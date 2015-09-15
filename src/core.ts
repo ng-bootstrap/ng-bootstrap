@@ -1,0 +1,1 @@
+export {UIBSAccordian} from './components/accordian'
