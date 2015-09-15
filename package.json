@@ -1,0 +1,30 @@
+{
+  "name": "ui-boostrap2-core",
+  "version": "1.0.0",
+  "description": "ui-bootstrap core components for angular2",
+  "main": "dist/core.js",
+  "scripts": {
+    "setup": "tsd reinstall",
+    "build" : "rm -rf dist/ && tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ui-bootstrap/core.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ui-bootstrap/core/issues"
+  },
+  "homepage": "https://github.com/ui-bootstrap/core#readme",
+  "jspm": {
+    "directories": {},
+    "devDependencies": {
+      "typescript": "github:mhegazy/typescript@v1.5-beta2"
+    }
+  },
+  "devDependencies": {
+    "angular2": "^2.0.0-alpha.37"
+  }
+}
