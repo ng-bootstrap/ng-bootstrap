@@ -1,17 +1,16 @@
 /// <reference path="../../typings/tsd.d.ts" />
-
 import {Component, Directive, View} from 'angular2/angular2'
 
 @Component({
-  selector: 'ui-bs-accordian'
+  selector: 'ui-bs-accordion'
 })
 @View({
   template: `
     <div>
-      I'm an accordian!
+      I'm an accordion!
     </div>
   `
 })
-export class UIBSAccordian {
+export class UIBSAccordion {
   
 }

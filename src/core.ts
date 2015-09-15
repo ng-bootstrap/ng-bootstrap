@@ -1,1 +1,1 @@
-export {UIBSAccordian} from './components/accordian'
+export {UIBSAccordion} from './components/accordion'

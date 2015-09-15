@@ -8,7 +8,7 @@
   },
   "files": [
     "src/core.ts",
-    "src/components/accordian.ts"
+    "src/components/accordion.ts"
   ],
   "exclude": [
     "node_modules"
