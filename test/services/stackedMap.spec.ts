@@ -1,4 +1,14 @@
 import {UIBStackedMap} from '../../src/core';
+import {
+  beforeEach,
+  ddescribe,
+  xdescribe,
+  describe,
+  expect,
+  iit,
+  it,
+  xit
+} from 'angular2/test_lib';
 
 describe('StackedMap', () => {
   let stackedMap;

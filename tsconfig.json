@@ -9,6 +9,7 @@
   "files": [
     "src/core.ts",
     "src/components/accordion.ts",
+    "src/services/multiMap.ts",
     "src/services/stackedMap.ts"
   ],
   "exclude": [
