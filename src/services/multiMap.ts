@@ -6,7 +6,12 @@ export class UIBMultiMap {
   }
 
   entries() {
-    return Object.keys(map).map(key => { key: key, value: map[key] });
+    return Object.keys(map).map(key => {
+      return {
+        key: key,
+        value: map[key]
+      }
+    });
   }
 
   get(key) {
