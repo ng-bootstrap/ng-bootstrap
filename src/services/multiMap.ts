@@ -6,36 +6,36 @@ export class UIBMultiMap {
   }
 
   entries() {
-    return Object.keys(map).map(key => {
+    return Object.keys(this._map).map(key => {
       return {
         key: key,
-        value: map[key]
+        value: this._map[key]
       }
     });
   }
 
   get(key) {
-    return map[key];
+    return this._map[key];
   }
 
   hasKey(key) {
-    return !!map[key];
+    return !!this._map[key];
   }
 
   keys() {
-    return Object.keys(map);
+    return Object.keys(this._map);
   }
 
   put(key, value) {
-    if (!map[key]) {
-      map[key] = [];
+    if (!this._map[key]) {
+      this._map[key] = [];
     }
 
-    map[key].push(value);
+    this._map[key].push(value);
   }
 
   remove(key, value) {
-    var values = map[key];
+    var values = this._map[key];
 
     if (!values) {
       return;
@@ -48,7 +48,7 @@ export class UIBMultiMap {
     }
 
     if (!values.length) {
-      delete map[key];
+      delete this._map[key];
     }
   }
 }
