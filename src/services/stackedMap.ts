@@ -1,12 +1,10 @@
 /// <reference path="../../typings/tsd.d.ts" />
-import {Injectable} from 'angular2/angular2';
 
 interface keyVal {
   key: Object;
   value: Object;
 }
 
-@Injectable()
 export class UIBStackedMap {
   _stack: Array<keyVal>;
 
@@ -44,9 +42,5 @@ export class UIBStackedMap {
 
   length() {
     return this._stack.length;
-  }
-
-  static create() {
-    return new UIBStackedMap();
   }
 }
