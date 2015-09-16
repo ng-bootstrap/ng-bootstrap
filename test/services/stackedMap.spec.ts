@@ -1,4 +1,4 @@
-import {UIBStackedMap} from '../../src/core';
+import {UibStackedMap} from '../../src/core';
 import {
   beforeEach,
   ddescribe,
@@ -13,7 +13,7 @@ import {
 describe('StackedMap', () => {
   let stackedMap;
   beforeEach(() => {
-    stackedMap = new UIBStackedMap();
+    stackedMap = new UibStackedMap();
   });
 
   it('should add and remove objects by key', () => {

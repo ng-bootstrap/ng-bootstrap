@@ -2,7 +2,7 @@
 import {Component, Directive, View} from 'angular2/angular2'
 
 @Component({
-  selector: 'ui-bs-accordion'
+  selector: 'uib-accordion'
 })
 @View({
   template: `
@@ -11,6 +11,6 @@ import {Component, Directive, View} from 'angular2/angular2'
     </div>
   `
 })
-export class UIBSAccordion {
+export class UibAccordion {
   
 }

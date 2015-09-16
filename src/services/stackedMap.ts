@@ -5,7 +5,7 @@ interface keyVal {
   value: Object;
 }
 
-export class UIBStackedMap {
+export class UibStackedMap {
   _stack: Array<keyVal>;
 
   constructor() {

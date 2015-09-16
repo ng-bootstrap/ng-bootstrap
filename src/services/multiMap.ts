@@ -1,4 +1,4 @@
-export class UIBMultiMap {
+export class UibMultiMap {
   _map: Object;
 
   constructor() {

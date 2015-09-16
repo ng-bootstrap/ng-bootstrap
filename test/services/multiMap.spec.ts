@@ -1,4 +1,4 @@
-import {UIBMultiMap} from '../../src/core';
+import {UibMultiMap} from '../../src/core';
 import {
   beforeEach,
   ddescribe,
@@ -14,7 +14,7 @@ describe('multi map', function() {
   let multiMap;
 
   beforeEach(() => {
-    multiMap = new UIBMultiMap();
+    multiMap = new UibMultiMap();
   });
 
   it('should add and remove objects by key', () => {
