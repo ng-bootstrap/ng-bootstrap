@@ -18,13 +18,14 @@
     "url": "https://github.com/ui-bootstrap/core/issues"
   },
   "homepage": "https://github.com/ui-bootstrap/core#readme",
-  "jspm": true,
-  "devDependencies": {
-    "typescript": "github:mhegazy/typescript@v1.5-beta2"
-  },
-  "dependencies": {
-    "angular2": "npm:angular2@^2.0.0-alpha.37",
-    "es6-shim": "github:es-shims/es6-shim@^0.33.3",
-    "reflect-metadata": "npm:reflect-metadata@^0.1.1"
+  "jspm": {
+    "dependencies": {
+      "angular2": "npm:angular2@^2.0.0-alpha.37",
+      "es6-shim": "github:es-shims/es6-shim@^0.33.3",
+      "reflect-metadata": "npm:reflect-metadata@^0.1.1"
+    },
+    "devDependencies": {
+      "typescript": "github:microsoft/typescript@v1.6.2"
+    }
   }
 }

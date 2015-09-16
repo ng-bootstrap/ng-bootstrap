@@ -2,3 +2,6 @@
 /typings/
 /jspm_packages/
 /dist/
+npm-debug.log
+.sw*
+.idea
