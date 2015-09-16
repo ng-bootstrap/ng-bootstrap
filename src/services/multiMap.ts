@@ -27,7 +27,8 @@ export class UIBMultiMap {
     }
 
     map[key].push(value);
-  },
+  }
+
   remove(key, value) {
     var values = map[key];
 
