@@ -2,7 +2,7 @@
   "name": "ui-boostrap2-core",
   "version": "1.0.0",
   "description": "ui-bootstrap core components for angular2",
-  "main": "dist/core.js",
+  "main": "dist/cjs/core.js",
   "scripts": {
     "setup": "node misc/validate-commit.install.js && tsd reinstall",
     "build": "rm -rf dist/ && tsc",
@@ -27,5 +27,13 @@
     "devDependencies": {
       "typescript": "github:microsoft/typescript@v1.6.2"
     }
+  },
+  "devDependencies": {
+    "del": "^2.0.2",
+    "gulp": "^3.9.0",
+    "gulp-typescript": "^2.9.0",
+    "gulp-util": "^3.0.6",
+    "typescript": "^1.6.2",
+    "webpack": "^1.12.2"
   }
 }

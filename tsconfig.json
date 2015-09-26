@@ -1,12 +1,11 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "ES5",
+    "target": "ES6",
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "outDir": "dist"
+    "experimentalDecorators": true
   },
   "files": [
+    "typings/tsd.d.ts",
     "src/core.ts",
     "src/components/accordion.ts",
     "src/services/multiMap.ts",
