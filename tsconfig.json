@@ -6,6 +6,7 @@
   },
   "files": [
     "typings/tsd.d.ts",
-    "src/core.ts"
+    "src/core.ts",
+    "src/components/dropdown.ts"
   ]
 }
