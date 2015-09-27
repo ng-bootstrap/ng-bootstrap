@@ -1,5 +1,4 @@
-/// <reference path="../../typings/tsd.d.ts" />
-import {Component, Directive, View} from 'angular2/angular2'
+import {Component, Directive, View} from 'angular2/angular2';
 
 @Component({
   selector: 'uib-accordion'
