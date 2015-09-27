@@ -5,7 +5,6 @@
   "main": "dist/cjs/core.js",
   "scripts": {
     "setup": "node misc/validate-commit.install.js && tsd reinstall",
-    "build": "rm -rf dist/ && tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,16 +17,6 @@
     "url": "https://github.com/ui-bootstrap/core/issues"
   },
   "homepage": "https://github.com/ui-bootstrap/core#readme",
-  "jspm": {
-    "dependencies": {
-      "angular2": "npm:angular2@^2.0.0-alpha.37",
-      "es6-shim": "github:es-shims/es6-shim@^0.33.3",
-      "reflect-metadata": "npm:reflect-metadata@^0.1.1"
-    },
-    "devDependencies": {
-      "typescript": "github:microsoft/typescript@v1.6.2"
-    }
-  },
   "devDependencies": {
     "del": "^2.0.2",
     "gulp": "^3.9.0",
