@@ -1,6 +1,6 @@
 /// <reference path="../../typings/tsd.d.ts" />
 
-interface keyVal {
+export interface keyVal {
   key: Object;
   value: Object;
 }
