@@ -1,4 +1,4 @@
-interface keyVal {
+export interface keyVal {
   key: Object;
   value: Object;
 }
