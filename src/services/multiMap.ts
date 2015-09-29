@@ -1,30 +1,15 @@
 export class UibMultiMap {
   _map: Object;
 
-  constructor() {
-    this._map = {};
-  }
+  constructor() { this._map = {}; }
 
-  entries() {
-    return Object.keys(this._map).map(key => {
-      return {
-        key: key,
-        value: this._map[key]
-      }
-    });
-  }
+  entries() { return Object.keys(this._map).map(key => {return {key: key, value: this._map[key]}}); }
 
-  get(key) {
-    return this._map[key];
-  }
+  get(key) { return this._map[key]; }
 
-  hasKey(key) {
-    return !!this._map[key];
-  }
+  hasKey(key) { return !!this._map[key]; }
 
-  keys() {
-    return Object.keys(this._map);
-  }
+  keys() { return Object.keys(this._map); }
 
   put(key, value) {
     if (!this._map[key]) {
