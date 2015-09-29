@@ -5,14 +5,10 @@
     "experimentalDecorators": true
   },
   "files": [
-    "node_modules/typescript/lib/lib.es6.d.ts",
     "typings/tsd.d.ts",
     "src/core.ts",
     "src/components/accordion.ts",
     "src/services/multiMap.ts",
     "src/services/stackedMap.ts"
-  ],
-  "exclude": [
-    "node_modules"
   ]
 }
