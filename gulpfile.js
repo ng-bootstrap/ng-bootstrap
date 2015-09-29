@@ -3,6 +3,8 @@ var gutil = require('gulp-util');
 var ts = require('gulp-typescript');
 var del = require('del');
 var webpack = require('webpack');
+var gulpFormat = require('gulp-clang-format');
+var clangFormat = require('clang-format');
 
 gulp.task('clean', function (cb) {
   del('dist/', cb);
@@ -46,5 +48,25 @@ gulp.task('umd', ['es5', 'es6'], function (cb) {
   })
 });
 
-gulp.task('build', ['clean', 'umd']);
+gulp.task('check-format', function() {
+  return doCheckFormat().on('warning', function(e) {
+    console.log("NOTE: this will be promoted to an ERROR in the continuous build");
+  });
+});
+
+gulp.task('enforce-format', function() {
+  return doCheckFormat().on('warning', function(e) {
+    console.log("ERROR: You forgot to run clang-format on your change.");
+    console.log("See https://github.com/ng-bootstrap/core/blob/master/DEVELOPER.md#clang-format");
+    process.exit(1);
+  });
+});
+
+gulp.task('build', ['clean', 'umd', 'check-format']);
 gulp.task('default', ['build']);
+
+//formatting
+function doCheckFormat() {
+  return gulp.src(['src/**/*.ts'])
+    .pipe(gulpFormat.checkFormat('file', clangFormat));
+}
