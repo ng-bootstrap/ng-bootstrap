@@ -6,9 +6,6 @@
   },
   "files": [
     "typings/tsd.d.ts",
-    "src/core.ts",
-    "src/components/accordion.ts",
-    "src/services/multiMap.ts",
-    "src/services/stackedMap.ts"
+    "src/core.ts"
   ]
 }
