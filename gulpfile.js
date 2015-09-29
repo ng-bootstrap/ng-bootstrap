@@ -16,7 +16,11 @@ gulp.task('es5', function () {
     target: 'es5'
   });
 
-  var tsResult = gulp.src(['typings/tsd.d.ts', 'src/**/*.ts'])
+  var tsResult = gulp.src([
+      'node_modules/typescript/lib/lib.es6.d.ts',
+      'typings/tsd.d.ts',
+      'src/**/*.ts'
+    ])
     .pipe(ts(tsProject));
 
   return tsResult.js.pipe(gulp.dest('dist/cjs'));
@@ -25,7 +29,10 @@ gulp.task('es5', function () {
 gulp.task('es6', function () {
   var tsProject = ts.createProject('tsconfig.json');
 
-  var tsResult = gulp.src(['typings/tsd.d.ts', 'src/**/*.ts'])
+  var tsResult = gulp.src([
+      'typings/tsd.d.ts',
+      'src/**/*.ts'
+    ])
     .pipe(ts(tsProject));
 
   return tsResult.js.pipe(gulp.dest('dist/es6'));
