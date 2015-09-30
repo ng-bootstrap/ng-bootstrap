@@ -1,7 +1,7 @@
 {
-  "name": "ui-boostrap2-core",
-  "version": "1.0.0",
-  "description": "ui-bootstrap core components for angular2",
+  "name": "angular-ng-bootstrap",
+  "version": "0.1.0",
+  "description": "ng-bootstrap core components for angular2",
   "main": "dist/cjs/core.js",
   "scripts": {
     "setup": "node misc/validate-commit.install.js && tsd reinstall",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ui-bootstrap/core.git"
+    "url": "git+https://github.com/ng-bootstrap/core.git"
   },
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ui-bootstrap/core/issues"
+    "url": "https://github.com/ng-bootstrap/core/issues"
   },
-  "homepage": "https://github.com/ui-bootstrap/core#readme",
+  "homepage": "https://github.com/ng-bootstrap/core#readme",
   "devDependencies": {
     "clang-format": "^1.0.29",
     "del": "^2.0.2",
