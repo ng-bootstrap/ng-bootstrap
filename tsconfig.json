@@ -8,5 +8,6 @@
     "typings/tsd.d.ts",
     "src/core.ts",
     "src/components/dropdown.ts"
-  ]
+  ],
+  "compileOnSave": false
 }
