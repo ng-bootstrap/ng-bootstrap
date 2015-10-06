@@ -29,8 +29,11 @@ gulp.task('umd', ['es5', 'es6'], function(cb) {
   webpack(
       {
         entry: './dist/cjs/core.js',
-        output: {filename: 'dist/global/ng-bootstrap.js', libraryTarget: 'umd'},
-        externals: {'angular2/angular2': 'angular2/angular2'}
+        output: {filename: 'dist/global/ng-bootstrap.js', library: 'ngb', libraryTarget: 'umd'},
+        externals: {
+          'angular2/angular2':
+              {root: 'ng', commonjs: 'angular2/angular2', commonjs2: 'angular2/angular2', amd: 'angular2/angular2'}
+        }
       },
       function(err, stats) {
         if (err) throw new gutil.PluginError('webpack', err);
