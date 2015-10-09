@@ -7,7 +7,8 @@
   "files": [
     "typings/tsd.d.ts",
     "src/core.ts",
-    "src/components/dropdown.ts"
+    "src/components/dropdown.ts",
+    "src/components/rating.ts"
   ],
   "compileOnSave": false
 }
