@@ -5,7 +5,8 @@
   "author": "https://github.com/ng-bootstrap/core/graphs/contributors",
   "main": "dist/cjs/core.js",
   "scripts": {
-    "setup": "node misc/validate-commit.install.js && tsd reinstall",
+    "setup": "node misc/validate-commit.install.js",
+    "build": "rm -rf dist && tsc && gulp build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,11 +19,10 @@
   },
   "homepage": "https://github.com/ng-bootstrap/core#readme",
   "devDependencies": {
+    "angular2": "^2.0.0-alpha.44",
     "clang-format": "^1.0.29",
-    "del": "^2.0.2",
     "gulp": "^3.9.0",
     "gulp-clang-format": "^1.0.21",
-    "gulp-typescript": "^2.9.0",
     "gulp-util": "^3.0.6",
     "typescript": "^1.6.2",
     "webpack": "^1.12.2"

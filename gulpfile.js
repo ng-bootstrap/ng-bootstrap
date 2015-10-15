@@ -1,31 +1,10 @@
 var gulp = require('gulp');
 var gutil = require('gulp-util');
-var ts = require('gulp-typescript');
-var del = require('del');
 var webpack = require('webpack');
 var gulpFormat = require('gulp-clang-format');
 var clangFormat = require('clang-format');
 
-gulp.task('clean', function(cb) { del('dist/', cb); });
-
-gulp.task('es5', function() {
-  var tsProject = ts.createProject('tsconfig.json', {module: 'commonjs', target: 'es5'});
-
-  var tsResult =
-      gulp.src(['node_modules/typescript/lib/lib.es6.d.ts', 'typings/tsd.d.ts', 'src/**/*.ts']).pipe(ts(tsProject));
-
-  return tsResult.js.pipe(gulp.dest('dist/cjs'));
-});
-
-gulp.task('es6', function() {
-  var tsProject = ts.createProject('tsconfig.json');
-
-  var tsResult = gulp.src(['typings/tsd.d.ts', 'src/**/*.ts']).pipe(ts(tsProject));
-
-  return tsResult.js.pipe(gulp.dest('dist/es6'));
-});
-
-gulp.task('umd', ['es5', 'es6'], function(cb) {
+gulp.task('umd', function(cb) {
   webpack(
       {
         entry: './dist/cjs/core.js',
@@ -55,7 +34,7 @@ gulp.task('enforce-format', function() {
   });
 });
 
-gulp.task('build', ['clean', 'umd', 'check-format']);
+gulp.task('build', ['umd', 'check-format']);
 gulp.task('default', ['build']);
 
 // formatting
