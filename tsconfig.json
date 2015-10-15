@@ -1,11 +1,13 @@
 {
   "compilerOptions": {
-    "target": "ES6",
+    "target": "ES5",
+    "module": "commonjs",
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "declaration": true,
+    "outDir": "dist/cjs"
   },
   "files": [
-    "typings/tsd.d.ts",
     "src/core.ts",
     "src/components/accordion.ts",
     "src/components/dropdown.ts",
