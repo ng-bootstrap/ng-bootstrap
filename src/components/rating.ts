@@ -1,11 +1,7 @@
-import {Component, View, NgFor, NgClass, EventEmitter, OnInit} from 'angular2/angular2';
+import {Component, Input, Output, NgFor, NgClass, EventEmitter, OnInit} from 'angular2/angular2';
 
 @Component({
   selector: 'ngb-rating',
-  inputs: ['max', 'rate', 'readonly'],
-  outputs: ['updateRating: rate', 'onHover', 'onLeave']
-})
-@View({
   template: `
     <span tabindex="0" (mouseleave)="reset()" aria-valuemin="0" [attr.aria-valuemax]="max" [attr.aria-valuenow]="rate">
       <template ng-for #r [ng-for-of]="range" #index="index">
@@ -17,14 +13,14 @@ import {Component, View, NgFor, NgClass, EventEmitter, OnInit} from 'angular2/an
   directives: [NgFor, NgClass]
 })
 export class NgbRating implements OnInit {
-  private max: number = 10;
+  @Input() private max: number = 10;
+  @Input() private rate: number;
+  @Input() private readonly: boolean;
+  @Output('rateChange') private updateRating: EventEmitter = new EventEmitter();
+  @Output() private onHover: EventEmitter = new EventEmitter();
+  @Output() private onLeave: EventEmitter = new EventEmitter();
   private oldRate: number;
   private range: Array<any>;
-  private rate: number;
-  private readonly: boolean;
-  private updateRating: EventEmitter = new EventEmitter();
-  private onHover: EventEmitter = new EventEmitter();
-  private onLeave: EventEmitter = new EventEmitter();
 
   onInit() {
     this.oldRate = this.rate;
@@ -47,7 +43,6 @@ export class NgbRating implements OnInit {
   }
 
   reset(): void {
-    // I feel like sending the hovered value on leave.
     this.onLeave.next(this.rate);
     this.rate = this.oldRate;
   }
