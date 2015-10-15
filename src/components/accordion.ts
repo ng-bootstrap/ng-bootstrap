@@ -1,9 +1,8 @@
-import {Component, View, OnDestroy} from 'angular2/angular2';
+import {Component, Input, OnDestroy} from 'angular2/angular2';
 
-@Component({selector: 'ngb-accordion, [ngb-accordion]', properties: ['onlyOneOpen: closeOthers']})
-@View({template: `<ng-content></ng-content>`})
+@Component({selector: 'ngb-accordion, [ngb-accordion]', template: `<ng-content></ng-content>`})
 export class NgbAccordion {
-  private onlyOneOpen: boolean;
+  @Input('closeOthers') private onlyOneOpen: boolean;
   private groups: Array<NgbAccordionGroup> = [];
 
   addGroup(group: NgbAccordionGroup): void { this.groups.push(group); }
@@ -28,8 +27,9 @@ export class NgbAccordion {
   }
 }
 
-@Component({selector: 'ngb-accordion-group, [ngb-accordion-group]', properties: ['heading', 'isOpen', 'isDisabled']})
-@View({
+@Component({
+  selector: 'ngb-accordion-group, [ngb-accordion-group]',
+  inputs: ['heading', 'isOpen', 'isDisabled'],
   template: `
     <div class="panel panel-default" [class.panel-open]="isOpen">
       <div class="panel-heading">
@@ -39,8 +39,8 @@ export class NgbAccordion {
       </div>
       <div class="panel-collapse" [hidden]="!isOpen">
         <div class="panel-body">
-    	    <ng-content></ng-content>
-  	    </div>
+          <ng-content></ng-content>
+        </div>
       </div>
     </div>
   `
