@@ -6,8 +6,10 @@
   "main": "dist/cjs/core.js",
   "scripts": {
     "setup": "node misc/validate-commit.install.js",
-    "build": "rm -rf dist && tsc && gulp build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rm -rf dist && tsc src/core.ts --outDir dist/cjs --target ES5 --module commonjs -d --experimentalDecorators --emitDecoratorMetadata && gulp build",
+    "watch": "tsc --watch",
+    "build_tests": "rm -rf temp && tsc",
+    "test": "karma start karma.conf.js"
   },
   "repository": {
     "type": "git",
@@ -24,6 +26,12 @@
     "gulp": "^3.9.0",
     "gulp-clang-format": "^1.0.21",
     "gulp-util": "^3.0.6",
+    "jasmine": "^2.3.2",
+    "jasmine-core": "^2.3.4",
+    "karma": "^0.13.14",
+    "karma-chrome-launcher": "^0.2.1",
+    "karma-jasmine": "^0.3.6",
+    "systemjs": "^0.19.5",
     "typescript": "^1.6.2",
     "webpack": "^1.12.2"
   }

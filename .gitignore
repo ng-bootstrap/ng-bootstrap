@@ -1,6 +1,7 @@
 /node_modules/
 /typings/
 /dist/
+/temp/
 npm-debug.log
 .sw*
 .idea
