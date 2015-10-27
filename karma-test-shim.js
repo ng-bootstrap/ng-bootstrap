@@ -13,14 +13,14 @@ System.config({
   packages: {
     'base/temp/components': {
       defaultExtension: false,
-      format: 'register',
+      format: 'cjs',
       map: Object.keys(window.__karma__.files).
             filter(onlyAppFiles).
             reduce(function createPathRecords(pathsMapping, appPath) {
               // creates local module name mapping to global path with karma's fingerprint in path, e.g.:
               // './hero.service': '/base/temp/components/hero.service.js?f4523daf879cfb7310ef6242682ccf10b2041b3e'
               var moduleName = appPath.replace(/^\/base\/temp\/components\//, './').replace(/\.js$/, '');
-              pathsMapping[moduleName] = appPath + '?' + window.__karma__.files[appPath]
+              pathsMapping[moduleName] = appPath + '?' + window.__karma__.files[appPath];
               return pathsMapping;
             }, {})
 
@@ -60,5 +60,5 @@ function onlyAppFiles(filePath) {
 
 
 function onlySpecFiles(path) {
-  return /_test\.js$/.test(path);
+  return /\.test\.js$/.test(path);
 }
