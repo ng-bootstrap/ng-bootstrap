@@ -12,7 +12,7 @@
     "src/components/accordion.ts",
     "src/components/dropdown.ts",
     "src/components/rating.ts",
-    "src/test/sanity_test.ts"
+    "src/test/rating.test.ts"
   ],
   "compileOnSave": false,
   "exclude": [
