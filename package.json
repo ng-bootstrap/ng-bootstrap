@@ -9,7 +9,8 @@
     "build": "rm -rf dist && tsc src/core.ts --outDir dist/cjs --target ES5 --module commonjs -d --experimentalDecorators --emitDecoratorMetadata && gulp build",
     "watch": "tsc --watch",
     "build_tests": "rm -rf temp && tsc",
-    "test": "karma start karma.conf.js"
+    "test": "karma start karma.conf.js",
+    "test:ci": "tsc && karma start --single-run --reporters dots --browsers Firefox"
   },
   "repository": {
     "type": "git",
@@ -30,6 +31,7 @@
     "jasmine-core": "^2.3.4",
     "karma": "^0.13.14",
     "karma-chrome-launcher": "^0.2.1",
+    "karma-firefox-launcher": "^0.1.6",
     "karma-jasmine": "^0.3.6",
     "systemjs": "^0.19.5",
     "typescript": "^1.6.2",
