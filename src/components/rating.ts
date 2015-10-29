@@ -6,7 +6,7 @@ import {Component, Input, Output, NgFor, EventEmitter, OnInit} from 'angular2/an
     <span tabindex="0" (mouseleave)="reset()" aria-valuemin="0" [attr.aria-valuemax]="max" [attr.aria-valuenow]="rate">
       <template ng-for #r [ng-for-of]="range" #index="index">
         <span class="sr-only">({{ index < rate ? '*' : ' ' }})</span>
-        <i class="glyphicon {{index < rate ? 'glyphicon-star' : 'glyphicon-star-empty'}}" (mouseenter)="hover(index + 1)" (click)="update(index + 1)" [title]="r.title" [attr.aria-valuetext]="r.title"></i>
+        <i class="glyphicon {{index < rate ? 'glyphicon-star' : 'glyphicon-star-empty'}}" (mouseenter)="enter(index + 1)" (click)="update(index + 1)" [title]="r.title" [attr.aria-valuetext]="r.title"></i>
       </template>
     </span>
   `,
@@ -17,8 +17,8 @@ export class NgbRating implements OnInit {
   @Input() private rate: number;
   @Input() private readonly: boolean;
   @Output() private rateChange: EventEmitter = new EventEmitter();
-  @Output() private onHover: EventEmitter = new EventEmitter();
-  @Output() private onLeave: EventEmitter = new EventEmitter();
+  @Output() private hover: EventEmitter = new EventEmitter();
+  @Output() private leave: EventEmitter = new EventEmitter();
   private oldRate: number;
   private range: Array<any>;
 
@@ -35,15 +35,15 @@ export class NgbRating implements OnInit {
     return range;
   }
 
-  hover(value: number): void {
+  enter(value: number): void {
     if (!this.readonly) {
       this.rate = value;
     }
-    this.onHover.next(value);
+    this.hover.next(value);
   }
 
   reset(): void {
-    this.onLeave.next(this.rate);
+    this.leave.next(this.rate);
     this.rate = this.oldRate;
   }
 
