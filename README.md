@@ -1,6 +1,6 @@
 ### NG Bootstrap - [Angular 2](http://angular.io/) directives specific to [Bootstrap](http://getbootstrap.com)
 
-[![Build Status](https://travis-ci.org/ng-bootstrap/core.svg)](http://travis-ci.org/ng-bootstrap/core.svg)
+[![Build Status](https://travis-ci.org/ng-bootstrap/core.svg?branch=master)](https://travis-ci.org/ng-bootstrap/core)
 
 This library is a work in progress. Please check out our list of [issues](https://github.com/ng-bootstrap/core/issues) to see all the things we are implementing. Feel free to make any comment there ;)
 
