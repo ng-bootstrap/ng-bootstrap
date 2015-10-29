@@ -16,7 +16,7 @@ export class NgbRating implements OnInit {
   @Input() private max: number = 10;
   @Input() private rate: number;
   @Input() private readonly: boolean;
-  @Output('rateChange') private updateRating: EventEmitter = new EventEmitter();
+  @Output() private rateChange: EventEmitter = new EventEmitter();
   @Output() private onHover: EventEmitter = new EventEmitter();
   @Output() private onLeave: EventEmitter = new EventEmitter();
   private oldRate: number;
@@ -51,7 +51,7 @@ export class NgbRating implements OnInit {
     if (!this.readonly) {
       this.oldRate = value;
       this.rate = value;
-      this.updateRating.next(value);
+      this.rateChange.next(value);
     }
   }
 }
