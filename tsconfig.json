@@ -7,13 +7,6 @@
     "experimentalDecorators": true,
     "outDir": "temp/"
   },
-  "files": [
-    "src/core.ts",
-    "src/components/accordion.ts",
-    "src/components/dropdown.ts",
-    "src/components/rating.ts",
-    "src/test/rating.test.ts"
-  ],
   "compileOnSave": false,
   "exclude": [
     "node_modules"
