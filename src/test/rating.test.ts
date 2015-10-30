@@ -14,6 +14,32 @@ import {Component} from 'angular2/angular2';
 
 import {NgbRating} from '../components/rating';
 
+function getStar(compiled, num: number) {
+  return getStars(compiled)[num - 1];
+}
+
+function getStars(element, selector = 'i') {
+  return element.querySelectorAll(selector);
+}
+
+function getState(compiled) {
+  const stars = getStars(compiled);
+  let state = [];
+  for (let i = 0, l = stars.length; i < l; i++) {
+    state.push((stars[i].classList.contains('glyphicon-star') && !stars[i].classList.contains('glyphicon-star-empty')));
+  }
+  return state;
+}
+
+function getAriaState(compiled) {
+  const stars = getStars(compiled, '.sr-only');
+  let state = [];
+  for (let i = 0, l = stars.length; i < l; i++) {
+    state.push((stars[i].textContent === '(*)' && stars[i].textContent !== '( )'));
+  }
+  return state;
+}
+
 describe('ngb-rating', () => {
   it('should show 10 stars by default', injectAsync([TestComponentBuilder], (tcb) => {
        return tcb.createAsync(NgbRating).then((fixture) => {
@@ -21,7 +47,7 @@ describe('ngb-rating', () => {
 
          const compiled = fixture.debugElement.nativeElement;
 
-         const stars = compiled.querySelectorAll('i');
+         const stars = getStars(compiled);
          expect(stars.length).toBe(10);
        });
      }));
@@ -36,8 +62,38 @@ describe('ngb-rating', () => {
 
              const compiled = fixture.debugElement.nativeElement;
 
-             const stars = compiled.querySelectorAll('i');
+             const stars = getStars(compiled);
              expect(stars.length).toBe(3);
+           });
+     }));
+
+  it('initializes the default star icons as selected', injectAsync([TestComponentBuilder], (tcb) => {
+       const html = '<ngb-rating rate="3" max="5"></ngb-rating>';
+
+       return tcb.overrideTemplate(TestComponent, html)
+           .createAsync(TestComponent)
+           .then((fixture) => {
+             fixture.detectChanges();
+
+             const compiled = fixture.debugElement.nativeElement;
+
+             expect(getState(compiled)).toEqual([true, true, true, false, false]);
+           });
+     }));
+
+  it('handles correctly the click event', injectAsync([TestComponentBuilder], (tcb) => {
+       const html = '<ngb-rating rate="3" max="5"></ngb-rating>';
+
+       return tcb.overrideTemplate(TestComponent, html)
+           .createAsync(TestComponent)
+           .then((fixture) => {
+             fixture.detectChanges();
+
+             const compiled = fixture.debugElement.nativeElement;
+
+             getStar(compiled, 2).click();
+             fixture.detectChanges();
+             expect(getState(compiled)).toEqual([true, true, false, false, false]);
            });
      }));
 
@@ -65,8 +121,53 @@ describe('ngb-rating', () => {
                fixture.detectChanges();
 
                let compiled = fixture.debugElement.nativeElement;
-               let hiddenStars = compiled.querySelectorAll('.sr-only');
+               let hiddenStars = getStars(compiled, '.sr-only');
                expect(hiddenStars.length).toBe(5);
+             });
+       }));
+
+    it('initializes populates the current rate for screenreaders', injectAsync([TestComponentBuilder], (tcb) => {
+         const html = '<ngb-rating rate="3" max="5"></ngb-rating>';
+
+         return tcb.overrideTemplate(TestComponent, html)
+             .createAsync(TestComponent)
+             .then((fixture) => {
+               fixture.detectChanges();
+
+               const compiled = fixture.debugElement.nativeElement;
+
+               expect(getAriaState(compiled)).toEqual([true, true, true, false, false]);
+             });
+       }));
+
+    it('contains aria-valuenow with the current rate', injectAsync([TestComponentBuilder], (tcb) => {
+         const html = '<ngb-rating [max]="max" rate="3"></ngb-rating>';
+
+         return tcb.overrideTemplate(TestComponent, html)
+             .createAsync(TestComponent)
+             .then((fixture) => {
+               fixture.detectChanges();
+
+               const compiled = fixture.debugElement.nativeElement;
+
+               expect(compiled.querySelector('span').getAttribute('aria-valuenow')).toBe('3');
+             });
+       }));
+
+    it('updates aria-valuenow when the rate changes', injectAsync([TestComponentBuilder], (tcb) => {
+         const html = '<ngb-rating [max]="max" rate="3"></ngb-rating>';
+
+         return tcb.overrideTemplate(TestComponent, html)
+             .createAsync(TestComponent)
+             .then((fixture) => {
+               fixture.detectChanges();
+
+               const compiled = fixture.debugElement.nativeElement;
+
+               getStar(compiled, 7).click();
+               fixture.detectChanges();
+
+               expect(compiled.querySelector('span').getAttribute('aria-valuenow')).toBe('7');
              });
        }));
   });
