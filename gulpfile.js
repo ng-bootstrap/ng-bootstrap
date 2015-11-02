@@ -39,5 +39,6 @@ gulp.task('default', ['build']);
 
 // formatting
 function doCheckFormat() {
-  return gulp.src(['gulpfile.js', 'src/**/*.ts']).pipe(gulpFormat.checkFormat('file', clangFormat));
+  return gulp.src(['gulpfile.js', 'karma-test-shim.js', 'src/**/*.ts'])
+      .pipe(gulpFormat.checkFormat('file', clangFormat));
 }
