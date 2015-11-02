@@ -1,3 +1,3 @@
-export {NgbAccordion, NgbAccordionGroup} from './components/accordion';
-export {NgbDropdown, NgbDropdownMenu} from './components/dropdown';
-export {NgbRating} from './components/rating';
+export {NgbAccordion, NgbAccordionGroup} from './accordion/accordion';
+export {NgbDropdown, NgbDropdownMenu} from './dropdown/dropdown';
+export {NgbRating} from './rating/rating';

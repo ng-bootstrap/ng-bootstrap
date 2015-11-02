@@ -12,7 +12,7 @@ import {
 
 import {Component} from 'angular2/angular2';
 
-import {NgbRating} from '../components/rating';
+import {NgbRating} from './rating';
 
 function getStar(compiled, num: number) {
   return getStars(compiled)[num - 1];
