@@ -5,12 +5,8 @@
   "author": "https://github.com/ng-bootstrap/core/graphs/contributors",
   "main": "dist/cjs/core.js",
   "scripts": {
-    "setup": "node misc/validate-commit.install.js",
-    "build": "rm -rf dist && tsc src/core.ts --outDir dist/cjs --target ES5 --module commonjs -d --experimentalDecorators --emitDecoratorMetadata && gulp build",
-    "watch": "tsc --watch",
-    "build_tests": "rm -rf temp && tsc",
-    "test": "karma start karma.conf.js",
-    "test:ci": "tsc && karma start --single-run --reporters dots --browsers Firefox"
+    "install": "node misc/validate-commit.install.js",
+    "test": "karma start karma.conf.js"
   },
   "repository": {
     "type": "git",
@@ -24,9 +20,13 @@
   "devDependencies": {
     "angular2": "^2.0.0-alpha.45",
     "clang-format": "^1.0.29",
+    "del": "^2.0.2",
     "es6-shim": "^0.33.8",
     "gulp": "^3.9.0",
     "gulp-clang-format": "^1.0.21",
+    "gulp-ddescribe-iit": "^1.3.0",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-typescript": "^2.9.2",
     "gulp-util": "^3.0.6",
     "jasmine": "^2.3.2",
     "jasmine-core": "^2.3.4",
@@ -34,6 +34,8 @@
     "karma-chrome-launcher": "^0.2.1",
     "karma-firefox-launcher": "^0.1.6",
     "karma-jasmine": "^0.3.6",
+    "merge2": "^0.3.6",
+    "run-sequence": "^1.1.4",
     "systemjs": "^0.19.5",
     "typescript": "^1.6.2",
     "webpack": "^1.12.2"
