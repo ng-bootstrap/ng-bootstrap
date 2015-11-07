@@ -1,4 +1,4 @@
-import {Component, Input} from 'angular2/angular2';
+import {Component, Directive, Input} from 'angular2/angular2';
 
 @Component({
   selector: 'ngb-dropdown',
@@ -10,6 +10,6 @@ export class NgbDropdown {
   @Input() private open: boolean;
 }
 
-@Component({selector: 'ngb-dropdown-menu', host: {'class': 'dropdown-menu'}, template: `<ng-content></ng-content>`})
+@Directive({selector: 'ngb-dropdown-menu', host: {'class': 'dropdown-menu'}})
 export class NgbDropdownMenu {
 }
