@@ -45,6 +45,8 @@ gulp.task('umd', function(cb) {
 
 var testProject = ts.createProject('tsconfig.json');
 
+gulp.task('clean:tests', function() { return del('temp/'); });
+
 gulp.task('build-tests', function() {
   var tsResult = gulp.src(PATHS.src).pipe(sourcemaps.init()).pipe(ts(testProject));
 
@@ -68,7 +70,7 @@ gulp.task('test', function(done) {
   new karmaServer(config, done).start();
 });
 
-gulp.task('watch', ['build-tests'], function() { gulp.watch(PATHS.src, ['build-tests']); });
+gulp.task('watch', ['clean:tests', 'build-tests'], function() { gulp.watch(PATHS.src, ['build-tests']); });
 
 // Formatting
 
@@ -92,7 +94,10 @@ function doCheckFormat() {
 // Public Tasks
 
 gulp.task('build', function(done) {
-  runSequence('enforce-format', 'ddescribe-iit', 'build-tests', 'test', 'clean:build', 'cjs', 'umd', done);
+  runSequence(
+      'enforce-format', 'ddescribe-iit', 'clean:tests', 'build-tests', 'test', 'clean:build', 'cjs', 'umd', done);
 });
 
-gulp.task('default', function(done) { runSequence('enforce-format', 'ddescribe-iit', 'build-tests', 'test', done); });
+gulp.task('default', function(done) {
+  runSequence('enforce-format', 'ddescribe-iit', 'clean:tests', 'build-tests', 'test', done);
+});
