@@ -1,40 +1,12 @@
-import {Component, Input, OnDestroy} from 'angular2/angular2';
-
-@Component({selector: 'ngb-accordion, [ngb-accordion]', template: `<ng-content></ng-content>`})
-export class NgbAccordion {
-  @Input('closeOthers') private onlyOneOpen: boolean;
-  private groups: Array<NgbAccordionGroup> = [];
-
-  addGroup(group: NgbAccordionGroup): void { this.groups.push(group); }
-
-  closeOthers(openGroup): void {
-    if (!this.onlyOneOpen) {
-      return;
-    }
-
-    this.groups.forEach((group: NgbAccordionGroup) => {
-      if (group !== openGroup) {
-        group.isOpen = false;
-      }
-    });
-  }
-
-  removeGroup(group: NgbAccordionGroup): void {
-    const index = this.groups.indexOf(group);
-    if (index !== -1) {
-      this.groups.splice(index, 1);
-    }
-  }
-}
+import {Component, Directive, forwardRef, Inject, Input, Query, QueryList} from 'angular2/angular2';
 
 @Component({
   selector: 'ngb-accordion-group, [ngb-accordion-group]',
-  inputs: ['heading', 'isOpen', 'isDisabled'],
   template: `
     <div class="panel panel-default" [class.panel-open]="isOpen">
       <div class="panel-heading">
         <h4 class="panel-title">
-          <a href tabindex="0"><span [class.text-muted]="isDisabled" (click)="toggleOpen($event)">{{heading}}</span></a>
+          <a href tabindex="0"><span [class.text-muted]="isDisabled" (click)="toggleOpen($event)">{{title}}</span></a>
         </h4>
       </div>
       <div class="panel-collapse" [hidden]="!isOpen">
@@ -45,27 +17,46 @@ export class NgbAccordion {
     </div>
   `
 })
-export class NgbAccordionGroup implements OnDestroy {
-  private isDisabled: boolean;
-  private _isOpen: boolean = false;
+export class NgbAccordionGroup {
+  private _isOpen = false;
+  @Input() isDisabled: boolean;
+  @Input() title: string;
 
-  constructor(private accordion: NgbAccordion) { this.accordion.addGroup(this); }
+  @Input()
+  set isOpen(value: boolean) {
+    this._isOpen = value;
+    if (value) {
+      this.accordion.closeOthers(this);
+    }
+  }
 
-  toggleOpen(event) {
+  get isOpen(): boolean { return this._isOpen; }
+
+  constructor(@Inject(forwardRef(() => NgbAccordion)) private accordion: NgbAccordion) {}
+
+  toggleOpen(event): void {
     event.preventDefault();
     if (!this.isDisabled) {
       this.isOpen = !this.isOpen;
     }
   }
+}
 
-  onDestroy(): void { this.accordion.removeGroup(this); }
+@Directive({selector: 'ngb-accordion, [ngb-accordion]'})
+export class NgbAccordion {
+  @Input('closeOthers') onlyOneOpen: boolean;
 
-  public get isOpen(): boolean { return this._isOpen; }
+  constructor(@Query(NgbAccordionGroup) public groups: QueryList<NgbAccordionGroup>) {}
 
-  public set isOpen(value: boolean) {
-    this._isOpen = value;
-    if (value) {
-      this.accordion.closeOthers(this);
+  closeOthers(openGroup: NgbAccordionGroup): void {
+    if (!this.onlyOneOpen) {
+      return;
     }
+
+    this.groups.toArray().forEach((group: NgbAccordionGroup) => {
+      if (group !== openGroup) {
+        group.isOpen = false;
+      }
+    });
   }
 }
