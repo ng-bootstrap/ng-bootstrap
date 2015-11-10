@@ -34,6 +34,7 @@
     "karma-chrome-launcher": "^0.2.1",
     "karma-firefox-launcher": "^0.1.6",
     "karma-jasmine": "^0.3.6",
+    "karma-sourcemap-loader": "^0.3.6",
     "merge2": "^0.3.6",
     "run-sequence": "^1.1.4",
     "systemjs": "^0.19.5",

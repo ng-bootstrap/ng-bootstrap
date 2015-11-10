@@ -22,6 +22,8 @@ module.exports = function(config) {
       {pattern: 'temp/**/*.js.map', included: false, watched: false}
     ],
 
+    preprocessors: {'temp/**/*.js': ['sourcemap']},
+
     reporters: ['progress'],
     port: 9876,
     colors: true,
