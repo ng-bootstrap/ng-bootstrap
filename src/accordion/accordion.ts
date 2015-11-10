@@ -9,7 +9,7 @@ import {Component, Directive, forwardRef, Inject, Input, Query, QueryList} from 
           <a href tabindex="0"><span [class.text-muted]="isDisabled" (click)="toggleOpen($event)">{{title}}</span></a>
         </h4>
       </div>
-      <div class="panel-collapse" [hidden]="!isOpen">
+      <div class="panel-collapse collapse" [class.in]="isOpen">
         <div class="panel-body">
           <ng-content></ng-content>
         </div>
