@@ -1,7 +1,7 @@
 import {Component, Directive, forwardRef, Inject, Input, Query, QueryList} from 'angular2/angular2';
 
 @Component({
-  selector: 'ngb-accordion-group, [ngb-accordion-group]',
+  selector: 'ngb-accordion-group',
   template: `
     <div class="panel panel-default" [class.panel-open]="isOpen">
       <div class="panel-heading">
@@ -42,7 +42,7 @@ export class NgbAccordionGroup {
   }
 }
 
-@Directive({selector: 'ngb-accordion, [ngb-accordion]'})
+@Directive({selector: 'ngb-accordion'})
 export class NgbAccordion {
   @Input('closeOthers') onlyOneOpen: boolean;
 
