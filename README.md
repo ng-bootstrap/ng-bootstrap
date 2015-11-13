@@ -17,7 +17,6 @@ This project is being created by the [ui-bootstrap team](https://github.com/angu
     - [Code of Conduct](#code-of-conduct)
     - [Supported browsers](#supported-browsers)
 - [Contributing to the project](#contributing-to-the-project)
-- [Development, meeting minutes, roadmap and more.](#development-meeting-minutes-roadmap-and-more)
 
 # Demo
 
@@ -45,7 +44,3 @@ See [this](https://github.com/angular/angular/blob/master/README.md) for up-to-d
 ## Contributing to the project
 
 We are always looking for the quality contributions! Please check the [CONTRIBUTING.md](CONTRIBUTING.md) doc for contribution guidelines.
-
-## Development, meeting minutes, roadmap and more.
-
-We support TypeScript and ES5 using the CJS module system.
