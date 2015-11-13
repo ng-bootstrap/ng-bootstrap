@@ -12,6 +12,7 @@ Feel free to make comments there.
 This project is being created by the [ui-bootstrap team](https://github.com/angular-ui/bootstrap).
 
 # Quick links
+
 - [Demo](#demo)
 - [Support](#support)
     - [Code of Conduct](#code-of-conduct)
