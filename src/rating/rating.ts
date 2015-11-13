@@ -13,26 +13,18 @@ import {Component, Input, Output, NgFor, EventEmitter, OnInit} from 'angular2/an
   directives: [NgFor]
 })
 export class NgbRating implements OnInit {
-  @Input() private max: number = 10;
-  @Input() private rate: number;
-  @Input() private readonly: boolean;
-  @Output() private rateChange: EventEmitter = new EventEmitter();
-  @Output() private hover: EventEmitter = new EventEmitter();
-  @Output() private leave: EventEmitter = new EventEmitter();
-  private oldRate: number;
-  private range: Array<any>;
+  @Input() max = 10;
+  @Input() rate: number;
+  @Input() readonly: boolean;
+  @Output() rateChange = new EventEmitter<number>();
+  @Output() hover = new EventEmitter<number>();
+  @Output() leave = new EventEmitter<number>();
+  range: Array<number>;
+  private _oldRate: number;
 
   onInit() {
-    this.oldRate = this.rate;
-    this.range = this.buildTemplateObjects();
-  }
-
-  buildTemplateObjects(): Array<any> {
-    let range = [];
-    for (let i = 1; i <= this.max; i++) {
-      range.push({title: i});
-    }
-    return range;
+    this._oldRate = this.rate;
+    this.range = this._buildTemplateObjects();
   }
 
   enter(value: number): void {
@@ -44,14 +36,22 @@ export class NgbRating implements OnInit {
 
   reset(): void {
     this.leave.next(this.rate);
-    this.rate = this.oldRate;
+    this.rate = this._oldRate;
   }
 
   update(value: number): void {
     if (!this.readonly) {
-      this.oldRate = value;
+      this._oldRate = value;
       this.rate = value;
       this.rateChange.next(value);
     }
+  }
+
+  private _buildTemplateObjects(): Array<number> {
+    let range = [];
+    for (let i = 1; i <= this.max; i++) {
+      range.push({title: i});
+    }
+    return range;
   }
 }
