@@ -22,7 +22,6 @@ function getButton(element) {
   return element.querySelector('button');
 }
 
-
 function hasClass(element: Element, str: string): Boolean {
   return new RegExp(`(^|\\s)${str}(\\s|$)`).test(element.className);
 }
@@ -60,7 +59,7 @@ describe('ngb-collapse', () => {
        });
      }));
 
-  it('should have content closed  and aria-expanded false', injectAsync([TestComponentBuilder], (tcb) => {
+  it('should have content closed and aria-expanded false', injectAsync([TestComponentBuilder], (tcb) => {
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          const tc = fixture.debugElement.componentInstance;
          tc.collapsed = true;
@@ -105,11 +104,8 @@ describe('ngb-collapse', () => {
          buttonEl.click();
          fixture.detectChanges();
          expect(hasClass(content, 'in')).toBe(true);
-
        });
      }));
-
-
 });
 
 @Component({selector: 'test-cmp', directives: [NgbCollapse], template: ''})

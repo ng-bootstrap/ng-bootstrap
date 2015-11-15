@@ -11,14 +11,18 @@ export class NgbCollapse {
   constructor() { this._open = this.ngbCollapse; }
 
   @Input()
-  private set ngbCollapse(value: boolean) {
+  set ngbCollapse(value: boolean) {
     this._open = !value;
+    this._setHeight()
+  }
+
+  get ngbCollapse(): boolean { return this._open; }
+
+  private _setHeight() {
     if (this._open === true) {
       this._height = undefined;
     } else {
       this._height = 0;
     }
   }
-
-  private get ngbCollapse(): boolean { return this._open; }
 }

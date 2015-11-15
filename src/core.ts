@@ -8,4 +8,4 @@ export {NgbCollapse} from './collapse/collapse';
 export {NgbDropdown} from './dropdown/dropdown';
 export {NgbRating} from './rating/rating';
 
-export const NGB_DIRECTIVES = [NgbAccordion, NgbAccordionGroup, NgbDropdown, NgbRating];
+export const NGB_DIRECTIVES = [NgbAccordion, NgbAccordionGroup, NgbCollapse, NgbDropdown, NgbRating];
