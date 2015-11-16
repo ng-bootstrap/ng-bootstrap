@@ -26,10 +26,6 @@ function hasClass(element: Element, str: string): Boolean {
   return new RegExp(`(^|\\s)${str}(\\s|$)`).test(element.className);
 }
 
-function hasStyle(element: Element, str: string): Boolean {
-  return new RegExp(`(^|\\s)${str}(\\s|$)`).test(element.getAttribute('style'));
-}
-
 describe('ngb-collapse', () => {
   let html: string;
 
@@ -71,20 +67,6 @@ describe('ngb-collapse', () => {
 
          expect(hasClass(content, 'in')).toBe(false);
          expect(content.getAttribute('aria-expanded') === "false").toBe(true);
-       });
-     }));
-
-  it('should have height style of 0px', injectAsync([TestComponentBuilder], (tcb) => {
-       return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
-         const tc = fixture.debugElement.componentInstance;
-         tc.collapsed = true;
-         fixture.detectChanges();
-
-         const compiled = fixture.debugElement.nativeElement;
-
-         let content = getCollapsibleContent(compiled);
-
-         expect(hasStyle(content, 'height: 0px;')).toBe(true);
        });
      }));
 
