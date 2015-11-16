@@ -2,27 +2,26 @@ import {Directive, Input} from 'angular2/angular2';
 
 @Directive({
   selector: '[ngb-collapse]',
-  host: {'class': 'collapse', '[class.in]': '_open', '[attr.aria-expanded]': '_open', '[style.height.px]': '_height'}
+  host: {
+    'class': 'collapse',
+    '[class.in]': '!_collapsed',
+    '[attr.aria-expanded]': '!_collapsed',
+    '[style.height.px]': '_height'
+  }
 })
 export class NgbCollapse {
-  private _open: boolean;
+  private _collapsed: boolean;
   private _height: number;
 
-  constructor() { this._open = this.ngbCollapse; }
+  constructor() {}
 
-  @Input()
-  set ngbCollapse(value: boolean) {
-    this._open = !value;
+  @Input('ngbCollapse')
+  set collapsed(value: boolean) {
+    this._collapsed = value;
     this._setHeight()
   }
 
-  get ngbCollapse(): boolean { return this._open; }
+  get collapsed(): boolean { return this._collapsed; }
 
-  private _setHeight() {
-    if (this._open === true) {
-      this._height = undefined;
-    } else {
-      this._height = 0;
-    }
-  }
+  private _setHeight(): void { this._height = this._collapsed ? 0 : undefined; }
 }
