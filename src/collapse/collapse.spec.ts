@@ -17,25 +17,9 @@ function getCollapsibleContent(element: Element): Element {
   return element.querySelector('.collapse');
 }
 
-function getButton(element) {
-  return element.querySelector('button');
-}
-
 describe('ngb-collapse', () => {
-  let html: string;
 
-  beforeEach(() => {
-    html = `
-      <button type="button" (click)="collapsed = !collapsed">Toggle collapse</button>
-      <div [ngb-collapse]="collapsed">
-        <div class="card">
-          <div class="card-block">
-            Some content
-          </div>
-        </div>
-      </div>
-    `;
-  });
+  const html = `<div [ngb-collapse]="collapsed">Some content</div>`;
 
   it('should have content open and aria-expanded true', injectAsync([TestComponentBuilder], (tcb) => {
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
@@ -65,20 +49,18 @@ describe('ngb-collapse', () => {
        });
      }));
 
-  it('should toggle collapsed content on click', injectAsync([TestComponentBuilder], (tcb) => {
+  it('should toggle collapsed content based on bound model change', injectAsync([TestComponentBuilder], (tcb) => {
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
          const compiled = fixture.debugElement.nativeElement;
          const content = getCollapsibleContent(compiled);
          expect(content).toHaveCssClass('in');
 
-         const buttonEl = getButton(compiled);
-
-         buttonEl.click();
+         fixture.debugElement.componentInstance.collapsed = true;
          fixture.detectChanges();
          expect(content).not.toHaveCssClass('in');
 
-         buttonEl.click();
+         fixture.debugElement.componentInstance.collapsed = false;
          fixture.detectChanges();
          expect(content).toHaveCssClass('in');
        });
