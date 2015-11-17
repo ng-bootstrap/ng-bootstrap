@@ -22,20 +22,11 @@ function getButton(element) {
 }
 
 describe('ngb-collapse', () => {
-  let html: string;
 
-  beforeEach(() => {
-    html = `
+  const html = `
       <button type="button" (click)="collapsed = !collapsed">Toggle collapse</button>
-      <div [ngb-collapse]="collapsed">
-        <div class="card">
-          <div class="card-block">
-            Some content
-          </div>
-        </div>
-      </div>
+      <div [ngb-collapse]="collapsed">Some content</div>
     `;
-  });
 
   it('should have content open and aria-expanded true', injectAsync([TestComponentBuilder], (tcb) => {
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
