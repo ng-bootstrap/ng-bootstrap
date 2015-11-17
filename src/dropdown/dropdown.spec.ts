@@ -20,7 +20,7 @@ function getDropdownEl(tc) {
 
 describe('ngb-dropdown', () => {
   it('should be closed by default', injectAsync([TestComponentBuilder], (tcb) => {
-       const html = `<ngb-dropdown [open]="isOpen"></ngb-dropdown>`;
+       const html = `<ngb-dropdown></ngb-dropdown>`;
 
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
@@ -30,10 +30,10 @@ describe('ngb-dropdown', () => {
        });
      }));
 
-  it('should be open by default', injectAsync([TestComponentBuilder], (tcb) => {
-       const html = `<ngb-dropdown [open]="isOpen"></ngb-dropdown>`;
+  it('should be open initially if open expression is true', injectAsync([TestComponentBuilder], (tcb) => {
+       const html = `<ngb-dropdown [open]="true"></ngb-dropdown>`;
 
-       return tcb.overrideTemplate(TestComponent2, html).createAsync(TestComponent2).then((fixture) => {
+       return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
          const compiled = fixture.debugElement.nativeElement;
 
@@ -70,9 +70,4 @@ class TestComponent {
   isOpen = false;
 
   toggleOpen() { this.isOpen = !this.isOpen; }
-}
-
-@Component({selector: 'test-cmp2', directives: [NgbDropdown], template: ``})
-class TestComponent2 {
-  isOpen = true;
 }
