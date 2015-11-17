@@ -42,7 +42,7 @@ describe('ngb-dropdown', () => {
      }));
 
   it('should toggle open class', injectAsync([TestComponentBuilder], (tcb) => {
-       const html = `<ngb-dropdown [open]="isOpen" (click)="toggleOpen()"></ngb-dropdown>`;
+       const html = `<ngb-dropdown [open]="isOpen"></ngb-dropdown>`;
 
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
@@ -52,12 +52,12 @@ describe('ngb-dropdown', () => {
 
          expect(dropdownEl).not.toHaveCssClass('open');
 
-         dropdownEl.click();
+         fixture.debugElement.componentInstance.isOpen = true;
          fixture.detectChanges();
 
          expect(dropdownEl).toHaveCssClass('open');
 
-         dropdownEl.click();
+         fixture.debugElement.componentInstance.isOpen = false;
          fixture.detectChanges();
 
          expect(dropdownEl).not.toHaveCssClass('open');
@@ -68,6 +68,4 @@ describe('ngb-dropdown', () => {
 @Component({selector: 'test-cmp', directives: [NgbDropdown], template: ``})
 class TestComponent {
   isOpen = false;
-
-  toggleOpen() { this.isOpen = !this.isOpen; }
 }
