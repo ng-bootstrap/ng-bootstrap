@@ -63,6 +63,27 @@ describe('ngb-dropdown', () => {
          expect(dropdownEl).not.toHaveCssClass('open');
        });
      }));
+
+  it('should allow toggling dropdown from outside', injectAsync([TestComponentBuilder], (tcb) => {
+       const html = `
+      <button (click)="drop.open = !drop.open">Toggle</button>
+      <ngb-dropdown #drop="ngbDropdown"></ngb-dropdown>`;
+
+       return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         fixture.detectChanges();
+         const compiled = fixture.debugElement.nativeElement;
+         let dropdownEl = getDropdownEl(compiled);
+         let buttonEl = compiled.querySelector('button');
+
+         buttonEl.click();
+         fixture.detectChanges();
+         expect(dropdownEl).toHaveCssClass('open');
+
+         buttonEl.click();
+         fixture.detectChanges();
+         expect(dropdownEl).not.toHaveCssClass('open');
+       });
+     }));
 });
 
 @Component({selector: 'test-cmp', directives: [NgbDropdown], template: ``})
