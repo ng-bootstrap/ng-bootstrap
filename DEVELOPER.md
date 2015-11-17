@@ -92,11 +92,10 @@ If you want to run your tests in **watch mode**, you need two console tabs, firs
 
 And in a second tab:
 
-* `$(npm bin)/gulp test`
 * `npm test`
 * `$(npm bin)/karma start`
 
-Just pick one of those 3, they all do the same.
+Just pick one of those 2, they do the same.
 
 The task updates the `temp` folder with transpiled code whenever a source or test file changes, and
 Karma is run against the new output.
