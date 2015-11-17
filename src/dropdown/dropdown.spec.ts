@@ -26,9 +26,7 @@ describe('ngb-dropdown', () => {
          fixture.detectChanges();
          const compiled = fixture.debugElement.nativeElement;
 
-         let dropdownEl = getDropdownEl(compiled);
-
-         expect(dropdownEl.className.indexOf('open') !== -1).toBe(false);
+         expect(getDropdownEl(compiled)).not.toHaveCssClass('open');
        });
      }));
 
@@ -39,9 +37,7 @@ describe('ngb-dropdown', () => {
          fixture.detectChanges();
          const compiled = fixture.debugElement.nativeElement;
 
-         let dropdownEl = getDropdownEl(compiled);
-
-         expect(dropdownEl.className.indexOf('open') !== -1).toBe(true);
+         expect(getDropdownEl(compiled)).toHaveCssClass('open');
        });
      }));
 
@@ -54,17 +50,17 @@ describe('ngb-dropdown', () => {
 
          let dropdownEl = getDropdownEl(compiled);
 
-         expect(dropdownEl.className.indexOf('open') !== -1).toBe(false);
+         expect(dropdownEl).not.toHaveCssClass('open');
 
          dropdownEl.click();
          fixture.detectChanges();
 
-         expect(dropdownEl.className.indexOf(' open') !== -1).toBe(true);
+         expect(dropdownEl).toHaveCssClass('open');
 
          dropdownEl.click();
          fixture.detectChanges();
 
-         expect(dropdownEl.className.indexOf('open') !== -1).toBe(false);
+         expect(dropdownEl).not.toHaveCssClass('open');
        });
      }));
 });
