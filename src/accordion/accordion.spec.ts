@@ -18,10 +18,6 @@ function getPanels(element: Element): Element[] {
   return Array.from(element.querySelectorAll('ngb-accordion-group .panel'));
 }
 
-function hasClass(element: Element, str: string): Boolean {
-  return new RegExp(`(^|\\s)${str}(\\s|$)`).test(element.className)
-}
-
 function hasTitle(element: Element, str: string): Boolean {
   return element.textContent === str;
 }
@@ -59,7 +55,7 @@ describe('ngb-accordion', () => {
 
          let panels = getPanels(compiled);
 
-         panels.forEach((panel) => expect(hasClass(panel, 'panel-open')).toBe(false));
+         panels.forEach((panel) => expect(panel).not.toHaveCssClass('panel-open'));
        });
      }));
 
@@ -72,49 +68,49 @@ describe('ngb-accordion', () => {
 
          let panels = getPanels(compiled);
 
-         panels.forEach((panel) => expect(hasClass(panel, 'panel-open')).toBe(false));
+         panels.forEach((panel) => expect(panel).not.toHaveCssClass('panel-open'));
 
          tc.panels[1].open = true;
          fixture.detectChanges();
 
-         expect(hasClass(panels[0], 'panel-open')).toBe(false);
-         expect(hasClass(panels[1], 'panel-open')).toBe(true);
-         expect(hasClass(panels[2], 'panel-open')).toBe(false);
+         expect(panels[0]).not.toHaveCssClass('panel-open');
+         expect(panels[1]).toHaveCssClass('panel-open');
+         expect(panels[2]).not.toHaveCssClass('panel-open');
 
          tc.panels[0].open = true;
          fixture.detectChanges();
 
-         expect(hasClass(panels[0], 'panel-open')).toBe(true);
-         expect(hasClass(panels[1], 'panel-open')).toBe(true);
-         expect(hasClass(panels[2], 'panel-open')).toBe(false);
+         expect(panels[0]).toHaveCssClass('panel-open');
+         expect(panels[1]).toHaveCssClass('panel-open');
+         expect(panels[2]).not.toHaveCssClass('panel-open');
 
          tc.panels[1].open = false;
          fixture.detectChanges();
 
-         expect(hasClass(panels[0], 'panel-open')).toBe(true);
-         expect(hasClass(panels[1], 'panel-open')).toBe(false);
-         expect(hasClass(panels[2], 'panel-open')).toBe(false);
+         expect(panels[0]).toHaveCssClass('panel-open');
+         expect(panels[1]).not.toHaveCssClass('panel-open');
+         expect(panels[2]).not.toHaveCssClass('panel-open');
 
          tc.panels[2].open = true;
          fixture.detectChanges();
 
-         expect(hasClass(panels[0], 'panel-open')).toBe(true);
-         expect(hasClass(panels[1], 'panel-open')).toBe(false);
-         expect(hasClass(panels[2], 'panel-open')).toBe(true);
+         expect(panels[0]).toHaveCssClass('panel-open');
+         expect(panels[1]).not.toHaveCssClass('panel-open');
+         expect(panels[2]).toHaveCssClass('panel-open');
 
          tc.panels[0].open = false;
          fixture.detectChanges();
 
-         expect(hasClass(panels[0], 'panel-open')).toBe(false);
-         expect(hasClass(panels[1], 'panel-open')).toBe(false);
-         expect(hasClass(panels[2], 'panel-open')).toBe(true);
+         expect(panels[0]).not.toHaveCssClass('panel-open');
+         expect(panels[1]).not.toHaveCssClass('panel-open');
+         expect(panels[2]).toHaveCssClass('panel-open');
 
          tc.panels[2].open = false;
          fixture.detectChanges();
 
-         expect(hasClass(panels[0], 'panel-open')).toBe(false);
-         expect(hasClass(panels[1], 'panel-open')).toBe(false);
-         expect(hasClass(panels[2], 'panel-open')).toBe(false);
+         expect(panels[0]).not.toHaveCssClass('panel-open');
+         expect(panels[1]).not.toHaveCssClass('panel-open');
+         expect(panels[2]).not.toHaveCssClass('panel-open');
        });
      }));
 
@@ -143,30 +139,30 @@ describe('ngb-accordion', () => {
          tc.panels[1].open = true;
          fixture.detectChanges();
 
-         expect(hasClass(panels[0], 'panel-open')).toBe(false);
-         expect(hasClass(panels[1], 'panel-open')).toBe(true);
-         expect(hasClass(panels[2], 'panel-open')).toBe(false);
+         expect(panels[0]).not.toHaveCssClass('panel-open');
+         expect(panels[1]).toHaveCssClass('panel-open');
+         expect(panels[2]).not.toHaveCssClass('panel-open');
 
          tc.panels[0].open = true;
          fixture.detectChanges();
 
-         expect(hasClass(panels[0], 'panel-open')).toBe(true);
-         expect(hasClass(panels[1], 'panel-open')).toBe(false);
-         expect(hasClass(panels[2], 'panel-open')).toBe(false);
+         expect(panels[0]).toHaveCssClass('panel-open');
+         expect(panels[1]).not.toHaveCssClass('panel-open');
+         expect(panels[2]).not.toHaveCssClass('panel-open');
 
          tc.panels[2].open = true;
          fixture.detectChanges();
 
-         expect(hasClass(panels[0], 'panel-open')).toBe(false);
-         expect(hasClass(panels[1], 'panel-open')).toBe(false);
-         expect(hasClass(panels[2], 'panel-open')).toBe(true);
+         expect(panels[0]).not.toHaveCssClass('panel-open');
+         expect(panels[1]).not.toHaveCssClass('panel-open');
+         expect(panels[2]).toHaveCssClass('panel-open');
 
          tc.panels[2].open = false;
          fixture.detectChanges();
 
-         expect(hasClass(panels[0], 'panel-open')).toBe(false);
-         expect(hasClass(panels[1], 'panel-open')).toBe(false);
-         expect(hasClass(panels[2], 'panel-open')).toBe(false);
+         expect(panels[0]).not.toHaveCssClass('panel-open');
+         expect(panels[1]).not.toHaveCssClass('panel-open');
+         expect(panels[2]).not.toHaveCssClass('panel-open');
        });
      }));
 
@@ -183,9 +179,9 @@ describe('ngb-accordion', () => {
          fixture.debugElement.componentViewChildren[0].children[0].nativeElement.click();
          fixture.detectChanges();
 
-         expect(hasClass(panels[0], 'panel-open')).toBe(false);
-         expect(hasClass(panels[1], 'panel-open')).toBe(false);
-         expect(hasClass(panels[2], 'panel-open')).toBe(false);
+         expect(panels[0]).not.toHaveCssClass('panel-open');
+         expect(panels[1]).not.toHaveCssClass('panel-open');
+         expect(panels[2]).not.toHaveCssClass('panel-open');
        });
      }));
 
@@ -202,16 +198,16 @@ describe('ngb-accordion', () => {
          tc.panels[0].open = true;
          fixture.detectChanges();
 
-         expect(hasClass(panels[0], 'panel-open')).toBe(true);
-         expect(hasClass(panels[1], 'panel-open')).toBe(false);
-         expect(hasClass(panels[2], 'panel-open')).toBe(false);
+         expect(panels[0]).toHaveCssClass('panel-open');
+         expect(panels[1]).not.toHaveCssClass('panel-open');
+         expect(panels[2]).not.toHaveCssClass('panel-open');
 
          tc.panels[0].open = false;
          fixture.detectChanges();
 
-         expect(hasClass(panels[0], 'panel-open')).toBe(false);
-         expect(hasClass(panels[1], 'panel-open')).toBe(false);
-         expect(hasClass(panels[2], 'panel-open')).toBe(false);
+         expect(panels[0]).not.toHaveCssClass('panel-open');
+         expect(panels[1]).not.toHaveCssClass('panel-open');
+         expect(panels[2]).not.toHaveCssClass('panel-open');
        });
      }));
 });
