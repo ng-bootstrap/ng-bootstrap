@@ -12,10 +12,10 @@ import {
 
 import {Component} from 'angular2/angular2';
 
-import {NgbAccordion, NgbAccordionGroup} from './accordion';
+import {NgbAccordion, NgbAccordionPanel} from './accordion';
 
 function getPanels(element: Element): Element[] {
-  return Array.from(element.querySelectorAll('ngb-accordion-group .panel'));
+  return Array.from(element.querySelectorAll('ngb-accordion-panel .panel'));
 }
 
 function hasTitle(element: Element, str: string): Boolean {
@@ -28,21 +28,21 @@ describe('ngb-accordion', () => {
   beforeEach(() => {
     html = `
       <ngb-accordion [close-others]="closeOthers">
-        <ngb-accordion-group [is-open]="panels[0].open"
+        <ngb-accordion-panel [is-open]="panels[0].open"
           [title]="panels[0].title"
           [is-disabled]="panels[0].disabled">
           <div class="text-content">{{panels[0].content}}</div>
-        </ngb-accordion-group>
-        <ngb-accordion-group [is-open]="panels[1].open"
+        </ngb-accordion-panel>
+        <ngb-accordion-panel [is-open]="panels[1].open"
           [title]="panels[1].title"
           [is-disabled]="panels[1].disabled">
           <div class="text-content">{{panels[1].content}}</div>
-        </ngb-accordion-group>
-        <ngb-accordion-group [is-open]="panels[2].open"
+        </ngb-accordion-panel>
+        <ngb-accordion-panel [is-open]="panels[2].open"
           [title]="panels[2].title"
           [is-disabled]="panels[2].disabled">
           <div class="text-content">{{panels[2].content}}</div>
-        </ngb-accordion-group>
+        </ngb-accordion-panel>
       </ngb-accordion>
     `;
   });
@@ -212,7 +212,7 @@ describe('ngb-accordion', () => {
      }));
 });
 
-@Component({selector: 'test-cmp', directives: [NgbAccordion, NgbAccordionGroup], template: ''})
+@Component({selector: 'test-cmp', directives: [NgbAccordion, NgbAccordionPanel], template: ''})
 class TestComponent {
   closeOthers = false;
   panels: any[] = [
