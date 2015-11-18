@@ -53,10 +53,12 @@ gulp.task('build-tests', function() {
   return tsResult.js.pipe(sourcemaps.write('.')).pipe(gulp.dest('temp'));
 });
 
+gulp.task('clean-build-tests', function(done) { runSequence('clean:tests', 'build-tests', done); });
+
 gulp.task(
     'ddescribe-iit', function() { return gulp.src(PATHS.specs).pipe(ddescribeIit({allowDisabledTests: false})); });
 
-gulp.task('test', function(done) {
+gulp.task('test', ['clean-build-tests'], function(done) {
   var karmaServer = require('karma').Server;
   var travis = process.env.TRAVIS;
 
@@ -70,7 +72,25 @@ gulp.task('test', function(done) {
   new karmaServer(config, done).start();
 });
 
-gulp.task('watch', ['clean:tests', 'build-tests'], function() { gulp.watch(PATHS.src, ['build-tests']); });
+gulp.task('tdd', ['clean-build-tests'], function(done) {
+  var karmaServer = require('karma').Server;
+  var travis = process.env.TRAVIS;
+
+  var config = {configFile: __dirname + '/karma.conf.js'};
+
+  if (travis) {
+    config['reporters'] = ['dots'];
+    config['browsers'] = ['Firefox'];
+  }
+
+  new karmaServer(config, function(err) {
+    done(err);
+    process.exit(1);
+  }).start();
+
+  gulp.watch(PATHS.src, ['build-tests']);
+});
+
 
 // Formatting
 
@@ -94,10 +114,7 @@ function doCheckFormat() {
 // Public Tasks
 
 gulp.task('build', function(done) {
-  runSequence(
-      'enforce-format', 'ddescribe-iit', 'clean:tests', 'build-tests', 'test', 'clean:build', 'cjs', 'umd', done);
+  runSequence('enforce-format', 'ddescribe-iit', 'test', 'clean:build', 'cjs', 'umd', done);
 });
 
-gulp.task('default', function(done) {
-  runSequence('enforce-format', 'ddescribe-iit', 'clean:tests', 'build-tests', 'test', done);
-});
+gulp.task('default', function(done) { runSequence('enforce-format', 'ddescribe-iit', 'test', done); });
