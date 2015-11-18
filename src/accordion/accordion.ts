@@ -3,7 +3,7 @@ import {Component, Directive, forwardRef, Inject, Input, Query, QueryList} from 
 import {NgbCollapse} from '../collapse/collapse';
 
 @Component({
-  selector: 'ngb-accordion-group',
+  selector: 'ngb-accordion-panel',
   directives: [NgbCollapse],
   template: `
     <div class="panel panel-default" [class.panel-open]="isOpen">
@@ -20,7 +20,7 @@ import {NgbCollapse} from '../collapse/collapse';
     </div>
   `
 })
-export class NgbAccordionGroup {
+export class NgbAccordionPanel {
   private _isOpen = false;
   @Input() isDisabled: boolean;
   @Input() title: string;
@@ -49,16 +49,16 @@ export class NgbAccordionGroup {
 export class NgbAccordion {
   @Input('closeOthers') onlyOneOpen: boolean;
 
-  constructor(@Query(NgbAccordionGroup) public groups: QueryList<NgbAccordionGroup>) {}
+  constructor(@Query(NgbAccordionPanel) public panels: QueryList<NgbAccordionPanel>) {}
 
-  closeOthers(openGroup: NgbAccordionGroup): void {
+  closeOthers(openPanel: NgbAccordionPanel): void {
     if (!this.onlyOneOpen) {
       return;
     }
 
-    this.groups.toArray().forEach((group: NgbAccordionGroup) => {
-      if (group !== openGroup) {
-        group.isOpen = false;
+    this.panels.toArray().forEach((panel: NgbAccordionPanel) => {
+      if (panel !== openPanel) {
+        panel.isOpen = false;
       }
     });
   }
