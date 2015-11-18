@@ -12,7 +12,7 @@ import {
 
 import {Component} from 'angular2/angular2';
 
-import {NgbDropdown} from './dropdown';
+import {NgbDropdown, NgbDropdownToggle} from './dropdown';
 
 function getDropdownEl(tc) {
   return tc.querySelector(`ngb-dropdown`);
@@ -86,7 +86,40 @@ describe('ngb-dropdown', () => {
      }));
 });
 
-@Component({selector: 'test-cmp', directives: [NgbDropdown], template: ``})
+describe('ngb-dropdown-toggle', () => {
+
+  it('should toggle dropdown on click', injectAsync([TestComponentBuilder], (tcb) => {
+       const html = `
+      <ngb-dropdown>
+          <button ngb-dropdown-toggle class="btn btn-success" type="button">
+            Toggle dropdown
+          </button>
+      </ngb-dropdown>`;
+
+       return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         fixture.detectChanges();
+         const compiled = fixture.debugElement.nativeElement;
+         let dropdownEl = getDropdownEl(compiled);
+         let buttonEl = compiled.querySelector('button');
+
+         expect(dropdownEl).not.toHaveCssClass('open');
+         expect(buttonEl.getAttribute('aria-haspopup')).toBe('true');
+         expect(buttonEl.getAttribute('aria-expanded')).toBe('false');
+
+         buttonEl.click();
+         fixture.detectChanges();
+         expect(dropdownEl).toHaveCssClass('open');
+         expect(buttonEl.getAttribute('aria-expanded')).toBe('true');
+
+         buttonEl.click();
+         fixture.detectChanges();
+         expect(dropdownEl).not.toHaveCssClass('open');
+         expect(buttonEl.getAttribute('aria-expanded')).toBe('false');
+       });
+     }));
+});
+
+@Component({selector: 'test-cmp', directives: [NgbDropdown, NgbDropdownToggle], template: ''})
 class TestComponent {
   isOpen = false;
 }
