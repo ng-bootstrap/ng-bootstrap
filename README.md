@@ -44,4 +44,7 @@ See [this](https://github.com/angular/angular/blob/master/README.md) for up-to-d
 
 ## Contributing to the project
 
+**NOTE: We appreciate all the interest and enthusiasm, but this project is just in such a volatile state right now that we can't guarantee that your PR is going to be merged.
+It is highly recommended to open an issue (or write in the existing ones) and discuss possible collaborations.**
+
 We are always looking for the quality contributions! Please check the [CONTRIBUTING.md](CONTRIBUTING.md) doc for contribution guidelines.
