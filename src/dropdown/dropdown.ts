@@ -1,8 +1,11 @@
 import {Directive, Input, HostListener} from 'angular2/core';
 
-@Directive({selector: '[ngbDropdown]', exportAs: 'ngbDropdown', host: {'[class.open]': 'open'}})
+@Directive(
+    {selector: '[ngbDropdown]', exportAs: 'ngbDropdown', host: {'[class.open]': 'open', '(keyup.esc)': 'close()'}})
 export class NgbDropdown {
   @Input() open = false;
+
+  close() { this.open = false; }
 }
 
 @Directive({
