@@ -15,12 +15,12 @@ import {Component} from 'angular2/angular2';
 import {NgbDropdown, NgbDropdownToggle} from './dropdown';
 
 function getDropdownEl(tc) {
-  return tc.querySelector(`ngb-dropdown`);
+  return tc.querySelector(`[ngb-dropdown]`);
 }
 
 describe('ngb-dropdown', () => {
   it('should be closed by default', injectAsync([TestComponentBuilder], (tcb) => {
-       const html = `<ngb-dropdown></ngb-dropdown>`;
+       const html = `<div ngb-dropdown></div>`;
 
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
@@ -31,7 +31,7 @@ describe('ngb-dropdown', () => {
      }));
 
   it('should be open initially if open expression is true', injectAsync([TestComponentBuilder], (tcb) => {
-       const html = `<ngb-dropdown [open]="true"></ngb-dropdown>`;
+       const html = `<div ngb-dropdown [open]="true"></div>`;
 
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
@@ -42,7 +42,7 @@ describe('ngb-dropdown', () => {
      }));
 
   it('should toggle open class', injectAsync([TestComponentBuilder], (tcb) => {
-       const html = `<ngb-dropdown [open]="isOpen"></ngb-dropdown>`;
+       const html = `<div ngb-dropdown [open]="isOpen"></div>`;
 
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
@@ -67,7 +67,7 @@ describe('ngb-dropdown', () => {
   it('should allow toggling dropdown from outside', injectAsync([TestComponentBuilder], (tcb) => {
        const html = `
       <button (click)="drop.open = !drop.open">Toggle</button>
-      <ngb-dropdown #drop="ngbDropdown"></ngb-dropdown>`;
+      <div ngb-dropdown #drop="ngbDropdown"></div>`;
 
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
@@ -90,11 +90,11 @@ describe('ngb-dropdown-toggle', () => {
 
   it('should toggle dropdown on click', injectAsync([TestComponentBuilder], (tcb) => {
        const html = `
-      <ngb-dropdown>
+      <div ngb-dropdown>
           <button ngb-dropdown-toggle class="btn btn-success" type="button">
             Toggle dropdown
           </button>
-      </ngb-dropdown>`;
+      </div>`;
 
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
