@@ -11,6 +11,7 @@ import {
 } from 'angular2/testing';
 
 import {Component} from 'angular2/core';
+import {By} from 'angular2/platform/browser';
 
 import {NgbDropdown, NgbDropdownToggle} from './dropdown';
 
@@ -91,9 +92,7 @@ describe('ngb-dropdown-toggle', () => {
   it('should toggle dropdown on click', async(inject([TestComponentBuilder], (tcb) => {
        const html = `
       <div ngbDropdown>
-          <button ngbDropdownToggle class="btn btn-success" type="button">
-            Toggle dropdown
-          </button>
+          <button ngbDropdownToggle>Toggle dropdown</button>
       </div>`;
 
        tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
@@ -115,6 +114,28 @@ describe('ngb-dropdown-toggle', () => {
          fixture.detectChanges();
          expect(dropdownEl).not.toHaveCssClass('open');
          expect(buttonEl.getAttribute('aria-expanded')).toBe('false');
+       });
+     })));
+
+  it('should close on ESC', async(inject([TestComponentBuilder], (tcb) => {
+       const html = `
+      <div ngbDropdown>
+          <button ngbDropdownToggle>Toggle dropdown</button>
+      </div>`;
+
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         fixture.detectChanges();
+         const compiled = fixture.nativeElement;
+         let dropdownEl = getDropdownEl(compiled);
+         let buttonEl = compiled.querySelector('button');
+
+         buttonEl.click();
+         fixture.detectChanges();
+         expect(dropdownEl).toHaveCssClass('open');
+
+         fixture.debugElement.query(By.directive(NgbDropdown)).triggerEventHandler('keyup.esc', {});
+         fixture.detectChanges();
+         expect(dropdownEl).not.toHaveCssClass('open');
        });
      })));
 });
