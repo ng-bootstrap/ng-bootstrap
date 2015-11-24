@@ -34,23 +34,23 @@ export class NgbPagination {
   pages: number[] = [];
 
   @Input()
-  set page(newPage: number | string) {
-    this.selectPage(parseInt(`${newPage}`, 10));
+  set page(value: number | string) {
+    this.selectPage(parseInt(`${value}`, 10));
   }
 
   get page(): number | string { return this._page; }
 
   @Input()
-  set collectionSize(newSize: number | string) {
-    this._collectionSize = parseInt(`${newSize}`, 10);
+  set collectionSize(value: number | string) {
+    this._collectionSize = parseInt(`${value}`, 10);
     this._updatePages();
   }
 
   get collectionSize(): number | string { return this._collectionSize; }
 
   @Input()
-  set pageSize(newSize: number | string) {
-    this._pageSize = parseInt(`${newSize}`, 10);
+  set pageSize(value: number | string) {
+    this._pageSize = parseInt(`${value}`, 10);
     this._updatePages();
   }
 
