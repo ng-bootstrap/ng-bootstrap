@@ -36,6 +36,28 @@ describe('ng-progressbar', () => {
       progressCmp.value = 30;
       expect(progressCmp.calculatePercentage()).toBe(20);
     });
+
+    it('should set the value to 0 for negative numbers', () => {
+      progressCmp.value = -20;
+      expect(progressCmp.value).toBe(0);
+    });
+
+    it('should set the value to max if it is higher than max (default max size)', () => {
+      progressCmp.value = 120;
+      expect(progressCmp.value).toBe(100);
+    });
+
+    it('should set the value to max if it is higher than max (custom max size)', () => {
+      progressCmp.max = 150;
+      progressCmp.value = 170;
+      expect(progressCmp.value).toBe(150);
+    });
+
+    it('should update the value if max updates to a smaller value', () => {
+      progressCmp.value = 80;
+      progressCmp.max = 70;
+      expect(progressCmp.value).toBe(70);
+    });
   });
 
   describe('UI logic', () => {

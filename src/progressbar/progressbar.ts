@@ -11,9 +11,17 @@ import {Component, Input} from 'angular2/angular2';
   `
 })
 export class NgbProgressbar {
+  private _max = 100;
   private _striped: boolean;
+  private _value: number;
 
-  @Input() max = 100;
+  @Input()
+  set max(value: number) {
+    this._max = value;
+    this.value = Math.min(this.value, this._max);
+  }
+
+  get max(): number { return this._max; }
 
   @Input()
   set striped(value: boolean | string) {
@@ -28,7 +36,12 @@ export class NgbProgressbar {
 
   @Input() type: string;
 
-  @Input() value: number;
+  @Input()
+  set value(value: number) {
+    this._value = Math.max(Math.min(value, this.max), 0);
+  }
+
+  get value(): number { return this._value; }
 
   calculatePercentage() { return 100 * this.value / this.max; }
 }
