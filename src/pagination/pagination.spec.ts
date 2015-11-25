@@ -15,15 +15,7 @@ import {Component} from 'angular2/angular2';
 
 import {NgbPagination} from './pagination';
 
-function getLink(nativeEl, idx) {
-  return nativeEl.querySelectorAll('li')[idx].querySelector('a');
-}
-
-function normalizeText(txt) {
-  return txt.trim().replace(/\s+/g, ' ');
-}
-
-function expectPages(nativeEl, pagesDef: string[]) {
+function expectPages(nativeEl: HTMLElement, pagesDef: string[]): void {
   var pages = nativeEl.querySelectorAll('li');
 
   expect(pages.length).toEqual(pagesDef.length);
@@ -48,68 +40,76 @@ function expectPages(nativeEl, pagesDef: string[]) {
   }
 }
 
+function getLink(nativeEl: HTMLElement, idx: number): HTMLAnchorElement {
+  return <HTMLAnchorElement>nativeEl.querySelectorAll('li')[idx].querySelector('a');
+}
+
+function normalizeText(txt: string): string {
+  return txt.trim().replace(/\s+/g, ' ');
+}
+
 describe('ngb-pagination', () => {
 
   describe('business logic', () => {
 
-    var paginationCmpt: NgbPagination;
+    var pagination: NgbPagination;
 
-    beforeEach(() => { paginationCmpt = new NgbPagination(); });
+    beforeEach(() => { pagination = new NgbPagination(); });
 
     it('should calculate and update no of pages (default page size)', () => {
-      paginationCmpt.collectionSize = 100;
-      paginationCmpt.onChanges();
-      expect(paginationCmpt.pages.length).toEqual(10);
+      pagination.collectionSize = 100;
+      pagination.onChanges();
+      expect(pagination.pages.length).toEqual(10);
 
-      paginationCmpt.collectionSize = 200;
-      paginationCmpt.onChanges();
-      expect(paginationCmpt.pages.length).toEqual(20);
+      pagination.collectionSize = 200;
+      pagination.onChanges();
+      expect(pagination.pages.length).toEqual(20);
     });
 
     it('should calculate and update no of pages (custom page size)', () => {
-      paginationCmpt.collectionSize = 100;
-      paginationCmpt.pageSize = 20;
-      paginationCmpt.onChanges();
-      expect(paginationCmpt.pages.length).toEqual(5);
+      pagination.collectionSize = 100;
+      pagination.pageSize = 20;
+      pagination.onChanges();
+      expect(pagination.pages.length).toEqual(5);
 
-      paginationCmpt.collectionSize = 200;
-      paginationCmpt.onChanges();
-      expect(paginationCmpt.pages.length).toEqual(10);
+      pagination.collectionSize = 200;
+      pagination.onChanges();
+      expect(pagination.pages.length).toEqual(10);
 
-      paginationCmpt.pageSize = 10;
-      paginationCmpt.onChanges();
-      expect(paginationCmpt.pages.length).toEqual(20);
+      pagination.pageSize = 10;
+      pagination.onChanges();
+      expect(pagination.pages.length).toEqual(20);
     });
 
     it('should allow setting a page within a valid range (default page size)', () => {
-      paginationCmpt.collectionSize = 100;
-      paginationCmpt.page = 2;
-      paginationCmpt.onChanges();
-      expect(paginationCmpt.page).toEqual(2);
+      pagination.collectionSize = 100;
+      pagination.page = 2;
+      pagination.onChanges();
+      expect(pagination.page).toEqual(2);
     });
 
     it('should auto-correct page no if outside of valid range (default page size)', () => {
-      paginationCmpt.collectionSize = 100;
-      paginationCmpt.page = 100;
-      paginationCmpt.onChanges();
-      expect(paginationCmpt.page).toEqual(10);
+      pagination.collectionSize = 100;
+      pagination.page = 100;
+      pagination.onChanges();
+      expect(pagination.page).toEqual(10);
 
-      paginationCmpt.page = -100;
-      paginationCmpt.onChanges();
-      expect(paginationCmpt.page).toEqual(1);
+      pagination.page = -100;
+      pagination.onChanges();
+      expect(pagination.page).toEqual(1);
 
-      paginationCmpt.page = 5;
-      paginationCmpt.collectionSize = 10;
-      paginationCmpt.onChanges();
-      expect(paginationCmpt.page).toEqual(1);
+      pagination.page = 5;
+      pagination.collectionSize = 10;
+      pagination.onChanges();
+      expect(pagination.page).toEqual(1);
     });
 
     it('should allow setting a page within a valid range (custom page size)', () => {
-      paginationCmpt.collectionSize = 100;
-      paginationCmpt.pageSize = 20;
-      paginationCmpt.page = 2;
-      paginationCmpt.onChanges();
-      expect(paginationCmpt.page).toEqual(2);
+      pagination.collectionSize = 100;
+      pagination.pageSize = 20;
+      pagination.page = 2;
+      pagination.onChanges();
+      expect(pagination.page).toEqual(2);
     });
 
   });
