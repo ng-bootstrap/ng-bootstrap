@@ -21,9 +21,11 @@ describe('ng-progressbar', () => {
 
     it('should calculate the percentage (default max size)', () => {
       progressCmp.value = 50;
+      progressCmp.onChanges();
       expect(progressCmp.calculatePercentage()).toBe(50);
 
       progressCmp.value = 25;
+      progressCmp.onChanges();
       expect(progressCmp.calculatePercentage()).toBe(25);
     });
 
@@ -31,32 +33,45 @@ describe('ng-progressbar', () => {
       progressCmp.max = 150;
 
       progressCmp.value = 75;
+      progressCmp.onChanges();
       expect(progressCmp.calculatePercentage()).toBe(50);
 
       progressCmp.value = 30;
+      progressCmp.onChanges();
       expect(progressCmp.calculatePercentage()).toBe(20);
     });
 
     it('should set the value to 0 for negative numbers', () => {
       progressCmp.value = -20;
+      progressCmp.onChanges();
       expect(progressCmp.value).toBe(0);
     });
 
     it('should set the value to max if it is higher than max (default max size)', () => {
       progressCmp.value = 120;
+      progressCmp.onChanges();
       expect(progressCmp.value).toBe(100);
     });
 
     it('should set the value to max if it is higher than max (custom max size)', () => {
       progressCmp.max = 150;
       progressCmp.value = 170;
+      progressCmp.onChanges();
       expect(progressCmp.value).toBe(150);
     });
 
     it('should update the value if max updates to a smaller value', () => {
       progressCmp.value = 80;
       progressCmp.max = 70;
+      progressCmp.onChanges();
       expect(progressCmp.value).toBe(70);
+    });
+
+    it('should not update the value if max updates to a larger value', () => {
+      progressCmp.value = 120;
+      progressCmp.max = 150;
+      progressCmp.onChanges();
+      expect(progressCmp.value).toBe(120);
     });
   });
 
@@ -86,6 +101,15 @@ describe('ng-progressbar', () => {
            fixture.debugElement.componentInstance.max = 200;
            fixture.detectChanges();
            expect(getBarWidth(fixture.debugElement.nativeElement)).toBe('5%');
+         });
+       }));
+
+    it('accepts a value and max value above default values', injectAsync([TestComponentBuilder], (tcb) => {
+         const html = '<ngb-progressbar [value]="150" [max]="150"></ngb-progressbar>';
+
+         return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+           fixture.detectChanges();
+           expect(getBarWidth(fixture.debugElement.nativeElement)).toBe('100%');
          });
        }));
 
