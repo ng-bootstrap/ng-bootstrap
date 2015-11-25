@@ -1,4 +1,4 @@
-import {Component, Input} from 'angular2/angular2';
+import {Component, Input, OnChanges} from 'angular2/angular2';
 
 @Component({
   selector: 'ngb-progressbar',
@@ -10,18 +10,11 @@ import {Component, Input} from 'angular2/angular2';
     </progress>
   `
 })
-export class NgbProgressbar {
-  private _max = 100;
+export class NgbProgressbar implements OnChanges {
   private _striped: boolean;
-  private _value: number;
 
-  @Input()
-  set max(value: number) {
-    this._max = value;
-    this.value = Math.min(this.value, this._max);
-  }
-
-  get max(): number { return this._max; }
+  @Input() max = 100;
+  @Input() value: number;
 
   @Input()
   set striped(value: boolean | string) {
@@ -36,12 +29,7 @@ export class NgbProgressbar {
 
   @Input() type: string;
 
-  @Input()
-  set value(value: number) {
-    this._value = Math.max(Math.min(value, this.max), 0);
-  }
-
-  get value(): number { return this._value; }
+  onChanges() { this.value = Math.max(Math.min(this.value, this.max), 0); }
 
   calculatePercentage() { return 100 * this.value / this.max; }
 }
