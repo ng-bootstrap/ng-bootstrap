@@ -14,6 +14,15 @@ import {Component} from 'angular2/angular2';
 
 import {NgbRating} from './rating';
 
+function getAriaState(compiled) {
+  const stars = getStars(compiled, '.sr-only');
+  let state = [];
+  for (let i = 0, l = stars.length; i < l; i++) {
+    state.push((stars[i].textContent === '(*)' && stars[i].textContent !== '( )'));
+  }
+  return state;
+}
+
 function getStar(compiled, num: number) {
   return getStars(compiled)[num - 1];
 }
@@ -27,15 +36,6 @@ function getState(compiled) {
   let state = [];
   for (let i = 0, l = stars.length; i < l; i++) {
     state.push((stars[i].classList.contains('glyphicon-star') && !stars[i].classList.contains('glyphicon-star-empty')));
-  }
-  return state;
-}
-
-function getAriaState(compiled) {
-  const stars = getStars(compiled, '.sr-only');
-  let state = [];
-  for (let i = 0, l = stars.length; i < l; i++) {
-    state.push((stars[i].textContent === '(*)' && stars[i].textContent !== '( )'));
   }
   return state;
 }

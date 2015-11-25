@@ -13,25 +13,27 @@ import {Component, Input, Output, NgFor, EventEmitter, OnInit} from 'angular2/an
   directives: [NgFor]
 })
 export class NgbRating implements OnInit {
+  private _oldRate: number;
+  range: number[] = [];
+
   @Input() max = 10;
   @Input() rate: number;
   @Input() readonly: boolean;
-  @Output() rateChange = new EventEmitter<number>();
+
   @Output() hover = new EventEmitter<number>();
   @Output() leave = new EventEmitter<number>();
-  range: Array<number>;
-  private _oldRate: number;
-
-  onInit() {
-    this._oldRate = this.rate;
-    this.range = this._buildTemplateObjects();
-  }
+  @Output() rateChange = new EventEmitter<number>();
 
   enter(value: number): void {
     if (!this.readonly) {
       this.rate = value;
     }
     this.hover.next(value);
+  }
+
+  onInit(): void {
+    this._oldRate = this.rate;
+    this.range = this._buildTemplateObjects();
   }
 
   reset(): void {
@@ -47,7 +49,7 @@ export class NgbRating implements OnInit {
     }
   }
 
-  private _buildTemplateObjects(): Array<number> {
+  private _buildTemplateObjects(): number[] {
     let range = [];
     for (let i = 1; i <= this.max; i++) {
       range.push({title: i});
