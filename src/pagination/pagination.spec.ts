@@ -52,48 +52,55 @@ describe('ngb-pagination', () => {
 
   describe('business logic', () => {
 
-    var paginationCmpt;
+    var paginationCmpt: NgbPagination;
 
     beforeEach(() => { paginationCmpt = new NgbPagination(); });
 
     it('should calculate and update no of pages (default page size)', () => {
       paginationCmpt.collectionSize = 100;
+      paginationCmpt.onChanges();
       expect(paginationCmpt.pages.length).toEqual(10);
 
       paginationCmpt.collectionSize = 200;
+      paginationCmpt.onChanges();
       expect(paginationCmpt.pages.length).toEqual(20);
     });
 
     it('should calculate and update no of pages (custom page size)', () => {
       paginationCmpt.collectionSize = 100;
       paginationCmpt.pageSize = 20;
+      paginationCmpt.onChanges();
       expect(paginationCmpt.pages.length).toEqual(5);
 
       paginationCmpt.collectionSize = 200;
+      paginationCmpt.onChanges();
       expect(paginationCmpt.pages.length).toEqual(10);
 
       paginationCmpt.pageSize = 10;
+      paginationCmpt.onChanges();
       expect(paginationCmpt.pages.length).toEqual(20);
     });
 
     it('should allow setting a page within a valid range (default page size)', () => {
       paginationCmpt.collectionSize = 100;
       paginationCmpt.page = 2;
-
+      paginationCmpt.onChanges();
       expect(paginationCmpt.page).toEqual(2);
     });
 
     it('should auto-correct page no if outside of valid range (default page size)', () => {
       paginationCmpt.collectionSize = 100;
-
       paginationCmpt.page = 100;
+      paginationCmpt.onChanges();
       expect(paginationCmpt.page).toEqual(10);
 
       paginationCmpt.page = -100;
+      paginationCmpt.onChanges();
       expect(paginationCmpt.page).toEqual(1);
 
       paginationCmpt.page = 5;
       paginationCmpt.collectionSize = 10;
+      paginationCmpt.onChanges();
       expect(paginationCmpt.page).toEqual(1);
     });
 
@@ -101,7 +108,7 @@ describe('ngb-pagination', () => {
       paginationCmpt.collectionSize = 100;
       paginationCmpt.pageSize = 20;
       paginationCmpt.page = 2;
-
+      paginationCmpt.onChanges();
       expect(paginationCmpt.page).toEqual(2);
     });
 
