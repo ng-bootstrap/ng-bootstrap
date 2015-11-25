@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output, NgFor} from 'angular2/angular2';
+import {Component, EventEmitter, Input, Output, NgFor, OnChanges} from 'angular2/angular2';
 
 @Component({
   selector: 'ngb-pagination',
@@ -27,7 +27,7 @@ import {Component, EventEmitter, Input, Output, NgFor} from 'angular2/angular2';
     </nav>
   `
 })
-export class NgbPagination {
+export class NgbPagination implements OnChanges {
   private _collectionSize;
   private _page = 0;
   private _pageSize = 10;
@@ -35,7 +35,7 @@ export class NgbPagination {
 
   @Input()
   set page(value: number | string) {
-    this.selectPage(parseInt(`${value}`, 10));
+    this._page = parseInt(`${value}`, 10);
   }
 
   get page(): number | string { return this._page; }
@@ -43,7 +43,6 @@ export class NgbPagination {
   @Input()
   set collectionSize(value: number | string) {
     this._collectionSize = parseInt(`${value}`, 10);
-    this._updatePages();
   }
 
   get collectionSize(): number | string { return this._collectionSize; }
@@ -51,7 +50,6 @@ export class NgbPagination {
   @Input()
   set pageSize(value: number | string) {
     this._pageSize = parseInt(`${value}`, 10);
-    this._updatePages();
   }
 
   get pageSize(): number | string { return this._pageSize; }
@@ -64,15 +62,14 @@ export class NgbPagination {
 
   selectPage(pageNumber: number): void {
     var prevPageNo = this.page;
-
-    this._page = this._collectionSize ? Math.max(Math.min(pageNumber, this.pages.length), 1) : pageNumber;
+    this._page = this._getPageNoInRange(pageNumber);
 
     if (this.page != prevPageNo) {
       this.pageChange.next(this.page);
     }
   }
 
-  private _updatePages(): void {
+  onChanges(): void {
     // re-calculate new length of pages
     var pageCount = Math.ceil(this._collectionSize / this._pageSize);
 
@@ -82,7 +79,11 @@ export class NgbPagination {
       this.pages.push(i);
     }
 
+    this._page = this._getPageNoInRange(this.page);
+  }
+
+  private _getPageNoInRange(newPageNo): number {
     // make sure that the selected page is within available pages range
-    this.selectPage(this._page);
+    return Math.max(Math.min(newPageNo, this.pages.length), 1);
   }
 }
