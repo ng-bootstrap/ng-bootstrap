@@ -21,57 +21,48 @@ describe('ng-progressbar', () => {
 
     it('should calculate the percentage (default max size)', () => {
       progressCmp.value = 50;
-      progressCmp.onChanges();
-      expect(progressCmp.calculatePercentage()).toBe(50);
+      expect(progressCmp.getPercentValue()).toBe(50);
 
       progressCmp.value = 25;
-      progressCmp.onChanges();
-      expect(progressCmp.calculatePercentage()).toBe(25);
+      expect(progressCmp.getPercentValue()).toBe(25);
     });
 
     it('should calculate the percentage (custom max size)', () => {
       progressCmp.max = 150;
 
       progressCmp.value = 75;
-      progressCmp.onChanges();
-      expect(progressCmp.calculatePercentage()).toBe(50);
+      expect(progressCmp.getPercentValue()).toBe(50);
 
       progressCmp.value = 30;
-      progressCmp.onChanges();
-      expect(progressCmp.calculatePercentage()).toBe(20);
+      expect(progressCmp.getPercentValue()).toBe(20);
     });
 
     it('should set the value to 0 for negative numbers', () => {
       progressCmp.value = -20;
-      progressCmp.onChanges();
-      expect(progressCmp.value).toBe(0);
+      expect(progressCmp.getValue()).toBe(0);
     });
 
     it('should set the value to max if it is higher than max (default max size)', () => {
       progressCmp.value = 120;
-      progressCmp.onChanges();
-      expect(progressCmp.value).toBe(100);
+      expect(progressCmp.getValue()).toBe(100);
     });
 
     it('should set the value to max if it is higher than max (custom max size)', () => {
       progressCmp.max = 150;
       progressCmp.value = 170;
-      progressCmp.onChanges();
-      expect(progressCmp.value).toBe(150);
+      expect(progressCmp.getValue()).toBe(150);
     });
 
     it('should update the value if max updates to a smaller value', () => {
       progressCmp.value = 80;
       progressCmp.max = 70;
-      progressCmp.onChanges();
-      expect(progressCmp.value).toBe(70);
+      expect(progressCmp.getValue()).toBe(70);
     });
 
     it('should not update the value if max updates to a larger value', () => {
       progressCmp.value = 120;
       progressCmp.max = 150;
-      progressCmp.onChanges();
-      expect(progressCmp.value).toBe(120);
+      expect(progressCmp.getValue()).toBe(120);
     });
   });
 
