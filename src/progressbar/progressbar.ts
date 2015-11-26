@@ -1,35 +1,25 @@
-import {Component, Input, OnChanges} from 'angular2/angular2';
+import {Component, Input, ChangeDetectionStrategy} from 'angular2/angular2';
 
 @Component({
   selector: 'ngb-progressbar',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <progress class="progress {{striped && 'progress-striped'}} {{type && 'progress-' + type}}" [value]="value" [max]="max">
+    <progress class="progress {{isStriped() && 'progress-striped'}} {{type && 'progress-' + type}}" [value]="getValue()" [max]="max">
       <div class="progress">
-        <span class="progress-bar" [style.width.%]="calculatePercentage()"><ng-content></ng-content></span>
+        <span class="progress-bar" [style.width.%]="getPercentValue()"><ng-content></ng-content></span>
       </div>
     </progress>
   `
 })
-export class NgbProgressbar implements OnChanges {
-  private _striped: boolean;
-
+export class NgbProgressbar {
   @Input() max = 100;
+  @Input() striped: boolean | string;
+  @Input() type: string;
   @Input() value: number;
 
-  @Input()
-  set striped(value: boolean | string) {
-    if (value === '') {  // boolean usage
-      value = true;
-    }
+  isStriped(): boolean { return this.striped === '' ? true : !!this.striped; }
 
-    this._striped = !!value;
-  }
+  getValue() { return Math.max(Math.min(this.value, this.max), 0); }
 
-  get striped(): boolean | string { return this._striped; }
-
-  @Input() type: string;
-
-  onChanges() { this.value = Math.max(Math.min(this.value, this.max), 0); }
-
-  calculatePercentage() { return 100 * this.value / this.max; }
+  getPercentValue() { return 100 * this.getValue() / this.max; }
 }
