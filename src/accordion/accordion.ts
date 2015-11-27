@@ -22,6 +22,7 @@ import {NgbCollapse} from '../collapse/collapse';
 })
 export class NgbAccordionPanel {
   private _isOpen = false;
+
   @Input() isDisabled: boolean;
   @Input() title: string;
 
