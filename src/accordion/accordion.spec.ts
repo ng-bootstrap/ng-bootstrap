@@ -14,11 +14,11 @@ import {Component} from 'angular2/angular2';
 
 import {NgbAccordion, NgbAccordionPanel} from './accordion';
 
-function getPanels(element: Element): Element[] {
-  return Array.from(element.querySelectorAll('ngb-accordion-panel .panel'));
+function getPanels(element: HTMLElement): HTMLDivElement[] {
+  return <HTMLDivElement[]>Array.from(element.querySelectorAll('ngb-accordion-panel .panel'));
 }
 
-function hasTitle(element: Element, str: string): Boolean {
+function hasTitle(element: HTMLElement, str: string): boolean {
   return element.textContent === str;
 }
 
@@ -51,11 +51,9 @@ describe('ngb-accordion', () => {
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
 
-         const compiled = fixture.debugElement.nativeElement;
+         const panels = getPanels(fixture.debugElement.nativeElement);
 
-         let panels = getPanels(compiled);
-
-         panels.forEach((panel) => expect(panel).not.toHaveCssClass('panel-open'));
+         panels.forEach((panel: HTMLDivElement) => expect(panel).not.toHaveCssClass('panel-open'));
        });
      }));
 
@@ -64,11 +62,9 @@ describe('ngb-accordion', () => {
          fixture.detectChanges();
 
          const tc = fixture.debugElement.componentInstance;
-         const compiled = fixture.debugElement.nativeElement;
+         const panels = getPanels(fixture.debugElement.nativeElement);
 
-         let panels = getPanels(compiled);
-
-         panels.forEach((panel) => expect(panel).not.toHaveCssClass('panel-open'));
+         panels.forEach((panel: HTMLDivElement) => expect(panel).not.toHaveCssClass('panel-open'));
 
          tc.panels[1].open = true;
          fixture.detectChanges();
@@ -118,11 +114,12 @@ describe('ngb-accordion', () => {
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
 
-         const compiled: Element = fixture.debugElement.nativeElement;
+         const compiled = fixture.debugElement.nativeElement;
 
-         let titles: Element[] = Array.from(compiled.querySelectorAll('.panel-heading a span'));
+         const titles = Array.from(compiled.querySelectorAll('.panel-heading a span'));
 
-         titles.forEach((title, idx) => { return expect(hasTitle(title, `Panel ${idx + 1}`)).toBe(true); });
+         titles.forEach(
+             (title: HTMLElement, idx: number) => { return expect(hasTitle(title, `Panel ${idx + 1}`)).toBe(true); });
        });
      }));
 
@@ -132,9 +129,7 @@ describe('ngb-accordion', () => {
          tc.closeOthers = true;
          fixture.detectChanges();
 
-         const compiled: Element = fixture.debugElement.nativeElement;
-
-         let panels: Element[] = getPanels(compiled);
+         const panels = getPanels(fixture.debugElement.nativeElement);
 
          tc.panels[1].open = true;
          fixture.detectChanges();
@@ -172,9 +167,7 @@ describe('ngb-accordion', () => {
          tc.panels[0].disabled = true;
          fixture.detectChanges();
 
-         const compiled: Element = fixture.debugElement.nativeElement;
-
-         let panels: Element[] = getPanels(compiled);
+         const panels = getPanels(fixture.debugElement.nativeElement);
 
          fixture.debugElement.componentViewChildren[0].children[0].nativeElement.click();
          fixture.detectChanges();
@@ -191,9 +184,7 @@ describe('ngb-accordion', () => {
          tc.panels[0].disabled = true;
          fixture.detectChanges();
 
-         const compiled: Element = fixture.debugElement.nativeElement;
-
-         let panels: Element[] = getPanels(compiled);
+         const panels = getPanels(fixture.debugElement.nativeElement);
 
          tc.panels[0].open = true;
          fixture.detectChanges();
@@ -215,7 +206,7 @@ describe('ngb-accordion', () => {
 @Component({selector: 'test-cmp', directives: [NgbAccordion, NgbAccordionPanel], template: ''})
 class TestComponent {
   closeOthers = false;
-  panels: any[] = [
+  panels = [
     {disabled: false, title: 'Panel 1', open: false, content: 'foo'},
     {disabled: false, title: 'Panel 2', open: false, content: 'bar'},
     {disabled: false, title: 'Panel 3', open: false, content: 'baz'}
