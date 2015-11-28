@@ -13,8 +13,8 @@ import {Component} from 'angular2/angular2';
 
 import {NgbCollapse} from './collapse';
 
-function getCollapsibleContent(element: Element): Element {
-  return element.querySelector('.collapse');
+function getCollapsibleContent(element: HTMLElement): HTMLDivElement {
+  return <HTMLDivElement>element.querySelector('.collapse');
 }
 
 describe('ngb-collapse', () => {
@@ -25,12 +25,10 @@ describe('ngb-collapse', () => {
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
 
-         const compiled = fixture.debugElement.nativeElement;
+         const collapseEl = getCollapsibleContent(fixture.debugElement.nativeElement);
 
-         const content = getCollapsibleContent(compiled);
-
-         expect(content).toHaveCssClass('in');
-         expect(content.getAttribute('aria-expanded')).toBe('true');
+         expect(collapseEl).toHaveCssClass('in');
+         expect(collapseEl.getAttribute('aria-expanded')).toBe('true');
        });
      }));
 
@@ -40,29 +38,28 @@ describe('ngb-collapse', () => {
          tc.collapsed = true;
          fixture.detectChanges();
 
-         const compiled = fixture.debugElement.nativeElement;
+         const collapseEl = getCollapsibleContent(fixture.debugElement.nativeElement);
 
-         const content = getCollapsibleContent(compiled);
-
-         expect(content).not.toHaveCssClass('in');
-         expect(content.getAttribute('aria-expanded')).toBe('false');
+         expect(collapseEl).not.toHaveCssClass('in');
+         expect(collapseEl.getAttribute('aria-expanded')).toBe('false');
        });
      }));
 
   it('should toggle collapsed content based on bound model change', injectAsync([TestComponentBuilder], (tcb) => {
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
-         const compiled = fixture.debugElement.nativeElement;
-         const content = getCollapsibleContent(compiled);
-         expect(content).toHaveCssClass('in');
 
-         fixture.debugElement.componentInstance.collapsed = true;
-         fixture.detectChanges();
-         expect(content).not.toHaveCssClass('in');
+         const tc = fixture.debugElement.componentInstance;
+         const collapseEl = getCollapsibleContent(fixture.debugElement.nativeElement);
+         expect(collapseEl).toHaveCssClass('in');
 
-         fixture.debugElement.componentInstance.collapsed = false;
+         tc.collapsed = true;
          fixture.detectChanges();
-         expect(content).toHaveCssClass('in');
+         expect(collapseEl).not.toHaveCssClass('in');
+
+         tc.collapsed = false;
+         fixture.detectChanges();
+         expect(collapseEl).toHaveCssClass('in');
        });
      }));
 
