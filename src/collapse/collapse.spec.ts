@@ -65,6 +65,28 @@ describe('ngb-collapse', () => {
          expect(content).toHaveCssClass('in');
        });
      }));
+
+  it('should allow toggling collapse from outside', injectAsync([TestComponentBuilder], (tcb) => {
+       const html = `
+      <button (click)="collapse.collapsed = !collapse.collapsed">Collapse</button>
+      <div [ngb-collapse] #collapse="ngbCollapse"></div>`;
+
+       return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         fixture.detectChanges();
+
+         const compiled = fixture.debugElement.nativeElement;
+         const collapseEl = getCollapsibleContent(compiled);
+         const buttonEl = compiled.querySelector('button');
+
+         buttonEl.click();
+         fixture.detectChanges();
+         expect(collapseEl).not.toHaveCssClass('in');
+
+         buttonEl.click();
+         fixture.detectChanges();
+         expect(collapseEl).toHaveCssClass('in');
+       });
+     }));
 });
 
 @Component({selector: 'test-cmp', directives: [NgbCollapse], template: ''})
