@@ -1,4 +1,4 @@
-import {Component, Input, Output, NgFor, EventEmitter, OnInit} from 'angular2/angular2';
+import {Component, Input, Output, EventEmitter, OnInit} from 'angular2/angular2';
 
 @Component({
   selector: 'ngb-rating',
@@ -9,8 +9,7 @@ import {Component, Input, Output, NgFor, EventEmitter, OnInit} from 'angular2/an
         <i class="glyphicon {{index < rate ? 'glyphicon-star' : 'glyphicon-star-empty'}}" (mouseenter)="enter(index + 1)" (click)="update(index + 1)" [title]="r.title" [attr.aria-valuetext]="r.title"></i>
       </template>
     </span>
-  `,
-  directives: [NgFor]
+  `
 })
 export class NgbRating implements OnInit {
   private _oldRate: number;
