@@ -45,6 +45,20 @@ gulp.task('umd', function(cb) {
 
 var testProject = ts.createProject('tsconfig.json');
 
+function startKarmaServer(isTddMode, done) {
+  var karmaServer = require('karma').Server;
+  var travis = process.env.TRAVIS;
+
+  var config = {configFile: __dirname + '/karma.conf.js', singleRun: !isTddMode, autoWatch: isTddMode};
+
+  if (travis) {
+    config['reporters'] = ['dots'];
+    config['browsers'] = ['Firefox'];
+  }
+
+  new karmaServer(config, done).start();
+}
+
 gulp.task('clean:tests', function() { return del('temp/'); });
 
 gulp.task('build-tests', function() {
@@ -58,35 +72,13 @@ gulp.task('clean-build-tests', function(done) { runSequence('clean:tests', 'buil
 gulp.task(
     'ddescribe-iit', function() { return gulp.src(PATHS.specs).pipe(ddescribeIit({allowDisabledTests: false})); });
 
-gulp.task('test', ['clean-build-tests'], function(done) {
-  var karmaServer = require('karma').Server;
-  var travis = process.env.TRAVIS;
-
-  var config = {configFile: __dirname + '/karma.conf.js', singleRun: true, autoWatch: false};
-
-  if (travis) {
-    config['reporters'] = ['dots'];
-    config['browsers'] = ['Firefox'];
-  }
-
-  new karmaServer(config, done).start();
-});
+gulp.task('test', ['clean-build-tests'], function(done) { startKarmaServer(false, done); });
 
 gulp.task('tdd', ['clean-build-tests'], function(done) {
-  var karmaServer = require('karma').Server;
-  var travis = process.env.TRAVIS;
-
-  var config = {configFile: __dirname + '/karma.conf.js'};
-
-  if (travis) {
-    config['reporters'] = ['dots'];
-    config['browsers'] = ['Firefox'];
-  }
-
-  new karmaServer(config, function(err) {
+  startKarmaServer(true, function(err) {
     done(err);
     process.exit(1);
-  }).start();
+  });
 
   gulp.watch(PATHS.src, ['build-tests']);
 });
