@@ -5,7 +5,6 @@ import {
   describe,
   expect,
   inject,
-  injectAsync,
   TestComponentBuilder,
   beforeEachProviders
 } from 'angular2/testing';
@@ -19,10 +18,10 @@ function getDropdownEl(tc) {
 }
 
 describe('ngb-dropdown', () => {
-  it('should be closed by default', injectAsync([TestComponentBuilder], (tcb) => {
+  it('should be closed by default', inject([TestComponentBuilder], (tcb) => {
        const html = `<div ngb-dropdown></div>`;
 
-       return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
          const compiled = fixture.nativeElement;
 
@@ -30,10 +29,10 @@ describe('ngb-dropdown', () => {
        });
      }));
 
-  it('should be open initially if open expression is true', injectAsync([TestComponentBuilder], (tcb) => {
+  it('should be open initially if open expression is true', inject([TestComponentBuilder], (tcb) => {
        const html = `<div ngb-dropdown [open]="true"></div>`;
 
-       return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
          const compiled = fixture.nativeElement;
 
@@ -41,10 +40,10 @@ describe('ngb-dropdown', () => {
        });
      }));
 
-  it('should toggle open class', injectAsync([TestComponentBuilder], (tcb) => {
+  it('should toggle open class', inject([TestComponentBuilder], (tcb) => {
        const html = `<div ngb-dropdown [open]="isOpen"></div>`;
 
-       return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
          const compiled = fixture.nativeElement;
 
@@ -64,12 +63,12 @@ describe('ngb-dropdown', () => {
        });
      }));
 
-  it('should allow toggling dropdown from outside', injectAsync([TestComponentBuilder], (tcb) => {
+  it('should allow toggling dropdown from outside', inject([TestComponentBuilder], (tcb) => {
        const html = `
       <button (click)="drop.open = !drop.open">Toggle</button>
       <div ngb-dropdown #drop="ngbDropdown"></div>`;
 
-       return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
          const compiled = fixture.nativeElement;
          let dropdownEl = getDropdownEl(compiled);
@@ -88,7 +87,7 @@ describe('ngb-dropdown', () => {
 
 describe('ngb-dropdown-toggle', () => {
 
-  it('should toggle dropdown on click', injectAsync([TestComponentBuilder], (tcb) => {
+  it('should toggle dropdown on click', inject([TestComponentBuilder], (tcb) => {
        const html = `
       <div ngb-dropdown>
           <button ngb-dropdown-toggle class="btn btn-success" type="button">
@@ -96,7 +95,7 @@ describe('ngb-dropdown-toggle', () => {
           </button>
       </div>`;
 
-       return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
          const compiled = fixture.nativeElement;
          let dropdownEl = getDropdownEl(compiled);

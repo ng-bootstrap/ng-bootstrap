@@ -1,4 +1,4 @@
-import {iit, it, ddescribe, describe, expect, injectAsync, TestComponentBuilder} from 'angular2/testing';
+import {iit, it, ddescribe, describe, expect, inject, TestComponentBuilder} from 'angular2/testing';
 
 import {Component} from 'angular2/core';
 
@@ -67,10 +67,10 @@ describe('ng-progressbar', () => {
   });
 
   describe('UI logic', () => {
-    it('accepts a value and respond to value changes', injectAsync([TestComponentBuilder], (tcb) => {
+    it('accepts a value and respond to value changes', inject([TestComponentBuilder], (tcb) => {
          const html = '<ngb-progressbar [value]="value"></ngb-progressbar>';
 
-         return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.detectChanges();
 
            expect(getBarWidth(fixture.nativeElement)).toBe('10%');
@@ -81,10 +81,10 @@ describe('ng-progressbar', () => {
          });
        }));
 
-    it('accepts a max value and respond to max changes', injectAsync([TestComponentBuilder], (tcb) => {
+    it('accepts a max value and respond to max changes', inject([TestComponentBuilder], (tcb) => {
          const html = '<ngb-progressbar [value]="value" [max]="max"></ngb-progressbar>';
 
-         return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.detectChanges();
 
            expect(getBarWidth(fixture.nativeElement)).toBe('20%');
@@ -95,19 +95,19 @@ describe('ng-progressbar', () => {
          });
        }));
 
-    it('accepts a value and max value above default values', injectAsync([TestComponentBuilder], (tcb) => {
+    it('accepts a value and max value above default values', inject([TestComponentBuilder], (tcb) => {
          const html = '<ngb-progressbar [value]="150" [max]="150"></ngb-progressbar>';
 
-         return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.detectChanges();
            expect(getBarWidth(fixture.nativeElement)).toBe('100%');
          });
        }));
 
-    it('accepts a custom type', injectAsync([TestComponentBuilder], (tcb) => {
+    it('accepts a custom type', inject([TestComponentBuilder], (tcb) => {
          const html = '<ngb-progressbar [value]="value" [type]="type"></ngb-progressbar>';
 
-         return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.detectChanges();
 
            expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('progress-warning');
@@ -118,20 +118,20 @@ describe('ng-progressbar', () => {
          });
        }));
 
-    it('accepts striped as boolean attr', injectAsync([TestComponentBuilder], (tcb) => {
+    it('accepts striped as boolean attr', inject([TestComponentBuilder], (tcb) => {
          const html = '<ngb-progressbar [value]="value" striped></ngb-progressbar>';
 
-         return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.detectChanges();
 
            expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('progress-striped');
          });
        }));
 
-    it('accepts striped as normal attr', injectAsync([TestComponentBuilder], (tcb) => {
+    it('accepts striped as normal attr', inject([TestComponentBuilder], (tcb) => {
          const html = '<ngb-progressbar [value]="value" [striped]="striped"></ngb-progressbar>';
 
-         return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.detectChanges();
 
            expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('progress-striped');

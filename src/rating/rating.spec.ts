@@ -5,7 +5,6 @@ import {
   describe,
   expect,
   inject,
-  injectAsync,
   TestComponentBuilder,
   beforeEachProviders
 } from 'angular2/testing';
@@ -41,8 +40,8 @@ function getState(compiled) {
 }
 
 describe('ngb-rating', () => {
-  it('should show 10 stars by default', injectAsync([TestComponentBuilder], (tcb) => {
-       return tcb.createAsync(NgbRating).then((fixture) => {
+  it('should show 10 stars by default', inject([TestComponentBuilder], (tcb) => {
+       tcb.createAsync(NgbRating).then((fixture) => {
          fixture.detectChanges();
 
          const compiled = fixture.nativeElement;
@@ -52,10 +51,10 @@ describe('ngb-rating', () => {
        });
      }));
 
-  it('should change the num of stars with `max`', injectAsync([TestComponentBuilder], (tcb) => {
+  it('should change the num of stars with `max`', inject([TestComponentBuilder], (tcb) => {
        const html = '<ngb-rating max="3"></ngb-rating>';
 
-       return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
 
          const compiled = fixture.nativeElement;
@@ -65,10 +64,10 @@ describe('ngb-rating', () => {
        });
      }));
 
-  it('initializes the default star icons as selected', injectAsync([TestComponentBuilder], (tcb) => {
+  it('initializes the default star icons as selected', inject([TestComponentBuilder], (tcb) => {
        const html = '<ngb-rating rate="3" max="5"></ngb-rating>';
 
-       return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
 
          const compiled = fixture.nativeElement;
@@ -77,10 +76,10 @@ describe('ngb-rating', () => {
        });
      }));
 
-  it('handles correctly the click event', injectAsync([TestComponentBuilder], (tcb) => {
+  it('handles correctly the click event', inject([TestComponentBuilder], (tcb) => {
        const html = '<ngb-rating rate="3" max="5"></ngb-rating>';
 
-       return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
 
          const compiled = fixture.nativeElement;
@@ -92,10 +91,10 @@ describe('ngb-rating', () => {
      }));
 
   describe('aria support', () => {
-    it('contains aria-valuemax with the number of stars', injectAsync([TestComponentBuilder], (tcb) => {
+    it('contains aria-valuemax with the number of stars', inject([TestComponentBuilder], (tcb) => {
          const html = '<ngb-rating [max]="max"></ngb-rating>';
 
-         return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.detectChanges();
 
            const compiled = fixture.nativeElement;
@@ -104,10 +103,10 @@ describe('ngb-rating', () => {
          });
        }));
 
-    it('contains a hidden span for each star for screenreaders', injectAsync([TestComponentBuilder], (tcb) => {
+    it('contains a hidden span for each star for screenreaders', inject([TestComponentBuilder], (tcb) => {
          const html = '<ngb-rating max="5"></ngb-rating>';
 
-         return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.detectChanges();
 
            let compiled = fixture.nativeElement;
@@ -116,10 +115,10 @@ describe('ngb-rating', () => {
          });
        }));
 
-    it('initializes populates the current rate for screenreaders', injectAsync([TestComponentBuilder], (tcb) => {
+    it('initializes populates the current rate for screenreaders', inject([TestComponentBuilder], (tcb) => {
          const html = '<ngb-rating rate="3" max="5"></ngb-rating>';
 
-         return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.detectChanges();
 
            const compiled = fixture.nativeElement;
@@ -128,10 +127,10 @@ describe('ngb-rating', () => {
          });
        }));
 
-    it('contains aria-valuenow with the current rate', injectAsync([TestComponentBuilder], (tcb) => {
+    it('contains aria-valuenow with the current rate', inject([TestComponentBuilder], (tcb) => {
          const html = '<ngb-rating [max]="max" rate="3"></ngb-rating>';
 
-         return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.detectChanges();
 
            const compiled = fixture.nativeElement;
@@ -140,10 +139,10 @@ describe('ngb-rating', () => {
          });
        }));
 
-    it('updates aria-valuenow when the rate changes', injectAsync([TestComponentBuilder], (tcb) => {
+    it('updates aria-valuenow when the rate changes', inject([TestComponentBuilder], (tcb) => {
          const html = '<ngb-rating [max]="max" rate="3"></ngb-rating>';
 
-         return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.detectChanges();
 
            const compiled = fixture.nativeElement;
