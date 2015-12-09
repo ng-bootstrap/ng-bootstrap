@@ -5,7 +5,6 @@ import {
   describe,
   expect,
   inject,
-  injectAsync,
   TestComponentBuilder,
 } from 'angular2/testing';
 
@@ -21,8 +20,8 @@ describe('ngb-collapse', () => {
 
   const html = `<div [ngb-collapse]="collapsed">Some content</div>`;
 
-  it('should have content open and aria-expanded true', injectAsync([TestComponentBuilder], (tcb) => {
-       return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+  it('should have content open and aria-expanded true', inject([TestComponentBuilder], (tcb) => {
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
 
          const collapseEl = getCollapsibleContent(fixture.nativeElement);
@@ -32,8 +31,8 @@ describe('ngb-collapse', () => {
        });
      }));
 
-  it('should have content closed and aria-expanded false', injectAsync([TestComponentBuilder], (tcb) => {
-       return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+  it('should have content closed and aria-expanded false', inject([TestComponentBuilder], (tcb) => {
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          const tc = fixture.componentInstance;
          tc.collapsed = true;
          fixture.detectChanges();
@@ -45,8 +44,8 @@ describe('ngb-collapse', () => {
        });
      }));
 
-  it('should toggle collapsed content based on bound model change', injectAsync([TestComponentBuilder], (tcb) => {
-       return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+  it('should toggle collapsed content based on bound model change', inject([TestComponentBuilder], (tcb) => {
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
 
          const tc = fixture.componentInstance;
@@ -63,12 +62,12 @@ describe('ngb-collapse', () => {
        });
      }));
 
-  it('should allow toggling collapse from outside', injectAsync([TestComponentBuilder], (tcb) => {
+  it('should allow toggling collapse from outside', inject([TestComponentBuilder], (tcb) => {
        const html = `
       <button (click)="collapse.collapsed = !collapse.collapsed">Collapse</button>
       <div [ngb-collapse] #collapse="ngbCollapse"></div>`;
 
-       return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
 
          const compiled = fixture.nativeElement;

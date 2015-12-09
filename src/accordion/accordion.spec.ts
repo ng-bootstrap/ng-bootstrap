@@ -5,7 +5,6 @@ import {
   describe,
   expect,
   inject,
-  injectAsync,
   TestComponentBuilder,
   beforeEachProviders
 } from 'angular2/testing';
@@ -47,8 +46,8 @@ describe('ngb-accordion', () => {
     `;
   });
 
-  it('should have no open panel', injectAsync([TestComponentBuilder], (tcb) => {
-       return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+  it('should have no open panel', inject([TestComponentBuilder], (tcb) => {
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
 
          const panels = getPanels(fixture.nativeElement);
@@ -57,8 +56,8 @@ describe('ngb-accordion', () => {
        });
      }));
 
-  it('should toggle panels independently', injectAsync([TestComponentBuilder], (tcb) => {
-       return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+  it('should toggle panels independently', inject([TestComponentBuilder], (tcb) => {
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
 
          const tc = fixture.componentInstance;
@@ -110,8 +109,8 @@ describe('ngb-accordion', () => {
        });
      }));
 
-  it('should have the appropriate heading', injectAsync([TestComponentBuilder], (tcb) => {
-       return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+  it('should have the appropriate heading', inject([TestComponentBuilder], (tcb) => {
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
 
          const compiled = fixture.nativeElement;
@@ -123,8 +122,8 @@ describe('ngb-accordion', () => {
        });
      }));
 
-  it('should only open one at a time', injectAsync([TestComponentBuilder], (tcb) => {
-       return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+  it('should only open one at a time', inject([TestComponentBuilder], (tcb) => {
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          const tc = fixture.componentInstance;
          tc.closeOthers = true;
          fixture.detectChanges();
@@ -161,8 +160,8 @@ describe('ngb-accordion', () => {
        });
      }));
 
-  it('should not open disabled panels from click', injectAsync([TestComponentBuilder], (tcb) => {
-       return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+  it('should not open disabled panels from click', inject([TestComponentBuilder], (tcb) => {
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          const tc = fixture.componentInstance;
          tc.panels[0].disabled = true;
          fixture.detectChanges();
@@ -178,8 +177,8 @@ describe('ngb-accordion', () => {
        });
      }));
 
-  it('should open disabled panels programmatically', injectAsync([TestComponentBuilder], (tcb) => {
-       return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+  it('should open disabled panels programmatically', inject([TestComponentBuilder], (tcb) => {
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          const tc = fixture.componentInstance;
          tc.panels[0].disabled = true;
          fixture.detectChanges();
