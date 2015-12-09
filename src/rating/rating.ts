@@ -31,7 +31,7 @@ export class NgbRating implements OnInit {
     this.hover.next(value);
   }
 
-  onInit(): void {
+  ngOnInit(): void {
     this._oldRate = this.rate;
     this.range = this._buildTemplateObjects();
   }

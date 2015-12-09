@@ -69,7 +69,7 @@ export class NgbPagination implements OnChanges {
     }
   }
 
-  onChanges(): void {
+  ngOnChanges(): void {
     // re-calculate new length of pages
     var pageCount = Math.ceil(this._collectionSize / this._pageSize);
 
