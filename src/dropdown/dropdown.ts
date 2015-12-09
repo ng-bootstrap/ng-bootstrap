@@ -1,4 +1,4 @@
-import {Directive, Input, HostListener} from 'angular2/angular2';
+import {Directive, Input, HostListener} from 'angular2/core';
 
 @Directive({selector: '[ngb-dropdown]', exportAs: 'ngbDropdown', host: {'[class.open]': 'open'}})
 export class NgbDropdown {

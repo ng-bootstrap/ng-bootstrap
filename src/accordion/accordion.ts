@@ -1,4 +1,4 @@
-import {Component, Directive, forwardRef, Inject, Input, Query, QueryList} from 'angular2/angular2';
+import {Component, Directive, forwardRef, Inject, Input, Query, QueryList} from 'angular2/core';
 
 import {NgbCollapse} from '../collapse/collapse';
 
