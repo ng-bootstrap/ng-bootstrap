@@ -73,11 +73,11 @@ describe('ng-progressbar', () => {
          return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.detectChanges();
 
-           expect(getBarWidth(fixture.debugElement.nativeElement)).toBe('10%');
+           expect(getBarWidth(fixture.nativeElement)).toBe('10%');
 
-           fixture.debugElement.componentInstance.value = 30;
+           fixture.componentInstance.value = 30;
            fixture.detectChanges();
-           expect(getBarWidth(fixture.debugElement.nativeElement)).toBe('30%');
+           expect(getBarWidth(fixture.nativeElement)).toBe('30%');
          });
        }));
 
@@ -87,11 +87,11 @@ describe('ng-progressbar', () => {
          return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.detectChanges();
 
-           expect(getBarWidth(fixture.debugElement.nativeElement)).toBe('20%');
+           expect(getBarWidth(fixture.nativeElement)).toBe('20%');
 
-           fixture.debugElement.componentInstance.max = 200;
+           fixture.componentInstance.max = 200;
            fixture.detectChanges();
-           expect(getBarWidth(fixture.debugElement.nativeElement)).toBe('5%');
+           expect(getBarWidth(fixture.nativeElement)).toBe('5%');
          });
        }));
 
@@ -100,7 +100,7 @@ describe('ng-progressbar', () => {
 
          return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.detectChanges();
-           expect(getBarWidth(fixture.debugElement.nativeElement)).toBe('100%');
+           expect(getBarWidth(fixture.nativeElement)).toBe('100%');
          });
        }));
 
@@ -110,11 +110,11 @@ describe('ng-progressbar', () => {
          return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.detectChanges();
 
-           expect(getProgressbar(fixture.debugElement.nativeElement)).toHaveCssClass('progress-warning');
+           expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('progress-warning');
 
-           fixture.debugElement.componentInstance.type = 'info';
+           fixture.componentInstance.type = 'info';
            fixture.detectChanges();
-           expect(getProgressbar(fixture.debugElement.nativeElement)).toHaveCssClass('progress-info');
+           expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('progress-info');
          });
        }));
 
@@ -124,7 +124,7 @@ describe('ng-progressbar', () => {
          return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.detectChanges();
 
-           expect(getProgressbar(fixture.debugElement.nativeElement)).toHaveCssClass('progress-striped');
+           expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('progress-striped');
          });
        }));
 
@@ -134,11 +134,11 @@ describe('ng-progressbar', () => {
          return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.detectChanges();
 
-           expect(getProgressbar(fixture.debugElement.nativeElement)).toHaveCssClass('progress-striped');
+           expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('progress-striped');
 
-           fixture.debugElement.componentInstance.striped = false;
+           fixture.componentInstance.striped = false;
            fixture.detectChanges();
-           expect(getProgressbar(fixture.debugElement.nativeElement)).not.toHaveCssClass('progress-striped');
+           expect(getProgressbar(fixture.nativeElement)).not.toHaveCssClass('progress-striped');
          });
        }));
   });

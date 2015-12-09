@@ -45,7 +45,7 @@ describe('ngb-rating', () => {
        return tcb.createAsync(NgbRating).then((fixture) => {
          fixture.detectChanges();
 
-         const compiled = fixture.debugElement.nativeElement;
+         const compiled = fixture.nativeElement;
 
          const stars = getStars(compiled);
          expect(stars.length).toBe(10);
@@ -58,7 +58,7 @@ describe('ngb-rating', () => {
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
 
-         const compiled = fixture.debugElement.nativeElement;
+         const compiled = fixture.nativeElement;
 
          const stars = getStars(compiled);
          expect(stars.length).toBe(3);
@@ -71,7 +71,7 @@ describe('ngb-rating', () => {
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
 
-         const compiled = fixture.debugElement.nativeElement;
+         const compiled = fixture.nativeElement;
 
          expect(getState(compiled)).toEqual([true, true, true, false, false]);
        });
@@ -83,7 +83,7 @@ describe('ngb-rating', () => {
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
 
-         const compiled = fixture.debugElement.nativeElement;
+         const compiled = fixture.nativeElement;
 
          getStar(compiled, 2).click();
          fixture.detectChanges();
@@ -98,7 +98,7 @@ describe('ngb-rating', () => {
          return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.detectChanges();
 
-           const compiled = fixture.debugElement.nativeElement;
+           const compiled = fixture.nativeElement;
 
            expect(compiled.querySelector('span').getAttribute('aria-valuemax')).toBe('10');
          });
@@ -110,7 +110,7 @@ describe('ngb-rating', () => {
          return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.detectChanges();
 
-           let compiled = fixture.debugElement.nativeElement;
+           let compiled = fixture.nativeElement;
            let hiddenStars = getStars(compiled, '.sr-only');
            expect(hiddenStars.length).toBe(5);
          });
@@ -122,7 +122,7 @@ describe('ngb-rating', () => {
          return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.detectChanges();
 
-           const compiled = fixture.debugElement.nativeElement;
+           const compiled = fixture.nativeElement;
 
            expect(getAriaState(compiled)).toEqual([true, true, true, false, false]);
          });
@@ -134,7 +134,7 @@ describe('ngb-rating', () => {
          return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.detectChanges();
 
-           const compiled = fixture.debugElement.nativeElement;
+           const compiled = fixture.nativeElement;
 
            expect(compiled.querySelector('span').getAttribute('aria-valuenow')).toBe('3');
          });
@@ -146,7 +146,7 @@ describe('ngb-rating', () => {
          return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.detectChanges();
 
-           const compiled = fixture.debugElement.nativeElement;
+           const compiled = fixture.nativeElement;
 
            getStar(compiled, 7).click();
            fixture.detectChanges();
