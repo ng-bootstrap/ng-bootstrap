@@ -24,7 +24,7 @@ describe('ngb-dropdown', () => {
 
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
-         const compiled = fixture.debugElement.nativeElement;
+         const compiled = fixture.nativeElement;
 
          expect(getDropdownEl(compiled)).not.toHaveCssClass('open');
        });
@@ -35,7 +35,7 @@ describe('ngb-dropdown', () => {
 
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
-         const compiled = fixture.debugElement.nativeElement;
+         const compiled = fixture.nativeElement;
 
          expect(getDropdownEl(compiled)).toHaveCssClass('open');
        });
@@ -46,18 +46,18 @@ describe('ngb-dropdown', () => {
 
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
-         const compiled = fixture.debugElement.nativeElement;
+         const compiled = fixture.nativeElement;
 
          let dropdownEl = getDropdownEl(compiled);
 
          expect(dropdownEl).not.toHaveCssClass('open');
 
-         fixture.debugElement.componentInstance.isOpen = true;
+         fixture.componentInstance.isOpen = true;
          fixture.detectChanges();
 
          expect(dropdownEl).toHaveCssClass('open');
 
-         fixture.debugElement.componentInstance.isOpen = false;
+         fixture.componentInstance.isOpen = false;
          fixture.detectChanges();
 
          expect(dropdownEl).not.toHaveCssClass('open');
@@ -71,7 +71,7 @@ describe('ngb-dropdown', () => {
 
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
-         const compiled = fixture.debugElement.nativeElement;
+         const compiled = fixture.nativeElement;
          let dropdownEl = getDropdownEl(compiled);
          let buttonEl = compiled.querySelector('button');
 
@@ -98,7 +98,7 @@ describe('ngb-dropdown-toggle', () => {
 
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
-         const compiled = fixture.debugElement.nativeElement;
+         const compiled = fixture.nativeElement;
          let dropdownEl = getDropdownEl(compiled);
          let buttonEl = compiled.querySelector('button');
 

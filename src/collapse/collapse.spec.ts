@@ -25,7 +25,7 @@ describe('ngb-collapse', () => {
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
 
-         const collapseEl = getCollapsibleContent(fixture.debugElement.nativeElement);
+         const collapseEl = getCollapsibleContent(fixture.nativeElement);
 
          expect(collapseEl).toHaveCssClass('in');
          expect(collapseEl.getAttribute('aria-expanded')).toBe('true');
@@ -34,11 +34,11 @@ describe('ngb-collapse', () => {
 
   it('should have content closed and aria-expanded false', injectAsync([TestComponentBuilder], (tcb) => {
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
-         const tc = fixture.debugElement.componentInstance;
+         const tc = fixture.componentInstance;
          tc.collapsed = true;
          fixture.detectChanges();
 
-         const collapseEl = getCollapsibleContent(fixture.debugElement.nativeElement);
+         const collapseEl = getCollapsibleContent(fixture.nativeElement);
 
          expect(collapseEl).not.toHaveCssClass('in');
          expect(collapseEl.getAttribute('aria-expanded')).toBe('false');
@@ -49,8 +49,8 @@ describe('ngb-collapse', () => {
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
 
-         const tc = fixture.debugElement.componentInstance;
-         const collapseEl = getCollapsibleContent(fixture.debugElement.nativeElement);
+         const tc = fixture.componentInstance;
+         const collapseEl = getCollapsibleContent(fixture.nativeElement);
          expect(collapseEl).toHaveCssClass('in');
 
          tc.collapsed = true;
@@ -71,7 +71,7 @@ describe('ngb-collapse', () => {
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
 
-         const compiled = fixture.debugElement.nativeElement;
+         const compiled = fixture.nativeElement;
          const collapseEl = getCollapsibleContent(compiled);
          const buttonEl = compiled.querySelector('button');
 

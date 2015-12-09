@@ -51,7 +51,7 @@ describe('ngb-accordion', () => {
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
 
-         const panels = getPanels(fixture.debugElement.nativeElement);
+         const panels = getPanels(fixture.nativeElement);
 
          panels.forEach((panel: HTMLDivElement) => expect(panel).not.toHaveCssClass('panel-open'));
        });
@@ -61,8 +61,8 @@ describe('ngb-accordion', () => {
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
 
-         const tc = fixture.debugElement.componentInstance;
-         const panels = getPanels(fixture.debugElement.nativeElement);
+         const tc = fixture.componentInstance;
+         const panels = getPanels(fixture.nativeElement);
 
          panels.forEach((panel: HTMLDivElement) => expect(panel).not.toHaveCssClass('panel-open'));
 
@@ -114,7 +114,7 @@ describe('ngb-accordion', () => {
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
 
-         const compiled = fixture.debugElement.nativeElement;
+         const compiled = fixture.nativeElement;
 
          const titles = Array.from(compiled.querySelectorAll('.panel-heading a span'));
 
@@ -125,11 +125,11 @@ describe('ngb-accordion', () => {
 
   it('should only open one at a time', injectAsync([TestComponentBuilder], (tcb) => {
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
-         const tc = fixture.debugElement.componentInstance;
+         const tc = fixture.componentInstance;
          tc.closeOthers = true;
          fixture.detectChanges();
 
-         const panels = getPanels(fixture.debugElement.nativeElement);
+         const panels = getPanels(fixture.nativeElement);
 
          tc.panels[1].open = true;
          fixture.detectChanges();
@@ -163,11 +163,11 @@ describe('ngb-accordion', () => {
 
   it('should not open disabled panels from click', injectAsync([TestComponentBuilder], (tcb) => {
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
-         const tc = fixture.debugElement.componentInstance;
+         const tc = fixture.componentInstance;
          tc.panels[0].disabled = true;
          fixture.detectChanges();
 
-         const panels = getPanels(fixture.debugElement.nativeElement);
+         const panels = getPanels(fixture.nativeElement);
 
          fixture.debugElement.componentViewChildren[0].children[0].nativeElement.click();
          fixture.detectChanges();
@@ -180,11 +180,11 @@ describe('ngb-accordion', () => {
 
   it('should open disabled panels programmatically', injectAsync([TestComponentBuilder], (tcb) => {
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
-         const tc = fixture.debugElement.componentInstance;
+         const tc = fixture.componentInstance;
          tc.panels[0].disabled = true;
          fixture.detectChanges();
 
-         const panels = getPanels(fixture.debugElement.nativeElement);
+         const panels = getPanels(fixture.nativeElement);
 
          tc.panels[0].open = true;
          fixture.detectChanges();
