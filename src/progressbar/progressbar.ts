@@ -1,4 +1,4 @@
-import {Component, Input, ChangeDetectionStrategy} from 'angular2/angular2';
+import {Component, Input, ChangeDetectionStrategy} from 'angular2/core';
 
 @Component({
   selector: 'ngb-progressbar',

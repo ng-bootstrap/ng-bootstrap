@@ -1,6 +1,6 @@
 import {iit, it, ddescribe, describe, expect, injectAsync, TestComponentBuilder} from 'angular2/testing';
 
-import {Component} from 'angular2/angular2';
+import {Component} from 'angular2/core';
 
 import {NgbProgressbar} from "./progressbar";
 

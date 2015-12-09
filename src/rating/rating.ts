@@ -1,4 +1,5 @@
-import {Component, Input, Output, NgFor, EventEmitter, OnInit} from 'angular2/angular2';
+import {Component, Input, Output, EventEmitter, OnInit} from 'angular2/core';
+import {NgFor} from 'angular2/common';
 
 @Component({
   selector: 'ngb-rating',
