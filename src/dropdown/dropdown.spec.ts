@@ -15,12 +15,12 @@ import {Component} from 'angular2/core';
 import {NgbDropdown, NgbDropdownToggle} from './dropdown';
 
 function getDropdownEl(tc) {
-  return tc.querySelector(`[ngb-dropdown]`);
+  return tc.querySelector(`[ngbDropdown]`);
 }
 
 describe('ngb-dropdown', () => {
   it('should be closed by default', injectAsync([TestComponentBuilder], (tcb) => {
-       const html = `<div ngb-dropdown></div>`;
+       const html = `<div ngbDropdown></div>`;
 
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
@@ -31,7 +31,7 @@ describe('ngb-dropdown', () => {
      }));
 
   it('should be open initially if open expression is true', injectAsync([TestComponentBuilder], (tcb) => {
-       const html = `<div ngb-dropdown [open]="true"></div>`;
+       const html = `<div ngbDropdown [open]="true"></div>`;
 
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
@@ -42,7 +42,7 @@ describe('ngb-dropdown', () => {
      }));
 
   it('should toggle open class', injectAsync([TestComponentBuilder], (tcb) => {
-       const html = `<div ngb-dropdown [open]="isOpen"></div>`;
+       const html = `<div ngbDropdown [open]="isOpen"></div>`;
 
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
@@ -67,7 +67,7 @@ describe('ngb-dropdown', () => {
   it('should allow toggling dropdown from outside', injectAsync([TestComponentBuilder], (tcb) => {
        const html = `
       <button (click)="drop.open = !drop.open">Toggle</button>
-      <div ngb-dropdown #drop="ngbDropdown"></div>`;
+      <div ngbDropdown #drop="ngbDropdown"></div>`;
 
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
@@ -90,8 +90,8 @@ describe('ngb-dropdown-toggle', () => {
 
   it('should toggle dropdown on click', injectAsync([TestComponentBuilder], (tcb) => {
        const html = `
-      <div ngb-dropdown>
-          <button ngb-dropdown-toggle class="btn btn-success" type="button">
+      <div ngbDropdown>
+          <button ngbDropdownToggle class="btn btn-success" type="button">
             Toggle dropdown
           </button>
       </div>`;

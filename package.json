@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/ng-bootstrap/core#readme",
   "devDependencies": {
-    "angular2": "2.0.0-alpha.50",
+    "angular2": "2.0.0-alpha.52",
     "clang-format": "^1.0.29",
     "del": "^2.0.2",
     "es6-shim": "^0.33.8",

@@ -27,20 +27,20 @@ describe('ngb-accordion', () => {
 
   beforeEach(() => {
     html = `
-      <ngb-accordion [close-others]="closeOthers">
-        <ngb-accordion-panel [is-open]="panels[0].open"
+      <ngb-accordion [closeOthers]="closeOthers">
+        <ngb-accordion-panel [isOpen]="panels[0].open"
           [title]="panels[0].title"
-          [is-disabled]="panels[0].disabled">
+          [isDisabled]="panels[0].disabled">
           <div class="text-content">{{panels[0].content}}</div>
         </ngb-accordion-panel>
-        <ngb-accordion-panel [is-open]="panels[1].open"
+        <ngb-accordion-panel [isOpen]="panels[1].open"
           [title]="panels[1].title"
-          [is-disabled]="panels[1].disabled">
+          [isDisabled]="panels[1].disabled">
           <div class="text-content">{{panels[1].content}}</div>
         </ngb-accordion-panel>
-        <ngb-accordion-panel [is-open]="panels[2].open"
+        <ngb-accordion-panel [isOpen]="panels[2].open"
           [title]="panels[2].title"
-          [is-disabled]="panels[2].disabled">
+          [isDisabled]="panels[2].disabled">
           <div class="text-content">{{panels[2].content}}</div>
         </ngb-accordion-panel>
       </ngb-accordion>

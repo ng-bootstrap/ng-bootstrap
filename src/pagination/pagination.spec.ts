@@ -117,7 +117,7 @@ describe('ngb-pagination', () => {
   describe('UI logic', () => {
 
     it('should render and respond to collectionSize change', injectAsync([TestComponentBuilder], (tcb) => {
-         const html = '<ngb-pagination [collection-size]="collectionSize" page="1"></ngb-pagination>';
+         const html = '<ngb-pagination [collectionSize]="collectionSize" page="1"></ngb-pagination>';
 
          return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.componentInstance.collectionSize = 30;
@@ -132,7 +132,7 @@ describe('ngb-pagination', () => {
 
     it('should render and respond to pageSize change', injectAsync([TestComponentBuilder], (tcb) => {
          const html =
-             '<ngb-pagination [collection-size]="collectionSize" page="1" [page-size]="pageSize"></ngb-pagination>';
+             '<ngb-pagination [collectionSize]="collectionSize" page="1" [pageSize]="pageSize"></ngb-pagination>';
 
          return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.componentInstance.collectionSize = 30;
@@ -147,7 +147,7 @@ describe('ngb-pagination', () => {
        }));
 
     it('should render and respond to active page change', injectAsync([TestComponentBuilder], (tcb) => {
-         const html = '<ngb-pagination [collection-size]="collectionSize" [page]="page"></ngb-pagination>';
+         const html = '<ngb-pagination [collectionSize]="collectionSize" [page]="page"></ngb-pagination>';
 
          return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.componentInstance.collectionSize = 30;
@@ -162,7 +162,7 @@ describe('ngb-pagination', () => {
        }));
 
     it('should update selected page model on page no click', injectAsync([TestComponentBuilder], (tcb) => {
-         const html = '<ngb-pagination [collection-size]="collectionSize" [page]="page"></ngb-pagination>';
+         const html = '<ngb-pagination [collectionSize]="collectionSize" [page]="page"></ngb-pagination>';
 
          return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.componentInstance.collectionSize = 30;
@@ -181,7 +181,7 @@ describe('ngb-pagination', () => {
        }));
 
     it('should update selected page model on prev / next click', injectAsync([TestComponentBuilder], (tcb) => {
-         const html = '<ngb-pagination [collection-size]="collectionSize" [page]="page"></ngb-pagination>';
+         const html = '<ngb-pagination [collectionSize]="collectionSize" [page]="page"></ngb-pagination>';
 
          return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.componentInstance.collectionSize = 30;
