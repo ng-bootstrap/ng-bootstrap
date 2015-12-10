@@ -12,7 +12,7 @@ import {NgbCollapse} from '../collapse/collapse';
           <a href tabindex="0"><span [class.text-muted]="isDisabled" (click)="toggleOpen($event)">{{title}}</span></a>
         </h4>
       </div>
-      <div class="panel-collapse" [ngb-collapse]="!isOpen">
+      <div class="panel-collapse" [ngbCollapse]="!isOpen">
         <div class="panel-body">
           <ng-content></ng-content>
         </div>

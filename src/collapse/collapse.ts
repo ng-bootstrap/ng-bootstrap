@@ -1,7 +1,7 @@
 import {Directive, Input} from 'angular2/core';
 
 @Directive({
-  selector: '[ngb-collapse]',
+  selector: '[ngbCollapse]',
   exportAs: 'ngbCollapse',
   host: {'class': 'collapse', '[class.in]': '!collapsed', '[attr.aria-expanded]': '!collapsed'}
 })

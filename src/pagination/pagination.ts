@@ -14,7 +14,7 @@ import {NgFor} from 'angular2/common';
             </a>
         </li>
 
-        <li *ng-for="#pageNumber of pages" [class.active]="pageNumber === page">
+        <li *ngFor="#pageNumber of pages" [class.active]="pageNumber === page">
           <a (click)="selectPage(pageNumber)">{{pageNumber}}</a>
         </li>
 
