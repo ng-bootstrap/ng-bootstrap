@@ -1,6 +1,7 @@
 # NG Bootstrap - [Angular 2](http://angular.io/) directives specific to [Bootstrap 4](http://v4-alpha.getbootstrap.com/)
 
 [![Build Status](https://travis-ci.org/ng-bootstrap/core.svg?branch=master)](https://travis-ci.org/ng-bootstrap/core)
+[![devDependency Status](https://david-dm.org/ng-bootstrap/core/dev-status.svg?branch=master)](https://david-dm.org/ng-bootstrap/core#info=devDependencies)
 
 Welcome to the Angular 2 version of the [Angular UI Bootstrap](https://github.com/angular-ui/bootstrap) library.
 This library is being built from scratch in TypeScript using the Bootstrap 4 CSS framework.
