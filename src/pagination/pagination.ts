@@ -7,19 +7,19 @@ import {NgFor} from 'angular2/common';
   template: `
     <nav>
       <ul class="pagination">
-        <li [class.disabled]="!hasPrevious()">
-            <a aria-label="Previous"  (click)="selectPage(page-1)">
+        <li class="page-item" [class.disabled]="!hasPrevious()">
+            <a aria-label="Previous" class="page-link" (click)="selectPage(page-1)">
               <span aria-hidden="true">&laquo;</span>
               <span class="sr-only">Previous</span>
             </a>
         </li>
 
-        <li *ngFor="#pageNumber of pages" [class.active]="pageNumber === page">
-          <a (click)="selectPage(pageNumber)">{{pageNumber}}</a>
+        <li *ngFor="#pageNumber of pages" class="page-item" [class.active]="pageNumber === page">
+          <a class="page-link" (click)="selectPage(pageNumber)">{{pageNumber}}</a>
         </li>
 
-        <li [class.disabled]="!hasNext()">
-          <a aria-label="Next" (click)="selectPage(page+1)">
+        <li class="page-item" [class.disabled]="!hasNext()">
+          <a aria-label="Next" class="page-link" (click)="selectPage(page+1)">
             <span aria-hidden="true">&raquo;</span>
             <span class="sr-only">Next</span>
           </a>
