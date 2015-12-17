@@ -3,13 +3,17 @@ var ts = require('gulp-typescript');
 var gutil = require('gulp-util');
 var sourcemaps = require('gulp-sourcemaps');
 var ddescribeIit = require('gulp-ddescribe-iit');
+var shell = require('gulp-shell');
+var ghPages = require('gulp-gh-pages');
 var del = require('del');
 var merge = require('merge2');
 var clangFormat = require('clang-format');
 var gulpFormat = require('gulp-clang-format');
 var runSequence = require('run-sequence');
+var webpack = require('webpack');
+var webpackDemoConfig = require('./webpack.demo.js');
 
-var PATHS = {src: 'src/**/*.ts', specs: 'src/**/*.spec.ts'};
+var PATHS = {src: 'src/**/*.ts', specs: 'src/**/*.spec.ts', demo: 'demo/**/*.ts', demoDist: 'demo/dist/**/*'};
 
 // Transpiling & Building
 
@@ -24,7 +28,6 @@ gulp.task('cjs', function() {
 });
 
 gulp.task('umd', function(cb) {
-  var webpack = require('webpack');
   webpack(
       {
         entry: './dist/cjs/core.js',
@@ -61,26 +64,26 @@ function startKarmaServer(isTddMode, done) {
 
 gulp.task('clean:tests', function() { return del('temp/'); });
 
-gulp.task('build-tests', function() {
+gulp.task('build:tests', function() {
   var tsResult = gulp.src(PATHS.src).pipe(sourcemaps.init()).pipe(ts(testProject));
 
   return tsResult.js.pipe(sourcemaps.write('.')).pipe(gulp.dest('temp'));
 });
 
-gulp.task('clean-build-tests', function(done) { runSequence('clean:tests', 'build-tests', done); });
+gulp.task('clean:build-tests', function(done) { runSequence('clean:tests', 'build:tests', done); });
 
 gulp.task(
     'ddescribe-iit', function() { return gulp.src(PATHS.specs).pipe(ddescribeIit({allowDisabledTests: false})); });
 
-gulp.task('test', ['clean-build-tests'], function(done) { startKarmaServer(false, done); });
+gulp.task('test', ['clean:build-tests'], function(done) { startKarmaServer(false, done); });
 
-gulp.task('tdd', ['clean-build-tests'], function(done) {
+gulp.task('tdd', ['clean:build-tests'], function(done) {
   startKarmaServer(true, function(err) {
     done(err);
     process.exit(1);
   });
 
-  gulp.watch(PATHS.src, ['build-tests']);
+  gulp.watch(PATHS.src, ['build:tests']);
 });
 
 
@@ -100,13 +103,45 @@ gulp.task('enforce-format', function() {
 });
 
 function doCheckFormat() {
-  return gulp.src(['gulpfile.js', 'karma-test-shim.js', PATHS.src]).pipe(gulpFormat.checkFormat('file', clangFormat));
+  return gulp.src(['gulpfile.js', 'karma-test-shim.js', PATHS.src, PATHS.demo])
+      .pipe(gulpFormat.checkFormat('file', clangFormat));
 }
+
+// Demo
+
+gulp.task('clean:demo', function() { return del('demo/dist'); });
+
+gulp.task('clean:demo-cache', function() { return del('.publish/'); });
+
+gulp.task('copy:polyfills-demo', function() {
+  gulp.src('./node_modules/angular2/bundles/angular2-polyfills.js').pipe(gulp.dest('./demo/dist/lib/'));
+});
+
+gulp.task(
+    'demo-server', ['copy:polyfills-demo'],
+    shell.task(['webpack-dev-server --config webpack.demo.js --inline --progress']));
+
+gulp.task('build:demo', function(done) {
+  var config = Object.create(webpackDemoConfig);
+  config.plugins = config.plugins.concat(new webpack.optimize.UglifyJsPlugin());
+
+  webpack(config, function(err, stats) {
+    if (err) throw new gutil.PluginError('build:demo', err);
+    gutil.log('[build:demo]', stats.toString({colors: true}));
+    done();
+  });
+});
+
+gulp.task('demo-push', function() { return gulp.src(PATHS.demoDist).pipe(ghPages()); });
 
 // Public Tasks
 
 gulp.task('build', function(done) {
   runSequence('enforce-format', 'ddescribe-iit', 'test', 'clean:build', 'cjs', 'umd', done);
+});
+
+gulp.task('deploy-demo', function(done) {
+  runSequence('clean:demo', 'copy:polyfills-demo', 'build:demo', 'demo-push', 'clean:demo-cache', done);
 });
 
 gulp.task('default', function(done) { runSequence('enforce-format', 'ddescribe-iit', 'test', done); });
