@@ -29,7 +29,7 @@ export class NgbRating implements OnInit {
     if (!this.readonly) {
       this.rate = value;
     }
-    this.hover.next(value);
+    this.hover.emit(value);
   }
 
   ngOnInit(): void {
@@ -38,7 +38,7 @@ export class NgbRating implements OnInit {
   }
 
   reset(): void {
-    this.leave.next(this.rate);
+    this.leave.emit(this.rate);
     this.rate = this._oldRate;
   }
 
@@ -46,7 +46,7 @@ export class NgbRating implements OnInit {
     if (!this.readonly) {
       this._oldRate = value;
       this.rate = value;
-      this.rateChange.next(value);
+      this.rateChange.emit(value);
     }
   }
 
