@@ -66,7 +66,7 @@ export class NgbPagination implements OnChanges {
     this._page = this._getPageNoInRange(pageNumber);
 
     if (this.page != prevPageNo) {
-      this.pageChange.next(this.page);
+      this.pageChange.emit(this.page);
     }
   }
 
