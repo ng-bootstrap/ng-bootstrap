@@ -1,4 +1,4 @@
-import {Component, Directive, forwardRef, Inject, Input, Query, QueryList} from 'angular2/core';
+import {Component, Directive, forwardRef, Inject, Input, ContentChildren, QueryList} from 'angular2/core';
 
 import {NgbCollapse} from '../collapse/collapse';
 
@@ -49,8 +49,7 @@ export class NgbAccordionPanel {
 @Directive({selector: 'ngb-accordion'})
 export class NgbAccordion {
   @Input('closeOthers') onlyOneOpen: boolean;
-
-  constructor(@Query(NgbAccordionPanel) public panels: QueryList<NgbAccordionPanel>) {}
+  @ContentChildren(NgbAccordionPanel) panels: QueryList<NgbAccordionPanel>;
 
   closeOthers(openPanel: NgbAccordionPanel): void {
     if (!this.onlyOneOpen) {
