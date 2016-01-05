@@ -1,4 +1,5 @@
 import {Component, Input, ChangeDetectionStrategy} from 'angular2/core';
+import {getValueInRange, toBoolean} from '../util/util';
 
 @Component({
   selector: 'ngb-progressbar',
@@ -17,9 +18,9 @@ export class NgbProgressbar {
   @Input() type: string;
   @Input() value: number;
 
-  isStriped(): boolean { return this.striped === '' ? true : !!this.striped; }
+  isStriped(): boolean { return toBoolean(this.striped); }
 
-  getValue() { return Math.max(Math.min(this.value, this.max), 0); }
+  getValue() { return getValueInRange(this.value, this.max); }
 
   getPercentValue() { return 100 * this.getValue() / this.max; }
 }

@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, Output, OnChanges, ChangeDetectionStrategy} from 'angular2/core';
 import {NgFor} from 'angular2/common';
+import {getValueInRange, toInteger} from '../util/util';
 
 @Component({
   selector: 'ngb-pagination',
@@ -44,14 +45,14 @@ export class NgbPagination implements OnChanges {
 
   @Input()
   set collectionSize(value: number | string) {
-    this._collectionSize = parseInt(`${value}`, 10);
+    this._collectionSize = toInteger(value);
   }
 
   get collectionSize(): number | string { return this._collectionSize; }
 
   @Input()
   set pageSize(value: number | string) {
-    this._pageSize = parseInt(`${value}`, 10);
+    this._pageSize = toInteger(value);
   }
 
   get pageSize(): number | string { return this._pageSize; }
@@ -84,8 +85,5 @@ export class NgbPagination implements OnChanges {
     this._page = this._getPageNoInRange(this.page);
   }
 
-  private _getPageNoInRange(newPageNo): number {
-    // make sure that the selected page is within available pages range
-    return Math.max(Math.min(newPageNo, this.pages.length), 1);
-  }
+  private _getPageNoInRange(newPageNo): number { return getValueInRange(newPageNo, this.pages.length, 1); }
 }
