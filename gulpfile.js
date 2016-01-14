@@ -15,6 +15,14 @@ var webpackDemoConfig = require('./webpack.demo.js');
 
 var PATHS = {src: 'src/**/*.ts', specs: 'src/**/*.spec.ts', demo: 'demo/**/*.ts', demoDist: 'demo/dist/**/*'};
 
+function webpackCallBack(taskName, gulpDone) {
+  return function(err, stats) {
+    if (err) throw new gutil.PluginError(taskName, err);
+    gutil.log("[" + taskName + "]", stats.toString());
+    gulpDone();
+  }
+}
+
 // Transpiling & Building
 
 var buildProject = ts.createProject('tsconfig.json', {declaration: true});
@@ -39,11 +47,7 @@ gulp.task('umd', function(cb) {
         output: {filename: 'dist/global/ng-bootstrap.js', library: 'ngb', libraryTarget: 'umd'},
         externals: {'angular2/core': ngExternal('core'), 'angular2/common': ngExternal('common')}
       },
-      function(err, stats) {
-        if (err) throw new gutil.PluginError('webpack', err);
-        gutil.log("[webpack]", stats.toString());
-        cb();
-      });
+      webpackCallBack('webpack', cb));
 });
 
 // Testing
@@ -127,11 +131,7 @@ gulp.task('build:demo', function(done) {
   var config = Object.create(webpackDemoConfig);
   config.plugins = config.plugins.concat(new webpack.optimize.UglifyJsPlugin());
 
-  webpack(config, function(err, stats) {
-    if (err) throw new gutil.PluginError('build:demo', err);
-    gutil.log('[build:demo]', stats.toString({colors: true}));
-    done();
-  });
+  webpack(config, webpackCallBack('build:demo'), done);
 });
 
 gulp.task('demo-push', function() { return gulp.src(PATHS.demoDist).pipe(ghPages()); });
