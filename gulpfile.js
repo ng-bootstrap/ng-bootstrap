@@ -28,20 +28,16 @@ gulp.task('cjs', function() {
 });
 
 gulp.task('umd', function(cb) {
+  function ngExternal(ns) {
+    var ng2Ns = 'angular2/' + ns;
+    return {root: ['ng', ns], commonjs: ng2Ns, commonjs2: ng2Ns, amd: ng2Ns};
+  }
+
   webpack(
       {
         entry: './dist/cjs/core.js',
         output: {filename: 'dist/global/ng-bootstrap.js', library: 'ngb', libraryTarget: 'umd'},
-        externals: {
-          'angular2/core':
-              {root: ['ng', 'core'], commonjs: 'angular2/core', commonjs2: 'angular2/core', amd: 'angular2/core'},
-          'angular2/common': {
-            root: ['ng', 'common'],
-            commonjs: 'angular2/common',
-            commonjs2: 'angular2/common',
-            amd: 'angular2/common'
-          }
-        }
+        externals: {'angular2/core': ngExternal('core'), 'angular2/common': ngExternal('common')}
       },
       function(err, stats) {
         if (err) throw new gutil.PluginError('webpack', err);
