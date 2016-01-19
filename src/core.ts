@@ -1,4 +1,5 @@
 import {NgbAccordion, NgbAccordionPanel} from './accordion/accordion';
+import {NgbAlert} from './alert/alert';
 import {NgbCollapse} from './collapse/collapse';
 import {NgbDropdown, NgbDropdownToggle} from './dropdown/dropdown';
 import {NgbPagination} from './pagination/pagination';
@@ -13,5 +14,6 @@ export {NgbProgressbar} from './progressbar/progressbar';
 export {NgbRating} from './rating/rating';
 
 export const NGB_DIRECTIVES = [
-  NgbAccordion, NgbAccordionPanel, NgbCollapse, NgbDropdown, NgbDropdownToggle, NgbPagination, NgbProgressbar, NgbRating
+  NgbAccordion, NgbAccordionPanel, NgbAlert, NgbCollapse, NgbDropdown, NgbDropdownToggle, NgbPagination, NgbProgressbar,
+  NgbRating
 ];
