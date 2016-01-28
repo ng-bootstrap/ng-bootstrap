@@ -13,12 +13,5 @@ export {NgbProgressbar} from './progressbar/progressbar';
 export {NgbRating} from './rating/rating';
 
 export const NGB_DIRECTIVES = [
-  NgbAccordion,
-  NgbAccordionPanel,
-  NgbCollapse,
-  NgbDropdown,
-  NgbDropdownToggle,
-  NgbPagination,
-  NgbProgressbar,
-  NgbRating
+  NgbAccordion, NgbAccordionPanel, NgbCollapse, NgbDropdown, NgbDropdownToggle, NgbPagination, NgbProgressbar, NgbRating
 ];

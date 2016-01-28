@@ -42,7 +42,8 @@ function onlySpecFiles(path) {
 }
 
 function resolveTestFiles() {
-  return Object.keys(window.__karma__.files)  // All files served by Karma.
+  return Object
+      .keys(window.__karma__.files)  // All files served by Karma.
       .filter(onlySpecFiles)
       .map(function(moduleName) {
         // loads all spec files via their global module names (e.g.
