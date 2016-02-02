@@ -8,5 +8,5 @@ We are always looking for the quality contributions and will be happy to accept 
 * Please assure that you are submitting quality code, specifically make sure that:
   * your component has accompanying tests and all the tests are passing
   * your PR doesn't break the build; check the Travis-CI build status after opening a PR and push corrective commits if anything goes wrong
-  * your commits conform to the conventions established [here](https://github.com/ajoslin/conventional-changelog/blob/master/conventions/angular.md)
+  * your commits conform to the conventions established [here](https://github.com/stevemao/conventional-changelog-angular/blob/master/convention.md)
   * your component follows all the conventions stated [here](https://github.com/ng-bootstrap/core/wiki/Code-conventions)
