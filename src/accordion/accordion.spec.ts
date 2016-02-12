@@ -169,7 +169,7 @@ describe('ngb-accordion', () => {
 
          const panels = getPanels(fixture.nativeElement);
 
-         fixture.debugElement.componentViewChildren[0].children[0].nativeElement.click();
+         fixture.debugElement.children[0].nativeElement.click();
          fixture.detectChanges();
 
          expect(panels[0]).not.toHaveCssClass('panel-open');
