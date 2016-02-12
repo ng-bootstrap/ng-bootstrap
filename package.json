@@ -6,7 +6,8 @@
   "main": "dist/cjs/core.js",
   "scripts": {
     "install": "node misc/validate-commit.install.js",
-    "test": "karma start karma.conf.js"
+    "test": "karma start karma.conf.js",
+    "postinstall": "typings install"
   },
   "repository": {
     "type": "git",
@@ -45,6 +46,7 @@
     "systemjs": "^0.19.5",
     "ts-loader": "^0.7.2",
     "typescript": "^1.6.2",
+    "typings": "^0.6.8",
     "webpack": "^1.12.2",
     "webpack-dev-server": "^1.14.0",
     "zone.js": "0.6.6"

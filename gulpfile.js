@@ -13,7 +13,13 @@ var runSequence = require('run-sequence');
 var webpack = require('webpack');
 var webpackDemoConfig = require('./webpack.demo.js');
 
-var PATHS = {src: 'src/**/*.ts', specs: 'src/**/*.spec.ts', demo: 'demo/**/*.ts', demoDist: 'demo/dist/**/*'};
+var PATHS = {
+  src: 'src/**/*.ts',
+  specs: 'src/**/*.spec.ts',
+  demo: 'demo/**/*.ts',
+  demoDist: 'demo/dist/**/*',
+  typings: 'typings/browser.d.ts'
+};
 
 function webpackCallBack(taskName, gulpDone) {
   return function(err, stats) {
@@ -30,7 +36,7 @@ var buildProject = ts.createProject('tsconfig.json', {declaration: true});
 gulp.task('clean:build', function() { return del('dist/'); });
 
 gulp.task('cjs', function() {
-  var tsResult = gulp.src([PATHS.src, '!' + PATHS.specs]).pipe(ts(buildProject));
+  var tsResult = gulp.src([PATHS.src, PATHS.typings, '!' + PATHS.specs]).pipe(ts(buildProject));
 
   return merge([tsResult.dts.pipe(gulp.dest('dist/cjs')), tsResult.js.pipe(gulp.dest('dist/cjs'))]);
 });
@@ -71,7 +77,7 @@ function startKarmaServer(isTddMode, done) {
 gulp.task('clean:tests', function() { return del('temp/'); });
 
 gulp.task('build:tests', function() {
-  var tsResult = gulp.src(PATHS.src).pipe(sourcemaps.init()).pipe(ts(testProject));
+  var tsResult = gulp.src([PATHS.src, PATHS.typings]).pipe(sourcemaps.init()).pipe(ts(testProject));
 
   return tsResult.js.pipe(sourcemaps.write('.')).pipe(gulp.dest('temp'));
 });
