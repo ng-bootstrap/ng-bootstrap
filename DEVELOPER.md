@@ -86,16 +86,9 @@ $(npm bin)/gulp clean:build
 
 That will check the formatting and run the full test suite.
 
-If you want to run your tests in **watch mode**, you need two console tabs, first to watch for changes:
+If you want to run your tests in **watch mode**, you can use:
 
-* `$(npm bin)/gulp watch`
-
-And in a second tab:
-
-* `npm test`
-* `$(npm bin)/karma start`
-
-Just pick one of those 2, they do the same.
+* `$(npm bin)/gulp tdd`
 
 The task updates the `temp` folder with transpiled code whenever a source or test file changes, and
 Karma is run against the new output.
