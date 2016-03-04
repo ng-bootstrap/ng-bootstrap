@@ -12,14 +12,28 @@ import {
 
 import {Component} from 'angular2/core';
 
-import {NgbAccordion, NgbAccordionPanel} from './accordion';
+import {NgbAccordion, NgbPanel} from './accordion';
 
 function getPanels(element: HTMLElement): HTMLDivElement[] {
-  return <HTMLDivElement[]>Array.from(element.querySelectorAll('ngb-accordion-panel .panel'));
+  return <HTMLDivElement[]>Array.from(element.querySelectorAll('ngb-panel .panel'));
 }
 
 function hasTitle(element: HTMLElement, str: string): boolean {
   return element.textContent === str;
+}
+
+function expectOpenPanels(nativeEl: HTMLElement, openPanelsDef: boolean[]) {
+  const panels = getPanels(nativeEl);
+
+  expect(panels.length).toBe(openPanelsDef.length);
+
+  for (let i = 0; i < panels.length; i++) {
+    if (openPanelsDef[i]) {
+      expect(panels[i]).toHaveCssClass('panel-open');
+    } else {
+      expect(panels[i]).not.toHaveCssClass('panel-open');
+    }
+  }
 }
 
 describe('ngb-accordion', () => {
@@ -28,85 +42,69 @@ describe('ngb-accordion', () => {
   beforeEach(() => {
     html = `
       <ngb-accordion [closeOthers]="closeOthers">
-        <ngb-accordion-panel [isOpen]="panels[0].open"
+        <ngb-panel [open]="panels[0].open"
           [title]="panels[0].title"
-          [isDisabled]="panels[0].disabled">
+          [disabled]="panels[0].disabled">
           <div class="text-content">{{panels[0].content}}</div>
-        </ngb-accordion-panel>
-        <ngb-accordion-panel [isOpen]="panels[1].open"
+        </ngb-panel>
+        <ngb-panel [open]="panels[1].open"
           [title]="panels[1].title"
-          [isDisabled]="panels[1].disabled">
+          [disabled]="panels[1].disabled">
           <div class="text-content">{{panels[1].content}}</div>
-        </ngb-accordion-panel>
-        <ngb-accordion-panel [isOpen]="panels[2].open"
+        </ngb-panel>
+        <ngb-panel [open]="panels[2].open"
           [title]="panels[2].title"
-          [isDisabled]="panels[2].disabled">
+          [disabled]="panels[2].disabled">
           <div class="text-content">{{panels[2].content}}</div>
-        </ngb-accordion-panel>
+        </ngb-panel>
       </ngb-accordion>
     `;
   });
 
-  it('should have no open panel', injectAsync([TestComponentBuilder], (tcb) => {
+  it('should have no open panels', injectAsync([TestComponentBuilder], (tcb) => {
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
+         expectOpenPanels(fixture.nativeElement, [false, false, false]);
+       });
+     }));
 
-         const panels = getPanels(fixture.nativeElement);
+  it('should have open panel based on binding', injectAsync([TestComponentBuilder], (tcb) => {
+       return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         const tc = fixture.componentInstance;
 
-         panels.forEach((panel: HTMLDivElement) => expect(panel).not.toHaveCssClass('panel-open'));
+         tc.panels[0].open = true;
+         fixture.detectChanges();
+         expectOpenPanels(fixture.nativeElement, [true, false, false]);
        });
      }));
 
   it('should toggle panels independently', injectAsync([TestComponentBuilder], (tcb) => {
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
-         fixture.detectChanges();
-
          const tc = fixture.componentInstance;
-         const panels = getPanels(fixture.nativeElement);
-
-         panels.forEach((panel: HTMLDivElement) => expect(panel).not.toHaveCssClass('panel-open'));
 
          tc.panels[1].open = true;
          fixture.detectChanges();
-
-         expect(panels[0]).not.toHaveCssClass('panel-open');
-         expect(panels[1]).toHaveCssClass('panel-open');
-         expect(panels[2]).not.toHaveCssClass('panel-open');
+         expectOpenPanels(fixture.nativeElement, [false, true, false]);
 
          tc.panels[0].open = true;
          fixture.detectChanges();
-
-         expect(panels[0]).toHaveCssClass('panel-open');
-         expect(panels[1]).toHaveCssClass('panel-open');
-         expect(panels[2]).not.toHaveCssClass('panel-open');
+         expectOpenPanels(fixture.nativeElement, [true, true, false]);
 
          tc.panels[1].open = false;
          fixture.detectChanges();
-
-         expect(panels[0]).toHaveCssClass('panel-open');
-         expect(panels[1]).not.toHaveCssClass('panel-open');
-         expect(panels[2]).not.toHaveCssClass('panel-open');
+         expectOpenPanels(fixture.nativeElement, [true, false, false]);
 
          tc.panels[2].open = true;
          fixture.detectChanges();
-
-         expect(panels[0]).toHaveCssClass('panel-open');
-         expect(panels[1]).not.toHaveCssClass('panel-open');
-         expect(panels[2]).toHaveCssClass('panel-open');
+         expectOpenPanels(fixture.nativeElement, [true, false, true]);
 
          tc.panels[0].open = false;
          fixture.detectChanges();
-
-         expect(panels[0]).not.toHaveCssClass('panel-open');
-         expect(panels[1]).not.toHaveCssClass('panel-open');
-         expect(panels[2]).toHaveCssClass('panel-open');
+         expectOpenPanels(fixture.nativeElement, [false, false, true]);
 
          tc.panels[2].open = false;
          fixture.detectChanges();
-
-         expect(panels[0]).not.toHaveCssClass('panel-open');
-         expect(panels[1]).not.toHaveCssClass('panel-open');
-         expect(panels[2]).not.toHaveCssClass('panel-open');
+         expectOpenPanels(fixture.nativeElement, [false, false, false]);
        });
      }));
 
@@ -129,35 +127,32 @@ describe('ngb-accordion', () => {
          tc.closeOthers = true;
          fixture.detectChanges();
 
-         const panels = getPanels(fixture.nativeElement);
+         const headingLinks = fixture.nativeElement.querySelectorAll('.panel-title a');
 
-         tc.panels[1].open = true;
+         headingLinks[0].click();
          fixture.detectChanges();
+         expectOpenPanels(fixture.nativeElement, [true, false, false]);
 
-         expect(panels[0]).not.toHaveCssClass('panel-open');
-         expect(panels[1]).toHaveCssClass('panel-open');
-         expect(panels[2]).not.toHaveCssClass('panel-open');
+         headingLinks[2].click();
+         fixture.detectChanges();
+         expectOpenPanels(fixture.nativeElement, [false, false, true]);
+
+         headingLinks[2].click();
+         fixture.detectChanges();
+         expectOpenPanels(fixture.nativeElement, [false, false, false]);
+       });
+     }));
+
+  it('should have only one open panel even if binding says otherwise', injectAsync([TestComponentBuilder], (tcb) => {
+       return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         const tc = fixture.componentInstance;
 
          tc.panels[0].open = true;
+         tc.panels[1].open = true;
+         tc.closeOthers = true;
          fixture.detectChanges();
 
-         expect(panels[0]).toHaveCssClass('panel-open');
-         expect(panels[1]).not.toHaveCssClass('panel-open');
-         expect(panels[2]).not.toHaveCssClass('panel-open');
-
-         tc.panels[2].open = true;
-         fixture.detectChanges();
-
-         expect(panels[0]).not.toHaveCssClass('panel-open');
-         expect(panels[1]).not.toHaveCssClass('panel-open');
-         expect(panels[2]).toHaveCssClass('panel-open');
-
-         tc.panels[2].open = false;
-         fixture.detectChanges();
-
-         expect(panels[0]).not.toHaveCssClass('panel-open');
-         expect(panels[1]).not.toHaveCssClass('panel-open');
-         expect(panels[2]).not.toHaveCssClass('panel-open');
+         expectOpenPanels(fixture.nativeElement, [true, false, false]);
        });
      }));
 
@@ -167,43 +162,32 @@ describe('ngb-accordion', () => {
          tc.panels[0].disabled = true;
          fixture.detectChanges();
 
-         const panels = getPanels(fixture.nativeElement);
-
-         fixture.debugElement.nativeElement.click();
+         fixture.debugElement.nativeElement.click();  // WTF?
          fixture.detectChanges();
 
-         expect(panels[0]).not.toHaveCssClass('panel-open');
-         expect(panels[1]).not.toHaveCssClass('panel-open');
-         expect(panels[2]).not.toHaveCssClass('panel-open');
+         expectOpenPanels(fixture.nativeElement, [false, false, false]);
        });
      }));
 
+  // TODO: this is questionable (?)
   it('should open disabled panels programmatically', injectAsync([TestComponentBuilder], (tcb) => {
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          const tc = fixture.componentInstance;
          tc.panels[0].disabled = true;
          fixture.detectChanges();
 
-         const panels = getPanels(fixture.nativeElement);
-
          tc.panels[0].open = true;
          fixture.detectChanges();
-
-         expect(panels[0]).toHaveCssClass('panel-open');
-         expect(panels[1]).not.toHaveCssClass('panel-open');
-         expect(panels[2]).not.toHaveCssClass('panel-open');
+         expectOpenPanels(fixture.nativeElement, [true, false, false]);
 
          tc.panels[0].open = false;
          fixture.detectChanges();
-
-         expect(panels[0]).not.toHaveCssClass('panel-open');
-         expect(panels[1]).not.toHaveCssClass('panel-open');
-         expect(panels[2]).not.toHaveCssClass('panel-open');
+         expectOpenPanels(fixture.nativeElement, [false, false, false]);
        });
      }));
 });
 
-@Component({selector: 'test-cmp', directives: [NgbAccordion, NgbAccordionPanel], template: ''})
+@Component({selector: 'test-cmp', directives: [NgbAccordion, NgbPanel], template: ''})
 class TestComponent {
   closeOthers = false;
   panels = [

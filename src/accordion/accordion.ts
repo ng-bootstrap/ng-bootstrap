@@ -1,66 +1,72 @@
-import {Component, Directive, forwardRef, Inject, Input, Query, QueryList} from 'angular2/core';
+import {
+  Component,
+  forwardRef,
+  Inject,
+  Input,
+  QueryList,
+  ContentChildren,
+  AfterContentChecked,
+  Optional
+} from 'angular2/core';
 
-import {NgbCollapse} from '../collapse/collapse';
+import {
+  NgbCollapse
+} from '../collapse/collapse'
 
-@Component({
-  selector: 'ngb-accordion-panel',
-  directives: [NgbCollapse],
-  template: `
-    <div class="panel panel-default" [class.panel-open]="isOpen">
+    @Component({
+      selector: 'ngb-panel',
+      exportAs: 'ngbPanel',
+      template: `
+    <div class="panel panel-default" [class.panel-open]="open">
       <div class="panel-heading">
         <h4 class="panel-title">
-          <a href tabindex="0"><span [class.text-muted]="isDisabled" (click)="toggleOpen($event)">{{title}}</span></a>
+          <a tabindex="0" (click)="toggleOpen($event)"><span [class.text-muted]="disabled">{{title}}</span></a>
         </h4>
       </div>
-      <div class="panel-collapse" [ngbCollapse]="!isOpen">
+      <div class="panel-collapse" [ngbCollapse]="!open">
         <div class="panel-body">
           <ng-content></ng-content>
         </div>
       </div>
     </div>
-  `
-})
-export class NgbAccordionPanel {
-  private _isOpen = false;
+  `,
+      directives: [NgbCollapse]
+    }) export class NgbPanel {
+      @Input() disabled = false; @Input() open = false; @Input() title: string;
 
-  @Input() isDisabled: boolean;
-  @Input() title: string;
+      constructor(@Optional() @Inject(forwardRef(() => NgbAccordion)) private accordion: NgbAccordion) {}
 
-  @Input()
-  set isOpen(value: boolean) {
-    this._isOpen = value;
-    if (value) {
-      this.accordion.closeOthers(this);
-    }
-  }
-
-  get isOpen(): boolean { return this._isOpen; }
-
-  constructor(@Inject(forwardRef(() => NgbAccordion)) private accordion: NgbAccordion) {}
-
-  toggleOpen(event): void {
-    event.preventDefault();
-    if (!this.isDisabled) {
-      this.isOpen = !this.isOpen;
-    }
-  }
-}
-
-@Directive({selector: 'ngb-accordion'})
-export class NgbAccordion {
-  @Input('closeOthers') onlyOneOpen: boolean;
-
-  constructor(@Query(NgbAccordionPanel) public panels: QueryList<NgbAccordionPanel>) {}
-
-  closeOthers(openPanel: NgbAccordionPanel): void {
-    if (!this.onlyOneOpen) {
-      return;
-    }
-
-    this.panels.forEach((panel: NgbAccordionPanel) => {
-      if (panel !== openPanel) {
-        panel.isOpen = false;
+      toggleOpen(event): void{
+        event.preventDefault(); if (!this.disabled) {
+          this.open = !this.open;
+          if (this.open && this.accordion) {
+            this.accordion.closeOthers(this);
+          }
+        }
       }
-    });
+    }
+
+@Component({
+  selector: 'ngb-accordion',
+  host: {'role': 'tablist', '[attr.aria-multiselectable]': '!closeOtherPanels'},
+  template: `<ng-content></ng-content>`
+}) export class NgbAccordion implements AfterContentChecked {
+  @ContentChildren(NgbPanel) _panels: QueryList<NgbPanel>; @Input('closeOthers') closeOtherPanels: boolean;
+
+  closeOthers(openPanel: NgbPanel): void{
+    if (this.closeOtherPanels) {
+      this._panels.forEach((panel: NgbPanel) => {
+        if (panel !== openPanel) {
+          panel.open = false;
+        }
+      });
+    }
+  }
+
+  ngAfterContentChecked() {
+    var openPanels = this._panels.toArray().filter((panel) => panel.open);
+    if (openPanels.length > 1) {
+      this.closeOthers(openPanels[0]);
+    }
   }
 }
