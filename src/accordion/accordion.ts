@@ -57,7 +57,7 @@ export class NgbAccordion {
       return;
     }
 
-    this.panels.toArray().forEach((panel: NgbAccordionPanel) => {
+    this.panels.forEach((panel: NgbAccordionPanel) => {
       if (panel !== openPanel) {
         panel.isOpen = false;
       }
