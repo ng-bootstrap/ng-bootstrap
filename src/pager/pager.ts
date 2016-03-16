@@ -5,9 +5,9 @@ import {Component, ChangeDetectionStrategy, OnChanges, Input, Output, EventEmitt
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <nav>
-      <ul class="pager">
-        <li [class.disabled]="!hasPrev()"><a (click)="prev()">Previous</a></li>
-        <li [class.disabled]="!hasNext()"><a (click)="next()">Next</a></li>
+      <ul class='pager'>
+        <li [class.disabled]='!hasPrev()'><a (click)='prev()'>Previous</a></li>
+        <li [class.disabled]='!hasNext()'><a (click)='next()'>Next</a></li>
       </ul>
     </nav>
     `

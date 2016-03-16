@@ -13,7 +13,5 @@ export class NgbDropdownToggle {
   constructor(private _dropdown: NgbDropdown) {}
 
   @HostListener('click')
-  toggleOpen() {
-    this._dropdown.open = !this._dropdown.open;
-  }
+  toggleOpen() { this._dropdown.open = !this._dropdown.open; }
 }
