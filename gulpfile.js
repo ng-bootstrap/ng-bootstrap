@@ -143,6 +143,7 @@ gulp.task('build:demo', function(done) {
 gulp.task('demo-push', function() { return gulp.src(PATHS.demoDist).pipe(ghPages()); });
 
 // Public Tasks
+gulp.task('clean', ['clean:build', 'clean:tests', 'clean:demo', 'clean:demo-cache']);
 
 gulp.task('build', function(done) {
   runSequence('enforce-format', 'ddescribe-iit', 'test', 'clean:build', 'cjs', 'umd', done);
