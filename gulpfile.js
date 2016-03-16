@@ -18,7 +18,7 @@ var PATHS = {src: 'src/**/*.ts', specs: 'src/**/*.spec.ts', demo: 'demo/**/*.ts'
 function webpackCallBack(taskName, gulpDone) {
   return function(err, stats) {
     if (err) throw new gutil.PluginError(taskName, err);
-    gutil.log("[" + taskName + "]", stats.toString());
+    gutil.log('[' + taskName + ']', stats.toString());
     gulpDone();
   }
 }
@@ -97,13 +97,13 @@ gulp.task('tdd', ['clean:build-tests'], function(done) {
 
 gulp.task('check-format', function() {
   return doCheckFormat().on(
-      'warning', function(e) { console.log("NOTE: this will be promoted to an ERROR in the continuous build"); });
+      'warning', function(e) { console.log('NOTE: this will be promoted to an ERROR in the continuous build'); });
 });
 
 gulp.task('enforce-format', function() {
   return doCheckFormat().on('warning', function(e) {
-    console.log("ERROR: You forgot to run clang-format on your change.");
-    console.log("See https://github.com/ng-bootstrap/core/blob/master/DEVELOPER.md#clang-format");
+    console.log('ERROR: You forgot to run clang-format on your change.');
+    console.log('See https://github.com/ng-bootstrap/core/blob/master/DEVELOPER.md#clang-format');
     process.exit(1);
   });
 });

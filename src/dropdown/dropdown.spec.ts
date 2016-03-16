@@ -31,7 +31,7 @@ describe('ngb-dropdown', () => {
      }));
 
   it('should be open initially if open expression is true', injectAsync([TestComponentBuilder], (tcb) => {
-       const html = `<div ngbDropdown [open]="true"></div>`;
+       const html = `<div ngbDropdown [open]='true'></div>`;
 
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
@@ -42,7 +42,7 @@ describe('ngb-dropdown', () => {
      }));
 
   it('should toggle open class', injectAsync([TestComponentBuilder], (tcb) => {
-       const html = `<div ngbDropdown [open]="isOpen"></div>`;
+       const html = `<div ngbDropdown [open]='isOpen'></div>`;
 
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
@@ -66,7 +66,7 @@ describe('ngb-dropdown', () => {
 
   it('should allow toggling dropdown from outside', injectAsync([TestComponentBuilder], (tcb) => {
        const html = `
-      <button (click)="drop.open = !drop.open">Toggle</button>
+      <button (click)='drop.open = !drop.open'>Toggle</button>
       <div ngbDropdown #drop="ngbDropdown"></div>`;
 
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
@@ -91,7 +91,7 @@ describe('ngb-dropdown-toggle', () => {
   it('should toggle dropdown on click', injectAsync([TestComponentBuilder], (tcb) => {
        const html = `
       <div ngbDropdown>
-          <button ngbDropdownToggle class="btn btn-success" type="button">
+          <button ngbDropdownToggle class='btn btn-success' type='button'>
             Toggle dropdown
           </button>
       </div>`;

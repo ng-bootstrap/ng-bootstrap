@@ -6,14 +6,14 @@ import {NgbCollapse} from '../collapse/collapse';
   selector: 'ngb-accordion-panel',
   directives: [NgbCollapse],
   template: `
-    <div class="panel panel-default" [class.panel-open]="isOpen">
-      <div class="panel-heading">
-        <h4 class="panel-title">
-          <a href tabindex="0"><span [class.text-muted]="isDisabled" (click)="toggleOpen($event)">{{title}}</span></a>
+    <div class='panel panel-default' [class.panel-open]='isOpen'>
+      <div class='panel-heading'>
+        <h4 class='panel-title'>
+          <a href tabindex='0'><span [class.text-muted]='isDisabled' (click)='toggleOpen($event)'>{{title}}</span></a>
         </h4>
       </div>
-      <div class="panel-collapse" [ngbCollapse]="!isOpen">
-        <div class="panel-body">
+      <div class='panel-collapse' [ngbCollapse]='!isOpen'>
+        <div class='panel-body'>
           <ng-content></ng-content>
         </div>
       </div>
