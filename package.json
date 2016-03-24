@@ -18,10 +18,9 @@
   },
   "homepage": "https://github.com/ng-bootstrap/core#readme",
   "devDependencies": {
-    "angular2": "2.0.0-beta.11",
+    "angular2": "2.0.0-beta.12",
     "clang-format": "1.0.35",
     "del": "^2.0.2",
-    "es6-promise": "^3.0.2",
     "es6-shim": "^0.35.0",
     "gulp": "^3.9.0",
     "gulp-clang-format": "^1.0.21",
@@ -48,6 +47,6 @@
     "typescript": "^1.6.2",
     "webpack": "^1.12.2",
     "webpack-dev-server": "^1.14.0",
-    "zone.js": "0.6.4"
+    "zone.js": "0.6.6"
   }
 }
