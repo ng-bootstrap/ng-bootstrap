@@ -1,11 +1,9 @@
 import {Component, EventEmitter, Input, Output, OnChanges, ChangeDetectionStrategy} from 'angular2/core';
-import {NgFor} from 'angular2/common';
 import {getValueInRange, toInteger} from '../util/util';
 
 @Component({
   selector: 'ngb-pagination',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  directives: [NgFor],
   template: `
     <nav>
       <ul class="pagination">
