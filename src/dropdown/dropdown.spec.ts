@@ -41,6 +41,7 @@ describe('ngb-dropdown', () => {
        });
      }));
 
+
   it('should toggle open class', injectAsync([TestComponentBuilder], (tcb) => {
        const html = `<div ngbDropdown [open]="isOpen"></div>`;
 
