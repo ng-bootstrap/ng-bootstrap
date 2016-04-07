@@ -14,9 +14,11 @@ import {getValueInRange, toInteger} from '../util/util';
             </a>
         </li>
 
-        <li *ngFor="#pageNumber of pages" class="page-item" [class.active]="pageNumber === page">
-          <a class="page-link" (click)="selectPage(pageNumber)">{{pageNumber}}</a>
-        </li>
+        <template ngFor #pageNumber [ngForOf]="pages">
+          <li class="page-item" [class.active]="pageNumber === page">
+            <a class="page-link" (click)="selectPage(pageNumber)">{{pageNumber}}</a>
+          </li>
+        </template>
 
         <li class="page-item" [class.disabled]="!hasNext()">
           <a aria-label="Next" class="page-link" (click)="selectPage(page+1)">
