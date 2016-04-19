@@ -1,3 +1,5 @@
+var webpackConfig = require('./webpack.test');
+
 module.exports = function(config) {
   config.set({
 
@@ -6,25 +8,18 @@ module.exports = function(config) {
     frameworks: ['jasmine'],
 
     files: [
-      // For travis
-      'node_modules/es6-shim/es6-shim.js',
-      // paths loaded by Karma
-      {pattern: 'node_modules/systemjs/dist/system.src.js', included: true, watched: false},
+      {pattern: 'node_modules/es6-shim/es6-shim.js', included: true, watched: false},
       {pattern: 'node_modules/angular2/bundles/angular2-polyfills.js', included: true, watched: false},
-      {pattern: 'node_modules/rxjs/bundles/Rx.js', included: true, watched: false},
-      {pattern: 'node_modules/angular2/bundles/angular2.js', included: true, watched: true},
-      {pattern: 'node_modules/angular2/bundles/testing.dev.js', included: true, watched: true},
-      {pattern: 'karma-test-shim.js', included: true, watched: true},
-
-      // paths loaded via module imports
-      {pattern: 'temp/**/*.js', included: false, watched: true},
-
-      // paths to support debugging with source maps in dev tools
-      {pattern: 'src/**/*.ts', included: false, watched: false},
-      {pattern: 'temp/**/*.js.map', included: false, watched: false}
+      {pattern: './karma-test-shim.js', watched: false}
     ],
 
-    preprocessors: {'temp/**/*.js': ['sourcemap']},
+    preprocessors: {'./karma-test-shim.js': ['webpack', 'sourcemap']},
+    
+    webpack: webpackConfig,
+    
+    webpackMiddleware: {
+      stats: 'errors-only'
+    },
 
     reporters: ['progress'],
     port: 9876,
