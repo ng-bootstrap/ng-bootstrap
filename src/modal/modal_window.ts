@@ -2,11 +2,12 @@ import {
   Component,
   Output,
   EventEmitter,
-  ElementRef,
   DynamicComponentLoader,
   Input,
   HostListener,
-  ComponentRef
+  ComponentRef,
+  TemplateRef,
+  ViewChild
 } from "angular2/core";
 import {ModalDismissReasons} from './modal_dismiss_reasons';
 
@@ -16,12 +17,14 @@ import {ModalDismissReasons} from './modal_dismiss_reasons';
   template: `
         <div [class]="'modal-dialog' + (size ? ' modal-' + size : '')">
             <div class="modal-content" (click)="stopPropagation($event)">
-                <content-sibiling #content></content-sibiling>                          
+                <template><!-- content insertion point--></template>                          
             </div>
         </div>
     `
 })
 export class NgbModalWindow {
+  @ViewChild(TemplateRef) private _contentTplRef: TemplateRef;
+
   @Input() backdrop = true;
   @Input() keyboard = true;
   @Input() size: string;
@@ -29,7 +32,7 @@ export class NgbModalWindow {
   @Output('close') closeEvent = new EventEmitter();
   @Output('dismiss') dismissEvent = new EventEmitter();
 
-  constructor(private _elRef: ElementRef, private _dcl: DynamicComponentLoader) {}
+  constructor(private _dcl: DynamicComponentLoader) {}
 
   @HostListener('click')
   backdropClick(): void {
@@ -52,6 +55,6 @@ export class NgbModalWindow {
   stopPropagation($event: MouseEvent): void { $event.stopPropagation(); }
 
   loadContent(content: any): Promise<ComponentRef> {
-    return this._dcl.loadIntoLocation(content, this._elRef, 'content');
+    return this._dcl.loadNextToLocation(content, this._contentTplRef.elementRef);
   }
 }
