@@ -9,14 +9,12 @@ import {
   Optional
 } from 'angular2/core';
 
-import {
-  NgbCollapse
-} from '../collapse/collapse'
+import {NgbCollapse} from '../collapse/collapse';
 
-    @Component({
-      selector: 'ngb-panel',
-      exportAs: 'ngbPanel',
-      template: `
+@Component({
+  selector: 'ngb-panel',
+  exportAs: 'ngbPanel',
+  template: `
     <div class="panel panel-default" [class.panel-open]="open">
       <div class="panel-heading">
         <h4 class="panel-title">
@@ -30,30 +28,36 @@ import {
       </div>
     </div>
   `,
-      directives: [NgbCollapse]
-    }) export class NgbPanel {
-      @Input() disabled = false; @Input() open = false; @Input() title: string;
+  directives: [NgbCollapse]
+})
+export class NgbPanel {
+  @Input() disabled = false;
+  @Input() open = false;
+  @Input() title: string;
 
-      constructor(@Optional() @Inject(forwardRef(() => NgbAccordion)) private accordion: NgbAccordion) {}
+  constructor(@Optional() @Inject(forwardRef(() => NgbAccordion)) private accordion: NgbAccordion) {}
 
-      toggleOpen(event): void{
-        event.preventDefault(); if (!this.disabled) {
-          this.open = !this.open;
-          if (this.open && this.accordion) {
-            this.accordion.closeOthers(this);
-          }
-        }
+  toggleOpen(event): void {
+    event.preventDefault();
+    if (!this.disabled) {
+      this.open = !this.open;
+      if (this.open && this.accordion) {
+        this.accordion.closeOthers(this);
       }
     }
+  }
+}
 
 @Component({
   selector: 'ngb-accordion',
   host: {'role': 'tablist', '[attr.aria-multiselectable]': '!closeOtherPanels'},
   template: `<ng-content></ng-content>`
-}) export class NgbAccordion implements AfterContentChecked {
-  @ContentChildren(NgbPanel) _panels: QueryList<NgbPanel>; @Input('closeOthers') closeOtherPanels: boolean;
+})
+export class NgbAccordion implements AfterContentChecked {
+  @ContentChildren(NgbPanel) _panels: QueryList<NgbPanel>;
+  @Input('closeOthers') closeOtherPanels: boolean;
 
-  closeOthers(openPanel: NgbPanel): void{
+  closeOthers(openPanel: NgbPanel): void {
     if (this.closeOtherPanels) {
       this._panels.forEach((panel: NgbPanel) => {
         if (panel !== openPanel) {
