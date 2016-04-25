@@ -58,8 +58,6 @@ gulp.task('umd', function(cb) {
 
 // Testing
 
-var testProject = ts.createProject('tsconfig.json');
-
 function startKarmaServer(isTddMode, done) {
   var karmaServer = require('karma').Server;
   var travis = process.env.TRAVIS;
@@ -74,28 +72,16 @@ function startKarmaServer(isTddMode, done) {
   new karmaServer(config, done).start();
 }
 
-gulp.task('clean:tests', function() { return del('temp/'); });
-
-gulp.task('build:tests', function() {
-  var tsResult = gulp.src([PATHS.src, PATHS.typings]).pipe(sourcemaps.init()).pipe(ts(testProject));
-
-  return tsResult.js.pipe(sourcemaps.write('.')).pipe(gulp.dest('temp'));
-});
-
-gulp.task('clean:build-tests', function(done) { runSequence('clean:tests', 'build:tests', done); });
-
 gulp.task(
     'ddescribe-iit', function() { return gulp.src(PATHS.specs).pipe(ddescribeIit({allowDisabledTests: false})); });
 
-gulp.task('test', ['clean:build-tests'], function(done) { startKarmaServer(false, done); });
+gulp.task('test', function(done) { startKarmaServer(false, done); });
 
-gulp.task('tdd', ['clean:build-tests'], function(done) {
+gulp.task('tdd', function(done) {
   startKarmaServer(true, function(err) {
     done(err);
     process.exit(1);
   });
-
-  gulp.watch(PATHS.src, ['build:tests']);
 });
 
 
