@@ -5,11 +5,9 @@ import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy} from 'a
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div [class]="'alert alert-' + type" role="alert">
-      <template [ngIf]="dismissible">
-        <button type="button" class="close" aria-label="Close" (click)="closeHandler()">
-              <span aria-hidden="true">&times;</span>
-        </button>
-      </template>
+      <button *ngIf="dismissible" type="button" class="close" aria-label="Close" (click)="closeHandler()">
+            <span aria-hidden="true">&times;</span>
+      </button>
       <ng-content></ng-content>
     </div>
     `
