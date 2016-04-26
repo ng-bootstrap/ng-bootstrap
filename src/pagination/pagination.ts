@@ -3,7 +3,7 @@ import {getValueInRange, toInteger} from '../util/util';
 
 @Component({
   selector: 'ngb-pagination',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush, TODO: https://github.com/angular/angular/issues/8242
   template: `
     <nav>
       <ul class="pagination">

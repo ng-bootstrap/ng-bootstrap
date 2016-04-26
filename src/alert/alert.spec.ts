@@ -5,7 +5,7 @@ import {
   describe,
   expect,
   inject,
-  injectAsync,
+  async,
   TestComponentBuilder,
 } from 'angular2/testing';
 
@@ -23,8 +23,8 @@ function getCloseButton(element: HTMLElement): HTMLButtonElement {
 
 describe('ngb-alert', () => {
 
-  it('should have type warning and by dismissible by default', injectAsync([TestComponentBuilder], (tcb) => {
-       return tcb.overrideTemplate(TestComponent, '<ngb-alert>Watch out!</ngb-alert>')
+  it('should have type warning and by dismissible by default', async(inject([TestComponentBuilder], (tcb) => {
+       tcb.overrideTemplate(TestComponent, '<ngb-alert>Watch out!</ngb-alert>')
            .createAsync(TestComponent)
            .then((fixture) => {
              fixture.detectChanges();
@@ -35,25 +35,25 @@ describe('ngb-alert', () => {
              expect(alertEl.getAttribute('role')).toEqual('alert');
              expect(getCloseButton(alertEl)).toBeTruthy();
            });
-     }));
+     })));
 
-  it('should allow specifying alert type', injectAsync([TestComponentBuilder], (tcb) => {
-       return tcb.overrideTemplate(TestComponent, '<ngb-alert type="success">Cool!</ngb-alert>')
+  it('should allow specifying alert type', async(inject([TestComponentBuilder], (tcb) => {
+       tcb.overrideTemplate(TestComponent, '<ngb-alert type="success">Cool!</ngb-alert>')
            .createAsync(TestComponent)
            .then((fixture) => {
              fixture.detectChanges();
              expect(getAlertElement(fixture.nativeElement)).toHaveCssClass('alert-success');
            });
-     }));
+     })));
 
-  it('should render close button only if dismissible', injectAsync([TestComponentBuilder], (tcb) => {
-       return tcb.overrideTemplate(TestComponent, '<ngb-alert [dismissible]="false">Don\'t close!</ngb-alert>')
+  it('should render close button only if dismissible', async(inject([TestComponentBuilder], (tcb) => {
+       tcb.overrideTemplate(TestComponent, '<ngb-alert [dismissible]="false">Don\'t close!</ngb-alert>')
            .createAsync(TestComponent)
            .then((fixture) => {
              fixture.detectChanges();
              expect(getCloseButton(getAlertElement(fixture.nativeElement))).toBeFalsy();
            });
-     }));
+     })));
 });
 
 @Component({selector: 'test-cmp', directives: [NgbAlert], template: ''})
