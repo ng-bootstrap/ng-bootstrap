@@ -5,7 +5,7 @@ import {
   describe,
   expect,
   inject,
-  injectAsync,
+  async,
   TestComponentBuilder,
   beforeEach,
   beforeEachProviders
@@ -116,10 +116,10 @@ describe('ngb-pagination', () => {
 
   describe('UI logic', () => {
 
-    it('should render and respond to collectionSize change', injectAsync([TestComponentBuilder], (tcb) => {
+    it('should render and respond to collectionSize change', async(inject([TestComponentBuilder], (tcb) => {
          const html = '<ngb-pagination [collectionSize]="collectionSize" page="1"></ngb-pagination>';
 
-         return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.componentInstance.collectionSize = 30;
            fixture.detectChanges();
            expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '» Next']);
@@ -128,13 +128,13 @@ describe('ngb-pagination', () => {
            fixture.detectChanges();
            expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '4', '» Next']);
          });
-       }));
+       })));
 
-    it('should render and respond to pageSize change', injectAsync([TestComponentBuilder], (tcb) => {
+    it('should render and respond to pageSize change', async(inject([TestComponentBuilder], (tcb) => {
          const html =
              '<ngb-pagination [collectionSize]="collectionSize" page="1" [pageSize]="pageSize"></ngb-pagination>';
 
-         return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.componentInstance.collectionSize = 30;
            fixture.componentInstance.pageSize = 5;
            fixture.detectChanges();
@@ -144,12 +144,12 @@ describe('ngb-pagination', () => {
            fixture.detectChanges();
            expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '» Next']);
          });
-       }));
+       })));
 
-    it('should render and respond to active page change', injectAsync([TestComponentBuilder], (tcb) => {
+    it('should render and respond to active page change', async(inject([TestComponentBuilder], (tcb) => {
          const html = '<ngb-pagination [collectionSize]="collectionSize" [page]="page"></ngb-pagination>';
 
-         return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.componentInstance.collectionSize = 30;
            fixture.componentInstance.page = 2;
            fixture.detectChanges();
@@ -159,31 +159,32 @@ describe('ngb-pagination', () => {
            fixture.detectChanges();
            expectPages(fixture.nativeElement, ['« Previous', '1', '2', '+3', '-» Next']);
          });
-       }));
+       })));
 
-    it('should update selected page model on page no click', injectAsync([TestComponentBuilder], (tcb) => {
+    it('should update selected page model on page no click', async(inject([TestComponentBuilder], (tcb) => {
          const html = '<ngb-pagination [collectionSize]="collectionSize" [page]="page"></ngb-pagination>';
 
-         return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.componentInstance.collectionSize = 30;
            fixture.componentInstance.page = 2;
            fixture.detectChanges();
            expectPages(fixture.nativeElement, ['« Previous', '1', '+2', '3', '» Next']);
 
-           getLink(fixture.nativeElement, 1).click();
+           getLink(fixture.nativeElement, 0).click();
            fixture.detectChanges();
            expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '» Next']);
+
 
            getLink(fixture.nativeElement, 3).click();
            fixture.detectChanges();
            expectPages(fixture.nativeElement, ['« Previous', '1', '2', '+3', '-» Next']);
          });
-       }));
+       })));
 
-    it('should update selected page model on prev / next click', injectAsync([TestComponentBuilder], (tcb) => {
+    it('should update selected page model on prev / next click', async(inject([TestComponentBuilder], (tcb) => {
          const html = '<ngb-pagination [collectionSize]="collectionSize" [page]="page"></ngb-pagination>';
 
-         return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.componentInstance.collectionSize = 30;
            fixture.detectChanges();
            expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '» Next']);
@@ -204,7 +205,7 @@ describe('ngb-pagination', () => {
            fixture.detectChanges();
            expectPages(fixture.nativeElement, ['« Previous', '1', '2', '+3', '-» Next']);
          });
-       }));
+       })));
   });
 
 });

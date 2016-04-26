@@ -5,7 +5,7 @@ import {
   describe,
   expect,
   inject,
-  injectAsync,
+  async,
   TestComponentBuilder,
   beforeEach,
   beforeEachProviders
@@ -80,10 +80,10 @@ describe('ngb-pagination', () => {
 
   describe('UI logic', () => {
 
-    it('should render and respond to noOfPages change', injectAsync([TestComponentBuilder], (tcb) => {
+    it('should render and respond to noOfPages change', async(inject([TestComponentBuilder], (tcb) => {
          const html = '<ngb-pager [noOfPages]="noOfPages" page="5"></ngb-pager>';
 
-         return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.detectChanges();
            expectPager(fixture.nativeElement, [true, true]);
 
@@ -95,12 +95,12 @@ describe('ngb-pagination', () => {
            fixture.detectChanges();
            expectPager(fixture.nativeElement, [false, false]);
          });
-       }));
+       })));
 
-    it('should render and respond to page change', injectAsync([TestComponentBuilder], (tcb) => {
+    it('should render and respond to page change', async(inject([TestComponentBuilder], (tcb) => {
          const html = '<ngb-pager [noOfPages]="noOfPages" [page]="page"></ngb-pager>';
 
-         return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.detectChanges();
            expectPager(fixture.nativeElement, [true, true]);
 
@@ -112,12 +112,12 @@ describe('ngb-pagination', () => {
            fixture.detectChanges();
            expectPager(fixture.nativeElement, [false, true]);
          });
-       }));
+       })));
 
-    it('should update selected page model on prev / next click', injectAsync([TestComponentBuilder], (tcb) => {
+    it('should update selected page model on prev / next click', async(inject([TestComponentBuilder], (tcb) => {
          const html = '<ngb-pager [noOfPages]="noOfPages" [page]="page"></ngb-pager>';
 
-         return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.detectChanges();
            expectPager(fixture.nativeElement, [true, true]);
 
@@ -129,7 +129,7 @@ describe('ngb-pagination', () => {
            fixture.detectChanges();
            expectPager(fixture.nativeElement, [true, true]);
          });
-       }));
+       })));
   });
 
 });

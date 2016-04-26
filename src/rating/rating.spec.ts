@@ -5,7 +5,7 @@ import {
   describe,
   expect,
   inject,
-  injectAsync,
+  async,
   TestComponentBuilder,
   beforeEachProviders
 } from 'angular2/testing';
@@ -41,8 +41,8 @@ function getState(compiled) {
 }
 
 describe('ngb-rating', () => {
-  it('should show 10 stars by default', injectAsync([TestComponentBuilder], (tcb) => {
-       return tcb.createAsync(NgbRating).then((fixture) => {
+  it('should show 10 stars by default', async(inject([TestComponentBuilder], (tcb) => {
+       tcb.createAsync(NgbRating).then((fixture) => {
          fixture.detectChanges();
 
          const compiled = fixture.nativeElement;
@@ -50,9 +50,9 @@ describe('ngb-rating', () => {
          const stars = getStars(compiled);
          expect(stars.length).toBe(10);
        });
-     }));
+     })));
 
-  it('should change the num of stars with `max`', injectAsync([TestComponentBuilder], (tcb) => {
+  it('should change the num of stars with `max`', async(inject([TestComponentBuilder], (tcb) => {
        const html = '<ngb-rating max="3"></ngb-rating>';
 
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
@@ -63,9 +63,9 @@ describe('ngb-rating', () => {
          const stars = getStars(compiled);
          expect(stars.length).toBe(3);
        });
-     }));
+     })));
 
-  it('initializes the default star icons as selected', injectAsync([TestComponentBuilder], (tcb) => {
+  it('initializes the default star icons as selected', async(inject([TestComponentBuilder], (tcb) => {
        const html = '<ngb-rating rate="3" max="5"></ngb-rating>';
 
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
@@ -75,9 +75,9 @@ describe('ngb-rating', () => {
 
          expect(getState(compiled)).toEqual([true, true, true, false, false]);
        });
-     }));
+     })));
 
-  it('handles correctly the click event', injectAsync([TestComponentBuilder], (tcb) => {
+  it('handles correctly the click event', async(inject([TestComponentBuilder], (tcb) => {
        const html = '<ngb-rating rate="3" max="5"></ngb-rating>';
 
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
@@ -89,10 +89,10 @@ describe('ngb-rating', () => {
          fixture.detectChanges();
          expect(getState(compiled)).toEqual([true, true, false, false, false]);
        });
-     }));
+     })));
 
   describe('aria support', () => {
-    it('contains aria-valuemax with the number of stars', injectAsync([TestComponentBuilder], (tcb) => {
+    it('contains aria-valuemax with the number of stars', async(inject([TestComponentBuilder], (tcb) => {
          const html = '<ngb-rating [max]="max"></ngb-rating>';
 
          return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
@@ -102,9 +102,9 @@ describe('ngb-rating', () => {
 
            expect(compiled.querySelector('span').getAttribute('aria-valuemax')).toBe('10');
          });
-       }));
+       })));
 
-    it('contains a hidden span for each star for screenreaders', injectAsync([TestComponentBuilder], (tcb) => {
+    it('contains a hidden span for each star for screenreaders', async(inject([TestComponentBuilder], (tcb) => {
          const html = '<ngb-rating max="5"></ngb-rating>';
 
          return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
@@ -114,9 +114,9 @@ describe('ngb-rating', () => {
            let hiddenStars = getStars(compiled, '.sr-only');
            expect(hiddenStars.length).toBe(5);
          });
-       }));
+       })));
 
-    it('initializes populates the current rate for screenreaders', injectAsync([TestComponentBuilder], (tcb) => {
+    it('initializes populates the current rate for screenreaders', async(inject([TestComponentBuilder], (tcb) => {
          const html = '<ngb-rating rate="3" max="5"></ngb-rating>';
 
          return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
@@ -126,9 +126,9 @@ describe('ngb-rating', () => {
 
            expect(getAriaState(compiled)).toEqual([true, true, true, false, false]);
          });
-       }));
+       })));
 
-    it('contains aria-valuenow with the current rate', injectAsync([TestComponentBuilder], (tcb) => {
+    it('contains aria-valuenow with the current rate', async(inject([TestComponentBuilder], (tcb) => {
          const html = '<ngb-rating [max]="max" rate="3"></ngb-rating>';
 
          return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
@@ -138,9 +138,9 @@ describe('ngb-rating', () => {
 
            expect(compiled.querySelector('span').getAttribute('aria-valuenow')).toBe('3');
          });
-       }));
+       })));
 
-    it('updates aria-valuenow when the rate changes', injectAsync([TestComponentBuilder], (tcb) => {
+    it('updates aria-valuenow when the rate changes', async(inject([TestComponentBuilder], (tcb) => {
          const html = '<ngb-rating [max]="max" rate="3"></ngb-rating>';
 
          return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
@@ -153,7 +153,7 @@ describe('ngb-rating', () => {
 
            expect(compiled.querySelector('span').getAttribute('aria-valuenow')).toBe('7');
          });
-       }));
+       })));
   });
 });
 

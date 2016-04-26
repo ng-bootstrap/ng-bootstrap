@@ -5,7 +5,7 @@ import {
   describe,
   expect,
   inject,
-  injectAsync,
+  async,
   TestComponentBuilder,
   beforeEachProviders
 } from 'angular2/testing';
@@ -19,32 +19,32 @@ function getDropdownEl(tc) {
 }
 
 describe('ngb-dropdown', () => {
-  it('should be closed by default', injectAsync([TestComponentBuilder], (tcb) => {
+  it('should be closed by default', async(inject([TestComponentBuilder], (tcb) => {
        const html = `<div ngbDropdown></div>`;
 
-       return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
          const compiled = fixture.nativeElement;
 
          expect(getDropdownEl(compiled)).not.toHaveCssClass('open');
        });
-     }));
+     })));
 
-  it('should be open initially if open expression is true', injectAsync([TestComponentBuilder], (tcb) => {
+  it('should be open initially if open expression is true', async(inject([TestComponentBuilder], (tcb) => {
        const html = `<div ngbDropdown [open]="true"></div>`;
 
-       return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
          const compiled = fixture.nativeElement;
 
          expect(getDropdownEl(compiled)).toHaveCssClass('open');
        });
-     }));
+     })));
 
-  it('should toggle open class', injectAsync([TestComponentBuilder], (tcb) => {
+  it('should toggle open class', async(inject([TestComponentBuilder], (tcb) => {
        const html = `<div ngbDropdown [open]="isOpen"></div>`;
 
-       return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
          const compiled = fixture.nativeElement;
 
@@ -62,14 +62,14 @@ describe('ngb-dropdown', () => {
 
          expect(dropdownEl).not.toHaveCssClass('open');
        });
-     }));
+     })));
 
-  it('should allow toggling dropdown from outside', injectAsync([TestComponentBuilder], (tcb) => {
+  it('should allow toggling dropdown from outside', async(inject([TestComponentBuilder], (tcb) => {
        const html = `
       <button (click)="drop.open = !drop.open">Toggle</button>
       <div ngbDropdown #drop="ngbDropdown"></div>`;
 
-       return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
          const compiled = fixture.nativeElement;
          let dropdownEl = getDropdownEl(compiled);
@@ -83,12 +83,12 @@ describe('ngb-dropdown', () => {
          fixture.detectChanges();
          expect(dropdownEl).not.toHaveCssClass('open');
        });
-     }));
+     })));
 });
 
 describe('ngb-dropdown-toggle', () => {
 
-  it('should toggle dropdown on click', injectAsync([TestComponentBuilder], (tcb) => {
+  it('should toggle dropdown on click', async(inject([TestComponentBuilder], (tcb) => {
        const html = `
       <div ngbDropdown>
           <button ngbDropdownToggle class="btn btn-success" type="button">
@@ -96,7 +96,7 @@ describe('ngb-dropdown-toggle', () => {
           </button>
       </div>`;
 
-       return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
          const compiled = fixture.nativeElement;
          let dropdownEl = getDropdownEl(compiled);
@@ -116,7 +116,7 @@ describe('ngb-dropdown-toggle', () => {
          expect(dropdownEl).not.toHaveCssClass('open');
          expect(buttonEl.getAttribute('aria-expanded')).toBe('false');
        });
-     }));
+     })));
 });
 
 @Component({selector: 'test-cmp', directives: [NgbDropdown, NgbDropdownToggle], template: ''})
