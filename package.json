@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/ng-bootstrap/core#readme",
   "devDependencies": {
-    "angular2": "2.0.0-beta.16",
+    "angular2": "2.0.0-beta.17",
     "clang-format": "1.0.35",
     "del": "^2.0.2",
     "es6-shim": "^0.35.0",
@@ -42,7 +42,7 @@
     "merge2": "^1.0.1",
     "reflect-metadata": "0.1.2",
     "run-sequence": "^1.1.4",
-    "rxjs": "5.0.0-beta.2",
+    "rxjs": "5.0.0-beta.6",
     "systemjs": "^0.19.5",
     "ts-loader": "^0.8.1",
     "typescript": "^1.6.2",

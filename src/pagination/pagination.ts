@@ -14,7 +14,7 @@ import {getValueInRange, toInteger} from '../util/util';
             </a>
         </li>
 
-        <li *ngFor="#pageNumber of pages" class="page-item" [class.active]="pageNumber === page">
+        <li *ngFor="let pageNumber of pages" class="page-item" [class.active]="pageNumber === page">
           <a class="page-link" (click)="selectPage(pageNumber)">{{pageNumber}}</a>
         </li>
 

@@ -31,14 +31,14 @@ export class NgbTab {
   selector: 'ngb-tabset',
   template: `
     <ul class="nav nav-tabs" role="tablist">
-      <li class="nav-item" *ngFor="#tab of tabs; #i=index">
+      <li class="nav-item" *ngFor="let tab of tabs; let i=index">
         <a class="nav-link" [class.active]="i === activeIdx" (click)="select(i)">
           {{tab.title}}<template [ngTemplateOutlet]="tab.titleTpl?.templateRef"></template>
         </a>
       </li>
     </ul>
     <div class="tab-content">
-      <div *ngFor="#tab of tabs; #i=index" class="tab-pane" [class.active]="i === activeIdx" role="tabpanel">
+      <div *ngFor="let tab of tabs; let i=index" class="tab-pane" [class.active]="i === activeIdx" role="tabpanel">
         <template [ngTemplateOutlet]="tab.contentTpl.templateRef"></template>
       </div>
     </div>

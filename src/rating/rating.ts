@@ -4,7 +4,7 @@ import {Component, Input, Output, EventEmitter, OnInit} from 'angular2/core';
   selector: 'ngb-rating',
   template: `
     <span tabindex="0" (mouseleave)="reset()" aria-valuemin="0" [attr.aria-valuemax]="max" [attr.aria-valuenow]="rate">
-      <template ngFor #r [ngForOf]="range" #index="index">
+      <template ngFor let-r [ngForOf]="range" let-index="index">
         <span class="sr-only">({{ index < rate ? '*' : ' ' }})</span>
         <i class="glyphicon {{index < rate ? 'glyphicon-star' : 'glyphicon-star-empty'}}" (mouseenter)="enter(index + 1)" (click)="update(index + 1)" [title]="r.title" [attr.aria-valuetext]="r.title"></i>
       </template>
