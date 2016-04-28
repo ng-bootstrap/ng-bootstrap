@@ -17,7 +17,7 @@ import {Component} from '@angular/core';
 import {NgbPager} from './pager';
 
 function expectPager(nativeEl: HTMLElement, pagerStates: boolean[]): void {
-  var pagerCtrls = nativeEl.querySelectorAll('li');
+  const pagerCtrls = nativeEl.querySelectorAll('li');
 
   if (pagerStates[0]) {
     expect(pagerCtrls[0]).not.toHaveCssClass('disabled');
@@ -40,7 +40,7 @@ describe('ngb-pagination', () => {
 
   describe('business logic', () => {
 
-    var pager: NgbPager;
+    let pager: NgbPager;
 
     beforeEach(() => { pager = new NgbPager(); });
 

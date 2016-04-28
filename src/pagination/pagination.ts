@@ -62,21 +62,21 @@ export class NgbPagination implements OnChanges {
   hasNext(): boolean { return this.page < this.pages.length; }
 
   selectPage(pageNumber: number): void {
-    var prevPageNo = this.page;
+    let prevPageNo = this.page;
     this._page = this._getPageNoInRange(pageNumber);
 
-    if (this.page != prevPageNo) {
+    if (this.page !== prevPageNo) {
       this.pageChange.emit(this.page);
     }
   }
 
   ngOnChanges(): void {
     // re-calculate new length of pages
-    var pageCount = Math.ceil(this._collectionSize / this._pageSize);
+    let pageCount = Math.ceil(this._collectionSize / this._pageSize);
 
     // fill-in model needed to render pages
     this.pages.length = 0;
-    for (var i = 1; i <= pageCount; i++) {
+    for (let i = 1; i <= pageCount; i++) {
       this.pages.push(i);
     }
 

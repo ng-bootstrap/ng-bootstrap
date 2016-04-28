@@ -20,13 +20,13 @@ export class NgbPager implements OnChanges {
 
   prev(): void {
     if (this.hasPrev()) {
-      this.pageChange.emit(--this._currentPage)
+      this.pageChange.emit(--this._currentPage);
     }
   }
 
   next(): void {
     if (this.hasNext()) {
-      this.pageChange.emit(++this._currentPage)
+      this.pageChange.emit(++this._currentPage);
     }
   }
 
@@ -34,5 +34,5 @@ export class NgbPager implements OnChanges {
 
   hasNext(): boolean { return this._currentPage < this.noOfPages - 1; }
 
-  ngOnChanges(): void { this._currentPage = Math.max(Math.min(this.page, this.noOfPages - 1), 0) }
+  ngOnChanges(): void { this._currentPage = Math.max(Math.min(this.page, this.noOfPages - 1), 0); }
 }

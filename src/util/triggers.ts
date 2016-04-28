@@ -13,18 +13,18 @@ const DEFAULT_ALIASES = {
 };
 
 export function parseTriggers(triggers: string, aliases = DEFAULT_ALIASES): Trigger[] {
-  var trimmedTriggers = (triggers || '').trim();
+  const trimmedTriggers = (triggers || '').trim();
 
   if (trimmedTriggers.length === 0) {
     return [];
   }
 
-  var parsedTriggers = trimmedTriggers.split(/\s+/).map(trigger => trigger.split(':')).map((triggerPair) => {
+  const parsedTriggers = trimmedTriggers.split(/\s+/).map(trigger => trigger.split(':')).map((triggerPair) => {
     let alias = aliases[triggerPair[0]] || triggerPair;
-    return new Trigger(alias[0], alias[1])
+    return new Trigger(alias[0], alias[1]);
   });
 
-  var manualTriggers = parsedTriggers.filter(triggerPair => triggerPair.isManual());
+  const manualTriggers = parsedTriggers.filter(triggerPair => triggerPair.isManual());
 
   if (manualTriggers.length > 1) {
     throw 'Triggers parse error: only one manual trigger is allowed';

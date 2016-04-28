@@ -11,7 +11,7 @@ import {
 
 import {NgbCollapse} from '../collapse/collapse';
 
-var nextId = 0;
+let nextId = 0;
 
 @Component({
   selector: 'ngb-panel',
@@ -71,7 +71,7 @@ export class NgbAccordion implements AfterContentChecked {
   }
 
   ngAfterContentChecked() {
-    var openPanels = this._panels.toArray().filter((panel) => panel.open);
+    const openPanels = this._panels.toArray().filter((panel) => panel.open);
     if (openPanels.length > 1) {
       this.closeOthers(openPanels[0]);
     }

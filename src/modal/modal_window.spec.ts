@@ -12,7 +12,7 @@ import {
 import {TestComponentBuilder} from '@angular/compiler/testing';
 
 import {NgbModalWindow} from './modal_window';
-import {ModalDismissReasons} from "./modal_dismiss_reasons";
+import {ModalDismissReasons} from './modal_dismiss_reasons';
 
 describe('ngb-modal-dialog', () => {
 
@@ -22,8 +22,8 @@ describe('ngb-modal-dialog', () => {
          tcb.createAsync(NgbModalWindow).then((fixture) => {
            fixture.detectChanges();
 
-           var modalEl: Element = fixture.nativeElement;
-           var dialogEl: Element = fixture.nativeElement.querySelector('.modal-dialog');
+           const modalEl: Element = fixture.nativeElement;
+           const dialogEl: Element = fixture.nativeElement.querySelector('.modal-dialog');
 
            expect(modalEl).toHaveCssClass('modal');
            expect(dialogEl).toHaveCssClass('modal-dialog');
@@ -36,7 +36,7 @@ describe('ngb-modal-dialog', () => {
            fixture.componentInstance.size = 'sm';
            fixture.detectChanges();
 
-           var dialogEl: Element = fixture.nativeElement.querySelector('.modal-dialog');
+           const dialogEl: Element = fixture.nativeElement.querySelector('.modal-dialog');
            expect(dialogEl).toHaveCssClass('modal-dialog');
            expect(dialogEl).toHaveCssClass('modal-sm');
          });
@@ -45,7 +45,7 @@ describe('ngb-modal-dialog', () => {
 
   describe('dismiss', () => {
 
-    var tcb: TestComponentBuilder;
+    let tcb: TestComponentBuilder;
 
     beforeEach(inject([TestComponentBuilder], (tcBuilder) => { tcb = tcBuilder; }));
 

@@ -46,7 +46,7 @@ export class NgbRadioGroup implements ControlValueAccessor {
 
   private _setGroupValue(radio: NgbRadio) {
     this._selectedRadio = radio;
-    var value = radio ? radio.value : null;
+    const value = radio ? radio.value : null;
     this.writeValue(value);
     this.onChange(value);
   }
@@ -77,7 +77,7 @@ export class NgbRadio implements OnDestroy {
   @Input('value')
   set value(value) {
     this._value = value;
-    var stringValue = value ? value.toString() : '';
+    const stringValue = value ? value.toString() : '';
     this.renderer.setElementProperty(this.element.nativeElement, 'value', stringValue);
 
     if (this.group) {

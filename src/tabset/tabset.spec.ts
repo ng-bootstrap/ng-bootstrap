@@ -25,13 +25,13 @@ function getTabContent(nativeEl: HTMLElement) {
 }
 
 function expectActiveTabs(nativeEl: HTMLElement, active: boolean[]) {
-  var tabTitles = getTabTitles(nativeEl);
-  var tabContent = getTabContent(nativeEl);
+  const tabTitles = getTabTitles(nativeEl);
+  const tabContent = getTabContent(nativeEl);
 
   expect(tabTitles.length).toBe(active.length);
   expect(tabContent.length).toBe(active.length);
 
-  for (var i = 0; i < active.length; i++) {
+  for (let i = 0; i < active.length; i++) {
     if (active[i]) {
       expect(tabTitles[i]).toHaveCssClass('active');
       expect(tabContent[i]).toHaveCssClass('active');
@@ -55,8 +55,8 @@ describe('ngb-tabset', () => {
        tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
 
-         var tabTitles = getTabTitles(fixture.nativeElement);
-         var tabContent = getTabContent(fixture.nativeElement);
+         const tabTitles = getTabTitles(fixture.nativeElement);
+         const tabContent = getTabContent(fixture.nativeElement);
 
          expect(tabTitles[0].textContent).toMatchPattern(/foo/);
          expect(tabTitles[1].textContent).toMatchPattern(/bar/);
@@ -85,7 +85,7 @@ describe('ngb-tabset', () => {
        tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
 
-         var tabTitles = getTabTitles(fixture.nativeElement);
+         const tabTitles = getTabTitles(fixture.nativeElement);
 
          expect(tabTitles[0].textContent).toMatchPattern(/foo/);
          expect(tabTitles[1].innerHTML).toMatchPattern(/<b>bar<\/b>/);
@@ -137,7 +137,7 @@ describe('ngb-tabset', () => {
        tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
 
-         var tabTitles = getTabTitles(fixture.nativeElement);
+         const tabTitles = getTabTitles(fixture.nativeElement);
 
          (<HTMLAnchorElement>tabTitles[1]).click();
          fixture.detectChanges();
