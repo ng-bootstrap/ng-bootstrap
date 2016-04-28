@@ -20,7 +20,7 @@ function getCollapsibleContent(element: HTMLElement): HTMLDivElement {
 
 describe('ngb-collapse', () => {
 
-  const html = `<div [ngbCollapse]="collapsed">Some content</div>`;
+  let html = `<div [ngbCollapse]="collapsed">Some content</div>`;
 
   it('should have content open and aria-expanded true', async(inject([TestComponentBuilder], (tcb) => {
        tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
@@ -65,7 +65,7 @@ describe('ngb-collapse', () => {
      })));
 
   it('should allow toggling collapse from outside', async(inject([TestComponentBuilder], (tcb) => {
-       const html = `
+       html = `
       <button (click)="collapse.collapsed = !collapse.collapsed">Collapse</button>
       <div [ngbCollapse] #collapse="ngbCollapse"></div>`;
 

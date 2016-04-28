@@ -10,6 +10,7 @@ var merge = require('merge2');
 var clangFormat = require('clang-format');
 var gulpFormat = require('gulp-clang-format');
 var runSequence = require('run-sequence');
+var tslint = require('gulp-tslint');
 var webpack = require('webpack');
 var webpackDemoConfig = require('./webpack.demo.js');
 
@@ -101,6 +102,12 @@ gulp.task('tdd', ['clean:build-tests'], function(done) {
 
 // Formatting
 
+gulp.task('lint', function() {
+  return gulp.src(PATHS.src).pipe(tslint({configuration: require('./tslint.json')})).pipe(tslint.report('prose', {
+    summarizeFailureOutput: true
+  }));
+});
+
 gulp.task('check-format', function() {
   return doCheckFormat().on(
       'warning', function(e) { console.log("NOTE: this will be promoted to an ERROR in the continuous build"); });
@@ -135,11 +142,11 @@ gulp.task('demo-push', function() { return gulp.src(PATHS.demoDist).pipe(ghPages
 gulp.task('clean', ['clean:build', 'clean:tests', 'clean:demo', 'clean:demo-cache']);
 
 gulp.task('build', function(done) {
-  runSequence('enforce-format', 'ddescribe-iit', 'test', 'clean:build', 'cjs', 'umd', done);
+  runSequence('lint', 'enforce-format', 'ddescribe-iit', 'test', 'clean:build', 'cjs', 'umd', done);
 });
 
 gulp.task('deploy-demo', function(done) {
   runSequence('clean:demo', 'copy:polyfills-demo', 'build:demo', 'demo-push', 'clean:demo-cache', done);
 });
 
-gulp.task('default', function(done) { runSequence('enforce-format', 'ddescribe-iit', 'test', done); });
+gulp.task('default', function(done) { runSequence('lint', 'enforce-format', 'ddescribe-iit', 'test', done); });

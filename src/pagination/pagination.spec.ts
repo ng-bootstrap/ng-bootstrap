@@ -17,7 +17,7 @@ import {Component} from '@angular/core';
 import {NgbPagination} from './pagination';
 
 function expectPages(nativeEl: HTMLElement, pagesDef: string[]): void {
-  var pages = nativeEl.querySelectorAll('li');
+  const pages = nativeEl.querySelectorAll('li');
 
   expect(pages.length).toEqual(pagesDef.length);
 
@@ -53,7 +53,7 @@ describe('ngb-pagination', () => {
 
   describe('business logic', () => {
 
-    var pagination: NgbPagination;
+    let pagination: NgbPagination;
 
     beforeEach(() => { pagination = new NgbPagination(); });
 

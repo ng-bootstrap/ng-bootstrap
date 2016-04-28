@@ -5,7 +5,7 @@ import {NGB_RADIO_DIRECTIVES} from './radio';
 
 
 function expectRadios(element: HTMLElement, states: number[]) {
-  var labels = element.querySelectorAll('label');
+  const labels = element.querySelectorAll('label');
   expect(labels.length).toEqual(states.length);
 
   for (let i = 0; i < states.length; i++) {

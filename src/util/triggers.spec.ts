@@ -17,7 +17,7 @@ describe('triggers', () => {
   describe('parseTriggers', () => {
 
     it('should parse single trigger', () => {
-      var t = parseTriggers('foo');
+      const t = parseTriggers('foo');
 
       expect(t.length).toBe(1);
       expect(t[0].open).toBe('foo');
@@ -25,7 +25,7 @@ describe('triggers', () => {
     });
 
     it('should parse open:close form', () => {
-      var t = parseTriggers('foo:bar');
+      const t = parseTriggers('foo:bar');
 
       expect(t.length).toBe(1);
       expect(t[0].open).toBe('foo');
@@ -33,7 +33,7 @@ describe('triggers', () => {
     });
 
     it('should parse multiple triggers', () => {
-      var t = parseTriggers('foo:bar bar:baz');
+      const t = parseTriggers('foo:bar bar:baz');
 
       expect(t.length).toBe(2);
       expect(t[0].open).toBe('foo');
@@ -43,7 +43,7 @@ describe('triggers', () => {
     });
 
     it('should parse multiple triggers with mixed forms', () => {
-      var t = parseTriggers('foo bar:baz');
+      const t = parseTriggers('foo bar:baz');
 
       expect(t.length).toBe(2);
       expect(t[0].open).toBe('foo');
@@ -53,7 +53,7 @@ describe('triggers', () => {
     });
 
     it('should properly trim excessive white-spaces', () => {
-      var t = parseTriggers('foo   bar  \n baz ');
+      const t = parseTriggers('foo   bar  \n baz ');
 
       expect(t.length).toBe(3);
       expect(t[0].open).toBe('foo');
@@ -65,7 +65,7 @@ describe('triggers', () => {
     });
 
     it('should lookup and translate special aliases', () => {
-      var t = parseTriggers('hover');
+      const t = parseTriggers('hover');
 
       expect(t.length).toBe(1);
       expect(t[0].open).toBe('mouseenter');
@@ -73,9 +73,9 @@ describe('triggers', () => {
     });
 
     it('should detect manual triggers', () => {
-      var t = parseTriggers('manual');
+      const t = parseTriggers('manual');
 
-      expect(t[0].isManual).toBeTruthy()
+      expect(t[0].isManual).toBeTruthy();
     });
 
     it('should ignore empty inputs', () => {

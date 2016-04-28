@@ -4,17 +4,17 @@ import {
   EventEmitter,
   Input,
   HostListener,
-} from "@angular/core";
+} from '@angular/core';
 
 import {ModalDismissReasons} from './modal_dismiss_reasons';
 
 @Component({
   selector: 'ngb-modal-window',
-  host: {"class": "modal", "role": "dialog", "tabindex": "-1", "style": "display: block;"},
+  host: {'class': 'modal', 'role': 'dialog', 'tabindex': '-1', 'style': 'display: block;'},
   template: `
         <div [class]="'modal-dialog' + (size ? ' modal-' + size : '')">
             <div class="modal-content" (click)="stopPropagation($event)">
-                <ng-content></ng-content>                          
+                <ng-content></ng-content>
             </div>
         </div>
     `
