@@ -1,16 +1,8 @@
-import {
-  iit,
-  it,
-  ddescribe,
-  describe,
-  expect,
-  inject,
-  injectAsync,
-  TestComponentBuilder,
-  beforeEachProviders
-} from 'angular2/testing';
+import {iit, it, ddescribe, describe, expect, inject, injectAsync, beforeEachProviders} from '@angular/core/testing';
 
-import {Component} from 'angular2/core';
+import {TestComponentBuilder} from '@angular/compiler/testing';
+
+import {Component} from '@angular/core';
 
 import {NgbPanel} from './accordion';
 

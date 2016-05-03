@@ -7,7 +7,7 @@ import {
   ContentChildren,
   AfterContentChecked,
   Optional
-} from 'angular2/core';
+} from '@angular/core';
 
 import {NgbCollapse} from '../collapse/collapse';
 

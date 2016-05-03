@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output, OnChanges, ChangeDetectionStrategy} from 'angular2/core';
+import {Component, EventEmitter, Input, Output, OnChanges, ChangeDetectionStrategy} from '@angular/core';
 import {getValueInRange, toInteger} from '../util/util';
 
 @Component({

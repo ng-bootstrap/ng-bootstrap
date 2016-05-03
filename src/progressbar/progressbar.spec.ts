@@ -1,8 +1,10 @@
-import {iit, it, ddescribe, describe, expect, inject, async, TestComponentBuilder} from 'angular2/testing';
+import {iit, it, ddescribe, describe, expect, inject, async} from '@angular/core/testing';
 
-import {Component} from 'angular2/core';
+import {TestComponentBuilder} from '@angular/compiler/testing';
 
-import {NgbProgressbar} from "./progressbar";
+import {Component} from '@angular/core';
+
+import {NgbProgressbar} from './progressbar';
 
 function getBarWidth(nativeEl): string {
   return nativeEl.querySelector('.progress-bar').style.width;

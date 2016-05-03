@@ -6,10 +6,11 @@ import {
   expect,
   inject,
   async,
-  TestComponentBuilder,
-} from 'angular2/testing';
+} from '@angular/core/testing';
 
-import {Component} from 'angular2/core';
+import {TestComponentBuilder} from '@angular/compiler/testing';
+
+import {Component} from '@angular/core';
 
 import {NgbCollapse} from './collapse';
 

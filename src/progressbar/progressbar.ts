@@ -1,4 +1,4 @@
-import {Component, Input, ChangeDetectionStrategy} from 'angular2/core';
+import {Component, Input, ChangeDetectionStrategy} from '@angular/core';
 import {getValueInRange, toBoolean} from '../util/util';
 
 @Component({
