@@ -1,4 +1,4 @@
-import {Component, ChangeDetectionStrategy, OnChanges, Input, Output, EventEmitter} from 'angular2/core';
+import {Component, ChangeDetectionStrategy, OnChanges, Input, Output, EventEmitter} from '@angular/core';
 
 @Component({
   selector: 'ngb-pager',

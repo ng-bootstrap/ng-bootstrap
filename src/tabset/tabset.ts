@@ -7,16 +7,16 @@ import {
   TemplateRef,
   ContentChild,
   AfterContentChecked
-} from 'angular2/core';
+} from '@angular/core';
 
 @Directive({selector: 'template[ngb-tab-title]'})
 export class NgbTabTitle {
-  constructor(public templateRef: TemplateRef) {}
+  constructor(public templateRef: TemplateRef<any>) {}
 }
 
 @Directive({selector: 'template[ngb-tab-content]'})
 export class NgbTabContent {
-  constructor(public templateRef: TemplateRef) {}
+  constructor(public templateRef: TemplateRef<any>) {}
 }
 
 @Directive({selector: 'ngb-tab'})

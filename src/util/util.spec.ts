@@ -6,10 +6,11 @@ import {
   expect,
   inject,
   injectAsync,
-  TestComponentBuilder,
   beforeEach,
   beforeEachProviders
-} from 'angular2/testing';
+} from '@angular/core/testing';
+
+import {TestComponentBuilder} from '@angular/compiler/testing';
 
 import {toBoolean, toInteger, getValueInRange} from './util';
 
