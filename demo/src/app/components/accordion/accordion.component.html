@@ -1,5 +1,35 @@
-<h1>Accordion page!</h1>
+<h3>{{accordionDocs.title}}</h3>
+
+<p>{{accordionDocs.description}}</p>
+
+<template ngFor let-input [ngForOf]="accordionDocs.inputs">
+  <ngbd-instructions-item [item]="input.item" [description]="input.description"></ngbd-instructions-item>
+</template>
+
+<h3>{{panelDocs.title}}</h3>
+
+<p>{{panelDocs.description}}</p>
+
+<template ngFor let-input [ngForOf]="panelDocs.inputs">
+  <ngbd-instructions-item [item]="input.item" [description]="input.description"></ngbd-instructions-item>
+</template>
+
+CODE:
+
+<ngb-tabset>
+  <ngb-tab title="typescript">
+    <template ngb-tab-content>
+      <pre class="language-typescript"><code class="language-typescript" [innerHTML]="basicTsContent"></code></pre>
+    </template>
+  </ngb-tab>
+  <ngb-tab title="html">
+    <template ngb-tab-content>
+      <pre class="language-html"><code class="language-html" [innerHTML]="basicHtmlContent"></code></pre>
+    </template>
+  </ngb-tab>
+</ngb-tabset>
 
 DEMO:
 
-<ngb-accordion></ngb-accordion>
+<ngbd-accordion-basic></ngbd-accordion-basic>
+
