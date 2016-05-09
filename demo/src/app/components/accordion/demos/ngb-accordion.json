@@ -1,0 +1,10 @@
+{
+  "title": "ngb-accordion",
+  "description": "This is an accordion and it rocks",
+  "inputs": [
+    {
+      "item": "closeOthers",
+      "description": "Whether the panel is open or closed."
+    }
+  ]
+}

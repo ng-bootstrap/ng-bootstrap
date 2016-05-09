@@ -1,0 +1,17 @@
+<p>
+  <button type="button" class="btn btn-primary btn-sm" (click)="isOpen = !isOpen">Toggle last panel</button>
+  <button type="button" class="btn btn-primary btn-sm" (click)="firstDisabled = !firstDisabled">Enable / Disable first panel</button>
+  <button type="button" class="btn btn-danger btn-sm" (click)="removeDynamic()">Remove last dynamic</button>
+</p>
+
+<ngb-accordion close-others="true">
+  <ngb-panel title="This is the header" [disabled]="firstDisabled" open="true">
+    This is the content
+  </ngb-panel>
+  <ngb-panel [title]="group.heading" *ngFor="let group of groups">
+    {{group.content}}
+  </ngb-panel>
+  <ngb-panel title="Another group" [open]="isOpen">
+    More content
+  </ngb-panel>
+</ngb-accordion>

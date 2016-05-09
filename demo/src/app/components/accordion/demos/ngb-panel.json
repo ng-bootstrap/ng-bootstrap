@@ -1,0 +1,18 @@
+{
+  "title": "ngb-panel",
+  "description": "This is an panel and it is good too.",
+  "inputs": [
+    {
+      "item": "disabled",
+      "description": "Whether the panel is disabled or not."
+    },
+    {
+      "item": "open",
+      "description": "Whether the panel is open or closed."
+    },
+    {
+      "item": "title",
+      "description": "The clickable text on the panel's header."
+    }
+  ]
+}

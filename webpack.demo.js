@@ -65,7 +65,11 @@ module.exports = function makeWebpackConfig() {
   config.resolve = {
     root: root('demo'),
     // only discover files that have those extensions
-    extensions: ['', '.ts', '.js', '.json', '.css', '.scss', '.html']
+    extensions: ['', '.ts', '.js', '.json', '.css', '.scss', '.html'],
+
+    alias: {
+      '@ng-bootstrap/accordion': root('src/accordion/accordion.ts')
+    }
   };
 
   /**

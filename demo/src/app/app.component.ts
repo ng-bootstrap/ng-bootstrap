@@ -5,6 +5,8 @@ import { HomeComponent } from './home';
 import { AccordionComponent } from './components/accordion';
 import { SideNavComponent } from './shared';
 
+import 'prismjs/themes/prism-okaidia.css';
+import 'bootstrap/dist/css/bootstrap.css';
 import '../style/app.scss';
 
 /*
