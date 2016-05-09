@@ -52,7 +52,6 @@
     "karma-firefox-launcher": "^0.1.6",
     "karma-jasmine": "^0.3.6",
     "karma-sourcemap-loader": "^0.3.6",
-    "markdown-loader": "^0.1.7",
     "merge2": "^1.0.1",
     "node-sass": "^3.7.0",
     "postcss-loader": "^0.9.1",
