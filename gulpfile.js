@@ -115,8 +115,7 @@ gulp.task('enforce-format', function() {
 });
 
 function doCheckFormat() {
-  return gulp.src(['gulpfile.js', 'karma-test-shim.js', PATHS.src, PATHS.demo])
-      .pipe(gulpFormat.checkFormat('file', clangFormat));
+  return gulp.src(['gulpfile.js', 'karma-test-shim.js', PATHS.src]).pipe(gulpFormat.checkFormat('file', clangFormat));
 }
 
 // Demo
@@ -125,20 +124,9 @@ gulp.task('clean:demo', function() { return del('demo/dist'); });
 
 gulp.task('clean:demo-cache', function() { return del('.publish/'); });
 
-gulp.task('copy:polyfills-demo', function() {
-  gulp.src('./node_modules/angular2/bundles/angular2-polyfills.js').pipe(gulp.dest('./demo/dist/lib/'));
-});
+gulp.task('demo-server', shell.task(['webpack-dev-server --config webpack.demo.js --inline --progress']));
 
-gulp.task(
-    'demo-server', ['copy:polyfills-demo'],
-    shell.task(['webpack-dev-server --config webpack.demo.js --inline --progress']));
-
-gulp.task('build:demo', function(done) {
-  var config = Object.create(webpackDemoConfig);
-  config.plugins = config.plugins.concat(new webpack.optimize.UglifyJsPlugin());
-
-  webpack(config, webpackCallBack('build:demo'), done);
-});
+gulp.task('build:demo', ['clean:demo'], shell.task(['webpack --config webpack.demo.js --progress --profile --bail']));
 
 gulp.task('demo-push', function() { return gulp.src(PATHS.demoDist).pipe(ghPages()); });
 
