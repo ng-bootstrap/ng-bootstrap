@@ -11,17 +11,19 @@ import {
 
 import {NgbCollapse} from '../collapse/collapse';
 
+var nextId = 0;
+
 @Component({
   selector: 'ngb-panel',
   exportAs: 'ngbPanel',
   template: `
     <div class="panel panel-default" [class.panel-open]="open">
-      <div class="panel-heading">
+      <div class="panel-heading" role="tab" [id]="id">
         <h4 class="panel-title">
           <a tabindex="0" (click)="toggleOpen($event)"><span [class.text-muted]="disabled">{{title}}</span></a>
         </h4>
       </div>
-      <div class="panel-collapse" [ngbCollapse]="!open">
+      <div class="panel-collapse" [ngbCollapse]="!open" [attr.aria-labelledby]="id">
         <div class="panel-body">
           <ng-content></ng-content>
         </div>
@@ -32,6 +34,7 @@ import {NgbCollapse} from '../collapse/collapse';
 })
 export class NgbPanel {
   @Input() disabled = false;
+  @Input() id = `ngb-panel-${nextId++}`;
   @Input() open = false;
   @Input() title: string;
 
