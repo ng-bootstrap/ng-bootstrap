@@ -124,7 +124,7 @@ gulp.task('clean:demo', function() { return del('demo/dist'); });
 
 gulp.task('clean:demo-cache', function() { return del('.publish/'); });
 
-gulp.task('demo-server', shell.task(['webpack-dev-server --config webpack.demo.js --inline --progress']));
+gulp.task('demo-server', shell.task(['webpack-dev-server --config webpack.demo.js --hot --inline --progress']));
 
 gulp.task('build:demo', ['clean:demo'], shell.task(['webpack --config webpack.demo.js --progress --profile --bail']));
 
