@@ -47,8 +47,8 @@ describe('ngb-tabset', () => {
   it('should render tabs and select first tab as active by default', async(inject([TestComponentBuilder], (tcb) => {
        const html = `
       <ngb-tabset>
-        <ngb-tab title="foo"><template ngb-tab-content>Foo</template></ngb-tab>
-        <ngb-tab title="bar"><template ngb-tab-content>Bar</template></ngb-tab>
+        <ngb-tab title="foo"><template ngbTabContent>Foo</template></ngb-tab>
+        <ngb-tab title="bar"><template ngbTabContent>Bar</template></ngb-tab>
       </ngb-tabset>
     `;
 
@@ -70,14 +70,14 @@ describe('ngb-tabset', () => {
   it('should allow mix of text and HTML in tab titles', async(inject([TestComponentBuilder], (tcb) => {
        const html = `
       <ngb-tabset>
-        <ngb-tab title="foo"><template ngb-tab-content>Foo</template></ngb-tab>
+        <ngb-tab title="foo"><template ngbTabContent>Foo</template></ngb-tab>
         <ngb-tab>
-          <template ngb-tab-title><b>bar</b></template>
-          <template ngb-tab-content>Bar</template>
+          <template ngbTabTitle><b>bar</b></template>
+          <template ngbTabContent>Bar</template>
         </ngb-tab>
         <ngb-tab title="baz">
-          <template ngb-tab-title>baz</template>
-          <template ngb-tab-content>Baz</template>
+          <template ngbTabTitle>baz</template>
+          <template ngbTabContent>Baz</template>
         </ngb-tab>
       </ngb-tabset>
     `;
@@ -96,8 +96,8 @@ describe('ngb-tabset', () => {
   it('should mark the requested tab as active', async(inject([TestComponentBuilder], (tcb) => {
        const html = `
       <ngb-tabset [activeIdx]="1">
-        <ngb-tab title="foo"><template ngb-tab-content>Foo</template></ngb-tab>
-        <ngb-tab title="bar"><template ngb-tab-content>Bar</template></ngb-tab>
+        <ngb-tab title="foo"><template ngbTabContent>Foo</template></ngb-tab>
+        <ngb-tab title="bar"><template ngbTabContent>Bar</template></ngb-tab>
       </ngb-tabset>
     `;
 
@@ -110,8 +110,8 @@ describe('ngb-tabset', () => {
   it('should auto-correct requested active tab index', async(inject([TestComponentBuilder], (tcb) => {
        const html = `
       <ngb-tabset [activeIdx]="activeTabIdx">
-        <ngb-tab title="foo"><template ngb-tab-content>Foo</template></ngb-tab>
-        <ngb-tab title="bar"><template ngb-tab-content>Bar</template></ngb-tab>
+        <ngb-tab title="foo"><template ngbTabContent>Foo</template></ngb-tab>
+        <ngb-tab title="bar"><template ngbTabContent>Bar</template></ngb-tab>
       </ngb-tabset>
     `;
 
@@ -129,8 +129,8 @@ describe('ngb-tabset', () => {
   it('should change active tab on tab title click', async(inject([TestComponentBuilder], (tcb) => {
        const html = `
       <ngb-tabset [activeIdx]="activeTabIdx">
-        <ngb-tab title="foo"><template ngb-tab-content>Foo</template></ngb-tab>
-        <ngb-tab title="bar"><template ngb-tab-content>Bar</template></ngb-tab>
+        <ngb-tab title="foo"><template ngbTabContent>Foo</template></ngb-tab>
+        <ngb-tab title="bar"><template ngbTabContent>Bar</template></ngb-tab>
       </ngb-tabset>
     `;
 

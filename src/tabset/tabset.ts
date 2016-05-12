@@ -9,12 +9,12 @@ import {
   AfterContentChecked
 } from '@angular/core';
 
-@Directive({selector: 'template[ngb-tab-title]'})
+@Directive({selector: 'template[ngbTabTitle]'})
 export class NgbTabTitle {
   constructor(public templateRef: TemplateRef<any>) {}
 }
 
-@Directive({selector: 'template[ngb-tab-content]'})
+@Directive({selector: 'template[ngbTabContent]'})
 export class NgbTabContent {
   constructor(public templateRef: TemplateRef<any>) {}
 }
