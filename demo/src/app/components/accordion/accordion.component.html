@@ -1,35 +1,56 @@
-<h3>{{accordionDocs.title}}</h3>
-
-<p>{{accordionDocs.description}}</p>
-
-<template ngFor let-input [ngForOf]="accordionDocs.inputs">
-  <ngbd-instructions-item [item]="input.item" [description]="input.description"></ngbd-instructions-item>
-</template>
-
-<h3>{{panelDocs.title}}</h3>
-
-<p>{{panelDocs.description}}</p>
-
-<template ngFor let-input [ngForOf]="panelDocs.inputs">
-  <ngbd-instructions-item [item]="input.item" [description]="input.description"></ngbd-instructions-item>
-</template>
-
-CODE:
-
-<ngb-tabset>
-  <ngb-tab title="typescript">
-    <template ngb-tab-content>
-      <pre class="language-typescript"><code class="language-typescript" [innerHTML]="basicTsContent"></code></pre>
+<div class="row">
+  <h1>{{ accordionDocs.title }}</h1>
+  <p class="lead">
+    {{ accordionDocs.description }}
+  </p>
+  <div class="row component-api">
+    <template ngFor let-input [ngForOf]="accordionDocs.inputs">
+      <ngbd-instructions-item [item]="input.item" [description]="input.description"></ngbd-instructions-item>
     </template>
-  </ngb-tab>
-  <ngb-tab title="html">
-    <template ngb-tab-content>
-      <pre class="language-html"><code class="language-html" [innerHTML]="basicHtmlContent"></code></pre>
+  </div>
+</div>
+<div class="row">
+  <h1>{{ panelDocs.title }}</h1>
+  <p class="lead">
+    {{ panelDocs.description }}
+  </p>
+  <div class="row component-api">
+    <template ngFor let-input [ngForOf]="panelDocs.inputs">
+      <ngbd-instructions-item [item]="input.item" [description]="input.description"></ngbd-instructions-item>
     </template>
-  </ngb-tab>
-</ngb-tabset>
-
-DEMO:
-
-<ngbd-accordion-basic></ngbd-accordion-basic>
-
+  </div>
+</div>
+<div class="row">
+  <div class="card">
+    <div class="card-header">
+      {{ accordionDocs.title }}
+      <div class="pull-xs-right">
+        <a href="#" title="View Source">
+          <img src="/img/code-icon.png"/>
+        </a>
+        <a target="_blank" href="http://plnkr.co" title="Edit in Plnkr">
+          <img src="/img/plunker-icon.png" height="24" width="24"/>
+        </a>
+      </div>
+    </div>
+    <!-- we want this to toggle with the click of the View Source button above.
+         this means we need to create a new component that defines the entire panel. -->
+    <div class="card-block" style="display: none;">
+      <ngb-tabset>
+        <ngb-tab title="typescript">
+          <template ngb-tab-content>
+            <pre class="language-typescript"><code class="language-typescript" [innerHTML]="basicTsContent"></code></pre>
+          </template>
+        </ngb-tab>
+        <ngb-tab title="html">
+          <template ngb-tab-content>
+            <pre class="language-html"><code class="language-html" [innerHTML]="basicHtmlContent"></code></pre>
+          </template>
+        </ngb-tab>
+      </ngb-tabset>
+    </div>
+    <div class="card-block">
+      <ngbd-accordion-basic></ngbd-accordion-basic>
+    </div>
+  </div>
+</div>
