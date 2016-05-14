@@ -25,9 +25,7 @@
     <div class="card-header">
       {{ accordionDocs.title }}
       <div class="pull-xs-right">
-        <a href="#" title="View Source">
-          <img src="/img/code-icon.png"/>
-        </a>
+        <img src="/img/code-icon.png" (click)="showCode = !showCode"/>
         <a target="_blank" href="http://plnkr.co" title="Edit in Plnkr">
           <img src="/img/plunker-icon.png" height="24" width="24"/>
         </a>
@@ -35,7 +33,7 @@
     </div>
     <!-- we want this to toggle with the click of the View Source button above.
          this means we need to create a new component that defines the entire panel. -->
-    <div class="card-block" style="display: none;">
+    <div class="card-block" *ngIf="showCode">
       <ngb-tabset>
         <ngb-tab title="typescript">
           <template ngb-tab-content>
