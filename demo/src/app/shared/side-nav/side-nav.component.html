@@ -19,6 +19,9 @@
           <li *ngFor="let component of components" [routerLinkActive]="['active']">
             <a [routerLink]="['/components', component.toLowerCase()]">{{ component }}</a>
           </li>
+          <li [routerLinkActive]="['active']">
+            <a [routerLink]="['/components/tooltip']">Tooltip</a>
+          </li>
         </ul>
       </div>
     </nav>

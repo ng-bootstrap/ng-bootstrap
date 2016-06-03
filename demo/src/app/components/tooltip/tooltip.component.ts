@@ -1,11 +1,14 @@
 import {Component} from '@angular/core';
+import {ContentWrapper} from '../../shared';
 import {NgbdApiDocs} from '../shared/api-docs';
 
 @Component({
   selector: 'ngbd-tooltip',
   template: `
-    <ngbd-api-docs directive="NgbTooltip"></ngbd-api-docs>
+    <ngbd-content-wrapper component="Tooltip">
+      <ngbd-api-docs directive="NgbTooltip"></ngbd-api-docs>
+    </ngbd-content-wrapper>  
   `,
-  directives: [NgbdApiDocs]
+  directives: [ContentWrapper, NgbdApiDocs]
 })
 export class NgbdTooltip {}
