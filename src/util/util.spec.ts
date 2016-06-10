@@ -10,8 +10,6 @@ import {
   beforeEachProviders
 } from '@angular/core/testing';
 
-import {TestComponentBuilder} from '@angular/compiler/testing';
-
 import {toBoolean, toInteger, getValueInRange} from './util';
 
 describe('util', () => {
