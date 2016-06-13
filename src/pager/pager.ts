@@ -36,8 +36,3 @@ export class NgbPager implements OnChanges {
 
   ngOnChanges(): void { this._currentPage = Math.max(Math.min(this.page, this.noOfPages - 1), 0) }
 }
-
-// TODO:
-//- inputs as string
-//- what about this special CSS that puts pager navigation apart? Aligned boolean attribute?
-//- aria attributes?
