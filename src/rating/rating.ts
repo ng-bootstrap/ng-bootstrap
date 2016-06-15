@@ -15,7 +15,7 @@ export class NgbRating implements OnInit {
   private _oldRate: number;
   range: number[] = [];
 
-  @Input() max = 10;
+  @Input() max: number = 10;
   @Input() rate: number;
   @Input() readonly: boolean;
 

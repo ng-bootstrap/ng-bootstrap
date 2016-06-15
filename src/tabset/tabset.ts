@@ -47,7 +47,7 @@ export class NgbTab {
 export class NgbTabset implements AfterContentChecked {
   @ContentChildren(NgbTab) tabs: QueryList<NgbTab>;
 
-  @Input() activeIdx = 0;
+  @Input() activeIdx: number = 0;
 
   select(tabIdx: number) { this.activeIdx = tabIdx; }
 

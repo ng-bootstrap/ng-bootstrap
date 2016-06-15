@@ -13,7 +13,7 @@ import {getValueInRange, toBoolean} from '../util/util';
   `
 })
 export class NgbProgressbar {
-  @Input() max = 100;
+  @Input() max: number = 100;
   @Input() striped: boolean | string;
   @Input() type: string;
   @Input() value: number;

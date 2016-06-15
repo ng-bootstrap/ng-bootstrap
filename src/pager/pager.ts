@@ -14,8 +14,8 @@ import {Component, ChangeDetectionStrategy, OnChanges, Input, Output, EventEmitt
 })
 export class NgbPager implements OnChanges {
   private _currentPage = 0;  // internal state
-  @Input() noOfPages = 0;
-  @Input() page = 0;
+  @Input() noOfPages: number = 0;
+  @Input() page: number = 0;
   @Output() pageChange = new EventEmitter();
 
   prev(): void {

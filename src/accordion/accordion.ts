@@ -33,9 +33,9 @@ var nextId = 0;
   directives: [NgbCollapse]
 })
 export class NgbPanel {
-  @Input() disabled = false;
-  @Input() id = `ngb-panel-${nextId++}`;
-  @Input() open = false;
+  @Input() disabled: boolean = false;
+  @Input() id: string = `ngb-panel-${nextId++}`;
+  @Input() open: boolean = false;
   @Input() title: string;
 
   constructor(@Optional() @Inject(forwardRef(() => NgbAccordion)) private accordion: NgbAccordion) {}
