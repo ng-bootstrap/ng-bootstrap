@@ -4,7 +4,7 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/common';
 const NGB_RADIO_VALUE_ACCESSOR =
     new Provider(NG_VALUE_ACCESSOR, {useExisting: forwardRef(() => NgbRadioGroup), multi: true});
 
-@Directive({selector: '[ngb-radio-group][ngModel]', bindings: [NGB_RADIO_VALUE_ACCESSOR]})
+@Directive({selector: '[ngb-radio-group][ngModel]', providers: [NGB_RADIO_VALUE_ACCESSOR]})
 export class NgbRadioGroup implements ControlValueAccessor {
   private _radios: Set<NgbRadio> = new Set<NgbRadio>();
   private _selectedRadio: NgbRadio = null;
