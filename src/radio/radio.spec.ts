@@ -1,4 +1,4 @@
-import {it, iit, expect, inject, async, tick, fakeAsync, describe, ddescribe} from '@angular/core/testing';
+import {it, iit, expect, inject, async, describe, ddescribe} from '@angular/core/testing';
 import {TestComponentBuilder} from '@angular/compiler/testing';
 import {Component} from '@angular/core';
 import {NGB_RADIO_DIRECTIVES} from './radio';
@@ -27,10 +27,10 @@ describe('ng-radio-group', () => {
 
   const defaultHtml = `<div [(ngModel)]="model" ngb-radio-group>
       <label class="btn">
-        <input type="radio" name="radio" [value]="values[0]" ngb-radio/> {{ values[0] }}
+        <input type="radio" name="radio" [value]="values[0]"/> {{ values[0] }}
       </label>
       <label class="btn">
-        <input type="radio" name="radio" [value]="values[1]" ngb-radio/> {{ values[1] }}
+        <input type="radio" name="radio" [value]="values[1]"/> {{ values[1] }}
       </label>
     </div>`;
 
@@ -39,8 +39,11 @@ describe('ng-radio-group', () => {
 
          let values = fixture.componentInstance.values;
 
+         // checking initial values
          fixture.detectChanges();
          expectRadios(fixture.nativeElement, [0, 0]);
+         expect(getInput(fixture.nativeElement, 0).value).toEqual(values[0]);
+         expect(getInput(fixture.nativeElement, 1).value).toEqual(values[1]);
 
          // checking null
          fixture.componentInstance.model = null;
@@ -64,7 +67,7 @@ describe('ng-radio-group', () => {
        });
      })));
 
-  it('updates model based on radio input clicks', fakeAsync(inject([TestComponentBuilder], (tcb) => {
+  it('updates model based on radio input clicks', async(inject([TestComponentBuilder], (tcb) => {
        tcb.overrideTemplate(TestComponent, defaultHtml).createAsync(TestComponent).then((fixture) => {
 
          fixture.detectChanges();
@@ -72,21 +75,19 @@ describe('ng-radio-group', () => {
 
          // clicking first radio
          getInput(fixture.nativeElement, 0).click();
-         tick();
          fixture.detectChanges();
          expectRadios(fixture.nativeElement, [1, 0]);
          expect(fixture.componentInstance.model).toBe('one');
 
          // clicking second radio
          getInput(fixture.nativeElement, 1).click();
-         tick();
          fixture.detectChanges();
          expectRadios(fixture.nativeElement, [0, 1]);
          expect(fixture.componentInstance.model).toBe('two');
        });
      })));
 
-  it('can be used with objects as values', fakeAsync(inject([TestComponentBuilder], (tcb) => {
+  it('can be used with objects as values', async(inject([TestComponentBuilder], (tcb) => {
        tcb.overrideTemplate(TestComponent, defaultHtml).createAsync(TestComponent).then((fixture) => {
 
          let [one, two] = [{one: 'one'}, {two: 'two'}];
@@ -94,8 +95,11 @@ describe('ng-radio-group', () => {
          fixture.componentInstance.values[0] = one;
          fixture.componentInstance.values[1] = two;
 
+         // checking initial values
          fixture.detectChanges();
          expectRadios(fixture.nativeElement, [0, 0]);
+         expect(getInput(fixture.nativeElement, 0).value).toEqual({}.toString());
+         expect(getInput(fixture.nativeElement, 1).value).toEqual({}.toString());
 
          // checking model -> radio input
          fixture.componentInstance.model = one;
@@ -104,36 +108,45 @@ describe('ng-radio-group', () => {
 
          // checking radio click -> model
          getInput(fixture.nativeElement, 1).click();
-         tick();
          fixture.detectChanges();
          expectRadios(fixture.nativeElement, [0, 1]);
          expect(fixture.componentInstance.model).toBe(two);
        });
      })));
 
-  /*it('updates radio input values dynamically', fakeAsync(inject([TestComponentBuilder], (tcb) => {
-        tcb.overrideTemplate(TestComponent, defaultHtml).createAsync(TestComponent).then((fixture) => {
+  it('updates radio input values dynamically', async(inject([TestComponentBuilder], (tcb) => {
+       tcb.overrideTemplate(TestComponent, defaultHtml).createAsync(TestComponent).then((fixture) => {
 
-          let values = fixture.componentInstance.values;
+         let values = fixture.componentInstance.values;
 
-          // checking first radio
-          fixture.componentInstance.model = values[0];
-          fixture.detectChanges();
-          expectRadios(fixture.nativeElement, [1, 0]);
+         // checking first radio
+         fixture.componentInstance.model = values[0];
+         fixture.detectChanges();
+         expectRadios(fixture.nativeElement, [1, 0]);
+         expect(fixture.componentInstance.model).toEqual(values[0]);
 
-          // updating radio value
-          fixture.componentInstance.values[0] = 'ten';
-          fixture.detectChanges();
-          expectRadios(fixture.nativeElement, [1, 0]);
-          expect(fixture.componentInstance.model).toEqual('ten');
-        });
-      })));*/
+         // updating first radio value -> expecting none selected
+         let initialValue = values[0];
+         values[0] = 'ten';
+         fixture.detectChanges();
+         expectRadios(fixture.nativeElement, [0, 0]);
+         expect(getInput(fixture.nativeElement, 0).value).toEqual('ten');
+         expect(fixture.componentInstance.model).toEqual(initialValue);
+
+         // updating values back -> expecting initial state
+         values[0] = initialValue;
+         fixture.detectChanges();
+         expectRadios(fixture.nativeElement, [1, 0]);
+         expect(getInput(fixture.nativeElement, 0).value).toEqual(values[0]);
+         expect(fixture.componentInstance.model).toEqual(values[0]);
+       });
+     })));
 
   it('can be used with ngFor', async(inject([TestComponentBuilder], (tcb) => {
 
        const forHtml = `<div [(ngModel)]="model" ngb-radio-group>
           <label *ngFor="let v of values" class="btn">
-            <input type="radio" name="radio" [value]="v" ngb-radio/> {{ v }}
+            <input type="radio" name="radio" [value]="v"/> {{ v }}
           </label>
         </div>`;
 
@@ -150,55 +163,51 @@ describe('ng-radio-group', () => {
        });
      })));
 
-  /*it('cleans up the model when radio inputs are hidden', fakeAsync(inject([TestComponentBuilder], (tcb) => {
+  it('cleans up the model when radio inputs are hidden', async(inject([TestComponentBuilder], (tcb) => {
 
-        const ifHtml = `<div [(ngModel)]="model" ngb-radio-group>
+       const ifHtml = `<div [(ngModel)]="model" ngb-radio-group>
         <label class="btn">
-          <input type="radio" name="radio" [value]="values[0]" ngb-radio/> {{ values[0] }}
+          <input type="radio" name="radio" [value]="values[0]"/> {{ values[0] }}
         </label>
         <label *ngIf="shown" class="btn">
-          <input type="radio" name="radio" [value]="values[1]" ngb-radio/> {{ values[1] }}
+          <input type="radio" name="radio" [value]="values[1]"/> {{ values[1] }}
         </label>
       </div>`;
 
-        tcb.overrideTemplate(TestComponent, ifHtml).createAsync(TestComponent).then((fixture) => {
+       tcb.overrideTemplate(TestComponent, ifHtml).createAsync(TestComponent).then((fixture) => {
 
-          let values = fixture.componentInstance.values;
+         let values = fixture.componentInstance.values;
 
-          // hiding/showing non-selected radio -> expecting initial model value
-          fixture.detectChanges();
-          expectRadios(fixture.nativeElement, [0, 0]);
+         // hiding/showing non-selected radio -> expecting initial model value
+         fixture.detectChanges();
+         expectRadios(fixture.nativeElement, [0, 0]);
 
-          fixture.componentInstance.shown = false;
-          fixture.detectChanges();
-          expectRadios(fixture.nativeElement, [0]);
-          tick();
-          expect(fixture.componentInstance.model).toBeUndefined();
+         fixture.componentInstance.shown = false;
+         fixture.detectChanges();
+         expectRadios(fixture.nativeElement, [0]);
+         expect(fixture.componentInstance.model).toBeUndefined();
 
-          fixture.componentInstance.shown = true;
-          fixture.detectChanges();
-          expectRadios(fixture.nativeElement, [0, 0]);
-          tick();
-          expect(fixture.componentInstance.model).toBeUndefined();
+         fixture.componentInstance.shown = true;
+         fixture.detectChanges();
+         expectRadios(fixture.nativeElement, [0, 0]);
+         expect(fixture.componentInstance.model).toBeUndefined();
 
-          // hiding/showing selected radio -> expecting model to become null
-          fixture.componentInstance.model = values[1];
-          fixture.detectChanges();
-          expectRadios(fixture.nativeElement, [0, 1]);
+         // hiding/showing selected radio -> expecting model to unchange, but none selected
+         fixture.componentInstance.model = values[1];
+         fixture.detectChanges();
+         expectRadios(fixture.nativeElement, [0, 1]);
 
-          fixture.componentInstance.shown = false;
-          fixture.detectChanges();
-          expectRadios(fixture.nativeElement, [0]);
-          tick();
-          expect(fixture.componentInstance.model).toBeNull();
+         fixture.componentInstance.shown = false;
+         fixture.detectChanges();
+         expectRadios(fixture.nativeElement, [0]);
+         expect(fixture.componentInstance.model).toEqual(values[1]);
 
-          fixture.componentInstance.shown = true;
-          fixture.detectChanges();
-          expectRadios(fixture.nativeElement, [0, 0]);
-          tick();
-          expect(fixture.componentInstance.model).toBeNull();
-        });
-      })));*/
+         fixture.componentInstance.shown = true;
+         fixture.detectChanges();
+         expectRadios(fixture.nativeElement, [0, 1]);
+         expect(fixture.componentInstance.model).toEqual(values[1]);
+       });
+     })));
 
 });
 

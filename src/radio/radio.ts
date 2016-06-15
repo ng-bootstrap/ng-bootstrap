@@ -1,64 +1,41 @@
-import {Directive, forwardRef, Provider, Host, Optional, Input, Renderer, ElementRef, OnDestroy} from '@angular/core';
+import {Directive, forwardRef, Host, Optional, Input, Renderer, ElementRef, OnDestroy} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/common';
 
-const NGB_RADIO_VALUE_ACCESSOR =
-    new Provider(NG_VALUE_ACCESSOR, {useExisting: forwardRef(() => NgbRadioGroup), multi: true});
+const NGB_RADIO_VALUE_ACCESSOR = {
+  provide: NG_VALUE_ACCESSOR,
+  useExisting: forwardRef(() => NgbRadioGroup),
+  multi: true
+};
 
 @Directive({selector: '[ngb-radio-group][ngModel]', providers: [NGB_RADIO_VALUE_ACCESSOR]})
 export class NgbRadioGroup implements ControlValueAccessor {
   private _radios: Set<NgbRadio> = new Set<NgbRadio>();
-  private _selectedRadio: NgbRadio = null;
   private _value = null;
 
   onChange = (_: any) => {};
   onTouched = () => {};
 
-  onRadioChange(radio: NgbRadio) { this._setGroupValue(radio); }
-
-  onRadioValueUpdate(radio: NgbRadio) {
-    if (this._selectedRadio === radio) {
-      this.onRadioChange(radio);
-    } else {
-      this._updateRadios();
-    }
+  onRadioChange(radio: NgbRadio) {
+    this.writeValue(radio.value);
+    this.onChange(radio.value);
   }
 
-  register(radio: NgbRadio) {
-    this._radios.add(radio);
-    this._updateRadios();
-  }
+  onRadioValueUpdate() { this._updateRadios(); }
+
+  register(radio: NgbRadio) { this._radios.add(radio); }
 
   registerOnChange(fn: (value: any) => any): void { this.onChange = fn; }
 
   registerOnTouched(fn: () => any): void { this.onTouched = fn; }
 
-  unregister(radio: NgbRadio) {
-    this._radios.delete(radio);
-    if (this._selectedRadio === radio) {
-      this._setGroupValue(null);
-    }
-  }
+  unregister(radio: NgbRadio) { this._radios.delete(radio); }
 
   writeValue(value) {
     this._value = value;
     this._updateRadios();
   }
 
-  private _setGroupValue(radio: NgbRadio) {
-    this._selectedRadio = radio;
-    const value = radio ? radio.value : null;
-    this.writeValue(value);
-    this.onChange(value);
-  }
-
-  private _updateRadios() {
-    this._selectedRadio = null;
-    this._radios.forEach((radio) => {
-      if (radio.markChecked(this._value)) {
-        this._selectedRadio = radio;
-      }
-    });
-  }
+  private _updateRadios() { this._radios.forEach((radio) => radio.markChecked(this._value)); }
 }
 
 
@@ -81,7 +58,7 @@ export class NgbRadio implements OnDestroy {
     this.renderer.setElementProperty(this.element.nativeElement, 'value', stringValue);
 
     if (this.group) {
-      this.group.onRadioValueUpdate(this);
+      this.group.onRadioValueUpdate();
     }
   }
 
@@ -95,11 +72,9 @@ export class NgbRadio implements OnDestroy {
     }
   }
 
-  markChecked(value): boolean {
+  markChecked(value) {
     this.checked = (this.value === value && value !== null);
     this.label.checked = this.checked;
-
-    return this.checked;
   }
 
   ngOnDestroy() {
