@@ -13,8 +13,8 @@ import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy} from '@
     `
 })
 export class NgbAlert {
-  @Input() dismissible = true;
-  @Input() type = 'warning';
+  @Input() dismissible: boolean = true;
+  @Input() type: string = 'warning';
   @Output() close = new EventEmitter();
 
   closeHandler() { this.close.emit(null); }

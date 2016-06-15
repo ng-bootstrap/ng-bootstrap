@@ -3,7 +3,7 @@ import {Directive, Input, HostListener} from '@angular/core';
 @Directive(
     {selector: '[ngbDropdown]', exportAs: 'ngbDropdown', host: {'[class.open]': 'open', '(keyup.esc)': 'close()'}})
 export class NgbDropdown {
-  @Input() open = false;
+  @Input() open: boolean = false;
 
   close() { this.open = false; }
 }

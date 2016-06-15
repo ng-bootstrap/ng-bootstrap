@@ -11,6 +11,6 @@ import {Component, Input, ChangeDetectionStrategy} from '@angular/core';
     `
 })
 export class NgbPopoverWindow {
-  @Input() placement = 'top';
+  @Input() placement: string = 'top';
   @Input() title: string;
 }

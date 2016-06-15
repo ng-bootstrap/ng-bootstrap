@@ -10,5 +10,5 @@ import {Component, Input, ChangeDetectionStrategy} from '@angular/core';
     `
 })
 export class NgbTooltipWindow {
-  @Input() placement = 'top';
+  @Input() placement: string = 'top';
 }

@@ -20,8 +20,8 @@ import {ModalDismissReasons} from './modal_dismiss_reasons';
     `
 })
 export class NgbModalWindow {
-  @Input() backdrop = true;
-  @Input() keyboard = true;
+  @Input() backdrop: boolean = true;
+  @Input() keyboard: boolean = true;
   @Input() size: string;
 
   @Output('close') closeEvent = new EventEmitter();
