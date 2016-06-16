@@ -1,9 +1,9 @@
 {
-  "title": "ngb-accordion",
+  "name": "ngb-accordion",
   "description": "This is an accordion and it rocks",
   "inputs": [
     {
-      "item": "closeOthers",
+      "name": "closeOthers",
       "description": "Whether the panel is open or closed."
     }
   ]

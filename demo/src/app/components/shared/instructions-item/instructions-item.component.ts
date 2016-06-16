@@ -5,6 +5,6 @@ import { Component, Input } from '@angular/core';
   template: require('./instructions-item.component.html')
 })
 export class InstructionsItemComponent {
-  @Input() item: string;
+  @Input() name: string;
   @Input() description: string;
 }
