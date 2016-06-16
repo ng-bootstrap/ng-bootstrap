@@ -1,7 +1,8 @@
-import {Component, Input, Output, EventEmitter, OnInit} from '@angular/core';
+import {Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit} from '@angular/core';
 
 @Component({
   selector: 'ngb-rating',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <span tabindex="0" (mouseleave)="reset()" aria-valuemin="0" [attr.aria-valuemax]="max" [attr.aria-valuenow]="rate">
       <template ngFor let-r [ngForOf]="range" let-index="index">
