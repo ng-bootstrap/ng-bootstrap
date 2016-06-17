@@ -8,21 +8,25 @@ hr.header {
   background-color: #80b5ff;
 }
 
-button.header-button {
+a.header-button {
   color: #80b5ff;
   border-color: #80b5ff;
 }
 
-button.header-button:focus,
-button.header-button:hover,
-button.header-button:active {
+a.header-button:focus,
+a.header-button:hover,
+a.header-button:active {
   color: #003580;
   background-color: #80b5ff;
   border-color: #80b5ff;
 }
 
-div.github-buttons {
+p.github-buttons {
   padding-left: 0;
+}
+
+p.github-buttons > iframe {
+  margin-right: 20px;
 }
 
 @media (min-width: 768px) {
