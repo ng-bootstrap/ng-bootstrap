@@ -3,8 +3,7 @@ import { Component } from '@angular/core';
 import { ComponentDocsComponent, ExampleBoxComponent } from '../shared';
 import { AccordionBasicComponent, basicHtmlContent, basicTsContent } from './demos';
 
-const accordionDocs = require('./demos/ngb-accordion.json');
-const panelDocs = require('./demos/ngb-panel.json');
+const docs = require('../../../docs.json');
 
 @Component({
   selector: 'ngbd-accordion',
@@ -12,8 +11,8 @@ const panelDocs = require('./demos/ngb-panel.json');
   directives: [AccordionBasicComponent, ComponentDocsComponent, ExampleBoxComponent]
 })
 export class AccordionComponent {
-  accordionDocs = accordionDocs;
-  panelDocs = panelDocs;
+  accordionDocs = docs.NgbAccordion;
+  panelDocs = docs.NgbPanel;
   basicHtmlContent = basicHtmlContent;
   basicTsContent = basicTsContent;
 }

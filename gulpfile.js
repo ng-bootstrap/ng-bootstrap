@@ -19,7 +19,8 @@ var PATHS = {
   specs: 'src/**/*.spec.ts',
   demo: 'demo/**/*.ts',
   demoDist: 'demo/dist/**/*',
-  typings: 'typings/browser.d.ts'
+  typings: 'typings/browser.d.ts',
+  demoDocsJson: 'demo/src/docs.json'
 };
 
 function webpackCallBack(taskName, gulpDone) {
@@ -128,13 +129,25 @@ function doCheckFormat() {
 
 // Demo
 
+gulp.task('generate-docs', function() {
+  var getApiDocs = require('./misc/get-doc');
+  var jsonfile = require('jsonfile');
+
+  var docs = getApiDocs();
+  jsonfile.writeFileSync(PATHS.demoDocsJson, docs);
+});
+
 gulp.task('clean:demo', function() { return del('demo/dist'); });
 
 gulp.task('clean:demo-cache', function() { return del('.publish/'); });
 
-gulp.task('demo-server', shell.task(['webpack-dev-server --config webpack.demo.js --hot --inline --progress']));
+gulp.task(
+    'demo-server', ['generate-docs'],
+    shell.task(['webpack-dev-server --config webpack.demo.js --hot --inline --progress']));
 
-gulp.task('build:demo', ['clean:demo'], shell.task(['webpack --config webpack.demo.js --progress --profile --bail']));
+gulp.task(
+    'build:demo', ['clean:demo', 'generate-docs'],
+    shell.task(['webpack --config webpack.demo.js --progress --profile --bail']));
 
 gulp.task('demo-push', function() { return gulp.src(PATHS.demoDist).pipe(ghPages()); });
 
