@@ -33,7 +33,7 @@ export class NgbTab {
   template: `
     <ul class="nav nav-tabs" role="tablist">
       <li class="nav-item" *ngFor="let tab of tabs; let i=index">
-        <a class="nav-link" [class.active]="i === activeIdx" (click)="select(i)">
+        <a class="nav-link" [class.active]="i === activeIdx && !disabled" [class.disabled]="tab.disabled" (click)="select(i)">
           {{tab.title}}<template [ngTemplateOutlet]="tab.titleTpl?.templateRef"></template>
         </a>
       </li>
