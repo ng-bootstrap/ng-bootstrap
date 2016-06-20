@@ -18,7 +18,7 @@ export class NgbSlide {
 @Component({
   selector: 'ngb-carousel',
   exportAs: 'ngbCarousel',
-  host: {'class': 'carousel slide', '(mouseenter)': 'pause()', '(mouseleave)': 'cycle()'},
+  host: {'class': 'carousel slide', '[style.display]': '"block"', '(mouseenter)': 'pause()', '(mouseleave)': 'cycle()'},
   template: `
     <ol class="carousel-indicators">
       <li *ngFor="let slide of _slides; let slideIdx = index" [class.active]="slideIdx === _activeIdx" (click)="select(slideIdx)"></li>
