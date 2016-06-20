@@ -131,6 +131,23 @@ describe('ngb-pagination', () => {
            expectPager(fixture.nativeElement, [true, true]);
          });
        })));
+
+    it('should have pager-prev and pager-next classes set', async(inject([TestComponentBuilder], (tcb) => {
+         const html = '<ngb-pager [noOfPages]="noOfPages" page="5" [alignLinks]="shouldAlign"></ngb-pager>';
+
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+           fixture.detectChanges();
+           expect(fixture.nativeElement.querySelectorAll('li')[0]).toHaveCssClass('pager-prev');
+           expect(fixture.nativeElement.querySelectorAll('li')[1]).toHaveCssClass('pager-next');
+
+           const tc = fixture.componentInstance;
+           tc.shouldAlign = false;
+           fixture.detectChanges();
+           expect(fixture.nativeElement.querySelectorAll('li')[0]).not.toHaveCssClass('pager-prev');
+           expect(fixture.nativeElement.querySelectorAll('li')[1]).not.toHaveCssClass('pager-next');
+
+         });
+       })));
   });
 
 });
@@ -139,4 +156,5 @@ describe('ngb-pagination', () => {
 class TestComponent {
   noOfPages = 10;
   page = 1;
+  shouldAlign = true;
 }
