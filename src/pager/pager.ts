@@ -6,8 +6,8 @@ import {Component, ChangeDetectionStrategy, OnChanges, Input, Output, EventEmitt
   template: `
     <nav>
       <ul class="pager">
-        <li [class.disabled]="!hasPrev()"><a (click)="prev()">Previous</a></li>
-        <li [class.disabled]="!hasNext()"><a (click)="next()">Next</a></li>
+        <li [class.disabled]="!hasPrev()" [class.pager-prev]="alignLinks"><a (click)="prev()">Previous</a></li>
+        <li [class.disabled]="!hasNext()" [class.pager-next]="alignLinks"><a (click)="next()">Next</a></li>
       </ul>
     </nav>
     `
@@ -16,6 +16,7 @@ export class NgbPager implements OnChanges {
   private _currentPage = 0;  // internal state
   @Input() noOfPages: number = 0;
   @Input() page: number = 0;
+  @Input() alignLinks: boolean = false;
   @Output() pageChange = new EventEmitter();
 
   prev(): void {

@@ -36,6 +36,20 @@ function getLink(nativeEl: HTMLElement, idx: number): HTMLAnchorElement {
   return <HTMLAnchorElement>nativeEl.querySelectorAll('li')[idx].querySelector('a');
 }
 
+function expectAlignClasses(nativeEl: HTMLElement, active: boolean[]) {
+  const pagerCtrls = nativeEl.querySelectorAll('li');
+
+  for (let i = 0; i < active.length; i++) {
+    if (active[i]) {
+      expect(pagerCtrls[0]).toHaveCssClass('pager-prev');
+      expect(pagerCtrls[1]).toHaveCssClass('pager-next');
+    } else {
+      expect(pagerCtrls[0]).not.toHaveCssClass('pager-prev');
+      expect(pagerCtrls[1]).not.toHaveCssClass('pager-next');
+    }
+  }
+}
+
 describe('ngb-pagination', () => {
 
   describe('business logic', () => {
@@ -129,6 +143,23 @@ describe('ngb-pagination', () => {
            getLink(fixture.nativeElement, 1).click();
            fixture.detectChanges();
            expectPager(fixture.nativeElement, [true, true]);
+         });
+       })));
+
+    it('should have pager-prev and pager-next classes set', async(inject([TestComponentBuilder], (tcb) => {
+         const html = '<ngb-pager [noOfPages]="noOfPages" page="5" [alignLinks]=true></ngb-pager>';
+
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+           fixture.detectChanges();
+           expectPager(fixture.nativeElement, [true, true]);
+           expectAlignClasses(fixture.nativeElement, [true, true]);
+
+           fixture.componentInstance.noOfPages = 5;
+           fixture.componentInstance.page = 5;
+           fixture.detectChanges();
+           expectPager(fixture.nativeElement, [true, false]);
+           expectAlignClasses(fixture.nativeElement, [true, true]);
+
          });
        })));
   });
