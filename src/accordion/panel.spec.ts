@@ -1,4 +1,4 @@
-import {iit, it, ddescribe, describe, expect, inject, injectAsync, beforeEachProviders} from '@angular/core/testing';
+import {iit, it, ddescribe, describe, expect, inject, async, beforeEachProviders} from '@angular/core/testing';
 
 import {TestComponentBuilder} from '@angular/compiler/testing';
 
@@ -28,7 +28,7 @@ function expectToBeEnabled(panelEl) {
 
 describe('ngb-panel', () => {
 
-  it('should render as a closed, enabled panel by default', injectAsync([TestComponentBuilder], (tcb) => {
+  it('should render as a closed, enabled panel by default', async(inject([TestComponentBuilder], (tcb) => {
        const panelHtml = `
       <ngb-panel title="Test title">Test content</ngb-panel>
     `;
@@ -40,9 +40,9 @@ describe('ngb-panel', () => {
          expectToBeClosed(panelEl);
          expectToBeEnabled(panelEl);
        });
-     }));
+     })));
 
-  it('should render an open pane when requested', injectAsync([TestComponentBuilder], (tcb) => {
+  it('should render an open pane when requested', async(inject([TestComponentBuilder], (tcb) => {
        const panelHtml = `
       <ngb-panel title="Test title" [open]="true">Test content</ngb-panel>
     `;
@@ -53,9 +53,9 @@ describe('ngb-panel', () => {
          fixture.detectChanges();
          expectToBeOpen(panelEl);
        });
-     }));
+     })));
 
-  it('should render a disabled pane when requested', injectAsync([TestComponentBuilder], (tcb) => {
+  it('should render a disabled pane when requested', async(inject([TestComponentBuilder], (tcb) => {
        const panelHtml = `
       <ngb-panel title="Test title" [disabled]="true">Test content</ngb-panel>
     `;
@@ -67,9 +67,9 @@ describe('ngb-panel', () => {
          expectToBeClosed(panelEl);
          expectToBeDisabled(panelEl);
        });
-     }));
+     })));
 
-  it('should render an open and disabled pane when requested', injectAsync([TestComponentBuilder], (tcb) => {
+  it('should render an open and disabled pane when requested', async(inject([TestComponentBuilder], (tcb) => {
        const panelHtml = `
       <ngb-panel title="Test title" [open]="true" [disabled]="true">Test content</ngb-panel>
     `;
@@ -81,9 +81,9 @@ describe('ngb-panel', () => {
          expectToBeOpen(panelEl);
          expectToBeDisabled(panelEl);
        });
-     }));
+     })));
 
-  it('should toggle open on header click', injectAsync([TestComponentBuilder], (tcb) => {
+  it('should toggle open on header click', async(inject([TestComponentBuilder], (tcb) => {
        const panelHtml = `
       <ngb-panel title="Test title">Test content</ngb-panel>
     `;
@@ -99,9 +99,9 @@ describe('ngb-panel', () => {
          fixture.detectChanges();
          expectToBeClosed(panelEl);
        });
-     }));
+     })));
 
-  it('should not toggle open on header click if disabled', injectAsync([TestComponentBuilder], (tcb) => {
+  it('should not toggle open on header click if disabled', async(inject([TestComponentBuilder], (tcb) => {
        const panelHtml = `
       <ngb-panel title="Test title" [disabled]="true">Test content</ngb-panel>
     `;
@@ -116,7 +116,7 @@ describe('ngb-panel', () => {
          fixture.detectChanges();
          expectToBeClosed(panelEl);
        });
-     }));
+     })));
 
 });
 
