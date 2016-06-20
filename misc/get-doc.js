@@ -1,6 +1,14 @@
 var doc = require('./api-doc');
+var glob = require('glob');
 
-function getFileNames(directiveName) {
-  return [`./src/${directiveName}/${directiveName}.ts`];
+function getFileNames() {
+  return glob.sync('src/**/*.ts', {
+    ignore: ['src/**/*.spec.ts', 'src/util/**']
+  });
 }
-console.log(JSON.stringify(doc(getFileNames('tabset'))));
+
+function getApiDocs() {
+  return doc(getFileNames());
+}
+
+module.exports = getApiDocs;
