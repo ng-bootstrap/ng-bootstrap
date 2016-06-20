@@ -22,6 +22,7 @@ export class NgbTabContent {
 @Directive({selector: 'ngb-tab'})
 export class NgbTab {
   @Input() title: string;
+  @Input() disabled: boolean = false;
 
   @ContentChild(NgbTabContent) contentTpl: NgbTabContent;
   @ContentChild(NgbTabTitle) titleTpl: NgbTabTitle;
@@ -49,7 +50,11 @@ export class NgbTabset implements AfterContentChecked {
 
   @Input() activeIdx: number = 0;
 
-  select(tabIdx: number) { this.activeIdx = tabIdx; }
+  select(tabIdx: number) {
+    if (!this.tabs.toArray()[tabIdx].disabled) {
+      this.activeIdx = tabIdx;
+    }
+  }
 
   ngAfterContentChecked() {
     // auto-correct _activeIdx that might have been set incorrectly as input

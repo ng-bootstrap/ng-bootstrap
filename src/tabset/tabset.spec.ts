@@ -149,6 +149,25 @@ describe('ngb-tabset', () => {
        });
      })));
 
+  it('should not change active tab on disabled tab title click', async(inject([TestComponentBuilder], (tcb) => {
+       const html = `
+         <ngb-tabset [activeIdx]="activeTabIdx">
+           <ngb-tab title="foo"><template ngbTabContent>Foo</template></ngb-tab>
+           <ngb-tab title="bar" [disabled]=true><template ngbTabContent>Bar</template></ngb-tab>
+         </ngb-tabset>
+       `;
+
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         fixture.detectChanges();
+
+         const tabTitles = getTabTitles(fixture.nativeElement);
+
+         (<HTMLAnchorElement>tabTitles[1]).click();
+         fixture.detectChanges();
+         expectActiveTabs(fixture.nativeElement, [false, false]);
+       });
+     })));
+
 });
 
 @Component({selector: 'test-cmp', directives: [NgbTabset, NgbTab, NgbTabContent, NgbTabTitle], template: ''})
