@@ -118,6 +118,13 @@ describe('ngb-panel', () => {
        });
      })));
 
+  it('should have the tabpanel role attribute', async(inject([TestComponentBuilder], (tcb) => {
+       const panelHtml = `<ngb-panel title="Test title" [disabled]="true">Test content</ngb-panel>`;
+
+       return tcb.overrideTemplate(TestComponent, panelHtml).createAsync(TestComponent).then((fixture) => {
+         expect(fixture.nativeElement.querySelector('.panel .panel-collapse').getAttribute('role')).toEqual('tabpanel');
+       });
+     })));
 });
 
 @Component({selector: 'test-cmp', directives: [NgbPanel], template: ''})
