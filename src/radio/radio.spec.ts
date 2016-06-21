@@ -23,9 +23,9 @@ function getInput(nativeEl: HTMLElement, idx: number): HTMLInputElement {
   return <HTMLInputElement>nativeEl.querySelectorAll('input')[idx];
 }
 
-describe('ng-radio-group', () => {
+describe('ngbRadioGroup', () => {
 
-  const defaultHtml = `<div [(ngModel)]="model" ngb-radio-group>
+  const defaultHtml = `<div [(ngModel)]="model" ngbRadioGroup>
       <label class="btn">
         <input type="radio" name="radio" [value]="values[0]"/> {{ values[0] }}
       </label>
@@ -144,7 +144,7 @@ describe('ng-radio-group', () => {
 
   it('can be used with ngFor', async(inject([TestComponentBuilder], (tcb) => {
 
-       const forHtml = `<div [(ngModel)]="model" ngb-radio-group>
+       const forHtml = `<div [(ngModel)]="model" ngbRadioGroup>
           <label *ngFor="let v of values" class="btn">
             <input type="radio" name="radio" [value]="v"/> {{ v }}
           </label>
@@ -163,9 +163,9 @@ describe('ng-radio-group', () => {
        });
      })));
 
-  it('cleans up the model when radio inputs are hidden', async(inject([TestComponentBuilder], (tcb) => {
+  it('cleans up the model when radio inputs are added / removed', async(inject([TestComponentBuilder], (tcb) => {
 
-       const ifHtml = `<div [(ngModel)]="model" ngb-radio-group>
+       const ifHtml = `<div [(ngModel)]="model" ngbRadioGroup>
         <label class="btn">
           <input type="radio" name="radio" [value]="values[0]"/> {{ values[0] }}
         </label>
