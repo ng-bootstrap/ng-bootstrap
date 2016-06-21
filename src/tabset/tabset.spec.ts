@@ -24,12 +24,18 @@ function getTabContent(nativeEl: HTMLElement) {
   return nativeEl.querySelectorAll('.tab-content .tab-pane');
 }
 
-function expectActiveTabs(nativeEl: HTMLElement, active: boolean[]) {
+function expectTabs(nativeEl: HTMLElement, active: boolean[], disabled?: boolean[]) {
   const tabTitles = getTabTitles(nativeEl);
   const tabContent = getTabContent(nativeEl);
 
   expect(tabTitles.length).toBe(active.length);
   expect(tabContent.length).toBe(active.length);
+
+  if (disabled) {
+    expect(disabled.length).toBe(active.length);
+  } else {
+    disabled = new Array(active.length);  // tabs are not disabled by default
+  }
 
   for (let i = 0; i < active.length; i++) {
     if (active[i]) {
@@ -39,17 +45,7 @@ function expectActiveTabs(nativeEl: HTMLElement, active: boolean[]) {
       expect(tabTitles[i]).not.toHaveCssClass('active');
       expect(tabContent[i]).not.toHaveCssClass('active');
     }
-  }
-}
 
-function expectDisabledTabs(nativeEl: HTMLElement, disabled: boolean[]) {
-  const tabTitles = getTabTitles(nativeEl);
-  const tabContent = getTabContent(nativeEl);
-
-  expect(tabTitles.length).toBe(disabled.length);
-  expect(tabContent.length).toBe(disabled.length);
-
-  for (let i = 0; i < disabled.length; i++) {
     if (disabled[i]) {
       expect(tabTitles[i]).toHaveCssClass('disabled');
     } else {
@@ -79,8 +75,7 @@ describe('ngb-tabset', () => {
          expect(tabContent[0].textContent).toMatchPattern(/Foo/);
          expect(tabContent[1].textContent).toMatchPattern(/Bar/);
 
-         expectActiveTabs(fixture.nativeElement, [true, false]);
-         expectDisabledTabs(fixture.nativeElement, [false, false]);
+         expectTabs(fixture.nativeElement, [true, false]);
        });
      })));
 
@@ -120,8 +115,7 @@ describe('ngb-tabset', () => {
 
        tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
-         expectActiveTabs(fixture.nativeElement, [false, true]);
-         expectDisabledTabs(fixture.nativeElement, [false, false]);
+         expectTabs(fixture.nativeElement, [false, true]);
        });
      })));
 
@@ -136,13 +130,43 @@ describe('ngb-tabset', () => {
        tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.componentInstance.activeTabIdx = 100;
          fixture.detectChanges();
-         expectActiveTabs(fixture.nativeElement, [false, true]);
-         expectDisabledTabs(fixture.nativeElement, [false, false]);
+         expectTabs(fixture.nativeElement, [false, true]);
 
          fixture.componentInstance.activeTabIdx = -100;
          fixture.detectChanges();
-         expectActiveTabs(fixture.nativeElement, [true, false]);
-         expectDisabledTabs(fixture.nativeElement, [false, false]);
+         expectTabs(fixture.nativeElement, [true, false]);
+       });
+     })));
+
+  it('should auto-correct requested active tab index for undefined indexes',
+     async(inject([TestComponentBuilder], (tcb) => {
+       const html = `
+      <ngb-tabset [activeIdx]="activeTabIdx">
+        <ngb-tab title="foo"><template ngbTabContent>Foo</template></ngb-tab>
+        <ngb-tab title="bar"><template ngbTabContent>Bar</template></ngb-tab>
+      </ngb-tabset>
+    `;
+
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         fixture.componentInstance.activeTabIdx = undefined;
+         fixture.detectChanges();
+         expectTabs(fixture.nativeElement, [true, false]);
+       });
+     })));
+
+  it('should auto-correct requested active tab index for non-existing indexes',
+     async(inject([TestComponentBuilder], (tcb) => {
+       const html = `
+      <ngb-tabset activeIdx="blah">
+        <ngb-tab title="foo"><template ngbTabContent>Foo</template></ngb-tab>
+        <ngb-tab title="bar"><template ngbTabContent>Bar</template></ngb-tab>
+      </ngb-tabset>
+    `;
+
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         fixture.componentInstance.activeTabIdx = undefined;
+         fixture.detectChanges();
+         expectTabs(fixture.nativeElement, [true, false]);
        });
      })));
 
@@ -161,53 +185,57 @@ describe('ngb-tabset', () => {
 
          (<HTMLAnchorElement>tabTitles[1]).click();
          fixture.detectChanges();
-         expectActiveTabs(fixture.nativeElement, [false, true]);
-         expectDisabledTabs(fixture.nativeElement, [false, false]);
+         expectTabs(fixture.nativeElement, [false, true]);
 
          (<HTMLAnchorElement>tabTitles[0]).click();
          fixture.detectChanges();
-         expectActiveTabs(fixture.nativeElement, [true, false]);
-         expectDisabledTabs(fixture.nativeElement, [false, false]);
+         expectTabs(fixture.nativeElement, [true, false]);
        });
      })));
 
-  it('should have disabled class on disabled tab', async(inject([TestComponentBuilder], (tcb) => {
+  it('should support disabled tabs', async(inject([TestComponentBuilder], (tcb) => {
        const html = `
-         <ngb-tabset [activeIdx]="activeTabIdx">
-           <ngb-tab title="foo" [disabled]=true><template ngbTabContent>Foo</template></ngb-tab>
+         <ngb-tabset [activeIdx]="0">
+           <ngb-tab title="foo"><template ngbTabContent>Foo</template></ngb-tab>
+           <ngb-tab title="bar" [disabled]="true"><template ngbTabContent>Bar</template></ngb-tab>
          </ngb-tabset>
        `;
 
        tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
 
-         const tabTitles = getTabTitles(fixture.nativeElement);
-
-         (<HTMLAnchorElement>tabTitles[0]).click();
-         fixture.detectChanges();
-         expectActiveTabs(fixture.nativeElement, [false]);
-         expectDisabledTabs(fixture.nativeElement, [true]);
+         expectTabs(fixture.nativeElement, [true, false], [false, true]);
        });
      })));
 
   it('should not change active tab on disabled tab title click', async(inject([TestComponentBuilder], (tcb) => {
        const html = `
-         <ngb-tabset [activeIdx]="activeTabIdx">
+         <ngb-tabset>
            <ngb-tab title="foo"><template ngbTabContent>Foo</template></ngb-tab>
-           <ngb-tab title="bar" [disabled]=true><template ngbTabContent>Bar</template></ngb-tab>
+           <ngb-tab title="bar" [disabled]="true"><template ngbTabContent>Bar</template></ngb-tab>
          </ngb-tabset>
        `;
 
        tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
-         expectDisabledTabs(fixture.nativeElement, [false, true]);
+         expectTabs(fixture.nativeElement, [true, false], [false, true]);
 
-         const tabTitles = getTabTitles(fixture.nativeElement);
-
-         (<HTMLAnchorElement>tabTitles[1]).click();
+         (<HTMLAnchorElement>getTabTitles(fixture.nativeElement)[1]).click();
          fixture.detectChanges();
-         expectActiveTabs(fixture.nativeElement, [false, false]);
-         expectDisabledTabs(fixture.nativeElement, [false, true]);
+         expectTabs(fixture.nativeElement, [true, false], [false, true]);
+       });
+     })));
+
+  it('should allow initially active and disabled tabs', async(inject([TestComponentBuilder], (tcb) => {
+       const html = `
+         <ngb-tabset>
+           <ngb-tab title="bar" [disabled]="true"><template ngbTabContent>Bar</template></ngb-tab>
+         </ngb-tabset>
+       `;
+
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         fixture.detectChanges();
+         expectTabs(fixture.nativeElement, [true], [true]);
        });
      })));
 });
