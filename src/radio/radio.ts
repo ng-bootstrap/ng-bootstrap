@@ -1,4 +1,4 @@
-import {Directive, forwardRef, Host, Optional, Input, Renderer, ElementRef, OnDestroy} from '@angular/core';
+import {Directive, forwardRef, Optional, Input, Renderer, ElementRef, OnDestroy} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/common';
 
 const NGB_RADIO_VALUE_ACCESSOR = {
@@ -7,7 +7,7 @@ const NGB_RADIO_VALUE_ACCESSOR = {
   multi: true
 };
 
-@Directive({selector: '[ngb-radio-group][ngModel]', providers: [NGB_RADIO_VALUE_ACCESSOR]})
+@Directive({selector: '[ngbRadioGroup][ngModel]', providers: [NGB_RADIO_VALUE_ACCESSOR]})
 export class NgbRadioGroup implements ControlValueAccessor {
   private _radios: Set<NgbRadio> = new Set<NgbRadio>();
   private _value = null;
@@ -55,37 +55,37 @@ export class NgbRadio implements OnDestroy {
   set value(value) {
     this._value = value;
     const stringValue = value ? value.toString() : '';
-    this.renderer.setElementProperty(this.element.nativeElement, 'value', stringValue);
+    this._renderer.setElementProperty(this._element.nativeElement, 'value', stringValue);
 
-    if (this.group) {
-      this.group.onRadioValueUpdate();
+    if (this._group) {
+      this._group.onRadioValueUpdate();
     }
   }
 
   get value() { return this._value; }
 
   constructor(
-      @Optional() @Host() private group: NgbRadioGroup, @Optional() @Host() private label: NgbRadioLabel,
-      private renderer: Renderer, private element: ElementRef) {
-    if (this.group) {
-      this.group.register(this);
+      @Optional() private _group: NgbRadioGroup, @Optional() private _label: NgbRadioLabel, private _renderer: Renderer,
+      private _element: ElementRef) {
+    if (this._group) {
+      this._group.register(this);
     }
   }
 
   markChecked(value) {
     this.checked = (this.value === value && value !== null);
-    this.label.checked = this.checked;
+    this._label.checked = this.checked;
   }
 
   ngOnDestroy() {
-    if (this.group) {
-      this.group.unregister(this);
+    if (this._group) {
+      this._group.unregister(this);
     }
   }
 
   onChange() {
-    if (this.group) {
-      this.group.onRadioChange(this);
+    if (this._group) {
+      this._group.onRadioChange(this);
     }
   }
 }
