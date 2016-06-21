@@ -311,6 +311,31 @@ describe('ngb-carousel', () => {
        });
      })));
 
+  it('should change on key arrowRight and arrowLeft', fakeAsync(inject([TestComponentBuilder], (tcb) => {
+       const html = `
+            <ngb-carousel [wrap]="false">
+              <template ngbSlide>foo</template>
+              <template ngbSlide>bar</template>
+            </ngb-carousel>
+          `;
+
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         fixture.detectChanges();
+         expectActiveSlides(fixture.nativeElement, [true, false]);
+
+         fixture.debugElement.query(By.directive(NgbCarousel)).triggerEventHandler('keyup.arrowRight', {});  // next()
+         fixture.detectChanges();
+         expectActiveSlides(fixture.nativeElement, [false, true]);
+
+         fixture.debugElement.query(By.directive(NgbCarousel)).triggerEventHandler('keyup.arrowLeft', {});  // prev()
+         fixture.detectChanges();
+         expectActiveSlides(fixture.nativeElement, [true, false]);
+
+         discardPeriodicTasks();
+
+       });
+     })));
+
 });
 
 @Component({selector: 'test-cmp', directives: [NgbCarousel, NgbSlide], template: ''})
