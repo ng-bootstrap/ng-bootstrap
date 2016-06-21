@@ -1,14 +1,4 @@
-import {
-  iit,
-  it,
-  ddescribe,
-  describe,
-  expect,
-  inject,
-  injectAsync,
-  beforeEach,
-  beforeEachProviders
-} from '@angular/core/testing';
+import {iit, it, ddescribe, describe, expect, inject, beforeEach, beforeEachProviders} from '@angular/core/testing';
 
 import {parseTriggers} from './triggers';
 
