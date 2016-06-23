@@ -104,10 +104,20 @@ class APIDocVisitor {
     var inArgs = inDecorator.expression.arguments;
     return {
       name: inArgs.length ? inArgs[0].text : property.name.text,
-      defaultValue: property.initializer ? property.initializer.text : undefined,
+      defaultValue: property.initializer ? this.stringifyDefaultValue(property.initializer) : undefined,
       type: this.stringifyTypeInfo(property.type),
       description: ts.displayPartsToString(property.symbol.getDocumentationComment())
     };
+  }
+
+  stringifyDefaultValue(node) {
+    if (node.text) {
+      return node.text;
+    } else if (node.kind === ts.SyntaxKind.FalseKeyword) {
+      return 'false';
+    } else if (node.kind === ts.SyntaxKind.TrueKeyword) {
+      return 'true';
+    }
   }
 
   visitOutput(property, outDecorator) {
