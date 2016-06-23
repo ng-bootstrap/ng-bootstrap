@@ -158,8 +158,7 @@ gulp.task('build', function(done) {
   runSequence('lint', 'enforce-format', 'ddescribe-iit', 'test', 'clean:build', 'cjs', 'umd', done);
 });
 
-gulp.task('deploy-demo', function(done) {
-  runSequence('clean:demo', 'build:demo', 'demo-push', 'clean:demo-cache', done);
-});
+gulp.task(
+    'deploy-demo', function(done) { runSequence('clean:demo', 'build:demo', 'demo-push', 'clean:demo-cache', done); });
 
 gulp.task('default', function(done) { runSequence('lint', 'enforce-format', 'ddescribe-iit', 'test', done); });
