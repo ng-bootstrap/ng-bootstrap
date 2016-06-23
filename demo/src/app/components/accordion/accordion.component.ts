@@ -1,18 +1,21 @@
 import { Component } from '@angular/core';
 
-import { ComponentDocsComponent, ExampleBoxComponent } from '../shared';
+import { ExampleBoxComponent, NgbdApiDocs} from '../shared';
 import { AccordionBasicComponent, basicHtmlContent, basicTsContent } from './demos';
-
-const docs = require('../../../docs.json');
 
 @Component({
   selector: 'ngbd-accordion',
-  template: require('./accordion.component.html'),
-  directives: [AccordionBasicComponent, ComponentDocsComponent, ExampleBoxComponent]
+  template: `
+    <ngbd-example-box demoTitle="Basic demo" [htmlSnippet]="basicHtmlContent" [tsSnippet]="basicTsContent">
+      <ngbd-accordion-basic></ngbd-accordion-basic>
+    </ngbd-example-box>
+    
+    <ngbd-api-docs directive="NgbAccordion"></ngbd-api-docs> 
+    <ngbd-api-docs directive="NgbPanel"></ngbd-api-docs> 
+  `,
+  directives: [AccordionBasicComponent, NgbdApiDocs, ExampleBoxComponent]
 })
-export class AccordionComponent {
-  accordionDocs = docs.NgbAccordion;
-  panelDocs = docs.NgbPanel;
+export class NgbdAccordion {
   basicHtmlContent = basicHtmlContent;
   basicTsContent = basicTsContent;
 }
