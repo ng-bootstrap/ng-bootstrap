@@ -2,12 +2,12 @@
   <div class="bd-sidebar">
     <nav>
       <div class="bd-toc-item">
-        <a class="bd-toc-link" [routerLink]="['']">
+        <a class="bd-toc-link" [routerLink]="['home']">
           <h4>Home</h4>
         </a>
         <ul class="nav bd-sidenav">
           <li>
-            <a [routerLink]="['Home']">Getting Started</a>
+            <a [routerLink]="['home']">Getting Started</a>
           </li>
         </ul>
       </div>
@@ -20,7 +20,7 @@
             <a [routerLink]="['components/accordion']">Accordion</a>
           </li>
           <li>
-            <a href="#alert">Alert</a>
+            <a [routerLink]="['components/alert']">Alert</a>
           </li>
           <li>
             <a href="#buttons">Buttons</a>
