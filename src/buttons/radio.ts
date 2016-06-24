@@ -7,6 +7,10 @@ const NGB_RADIO_VALUE_ACCESSOR = {
   multi: true
 };
 
+/**
+ * Easily create Bootstrap-style radio buttons. A value of a selected button is bound to a variable
+ * specified via ngModel.
+ */
 @Directive({selector: '[ngbRadioGroup][ngModel]', providers: [NGB_RADIO_VALUE_ACCESSOR]})
 export class NgbRadioGroup implements ControlValueAccessor {
   private _radios: Set<NgbRadio> = new Set<NgbRadio>();
@@ -45,14 +49,20 @@ export class NgbRadioLabel {
 }
 
 
-@Directive({selector: 'input[type=radio]', host: {'(change)': 'onChange($event.target.value)', '[checked]': 'checked'}})
+/**
+ * Marks an input of type "radio" as part of the NgbRadioGroup.
+ */
+@Directive(
+    {selector: 'input[type=radio]', host: {'(change)': 'onChange($event.target.value)', '[checked]': '_checked'}})
 export class NgbRadio implements OnDestroy {
-  private _value = null;
+  private _value: any = null;
+  private _checked: boolean;
 
-  @Input() checked: boolean;
-
+  /**
+   * You can specify model value of a given radio by binding to the value property.
+  */
   @Input('value')
-  set value(value) {
+  set value(value: any) {
     this._value = value;
     const stringValue = value ? value.toString() : '';
     this._renderer.setElementProperty(this._element.nativeElement, 'value', stringValue);
@@ -73,8 +83,8 @@ export class NgbRadio implements OnDestroy {
   }
 
   markChecked(value) {
-    this.checked = (this.value === value && value !== null);
-    this._label.checked = this.checked;
+    this._checked = (this.value === value && value !== null);
+    this._label.checked = this._checked;
   }
 
   ngOnDestroy() {
