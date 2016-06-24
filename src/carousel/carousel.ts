@@ -18,7 +18,15 @@ export class NgbSlide {
 @Component({
   selector: 'ngb-carousel',
   exportAs: 'ngbCarousel',
-  host: {'class': 'carousel slide', '[style.display]': '"block"', '(mouseenter)': 'pause()', '(mouseleave)': 'cycle()'},
+  host: {
+    'class': 'carousel slide',
+    '[style.display]': '"block"',
+    'tabIndex': '0',
+    '(mouseenter)': 'pause()',
+    '(mouseleave)': 'cycle()',
+    '(keyup.arrowLeft)': 'keyPrev()',
+    '(keyup.arrowRight)': 'keyNext()'
+  },
   template: `
     <ol class="carousel-indicators">
       <li *ngFor="let slide of _slides; let slideIdx = index" [class.active]="slideIdx === _activeIdx" (click)="select(slideIdx)"></li>
@@ -52,6 +60,7 @@ export class NgbCarousel implements AfterContentChecked,
 
   @Input() interval: number = 5000;
   @Input() wrap: boolean = true;
+  @Input() keyboard: boolean = true;
 
   ngAfterContentChecked() {
     // auto-correct _activeIdx that might have been set incorrectly as input
@@ -73,6 +82,18 @@ export class NgbCarousel implements AfterContentChecked,
   next() {
     this._cycleToNext();
     this._restartTimer();
+  }
+
+  keyPrev() {
+    if (this.keyboard) {
+      this.prev();
+    }
+  }
+
+  keyNext() {
+    if (this.keyboard) {
+      this.next();
+    }
   }
 
   pause() { clearInterval(this._slideChangeInterval); }
