@@ -47,3 +47,5 @@ export class NgbModalWindow {
 
   stopPropagation($event: MouseEvent): void { $event.stopPropagation(); }
 }
+
+export const NGB_MODAL_WINDOW_DIRECTIVES = [NgbModalWindow];

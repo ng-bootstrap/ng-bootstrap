@@ -77,3 +77,5 @@ export class NgbAccordion implements AfterContentChecked {
     }
   }
 }
+
+export const NGB_ACCORDION_DIRECTIVES = [NgbAccordion, NgbPanel];

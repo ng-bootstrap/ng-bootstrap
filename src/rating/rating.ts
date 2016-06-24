@@ -58,3 +58,5 @@ export class NgbRating implements OnInit {
     return range;
   }
 }
+
+export const NGB_RATING_DIRECTIVES = [NgbRating];

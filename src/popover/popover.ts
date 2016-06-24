@@ -14,3 +14,5 @@ export class NgbPopoverWindow {
   @Input() placement: string = 'top';
   @Input() title: string;
 }
+
+export const NGB_POPOVER_DIRECTIVES = [NgbPopoverWindow];

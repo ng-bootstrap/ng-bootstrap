@@ -20,3 +20,5 @@ export class NgbDropdownToggle {
     this._dropdown.open = !this._dropdown.open;
   }
 }
+
+export const NGB_DROPDOWN_DIRECTIVES = [NgbDropdownToggle, NgbDropdown];
