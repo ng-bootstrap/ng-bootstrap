@@ -105,11 +105,20 @@ describe('ngb-tabset', () => {
        });
      })));
 
+  it('should not crash for empty tabsets', async(inject([TestComponentBuilder], (tcb) => {
+       const html = `<ngb-tabset activeId="2"></ngb-tabset>`;
+
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         fixture.detectChanges();
+         expectTabs(fixture.nativeElement, []);
+       });
+     })));
+
   it('should mark the requested tab as active', async(inject([TestComponentBuilder], (tcb) => {
        const html = `
-      <ngb-tabset [activeIdx]="1">
-        <ngb-tab title="foo"><template ngbTabContent>Foo</template></ngb-tab>
-        <ngb-tab title="bar"><template ngbTabContent>Bar</template></ngb-tab>
+      <ngb-tabset activeId="2">
+        <ngb-tab title="foo" id="1"><template ngbTabContent>Foo</template></ngb-tab>
+        <ngb-tab title="bar" id="2"><template ngbTabContent>Bar</template></ngb-tab>
       </ngb-tabset>
     `;
 
@@ -121,18 +130,13 @@ describe('ngb-tabset', () => {
 
   it('should auto-correct requested active tab index', async(inject([TestComponentBuilder], (tcb) => {
        const html = `
-      <ngb-tabset [activeIdx]="activeTabIdx">
+      <ngb-tabset activeId="doesntExist">
         <ngb-tab title="foo"><template ngbTabContent>Foo</template></ngb-tab>
         <ngb-tab title="bar"><template ngbTabContent>Bar</template></ngb-tab>
       </ngb-tabset>
     `;
 
        tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
-         fixture.componentInstance.activeTabIdx = 100;
-         fixture.detectChanges();
-         expectTabs(fixture.nativeElement, [false, true]);
-
-         fixture.componentInstance.activeTabIdx = -100;
          fixture.detectChanges();
          expectTabs(fixture.nativeElement, [true, false]);
        });
@@ -141,30 +145,13 @@ describe('ngb-tabset', () => {
   it('should auto-correct requested active tab index for undefined indexes',
      async(inject([TestComponentBuilder], (tcb) => {
        const html = `
-      <ngb-tabset [activeIdx]="activeTabIdx">
+      <ngb-tabset [activeId]="activeTabId">
         <ngb-tab title="foo"><template ngbTabContent>Foo</template></ngb-tab>
         <ngb-tab title="bar"><template ngbTabContent>Bar</template></ngb-tab>
       </ngb-tabset>
     `;
 
        tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
-         fixture.componentInstance.activeTabIdx = undefined;
-         fixture.detectChanges();
-         expectTabs(fixture.nativeElement, [true, false]);
-       });
-     })));
-
-  it('should auto-correct requested active tab index for non-existing indexes',
-     async(inject([TestComponentBuilder], (tcb) => {
-       const html = `
-      <ngb-tabset activeIdx="blah">
-        <ngb-tab title="foo"><template ngbTabContent>Foo</template></ngb-tab>
-        <ngb-tab title="bar"><template ngbTabContent>Bar</template></ngb-tab>
-      </ngb-tabset>
-    `;
-
-       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
-         fixture.componentInstance.activeTabIdx = undefined;
          fixture.detectChanges();
          expectTabs(fixture.nativeElement, [true, false]);
        });
@@ -172,7 +159,7 @@ describe('ngb-tabset', () => {
 
   it('should change active tab on tab title click', async(inject([TestComponentBuilder], (tcb) => {
        const html = `
-      <ngb-tabset [activeIdx]="activeTabIdx">
+      <ngb-tabset>
         <ngb-tab title="foo"><template ngbTabContent>Foo</template></ngb-tab>
         <ngb-tab title="bar"><template ngbTabContent>Bar</template></ngb-tab>
       </ngb-tabset>
@@ -195,7 +182,7 @@ describe('ngb-tabset', () => {
 
   it('should support disabled tabs', async(inject([TestComponentBuilder], (tcb) => {
        const html = `
-         <ngb-tabset [activeIdx]="0">
+         <ngb-tabset>
            <ngb-tab title="foo"><template ngbTabContent>Foo</template></ngb-tab>
            <ngb-tab title="bar" [disabled]="true"><template ngbTabContent>Bar</template></ngb-tab>
          </ngb-tabset>
@@ -242,5 +229,5 @@ describe('ngb-tabset', () => {
 
 @Component({selector: 'test-cmp', directives: [NgbTabset, NgbTab, NgbTabContent, NgbTabTitle], template: ''})
 class TestComponent {
-  activeTabIdx;
+  activeTabId;
 }
