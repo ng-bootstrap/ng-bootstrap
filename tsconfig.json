@@ -5,10 +5,5 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true
   },
-  "compileOnSave": false,
-  "exclude": [
-    "node_modules",
-    "typings/main",
-    "typings/main.d.ts"
-  ]
+  "compileOnSave": false
 }
