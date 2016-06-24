@@ -8,3 +8,5 @@ import {Directive, Input} from '@angular/core';
 export class NgbCollapse {
   @Input('ngbCollapse') collapsed: boolean;
 }
+
+export const NGB_COLLAPSE_DIRECTIVES = [NgbCollapse];

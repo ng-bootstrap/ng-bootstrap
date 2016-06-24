@@ -12,3 +12,5 @@ import {Component, Input, ChangeDetectionStrategy} from '@angular/core';
 export class NgbTooltipWindow {
   @Input() placement: string = 'top';
 }
+
+export const NGB_TOOLTIP_DIRECTIVES = [NgbTooltipWindow];

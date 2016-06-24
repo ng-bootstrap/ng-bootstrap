@@ -37,3 +37,5 @@ export class NgbPager implements OnChanges {
 
   ngOnChanges(): void { this._currentPage = Math.max(Math.min(this.page, this.noOfPages - 1), 0); }
 }
+
+export const NGB_PAGER_DIRECTIVES = [NgbPager];

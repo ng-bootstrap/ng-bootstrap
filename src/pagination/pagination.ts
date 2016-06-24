@@ -85,3 +85,5 @@ export class NgbPagination implements OnChanges {
 
   private _getPageNoInRange(newPageNo): number { return getValueInRange(newPageNo, this.pages.length, 1); }
 }
+
+export const NGB_PAGINATION_DIRECTIVES = [NgbPagination];
