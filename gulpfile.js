@@ -19,7 +19,7 @@ var PATHS = {
   specs: 'src/**/*.spec.ts',
   demo: 'demo/**/*.ts',
   demoDist: 'demo/dist/**/*',
-  typings: 'typings/browser.d.ts',
+  typings: 'typings/index.d.ts',
   demoDocsJson: 'demo/src/docs.json'
 };
 

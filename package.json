@@ -7,7 +7,7 @@
   "scripts": {
     "install": "node misc/validate-commit.install.js",
     "test": "karma start karma.conf.js",
-    "postinstall": "typings install"
+    "typings": "typings"
   },
   "repository": {
     "type": "git",
@@ -70,7 +70,7 @@
     "ts-loader": "^0.8.2",
     "tslint": "^3.8.1",
     "typescript": "^1.6.2",
-    "typings": "^0.7.9",
+    "typings": "^1.3.0",
     "url-loader": "^0.5.7",
     "webpack": "^1.12.2",
     "webpack-dev-server": "^1.14.1",
