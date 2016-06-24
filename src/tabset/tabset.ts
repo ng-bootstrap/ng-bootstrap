@@ -33,7 +33,7 @@ export class NgbTab {
   template: `
     <ul class="nav nav-tabs" role="tablist">
       <li class="nav-item" *ngFor="let tab of tabs; let i=index">
-        <a class="nav-link" [class.active]="i === activeIdx && !disabled" [class.disabled]="tab.disabled" (click)="select(i)">
+        <a class="nav-link" [class.active]="i === activeIdx" [class.disabled]="tab.disabled" (click)="select(i)">
           {{tab.title}}<template [ngTemplateOutlet]="tab.titleTpl?.templateRef"></template>
         </a>
       </li>
@@ -58,6 +58,7 @@ export class NgbTabset implements AfterContentChecked {
 
   ngAfterContentChecked() {
     // auto-correct _activeIdx that might have been set incorrectly as input
-    this.activeIdx = Math.min(Math.max(0, this.activeIdx), this.tabs.length - 1);
+    const activeIdx = Math.min(Math.max(0, this.activeIdx), this.tabs.length - 1);
+    this.activeIdx = this.tabs.toArray()[activeIdx] ? activeIdx : 0;
   }
 }

@@ -1,3 +1,2 @@
-export * from './component-docs';
+export * from './api-docs';
 export * from './example-box';
-export * from './instructions-item';

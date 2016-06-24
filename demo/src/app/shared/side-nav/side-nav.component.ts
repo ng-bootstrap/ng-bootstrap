@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router-deprecated';
+import { ROUTER_DIRECTIVES } from '@angular/router';
 
 @Component({
   selector: 'ngbd-side-nav',
   template: require('./side-nav.component.html'),
-  directives: [RouterLink]
+  directives: [ROUTER_DIRECTIVES]
 })
 export class SideNavComponent { }

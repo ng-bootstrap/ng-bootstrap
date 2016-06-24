@@ -313,7 +313,7 @@ describe('ngb-carousel', () => {
 
   it('should change on key arrowRight and arrowLeft', fakeAsync(inject([TestComponentBuilder], (tcb) => {
        const html = `
-            <ngb-carousel [wrap]="false">
+            <ngb-carousel [keyboard]="keyboard" [wrap]="false">
               <template ngbSlide>foo</template>
               <template ngbSlide>bar</template>
             </ngb-carousel>
@@ -331,6 +331,42 @@ describe('ngb-carousel', () => {
          fixture.detectChanges();
          expectActiveSlides(fixture.nativeElement, [true, false]);
 
+         fixture.componentInstance.keyboard = false;
+         fixture.detectChanges();
+         fixture.debugElement.query(By.directive(NgbCarousel)).triggerEventHandler('keyup.arrowRight', {});  // prev()
+         fixture.detectChanges();
+         expectActiveSlides(fixture.nativeElement, [true, false]);
+
+
+         discardPeriodicTasks();
+
+       });
+     })));
+
+  it('should listen to keyevents based on keyboard attribute', fakeAsync(inject([TestComponentBuilder], (tcb) => {
+       const html = `
+               <ngb-carousel [keyboard]="keyboard" >
+                 <template ngbSlide>foo</template>
+                 <template ngbSlide>bar</template>
+               </ngb-carousel>
+             `;
+
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         fixture.detectChanges();
+         expectActiveSlides(fixture.nativeElement, [true, false]);
+
+         fixture.componentInstance.keyboard = false;
+         fixture.detectChanges();
+         fixture.debugElement.query(By.directive(NgbCarousel)).triggerEventHandler('keyup.arrowRight', {});  // prev()
+         fixture.detectChanges();
+         expectActiveSlides(fixture.nativeElement, [true, false]);
+
+         fixture.componentInstance.keyboard = true;
+         fixture.detectChanges();
+         fixture.debugElement.query(By.directive(NgbCarousel)).triggerEventHandler('keyup.arrowRight', {});  // next()
+         fixture.detectChanges();
+         expectActiveSlides(fixture.nativeElement, [false, true]);
+
          discardPeriodicTasks();
 
        });
@@ -341,4 +377,5 @@ describe('ngb-carousel', () => {
 @Component({selector: 'test-cmp', directives: [NgbCarousel, NgbSlide], template: ''})
 class TestComponent {
   activeSlideIdx = 1;
+  keyboard = true;
 }

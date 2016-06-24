@@ -44,6 +44,16 @@ describe('APIDocVisitor', function() {
     expect(inputDocs[2].description).toBe('Has default value');
   });
 
+  it('should extract input default value', function() {
+    var inputDocs = apiDoc(['./misc/api-doc-test-cases/directives-with-inputs-default-vals.ts']).Foo.inputs;
+
+    expect(inputDocs.length).toBe(3);
+
+    expect(inputDocs[0].defaultValue).toBe('false');
+    expect(inputDocs[1].defaultValue).toBe('5');
+    expect(inputDocs[2].defaultValue).toBe('bar');
+  });
+
   it('should extract inputs info from setters', function() {
     var inputDocs = apiDoc(['./misc/api-doc-test-cases/directives-with-tricky-inputs.ts']).Foo.inputs;
 
