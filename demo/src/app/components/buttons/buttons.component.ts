@@ -1,13 +1,10 @@
 import {Component} from '@angular/core';
+import {ContentWrapper} from '../../shared';
 import {NgbdApiDocs} from '../shared/api-docs';
 
 @Component({
   selector: 'ngbd-buttons',
-  template: `
-    <ngbd-api-docs directive="NgbRadioGroup"></ngbd-api-docs>
-    <ngbd-api-docs directive="NgbRadio"></ngbd-api-docs>
-  `,
-  directives: [NgbdApiDocs]
+  template: require('./buttons.component.html'),
+  directives: [ContentWrapper, NgbdApiDocs]
 })
-export class NgbdButtons {
-}
+export class NgbdButtons {}

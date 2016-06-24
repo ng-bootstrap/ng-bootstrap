@@ -1,6 +1,15 @@
 <header>
-  <div class="jumbotron">
-    <div class="container">
+  <div class="container">
+    <nav class="navbar navbar-dark navbar-fixed-top">
+      <a class="navbar-brand" href="https://ng-bootstrap.io">ng-bootstrap</a>
+      <ul class="nav navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['getting-started']">Getting Started</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['components/accordion']">Components</a>
+        </li>
+      </ul>
       <p class="github-buttons pull-lg-right">
         <a class="github-button" href="https://github.com/ng-bootstrap/core" data-icon="octicon-star" data-style="mega" data-count-href="/ng-bootstrap/core/stargazers" data-count-api="/repos/ng-bootstrap/core#stargazers_count"
            data-count-aria-label="# stargazers on GitHub" aria-label="Star ng-bootstrap/core on GitHub">Star</a>
@@ -9,25 +18,11 @@
         <a class="github-button" href="https://github.com/ng-bootstrap/core" data-icon="octicon-eye" data-style="mega" data-count-href="/ng-bootstrap/core/watchers" data-count-api="/repos/ng-bootstrap/core#subscribers_count"
            data-count-aria-label="# watchers on GitHub" aria-label="Watch ng-bootstrap/core on GitHub">Watch</a>
       </p>
-      <div class="pull-lg-left">
-        <h1 class="display-3">ng-bootstrap</h1>
-        <p class="lead">Angular 2, powered by Bootstrap</p>
-        <hr class="m-y-2 header">
-        <p>Bootstrap 4 components written in pure Angular 2 by the ng-bootstrap Team</p>
-        <p class="lead">
-          <a type="button" href="https://github.com/ng-bootstrap/core" target="_blank" class="btn btn-secondary-outline btn-lg header-button">Code on GitHub</a>
-        </p>
-      </div>
-    </div>
+    </nav>
   </div>
 </header>
-<div class="container">
-  <div class="col-md-3 col-md-push-9">
-    <ngbd-side-nav></ngbd-side-nav>
-  </div>
-  <div class="col-md-9 col-md-pull-3">
-    <router-outlet></router-outlet>
-  </div>
+<div>
+  <router-outlet></router-outlet>
 </div>
 <footer class="bd-footer text-muted">
   <div class="container">
