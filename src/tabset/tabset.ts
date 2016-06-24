@@ -62,3 +62,5 @@ export class NgbTabset implements AfterContentChecked {
     this.activeIdx = this.tabs.toArray()[activeIdx] ? activeIdx : 0;
   }
 }
+
+export const NGB_TABSET_DIRECTIVES = [NgbTabset, NgbTab, NgbTabContent, NgbTabTitle];
