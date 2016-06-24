@@ -7,5 +7,9 @@ before_install:
   - sh -e /etc/init.d/xvfb start
   - npm install --quiet -g gulp
 
+install:
+  - npm install
+  - npm run typings install
+
 script: gulp
 sudo: false
