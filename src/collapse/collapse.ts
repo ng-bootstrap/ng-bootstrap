@@ -12,7 +12,7 @@ export class NgbCollapse {
   /**
    * A flag indicating collapsed (true) or open (false) state.
    */
-  @Input('ngbCollapse') collapsed: boolean = false;
+  @Input('ngbCollapse') collapsed = false;
 }
 
 export const NGB_COLLAPSE_DIRECTIVES = [NgbCollapse];

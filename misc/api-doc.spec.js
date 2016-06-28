@@ -40,7 +40,7 @@ describe('APIDocVisitor', function() {
 
     expect(inputDocs[2].name).toBe('foo');
     expect(inputDocs[2].defaultValue).toBe('5');
-    expect(inputDocs[2].type).toBeUndefined();
+    expect(inputDocs[2].type).toBe('number');
     expect(inputDocs[2].description).toBe('Has default value');
   });
 
@@ -52,6 +52,19 @@ describe('APIDocVisitor', function() {
     expect(inputDocs[0].defaultValue).toBe('false');
     expect(inputDocs[1].defaultValue).toBe('5');
     expect(inputDocs[2].defaultValue).toBe('bar');
+  });
+
+  it('should extract inferred types', function() {
+    var inputDocs = apiDoc(['./misc/api-doc-test-cases/directives-with-inputs-types-to-infer.ts']).Foo.inputs;
+
+    expect(inputDocs.length).toBe(3);
+
+    expect(inputDocs[0].defaultValue).toBe('false');
+    expect(inputDocs[0].type).toBe('boolean');
+    expect(inputDocs[1].defaultValue).toBe('5');
+    expect(inputDocs[1].type).toBe('number');
+    expect(inputDocs[2].defaultValue).toBe('bar');
+    expect(inputDocs[2].type).toBe('string');
   });
 
   it('should extract inputs info from setters', function() {
