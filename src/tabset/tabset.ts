@@ -31,7 +31,7 @@ export class NgbTab {
 @Component({
   selector: 'ngb-tabset',
   template: `
-    <ul class="nav nav-tabs" role="tablist">
+    <ul [class]="'nav nav-'+type" role="tablist">
       <li class="nav-item" *ngFor="let tab of tabs; let i=index">
         <a class="nav-link" [class.active]="i === activeIdx" [class.disabled]="tab.disabled" (click)="select(i)">
           {{tab.title}}<template [ngTemplateOutlet]="tab.titleTpl?.templateRef"></template>
@@ -49,6 +49,8 @@ export class NgbTabset implements AfterContentChecked {
   @ContentChildren(NgbTab) tabs: QueryList<NgbTab>;
 
   @Input() activeIdx: number = 0;
+
+  @Input() type: string = 'tabs';
 
   select(tabIdx: number) {
     if (!this.tabs.toArray()[tabIdx].disabled) {
