@@ -6,12 +6,11 @@ import { AccordionBasicComponent, basicHtmlContent, basicTsContent } from './dem
 @Component({
   selector: 'ngbd-accordion',
   template: `
+    <ngbd-api-docs directive="NgbAccordion"></ngbd-api-docs> 
+    <ngbd-api-docs directive="NgbPanel"></ngbd-api-docs> 
     <ngbd-example-box demoTitle="Basic demo" [htmlSnippet]="basicHtmlContent" [tsSnippet]="basicTsContent">
       <ngbd-accordion-basic></ngbd-accordion-basic>
     </ngbd-example-box>
-    
-    <ngbd-api-docs directive="NgbAccordion"></ngbd-api-docs> 
-    <ngbd-api-docs directive="NgbPanel"></ngbd-api-docs> 
   `,
   directives: [AccordionBasicComponent, NgbdApiDocs, ExampleBoxComponent]
 })
