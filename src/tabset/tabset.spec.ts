@@ -54,6 +54,10 @@ function expectTabs(nativeEl: HTMLElement, active: boolean[], disabled?: boolean
   }
 }
 
+function getButton(nativeEl: HTMLElement) {
+  return nativeEl.querySelectorAll('button');
+}
+
 describe('ngb-tabset', () => {
 
   it('should render tabs and select first tab as active by default', async(inject([TestComponentBuilder], (tcb) => {
@@ -255,6 +259,56 @@ describe('ngb-tabset', () => {
          expect(fixture.nativeElement.querySelector('ul')).toHaveCssClass('nav-pills');
          expect(fixture.nativeElement.querySelector('ul')).not.toHaveCssClass('nav-tabs');
 
+       });
+     })));
+
+  it('should change active tab by calling select on an exported directive instance',
+     async(inject([TestComponentBuilder], (tcb) => {
+       const html = `
+          <ngb-tabset #myTabSet="ngbTabset">
+            <ngb-tab id="myFirstTab" title="foo"><template ngbTabContent>Foo</template></ngb-tab>
+            <ngb-tab id="mySecondTab" title="bar"><template ngbTabContent>Bar</template></ngb-tab>
+          </ngb-tabset>
+          <button (click)="myTabSet.select('myFirstTab')">Select the first Tab</button>
+          <button (click)="myTabSet.select('mySecondTab')">Select the second Tab</button>
+        `;
+
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         fixture.detectChanges();
+
+         const button = getButton(fixture.nativeElement);
+
+         // Click on a button to select the second tab
+         (<HTMLAnchorElement>button[1]).click();
+         fixture.detectChanges();
+         expectTabs(fixture.nativeElement, [false, true]);
+
+         // Click on a button to select the first tab
+         (<HTMLAnchorElement>button[0]).click();
+         fixture.detectChanges();
+         expectTabs(fixture.nativeElement, [true, false]);
+       });
+     })));
+
+  it('should not change active tab by calling select on an exported directive instance in case of disable tab',
+     async(inject([TestComponentBuilder], (tcb) => {
+       const html = `
+          <ngb-tabset #myTabSet="ngbTabset">
+            <ngb-tab id="myFirstTab" title="foo"><template ngbTabContent>Foo</template></ngb-tab>
+            <ngb-tab id="mySecondTab" title="bar" [disabled]="true"><template ngbTabContent>Bar</template></ngb-tab>
+          </ngb-tabset>
+          <button (click)="myTabSet.select('mySecondTab')">Select the second Tab</button>
+        `;
+
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         fixture.detectChanges();
+
+         const button = getButton(fixture.nativeElement);
+
+         // Click on a button to select the second disabled tab (should not change active tab).
+         (<HTMLAnchorElement>button[0]).click();
+         fixture.detectChanges();
+         expectTabs(fixture.nativeElement, [true, false], [false, true]);
        });
      })));
 });
