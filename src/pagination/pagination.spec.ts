@@ -207,6 +207,37 @@ describe('ngb-pagination', () => {
            expectPages(fixture.nativeElement, ['« Previous', '1', '2', '+3', '-» Next']);
          });
        })));
+
+    it('should update selected page model on first / last click', async(inject([TestComponentBuilder], (tcb) => {
+         const html =
+             '<ngb-pagination [collectionSize]="collectionSize" [page]="page" [boundaryLinks]="boundaryLinks"></ngb-pagination>';
+
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+           fixture.componentInstance.collectionSize = 30;
+           fixture.detectChanges();
+           expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '» Next']);
+
+           fixture.componentInstance.boundaryLinks = true;
+           fixture.detectChanges();
+           expectPages(fixture.nativeElement, ['-«« First', '-« Previous', '+1', '2', '3', '» Next', '»» Last']);
+
+           getLink(fixture.nativeElement, 0).click();
+           fixture.detectChanges();
+           expectPages(fixture.nativeElement, ['-«« First', '-« Previous', '+1', '2', '3', '» Next', '»» Last']);
+
+           getLink(fixture.nativeElement, 6).click();
+           fixture.detectChanges();
+           expectPages(fixture.nativeElement, ['«« First', '« Previous', '1', '2', '+3', '-» Next', '-»» Last']);
+
+           getLink(fixture.nativeElement, 3).click();
+           fixture.detectChanges();
+           expectPages(fixture.nativeElement, ['«« First', '« Previous', '1', '+2', '3', '» Next', '»» Last']);
+
+           getLink(fixture.nativeElement, 0).click();
+           fixture.detectChanges();
+           expectPages(fixture.nativeElement, ['-«« First', '-« Previous', '+1', '2', '3', '» Next', '»» Last']);
+         });
+       })));
   });
 
 });
@@ -216,4 +247,5 @@ class TestComponent {
   pageSize = 10;
   collectionSize = 100;
   page = 1;
+  boundaryLinks = false;
 }

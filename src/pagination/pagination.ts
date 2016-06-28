@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output, OnChanges, ChangeDetectionStrategy} from '@angular/core';
-import {getValueInRange, toInteger} from '../util/util';
+import {getValueInRange, toInteger, toBoolean} from '../util/util';
 
 @Component({
   selector: 'ngb-pagination',
@@ -7,11 +7,18 @@ import {getValueInRange, toInteger} from '../util/util';
   template: `
     <nav>
       <ul class="pagination">
+        <li *ngIf="boundaryLinks" class="page-item" [class.disabled]="!hasPrevious()">
+          <a aria-label="First" class="page-link" (click)="selectPage(1)">
+            <span aria-hidden="true">&laquo;&laquo;</span>
+            <span class="sr-only">First</span>
+          </a>                
+        </li>
+      
         <li class="page-item" [class.disabled]="!hasPrevious()">
-            <a aria-label="Previous" class="page-link" (click)="selectPage(page-1)">
-              <span aria-hidden="true">&laquo;</span>
-              <span class="sr-only">Previous</span>
-            </a>
+          <a aria-label="Previous" class="page-link" (click)="selectPage(page-1)">
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">Previous</span>
+          </a>
         </li>
 
         <li *ngFor="let pageNumber of pages" class="page-item" [class.active]="pageNumber === page">
@@ -24,15 +31,30 @@ import {getValueInRange, toInteger} from '../util/util';
             <span class="sr-only">Next</span>
           </a>
         </li>
+        
+        <li *ngIf="boundaryLinks" class="page-item" [class.disabled]="!hasNext()">
+          <a aria-label="Last" class="page-link" (click)="selectPage(pages.length)">
+            <span aria-hidden="true">&raquo;&raquo;</span>
+            <span class="sr-only">Last</span>
+          </a>                
+        </li>        
       </ul>
     </nav>
   `
 })
 export class NgbPagination implements OnChanges {
+  private _boundaryLinks: boolean = false;
   private _collectionSize;
   private _page = 0;
   private _pageSize = 10;
   pages: number[] = [];
+
+  @Input()
+  set boundaryLinks(value: boolean) {
+    this._boundaryLinks = toBoolean(value);
+  }
+
+  get boundaryLinks(): boolean { return this._boundaryLinks; }
 
   @Input()
   set page(value: number | string) {
