@@ -9,7 +9,10 @@ function getNamesCompareFn(name) {
 }
 
 class APIDocVisitor {
-  constructor(fileNames) { this.program = ts.createProgram(fileNames, {}); }
+  constructor(fileNames) {
+    this.program = ts.createProgram(fileNames, {});
+    this.typeChecker = this.program.getTypeChecker(true);
+  }
 
 
   visitSourceFile(fileName) {
@@ -105,7 +108,7 @@ class APIDocVisitor {
     return {
       name: inArgs.length ? inArgs[0].text : property.name.text,
       defaultValue: property.initializer ? this.stringifyDefaultValue(property.initializer) : undefined,
-      type: this.stringifyTypeInfo(property.type),
+      type: this.typeChecker.typeToString(this.typeChecker.getTypeAtLocation(property)),
       description: ts.displayPartsToString(property.symbol.getDocumentationComment())
     };
   }
@@ -143,27 +146,6 @@ class APIDocVisitor {
     }
 
     return null;
-  }
-
-  stringifyTypeInfo(type) {
-    // TODO: this is probably covered by some helper method in TS, investigate
-
-    if (!type) {
-      return undefined;
-    }
-
-    switch (type.kind) {
-      case ts.SyntaxKind.BooleanKeyword:
-        return 'boolean';
-      case ts.SyntaxKind.NumberKeyword:
-        return 'number';
-      case ts.SyntaxKind.StringKeyword:
-        return 'string';
-      case ts.SyntaxKind.UnionType:
-        return type.types.map((typeNode) => { return this.stringifyTypeInfo(typeNode); }).join(' | ');
-      default:
-        return 'unknown';
-    }
   }
 }
 

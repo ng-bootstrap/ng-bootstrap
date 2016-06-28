@@ -4,10 +4,8 @@ import {Directive, Input} from '@angular/core';
   selector: '[foo]'
 })
 export class Foo {
-  @Input('foo') _foo;
-  @Input() set bar(newVal) {
-  }
-  
-  @Input('baz') set _baz(newVal) {
-  }
+
+  @Input() fooBoolean = false;
+  @Input() fooNumber = 5;
+  @Input() fooString = 'bar';
 }
