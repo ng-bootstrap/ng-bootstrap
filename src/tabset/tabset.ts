@@ -49,7 +49,7 @@ export class NgbTab {
 @Component({
   selector: 'ngb-tabset',
   template: `
-    <ul class="nav nav-tabs" role="tablist">
+    <ul [class]="'nav nav-' + type" role="tablist">
       <li class="nav-item" *ngFor="let tab of tabs">
         <a [id]="tab.id" class="nav-link" [class.active]="tab.id === activeId" [class.disabled]="tab.disabled" (click)="select(tab.id)">
           {{tab.title}}<template [ngTemplateOutlet]="tab.titleTpl?.templateRef"></template>
@@ -70,6 +70,11 @@ export class NgbTabset implements AfterContentChecked {
    * An identifier of a tab that should be selected (active).
    */
   @Input() activeId: string;
+
+  /**
+   * Type of navigation to be used for tabs. Can be one of 'tabs' or 'pills'.
+   */
+  @Input() type: string = 'tabs';
 
   select(tabIdx: string) {
     let selectedTab = this._getTabById(tabIdx);

@@ -225,6 +225,38 @@ describe('ngb-tabset', () => {
          expectTabs(fixture.nativeElement, [true], [true]);
        });
      })));
+
+  it('should have nav-tabs default', async(inject([TestComponentBuilder], (tcb) => {
+       const html = `
+         <ngb-tabset>
+           <ngb-tab title="bar"><template ngbTabContent>Bar</template></ngb-tab>
+         </ngb-tabset>
+       `;
+
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         fixture.detectChanges();
+
+         expect(fixture.nativeElement.querySelector('ul')).toHaveCssClass('nav-tabs');
+         expect(fixture.nativeElement.querySelector('ul')).not.toHaveCssClass('nav-pills');
+
+       });
+     })));
+
+  it('should have pills upon setting pills', async(inject([TestComponentBuilder], (tcb) => {
+       const html = `
+         <ngb-tabset type="pills">
+           <ngb-tab title="bar"><template ngbTabContent>Bar</template></ngb-tab>
+         </ngb-tabset>
+       `;
+
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         fixture.detectChanges();
+
+         expect(fixture.nativeElement.querySelector('ul')).toHaveCssClass('nav-pills');
+         expect(fixture.nativeElement.querySelector('ul')).not.toHaveCssClass('nav-tabs');
+
+       });
+     })));
 });
 
 @Component({selector: 'test-cmp', directives: [NgbTabset, NgbTab, NgbTabContent, NgbTabTitle], template: ''})
