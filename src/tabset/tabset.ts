@@ -48,6 +48,7 @@ export class NgbTab {
  */
 @Component({
   selector: 'ngb-tabset',
+  exportAs: 'ngbTabset',
   template: `
     <ul [class]="'nav nav-' + type" role="tablist">
       <li class="nav-item" *ngFor="let tab of tabs">
