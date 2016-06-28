@@ -11,11 +11,11 @@ import {AlertBasicComponent, basicHtmlContent, basicTsContent,
     <ngbd-example-box demoTitle="Basic Alert" [htmlSnippet]="basicHtmlContent" [tsSnippet]="basicTsContent">
       <ngbd-alert-basic></ngbd-alert-basic>
     </ngbd-example-box>
-    <ngbd-example-box demoTitle="Custom Alert" [htmlSnippet]="customHtmlContent" [tsSnippet]="customTsContent">
-      <ngbd-alert-custom></ngbd-alert-custom>
-    </ngbd-example-box>
     <ngbd-example-box demoTitle="Closeable Alert" [htmlSnippet]="closeableHtmlContent" [tsSnippet]="closeableTsContent">
       <ngbd-alert-closeable></ngbd-alert-closeable>
+    </ngbd-example-box>
+    <ngbd-example-box demoTitle="Custom Alert" [htmlSnippet]="customHtmlContent" [tsSnippet]="customTsContent">
+      <ngbd-alert-custom></ngbd-alert-custom>
     </ngbd-example-box>
   `,
   directives: [AlertBasicComponent, AlertCloseableComponent, AlertCustomComponent, NgbdApiDocs, ExampleBoxComponent]
