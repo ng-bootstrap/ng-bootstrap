@@ -10,8 +10,11 @@ import {
   OnInit
 } from '@angular/core';
 
+let nextId = 0;
+
 @Directive({selector: 'template[ngbSlide]'})
 export class NgbSlide {
+  @Input() id = `ngb-slide-${nextId++}`;
   constructor(public tplRef: TemplateRef<any>) {}
 }
 
@@ -29,10 +32,10 @@ export class NgbSlide {
   },
   template: `
     <ol class="carousel-indicators">
-      <li *ngFor="let slide of _slides; let slideIdx = index" [class.active]="slideIdx === _activeIdx" (click)="select(slideIdx)"></li>
+      <li *ngFor="let slide of _slides" [id]="slide.id" [class.active]="slide.id === activeId" (click)="select(slide.id)"></li>
     </ol>
     <div class="carousel-inner" role="listbox">
-      <div *ngFor="let slide of _slides; let slideIdx = index" class="carousel-item" [class.active]="slideIdx === _activeIdx">
+      <div *ngFor="let slide of _slides" class="carousel-item" [class.active]="slide.id === activeId">
         <template [ngTemplateOutlet]="slide.tplRef"></template>
       </div>
     </div>
@@ -49,33 +52,32 @@ export class NgbSlide {
 export class NgbCarousel implements AfterContentChecked,
     OnDestroy, OnInit {
   @ContentChildren(NgbSlide) private _slides: QueryList<NgbSlide>;
-  private _activeIdx = 0;
   private _slideChangeInterval;
 
-  @Input()
-  set activeIdx(newActiveIdx: number) {
-    this.select(newActiveIdx || 0);
-    this._restartTimer();
-  };
-
-  @Input() interval: number = 5000;
-  @Input() wrap: boolean = true;
-  @Input() keyboard: boolean = true;
+  @Input() interval = 5000;
+  @Input() wrap = true;
+  @Input() keyboard = true;
+  @Input() activeId: string;
 
   ngAfterContentChecked() {
-    // auto-correct _activeIdx that might have been set incorrectly as input
-    this._activeIdx = Math.min(Math.max(0, this._activeIdx), this._slides.length - 1);
+    let activeSlide = this._getSlideById(this.activeId);
+    this.activeId = activeSlide ? activeSlide.id : (this._slides.length ? this._slides.first.id : null);
   }
 
   ngOnInit() { this.cycle(); }
 
   ngOnDestroy() { clearInterval(this._slideChangeInterval); }
 
-  select(slideIdx: number) { this._activeIdx = slideIdx; }
+  select(slideIdx: string) {
+    let selectedSlide = this._getSlideById(slideIdx);
+    if (selectedSlide) {
+      this.activeId = selectedSlide.id;
+    }
+  }
 
   prev() {
-    const prevIdx = this._activeIdx - 1;
-    this.select(prevIdx < 0 ? (this.wrap ? prevIdx + this._slides.length : prevIdx + 1) : prevIdx);
+    let selectedId: string = this._getPrevSlide(this.activeId);
+    this.select(selectedId);
     this._restartTimer();
   }
 
@@ -103,13 +105,45 @@ export class NgbCarousel implements AfterContentChecked,
   }
 
   private _cycleToNext() {
-    const nextIdx = this._activeIdx + 1;
-    this.select(nextIdx >= this._slides.length ? (this.wrap ? 0 : nextIdx - 1) : nextIdx);
+    let selectedId: string = this._getNextSlide(this.activeId);
+    this.select(selectedId);
   }
 
   private _restartTimer() {
     this.pause();
     this.cycle();
+  }
+
+  private _getSlideById(slideIdx: string): NgbSlide {
+    let slideWithId: NgbSlide[] = this._slides.filter(slide => slide.id === slideIdx);
+    return slideWithId.length ? slideWithId[0] : null;
+  }
+
+  private _getNextSlide(id: string): string {
+    let nextSlideId = id;
+    let slideArr = this._slides.toArray();
+
+    slideArr.forEach((slide, idx) => {
+      if (slide.id === id) {
+        let lastSlide: boolean = (idx === (slideArr.length - 1));
+        nextSlideId =
+            lastSlide ? (this.wrap ? slideArr[0].id : slideArr[slideArr.length - 1].id) : slideArr[idx + 1].id;
+      }
+    });
+    return nextSlideId;
+  }
+
+  private _getPrevSlide(id: string): string {
+    let prevSlideId = id;
+    let slideArr = this._slides.toArray();
+
+    slideArr.forEach((slide, idx) => {
+      if (slide.id === id) {
+        prevSlideId =
+            idx === 0 ? (this.wrap ? slideArr[slideArr.length - 1].id : slideArr[0].id) : slideArr[idx - 1].id;
+      }
+    });
+    return prevSlideId;
   }
 }
 
