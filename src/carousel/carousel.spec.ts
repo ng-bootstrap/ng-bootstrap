@@ -80,14 +80,15 @@ describe('ngb-carousel', () => {
 
   it('should mark the requested slide as active', fakeAsync(inject([TestComponentBuilder], (tcb) => {
        const html = `
-      <ngb-carousel [activeIdx]="activeSlideIdx">
-        <template ngbSlide>foo</template>
-        <template ngbSlide>bar</template>
-      </ngb-carousel>
-    `;
+       <ngb-carousel [activeId]="activeSlideId">
+         <template ngbSlide id="1">foo</template>
+         <template ngbSlide id="2">bar</template>
+       </ngb-carousel>
+     `;
 
        tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
-         fixture.componentInstance.activeSlideIdx = 0;
+
+         fixture.componentInstance.activeSlideId = 1;
          fixture.detectChanges();
          expectActiveSlides(fixture.nativeElement, [true, false]);
 
@@ -95,20 +96,15 @@ describe('ngb-carousel', () => {
        });
      })));
 
-  it('should auto-correct requested active slide index', fakeAsync(inject([TestComponentBuilder], (tcb) => {
+  it('should auto-correct when slide index is undefined', fakeAsync(inject([TestComponentBuilder], (tcb) => {
        const html = `
-      <ngb-carousel [activeIdx]="activeSlideIdx">
-        <template ngbSlide>foo</template>
-        <template ngbSlide>bar</template>
-      </ngb-carousel>
-    `;
+            <ngb-carousel [activeId]="doesntExist">
+              <template ngbSlide>foo</template>
+              <template ngbSlide>bar</template>
+            </ngb-carousel>
+          `;
 
        tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
-         fixture.componentInstance.activeSlideIdx = 100;
-         fixture.detectChanges();
-         expectActiveSlides(fixture.nativeElement, [false, true]);
-
-         fixture.componentInstance.activeSlideIdx = -100;
          fixture.detectChanges();
          expectActiveSlides(fixture.nativeElement, [true, false]);
 
@@ -376,6 +372,6 @@ describe('ngb-carousel', () => {
 
 @Component({selector: 'test-cmp', directives: [NgbCarousel, NgbSlide], template: ''})
 class TestComponent {
-  activeSlideIdx = 1;
+  activeSlideId;
   keyboard = true;
 }
