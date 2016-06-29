@@ -1,5 +1,8 @@
 import {Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit} from '@angular/core';
 
+/**
+ * Rating directive that will take care of visualising a star rating bar.
+ */
 @Component({
   selector: 'ngb-rating',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -17,12 +20,37 @@ export class NgbRating implements OnInit {
   private _oldRate: number;
   range: number[] = [];
 
+  /**
+   * Maximal rating that can be given using this widget.
+   */
   @Input() max: number = 10;
-  @Input() rate: number;
-  @Input() readonly: boolean;
 
+  /**
+   * Current rating.
+   */
+  @Input() rate: number;
+
+  /**
+   * A flag indicating if rating can be updated.
+   */
+  @Input() readonly = false;
+
+  /**
+   * An event fired when a user is hovering over a given rating.
+   * Event's payload equals to the rating being hovered over.
+   */
   @Output() hover = new EventEmitter<number>();
+
+  /**
+   * An event fired when a user stops hovering over a given rating.
+   * Event's payload equals to the rating of the last item being hovered over.
+   */
   @Output() leave = new EventEmitter<number>();
+
+  /**
+   * An event fired when a user selects a new rating.
+   * Event's payload equals to the newly selected rating.
+   */
   @Output() rateChange = new EventEmitter<number>();
 
   enter(value: number): void {
