@@ -1,6 +1,9 @@
 import {Component, Input, ChangeDetectionStrategy} from '@angular/core';
 import {getValueInRange, toBoolean} from '../util/util';
 
+/**
+ * Directive that can be used to provide feedback on the progress of a workflow or an action.
+ */
 @Component({
   selector: 'ngb-progressbar',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -14,10 +17,30 @@ import {getValueInRange, toBoolean} from '../util/util';
   `
 })
 export class NgbProgressbar {
+  /**
+   * Maximal value to be displayed in the progressbar.
+   */
   @Input() max: number = 100;
+
+  /**
+   * A flag indicating if a progress bar should be animated when the value changes. Takes effect only for browsers
+   * supporting CSS3 animations.
+   */
   @Input() animated: boolean | string;
+
+  /**
+   * A flag indicating if a progress bar should be displayed as striped.
+   */
   @Input() striped: boolean | string;
+
+  /**
+   * Type of progress bar, can be one of "success", "info", "warning" or "danger".
+   */
   @Input() type: string;
+
+  /**
+   * Current value to be displayed in the progressbar. Should be smaller or equal to "max" value.
+   */
   @Input() value: number;
 
   isAnimated(): boolean { return toBoolean(this.animated); }
