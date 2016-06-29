@@ -54,9 +54,24 @@ export class NgbCarousel implements AfterContentChecked,
   @ContentChildren(NgbSlide) private _slides: QueryList<NgbSlide>;
   private _slideChangeInterval;
 
+  /**
+   *  Amount of time in milliseconds before next slide is shown.
+   */
   @Input() interval = 5000;
+
+  /**
+   *  Whether can wrap from the last to the first slide.
+   */
   @Input() wrap = true;
+
+  /**
+   *  A flag for allowing navigation via keyboard
+   */
   @Input() keyboard = true;
+
+  /**
+   *  The active slide id.
+   */
   @Input() activeId: string;
 
   ngAfterContentChecked() {
