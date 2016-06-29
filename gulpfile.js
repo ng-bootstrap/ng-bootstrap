@@ -143,7 +143,7 @@ gulp.task('clean:demo-cache', function() { return del('.publish/'); });
 
 gulp.task(
     'demo-server', ['generate-docs'],
-    shell.task(['webpack-dev-server --config webpack.demo.js --hot --inline --progress']));
+    shell.task(['webpack-dev-server --port 9090 --config webpack.demo.js --hot --inline --progress']));
 
 gulp.task(
     'build:demo', ['clean:demo', 'generate-docs'],
