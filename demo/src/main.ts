@@ -1,6 +1,7 @@
 import { enableProdMode } from '@angular/core';
 import { bootstrap } from '@angular/platform-browser-dynamic';
 import { ELEMENT_PROBE_PROVIDERS } from '@angular/platform-browser';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 import { APP_ROUTER_PROVIDERS } from './app/app.routes';
 
@@ -16,6 +17,7 @@ if (process.env.ENV === 'build') {
 
 bootstrap(AppComponent, [
     // These are dependencies of our App
-    APP_ROUTER_PROVIDERS
+    APP_ROUTER_PROVIDERS,
+    { provide: LocationStrategy, useClass: HashLocationStrategy }
   ])
   .catch(err => console.error(err));
