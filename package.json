@@ -24,7 +24,7 @@
     "@angular/core": "2.0.0-rc.3",
     "@angular/platform-browser": "2.0.0-rc.3",
     "@angular/platform-browser-dynamic": "2.0.0-rc.3",
-    "@angular/router": "3.0.0-alpha.7",
+    "@angular/router": "3.0.0-alpha.8",
     "autoprefixer": "^6.3.6",
     "bootstrap": "^4.0.0-alpha.2",
     "clang-format": "1.0.35",
