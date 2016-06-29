@@ -33,9 +33,26 @@ let nextId = 0;
   directives: [NgbCollapse]
 })
 export class NgbPanel {
+  /**
+   *  A flag determining whether the panel is disabled or not.
+   *  When disabled, the panel cannot be toggled.
+   */
   @Input() disabled = false;
+
+  /**
+   *  An optional id for the panel. The id should be unique.
+   *  If not provided, it will be auto-generated.
+   */
   @Input() id = `ngb-panel-${nextId++}`;
+
+  /**
+   *  Defines whether the panel should be open initially.
+   */
   @Input() open = false;
+
+  /**
+   *  The title for the panel.
+   */
   @Input() title: string;
 
   constructor(@Optional() @Inject(forwardRef(() => NgbAccordion)) private accordion: NgbAccordion) {}
@@ -58,6 +75,11 @@ export class NgbPanel {
 })
 export class NgbAccordion implements AfterContentChecked {
   @ContentChildren(NgbPanel) _panels: QueryList<NgbPanel>;
+
+  /**
+   *  A flag determining whether the other panels should be closed
+   *  when a panel is opened.
+   */
   @Input('closeOthers') closeOtherPanels: boolean;
 
   closeOthers(openPanel: NgbPanel): void {
