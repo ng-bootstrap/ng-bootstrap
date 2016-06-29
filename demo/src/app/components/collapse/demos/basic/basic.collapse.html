@@ -1,0 +1,8 @@
+<button type="button" class="btn btn-default" (click)="isCollapsed = !isCollapsed">Toggle</button>
+<div [ngbCollapse]="isCollapsed">
+  <div class="card">
+    <div class="card-block">
+      You can collapse this card by clicking Toggle
+    </div>
+  </div>
+</div>
