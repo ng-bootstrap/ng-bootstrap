@@ -14,9 +14,26 @@ import {Component, ChangeDetectionStrategy, OnChanges, Input, Output, EventEmitt
 })
 export class NgbPager implements OnChanges {
   private _currentPage = 0;  // internal state
+
+  /**
+   *  Number of pages present.
+   */
   @Input() noOfPages: number = 0;
+
+  /**
+   *  Current page.
+   */
   @Input() page: number = 0;
+
+  /**
+   *  A flag for determining whether links need to be aligned.
+   */
   @Input() alignLinks: boolean = false;
+
+  /**
+   *  An event fired when the page is changed.
+   *  Event's payload equals the current page.
+   */
   @Output() pageChange = new EventEmitter();
 
   prev(): void {
