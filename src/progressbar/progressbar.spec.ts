@@ -120,6 +120,30 @@ describe('ng-progressbar', () => {
          });
        })));
 
+    it('accepts animated as boolean attr', async(inject([TestComponentBuilder], (tcb) => {
+         const html = '<ngb-progressbar [value]="value" animated></ngb-progressbar>';
+
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+           fixture.detectChanges();
+
+           expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('progress-animated');
+         });
+       })));
+
+    it('accepts animated as normal attr', async(inject([TestComponentBuilder], (tcb) => {
+         const html = '<ngb-progressbar [value]="value" [animated]="animated"></ngb-progressbar>';
+
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+           fixture.detectChanges();
+
+           expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('progress-animated');
+
+           fixture.componentInstance.animated = false;
+           fixture.detectChanges();
+           expect(getProgressbar(fixture.nativeElement)).not.toHaveCssClass('progress-animated');
+         });
+       })));
+
     it('accepts striped as boolean attr', async(inject([TestComponentBuilder], (tcb) => {
          const html = '<ngb-progressbar [value]="value" striped></ngb-progressbar>';
 
@@ -150,6 +174,7 @@ describe('ng-progressbar', () => {
 class TestComponent {
   value = 10;
   max = 50;
+  animated = true;
   striped = true;
   type = 'warning';
 }
