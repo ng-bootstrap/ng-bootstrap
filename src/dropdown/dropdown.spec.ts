@@ -87,6 +87,30 @@ describe('ngb-dropdown', () => {
          expect(dropdownEl).not.toHaveCssClass('open');
        });
      })));
+
+  it('should allow binding to open output', async(inject([TestComponentBuilder], (tcb) => {
+       const html = `
+      <button (click)="drop.toggle(); $event.stopPropagation()">Toggle</button>
+      <div ngbDropdown [(open)]="isOpen" #drop="ngbDropdown"></div>`;
+
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         fixture.detectChanges();
+         const compiled = fixture.nativeElement;
+         let buttonEl = compiled.querySelector('button');
+
+         expect(fixture.componentInstance.isOpen).toBe(false);
+
+         buttonEl.click();
+         fixture.detectChanges();
+
+         expect(fixture.componentInstance.isOpen).toBe(true);
+
+         buttonEl.click();
+         fixture.detectChanges();
+
+         expect(fixture.componentInstance.isOpen).toBe(false);
+       });
+     })));
 });
 
 describe('ngb-dropdown-toggle', () => {

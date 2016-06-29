@@ -1,4 +1,4 @@
-import {Directive, Input, HostListener} from '@angular/core';
+import {Directive, Input, Output, HostListener, EventEmitter} from '@angular/core';
 
 /**
  * Transforms a node into a dropdown.
@@ -19,9 +19,21 @@ export class NgbDropdown {
    */
   @Input('open') private _open = false;
 
+  /**
+   *  An event fired when the dropdown is opened or closed.
+   *  Event's payload equals whether dropdown is open.
+   */
+  @Output() openChange = new EventEmitter();
+
   isOpen() { return this._open; }
-  open() { this._open = true; }
-  close() { this._open = false; }
+  open() {
+    this._open = true;
+    this.openChange.emit(true);
+  }
+  close() {
+    this._open = false;
+    this.openChange.emit(false);
+  }
   toggle() {
     if (this.isOpen()) {
       this.close();
