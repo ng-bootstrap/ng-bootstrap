@@ -1,14 +1,14 @@
 import {Component} from '@angular/core';
 import {ContentWrapper} from '../../shared';
-import {NgbdApiDocs} from '../shared/api-docs';
+import {ExampleBoxComponent, NgbdApiDocs} from '../shared';
+import {RatingBasicComponent, basicHtmlContent, basicTsContent} from './demos';
 
 @Component({
   selector: 'ngbd-rating',
-  template: `
-    <ngbd-content-wrapper component="Rating">
-      <ngbd-api-docs directive="NgbRating"></ngbd-api-docs>
-    </ngbd-content-wrapper>
-  `,
-  directives: [ContentWrapper, NgbdApiDocs]
+  template: require('./rating.component.html'),
+  directives: [ContentWrapper, RatingBasicComponent, NgbdApiDocs, ExampleBoxComponent]
 })
-export class NgbdRating {}
+export class NgbdRating {
+  basicHtmlContent = basicHtmlContent;
+  basicTsContent = basicTsContent;
+}

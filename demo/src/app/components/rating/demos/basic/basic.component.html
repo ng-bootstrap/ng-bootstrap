@@ -1,0 +1,7 @@
+<ngb-rating #ngbRating [(rate)]="rate" [max]="max" [readonly]="isReadonly" (hover)="hoveringOver($event)" aria-labelledby="default-rating"></ngb-rating>
+<span class="label {{percent < 30 && 'label-warning'}} {{percent >= 30 && percent < 70 && 'label-info'}} {{percent >= 70 && 'label-success'}}" *ngIf="overStar && !isReadonly">{{percent}}%</span>
+
+<pre>Rate: <b>{{rate}}</b> - Readonly is: <i>{{isReadonly ? 'true' : 'false'}}</i> - Hovering over: <b>{{overStar || 'none'}}</b></pre>
+
+<button type="button" class="btn btn-sm btn-danger" (click)="rate = 0" [disabled]="isReadonly">Clear</button>
+<button type="button" class="btn btn-sm btn-default" (click)="isReadonly =! isReadonly">Toggle Readonly</button>
