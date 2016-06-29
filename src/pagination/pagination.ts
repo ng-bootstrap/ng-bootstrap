@@ -49,6 +49,9 @@ export class NgbPagination implements OnChanges {
   private _pageSize = 10;
   pages: number[] = [];
 
+  /**
+   *  Whether to show the "First" and "Last" page links
+   */
   @Input()
   set boundaryLinks(value: boolean) {
     this._boundaryLinks = toBoolean(value);
@@ -56,6 +59,9 @@ export class NgbPagination implements OnChanges {
 
   get boundaryLinks(): boolean { return this._boundaryLinks; }
 
+  /**
+   *  Current page.
+   */
   @Input()
   set page(value: number | string) {
     this._page = parseInt(`${value}`, 10);
@@ -63,6 +69,9 @@ export class NgbPagination implements OnChanges {
 
   get page(): number | string { return this._page; }
 
+  /**
+   *  Number of items in collection.
+   */
   @Input()
   set collectionSize(value: number | string) {
     this._collectionSize = toInteger(value);
@@ -70,6 +79,9 @@ export class NgbPagination implements OnChanges {
 
   get collectionSize(): number | string { return this._collectionSize; }
 
+  /**
+   *  Number of items per page.
+   */
   @Input()
   set pageSize(value: number | string) {
     this._pageSize = toInteger(value);
@@ -77,6 +89,10 @@ export class NgbPagination implements OnChanges {
 
   get pageSize(): number | string { return this._pageSize; }
 
+  /**
+   *  An event fired when the page is changed.
+   *  Event's payload equals the current page.
+   */
   @Output() pageChange = new EventEmitter();
 
   hasPrevious(): boolean { return this.page > 1; }
