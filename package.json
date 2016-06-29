@@ -59,6 +59,7 @@
     "merge2": "^1.0.1",
     "node-sass": "^3.7.0",
     "postcss-loader": "^0.9.1",
+    "prismjs": "^1.5.1",
     "prismjs-loader": "0.0.3",
     "raw-loader": "^0.5.1",
     "reflect-metadata": "0.1.2",
