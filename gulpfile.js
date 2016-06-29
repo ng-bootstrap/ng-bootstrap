@@ -147,7 +147,7 @@ gulp.task(
 
 gulp.task(
     'build:demo', ['clean:demo', 'generate-docs'],
-    shell.task(['webpack --config webpack.demo.js --progress --profile --bail']));
+    shell.task(['MODE=build webpack --config webpack.demo.js --progress --profile --bail']));
 
 gulp.task('demo-push', function() { return gulp.src(PATHS.demoDist).pipe(ghPages()); });
 
