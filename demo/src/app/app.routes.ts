@@ -19,9 +19,10 @@ import {
 } from './components';
 
 const routes: RouterConfig = [
-  {path: '', redirectTo: 'default'},
-  {path: 'default', component: DefaultComponent},
+  {path: '', redirectTo: 'home'},
+  {path: 'home', component: DefaultComponent},
   {path: 'getting-started', component: GettingStarted},
+  {path: 'components', redirectTo: 'components/accordion'},
   {path: 'components/accordion', component: NgbdAccordion},
   {path: 'components/alert', component: NgbdAlert},
   {path: 'components/buttons', component: NgbdButtons},
