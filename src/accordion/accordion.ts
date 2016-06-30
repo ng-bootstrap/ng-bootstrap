@@ -24,7 +24,7 @@ let nextId = 0;
     <div class="panel panel-default" [class.panel-open]="open">
       <div class="panel-heading" role="tab" [id]="id">
         <h4 class="panel-title">
-          <a tabindex="0" (click)="toggleOpen($event)"><span [class.text-muted]="disabled">{{title}}</span></a>
+          <a tabindex="0" (click)="toggleOpen($event)" href><span [class.text-muted]="disabled">{{title}}</span></a>
         </h4>
       </div>
       <div class="panel-collapse" [ngbCollapse]="!open" [attr.aria-labelledby]="id" role="tabpanel">
