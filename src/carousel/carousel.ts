@@ -12,12 +12,22 @@ import {
 
 let nextId = 0;
 
+/**
+ * Represents an individual slide to be used within a carousel.
+ */
 @Directive({selector: 'template[ngbSlide]'})
 export class NgbSlide {
+  /**
+   * Unique slide identifier. Must be unique for the entire document for proper accessibility support.
+   * Will be auto-generated if not provided by a user.
+   */
   @Input() id = `ngb-slide-${nextId++}`;
   constructor(public tplRef: TemplateRef<any>) {}
 }
 
+/**
+ * Directive to easily create carousels based on Bootstrap's markup.
+ */
 @Component({
   selector: 'ngb-carousel',
   exportAs: 'ngbCarousel',

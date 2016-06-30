@@ -13,6 +13,10 @@ import {NgbCollapse} from '../collapse/collapse';
 
 let nextId = 0;
 
+/**
+ * The NgbPanel directive builds on top of the NgbCollapse directive to provide a panel with collapsible body that can
+ * collapsed or expanded by clicking on the panel's header.
+ */
 @Component({
   selector: 'ngb-panel',
   exportAs: 'ngbPanel',
@@ -68,6 +72,10 @@ export class NgbPanel {
   }
 }
 
+/**
+ * The NgbAccordion directive is a collection of panels.
+ * NgbAccordion can assure that only panel can be opened at a time.
+ */
 @Component({
   selector: 'ngb-accordion',
   host: {'role': 'tablist', '[attr.aria-multiselectable]': '!closeOtherPanels'},

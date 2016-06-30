@@ -1,5 +1,8 @@
 import {Component, ChangeDetectionStrategy, OnChanges, Input, Output, EventEmitter} from '@angular/core';
 
+/**
+ * A lightweight pager directive that is focused on providing previous/next paging functionality.
+ */
 @Component({
   selector: 'ngb-pager',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -18,17 +21,17 @@ export class NgbPager implements OnChanges {
   /**
    *  Number of pages present.
    */
-  @Input() noOfPages: number = 0;
+  @Input() noOfPages: number;
 
   /**
    *  Current page.
    */
-  @Input() page: number = 0;
+  @Input() page: number;
 
   /**
    *  A flag for determining whether links need to be aligned.
    */
-  @Input() alignLinks: boolean = false;
+  @Input() alignLinks = false;
 
   /**
    *  An event fired when the page is changed.
