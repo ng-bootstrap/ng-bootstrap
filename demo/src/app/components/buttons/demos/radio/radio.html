@@ -1,0 +1,13 @@
+<div class="btn-group" data-toggle="buttons" [(ngModel)]="model" ngbRadioGroup>
+  <label class="btn btn-primary">
+    <input type="radio" [value]="1"> Left (pre-checked)
+  </label>
+  <label class="btn btn-primary">
+    <input type="radio" value="middle"> Middle
+  </label>
+  <label class="btn btn-primary">
+    <input type="radio" [value]="false"> Right
+  </label>
+</div>
+<hr>
+<pre>{{model}}</pre>

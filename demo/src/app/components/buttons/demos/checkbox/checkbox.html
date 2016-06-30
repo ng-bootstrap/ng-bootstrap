@@ -1,0 +1,17 @@
+<p>
+  Check-box-like button group can be easily done with pure Angular 2, no custom directives necessary.
+  But we include demo here for completeness.
+</p>
+<div class="btn-group" data-toggle="buttons">
+  <label class="btn btn-primary" [class.active]="model.left">
+    <input type="checkbox" [(ngModel)]="model.left"> Left (pre-checked)
+  </label>
+  <label class="btn btn-primary" [class.active]="model.middle">
+    <input type="checkbox" [(ngModel)]="model.middle"> Middle
+  </label>
+  <label class="btn btn-primary" [class.active]="model.right">
+    <input type="checkbox" [(ngModel)]="model.right"> Right
+  </label>
+</div>
+<hr>
+<pre>{{model | json}}</pre>
