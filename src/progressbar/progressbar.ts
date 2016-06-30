@@ -20,18 +20,18 @@ export class NgbProgressbar {
   /**
    * Maximal value to be displayed in the progressbar.
    */
-  @Input() max: number = 100;
+  @Input() max = 100;
 
   /**
    * A flag indicating if a progress bar should be animated when the value changes. Takes effect only for browsers
    * supporting CSS3 animations.
    */
-  @Input() animated: boolean | string;
+  @Input() animated: boolean | string = false;
 
   /**
    * A flag indicating if a progress bar should be displayed as striped.
    */
-  @Input() striped: boolean | string;
+  @Input() striped: boolean | string = false;
 
   /**
    * Type of progress bar, can be one of "success", "info", "warning" or "danger".
@@ -41,7 +41,7 @@ export class NgbProgressbar {
   /**
    * Current value to be displayed in the progressbar. Should be smaller or equal to "max" value.
    */
-  @Input() value: number;
+  @Input() value = 0;
 
   isAnimated(): boolean { return toBoolean(this.animated); }
 
