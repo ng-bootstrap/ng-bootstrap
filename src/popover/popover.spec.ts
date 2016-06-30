@@ -1,10 +1,9 @@
-import {iit, it, ddescribe, describe, expect, inject, async} from '@angular/core/testing';
+import {inject, async} from '@angular/core/testing';
 import {TestComponentBuilder} from '@angular/compiler/testing';
 
 import {NgbPopoverWindow} from './popover';
 
 describe('ngb-popover-window', () => {
-
   it('should render popover on top by default', async(inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
        tcb.createAsync(NgbPopoverWindow).then((fixture) => {
          fixture.componentInstance.title = 'Test title';

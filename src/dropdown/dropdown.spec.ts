@@ -1,4 +1,4 @@
-import {iit, it, ddescribe, describe, expect, inject, async, beforeEachProviders} from '@angular/core/testing';
+import {inject, async, addProviders} from '@angular/core/testing';
 
 import {TestComponentBuilder} from '@angular/compiler/testing';
 
@@ -114,7 +114,6 @@ describe('ngb-dropdown', () => {
 });
 
 describe('ngb-dropdown-toggle', () => {
-
   it('should toggle dropdown on click', async(inject([TestComponentBuilder], (tcb) => {
        const html = `
       <div ngbDropdown>

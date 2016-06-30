@@ -1,14 +1,4 @@
-import {
-  iit,
-  it,
-  ddescribe,
-  describe,
-  expect,
-  inject,
-  async,
-  beforeEach,
-  beforeEachProviders
-} from '@angular/core/testing';
+import {inject, async, addProviders} from '@angular/core/testing';
 
 import {TestComponentBuilder} from '@angular/compiler/testing';
 
@@ -59,7 +49,6 @@ function getButton(nativeEl: HTMLElement) {
 }
 
 describe('ngb-tabset', () => {
-
   it('should render tabs and select first tab as active by default', async(inject([TestComponentBuilder], (tcb) => {
        const html = `
       <ngb-tabset>
@@ -74,10 +63,10 @@ describe('ngb-tabset', () => {
          const tabTitles = getTabTitles(fixture.nativeElement);
          const tabContent = getTabContent(fixture.nativeElement);
 
-         expect(tabTitles[0].textContent).toMatchPattern(/foo/);
-         expect(tabTitles[1].textContent).toMatchPattern(/bar/);
-         expect(tabContent[0].textContent).toMatchPattern(/Foo/);
-         expect(tabContent[1].textContent).toMatchPattern(/Bar/);
+         expect(tabTitles[0].textContent).toMatch(/foo/);
+         expect(tabTitles[1].textContent).toMatch(/bar/);
+         expect(tabContent[0].textContent).toMatch(/Foo/);
+         expect(tabContent[1].textContent).toMatch(/Bar/);
 
          expectTabs(fixture.nativeElement, [true, false]);
        });
@@ -103,9 +92,9 @@ describe('ngb-tabset', () => {
 
          const tabTitles = getTabTitles(fixture.nativeElement);
 
-         expect(tabTitles[0].textContent).toMatchPattern(/foo/);
-         expect(tabTitles[1].innerHTML).toMatchPattern(/<b>bar<\/b>/);
-         expect(tabTitles[2].textContent).toMatchPattern(/bazbaz/);
+         expect(tabTitles[0].textContent).toMatch(/foo/);
+         expect(tabTitles[1].innerHTML).toMatch(/<b>bar<\/b>/);
+         expect(tabTitles[2].textContent).toMatch(/bazbaz/);
        });
      })));
 

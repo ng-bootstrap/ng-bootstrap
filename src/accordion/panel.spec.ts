@@ -1,4 +1,4 @@
-import {iit, it, ddescribe, describe, expect, inject, async, beforeEachProviders} from '@angular/core/testing';
+import {inject, async, addProviders} from '@angular/core/testing';
 
 import {TestComponentBuilder} from '@angular/compiler/testing';
 
@@ -27,7 +27,6 @@ function expectToBeEnabled(panelEl) {
 }
 
 describe('ngb-panel', () => {
-
   it('should render as a closed, enabled panel by default', async(inject([TestComponentBuilder], (tcb) => {
        const panelHtml = `
       <ngb-panel title="Test title">Test content</ngb-panel>

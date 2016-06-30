@@ -31,6 +31,7 @@ Promise.all([System.import('@angular/core/testing'), System.import('@angular/pla
           testingBrowser.TEST_BROWSER_DYNAMIC_PLATFORM_PROVIDERS,
           testingBrowser.TEST_BROWSER_DYNAMIC_APPLICATION_PROVIDERS);
     })
+    .then(function() { return Promise.all(customMatchers()); })
     .then(function() { return Promise.all(resolveTestFiles()); })
     .then(function() { __karma__.start(); }, function(error) { __karma__.error(error.stack || error); });
 
@@ -43,6 +44,10 @@ function createPathRecords(pathsMapping, appPath) {
   moduleName = moduleName.replace(/\.js$/, '');
   pathsMapping[moduleName] = appPath + '?' + window.__karma__.files[appPath];
   return pathsMapping;
+}
+
+function customMatchers() {
+  return System.import('/base/temp/util/matchers.js');
 }
 
 function onlyAppFiles(filePath) {

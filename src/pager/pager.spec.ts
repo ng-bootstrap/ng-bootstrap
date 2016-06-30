@@ -1,14 +1,4 @@
-import {
-  iit,
-  it,
-  ddescribe,
-  describe,
-  expect,
-  inject,
-  async,
-  beforeEach,
-  beforeEachProviders
-} from '@angular/core/testing';
+import {inject, async, addProviders} from '@angular/core/testing';
 
 import {TestComponentBuilder} from '@angular/compiler/testing';
 
@@ -37,7 +27,6 @@ function getLink(nativeEl: HTMLElement, idx: number): HTMLAnchorElement {
 }
 
 describe('ngb-pagination', () => {
-
   describe('business logic', () => {
 
     let pager: NgbPager;

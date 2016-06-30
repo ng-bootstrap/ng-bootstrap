@@ -1,9 +1,4 @@
 import {
-  iit,
-  it,
-  ddescribe,
-  describe,
-  expect,
   inject,
   async,
 } from '@angular/core/testing';
@@ -19,7 +14,6 @@ function getCollapsibleContent(element: HTMLElement): HTMLDivElement {
 }
 
 describe('ngb-collapse', () => {
-
   let html = `<div [ngbCollapse]="collapsed">Some content</div>`;
 
   it('should have content open and aria-expanded true', async(inject([TestComponentBuilder], (tcb) => {

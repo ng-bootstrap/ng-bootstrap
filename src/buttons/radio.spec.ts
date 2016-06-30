@@ -1,6 +1,7 @@
-import {it, iit, expect, inject, async, describe, ddescribe} from '@angular/core/testing';
+import {inject, async} from '@angular/core/testing';
 import {TestComponentBuilder} from '@angular/compiler/testing';
 import {Component} from '@angular/core';
+
 import {NGB_RADIO_DIRECTIVES} from './radio';
 
 
@@ -24,7 +25,6 @@ function getInput(nativeEl: HTMLElement, idx: number): HTMLInputElement {
 }
 
 describe('ngbRadioGroup', () => {
-
   const defaultHtml = `<div [(ngModel)]="model" ngbRadioGroup>
       <label class="btn">
         <input type="radio" name="radio" [value]="values[0]"/> {{ values[0] }}

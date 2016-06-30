@@ -1,5 +1,3 @@
-import {it, describe, expect, beforeEach, afterEach} from '@angular/core/testing';
-
 import {Positioning} from './positioning';
 
 describe('Positioning', () => {

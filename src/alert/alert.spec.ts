@@ -1,4 +1,4 @@
-import {iit, it, ddescribe, describe, expect, inject, async} from '@angular/core/testing';
+import {inject, async} from '@angular/core/testing';
 
 import {TestComponentBuilder} from '@angular/compiler/testing';
 
@@ -15,7 +15,6 @@ function getCloseButton(element: HTMLElement): HTMLButtonElement {
 }
 
 describe('ngb-alert', () => {
-
   it('should have type warning and by dismissible by default', async(inject([TestComponentBuilder], (tcb) => {
        tcb.overrideTemplate(TestComponent, '<ngb-alert>Watch out!</ngb-alert>')
            .createAsync(TestComponent)
