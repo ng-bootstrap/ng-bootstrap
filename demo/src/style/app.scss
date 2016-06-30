@@ -6,8 +6,8 @@ header .navbar {
 .jumbotron {
   margin-top: 50px;
   background-color: #0143A3;
-  background: -webkit-linear-gradient(#0143A3,#0273D4);
-  background: linear-gradient(#0143A3,#0273D4);
+  background: -webkit-linear-gradient(#0143A3, #0273D4);
+  background: linear-gradient(#0143A3, #0273D4);
   color: #fff
 }
 
@@ -40,16 +40,18 @@ p.github-buttons > iframe {
 
 @media (min-width: 768px) {
   .bd-sidebar {
-    padding-left:1rem
+    padding-left: 1rem
   }
 }
+
 .bd-toc-link {
   display: block;
   padding: .25rem .75rem;
   color: #55595c
 }
 
-.bd-toc-link:focus, .bd-toc-link:hover {
+.bd-toc-link:focus,
+.bd-toc-link:hover {
   color: #0275d8;
   text-decoration: none
 }
@@ -89,13 +91,16 @@ p.github-buttons > iframe {
   cursor: pointer;
 }
 
-.bd-sidebar .nav > li > a:focus, .bd-sidebar .nav > li > a:hover {
+.bd-sidebar .nav > li > a:focus,
+.bd-sidebar .nav > li > a:hover {
   color: #0275d8;
   text-decoration: none;
   background-color: transparent
 }
 
-.bd-sidebar .nav > .active:focus > a, .bd-sidebar .nav > .active:hover > a, .bd-sidebar .nav > .active > a {
+.bd-sidebar .nav > .active:focus > a,
+.bd-sidebar .nav > .active:hover > a,
+.bd-sidebar .nav > .active > a {
   font-weight: 500;
   color: #373a3c;
   background-color: transparent
@@ -108,20 +113,20 @@ div.component-api div.component-api-instructions {
 }
 
 .bd-footer {
-    padding: 3rem 0;
-    margin-top: 3rem;
-    font-size: 85%;
-    background-color: #f7f7f7;
-    text-align: left;
+  padding: 3rem 0;
+  margin-top: 3rem;
+  font-size: 85%;
+  background-color: #f7f7f7;
+  text-align: left;
 }
 
 .bd-footer p {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 .bd-footer a {
-    font-weight: 500;
-    color: #55595c;
+  font-weight: 500;
+  color: #55595c;
 }
 
 section {
