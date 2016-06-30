@@ -70,6 +70,7 @@ module.exports = function makeWebpackConfig() {
     alias: {
       '@ng-bootstrap/accordion': root('src/accordion/accordion.ts'),
       '@ng-bootstrap/alert': root('src/alert/alert.ts'),
+      '@ng-bootstrap/buttons': root('src/buttons/radio.ts'),
       '@ng-bootstrap/collapse': root('src/collapse/collapse.ts'),
       '@ng-bootstrap/dropdown': root('src/dropdown/dropdown.ts')
     }
