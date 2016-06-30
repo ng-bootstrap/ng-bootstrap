@@ -49,11 +49,11 @@ export class NgbSlide {
         <template [ngTemplateOutlet]="slide.tplRef"></template>
       </div>
     </div>
-    <a class="left carousel-control" role="button" (click)="prev()">
+    <a class="left carousel-control" role="button" (click)="prev()" href>
       <span class="icon-prev" aria-hidden="true"></span>
       <span class="sr-only">Previous</span>
     </a>
-    <a class="right carousel-control" role="button" (click)="next()">
+    <a class="right carousel-control" role="button" (click)="next()" href>
       <span class="icon-next" aria-hidden="true"></span>
       <span class="sr-only">Next</span>
     </a>

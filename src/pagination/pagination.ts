@@ -11,32 +11,32 @@ import {getValueInRange, toInteger, toBoolean} from '../util/util';
     <nav>
       <ul [class]="'pagination' + (size ? ' pagination-' + size : '')">
         <li *ngIf="boundaryLinks" class="page-item" [class.disabled]="!hasPrevious()">
-          <a aria-label="First" class="page-link" (click)="selectPage(1)">
+          <a aria-label="First" class="page-link" (click)="selectPage(1)" href>
             <span aria-hidden="true">&laquo;&laquo;</span>
             <span class="sr-only">First</span>
           </a>                
         </li>
       
         <li *ngIf="directionLinks"class="page-item" [class.disabled]="!hasPrevious()">
-          <a aria-label="Previous" class="page-link" (click)="selectPage(page-1)">
+          <a aria-label="Previous" class="page-link" (click)="selectPage(page-1)" href>
             <span aria-hidden="true">&laquo;</span>
             <span class="sr-only">Previous</span>
           </a>
         </li>
 
         <li *ngFor="let pageNumber of pages" class="page-item" [class.active]="pageNumber === page">
-          <a class="page-link" (click)="selectPage(pageNumber)">{{pageNumber}}</a>
+          <a class="page-link" (click)="selectPage(pageNumber)" href>{{pageNumber}}</a>
         </li>
 
         <li *ngIf="directionLinks" class="page-item" [class.disabled]="!hasNext()">
-          <a aria-label="Next" class="page-link" (click)="selectPage(page+1)">
+          <a aria-label="Next" class="page-link" (click)="selectPage(page+1)" href>
             <span aria-hidden="true">&raquo;</span>
             <span class="sr-only">Next</span>
           </a>
         </li>
         
         <li *ngIf="boundaryLinks" class="page-item" [class.disabled]="!hasNext()">
-          <a aria-label="Last" class="page-link" (click)="selectPage(pages.length)">
+          <a aria-label="Last" class="page-link" (click)="selectPage(pages.length)" href>
             <span aria-hidden="true">&raquo;&raquo;</span>
             <span class="sr-only">Last</span>
           </a>                
