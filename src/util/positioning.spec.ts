@@ -20,25 +20,15 @@ describe('Positioning', () => {
     return element;
   }
 
-  let cleanUp = false;
   let element = createElement(200, 300, 100, 150);
+  document.body.appendChild(element);
+  let targetElement = createElement(50, 100, 10, 20);
+  document.body.appendChild(targetElement);
 
   document.documentElement.style.margin = '0';
   document.body.style.margin = '0';
   document.body.style.height = '2000px';
   document.body.style.width = '2000px';
-
-  beforeEach(() => {
-    if (!cleanUp) {
-      document.body.appendChild(element);
-    }
-  });
-
-  afterEach(() => {
-    if (!cleanUp) {
-      document.body.removeChild(element);
-    }
-  });
 
   it('should calculate the element offset', () => {
     let position = positioning.offset(element);
@@ -110,151 +100,92 @@ describe('Positioning', () => {
   });
 
   it('should position the element top-left', () => {
-    let targetElement = createElement(50, 100, 10, 20);
-    document.body.appendChild(targetElement);
-
     let position = positioning.positionElements(element, targetElement, 'top-left');
 
     expect(position.top).toBe(50);
     expect(position.left).toBe(150);
-
-    document.body.removeChild(targetElement);
   });
 
   it('should position the element top-center', () => {
-    let targetElement = createElement(50, 100, 10, 20);
-    document.body.appendChild(targetElement);
-
     let position = positioning.positionElements(element, targetElement, 'top');
 
     expect(position.top).toBe(50);
     expect(position.left).toBe(250);
-
-    document.body.removeChild(targetElement);
   });
 
   it('should position the element top-right', () => {
-    let targetElement = createElement(50, 100, 10, 20);
-    document.body.appendChild(targetElement);
-
     let position = positioning.positionElements(element, targetElement, 'top-right');
 
     expect(position.top).toBe(50);
     expect(position.left).toBe(450);
-
-    document.body.removeChild(targetElement);
   });
 
   it('should position the element bottom-left', () => {
-    let targetElement = createElement(50, 100, 10, 20);
-    document.body.appendChild(targetElement);
-
     let position = positioning.positionElements(element, targetElement, 'bottom-left');
 
     expect(position.top).toBe(300);
     expect(position.left).toBe(150);
-
-    document.body.removeChild(targetElement);
   });
 
   it('should position the element bottom-center', () => {
-    let targetElement = createElement(50, 100, 10, 20);
-    document.body.appendChild(targetElement);
-
     let position = positioning.positionElements(element, targetElement, 'bottom');
 
     expect(position.top).toBe(300);
     expect(position.left).toBe(250);
-
-    document.body.removeChild(targetElement);
   });
 
   it('should position the element bottom-right', () => {
-    let targetElement = createElement(50, 100, 10, 20);
-    document.body.appendChild(targetElement);
-
     let position = positioning.positionElements(element, targetElement, 'bottom-right');
 
     expect(position.top).toBe(300);
     expect(position.left).toBe(450);
-
-    document.body.removeChild(targetElement);
   });
 
   it('should position the element left-top', () => {
-    let targetElement = createElement(50, 100, 10, 20);
-    document.body.appendChild(targetElement);
-
     let position = positioning.positionElements(element, targetElement, 'left-top');
 
     expect(position.top).toBe(100);
     expect(position.left).toBe(50);
-
-    document.body.removeChild(targetElement);
   });
 
   it('should position the element left-center', () => {
-    let targetElement = createElement(50, 100, 10, 20);
-    document.body.appendChild(targetElement);
-
     let position = positioning.positionElements(element, targetElement, 'left');
 
     expect(position.top).toBe(175);
     expect(position.left).toBe(50);
-
-    document.body.removeChild(targetElement);
   });
 
   it('should position the element left-bottom', () => {
-    let targetElement = createElement(50, 100, 10, 20);
-    document.body.appendChild(targetElement);
-
     let position = positioning.positionElements(element, targetElement, 'left-bottom');
 
     expect(position.top).toBe(300);
     expect(position.left).toBe(50);
-
-    document.body.removeChild(targetElement);
   });
 
   it('should position the element right-top', () => {
-    let targetElement = createElement(50, 100, 10, 20);
-    document.body.appendChild(targetElement);
-
     let position = positioning.positionElements(element, targetElement, 'right-top');
 
     expect(position.top).toBe(100);
     expect(position.left).toBe(450);
-
-    document.body.removeChild(targetElement);
   });
 
   it('should position the element right-center', () => {
-    let targetElement = createElement(50, 100, 10, 20);
-    document.body.appendChild(targetElement);
-
     let position = positioning.positionElements(element, targetElement, 'right');
 
     expect(position.top).toBe(175);
     expect(position.left).toBe(450);
-
-    document.body.removeChild(targetElement);
   });
 
   it('should position the element right-bottom', () => {
-    let targetElement = createElement(50, 100, 10, 20);
-    document.body.appendChild(targetElement);
-
     let position = positioning.positionElements(element, targetElement, 'right-bottom');
 
     expect(position.top).toBe(300);
     expect(position.left).toBe(450);
-
-    document.body.removeChild(targetElement);
   });
 
   it('cleanUp', () => {
-    cleanUp = true;
+    document.body.removeChild(element);
+    document.body.removeChild(targetElement);
     document.documentElement.style.margin = documentMargin;
     document.body.style.margin = bodyMargin;
     document.body.style.height = bodyHeight;
