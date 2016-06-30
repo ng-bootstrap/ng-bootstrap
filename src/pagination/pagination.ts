@@ -1,6 +1,9 @@
 import {Component, EventEmitter, Input, Output, OnChanges, ChangeDetectionStrategy} from '@angular/core';
 import {getValueInRange, toInteger, toBoolean} from '../util/util';
 
+/**
+ * A directive that will take care of visualising a pagination bar and enable / disable buttons correctly!
+ */
 @Component({
   selector: 'ngb-pagination',
   changeDetection: ChangeDetectionStrategy.OnPush,
