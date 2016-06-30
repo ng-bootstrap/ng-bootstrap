@@ -45,6 +45,10 @@ function getLink(nativeEl: HTMLElement, idx: number): HTMLAnchorElement {
   return <HTMLAnchorElement>nativeEl.querySelectorAll('li')[idx].querySelector('a');
 }
 
+function getList(nativeEl: HTMLElement) {
+  return <HTMLUListElement>nativeEl.querySelector('ul');
+}
+
 function normalizeText(txt: string): string {
   return txt.trim().replace(/\s+/g, ' ');
 }
@@ -243,6 +247,37 @@ describe('ngb-pagination', () => {
            expectPages(fixture.nativeElement, ['-«« First', '-« Previous', '+1', '2', '3', '» Next', '»» Last']);
          });
        })));
+
+    it('should render and respond to size change', async(inject([TestComponentBuilder], (tcb) => {
+         const html = '<ngb-pagination collectionSize="20" page="1" [size]="size"></ngb-pagination>';
+
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+           fixture.detectChanges();
+           const classList = getList(fixture.nativeElement).classList;
+
+           // default case
+           expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '» Next']);
+           expect(classList).toContain('pagination');
+
+           // large size
+           fixture.componentInstance.size = 'lg';
+           fixture.detectChanges();
+           expect(classList).toContain('pagination');
+           expect(classList).toContain('pagination-lg');
+
+           // removing large size
+           fixture.componentInstance.size = '';
+           fixture.detectChanges();
+           expect(classList).toContain('pagination');
+           expect(classList).not.toContain('pagination-lg');
+
+           // arbitrary string
+           fixture.componentInstance.size = '123';
+           fixture.detectChanges();
+           expect(classList).toContain('pagination');
+           expect(classList).toContain('pagination-123');
+         });
+       })));
   });
 
 });
@@ -254,4 +289,5 @@ class TestComponent {
   page = 1;
   boundaryLinks = false;
   directionLinks = false;
+  size = '';
 }

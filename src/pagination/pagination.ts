@@ -6,7 +6,7 @@ import {getValueInRange, toInteger, toBoolean} from '../util/util';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <nav>
-      <ul class="pagination">
+      <ul [class]="'pagination' + (size ? ' pagination-' + size : '')">
         <li *ngIf="boundaryLinks" class="page-item" [class.disabled]="!hasPrevious()">
           <a aria-label="First" class="page-link" (click)="selectPage(1)">
             <span aria-hidden="true">&laquo;&laquo;</span>
@@ -105,6 +105,11 @@ export class NgbPagination implements OnChanges {
    *  Event's payload equals the current page.
    */
   @Output() pageChange = new EventEmitter();
+
+  /**
+   * Pagination display size: small or large
+   */
+  @Input() size: 'sm' | 'lg';
 
   hasPrevious(): boolean { return this.page > 1; }
 
