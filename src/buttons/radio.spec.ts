@@ -209,6 +209,16 @@ describe('ngbRadioGroup', () => {
        });
      })));
 
+  it('should add data-toggle="buttons" and "btn-group" CSS class to button group',
+     async(inject([TestComponentBuilder], (tcb) => {
+       // Bootstrap for uses presence of data-toggle="buttons" to style radio buttons
+       const html = `<div [(ngModel)]="model" class="foo" ngbRadioGroup></div>`;
+
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         expect(fixture.nativeElement.children[0].getAttribute('data-toggle')).toBe('buttons');
+         expect(fixture.nativeElement.children[0]).toHaveCssClass('btn-group');
+       });
+     })));
 });
 
 @Component({selector: 'test-cmp', directives: [NGB_RADIO_DIRECTIVES], template: ''})

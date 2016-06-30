@@ -11,7 +11,11 @@ const NGB_RADIO_VALUE_ACCESSOR = {
  * Easily create Bootstrap-style radio buttons. A value of a selected button is bound to a variable
  * specified via ngModel.
  */
-@Directive({selector: '[ngbRadioGroup][ngModel]', providers: [NGB_RADIO_VALUE_ACCESSOR]})
+@Directive({
+  selector: '[ngbRadioGroup][ngModel]',
+  host: {'data-toggle': 'buttons', 'class': 'btn-group'},
+  providers: [NGB_RADIO_VALUE_ACCESSOR]
+})
 export class NgbRadioGroup implements ControlValueAccessor {
   private _radios: Set<NgbRadio> = new Set<NgbRadio>();
   private _value = null;
