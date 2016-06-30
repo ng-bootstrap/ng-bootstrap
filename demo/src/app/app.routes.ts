@@ -19,7 +19,7 @@ import {
 } from './components';
 
 const routes: RouterConfig = [
-  {path: '', redirectTo: 'home'},
+  {path: '', pathMatch: 'full', redirectTo: 'home'},
   {path: 'home', component: DefaultComponent},
   {path: 'getting-started', component: GettingStarted},
   {path: 'components', redirectTo: 'components/accordion'},

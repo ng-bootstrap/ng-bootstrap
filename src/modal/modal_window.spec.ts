@@ -1,20 +1,13 @@
-import {
-  iit,
-  it,
-  ddescribe,
-  describe,
-  expect,
-  inject,
-  async,
-  beforeEach,
-  beforeEachProviders
-} from '@angular/core/testing';
+import {inject, async, addProviders} from '@angular/core/testing';
 import {TestComponentBuilder} from '@angular/compiler/testing';
+
+import {addMatchers} from '../util/matchers';
 
 import {NgbModalWindow} from './modal_window';
 import {ModalDismissReasons} from './modal_dismiss_reasons';
 
 describe('ngb-modal-dialog', () => {
+  beforeEach(() => addMatchers());
 
   describe('basic rendering functionality', () => {
 

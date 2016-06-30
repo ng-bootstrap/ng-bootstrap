@@ -1,4 +1,4 @@
-import {iit, it, ddescribe, describe, expect, inject, beforeEach, beforeEachProviders} from '@angular/core/testing';
+import {inject, addProviders} from '@angular/core/testing';
 
 import {toBoolean, toInteger, getValueInRange} from './util';
 

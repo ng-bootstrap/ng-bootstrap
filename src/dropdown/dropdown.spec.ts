@@ -1,9 +1,11 @@
-import {iit, it, ddescribe, describe, expect, inject, async, beforeEachProviders} from '@angular/core/testing';
+import {inject, async, addProviders} from '@angular/core/testing';
 
 import {TestComponentBuilder} from '@angular/compiler/testing';
 
 import {Component} from '@angular/core';
 import {By} from '@angular/platform-browser';
+
+import {addMatchers} from '../util/matchers';
 
 import {NgbDropdown, NgbDropdownToggle} from './dropdown';
 
@@ -12,6 +14,8 @@ function getDropdownEl(tc) {
 }
 
 describe('ngb-dropdown', () => {
+  beforeEach(() => addMatchers());
+
   it('should be closed by default', async(inject([TestComponentBuilder], (tcb) => {
        const html = `<div ngbDropdown></div>`;
 
@@ -114,6 +118,7 @@ describe('ngb-dropdown', () => {
 });
 
 describe('ngb-dropdown-toggle', () => {
+  beforeEach(() => addMatchers());
 
   it('should toggle dropdown on click', async(inject([TestComponentBuilder], (tcb) => {
        const html = `

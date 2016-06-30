@@ -4,7 +4,7 @@ const docs = require('../../../../docs.json');
 
 @Component({
   selector: 'ngbd-api-docs',
-  changeDetection: ChangeDetectionStrategy.CheckOnce,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <h2><a href="https://github.com/ng-bootstrap/core/tree/master/{{apiDocs.fileName}}" target="_blank">{{apiDocs.className}}</a></h2>
     <p>{{apiDocs.description}}</p>

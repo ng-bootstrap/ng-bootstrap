@@ -1,8 +1,10 @@
-import {iit, it, ddescribe, describe, expect, inject, async} from '@angular/core/testing';
+import {inject, async} from '@angular/core/testing';
 
 import {TestComponentBuilder} from '@angular/compiler/testing';
 
 import {Component} from '@angular/core';
+
+import {addMatchers} from '../util/matchers';
 
 import {NgbProgressbar} from './progressbar';
 
@@ -15,6 +17,7 @@ function getProgressbar(nativeEl: Element): Element {
 }
 
 describe('ng-progressbar', () => {
+  beforeEach(() => addMatchers());
 
   describe('business logic', () => {
     let progressCmp: NgbProgressbar;
