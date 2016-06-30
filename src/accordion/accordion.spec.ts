@@ -1,8 +1,10 @@
-import {iit, it, ddescribe, describe, expect, inject, async, beforeEachProviders} from '@angular/core/testing';
+import {inject, async, addProviders} from '@angular/core/testing';
 
 import {TestComponentBuilder} from '@angular/compiler/testing';
 
 import {Component} from '@angular/core';
+
+import {addMatchers} from '../util/matchers';
 
 import {NgbAccordion, NgbPanel} from './accordion';
 
@@ -29,6 +31,8 @@ function expectOpenPanels(nativeEl: HTMLElement, openPanelsDef: boolean[]) {
 }
 
 describe('ngb-accordion', () => {
+  beforeEach(() => addMatchers());
+
   let html: string;
 
   beforeEach(() => {

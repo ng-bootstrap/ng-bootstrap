@@ -1,20 +1,10 @@
-import {
-  iit,
-  it,
-  ddescribe,
-  describe,
-  expect,
-  inject,
-  fakeAsync,
-  discardPeriodicTasks,
-  tick,
-  beforeEach,
-  beforeEachProviders
-} from '@angular/core/testing';
+import {inject, fakeAsync, discardPeriodicTasks, tick, addProviders} from '@angular/core/testing';
 import {TestComponentBuilder} from '@angular/compiler/testing';
 
 import {By} from '@angular/platform-browser';
 import {Component} from '@angular/core';
+
+import {addMatchers} from '../util/matchers';
 
 import {NgbCarousel, NgbSlide} from './carousel';
 
@@ -37,6 +27,7 @@ function expectActiveSlides(nativeEl: HTMLDivElement, active: boolean[]) {
 }
 
 describe('ngb-carousel', () => {
+  beforeEach(() => addMatchers());
 
   it('should render slides and navigation indicators', fakeAsync(inject([TestComponentBuilder], (tcb) => {
        const html = `
@@ -51,8 +42,8 @@ describe('ngb-carousel', () => {
 
          const slideElms = fixture.nativeElement.querySelectorAll('.carousel-item');
          expect(slideElms.length).toBe(2);
-         expect(slideElms[0].textContent).toMatchPattern(/foo/);
-         expect(slideElms[1].textContent).toMatchPattern(/bar/);
+         expect(slideElms[0].textContent).toMatch(/foo/);
+         expect(slideElms[1].textContent).toMatch(/bar/);
 
          expect(fixture.nativeElement.querySelectorAll('ol.carousel-indicators > li').length).toBe(2);
 

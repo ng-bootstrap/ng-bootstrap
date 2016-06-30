@@ -1,9 +1,4 @@
 import {
-  iit,
-  it,
-  ddescribe,
-  describe,
-  expect,
   inject,
   async,
 } from '@angular/core/testing';
@@ -12,6 +7,8 @@ import {TestComponentBuilder} from '@angular/compiler/testing';
 
 import {Component} from '@angular/core';
 
+import {addMatchers} from '../util/matchers';
+
 import {NgbCollapse} from './collapse';
 
 function getCollapsibleContent(element: HTMLElement): HTMLDivElement {
@@ -19,6 +16,7 @@ function getCollapsibleContent(element: HTMLElement): HTMLDivElement {
 }
 
 describe('ngb-collapse', () => {
+  beforeEach(() => addMatchers());
 
   let html = `<div [ngbCollapse]="collapsed">Some content</div>`;
 

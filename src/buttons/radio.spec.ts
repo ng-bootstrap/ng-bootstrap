@@ -1,6 +1,8 @@
-import {it, iit, expect, inject, async, describe, ddescribe} from '@angular/core/testing';
+import {inject, async} from '@angular/core/testing';
 import {TestComponentBuilder} from '@angular/compiler/testing';
 import {Component} from '@angular/core';
+
+import {addMatchers} from '../util/matchers';
 import {NGB_RADIO_DIRECTIVES} from './radio';
 
 
@@ -24,6 +26,7 @@ function getInput(nativeEl: HTMLElement, idx: number): HTMLInputElement {
 }
 
 describe('ngbRadioGroup', () => {
+  beforeEach(() => addMatchers());
 
   const defaultHtml = `<div [(ngModel)]="model" ngbRadioGroup>
       <label class="btn">

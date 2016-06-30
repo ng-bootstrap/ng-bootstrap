@@ -1,9 +1,12 @@
-import {iit, it, ddescribe, describe, expect, inject, async} from '@angular/core/testing';
+import {inject, async} from '@angular/core/testing';
 import {TestComponentBuilder} from '@angular/compiler/testing';
+
+import {addMatchers} from '../util/matchers';
 
 import {NgbTooltipWindow} from './tooltip';
 
 describe('ngb-tooltip-window', () => {
+  beforeEach(() => addMatchers());
 
   it('should render tooltip on top by default', async(inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
        tcb.createAsync(NgbTooltipWindow).then((fixture) => {

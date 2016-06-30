@@ -1,8 +1,10 @@
-import {iit, it, ddescribe, describe, expect, inject, async, beforeEachProviders} from '@angular/core/testing';
+import {inject, async, addProviders} from '@angular/core/testing';
 
 import {TestComponentBuilder} from '@angular/compiler/testing';
 
 import {Component} from '@angular/core';
+
+import {addMatchers} from '../util/matchers';
 
 import {NgbRating} from './rating';
 
@@ -33,6 +35,8 @@ function getState(compiled) {
 }
 
 describe('ngb-rating', () => {
+  beforeEach(() => addMatchers());
+
   it('should show 10 stars by default', async(inject([TestComponentBuilder], (tcb) => {
        tcb.createAsync(NgbRating).then((fixture) => {
          fixture.detectChanges();

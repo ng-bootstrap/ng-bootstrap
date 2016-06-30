@@ -1,8 +1,10 @@
-import {iit, it, ddescribe, describe, expect, inject, async} from '@angular/core/testing';
+import {inject, async} from '@angular/core/testing';
 
 import {TestComponentBuilder} from '@angular/compiler/testing';
 
 import {Component} from '@angular/core';
+
+import {addMatchers} from '../util/matchers';
 
 import {NgbAlert} from './alert';
 
@@ -15,6 +17,7 @@ function getCloseButton(element: HTMLElement): HTMLButtonElement {
 }
 
 describe('ngb-alert', () => {
+  beforeEach(() => addMatchers());
 
   it('should have type warning and by dismissible by default', async(inject([TestComponentBuilder], (tcb) => {
        tcb.overrideTemplate(TestComponent, '<ngb-alert>Watch out!</ngb-alert>')
