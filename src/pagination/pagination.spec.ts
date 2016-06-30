@@ -183,10 +183,15 @@ describe('ngb-pagination', () => {
        })));
 
     it('should update selected page model on prev / next click', async(inject([TestComponentBuilder], (tcb) => {
-         const html = '<ngb-pagination [collectionSize]="collectionSize" [page]="page"></ngb-pagination>';
+         const html =
+             '<ngb-pagination [collectionSize]="collectionSize" [page]="page" [directionLinks]="directionLinks"></ngb-pagination>';
 
          tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.componentInstance.collectionSize = 30;
+           fixture.detectChanges();
+           expectPages(fixture.nativeElement, ['+1', '2', '3']);
+
+           fixture.componentInstance.directionLinks = true;
            fixture.detectChanges();
            expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '» Next']);
 
@@ -248,4 +253,5 @@ class TestComponent {
   collectionSize = 100;
   page = 1;
   boundaryLinks = false;
+  directionLinks = false;
 }

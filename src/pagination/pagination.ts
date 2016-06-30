@@ -14,7 +14,7 @@ import {getValueInRange, toInteger, toBoolean} from '../util/util';
           </a>                
         </li>
       
-        <li class="page-item" [class.disabled]="!hasPrevious()">
+        <li *ngIf="directionLinks"class="page-item" [class.disabled]="!hasPrevious()">
           <a aria-label="Previous" class="page-link" (click)="selectPage(page-1)">
             <span aria-hidden="true">&laquo;</span>
             <span class="sr-only">Previous</span>
@@ -25,7 +25,7 @@ import {getValueInRange, toInteger, toBoolean} from '../util/util';
           <a class="page-link" (click)="selectPage(pageNumber)">{{pageNumber}}</a>
         </li>
 
-        <li class="page-item" [class.disabled]="!hasNext()">
+        <li *ngIf="directionLinks" class="page-item" [class.disabled]="!hasNext()">
           <a aria-label="Next" class="page-link" (click)="selectPage(page+1)">
             <span aria-hidden="true">&raquo;</span>
             <span class="sr-only">Next</span>
@@ -45,6 +45,7 @@ import {getValueInRange, toInteger, toBoolean} from '../util/util';
 export class NgbPagination implements OnChanges {
   private _boundaryLinks: boolean = false;
   private _collectionSize;
+  private _directionLinks: boolean = true;
   private _page = 0;
   private _pageSize = 10;
   pages: number[] = [];
@@ -58,6 +59,16 @@ export class NgbPagination implements OnChanges {
   }
 
   get boundaryLinks(): boolean { return this._boundaryLinks; }
+
+  /**
+   *  Whether to show the "Next" and "Previous" page links
+   */
+  @Input()
+  set directionLinks(value: boolean) {
+    this._directionLinks = toBoolean(value);
+  }
+
+  get directionLinks(): boolean { return this._directionLinks; }
 
   /**
    *  Current page.
