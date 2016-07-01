@@ -267,6 +267,132 @@ describe('ngb-pagination', () => {
            expect(classList).toContain('pagination-123');
          });
        })));
+
+    it('should render and respond to maxSize change correctly', async(inject([TestComponentBuilder], (tcb) => {
+         const html =
+             '<ngb-pagination collectionSize="70" [page]="page" [maxSize]="maxSize" [ellipses]="ellipses"></ngb-pagination>';
+
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+           fixture.detectChanges();
+           expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '4', '5', '6', '7', '» Next']);
+
+           // disabling ellipsis
+           fixture.componentInstance.ellipses = false;
+
+           // limiting to 3 page numbers
+           fixture.componentInstance.maxSize = 3;
+           fixture.detectChanges();
+           expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '» Next']);
+
+           fixture.componentInstance.page = 3;
+           fixture.detectChanges();
+           expectPages(fixture.nativeElement, ['« Previous', '1', '2', '+3', '» Next']);
+
+           fixture.componentInstance.page = 4;
+           fixture.detectChanges();
+           expectPages(fixture.nativeElement, ['« Previous', '+4', '5', '6', '» Next']);
+
+           fixture.componentInstance.page = 7;
+           fixture.detectChanges();
+           expectPages(fixture.nativeElement, ['« Previous', '+7', '-» Next']);
+
+           // checking that maxSize > total pages works
+           fixture.componentInstance.maxSize = 100;
+           fixture.detectChanges();
+           expectPages(fixture.nativeElement, ['« Previous', '1', '2', '3', '4', '5', '6', '+7', '-» Next']);
+         });
+       })));
+
+    it('should render and rotate pages correctly', async(inject([TestComponentBuilder], (tcb) => {
+         const html = `<ngb-pagination collectionSize="70" [page]="page" [maxSize]="maxSize" [rotate]="rotate" 
+        [ellipses]="ellipses"></ngb-pagination>`;
+
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+           fixture.detectChanges();
+           expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '4', '5', '6', '7', '» Next']);
+
+           // disabling ellipsis
+           fixture.componentInstance.ellipses = false;
+
+           // limiting to 3 (odd) page numbers
+           fixture.componentInstance.maxSize = 3;
+           fixture.componentInstance.rotate = true;
+           fixture.detectChanges();
+           expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '» Next']);
+
+           fixture.componentInstance.page = 2;
+           fixture.detectChanges();
+           expectPages(fixture.nativeElement, ['« Previous', '1', '+2', '3', '» Next']);
+
+           fixture.componentInstance.page = 3;
+           fixture.detectChanges();
+           expectPages(fixture.nativeElement, ['« Previous', '2', '+3', '4', '» Next']);
+
+           fixture.componentInstance.page = 7;
+           fixture.detectChanges();
+           expectPages(fixture.nativeElement, ['« Previous', '5', '6', '+7', '-» Next']);
+
+           // limiting to 4 (even) page numbers
+           fixture.componentInstance.maxSize = 4;
+           fixture.detectChanges();
+           expectPages(fixture.nativeElement, ['« Previous', '4', '5', '6', '+7', '-» Next']);
+
+           fixture.componentInstance.page = 5;
+           fixture.detectChanges();
+           expectPages(fixture.nativeElement, ['« Previous', '3', '4', '+5', '6', '» Next']);
+
+           fixture.componentInstance.page = 3;
+           fixture.detectChanges();
+           expectPages(fixture.nativeElement, ['« Previous', '1', '2', '+3', '4', '» Next']);
+         });
+       })));
+
+    it('should display ellipsis correctly', async(inject([TestComponentBuilder], (tcb) => {
+         const html = `<ngb-pagination collectionSize="70" [page]="page" 
+        [maxSize]="maxSize" [rotate]="rotate" [ellipses]="ellipses"></ngb-pagination>`;
+
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+           fixture.detectChanges();
+           expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '4', '5', '6', '7', '» Next']);
+
+           // limiting to 3 page numbers
+           fixture.componentInstance.maxSize = 3;
+           fixture.detectChanges();
+           expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '-...', '7', '» Next']);
+
+           fixture.componentInstance.page = 4;
+           fixture.detectChanges();
+           expectPages(fixture.nativeElement, ['« Previous', '1', '-...', '+4', '5', '6', '-...', '7', '» Next']);
+
+           fixture.componentInstance.page = 7;
+           fixture.detectChanges();
+           expectPages(fixture.nativeElement, ['« Previous', '1', '-...', '+7', '-» Next']);
+
+           // enabling rotation
+           fixture.componentInstance.rotate = true;
+           fixture.componentInstance.page = 1;
+           fixture.detectChanges();
+           expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '-...', '7', '» Next']);
+
+           fixture.componentInstance.page = 2;
+           fixture.detectChanges();
+           expectPages(fixture.nativeElement, ['« Previous', '1', '+2', '3', '-...', '7', '» Next']);
+
+           fixture.componentInstance.page = 3;
+           fixture.detectChanges();
+           expectPages(fixture.nativeElement, ['« Previous', '1', '-...', '2', '+3', '4', '-...', '7', '» Next']);
+
+           fixture.componentInstance.page = 7;
+           fixture.detectChanges();
+           expectPages(fixture.nativeElement, ['« Previous', '1', '-...', '5', '6', '+7', '-» Next']);
+
+           // no ellipsis when maxPage > total pages
+           fixture.componentInstance.maxSize = 100;
+           fixture.componentInstance.page = 5;
+           fixture.detectChanges();
+           expectPages(fixture.nativeElement, ['« Previous', '1', '2', '3', '4', '+5', '6', '7', '» Next']);
+         });
+       })));
   });
 
 });
@@ -279,4 +405,7 @@ class TestComponent {
   boundaryLinks = false;
   directionLinks = false;
   size = '';
+  maxSize = 0;
+  ellipses = true;
+  rotate = false;
 }

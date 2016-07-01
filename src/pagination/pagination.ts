@@ -24,8 +24,10 @@ import {getValueInRange, toInteger, toBoolean} from '../util/util';
           </a>
         </li>
 
-        <li *ngFor="let pageNumber of pages" class="page-item" [class.active]="pageNumber === page">
-          <a class="page-link" (click)="selectPage(pageNumber)">{{pageNumber}}</a>
+        <li *ngFor="let pageNumber of pages" class="page-item" [class.active]="pageNumber === page" 
+          [class.disabled]="_isEllipsis(pageNumber)">
+          <a *ngIf="_isEllipsis(pageNumber)" class="page-link">...</a>
+          <a *ngIf="!_isEllipsis(pageNumber)" class="page-link" (click)="selectPage(pageNumber)">{{pageNumber}}</a>
         </li>
 
         <li *ngIf="directionLinks" class="page-item" [class.disabled]="!hasNext()">
@@ -49,8 +51,12 @@ export class NgbPagination implements OnChanges {
   private _boundaryLinks: boolean = false;
   private _collectionSize;
   private _directionLinks: boolean = true;
+  private _ellipses: boolean = true;
+  private _maxSize = 0;
   private _page = 0;
+  private _pageCount = 0;
   private _pageSize = 10;
+  private _rotate: boolean = false;
   pages: number[] = [];
 
   /**
@@ -74,14 +80,14 @@ export class NgbPagination implements OnChanges {
   get directionLinks(): boolean { return this._directionLinks; }
 
   /**
-   *  Current page.
+   *  Whether to show ellipsis symbols and first/last page numbers when maxSize > number of pages
    */
   @Input()
-  set page(value: number | string) {
-    this._page = parseInt(`${value}`, 10);
+  set ellipses(value: boolean) {
+    this._ellipses = toBoolean(value);
   }
 
-  get page(): number | string { return this._page; }
+  get ellipses(): boolean { return this._ellipses; }
 
   /**
    *  Number of items in collection.
@@ -92,6 +98,26 @@ export class NgbPagination implements OnChanges {
   }
 
   get collectionSize(): number | string { return this._collectionSize; }
+
+  /**
+   *  Maximum page numbers to be displayed
+   */
+  @Input()
+  set maxSize(value: number | string) {
+    this._maxSize = toInteger(value);
+  }
+
+  get maxSize(): number | string { return this._maxSize; }
+
+  /**
+   *  Current page.
+   */
+  @Input()
+  set page(value: number | string) {
+    this._page = parseInt(`${value}`, 10);
+  }
+
+  get page(): number | string { return this._page; }
 
   /**
    *  Number of items per page.
@@ -110,13 +136,24 @@ export class NgbPagination implements OnChanges {
   @Output() pageChange = new EventEmitter();
 
   /**
+   *  Whether to rotate pages when maxSize > number of pages.
+   *  Current page will be in the middle
+   */
+  @Input()
+  set rotate(value: boolean) {
+    this._rotate = toBoolean(value);
+  }
+
+  get rotate(): boolean { return this._rotate; }
+
+  /**
    * Pagination display size: small or large
    */
   @Input() size: 'sm' | 'lg';
 
   hasPrevious(): boolean { return this.page > 1; }
 
-  hasNext(): boolean { return this.page < this.pages.length; }
+  hasNext(): boolean { return this.page < this._pageCount; }
 
   selectPage(pageNumber: number): void {
     let prevPageNo = this.page;
@@ -125,22 +162,101 @@ export class NgbPagination implements OnChanges {
     if (this.page !== prevPageNo) {
       this.pageChange.emit(this.page);
     }
+
+    this.ngOnChanges();
   }
 
   ngOnChanges(): void {
     // re-calculate new length of pages
-    let pageCount = Math.ceil(this._collectionSize / this._pageSize);
+    this._pageCount = Math.ceil(this._collectionSize / this._pageSize);
 
     // fill-in model needed to render pages
     this.pages.length = 0;
-    for (let i = 1; i <= pageCount; i++) {
+    for (let i = 1; i <= this._pageCount; i++) {
       this.pages.push(i);
     }
 
+    // get selected page
     this._page = this._getPageNoInRange(this.page);
+
+    // apply maxSize if necessary
+    if (this._maxSize > 0 && this._pageCount > this._maxSize) {
+      let start = 0;
+      let end = this._pageCount;
+
+      // either paginating or rotating page numbers
+      if (this._rotate) {
+        [start, end] = this._applyRotation();
+      } else {
+        [start, end] = this._applyPagination();
+      }
+
+      this.pages = this.pages.slice(start, end);
+
+      // adding ellipses
+      this._applyEllipses(start, end);
+    }
   }
 
-  private _getPageNoInRange(newPageNo): number { return getValueInRange(newPageNo, this.pages.length, 1); }
+  /**
+   * Appends ellipses and first/last page number to the displayed pages
+   */
+  private _applyEllipses(start: number, end: number) {
+    if (this._ellipses) {
+      if (start > 0) {
+        this.pages.unshift(-1);
+        this.pages.unshift(1);
+      }
+      if (end < this._pageCount) {
+        this.pages.push(-1);
+        this.pages.push(this._pageCount);
+      }
+    }
+  }
+
+  /**
+   * Rotates page numbers based on maxSize items visible.
+   * Currently selected page stays in the middle:
+   *
+   * Ex. for selected page = 6:
+   * [5,*6*,7] for maxSize = 3
+   * [4,5,*6*,7] for maxSize = 4
+   */
+  private _applyRotation(): [number, number] {
+    let start = 0;
+    let end = this._pageCount;
+    let leftOffset = Math.floor(this._maxSize / 2);
+    let rightOffset = this._maxSize % 2 === 0 ? leftOffset - 1 : leftOffset;
+
+    if (this._page <= leftOffset) {
+      // very beginning, no rotation -> [0..maxSize]
+      end = this._maxSize;
+    } else if (this._pageCount - this._page < leftOffset) {
+      // very end, no rotation -> [len-maxSize..len]
+      start = this._pageCount - this._maxSize;
+    } else {
+      // rotate
+      start = this._page - leftOffset - 1;
+      end = this._page + rightOffset;
+    }
+
+    return [start, end];
+  }
+
+  /**
+   * Paginates page numbers based on maxSize items per page
+   */
+  private _applyPagination(): [number, number] {
+    let page = Math.ceil(this._page / this._maxSize) - 1;
+    let start = page * this._maxSize;
+    let end = start + this._maxSize;
+
+    return [start, end];
+  }
+
+  private _isEllipsis(pageNumber): boolean { return pageNumber === -1; }
+
+  private _getPageNoInRange(newPageNo): number { return getValueInRange(newPageNo, this._pageCount, 1); }
 }
 
 export const NGB_PAGINATION_DIRECTIVES = [NgbPagination];
