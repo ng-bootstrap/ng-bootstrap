@@ -65,11 +65,6 @@ p.github-buttons > iframe {
   display: block
 }
 
-.bd-toc-item .active {
-  margin-top: 1rem;
-  margin-bottom: 1rem
-}
-
 .bd-toc-item a.active {
   margin-top: inherit;
   margin-bottom: inherit;
@@ -101,7 +96,7 @@ p.github-buttons > iframe {
 .bd-sidebar .nav > .active:focus > a,
 .bd-sidebar .nav > .active:hover > a,
 .bd-sidebar .nav > .active > a {
-  font-weight: 500;
+  font-weight: 700;
   color: #373a3c;
   background-color: transparent
 }
