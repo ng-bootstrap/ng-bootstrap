@@ -3,6 +3,11 @@ header .navbar {
   background-color: #1976d2;
 }
 
+img.nav-logo {
+  display: inline-block;
+  height: 30px;
+}
+
 .jumbotron {
   margin-top: 50px;
   background-color: #0143A3;
@@ -101,10 +106,54 @@ p.github-buttons > iframe {
   background-color: transparent
 }
 
-div.component-api,
-div.component-api div.component-api-property,
-div.component-api div.component-api-instructions {
-  margin-bottom: 10px;
+div.api-doc-component {
+  margin-bottom: 20px;
+}
+
+div.api-doc-component > h2 > a {
+  text-decoration: none;
+}
+
+div.api-doc-component > h2 > a:hover {
+  text-decoration: none;
+}
+
+div.api-doc-component > h2 {
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+  line-height:0.85em;
+  text-shadow:
+          0 0 3px white, /* stroke around*/
+          0 0 3px white,
+          0 0 3px white,
+          0 0 3px white,
+          0 0 3px white,
+          0 0 3px white,
+          0 0 3px white,
+          0 0 3px white,
+          0 0 3px white,
+          0 -5px 0 white, /* clear vertically*/
+          0 -1px 0 white,
+          0 -2px 0 white,
+          0 -3px 0 white,
+          0 -4px 0 white,
+          0 -5px 0 white,
+          0 -6px 0 white;
+  box-shadow:0 1px white, 0 3px #0275d8;
+  word-spacing:0.5em;
+  font-size:2.5em;
+  border-bottom: 2px solid #fff;
+  display: table;
+}
+
+div.api-doc-component > h2:hover {
+  border-bottom: 2px solid #fff;
+  box-shadow:0 1px white, 0 3px #014c8c;
+  text-decoration: none;
+}
+
+div.component-demo {
+  margin-bottom: 15px;
 }
 
 .bd-footer {
