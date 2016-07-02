@@ -6,4 +6,18 @@ import { ROUTER_DIRECTIVES } from '@angular/router';
   template: require('./side-nav.component.html'),
   directives: [ROUTER_DIRECTIVES]
 })
-export class SideNavComponent {}
+export class SideNavComponent {
+  public components: Array<string> = [
+    'Accordion',
+    'Alert',
+    'Buttons',
+    'Carousel',
+    'Collapse',
+    'Dropdown',
+    'Pager',
+    'Pagination',
+    'Progressbar',
+    'Rating',
+    'Tabs'
+  ]
+}
