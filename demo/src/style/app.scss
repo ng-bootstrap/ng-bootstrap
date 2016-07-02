@@ -1,11 +1,11 @@
 // styles in src/style directory are applied to the whole page
 header .navbar {
-  background-color: #1976d2;
+  background-color: #f7f7f7;
 }
 
 img.nav-logo {
   display: inline-block;
-  height: 30px;
+  height: 27px;
 }
 
 .jumbotron {
@@ -121,35 +121,35 @@ div.api-doc-component > h2 > a:hover {
 div.api-doc-component > h2 {
   margin-top: 0.2em;
   margin-bottom: 0.2em;
-  line-height:0.85em;
+  line-height: 0.85em;
   text-shadow:
-          0 0 3px white, /* stroke around*/
-          0 0 3px white,
-          0 0 3px white,
-          0 0 3px white,
-          0 0 3px white,
-          0 0 3px white,
-          0 0 3px white,
-          0 0 3px white,
-          0 0 3px white,
-          0 -5px 0 white, /* clear vertically*/
-          0 -1px 0 white,
-          0 -2px 0 white,
-          0 -3px 0 white,
-          0 -4px 0 white,
-          0 -5px 0 white,
-          0 -6px 0 white;
-  box-shadow:0 1px white, 0 3px #0275d8;
-  word-spacing:0.5em;
-  font-size:2.5em;
+          0 0 3px #fff, /* stroke around*/
+          0 0 3px #fff,
+          0 0 3px #fff,
+          0 0 3px #fff,
+          0 0 3px #fff,
+          0 0 3px #fff,
+          0 0 3px #fff,
+          0 0 3px #fff,
+          0 0 3px #fff,
+          0 -5px 0 #fff, /* clear vertically*/
+          0 -1px 0 #fff,
+          0 -2px 0 #fff,
+          0 -3px 0 #fff,
+          0 -4px 0 #fff,
+          0 -5px 0 #fff,
+          0 -6px 0 #fff;
+  box-shadow: 0 1px #fff, 0 3px #0275d8;
+  word-spacing: 0.5em;
+  font-size: 2.5em;
   border-bottom: 2px solid #fff;
   display: table;
-}
 
-div.api-doc-component > h2:hover {
-  border-bottom: 2px solid #fff;
-  box-shadow:0 1px white, 0 3px #014c8c;
-  text-decoration: none;
+  &:hover {
+    border-bottom: 2px solid #fff;
+    box-shadow: 0 1px #fff, 0 3px #014c8c;
+    text-decoration: none;
+  }
 }
 
 div.component-demo {
