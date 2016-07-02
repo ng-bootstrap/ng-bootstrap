@@ -16,8 +16,10 @@ export class SideNavComponent {
     'Dropdown',
     'Pager',
     'Pagination',
+    'Popover',
     'Progressbar',
     'Rating',
-    'Tabs'
+    'Tabs',
+    'Tooltip'
   ]
 }
