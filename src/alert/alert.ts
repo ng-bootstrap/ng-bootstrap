@@ -1,4 +1,18 @@
-import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
+import {
+  Component,
+  Directive,
+  Input,
+  Output,
+  EventEmitter,
+  OnInit,
+  ChangeDetectionStrategy,
+  ViewContainerRef,
+  Injector,
+  ComponentFactoryResolver,
+  ComponentFactory,
+  ComponentRef,
+  TemplateRef
+} from '@angular/core';
 
 /**
  * Alerts can be used to provide feedback messages.
@@ -23,7 +37,7 @@ export class NgbAlert {
   @Input() dismissible = true;
   /**
    * Alert type (CSS class). Bootstrap 4 recognizes the following types: "success", "info", "warning" and "danger".
-  */
+   */
   @Input() type = 'warning';
   /**
    * An event emitted when the close button is clicked. This event has no payload. Only relevant for dismissible alerts.
@@ -33,4 +47,45 @@ export class NgbAlert {
   closeHandler() { this.close.emit(null); }
 }
 
-export const NGB_ALERT_DIRECTIVES = [NgbAlert];
+/**
+ * Alerts that can be dismissed without any additional code.
+ */
+@Directive({selector: 'template[ngbAlert]'})
+export class NgbDismissibleAlert implements OnInit {
+  private _windowFactory: ComponentFactory<NgbAlert>;
+  private _windowRef: ComponentRef<NgbAlert>;
+
+  /**
+   * Alert type (CSS class). Bootstrap 4 recognizes the following types: "success", "info", "warning" and "danger".
+   */
+  @Input() type = 'warning';
+  /**
+   * An event emitted when the close button is clicked.
+   */
+  @Output('close') closeEvent = new EventEmitter();
+
+  constructor(
+      private _templateRef: TemplateRef<Object>, private _viewContainerRef: ViewContainerRef,
+      private _injector: Injector, componentFactoryResolver: ComponentFactoryResolver) {
+    this._windowFactory = componentFactoryResolver.resolveComponentFactory(NgbAlert);
+  }
+
+  close() {
+    if (this._windowRef) {
+      this._viewContainerRef.remove(this._viewContainerRef.indexOf(this._windowRef.hostView));
+      this._windowRef = null;
+    }
+  }
+
+  ngOnInit() {
+    const nodes = [this._viewContainerRef.createEmbeddedView(this._templateRef).rootNodes];
+    this._windowRef = this._viewContainerRef.createComponent(this._windowFactory, 0, this._injector, nodes);
+    this._windowRef.instance.type = this.type;
+    this._windowRef.instance.close.subscribe(($event) => {
+      this.closeEvent.emit($event);
+      this.close();
+    });
+  }
+}
+
+export const NGB_ALERT_DIRECTIVES = [NgbAlert, NgbDismissibleAlert];

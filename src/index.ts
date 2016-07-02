@@ -1,6 +1,6 @@
 import {NgbAccordion, NgbPanel} from './accordion/accordion';
-import {NgbAlert} from './alert/alert';
 import {NGB_CAROUSEL_DIRECTIVES} from './carousel/carousel';
+import {NGB_ALERT_DIRECTIVES} from './alert/alert';
 import {NgbCollapse} from './collapse/collapse';
 import {NgbDropdown, NgbDropdownToggle} from './dropdown/dropdown';
 import {NgbPagination} from './pagination/pagination';
@@ -12,7 +12,7 @@ import {NGB_POPOVER_DIRECTIVES} from './popover/popover';
 import {NGB_RADIO_DIRECTIVES} from './buttons/radio';
 
 export {NgbAccordion, NgbPanel} from './accordion/accordion';
-export {NgbAlert} from './alert/alert';
+export {NgbAlert, NgbDismissibleAlert, NGB_ALERT_DIRECTIVES} from './alert/alert';
 export {NgbCarousel, NgbSlide} from './carousel/carousel';
 export {NgbCollapse} from './collapse/collapse';
 export {NgbDropdown, NgbDropdownToggle} from './dropdown/dropdown';
@@ -25,7 +25,7 @@ export {NgbPopover, NgbPopoverWindow, NGB_POPOVER_DIRECTIVES} from './popover/po
 export {NgbRadioGroup, NgbRadioLabel, NgbRadio, NGB_RADIO_DIRECTIVES} from './buttons/radio';
 
 export const NGB_DIRECTIVES = [
-  NgbAccordion, NgbAlert, NGB_CAROUSEL_DIRECTIVES, NgbCollapse, NgbPanel, NgbDropdown, NgbDropdownToggle, NgbPagination,
-  NgbProgressbar, NgbRating, NgbTabset, NgbTab, NgbTabContent, NgbTabTitle, NGB_TOOLTIP_DIRECTIVES,
+  NgbAccordion, NGB_ALERT_DIRECTIVES, NGB_CAROUSEL_DIRECTIVES, NgbCollapse, NgbPanel, NgbDropdown, NgbDropdownToggle,
+  NgbPagination, NgbProgressbar, NgbRating, NgbTabset, NgbTab, NgbTabContent, NgbTabTitle, NGB_TOOLTIP_DIRECTIVES,
   NGB_POPOVER_DIRECTIVES, NGB_RADIO_DIRECTIVES
 ];
