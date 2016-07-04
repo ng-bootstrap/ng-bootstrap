@@ -8,11 +8,13 @@ import {
   ChangeDetectionStrategy,
   ViewContainerRef,
   Injector,
+  OnDestroy,
   ComponentFactoryResolver,
   ComponentFactory,
   ComponentRef,
   TemplateRef
 } from '@angular/core';
+import {toInteger} from '../util/util';
 
 /**
  * Alerts can be used to provide feedback messages.
@@ -51,9 +53,10 @@ export class NgbAlert {
  * Alerts that can be dismissed without any additional code.
  */
 @Directive({selector: 'template[ngbAlert]'})
-export class NgbDismissibleAlert implements OnInit {
+export class NgbDismissibleAlert implements OnInit, OnDestroy {
   private _windowFactory: ComponentFactory<NgbAlert>;
   private _windowRef: ComponentRef<NgbAlert>;
+  private _timeout;
 
   /**
    * Alert type (CSS class). Bootstrap 4 recognizes the following types: "success", "info", "warning" and "danger".
@@ -63,6 +66,10 @@ export class NgbDismissibleAlert implements OnInit {
    * An event emitted when the close button is clicked.
    */
   @Output('close') closeEvent = new EventEmitter();
+  /**
+   *  Time, in milliseconds, before the alert auto closes.
+   */
+  @Input() dismissOnTimeout: number;
 
   constructor(
       private _templateRef: TemplateRef<Object>, private _viewContainerRef: ViewContainerRef,
@@ -85,7 +92,12 @@ export class NgbDismissibleAlert implements OnInit {
       this.closeEvent.emit($event);
       this.close();
     });
+    if (this.dismissOnTimeout) {
+      this._timeout = setTimeout(() => { this.close(); }, toInteger(this.dismissOnTimeout));
+    }
   }
+
+  ngOnDestroy() { clearTimeout(this._timeout); }
 }
 
 export const NGB_ALERT_DIRECTIVES = [NgbAlert, NgbDismissibleAlert];
