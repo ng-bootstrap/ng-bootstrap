@@ -73,7 +73,8 @@ module.exports = function makeWebpackConfig() {
       '@ng-bootstrap/buttons': root('src/buttons/radio.ts'),
       '@ng-bootstrap/carousel': root('src/carousel/carousel.ts'),
       '@ng-bootstrap/collapse': root('src/collapse/collapse.ts'),
-      '@ng-bootstrap/dropdown': root('src/dropdown/dropdown.ts')
+      '@ng-bootstrap/dropdown': root('src/dropdown/dropdown.ts'),
+      '@ng-bootstrap/progressbar': root('src/progressbar/progressbar.ts')
     }
   };
 
