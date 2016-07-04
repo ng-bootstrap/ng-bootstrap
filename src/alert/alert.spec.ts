@@ -1,4 +1,4 @@
-import {inject, async} from '@angular/core/testing';
+import {inject, async, fakeAsync, tick} from '@angular/core/testing';
 
 import {TestComponentBuilder} from '@angular/compiler/testing';
 
@@ -97,6 +97,27 @@ describe('NgbDismissibleAlert', () => {
              expect(fixture.componentInstance.closed).toBeTruthy();
              expect(getAlertElement(fixture.nativeElement)).toBeNull();
            });
+     })));
+
+  it('should auto close on timeout specified', fakeAsync(inject([TestComponentBuilder], (tcb) => {
+       const html = '<template ngbAlert [dismissOnTimeout]="1000">Hello, {{name}}!</template>';
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         fixture.detectChanges();
+         const alertEl = getAlertElement(fixture.nativeElement);
+         fixture.detectChanges();
+         expect(alertEl.getAttribute('role')).toEqual('alert');
+         expect(getCloseButton(alertEl)).toBeTruthy();
+
+         tick(800);
+         fixture.detectChanges();
+         expect(alertEl.getAttribute('role')).toEqual('alert');
+         expect(getCloseButton(alertEl)).toBeTruthy();
+
+         tick(1200);
+         fixture.detectChanges();
+         expect(getAlertElement(fixture.nativeElement)).toBeNull();
+
+       });
      })));
 
 });
