@@ -1,5 +1,6 @@
 var fs = require('fs');
 var glob = require('glob');
+var mkdirp = require('mkdirp');
 
 function capitalize(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -24,13 +25,18 @@ export class Ngbd${capitalize(component)}${capitalize(demo)} {
 function genDemo(component, demo) {
   const demoFolder = `./demo/src/app/components/${component}/demos/${demo}`;
   const componentFile = `${demoFolder}/${component}-${demo}`;
+  const codeFile = `${componentFile}.ts`;
+  const markupFile = `${componentFile}.html`;
 
-  if (!fs.existsSync(demoFolder)) {
-    fs.mkdirSync(demoFolder);
+  mkdirp.sync(demoFolder);
+
+  if (!fs.exists(codeFile)) {
+    fs.writeFileSync(codeFile, genDemoComponent(component, demo), {flag: 'w'});
   }
 
-  fs.writeFileSync(componentFile + '.ts', genDemoComponent(component, demo), {flag: 'w'});
-  fs.writeFileSync(componentFile + '.html', ' ', {flag: 'w'});
+  if (!fs.exists(markupFile)) {
+    fs.writeFileSync(markupFile, ' ', {flag: 'w'});
+  }
 }
 
 function genDemosIndex(component) {
@@ -53,7 +59,7 @@ function genDemosIndex(component) {
   const demoDirectives = demoNames.map((demo) => { return `Ngbd${capitalize(component)}${capitalize(demo)}`; });
 
   const demoSnippets = demoNames.map((demo) => {
-    return `"${demo}": {
+    return `  "${demo}": {
     "code": require('!!prismjs?lang=typescript!./${demo}/${component}-${demo}'), 
     "markup": require('!!prismjs?lang=markup!./${demo}/${component}-${demo}.html')}`;
   });
@@ -63,10 +69,25 @@ function genDemosIndex(component) {
 export const DEMO_DIRECTIVES = [${demoDirectives.join(', ')}];
 
 export const DEMO_SNIPPETS = {
-${demoSnippets}
+${demoSnippets.join(',\n')}
 };
 `;
 }
 
-console.log(genDemosIndex('tooltip'));
-// genDemo('tooltip', 'basic');
+function genIndex(componentName) {
+  const componentDemosFolder = `./demo/src/app/components/${componentName}/demos`;
+  fs.writeFileSync(`${componentDemosFolder}/index.ts`, genDemosIndex(componentName), {flag: 'w'});
+}
+
+const args = process.argv;
+const componentName = args[2];
+const demoNames = args[3];
+
+if (args.length === 4) {
+  demoNames.split(',').forEach((demo) => { genDemo(componentName, demo); });
+  genIndex(componentName);
+} else if (args.length === 3) {
+  genIndex(componentName);
+} else {
+  console.log('Usage: node misc/demo-gen.js [component] [demo]\n');
+}
