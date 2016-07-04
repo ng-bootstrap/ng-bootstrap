@@ -68,4 +68,5 @@ ${demoSnippets}
 `;
 }
 
-console.log(genDemosIndex('carousel'));
+console.log(genDemosIndex('tooltip'));
+// genDemo('tooltip', 'basic');
