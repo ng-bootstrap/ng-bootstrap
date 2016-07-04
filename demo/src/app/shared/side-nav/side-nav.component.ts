@@ -21,5 +21,5 @@ export class SideNavComponent {
     'Rating',
     'Tabs',
     'Tooltip'
-  ]
+  ];
 }
