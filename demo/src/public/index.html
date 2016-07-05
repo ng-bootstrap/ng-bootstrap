@@ -7,7 +7,163 @@
     <base href=".">
   </head>
   <body>
-    <ngbd-app>Loading...</ngbd-app>
+    <ngbd-app>
+      <style type="text/css">
+        .backdrop {
+          position: fixed;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          z-index: 1000;
+          background-color: #000;
+          opacity: 0.7;
+        }
+
+        .center {
+          min-height: 100%; /* fallback for older browsers */
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .loading-content {
+          background-color: #fff;
+          border: 1px solid #ccc;
+          border-radius: 8px;
+          font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+          font-size: 1rem;
+          padding: 5px 10px 20px 10px;
+          width: 400px;
+          z-index: 1010;
+        }
+
+        progress {
+          display: inline-block;
+          vertical-align: baseline;
+        }
+
+        @-webkit-keyframes progress-bar-stripes {
+          from {
+            background-position: 1rem 0;
+          }
+          to {
+            background-position: 0 0;
+          }
+        }
+
+        @-o-keyframes progress-bar-stripes {
+          from {
+            background-position: 1rem 0;
+          }
+          to {
+            background-position: 0 0;
+          }
+        }
+
+        @keyframes progress-bar-stripes {
+          from {
+            background-position: 1rem 0;
+          }
+          to {
+            background-position: 0 0;
+          }
+        }
+
+        .progress {
+          display: block;
+          width: 100%;
+          height: 1rem;
+          margin-bottom: 1rem;
+        }
+
+        .progress[value] {
+          -webkit-appearance: none;
+          color: #0074d9;
+          border: 0;
+
+          -moz-appearance: none;
+          appearance: none;
+        }
+
+        .progress[value]::-webkit-progress-bar {
+          background-color: #eee;
+          border-radius: .25rem;
+        }
+
+        .progress[value]::-webkit-progress-value::before {
+          content: attr(value);
+        }
+
+        .progress[value]::-webkit-progress-value {
+          background-color: #0074d9;
+          border-top-left-radius: .25rem;
+          border-bottom-left-radius: .25rem;
+        }
+
+        .progress[value="100"]::-webkit-progress-value {
+          border-top-right-radius: .25rem;
+          border-bottom-right-radius: .25rem;
+        }
+
+        @media screen and (min-width: 0\0
+        ) {
+          .progress {
+            background-color: #eee;
+            border-radius: .25rem;
+          }
+
+          .progress[width^="0"] {
+            min-width: 2rem;
+            color: #818a91;
+            background: transparent none;
+          }
+
+          .progress[width="100%"] {
+            border-top-right-radius: .25rem;
+            border-bottom-right-radius: .25rem;
+          }
+        }
+
+        .progress-striped[value]::-webkit-progress-value {
+          background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);
+          background-image: linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);
+          -webkit-background-size: 1rem 1rem;
+          background-size: 1rem 1rem;
+        }
+
+        .progress-striped[value]::-moz-progress-bar {
+          background-image: linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);
+          background-size: 1rem 1rem;
+        }
+
+        .progress-animated[value]::-webkit-progress-value {
+          -webkit-animation: progress-bar-stripes 2s linear infinite;
+          animation: progress-bar-stripes 2s linear infinite;
+        }
+
+        .progress-animated[value]::-moz-progress-bar {
+          animation: progress-bar-stripes 2s linear infinite;
+        }
+
+        @media screen and (min-width: 0\0
+        ) {
+          .progress-animated {
+            -webkit-animation: progress-bar-stripes 2s linear infinite;
+            -o-animation: progress-bar-stripes 2s linear infinite;
+            animation: progress-bar-stripes 2s linear infinite;
+          }
+        }
+      </style>
+      <div class="backdrop"></div>
+      <div class="center">
+        <div class="loading-content">
+          <h3>Loading, please wait...</h3>
+          <progress class="progress progress-striped progress-animated" value="100" max="100"></progress>
+        </div>
+      </div>
+    </ngbd-app>
     <script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
   </body>
 </html>
