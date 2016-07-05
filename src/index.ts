@@ -11,6 +11,7 @@ import {NgbTabset, NgbTab, NgbTabContent, NgbTabTitle, NgbTabChangeEvent, NGB_TA
 import {NgbTooltip, NgbTooltipWindow, NGB_TOOLTIP_DIRECTIVES} from './tooltip/tooltip';
 import {NgbPopover, NgbPopoverWindow, NGB_POPOVER_DIRECTIVES} from './popover/popover';
 import {NgbRadioGroup, NgbRadioLabel, NgbRadio, NGB_RADIO_DIRECTIVES} from './buttons/radio';
+import {NgbScrollSpy, NgbScrollTarget, NGB_SCROLLSPY_DIRECTIVES} from './scrollspy/scrollspy';
 
 export {NgbAccordion, NgbPanel, NGB_ACCORDION_DIRECTIVES} from './accordion/accordion';
 export {NgbAlert, NgbDismissibleAlert, NGB_ALERT_DIRECTIVES} from './alert/alert';
@@ -25,11 +26,13 @@ export {NgbTabset, NgbTab, NgbTabContent, NgbTabTitle, NgbTabChangeEvent, NGB_TA
 export {NgbTooltip, NgbTooltipWindow, NGB_TOOLTIP_DIRECTIVES} from './tooltip/tooltip';
 export {NgbPopover, NgbPopoverWindow, NGB_POPOVER_DIRECTIVES} from './popover/popover';
 export {NgbRadioGroup, NgbRadioLabel, NgbRadio, NGB_RADIO_DIRECTIVES} from './buttons/radio';
+export {NgbScrollSpy, NgbScrollTarget, NGB_SCROLLSPY_DIRECTIVES} from './scrollspy/scrollspy';
 
 export const NGB_DIRECTIVES = [
   NGB_ACCORDION_DIRECTIVES, NGB_ALERT_DIRECTIVES, NGB_CAROUSEL_DIRECTIVES, NGB_COLLAPSE_DIRECTIVES,
   NGB_DROPDOWN_DIRECTIVES, NGB_PAGER_DIRECTIVES, NGB_PAGINATION_DIRECTIVES, NGB_PROGRESSBAR_DIRECTIVES,
-  NGB_RATING_DIRECTIVES, NGB_TABSET_DIRECTIVES, NGB_TOOLTIP_DIRECTIVES, NGB_POPOVER_DIRECTIVES, NGB_RADIO_DIRECTIVES
+  NGB_RATING_DIRECTIVES, NGB_TABSET_DIRECTIVES, NGB_TOOLTIP_DIRECTIVES, NGB_POPOVER_DIRECTIVES, NGB_RADIO_DIRECTIVES,
+  NGB_SCROLLSPY_DIRECTIVES
 ];
 
 export const NGB_PRECOMPILE = [NgbAlert, NgbPopoverWindow, NgbTooltipWindow];
