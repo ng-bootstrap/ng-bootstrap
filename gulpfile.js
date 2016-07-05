@@ -38,9 +38,12 @@ var buildProject = ts.createProject('tsconfig.json', {declaration: true});
 gulp.task('clean:build', function() { return del('dist/'); });
 
 gulp.task('cjs', function() {
-  var tsResult = gulp.src([PATHS.src, PATHS.typings, '!' + PATHS.specs]).pipe(ts(buildProject));
+  var tsResult = gulp.src([PATHS.src, PATHS.typings, '!' + PATHS.specs]).pipe(sourcemaps.init()).pipe(ts(buildProject));
 
-  return merge([tsResult.dts.pipe(gulp.dest('dist/cjs')), tsResult.js.pipe(gulp.dest('dist/cjs'))]);
+  return merge([
+    tsResult.dts.pipe(gulp.dest('dist/cjs')),
+    tsResult.js.pipe(sourcemaps.write('.')).pipe(gulp.dest('dist/cjs'), tsResult.js.pipe(gulp.dest('dist/cjs')))
+  ]);
 });
 
 gulp.task('umd', function(cb) {
