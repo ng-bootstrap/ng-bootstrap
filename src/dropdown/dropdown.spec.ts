@@ -19,6 +19,7 @@ describe('ngb-dropdown', () => {
          fixture.detectChanges();
          const compiled = fixture.nativeElement;
 
+         expect(getDropdownEl(compiled)).toHaveCssClass('dropdown');
          expect(getDropdownEl(compiled)).not.toHaveCssClass('open');
        });
      })));
@@ -30,6 +31,7 @@ describe('ngb-dropdown', () => {
          fixture.detectChanges();
          const compiled = fixture.nativeElement;
 
+         expect(getDropdownEl(compiled)).toHaveCssClass('dropdown');
          expect(getDropdownEl(compiled)).toHaveCssClass('open');
        });
      })));

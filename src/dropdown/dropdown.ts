@@ -6,7 +6,12 @@ import {Directive, Input, Output, HostListener, EventEmitter} from '@angular/cor
 @Directive({
   selector: '[ngbDropdown]',
   exportAs: 'ngbDropdown',
-  host: {'[class.open]': '_open', '(keyup.esc)': '_closeFromOutside()', '(document:click)': '_closeFromOutside()'}
+  host: {
+    'class': 'dropdown',
+    '[class.open]': '_open',
+    '(keyup.esc)': '_closeFromOutside()',
+    '(document:click)': '_closeFromOutside()'
+  }
 })
 export class NgbDropdown {
   /**
