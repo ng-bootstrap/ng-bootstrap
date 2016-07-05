@@ -300,6 +300,100 @@ describe('ngb-tabset', () => {
          expectTabs(fixture.nativeElement, [true, false], [false, true]);
        });
      })));
+
+  it('should emit tab change event when switching tabs', async(inject([TestComponentBuilder], (tcb) => {
+       const html = `
+          <ngb-tabset #myTabSet="ngbTabset" (change)="changeCallback($event)">
+            <ngb-tab id="first" title="first"><template ngbTabContent>First</template></ngb-tab>
+            <ngb-tab id="second" title="second"><template ngbTabContent>Second</template></ngb-tab>
+          </ngb-tabset>
+          <button (click)="myTabSet.select('first')">Select the first Tab</button>
+          <button (click)="myTabSet.select('second')">Select the second Tab</button>
+        `;
+
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         fixture.detectChanges();
+
+         const button = getButton(fixture.nativeElement);
+
+         fixture.componentInstance.changeCallback = () => {};
+
+         spyOn(fixture.componentInstance, 'changeCallback');
+
+         // Select the second tab -> change event
+         (<HTMLAnchorElement>button[1]).click();
+         fixture.detectChanges();
+         expect(fixture.componentInstance.changeCallback)
+             .toHaveBeenCalledWith(jasmine.objectContaining({activeId: 'first', nextId: 'second'}));
+
+         // Select the first tab again -> change event
+         (<HTMLAnchorElement>button[0]).click();
+         fixture.detectChanges();
+         expect(fixture.componentInstance.changeCallback)
+             .toHaveBeenCalledWith(jasmine.objectContaining({activeId: 'second', nextId: 'first'}));
+       });
+     })));
+
+  it('should not emit tab change event when selecting currently active and disabled tabs',
+     async(inject([TestComponentBuilder], (tcb) => {
+       const html = `
+          <ngb-tabset #myTabSet="ngbTabset" (change)="changeCallback($event)">
+            <ngb-tab id="first" title="first"><template ngbTabContent>First</template></ngb-tab>
+            <ngb-tab id="second" title="second" [disabled]="true"><template ngbTabContent>Second</template></ngb-tab>
+          </ngb-tabset>
+          <button (click)="myTabSet.select('first')">Select the first Tab</button>
+          <button (click)="myTabSet.select('second')">Select the second Tab</button>
+        `;
+
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         fixture.detectChanges();
+
+         const button = getButton(fixture.nativeElement);
+
+         fixture.componentInstance.changeCallback = () => {};
+
+         spyOn(fixture.componentInstance, 'changeCallback');
+
+         // Select the currently active tab -> no change event
+         (<HTMLAnchorElement>button[0]).click();
+         fixture.detectChanges();
+         expect(fixture.componentInstance.changeCallback).not.toHaveBeenCalled();
+
+         // Select the disabled tab -> no change event
+         (<HTMLAnchorElement>button[1]).click();
+         fixture.detectChanges();
+         expect(fixture.componentInstance.changeCallback).not.toHaveBeenCalled();
+       });
+     })));
+
+  it('should cancel tab change when preventDefault() is called', async(inject([TestComponentBuilder], (tcb) => {
+       const html = `
+          <ngb-tabset #myTabSet="ngbTabset" (change)="changeCallback($event)">
+            <ngb-tab id="first" title="first"><template ngbTabContent>First</template></ngb-tab>
+            <ngb-tab id="second" title="second"><template ngbTabContent>Second</template></ngb-tab>
+          </ngb-tabset>
+          <button (click)="myTabSet.select('first')">Select the first Tab</button>
+          <button (click)="myTabSet.select('second')">Select the second Tab</button>
+        `;
+
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         fixture.detectChanges();
+
+         const button = getButton(fixture.nativeElement);
+
+         let changeEvent = null;
+         fixture.componentInstance.changeCallback = (event) => {
+           changeEvent = event;
+           event.preventDefault();
+         };
+
+         // Select the second tab -> selection will be canceled
+         (<HTMLAnchorElement>button[1]).click();
+         fixture.detectChanges();
+         expect(changeEvent).toEqual(jasmine.objectContaining({activeId: 'first', nextId: 'second'}));
+         expectTabs(fixture.nativeElement, [true, false]);
+       });
+     })));
 });
 
 @Component({selector: 'test-cmp', directives: [NgbTabset, NgbTab, NgbTabContent, NgbTabTitle], template: ''})
