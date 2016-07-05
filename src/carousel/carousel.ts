@@ -37,23 +37,23 @@ export class NgbSlide {
     'tabIndex': '0',
     '(mouseenter)': 'pause()',
     '(mouseleave)': 'cycle()',
-    '(keyup.arrowLeft)': 'keyPrev()',
-    '(keyup.arrowRight)': 'keyNext()'
+    '(keyup.arrowLeft)': '_keyPrev()',
+    '(keyup.arrowRight)': '_keyNext()'
   },
   template: `
     <ol class="carousel-indicators">
-      <li *ngFor="let slide of _slides" [id]="slide.id" [class.active]="slide.id === activeId" (click)="select(slide.id)"></li>
+      <li *ngFor="let slide of _slides" [id]="slide.id" [class.active]="slide.id === activeId" (click)="_cycleToSelected(slide.id)"></li>
     </ol>
     <div class="carousel-inner" role="listbox">
       <div *ngFor="let slide of _slides" class="carousel-item" [class.active]="slide.id === activeId">
         <template [ngTemplateOutlet]="slide.tplRef"></template>
       </div>
     </div>
-    <a class="left carousel-control" role="button" (click)="prev()">
+    <a class="left carousel-control" role="button" (click)="_cycleToPrev()">
       <span class="icon-prev" aria-hidden="true"></span>
       <span class="sr-only">Previous</span>
     </a>
-    <a class="right carousel-control" role="button" (click)="next()">
+    <a class="right carousel-control" role="button" (click)="_cycleToNext()">
       <span class="icon-next" aria-hidden="true"></span>
       <span class="sr-only">Next</span>
     </a>
@@ -89,20 +89,17 @@ export class NgbCarousel implements AfterContentChecked,
     this.activeId = activeSlide ? activeSlide.id : (this._slides.length ? this._slides.first.id : null);
   }
 
-  ngOnInit() { this.cycle(); }
+  ngOnInit() { this._startTimer(); }
 
   ngOnDestroy() { clearInterval(this._slideChangeInterval); }
 
   select(slideIdx: string) {
-    let selectedSlide = this._getSlideById(slideIdx);
-    if (selectedSlide) {
-      this.activeId = selectedSlide.id;
-    }
+    this._cycleToSelected(slideIdx);
+    this._restartTimer();
   }
 
   prev() {
-    let selectedId: string = this._getPrevSlide(this.activeId);
-    this.select(selectedId);
+    this._cycleToPrev();
     this._restartTimer();
   }
 
@@ -111,33 +108,49 @@ export class NgbCarousel implements AfterContentChecked,
     this._restartTimer();
   }
 
-  keyPrev() {
+  pause() { this._stopTimer(); }
+
+  cycle() { this._startTimer(); }
+
+  private _keyPrev() {
     if (this.keyboard) {
       this.prev();
     }
   }
 
-  keyNext() {
+  private _keyNext() {
     if (this.keyboard) {
       this.next();
     }
   }
 
-  pause() { clearInterval(this._slideChangeInterval); }
-
-  cycle() {
-    this._slideChangeInterval = setInterval(() => { this._cycleToNext(); }, this.interval);
-  }
-
   private _cycleToNext() {
     let selectedId: string = this._getNextSlide(this.activeId);
-    this.select(selectedId);
+    this._cycleToSelected(selectedId);
+  }
+
+  private _cycleToPrev() {
+    let selectedId: string = this._getPrevSlide(this.activeId);
+    this._cycleToSelected(selectedId);
+  }
+
+  private _cycleToSelected(slideIdx: string) {
+    let selectedSlide = this._getSlideById(slideIdx);
+    if (selectedSlide) {
+      this.activeId = selectedSlide.id;
+    }
   }
 
   private _restartTimer() {
-    this.pause();
-    this.cycle();
+    this._stopTimer();
+    this._startTimer();
   }
+
+  private _startTimer() {
+    this._slideChangeInterval = setInterval(() => { this._cycleToNext(); }, this.interval);
+  }
+
+  private _stopTimer() { clearInterval(this._slideChangeInterval); }
 
   private _getSlideById(slideIdx: string): NgbSlide {
     let slideWithId: NgbSlide[] = this._slides.filter(slide => slide.id === slideIdx);
