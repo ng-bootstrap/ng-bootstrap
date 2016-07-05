@@ -6,7 +6,9 @@ import {
   Directive,
   TemplateRef,
   ContentChild,
-  AfterContentChecked
+  AfterContentChecked,
+  Output,
+  EventEmitter
 } from '@angular/core';
 
 let nextId = 0;
@@ -50,6 +52,15 @@ export class NgbTab {
 }
 
 /**
+ * The payload of the tab change event
+ */
+export interface NgbTabChangeEvent {
+  activeId: String;
+  nextId: String;
+  preventDefault();
+}
+
+/**
  * A component that makes it easy to create tabbed interface.
  */
 @Component({
@@ -83,10 +94,22 @@ export class NgbTabset implements AfterContentChecked {
    */
   @Input() type: string = 'tabs';
 
+  /**
+   * A tab change event fired right before the tab selection happens
+   */
+  @Output() change = new EventEmitter<NgbTabChangeEvent>();
+
   select(tabIdx: string) {
     let selectedTab = this._getTabById(tabIdx);
-    if (selectedTab && !selectedTab.disabled) {
-      this.activeId = selectedTab.id;
+    if (selectedTab && !selectedTab.disabled && this.activeId !== selectedTab.id) {
+      let defaultPrevented = false;
+
+      this.change.emit(
+          {activeId: this.activeId, nextId: selectedTab.id, preventDefault: () => { defaultPrevented = true; }});
+
+      if (!defaultPrevented) {
+        this.activeId = selectedTab.id;
+      }
     }
   }
 
