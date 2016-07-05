@@ -26,6 +26,33 @@ See [this](https://github.com/angular/angular/blob/master/README.md) for up-to-d
 
 We are always looking for the quality contributions! Please check the [CONTRIBUTING.md](CONTRIBUTING.md) doc for contribution guidelines.
 
+## Getting Help
+
+Please, do not open issues for the general support questions as we want to keep GitHub issues for bug reports and feature requests. You've got much better chances of getting your question answered on [StackOverflow](http://stackoverflow.com/questions/tagged/ng-bootstrap) where maintainers are looking at questions tagged with `ng-bootstrap`.
+
+StackOverflow is a much better place to ask questions since:
+* there are hundreds of people willing to help on StackOverflow
+* questions and answers stay available for public viewing so your question / answer might help someone else
+* SO voting system assures that the best answers are prominently visible.
+
+To save your and our time we will be systematically closing all the issues that are requests for general support and redirecting people to StackOverflow.
+
+## You think you've found a bug?
+
+Oh, we are ashamed and want to fix it ASAP! But before fixing a bug we need to reproduce and confirm it. In order to reproduce bugs we will systematically ask you to provide a _minimal_ reproduction scenario using http://plnkr.co. Having a live, reproducible scenario gives us wealth of important information without going back & forth to you with additional questions like:
+* version of AngularJS used
+* version of this library that you are using
+* 3rd-party libraries used, if any
+* and most importantly - a use-case that fails
+
+A minimal reproduce scenario using http://plnkr.co/ allows us to quickly confirm a bug (or point out coding problem) as well as confirm that we are fixing the right problem.
+
+We will be insisting on a minimal reproduce scenario in order to save maintainers time and ultimately be able to fix more bugs. Interestingly, from our experience users often find coding problems themselves while preparing a minimal plunk. We understand that sometimes it might be hard to extract essentials bits of code from a larger code-base but we really need to isolate the problem before we can fix it.
+
+The best part is that you don't need to create plunks from scratch - you can use one from our [demo page](https://ng-bootstrap.io/getting_started).
+
+Unfortunately we are not able to investigate / fix bugs without a minimal reproduce scenario using http://plnkr.co, so if we don't hear back from you we are going to close an issue that don't have enough info to be reproduced.
+
 ## Code of Conduct
 
 Please take a moment and read our [Code of Conduct](CODE_OF_CONDUCT.md)
