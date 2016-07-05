@@ -19,7 +19,7 @@ function getStar(compiled, num: number) {
   return getStars(compiled)[num - 1];
 }
 
-function getStars(element, selector = 'i') {
+function getStars(element, selector = 'span > span:not(.sr-only)') {
   return element.querySelectorAll(selector);
 }
 
@@ -27,7 +27,7 @@ function getState(compiled) {
   const stars = getStars(compiled);
   let state = [];
   for (let i = 0, l = stars.length; i < l; i++) {
-    state.push((stars[i].classList.contains('glyphicon-star') && !stars[i].classList.contains('glyphicon-star-empty')));
+    state.push((stars[i].textContent === String.fromCharCode(9733)));
   }
   return state;
 }
