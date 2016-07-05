@@ -207,8 +207,8 @@ describe('ngb-pagination', () => {
        })));
 
     it('should update selected page model on first / last click', async(inject([TestComponentBuilder], (tcb) => {
-         const html =
-             '<ngb-pagination [collectionSize]="collectionSize" [page]="page" [boundaryLinks]="boundaryLinks"></ngb-pagination>';
+         const html = `<ngb-pagination [collectionSize]="collectionSize" [page]="page" [maxSize]="maxSize" 
+              [boundaryLinks]="boundaryLinks"></ngb-pagination>`;
 
          tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.componentInstance.collectionSize = 30;
@@ -234,6 +234,22 @@ describe('ngb-pagination', () => {
            getLink(fixture.nativeElement, 0).click();
            fixture.detectChanges();
            expectPages(fixture.nativeElement, ['-«« First', '-« Previous', '+1', '2', '3', '» Next', '»» Last']);
+
+           // maxSize < number of pages
+           fixture.componentInstance.collectionSize = 70;
+           fixture.componentInstance.maxSize = 3;
+           fixture.detectChanges();
+           expectPages(
+               fixture.nativeElement, ['-«« First', '-« Previous', '+1', '2', '3', '-...', '7', '» Next', '»» Last']);
+
+           getLink(fixture.nativeElement, 8).click();
+           fixture.detectChanges();
+           expectPages(fixture.nativeElement, ['«« First', '« Previous', '1', '-...', '+7', '-» Next', '-»» Last']);
+
+           getLink(fixture.nativeElement, 0).click();
+           fixture.detectChanges();
+           expectPages(
+               fixture.nativeElement, ['-«« First', '-« Previous', '+1', '2', '3', '-...', '7', '» Next', '»» Last']);
          });
        })));
 

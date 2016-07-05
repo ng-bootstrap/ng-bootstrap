@@ -38,7 +38,7 @@ import {getValueInRange, toInteger, toBoolean} from '../util/util';
         </li>
         
         <li *ngIf="boundaryLinks" class="page-item" [class.disabled]="!hasNext()">
-          <a aria-label="Last" class="page-link" (click)="selectPage(pages.length)">
+          <a aria-label="Last" class="page-link" (click)="selectPage(_pageCount)">
             <span aria-hidden="true">&raquo;&raquo;</span>
             <span class="sr-only">Last</span>
           </a>                
