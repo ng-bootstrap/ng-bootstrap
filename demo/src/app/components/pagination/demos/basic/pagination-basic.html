@@ -1,0 +1,12 @@
+<div>Default pagination</div>
+<ngb-pagination collectionSize="70" [(page)]="page"></ngb-pagination>
+
+<div>directionLinks = false</div>
+<ngb-pagination collectionSize="70" [(page)]="page" [directionLinks]="false"></ngb-pagination>
+
+<div>boundaryLinks = true</div>
+<ngb-pagination collectionSize="70" [(page)]="page" [boundaryLinks]="true"></ngb-pagination>
+
+<hr>
+
+<pre>Current page: {{page}}</pre>
