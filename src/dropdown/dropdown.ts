@@ -15,7 +15,7 @@ import {Directive, Input, Output, HostListener, EventEmitter} from '@angular/cor
 })
 export class NgbDropdown {
   /**
-   * Indicates that dropdown should be closed when selecting one of dropdown items (click) or pressing ESC.
+   * Indicates that dropdown should be closed when selecting one of dropdown items (click) or pressing <kbd>ESC</kbd>.
    */
   @Input() autoClose = true;
 

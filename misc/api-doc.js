@@ -23,7 +23,7 @@ class APIDocVisitor {
     }
 
     return sourceFile.statements.reduce((directivesSoFar, statement) => {
-      if (statement.kind === ts.SyntaxKind.ClassDeclaration) {
+      if (statement.kind === ts.SyntaxKind.ClassDeclaration || statement.kind === ts.SyntaxKind.InterfaceDeclaration) {
         return directivesSoFar.concat(this.visitClassDeclaration(statement));
       }
 
@@ -55,6 +55,9 @@ class APIDocVisitor {
           }];
         }
       }
+    } else if (classDeclaration.kind === ts.SyntaxKind.InterfaceDeclaration) {
+      const properties = this.visitInterfaceMembers(classDeclaration.members);
+      return [{fileName, className, description, properties}]
     }
 
     // a class that is not a directive, not documented for now
@@ -146,6 +149,21 @@ class APIDocVisitor {
     }
 
     return null;
+  }
+
+  visitInterfaceMembers(members) {
+    const result = [];
+    members.forEach(member => {result.push(this.visitInterfaceMember(member))});
+
+    return result;
+  }
+
+  visitInterfaceMember(member) {
+    return {
+      name: member.symbol.name,
+      type: this.typeChecker.typeToString(this.typeChecker.getTypeAtLocation(member)),
+      description: ts.displayPartsToString(member.symbol.getDocumentationComment())
+    };
   }
 }
 

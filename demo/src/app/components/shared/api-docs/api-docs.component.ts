@@ -8,8 +8,13 @@ const docs = require('../../../../docs.json');
   template: require('./api-docs.component.html')
 })
 export class NgbdApiDocs {
-  apiDocs;
+  directiveDocs;
+  interfaceDocs;
+
   @Input() set directive(directiveName) {
-    this.apiDocs = docs[directiveName];
+    this.directiveDocs = docs[directiveName];
   };
+  @Input() set interfaceName(interfaceName) {
+    this.interfaceDocs = docs[interfaceName];
+  }
 }

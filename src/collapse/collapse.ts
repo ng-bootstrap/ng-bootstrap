@@ -1,7 +1,7 @@
 import {Directive, Input} from '@angular/core';
 
 /**
- * The NgbCollapse directive provides a simple way to hide and show an element with animations.
+ * The <code>NgbCollapse</code> directive provides a simple way to hide and show an element with animations.
  */
 @Directive({
   selector: '[ngbCollapse]',
@@ -10,7 +10,7 @@ import {Directive, Input} from '@angular/core';
 })
 export class NgbCollapse {
   /**
-   * A flag indicating collapsed (true) or open (false) state.
+   * A flag indicating collapsed, <code>true</code>, or open, <code>false</code>, state.
    */
   @Input('ngbCollapse') collapsed = false;
 }
