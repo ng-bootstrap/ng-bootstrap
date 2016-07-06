@@ -16,10 +16,12 @@ var webpackDemoConfig = require('./webpack.demo.js');
 
 var PATHS = {
   src: 'src/**/*.ts',
+  srcIndex: 'src/index.ts',
   specs: 'src/**/*.spec.ts',
   demo: 'demo/**/*.ts',
   demoDist: 'demo/dist/**/*',
   typings: 'typings/index.d.ts',
+  jasmineTypings: 'typings/globals/jasmine/index.d.ts',
   demoDocsJson: 'demo/src/docs.json'
 };
 
@@ -33,30 +35,41 @@ function webpackCallBack(taskName, gulpDone) {
 
 // Transpiling & Building
 
-var buildProject = ts.createProject('tsconfig.json', {declaration: true});
+var csjProject = ts.createProject('tsconfig.json', {declaration: true});
+var esmProject = ts.createProject('tsconfig-es2015.json');
 
 gulp.task('clean:build', function() { return del('dist/'); });
 
 gulp.task('cjs', function() {
-  var tsResult = gulp.src([PATHS.src, PATHS.typings, '!' + PATHS.specs]).pipe(sourcemaps.init()).pipe(ts(buildProject));
+  var tsResult = gulp.src([PATHS.src, PATHS.typings, '!' + PATHS.specs]).pipe(sourcemaps.init()).pipe(ts(csjProject));
 
   return merge([
-    tsResult.dts.pipe(gulp.dest('dist/cjs')),
-    tsResult.js.pipe(sourcemaps.write('.')).pipe(gulp.dest('dist/cjs'), tsResult.js.pipe(gulp.dest('dist/cjs')))
+    tsResult.dts.pipe(gulp.dest('dist/')),
+    tsResult.js.pipe(sourcemaps.write('.')).pipe(gulp.dest('dist/'), tsResult.js.pipe(gulp.dest('dist/')))
+  ]);
+});
+
+gulp.task('esm', function() {
+  var tsResult =
+      gulp.src([PATHS.src, PATHS.jasmineTypings, '!' + PATHS.specs]).pipe(sourcemaps.init()).pipe(ts(esmProject));
+
+  return merge([
+    tsResult.dts.pipe(gulp.dest('dist/esm')),
+    tsResult.js.pipe(sourcemaps.write('.')).pipe(gulp.dest('dist/esm'), tsResult.js.pipe(gulp.dest('dist/esm')))
   ]);
 });
 
 gulp.task('umd', function(cb) {
   function ngExternal(ns) {
-    var ng2Ns = 'angular2/' + ns;
+    var ng2Ns = '@angular/' + ns;
     return {root: ['ng', ns], commonjs: ng2Ns, commonjs2: ng2Ns, amd: ng2Ns};
   }
 
   webpack(
       {
-        entry: './dist/cjs/core.js',
-        output: {filename: 'dist/global/ng-bootstrap.js', library: 'ngb', libraryTarget: 'umd'},
-        externals: {'angular2/core': ngExternal('core'), 'angular2/common': ngExternal('common')}
+        entry: './dist/index.js',
+        output: {filename: 'dist/bundles/ng-bootstrap.js', library: 'ngb', libraryTarget: 'umd'},
+        externals: {'@angular/core': ngExternal('core'), '@angular/common': ngExternal('common')}
       },
       webpackCallBack('webpack', cb));
 });
@@ -161,7 +174,7 @@ gulp.task('demo-push', function() { return gulp.src(PATHS.demoDist).pipe(ghPages
 gulp.task('clean', ['clean:build', 'clean:tests', 'clean:demo', 'clean:demo-cache']);
 
 gulp.task('build', function(done) {
-  runSequence('lint', 'enforce-format', 'ddescribe-iit', 'test', 'clean:build', 'cjs', 'umd', done);
+  runSequence('lint', 'enforce-format', 'ddescribe-iit', 'test', 'clean:build', 'cjs', 'esm', 'umd', done);
 });
 
 gulp.task(
