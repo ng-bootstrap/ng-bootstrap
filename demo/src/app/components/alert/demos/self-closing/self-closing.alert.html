@@ -1,0 +1,9 @@
+<p>
+  These alerts will be dismissed in 5 seconds.  Click "Add Alert" to add an alert.
+</p>
+<p *ngFor="let alert of alerts">
+  <template ngbAlert [dismissOnTimeout]="5000">{{ alert }}</template>
+</p>
+<p>
+  <button class="btn btn-primary" (click)="addAlert()">Add Alert</button>
+</p>

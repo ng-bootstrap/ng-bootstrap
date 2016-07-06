@@ -1,10 +1,14 @@
 <ngbd-content-wrapper component="Alert">
   <ngbd-api-docs directive="NgbAlert"></ngbd-api-docs>
+  <ngbd-api-docs directive="NgbDismissibleAlert"></ngbd-api-docs>
   <ngbd-example-box demoTitle="Basic Alert" [htmlSnippet]="basicHtmlContent" [tsSnippet]="basicTsContent">
     <ngbd-alert-basic></ngbd-alert-basic>
   </ngbd-example-box>
   <ngbd-example-box demoTitle="Closeable Alert" [htmlSnippet]="closeableHtmlContent" [tsSnippet]="closeableTsContent">
     <ngbd-alert-closeable></ngbd-alert-closeable>
+  </ngbd-example-box>
+  <ngbd-example-box demoTitle="Self-Closing Alert" [htmlSnippet]="selfClosingHtmlContent" [tsSnippet]="selfClosingTsContent">
+    <ngbd-alert-self-closing></ngbd-alert-self-closing>
   </ngbd-example-box>
   <ngbd-example-box demoTitle="Custom Alert" [htmlSnippet]="customHtmlContent" [tsSnippet]="customTsContent">
     <ngbd-alert-custom></ngbd-alert-custom>
