@@ -14,6 +14,9 @@ import {DEMO_DIRECTIVES, DEMO_SNIPPETS} from './demos';
       <ngbd-example-box demoTitle="Advanced pagination" pagination [htmlSnippet]="snippets.advanced.markup" [tsSnippet]="snippets.advanced.code">
         <ngbd-pagination-advanced></ngbd-pagination-advanced>
       </ngbd-example-box>
+      <ngbd-example-box demoTitle="Pagination size" pagination [htmlSnippet]="snippets.size.markup" [tsSnippet]="snippets.size.code">
+        <ngbd-pagination-size></ngbd-pagination-size>
+      </ngbd-example-box>
     </ngbd-content-wrapper>
   `,
   directives: [ContentWrapper, NgbdApiDocs, DEMO_DIRECTIVES, ExampleBoxComponent]
