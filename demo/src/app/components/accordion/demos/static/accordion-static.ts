@@ -3,9 +3,9 @@ import { Component } from '@angular/core';
 import { NgbAccordion, NgbPanel } from '@ng-bootstrap/accordion';
 
 @Component({
-  selector: 'ngbd-accordion-basic',
-  template: require('./basic.component.html'),
+  selector: 'ngbd-accordion-static',
+  template: require('./accordion-static.html'),
   directives: [NgbAccordion, NgbPanel]
 })
-export class AccordionBasicComponent {
+export class AccordionStaticComponent {
 }
