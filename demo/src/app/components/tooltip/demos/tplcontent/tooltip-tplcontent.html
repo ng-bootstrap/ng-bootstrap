@@ -1,0 +1,9 @@
+<p>
+  Tooltips can contain any arbitrary HTML, Angular bindings and even directives!
+  Simply enclose desired content in a <code>&lt;template&gt;</code> element.
+</p>
+
+<template #tipContent>Hello, <b>{{name}}</b>!</template>
+<button type="button" class="btn btn-secondary" [ngbTooltip]="tipContent">
+  I've got markup and bindings in my tooltip!
+</button>
