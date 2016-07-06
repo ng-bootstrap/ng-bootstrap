@@ -1,0 +1,9 @@
+<p>
+  Popovers can contain any arbitrary HTML, Angular bindings and even directives!
+  Simply enclose desired content in a <code>&lt;template&gt;</code> element.
+</p>
+
+<template #popContent>Hello, <b>{{name}}</b>!</template>
+<button type="button" class="btn btn-secondary" [ngbPopover]="popContent" title="Fancy content">
+  I've got markup and bindings in my popover!
+</button>
