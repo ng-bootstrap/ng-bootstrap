@@ -95,7 +95,9 @@ export class NgbTabset implements AfterContentChecked {
   @Input() type: string = 'tabs';
 
   /**
-   * A tab change event fired right before the tab selection happens
+   * A tab change event fired right before the tab selection happens.  The event object has three properties:
+   * 'activeId', the id of the currently active tab, 'nextId' the id of the newly selected tab, and a function,
+   * 'preventDefault()' which, when executed, will prevent the tab change from occurring.
    */
   @Output() change = new EventEmitter<NgbTabChangeEvent>();
 
