@@ -41,7 +41,7 @@ export class AlertCloseableComponent {
   }
 
   public reset() {
-    this.alerts = this.backup.map((alert: IAlert) => Object.assign({}, alert))
+    this.alerts = this.backup.map((alert: IAlert) => Object.assign({}, alert));
   }
 }
 

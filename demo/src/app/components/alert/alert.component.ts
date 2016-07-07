@@ -4,7 +4,8 @@ import {ContentWrapper} from '../../shared';
 import {ExampleBoxComponent, NgbdApiDocs} from '../shared';
 import {AlertBasicComponent, basicHtmlContent, basicTsContent,
         AlertCloseableComponent, closeableHtmlContent, closeableTsContent,
-        AlertCustomComponent, customHtmlContent, customTsContent} from './demos';
+        AlertCustomComponent, customHtmlContent, customTsContent,
+        AlertSelfClosingComponent, selfClosingHtmlContent, selfClosingTsContent} from './demos';
 
 @Component({
   selector: 'ngbd-alert',
@@ -13,6 +14,7 @@ import {AlertBasicComponent, basicHtmlContent, basicTsContent,
     AlertBasicComponent,
     AlertCloseableComponent,
     AlertCustomComponent,
+    AlertSelfClosingComponent,
     ContentWrapper,
     ExampleBoxComponent,
     NgbdApiDocs]
@@ -24,4 +26,6 @@ export class NgbdAlert {
   closeableTsContent = closeableTsContent;
   customHtmlContent = customHtmlContent;
   customTsContent = customTsContent;
+  selfClosingHtmlContent = selfClosingHtmlContent;
+  selfClosingTsContent = selfClosingTsContent;
 }
