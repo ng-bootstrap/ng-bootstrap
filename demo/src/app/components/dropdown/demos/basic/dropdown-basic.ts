@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NGB_DROPDOWN_DIRECTIVES} from '@ng-bootstrap/dropdown';
+import {NGB_DROPDOWN_DIRECTIVES} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'ngbd-dropdown-basic',

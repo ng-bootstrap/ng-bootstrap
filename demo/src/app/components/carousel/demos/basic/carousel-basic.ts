@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NGB_CAROUSEL_DIRECTIVES} from '@ng-bootstrap/carousel';
+import {NGB_CAROUSEL_DIRECTIVES} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'ngbd-carousel-basic',
@@ -8,4 +8,3 @@ import {NGB_CAROUSEL_DIRECTIVES} from '@ng-bootstrap/carousel';
 })
 export class NgbdCarouselBasic {
 }
-  
