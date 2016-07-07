@@ -7,5 +7,5 @@ import { NGB_ACCORDION_DIRECTIVES } from '@ng-bootstrap/ng-bootstrap';
   template: require('./accordion-static.html'),
   directives: [NGB_ACCORDION_DIRECTIVES]
 })
-export class AccordionStaticComponent {
+export class NgbdAccordionStatic {
 }

@@ -4,8 +4,8 @@ import { NGB_ACCORDION_DIRECTIVES } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'ngbd-accordion-basic',
-  template: require('./basic.component.html'),
+  template: require('./accordion-basic.html'),
   directives: [NGB_ACCORDION_DIRECTIVES]
 })
-export class AccordionBasicComponent {
+export class NgbdAccordionBasic {
 }
