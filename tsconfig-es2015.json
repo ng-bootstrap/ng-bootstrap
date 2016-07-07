@@ -3,7 +3,7 @@
     "target": "es2015",
     "module": "es2015",
     "moduleResolution": "node",
-    "declaration": "true",
+    "declaration": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true
   }
