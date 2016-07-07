@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NGB_TOOLTIP_DIRECTIVES, NgbTooltipWindow} from '@ng-bootstrap/tooltip';
+import {NGB_TOOLTIP_DIRECTIVES, NgbTooltipWindow} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'ngbd-tooltip-triggers',

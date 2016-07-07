@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NGB_PAGER_DIRECTIVES} from '@ng-bootstrap/pager';
+import {NGB_PAGER_DIRECTIVES} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'ngbd-pager-align',

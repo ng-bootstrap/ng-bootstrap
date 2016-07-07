@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 
-import { NgbCollapse } from '@ng-bootstrap/collapse';
+import { NGB_COLLAPSE_DIRECTIVES } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'ngbd-collapse-basic',
   template: require('./basic.collapse.html'),
-  directives: [NgbCollapse]
+  directives: [NGB_COLLAPSE_DIRECTIVES]
 })
 export class CollapseBasicComponent {
   private isCollapsed = false;

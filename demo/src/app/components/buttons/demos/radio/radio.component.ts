@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NGB_RADIO_DIRECTIVES} from '@ng-bootstrap/buttons';
+import {NGB_RADIO_DIRECTIVES} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'ngbd-buttons-radio',

@@ -14,8 +14,8 @@ import {NgbRadioGroup, NgbRadioLabel, NgbRadio, NGB_RADIO_DIRECTIVES} from './bu
 
 export {NgbAccordion, NgbPanel, NGB_ACCORDION_DIRECTIVES} from './accordion/accordion';
 export {NgbAlert, NgbDismissibleAlert, NGB_ALERT_DIRECTIVES} from './alert/alert';
-export {NgbCarousel, NgbSlide} from './carousel/carousel';
-export {NgbCollapse} from './collapse/collapse';
+export {NgbCarousel, NgbSlide, NGB_CAROUSEL_DIRECTIVES} from './carousel/carousel';
+export {NgbCollapse, NGB_COLLAPSE_DIRECTIVES} from './collapse/collapse';
 export {NgbDropdown, NgbDropdownToggle, NGB_DROPDOWN_DIRECTIVES} from './dropdown/dropdown';
 export {NgbPager, NGB_PAGER_DIRECTIVES} from './pager/pager';
 export {NgbPagination, NGB_PAGINATION_DIRECTIVES} from './pagination/pagination';

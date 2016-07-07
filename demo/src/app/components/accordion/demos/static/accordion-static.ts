@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 
-import { NgbAccordion, NgbPanel } from '@ng-bootstrap/accordion';
+import { NGB_ACCORDION_DIRECTIVES } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'ngbd-accordion-static',
   template: require('./accordion-static.html'),
-  directives: [NgbAccordion, NgbPanel]
+  directives: [NGB_ACCORDION_DIRECTIVES]
 })
 export class AccordionStaticComponent {
 }

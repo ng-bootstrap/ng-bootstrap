@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 
-import { NgbAlert } from '@ng-bootstrap/alert';
+import { NGB_ALERT_DIRECTIVES } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'ngbd-alert-custom',
   template: require('./custom.alert.html'),
-  directives: [NgbAlert],
+  directives: [NGB_ALERT_DIRECTIVES],
   styles: [`
     :host .alert-custom {
       color: #99004d;

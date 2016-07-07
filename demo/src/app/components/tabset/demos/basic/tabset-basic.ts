@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NGB_TABSET_DIRECTIVES} from '@ng-bootstrap/tabset';
+import {NGB_TABSET_DIRECTIVES} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'ngbd-tabset-basic',

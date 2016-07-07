@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NGB_POPOVER_DIRECTIVES, NgbPopoverWindow} from '@ng-bootstrap/popover';
+import {NGB_POPOVER_DIRECTIVES, NgbPopoverWindow} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'ngbd-popover-tplcontent',
