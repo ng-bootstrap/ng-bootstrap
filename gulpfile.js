@@ -5,6 +5,7 @@ var sourcemaps = require('gulp-sourcemaps');
 var ddescribeIit = require('gulp-ddescribe-iit');
 var shell = require('gulp-shell');
 var ghPages = require('gulp-gh-pages');
+var gulpFile = require('gulp-file');
 var del = require('del');
 var merge = require('merge2');
 var clangFormat = require('clang-format');
@@ -12,7 +13,6 @@ var gulpFormat = require('gulp-clang-format');
 var runSequence = require('run-sequence');
 var tslint = require('gulp-tslint');
 var webpack = require('webpack');
-var webpackDemoConfig = require('./webpack.demo.js');
 
 var PATHS = {
   src: 'src/**/*.ts',
@@ -72,6 +72,28 @@ gulp.task('umd', function(cb) {
         externals: {'@angular/core': ngExternal('core'), '@angular/common': ngExternal('common')}
       },
       webpackCallBack('webpack', cb));
+});
+
+gulp.task('npm', function() {
+  var pkgJson = require('./package.json');
+  var targetPkgJson = {};
+  var fieldsToCopy = ['version', 'description', 'keywords', 'author', 'repository', 'license', 'bugs', 'homepage'];
+
+  targetPkgJson['name'] = '@ng-bootstrap/ng-bootstrap';
+
+  fieldsToCopy.forEach(function(field) { targetPkgJson[field] = pkgJson[field]; });
+
+  targetPkgJson['main'] = 'index.js';
+  targetPkgJson['jsnext:main'] = 'esm/index.js';
+
+  targetPkgJson.peerDependencies = {};
+  Object.keys(pkgJson.dependencies).forEach(function(dependency) {
+    targetPkgJson.peerDependencies[dependency] = '^' + pkgJson.dependencies[dependency];
+  });
+
+  return gulp.src('README.md')
+      .pipe(gulpFile('package.json', JSON.stringify(targetPkgJson, null, 2)))
+      .pipe(gulp.dest('dist'));
 });
 
 // Testing
@@ -174,7 +196,7 @@ gulp.task('demo-push', function() { return gulp.src(PATHS.demoDist).pipe(ghPages
 gulp.task('clean', ['clean:build', 'clean:tests', 'clean:demo', 'clean:demo-cache']);
 
 gulp.task('build', function(done) {
-  runSequence('lint', 'enforce-format', 'ddescribe-iit', 'test', 'clean:build', 'cjs', 'esm', 'umd', done);
+  runSequence('lint', 'enforce-format', 'ddescribe-iit', 'test', 'clean:build', 'cjs', 'esm', 'umd', 'npm', done);
 });
 
 gulp.task(
