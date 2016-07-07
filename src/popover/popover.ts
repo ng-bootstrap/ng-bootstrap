@@ -46,7 +46,7 @@ export class NgbPopover implements OnInit, AfterViewChecked {
    */
   @Input() title: string;
   /**
-   * Placement of a popover. Accepts: "top", "bottom", "left", "right"
+   * Placement of a popover. Accepts: <code>top</code>, <code>bottom</code>, <code>left</code>, <code>right</code>.
    */
   @Input() placement = 'top';
   /**

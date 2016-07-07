@@ -38,7 +38,8 @@ export class NgbAlert {
    */
   @Input() dismissible = true;
   /**
-   * Alert type (CSS class). Bootstrap 4 recognizes the following types: "success", "info", "warning" and "danger".
+   * Alert type (CSS class). Bootstrap 4 recognizes the following types: <code>success</code>, <code>info</code>,
+   * <code>warning</code> and <code>danger</code>.
    */
   @Input() type = 'warning';
   /**
@@ -59,7 +60,8 @@ export class NgbDismissibleAlert implements OnInit, OnDestroy {
   private _timeout;
 
   /**
-   * Alert type (CSS class). Bootstrap 4 recognizes the following types: "success", "info", "warning" and "danger".
+   * Alert type (CSS class). Bootstrap 4 recognizes the following types: <code>success</code>, <code>info</code>,
+   * <code>warning</code> and <code>danger</code>.
    */
   @Input() type = 'warning';
   /**

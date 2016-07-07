@@ -9,7 +9,7 @@ const NGB_RADIO_VALUE_ACCESSOR = {
 
 /**
  * Easily create Bootstrap-style radio buttons. A value of a selected button is bound to a variable
- * specified via ngModel.
+ * specified via <code>ngModel</code>.
  */
 @Directive({
   selector: '[ngbRadioGroup][ngModel]',
@@ -54,7 +54,7 @@ export class NgbRadioLabel {
 
 
 /**
- * Marks an input of type "radio" as part of the NgbRadioGroup.
+ * Marks an input of type <code>radio</code> as part of the <code>NgbRadioGroup</code>.
  */
 @Directive(
     {selector: 'input[type=radio]', host: {'(change)': 'onChange($event.target.value)', '[checked]': '_checked'}})

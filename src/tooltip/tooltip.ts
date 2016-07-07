@@ -41,7 +41,7 @@ export class NgbTooltip implements OnInit, AfterViewChecked {
    */
   @Input() ngbTooltip: string | TemplateRef<any>;
   /**
-   * Placement of a tooltip. Accepts: "top", "bottom", "left", "right"
+   * Placement of a tooltip. Accepts: <code>top</code>, <code>bottom</code>, <code>left</code>, <code>right</code>.
    */
   @Input() placement = 'top';
   /**

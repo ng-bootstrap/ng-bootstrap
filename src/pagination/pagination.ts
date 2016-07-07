@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, Output, OnChanges, ChangeDetectionStrate
 import {getValueInRange, toInteger, toBoolean} from '../util/util';
 
 /**
- * A directive that will take care of visualising a pagination bar and enable / disable buttons correctly!
+ * A directive that will take care of visualising a pagination bar and enable/disable buttons correctly.
  */
 @Component({
   selector: 'ngb-pagination',
@@ -80,7 +80,7 @@ export class NgbPagination implements OnChanges {
   get directionLinks(): boolean { return this._directionLinks; }
 
   /**
-   *  Whether to show ellipsis symbols and first/last page numbers when maxSize > number of pages
+   *  Whether to show ellipsis symbols and first/last page numbers when maxSize &gt; number of pages
    */
   @Input()
   set ellipses(value: boolean) {
@@ -136,7 +136,7 @@ export class NgbPagination implements OnChanges {
   @Output() pageChange = new EventEmitter();
 
   /**
-   *  Whether to rotate pages when maxSize > number of pages.
+   *  Whether to rotate pages when maxSize &gt; number of pages.
    *  Current page will be in the middle
    */
   @Input()

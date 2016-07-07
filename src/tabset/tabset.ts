@@ -39,7 +39,7 @@ export class NgbTab {
    */
   @Input() id: string = `ngb-tab-${nextId++}`;
   /**
-   * Simple (string only) title. Use the "NgbTabTitle" directive for more complex use-cases.
+   * Simple (string only) title. Use the <code>NgbTabTitle</code> directive for more complex use-cases.
    */
   @Input() title: string;
   /**
@@ -55,9 +55,20 @@ export class NgbTab {
  * The payload of the tab change event
  */
 export interface NgbTabChangeEvent {
-  activeId: String;
-  nextId: String;
-  preventDefault();
+  /**
+   * The id of the active tab
+   */
+  activeId: string;
+
+  /**
+   * The id of the newly selected tab
+   */
+  nextId: string;
+
+  /**
+   * The method to call to disallow the tabs from changing.
+   */
+  preventDefault(): void;
 }
 
 /**
@@ -90,12 +101,12 @@ export class NgbTabset implements AfterContentChecked {
   @Input() activeId: string;
 
   /**
-   * Type of navigation to be used for tabs. Can be one of 'tabs' or 'pills'.
+   * Type of navigation to be used for tabs. Can be one of <code>tabs</code> or <code>pills</code>.
    */
   @Input() type: string = 'tabs';
 
   /**
-   * A tab change event fired right before the tab selection happens
+   * An <code>NgbTabChangeEvent</code> fired right before the tab selection happens.
    */
   @Output() change = new EventEmitter<NgbTabChangeEvent>();
 

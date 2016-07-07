@@ -34,7 +34,8 @@ export class NgbProgressbar {
   @Input() striped: boolean | string = false;
 
   /**
-   * Type of progress bar, can be one of "success", "info", "warning" or "danger".
+   * Type of progress bar, can be one of <code>success</code>, <code>info</code>, <code>warning</code>, or
+   * <code>danger</code>.
    */
   @Input() type: string;
 

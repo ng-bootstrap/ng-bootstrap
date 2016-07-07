@@ -1,7 +1,7 @@
 import {Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit} from '@angular/core';
 
 /**
- * Rating directive that will take care of visualising a star rating bar.
+ * Rating directive that will take care of visualizing a star rating bar.
  */
 @Component({
   selector: 'ngb-rating',
