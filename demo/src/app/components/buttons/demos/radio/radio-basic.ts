@@ -2,10 +2,10 @@ import {Component} from '@angular/core';
 import {NGB_RADIO_DIRECTIVES} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'ngbd-buttons-radio',
-  template: require('./radio.html'),
+  selector: 'ngbd-radio-basic',
+  template: require('./radio-basic.html'),
   directives: [NGB_RADIO_DIRECTIVES]
 })
-export class NgbdButtonsRadio {
+export class NgbdRadioBasic {
   model = 1;
 }

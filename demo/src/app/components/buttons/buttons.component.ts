@@ -1,17 +1,24 @@
 import {Component} from '@angular/core';
 import {ContentWrapper} from '../../shared';
 import {ExampleBoxComponent, NgbdApiDocs} from '../shared';
-import {NgbdButtonsCheckbox, checkboxHtmlContent, checkboxTsContent} from './demos';
-import {NgbdButtonsRadio, radioHtmlContent, radioTsContent} from './demos';
+import {DEMO_DIRECTIVES, DEMO_SNIPPETS} from './demos';
 
 @Component({
   selector: 'ngbd-buttons',
-  template: require('./buttons.component.html'),
-  directives: [ContentWrapper, ExampleBoxComponent, NgbdApiDocs, NgbdButtonsCheckbox, NgbdButtonsRadio]
+  template: `
+    <ngbd-content-wrapper component="Buttons">
+      <ngbd-api-docs directive="NgbRadioGroup"></ngbd-api-docs>
+      <ngbd-api-docs directive="NgbRadio"></ngbd-api-docs>
+      <ngbd-example-box demoTitle="Radio buttons" [htmlSnippet]="snippets.radio.markup" [tsSnippet]="snippets.radio.code">
+        <ngbd-radio-basic></ngbd-radio-basic>
+      </ngbd-example-box>
+      <ngbd-example-box demoTitle="Checkbox buttons" [htmlSnippet]="snippets.checkbox.markup" [tsSnippet]="snippets.checkbox.code">
+        <ngbd-checkbox-basic></ngbd-checkbox-basic>
+      </ngbd-example-box>
+    </ngbd-content-wrapper>
+  `,
+  directives: [ContentWrapper, NgbdApiDocs, DEMO_DIRECTIVES, ExampleBoxComponent]
 })
 export class NgbdButtons {
-  checkboxHtmlContent = checkboxHtmlContent;
-  checkboxTsContent = checkboxTsContent;
-  radioHtmlContent = radioHtmlContent;
-  radioTsContent = radioTsContent;
+   snippets = DEMO_SNIPPETS;
 }

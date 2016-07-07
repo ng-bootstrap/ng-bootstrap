@@ -4,11 +4,11 @@ import { NgbAlert, NGB_ALERT_DIRECTIVES } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'ngbd-alert-self-closing',
-  template: require('./self-closing.alert.html'),
+  template: require('./alert-selfClosing.html'),
   directives: [NGB_ALERT_DIRECTIVES],
   precompile: [NgbAlert]
 })
-export class AlertSelfClosingComponent {
+export class NgbdAlertSelfClosing {
   @Input()
   public alerts: Array<string> = [];
 
