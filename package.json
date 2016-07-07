@@ -1,9 +1,10 @@
 {
-  "name": "angular-ng-bootstrap",
-  "version": "0.1.0",
-  "description": "ng-bootstrap core components for angular2",
-  "author": "https://github.com/ng-bootstrap/core/graphs/contributors",
-  "main": "dist/cjs/core.js",
+  "name": "ng-bootstrap",
+  "version": "1.0.0-alpha.0",
+  "description": "Angular 2 powered Bootstrap",
+  "keywords": "Angular 2 Angular2 Bootstrap",
+  "author": "https://github.com/ng-bootstrap/ng-bootstrap/graphs/contributors",
+  "main": "dist/index.js",
   "scripts": {
     "install": "node misc/validate-commit.install.js",
     "test": "karma start karma.conf.js",
@@ -11,17 +12,22 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ng-bootstrap/core.git"
+    "url": "git+https://github.com/ng-bootstrap/ng-bootstrap.git"
   },
-  "license": "MIT",
+  "license": {
+    "type": "MIT",
+    "url": "https://raw.githubusercontent.com/ng-bootstrap/ng-bootstrap/master/LICENSE"
+  },
   "bugs": {
-    "url": "https://github.com/ng-bootstrap/core/issues"
+    "url": "https://github.com/ng-bootstrap/ng-bootstrap/issues"
   },
-  "homepage": "https://github.com/ng-bootstrap/core#readme",
-  "devDependencies": {
-    "@angular/common": "2.0.0-rc.4",
-    "@angular/compiler": "2.0.0-rc.4",
+  "homepage": "https://github.com/ng-bootstrap/ng-bootstrap#readme",
+  "dependencies": {
     "@angular/core": "2.0.0-rc.4",
+    "@angular/common": "2.0.0-rc.4"
+  },
+  "devDependencies": {
+    "@angular/compiler": "2.0.0-rc.4",
     "@angular/platform-browser": "2.0.0-rc.4",
     "@angular/platform-browser-dynamic": "2.0.0-rc.4",
     "@angular/router": "3.0.0-beta.1",
