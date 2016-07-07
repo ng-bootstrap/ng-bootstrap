@@ -194,7 +194,10 @@ gulp.task(
     'build:demo', ['clean:demo', 'generate-docs'],
     shell.task(['MODE=build webpack --config webpack.demo.js --progress --profile --bail']));
 
-gulp.task('demo-push', function() { return gulp.src(PATHS.demoDist).pipe(ghPages({origin: "https://github.com/ng-bootstrap/ng-bootstrap.github.io", branch: "master"})); });
+gulp.task('demo-push', function() {
+  return gulp.src(PATHS.demoDist)
+      .pipe(ghPages({origin: "https://github.com/ng-bootstrap/ng-bootstrap.github.io", branch: "master"}));
+});
 
 // Public Tasks
 gulp.task('clean', ['clean:build', 'clean:tests', 'clean:demo', 'clean:demo-cache']);
