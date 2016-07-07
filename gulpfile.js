@@ -18,6 +18,7 @@ var PATHS = {
   src: 'src/**/*.ts',
   srcIndex: 'src/index.ts',
   specs: 'src/**/*.spec.ts',
+  testHelpers: 'src/util/matchers.ts',
   demo: 'demo/**/*.ts',
   demoDist: 'demo/dist/**/*',
   typings: 'typings/index.d.ts',
@@ -35,13 +36,15 @@ function webpackCallBack(taskName, gulpDone) {
 
 // Transpiling & Building
 
-var csjProject = ts.createProject('tsconfig.json', {declaration: true});
+var cjsProject = ts.createProject('tsconfig.json', {declaration: true});
 var esmProject = ts.createProject('tsconfig-es2015.json');
 
 gulp.task('clean:build', function() { return del('dist/'); });
 
 gulp.task('cjs', function() {
-  var tsResult = gulp.src([PATHS.src, PATHS.typings, '!' + PATHS.specs]).pipe(sourcemaps.init()).pipe(ts(csjProject));
+  var tsResult = gulp.src([PATHS.src, PATHS.typings, '!' + PATHS.specs, '!' + PATHS.testHelpers])
+                     .pipe(sourcemaps.init())
+                     .pipe(ts(cjsProject));
 
   return merge([
     tsResult.dts.pipe(gulp.dest('dist/')),
@@ -50,8 +53,9 @@ gulp.task('cjs', function() {
 });
 
 gulp.task('esm', function() {
-  var tsResult =
-      gulp.src([PATHS.src, PATHS.jasmineTypings, '!' + PATHS.specs]).pipe(sourcemaps.init()).pipe(ts(esmProject));
+  var tsResult = gulp.src([PATHS.src, PATHS.jasmineTypings, '!' + PATHS.specs, '!' + PATHS.testHelpers])
+                     .pipe(sourcemaps.init())
+                     .pipe(ts(esmProject));
 
   return merge([
     tsResult.dts.pipe(gulp.dest('dist/esm')),
