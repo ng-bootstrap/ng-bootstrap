@@ -10,7 +10,7 @@ It also explains the basic mechanics of using `git`, `node`, and `npm`.
 * [Running Tests Locally](#running-tests-locally)
 * [Formatting](#clang-format)
 
-See the [contribution guidelines](https://github.com/ng-bootstrap/core/blob/master/CONTRIBUTING.md)
+See the [contribution guidelines](https://github.com/ng-bootstrap/ng-bootstrap/blob/master/CONTRIBUTING.md)
 if you'd like to contribute to ng-bootstrap.
 
 ## Prerequisite Software
@@ -35,19 +35,19 @@ Fork and clone the ng-bootstrap repository:
 1. Login to your GitHub account or create one by following the instructions given
    [here](https://github.com/signup/free).
 2. [Fork](http://help.github.com/forking) the [main ng-bootstrap
-   repository](https://github.com/ng-bootstrap/core).
-3. Clone your fork of the ng-bootstrap's core repository and define an `upstream` remote pointing back to
-   the ng-bootstrap's core repository that you forked in the first place.
+   repository](https://github.com/ng-bootstrap/ng-bootstrap).
+3. Clone your fork of the ng-bootstrap's ng-bootstrap repository and define an `upstream` remote pointing back to
+   the ng-bootstrap's ng-bootstrap repository that you forked in the first place.
 
 ```shell
 # Clone your GitHub repository:
-git clone git@github.com:<github username>/core.git ng-bootstrap
+git clone git@github.com:<github username>/ng-bootstrap.git ng-bootstrap
 
-# Go to the core directory:
+# Go to the ng-bootstrap directory:
 cd ng-bootstrap
 
 # Add the main ng-bootstrap repository as an upstream remote to your repository:
-git remote add upstream https://github.com/ng-bootstrap/core.git
+git remote add upstream https://github.com/ng-bootstrap/ng-bootstrap.git
 ```
 
 ## Installing NPM Modules and typings
@@ -129,7 +129,7 @@ to some whitespace difference.
 * `clang-format` also includes a git hook, run `git clang-format` to format all files you
   touched.
 * You can run this as a **git pre-commit hook** to automatically format your delta regions when you
-  commit a change. In the core repo, run
+  commit a change. In the ng-bootstrap repo, run
 
 ```
     $ echo -e '#!/bin/sh\nexec git clang-format' > .git/hooks/pre-commit
