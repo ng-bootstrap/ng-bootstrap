@@ -55,8 +55,8 @@ export class NgbTab {
  * The payload of the tab change event
  */
 export interface NgbTabChangeEvent {
-  activeId: String;
-  nextId: String;
+  activeId: string;
+  nextId: string;
   preventDefault();
 }
 
