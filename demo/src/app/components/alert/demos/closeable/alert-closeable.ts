@@ -35,8 +35,8 @@ export class NgbdAlertCloseable {
     this.backup = this.alerts.map((alert: IAlert) => Object.assign({}, alert))
   }
 
-  public closeAlert(id: number) {
-    const index: number = this.alerts.findIndex((alert: IAlert) => alert.id === id);
+  public closeAlert(alert: IAlert) {
+    const index: number = this.alerts.indexOf(alert);
     this.alerts.splice(index, 1);
   }
 
