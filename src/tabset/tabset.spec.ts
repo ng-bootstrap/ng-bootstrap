@@ -17,9 +17,10 @@ function getTabContent(nativeEl: HTMLElement) {
 function expectTabs(nativeEl: HTMLElement, active: boolean[], disabled?: boolean[]) {
   const tabTitles = getTabTitles(nativeEl);
   const tabContent = getTabContent(nativeEl);
+  const anyTabsActive = active.reduce((prev, curr) => prev || curr, false);
 
   expect(tabTitles.length).toBe(active.length);
-  expect(tabContent.length).toBe(active.length);
+  expect(tabContent.length).toBe(anyTabsActive ? 1 : 0);  // only 1 tab content in DOM at a time
 
   if (disabled) {
     expect(disabled.length).toBe(active.length);
@@ -30,10 +31,8 @@ function expectTabs(nativeEl: HTMLElement, active: boolean[], disabled?: boolean
   for (let i = 0; i < active.length; i++) {
     if (active[i]) {
       expect(tabTitles[i]).toHaveCssClass('active');
-      expect(tabContent[i]).toHaveCssClass('active');
     } else {
       expect(tabTitles[i]).not.toHaveCssClass('active');
-      expect(tabContent[i]).not.toHaveCssClass('active');
     }
 
     if (disabled[i]) {
@@ -65,8 +64,8 @@ describe('ngb-tabset', () => {
 
          expect(tabTitles[0].textContent).toMatch(/foo/);
          expect(tabTitles[1].textContent).toMatch(/bar/);
+         expect(tabContent.length).toBe(1);
          expect(tabContent[0].textContent).toMatch(/Foo/);
-         expect(tabContent[1].textContent).toMatch(/Bar/);
 
          expectTabs(fixture.nativeElement, [true, false]);
        });

@@ -75,9 +75,11 @@ export interface NgbTabChangeEvent {
       </li>
     </ul>
     <div class="tab-content">
-      <div *ngFor="let tab of tabs" class="tab-pane" [class.active]="tab.id === activeId" role="tabpanel" [attr.aria-labelledby]="tab.id">
-        <template [ngTemplateOutlet]="tab.contentTpl.templateRef"></template>
-      </div>
+      <template ngFor let-tab [ngForOf]="tabs">
+        <div class="tab-pane active" *ngIf="tab.id === activeId" role="tabpanel" [attr.aria-labelledby]="tab.id">
+          <template [ngTemplateOutlet]="tab.contentTpl.templateRef"></template>
+        </div>
+      </template>
     </div>
   `
 })
