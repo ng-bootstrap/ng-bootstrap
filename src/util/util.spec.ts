@@ -1,6 +1,6 @@
 import {inject, addProviders} from '@angular/core/testing';
 
-import {toBoolean, toInteger, getValueInRange} from './util';
+import {toBoolean, toInteger, getValueInRange, isString} from './util';
 
 describe('util', () => {
 
@@ -54,6 +54,22 @@ describe('util', () => {
     it('should take 0 as a default min bound', () => {
       expect(getValueInRange(11, 10)).toBe(10);
       expect(getValueInRange(-1, 10)).toBe(0);
+    });
+
+  });
+
+  describe('isString', () => {
+
+    it('should recognize strings', () => {
+      expect(isString('string')).toBeTruthy();
+      expect(isString('')).toBeTruthy();
+    });
+
+    it('should recognize non-strings', () => {
+      expect(isString(null)).toBeFalsy();
+      expect(isString(2048)).toBeFalsy();
+      expect(isString([])).toBeFalsy();
+      expect(isString(undefined)).toBeFalsy();
     });
 
   });

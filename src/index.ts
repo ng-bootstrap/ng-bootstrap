@@ -1,4 +1,11 @@
-import {NgbAccordion, NgbPanel, NGB_ACCORDION_DIRECTIVES} from './accordion/accordion';
+import {
+  NgbAccordion,
+  NgbPanel,
+  NgbPanelTitle,
+  NgbPanelContent,
+  NgbPanelChangeEvent,
+  NGB_ACCORDION_DIRECTIVES
+} from './accordion/accordion';
 import {NgbAlert, NgbDismissibleAlert, NGB_ALERT_DIRECTIVES} from './alert/alert';
 import {NgbCarousel, NgbSlide, NGB_CAROUSEL_DIRECTIVES} from './carousel/carousel';
 import {NgbCollapse, NGB_COLLAPSE_DIRECTIVES} from './collapse/collapse';
@@ -12,7 +19,14 @@ import {NgbTooltip, NgbTooltipWindow, NGB_TOOLTIP_DIRECTIVES} from './tooltip/to
 import {NgbPopover, NgbPopoverWindow, NGB_POPOVER_DIRECTIVES} from './popover/popover';
 import {NgbRadioGroup, NgbRadioLabel, NgbRadio, NGB_RADIO_DIRECTIVES} from './buttons/radio';
 
-export {NgbAccordion, NgbPanel, NGB_ACCORDION_DIRECTIVES} from './accordion/accordion';
+export {
+  NgbAccordion,
+  NgbPanel,
+  NgbPanelTitle,
+  NgbPanelContent,
+  NgbPanelChangeEvent,
+  NGB_ACCORDION_DIRECTIVES
+} from './accordion/accordion';
 export {NgbAlert, NgbDismissibleAlert, NGB_ALERT_DIRECTIVES} from './alert/alert';
 export {NgbCarousel, NgbSlide, NGB_CAROUSEL_DIRECTIVES} from './carousel/carousel';
 export {NgbCollapse, NGB_COLLAPSE_DIRECTIVES} from './collapse/collapse';
