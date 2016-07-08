@@ -11,7 +11,8 @@ import {Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit}
       <template ngFor let-r [ngForOf]="range" let-index="index">
         <span class="sr-only">({{ index < rate ? '*' : ' ' }})</span>
         <span (mouseenter)="enter(index + 1)" (click)="update(index + 1)" [title]="r.title" 
-        [attr.aria-valuetext]="r.title">{{ index < rate ? '&#9733;' : '&#9734;' }}</span>
+        [attr.aria-valuetext]="r.title" 
+        [style.cursor]="readonly ? 'not-allowed' : 'pointer'">{{ index < rate ? '&#9733;' : '&#9734;' }}</span>
       </template>
     </span>
   `

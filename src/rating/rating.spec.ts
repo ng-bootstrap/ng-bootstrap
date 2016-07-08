@@ -83,6 +83,27 @@ describe('ngb-rating', () => {
        });
      })));
 
+  it('should set pointer cursor on stars when not readonly', async(inject([TestComponentBuilder], (tcb) => {
+       tcb.createAsync(NgbRating).then((fixture) => {
+         fixture.detectChanges();
+
+         const compiled = fixture.nativeElement;
+
+         expect(window.getComputedStyle(getStar(compiled, 1)).getPropertyValue('cursor')).toBe('pointer');
+       });
+     })));
+
+  it('should set not allowed cursor on stars when readonly', async(inject([TestComponentBuilder], (tcb) => {
+       const html = '<ngb-rating [readonly]="true"></ngb-rating>';
+       return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         fixture.detectChanges();
+
+         const compiled = fixture.nativeElement;
+
+         expect(window.getComputedStyle(getStar(compiled, 1)).getPropertyValue('cursor')).toBe('not-allowed');
+       });
+     })));
+
   describe('aria support', () => {
     it('contains aria-valuemax with the number of stars', async(inject([TestComponentBuilder], (tcb) => {
          const html = '<ngb-rating [max]="max"></ngb-rating>';
