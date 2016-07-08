@@ -100,7 +100,7 @@ export class NgbPagination implements OnChanges {
   get collectionSize(): number | string { return this._collectionSize; }
 
   /**
-   *  Maximum page numbers to be displayed
+   *  Maximum number of pages to display
    */
   @Input()
   set maxSize(value: number | string) {

@@ -19,7 +19,7 @@ let nextId = 0;
 export class NgbSlide {
   /**
    * Unique slide identifier. Must be unique for the entire document for proper accessibility support.
-   * Will be auto-generated if not provided by a user.
+   * Will be auto-generated if not provided.
    */
   @Input() id = `ngb-slide-${nextId++}`;
   constructor(public tplRef: TemplateRef<any>) {}
