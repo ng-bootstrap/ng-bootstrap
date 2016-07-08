@@ -196,7 +196,7 @@ gulp.task(
 
 gulp.task('demo-push', function() {
   return gulp.src(PATHS.demoDist)
-      .pipe(ghPages({origin: "https://github.com/ng-bootstrap/ng-bootstrap.github.io", branch: "master"}));
+      .pipe(ghPages({remoteUrl: "https://github.com/ng-bootstrap/ng-bootstrap.github.io.git", branch: "master"}));
 });
 
 // Public Tasks
