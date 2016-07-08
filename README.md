@@ -11,16 +11,9 @@ As with Bootstrap 4 and Angular 2, this library is a work in progress. Please ch
 [issues](https://github.com/ng-bootstrap/ng-bootstrap/issues) to see all the things we are implementing.
 Feel free to make comments there.
 
-## Supported browsers
+## Demo
 
-We support the same browsers and versions supported by both Bootstrap 4 and Angular 2, whichever is _more_ restrictive.
-See [this](https://github.com/angular/angular/blob/master/README.md) for up-to-date Angular 2 browser support.
-
-* Chrome (45+)
-* Firefox (40+)
-* IE (9+) (but see [Bootstrap 4's notes](http://v4-alpha.getbootstrap.com/getting-started/browsers-devices/#internet-explorer-9) on IE9)
-* Edge (20+)
-* Safari (7+)
+Check all the directives in action at https://ng-bootstrap.github.io
 
 ## Dependencies
 * [Angular 2](https://angular.io) (tested with 2.0-rc.4)
@@ -73,6 +66,17 @@ export class App {
     ...
 }
 ```
+## Supported browsers
+
+We support the same browsers and versions supported by both Bootstrap 4 and Angular 2, whichever is _more_ restrictive.
+See [this](https://github.com/angular/angular/blob/master/README.md) for up-to-date Angular 2 browser support.
+
+* Chrome (45+)
+* Firefox (40+)
+* IE (9+) (but see [Bootstrap 4's notes](http://v4-alpha.getbootstrap.com/getting-started/browsers-devices/#internet-explorer-9) on IE9)
+* Edge (20+)
+* Safari (7+)
+
 ## Contributing to the project
 
 We are always looking for the quality contributions! Please check the [CONTRIBUTING.md](CONTRIBUTING.md) doc for contribution guidelines.
