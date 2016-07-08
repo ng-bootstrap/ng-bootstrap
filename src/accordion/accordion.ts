@@ -1,41 +1,40 @@
 import {
   Component,
-  forwardRef,
-  Inject,
   Input,
   QueryList,
   ContentChildren,
-  AfterContentChecked,
-  Optional
+  Directive,
+  TemplateRef,
+  ContentChild,
+  Output,
+  EventEmitter,
+  AfterContentChecked
 } from '@angular/core';
-
-import {NgbCollapse} from '../collapse/collapse';
+import {isString} from '../util/util';
 
 let nextId = 0;
 
 /**
- * The NgbPanel directive builds on top of the NgbCollapse directive to provide a panel with collapsible body that can
- * be collapsed or expanded by clicking on the panel's header.
+ * This directive should be used to wrap accordion panel titles that need to contain HTML markup or other directives.
  */
-@Component({
-  selector: 'ngb-panel',
-  exportAs: 'ngbPanel',
-  template: `
-    <div class="panel panel-default" [class.panel-open]="open">
-      <div class="panel-heading" role="tab" [id]="id">
-        <h4 class="panel-title">
-          <a tabindex="0" (click)="toggleOpen($event)"><span [class.text-muted]="disabled">{{title}}</span></a>
-        </h4>
-      </div>
-      <div class="panel-collapse" [ngbCollapse]="!open" [attr.aria-labelledby]="id" role="tabpanel">
-        <div class="panel-body">
-          <ng-content></ng-content>
-        </div>
-      </div>
-    </div>
-  `,
-  directives: [NgbCollapse]
-})
+@Directive({selector: 'template[ngbPanelTitle]'})
+export class NgbPanelTitle {
+  constructor(public templateRef: TemplateRef<any>) {}
+}
+
+/**
+ * This directive must be used to wrap accordion panel content.
+ */
+@Directive({selector: 'template[ngbPanelContent]'})
+export class NgbPanelContent {
+  constructor(public templateRef: TemplateRef<any>) {}
+}
+
+/**
+ * The NgbPanel directive represents an in individual panel with the title and collapsible
+ * content
+ */
+@Directive({selector: 'ngb-panel'})
 export class NgbPanel {
   /**
    *  A flag determining whether the panel is disabled or not.
@@ -50,62 +49,132 @@ export class NgbPanel {
   @Input() id = `ngb-panel-${nextId++}`;
 
   /**
-   *  Defines whether the panel should be open initially.
-   */
-  @Input() open = false;
-
-  /**
    *  The title for the panel.
    */
   @Input() title: string;
 
-  constructor(@Optional() @Inject(forwardRef(() => NgbAccordion)) private accordion: NgbAccordion) {}
+  @ContentChild(NgbPanelContent) contentTpl: NgbPanelContent;
+  @ContentChild(NgbPanelTitle) titleTpl: NgbPanelTitle;
+}
 
-  toggleOpen(event): void {
-    event.preventDefault();
-    if (!this.disabled) {
-      this.open = !this.open;
-      if (this.open && this.accordion) {
-        this.accordion.closeOthers(this);
-      }
-    }
-  }
+/**
+ * The payload of the panel change event
+ */
+export interface NgbPanelChangeEvent {
+  panelId: string;
+  nextState: boolean;
+  preventDefault();
 }
 
 /**
  * The NgbAccordion directive is a collection of panels.
- * NgbAccordion can assure that only one panel can be opened at a time.
+ * It can assure that only panel can be opened at a time.
  */
 @Component({
   selector: 'ngb-accordion',
-  host: {'role': 'tablist', '[attr.aria-multiselectable]': '!closeOtherPanels'},
-  template: `<ng-content></ng-content>`
+  exportAs: 'ngbAccordion',
+  template: `
+  <div class="card">
+    <template ngFor let-panel [ngForOf]="_panels">
+      <div class="card-header" [class.active]="_isOpen(panel.id)">
+        <a tabindex="0" (click)="toggle(panel.id)" [class.text-muted]="panel.disabled">
+          {{panel.title}}<template [ngTemplateOutlet]="panel.titleTpl?.templateRef"></template>          
+        </a>
+      </div>
+      <div class="card-block" *ngIf="_isOpen(panel.id)">
+        <template [ngTemplateOutlet]="panel.contentTpl.templateRef"></template>
+      </div>
+    </template>
+  </div>
+`
 })
 export class NgbAccordion implements AfterContentChecked {
   @ContentChildren(NgbPanel) _panels: QueryList<NgbPanel>;
 
   /**
-   *  A flag determining whether the other panels should be closed
-   *  when a panel is opened.
+   * An array or comma separated strings of panel identifiers that should be opened
    */
-  @Input('closeOthers') closeOtherPanels: boolean;
+  @Input() activeIds: string | string[] = [];
 
-  closeOthers(openPanel: NgbPanel): void {
-    if (this.closeOtherPanels) {
-      this._panels.forEach((panel: NgbPanel) => {
-        if (panel !== openPanel) {
-          panel.open = false;
-        }
-      });
+  /**
+   *  Whether the other panels should be closed when a panel is opened
+   */
+  @Input('closeOthers') closeOtherPanels: boolean = false;
+
+  /**
+   * A panel change event fired right before the panel toggle happens. The event object has three properties:
+   * 'panelId', the id of panel that id toggled, 'nextState' whether panel will be opened (true) or closed (false),
+   * and a function, 'preventDefault()' which, when executed, will prevent the panel toggle from occurring.
+   */
+  @Output() change = new EventEmitter<NgbPanelChangeEvent>();
+
+  /**
+   * A map that stores each panel state
+   */
+  private _states: Map<string, boolean> = new Map<string, boolean>();
+
+  /**
+   * A map that stores references to all panels
+   */
+  private _panelRefs: Map<string, NgbPanel> = new Map<string, NgbPanel>();
+
+  ngAfterContentChecked() {
+    // active id updates
+    if (isString(this.activeIds)) {
+      this.activeIds = (this.activeIds as string).split(/\s*,\s*/);
+    }
+    this._updateStates();
+
+    // closeOthers updates
+    if (this.activeIds.length > 1 && this.closeOtherPanels) {
+      this._closeOthers(this.activeIds[0]);
+      this._updateActiveIds();
     }
   }
 
-  ngAfterContentChecked() {
-    const openPanels = this._panels.toArray().filter((panel) => panel.open);
-    if (openPanels.length > 1) {
-      this.closeOthers(openPanels[0]);
+  toggle(panelId: string) {
+    const panel = this._panelRefs.get(panelId);
+
+    if (panel && !panel.disabled) {
+      const nextState = !this._states.get(panelId);
+      let defaultPrevented = false;
+
+      this.change.emit({panelId: panelId, nextState: nextState, preventDefault: () => { defaultPrevented = true; }});
+
+      if (!defaultPrevented) {
+        this._states.set(panelId, nextState);
+
+        if (this.closeOtherPanels) {
+          this._closeOthers(panelId);
+        }
+        this._updateActiveIds();
+      }
     }
+  }
+
+  private _closeOthers(panelId: string) {
+    this._states.forEach((state, id) => {
+      if (id !== panelId) {
+        this._states.set(id, false);
+      }
+    });
+  }
+
+  private _isOpen(panelId: string): boolean { return this._states.get(panelId); }
+
+  private _updateActiveIds() {
+    this.activeIds =
+        this._panels.toArray().filter(panel => this._isOpen(panel.id) && !panel.disabled).map(panel => panel.id);
+  }
+
+  private _updateStates() {
+    this._states.clear();
+    this._panelRefs.clear();
+    this._panels.toArray().forEach((panel) => {
+      this._states.set(panel.id, this.activeIds.indexOf(panel.id) > -1 && !panel.disabled);
+      this._panelRefs.set(panel.id, panel);
+    });
   }
 }
 
-export const NGB_ACCORDION_DIRECTIVES = [NgbAccordion, NgbPanel];
+export const NGB_ACCORDION_DIRECTIVES = [NgbAccordion, NgbPanel, NgbPanelTitle, NgbPanelContent];
