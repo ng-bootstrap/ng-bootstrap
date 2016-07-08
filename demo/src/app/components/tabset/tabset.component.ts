@@ -14,10 +14,21 @@ import {DEMO_DIRECTIVES, DEMO_SNIPPETS} from './demos';
       <ngbd-example-box demoTitle="Tabset" [htmlSnippet]="snippets.basic.markup" [tsSnippet]="snippets.basic.code">
         <ngbd-tabset-basic></ngbd-tabset-basic>      
       </ngbd-example-box>
+      <ngbd-example-box demoTitle="Tabset - Pills" [htmlSnippet]="snippets.pills.markup" [tsSnippet]="snippets.pills.code">
+        <ngbd-tabset-pills></ngbd-tabset-pills>      
+      </ngbd-example-box>
+      <ngbd-example-box demoTitle="Tabset -  Select By Id" [htmlSnippet]="snippets.selectById.markup"
+          [tsSnippet]="snippets.selectById.code">
+        <ngbd-tabset-selectById></ngbd-tabset-selectById>      
+      </ngbd-example-box>
+      <ngbd-example-box demoTitle="Tabset - Prevent Change" [htmlSnippet]="snippets.preventChange.markup"
+          [tsSnippet]="snippets.preventChange.code">
+        <ngbd-tabset-preventChange></ngbd-tabset-preventChange>      
+      </ngbd-example-box>
     </ngbd-content-wrapper>
   `,
   directives: [ContentWrapper, NgbdApiDocs, DEMO_DIRECTIVES, ExampleBoxComponent]
 })
 export class NgbdTabs {
-   snippets = DEMO_SNIPPETS;
+  snippets = DEMO_SNIPPETS;
 }
