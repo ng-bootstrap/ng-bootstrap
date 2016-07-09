@@ -3,20 +3,15 @@ import {
   Directive,
   Input,
   ChangeDetectionStrategy,
-  OnInit,
-  AfterViewChecked,
   Injector,
   Renderer,
-  ComponentRef,
   ElementRef,
   TemplateRef,
   ViewContainerRef,
-  ComponentFactoryResolver,
-  ComponentFactory
+  ComponentFactoryResolver
 } from '@angular/core';
 
-import {parseTriggers, Trigger} from '../util/triggers';
-import {Positioning} from '../util/positioning';
+import {ITooltipWindow, NgbAbstractTooltip} from './abstract-tooltip';
 
 @Component({
   selector: 'ngb-tooltip-window',
@@ -27,7 +22,7 @@ import {Positioning} from '../util/positioning';
     <div class="tooltip-inner"><ng-content></ng-content></div>
     `
 })
-export class NgbTooltipWindow {
+export class NgbTooltipWindow implements ITooltipWindow {
   @Input() placement: string = 'top';
 }
 
@@ -35,7 +30,7 @@ export class NgbTooltipWindow {
  * A lightweight, extensible directive for fancy tooltip creation.
  */
 @Directive({selector: '[ngbTooltip]', exportAs: 'ngbTooltip'})
-export class NgbTooltip implements OnInit, AfterViewChecked {
+export class NgbTooltip extends NgbAbstractTooltip<NgbTooltipWindow> {
   /**
    * Content to be displayed as tooltip.
    */
@@ -49,74 +44,17 @@ export class NgbTooltip implements OnInit, AfterViewChecked {
    */
   @Input() triggers = 'hover';
 
-  private _positioning = new Positioning();
-  private _windowFactory: ComponentFactory<NgbTooltipWindow>;
-  private _windowRef: ComponentRef<NgbTooltipWindow>;
-
   constructor(
-      private _elementRef: ElementRef, private _viewContainerRef: ViewContainerRef, private _injector: Injector,
-      private _renderer: Renderer, componentFactoryResolver: ComponentFactoryResolver) {
-    this._windowFactory = componentFactoryResolver.resolveComponentFactory(NgbTooltipWindow);
+      elementRef: ElementRef, viewContainerRef: ViewContainerRef, injector: Injector, renderer: Renderer,
+      componentFactoryResolver: ComponentFactoryResolver) {
+    super(elementRef, viewContainerRef, injector, renderer, componentFactoryResolver, NgbTooltipWindow);
   }
 
-  open() {
-    if (!this._windowRef) {
-      const nodes = this._getContentNodes();
-      this._windowRef = this._viewContainerRef.createComponent(this._windowFactory, 0, this._injector, nodes);
-      this._windowRef.instance.placement = this.placement;
-    }
-  }
+  protected getTooltipInput(): string | TemplateRef<any> { return this.ngbTooltip; }
 
-  close(): void {
-    if (this._windowRef) {
-      this._viewContainerRef.remove(this._viewContainerRef.indexOf(this._windowRef.hostView));
-      this._windowRef = null;
-    }
-  }
+  protected getPlacementInput(): string { return this.placement; }
 
-  toggle(): void {
-    if (this._windowRef) {
-      this.close();
-    } else {
-      this.open();
-    }
-  }
-
-  ngOnInit() {
-    const triggers = parseTriggers(this.triggers);
-
-    if (triggers.length === 1 && triggers[0].isManual()) {
-      return;
-    }
-
-    triggers.forEach((trigger: Trigger) => {
-      if (trigger.open === trigger.close) {
-        this._renderer.listen(this._elementRef.nativeElement, trigger.open, () => { this.toggle(); });
-      } else {
-        this._renderer.listen(this._elementRef.nativeElement, trigger.open, () => { this.open(); });
-        this._renderer.listen(this._elementRef.nativeElement, trigger.close, () => { this.close(); });
-      }
-    });
-  }
-
-  ngAfterViewChecked() {
-    if (this._windowRef) {
-      const targetPosition = this._positioning.positionElements(
-          this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement, false);
-
-      const targetStyle = this._windowRef.location.nativeElement.style;
-      targetStyle.top = `${targetPosition.top}px`;
-      targetStyle.left = `${targetPosition.left}px`;
-    }
-  }
-
-  private _getContentNodes() {
-    if (this.ngbTooltip instanceof TemplateRef) {
-      return [this._viewContainerRef.createEmbeddedView(<TemplateRef<NgbTooltipWindow>>this.ngbTooltip).rootNodes];
-    } else {
-      return [[this._renderer.createText(null, `${this.ngbTooltip}`)]];
-    }
-  }
+  protected getTriggersInput(): string { return this.triggers; }
 }
 
 export const NGB_TOOLTIP_DIRECTIVES = [NgbTooltip];
