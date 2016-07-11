@@ -4,7 +4,7 @@ import { NGB_ALERT_DIRECTIVES } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'ngbd-alert-custom',
-  template: require('./alert-custom.html'),
+  templateUrl: './alert-custom.html',
   directives: [NGB_ALERT_DIRECTIVES],
   styles: [`
     :host .alert-custom {

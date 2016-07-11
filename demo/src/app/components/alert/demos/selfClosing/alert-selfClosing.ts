@@ -4,7 +4,7 @@ import { NgbAlert, NGB_ALERT_DIRECTIVES } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'ngbd-alert-self-closing',
-  template: require('./alert-selfClosing.html'),
+  templateUrl: './alert-selfClosing.html',
   directives: [NGB_ALERT_DIRECTIVES],
   precompile: [NgbAlert]
 })

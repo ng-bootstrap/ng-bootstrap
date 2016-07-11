@@ -110,6 +110,11 @@ module.exports = function makeWebpackConfig() {
         exclude: [/node_modules\/(?!(ng2-.+))/]
       },
 
+      {
+        test: /\.ts$/,
+        loader: 'angular2-template-loader'
+      },
+
       // copy those assets to output
       {test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/, loader: 'file?name=fonts/[name].[hash].[ext]?'},
 

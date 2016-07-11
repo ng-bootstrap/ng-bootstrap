@@ -3,7 +3,7 @@ import {NGB_PAGINATION_DIRECTIVES} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'ngbd-pagination-size',
-  template: require('./pagination-size.html'),
+  templateUrl: './pagination-size.html',
   directives: [NGB_PAGINATION_DIRECTIVES]
 })
 export class NgbdPaginationSize {

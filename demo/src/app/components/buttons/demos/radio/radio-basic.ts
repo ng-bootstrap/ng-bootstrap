@@ -3,7 +3,7 @@ import {NGB_RADIO_DIRECTIVES} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'ngbd-radio-basic',
-  template: require('./radio-basic.html'),
+  templateUrl: './radio-basic.html',
   directives: [NGB_RADIO_DIRECTIVES]
 })
 export class NgbdRadioBasic {

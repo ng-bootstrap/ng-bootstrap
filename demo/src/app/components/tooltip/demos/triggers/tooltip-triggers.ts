@@ -3,7 +3,7 @@ import {NGB_TOOLTIP_DIRECTIVES, NgbTooltipWindow} from '@ng-bootstrap/ng-bootstr
 
 @Component({
   selector: 'ngbd-tooltip-triggers',
-  template: require('./tooltip-triggers.html'),
+  templateUrl: './tooltip-triggers.html',
   directives: [NGB_TOOLTIP_DIRECTIVES],
   precompile: [NgbTooltipWindow]
 })

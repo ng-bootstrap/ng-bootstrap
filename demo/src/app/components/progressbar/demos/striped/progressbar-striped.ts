@@ -3,7 +3,7 @@ import {NGB_PROGRESSBAR_DIRECTIVES} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'ngbd-progressbar-striped',
-  template: require('./progressbar-striped.html'),
+  templateUrl: './progressbar-striped.html',
   directives: [NGB_PROGRESSBAR_DIRECTIVES]
 })
 export class NgbdProgressbarStriped {

@@ -3,7 +3,7 @@ import {NGB_TABSET_DIRECTIVES} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'ngbd-tabset-selectById',
-  template: require('./tabset-selectById.html'),
+  templateUrl: './tabset-selectById.html',
   directives: [NGB_TABSET_DIRECTIVES]
 })
 export class NgbdTabsetSelectById {
