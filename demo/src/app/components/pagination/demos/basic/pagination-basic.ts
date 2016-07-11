@@ -3,7 +3,7 @@ import {NGB_PAGINATION_DIRECTIVES} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'ngbd-pagination-basic',
-  template: require('./pagination-basic.html'),
+  templateUrl: './pagination-basic.html',
   directives: [NGB_PAGINATION_DIRECTIVES]
 })
 export class NgbdPaginationBasic {

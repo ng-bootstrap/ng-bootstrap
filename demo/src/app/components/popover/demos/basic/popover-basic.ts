@@ -3,7 +3,7 @@ import {NGB_POPOVER_DIRECTIVES, NgbPopoverWindow} from '@ng-bootstrap/ng-bootstr
 
 @Component({
   selector: 'ngbd-popover-basic',
-  template: require('./popover-basic.html'),
+  templateUrl: './popover-basic.html',
   directives: [NGB_POPOVER_DIRECTIVES],
   precompile: [NgbPopoverWindow]
 })

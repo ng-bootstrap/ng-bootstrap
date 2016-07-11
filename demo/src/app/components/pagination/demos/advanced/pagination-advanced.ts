@@ -3,7 +3,7 @@ import {NGB_PAGINATION_DIRECTIVES} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'ngbd-pagination-advanced',
-  template: require('./pagination-advanced.html'),
+  templateUrl: './pagination-advanced.html',
   directives: [NGB_PAGINATION_DIRECTIVES]
 })
 export class NgbdPaginationAdvanced {

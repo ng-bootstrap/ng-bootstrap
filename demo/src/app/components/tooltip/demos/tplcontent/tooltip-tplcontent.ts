@@ -3,7 +3,7 @@ import {NGB_TOOLTIP_DIRECTIVES, NgbTooltipWindow} from '@ng-bootstrap/ng-bootstr
 
 @Component({
   selector: 'ngbd-tooltip-tplcontent',
-  template: require('./tooltip-tplcontent.html'),
+  templateUrl: './tooltip-tplcontent.html',
   directives: [NGB_TOOLTIP_DIRECTIVES],
   precompile: [NgbTooltipWindow]
 })
