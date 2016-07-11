@@ -101,6 +101,13 @@ gulp.task('npm', function() {
       .pipe(gulp.dest('dist'));
 });
 
+gulp.task('changelog', function() {
+  var conventionalChangelog = require('gulp-conventional-changelog');
+  return gulp.src('CHANGELOG.md', {})
+      .pipe(conventionalChangelog({preset: 'angular', releaseCount: 1}))
+      .pipe(gulp.dest('./'));
+});
+
 // Testing
 
 var testProject = ts.createProject('tsconfig.json');
