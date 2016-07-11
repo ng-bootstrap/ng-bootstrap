@@ -24,18 +24,17 @@ class APIDocVisitor {
 
     return sourceFile.statements.reduce((directivesSoFar, statement) => {
       if (statement.kind === ts.SyntaxKind.ClassDeclaration) {
-        return directivesSoFar.concat(this.visitClassDeclaration(statement));
+        return directivesSoFar.concat(this.visitClassDeclaration(fileName, statement));
       }
 
       return directivesSoFar;
     }, []);
   }
 
-  visitClassDeclaration(classDeclaration) {
+  visitClassDeclaration(fileName, classDeclaration) {
     var symbol = this.program.getTypeChecker().getSymbolAtLocation(classDeclaration.name);
     var description = ts.displayPartsToString(symbol.getDocumentationComment());
     var className = classDeclaration.name.text;
-    var fileName = classDeclaration.parent.fileName;
     var directiveInfo;
     var members;
 

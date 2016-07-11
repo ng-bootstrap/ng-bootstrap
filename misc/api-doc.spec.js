@@ -6,7 +6,7 @@ describe('APIDocVisitor', function() {
      function() { expect(apiDoc(['./misc/api-doc-test-cases/no-docs.ts'])).toEqual({}); });
 
   it('should extract basic info from directives and components', function() {
-    var docs = apiDoc(['./misc/api-doc-test-cases/directives-no-in-out.ts']);
+    var docs = apiDoc(['misc/api-doc-test-cases/directives-no-in-out.ts']);
 
     expect(Object.keys(docs).length).toBe(2);
 
