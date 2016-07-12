@@ -17,10 +17,17 @@ import {DEMO_DIRECTIVES, DEMO_SNIPPETS} from './demos';
       <ngbd-example-box demoTitle="One open panel at a time" [htmlSnippet]="snippets.static.markup" [tsSnippet]="snippets.static.code">
         <ngbd-accordion-static></ngbd-accordion-static>
       </ngbd-example-box>
+      <ngbd-example-box demoTitle="Toggle panels" [htmlSnippet]="snippets.toggle.markup" [tsSnippet]="snippets.toggle.code">
+        <ngbd-accordion-toggle></ngbd-accordion-toggle>
+      </ngbd-example-box>      
+      <ngbd-example-box demoTitle="Prevent panel toggle" [htmlSnippet]="snippets.preventChange.markup" 
+        [tsSnippet]="snippets.preventChange.code">
+        <ngbd-accordion-preventChange></ngbd-accordion-preventChange>
+      </ngbd-example-box> 
     </ngbd-content-wrapper>
   `,
   directives: [ContentWrapper, NgbdApiDocs, DEMO_DIRECTIVES, ExampleBoxComponent]
 })
 export class NgbdAccordion {
-   snippets = DEMO_SNIPPETS;
+  snippets = DEMO_SNIPPETS;
 }
