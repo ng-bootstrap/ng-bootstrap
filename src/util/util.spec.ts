@@ -1,6 +1,4 @@
-import {inject, addProviders} from '@angular/core/testing';
-
-import {toBoolean, toInteger, getValueInRange, isString} from './util';
+import {toBoolean, toInteger, toDefinedString, getValueInRange, isString} from './util';
 
 describe('util', () => {
 
@@ -38,6 +36,22 @@ describe('util', () => {
       expect(toInteger('10')).toBe(10);
       expect(toInteger('10.1')).toBe(10);
       expect(toInteger('10.9')).toBe(10);
+    });
+
+  });
+
+  describe('toDefinedString', () => {
+
+    it('should be noop for strings', () => { expect(toDefinedString('foo')).toBe('foo'); });
+
+    it('should return empty string for undefined values', () => {
+      expect(toDefinedString(null)).toBe('');
+      expect(toDefinedString(undefined)).toBe('');
+    });
+
+    it('should stringify non-string values', () => {
+      expect(toDefinedString(10)).toBe('10');
+      expect(toDefinedString(false)).toBe('false');
     });
 
   });
