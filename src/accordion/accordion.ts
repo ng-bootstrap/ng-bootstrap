@@ -53,6 +53,11 @@ export class NgbPanel {
    */
   @Input() title: string;
 
+  /**
+   *  Panel type (CSS class). Bootstrap 4 recognizes the following types: "success", "info", "warning" and "danger".
+   */
+  @Input() type: string;
+
   @ContentChild(NgbPanelContent) contentTpl: NgbPanelContent;
   @ContentChild(NgbPanelTitle) titleTpl: NgbPanelTitle;
 }
@@ -76,7 +81,7 @@ export interface NgbPanelChangeEvent {
   template: `
   <div class="card">
     <template ngFor let-panel [ngForOf]="_panels">
-      <div class="card-header" [class.active]="_isOpen(panel.id)">
+      <div [class]="'card-header ' + (panel.type ? 'card-'+panel.type: type ? 'card-'+type : '')" [class.active]="_isOpen(panel.id)">
         <a tabindex="0" (click)="toggle(panel.id)" [class.text-muted]="panel.disabled">
           {{panel.title}}<template [ngTemplateOutlet]="panel.titleTpl?.templateRef"></template>          
         </a>
@@ -100,6 +105,12 @@ export class NgbAccordion implements AfterContentChecked {
    *  Whether the other panels should be closed when a panel is opened
    */
   @Input('closeOthers') closeOtherPanels: boolean = false;
+
+  /**
+   *  Type of accordion's panels. Bootstrap 4 recognizes the following types: "success", "info", "warning" and "danger".
+   */
+  @Input() type: string;
+
 
   /**
    * A panel change event fired right before the panel toggle happens. The event object has three properties:

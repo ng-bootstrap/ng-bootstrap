@@ -31,8 +31,9 @@ describe('ngb-accordion', () => {
 
   beforeEach(() => {
     html = `
-      <ngb-accordion #acc="ngbAccordion" [closeOthers]="closeOthers" [activeIds]="activeIds" (change)="changeCallback($event)">
-        <ngb-panel *ngFor="let panel of panels" [id]="panel.id" [disabled]="panel.disabled">
+      <ngb-accordion #acc="ngbAccordion" [closeOthers]="closeOthers" [activeIds]="activeIds" 
+        (change)="changeCallback($event)" [type]="classType">
+        <ngb-panel *ngFor="let panel of panels" [id]="panel.id" [disabled]="panel.disabled" [type]="panel.type">
           <template ngbPanelTitle>{{panel.title}}</template>       
           <template ngbPanelContent>{{panel.content}}</template>        
         </ngb-panel>        
@@ -271,15 +272,58 @@ describe('ngb-accordion', () => {
          expectOpenPanels(fixture.nativeElement, [false, false, false]);
        });
      })));
+
+  it('should have specified type of accordion ', async(inject([TestComponentBuilder], (tcb) => {
+       const testHtml = `
+      <ngb-accordion #acc="ngbAccordion" [closeOthers]="closeOthers" [type]="type">
+        <ngb-panel *ngFor="let panel of panels" [id]="panel.id" [disabled]="panel.disabled">
+          <template ngbPanelTitle>{{panel.title}}</template>       
+          <template ngbPanelContent>{{panel.content}}</template>        
+        </ngb-panel>        
+      </ngb-accordion>
+      <button *ngFor="let panel of panels" (click)="acc.toggle(panel.id)">Toggle the panel {{ panel.id }}</button>
+    `;
+       tcb.overrideTemplate(TestComponent, testHtml).createAsync(TestComponent).then((fixture) => {
+         fixture.detectChanges();
+
+         fixture.componentInstance.type = 'warning';
+         fixture.detectChanges();
+
+         let el = fixture.nativeElement.querySelectorAll('.card-header');
+         expect(el[0]).toHaveCssClass('card-warning');
+         expect(el[1]).toHaveCssClass('card-warning');
+         expect(el[2]).toHaveCssClass('card-warning');
+
+       });
+     })));
+  
+  it('should override the type in accordion with type in panel', async(inject([TestComponentBuilder], (tcb) => {
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         fixture.detectChanges();
+         fixture.componentInstance.classType = 'warning';
+
+         const tc = fixture.componentInstance;
+         tc.panels[0].type = 'success';
+         tc.panels[1].type = 'danger';
+         fixture.detectChanges();
+
+         let el = fixture.nativeElement.querySelectorAll('.card-header');
+         expect(el[0]).toHaveCssClass('card-success');
+         expect(el[1]).toHaveCssClass('card-danger');
+         expect(el[2]).toHaveCssClass('card-warning');
+
+       });
+     })));
 });
 
 @Component({selector: 'test-cmp', directives: [NGB_ACCORDION_DIRECTIVES], template: ''})
 class TestComponent {
   activeIds = [];
+  classType;
   closeOthers = false;
   panels = [
-    {id: 'one', disabled: false, title: 'Panel 1', content: 'foo'},
-    {id: 'two', disabled: false, title: 'Panel 2', content: 'bar'},
+    {id: 'one', disabled: false, title: 'Panel 1', content: 'foo', type: ''},
+    {id: 'two', disabled: false, title: 'Panel 2', content: 'bar', type: ''},
     {id: 'three', disabled: false, title: 'Panel 3', content: 'baz'}
   ];
   changeCallback = () => {};
