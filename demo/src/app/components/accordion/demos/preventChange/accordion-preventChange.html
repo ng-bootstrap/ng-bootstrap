@@ -1,5 +1,5 @@
-<ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0">
-  <ngb-panel title="Simple">
+<ngb-accordion (change)="beforeChange($event)">
+  <ngb-panel id="1" title="Simple">
     <template ngbPanelContent>
       Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia
       aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
@@ -9,10 +9,7 @@
       labore sustainable VHS.
     </template>
   </ngb-panel>
-  <ngb-panel>
-    <template ngbPanelTitle>
-      <span>&#9733; <b>Fancy</b> title &#9733;</span>
-    </template>
+  <ngb-panel id="2" title="I can't be toggled...">
     <template ngbPanelContent>
       Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia
       aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
@@ -22,7 +19,7 @@
       labore sustainable VHS.
     </template>
   </ngb-panel>
-  <ngb-panel title="Disabled" [disabled]="true">
+  <ngb-panel id="3" title="I can be opened, but not closed...">
     <template ngbPanelContent>
       Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia
       aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,

@@ -1,5 +1,5 @@
 <ngb-accordion [closeOthers]="true" activeIds="1">
-  <ngb-panel id="1" title="Collapsible Group Item #1">
+  <ngb-panel id="1" title="Simple">
     <template ngbPanelContent>
       Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia
       aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
@@ -9,7 +9,10 @@
       labore sustainable VHS.
     </template>
   </ngb-panel>
-  <ngb-panel id="2" title="Collapsible Group Item #2">
+  <ngb-panel id="2">
+    <template ngbPanelTitle>
+      <span>&#9733; <b>Fancy</b> title &#9733;</span>
+    </template>
     <template ngbPanelContent>
       Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia
       aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
@@ -19,7 +22,7 @@
       labore sustainable VHS.
     </template>
   </ngb-panel>
-  <ngb-panel id="3" title="Collapsible Group Item #3">
+  <ngb-panel id="3" title="Disabled" [disabled]="true">
     <template ngbPanelContent>
       Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia
       aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
