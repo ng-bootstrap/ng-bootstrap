@@ -6,7 +6,7 @@ import {CollapseBasicComponent, basicHtmlContent, basicTsContent } from './demos
 
 @Component({
   selector: 'ngbd-collapse',
-  template: require('./collapse.component.html'),
+  templateUrl: './collapse.component.html',
   directives: [
     CollapseBasicComponent,
     ContentWrapper,

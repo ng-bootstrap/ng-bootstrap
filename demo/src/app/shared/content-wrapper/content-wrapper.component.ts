@@ -4,7 +4,7 @@ import {SideNavComponent} from '../side-nav';
 @Component({
   selector: 'ngbd-content-wrapper',
   directives: [SideNavComponent],
-  template: require('./content-wrapper.component.html')
+  templateUrl: './content-wrapper.component.html'
 })
 export class ContentWrapper {
   @Input()
