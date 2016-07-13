@@ -65,7 +65,7 @@ module.exports = function makeWebpackConfig() {
   config.resolve = {
     root: root('demo'),
     // only discover files that have those extensions
-    extensions: ['', '.ts', '.js', '.json', '.css', '.scss', '.html'],
+    extensions: ['', '.ts', '.js', '.css', '.scss', '.html'],
 
     alias: {
       '@ng-bootstrap/ng-bootstrap': root('src/index.ts'),
@@ -117,9 +117,6 @@ module.exports = function makeWebpackConfig() {
 
       // copy those assets to output
       {test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/, loader: 'file?name=fonts/[name].[hash].[ext]?'},
-
-      // Support for *.json files.
-      {test: /\.json$/, loader: 'json'},
 
       // Support for CSS as raw text
       // use 'null' loader in test mode (https://github.com/webpack/null-loader)

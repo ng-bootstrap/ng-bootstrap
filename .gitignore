@@ -7,4 +7,4 @@ npm-debug.log
 .publish
 .sw*
 .idea
-demo/src/docs.json
+demo/src/api-docs.ts
