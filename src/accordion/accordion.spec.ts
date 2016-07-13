@@ -296,7 +296,7 @@ describe('ngb-accordion', () => {
 
        });
      })));
-  
+
   it('should override the type in accordion with type in panel', async(inject([TestComponentBuilder], (tcb) => {
        tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
