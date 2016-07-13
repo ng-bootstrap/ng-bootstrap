@@ -32,7 +32,7 @@ export class NgbdAlertCloseable {
       type: 'danger',
       message: 'This is a danger alert',
     });
-    this.backup = this.alerts.map((alert: IAlert) => Object.assign({}, alert))
+    this.backup = this.alerts.map((alert: IAlert) => Object.assign({}, alert));
   }
 
   public closeAlert(alert: IAlert) {

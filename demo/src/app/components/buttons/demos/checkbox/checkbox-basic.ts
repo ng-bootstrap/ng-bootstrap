@@ -9,5 +9,5 @@ export class NgbdCheckboxBasic {
     left: true,
     middle: false,
     right: false
-  }
+  };
 }
