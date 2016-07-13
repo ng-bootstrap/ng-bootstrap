@@ -154,9 +154,9 @@ gulp.task('tdd', ['clean:build-tests'], function(done) {
 // Formatting
 
 gulp.task('lint', function() {
-  return gulp.src(PATHS.src).pipe(tslint({configuration: require('./tslint.json')})).pipe(tslint.report('prose', {
-    summarizeFailureOutput: true
-  }));
+  return gulp.src([PATHS.src, PATHS.demo])
+      .pipe(tslint({configuration: require('./tslint.json')}))
+      .pipe(tslint.report('prose', {summarizeFailureOutput: true}));
 });
 
 gulp.task('check-format', function() {
