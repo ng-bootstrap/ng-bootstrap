@@ -23,7 +23,7 @@ var PATHS = {
   demoDist: 'demo/dist/**/*',
   typings: 'typings/index.d.ts',
   jasmineTypings: 'typings/globals/jasmine/index.d.ts',
-  demoDocsJson: 'demo/src/docs.json'
+  demoApiDocs: 'demo/src'
 };
 
 function webpackCallBack(taskName, gulpDone) {
@@ -184,10 +184,9 @@ function doCheckFormat() {
 
 gulp.task('generate-docs', function() {
   var getApiDocs = require('./misc/get-doc');
-  var jsonfile = require('jsonfile');
+  var docs = `const API_DOCS = ${JSON.stringify(getApiDocs(), null, 2)};\n\nexport default API_DOCS;`;
 
-  var docs = getApiDocs();
-  jsonfile.writeFileSync(PATHS.demoDocsJson, docs);
+  return gulpFile('api-docs.ts', docs, {src: true}).pipe(gulp.dest(PATHS.demoApiDocs));
 });
 
 gulp.task('clean:demo', function() { return del('demo/dist'); });

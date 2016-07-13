@@ -1,6 +1,5 @@
 import {Component, ChangeDetectionStrategy, Input} from '@angular/core';
-
-const docs = require('../../../../docs.json');
+import docs from '../../../../api-docs';
 
 @Component({
   selector: 'ngbd-api-docs',
