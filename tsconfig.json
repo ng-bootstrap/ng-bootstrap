@@ -3,7 +3,8 @@
     "target": "ES5",
     "module": "commonjs",
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "noEmitOnError": true
   },
   "exclude": [
     "node_modules"
