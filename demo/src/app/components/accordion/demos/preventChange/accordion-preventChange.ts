@@ -3,12 +3,12 @@ import {NGB_ACCORDION_DIRECTIVES, NgbPanelChangeEvent} from '@ng-bootstrap/accor
 
 @Component({
   selector: 'ngbd-accordion-preventChange',
-  template: require('./accordion-preventChange.html'),
+  templateUrl: './accordion-preventChange.html',
   directives: [NGB_ACCORDION_DIRECTIVES]
 })
 export class NgbdAccordionPreventChange {
   public beforeChange($event: NgbPanelChangeEvent) {
-    
+
     if ($event.panelId === '2') {
       $event.preventDefault();
     }

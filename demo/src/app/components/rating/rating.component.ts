@@ -5,7 +5,7 @@ import {RatingBasicComponent, basicHtmlContent, basicTsContent} from './demos';
 
 @Component({
   selector: 'ngbd-rating',
-  template: require('./rating.component.html'),
+  templateUrl: './rating.component.html',
   directives: [ContentWrapper, RatingBasicComponent, NgbdApiDocs, ExampleBoxComponent]
 })
 export class NgbdRating {

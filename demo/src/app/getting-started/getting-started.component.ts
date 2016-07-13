@@ -4,6 +4,6 @@ import {ContentWrapper} from '../shared';
 @Component({
   selector: 'ngbd-getting-started',
   directives: [ContentWrapper],
-  template: require('./getting-started.component.html')
+  templateUrl: './getting-started.component.html'
 })
 export class GettingStarted {}

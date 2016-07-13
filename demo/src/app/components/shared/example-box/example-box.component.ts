@@ -4,7 +4,7 @@ import { NgbTabContent, NgbTab, NgbTabset } from '../../../../../../src/tabset/t
 
 @Component({
   selector: 'ngbd-example-box',
-  template: require('./example-box.component.html'),
+  templateUrl: './example-box.component.html',
   directives: [NgbTab, NgbTabset, NgbTabContent]
 })
 export class ExampleBoxComponent {

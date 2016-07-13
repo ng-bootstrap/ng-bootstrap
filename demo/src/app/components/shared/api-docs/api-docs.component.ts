@@ -5,7 +5,7 @@ const docs = require('../../../../docs.json');
 @Component({
   selector: 'ngbd-api-docs',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: require('./api-docs.component.html')
+  templateUrl: './api-docs.component.html'
 })
 export class NgbdApiDocs {
   apiDocs;
