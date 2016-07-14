@@ -48,15 +48,15 @@ import {getValueInRange, toInteger, toBoolean} from '../util/util';
   `
 })
 export class NgbPagination implements OnChanges {
-  private _boundaryLinks: boolean = false;
+  private _boundaryLinks = false;
   private _collectionSize;
-  private _directionLinks: boolean = true;
-  private _ellipses: boolean = true;
+  private _directionLinks = true;
+  private _ellipses = true;
   private _maxSize = 0;
   private _page = 0;
   private _pageCount = 0;
   private _pageSize = 10;
-  private _rotate: boolean = false;
+  private _rotate = false;
   pages: number[] = [];
 
   /**
