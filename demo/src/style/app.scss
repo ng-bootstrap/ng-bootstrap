@@ -1,13 +1,12 @@
 // styles in src/style directory are applied to the whole page
-$footer-height: 156px !default;
-
-html {
-  position: relative;
-  min-height: 100%;
+html, body {
+  height: 100%;
 }
 
-body {
-  margin-bottom: $footer-height + 48px;
+ngbd-app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 header .navbar {
@@ -168,12 +167,13 @@ div.component-demo {
   margin-bottom: 15px;
 }
 
+.main-content {
+  flex: 1 0 auto;
+}
+
 .bd-footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: $footer-height;
   padding: 3rem 0;
+  margin-top: 3rem;
   font-size: 85%;
   background-color: #f7f7f7;
   text-align: left;
