@@ -7,7 +7,7 @@ html {
 }
 
 body {
-  margin-bottom: $footer-height;
+  margin-bottom: $footer-height + 48px;
 }
 
 header .navbar {
@@ -174,7 +174,6 @@ div.component-demo {
   width: 100%;
   height: $footer-height;
   padding: 3rem 0;
-  margin-top: 3rem;
   font-size: 85%;
   background-color: #f7f7f7;
   text-align: left;
