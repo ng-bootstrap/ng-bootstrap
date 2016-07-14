@@ -45,7 +45,7 @@ export class NgbTab {
   /**
    * Allows toggling disabled state of a given state. Disabled tabs can't be selected.
    */
-  @Input() disabled: boolean = false;
+  @Input() disabled = false;
 
   @ContentChild(NgbTabContent) contentTpl: NgbTabContent;
   @ContentChild(NgbTabTitle) titleTpl: NgbTabTitle;
@@ -94,7 +94,7 @@ export class NgbTabset implements AfterContentChecked {
   /**
    * Type of navigation to be used for tabs. Can be one of 'tabs' or 'pills'.
    */
-  @Input() type: string = 'tabs';
+  @Input() type = 'tabs';
 
   /**
    * A tab change event fired right before the tab selection happens.  The event object has three properties:
