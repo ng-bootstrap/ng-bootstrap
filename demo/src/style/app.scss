@@ -1,4 +1,15 @@
 // styles in src/style directory are applied to the whole page
+$footer-height: 156px !default;
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: $footer-height;
+}
+
 header .navbar {
   background-color: #f7f7f7;
 }
@@ -157,6 +168,10 @@ div.component-demo {
 }
 
 .bd-footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: $footer-height;
   padding: 3rem 0;
   margin-top: 3rem;
   font-size: 85%;
