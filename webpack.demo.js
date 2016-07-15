@@ -82,6 +82,7 @@ module.exports = function makeWebpackConfig() {
       '@ng-bootstrap/progressbar': root('src/progressbar/progressbar.ts'),
       '@ng-bootstrap/rating': root('src/rating/rating.ts'),
       '@ng-bootstrap/tabset': root('src/tabset/tabset.ts'),
+      '@ng-bootstrap/timepicker': root('src/timepicker/timepicker.ts'),
       '@ng-bootstrap/tooltip': root('src/tooltip/tooltip.ts')
     }
   };
