@@ -15,6 +15,7 @@ import {
   NgbdProgressbar,
   NgbdRating,
   NgbdTabs,
+  NgbdTimepicker,
   NgbdTooltip
 } from './components';
 
@@ -36,6 +37,7 @@ const routes: RouterConfig = [
   {path: 'components/progressbar', component: NgbdProgressbar},
   {path: 'components/rating', component: NgbdRating},
   {path: 'components/tabs', component: NgbdTabs},
+  {path: 'components/timepicker', component: NgbdTimepicker},
   {path: 'components/tooltip', component: NgbdTooltip}
 ];
 
