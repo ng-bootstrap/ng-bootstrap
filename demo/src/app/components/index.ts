@@ -11,4 +11,5 @@ export * from './popover';
 export * from './progressbar';
 export * from './rating';
 export * from './tabset';
+export * from './timepicker';
 export * from './tooltip';
