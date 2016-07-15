@@ -1,4 +1,14 @@
 // styles in src/style directory are applied to the whole page
+html, body {
+  height: 100%;
+}
+
+ngbd-app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 header .navbar {
   background-color: #f7f7f7;
 }
@@ -155,6 +165,10 @@ div.api-doc-component > h2 {
 
 div.component-demo {
   margin-bottom: 15px;
+}
+
+.main-content {
+  flex: 1 0 auto;
 }
 
 .bd-footer {
