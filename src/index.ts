@@ -15,7 +15,7 @@ import {NgbPagination, NGB_PAGINATION_DIRECTIVES} from './pagination/pagination'
 import {NgbProgressbar, NGB_PROGRESSBAR_DIRECTIVES} from './progressbar/progressbar';
 import {NgbRating, NGB_RATING_DIRECTIVES} from './rating/rating';
 import {NgbTabset, NgbTab, NgbTabContent, NgbTabTitle, NgbTabChangeEvent, NGB_TABSET_DIRECTIVES} from './tabset/tabset';
-import {NgbTimePicker, NGB_TIMEPICKER_DIRECTIVES} from './timepicker/timepicker';
+import {NgbTimepicker, NGB_TIMEPICKER_DIRECTIVES} from './timepicker/timepicker';
 import {NgbTooltip, NgbTooltipWindow, NGB_TOOLTIP_DIRECTIVES} from './tooltip/tooltip';
 import {NgbPopover, NgbPopoverWindow, NGB_POPOVER_DIRECTIVES} from './popover/popover';
 import {NgbRadioGroup, NgbRadioLabel, NgbRadio, NGB_RADIO_DIRECTIVES} from './buttons/radio';
@@ -37,7 +37,7 @@ export {NgbPagination, NGB_PAGINATION_DIRECTIVES} from './pagination/pagination'
 export {NgbProgressbar, NGB_PROGRESSBAR_DIRECTIVES} from './progressbar/progressbar';
 export {NgbRating, NGB_RATING_DIRECTIVES} from './rating/rating';
 export {NgbTabset, NgbTab, NgbTabContent, NgbTabTitle, NgbTabChangeEvent, NGB_TABSET_DIRECTIVES} from './tabset/tabset';
-export {NgbTimePicker, NGB_TIMEPICKER_DIRECTIVES} from './timepicker/timepicker';
+export {NgbTimepicker, NGB_TIMEPICKER_DIRECTIVES} from './timepicker/timepicker';
 export {NgbTooltip, NgbTooltipWindow, NGB_TOOLTIP_DIRECTIVES} from './tooltip/tooltip';
 export {NgbPopover, NgbPopoverWindow, NGB_POPOVER_DIRECTIVES} from './popover/popover';
 export {NgbRadioGroup, NgbRadioLabel, NgbRadio, NGB_RADIO_DIRECTIVES} from './buttons/radio';

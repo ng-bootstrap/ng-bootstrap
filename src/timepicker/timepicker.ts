@@ -1,9 +1,11 @@
 import {Component, Directive, Input, forwardRef} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/common';
 
+import {toInteger} from '../util/util';
+
 const NGB_TIMEPICKER_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
-  useExisting: forwardRef(() => NgbTimePicker),
+  useExisting: forwardRef(() => NgbTimepicker),
   multi: true
 };
 
@@ -14,10 +16,11 @@ export class NgbTime {
 
 @Component({
   selector: 'ngb-timepicker',
+  exportAs: 'ngbTimepicker',
   providers: [NGB_TIMEPICKER_VALUE_ACCESSOR],
   template: `
-    <input [ngModel]="model?.hour" (ngModelChange)="updateHour($event)">:
-    <input [ngModel]="model?.minute" (ngModelChange)="updateMinute($event)">
+    <input [ngModel]="model?.hour" (ngModelChange)="updateHour($event)" [maxLength]=2>:
+    <input [ngModel]="model?.minute" (ngModelChange)="updateMinute($event)" [maxLength]=2>
     <br>
     <button (click)="incrementHour()">H+</button>
     <button (click)="decrementHour()">H-</button>
@@ -25,7 +28,7 @@ export class NgbTime {
     <button (click)="decrementMinute()">M-</button>
   `
 })
-export class NgbTimePicker implements ControlValueAccessor {
+export class NgbTimepicker implements ControlValueAccessor {
   private model;
 
   onChange = (_: any) => {};
@@ -44,49 +47,59 @@ export class NgbTimePicker implements ControlValueAccessor {
   registerOnTouched(fn: () => any): void { this.onTouched = fn; }
 
   incrementHour() {
-    // TODO: make sure that it doesn't go above 23
     this.model.hour++;
+    if ( this.model.hour > 23 ) {
+      this.model.hour = 0;
+    }
     this.onTouched();
     this.onChange(this.model);
   }
 
   decrementHour() {
-    // TODO: make sure that it doesn't go below 0
     this.model.hour--;
+    if ( this.model.hour < 0 ) {
+      this.model.hour = 23;
+    }
     this.propagateModelChange();
   }
 
   incrementMinute() {
-    // TODO: make sure that it doesn't go above 59 and increment hour if it does
     this.model.minute++;
+    if ( this.model.minute > 59 ) {
+      this.model.minute = 0;
+      this.incrementHour();
+    }
     this.propagateModelChange();
   }
-  
+
   decrementMinute() {
-    // TODO: make sure that it doesn't go above 59 and increment hour if it does
     this.model.minute--;
+    if ( this.model.minute < 0 ) {
+      this.model.minute = 59;
+      this.decrementHour();
+    }
     this.propagateModelChange();
   }
-  
+
   updateHour(newVal) {
-    // TODO: make sure that this is a valid value for an hour
-    this.model.hour = parseInt(newVal);
+    let hour = toInteger(newVal);
+    this.model.hour = hour > 0 || hour < 24 ? hour : 23;
     this.propagateModelChange();
   }
-  
+
   updateMinute(newVal) {
-    // TODO: make sure that this is a valid value for a minute
-    this.model.minute = parseInt(newVal);
+    let minute = toInteger(newVal);
+    this.model.minute = minute > 0 || minute < 60 ? minute : 59;
     this.propagateModelChange();
   }
 
   private propagateModelChange() {
     this.onTouched();
     this.onChange(this.model);
-  } 
+  }
   // TODO: formatting of minutes / hours
   // TODO: could it use OnPush strategy?
 }
 
 
-export const NGB_TIMEPICKER_DIRECTIVES = [ NgbTimePicker ];
+export const NGB_TIMEPICKER_DIRECTIVES = [ NgbTimepicker ];
