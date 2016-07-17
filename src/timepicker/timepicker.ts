@@ -19,16 +19,21 @@ export class NgbTime {
   exportAs: 'ngbTimepicker',
   providers: [NGB_TIMEPICKER_VALUE_ACCESSOR],
   template: `
-    <input [ngModel]="model?.hour" (ngModelChange)="updateHour($event)" [maxLength]=2> <span> : </span>
-    <input [ngModel]="model?.minute" (ngModelChange)="updateMinute($event)" [maxLength]=2> <span *ngIf="seconds" > : </span>
-    <input [ngModel]="model?.second" *ngIf="seconds" (ngModelChange)="updateSecond($event)" [maxLength]=2>
+    <div class="input-group">
+      <input type="text" class="form-control" [ngModel]="model?.hour" (ngModelChange)="updateHour($event)" [maxLength]=2>
+      <span class="input-group-addon"> : </span>
+      <input type="text" class="form-control" [ngModel]="model?.minute" (ngModelChange)="updateMinute($event)" [maxLength]=2>
+      <span *ngIf="seconds" class="input-group-addon"> : </span>
+      <input type="text" class="form-control" [ngModel]="model?.second" *ngIf="seconds" 
+          (ngModelChange)="updateSecond($event)" [maxLength]=2>
+    </div>
     <br>
-    <button (click)="incrementHour()">H+</button>
-    <button (click)="decrementHour()">H-</button>
-    <button (click)="incrementMinute()">M+</button>
-    <button (click)="decrementMinute()">M-</button>
-    <button (click)="incrementSecond()" *ngIf="seconds">S+</button>
-    <button (click)="decrementSecond()" *ngIf="seconds">S-</button>
+    <button type="button" class="btn btn-primary" (click)="incrementHour()">H+</button>
+    <button type="button" class="btn btn-primary" (click)="decrementHour()">H-</button>
+    <button type="button" class="btn btn-primary" (click)="incrementMinute()">M+</button>
+    <button type="button" class="btn btn-primary" (click)="decrementMinute()">M-</button>
+    <button type="button" class="btn btn-primary" (click)="incrementSecond()" *ngIf="seconds">S+</button>
+    <button type="button" class="btn btn-primary" (click)="decrementSecond()" *ngIf="seconds">S-</button>
  
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -37,6 +42,12 @@ export class NgbTimepicker implements ControlValueAccessor {
   private model;
 
   @Input() seconds = false;
+
+  @Input() meridian = false;
+
+  @Input() duration = false;
+
+  @Input() step = 1;
 
   onChange = (_: any) => {};
   onTouched = () => {};
@@ -54,24 +65,26 @@ export class NgbTimepicker implements ControlValueAccessor {
   registerOnTouched(fn: () => any): void { this.onTouched = fn; }
 
   incrementHour() {
-    this.model.hour++;
-    if (this.model.hour > 23) {
-      this.model.hour = 0;
+    this.model.hour += this.step;
+    if (this.meridian) {
+      this.model.hour = this.model.hour < 12 ? this.model.hour : 0;
+    } else {
+      this.model.hour = this.model.hour < 24 ? this.model.hour : 0;
     }
     this.onTouched();
     this.onChange(this.model);
   }
 
   decrementHour() {
-    this.model.hour--;
+    this.model.hour -= this.step;
     if (this.model.hour < 0) {
-      this.model.hour = 23;
+      this.model.hour = this.meridian ? 11 : 23;
     }
     this.propagateModelChange();
   }
 
   incrementMinute() {
-    this.model.minute++;
+    this.model.minute += this.step;
     if (this.model.minute > 59) {
       this.model.minute = 0;
       this.incrementHour();
@@ -80,7 +93,7 @@ export class NgbTimepicker implements ControlValueAccessor {
   }
 
   decrementMinute() {
-    this.model.minute--;
+    this.model.minute -= this.step;
     if (this.model.minute < 0) {
       this.model.minute = 59;
       this.decrementHour();
@@ -89,7 +102,7 @@ export class NgbTimepicker implements ControlValueAccessor {
   }
 
   incrementSecond() {
-    this.model.second++;
+    this.model.second += this.step;
     if (this.model.second > 59) {
       this.model.second = 0;
       this.incrementMinute();
@@ -98,7 +111,7 @@ export class NgbTimepicker implements ControlValueAccessor {
   }
 
   decrementSecond() {
-    this.model.second--;
+    this.model.second -= this.step;
     if (this.model.second < 0) {
       this.model.second = 59;
       this.decrementMinute();
@@ -110,7 +123,11 @@ export class NgbTimepicker implements ControlValueAccessor {
     let hour = toInteger(newVal);
 
     if (hour) {
-      this.model.hour = hour >= 0 && hour < 24 ? hour : 23;
+      if (this.meridian) {
+        this.model.hour = hour >= 0 && hour < 12 ? hour : 11;
+      } else {
+        this.model.hour = hour >= 0 && hour < 24 ? hour : 23;
+      }
     } else {
       this.model.hour = 0;
     }
