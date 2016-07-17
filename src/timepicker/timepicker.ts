@@ -1,4 +1,4 @@
-import {Component, Directive, Input, forwardRef} from '@angular/core';
+import {Component, ChangeDetectionStrategy, Directive, Input, forwardRef} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/common';
 
 import {toInteger} from '../util/util';
@@ -19,17 +19,24 @@ export class NgbTime {
   exportAs: 'ngbTimepicker',
   providers: [NGB_TIMEPICKER_VALUE_ACCESSOR],
   template: `
-    <input [ngModel]="model?.hour" (ngModelChange)="updateHour($event)" [maxLength]=2>:
-    <input [ngModel]="model?.minute" (ngModelChange)="updateMinute($event)" [maxLength]=2>
+    <input [ngModel]="model?.hour" (ngModelChange)="updateHour($event)" [maxLength]=2> <span> : </span>
+    <input [ngModel]="model?.minute" (ngModelChange)="updateMinute($event)" [maxLength]=2> <span *ngIf="seconds" > : </span>
+    <input [ngModel]="model?.second" *ngIf="seconds" (ngModelChange)="updateSecond($event)" [maxLength]=2>
     <br>
     <button (click)="incrementHour()">H+</button>
     <button (click)="decrementHour()">H-</button>
     <button (click)="incrementMinute()">M+</button>
     <button (click)="decrementMinute()">M-</button>
-  `
+    <button (click)="incrementSecond()" *ngIf="seconds">S+</button>
+    <button (click)="decrementSecond()" *ngIf="seconds">S-</button>
+ 
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NgbTimepicker implements ControlValueAccessor {
   private model;
+
+  @Input() seconds = false;
 
   onChange = (_: any) => {};
   onTouched = () => {};
@@ -48,7 +55,7 @@ export class NgbTimepicker implements ControlValueAccessor {
 
   incrementHour() {
     this.model.hour++;
-    if ( this.model.hour > 23 ) {
+    if (this.model.hour > 23) {
       this.model.hour = 0;
     }
     this.onTouched();
@@ -57,7 +64,7 @@ export class NgbTimepicker implements ControlValueAccessor {
 
   decrementHour() {
     this.model.hour--;
-    if ( this.model.hour < 0 ) {
+    if (this.model.hour < 0) {
       this.model.hour = 23;
     }
     this.propagateModelChange();
@@ -65,7 +72,7 @@ export class NgbTimepicker implements ControlValueAccessor {
 
   incrementMinute() {
     this.model.minute++;
-    if ( this.model.minute > 59 ) {
+    if (this.model.minute > 59) {
       this.model.minute = 0;
       this.incrementHour();
     }
@@ -74,22 +81,59 @@ export class NgbTimepicker implements ControlValueAccessor {
 
   decrementMinute() {
     this.model.minute--;
-    if ( this.model.minute < 0 ) {
+    if (this.model.minute < 0) {
       this.model.minute = 59;
       this.decrementHour();
     }
     this.propagateModelChange();
   }
 
+  incrementSecond() {
+    this.model.second++;
+    if (this.model.second > 59) {
+      this.model.second = 0;
+      this.incrementMinute();
+    }
+    this.propagateModelChange();
+  }
+
+  decrementSecond() {
+    this.model.second--;
+    if (this.model.second < 0) {
+      this.model.second = 59;
+      this.decrementMinute();
+    }
+    this.propagateModelChange();
+  }
+
   updateHour(newVal) {
     let hour = toInteger(newVal);
-    this.model.hour = hour > 0 || hour < 24 ? hour : 23;
+
+    if (hour) {
+      this.model.hour = hour >= 0 && hour < 24 ? hour : 23;
+    } else {
+      this.model.hour = 0;
+    }
     this.propagateModelChange();
   }
 
   updateMinute(newVal) {
     let minute = toInteger(newVal);
-    this.model.minute = minute > 0 || minute < 60 ? minute : 59;
+    if (minute) {
+      this.model.minute = minute >= 0 && minute < 60 ? minute : 59;
+    } else {
+      this.model.minute = 0;
+    }
+    this.propagateModelChange();
+  }
+
+  updateSecond(newVal) {
+    let second = toInteger(newVal);
+    if (second) {
+      this.model.second = second >= 0 && second < 60 ? second : 59;
+    } else {
+      this.model.second = 0;
+    }
     this.propagateModelChange();
   }
 
@@ -102,4 +146,4 @@ export class NgbTimepicker implements ControlValueAccessor {
 }
 
 
-export const NGB_TIMEPICKER_DIRECTIVES = [ NgbTimepicker ];
+export const NGB_TIMEPICKER_DIRECTIVES = [NgbTimepicker];
