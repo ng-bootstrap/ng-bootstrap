@@ -10,11 +10,13 @@ import {
   Injector,
   OnDestroy,
   ComponentFactoryResolver,
-  ComponentFactory,
   ComponentRef,
+  Renderer,
   TemplateRef
 } from '@angular/core';
+
 import {toInteger} from '../util/util';
+import {PopupService} from '../util/popup';
 
 /**
  * Alerts can be used to provide feedback messages.
@@ -54,7 +56,7 @@ export class NgbAlert {
  */
 @Directive({selector: 'template[ngbAlert]'})
 export class NgbDismissibleAlert implements OnInit, OnDestroy {
-  private _windowFactory: ComponentFactory<NgbAlert>;
+  private _popupService: PopupService<NgbAlert>;
   private _windowRef: ComponentRef<NgbAlert>;
   private _timeout;
 
@@ -72,21 +74,16 @@ export class NgbDismissibleAlert implements OnInit, OnDestroy {
   @Input() dismissOnTimeout: number;
 
   constructor(
-      private _templateRef: TemplateRef<Object>, private _viewContainerRef: ViewContainerRef,
-      private _injector: Injector, componentFactoryResolver: ComponentFactoryResolver) {
-    this._windowFactory = componentFactoryResolver.resolveComponentFactory(NgbAlert);
+      private _templateRef: TemplateRef<Object>, viewContainerRef: ViewContainerRef, injector: Injector,
+      componentFactoryResolver: ComponentFactoryResolver, renderer: Renderer) {
+    this._popupService =
+        new PopupService<NgbAlert>(NgbAlert, injector, viewContainerRef, renderer, componentFactoryResolver);
   }
 
-  close() {
-    if (this._windowRef) {
-      this._viewContainerRef.remove(this._viewContainerRef.indexOf(this._windowRef.hostView));
-      this._windowRef = null;
-    }
-  }
+  close(): void { this._popupService.close(); }
 
   ngOnInit() {
-    const nodes = [this._viewContainerRef.createEmbeddedView(this._templateRef).rootNodes];
-    this._windowRef = this._viewContainerRef.createComponent(this._windowFactory, 0, this._injector, nodes);
+    this._windowRef = this._popupService.open(this._templateRef);
     this._windowRef.instance.type = this.type;
     this._windowRef.instance.close.subscribe(($event) => {
       this.closeEvent.emit($event);
