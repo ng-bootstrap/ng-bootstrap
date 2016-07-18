@@ -12,11 +12,11 @@ import {
   TemplateRef,
   ViewContainerRef,
   ComponentFactoryResolver,
-  ComponentFactory
 } from '@angular/core';
 
 import {parseTriggers, Trigger} from '../util/triggers';
 import {Positioning} from '../util/positioning';
+import {PopupService} from '../util/popup';
 
 @Component({
   selector: 'ngb-popover-window',
@@ -54,31 +54,27 @@ export class NgbPopover implements OnInit, AfterViewChecked {
    */
   @Input() triggers = 'click';
 
+  private _popupService: PopupService<NgbPopoverWindow>;
   private _positioning = new Positioning();
-  private _windowFactory: ComponentFactory<NgbPopoverWindow>;
   private _windowRef: ComponentRef<NgbPopoverWindow>;
 
   constructor(
-      private _elementRef: ElementRef, private _viewContainerRef: ViewContainerRef, private _injector: Injector,
-      private _renderer: Renderer, componentFactoryResolver: ComponentFactoryResolver) {
-    this._windowFactory = componentFactoryResolver.resolveComponentFactory(NgbPopoverWindow);
+      private _elementRef: ElementRef, private _renderer: Renderer, injector: Injector,
+      componentFactoryResolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef) {
+    this._popupService = new PopupService<NgbPopoverWindow>(
+        NgbPopoverWindow, injector, viewContainerRef, _renderer, componentFactoryResolver);
   }
 
   open() {
     if (!this._windowRef) {
-      const nodes = this._getContentNodes();
-      this._windowRef = this._viewContainerRef.createComponent(this._windowFactory, 0, this._injector, nodes);
+      this._windowRef = this._popupService.open(this.ngbPopover);
+      this._windowRef.instance.placement = this.placement;
       this._windowRef.instance.placement = this.placement;
       this._windowRef.instance.title = this.title;
     }
   }
 
-  close(): void {
-    if (this._windowRef) {
-      this._viewContainerRef.remove(this._viewContainerRef.indexOf(this._windowRef.hostView));
-      this._windowRef = null;
-    }
-  }
+  close(): void { this._popupService.close(); }
 
   toggle(): void {
     if (this._windowRef) {
@@ -113,14 +109,6 @@ export class NgbPopover implements OnInit, AfterViewChecked {
       const targetStyle = this._windowRef.location.nativeElement.style;
       targetStyle.top = `${targetPosition.top}px`;
       targetStyle.left = `${targetPosition.left}px`;
-    }
-  }
-
-  private _getContentNodes() {
-    if (this.ngbPopover instanceof TemplateRef) {
-      return [this._viewContainerRef.createEmbeddedView(<TemplateRef<NgbPopoverWindow>>this.ngbPopover).rootNodes];
-    } else {
-      return [[this._renderer.createText(null, `${this.ngbPopover}`)]];
     }
   }
 }
