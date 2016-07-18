@@ -77,8 +77,9 @@ export class NgbTimepicker implements ControlValueAccessor {
 
   incrementHour() {
     this.model.hour += this.hourStep;
-    this.model.hour = this.model.hour <= this._originalHour() ? this.model.hour : (this.model.hour - this._originalHour());
-    if ( this.model.hour > this._maxHour() ) {
+    this.model.hour =
+        this.model.hour <= this._originalHour() ? this.model.hour : (this.model.hour - this._originalHour());
+    if (this.model.hour > this._maxHour()) {
       this.model.hour = this._meridianUpdate(this.model.hour);
     }
     this.onTouched();
@@ -88,10 +89,10 @@ export class NgbTimepicker implements ControlValueAccessor {
   decrementHour() {
     this.model.hour -= this.hourStep;
     if (this.model.hour < 0) {
-      // Note : here the hour will be negative 
-      this.model.hour = this._originalHour() + this.model.hour ;
+      // Note : here the hour will be negative
+      this.model.hour = this._originalHour() + this.model.hour;
     }
-    if ( this.model.hour > this._maxHour() ) {
+    if (this.model.hour > this._maxHour()) {
       this.model.hour = this._meridianUpdate(this.model.hour);
     }
     this.propagateModelChange();
@@ -187,14 +188,14 @@ export class NgbTimepicker implements ControlValueAccessor {
   }
 
   private _validateFormat(value) {
-      if ( value.hour > this._maxHour() ) {
-        value.hour = this._meridianUpdate(value.hour);
-      }
-      value.minutes = value.minutes < 0 ? 0 : value.minutes > 60 ? 59 : value.minutes;
+    if (value.hour > this._maxHour()) {
+      value.hour = this._meridianUpdate(value.hour);
+    }
+    value.minutes = value.minutes < 0 ? 0 : value.minutes > 60 ? 59 : value.minutes;
 
-      if ( this.seconds ) {
-        value.seconds = value.seconds < 0 ? 0 : value.seconds > 60 ? 59 : value.seconds;
-      }
+    if (this.seconds) {
+      value.seconds = value.seconds < 0 ? 0 : value.seconds > 60 ? 59 : value.seconds;
+    }
     return value;
   }
 }
