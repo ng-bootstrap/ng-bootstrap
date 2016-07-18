@@ -1,7 +1,8 @@
-import {Component, ChangeDetectionStrategy, Directive, Input, forwardRef} from '@angular/core';
+import {Component, Input, forwardRef} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/common';
 
 import {toInteger} from '../util/util';
+import {NgbTime} from './ngb-time';
 
 const NGB_TIMEPICKER_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -9,196 +10,182 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
   multi: true
 };
 
-//  TODO: use this and have an interface / type as well
-export class NgbTime {
-  constructor(public hour: number, public minute: number, public second: number) {}
-}
-
+/**
+ * A lightweight & configurable timepicker directive.
+ */
 @Component({
   selector: 'ngb-timepicker',
-  exportAs: 'ngbTimepicker',
-  providers: [NGB_TIMEPICKER_VALUE_ACCESSOR],
+  styles: [`
+    .chevron::before {
+      border-style: solid;
+      border-width: 0.29em 0.29em 0 0;
+      content: '';
+      display: inline-block;
+      height: 0.69em;
+      left: 0.05em;
+      position: relative;
+      top: 0.15em;
+      transform: rotate(-45deg);
+      vertical-align: middle;
+      width: 0.71em;
+    }
+    
+    .chevron.bottom:before {
+      top: -.3em;
+      transform: rotate(135deg);
+    }
+    
+    .btn-link {
+      outline: 0;
+    }
+  `],
   template: `
-    <fieldset [disabled]="disabled">
-    <div class="input-group">
-      <input type="text" class="form-control" [ngModel]="model?.hour" (ngModelChange)="updateHour($event)" 
-        [maxLength]=2>
-      <span class="input-group-addon"> : </span>
-      <input type="text" class="form-control" [ngModel]="model?.minute" (ngModelChange)="updateMinute($event)" 
-        [maxLength]=2>
-      <span *ngIf="seconds" class="input-group-addon"> : </span>
-      <input type="text" class="form-control" [ngModel]="model?.second" *ngIf="seconds" 
-          (ngModelChange)="updateSecond($event)" [maxLength]=2>
-    </div>
-    <br>
-    <button type="button" *ngIf="meridian" class="btn btn-primary" 
-        (click)="toggleMeridian()">{{meridianVal}}</button>
-    <button type="button" class="btn btn-primary" (click)="incrementHour()">H+</button>
-    <button type="button" class="btn btn-primary" (click)="decrementHour()">H-</button>
-    <button type="button" class="btn btn-primary" (click)="incrementMinute()">M+</button>
-    <button type="button" class="btn btn-primary" (click)="decrementMinute()">M-</button>
-    <button type="button" class="btn btn-primary" (click)="incrementSecond()" *ngIf="seconds">S+</button>
-    <button type="button" class="btn btn-primary" (click)="decrementSecond()" *ngIf="seconds">S-</button>
-  </fieldset>
+    <table>
+      <tr>
+        <td class="text-xs-center">
+          <button class="btn-link" (click)="changeHour(hourStep)"><span class="chevron"></span></button>
+        </td>
+        <td>&nbsp;</td>
+        <td class="text-xs-center">
+          <button class="btn-link" (click)="changeMinute(minuteStep)"><span class="chevron"></span></button>
+        </td>
+        <template [ngIf]="seconds">
+          <td>&nbsp;</td>
+          <td class="text-xs-center">
+            <button class="btn-link" (click)="changeSecond(secondStep)"><span class="chevron"></span></button>
+          </td>
+        </template>
+        <template [ngIf]="meridian">
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+        </template>
+      </tr>
+      <tr>
+        <td>
+          <input type="text" class="form-control" maxlength="2" size="2" 
+            [ngModel]="formatHour(model?.hour)" (ngModelChange)="updateHour($event)">
+        </td>
+        <td>&nbsp;:&nbsp;</td>
+        <td>
+          <input type="text" class="form-control" maxlength="2" size="2"
+            [ngModel]="formatMinSec(model?.minute)" (ngModelChange)="updateMinute($event)">
+        </td>
+        <template [ngIf]="seconds">
+          <td>&nbsp;:&nbsp;</td>
+          <input type="text" class="form-control" maxlength="2" size="2"
+            [ngModel]="formatMinSec(model?.second)" (ngModelChange)="updateSecond($event)">
+        </template>
+        <template [ngIf]="meridian">
+          <td>&nbsp;&nbsp;</td>
+          <td>
+            <button class="btn btn-primary-outline" (click)="toggleMeridian()">{{model.hour > 12 ? 'PM' : 'AM'}}</button>
+          </td>
+        </template>
+      </tr>
+      <tr>
+        <td class="text-xs-center">
+          <button class="btn-link" (click)="changeHour(-hourStep)"><span class="chevron bottom"></span></button>
+        </td>
+        <td>&nbsp;</td>
+        <td class="text-xs-center">
+          <button class="btn-link" (click)="changeMinute(-minuteStep)"><span class="chevron bottom"></span></button>
+        </td>
+        <template [ngIf]="seconds">
+          <td>&nbsp;</td>
+          <td class="text-xs-center">
+            <button class="btn-link" (click)="changeSecond(-secondStep)"><span class="chevron bottom"></span></button>
+          </td>
+        </template>
+        <template [ngIf]="meridian">
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+        </template>
+      </tr>
+    </table>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  providers: [NGB_TIMEPICKER_VALUE_ACCESSOR]
 })
 export class NgbTimepicker implements ControlValueAccessor {
-  private model;
-  private meridianVal = 'AM';
+  private model: NgbTime;
 
-  @Input() seconds = false;
-
+  /**
+   * Whether to display 12H or 24H mode.
+   */
   @Input() meridian = false;
 
-  @Input() duration = false;
+  /**
+   * Whether to display seconds input.
+   */
+  @Input() seconds = false;
 
+  /**
+   * Number of hours to increase or decrease when using a button.
+   */
   @Input() hourStep = 1;
 
+  /**
+   * Number of minutes to increase or decrease when using a button.
+   */
   @Input() minuteStep = 1;
 
+  /**
+   * Number of seconds to increase or decrease when using a button.
+   */
   @Input() secondStep = 1;
-
-  @Input() disabled = false;
 
   onChange = (_: any) => {};
   onTouched = () => {};
 
-  //  invoked when model changes
-  writeValue(value) {
-    // TODO: do I need to observe value changes "manually"?
-    this.model = value ? this._validateFormat(value) : null;
-  }
+  writeValue(value) { this.model = value ? new NgbTime(value.hour, value.minute, value.second) : null; }
 
-  //  function called when control value gets updated by a user
   registerOnChange(fn: (value: any) => any): void { this.onChange = fn; }
 
   registerOnTouched(fn: () => any): void { this.onTouched = fn; }
 
-  incrementHour() {
-    this.model.hour += this.hourStep;
-    this.model.hour =
-        this.model.hour <= this._originalHour() ? this.model.hour : (this.model.hour - this._originalHour());
-    if (this.model.hour > this._maxHour()) {
-      this.model.hour = this._meridianUpdate(this.model.hour);
-    }
-    this.onTouched();
-    this.onChange(this.model);
-  }
-
-  decrementHour() {
-    this.model.hour -= this.hourStep;
-    if (this.model.hour < 0) {
-      // Note : here the hour will be negative
-      this.model.hour = this._originalHour() + this.model.hour;
-    }
-    if (this.model.hour > this._maxHour()) {
-      this.model.hour = this._meridianUpdate(this.model.hour);
-    }
+  changeHour(step: number) {
+    this.model.changeHour(step);
     this.propagateModelChange();
   }
 
-  incrementMinute() {
-    this.model.minute += this.minuteStep;
-    if (this.model.minute > 59) {
-      this.model.minute -= 60;
-      this.incrementHour();
-    }
+  changeMinute(step: number) {
+    this.model.changeMinute(step);
     this.propagateModelChange();
   }
 
-  decrementMinute() {
-    this.model.minute -= this.minuteStep;
-    if (this.model.minute < 0) {
-      this.model.minute = 59;
-      this.decrementHour();
-    }
+  changeSecond(step: number) {
+    this.model.changeSecond(step);
     this.propagateModelChange();
   }
 
-  incrementSecond() {
-    this.model.second += this.secondStep;
-    if (this.model.second > 59) {
-      this.model.second -= 60;
-      this.incrementMinute();
-    }
+  updateHour(newVal: string | number) {
+    this.model.updateHour(toInteger(newVal) || 0);
     this.propagateModelChange();
   }
 
-  decrementSecond() {
-    this.model.second -= this.secondStep;
-    if (this.model.second < 0) {
-      this.model.second = 59;
-      this.decrementMinute();
-    }
+  updateMinute(newVal: string | number) {
+    this.model.updateMinute(toInteger(newVal) || 0);
     this.propagateModelChange();
   }
 
-  updateHour(newVal) {
-    let hour = toInteger(newVal);
-    if (hour) {
-      this.model.hour = hour >= 0 && hour <= this._maxHour() ? hour : this._maxHour();
-    } else {
-      this.model.hour = 0;
-    }
+  updateSecond(newVal: string | number) {
+    this.model.updateSecond(toInteger(newVal) || 0);
     this.propagateModelChange();
   }
-
-  updateMinute(newVal) {
-    let minute = toInteger(newVal);
-    if (minute) {
-      this.model.minute = minute >= 0 && minute < 60 ? minute : 59;
-    } else {
-      this.model.minute = 0;
-    }
-    this.propagateModelChange();
-  }
-
-  updateSecond(newVal) {
-    let second = toInteger(newVal);
-    if (second) {
-      this.model.second = second >= 0 && second < 60 ? second : 59;
-    } else {
-      this.model.second = 0;
-    }
-    this.propagateModelChange();
-  }
-
-  private propagateModelChange() {
-    this.onTouched();
-    this.onChange(this.model);
-  }
-  // TODO: formatting of minutes / hours
-  // TODO: could it use OnPush strategy?
-
-  private _originalHour() { return this.duration ? this.model.hour : 23; }
-
-  private _maxHour() { return this.duration ? this.model.hour : (this.meridian ? 11 : 23); }
 
   toggleMeridian() {
     if (this.meridian) {
-      this.meridianVal = this.meridianVal !== 'AM' ? 'AM' : 'PM';
+      this.changeHour(12);
     }
   }
 
-  private _meridianUpdate(hourValue) {
-    this.toggleMeridian();
-    hourValue = hourValue - (this._maxHour() + 1);
-    return hourValue;
-  }
+  private formatHour(value: number) { return `0${(value || 0) % (this.meridian ? 12 : 24)}`.slice(-2); }
 
-  private _validateFormat(value) {
-    if (value.hour > this._maxHour()) {
-      value.hour = this._meridianUpdate(value.hour);
-    }
-    value.minutes = value.minutes < 0 ? 0 : value.minutes > 60 ? 59 : value.minutes;
+  private formatMinSec(value: number) { return `0${value || 0}`.slice(-2); }
 
-    if (this.seconds) {
-      value.seconds = value.seconds < 0 ? 0 : value.seconds > 60 ? 59 : value.seconds;
-    }
-    return value;
+  private propagateModelChange() {
+    this.onTouched();
+    this.onChange({hour: this.model.hour, minute: this.model.minute, second: this.model.second});
   }
 }
-
 
 export const NGB_TIMEPICKER_DIRECTIVES = [NgbTimepicker];
