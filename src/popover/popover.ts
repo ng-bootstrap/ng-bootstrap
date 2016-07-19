@@ -5,6 +5,7 @@ import {
   ChangeDetectionStrategy,
   OnInit,
   AfterViewChecked,
+  OnDestroy,
   Injector,
   Renderer,
   ComponentRef,
@@ -36,7 +37,7 @@ export class NgbPopoverWindow {
  * A lightweight, extensible directive for fancy popover creation.
  */
 @Directive({selector: '[ngbPopover]', exportAs: 'ngbPopover'})
-export class NgbPopover implements OnInit, AfterViewChecked {
+export class NgbPopover implements OnInit, AfterViewChecked, OnDestroy {
   /**
    * Content to be displayed as popover.
    */
@@ -57,6 +58,7 @@ export class NgbPopover implements OnInit, AfterViewChecked {
   private _popupService: PopupService<NgbPopoverWindow>;
   private _positioning = new Positioning();
   private _windowRef: ComponentRef<NgbPopoverWindow>;
+  private _listeners = [];
 
   constructor(
       private _elementRef: ElementRef, private _renderer: Renderer, injector: Injector,
@@ -93,10 +95,12 @@ export class NgbPopover implements OnInit, AfterViewChecked {
 
     triggers.forEach((trigger: Trigger) => {
       if (trigger.open === trigger.close) {
-        this._renderer.listen(this._elementRef.nativeElement, trigger.open, () => { this.toggle(); });
+        this._listeners.push(
+            this._renderer.listen(this._elementRef.nativeElement, trigger.open, this.toggle.bind(this)));
       } else {
-        this._renderer.listen(this._elementRef.nativeElement, trigger.open, () => { this.open(); });
-        this._renderer.listen(this._elementRef.nativeElement, trigger.close, () => { this.close(); });
+        this._listeners.push(
+            this._renderer.listen(this._elementRef.nativeElement, trigger.open, this.open.bind(this)),
+            this._renderer.listen(this._elementRef.nativeElement, trigger.close, this.close.bind(this)));
       }
     });
   }
@@ -111,6 +115,8 @@ export class NgbPopover implements OnInit, AfterViewChecked {
       targetStyle.left = `${targetPosition.left}px`;
     }
   }
+
+  ngOnDestroy() { this._listeners.forEach(unsubscribe => unsubscribe()); }
 }
 
 export const NGB_POPOVER_DIRECTIVES = [NgbPopover];
