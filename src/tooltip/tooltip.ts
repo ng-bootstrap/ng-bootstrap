@@ -89,13 +89,11 @@ export class NgbTooltip implements OnInit, AfterViewChecked, OnDestroy {
     triggers.forEach((trigger: Trigger) => {
       if (trigger.open === trigger.close) {
         this._listeners.push(
-          this._renderer.listen(this._elementRef.nativeElement, trigger.open, this.toggle.bind(this))
-        );
+            this._renderer.listen(this._elementRef.nativeElement, trigger.open, this.toggle.bind(this)));
       } else {
         this._listeners.push(
-          this._renderer.listen(this._elementRef.nativeElement, trigger.open, this.open.bind(this)),
-          this._renderer.listen(this._elementRef.nativeElement, trigger.close, this.close.bind(this))
-        );
+            this._renderer.listen(this._elementRef.nativeElement, trigger.open, this.open.bind(this)),
+            this._renderer.listen(this._elementRef.nativeElement, trigger.close, this.close.bind(this)));
       }
     });
   }
@@ -111,9 +109,7 @@ export class NgbTooltip implements OnInit, AfterViewChecked, OnDestroy {
     }
   }
 
-  ngOnDestroy() {
-    this._listeners.forEach(unsubscribe => unsubscribe());
-  }
+  ngOnDestroy() { this._listeners.forEach(unsubscribe => unsubscribe()); }
 }
 
 export const NGB_TOOLTIP_DIRECTIVES = [NgbTooltip];
