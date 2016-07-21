@@ -20,6 +20,7 @@ export class SideNavComponent {
     'Progressbar',
     'Rating',
     'Tabs',
+    'Timepicker',
     'Tooltip'
   ];
 }
