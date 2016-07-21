@@ -119,12 +119,37 @@ describe('ngb-typeahead-window', () => {
            expect(fixture.componentInstance.selected).toBe('baz');
          });
        })));
+
+    it('should return selected row via getActive()', async(inject([TestComponentBuilder], (tcb) => {
+         const html = `
+        <button (click)="active = w.getActive()">getActive</button>
+        <button (click)="w.next()">+</button>
+        <ngb-typeahead-window [results]="results" [term]="term" #w="ngbTypeaheadWindow"></ngb-typeahead-window>`;
+
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+           fixture.detectChanges();
+           const buttons = fixture.nativeElement.querySelectorAll('button');
+           const activeBtn = buttons[0];
+           const nextBtn = buttons[1];
+
+           activeBtn.click();
+           expectResults(fixture.nativeElement, ['+bar', 'baz']);
+           expect(fixture.componentInstance.active).toBe('bar');
+
+           nextBtn.click();
+           activeBtn.click();
+           fixture.detectChanges();
+           expectResults(fixture.nativeElement, ['bar', '+baz']);
+           expect(fixture.componentInstance.active).toBe('baz');
+         });
+       })));
   });
 
 });
 
 @Component({selector: 'test-cmp', directives: [NgbTypeaheadWindow], template: ''})
 class TestComponent {
+  active: string;
   results = ['bar', 'baz'];
   term = 'ba';
   selected: string;
