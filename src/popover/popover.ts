@@ -15,7 +15,7 @@ import {
   ComponentFactoryResolver,
 } from '@angular/core';
 
-import {parseTriggers, Trigger} from '../util/triggers';
+import {listenToTriggers} from '../util/triggers';
 import {Positioning} from '../util/positioning';
 import {PopupService} from '../util/popup';
 
@@ -58,7 +58,7 @@ export class NgbPopover implements OnInit, AfterViewChecked, OnDestroy {
   private _popupService: PopupService<NgbPopoverWindow>;
   private _positioning = new Positioning();
   private _windowRef: ComponentRef<NgbPopoverWindow>;
-  private _listeners = [];
+  private _unregisterListenersFn;
 
   constructor(
       private _elementRef: ElementRef, private _renderer: Renderer, injector: Injector,
@@ -70,7 +70,6 @@ export class NgbPopover implements OnInit, AfterViewChecked, OnDestroy {
   open() {
     if (!this._windowRef) {
       this._windowRef = this._popupService.open(this.ngbPopover);
-      this._windowRef.instance.placement = this.placement;
       this._windowRef.instance.placement = this.placement;
       this._windowRef.instance.title = this.title;
     }
@@ -87,22 +86,9 @@ export class NgbPopover implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   ngOnInit() {
-    const triggers = parseTriggers(this.triggers);
-
-    if (triggers.length === 1 && triggers[0].isManual()) {
-      return;
-    }
-
-    triggers.forEach((trigger: Trigger) => {
-      if (trigger.open === trigger.close) {
-        this._listeners.push(
-            this._renderer.listen(this._elementRef.nativeElement, trigger.open, this.toggle.bind(this)));
-      } else {
-        this._listeners.push(
-            this._renderer.listen(this._elementRef.nativeElement, trigger.open, this.open.bind(this)),
-            this._renderer.listen(this._elementRef.nativeElement, trigger.close, this.close.bind(this)));
-      }
-    });
+    this._unregisterListenersFn = listenToTriggers(
+        this._renderer, this._elementRef.nativeElement, this.triggers, this.open.bind(this), this.close.bind(this),
+        this.toggle.bind(this));
   }
 
   ngAfterViewChecked() {
@@ -116,7 +102,7 @@ export class NgbPopover implements OnInit, AfterViewChecked, OnDestroy {
     }
   }
 
-  ngOnDestroy() { this._listeners.forEach(unsubscribe => unsubscribe()); }
+  ngOnDestroy() { this._unregisterListenersFn(); }
 }
 
 export const NGB_POPOVER_DIRECTIVES = [NgbPopover];

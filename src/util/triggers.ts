@@ -36,3 +36,23 @@ export function parseTriggers(triggers: string, aliases = DEFAULT_ALIASES): Trig
 
   return parsedTriggers;
 }
+
+export function listenToTriggers(renderer: any, nativeElement: any, triggers: string, openFn, closeFn, toggleFn) {
+  const parsedTriggers = parseTriggers(triggers);
+  const listeners = [];
+
+  if (parsedTriggers.length === 1 && parsedTriggers[0].isManual()) {
+    return;
+  }
+
+  parsedTriggers.forEach((trigger: Trigger) => {
+    if (trigger.open === trigger.close) {
+      listeners.push(renderer.listen(nativeElement, trigger.open, toggleFn));
+    } else {
+      listeners.push(
+          renderer.listen(nativeElement, trigger.open, openFn), renderer.listen(nativeElement, trigger.close, closeFn));
+    }
+  });
+
+  return () => { this._listeners.forEach(unsubscribeFn => unsubscribeFn()); };
+}
