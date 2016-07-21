@@ -19,6 +19,7 @@ export class SideNavComponent {
     'Popover',
     'Progressbar',
     'Rating',
+    'Scrollspy',
     'Tabs',
     'Tooltip'
   ];

@@ -13,6 +13,7 @@ import {
   NgbdPagination,
   NgbdPopover,
   NgbdProgressbar,
+  NgbdScrollspy,
   NgbdRating,
   NgbdTabs,
   NgbdTooltip
@@ -34,6 +35,7 @@ const routes: RouterConfig = [
   {path: 'components/pagination', component: NgbdPagination},
   {path: 'components/popover', component: NgbdPopover},
   {path: 'components/progressbar', component: NgbdProgressbar},
+  {path: 'components/scrollspy', component: NgbdScrollspy},
   {path: 'components/rating', component: NgbdRating},
   {path: 'components/tabs', component: NgbdTabs},
   {path: 'components/tooltip', component: NgbdTooltip}

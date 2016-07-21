@@ -10,5 +10,6 @@ export * from './pagination';
 export * from './popover';
 export * from './progressbar';
 export * from './rating';
+export * from './scrollspy';
 export * from './tabset';
 export * from './tooltip';

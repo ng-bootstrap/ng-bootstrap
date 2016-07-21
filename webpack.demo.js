@@ -81,6 +81,7 @@ module.exports = function makeWebpackConfig() {
       '@ng-bootstrap/popover': root('src/popover/popover.ts'),
       '@ng-bootstrap/progressbar': root('src/progressbar/progressbar.ts'),
       '@ng-bootstrap/rating': root('src/rating/rating.ts'),
+      '@ng-bootstrap/scrollspy': root('src/scrollspy/scrollspy.ts'),
       '@ng-bootstrap/tabset': root('src/tabset/tabset.ts'),
       '@ng-bootstrap/tooltip': root('src/tooltip/tooltip.ts')
     }
