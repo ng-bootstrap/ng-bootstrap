@@ -3,31 +3,35 @@ import {NgbHighlight} from './highlight';
 
 import {toString} from '../util/util';
 
-class ResultTplCtx {
+export class ResultTplCtx {
   constructor(public result, public term: string, public formatter: (result) => string) {}
 }
 
 @Component({
   selector: 'ngb-typeahead-window',
   exportAs: 'ngbTypeaheadWindow',
+  host: {'class': 'dropdown-menu', 'style': 'display: block', '[attr.aria-labelledby]': 'ariaLabelledBy'},
   template: `
     <template #rt let-result="result" let-term="term" let-formatter="formatter">
       <ngb-highlight [result]="formatter(result)" [term]="term"></ngb-highlight>
     </template>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
-      <template ngFor [ngForOf]="results" let-result let-idx="index">
-        <a class="dropdown-item" [class.active]="idx === _activeIdx" 
-          (mouseenter)="markActive(idx)" 
-          (click)="select(result)">
-            <template [ngTemplateOutlet]="resultTemplate || rt" [ngOutletContext]="_prepareTplCtx(result)"></template>
-        </a>
-      </template>
-    </div>
+    <template ngFor [ngForOf]="results" let-result let-idx="index">
+      <a class="dropdown-item" [class.active]="idx === _activeIdx" 
+        (mouseenter)="markActive(idx)" 
+        (click)="select(result)">
+          <template [ngTemplateOutlet]="resultTemplate || rt" [ngOutletContext]="_prepareTplCtx(result)"></template>
+      </a>
+    </template>
   `,
   directives: [NgbHighlight]
 })
 export class NgbTypeaheadWindow {
   private _activeIdx = 0;
+
+  /**
+   * Aria-labelledby attribute value
+   */
+  @Input() ariaLabelledBy;
 
   /**
    * Typeahead match results to be displayed
@@ -54,6 +58,8 @@ export class NgbTypeaheadWindow {
    * Event raised when users selects a particular result row.
    */
   @Output('select') selectEvent = new EventEmitter();
+
+  getActive() { return this.results[this._activeIdx]; }
 
   markActive(_activeIdx: number) { this._activeIdx = _activeIdx; }
 
