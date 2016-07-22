@@ -29,6 +29,16 @@ describe('ngb-typeahead-window', () => {
            expectResults(fixture.nativeElement, ['+BAR', 'BAZ']);
          });
        })));
+
+    it('should use a custom template if provided', async(inject([TestComponentBuilder], (tcb) => {
+         const html = `<template #rt let-r="result" let-t="term">{{r.toUpperCase()}}-{{t}}</template>
+         <ngb-typeahead-window [results]="results" [term]="term" [resultTemplate]="rt"></ngb-typeahead-window>`;
+
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+           fixture.detectChanges();
+           expectResults(fixture.nativeElement, ['+BAR-ba', 'BAZ-ba']);
+         });
+       })));
   });
 
   describe('active row', () => {
