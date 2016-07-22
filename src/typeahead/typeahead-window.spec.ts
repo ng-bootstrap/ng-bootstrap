@@ -1,34 +1,11 @@
 import {inject, async} from '@angular/core/testing';
 import {TestComponentBuilder} from '@angular/compiler/testing';
-import {By} from '@angular/platform-browser';
 
 import {Component} from '@angular/core';
 
 import {NgbTypeaheadWindow} from './typeahead-window';
+import {expectResults, getWindowLinks} from './test-common';
 
-function normalizeText(txt: string): string {
-  return txt.trim().replace(/\s+/g, ' ');
-}
-
-function expectResults(nativeEl: HTMLElement, resultsDef: string[]): void {
-  const pages = nativeEl.querySelectorAll('a');
-
-  expect(pages.length).toEqual(resultsDef.length);
-
-  for (let i = 0; i < resultsDef.length; i++) {
-    let resultDef = resultsDef[i];
-    let classIndicator = resultDef.charAt(0);
-
-    expect(pages[i]).toHaveCssClass('dropdown-item');
-    if (classIndicator === '+') {
-      expect(pages[i]).toHaveCssClass('active');
-      expect(normalizeText(pages[i].textContent)).toEqual(resultDef.substr(1));
-    } else {
-      expect(pages[i]).not.toHaveCssClass('active');
-      expect(normalizeText(pages[i].textContent)).toEqual(resultDef);
-    }
-  }
-}
 
 describe('ngb-typeahead-window', () => {
 
@@ -105,11 +82,11 @@ describe('ngb-typeahead-window', () => {
 
          tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.detectChanges();
-           const rowDebugEls = fixture.debugElement.queryAll(By.css('a'));
+           const links = getWindowLinks(fixture.debugElement);
 
            expectResults(fixture.nativeElement, ['+bar', 'baz']);
 
-           rowDebugEls[1].triggerEventHandler('mouseenter', {});
+           links[1].triggerEventHandler('mouseenter', {});
            fixture.detectChanges();
            expectResults(fixture.nativeElement, ['bar', '+baz']);
          });
@@ -123,11 +100,11 @@ describe('ngb-typeahead-window', () => {
 
          tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.detectChanges();
-           const rowDebugEls = fixture.debugElement.queryAll(By.css('a'));
+           const links = getWindowLinks(fixture.debugElement);
 
            expectResults(fixture.nativeElement, ['+bar', 'baz']);
 
-           rowDebugEls[1].triggerEventHandler('click', {});
+           links[1].triggerEventHandler('click', {});
            fixture.detectChanges();
            expect(fixture.componentInstance.selected).toBe('baz');
          });
