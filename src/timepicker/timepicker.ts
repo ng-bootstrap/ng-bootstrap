@@ -1,7 +1,7 @@
 import {Component, Input, forwardRef} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
-import {isNumber, padNumber, toInteger} from '../util/util';
+import {isNumber, padNumber, toInteger, toString} from '../util/util';
 import {NgbTime} from './ngb-time';
 import {NgbTimepickerConfig} from './timepicker-config';
 
@@ -80,19 +80,19 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
           <td>
             <input type="text" class="form-control" maxlength="2" size="2" placeholder="HH"
               [value]="formatHour(model?.hour)" (change)="updateHour($event.target.value)" 
-              [readonly]="readonlyInputs" [disabled]="disabled">
+              [readonly]="readonlyInputs" [disabled]="disabled" (keydown)="keyDownHour($event)" (mousewheel)="mouseHourEvent($event)">
           </td>
           <td>&nbsp;:&nbsp;</td>
           <td>
             <input type="text" class="form-control" maxlength="2" size="2" placeholder="MM"
-              [value]="formatMinSec(model?.minute)" (change)="updateMinute($event.target.value)" 
-              [readonly]="readonlyInputs" [disabled]="disabled">
+              [value]="formatMinSec(model?.minute)" (change)="updateMinute($event.target.value)"
+              [readonly]="readonlyInputs" [disabled]="disabled" (keydown)="keyDownMinute($event)" (mousewheel)="mouseMinuteEvent($event)">
           </td>
           <template [ngIf]="seconds">
             <td>&nbsp;:&nbsp;</td>
             <input type="text" class="form-control" maxlength="2" size="2" placeholder="SS"
               [value]="formatMinSec(model?.second)" (change)="updateSecond($event.target.value)" 
-              [readonly]="readonlyInputs" [disabled]="disabled">
+              [readonly]="readonlyInputs" [disabled]="disabled" (keydown)="keyDownSecond($event)" (mousewheel)="mouseSecondEvent($event)">
           </template>
           <template [ngIf]="meridian">
             <td>&nbsp;&nbsp;</td>
@@ -135,7 +135,9 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
   providers: [NGB_TIMEPICKER_VALUE_ACCESSOR]
 })
 export class NgbTimepicker implements ControlValueAccessor {
-  model: NgbTime;
+  private model: NgbTime;
+  private arrowDown = 40;
+  private arrowUp = 38;
 
   /**
    * Whether to display 12H or 24H mode.
@@ -245,6 +247,50 @@ export class NgbTimepicker implements ControlValueAccessor {
     this.propagateModelChange();
   }
 
+  mouseHourEvent(event: MouseWheelEvent) {
+    if (!this.disabled) {
+      let step: number = this.isScrollUp(event) ? this.hourStep : -this.hourStep;
+      this.changeHour(step);
+    }
+    event.preventDefault();
+  }
+
+  mouseMinuteEvent(event: MouseWheelEvent) {
+    if (!this.disabled) {
+      let step: number = this.isScrollUp(event) ? this.minuteStep : -this.minuteStep;
+      this.changeMinute(step);
+    }
+    event.preventDefault();
+  }
+
+  mouseSecondEvent(event: MouseWheelEvent) {
+    if (!this.disabled) {
+      let step: number = this.isScrollUp(event) ? this.minuteStep : -this.minuteStep;
+      this.changeSecond(step);
+    }
+    event.preventDefault();
+  }
+
+  keyDownHour(event: KeyboardEvent) {
+    if (this.validEvent(event)) {
+      this.isArrowUp(event) ? this.changeHour(this.hourStep) : this.changeHour(-this.hourStep);
+    }
+  }
+
+  keyDownMinute(event: KeyboardEvent) {
+    if (this.validEvent(event)) {
+      this.isArrowUp(event) ? this.changeMinute(this.minuteStep) : this.changeMinute(-this.minuteStep);
+    }
+  }
+
+  keyDownSecond(event: KeyboardEvent) {
+    if (this.validEvent(event)) {
+      this.isArrowUp(event) ? this.changeSecond(this.secondStep) : this.changeSecond(-this.secondStep);
+    }
+  }
+
+
+
   /**
    * @internal
    */
@@ -272,6 +318,21 @@ export class NgbTimepicker implements ControlValueAccessor {
       this.onChange(null);
     }
   }
+
+  private isScrollUp(event: MouseWheelEvent): boolean {
+    let delta: number = event.wheelDelta ? event.wheelDelta : -event.wheelDeltaY;
+    return event.detail > 0 || delta > 0;
+  }
+
+  private validEvent(event: KeyboardEvent): boolean {
+    if (event.which === this.arrowDown || event.which === this.arrowUp) {
+      event.preventDefault();
+      return true;
+    }
+    return false;
+  }
+
+  private isArrowUp(event: KeyboardEvent): boolean { return event.which === this.arrowDown ? false : true; }
 }
 
 export const NGB_TIMEPICKER_DIRECTIVES = [NgbTimepicker];
