@@ -1,9 +1,7 @@
 import {Component, Input, Output, EventEmitter, TemplateRef} from '@angular/core';
 import {NgbHighlight} from './highlight';
 
-function toStringFormatter(result) {
-  return `${result}`;
-}
+import {toString} from '../util/util';
 
 class ResultTplCtx {
   constructor(public result, public term: string, public formatter: (result) => string) {}
@@ -45,7 +43,7 @@ export class NgbTypeaheadWindow {
    * A function used to format a given result before display. This function should return a formated string without any
    * HTML markup.
    */
-  @Input() formatter = toStringFormatter;
+  @Input() formatter = toString;
 
   /**
    * A template to display a matching result.

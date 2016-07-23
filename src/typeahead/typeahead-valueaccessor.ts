@@ -1,6 +1,8 @@
 import {NG_VALUE_ACCESSOR, ControlValueAccessor} from '@angular/common';
 import {forwardRef, Directive, Input, ElementRef, Renderer} from '@angular/core';
 
+import {toString} from '../util/util';
+
 const NGB_TYPEAHEAD_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => NgbTypeaheadValueAccessor),
@@ -27,13 +29,7 @@ export class NgbTypeaheadValueAccessor implements ControlValueAccessor {
   registerOnTouched(fn: () => any): void { this.onTouched = fn; }
 
   writeValue(value) {
-    if (!value) {
-      value = '';
-    } else if (this.inputFormatter) {
-      value = this.inputFormatter(value);
-    } else {
-      value = `${value}`;
-    }
-    this._renderer.setElementProperty(this._elementRef.nativeElement, 'value', value);
+    const formattedValue = value && this.inputFormatter ? this.inputFormatter(value) : toString(value);
+    this._renderer.setElementProperty(this._elementRef.nativeElement, 'value', formattedValue);
   }
 }
