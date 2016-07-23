@@ -38,70 +38,98 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
     .btn-link {
       outline: 0;
     }
+
+    .btn-link.disabled {
+      cursor: not-allowed;
+      opacity: .65;
+    }
   `],
   template: `
-    <table>
-      <tr>
-        <td class="text-xs-center">
-          <button class="btn-link" (click)="changeHour(hourStep)"><span class="chevron"></span></button>
-        </td>
-        <td>&nbsp;</td>
-        <td class="text-xs-center">
-          <button class="btn-link" (click)="changeMinute(minuteStep)"><span class="chevron"></span></button>
-        </td>
-        <template [ngIf]="seconds">
+     <fieldset [disabled]="disabled" [class.disabled]="disabled">
+      <table>
+        <tr>
+          <td class="text-xs-center">
+            <button class="btn-link" (click)="changeHour(hourStep)"
+              [class.disabled]="disabled">
+              <span class="chevron"></span>
+            </button>
+          </td>
           <td>&nbsp;</td>
           <td class="text-xs-center">
-            <button class="btn-link" (click)="changeSecond(secondStep)"><span class="chevron"></span></button>
+            <button class="btn-link" (click)="changeMinute(minuteStep)"
+              [class.disabled]="disabled">
+                <span class="chevron"></span>
+            </button>
           </td>
-        </template>
-        <template [ngIf]="meridian">
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
-        </template>
-      </tr>
-      <tr>
-        <td>
-          <input type="text" class="form-control" maxlength="2" size="2" placeholder="HH"
-            [ngModel]="formatHour(model?.hour)" (ngModelChange)="updateHour($event)">
-        </td>
-        <td>&nbsp;:&nbsp;</td>
-        <td>
-          <input type="text" class="form-control" maxlength="2" size="2" placeholder="MM"
-            [ngModel]="formatMinSec(model?.minute)" (ngModelChange)="updateMinute($event)">
-        </td>
-        <template [ngIf]="seconds">
-          <td>&nbsp;:&nbsp;</td>
-          <input type="text" class="form-control" maxlength="2" size="2" placeholder="SS"
-            [ngModel]="formatMinSec(model?.second)" (ngModelChange)="updateSecond($event)">
-        </template>
-        <template [ngIf]="meridian">
-          <td>&nbsp;&nbsp;</td>
+          <template [ngIf]="seconds">
+            <td>&nbsp;</td>
+            <td class="text-xs-center">
+              <button class="btn-link" (click)="changeSecond(secondStep)"
+                [class.disabled]="disabled">
+                <span class="chevron"></span>
+              </button>
+            </td>
+          </template>
+          <template [ngIf]="meridian">
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+          </template>
+        </tr>
+        <tr>
           <td>
-            <button class="btn btn-primary-outline" (click)="toggleMeridian()">{{model.hour > 12 ? 'PM' : 'AM'}}</button>
+            <input type="text" class="form-control" maxlength="2" size="2" placeholder="HH"
+              [ngModel]="formatHour(model?.hour)" (ngModelChange)="updateHour($event)" 
+              [readonly]="readonlyInputs">
           </td>
-        </template>
-      </tr>
-      <tr>
-        <td class="text-xs-center">
-          <button class="btn-link" (click)="changeHour(-hourStep)"><span class="chevron bottom"></span></button>
-        </td>
-        <td>&nbsp;</td>
-        <td class="text-xs-center">
-          <button class="btn-link" (click)="changeMinute(-minuteStep)"><span class="chevron bottom"></span></button>
-        </td>
-        <template [ngIf]="seconds">
+          <td>&nbsp;:&nbsp;</td>
+          <td>
+            <input type="text" class="form-control" maxlength="2" size="2" placeholder="MM"
+              [ngModel]="formatMinSec(model?.minute)" (ngModelChange)="updateMinute($event)" 
+              [readonly]="readonlyInputs">
+          </td>
+          <template [ngIf]="seconds">
+            <td>&nbsp;:&nbsp;</td>
+            <input type="text" class="form-control" maxlength="2" size="2" placeholder="SS"
+              [ngModel]="formatMinSec(model?.second)" (ngModelChange)="updateSecond($event)" 
+              [readonly]="readonlyInputs">
+          </template>
+          <template [ngIf]="meridian">
+            <td>&nbsp;&nbsp;</td>
+            <td>
+              <button class="btn btn-primary-outline" (click)="toggleMeridian()">{{model.hour > 12 ? 'PM' : 'AM'}}</button>
+            </td>
+          </template>
+        </tr>
+        <tr>
+          <td class="text-xs-center">
+            <button class="btn-link" (click)="changeHour(-hourStep)" 
+              [class.disabled]="disabled">
+              <span class="chevron bottom"></span>
+            </button>
+          </td>
           <td>&nbsp;</td>
           <td class="text-xs-center">
-            <button class="btn-link" (click)="changeSecond(-secondStep)"><span class="chevron bottom"></span></button>
+            <button class="btn-link" (click)="changeMinute(-minuteStep)"
+              [class.disabled]="disabled">
+              <span class="chevron bottom"></span>
+            </button>
           </td>
-        </template>
-        <template [ngIf]="meridian">
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
-        </template>
-      </tr>
-    </table>
+          <template [ngIf]="seconds">
+            <td>&nbsp;</td>
+            <td class="text-xs-center">
+              <button class="btn-link" (click)="changeSecond(-secondStep)"
+                [class.disabled]="disabled">
+                <span class="chevron bottom"></span>
+              </button>
+            </td>
+          </template>
+          <template [ngIf]="meridian">
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+          </template>
+        </tr>
+      </table>
+    </fieldset>
   `,
   providers: [NGB_TIMEPICKER_VALUE_ACCESSOR]
 })
@@ -132,6 +160,16 @@ export class NgbTimepicker implements ControlValueAccessor {
    * Number of seconds to increase or decrease when using a button.
    */
   @Input() secondStep = 1;
+
+  /**
+   * To disable timepicker
+   */
+  @Input() disabled = false;
+
+  /**
+   * To make timepicker readonly
+   */
+  @Input() readonlyInputs = false;
 
   onChange = (_: any) => {};
   onTouched = () => {};
