@@ -19,6 +19,10 @@ function getButtons(nativeEl: HTMLElement) {
   return nativeEl.querySelectorAll('button.btn-link');
 }
 
+function getFieldsetElement(element: HTMLElement): HTMLFieldSetElement {
+  return <HTMLFieldSetElement>element.querySelector('fieldset');
+}
+
 function getMeridianButton(nativeEl: HTMLElement) {
   return nativeEl.querySelector('button.btn-primary-outline');
 }
@@ -443,13 +447,150 @@ describe('ngb-timepicker', () => {
        })));
 
   });
+
+  describe('disabled', () => {
+
+    it('should not change the value on button click, when it is disabled',
+       async(inject([TestComponentBuilder], (tcb) => {
+         const html = `<ngb-timepicker [(ngModel)]="model" [seconds]="true" [disabled]="disabled"></ngb-timepicker>`;
+
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+           fixture.componentInstance.model = {hour: 13, minute: 30, second: 0};
+           fixture.detectChanges();
+
+           const buttons = getButtons(fixture.nativeElement);
+
+           expectToDisplayTime(fixture.nativeElement, '13:30:00');
+           expect(fixture.componentInstance.model).toEqual({hour: 13, minute: 30, second: 0});
+
+           (<HTMLButtonElement>buttons[0]).click();  // H+
+           fixture.detectChanges();
+           expectToDisplayTime(fixture.nativeElement, '13:30:00');
+           expect(fixture.componentInstance.model).toEqual({hour: 13, minute: 30, second: 0});
+
+           (<HTMLButtonElement>buttons[3]).click();  // H-
+           fixture.detectChanges();
+           expectToDisplayTime(fixture.nativeElement, '13:30:00');
+           expect(fixture.componentInstance.model).toEqual({hour: 13, minute: 30, second: 0});
+
+           (<HTMLButtonElement>buttons[1]).click();  // M+
+           fixture.detectChanges();
+           expectToDisplayTime(fixture.nativeElement, '13:30:00');
+           expect(fixture.componentInstance.model).toEqual({hour: 13, minute: 30, second: 0});
+
+           (<HTMLButtonElement>buttons[4]).click();  // M-
+           fixture.detectChanges();
+           expectToDisplayTime(fixture.nativeElement, '13:30:00');
+           expect(fixture.componentInstance.model).toEqual({hour: 13, minute: 30, second: 0});
+
+           (<HTMLButtonElement>buttons[2]).click();  // S+
+           fixture.detectChanges();
+           expectToDisplayTime(fixture.nativeElement, '13:30:00');
+           expect(fixture.componentInstance.model).toEqual({hour: 13, minute: 30, second: 0});
+
+           (<HTMLButtonElement>buttons[5]).click();  // S-
+           fixture.detectChanges();
+           expectToDisplayTime(fixture.nativeElement, '13:30:00');
+           expect(fixture.componentInstance.model).toEqual({hour: 13, minute: 30, second: 0});
+
+         });
+       })));
+
+    it('should have disabled class, when it is disabled', async(inject([TestComponentBuilder], (tcb) => {
+         const html = `<ngb-timepicker [(ngModel)]="model" [seconds]="true" [disabled]="disabled"></ngb-timepicker>`;
+
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+           fixture.detectChanges();
+
+           let fieldset = getFieldsetElement(fixture.nativeElement);
+           expect(fieldset.hasAttribute('disabled')).toBeTruthy;
+
+           fixture.componentInstance.disabled = false;
+           fixture.detectChanges();
+           fieldset = getFieldsetElement(fixture.nativeElement);
+           expect(fieldset.hasAttribute('disabled')).toBeFalsy;
+
+         });
+       })));
+
+  });
+
+  describe('readonly', () => {
+
+    it('should change the value on button click, when it is readonly', async(inject([TestComponentBuilder], (tcb) => {
+         const html =
+             `<ngb-timepicker [(ngModel)]="model" [seconds]="true" [readonlyInputs]="readonly"></ngb-timepicker>`;
+
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+           fixture.componentInstance.model = {hour: 13, minute: 30, second: 0};
+           fixture.detectChanges();
+
+           const buttons = getButtons(fixture.nativeElement);
+
+           expectToDisplayTime(fixture.nativeElement, '13:30:00');
+           expect(fixture.componentInstance.model).toEqual({hour: 13, minute: 30, second: 0});
+
+           (<HTMLButtonElement>buttons[0]).click();  // H+
+           fixture.detectChanges();
+           expectToDisplayTime(fixture.nativeElement, '14:30:00');
+           expect(fixture.componentInstance.model).toEqual({hour: 14, minute: 30, second: 0});
+
+           (<HTMLButtonElement>buttons[3]).click();  // H-
+           fixture.detectChanges();
+           expectToDisplayTime(fixture.nativeElement, '13:30:00');
+           expect(fixture.componentInstance.model).toEqual({hour: 13, minute: 30, second: 0});
+
+           (<HTMLButtonElement>buttons[1]).click();  // M+
+           fixture.detectChanges();
+           expectToDisplayTime(fixture.nativeElement, '13:31:00');
+           expect(fixture.componentInstance.model).toEqual({hour: 13, minute: 31, second: 0});
+
+           (<HTMLButtonElement>buttons[4]).click();  // M-
+           fixture.detectChanges();
+           expectToDisplayTime(fixture.nativeElement, '13:30:00');
+           expect(fixture.componentInstance.model).toEqual({hour: 13, minute: 30, second: 0});
+
+           (<HTMLButtonElement>buttons[2]).click();  // S+
+           fixture.detectChanges();
+           expectToDisplayTime(fixture.nativeElement, '13:30:01');
+           expect(fixture.componentInstance.model).toEqual({hour: 13, minute: 30, second: 1});
+
+           (<HTMLButtonElement>buttons[5]).click();  // S-
+           fixture.detectChanges();
+           expectToDisplayTime(fixture.nativeElement, '13:30:00');
+           expect(fixture.componentInstance.model).toEqual({hour: 13, minute: 30, second: 0});
+         });
+       })));
+
+    it('should not change value on input change, when it is readonly', async(inject([TestComponentBuilder], (tcb) => {
+         const html =
+             `<ngb-timepicker [(ngModel)]="model" [seconds]="true" [readonlyInputs]="readonly"></ngb-timepicker>`;
+
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+           fixture.detectChanges();
+
+           let inputs = getInputs(fixture.nativeElement);
+           expect(inputs[0].hasAttribute('readonly')).toBeTruthy;
+           expect(inputs[1].hasAttribute('readonly')).toBeTruthy;
+           expect(inputs[2].hasAttribute('readonly')).toBeTruthy;
+
+           fixture.componentInstance.readonly = false;
+           fixture.detectChanges();
+           inputs = getInputs(fixture.nativeElement);
+           expect(inputs[0].hasAttribute('readonly')).toBeFalsy;
+           expect(inputs[1].hasAttribute('readonly')).toBeFalsy;
+           expect(inputs[2].hasAttribute('readonly')).toBeFalsy;
+         });
+       })));
+  });
 });
 
 
 @Component({selector: 'test-cmp', directives: [NgbTimepicker], template: ''})
 class TestComponent {
   model;
-
+  disabled = true;
+  readonly = true;
   form = this._builder.group({control: new Control('', Validators.required)});
 
   constructor(private _builder: FormBuilder) {}
