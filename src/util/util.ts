@@ -6,7 +6,7 @@ export function toInteger(value: any): number {
   return parseInt(`${value}`, 10);
 }
 
-export function toDefinedString(value: any): string {
+export function toString(value: any): string {
   return (value !== undefined && value !== null) ? `${value}` : '';
 }
 

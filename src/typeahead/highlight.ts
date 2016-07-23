@@ -1,5 +1,5 @@
 import {Component, Input, OnChanges, ChangeDetectionStrategy} from '@angular/core';
-import {regExpEscape, toDefinedString} from '../util/util';
+import {regExpEscape, toString} from '../util/util';
 
 @Component({
   selector: 'ngb-highlight',
@@ -21,9 +21,9 @@ export class NgbHighlight implements OnChanges {
   @Input() term: string;
 
   ngOnChanges() {
-    const resultStr = toDefinedString(this.result);
+    const resultStr = toString(this.result);
     const resultLC = resultStr.toLowerCase();
-    const termLC = toDefinedString(this.term).toLowerCase();
+    const termLC = toString(this.term).toLowerCase();
     let currentIdx = 0;
 
     if (termLC.length > 0) {
