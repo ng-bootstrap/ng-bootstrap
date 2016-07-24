@@ -20,8 +20,8 @@ import {ModalDismissReasons} from './modal_dismiss_reasons';
     `
 })
 export class NgbModalWindow {
-  @Input() backdrop: boolean = true;
-  @Input() keyboard: boolean = true;
+  @Input() backdrop = true;
+  @Input() keyboard = true;
   @Input() size: string;
 
   @Output('close') closeEvent = new EventEmitter();
@@ -47,5 +47,3 @@ export class NgbModalWindow {
 
   stopPropagation($event: MouseEvent): void { $event.stopPropagation(); }
 }
-
-export const NGB_MODAL_WINDOW_DIRECTIVES = [NgbModalWindow];
