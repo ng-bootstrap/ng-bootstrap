@@ -54,5 +54,5 @@ export function listenToTriggers(renderer: any, nativeElement: any, triggers: st
     }
   });
 
-  return () => { this._listeners.forEach(unsubscribeFn => unsubscribeFn()); };
+  return () => { listeners.forEach(unsubscribeFn => unsubscribeFn()); };
 }

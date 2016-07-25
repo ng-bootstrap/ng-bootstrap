@@ -79,6 +79,48 @@ describe('ngb-popover', () => {
                expect(getWindow(fixture)).toBeNull();
              });
        })));
+
+    it('should allow re-opening previously closed popovers',
+       async(inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
+         tcb.overrideTemplate(TestCmpt, `<div ngbPopover="Great tip!" title="Title"></div>`)
+             .createAsync(TestCmpt)
+             .then((fixture: ComponentFixture<TestCmpt>) => {
+               fixture.detectChanges();
+               const directive = fixture.debugElement.query(By.directive(NgbPopover));
+
+               directive.triggerEventHandler('click', {});
+               fixture.detectChanges();
+               expect(getWindow(fixture)).not.toBeNull();
+
+               directive.triggerEventHandler('click', {});
+               fixture.detectChanges();
+               expect(getWindow(fixture)).toBeNull();
+
+               directive.triggerEventHandler('click', {});
+               fixture.detectChanges();
+               expect(getWindow(fixture)).not.toBeNull();
+             });
+       })));
+
+    it('should not leave dangling popovers in the DOM',
+       async(inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
+         tcb.overrideTemplate(
+                TestCmpt, `<template [ngIf]="show"><div ngbPopover="Great tip!" title="Title"></div></template>`)
+             .createAsync(TestCmpt)
+             .then((fixture: ComponentFixture<TestCmpt>) => {
+               fixture.detectChanges();
+               const directive = fixture.debugElement.query(By.directive(NgbPopover));
+
+               directive.triggerEventHandler('click', {});
+               fixture.detectChanges();
+               expect(getWindow(fixture)).not.toBeNull();
+
+               fixture.componentInstance.show = false;
+               fixture.detectChanges();
+               expect(getWindow(fixture)).toBeNull();
+
+             });
+       })));
   });
 
 
@@ -250,4 +292,5 @@ describe('ngb-popover', () => {
 @Component({selector: 'test-cmpt', template: ``, directives: [NgbPopover], precompile: [NgbPopoverWindow]})
 export class TestCmpt {
   name = 'World';
+  show = true;
 }
