@@ -3,7 +3,7 @@ import {NgbTime} from './ngb-time';
 describe('NgbTime', () => {
 
   it('should allow constructing new objects', () => {
-    expect(new NgbTime().toString()).toBe('0:0:0');
+    expect(new NgbTime(undefined, undefined).toString()).toBe('0:0:0');
     expect(new NgbTime(12, 31, 45).toString()).toBe('12:31:45');
   });
 
@@ -19,6 +19,13 @@ describe('NgbTime', () => {
 
     t.changeHour(-2);
     expect(t.toString()).toBe('14:30:0');
+  });
+
+  it('should properly change undefined hours', () => {
+    const t = new NgbTime(undefined, 30);
+
+    t.changeHour(1);
+    expect(t.toString()).toBe('1:30:0');
   });
 
   it('should allow changing hours with rolling', () => {
@@ -58,6 +65,13 @@ describe('NgbTime', () => {
 
     t.changeMinute(-2);
     expect(t.toString()).toBe('10:34:0');
+  });
+
+  it('should properly change undefined minutes', () => {
+    const t = new NgbTime(1, undefined);
+
+    t.changeMinute(0);
+    expect(t.toString()).toBe('1:0:0');
   });
 
   it('should allow changing minutes with rolling', () => {
@@ -103,6 +117,13 @@ describe('NgbTime', () => {
 
     t.changeSecond(-6);
     expect(t.toString()).toBe('10:30:30');
+  });
+
+  it('should properly change undefined minutes', () => {
+    const t = new NgbTime(1, 20, undefined);
+
+    t.changeSecond(30);
+    expect(t.toString()).toBe('1:20:30');
   });
 
   it('should allow changing seconds with rolling', () => {

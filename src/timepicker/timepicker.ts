@@ -1,7 +1,7 @@
 import {Component, Input, forwardRef} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/common';
 
-import {toInteger} from '../util/util';
+import {isNumber, padNumber, toInteger} from '../util/util';
 import {NgbTime} from './ngb-time';
 
 const NGB_TIMEPICKER_VALUE_ACCESSOR = {
@@ -62,17 +62,17 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
       </tr>
       <tr>
         <td>
-          <input type="text" class="form-control" maxlength="2" size="2" 
+          <input type="text" class="form-control" maxlength="2" size="2" placeholder="HH"
             [ngModel]="formatHour(model?.hour)" (ngModelChange)="updateHour($event)">
         </td>
         <td>&nbsp;:&nbsp;</td>
         <td>
-          <input type="text" class="form-control" maxlength="2" size="2"
+          <input type="text" class="form-control" maxlength="2" size="2" placeholder="MM"
             [ngModel]="formatMinSec(model?.minute)" (ngModelChange)="updateMinute($event)">
         </td>
         <template [ngIf]="seconds">
           <td>&nbsp;:&nbsp;</td>
-          <input type="text" class="form-control" maxlength="2" size="2"
+          <input type="text" class="form-control" maxlength="2" size="2" placeholder="SS"
             [ngModel]="formatMinSec(model?.second)" (ngModelChange)="updateSecond($event)">
         </template>
         <template [ngIf]="meridian">
@@ -136,7 +136,7 @@ export class NgbTimepicker implements ControlValueAccessor {
   onChange = (_: any) => {};
   onTouched = () => {};
 
-  writeValue(value) { this.model = value ? new NgbTime(value.hour, value.minute, value.second) : null; }
+  writeValue(value) { this.model = value ? new NgbTime(value.hour, value.minute, value.second) : new NgbTime(); }
 
   registerOnChange(fn: (value: any) => any): void { this.onChange = fn; }
 
@@ -178,9 +178,9 @@ export class NgbTimepicker implements ControlValueAccessor {
     }
   }
 
-  private formatHour(value: number) { return `0${(value || 0) % (this.meridian ? 12 : 24)}`.slice(-2); }
+  private formatHour(value: number) { return padNumber(isNumber(value) ? (value % (this.meridian ? 12 : 24)) : NaN); }
 
-  private formatMinSec(value: number) { return `0${value || 0}`.slice(-2); }
+  private formatMinSec(value: number) { return padNumber(value); }
 
   private propagateModelChange() {
     this.onTouched();
