@@ -21,12 +21,15 @@ function getMeridianButton(nativeEl: HTMLElement) {
 function expectToDisplayTime(el: HTMLElement, time: string) {
   const inputs = getInputs(el);
   const timeParts = time.split(':');
+  let timeInInputs = [];
 
   expect(inputs.length).toBe(timeParts.length);
 
   for (let i = 0; i < inputs.length; i++) {
-    expect((<HTMLInputElement>inputs[i]).value).toBe(timeParts[i]);
+    timeInInputs.push((<HTMLInputElement>inputs[i]).value);
   }
+
+  expect(timeInInputs.join(':')).toBe(time);
 }
 
 describe('ngb-timepicker', () => {
@@ -74,6 +77,36 @@ describe('ngb-timepicker', () => {
            fixture.componentInstance.model = {hour: 10, minute: 3, second: 4};
            fixture.detectChanges();
            expectToDisplayTime(fixture.nativeElement, '10:03:04');
+         });
+       })));
+
+    it('should render invalid or empty hour and minute as blank string', async(inject([TestComponentBuilder], (tcb) => {
+         const html = `<ngb-timepicker [ngModel]="model"></ngb-timepicker>`;
+
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+           fixture.componentInstance.model = {hour: undefined, minute: 'aaa'};
+           fixture.detectChanges();
+           expectToDisplayTime(fixture.nativeElement, ':');
+         });
+       })));
+
+    it('should render invalid or empty second as blank string', async(inject([TestComponentBuilder], (tcb) => {
+         const html = `<ngb-timepicker [ngModel]="model" [seconds]="true"></ngb-timepicker>`;
+
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+           fixture.componentInstance.model = {hour: 10, minute: 20, second: false};
+           fixture.detectChanges();
+           expectToDisplayTime(fixture.nativeElement, '10:20:');
+         });
+       })));
+
+    it('should render empty fields on null model', async(inject([TestComponentBuilder], (tcb) => {
+         const html = `<ngb-timepicker [ngModel]="model" [seconds]="true"></ngb-timepicker>`;
+
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+           fixture.componentInstance.model = null;
+           fixture.detectChanges();
+           expectToDisplayTime(fixture.nativeElement, '::');
          });
        })));
   });
