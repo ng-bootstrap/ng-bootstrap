@@ -76,6 +76,46 @@ describe('ngb-tooltip', () => {
                expect(getWindow(fixture)).toBeNull();
              });
        })));
+
+    it('should allow re-opening previously closed tooltips',
+       async(inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
+         tcb.overrideTemplate(TestCmpt, `<div ngbTooltip="Great tip!"></div>`)
+             .createAsync(TestCmpt)
+             .then((fixture: ComponentFixture<TestCmpt>) => {
+               fixture.detectChanges();
+               const directive = fixture.debugElement.query(By.directive(NgbTooltip));
+
+               directive.triggerEventHandler('mouseenter', {});
+               fixture.detectChanges();
+               expect(getWindow(fixture)).not.toBeNull();
+
+               directive.triggerEventHandler('mouseleave', {});
+               fixture.detectChanges();
+               expect(getWindow(fixture)).toBeNull();
+
+               directive.triggerEventHandler('mouseenter', {});
+               fixture.detectChanges();
+               expect(getWindow(fixture)).not.toBeNull();
+             });
+       })));
+
+    it('should not leave dangling tooltips in the DOM',
+       async(inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
+         tcb.overrideTemplate(TestCmpt, `<template [ngIf]="show"><div ngbTooltip="Great tip!"></div></template>`)
+             .createAsync(TestCmpt)
+             .then((fixture: ComponentFixture<TestCmpt>) => {
+               fixture.detectChanges();
+               const directive = fixture.debugElement.query(By.directive(NgbTooltip));
+
+               directive.triggerEventHandler('mouseenter', {});
+               fixture.detectChanges();
+               expect(getWindow(fixture)).not.toBeNull();
+
+               fixture.componentInstance.show = false;
+               fixture.detectChanges();
+               expect(getWindow(fixture)).toBeNull();
+             });
+       })));
   });
 
 
@@ -248,4 +288,5 @@ describe('ngb-tooltip', () => {
 @Component({selector: 'test-cmpt', template: ``, directives: [NgbTooltip], precompile: [NgbTooltipWindow]})
 export class TestCmpt {
   name = 'World';
+  show = true;
 }

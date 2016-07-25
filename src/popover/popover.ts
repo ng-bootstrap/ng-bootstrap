@@ -75,7 +75,10 @@ export class NgbPopover implements OnInit, AfterViewChecked, OnDestroy {
     }
   }
 
-  close(): void { this._popupService.close(); }
+  close(): void {
+    this._popupService.close();
+    this._windowRef = null;
+  }
 
   toggle(): void {
     if (this._windowRef) {
