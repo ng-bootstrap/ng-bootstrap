@@ -9,7 +9,8 @@ import {
   Renderer,
   ElementRef,
   TemplateRef,
-  forwardRef
+  forwardRef,
+  AfterViewChecked
 } from '@angular/core';
 import {Observable, Subject} from 'rxjs/Rx';
 import 'rxjs/add/operator/let';
@@ -48,7 +49,7 @@ const NGB_TYPEAHEAD_VALUE_ACCESSOR = {
   providers: [NGB_TYPEAHEAD_VALUE_ACCESSOR]
 })
 export class NgbTypeahead implements OnInit,
-    ControlValueAccessor {
+    AfterViewChecked, ControlValueAccessor {
   private _onChangeNoEmit: (_: any) => void;
   private _popupService: PopupService<NgbTypeaheadWindow>;
   private _positioning = new Positioning();
@@ -89,6 +90,17 @@ export class NgbTypeahead implements OnInit,
     this._popupService = new PopupService<NgbTypeaheadWindow>(
         NgbTypeaheadWindow, _injector, _viewContainerRef, _renderer, componentFactoryResolver);
     this._onChangeNoEmit = (_: any) => {};
+  }
+
+  ngAfterViewChecked() {
+    if (this._windowRef) {
+      const targetPosition = this._positioning.positionElements(
+          this._elementRef.nativeElement, this._windowRef.location.nativeElement, 'bottom-left', false);
+
+      const targetStyle = this._windowRef.location.nativeElement.style;
+      targetStyle.top = `${targetPosition.top}px`;
+      targetStyle.left = `${targetPosition.left}px`;
+    }
   }
 
   ngOnInit() {
@@ -154,14 +166,6 @@ export class NgbTypeahead implements OnInit,
     if (!this._windowRef) {
       this._windowRef = this._popupService.open();
       this._windowRef.instance.selectEvent.subscribe((result: any) => this._selectResult(result));
-
-      // position
-      const targetPosition = this._positioning.positionElements(
-          this._elementRef.nativeElement, this._windowRef.location.nativeElement, 'bottom-left', false);
-
-      const targetStyle = this._windowRef.location.nativeElement.style;
-      targetStyle.top = `${targetPosition.top}px`;
-      targetStyle.left = `${targetPosition.left}px`;
     }
   }
 
