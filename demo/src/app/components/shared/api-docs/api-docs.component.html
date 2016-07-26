@@ -6,12 +6,12 @@
   <table class="table table-sm table-hover">
     <tbody>
       <tr>
-        <td class="col-md-2">Selector</td>
-        <td class="col-md-10"><code>{{apiDocs.selector}}</code></td>
+        <td class="col-md-3">Selector</td>
+        <td class="col-md-9"><code>{{apiDocs.selector}}</code></td>
       </tr>
       <tr *ngIf="apiDocs.exportAs">
-        <td class="col-md-2">Exported as</td>
-        <td class="col-md-10"><code>{{apiDocs.exportAs}}</code></td>
+        <td class="col-md-3">Exported as</td>
+        <td class="col-md-9"><code>{{apiDocs.exportAs}}</code></td>
       </tr>
     </tbody>
   </table>
@@ -20,21 +20,17 @@
     <section>
       <h3 id="inputs">Inputs</h3>
       <table class="table table-sm table-hover">
-        <thead>
-          <tr>
-            <td class="col-md-2"><strong>Name</strong></td>
-            <td class="col-md-2"><strong>Default value</strong></td>
-            <td class="col-md-2"><strong>Type</strong></td>
-            <td class="col-md-6"><strong>Description</strong></td>
-          </tr>
-        </thead>
         <tbody>
-          <tr *ngFor="let input of apiDocs.inputs">
-            <td class="col-md-2"><code>{{input.name}}</code></td>
-            <td class="col-md-2">{{input.defaultValue || '-'}}</td>
-            <td class="col-md-2">{{input.type}}</td>
-            <td class="col-md-6">{{input.description}}</td>
-          </tr>
+        <tr *ngFor="let input of apiDocs.inputs">
+          <td class="col-md-3"><code>{{input.name}}</code></td>
+          <td class="col-md-9">
+            <div><i>Type: </i><code>{{ input.type }}</code></div>
+            <template [ngIf]="input.defaultValue">
+            <div><i>Default value: </i><code>{{input.defaultValue || '-'}}</code></div>
+            </template>
+            <div style="margin: 10px 0">{{ input.description }}</div>
+          </td>
+        </tr>
         </tbody>
       </table>
     </section>
@@ -44,16 +40,10 @@
     <section>
       <h3 id="outputs">Outputs</h3>
       <table class="table table-sm table-hover">
-        <thead>
-          <tr>
-            <td class="col-md-2"><strong>Name</strong></td>
-            <td class="col-md-10"><strong>Description</strong></td>
-          </tr>
-        </thead>
         <tbody>
           <tr *ngFor="let output of apiDocs.outputs">
-            <td class="col-md-2"><code>{{output.name}}</code></td>
-            <td class="col-md-10">{{output.description}}</td>
+            <td class="col-md-3"><code>{{output.name}}</code></td>
+            <td class="col-md-9">{{output.description}}</td>
           </tr>
         </tbody>
       </table>
