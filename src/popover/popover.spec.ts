@@ -121,6 +121,26 @@ describe('ngb-popover', () => {
 
              });
        })));
+
+    it('should properly cleanup popovers with manual triggers',
+       async(inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
+         tcb.overrideTemplate(TestCmpt, `<template [ngIf]="show">
+                                            <div ngbPopover="Great tip!" triggers="manual" #p="ngbPopover" (mouseenter)="p.open()"></div>
+                                        </template>`)
+             .createAsync(TestCmpt)
+             .then((fixture: ComponentFixture<TestCmpt>) => {
+               fixture.detectChanges();
+               const directive = fixture.debugElement.query(By.directive(NgbPopover));
+
+               directive.triggerEventHandler('mouseenter', {});
+               fixture.detectChanges();
+               expect(getWindow(fixture)).not.toBeNull();
+
+               fixture.componentInstance.show = false;
+               fixture.detectChanges();
+               expect(getWindow(fixture)).toBeNull();
+             });
+       })));
   });
 
 

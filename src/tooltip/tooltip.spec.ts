@@ -116,6 +116,26 @@ describe('ngb-tooltip', () => {
                expect(getWindow(fixture)).toBeNull();
              });
        })));
+
+    it('should properly cleanup tooltips with manual triggers',
+       async(inject([TestComponentBuilder], (tcb: TestComponentBuilder) => {
+         tcb.overrideTemplate(TestCmpt, `<template [ngIf]="show">
+                                            <div ngbTooltip="Great tip!" triggers="manual" #t="ngbTooltip" (mouseenter)="t.open()"></div>
+                                        </template>`)
+             .createAsync(TestCmpt)
+             .then((fixture: ComponentFixture<TestCmpt>) => {
+               fixture.detectChanges();
+               const directive = fixture.debugElement.query(By.directive(NgbTooltip));
+
+               directive.triggerEventHandler('mouseenter', {});
+               fixture.detectChanges();
+               expect(getWindow(fixture)).not.toBeNull();
+
+               fixture.componentInstance.show = false;
+               fixture.detectChanges();
+               expect(getWindow(fixture)).toBeNull();
+             });
+       })));
   });
 
 
