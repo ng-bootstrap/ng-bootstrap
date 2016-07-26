@@ -13,3 +13,4 @@ export * from './rating';
 export * from './tabset';
 export * from './timepicker';
 export * from './tooltip';
+export * from './typeahead';

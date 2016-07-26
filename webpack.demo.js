@@ -83,7 +83,8 @@ module.exports = function makeWebpackConfig() {
       '@ng-bootstrap/rating': root('src/rating/rating.ts'),
       '@ng-bootstrap/tabset': root('src/tabset/tabset.ts'),
       '@ng-bootstrap/timepicker': root('src/timepicker/timepicker.ts'),
-      '@ng-bootstrap/tooltip': root('src/tooltip/tooltip.ts')
+      '@ng-bootstrap/tooltip': root('src/tooltip/tooltip.ts'),
+      '@ng-bootstrap/typeahead': root('src/typeahead/typeahead.ts')
     }
   };
 
