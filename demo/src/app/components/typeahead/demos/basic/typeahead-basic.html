@@ -1,0 +1,10 @@
+A typeahead example that gets values from a static <code>string[]</code>
+<ul>
+  <li><code>debounceTime</code> operator</li>
+  <li>kicks in only if 2+ characters typed</li>
+  <li>limits to 10 results</li>
+</ul>
+
+<input type="text" [(ngModel)]="model" [ngbTypeahead]="search" />
+<hr>
+<pre>Model: {{ model | json }}</pre>

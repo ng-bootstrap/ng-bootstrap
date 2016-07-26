@@ -21,6 +21,7 @@ export class SideNavComponent {
     'Rating',
     'Tabs',
     'Timepicker',
-    'Tooltip'
+    'Tooltip',
+    'Typeahead'
   ];
 }
