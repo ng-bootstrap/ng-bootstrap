@@ -8,3 +8,4 @@ npm-debug.log
 .sw*
 .idea
 demo/src/api-docs.ts
+plnkr.html
