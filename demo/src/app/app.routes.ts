@@ -16,7 +16,8 @@ import {
   NgbdRating,
   NgbdTabs,
   NgbdTimepicker,
-  NgbdTooltip
+  NgbdTooltip,
+  NgbdTypeahead
 } from './components';
 
 const routes: RouterConfig = [
@@ -38,7 +39,8 @@ const routes: RouterConfig = [
   {path: 'components/rating', component: NgbdRating},
   {path: 'components/tabs', component: NgbdTabs},
   {path: 'components/timepicker', component: NgbdTimepicker},
-  {path: 'components/tooltip', component: NgbdTooltip}
+  {path: 'components/tooltip', component: NgbdTooltip},
+  {path: 'components/typeahead', component: NgbdTypeahead}
 ];
 
 export const APP_ROUTER_PROVIDERS = [
