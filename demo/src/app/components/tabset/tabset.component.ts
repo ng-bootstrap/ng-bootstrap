@@ -19,11 +19,11 @@ import {DEMO_DIRECTIVES, DEMO_SNIPPETS} from './demos';
       </ngbd-example-box>
       <ngbd-example-box demoTitle="Select an active tab by id" [htmlSnippet]="snippets.selectById.markup"
           [tsSnippet]="snippets.selectById.code">
-        <ngbd-tabset-selectById></ngbd-tabset-selectById>      
+        <ngbd-tabset-selectbyid></ngbd-tabset-selectbyid>      
       </ngbd-example-box>
       <ngbd-example-box demoTitle="Prevent tab change" [htmlSnippet]="snippets.preventChange.markup"
           [tsSnippet]="snippets.preventChange.code">
-        <ngbd-tabset-preventChange></ngbd-tabset-preventChange>      
+        <ngbd-tabset-preventchange></ngbd-tabset-preventchange>      
       </ngbd-example-box>
     </ngbd-content-wrapper>
   `,

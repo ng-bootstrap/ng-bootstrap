@@ -1,9 +1,9 @@
 import {NgbdAlertBasic} from './basic/alert-basic';
 import {NgbdAlertCloseable} from './closeable/alert-closeable';
 import {NgbdAlertCustom} from './custom/alert-custom';
-import {NgbdAlertSelfClosing} from './selfClosing/alert-selfClosing';
+import {NgbdAlertSelfclosing} from './selfclosing/alert-selfclosing';
 
-export const DEMO_DIRECTIVES = [NgbdAlertBasic, NgbdAlertCloseable, NgbdAlertCustom, NgbdAlertSelfClosing];
+export const DEMO_DIRECTIVES = [NgbdAlertBasic, NgbdAlertCloseable, NgbdAlertCustom, NgbdAlertSelfclosing];
 
 export const DEMO_SNIPPETS = {
   basic: {
@@ -16,6 +16,6 @@ export const DEMO_SNIPPETS = {
     code: require('!!prismjs?lang=typescript!./custom/alert-custom'),
     markup: require('!!prismjs?lang=markup!./custom/alert-custom.html')},
   selfClosing: {
-    code: require('!!prismjs?lang=typescript!./selfClosing/alert-selfClosing'),
-    markup: require('!!prismjs?lang=markup!./selfClosing/alert-selfClosing.html')}
+    code: require('!!prismjs?lang=typescript!./selfclosing/alert-selfclosing'),
+    markup: require('!!prismjs?lang=markup!./selfclosing/alert-selfclosing.html')}
 };

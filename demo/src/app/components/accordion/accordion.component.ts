@@ -22,7 +22,7 @@ import {DEMO_DIRECTIVES, DEMO_SNIPPETS} from './demos';
       </ngbd-example-box>      
       <ngbd-example-box demoTitle="Prevent panel toggle" [htmlSnippet]="snippets.preventChange.markup" 
         [tsSnippet]="snippets.preventChange.code">
-        <ngbd-accordion-preventChange></ngbd-accordion-preventChange>
+        <ngbd-accordion-preventchange></ngbd-accordion-preventchange>
       </ngbd-example-box> 
     </ngbd-content-wrapper>
   `,
