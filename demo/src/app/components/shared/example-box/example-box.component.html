@@ -5,22 +5,22 @@
         {{ demoTitle }}
       </span>
       <div class="pull-xs-right">
-        <img role="button" src="img/code-icon.png" (click)="toggleCode()"/>
-        <!--<a target="_blank" href="http://plnkr.co" title="Edit in Plnkr">-->
-          <!--<img src="img/plunker-icon.png" height="24" width="24"/>-->
-        <!--</a>-->
+        <img role="button" src="img/code-icon.png" (click)="toggleCode()" title="Show source code"/>
+        <a target="_blank" href="app/components/{{component}}/demos/{{demo}}/plnkr.html" title="Edit in Plnkr" >
+          <img src="img/plunker-icon.png" height="24" width="24"/>
+        </a>
       </div>
     </div>
     <div class="card-block" *ngIf="showCode">
       <ngb-tabset>
         <ngb-tab title="html">
           <template ngbTabContent>
-            <pre class="language-html"><code class="language-html" [innerHTML]="htmlSnippet"></code></pre>
+            <pre class="language-html"><code class="language-html" [innerHTML]="snippets[demo].markup"></code></pre>
           </template>
         </ngb-tab>
         <ngb-tab title="typescript">
           <template ngbTabContent>
-            <pre class="language-typescript"><code class="language-typescript" [innerHTML]="tsSnippet"></code></pre>
+            <pre class="language-typescript"><code class="language-typescript" [innerHTML]="snippets[demo].code"></code></pre>
           </template>
         </ngb-tab>
       </ngb-tabset>

@@ -7,11 +7,11 @@ import {DEMO_SNIPPETS} from './demos';
     <ngbd-content-wrapper component="Buttons">
       <ngbd-api-docs directive="NgbRadioGroup"></ngbd-api-docs>
       <ngbd-api-docs directive="NgbRadio"></ngbd-api-docs>
-      <ngbd-example-box demoTitle="Radio buttons" [htmlSnippet]="snippets.radio.markup" [tsSnippet]="snippets.radio.code">
-        <ngbd-radio-basic></ngbd-radio-basic>
+      <ngbd-example-box demoTitle="Radio buttons" [snippets]="snippets" component="buttons" demo="radio">
+        <ngbd-buttons-radio></ngbd-buttons-radio>
       </ngbd-example-box>
-      <ngbd-example-box demoTitle="Checkbox buttons" [htmlSnippet]="snippets.checkbox.markup" [tsSnippet]="snippets.checkbox.code">
-        <ngbd-checkbox-basic></ngbd-checkbox-basic>
+      <ngbd-example-box demoTitle="Checkbox buttons" [snippets]="snippets" component="buttons" demo="checkbox">
+        <ngbd-buttons-checkbox></ngbd-buttons-checkbox>
       </ngbd-example-box>
     </ngbd-content-wrapper>
   `

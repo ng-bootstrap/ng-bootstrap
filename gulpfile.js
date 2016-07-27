@@ -224,16 +224,31 @@ gulp.task('generate-docs', function() {
   return gulpFile('api-docs.ts', docs, {src: true}).pipe(gulp.dest(PATHS.demoApiDocs));
 });
 
+gulp.task('generate-plunks', function() {
+  var getPlunker = require('./misc/plunk-gen');
+  var demoGenUtils = require('./misc/demo-gen-utils');
+  var plunks = [];
+
+  demoGenUtils.getDemoComponentNames().forEach(function(componentName) {
+    plunks = plunks.concat(demoGenUtils.getDemoNames(componentName).reduce(function(soFar, demoName) {
+      soFar.push({name: `${componentName}/demos/${demoName}/plnkr.html`, source: getPlunker(componentName, demoName)});
+      return soFar;
+    }, []));
+  });
+
+  return gulpFile(plunks, {src: true}).pipe(gulp.dest('demo/src/public/app/components'));
+});
+
 gulp.task('clean:demo', function() { return del('demo/dist'); });
 
 gulp.task('clean:demo-cache', function() { return del('.publish/'); });
 
 gulp.task(
-    'demo-server', ['generate-docs'],
+    'demo-server', ['generate-docs', 'generate-plunks'],
     shell.task(['webpack-dev-server --port 9090 --config webpack.demo.js --hot --inline --progress']));
 
 gulp.task(
-    'build:demo', ['clean:demo', 'generate-docs'],
+    'build:demo', ['clean:demo', 'generate-docs', 'generate-plunks'],
     shell.task(['MODE=build webpack --config webpack.demo.js --progress --profile --bail']));
 
 gulp.task('demo-push', function() {

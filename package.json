@@ -56,6 +56,7 @@
     "gulp-shell": "^0.5.1",
     "gulp-tslint": "^6.0.1",
     "gulp-util": "^3.0.6",
+    "he": "^1.1.0",
     "html-loader": "^0.4.3",
     "html-webpack-plugin": "^2.16.1",
     "ie-shim": "^0.1.0",

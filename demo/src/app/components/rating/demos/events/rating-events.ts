@@ -2,9 +2,9 @@ import {Component} from '@angular/core';
 
 @Component({
   selector: 'ngbd-rating-events',
-  templateUrl: 'events.component.html'
+  templateUrl: './rating-events.html'
 })
-export class RatingEventsComponent {
+export class NgbdRatingEvents {
   selected = 0;
   hovered = 0;
   readonly = false;

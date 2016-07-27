@@ -6,9 +6,14 @@ import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
   selector: 'ngbd-modal-customclass',
   templateUrl: './modal-customclass.html',
   encapsulation: ViewEncapsulation.None,
-  styleUrls: [ './modal-customclass.css' ]
+  styles: [`
+    .dark-modal .modal-content {
+      background-color: black;
+      color: white;
+    }
+  `]
 })
-export class NgbdModalCustomClass {
+export class NgbdModalCustomclass {
   closeResult: string;
 
   constructor(private modalService: NgbModal) {}

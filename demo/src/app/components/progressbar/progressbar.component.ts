@@ -7,15 +7,13 @@ import {DEMO_SNIPPETS} from './demos';
     <ngbd-content-wrapper component="Progressbar">
       <ngbd-api-docs directive="NgbProgressbar"></ngbd-api-docs>
       <ngbd-api-docs-config type="NgbProgressbarConfig"></ngbd-api-docs-config>
-      <ngbd-example-box demoTitle="Contextual progress bars" [htmlSnippet]="snippets.basic.markup" [tsSnippet]="snippets.basic.code">
+      <ngbd-example-box demoTitle="Contextual progress bars" [snippets]="snippets" component="progressbar" demo="basic">
         <ngbd-progressbar-basic></ngbd-progressbar-basic>
       </ngbd-example-box>
-      <ngbd-example-box demoTitle="Striped progress bars" [htmlSnippet]="snippets.striped.markup" [tsSnippet]="snippets.striped.code">
+      <ngbd-example-box demoTitle="Striped progress bars" [snippets]="snippets" component="progressbar" demo="striped">
         <ngbd-progressbar-striped></ngbd-progressbar-striped>
       </ngbd-example-box>
-      <ngbd-example-box demoTitle="Global configuration of progress bars" 
-                        [htmlSnippet]="snippets.config.markup" 
-                        [tsSnippet]="snippets.config.code">
+      <ngbd-example-box demoTitle="Global configuration of progress bars" [snippets]="snippets" component="progressbar" demo="config"> 
         <ngbd-progressbar-config></ngbd-progressbar-config>      
       </ngbd-example-box>
     </ngbd-content-wrapper>

@@ -2,8 +2,8 @@ import {Component} from '@angular/core';
 
 @Component({
   selector: 'ngbd-rating-basic',
-  templateUrl: './basic.component.html'
+  templateUrl: './rating-basic.html'
 })
-export class RatingBasicComponent {
+export class NgbdRatingBasic {
   currentRate = 8;
 }

@@ -1,13 +1,13 @@
-import {NgbdCheckboxBasic} from './checkbox/checkbox-basic';
-import {NgbdRadioBasic} from './radio/radio-basic';
+import {NgbdButtonsCheckbox} from './checkbox/buttons-checkbox';
+import {NgbdButtonsRadio} from './radio/buttons-radio';
 
-export const DEMO_DIRECTIVES = [NgbdCheckboxBasic, NgbdRadioBasic];
+export const DEMO_DIRECTIVES = [NgbdButtonsCheckbox, NgbdButtonsRadio];
 
 export const DEMO_SNIPPETS = {
   checkbox: {
-    code: require('!!prismjs?lang=typescript!./checkbox/checkbox-basic'),
-    markup: require('!!prismjs?lang=markup!./checkbox/checkbox-basic.html')},
+    code: require('!!prismjs?lang=typescript!./checkbox/buttons-checkbox'),
+    markup: require('!!prismjs?lang=markup!./checkbox/buttons-checkbox.html')},
   radio: {
-    code: require('!!prismjs?lang=typescript!./radio/radio-basic'),
-    markup: require('!!prismjs?lang=markup!./radio/radio-basic.html')}
+    code: require('!!prismjs?lang=typescript!./radio/buttons-radio'),
+    markup: require('!!prismjs?lang=markup!./radio/buttons-radio.html')}
 };
