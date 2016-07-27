@@ -1,10 +1,10 @@
 import {Component} from '@angular/core';
 
 @Component({
-  selector: 'ngbd-checkbox-basic',
-  templateUrl: './checkbox-basic.html'
+  selector: 'ngbd-buttons-checkbox',
+  templateUrl: './buttons-checkbox.html'
 })
-export class NgbdCheckboxBasic {
+export class NgbdButtonsCheckbox {
   model = {
     left: true,
     middle: false,

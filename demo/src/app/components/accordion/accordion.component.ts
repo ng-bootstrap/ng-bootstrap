@@ -11,22 +11,19 @@ import {DEMO_SNIPPETS} from './demos';
       <ngbd-api-docs directive="NgbPanelContent"></ngbd-api-docs>
       <ngbd-api-docs-class type="NgbPanelChangeEvent"></ngbd-api-docs-class>
       <ngbd-api-docs-config type="NgbAccordionConfig"></ngbd-api-docs-config>
-      <ngbd-example-box demoTitle="Accordion" [htmlSnippet]="snippets.basic.markup" [tsSnippet]="snippets.basic.code">
+      <ngbd-example-box demoTitle="Accordion" [snippets]="snippets" component="accordion" demo="basic">
         <ngbd-accordion-basic></ngbd-accordion-basic>
       </ngbd-example-box>
-      <ngbd-example-box demoTitle="One open panel at a time" [htmlSnippet]="snippets.static.markup" [tsSnippet]="snippets.static.code">
+      <ngbd-example-box demoTitle="One open panel at a time" [snippets]="snippets" component="accordion" demo="static">
         <ngbd-accordion-static></ngbd-accordion-static>
       </ngbd-example-box>
-      <ngbd-example-box demoTitle="Toggle panels" [htmlSnippet]="snippets.toggle.markup" [tsSnippet]="snippets.toggle.code">
+      <ngbd-example-box demoTitle="Toggle panels" [snippets]="snippets" component="accordion" demo="toggle">
         <ngbd-accordion-toggle></ngbd-accordion-toggle>
       </ngbd-example-box>
-      <ngbd-example-box demoTitle="Prevent panel toggle" [htmlSnippet]="snippets.preventChange.markup"
-        [tsSnippet]="snippets.preventChange.code">
+      <ngbd-example-box demoTitle="Prevent panel toggle" [snippets]="snippets" component="accordion" demo="preventchange">
         <ngbd-accordion-preventchange></ngbd-accordion-preventchange>
       </ngbd-example-box>
-      <ngbd-example-box demoTitle="Global configuration of accordions" 
-                        [htmlSnippet]="snippets.config.markup" 
-                        [tsSnippet]="snippets.config.code">
+      <ngbd-example-box demoTitle="Global configuration of accordions" [snippets]="snippets" component="accordion" demo="config">
         <ngbd-accordion-config></ngbd-accordion-config>
       </ngbd-example-box>
     </ngbd-content-wrapper>

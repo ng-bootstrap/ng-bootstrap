@@ -7,9 +7,9 @@ import {Analytics} from '../../../shared/analytics/analytics';
 })
 export class ExampleBoxComponent {
   @Input() demoTitle: string;
-  @Input() htmlSnippet: string;
-  @Input() tsSnippet: string;
-
+  @Input() component: string;
+  @Input() demo: string;
+  @Input() snippets: Object;
   showCode = false;
 
   constructor(private _analytics: Analytics) {}

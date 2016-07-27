@@ -1,31 +1,31 @@
-import {RatingBasicComponent} from './basic/basic.component';
-import {RatingConfigComponent} from './config/config.component';
-import {RatingTemplateComponent} from './template/template.component';
-import {RatingEventsComponent} from './events/events.component';
-import {RatingDecimalComponent} from './decimal/decimal.component';
+import {NgbdRatingBasic} from './basic/rating-basic';
+import {NgbdRatingConfig} from './config/rating-config';
+import {NgbdRatingTemplate} from './template/rating-template';
+import {NgbdRatingEvents} from './events/rating-events';
+import {NgbdRatingDecimal} from './decimal/rating-decimal';
 
-export const DEMO_DIRECTIVES = [RatingBasicComponent, RatingConfigComponent,
-  RatingEventsComponent, RatingTemplateComponent, RatingDecimalComponent];
+export const DEMO_DIRECTIVES = [NgbdRatingBasic, NgbdRatingConfig,
+  NgbdRatingTemplate, NgbdRatingEvents, NgbdRatingDecimal];
 
 export const DEMO_SNIPPETS = {
   basic: {
-    code: require('!!prismjs?lang=typescript!./basic/basic.component'),
-    markup: require('!!prismjs?lang=markup!./basic/basic.component.html')
+    code: require('!!prismjs?lang=typescript!./basic/rating-basic'),
+    markup: require('!!prismjs?lang=markup!./basic/rating-basic.html')
   },
   events: {
-    code: require('!!prismjs?lang=typescript!./events/events.component'),
-    markup: require('!!prismjs?lang=markup!./events/events.component.html')
+    code: require('!!prismjs?lang=typescript!./events/rating-events'),
+    markup: require('!!prismjs?lang=markup!./events/rating-events.html')
   },
   template: {
-    code: require('!!prismjs?lang=typescript!./template/template.component'),
-    markup: require('!!prismjs?lang=markup!./template/template.component.html')
+    code: require('!!prismjs?lang=typescript!./template/rating-template'),
+    markup: require('!!prismjs?lang=markup!./template/rating-template.html')
   },
   decimal: {
-    code: require('!!prismjs?lang=typescript!./decimal/decimal.component'),
-    markup: require('!!prismjs?lang=markup!./decimal/decimal.component.html')
+    code: require('!!prismjs?lang=typescript!./decimal/rating-decimal'),
+    markup: require('!!prismjs?lang=markup!./decimal/rating-decimal.html')
   },
   config: {
-    code: require('!!prismjs?lang=typescript!./config/config.component'),
-    markup: require('!!prismjs?lang=markup!./config/config.component.html')
+    code: require('!!prismjs?lang=typescript!./config/rating-config'),
+    markup: require('!!prismjs?lang=markup!./config/rating-config.html')
   }
 };

@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 
 @Component({
   selector: 'ngbd-rating-decimal',
-  templateUrl: './decimal.component.html',
+  templateUrl: './rating-decimal.html',
   styles: [`
     .star {
       position: relative;  
@@ -21,6 +21,6 @@ import {Component} from '@angular/core';
     }
   `]
 })
-export class RatingDecimalComponent {
+export class NgbdRatingDecimal {
   currentRate = 3.14;
 }

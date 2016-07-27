@@ -1,7 +1,6 @@
 export * from './rating.component';
 
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
 
 import {NgbdSharedModule} from '../../shared';
 import {NgbdComponentsSharedModule} from '../shared';

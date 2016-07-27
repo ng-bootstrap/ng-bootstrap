@@ -8,15 +8,13 @@ import {DEMO_SNIPPETS} from './demos';
       <ngbd-api-docs directive="NgbDropdown"></ngbd-api-docs>
       <ngbd-api-docs directive="NgbDropdownToggle"></ngbd-api-docs>
       <ngbd-api-docs-config type="NgbDropdownConfig"></ngbd-api-docs-config>
-      <ngbd-example-box demoTitle="Dropdown" [htmlSnippet]="snippets.basic.markup" [tsSnippet]="snippets.basic.code">
+      <ngbd-example-box demoTitle="Dropdown" [snippets]="snippets" component="dropdown" demo="basic">
         <ngbd-dropdown-basic></ngbd-dropdown-basic>
       </ngbd-example-box>
-      <ngbd-example-box demoTitle="Manual triggers" [htmlSnippet]="snippets.manual.markup" [tsSnippet]="snippets.manual.code">
+      <ngbd-example-box demoTitle="Manual triggers" [snippets]="snippets" component="dropdown" demo="manual">
         <ngbd-dropdown-manual></ngbd-dropdown-manual>
       </ngbd-example-box>
-      <ngbd-example-box demoTitle="Global configuration of dropdowns" 
-                        [htmlSnippet]="snippets.config.markup" 
-                        [tsSnippet]="snippets.config.code">
+      <ngbd-example-box demoTitle="Global configuration of dropdowns" [snippets]="snippets" component="dropdown" demo="config">
         <ngbd-dropdown-config></ngbd-dropdown-config>
       </ngbd-example-box>
     </ngbd-content-wrapper>

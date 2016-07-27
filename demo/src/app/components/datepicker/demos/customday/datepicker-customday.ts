@@ -25,7 +25,7 @@ import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
     }
   `]
 })
-export class NgbdDatepickerCustomDay {
+export class NgbdDatepickerCustomday {
   model: NgbDateStruct;
 
   isWeekend(date: NgbDateStruct) {
