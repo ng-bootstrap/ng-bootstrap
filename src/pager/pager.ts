@@ -6,6 +6,61 @@ import {Component, ChangeDetectionStrategy, OnChanges, Input, Output, EventEmitt
 @Component({
   selector: 'ngb-pager',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  styles: [`
+    .pager {
+      padding-left: 0;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+      text-align: center;
+      list-style: none;
+    }
+    
+    .pager::after {
+      display: table;
+      clear: both;
+      content: "";
+    }
+    
+    .pager li {
+      display: inline;
+    }
+    
+    .pager li > a,
+    .pager li > span {
+      display: inline-block;
+      padding: 5px 14px;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 15px;
+    }
+    
+    .pager li > a:focus, .pager li > a:hover {
+      text-decoration: none;
+      background-color: #eceeef;
+    }
+    
+    .pager .disabled > a, .pager .disabled > a:focus, .pager .disabled > a:hover {
+      color: #818a91;
+      cursor: not-allowed;
+      background-color: #fff;
+    }
+    
+    .pager .disabled > span {
+      color: #818a91;
+      cursor: not-allowed;
+      background-color: #fff;
+    }
+    
+    .pager-next > a,
+    .pager-next > span {
+      float: right;
+    }
+    
+    .pager-prev > a,
+    .pager-prev > span {
+      float: left;
+    }
+    `],
   template: `
     <nav>
       <ul class="pager">

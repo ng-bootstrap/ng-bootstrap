@@ -187,3 +187,8 @@ code[class*="language-"],
 pre[class*="language-"] {
   background-color: #f5f5f5; // same as bootstrap card header
 }
+
+span.token.tag {
+  font-size: 1em;
+  padding: 0;
+}
