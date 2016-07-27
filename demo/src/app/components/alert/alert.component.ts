@@ -16,7 +16,7 @@ import {DEMO_DIRECTIVES, DEMO_SNIPPETS} from './demos';
         <ngbd-alert-closeable></ngbd-alert-closeable>
       </ngbd-example-box>
       <ngbd-example-box demoTitle="Self-Closing Alert" [htmlSnippet]="snippets.selfClosing.markup" [tsSnippet]="snippets.selfClosing.code">
-        <ngbd-alert-self-closing></ngbd-alert-self-closing>
+        <ngbd-alert-selfclosing></ngbd-alert-selfclosing>
       </ngbd-example-box>
       <ngbd-example-box demoTitle="Custom Alert" [htmlSnippet]="snippets.custom.markup" [tsSnippet]="snippets.custom.code">
         <ngbd-alert-custom></ngbd-alert-custom>

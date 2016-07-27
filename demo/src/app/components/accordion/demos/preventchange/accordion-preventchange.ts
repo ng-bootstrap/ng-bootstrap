@@ -2,11 +2,11 @@ import {Component} from '@angular/core';
 import {NGB_ACCORDION_DIRECTIVES, NgbPanelChangeEvent} from '@ng-bootstrap/accordion';
 
 @Component({
-  selector: 'ngbd-accordion-preventChange',
-  templateUrl: './accordion-preventChange.html',
+  selector: 'ngbd-accordion-preventchange',
+  templateUrl: './accordion-preventchange.html',
   directives: [NGB_ACCORDION_DIRECTIVES]
 })
-export class NgbdAccordionPreventChange {
+export class NgbdAccordionPreventchange {
   public beforeChange($event: NgbPanelChangeEvent) {
 
     if ($event.panelId === '2') {

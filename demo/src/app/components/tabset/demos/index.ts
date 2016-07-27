@@ -1,9 +1,9 @@
 import {NgbdTabsetBasic} from './basic/tabset-basic';
 import {NgbdTabsetPills} from './pills/tabset-pills';
-import {NgbdTabsetPreventChange} from './preventChange/tabset-preventChange';
-import {NgbdTabsetSelectById} from './selectById/tabset-selectById';
+import {NgbdTabsetPreventchange} from './preventchange/tabset-preventchange';
+import {NgbdTabsetSelectbyid} from './selectbyid/tabset-selectbyid';
 
-export const DEMO_DIRECTIVES = [NgbdTabsetBasic, NgbdTabsetPills, NgbdTabsetPreventChange, NgbdTabsetSelectById];
+export const DEMO_DIRECTIVES = [NgbdTabsetBasic, NgbdTabsetPills, NgbdTabsetPreventchange, NgbdTabsetSelectbyid];
 
 export const DEMO_SNIPPETS = {
   basic: {
@@ -13,9 +13,9 @@ export const DEMO_SNIPPETS = {
     code: require('!!prismjs?lang=typescript!./pills/tabset-pills'),
     markup: require('!!prismjs?lang=markup!./pills/tabset-pills.html')},
   preventChange: {
-    code: require('!!prismjs?lang=typescript!./preventChange/tabset-preventChange'),
-    markup: require('!!prismjs?lang=markup!./preventChange/tabset-preventChange.html')},
+    code: require('!!prismjs?lang=typescript!./preventchange/tabset-preventchange'),
+    markup: require('!!prismjs?lang=markup!./preventchange/tabset-preventchange.html')},
   selectById: {
-    code: require('!!prismjs?lang=typescript!./selectById/tabset-selectById'),
-    markup: require('!!prismjs?lang=markup!./selectById/tabset-selectById.html')},
+    code: require('!!prismjs?lang=typescript!./selectbyid/tabset-selectbyid'),
+    markup: require('!!prismjs?lang=markup!./selectbyid/tabset-selectbyid.html')},
 };
