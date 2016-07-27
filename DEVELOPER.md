@@ -82,7 +82,7 @@ To clean out the `dist` folder, run:
 $(npm bin)/gulp clean:build
 ```
 
-## Running Tests Locally
+## Running tests locally
 
 * `$(npm bin)/gulp`
 
@@ -99,6 +99,10 @@ Karma is run against the new output.
 `it` to `iit` or `describe` to `ddescribe`. This will only run that individual test and make it
 much easier to debug. `xit` and `xdescribe` can also be useful to exclude a test and a group of
 tests respectively.
+
+## Running demo locally
+
+* `$(npm bin)/gulp demo-server` and go to [http://localhost:9090/](http://localhost:9090/)
 
 ## Formatting with <a name="clang-format">clang-format</a>
 
