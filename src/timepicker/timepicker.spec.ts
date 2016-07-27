@@ -5,6 +5,11 @@ import {By} from '@angular/platform-browser';
 import {Component} from '@angular/core';
 
 import {NgbTimepicker} from './timepicker';
+import {Validators, FormBuilder, Control} from '@angular/common';
+
+function getTimepicker(el: HTMLElement) {
+  return el.querySelector('ngb-timepicker');
+}
 
 function getInputs(el: HTMLElement) {
   return el.querySelectorAll('input');
@@ -393,10 +398,59 @@ describe('ngb-timepicker', () => {
        })));
 
   });
+
+  describe('forms', () => {
+
+    it('should work with template-driven form validation', async(inject([TestComponentBuilder], (tcb) => {
+         const html = `
+          <form>
+            <ngb-timepicker [(ngModel)]="model" required></ngb-timepicker>
+          </form>`;
+
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+           fixture.detectChanges();
+           const compiled = fixture.nativeElement;
+
+           expect(getTimepicker(compiled)).toHaveCssClass('ng-invalid');
+           expect(getTimepicker(compiled)).not.toHaveCssClass('ng-valid');
+
+           fixture.componentInstance.model = {hour: 12, minute: 0, second: 0};
+           fixture.detectChanges();
+           expect(getTimepicker(compiled)).toHaveCssClass('ng-valid');
+           expect(getTimepicker(compiled)).not.toHaveCssClass('ng-invalid');
+         });
+       })));
+
+    it('should work with model-driven form validation', async(inject([TestComponentBuilder], (tcb) => {
+         const html = `
+          <form [ngFormModel]="form">
+            <ngb-timepicker ngControl="control" required></ngb-timepicker>
+          </form>`;
+
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+           fixture.detectChanges();
+           const compiled = fixture.nativeElement;
+           const inputs = fixture.debugElement.queryAll(By.css('input'));
+
+           expect(getTimepicker(compiled)).toHaveCssClass('ng-invalid');
+           expect(getTimepicker(compiled)).not.toHaveCssClass('ng-valid');
+
+           inputs[0].triggerEventHandler('ngModelChange', '12');
+           fixture.detectChanges();
+           expect(getTimepicker(compiled)).toHaveCssClass('ng-valid');
+           expect(getTimepicker(compiled)).not.toHaveCssClass('ng-invalid');
+         });
+       })));
+
+  });
 });
 
 
 @Component({selector: 'test-cmp', directives: [NgbTimepicker], template: ''})
 class TestComponent {
   model;
+
+  form = this._builder.group({control: new Control('', Validators.required)});
+
+  constructor(private _builder: FormBuilder) {}
 }

@@ -7,6 +7,7 @@ import 'rxjs/add/operator/map';
 import {NgbTypeaheadWindow} from './typeahead-window';
 import {By} from '@angular/platform-browser';
 import {expectResults, getWindowLinks} from './test-common';
+import {Validators, Control, FormBuilder} from '@angular/common';
 
 enum Key {
   Tab = 9,
@@ -352,6 +353,49 @@ describe('ngb-typeahead', () => {
        })));
   });
 
+  describe('forms', () => {
+
+    it('should work with template-driven form validation', async(inject([TestComponentBuilder], (tcb) => {
+         const html = `
+        <form>
+          <input type="text" [(ngModel)]="model" required [ngbTypeahead]="findObjects" />
+        </form>`;
+
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+           fixture.detectChanges();
+           const compiled = fixture.nativeElement;
+
+           expect(getNativeInput(compiled)).toHaveCssClass('ng-invalid');
+           expect(getNativeInput(compiled)).not.toHaveCssClass('ng-valid');
+
+           changeInput(compiled, 'o');
+           fixture.detectChanges();
+           expect(getNativeInput(compiled)).toHaveCssClass('ng-valid');
+           expect(getNativeInput(compiled)).not.toHaveCssClass('ng-invalid');
+         });
+       })));
+
+    it('should work with model-driven form validation', async(inject([TestComponentBuilder], (tcb) => {
+         const html = `
+        <form [ngFormModel]="form">
+          <input type="text" ngControl="control" required [ngbTypeahead]="findObjects" />
+        </form>`;
+
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+           fixture.detectChanges();
+           const compiled = fixture.nativeElement;
+
+           expect(getNativeInput(compiled)).toHaveCssClass('ng-invalid');
+           expect(getNativeInput(compiled)).not.toHaveCssClass('ng-valid');
+
+           changeInput(compiled, 'o');
+           fixture.detectChanges();
+           expect(getNativeInput(compiled)).toHaveCssClass('ng-valid');
+           expect(getNativeInput(compiled)).not.toHaveCssClass('ng-invalid');
+         });
+       })));
+  });
+
 });
 
 @Component(
@@ -363,6 +407,8 @@ class TestComponent {
 
   model = '';
 
+  form = this._builder.group({control: new Control('', Validators.required)});
+
   find = (text$: Observable<string>) => { return text$.map(text => this._strings.filter(v => v.startsWith(text))); };
 
   findNothing = (text$: Observable<string>) => { return text$.map(text => []); };
@@ -370,9 +416,11 @@ class TestComponent {
   findObjects =
       (text$: Observable<string>) => { return text$.map(text => this._objects.filter(v => v.value.startsWith(text))); };
 
-  formatter = (obj: {id: number, value: string}) => { return `${obj.id} ${obj.value}`; }
+  formatter = (obj: {id: number, value: string}) => { return `${obj.id} ${obj.value}`; };
 
   uppercaseFormatter = s => s.toUpperCase();
 
-  uppercaseObjFormatter = (obj: {value: string}) => { return obj.value.toUpperCase(); }
+  uppercaseObjFormatter = (obj: {value: string}) => { return obj.value.toUpperCase(); };
+
+  constructor(private _builder: FormBuilder) {}
 }
