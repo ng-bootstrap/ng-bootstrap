@@ -17,7 +17,7 @@ import {NgbRating, NGB_RATING_DIRECTIVES} from './rating/rating';
 import {NgbTabset, NgbTab, NgbTabContent, NgbTabTitle, NgbTabChangeEvent, NGB_TABSET_DIRECTIVES} from './tabset/tabset';
 import {NgbTimepicker, NGB_TIMEPICKER_DIRECTIVES} from './timepicker/timepicker';
 import {NgbTooltip, NgbTooltipWindow, NGB_TOOLTIP_DIRECTIVES} from './tooltip/tooltip';
-import {NGB_TYPEAHEAD_DIRECTIVES} from './typeahead/typeahead';
+import {NgbTypeahead, NGB_TYPEAHEAD_DIRECTIVES} from './typeahead/typeahead';
 import {NgbTypeaheadWindow} from './typeahead/typeahead-window';
 import {NgbPopover, NgbPopoverWindow, NGB_POPOVER_DIRECTIVES} from './popover/popover';
 import {NgbRadioGroup, NgbRadioLabel, NgbRadio, NGB_RADIO_DIRECTIVES} from './buttons/radio';
