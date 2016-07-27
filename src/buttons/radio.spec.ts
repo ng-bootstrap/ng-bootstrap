@@ -3,6 +3,7 @@ import {TestComponentBuilder} from '@angular/compiler/testing';
 import {Component} from '@angular/core';
 
 import {NGB_RADIO_DIRECTIVES} from './radio';
+import {Control, Validators, FormBuilder} from '@angular/common';
 
 
 function expectRadios(element: HTMLElement, states: number[]) {
@@ -18,6 +19,10 @@ function expectRadios(element: HTMLElement, states: number[]) {
       expect(labels[i]).not.toHaveCssClass('active');
     }
   }
+}
+
+function getGroupElement(nativeEl: HTMLElement): HTMLDivElement {
+  return <HTMLDivElement>nativeEl.querySelector('div[ngbRadioGroup]');
 }
 
 function getInput(nativeEl: HTMLElement, idx: number): HTMLInputElement {
@@ -212,18 +217,66 @@ describe('ngbRadioGroup', () => {
   it('should add data-toggle="buttons" and "btn-group" CSS class to button group',
      async(inject([TestComponentBuilder], (tcb) => {
        // Bootstrap for uses presence of data-toggle="buttons" to style radio buttons
-       const html = `<div [(ngModel)]="model" class="foo" ngbRadioGroup></div>`;
+       const html = `<div class="foo" ngbRadioGroup></div>`;
 
        tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          expect(fixture.nativeElement.children[0].getAttribute('data-toggle')).toBe('buttons');
          expect(fixture.nativeElement.children[0]).toHaveCssClass('btn-group');
        });
      })));
+
+  it('should work with template-driven form validation', async(inject([TestComponentBuilder], (tcb) => {
+       const html = `
+        <form>
+          <div ngbRadioGroup [(ngModel)]="model" required>
+            <label class="btn">
+              <input type="radio" value="foo"/>
+            </label>          
+          </div>
+        </form>`;
+
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         fixture.detectChanges();
+         expect(getGroupElement(fixture.nativeElement)).toHaveCssClass('ng-invalid');
+         expect(getGroupElement(fixture.nativeElement)).not.toHaveCssClass('ng-valid');
+
+         getInput(fixture.nativeElement, 0).click();
+         fixture.detectChanges();
+         expect(getGroupElement(fixture.nativeElement)).toHaveCssClass('ng-valid');
+         expect(getGroupElement(fixture.nativeElement)).not.toHaveCssClass('ng-invalid');
+       });
+     })));
+
+  it('should work with model-driven form validation', async(inject([TestComponentBuilder], (tcb) => {
+       const html = `
+        <form [ngFormModel]="form">
+          <div ngbRadioGroup ngControl="control">
+            <label class="btn">
+              <input type="radio" value="foo"/>
+            </label>          
+          </div>
+        </form>`;
+
+       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+         fixture.detectChanges();
+         expect(getGroupElement(fixture.nativeElement)).toHaveCssClass('ng-invalid');
+         expect(getGroupElement(fixture.nativeElement)).not.toHaveCssClass('ng-valid');
+
+         getInput(fixture.nativeElement, 0).click();
+         fixture.detectChanges();
+         expect(getGroupElement(fixture.nativeElement)).toHaveCssClass('ng-valid');
+         expect(getGroupElement(fixture.nativeElement)).not.toHaveCssClass('ng-invalid');
+       });
+     })));
 });
 
 @Component({selector: 'test-cmp', directives: [NGB_RADIO_DIRECTIVES], template: ''})
 class TestComponent {
+  form = this._builder.group({control: new Control('', Validators.required)});
+
   model;
   values = ['one', 'two', 'three'];
   shown = true;
+
+  constructor(private _builder: FormBuilder) {}
 }
