@@ -1,8 +1,10 @@
 import {Component, ChangeDetectionStrategy, Input} from '@angular/core';
+import {Angulartics2On} from 'angulartics2';
 import docs from '../../../../api-docs';
 
 @Component({
   selector: 'ngbd-api-docs',
+  directives: [Angulartics2On],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './api-docs.component.html'
 })
