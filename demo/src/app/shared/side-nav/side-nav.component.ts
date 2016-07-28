@@ -14,7 +14,6 @@ export class SideNavComponent {
     'Carousel',
     'Collapse',
     'Dropdown',
-    'Pager',
     'Pagination',
     'Popover',
     'Progressbar',
