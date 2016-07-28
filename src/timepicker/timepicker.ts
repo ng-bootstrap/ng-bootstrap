@@ -96,7 +96,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
           <template [ngIf]="meridian">
             <td>&nbsp;&nbsp;</td>
             <td>
-              <button class="btn btn-primary-outline" (click)="toggleMeridian()">{{model.hour > 12 ? 'PM' : 'AM'}}</button>
+              <button class="btn btn-outline-primary" (click)="toggleMeridian()">{{model.hour > 12 ? 'PM' : 'AM'}}</button>
             </td>
           </template>
         </tr>
