@@ -5,7 +5,6 @@ export * from './carousel';
 export * from './collapse';
 export * from './dropdown';
 export * from './modal';
-export * from './pager';
 export * from './pagination';
 export * from './popover';
 export * from './progressbar';

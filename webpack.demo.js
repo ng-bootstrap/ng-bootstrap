@@ -76,7 +76,6 @@ module.exports = function makeWebpackConfig() {
       '@ng-bootstrap/collapse': root('src/collapse/collapse.ts'),
       '@ng-bootstrap/dropdown': root('src/dropdown/dropdown.ts'),
       '@ng-bootstrap/modal': root('src/modal/modal.ts'),
-      '@ng-bootstrap/pager': root('src/pager/pager.ts'),
       '@ng-bootstrap/pagination': root('src/pagination/pagination.ts'),
       '@ng-bootstrap/popover': root('src/popover/popover.ts'),
       '@ng-bootstrap/progressbar': root('src/progressbar/progressbar.ts'),
