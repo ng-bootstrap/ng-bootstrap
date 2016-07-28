@@ -96,7 +96,7 @@ The task updates the `temp` folder with transpiled code whenever a source or tes
 Karma is run against the new output.
 
 **Note**: If you want to only run a single test you can alter the test you wish to run by changing
-`it` to `iit` or `describe` to `ddescribe`. This will only run that individual test and make it
+`it` to `fit` or `describe` to `fdescribe`. This will only run that individual test and make it
 much easier to debug. `xit` and `xdescribe` can also be useful to exclude a test and a group of
 tests respectively.
 
