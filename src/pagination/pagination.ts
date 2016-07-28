@@ -7,41 +7,46 @@ import {getValueInRange, toInteger, toBoolean} from '../util/util';
 @Component({
   selector: 'ngb-pagination',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  styles: [`
+    button.page-link {
+      outline: 0;
+    }
+  `],
   template: `
     <nav>
       <ul [class]="'pagination' + (size ? ' pagination-' + size : '')">
         <li *ngIf="boundaryLinks" class="page-item" [class.disabled]="!hasPrevious()">
-          <a aria-label="First" class="page-link" (click)="selectPage(1)">
+          <button aria-label="First" class="page-link" (click)="selectPage(1)">
             <span aria-hidden="true">&laquo;&laquo;</span>
             <span class="sr-only">First</span>
-          </a>                
+          </button>                
         </li>
       
-        <li *ngIf="directionLinks"class="page-item" [class.disabled]="!hasPrevious()">
-          <a aria-label="Previous" class="page-link" (click)="selectPage(page-1)">
+        <li *ngIf="directionLinks" class="page-item" [class.disabled]="!hasPrevious()">
+          <button aria-label="Previous" class="page-link" (click)="selectPage(page-1)">
             <span aria-hidden="true">&laquo;</span>
             <span class="sr-only">Previous</span>
-          </a>
+          </button>
         </li>
 
         <li *ngFor="let pageNumber of pages" class="page-item" [class.active]="pageNumber === page" 
           [class.disabled]="_isEllipsis(pageNumber)">
-          <a *ngIf="_isEllipsis(pageNumber)" class="page-link">...</a>
-          <a *ngIf="!_isEllipsis(pageNumber)" class="page-link" (click)="selectPage(pageNumber)">{{pageNumber}}</a>
+          <button *ngIf="_isEllipsis(pageNumber)" class="page-link">...</button>
+          <button *ngIf="!_isEllipsis(pageNumber)" class="page-link" (click)="selectPage(pageNumber)">{{pageNumber}}</button>
         </li>
 
         <li *ngIf="directionLinks" class="page-item" [class.disabled]="!hasNext()">
-          <a aria-label="Next" class="page-link" (click)="selectPage(page+1)">
+          <button aria-label="Next" class="page-link" (click)="selectPage(page+1)">
             <span aria-hidden="true">&raquo;</span>
             <span class="sr-only">Next</span>
-          </a>
+          </button>
         </li>
         
         <li *ngIf="boundaryLinks" class="page-item" [class.disabled]="!hasNext()">
-          <a aria-label="Last" class="page-link" (click)="selectPage(_pageCount)">
+          <button aria-label="Last" class="page-link" (click)="selectPage(_pageCount)">
             <span aria-hidden="true">&raquo;&raquo;</span>
             <span class="sr-only">Last</span>
-          </a>                
+          </button>                
         </li>        
       </ul>
     </nav>
