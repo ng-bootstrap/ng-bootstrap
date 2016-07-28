@@ -1,0 +1,17 @@
+<p>Illustrates custom validation, you have to select time between 12:00 and 13:59</p>
+
+<ngb-timepicker [(ngModel)]="time" #c="ngForm" [ngFormControl]="lunchControl" required #t></ngb-timepicker>
+
+<div *ngIf="c.valid" class="alert alert-success">
+  <p>Great choice</p>
+</div>
+
+<div *ngIf="!c.valid" class="alert alert-danger">
+  <p *ngIf="c.errors.required">Select some time during lunchtime</p>
+  <p *ngIf="c.errors.tooLate">Oh no, it's way too late</p>
+  <p *ngIf="c.errors.tooEarly">It's a bit too early</p>
+  <p *ngIf="c.errors.noMinutesSet">And don't forget to set minutes</p>
+</div>
+
+<hr>
+<pre>Selected time: {{time | json}}</pre>
