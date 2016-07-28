@@ -24,7 +24,7 @@ function getFieldsetElement(element: HTMLElement): HTMLFieldSetElement {
 }
 
 function getMeridianButton(nativeEl: HTMLElement) {
-  return nativeEl.querySelector('button.btn-primary-outline');
+  return nativeEl.querySelector('button.btn-outline-primary');
 }
 
 function expectToDisplayTime(el: HTMLElement, time: string) {

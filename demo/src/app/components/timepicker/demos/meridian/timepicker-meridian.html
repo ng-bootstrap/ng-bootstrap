@@ -1,5 +1,5 @@
 <ngb-timepicker [(ngModel)]="time" [meridian]="meridian"></ngb-timepicker>
-<button class="btn btn-sm {{meridian ? 'btn-success' : 'btn-danger'}}-outline" (click)="toggleMeridian()">
+<button class="btn btn-sm btn-outline-{{meridian ? 'success' : 'danger'}}" (click)="toggleMeridian()">
     Meridian - {{meridian ? "ON" : "OFF"}}
 </button>
 <hr>
