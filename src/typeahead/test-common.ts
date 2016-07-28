@@ -6,11 +6,11 @@ function normalizeText(txt: string): string {
 }
 
 export function getWindowLinks(element: DebugElement): DebugElement[] {
-  return Array.from(element.queryAll(By.css('a')));
+  return Array.from(element.queryAll(By.css('button.dropdown-item')));
 }
 
 export function expectResults(nativeEl: HTMLElement, resultsDef: string[]): void {
-  const pages = nativeEl.querySelectorAll('a');
+  const pages = nativeEl.querySelectorAll('button.dropdown-item');
 
   expect(pages.length).toEqual(resultsDef.length);
 
@@ -18,7 +18,6 @@ export function expectResults(nativeEl: HTMLElement, resultsDef: string[]): void
     let resultDef = resultsDef[i];
     let classIndicator = resultDef.charAt(0);
 
-    expect(pages[i]).toHaveCssClass('dropdown-item');
     if (classIndicator === '+') {
       expect(pages[i]).toHaveCssClass('active');
       expect(normalizeText(pages[i].textContent)).toEqual(resultDef.substr(1));
