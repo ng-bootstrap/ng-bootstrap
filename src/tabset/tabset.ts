@@ -69,7 +69,8 @@ export interface NgbTabChangeEvent {
   template: `
     <ul [class]="'nav nav-' + type" role="tablist">
       <li class="nav-item" *ngFor="let tab of tabs">
-        <a [id]="tab.id" class="nav-link" [class.active]="tab.id === activeId" [class.disabled]="tab.disabled" (click)="select(tab.id)">
+        <a [id]="tab.id" class="nav-link" [class.active]="tab.id === activeId" [class.disabled]="tab.disabled" 
+          href (click)="!!select(tab.id)">
           {{tab.title}}<template [ngTemplateOutlet]="tab.titleTpl?.templateRef"></template>
         </a>
       </li>
