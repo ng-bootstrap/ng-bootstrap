@@ -7,6 +7,6 @@ A typeahead example that gets values from the <code>WikipediaService</code>
   <li><code>switchMap</code> operator</li>
 </ul>
 
-<input type="text" [(ngModel)]="model" [ngbTypeahead]="search" placeholder="Wikipedia search" /><span *ngIf="_searching"> searching...</span>
+<input type="text" class="form-control" [(ngModel)]="model" [ngbTypeahead]="search" placeholder="Wikipedia search" /><span *ngIf="_searching"> searching...</span>
 <hr>
 <pre>Model: {{ model | json }}</pre>
