@@ -5,6 +5,6 @@
   {{ r.name}}
 </template>
 
-<input type="text" [(ngModel)]="model" [ngbTypeahead]="search" [resultTemplate]="rt" [inputFormatter]="formatter" />
+<input type="text" class="form-control" [(ngModel)]="model" [ngbTypeahead]="search" [resultTemplate]="rt" [inputFormatter]="formatter" />
 <hr>
 <pre>Model: {{ model | json }}</pre>

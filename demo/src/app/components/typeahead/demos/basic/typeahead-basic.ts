@@ -18,7 +18,8 @@ const states = ['Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Arkansas', 'C
   selector: 'ngbd-typeahead-basic',
   template: require('./typeahead-basic.html'),
   directives: [NGB_TYPEAHEAD_DIRECTIVES],
-  precompile: [NGB_PRECOMPILE]
+  precompile: [NGB_PRECOMPILE],
+  styles: [`.form-control { width: 300px; }`]
 })
 export class NgbdTypeaheadBasic {
 

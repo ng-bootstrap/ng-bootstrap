@@ -62,7 +62,8 @@ const statesWithFlags = [
   selector: 'ngbd-typeahead-template',
   template: require('./typeahead-template.html'),
   directives: [NGB_TYPEAHEAD_DIRECTIVES],
-  precompile: [NGB_PRECOMPILE]
+  precompile: [NGB_PRECOMPILE],
+  styles: [`.form-control { width: 300px; }`]
 })
 export class NgbdTypeaheadTemplate {
 

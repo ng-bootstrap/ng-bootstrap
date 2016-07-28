@@ -33,7 +33,8 @@ export class WikipediaService {
   template: require('./typeahead-http.html'),
   directives: [NGB_TYPEAHEAD_DIRECTIVES],
   precompile: [NGB_PRECOMPILE],
-  providers: [HTTP_PROVIDERS, JSONP_PROVIDERS, WikipediaService]
+  providers: [HTTP_PROVIDERS, JSONP_PROVIDERS, WikipediaService],
+  styles: [`.form-control { width: 300px; display: inline; }`]
 })
 export class NgbdTypeaheadHttp {
 
