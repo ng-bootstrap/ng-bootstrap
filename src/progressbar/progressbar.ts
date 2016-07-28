@@ -8,7 +8,9 @@ import {getValueInRange, toBoolean} from '../util/util';
   selector: 'ngb-progressbar',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <progress class="progress {{isAnimated() && 'progress-animated'}} {{isStriped() && 'progress-striped'}} {{type && 'progress-' + type}}"
+    <progress class="progress {{type ? 'progress-' + type : ''}}" 
+      [class.progress-animated]="isAnimated()" 
+      [class.progress-striped]="isStriped()"
       [value]="getValue()" [max]="max">
       <div class="progress">
         <span class="progress-bar" [style.width.%]="getPercentValue()"><ng-content></ng-content></span>

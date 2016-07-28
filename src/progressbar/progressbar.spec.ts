@@ -166,6 +166,17 @@ describe('ng-progressbar', () => {
            expect(getProgressbar(fixture.nativeElement)).not.toHaveCssClass('progress-striped');
          });
        })));
+
+    it('should not add "false" CSS class', async(inject([TestComponentBuilder], (tcb) => {
+         const html = '<ngb-progressbar [value]="value" [striped]="striped"></ngb-progressbar>';
+
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+           fixture.detectChanges();
+
+           expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('progress-striped');
+           expect(getProgressbar(fixture.nativeElement)).not.toHaveCssClass('false');
+         });
+       })));
   });
 });
 
