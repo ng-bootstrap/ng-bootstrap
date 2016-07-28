@@ -16,11 +16,11 @@ export class ResultTplCtx {
       <ngb-highlight [result]="formatter(result)" [term]="term"></ngb-highlight>
     </template>
     <template ngFor [ngForOf]="results" let-result let-idx="index">
-      <a class="dropdown-item" [class.active]="idx === _activeIdx" 
+      <button class="dropdown-item" [class.active]="idx === _activeIdx" 
         (mouseenter)="markActive(idx)" 
         (click)="select(result)">
           <template [ngTemplateOutlet]="resultTemplate || rt" [ngOutletContext]="_prepareTplCtx(result)"></template>
-      </a>
+      </button>
     </template>
   `,
   directives: [NgbHighlight]
