@@ -32,7 +32,7 @@ function expectPages(nativeEl: HTMLElement, pagesDef: string[]): void {
 }
 
 function getLink(nativeEl: HTMLElement, idx: number): HTMLAnchorElement {
-  return <HTMLAnchorElement>nativeEl.querySelectorAll('li')[idx].querySelector('a');
+  return <HTMLAnchorElement>nativeEl.querySelectorAll('li')[idx].querySelector('button.page-link');
 }
 
 function getList(nativeEl: HTMLElement) {
