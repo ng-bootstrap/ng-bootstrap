@@ -17,6 +17,9 @@ import {DEMO_DIRECTIVES, DEMO_SNIPPETS} from './demos';
       <ngbd-example-box demoTitle="Seconds" [htmlSnippet]="snippets.seconds.markup" [tsSnippet]="snippets.seconds.code">
         <ngbd-timepicker-seconds></ngbd-timepicker-seconds>      
       </ngbd-example-box>
+      <ngbd-example-box demoTitle="Spinners" [htmlSnippet]="snippets.spinners.markup" [tsSnippet]="snippets.spinners.code">
+        <ngbd-timepicker-spinners></ngbd-timepicker-spinners>      
+      </ngbd-example-box>
       <ngbd-example-box demoTitle="Custom steps" [htmlSnippet]="snippets.steps.markup" [tsSnippet]="snippets.steps.code">
         <ngbd-timepicker-steps></ngbd-timepicker-steps>      
       </ngbd-example-box>
