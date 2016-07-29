@@ -583,6 +583,18 @@ describe('ngb-timepicker', () => {
          });
        })));
   });
+
+  describe('spinners', () => {
+
+    it('should not have spinners if configured so', async(inject([TestComponentBuilder], (tcb) => {
+         const html = `<ngb-timepicker [(ngModel)]="model" [seconds]="true" [spinners]="false"></ngb-timepicker>`;
+
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+           const buttons = getButtons(fixture.nativeElement);
+           expect(buttons.length).toBe(0);
+         });
+       })));
+  });
 });
 
 

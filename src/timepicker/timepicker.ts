@@ -47,7 +47,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
   template: `
      <fieldset [disabled]="disabled" [class.disabled]="disabled">
       <table>
-        <tr>
+        <tr *ngIf="spinners">
           <td class="text-xs-center">
             <button class="btn-link" (click)="changeHour(hourStep)"
               [class.disabled]="disabled">
@@ -100,7 +100,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
             </td>
           </template>
         </tr>
-        <tr>
+        <tr *ngIf="spinners">
           <td class="text-xs-center">
             <button class="btn-link" (click)="changeHour(-hourStep)" 
               [class.disabled]="disabled">
@@ -140,6 +140,11 @@ export class NgbTimepicker implements ControlValueAccessor {
    * Whether to display 12H or 24H mode.
    */
   @Input() meridian = false;
+
+  /**
+   * Whether to display the spinners above and below the inputs.
+   */
+  @Input() spinners = true;
 
   /**
    * Whether to display seconds input.

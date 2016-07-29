@@ -3,9 +3,10 @@ import {NgbdTimepickerMeridian} from './meridian/timepicker-meridian';
 import {NgbdTimepickerSeconds} from './seconds/timepicker-seconds';
 import {NgbdTimepickerSteps} from './steps/timepicker-steps';
 import {NgbdTimepickerValidation} from './validation/timepicker-validation';
+import {NgbdTimepickerSpinners} from './spinners/timepicker-spinners';
 
 export const DEMO_DIRECTIVES = [NgbdTimepickerBasic, NgbdTimepickerMeridian, NgbdTimepickerSeconds,
-  NgbdTimepickerSteps, NgbdTimepickerValidation];
+  NgbdTimepickerSpinners, NgbdTimepickerSteps, NgbdTimepickerValidation];
 
 export const DEMO_SNIPPETS = {
   basic: {
@@ -17,6 +18,9 @@ export const DEMO_SNIPPETS = {
   seconds: {
     code: require('!!prismjs?lang=typescript!./seconds/timepicker-seconds'),
     markup: require('!!prismjs?lang=markup!./seconds/timepicker-seconds.html')},
+  spinners: {
+    code: require('!!prismjs?lang=typescript!./spinners/timepicker-spinners'),
+    markup: require('!!prismjs?lang=markup!./spinners/timepicker-spinners.html')},
   steps: {
     code: require('!!prismjs?lang=typescript!./steps/timepicker-steps'),
     markup: require('!!prismjs?lang=markup!./steps/timepicker-steps.html')},
