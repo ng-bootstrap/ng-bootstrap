@@ -196,17 +196,17 @@ export class NgbTimepicker implements ControlValueAccessor {
   }
 
   updateHour(newVal: string | number) {
-    this.model.updateHour(toInteger(newVal) || 0);
+    this.model.updateHour(toInteger(newVal));
     this.propagateModelChange();
   }
 
   updateMinute(newVal: string | number) {
-    this.model.updateMinute(toInteger(newVal) || 0);
+    this.model.updateMinute(toInteger(newVal));
     this.propagateModelChange();
   }
 
   updateSecond(newVal: string | number) {
-    this.model.updateSecond(toInteger(newVal) || 0);
+    this.model.updateSecond(toInteger(newVal));
     this.propagateModelChange();
   }
 
@@ -222,7 +222,11 @@ export class NgbTimepicker implements ControlValueAccessor {
 
   private propagateModelChange() {
     this.onTouched();
-    this.onChange({hour: this.model.hour, minute: this.model.minute, second: this.model.second});
+    if (this.model.isValid(this.seconds)) {
+      this.onChange({hour: this.model.hour, minute: this.model.minute, second: this.model.second});
+    } else {
+      this.onChange(null);
+    }
   }
 }
 

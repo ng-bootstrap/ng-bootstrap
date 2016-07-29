@@ -294,8 +294,8 @@ describe('ngb-timepicker', () => {
 
            inputs[0].triggerEventHandler('ngModelChange', 'aa');
            fixture.detectChanges();
-           expectToDisplayTime(fixture.nativeElement, '00:30');
-           expect(fixture.componentInstance.model).toEqual({hour: 0, minute: 30, second: 0});
+           expectToDisplayTime(fixture.nativeElement, ':30');
+           expect(fixture.componentInstance.model).toEqual(null);
          });
        })));
 
@@ -323,8 +323,8 @@ describe('ngb-timepicker', () => {
 
            inputs[1].triggerEventHandler('ngModelChange', 'aa');
            fixture.detectChanges();
-           expectToDisplayTime(fixture.nativeElement, '11:00');
-           expect(fixture.componentInstance.model).toEqual({hour: 11, minute: 0, second: 0});
+           expectToDisplayTime(fixture.nativeElement, '11:');
+           expect(fixture.componentInstance.model).toEqual(null);
          });
        })));
 
@@ -352,8 +352,8 @@ describe('ngb-timepicker', () => {
 
            inputs[2].triggerEventHandler('ngModelChange', 'aa');
            fixture.detectChanges();
-           expectToDisplayTime(fixture.nativeElement, '10:31:00');
-           expect(fixture.componentInstance.model).toEqual({hour: 10, minute: 31, second: 0});
+           expectToDisplayTime(fixture.nativeElement, '10:31:');
+           expect(fixture.componentInstance.model).toEqual(null);
          });
        })));
   });
@@ -440,12 +440,48 @@ describe('ngb-timepicker', () => {
            expect(getTimepicker(compiled)).not.toHaveCssClass('ng-valid');
 
            inputs[0].triggerEventHandler('ngModelChange', '12');
+           inputs[1].triggerEventHandler('ngModelChange', '15');
            fixture.detectChanges();
            expect(getTimepicker(compiled)).toHaveCssClass('ng-valid');
            expect(getTimepicker(compiled)).not.toHaveCssClass('ng-invalid');
          });
        })));
 
+    it('should propagate model changes only if valid - no seconds', async(inject([TestComponentBuilder], (tcb) => {
+         const html = `
+          <form>
+            <ngb-timepicker [(ngModel)]="model"></ngb-timepicker>
+          </form>`;
+
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+           fixture.componentInstance.model = {hour: 12, minute: 0};
+           fixture.detectChanges();
+
+           const inputs = fixture.debugElement.queryAll(By.css('input'));
+           inputs[0].triggerEventHandler('ngModelChange', 'aa');
+           fixture.detectChanges();
+
+           expect(fixture.componentInstance.model).toBeNull();
+         });
+       })));
+
+    it('should propagate model changes only if valid - with seconds', async(inject([TestComponentBuilder], (tcb) => {
+         const html = `
+          <form>
+            <ngb-timepicker [(ngModel)]="model" [seconds]="true"></ngb-timepicker>
+          </form>`;
+
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+           fixture.componentInstance.model = {hour: 12, minute: 0, second: 0};
+           fixture.detectChanges();
+
+           const inputs = fixture.debugElement.queryAll(By.css('input'));
+           inputs[2].triggerEventHandler('ngModelChange', 'aa');
+           fixture.detectChanges();
+
+           expect(fixture.componentInstance.model).toBeNull();
+         });
+       })));
   });
 
   describe('disabled', () => {
