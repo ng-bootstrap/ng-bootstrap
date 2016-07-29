@@ -207,4 +207,16 @@ describe('NgbTime', () => {
     t.updateSecond(70);
     expect(t.toString()).toBe('11:1:10');
   });
+
+  it('should have a validity flag', () => {
+    expect(new NgbTime(11, 0, 30).isValid()).toBeTruthy();
+    expect(new NgbTime(null, 0, 30).isValid()).toBeFalsy();
+    expect(new NgbTime(11, null, 30).isValid()).toBeFalsy();
+    expect(new NgbTime(11, 0, null).isValid()).toBeFalsy();
+    expect(new NgbTime(null, 0, null).isValid()).toBeFalsy();
+    expect(new NgbTime(null, null, null).isValid()).toBeFalsy();
+  });
+
+  it('should have a validity flag with optional seconds checking',
+     () => { expect(new NgbTime(11, 0).isValid(false)).toBeTruthy(); });
 });
