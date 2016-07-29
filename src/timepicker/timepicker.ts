@@ -78,19 +78,19 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
         <tr>
           <td>
             <input type="text" class="form-control" maxlength="2" size="2" placeholder="HH"
-              [ngModel]="formatHour(model?.hour)" (ngModelChange)="updateHour($event)" 
+              [value]="formatHour(model?.hour)" (change)="updateHour($event.target.value)" 
               [readonly]="readonlyInputs">
           </td>
           <td>&nbsp;:&nbsp;</td>
           <td>
             <input type="text" class="form-control" maxlength="2" size="2" placeholder="MM"
-              [ngModel]="formatMinSec(model?.minute)" (ngModelChange)="updateMinute($event)" 
+              [value]="formatMinSec(model?.minute)" (change)="updateMinute($event.target.value)" 
               [readonly]="readonlyInputs">
           </td>
           <template [ngIf]="seconds">
             <td>&nbsp;:&nbsp;</td>
             <input type="text" class="form-control" maxlength="2" size="2" placeholder="SS"
-              [ngModel]="formatMinSec(model?.second)" (ngModelChange)="updateSecond($event)" 
+              [value]="formatMinSec(model?.second)" (change)="updateSecond($event.target.value)" 
               [readonly]="readonlyInputs">
           </template>
           <template [ngIf]="meridian">
@@ -200,17 +200,17 @@ export class NgbTimepicker implements ControlValueAccessor {
     this.propagateModelChange();
   }
 
-  updateHour(newVal: string | number) {
+  updateHour(newVal: string) {
     this.model.updateHour(toInteger(newVal));
     this.propagateModelChange();
   }
 
-  updateMinute(newVal: string | number) {
+  updateMinute(newVal: string) {
     this.model.updateMinute(toInteger(newVal));
     this.propagateModelChange();
   }
 
-  updateSecond(newVal: string | number) {
+  updateSecond(newVal: string) {
     this.model.updateSecond(toInteger(newVal));
     this.propagateModelChange();
   }

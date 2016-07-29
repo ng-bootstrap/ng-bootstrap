@@ -27,6 +27,10 @@ function getMeridianButton(nativeEl: HTMLElement) {
   return nativeEl.querySelector('button.btn-outline-primary');
 }
 
+function createChangeEvent(value: string) {
+  return {target: {value: value}};
+}
+
 function expectToDisplayTime(el: HTMLElement, time: string) {
   const inputs = getInputs(el);
   const timeParts = time.split(':');
@@ -282,17 +286,17 @@ describe('ngb-timepicker', () => {
            expectToDisplayTime(fixture.nativeElement, '10:30');
            expect(fixture.componentInstance.model).toEqual({hour: 10, minute: 30, second: 0});
 
-           inputs[0].triggerEventHandler('ngModelChange', '11');
+           inputs[0].triggerEventHandler('change', createChangeEvent('11'));
            fixture.detectChanges();
            expectToDisplayTime(fixture.nativeElement, '11:30');
            expect(fixture.componentInstance.model).toEqual({hour: 11, minute: 30, second: 0});
 
-           inputs[0].triggerEventHandler('ngModelChange', `${24 + 11}`);
+           inputs[0].triggerEventHandler('change', createChangeEvent(`${24 + 11}`));
            fixture.detectChanges();
            expectToDisplayTime(fixture.nativeElement, '11:30');
            expect(fixture.componentInstance.model).toEqual({hour: 11, minute: 30, second: 0});
 
-           inputs[0].triggerEventHandler('ngModelChange', 'aa');
+           inputs[0].triggerEventHandler('change', createChangeEvent('aa'));
            fixture.detectChanges();
            expectToDisplayTime(fixture.nativeElement, ':30');
            expect(fixture.componentInstance.model).toEqual(null);
@@ -311,17 +315,17 @@ describe('ngb-timepicker', () => {
            expectToDisplayTime(fixture.nativeElement, '10:30');
            expect(fixture.componentInstance.model).toEqual({hour: 10, minute: 30, second: 0});
 
-           inputs[1].triggerEventHandler('ngModelChange', '40');
+           inputs[1].triggerEventHandler('change', createChangeEvent('40'));
            fixture.detectChanges();
            expectToDisplayTime(fixture.nativeElement, '10:40');
            expect(fixture.componentInstance.model).toEqual({hour: 10, minute: 40, second: 0});
 
-           inputs[1].triggerEventHandler('ngModelChange', '70');
+           inputs[1].triggerEventHandler('change', createChangeEvent('70'));
            fixture.detectChanges();
            expectToDisplayTime(fixture.nativeElement, '11:10');
            expect(fixture.componentInstance.model).toEqual({hour: 11, minute: 10, second: 0});
 
-           inputs[1].triggerEventHandler('ngModelChange', 'aa');
+           inputs[1].triggerEventHandler('change', createChangeEvent('aa'));
            fixture.detectChanges();
            expectToDisplayTime(fixture.nativeElement, '11:');
            expect(fixture.componentInstance.model).toEqual(null);
@@ -340,17 +344,17 @@ describe('ngb-timepicker', () => {
            expectToDisplayTime(fixture.nativeElement, '10:30:00');
            expect(fixture.componentInstance.model).toEqual({hour: 10, minute: 30, second: 0});
 
-           inputs[2].triggerEventHandler('ngModelChange', '40');
+           inputs[2].triggerEventHandler('change', createChangeEvent('40'));
            fixture.detectChanges();
            expectToDisplayTime(fixture.nativeElement, '10:30:40');
            expect(fixture.componentInstance.model).toEqual({hour: 10, minute: 30, second: 40});
 
-           inputs[2].triggerEventHandler('ngModelChange', '70');
+           inputs[2].triggerEventHandler('change', createChangeEvent('70'));
            fixture.detectChanges();
            expectToDisplayTime(fixture.nativeElement, '10:31:10');
            expect(fixture.componentInstance.model).toEqual({hour: 10, minute: 31, second: 10});
 
-           inputs[2].triggerEventHandler('ngModelChange', 'aa');
+           inputs[2].triggerEventHandler('change', createChangeEvent('aa'));
            fixture.detectChanges();
            expectToDisplayTime(fixture.nativeElement, '10:31:');
            expect(fixture.componentInstance.model).toEqual(null);
@@ -439,8 +443,8 @@ describe('ngb-timepicker', () => {
            expect(getTimepicker(compiled)).toHaveCssClass('ng-invalid');
            expect(getTimepicker(compiled)).not.toHaveCssClass('ng-valid');
 
-           inputs[0].triggerEventHandler('ngModelChange', '12');
-           inputs[1].triggerEventHandler('ngModelChange', '15');
+           inputs[0].triggerEventHandler('change', createChangeEvent('12'));
+           inputs[1].triggerEventHandler('change', createChangeEvent('15'));
            fixture.detectChanges();
            expect(getTimepicker(compiled)).toHaveCssClass('ng-valid');
            expect(getTimepicker(compiled)).not.toHaveCssClass('ng-invalid');
@@ -458,7 +462,7 @@ describe('ngb-timepicker', () => {
            fixture.detectChanges();
 
            const inputs = fixture.debugElement.queryAll(By.css('input'));
-           inputs[0].triggerEventHandler('ngModelChange', 'aa');
+           inputs[0].triggerEventHandler('change', createChangeEvent('aa'));
            fixture.detectChanges();
 
            expect(fixture.componentInstance.model).toBeNull();
@@ -476,7 +480,7 @@ describe('ngb-timepicker', () => {
            fixture.detectChanges();
 
            const inputs = fixture.debugElement.queryAll(By.css('input'));
-           inputs[2].triggerEventHandler('ngModelChange', 'aa');
+           inputs[2].triggerEventHandler('change', createChangeEvent('aa'));
            fixture.detectChanges();
 
            expect(fixture.componentInstance.model).toBeNull();
