@@ -5,7 +5,12 @@
         {{ demoTitle }}
       </span>
       <div class="pull-xs-right">
-        <img role="button" src="img/code-icon.png" (click)="showCode = !showCode"/>
+        <img role="button"
+             src="img/code-icon.png"
+             (click)="showCode = !showCode"
+             angulartics2On="click"
+             angularticsEvent="Demo Toggle Source"
+             angularticsCategory="{{ demoTitle }}"/>
         <!--<a target="_blank" href="http://plnkr.co" title="Edit in Plnkr">-->
           <!--<img src="img/plunker-icon.png" height="24" width="24"/>-->
         <!--</a>-->
