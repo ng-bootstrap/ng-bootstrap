@@ -44,7 +44,10 @@ const NGB_TYPEAHEAD_VALUE_ACCESSOR = {
     '[class.open]': '_windowRef !== null',
     '(document:click)': '_closePopup()',
     '(input)': 'onChange($event.target.value)',
-    '(keydown)': '_handleKeyDown($event)'
+    '(keydown)': '_handleKeyDown($event)',
+    'autocomplete': 'off',
+    'autocapitalize': 'off',
+    'autocorrect': 'off'
   },
   providers: [NGB_TYPEAHEAD_VALUE_ACCESSOR]
 })

@@ -396,6 +396,23 @@ describe('ngb-typeahead', () => {
        })));
   });
 
+  describe('auto attributes', () => {
+
+    it('should have autocomplete, autocapitalize and autocorrect attributes set to off',
+       async(inject([TestComponentBuilder], (tcb) => {
+         const html = '<input type="text" [ngbTypeahead]="findObjects" />';
+
+         tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
+           fixture.detectChanges();
+           const input = getNativeInput(fixture.nativeElement);
+
+           expect(input.getAttribute('autocomplete')).toBe('off');
+           expect(input.getAttribute('autocapitalize')).toBe('off');
+           expect(input.getAttribute('autocorrect')).toBe('off');
+         });
+       })));
+  });
+
 });
 
 @Component(
