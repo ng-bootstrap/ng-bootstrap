@@ -183,7 +183,7 @@ describe('ngb-typeahead', () => {
          });
        })));
 
-    it('should select the result on click, close window and fill the input',
+    it('should select the result on mousedown, close window and fill the input',
        async(inject([TestComponentBuilder], (tcb) => {
          const html = `<input type="text" [(ngModel)]="model" [ngbTypeahead]="find"/>`;
 
@@ -196,7 +196,7 @@ describe('ngb-typeahead', () => {
            fixture.detectChanges();
            expectWindowResults(compiled, ['+one', 'one more']);
 
-           getWindowLinks(fixture.debugElement)[0].triggerEventHandler('click', {});
+           getWindowLinks(fixture.debugElement)[0].triggerEventHandler('mousedown', {});
            fixture.detectChanges();
            expect(getWindow(compiled)).toBeNull();
            expectInputValue(compiled, 'one');
@@ -208,7 +208,7 @@ describe('ngb-typeahead', () => {
            expectWindowResults(compiled, ['+one', 'one more']);
            expectInputValue(compiled, 'o');
 
-           getWindowLinks(fixture.debugElement)[0].triggerEventHandler('click', {});
+           getWindowLinks(fixture.debugElement)[0].triggerEventHandler('mousedown', {});
            fixture.detectChanges();
            expect(getWindow(compiled)).toBeNull();
            expectInputValue(compiled, 'one');
