@@ -1,5 +1,4 @@
-import {inject, fakeAsync, discardPeriodicTasks, tick, addProviders} from '@angular/core/testing';
-import {TestComponentBuilder} from '@angular/compiler/testing';
+import {inject, fakeAsync, discardPeriodicTasks, tick, TestComponentBuilder} from '@angular/core/testing';
 
 import {By} from '@angular/platform-browser';
 import {Component} from '@angular/core';

@@ -1,20 +1,13 @@
-import {inject, async, addProviders} from '@angular/core/testing';
-import {TestComponentBuilder} from '@angular/compiler/testing';
 import {Component, DebugElement} from '@angular/core';
-import {NGB_TYPEAHEAD_DIRECTIVES, NgbTypeahead} from './typeahead';
+import {inject, async, TestBed, TestComponentBuilder} from '@angular/core/testing';
+
+import {NgbTypeahead} from './typeahead';
+import {NgbTypeaheadModule} from './index';
 import {Observable} from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
-import {NgbTypeaheadWindow} from './typeahead-window';
 import {By} from '@angular/platform-browser';
 import {expectResults, getWindowLinks} from './test-common';
-import {
-  Validators,
-  provideForms,
-  disableDeprecatedForms,
-  FormControl,
-  REACTIVE_FORM_DIRECTIVES,
-  FormGroup
-} from '@angular/forms';
+import {Validators, FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 enum Key {
   Tab = 9,
@@ -60,7 +53,9 @@ function expectWindowResults(element, expectedResults: string[]) {
 
 describe('ngb-typeahead', () => {
 
-  beforeEach(() => { addProviders([disableDeprecatedForms(), provideForms()]); });
+  beforeEach(() => {
+    TestBed.configureTestingModule({imports: [NgbTypeaheadModule, FormsModule, ReactiveFormsModule]});
+  });
 
   describe('valueaccessor', () => {
 
@@ -440,12 +435,7 @@ describe('ngb-typeahead', () => {
 
 });
 
-@Component({
-  selector: 'test-cmp',
-  directives: [NGB_TYPEAHEAD_DIRECTIVES, REACTIVE_FORM_DIRECTIVES],
-  precompile: [NgbTypeaheadWindow],
-  template: ''
-})
+@Component({selector: 'test-cmp', template: ''})
 class TestComponent {
   private _strings = ['one', 'one more', 'two', 'three'];
   private _objects =

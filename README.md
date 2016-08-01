@@ -19,7 +19,7 @@ Feel free to make comments there.
 Check all the directives in action at https://ng-bootstrap.github.io
 
 ## Dependencies
-* [Angular 2](https://angular.io) (tested with 2.0-rc.4)
+* [Angular 2](https://angular.io) (tested with 2.0-rc.5)
 * [Bootstrap 4](https://v4-alpha.getbootstrap.com) (test with 4.0 alpha V3)
 
 ## Installation
@@ -27,48 +27,23 @@ After installing the above dependencies, install `ng-bootstrap` via:
 ```
 npm install --save @ng-bootstrap/ng-bootstrap
 ```
-Once Installed, directives may be imported in several different ways:
-For all the directives (if you simply intend on using everything):
+Once installed you need to import our main module:
 ```
-import {NGB_DIRECTIVES} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 ```
-Or, for specific component directives (using Alert as an example):
+The only remaining part is to list the imported module in your application module. You should end up with the code similar to:
 ```
-import {NGB_ALERT_DIRECTIVES} from '@ng-bootstrap/ng-bootstrap';
-```
-Once imported, add your chosen directives on your component's `directives` array property:
-```
-directives: [
-  ...,
-  NGB_DIRECTIVES,
-  ...
-]
-```
-Certain directives need to be precompiled in order to be used. This is done via your component's `precompiled` array
-property. The following components require precompilation:
-```
-precompile: [
-  ...,
-  NGB_PRECOMPILE,
-  ...
-]
-```
-We recommend putting these in the top level component of your application. So ultimately, you
-should wind up having something that looks like this:
-```
-import {Component} from '@angular/core';
-import {NGB_DIRECTIVES, NGB_PRECOMPILE} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
-@Component({
-  selector: 'app',
-  directives: [ NGB_DIRECTIVES ],
-  precompile: [ NGB_PRECOMPILE ],
-  templateUrl: './app.html',
+@NgModule({
+  declarations: [AppComponent, ...],
+  imports: [NgbModule, ...],  
+  bootstrap: [AppComponent]
 })
-export class App {
-    ...
+export class AppModule {
 }
 ```
+
 ## Supported browsers
 
 We support the same browsers and versions supported by both Bootstrap 4 and Angular 2, whichever is _more_ restrictive.

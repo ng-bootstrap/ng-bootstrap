@@ -1,5 +1,4 @@
-import {inject, async, addProviders} from '@angular/core/testing';
-import {TestComponentBuilder} from '@angular/compiler/testing';
+import {inject, async, TestComponentBuilder} from '@angular/core/testing';
 
 import {NgbModalWindow} from './modal_window';
 import {ModalDismissReasons} from './modal_dismiss_reasons';

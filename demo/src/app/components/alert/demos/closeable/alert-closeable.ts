@@ -1,11 +1,8 @@
 import { Input, Component } from '@angular/core';
 
-import { NGB_ALERT_DIRECTIVES } from '@ng-bootstrap/ng-bootstrap';
-
 @Component({
   selector: 'ngbd-alert-closeable',
-  templateUrl: './alert-closeable.html',
-  directives: [NGB_ALERT_DIRECTIVES]
+  templateUrl: './alert-closeable.html'
 })
 export class NgbdAlertCloseable {
 

@@ -1,8 +1,8 @@
-import {inject, async} from '@angular/core/testing';
-import {TestComponentBuilder, ComponentFixture} from '@angular/compiler/testing';
+import {inject, async, TestBed, TestComponentBuilder, ComponentFixture} from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
 import {Component} from '@angular/core';
 
+import {NgbTooltipModule} from './index';
 import {NgbTooltipWindow, NgbTooltip} from './tooltip';
 
 describe('ngb-tooltip-window', () => {
@@ -26,6 +26,8 @@ describe('ngb-tooltip-window', () => {
 });
 
 describe('ngb-tooltip', () => {
+
+  beforeEach(() => { TestBed.configureTestingModule({imports: [NgbTooltipModule]}); });
 
   function getWindow(fixture) { return fixture.nativeElement.querySelector('ngb-tooltip-window'); }
 
@@ -305,7 +307,7 @@ describe('ngb-tooltip', () => {
 });
 
 
-@Component({selector: 'test-cmpt', template: ``, directives: [NgbTooltip], precompile: [NgbTooltipWindow]})
+@Component({selector: 'test-cmpt', template: ``})
 export class TestCmpt {
   name = 'World';
   show = true;

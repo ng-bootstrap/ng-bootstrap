@@ -1,11 +1,9 @@
 import {Component} from '@angular/core';
-import {NGB_TIMEPICKER_DIRECTIVES} from '@ng-bootstrap/ng-bootstrap';
-import {FormControl, REACTIVE_FORM_DIRECTIVES} from '@angular/forms';
+import {FormControl} from '@angular/forms';
 
 @Component({
   selector: 'ngbd-timepicker-validation',
-  template: require('./timepicker-validation.html'),
-  directives: [NGB_TIMEPICKER_DIRECTIVES, REACTIVE_FORM_DIRECTIVES]
+  templateUrl: './timepicker-validation.html'
 })
 export class NgbdTimepickerValidation {
   time;

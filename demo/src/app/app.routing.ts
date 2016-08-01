@@ -1,4 +1,4 @@
-import {provideRouter, RouterConfig} from '@angular/router';
+import {Routes, RouterModule} from '@angular/router';
 import {DefaultComponent} from './default';
 import {GettingStarted} from './getting-started';
 import {
@@ -19,7 +19,7 @@ import {
   NgbdTypeahead
 } from './components';
 
-const routes: RouterConfig = [
+const routes: Routes = [
   {path: '', pathMatch: 'full', redirectTo: 'home'},
   {path: 'home', component: DefaultComponent},
   {path: 'getting-started', component: GettingStarted},
@@ -41,6 +41,4 @@ const routes: RouterConfig = [
   {path: 'components/typeahead', component: NgbdTypeahead}
 ];
 
-export const APP_ROUTER_PROVIDERS = [
-  provideRouter(routes)
-];
+export const routing = RouterModule.forRoot(routes, {useHash: true});

@@ -69,21 +69,21 @@ module.exports = function makeWebpackConfig() {
 
     alias: {
       '@ng-bootstrap/ng-bootstrap': root('src/index.ts'),
-      '@ng-bootstrap/accordion': root('src/accordion/accordion.ts'),
-      '@ng-bootstrap/alert': root('src/alert/alert.ts'),
-      '@ng-bootstrap/buttons': root('src/buttons/radio.ts'),
-      '@ng-bootstrap/carousel': root('src/carousel/carousel.ts'),
-      '@ng-bootstrap/collapse': root('src/collapse/collapse.ts'),
-      '@ng-bootstrap/dropdown': root('src/dropdown/dropdown.ts'),
-      '@ng-bootstrap/modal': root('src/modal/modal.ts'),
-      '@ng-bootstrap/pagination': root('src/pagination/pagination.ts'),
-      '@ng-bootstrap/popover': root('src/popover/popover.ts'),
-      '@ng-bootstrap/progressbar': root('src/progressbar/progressbar.ts'),
-      '@ng-bootstrap/rating': root('src/rating/rating.ts'),
-      '@ng-bootstrap/tabset': root('src/tabset/tabset.ts'),
-      '@ng-bootstrap/timepicker': root('src/timepicker/timepicker.ts'),
-      '@ng-bootstrap/tooltip': root('src/tooltip/tooltip.ts'),
-      '@ng-bootstrap/typeahead': root('src/typeahead/typeahead.ts')
+      '@ng-bootstrap/accordion': root('src/accordion/index.ts'),
+      '@ng-bootstrap/alert': root('src/alert/index.ts'),
+      '@ng-bootstrap/buttons': root('src/buttons/index.ts'),
+      '@ng-bootstrap/carousel': root('src/carousel/index.ts'),
+      '@ng-bootstrap/collapse': root('src/collapse/index.ts'),
+      '@ng-bootstrap/dropdown': root('src/dropdown/index.ts'),
+      '@ng-bootstrap/modal': root('src/modal/index.ts'),
+      '@ng-bootstrap/pagination': root('src/pagination/index.ts'),
+      '@ng-bootstrap/popover': root('src/popover/index.ts'),
+      '@ng-bootstrap/progressbar': root('src/progressbar/index.ts'),
+      '@ng-bootstrap/rating': root('src/rating/index.ts'),
+      '@ng-bootstrap/tabset': root('src/tabset/index.ts'),
+      '@ng-bootstrap/timepicker': root('src/timepicker/index.ts'),
+      '@ng-bootstrap/tooltip': root('src/tooltip/index.ts'),
+      '@ng-bootstrap/typeahead': root('src/typeahead/index.ts')
     }
   };
 

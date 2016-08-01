@@ -1,11 +1,8 @@
 import {Component} from '@angular/core';
-import {NGB_POPOVER_DIRECTIVES, NgbPopoverWindow} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'ngbd-popover-triggers',
-  templateUrl: './popover-triggers.html',
-  directives: [NGB_POPOVER_DIRECTIVES],
-  precompile: [NgbPopoverWindow]
+  templateUrl: './popover-triggers.html'
 })
 export class NgbdPopoverTriggers {
 }

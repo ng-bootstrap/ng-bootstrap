@@ -108,4 +108,4 @@ export class NgbPopover implements OnInit, AfterViewChecked, OnDestroy {
   ngOnDestroy() { this._unregisterListenersFn(); }
 }
 
-export const NGB_POPOVER_DIRECTIVES = [NgbPopover];
+export const NGB_POPOVER_DIRECTIVES = [NgbPopover, NgbPopoverWindow];

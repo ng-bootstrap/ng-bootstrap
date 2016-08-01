@@ -1,16 +1,8 @@
-import {inject, async, addProviders} from '@angular/core/testing';
-import {TestComponentBuilder} from '@angular/compiler/testing';
+import {inject, async, TestComponentBuilder, TestBed} from '@angular/core/testing';
 import {Component} from '@angular/core';
 
-import {NGB_RADIO_DIRECTIVES} from './radio';
-import {
-  Validators,
-  provideForms,
-  disableDeprecatedForms,
-  FormControl,
-  REACTIVE_FORM_DIRECTIVES,
-  FormGroup
-} from '@angular/forms';
+import {NgbButtonsModule} from './index';
+import {Validators, FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 function expectRadios(element: HTMLElement, states: number[]) {
   const labels = element.querySelectorAll('label');
@@ -36,8 +28,9 @@ function getInput(nativeEl: HTMLElement, idx: number): HTMLInputElement {
 }
 
 describe('ngbRadioGroup', () => {
-
-  beforeEach(() => { addProviders([disableDeprecatedForms(), provideForms()]); });
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({imports: [NgbButtonsModule, FormsModule, ReactiveFormsModule]});
+  }));
 
   const defaultHtml = `<div [(ngModel)]="model" ngbRadioGroup>
       <label class="btn">
@@ -313,7 +306,7 @@ describe('ngbRadioGroup', () => {
      })));
 });
 
-@Component({selector: 'test-cmp', directives: [NGB_RADIO_DIRECTIVES, REACTIVE_FORM_DIRECTIVES], template: ''})
+@Component({selector: 'test-cmp', template: ''})
 class TestComponent {
   form = new FormGroup({control: new FormControl('', Validators.required)});
 

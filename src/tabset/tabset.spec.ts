@@ -1,6 +1,4 @@
-import {inject, async, addProviders} from '@angular/core/testing';
-
-import {TestComponentBuilder} from '@angular/compiler/testing';
+import {inject, async, TestComponentBuilder} from '@angular/core/testing';
 
 import {Component} from '@angular/core';
 
