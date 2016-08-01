@@ -1,10 +1,8 @@
 import {Component} from '@angular/core';
-import {NGB_PAGINATION_DIRECTIVES} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'ngbd-pagination-size',
-  templateUrl: './pagination-size.html',
-  directives: [NGB_PAGINATION_DIRECTIVES]
+  templateUrl: './pagination-size.html'
 })
 export class NgbdPaginationSize {
   currentPage = 3;

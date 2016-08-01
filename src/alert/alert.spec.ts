@@ -1,6 +1,4 @@
-import {inject, async, fakeAsync, tick} from '@angular/core/testing';
-
-import {TestComponentBuilder} from '@angular/compiler/testing';
+import {inject, async, fakeAsync, tick, TestComponentBuilder} from '@angular/core/testing';
 
 import {Component} from '@angular/core';
 
@@ -122,7 +120,8 @@ describe('NgbDismissibleAlert', () => {
 
 });
 
-@Component({selector: 'test-cmp', directives: [NgbAlert, NgbDismissibleAlert], template: '', precompile: [NgbAlert]})
+@Component(
+    {selector: 'test-cmp', directives: [NgbAlert, NgbDismissibleAlert], template: '', entryComponents: [NgbAlert]})
 class TestComponent {
   name = 'World';
   closed = false;

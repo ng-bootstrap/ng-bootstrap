@@ -9,7 +9,7 @@
   <ul>
     <li>
       <a href="https://angular.io" target="_blank">Angular</a> (<em>requires</em> Angular version 2 or higher, tested
-      with 2.0-rc.4)
+      with 2.0-rc.5)
     </li>
     <li>
       <a href="http://v4-alpha.getbootstrap.com" target="_blank">Bootstrap CSS</a> (tested with version 4.0 alpha V3)
@@ -18,66 +18,20 @@
   <h3>
     Installation
   </h3>
-  <p>
-    After installing the above dependencies, install <code>ng-bootstrap</code> via:
-  </p>
-  <pre>
-    <code>npm install --save @ng-bootstrap/ng-bootstrap</code>
-  </pre>
-  <p>
-    Once installed, directives may be imported in several different ways:
-  </p>
-  <p>
-    For all the directives (if you simply intend on using everything):
-  </p>
-  <pre>
-    <code>import {NGB_DIRECTIVES} from '@ng-bootstrap/ng-bootstrap';</code>
-  </pre>
-  <p>
-    Or, for specific component directives (using Alert as an example):
-  </p>
-  <pre>
-    <code>import {NGB_ALERT_DIRECTIVES} from '@ng-bootstrap/ng-bootstrap';</code>
-  </pre>
-  <p>
-    Once imported, add your chosen directives on your component's <code>directives</code> array property:
-  </p>
-  <pre>
-    directives: [
-      ...
-      NGB_DIRECTIVES,
-      ...
-    ]
-  </pre>
-  <p>
-    Certain directives need to be precompiled in order to be used. This is done via your component's <code>precompile</code>
-    array property. The following components require precompilation:
-  </p>
-  <pre>
-    precompile: [
-      ...
-      NGB_PRECOMPILE,
-      ...
-    ]
-  </pre>
-  <p>
-    We recommend putting these in the top level component of your application.  So ultimately, you should wind up
-    having something that looks like this:
-  </p>
-  <pre>
-    import {Component} from '@angular/core';
-    import {NGB_DIRECTIVES, NGB_PRECOMPILE} from '@ng-bootstrap/ng-bootstrap';
+  <p>After installing the above dependencies, install <code>ng-bootstrap</code> via: <br><code>npm install --save @ng-bootstrap/ng-bootstrap</code>.</p>
 
-    @Component({
-      selector: 'app',
-      directives: [ NGB_DIRECTIVES ],
-      precompile: [ NGB_PRECOMPILE ],
-      templateUrl: './app.html',
-    })
-    export class App {
-        ...
-    }
-  </pre>
+  <p>Once installed you need to import our main module.</p>
+  <pre>import &#123;NgbModule} from '@ng-bootstrap/ng-bootstrap';</pre>
+  <p>The only remaining part is to list the imported module in your application module. You should end up with the code similar to:</p>
+  <pre>import &#123;NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
+@NgModule(&#123;
+  declarations: [AppComponent, ...],
+  imports: [NgbModule, ...],
+  bootstrap: [AppComponent]
+})
+export class AppModule &#123;
+}</pre>
   <h3>
     Getting Help
   </h3>

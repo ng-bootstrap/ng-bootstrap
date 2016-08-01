@@ -1,11 +1,8 @@
 import {Component} from '@angular/core';
 
-import {NGB_RATING_DIRECTIVES} from '@ng-bootstrap/ng-bootstrap';
-
 @Component({
   selector: 'ngbd-rating-basic',
-  templateUrl: './basic.component.html',
-  directives: [NGB_RATING_DIRECTIVES]
+  templateUrl: './basic.component.html'
 })
 export class RatingBasicComponent {
   currentRate = 8;

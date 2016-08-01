@@ -1,9 +1,9 @@
-import {inject, async} from '@angular/core/testing';
-import {TestComponentBuilder, ComponentFixture} from '@angular/compiler/testing';
+import {inject, async, TestBed, TestComponentBuilder, ComponentFixture} from '@angular/core/testing';
 
 import {By} from '@angular/platform-browser';
 import {Component} from '@angular/core';
 
+import {NgbPopoverModule} from './index';
 import {NgbPopoverWindow, NgbPopover} from './popover';
 
 describe('ngb-popover-window', () => {
@@ -29,6 +29,8 @@ describe('ngb-popover-window', () => {
 });
 
 describe('ngb-popover', () => {
+
+  beforeEach(() => { TestBed.configureTestingModule({imports: [NgbPopoverModule]}); });
 
   function getWindow(fixture) { return fixture.nativeElement.querySelector('ngb-popover-window'); }
 
@@ -309,7 +311,7 @@ describe('ngb-popover', () => {
   });
 });
 
-@Component({selector: 'test-cmpt', template: ``, directives: [NgbPopover], precompile: [NgbPopoverWindow]})
+@Component({selector: 'test-cmpt', template: ``})
 export class TestCmpt {
   name = 'World';
   show = true;

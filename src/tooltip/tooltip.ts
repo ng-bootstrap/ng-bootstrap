@@ -101,5 +101,3 @@ export class NgbTooltip implements OnInit, AfterViewChecked, OnDestroy {
 
   ngOnDestroy() { this._unregisterListenersFn(); }
 }
-
-export const NGB_TOOLTIP_DIRECTIVES = [NgbTooltip];

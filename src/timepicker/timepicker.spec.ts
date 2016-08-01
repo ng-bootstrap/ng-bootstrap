@@ -1,18 +1,11 @@
-import {inject, async, addProviders} from '@angular/core/testing';
-import {TestComponentBuilder} from '@angular/compiler/testing';
-import {By} from '@angular/platform-browser';
-
 import {Component} from '@angular/core';
 
-import {NgbTimepicker} from './timepicker';
-import {
-  Validators,
-  provideForms,
-  disableDeprecatedForms,
-  FormControl,
-  REACTIVE_FORM_DIRECTIVES,
-  FormGroup
-} from '@angular/forms';
+import {inject, async, TestBed, TestComponentBuilder} from '@angular/core/testing';
+import {By} from '@angular/platform-browser';
+
+import {Validators, FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
+
+import {NgbTimepickerModule} from './index';
 
 function getTimepicker(el: HTMLElement) {
   return el.querySelector('ngb-timepicker');
@@ -54,7 +47,9 @@ function expectToDisplayTime(el: HTMLElement, time: string) {
 
 describe('ngb-timepicker', () => {
 
-  beforeEach(() => { addProviders([disableDeprecatedForms(), provideForms()]); });
+  beforeEach(() => {
+    TestBed.configureTestingModule({imports: [NgbTimepickerModule, FormsModule, ReactiveFormsModule]});
+  });
 
   describe('rendering based on model', () => {
 
@@ -770,7 +765,7 @@ describe('ngb-timepicker', () => {
 });
 
 
-@Component({selector: 'test-cmp', directives: [NgbTimepicker, REACTIVE_FORM_DIRECTIVES], template: ''})
+@Component({selector: 'test-cmp', template: ''})
 class TestComponent {
   model;
   disabled = true;

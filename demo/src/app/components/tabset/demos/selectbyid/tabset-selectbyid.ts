@@ -1,10 +1,8 @@
 import {Component} from '@angular/core';
-import {NGB_TABSET_DIRECTIVES} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'ngbd-tabset-selectbyid',
-  templateUrl: './tabset-selectbyid.html',
-  directives: [NGB_TABSET_DIRECTIVES]
+  templateUrl: './tabset-selectbyid.html'
 })
 export class NgbdTabsetSelectbyid {
   tabIds = ['foo', 'bar'];

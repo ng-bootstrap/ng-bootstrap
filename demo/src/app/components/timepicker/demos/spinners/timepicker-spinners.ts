@@ -1,10 +1,8 @@
 import {Component} from '@angular/core';
-import {NGB_TIMEPICKER_DIRECTIVES} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'ngbd-timepicker-spinners',
-  templateUrl: './timepicker-spinners.html',
-  directives: [NGB_TIMEPICKER_DIRECTIVES]
+  templateUrl: './timepicker-spinners.html'
 })
 export class NgbdTimepickerSpinners {
   time = {hour: 13, minute: 30};

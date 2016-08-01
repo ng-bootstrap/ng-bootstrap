@@ -1,53 +1,29 @@
-import {
-  NgbAccordion,
-  NgbPanel,
-  NgbPanelTitle,
-  NgbPanelContent,
-  NgbPanelChangeEvent,
-  NGB_ACCORDION_DIRECTIVES
-} from './accordion/accordion';
-import {NgbAlert, NgbDismissibleAlert, NGB_ALERT_DIRECTIVES} from './alert/alert';
-import {NgbCarousel, NgbSlide, NGB_CAROUSEL_DIRECTIVES} from './carousel/carousel';
-import {NgbCollapse, NGB_COLLAPSE_DIRECTIVES} from './collapse/collapse';
-import {NgbDropdown, NgbDropdownToggle, NGB_DROPDOWN_DIRECTIVES} from './dropdown/dropdown';
-import {NgbPagination, NGB_PAGINATION_DIRECTIVES} from './pagination/pagination';
-import {NgbProgressbar, NGB_PROGRESSBAR_DIRECTIVES} from './progressbar/progressbar';
-import {NgbRating, NGB_RATING_DIRECTIVES} from './rating/rating';
-import {NgbTabset, NgbTab, NgbTabContent, NgbTabTitle, NgbTabChangeEvent, NGB_TABSET_DIRECTIVES} from './tabset/tabset';
-import {NgbTimepicker, NGB_TIMEPICKER_DIRECTIVES} from './timepicker/timepicker';
-import {NgbTooltip, NgbTooltipWindow, NGB_TOOLTIP_DIRECTIVES} from './tooltip/tooltip';
-import {NgbTypeahead, NGB_TYPEAHEAD_DIRECTIVES} from './typeahead/typeahead';
-import {NgbTypeaheadWindow} from './typeahead/typeahead-window';
-import {NgbPopover, NgbPopoverWindow, NGB_POPOVER_DIRECTIVES} from './popover/popover';
-import {NgbRadioGroup, NgbRadioLabel, NgbRadio, NGB_RADIO_DIRECTIVES} from './buttons/radio';
+import {NgModule} from '@angular/core';
 
-export {
-  NgbAccordion,
-  NgbPanel,
-  NgbPanelTitle,
-  NgbPanelContent,
-  NgbPanelChangeEvent,
-  NGB_ACCORDION_DIRECTIVES
-} from './accordion/accordion';
-export {NgbAlert, NgbDismissibleAlert, NGB_ALERT_DIRECTIVES} from './alert/alert';
-export {NgbCarousel, NgbSlide, NGB_CAROUSEL_DIRECTIVES} from './carousel/carousel';
-export {NgbCollapse, NGB_COLLAPSE_DIRECTIVES} from './collapse/collapse';
-export {NgbDropdown, NgbDropdownToggle, NGB_DROPDOWN_DIRECTIVES} from './dropdown/dropdown';
-export {NgbPagination, NGB_PAGINATION_DIRECTIVES} from './pagination/pagination';
-export {NgbProgressbar, NGB_PROGRESSBAR_DIRECTIVES} from './progressbar/progressbar';
-export {NgbRating, NGB_RATING_DIRECTIVES} from './rating/rating';
-export {NgbTabset, NgbTab, NgbTabContent, NgbTabTitle, NgbTabChangeEvent, NGB_TABSET_DIRECTIVES} from './tabset/tabset';
-export {NgbTimepicker, NGB_TIMEPICKER_DIRECTIVES} from './timepicker/timepicker';
-export {NgbTooltip, NgbTooltipWindow, NGB_TOOLTIP_DIRECTIVES} from './tooltip/tooltip';
-export {NgbTypeahead, NGB_TYPEAHEAD_DIRECTIVES} from './typeahead/typeahead';
-export {NgbPopover, NgbPopoverWindow, NGB_POPOVER_DIRECTIVES} from './popover/popover';
-export {NgbRadioGroup, NgbRadioLabel, NgbRadio, NGB_RADIO_DIRECTIVES} from './buttons/radio';
+import {NgbAccordionModule} from './accordion';
+import {NgbAlertModule} from './alert';
+import {NgbButtonsModule} from './buttons';
+import {NgbCarouselModule} from './carousel';
+import {NgbCollapseModule} from './collapse';
+import {NgbDropdownModule} from './dropdown';
+import {NgbPaginationModule} from './pagination';
+import {NgbPopoverModule} from './popover';
+import {NgbProgressbarModule} from './progressbar';
+import {NgbRatingModule} from './rating';
+import {NgbTabsetModule} from './tabset';
+import {NgbTimepickerModule} from './timepicker';
+import {NgbTooltipModule} from './tooltip';
+import {NgbTypeaheadModule} from './typeahead';
 
-export const NGB_DIRECTIVES = [
-  NGB_ACCORDION_DIRECTIVES, NGB_ALERT_DIRECTIVES, NGB_CAROUSEL_DIRECTIVES, NGB_COLLAPSE_DIRECTIVES,
-  NGB_DROPDOWN_DIRECTIVES, NGB_PAGINATION_DIRECTIVES, NGB_PROGRESSBAR_DIRECTIVES, NGB_RATING_DIRECTIVES,
-  NGB_TABSET_DIRECTIVES, NGB_TIMEPICKER_DIRECTIVES, NGB_TOOLTIP_DIRECTIVES, NGB_TYPEAHEAD_DIRECTIVES,
-  NGB_POPOVER_DIRECTIVES, NGB_RADIO_DIRECTIVES
-];
+export {NgbPanelChangeEvent} from './accordion';
+export {NgbTabChangeEvent} from './tabset';
 
-export const NGB_PRECOMPILE = [NgbAlert, NgbPopoverWindow, NgbTooltipWindow, NgbTypeaheadWindow];
+@NgModule({
+  exports: [
+    NgbAccordionModule, NgbAlertModule, NgbButtonsModule, NgbCarouselModule, NgbCollapseModule, NgbDropdownModule,
+    NgbPaginationModule, NgbPopoverModule, NgbProgressbarModule, NgbRatingModule, NgbTabsetModule, NgbTimepickerModule,
+    NgbTooltipModule, NgbTypeaheadModule
+  ]
+})
+export class NgbModule {
+}

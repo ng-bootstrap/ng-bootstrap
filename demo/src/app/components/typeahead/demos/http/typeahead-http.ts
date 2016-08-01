@@ -1,8 +1,5 @@
-import {Component, Input} from '@angular/core';
-import {HTTP_PROVIDERS, JSONP_PROVIDERS} from '@angular/http';
-import {NGB_TYPEAHEAD_DIRECTIVES, NGB_PRECOMPILE} from '@ng-bootstrap/ng-bootstrap';
-
-import {Injectable} from '@angular/core';
+import {Component, Injectable} from '@angular/core';
+import {} from '@angular/core';
 import {Jsonp, URLSearchParams} from '@angular/http';
 import {Observable} from 'rxjs/Rx';
 import 'rxjs/add/operator/debounceTime';
@@ -30,10 +27,8 @@ export class WikipediaService {
 
 @Component({
   selector: 'ngbd-typeahead-http',
-  template: require('./typeahead-http.html'),
-  directives: [NGB_TYPEAHEAD_DIRECTIVES],
-  precompile: [NGB_PRECOMPILE],
-  providers: [HTTP_PROVIDERS, JSONP_PROVIDERS, WikipediaService],
+  templateUrl: './typeahead-http.html',
+  providers: [WikipediaService],
   styles: [`.form-control { width: 300px; display: inline; }`]
 })
 export class NgbdTypeaheadHttp {
