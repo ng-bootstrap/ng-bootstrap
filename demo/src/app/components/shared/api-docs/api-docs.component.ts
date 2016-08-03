@@ -13,4 +13,9 @@ export class NgbdApiDocs {
   @Input() set directive(directiveName) {
     this.apiDocs = docs[directiveName];
   };
+
+  private _methodSignature(method) {
+    const args = method.args.map(arg => `${arg.name}: ${arg.type}`).join(', ');
+    return `${method.name}(${args})`;
+  }
 }
