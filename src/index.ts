@@ -19,6 +19,7 @@ import {NgbTypeaheadModule} from './typeahead/typeahead.module';
 export {NgbPanelChangeEvent} from './accordion/accordion.module';
 export {NgbModal, NgbModalOptions, NgbModalRef, ModalDismissReasons} from './modal/modal.module';
 export {NgbTabChangeEvent} from './tabset/tabset.module';
+export {NgbProgressbarConfig} from './progressbar/progressbar.module';
 
 @NgModule({
   exports: [
