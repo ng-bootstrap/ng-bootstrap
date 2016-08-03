@@ -1,10 +1,11 @@
-import {TestBed, ComponentFixture} from '@angular/core/testing';
+import {TestBed, ComponentFixture, inject} from '@angular/core/testing';
 import {createGenericTestComponent} from '../util/tests';
 
 import {Component} from '@angular/core';
 
 import {NgbProgressbarModule} from './progressbar.module';
 import {NgbProgressbar} from './progressbar';
+import {NgbProgressbarConfig} from './progressbar-config';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -17,11 +18,19 @@ function getProgressbar(nativeEl: Element): Element {
   return nativeEl.querySelector('progress');
 }
 
-describe('ng-progressbar', () => {
+describe('ngb-progressbar', () => {
   describe('business logic', () => {
     let progressCmp: NgbProgressbar;
 
-    beforeEach(() => { progressCmp = new NgbProgressbar(); });
+    beforeEach(() => { progressCmp = new NgbProgressbar(new NgbProgressbarConfig()); });
+
+    it('should initialize inputs with default values', () => {
+      const defaultConfig = new NgbProgressbarConfig();
+      expect(progressCmp.max).toBe(defaultConfig.max);
+      expect(progressCmp.animated).toBe(defaultConfig.animated);
+      expect(progressCmp.striped).toBe(defaultConfig.striped);
+      expect(progressCmp.type).toBe(defaultConfig.type);
+    });
 
     it('should calculate the percentage (default max size)', () => {
       progressCmp.value = 50;
@@ -153,6 +162,31 @@ describe('ng-progressbar', () => {
 
       expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('progress-striped');
       expect(getProgressbar(fixture.nativeElement)).not.toHaveCssClass('false');
+    });
+  });
+
+  describe('Custom config', () => {
+    let config: NgbProgressbarConfig;
+
+    beforeEach(() => { TestBed.configureTestingModule({imports: [NgbProgressbarModule]}); });
+
+    beforeEach(inject([NgbProgressbarConfig], (c: NgbProgressbarConfig) => {
+      config = c;
+      config.max = 1000;
+      config.striped = true;
+      config.animated = true;
+      config.type = 'success';
+    }));
+
+    it('should initialize inputs with provided config', () => {
+      const fixture = TestBed.createComponent(NgbProgressbar);
+      fixture.detectChanges();
+
+      let progressbar = fixture.componentInstance;
+      expect(progressbar.max).toBe(config.max);
+      expect(progressbar.striped).toBe(config.striped);
+      expect(progressbar.animated).toBe(config.animated);
+      expect(progressbar.type).toBe(config.type);
     });
   });
 });

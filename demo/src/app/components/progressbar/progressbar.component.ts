@@ -12,6 +12,11 @@ import {DEMO_SNIPPETS} from './demos';
       <ngbd-example-box demoTitle="Striped progress bars" [htmlSnippet]="snippets.striped.markup" [tsSnippet]="snippets.striped.code">
         <ngbd-progressbar-striped></ngbd-progressbar-striped>
       </ngbd-example-box>
+      <ngbd-example-box demoTitle="Global configuration of progress bars" 
+                        [htmlSnippet]="snippets.config.markup" 
+                        [tsSnippet]="snippets.config.code">
+        <ngbd-progressbar-config></ngbd-progressbar-config>      
+      </ngbd-example-box>
     </ngbd-content-wrapper>
   `
 })
