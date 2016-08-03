@@ -17,7 +17,7 @@ import 'rxjs/add/operator/let';
 import {Positioning} from '../util/positioning';
 import {NgbTypeaheadWindow, ResultTplCtx} from './typeahead-window';
 import {PopupService} from '../util/popup';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/common';
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {toString} from '../util/util';
 
 enum Key {

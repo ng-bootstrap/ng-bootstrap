@@ -1,10 +1,16 @@
-import {inject, async} from '@angular/core/testing';
+import {inject, async, addProviders} from '@angular/core/testing';
 import {TestComponentBuilder} from '@angular/compiler/testing';
 import {Component} from '@angular/core';
 
 import {NGB_RADIO_DIRECTIVES} from './radio';
-import {Control, Validators, FormBuilder} from '@angular/common';
-
+import {
+  Validators,
+  provideForms,
+  disableDeprecatedForms,
+  FormControl,
+  REACTIVE_FORM_DIRECTIVES,
+  FormGroup
+} from '@angular/forms';
 
 function expectRadios(element: HTMLElement, states: number[]) {
   const labels = element.querySelectorAll('label');
@@ -30,6 +36,9 @@ function getInput(nativeEl: HTMLElement, idx: number): HTMLInputElement {
 }
 
 describe('ngbRadioGroup', () => {
+
+  beforeEach(() => { addProviders([disableDeprecatedForms(), provideForms()]); });
+
   const defaultHtml = `<div [(ngModel)]="model" ngbRadioGroup>
       <label class="btn">
         <input type="radio" name="radio" [value]="values[0]"/> {{ values[0] }}
@@ -39,6 +48,7 @@ describe('ngbRadioGroup', () => {
       </label>
     </div>`;
 
+  // TODO: remove 'whenStable' once 'core/testing' is fixed
   it('toggles radio inputs based on model changes', async(inject([TestComponentBuilder], (tcb) => {
        tcb.overrideTemplate(TestComponent, defaultHtml).createAsync(TestComponent).then((fixture) => {
 
@@ -53,22 +63,34 @@ describe('ngbRadioGroup', () => {
          // checking null
          fixture.componentInstance.model = null;
          fixture.detectChanges();
-         expectRadios(fixture.nativeElement, [0, 0]);
+         fixture.whenStable().then(() => {
+           fixture.detectChanges();
+           expectRadios(fixture.nativeElement, [0, 0]);
 
-         // checking first radio
-         fixture.componentInstance.model = values[0];
-         fixture.detectChanges();
-         expectRadios(fixture.nativeElement, [1, 0]);
+           // checking first radio
+           fixture.componentInstance.model = values[0];
+           fixture.detectChanges();
+           fixture.whenStable().then(() => {
+             fixture.detectChanges();
+             expectRadios(fixture.nativeElement, [1, 0]);
 
-         // checking second radio
-         fixture.componentInstance.model = values[1];
-         fixture.detectChanges();
-         expectRadios(fixture.nativeElement, [0, 1]);
+             // checking second radio
+             fixture.componentInstance.model = values[1];
+             fixture.detectChanges();
+             fixture.whenStable().then(() => {
+               fixture.detectChanges();
+               expectRadios(fixture.nativeElement, [0, 1]);
 
-         // checking non-matching value
-         fixture.componentInstance.model = values[3];
-         fixture.detectChanges();
-         expectRadios(fixture.nativeElement, [0, 0]);
+               // checking non-matching value
+               fixture.componentInstance.model = values[3];
+               fixture.detectChanges();
+               fixture.whenStable().then(() => {
+                 fixture.detectChanges();
+                 expectRadios(fixture.nativeElement, [0, 0]);
+               });
+             });
+           });
+         });
        });
      })));
 
@@ -92,6 +114,7 @@ describe('ngbRadioGroup', () => {
        });
      })));
 
+  // TODO: remove 'whenStable' once 'core/testing' is fixed
   it('can be used with objects as values', async(inject([TestComponentBuilder], (tcb) => {
        tcb.overrideTemplate(TestComponent, defaultHtml).createAsync(TestComponent).then((fixture) => {
 
@@ -109,16 +132,20 @@ describe('ngbRadioGroup', () => {
          // checking model -> radio input
          fixture.componentInstance.model = one;
          fixture.detectChanges();
-         expectRadios(fixture.nativeElement, [1, 0]);
+         fixture.whenStable().then(() => {
+           fixture.detectChanges();
+           expectRadios(fixture.nativeElement, [1, 0]);
 
-         // checking radio click -> model
-         getInput(fixture.nativeElement, 1).click();
-         fixture.detectChanges();
-         expectRadios(fixture.nativeElement, [0, 1]);
-         expect(fixture.componentInstance.model).toBe(two);
+           // checking radio click -> model
+           getInput(fixture.nativeElement, 1).click();
+           fixture.detectChanges();
+           expectRadios(fixture.nativeElement, [0, 1]);
+           expect(fixture.componentInstance.model).toBe(two);
+         });
        });
      })));
 
+  // TODO: remove 'whenStable' once 'core/testing' is fixed
   it('updates radio input values dynamically', async(inject([TestComponentBuilder], (tcb) => {
        tcb.overrideTemplate(TestComponent, defaultHtml).createAsync(TestComponent).then((fixture) => {
 
@@ -127,26 +154,30 @@ describe('ngbRadioGroup', () => {
          // checking first radio
          fixture.componentInstance.model = values[0];
          fixture.detectChanges();
-         expectRadios(fixture.nativeElement, [1, 0]);
-         expect(fixture.componentInstance.model).toEqual(values[0]);
+         fixture.whenStable().then(() => {
+           fixture.detectChanges();
+           expectRadios(fixture.nativeElement, [1, 0]);
+           expect(fixture.componentInstance.model).toEqual(values[0]);
 
-         // updating first radio value -> expecting none selected
-         let initialValue = values[0];
-         values[0] = 'ten';
-         fixture.detectChanges();
-         expectRadios(fixture.nativeElement, [0, 0]);
-         expect(getInput(fixture.nativeElement, 0).value).toEqual('ten');
-         expect(fixture.componentInstance.model).toEqual(initialValue);
+           // updating first radio value -> expecting none selected
+           let initialValue = values[0];
+           values[0] = 'ten';
+           fixture.detectChanges();
+           expectRadios(fixture.nativeElement, [0, 0]);
+           expect(getInput(fixture.nativeElement, 0).value).toEqual('ten');
+           expect(fixture.componentInstance.model).toEqual(initialValue);
 
-         // updating values back -> expecting initial state
-         values[0] = initialValue;
-         fixture.detectChanges();
-         expectRadios(fixture.nativeElement, [1, 0]);
-         expect(getInput(fixture.nativeElement, 0).value).toEqual(values[0]);
-         expect(fixture.componentInstance.model).toEqual(values[0]);
+           // updating values back -> expecting initial state
+           values[0] = initialValue;
+           fixture.detectChanges();
+           expectRadios(fixture.nativeElement, [1, 0]);
+           expect(getInput(fixture.nativeElement, 0).value).toEqual(values[0]);
+           expect(fixture.componentInstance.model).toEqual(values[0]);
+         });
        });
      })));
 
+  // TODO: remove 'whenStable' once 'core/testing' is fixed
   it('can be used with ngFor', async(inject([TestComponentBuilder], (tcb) => {
 
        const forHtml = `<div [(ngModel)]="model" ngbRadioGroup>
@@ -164,10 +195,14 @@ describe('ngbRadioGroup', () => {
 
          fixture.componentInstance.model = values[1];
          fixture.detectChanges();
-         expectRadios(fixture.nativeElement, [0, 1, 0]);
+         fixture.whenStable().then(() => {
+           fixture.detectChanges();
+           expectRadios(fixture.nativeElement, [0, 1, 0]);
+         });
        });
      })));
 
+  // TODO: remove 'whenStable' once 'core/testing' is fixed
   it('cleans up the model when radio inputs are added / removed', async(inject([TestComponentBuilder], (tcb) => {
 
        const ifHtml = `<div [(ngModel)]="model" ngbRadioGroup>
@@ -200,17 +235,21 @@ describe('ngbRadioGroup', () => {
          // hiding/showing selected radio -> expecting model to unchange, but none selected
          fixture.componentInstance.model = values[1];
          fixture.detectChanges();
-         expectRadios(fixture.nativeElement, [0, 1]);
+         fixture.whenStable().then(() => {
+           fixture.detectChanges();
+           expectRadios(fixture.nativeElement, [0, 1]);
 
-         fixture.componentInstance.shown = false;
-         fixture.detectChanges();
-         expectRadios(fixture.nativeElement, [0]);
-         expect(fixture.componentInstance.model).toEqual(values[1]);
+           fixture.componentInstance.shown = false;
+           fixture.detectChanges();
+           expectRadios(fixture.nativeElement, [0]);
+           expect(fixture.componentInstance.model).toEqual(values[1]);
 
-         fixture.componentInstance.shown = true;
-         fixture.detectChanges();
-         expectRadios(fixture.nativeElement, [0, 1]);
-         expect(fixture.componentInstance.model).toEqual(values[1]);
+           fixture.componentInstance.shown = true;
+           fixture.detectChanges();
+           expectRadios(fixture.nativeElement, [0, 1]);
+           expect(fixture.componentInstance.model).toEqual(values[1]);
+         });
+
        });
      })));
 
@@ -225,10 +264,11 @@ describe('ngbRadioGroup', () => {
        });
      })));
 
+  // TODO: remove 'whenStable' once 'core/testing' is fixed
   it('should work with template-driven form validation', async(inject([TestComponentBuilder], (tcb) => {
        const html = `
         <form>
-          <div ngbRadioGroup [(ngModel)]="model" required>
+          <div ngbRadioGroup [(ngModel)]="model" name="control" required>
             <label class="btn">
               <input type="radio" value="foo"/>
             </label>          
@@ -237,20 +277,23 @@ describe('ngbRadioGroup', () => {
 
        tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
-         expect(getGroupElement(fixture.nativeElement)).toHaveCssClass('ng-invalid');
-         expect(getGroupElement(fixture.nativeElement)).not.toHaveCssClass('ng-valid');
+         fixture.whenStable().then(() => {
+           fixture.detectChanges();
+           expect(getGroupElement(fixture.nativeElement)).toHaveCssClass('ng-invalid');
+           expect(getGroupElement(fixture.nativeElement)).not.toHaveCssClass('ng-valid');
 
-         getInput(fixture.nativeElement, 0).click();
-         fixture.detectChanges();
-         expect(getGroupElement(fixture.nativeElement)).toHaveCssClass('ng-valid');
-         expect(getGroupElement(fixture.nativeElement)).not.toHaveCssClass('ng-invalid');
+           getInput(fixture.nativeElement, 0).click();
+           fixture.detectChanges();
+           expect(getGroupElement(fixture.nativeElement)).toHaveCssClass('ng-valid');
+           expect(getGroupElement(fixture.nativeElement)).not.toHaveCssClass('ng-invalid');
+         });
        });
      })));
 
   it('should work with model-driven form validation', async(inject([TestComponentBuilder], (tcb) => {
        const html = `
-        <form [ngFormModel]="form">
-          <div ngbRadioGroup ngControl="control">
+        <form [formGroup]="form">
+          <div ngbRadioGroup formControlName="control">
             <label class="btn">
               <input type="radio" value="foo"/>
             </label>          
@@ -270,13 +313,11 @@ describe('ngbRadioGroup', () => {
      })));
 });
 
-@Component({selector: 'test-cmp', directives: [NGB_RADIO_DIRECTIVES], template: ''})
+@Component({selector: 'test-cmp', directives: [NGB_RADIO_DIRECTIVES, REACTIVE_FORM_DIRECTIVES], template: ''})
 class TestComponent {
-  form = this._builder.group({control: new Control('', Validators.required)});
+  form = new FormGroup({control: new FormControl('', Validators.required)});
 
   model;
   values = ['one', 'two', 'three'];
   shown = true;
-
-  constructor(private _builder: FormBuilder) {}
 }

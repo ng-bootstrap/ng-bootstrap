@@ -1,5 +1,5 @@
 import {Component, Input, forwardRef} from '@angular/core';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/common';
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 import {isNumber, padNumber, toInteger} from '../util/util';
 import {NgbTime} from './ngb-time';

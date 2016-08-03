@@ -1,4 +1,4 @@
-import {inject, async} from '@angular/core/testing';
+import {inject, async, addProviders} from '@angular/core/testing';
 import {TestComponentBuilder} from '@angular/compiler/testing';
 import {Component, DebugElement} from '@angular/core';
 import {NGB_TYPEAHEAD_DIRECTIVES, NgbTypeahead} from './typeahead';
@@ -7,7 +7,14 @@ import 'rxjs/add/operator/map';
 import {NgbTypeaheadWindow} from './typeahead-window';
 import {By} from '@angular/platform-browser';
 import {expectResults, getWindowLinks} from './test-common';
-import {Validators, Control, FormBuilder} from '@angular/common';
+import {
+  Validators,
+  provideForms,
+  disableDeprecatedForms,
+  FormControl,
+  REACTIVE_FORM_DIRECTIVES,
+  FormGroup
+} from '@angular/forms';
 
 enum Key {
   Tab = 9,
@@ -53,8 +60,11 @@ function expectWindowResults(element, expectedResults: string[]) {
 
 describe('ngb-typeahead', () => {
 
+  beforeEach(() => { addProviders([disableDeprecatedForms(), provideForms()]); });
+
   describe('valueaccessor', () => {
 
+    // TODO: remove 'whenStable' once 'core/testing' is fixed
     it('should format values when no formatter provided', async(inject([TestComponentBuilder], (tcb) => {
          const html = '<input [(ngModel)]="model" [ngbTypeahead]="findNothing" />';
 
@@ -66,18 +76,23 @@ describe('ngb-typeahead', () => {
 
            comp.model = 'text';
            fixture.detectChanges();
-           expectInputValue(el, 'text');
+           fixture.whenStable().then(() => {
+             expectInputValue(el, 'text');
 
-           comp.model = null;
-           fixture.detectChanges();
-           expectInputValue(el, '');
+             comp.model = null;
+             fixture.detectChanges();
+             fixture.whenStable().then(() => {
+               expectInputValue(el, '');
 
-           comp.model = {};
-           fixture.detectChanges();
-           expectInputValue(el, '[object Object]');
+               comp.model = {};
+               fixture.detectChanges();
+               fixture.whenStable().then(() => { expectInputValue(el, '[object Object]'); });
+             });
+           });
          });
        })));
 
+    // TODO: remove 'whenStable' once 'core/testing' is fixed
     it('should format values with custom formatter provided', async(inject([TestComponentBuilder], (tcb) => {
          const html =
              '<input [(ngModel)]="model" [ngbTypeahead]="findNothing" [inputFormatter]="uppercaseObjFormatter"/>';
@@ -90,11 +105,13 @@ describe('ngb-typeahead', () => {
 
            comp.model = null;
            fixture.detectChanges();
-           expectInputValue(el, '');
+           fixture.whenStable().then(() => {
+             expectInputValue(el, '');
 
-           comp.model = {value: 'text'};
-           fixture.detectChanges();
-           expectInputValue(el, 'TEXT');
+             comp.model = {value: 'text'};
+             fixture.detectChanges();
+             fixture.whenStable().then(() => { expectInputValue(el, 'TEXT'); });
+           });
          });
        })));
   });
@@ -111,6 +128,7 @@ describe('ngb-typeahead', () => {
          });
        })));
 
+    // TODO: remove 'whenStable' once 'core/testing' is fixed
     it('should not be opened when the model changes', async(inject([TestComponentBuilder], (tcb) => {
          const html = `<input type="text" [(ngModel)]="model" [ngbTypeahead]="find"/>`;
 
@@ -120,7 +138,7 @@ describe('ngb-typeahead', () => {
 
            fixture.componentInstance.model = 'one';
            fixture.detectChanges();
-           expect(getWindow(compiled)).toBeNull();
+           fixture.whenStable().then(() => { expect(getWindow(compiled)).toBeNull(); });
          });
        })));
 
@@ -337,6 +355,7 @@ describe('ngb-typeahead', () => {
          });
        })));
 
+    // TODO: remove 'whenStable' once 'core/testing' is fixed
     it('should allow to assign ngModel custom objects', async(inject([TestComponentBuilder], (tcb) => {
          const html = `<input type="text" [(ngModel)]="model" [ngbTypeahead]="findObjects"
           [inputFormatter]="formatter" [resultFormatter]="uppercaseObjFormatter"/>`;
@@ -347,38 +366,44 @@ describe('ngb-typeahead', () => {
 
            fixture.componentInstance.model = {id: 1, value: 'one'};
            fixture.detectChanges();
-           expect(getWindow(compiled)).toBeNull();
-           expect(getNativeInput(compiled).value).toBe('1 one');
+           fixture.whenStable().then(() => {
+             expect(getWindow(compiled)).toBeNull();
+             expect(getNativeInput(compiled).value).toBe('1 one');
+           });
          });
        })));
   });
 
   describe('forms', () => {
 
+    // TODO: remove 'whenStable' once 'core/testing' is fixed
     it('should work with template-driven form validation', async(inject([TestComponentBuilder], (tcb) => {
          const html = `
         <form>
-          <input type="text" [(ngModel)]="model" required [ngbTypeahead]="findObjects" />
+          <input type="text" [(ngModel)]="model" name="control" required [ngbTypeahead]="findObjects" />
         </form>`;
 
          tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.detectChanges();
-           const compiled = fixture.nativeElement;
+           fixture.whenStable().then(() => {
 
-           expect(getNativeInput(compiled)).toHaveCssClass('ng-invalid');
-           expect(getNativeInput(compiled)).not.toHaveCssClass('ng-valid');
+             fixture.detectChanges();
+             const compiled = fixture.nativeElement;
+             expect(getNativeInput(compiled)).toHaveCssClass('ng-invalid');
+             expect(getNativeInput(compiled)).not.toHaveCssClass('ng-valid');
 
-           changeInput(compiled, 'o');
-           fixture.detectChanges();
-           expect(getNativeInput(compiled)).toHaveCssClass('ng-valid');
-           expect(getNativeInput(compiled)).not.toHaveCssClass('ng-invalid');
+             changeInput(compiled, 'o');
+             fixture.detectChanges();
+             expect(getNativeInput(compiled)).toHaveCssClass('ng-valid');
+             expect(getNativeInput(compiled)).not.toHaveCssClass('ng-invalid');
+           });
          });
        })));
 
     it('should work with model-driven form validation', async(inject([TestComponentBuilder], (tcb) => {
          const html = `
-        <form [ngFormModel]="form">
-          <input type="text" ngControl="control" required [ngbTypeahead]="findObjects" />
+        <form [formGroup]="form">
+          <input type="text" formControlName="control" required [ngbTypeahead]="findObjects" />
         </form>`;
 
          tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
@@ -415,8 +440,12 @@ describe('ngb-typeahead', () => {
 
 });
 
-@Component(
-    {selector: 'test-cmp', directives: [NGB_TYPEAHEAD_DIRECTIVES], precompile: [NgbTypeaheadWindow], template: ''})
+@Component({
+  selector: 'test-cmp',
+  directives: [NGB_TYPEAHEAD_DIRECTIVES, REACTIVE_FORM_DIRECTIVES],
+  precompile: [NgbTypeaheadWindow],
+  template: ''
+})
 class TestComponent {
   private _strings = ['one', 'one more', 'two', 'three'];
   private _objects =
@@ -424,7 +453,7 @@ class TestComponent {
 
   model = '';
 
-  form = this._builder.group({control: new Control('', Validators.required)});
+  form = new FormGroup({control: new FormControl('', Validators.required)});
 
   find = (text$: Observable<string>) => { return text$.map(text => this._strings.filter(v => v.startsWith(text))); };
 
@@ -438,6 +467,4 @@ class TestComponent {
   uppercaseFormatter = s => s.toUpperCase();
 
   uppercaseObjFormatter = (obj: {value: string}) => { return obj.value.toUpperCase(); };
-
-  constructor(private _builder: FormBuilder) {}
 }
