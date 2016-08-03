@@ -7,6 +7,7 @@ import {Angulartics2GoogleAnalytics} from 'angulartics2/src/providers/angulartic
 import {APP_ROUTER_PROVIDERS} from './app/app.routes';
 import {AppComponent} from './app/app.component';
 import {Angulartics} from './angulartics2.workaround';
+import {disableDeprecatedForms, provideForms} from '@angular/forms';
 
 // depending on the env mode, enable prod mode or add debugging modules
 if (process.env.ENV === 'build') {
@@ -17,6 +18,10 @@ bootstrap(AppComponent, [
   // core dependencies
   APP_ROUTER_PROVIDERS,
   {provide: LocationStrategy, useClass: HashLocationStrategy},
+
+  // forms
+  disableDeprecatedForms(),
+  provideForms(),
 
   // google analytics dependencies
   {provide: Angulartics2, useClass: Angulartics},

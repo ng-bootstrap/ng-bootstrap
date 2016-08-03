@@ -1,5 +1,5 @@
 import {Directive, forwardRef, Optional, Input, Renderer, ElementRef, OnDestroy} from '@angular/core';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/common';
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 const NGB_RADIO_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
