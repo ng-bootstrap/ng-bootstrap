@@ -129,20 +129,9 @@ export class NgbAccordion implements AfterContentChecked {
    */
   private _panelRefs: Map<string, NgbPanel> = new Map<string, NgbPanel>();
 
-  ngAfterContentChecked() {
-    // active id updates
-    if (isString(this.activeIds)) {
-      this.activeIds = (this.activeIds as string).split(/\s*,\s*/);
-    }
-    this._updateStates();
-
-    // closeOthers updates
-    if (this.activeIds.length > 1 && this.closeOtherPanels) {
-      this._closeOthers(this.activeIds[0]);
-      this._updateActiveIds();
-    }
-  }
-
+  /**
+   * Programmatically toggle a panel with a given id.
+   */
   toggle(panelId: string) {
     const panel = this._panelRefs.get(panelId);
 
@@ -160,6 +149,20 @@ export class NgbAccordion implements AfterContentChecked {
         }
         this._updateActiveIds();
       }
+    }
+  }
+
+  ngAfterContentChecked() {
+    // active id updates
+    if (isString(this.activeIds)) {
+      this.activeIds = (this.activeIds as string).split(/\s*,\s*/);
+    }
+    this._updateStates();
+
+    // closeOthers updates
+    if (this.activeIds.length > 1 && this.closeOtherPanels) {
+      this._closeOthers(this.activeIds[0]);
+      this._updateActiveIds();
     }
   }
 

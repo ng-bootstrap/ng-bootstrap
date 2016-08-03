@@ -30,15 +30,31 @@ export class NgbDropdown {
    */
   @Output() openChange = new EventEmitter();
 
+
+  /**
+   * Checks if the dropdown menu is open or not.
+   */
   isOpen() { return this._open; }
+
+  /**
+   * Opens the dropdown menu of a given navbar or tabbed navigation.
+   */
   open() {
     this._open = true;
     this.openChange.emit(true);
   }
+
+  /**
+   * Closes the dropdown menu of a given navbar or tabbed navigation.
+   */
   close() {
     this._open = false;
     this.openChange.emit(false);
   }
+
+  /**
+   * Toggles the dropdown menu of a given navbar or tabbed navigation.
+   */
   toggle() {
     if (this.isOpen()) {
       this.close();

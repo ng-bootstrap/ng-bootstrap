@@ -67,6 +67,10 @@ export class NgbPopover implements OnInit, AfterViewChecked, OnDestroy {
         NgbPopoverWindow, injector, viewContainerRef, _renderer, componentFactoryResolver);
   }
 
+
+  /**
+   * Opens an element’s popover. This is considered a “manual” triggering of the popover.
+   */
   open() {
     if (!this._windowRef) {
       this._windowRef = this._popupService.open(this.ngbPopover);
@@ -75,11 +79,17 @@ export class NgbPopover implements OnInit, AfterViewChecked, OnDestroy {
     }
   }
 
+  /**
+   * Closes an element’s popover. This is considered a “manual” triggering of the popover.
+   */
   close(): void {
     this._popupService.close();
     this._windowRef = null;
   }
 
+  /**
+   * Toggles an element’s popover. This is considered a “manual” triggering of the popover.
+   */
   toggle(): void {
     if (this._windowRef) {
       this.close();

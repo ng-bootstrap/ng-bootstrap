@@ -8,6 +8,20 @@ function getNamesCompareFn(name) {
   return (a, b) => a[name].localeCompare(b[name]);
 }
 
+const ANGULAR_LIFECYCLE_METHODS = [
+  'ngOnInit', 'ngOnChanges', 'ngDoCheck', 'ngOnDestroy', 'ngAfterContentInit', 'ngAfterContentChecked',
+  'ngAfterViewInit', 'ngAfterViewChecked'
+];
+
+function isInternalMember(member) {
+  const jsDoc = ts.displayPartsToString(member.symbol.getDocumentationComment());
+  return jsDoc.indexOf('@internal') > -1;
+}
+
+function isAngularLifecycleHook(methodName) {
+  return ANGULAR_LIFECYCLE_METHODS.indexOf(methodName) >= 0;
+}
+
 class APIDocVisitor {
   constructor(fileNames) {
     this.program = ts.createProgram(fileNames, {});
@@ -50,7 +64,8 @@ class APIDocVisitor {
             selector: directiveInfo.selector,
             exportAs: directiveInfo.exportAs, description,
             inputs: members.inputs,
-            outputs: members.outputs
+            outputs: members.outputs,
+            methods: members.methods
           }];
         }
       }
@@ -82,24 +97,44 @@ class APIDocVisitor {
   visitMembers(members) {
     var inputs = [];
     var outputs = [];
+    var methods = [];
     var inputDecorator, outDecorator;
 
     for (var i = 0; i < members.length; i++) {
       inputDecorator = this.getDecoratorOfType(members[i], 'Input');
+      outDecorator = this.getDecoratorOfType(members[i], 'Output');
+
       if (inputDecorator) {
         inputs.push(this.visitInput(members[i], inputDecorator));
-      }
 
-      outDecorator = this.getDecoratorOfType(members[i], 'Output');
-      if (outDecorator) {
+      } else if (outDecorator) {
         outputs.push(this.visitOutput(members[i], outDecorator));
+
+      } else {
+        if (members[i].kind === ts.SyntaxKind.MethodDeclaration) {
+          if ((members[i].flags & ts.NodeFlags.Private) === 0 && !isAngularLifecycleHook(members[i].name.text) &&
+              !isInternalMember(members[i])) {
+            methods.push(this.visitMethodDeclaration(members[i]));
+          }
+        }
       }
     }
 
     inputs.sort(getNamesCompareFn());
     outputs.sort(getNamesCompareFn());
 
-    return {inputs, outputs};
+    return {inputs, outputs, methods};
+  }
+
+  visitMethodDeclaration(method) {
+    return {
+      name: method.name.text, description: ts.displayPartsToString(method.symbol.getDocumentationComment()),
+          args: method.parameters ? method.parameters.map((prop) => this.visitArgument(prop)) : []
+    }
+  }
+
+  visitArgument(arg) {
+    return { name: arg.name.text, type: this.typeChecker.typeToString(this.typeChecker.getTypeAtLocation(arg)) }
   }
 
   visitInput(property, inDecorator) {

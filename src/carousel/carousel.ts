@@ -93,23 +93,38 @@ export class NgbCarousel implements AfterContentChecked,
 
   ngOnDestroy() { clearInterval(this._slideChangeInterval); }
 
+  /**
+   * Navigate to a slide with a specified identifier.
+   */
   select(slideIdx: string) {
     this._cycleToSelected(slideIdx);
     this._restartTimer();
   }
 
+  /**
+   * Navigate to the next slide.
+   */
   prev() {
     this._cycleToPrev();
     this._restartTimer();
   }
 
+  /**
+   * Navigate to the next slide.
+   */
   next() {
     this._cycleToNext();
     this._restartTimer();
   }
 
+  /**
+   * Stops the carousel from cycling through items.
+   */
   pause() { this._stopTimer(); }
 
+  /**
+   * Restarts cycling through the carousel slides from left to right.
+   */
   cycle() { this._startTimer(); }
 
   private _keyPrev() {

@@ -104,6 +104,10 @@ export class NgbTabset implements AfterContentChecked {
    */
   @Output() change = new EventEmitter<NgbTabChangeEvent>();
 
+  /**
+   * Selects the given tab and shows its associated pane.
+   * Any other tab that was previously selected becomes unselected and its associated pane is hidden.
+   */
   select(tabIdx: string) {
     let selectedTab = this._getTabById(tabIdx);
     if (selectedTab && !selectedTab.disabled && this.activeId !== selectedTab.id) {

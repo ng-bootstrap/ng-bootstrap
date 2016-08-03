@@ -62,6 +62,9 @@ export class NgbTooltip implements OnInit, AfterViewChecked, OnDestroy {
         NgbTooltipWindow, injector, viewContainerRef, _renderer, componentFactoryResolver);
   }
 
+  /**
+   * Opens an element’s tooltip. This is considered a “manual” triggering of the tooltip.
+   */
   open() {
     if (!this._windowRef) {
       this._windowRef = this._popupService.open(this.ngbTooltip);
@@ -69,11 +72,17 @@ export class NgbTooltip implements OnInit, AfterViewChecked, OnDestroy {
     }
   }
 
+  /**
+   * Closes an element’s tooltip. This is considered a “manual” triggering of the tooltip.
+   */
   close(): void {
     this._popupService.close();
     this._windowRef = null;
   }
 
+  /**
+   * Toggles an element’s tooltip. This is considered a “manual” triggering of the tooltip.
+   */
   toggle(): void {
     if (this._windowRef) {
       this.close();
