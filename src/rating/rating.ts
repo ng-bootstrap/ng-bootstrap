@@ -24,7 +24,7 @@ export class NgbRating implements OnInit {
   /**
    * Maximal rating that can be given using this widget.
    */
-  @Input() max: number = 10;
+  @Input() max = 10;
 
   /**
    * Current rating.
