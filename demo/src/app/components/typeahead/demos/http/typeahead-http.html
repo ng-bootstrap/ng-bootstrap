@@ -1,12 +1,20 @@
 A typeahead example that gets values from the <code>WikipediaService</code>
 <ul>
-  <li>remote data retrieval</li>
   <li><code>debounceTime</code> operator</li>
-  <li><code>do</code> operator</li>
-  <li><code>distinctUntilChanged</code> operator</li>
-  <li><code>switchMap</code> operator</li>
+  <li>remote data retrieval</li>
+  <li>guaranteed ordering using <code>switchMap</code></li>
+  <li>error recovery after 2 retries</li>
 </ul>
 
-<input type="text" class="form-control" [(ngModel)]="model" [ngbTypeahead]="search" placeholder="Wikipedia search" /><span *ngIf="_searching"> searching...</span>
+<div class="form-group" [class.has-danger]="_error">
+  <input type="text" class="form-control" [(ngModel)]="model" [ngbTypeahead]="search" placeholder="Wikipedia search" />
+  <span class="form-control-feedback">
+    <span *ngIf="_searching"> searching...</span>
+    <span *ngIf="_error"> search failed</span>
+  </span>
+</div>
+<label>
+  <input type="checkbox" [(ngModel)]="_failRequests"> Fail requests
+</label>
 <hr>
 <pre>Model: {{ model | json }}</pre>
