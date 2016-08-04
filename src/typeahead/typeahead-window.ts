@@ -20,7 +20,7 @@ export type ResultTplCtx = {
     <template ngFor [ngForOf]="results" let-result let-idx="index">
       <button class="dropdown-item" [class.active]="idx === _activeIdx" 
         (mouseenter)="markActive(idx)" 
-        (mousedown)="select(result)">
+        (click)="select(result)">
           <template [ngTemplateOutlet]="resultTemplate || rt" 
           [ngOutletContext]="{result: result, term: term, formatter: formatter}"></template>
       </button>
