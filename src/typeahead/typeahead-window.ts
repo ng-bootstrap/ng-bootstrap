@@ -3,9 +3,11 @@ import {NgbHighlight} from './highlight';
 
 import {toString} from '../util/util';
 
-export class ResultTplCtx {
-  constructor(public result, public term: string, public formatter: (result) => string) {}
-}
+export type ResultTplCtx = {
+  result: string,
+  term: string,
+  formatter: (_: string) => string
+};
 
 @Component({
   selector: 'ngb-typeahead-window',
@@ -19,7 +21,8 @@ export class ResultTplCtx {
       <button class="dropdown-item" [class.active]="idx === _activeIdx" 
         (mouseenter)="markActive(idx)" 
         (mousedown)="select(result)">
-          <template [ngTemplateOutlet]="resultTemplate || rt" [ngOutletContext]="_prepareTplCtx(result)"></template>
+          <template [ngTemplateOutlet]="resultTemplate || rt" 
+          [ngOutletContext]="{result: result, term: term, formatter: formatter}"></template>
       </button>
     </template>
   `,
@@ -68,6 +71,4 @@ export class NgbTypeaheadWindow {
   prev() { this._activeIdx = (this._activeIdx === 0 ? this.results.length - 1 : this._activeIdx - 1); }
 
   select(item) { this.selectEvent.emit(item); }
-
-  private _prepareTplCtx(result: any) { return new ResultTplCtx(result, this.term, this.formatter); }
 }
