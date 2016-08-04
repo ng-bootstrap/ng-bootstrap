@@ -114,7 +114,7 @@ describe('ngb-typeahead-window', () => {
 
            expectResults(fixture.nativeElement, ['+bar', 'baz']);
 
-           links[1].triggerEventHandler('mousedown', {});
+           links[1].triggerEventHandler('click', {});
            fixture.detectChanges();
            expect(fixture.componentInstance.selected).toBe('baz');
          });
