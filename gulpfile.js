@@ -74,7 +74,19 @@ gulp.task('umd', function(cb) {
         entry: './dist/index.js',
         output: {filename: 'dist/bundles/ng-bootstrap.js', library: 'ngb', libraryTarget: 'umd'},
         devtool: 'source-map',
-        externals: {'@angular/core': ngExternal('core'), '@angular/common': ngExternal('common')}
+        externals: {
+          '@angular/core': ngExternal('core'),
+          '@angular/common': ngExternal('common'),
+          '@angular/forms': ngExternal('forms'),
+          'rxjs/Rx': {root: 'Rx', commonjs: 'rxjs/Rx', commonjs2: 'rxjs/Rx', amd: 'rxjs/Rx'},
+          // 'rxjs/add/operator/let': 'rxjs/add/operator/let'
+          'rxjs/add/operator/let': {
+            root: ['Rx', 'Observable', 'prototype'],
+            commonjs: 'rxjs/add/operator/let',
+            commonjs2: 'rxjs/add/operator/let',
+            amd: 'rxjs/add/operator/let'
+          }
+        }
       },
       webpackCallBack('webpack', cb));
 });
