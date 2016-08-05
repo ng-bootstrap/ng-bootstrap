@@ -192,3 +192,12 @@ span.token.tag {
   font-size: 1em;
   padding: 0;
 }
+
+// version information in main page
+.version {
+  font-size: 0.75em;
+  & a {
+    font-weight: 500;
+    color: #222;
+  }
+}
