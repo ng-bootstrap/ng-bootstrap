@@ -1,5 +1,5 @@
 import {Component, Input, ChangeDetectionStrategy} from '@angular/core';
-import {getValueInRange, toBoolean} from '../util/util';
+import {getValueInRange} from '../util/util';
 
 /**
  * Directive that can be used to provide feedback on the progress of a workflow or an action.
@@ -9,8 +9,8 @@ import {getValueInRange, toBoolean} from '../util/util';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <progress class="progress {{type ? 'progress-' + type : ''}}" 
-      [class.progress-animated]="isAnimated()" 
-      [class.progress-striped]="isStriped()"
+      [class.progress-animated]="animated" 
+      [class.progress-striped]="striped"
       [max]="max" [value]="getValue()">
       <div class="progress">
         <span class="progress-bar" [style.width.%]="getPercentValue()"><ng-content></ng-content></span>
@@ -28,12 +28,12 @@ export class NgbProgressbar {
    * A flag indicating if a progress bar should be animated when the value changes. Takes effect only for browsers
    * supporting CSS3 animations.
    */
-  @Input() animated: boolean | string = false;
+  @Input() animated = false;
 
   /**
    * A flag indicating if a progress bar should be displayed as striped.
    */
-  @Input() striped: boolean | string = false;
+  @Input() striped = false;
 
   /**
    * Type of progress bar, can be one of "success", "info", "warning" or "danger".
@@ -44,10 +44,6 @@ export class NgbProgressbar {
    * Current value to be displayed in the progressbar. Should be smaller or equal to "max" value.
    */
   @Input() value = 0;
-
-  isAnimated(): boolean { return toBoolean(this.animated); }
-
-  isStriped(): boolean { return toBoolean(this.striped); }
 
   getValue() { return getValueInRange(this.value, this.max); }
 

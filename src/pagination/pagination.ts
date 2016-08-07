@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output, OnChanges, ChangeDetectionStrategy} from '@angular/core';
-import {getValueInRange, toInteger, toBoolean} from '../util/util';
+import {getValueInRange, toInteger} from '../util/util';
 
 /**
  * A directive that will take care of visualising a pagination bar and enable / disable buttons correctly!
@@ -48,46 +48,34 @@ import {getValueInRange, toInteger, toBoolean} from '../util/util';
   `
 })
 export class NgbPagination implements OnChanges {
-  private _boundaryLinks = false;
-  private _collectionSize;
-  private _directionLinks = true;
-  private _ellipses = true;
   private _maxSize = 0;
   private _page = 0;
   private _pageCount = 0;
   private _pageSize = 10;
-  private _rotate = false;
   pages: number[] = [];
 
   /**
    *  Whether to show the "First" and "Last" page links
    */
-  @Input()
-  set boundaryLinks(value: boolean) {
-    this._boundaryLinks = toBoolean(value);
-  }
+  @Input() boundaryLinks = false;
 
-  get boundaryLinks(): boolean { return this._boundaryLinks; }
+  private _collectionSize;
 
   /**
    *  Whether to show the "Next" and "Previous" page links
    */
-  @Input()
-  set directionLinks(value: boolean) {
-    this._directionLinks = toBoolean(value);
-  }
-
-  get directionLinks(): boolean { return this._directionLinks; }
+  @Input() directionLinks = true;
 
   /**
    *  Whether to show ellipsis symbols and first/last page numbers when maxSize > number of pages
    */
-  @Input()
-  set ellipses(value: boolean) {
-    this._ellipses = toBoolean(value);
-  }
+  @Input() ellipses = true;
 
-  get ellipses(): boolean { return this._ellipses; }
+  /**
+   *  Whether to rotate pages when maxSize > number of pages.
+   *  Current page will be in the middle
+   */
+  @Input() rotate = false;
 
   /**
    *  Number of items in collection.
@@ -136,17 +124,6 @@ export class NgbPagination implements OnChanges {
   @Output() pageChange = new EventEmitter();
 
   /**
-   *  Whether to rotate pages when maxSize > number of pages.
-   *  Current page will be in the middle
-   */
-  @Input()
-  set rotate(value: boolean) {
-    this._rotate = toBoolean(value);
-  }
-
-  get rotate(): boolean { return this._rotate; }
-
-  /**
    * Pagination display size: small or large
    */
   @Input() size: 'sm' | 'lg';
@@ -185,7 +162,7 @@ export class NgbPagination implements OnChanges {
       let end = this._pageCount;
 
       // either paginating or rotating page numbers
-      if (this._rotate) {
+      if (this.rotate) {
         [start, end] = this._applyRotation();
       } else {
         [start, end] = this._applyPagination();
@@ -202,7 +179,7 @@ export class NgbPagination implements OnChanges {
    * Appends ellipses and first/last page number to the displayed pages
    */
   private _applyEllipses(start: number, end: number) {
-    if (this._ellipses) {
+    if (this.ellipses) {
       if (start > 0) {
         this.pages.unshift(-1);
         this.pages.unshift(1);

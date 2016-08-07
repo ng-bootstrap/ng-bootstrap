@@ -29,7 +29,7 @@ import {PopupService} from '../util/popup';
     `
 })
 export class NgbPopoverWindow {
-  @Input() placement: string = 'top';
+  @Input() placement = 'top';
   @Input() title: string;
 }
 
