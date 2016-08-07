@@ -62,7 +62,7 @@ export class NgbTypeahead implements OnInit,
   /**
    * A function to convert a given value into string to display in the input field
    */
-  @Input() inputFormatter: (value) => string;
+  @Input() inputFormatter: (value: any) => string;
 
   /**
    * A function to transform the provided observable text into the array of results
@@ -73,7 +73,7 @@ export class NgbTypeahead implements OnInit,
    * A function to format a given result before display. This function should return a formatted string without any
    * HTML markup.
    */
-  @Input() resultFormatter: (value) => string;
+  @Input() resultFormatter: (value: any) => string;
 
   /**
    * A template to display a matching result.
