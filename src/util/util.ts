@@ -1,7 +1,3 @@
-export function toBoolean(value: any): boolean {
-  return value === '' ? true : !!value;
-}
-
 export function toInteger(value: any): number {
   return parseInt(`${value}`, 10);
 }

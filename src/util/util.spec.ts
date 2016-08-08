@@ -1,23 +1,6 @@
-import {toBoolean, toInteger, toString, getValueInRange, isString} from './util';
+import {toInteger, toString, getValueInRange, isString} from './util';
 
 describe('util', () => {
-
-  describe('toBoolean', () => {
-
-    it('should be noop for booleans', () => {
-      expect(toBoolean(true)).toBeTruthy();
-      expect(toBoolean(false)).toBeFalsy();
-    });
-
-    it('should parse an empty string as truthy', () => { expect(toBoolean('')).toBeTruthy(); });
-
-    it('should parse any string as truthy', () => {
-      expect(toBoolean('foo')).toBeTruthy();
-      expect(toBoolean('true')).toBeTruthy();
-      expect(toBoolean('false')).toBeTruthy();
-    });
-
-  });
 
   describe('toInteger', () => {
 

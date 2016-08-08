@@ -104,7 +104,7 @@ export class NgbAccordion implements AfterContentChecked {
   /**
    *  Whether the other panels should be closed when a panel is opened
    */
-  @Input('closeOthers') closeOtherPanels: boolean = false;
+  @Input('closeOthers') closeOtherPanels = false;
 
   /**
    *  Type of accordion's panels. Bootstrap 4 recognizes the following types: "success", "info", "warning" and "danger".
