@@ -4,7 +4,7 @@ import {NgbHighlight} from './highlight';
 import {toString} from '../util/util';
 
 export type ResultTplCtx = {
-  result: string,
+  result: any,
   term: string,
   formatter: (_: string) => string
 };
@@ -12,7 +12,7 @@ export type ResultTplCtx = {
 @Component({
   selector: 'ngb-typeahead-window',
   exportAs: 'ngbTypeaheadWindow',
-  host: {'class': 'dropdown-menu', 'style': 'display: block', '[attr.aria-labelledby]': 'ariaLabelledBy'},
+  host: {'class': 'dropdown-menu', 'style': 'display: block'},
   template: `
     <template #rt let-result="result" let-term="term" let-formatter="formatter">
       <ngb-highlight [result]="formatter(result)" [term]="term"></ngb-highlight>
@@ -32,11 +32,6 @@ export class NgbTypeaheadWindow {
   private _activeIdx = 0;
 
   /**
-   * Aria-labelledby attribute value
-   */
-  @Input() ariaLabelledBy;
-
-  /**
    * Typeahead match results to be displayed
    */
   @Input() results;
@@ -44,7 +39,7 @@ export class NgbTypeaheadWindow {
   /**
    * Search term used to get current results
    */
-  @Input() term;
+  @Input() term: string;
 
   /**
    * A function used to format a given result before display. This function should return a formated string without any
