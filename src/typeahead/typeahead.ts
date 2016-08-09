@@ -17,6 +17,7 @@ import {
 } from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {Observable, Subject, Subscription} from 'rxjs/Rx';
+import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/let';
 import {Positioning} from '../util/positioning';
 import {NgbTypeaheadWindow, ResultTemplateContext} from './typeahead-window';
@@ -45,7 +46,7 @@ const NGB_TYPEAHEAD_VALUE_ACCESSOR = {
   host: {
     '(blur)': 'onTouched()',
     '[class.open]': 'isPopupOpen()',
-    '(document:click)': 'closePopup()',
+    '(document:click)': 'dismissPopup()',
     '(input)': 'onChange($event.target.value)',
     '(keydown)': 'handleKeyDown($event)',
     'autocomplete': 'off',
@@ -60,6 +61,7 @@ export class NgbTypeahead implements OnInit,
   private _popupService: PopupService<NgbTypeaheadWindow>;
   private _positioning = new Positioning();
   private _subscription: Subscription;
+  private _userInput: string;
   private _valueChanges = new Subject<string>();
   private _windowRef: ComponentRef<NgbTypeaheadWindow>;
 
@@ -85,7 +87,12 @@ export class NgbTypeahead implements OnInit,
   @Input() resultTemplate: TemplateRef<ResultTemplateContext>;
 
   /**
-   * An event emitted when a match is selected. Event payload is equal to the selected item
+   * Show hint when an option in the result list matches.
+   */
+  @Input() showHint = false;
+
+  /**
+   * An event emitted when a match is selected. Event payload is equal to the selected item.
    */
   @Output() selectItem = new EventEmitter();
 
@@ -118,44 +125,45 @@ export class NgbTypeahead implements OnInit,
   ngOnDestroy() { this._subscription.unsubscribe(); }
 
   ngOnInit() {
-    this._subscription = this._valueChanges.let (this.ngbTypeahead).subscribe((results) => {
-      if (!results || results.length === 0) {
-        this.closePopup();
-      } else {
-        this._openPopup();
-        this._windowRef.instance.results = results;
-        this._windowRef.instance.term = this._elementRef.nativeElement.value;
-        if (this.resultFormatter) {
-          this._windowRef.instance.formatter = this.resultFormatter;
-        }
-        if (this.resultTemplate) {
-          this._windowRef.instance.resultTemplate = this.resultTemplate;
-        }
-      }
-    });
+    this._subscription =
+        this._valueChanges.do(value => this._userInput = value).let (this.ngbTypeahead).subscribe((results) => {
+          if (!results || results.length === 0) {
+            this._closePopup();
+          } else {
+            this._openPopup();
+            this._windowRef.instance.results = results;
+            this._windowRef.instance.term = this._elementRef.nativeElement.value;
+            if (this.resultFormatter) {
+              this._windowRef.instance.formatter = this.resultFormatter;
+            }
+            if (this.resultTemplate) {
+              this._windowRef.instance.resultTemplate = this.resultTemplate;
+            }
+            this._showHint();
+          }
+        });
   }
 
   registerOnChange(fn: (value: any) => any): void { this._onChangeNoEmit = fn; }
 
   registerOnTouched(fn: () => any): void { this.onTouched = fn; }
 
-  writeValue(value) {
-    const formattedValue = value && this.inputFormatter ? this.inputFormatter(value) : toString(value);
-    this._renderer.setElementProperty(this._elementRef.nativeElement, 'value', formattedValue);
+  writeValue(value) { this._writeInputValue(this._formatItemForInput(value)); }
+
+  /**
+   * @internal
+   */
+  dismissPopup() {
+    if (this.isPopupOpen()) {
+      this._closePopup();
+      this._writeInputValue(this._userInput);
+    }
   }
 
   /**
    * @internal
    */
   isPopupOpen() { return this._windowRef != null; }
-
-  /**
-   * @internal
-   */
-  closePopup() {
-    this._popupService.close();
-    this._windowRef = null;
-  }
 
   /**
    * @internal
@@ -171,9 +179,11 @@ export class NgbTypeahead implements OnInit,
       switch (event.which) {
         case Key.ArrowDown:
           this._windowRef.instance.next();
+          this._showHint();
           break;
         case Key.ArrowUp:
           this._windowRef.instance.prev();
+          this._showHint();
           break;
         case Key.Enter:
         case Key.Tab:
@@ -181,7 +191,7 @@ export class NgbTypeahead implements OnInit,
           this._selectResult(result);
           break;
         case Key.Escape:
-          this.closePopup();
+          this.dismissPopup();
           break;
       }
     }
@@ -194,11 +204,39 @@ export class NgbTypeahead implements OnInit,
     }
   }
 
+  private _closePopup() {
+    this._popupService.close();
+    this._windowRef = null;
+  }
+
   private _selectResult(result: any) {
     this.writeValue(result);
     this._onChangeNoEmit(result);
     this.selectItem.emit(result);
-    this.closePopup();
+    this._closePopup();
+  }
+
+  private _showHint() {
+    if (this.showHint) {
+      const userInputLowerCase = this._userInput.toLowerCase();
+      const formattedVal = this._formatItemForInput(this._windowRef.instance.getActive());
+
+      if (userInputLowerCase === formattedVal.substr(0, this._userInput.length).toLowerCase()) {
+        this._writeInputValue(this._userInput + formattedVal.substr(this._userInput.length));
+        this._renderer.invokeElementMethod(
+            this._elementRef.nativeElement, 'setSelectionRange', [this._userInput.length, formattedVal.length]);
+      } else {
+        this.writeValue(this._windowRef.instance.getActive());
+      }
+    }
+  }
+
+  private _formatItemForInput(item: any): string {
+    return item && this.inputFormatter ? this.inputFormatter(item) : toString(item);
+  }
+
+  private _writeInputValue(value: string): void {
+    this._renderer.setElementProperty(this._elementRef.nativeElement, 'value', value);
   }
 }
 
