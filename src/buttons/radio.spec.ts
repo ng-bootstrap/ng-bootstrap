@@ -27,6 +27,22 @@ function getInput(nativeEl: HTMLElement, idx: number): HTMLInputElement {
   return <HTMLInputElement>nativeEl.querySelectorAll('input')[idx];
 }
 
+describe('NgbActiveLabel', () => {
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({imports: [NgbButtonsModule, FormsModule, ReactiveFormsModule]});
+  }));
+
+  it('should not touch active class on labels not part of a group', async(inject([TestComponentBuilder], (tcb) => {
+       tcb.overrideTemplate(TestComponent, '<label class="btn" [class.active]="true"></label>')
+           .createAsync(TestComponent)
+           .then((fixture) => {
+
+             fixture.detectChanges();
+             expect(fixture.nativeElement.children[0]).toHaveCssClass('active');
+           });
+     })));
+});
+
 describe('ngbRadioGroup', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({imports: [NgbButtonsModule, FormsModule, ReactiveFormsModule]});

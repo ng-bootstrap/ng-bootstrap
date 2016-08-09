@@ -47,9 +47,11 @@ export class NgbRadioGroup implements ControlValueAccessor {
 }
 
 
-@Directive({selector: 'label.btn', host: {'[class.active]': 'checked'}})
-export class NgbRadioLabel {
-  @Input() checked: boolean;
+@Directive({selector: 'label.btn'})
+export class NgbActiveLabel {
+  constructor(private _renderer: Renderer, private _elRef: ElementRef) {}
+
+  set active(isActive: boolean) { this._renderer.setElementClass(this._elRef.nativeElement, 'active', isActive); }
 }
 
 
@@ -79,8 +81,8 @@ export class NgbRadio implements OnDestroy {
   get value() { return this._value; }
 
   constructor(
-      @Optional() private _group: NgbRadioGroup, @Optional() private _label: NgbRadioLabel, private _renderer: Renderer,
-      private _element: ElementRef) {
+      @Optional() private _group: NgbRadioGroup, @Optional() private _label: NgbActiveLabel,
+      private _renderer: Renderer, private _element: ElementRef) {
     if (this._group) {
       this._group.register(this);
     }
@@ -88,7 +90,7 @@ export class NgbRadio implements OnDestroy {
 
   markChecked(value) {
     this._checked = (this.value === value && value !== null);
-    this._label.checked = this._checked;
+    this._label.active = this._checked;
   }
 
   ngOnDestroy() {
@@ -104,4 +106,4 @@ export class NgbRadio implements OnDestroy {
   }
 }
 
-export const NGB_RADIO_DIRECTIVES = [NgbRadio, NgbRadioLabel, NgbRadioGroup];
+export const NGB_RADIO_DIRECTIVES = [NgbRadio, NgbActiveLabel, NgbRadioGroup];
