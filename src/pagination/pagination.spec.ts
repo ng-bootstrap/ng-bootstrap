@@ -109,7 +109,7 @@ describe('ngb-pagination', () => {
   describe('UI logic', () => {
 
     it('should render and respond to collectionSize change', async(inject([TestComponentBuilder], (tcb) => {
-         const html = '<ngb-pagination [collectionSize]="collectionSize" page="1"></ngb-pagination>';
+         const html = '<ngb-pagination [collectionSize]="collectionSize" [page]="1"></ngb-pagination>';
 
          tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.componentInstance.collectionSize = 30;
@@ -124,7 +124,7 @@ describe('ngb-pagination', () => {
 
     it('should render and respond to pageSize change', async(inject([TestComponentBuilder], (tcb) => {
          const html =
-             '<ngb-pagination [collectionSize]="collectionSize" page="1" [pageSize]="pageSize"></ngb-pagination>';
+             '<ngb-pagination [collectionSize]="collectionSize" [page]="1" [pageSize]="pageSize"></ngb-pagination>';
 
          tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.componentInstance.collectionSize = 30;
@@ -252,7 +252,7 @@ describe('ngb-pagination', () => {
        })));
 
     it('should render and respond to size change', async(inject([TestComponentBuilder], (tcb) => {
-         const html = '<ngb-pagination collectionSize="20" page="1" [size]="size"></ngb-pagination>';
+         const html = '<ngb-pagination [collectionSize]="20" [page]="1" [size]="size"></ngb-pagination>';
 
          tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.detectChanges();
@@ -284,7 +284,7 @@ describe('ngb-pagination', () => {
 
     it('should render and respond to maxSize change correctly', async(inject([TestComponentBuilder], (tcb) => {
          const html =
-             '<ngb-pagination collectionSize="70" [page]="page" [maxSize]="maxSize" [ellipses]="ellipses"></ngb-pagination>';
+             '<ngb-pagination [collectionSize]="70" [page]="page" [maxSize]="maxSize" [ellipses]="ellipses"></ngb-pagination>';
 
          tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
            fixture.detectChanges();
@@ -318,7 +318,7 @@ describe('ngb-pagination', () => {
        })));
 
     it('should render and rotate pages correctly', async(inject([TestComponentBuilder], (tcb) => {
-         const html = `<ngb-pagination collectionSize="70" [page]="page" [maxSize]="maxSize" [rotate]="rotate" 
+         const html = `<ngb-pagination [collectionSize]="70" [page]="page" [maxSize]="maxSize" [rotate]="rotate" 
         [ellipses]="ellipses"></ngb-pagination>`;
 
          tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
@@ -362,7 +362,7 @@ describe('ngb-pagination', () => {
        })));
 
     it('should display ellipsis correctly', async(inject([TestComponentBuilder], (tcb) => {
-         const html = `<ngb-pagination collectionSize="70" [page]="page" 
+         const html = `<ngb-pagination [collectionSize]="70" [page]="page" 
         [maxSize]="maxSize" [rotate]="rotate" [ellipses]="ellipses"></ngb-pagination>`;
 
          tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {

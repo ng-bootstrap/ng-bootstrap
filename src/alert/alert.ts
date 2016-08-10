@@ -15,7 +15,6 @@ import {
   TemplateRef
 } from '@angular/core';
 
-import {toInteger} from '../util/util';
 import {PopupService} from '../util/popup';
 
 /**
@@ -90,7 +89,7 @@ export class NgbDismissibleAlert implements OnInit, OnDestroy {
       this.close();
     });
     if (this.dismissOnTimeout) {
-      this._timeout = setTimeout(() => { this.close(); }, toInteger(this.dismissOnTimeout));
+      this._timeout = setTimeout(() => { this.close(); }, this.dismissOnTimeout);
     }
   }
 
