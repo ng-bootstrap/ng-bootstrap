@@ -3,6 +3,7 @@ export * from './alert';
 export * from './buttons';
 export * from './carousel';
 export * from './collapse';
+export * from './datepicker';
 export * from './dropdown';
 export * from './modal';
 export * from './pagination';
@@ -23,6 +24,7 @@ import {NgbdAlertModule} from './alert';
 import {NgbdButtonsModule} from './buttons';
 import {NgbdCarouselModule} from './carousel';
 import {NgbdCollapseModule} from './collapse';
+import {NgbdDatepickerModule} from './datepicker';
 import {NgbdDropdownModule} from './dropdown';
 import {NgbdModalModule} from './modal';
 import {NgbdPaginationModule} from './pagination';
@@ -42,6 +44,7 @@ import {NgbdTypeaheadModule} from './typeahead';
     NgbdButtonsModule,
     NgbdCarouselModule,
     NgbdCollapseModule,
+    NgbdDatepickerModule,
     NgbdDropdownModule,
     NgbdModalModule,
     NgbdPaginationModule,
@@ -59,6 +62,7 @@ import {NgbdTypeaheadModule} from './typeahead';
     NgbdButtonsModule,
     NgbdCarouselModule,
     NgbdCollapseModule,
+    NgbdDatepickerModule,
     NgbdDropdownModule,
     NgbdModalModule,
     NgbdPaginationModule,

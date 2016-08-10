@@ -74,6 +74,7 @@ module.exports = function makeWebpackConfig() {
       '@ng-bootstrap/buttons': root('src/buttons/index.ts'),
       '@ng-bootstrap/carousel': root('src/carousel/index.ts'),
       '@ng-bootstrap/collapse': root('src/collapse/index.ts'),
+      '@ng-bootstrap/datepicker': root('src/datepicker/index.ts'),
       '@ng-bootstrap/dropdown': root('src/dropdown/index.ts'),
       '@ng-bootstrap/modal': root('src/modal/index.ts'),
       '@ng-bootstrap/pagination': root('src/pagination/index.ts'),
