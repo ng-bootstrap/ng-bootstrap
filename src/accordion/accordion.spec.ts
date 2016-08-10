@@ -1,10 +1,10 @@
-import {inject, async, addProviders} from '@angular/core/testing';
+import {async, TestBed} from '@angular/core/testing';
 
 import {TestComponentBuilder} from '@angular/core/testing';
 
 import {Component} from '@angular/core';
 
-import {NGB_ACCORDION_DIRECTIVES} from './accordion';
+import {NgbAccordionModule} from './index';
 
 function getPanels(element: HTMLElement): HTMLDivElement[] {
   return <HTMLDivElement[]>Array.from(element.querySelectorAll('div .card-header'));
@@ -27,304 +27,294 @@ function expectOpenPanels(nativeEl: HTMLElement, openPanelsDef: boolean[]) {
 }
 
 describe('ngb-accordion', () => {
-  let html: string;
+  let html = `
+    <ngb-accordion #acc="ngbAccordion" [closeOthers]="closeOthers" [activeIds]="activeIds"
+      (change)="changeCallback($event)" [type]="classType">
+      <ngb-panel *ngFor="let panel of panels" [id]="panel.id" [disabled]="panel.disabled" [type]="panel.type">
+        <template ngbPanelTitle>{{panel.title}}</template>
+        <template ngbPanelContent>{{panel.content}}</template>
+      </ngb-panel>
+    </ngb-accordion>
+    <button *ngFor="let panel of panels" (click)="acc.toggle(panel.id)">Toggle the panel {{ panel.id }}</button>
+  `;
 
   beforeEach(() => {
-    html = `
-      <ngb-accordion #acc="ngbAccordion" [closeOthers]="closeOthers" [activeIds]="activeIds" 
-        (change)="changeCallback($event)" [type]="classType">
-        <ngb-panel *ngFor="let panel of panels" [id]="panel.id" [disabled]="panel.disabled" [type]="panel.type">
-          <template ngbPanelTitle>{{panel.title}}</template>       
-          <template ngbPanelContent>{{panel.content}}</template>        
-        </ngb-panel>        
-      </ngb-accordion>
-      <button *ngFor="let panel of panels" (click)="acc.toggle(panel.id)">Toggle the panel {{ panel.id }}</button>
-    `;
+    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbAccordionModule]});
+    TestBed.overrideComponent(TestComponent, {set: {template: html}});
   });
 
-  it('should have no open panels', async(inject([TestComponentBuilder], (tcb) => {
-       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
-         fixture.detectChanges();
-         expectOpenPanels(fixture.nativeElement, [false, false, false]);
-       });
-     })));
+  it('should have no open panels', async(() => {
+       const fixture = TestBed.createComponent(TestComponent);
+       fixture.detectChanges();
+       expectOpenPanels(fixture.nativeElement, [false, false, false]);
+     }));
 
-  it('should toggle panels based on "activeIds" values', async(inject([TestComponentBuilder], (tcb) => {
-       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
-         const tc = fixture.componentInstance;
-         const el = fixture.nativeElement;
+  it('should toggle panels based on "activeIds" values', async(() => {
+       const fixture = TestBed.createComponent(TestComponent);
+       const tc = fixture.componentInstance;
+       const el = fixture.nativeElement;
+       // as array
+       tc.activeIds = ['one', 'two'];
+       fixture.detectChanges();
+       expectOpenPanels(el, [true, true, false]);
 
-         // as array
-         tc.activeIds = ['one', 'two'];
-         fixture.detectChanges();
-         expectOpenPanels(el, [true, true, false]);
+       tc.activeIds = ['two', 'three'];
+       fixture.detectChanges();
+       expectOpenPanels(el, [false, true, true]);
 
-         tc.activeIds = ['two', 'three'];
-         fixture.detectChanges();
-         expectOpenPanels(el, [false, true, true]);
+       tc.activeIds = [];
+       fixture.detectChanges();
+       expectOpenPanels(el, [false, false, false]);
 
-         tc.activeIds = [];
-         fixture.detectChanges();
-         expectOpenPanels(el, [false, false, false]);
+       tc.activeIds = ['wrong id', 'one'];
+       fixture.detectChanges();
+       expectOpenPanels(el, [true, false, false]);
 
-         tc.activeIds = ['wrong id', 'one'];
-         fixture.detectChanges();
-         expectOpenPanels(el, [true, false, false]);
+       // as string
+       tc.activeIds = 'one';
+       fixture.detectChanges();
+       expectOpenPanels(el, [true, false, false]);
 
-         // as string
-         tc.activeIds = 'one';
-         fixture.detectChanges();
-         expectOpenPanels(el, [true, false, false]);
+       tc.activeIds = 'two, three';
+       fixture.detectChanges();
+       expectOpenPanels(el, [false, true, true]);
 
-         tc.activeIds = 'two, three';
-         fixture.detectChanges();
-         expectOpenPanels(el, [false, true, true]);
+       tc.activeIds = '';
+       fixture.detectChanges();
+       expectOpenPanels(el, [false, false, false]);
 
-         tc.activeIds = '';
-         fixture.detectChanges();
-         expectOpenPanels(el, [false, false, false]);
+       tc.activeIds = 'wrong id,one';
+       fixture.detectChanges();
+       expectOpenPanels(el, [true, false, false]);
+     }));
 
-         tc.activeIds = 'wrong id,one';
-         fixture.detectChanges();
-         expectOpenPanels(el, [true, false, false]);
-       });
-     })));
 
-  it('should toggle panels independently', async(inject([TestComponentBuilder], (tcb) => {
-       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
-         fixture.detectChanges();
+  it('should toggle panels independently', async(() => {
+       const fixture = TestBed.createComponent(TestComponent);
+       fixture.detectChanges();
 
-         const el = fixture.nativeElement;
+       const el = fixture.nativeElement;
 
-         getButton(el, 1).click();
-         fixture.detectChanges();
-         expectOpenPanels(el, [false, true, false]);
+       getButton(el, 1).click();
+       fixture.detectChanges();
+       expectOpenPanels(el, [false, true, false]);
 
-         getButton(el, 0).click();
-         fixture.detectChanges();
-         expectOpenPanels(el, [true, true, false]);
+       getButton(el, 0).click();
+       fixture.detectChanges();
+       expectOpenPanels(el, [true, true, false]);
 
-         getButton(el, 1).click();
-         fixture.detectChanges();
-         expectOpenPanels(el, [true, false, false]);
+       getButton(el, 1).click();
+       fixture.detectChanges();
+       expectOpenPanels(el, [true, false, false]);
 
-         getButton(el, 2).click();
-         fixture.detectChanges();
-         expectOpenPanels(el, [true, false, true]);
+       getButton(el, 2).click();
+       fixture.detectChanges();
 
-         getButton(el, 0).click();
-         fixture.detectChanges();
-         expectOpenPanels(el, [false, false, true]);
+       expectOpenPanels(el, [true, false, true]);
 
-         getButton(el, 2).click();
-         fixture.detectChanges();
-         expectOpenPanels(el, [false, false, false]);
-       });
-     })));
+       getButton(el, 0).click();
+       fixture.detectChanges();
+       expectOpenPanels(el, [false, false, true]);
 
-  it('should allow only one panel to be active with "closeOthers" flag', async(inject([TestComponentBuilder], (tcb) => {
-       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
-         fixture.detectChanges();
+       getButton(el, 2).click();
+       fixture.detectChanges();
+       expectOpenPanels(el, [false, false, false]);
+     }));
 
-         const tc = fixture.componentInstance;
-         const el = fixture.nativeElement;
+  it('should allow only one panel to be active with "closeOthers" flag', async(() => {
+       const fixture = TestBed.createComponent(TestComponent);
+       fixture.detectChanges();
 
-         tc.closeOthers = true;
+       const tc = fixture.componentInstance;
+       const el = fixture.nativeElement;
 
-         getButton(el, 0).click();
-         fixture.detectChanges();
-         expectOpenPanels(el, [true, false, false]);
+       tc.closeOthers = true;
 
-         getButton(el, 1).click();
-         fixture.detectChanges();
-         expectOpenPanels(el, [false, true, false]);
-       });
-     })));
+       getButton(el, 0).click();
+       fixture.detectChanges();
+       expectOpenPanels(el, [true, false, false]);
 
-  it('should have the appropriate heading', async(inject([TestComponentBuilder], (tcb) => {
-       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
-         fixture.detectChanges();
+       getButton(el, 1).click();
+       fixture.detectChanges();
+       expectOpenPanels(el, [false, true, false]);
+     }));
 
-         const compiled = fixture.nativeElement;
+  it('should have the appropriate heading', async(() => {
+       const fixture = TestBed.createComponent(TestComponent);
+       fixture.detectChanges();
 
-         const titles = Array.from(compiled.querySelectorAll('.card-header a'));
-         expect(titles.length).not.toBe(0);
+       const compiled = fixture.nativeElement;
 
-         titles.forEach(
-             (title: HTMLElement, idx: number) => { expect(title.textContent.trim()).toBe(`Panel ${idx + 1}`); });
-       });
-     })));
+       const titles = Array.from(compiled.querySelectorAll('.card-header a'));
+       expect(titles.length).not.toBe(0);
 
-  it('should only open one at a time', async(inject([TestComponentBuilder], (tcb) => {
-       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
-         const tc = fixture.componentInstance;
-         tc.closeOthers = true;
-         fixture.detectChanges();
+       titles.forEach(
+           (title: HTMLElement, idx: number) => { expect(title.textContent.trim()).toBe(`Panel ${idx + 1}`); });
+     }));
 
-         const headingLinks = fixture.nativeElement.querySelectorAll('.card-header a');
+  it('should only open one at a time', async(() => {
+       const fixture = TestBed.createComponent(TestComponent);
+       const tc = fixture.componentInstance;
+       tc.closeOthers = true;
+       fixture.detectChanges();
 
-         headingLinks[0].click();
-         fixture.detectChanges();
-         expectOpenPanels(fixture.nativeElement, [true, false, false]);
+       const headingLinks = fixture.nativeElement.querySelectorAll('.card-header a');
 
-         headingLinks[2].click();
-         fixture.detectChanges();
-         expectOpenPanels(fixture.nativeElement, [false, false, true]);
+       headingLinks[0].click();
+       fixture.detectChanges();
+       expectOpenPanels(fixture.nativeElement, [true, false, false]);
 
-         headingLinks[2].click();
-         fixture.detectChanges();
-         expectOpenPanels(fixture.nativeElement, [false, false, false]);
-       });
-     })));
+       headingLinks[2].click();
+       fixture.detectChanges();
+       expectOpenPanels(fixture.nativeElement, [false, false, true]);
 
-  it('should have only one open panel even if binding says otherwise', async(inject([TestComponentBuilder], (tcb) => {
-       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
-         const tc = fixture.componentInstance;
+       headingLinks[2].click();
+       fixture.detectChanges();
+       expectOpenPanels(fixture.nativeElement, [false, false, false]);
+     }));
 
-         tc.activeIds = ['one', 'two'];
-         tc.closeOthers = true;
-         fixture.detectChanges();
 
-         expectOpenPanels(fixture.nativeElement, [true, false, false]);
-       });
-     })));
 
-  it('should not open disabled panels from click', async(inject([TestComponentBuilder], (tcb) => {
-       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
-         const tc = fixture.componentInstance;
-         tc.panels[0].disabled = true;
-         fixture.detectChanges();
+  it('should have only one open panel even if binding says otherwise', async(() => {
+       const fixture = TestBed.createComponent(TestComponent);
+       const tc = fixture.componentInstance;
 
-         const headingLinks = fixture.nativeElement.querySelectorAll('.card-header a');
+       tc.activeIds = ['one', 'two'];
+       tc.closeOthers = true;
+       fixture.detectChanges();
 
-         headingLinks[0].click();
-         fixture.detectChanges();
+       expectOpenPanels(fixture.nativeElement, [true, false, false]);
+     }));
 
-         expectOpenPanels(fixture.nativeElement, [false, false, false]);
-       });
-     })));
+  it('should not open disabled panels from click', async(() => {
+       const fixture = TestBed.createComponent(TestComponent);
+       const tc = fixture.componentInstance;
+       tc.panels[0].disabled = true;
+       fixture.detectChanges();
 
-  it('should open/collapse disabled panels', async(inject([TestComponentBuilder], (tcb) => {
-       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
-         const tc = fixture.componentInstance;
+       const headingLinks = fixture.nativeElement.querySelectorAll('.card-header a');
 
-         tc.activeIds = ['one'];
-         fixture.detectChanges();
-         expectOpenPanels(fixture.nativeElement, [true, false, false]);
+       headingLinks[0].click();
+       fixture.detectChanges();
 
-         tc.panels[0].disabled = true;
-         fixture.detectChanges();
-         expectOpenPanels(fixture.nativeElement, [false, false, false]);
+       expectOpenPanels(fixture.nativeElement, [false, false, false]);
+     }));
 
-         tc.panels[0].disabled = false;
-         fixture.detectChanges();
-         expectOpenPanels(fixture.nativeElement, [true, false, false]);
-       });
-     })));
+  it('should open/collapse disabled panels', async(() => {
+       const fixture = TestBed.createComponent(TestComponent);
+       const tc = fixture.componentInstance;
 
-  it('should remove collapsed panels content from DOM', async(inject([TestComponentBuilder], (tcb) => {
-       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
-         fixture.detectChanges();
-         expect(getPanelsContent(fixture.nativeElement).length).toBe(0);
+       tc.activeIds = ['one'];
+       fixture.detectChanges();
+       expectOpenPanels(fixture.nativeElement, [true, false, false]);
 
-         getButton(fixture.nativeElement, 0).click();
-         fixture.detectChanges();
-         expect(getPanelsContent(fixture.nativeElement).length).toBe(1);
-       });
-     })));
+       tc.panels[0].disabled = true;
+       fixture.detectChanges();
+       expectOpenPanels(fixture.nativeElement, [false, false, false]);
 
-  it('should emit panel change event when toggling panels', async(inject([TestComponentBuilder], (tcb) => {
-       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
-         fixture.detectChanges();
+       tc.panels[0].disabled = false;
+       fixture.detectChanges();
+       expectOpenPanels(fixture.nativeElement, [true, false, false]);
+     }));
 
-         fixture.componentInstance.changeCallback = () => {};
+  it('should remove collapsed panels content from DOM', async(() => {
+       const fixture = TestBed.createComponent(TestComponent);
+       fixture.detectChanges();
+       expect(getPanelsContent(fixture.nativeElement).length).toBe(0);
 
-         spyOn(fixture.componentInstance, 'changeCallback');
+       getButton(fixture.nativeElement, 0).click();
+       fixture.detectChanges();
+       expect(getPanelsContent(fixture.nativeElement).length).toBe(1);
+     }));
 
-         // Select the first tab -> change event
-         getButton(fixture.nativeElement, 0).click();
-         fixture.detectChanges();
-         expect(fixture.componentInstance.changeCallback)
-             .toHaveBeenCalledWith(jasmine.objectContaining({panelId: 'one', nextState: true}));
+  it('should emit panel change event when toggling panels', async(() => {
+       const fixture = TestBed.createComponent(TestComponent);
+       fixture.detectChanges();
 
-         // Select the first tab again -> change event
-         getButton(fixture.nativeElement, 0).click();
-         fixture.detectChanges();
-         expect(fixture.componentInstance.changeCallback)
-             .toHaveBeenCalledWith(jasmine.objectContaining({panelId: 'one', nextState: false}));
-       });
-     })));
+       fixture.componentInstance.changeCallback = () => {};
 
-  it('should cancel panel toggle when preventDefault() is called', async(inject([TestComponentBuilder], (tcb) => {
-       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
-         fixture.detectChanges();
+       spyOn(fixture.componentInstance, 'changeCallback');
 
-         let changeEvent = null;
-         fixture.componentInstance.changeCallback = (event) => {
-           changeEvent = event;
-           event.preventDefault();
-         };
+       // Select the first tab -> change event
+       getButton(fixture.nativeElement, 0).click();
+       fixture.detectChanges();
+       expect(fixture.componentInstance.changeCallback)
+           .toHaveBeenCalledWith(jasmine.objectContaining({panelId: 'one', nextState: true}));
 
-         // Select the first tab -> toggle will be canceled
-         getButton(fixture.nativeElement, 0).click();
-         fixture.detectChanges();
-         expect(changeEvent).toEqual(jasmine.objectContaining({panelId: 'one', nextState: true}));
-         expectOpenPanels(fixture.nativeElement, [false, false, false]);
-       });
-     })));
+       // Select the first tab again -> change event
+       getButton(fixture.nativeElement, 0).click();
+       fixture.detectChanges();
+       expect(fixture.componentInstance.changeCallback)
+           .toHaveBeenCalledWith(jasmine.objectContaining({panelId: 'one', nextState: false}));
+     }));
 
-  it('should have specified type of accordion ', async(inject([TestComponentBuilder], (tcb) => {
+  it('should cancel panel toggle when preventDefault() is called', async(() => {
+       const fixture = TestBed.createComponent(TestComponent);
+       fixture.detectChanges();
+
+       let changeEvent = null;
+       fixture.componentInstance.changeCallback = event => {
+         changeEvent = event;
+         event.preventDefault();
+       };
+
+       // Select the first tab -> toggle will be canceled
+       getButton(fixture.nativeElement, 0).click();
+       fixture.detectChanges();
+       expect(changeEvent).toEqual(jasmine.objectContaining({panelId: 'one', nextState: true}));
+       expectOpenPanels(fixture.nativeElement, [false, false, false]);
+     }));
+
+
+  it('should have specified type of accordion ', async(() => {
        const testHtml = `
-      <ngb-accordion #acc="ngbAccordion" [closeOthers]="closeOthers" [type]="type">
-        <ngb-panel *ngFor="let panel of panels" [id]="panel.id" [disabled]="panel.disabled">
-          <template ngbPanelTitle>{{panel.title}}</template>       
-          <template ngbPanelContent>{{panel.content}}</template>        
-        </ngb-panel>        
-      </ngb-accordion>
-      <button *ngFor="let panel of panels" (click)="acc.toggle(panel.id)">Toggle the panel {{ panel.id }}</button>
+    <ngb-accordion #acc="ngbAccordion" [closeOthers]="closeOthers" [type]="classType">
+     <ngb-panel *ngFor="let panel of panels" [id]="panel.id" [disabled]="panel.disabled">
+       <template ngbPanelTitle>{{panel.title}}</template>
+       <template ngbPanelContent>{{panel.content}}</template>
+     </ngb-panel>
+    </ngb-accordion>
+    <button *ngFor="let panel of panels" (click)="acc.toggle(panel.id)">Toggle the panel {{ panel.id }}</button>
     `;
-       tcb.overrideTemplate(TestComponent, testHtml).createAsync(TestComponent).then((fixture) => {
-         fixture.detectChanges();
+       TestBed.overrideComponent(TestComponent, {set: {template: testHtml}});
+       const fixture = TestBed.createComponent(TestComponent);
+       fixture.detectChanges();
 
-         fixture.componentInstance.type = 'warning';
-         fixture.detectChanges();
+       fixture.componentInstance.classType = 'warning';
+       fixture.detectChanges();
 
-         let el = fixture.nativeElement.querySelectorAll('.card-header');
-         expect(el[0]).toHaveCssClass('card-warning');
-         expect(el[1]).toHaveCssClass('card-warning');
-         expect(el[2]).toHaveCssClass('card-warning');
+       let el = fixture.nativeElement.querySelectorAll('.card-header');
+       expect(el[0]).toHaveCssClass('card-warning');
+       expect(el[1]).toHaveCssClass('card-warning');
+       expect(el[2]).toHaveCssClass('card-warning');
+     }));
 
-       });
-     })));
+  it('should override the type in accordion with type in panel', async(() => {
+       const fixture = TestBed.createComponent(TestComponent);
+       fixture.detectChanges();
+       fixture.componentInstance.classType = 'warning';
 
-  it('should override the type in accordion with type in panel', async(inject([TestComponentBuilder], (tcb) => {
-       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
-         fixture.detectChanges();
-         fixture.componentInstance.classType = 'warning';
+       const tc = fixture.componentInstance;
+       tc.panels[0].type = 'success';
+       tc.panels[1].type = 'danger';
+       fixture.detectChanges();
 
-         const tc = fixture.componentInstance;
-         tc.panels[0].type = 'success';
-         tc.panels[1].type = 'danger';
-         fixture.detectChanges();
-
-         let el = fixture.nativeElement.querySelectorAll('.card-header');
-         expect(el[0]).toHaveCssClass('card-success');
-         expect(el[1]).toHaveCssClass('card-danger');
-         expect(el[2]).toHaveCssClass('card-warning');
-
-       });
-     })));
+       let el = fixture.nativeElement.querySelectorAll('.card-header');
+       expect(el[0]).toHaveCssClass('card-success');
+       expect(el[1]).toHaveCssClass('card-danger');
+       expect(el[2]).toHaveCssClass('card-warning');
+     }));
 });
 
-@Component({selector: 'test-cmp', directives: [NGB_ACCORDION_DIRECTIVES], template: ''})
+@Component({selector: 'test-cmp', template: ''})
 class TestComponent {
-  activeIds = [];
+  activeIds: string | string[] = [];
   classType;
   closeOthers = false;
   panels = [
     {id: 'one', disabled: false, title: 'Panel 1', content: 'foo', type: ''},
     {id: 'two', disabled: false, title: 'Panel 2', content: 'bar', type: ''},
-    {id: 'three', disabled: false, title: 'Panel 3', content: 'baz'}
+    {id: 'three', disabled: false, title: 'Panel 3', content: 'baz', type: ''}
   ];
-  changeCallback = () => {};
+  changeCallback = (event: any) => {};
 }
