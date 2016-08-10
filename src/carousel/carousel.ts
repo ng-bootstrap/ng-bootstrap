@@ -37,23 +37,23 @@ export class NgbSlide {
     'tabIndex': '0',
     '(mouseenter)': 'pause()',
     '(mouseleave)': 'cycle()',
-    '(keyup.arrowLeft)': '_keyPrev()',
-    '(keyup.arrowRight)': '_keyNext()'
+    '(keyup.arrowLeft)': 'keyPrev()',
+    '(keyup.arrowRight)': 'keyNext()'
   },
   template: `
     <ol class="carousel-indicators">
-      <li *ngFor="let slide of _slides" [id]="slide.id" [class.active]="slide.id === activeId" (click)="_cycleToSelected(slide.id)"></li>
+      <li *ngFor="let slide of slides" [id]="slide.id" [class.active]="slide.id === activeId" (click)="cycleToSelected(slide.id)"></li>
     </ol>
     <div class="carousel-inner" role="listbox">
-      <div *ngFor="let slide of _slides" class="carousel-item" [class.active]="slide.id === activeId">
+      <div *ngFor="let slide of slides" class="carousel-item" [class.active]="slide.id === activeId">
         <template [ngTemplateOutlet]="slide.tplRef"></template>
       </div>
     </div>
-    <a class="left carousel-control" role="button" (click)="_cycleToPrev()">
+    <a class="left carousel-control" role="button" (click)="cycleToPrev()">
       <span class="icon-prev" aria-hidden="true"></span>
       <span class="sr-only">Previous</span>
     </a>
-    <a class="right carousel-control" role="button" (click)="_cycleToNext()">
+    <a class="right carousel-control" role="button" (click)="cycleToNext()">
       <span class="icon-next" aria-hidden="true"></span>
       <span class="sr-only">Next</span>
     </a>
@@ -61,7 +61,7 @@ export class NgbSlide {
 })
 export class NgbCarousel implements AfterContentChecked,
     OnDestroy, OnInit {
-  @ContentChildren(NgbSlide) private _slides: QueryList<NgbSlide>;
+  @ContentChildren(NgbSlide) slides: QueryList<NgbSlide>;
   private _slideChangeInterval;
 
   /**
@@ -86,7 +86,7 @@ export class NgbCarousel implements AfterContentChecked,
 
   ngAfterContentChecked() {
     let activeSlide = this._getSlideById(this.activeId);
-    this.activeId = activeSlide ? activeSlide.id : (this._slides.length ? this._slides.first.id : null);
+    this.activeId = activeSlide ? activeSlide.id : (this.slides.length ? this.slides.first.id : null);
   }
 
   ngOnInit() { this._startTimer(); }
@@ -97,7 +97,7 @@ export class NgbCarousel implements AfterContentChecked,
    * Navigate to a slide with a specified identifier.
    */
   select(slideIdx: string) {
-    this._cycleToSelected(slideIdx);
+    this.cycleToSelected(slideIdx);
     this._restartTimer();
   }
 
@@ -105,7 +105,7 @@ export class NgbCarousel implements AfterContentChecked,
    * Navigate to the next slide.
    */
   prev() {
-    this._cycleToPrev();
+    this.cycleToPrev();
     this._restartTimer();
   }
 
@@ -113,7 +113,7 @@ export class NgbCarousel implements AfterContentChecked,
    * Navigate to the next slide.
    */
   next() {
-    this._cycleToNext();
+    this.cycleToNext();
     this._restartTimer();
   }
 
@@ -127,32 +127,47 @@ export class NgbCarousel implements AfterContentChecked,
    */
   cycle() { this._startTimer(); }
 
-  private _keyPrev() {
+  /**
+   * @internal
+   */
+  cycleToNext() {
+    let selectedId: string = this._getNextSlide(this.activeId);
+    this.cycleToSelected(selectedId);
+  }
+
+  /**
+   * @internal
+   */
+  cycleToPrev() {
+    let selectedId: string = this._getPrevSlide(this.activeId);
+    this.cycleToSelected(selectedId);
+  }
+
+  /**
+   * @internal
+   */
+  cycleToSelected(slideIdx: string) {
+    let selectedSlide = this._getSlideById(slideIdx);
+    if (selectedSlide) {
+      this.activeId = selectedSlide.id;
+    }
+  }
+
+  /**
+   * @internal
+   */
+  keyPrev() {
     if (this.keyboard) {
       this.prev();
     }
   }
 
-  private _keyNext() {
+  /**
+   * @internal
+   */
+  keyNext() {
     if (this.keyboard) {
       this.next();
-    }
-  }
-
-  private _cycleToNext() {
-    let selectedId: string = this._getNextSlide(this.activeId);
-    this._cycleToSelected(selectedId);
-  }
-
-  private _cycleToPrev() {
-    let selectedId: string = this._getPrevSlide(this.activeId);
-    this._cycleToSelected(selectedId);
-  }
-
-  private _cycleToSelected(slideIdx: string) {
-    let selectedSlide = this._getSlideById(slideIdx);
-    if (selectedSlide) {
-      this.activeId = selectedSlide.id;
     }
   }
 
@@ -162,19 +177,19 @@ export class NgbCarousel implements AfterContentChecked,
   }
 
   private _startTimer() {
-    this._slideChangeInterval = setInterval(() => { this._cycleToNext(); }, this.interval);
+    this._slideChangeInterval = setInterval(() => { this.cycleToNext(); }, this.interval);
   }
 
   private _stopTimer() { clearInterval(this._slideChangeInterval); }
 
   private _getSlideById(slideIdx: string): NgbSlide {
-    let slideWithId: NgbSlide[] = this._slides.filter(slide => slide.id === slideIdx);
+    let slideWithId: NgbSlide[] = this.slides.filter(slide => slide.id === slideIdx);
     return slideWithId.length ? slideWithId[0] : null;
   }
 
   private _getNextSlide(id: string): string {
     let nextSlideId = id;
-    let slideArr = this._slides.toArray();
+    let slideArr = this.slides.toArray();
 
     slideArr.forEach((slide, idx) => {
       if (slide.id === id) {
@@ -188,7 +203,7 @@ export class NgbCarousel implements AfterContentChecked,
 
   private _getPrevSlide(id: string): string {
     let prevSlideId = id;
-    let slideArr = this._slides.toArray();
+    let slideArr = this.slides.toArray();
 
     slideArr.forEach((slide, idx) => {
       if (slide.id === id) {
