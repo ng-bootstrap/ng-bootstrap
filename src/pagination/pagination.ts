@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output, OnChanges, ChangeDetectionStrategy} from '@angular/core';
-import {getValueInRange, toInteger} from '../util/util';
+import {getValueInRange} from '../util/util';
 
 /**
  * A directive that will take care of visualising a pagination bar and enable / disable buttons correctly!
@@ -48,18 +48,13 @@ import {getValueInRange, toInteger} from '../util/util';
   `
 })
 export class NgbPagination implements OnChanges {
-  private _maxSize = 0;
-  private _page = 0;
   private _pageCount = 0;
-  private _pageSize = 10;
   pages: number[] = [];
 
   /**
    *  Whether to show the "First" and "Last" page links
    */
   @Input() boundaryLinks = false;
-
-  private _collectionSize;
 
   /**
    *  Whether to show the "Next" and "Previous" page links
@@ -80,42 +75,22 @@ export class NgbPagination implements OnChanges {
   /**
    *  Number of items in collection.
    */
-  @Input()
-  set collectionSize(value: number | string) {
-    this._collectionSize = toInteger(value);
-  }
-
-  get collectionSize(): number | string { return this._collectionSize; }
+  @Input() collectionSize: number;
 
   /**
-   *  Maximum number of pages to display
+   *  Maximum number of pages to display.
    */
-  @Input()
-  set maxSize(value: number | string) {
-    this._maxSize = toInteger(value);
-  }
-
-  get maxSize(): number | string { return this._maxSize; }
+  @Input() maxSize = 0;
 
   /**
    *  Current page.
    */
-  @Input()
-  set page(value: number | string) {
-    this._page = parseInt(`${value}`, 10);
-  }
-
-  get page(): number | string { return this._page; }
+  @Input() page = 0;
 
   /**
    *  Number of items per page.
    */
-  @Input()
-  set pageSize(value: number | string) {
-    this._pageSize = toInteger(value);
-  }
-
-  get pageSize(): number | string { return this._pageSize; }
+  @Input() pageSize = 10;
 
   /**
    *  An event fired when the page is changed.
@@ -134,7 +109,7 @@ export class NgbPagination implements OnChanges {
 
   selectPage(pageNumber: number): void {
     let prevPageNo = this.page;
-    this._page = this._getPageNoInRange(pageNumber);
+    this.page = this._getPageNoInRange(pageNumber);
 
     if (this.page !== prevPageNo) {
       this.pageChange.emit(this.page);
@@ -145,7 +120,7 @@ export class NgbPagination implements OnChanges {
 
   ngOnChanges(): void {
     // re-calculate new length of pages
-    this._pageCount = Math.ceil(this._collectionSize / this._pageSize);
+    this._pageCount = Math.ceil(this.collectionSize / this.pageSize);
 
     // fill-in model needed to render pages
     this.pages.length = 0;
@@ -154,10 +129,10 @@ export class NgbPagination implements OnChanges {
     }
 
     // get selected page
-    this._page = this._getPageNoInRange(this.page);
+    this.page = this._getPageNoInRange(this.page);
 
     // apply maxSize if necessary
-    if (this._maxSize > 0 && this._pageCount > this._maxSize) {
+    if (this.maxSize > 0 && this._pageCount > this.maxSize) {
       let start = 0;
       let end = this._pageCount;
 
@@ -202,19 +177,19 @@ export class NgbPagination implements OnChanges {
   private _applyRotation(): [number, number] {
     let start = 0;
     let end = this._pageCount;
-    let leftOffset = Math.floor(this._maxSize / 2);
-    let rightOffset = this._maxSize % 2 === 0 ? leftOffset - 1 : leftOffset;
+    let leftOffset = Math.floor(this.maxSize / 2);
+    let rightOffset = this.maxSize % 2 === 0 ? leftOffset - 1 : leftOffset;
 
-    if (this._page <= leftOffset) {
+    if (this.page <= leftOffset) {
       // very beginning, no rotation -> [0..maxSize]
-      end = this._maxSize;
-    } else if (this._pageCount - this._page < leftOffset) {
+      end = this.maxSize;
+    } else if (this._pageCount - this.page < leftOffset) {
       // very end, no rotation -> [len-maxSize..len]
-      start = this._pageCount - this._maxSize;
+      start = this._pageCount - this.maxSize;
     } else {
       // rotate
-      start = this._page - leftOffset - 1;
-      end = this._page + rightOffset;
+      start = this.page - leftOffset - 1;
+      end = this.page + rightOffset;
     }
 
     return [start, end];
@@ -224,9 +199,9 @@ export class NgbPagination implements OnChanges {
    * Paginates page numbers based on maxSize items per page
    */
   private _applyPagination(): [number, number] {
-    let page = Math.ceil(this._page / this._maxSize) - 1;
-    let start = page * this._maxSize;
-    let end = start + this._maxSize;
+    let page = Math.ceil(this.page / this.maxSize) - 1;
+    let start = page * this.maxSize;
+    let end = start + this.maxSize;
 
     return [start, end];
   }
