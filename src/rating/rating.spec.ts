@@ -1,7 +1,8 @@
-import {inject, async, TestComponentBuilder} from '@angular/core/testing';
+import {async, TestBed, ComponentFixture} from '@angular/core/testing';
 
 import {Component} from '@angular/core';
 
+import {NgbRatingModule} from './index';
 import {NgbRating} from './rating';
 
 function getAriaState(compiled) {
@@ -30,141 +31,112 @@ function getState(compiled) {
   return state;
 }
 
+function createTestComponentFixture(html: string): ComponentFixture<TestComponent> {
+  TestBed.overrideComponent(TestComponent, {set: {template: html}});
+  const fixture = TestBed.createComponent(TestComponent);
+  fixture.detectChanges();
+  return fixture;
+}
+
 describe('ngb-rating', () => {
-  it('should show 10 stars by default', async(inject([TestComponentBuilder], (tcb) => {
-       tcb.createAsync(NgbRating).then((fixture) => {
-         fixture.detectChanges();
+  beforeEach(() => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbRatingModule]}); });
 
-         const compiled = fixture.nativeElement;
+  it('should show 10 stars by default', async(() => {
+       const fixture = TestBed.createComponent(NgbRating);
+       fixture.detectChanges();
 
-         const stars = getStars(compiled);
-         expect(stars.length).toBe(10);
-       });
-     })));
+       const compiled = fixture.nativeElement;
 
-  it('should change the num of stars with `max`', async(inject([TestComponentBuilder], (tcb) => {
-       const html = '<ngb-rating max="3"></ngb-rating>';
+       const stars = getStars(compiled);
+       expect(stars.length).toBe(10);
+     }));
 
-       return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
-         fixture.detectChanges();
+  it('should change the num of stars with `max`', async(() => {
+       const fixture = createTestComponentFixture('<ngb-rating max="3"></ngb-rating>');
 
-         const compiled = fixture.nativeElement;
+       const compiled = fixture.nativeElement;
+       const stars = getStars(compiled);
+       expect(stars.length).toBe(3);
+     }));
 
-         const stars = getStars(compiled);
-         expect(stars.length).toBe(3);
-       });
-     })));
+  it('initializes the default star icons as selected', async(() => {
+       const fixture = createTestComponentFixture('<ngb-rating rate="3" max="5"></ngb-rating>');
 
-  it('initializes the default star icons as selected', async(inject([TestComponentBuilder], (tcb) => {
-       const html = '<ngb-rating rate="3" max="5"></ngb-rating>';
+       const compiled = fixture.nativeElement;
+       expect(getState(compiled)).toEqual([true, true, true, false, false]);
+     }));
 
-       return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
-         fixture.detectChanges();
+  it('handles correctly the click event', async(() => {
+       const fixture = createTestComponentFixture('<ngb-rating rate="3" max="5"></ngb-rating>');
 
-         const compiled = fixture.nativeElement;
+       const compiled = fixture.nativeElement;
 
-         expect(getState(compiled)).toEqual([true, true, true, false, false]);
-       });
-     })));
+       getStar(compiled, 2).click();
+       fixture.detectChanges();
+       expect(getState(compiled)).toEqual([true, true, false, false, false]);
+     }));
 
-  it('handles correctly the click event', async(inject([TestComponentBuilder], (tcb) => {
-       const html = '<ngb-rating rate="3" max="5"></ngb-rating>';
+  it('should set pointer cursor on stars when not readonly', async(() => {
+       const fixture = TestBed.createComponent(NgbRating);
+       fixture.detectChanges();
 
-       return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
-         fixture.detectChanges();
+       const compiled = fixture.nativeElement;
 
-         const compiled = fixture.nativeElement;
+       expect(window.getComputedStyle(getStar(compiled, 1)).getPropertyValue('cursor')).toBe('pointer');
+     }));
 
-         getStar(compiled, 2).click();
-         fixture.detectChanges();
-         expect(getState(compiled)).toEqual([true, true, false, false, false]);
-       });
-     })));
+  it('should set not allowed cursor on stars when readonly', async(() => {
+       const fixture = createTestComponentFixture('<ngb-rating [readonly]="true"></ngb-rating>');
 
-  it('should set pointer cursor on stars when not readonly', async(inject([TestComponentBuilder], (tcb) => {
-       tcb.createAsync(NgbRating).then((fixture) => {
-         fixture.detectChanges();
+       const compiled = fixture.nativeElement;
 
-         const compiled = fixture.nativeElement;
-
-         expect(window.getComputedStyle(getStar(compiled, 1)).getPropertyValue('cursor')).toBe('pointer');
-       });
-     })));
-
-  it('should set not allowed cursor on stars when readonly', async(inject([TestComponentBuilder], (tcb) => {
-       const html = '<ngb-rating [readonly]="true"></ngb-rating>';
-       return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
-         fixture.detectChanges();
-
-         const compiled = fixture.nativeElement;
-
-         expect(window.getComputedStyle(getStar(compiled, 1)).getPropertyValue('cursor')).toBe('not-allowed');
-       });
-     })));
+       expect(window.getComputedStyle(getStar(compiled, 1)).getPropertyValue('cursor')).toBe('not-allowed');
+     }));
 
   describe('aria support', () => {
-    it('contains aria-valuemax with the number of stars', async(inject([TestComponentBuilder], (tcb) => {
-         const html = '<ngb-rating [max]="max"></ngb-rating>';
+    it('contains aria-valuemax with the number of stars', async(() => {
+         const fixture = createTestComponentFixture('<ngb-rating [max]="max"></ngb-rating>');
 
-         return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
-           fixture.detectChanges();
+         const compiled = fixture.nativeElement;
 
-           const compiled = fixture.nativeElement;
+         expect(compiled.querySelector('span').getAttribute('aria-valuemax')).toBe('10');
+       }));
 
-           expect(compiled.querySelector('span').getAttribute('aria-valuemax')).toBe('10');
-         });
-       })));
+    it('contains a hidden span for each star for screenreaders', async(() => {
+         const fixture = createTestComponentFixture('<ngb-rating max="5"></ngb-rating>');
 
-    it('contains a hidden span for each star for screenreaders', async(inject([TestComponentBuilder], (tcb) => {
-         const html = '<ngb-rating max="5"></ngb-rating>';
+         const compiled = fixture.nativeElement;
+         const hiddenStars = getStars(compiled, '.sr-only');
 
-         return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
-           fixture.detectChanges();
+         expect(hiddenStars.length).toBe(5);
+       }));
 
-           let compiled = fixture.nativeElement;
-           let hiddenStars = getStars(compiled, '.sr-only');
-           expect(hiddenStars.length).toBe(5);
-         });
-       })));
+    it('initializes populates the current rate for screenreaders', async(() => {
+         const fixture = createTestComponentFixture('<ngb-rating rate="3" max="5"></ngb-rating>');
 
-    it('initializes populates the current rate for screenreaders', async(inject([TestComponentBuilder], (tcb) => {
-         const html = '<ngb-rating rate="3" max="5"></ngb-rating>';
+         const compiled = fixture.nativeElement;
 
-         return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
-           fixture.detectChanges();
+         expect(getAriaState(compiled)).toEqual([true, true, true, false, false]);
+       }));
 
-           const compiled = fixture.nativeElement;
+    it('contains aria-valuenow with the current rate', async(() => {
+         const fixture = createTestComponentFixture('<ngb-rating [max]="max" rate="3"></ngb-rating>');
 
-           expect(getAriaState(compiled)).toEqual([true, true, true, false, false]);
-         });
-       })));
+         const compiled = fixture.nativeElement;
 
-    it('contains aria-valuenow with the current rate', async(inject([TestComponentBuilder], (tcb) => {
-         const html = '<ngb-rating [max]="max" rate="3"></ngb-rating>';
+         expect(compiled.querySelector('span').getAttribute('aria-valuenow')).toBe('3');
+       }));
 
-         return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
-           fixture.detectChanges();
+    it('updates aria-valuenow when the rate changes', async(() => {
+         const fixture = createTestComponentFixture('<ngb-rating [max]="max" rate="3"></ngb-rating>');
 
-           const compiled = fixture.nativeElement;
+         const compiled = fixture.nativeElement;
 
-           expect(compiled.querySelector('span').getAttribute('aria-valuenow')).toBe('3');
-         });
-       })));
+         getStar(compiled, 7).click();
+         fixture.detectChanges();
 
-    it('updates aria-valuenow when the rate changes', async(inject([TestComponentBuilder], (tcb) => {
-         const html = '<ngb-rating [max]="max" rate="3"></ngb-rating>';
-
-         return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
-           fixture.detectChanges();
-
-           const compiled = fixture.nativeElement;
-
-           getStar(compiled, 7).click();
-           fixture.detectChanges();
-
-           expect(compiled.querySelector('span').getAttribute('aria-valuenow')).toBe('7');
-         });
-       })));
+         expect(compiled.querySelector('span').getAttribute('aria-valuenow')).toBe('7');
+       }));
   });
 });
 
