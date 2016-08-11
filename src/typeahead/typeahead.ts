@@ -41,10 +41,10 @@ const NGB_TYPEAHEAD_VALUE_ACCESSOR = {
   selector: 'input[ngbTypeahead]',
   host: {
     '(blur)': 'onTouched()',
-    '[class.open]': '_windowRef !== null',
-    '(document:click)': '_closePopup()',
+    '[class.open]': 'isPopupOpen()',
+    '(document:click)': 'closePopup()',
     '(input)': 'onChange($event.target.value)',
-    '(keydown)': '_handleKeyDown($event)',
+    '(keydown)': 'handleKeyDown($event)',
     'autocomplete': 'off',
     'autocapitalize': 'off',
     'autocorrect': 'off'
@@ -109,7 +109,7 @@ export class NgbTypeahead implements OnInit,
   ngOnInit() {
     this._valueChanges.let (this.ngbTypeahead).subscribe((results) => {
       if (!results || results.length === 0) {
-        this._closePopup();
+        this.closePopup();
       } else {
         this._openPopup();
         this._windowRef.instance.results = results;
@@ -133,12 +133,23 @@ export class NgbTypeahead implements OnInit,
     this._renderer.setElementProperty(this._elementRef.nativeElement, 'value', formattedValue);
   }
 
-  private _closePopup() {
+  /**
+   * @internal
+   */
+  isPopupOpen() { return this._windowRef != null; }
+
+  /**
+   * @internal
+   */
+  closePopup() {
     this._popupService.close();
     this._windowRef = null;
   }
 
-  private _handleKeyDown(event: KeyboardEvent) {
+  /**
+   * @internal
+   */
+  handleKeyDown(event: KeyboardEvent) {
     if (!this._windowRef) {
       return;
     }
@@ -159,7 +170,7 @@ export class NgbTypeahead implements OnInit,
           this._selectResult(result);
           break;
         case Key.Escape:
-          this._closePopup();
+          this.closePopup();
           break;
       }
     }
@@ -175,7 +186,7 @@ export class NgbTypeahead implements OnInit,
   private _selectResult(result: any) {
     this.writeValue(result);
     this._onChangeNoEmit(result);
-    this._closePopup();
+    this.closePopup();
   }
 }
 

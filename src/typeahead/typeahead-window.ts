@@ -1,5 +1,4 @@
 import {Component, Input, Output, EventEmitter, TemplateRef} from '@angular/core';
-import {NgbHighlight} from './highlight';
 
 import {toString} from '../util/util';
 
@@ -18,7 +17,7 @@ export type ResultTplCtx = {
       <ngb-highlight [result]="formatter(result)" [term]="term"></ngb-highlight>
     </template>
     <template ngFor [ngForOf]="results" let-result let-idx="index">
-      <button class="dropdown-item" [class.active]="idx === _activeIdx" 
+      <button class="dropdown-item" [class.active]="idx === activeIdx" 
         (mouseenter)="markActive(idx)" 
         (click)="select(result)">
           <template [ngTemplateOutlet]="resultTemplate || rt" 
@@ -28,7 +27,7 @@ export type ResultTplCtx = {
   `
 })
 export class NgbTypeaheadWindow {
-  private _activeIdx = 0;
+  activeIdx = 0;
 
   /**
    * Typeahead match results to be displayed
@@ -41,7 +40,7 @@ export class NgbTypeaheadWindow {
   @Input() term: string;
 
   /**
-   * A function used to format a given result before display. This function should return a formated string without any
+   * A function used to format a given result before display. This function should return a formatted string without any
    * HTML markup.
    */
   @Input() formatter = toString;
@@ -56,13 +55,19 @@ export class NgbTypeaheadWindow {
    */
   @Output('select') selectEvent = new EventEmitter();
 
-  getActive() { return this.results[this._activeIdx]; }
+  getActive() { return this.results[this.activeIdx]; }
 
-  markActive(_activeIdx: number) { this._activeIdx = _activeIdx; }
+  /**
+   * @internal
+   */
+  markActive(activeIdx: number) { this.activeIdx = activeIdx; }
 
-  next() { this._activeIdx = (this._activeIdx + 1) % this.results.length; }
+  next() { this.activeIdx = (this.activeIdx + 1) % this.results.length; }
 
-  prev() { this._activeIdx = (this._activeIdx === 0 ? this.results.length - 1 : this._activeIdx - 1); }
+  prev() { this.activeIdx = (this.activeIdx === 0 ? this.results.length - 1 : this.activeIdx - 1); }
 
+  /**
+   * @internal
+   */
   select(item) { this.selectEvent.emit(item); }
 }
