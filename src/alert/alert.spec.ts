@@ -1,7 +1,8 @@
-import {inject, async, fakeAsync, tick, TestComponentBuilder} from '@angular/core/testing';
+import {async, fakeAsync, tick, TestBed} from '@angular/core/testing';
 
 import {Component} from '@angular/core';
 
+import {NgbAlertModule} from './index';
 import {NgbAlert, NgbDismissibleAlert} from './alert';
 
 function getAlertElement(element: HTMLElement): HTMLDivElement {
@@ -13,10 +14,14 @@ function getCloseButton(element: HTMLElement): HTMLButtonElement {
 }
 
 describe('ngb-alert', () => {
-  it('should have type warning and by dismissible by default', async(inject([TestComponentBuilder], (tcb) => {
-       tcb.overrideTemplate(TestComponent, '<ngb-alert>Watch out!</ngb-alert>')
-           .createAsync(TestComponent)
-           .then((fixture) => {
+
+  beforeEach(() => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbAlertModule]}); });
+
+  it('should have type warning and by dismissible by default', async(() => {
+       TestBed.overrideComponent(TestComponent, {set: {template: '<ngb-alert>Watch out!</ngb-alert>'}})
+           .compileComponents()
+           .then(() => {
+             const fixture = TestBed.createComponent(TestComponent);
              fixture.detectChanges();
 
              const alertEl = getAlertElement(fixture.nativeElement);
@@ -25,33 +30,40 @@ describe('ngb-alert', () => {
              expect(alertEl.getAttribute('role')).toEqual('alert');
              expect(getCloseButton(alertEl)).toBeTruthy();
            });
-     })));
+     }));
 
-  it('should allow specifying alert type', async(inject([TestComponentBuilder], (tcb) => {
-       tcb.overrideTemplate(TestComponent, '<ngb-alert type="success">Cool!</ngb-alert>')
-           .createAsync(TestComponent)
-           .then((fixture) => {
+  it('should allow specifying alert type', async(() => {
+       TestBed.overrideComponent(TestComponent, {set: {template: '<ngb-alert type="success">Cool!</ngb-alert>'}})
+           .compileComponents()
+           .then(() => {
+             const fixture = TestBed.createComponent(TestComponent);
              fixture.detectChanges();
              expect(getAlertElement(fixture.nativeElement)).toHaveCssClass('alert-success');
            });
-     })));
+     }));
 
-  it('should render close button only if dismissible', async(inject([TestComponentBuilder], (tcb) => {
-       tcb.overrideTemplate(TestComponent, '<ngb-alert [dismissible]="false">Don\'t close!</ngb-alert>')
-           .createAsync(TestComponent)
-           .then((fixture) => {
+  it('should render close button only if dismissible', async(() => {
+       TestBed
+           .overrideComponent(
+               TestComponent, {set: {template: `<ngb-alert [dismissible]="false">Don't close!</ngb-alert>`}})
+           .compileComponents()
+           .then(() => {
+             const fixture = TestBed.createComponent(TestComponent);
              fixture.detectChanges();
              expect(getCloseButton(getAlertElement(fixture.nativeElement))).toBeFalsy();
            });
-     })));
+     }));
 });
 
 describe('NgbDismissibleAlert', () => {
 
-  it('should open a dismissible alert with default type', async(inject([TestComponentBuilder], (tcb) => {
-       tcb.overrideTemplate(TestComponent, '<template ngbAlert>Hello, {{name}}!</template>')
-           .createAsync(TestComponent)
-           .then((fixture) => {
+  beforeEach(() => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbAlertModule]}); });
+
+  it('should open a dismissible alert with default type', async(() => {
+       TestBed.overrideComponent(TestComponent, {set: {template: '<template ngbAlert>Hello, {{name}}!</template>'}})
+           .compileComponents()
+           .then(() => {
+             const fixture = TestBed.createComponent(TestComponent);
              fixture.detectChanges();
 
              const alertEl = getAlertElement(fixture.nativeElement);
@@ -64,12 +76,15 @@ describe('NgbDismissibleAlert', () => {
              fixture.detectChanges();
              expect(getAlertElement(fixture.nativeElement)).toBeNull();
            });
-     })));
+     }));
 
-  it('should open a dismissible alert with a specified type', async(inject([TestComponentBuilder], (tcb) => {
-       tcb.overrideTemplate(TestComponent, '<template ngbAlert type="success">Hello, {{name}}!</template>')
-           .createAsync(TestComponent)
-           .then((fixture) => {
+  it('should open a dismissible alert with a specified type', async(() => {
+       TestBed
+           .overrideComponent(
+               TestComponent, {set: {template: '<template ngbAlert type="success">Hello, {{name}}!</template>'}})
+           .compileComponents()
+           .then(() => {
+             const fixture = TestBed.createComponent(TestComponent);
              fixture.detectChanges();
 
              const alertEl = getAlertElement(fixture.nativeElement);
@@ -77,14 +92,17 @@ describe('NgbDismissibleAlert', () => {
              expect(alertEl).toHaveCssClass('alert-success');
              expect(getCloseButton(alertEl)).toBeTruthy();
            });
-     })));
+     }));
 
 
-  it('should dismiss alert and invoke close handler on close button click',
-     async(inject([TestComponentBuilder], (tcb) => {
-       tcb.overrideTemplate(TestComponent, '<template ngbAlert (close)="closed = true">Hello, {{name}}!</template>')
-           .createAsync(TestComponent)
-           .then((fixture) => {
+  it('should dismiss alert and invoke close handler on close button click', async(() => {
+       TestBed
+           .overrideComponent(
+               TestComponent,
+               {set: {template: '<template ngbAlert (close)="closed = true">Hello, {{name}}!</template>'}})
+           .compileComponents()
+           .then(() => {
+             const fixture = TestBed.createComponent(TestComponent);
              fixture.detectChanges();
 
              const alertEl = getAlertElement(fixture.nativeElement);
@@ -95,33 +113,37 @@ describe('NgbDismissibleAlert', () => {
              expect(fixture.componentInstance.closed).toBeTruthy();
              expect(getAlertElement(fixture.nativeElement)).toBeNull();
            });
-     })));
+     }));
 
-  it('should auto close on timeout specified', fakeAsync(inject([TestComponentBuilder], (tcb) => {
-       const html = '<template ngbAlert [dismissOnTimeout]="1000">Hello, {{name}}!</template>';
-       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
-         fixture.detectChanges();
-         const alertEl = getAlertElement(fixture.nativeElement);
-         fixture.detectChanges();
-         expect(alertEl.getAttribute('role')).toEqual('alert');
-         expect(getCloseButton(alertEl)).toBeTruthy();
+  it('should auto close on timeout specified', fakeAsync(() => {
+       TestBed
+           .overrideComponent(
+               TestComponent,
+               {set: {template: '<template ngbAlert [dismissOnTimeout]="1000">Hello, {{name}}!</template>'}})
+           .compileComponents()
+           .then(() => {
+             const fixture = TestBed.createComponent(TestComponent);
+             fixture.detectChanges();
+             const alertEl = getAlertElement(fixture.nativeElement);
+             fixture.detectChanges();
+             expect(alertEl.getAttribute('role')).toEqual('alert');
+             expect(getCloseButton(alertEl)).toBeTruthy();
 
-         tick(800);
-         fixture.detectChanges();
-         expect(alertEl.getAttribute('role')).toEqual('alert');
-         expect(getCloseButton(alertEl)).toBeTruthy();
+             tick(800);
+             fixture.detectChanges();
+             expect(alertEl.getAttribute('role')).toEqual('alert');
+             expect(getCloseButton(alertEl)).toBeTruthy();
 
-         tick(1200);
-         fixture.detectChanges();
-         expect(getAlertElement(fixture.nativeElement)).toBeNull();
+             tick(1200);
+             fixture.detectChanges();
+             expect(getAlertElement(fixture.nativeElement)).toBeNull();
 
-       });
-     })));
+           });
+     }));
 
 });
 
-@Component(
-    {selector: 'test-cmp', directives: [NgbAlert, NgbDismissibleAlert], template: '', entryComponents: [NgbAlert]})
+@Component({selector: 'test-cmp', template: '', entryComponents: [NgbAlert]})
 class TestComponent {
   name = 'World';
   closed = false;
