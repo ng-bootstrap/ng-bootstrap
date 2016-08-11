@@ -281,7 +281,7 @@ describe('ngb-dropdown-toggle', () => {
      }));
 });
 
-@Component({selector: 'test-cmp', directives: [NgbDropdown, NgbDropdownToggle], template: ''})
+@Component({selector: 'test-cmp', template: ''})
 class TestComponent {
   isOpen = false;
 }
