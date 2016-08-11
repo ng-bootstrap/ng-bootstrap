@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 
-import {TestBed} from '@angular/core/testing';
+import {TestBed, ComponentFixture} from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
 
 import {Validators, FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -45,11 +45,10 @@ function expectToDisplayTime(el: HTMLElement, time: string) {
   expect(timeInInputs.join(':')).toBe(time);
 }
 
-function createTestComponent(html: string) {
+function createTestComponent(html: string): ComponentFixture<TestComponent> {
   TestBed.overrideComponent(TestComponent, {set: {template: html}});
   const fixture = TestBed.createComponent(TestComponent);
   fixture.detectChanges();
-
   return fixture;
 }
 

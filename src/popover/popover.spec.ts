@@ -6,11 +6,10 @@ import {Component} from '@angular/core';
 import {NgbPopoverModule} from './index';
 import {NgbPopoverWindow, NgbPopover} from './popover';
 
-function createTestComponent(html: string) {
+function createTestComponent(html: string): ComponentFixture<TestComponent> {
   TestBed.overrideComponent(TestComponent, {set: {template: html}});
   const fixture = TestBed.createComponent(TestComponent);
   fixture.detectChanges();
-
   return fixture;
 }
 
@@ -63,7 +62,9 @@ describe('ngb-popover', () => {
     });
 
     it('should open and close a popover - default settings and content from a template', () => {
-      const fixture = createTestComponent(`<template #t>Hello, {{name}}!</template><div [ngbPopover]="t" title="Title"></div>`);
+      const fixture = createTestComponent(`
+          <template #t>Hello, {{name}}!</template>
+          <div [ngbPopover]="t" title="Title"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
       directive.triggerEventHandler('click', {});

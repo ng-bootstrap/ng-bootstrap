@@ -1,4 +1,4 @@
-import {async, TestBed} from '@angular/core/testing';
+import {TestBed, ComponentFixture} from '@angular/core/testing';
 
 import {Component} from '@angular/core';
 import {By} from '@angular/platform-browser';
@@ -10,225 +10,212 @@ function getDropdownEl(tc) {
   return tc.querySelector(`[ngbDropdown]`);
 }
 
+function createTestComponent(html: string): ComponentFixture<TestComponent> {
+  TestBed.overrideComponent(TestComponent, {set: {template: html}});
+  const fixture = TestBed.createComponent(TestComponent);
+  fixture.detectChanges();
+  return fixture;
+}
+
 describe('ngb-dropdown', () => {
   beforeEach(() => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbDropdownModule]}); });
 
-  it('should be closed by default', async(() => {
-       const html = `<div ngbDropdown></div>`;
+  it('should be closed by default', () => {
+    const html = `<div ngbDropdown></div>`;
 
-       TestBed.overrideComponent(TestComponent, {set: {template: html}});
-       const fixture = TestBed.createComponent(TestComponent);
-       fixture.detectChanges();
-       const compiled = fixture.nativeElement;
+    const fixture = createTestComponent(html);
+    const compiled = fixture.nativeElement;
 
-       expect(getDropdownEl(compiled)).toHaveCssClass('dropdown');
-       expect(getDropdownEl(compiled)).not.toHaveCssClass('open');
-     }));
+    expect(getDropdownEl(compiled)).toHaveCssClass('dropdown');
+    expect(getDropdownEl(compiled)).not.toHaveCssClass('open');
+  });
 
-  it('should be open initially if open expression is true', async(() => {
-       const html = `<div ngbDropdown [open]="true"></div>`;
+  it('should be open initially if open expression is true', () => {
+    const html = `<div ngbDropdown [open]="true"></div>`;
 
-       TestBed.overrideComponent(TestComponent, {set: {template: html}});
-       const fixture = TestBed.createComponent(TestComponent);
-       fixture.detectChanges();
-       const compiled = fixture.nativeElement;
+    const fixture = createTestComponent(html);
+    const compiled = fixture.nativeElement;
 
-       expect(getDropdownEl(compiled)).toHaveCssClass('dropdown');
-       expect(getDropdownEl(compiled)).toHaveCssClass('open');
-     }));
+    expect(getDropdownEl(compiled)).toHaveCssClass('dropdown');
+    expect(getDropdownEl(compiled)).toHaveCssClass('open');
+  });
 
-  it('should toggle open class', async(() => {
-       const html = `<div ngbDropdown [open]="isOpen"></div>`;
+  it('should toggle open class', () => {
+    const html = `<div ngbDropdown [open]="isOpen"></div>`;
 
-       TestBed.overrideComponent(TestComponent, {set: {template: html}});
-       let fixture = TestBed.createComponent(TestComponent);
-       fixture.detectChanges();
-       const compiled = fixture.nativeElement;
+    const fixture = createTestComponent(html);
+    const compiled = fixture.nativeElement;
 
-       let dropdownEl = getDropdownEl(compiled);
+    let dropdownEl = getDropdownEl(compiled);
 
-       expect(dropdownEl).not.toHaveCssClass('open');
+    expect(dropdownEl).not.toHaveCssClass('open');
 
-       fixture.componentInstance.isOpen = true;
-       fixture.detectChanges();
+    fixture.componentInstance.isOpen = true;
+    fixture.detectChanges();
 
-       expect(dropdownEl).toHaveCssClass('open');
+    expect(dropdownEl).toHaveCssClass('open');
 
-       fixture.componentInstance.isOpen = false;
-       fixture.detectChanges();
+    fixture.componentInstance.isOpen = false;
+    fixture.detectChanges();
 
-       expect(dropdownEl).not.toHaveCssClass('open');
-     }));
+    expect(dropdownEl).not.toHaveCssClass('open');
+  });
 
-  it('should allow toggling dropdown from outside', async(() => {
-       const html = `
+  it('should allow toggling dropdown from outside', () => {
+    const html = `
       <button (click)="drop.open(); $event.stopPropagation()">Open</button>
       <button (click)="drop.close(); $event.stopPropagation()">Close</button>
       <button (click)="drop.toggle(); $event.stopPropagation()">Toggle</button>
       <div ngbDropdown #drop="ngbDropdown"></div>`;
 
-       TestBed.overrideComponent(TestComponent, {set: {template: html}});
-       let fixture = TestBed.createComponent(TestComponent);
-       fixture.detectChanges();
-       const compiled = fixture.nativeElement;
-       let dropdownEl = getDropdownEl(compiled);
-       let buttonEls = compiled.querySelectorAll('button');
+    const fixture = createTestComponent(html);
+    const compiled = fixture.nativeElement;
+    let dropdownEl = getDropdownEl(compiled);
+    let buttonEls = compiled.querySelectorAll('button');
 
-       buttonEls[0].click();
-       fixture.detectChanges();
-       expect(dropdownEl).toHaveCssClass('open');
+    buttonEls[0].click();
+    fixture.detectChanges();
+    expect(dropdownEl).toHaveCssClass('open');
 
-       buttonEls[1].click();
-       fixture.detectChanges();
-       expect(dropdownEl).not.toHaveCssClass('open');
+    buttonEls[1].click();
+    fixture.detectChanges();
+    expect(dropdownEl).not.toHaveCssClass('open');
 
-       buttonEls[2].click();
-       fixture.detectChanges();
-       expect(dropdownEl).toHaveCssClass('open');
+    buttonEls[2].click();
+    fixture.detectChanges();
+    expect(dropdownEl).toHaveCssClass('open');
 
-       buttonEls[2].click();
-       fixture.detectChanges();
-       expect(dropdownEl).not.toHaveCssClass('open');
-     }));
+    buttonEls[2].click();
+    fixture.detectChanges();
+    expect(dropdownEl).not.toHaveCssClass('open');
+  });
 
-  it('should allow binding to open output', async(() => {
-       const html = `
+  it('should allow binding to open output', () => {
+    const html = `
       <button (click)="drop.toggle(); $event.stopPropagation()">Toggle</button>
       <div ngbDropdown [(open)]="isOpen" #drop="ngbDropdown"></div>`;
 
-       TestBed.overrideComponent(TestComponent, {set: {template: html}});
-       let fixture = TestBed.createComponent(TestComponent);
-       fixture.detectChanges();
-       const compiled = fixture.nativeElement;
-       let buttonEl = compiled.querySelector('button');
+    const fixture = createTestComponent(html);
+    const compiled = fixture.nativeElement;
+    let buttonEl = compiled.querySelector('button');
 
-       expect(fixture.componentInstance.isOpen).toBe(false);
+    expect(fixture.componentInstance.isOpen).toBe(false);
 
-       buttonEl.click();
-       fixture.detectChanges();
+    buttonEl.click();
+    fixture.detectChanges();
 
-       expect(fixture.componentInstance.isOpen).toBe(true);
+    expect(fixture.componentInstance.isOpen).toBe(true);
 
-       buttonEl.click();
-       fixture.detectChanges();
+    buttonEl.click();
+    fixture.detectChanges();
 
-       expect(fixture.componentInstance.isOpen).toBe(false);
-     }));
+    expect(fixture.componentInstance.isOpen).toBe(false);
+  });
 });
 
 describe('ngb-dropdown-toggle', () => {
   beforeEach(() => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbDropdownModule]}); });
 
-  it('should toggle dropdown on click', async(() => {
-       const html = `
+  it('should toggle dropdown on click', () => {
+    const html = `
       <div ngbDropdown>
           <button ngbDropdownToggle>Toggle dropdown</button>
       </div>`;
 
-       TestBed.overrideComponent(TestComponent, {set: {template: html}});
-       let fixture = TestBed.createComponent(TestComponent);
-       fixture.detectChanges();
-       const compiled = fixture.nativeElement;
-       let dropdownEl = getDropdownEl(compiled);
-       let buttonEl = compiled.querySelector('button');
+    const fixture = createTestComponent(html);
+    const compiled = fixture.nativeElement;
+    let dropdownEl = getDropdownEl(compiled);
+    let buttonEl = compiled.querySelector('button');
 
-       expect(dropdownEl).not.toHaveCssClass('open');
-       expect(buttonEl.getAttribute('aria-haspopup')).toBe('true');
-       expect(buttonEl.getAttribute('aria-expanded')).toBe('false');
+    expect(dropdownEl).not.toHaveCssClass('open');
+    expect(buttonEl.getAttribute('aria-haspopup')).toBe('true');
+    expect(buttonEl.getAttribute('aria-expanded')).toBe('false');
 
-       buttonEl.click();
-       fixture.detectChanges();
-       expect(dropdownEl).toHaveCssClass('open');
-       expect(buttonEl.getAttribute('aria-expanded')).toBe('true');
+    buttonEl.click();
+    fixture.detectChanges();
+    expect(dropdownEl).toHaveCssClass('open');
+    expect(buttonEl.getAttribute('aria-expanded')).toBe('true');
 
-       buttonEl.click();
-       fixture.detectChanges();
-       expect(dropdownEl).not.toHaveCssClass('open');
-       expect(buttonEl.getAttribute('aria-expanded')).toBe('false');
-     }));
+    buttonEl.click();
+    fixture.detectChanges();
+    expect(dropdownEl).not.toHaveCssClass('open');
+    expect(buttonEl.getAttribute('aria-expanded')).toBe('false');
+  });
 
-  it('should close on outside click', async(() => {
-       const html = `<button>Outside</button><div ngbDropdown [open]="true"></div>`;
+  it('should close on outside click', () => {
+    const html = `<button>Outside</button><div ngbDropdown [open]="true"></div>`;
 
-       TestBed.overrideComponent(TestComponent, {set: {template: html}});
-       let fixture = TestBed.createComponent(TestComponent);
-       fixture.detectChanges();
-       const compiled = fixture.nativeElement;
-       let dropdownEl = getDropdownEl(compiled);
-       let buttonEl = compiled.querySelector('button');
+    const fixture = createTestComponent(html);
+    const compiled = fixture.nativeElement;
+    let dropdownEl = getDropdownEl(compiled);
+    let buttonEl = compiled.querySelector('button');
 
-       fixture.detectChanges();
-       expect(dropdownEl).toHaveCssClass('open');
+    fixture.detectChanges();
+    expect(dropdownEl).toHaveCssClass('open');
 
-       buttonEl.click();
-       fixture.detectChanges();
-       expect(dropdownEl).not.toHaveCssClass('open');
-     }));
+    buttonEl.click();
+    fixture.detectChanges();
+    expect(dropdownEl).not.toHaveCssClass('open');
+  });
 
-  it('should not close on outside click if autoClose is set to false', async(() => {
-       const html = `<button>Outside</button><div ngbDropdown [open]="true" [autoClose]="false"></div>`;
+  it('should not close on outside click if autoClose is set to false', () => {
+    const html = `<button>Outside</button><div ngbDropdown [open]="true" [autoClose]="false"></div>`;
 
-       TestBed.overrideComponent(TestComponent, {set: {template: html}});
-       let fixture = TestBed.createComponent(TestComponent);
-       fixture.detectChanges();
-       const compiled = fixture.nativeElement;
-       let dropdownEl = getDropdownEl(compiled);
-       let buttonEl = compiled.querySelector('button');
+    const fixture = createTestComponent(html);
+    const compiled = fixture.nativeElement;
+    let dropdownEl = getDropdownEl(compiled);
+    let buttonEl = compiled.querySelector('button');
 
-       fixture.detectChanges();
-       expect(dropdownEl).toHaveCssClass('open');
+    fixture.detectChanges();
+    expect(dropdownEl).toHaveCssClass('open');
 
-       buttonEl.click();
-       fixture.detectChanges();
-       expect(dropdownEl).toHaveCssClass('open');
-     }));
+    buttonEl.click();
+    fixture.detectChanges();
+    expect(dropdownEl).toHaveCssClass('open');
+  });
 
-  it('should close on ESC', async(() => {
-       const html = `
+  it('should close on ESC', () => {
+    const html = `
       <div ngbDropdown>
           <button ngbDropdownToggle>Toggle dropdown</button>
       </div>`;
 
-       TestBed.overrideComponent(TestComponent, {set: {template: html}});
-       let fixture = TestBed.createComponent(TestComponent);
-       fixture.detectChanges();
-       const compiled = fixture.nativeElement;
-       let dropdownEl = getDropdownEl(compiled);
-       let buttonEl = compiled.querySelector('button');
+    const fixture = createTestComponent(html);
+    const compiled = fixture.nativeElement;
+    let dropdownEl = getDropdownEl(compiled);
+    let buttonEl = compiled.querySelector('button');
 
-       buttonEl.click();
-       fixture.detectChanges();
-       expect(dropdownEl).toHaveCssClass('open');
+    buttonEl.click();
+    fixture.detectChanges();
+    expect(dropdownEl).toHaveCssClass('open');
 
-       fixture.debugElement.query(By.directive(NgbDropdown)).triggerEventHandler('keyup.esc', {});
-       fixture.detectChanges();
-       expect(dropdownEl).not.toHaveCssClass('open');
-     }));
+    fixture.debugElement.query(By.directive(NgbDropdown)).triggerEventHandler('keyup.esc', {});
+    fixture.detectChanges();
+    expect(dropdownEl).not.toHaveCssClass('open');
+  });
 
-  it('should not close on ESC if autoClose is set to false', async(() => {
-       const html = `
+  it('should not close on ESC if autoClose is set to false', () => {
+    const html = `
       <div ngbDropdown [autoClose]="false">
           <button ngbDropdownToggle>Toggle dropdown</button>
       </div>`;
 
-       TestBed.overrideComponent(TestComponent, {set: {template: html}});
-       let fixture = TestBed.createComponent(TestComponent);
-       fixture.detectChanges();
-       const compiled = fixture.nativeElement;
-       let dropdownEl = getDropdownEl(compiled);
-       let buttonEl = compiled.querySelector('button');
+    const fixture = createTestComponent(html);
+    const compiled = fixture.nativeElement;
+    let dropdownEl = getDropdownEl(compiled);
+    let buttonEl = compiled.querySelector('button');
 
-       buttonEl.click();
-       fixture.detectChanges();
-       expect(dropdownEl).toHaveCssClass('open');
+    buttonEl.click();
+    fixture.detectChanges();
+    expect(dropdownEl).toHaveCssClass('open');
 
-       fixture.debugElement.query(By.directive(NgbDropdown)).triggerEventHandler('keyup.esc', {});
-       fixture.detectChanges();
-       expect(dropdownEl).toHaveCssClass('open');
-     }));
+    fixture.debugElement.query(By.directive(NgbDropdown)).triggerEventHandler('keyup.esc', {});
+    fixture.detectChanges();
+    expect(dropdownEl).toHaveCssClass('open');
+  });
 
-  it('should close on item click if autoClose is set to false', async(() => {
-       const html = `
+  it('should close on item click if autoClose is set to false', () => {
+    const html = `
       <div ngbDropdown [open]="true" [autoClose]="false">
           <button ngbDropdownToggle>Toggle dropdown</button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
@@ -236,23 +223,21 @@ describe('ngb-dropdown-toggle', () => {
           </div>
       </div>`;
 
-       TestBed.overrideComponent(TestComponent, {set: {template: html}});
-       let fixture = TestBed.createComponent(TestComponent);
-       fixture.detectChanges();
-       const compiled = fixture.nativeElement;
-       let dropdownEl = getDropdownEl(compiled);
-       let linkEl = compiled.querySelector('a');
+    const fixture = createTestComponent(html);
+    const compiled = fixture.nativeElement;
+    let dropdownEl = getDropdownEl(compiled);
+    let linkEl = compiled.querySelector('a');
 
-       fixture.detectChanges();
-       expect(dropdownEl).toHaveCssClass('open');
+    fixture.detectChanges();
+    expect(dropdownEl).toHaveCssClass('open');
 
-       linkEl.click();
-       fixture.detectChanges();
-       expect(dropdownEl).toHaveCssClass('open');
-     }));
+    linkEl.click();
+    fixture.detectChanges();
+    expect(dropdownEl).toHaveCssClass('open');
+  });
 
-  it('should not close on item click', async(() => {
-       const html = `
+  it('should not close on item click', () => {
+    const html = `
       <div ngbDropdown [open]="true">
           <button ngbDropdownToggle>Toggle dropdown</button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
@@ -260,25 +245,23 @@ describe('ngb-dropdown-toggle', () => {
           </div>
       </div>`;
 
-       TestBed.overrideComponent(TestComponent, {set: {template: html}});
-       let fixture = TestBed.createComponent(TestComponent);
-       fixture.detectChanges();
-       const compiled = fixture.nativeElement;
-       let dropdownEl = getDropdownEl(compiled);
-       let buttonEl = compiled.querySelector('button');
-       let linkEl = compiled.querySelector('a');
+    const fixture = createTestComponent(html);
+    const compiled = fixture.nativeElement;
+    let dropdownEl = getDropdownEl(compiled);
+    let buttonEl = compiled.querySelector('button');
+    let linkEl = compiled.querySelector('a');
 
-       fixture.detectChanges();
-       expect(dropdownEl).toHaveCssClass('open');
+    fixture.detectChanges();
+    expect(dropdownEl).toHaveCssClass('open');
 
-       linkEl.click();
-       fixture.detectChanges();
-       expect(dropdownEl).not.toHaveCssClass('open');
+    linkEl.click();
+    fixture.detectChanges();
+    expect(dropdownEl).not.toHaveCssClass('open');
 
-       buttonEl.click();
-       fixture.detectChanges();
-       expect(dropdownEl).toHaveCssClass('open');
-     }));
+    buttonEl.click();
+    fixture.detectChanges();
+    expect(dropdownEl).toHaveCssClass('open');
+  });
 });
 
 @Component({selector: 'test-cmp', template: ''})
