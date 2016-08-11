@@ -4,7 +4,7 @@ import {regExpEscape, toString} from '../util/util';
 @Component({
   selector: 'ngb-highlight',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<template ngFor [ngForOf]="_parts" let-part let-isOdd="odd">` +
+  template: `<template ngFor [ngForOf]="parts" let-part let-isOdd="odd">` +
       `<span *ngIf="isOdd" class="{{highlightClass}}">{{part}}</span><template [ngIf]="!isOdd">{{part}}</template>` +
       `</template>`,  // template needs to be formatted in a certain way so we don't add empty text nodes
   styles: [`
@@ -14,7 +14,7 @@ import {regExpEscape, toString} from '../util/util';
   `]
 })
 export class NgbHighlight implements OnChanges {
-  private _parts: string[];
+  parts: string[];
 
   @Input() highlightClass = 'ngb-highlight';
   @Input() result: string;
@@ -27,13 +27,13 @@ export class NgbHighlight implements OnChanges {
     let currentIdx = 0;
 
     if (termLC.length > 0) {
-      this._parts = resultLC.split(new RegExp(`(${regExpEscape(termLC)})`)).map((part) => {
+      this.parts = resultLC.split(new RegExp(`(${regExpEscape(termLC)})`)).map((part) => {
         const originalPart = resultStr.substr(currentIdx, part.length);
         currentIdx += part.length;
         return originalPart;
       });
     } else {
-      this._parts = [resultStr];
+      this.parts = [resultStr];
     }
   }
 }
