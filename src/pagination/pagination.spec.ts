@@ -1,4 +1,4 @@
-import {async, TestBed} from '@angular/core/testing';
+import {TestBed, ComponentFixture} from '@angular/core/testing';
 
 import {TestComponentBuilder} from '@angular/core/testing';
 
@@ -43,6 +43,13 @@ function getList(nativeEl: HTMLElement) {
 
 function normalizeText(txt: string): string {
   return txt.trim().replace(/\s+/g, ' ');
+}
+
+function createTestComponent(html: string): ComponentFixture<TestComponent> {
+  TestBed.overrideComponent(TestComponent, {set: {template: html}});
+  const fixture = TestBed.createComponent(TestComponent);
+  fixture.detectChanges();
+  return fixture;
 }
 
 describe('ngb-pagination', () => {
@@ -115,305 +122,291 @@ describe('ngb-pagination', () => {
     beforeEach(
         () => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbPaginationModule]}); });
 
-    it('should render and respond to collectionSize change', async(() => {
-         const html = '<ngb-pagination [collectionSize]="collectionSize" [page]="1"></ngb-pagination>';
-         TestBed.overrideComponent(TestComponent, {set: {template: html}});
-         const fixture = TestBed.createComponent(TestComponent);
+    it('should render and respond to collectionSize change', () => {
+      const html = '<ngb-pagination [collectionSize]="collectionSize" [page]="1"></ngb-pagination>';
+      const fixture = createTestComponent(html);
 
-         fixture.componentInstance.collectionSize = 30;
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '» Next']);
+      fixture.componentInstance.collectionSize = 30;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '» Next']);
 
-         fixture.componentInstance.collectionSize = 40;
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '4', '» Next']);
-       }));
+      fixture.componentInstance.collectionSize = 40;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '4', '» Next']);
+    });
 
-    it('should render and respond to pageSize change', async(() => {
-         const html =
-             '<ngb-pagination [collectionSize]="collectionSize" [page]="1" [pageSize]="pageSize"></ngb-pagination>';
-         TestBed.overrideComponent(TestComponent, {set: {template: html}});
-         const fixture = TestBed.createComponent(TestComponent);
+    it('should render and respond to pageSize change', () => {
+      const html =
+          '<ngb-pagination [collectionSize]="collectionSize" [page]="1" [pageSize]="pageSize"></ngb-pagination>';
+      const fixture = createTestComponent(html);
 
-         fixture.componentInstance.collectionSize = 30;
-         fixture.componentInstance.pageSize = 5;
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '4', '5', '6', '» Next']);
+      fixture.componentInstance.collectionSize = 30;
+      fixture.componentInstance.pageSize = 5;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '4', '5', '6', '» Next']);
 
-         fixture.componentInstance.pageSize = 10;
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '» Next']);
-       }));
+      fixture.componentInstance.pageSize = 10;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '» Next']);
+    });
 
-    it('should render and respond to active page change', async(() => {
-         const html = '<ngb-pagination [collectionSize]="collectionSize" [page]="page"></ngb-pagination>';
-         TestBed.overrideComponent(TestComponent, {set: {template: html}});
-         const fixture = TestBed.createComponent(TestComponent);
+    it('should render and respond to active page change', () => {
+      const html = '<ngb-pagination [collectionSize]="collectionSize" [page]="page"></ngb-pagination>';
+      const fixture = createTestComponent(html);
 
-         fixture.componentInstance.collectionSize = 30;
-         fixture.componentInstance.page = 2;
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['« Previous', '1', '+2', '3', '» Next']);
+      fixture.componentInstance.collectionSize = 30;
+      fixture.componentInstance.page = 2;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['« Previous', '1', '+2', '3', '» Next']);
 
-         fixture.componentInstance.page = 3;
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['« Previous', '1', '2', '+3', '-» Next']);
-       }));
+      fixture.componentInstance.page = 3;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['« Previous', '1', '2', '+3', '-» Next']);
+    });
 
-    it('should update selected page model on page no click', async(() => {
-         const html = '<ngb-pagination [collectionSize]="collectionSize" [page]="page"></ngb-pagination>';
-         TestBed.overrideComponent(TestComponent, {set: {template: html}});
-         const fixture = TestBed.createComponent(TestComponent);
+    it('should update selected page model on page no click', () => {
+      const html = '<ngb-pagination [collectionSize]="collectionSize" [page]="page"></ngb-pagination>';
+      const fixture = createTestComponent(html);
 
-         fixture.componentInstance.collectionSize = 30;
-         fixture.componentInstance.page = 2;
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['« Previous', '1', '+2', '3', '» Next']);
+      fixture.componentInstance.collectionSize = 30;
+      fixture.componentInstance.page = 2;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['« Previous', '1', '+2', '3', '» Next']);
 
-         getLink(fixture.nativeElement, 0).click();
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '» Next']);
+      getLink(fixture.nativeElement, 0).click();
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '» Next']);
 
 
-         getLink(fixture.nativeElement, 3).click();
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['« Previous', '1', '2', '+3', '-» Next']);
-       }));
+      getLink(fixture.nativeElement, 3).click();
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['« Previous', '1', '2', '+3', '-» Next']);
+    });
 
-    it('should update selected page model on prev / next click', async(() => {
-         const html =
-             '<ngb-pagination [collectionSize]="collectionSize" [page]="page" [directionLinks]="directionLinks"></ngb-pagination>';
-         TestBed.overrideComponent(TestComponent, {set: {template: html}});
-         const fixture = TestBed.createComponent(TestComponent);
+    it('should update selected page model on prev / next click', () => {
+      const html =
+          '<ngb-pagination [collectionSize]="collectionSize" [page]="page" [directionLinks]="directionLinks"></ngb-pagination>';
+      const fixture = createTestComponent(html);
 
-         fixture.componentInstance.collectionSize = 30;
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['+1', '2', '3']);
+      fixture.componentInstance.collectionSize = 30;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['+1', '2', '3']);
 
-         fixture.componentInstance.directionLinks = true;
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '» Next']);
+      fixture.componentInstance.directionLinks = true;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '» Next']);
 
-         getLink(fixture.nativeElement, 0).click();
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '» Next']);
+      getLink(fixture.nativeElement, 0).click();
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '» Next']);
 
-         getLink(fixture.nativeElement, 4).click();
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['« Previous', '1', '+2', '3', '» Next']);
+      getLink(fixture.nativeElement, 4).click();
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['« Previous', '1', '+2', '3', '» Next']);
 
-         getLink(fixture.nativeElement, 4).click();
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['« Previous', '1', '2', '+3', '-» Next']);
+      getLink(fixture.nativeElement, 4).click();
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['« Previous', '1', '2', '+3', '-» Next']);
 
-         getLink(fixture.nativeElement, 4).click();
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['« Previous', '1', '2', '+3', '-» Next']);
-       }));
+      getLink(fixture.nativeElement, 4).click();
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['« Previous', '1', '2', '+3', '-» Next']);
+    });
 
-    it('should update selected page model on first / last click', async(() => {
-         const html = `<ngb-pagination [collectionSize]="collectionSize" [page]="page" [maxSize]="maxSize"
+    it('should update selected page model on first / last click', () => {
+      const html = `<ngb-pagination [collectionSize]="collectionSize" [page]="page" [maxSize]="maxSize"
               [boundaryLinks]="boundaryLinks"></ngb-pagination>`;
-         TestBed.overrideComponent(TestComponent, {set: {template: html}});
-         const fixture = TestBed.createComponent(TestComponent);
+      const fixture = createTestComponent(html);
 
-         fixture.componentInstance.collectionSize = 30;
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '» Next']);
+      fixture.componentInstance.collectionSize = 30;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '» Next']);
 
-         fixture.componentInstance.boundaryLinks = true;
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['-«« First', '-« Previous', '+1', '2', '3', '» Next', '»» Last']);
+      fixture.componentInstance.boundaryLinks = true;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['-«« First', '-« Previous', '+1', '2', '3', '» Next', '»» Last']);
 
-         getLink(fixture.nativeElement, 0).click();
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['-«« First', '-« Previous', '+1', '2', '3', '» Next', '»» Last']);
+      getLink(fixture.nativeElement, 0).click();
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['-«« First', '-« Previous', '+1', '2', '3', '» Next', '»» Last']);
 
-         getLink(fixture.nativeElement, 6).click();
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['«« First', '« Previous', '1', '2', '+3', '-» Next', '-»» Last']);
+      getLink(fixture.nativeElement, 6).click();
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['«« First', '« Previous', '1', '2', '+3', '-» Next', '-»» Last']);
 
-         getLink(fixture.nativeElement, 3).click();
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['«« First', '« Previous', '1', '+2', '3', '» Next', '»» Last']);
+      getLink(fixture.nativeElement, 3).click();
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['«« First', '« Previous', '1', '+2', '3', '» Next', '»» Last']);
 
-         getLink(fixture.nativeElement, 0).click();
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['-«« First', '-« Previous', '+1', '2', '3', '» Next', '»» Last']);
+      getLink(fixture.nativeElement, 0).click();
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['-«« First', '-« Previous', '+1', '2', '3', '» Next', '»» Last']);
 
-         // maxSize < number of pages
-         fixture.componentInstance.collectionSize = 70;
-         fixture.componentInstance.maxSize = 3;
-         fixture.detectChanges();
-         expectPages(
-             fixture.nativeElement, ['-«« First', '-« Previous', '+1', '2', '3', '-...', '7', '» Next', '»» Last']);
+      // maxSize < number of pages
+      fixture.componentInstance.collectionSize = 70;
+      fixture.componentInstance.maxSize = 3;
+      fixture.detectChanges();
+      expectPages(
+          fixture.nativeElement, ['-«« First', '-« Previous', '+1', '2', '3', '-...', '7', '» Next', '»» Last']);
 
-         getLink(fixture.nativeElement, 8).click();
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['«« First', '« Previous', '1', '-...', '+7', '-» Next', '-»» Last']);
+      getLink(fixture.nativeElement, 8).click();
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['«« First', '« Previous', '1', '-...', '+7', '-» Next', '-»» Last']);
 
-         getLink(fixture.nativeElement, 0).click();
-         fixture.detectChanges();
-         expectPages(
-             fixture.nativeElement, ['-«« First', '-« Previous', '+1', '2', '3', '-...', '7', '» Next', '»» Last']);
-       }));
+      getLink(fixture.nativeElement, 0).click();
+      fixture.detectChanges();
+      expectPages(
+          fixture.nativeElement, ['-«« First', '-« Previous', '+1', '2', '3', '-...', '7', '» Next', '»» Last']);
+    });
 
-    it('should render and respond to size change', async(() => {
-         const html = '<ngb-pagination [collectionSize]="20" [page]="1" [size]="size"></ngb-pagination>';
-         TestBed.overrideComponent(TestComponent, {set: {template: html}});
+    it('should render and respond to size change', () => {
+      const html = '<ngb-pagination [collectionSize]="20" [page]="1" [size]="size"></ngb-pagination>';
 
-         const fixture = TestBed.createComponent(TestComponent);
-         fixture.detectChanges();
-         const classList = getList(fixture.nativeElement).classList;
+      const fixture = createTestComponent(html);
+      const classList = getList(fixture.nativeElement).classList;
 
-         // default case
-         expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '» Next']);
-         expect(classList).toContain('pagination');
+      // default case
+      expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '» Next']);
+      expect(classList).toContain('pagination');
 
-         // large size
-         fixture.componentInstance.size = 'lg';
-         fixture.detectChanges();
-         expect(classList).toContain('pagination');
-         expect(classList).toContain('pagination-lg');
+      // large size
+      fixture.componentInstance.size = 'lg';
+      fixture.detectChanges();
+      expect(classList).toContain('pagination');
+      expect(classList).toContain('pagination-lg');
 
-         // removing large size
-         fixture.componentInstance.size = '';
-         fixture.detectChanges();
-         expect(classList).toContain('pagination');
-         expect(classList).not.toContain('pagination-lg');
+      // removing large size
+      fixture.componentInstance.size = '';
+      fixture.detectChanges();
+      expect(classList).toContain('pagination');
+      expect(classList).not.toContain('pagination-lg');
 
-         // arbitrary string
-         fixture.componentInstance.size = '123';
-         fixture.detectChanges();
-         expect(classList).toContain('pagination');
-         expect(classList).toContain('pagination-123');
-       }));
+      // arbitrary string
+      fixture.componentInstance.size = '123';
+      fixture.detectChanges();
+      expect(classList).toContain('pagination');
+      expect(classList).toContain('pagination-123');
+    });
 
-    it('should render and respond to maxSize change correctly', async(() => {
-         const html =
-             '<ngb-pagination [collectionSize]="70" [page]="page" [maxSize]="maxSize" [ellipses]="ellipses"></ngb-pagination>';
-         TestBed.overrideComponent(TestComponent, {set: {template: html}});
-         const fixture = TestBed.createComponent(TestComponent);
+    it('should render and respond to maxSize change correctly', () => {
+      const html =
+          '<ngb-pagination [collectionSize]="70" [page]="page" [maxSize]="maxSize" [ellipses]="ellipses"></ngb-pagination>';
+      const fixture = createTestComponent(html);
 
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '4', '5', '6', '7', '» Next']);
+      expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '4', '5', '6', '7', '» Next']);
 
-         // disabling ellipsis
-         fixture.componentInstance.ellipses = false;
+      // disabling ellipsis
+      fixture.componentInstance.ellipses = false;
 
-         // limiting to 3 page numbers
-         fixture.componentInstance.maxSize = 3;
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '» Next']);
+      // limiting to 3 page numbers
+      fixture.componentInstance.maxSize = 3;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '» Next']);
 
-         fixture.componentInstance.page = 3;
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['« Previous', '1', '2', '+3', '» Next']);
+      fixture.componentInstance.page = 3;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['« Previous', '1', '2', '+3', '» Next']);
 
-         fixture.componentInstance.page = 4;
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['« Previous', '+4', '5', '6', '» Next']);
+      fixture.componentInstance.page = 4;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['« Previous', '+4', '5', '6', '» Next']);
 
-         fixture.componentInstance.page = 7;
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['« Previous', '+7', '-» Next']);
+      fixture.componentInstance.page = 7;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['« Previous', '+7', '-» Next']);
 
-         // checking that maxSize > total pages works
-         fixture.componentInstance.maxSize = 100;
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['« Previous', '1', '2', '3', '4', '5', '6', '+7', '-» Next']);
-       }));
+      // checking that maxSize > total pages works
+      fixture.componentInstance.maxSize = 100;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['« Previous', '1', '2', '3', '4', '5', '6', '+7', '-» Next']);
+    });
 
-    it('should render and rotate pages correctly', async(() => {
-         const html = `<ngb-pagination [collectionSize]="70" [page]="page" [maxSize]="maxSize" [rotate]="rotate"
+    it('should render and rotate pages correctly', () => {
+      const html = `<ngb-pagination [collectionSize]="70" [page]="page" [maxSize]="maxSize" [rotate]="rotate"
         [ellipses]="ellipses"></ngb-pagination>`;
-         TestBed.overrideComponent(TestComponent, {set: {template: html}});
-         const fixture = TestBed.createComponent(TestComponent);
+      const fixture = createTestComponent(html);
 
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '4', '5', '6', '7', '» Next']);
+      expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '4', '5', '6', '7', '» Next']);
 
-         // disabling ellipsis
-         fixture.componentInstance.ellipses = false;
+      // disabling ellipsis
+      fixture.componentInstance.ellipses = false;
 
-         // limiting to 3 (odd) page numbers
-         fixture.componentInstance.maxSize = 3;
-         fixture.componentInstance.rotate = true;
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '» Next']);
+      // limiting to 3 (odd) page numbers
+      fixture.componentInstance.maxSize = 3;
+      fixture.componentInstance.rotate = true;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '» Next']);
 
-         fixture.componentInstance.page = 2;
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['« Previous', '1', '+2', '3', '» Next']);
+      fixture.componentInstance.page = 2;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['« Previous', '1', '+2', '3', '» Next']);
 
-         fixture.componentInstance.page = 3;
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['« Previous', '2', '+3', '4', '» Next']);
+      fixture.componentInstance.page = 3;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['« Previous', '2', '+3', '4', '» Next']);
 
-         fixture.componentInstance.page = 7;
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['« Previous', '5', '6', '+7', '-» Next']);
+      fixture.componentInstance.page = 7;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['« Previous', '5', '6', '+7', '-» Next']);
 
-         // limiting to 4 (even) page numbers
-         fixture.componentInstance.maxSize = 4;
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['« Previous', '4', '5', '6', '+7', '-» Next']);
+      // limiting to 4 (even) page numbers
+      fixture.componentInstance.maxSize = 4;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['« Previous', '4', '5', '6', '+7', '-» Next']);
 
-         fixture.componentInstance.page = 5;
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['« Previous', '3', '4', '+5', '6', '» Next']);
+      fixture.componentInstance.page = 5;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['« Previous', '3', '4', '+5', '6', '» Next']);
 
-         fixture.componentInstance.page = 3;
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['« Previous', '1', '2', '+3', '4', '» Next']);
-       }));
+      fixture.componentInstance.page = 3;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['« Previous', '1', '2', '+3', '4', '» Next']);
+    });
 
-    it('should display ellipsis correctly', async(() => {
-         const html = `<ngb-pagination [collectionSize]="70" [page]="page"
+    it('should display ellipsis correctly', () => {
+      const html = `<ngb-pagination [collectionSize]="70" [page]="page"
         [maxSize]="maxSize" [rotate]="rotate" [ellipses]="ellipses"></ngb-pagination>`;
-         TestBed.overrideComponent(TestComponent, {set: {template: html}});
-         const fixture = TestBed.createComponent(TestComponent);
+      const fixture = createTestComponent(html);
 
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '4', '5', '6', '7', '» Next']);
+      expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '4', '5', '6', '7', '» Next']);
 
-         // limiting to 3 page numbers
-         fixture.componentInstance.maxSize = 3;
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '-...', '7', '» Next']);
+      // limiting to 3 page numbers
+      fixture.componentInstance.maxSize = 3;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '-...', '7', '» Next']);
 
-         fixture.componentInstance.page = 4;
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['« Previous', '1', '-...', '+4', '5', '6', '-...', '7', '» Next']);
+      fixture.componentInstance.page = 4;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['« Previous', '1', '-...', '+4', '5', '6', '-...', '7', '» Next']);
 
-         fixture.componentInstance.page = 7;
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['« Previous', '1', '-...', '+7', '-» Next']);
+      fixture.componentInstance.page = 7;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['« Previous', '1', '-...', '+7', '-» Next']);
 
-         // enabling rotation
-         fixture.componentInstance.rotate = true;
-         fixture.componentInstance.page = 1;
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '-...', '7', '» Next']);
+      // enabling rotation
+      fixture.componentInstance.rotate = true;
+      fixture.componentInstance.page = 1;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '-...', '7', '» Next']);
 
-         fixture.componentInstance.page = 2;
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['« Previous', '1', '+2', '3', '-...', '7', '» Next']);
+      fixture.componentInstance.page = 2;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['« Previous', '1', '+2', '3', '-...', '7', '» Next']);
 
-         fixture.componentInstance.page = 3;
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['« Previous', '1', '-...', '2', '+3', '4', '-...', '7', '» Next']);
+      fixture.componentInstance.page = 3;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['« Previous', '1', '-...', '2', '+3', '4', '-...', '7', '» Next']);
 
-         fixture.componentInstance.page = 7;
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['« Previous', '1', '-...', '5', '6', '+7', '-» Next']);
+      fixture.componentInstance.page = 7;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['« Previous', '1', '-...', '5', '6', '+7', '-» Next']);
 
-         // no ellipsis when maxPage > total pages
-         fixture.componentInstance.maxSize = 100;
-         fixture.componentInstance.page = 5;
-         fixture.detectChanges();
-         expectPages(fixture.nativeElement, ['« Previous', '1', '2', '3', '4', '+5', '6', '7', '» Next']);
-       }));
+      // no ellipsis when maxPage > total pages
+      fixture.componentInstance.maxSize = 100;
+      fixture.componentInstance.page = 5;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['« Previous', '1', '2', '3', '4', '+5', '6', '7', '» Next']);
+    });
   });
 
 });

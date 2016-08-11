@@ -1,4 +1,4 @@
-import {async, TestBed} from '@angular/core/testing';
+import {TestBed, ComponentFixture} from '@angular/core/testing';
 
 import {Component} from '@angular/core';
 
@@ -11,6 +11,13 @@ function getBarWidth(nativeEl): string {
 
 function getProgressbar(nativeEl: Element): Element {
   return nativeEl.querySelector('progress');
+}
+
+function createTestComponent(html: string): ComponentFixture<TestComponent> {
+  TestBed.overrideComponent(TestComponent, {set: {template: html}});
+  const fixture = TestBed.createComponent(TestComponent);
+  fixture.detectChanges();
+  return fixture;
 }
 
 describe('ng-progressbar', () => {
@@ -71,99 +78,85 @@ describe('ng-progressbar', () => {
     beforeEach(
         () => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbProgressbarModule]}); });
 
-    it('accepts a value and respond to value changes', async(() => {
-         const html = '<ngb-progressbar [value]="value"></ngb-progressbar>';
-         TestBed.overrideComponent(TestComponent, {set: {template: html}});
-         const fixture = TestBed.createComponent(TestComponent);
-         fixture.detectChanges();
+    it('accepts a value and respond to value changes', () => {
+      const html = '<ngb-progressbar [value]="value"></ngb-progressbar>';
+      const fixture = createTestComponent(html);
 
-         expect(getBarWidth(fixture.nativeElement)).toBe('10%');
+      expect(getBarWidth(fixture.nativeElement)).toBe('10%');
 
-         // this might fail in IE11 if attribute binding order is not respected for the <progress> element:
-         // <progress [value]="" [max]=""> will fail with value = 1
-         // <progress [max]="" [value]=""> will work with value = 10
-         expect(getProgressbar(fixture.nativeElement).getAttribute('value')).toBe('10');
+      // this might fail in IE11 if attribute binding order is not respected for the <progress> element:
+      // <progress [value]="" [max]=""> will fail with value = 1
+      // <progress [max]="" [value]=""> will work with value = 10
+      expect(getProgressbar(fixture.nativeElement).getAttribute('value')).toBe('10');
 
-         fixture.componentInstance.value = 30;
-         fixture.detectChanges();
-         expect(getBarWidth(fixture.nativeElement)).toBe('30%');
-         expect(getProgressbar(fixture.nativeElement).getAttribute('value')).toBe('30');
-       }));
+      fixture.componentInstance.value = 30;
+      fixture.detectChanges();
+      expect(getBarWidth(fixture.nativeElement)).toBe('30%');
+      expect(getProgressbar(fixture.nativeElement).getAttribute('value')).toBe('30');
+    });
 
-    it('accepts a max value and respond to max changes', async(() => {
-         const html = '<ngb-progressbar [value]="value" [max]="max"></ngb-progressbar>';
-         TestBed.overrideComponent(TestComponent, {set: {template: html}});
-         const fixture = TestBed.createComponent(TestComponent);
-         fixture.detectChanges();
+    it('accepts a max value and respond to max changes', () => {
+      const html = '<ngb-progressbar [value]="value" [max]="max"></ngb-progressbar>';
+      const fixture = createTestComponent(html);
 
-         expect(getBarWidth(fixture.nativeElement)).toBe('20%');
+      expect(getBarWidth(fixture.nativeElement)).toBe('20%');
 
-         fixture.componentInstance.max = 200;
-         fixture.detectChanges();
-         expect(getBarWidth(fixture.nativeElement)).toBe('5%');
-       }));
+      fixture.componentInstance.max = 200;
+      fixture.detectChanges();
+      expect(getBarWidth(fixture.nativeElement)).toBe('5%');
+    });
 
 
-    it('accepts a value and max value above default values', async(() => {
-         const html = '<ngb-progressbar [value]="150" [max]="150"></ngb-progressbar>';
-         TestBed.overrideComponent(TestComponent, {set: {template: html}});
-         const fixture = TestBed.createComponent(TestComponent);
-         fixture.detectChanges();
+    it('accepts a value and max value above default values', () => {
+      const html = '<ngb-progressbar [value]="150" [max]="150"></ngb-progressbar>';
+      const fixture = createTestComponent(html);
 
-         expect(getBarWidth(fixture.nativeElement)).toBe('100%');
-       }));
+      expect(getBarWidth(fixture.nativeElement)).toBe('100%');
+    });
 
 
-    it('accepts a custom type', async(() => {
-         const html = '<ngb-progressbar [value]="value" [type]="type"></ngb-progressbar>';
-         TestBed.overrideComponent(TestComponent, {set: {template: html}});
-         const fixture = TestBed.createComponent(TestComponent);
+    it('accepts a custom type', () => {
+      const html = '<ngb-progressbar [value]="value" [type]="type"></ngb-progressbar>';
+      const fixture = createTestComponent(html);
 
-         fixture.detectChanges();
-         expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('progress-warning');
+      expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('progress-warning');
 
-         fixture.componentInstance.type = 'info';
-         fixture.detectChanges();
-         expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('progress-info');
-       }));
+      fixture.componentInstance.type = 'info';
+      fixture.detectChanges();
+      expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('progress-info');
+    });
 
-    it('accepts animated as normal attr', async(() => {
-         const html = '<ngb-progressbar [value]="value" [animated]="animated"></ngb-progressbar>';
-         TestBed.overrideComponent(TestComponent, {set: {template: html}});
-         const fixture = TestBed.createComponent(TestComponent);
-         fixture.detectChanges();
+    it('accepts animated as normal attr', () => {
+      const html = '<ngb-progressbar [value]="value" [animated]="animated"></ngb-progressbar>';
+      const fixture = createTestComponent(html);
 
-         expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('progress-animated');
+      expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('progress-animated');
 
-         fixture.componentInstance.animated = false;
-         fixture.detectChanges();
-         expect(getProgressbar(fixture.nativeElement)).not.toHaveCssClass('progress-animated');
-       }));
+      fixture.componentInstance.animated = false;
+      fixture.detectChanges();
+      expect(getProgressbar(fixture.nativeElement)).not.toHaveCssClass('progress-animated');
+    });
 
 
-    it('accepts striped as normal attr', async(() => {
-         const html = '<ngb-progressbar [value]="value" [striped]="striped"></ngb-progressbar>';
-         TestBed.overrideComponent(TestComponent, {set: {template: html}});
-         const fixture = TestBed.createComponent(TestComponent);
-         fixture.detectChanges();
+    it('accepts striped as normal attr', () => {
+      const html = '<ngb-progressbar [value]="value" [striped]="striped"></ngb-progressbar>';
+      const fixture = createTestComponent(html);
 
-         expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('progress-striped');
+      expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('progress-striped');
 
-         fixture.componentInstance.striped = false;
-         fixture.detectChanges();
-         expect(getProgressbar(fixture.nativeElement)).not.toHaveCssClass('progress-striped');
-       }));
+      fixture.componentInstance.striped = false;
+      fixture.detectChanges();
+      expect(getProgressbar(fixture.nativeElement)).not.toHaveCssClass('progress-striped');
+    });
 
 
-    it('should not add "false" CSS class', async(() => {
-         const html = '<ngb-progressbar [value]="value" [striped]="striped"></ngb-progressbar>';
-         TestBed.overrideComponent(TestComponent, {set: {template: html}});
-         const fixture = TestBed.createComponent(TestComponent);
-         fixture.detectChanges();
+    it('should not add "false" CSS class', () => {
+      const html = '<ngb-progressbar [value]="value" [striped]="striped"></ngb-progressbar>';
+      const fixture = createTestComponent(html);
 
-         expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('progress-striped');
-         expect(getProgressbar(fixture.nativeElement)).not.toHaveCssClass('false');
-       }));
+      expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('progress-striped');
+      expect(getProgressbar(fixture.nativeElement)).not.toHaveCssClass('false');
+    });
   });
 });
 
