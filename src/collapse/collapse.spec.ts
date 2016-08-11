@@ -1,7 +1,8 @@
-import {inject, async, TestComponentBuilder} from '@angular/core/testing';
+import {async, TestBed} from '@angular/core/testing';
 
 import {Component} from '@angular/core';
 
+import {NgbCollapseModule} from './index';
 import {NgbCollapse} from './collapse';
 
 function getCollapsibleContent(element: HTMLElement): HTMLDivElement {
@@ -11,72 +12,74 @@ function getCollapsibleContent(element: HTMLElement): HTMLDivElement {
 describe('ngb-collapse', () => {
   let html = `<div [ngbCollapse]="collapsed">Some content</div>`;
 
-  it('should have content open and aria-expanded true', async(inject([TestComponentBuilder], (tcb) => {
-       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
-         fixture.detectChanges();
+  beforeEach(() => {
+    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbCollapseModule]});
+    TestBed.overrideComponent(TestComponent, {set: {template: html}});
+  });
 
-         const collapseEl = getCollapsibleContent(fixture.nativeElement);
+  it('should have content open and aria-expanded true', async(() => {
+       const fixture = TestBed.createComponent(TestComponent);
+       fixture.detectChanges();
 
-         expect(collapseEl).toHaveCssClass('in');
-         expect(collapseEl.getAttribute('aria-expanded')).toBe('true');
-       });
-     })));
+       const collapseEl = getCollapsibleContent(fixture.nativeElement);
 
-  it('should have content closed and aria-expanded false', async(inject([TestComponentBuilder], (tcb) => {
-       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
-         const tc = fixture.componentInstance;
-         tc.collapsed = true;
-         fixture.detectChanges();
+       expect(collapseEl).toHaveCssClass('in');
+       expect(collapseEl.getAttribute('aria-expanded')).toBe('true');
+     }));
 
-         const collapseEl = getCollapsibleContent(fixture.nativeElement);
+  it('should have content closed and aria-expanded false', async(() => {
+       const fixture = TestBed.createComponent(TestComponent);
+       const tc = fixture.componentInstance;
+       tc.collapsed = true;
+       fixture.detectChanges();
 
-         expect(collapseEl).not.toHaveCssClass('in');
-         expect(collapseEl.getAttribute('aria-expanded')).toBe('false');
-       });
-     })));
+       const collapseEl = getCollapsibleContent(fixture.nativeElement);
 
-  it('should toggle collapsed content based on bound model change', async(inject([TestComponentBuilder], (tcb) => {
-       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
-         fixture.detectChanges();
+       expect(collapseEl).not.toHaveCssClass('in');
+       expect(collapseEl.getAttribute('aria-expanded')).toBe('false');
+     }));
 
-         const tc = fixture.componentInstance;
-         const collapseEl = getCollapsibleContent(fixture.nativeElement);
-         expect(collapseEl).toHaveCssClass('in');
+  it('should toggle collapsed content based on bound model change', async(() => {
+       const fixture = TestBed.createComponent(TestComponent);
+       fixture.detectChanges();
 
-         tc.collapsed = true;
-         fixture.detectChanges();
-         expect(collapseEl).not.toHaveCssClass('in');
+       const tc = fixture.componentInstance;
+       const collapseEl = getCollapsibleContent(fixture.nativeElement);
+       expect(collapseEl).toHaveCssClass('in');
 
-         tc.collapsed = false;
-         fixture.detectChanges();
-         expect(collapseEl).toHaveCssClass('in');
-       });
-     })));
+       tc.collapsed = true;
+       fixture.detectChanges();
+       expect(collapseEl).not.toHaveCssClass('in');
 
-  it('should allow toggling collapse from outside', async(inject([TestComponentBuilder], (tcb) => {
+       tc.collapsed = false;
+       fixture.detectChanges();
+       expect(collapseEl).toHaveCssClass('in');
+     }));
+
+  it('should allow toggling collapse from outside', async(() => {
        html = `
       <button (click)="collapse.collapsed = !collapse.collapsed">Collapse</button>
       <div [ngbCollapse] #collapse="ngbCollapse"></div>`;
 
-       tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
-         fixture.detectChanges();
+       TestBed.overrideComponent(TestComponent, {set: {template: html}});
+       const fixture = TestBed.createComponent(TestComponent);
+       fixture.detectChanges();
 
-         const compiled = fixture.nativeElement;
-         const collapseEl = getCollapsibleContent(compiled);
-         const buttonEl = compiled.querySelector('button');
+       const compiled = fixture.nativeElement;
+       const collapseEl = getCollapsibleContent(compiled);
+       const buttonEl = compiled.querySelector('button');
 
-         buttonEl.click();
-         fixture.detectChanges();
-         expect(collapseEl).not.toHaveCssClass('in');
+       buttonEl.click();
+       fixture.detectChanges();
+       expect(collapseEl).not.toHaveCssClass('in');
 
-         buttonEl.click();
-         fixture.detectChanges();
-         expect(collapseEl).toHaveCssClass('in');
-       });
-     })));
+       buttonEl.click();
+       fixture.detectChanges();
+       expect(collapseEl).toHaveCssClass('in');
+     }));
 });
 
-@Component({selector: 'test-cmp', directives: [NgbCollapse], template: ''})
+@Component({selector: 'test-cmp', template: ''})
 class TestComponent {
   collapsed = false;
 }
