@@ -25,8 +25,7 @@ export type ResultTplCtx = {
           [ngOutletContext]="{result: result, term: term, formatter: formatter}"></template>
       </button>
     </template>
-  `,
-  directives: [NgbHighlight]
+  `
 })
 export class NgbTypeaheadWindow {
   private _activeIdx = 0;
