@@ -134,7 +134,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
   providers: [NGB_TIMEPICKER_VALUE_ACCESSOR]
 })
 export class NgbTimepicker implements ControlValueAccessor {
-  private model: NgbTime;
+  model: NgbTime;
 
   /**
    * Whether to display 12H or 24H mode.
@@ -185,45 +185,72 @@ export class NgbTimepicker implements ControlValueAccessor {
 
   registerOnTouched(fn: () => any): void { this.onTouched = fn; }
 
+  /**
+   * @internal
+   */
   changeHour(step: number) {
     this.model.changeHour(step);
     this.propagateModelChange();
   }
 
+  /**
+   * @internal
+   */
   changeMinute(step: number) {
     this.model.changeMinute(step);
     this.propagateModelChange();
   }
 
+  /**
+   * @internal
+   */
   changeSecond(step: number) {
     this.model.changeSecond(step);
     this.propagateModelChange();
   }
 
+  /**
+   * @internal
+   */
   updateHour(newVal: string) {
     this.model.updateHour(toInteger(newVal));
     this.propagateModelChange();
   }
 
+  /**
+   * @internal
+   */
   updateMinute(newVal: string) {
     this.model.updateMinute(toInteger(newVal));
     this.propagateModelChange();
   }
 
+  /**
+   * @internal
+   */
   updateSecond(newVal: string) {
     this.model.updateSecond(toInteger(newVal));
     this.propagateModelChange();
   }
 
+  /**
+   * @internal
+   */
   toggleMeridian() {
     if (this.meridian) {
       this.changeHour(12);
     }
   }
 
-  private formatHour(value: number) { return padNumber(isNumber(value) ? (value % (this.meridian ? 12 : 24)) : NaN); }
+  /**
+   * @internal
+   */
+  formatHour(value: number) { return padNumber(isNumber(value) ? (value % (this.meridian ? 12 : 24)) : NaN); }
 
-  private formatMinSec(value: number) { return padNumber(value); }
+  /**
+   * @internal
+   */
+  formatMinSec(value: number) { return padNumber(value); }
 
   private propagateModelChange() {
     this.onTouched();
