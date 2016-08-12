@@ -1,11 +1,7 @@
+import {Component} from '@angular/core';
 import {TestBed, ComponentFixture} from '@angular/core/testing';
 
-import {TestComponentBuilder} from '@angular/core/testing';
-
-import {Component} from '@angular/core';
-
 import {NgbPaginationModule} from './index';
-
 import {NgbPagination} from './pagination';
 
 function expectPages(nativeEl: HTMLElement, pagesDef: string[]): void {

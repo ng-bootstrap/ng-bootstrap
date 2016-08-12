@@ -1,9 +1,7 @@
+import {Component} from '@angular/core';
 import {TestBed, ComponentFixture} from '@angular/core/testing';
 
-import {Component} from '@angular/core';
-
 import {NgbCollapseModule} from './index';
-import {NgbCollapse} from './collapse';
 
 function getCollapsibleContent(element: HTMLElement): HTMLDivElement {
   return <HTMLDivElement>element.querySelector('.collapse');
