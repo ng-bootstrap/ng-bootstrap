@@ -115,7 +115,7 @@ describe('ngb-tabset', () => {
   });
 
 
-  it('should auto-correct requested active tab index', () => {
+  it('should auto-correct requested active tab id', () => {
     const fixture = createTestComponent(`
       <ngb-tabset activeId="doesntExist">
         <ngb-tab title="foo"><template ngbTabContent>Foo</template></ngb-tab>
@@ -127,7 +127,7 @@ describe('ngb-tabset', () => {
   });
 
 
-  it('should auto-correct requested active tab index for undefined indexes', () => {
+  it('should auto-correct requested active tab id for undefined ids', () => {
     const fixture = createTestComponent(`
       <ngb-tabset [activeId]="activeTabId">
         <ngb-tab title="foo"><template ngbTabContent>Foo</template></ngb-tab>
