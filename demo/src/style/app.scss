@@ -16,8 +16,8 @@
 
 .bd-masthead {
   margin-top: 3.4rem;
-  padding-top: 6rem;
-  padding-bottom: 1.5rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
   margin-bottom: 4rem;
   text-align: center;
   color: #efefef;
@@ -29,6 +29,11 @@
     width: 80%;
     font-size: 2rem;
     color: #fff;
+  }
+
+  .btn:hover {
+    background-color: #f7f7f7;
+    color: #0273D4;
   }
 }
 
