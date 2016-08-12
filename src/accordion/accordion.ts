@@ -81,12 +81,12 @@ export interface NgbPanelChangeEvent {
   template: `
   <div class="card">
     <template ngFor let-panel [ngForOf]="_panels">
-      <div [class]="'card-header ' + (panel.type ? 'card-'+panel.type: type ? 'card-'+type : '')" [class.active]="_isOpen(panel.id)">
+      <div [class]="'card-header ' + (panel.type ? 'card-'+panel.type: type ? 'card-'+type : '')" [class.active]="isOpen(panel.id)">
         <a tabindex="0" href (click)="!!toggle(panel.id)" [class.text-muted]="panel.disabled">
           {{panel.title}}<template [ngTemplateOutlet]="panel.titleTpl?.templateRef"></template>          
         </a>
       </div>
-      <div class="card-block" *ngIf="_isOpen(panel.id)">
+      <div class="card-block" *ngIf="isOpen(panel.id)">
         <template [ngTemplateOutlet]="panel.contentTpl.templateRef"></template>
       </div>
     </template>
@@ -152,6 +152,11 @@ export class NgbAccordion implements AfterContentChecked {
     }
   }
 
+  /**
+   * @internal
+   */
+  isOpen(panelId: string): boolean { return this._states.get(panelId); }
+
   ngAfterContentChecked() {
     // active id updates
     if (isString(this.activeIds)) {
@@ -174,11 +179,9 @@ export class NgbAccordion implements AfterContentChecked {
     });
   }
 
-  private _isOpen(panelId: string): boolean { return this._states.get(panelId); }
-
   private _updateActiveIds() {
     this.activeIds =
-        this._panels.toArray().filter(panel => this._isOpen(panel.id) && !panel.disabled).map(panel => panel.id);
+        this._panels.toArray().filter(panel => this.isOpen(panel.id) && !panel.disabled).map(panel => panel.id);
   }
 
   private _updateStates() {
