@@ -4,4 +4,6 @@ import {Component} from '@angular/core';
   selector: 'ngbd-default',
   templateUrl: './default.component.html'
 })
-export class DefaultComponent {}
+export class DefaultComponent {
+  public version: string = process.env.version;
+}

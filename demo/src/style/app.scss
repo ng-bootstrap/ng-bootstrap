@@ -1,47 +1,67 @@
 // styles in src/style directory are applied to the whole page
-header .navbar {
-  background-color: #f7f7f7;
+.navbar {
+  background: rgba(255,255,255,0.95);
 }
 
-img.nav-logo {
-  display: inline-block;
-  height: 27px;
+.bd-booticon {
+  margin: 1.25rem;
+  width: 256px;
+  height: 256px;
+}
+
+.bd-masthead, .jumbotron {
+  background-color: #0143A3;
+  background: linear-gradient(135deg, #0143A3, #0273D4);
+}
+
+.bd-masthead {
+  margin-top: 3.4rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  margin-bottom: 4rem;
+  text-align: center;
+  color: #efefef;
+
+  .lead {
+    margin-right: auto;
+    margin-bottom: 2rem;
+    margin-left: auto;
+    width: 80%;
+    font-size: 2rem;
+    color: #fff;
+  }
+
+  .btn {
+    color: #fff;
+    border-color: #fff;
+    &:hover {
+      background-color: #f7f7f7;
+      color: #0273D4;
+    }
+  }
 }
 
 .jumbotron {
-  margin-top: 50px;
-  background-color: #0143A3;
-  background: -webkit-linear-gradient(#0143A3, #0273D4);
-  background: linear-gradient(#0143A3, #0273D4);
+  margin-top: 3.4rem;
   color: #fff;
   border-radius: 0;
 }
 
-hr.header {
-  background-color: #fff;
-}
-
-a.header-button {
-  color: #ffffff;
-  border-color: #ffffff;
-}
-
-a.header-button:focus,
-a.header-button:hover,
-a.header-button:active {
-  color: #003580;
-  background-color: #80b5ff;
-  border-color: #80b5ff;
-}
-
 p.github-buttons {
-  margin-bottom: 0;
-  margin-top: 4px;
-  padding-left: 0;
-}
+  iframe {
+    margin-left: 20px;
+  }
 
-p.github-buttons > iframe {
-  margin-left: 20px;
+  header & {
+    margin-bottom: 0;
+    margin-top: 4px;
+    padding-left: 0;
+  }
+
+  ngbd-default & {
+    text-align: center;
+    margin-top: 2rem;
+  }
 }
 
 @media (min-width: 768px) {
@@ -163,16 +183,17 @@ div.component-demo {
   font-size: 85%;
   background-color: #f7f7f7;
   text-align: left;
+
+  p {
+    margin-bottom: 0;
+  }
+
+  a {
+    font-weight: 500;
+    color: #55595c;
+  }
 }
 
-.bd-footer p {
-  margin-bottom: 0;
-}
-
-.bd-footer a {
-  font-weight: 500;
-  color: #55595c;
-}
 
 section {
   margin-top: 30px;
