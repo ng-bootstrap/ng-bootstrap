@@ -8,9 +8,9 @@ import {Directive, Input, Output, HostListener, EventEmitter} from '@angular/cor
   exportAs: 'ngbDropdown',
   host: {
     'class': 'dropdown',
-    '[class.open]': '_open',
-    '(keyup.esc)': '_closeFromOutside()',
-    '(document:click)': '_closeFromOutside()'
+    '[class.open]': 'open',
+    '(keyup.esc)': 'closeFromOutside()',
+    '(document:click)': 'closeFromOutside()'
   }
 })
 export class NgbDropdown {
@@ -22,7 +22,7 @@ export class NgbDropdown {
   /**
    *  Defines whether or not the dropdown-menu is open initially.
    */
-  @Input('open') private _open = false;
+  @Input('open') open = false;
 
   /**
    *  An event fired when the dropdown is opened or closed.
@@ -34,21 +34,21 @@ export class NgbDropdown {
   /**
    * Checks if the dropdown menu is open or not.
    */
-  isOpen() { return this._open; }
+  isOpen() { return this.open; }
 
   /**
    * Opens the dropdown menu of a given navbar or tabbed navigation.
    */
-  open() {
-    this._open = true;
+  openDropdown() {
+    this.open = true;
     this.openChange.emit(true);
   }
 
   /**
    * Closes the dropdown menu of a given navbar or tabbed navigation.
    */
-  close() {
-    this._open = false;
+  closeDropdown() {
+    this.open = false;
     this.openChange.emit(false);
   }
 
@@ -57,15 +57,18 @@ export class NgbDropdown {
    */
   toggle() {
     if (this.isOpen()) {
-      this.close();
+      this.closeDropdown();
     } else {
-      this.open();
+      this.openDropdown();
     }
   }
 
-  private _closeFromOutside() {
+  /**
+   * @internal
+   */
+  closeFromOutside() {
     if (this.autoClose) {
-      this.close();
+      this.closeDropdown();
     }
   }
 }
@@ -75,15 +78,15 @@ export class NgbDropdown {
  */
 @Directive({
   selector: '[ngbDropdownToggle]',
-  host: {'class': 'dropdown-toggle', 'aria-haspopup': 'true', '[attr.aria-expanded]': '_dropdown.isOpen()'}
+  host: {'class': 'dropdown-toggle', 'aria-haspopup': 'true', '[attr.aria-expanded]': 'dropdown.isOpen()'}
 })
 export class NgbDropdownToggle {
-  constructor(private _dropdown: NgbDropdown) {}
+  constructor(public dropdown: NgbDropdown) {}
 
   @HostListener('click', ['$event'])
   toggleOpen($event) {
     $event.stopPropagation();
-    this._dropdown.toggle();
+    this.dropdown.toggle();
   }
 }
 

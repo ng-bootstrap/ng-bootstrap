@@ -63,8 +63,8 @@ describe('ngb-dropdown', () => {
 
   it('should allow toggling dropdown from outside', () => {
     const html = `
-      <button (click)="drop.open(); $event.stopPropagation()">Open</button>
-      <button (click)="drop.close(); $event.stopPropagation()">Close</button>
+      <button (click)="drop.openDropdown(); $event.stopPropagation()">Open</button>
+      <button (click)="drop.closeDropdown(); $event.stopPropagation()">Close</button>
       <button (click)="drop.toggle(); $event.stopPropagation()">Toggle</button>
       <div ngbDropdown #drop="ngbDropdown"></div>`;
 
