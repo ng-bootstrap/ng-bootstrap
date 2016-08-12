@@ -76,8 +76,8 @@ p.github-buttons > iframe {
   margin-bottom: inherit;
 }
 
-.bd-toc-item:first-child {
-  margin-top: 0
+.bd-toc-item:not(:first-child) {
+  margin-top: 2rem;
 }
 
 .bd-toc-item:last-child {
@@ -108,53 +108,35 @@ p.github-buttons > iframe {
 }
 
 div.api-doc-component {
-  margin-bottom: 20px;
-}
+  margin-bottom: 3rem;
+  h2 {
+    a {
+      font-size: .75rem;
+      opacity: 0.35;
+      transition: opacity 250ms;
+    }
 
-div.api-doc-component > h2 > a {
-  text-decoration: none;
-}
-
-div.api-doc-component > h2 > a:hover {
-  text-decoration: none;
-}
-
-div.api-doc-component > h2 {
-  margin-top: 0.2em;
-  margin-bottom: 1rem;
-  line-height: 0.85em;
-  text-shadow:
-          0 0 3px #fff, /* stroke around*/
-          0 0 3px #fff,
-          0 0 3px #fff,
-          0 0 3px #fff,
-          0 0 3px #fff,
-          0 0 3px #fff,
-          0 0 3px #fff,
-          0 0 3px #fff,
-          0 0 3px #fff,
-          0 -5px 0 #fff, /* clear vertically*/
-          0 -1px 0 #fff,
-          0 -2px 0 #fff,
-          0 -3px 0 #fff,
-          0 -4px 0 #fff,
-          0 -5px 0 #fff,
-          0 -6px 0 #fff;
-  box-shadow: 0 1px #fff, 0 3px #0275d8;
-  word-spacing: 0.5em;
-  font-size: 2.5em;
-  border-bottom: 2px solid #fff;
-  display: table;
-
-  &:hover {
-    border-bottom: 2px solid #fff;
-    box-shadow: 0 1px #fff, 0 3px #014c8c;
-    text-decoration: none;
+    &:hover {
+      a {
+        opacity: 0.75;
+      }
+    }
+  }
+  h3 {
+    margin-top: 1.5rem;
+    font-size: 1.75rem;
+    color: #666;
   }
 }
 
 div.component-demo {
   margin-bottom: 15px;
+}
+
+.bd-content {
+  h2:not(:first-child) {
+    margin-top: 3rem;
+  }
 }
 
 .bd-footer {
