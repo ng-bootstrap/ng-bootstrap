@@ -25,9 +25,9 @@ import {getValueInRange} from '../util/util';
         </li>
 
         <li *ngFor="let pageNumber of pages" class="page-item" [class.active]="pageNumber === page" 
-          [class.disabled]="_isEllipsis(pageNumber)">
-          <a *ngIf="_isEllipsis(pageNumber)" class="page-link">...</a>
-          <a *ngIf="!_isEllipsis(pageNumber)" class="page-link" href (click)="!!selectPage(pageNumber)">{{pageNumber}}</a>
+          [class.disabled]="isEllipsis(pageNumber)">
+          <a *ngIf="isEllipsis(pageNumber)" class="page-link">...</a>
+          <a *ngIf="!isEllipsis(pageNumber)" class="page-link" href (click)="!!selectPage(pageNumber)">{{pageNumber}}</a>
         </li>
 
         <li *ngIf="directionLinks" class="page-item" [class.disabled]="!hasNext()">
@@ -38,7 +38,7 @@ import {getValueInRange} from '../util/util';
         </li>
         
         <li *ngIf="boundaryLinks" class="page-item" [class.disabled]="!hasNext()">
-          <a aria-label="Last" class="page-link" href (click)="!!selectPage(_pageCount)">
+          <a aria-label="Last" class="page-link" href (click)="!!selectPage(pageCount)">
             <span aria-hidden="true">&raquo;&raquo;</span>
             <span class="sr-only">Last</span>
           </a>                
@@ -103,6 +103,8 @@ export class NgbPagination implements OnChanges {
    */
   @Input() size: 'sm' | 'lg';
 
+  get pageCount(): number { return this._pageCount; }
+
   hasPrevious(): boolean { return this.page > 1; }
 
   hasNext(): boolean { return this.page < this._pageCount; }
@@ -149,6 +151,11 @@ export class NgbPagination implements OnChanges {
       this._applyEllipses(start, end);
     }
   }
+
+  /**
+   * @internal
+   */
+  isEllipsis(pageNumber): boolean { return pageNumber === -1; }
 
   /**
    * Appends ellipses and first/last page number to the displayed pages
@@ -205,8 +212,6 @@ export class NgbPagination implements OnChanges {
 
     return [start, end];
   }
-
-  private _isEllipsis(pageNumber): boolean { return pageNumber === -1; }
 
   private _getPageNoInRange(newPageNo): number { return getValueInRange(newPageNo, this._pageCount, 1); }
 }
