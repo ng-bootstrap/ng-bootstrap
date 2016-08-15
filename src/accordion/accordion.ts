@@ -80,13 +80,13 @@ export interface NgbPanelChangeEvent {
   exportAs: 'ngbAccordion',
   template: `
   <div class="card">
-    <template ngFor let-panel [ngForOf]="_panels">
-      <div [class]="'card-header ' + (panel.type ? 'card-'+panel.type: type ? 'card-'+type : '')" [class.active]="_isOpen(panel.id)">
+    <template ngFor let-panel [ngForOf]="panels">
+      <div [class]="'card-header ' + (panel.type ? 'card-'+panel.type: type ? 'card-'+type : '')" [class.active]="isOpen(panel.id)">
         <a tabindex="0" href (click)="!!toggle(panel.id)" [class.text-muted]="panel.disabled">
           {{panel.title}}<template [ngTemplateOutlet]="panel.titleTpl?.templateRef"></template>          
         </a>
       </div>
-      <div class="card-block" *ngIf="_isOpen(panel.id)">
+      <div class="card-block" *ngIf="isOpen(panel.id)">
         <template [ngTemplateOutlet]="panel.contentTpl.templateRef"></template>
       </div>
     </template>
@@ -94,7 +94,7 @@ export interface NgbPanelChangeEvent {
 `
 })
 export class NgbAccordion implements AfterContentChecked {
-  @ContentChildren(NgbPanel) _panels: QueryList<NgbPanel>;
+  @ContentChildren(NgbPanel) panels: QueryList<NgbPanel>;
 
   /**
    * An array or comma separated strings of panel identifiers that should be opened
@@ -166,6 +166,11 @@ export class NgbAccordion implements AfterContentChecked {
     }
   }
 
+  /**
+   * @internal
+   */
+  isOpen(panelId: string): boolean { return this._states.get(panelId); }
+
   private _closeOthers(panelId: string) {
     this._states.forEach((state, id) => {
       if (id !== panelId) {
@@ -174,17 +179,15 @@ export class NgbAccordion implements AfterContentChecked {
     });
   }
 
-  private _isOpen(panelId: string): boolean { return this._states.get(panelId); }
-
   private _updateActiveIds() {
     this.activeIds =
-        this._panels.toArray().filter(panel => this._isOpen(panel.id) && !panel.disabled).map(panel => panel.id);
+        this.panels.toArray().filter(panel => this.isOpen(panel.id) && !panel.disabled).map(panel => panel.id);
   }
 
   private _updateStates() {
     this._states.clear();
     this._panelRefs.clear();
-    this._panels.toArray().forEach((panel) => {
+    this.panels.toArray().forEach((panel) => {
       this._states.set(panel.id, this.activeIds.indexOf(panel.id) > -1 && !panel.disabled);
       this._panelRefs.set(panel.id, panel);
     });
