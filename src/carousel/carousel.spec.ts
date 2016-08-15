@@ -4,7 +4,7 @@ import {By} from '@angular/platform-browser';
 import {Component} from '@angular/core';
 
 import {NgbCarouselModule} from './index';
-import {NgbCarousel, NgbSlide} from './carousel';
+import {NgbCarousel} from './carousel';
 
 function expectActiveSlides(nativeEl: HTMLDivElement, active: boolean[]) {
   const slideElms = nativeEl.querySelectorAll('.carousel-item');

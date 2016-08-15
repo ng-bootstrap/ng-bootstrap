@@ -140,7 +140,7 @@ describe('ngb-rating', () => {
   });
 });
 
-@Component({selector: 'test-cmp', directives: [NgbRating], template: ''})
+@Component({selector: 'test-cmp', template: ''})
 class TestComponent {
   max: number = 10;
 }
