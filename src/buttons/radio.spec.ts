@@ -77,34 +77,38 @@ describe('ngbRadioGroup', () => {
     // checking null
     fixture.componentInstance.model = null;
     fixture.detectChanges();
-    fixture.whenStable().then(() => {
-      fixture.detectChanges();
-      expectRadios(fixture.nativeElement, [0, 0]);
+    fixture.whenStable()
+        .then(() => {
+          fixture.detectChanges();
+          expectRadios(fixture.nativeElement, [0, 0]);
 
-      // checking first radio
-      fixture.componentInstance.model = values[0];
-      fixture.detectChanges();
-      fixture.whenStable().then(() => {
-        fixture.detectChanges();
-        expectRadios(fixture.nativeElement, [1, 0]);
+          // checking first radio
+          fixture.componentInstance.model = values[0];
+          fixture.detectChanges();
+          return fixture.whenStable();
+        })
+        .then(() => {
+          fixture.detectChanges();
+          expectRadios(fixture.nativeElement, [1, 0]);
 
-        // checking second radio
-        fixture.componentInstance.model = values[1];
-        fixture.detectChanges();
-        fixture.whenStable().then(() => {
+          // checking second radio
+          fixture.componentInstance.model = values[1];
+          fixture.detectChanges();
+          return fixture.whenStable();
+        })
+        .then(() => {
           fixture.detectChanges();
           expectRadios(fixture.nativeElement, [0, 1]);
 
           // checking non-matching value
           fixture.componentInstance.model = values[3];
           fixture.detectChanges();
-          fixture.whenStable().then(() => {
-            fixture.detectChanges();
-            expectRadios(fixture.nativeElement, [0, 0]);
-          });
+          return fixture.whenStable();
+        })
+        .then(() => {
+          fixture.detectChanges();
+          expectRadios(fixture.nativeElement, [0, 0]);
         });
-      });
-    });
   });
 
   it('updates model based on radio input clicks', () => {
