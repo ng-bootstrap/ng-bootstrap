@@ -7,7 +7,7 @@ module.exports = function(config) {
 
     files: [
       // For travis
-      'node_modules/es6-shim/es6-shim.js',
+      'node_modules/core-js/client/shim.js',
       'node_modules/reflect-metadata/Reflect.js',
       // paths loaded by Karma
       'node_modules/systemjs/dist/system-polyfills.js',
