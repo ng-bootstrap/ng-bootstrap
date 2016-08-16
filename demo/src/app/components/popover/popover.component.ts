@@ -1,7 +1,5 @@
 import {Component} from '@angular/core';
-import {ContentWrapper} from '../../shared';
-import {ExampleBoxComponent, NgbdApiDocs} from '../shared';
-import {DEMO_DIRECTIVES, DEMO_SNIPPETS} from './demos';
+import {DEMO_SNIPPETS} from './demos';
 
 @Component({
   selector: 'ngbd-popover',
@@ -20,8 +18,7 @@ import {DEMO_DIRECTIVES, DEMO_SNIPPETS} from './demos';
         <ngbd-popover-triggers></ngbd-popover-triggers>
       </ngbd-example-box>
     </ngbd-content-wrapper>
-  `,
-  directives: [NgbdApiDocs, ContentWrapper, ExampleBoxComponent, DEMO_DIRECTIVES]
+  `
 })
 export class NgbdPopover {
   snippets = DEMO_SNIPPETS;

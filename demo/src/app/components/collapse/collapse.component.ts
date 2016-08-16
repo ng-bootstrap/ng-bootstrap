@@ -1,20 +1,10 @@
 import {Component} from '@angular/core';
-
-import {ContentWrapper} from '../../shared';
-import {ExampleBoxComponent, NgbdApiDocs} from '../shared';
-import {CollapseBasicComponent, basicHtmlContent, basicTsContent } from './demos';
+import {DEMO_SNIPPETS} from './demos';
 
 @Component({
   selector: 'ngbd-collapse',
-  templateUrl: './collapse.component.html',
-  directives: [
-    CollapseBasicComponent,
-    ContentWrapper,
-    ExampleBoxComponent,
-    NgbdApiDocs
-  ]
+  templateUrl: './collapse.component.html'
 })
 export class NgbdCollapse {
-  basicHtmlContent = basicHtmlContent;
-  basicTsContent = basicTsContent;
+  snippets = DEMO_SNIPPETS;
 }

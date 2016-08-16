@@ -1,7 +1,5 @@
 import {Component} from '@angular/core';
-import {ContentWrapper} from '../../shared';
-import {ExampleBoxComponent, NgbdApiDocs} from '../shared';
-import {DEMO_DIRECTIVES, DEMO_SNIPPETS} from './demos';
+import {DEMO_SNIPPETS} from './demos';
 
 @Component({
   selector: 'ngbd-accordion',
@@ -19,14 +17,13 @@ import {DEMO_DIRECTIVES, DEMO_SNIPPETS} from './demos';
       </ngbd-example-box>
       <ngbd-example-box demoTitle="Toggle panels" [htmlSnippet]="snippets.toggle.markup" [tsSnippet]="snippets.toggle.code">
         <ngbd-accordion-toggle></ngbd-accordion-toggle>
-      </ngbd-example-box>      
-      <ngbd-example-box demoTitle="Prevent panel toggle" [htmlSnippet]="snippets.preventChange.markup" 
+      </ngbd-example-box>
+      <ngbd-example-box demoTitle="Prevent panel toggle" [htmlSnippet]="snippets.preventChange.markup"
         [tsSnippet]="snippets.preventChange.code">
         <ngbd-accordion-preventchange></ngbd-accordion-preventchange>
-      </ngbd-example-box> 
+      </ngbd-example-box>
     </ngbd-content-wrapper>
-  `,
-  directives: [ContentWrapper, NgbdApiDocs, DEMO_DIRECTIVES, ExampleBoxComponent]
+  `
 })
 export class NgbdAccordion {
   snippets = DEMO_SNIPPETS;
