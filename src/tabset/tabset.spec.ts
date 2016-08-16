@@ -158,6 +158,84 @@ describe('ngb-tabset', () => {
     expectTabs(fixture.nativeElement, [true, false]);
   });
 
+  it('should set the active tab to bound variable', () => {
+    const fixture = createTestComponent(`
+        <ngb-tabset [activeId]="activeTabId">
+          <ngb-tab title="foo" id="1"><template ngbTabContent>Foo</template></ngb-tab>
+          <ngb-tab title="bar" id="2"><template ngbTabContent>Bar</template></ngb-tab>
+        </ngb-tabset>
+    `);
+
+    fixture.componentInstance.activeTabId = '2';
+
+    fixture.detectChanges();
+    expectTabs(fixture.nativeElement, [false, true]);
+  });
+
+  it('should change the active tab when bound variable changes', () => {
+    const fixture = createTestComponent(`
+        <ngb-tabset [activeId]="activeTabId">
+          <ngb-tab title="foo" id="1"><template ngbTabContent>Foo</template></ngb-tab>
+          <ngb-tab title="bar" id="2"><template ngbTabContent>Bar</template></ngb-tab>
+        </ngb-tabset>
+    `);
+
+    fixture.componentInstance.activeTabId = '2';
+
+    fixture.detectChanges();
+    expectTabs(fixture.nativeElement, [false, true]);
+
+    fixture.componentInstance.activeTabId = '1';
+
+    fixture.detectChanges();
+    expectTabs(fixture.nativeElement, [true, false]);
+  });
+
+  it('should emit active ID change event when switching tabs', () => {
+    const fixture = createTestComponent(`
+        <ngb-tabset activeId="1" (activeIdChange)="changeCallback($event)">
+          <ngb-tab title="foo" id="1"><template ngbTabContent>Foo</template></ngb-tab>
+          <ngb-tab title="bar" id="2"><template ngbTabContent>Bar</template></ngb-tab>
+        </ngb-tabset>
+    `);
+
+    fixture.componentInstance.changeCallback = () => {};
+
+    spyOn(fixture.componentInstance, 'changeCallback');
+
+    fixture.detectChanges();
+
+    expectTabs(fixture.nativeElement, [true, false]);
+
+    (<HTMLAnchorElement>getTabTitles(fixture.nativeElement)[1]).click();
+
+    fixture.detectChanges();
+    expectTabs(fixture.nativeElement, [false, true]);
+
+    expect(fixture.componentInstance.changeCallback).toHaveBeenCalledWith('2');
+  });
+
+  it('should update bound activeId when tab changes on click', () => {
+    const fixture = createTestComponent(`
+        <ngb-tabset [(activeId)]="activeTabId">
+          <ngb-tab title="foo" id="1"><template ngbTabContent>Foo</template></ngb-tab>
+          <ngb-tab title="bar" id="2"><template ngbTabContent>Bar</template></ngb-tab>
+        </ngb-tabset>
+    `);
+
+    fixture.componentInstance.activeTabId = '1';
+
+    fixture.detectChanges();
+
+    expectTabs(fixture.nativeElement, [true, false]);
+
+    (<HTMLAnchorElement>getTabTitles(fixture.nativeElement)[1]).click();
+
+    fixture.detectChanges();
+    expectTabs(fixture.nativeElement, [false, true]);
+
+    expect(fixture.componentInstance.activeTabId).toBe('2');
+  });
 
   it('should support disabled tabs', () => {
     const fixture = createTestComponent(`
