@@ -87,12 +87,12 @@ describe('ng-progressbar', () => {
       // this might fail in IE11 if attribute binding order is not respected for the <progress> element:
       // <progress [value]="" [max]=""> will fail with value = 1
       // <progress [max]="" [value]=""> will work with value = 10
-      expect(getProgressbar(fixture.nativeElement).getAttribute('value')).toBe('10');
+      expect(getProgressbar(fixture.nativeElement)['value']).toBe(10);
 
       fixture.componentInstance.value = 30;
       fixture.detectChanges();
       expect(getBarWidth(fixture.nativeElement)).toBe('30%');
-      expect(getProgressbar(fixture.nativeElement).getAttribute('value')).toBe('30');
+      expect(getProgressbar(fixture.nativeElement)['value']).toBe(30);
     });
 
     it('accepts a max value and respond to max changes', () => {

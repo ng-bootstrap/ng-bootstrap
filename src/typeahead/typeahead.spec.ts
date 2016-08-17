@@ -38,7 +38,9 @@ function getNativeInput(element: HTMLElement): HTMLInputElement {
 function changeInput(element: any, value: string) {
   const input = getNativeInput(element);
   input.value = value;
-  input.dispatchEvent(new Event('input'));
+  const evt = document.createEvent('MouseEvent');
+  evt.initEvent('input', true, true);
+  input.dispatchEvent(evt);
 }
 
 function expectInputValue(element: HTMLElement, value: string) {
