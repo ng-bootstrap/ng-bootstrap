@@ -23,14 +23,12 @@ System.config({
   }
 });
 
-Promise.all([System.import('@angular/core/testing'), System.import('@angular/platform-browser-dynamic/testing')])
-    .then(function(providers) {
-      var testing = providers[0];
-      var testingBrowser = providers[1];
-
-      testing.setBaseTestProviders(
-          testingBrowser.TEST_BROWSER_DYNAMIC_PLATFORM_PROVIDERS,
-          testingBrowser.TEST_BROWSER_DYNAMIC_APPLICATION_PROVIDERS);
+System.import('@angular/core/testing')
+    .then(function(coreTesting) {
+      return System.import('@angular/platform-browser-dynamic/testing').then(function(browserTesting) {
+        coreTesting.TestBed.initTestEnvironment(
+            browserTesting.BrowserDynamicTestingModule, browserTesting.platformBrowserDynamicTesting());
+      });
     })
     .then(function() { return Promise.all(customMatchers()); })
     .then(function() { return Promise.all(resolveTestFiles()); })
