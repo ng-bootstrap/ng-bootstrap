@@ -117,17 +117,22 @@ describe('ngbRadioGroup', () => {
     fixture.detectChanges();
     expectRadios(fixture.nativeElement, [0, 0]);
 
-    // clicking first radio
-    getInput(fixture.nativeElement, 0).click();
-    fixture.detectChanges();
-    expectRadios(fixture.nativeElement, [1, 0]);
-    expect(fixture.componentInstance.model).toBe('one');
-
-    // clicking second radio
-    getInput(fixture.nativeElement, 1).click();
-    fixture.detectChanges();
-    expectRadios(fixture.nativeElement, [0, 1]);
-    expect(fixture.componentInstance.model).toBe('two');
+    fixture.whenStable()
+        .then(() => {
+          // clicking first radio
+          getInput(fixture.nativeElement, 0).click();
+          fixture.detectChanges();
+          expectRadios(fixture.nativeElement, [1, 0]);
+          expect(fixture.componentInstance.model).toBe('one');
+          return fixture.whenStable();
+        })
+        .then(() => {
+          // clicking second radio
+          getInput(fixture.nativeElement, 1).click();
+          fixture.detectChanges();
+          expectRadios(fixture.nativeElement, [0, 1]);
+          expect(fixture.componentInstance.model).toBe('two');
+        });
   });
 
   // TODO: remove 'whenStable' once 'core/testing' is fixed

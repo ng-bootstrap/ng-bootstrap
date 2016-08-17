@@ -8,6 +8,7 @@ module.exports = function(config) {
     files: [
       // For travis
       'node_modules/core-js/client/shim.js',
+      'node_modules/ie-shim/index.js',
       'node_modules/reflect-metadata/Reflect.js',
       // paths loaded by Karma
       'node_modules/systemjs/dist/system-polyfills.js',
@@ -38,6 +39,10 @@ module.exports = function(config) {
     logLevel: config.LOG_INFO,
     autoWatch: true,
     browsers: ['Chrome'],
-    singleRun: false
+    singleRun: false,
+    captureTimeout: 60000,
+    browserDisconnectTimeout: 60000,
+    browserDisconnectTolerance: 3,
+    browserNoActivityTimeout: 60000
   });
 };

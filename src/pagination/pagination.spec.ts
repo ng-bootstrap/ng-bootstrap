@@ -259,7 +259,7 @@ describe('ngb-pagination', () => {
       const html = '<ngb-pagination [collectionSize]="20" [page]="1" [size]="size"></ngb-pagination>';
 
       const fixture = createTestComponent(html);
-      const classList = getList(fixture.nativeElement).classList;
+      let classList = getList(fixture.nativeElement).classList;
 
       // default case
       expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '» Next']);
@@ -268,18 +268,21 @@ describe('ngb-pagination', () => {
       // large size
       fixture.componentInstance.size = 'lg';
       fixture.detectChanges();
+      classList = getList(fixture.nativeElement).classList;
       expect(classList).toContain('pagination');
       expect(classList).toContain('pagination-lg');
 
       // removing large size
       fixture.componentInstance.size = '';
       fixture.detectChanges();
+      classList = getList(fixture.nativeElement).classList;
       expect(classList).toContain('pagination');
       expect(classList).not.toContain('pagination-lg');
 
       // arbitrary string
       fixture.componentInstance.size = '123';
       fixture.detectChanges();
+      classList = getList(fixture.nativeElement).classList;
       expect(classList).toContain('pagination');
       expect(classList).toContain('pagination-123');
     });

@@ -50,14 +50,14 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
         <tr *ngIf="spinners">
           <td class="text-xs-center">
             <button class="btn-link" (click)="changeHour(hourStep)"
-              [class.disabled]="disabled">
+              [disabled]="disabled" [class.disabled]="disabled">
               <span class="chevron"></span>
             </button>
           </td>
           <td>&nbsp;</td>
           <td class="text-xs-center">
             <button class="btn-link" (click)="changeMinute(minuteStep)"
-              [class.disabled]="disabled">
+              [disabled]="disabled" [class.disabled]="disabled">
                 <span class="chevron"></span>
             </button>
           </td>
@@ -65,7 +65,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
             <td>&nbsp;</td>
             <td class="text-xs-center">
               <button class="btn-link" (click)="changeSecond(secondStep)"
-                [class.disabled]="disabled">
+                [disabled]="disabled" [class.disabled]="disabled">
                 <span class="chevron"></span>
               </button>
             </td>
@@ -79,19 +79,19 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
           <td>
             <input type="text" class="form-control" maxlength="2" size="2" placeholder="HH"
               [value]="formatHour(model?.hour)" (change)="updateHour($event.target.value)" 
-              [readonly]="readonlyInputs">
+              [readonly]="readonlyInputs" [disabled]="disabled">
           </td>
           <td>&nbsp;:&nbsp;</td>
           <td>
             <input type="text" class="form-control" maxlength="2" size="2" placeholder="MM"
               [value]="formatMinSec(model?.minute)" (change)="updateMinute($event.target.value)" 
-              [readonly]="readonlyInputs">
+              [readonly]="readonlyInputs" [disabled]="disabled">
           </td>
           <template [ngIf]="seconds">
             <td>&nbsp;:&nbsp;</td>
             <input type="text" class="form-control" maxlength="2" size="2" placeholder="SS"
               [value]="formatMinSec(model?.second)" (change)="updateSecond($event.target.value)" 
-              [readonly]="readonlyInputs">
+              [readonly]="readonlyInputs" [disabled]="disabled">
           </template>
           <template [ngIf]="meridian">
             <td>&nbsp;&nbsp;</td>
@@ -103,14 +103,14 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
         <tr *ngIf="spinners">
           <td class="text-xs-center">
             <button class="btn-link" (click)="changeHour(-hourStep)" 
-              [class.disabled]="disabled">
+              [disabled]="disabled" [class.disabled]="disabled">
               <span class="chevron bottom"></span>
             </button>
           </td>
           <td>&nbsp;</td>
           <td class="text-xs-center">
             <button class="btn-link" (click)="changeMinute(-minuteStep)"
-              [class.disabled]="disabled">
+              [disabled]="disabled" [class.disabled]="disabled">
               <span class="chevron bottom"></span>
             </button>
           </td>
@@ -118,7 +118,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
             <td>&nbsp;</td>
             <td class="text-xs-center">
               <button class="btn-link" (click)="changeSecond(-secondStep)"
-                [class.disabled]="disabled">
+                [disabled]="disabled" [class.disabled]="disabled">
                 <span class="chevron bottom"></span>
               </button>
             </td>
