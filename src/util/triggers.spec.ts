@@ -1,5 +1,3 @@
-import {inject, addProviders} from '@angular/core/testing';
-
 import {parseTriggers} from './triggers';
 
 describe('triggers', () => {
