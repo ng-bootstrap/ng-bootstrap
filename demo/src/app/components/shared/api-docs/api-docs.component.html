@@ -7,20 +7,23 @@
        angularticsCategory="{{ demoTitle }}">{{apiDocs.className}}</a>
   </h2>
   <p>{{apiDocs.description}}</p>
-  <table class="table table-sm table-hover">
-    <tbody>
-      <tr>
-        <td class="col-md-3">Selector</td>
-        <td class="col-md-9"><code>{{apiDocs.selector}}</code></td>
-      </tr>
-      <tr *ngIf="apiDocs.exportAs">
-        <td class="col-md-3">Exported as</td>
-        <td class="col-md-9"><code>{{apiDocs.exportAs}}</code></td>
-      </tr>
-    </tbody>
-  </table>
 
-  <template [ngIf]="apiDocs.inputs.length">
+  <template [ngIf]="isDirective">
+    <table class="table table-sm table-hover">
+      <tbody>
+        <tr *ngIf="apiDocs.selector">
+          <td class="col-md-3">Selector</td>
+          <td class="col-md-9"><code>{{apiDocs.selector}}</code></td>
+        </tr>
+        <tr *ngIf="apiDocs.exportAs">
+          <td class="col-md-3">Exported as</td>
+          <td class="col-md-9"><code>{{apiDocs.exportAs}}</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </template>
+
+  <template [ngIf]="isDirective && apiDocs.inputs.length">
     <section>
       <h3 id="inputs">Inputs</h3>
       <table class="table table-sm table-hover">
@@ -40,7 +43,7 @@
     </section>
   </template>
 
-  <template [ngIf]="apiDocs.outputs.length">
+  <template [ngIf]="isDirective && apiDocs.outputs.length">
     <section>
       <h3 id="outputs">Outputs</h3>
       <table class="table table-sm table-hover">
@@ -54,7 +57,7 @@
     </section>
   </template>
 
-  <template [ngIf]="apiDocs.exportAs && apiDocs.methods.length">
+  <template [ngIf]="isDirective ? apiDocs.methods.length && apiDocs.exportAs : apiDocs.methods.length">
     <section>
       <h3 id="methods">Methods</h3>
       <table class="table table-sm table-hover">

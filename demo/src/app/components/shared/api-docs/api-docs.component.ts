@@ -7,9 +7,12 @@ import docs from '../../../../api-docs';
   templateUrl: './api-docs.component.html'
 })
 export class NgbdApiDocs {
+  isDirective;
+
   apiDocs;
   @Input() set directive(directiveName) {
     this.apiDocs = docs[directiveName];
+    this.isDirective = this.apiDocs.selector;
   };
 
   private _methodSignature(method) {
