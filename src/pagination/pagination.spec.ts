@@ -259,32 +259,29 @@ describe('ngb-pagination', () => {
       const html = '<ngb-pagination [collectionSize]="20" [page]="1" [size]="size"></ngb-pagination>';
 
       const fixture = createTestComponent(html);
-      let classList = getList(fixture.nativeElement).classList;
+      const listEl = getList(fixture.nativeElement);
 
       // default case
       expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '» Next']);
-      expect(classList).toContain('pagination');
+      expect(listEl).toHaveCssClass('pagination');
 
       // large size
       fixture.componentInstance.size = 'lg';
       fixture.detectChanges();
-      classList = getList(fixture.nativeElement).classList;
-      expect(classList).toContain('pagination');
-      expect(classList).toContain('pagination-lg');
+      expect(listEl).toHaveCssClass('pagination');
+      expect(listEl).toHaveCssClass('pagination-lg');
 
       // removing large size
       fixture.componentInstance.size = '';
       fixture.detectChanges();
-      classList = getList(fixture.nativeElement).classList;
-      expect(classList).toContain('pagination');
-      expect(classList).not.toContain('pagination-lg');
+      expect(listEl).toHaveCssClass('pagination');
+      expect(listEl).not.toHaveCssClass('pagination-lg');
 
       // arbitrary string
       fixture.componentInstance.size = '123';
       fixture.detectChanges();
-      classList = getList(fixture.nativeElement).classList;
-      expect(classList).toContain('pagination');
-      expect(classList).toContain('pagination-123');
+      expect(listEl).toHaveCssClass('pagination');
+      expect(listEl).toHaveCssClass('pagination-123');
     });
 
     it('should render and respond to maxSize change correctly', () => {
