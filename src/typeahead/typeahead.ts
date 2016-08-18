@@ -2,6 +2,8 @@ import {
   Directive,
   OnInit,
   Input,
+  Output,
+  EventEmitter,
   ComponentRef,
   ComponentFactoryResolver,
   ViewContainerRef,
@@ -79,6 +81,11 @@ export class NgbTypeahead implements OnInit,
    * A template to display a matching result.
    */
   @Input() resultTemplate: TemplateRef<ResultTplCtx>;
+
+  /**
+   * An event emitted when a match is selected. Event payload is equal to the selected item.
+   */
+  @Output() select = new EventEmitter();
 
   onChange = (value) => {
     this._onChangeNoEmit(value);
@@ -186,6 +193,7 @@ export class NgbTypeahead implements OnInit,
   private _selectResult(result: any) {
     this.writeValue(result);
     this._onChangeNoEmit(result);
+    this.select.emit(result);
     this.closePopup();
   }
 }

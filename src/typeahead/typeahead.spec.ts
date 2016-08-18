@@ -365,6 +365,22 @@ describe('ngb-typeahead', () => {
     });
   });
 
+  describe('select event', () => {
+
+    it('should raise select event when a result is selected', () => {
+      const fixture = createTestComponent('<input type="text" [ngbTypeahead]="find" (select)="onSelect($event)"/>');
+      const input = getNativeInput(fixture.nativeElement);
+
+      // clicking selected
+      changeInput(fixture.nativeElement, 'o');
+      fixture.detectChanges();
+      getWindowLinks(fixture.debugElement)[0].triggerEventHandler('click', {});
+      fixture.detectChanges();
+
+      expect(fixture.componentInstance.selectEventValue).toBe('one');
+    });
+  });
+
   describe('auto attributes', () => {
 
     it('should have autocomplete, autocapitalize and autocorrect attributes set to off', () => {
@@ -386,6 +402,7 @@ class TestComponent {
       [{id: 1, value: 'one'}, {id: 10, value: 'one more'}, {id: 2, value: 'two'}, {id: 3, value: 'three'}];
 
   model: any;
+  selectEventValue: any;
 
   form = new FormGroup({control: new FormControl('', Validators.required)});
 
@@ -401,4 +418,6 @@ class TestComponent {
   uppercaseFormatter = s => s.toUpperCase();
 
   uppercaseObjFormatter = (obj: {value: string}) => { return obj.value.toUpperCase(); };
+
+  onSelect($event) { this.selectEventValue = $event; }
 }
