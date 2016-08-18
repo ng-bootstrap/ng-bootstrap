@@ -18,6 +18,10 @@ export function isNumber(value: any): boolean {
   return !isNaN(toInteger(value));
 }
 
+export function isDefined(value: any): boolean {
+  return value !== undefined && value !== null;
+}
+
 export function padNumber(value: number) {
   if (isNumber(value)) {
     return `0${value}`.slice(-2);

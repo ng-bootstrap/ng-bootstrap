@@ -1,7 +1,7 @@
 import {TestBed, ComponentFixture} from '@angular/core/testing';
 
-import {NgbModalWindow} from './modal_window';
-import {ModalDismissReasons} from './modal_dismiss_reasons';
+import {NgbModalWindow} from './modal-window';
+import {ModalDismissReasons} from './modal-dismiss-reasons';
 
 describe('ngb-modal-dialog', () => {
 
@@ -32,6 +32,14 @@ describe('ngb-modal-dialog', () => {
       expect(dialogEl).toHaveCssClass('modal-dialog');
       expect(dialogEl).toHaveCssClass('modal-sm');
     });
+
+    it('aria attributes', () => {
+      fixture.detectChanges();
+      const dialogEl: Element = fixture.nativeElement.querySelector('.modal-dialog');
+
+      expect(fixture.nativeElement.getAttribute('role')).toBe('dialog');
+      expect(dialogEl.getAttribute('role')).toBe('document');
+    });
   });
 
   describe('dismiss', () => {
@@ -47,8 +55,21 @@ describe('ngb-modal-dialog', () => {
       fixture.nativeElement.querySelector('.modal-dialog').click();
     });
 
-    it('should ignore backdrop clicks when configured to do so', (done) => {
+    it('should ignore backdrop clicks when there is no backdrop', (done) => {
       fixture.componentInstance.backdrop = false;
+      fixture.detectChanges();
+
+      fixture.componentInstance.dismissEvent.subscribe(($event) => {
+        expect($event).toBe(ModalDismissReasons.BACKDROP_CLICK);
+        done(new Error('Should not trigger dismiss event'));
+      });
+
+      fixture.nativeElement.querySelector('.modal-dialog').click();
+      setTimeout(done, 200);
+    });
+
+    it('should ignore backdrop clicks when backdrop is "static"', (done) => {
+      fixture.componentInstance.backdrop = 'static';
       fixture.detectChanges();
 
       fixture.componentInstance.dismissEvent.subscribe(($event) => {

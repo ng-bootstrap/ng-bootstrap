@@ -1,9 +1,25 @@
 import {Component} from '@angular/core';
 
+import {DEMO_SNIPPETS} from './demos';
+
 @Component({
   selector: 'ngbd-modal',
   template: `
-    <ngbd-api-docs directive="NgbModal"></ngbd-api-docs>
+    <template ngbModalContainer></template>
+    <ngbd-content-wrapper component="Modal">
+      <ngbd-api-docs directive="NgbModal"></ngbd-api-docs>
+      <ngb-alert [dismissible]="false">
+        <strong>Heads up!</strong>
+        The <code>NgbModal</code> service needs a container element with the <code>ngbModalContainer</code> directive. The
+        <code>ngbModalContainer</code> directive marks the place in the DOM where modals are opened. Be sure to add 
+        <code>&lt;template ngbModalContainer&gt;&lt;/template&gt;</code> somewhere under your application root element.
+      </ngb-alert>      
+      <ngbd-example-box demoTitle="Modal with default options" [htmlSnippet]="snippets.basic.markup" [tsSnippet]="snippets.basic.code">
+          <ngbd-modal-basic></ngbd-modal-basic>
+      </ngbd-example-box>
+    </ngbd-content-wrapper>
   `
 })
-export class NgbdModal {}
+export class NgbdModal {
+  snippets = DEMO_SNIPPETS;
+}
