@@ -141,8 +141,7 @@ function startKarmaServer(isTddMode, isSaucelabs, done) {
 
   if (isSaucelabs) {
     config['reporters'] = ['dots', 'saucelabs'];
-    // TODO: enable Safari once issue is fixed: https://github.com/ng-bootstrap/ng-bootstrap/issues/613
-    config['browsers'] = ['SL_CHROME', 'SL_FIREFOX', 'SL_IE9', 'SL_IE10', 'SL_IE11', 'SL_EDGE' /*, 'SL_SAFARI9'*/];
+    config['browsers'] = ['SL_CHROME', 'SL_FIREFOX', 'SL_IE9', 'SL_IE10', 'SL_IE11', 'SL_EDGE', 'SL_SAFARI9'];
 
     if (process.env.TRAVIS) {
       var buildId = 'TRAVIS #' + process.env.TRAVIS_BUILD_NUMBER + ' (' + process.env.TRAVIS_BUILD_ID + ')';
