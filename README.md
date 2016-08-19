@@ -5,6 +5,7 @@
 [![devDependency Status](https://david-dm.org/ng-bootstrap/ng-bootstrap/dev-status.svg?branch=master)](https://david-dm.org/ng-bootstrap/ng-bootstrap#info=devDependencies)
 [![Issue Stats](http://issuestats.com/github/ng-bootstrap/ng-bootstrap/badge/pr)](http://issuestats.com/github/ng-bootstrap/ng-bootstrap)
 [![Issue Stats](http://issuestats.com/github/ng-bootstrap/ng-bootstrap/badge/issue)](http://issuestats.com/github/ng-bootstrap/ng-bootstrap)
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/pkozlowski.svg)](https://saucelabs.com/u/pkozlowski)
 
 Welcome to the Angular 2 version of the [Angular UI Bootstrap](https://github.com/angular-ui/bootstrap) library.
 This library is being built from scratch by the [ui-bootstrap team](https://github.com/angular-ui/bootstrap).

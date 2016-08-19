@@ -33,6 +33,63 @@ module.exports = function(config) {
 
     preprocessors: {'temp/**/*.js': ['sourcemap']},
 
+    customLaunchers: {
+      'SL_CHROME': {
+        base: 'SauceLabs',
+        browserName: 'chrome',
+        version: '52'
+      },
+      'SL_FIREFOX': {
+        base: 'SauceLabs',
+        browserName: 'firefox',
+        version: '46'
+      },
+      'SL_IE9': {
+        base: 'SauceLabs',
+        browserName: 'internet explorer',
+        platform: 'Windows 2008',
+        version: '9'
+      },
+      'SL_IE10': {
+        base: 'SauceLabs',
+        browserName: 'internet explorer',
+        platform: 'Windows 2012',
+        version: '10'
+      },
+      'SL_IE11': {
+        base: 'SauceLabs',
+        browserName: 'internet explorer',
+        platform: 'Windows 8.1',
+        version: '11'
+      },
+      'SL_EDGE': {
+        base: 'SauceLabs',
+        browserName: 'MicrosoftEdge',
+        platform: 'Windows 10',
+        version: '13.10586'
+      },
+      'SL_SAFARI9': {
+        base: 'SauceLabs',
+        browserName: 'safari',
+        platform: 'OS X 10.11',
+        version: '9.0'
+      }
+    },
+
+    sauceLabs: {
+      testName: 'ng-bootstrap',
+      retryLimit: 3,
+      startConnect: false,
+      recordVideo: false,
+      recordScreenshots: false,
+      options: {
+        'selenium-version': '2.53.0',
+        'command-timeout': 600,
+        'idle-timeout': 600,
+        'max-duration': 5400
+      }
+    },
+
     reporters: ['progress'],
     port: 9876,
     colors: true,

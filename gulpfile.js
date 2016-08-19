@@ -128,7 +128,7 @@ gulp.task('changelog', function() {
 
 var testProject = ts.createProject('tsconfig.json');
 
-function startKarmaServer(isTddMode, done) {
+function startKarmaServer(isTddMode, isSaucelabs, done) {
   var karmaServer = require('karma').Server;
   var travis = process.env.TRAVIS;
 
@@ -137,6 +137,18 @@ function startKarmaServer(isTddMode, done) {
   if (travis) {
     config['reporters'] = ['dots'];
     config['browsers'] = ['Firefox'];
+  }
+
+  if (isSaucelabs) {
+    config['reporters'] = ['dots', 'saucelabs'];
+    // TODO: enable Safari once issue is fixed: https://github.com/ng-bootstrap/ng-bootstrap/issues/613
+    config['browsers'] = ['SL_CHROME', 'SL_FIREFOX', 'SL_IE9', 'SL_IE10', 'SL_IE11', 'SL_EDGE' /*, 'SL_SAFARI9'*/];
+
+    if (process.env.TRAVIS) {
+      var buildId = 'TRAVIS #' + process.env.TRAVIS_BUILD_NUMBER + ' (' + process.env.TRAVIS_BUILD_ID + ')';
+      config['sauceLabs'] = {build: buildId, tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER};
+      process.env.SAUCE_ACCESS_KEY = process.env.SAUCE_ACCESS_KEY.split('').reverse().join('');
+    }
   }
 
   new karmaServer(config, done).start();
@@ -155,10 +167,10 @@ gulp.task('clean:build-tests', function(done) { runSequence('clean:tests', 'buil
 gulp.task(
     'ddescribe-iit', function() { return gulp.src(PATHS.specs).pipe(ddescribeIit({allowDisabledTests: false})); });
 
-gulp.task('test', ['clean:build-tests'], function(done) { startKarmaServer(false, done); });
+gulp.task('test', ['clean:build-tests'], function(done) { startKarmaServer(false, false, done); });
 
 gulp.task('tdd', ['clean:build-tests'], function(done) {
-  startKarmaServer(true, function(err) {
+  startKarmaServer(true, false, function(err) {
     done(err);
     process.exit(1);
   });
@@ -166,6 +178,12 @@ gulp.task('tdd', ['clean:build-tests'], function(done) {
   gulp.watch(PATHS.src, ['build:tests']);
 });
 
+gulp.task('saucelabs', ['clean:build-tests'], function(done) {
+  startKarmaServer(false, true, function(err) {
+    done(err);
+    process.exit(err ? 1 : 0);
+  });
+});
 
 // Formatting
 
