@@ -85,7 +85,7 @@ export class NgbTypeahead implements OnInit,
   /**
    * An event emitted when a match is selected. Event payload is equal to the selected item.
    */
-  @Output() select = new EventEmitter();
+  @Output() selectItem = new EventEmitter();
 
   onChange = (value) => {
     this._onChangeNoEmit(value);
@@ -193,7 +193,7 @@ export class NgbTypeahead implements OnInit,
   private _selectResult(result: any) {
     this.writeValue(result);
     this._onChangeNoEmit(result);
-    this.select.emit(result);
+    this.selectItem.emit(result);
     this.closePopup();
   }
 }
