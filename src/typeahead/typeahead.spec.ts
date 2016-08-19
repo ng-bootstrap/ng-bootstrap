@@ -368,7 +368,7 @@ describe('ngb-typeahead', () => {
   describe('select event', () => {
 
     it('should raise select event when a result is selected', () => {
-      const fixture = createTestComponent('<input type="text" [ngbTypeahead]="find" (select)="onSelect($event)"/>');
+      const fixture = createTestComponent('<input type="text" [ngbTypeahead]="find" (selectItem)="onSelect($event)"/>');
       const input = getNativeInput(fixture.nativeElement);
 
       // clicking selected
