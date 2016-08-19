@@ -141,10 +141,12 @@ describe('ngb-typeahead', () => {
       const fixture = createTestComponent(`<input type="text" [(ngModel)]="model" [ngbTypeahead]="find"/>`);
       const compiled = fixture.nativeElement;
 
-      changeInput(compiled, 'one');
-      fixture.detectChanges();
-      expectWindowResults(compiled, ['+one', 'one more']);
-      expect(fixture.componentInstance.model).toBe('one');
+      fixture.whenStable().then(() => {
+        changeInput(compiled, 'one');
+        fixture.detectChanges();
+        expectWindowResults(compiled, ['+one', 'one more']);
+        expect(fixture.componentInstance.model).toBe('one');
+      });
     });
 
     it('should be closed when there no results', () => {
@@ -185,44 +187,48 @@ describe('ngb-typeahead', () => {
       const fixture = createTestComponent(`<input type="text" [(ngModel)]="model" [ngbTypeahead]="find"/>`);
       const compiled = fixture.nativeElement;
 
-      // clicking selected
-      changeInput(compiled, 'o');
-      fixture.detectChanges();
-      expectWindowResults(compiled, ['+one', 'one more']);
+      fixture.whenStable().then(() => {
+        // clicking selected
+        changeInput(compiled, 'o');
+        fixture.detectChanges();
+        expectWindowResults(compiled, ['+one', 'one more']);
 
-      getWindowLinks(fixture.debugElement)[0].triggerEventHandler('click', {});
-      fixture.detectChanges();
-      expect(getWindow(compiled)).toBeNull();
-      expectInputValue(compiled, 'one');
-      expect(fixture.componentInstance.model).toBe('one');
+        getWindowLinks(fixture.debugElement)[0].triggerEventHandler('click', {});
+        fixture.detectChanges();
+        expect(getWindow(compiled)).toBeNull();
+        expectInputValue(compiled, 'one');
+        expect(fixture.componentInstance.model).toBe('one');
 
-      // clicking not selected
-      changeInput(compiled, 'o');
-      fixture.detectChanges();
-      expectWindowResults(compiled, ['+one', 'one more']);
-      expectInputValue(compiled, 'o');
+        // clicking not selected
+        changeInput(compiled, 'o');
+        fixture.detectChanges();
+        expectWindowResults(compiled, ['+one', 'one more']);
+        expectInputValue(compiled, 'o');
 
-      getWindowLinks(fixture.debugElement)[0].triggerEventHandler('click', {});
-      fixture.detectChanges();
-      expect(getWindow(compiled)).toBeNull();
-      expectInputValue(compiled, 'one');
+        getWindowLinks(fixture.debugElement)[0].triggerEventHandler('click', {});
+        fixture.detectChanges();
+        expect(getWindow(compiled)).toBeNull();
+        expectInputValue(compiled, 'one');
+      });
     });
 
     it('should select the result on ENTER, close window and fill the input', () => {
       const fixture = createTestComponent(`<input type="text" [(ngModel)]="model" [ngbTypeahead]="find"/>`);
       const compiled = fixture.nativeElement;
 
-      changeInput(compiled, 'o');
-      fixture.detectChanges();
-      expectWindowResults(compiled, ['+one', 'one more']);
+      fixture.whenStable().then(() => {
+        changeInput(compiled, 'o');
+        fixture.detectChanges();
+        expectWindowResults(compiled, ['+one', 'one more']);
 
-      const event = createKeyDownEvent(Key.Enter);
-      getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
-      fixture.detectChanges();
-      expect(getWindow(compiled)).toBeNull();
-      expectInputValue(compiled, 'one');
-      expect(fixture.componentInstance.model).toBe('one');
-      expect(event.preventDefault).toHaveBeenCalled();
+        const event = createKeyDownEvent(Key.Enter);
+        getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
+        fixture.detectChanges();
+        expect(getWindow(compiled)).toBeNull();
+        expectInputValue(compiled, 'one');
+        expect(fixture.componentInstance.model).toBe('one');
+        expect(event.preventDefault).toHaveBeenCalled();
+      });
     });
 
     it('should select the result on TAB, close window and fill the input', () => {
@@ -297,16 +303,18 @@ describe('ngb-typeahead', () => {
                     [inputFormatter]="formatter" [resultFormatter]="uppercaseObjFormatter"/>`);
       const compiled = fixture.nativeElement;
 
-      changeInput(compiled, 'o');
-      fixture.detectChanges();
-      expectWindowResults(compiled, ['+ONE', 'ONE MORE']);
+      fixture.whenStable().then(() => {
+        changeInput(compiled, 'o');
+        fixture.detectChanges();
+        expectWindowResults(compiled, ['+ONE', 'ONE MORE']);
 
-      const event = createKeyDownEvent(Key.Enter);
-      getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
-      fixture.detectChanges();
-      expect(getWindow(compiled)).toBeNull();
-      expect(getNativeInput(compiled).value).toBe('1 one');
-      expect(fixture.componentInstance.model).toEqual({id: 1, value: 'one'});
+        const event = createKeyDownEvent(Key.Enter);
+        getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
+        fixture.detectChanges();
+        expect(getWindow(compiled)).toBeNull();
+        expect(getNativeInput(compiled).value).toBe('1 one');
+        expect(fixture.componentInstance.model).toEqual({id: 1, value: 'one'});
+      });
     });
 
     // TODO: remove 'whenStable' once 'core/testing' is fixed
