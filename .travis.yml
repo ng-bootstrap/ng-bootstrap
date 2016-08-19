@@ -2,6 +2,13 @@ language: node_js
 node_js:
   - "5"
 
+env:
+  global:
+    - SAUCE_USERNAME=pkozlowski
+    - SAUCE_ACCESS_KEY=c5ea8b730bc9-378b-43e4-6e34-e66aa371
+    - BROWSER_PROVIDER_READY_FILE=/tmp/sauce-connect-ready
+    - LOGS_DIR=/tmp/logs
+
 addons:
   firefox: "latest"
 
@@ -14,5 +21,16 @@ install:
   - npm install
   - npm run typings install
 
-script: gulp
+before_script:
+  - mkdir -p $LOGS_DIR
+  - ./scripts/sauce_connect_setup.sh
+
+script:
+  - gulp
+  - ./scripts/sauce_connect_block.sh
+  - gulp saucelabs
+
+after_script:
+  - ./scripts/sauce_connect_teardown.sh
+
 sudo: false
