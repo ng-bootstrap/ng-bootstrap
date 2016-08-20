@@ -1,16 +1,14 @@
 import {TestBed, ComponentFixture} from '@angular/core/testing';
+import {createGenericTestComponent} from '../util/tests';
+
 import {By} from '@angular/platform-browser';
 import {Component} from '@angular/core';
 
 import {NgbTooltipModule} from './index';
 import {NgbTooltipWindow, NgbTooltip} from './tooltip';
 
-function createTestComponent(html: string): ComponentFixture<TestComponent> {
-  TestBed.overrideComponent(TestComponent, {set: {template: html}});
-  const fixture = TestBed.createComponent(TestComponent);
-  fixture.detectChanges();
-  return fixture;
-}
+const createTestComponent =
+    (html: string) => <ComponentFixture<TestComponent>>createGenericTestComponent(html, TestComponent);
 
 describe('ngb-tooltip-window', () => {
   beforeEach(() => { TestBed.configureTestingModule({imports: [NgbTooltipModule]}); });

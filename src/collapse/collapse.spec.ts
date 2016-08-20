@@ -1,17 +1,15 @@
-import {Component} from '@angular/core';
 import {TestBed, ComponentFixture} from '@angular/core/testing';
+import {createGenericTestComponent} from '../util/tests';
+
+import {Component} from '@angular/core';
 
 import {NgbCollapseModule} from './index';
 
+const createTestComponent = (html: string) =>
+    createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
+
 function getCollapsibleContent(element: HTMLElement): HTMLDivElement {
   return <HTMLDivElement>element.querySelector('.collapse');
-}
-
-function createTestComponent(html: string): ComponentFixture<TestComponent> {
-  TestBed.overrideComponent(TestComponent, {set: {template: html}});
-  const fixture = TestBed.createComponent(TestComponent);
-  fixture.detectChanges();
-  return fixture;
 }
 
 describe('ngb-collapse', () => {

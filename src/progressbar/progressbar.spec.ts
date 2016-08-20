@@ -1,9 +1,13 @@
 import {TestBed, ComponentFixture} from '@angular/core/testing';
+import {createGenericTestComponent} from '../util/tests';
 
 import {Component} from '@angular/core';
 
 import {NgbProgressbarModule} from './index';
 import {NgbProgressbar} from './progressbar';
+
+const createTestComponent = (html: string) =>
+    createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
 function getBarWidth(nativeEl): string {
   return nativeEl.querySelector('.progress-bar').style.width;
@@ -11,13 +15,6 @@ function getBarWidth(nativeEl): string {
 
 function getProgressbar(nativeEl: Element): Element {
   return nativeEl.querySelector('progress');
-}
-
-function createTestComponent(html: string): ComponentFixture<TestComponent> {
-  TestBed.overrideComponent(TestComponent, {set: {template: html}});
-  const fixture = TestBed.createComponent(TestComponent);
-  fixture.detectChanges();
-  return fixture;
 }
 
 describe('ng-progressbar', () => {

@@ -1,4 +1,5 @@
 import {TestBed, ComponentFixture} from '@angular/core/testing';
+import {createGenericTestComponent} from '../util/tests';
 
 import {By} from '@angular/platform-browser';
 import {Component} from '@angular/core';
@@ -6,12 +7,8 @@ import {Component} from '@angular/core';
 import {NgbPopoverModule} from './index';
 import {NgbPopoverWindow, NgbPopover} from './popover';
 
-function createTestComponent(html: string): ComponentFixture<TestComponent> {
-  TestBed.overrideComponent(TestComponent, {set: {template: html}});
-  const fixture = TestBed.createComponent(TestComponent);
-  fixture.detectChanges();
-  return fixture;
-}
+const createTestComponent = (html: string) =>
+    createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
 describe('ngb-popover-window', () => {
   beforeEach(() => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbPopoverModule]}); });

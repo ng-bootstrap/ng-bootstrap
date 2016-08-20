@@ -1,10 +1,14 @@
 import {fakeAsync, discardPeriodicTasks, tick, TestBed, ComponentFixture} from '@angular/core/testing';
+import {createGenericTestComponent} from '../util/tests';
 
 import {By} from '@angular/platform-browser';
 import {Component} from '@angular/core';
 
 import {NgbCarouselModule} from './index';
 import {NgbCarousel} from './carousel';
+
+const createTestComponent = (html: string) =>
+    createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
 function expectActiveSlides(nativeEl: HTMLDivElement, active: boolean[]) {
   const slideElms = nativeEl.querySelectorAll('.carousel-item');
@@ -22,13 +26,6 @@ function expectActiveSlides(nativeEl: HTMLDivElement, active: boolean[]) {
       expect(indicatorElms[i]).not.toHaveCssClass('active');
     }
   }
-}
-
-function createTestComponent(html: string): ComponentFixture<TestComponent> {
-  TestBed.overrideComponent(TestComponent, {set: {template: html}});
-  const fixture = TestBed.createComponent(TestComponent);
-  fixture.detectChanges();
-  return fixture;
 }
 
 describe('ngb-carousel', () => {

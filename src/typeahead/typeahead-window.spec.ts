@@ -1,4 +1,5 @@
 import {TestBed, ComponentFixture} from '@angular/core/testing';
+import {createGenericTestComponent} from '../util/tests';
 
 import {Component} from '@angular/core';
 
@@ -6,12 +7,8 @@ import {NgbTypeaheadWindow} from './typeahead-window';
 import {expectResults, getWindowLinks} from './test-common';
 import {NgbTypeaheadModule} from './index';
 
-function createTestComponent(html: string): ComponentFixture<TestComponent> {
-  TestBed.overrideComponent(TestComponent, {set: {template: html}});
-  const fixture = TestBed.createComponent(TestComponent);
-  fixture.detectChanges();
-  return fixture;
-}
+const createTestComponent = (html: string) =>
+    createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
 describe('ngb-typeahead-window', () => {
 

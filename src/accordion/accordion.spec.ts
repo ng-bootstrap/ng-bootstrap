@@ -1,8 +1,12 @@
 import {TestBed, ComponentFixture} from '@angular/core/testing';
+import {createGenericTestComponent} from '../util/tests';
 
 import {Component} from '@angular/core';
 
 import {NgbAccordionModule} from './index';
+
+const createTestComponent = (html: string) =>
+    createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
 function getPanels(element: HTMLElement): HTMLDivElement[] {
   return <HTMLDivElement[]>Array.from(element.querySelectorAll('div .card-header'));
@@ -22,13 +26,6 @@ function expectOpenPanels(nativeEl: HTMLElement, openPanelsDef: boolean[]) {
 
   const result = panels.map(panel => panel.classList.contains('active'));
   expect(result).toEqual(openPanelsDef);
-}
-
-function createTestComponent(html: string): ComponentFixture<TestComponent> {
-  TestBed.overrideComponent(TestComponent, {set: {template: html}});
-  const fixture = TestBed.createComponent(TestComponent);
-  fixture.detectChanges();
-  return fixture;
 }
 
 describe('ngb-accordion', () => {

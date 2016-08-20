@@ -1,8 +1,13 @@
-import {Component} from '@angular/core';
 import {TestBed, ComponentFixture} from '@angular/core/testing';
+import {createGenericTestComponent} from '../util/tests';
+
+import {Component} from '@angular/core';
 
 import {NgbPaginationModule} from './index';
 import {NgbPagination} from './pagination';
+
+const createTestComponent = (html: string) =>
+    createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
 function expectPages(nativeEl: HTMLElement, pagesDef: string[]): void {
   const pages = nativeEl.querySelectorAll('li');
@@ -39,13 +44,6 @@ function getList(nativeEl: HTMLElement) {
 
 function normalizeText(txt: string): string {
   return txt.trim().replace(/\s+/g, ' ');
-}
-
-function createTestComponent(html: string): ComponentFixture<TestComponent> {
-  TestBed.overrideComponent(TestComponent, {set: {template: html}});
-  const fixture = TestBed.createComponent(TestComponent);
-  fixture.detectChanges();
-  return fixture;
 }
 
 describe('ngb-pagination', () => {
