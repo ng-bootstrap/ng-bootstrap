@@ -1,11 +1,14 @@
-import {Component} from '@angular/core';
-
 import {TestBed, ComponentFixture} from '@angular/core/testing';
-import {By} from '@angular/platform-browser';
+import {createGenericTestComponent} from '../util/tests';
 
+import {Component} from '@angular/core';
+import {By} from '@angular/platform-browser';
 import {Validators, FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import {NgbTimepickerModule} from './index';
+
+const createTestComponent = (html: string) =>
+    createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
 function getTimepicker(el: HTMLElement) {
   return el.querySelector('ngb-timepicker');
@@ -43,13 +46,6 @@ function expectToDisplayTime(el: HTMLElement, time: string) {
   }
 
   expect(timeInInputs.join(':')).toBe(time);
-}
-
-function createTestComponent(html: string): ComponentFixture<TestComponent> {
-  TestBed.overrideComponent(TestComponent, {set: {template: html}});
-  const fixture = TestBed.createComponent(TestComponent);
-  fixture.detectChanges();
-  return fixture;
 }
 
 describe('ngb-timepicker', () => {

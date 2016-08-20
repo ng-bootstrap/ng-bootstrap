@@ -1,9 +1,13 @@
 import {TestBed, ComponentFixture} from '@angular/core/testing';
+import {createGenericTestComponent} from '../util/tests';
 
 import {Component} from '@angular/core';
 
 import {NgbHighlight} from './highlight';
 import {NgbTypeaheadModule} from './index';
+
+const createTestComponent = (html: string) =>
+    createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
 /**
  * Get generated innerHtml without HTML comments and Angular debug attributes
@@ -26,13 +30,6 @@ function highlightHtml(fixture) {
   }
 
   return result;
-}
-
-function createTestComponent(html: string): ComponentFixture<TestComponent> {
-  TestBed.overrideComponent(TestComponent, {set: {template: html}});
-  const fixture = TestBed.createComponent(TestComponent);
-  fixture.detectChanges();
-  return fixture;
 }
 
 describe('ngb-highlight', () => {

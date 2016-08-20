@@ -1,9 +1,13 @@
 import {fakeAsync, tick, TestBed, ComponentFixture} from '@angular/core/testing';
+import {createGenericTestComponent} from '../util/tests';
 
 import {Component} from '@angular/core';
 
 import {NgbAlertModule} from './index';
 import {NgbAlert, NgbDismissibleAlert} from './alert';
+
+const createTestComponent = (html: string) =>
+    createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
 function getAlertElement(element: HTMLElement): HTMLDivElement {
   return <HTMLDivElement>element.querySelector('.alert');
@@ -11,13 +15,6 @@ function getAlertElement(element: HTMLElement): HTMLDivElement {
 
 function getCloseButton(element: HTMLElement): HTMLButtonElement {
   return <HTMLButtonElement>element.querySelector('button');
-}
-
-function createTestComponent(html: string): ComponentFixture<TestComponent> {
-  TestBed.overrideComponent(TestComponent, {set: {template: html}});
-  const fixture = TestBed.createComponent(TestComponent);
-  fixture.detectChanges();
-  return fixture;
 }
 
 describe('ngb-alert', () => {

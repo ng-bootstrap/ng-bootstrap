@@ -1,7 +1,12 @@
-import {Component} from '@angular/core';
 import {TestBed, ComponentFixture} from '@angular/core/testing';
+import {createGenericTestComponent} from '../util/tests';
+
+import {Component} from '@angular/core';
 
 import {NgbTabsetModule} from './index';
+
+const createTestComponent = (html: string) =>
+    createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
 function getTabTitles(nativeEl: HTMLElement) {
   return nativeEl.querySelectorAll('.nav-link');
@@ -42,13 +47,6 @@ function expectTabs(nativeEl: HTMLElement, active: boolean[], disabled?: boolean
 
 function getButton(nativeEl: HTMLElement) {
   return nativeEl.querySelectorAll('button');
-}
-
-function createTestComponent(html: string): ComponentFixture<TestComponent> {
-  TestBed.overrideComponent(TestComponent, {set: {template: html}});
-  const fixture = TestBed.createComponent(TestComponent);
-  fixture.detectChanges();
-  return fixture;
 }
 
 describe('ngb-tabset', () => {

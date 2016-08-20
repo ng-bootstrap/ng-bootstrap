@@ -1,8 +1,13 @@
 import {TestBed, ComponentFixture} from '@angular/core/testing';
+import {createGenericTestComponent} from '../util/tests';
+
 import {Component} from '@angular/core';
 import {Validators, FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import {NgbButtonsModule} from './index';
+
+const createTestComponent = (html: string) =>
+    createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
 function expectRadios(element: HTMLElement, states: number[]) {
   const labels = element.querySelectorAll('label');
@@ -25,13 +30,6 @@ function getGroupElement(nativeEl: HTMLElement): HTMLDivElement {
 
 function getInput(nativeEl: HTMLElement, idx: number): HTMLInputElement {
   return <HTMLInputElement>nativeEl.querySelectorAll('input')[idx];
-}
-
-function createTestComponent(html: string): ComponentFixture<TestComponent> {
-  TestBed.overrideComponent(TestComponent, {set: {template: html}});
-  const fixture = TestBed.createComponent(TestComponent);
-  fixture.detectChanges();
-  return fixture;
 }
 
 describe('NgbActiveLabel', () => {

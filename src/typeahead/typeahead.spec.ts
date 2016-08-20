@@ -1,13 +1,18 @@
-import {Component, DebugElement} from '@angular/core';
 import {TestBed, ComponentFixture} from '@angular/core/testing';
+import {createGenericTestComponent} from '../util/tests';
+import {expectResults, getWindowLinks} from './test-common';
+
+import {Component, DebugElement} from '@angular/core';
+import {Validators, FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {By} from '@angular/platform-browser';
+import {Observable} from 'rxjs/Rx';
+import 'rxjs/add/operator/map';
 
 import {NgbTypeahead} from './typeahead';
 import {NgbTypeaheadModule} from './index';
-import {Observable} from 'rxjs/Rx';
-import 'rxjs/add/operator/map';
-import {By} from '@angular/platform-browser';
-import {expectResults, getWindowLinks} from './test-common';
-import {Validators, FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
+
+const createTestComponent = (html: string) =>
+    createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
 enum Key {
   Tab = 9,
@@ -51,13 +56,6 @@ function expectWindowResults(element, expectedResults: string[]) {
   const window = getWindow(element);
   expect(getWindow).not.toBeNull();
   expectResults(window, expectedResults);
-}
-
-function createTestComponent(html: string): ComponentFixture<TestComponent> {
-  TestBed.overrideComponent(TestComponent, {set: {template: html}});
-  const fixture = TestBed.createComponent(TestComponent);
-  fixture.detectChanges();
-  return fixture;
 }
 
 describe('ngb-typeahead', () => {
