@@ -109,4 +109,18 @@ describe('APIDocVisitor', function() {
     expect(methodDocs.length).toBe(0);
   });
 
+  it('should extract documentation from services', function() {
+    var serviceDocs = apiDoc(['./misc/api-doc-test-cases/services-with-methods.ts']).ModalService;
+
+    expect(serviceDocs.fileName).toBe('./misc/api-doc-test-cases/services-with-methods.ts');
+    expect(serviceDocs.className).toBe('ModalService');
+    expect(serviceDocs.description).toBe('A service to open modals');
+
+    expect(serviceDocs.methods.length).toBe(1);
+    expect(serviceDocs.methods[0].name).toBe('open');
+    expect(serviceDocs.methods[0].description).toBe('A method to open a modal');
+    expect(serviceDocs.methods[0].args.length).toBe(2);
+    expect(serviceDocs.methods[0].returnType).toBe('boolean');
+  });
+
 });

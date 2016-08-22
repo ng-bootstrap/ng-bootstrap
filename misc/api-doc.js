@@ -61,17 +61,22 @@ class APIDocVisitor {
           return [{
             fileName,
             className,
+            description,
             selector: directiveInfo.selector,
-            exportAs: directiveInfo.exportAs, description,
+            exportAs: directiveInfo.exportAs,
             inputs: members.inputs,
             outputs: members.outputs,
             methods: members.methods
           }];
+        } else if (this.isServiceDecorator(classDeclaration.decorators[i])) {
+          members = this.visitMembers(classDeclaration.members);
+
+          return [{fileName, className, description, methods: members.methods}];
         }
       }
     }
 
-    // a class that is not a directive, not documented for now
+    // a class that is not a directive or a service, not documented for now
     return [];
   }
 
@@ -129,12 +134,13 @@ class APIDocVisitor {
   visitMethodDeclaration(method) {
     return {
       name: method.name.text, description: ts.displayPartsToString(method.symbol.getDocumentationComment()),
-          args: method.parameters ? method.parameters.map((prop) => this.visitArgument(prop)) : []
+          args: method.parameters ? method.parameters.map((prop) => this.visitArgument(prop)) : [],
+          returnType: this.visitType(method.type)
     }
   }
 
   visitArgument(arg) {
-    return { name: arg.name.text, type: this.typeChecker.typeToString(this.typeChecker.getTypeAtLocation(arg)) }
+    return { name: arg.name.text, type: this.visitType(arg) }
   }
 
   visitInput(property, inDecorator) {
@@ -142,7 +148,7 @@ class APIDocVisitor {
     return {
       name: inArgs.length ? inArgs[0].text : property.name.text,
       defaultValue: property.initializer ? this.stringifyDefaultValue(property.initializer) : undefined,
-      type: this.typeChecker.typeToString(this.typeChecker.getTypeAtLocation(property)),
+      type: this.visitType(property),
       description: ts.displayPartsToString(property.symbol.getDocumentationComment())
     };
   }
@@ -165,10 +171,14 @@ class APIDocVisitor {
     };
   }
 
+  visitType(node) { return node ? this.typeChecker.typeToString(this.typeChecker.getTypeAtLocation(node)) : 'void'; }
+
   isDirectiveDecorator(decorator) {
     var decoratorIdentifierText = decorator.expression.expression.text;
     return decoratorIdentifierText === 'Directive' || decoratorIdentifierText === 'Component';
   }
+
+  isServiceDecorator(decorator) { return decorator.expression.expression.text === 'Injectable'; }
 
   getDecoratorOfType(node, decoratorType) {
     var decorators = node.decorators || [];
