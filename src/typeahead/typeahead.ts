@@ -12,10 +12,11 @@ import {
   ElementRef,
   TemplateRef,
   forwardRef,
-  AfterViewChecked
+  AfterViewChecked,
+  OnDestroy
 } from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {Observable, Subject} from 'rxjs/Rx';
+import {Observable, Subject, Subscription} from 'rxjs/Rx';
 import 'rxjs/add/operator/let';
 import {Positioning} from '../util/positioning';
 import {NgbTypeaheadWindow, ResultTplCtx} from './typeahead-window';
@@ -54,10 +55,11 @@ const NGB_TYPEAHEAD_VALUE_ACCESSOR = {
   providers: [NGB_TYPEAHEAD_VALUE_ACCESSOR]
 })
 export class NgbTypeahead implements OnInit,
-    AfterViewChecked, ControlValueAccessor {
+    AfterViewChecked, ControlValueAccessor, OnDestroy {
   private _onChangeNoEmit: (_: any) => void;
   private _popupService: PopupService<NgbTypeaheadWindow>;
   private _positioning = new Positioning();
+  private _subscription: Subscription;
   private _valueChanges = new Subject<string>();
   private _windowRef: ComponentRef<NgbTypeaheadWindow>;
 
@@ -113,8 +115,10 @@ export class NgbTypeahead implements OnInit,
     }
   }
 
+  ngOnDestroy() { this._subscription.unsubscribe(); }
+
   ngOnInit() {
-    this._valueChanges.let (this.ngbTypeahead).subscribe((results) => {
+    this._subscription = this._valueChanges.let (this.ngbTypeahead).subscribe((results) => {
       if (!results || results.length === 0) {
         this.closePopup();
       } else {
