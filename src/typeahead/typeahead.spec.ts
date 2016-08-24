@@ -9,7 +9,7 @@ import {Observable} from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 
 import {NgbTypeahead} from './typeahead';
-import {NgbTypeaheadModule} from './index';
+import {NgbTypeaheadModule} from './typeahead.module';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;

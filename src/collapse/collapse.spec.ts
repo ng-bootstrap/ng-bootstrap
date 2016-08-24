@@ -3,7 +3,7 @@ import {createGenericTestComponent} from '../util/tests';
 
 import {Component} from '@angular/core';
 
-import {NgbCollapseModule} from './index';
+import {NgbCollapseModule} from './collapse.module';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
