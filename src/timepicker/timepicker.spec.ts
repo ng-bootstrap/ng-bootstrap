@@ -5,7 +5,7 @@ import {Component} from '@angular/core';
 import {By} from '@angular/platform-browser';
 import {Validators, FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 
-import {NgbTimepickerModule} from './index';
+import {NgbTimepickerModule} from './timepicker.module';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;

@@ -4,7 +4,7 @@ import {createGenericTestComponent} from '../util/tests';
 import {By} from '@angular/platform-browser';
 import {Component} from '@angular/core';
 
-import {NgbTooltipModule} from './index';
+import {NgbTooltipModule} from './tooltip.module';
 import {NgbTooltipWindow, NgbTooltip} from './tooltip';
 
 const createTestComponent =

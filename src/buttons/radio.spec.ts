@@ -4,7 +4,7 @@ import {createGenericTestComponent} from '../util/tests';
 import {Component} from '@angular/core';
 import {Validators, FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 
-import {NgbButtonsModule} from './index';
+import {NgbButtonsModule} from './radio.module';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;

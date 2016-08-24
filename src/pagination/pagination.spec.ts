@@ -3,7 +3,7 @@ import {createGenericTestComponent} from '../util/tests';
 
 import {Component} from '@angular/core';
 
-import {NgbPaginationModule} from './index';
+import {NgbPaginationModule} from './pagination.module';
 import {NgbPagination} from './pagination';
 
 const createTestComponent = (html: string) =>

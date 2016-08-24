@@ -3,7 +3,7 @@ import {createGenericTestComponent} from '../util/tests';
 
 import {Component} from '@angular/core';
 
-import {NgbTabsetModule} from './index';
+import {NgbTabsetModule} from './tabset.module';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;

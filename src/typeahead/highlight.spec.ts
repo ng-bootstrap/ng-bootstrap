@@ -4,7 +4,7 @@ import {createGenericTestComponent} from '../util/tests';
 import {Component} from '@angular/core';
 
 import {NgbHighlight} from './highlight';
-import {NgbTypeaheadModule} from './index';
+import {NgbTypeaheadModule} from './typeahead.module';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;

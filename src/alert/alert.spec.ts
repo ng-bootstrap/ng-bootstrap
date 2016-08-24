@@ -3,7 +3,7 @@ import {createGenericTestComponent} from '../util/tests';
 
 import {Component} from '@angular/core';
 
-import {NgbAlertModule} from './index';
+import {NgbAlertModule} from './alert.module';
 import {NgbAlert, NgbDismissibleAlert} from './alert';
 
 const createTestComponent = (html: string) =>

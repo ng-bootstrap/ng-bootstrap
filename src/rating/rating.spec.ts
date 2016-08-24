@@ -3,7 +3,7 @@ import {createGenericTestComponent} from '../util/tests';
 
 import {Component} from '@angular/core';
 
-import {NgbRatingModule} from './index';
+import {NgbRatingModule} from './rating.module';
 import {NgbRating} from './rating';
 
 const createTestComponent = (html: string) =>

@@ -4,7 +4,7 @@ import {createGenericTestComponent} from '../util/tests';
 import {By} from '@angular/platform-browser';
 import {Component} from '@angular/core';
 
-import {NgbPopoverModule} from './index';
+import {NgbPopoverModule} from './popover.module';
 import {NgbPopoverWindow, NgbPopover} from './popover';
 
 const createTestComponent = (html: string) =>
