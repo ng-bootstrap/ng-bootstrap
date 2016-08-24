@@ -4,7 +4,7 @@ import {createGenericTestComponent} from '../util/tests';
 import {Component} from '@angular/core';
 import {By} from '@angular/platform-browser';
 
-import {NgbDropdownModule} from './index';
+import {NgbDropdownModule} from './dropdown.module';
 import {NgbDropdown} from './dropdown';
 
 const createTestComponent = (html: string) =>

@@ -3,7 +3,7 @@ import {createGenericTestComponent} from '../util/tests';
 
 import {Component} from '@angular/core';
 
-import {NgbProgressbarModule} from './index';
+import {NgbProgressbarModule} from './progressbar.module';
 import {NgbProgressbar} from './progressbar';
 
 const createTestComponent = (html: string) =>

@@ -4,7 +4,7 @@ import {createGenericTestComponent} from '../util/tests';
 import {By} from '@angular/platform-browser';
 import {Component} from '@angular/core';
 
-import {NgbCarouselModule} from './index';
+import {NgbCarouselModule} from './carousel.module';
 import {NgbCarousel} from './carousel';
 
 const createTestComponent = (html: string) =>
