@@ -43,10 +43,21 @@ class APIDocVisitor {
     return sourceFile.statements.reduce((directivesSoFar, statement) => {
       if (statement.kind === ts.SyntaxKind.ClassDeclaration) {
         return directivesSoFar.concat(this.visitClassDeclaration(fileName, statement));
+      } else if (statement.kind === ts.SyntaxKind.InterfaceDeclaration) {
+        return directivesSoFar.concat(this.visitInterfaceDeclaration(fileName, statement));
       }
 
       return directivesSoFar;
     }, []);
+  }
+
+  visitInterfaceDeclaration(fileName, interfaceDeclaration) {
+    var symbol = this.program.getTypeChecker().getSymbolAtLocation(interfaceDeclaration.name);
+    var description = ts.displayPartsToString(symbol.getDocumentationComment());
+    var className = interfaceDeclaration.name.text;
+    var members = this.visitMembers(interfaceDeclaration.members);
+
+    return [{fileName, className, description, methods: members.methods, properties: members.properties}];
   }
 
   visitClassDeclaration(fileName, classDeclaration) {
@@ -124,7 +135,9 @@ class APIDocVisitor {
           members[i].kind === ts.SyntaxKind.MethodDeclaration && !isPrivateOrInternal(members[i]) &&
           !isAngularLifecycleHook(members[i].name.text)) {
         methods.push(this.visitMethodDeclaration(members[i]));
-      } else if (members[i].kind === ts.SyntaxKind.PropertyDeclaration) {
+      } else if (
+          members[i].kind === ts.SyntaxKind.PropertyDeclaration ||
+          members[i].kind === ts.SyntaxKind.PropertySignature) {
         properties.push(this.visitProperty(members[i]));
       }
     }

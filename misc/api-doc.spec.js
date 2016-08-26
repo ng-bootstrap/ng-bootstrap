@@ -138,4 +138,31 @@ describe('APIDocVisitor', function() {
     expect(serviceDocs.properties[1].defaultValue).toBe('100');
   });
 
+  it('should extract documentation from interfaces', function() {
+    var interfaceDocs = apiDoc(['./misc/api-doc-test-cases/interface-with-properties.ts']).NgbModalOptions;
+
+    expect(interfaceDocs.className).toBe('NgbModalOptions');
+    expect(interfaceDocs.description).toBe('Represent options available when opening new modal windows.');
+    expect(interfaceDocs.properties.length).toBe(3);
+
+    expect(interfaceDocs.properties[0].name).toBe('backdrop');
+    expect(interfaceDocs.properties[0].description)
+        .toContain('Weather a backdrop element should be created for a given modal (true by default)');
+    expect(interfaceDocs.properties[0].description)
+        .toContain("Alternatively, specify 'static' for a backdrop which doesn't close the modal on click.");
+    expect(interfaceDocs.properties[0].type).toBe('boolean | "static"');
+    expect(interfaceDocs.properties[0].defaultValue).toBeUndefined();
+
+    expect(interfaceDocs.properties[1].name).toBe('keyboard');
+    expect(interfaceDocs.properties[1].description)
+        .toBe('Weather to close the modal when escape key is pressed (true by default).');
+    expect(interfaceDocs.properties[1].type).toBe('boolean');
+    expect(interfaceDocs.properties[1].defaultValue).toBeUndefined();
+
+    expect(interfaceDocs.properties[2].name).toBe('size');
+    expect(interfaceDocs.properties[2].description).toBe('Size of a new modal window.');
+    expect(interfaceDocs.properties[2].type).toBe('"sm" | "lg"');
+    expect(interfaceDocs.properties[2].defaultValue).toBeUndefined();
+  });
+
 });
