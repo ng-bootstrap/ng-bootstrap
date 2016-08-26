@@ -22,6 +22,10 @@ function isAngularLifecycleHook(methodName) {
   return ANGULAR_LIFECYCLE_METHODS.indexOf(methodName) >= 0;
 }
 
+function isPrivateOrInternal(member) {
+  return ((member.flags & ts.NodeFlags.Private) !== 0) || isInternalMember(member);
+}
+
 class APIDocVisitor {
   constructor(fileNames) {
     this.program = ts.createProgram(fileNames, {});
@@ -71,7 +75,7 @@ class APIDocVisitor {
         } else if (this.isServiceDecorator(classDeclaration.decorators[i])) {
           members = this.visitMembers(classDeclaration.members);
 
-          return [{fileName, className, description, methods: members.methods}];
+          return [{fileName, className, description, methods: members.methods, properties: members.properties}];
         }
       }
     }
@@ -103,6 +107,7 @@ class APIDocVisitor {
     var inputs = [];
     var outputs = [];
     var methods = [];
+    var properties = [];
     var inputDecorator, outDecorator;
 
     for (var i = 0; i < members.length; i++) {
@@ -115,20 +120,20 @@ class APIDocVisitor {
       } else if (outDecorator) {
         outputs.push(this.visitOutput(members[i], outDecorator));
 
-      } else {
-        if (members[i].kind === ts.SyntaxKind.MethodDeclaration) {
-          if ((members[i].flags & ts.NodeFlags.Private) === 0 && !isAngularLifecycleHook(members[i].name.text) &&
-              !isInternalMember(members[i])) {
-            methods.push(this.visitMethodDeclaration(members[i]));
-          }
-        }
+      } else if (
+          members[i].kind === ts.SyntaxKind.MethodDeclaration && !isPrivateOrInternal(members[i]) &&
+          !isAngularLifecycleHook(members[i].name.text)) {
+        methods.push(this.visitMethodDeclaration(members[i]));
+      } else if (members[i].kind === ts.SyntaxKind.PropertyDeclaration) {
+        properties.push(this.visitProperty(members[i]));
       }
     }
 
     inputs.sort(getNamesCompareFn());
     outputs.sort(getNamesCompareFn());
+    properties.sort(getNamesCompareFn());
 
-    return {inputs, outputs, methods};
+    return {inputs, outputs, methods, properties};
   }
 
   visitMethodDeclaration(method) {
@@ -167,6 +172,15 @@ class APIDocVisitor {
     var outArgs = outDecorator.expression.arguments;
     return {
       name: outArgs.length ? outArgs[0].text : property.name.text,
+      description: ts.displayPartsToString(property.symbol.getDocumentationComment())
+    };
+  }
+
+  visitProperty(property) {
+    return {
+      name: property.name.text,
+      defaultValue: property.initializer ? this.stringifyDefaultValue(property.initializer) : undefined,
+      type: this.visitType(property),
       description: ts.displayPartsToString(property.symbol.getDocumentationComment())
     };
   }
