@@ -123,4 +123,19 @@ describe('APIDocVisitor', function() {
     expect(serviceDocs.methods[0].returnType).toBe('boolean');
   });
 
+  it('should extract documentation of properties from services', function() {
+    var serviceDocs = apiDoc(['./misc/api-doc-test-cases/services-with-properties.ts']).ProgressbarConfig;
+
+    expect(serviceDocs.properties.length).toBe(2);
+    expect(serviceDocs.properties[0].name).toBe('foo');
+    expect(serviceDocs.properties[0].description).toBe('Voluntarily left without a default value.');
+    expect(serviceDocs.properties[0].type).toBe('string');
+    expect(serviceDocs.properties[0].defaultValue).toBeUndefined();
+
+    expect(serviceDocs.properties[1].name).toBe('max');
+    expect(serviceDocs.properties[1].description).toBe('Maximal value to be displayed in the progressbar.');
+    expect(serviceDocs.properties[1].type).toBe('number');
+    expect(serviceDocs.properties[1].defaultValue).toBe('100');
+  });
+
 });
