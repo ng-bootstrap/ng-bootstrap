@@ -17,7 +17,7 @@ export class Positioning {
     return offsetParentEl || document.documentElement;
   }
 
-  position(element: HTMLElement, round = true): ClientRect {
+  position(element: HTMLElement, round = true, includeMargin = true): ClientRect {
     let elPosition: ClientRect;
     let parentOffset: ClientRect = {width: 0, height: 0, top: 0, bottom: 0, left: 0, right: 0};
 
@@ -25,21 +25,26 @@ export class Positioning {
       elPosition = element.getBoundingClientRect();
     } else {
       const offsetParentEl = this.offsetParent(element);
-
       elPosition = this.offset(element, false);
 
       if (offsetParentEl !== document.documentElement) {
         parentOffset = this.offset(offsetParentEl, false);
+        parentOffset.top += offsetParentEl.clientTop;
+        parentOffset.left += offsetParentEl.clientLeft;
       }
-
-      parentOffset.top += offsetParentEl.clientTop;
-      parentOffset.left += offsetParentEl.clientLeft;
     }
 
     elPosition.top -= parentOffset.top;
     elPosition.bottom -= parentOffset.top;
     elPosition.left -= parentOffset.left;
     elPosition.right -= parentOffset.left;
+
+    if (includeMargin) {
+      elPosition.top -= parseFloat(this.getStyle(element, 'margin-top')) || 0;
+      elPosition.bottom += parseFloat(this.getStyle(element, 'margin-bottom')) || 0;
+      elPosition.left -= parseFloat(this.getStyle(element, 'margin-left')) || 0;
+      elPosition.right += parseFloat(this.getStyle(element, 'margin-right')) || 0;
+    }
 
     if (round) {
       elPosition.height = Math.round(elPosition.height);
@@ -83,7 +88,18 @@ export class Positioning {
 
   positionElements(hostElement: HTMLElement, targetElement: HTMLElement, placement: string, appendToBody?: boolean):
       ClientRect {
-    const hostElPosition = appendToBody ? this.offset(hostElement, false) : this.position(hostElement, false);
+    let hostElPosition: ClientRect;
+    if (appendToBody) {
+      hostElPosition = this.offset(hostElement, false);
+    } else {
+      hostElPosition = this.position(hostElement, false, false);
+      const offsetParentEl = this.offsetParent(hostElement);
+      hostElPosition.top += offsetParentEl.scrollTop;
+      hostElPosition.bottom += offsetParentEl.scrollTop;
+      hostElPosition.left += offsetParentEl.scrollLeft;
+      hostElPosition.right += offsetParentEl.scrollLeft;
+    }
+
     const shiftWidth: any = {
       left: hostElPosition.left,
       center: hostElPosition.left + hostElPosition.width / 2 - targetElement.offsetWidth / 2,
