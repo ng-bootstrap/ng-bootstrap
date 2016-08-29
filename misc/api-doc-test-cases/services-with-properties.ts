@@ -14,5 +14,12 @@ export class ProgressbarConfig {
   /**
    * Voluntarily left without a default value.
    */
-  foo: string
+  foo: string;
+
+  private _dontExtract;
+
+  /**
+   * @internal
+   */
+  notForDocumentation;
 }
