@@ -130,18 +130,12 @@ export class NgbCarousel implements AfterContentChecked,
   /**
    * @internal
    */
-  cycleToNext() {
-    let selectedId: string = this._getNextSlide(this.activeId);
-    this.cycleToSelected(selectedId);
-  }
+  cycleToNext() { this.cycleToSelected(this._getNextSlide(this.activeId)); }
 
   /**
    * @internal
    */
-  cycleToPrev() {
-    let selectedId: string = this._getPrevSlide(this.activeId);
-    this.cycleToSelected(selectedId);
-  }
+  cycleToPrev() { this.cycleToSelected(this._getPrevSlide(this.activeId)); }
 
   /**
    * @internal
@@ -182,36 +176,31 @@ export class NgbCarousel implements AfterContentChecked,
 
   private _stopTimer() { clearInterval(this._slideChangeInterval); }
 
-  private _getSlideById(slideIdx: string): NgbSlide {
-    let slideWithId: NgbSlide[] = this.slides.filter(slide => slide.id === slideIdx);
+  private _getSlideById(slideId: string): NgbSlide {
+    let slideWithId: NgbSlide[] = this.slides.filter(slide => slide.id === slideId);
     return slideWithId.length ? slideWithId[0] : null;
   }
 
-  private _getNextSlide(id: string): string {
-    let nextSlideId = id;
-    let slideArr = this.slides.toArray();
-
-    slideArr.forEach((slide, idx) => {
-      if (slide.id === id) {
-        let lastSlide: boolean = (idx === (slideArr.length - 1));
-        nextSlideId =
-            lastSlide ? (this.wrap ? slideArr[0].id : slideArr[slideArr.length - 1].id) : slideArr[idx + 1].id;
-      }
-    });
-    return nextSlideId;
+  private _getSlideIdxById(slideId: string): number {
+    return this.slides.toArray().indexOf(this._getSlideById(slideId));
   }
 
-  private _getPrevSlide(id: string): string {
-    let prevSlideId = id;
-    let slideArr = this.slides.toArray();
+  private _getNextSlide(currentSlideId: string): string {
+    const slideArr = this.slides.toArray();
+    const currentSlideIdx = this._getSlideIdxById(currentSlideId);
+    const isLastSlide = currentSlideIdx === slideArr.length - 1;
 
-    slideArr.forEach((slide, idx) => {
-      if (slide.id === id) {
-        prevSlideId =
-            idx === 0 ? (this.wrap ? slideArr[slideArr.length - 1].id : slideArr[0].id) : slideArr[idx - 1].id;
-      }
-    });
-    return prevSlideId;
+    return isLastSlide ? (this.wrap ? slideArr[0].id : slideArr[slideArr.length - 1].id) :
+                         slideArr[currentSlideIdx + 1].id;
+  }
+
+  private _getPrevSlide(currentSlideId: string): string {
+    const slideArr = this.slides.toArray();
+    const currentSlideIdx = this._getSlideIdxById(currentSlideId);
+    const isFirstSlide = currentSlideIdx === 0;
+
+    return isFirstSlide ? (this.wrap ? slideArr[slideArr.length - 1].id : slideArr[0].id) :
+                          slideArr[currentSlideIdx - 1].id;
   }
 }
 
