@@ -189,6 +189,30 @@ describe('ngb-progressbar', () => {
       expect(progressbar.type).toBe(config.type);
     });
   });
+
+  describe('Custom config as provider', () => {
+    let config = new NgbProgressbarConfig();
+    config.max = 1000;
+    config.striped = true;
+    config.animated = true;
+    config.type = 'success';
+
+    beforeEach(() => {
+      TestBed.configureTestingModule(
+          {imports: [NgbProgressbarModule], providers: [{provide: NgbProgressbarConfig, useValue: config}]});
+    });
+
+    it('should initialize inputs with provided config as provider', () => {
+      const fixture = TestBed.createComponent(NgbProgressbar);
+      fixture.detectChanges();
+
+      let progressbar = fixture.componentInstance;
+      expect(progressbar.max).toBe(config.max);
+      expect(progressbar.striped).toBe(config.striped);
+      expect(progressbar.animated).toBe(config.animated);
+      expect(progressbar.type).toBe(config.type);
+    });
+  });
 });
 
 @Component({selector: 'test-cmp', template: ''})

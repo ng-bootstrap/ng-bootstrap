@@ -1,4 +1,4 @@
-import {Component, Input, ChangeDetectionStrategy, Optional} from '@angular/core';
+import {Component, Input, ChangeDetectionStrategy} from '@angular/core';
 import {getValueInRange} from '../util/util';
 import {NgbProgressbarConfig} from './progressbar-config';
 
