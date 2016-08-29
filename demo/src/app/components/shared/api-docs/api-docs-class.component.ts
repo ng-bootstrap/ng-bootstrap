@@ -12,8 +12,8 @@ export class NgbdApiDocsClass {
     this.apiDocs = docs[directiveName];
   };
 
-  private _methodSignature(method) {
+  private methodSignature(method) {
     const args = method.args.map(arg => `${arg.name}: ${arg.type}`).join(', ');
-    return `${method.name}(${args})`;
+    return `${method.name}(${args}): ${method.returnType}`;
   }
 }

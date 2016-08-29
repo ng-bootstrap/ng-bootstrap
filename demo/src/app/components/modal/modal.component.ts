@@ -7,7 +7,9 @@ import {DEMO_SNIPPETS} from './demos';
   template: `
     <template ngbModalContainer></template>
     <ngbd-content-wrapper component="Modal">
-      <ngbd-api-docs directive="NgbModal"></ngbd-api-docs>
+      <ngbd-api-docs-class type="NgbModal"></ngbd-api-docs-class>
+      <ngbd-api-docs-class type="NgbModalOptions"></ngbd-api-docs-class>
+      <ngbd-api-docs-class type="NgbModalRef"></ngbd-api-docs-class>
       <ngb-alert [dismissible]="false">
         <strong>Heads up!</strong>
         The <code>NgbModal</code> service needs a container element with the <code>ngbModalContainer</code> directive. The

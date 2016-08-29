@@ -1,4 +1,4 @@
-import {ComponentRef, ViewContainerRef} from '@angular/core';
+import {Injectable, ComponentRef, ViewContainerRef} from '@angular/core';
 
 import {NgbModalBackdrop} from './modal-backdrop';
 import {NgbModalWindow} from './modal-window';
@@ -6,6 +6,7 @@ import {NgbModalWindow} from './modal-window';
 /**
  * A reference to a newly opened modal.
  */
+@Injectable()
 export class NgbModalRef {
   private _resolve: (result?: any) => void;
   private _reject: (reason?: any) => void;
@@ -29,7 +30,7 @@ export class NgbModalRef {
   /**
    * Can be used to close a modal, passing an optional result.
    */
-  close(result?: any) {
+  close(result?: any): void {
     if (this._windowCmptRef) {
       this._resolve(result);
       this._removeModalElements();
@@ -39,7 +40,7 @@ export class NgbModalRef {
   /**
    * Can be used to dismiss a modal, passing an optional reason.
    */
-  dismiss(reason?: any) {
+  dismiss(reason?: any): void {
     if (this._windowCmptRef) {
       this._reject(reason);
       this._removeModalElements();
