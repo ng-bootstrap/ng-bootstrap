@@ -1,12 +1,15 @@
 <div class="api-doc-component">
   <h2>
+    {{apiDocs.className}}
     <a href="https://github.com/ng-bootstrap/ng-bootstrap/tree/master/{{apiDocs.fileName}}"
        target="_blank"
        angulartics2On="click"
        angularticsEvent="Demo HTML Content"
-       angularticsCategory="{{ demoTitle }}">{{apiDocs.className}}</a>
+       angularticsCategory="{{ demoTitle }}">
+      open on Github
+    </a>
   </h2>
-  <p>{{apiDocs.description}}</p>
+  <p class="lead">{{apiDocs.description}}</p>
   <table class="table table-sm table-hover">
     <tbody>
       <tr>
@@ -71,4 +74,3 @@
     </section>
   </template>
 </div>
-<hr/>
