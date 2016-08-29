@@ -131,14 +131,14 @@ class APIDocVisitor {
       } else if (outDecorator) {
         outputs.push(this.visitOutput(members[i], outDecorator));
 
-      } else if (
-          members[i].kind === ts.SyntaxKind.MethodDeclaration && !isPrivateOrInternal(members[i]) &&
-          !isAngularLifecycleHook(members[i].name.text)) {
-        methods.push(this.visitMethodDeclaration(members[i]));
-      } else if (
-          members[i].kind === ts.SyntaxKind.PropertyDeclaration ||
-          members[i].kind === ts.SyntaxKind.PropertySignature) {
-        properties.push(this.visitProperty(members[i]));
+      } else if (!isPrivateOrInternal(members[i])) {
+        if (members[i].kind === ts.SyntaxKind.MethodDeclaration && !isAngularLifecycleHook(members[i].name.text)) {
+          methods.push(this.visitMethodDeclaration(members[i]));
+        } else if (
+            members[i].kind === ts.SyntaxKind.PropertyDeclaration ||
+            members[i].kind === ts.SyntaxKind.PropertySignature) {
+          properties.push(this.visitProperty(members[i]));
+        }
       }
     }
 
