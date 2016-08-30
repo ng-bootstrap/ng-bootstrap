@@ -9,7 +9,11 @@ export class ModalService {
   /**
    * A method to open a modal
    */
-  open(content: string | TemplateRef<any>, options = {}): boolean {
-    return true;
+  open(content: string | TemplateRef<any>, options = {}): Promise<any> {
+    return Promise.resolve();
+  }
+
+  isOpen(): boolean {
+    return false;
   }
 }
