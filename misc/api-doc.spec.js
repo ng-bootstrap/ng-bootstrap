@@ -110,17 +110,23 @@ describe('APIDocVisitor', function() {
   });
 
   it('should extract documentation from services', function() {
-    var serviceDocs = apiDoc(['./misc/api-doc-test-cases/services-with-methods.ts']).ModalService;
+    var serviceDocs =
+        apiDoc(['./misc/api-doc-test-cases/services-with-methods.ts', './typings/index.d.ts']).ModalService;
 
     expect(serviceDocs.fileName).toBe('./misc/api-doc-test-cases/services-with-methods.ts');
     expect(serviceDocs.className).toBe('ModalService');
     expect(serviceDocs.description).toBe('A service to open modals');
+    expect(serviceDocs.methods.length).toBe(2);
 
-    expect(serviceDocs.methods.length).toBe(1);
     expect(serviceDocs.methods[0].name).toBe('open');
     expect(serviceDocs.methods[0].description).toBe('A method to open a modal');
     expect(serviceDocs.methods[0].args.length).toBe(2);
-    expect(serviceDocs.methods[0].returnType).toBe('boolean');
+    expect(serviceDocs.methods[0].returnType).toBe('Promise<any>');
+
+    expect(serviceDocs.methods[1].name).toBe('isOpen');
+    expect(serviceDocs.methods[1].description).toBe('');
+    expect(serviceDocs.methods[1].args.length).toBe(0);
+    expect(serviceDocs.methods[1].returnType).toBe('boolean');
   });
 
   it('should extract documentation of properties from services', function() {
