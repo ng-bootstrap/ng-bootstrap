@@ -1,5 +1,6 @@
 import {Component, ChangeDetectionStrategy, Input} from '@angular/core';
 import docs from '../../../../api-docs';
+import {PropertyDesc, DirectiveDesc, InputDesc, MethodDesc, ClassDesc, signature} from './api-docs.model';
 
 /**
  * Displays the API docs of a directive.
@@ -20,12 +21,12 @@ export class NgbdApiDocs {
    * Object which contains, for each input name of the directive, the corresponding property of the associated config
    * service (if any)
    */
-  private _configProperties;
+  private _configProperties: {[propertyName: string]: PropertyDesc};
 
-  apiDocs;
-  configServiceName;
+  apiDocs: DirectiveDesc;
+  configServiceName: string;
 
-  @Input() set directive(directiveName) {
+  @Input() set directive(directiveName: string) {
     this.apiDocs = docs[directiveName];
     this.configServiceName = `${directiveName}Config`;
     const configApiDocs = docs[this.configServiceName];
@@ -40,7 +41,7 @@ export class NgbdApiDocs {
    * Returns the default value of the given directive input. If falsy, returns the default value of the matching
    * config service property
    */
-  defaultInputValue(input) {
+  defaultInputValue(input: InputDesc): string {
     if (input.defaultValue !== undefined) {
       return input.defaultValue;
     }
@@ -52,16 +53,13 @@ export class NgbdApiDocs {
   /**
    * Returns true if there is a config service property matching with the given directive input
    */
-  hasConfigProperty(input) {
+  hasConfigProperty(input: InputDesc): boolean {
     return !!this._configProperties[input.name];
   }
 
-  methodSignature(method) {
-    const args = method.args.map(arg => `${arg.name}: ${arg.type}`).join(', ');
-    return `${method.name}(${args})`;
-  }
+  methodSignature(method: MethodDesc): string { return signature(method); }
 
-  private _findInputConfigProperty(configApiDocs, input) {
+  private _findInputConfigProperty(configApiDocs: ClassDesc, input: InputDesc): PropertyDesc {
     return configApiDocs.properties.filter(prop => prop.name === input.name)[0];
   }
 }

@@ -1,5 +1,6 @@
 import {Component, ChangeDetectionStrategy, Input} from '@angular/core';
 import docs from '../../../../api-docs';
+import {ClassDesc} from './api-docs.model';
 
 const CONFIG_SUFFIX_LENGTH = 'Config'.length;
 
@@ -16,10 +17,10 @@ const CONFIG_SUFFIX_LENGTH = 'Config'.length;
   templateUrl: './api-docs-config.component.html'
 })
 export class NgbdApiDocsConfig {
-  apiDocs;
-  directiveName;
+  apiDocs: ClassDesc;
+  directiveName: string;
 
-  @Input() set type(typeName) {
+  @Input() set type(typeName: string) {
     this.apiDocs = docs[typeName];
     this.directiveName = typeName.slice(0, -CONFIG_SUFFIX_LENGTH);
   };
