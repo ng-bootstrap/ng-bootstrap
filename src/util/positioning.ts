@@ -42,8 +42,6 @@ export class Positioning {
     elPosition.right -= parentOffset.left;
 
     if (round) {
-      elPosition.height = Math.round(elPosition.height);
-      elPosition.width = Math.round(elPosition.width);
       elPosition.top = Math.round(elPosition.top);
       elPosition.bottom = Math.round(elPosition.bottom);
       elPosition.left = Math.round(elPosition.left);
@@ -134,8 +132,6 @@ export class Positioning {
         break;
     }
 
-    targetElPosition.height = Math.round(targetElPosition.height);
-    targetElPosition.width = Math.round(targetElPosition.width);
     targetElPosition.top = Math.round(targetElPosition.top);
     targetElPosition.bottom = Math.round(targetElPosition.bottom);
     targetElPosition.left = Math.round(targetElPosition.left);

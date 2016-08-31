@@ -147,11 +147,11 @@ describe('ngb-tabset', () => {
 
     const tabTitles = getTabTitles(fixture.nativeElement);
 
-    (<HTMLAnchorElement>tabTitles[1]).click();
+    (<HTMLElement>tabTitles[1]).click();
     fixture.detectChanges();
     expectTabs(fixture.nativeElement, [false, true]);
 
-    (<HTMLAnchorElement>tabTitles[0]).click();
+    (<HTMLElement>tabTitles[0]).click();
     fixture.detectChanges();
     expectTabs(fixture.nativeElement, [true, false]);
   });
@@ -179,7 +179,7 @@ describe('ngb-tabset', () => {
 
     expectTabs(fixture.nativeElement, [true, false], [false, true]);
 
-    (<HTMLAnchorElement>getTabTitles(fixture.nativeElement)[1]).click();
+    (<HTMLElement>getTabTitles(fixture.nativeElement)[1]).click();
     fixture.detectChanges();
     expectTabs(fixture.nativeElement, [true, false], [false, true]);
   });
@@ -233,12 +233,12 @@ describe('ngb-tabset', () => {
     const button = getButton(fixture.nativeElement);
 
     // Click on a button to select the second tab
-    (<HTMLAnchorElement>button[1]).click();
+    (<HTMLElement>button[1]).click();
     fixture.detectChanges();
     expectTabs(fixture.nativeElement, [false, true]);
 
     // Click on a button to select the first tab
-    (<HTMLAnchorElement>button[0]).click();
+    (<HTMLElement>button[0]).click();
     fixture.detectChanges();
     expectTabs(fixture.nativeElement, [true, false]);
   });
@@ -256,7 +256,7 @@ describe('ngb-tabset', () => {
     const button = getButton(fixture.nativeElement);
 
     // Click on a button to select the second disabled tab (should not change active tab).
-    (<HTMLAnchorElement>button[0]).click();
+    (<HTMLElement>button[0]).click();
     fixture.detectChanges();
     expectTabs(fixture.nativeElement, [true, false], [false, true]);
   });
@@ -277,13 +277,13 @@ describe('ngb-tabset', () => {
     spyOn(fixture.componentInstance, 'changeCallback');
 
     // Select the second tab -> change event
-    (<HTMLAnchorElement>button[1]).click();
+    (<HTMLElement>button[1]).click();
     fixture.detectChanges();
     expect(fixture.componentInstance.changeCallback)
         .toHaveBeenCalledWith(jasmine.objectContaining({activeId: 'first', nextId: 'second'}));
 
     // Select the first tab again -> change event
-    (<HTMLAnchorElement>button[0]).click();
+    (<HTMLElement>button[0]).click();
     fixture.detectChanges();
     expect(fixture.componentInstance.changeCallback)
         .toHaveBeenCalledWith(jasmine.objectContaining({activeId: 'second', nextId: 'first'}));
@@ -304,12 +304,12 @@ describe('ngb-tabset', () => {
     spyOn(fixture.componentInstance, 'changeCallback');
 
     // Select the currently active tab -> no change event
-    (<HTMLAnchorElement>button[0]).click();
+    (<HTMLElement>button[0]).click();
     fixture.detectChanges();
     expect(fixture.componentInstance.changeCallback).not.toHaveBeenCalled();
 
     // Select the disabled tab -> no change event
-    (<HTMLAnchorElement>button[1]).click();
+    (<HTMLElement>button[1]).click();
     fixture.detectChanges();
     expect(fixture.componentInstance.changeCallback).not.toHaveBeenCalled();
   });
@@ -333,7 +333,7 @@ describe('ngb-tabset', () => {
     };
 
     // Select the second tab -> selection will be canceled
-    (<HTMLAnchorElement>button[1]).click();
+    (<HTMLElement>button[1]).click();
     fixture.detectChanges();
     expect(changeEvent).toEqual(jasmine.objectContaining({activeId: 'first', nextId: 'second'}));
     expectTabs(fixture.nativeElement, [true, false]);
