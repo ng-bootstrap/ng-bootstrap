@@ -81,6 +81,7 @@ class APIDocVisitor {
             exportAs: directiveInfo.exportAs,
             inputs: members.inputs,
             outputs: members.outputs,
+            properties: members.properties,
             methods: members.methods
           }];
         } else if (this.isServiceDecorator(classDeclaration.decorators[i])) {
