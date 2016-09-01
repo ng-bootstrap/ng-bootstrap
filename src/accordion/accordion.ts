@@ -63,12 +63,23 @@ export class NgbPanel {
 }
 
 /**
- * The payload of the panel change event
+ * The payload of the change event fired right before toggling an accordion panel
  */
 export interface NgbPanelChangeEvent {
+  /**
+   * Id of the accordion panel that is toggled
+   */
   panelId: string;
+
+  /**
+   * Whether the panel will be opened (true) or closed (false)
+   */
   nextState: boolean;
-  preventDefault();
+
+  /**
+   * Function that will prevent panel toggling if called
+   */
+  preventDefault: () => void;
 }
 
 /**
@@ -113,9 +124,7 @@ export class NgbAccordion implements AfterContentChecked {
 
 
   /**
-   * A panel change event fired right before the panel toggle happens. The event object has three properties:
-   * 'panelId', the id of panel that id toggled, 'nextState' whether panel will be opened (true) or closed (false),
-   * and a function, 'preventDefault()' which, when executed, will prevent the panel toggle from occurring.
+   * A panel change event fired right before the panel toggle happens. See NgbPanelChangeEvent for payload details
    */
   @Output() change = new EventEmitter<NgbPanelChangeEvent>();
 

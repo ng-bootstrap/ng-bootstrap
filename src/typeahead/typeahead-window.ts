@@ -2,11 +2,20 @@ import {Component, Input, Output, EventEmitter, TemplateRef} from '@angular/core
 
 import {toString} from '../util/util';
 
-export type ResultTplCtx = {
-  result: any,
-  term: string,
-  formatter: (_: string) => string
-};
+/**
+ * Context for the typeahead result template in case you want to override the default one
+ */
+export interface ResultTemplateContext {
+  /**
+   * Your typeahead result data model
+   */
+  result: any;
+
+  /**
+   * Search term from the input used to get current result
+   */
+  term: string;
+}
 
 @Component({
   selector: 'ngb-typeahead-window',
@@ -41,17 +50,17 @@ export class NgbTypeaheadWindow {
 
   /**
    * A function used to format a given result before display. This function should return a formatted string without any
-   * HTML markup.
+   * HTML markup
    */
   @Input() formatter = toString;
 
   /**
-   * A template to display a matching result.
+   * A template to override a matching result default display
    */
-  @Input() resultTemplate: TemplateRef<ResultTplCtx>;
+  @Input() resultTemplate: TemplateRef<ResultTemplateContext>;
 
   /**
-   * Event raised when users selects a particular result row.
+   * Event raised when user selects a particular result row
    */
   @Output('select') selectEvent = new EventEmitter();
 
