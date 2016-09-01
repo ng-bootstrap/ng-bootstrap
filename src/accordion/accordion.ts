@@ -11,6 +11,7 @@ import {
   AfterContentChecked
 } from '@angular/core';
 import {isString} from '../util/util';
+import {NgbAccordionConfig} from './accordion-config';
 
 let nextId = 0;
 
@@ -115,7 +116,7 @@ export class NgbAccordion implements AfterContentChecked {
   /**
    *  Whether the other panels should be closed when a panel is opened
    */
-  @Input('closeOthers') closeOtherPanels = false;
+  @Input('closeOthers') closeOtherPanels: boolean;
 
   /**
    *  Type of accordion's panels. Bootstrap 4 recognizes the following types: "success", "info", "warning" and "danger".
@@ -137,6 +138,11 @@ export class NgbAccordion implements AfterContentChecked {
    * A map that stores references to all panels
    */
   private _panelRefs: Map<string, NgbPanel> = new Map<string, NgbPanel>();
+
+  constructor(config: NgbAccordionConfig) {
+    this.type = config.type;
+    this.closeOtherPanels = config.closeOthers;
+  }
 
   /**
    * Programmatically toggle a panel with a given id.

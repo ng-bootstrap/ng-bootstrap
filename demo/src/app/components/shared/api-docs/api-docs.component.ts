@@ -38,16 +38,12 @@ export class NgbdApiDocs {
   };
 
   /**
-   * Returns the default value of the given directive input. If falsy, returns the default value of the matching
-   * config service property
+   * Returns the default value of the given directive input by first looking for it in the matching config service
+   * property. If there is no matching config property, it reads it from the input.
    */
   defaultInputValue(input: InputDesc): string {
-    if (input.defaultValue !== undefined) {
-      return input.defaultValue;
-    }
-
     const configProperty = this._configProperties[input.name];
-    return (configProperty && configProperty.defaultValue);
+    return configProperty ? configProperty.defaultValue : input.defaultValue;
   }
 
   /**

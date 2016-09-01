@@ -23,18 +23,18 @@ export class NgbProgressbar {
   /**
    * Maximal value to be displayed in the progressbar.
    */
-  @Input() max = 100;
+  @Input() max: number;
 
   /**
    * A flag indicating if the stripes of the progress bar should be animated. Takes effect only for browsers
    * supporting CSS3 animations, and if striped is true.
    */
-  @Input() animated = false;
+  @Input() animated: boolean;
 
   /**
    * A flag indicating if a progress bar should be displayed as striped.
    */
-  @Input() striped = false;
+  @Input() striped: boolean;
 
   /**
    * Type of progress bar, can be one of "success", "info", "warning" or "danger".
