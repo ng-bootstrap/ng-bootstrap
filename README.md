@@ -20,7 +20,7 @@ Feel free to make comments there.
 Check all the directives in action at https://ng-bootstrap.github.io
 
 ## Dependencies
-* [Angular 2](https://angular.io) (tested with 2.0-rc.5)
+* [Angular 2](https://angular.io) (tested with 2.0-rc.6)
 * [Bootstrap 4](https://v4-alpha.getbootstrap.com) (tested with 4.0 alpha V3)
 
 ## Installation
