@@ -9,6 +9,7 @@ import {DEMO_SNIPPETS} from './demos';
       <ngbd-api-docs directive="NgbTab"></ngbd-api-docs>
       <ngbd-api-docs directive="NgbTabTitle"></ngbd-api-docs>
       <ngbd-api-docs directive="NgbTabContent"></ngbd-api-docs>
+      <ngbd-api-docs-class type="NgbTabChangeEvent"></ngbd-api-docs-class>
       <ngbd-example-box demoTitle="Tabset" [htmlSnippet]="snippets.basic.markup" [tsSnippet]="snippets.basic.code">
         <ngbd-tabset-basic></ngbd-tabset-basic>
       </ngbd-example-box>

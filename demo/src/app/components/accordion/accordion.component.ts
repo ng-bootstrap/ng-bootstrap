@@ -9,6 +9,7 @@ import {DEMO_SNIPPETS} from './demos';
       <ngbd-api-docs directive="NgbPanel"></ngbd-api-docs>
       <ngbd-api-docs directive="NgbPanelTitle"></ngbd-api-docs>
       <ngbd-api-docs directive="NgbPanelContent"></ngbd-api-docs>
+      <ngbd-api-docs-class type="NgbPanelChangeEvent"></ngbd-api-docs-class>
       <ngbd-example-box demoTitle="Accordion" [htmlSnippet]="snippets.basic.markup" [tsSnippet]="snippets.basic.code">
         <ngbd-accordion-basic></ngbd-accordion-basic>
       </ngbd-example-box>

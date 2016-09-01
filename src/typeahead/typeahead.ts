@@ -19,7 +19,7 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {Observable, Subject, Subscription} from 'rxjs/Rx';
 import 'rxjs/add/operator/let';
 import {Positioning} from '../util/positioning';
-import {NgbTypeaheadWindow, ResultTplCtx} from './typeahead-window';
+import {NgbTypeaheadWindow, ResultTemplateContext} from './typeahead-window';
 import {PopupService} from '../util/popup';
 import {toString} from '../util/util';
 
@@ -75,17 +75,17 @@ export class NgbTypeahead implements OnInit,
 
   /**
    * A function to format a given result before display. This function should return a formatted string without any
-   * HTML markup.
+   * HTML markup
    */
   @Input() resultFormatter: (value: any) => string;
 
   /**
-   * A template to display a matching result.
+   * A template to override a matching result default display
    */
-  @Input() resultTemplate: TemplateRef<ResultTplCtx>;
+  @Input() resultTemplate: TemplateRef<ResultTemplateContext>;
 
   /**
-   * An event emitted when a match is selected. Event payload is equal to the selected item.
+   * An event emitted when a match is selected. Event payload is equal to the selected item
    */
   @Output() selectItem = new EventEmitter();
 
