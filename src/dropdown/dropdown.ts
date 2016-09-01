@@ -8,9 +8,9 @@ import {Directive, Input, Output, HostListener, EventEmitter} from '@angular/cor
   exportAs: 'ngbDropdown',
   host: {
     'class': 'dropdown',
-    '[class.open]': '_open',
-    '(keyup.esc)': '_closeFromOutside()',
-    '(document:click)': '_closeFromOutside()'
+    '[class.open]': 'isOpen()',
+    '(keyup.esc)': 'closeFromOutside()',
+    '(document:click)': 'closeFromOutside()'
   }
 })
 export class NgbDropdown {
@@ -34,12 +34,12 @@ export class NgbDropdown {
   /**
    * Checks if the dropdown menu is open or not.
    */
-  isOpen() { return this._open; }
+  isOpen(): boolean { return this._open; }
 
   /**
    * Opens the dropdown menu of a given navbar or tabbed navigation.
    */
-  open() {
+  open(): void {
     this._open = true;
     this.openChange.emit(true);
   }
@@ -47,7 +47,7 @@ export class NgbDropdown {
   /**
    * Closes the dropdown menu of a given navbar or tabbed navigation.
    */
-  close() {
+  close(): void {
     this._open = false;
     this.openChange.emit(false);
   }
@@ -55,7 +55,7 @@ export class NgbDropdown {
   /**
    * Toggles the dropdown menu of a given navbar or tabbed navigation.
    */
-  toggle() {
+  toggle(): void {
     if (this.isOpen()) {
       this.close();
     } else {
@@ -63,7 +63,10 @@ export class NgbDropdown {
     }
   }
 
-  private _closeFromOutside() {
+  /**
+   * @internal
+   */
+  closeFromOutside() {
     if (this.autoClose) {
       this.close();
     }
