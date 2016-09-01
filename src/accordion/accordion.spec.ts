@@ -1,9 +1,11 @@
-import {TestBed, ComponentFixture} from '@angular/core/testing';
+import {TestBed, ComponentFixture, inject} from '@angular/core/testing';
 import {createGenericTestComponent} from '../util/tests';
 
 import {Component} from '@angular/core';
 
 import {NgbAccordionModule} from './accordion.module';
+import {NgbAccordionConfig} from './accordion-config';
+import {NgbAccordion} from './accordion';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -43,6 +45,13 @@ describe('ngb-accordion', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbAccordionModule]});
     TestBed.overrideComponent(TestComponent, {set: {template: html}});
+  });
+
+  it('should initialize inputs with default values', () => {
+    const defaultConfig = new NgbAccordionConfig();
+    const accordionCmp = new NgbAccordion(defaultConfig);
+    expect(accordionCmp.type).toBe(defaultConfig.type);
+    expect(accordionCmp.closeOtherPanels).toBe(defaultConfig.closeOthers);
   });
 
   it('should have no open panels', () => {
@@ -302,6 +311,47 @@ describe('ngb-accordion', () => {
     expect(el[0]).toHaveCssClass('card-success');
     expect(el[1]).toHaveCssClass('card-danger');
     expect(el[2]).toHaveCssClass('card-warning');
+  });
+
+  describe('Custom config', () => {
+    let config: NgbAccordionConfig;
+
+    beforeEach(() => { TestBed.configureTestingModule({imports: [NgbAccordionModule]}); });
+
+    beforeEach(inject([NgbAccordionConfig], (c: NgbAccordionConfig) => {
+      config = c;
+      config.closeOthers = true;
+      config.type = 'success';
+    }));
+
+    it('should initialize inputs with provided config', () => {
+      const fixture = TestBed.createComponent(NgbAccordion);
+      fixture.detectChanges();
+
+      let accordion = fixture.componentInstance;
+      expect(accordion.closeOtherPanels).toBe(config.closeOthers);
+      expect(accordion.type).toBe(config.type);
+    });
+  });
+
+  describe('Custom config as provider', () => {
+    let config = new NgbAccordionConfig();
+    config.closeOthers = true;
+    config.type = 'success';
+
+    beforeEach(() => {
+      TestBed.configureTestingModule(
+          {imports: [NgbAccordionModule], providers: [{provide: NgbAccordionConfig, useValue: config}]});
+    });
+
+    it('should initialize inputs with provided config as provider', () => {
+      const fixture = TestBed.createComponent(NgbAccordion);
+      fixture.detectChanges();
+
+      let accordion = fixture.componentInstance;
+      expect(accordion.closeOtherPanels).toBe(config.closeOthers);
+      expect(accordion.type).toBe(config.type);
+    });
   });
 });
 

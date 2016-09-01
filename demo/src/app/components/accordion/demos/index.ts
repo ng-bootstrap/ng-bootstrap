@@ -2,9 +2,10 @@ import {NgbdAccordionBasic} from './basic/accordion-basic';
 import {NgbdAccordionPreventchange} from './preventchange/accordion-preventchange';
 import {NgbdAccordionStatic} from './static/accordion-static';
 import {NgbdAccordionToggle} from './toggle/accordion-toggle';
+import {NgbdAccordionConfig} from './config/accordion-config';
 
 export const DEMO_DIRECTIVES =
-    [NgbdAccordionBasic, NgbdAccordionPreventchange, NgbdAccordionStatic, NgbdAccordionToggle];
+    [NgbdAccordionBasic, NgbdAccordionPreventchange, NgbdAccordionStatic, NgbdAccordionToggle, NgbdAccordionConfig];
 
 export const DEMO_SNIPPETS = {
   basic: {
@@ -22,5 +23,9 @@ export const DEMO_SNIPPETS = {
   toggle: {
     code: require('!!prismjs?lang=typescript!./toggle/accordion-toggle'),
     markup: require('!!prismjs?lang=markup!./toggle/accordion-toggle.html')
+  },
+  config: {
+    code: require('!!prismjs?lang=typescript!./config/accordion-config'),
+    markup: require('!!prismjs?lang=markup!./config/accordion-config.html')
   }
 };
