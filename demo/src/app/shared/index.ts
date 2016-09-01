@@ -6,10 +6,6 @@ import {JsonpModule} from '@angular/http';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
-import {Angulartics2, Angulartics2On} from 'angulartics2';
-import {Angulartics2GoogleAnalytics} from 'angulartics2/src/providers/angulartics2-google-analytics';
-import {Angulartics} from './angulartics2.workaround';
-
 import {ContentWrapper} from './content-wrapper/content-wrapper.component';
 import {SideNavComponent} from './side-nav/side-nav.component';
 
@@ -20,7 +16,6 @@ import {SideNavComponent} from './side-nav/side-nav.component';
     RouterModule,
     ContentWrapper,
     SideNavComponent,
-    Angulartics2On,
     NgbModule,
     FormsModule,
     ReactiveFormsModule,
@@ -29,11 +24,6 @@ import {SideNavComponent} from './side-nav/side-nav.component';
   declarations: [
     ContentWrapper,
     SideNavComponent,
-    Angulartics2On
-  ],
-  providers: [
-    {provide: Angulartics2, useClass: Angulartics},
-    Angulartics2GoogleAnalytics
-  ],
+  ]
 })
 export class NgbdSharedModule {}
