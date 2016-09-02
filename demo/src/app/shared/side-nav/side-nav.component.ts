@@ -11,6 +11,7 @@ export class SideNavComponent {
     'Buttons',
     'Carousel',
     'Collapse',
+    'Datepicker',
     'Dropdown',
     'Modal',
     'Pagination',

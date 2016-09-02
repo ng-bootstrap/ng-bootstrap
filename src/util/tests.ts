@@ -7,7 +7,7 @@ export function createGenericTestComponent<T>(html: string, type: {new (...args:
   return fixture as ComponentFixture<T>;
 }
 
-type Browser = 'ie9' | 'ie10' | 'ie11' | 'ie' | 'edge' | 'chrome' | 'safari';
+type Browser = 'ie9' | 'ie10' | 'ie11' | 'ie' | 'edge' | 'chrome' | 'safari' | 'firefox';
 
 export function getBrowser(ua = window.navigator.userAgent) {
   let browser = 'unknown';
@@ -39,8 +39,13 @@ export function getBrowser(ua = window.navigator.userAgent) {
     return 'safari';
   }
 
+  // Firefox
+  if (ua.indexOf('Firefox/') > 0) {
+    return 'firefox';
+  }
+
   if (browser === 'unknown') {
-    throw new Error('Browser detection failed for test exclusion');
+    throw new Error('Browser detection failed for: ' + ua);
   }
 
   return browser;

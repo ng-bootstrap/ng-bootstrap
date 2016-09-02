@@ -5,6 +5,7 @@ import {NgbAlertModule} from './alert/alert.module';
 import {NgbButtonsModule} from './buttons/radio.module';
 import {NgbCarouselModule} from './carousel/carousel.module';
 import {NgbCollapseModule} from './collapse/collapse.module';
+import {NgbDatepickerModule} from './datepicker/datepicker.module';
 import {NgbDropdownModule} from './dropdown/dropdown.module';
 import {NgbModalModule, NgbModal, NgbModalOptions, NgbModalRef, ModalDismissReasons} from './modal/modal.module';
 import {NgbPaginationModule} from './pagination/pagination.module';
@@ -25,9 +26,9 @@ export {NgbPaginationConfig} from './pagination/pagination.module';
 
 @NgModule({
   exports: [
-    NgbAccordionModule, NgbAlertModule, NgbButtonsModule, NgbCarouselModule, NgbCollapseModule, NgbDropdownModule,
-    NgbModalModule, NgbPaginationModule, NgbPopoverModule, NgbProgressbarModule, NgbRatingModule, NgbTabsetModule,
-    NgbTimepickerModule, NgbTooltipModule, NgbTypeaheadModule
+    NgbAccordionModule, NgbAlertModule, NgbButtonsModule, NgbCarouselModule, NgbCollapseModule, NgbDatepickerModule,
+    NgbDropdownModule, NgbModalModule, NgbPaginationModule, NgbPopoverModule, NgbProgressbarModule, NgbRatingModule,
+    NgbTabsetModule, NgbTimepickerModule, NgbTooltipModule, NgbTypeaheadModule
   ]
 })
 export class NgbModule {
