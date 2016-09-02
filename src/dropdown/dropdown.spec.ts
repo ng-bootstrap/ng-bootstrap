@@ -17,7 +17,7 @@ function getDropdownEl(tc) {
 describe('ngb-dropdown', () => {
   beforeEach(() => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbDropdownModule]}); });
 
-  it('should be closed by default', () => {
+  it('should be closed and down by default', () => {
     const html = `<div ngbDropdown></div>`;
 
     const fixture = createTestComponent(html);
@@ -25,6 +25,15 @@ describe('ngb-dropdown', () => {
 
     expect(getDropdownEl(compiled)).toHaveCssClass('dropdown');
     expect(getDropdownEl(compiled)).not.toHaveCssClass('open');
+  });
+
+  it('should be up if up input is true', () => {
+    const html = `<div ngbDropdown [up]="true"></div>`;
+
+    const fixture = createTestComponent(html);
+    const compiled = fixture.nativeElement;
+
+    expect(getDropdownEl(compiled)).toHaveCssClass('dropup');
   });
 
   it('should be open initially if open expression is true', () => {
