@@ -7,6 +7,8 @@ import {DEMO_SNIPPETS} from './demos';
     <ngbd-content-wrapper component="Alert">
       <ngbd-api-docs directive="NgbAlert"></ngbd-api-docs>
       <ngbd-api-docs directive="NgbDismissibleAlert"></ngbd-api-docs>
+      <ngbd-api-docs-config type="NgbAlertConfig"></ngbd-api-docs-config>
+      <ngbd-api-docs-config type="NgbDismissibleAlertConfig"></ngbd-api-docs-config>
       <ngbd-example-box demoTitle="Basic Alert" [htmlSnippet]="snippets.basic.markup" [tsSnippet]="snippets.basic.code">
         <ngbd-alert-basic></ngbd-alert-basic>
       </ngbd-example-box>
@@ -18,6 +20,11 @@ import {DEMO_SNIPPETS} from './demos';
       </ngbd-example-box>
       <ngbd-example-box demoTitle="Custom Alert" [htmlSnippet]="snippets.custom.markup" [tsSnippet]="snippets.custom.code">
         <ngbd-alert-custom></ngbd-alert-custom>
+      </ngbd-example-box>
+      <ngbd-example-box demoTitle="Global configuration of alerts" 
+                        [htmlSnippet]="snippets.config.markup" 
+                        [tsSnippet]="snippets.config.code">
+        <ngbd-alert-config></ngbd-alert-config>
       </ngbd-example-box>
     </ngbd-content-wrapper>
   `

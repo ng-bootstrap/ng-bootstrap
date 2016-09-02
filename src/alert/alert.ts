@@ -16,6 +16,7 @@ import {
 } from '@angular/core';
 
 import {PopupService} from '../util/popup';
+import {NgbAlertConfig, NgbDismissibleAlertConfig} from './alert-config';
 
 /**
  * Alerts can be used to provide feedback messages.
@@ -37,15 +38,20 @@ export class NgbAlert {
    * A flag indicating if a given alert can be dismissed (closed) by a user. If this flag is set, a close button (in a
    * form of a cross) will be displayed.
    */
-  @Input() dismissible = true;
+  @Input() dismissible: boolean;
   /**
    * Alert type (CSS class). Bootstrap 4 recognizes the following types: "success", "info", "warning" and "danger".
    */
-  @Input() type = 'warning';
+  @Input() type: string;
   /**
    * An event emitted when the close button is clicked. This event has no payload. Only relevant for dismissible alerts.
    */
   @Output() close = new EventEmitter();
+
+  constructor(config: NgbAlertConfig) {
+    this.dismissible = config.dismissible;
+    this.type = config.type;
+  }
 
   closeHandler() { this.close.emit(null); }
 }
@@ -56,13 +62,12 @@ export class NgbAlert {
 @Directive({selector: 'template[ngbAlert]'})
 export class NgbDismissibleAlert implements OnInit, OnDestroy {
   private _popupService: PopupService<NgbAlert>;
-  private _windowRef: ComponentRef<NgbAlert>;
   private _timeout;
 
   /**
    * Alert type (CSS class). Bootstrap 4 recognizes the following types: "success", "info", "warning" and "danger".
    */
-  @Input() type = 'warning';
+  @Input() type: string;
   /**
    * An event emitted when the close button is clicked.
    */
@@ -74,17 +79,19 @@ export class NgbDismissibleAlert implements OnInit, OnDestroy {
 
   constructor(
       private _templateRef: TemplateRef<Object>, viewContainerRef: ViewContainerRef, injector: Injector,
-      componentFactoryResolver: ComponentFactoryResolver, renderer: Renderer) {
+      componentFactoryResolver: ComponentFactoryResolver, renderer: Renderer, config: NgbDismissibleAlertConfig) {
     this._popupService =
         new PopupService<NgbAlert>(NgbAlert, injector, viewContainerRef, renderer, componentFactoryResolver);
+    this.type = config.type;
+    this.dismissOnTimeout = config.dismissOnTimeout;
   }
 
   close(): void { this._popupService.close(); }
 
   ngOnInit() {
-    this._windowRef = this._popupService.open(this._templateRef);
-    this._windowRef.instance.type = this.type;
-    this._windowRef.instance.close.subscribe(($event) => {
+    const windowRef = this._popupService.open(this._templateRef);
+    windowRef.instance.type = this.type;
+    windowRef.instance.close.subscribe(($event) => {
       this.closeEvent.emit($event);
       this.close();
     });

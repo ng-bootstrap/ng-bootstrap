@@ -20,9 +20,10 @@ import {NgbTypeaheadModule} from './typeahead/typeahead.module';
 export {NgbPanelChangeEvent, NgbAccordionConfig} from './accordion/accordion.module';
 export {NgbModal, NgbModalOptions, NgbModalRef, ModalDismissReasons} from './modal/modal.module';
 export {NgbTabChangeEvent} from './tabset/tabset.module';
-export {NgbProgressbarConfig} from './progressbar/progressbar.module';
+export {NgbAlertConfig, NgbDismissibleAlertConfig} from './alert/alert.module';
 export {NgbCarouselConfig} from './carousel/carousel.module';
 export {NgbPaginationConfig} from './pagination/pagination.module';
+export {NgbProgressbarConfig} from './progressbar/progressbar.module';
 
 @NgModule({
   exports: [
