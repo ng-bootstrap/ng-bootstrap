@@ -9,6 +9,7 @@ import {
   AfterContentChecked,
   OnInit
 } from '@angular/core';
+import {NgbCarouselConfig} from './carousel-config';
 
 let nextId = 0;
 
@@ -67,22 +68,28 @@ export class NgbCarousel implements AfterContentChecked,
   /**
    *  Amount of time in milliseconds before next slide is shown.
    */
-  @Input() interval = 5000;
+  @Input() interval: number;
 
   /**
    *  Whether can wrap from the last to the first slide.
    */
-  @Input() wrap = true;
+  @Input() wrap: boolean;
 
   /**
    *  A flag for allowing navigation via keyboard
    */
-  @Input() keyboard = true;
+  @Input() keyboard: boolean;
 
   /**
    *  The active slide id.
    */
   @Input() activeId: string;
+
+  constructor(config: NgbCarouselConfig) {
+    this.interval = config.interval;
+    this.wrap = config.wrap;
+    this.keyboard = config.keyboard;
+  }
 
   ngAfterContentChecked() {
     let activeSlide = this._getSlideById(this.activeId);

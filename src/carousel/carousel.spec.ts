@@ -1,4 +1,4 @@
-import {fakeAsync, discardPeriodicTasks, tick, TestBed, ComponentFixture} from '@angular/core/testing';
+import {fakeAsync, discardPeriodicTasks, tick, TestBed, ComponentFixture, inject} from '@angular/core/testing';
 import {createGenericTestComponent} from '../util/tests';
 
 import {By} from '@angular/platform-browser';
@@ -6,6 +6,7 @@ import {Component} from '@angular/core';
 
 import {NgbCarouselModule} from './carousel.module';
 import {NgbCarousel} from './carousel';
+import {NgbCarouselConfig} from './carousel-config';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -30,6 +31,15 @@ function expectActiveSlides(nativeEl: HTMLDivElement, active: boolean[]) {
 
 describe('ngb-carousel', () => {
   beforeEach(() => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbCarouselModule]}); });
+
+  it('should initialize inputs with default values', () => {
+    const defaultConfig = new NgbCarouselConfig();
+    const carousel = new NgbCarousel(new NgbCarouselConfig());
+
+    expect(carousel.interval).toBe(defaultConfig.interval);
+    expect(carousel.wrap).toBe(defaultConfig.wrap);
+    expect(carousel.keyboard).toBe(defaultConfig.keyboard);
+  });
 
   it('should render slides and navigation indicators', fakeAsync(() => {
        const html = `
@@ -333,6 +343,51 @@ describe('ngb-carousel', () => {
        discardPeriodicTasks();
 
      }));
+
+  describe('Custom config', () => {
+    let config: NgbCarouselConfig;
+
+    beforeEach(() => { TestBed.configureTestingModule({imports: [NgbCarouselModule]}); });
+
+    beforeEach(inject([NgbCarouselConfig], (c: NgbCarouselConfig) => {
+      config = c;
+      config.interval = 1000;
+      config.wrap = false;
+      config.keyboard = false;
+    }));
+
+    it('should initialize inputs with provided config', () => {
+      const fixture = TestBed.createComponent(NgbCarousel);
+      fixture.detectChanges();
+
+      const carousel = fixture.componentInstance;
+      expect(carousel.interval).toBe(config.interval);
+      expect(carousel.wrap).toBe(config.wrap);
+      expect(carousel.keyboard).toBe(config.keyboard);
+    });
+  });
+
+  describe('Custom config as provider', () => {
+    const config = new NgbCarouselConfig();
+    config.interval = 1000;
+    config.wrap = false;
+    config.keyboard = false;
+
+    beforeEach(() => {
+      TestBed.configureTestingModule(
+          {imports: [NgbCarouselModule], providers: [{provide: NgbCarouselConfig, useValue: config}]});
+    });
+
+    it('should initialize inputs with provided config as provider', () => {
+      const fixture = TestBed.createComponent(NgbCarousel);
+      fixture.detectChanges();
+
+      const carousel = fixture.componentInstance;
+      expect(carousel.interval).toBe(config.interval);
+      expect(carousel.wrap).toBe(config.wrap);
+      expect(carousel.keyboard).toBe(config.keyboard);
+    });
+  });
 
 });
 

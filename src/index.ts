@@ -20,6 +20,7 @@ export {NgbPanelChangeEvent} from './accordion/accordion.module';
 export {NgbModal, NgbModalOptions, NgbModalRef, ModalDismissReasons} from './modal/modal.module';
 export {NgbTabChangeEvent} from './tabset/tabset.module';
 export {NgbProgressbarConfig} from './progressbar/progressbar.module';
+export {NgbCarouselConfig} from './carousel/carousel.module';
 export {NgbPaginationConfig} from './pagination/pagination.module';
 
 @NgModule({
