@@ -31,9 +31,13 @@
     color: #fff;
   }
 
-  .btn:hover {
-    background-color: #f7f7f7;
-    color: #0273D4;
+  .btn {
+    color: #fff;
+    border-color: #fff;
+    &:hover {
+      background-color: #f7f7f7;
+      color: #0273D4;
+    }
   }
 }
 
