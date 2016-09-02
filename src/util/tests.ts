@@ -7,7 +7,7 @@ export function createGenericTestComponent<T>(html: string, type: {new (...args:
   return fixture as ComponentFixture<T>;
 }
 
-type Browser = 'ie9' | 'ie10' | 'ie11' | 'ie' | 'edge' | 'chrome' | 'safari' | 'firefox';
+export type Browser = 'ie9' | 'ie10' | 'ie11' | 'ie' | 'edge' | 'chrome' | 'safari' | 'firefox';
 
 export function getBrowser(ua = window.navigator.userAgent) {
   let browser = 'unknown';
