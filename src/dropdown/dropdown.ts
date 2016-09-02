@@ -7,13 +7,19 @@ import {Directive, Input, Output, HostListener, EventEmitter} from '@angular/cor
   selector: '[ngbDropdown]',
   exportAs: 'ngbDropdown',
   host: {
-    'class': 'dropdown',
+    '[class.dropdown]': '!up',
+    '[class.dropup]': 'up',
     '[class.open]': 'isOpen()',
     '(keyup.esc)': 'closeFromOutside()',
     '(document:click)': 'closeFromOutside()'
   }
 })
 export class NgbDropdown {
+  /**
+   * Indicates that the dropdown should open upwards
+   */
+  @Input() up = false;
+
   /**
    * Indicates that dropdown should be closed when selecting one of dropdown items (click) or pressing ESC.
    */
