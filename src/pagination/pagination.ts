@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, Output, OnChanges, ChangeDetectionStrategy} from '@angular/core';
 import {getValueInRange} from '../util/util';
+import {NgbPaginationConfig} from './pagination-config';
 
 /**
  * A directive that will take care of visualising a pagination bar and enable / disable buttons correctly!
@@ -54,23 +55,23 @@ export class NgbPagination implements OnChanges {
   /**
    *  Whether to show the "First" and "Last" page links
    */
-  @Input() boundaryLinks = false;
+  @Input() boundaryLinks: boolean;
 
   /**
    *  Whether to show the "Next" and "Previous" page links
    */
-  @Input() directionLinks = true;
+  @Input() directionLinks: boolean;
 
   /**
    *  Whether to show ellipsis symbols and first/last page numbers when maxSize > number of pages
    */
-  @Input() ellipses = true;
+  @Input() ellipses: boolean;
 
   /**
    *  Whether to rotate pages when maxSize > number of pages.
    *  Current page will be in the middle
    */
-  @Input() rotate = false;
+  @Input() rotate: boolean;
 
   /**
    *  Number of items in collection.
@@ -80,7 +81,7 @@ export class NgbPagination implements OnChanges {
   /**
    *  Maximum number of pages to display.
    */
-  @Input() maxSize = 0;
+  @Input() maxSize: number;
 
   /**
    *  Current page.
@@ -90,7 +91,7 @@ export class NgbPagination implements OnChanges {
   /**
    *  Number of items per page.
    */
-  @Input() pageSize = 10;
+  @Input() pageSize: number;
 
   /**
    *  An event fired when the page is changed.
@@ -102,6 +103,16 @@ export class NgbPagination implements OnChanges {
    * Pagination display size: small or large
    */
   @Input() size: 'sm' | 'lg';
+
+  constructor(config: NgbPaginationConfig) {
+    this.boundaryLinks = config.boundaryLinks;
+    this.directionLinks = config.directionLinks;
+    this.ellipses = config.ellipses;
+    this.maxSize = config.maxSize;
+    this.pageSize = config.pageSize;
+    this.rotate = config.rotate;
+    this.size = config.size;
+  }
 
   get pageCount(): number { return this._pageCount; }
 
