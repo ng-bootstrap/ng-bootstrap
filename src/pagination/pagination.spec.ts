@@ -1,10 +1,11 @@
-import {TestBed, ComponentFixture} from '@angular/core/testing';
+import {TestBed, ComponentFixture, inject} from '@angular/core/testing';
 import {createGenericTestComponent} from '../util/tests';
 
 import {Component} from '@angular/core';
 
 import {NgbPaginationModule} from './pagination.module';
 import {NgbPagination} from './pagination';
+import {NgbPaginationConfig} from './pagination-config';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -46,12 +47,27 @@ function normalizeText(txt: string): string {
   return txt.trim().replace(/\s+/g, ' ');
 }
 
+function expectSameValues(pagination: NgbPagination, config: NgbPaginationConfig) {
+  expect(pagination.boundaryLinks).toBe(config.boundaryLinks);
+  expect(pagination.directionLinks).toBe(config.directionLinks);
+  expect(pagination.ellipses).toBe(config.ellipses);
+  expect(pagination.maxSize).toBe(config.maxSize);
+  expect(pagination.pageSize).toBe(config.pageSize);
+  expect(pagination.rotate).toBe(config.rotate);
+  expect(pagination.size).toBe(config.size);
+}
+
 describe('ngb-pagination', () => {
   describe('business logic', () => {
 
     let pagination: NgbPagination;
 
-    beforeEach(() => { pagination = new NgbPagination(); });
+    beforeEach(() => { pagination = new NgbPagination(new NgbPaginationConfig()); });
+
+    it('should initialize inputs with default values', () => {
+      const defaultConfig = new NgbPaginationConfig();
+      expectSameValues(pagination, defaultConfig);
+    });
 
     it('should calculate and update no of pages (default page size)', () => {
       pagination.collectionSize = 100;
@@ -403,6 +419,54 @@ describe('ngb-pagination', () => {
     });
   });
 
+  describe('Custom config', () => {
+    let config: NgbPaginationConfig;
+
+    beforeEach(() => { TestBed.configureTestingModule({imports: [NgbPaginationModule]}); });
+
+    beforeEach(inject([NgbPaginationConfig], (c: NgbPaginationConfig) => {
+      config = c;
+      config.boundaryLinks = true;
+      config.directionLinks = false;
+      config.ellipses = false;
+      config.maxSize = 42;
+      config.pageSize = 7;
+      config.rotate = true;
+      config.size = 'sm';
+    }));
+
+    it('should initialize inputs with provided config', () => {
+      const fixture = TestBed.createComponent(NgbPagination);
+      fixture.detectChanges();
+
+      let pagination = fixture.componentInstance;
+      expectSameValues(pagination, config);
+    });
+  });
+
+  describe('Custom config as provider', () => {
+    let config = new NgbPaginationConfig();
+    config.boundaryLinks = true;
+    config.directionLinks = false;
+    config.ellipses = false;
+    config.maxSize = 42;
+    config.pageSize = 7;
+    config.rotate = true;
+    config.size = 'sm';
+
+    beforeEach(() => {
+      TestBed.configureTestingModule(
+          {imports: [NgbPaginationModule], providers: [{provide: NgbPaginationConfig, useValue: config}]});
+    });
+
+    it('should initialize inputs with provided config as provider', () => {
+      const fixture = TestBed.createComponent(NgbPagination);
+      fixture.detectChanges();
+
+      let pagination = fixture.componentInstance;
+      expectSameValues(pagination, config);
+    });
+  });
 });
 
 @Component({selector: 'test-cmp', template: ''})
