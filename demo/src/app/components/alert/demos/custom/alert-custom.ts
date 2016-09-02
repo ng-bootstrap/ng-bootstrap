@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'ngbd-alert-custom',
   templateUrl: './alert-custom.html',
   styles: [`
-    :host .alert-custom {
+    :host >>> .alert-custom {
       color: #99004d;
       background-color: #f169b4;
       border-color: #800040;
