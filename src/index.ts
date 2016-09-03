@@ -28,6 +28,7 @@ export {NgbProgressbarConfig} from './progressbar/progressbar.module';
 export {NgbRatingConfig} from './rating/rating.module';
 export {NgbTimepickerConfig} from './timepicker/timepicker.module';
 export {NgbTabsetConfig} from './tabset/tabset.module';
+export {NgbTooltipConfig} from './tooltip/tooltip.module';
 
 @NgModule({
   exports: [
