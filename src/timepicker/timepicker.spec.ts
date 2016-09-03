@@ -1,4 +1,4 @@
-import {TestBed, ComponentFixture, async} from '@angular/core/testing';
+import {TestBed, ComponentFixture, async, inject} from '@angular/core/testing';
 import {createGenericTestComponent} from '../util/tests';
 
 import {Component} from '@angular/core';
@@ -6,6 +6,8 @@ import {By} from '@angular/platform-browser';
 import {Validators, FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import {NgbTimepickerModule} from './timepicker.module';
+import {NgbTimepickerConfig} from './timepicker-config';
+import {NgbTimepicker} from './timepicker';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -48,11 +50,41 @@ function expectToDisplayTime(el: HTMLElement, time: string) {
   expect(timeInInputs.join(':')).toBe(time);
 }
 
+function expectSameValues(timepicker: NgbTimepicker, config: NgbTimepickerConfig) {
+  expect(timepicker.meridian).toBe(config.meridian);
+  expect(timepicker.spinners).toBe(config.spinners);
+  expect(timepicker.seconds).toBe(config.seconds);
+  expect(timepicker.hourStep).toBe(config.hourStep);
+  expect(timepicker.minuteStep).toBe(config.minuteStep);
+  expect(timepicker.secondStep).toBe(config.secondStep);
+  expect(timepicker.disabled).toBe(config.disabled);
+  expect(timepicker.readonlyInputs).toBe(config.readonlyInputs);
+}
+
+function customizeConfig(config: NgbTimepickerConfig) {
+  config.meridian = true;
+  config.spinners = false;
+  config.seconds = true;
+  config.hourStep = 2;
+  config.minuteStep = 3;
+  config.secondStep = 4;
+  config.disabled = true;
+  config.readonlyInputs = true;
+}
+
 describe('ngb-timepicker', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule(
         {declarations: [TestComponent], imports: [NgbTimepickerModule, FormsModule, ReactiveFormsModule]});
+  });
+
+  describe('initialization', () => {
+    it('should initialize inputs with provided config', () => {
+      const defaultConfig = new NgbTimepickerConfig();
+      const timepicker = new NgbTimepicker(new NgbTimepickerConfig());
+      expectSameValues(timepicker, defaultConfig);
+    });
   });
 
   describe('rendering based on model', () => {
@@ -757,6 +789,44 @@ describe('ngb-timepicker', () => {
       const fixture = createTestComponent(html);
       const buttons = getButtons(fixture.nativeElement);
       expect(buttons.length).toBe(0);
+    });
+  });
+
+  describe('Custom config', () => {
+    let config: NgbTimepickerConfig;
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({imports: [NgbTimepickerModule]});
+      TestBed.overrideComponent(NgbTimepicker, {set: {template: ''}});
+    });
+
+    beforeEach(inject([NgbTimepickerConfig], (c: NgbTimepickerConfig) => {
+      config = c;
+      customizeConfig(config);
+    }));
+
+    it('should initialize inputs with provided config', () => {
+      const fixture = TestBed.createComponent(NgbTimepicker);
+
+      const timepicker = fixture.componentInstance;
+      expectSameValues(timepicker, config);
+    });
+  });
+
+  describe('Custom config as provider', () => {
+    const config = new NgbTimepickerConfig();
+    customizeConfig(config);
+
+    beforeEach(() => {
+      TestBed.configureTestingModule(
+          {imports: [NgbTimepickerModule], providers: [{provide: NgbTimepickerConfig, useValue: config}]});
+    });
+
+    it('should initialize inputs with provided config as provider', () => {
+      const fixture = createGenericTestComponent('', NgbTimepicker);
+
+      const timepicker = fixture.componentInstance;
+      expectSameValues(timepicker, config);
     });
   });
 });

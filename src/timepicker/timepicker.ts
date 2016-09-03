@@ -3,6 +3,7 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 import {isNumber, padNumber, toInteger} from '../util/util';
 import {NgbTime} from './ngb-time';
+import {NgbTimepickerConfig} from './timepicker-config';
 
 const NGB_TIMEPICKER_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -139,42 +140,53 @@ export class NgbTimepicker implements ControlValueAccessor {
   /**
    * Whether to display 12H or 24H mode.
    */
-  @Input() meridian = false;
+  @Input() meridian: boolean;
 
   /**
    * Whether to display the spinners above and below the inputs.
    */
-  @Input() spinners = true;
+  @Input() spinners: boolean;
 
   /**
    * Whether to display seconds input.
    */
-  @Input() seconds = false;
+  @Input() seconds: boolean;
 
   /**
    * Number of hours to increase or decrease when using a button.
    */
-  @Input() hourStep = 1;
+  @Input() hourStep: number;
 
   /**
    * Number of minutes to increase or decrease when using a button.
    */
-  @Input() minuteStep = 1;
+  @Input() minuteStep: number;
 
   /**
    * Number of seconds to increase or decrease when using a button.
    */
-  @Input() secondStep = 1;
+  @Input() secondStep: number;
 
   /**
    * To disable timepicker
    */
-  @Input() disabled = false;
+  @Input() disabled: boolean;
 
   /**
    * To make timepicker readonly
    */
-  @Input() readonlyInputs = false;
+  @Input() readonlyInputs: boolean;
+
+  constructor(config: NgbTimepickerConfig) {
+    this.meridian = config.meridian;
+    this.spinners = config.spinners;
+    this.seconds = config.seconds;
+    this.hourStep = config.hourStep;
+    this.minuteStep = config.minuteStep;
+    this.secondStep = config.secondStep;
+    this.disabled = config.disabled;
+    this.readonlyInputs = config.readonlyInputs;
+  }
 
   onChange = (_: any) => {};
   onTouched = () => {};
