@@ -10,6 +10,7 @@ import {
   Output,
   EventEmitter
 } from '@angular/core';
+import {NgbTabsetConfig} from './tabset-config';
 
 let nextId = 0;
 
@@ -106,12 +107,14 @@ export class NgbTabset implements AfterContentChecked {
   /**
    * Type of navigation to be used for tabs. Can be one of 'tabs' or 'pills'.
    */
-  @Input() type = 'tabs';
+  @Input() type: 'tabs' | 'pills';
 
   /**
    * A tab change event fired right before the tab selection happens. See NgbTabChangeEvent for payload details
    */
   @Output() change = new EventEmitter<NgbTabChangeEvent>();
+
+  constructor(config: NgbTabsetConfig) { this.type = config.type; }
 
   /**
    * Selects the tab with the given id and shows its associated pane.

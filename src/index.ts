@@ -26,6 +26,7 @@ export {NgbPaginationConfig} from './pagination/pagination.module';
 export {NgbProgressbarConfig} from './progressbar/progressbar.module';
 export {NgbRatingConfig} from './rating/rating.module';
 export {NgbTimepickerConfig} from './timepicker/timepicker.module';
+export {NgbTabsetConfig} from './tabset/tabset.module';
 
 @NgModule({
   exports: [

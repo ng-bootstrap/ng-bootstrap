@@ -10,6 +10,7 @@ import {DEMO_SNIPPETS} from './demos';
       <ngbd-api-docs directive="NgbTabTitle"></ngbd-api-docs>
       <ngbd-api-docs directive="NgbTabContent"></ngbd-api-docs>
       <ngbd-api-docs-class type="NgbTabChangeEvent"></ngbd-api-docs-class>
+      <ngbd-api-docs-config type="NgbTabsetConfig"></ngbd-api-docs-config>
       <ngbd-example-box demoTitle="Tabset" [htmlSnippet]="snippets.basic.markup" [tsSnippet]="snippets.basic.code">
         <ngbd-tabset-basic></ngbd-tabset-basic>
       </ngbd-example-box>
@@ -23,6 +24,11 @@ import {DEMO_SNIPPETS} from './demos';
       <ngbd-example-box demoTitle="Prevent tab change" [htmlSnippet]="snippets.preventChange.markup"
           [tsSnippet]="snippets.preventChange.code">
         <ngbd-tabset-preventchange></ngbd-tabset-preventchange>
+      </ngbd-example-box>
+      <ngbd-example-box demoTitle="Global configuration of tabs"
+                    [htmlSnippet]="snippets.config.markup"
+                    [tsSnippet]="snippets.config.code">
+        <ngbd-tabset-config></ngbd-tabset-config>
       </ngbd-example-box>
     </ngbd-content-wrapper>
   `
