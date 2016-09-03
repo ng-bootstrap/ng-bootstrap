@@ -1,5 +1,5 @@
 import {TestBed, ComponentFixture, async, inject} from '@angular/core/testing';
-import {createGenericTestComponent} from '../util/tests';
+import {createGenericTestComponent} from '../test/common';
 
 import {Component} from '@angular/core';
 import {By} from '@angular/platform-browser';

@@ -70,7 +70,7 @@ function createPathRecords(pathsMapping, appPath) {
 }
 
 function customMatchers() {
-  return System.import('/base/temp/util/matchers.js');
+  return System.import('/base/temp/test/matchers.js');
 }
 
 function onlyAppFiles(filePath) {

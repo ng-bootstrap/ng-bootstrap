@@ -1,6 +1,6 @@
 import {TestBed, ComponentFixture, async} from '@angular/core/testing';
-import {createGenericTestComponent} from '../util/tests';
-import {getMonthSelect, getYearSelect, getNavigationLinks} from './test-common';
+import {createGenericTestComponent} from '../test/common';
+import {getMonthSelect, getYearSelect, getNavigationLinks} from '../test/datepicker/common';
 
 import {Component} from '@angular/core';
 import {FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators} from '@angular/forms';
