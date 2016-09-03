@@ -18,6 +18,7 @@ import {
 import {listenToTriggers} from '../util/triggers';
 import {Positioning} from '../util/positioning';
 import {PopupService} from '../util/popup';
+import {NgbTooltipConfig} from './tooltip-config';
 
 @Component({
   selector: 'ngb-tooltip-window',
@@ -29,7 +30,7 @@ import {PopupService} from '../util/popup';
     `
 })
 export class NgbTooltipWindow {
-  @Input() placement: string = 'top';
+  @Input() placement: 'top' | 'bottom' | 'left' | 'right' = 'top';
 }
 
 /**
@@ -44,11 +45,11 @@ export class NgbTooltip implements OnInit, AfterViewChecked, OnDestroy {
   /**
    * Placement of a tooltip. Accepts: "top", "bottom", "left", "right"
    */
-  @Input() placement = 'top';
+  @Input() placement: 'top' | 'bottom' | 'left' | 'right';
   /**
    * Specifies events that should trigger. Supports a space separated list of event names.
    */
-  @Input() triggers = 'hover';
+  @Input() triggers: string;
 
   private _popupService: PopupService<NgbTooltipWindow>;
   private _positioning = new Positioning();
@@ -57,7 +58,10 @@ export class NgbTooltip implements OnInit, AfterViewChecked, OnDestroy {
 
   constructor(
       private _elementRef: ElementRef, private _renderer: Renderer, injector: Injector,
-      componentFactoryResolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef) {
+      componentFactoryResolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef,
+      config: NgbTooltipConfig) {
+    this.placement = config.placement;
+    this.triggers = config.triggers;
     this._popupService = new PopupService<NgbTooltipWindow>(
         NgbTooltipWindow, injector, viewContainerRef, _renderer, componentFactoryResolver);
   }

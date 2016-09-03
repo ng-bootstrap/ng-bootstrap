@@ -1,4 +1,4 @@
-import {TestBed, ComponentFixture} from '@angular/core/testing';
+import {TestBed, ComponentFixture, inject} from '@angular/core/testing';
 import {createGenericTestComponent} from '../test/common';
 
 import {By} from '@angular/platform-browser';
@@ -6,6 +6,7 @@ import {Component} from '@angular/core';
 
 import {NgbTooltipModule} from './tooltip.module';
 import {NgbTooltipWindow, NgbTooltip} from './tooltip';
+import {NgbTooltipConfig} from './tooltip-config';
 
 const createTestComponent =
     (html: string) => <ComponentFixture<TestComponent>>createGenericTestComponent(html, TestComponent);
@@ -41,13 +42,14 @@ describe('ngb-tooltip', () => {
     it('should open and close a tooltip - default settings and content as string', () => {
       const fixture = createTestComponent(`<div ngbTooltip="Great tip!"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbTooltip));
+      const defaultConfig = new NgbTooltipConfig();
 
       directive.triggerEventHandler('mouseenter', {});
       fixture.detectChanges();
       const windowEl = getWindow(fixture);
 
       expect(windowEl).toHaveCssClass('tooltip');
-      expect(windowEl).toHaveCssClass('tooltip-top');
+      expect(windowEl).toHaveCssClass(`tooltip-${defaultConfig.placement}`);
       expect(windowEl.textContent.trim()).toBe('Great tip!');
       expect(windowEl.getAttribute('role')).toBe('tooltip');
 
@@ -245,6 +247,55 @@ describe('ngb-tooltip', () => {
         fixture.detectChanges();
         expect(getWindow(fixture)).toBeNull();
       });
+    });
+  });
+
+  describe('Custom config', () => {
+    let config: NgbTooltipConfig;
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({imports: [NgbTooltipModule]});
+      TestBed.overrideComponent(TestComponent, {set: {template: `<div ngbTooltip="Great tip!"></div>`}});
+    });
+
+    beforeEach(inject([NgbTooltipConfig], (c: NgbTooltipConfig) => {
+      config = c;
+      config.placement = 'bottom';
+      config.triggers = 'click';
+    }));
+
+    it('should initialize inputs with provided config', () => {
+      const fixture = TestBed.createComponent(TestComponent);
+      fixture.detectChanges();
+      const directive = fixture.debugElement.query(By.directive(NgbTooltip));
+
+      directive.triggerEventHandler('click', {});
+      fixture.detectChanges();
+      const windowEl = getWindow(fixture);
+
+      expect(windowEl).toHaveCssClass('tooltip-bottom');
+    });
+  });
+
+  describe('Custom config as provider', () => {
+    let config = new NgbTooltipConfig();
+    config.placement = 'bottom';
+    config.triggers = 'click';
+
+    beforeEach(() => {
+      TestBed.configureTestingModule(
+          {imports: [NgbTooltipModule], providers: [{provide: NgbTooltipConfig, useValue: config}]});
+    });
+
+    it('should initialize inputs with provided config as provider', () => {
+      const fixture = createTestComponent(`<div ngbTooltip="Great tip!"></div>`);
+      const directive = fixture.debugElement.query(By.directive(NgbTooltip));
+
+      directive.triggerEventHandler('click', {});
+      fixture.detectChanges();
+      const windowEl = getWindow(fixture);
+
+      expect(windowEl).toHaveCssClass('tooltip-bottom');
     });
   });
 });
