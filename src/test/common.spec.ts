@@ -1,4 +1,4 @@
-import {getBrowser, isBrowser} from './tests';
+import {getBrowser, isBrowser} from './common';
 
 const sampleAgents = {
   ie9: 'Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 7.1; Trident/5.0)',
