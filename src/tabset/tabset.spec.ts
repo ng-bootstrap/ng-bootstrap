@@ -1,9 +1,11 @@
-import {TestBed, ComponentFixture} from '@angular/core/testing';
+import {TestBed, ComponentFixture, inject} from '@angular/core/testing';
 import {createGenericTestComponent} from '../util/tests';
 
 import {Component} from '@angular/core';
 
 import {NgbTabsetModule} from './tabset.module';
+import {NgbTabsetConfig} from './tabset-config';
+import {NgbTabset} from './tabset';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -51,6 +53,12 @@ function getButton(nativeEl: HTMLElement) {
 
 describe('ngb-tabset', () => {
   beforeEach(() => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbTabsetModule]}); });
+
+  it('should initialize inputs with default values', () => {
+    const defaultConfig = new NgbTabsetConfig();
+    const tabset = new NgbTabset(new NgbTabsetConfig());
+    expect(tabset.type).toBe(defaultConfig.type);
+  });
 
   it('should render tabs and select first tab as active by default', () => {
     const fixture = createTestComponent(`
@@ -337,6 +345,43 @@ describe('ngb-tabset', () => {
     fixture.detectChanges();
     expect(changeEvent).toEqual(jasmine.objectContaining({activeId: 'first', nextId: 'second'}));
     expectTabs(fixture.nativeElement, [true, false]);
+  });
+
+  describe('Custom config', () => {
+    let config: NgbTabsetConfig;
+
+    beforeEach(() => { TestBed.configureTestingModule({imports: [NgbTabsetModule]}); });
+
+    beforeEach(inject([NgbTabsetConfig], (c: NgbTabsetConfig) => {
+      config = c;
+      config.type = 'pills';
+    }));
+
+    it('should initialize inputs with provided config', () => {
+      const fixture = TestBed.createComponent(NgbTabset);
+      fixture.detectChanges();
+
+      let tabset = fixture.componentInstance;
+      expect(tabset.type).toBe(config.type);
+    });
+  });
+
+  describe('Custom config as provider', () => {
+    let config = new NgbTabsetConfig();
+    config.type = 'pills';
+
+    beforeEach(() => {
+      TestBed.configureTestingModule(
+          {imports: [NgbTabsetModule], providers: [{provide: NgbTabsetConfig, useValue: config}]});
+    });
+
+    it('should initialize inputs with provided config as provider', () => {
+      const fixture = TestBed.createComponent(NgbTabset);
+      fixture.detectChanges();
+
+      let tabset = fixture.componentInstance;
+      expect(tabset.type).toBe(config.type);
+    });
   });
 });
 
