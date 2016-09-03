@@ -24,6 +24,7 @@ export {NgbAlertConfig, NgbDismissibleAlertConfig} from './alert/alert.module';
 export {NgbCarouselConfig} from './carousel/carousel.module';
 export {NgbPaginationConfig} from './pagination/pagination.module';
 export {NgbProgressbarConfig} from './progressbar/progressbar.module';
+export {NgbRatingConfig} from './rating/rating.module';
 
 @NgModule({
   exports: [

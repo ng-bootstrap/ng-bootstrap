@@ -1,10 +1,11 @@
-import {TestBed, ComponentFixture} from '@angular/core/testing';
+import {TestBed, ComponentFixture, inject} from '@angular/core/testing';
 import {createGenericTestComponent} from '../util/tests';
 
 import {Component} from '@angular/core';
 
 import {NgbRatingModule} from './rating.module';
 import {NgbRating} from './rating';
+import {NgbRatingConfig} from './rating-config';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -38,14 +39,21 @@ function getState(compiled) {
 describe('ngb-rating', () => {
   beforeEach(() => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbRatingModule]}); });
 
-  it('should show 10 stars by default', () => {
+  it('should initialize inputs with default values', () => {
+    const defaultConfig = new NgbRatingConfig();
+    const rating = new NgbRating(new NgbRatingConfig());
+    expect(rating.max).toBe(defaultConfig.max);
+    expect(rating.readonly).toBe(defaultConfig.readonly);
+  });
+
+  it('should show as many stars as the configured max by default', () => {
     const fixture = TestBed.createComponent(NgbRating);
     fixture.detectChanges();
 
     const compiled = fixture.nativeElement;
 
     const stars = getStars(compiled);
-    expect(stars.length).toBe(10);
+    expect(stars.length).toBe(new NgbRatingConfig().max);
   });
 
   it('should change the num of stars with `max`', () => {
@@ -133,6 +141,47 @@ describe('ngb-rating', () => {
       fixture.detectChanges();
 
       expect(compiled.querySelector('span').getAttribute('aria-valuenow')).toBe('7');
+    });
+  });
+
+  describe('Custom config', () => {
+    let config: NgbRatingConfig;
+
+    beforeEach(() => { TestBed.configureTestingModule({imports: [NgbRatingModule]}); });
+
+    beforeEach(inject([NgbRatingConfig], (c: NgbRatingConfig) => {
+      config = c;
+      config.max = 5;
+      config.readonly = true;
+    }));
+
+    it('should initialize inputs with provided config', () => {
+      const fixture = TestBed.createComponent(NgbRating);
+      fixture.detectChanges();
+
+      let rating = fixture.componentInstance;
+      expect(rating.max).toBe(config.max);
+      expect(rating.readonly).toBe(config.readonly);
+    });
+  });
+
+  describe('Custom config as provider', () => {
+    let config = new NgbRatingConfig();
+    config.max = 5;
+    config.readonly = true;
+
+    beforeEach(() => {
+      TestBed.configureTestingModule(
+          {imports: [NgbRatingModule], providers: [{provide: NgbRatingConfig, useValue: config}]});
+    });
+
+    it('should initialize inputs with provided config as provider', () => {
+      const fixture = TestBed.createComponent(NgbRating);
+      fixture.detectChanges();
+
+      let rating = fixture.componentInstance;
+      expect(rating.max).toBe(config.max);
+      expect(rating.readonly).toBe(config.readonly);
     });
   });
 });
