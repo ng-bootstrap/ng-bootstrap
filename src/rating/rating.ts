@@ -1,4 +1,5 @@
 import {Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit} from '@angular/core';
+import {NgbRatingConfig} from './rating-config';
 
 /**
  * Rating directive that will take care of visualising a star rating bar.
@@ -24,7 +25,7 @@ export class NgbRating implements OnInit {
   /**
    * Maximal rating that can be given using this widget.
    */
-  @Input() max = 10;
+  @Input() max: number;
 
   /**
    * Current rating.
@@ -34,7 +35,7 @@ export class NgbRating implements OnInit {
   /**
    * A flag indicating if rating can be updated.
    */
-  @Input() readonly = false;
+  @Input() readonly: boolean;
 
   /**
    * An event fired when a user is hovering over a given rating.
@@ -53,6 +54,11 @@ export class NgbRating implements OnInit {
    * Event's payload equals to the newly selected rating.
    */
   @Output() rateChange = new EventEmitter<number>();
+
+  constructor(config: NgbRatingConfig) {
+    this.max = config.max;
+    this.readonly = config.readonly;
+  }
 
   enter(value: number): void {
     if (!this.readonly) {
