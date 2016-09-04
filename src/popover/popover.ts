@@ -18,6 +18,7 @@ import {
 import {listenToTriggers} from '../util/triggers';
 import {Positioning} from '../util/positioning';
 import {PopupService} from '../util/popup';
+import {NgbPopoverConfig} from './popover-config';
 
 @Component({
   selector: 'ngb-popover-window',
@@ -29,7 +30,7 @@ import {PopupService} from '../util/popup';
     `
 })
 export class NgbPopoverWindow {
-  @Input() placement = 'top';
+  @Input() placement: 'top' | 'bottom' | 'left' | 'right' = 'top';
   @Input() title: string;
 }
 
@@ -49,11 +50,11 @@ export class NgbPopover implements OnInit, AfterViewChecked, OnDestroy {
   /**
    * Placement of a popover. Accepts: "top", "bottom", "left", "right"
    */
-  @Input() placement = 'top';
+  @Input() placement: 'top' | 'bottom' | 'left' | 'right';
   /**
    * Specifies events that should trigger. Supports a space separated list of event names.
    */
-  @Input() triggers = 'click';
+  @Input() triggers: string;
 
   private _popupService: PopupService<NgbPopoverWindow>;
   private _positioning = new Positioning();
@@ -62,7 +63,10 @@ export class NgbPopover implements OnInit, AfterViewChecked, OnDestroy {
 
   constructor(
       private _elementRef: ElementRef, private _renderer: Renderer, injector: Injector,
-      componentFactoryResolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef) {
+      componentFactoryResolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef,
+      config: NgbPopoverConfig) {
+    this.placement = config.placement;
+    this.triggers = config.triggers;
     this._popupService = new PopupService<NgbPopoverWindow>(
         NgbPopoverWindow, injector, viewContainerRef, _renderer, componentFactoryResolver);
   }

@@ -1,4 +1,4 @@
-import {TestBed, ComponentFixture} from '@angular/core/testing';
+import {TestBed, ComponentFixture, inject} from '@angular/core/testing';
 import {createGenericTestComponent} from '../test/common';
 
 import {By} from '@angular/platform-browser';
@@ -6,6 +6,7 @@ import {Component} from '@angular/core';
 
 import {NgbPopoverModule} from './popover.module';
 import {NgbPopoverWindow, NgbPopover} from './popover';
+import {NgbPopoverConfig} from './popover-config';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -63,13 +64,14 @@ describe('ngb-popover', () => {
           <template #t>Hello, {{name}}!</template>
           <div [ngbPopover]="t" title="Title"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbPopover));
+      const defaultConfig = new NgbPopoverConfig();
 
       directive.triggerEventHandler('click', {});
       fixture.detectChanges();
       const windowEl = getWindow(fixture);
 
       expect(windowEl).toHaveCssClass('popover');
-      expect(windowEl).toHaveCssClass('popover-top');
+      expect(windowEl).toHaveCssClass(`popover-${defaultConfig.placement}`);
       expect(windowEl.textContent.trim()).toBe('TitleHello, World!');
       expect(windowEl.getAttribute('role')).toBe('tooltip');
 
@@ -247,6 +249,55 @@ describe('ngb-popover', () => {
       button.click();  // close
       fixture.detectChanges();
       expect(getWindow(fixture)).toBeNull();
+    });
+  });
+
+  describe('Custom config', () => {
+    let config: NgbPopoverConfig;
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({imports: [NgbPopoverModule]});
+      TestBed.overrideComponent(TestComponent, {set: {template: `<div ngbPopover="Great tip!"></div>`}});
+    });
+
+    beforeEach(inject([NgbPopoverConfig], (c: NgbPopoverConfig) => {
+      config = c;
+      config.placement = 'bottom';
+      config.triggers = 'hover';
+    }));
+
+    it('should initialize inputs with provided config', () => {
+      const fixture = TestBed.createComponent(TestComponent);
+      fixture.detectChanges();
+      const directive = fixture.debugElement.query(By.directive(NgbPopover));
+
+      directive.triggerEventHandler('mouseenter', {});
+      fixture.detectChanges();
+      const windowEl = getWindow(fixture);
+
+      expect(windowEl).toHaveCssClass('popover-bottom');
+    });
+  });
+
+  describe('Custom config as provider', () => {
+    let config = new NgbPopoverConfig();
+    config.placement = 'bottom';
+    config.triggers = 'hover';
+
+    beforeEach(() => {
+      TestBed.configureTestingModule(
+          {imports: [NgbPopoverModule], providers: [{provide: NgbPopoverConfig, useValue: config}]});
+    });
+
+    it('should initialize inputs with provided config as provider', () => {
+      const fixture = createTestComponent(`<div ngbPopover="Great tip!"></div>`);
+      const directive = fixture.debugElement.query(By.directive(NgbPopover));
+
+      directive.triggerEventHandler('mouseenter', {});
+      fixture.detectChanges();
+      const windowEl = getWindow(fixture);
+
+      expect(windowEl).toHaveCssClass('popover-bottom');
     });
   });
 });
