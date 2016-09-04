@@ -24,6 +24,7 @@ export {NgbAlertConfig, NgbSelfClosingAlertConfig} from './alert/alert.module';
 export {NgbCarouselConfig} from './carousel/carousel.module';
 export {NgbDatepickerConfig} from './datepicker/datepicker.module';
 export {NgbPaginationConfig} from './pagination/pagination.module';
+export {NgbPopoverConfig} from './popover/popover.module';
 export {NgbProgressbarConfig} from './progressbar/progressbar.module';
 export {NgbRatingConfig} from './rating/rating.module';
 export {NgbTimepickerConfig} from './timepicker/timepicker.module';
