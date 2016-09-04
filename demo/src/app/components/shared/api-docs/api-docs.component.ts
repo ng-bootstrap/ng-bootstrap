@@ -1,6 +1,7 @@
 import {Component, ChangeDetectionStrategy, Input} from '@angular/core';
 import docs from '../../../../api-docs';
 import {PropertyDesc, DirectiveDesc, InputDesc, MethodDesc, ClassDesc, signature} from './api-docs.model';
+import {Analytics} from '../../../shared/analytics/analytics';
 
 /**
  * Displays the API docs of a directive.
@@ -25,6 +26,8 @@ export class NgbdApiDocs {
 
   apiDocs: DirectiveDesc;
   configServiceName: string;
+
+  constructor(private _analytics: Analytics) {}
 
   @Input() set directive(directiveName: string) {
     this.apiDocs = docs[directiveName];
@@ -54,6 +57,10 @@ export class NgbdApiDocs {
   }
 
   methodSignature(method: MethodDesc): string { return signature(method); }
+
+  trackSourceClick() {
+    this._analytics.trackEvent('Source File View', this.apiDocs.className);
+  }
 
   private _findInputConfigProperty(configApiDocs: ClassDesc, input: InputDesc): PropertyDesc {
     return configApiDocs.properties.filter(prop => prop.name === input.name)[0];
