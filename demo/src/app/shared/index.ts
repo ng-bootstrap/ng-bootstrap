@@ -8,6 +8,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {ContentWrapper} from './content-wrapper/content-wrapper.component';
 import {SideNavComponent} from './side-nav/side-nav.component';
+import {Analytics} from './analytics/analytics';
 
 @NgModule({
   imports: [CommonModule, RouterModule],
@@ -24,6 +25,7 @@ import {SideNavComponent} from './side-nav/side-nav.component';
   declarations: [
     ContentWrapper,
     SideNavComponent,
-  ]
+  ],
+  providers: [Analytics]
 })
 export class NgbdSharedModule {}
