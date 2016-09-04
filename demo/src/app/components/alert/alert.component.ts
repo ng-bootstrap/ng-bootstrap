@@ -6,9 +6,9 @@ import {DEMO_SNIPPETS} from './demos';
   template: `
     <ngbd-content-wrapper component="Alert">
       <ngbd-api-docs directive="NgbAlert"></ngbd-api-docs>
-      <ngbd-api-docs directive="NgbDismissibleAlert"></ngbd-api-docs>
+      <ngbd-api-docs directive="NgbSelfClosingAlert"></ngbd-api-docs>
       <ngbd-api-docs-config type="NgbAlertConfig"></ngbd-api-docs-config>
-      <ngbd-api-docs-config type="NgbDismissibleAlertConfig"></ngbd-api-docs-config>
+      <ngbd-api-docs-config type="NgbSelfClosingAlertConfig"></ngbd-api-docs-config>
       <ngbd-example-box demoTitle="Basic Alert" [htmlSnippet]="snippets.basic.markup" [tsSnippet]="snippets.basic.code">
         <ngbd-alert-basic></ngbd-alert-basic>
       </ngbd-example-box>
