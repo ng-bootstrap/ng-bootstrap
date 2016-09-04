@@ -9,6 +9,9 @@ import {NgbDatepickerI18n, NgbDatepickerI18nDefault} from './datepicker-i18n';
 import {NgbCalendar, NgbCalendarGregorian} from './ngb-calendar';
 import {NgbDatepickerService} from './datepicker-service';
 import {NgbDatepickerNavigationSelect} from './datepicker-navigation-select';
+import {NgbDatepickerConfig} from './datepicker-config';
+
+export {NgbDatepickerConfig} from './datepicker-config';
 
 @NgModule({
   declarations: [
@@ -18,7 +21,7 @@ import {NgbDatepickerNavigationSelect} from './datepicker-navigation-select';
   imports: [CommonModule, FormsModule],
   providers: [
     {provide: NgbCalendar, useClass: NgbCalendarGregorian},
-    {provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nDefault}, NgbDatepickerService
+    {provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nDefault}, NgbDatepickerService, NgbDatepickerConfig
   ]
 })
 export class NgbDatepickerModule {

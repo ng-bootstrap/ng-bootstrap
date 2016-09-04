@@ -1,12 +1,15 @@
-import {TestBed, ComponentFixture, async} from '@angular/core/testing';
+import {TestBed, ComponentFixture, async, inject} from '@angular/core/testing';
 import {createGenericTestComponent} from '../test/common';
 import {getMonthSelect, getYearSelect, getNavigationLinks} from '../test/datepicker/common';
 
-import {Component} from '@angular/core';
+import {Component, TemplateRef} from '@angular/core';
 import {FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators} from '@angular/forms';
 
 import {NgbDatepickerModule} from './datepicker.module';
 import {NgbDate} from './ngb-date';
+import {NgbDatepickerConfig} from './datepicker-config';
+import {NgbDatepicker} from './datepicker';
+import {DayTemplateContext} from './datepicker-day-template-context';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -23,11 +26,41 @@ function getDatepicker(element: HTMLElement): HTMLElement {
   return element.querySelector('ngb-datepicker') as HTMLElement;
 }
 
+function expectSameValues(datepicker: NgbDatepicker, config: NgbDatepickerConfig) {
+  expect(datepicker.dayTemplate).toBe(config.dayTemplate);
+  expect(datepicker.firstDayOfWeek).toBe(config.firstDayOfWeek);
+  expect(datepicker.markDisabled).toBe(config.markDisabled);
+  expect(datepicker.minDate).toBe(config.minDate);
+  expect(datepicker.maxDate).toBe(config.maxDate);
+  expect(datepicker.showNavigation).toBe(config.showNavigation);
+  expect(datepicker.showWeekdays).toBe(config.showWeekdays);
+  expect(datepicker.showWeekNumbers).toBe(config.showWeekNumbers);
+  expect(datepicker.startDate).toBe(config.startDate);
+}
+
+function customizeConfig(config: NgbDatepickerConfig) {
+  config.dayTemplate = {} as TemplateRef<DayTemplateContext>;
+  config.firstDayOfWeek = 2;
+  config.markDisabled = (date) => false;
+  config.minDate = {year: 2000, month: 0, day: 1};
+  config.maxDate = {year: 2030, month: 11, day: 31};
+  config.showNavigation = false;
+  config.showWeekdays = false;
+  config.showWeekNumbers = true;
+  config.startDate = {year: 2015, month: 1};
+}
+
 describe('ngb-datepicker', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule(
         {declarations: [TestComponent], imports: [NgbDatepickerModule, FormsModule, ReactiveFormsModule]});
+  });
+
+  it('should initialize inputs with provided config', () => {
+    const defaultConfig = new NgbDatepickerConfig();
+    const datepicker = TestBed.createComponent(NgbDatepicker).componentInstance;
+    expectSameValues(datepicker, defaultConfig);
   });
 
   it('should display current month if no date provided', () => {
@@ -250,6 +283,40 @@ describe('ngb-datepicker', () => {
        }));
   });
 
+  describe('Custom config', () => {
+    let config: NgbDatepickerConfig;
+
+    beforeEach(() => { TestBed.configureTestingModule({imports: [NgbDatepickerModule]}); });
+
+    beforeEach(inject([NgbDatepickerConfig], (c: NgbDatepickerConfig) => {
+      config = c;
+      customizeConfig(config);
+    }));
+
+    it('should initialize inputs with provided config', () => {
+      const fixture = TestBed.createComponent(NgbDatepicker);
+
+      const datepicker = fixture.componentInstance;
+      expectSameValues(datepicker, config);
+    });
+  });
+
+  describe('Custom config as provider', () => {
+    const config = new NgbDatepickerConfig();
+    customizeConfig(config);
+
+    beforeEach(() => {
+      TestBed.configureTestingModule(
+          {imports: [NgbDatepickerModule], providers: [{provide: NgbDatepickerConfig, useValue: config}]});
+    });
+
+    it('should initialize inputs with provided config as provider', () => {
+      const fixture = createGenericTestComponent('', NgbDatepicker);
+
+      const datepicker = fixture.componentInstance;
+      expectSameValues(datepicker, config);
+    });
+  });
 });
 
 @Component({selector: 'test-cmp', template: ''})
