@@ -6,6 +6,7 @@ import {NgbDatepickerService} from './datepicker-service';
 import {MonthViewModel, NavigationEvent} from './datepicker-view-model';
 import {toInteger} from '../util/util';
 import {DayTemplateContext} from './datepicker-day-template-context';
+import {NgbDatepickerConfig} from './datepicker-config';
 
 const NGB_DATEPICKER_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -63,7 +64,7 @@ export class NgbDatepicker implements OnChanges,
   /**
    * First day of the week, 0=Sun, 1=Mon, etc.
    */
-  @Input() firstDayOfWeek = 1;
+  @Input() firstDayOfWeek: number;
 
   /**
    * Callback to mark a given date as disabled
@@ -83,17 +84,17 @@ export class NgbDatepicker implements OnChanges,
   /**
    * Whether to display navigation or not
    */
-  @Input() showNavigation = true;
+  @Input() showNavigation: boolean;
 
   /**
    * Whether to display days of the week
    */
-  @Input() showWeekdays = true;
+  @Input() showWeekdays: boolean;
 
   /**
    * Whether to display week numbers
    */
-  @Input() showWeekNumbers = false;
+  @Input() showWeekNumbers: boolean;
 
   /**
    * Date to open calendar with. If nothing provided, calendar will open with current month.
@@ -104,7 +105,17 @@ export class NgbDatepicker implements OnChanges,
   onChange = (_: any) => {};
   onTouched = () => {};
 
-  constructor(private _service: NgbDatepickerService, private _calendar: NgbCalendar) {}
+  constructor(private _service: NgbDatepickerService, private _calendar: NgbCalendar, config: NgbDatepickerConfig) {
+    this.dayTemplate = config.dayTemplate;
+    this.firstDayOfWeek = config.firstDayOfWeek;
+    this.markDisabled = config.markDisabled;
+    this.minDate = config.minDate;
+    this.maxDate = config.maxDate;
+    this.showNavigation = config.showNavigation;
+    this.showWeekdays = config.showWeekdays;
+    this.showWeekNumbers = config.showWeekNumbers;
+    this.startDate = config.startDate;
+  }
 
   /**
    * Navigates current view to provided date. If nothing provided calendar will open current month.
