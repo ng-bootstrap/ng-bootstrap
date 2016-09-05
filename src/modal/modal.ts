@@ -8,13 +8,13 @@ import {NgbModalRef} from './modal-ref';
  */
 export interface NgbModalOptions {
   /**
-   * Weather a backdrop element should be created for a given modal (true by default).
+   * Whether a backdrop element should be created for a given modal (true by default).
    * Alternatively, specify 'static' for a backdrop which doesn't close the modal on click.
    */
   backdrop?: boolean | 'static';
 
   /**
-   * Weather to close the modal when escape key is pressed (true by default).
+   * Whether to close the modal when escape key is pressed (true by default).
    */
   keyboard?: boolean;
 
@@ -25,7 +25,7 @@ export interface NgbModalOptions {
 }
 
 /**
- * A service to open modal windows. Creating modals is straightforward: create a template and pass it as an argument to
+ * A service to open modal windows. Creating a modal is straightforward: create a template and pass it as an argument to
  * the "open" method!
  */
 @Injectable()
