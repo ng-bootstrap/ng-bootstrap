@@ -13,12 +13,13 @@ var gulpFormat = require('gulp-clang-format');
 var runSequence = require('run-sequence');
 var tslint = require('gulp-tslint');
 var webpack = require('webpack');
+var typescript = require('typescript');
 
 var PATHS = {
   src: 'src/**/*.ts',
   srcIndex: 'src/index.ts',
   specs: 'src/**/*.spec.ts',
-  testHelpers: 'src/util/matchers.ts',
+  testHelpers: 'src/test/**/*.ts',
   demo: 'demo/**/*.ts',
   demoDist: 'demo/dist/**/*',
   typings: 'typings/index.d.ts',
@@ -36,8 +37,8 @@ function webpackCallBack(taskName, gulpDone) {
 
 // Transpiling & Building
 
-var cjsProject = ts.createProject('tsconfig.json', {declaration: true});
-var esmProject = ts.createProject('tsconfig-es2015.json');
+var cjsProject = ts.createProject('tsconfig.json', {declaration: true, typescript: typescript});
+var esmProject = ts.createProject('tsconfig-es2015.json', {typescript: typescript});
 
 gulp.task('clean:build', function() { return del('dist/'); });
 
@@ -126,7 +127,7 @@ gulp.task('changelog', function() {
 
 // Testing
 
-var testProject = ts.createProject('tsconfig.json');
+var testProject = ts.createProject('tsconfig.json', {typescript: typescript});
 
 function startKarmaServer(isTddMode, isSaucelabs, done) {
   var karmaServer = require('karma').Server;

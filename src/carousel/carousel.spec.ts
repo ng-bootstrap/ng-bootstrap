@@ -1,5 +1,5 @@
 import {fakeAsync, discardPeriodicTasks, tick, TestBed, ComponentFixture, inject} from '@angular/core/testing';
-import {createGenericTestComponent} from '../util/tests';
+import {createGenericTestComponent} from '../test/common';
 
 import {By} from '@angular/platform-browser';
 import {Component} from '@angular/core';

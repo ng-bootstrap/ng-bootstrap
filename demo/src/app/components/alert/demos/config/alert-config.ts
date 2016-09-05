@@ -1,21 +1,22 @@
 import {Component, Input} from '@angular/core';
-import {NgbAlertConfig, NgbDismissibleAlertConfig} from '@ng-bootstrap/ng-bootstrap';
+import {NgbAlertConfig, NgbSelfClosingAlertConfig} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'ngbd-alert-config',
   templateUrl: './alert-config.html',
-  // add NgbProgressbarConfig and NgbDismissibleAlertConfig to the component providers
-  providers: [NgbAlertConfig, NgbDismissibleAlertConfig]
+  // add NgbProgressbarConfig and NgbSelfClosingAlertConfig to the component providers
+  providers: [NgbAlertConfig, NgbSelfClosingAlertConfig]
 })
 export class NgbdAlertConfig {
   @Input() public alerts: Array<string> = [];
 
-  constructor(alertConfig: NgbAlertConfig, dismissibleAlertConfig: NgbDismissibleAlertConfig) {
+  constructor(alertConfig: NgbAlertConfig, selfClosingAlertConfig: NgbSelfClosingAlertConfig) {
     // customize default values of alerts used by this component tree
     alertConfig.type = 'success';
     alertConfig.dismissible = false;
-    dismissibleAlertConfig.dismissOnTimeout = 5000;
-    dismissibleAlertConfig.type = 'danger';
+    selfClosingAlertConfig.dismissible = true;
+    selfClosingAlertConfig.dismissOnTimeout = 5000;
+    selfClosingAlertConfig.type = 'danger';
   }
 
   public addAlert() {

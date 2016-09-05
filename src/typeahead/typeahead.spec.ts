@@ -1,6 +1,6 @@
 import {TestBed, ComponentFixture, async} from '@angular/core/testing';
-import {createGenericTestComponent} from '../util/tests';
-import {expectResults, getWindowLinks} from './test-common';
+import {createGenericTestComponent} from '../test/common';
+import {expectResults, getWindowLinks} from '../test/typeahead/common';
 
 import {Component, DebugElement} from '@angular/core';
 import {Validators, FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';

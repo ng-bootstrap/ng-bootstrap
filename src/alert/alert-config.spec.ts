@@ -1,4 +1,4 @@
-import {NgbAlertConfig, NgbDismissibleAlertConfig} from './alert-config';
+import {NgbAlertConfig, NgbSelfClosingAlertConfig} from './alert-config';
 
 describe('ngb-alert-config', () => {
   it('should have sensible default values', () => {
@@ -9,10 +9,11 @@ describe('ngb-alert-config', () => {
   });
 });
 
-describe('ngb-dismissible-alert-config', () => {
+describe('ngb-self-closing-alert-config', () => {
   it('should have sensible default values', () => {
-    const config = new NgbDismissibleAlertConfig();
+    const config = new NgbSelfClosingAlertConfig();
 
+    expect(config.dismissible).toBe(false);
     expect(config.type).toBe('warning');
     expect(config.dismissOnTimeout).toBeUndefined();
   });
