@@ -15,7 +15,8 @@ import {NgbCalendar} from './ngb-calendar';
   template: `
     <tr>
       <td>
-        <button (click)="doNavigate(navigation.PREV)" class="btn btn-sm btn-secondary btn-block" [disabled]="prevDisabled()">&lt;</button>
+        <button type="button" (click)="doNavigate(navigation.PREV)" class="btn btn-sm btn-secondary btn-block" 
+          [disabled]="prevDisabled()">&lt;</button>
       </td>
       <td [attr.colspan]="showWeekNumbers ? 6 : 5">      
         <ngb-datepicker-navigation-select *ngIf="type === 'select'"
@@ -26,7 +27,8 @@ import {NgbCalendar} from './ngb-calendar';
         </ngb-datepicker-navigation-select>
       </td>
       <td>
-        <button (click)="doNavigate(navigation.NEXT)" class="btn btn-sm btn-secondary btn-block" [disabled]="nextDisabled()">&gt;</button>
+        <button type="button" (click)="doNavigate(navigation.NEXT)" class="btn btn-sm btn-secondary btn-block" 
+          [disabled]="nextDisabled()">&gt;</button>
       </td>
     </tr>
   `

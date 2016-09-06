@@ -95,6 +95,14 @@ describe('ngbDatepickerNavigation', () => {
     expect(fixture.componentInstance.onNavigate).toHaveBeenCalledWith(NavigationEvent.NEXT);
   });
 
+  it('should have buttons of type button', () => {
+    const fixture = createTestComponent(
+        `<tbody ngbDatepickerNavigation type="select" [date]="date" [minDate]="minDate" [maxDate]="maxDate"></tbody>`);
+
+    const links = getNavigationLinks(fixture.nativeElement);
+    links.forEach((link) => { expect(link.getAttribute('type')).toBe('button'); });
+  });
+
 });
 
 @Component({selector: 'test-cmp', template: ''})
