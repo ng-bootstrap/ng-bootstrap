@@ -129,6 +129,17 @@ describe('ngb-typeahead-window', () => {
       expectResults(fixture.nativeElement, ['bar', '+baz']);
       expect(fixture.componentInstance.active).toBe('baz');
     });
+
+    it('should have buttons of type button', () => {
+      const html = `
+           <ngb-typeahead-window [results]="results" [term]="term"></ngb-typeahead-window>`;
+      const fixture = createTestComponent(html);
+      const buttons = fixture.nativeElement.querySelectorAll('button');
+      expect(buttons.length).toBeGreaterThan(0);
+      for (let i = 0; i < buttons.length; i++) {
+        expect(buttons[i].getAttribute('type')).toBe('button');
+      }
+    });
   });
 
 });
