@@ -1,4 +1,4 @@
-import {TestBed, ComponentFixture} from '@angular/core/testing';
+import {TestBed, ComponentFixture, inject} from '@angular/core/testing';
 import {createGenericTestComponent} from '../test/common';
 
 import {Component} from '@angular/core';
@@ -6,6 +6,7 @@ import {By} from '@angular/platform-browser';
 
 import {NgbDropdownModule} from './dropdown.module';
 import {NgbDropdown} from './dropdown';
+import {NgbDropdownConfig} from './dropdown-config';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -16,6 +17,13 @@ function getDropdownEl(tc) {
 
 describe('ngb-dropdown', () => {
   beforeEach(() => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbDropdownModule]}); });
+
+  it('should initialize inputs with provided config', () => {
+    const defaultConfig = new NgbDropdownConfig();
+    const dropdown = new NgbDropdown(new NgbDropdownConfig);
+    expect(dropdown.up).toBe(defaultConfig.up);
+    expect(dropdown.autoClose).toBe(defaultConfig.autoClose);
+  });
 
   it('should be closed and down by default', () => {
     const html = `<div ngbDropdown></div>`;
@@ -267,6 +275,49 @@ describe('ngb-dropdown-toggle', () => {
     buttonEl.click();
     fixture.detectChanges();
     expect(dropdownEl).toHaveCssClass('open');
+  });
+
+
+  describe('Custom config', () => {
+    let config: NgbDropdownConfig;
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({imports: [NgbDropdownModule]});
+      TestBed.overrideComponent(TestComponent, {set: {template: '<div ngbDropdown></div>'}});
+    });
+
+    beforeEach(inject([NgbDropdownConfig], (c: NgbDropdownConfig) => {
+      config = c;
+      config.up = true;
+    }));
+
+    it('should initialize inputs with provided config', () => {
+      const fixture = TestBed.createComponent(TestComponent);
+      fixture.detectChanges();
+
+      const compiled = fixture.nativeElement;
+
+      expect(getDropdownEl(compiled)).toHaveCssClass('dropup');
+    });
+  });
+
+  describe('Custom config as provider', () => {
+    let config = new NgbDropdownConfig();
+    config.up = true;
+
+    beforeEach(() => {
+      TestBed.configureTestingModule(
+          {imports: [NgbDropdownModule], providers: [{provide: NgbDropdownConfig, useValue: config}]});
+    });
+
+    it('should initialize inputs with provided config as provider', () => {
+      const fixture = createTestComponent('<div ngbDropdown></div>');
+      fixture.detectChanges();
+
+      const compiled = fixture.nativeElement;
+
+      expect(getDropdownEl(compiled)).toHaveCssClass('dropup');
+    });
   });
 });
 
