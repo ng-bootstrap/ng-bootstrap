@@ -637,6 +637,30 @@ describe('ngb-timepicker', () => {
 
       expect(fixture.componentInstance.model).toBeNull();
     });
+
+    it('should not submit form when spinners clicked', async(() => {
+         const html = `<form (ngSubmit)="onSubmit()">
+           <ngb-timepicker name="control" [(ngModel)]="model"></ngb-timepicker>
+           </form>`;
+
+         const fixture = createTestComponent(html);
+         const compiled = fixture.nativeElement;
+         const buttons = getButtons(compiled);
+         const button = buttons[0] as HTMLButtonElement;
+
+         fixture.detectChanges();
+         fixture.whenStable()
+             .then(() => {
+               fixture.detectChanges();
+               return fixture.whenStable();
+             })
+             .then(() => {
+               button.click();
+               fixture.detectChanges();
+               return fixture.whenStable();
+             })
+             .then(() => { expect(fixture.componentInstance.submitted).toBeFalsy(); });
+       }));
   });
 
   describe('disabled', () => {
@@ -838,4 +862,7 @@ class TestComponent {
   disabled = true;
   readonly = true;
   form = new FormGroup({control: new FormControl('', Validators.required)});
+  submitted = false;
+
+  onSubmit() { this.submitted = true; }
 }
