@@ -1,6 +1,6 @@
 {
   "name": "ng-bootstrap",
-  "version": "1.0.0-alpha.3",
+  "version": "1.0.0-alpha.4",
   "description": "Angular 2 powered Bootstrap",
   "keywords": "Angular 2 Angular2 Bootstrap autocomplete accordion alert buttons carousel collapse dropdown pagination popover progressbar rating tabset timepicker tooltip typeahead",
   "author": "https://github.com/ng-bootstrap/ng-bootstrap/graphs/contributors",
