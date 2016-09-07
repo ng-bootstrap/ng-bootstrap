@@ -23,6 +23,7 @@ import {Positioning} from '../util/positioning';
 import {NgbTypeaheadWindow, ResultTemplateContext} from './typeahead-window';
 import {PopupService} from '../util/popup';
 import {toString} from '../util/util';
+import {NgbTypeaheadConfig} from './typeahead-config';
 
 enum Key {
   Tab = 9,
@@ -89,7 +90,7 @@ export class NgbTypeahead implements OnInit,
   /**
    * Show hint when an option in the result list matches.
    */
-  @Input() showHint = false;
+  @Input() showHint: boolean;
 
   /**
    * An event emitted when a match is selected. Event payload is equal to the selected item.
@@ -105,7 +106,8 @@ export class NgbTypeahead implements OnInit,
 
   constructor(
       private _elementRef: ElementRef, private _viewContainerRef: ViewContainerRef, private _renderer: Renderer,
-      private _injector: Injector, componentFactoryResolver: ComponentFactoryResolver) {
+      private _injector: Injector, componentFactoryResolver: ComponentFactoryResolver, config: NgbTypeaheadConfig) {
+    this.showHint = config.showHint;
     this._popupService = new PopupService<NgbTypeaheadWindow>(
         NgbTypeaheadWindow, _injector, _viewContainerRef, _renderer, componentFactoryResolver);
     this._onChangeNoEmit = (_: any) => {};

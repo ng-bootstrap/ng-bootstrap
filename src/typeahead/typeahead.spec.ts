@@ -1,4 +1,4 @@
-import {TestBed, ComponentFixture, async} from '@angular/core/testing';
+import {TestBed, ComponentFixture, async, inject} from '@angular/core/testing';
 import {createGenericTestComponent, isBrowser} from '../test/common';
 import {expectResults, getWindowLinks} from '../test/typeahead/common';
 
@@ -10,6 +10,7 @@ import 'rxjs/add/operator/map';
 
 import {NgbTypeahead} from './typeahead';
 import {NgbTypeaheadModule} from './typeahead.module';
+import {NgbTypeaheadConfig} from './typeahead-config';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -470,6 +471,7 @@ describe('ngb-typeahead', () => {
       it('should restore hint when results window is dismissed', async(() => {
            const fixture = createTestComponent(
                `<input type="text" [(ngModel)]="model" [ngbTypeahead]="findAnywhere" [showHint]="true"/>`);
+           fixture.detectChanges();
            const compiled = fixture.nativeElement;
            const inputEl = getNativeInput(compiled);
 
@@ -490,8 +492,59 @@ describe('ngb-typeahead', () => {
            });
          }));
     });
-  }
 
+    describe('Custom config', () => {
+      beforeEach(() => {
+        TestBed.overrideComponent(
+            TestComponent, {set: {template: '<input type="text" [(ngModel)]="model" [ngbTypeahead]="findAnywhere"/>'}});
+      });
+
+      beforeEach(inject([NgbTypeaheadConfig], (c: NgbTypeaheadConfig) => { c.showHint = true; }));
+
+      it('should initialize inputs with provided config', async(() => {
+           const fixture = TestBed.createComponent(TestComponent);
+           fixture.detectChanges();
+           const compiled = fixture.nativeElement;
+           const inputEl = getNativeInput(compiled);
+
+           fixture.whenStable().then(() => {
+             changeInput(compiled, 'on');
+             fixture.detectChanges();
+             expectWindowResults(compiled, ['+one', 'one more']);
+             expect(inputEl.value).toBe('one');
+             expect(inputEl.selectionStart).toBe(2);
+             expect(inputEl.selectionEnd).toBe(3);
+           });
+         }));
+    });
+
+    describe('Custom config as provider', () => {
+      beforeEach(() => {
+        const config = new NgbTypeaheadConfig();
+        config.showHint = true;
+        TestBed.configureTestingModule({providers: [{provide: NgbTypeaheadConfig, useValue: config}]});
+
+        TestBed.overrideComponent(
+            TestComponent, {set: {template: '<input type="text" [(ngModel)]="model" [ngbTypeahead]="findAnywhere"/>'}});
+      });
+
+      it('should initialize inputs with provided config as provider', async(() => {
+           const fixture = TestBed.createComponent(TestComponent);
+           fixture.detectChanges();
+           const compiled = fixture.nativeElement;
+           const inputEl = getNativeInput(compiled);
+
+           fixture.whenStable().then(() => {
+             changeInput(compiled, 'on');
+             fixture.detectChanges();
+             expectWindowResults(compiled, ['+one', 'one more']);
+             expect(inputEl.value).toBe('one');
+             expect(inputEl.selectionStart).toBe(2);
+             expect(inputEl.selectionEnd).toBe(3);
+           });
+         }));
+    });
+  }
 });
 
 @Component({selector: 'test-cmp', template: ''})

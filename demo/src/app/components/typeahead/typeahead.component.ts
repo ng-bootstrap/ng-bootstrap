@@ -7,6 +7,7 @@ import {DEMO_SNIPPETS} from './demos';
     <ngbd-content-wrapper component="Typeahead">
       <ngbd-api-docs directive="NgbTypeahead"></ngbd-api-docs>
       <ngbd-api-docs-class type="ResultTemplateContext"></ngbd-api-docs-class>
+      <ngbd-api-docs-config type="NgbTypeaheadConfig"></ngbd-api-docs-config>
       <ngbd-example-box demoTitle="Simple Typeahead" [htmlSnippet]="snippets.basic.markup" [tsSnippet]="snippets.basic.code">
         <ngbd-typeahead-basic></ngbd-typeahead-basic>
       </ngbd-example-box>
@@ -18,6 +19,11 @@ import {DEMO_SNIPPETS} from './demos';
       </ngbd-example-box>
       <ngbd-example-box demoTitle="Template for results" [htmlSnippet]="snippets.template.markup" [tsSnippet]="snippets.template.code">
         <ngbd-typeahead-template></ngbd-typeahead-template>
+      </ngbd-example-box>
+      <ngbd-example-box demoTitle="Global configuration of typeaheads" 
+                        [htmlSnippet]="snippets.config.markup" 
+                        [tsSnippet]="snippets.config.code">
+        <ngbd-typeahead-config></ngbd-typeahead-config>
       </ngbd-example-box>
     </ngbd-content-wrapper>
   `
