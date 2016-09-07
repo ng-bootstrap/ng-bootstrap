@@ -125,6 +125,40 @@ describe('ngb-dropdown', () => {
 
     expect(fixture.componentInstance.isOpen).toBe(false);
   });
+
+  it('should not raise open events if open state does not change', () => {
+    const html = `
+      <button (click)="drop.open(); $event.stopPropagation()">Open</button>
+      <button (click)="drop.close(); $event.stopPropagation()">Close</button>
+      <div ngbDropdown (openChange)="recordStateChange($event)" #drop="ngbDropdown"></div>`;
+
+    const fixture = createTestComponent(html);
+    const compiled = fixture.nativeElement;
+    let buttonEls = compiled.querySelectorAll('button');
+
+    expect(fixture.componentInstance.isOpen).toBe(false);
+    expect(fixture.componentInstance.stateChanges).toEqual([]);
+
+    buttonEls[1].click();  // close a closed one
+    fixture.detectChanges();
+    expect(fixture.componentInstance.isOpen).toBe(false);
+    expect(fixture.componentInstance.stateChanges).toEqual([]);
+
+    buttonEls[0].click();  // open a closed one
+    fixture.detectChanges();
+    expect(fixture.componentInstance.isOpen).toBe(true);
+    expect(fixture.componentInstance.stateChanges).toEqual([true]);
+
+    buttonEls[0].click();  // open an opened one
+    fixture.detectChanges();
+    expect(fixture.componentInstance.isOpen).toBe(true);
+    expect(fixture.componentInstance.stateChanges).toEqual([true]);
+
+    buttonEls[1].click();  // close an opened one
+    fixture.detectChanges();
+    expect(fixture.componentInstance.isOpen).toBe(false);
+    expect(fixture.componentInstance.stateChanges).toEqual([true, false]);
+  });
 });
 
 describe('ngb-dropdown-toggle', () => {
@@ -324,4 +358,10 @@ describe('ngb-dropdown-toggle', () => {
 @Component({selector: 'test-cmp', template: ''})
 class TestComponent {
   isOpen = false;
+  stateChanges = [];
+
+  recordStateChange($event) {
+    this.stateChanges.push($event);
+    this.isOpen = $event;
+  }
 }

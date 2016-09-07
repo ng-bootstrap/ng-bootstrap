@@ -52,16 +52,20 @@ export class NgbDropdown {
    * Opens the dropdown menu of a given navbar or tabbed navigation.
    */
   open(): void {
-    this._open = true;
-    this.openChange.emit(true);
+    if (!this._open) {
+      this._open = true;
+      this.openChange.emit(true);
+    }
   }
 
   /**
    * Closes the dropdown menu of a given navbar or tabbed navigation.
    */
   close(): void {
-    this._open = false;
-    this.openChange.emit(false);
+    if (this._open) {
+      this._open = false;
+      this.openChange.emit(false);
+    }
   }
 
   /**
