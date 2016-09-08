@@ -366,6 +366,19 @@ describe('ngb-typeahead', () => {
       expect(getNativeInput(compiled)).toHaveCssClass('ng-valid');
       expect(getNativeInput(compiled)).not.toHaveCssClass('ng-invalid');
     });
+
+    it('should support disabled state', async(() => {
+         const html = `
+            <form>
+              <input type="text" [(ngModel)]="model" name="control" [disabled]="true" [ngbTypeahead]="findObjects" />
+            </form>`;
+         const fixture = createTestComponent(html);
+         fixture.whenStable().then(() => {
+           fixture.detectChanges();
+           const compiled = fixture.nativeElement;
+           expect(getNativeInput(compiled).disabled).toBeTruthy();
+         });
+       }));
   });
 
   describe('select event', () => {
