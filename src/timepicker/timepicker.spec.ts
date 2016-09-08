@@ -728,8 +728,16 @@ describe('ngb-timepicker', () => {
       fixture.detectChanges();
       fieldset = getFieldsetElement(fixture.nativeElement);
       expect(fieldset.hasAttribute('disabled')).toBeFalsy;
-
     });
+
+    it('should have disabled attribute when it is disabled using reactive forms', async(() => {
+         const html = `<form [formGroup]="disabledForm"><ngb-timepicker formControlName="control"></ngb-timepicker></form>`;
+
+         const fixture = createTestComponent(html);
+         fixture.detectChanges();
+         let fieldset = getFieldsetElement(fixture.nativeElement);
+         expect(fieldset.hasAttribute('disabled')).toBeTruthy();
+       }));
   });
 
   describe('readonly', () => {
@@ -862,6 +870,7 @@ class TestComponent {
   disabled = true;
   readonly = true;
   form = new FormGroup({control: new FormControl('', Validators.required)});
+  disabledForm = new FormGroup({control: new FormControl({value: '', disabled: true})});
   submitted = false;
 
   onSubmit() { this.submitted = true; }
