@@ -135,6 +135,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
   providers: [NGB_TIMEPICKER_VALUE_ACCESSOR]
 })
 export class NgbTimepicker implements ControlValueAccessor {
+  disabled: boolean;
   model: NgbTime;
 
   /**
@@ -168,11 +169,6 @@ export class NgbTimepicker implements ControlValueAccessor {
   @Input() secondStep: number;
 
   /**
-   * To disable timepicker
-   */
-  @Input() disabled: boolean;
-
-  /**
    * To make timepicker readonly
    */
   @Input() readonlyInputs: boolean;
@@ -196,6 +192,8 @@ export class NgbTimepicker implements ControlValueAccessor {
   registerOnChange(fn: (value: any) => any): void { this.onChange = fn; }
 
   registerOnTouched(fn: () => any): void { this.onTouched = fn; }
+
+  setDisabledState(isDisabled: boolean) { this.disabled = isDisabled; }
 
   /**
    * @internal
