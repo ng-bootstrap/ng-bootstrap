@@ -152,6 +152,10 @@ export class NgbTypeahead implements OnInit,
 
   writeValue(value) { this._writeInputValue(this._formatItemForInput(value)); }
 
+  setDisabledState(isDisabled: boolean): void {
+    this._renderer.setElementProperty(this._elementRef.nativeElement, 'disabled', isDisabled);
+  }
+
   /**
    * @internal
    */
