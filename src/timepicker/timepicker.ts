@@ -1,7 +1,7 @@
-import {Component, Input, forwardRef} from '@angular/core';
+import {Component, Input, forwardRef, OnChanges, SimpleChanges} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
-import {isNumber, padNumber, toInteger} from '../util/util';
+import {isNumber, padNumber, toInteger, isDefined} from '../util/util';
 import {NgbTime} from './ngb-time';
 import {NgbTimepickerConfig} from './timepicker-config';
 
@@ -134,7 +134,8 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
   `,
   providers: [NGB_TIMEPICKER_VALUE_ACCESSOR]
 })
-export class NgbTimepicker implements ControlValueAccessor {
+export class NgbTimepicker implements ControlValueAccessor,
+    OnChanges {
   disabled: boolean;
   model: NgbTime;
 
@@ -187,7 +188,12 @@ export class NgbTimepicker implements ControlValueAccessor {
   onChange = (_: any) => {};
   onTouched = () => {};
 
-  writeValue(value) { this.model = value ? new NgbTime(value.hour, value.minute, value.second) : new NgbTime(); }
+  writeValue(value) {
+    this.model = value ? new NgbTime(value.hour, value.minute, value.second) : new NgbTime();
+    if (!this.seconds && (!value || !isNumber(value.second))) {
+      this.model.second = 0;
+    }
+  }
 
   registerOnChange(fn: (value: any) => any): void { this.onChange = fn; }
 
@@ -262,8 +268,18 @@ export class NgbTimepicker implements ControlValueAccessor {
    */
   formatMinSec(value: number) { return padNumber(value); }
 
-  private propagateModelChange() {
-    this.onTouched();
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['seconds'] && !this.seconds && this.model && !isNumber(this.model.second)) {
+      this.model.second = 0;
+      this.propagateModelChange(false);
+    }
+  }
+
+  private propagateModelChange(touched = true) {
+    if (touched) {
+      this.onTouched();
+    }
     if (this.model.isValid(this.seconds)) {
       this.onChange({hour: this.model.hour, minute: this.model.minute, second: this.model.second});
     } else {

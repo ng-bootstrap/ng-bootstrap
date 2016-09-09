@@ -9,6 +9,6 @@ export class NgbdTimepickerSeconds {
   seconds = true;
 
   toggleSeconds() {
-      this.seconds = !this.seconds;
+    this.seconds = !this.seconds;
   }
 }
