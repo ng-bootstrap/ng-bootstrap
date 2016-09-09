@@ -861,6 +861,95 @@ describe('ngb-timepicker', () => {
       expectSameValues(timepicker, config);
     });
   });
+
+  describe('Seconds handling', () => {
+    it('should propagate seconds to 0 in model if seconds not shown and no second in initial model', async(() => {
+         const html = `<ngb-timepicker [(ngModel)]="model" [seconds]="false"></ngb-timepicker>`;
+
+         const fixture = createTestComponent(html);
+         fixture.componentInstance.model = {hour: 10, minute: 30};
+         fixture.detectChanges();
+         fixture.whenStable()
+             .then(() => {
+               fixture.detectChanges();
+               return fixture.whenStable();
+             })
+             .then(() => {
+               const inputs = fixture.debugElement.queryAll(By.css('input'));
+
+               inputs[1].triggerEventHandler('change', createChangeEvent('40'));
+               fixture.detectChanges();
+               expectToDisplayTime(fixture.nativeElement, '10:40');
+               expect(fixture.componentInstance.model).toEqual({hour: 10, minute: 40, second: 0});
+             });
+       }));
+
+    it('should propagate second as 0 in model if seconds not shown and null initial model', async(() => {
+         const html = `<ngb-timepicker [(ngModel)]="model" [seconds]="false"></ngb-timepicker>`;
+
+         const fixture = createTestComponent(html);
+         fixture.detectChanges();
+         fixture.whenStable()
+             .then(() => {
+               fixture.detectChanges();
+               return fixture.whenStable();
+             })
+             .then(() => {
+               const inputs = fixture.debugElement.queryAll(By.css('input'));
+
+               inputs[0].triggerEventHandler('change', createChangeEvent('10'));
+               inputs[1].triggerEventHandler('change', createChangeEvent('40'));
+               fixture.detectChanges();
+               expectToDisplayTime(fixture.nativeElement, '10:40');
+               expect(fixture.componentInstance.model).toEqual({hour: 10, minute: 40, second: 0});
+             });
+       }));
+
+    it('should leave second as is in model if seconds not shown and second present in initial model', async(() => {
+         const html = `<ngb-timepicker [(ngModel)]="model" [seconds]="false"></ngb-timepicker>`;
+
+         const fixture = createTestComponent(html);
+         fixture.componentInstance.model = {hour: 10, minute: 30, second: 30};
+         fixture.detectChanges();
+         fixture.whenStable()
+             .then(() => {
+               fixture.detectChanges();
+               return fixture.whenStable();
+             })
+             .then(() => {
+               const inputs = fixture.debugElement.queryAll(By.css('input'));
+
+               inputs[1].triggerEventHandler('change', createChangeEvent('40'));
+               fixture.detectChanges();
+               expectToDisplayTime(fixture.nativeElement, '10:40');
+               expect(fixture.componentInstance.model).toEqual({hour: 10, minute: 40, second: 30});
+             });
+       }));
+
+    it('should reset the second to 0 if invalid when seconds are hidden', async(() => {
+         const html = `<ngb-timepicker [(ngModel)]="model" [seconds]="showSeconds"></ngb-timepicker>`;
+
+         const fixture = createTestComponent(html);
+         fixture.componentInstance.model = {hour: 10, minute: 30, second: null};
+         fixture.detectChanges();
+         fixture.whenStable()
+             .then(() => {
+               fixture.detectChanges();
+               return fixture.whenStable();
+             })
+             .then(() => {
+               expectToDisplayTime(fixture.nativeElement, '10:30:');
+
+               fixture.componentInstance.showSeconds = false;
+               fixture.detectChanges();
+               return fixture.whenStable();
+             })
+             .then(() => {
+               expectToDisplayTime(fixture.nativeElement, '10:30');
+               expect(fixture.componentInstance.model).toEqual({hour: 10, minute: 30, second: 0});
+             });
+       }));
+  });
 });
 
 
@@ -872,6 +961,8 @@ class TestComponent {
   form = new FormGroup({control: new FormControl('', Validators.required)});
   disabledForm = new FormGroup({control: new FormControl({value: '', disabled: true})});
   submitted = false;
+
+  showSeconds = true;
 
   onSubmit() { this.submitted = true; }
 }
