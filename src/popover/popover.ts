@@ -16,7 +16,7 @@ import {
 } from '@angular/core';
 
 import {listenToTriggers} from '../util/triggers';
-import {Positioning} from '../util/positioning';
+import {positionElements} from '../util/positioning';
 import {PopupService} from '../util/popup';
 import {NgbPopoverConfig} from './popover-config';
 
@@ -57,7 +57,6 @@ export class NgbPopover implements OnInit, AfterViewChecked, OnDestroy {
   @Input() triggers: string;
 
   private _popupService: PopupService<NgbPopoverWindow>;
-  private _positioning = new Positioning();
   private _windowRef: ComponentRef<NgbPopoverWindow>;
   private _unregisterListenersFn;
 
@@ -110,12 +109,7 @@ export class NgbPopover implements OnInit, AfterViewChecked, OnDestroy {
 
   ngAfterViewChecked() {
     if (this._windowRef) {
-      const targetPosition = this._positioning.positionElements(
-          this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement, false);
-
-      const targetStyle = this._windowRef.location.nativeElement.style;
-      targetStyle.top = `${targetPosition.top}px`;
-      targetStyle.left = `${targetPosition.left}px`;
+      positionElements(this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement, false);
     }
   }
 

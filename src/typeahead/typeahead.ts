@@ -19,7 +19,7 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {Observable, Subject, Subscription} from 'rxjs/Rx';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/let';
-import {Positioning} from '../util/positioning';
+import {positionElements} from '../util/positioning';
 import {NgbTypeaheadWindow, ResultTemplateContext} from './typeahead-window';
 import {PopupService} from '../util/popup';
 import {toString} from '../util/util';
@@ -60,7 +60,6 @@ export class NgbTypeahead implements OnInit,
     AfterViewChecked, ControlValueAccessor, OnDestroy {
   private _onChangeNoEmit: (_: any) => void;
   private _popupService: PopupService<NgbTypeaheadWindow>;
-  private _positioning = new Positioning();
   private _subscription: Subscription;
   private _userInput: string;
   private _valueChanges = new Subject<string>();
@@ -115,12 +114,7 @@ export class NgbTypeahead implements OnInit,
 
   ngAfterViewChecked() {
     if (this._windowRef) {
-      const targetPosition = this._positioning.positionElements(
-          this._elementRef.nativeElement, this._windowRef.location.nativeElement, 'bottom-left', false);
-
-      const targetStyle = this._windowRef.location.nativeElement.style;
-      targetStyle.top = `${targetPosition.top}px`;
-      targetStyle.left = `${targetPosition.left}px`;
+      positionElements(this._elementRef.nativeElement, this._windowRef.location.nativeElement, 'bottom-left');
     }
   }
 
