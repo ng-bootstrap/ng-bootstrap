@@ -9,7 +9,7 @@ import {Component, Input} from '@angular/core';
       border-radius: 0.25rem;
     }
   `],
-  host: {'[class.bg-primary]': 'selected', '[class.text-muted]': 'isMuted()'},
+  host: {'[class.bg-primary]': 'selected', '[class.text-muted]': 'isMuted()', '[class.btn-secondary]': '!disabled'},
   template: `{{ date.day }}`
 })
 export class NgbDatepickerDayView {
