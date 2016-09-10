@@ -1,9 +1,14 @@
 <p>
-  These alerts will be dismissed in 5 seconds.  Click "Add Alert" to add an alert.
+  Static self-closing alert that disappears after 20 seconds (refresh the page if it has already disappeared)
 </p>
-<p *ngFor="let alert of alerts">
-  <template ngbAlert [dismissOnTimeout]="5000">{{ alert }}</template>
-</p>
+<ngb-alert *ngIf="!staticAlertClosed" (close)="staticAlertClosed = true">Check out our awesome new features!</ngb-alert>
+
+<hr/>
+
 <p>
-  <button class="btn btn-primary" (click)="addAlert()">Add Alert</button>
+  Show a self-closing success message that disappears after 5 seconds.
+</p>
+<ngb-alert *ngIf="successMessage" type="success" (close)="successMessage = null">{{ successMessage }}</ngb-alert>
+<p>
+  <button class="btn btn-primary" (click)="changeSuccessMessage()">Change message</button>
 </p>

@@ -1,11 +1,11 @@
-import {fakeAsync, tick, TestBed, ComponentFixture, inject} from '@angular/core/testing';
+import {TestBed, ComponentFixture, inject} from '@angular/core/testing';
 import {createGenericTestComponent} from '../test/common';
 
-import {Component, ViewChild} from '@angular/core';
+import {Component} from '@angular/core';
 
 import {NgbAlertModule} from './alert.module';
-import {NgbAlert, NgbSelfClosingAlert} from './alert';
-import {NgbAlertConfig, NgbSelfClosingAlertConfig} from './alert-config';
+import {NgbAlert} from './alert';
+import {NgbAlertConfig} from './alert-config';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -91,112 +91,8 @@ describe('ngb-alert', () => {
   });
 });
 
-describe('NgbSelfClosingAlert', () => {
-
-  describe('UI logic', () => {
-    beforeEach(() => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbAlertModule]}); });
-
-    it('should open a self-closing alert with default type and no close button', () => {
-      const defaultConfig = new NgbSelfClosingAlertConfig();
-      const fixture = createTestComponent(`<template ngbAlert>Hello, {{name}}!</template>`);
-      const alertEl = getAlertElement(fixture.nativeElement);
-
-      expect(alertEl).toHaveCssClass(`alert-${defaultConfig.type}`);
-      expect(alertEl.getAttribute('role')).toEqual('alert');
-      expect(getCloseButton(alertEl)).toBeFalsy();
-    });
-
-    it('should open a self-closing alert with a specified type', () => {
-      const fixture = createTestComponent(`<template ngbAlert type="success">Hello, {{name}}!</template>`);
-      const alertEl = getAlertElement(fixture.nativeElement);
-
-      expect(alertEl).toHaveCssClass('alert-success');
-    });
-
-    it('should dismiss alert and invoke close handler on close button click', () => {
-      const fixture = createTestComponent(
-          `<template ngbAlert (close)="closed = true" [dismissible]="true">Hello, {{name}}!</template>`);
-      const alertEl = getAlertElement(fixture.nativeElement);
-
-      getCloseButton(alertEl).click();
-      fixture.detectChanges();
-
-      expect(fixture.componentInstance.closed).toBeTruthy();
-      expect(getAlertElement(fixture.nativeElement)).toBeNull();
-    });
-
-    it('should auto close on timeout specified', fakeAsync(() => {
-         const fixture =
-             createTestComponent(`<template ngbAlert [dismissOnTimeout]="1000">Hello, {{name}}!</template>`);
-         const alertEl = getAlertElement(fixture.nativeElement);
-
-         tick(800);
-         fixture.detectChanges();
-         expect(alertEl.getAttribute('role')).toEqual('alert');
-
-         tick(1200);
-         fixture.detectChanges();
-         expect(getAlertElement(fixture.nativeElement)).toBeNull();
-       }));
-  });
-
-  describe('Custom config', () => {
-
-    let config: NgbSelfClosingAlertConfig;
-
-    beforeEach(() => {
-      TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbAlertModule]});
-      TestBed.overrideComponent(TestComponent, {set: {template: '<template ngbAlert>Hello, {{name}}!</template>'}});
-    });
-
-    beforeEach(inject([NgbSelfClosingAlertConfig], (c: NgbSelfClosingAlertConfig) => {
-      config = c;
-      config.dismissible = true;
-      config.dismissOnTimeout = 2000;
-      config.type = 'success';
-    }));
-
-    it('should initialize inputs with provided config', () => {
-      const fixture = TestBed.createComponent(TestComponent);
-      fixture.detectChanges();
-
-      const alert = fixture.componentInstance.selfClosingAlert;
-
-      expect(alert.type).toBe(config.type);
-      expect(alert.dismissible).toBe(config.dismissible);
-      expect(alert.dismissOnTimeout).toBe(config.dismissOnTimeout);
-    });
-  });
-
-  describe('Custom config as provider', () => {
-    const config = new NgbSelfClosingAlertConfig();
-    config.dismissible = true;
-    config.dismissOnTimeout = 2000;
-    config.type = 'success';
-
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        declarations: [TestComponent],
-        imports: [NgbAlertModule],
-        providers: [{provide: NgbSelfClosingAlertConfig, useValue: config}]
-      });
-    });
-
-    it('should initialize inputs with provided config as provider', () => {
-      const fixture = createTestComponent(`<template ngbAlert>Hello, {{name}}!</template>`);
-      const alert = fixture.componentInstance.selfClosingAlert;
-
-      expect(alert.type).toBe(config.type);
-      expect(alert.dismissible).toBe(config.dismissible);
-      expect(alert.dismissOnTimeout).toBe(config.dismissOnTimeout);
-    });
-  });
-});
-
 @Component({selector: 'test-cmp', template: '', entryComponents: [NgbAlert]})
 class TestComponent {
   name = 'World';
   closed = false;
-
-  @ViewChild(NgbSelfClosingAlert) selfClosingAlert: NgbSelfClosingAlert;
 }
