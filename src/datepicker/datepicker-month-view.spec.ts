@@ -104,7 +104,23 @@ describe('ngbDatepickerMonthView', () => {
     const dates = getDates(fixture.nativeElement);
     dates[0].click();
 
-    expect(fixture.componentInstance.onClick).not.toHaveBeenCalledWith();
+    expect(fixture.componentInstance.onClick).not.toHaveBeenCalled();
+  });
+
+  it('should not send date selection events if disabled', () => {
+    const fixture = createTestComponent(`
+        <template #tpl let-date="date">{{ date.day }}</template>
+        <tbody ngbDatepickerMonthView [month]="month" [dayTemplate]="tpl" [disabled]="true" (select)="onClick($event)"></tbody>
+      `);
+
+    fixture.detectChanges();
+
+    spyOn(fixture.componentInstance, 'onClick');
+
+    const dates = getDates(fixture.nativeElement);
+    dates[0].click();
+
+    expect(fixture.componentInstance.onClick).not.toHaveBeenCalled();
   });
 
   if (!isBrowser('ie9')) {
@@ -133,6 +149,19 @@ describe('ngbDatepickerMonthView', () => {
 
       const dates = getDates(fixture.nativeElement);
       expect(window.getComputedStyle(dates[0]).getPropertyValue('cursor')).toBe('not-allowed');
+    });
+
+    it('should set not-allowed cursor for all dates if disabled', () => {
+      const fixture = createTestComponent(`
+        <template #tpl let-date="date">{{ date.day }}</template>
+        <table><tbody ngbDatepickerMonthView [month]="month" [dayTemplate]="tpl"
+        (change)="onClick($event)" [disabled]="true"></tbody></table>
+      `);
+
+      fixture.detectChanges();
+
+      const dates = getDates(fixture.nativeElement);
+      dates.forEach((date) => expect(window.getComputedStyle(date).getPropertyValue('cursor')).toBe('not-allowed'));
     });
   }
 

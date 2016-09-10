@@ -1,0 +1,9 @@
+<p>Disabled datepicker</p>
+
+<ngb-datepicker [(ngModel)]="model" [disabled]="disabled"></ngb-datepicker>
+
+<hr/>
+
+<button class="btn btn-sm btn-outline-{{disabled ? 'danger' : 'success'}}" (click)="disabled = !disabled">
+  {{ disabled ? "disabled" : "enabled"}}
+</button>

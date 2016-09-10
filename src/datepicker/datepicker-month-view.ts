@@ -28,11 +28,11 @@ import {DayTemplateContext} from './datepicker-day-template-context';
     </tr>
     <tr *ngFor="let week of month.weeks">
       <td *ngIf="showWeekNumbers" class="weeknumber small text-xs-center">{{ week.number }}</td>
-      <td *ngFor="let day of week.days" (click)="doSelect(day)" class="day" [class.disabled]="day.disabled">
+      <td *ngFor="let day of week.days" (click)="doSelect(day)" class="day" [class.disabled]="isDisabled(day)">
         <template [ngTemplateOutlet]="dayTemplate" 
         [ngOutletContext]="{date: {year: day.date.year, month: day.date.month, day: day.date.day}, 
           currentMonth: month.number, 
-          disabled: day.disabled, 
+          disabled: isDisabled(day), 
           selected: isSelected(day.date)}">
         </template>
       </td>                
@@ -41,6 +41,7 @@ import {DayTemplateContext} from './datepicker-day-template-context';
 })
 export class NgbDatepickerMonthView {
   @Input() dayTemplate: TemplateRef<DayTemplateContext>;
+  @Input() disabled: boolean;
   @Input() month: MonthViewModel;
   @Input() selectedDate: NgbDate;
   @Input() showWeekdays;
@@ -51,10 +52,12 @@ export class NgbDatepickerMonthView {
   constructor(public i18n: NgbDatepickerI18n) {}
 
   doSelect(day: DayViewModel) {
-    if (!day.disabled) {
+    if (!this.isDisabled(day)) {
       this.select.emit(NgbDate.from(day.date));
     }
   }
+
+  isDisabled(day) { return this.disabled || day.disabled; }
 
   isSelected(date: NgbDate) { return this.selectedDate && this.selectedDate.equals(date); }
 }
