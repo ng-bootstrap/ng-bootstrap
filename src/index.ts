@@ -18,7 +18,7 @@ import {NgbTooltipModule} from './tooltip/tooltip.module';
 import {NgbTypeaheadModule, NgbTypeaheadSelectItemEvent} from './typeahead/typeahead.module';
 
 export {NgbAccordionModule, NgbPanelChangeEvent, NgbAccordionConfig} from './accordion/accordion.module';
-export {NgbAlertModule, NgbAlertConfig, NgbSelfClosingAlertConfig} from './alert/alert.module';
+export {NgbAlertModule, NgbAlertConfig} from './alert/alert.module';
 export {NgbButtonsModule} from './buttons/radio.module';
 export {NgbCarouselModule, NgbCarouselConfig} from './carousel/carousel.module';
 export {NgbCollapseModule} from './collapse/collapse.module';

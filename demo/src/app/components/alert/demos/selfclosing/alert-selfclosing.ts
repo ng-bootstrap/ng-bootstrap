@@ -1,14 +1,24 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {Subject} from 'rxjs/Rx';
 
 @Component({
   selector: 'ngbd-alert-selfclosing',
   templateUrl: './alert-selfclosing.html'
 })
-export class NgbdAlertSelfclosing {
-  @Input()
-  public alerts: Array<string> = [];
+export class NgbdAlertSelfclosing implements OnInit {
+  private _success = new Subject<string>();
 
-  public addAlert() {
-    this.alerts.push('This alert will close automatically after 5 seconds');
+  staticAlertClosed = false;
+  successMessage: string;
+
+  ngOnInit(): void {
+    setTimeout(() => this.staticAlertClosed = true, 20000);
+
+    this._success.subscribe((message) => this.successMessage = message);
+    this._success.debounceTime(5000).subscribe(() => this.successMessage = null);
+  }
+
+  public changeSuccessMessage() {
+    this._success.next(`${new Date()} - Message successfully changed.`);
   }
 }
