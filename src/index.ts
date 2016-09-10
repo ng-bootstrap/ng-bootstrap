@@ -22,7 +22,7 @@ export {NgbModal, NgbModalOptions, NgbModalRef, ModalDismissReasons} from './mod
 export {NgbTabChangeEvent} from './tabset/tabset.module';
 export {NgbAlertConfig, NgbSelfClosingAlertConfig} from './alert/alert.module';
 export {NgbCarouselConfig} from './carousel/carousel.module';
-export {NgbDatepickerConfig} from './datepicker/datepicker.module';
+export {NgbDatepickerI18n, NgbDatepickerConfig} from './datepicker/datepicker.module';
 export {NgbDropdownConfig} from './dropdown/dropdown.module';
 export {NgbPaginationConfig} from './pagination/pagination.module';
 export {NgbPopoverConfig} from './popover/popover.module';
