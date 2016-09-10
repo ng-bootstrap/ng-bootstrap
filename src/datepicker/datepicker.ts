@@ -41,6 +41,7 @@ const NGB_DATEPICKER_VALUE_ACCESSOR = {
         [dayTemplate]="dayTemplate || dt"
         [showWeekdays]="showWeekdays"
         [showWeekNumbers]="showWeekNumbers"
+        [disabled]="disabled"
         (select)="onDateSelect($event)">
       </tbody>
     </table>
@@ -101,6 +102,8 @@ export class NgbDatepicker implements OnChanges,
    * Use 'navigateTo(date)' as an alternative
    */
   @Input() startDate: {year: number, month: number};
+
+  disabled = false;
 
   onChange = (_: any) => {};
   onTouched = () => {};
@@ -190,6 +193,11 @@ export class NgbDatepicker implements OnChanges,
    * @internal
    */
   writeValue(value) { this.model = value ? new NgbDate(value.year, value.month, value.day) : null; }
+
+  /**
+   * @internal
+   */
+  setDisabledState(isDisabled: boolean) { this.disabled = isDisabled; }
 
   private _setDates() {
     this._maxDate = NgbDate.from(this.maxDate);

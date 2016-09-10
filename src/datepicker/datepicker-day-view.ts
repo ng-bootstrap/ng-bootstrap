@@ -18,5 +18,5 @@ export class NgbDatepickerDayView {
   @Input() disabled: boolean;
   @Input() selected: boolean;
 
-  isMuted() { return this.date.month !== this.currentMonth || this.disabled; }
+  isMuted() { return !this.selected && (this.date.month !== this.currentMonth || this.disabled); }
 }

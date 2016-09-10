@@ -62,6 +62,17 @@ describe('ngbDatepickerDayView', () => {
     fixture.detectChanges();
     expect(el).toHaveCssClass('bg-primary');
   });
+
+  it('should not apply muted style if disabled but selected', () => {
+    const fixture = TestBed.createComponent(TestComponent);
+    fixture.componentInstance.disabled = true;
+    fixture.componentInstance.selected = true;
+    fixture.detectChanges();
+
+    const el = getElement(fixture.nativeElement);
+    expect(el).toHaveCssClass('bg-primary');
+    expect(el).not.toHaveCssClass('text-muted');
+  });
 });
 
 @Component({

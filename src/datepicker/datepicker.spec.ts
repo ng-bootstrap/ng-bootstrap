@@ -117,6 +117,27 @@ describe('ngb-datepicker', () => {
       expect(fixture.componentInstance.model).toEqual({year: 2016, month: 7, day: 2});
     });
 
+    it('should not update model based on calendar clicks when disabled', async(() => {
+         const fixture = createTestComponent(
+             `<ngb-datepicker [startDate]="date" [minDate]="minDate" [maxDate]="maxDate" [(ngModel)]="model" [disabled]="true">
+              </ngb-datepicker>`);
+
+         fixture.whenStable()
+             .then(() => {
+               fixture.detectChanges();
+               return fixture.whenStable();
+             })
+             .then(() => {
+
+               const dates = getDates(fixture.nativeElement);
+               dates[0].click();  // 1 AUG 2016
+               expect(fixture.componentInstance.model).toBeFalsy();
+
+               dates[1].click();
+               expect(fixture.componentInstance.model).toBeFalsy();
+             });
+       }));
+
     it('select calendar date based on model updates', async(() => {
          const fixture = createTestComponent(
              `<ngb-datepicker [startDate]="date" [minDate]="minDate" [maxDate]="maxDate" [(ngModel)]="model"></ngb-datepicker>`);
@@ -219,6 +240,22 @@ describe('ngb-datepicker', () => {
       expect(getMonthSelect(fixture.nativeElement).value).toBe(`${today.getMonth()}`);
       expect(getYearSelect(fixture.nativeElement).value).toBe(`${today.getFullYear()}`);
     });
+
+    it('should support disabling all dates via the disabled attribute', async(() => {
+         const fixture = createTestComponent(
+             `<ngb-datepicker [(ngModel)]="model" [startDate]="date" [disabled]="true"></ngb-datepicker>`);
+         fixture.detectChanges();
+         fixture.whenStable()
+             .then(() => {
+               fixture.detectChanges();
+               return fixture.whenStable();
+             })
+             .then(() => {
+               for (let index = 0; index < 31; index++) {
+                 expect(getDay(fixture.nativeElement, index)).toHaveCssClass('text-muted');
+               }
+             });
+       }));
   });
 
   describe('forms', () => {
@@ -281,6 +318,22 @@ describe('ngb-datepicker', () => {
                expect(getDatepicker(compiled)).not.toHaveCssClass('ng-invalid');
              });
        }));
+
+    it('should be disabled with reactive forms', async(() => {
+         const html = `<form [formGroup]="disabledForm">
+            <ngb-datepicker [startDate]="date" [minDate]="minDate" [maxDate]="maxDate" formControlName="control">
+            </ngb-datepicker>
+        </form>`;
+
+         const fixture = createTestComponent(html);
+         fixture.detectChanges();
+         const dates = getDates(fixture.nativeElement);
+         dates[0].click();  // 1 AUG 2016
+         expect(fixture.componentInstance.disabledForm.controls['control'].value).toBeFalsy();
+         for (let index = 0; index < 31; index++) {
+           expect(getDay(fixture.nativeElement, index)).toHaveCssClass('text-muted');
+         }
+       }));
   });
 
   describe('Custom config', () => {
@@ -325,6 +378,7 @@ class TestComponent {
   minDate = {year: 2010, month: 0, day: 1};
   maxDate = {year: 2020, month: 11, day: 31};
   form = new FormGroup({control: new FormControl('', Validators.required)});
+  disabledForm = new FormGroup({control: new FormControl({value: null, disabled: true})});
   model;
   markDisabled = (date: {year: number, month: number, day: number}) => {
     return NgbDate.from(date).equals(new NgbDate(2016, 7, 22));
