@@ -12,6 +12,7 @@ import {NgbDatepickerNavigationSelect} from './datepicker-navigation-select';
 import {NgbDatepickerConfig} from './datepicker-config';
 
 export {NgbDatepickerConfig} from './datepicker-config';
+export {NgbDatepickerI18n} from './datepicker-i18n';
 
 @NgModule({
   declarations: [
