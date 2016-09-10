@@ -7,6 +7,7 @@ import {DEMO_SNIPPETS} from './demos';
     <ngbd-content-wrapper component="Datepicker">
       <ngbd-api-docs directive="NgbDatepicker"></ngbd-api-docs>
       <ngbd-api-docs-class type="DayTemplateContext"></ngbd-api-docs-class>
+      <ngbd-api-docs-class type="NgbDatepickerI18n"></ngbd-api-docs-class>
       <ngbd-api-docs-config type="NgbDatepickerConfig"></ngbd-api-docs-config>
       <ngbd-example-box demoTitle="Basic datepicker" [htmlSnippet]="snippets.basic.markup" [tsSnippet]="snippets.basic.code">
         <ngbd-datepicker-basic></ngbd-datepicker-basic>
