@@ -12,8 +12,8 @@ import {
   ElementRef,
   TemplateRef,
   forwardRef,
-  AfterViewChecked,
-  OnDestroy
+  OnDestroy,
+  NgZone
 } from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {Observable, Subject, Subscription} from 'rxjs/Rx';
@@ -57,13 +57,14 @@ const NGB_TYPEAHEAD_VALUE_ACCESSOR = {
   providers: [NGB_TYPEAHEAD_VALUE_ACCESSOR]
 })
 export class NgbTypeahead implements OnInit,
-    AfterViewChecked, ControlValueAccessor, OnDestroy {
+    ControlValueAccessor, OnDestroy {
   private _onChangeNoEmit: (_: any) => void;
   private _popupService: PopupService<NgbTypeaheadWindow>;
   private _subscription: Subscription;
   private _userInput: string;
   private _valueChanges = new Subject<string>();
   private _windowRef: ComponentRef<NgbTypeaheadWindow>;
+  private _zoneSubscription: any;
 
   /**
    * A function to convert a given value into string to display in the input field
@@ -105,20 +106,24 @@ export class NgbTypeahead implements OnInit,
 
   constructor(
       private _elementRef: ElementRef, private _viewContainerRef: ViewContainerRef, private _renderer: Renderer,
-      private _injector: Injector, componentFactoryResolver: ComponentFactoryResolver, config: NgbTypeaheadConfig) {
+      private _injector: Injector, componentFactoryResolver: ComponentFactoryResolver, config: NgbTypeaheadConfig,
+      ngZone: NgZone) {
     this.showHint = config.showHint;
     this._popupService = new PopupService<NgbTypeaheadWindow>(
         NgbTypeaheadWindow, _injector, _viewContainerRef, _renderer, componentFactoryResolver);
     this._onChangeNoEmit = (_: any) => {};
+
+    this._zoneSubscription = ngZone.onStable.subscribe(() => {
+      if (this._windowRef) {
+        positionElements(this._elementRef.nativeElement, this._windowRef.location.nativeElement, 'bottom-left');
+      }
+    });
   }
 
-  ngAfterViewChecked() {
-    if (this._windowRef) {
-      positionElements(this._elementRef.nativeElement, this._windowRef.location.nativeElement, 'bottom-left');
-    }
+  ngOnDestroy() {
+    this._subscription.unsubscribe();
+    this._zoneSubscription.unsubscribe();
   }
-
-  ngOnDestroy() { this._subscription.unsubscribe(); }
 
   ngOnInit() {
     this._subscription =
@@ -239,5 +244,3 @@ export class NgbTypeahead implements OnInit,
     this._renderer.setElementProperty(this._elementRef.nativeElement, 'value', value);
   }
 }
-
-export const NGB_TYPEAHEAD_DIRECTIVES = [NgbTypeahead];
