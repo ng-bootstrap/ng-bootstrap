@@ -16,10 +16,10 @@ import {NgbCalendar} from './ngb-calendar';
     }
   `],
   template: `
-    <select class="custom-select d-inline-block" [value]="date.month" (change)="changeMonth($event.target.value)">
+    <select [disabled]="disabled" class="custom-select d-inline-block" [value]="date.month" (change)="changeMonth($event.target.value)">
       <option *ngFor="let m of months" [value]="m">{{ i18n.getMonthName(m) }}</option>
     </select>` +
-      `<select class="custom-select d-inline-block" [value]="date.year" (change)="changeYear($event.target.value)">
+      `<select [disabled]="disabled" class="custom-select d-inline-block" [value]="date.year" (change)="changeYear($event.target.value)">
       <option *ngFor="let y of years" [value]="y">{{ y }}</option>
     </select> 
   `  // template needs to be formatted in a certain way so we don't add empty text nodes
@@ -29,6 +29,7 @@ export class NgbDatepickerNavigationSelect implements OnChanges {
   years: number[] = [];
 
   @Input() date: NgbDate;
+  @Input() disabled: boolean;
   @Input() maxYear: number;
   @Input() minYear: number;
 

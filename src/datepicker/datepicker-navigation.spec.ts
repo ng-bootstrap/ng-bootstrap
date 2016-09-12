@@ -35,7 +35,7 @@ describe('ngbDatepickerNavigation', () => {
     expect(getYearSelect(fixture.nativeElement).value).toBe('2016');
   });
 
-  it('should not render navigation select component for a differrent type', () => {
+  it('should not render navigation select component for a different type', () => {
     const fixture = createTestComponent(`<tbody ngbDatepickerNavigation type="blah" [date]="date"></tbody>`);
     expect(fixture.nativeElement.querySelector('ngbDatepickerNavigation-select')).toBeFalsy();
   });
@@ -77,6 +77,17 @@ describe('ngbDatepickerNavigation', () => {
     fixture.detectChanges();
     expect(links[0].hasAttribute('disabled')).toBeFalsy();
     expect(links[1].hasAttribute('disabled')).toBeTruthy();
+  });
+
+  it('should have disabled navigation buttons and year and month select boxes when disabled', () => {
+    const fixture = createTestComponent(
+        `<tbody ngbDatepickerNavigation [disabled]="true" type="select" [date]="date" [minDate]="minDate" [maxDate]="maxDate"></tbody>`);
+
+    const links = getNavigationLinks(fixture.nativeElement);
+    expect(links[0].hasAttribute('disabled')).toBeTruthy();
+    expect(links[1].hasAttribute('disabled')).toBeTruthy();
+    expect(getYearSelect(fixture.nativeElement).disabled).toBeTruthy();
+    expect(getMonthSelect(fixture.nativeElement).disabled).toBeTruthy();
   });
 
   it('should send navigation events', () => {
