@@ -30,6 +30,7 @@ const NGB_DATEPICKER_VALUE_ACCESSOR = {
         [date]="_date"
         [minDate]="_minDate"
         [maxDate]="_maxDate"
+        [disabled]="disabled"
         [showWeekNumbers]="showWeekNumbers"
         (navigate)="onNavigateEvent($event)"
         (select)="onNavigateDateSelect($event)">

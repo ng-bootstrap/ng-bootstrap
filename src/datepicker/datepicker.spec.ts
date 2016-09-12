@@ -241,7 +241,7 @@ describe('ngb-datepicker', () => {
       expect(getYearSelect(fixture.nativeElement).value).toBe(`${today.getFullYear()}`);
     });
 
-    it('should support disabling all dates via the disabled attribute', async(() => {
+    it('should support disabling all dates and navigation via the disabled attribute', async(() => {
          const fixture = createTestComponent(
              `<ngb-datepicker [(ngModel)]="model" [startDate]="date" [disabled]="true"></ngb-datepicker>`);
          fixture.detectChanges();
@@ -254,6 +254,12 @@ describe('ngb-datepicker', () => {
                for (let index = 0; index < 31; index++) {
                  expect(getDay(fixture.nativeElement, index)).toHaveCssClass('text-muted');
                }
+
+               const links = getNavigationLinks(fixture.nativeElement);
+               expect(links[0].hasAttribute('disabled')).toBeTruthy();
+               expect(links[1].hasAttribute('disabled')).toBeTruthy();
+               expect(getYearSelect(fixture.nativeElement).disabled).toBeTruthy();
+               expect(getMonthSelect(fixture.nativeElement).disabled).toBeTruthy();
              });
        }));
   });

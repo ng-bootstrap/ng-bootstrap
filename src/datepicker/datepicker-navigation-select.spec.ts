@@ -99,6 +99,14 @@ describe('ngb-datepicker-navigation-select', () => {
     expect(getYearSelect(fixture.nativeElement).value).toBe('');
   });
 
+  it('should have disabled select boxes when disabled', () => {
+    const fixture = createTestComponent(
+        `<ngb-datepicker-navigation-select [disabled]="true" [date]="date" [minYear]="minYear" [maxYear]="maxYear">`);
+
+    expect(getMonthSelect(fixture.nativeElement).disabled).toBe(true);
+    expect(getYearSelect(fixture.nativeElement).disabled).toBe(true);
+  });
+
 });
 
 @Component({selector: 'test-cmp', template: ''})

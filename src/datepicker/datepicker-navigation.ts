@@ -23,6 +23,7 @@ import {NgbCalendar} from './ngb-calendar';
           [date]="date"
           [minYear]="minDate.year"
           [maxYear]="maxDate.year"
+          [disabled] = "disabled"
           (select)="selectDate($event)">
         </ngb-datepicker-navigation-select>
       </td>
@@ -37,6 +38,7 @@ export class NgbDatepickerNavigation {
   navigation = NavigationEvent;
 
   @Input() date: NgbDate;
+  @Input() disabled: boolean;
   @Input() maxDate: NgbDate;
   @Input() minDate: NgbDate;
   @Input() showWeekNumbers: boolean;
@@ -49,9 +51,13 @@ export class NgbDatepickerNavigation {
 
   doNavigate(event: NavigationEvent) { this.navigate.emit(event); }
 
-  nextDisabled() { return !this.maxDate ? false : this._calendar.getNext(this.date, 'm').after(this.maxDate); }
+  nextDisabled() {
+    return this.disabled || (this.maxDate && this._calendar.getNext(this.date, 'm').after(this.maxDate));
+  }
 
-  prevDisabled() { return !this.minDate ? false : this._calendar.getPrev(this.date, 'm').before(this.minDate); }
+  prevDisabled() {
+    return this.disabled || (this.minDate && this._calendar.getPrev(this.date, 'm').before(this.minDate));
+  }
 
   selectDate(date: NgbDate) { this.select.emit(date); }
 }
