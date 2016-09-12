@@ -32,7 +32,6 @@ class APIDocVisitor {
     this.typeChecker = this.program.getTypeChecker(true);
   }
 
-
   visitSourceFile(fileName) {
     var sourceFile = this.program.getSourceFile(fileName);
 
@@ -90,6 +89,10 @@ class APIDocVisitor {
           return [{fileName, className, description, methods: members.methods, properties: members.properties}];
         }
       }
+    } else if (description) {
+      members = this.visitMembers(classDeclaration.members);
+
+      return [{fileName, className, description, methods: members.methods, properties: members.properties}];
     }
 
     // a class that is not a directive or a service, not documented for now
@@ -133,7 +136,9 @@ class APIDocVisitor {
         outputs.push(this.visitOutput(members[i], outDecorator));
 
       } else if (!isPrivateOrInternal(members[i])) {
-        if (members[i].kind === ts.SyntaxKind.MethodDeclaration && !isAngularLifecycleHook(members[i].name.text)) {
+        if ((members[i].kind === ts.SyntaxKind.MethodDeclaration ||
+             members[i].kind === ts.SyntaxKind.MethodSignature) &&
+            !isAngularLifecycleHook(members[i].name.text)) {
           methods.push(this.visitMethodDeclaration(members[i]));
         } else if (
             members[i].kind === ts.SyntaxKind.PropertyDeclaration ||

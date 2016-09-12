@@ -171,4 +171,33 @@ describe('APIDocVisitor', function() {
     expect(interfaceDocs.properties[2].defaultValue).toBeUndefined();
   });
 
+  it('should extract method documentation from interfaces', function() {
+    var interfaceDocs = apiDoc(['./misc/api-doc-test-cases/interface-with-methods.ts']).SomeInterface;
+
+    expect(interfaceDocs.className).toBe('SomeInterface');
+    expect(interfaceDocs.description).toBe('Some interface');
+    expect(interfaceDocs.methods.length).toBe(1);
+
+    expect(interfaceDocs.methods[0].name).toBe('foo');
+    expect(interfaceDocs.methods[0].description).toContain('does something');
+    expect(interfaceDocs.methods[0].returnType).toBe('void');
+  });
+
+  it('should extract documentation from documented classes', function() {
+    var classDocs = apiDoc(['./misc/api-doc-test-cases/class-with-doc.ts']).DocumentedFoo;
+
+    expect(classDocs.className).toBe('DocumentedFoo');
+    expect(classDocs.description).toBe('This is a documented foo');
+
+    expect(classDocs.properties[0].name).toBe('bar');
+    expect(classDocs.properties[0].description).toContain('the bar');
+    expect(classDocs.properties[0].type).toBe('string');
+
+    expect(classDocs.methods.length).toBe(1);
+
+    expect(classDocs.methods[0].name).toBe('someMethod');
+    expect(classDocs.methods[0].description).toContain('some method');
+    expect(classDocs.methods[0].returnType).toBe('void');
+  });
+
 });
