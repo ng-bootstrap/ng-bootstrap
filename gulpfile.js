@@ -14,6 +14,8 @@ var runSequence = require('run-sequence');
 var tslint = require('gulp-tslint');
 var webpack = require('webpack');
 var typescript = require('typescript');
+var exec = require('child_process').exec;
+var isWin = /^win/.test(process.platform);
 
 var PATHS = {
   src: 'src/**/*.ts',
@@ -37,31 +39,15 @@ function webpackCallBack(taskName, gulpDone) {
 
 // Transpiling & Building
 
-var cjsProject = ts.createProject('tsconfig.json', {declaration: true, typescript: typescript});
-var esmProject = ts.createProject('tsconfig-es2015.json', {typescript: typescript});
-
 gulp.task('clean:build', function() { return del('dist/'); });
 
-gulp.task('cjs', function() {
-  var tsResult = gulp.src([PATHS.src, PATHS.typings, '!' + PATHS.specs, '!' + PATHS.testHelpers])
-                     .pipe(sourcemaps.init())
-                     .pipe(ts(cjsProject));
-
-  return merge([
-    tsResult.dts.pipe(gulp.dest('dist/')),
-    tsResult.js.pipe(sourcemaps.write('.')).pipe(gulp.dest('dist/'), tsResult.js.pipe(gulp.dest('dist/')))
-  ]);
-});
-
-gulp.task('esm', function() {
-  var tsResult = gulp.src([PATHS.src, PATHS.jasmineTypings, '!' + PATHS.specs, '!' + PATHS.testHelpers])
-                     .pipe(sourcemaps.init())
-                     .pipe(ts(esmProject));
-
-  return merge([
-    tsResult.dts.pipe(gulp.dest('dist/esm')),
-    tsResult.js.pipe(sourcemaps.write('.')).pipe(gulp.dest('dist/esm'), tsResult.js.pipe(gulp.dest('dist/esm')))
-  ]);
+gulp.task('ngc', function(cb) {
+  var executable = isWin ? 'node_modules\\.bin\\ngc.cmd' : './node_modules/.bin/ngc';
+  exec(`${executable} -p ./tsconfig-es2015.json`, (e) => {
+    if (e) console.log(e);
+    del('./dist/waste');
+    cb();
+  }).stdout.on('data', function(data) { console.log(data); });
 });
 
 gulp.task('umd', function(cb) {
@@ -72,7 +58,7 @@ gulp.task('umd', function(cb) {
 
   webpack(
       {
-        entry: './dist/index.js',
+        entry: './temp/index.js',
         output: {filename: 'dist/bundles/ng-bootstrap.js', library: 'ngb', libraryTarget: 'umd'},
         devtool: 'source-map',
         externals: {
@@ -101,8 +87,9 @@ gulp.task('npm', function() {
 
   fieldsToCopy.forEach(function(field) { targetPkgJson[field] = pkgJson[field]; });
 
-  targetPkgJson['main'] = 'index.js';
-  targetPkgJson['jsnext:main'] = 'esm/index.js';
+  targetPkgJson['main'] = 'bundles/ng-bootstrap.js';
+  targetPkgJson['module'] = 'index.js';
+  targetPkgJson['typings'] = 'index.d.ts';
 
   targetPkgJson.peerDependencies = {};
   Object.keys(pkgJson.dependencies).forEach(function(dependency) {
@@ -244,7 +231,7 @@ gulp.task('demo-push', function() {
 gulp.task('clean', ['clean:build', 'clean:tests', 'clean:demo', 'clean:demo-cache']);
 
 gulp.task('build', function(done) {
-  runSequence('lint', 'enforce-format', 'ddescribe-iit', 'test', 'clean:build', 'cjs', 'esm', 'umd', 'npm', done);
+  runSequence('lint', 'enforce-format', 'ddescribe-iit', 'test', 'clean:build', 'ngc', 'umd', 'npm', done);
 });
 
 gulp.task(
