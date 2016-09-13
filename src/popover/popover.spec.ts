@@ -2,7 +2,7 @@ import {TestBed, ComponentFixture, inject} from '@angular/core/testing';
 import {createGenericTestComponent} from '../test/common';
 
 import {By} from '@angular/platform-browser';
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 
 import {NgbPopoverModule} from './popover.module';
 import {NgbPopoverWindow, NgbPopover} from './popover';
@@ -269,13 +269,11 @@ describe('ngb-popover', () => {
     it('should initialize inputs with provided config', () => {
       const fixture = TestBed.createComponent(TestComponent);
       fixture.detectChanges();
-      const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
-      directive.triggerEventHandler('mouseenter', {});
-      fixture.detectChanges();
-      const windowEl = getWindow(fixture);
+      const popover = fixture.componentInstance.popover;
 
-      expect(windowEl).toHaveCssClass('popover-bottom');
+      expect(popover.placement).toBe(config.placement);
+      expect(popover.triggers).toBe(config.triggers);
     });
   });
 
@@ -291,13 +289,10 @@ describe('ngb-popover', () => {
 
     it('should initialize inputs with provided config as provider', () => {
       const fixture = createTestComponent(`<div ngbPopover="Great tip!"></div>`);
-      const directive = fixture.debugElement.query(By.directive(NgbPopover));
+      const popover = fixture.componentInstance.popover;
 
-      directive.triggerEventHandler('mouseenter', {});
-      fixture.detectChanges();
-      const windowEl = getWindow(fixture);
-
-      expect(windowEl).toHaveCssClass('popover-bottom');
+      expect(popover.placement).toBe(config.placement);
+      expect(popover.triggers).toBe(config.triggers);
     });
   });
 });
@@ -308,4 +303,6 @@ export class TestComponent {
   show = true;
   title: string;
   placement: string;
+
+  @ViewChild(NgbPopover) popover: NgbPopover;
 }

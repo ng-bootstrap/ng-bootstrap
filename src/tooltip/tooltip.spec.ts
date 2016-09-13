@@ -2,7 +2,7 @@ import {TestBed, ComponentFixture, inject} from '@angular/core/testing';
 import {createGenericTestComponent} from '../test/common';
 
 import {By} from '@angular/platform-browser';
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 
 import {NgbTooltipModule} from './tooltip.module';
 import {NgbTooltipWindow, NgbTooltip} from './tooltip';
@@ -267,13 +267,10 @@ describe('ngb-tooltip', () => {
     it('should initialize inputs with provided config', () => {
       const fixture = TestBed.createComponent(TestComponent);
       fixture.detectChanges();
-      const directive = fixture.debugElement.query(By.directive(NgbTooltip));
+      const tooltip = fixture.componentInstance.tooltip;
 
-      directive.triggerEventHandler('click', {});
-      fixture.detectChanges();
-      const windowEl = getWindow(fixture);
-
-      expect(windowEl).toHaveCssClass('tooltip-bottom');
+      expect(tooltip.placement).toBe(config.placement);
+      expect(tooltip.triggers).toBe(config.triggers);
     });
   });
 
@@ -289,13 +286,10 @@ describe('ngb-tooltip', () => {
 
     it('should initialize inputs with provided config as provider', () => {
       const fixture = createTestComponent(`<div ngbTooltip="Great tip!"></div>`);
-      const directive = fixture.debugElement.query(By.directive(NgbTooltip));
+      const tooltip = fixture.componentInstance.tooltip;
 
-      directive.triggerEventHandler('click', {});
-      fixture.detectChanges();
-      const windowEl = getWindow(fixture);
-
-      expect(windowEl).toHaveCssClass('tooltip-bottom');
+      expect(tooltip.placement).toBe(config.placement);
+      expect(tooltip.triggers).toBe(config.triggers);
     });
   });
 });
@@ -304,4 +298,6 @@ describe('ngb-tooltip', () => {
 export class TestComponent {
   name = 'World';
   show = true;
+
+  @ViewChild(NgbTooltip) tooltip: NgbTooltip;
 }
