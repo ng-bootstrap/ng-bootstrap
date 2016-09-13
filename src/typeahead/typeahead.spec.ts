@@ -2,7 +2,7 @@ import {TestBed, ComponentFixture, async, inject} from '@angular/core/testing';
 import {createGenericTestComponent, isBrowser} from '../test/common';
 import {expectResults, getWindowLinks} from '../test/typeahead/common';
 
-import {Component, DebugElement} from '@angular/core';
+import {Component, DebugElement, ViewChild} from '@angular/core';
 import {Validators, FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {By} from '@angular/platform-browser';
 import {Observable} from 'rxjs/Rx';
@@ -527,21 +527,13 @@ describe('ngb-typeahead', () => {
 
       beforeEach(inject([NgbTypeaheadConfig], (c: NgbTypeaheadConfig) => { c.showHint = true; }));
 
-      it('should initialize inputs with provided config', async(() => {
-           const fixture = TestBed.createComponent(TestComponent);
-           fixture.detectChanges();
-           const compiled = fixture.nativeElement;
-           const inputEl = getNativeInput(compiled);
+      it('should initialize inputs with provided config', () => {
+        const fixture = TestBed.createComponent(TestComponent);
+        fixture.detectChanges();
 
-           fixture.whenStable().then(() => {
-             changeInput(compiled, 'on');
-             fixture.detectChanges();
-             expectWindowResults(compiled, ['+one', 'one more']);
-             expect(inputEl.value).toBe('one');
-             expect(inputEl.selectionStart).toBe(2);
-             expect(inputEl.selectionEnd).toBe(3);
-           });
-         }));
+        const typeahead = fixture.componentInstance.typeahead;
+        expect(typeahead.showHint).toBe(true);
+      });
     });
 
     describe('Custom config as provider', () => {
@@ -554,21 +546,12 @@ describe('ngb-typeahead', () => {
             TestComponent, {set: {template: '<input type="text" [(ngModel)]="model" [ngbTypeahead]="findAnywhere"/>'}});
       });
 
-      it('should initialize inputs with provided config as provider', async(() => {
-           const fixture = TestBed.createComponent(TestComponent);
-           fixture.detectChanges();
-           const compiled = fixture.nativeElement;
-           const inputEl = getNativeInput(compiled);
-
-           fixture.whenStable().then(() => {
-             changeInput(compiled, 'on');
-             fixture.detectChanges();
-             expectWindowResults(compiled, ['+one', 'one more']);
-             expect(inputEl.value).toBe('one');
-             expect(inputEl.selectionStart).toBe(2);
-             expect(inputEl.selectionEnd).toBe(3);
-           });
-         }));
+      it('should initialize inputs with provided config as provider', () => {
+        const fixture = TestBed.createComponent(TestComponent);
+        fixture.detectChanges();
+        const typeahead = fixture.componentInstance.typeahead;
+        expect(typeahead.showHint).toBe(true);
+      });
     });
   }
 });
@@ -583,6 +566,8 @@ class TestComponent {
   selectEventValue: any;
 
   form = new FormGroup({control: new FormControl('', Validators.required)});
+
+  @ViewChild(NgbTypeahead) typeahead: NgbTypeahead;
 
   find = (text$: Observable<string>) => { return text$.map(text => this._strings.filter(v => v.startsWith(text))); };
 
@@ -599,6 +584,7 @@ class TestComponent {
   uppercaseFormatter = s => s.toUpperCase();
 
   uppercaseObjFormatter = (obj: {value: string}) => { return obj.value.toUpperCase(); };
+
 
   onSelect($event) { this.selectEventValue = $event; }
 }
