@@ -1,11 +1,25 @@
 {
   "compilerOptions": {
-    "target": "es2015",
+    "target": "es5",
     "module": "es2015",
     "moduleResolution": "node",
     "declaration": true,
-    "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "noEmitOnError": true
+    "baseUrl": ".",
+    "stripInternal": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "sourceMap": true,
+    "inlineSources": true,
+    "skipLibCheck": true
+  },
+  "files": [
+    "src/index.ts",
+    "typings/index.d.ts"
+  ],
+  "angularCompilerOptions": {
+    "strictMetadataEmit": true,
+    "genDir": "./dist/waste"
   }
 }
+

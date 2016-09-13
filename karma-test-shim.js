@@ -73,8 +73,8 @@ function customMatchers() {
   return System.import('/base/temp/test/matchers.js');
 }
 
-function onlyAppFiles(filePath) {
-  return /\/base\/temp\/(?!.*\.spec\.js$).*\.js$/.test(filePath);
+function onlyBuiltFiles(filePath) {
+  return /^\/base\/temp\//.test(filePath);
 }
 
 function onlySpecFiles(path) {
@@ -84,6 +84,7 @@ function onlySpecFiles(path) {
 function resolveTestFiles() {
   return Object
       .keys(window.__karma__.files)  // All files served by Karma.
+      .filter(onlyBuiltFiles)
       .filter(onlySpecFiles)
       .map(function(moduleName) {
         // loads all spec files via their global module names (e.g.
