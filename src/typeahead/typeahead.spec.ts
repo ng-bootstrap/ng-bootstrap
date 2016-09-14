@@ -384,7 +384,7 @@ describe('ngb-typeahead', () => {
   describe('select event', () => {
 
     it('should raise select event when a result is selected', () => {
-      const fixture = createTestComponent('<input type="text" [ngbTypeahead]="find" (selectItem)="onSelect($event)"/>');
+      const fixture = createTestComponent('<input [ngbTypeahead]="find" (selectItem)="onSelect($event.item)"/>');
       const input = getNativeInput(fixture.nativeElement);
 
       // clicking selected
@@ -395,6 +395,19 @@ describe('ngb-typeahead', () => {
 
       expect(fixture.componentInstance.selectEventValue).toBe('one');
     });
+
+    it('should not propagate model when preventDefault() is called on selectEvent', async(() => {
+         const fixture = createTestComponent(
+             '<input [(ngModel)]="model" [ngbTypeahead]="find" (selectItem)="$event.preventDefault()"/>');
+         const input = getNativeInput(fixture.nativeElement);
+
+         // clicking selected
+         changeInput(fixture.nativeElement, 'o');
+         fixture.detectChanges();
+         getWindowLinks(fixture.debugElement)[0].triggerEventHandler('click', {});
+         fixture.detectChanges();
+         fixture.whenStable().then(() => { expect(fixture.componentInstance.model).toBe('o'); });
+       }));
   });
 
   describe('auto attributes', () => {

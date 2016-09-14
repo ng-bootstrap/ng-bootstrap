@@ -40,6 +40,21 @@ const NGB_TYPEAHEAD_VALUE_ACCESSOR = {
 };
 
 /**
+ * Payload of the selectItem event.
+ */
+export interface NgbTypeaheadSelectItemEvent {
+  /**
+   * An item about to be selected
+   */
+  item: any;
+
+  /**
+   * Function that will prevent item selection if called
+   */
+  preventDefault: () => void;
+}
+
+/**
  * NgbTypeahead directive provides a simple way of creating powerful typeaheads from any text input
  */
 @Directive({
@@ -93,9 +108,9 @@ export class NgbTypeahead implements OnInit,
   @Input() showHint: boolean;
 
   /**
-   * An event emitted when a match is selected. Event payload is equal to the selected item.
+   * An event emitted when a match is selected. Event payload is of type NgbTypeaheadSelectItemEvent.
    */
-  @Output() selectItem = new EventEmitter();
+  @Output() selectItem = new EventEmitter<NgbTypeaheadSelectItemEvent>();
 
   onChange = (value) => {
     this._onChangeNoEmit(value);
@@ -215,9 +230,14 @@ export class NgbTypeahead implements OnInit,
   }
 
   private _selectResult(result: any) {
-    this.writeValue(result);
-    this._onChangeNoEmit(result);
-    this.selectItem.emit(result);
+    let defaultPrevented = false;
+    this.selectItem.emit({item: result, preventDefault: () => { defaultPrevented = true; }});
+
+    if (!defaultPrevented) {
+      this.writeValue(result);
+      this._onChangeNoEmit(result);
+    }
+
     this._closePopup();
   }
 
