@@ -15,7 +15,7 @@ import {NgbRatingModule} from './rating/rating.module';
 import {NgbTabsetModule, NgbTabChangeEvent} from './tabset/tabset.module';
 import {NgbTimepickerModule} from './timepicker/timepicker.module';
 import {NgbTooltipModule} from './tooltip/tooltip.module';
-import {NgbTypeaheadModule} from './typeahead/typeahead.module';
+import {NgbTypeaheadModule, NgbTypeaheadSelectItemEvent} from './typeahead/typeahead.module';
 
 export {NgbPanelChangeEvent, NgbAccordionConfig} from './accordion/accordion.module';
 export {NgbModal, NgbModalOptions, NgbModalRef, ModalDismissReasons} from './modal/modal.module';
@@ -31,7 +31,7 @@ export {NgbRatingConfig} from './rating/rating.module';
 export {NgbTimepickerConfig} from './timepicker/timepicker.module';
 export {NgbTabsetConfig} from './tabset/tabset.module';
 export {NgbTooltipConfig} from './tooltip/tooltip.module';
-export {NgbTypeaheadConfig} from './typeahead/typeahead.module';
+export {NgbTypeaheadConfig, NgbTypeaheadSelectItemEvent} from './typeahead/typeahead.module';
 
 @NgModule({
   exports: [
