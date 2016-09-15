@@ -36,7 +36,7 @@ to
 
 `<input [ngbTypeahead]="find" (selectItem)="onSelect($event.item)"/>`
 
-* build: npm package: code in ESM (ES6 Modules) format is now published at the default location in the npm package with `package.json`'s `main` entry pointint to an UMD bundle (primarily for node and webpack 1 users).
+* build: npm package: code in ESM (ES6 Modules) format is now published at the default location in the npm package with `package.json`'s `main` entry pointing to an UMD bundle (primarily for node and webpack 1 users).
 
 If you are using SystemJS, you should adjust your configuration to point to the UMD bundle.
 
