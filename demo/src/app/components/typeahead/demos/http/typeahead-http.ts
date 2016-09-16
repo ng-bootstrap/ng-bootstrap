@@ -1,5 +1,4 @@
 import {Component, Injectable} from '@angular/core';
-import {} from '@angular/core';
 import {Jsonp, URLSearchParams} from '@angular/http';
 import {Observable} from 'rxjs/Rx';
 import 'rxjs/add/operator/debounceTime';
