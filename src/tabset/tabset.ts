@@ -112,7 +112,7 @@ export class NgbTabset implements AfterContentChecked {
   /**
    * A tab change event fired right before the tab selection happens. See NgbTabChangeEvent for payload details
    */
-  @Output() change = new EventEmitter<NgbTabChangeEvent>();
+  @Output() tabChange = new EventEmitter<NgbTabChangeEvent>();
 
   constructor(config: NgbTabsetConfig) { this.type = config.type; }
 
@@ -125,7 +125,7 @@ export class NgbTabset implements AfterContentChecked {
     if (selectedTab && !selectedTab.disabled && this.activeId !== selectedTab.id) {
       let defaultPrevented = false;
 
-      this.change.emit(
+      this.tabChange.emit(
           {activeId: this.activeId, nextId: selectedTab.id, preventDefault: () => { defaultPrevented = true; }});
 
       if (!defaultPrevented) {

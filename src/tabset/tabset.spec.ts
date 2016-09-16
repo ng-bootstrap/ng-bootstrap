@@ -272,7 +272,7 @@ describe('ngb-tabset', () => {
 
   it('should emit tab change event when switching tabs', () => {
     const fixture = createTestComponent(`
-          <ngb-tabset #myTabSet="ngbTabset" (change)="changeCallback($event)">
+          <ngb-tabset #myTabSet="ngbTabset" (tabChange)="changeCallback($event)">
             <ngb-tab id="first" title="first"><template ngbTabContent>First</template></ngb-tab>
             <ngb-tab id="second" title="second"><template ngbTabContent>Second</template></ngb-tab>
           </ngb-tabset>
@@ -299,7 +299,7 @@ describe('ngb-tabset', () => {
 
   it('should not emit tab change event when selecting currently active and disabled tabs', () => {
     const fixture = createTestComponent(`
-          <ngb-tabset #myTabSet="ngbTabset" (change)="changeCallback($event)">
+          <ngb-tabset #myTabSet="ngbTabset" (tabChange)="changeCallback($event)">
             <ngb-tab id="first" title="first"><template ngbTabContent>First</template></ngb-tab>
             <ngb-tab id="second" title="second" [disabled]="true"><template ngbTabContent>Second</template></ngb-tab>
           </ngb-tabset>
@@ -324,7 +324,7 @@ describe('ngb-tabset', () => {
 
   it('should cancel tab change when preventDefault() is called', () => {
     const fixture = createTestComponent(`
-          <ngb-tabset #myTabSet="ngbTabset" (change)="changeCallback($event)">
+          <ngb-tabset #myTabSet="ngbTabset" (tabChange)="changeCallback($event)">
             <ngb-tab id="first" title="first"><template ngbTabContent>First</template></ngb-tab>
             <ngb-tab id="second" title="second"><template ngbTabContent>Second</template></ngb-tab>
           </ngb-tabset>
