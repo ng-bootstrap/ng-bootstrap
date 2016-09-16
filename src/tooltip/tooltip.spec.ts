@@ -76,6 +76,30 @@ describe('ngb-tooltip', () => {
       expect(getWindow(fixture)).toBeNull();
     });
 
+    it('should not open a tooltip if content is falsy', () => {
+      const fixture = createTestComponent(`<div [ngbTooltip]="notExisting"></div>`);
+      const directive = fixture.debugElement.query(By.directive(NgbTooltip));
+
+      directive.triggerEventHandler('mouseenter', {});
+      fixture.detectChanges();
+      const windowEl = getWindow(fixture);
+
+      expect(windowEl).toBeNull();
+    });
+
+    it('should close the tooltip tooltip if content becomes falsy', () => {
+      const fixture = createTestComponent(`<div [ngbTooltip]="name"></div>`);
+      const directive = fixture.debugElement.query(By.directive(NgbTooltip));
+
+      directive.triggerEventHandler('mouseenter', {});
+      fixture.detectChanges();
+      expect(getWindow(fixture)).not.toBeNull();
+
+      fixture.componentInstance.name = null;
+      fixture.detectChanges();
+      expect(getWindow(fixture)).toBeNull();
+    });
+
     it('should allow re-opening previously closed tooltips', () => {
       const fixture = createTestComponent(`<div ngbTooltip="Great tip!"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbTooltip));
