@@ -3,6 +3,7 @@ import {TestBed} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {NgbDatepickerModule} from './datepicker.module';
 import {NgbDatepickerDayView} from './datepicker-day-view';
+import {NgbDateStruct} from './ngb-date-struct';
 
 function getElement(element: HTMLElement): HTMLElement {
   return <HTMLElement>element.querySelector('[ngbDatepickerDayView]');
@@ -82,7 +83,7 @@ describe('ngbDatepickerDayView', () => {
 })
 class TestComponent {
   currentMonth = 7;
-  date = {year: 2016, month: 7, day: 22};
+  date: NgbDateStruct = {year: 2016, month: 7, day: 22};
   disabled = false;
   selected = false;
 }

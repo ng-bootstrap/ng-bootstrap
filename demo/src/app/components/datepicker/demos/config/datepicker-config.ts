@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NgbDatepickerConfig} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDatepickerConfig, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'ngbd-datepicker-config',
@@ -16,7 +16,7 @@ export class NgbdDatepickerConfig {
     config.maxDate = {year: 2099, month: 11, day: 31};
 
     // weekends are disabled
-    config.markDisabled = (date: {year: number, month: number, day: number}) => {
+    config.markDisabled = (date: NgbDateStruct) => {
       const d = new Date(date.year, date.month, date.day);
       return d.getDay() === 0 || d.getDay() === 6;
     };

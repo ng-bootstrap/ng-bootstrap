@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 
 const now = new Date();
 
@@ -8,7 +9,7 @@ const now = new Date();
 })
 export class NgbdDatepickerBasic {
 
-  model;
+  model: NgbDateStruct;
 
   selectToday() {
     this.model = {year: now.getFullYear(), month: now.getMonth(), day: now.getDate()};

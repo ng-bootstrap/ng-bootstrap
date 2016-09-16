@@ -18,6 +18,7 @@ import {DayTemplateContext} from './datepicker-day-template-context';
 import {NgbDateParserFormatter} from './ngb-date-parser-formatter';
 
 import {positionElements} from '../util/positioning';
+import {NgbDateStruct} from './ngb-date-struct';
 
 const NGB_DATEPICKER_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -53,17 +54,17 @@ export class NgbInputDatepicker implements ControlValueAccessor {
   /**
    * Callback to mark a given date as disabled
    */
-  @Input() markDisabled: (date: {year: number, month: number, day: number}) => boolean;
+  @Input() markDisabled: (date: NgbDateStruct) => boolean;
 
   /**
    * Min date for the navigation. If not provided will be 10 years before today or `startDate`
    */
-  @Input() minDate: {year: number, month: number, day: number};
+  @Input() minDate: NgbDateStruct;
 
   /**
    * Max date for the navigation. If not provided will be 10 years from today or `startDate`
    */
-  @Input() maxDate: {year: number, month: number, day: number};
+  @Input() maxDate: NgbDateStruct;
 
   /**
    * Whether to display navigation or not

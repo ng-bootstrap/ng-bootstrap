@@ -10,6 +10,7 @@ import {NgbDate} from './ngb-date';
 import {NgbDatepickerConfig} from './datepicker-config';
 import {NgbDatepicker} from './datepicker';
 import {DayTemplateContext} from './datepicker-day-template-context';
+import {NgbDateStruct} from './ngb-date-struct';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -381,12 +382,10 @@ describe('ngb-datepicker', () => {
 @Component({selector: 'test-cmp', template: ''})
 class TestComponent {
   date = {year: 2016, month: 7};
-  minDate = {year: 2010, month: 0, day: 1};
-  maxDate = {year: 2020, month: 11, day: 31};
+  minDate: NgbDateStruct = {year: 2010, month: 0, day: 1};
+  maxDate: NgbDateStruct = {year: 2020, month: 11, day: 31};
   form = new FormGroup({control: new FormControl('', Validators.required)});
   disabledForm = new FormGroup({control: new FormControl({value: null, disabled: true})});
   model;
-  markDisabled = (date: {year: number, month: number, day: number}) => {
-    return NgbDate.from(date).equals(new NgbDate(2016, 7, 22));
-  };
+  markDisabled = (date: NgbDateStruct) => { return NgbDate.from(date).equals(new NgbDate(2016, 7, 22)); };
 }

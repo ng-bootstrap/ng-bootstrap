@@ -1,5 +1,6 @@
 import {Injectable, TemplateRef} from '@angular/core';
 import {DayTemplateContext} from './datepicker-day-template-context';
+import {NgbDateStruct} from './ngb-date-struct';
 
 /**
  * Configuration service for the NgbDatepicker component.
@@ -10,9 +11,9 @@ import {DayTemplateContext} from './datepicker-day-template-context';
 export class NgbDatepickerConfig {
   dayTemplate: TemplateRef<DayTemplateContext>;
   firstDayOfWeek = 1;
-  markDisabled: (date: {year: number, month: number, day: number}) => boolean;
-  minDate: {year: number, month: number, day: number};
-  maxDate: {year: number, month: number, day: number};
+  markDisabled: (date: NgbDateStruct) => boolean;
+  minDate: NgbDateStruct;
+  maxDate: NgbDateStruct;
   showNavigation = true;
   showWeekdays = true;
   showWeekNumbers = false;

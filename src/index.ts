@@ -22,7 +22,12 @@ export {NgbAlertModule, NgbAlertConfig, NgbSelfClosingAlertConfig} from './alert
 export {NgbButtonsModule} from './buttons/radio.module';
 export {NgbCarouselModule, NgbCarouselConfig} from './carousel/carousel.module';
 export {NgbCollapseModule} from './collapse/collapse.module';
-export {NgbDatepickerModule, NgbDatepickerI18n, NgbDatepickerConfig} from './datepicker/datepicker.module';
+export {
+  NgbDatepickerModule,
+  NgbDatepickerI18n,
+  NgbDatepickerConfig,
+  NgbDateStruct
+} from './datepicker/datepicker.module';
 export {NgbDropdownModule, NgbDropdownConfig} from './dropdown/dropdown.module';
 export {NgbModalModule, NgbModal, NgbModalOptions, NgbModalRef, ModalDismissReasons} from './modal/modal.module';
 export {NgbPaginationModule, NgbPaginationConfig} from './pagination/pagination.module';

@@ -1,4 +1,5 @@
 import {Component, Input} from '@angular/core';
+import {NgbDateStruct} from './ngb-date-struct';
 
 @Component({
   selector: '[ngbDatepickerDayView]',
@@ -14,7 +15,7 @@ import {Component, Input} from '@angular/core';
 })
 export class NgbDatepickerDayView {
   @Input() currentMonth: number;
-  @Input() date: {year: number, month: number, day: number};
+  @Input() date: NgbDateStruct;
   @Input() disabled: boolean;
   @Input() selected: boolean;
 
