@@ -8,6 +8,7 @@ import {FormsModule} from '@angular/forms';
 import {NgbDatepickerModule} from './datepicker.module';
 import {NgbInputDatepicker} from './datepicker-input';
 import {NgbDatepicker} from './datepicker';
+import {NgbDateStruct} from './ngb-date-struct';
 
 const createTestCmpt = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -215,7 +216,7 @@ describe('NgbInputDatepicker', () => {
 
 @Component({selector: 'test-cmp', template: ''})
 class TestComponent {
-  date;
+  date: NgbDateStruct;
   isDisabled;
 
   open(d: NgbInputDatepicker) { d.open(); }

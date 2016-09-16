@@ -7,6 +7,7 @@ import {MonthViewModel, NavigationEvent} from './datepicker-view-model';
 import {toInteger} from '../util/util';
 import {DayTemplateContext} from './datepicker-day-template-context';
 import {NgbDatepickerConfig} from './datepicker-config';
+import {NgbDateStruct} from './ngb-date-struct';
 
 const NGB_DATEPICKER_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -71,17 +72,17 @@ export class NgbDatepicker implements OnChanges,
   /**
    * Callback to mark a given date as disabled
    */
-  @Input() markDisabled: (date: {year: number, month: number, day: number}) => boolean;
+  @Input() markDisabled: (date: NgbDateStruct) => boolean;
 
   /**
    * Min date for the navigation. If not provided will be 10 years before today or `startDate`
    */
-  @Input() minDate: {year: number, month: number, day: number};
+  @Input() minDate: NgbDateStruct;
 
   /**
    * Max date for the navigation. If not provided will be 10 years from today or `startDate`
    */
-  @Input() maxDate: {year: number, month: number, day: number};
+  @Input() maxDate: NgbDateStruct;
 
   /**
    * Whether to display navigation or not
