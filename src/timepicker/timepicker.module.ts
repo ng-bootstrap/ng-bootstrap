@@ -5,6 +5,7 @@ import {NGB_TIMEPICKER_DIRECTIVES} from './timepicker';
 import {NgbTimepickerConfig} from './timepicker-config';
 
 export {NgbTimepickerConfig} from './timepicker-config';
+export {NgbTimeStruct} from './ngb-time-struct';
 
 @NgModule({
   declarations: NGB_TIMEPICKER_DIRECTIVES,
