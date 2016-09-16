@@ -16,7 +16,7 @@ import {
   NgZone
 } from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {Observable, Subject, Subscription} from 'rxjs/Rx';
+import {Observable, Subscription} from 'rxjs/Rx';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/let';
 import {positionElements} from '../util/positioning';
@@ -60,10 +60,9 @@ export interface NgbTypeaheadSelectItemEvent {
 @Directive({
   selector: 'input[ngbTypeahead]',
   host: {
-    '(blur)': 'onTouched()',
+    '(blur)': 'handleBlur()',
     '[class.open]': 'isPopupOpen()',
     '(document:click)': 'dismissPopup()',
-    '(input)': 'onChange($event.target.value)',
     '(keydown)': 'handleKeyDown($event)',
     'autocomplete': 'off',
     'autocapitalize': 'off',
@@ -71,13 +70,12 @@ export interface NgbTypeaheadSelectItemEvent {
   },
   providers: [NGB_TYPEAHEAD_VALUE_ACCESSOR]
 })
-export class NgbTypeahead implements OnInit,
-    ControlValueAccessor, OnDestroy {
-  private _onChangeNoEmit: (_: any) => void;
+export class NgbTypeahead implements ControlValueAccessor,
+    OnInit, OnDestroy {
   private _popupService: PopupService<NgbTypeaheadWindow>;
   private _subscription: Subscription;
   private _userInput: string;
-  private _valueChanges = new Subject<string>();
+  private _valueChanges: Observable<string>;
   private _windowRef: ComponentRef<NgbTypeaheadWindow>;
   private _zoneSubscription: any;
 
@@ -112,21 +110,19 @@ export class NgbTypeahead implements OnInit,
    */
   @Output() selectItem = new EventEmitter<NgbTypeaheadSelectItemEvent>();
 
-  onChange = (value) => {
-    this._onChangeNoEmit(value);
-    this._valueChanges.next(value);
-  };
-
-  onTouched = () => {};
+  private _onTouched = () => {};
+  private _onChange = (_: any) => {};
 
   constructor(
       private _elementRef: ElementRef, private _viewContainerRef: ViewContainerRef, private _renderer: Renderer,
       private _injector: Injector, componentFactoryResolver: ComponentFactoryResolver, config: NgbTypeaheadConfig,
       ngZone: NgZone) {
     this.showHint = config.showHint;
+
+    this._valueChanges = Observable.fromEvent(_elementRef.nativeElement, 'input', ($event) => $event.target.value);
+
     this._popupService = new PopupService<NgbTypeaheadWindow>(
         NgbTypeaheadWindow, _injector, _viewContainerRef, _renderer, componentFactoryResolver);
-    this._onChangeNoEmit = (_: any) => {};
 
     this._zoneSubscription = ngZone.onStable.subscribe(() => {
       if (this._windowRef) {
@@ -135,34 +131,24 @@ export class NgbTypeahead implements OnInit,
     });
   }
 
+  ngOnInit() {
+    this._subscription = this._subscribeToUserInput(
+        this._valueChanges
+            .do(value => {
+              this._userInput = value;
+              this._onChange(value);
+            })
+            .let (this.ngbTypeahead));
+  }
+
   ngOnDestroy() {
-    this._subscription.unsubscribe();
+    this._unsubscribeFromUserInput();
     this._zoneSubscription.unsubscribe();
   }
 
-  ngOnInit() {
-    this._subscription =
-        this._valueChanges.do(value => this._userInput = value).let (this.ngbTypeahead).subscribe((results) => {
-          if (!results || results.length === 0) {
-            this._closePopup();
-          } else {
-            this._openPopup();
-            this._windowRef.instance.results = results;
-            this._windowRef.instance.term = this._elementRef.nativeElement.value;
-            if (this.resultFormatter) {
-              this._windowRef.instance.formatter = this.resultFormatter;
-            }
-            if (this.resultTemplate) {
-              this._windowRef.instance.resultTemplate = this.resultTemplate;
-            }
-            this._showHint();
-          }
-        });
-  }
+  registerOnChange(fn: (value: any) => any): void { this._onChange = fn; }
 
-  registerOnChange(fn: (value: any) => any): void { this._onChangeNoEmit = fn; }
-
-  registerOnTouched(fn: () => any): void { this.onTouched = fn; }
+  registerOnTouched(fn: () => any): void { this._onTouched = fn; }
 
   writeValue(value) { this._writeInputValue(this._formatItemForInput(value)); }
 
@@ -184,6 +170,11 @@ export class NgbTypeahead implements OnInit,
    * @internal
    */
   isPopupOpen() { return this._windowRef != null; }
+
+  /**
+   * @internal
+   */
+  handleBlur() { this._onTouched(); }
 
   /**
    * @internal
@@ -235,7 +226,7 @@ export class NgbTypeahead implements OnInit,
 
     if (!defaultPrevented) {
       this.writeValue(result);
-      this._onChangeNoEmit(result);
+      this._onChange(result);
     }
 
     this._closePopup();
@@ -262,5 +253,31 @@ export class NgbTypeahead implements OnInit,
 
   private _writeInputValue(value: string): void {
     this._renderer.setElementProperty(this._elementRef.nativeElement, 'value', value);
+  }
+
+  private _subscribeToUserInput(userInput$: Observable<any[]>): Subscription {
+    return userInput$.subscribe((results) => {
+      if (!results || results.length === 0) {
+        this._closePopup();
+      } else {
+        this._openPopup();
+        this._windowRef.instance.results = results;
+        this._windowRef.instance.term = this._elementRef.nativeElement.value;
+        if (this.resultFormatter) {
+          this._windowRef.instance.formatter = this.resultFormatter;
+        }
+        if (this.resultTemplate) {
+          this._windowRef.instance.resultTemplate = this.resultTemplate;
+        }
+        this._showHint();
+      }
+    });
+  }
+
+  private _unsubscribeFromUserInput() {
+    if (this._subscription) {
+      this._subscription.unsubscribe();
+    }
+    this._subscription = null;
   }
 }
