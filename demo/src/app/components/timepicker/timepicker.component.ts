@@ -6,6 +6,7 @@ import {DEMO_SNIPPETS} from './demos';
   template: `
     <ngbd-content-wrapper component="Timepicker">
       <ngbd-api-docs directive="NgbTimepicker"></ngbd-api-docs>
+      <ngbd-api-docs-class type="NgbTimeStruct"></ngbd-api-docs-class>
       <ngbd-api-docs-config type="NgbTimepickerConfig"></ngbd-api-docs-config>
       <ngbd-example-box demoTitle="Timepicker" [htmlSnippet]="snippets.basic.markup" [tsSnippet]="snippets.basic.code">
         <ngbd-timepicker-basic></ngbd-timepicker-basic>

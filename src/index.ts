@@ -35,7 +35,7 @@ export {NgbPopoverModule, NgbPopoverConfig} from './popover/popover.module';
 export {NgbProgressbarModule, NgbProgressbarConfig} from './progressbar/progressbar.module';
 export {NgbRatingModule, NgbRatingConfig} from './rating/rating.module';
 export {NgbTabsetModule, NgbTabChangeEvent, NgbTabsetConfig} from './tabset/tabset.module';
-export {NgbTimepickerModule, NgbTimepickerConfig} from './timepicker/timepicker.module';
+export {NgbTimepickerModule, NgbTimepickerConfig, NgbTimeStruct} from './timepicker/timepicker.module';
 export {NgbTooltipModule, NgbTooltipConfig} from './tooltip/tooltip.module';
 export {NgbTypeaheadModule, NgbTypeaheadConfig, NgbTypeaheadSelectItemEvent} from './typeahead/typeahead.module';
 
