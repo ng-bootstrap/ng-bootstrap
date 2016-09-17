@@ -133,7 +133,7 @@ export class NgbInputDatepicker implements ControlValueAccessor {
    * @internal
    */
   manualDateChange(value: string) {
-    this._model = this._parserFormatter.parse(value);
+    this._model = NgbDate.from(this._parserFormatter.parse(value));
     this._onChange(this._model ? {year: this._model.year, month: this._model.month, day: this._model.day} : null);
     this._writeModelValue(this._model);
   }

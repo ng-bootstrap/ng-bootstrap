@@ -26,7 +26,8 @@ export {
   NgbDatepickerModule,
   NgbDatepickerI18n,
   NgbDatepickerConfig,
-  NgbDateStruct
+  NgbDateStruct,
+  NgbDateParserFormatter
 } from './datepicker/datepicker.module';
 export {NgbDropdownModule, NgbDropdownConfig} from './dropdown/dropdown.module';
 export {NgbModalModule, NgbModal, NgbModalOptions, NgbModalRef, ModalDismissReasons} from './modal/modal.module';
