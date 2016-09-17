@@ -2,7 +2,7 @@
   You can easily override open and close triggers by specifying event names (separated by <code>:</code>) in the <code>triggers</code> property.
 </p>
 
-<button type="button" class="btn btn-secondary" ngbPopover="You see, I show up on hover!" triggers="mouseenter:mouseleave" title="Pop title">
+<button type="button" class="btn btn-secondary" ngbPopover="You see, I show up on hover!" triggers="mouseenter:mouseleave" popoverTitle="Pop title">
   Hover over me!
 </button>
 
@@ -11,7 +11,7 @@
   Alternatively you can take full manual control over popover opening / closing events.
 </p>
 
-<button type="button" class="btn btn-secondary" ngbPopover="What a great tip!" triggers="manual" #p="ngbPopover" (click)="p.open()" title="Pop title">
+<button type="button" class="btn btn-secondary" ngbPopover="What a great tip!" triggers="manual" #p="ngbPopover" (click)="p.open()" popoverTitle="Pop title">
   Click me to open a popover
 </button>
 <button type="button" class="btn btn-secondary" (click)="p.close()">

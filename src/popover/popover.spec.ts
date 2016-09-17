@@ -42,7 +42,7 @@ describe('ngb-popover', () => {
   describe('basic functionality', () => {
 
     it('should open and close a popover - default settings and content as string', () => {
-      const fixture = createTestComponent(`<div ngbPopover="Great tip!" title="Title"></div>`);
+      const fixture = createTestComponent(`<div ngbPopover="Great tip!" popoverTitle="Title"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
       directive.triggerEventHandler('click', {});
@@ -62,7 +62,7 @@ describe('ngb-popover', () => {
     it('should open and close a popover - default settings and content from a template', () => {
       const fixture = createTestComponent(`
           <template #t>Hello, {{name}}!</template>
-          <div [ngbPopover]="t" title="Title"></div>`);
+          <div [ngbPopover]="t" popoverTitle="Title"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbPopover));
       const defaultConfig = new NgbPopoverConfig();
 
@@ -81,7 +81,7 @@ describe('ngb-popover', () => {
     });
 
     it('should allow re-opening previously closed popovers', () => {
-      const fixture = createTestComponent(`<div ngbPopover="Great tip!" title="Title"></div>`);
+      const fixture = createTestComponent(`<div ngbPopover="Great tip!" popoverTitle="Title"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
       directive.triggerEventHandler('click', {});
@@ -99,7 +99,7 @@ describe('ngb-popover', () => {
 
     it('should not leave dangling popovers in the DOM', () => {
       const fixture =
-          createTestComponent(`<template [ngIf]="show"><div ngbPopover="Great tip!" title="Title"></div></template>`);
+          createTestComponent(`<template [ngIf]="show"><div ngbPopover="Great tip!" popoverTitle="Title"></div></template>`);
       const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
       directive.triggerEventHandler('click', {});
