@@ -46,7 +46,7 @@ export class NgbPopover implements OnInit, OnDestroy {
   /**
    * Title of a popover.
    */
-  @Input() title: string;
+  @Input() popoverTitle: string;
   /**
    * Placement of a popover. Accepts: "top", "bottom", "left", "right"
    */
@@ -85,7 +85,7 @@ export class NgbPopover implements OnInit, OnDestroy {
     if (!this._windowRef) {
       this._windowRef = this._popupService.open(this.ngbPopover);
       this._windowRef.instance.placement = this.placement;
-      this._windowRef.instance.title = this.title;
+      this._windowRef.instance.title = this.popoverTitle;
     }
   }
 
