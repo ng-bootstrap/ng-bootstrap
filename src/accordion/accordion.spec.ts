@@ -33,7 +33,7 @@ function expectOpenPanels(nativeEl: HTMLElement, openPanelsDef: boolean[]) {
 describe('ngb-accordion', () => {
   let html = `
     <ngb-accordion #acc="ngbAccordion" [closeOthers]="closeOthers" [activeIds]="activeIds"
-      (change)="changeCallback($event)" [type]="classType">
+      (panelChange)="changeCallback($event)" [type]="classType">
       <ngb-panel *ngFor="let panel of panels" [id]="panel.id" [disabled]="panel.disabled" [type]="panel.type">
         <template ngbPanelTitle>{{panel.title}}</template>
         <template ngbPanelContent>{{panel.content}}</template>
