@@ -68,23 +68,7 @@ module.exports = function makeWebpackConfig() {
     extensions: ['', '.ts', '.js', '.css', '.scss', '.html'],
 
     alias: {
-      '@ng-bootstrap/ng-bootstrap': root('src/index.ts'),
-      '@ng-bootstrap/accordion': root('src/accordion/index.ts'),
-      '@ng-bootstrap/alert': root('src/alert/index.ts'),
-      '@ng-bootstrap/buttons': root('src/buttons/index.ts'),
-      '@ng-bootstrap/carousel': root('src/carousel/index.ts'),
-      '@ng-bootstrap/collapse': root('src/collapse/index.ts'),
-      '@ng-bootstrap/datepicker': root('src/datepicker/index.ts'),
-      '@ng-bootstrap/dropdown': root('src/dropdown/index.ts'),
-      '@ng-bootstrap/modal': root('src/modal/index.ts'),
-      '@ng-bootstrap/pagination': root('src/pagination/index.ts'),
-      '@ng-bootstrap/popover': root('src/popover/index.ts'),
-      '@ng-bootstrap/progressbar': root('src/progressbar/index.ts'),
-      '@ng-bootstrap/rating': root('src/rating/index.ts'),
-      '@ng-bootstrap/tabset': root('src/tabset/index.ts'),
-      '@ng-bootstrap/timepicker': root('src/timepicker/index.ts'),
-      '@ng-bootstrap/tooltip': root('src/tooltip/index.ts'),
-      '@ng-bootstrap/typeahead': root('src/typeahead/index.ts')
+      '@ng-bootstrap/ng-bootstrap': root('src/index.ts')
     }
   };
 
@@ -199,9 +183,7 @@ module.exports = function makeWebpackConfig() {
       // Reference: http://webpack.github.io/docs/list-of-plugins.html#uglifyjsplugin
       // Minify all javascript, switch loaders to minimizing mode
       new webpack.optimize.UglifyJsPlugin({
-        // Angular 2 is broken again, disabling mangle until beta 6 that should fix the thing
-        // Todo: remove this with beta 6
-        mangle: false
+        mangle: true
       }),
 
       // Copy assets from the public folder
