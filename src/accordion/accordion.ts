@@ -127,7 +127,7 @@ export class NgbAccordion implements AfterContentChecked {
   /**
    * A panel change event fired right before the panel toggle happens. See NgbPanelChangeEvent for payload details
    */
-  @Output() change = new EventEmitter<NgbPanelChangeEvent>();
+  @Output() panelChange = new EventEmitter<NgbPanelChangeEvent>();
 
   /**
    * A map that stores each panel state
@@ -154,7 +154,8 @@ export class NgbAccordion implements AfterContentChecked {
       const nextState = !this._states.get(panelId);
       let defaultPrevented = false;
 
-      this.change.emit({panelId: panelId, nextState: nextState, preventDefault: () => { defaultPrevented = true; }});
+      this.panelChange.emit(
+          {panelId: panelId, nextState: nextState, preventDefault: () => { defaultPrevented = true; }});
 
       if (!defaultPrevented) {
         this._states.set(panelId, nextState);
