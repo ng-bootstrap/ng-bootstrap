@@ -15,7 +15,7 @@ describe('ngb-date parsing and formatting', () => {
       expect(pf.parse('   ')).toBeNull();
     });
 
-    it('should parse valid date', () => { expect(pf.parse('2016-05-12')).toEqual(new NgbDate(2016, 4, 12)); });
+    it('should parse valid date', () => { expect(pf.parse('2016-05-12')).toEqual({year: 2016, month: 4, day: 12}); });
 
     it('should parse non-date as null', () => {
       expect(pf.parse('foo-bar-baz')).toBeNull();
@@ -24,7 +24,7 @@ describe('ngb-date parsing and formatting', () => {
     });
 
     it('should do its best parsing incomplete dates',
-       () => { expect(pf.parse('2011-5')).toEqual(new NgbDate(2011, 4, null)); });
+       () => { expect(pf.parse('2011-5')).toEqual({year: 2011, month: 4, day: null}); });
   });
 
   describe('formatting', () => {
@@ -34,14 +34,14 @@ describe('ngb-date parsing and formatting', () => {
       expect(pf.format(undefined)).toBe('');
     });
 
-    it('should format a valid date', () => { expect(pf.format(new NgbDate(2016, 9, 15))).toBe('2016-10-15'); });
+    it('should format a valid date', () => { expect(pf.format({year: 2016, month: 9, day: 15})).toBe('2016-10-15'); });
 
     it('should format a valid date with padding',
-       () => { expect(pf.format(new NgbDate(2016, 9, 5))).toBe('2016-10-05'); });
+       () => { expect(pf.format({year: 2016, month: 9, day: 5})).toBe('2016-10-05'); });
 
     it('should try its best with invalid dates', () => {
-      expect(pf.format(new NgbDate(2016, NaN, undefined))).toBe('2016--');
-      expect(pf.format(new NgbDate(2016, null, 0))).toBe('2016--00');
+      expect(pf.format({year: 2016, month: NaN, day: undefined})).toBe('2016--');
+      expect(pf.format({year: 2016, month: null, day: 0})).toBe('2016--00');
     });
   });
 

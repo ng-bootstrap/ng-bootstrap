@@ -16,6 +16,7 @@ import {NgbDatepickerConfig} from './datepicker-config';
 export {NgbDatepickerConfig} from './datepicker-config';
 export {NgbDatepickerI18n} from './datepicker-i18n';
 export {NgbDateStruct} from './ngb-date-struct';
+export {NgbDateParserFormatter} from './ngb-date-parser-formatter';
 
 @NgModule({
   declarations: [
