@@ -26,6 +26,11 @@ import {DEMO_SNIPPETS} from './demos';
                         [tsSnippet]="snippets.i18n.code">
         <ngbd-datepicker-i18n></ngbd-datepicker-i18n>
       </ngbd-example-box>
+      <ngbd-example-box demoTitle="Custom day view" 
+                        [htmlSnippet]="snippets.customday.markup" 
+                        [tsSnippet]="snippets.customday.code">
+        <ngbd-datepicker-customday></ngbd-datepicker-customday>
+      </ngbd-example-box>
       <ngbd-example-box demoTitle="Global configuration of datepickers" 
                         [htmlSnippet]="snippets.config.markup" 
                         [tsSnippet]="snippets.config.code">
