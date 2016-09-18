@@ -101,27 +101,15 @@ export class NgbInputDatepicker implements ControlValueAccessor {
     });
   }
 
-  /**
-   * @internal
-   */
   registerOnChange(fn: (value: any) => any): void { this._onChange = fn; }
 
-  /**
-   * @internal
-   */
   registerOnTouched(fn: () => any): void { this._onTouched = fn; }
 
-  /**
-   * @internal
-   */
   writeValue(value) {
     this._model = value ? new NgbDate(value.year, value.month, value.day) : null;
     this._writeModelValue(this._model);
   }
 
-  /**
-   * @internal
-   */
   setDisabledState(isDisabled: boolean): void {
     this._renderer.setElementProperty(this._elRef.nativeElement, 'disabled', isDisabled);
     if (this.isOpen()) {

@@ -181,24 +181,12 @@ export class NgbDatepicker implements OnChanges,
     this._updateData();
   }
 
-  /**
-   * @internal
-   */
   registerOnChange(fn: (value: any) => any): void { this.onChange = fn; }
 
-  /**
-   * @internal
-   */
   registerOnTouched(fn: () => any): void { this.onTouched = fn; }
 
-  /**
-   * @internal
-   */
   writeValue(value) { this.model = value ? new NgbDate(value.year, value.month, value.day) : null; }
 
-  /**
-   * @internal
-   */
   setDisabledState(isDisabled: boolean) { this.disabled = isDisabled; }
 
   private _setDates() {
