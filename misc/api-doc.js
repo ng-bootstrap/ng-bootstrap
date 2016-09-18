@@ -10,7 +10,7 @@ function getNamesCompareFn(name) {
 
 const ANGULAR_LIFECYCLE_METHODS = [
   'ngOnInit', 'ngOnChanges', 'ngDoCheck', 'ngOnDestroy', 'ngAfterContentInit', 'ngAfterContentChecked',
-  'ngAfterViewInit', 'ngAfterViewChecked'
+  'ngAfterViewInit', 'ngAfterViewChecked', 'writeValue', 'registerOnChange', 'registerOnTouched', 'setDisabledState'
 ];
 
 function isInternalMember(member) {
