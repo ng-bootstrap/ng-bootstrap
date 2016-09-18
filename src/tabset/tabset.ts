@@ -100,7 +100,7 @@ export class NgbTabset implements AfterContentChecked {
   @ContentChildren(NgbTab) tabs: QueryList<NgbTab>;
 
   /**
-   * An identifier of a tab that should be selected (active).
+   * An identifier of an initially selected (active) tab. Use the "select" method to switch a tab programmatically.
    */
   @Input() activeId: string;
 
