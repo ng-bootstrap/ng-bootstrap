@@ -2,6 +2,8 @@ import {Component, Input, Output, EventEmitter, TemplateRef} from '@angular/core
 
 import {toString} from '../util/util';
 
+import { NgbTypeaheadConfig } from './typeahead-config';
+
 /**
  * Context for the typeahead result template in case you want to override the default one
  */
@@ -36,7 +38,15 @@ export interface ResultTemplateContext {
   `
 })
 export class NgbTypeaheadWindow {
-  activeIdx = 0;
+  
+  activeIdx: number;
+
+  /**
+   * Constructor
+   */
+  constructor(private typeaheadConfig: NgbTypeaheadConfig) {
+    this.activeIdx = typeaheadConfig.firstItemSelected ? 0 : -1;
+  }
 
   /**
    * Typeahead match results to be displayed
