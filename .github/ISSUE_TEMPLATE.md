@@ -5,6 +5,7 @@ existing issues (both open and closed) prior to opening any new issue and ensure
 ### Bug description:
 
 ### Link to minimally-working plunker that reproduces the issue:
+You can use this template as a starting point: http://plnkr.co/edit/l7oMt8?p=preview
 
 ### Version of Angular, ng-bootstrap, and Bootstrap:
 
