@@ -8,5 +8,5 @@ import {Injectable} from '@angular/core';
 @Injectable()
 export class NgbTypeaheadConfig {
   showHint = false;
-  firstItemSelected = true;
+  autoSelectItem = true;
 }
