@@ -129,7 +129,7 @@ export class NgbTypeahead implements OnInit,
       private _injector: Injector, componentFactoryResolver: ComponentFactoryResolver, config: NgbTypeaheadConfig,
       ngZone: NgZone) {
     this.showHint = config.showHint;
-    this.autoSelectItem = config.showHint;
+    this.autoSelectItem = config.autoSelectItem;
     this._popupService = new PopupService<NgbTypeaheadWindow>(
         NgbTypeaheadWindow, _injector, _viewContainerRef, _renderer, componentFactoryResolver);
     this._onChangeNoEmit = (_: any) => {};
