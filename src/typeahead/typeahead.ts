@@ -153,7 +153,10 @@ export class NgbTypeahead implements OnInit,
             this._closePopup();
           } else {
             this._openPopup();
-            this._windowRef.instance.activeIdx  = this.autoSelectItem ? 0 : -1;
+             if(this.autoSelectItem !== null && this.autoSelectItem !== undefined){
+              this._windowRef.instance.activeIdx  = this.autoSelectItem ? 0 : -1;
+              this._windowRef.instance.autoSelectItem = this.autoSelectItem;
+            }
             this._windowRef.instance.results = results;
             this._windowRef.instance.term = this._elementRef.nativeElement.value;
             if (this.resultFormatter) {
