@@ -37,7 +37,8 @@ export interface ResultTemplateContext {
 })
 export class NgbTypeaheadWindow {
   
-  activeIdx: number;
+  activeIdx: number = 0;
+  autoSelectItem: boolean = true;
 
   /**
    * Typeahead match results to be displayed
@@ -74,7 +75,7 @@ export class NgbTypeaheadWindow {
 
   next() { this.activeIdx = (this.activeIdx + 1) % this.results.length; }
 
-  prev() { this.activeIdx = (this.activeIdx === -1 ? this.results.length - 1 : this.activeIdx - 1); }
+  prev() { this.activeIdx = ( (this.autoSelectItem === true && this.activeIdx === 0) || (this.autoSelectItem === false && this.activeIdx === -1) ? this.results.length - 1 : this.activeIdx - 1); }
 
   /**
    * @internal
