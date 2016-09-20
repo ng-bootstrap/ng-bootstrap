@@ -473,7 +473,7 @@ describe('ngb-typeahead', () => {
            const fixture = createTestComponent(`<input type="text" [(ngModel)]="model" 
                 [ngbTypeahead]="findAnywhere" 
                 [inputFormatter]="uppercaseFormatter" 
-                [showHint]="true"/>`);
+                [showHint]="true" [autoSelectItem]="true" />`);
            const compiled = fixture.nativeElement;
            const inputEl = getNativeInput(compiled);
 
@@ -496,7 +496,7 @@ describe('ngb-typeahead', () => {
 
       it('should restore hint when results window is dismissed', async(() => {
            const fixture = createTestComponent(
-               `<input type="text" [(ngModel)]="model" [ngbTypeahead]="findAnywhere" [showHint]="true"/>`);
+               `<input type="text" [(ngModel)]="model" [ngbTypeahead]="findAnywhere" [showHint]="true" [autoSelectItem]="true" />`);
            fixture.detectChanges();
            const compiled = fixture.nativeElement;
            const inputEl = getNativeInput(compiled);
@@ -525,7 +525,10 @@ describe('ngb-typeahead', () => {
             TestComponent, {set: {template: '<input type="text" [(ngModel)]="model" [ngbTypeahead]="findAnywhere"/>'}});
       });
 
-      beforeEach(inject([NgbTypeaheadConfig], (c: NgbTypeaheadConfig) => { c.showHint = true; c.autoSelectItem = false; }));
+      beforeEach(inject([NgbTypeaheadConfig], (c: NgbTypeaheadConfig) => {
+        c.showHint = true;
+        c.autoSelectItem = false;
+      }));
 
       it('should initialize inputs with provided config', () => {
         const fixture = TestBed.createComponent(TestComponent);
