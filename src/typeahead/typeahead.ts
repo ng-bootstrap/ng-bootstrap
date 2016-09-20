@@ -107,9 +107,9 @@ export class NgbTypeahead implements OnInit,
    */
   @Input() showHint: boolean;
 
-   /**
-   * Auto select the first item in the result list 
-   */
+  /**
+  * Auto select the first item in the result list
+  */
   @Input() autoSelectItem: boolean = null;
 
   /**
@@ -154,7 +154,7 @@ export class NgbTypeahead implements OnInit,
           } else {
             this._openPopup();
             if (this.autoSelectItem !== null && this.autoSelectItem !== undefined) {
-              this._windowRef.instance.activeIdx  = this.autoSelectItem ? 0 : -1;
+              this._windowRef.instance.activeIdx = this.autoSelectItem ? 0 : -1;
               this._windowRef.instance.autoSelectItem = this.autoSelectItem;
             }
             this._windowRef.instance.results = results;
