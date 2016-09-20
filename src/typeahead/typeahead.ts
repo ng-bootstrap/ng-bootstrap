@@ -106,7 +106,7 @@ export class NgbTypeahead implements OnInit,
    * Show hint when an option in the result list matches.
    */
   @Input() showHint: boolean;
-  
+
    /**
    * Auto select the first item in the result list 
    */
@@ -153,7 +153,7 @@ export class NgbTypeahead implements OnInit,
             this._closePopup();
           } else {
             this._openPopup();
-             if(this.autoSelectItem !== null && this.autoSelectItem !== undefined){
+            if (this.autoSelectItem !== null && this.autoSelectItem !== undefined) {
               this._windowRef.instance.activeIdx  = this.autoSelectItem ? 0 : -1;
               this._windowRef.instance.autoSelectItem = this.autoSelectItem;
             }
