@@ -75,7 +75,9 @@ export class NgbTypeaheadWindow {
 
   next() { this.activeIdx = (this.activeIdx + 1) % this.results.length; }
 
-  prev() { this.activeIdx = ( (this.autoSelectItem === true && this.activeIdx === 0) || (this.autoSelectItem === false && this.activeIdx === -1) ? this.results.length - 1 : this.activeIdx - 1); }
+   prev() { this.activeIdx = ( (this.autoSelectItem === true && this.activeIdx === 0) ||
+   (this.autoSelectItem === false && this.activeIdx === -1)
+   ? this.results.length - 1 : this.activeIdx - 1); }
 
   /**
    * @internal
