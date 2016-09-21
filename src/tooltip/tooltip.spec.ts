@@ -2,7 +2,7 @@ import {TestBed, ComponentFixture, inject} from '@angular/core/testing';
 import {createGenericTestComponent} from '../test/common';
 
 import {By} from '@angular/platform-browser';
-import {Component, ViewChild} from '@angular/core';
+import {Component, ViewChild, ChangeDetectionStrategy} from '@angular/core';
 
 import {NgbTooltipModule} from './tooltip.module';
 import {NgbTooltipWindow, NgbTooltip} from './tooltip';
@@ -10,6 +10,9 @@ import {NgbTooltipConfig} from './tooltip-config';
 
 const createTestComponent =
     (html: string) => <ComponentFixture<TestComponent>>createGenericTestComponent(html, TestComponent);
+
+const createOnPushTestComponent =
+    (html: string) => <ComponentFixture<TestOnPushComponent>>createGenericTestComponent(html, TestOnPushComponent);
 
 describe('ngb-tooltip-window', () => {
   beforeEach(() => { TestBed.configureTestingModule({imports: [NgbTooltipModule]}); });
@@ -33,7 +36,9 @@ describe('ngb-tooltip-window', () => {
 
 describe('ngb-tooltip', () => {
 
-  beforeEach(() => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbTooltipModule]}); });
+  beforeEach(() => {
+    TestBed.configureTestingModule({declarations: [TestComponent, TestOnPushComponent], imports: [NgbTooltipModule]});
+  });
 
   function getWindow(fixture) { return fixture.nativeElement.querySelector('ngb-tooltip-window'); }
 
@@ -150,6 +155,19 @@ describe('ngb-tooltip', () => {
 
       it('should use requested position', () => {
         const fixture = createTestComponent(`<div ngbTooltip="Great tip!" placement="left"></div>`);
+        const directive = fixture.debugElement.query(By.directive(NgbTooltip));
+
+        directive.triggerEventHandler('mouseenter', {});
+        fixture.detectChanges();
+        const windowEl = getWindow(fixture);
+
+        expect(windowEl).toHaveCssClass('tooltip');
+        expect(windowEl).toHaveCssClass('tooltip-left');
+        expect(windowEl.textContent.trim()).toBe('Great tip!');
+      });
+
+      it('should properly position tooltips when a component is using the OnPush strategy', () => {
+        const fixture = createOnPushTestComponent(`<div ngbTooltip="Great tip!" placement="left"></div>`);
         const directive = fixture.debugElement.query(By.directive(NgbTooltip));
 
         directive.triggerEventHandler('mouseenter', {});
@@ -324,4 +342,8 @@ export class TestComponent {
   show = true;
 
   @ViewChild(NgbTooltip) tooltip: NgbTooltip;
+}
+
+@Component({selector: 'test-onpush-cmpt', changeDetection: ChangeDetectionStrategy.OnPush, template: ``})
+export class TestOnPushComponent {
 }

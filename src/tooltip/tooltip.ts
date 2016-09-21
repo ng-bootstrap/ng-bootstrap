@@ -89,6 +89,9 @@ export class NgbTooltip implements OnInit, OnDestroy {
     if (!this._windowRef && this._ngbTooltip) {
       this._windowRef = this._popupService.open(this._ngbTooltip);
       this._windowRef.instance.placement = this.placement;
+      // we need to manually invoke change detection since events registered via
+      // Renderer::listen() - to be determined if this is a bug in the Angular 2
+      this._windowRef.changeDetectorRef.markForCheck();
     }
   }
 
