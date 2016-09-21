@@ -1,12 +1,13 @@
-import {TestBed, ComponentFixture, async, inject} from '@angular/core/testing';
+import {TestBed, ComponentFixture, async, fakeAsync, inject, tick} from '@angular/core/testing';
 import {createGenericTestComponent, isBrowser} from '../test/common';
 import {expectResults, getWindowLinks} from '../test/typeahead/common';
 
-import {Component, DebugElement, ViewChild} from '@angular/core';
+import {Component, DebugElement, ViewChild, ChangeDetectionStrategy} from '@angular/core';
 import {Validators, FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {By} from '@angular/platform-browser';
 import {Observable} from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/debounceTime';
 
 import {NgbTypeahead} from './typeahead';
 import {NgbTypeaheadModule} from './typeahead.module';
@@ -14,6 +15,9 @@ import {NgbTypeaheadConfig} from './typeahead-config';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
+
+const createOnPushTestComponent = (html: string) =>
+    createGenericTestComponent(html, TestOnPushComponent) as ComponentFixture<TestOnPushComponent>;
 
 enum Key {
   Tab = 9,
@@ -62,8 +66,10 @@ function expectWindowResults(element, expectedResults: string[]) {
 describe('ngb-typeahead', () => {
 
   beforeEach(() => {
-    TestBed.configureTestingModule(
-        {declarations: [TestComponent], imports: [NgbTypeaheadModule, FormsModule, ReactiveFormsModule]});
+    TestBed.configureTestingModule({
+      declarations: [TestComponent, TestOnPushComponent],
+      imports: [NgbTypeaheadModule, FormsModule, ReactiveFormsModule]
+    });
   });
 
   describe('valueaccessor', () => {
@@ -290,6 +296,15 @@ describe('ngb-typeahead', () => {
       expectWindowResults(compiled, ['+ONE', 'ONE MORE']);
     });
 
+    it('should properly display results when an owning components using OnPush strategy', fakeAsync(() => {
+         const fixture = createOnPushTestComponent(`<input type="text" [(ngModel)]="model" [ngbTypeahead]="find"/>`);
+         const compiled = fixture.nativeElement;
+
+         changeInput(compiled, 'o');
+         fixture.detectChanges();
+         tick(250);
+         expectWindowResults(compiled, ['+one', 'one more']);
+       }));
   });
 
   describe('objects', () => {
@@ -587,4 +602,13 @@ class TestComponent {
 
 
   onSelect($event) { this.selectEventValue = $event; }
+}
+
+@Component({selector: 'test-onpush-cmp', changeDetection: ChangeDetectionStrategy.OnPush, template: ''})
+class TestOnPushComponent {
+  private _strings = ['one', 'one more', 'two', 'three'];
+
+  find = (text$: Observable<string>) => {
+    return text$.debounceTime(200).map(text => this._strings.filter(v => v.startsWith(text)));
+  };
 }
