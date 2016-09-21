@@ -2,7 +2,7 @@ import {TestBed, ComponentFixture, inject} from '@angular/core/testing';
 import {createGenericTestComponent} from '../test/common';
 
 import {By} from '@angular/platform-browser';
-import {Component, ViewChild} from '@angular/core';
+import {Component, ViewChild, ChangeDetectionStrategy} from '@angular/core';
 
 import {NgbPopoverModule} from './popover.module';
 import {NgbPopoverWindow, NgbPopover} from './popover';
@@ -10,6 +10,9 @@ import {NgbPopoverConfig} from './popover-config';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
+
+const createOnPushTestComponent =
+    (html: string) => <ComponentFixture<TestOnPushComponent>>createGenericTestComponent(html, TestOnPushComponent);
 
 describe('ngb-popover-window', () => {
   beforeEach(() => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbPopoverModule]}); });
@@ -35,7 +38,9 @@ describe('ngb-popover-window', () => {
 
 describe('ngb-popover', () => {
 
-  beforeEach(() => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbPopoverModule]}); });
+  beforeEach(() => {
+    TestBed.configureTestingModule({declarations: [TestComponent, TestOnPushComponent], imports: [NgbPopoverModule]});
+  });
 
   function getWindow(fixture) { return fixture.nativeElement.querySelector('ngb-popover-window'); }
 
@@ -132,6 +137,19 @@ describe('ngb-popover', () => {
 
     it('should use requested position', () => {
       const fixture = createTestComponent(`<div ngbPopover="Great tip!" placement="left"></div>`);
+      const directive = fixture.debugElement.query(By.directive(NgbPopover));
+
+      directive.triggerEventHandler('click', {});
+      fixture.detectChanges();
+      const windowEl = getWindow(fixture);
+
+      expect(windowEl).toHaveCssClass('popover');
+      expect(windowEl).toHaveCssClass('popover-left');
+      expect(windowEl.textContent.trim()).toBe('Great tip!');
+    });
+
+    it('should properly position popovers when a component is using the OnPush strategy', () => {
+      const fixture = createOnPushTestComponent(`<div ngbPopover="Great tip!" placement="left"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
       directive.triggerEventHandler('click', {});
@@ -305,4 +323,8 @@ export class TestComponent {
   placement: string;
 
   @ViewChild(NgbPopover) popover: NgbPopover;
+}
+
+@Component({selector: 'test-onpush-cmpt', changeDetection: ChangeDetectionStrategy.OnPush, template: ``})
+export class TestOnPushComponent {
 }
