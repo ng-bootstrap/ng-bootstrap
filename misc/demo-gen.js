@@ -7,15 +7,11 @@ function capitalize(string) {
 }
 
 function genDemoComponent(component, demo) {
-  const directivesToImport = `NGB_${component.toUpperCase()}_DIRECTIVES`;
-
   return `import {Component} from '@angular/core';
-import {${directivesToImport}} from '@ng-bootstrap/${component}';
 
 @Component({
   selector: 'ngbd-${component}-${demo}',
-  template: require('./${component}-${demo}.html'),
-  directives: [${directivesToImport}]
+  template: require('./${component}-${demo}.html')
 })
 export class Ngbd${capitalize(component)}${capitalize(demo)} {
 }
@@ -59,9 +55,9 @@ function genDemosIndex(component) {
   const demoDirectives = demoNames.map((demo) => { return `Ngbd${capitalize(component)}${capitalize(demo)}`; });
 
   const demoSnippets = demoNames.map((demo) => {
-    return `  "${demo}": {
-    "code": require('!!prismjs?lang=typescript!./${demo}/${component}-${demo}'), 
-    "markup": require('!!prismjs?lang=markup!./${demo}/${component}-${demo}.html')}`;
+    return `  '${demo}': {
+    'code': require('!!prismjs?lang=typescript!./${demo}/${component}-${demo}'), 
+    'markup': require('!!prismjs?lang=markup!./${demo}/${component}-${demo}.html')}`;
   });
 
   return `${demoImports}
