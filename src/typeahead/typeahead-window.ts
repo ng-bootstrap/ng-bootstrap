@@ -66,7 +66,7 @@ export class NgbTypeaheadWindow {
    */
   @Output('select') selectEvent = new EventEmitter();
 
-  getActive() { return this.results[this.activeIdx]; }
+  getActive() { return this.activeIdx >= 0 ? this.results[this.activeIdx] : null; }
 
   /**
    * @internal
