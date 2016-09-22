@@ -25,6 +25,7 @@ export class NgbdTypeaheadConfig {
   constructor(config: NgbTypeaheadConfig) {
     // customize default values of typeaheads used by this component tree
     config.showHint = true;
+    config.autoSelectItem = false;
   }
 
   search = (text$: Observable<string>) =>
