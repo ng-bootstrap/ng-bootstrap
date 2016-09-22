@@ -20,7 +20,7 @@ describe('ngb-dropdown', () => {
 
   it('should initialize inputs with provided config', () => {
     const defaultConfig = new NgbDropdownConfig();
-    const dropdown = new NgbDropdown(new NgbDropdownConfig);
+    const dropdown = new NgbDropdown(defaultConfig);
     expect(dropdown.up).toBe(defaultConfig.up);
     expect(dropdown.autoClose).toBe(defaultConfig.autoClose);
   });
@@ -284,7 +284,7 @@ describe('ngb-dropdown-toggle', () => {
     expect(dropdownEl).toHaveCssClass('open');
   });
 
-  it('should not close on item click', () => {
+  it('should close on item click', () => {
     const html = `
       <div ngbDropdown [open]="true">
           <button ngbDropdownToggle>Toggle dropdown</button>
@@ -296,7 +296,6 @@ describe('ngb-dropdown-toggle', () => {
     const fixture = createTestComponent(html);
     const compiled = fixture.nativeElement;
     let dropdownEl = getDropdownEl(compiled);
-    let buttonEl = compiled.querySelector('button');
     let linkEl = compiled.querySelector('a');
 
     fixture.detectChanges();
@@ -305,12 +304,44 @@ describe('ngb-dropdown-toggle', () => {
     linkEl.click();
     fixture.detectChanges();
     expect(dropdownEl).not.toHaveCssClass('open');
-
-    buttonEl.click();
-    fixture.detectChanges();
-    expect(dropdownEl).toHaveCssClass('open');
   });
 
+
+  it('should close on other dropdown click', () => {
+    const html = `
+      <div ngbDropdown>
+          <button ngbDropdownToggle>Toggle dropdown 1</button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item">Action 1</a>
+          </div>
+      </div>
+      <div ngbDropdown>
+          <button ngbDropdownToggle>Toggle dropdown 2</button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item">Action 2</a>
+          </div>
+      </div>`;
+
+    const fixture = createTestComponent(html);
+    const compiled = fixture.nativeElement;
+
+    const buttonEls = compiled.querySelectorAll('button');
+    const dropdownEls = compiled.querySelectorAll('div[ngbDropdown]');
+
+    fixture.detectChanges();
+    expect(dropdownEls[0]).not.toHaveCssClass('open');
+    expect(dropdownEls[1]).not.toHaveCssClass('open');
+
+    buttonEls[0].click();
+    fixture.detectChanges();
+    expect(dropdownEls[0]).toHaveCssClass('open');
+    expect(dropdownEls[1]).not.toHaveCssClass('open');
+
+    buttonEls[1].click();
+    fixture.detectChanges();
+    expect(dropdownEls[0]).not.toHaveCssClass('open');
+    expect(dropdownEls[1]).toHaveCssClass('open');
+  });
 
   describe('Custom config', () => {
     let config: NgbDropdownConfig;

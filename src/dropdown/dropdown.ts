@@ -1,4 +1,4 @@
-import {Directive, Input, Output, HostListener, EventEmitter} from '@angular/core';
+import {Directive, Input, Output, EventEmitter, ElementRef} from '@angular/core';
 import {NgbDropdownConfig} from './dropdown-config';
 
 /**
@@ -11,11 +11,13 @@ import {NgbDropdownConfig} from './dropdown-config';
     '[class.dropdown]': '!up',
     '[class.dropup]': 'up',
     '[class.open]': 'isOpen()',
-    '(keyup.esc)': 'closeFromOutside()',
-    '(document:click)': 'closeFromOutside()'
+    '(keyup.esc)': 'closeFromOutsideEsc()',
+    '(document:click)': 'closeFromOutsideClick($event)'
   }
 })
 export class NgbDropdown {
+  private _toggleElement: any;
+
   /**
    * Indicates that the dropdown should open upwards
    */
@@ -82,11 +84,27 @@ export class NgbDropdown {
   /**
    * @internal
    */
-  closeFromOutside() {
+  closeFromOutsideClick($event) {
+    if (this.autoClose && !this._isEventFromToggle($event)) {
+      this.close();
+    }
+  }
+
+  /**
+   * @internal
+   */
+  closeFromOutsideEsc() {
     if (this.autoClose) {
       this.close();
     }
   }
+
+  /**
+   * @internal
+   */
+  set toggleElement(toggleElement: any) { this._toggleElement = toggleElement; }
+
+  private _isEventFromToggle($event) { return $event.target === this._toggleElement; }
 }
 
 /**
@@ -94,16 +112,19 @@ export class NgbDropdown {
  */
 @Directive({
   selector: '[ngbDropdownToggle]',
-  host: {'class': 'dropdown-toggle', 'aria-haspopup': 'true', '[attr.aria-expanded]': '_dropdown.isOpen()'}
+  host: {
+    'class': 'dropdown-toggle',
+    'aria-haspopup': 'true',
+    '[attr.aria-expanded]': 'dropdown.isOpen()',
+    '(click)': 'toggleOpen()'
+  }
 })
 export class NgbDropdownToggle {
-  constructor(private _dropdown: NgbDropdown) {}
-
-  @HostListener('click', ['$event'])
-  toggleOpen($event) {
-    $event.stopPropagation();
-    this._dropdown.toggle();
+  constructor(public dropdown: NgbDropdown, elementRef: ElementRef) {
+    dropdown.toggleElement = elementRef.nativeElement;
   }
+
+  toggleOpen() { this.dropdown.toggle(); }
 }
 
 export const NGB_DROPDOWN_DIRECTIVES = [NgbDropdownToggle, NgbDropdown];
