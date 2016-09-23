@@ -44,7 +44,15 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 export class AppModule {
 }
 ```
+### SystemJS
+If you are using SystemJS, you should also adjust your configuration to point to the UMD bundle.
 
+In your systemjs config file, `map` needs to tell the System loader where to look for `ng-bootstrap`:
+```
+map: {
+  '@ng-bootstrap/ng-bootstrap': 'node_modules/@ng-bootstrap/ng-bootstrap/bundles/ng-bootstrap.js',
+}
+```
 ## Supported browsers
 
 We support the same browsers and versions supported by both Bootstrap 4 and Angular 2, whichever is _more_ restrictive.
