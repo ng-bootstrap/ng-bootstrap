@@ -79,6 +79,12 @@ export class NgbTypeahead implements ControlValueAccessor,
   private _windowRef: ComponentRef<NgbTypeaheadWindow>;
   private _zoneSubscription: any;
 
+
+  /**
+   * A flag indicating if model values should be restricted to the ones selected from the popup only.
+   */
+  @Input() editable: boolean;
+
   /**
    * A function to convert a given value into string to display in the input field
    */
@@ -117,6 +123,7 @@ export class NgbTypeahead implements ControlValueAccessor,
       private _elementRef: ElementRef, private _viewContainerRef: ViewContainerRef, private _renderer: Renderer,
       private _injector: Injector, componentFactoryResolver: ComponentFactoryResolver, config: NgbTypeaheadConfig,
       ngZone: NgZone) {
+    this.editable = config.editable;
     this.showHint = config.showHint;
 
     this._valueChanges = Observable.fromEvent(_elementRef.nativeElement, 'input', ($event) => $event.target.value);
@@ -136,7 +143,9 @@ export class NgbTypeahead implements ControlValueAccessor,
         this._valueChanges
             .do(value => {
               this._userInput = value;
-              this._onChange(value);
+              if (this.editable) {
+                this._onChange(value);
+              }
             })
             .let (this.ngbTypeahead));
   }
