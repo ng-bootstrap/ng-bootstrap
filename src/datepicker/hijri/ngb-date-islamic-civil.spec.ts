@@ -1,7 +1,7 @@
 import {NgbDateIslamicCivil} from './ngb-date-islamic-civil';
 
 describe('ngb-date-islamic-civil', () => {
-  const dateTable = [
+  const DATE_TABLE = [
     [1420, 0, 1, 1999, 3, 17], [1420, 0, 12, 1999, 3, 28], [1420, 0, 23, 1999, 4, 9], [1420, 1, 4, 1999, 4, 20],
     [1420, 1, 15, 1999, 4, 31], [1420, 1, 26, 1999, 5, 11], [1420, 2, 8, 1999, 5, 22], [1420, 2, 19, 1999, 6, 3],
     [1420, 2, 30, 1999, 6, 14], [1420, 3, 11, 1999, 6, 25], [1420, 3, 22, 1999, 7, 5], [1420, 4, 4, 1999, 7, 16],
@@ -282,7 +282,7 @@ describe('ngb-date-islamic-civil', () => {
   });
 
   describe('toGregorian', () => {
-    dateTable.forEach(element => {
+    DATE_TABLE.forEach(element => {
       const iDate = new NgbDateIslamicCivil(element[0], element[1], element[2]);
       let gDate = new Date(element[3], element[4], element[5]);
       it('should convert correctly from Hijri to Gregorian',
@@ -291,7 +291,7 @@ describe('ngb-date-islamic-civil', () => {
   });
 
   describe('fromGregorian', () => {
-    dateTable.forEach(element => {
+    DATE_TABLE.forEach(element => {
       const iDate = new NgbDateIslamicCivil(element[0], element[1], element[2]);
       const gDate = new Date(element[3], element[4], element[5]);
       let iDate2 = new NgbDateIslamicCivil(0, 0, 0);

@@ -43,7 +43,7 @@ export class NgbCalendarHijri extends NgbCalendar {
     const time = islamicDate.getTime();
     islamicDate.setMonth(0);  // Compare with Muh 1
     islamicDate.setDay(1);
-    return Math.floor(Math.round((time - islamicDate.getTime()) / 86400000) / 7) + 1;
+    return Math.floor(Math.round((time - islamicDate.getTime()) / 86400000) / 7) + 1;  // 24 * 60 * 60 * 1000
   }
 
   getToday(): NgbDateHijri { return new this.dateModel(); }

@@ -16,18 +16,18 @@ export abstract class NgbDateHijri extends NgbDate {
 
   public setDay(dayValue: number): NgbDateHijri {
     dayValue = +dayValue;
-    let mdays = this._getDaysInIslamicMonth(this.month, this.year);
+    let mdays = this.getDaysInIslamicMonth(this.month, this.year);
     if (dayValue <= 0) {
       while (dayValue <= 0) {
         this.setMonth(this.month - 1);
-        mdays = this._getDaysInIslamicMonth(this.month, this.year);
+        mdays = this.getDaysInIslamicMonth(this.month, this.year);
         dayValue += mdays;
       }
     } else if (dayValue > mdays) {
       while (dayValue > mdays) {
         dayValue -= mdays;
         this.setMonth(this.month + 1);
-        mdays = this._getDaysInIslamicMonth(this.month, this.year);
+        mdays = this.getDaysInIslamicMonth(this.month, this.year);
       }
     }
     this.day = dayValue;
@@ -53,7 +53,7 @@ export abstract class NgbDateHijri extends NgbDate {
   public getTime(): number { return this.toGregorian().getTime(); }
 
   /**
-  * Returns the equivalent islamic(civil/tabular) date value for a give input Gregorian date.
+  * Returns the equivalent Hijri date value for a give input Gregorian date.
   * `gdate` is s JS Date to be converted to Hijri.
   */
   abstract fromGregorian(gdate: Date): NgbDateHijri;
@@ -66,7 +66,7 @@ export abstract class NgbDateHijri extends NgbDate {
   * `month` is 0 for Muharram, 1 for Safar, etc.
   * `year` is any Hijri year.
   */
-  protected abstract _getDaysInIslamicMonth(month: number, year: number): number;
+  public abstract getDaysInIslamicMonth(month: number, year: number): number;
 
   protected _isIslamicLeapYear(year: number): boolean { return (14 + 11 * year) % 30 < 11; }
   /**
