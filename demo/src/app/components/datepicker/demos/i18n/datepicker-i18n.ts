@@ -14,13 +14,13 @@ const I18N_VALUES = {
 
 // Define a service holding the language. You probably already have one if your app is i18ned.
 @Injectable()
-class I18n {
+export class I18n {
   language = 'en';
 }
 
 // Define custom service providing the months and weekdays translations
 @Injectable()
-class CustomDatepickerI18n extends NgbDatepickerI18n {
+export class CustomDatepickerI18n extends NgbDatepickerI18n {
 
   constructor(private _i18n: I18n) {
     super();

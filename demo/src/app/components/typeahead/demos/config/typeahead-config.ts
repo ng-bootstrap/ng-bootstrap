@@ -22,6 +22,8 @@ const states = ['Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Arkansas', 'C
 })
 export class NgbdTypeaheadConfig {
 
+  public model: any;
+
   constructor(config: NgbTypeaheadConfig) {
     // customize default values of typeaheads used by this component tree
     config.showHint = true;

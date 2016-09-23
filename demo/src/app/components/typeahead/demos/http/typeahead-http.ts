@@ -32,7 +32,9 @@ export class WikipediaService {
 })
 export class NgbdTypeaheadHttp {
 
-  private _searching: boolean;
+  public model: any;
+
+  public searching: boolean;
 
   constructor(private _service: WikipediaService) {}
 
@@ -40,7 +42,7 @@ export class NgbdTypeaheadHttp {
     text$
       .debounceTime(300)
       .distinctUntilChanged()
-      .do(term => { this._searching = term.length > 0; })
+      .do(term => { this.searching = term.length > 0; })
       .switchMap(term => term === '' ? Observable.of([]) : this._service.search(term))
-      .do(() => { this._searching = false; });
+      .do(() => { this.searching = false; });
 }

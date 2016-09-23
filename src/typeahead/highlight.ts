@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, ChangeDetectionStrategy} from '@angular/core';
+import {Component, Input, OnChanges, ChangeDetectionStrategy, SimpleChanges} from '@angular/core';
 import {regExpEscape, toString} from '../util/util';
 
 @Component({
@@ -20,7 +20,7 @@ export class NgbHighlight implements OnChanges {
   @Input() result: string;
   @Input() term: string;
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
     const resultStr = toString(this.result);
     const resultLC = resultStr.toLowerCase();
     const termLC = toString(this.term).toLowerCase();

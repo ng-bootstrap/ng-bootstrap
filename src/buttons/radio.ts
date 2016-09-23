@@ -59,7 +59,7 @@ export class NgbActiveLabel {
  * Marks an input of type "radio" as part of the NgbRadioGroup.
  */
 @Directive(
-    {selector: 'input[type=radio]', host: {'(change)': 'onChange($event.target.value)', '[checked]': 'isChecked'}})
+    {selector: 'input[type=radio]', host: {'(change)': 'onChange()', '[checked]': 'isChecked'}})
 export class NgbRadio implements OnDestroy {
   private _value: any = null;
   private _checked: boolean;

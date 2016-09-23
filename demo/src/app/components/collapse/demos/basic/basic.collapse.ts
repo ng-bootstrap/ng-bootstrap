@@ -5,5 +5,5 @@ import { Component } from '@angular/core';
   templateUrl: './basic.collapse.html'
 })
 export class CollapseBasicComponent {
-  private isCollapsed = false;
+  public isCollapsed = false;
 }
