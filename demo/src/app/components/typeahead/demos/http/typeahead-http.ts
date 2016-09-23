@@ -31,9 +31,7 @@ export class WikipediaService {
   styles: [`.form-control { width: 300px; display: inline; }`]
 })
 export class NgbdTypeaheadHttp {
-
   public model: any;
-
   public searching: boolean;
 
   constructor(private _service: WikipediaService) {}
