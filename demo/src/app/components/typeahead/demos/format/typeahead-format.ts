@@ -19,6 +19,8 @@ const states = ['Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Arkansas', 'C
 })
 export class NgbdTypeaheadFormat {
 
+  public model: any;
+
   formatter = (result: string) => result.toUpperCase();
 
   search = (text$: Observable<string>) =>

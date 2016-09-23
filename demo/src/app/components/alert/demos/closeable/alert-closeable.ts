@@ -42,7 +42,7 @@ export class NgbdAlertCloseable {
   }
 }
 
-interface IAlert {
+export interface IAlert {
   id: number;
   type: string;
   message: string;

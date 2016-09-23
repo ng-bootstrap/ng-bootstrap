@@ -20,6 +20,8 @@ const states = ['Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Arkansas', 'C
 })
 export class NgbdTypeaheadBasic {
 
+  public model: any;
+
   search = (text$: Observable<string>) =>
     text$
       .debounceTime(200)

@@ -64,6 +64,8 @@ const statesWithFlags = [
 })
 export class NgbdTypeaheadTemplate {
 
+  public model: any;
+
   search = (text$: Observable<string>) =>
     text$
       .debounceTime(200)
