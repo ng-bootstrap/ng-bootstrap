@@ -110,7 +110,7 @@ export class NgbTypeahead implements OnInit,
   /**
   * Auto select the first item in the result list
   */
-  @Input() autoSelectItem: boolean = null;
+  @Input() autoSelect: boolean;
 
   /**
    * An event emitted when a match is selected. Event payload is of type NgbTypeaheadSelectItemEvent.
@@ -129,7 +129,7 @@ export class NgbTypeahead implements OnInit,
       private _injector: Injector, componentFactoryResolver: ComponentFactoryResolver, config: NgbTypeaheadConfig,
       ngZone: NgZone) {
     this.showHint = config.showHint;
-    this.autoSelectItem = config.autoSelectItem;
+    this.autoSelect = config.autoSelect;
     this._popupService = new PopupService<NgbTypeaheadWindow>(
         NgbTypeaheadWindow, _injector, _viewContainerRef, _renderer, componentFactoryResolver);
     this._onChangeNoEmit = (_: any) => {};
@@ -153,9 +153,9 @@ export class NgbTypeahead implements OnInit,
             this._closePopup();
           } else {
             this._openPopup();
-            if (this.autoSelectItem !== null && this.autoSelectItem !== undefined) {
-              this._windowRef.instance.activeIdx = this.autoSelectItem ? 0 : -1;
-              this._windowRef.instance.autoSelectItem = this.autoSelectItem;
+            if (this.autoSelect !== null && this.autoSelect !== undefined) {
+              this._windowRef.instance.activeIdx = this.autoSelect ? 0 : -1;
+              this._windowRef.instance.autoSelect = this.autoSelect;
             }
             this._windowRef.instance.results = results;
             this._windowRef.instance.term = this._elementRef.nativeElement.value;

@@ -5,6 +5,6 @@ describe('ngb-typehead-config', () => {
     const config = new NgbTypeaheadConfig();
 
     expect(config.showHint).toBe(false);
-    expect(config.autoSelectItem).toBe(true);
+    expect(config.autoSelect).toBe(true);
   });
 });
