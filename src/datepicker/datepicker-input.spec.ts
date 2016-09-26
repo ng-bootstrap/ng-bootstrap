@@ -16,7 +16,8 @@ const createTestCmpt = (html: string) =>
 describe('NgbInputDatepicker', () => {
 
   beforeEach(() => {
-    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbDatepickerModule, FormsModule]});
+    TestBed.configureTestingModule(
+        {declarations: [TestComponent], imports: [NgbDatepickerModule.forRoot(), FormsModule]});
   });
 
   describe('open, close and toggle', () => {

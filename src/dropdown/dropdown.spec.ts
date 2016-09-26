@@ -16,7 +16,9 @@ function getDropdownEl(tc) {
 }
 
 describe('ngb-dropdown', () => {
-  beforeEach(() => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbDropdownModule]}); });
+  beforeEach(() => {
+    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbDropdownModule.forRoot()]});
+  });
 
   it('should initialize inputs with provided config', () => {
     const defaultConfig = new NgbDropdownConfig();
@@ -162,7 +164,9 @@ describe('ngb-dropdown', () => {
 });
 
 describe('ngb-dropdown-toggle', () => {
-  beforeEach(() => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbDropdownModule]}); });
+  beforeEach(() => {
+    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbDropdownModule.forRoot()]});
+  });
 
   it('should toggle dropdown on click', () => {
     const html = `
@@ -347,7 +351,7 @@ describe('ngb-dropdown-toggle', () => {
     let config: NgbDropdownConfig;
 
     beforeEach(() => {
-      TestBed.configureTestingModule({imports: [NgbDropdownModule]});
+      TestBed.configureTestingModule({imports: [NgbDropdownModule.forRoot()]});
       TestBed.overrideComponent(TestComponent, {set: {template: '<div ngbDropdown></div>'}});
     });
 
@@ -372,7 +376,7 @@ describe('ngb-dropdown-toggle', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule(
-          {imports: [NgbDropdownModule], providers: [{provide: NgbDropdownConfig, useValue: config}]});
+          {imports: [NgbDropdownModule.forRoot()], providers: [{provide: NgbDropdownConfig, useValue: config}]});
     });
 
     it('should initialize inputs with provided config as provider', () => {

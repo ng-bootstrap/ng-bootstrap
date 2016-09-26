@@ -36,7 +36,7 @@ describe('ngb-highlight', () => {
 
   beforeEach(() => {
     TestBed.overrideModule(NgbTypeaheadModule, {set: {exports: [NgbHighlight]}});
-    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbTypeaheadModule]});
+    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbTypeaheadModule.forRoot()]});
   });
 
   it('should render highlighted text when there is one match', () => {

@@ -25,7 +25,7 @@ describe('ngbDatepickerNavigation', () => {
   beforeEach(() => {
     TestBed.overrideModule(
         NgbDatepickerModule, {set: {exports: [NgbDatepickerNavigation, NgbDatepickerNavigationSelect]}});
-    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbDatepickerModule]});
+    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbDatepickerModule.forRoot()]});
   });
 
   it('should render navigation select component for \'select\' type', () => {

@@ -52,7 +52,8 @@ function getButton(nativeEl: HTMLElement) {
 }
 
 describe('ngb-tabset', () => {
-  beforeEach(() => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbTabsetModule]}); });
+  beforeEach(
+      () => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbTabsetModule.forRoot()]}); });
 
   it('should initialize inputs with default values', () => {
     const defaultConfig = new NgbTabsetConfig();
@@ -350,7 +351,7 @@ describe('ngb-tabset', () => {
   describe('Custom config', () => {
     let config: NgbTabsetConfig;
 
-    beforeEach(() => { TestBed.configureTestingModule({imports: [NgbTabsetModule]}); });
+    beforeEach(() => { TestBed.configureTestingModule({imports: [NgbTabsetModule.forRoot()]}); });
 
     beforeEach(inject([NgbTabsetConfig], (c: NgbTabsetConfig) => {
       config = c;
@@ -372,7 +373,7 @@ describe('ngb-tabset', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule(
-          {imports: [NgbTabsetModule], providers: [{provide: NgbTabsetConfig, useValue: config}]});
+          {imports: [NgbTabsetModule.forRoot()], providers: [{provide: NgbTabsetConfig, useValue: config}]});
     });
 
     it('should initialize inputs with provided config as provider', () => {

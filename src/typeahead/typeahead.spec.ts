@@ -68,7 +68,7 @@ describe('ngb-typeahead', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [TestComponent, TestOnPushComponent],
-      imports: [NgbTypeaheadModule, FormsModule, ReactiveFormsModule]
+      imports: [NgbTypeaheadModule.forRoot(), FormsModule, ReactiveFormsModule]
     });
   });
 
@@ -512,9 +512,9 @@ describe('ngb-typeahead', () => {
          }));
 
       it('should take input formatter into account when displaying hints', async(() => {
-           const fixture = createTestComponent(`<input type="text" [(ngModel)]="model" 
-                [ngbTypeahead]="findAnywhere" 
-                [inputFormatter]="uppercaseFormatter" 
+           const fixture = createTestComponent(`<input type="text" [(ngModel)]="model"
+                [ngbTypeahead]="findAnywhere"
+                [inputFormatter]="uppercaseFormatter"
                 [showHint]="true"/>`);
            const compiled = fixture.nativeElement;
            const inputEl = getNativeInput(compiled);

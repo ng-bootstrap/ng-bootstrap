@@ -19,7 +19,7 @@ import {NgbdSharedModule} from './shared';
   imports: [
     BrowserModule,
     routing,
-    NgbModule,
+    NgbModule.forRoot(),
     NgbdDemoModule,
     NgbdSharedModule
   ],
