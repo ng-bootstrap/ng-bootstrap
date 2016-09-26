@@ -26,7 +26,7 @@ export class NgbdDatepickerCustomDay {
   model: NgbDateStruct;
 
   isWeekend(date: NgbDateStruct) {
-    const d = new Date(date.year, date.month, date.day);
+    const d = new Date(date.year, date.month - 1, date.day);
     return d.getDay() === 0 || d.getDay() === 6;
   }
 }

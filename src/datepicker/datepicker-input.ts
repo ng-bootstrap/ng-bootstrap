@@ -47,7 +47,7 @@ export class NgbInputDatepicker implements ControlValueAccessor {
   @Input() dayTemplate: TemplateRef<DayTemplateContext>;
 
   /**
-   * First day of the week, 0=Sun, 1=Mon, etc.
+  * First day of the week. With default calendar we use ISO 8601: 1=Mon ... 7=Sun
    */
   @Input() firstDayOfWeek: number;
 
@@ -67,7 +67,7 @@ export class NgbInputDatepicker implements ControlValueAccessor {
   @Input() maxDate: NgbDateStruct;
 
   /**
-   * Whether to display navigation or not
+   * Whether to display navigation
    */
   @Input() showNavigation: boolean;
 
@@ -82,7 +82,9 @@ export class NgbInputDatepicker implements ControlValueAccessor {
   @Input() showWeekNumbers: boolean;
 
   /**
-   * Date to open calendar with. If nothing provided, calendar will open with current month.
+   * Date to open calendar with.
+   * With default calendar we use ISO 8601: 'month' is 1=Jan ... 12=Dec.
+   * If nothing provided, calendar will open with current month.
    * Use 'navigateTo(date)' as an alternative
    */
   @Input() startDate: {year: number, month: number};
@@ -172,7 +174,9 @@ export class NgbInputDatepicker implements ControlValueAccessor {
   }
 
   /**
-   * Navigates current view to provided date. If nothing provided calendar will open current month.
+   * Navigates current view to provided date.
+   * With default calendar we use ISO 8601: 'month' is 1=Jan ... 12=Dec.
+   * If nothing provided calendar will open current month.
    * Use 'startDate' input as an alternative
    */
   navigateTo(date?: {year: number, month: number}) {

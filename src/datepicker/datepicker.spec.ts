@@ -43,8 +43,8 @@ function customizeConfig(config: NgbDatepickerConfig) {
   config.dayTemplate = {} as TemplateRef<DayTemplateContext>;
   config.firstDayOfWeek = 2;
   config.markDisabled = (date) => false;
-  config.minDate = {year: 2000, month: 0, day: 1};
-  config.maxDate = {year: 2030, month: 11, day: 31};
+  config.minDate = {year: 2000, month: 1, day: 1};
+  config.maxDate = {year: 2030, month: 12, day: 31};
   config.showNavigation = false;
   config.showWeekdays = false;
   config.showWeekNumbers = true;
@@ -68,7 +68,7 @@ describe('ngb-datepicker', () => {
     const fixture = createTestComponent(`<ngb-datepicker></ngb-datepicker>`);
 
     const today = new Date();
-    expect(getMonthSelect(fixture.nativeElement).value).toBe(`${today.getMonth()}`);
+    expect(getMonthSelect(fixture.nativeElement).value).toBe(`${today.getMonth() + 1}`);
     expect(getYearSelect(fixture.nativeElement).value).toBe(`${today.getFullYear()}`);
   });
 
@@ -90,8 +90,8 @@ describe('ngb-datepicker', () => {
     const fixture = createTestComponent(
         `<ngb-datepicker [startDate]="date" [minDate]="minDate" [maxDate]="maxDate"></ngb-datepicker>`);
 
-    fixture.componentInstance.minDate = {year: 2016, month: 7, day: 20};
-    fixture.componentInstance.maxDate = {year: 2016, month: 7, day: 25};
+    fixture.componentInstance.minDate = {year: 2016, month: 8, day: 20};
+    fixture.componentInstance.maxDate = {year: 2016, month: 8, day: 25};
     fixture.detectChanges();
 
     // 19 AUG 2016
@@ -112,10 +112,10 @@ describe('ngb-datepicker', () => {
 
       const dates = getDates(fixture.nativeElement);
       dates[0].click();  // 1 AUG 2016
-      expect(fixture.componentInstance.model).toEqual({year: 2016, month: 7, day: 1});
+      expect(fixture.componentInstance.model).toEqual({year: 2016, month: 8, day: 1});
 
       dates[1].click();
-      expect(fixture.componentInstance.model).toEqual({year: 2016, month: 7, day: 2});
+      expect(fixture.componentInstance.model).toEqual({year: 2016, month: 8, day: 2});
     });
 
     it('should not update model based on calendar clicks when disabled', async(() => {
@@ -143,7 +143,7 @@ describe('ngb-datepicker', () => {
          const fixture = createTestComponent(
              `<ngb-datepicker [startDate]="date" [minDate]="minDate" [maxDate]="maxDate" [(ngModel)]="model"></ngb-datepicker>`);
 
-         fixture.componentInstance.model = {year: 2016, month: 7, day: 1};
+         fixture.componentInstance.model = {year: 2016, month: 8, day: 1};
 
          fixture.detectChanges();
          fixture.whenStable()
@@ -154,7 +154,7 @@ describe('ngb-datepicker', () => {
              .then(() => {
                expect(getDay(fixture.nativeElement, 0)).toHaveCssClass('bg-primary');
 
-               fixture.componentInstance.model = {year: 2016, month: 7, day: 2};
+               fixture.componentInstance.model = {year: 2016, month: 8, day: 2};
                fixture.detectChanges();
                return fixture.whenStable();
              })
@@ -177,7 +177,7 @@ describe('ngb-datepicker', () => {
            let dates = getDates(fixture.nativeElement);
 
            dates[31].click();  // 1 SEP 2016
-           expect(fixture.componentInstance.model).toEqual({year: 2016, month: 8, day: 1});
+           expect(fixture.componentInstance.model).toEqual({year: 2016, month: 9, day: 1});
 
            // month changes to SEP
            fixture.detectChanges();
@@ -194,38 +194,38 @@ describe('ngb-datepicker', () => {
       const navigation = getNavigationLinks(fixture.nativeElement);
 
       dates[0].click();  // 1 AUG 2016
-      expect(fixture.componentInstance.model).toEqual({year: 2016, month: 7, day: 1});
+      expect(fixture.componentInstance.model).toEqual({year: 2016, month: 8, day: 1});
 
       // PREV
       navigation[0].click();
       fixture.detectChanges();
       dates = getDates(fixture.nativeElement);
       dates[4].click();  // 1 JUL 2016
-      expect(fixture.componentInstance.model).toEqual({year: 2016, month: 6, day: 1});
+      expect(fixture.componentInstance.model).toEqual({year: 2016, month: 7, day: 1});
 
       // NEXT
       navigation[1].click();
       fixture.detectChanges();
       dates = getDates(fixture.nativeElement);
       dates[0].click();  // 1 AUG 2016
-      expect(fixture.componentInstance.model).toEqual({year: 2016, month: 7, day: 1});
+      expect(fixture.componentInstance.model).toEqual({year: 2016, month: 8, day: 1});
     });
 
     it('should switch month using navigateTo({date})', () => {
       const fixture = createTestComponent(
           `<ngb-datepicker #dp [startDate]="date" [minDate]="minDate" [maxDate]="maxDate" [(ngModel)]="model"></ngb-datepicker>
-       <button id="btn"(click)="dp.navigateTo({year: 2015, month: 5})"></button>`);
+       <button id="btn"(click)="dp.navigateTo({year: 2015, month: 6})"></button>`);
 
       const button = fixture.nativeElement.querySelector('button#btn');
       button.click();
 
       fixture.detectChanges();
-      expect(getMonthSelect(fixture.nativeElement).value).toBe('5');
+      expect(getMonthSelect(fixture.nativeElement).value).toBe('6');
       expect(getYearSelect(fixture.nativeElement).value).toBe('2015');
 
       const dates = getDates(fixture.nativeElement);
       dates[0].click();  // 1 JUN 2015
-      expect(fixture.componentInstance.model).toEqual({year: 2015, month: 5, day: 1});
+      expect(fixture.componentInstance.model).toEqual({year: 2015, month: 6, day: 1});
     });
 
     it('should switch to current month using navigateTo() without arguments', () => {
@@ -238,7 +238,7 @@ describe('ngb-datepicker', () => {
 
       fixture.detectChanges();
       const today = new Date();
-      expect(getMonthSelect(fixture.nativeElement).value).toBe(`${today.getMonth()}`);
+      expect(getMonthSelect(fixture.nativeElement).value).toBe(`${today.getMonth() + 1}`);
       expect(getYearSelect(fixture.nativeElement).value).toBe(`${today.getFullYear()}`);
     });
 
@@ -286,7 +286,7 @@ describe('ngb-datepicker', () => {
                expect(getDatepicker(compiled)).toHaveCssClass('ng-invalid');
                expect(getDatepicker(compiled)).not.toHaveCssClass('ng-valid');
 
-               fixture.componentInstance.model = {year: 2016, month: 7, day: 1};
+               fixture.componentInstance.model = {year: 2016, month: 8, day: 1};
                fixture.detectChanges();
                return fixture.whenStable();
              })
@@ -381,11 +381,11 @@ describe('ngb-datepicker', () => {
 
 @Component({selector: 'test-cmp', template: ''})
 class TestComponent {
-  date = {year: 2016, month: 7};
-  minDate: NgbDateStruct = {year: 2010, month: 0, day: 1};
-  maxDate: NgbDateStruct = {year: 2020, month: 11, day: 31};
+  date = {year: 2016, month: 8};
+  minDate: NgbDateStruct = {year: 2010, month: 1, day: 1};
+  maxDate: NgbDateStruct = {year: 2020, month: 12, day: 31};
   form = new FormGroup({control: new FormControl('', Validators.required)});
   disabledForm = new FormGroup({control: new FormControl({value: null, disabled: true})});
   model;
-  markDisabled = (date: NgbDateStruct) => { return NgbDate.from(date).equals(new NgbDate(2016, 7, 22)); };
+  markDisabled = (date: NgbDateStruct) => { return NgbDate.from(date).equals(new NgbDate(2016, 8, 22)); };
 }

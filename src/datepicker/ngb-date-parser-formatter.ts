@@ -1,10 +1,9 @@
-import {NgbDate} from './ngb-date';
 import {padNumber, toInteger, isNumber} from '../util/util';
 import {NgbDateStruct} from './ngb-date-struct';
 
 /**
  * Abstract type serving as a DI token for the service parsing and formatting dates for the NgbInputDatepicker
- * directive. A default implementation using the ISO format is provided, but you can provide another implementation
+ * directive. A default implementation using the ISO 8601 format is provided, but you can provide another implementation
  * to use an alternative format.
  */
 export abstract class NgbDateParserFormatter {
@@ -30,9 +29,9 @@ export class NgbDateISOParserFormatter extends NgbDateParserFormatter {
       if (dateParts.length === 1 && isNumber(dateParts[0])) {
         return {year: toInteger(dateParts[0]), month: null, day: null};
       } else if (dateParts.length === 2 && isNumber(dateParts[0]) && isNumber(dateParts[1])) {
-        return {year: toInteger(dateParts[0]), month: toInteger(dateParts[1]) - 1, day: null};
+        return {year: toInteger(dateParts[0]), month: toInteger(dateParts[1]), day: null};
       } else if (dateParts.length === 3 && isNumber(dateParts[0]) && isNumber(dateParts[1]) && isNumber(dateParts[2])) {
-        return {year: toInteger(dateParts[0]), month: toInteger(dateParts[1]) - 1, day: toInteger(dateParts[2])};
+        return {year: toInteger(dateParts[0]), month: toInteger(dateParts[1]), day: toInteger(dateParts[2])};
       }
     }
     return null;
@@ -40,7 +39,7 @@ export class NgbDateISOParserFormatter extends NgbDateParserFormatter {
 
   format(date: NgbDateStruct): string {
     return date ?
-        `${date.year}-${isNumber(date.month) ? padNumber(date.month + 1) : ''}-${isNumber(date.day) ? padNumber(date.day) : ''}` :
+        `${date.year}-${isNumber(date.month) ? padNumber(date.month) : ''}-${isNumber(date.day) ? padNumber(date.day) : ''}` :
         '';
   }
 }

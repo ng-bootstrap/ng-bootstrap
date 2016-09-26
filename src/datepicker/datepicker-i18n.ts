@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 
-const WEEKDAYS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+const WEEKDAYS = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 /**
@@ -11,20 +11,20 @@ const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 export abstract class NgbDatepickerI18n {
   /**
    * Returns the short week day name to display in the heading of the month view.
-   * `weekday` is 0 for Sunday, 1 for Monday, etc.
+   * With default calendar we use ISO 8601: 'weekday' is 1=Mon ... 7=Sun
    */
   abstract getWeekdayName(weekday: number): string;
 
   /**
    * Returns the month name to display in the date picker navigation.
-   * `month` is 0 for January, 1 for February, etc.
+   * With default calendar we use ISO 8601: 'month' is 1=Jan ... 12=Dec
    */
   abstract getMonthName(month: number): string;
 }
 
 @Injectable()
 export class NgbDatepickerI18nDefault extends NgbDatepickerI18n {
-  getWeekdayName(weekday: number): string { return WEEKDAYS[weekday]; }
+  getWeekdayName(weekday: number): string { return WEEKDAYS[weekday - 1]; }
 
-  getMonthName(month: number): string { return MONTHS[month]; }
+  getMonthName(month: number): string { return MONTHS[month - 1]; }
 }
