@@ -54,12 +54,12 @@ describe('NgbInputDatepicker', () => {
          const fixture = createTestCmpt(`<input ngbDatepicker [ngModel]="date">`);
          const input = fixture.nativeElement.querySelector('input');
 
-         fixture.componentInstance.date = {year: 2016, month: 9, day: 10};
+         fixture.componentInstance.date = {year: 2016, month: 10, day: 10};
          fixture.detectChanges();
          tick();
          expect(input.value).toBe('2016-10-10');
 
-         fixture.componentInstance.date = {year: 2016, month: 9, day: 15};
+         fixture.componentInstance.date = {year: 2016, month: 10, day: 15};
          fixture.detectChanges();
          tick();
          expect(input.value).toBe('2016-10-15');
@@ -70,7 +70,7 @@ describe('NgbInputDatepicker', () => {
       const inputDebugEl = fixture.debugElement.query(By.css('input'));
 
       inputDebugEl.triggerEventHandler('change', {target: {value: '2016-09-10'}});
-      expect(fixture.componentInstance.date).toEqual({year: 2016, month: 8, day: 10});
+      expect(fixture.componentInstance.date).toEqual({year: 2016, month: 9, day: 10});
     });
 
     it('should propagate null to model when a user enters invalid date', () => {

@@ -34,7 +34,7 @@ describe('ngb-datepicker-navigation-select', () => {
         createTestComponent(`<ngb-datepicker-navigation-select [date]="date" [minYear]="minYear" [maxYear]="maxYear">`);
 
     expect(getOptionValues(getMonthSelect(fixture.nativeElement))).toEqual([
-      '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'
+      '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'
     ]);
   });
 
