@@ -190,6 +190,30 @@ describe('ngb-dropdown-toggle', () => {
     expect(buttonEl.getAttribute('aria-expanded')).toBe('false');
   });
 
+  it('should toggle dropdown on click of child of toggle', () => {
+    const html = `
+      <div ngbDropdown>
+          <button ngbDropdownToggle>
+            <span class="toggle">Toggle dropdown</span>
+          </button>
+      </div>`;
+
+    const fixture = createTestComponent(html);
+    const compiled = fixture.nativeElement;
+    let dropdownEl = getDropdownEl(compiled);
+    let toggleEl = compiled.querySelector('.toggle');
+
+    expect(dropdownEl).not.toHaveCssClass('open');
+
+    toggleEl.click();
+    fixture.detectChanges();
+    expect(dropdownEl).toHaveCssClass('open');
+
+    toggleEl.click();
+    fixture.detectChanges();
+    expect(dropdownEl).not.toHaveCssClass('open');
+  });
+
   it('should close on outside click', () => {
     const html = `<button>Outside</button><div ngbDropdown [open]="true"></div>`;
 
