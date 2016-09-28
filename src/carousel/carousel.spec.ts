@@ -196,6 +196,29 @@ describe('ngb-carousel', () => {
        discardPeriodicTasks();
      }));
 
+  it('should not change slide on time passage (custom interval value is zero)', fakeAsync(() => {
+       const html = `
+      <ngb-carousel [interval]="0">
+        <template ngbSlide>foo</template>
+        <template ngbSlide>bar</template>
+      </ngb-carousel>
+    `;
+
+       const fixture = createTestComponent(html);
+
+       expectActiveSlides(fixture.nativeElement, [true, false]);
+
+       tick(1000);
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [true, false]);
+
+       tick(1200);
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [true, false]);
+
+       discardPeriodicTasks();
+     }));
+
   it('should pause / resume slide change with time passage on mouse enter / leave', fakeAsync(() => {
        const html = `
       <ngb-carousel>

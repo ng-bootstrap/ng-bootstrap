@@ -178,7 +178,9 @@ export class NgbCarousel implements AfterContentChecked,
   }
 
   private _startTimer() {
-    this._slideChangeInterval = setInterval(() => { this.cycleToNext(); }, this.interval);
+    if (this.interval > 0) {
+      this._slideChangeInterval = setInterval(() => { this.cycleToNext(); }, this.interval);
+    }
   }
 
   private _stopTimer() { clearInterval(this._slideChangeInterval); }
