@@ -104,7 +104,7 @@ export class NgbDropdown {
    */
   set toggleElement(toggleElement: any) { this._toggleElement = toggleElement; }
 
-  private _isEventFromToggle($event) { return $event.target === this._toggleElement; }
+  private _isEventFromToggle($event) { return !!this._toggleElement && this._toggleElement.contains($event.target); }
 }
 
 /**
