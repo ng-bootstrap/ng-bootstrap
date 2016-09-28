@@ -32,7 +32,7 @@ var PATHS = {
 function webpackCallBack(taskName, gulpDone) {
   return function(err, stats) {
     if (err) throw new gutil.PluginError(taskName, err);
-    gutil.log("[" + taskName + "]", stats.toString());
+    gutil.log(`[${taskName}]`, stats.toString());
     gulpDone();
   }
 }
@@ -52,7 +52,7 @@ gulp.task('ngc', function(cb) {
 
 gulp.task('umd', function(cb) {
   function ngExternal(ns) {
-    var ng2Ns = '@angular/' + ns;
+    var ng2Ns = `@angular/${ns}`;
     return {root: ['ng', ns], commonjs: ng2Ns, commonjs2: ng2Ns, amd: ng2Ns};
   }
 
@@ -93,7 +93,7 @@ gulp.task('npm', function() {
 
   targetPkgJson.peerDependencies = {};
   Object.keys(pkgJson.dependencies).forEach(function(dependency) {
-    targetPkgJson.peerDependencies[dependency] = '^' + pkgJson.dependencies[dependency];
+    targetPkgJson.peerDependencies[dependency] = `^${pkgJson.dependencies[dependency]}`;
   });
 
   return gulp.src('README.md')
@@ -120,7 +120,7 @@ function startKarmaServer(isTddMode, isSaucelabs, done) {
   var karmaServer = require('karma').Server;
   var travis = process.env.TRAVIS;
 
-  var config = {configFile: __dirname + '/karma.conf.js', singleRun: !isTddMode, autoWatch: isTddMode};
+  var config = {configFile: `${__dirname}/karma.conf.js`, singleRun: !isTddMode, autoWatch: isTddMode};
 
   if (travis) {
     config['reporters'] = ['dots'];
@@ -132,7 +132,7 @@ function startKarmaServer(isTddMode, isSaucelabs, done) {
     config['browsers'] = ['SL_CHROME', 'SL_FIREFOX', 'SL_IE9', 'SL_IE10', 'SL_IE11', 'SL_EDGE', 'SL_SAFARI9'];
 
     if (process.env.TRAVIS) {
-      var buildId = 'TRAVIS #' + process.env.TRAVIS_BUILD_NUMBER + ' (' + process.env.TRAVIS_BUILD_ID + ')';
+      var buildId = `TRAVIS #${process.env.TRAVIS_BUILD_NUMBER} (${process.env.TRAVIS_BUILD_ID})`;
       config['sauceLabs'] = {build: buildId, tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER};
       process.env.SAUCE_ACCESS_KEY = process.env.SAUCE_ACCESS_KEY.split('').reverse().join('');
     }
