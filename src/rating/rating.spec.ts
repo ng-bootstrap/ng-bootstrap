@@ -12,11 +12,7 @@ const createTestComponent = (html: string) =>
 
 function getAriaState(compiled) {
   const stars = getStars(compiled, '.sr-only');
-  let state = [];
-  for (let i = 0, l = stars.length; i < l; i++) {
-    state.push((stars[i].textContent === '(*)' && stars[i].textContent !== '( )'));
-  }
-  return state;
+  return stars.map(star => star.textContent === '(*)' && star.textContent !== '( )');
 }
 
 function getStar(compiled, num: number) {
@@ -24,16 +20,12 @@ function getStar(compiled, num: number) {
 }
 
 function getStars(element, selector = 'span > span:not(.sr-only)') {
-  return element.querySelectorAll(selector);
+  return <HTMLElement[]>Array.from(element.querySelectorAll(selector));
 }
 
 function getState(compiled) {
   const stars = getStars(compiled);
-  let state = [];
-  for (let i = 0, l = stars.length; i < l; i++) {
-    state.push((stars[i].textContent === String.fromCharCode(9733)));
-  }
-  return state;
+  return stars.map(star => star.textContent.trim() === String.fromCharCode(9733));
 }
 
 describe('ngb-rating', () => {
@@ -96,6 +88,17 @@ describe('ngb-rating', () => {
     const compiled = fixture.nativeElement;
 
     expect(window.getComputedStyle(getStar(compiled, 1)).getPropertyValue('cursor')).toBe('not-allowed');
+  });
+
+  it('should allow custom star template', () => {
+    const fixture = createTestComponent(`
+      <template #t let-fill="fill">{{ fill === 100 ? 'x' : 'o' }}</template>
+      <ngb-rating [starTemplate]="t" rate="2" max="4"></ngb-rating>`);
+
+    const compiled = fixture.nativeElement;
+
+    const textContents = getStars(compiled).map(s => s.textContent.trim());
+    expect(textContents).toEqual(['x', 'x', 'o', 'o']);
   });
 
   describe('aria support', () => {
