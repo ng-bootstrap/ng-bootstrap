@@ -1,0 +1,6 @@
+<template #t let-fill="fill">
+  <span class="star" [class.filled]="fill === 100">&#9733;</span>
+</template>
+<ngb-rating [(rate)]="currentRate" [starTemplate]="t"></ngb-rating>
+<hr>
+<pre>Rate: <b>{{currentRate}}</b></pre>

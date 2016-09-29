@@ -1,5 +1,15 @@
-import {Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit} from '@angular/core';
+import {Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit, TemplateRef} from '@angular/core';
 import {NgbRatingConfig} from './rating-config';
+
+/**
+ * Context for the custom star display template
+ */
+export interface StarTemplateContext {
+  /**
+   * Star fill percentage. An integer value between 0 and 100
+   */
+  fill: number;
+}
 
 /**
  * Rating directive that will take care of visualising a star rating bar.
@@ -8,12 +18,15 @@ import {NgbRatingConfig} from './rating-config';
   selector: 'ngb-rating',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
+    <template #t let-fill="fill">{{ fill === 100 ? '&#9733;' : '&#9734;' }}</template>
     <span tabindex="0" (mouseleave)="reset()" aria-valuemin="0" [attr.aria-valuemax]="max" [attr.aria-valuenow]="rate">
       <template ngFor let-r [ngForOf]="range" let-index="index">
         <span class="sr-only">({{ index < rate ? '*' : ' ' }})</span>
         <span (mouseenter)="enter(index + 1)" (click)="update(index + 1)" [title]="r.title" 
         [attr.aria-valuetext]="r.title" 
-        [style.cursor]="readonly ? 'not-allowed' : 'pointer'">{{ index < rate ? '&#9733;' : '&#9734;' }}</span>
+        [style.cursor]="readonly ? 'not-allowed' : 'pointer'">
+          <template [ngTemplateOutlet]="starTemplate || t" [ngOutletContext]="{fill: index < rate ? 100 : 0}"></template>
+        </span>
       </template>
     </span>
   `
@@ -36,6 +49,11 @@ export class NgbRating implements OnInit {
    * A flag indicating if rating can be updated.
    */
   @Input() readonly: boolean;
+
+  /**
+   * A template to override star display
+   */
+  @Input() starTemplate: TemplateRef<StarTemplateContext>;
 
   /**
    * An event fired when a user is hovering over a given rating.
