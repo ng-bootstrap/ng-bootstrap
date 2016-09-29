@@ -63,7 +63,7 @@ describe('ngb-modal', () => {
   });
 
   beforeEach(() => {
-    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbModalModule]});
+    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbModalModule.forRoot()]});
     fixture = TestBed.createComponent(TestComponent);
   });
 

@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {NgModule, ModuleWithProviders} from '@angular/core';
 
 import {NgbAccordionModule, NgbPanelChangeEvent} from './accordion/accordion.module';
 import {NgbAlertModule} from './alert/alert.module';
@@ -40,12 +40,26 @@ export {NgbTimepickerModule, NgbTimepickerConfig, NgbTimeStruct} from './timepic
 export {NgbTooltipModule, NgbTooltipConfig} from './tooltip/tooltip.module';
 export {NgbTypeaheadModule, NgbTypeaheadConfig, NgbTypeaheadSelectItemEvent} from './typeahead/typeahead.module';
 
+const NGB_MODULES = [
+  NgbAccordionModule, NgbAlertModule, NgbButtonsModule, NgbCarouselModule, NgbCollapseModule, NgbDatepickerModule,
+  NgbDropdownModule, NgbModalModule, NgbPaginationModule, NgbPopoverModule, NgbProgressbarModule, NgbRatingModule,
+  NgbTabsetModule, NgbTimepickerModule, NgbTooltipModule, NgbTypeaheadModule
+];
+
 @NgModule({
-  exports: [
-    NgbAccordionModule, NgbAlertModule, NgbButtonsModule, NgbCarouselModule, NgbCollapseModule, NgbDatepickerModule,
-    NgbDropdownModule, NgbModalModule, NgbPaginationModule, NgbPopoverModule, NgbProgressbarModule, NgbRatingModule,
-    NgbTabsetModule, NgbTimepickerModule, NgbTooltipModule, NgbTypeaheadModule
-  ]
+  imports: [
+    NgbAlertModule.forRoot(), NgbButtonsModule.forRoot(), NgbCollapseModule.forRoot(), NgbProgressbarModule.forRoot(),
+    NgbTooltipModule.forRoot(), NgbTypeaheadModule.forRoot(), NgbAccordionModule.forRoot(), NgbCarouselModule.forRoot(),
+    NgbDatepickerModule.forRoot(), NgbDropdownModule.forRoot(), NgbModalModule.forRoot(), NgbPaginationModule.forRoot(),
+    NgbPopoverModule.forRoot(), NgbProgressbarModule.forRoot(), NgbRatingModule.forRoot(), NgbTabsetModule.forRoot(),
+    NgbTimepickerModule.forRoot(), NgbTooltipModule.forRoot()
+  ],
+  exports: NGB_MODULES
 })
+export class NgbRootModule {
+}
+
+@NgModule({imports: NGB_MODULES, exports: NGB_MODULES})
 export class NgbModule {
+  static forRoot(): ModuleWithProviders { return {ngModule: NgbRootModule}; }
 }

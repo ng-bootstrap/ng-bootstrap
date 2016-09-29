@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {NgModule, ModuleWithProviders} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
 import {NgbHighlight} from './highlight';
@@ -13,8 +13,8 @@ export {NgbTypeaheadSelectItemEvent} from './typeahead';
   declarations: [NgbTypeahead, NgbHighlight, NgbTypeaheadWindow],
   exports: [NgbTypeahead],
   imports: [CommonModule],
-  entryComponents: [NgbTypeaheadWindow],
-  providers: [NgbTypeaheadConfig]
+  entryComponents: [NgbTypeaheadWindow]
 })
 export class NgbTypeaheadModule {
+  static forRoot(): ModuleWithProviders { return {ngModule: NgbTypeaheadModule, providers: [NgbTypeaheadConfig]}; }
 }

@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {NgModule, ModuleWithProviders} from '@angular/core';
 
 import {NgbModalContainer} from './modal-container';
 import {NgbModalBackdrop} from './modal-backdrop';
@@ -13,8 +13,8 @@ export {ModalDismissReasons} from './modal-dismiss-reasons';
 @NgModule({
   declarations: [NgbModalContainer, NgbModalBackdrop, NgbModalWindow],
   entryComponents: [NgbModalBackdrop, NgbModalWindow],
-  exports: [NgbModalContainer],
-  providers: [NgbModal, NgbModalStack]
+  exports: [NgbModalContainer]
 })
 export class NgbModalModule {
+  static forRoot(): ModuleWithProviders { return {ngModule: NgbModalModule, providers: [NgbModal, NgbModalStack]}; }
 }

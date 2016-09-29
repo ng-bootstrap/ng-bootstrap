@@ -20,7 +20,8 @@ function getCloseButton(element: HTMLElement): HTMLButtonElement {
 
 describe('ngb-alert', () => {
 
-  beforeEach(() => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbAlertModule]}); });
+  beforeEach(
+      () => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbAlertModule.forRoot()]}); });
 
   it('should initialize inputs with default values', () => {
     const defaultConfig = new NgbAlertConfig();
@@ -52,7 +53,7 @@ describe('ngb-alert', () => {
   describe('Custom config', () => {
     let config: NgbAlertConfig;
 
-    beforeEach(() => { TestBed.configureTestingModule({imports: [NgbAlertModule]}); });
+    beforeEach(() => { TestBed.configureTestingModule({imports: [NgbAlertModule.forRoot()]}); });
 
     beforeEach(inject([NgbAlertConfig], (c: NgbAlertConfig) => {
       config = c;
@@ -77,7 +78,7 @@ describe('ngb-alert', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule(
-          {imports: [NgbAlertModule], providers: [{provide: NgbAlertConfig, useValue: config}]});
+          {imports: [NgbAlertModule.forRoot()], providers: [{provide: NgbAlertConfig, useValue: config}]});
     });
 
     it('should initialize inputs with provided config as provider', () => {

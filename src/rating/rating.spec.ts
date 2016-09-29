@@ -29,7 +29,8 @@ function getState(compiled) {
 }
 
 describe('ngb-rating', () => {
-  beforeEach(() => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbRatingModule]}); });
+  beforeEach(
+      () => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbRatingModule.forRoot()]}); });
 
   it('should initialize inputs with default values', () => {
     const defaultConfig = new NgbRatingConfig();
@@ -150,7 +151,7 @@ describe('ngb-rating', () => {
   describe('Custom config', () => {
     let config: NgbRatingConfig;
 
-    beforeEach(() => { TestBed.configureTestingModule({imports: [NgbRatingModule]}); });
+    beforeEach(() => { TestBed.configureTestingModule({imports: [NgbRatingModule.forRoot()]}); });
 
     beforeEach(inject([NgbRatingConfig], (c: NgbRatingConfig) => {
       config = c;
@@ -175,7 +176,7 @@ describe('ngb-rating', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule(
-          {imports: [NgbRatingModule], providers: [{provide: NgbRatingConfig, useValue: config}]});
+          {imports: [NgbRatingModule.forRoot()], providers: [{provide: NgbRatingConfig, useValue: config}]});
     });
 
     it('should initialize inputs with provided config as provider', () => {

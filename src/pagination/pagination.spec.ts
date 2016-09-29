@@ -129,8 +129,9 @@ describe('ngb-pagination', () => {
 
   describe('UI logic', () => {
 
-    beforeEach(
-        () => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbPaginationModule]}); });
+    beforeEach(() => {
+      TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbPaginationModule.forRoot()]});
+    });
 
     it('should render and respond to collectionSize change', () => {
       const html = '<ngb-pagination [collectionSize]="collectionSize" [page]="1"></ngb-pagination>';
@@ -422,7 +423,7 @@ describe('ngb-pagination', () => {
   describe('Custom config', () => {
     let config: NgbPaginationConfig;
 
-    beforeEach(() => { TestBed.configureTestingModule({imports: [NgbPaginationModule]}); });
+    beforeEach(() => { TestBed.configureTestingModule({imports: [NgbPaginationModule.forRoot()]}); });
 
     beforeEach(inject([NgbPaginationConfig], (c: NgbPaginationConfig) => {
       config = c;
@@ -456,7 +457,7 @@ describe('ngb-pagination', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule(
-          {imports: [NgbPaginationModule], providers: [{provide: NgbPaginationConfig, useValue: config}]});
+          {imports: [NgbPaginationModule.forRoot()], providers: [{provide: NgbPaginationConfig, useValue: config}]});
     });
 
     it('should initialize inputs with provided config as provider', () => {

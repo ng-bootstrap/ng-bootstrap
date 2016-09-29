@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {NgModule, ModuleWithProviders} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
 import {NGB_ALERT_DIRECTIVES, NgbAlert} from './alert';
@@ -10,8 +10,8 @@ export {NgbAlertConfig} from './alert-config';
   declarations: NGB_ALERT_DIRECTIVES,
   exports: NGB_ALERT_DIRECTIVES,
   imports: [CommonModule],
-  entryComponents: [NgbAlert],
-  providers: [NgbAlertConfig]
+  entryComponents: [NgbAlert]
 })
 export class NgbAlertModule {
+  static forRoot(): ModuleWithProviders { return {ngModule: NgbAlertModule, providers: [NgbAlertConfig]}; }
 }

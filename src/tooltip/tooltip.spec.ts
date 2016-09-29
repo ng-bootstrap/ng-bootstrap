@@ -15,7 +15,7 @@ const createOnPushTestComponent =
     (html: string) => <ComponentFixture<TestOnPushComponent>>createGenericTestComponent(html, TestOnPushComponent);
 
 describe('ngb-tooltip-window', () => {
-  beforeEach(() => { TestBed.configureTestingModule({imports: [NgbTooltipModule]}); });
+  beforeEach(() => { TestBed.configureTestingModule({imports: [NgbTooltipModule.forRoot()]}); });
 
   it('should render tooltip on top by default', () => {
     const fixture = TestBed.createComponent(NgbTooltipWindow);
@@ -37,7 +37,8 @@ describe('ngb-tooltip-window', () => {
 describe('ngb-tooltip', () => {
 
   beforeEach(() => {
-    TestBed.configureTestingModule({declarations: [TestComponent, TestOnPushComponent], imports: [NgbTooltipModule]});
+    TestBed.configureTestingModule(
+        {declarations: [TestComponent, TestOnPushComponent], imports: [NgbTooltipModule.forRoot()]});
   });
 
   function getWindow(fixture) { return fixture.nativeElement.querySelector('ngb-tooltip-window'); }
@@ -296,7 +297,7 @@ describe('ngb-tooltip', () => {
     let config: NgbTooltipConfig;
 
     beforeEach(() => {
-      TestBed.configureTestingModule({imports: [NgbTooltipModule]});
+      TestBed.configureTestingModule({imports: [NgbTooltipModule.forRoot()]});
       TestBed.overrideComponent(TestComponent, {set: {template: `<div ngbTooltip="Great tip!"></div>`}});
     });
 
@@ -323,7 +324,7 @@ describe('ngb-tooltip', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule(
-          {imports: [NgbTooltipModule], providers: [{provide: NgbTooltipConfig, useValue: config}]});
+          {imports: [NgbTooltipModule.forRoot()], providers: [{provide: NgbTooltipConfig, useValue: config}]});
     });
 
     it('should initialize inputs with provided config as provider', () => {
