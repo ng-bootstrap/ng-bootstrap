@@ -155,6 +155,11 @@ export class NgbCarousel implements AfterContentChecked,
   }
 
   /**
+   * Gets the slide index from the id for use in programmatically selecting a slide.
+   */
+  getSlideIdxById(slideId: string): number { return this.slides.toArray().indexOf(this._getSlideById(slideId)); }
+
+  /**
    * @internal
    */
   keyPrev() {
@@ -190,13 +195,9 @@ export class NgbCarousel implements AfterContentChecked,
     return slideWithId.length ? slideWithId[0] : null;
   }
 
-  private _getSlideIdxById(slideId: string): number {
-    return this.slides.toArray().indexOf(this._getSlideById(slideId));
-  }
-
   private _getNextSlide(currentSlideId: string): string {
     const slideArr = this.slides.toArray();
-    const currentSlideIdx = this._getSlideIdxById(currentSlideId);
+    const currentSlideIdx = this.getSlideIdxById(currentSlideId);
     const isLastSlide = currentSlideIdx === slideArr.length - 1;
 
     return isLastSlide ? (this.wrap ? slideArr[0].id : slideArr[slideArr.length - 1].id) :
@@ -205,7 +206,7 @@ export class NgbCarousel implements AfterContentChecked,
 
   private _getPrevSlide(currentSlideId: string): string {
     const slideArr = this.slides.toArray();
-    const currentSlideIdx = this._getSlideIdxById(currentSlideId);
+    const currentSlideIdx = this.getSlideIdxById(currentSlideId);
     const isFirstSlide = currentSlideIdx === 0;
 
     return isFirstSlide ? (this.wrap ? slideArr[slideArr.length - 1].id : slideArr[0].id) :
