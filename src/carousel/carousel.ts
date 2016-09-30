@@ -101,10 +101,10 @@ export class NgbCarousel implements AfterContentChecked,
   ngOnDestroy() { clearInterval(this._slideChangeInterval); }
 
   /**
-   * Navigate to a slide with a specified identifier.
+   * Navigate to a slide with the specified identifier.
    */
-  select(slideIdx: string) {
-    this.cycleToSelected(slideIdx);
+  select(slideId: string) {
+    this.cycleToSelected(slideId);
     this._restartTimer();
   }
 
