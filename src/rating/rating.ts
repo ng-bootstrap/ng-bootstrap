@@ -1,4 +1,14 @@
-import {Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnInit, TemplateRef} from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  Input,
+  Output,
+  EventEmitter,
+  OnInit,
+  TemplateRef,
+  OnChanges,
+  SimpleChanges
+} from '@angular/core';
 import {NgbRatingConfig} from './rating-config';
 
 /**
@@ -25,13 +35,14 @@ export interface StarTemplateContext {
         <span (mouseenter)="enter(index + 1)" (click)="update(index + 1)" [title]="r.title" 
         [attr.aria-valuetext]="r.title" 
         [style.cursor]="readonly ? 'not-allowed' : 'pointer'">
-          <template [ngTemplateOutlet]="starTemplate || t" [ngOutletContext]="{fill: index < rate ? 100 : 0}"></template>
+          <template [ngTemplateOutlet]="starTemplate || t" [ngOutletContext]="{fill: getFillValue(index)}"></template>
         </span>
       </template>
     </span>
   `
 })
-export class NgbRating implements OnInit {
+export class NgbRating implements OnInit,
+    OnChanges {
   private _oldRate: number;
   range: number[] = [];
 
@@ -41,7 +52,7 @@ export class NgbRating implements OnInit {
   @Input() max: number;
 
   /**
-   * Current rating.
+   * Current rating. Can be a decimal value like 3.75
    */
   @Input() rate: number;
 
@@ -85,10 +96,26 @@ export class NgbRating implements OnInit {
     this.hover.emit(value);
   }
 
-  ngOnInit(): void {
-    this._oldRate = this.rate;
-    this.range = this._buildTemplateObjects();
+  getFillValue(index: number): number {
+    const diff = this.rate - index;
+
+    if (diff >= 1) {
+      return 100;
+    }
+    if (diff < 1 && diff > 0) {
+      return Number.parseInt((diff * 100).toFixed(2));
+    }
+
+    return 0;
   }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['rate']) {
+      this._oldRate = this.rate;
+    }
+  }
+
+  ngOnInit(): void { this.range = this._buildTemplateObjects(); }
 
   reset(): void {
     this.leave.emit(this.rate);

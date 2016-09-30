@@ -28,6 +28,11 @@ function getState(compiled) {
   return stars.map(star => star.textContent.trim() === String.fromCharCode(9733));
 }
 
+function getStateText(compiled) {
+  const stars = getStars(compiled);
+  return stars.map(star => star.textContent.trim());
+}
+
 describe('ngb-rating', () => {
   beforeEach(
       () => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbRatingModule.forRoot()]}); });
@@ -97,9 +102,36 @@ describe('ngb-rating', () => {
       <ngb-rating [starTemplate]="t" rate="2" max="4"></ngb-rating>`);
 
     const compiled = fixture.nativeElement;
+    expect(getStateText(compiled)).toEqual(['x', 'x', 'o', 'o']);
+  });
 
-    const textContents = getStars(compiled).map(s => s.textContent.trim());
-    expect(textContents).toEqual(['x', 'x', 'o', 'o']);
+  it('should calculate fill percentage correctly', () => {
+    const fixture = createTestComponent(`
+      <template #t let-fill="fill">{{fill}}</template>
+      <ngb-rating [starTemplate]="t" [rate]="rate" max="4"></ngb-rating>`);
+
+    const compiled = fixture.nativeElement;
+    expect(getStateText(compiled)).toEqual(['100', '100', '100', '0']);
+
+    fixture.componentInstance.rate = 0;
+    fixture.detectChanges();
+    expect(getStateText(compiled)).toEqual(['0', '0', '0', '0']);
+
+    fixture.componentInstance.rate = 2.2;
+    fixture.detectChanges();
+    expect(getStateText(compiled)).toEqual(['100', '100', '20', '0']);
+
+    fixture.componentInstance.rate = 2.25;
+    fixture.detectChanges();
+    expect(getStateText(compiled)).toEqual(['100', '100', '25', '0']);
+
+    fixture.componentInstance.rate = 2.2548;
+    fixture.detectChanges();
+    expect(getStateText(compiled)).toEqual(['100', '100', '25', '0']);
+
+    fixture.componentInstance.rate = 7;
+    fixture.detectChanges();
+    expect(getStateText(compiled)).toEqual(['100', '100', '100', '100']);
   });
 
   describe('aria support', () => {
@@ -192,5 +224,6 @@ describe('ngb-rating', () => {
 
 @Component({selector: 'test-cmp', template: ''})
 class TestComponent {
-  max: number = 10;
+  max = 10;
+  rate = 3;
 }
