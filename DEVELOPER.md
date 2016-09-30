@@ -135,7 +135,7 @@ to some whitespace difference.
 * You can run this as a **git pre-commit hook** to automatically format your delta regions when you
   commit a change. In the ng-bootstrap repo, run
 
-```
+```shell
     $ echo -e '#!/bin/sh\nexec git clang-format' > .git/hooks/pre-commit
     $ chmod u+x !$
 ```

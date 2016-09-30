@@ -20,20 +20,20 @@ Feel free to make comments there.
 Check all the directives in action at https://ng-bootstrap.github.io
 
 ## Dependencies
-* [Angular 2](https://angular.io) (tested with 2.0.0-rc.7)
+* [Angular 2](https://angular.io) (tested with 2.0.0)
 * [Bootstrap 4](https://v4-alpha.getbootstrap.com) (tested with 4.0.0-alpha.4)
 
 ## Installation
 After installing the above dependencies, install `ng-bootstrap` via:
-```
+```shell
 npm install --save @ng-bootstrap/ng-bootstrap
 ```
 Once installed you need to import our main module:
-```
+```js
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 ```
 The only remaining part is to list the imported module in your application module. You should end up with the code similar to:
-```
+```js
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
@@ -48,7 +48,7 @@ export class AppModule {
 If you are using SystemJS, you should also adjust your configuration to point to the UMD bundle.
 
 In your systemjs config file, `map` needs to tell the System loader where to look for `ng-bootstrap`:
-```
+```js
 map: {
   '@ng-bootstrap/ng-bootstrap': 'node_modules/@ng-bootstrap/ng-bootstrap/bundles/ng-bootstrap.js',
 }
