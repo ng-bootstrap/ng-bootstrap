@@ -11,6 +11,10 @@ export class WikipediaService {
   constructor(private _jsonp: Jsonp) {}
 
   search(term: string) {
+    if (term === '') {
+      return Observable.of([]);
+    }
+
     let wikiUrl = 'https://en.wikipedia.org/w/api.php';
     let params = new URLSearchParams();
     params.set('search', term);
@@ -31,8 +35,9 @@ export class WikipediaService {
   styles: [`.form-control { width: 300px; display: inline; }`]
 })
 export class NgbdTypeaheadHttp {
-  public model: any;
-  public searching: boolean;
+  model: any;
+  searching = false;
+  searchFailed = false;
 
   constructor(private _service: WikipediaService) {}
 
@@ -40,7 +45,13 @@ export class NgbdTypeaheadHttp {
     text$
       .debounceTime(300)
       .distinctUntilChanged()
-      .do(term => { this.searching = term.length > 0; })
-      .switchMap(term => term === '' ? Observable.of([]) : this._service.search(term))
-      .do(() => { this.searching = false; });
+      .do(() => this.searching = true)
+      .switchMap(term =>
+        this._service.search(term)
+            .do(() => this.searchFailed = false)
+            .catch(() => {
+              this.searchFailed = true;
+              return Observable.of([]);
+            }))
+      .do(() => this.searching = false);
 }
