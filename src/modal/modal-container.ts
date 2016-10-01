@@ -3,6 +3,7 @@ import {
   Injector,
   Renderer,
   TemplateRef,
+  ViewRef,
   ViewContainerRef,
   ComponentFactoryResolver,
   ComponentFactory,
@@ -21,6 +22,10 @@ class ModalContentContext {
   dismiss(reason?: any) {}
 }
 
+class ContentRef {
+  constructor(public nodes: any[], public viewRef?: ViewRef) {}
+}
+
 @Directive({selector: 'template[ngbModalContainer]'})
 export class NgbModalContainer {
   private _backdropFactory: ComponentFactory<NgbModalBackdrop>;
@@ -37,15 +42,16 @@ export class NgbModalContainer {
 
   open(content: string | TemplateRef<any>, options): NgbModalRef {
     const modalContentContext = new ModalContentContext();
-    const nodes = this._getContentNodes(content, modalContentContext);
-    const windowCmptRef = this._viewContainerRef.createComponent(this._windowFactory, 0, this._injector, nodes);
+    const contentRef = this._getContentRef(content, modalContentContext);
+    const windowCmptRef =
+        this._viewContainerRef.createComponent(this._windowFactory, 0, this._injector, contentRef.nodes);
     let backdropCmptRef: ComponentRef<NgbModalBackdrop>;
     let ngbModalRef: NgbModalRef;
 
     if (options.backdrop !== false) {
       backdropCmptRef = this._viewContainerRef.createComponent(this._backdropFactory, 0, this._injector);
     }
-    ngbModalRef = new NgbModalRef(this._viewContainerRef, windowCmptRef, backdropCmptRef);
+    ngbModalRef = new NgbModalRef(this._viewContainerRef, windowCmptRef, backdropCmptRef, contentRef.viewRef);
 
     modalContentContext.close = (result: any) => { ngbModalRef.close(result); };
     modalContentContext.dismiss = (reason: any) => { ngbModalRef.dismiss(reason); };
@@ -63,13 +69,14 @@ export class NgbModalContainer {
     });
   }
 
-  private _getContentNodes(content: string | TemplateRef<any>, context: ModalContentContext): any[] {
+  private _getContentRef(content: string | TemplateRef<any>, context: ModalContentContext): ContentRef {
     if (!content) {
-      return [];
+      return new ContentRef([]);
     } else if (content instanceof TemplateRef) {
-      return [this._viewContainerRef.createEmbeddedView(<TemplateRef<ModalContentContext>>content, context).rootNodes];
+      const viewRef = this._viewContainerRef.createEmbeddedView(<TemplateRef<ModalContentContext>>content, context);
+      return new ContentRef([viewRef.rootNodes], viewRef);
     } else {
-      return [[this._renderer.createText(null, `${content}`)]];
+      return new ContentRef([[this._renderer.createText(null, `${content}`)]]);
     }
   }
 }
