@@ -32,6 +32,10 @@ function getInput(nativeEl: HTMLElement, idx: number): HTMLInputElement {
   return <HTMLInputElement>nativeEl.querySelectorAll('input')[idx];
 }
 
+function getLabel(nativeEl: HTMLElement, idx: number): HTMLElement {
+  return <HTMLElement>nativeEl.querySelectorAll('label')[idx];
+}
+
 describe('NgbActiveLabel', () => {
   beforeEach(() => {
     TestBed.configureTestingModule(
@@ -312,13 +316,67 @@ describe('ngbRadioGroup', () => {
     expect(getGroupElement(fixture.nativeElement)).toHaveCssClass('ng-valid');
     expect(getGroupElement(fixture.nativeElement)).not.toHaveCssClass('ng-invalid');
   });
+
+  it('should disable label and input when it is disabled using reactive forms', () => {
+    const html = `
+      <form [formGroup]="disabledForm">
+        <div ngbRadioGroup formControlName="control">
+          <label class="btn">
+            <input type="radio" value="foo"/>
+          </label>          
+        </div>
+      </form>`;
+
+    const fixture = createTestComponent(html);
+
+    expect(getLabel(fixture.nativeElement, 0)).toHaveCssClass('disabled');
+    expect(getInput(fixture.nativeElement, 0).hasAttribute('disabled')).toBeTruthy();
+
+    fixture.componentInstance.disabledControl.enable();
+    fixture.detectChanges();
+    expect(getLabel(fixture.nativeElement, 0)).not.toHaveCssClass('disabled');
+    expect(getInput(fixture.nativeElement, 0).hasAttribute('disabled')).toBeFalsy();
+  });
+
+  it('should disable label and input when it is disabled using template-driven forms', async(() => {
+       const html = `
+      <form>
+        <div ngbRadioGroup [(ngModel)]="model" name="control" [disabled]="disabled">
+          <label class="btn">
+            <input type="radio" value="foo"/>
+          </label>          
+        </div>
+      </form>`;
+
+       const fixture = createTestComponent(html);
+
+       fixture.whenStable()
+           .then(() => {
+             fixture.detectChanges();
+             expect(getLabel(fixture.nativeElement, 0)).toHaveCssClass('disabled');
+             expect(getInput(fixture.nativeElement, 0).hasAttribute('disabled')).toBeTruthy();
+
+             fixture.componentInstance.disabled = false;
+             fixture.detectChanges();
+             return fixture.whenStable();
+           })
+           .then(() => {
+             fixture.detectChanges();
+             expect(getLabel(fixture.nativeElement, 0)).not.toHaveCssClass('disabled');
+             expect(getInput(fixture.nativeElement, 0).hasAttribute('disabled')).toBeFalsy();
+           });
+     }));
+
 });
 
 @Component({selector: 'test-cmp', template: ''})
 class TestComponent {
   form = new FormGroup({control: new FormControl('', Validators.required)});
+  disabledControl = new FormControl({value: '', disabled: true});
+  disabledForm = new FormGroup({control: this.disabledControl});
 
   model;
   values: any = ['one', 'two', 'three'];
   shown = true;
+  disabled = true;
 }
