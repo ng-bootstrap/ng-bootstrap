@@ -17,6 +17,7 @@ const NGB_RADIO_VALUE_ACCESSOR = {
   providers: [NGB_RADIO_VALUE_ACCESSOR]
 })
 export class NgbRadioGroup implements ControlValueAccessor {
+  private _disabled: boolean;
   private _radios: Set<NgbRadio> = new Set<NgbRadio>();
   private _value = null;
 
@@ -36,6 +37,11 @@ export class NgbRadioGroup implements ControlValueAccessor {
 
   registerOnTouched(fn: () => any): void { this.onTouched = fn; }
 
+  setDisabledState(isDisabled: boolean): void {
+    this._disabled = isDisabled;
+    this._updateRadios();
+  }
+
   unregister(radio: NgbRadio) { this._radios.delete(radio); }
 
   writeValue(value) {
@@ -43,7 +49,7 @@ export class NgbRadioGroup implements ControlValueAccessor {
     this._updateRadios();
   }
 
-  private _updateRadios() { this._radios.forEach((radio) => radio.markChecked(this._value)); }
+  private _updateRadios() { this._radios.forEach((radio) => radio.update(this._value, this._disabled)); }
 }
 
 
@@ -52,16 +58,23 @@ export class NgbActiveLabel {
   constructor(private _renderer: Renderer, private _elRef: ElementRef) {}
 
   set active(isActive: boolean) { this._renderer.setElementClass(this._elRef.nativeElement, 'active', isActive); }
+  set disabled(isDisabled: boolean) {
+    this._renderer.setElementClass(this._elRef.nativeElement, 'disabled', isDisabled);
+  }
 }
 
 
 /**
  * Marks an input of type "radio" as part of the NgbRadioGroup.
  */
-@Directive({selector: 'input[type=radio]', host: {'(change)': 'onChange()', '[checked]': 'isChecked'}})
+@Directive({
+  selector: 'input[type=radio]',
+  host: {'(change)': 'onChange()', '[checked]': 'isChecked', '[disabled]': 'isDisabled'}
+})
 export class NgbRadio implements OnDestroy {
-  private _value: any = null;
   private _checked: boolean;
+  private _disabled: boolean;
+  private _value: any = null;
 
   /**
    * You can specify model value of a given radio by binding to the value property.
@@ -81,17 +94,14 @@ export class NgbRadio implements OnDestroy {
 
   get isChecked() { return this._checked; }
 
+  get isDisabled() { return this._disabled; }
+
   constructor(
       @Optional() private _group: NgbRadioGroup, @Optional() private _label: NgbActiveLabel,
       private _renderer: Renderer, private _element: ElementRef) {
     if (this._group) {
       this._group.register(this);
     }
-  }
-
-  markChecked(value) {
-    this._checked = (this.value === value && value !== null);
-    this._label.active = this._checked;
   }
 
   ngOnDestroy() {
@@ -104,6 +114,13 @@ export class NgbRadio implements OnDestroy {
     if (this._group) {
       this._group.onRadioChange(this);
     }
+  }
+
+  update(value, isDisabled) {
+    this._checked = (this.value === value && value !== null);
+    this._disabled = isDisabled;
+    this._label.active = this._checked;
+    this._label.disabled = this._disabled;
   }
 }
 
