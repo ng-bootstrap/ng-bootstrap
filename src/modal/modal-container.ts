@@ -3,7 +3,6 @@ import {
   Injector,
   Renderer,
   TemplateRef,
-  ViewRef,
   ViewContainerRef,
   ComponentFactoryResolver,
   ComponentFactory,
@@ -11,6 +10,7 @@ import {
 } from '@angular/core';
 
 import {isDefined} from '../util/util';
+import {ContentRef} from '../util/popup';
 
 import {NgbModalBackdrop} from './modal-backdrop';
 import {NgbModalWindow} from './modal-window';
@@ -20,10 +20,6 @@ import {NgbModalRef} from './modal-ref';
 class ModalContentContext {
   close(result?: any) {}
   dismiss(reason?: any) {}
-}
-
-class ContentRef {
-  constructor(public nodes: any[], public viewRef?: ViewRef) {}
 }
 
 @Directive({selector: 'template[ngbModalContainer]'})
