@@ -2,11 +2,16 @@ import {TestBed, ComponentFixture, inject} from '@angular/core/testing';
 import {createGenericTestComponent} from '../test/common';
 
 import {By} from '@angular/platform-browser';
-import {Component, ViewChild, ChangeDetectionStrategy} from '@angular/core';
+import {Component, ViewChild, ChangeDetectionStrategy, Injectable, OnDestroy} from '@angular/core';
 
 import {NgbPopoverModule} from './popover.module';
 import {NgbPopoverWindow, NgbPopover} from './popover';
 import {NgbPopoverConfig} from './popover-config';
+
+@Injectable()
+class SpyService {
+  called = false;
+}
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -41,8 +46,11 @@ describe('ngb-popover-window', () => {
 describe('ngb-popover', () => {
 
   beforeEach(() => {
-    TestBed.configureTestingModule(
-        {declarations: [TestComponent, TestOnPushComponent], imports: [NgbPopoverModule.forRoot()]});
+    TestBed.configureTestingModule({
+      declarations: [TestComponent, TestOnPushComponent, DestroyableCmpt],
+      imports: [NgbPopoverModule.forRoot()],
+      providers: [SpyService]
+    });
   });
 
   function getWindow(fixture) { return fixture.nativeElement.querySelector('ngb-popover-window'); }
@@ -86,6 +94,24 @@ describe('ngb-popover', () => {
       directive.triggerEventHandler('click', {});
       fixture.detectChanges();
       expect(getWindow(fixture)).toBeNull();
+    });
+
+    it('should properly destroy TemplateRef content', () => {
+      const fixture = createTestComponent(`
+          <template #t><destroyable-cmpt></destroyable-cmpt></template>
+          <div [ngbPopover]="t" popoverTitle="Title"></div>`);
+      const directive = fixture.debugElement.query(By.directive(NgbPopover));
+      const spyService = fixture.debugElement.injector.get(SpyService);
+
+      directive.triggerEventHandler('click', {});
+      fixture.detectChanges();
+      expect(getWindow(fixture)).not.toBeNull();
+      expect(spyService.called).toBeFalsy();
+
+      directive.triggerEventHandler('click', {});
+      fixture.detectChanges();
+      expect(getWindow(fixture)).toBeNull();
+      expect(spyService.called).toBeTruthy();
     });
 
     it('should allow re-opening previously closed popovers', () => {
@@ -332,4 +358,11 @@ export class TestComponent {
 
 @Component({selector: 'test-onpush-cmpt', changeDetection: ChangeDetectionStrategy.OnPush, template: ``})
 export class TestOnPushComponent {
+}
+
+@Component({selector: 'destroyable-cmpt', template: 'Some content'})
+export class DestroyableCmpt implements OnDestroy {
+  constructor(private _spyService: SpyService) {}
+
+  ngOnDestroy(): void { this._spyService.called = true; }
 }
