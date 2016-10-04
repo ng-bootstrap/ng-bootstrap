@@ -193,7 +193,8 @@ describe('ngb-popover', () => {
 
   describe('visibility', () => {
     it('should emit events when showing and hiding popover', () => {
-      const fixture = createTestComponent(`<div ngbPopover="Great tip!" triggers="click" (shown)="shown()" (hidden)="hidden()"></div>`);
+      const fixture = createTestComponent(
+          `<div ngbPopover="Great tip!" triggers="click" (shown)="shown()" (hidden)="hidden()"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
       let shownSpy = spyOn(fixture.componentInstance, 'shown');
@@ -211,7 +212,8 @@ describe('ngb-popover', () => {
     });
 
     it('should not emit close event when already closed', () => {
-      const fixture = createTestComponent(`<div ngbPopover="Great tip!" triggers="manual" (shown)="shown()" (hidden)="hidden()"></div>`);
+      const fixture = createTestComponent(
+          `<div ngbPopover="Great tip!" triggers="manual" (shown)="shown()" (hidden)="hidden()"></div>`);
 
       let shownSpy = spyOn(fixture.componentInstance, 'shown');
       let hiddenSpy = spyOn(fixture.componentInstance, 'hidden');
@@ -229,7 +231,8 @@ describe('ngb-popover', () => {
     });
 
     it('should not emit open event when already opened', () => {
-      const fixture = createTestComponent(`<div ngbPopover="Great tip!" triggers="manual" (shown)="shown()" (hidden)="hidden()"></div>`);
+      const fixture = createTestComponent(
+          `<div ngbPopover="Great tip!" triggers="manual" (shown)="shown()" (hidden)="hidden()"></div>`);
 
       let shownSpy = spyOn(fixture.componentInstance, 'shown');
       let hiddenSpy = spyOn(fixture.componentInstance, 'hidden');
@@ -421,9 +424,8 @@ export class TestComponent {
 
   @ViewChild(NgbPopover) popover: NgbPopover;
 
-  shown() { }
-  hidden() { }
-
+  shown() {}
+  hidden() {}
 }
 
 @Component({selector: 'test-onpush-cmpt', changeDetection: ChangeDetectionStrategy.OnPush, template: ``})

@@ -2,6 +2,8 @@ import {
   Component,
   Directive,
   Input,
+  Output,
+  EventEmitter,
   ChangeDetectionStrategy,
   OnInit,
   OnDestroy,
@@ -46,6 +48,14 @@ export class NgbTooltip implements OnInit, OnDestroy {
    * Specifies events that should trigger. Supports a space separated list of event names.
    */
   @Input() triggers: string;
+  /**
+ * Emits an event when the tooltip is shown
+ */
+  @Output() shown = new EventEmitter();
+  /**
+   * Emits an event when the tooltip is hidden
+   */
+  @Output() hidden = new EventEmitter();
 
   private _ngbTooltip: string | TemplateRef<any>;
   private _popupService: PopupService<NgbTooltipWindow>;
@@ -92,6 +102,7 @@ export class NgbTooltip implements OnInit, OnDestroy {
       // we need to manually invoke change detection since events registered via
       // Renderer::listen() - to be determined if this is a bug in the Angular 2
       this._windowRef.changeDetectorRef.markForCheck();
+      this.shown.emit();
     }
   }
 
@@ -99,8 +110,11 @@ export class NgbTooltip implements OnInit, OnDestroy {
    * Closes an element’s tooltip. This is considered a “manual” triggering of the tooltip.
    */
   close(): void {
-    this._popupService.close();
-    this._windowRef = null;
+    if (this._windowRef != null) {
+      this._popupService.close();
+      this._windowRef = null;
+      this.hidden.emit();
+    }
   }
 
   /**
@@ -113,6 +127,11 @@ export class NgbTooltip implements OnInit, OnDestroy {
       this.open();
     }
   }
+
+  /**
+   * Returns whether or not the tooltip is currently being shown
+   */
+  isOpen(): boolean { return this._windowRef != null; }
 
   ngOnInit() {
     this._unregisterListenersFn = listenToTriggers(
