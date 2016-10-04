@@ -2,6 +2,8 @@ import {
   Component,
   Directive,
   Input,
+  Output,
+  EventEmitter,
   ChangeDetectionStrategy,
   OnInit,
   OnDestroy,
@@ -55,6 +57,14 @@ export class NgbPopover implements OnInit, OnDestroy {
    * Specifies events that should trigger. Supports a space separated list of event names.
    */
   @Input() triggers: string;
+  /**
+   * Emits an event when the popover is shown
+   */
+  @Output() shown = new EventEmitter();
+  /**
+   * Emits an event when the popover is hidden
+   */
+  @Output() hidden = new EventEmitter();
 
   private _popupService: PopupService<NgbPopoverWindow>;
   private _windowRef: ComponentRef<NgbPopoverWindow>;
@@ -77,7 +87,6 @@ export class NgbPopover implements OnInit, OnDestroy {
     });
   }
 
-
   /**
    * Opens an element’s popover. This is considered a “manual” triggering of the popover.
    */
@@ -89,6 +98,7 @@ export class NgbPopover implements OnInit, OnDestroy {
       // we need to manually invoke change detection since events registered via
       // Renderer::listen() are not picked up by change detection with the OnPush strategy
       this._windowRef.changeDetectorRef.markForCheck();
+      this.shown.emit();
     }
   }
 
@@ -96,8 +106,11 @@ export class NgbPopover implements OnInit, OnDestroy {
    * Closes an element’s popover. This is considered a “manual” triggering of the popover.
    */
   close(): void {
-    this._popupService.close();
-    this._windowRef = null;
+    if (this._windowRef) {
+      this._popupService.close();
+      this._windowRef = null;
+      this.hidden.emit();
+    }
   }
 
   /**
@@ -109,6 +122,13 @@ export class NgbPopover implements OnInit, OnDestroy {
     } else {
       this.open();
     }
+  }
+
+  /**
+   * Returns whether or not the popover is currently being shown
+   */
+  isOpen(): boolean {
+    return this._windowRef != null;
   }
 
   ngOnInit() {
