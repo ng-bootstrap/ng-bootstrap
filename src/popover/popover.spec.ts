@@ -191,6 +191,72 @@ describe('ngb-popover', () => {
     });
   });
 
+  describe('visibility', () => {
+    it('should emit events when showing and hiding popover', () => {
+      const fixture = createTestComponent(`<div ngbPopover="Great tip!" triggers="click" (shown)="shown()" (hidden)="hidden()"></div>`);
+      const directive = fixture.debugElement.query(By.directive(NgbPopover));
+
+      let shownSpy = spyOn(fixture.componentInstance, 'shown');
+      let hiddenSpy = spyOn(fixture.componentInstance, 'hidden');
+
+      directive.triggerEventHandler('click', {});
+      fixture.detectChanges();
+      expect(getWindow(fixture)).not.toBeNull();
+      expect(shownSpy).toHaveBeenCalled();
+
+      directive.triggerEventHandler('click', {});
+      fixture.detectChanges();
+      expect(getWindow(fixture)).toBeNull();
+      expect(hiddenSpy).toHaveBeenCalled();
+    });
+
+    it('should not emit close event when already closed', () => {
+      const fixture = createTestComponent(`<div ngbPopover="Great tip!" triggers="manual" (shown)="shown()" (hidden)="hidden()"></div>`);
+
+      let shownSpy = spyOn(fixture.componentInstance, 'shown');
+      let hiddenSpy = spyOn(fixture.componentInstance, 'hidden');
+
+      fixture.componentInstance.popover.open();
+      fixture.detectChanges();
+
+      fixture.componentInstance.popover.open();
+      fixture.detectChanges();
+
+      expect(getWindow(fixture)).not.toBeNull();
+      expect(shownSpy).toHaveBeenCalled();
+      expect(shownSpy.calls.count()).toEqual(1);
+      expect(hiddenSpy).not.toHaveBeenCalled();
+    });
+
+    it('should not emit open event when already opened', () => {
+      const fixture = createTestComponent(`<div ngbPopover="Great tip!" triggers="manual" (shown)="shown()" (hidden)="hidden()"></div>`);
+
+      let shownSpy = spyOn(fixture.componentInstance, 'shown');
+      let hiddenSpy = spyOn(fixture.componentInstance, 'hidden');
+
+      fixture.componentInstance.popover.close();
+      fixture.detectChanges();
+      expect(getWindow(fixture)).toBeNull();
+      expect(shownSpy).not.toHaveBeenCalled();
+      expect(hiddenSpy).not.toHaveBeenCalled();
+    });
+
+    it('should report correct visibility', () => {
+      const fixture = createTestComponent(`<div ngbPopover="Great tip!" triggers="manual"></div>`);
+      fixture.detectChanges();
+
+      expect(fixture.componentInstance.popover.isOpen()).toBeFalsy();
+
+      fixture.componentInstance.popover.open();
+      fixture.detectChanges();
+      expect(fixture.componentInstance.popover.isOpen()).toBeTruthy();
+
+      fixture.componentInstance.popover.close();
+      fixture.detectChanges();
+      expect(fixture.componentInstance.popover.isOpen()).toBeFalsy();
+    });
+  });
+
   describe('triggers', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbPopoverModule.forRoot()]});
@@ -354,6 +420,10 @@ export class TestComponent {
   placement: string;
 
   @ViewChild(NgbPopover) popover: NgbPopover;
+
+  shown() { }
+  hidden() { }
+
 }
 
 @Component({selector: 'test-onpush-cmpt', changeDetection: ChangeDetectionStrategy.OnPush, template: ``})
