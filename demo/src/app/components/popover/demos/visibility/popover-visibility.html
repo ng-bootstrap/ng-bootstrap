@@ -1,0 +1,11 @@
+<button type="button" class="btn btn-secondary" placement="top"
+        ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." popoverTitle="Popover on top" 
+        #popover="ngbPopover">
+  Open Popover
+</button>
+
+<hr />
+
+<p>
+  Popover is currently: <code>{{ popover.isOpen() ? 'open' : 'closed' }}</code>
+</p>
