@@ -105,6 +105,27 @@ describe('ngb-rating', () => {
     expect(getStateText(compiled)).toEqual(['x', 'x', 'o', 'o']);
   });
 
+  it('should allow custom template as a child element', () => {
+    const fixture = createTestComponent(`
+      <ngb-rating rate="2" max="4">
+        <template let-fill="fill">{{ fill === 100 ? 'x' : 'o' }}</template>
+      </ngb-rating>`);
+
+    const compiled = fixture.nativeElement;
+    expect(getStateText(compiled)).toEqual(['x', 'x', 'o', 'o']);
+  });
+
+  it('should prefer explicitly set custom template to a child one', () => {
+    const fixture = createTestComponent(`
+      <template #t let-fill="fill">{{ fill === 100 ? 'a' : 'b' }}</template>
+      <ngb-rating [starTemplate]="t" rate="2" max="4">
+        <template let-fill="fill">{{ fill === 100 ? 'c' : 'd' }}</template>
+      </ngb-rating>`);
+
+    const compiled = fixture.nativeElement;
+    expect(getStateText(compiled)).toEqual(['a', 'a', 'b', 'b']);
+  });
+
   it('should calculate fill percentage correctly', () => {
     const fixture = createTestComponent(`
       <template #t let-fill="fill">{{fill}}</template>

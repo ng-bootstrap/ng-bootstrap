@@ -7,7 +7,8 @@ import {
   OnInit,
   TemplateRef,
   OnChanges,
-  SimpleChanges
+  SimpleChanges,
+  ContentChild
 } from '@angular/core';
 import {NgbRatingConfig} from './rating-config';
 
@@ -62,9 +63,10 @@ export class NgbRating implements OnInit,
   @Input() readonly: boolean;
 
   /**
-   * A template to override star display
+   * A template to override star display.
+   * Alternatively put a <template> as the only child of <ngb-rating> element
    */
-  @Input() starTemplate: TemplateRef<StarTemplateContext>;
+  @Input() @ContentChild(TemplateRef) starTemplate: TemplateRef<StarTemplateContext>;
 
   /**
    * An event fired when a user is hovering over a given rating.
