@@ -80,7 +80,7 @@ To save your and our time we will be systematically closing all the issues that 
 ## You think you've found a bug?
 
 Oh, we are ashamed and want to fix it ASAP! But before fixing a bug we need to reproduce and confirm it. In order to reproduce bugs we will systematically ask you to provide a _minimal_ reproduction scenario using http://plnkr.co. Having a live, reproducible scenario gives us wealth of important information without going back & forth to you with additional questions like:
-* version of AngularJS used
+* version of Angular used
 * version of this library that you are using
 * 3rd-party libraries used, if any
 * and most importantly - a use-case that fails
