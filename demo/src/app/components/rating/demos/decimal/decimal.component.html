@@ -1,3 +1,5 @@
+<p>Custom rating template provided via a variable. Shows fine-grained rating display</p>
+
 <template #t let-fill="fill">
   <span *ngIf="fill === 100" class="star full">&hearts;</span>
   <span *ngIf="fill === 0" class="star">&hearts;</span>
@@ -5,7 +7,9 @@
     <span class="half" [style.width.%]="fill">&hearts;</span>&hearts;
   </span>
 </template>
+
 <ngb-rating [(rate)]="currentRate" [starTemplate]="t" [readonly]="true" max="5"></ngb-rating>
+
 <hr>
 <pre>Rate: <b>{{currentRate}}</b></pre>
 <button class="btn btn-sm btn-outline-primary" (click)="currentRate = 1.35">1.35</button>
