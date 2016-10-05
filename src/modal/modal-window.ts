@@ -15,7 +15,7 @@ import {ModalDismissReasons} from './modal-dismiss-reasons';
 @Component({
   selector: 'ngb-modal-window',
   host: {
-    'class': 'modal fade in',
+    '[class]': '"modal fade in" + (windowClass ? " " + windowClass : "")',
     'role': 'dialog',
     'tabindex': '-1',
     'style': 'display: block;',
@@ -35,6 +35,7 @@ export class NgbModalWindow implements OnInit,
   @Input() backdrop: boolean | string = true;
   @Input() keyboard = true;
   @Input() size: string;
+  @Input() windowClass: string;
 
   @Output('dismiss') dismissEvent = new EventEmitter();
 

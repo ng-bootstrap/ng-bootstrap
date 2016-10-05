@@ -299,7 +299,7 @@ describe('ngb-modal', () => {
     });
   });
 
-  describe('size options', () => {
+  describe('other options', () => {
 
     it('should render modals with specified size', () => {
       fixture.componentInstance.open('foo', {size: 'sm'});
@@ -307,6 +307,14 @@ describe('ngb-modal', () => {
       expect(fixture.nativeElement).toHaveModal('foo');
       expect(fixture.nativeElement.querySelector('.modal-dialog')).toHaveCssClass('modal-sm');
     });
+
+    it('should render modals with the correct custom classes', () => {
+      fixture.componentInstance.open('foo', {windowClass: 'bar'});
+      fixture.detectChanges();
+      expect(fixture.nativeElement).toHaveModal('foo');
+      expect(fixture.nativeElement.querySelector('ngb-modal-window')).toHaveCssClass('bar');
+    });
+
   });
 
   describe('focus management', () => {

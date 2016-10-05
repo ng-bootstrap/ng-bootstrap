@@ -33,6 +33,13 @@ describe('ngb-modal-dialog', () => {
       expect(dialogEl).toHaveCssClass('modal-sm');
     });
 
+    it('should render default modal window with a specified class', () => {
+      fixture.componentInstance.windowClass = 'custom-class';
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement).toHaveCssClass('custom-class');
+    });
+
     it('aria attributes', () => {
       fixture.detectChanges();
       const dialogEl: Element = fixture.nativeElement.querySelector('.modal-dialog');

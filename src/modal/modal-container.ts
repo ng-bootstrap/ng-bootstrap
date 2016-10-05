@@ -58,7 +58,7 @@ export class NgbModalContainer {
   }
 
   private _applyWindowOptions(windowInstance: NgbModalWindow, options: Object): void {
-    ['backdrop', 'keyboard', 'size'].forEach((optionName: string) => {
+    ['backdrop', 'keyboard', 'size', 'windowClass'].forEach((optionName: string) => {
       if (isDefined(options[optionName])) {
         windowInstance[optionName] = options[optionName];
       }
