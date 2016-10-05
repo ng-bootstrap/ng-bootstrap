@@ -16,5 +16,5 @@ export class NgbdModalCustomClass {
   open(content) {
     this.modalService.open(content, { windowClass: 'dark-modal' });
   }
-  
+
 }
