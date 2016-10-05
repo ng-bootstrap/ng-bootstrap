@@ -187,12 +187,13 @@ export class NgbInputDatepicker implements ControlValueAccessor {
 
   private _applyDatepickerInputs(datepickerInstance: NgbDatepicker): void {
     ['dayTemplate', 'firstDayOfWeek', 'markDisabled', 'minDate', 'maxDate', 'showNavigation', 'showWeekdays',
-     'showWeekNumbers', 'startDate']
+     'showWeekNumbers']
         .forEach((optionName: string) => {
           if (this[optionName] !== undefined) {
             datepickerInstance[optionName] = this[optionName];
           }
         });
+    datepickerInstance.startDate = this.startDate || this._model;
   }
 
   private _applyPopupStyling(nativeElement: any) {

@@ -9,6 +9,7 @@ import {NgbDatepickerModule} from './datepicker.module';
 import {NgbInputDatepicker} from './datepicker-input';
 import {NgbDatepicker} from './datepicker';
 import {NgbDateStruct} from './ngb-date-struct';
+import {NgbDate} from './ngb-date';
 
 const createTestCmpt = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -212,6 +213,19 @@ describe('NgbInputDatepicker', () => {
       const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
       expect(dp.startDate).toEqual({year: 2016, month: 9, day: 13});
     });
+
+    it('should propagate model as "startDate" option when "startDate" not provided', fakeAsync(() => {
+         const fixture = createTestCmpt(`<input ngbDatepicker [ngModel]="{year: 2016, month: 9, day: 13}">`);
+         const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
+
+         tick();
+         fixture.detectChanges();
+         dpInput.open();
+         fixture.detectChanges();
+
+         const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
+         expect(dp.startDate).toEqual(NgbDate.from({year: 2016, month: 9, day: 13}));
+       }));
   });
 });
 
