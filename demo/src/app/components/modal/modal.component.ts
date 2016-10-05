@@ -19,6 +19,11 @@ import {DEMO_SNIPPETS} from './demos';
       <ngbd-example-box demoTitle="Modal with default options" [htmlSnippet]="snippets.basic.markup" [tsSnippet]="snippets.basic.code">
           <ngbd-modal-basic></ngbd-modal-basic>
       </ngbd-example-box>
+      <ngbd-example-box demoTitle="Modal with custom class" 
+              [htmlSnippet]="snippets.customclass.markup" 
+              [tsSnippet]="snippets.customclass.code">
+          <ngbd-modal-customclass></ngbd-modal-customclass>
+      </ngbd-example-box>
     </ngbd-content-wrapper>
   `
 })
