@@ -4,11 +4,12 @@ import {NgModule} from '@angular/core';
 import {NgbdModal} from './modal.component';
 import {NgbdSharedModule} from '../../shared';
 import {NgbdComponentsSharedModule} from '../shared';
-import {DEMO_DIRECTIVES} from './demos';
+import {DEMO_DIRECTIVES, NgbdModalContent} from './demos';
 
 @NgModule({
   imports: [NgbdSharedModule, NgbdComponentsSharedModule],
   exports: [NgbdModal],
-  declarations: [NgbdModal, ...DEMO_DIRECTIVES]
+  entryComponents: [NgbdModalContent],
+  declarations: [NgbdModal, NgbdModalContent, ...DEMO_DIRECTIVES]
 })
 export class NgbdModalModule {}

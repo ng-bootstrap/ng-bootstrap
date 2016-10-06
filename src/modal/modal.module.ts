@@ -7,7 +7,7 @@ import {NgbModalStack} from './modal-stack';
 import {NgbModal} from './modal';
 
 export {NgbModal, NgbModalOptions} from './modal';
-export {NgbModalRef} from './modal-ref';
+export {NgbModalRef, NgbActiveModal} from './modal-ref';
 export {ModalDismissReasons} from './modal-dismiss-reasons';
 
 @NgModule({

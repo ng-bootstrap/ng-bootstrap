@@ -30,7 +30,14 @@ export {
   NgbDateParserFormatter
 } from './datepicker/datepicker.module';
 export {NgbDropdownModule, NgbDropdownConfig} from './dropdown/dropdown.module';
-export {NgbModalModule, NgbModal, NgbModalOptions, NgbModalRef, ModalDismissReasons} from './modal/modal.module';
+export {
+  NgbModalModule,
+  NgbModal,
+  NgbModalOptions,
+  NgbActiveModal,
+  NgbModalRef,
+  ModalDismissReasons
+} from './modal/modal.module';
 export {NgbPaginationModule, NgbPaginationConfig} from './pagination/pagination.module';
 export {NgbPopoverModule, NgbPopoverConfig} from './popover/popover.module';
 export {NgbProgressbarModule, NgbProgressbarConfig} from './progressbar/progressbar.module';

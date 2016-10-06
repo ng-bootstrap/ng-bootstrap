@@ -38,9 +38,10 @@ export class NgbModal {
   constructor(private _modalStack: NgbModalStack) {}
 
   /**
-   * Opens a new modal window with the specified content and using supplied options.
+   * Opens a new modal window with the specified content and using supplied options. Content can be provided
+   * as a TemplateRef or a component type. If you pass a component type as content than instances of those
+   * components can be injected with an instance of the NgbActiveModal class. You can use methods on the
+   * NgbActiveModal class to close / dismiss modals from "inside" of a component.
    */
-  open(content: string | TemplateRef<any>, options: NgbModalOptions = {}): NgbModalRef {
-    return this._modalStack.open(content, options);
-  }
+  open(content: any, options: NgbModalOptions = {}): NgbModalRef { return this._modalStack.open(content, options); }
 }
