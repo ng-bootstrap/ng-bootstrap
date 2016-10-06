@@ -10,6 +10,7 @@ import {DEMO_SNIPPETS} from './demos';
       <ngbd-api-docs-class type="NgbModal"></ngbd-api-docs-class>
       <ngbd-api-docs-class type="NgbModalOptions"></ngbd-api-docs-class>
       <ngbd-api-docs-class type="NgbModalRef"></ngbd-api-docs-class>
+      <ngbd-api-docs-class type="NgbActiveModal"></ngbd-api-docs-class>
       <ngb-alert [dismissible]="false">
         <strong>Heads up!</strong>
         The <code>NgbModal</code> service needs a container element with the <code>ngbModalContainer</code> directive. The
@@ -18,6 +19,9 @@ import {DEMO_SNIPPETS} from './demos';
       </ngb-alert>      
       <ngbd-example-box demoTitle="Modal with default options" [htmlSnippet]="snippets.basic.markup" [tsSnippet]="snippets.basic.code">
           <ngbd-modal-basic></ngbd-modal-basic>
+      </ngbd-example-box>
+      <ngbd-example-box demoTitle="Components as content" [htmlSnippet]="snippets.component.markup" [tsSnippet]="snippets.component.code">
+          <ngbd-modal-component></ngbd-modal-component>
       </ngbd-example-box>
       <ngbd-example-box demoTitle="Modal with custom class" 
               [htmlSnippet]="snippets.customclass.markup" 

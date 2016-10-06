@@ -7,7 +7,7 @@ import {NgbModalContainer} from './modal-container';
 export class NgbModalStack {
   private modalContainer: NgbModalContainer;
 
-  open(content: string | TemplateRef<any>, options = {}): NgbModalRef {
+  open(content: any, options = {}): NgbModalRef {
     if (!this.modalContainer) {
       throw new Error(
           'Missing modal container, add <template ngbModalContainer></template> to one of your application templates.');
