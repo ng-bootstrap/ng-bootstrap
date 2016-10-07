@@ -2,9 +2,10 @@ import {NgbdPopoverBasic} from './basic/popover-basic';
 import {NgbdPopoverTplcontent} from './tplcontent/popover-tplcontent';
 import {NgbdPopoverTriggers} from './triggers/popover-triggers';
 import {NgbdPopoverVisibility} from './visibility/popover-visibility';
+import {NgbdPopoverAppendtoroot} from './appendtoroot/popover-appendtoroot';
 import {NgbdPopoverConfig} from './config/popover-config';
 
-export const DEMO_DIRECTIVES = [NgbdPopoverBasic, NgbdPopoverTplcontent, NgbdPopoverTriggers, NgbdPopoverVisibility, NgbdPopoverConfig];
+export const DEMO_DIRECTIVES = [NgbdPopoverBasic, NgbdPopoverTplcontent, NgbdPopoverTriggers, NgbdPopoverVisibility, NgbdPopoverAppendtoroot, NgbdPopoverConfig];
 
 export const DEMO_SNIPPETS = {
   basic: {
@@ -22,6 +23,10 @@ export const DEMO_SNIPPETS = {
   visibility: {
     code: require('!!prismjs?lang=typescript!./visibility/popover-visibility'),
     markup: require('!!prismjs?lang=markup!./visibility/popover-visibility.html')
+  },
+  appendtoroot: {
+    code: require('!!prismjs?lang=typescript!./appendtoroot/popover-appendtoroot'),
+    markup: require('!!prismjs?lang=markup!./appendtoroot/popover-appendtoroot.html')
   },
   config: {
     code: require('!!prismjs?lang=typescript!./config/popover-config'),

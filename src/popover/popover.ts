@@ -34,6 +34,7 @@ import {NgbPopoverConfig} from './popover-config';
 export class NgbPopoverWindow {
   @Input() placement: 'top' | 'bottom' | 'left' | 'right' = 'top';
   @Input() title: string;
+  @Input() appendToRoot = false;
 }
 
 /**
@@ -58,6 +59,10 @@ export class NgbPopover implements OnInit, OnDestroy {
    */
   @Input() triggers: string;
   /**
+   * Specifies whether the popover should be appended to the root element.
+   */
+  @Input() appendToRoot: boolean;
+  /**
    * Emits an event when the popover is shown
    */
   @Output() shown = new EventEmitter();
@@ -77,12 +82,28 @@ export class NgbPopover implements OnInit, OnDestroy {
       ngZone: NgZone) {
     this.placement = config.placement;
     this.triggers = config.triggers;
+    this.appendToRoot = config.appendToRoot;
     this._popupService = new PopupService<NgbPopoverWindow>(
         NgbPopoverWindow, injector, viewContainerRef, _renderer, componentFactoryResolver);
 
     this._zoneSubscription = ngZone.onStable.subscribe(() => {
       if (this._windowRef) {
-        positionElements(this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement);
+        positionElements(
+            this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement, this.appendToRoot);
+
+        if (this.appendToRoot) {
+          let windowNotInRootNode =
+              () => {
+                return this._windowRef.location.nativeElement.parentNode &&
+                    this._windowRef.location.nativeElement.parentNode.parentNode.parentNode &&
+                    this._windowRef.location.nativeElement.parentNode.parentNode.parentNode;
+              }
+
+          while (windowNotInRootNode()) {
+            this._windowRef.location.nativeElement.parentNode.parentNode.appendChild(
+                this._windowRef.location.nativeElement);
+          }
+        }
       }
     });
   }
@@ -95,6 +116,7 @@ export class NgbPopover implements OnInit, OnDestroy {
       this._windowRef = this._popupService.open(this.ngbPopover);
       this._windowRef.instance.placement = this.placement;
       this._windowRef.instance.title = this.popoverTitle;
+      this._windowRef.instance.appendToRoot = this.appendToRoot;
       // we need to manually invoke change detection since events registered via
       // Renderer::listen() are not picked up by change detection with the OnPush strategy
       this._windowRef.changeDetectorRef.markForCheck();

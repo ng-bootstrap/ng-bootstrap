@@ -69,6 +69,7 @@ describe('ngb-popover', () => {
       expect(windowEl).toHaveCssClass('popover-top');
       expect(windowEl.textContent.trim()).toBe('TitleGreat tip!');
       expect(windowEl.getAttribute('role')).toBe('tooltip');
+      expect(windowEl.parentNode).toBe(fixture.nativeElement);
 
       directive.triggerEventHandler('click', {});
       fixture.detectChanges();
@@ -90,6 +91,7 @@ describe('ngb-popover', () => {
       expect(windowEl).toHaveCssClass(`popover-${defaultConfig.placement}`);
       expect(windowEl.textContent.trim()).toBe('TitleHello, World!');
       expect(windowEl.getAttribute('role')).toBe('tooltip');
+      expect(windowEl.parentNode).toBe(fixture.nativeElement);
 
       directive.triggerEventHandler('click', {});
       fixture.detectChanges();
@@ -189,6 +191,28 @@ describe('ngb-popover', () => {
       expect(windowEl).toHaveCssClass('popover-left');
       expect(windowEl.textContent.trim()).toBe('Great tip!');
     });
+  });
+
+  describe('placement', () => {
+
+    it('should be appended to the root element when requested', () => {
+      const fixture = createTestComponent(`<div ngbPopover="Great tip!" [appendToRoot]="true"></div>`);
+      const directive = fixture.debugElement.query(By.directive(NgbPopover));
+
+      directive.triggerEventHandler('click', {});
+      fixture.detectChanges();
+      const windowEl = getWindow(fixture);
+      expect(windowEl).toBeNull();
+
+      let el = fixture.nativeElement;
+      while (el.parentNode) {
+        el = el.parentNode;
+      }
+      const root = el;
+      const windowEls = root.getElementsByTagName('ngb-popover-window');
+      expect(windowEls.length).toBe(1);
+    });
+
   });
 
   describe('visibility', () => {
@@ -382,6 +406,7 @@ describe('ngb-popover', () => {
       config = c;
       config.placement = 'bottom';
       config.triggers = 'hover';
+      config.appendToRoot = true;
     }));
 
     it('should initialize inputs with provided config', () => {
@@ -392,6 +417,7 @@ describe('ngb-popover', () => {
 
       expect(popover.placement).toBe(config.placement);
       expect(popover.triggers).toBe(config.triggers);
+      expect(popover.appendToRoot).toBe(config.appendToRoot);
     });
   });
 
