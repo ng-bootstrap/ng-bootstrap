@@ -11,7 +11,7 @@ import {NgbDateStruct} from './ngb-date-struct';
 export class NgbDatepickerConfig {
   dayTemplate: TemplateRef<DayTemplateContext>;
   firstDayOfWeek = 1;
-  markDisabled: (date: NgbDateStruct) => boolean;
+  markDisabled: (date: NgbDateStruct, current: {year: number, month: number}) => boolean;
   minDate: NgbDateStruct;
   maxDate: NgbDateStruct;
   showNavigation = true;

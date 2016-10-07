@@ -42,7 +42,7 @@ function expectSameValues(datepicker: NgbDatepicker, config: NgbDatepickerConfig
 function customizeConfig(config: NgbDatepickerConfig) {
   config.dayTemplate = {} as TemplateRef<DayTemplateContext>;
   config.firstDayOfWeek = 2;
-  config.markDisabled = (date) => false;
+  config.markDisabled = (date, current) => false;
   config.minDate = {year: 2000, month: 1, day: 1};
   config.maxDate = {year: 2030, month: 12, day: 31};
   config.showNavigation = false;

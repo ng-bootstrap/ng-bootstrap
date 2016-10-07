@@ -83,4 +83,20 @@ describe('ngb-datepicker-service', () => {
          weekdays: [1]
        });
      }));
+
+  it('markDisabled should pass the correct year and month',
+     inject([NgbDatepickerService, NgbCalendar], (service, calendar) => {
+
+       let result;
+
+       const markDisabled = (date, current) => {
+         result = current;
+         return false;
+       };
+
+       service.generateMonthViewModel(
+           new NgbDate(2016, 10, 10), new NgbDate(2000, 0, 1), new NgbDate(2020, 0, 10), 1, markDisabled);
+       expect(result).toEqual({month: 10, year: 2016});
+     }));
+
 });
