@@ -88,12 +88,12 @@ describe('ngb-rating', () => {
     expect(window.getComputedStyle(getStar(compiled, 1)).getPropertyValue('cursor')).toBe('pointer');
   });
 
-  it('should set not allowed cursor on stars when readonly', () => {
+  it('should set default cursor on stars when readonly', () => {
     const fixture = createTestComponent('<ngb-rating [readonly]="true"></ngb-rating>');
 
     const compiled = fixture.nativeElement;
 
-    expect(window.getComputedStyle(getStar(compiled, 1)).getPropertyValue('cursor')).toBe('not-allowed');
+    expect(window.getComputedStyle(getStar(compiled, 1)).getPropertyValue('cursor')).toBe('default');
   });
 
   it('should allow custom star template', () => {
