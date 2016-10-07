@@ -35,7 +35,7 @@ export interface StarTemplateContext {
         <span class="sr-only">({{ index < rate ? '*' : ' ' }})</span>
         <span (mouseenter)="enter(index + 1)" (click)="update(index + 1)" [title]="r.title" 
         [attr.aria-valuetext]="r.title" 
-        [style.cursor]="readonly ? 'not-allowed' : 'pointer'">
+        [style.cursor]="readonly ? 'default' : 'pointer'">
           <template [ngTemplateOutlet]="starTemplate || t" [ngOutletContext]="{fill: getFillValue(index)}"></template>
         </span>
       </template>
