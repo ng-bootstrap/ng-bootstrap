@@ -137,7 +137,7 @@ describe('ngbDatepickerMonthView', () => {
   }
 
   if (!isBrowser('ie9')) {
-    it('should set not-allowed cursor for disabled dates', () => {
+    it('should set default cursor for disabled dates', () => {
       const fixture = createTestComponent(`
         <template #tpl let-date="date">{{ date.day }}</template>
         <table><tbody ngbDatepickerMonthView [month]="month" [dayTemplate]="tpl"
@@ -148,10 +148,10 @@ describe('ngbDatepickerMonthView', () => {
       fixture.detectChanges();
 
       const dates = getDates(fixture.nativeElement);
-      expect(window.getComputedStyle(dates[0]).getPropertyValue('cursor')).toBe('not-allowed');
+      expect(window.getComputedStyle(dates[0]).getPropertyValue('cursor')).toBe('default');
     });
 
-    it('should set not-allowed cursor for all dates if disabled', () => {
+    it('should set default cursor for all dates if disabled', () => {
       const fixture = createTestComponent(`
         <template #tpl let-date="date">{{ date.day }}</template>
         <table><tbody ngbDatepickerMonthView [month]="month" [dayTemplate]="tpl"
@@ -161,7 +161,7 @@ describe('ngbDatepickerMonthView', () => {
       fixture.detectChanges();
 
       const dates = getDates(fixture.nativeElement);
-      dates.forEach((date) => expect(window.getComputedStyle(date).getPropertyValue('cursor')).toBe('not-allowed'));
+      dates.forEach((date) => expect(window.getComputedStyle(date).getPropertyValue('cursor')).toBe('default'));
     });
   }
 

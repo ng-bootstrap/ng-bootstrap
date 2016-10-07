@@ -18,7 +18,7 @@ import {DayTemplateContext} from './datepicker-day-template-context';
       cursor: pointer;
     }
     .day.disabled {
-      cursor: not-allowed;
+      cursor: default;
     }
   `],
   template: `
