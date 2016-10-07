@@ -65,14 +65,15 @@ export class NgbDatepicker implements OnChanges,
   @Input() dayTemplate: TemplateRef<DayTemplateContext>;
 
   /**
-   * First day of the week. With default calendar we use ISO 8601: `weekday` is 1=Mon ... 12=Sun
+   * First day of the week. With default calendar we use ISO 8601: 'weekday' is 1=Mon ... 7=Sun
    */
   @Input() firstDayOfWeek: number;
 
   /**
-   * Callback to mark a given date as disabled
+   * Callback to mark a given date as disabled.
+   * 'Current' contains the month that will be displayed in the view
    */
-  @Input() markDisabled: (date: NgbDateStruct) => boolean;
+  @Input() markDisabled: (date: NgbDateStruct, current: {year: number, month: number}) => boolean;
 
   /**
    * Min date for the navigation. If not provided will be 10 years before today or `startDate`

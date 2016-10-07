@@ -20,6 +20,9 @@ import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
       border-radius: 1rem;
       color: white;
     }
+    .hidden {
+      display: none;
+    }
   `]
 })
 export class NgbdDatepickerCustomDay {
@@ -28,5 +31,9 @@ export class NgbdDatepickerCustomDay {
   isWeekend(date: NgbDateStruct) {
     const d = new Date(date.year, date.month - 1, date.day);
     return d.getDay() === 0 || d.getDay() === 6;
+  }
+
+  isDisabled(date: NgbDateStruct, current: {month: number}) {
+    return date.month !== current.month;
   }
 }

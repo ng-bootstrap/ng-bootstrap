@@ -9,7 +9,7 @@ export class NgbDatepickerService {
 
   generateMonthViewModel(
       date: NgbDate, minDate: NgbDate, maxDate: NgbDate, firstDayOfWeek: number,
-      markDisabled: (date: NgbDate) => boolean): MonthViewModel {
+      markDisabled: (date: NgbDate, current: {month: number, year: number}) => boolean): MonthViewModel {
     const month: MonthViewModel = {number: date.month, year: date.year, weeks: [], weekdays: []};
 
     date = this._getFirstViewDate(date, firstDayOfWeek);
@@ -28,7 +28,7 @@ export class NgbDatepickerService {
 
         let disabled = (minDate && newDate.before(minDate)) || (maxDate && newDate.after(maxDate));
         if (!disabled && markDisabled) {
-          disabled = markDisabled(newDate);
+          disabled = markDisabled(newDate, {month: month.number, year: month.year});
         }
 
         days.push({date: newDate, disabled: disabled});
