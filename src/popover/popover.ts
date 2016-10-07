@@ -58,6 +58,11 @@ export class NgbPopover implements OnInit, OnDestroy {
    */
   @Input() triggers: string;
   /**
+   * A selector specifying the element the popover should be appended to.
+   * Currently only supports "body".
+   */
+  @Input() container: string;
+  /**
    * Emits an event when the popover is shown
    */
   @Output() shown = new EventEmitter();
@@ -77,12 +82,20 @@ export class NgbPopover implements OnInit, OnDestroy {
       ngZone: NgZone) {
     this.placement = config.placement;
     this.triggers = config.triggers;
+    this.container = config.container;
     this._popupService = new PopupService<NgbPopoverWindow>(
         NgbPopoverWindow, injector, viewContainerRef, _renderer, componentFactoryResolver);
 
     this._zoneSubscription = ngZone.onStable.subscribe(() => {
       if (this._windowRef) {
-        positionElements(this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement);
+        positionElements(
+            this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
+            this.container === 'body');
+
+        if (this.container === 'body') {
+          let windowEl = this._windowRef.location.nativeElement;
+          window.document.querySelector(this.container).appendChild(windowEl);
+        }
       }
     });
   }

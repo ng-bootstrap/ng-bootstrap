@@ -69,6 +69,7 @@ describe('ngb-popover', () => {
       expect(windowEl).toHaveCssClass('popover-top');
       expect(windowEl.textContent.trim()).toBe('TitleGreat tip!');
       expect(windowEl.getAttribute('role')).toBe('tooltip');
+      expect(windowEl.parentNode).toBe(fixture.nativeElement);
 
       directive.triggerEventHandler('click', {});
       fixture.detectChanges();
@@ -90,6 +91,7 @@ describe('ngb-popover', () => {
       expect(windowEl).toHaveCssClass(`popover-${defaultConfig.placement}`);
       expect(windowEl.textContent.trim()).toBe('TitleHello, World!');
       expect(windowEl.getAttribute('role')).toBe('tooltip');
+      expect(windowEl.parentNode).toBe(fixture.nativeElement);
 
       directive.triggerEventHandler('click', {});
       fixture.detectChanges();
@@ -189,6 +191,25 @@ describe('ngb-popover', () => {
       expect(windowEl).toHaveCssClass('popover-left');
       expect(windowEl.textContent.trim()).toBe('Great tip!');
     });
+  });
+
+  describe('container', () => {
+
+    it('should be appended to the element matching the selector passed to "container"', () => {
+      const selector = 'body';
+      const fixture = createTestComponent(`<div ngbPopover="Great tip!" container="` + selector + `"></div>`);
+      const directive = fixture.debugElement.query(By.directive(NgbPopover));
+
+      directive.triggerEventHandler('click', {});
+      fixture.detectChanges();
+      let windowEl = getWindow(fixture);
+      expect(windowEl).toBeNull();
+
+      const container = window.document.querySelector(selector);
+      windowEl = container.querySelector('ngb-popover-window');
+      expect(windowEl.parentNode).toBe(container);
+    });
+
   });
 
   describe('visibility', () => {
@@ -382,6 +403,7 @@ describe('ngb-popover', () => {
       config = c;
       config.placement = 'bottom';
       config.triggers = 'hover';
+      config.container = 'body';
     }));
 
     it('should initialize inputs with provided config', () => {
@@ -392,6 +414,7 @@ describe('ngb-popover', () => {
 
       expect(popover.placement).toBe(config.placement);
       expect(popover.triggers).toBe(config.triggers);
+      expect(popover.container).toBe(config.container);
     });
   });
 
