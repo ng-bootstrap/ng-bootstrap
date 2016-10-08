@@ -296,6 +296,83 @@ describe('ngb-typeahead', () => {
       expectWindowResults(compiled, ['+ONE', 'ONE MORE']);
     });
 
+    it('should not mark first result as active when focusFirst is false', () => {
+      const fixture = createTestComponent(`<input type="text" [ngbTypeahead]="find" [focusFirst]="false"/>`);
+      const compiled = fixture.nativeElement;
+
+      changeInput(compiled, 'o');
+      fixture.detectChanges();
+      expectWindowResults(compiled, ['one', 'one more']);
+    });
+
+    it('should properly make previous/next results active with down arrow keys when focusFirst is false', () => {
+      const fixture = createTestComponent(`<input type="text" [ngbTypeahead]="find" [focusFirst]="false"/>`);
+      const compiled = fixture.nativeElement;
+
+      changeInput(compiled, 'o');
+      fixture.detectChanges();
+      expectWindowResults(compiled, ['one', 'one more']);
+
+      // down
+      let event = createKeyDownEvent(Key.ArrowDown);
+      getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
+      fixture.detectChanges();
+      expectWindowResults(compiled, ['+one', 'one more']);
+      expect(event.preventDefault).toHaveBeenCalled();
+
+      event = createKeyDownEvent(Key.ArrowDown);
+      getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
+      fixture.detectChanges();
+      expectWindowResults(compiled, ['one', '+one more']);
+      expect(event.preventDefault).toHaveBeenCalled();
+
+      event = createKeyDownEvent(Key.ArrowDown);
+      getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
+      fixture.detectChanges();
+      expectWindowResults(compiled, ['+one', 'one more']);
+      expect(event.preventDefault).toHaveBeenCalled();
+    });
+
+    it('should properly make previous/next results active with up arrow keys when focusFirst is false', () => {
+      const fixture = createTestComponent(`<input type="text" [ngbTypeahead]="find" [focusFirst]="false"/>`);
+      const compiled = fixture.nativeElement;
+
+      changeInput(compiled, 'o');
+      fixture.detectChanges();
+      expectWindowResults(compiled, ['one', 'one more']);
+
+      // up
+      let event = createKeyDownEvent(Key.ArrowUp);
+      getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
+      fixture.detectChanges();
+      expectWindowResults(compiled, ['one', '+one more']);
+      expect(event.preventDefault).toHaveBeenCalled();
+
+      event = createKeyDownEvent(Key.ArrowUp);
+      getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
+      fixture.detectChanges();
+      expectWindowResults(compiled, ['+one', 'one more']);
+      expect(event.preventDefault).toHaveBeenCalled();
+    });
+
+    it('should not select the result on TAB, close window and not write to the input when focusFirst is false', () => {
+      const fixture =
+          createTestComponent(`<input type="text" [(ngModel)]="model" [ngbTypeahead]="find" [focusFirst]="false"/>`);
+      const compiled = fixture.nativeElement;
+
+      changeInput(compiled, 'o');
+      fixture.detectChanges();
+      expect(getWindow(compiled)).not.toBeNull();
+
+      const event = createKeyDownEvent(Key.Tab);
+      getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
+      fixture.detectChanges();
+      expect(getWindow(compiled)).toBeNull();
+      expectInputValue(compiled, 'o');
+      expect(fixture.componentInstance.model).toBe('o');
+      expect(event.preventDefault).toHaveBeenCalled();
+    });
+
     it('should properly display results when an owning components using OnPush strategy', fakeAsync(() => {
          const fixture = createOnPushTestComponent(`<input type="text" [(ngModel)]="model" [ngbTypeahead]="find"/>`);
          const compiled = fixture.nativeElement;
