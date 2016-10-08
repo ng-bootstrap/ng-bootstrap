@@ -92,17 +92,8 @@ export class NgbPopover implements OnInit, OnDestroy {
             this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement, this.appendToRoot);
 
         if (this.appendToRoot) {
-          let windowNotInRootNode =
-              () => {
-                return this._windowRef.location.nativeElement.parentNode &&
-                    this._windowRef.location.nativeElement.parentNode.parentNode.parentNode &&
-                    this._windowRef.location.nativeElement.parentNode.parentNode.parentNode;
-              }
-
-          while (windowNotInRootNode()) {
-            this._windowRef.location.nativeElement.parentNode.parentNode.appendChild(
-                this._windowRef.location.nativeElement);
-          }
+          let windowEl = this._windowRef.location.nativeElement;
+          window.document.documentElement.appendChild(windowEl);
         }
       }
     });
