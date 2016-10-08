@@ -23,7 +23,7 @@ import {DEMO_SNIPPETS} from './demos';
         <ngbd-popover-visibility></ngbd-popover-visibility>
       </ngbd-example-box>
       <ngbd-example-box
-        demoTitle="Append popover to root element" [htmlSnippet]="snippets.visibility.markup" [tsSnippet]="snippets.visibility.code">
+        demoTitle="Append popover to root element" [htmlSnippet]="snippets.appendtoroot.markup" [tsSnippet]="snippets.appendtoroot.code">
         <ngbd-popover-appendtoroot></ngbd-popover-appendtoroot>
       </ngbd-example-box>
       <ngbd-example-box
