@@ -34,7 +34,7 @@ import {NgbPopoverConfig} from './popover-config';
 export class NgbPopoverWindow {
   @Input() placement: 'top' | 'bottom' | 'left' | 'right' = 'top';
   @Input() title: string;
-  @Input() appendToRoot = false;
+  @Input() container: string;
 }
 
 /**
@@ -59,9 +59,10 @@ export class NgbPopover implements OnInit, OnDestroy {
    */
   @Input() triggers: string;
   /**
-   * Specifies whether the popover should be appended to the root element.
+   * A selector specifying the element the popover should be appended to.
+   * Currently only supports "body".
    */
-  @Input() appendToRoot: boolean;
+  @Input() container: string;
   /**
    * Emits an event when the popover is shown
    */
@@ -82,18 +83,19 @@ export class NgbPopover implements OnInit, OnDestroy {
       ngZone: NgZone) {
     this.placement = config.placement;
     this.triggers = config.triggers;
-    this.appendToRoot = config.appendToRoot;
+    this.container = config.container;
     this._popupService = new PopupService<NgbPopoverWindow>(
         NgbPopoverWindow, injector, viewContainerRef, _renderer, componentFactoryResolver);
 
     this._zoneSubscription = ngZone.onStable.subscribe(() => {
       if (this._windowRef) {
         positionElements(
-            this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement, this.appendToRoot);
+            this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
+            this.container === 'body');
 
-        if (this.appendToRoot) {
+        if (this.container === 'body') {
           let windowEl = this._windowRef.location.nativeElement;
-          window.document.documentElement.appendChild(windowEl);
+          window.document.querySelector(this.container).appendChild(windowEl);
         }
       }
     });
@@ -107,7 +109,7 @@ export class NgbPopover implements OnInit, OnDestroy {
       this._windowRef = this._popupService.open(this.ngbPopover);
       this._windowRef.instance.placement = this.placement;
       this._windowRef.instance.title = this.popoverTitle;
-      this._windowRef.instance.appendToRoot = this.appendToRoot;
+      this._windowRef.instance.container = this.container;
       // we need to manually invoke change detection since events registered via
       // Renderer::listen() are not picked up by change detection with the OnPush strategy
       this._windowRef.changeDetectorRef.markForCheck();
