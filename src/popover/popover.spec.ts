@@ -195,8 +195,9 @@ describe('ngb-popover', () => {
 
   describe('placement', () => {
 
-    it('should be appended to the root element when requested', () => {
-      const fixture = createTestComponent(`<div ngbPopover="Great tip!" [appendToRoot]="true"></div>`);
+    it('should be appended to the element matching the selector passed to "container"', () => {
+      const selector = 'body';
+      const fixture = createTestComponent(`<div ngbPopover="Great tip!" container="` + selector + `"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
       directive.triggerEventHandler('click', {});
@@ -204,9 +205,9 @@ describe('ngb-popover', () => {
       let windowEl = getWindow(fixture);
       expect(windowEl).toBeNull();
 
-      const root = window.document.documentElement;
-      windowEl = root.querySelector('ngb-popover-window');
-      expect(windowEl.parentNode).toBe(root);
+      const container = window.document.querySelector(selector);
+      windowEl = container.querySelector('ngb-popover-window');
+      expect(windowEl.parentNode).toBe(container);
     });
 
   });
@@ -402,7 +403,7 @@ describe('ngb-popover', () => {
       config = c;
       config.placement = 'bottom';
       config.triggers = 'hover';
-      config.appendToRoot = true;
+      config.container = 'body';
     }));
 
     it('should initialize inputs with provided config', () => {
@@ -413,7 +414,7 @@ describe('ngb-popover', () => {
 
       expect(popover.placement).toBe(config.placement);
       expect(popover.triggers).toBe(config.triggers);
-      expect(popover.appendToRoot).toBe(config.appendToRoot);
+      expect(popover.container).toBe(config.container);
     });
   });
 

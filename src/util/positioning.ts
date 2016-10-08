@@ -79,9 +79,9 @@ export class Positioning {
     return elOffset;
   }
 
-  positionElements(hostElement: HTMLElement, targetElement: HTMLElement, placement: string, appendToRoot?: boolean):
+  positionElements(hostElement: HTMLElement, targetElement: HTMLElement, placement: string, container?: boolean):
       ClientRect {
-    const hostElPosition = appendToRoot ? this.offset(hostElement, false) : this.position(hostElement, false);
+    const hostElPosition = container ? this.offset(hostElement, false) : this.position(hostElement, false);
     const shiftWidth: any = {
       left: hostElPosition.left,
       center: hostElPosition.left + hostElPosition.width / 2 - targetElement.offsetWidth / 2,
@@ -143,8 +143,8 @@ export class Positioning {
 
 const positionService = new Positioning();
 export function positionElements(
-    hostElement: HTMLElement, targetElement: HTMLElement, placement: string, appendToRoot?: boolean): void {
-  const pos = positionService.positionElements(hostElement, targetElement, placement, appendToRoot);
+    hostElement: HTMLElement, targetElement: HTMLElement, placement: string, container?: boolean): void {
+  const pos = positionService.positionElements(hostElement, targetElement, placement, container);
 
   targetElement.style.top = `${pos.top}px`;
   targetElement.style.left = `${pos.left}px`;
