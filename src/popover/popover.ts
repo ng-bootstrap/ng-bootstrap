@@ -34,7 +34,6 @@ import {NgbPopoverConfig} from './popover-config';
 export class NgbPopoverWindow {
   @Input() placement: 'top' | 'bottom' | 'left' | 'right' = 'top';
   @Input() title: string;
-  @Input() container: string;
 }
 
 /**
@@ -109,7 +108,6 @@ export class NgbPopover implements OnInit, OnDestroy {
       this._windowRef = this._popupService.open(this.ngbPopover);
       this._windowRef.instance.placement = this.placement;
       this._windowRef.instance.title = this.popoverTitle;
-      this._windowRef.instance.container = this.container;
       // we need to manually invoke change detection since events registered via
       // Renderer::listen() are not picked up by change detection with the OnPush strategy
       this._windowRef.changeDetectorRef.markForCheck();
