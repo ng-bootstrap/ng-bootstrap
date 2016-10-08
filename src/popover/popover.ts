@@ -155,5 +155,3 @@ export class NgbPopover implements OnInit, OnDestroy {
     this._zoneSubscription.unsubscribe();
   }
 }
-
-export const NGB_POPOVER_DIRECTIVES = [NgbPopover, NgbPopoverWindow];

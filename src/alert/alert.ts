@@ -45,5 +45,3 @@ export class NgbAlert {
 
   closeHandler() { this.close.emit(null); }
 }
-
-export const NGB_ALERT_DIRECTIVES = [NgbAlert];
