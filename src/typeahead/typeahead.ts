@@ -165,9 +165,6 @@ export class NgbTypeahead implements ControlValueAccessor,
     this._renderer.setElementProperty(this._elementRef.nativeElement, 'disabled', isDisabled);
   }
 
-  /**
-   * @internal
-   */
   dismissPopup() {
     if (this.isPopupOpen()) {
       this._closePopup();
@@ -175,19 +172,10 @@ export class NgbTypeahead implements ControlValueAccessor,
     }
   }
 
-  /**
-   * @internal
-   */
   isPopupOpen() { return this._windowRef != null; }
 
-  /**
-   * @internal
-   */
   handleBlur() { this._onTouched(); }
 
-  /**
-   * @internal
-   */
   handleKeyDown(event: KeyboardEvent) {
     if (!this._windowRef) {
       return;

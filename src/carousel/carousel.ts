@@ -134,19 +134,10 @@ export class NgbCarousel implements AfterContentChecked,
    */
   cycle() { this._startTimer(); }
 
-  /**
-   * @internal
-   */
   cycleToNext() { this.cycleToSelected(this._getNextSlide(this.activeId)); }
 
-  /**
-   * @internal
-   */
   cycleToPrev() { this.cycleToSelected(this._getPrevSlide(this.activeId)); }
 
-  /**
-   * @internal
-   */
   cycleToSelected(slideIdx: string) {
     let selectedSlide = this._getSlideById(slideIdx);
     if (selectedSlide) {
@@ -154,18 +145,12 @@ export class NgbCarousel implements AfterContentChecked,
     }
   }
 
-  /**
-   * @internal
-   */
   keyPrev() {
     if (this.keyboard) {
       this.prev();
     }
   }
 
-  /**
-   * @internal
-   */
   keyNext() {
     if (this.keyboard) {
       this.next();
