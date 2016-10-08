@@ -201,16 +201,12 @@ describe('ngb-popover', () => {
 
       directive.triggerEventHandler('click', {});
       fixture.detectChanges();
-      const windowEl = getWindow(fixture);
+      var windowEl = getWindow(fixture);
       expect(windowEl).toBeNull();
 
-      let el = fixture.nativeElement;
-      while (el.parentNode) {
-        el = el.parentNode;
-      }
-      const root = el;
-      const windowEls = root.getElementsByTagName('ngb-popover-window');
-      expect(windowEls.length).toBe(1);
+      const root = window.document.documentElement;
+      windowEl = root.querySelector('ngb-popover-window');
+      expect(windowEl.parentNode).toBe(root);
     });
 
   });
