@@ -201,7 +201,7 @@ describe('ngb-popover', () => {
 
       directive.triggerEventHandler('click', {});
       fixture.detectChanges();
-      var windowEl = getWindow(fixture);
+      let windowEl = getWindow(fixture);
       expect(windowEl).toBeNull();
 
       const root = window.document.documentElement;

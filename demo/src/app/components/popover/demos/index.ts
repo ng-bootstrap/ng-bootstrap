@@ -5,7 +5,14 @@ import {NgbdPopoverVisibility} from './visibility/popover-visibility';
 import {NgbdPopoverAppendtoroot} from './appendtoroot/popover-appendtoroot';
 import {NgbdPopoverConfig} from './config/popover-config';
 
-export const DEMO_DIRECTIVES = [NgbdPopoverBasic, NgbdPopoverTplcontent, NgbdPopoverTriggers, NgbdPopoverVisibility, NgbdPopoverAppendtoroot, NgbdPopoverConfig];
+export const DEMO_DIRECTIVES = [
+  NgbdPopoverBasic,
+  NgbdPopoverTplcontent,
+  NgbdPopoverTriggers,
+  NgbdPopoverVisibility,
+  NgbdPopoverAppendtoroot,
+  NgbdPopoverConfig
+];
 
 export const DEMO_SNIPPETS = {
   basic: {
