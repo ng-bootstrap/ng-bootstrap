@@ -146,9 +146,6 @@ export class NgbDatepicker implements OnChanges,
     this.navigateTo(this.startDate);
   }
 
-  /**
-   * @internal
-   */
   onDateSelect(date: NgbDate) {
     this._setViewWithinLimits(date);
 
@@ -162,17 +159,11 @@ export class NgbDatepicker implements OnChanges,
     }
   }
 
-  /**
-   * @internal
-   */
   onNavigateDateSelect(date: NgbDate) {
     this._setViewWithinLimits(date);
     this._updateData();
   }
 
-  /**
-   * @internal
-   */
   onNavigateEvent(event: NavigationEvent) {
     switch (event) {
       case NavigationEvent.PREV:

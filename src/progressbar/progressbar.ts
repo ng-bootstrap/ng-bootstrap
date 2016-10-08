@@ -57,5 +57,3 @@ export class NgbProgressbar {
 
   getPercentValue() { return 100 * this.getValue() / this.max; }
 }
-
-export const NGB_PROGRESSBAR_DIRECTIVES = [NgbProgressbar];
