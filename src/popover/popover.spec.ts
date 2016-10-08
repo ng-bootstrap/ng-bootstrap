@@ -193,7 +193,7 @@ describe('ngb-popover', () => {
     });
   });
 
-  describe('placement', () => {
+  describe('container', () => {
 
     it('should be appended to the element matching the selector passed to "container"', () => {
       const selector = 'body';
