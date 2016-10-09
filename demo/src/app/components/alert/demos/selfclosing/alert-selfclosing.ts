@@ -1,5 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Subject} from 'rxjs/Rx';
+import {Component, OnInit} from '@angular/core';
+import {Subject} from 'rxjs/Subject';
 
 @Component({
   selector: 'ngbd-alert-selfclosing',
