@@ -5,7 +5,7 @@ import {expectResults, getWindowLinks} from '../test/typeahead/common';
 import {Component, DebugElement, ViewChild, ChangeDetectionStrategy} from '@angular/core';
 import {Validators, FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {By} from '@angular/platform-browser';
-import {Observable} from 'rxjs/Rx';
+import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/debounceTime';
 
