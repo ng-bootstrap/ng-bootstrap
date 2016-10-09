@@ -7,7 +7,6 @@ var shell = require('gulp-shell');
 var ghPages = require('gulp-gh-pages');
 var gulpFile = require('gulp-file');
 var del = require('del');
-var merge = require('merge2');
 var clangFormat = require('clang-format');
 var gulpFormat = require('gulp-clang-format');
 var runSequence = require('run-sequence');

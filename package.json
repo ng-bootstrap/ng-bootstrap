@@ -70,7 +70,6 @@
     "karma-jasmine": "^1.0.2",
     "karma-sauce-launcher": "^1.0.0",
     "karma-sourcemap-loader": "^0.3.6",
-    "merge2": "^1.0.1",
     "mkdirp": "^0.5.1",
     "node-sass": "^3.7.0",
     "postcss-loader": "^0.9.1",
