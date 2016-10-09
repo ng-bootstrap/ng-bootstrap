@@ -5,9 +5,18 @@ import '@angular/core';
 import '@angular/common';
 import '@angular/router';
 import '@angular/forms';
+import '@angular/http';
 
 // RxJS
-import 'rxjs';
+import 'rxjs/Observable';
+import 'rxjs/Subject';
+import 'rxjs/Subscription';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/let';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/switchMap';
 
 // Other vendors for example jQuery, Lodash or Bootstrap
 // You can import js, ts, css, sass, ...
