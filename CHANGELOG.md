@@ -33,13 +33,18 @@ shipping a lot of new features and bug fixes - details below.
 
 * The `NgbModule` module must now import using the forRoot() static method. Check the updated [installation instructions](https://github.com/ng-bootstrap/ng-bootstrap#installation) for more details.
 * datepicker: now datepicker uses ISO 8601 for month and weekday numbers with default calendar
-Before
-0=Jan; 1=Feb; ... 11=Dec
-0=Sun; 1=Mon; ... 6=Sat
 
-Now
-1=Jan; 2=Feb; ... 12=Dec
-1=Mon; 2=Tue; ... 7=Sun
+Before:
+
+`0=Jan; 1=Feb; ... 11=Dec` 
+
+`0=Sun; 1=Mon; ... 6=Sat`
+
+After:
+
+`1=Jan; 2=Feb; ... 12=Dec`
+
+`1=Mon; 2=Tue; ... 7=Sun`
 
 
 
@@ -71,29 +76,32 @@ Now
 * alert: the `NgbSelfClosingAlert` component has been removed.
 Check the self-closing alert demo to know how to achieve the same thing with `NgbAlert`.
 * accordion: the `change` event on the accordion level was renamed to `panelChange`.
+
 Before:
 
 `<ngb-accordion (change)="...">`
 
-after:
+After:
 
 `<ngb-accordion (panelChange)="...">`
 
 * popover: the title property of the popover directive was renamed to popoverTitle.
+
 Before:
 
 `<div ngbPopover="..." title="...">`
 
-after:
+After:
 
 `<div ngbPopover="..." popoverTitle="...">`
 
 * tabset: the `change` event on the tabset level was renamed to `tabChange`.
+
 Before:
 
 `<ngb-tabset (change)="...">`
 
-after:
+After:
 
 `<ngb-tabset (tabChange)="...">`
 
