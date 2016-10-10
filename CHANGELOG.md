@@ -1,3 +1,48 @@
+<a name="1.0.0-alpha.7"></a>
+# [1.0.0-alpha.7](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.6...1.0.0-alpha.7) (2016-10-10)
+
+This release restores full AoT compatibility and has proper support for lazy-loaded `NgbModule`. On top of this we are 
+shipping a lot of new features and bug fixes - details below. 
+
+### Bug Fixes
+
+* restore full AoT compatibility ([2101a89](https://github.com/ng-bootstrap/ng-bootstrap/commit/2101a89)), closes [#796](https://github.com/ng-bootstrap/ng-bootstrap/issues/796) [#854](https://github.com/ng-bootstrap/ng-bootstrap/issues/854)
+* **buttons:** use disabled state from a control ([d9495db](https://github.com/ng-bootstrap/ng-bootstrap/commit/d9495db)), closes [#805](https://github.com/ng-bootstrap/ng-bootstrap/issues/805) [#828](https://github.com/ng-bootstrap/ng-bootstrap/issues/828)
+* **datepicker:** replace not-allowed cursor with default one ([807c7e7](https://github.com/ng-bootstrap/ng-bootstrap/commit/807c7e7)), closes [#850](https://github.com/ng-bootstrap/ng-bootstrap/issues/850)
+* **datepicker:** use ISO 8601 for month and weekday numbers ([#797](https://github.com/ng-bootstrap/ng-bootstrap/issues/797)) ([a173e40](https://github.com/ng-bootstrap/ng-bootstrap/commit/a173e40)), closes [#728](https://github.com/ng-bootstrap/ng-bootstrap/issues/728)
+* **dropdown:** properly close dropdown on child elements click ([fdf8d4b](https://github.com/ng-bootstrap/ng-bootstrap/commit/fdf8d4b)), closes [#803](https://github.com/ng-bootstrap/ng-bootstrap/issues/803) [#810](https://github.com/ng-bootstrap/ng-bootstrap/issues/810)
+* **modal:** support modals in lazy loaded modules ([#799](https://github.com/ng-bootstrap/ng-bootstrap/issues/799)) ([eca26cd](https://github.com/ng-bootstrap/ng-bootstrap/commit/eca26cd)), closes [#784](https://github.com/ng-bootstrap/ng-bootstrap/issues/784)
+* **modal:** properly destroy content views ([3cdb0ff](https://github.com/ng-bootstrap/ng-bootstrap/commit/3cdb0ff)), closes [#806](https://github.com/ng-bootstrap/ng-bootstrap/issues/806) [#826](https://github.com/ng-bootstrap/ng-bootstrap/issues/826)
+* **popover:** properly cleanup content passed as TemplateRef ([8246541](https://github.com/ng-bootstrap/ng-bootstrap/commit/8246541)), closes [#827](https://github.com/ng-bootstrap/ng-bootstrap/issues/827) [#830](https://github.com/ng-bootstrap/ng-bootstrap/issues/830)
+* **rating:** replace not-allowed cursor with default one ([e888d67](https://github.com/ng-bootstrap/ng-bootstrap/commit/e888d67)), closes [#851](https://github.com/ng-bootstrap/ng-bootstrap/issues/851)
+
+### Features
+
+* **carousel:** add support to turn off interval ([c5625e8](https://github.com/ng-bootstrap/ng-bootstrap/commit/c5625e8)), closes [#804](https://github.com/ng-bootstrap/ng-bootstrap/issues/804)
+* **datepicker:** infer startDate from model value ([4fc52c1](https://github.com/ng-bootstrap/ng-bootstrap/commit/4fc52c1)), closes [#843](https://github.com/ng-bootstrap/ng-bootstrap/issues/843) [#844](https://github.com/ng-bootstrap/ng-bootstrap/issues/844)
+* **datepicker:** pass current month value to 'markDisabled' callback ([afe6342](https://github.com/ng-bootstrap/ng-bootstrap/commit/afe6342)), closes [#849](https://github.com/ng-bootstrap/ng-bootstrap/issues/849)
+* **modal:** add support for custom windowClass on modals ([ff132d7](https://github.com/ng-bootstrap/ng-bootstrap/commit/ff132d7)), closes [#818](https://github.com/ng-bootstrap/ng-bootstrap/issues/818) [#845](https://github.com/ng-bootstrap/ng-bootstrap/issues/845)
+* **modal:** allow components as content ([ecdd3a0](https://github.com/ng-bootstrap/ng-bootstrap/commit/ecdd3a0)), closes [#680](https://github.com/ng-bootstrap/ng-bootstrap/issues/680) [#727](https://github.com/ng-bootstrap/ng-bootstrap/issues/727) [#846](https://github.com/ng-bootstrap/ng-bootstrap/issues/846)
+* **popover:** add isOpen() and shown/hidden events ([3bbf512](https://github.com/ng-bootstrap/ng-bootstrap/commit/3bbf512)), closes [#841](https://github.com/ng-bootstrap/ng-bootstrap/issues/841)
+* **rating:** allow custom star templates ([29c44cd](https://github.com/ng-bootstrap/ng-bootstrap/commit/29c44cd)), closes [#815](https://github.com/ng-bootstrap/ng-bootstrap/issues/815)
+* **rating:** allow decimal numbers as rating values ([964d8cf](https://github.com/ng-bootstrap/ng-bootstrap/commit/964d8cf)), closes [#817](https://github.com/ng-bootstrap/ng-bootstrap/issues/817)
+* **tooltip:** add isOpen() and show/hide events ([91c6054](https://github.com/ng-bootstrap/ng-bootstrap/commit/91c6054)), closes [#842](https://github.com/ng-bootstrap/ng-bootstrap/issues/842)
+
+
+### BREAKING CHANGES
+
+* The `NgbModule` module must now import using the forRoot() static method. Check the updated [installation instructions](https://github.com/ng-bootstrap/ng-bootstrap#installation) for more details.
+* datepicker: now datepicker uses ISO 8601 for month and weekday numbers with default calendar
+Before
+0=Jan; 1=Feb; ... 11=Dec
+0=Sun; 1=Mon; ... 6=Sat
+
+Now
+1=Jan; 2=Feb; ... 12=Dec
+1=Mon; 2=Tue; ... 7=Sun
+
+
+
 <a name="1.0.0-alpha.6"></a>
 # [1.0.0-alpha.6](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.5...1.0.0-alpha.6) (2016-09-23)
 
