@@ -422,6 +422,7 @@ describe('ngb-popover', () => {
     let config = new NgbPopoverConfig();
     config.placement = 'bottom';
     config.triggers = 'hover';
+    config.container = 'body';
 
     beforeEach(() => {
       TestBed.configureTestingModule(
@@ -434,6 +435,7 @@ describe('ngb-popover', () => {
 
       expect(popover.placement).toBe(config.placement);
       expect(popover.triggers).toBe(config.triggers);
+      expect(popover.container).toBe(config.container);
     });
   });
 });
