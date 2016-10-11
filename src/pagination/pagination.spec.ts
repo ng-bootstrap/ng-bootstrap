@@ -1,4 +1,4 @@
-import {TestBed, ComponentFixture, inject} from '@angular/core/testing';
+import {TestBed, ComponentFixture, inject, fakeAsync, tick} from '@angular/core/testing';
 import {createGenericTestComponent} from '../test/common';
 
 import {Component} from '@angular/core';
@@ -269,6 +269,28 @@ describe('ngb-pagination', () => {
       expectPages(
           fixture.nativeElement, ['-«« First', '-« Previous', '+1', '2', '3', '-...', '7', '» Next', '»» Last']);
     });
+
+    it('should update page when it becomes out of range', fakeAsync(() => {
+         const html =
+             '<ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [size]="size"></ngb-pagination>';
+         const fixture = createTestComponent(html);
+
+         fixture.componentInstance.collectionSize = 30;
+         fixture.detectChanges();
+         expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '» Next']);
+
+         getLink(fixture.nativeElement, 3).click();
+         fixture.detectChanges();
+         tick();
+         expectPages(fixture.nativeElement, ['« Previous', '1', '2', '+3', '-» Next']);
+         expect(fixture.componentInstance.page).toBe(3);
+
+         fixture.componentInstance.collectionSize = 20;
+         fixture.detectChanges();
+         tick();
+         expectPages(fixture.nativeElement, ['« Previous', '1', '+2', '-» Next']);
+         expect(fixture.componentInstance.page).toBe(2);
+       }));
 
     it('should render and respond to size change', () => {
       const html = '<ngb-pagination [collectionSize]="20" [page]="1" [size]="size"></ngb-pagination>';
