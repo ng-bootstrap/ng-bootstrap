@@ -81,18 +81,12 @@ export class NgbDropdown {
     }
   }
 
-  /**
-   * @internal
-   */
   closeFromOutsideClick($event) {
     if (this.autoClose && !this._isEventFromToggle($event)) {
       this.close();
     }
   }
 
-  /**
-   * @internal
-   */
   closeFromOutsideEsc() {
     if (this.autoClose) {
       this.close();

@@ -36,7 +36,10 @@ export interface ResultTemplateContext {
   `
 })
 export class NgbTypeaheadWindow {
-  activeIdx = 0;
+  /**
+   * An index of a match to be selected initially
+   */
+  @Input() activeIdx = 0;
 
   /**
    * Typeahead match results to be displayed
@@ -73,7 +76,7 @@ export class NgbTypeaheadWindow {
 
   next() { this.activeIdx = (this.activeIdx + 1) % this.results.length; }
 
-  prev() { this.activeIdx = (this.activeIdx === 0 ? this.results.length - 1 : this.activeIdx - 1); }
+  prev() { this.activeIdx = (this.activeIdx <= 0 ? this.results.length - 1 : this.activeIdx - 1); }
 
   /**
    * @internal

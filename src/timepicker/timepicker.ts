@@ -201,71 +201,44 @@ export class NgbTimepicker implements ControlValueAccessor,
 
   setDisabledState(isDisabled: boolean) { this.disabled = isDisabled; }
 
-  /**
-   * @internal
-   */
   changeHour(step: number) {
     this.model.changeHour(step);
     this.propagateModelChange();
   }
 
-  /**
-   * @internal
-   */
   changeMinute(step: number) {
     this.model.changeMinute(step);
     this.propagateModelChange();
   }
 
-  /**
-   * @internal
-   */
   changeSecond(step: number) {
     this.model.changeSecond(step);
     this.propagateModelChange();
   }
 
-  /**
-   * @internal
-   */
   updateHour(newVal: string) {
     this.model.updateHour(toInteger(newVal));
     this.propagateModelChange();
   }
 
-  /**
-   * @internal
-   */
   updateMinute(newVal: string) {
     this.model.updateMinute(toInteger(newVal));
     this.propagateModelChange();
   }
 
-  /**
-   * @internal
-   */
   updateSecond(newVal: string) {
     this.model.updateSecond(toInteger(newVal));
     this.propagateModelChange();
   }
 
-  /**
-   * @internal
-   */
   toggleMeridian() {
     if (this.meridian) {
       this.changeHour(12);
     }
   }
 
-  /**
-   * @internal
-   */
   formatHour(value: number) { return padNumber(isNumber(value) ? (value % (this.meridian ? 12 : 24)) : NaN); }
 
-  /**
-   * @internal
-   */
   formatMinSec(value: number) { return padNumber(value); }
 
 
@@ -287,5 +260,3 @@ export class NgbTimepicker implements ControlValueAccessor,
     }
   }
 }
-
-export const NGB_TIMEPICKER_DIRECTIVES = [NgbTimepicker];
