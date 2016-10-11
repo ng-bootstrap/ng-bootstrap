@@ -58,6 +58,7 @@ describe('ngb-tooltip', () => {
       expect(windowEl).toHaveCssClass(`tooltip-${defaultConfig.placement}`);
       expect(windowEl.textContent.trim()).toBe('Great tip!');
       expect(windowEl.getAttribute('role')).toBe('tooltip');
+      expect(windowEl.parentNode).toBe(fixture.nativeElement);
 
       directive.triggerEventHandler('mouseleave', {});
       fixture.detectChanges();
@@ -76,6 +77,7 @@ describe('ngb-tooltip', () => {
       expect(windowEl).toHaveCssClass('tooltip-top');
       expect(windowEl.textContent.trim()).toBe('Hello, World!');
       expect(windowEl.getAttribute('role')).toBe('tooltip');
+      expect(windowEl.parentNode).toBe(fixture.nativeElement);
 
       directive.triggerEventHandler('mouseleave', {});
       fixture.detectChanges();
@@ -293,6 +295,25 @@ describe('ngb-tooltip', () => {
     });
   });
 
+  describe('container', () => {
+
+    it('should be appended to the element matching the selector passed to "container"', () => {
+      const selector = 'body';
+      const fixture = createTestComponent(`<div ngbTooltip="Great tip!" container="` + selector + `"></div>`);
+      const directive = fixture.debugElement.query(By.directive(NgbTooltip));
+
+      directive.triggerEventHandler('mouseenter', {});
+      fixture.detectChanges();
+      let windowEl = getWindow(fixture);
+      expect(windowEl).toBeNull();
+
+      const container = window.document.querySelector(selector);
+      windowEl = container.querySelector('ngb-tooltip-window');
+      expect(windowEl.parentNode).toBe(container);
+    });
+
+  });
+
   describe('visibility', () => {
     it('should emit events when showing and hiding popover', () => {
       const fixture = createTestComponent(
@@ -374,6 +395,7 @@ describe('ngb-tooltip', () => {
       config = c;
       config.placement = 'bottom';
       config.triggers = 'click';
+      config.container = 'body';
     }));
 
     it('should initialize inputs with provided config', () => {
@@ -383,6 +405,7 @@ describe('ngb-tooltip', () => {
 
       expect(tooltip.placement).toBe(config.placement);
       expect(tooltip.triggers).toBe(config.triggers);
+      expect(tooltip.container).toBe(config.container);
     });
   });
 
@@ -390,6 +413,7 @@ describe('ngb-tooltip', () => {
     let config = new NgbTooltipConfig();
     config.placement = 'bottom';
     config.triggers = 'click';
+    config.container = 'body';
 
     beforeEach(() => {
       TestBed.configureTestingModule(
@@ -402,6 +426,7 @@ describe('ngb-tooltip', () => {
 
       expect(tooltip.placement).toBe(config.placement);
       expect(tooltip.triggers).toBe(config.triggers);
+      expect(tooltip.container).toBe(config.container);
     });
   });
 });
