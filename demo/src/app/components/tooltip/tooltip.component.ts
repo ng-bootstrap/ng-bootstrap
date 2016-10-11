@@ -19,6 +19,10 @@ import {DEMO_SNIPPETS} from './demos';
         <ngbd-tooltip-triggers></ngbd-tooltip-triggers>
       </ngbd-example-box>
       <ngbd-example-box
+        demoTitle="Append tooltip in the body" [htmlSnippet]="snippets.container.markup" [tsSnippet]="snippets.container.code">
+        <ngbd-tooltip-container></ngbd-tooltip-container>
+      </ngbd-example-box>
+      <ngbd-example-box
         demoTitle="Global configuration of tooltips" [htmlSnippet]="snippets.config.markup" [tsSnippet]="snippets.config.code">
         <ngbd-tooltip-config></ngbd-tooltip-config>
       </ngbd-example-box>
