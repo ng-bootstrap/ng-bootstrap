@@ -95,9 +95,9 @@ export class NgbPagination implements OnChanges {
 
   /**
    *  An event fired when the page is changed.
-   *  Event's payload equals the current page.
+   *  Event's payload equals to the newly selected page.
    */
-  @Output() pageChange = new EventEmitter();
+  @Output() pageChange = new EventEmitter<number>(true);
 
   /**
    * Pagination display size: small or large
@@ -121,13 +121,7 @@ export class NgbPagination implements OnChanges {
   hasNext(): boolean { return this.page < this._pageCount; }
 
   selectPage(pageNumber: number): void {
-    let prevPageNo = this.page;
-    this.page = this._getPageNoInRange(pageNumber);
-
-    if (this.page !== prevPageNo) {
-      this.pageChange.emit(this.page);
-    }
-
+    this._setPageInRange(pageNumber);
     this.ngOnChanges(null);
   }
 
@@ -141,8 +135,8 @@ export class NgbPagination implements OnChanges {
       this.pages.push(i);
     }
 
-    // get selected page
-    this.page = this._getPageNoInRange(this.page);
+    // set page within 1..max range
+    this._setPageInRange(this.page);
 
     // apply maxSize if necessary
     if (this.maxSize > 0 && this._pageCount > this.maxSize) {
@@ -224,5 +218,12 @@ export class NgbPagination implements OnChanges {
     return [start, end];
   }
 
-  private _getPageNoInRange(newPageNo): number { return getValueInRange(newPageNo, this._pageCount, 1); }
+  private _setPageInRange(newPageNo) {
+    const prevPageNo = this.page;
+    this.page = getValueInRange(newPageNo, this._pageCount, 1);
+
+    if (this.page !== prevPageNo) {
+      this.pageChange.emit(this.page);
+    }
+  }
 }
