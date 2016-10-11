@@ -1,0 +1,16 @@
+<p>
+	Set the <code>container</code> property to "body" to have the tooltip be appended to the body instead of the triggering element's parent. This option is useful if the element triggering the tooltip is inside an element that clips its contents (i.e. <code>overflow: hidden</code>).
+</p>
+
+<div class='row'>
+	<div class='card'>
+		<button type="button" class="btn btn-secondary"
+						ngbTooltip="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
+			Default tooltip
+		</button>
+		<button type="button" class="btn btn-secondary"
+						ngbTooltip="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." container="body">
+			Tooltip appended to body
+		</button>
+	</div>
+</div>

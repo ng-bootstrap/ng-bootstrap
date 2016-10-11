@@ -9,4 +9,5 @@ import {Injectable} from '@angular/core';
 export class NgbTooltipConfig {
   placement: 'top' | 'bottom' | 'left' | 'right' = 'top';
   triggers = 'hover';
+  container?: string;
 }
