@@ -24,7 +24,8 @@ var PATHS = {
   demoDist: 'demo/dist/**/*',
   typings: 'typings/index.d.ts',
   jasmineTypings: 'typings/globals/jasmine/index.d.ts',
-  demoApiDocs: 'demo/src'
+  demoApiDocs: 'demo/src',
+  componentDemos: './demo/src/app/components'
 };
 
 function platformPath(path) {
@@ -227,6 +228,12 @@ gulp.task('generate-docs', function() {
 gulp.task('clean:demo', function() { return del('demo/dist'); });
 
 gulp.task('clean:demo-cache', function() { return del('.publish/'); });
+
+gulp.task('build-plunkers', function() {
+  var plunkerBuilder = require('./misc/plunker-builder/plunkerBuilder');
+
+  plunkerBuilder.buildPlunkers(PATHS.componentDemos);
+});
 
 gulp.task(
     'demo-server', ['generate-docs'],
