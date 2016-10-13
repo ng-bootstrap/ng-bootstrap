@@ -367,6 +367,99 @@ describe('ngbRadioGroup', () => {
            });
      }));
 
+  it('should select a radio button when checked attribute is used', () => {
+    const html1 = `
+      <input type="radio" name="State" value="0" /> Foo <br>
+      <input type="radio" name="State" [value]="1" checked /> Foo Foo <br>`;
+
+    const fixture = createTestComponent(html1);
+    // checking initial values
+    fixture.detectChanges();
+
+    expect(getInput(fixture.nativeElement, 0).checked).toBeFalsy();
+    expect(getInput(fixture.nativeElement, 1).checked).toBeTruthy();
+  });
+
+  it('should select a radio button when checked attribute with value is used', () => {
+    const html1 = `
+      <input type="radio" name="State" value="0" checked="checked"/> Foo <br>
+      <input type="radio" name="State" [value]="1"  /> Foo Foo <br>`;
+
+    const fixture = createTestComponent(html1);
+    // checking initial values
+    fixture.detectChanges();
+
+    expect(getInput(fixture.nativeElement, 0).checked).toBeTruthy();
+    expect(getInput(fixture.nativeElement, 1).checked).toBeFalsy();
+
+  });
+
+  it('should disable a radio button when disabled attribute is used', () => {
+    const html1 = `
+      <input type="radio" name="State" value="0" /> Foo <br>
+      <input type="radio" name="State" [value]="1" disabled /> Foo Foo <br>`;
+
+    const fixture = createTestComponent(html1);
+    // checking initial values
+    fixture.detectChanges();
+
+    expect(getInput(fixture.nativeElement, 0).disabled).toBeFalsy();
+    expect(getInput(fixture.nativeElement, 1).disabled).toBeTruthy();
+  });
+
+  it('should disable a radio button when disabled attribute with value is used', () => {
+    const html1 = `
+      <input type="radio" name="State" value="0" disabled="disabled"/> Foo <br>
+      <input type="radio" name="State" [value]="1"  /> Foo Foo <br>`;
+
+    const fixture = createTestComponent(html1);
+    // checking initial values
+    fixture.detectChanges();
+
+    expect(getInput(fixture.nativeElement, 0).disabled).toBeTruthy();
+    expect(getInput(fixture.nativeElement, 1).disabled).toBeFalsy();
+
+  });
+
+  it('handle multiple cases for binded checked attribute.', () => {
+    const html1 = `
+      <input type="radio" name="State" value="0" [checked]="checked"/> Foo <br>
+      <input type="radio" name="State" [value]="1" /> Foo Foo <br>`;
+
+    const fixture = createTestComponent(html1);
+
+    // checking initial values which is undefined
+    fixture.detectChanges();
+    expect(getInput(fixture.nativeElement, 0).checked).toBeFalsy();
+    expect(getInput(fixture.nativeElement, 1).checked).toBeFalsy();
+
+    // put checked to false
+    fixture.componentInstance.checked = false;
+    fixture.detectChanges();
+    expect(getInput(fixture.nativeElement, 0).checked).toBeFalsy();
+    expect(getInput(fixture.nativeElement, 1).checked).toBeFalsy();
+
+    // put checked to null
+    fixture.componentInstance.checked = null;
+    fixture.detectChanges();
+    expect(getInput(fixture.nativeElement, 0).checked).toBeFalsy();
+    expect(getInput(fixture.nativeElement, 1).checked).toBeFalsy();
+
+    // put checked to empty string
+    fixture.componentInstance.checked = '';
+    fixture.detectChanges();
+    expect(getInput(fixture.nativeElement, 0).checked).toBeFalsy();
+    expect(getInput(fixture.nativeElement, 1).checked).toBeFalsy();
+
+    // put checked to a string value
+    fixture.componentInstance.checked = 'false';
+    fixture.detectChanges();
+    // it should be true, anything else than "" is true
+    expect(getInput(fixture.nativeElement, 0).checked).toBeTruthy();
+    expect(getInput(fixture.nativeElement, 1).checked).toBeFalsy();
+
+  });
+
 });
 
 @Component({selector: 'test-cmp', template: ''})
@@ -379,4 +472,5 @@ class TestComponent {
   values: any = ['one', 'two', 'three'];
   shown = true;
   disabled = true;
+  checked: any;
 }
