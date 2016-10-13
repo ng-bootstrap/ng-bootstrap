@@ -3,7 +3,6 @@ import {Injectable, ComponentRef, ViewRef, ViewContainerRef} from '@angular/core
 import {NgbModalBackdrop} from './modal-backdrop';
 import {NgbModalWindow} from './modal-window';
 
-
 /**
  * A reference to an active (currently opened) modal. Instances of this class
  * can be injected into components passed as modal content.
@@ -43,6 +42,7 @@ export class NgbModalRef {
       this._resolve = resolve;
       this._reject = reject;
     });
+    this.result.then(null, () => {});
   }
 
   /**
