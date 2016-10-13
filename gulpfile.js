@@ -58,24 +58,30 @@ gulp.task('umd', function(cb) {
     return {root: ['ng', ns], commonjs: ng2Ns, commonjs2: ng2Ns, amd: ng2Ns};
   }
 
+  function rxjsExternal(context, request, cb) {
+    if (/^rxjs\/add\/observable\//.test(request)) {
+      return cb(null, {root: ['Rx', 'Observable'], commonjs: request, commonjs2: request, amd: request});
+    } else if (/^rxjs\/add\/operator\//.test(request)) {
+      return cb(null, {root: ['Rx', 'Observable', 'prototype'], commonjs: request, commonjs2: request, amd: request});
+    } else if (/^rxjs\//.test(request)) {
+      return cb(null, {root: ['Rx'], commonjs: request, commonjs2: request, amd: request});
+    }
+    cb();
+  }
+
   webpack(
       {
         entry: './temp/index.js',
         output: {filename: 'dist/bundles/ng-bootstrap.js', library: 'ngb', libraryTarget: 'umd'},
         devtool: 'source-map',
-        externals: {
-          '@angular/core': ngExternal('core'),
-          '@angular/common': ngExternal('common'),
-          '@angular/forms': ngExternal('forms'),
-          'rxjs/Rx': {root: 'Rx', commonjs: 'rxjs/Rx', commonjs2: 'rxjs/Rx', amd: 'rxjs/Rx'},
-          // 'rxjs/add/operator/let': 'rxjs/add/operator/let'
-          'rxjs/add/operator/let': {
-            root: ['Rx', 'Observable', 'prototype'],
-            commonjs: 'rxjs/add/operator/let',
-            commonjs2: 'rxjs/add/operator/let',
-            amd: 'rxjs/add/operator/let'
-          }
-        }
+        externals: [
+          {
+            '@angular/core': ngExternal('core'),
+            '@angular/common': ngExternal('common'),
+            '@angular/forms': ngExternal('forms')
+          },
+          rxjsExternal
+        ]
       },
       webpackCallBack('webpack', cb));
 });
