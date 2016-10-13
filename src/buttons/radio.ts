@@ -90,6 +90,16 @@ export class NgbRadio implements OnDestroy {
     }
   }
 
+  @Input('checked')
+  set checked(value: any) {
+    this._checked = this._element.nativeElement.hasAttribute('checked') ? true : value;
+  }
+
+  @Input('disabled')
+  set disabled(value: any) {
+    this._disabled = this._element.nativeElement.hasAttribute('disabled') ? true : value;
+  }
+
   get value() { return this._value; }
 
   get isChecked() { return this._checked; }
