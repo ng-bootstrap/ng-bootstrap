@@ -4,10 +4,13 @@
     "module": "commonjs",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "noEmitOnError": true
+    "noEmitOnError": true,
+    "outDir": "temp",
+    "sourceMap": true
   },
-  "exclude": [
-    "node_modules"
+  "include": [
+    "src/**/*.ts",
+    "typings/index.d.ts"
   ],
   "compileOnSave": false
 }
