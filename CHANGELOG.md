@@ -1,3 +1,23 @@
+<a name="1.0.0-alpha.8"></a>
+# [1.0.0-alpha.8](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.7...1.0.0-alpha.8) (2016-10-14)
+
+
+### Bug Fixes
+
+* **build:** properly reference rxjs from the UMD bundle ([53115da](https://github.com/ng-bootstrap/ng-bootstrap/commit/53115da)), closes [#884](https://github.com/ng-bootstrap/ng-bootstrap/issues/884)
+* **modal:** don't error on dismiss without result handler ([21de54c](https://github.com/ng-bootstrap/ng-bootstrap/commit/21de54c)), closes [#880](https://github.com/ng-bootstrap/ng-bootstrap/issues/880) [#885](https://github.com/ng-bootstrap/ng-bootstrap/issues/885)
+* **pagination:** emits pageChange when collection size changes ([84d555c](https://github.com/ng-bootstrap/ng-bootstrap/commit/84d555c)), closes [#800](https://github.com/ng-bootstrap/ng-bootstrap/issues/800) [#868](https://github.com/ng-bootstrap/ng-bootstrap/issues/868)
+* **radio:** don't shadow checked attribute when not using buttons ([de7d0e4](https://github.com/ng-bootstrap/ng-bootstrap/commit/de7d0e4)), closes [#840](https://github.com/ng-bootstrap/ng-bootstrap/issues/840) [#874](https://github.com/ng-bootstrap/ng-bootstrap/issues/874)
+
+
+### Features
+
+* **popover:** add support for the 'container' option ([d1a22c0](https://github.com/ng-bootstrap/ng-bootstrap/commit/d1a22c0)), closes [#852](https://github.com/ng-bootstrap/ng-bootstrap/issues/852) [#853](https://github.com/ng-bootstrap/ng-bootstrap/issues/853)
+* **tooltip:** add support for the 'container' option ([b8230e5](https://github.com/ng-bootstrap/ng-bootstrap/commit/b8230e5)), closes [#621](https://github.com/ng-bootstrap/ng-bootstrap/issues/621) [#871](https://github.com/ng-bootstrap/ng-bootstrap/issues/871)
+* **typeahead:** add support for the focusFirst option ([e86277f](https://github.com/ng-bootstrap/ng-bootstrap/commit/e86277f)), closes [#748](https://github.com/ng-bootstrap/ng-bootstrap/issues/748) [#856](https://github.com/ng-bootstrap/ng-bootstrap/issues/856)
+
+
+
 <a name="1.0.0-alpha.7"></a>
 # [1.0.0-alpha.7](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.6...1.0.0-alpha.7) (2016-10-10)
 
