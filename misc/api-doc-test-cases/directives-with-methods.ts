@@ -24,4 +24,7 @@ export class Foo implements OnInit {
 
   private _dontSerialize() {
   }
+
+  noCommentDontExtract() {
+  }
 }
