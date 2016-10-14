@@ -15,7 +15,7 @@ const ANGULAR_LIFECYCLE_METHODS = [
 
 function isInternalMember(member) {
   const jsDoc = ts.displayPartsToString(member.symbol.getDocumentationComment());
-  return jsDoc.indexOf('@internal') > -1;
+  return jsDoc.trim().length === 0 || jsDoc.indexOf('@internal') > -1;
 }
 
 function isAngularLifecycleHook(methodName) {

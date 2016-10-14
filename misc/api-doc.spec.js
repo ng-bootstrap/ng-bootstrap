@@ -127,7 +127,7 @@ describe('APIDocVisitor', function() {
     expect(serviceDocs.methods[0].returnType).toBe('Promise<any>');
 
     expect(serviceDocs.methods[1].name).toBe('isOpen');
-    expect(serviceDocs.methods[1].description).toBe('');
+    expect(serviceDocs.methods[1].description).toBe('Checks if a modal is open');
     expect(serviceDocs.methods[1].args.length).toBe(0);
     expect(serviceDocs.methods[1].returnType).toBe('boolean');
   });

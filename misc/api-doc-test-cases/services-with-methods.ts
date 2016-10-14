@@ -13,6 +13,9 @@ export class ModalService {
     return Promise.resolve();
   }
 
+  /**
+   * Checks if a modal is open
+   */
   isOpen(): boolean {
     return false;
   }
