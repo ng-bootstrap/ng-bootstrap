@@ -371,6 +371,21 @@ describe('ngb-modal', () => {
       expect(document.activeElement).toBe(document.body);
     });
   });
+
+  describe('window element ordering', () => {
+    it('should place newer windows on top of older ones', () => {
+      fixture.componentInstance.open('foo', {windowClass: 'window-1'}).result.catch(NOOP);
+      fixture.detectChanges();
+
+      fixture.componentInstance.open('bar', {windowClass: 'window-2'}).result.catch(NOOP);
+      fixture.detectChanges();
+
+      let windows = fixture.nativeElement.querySelectorAll('ngb-modal-window');
+      expect(windows.length).toBe(2);
+      expect(windows[0]).toHaveCssClass('window-1');
+      expect(windows[1]).toHaveCssClass('window-2');
+    });
+  });
 });
 
 @Component({selector: 'destroyable-cmpt', template: 'Some content'})
