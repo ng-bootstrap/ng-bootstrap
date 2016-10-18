@@ -12,6 +12,26 @@ import {
 
 import {ModalDismissReasons} from './modal-dismiss-reasons';
 
+let scrollbarWidth;
+
+function getScrollbarWidth() {
+  let tempDiv;
+  if (scrollbarWidth === undefined) {
+    tempDiv = document.createElement('div');
+    tempDiv.innerHTML = '<div style="width:50px;height:50px;position:absolute;left:-50px;top:-50px;overflow:auto;"><div style="width:1px;height:100px;"></div></div>';
+    tempDiv = tempDiv.firstChild;
+    document.body.appendChild(tempDiv);
+    scrollbarWidth = tempDiv.offsetWidth - tempDiv.clientWidth;
+    document.body.removeChild(tempDiv);
+  }
+  return scrollbarWidth;
+}
+
+function isBodyOverflowing() {
+  console.log(document.body.clientWidth, window.innerWidth);
+  return document.body.clientWidth < window.innerWidth;
+}
+
 @Component({
   selector: 'ngb-modal-window',
   host: {
@@ -31,6 +51,7 @@ import {ModalDismissReasons} from './modal-dismiss-reasons';
 export class NgbModalWindow implements OnInit,
     AfterViewInit, OnDestroy {
   private _elWithFocus: Element;  // element that is focused prior to modal opening
+  private _originalBodyPadding: string;
 
   @Input() backdrop: boolean | string = true;
   @Input() keyboard = true;
@@ -59,7 +80,8 @@ export class NgbModalWindow implements OnInit,
 
   ngOnInit() {
     this._elWithFocus = document.activeElement;
-    this._renderer.setElementClass(document.body, 'modal-open', true);
+
+    this._hideScrollbars();
   }
 
   ngAfterViewInit() {
@@ -74,10 +96,25 @@ export class NgbModalWindow implements OnInit,
     } else {
       this._renderer.invokeElementMethod(document.body, 'focus', []);
     }
-
     this._elWithFocus = null;
-    this._renderer.setElementClass(document.body, 'modal-open', false);
+
+    this._restoreScrollbars();
   }
 
   private _isNodeChildOfAnother(parentNode, potentialChildNode) { return parentNode.contains(potentialChildNode); }
+
+  private _hideScrollbars() {
+    this._originalBodyPadding = document.body.style.paddingRight || '';
+
+    console.log(isBodyOverflowing());
+    if (isBodyOverflowing()) {
+      this._renderer.setElementStyle(document.body, 'paddingRight', `${getScrollbarWidth()}px`);
+    }
+    this._renderer.setElementClass(document.body, 'modal-open', true);
+  }
+
+  private _restoreScrollbars() {
+    this._renderer.setElementClass(document.body, 'modal-open', false);
+    this._renderer.setElementStyle(document.body, 'paddingRight', this._originalBodyPadding);
+  }
 }
