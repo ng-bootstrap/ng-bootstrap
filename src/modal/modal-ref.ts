@@ -3,6 +3,8 @@ import {Injectable, ComponentRef, ViewRef, ViewContainerRef} from '@angular/core
 import {NgbModalBackdrop} from './modal-backdrop';
 import {NgbModalWindow} from './modal-window';
 
+import {ContentRef} from '../util/popup';
+
 /**
  * A reference to an active (currently opened) modal. Instances of this class
  * can be injected into components passed as modal content.
@@ -29,13 +31,23 @@ export class NgbModalRef {
   private _reject: (reason?: any) => void;
 
   /**
+   * The instance of component used as modal's content.
+   * Undefined when a TemplateRef is used as modal's content.
+   */
+  get componentInstance(): any {
+    if (this._contentRef.componentRef) {
+      return this._contentRef.componentRef.instance;
+    }
+  }
+
+  /**
    * A promise that is resolved when a modal is closed and rejected when a modal is dismissed.
    */
   result: Promise<any>;
 
   constructor(
       private _viewContainerRef: ViewContainerRef, private _windowCmptRef: ComponentRef<NgbModalWindow>,
-      private _backdropCmptRef?: ComponentRef<NgbModalBackdrop>, private _contentViewRef?: ViewRef) {
+      private _contentRef: ContentRef, private _backdropCmptRef?: ComponentRef<NgbModalBackdrop>) {
     _windowCmptRef.instance.dismissEvent.subscribe((reason: any) => { this.dismiss(reason); });
 
     this.result = new Promise((resolve, reject) => {
@@ -70,12 +82,12 @@ export class NgbModalRef {
     if (this._backdropCmptRef) {
       this._viewContainerRef.remove(this._viewContainerRef.indexOf(this._backdropCmptRef.hostView));
     }
-    if (this._contentViewRef) {
-      this._viewContainerRef.remove(this._viewContainerRef.indexOf(this._contentViewRef));
+    if (this._contentRef && this._contentRef.viewRef) {
+      this._viewContainerRef.remove(this._viewContainerRef.indexOf(this._contentRef.viewRef));
     }
 
     this._windowCmptRef = null;
     this._backdropCmptRef = null;
-    this._contentViewRef = null;
+    this._contentRef = null;
   }
 }
