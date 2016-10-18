@@ -47,7 +47,7 @@ export class NgbModalContainer {
     windowCmptRef = this._viewContainerRef.createComponent(
         this._windowFactory, this._viewContainerRef.length, this._injector, contentRef.nodes);
 
-    ngbModalRef = new NgbModalRef(this._viewContainerRef, windowCmptRef, backdropCmptRef, contentRef.viewRef);
+    ngbModalRef = new NgbModalRef(this._viewContainerRef, windowCmptRef, contentRef, backdropCmptRef);
 
     activeModal.close = (result: any) => { ngbModalRef.close(result); };
     activeModal.dismiss = (reason: any) => { ngbModalRef.dismiss(reason); };

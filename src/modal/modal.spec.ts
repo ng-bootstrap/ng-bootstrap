@@ -130,6 +130,13 @@ describe('ngb-modal', () => {
       expect(fixture.nativeElement).not.toHaveModal();
     });
 
+    it('should expose component used as modal content', () => {
+      const modalInstance = fixture.componentInstance.openCmpt(WithActiveModalCmpt);
+      fixture.detectChanges();
+      expect(fixture.nativeElement).toHaveModal('Close');
+      expect(modalInstance.componentInstance instanceof WithActiveModalCmpt).toBeTruthy();
+    });
+
     it('should open and close modal from inside', () => {
       fixture.componentInstance.openTplClose();
       fixture.detectChanges();
