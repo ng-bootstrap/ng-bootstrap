@@ -26,6 +26,7 @@ import {NgbPopoverConfig} from './popover-config';
   selector: 'ngb-popover-window',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {'[class]': '"popover in popover-" + placement', 'role': 'tooltip'},
+  // TODO remove the div.popover-arrow, which is there only to maintain compatibility with bootstrap alpha.4
   template: `
     <div class="popover-arrow"></div>
     <h3 class="popover-title">{{title}}</h3><div class="popover-content"><ng-content></ng-content></div>
