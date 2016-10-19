@@ -1,4 +1,5 @@
 import {TestBed, ComponentFixture, async} from '@angular/core/testing';
+import {By} from '@angular/platform-browser';
 import {createGenericTestComponent} from '../test/common';
 
 import {Component} from '@angular/core';
@@ -460,6 +461,37 @@ describe('ngbRadioGroup', () => {
 
   });
 
+  it('should add / remove "focus" class on labels', () => {
+    const fixture = createTestComponent(`
+      <div [(ngModel)]="model" ngbRadioGroup>
+        <label class="btn">
+          <input type="radio" name="radio" [value]="values[0]"/> {{ values[0] }}
+        </label>
+        <label class="btn">
+          <input type="radio" name="radio" [value]="values[1]"/> {{ values[1] }}
+        </label>
+      </div>
+    `);
+    fixture.detectChanges();
+
+    const inputDebugEls = fixture.debugElement.queryAll(By.css('Input'));
+
+    inputDebugEls[0].triggerEventHandler('focus', {});
+    expect(inputDebugEls[0].nativeElement.parentNode).toHaveCssClass('focus');
+    expect(inputDebugEls[1].nativeElement.parentNode).not.toHaveCssClass('focus');
+
+    inputDebugEls[0].triggerEventHandler('blur', {});
+    inputDebugEls[1].triggerEventHandler('focus', {});
+    expect(inputDebugEls[0].nativeElement.parentNode).not.toHaveCssClass('focus');
+    expect(inputDebugEls[1].nativeElement.parentNode).toHaveCssClass('focus');
+  });
+
+  it('should do nothing when a standalone radio button is focused', () => {
+    const fixture = createTestComponent(`<input type="radio" name="state" value="0"/> Foo <br>`);
+    fixture.detectChanges();
+
+    expect(() => { fixture.debugElement.query(By.css('Input')).triggerEventHandler('focus', {}); }).not.toThrow();
+  });
 });
 
 @Component({selector: 'test-cmp', template: ''})
