@@ -61,6 +61,7 @@ export class NgbActiveLabel {
   set disabled(isDisabled: boolean) {
     this._renderer.setElementClass(this._elRef.nativeElement, 'disabled', isDisabled);
   }
+  set focused(isFocused: boolean) { this._renderer.setElementClass(this._elRef.nativeElement, 'focus', isFocused); }
 }
 
 
@@ -69,7 +70,13 @@ export class NgbActiveLabel {
  */
 @Directive({
   selector: 'input[type=radio]',
-  host: {'(change)': 'onChange()', '[checked]': 'isChecked', '[disabled]': 'isDisabled'}
+  host: {
+    '[checked]': 'isChecked',
+    '[disabled]': 'isDisabled',
+    '(change)': 'onChange()',
+    '(focus)': 'focused = true',
+    '(blur)': 'focused = false'
+  }
 })
 export class NgbRadio implements OnDestroy {
   private _checked: boolean;
@@ -98,6 +105,12 @@ export class NgbRadio implements OnDestroy {
   @Input('disabled')
   set disabled(value: any) {
     this._disabled = this._element.nativeElement.hasAttribute('disabled') ? true : value;
+  }
+
+  set focused(isFocused: boolean) {
+    if (this._label) {
+      this._label.focused = isFocused;
+    }
   }
 
   get value() { return this._value; }
