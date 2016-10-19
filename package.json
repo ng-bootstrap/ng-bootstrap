@@ -37,7 +37,7 @@
     "@angular/router": "3.0.0",
     "angular2-template-loader": "^0.4.0",
     "autoprefixer": "^6.3.6",
-    "bootstrap": "^4.0.0-alpha.4",
+    "bootstrap": "^4.0.0-alpha.5",
     "clang-format": "1.0.35",
     "classlist-polyfill": "^1.0.3",
     "copy-webpack-plugin": "^3.0.1",

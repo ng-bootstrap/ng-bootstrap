@@ -19,7 +19,7 @@ Check all the directives in action at https://ng-bootstrap.github.io
 
 ## Dependencies
 * [Angular 2](https://angular.io) (tested with 2.0.0)
-* [Bootstrap 4](https://v4-alpha.getbootstrap.com) (tested with 4.0.0-alpha.4)
+* [Bootstrap 4](https://v4-alpha.getbootstrap.com) (tested with 4.0.0-alpha.5)
 
 ## Installation
 After installing the above dependencies, install `ng-bootstrap` via:
