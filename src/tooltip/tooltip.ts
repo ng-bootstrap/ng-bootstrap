@@ -83,11 +83,6 @@ export class NgbTooltip implements OnInit, OnDestroy {
         positionElements(
             this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
             this.container === 'body');
-
-        if (this.container === 'body') {
-          let windowEl = this._windowRef.location.nativeElement;
-          window.document.querySelector(this.container).appendChild(windowEl);
-        }
       }
     });
   }
@@ -112,6 +107,11 @@ export class NgbTooltip implements OnInit, OnDestroy {
     if (!this._windowRef && this._ngbTooltip) {
       this._windowRef = this._popupService.open(this._ngbTooltip);
       this._windowRef.instance.placement = this.placement;
+
+      if (this.container === 'body') {
+        window.document.querySelector(this.container).appendChild(this._windowRef.location.nativeElement);
+      }
+
       // we need to manually invoke change detection since events registered via
       // Renderer::listen() - to be determined if this is a bug in the Angular 2
       this._windowRef.changeDetectorRef.markForCheck();
@@ -153,6 +153,7 @@ export class NgbTooltip implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.close();
     this._unregisterListenersFn();
     this._zoneSubscription.unsubscribe();
   }
