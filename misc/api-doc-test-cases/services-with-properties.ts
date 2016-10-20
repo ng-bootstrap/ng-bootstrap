@@ -1,4 +1,4 @@
-import {Injectable, TemplateRef} from '@angular/core';
+import {Injectable} from '@angular/core';
 
 /**
  * Service defining default values for progress bars
