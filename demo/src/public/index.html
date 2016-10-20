@@ -7,6 +7,27 @@
     <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico">
     <base href=".">
     <script>
+      // Console-polyfill. MIT license.
+      // https://github.com/paulmillr/console-polyfill
+      // Make it safe to do console.log() always.
+      (function(global) {
+        'use strict';
+        if (!global.console) {
+          global.console = {};
+        }
+        var con = global.console;
+        var prop, method;
+        var dummy = function() {
+        };
+        var properties = ['memory'];
+        var methods = ('assert,clear,count,debug,dir,dirxml,error,exception,group,' +
+        'groupCollapsed,groupEnd,info,log,markTimeline,profile,profiles,profileEnd,' +
+        'show,table,time,timeEnd,timeline,timelineEnd,timeStamp,trace,warn').split(',');
+        while (prop = properties.pop()) if (!con[prop]) con[prop] = {};
+        while (method = methods.pop()) if (typeof con[method] !== 'function') con[method] = dummy;
+        // Using `this` for web workers & supports Browserify / Webpack.
+      })(typeof window === 'undefined' ? this : window);
+
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
           (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
