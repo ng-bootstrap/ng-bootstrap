@@ -201,6 +201,17 @@ describe('NgbInputDatepicker', () => {
       expect(dp.maxDate).toEqual({year: 2016, month: 9, day: 13});
     });
 
+    it('should propagate the "outsideDays" option', () => {
+      const fixture = createTestCmpt(`<input ngbDatepicker outsideDays="collapsed">`);
+      const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
+
+      dpInput.open();
+      fixture.detectChanges();
+
+      const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
+      expect(dp.outsideDays).toEqual('collapsed');
+    });
+
     it('should propagate the "showNavigation" option', () => {
       const fixture = createTestCmpt(`<input ngbDatepicker [showNavigation]="true">`);
       const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);

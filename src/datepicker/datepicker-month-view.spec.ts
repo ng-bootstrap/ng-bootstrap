@@ -73,7 +73,7 @@ describe('ngbDatepickerMonthView', () => {
         <template #tpl let-date="date">{{ date.day }}</template>
         <tbody ngbDatepickerMonthView [month]="month" [dayTemplate]="tpl"></tbody>
       `);
-    expectDates(fixture.nativeElement, ['22']);
+    expectDates(fixture.nativeElement, ['22', '23']);
   });
 
   it('should send date selection events', () => {
@@ -163,7 +163,48 @@ describe('ngbDatepickerMonthView', () => {
       const dates = getDates(fixture.nativeElement);
       dates.forEach((date) => expect(window.getComputedStyle(date).getPropertyValue('cursor')).toBe('default'));
     });
+
+    it('should set default cursor for other months days', () => {
+      const fixture =
+          createTestComponent('<tbody ngbDatepickerMonthView [month]="month" [outsideDays]="outsideDays"></tbody>');
+
+      const dates = getDates(fixture.nativeElement);
+      expect(window.getComputedStyle(dates[1]).getPropertyValue('cursor')).toBe('pointer');
+
+      fixture.componentInstance.outsideDays = 'collapsed';
+      fixture.detectChanges();
+      expect(window.getComputedStyle(dates[1]).getPropertyValue('cursor')).toBe('default');
+
+      fixture.componentInstance.outsideDays = 'hidden';
+      fixture.detectChanges();
+      expect(window.getComputedStyle(dates[1]).getPropertyValue('cursor')).toBe('default');
+    });
   }
+
+  it('should apply proper visibility to other months days', () => {
+    const fixture =
+        createTestComponent('<tbody ngbDatepickerMonthView [month]="month" [outsideDays]="outsideDays"></tbody>');
+
+    let dates = getDates(fixture.nativeElement);
+    expect(dates[0]).not.toHaveCssClass('hidden');
+    expect(dates[0]).not.toHaveCssClass('collapsed');
+    expect(dates[1]).not.toHaveCssClass('hidden');
+    expect(dates[1]).not.toHaveCssClass('collapsed');
+
+    fixture.componentInstance.outsideDays = 'collapsed';
+    fixture.detectChanges();
+    expect(dates[0]).not.toHaveCssClass('hidden');
+    expect(dates[0]).not.toHaveCssClass('collapsed');
+    expect(dates[1]).not.toHaveCssClass('hidden');
+    expect(dates[1]).toHaveCssClass('collapsed');
+
+    fixture.componentInstance.outsideDays = 'hidden';
+    fixture.detectChanges();
+    expect(dates[0]).not.toHaveCssClass('hidden');
+    expect(dates[0]).not.toHaveCssClass('collapsed');
+    expect(dates[1]).toHaveCssClass('hidden');
+    expect(dates[1]).not.toHaveCssClass('collapsed');
+  });
 
 });
 
@@ -173,11 +214,15 @@ class TestComponent {
     year: 2016,
     number: 7,
     weekdays: [1],
-    weeks: [{number: 2, days: [{date: new NgbDate(2016, 7, 22), disabled: false}]}]
+    weeks: [{
+      number: 2,
+      days: [{date: new NgbDate(2016, 7, 22), disabled: false}, {date: new NgbDate(2016, 8, 23), disabled: false}]
+    }]
   };
 
   showWeekdays = true;
   showWeekNumbers = true;
+  outsideDays = 'visible';
 
   onClick = () => {};
 }

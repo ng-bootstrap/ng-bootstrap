@@ -68,6 +68,12 @@ export class NgbInputDatepicker implements ControlValueAccessor {
   @Input() maxDate: NgbDateStruct;
 
   /**
+   * The way to display days that don't belong to current month: `visible` (default),
+   * `hidden` (not displayed) or `collapsed` (not displayed with empty space collapsed)
+   */
+  @Input() outsideDays: 'visible' | 'collapsed' | 'hidden';
+
+  /**
    * Whether to display navigation
    */
   @Input() showNavigation: boolean;
@@ -184,8 +190,8 @@ export class NgbInputDatepicker implements ControlValueAccessor {
   }
 
   private _applyDatepickerInputs(datepickerInstance: NgbDatepicker): void {
-    ['dayTemplate', 'firstDayOfWeek', 'markDisabled', 'minDate', 'maxDate', 'showNavigation', 'showWeekdays',
-     'showWeekNumbers']
+    ['dayTemplate', 'firstDayOfWeek', 'markDisabled', 'minDate', 'maxDate', 'outsideDays', 'showNavigation',
+     'showWeekdays', 'showWeekNumbers']
         .forEach((optionName: string) => {
           if (this[optionName] !== undefined) {
             datepickerInstance[optionName] = this[optionName];

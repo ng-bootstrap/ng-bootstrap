@@ -33,6 +33,7 @@ function expectSameValues(datepicker: NgbDatepicker, config: NgbDatepickerConfig
   expect(datepicker.markDisabled).toBe(config.markDisabled);
   expect(datepicker.minDate).toBe(config.minDate);
   expect(datepicker.maxDate).toBe(config.maxDate);
+  expect(datepicker.outsideDays).toBe(config.outsideDays);
   expect(datepicker.showNavigation).toBe(config.showNavigation);
   expect(datepicker.showWeekdays).toBe(config.showWeekdays);
   expect(datepicker.showWeekNumbers).toBe(config.showWeekNumbers);
@@ -45,6 +46,7 @@ function customizeConfig(config: NgbDatepickerConfig) {
   config.markDisabled = (date, current) => false;
   config.minDate = {year: 2000, month: 1, day: 1};
   config.maxDate = {year: 2030, month: 12, day: 31};
+  config.outsideDays = 'collapsed';
   config.showNavigation = false;
   config.showWeekdays = false;
   config.showWeekNumbers = true;

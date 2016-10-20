@@ -44,6 +44,7 @@ const NGB_DATEPICKER_VALUE_ACCESSOR = {
         [showWeekdays]="showWeekdays"
         [showWeekNumbers]="showWeekNumbers"
         [disabled]="disabled"
+        [outsideDays]="outsideDays"
         (select)="onDateSelect($event)">
       </tbody>
     </table>
@@ -86,6 +87,12 @@ export class NgbDatepicker implements OnChanges,
   @Input() maxDate: NgbDateStruct;
 
   /**
+   * The way to display days that don't belong to current month: `visible` (default),
+   * `hidden` (not displayed) or `collapsed` (not displayed with empty space collapsed)
+   */
+  @Input() outsideDays: 'visible' | 'collapsed' | 'hidden';
+
+  /**
    * Whether to display navigation
    */
   @Input() showNavigation: boolean;
@@ -119,6 +126,7 @@ export class NgbDatepicker implements OnChanges,
     this.markDisabled = config.markDisabled;
     this.minDate = config.minDate;
     this.maxDate = config.maxDate;
+    this.outsideDays = config.outsideDays;
     this.showNavigation = config.showNavigation;
     this.showWeekdays = config.showWeekdays;
     this.showWeekNumbers = config.showWeekNumbers;
