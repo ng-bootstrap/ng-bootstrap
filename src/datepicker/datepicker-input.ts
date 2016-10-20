@@ -33,7 +33,7 @@ const NGB_DATEPICKER_VALUE_ACCESSOR = {
 @Directive({
   selector: 'input[ngbDatepicker]',
   exportAs: 'ngbDatepicker',
-  host: {'(change)': 'manualDateChange($event.target.value)', '(keyup.esc)': 'close()'},
+  host: {'(change)': 'manualDateChange($event.target.value)', '(keyup.esc)': 'close()', '(blur)': '_onTouched()'},
   providers: [NGB_DATEPICKER_VALUE_ACCESSOR]
 })
 export class NgbInputDatepicker implements ControlValueAccessor {
@@ -204,6 +204,7 @@ export class NgbInputDatepicker implements ControlValueAccessor {
     this._renderer.setElementProperty(this._elRef.nativeElement, 'value', this._parserFormatter.format(model));
     if (this.isOpen()) {
       this._cRef.instance.writeValue(model);
+      this._onTouched();
     }
   }
 }

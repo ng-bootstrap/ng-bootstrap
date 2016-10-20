@@ -111,6 +111,37 @@ describe('NgbInputDatepicker', () => {
          expect(input.disabled).toBeFalsy();
          expect(buttonInDatePicker.disabled).toBeFalsy();
        }));
+
+    it('should propagate touched state on (blur)', fakeAsync(() => {
+         const fixture = createTestCmpt(`<input ngbDatepicker [(ngModel)]="date">`);
+         const inputDebugEl = fixture.debugElement.query(By.css('input'));
+
+         expect(inputDebugEl.classes['ng-touched']).toBeFalsy();
+
+         inputDebugEl.triggerEventHandler('blur', {});
+         tick();
+         fixture.detectChanges();
+
+         expect(inputDebugEl.classes['ng-touched']).toBeTruthy();
+       }));
+
+    it('should propagate touched state when setting a date', fakeAsync(() => {
+         const fixture = createTestCmpt(`
+      <input ngbDatepicker [(ngModel)]="date" #d="ngbDatepicker">
+      <button (click)="open(d)">Open</button>`);
+
+         const buttonDebugEl = fixture.debugElement.query(By.css('button'));
+         const inputDebugEl = fixture.debugElement.query(By.css('input'));
+
+         expect(inputDebugEl.classes['ng-touched']).toBeFalsy();
+
+         buttonDebugEl.triggerEventHandler('click', {});  // open
+         inputDebugEl.triggerEventHandler('change', {target: {value: '2016-09-10'}});
+         tick();
+         fixture.detectChanges();
+
+         expect(inputDebugEl.classes['ng-touched']).toBeTruthy();
+       }));
   });
 
   describe('options', () => {
