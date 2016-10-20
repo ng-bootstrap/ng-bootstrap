@@ -30,7 +30,8 @@ Once installed you need to import our main module:
 ```js
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 ```
-The only remaining part is to list the imported module in your application module. You should end up with the code similar to:
+The only remaining part is to list the imported module in your application module. The exact method will be slightly
+different for the root (top-level) module for which you should end up with the code similar to (notice `NgbModule.forRoot()`):
 ```js
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
@@ -42,6 +43,20 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 export class AppModule {
 }
 ```
+
+Other modules in your application can simply import `NgbModule`:
+
+```js
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
+@NgModule({
+  declarations: [OtherComponent, ...],
+  imports: [NgbModule, ...], 
+})
+export class OtherModule {
+}
+```
+
 ### SystemJS
 If you are using SystemJS, you should also adjust your configuration to point to the UMD bundle.
 

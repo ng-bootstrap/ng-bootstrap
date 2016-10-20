@@ -21,7 +21,8 @@
 
   <p>Once installed you need to import our main module.</p>
   <pre>import &#123;NgbModule} from '@ng-bootstrap/ng-bootstrap';</pre>
-  <p>The only remaining part is to list the imported module in your application module. You should end up with the code similar to:</p>
+  <p>The only remaining part is to list the imported module in your application module. The exact method will be slightly
+different for the root (top-level) module for which you should end up with the code similar to (notice <code>NgbModule.forRoot()</code>):
   <pre>import &#123;NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule(&#123;
@@ -31,6 +32,17 @@
 })
 export class AppModule &#123;
 }</pre>
+
+  <p>Other modules in your application can simply import <code>NgbModule</code>:</p>
+  <pre>import &#123;NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
+@NgModule(&#123;
+  declarations: [OtherComponent, ...],
+  imports: [NgbModule, ...]
+})
+export class OtherModule &#123;
+}</pre>
+
   <h4>
     SystemJS
   </h4>
