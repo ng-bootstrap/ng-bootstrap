@@ -8,10 +8,17 @@ const contentIndexHtml = fs.readFileSync('misc/plunker-builder-templates/index.h
 const contentConfigJs = fs.readFileSync('misc/plunker-builder-templates/config.js').toString();
 const contentMainTs = fs.readFileSync('misc/plunker-builder-templates/main.ts').toString();
 
+const ENTRY_CMPTS = {
+  modal: ['component']
+};
+
 function generateAppTsContent(componentName, demoName) {
   const demoClassName = `Ngbd${capitalize(componentName)}${capitalize(demoName)}`;
   const demoImport = `./${componentName}-${demoName}`;
   const demoSelector = `ngbd-${componentName}-${demoName}`;
+  const needsEntryCmpt = ENTRY_CMPTS.hasOwnProperty(componentName) && ENTRY_CMPTS[componentName].indexOf(demoName) > -1;
+  const entryCmptClass =  needsEntryCmpt ? `Ngbd${capitalize(componentName)}Content` : null;
+  const demoImports = needsEntryCmpt ? `${demoClassName}, ${entryCmptClass}` : demoClassName;
 
   return `
 import { Component, NgModule } from '@angular/core';
@@ -19,7 +26,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { JsonpModule } from '@angular/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ${demoClassName} } from '${demoImport}';
+import { ${demoImports} } from '${demoImport}';
 
 @Component({
   selector: 'my-app',
@@ -31,7 +38,7 @@ import { ${demoClassName} } from '${demoImport}';
       This is a demo plnkr forked from the <strong>ng-bootstrap</strong> project: Angular 2 powered Bootstrap.
       Visit <a href="https://ng-bootstrap.github.io/" target="_blank">https://ng-bootstrap.github.io</a> for more widgets and demos.
     </p>
-    <hr>${componentName === 'modal' ? '\n<template ngbModalContainer></template>\n' : ''}
+    <hr>${componentName === 'modal' ? '\n\n      <template ngbModalContainer></template>\n' : ''}
 
     <${demoSelector}></${demoSelector}>
   </div>
@@ -42,7 +49,7 @@ export class App {
 
 @NgModule({
   imports: [BrowserModule, FormsModule, ReactiveFormsModule, JsonpModule, NgbModule.forRoot()], 
-  declarations: [App, ${demoClassName}],
+  declarations: [App, ${demoImports}]${needsEntryCmpt ? `,\n  entryComponents: [${entryCmptClass}],` : ''}
   bootstrap: [App]
 }) 
 export class AppModule {}
@@ -51,7 +58,7 @@ export class AppModule {}
 
 function generateTags(tags) {
   return tags.map((tag, idx) => {
-    return `<input type="hidden" name="tags[${idx}]" value="${tag}">`;
+    return `    <input type="hidden" name="tags[${idx}]" value="${tag}">`;
   }).join('\n');
 }
 
@@ -69,7 +76,7 @@ function generatePlnkrContent(componentName, demoName) {
 <body>
   <form id="mainForm" method="post" action="${plnkrUrl}">
     <input type="hidden" name="description" value="Example usage of the ${componentName} widget from https://ng-bootstrap.github.io">
-    ${generateTags(['Angular', 'Bootstrap', 'ng-bootstrap', capitalize(componentName)])}  
+${generateTags(['Angular', 'Bootstrap', 'ng-bootstrap', capitalize(componentName)])}  
     <input type="hidden" name="files[index.html]" value="${he.encode(contentIndexHtml)}">
     <input type="hidden" name="files[config.js]" value="${he.encode(contentConfigJs)}">
     <input type="hidden" name="files[src/main.ts]" value="${he.encode(contentMainTs)}">
