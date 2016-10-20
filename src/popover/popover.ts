@@ -91,11 +91,6 @@ export class NgbPopover implements OnInit, OnDestroy {
         positionElements(
             this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
             this.container === 'body');
-
-        if (this.container === 'body') {
-          let windowEl = this._windowRef.location.nativeElement;
-          window.document.querySelector(this.container).appendChild(windowEl);
-        }
       }
     });
   }
@@ -108,6 +103,11 @@ export class NgbPopover implements OnInit, OnDestroy {
       this._windowRef = this._popupService.open(this.ngbPopover);
       this._windowRef.instance.placement = this.placement;
       this._windowRef.instance.title = this.popoverTitle;
+
+      if (this.container === 'body') {
+        window.document.querySelector(this.container).appendChild(this._windowRef.location.nativeElement);
+      }
+
       // we need to manually invoke change detection since events registered via
       // Renderer::listen() are not picked up by change detection with the OnPush strategy
       this._windowRef.changeDetectorRef.markForCheck();
@@ -149,6 +149,7 @@ export class NgbPopover implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.close();
     this._unregisterListenersFn();
     this._zoneSubscription.unsubscribe();
   }

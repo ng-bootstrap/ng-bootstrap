@@ -53,7 +53,7 @@ describe('ngb-popover', () => {
     });
   });
 
-  function getWindow(fixture) { return fixture.nativeElement.querySelector('ngb-popover-window'); }
+  function getWindow(element) { return element.querySelector('ngb-popover-window'); }
 
   describe('basic functionality', () => {
 
@@ -63,7 +63,7 @@ describe('ngb-popover', () => {
 
       directive.triggerEventHandler('click', {});
       fixture.detectChanges();
-      const windowEl = getWindow(fixture);
+      const windowEl = getWindow(fixture.nativeElement);
 
       expect(windowEl).toHaveCssClass('popover');
       expect(windowEl).toHaveCssClass('popover-top');
@@ -73,7 +73,7 @@ describe('ngb-popover', () => {
 
       directive.triggerEventHandler('click', {});
       fixture.detectChanges();
-      expect(getWindow(fixture)).toBeNull();
+      expect(getWindow(fixture.nativeElement)).toBeNull();
     });
 
     it('should open and close a popover - default settings and content from a template', () => {
@@ -85,7 +85,7 @@ describe('ngb-popover', () => {
 
       directive.triggerEventHandler('click', {});
       fixture.detectChanges();
-      const windowEl = getWindow(fixture);
+      const windowEl = getWindow(fixture.nativeElement);
 
       expect(windowEl).toHaveCssClass('popover');
       expect(windowEl).toHaveCssClass(`popover-${defaultConfig.placement}`);
@@ -95,7 +95,7 @@ describe('ngb-popover', () => {
 
       directive.triggerEventHandler('click', {});
       fixture.detectChanges();
-      expect(getWindow(fixture)).toBeNull();
+      expect(getWindow(fixture.nativeElement)).toBeNull();
     });
 
     it('should properly destroy TemplateRef content', () => {
@@ -107,12 +107,12 @@ describe('ngb-popover', () => {
 
       directive.triggerEventHandler('click', {});
       fixture.detectChanges();
-      expect(getWindow(fixture)).not.toBeNull();
+      expect(getWindow(fixture.nativeElement)).not.toBeNull();
       expect(spyService.called).toBeFalsy();
 
       directive.triggerEventHandler('click', {});
       fixture.detectChanges();
-      expect(getWindow(fixture)).toBeNull();
+      expect(getWindow(fixture.nativeElement)).toBeNull();
       expect(spyService.called).toBeTruthy();
     });
 
@@ -122,15 +122,15 @@ describe('ngb-popover', () => {
 
       directive.triggerEventHandler('click', {});
       fixture.detectChanges();
-      expect(getWindow(fixture)).not.toBeNull();
+      expect(getWindow(fixture.nativeElement)).not.toBeNull();
 
       directive.triggerEventHandler('click', {});
       fixture.detectChanges();
-      expect(getWindow(fixture)).toBeNull();
+      expect(getWindow(fixture.nativeElement)).toBeNull();
 
       directive.triggerEventHandler('click', {});
       fixture.detectChanges();
-      expect(getWindow(fixture)).not.toBeNull();
+      expect(getWindow(fixture.nativeElement)).not.toBeNull();
     });
 
     it('should not leave dangling popovers in the DOM', () => {
@@ -140,11 +140,11 @@ describe('ngb-popover', () => {
 
       directive.triggerEventHandler('click', {});
       fixture.detectChanges();
-      expect(getWindow(fixture)).not.toBeNull();
+      expect(getWindow(fixture.nativeElement)).not.toBeNull();
 
       fixture.componentInstance.show = false;
       fixture.detectChanges();
-      expect(getWindow(fixture)).toBeNull();
+      expect(getWindow(fixture.nativeElement)).toBeNull();
     });
 
     it('should properly cleanup popovers with manual triggers', () => {
@@ -155,11 +155,11 @@ describe('ngb-popover', () => {
 
       directive.triggerEventHandler('mouseenter', {});
       fixture.detectChanges();
-      expect(getWindow(fixture)).not.toBeNull();
+      expect(getWindow(fixture.nativeElement)).not.toBeNull();
 
       fixture.componentInstance.show = false;
       fixture.detectChanges();
-      expect(getWindow(fixture)).toBeNull();
+      expect(getWindow(fixture.nativeElement)).toBeNull();
     });
   });
 
@@ -172,7 +172,7 @@ describe('ngb-popover', () => {
 
       directive.triggerEventHandler('click', {});
       fixture.detectChanges();
-      const windowEl = getWindow(fixture);
+      const windowEl = getWindow(fixture.nativeElement);
 
       expect(windowEl).toHaveCssClass('popover');
       expect(windowEl).toHaveCssClass('popover-left');
@@ -185,7 +185,7 @@ describe('ngb-popover', () => {
 
       directive.triggerEventHandler('click', {});
       fixture.detectChanges();
-      const windowEl = getWindow(fixture);
+      const windowEl = getWindow(fixture.nativeElement);
 
       expect(windowEl).toHaveCssClass('popover');
       expect(windowEl).toHaveCssClass('popover-left');
@@ -202,12 +202,23 @@ describe('ngb-popover', () => {
 
       directive.triggerEventHandler('click', {});
       fixture.detectChanges();
-      let windowEl = getWindow(fixture);
-      expect(windowEl).toBeNull();
+      expect(getWindow(fixture.nativeElement)).toBeNull();
+      expect(getWindow(window.document.querySelector(selector))).not.toBeNull();
+    });
 
-      const container = window.document.querySelector(selector);
-      windowEl = container.querySelector('ngb-popover-window');
-      expect(windowEl.parentNode).toBe(container);
+    it('should properly destroy popovers when the "container" option is used', () => {
+      const selector = 'body';
+      const fixture =
+          createTestComponent(`<div *ngIf="show" ngbPopover="Great tip!" container="` + selector + `"></div>`);
+      const directive = fixture.debugElement.query(By.directive(NgbPopover));
+
+      directive.triggerEventHandler('click', {});
+      fixture.detectChanges();
+
+      expect(getWindow(document.querySelector(selector))).not.toBeNull();
+      fixture.componentRef.instance.show = false;
+      fixture.detectChanges();
+      expect(getWindow(document.querySelector(selector))).toBeNull();
     });
 
   });
@@ -223,12 +234,12 @@ describe('ngb-popover', () => {
 
       directive.triggerEventHandler('click', {});
       fixture.detectChanges();
-      expect(getWindow(fixture)).not.toBeNull();
+      expect(getWindow(fixture.nativeElement)).not.toBeNull();
       expect(shownSpy).toHaveBeenCalled();
 
       directive.triggerEventHandler('click', {});
       fixture.detectChanges();
-      expect(getWindow(fixture)).toBeNull();
+      expect(getWindow(fixture.nativeElement)).toBeNull();
       expect(hiddenSpy).toHaveBeenCalled();
     });
 
@@ -245,7 +256,7 @@ describe('ngb-popover', () => {
       fixture.componentInstance.popover.open();
       fixture.detectChanges();
 
-      expect(getWindow(fixture)).not.toBeNull();
+      expect(getWindow(fixture.nativeElement)).not.toBeNull();
       expect(shownSpy).toHaveBeenCalled();
       expect(shownSpy.calls.count()).toEqual(1);
       expect(hiddenSpy).not.toHaveBeenCalled();
@@ -260,7 +271,7 @@ describe('ngb-popover', () => {
 
       fixture.componentInstance.popover.close();
       fixture.detectChanges();
-      expect(getWindow(fixture)).toBeNull();
+      expect(getWindow(fixture.nativeElement)).toBeNull();
       expect(shownSpy).not.toHaveBeenCalled();
       expect(hiddenSpy).not.toHaveBeenCalled();
     });
@@ -292,11 +303,11 @@ describe('ngb-popover', () => {
 
       directive.triggerEventHandler('click', {});
       fixture.detectChanges();
-      expect(getWindow(fixture)).not.toBeNull();
+      expect(getWindow(fixture.nativeElement)).not.toBeNull();
 
       directive.triggerEventHandler('click', {});
       fixture.detectChanges();
-      expect(getWindow(fixture)).toBeNull();
+      expect(getWindow(fixture.nativeElement)).toBeNull();
     });
 
     it('should non-default toggle triggers', () => {
@@ -305,11 +316,11 @@ describe('ngb-popover', () => {
 
       directive.triggerEventHandler('mouseenter', {});
       fixture.detectChanges();
-      expect(getWindow(fixture)).not.toBeNull();
+      expect(getWindow(fixture.nativeElement)).not.toBeNull();
 
       directive.triggerEventHandler('click', {});
       fixture.detectChanges();
-      expect(getWindow(fixture)).toBeNull();
+      expect(getWindow(fixture.nativeElement)).toBeNull();
     });
 
     it('should support multiple triggers', () => {
@@ -318,11 +329,11 @@ describe('ngb-popover', () => {
 
       directive.triggerEventHandler('mouseenter', {});
       fixture.detectChanges();
-      expect(getWindow(fixture)).not.toBeNull();
+      expect(getWindow(fixture.nativeElement)).not.toBeNull();
 
       directive.triggerEventHandler('click', {});
       fixture.detectChanges();
-      expect(getWindow(fixture)).toBeNull();
+      expect(getWindow(fixture.nativeElement)).toBeNull();
     });
 
     it('should not use default for manual triggers', () => {
@@ -331,7 +342,7 @@ describe('ngb-popover', () => {
 
       directive.triggerEventHandler('mouseenter', {});
       fixture.detectChanges();
-      expect(getWindow(fixture)).toBeNull();
+      expect(getWindow(fixture.nativeElement)).toBeNull();
     });
 
     it('should allow toggling for manual triggers', () => {
@@ -342,11 +353,11 @@ describe('ngb-popover', () => {
 
       button.click();
       fixture.detectChanges();
-      expect(getWindow(fixture)).not.toBeNull();
+      expect(getWindow(fixture.nativeElement)).not.toBeNull();
 
       button.click();
       fixture.detectChanges();
-      expect(getWindow(fixture)).toBeNull();
+      expect(getWindow(fixture.nativeElement)).toBeNull();
     });
 
     it('should allow open / close for manual triggers', () => {
@@ -357,11 +368,11 @@ describe('ngb-popover', () => {
 
       buttons[0].click();  // open
       fixture.detectChanges();
-      expect(getWindow(fixture)).not.toBeNull();
+      expect(getWindow(fixture.nativeElement)).not.toBeNull();
 
       buttons[1].click();  // close
       fixture.detectChanges();
-      expect(getWindow(fixture)).toBeNull();
+      expect(getWindow(fixture.nativeElement)).toBeNull();
     });
 
     it('should not throw when open called for manual triggers and open popover', () => {
@@ -372,11 +383,11 @@ describe('ngb-popover', () => {
 
       button.click();  // open
       fixture.detectChanges();
-      expect(getWindow(fixture)).not.toBeNull();
+      expect(getWindow(fixture.nativeElement)).not.toBeNull();
 
       button.click();  // open
       fixture.detectChanges();
-      expect(getWindow(fixture)).not.toBeNull();
+      expect(getWindow(fixture.nativeElement)).not.toBeNull();
     });
 
     it('should not throw when closed called for manual triggers and closed popover', () => {
@@ -387,7 +398,7 @@ describe('ngb-popover', () => {
 
       button.click();  // close
       fixture.detectChanges();
-      expect(getWindow(fixture)).toBeNull();
+      expect(getWindow(fixture.nativeElement)).toBeNull();
     });
   });
 
