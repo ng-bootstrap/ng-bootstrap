@@ -98,7 +98,8 @@ export class NgbTypeahead implements ControlValueAccessor,
   @Input() inputFormatter: (value: any) => string;
 
   /**
-   * A function to transform the provided observable text into the array of results
+   * A function to transform the provided observable text into the array of results.  Note that the "this" argument
+   * is undefined so you need to explicitly bind it to a desired "this" target.
    */
   @Input() ngbTypeahead: (text: Observable<string>) => Observable<any[]>;
 
