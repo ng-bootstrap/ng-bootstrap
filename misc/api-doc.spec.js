@@ -192,9 +192,15 @@ describe('APIDocVisitor', function() {
     expect(classDocs.className).toBe('DocumentedFoo');
     expect(classDocs.description).toBe('This is a documented foo');
 
+    expect(classDocs.properties.length).toBe(2);
+
     expect(classDocs.properties[0].name).toBe('bar');
     expect(classDocs.properties[0].description).toContain('the bar');
     expect(classDocs.properties[0].type).toBe('string');
+
+    expect(classDocs.properties[1].name).toBe('componentInstance');
+    expect(classDocs.properties[1].description).toContain('A getter');
+    expect(classDocs.properties[1].type).toBe('any');
 
     expect(classDocs.methods.length).toBe(1);
 

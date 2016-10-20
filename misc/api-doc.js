@@ -147,7 +147,7 @@ class APIDocVisitor {
           methods.push(this.visitMethodDeclaration(members[i]));
         } else if (
             members[i].kind === ts.SyntaxKind.PropertyDeclaration ||
-            members[i].kind === ts.SyntaxKind.PropertySignature) {
+            members[i].kind === ts.SyntaxKind.PropertySignature || members[i].kind === ts.SyntaxKind.GetAccessor) {
           properties.push(this.visitProperty(members[i]));
         }
       }

@@ -10,6 +10,12 @@ class DocumentedFoo {
   bar: string;
 
   /**
+   * A getter
+   */
+  get componentInstance(): any {
+  }
+
+  /**
    * some method
    */
   someMethod(): void {}
