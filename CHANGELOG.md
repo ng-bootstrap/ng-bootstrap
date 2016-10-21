@@ -1,3 +1,26 @@
+<a name="1.0.0-alpha.9"></a>
+# [1.0.0-alpha.9](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.8...1.0.0-alpha.9) (2016-10-21)
+
+
+### Bug Fixes
+
+* restore TypeScript 1.8 compatibility ([1259d37](https://github.com/ng-bootstrap/ng-bootstrap/commit/1259d37)), closes [#904](https://github.com/ng-bootstrap/ng-bootstrap/issues/904) [#911](https://github.com/ng-bootstrap/ng-bootstrap/issues/911)
+* **buttons:** properly handle focus on radio buttons ([23d412b](https://github.com/ng-bootstrap/ng-bootstrap/commit/23d412b)), closes [#913](https://github.com/ng-bootstrap/ng-bootstrap/issues/913)
+* **datepicker:** propagate "touched" property ([deadb67](https://github.com/ng-bootstrap/ng-bootstrap/commit/deadb67)), closes [#918](https://github.com/ng-bootstrap/ng-bootstrap/issues/918) [#924](https://github.com/ng-bootstrap/ng-bootstrap/issues/924)
+* **popover:** properly destroy popovers using container option ([19bb887](https://github.com/ng-bootstrap/ng-bootstrap/commit/19bb887)), closes [#931](https://github.com/ng-bootstrap/ng-bootstrap/issues/931)
+* **timepicker:** properly display chevrons in Safari on iOS ([cbfa23b](https://github.com/ng-bootstrap/ng-bootstrap/commit/cbfa23b)), closes [#908](https://github.com/ng-bootstrap/ng-bootstrap/issues/908) [#909](https://github.com/ng-bootstrap/ng-bootstrap/issues/909)
+* **timepicker:** properly display chevrons in older IEs ([54cd30b](https://github.com/ng-bootstrap/ng-bootstrap/commit/54cd30b)), closes [#935](https://github.com/ng-bootstrap/ng-bootstrap/issues/935)
+* **tooltip:** properly destroy tooltips using container option ([94a4d5c](https://github.com/ng-bootstrap/ng-bootstrap/commit/94a4d5c)), closes [#910](https://github.com/ng-bootstrap/ng-bootstrap/issues/910) [#912](https://github.com/ng-bootstrap/ng-bootstrap/issues/912)
+
+
+### Features
+
+* **datepicker:** can easily hide days outside of current month ([a92c0e7](https://github.com/ng-bootstrap/ng-bootstrap/commit/a92c0e7)), closes [#937](https://github.com/ng-bootstrap/ng-bootstrap/issues/937)
+* **modal:** allow interactions with components passed as content ([cc4ffb0](https://github.com/ng-bootstrap/ng-bootstrap/commit/cc4ffb0)), closes [#861](https://github.com/ng-bootstrap/ng-bootstrap/issues/861) [#903](https://github.com/ng-bootstrap/ng-bootstrap/issues/903)
+* **modals:** stack modals in opening order ([20ad457](https://github.com/ng-bootstrap/ng-bootstrap/commit/20ad457)), closes [#902](https://github.com/ng-bootstrap/ng-bootstrap/issues/902) [#901](https://github.com/ng-bootstrap/ng-bootstrap/issues/901)
+
+
+
 <a name="1.0.0-alpha.8"></a>
 # [1.0.0-alpha.8](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.7...1.0.0-alpha.8) (2016-10-14)
 
