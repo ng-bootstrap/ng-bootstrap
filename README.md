@@ -15,7 +15,7 @@ Feel free to make comments there.
 
 ## Demo
 
-Check all the directives in action at https://ng-bootstrap.github.io
+View all the directives in action at https://ng-bootstrap.github.io
 
 ## Dependencies
 * [Angular 2](https://angular.io) (tested with 2.0.0)
@@ -79,7 +79,7 @@ See [this](https://github.com/angular/angular/blob/master/README.md) for up-to-d
 
 ## Contributing to the project
 
-We are always looking for the quality contributions! Please check the [CONTRIBUTING.md](CONTRIBUTING.md) doc for contribution guidelines.
+Please check the [CONTRIBUTING.md](CONTRIBUTING.md) doc for contribution guidelines.
 
 ## Getting Help
 
