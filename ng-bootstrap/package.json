@@ -1,0 +1,27 @@
+{
+  "name": "@ng-bootstrap/ng-bootstrap",
+  "version": "1.0.0-alpha.9",
+  "description": "Angular 2 powered Bootstrap",
+  "keywords": "Angular 2 Angular2 Bootstrap autocomplete accordion alert buttons carousel collapse dropdown pagination popover progressbar rating tabset timepicker tooltip typeahead",
+  "author": "https://github.com/ng-bootstrap/ng-bootstrap/graphs/contributors",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ng-bootstrap/ng-bootstrap.git"
+  },
+  "license": {
+    "type": "MIT",
+    "url": "https://raw.githubusercontent.com/ng-bootstrap/ng-bootstrap/master/LICENSE"
+  },
+  "bugs": {
+    "url": "https://github.com/ng-bootstrap/ng-bootstrap/issues"
+  },
+  "homepage": "https://github.com/ng-bootstrap/ng-bootstrap#readme",
+  "main": "bundles/ng-bootstrap.js",
+  "module": "index.js",
+  "typings": "index.d.ts",
+  "peerDependencies": {
+    "@angular/core": "^2.0.0",
+    "@angular/common": "^2.0.0",
+    "@angular/forms": "^2.0.0"
+  }
+}
