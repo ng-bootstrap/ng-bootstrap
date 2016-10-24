@@ -1,6 +1,6 @@
 ## You want to contribute some code?
 
-We are always looking for the quality contributions and will be happy to accept your Pull Requests as long as those adhere to some basic rules:
+We are always looking for quality contributions and will be happy to accept your Pull Requests as long as they adhere to some basic rules:
 
 * Please make sure that your contribution fits well in the project's context:
   * we are aiming at rebuilding bootstrap components in pure Angular 2, without any dependencies on any external JavaScript library;
