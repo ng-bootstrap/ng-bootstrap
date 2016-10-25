@@ -10,7 +10,12 @@ import {NgbDateStruct} from './ngb-date-struct';
       border-radius: 0.25rem;
     }
   `],
-  host: {'[class.bg-primary]': 'selected', '[class.text-muted]': 'isMuted()', '[class.btn-secondary]': '!disabled'},
+  host: {
+    '[class.bg-primary]': 'selected',
+    '[class.text-white]': 'selected',
+    '[class.text-muted]': 'isMuted()',
+    '[class.btn-secondary]': '!disabled'
+  },
   template: `{{ date.day }}`
 })
 export class NgbDatepickerDayView {

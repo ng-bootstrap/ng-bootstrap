@@ -57,10 +57,12 @@ describe('ngbDatepickerDayView', () => {
     fixture.detectChanges();
 
     const el = getElement(fixture.nativeElement);
+    expect(el).not.toHaveCssClass('text-white');
     expect(el).not.toHaveCssClass('bg-primary');
 
     fixture.componentInstance.selected = true;
     fixture.detectChanges();
+    expect(el).toHaveCssClass('text-white');
     expect(el).toHaveCssClass('bg-primary');
   });
 
