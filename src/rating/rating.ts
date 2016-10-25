@@ -30,11 +30,11 @@ export interface StarTemplateContext {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <template #t let-fill="fill">{{ fill === 100 ? '&#9733;' : '&#9734;' }}</template>
-    <span tabindex="0" (mouseleave)="reset()" aria-valuemin="0" [attr.aria-valuemax]="max" [attr.aria-valuenow]="rate">
-      <template ngFor let-r [ngForOf]="range" let-index="index">
+    <span tabindex="0" (mouseleave)="reset()" role="slider" aria-valuemin="0"
+      [attr.aria-valuemax]="max" [attr.aria-valuenow]="rate" [attr.aria-valuetext]="ariaValueText">
+      <template ngFor [ngForOf]="range" let-index="index">
         <span class="sr-only">({{ index < rate ? '*' : ' ' }})</span>
-        <span (mouseenter)="enter(index + 1)" (click)="update(index + 1)" [title]="r.title" 
-        [attr.aria-valuetext]="r.title" 
+        <span (mouseenter)="enter(index + 1)" (click)="update(index + 1)" 
         [style.cursor]="readonly ? 'default' : 'pointer'">
           <template [ngTemplateOutlet]="starTemplate || t" [ngOutletContext]="{fill: getFillValue(index)}"></template>
         </span>
@@ -91,6 +91,8 @@ export class NgbRating implements OnInit,
     this.readonly = config.readonly;
   }
 
+  get ariaValueText() { return `${this.rate} out of ${this.max}`; }
+
   enter(value: number): void {
     if (!this.readonly) {
       this.rate = value;
@@ -117,7 +119,7 @@ export class NgbRating implements OnInit,
     }
   }
 
-  ngOnInit(): void { this.range = this._buildTemplateObjects(); }
+  ngOnInit(): void { this.range = Array.from({length: this.max}, (v, k) => k + 1); }
 
   reset(): void {
     this.leave.emit(this.rate);
@@ -130,13 +132,5 @@ export class NgbRating implements OnInit,
       this.rate = value;
       this.rateChange.emit(value);
     }
-  }
-
-  private _buildTemplateObjects(): number[] {
-    let range = [];
-    for (let i = 1; i <= this.max; i++) {
-      range.push({title: i});
-    }
-    return range;
   }
 }

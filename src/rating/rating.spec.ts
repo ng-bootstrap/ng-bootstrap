@@ -199,6 +199,17 @@ describe('ngb-rating', () => {
 
       expect(compiled.querySelector('span').getAttribute('aria-valuenow')).toBe('7');
     });
+
+    it('updates aria-valuetext when the rate changes', () => {
+      const fixture = createTestComponent('<ngb-rating [max]="max" rate="3"></ngb-rating>');
+
+      const compiled = fixture.nativeElement;
+
+      getStar(compiled, 7).click();
+      fixture.detectChanges();
+
+      expect(compiled.querySelector('span').getAttribute('aria-valuetext')).toBe('7 out of 10');
+    });
   });
 
   describe('Custom config', () => {
