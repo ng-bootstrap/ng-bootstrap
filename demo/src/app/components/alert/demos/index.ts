@@ -20,7 +20,7 @@ export const DEMO_SNIPPETS = {
     code: require('!!prismjs?lang=typescript!./custom/alert-custom'),
     markup: require('!!prismjs?lang=markup!./custom/alert-custom.html')
   },
-  selfClosing: {
+  selfclosing: {
     code: require('!!prismjs?lang=typescript!./selfclosing/alert-selfclosing'),
     markup: require('!!prismjs?lang=markup!./selfclosing/alert-selfclosing.html')
   },
