@@ -16,11 +16,11 @@ export const DEMO_SNIPPETS = {
     code: require('!!prismjs?lang=typescript!./pills/tabset-pills'),
     markup: require('!!prismjs?lang=markup!./pills/tabset-pills.html')
   },
-  preventChange: {
+  preventchange: {
     code: require('!!prismjs?lang=typescript!./preventchange/tabset-preventchange'),
     markup: require('!!prismjs?lang=markup!./preventchange/tabset-preventchange.html')
   },
-  selectById: {
+  selectbyid: {
     code: require('!!prismjs?lang=typescript!./selectbyid/tabset-selectbyid'),
     markup: require('!!prismjs?lang=markup!./selectbyid/tabset-selectbyid.html')
   },
