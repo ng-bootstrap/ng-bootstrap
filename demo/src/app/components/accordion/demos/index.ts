@@ -12,7 +12,7 @@ export const DEMO_SNIPPETS = {
     code: require('!!prismjs?lang=typescript!./basic/accordion-basic'),
     markup: require('!!prismjs?lang=markup!./basic/accordion-basic.html')
   },
-  preventChange: {
+  preventchange: {
     code: require('!!prismjs?lang=typescript!./preventchange/accordion-preventchange'),
     markup: require('!!prismjs?lang=markup!./preventchange/accordion-preventchange.html')
   },
