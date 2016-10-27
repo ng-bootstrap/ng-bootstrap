@@ -32,9 +32,9 @@ export class NgbModalContainer {
     ngbModalStack.registerContainer(this);
   }
 
-  open(content: string | TemplateRef<any>, options): NgbModalRef {
+  open(moduleCFR: ComponentFactoryResolver, content: string | TemplateRef<any>, options): NgbModalRef {
     const activeModal = new NgbActiveModal();
-    const contentRef = this._getContentRef(content, activeModal);
+    const contentRef = this._getContentRef(moduleCFR, content, activeModal);
     let windowCmptRef: ComponentRef<NgbModalWindow>;
     let backdropCmptRef: ComponentRef<NgbModalBackdrop>;
     let ngbModalRef: NgbModalRef;
@@ -65,7 +65,7 @@ export class NgbModalContainer {
     });
   }
 
-  private _getContentRef(content: any, context: NgbActiveModal): ContentRef {
+  private _getContentRef(moduleCFR: ComponentFactoryResolver, content: any, context: NgbActiveModal): ContentRef {
     if (!content) {
       return new ContentRef([]);
     } else if (content instanceof TemplateRef) {
@@ -74,7 +74,7 @@ export class NgbModalContainer {
     } else if (isString(content)) {
       return new ContentRef([[this._renderer.createText(null, `${content}`)]]);
     } else {
-      const contentCmptFactory = this._componentFactoryResolver.resolveComponentFactory(content);
+      const contentCmptFactory = moduleCFR.resolveComponentFactory(content);
       const modalContentInjector =
           ReflectiveInjector.resolveAndCreate([{provide: NgbActiveModal, useValue: context}], this._injector);
       const componentRef = this._viewContainerRef.createComponent(contentCmptFactory, 0, modalContentInjector);
