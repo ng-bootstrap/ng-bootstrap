@@ -31,7 +31,7 @@ export class NgbDropdown {
   /**
    *  Defines whether or not the dropdown-menu is open initially.
    */
-  @Input('open') private _open = false;
+  @Input('open') _open = false;
 
   /**
    *  An event fired when the dropdown is opened or closed.
@@ -120,5 +120,3 @@ export class NgbDropdownToggle {
 
   toggleOpen() { this.dropdown.toggle(); }
 }
-
-export const NGB_DROPDOWN_DIRECTIVES = [NgbDropdownToggle, NgbDropdown];

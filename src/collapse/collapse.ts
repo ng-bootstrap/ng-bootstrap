@@ -14,5 +14,3 @@ export class NgbCollapse {
    */
   @Input('ngbCollapse') collapsed = false;
 }
-
-export const NGB_COLLAPSE_DIRECTIVES = [NgbCollapse];
