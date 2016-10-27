@@ -13,6 +13,7 @@ export {ModalDismissReasons} from './modal-dismiss-reasons';
 @NgModule({
   declarations: [NgbModalContainer, NgbModalBackdrop, NgbModalWindow],
   entryComponents: [NgbModalBackdrop, NgbModalWindow],
+  providers: [NgbModal],
   exports: [NgbModalContainer]
 })
 export class NgbModalModule {
