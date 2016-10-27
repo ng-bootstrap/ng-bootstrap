@@ -145,5 +145,3 @@ export class NgbTabset implements AfterContentChecked {
     return tabsWithId.length ? tabsWithId[0] : null;
   }
 }
-
-export const NGB_TABSET_DIRECTIVES = [NgbTabset, NgbTab, NgbTabContent, NgbTabTitle];

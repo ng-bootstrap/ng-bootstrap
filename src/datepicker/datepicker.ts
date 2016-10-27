@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, TemplateRef, forwardRef, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, TemplateRef, forwardRef, OnInit, SimpleChanges} from '@angular/core';
 import {NG_VALUE_ACCESSOR, ControlValueAccessor} from '@angular/forms';
 import {NgbCalendar} from './ngb-calendar';
 import {NgbDate} from './ngb-date';
@@ -149,7 +149,7 @@ export class NgbDatepicker implements OnChanges,
     this.navigateTo(this.startDate);
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
     this._setDates();
     this.navigateTo(this.startDate);
   }

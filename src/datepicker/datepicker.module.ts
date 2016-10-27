@@ -14,6 +14,7 @@ import {NgbDatepickerNavigationSelect} from './datepicker-navigation-select';
 import {NgbDatepickerConfig} from './datepicker-config';
 
 export {NgbDatepicker} from './datepicker';
+export {NgbInputDatepicker} from './datepicker-input';
 export {NgbDatepickerMonthView} from './datepicker-month-view';
 export {NgbDatepickerDayView} from './datepicker-day-view';
 export {NgbDatepickerNavigation} from './datepicker-navigation';

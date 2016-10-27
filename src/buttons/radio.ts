@@ -146,5 +146,3 @@ export class NgbRadio implements OnDestroy {
     this._label.disabled = this._disabled;
   }
 }
-
-export const NGB_RADIO_DIRECTIVES = [NgbRadio, NgbActiveLabel, NgbRadioGroup];
