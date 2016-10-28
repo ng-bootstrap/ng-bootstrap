@@ -1,3 +1,14 @@
+<a name="1.0.0-alpha.10"></a>
+# [1.0.0-alpha.10](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.9...1.0.0-alpha.10) (2016-10-28)
+
+### Bug Fixes
+
+* restore AoT compatibility with 2.1.x ([991c880](https://github.com/ng-bootstrap/ng-bootstrap/commit/991c880)), closes [#953](https://github.com/ng-bootstrap/ng-bootstrap/issues/953) [#973](https://github.com/ng-bootstrap/ng-bootstrap/issues/973)
+* restore TypeScript 1.8 compatibility ([e077ccc](https://github.com/ng-bootstrap/ng-bootstrap/commit/e077ccc)), closes [#940](https://github.com/ng-bootstrap/ng-bootstrap/issues/940) [#941](https://github.com/ng-bootstrap/ng-bootstrap/issues/941)
+* **accordion:** remove unnecessary tabindex usage ([a240bea](https://github.com/ng-bootstrap/ng-bootstrap/commit/a240bea)), closes [#942](https://github.com/ng-bootstrap/ng-bootstrap/issues/942) [#943](https://github.com/ng-bootstrap/ng-bootstrap/issues/943)
+* **modal:** make it easier to use components from lazy-loaded modules ([2fb72d8](https://github.com/ng-bootstrap/ng-bootstrap/commit/2fb72d8)), closes [#947](https://github.com/ng-bootstrap/ng-bootstrap/issues/947) [#974](https://github.com/ng-bootstrap/ng-bootstrap/issues/974)
+* **rating:** improves rating accessibility ([9b5f999](https://github.com/ng-bootstrap/ng-bootstrap/commit/9b5f999)), closes [#962](https://github.com/ng-bootstrap/ng-bootstrap/issues/962)
+
 <a name="1.0.0-alpha.9"></a>
 # [1.0.0-alpha.9](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.8...1.0.0-alpha.9) (2016-10-21)
 
