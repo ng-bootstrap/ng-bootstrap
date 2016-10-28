@@ -440,6 +440,74 @@ describe('ngb-pagination', () => {
       fixture.detectChanges();
       expectPages(fixture.nativeElement, ['« Previous', '1', '2', '3', '4', '+5', '6', '7', '» Next']);
     });
+
+    describe('invalid inputs', () => {
+
+      ['page', 'collectionSize', 'maxSize', 'pageSize'].forEach((input) => {
+
+        it(`should throw for invalid "${input}" value`, () => {
+          const fixture = createTestComponent(`<ngb-pagination [collectionSize]="collectionSize" 
+            [maxSize]="maxSize" [pageSize]="pageSize" [page]="page"></ngb-pagination>`);
+          fixture.componentInstance[input] = NaN;
+          expect(() => { fixture.detectChanges(); }).toThrow();
+        });
+      });
+    });
+
+    it('should display one page for empty collection', fakeAsync(() => {
+         const html =
+             '<ngb-pagination [collectionSize]="collectionSize" (pageChange)="onPageChange($event)"></ngb-pagination>';
+         const fixture = createTestComponent(html);
+
+         spyOn(fixture.componentInstance, 'onPageChange');
+         fixture.componentInstance.collectionSize = 0;
+         fixture.detectChanges();
+         tick();
+         expectPages(fixture.nativeElement, ['-« Previous', '+1', '-» Next']);
+         expect(fixture.componentInstance.onPageChange).toHaveBeenCalledWith(1);
+       }));
+
+    it('should handle edge "maxSize" values', () => {
+      const html = '<ngb-pagination [collectionSize]="50" [maxSize]="maxSize"></ngb-pagination>';
+      const fixture = createTestComponent(html);
+
+      fixture.componentInstance.maxSize = 2;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '-...', '5', '» Next']);
+
+      fixture.componentInstance.maxSize = 0;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '4', '5', '» Next']);
+
+      fixture.componentInstance.maxSize = 100;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '4', '5', '» Next']);
+    });
+
+    it('should handle edge "pageSize" values', () => {
+      const html = '<ngb-pagination [collectionSize]="50" [pageSize]="pageSize"></ngb-pagination>';
+      const fixture = createTestComponent(html);
+
+      fixture.componentInstance.pageSize = 0;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['-« Previous', '+1', '-» Next']);
+    });
+
+    it('should handle edge "page" values', () => {
+      const html = '<ngb-pagination [collectionSize]="20" [page]="page"></ngb-pagination>';
+      const fixture = createTestComponent(html);
+
+      fixture.componentInstance.page = 0;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '» Next']);
+
+      fixture.componentInstance.page = 2016;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['« Previous', '1', '+2', '-» Next']);
+
+      fixture.componentInstance.page = NaN;
+      expect(() => { fixture.detectChanges(); }).toThrow();
+    });
   });
 
   describe('Custom config', () => {
@@ -503,4 +571,6 @@ class TestComponent {
   maxSize = 0;
   ellipses = true;
   rotate = false;
+
+  onPageChange = () => {};
 }
