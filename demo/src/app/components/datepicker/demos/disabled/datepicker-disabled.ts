@@ -9,6 +9,6 @@ const now = new Date();
 })
 export class NgbdDatepickerDisabled {
 
-  model: NgbDateStruct = {year: now.getFullYear(), month: now.getMonth(), day: now.getDate()};
+  model: NgbDateStruct = {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()};
   disabled = true;
 }
