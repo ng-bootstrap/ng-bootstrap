@@ -440,6 +440,107 @@ describe('ngb-pagination', () => {
       fixture.detectChanges();
       expectPages(fixture.nativeElement, ['« Previous', '1', '2', '3', '4', '+5', '6', '7', '» Next']);
     });
+
+    it('should handle edge "maxSize" values', () => {
+      const html = '<ngb-pagination [collectionSize]="50" [maxSize]="maxSize"></ngb-pagination>';
+      const fixture = createTestComponent(html);
+
+      fixture.componentInstance.maxSize = 2;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '-...', '5', '» Next']);
+
+      fixture.componentInstance.maxSize = 0;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '4', '5', '» Next']);
+
+      fixture.componentInstance.maxSize = 100;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '4', '5', '» Next']);
+
+      fixture.componentInstance.maxSize = NaN;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '4', '5', '» Next']);
+
+      fixture.componentInstance.maxSize = null;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '4', '5', '» Next']);
+    });
+
+    it('should handle edge "collectionSize" values', () => {
+      const html = '<ngb-pagination [collectionSize]="collectionSize"></ngb-pagination>';
+      const fixture = createTestComponent(html);
+
+      fixture.componentInstance.collectionSize = 0;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['-« Previous', '-» Next']);
+
+      fixture.componentInstance.collectionSize = NaN;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['-« Previous', '-» Next']);
+
+      fixture.componentInstance.collectionSize = null;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['-« Previous', '-» Next']);
+    });
+
+    it('should handle edge "pageSize" values', () => {
+      const html = '<ngb-pagination [collectionSize]="50" [pageSize]="pageSize"></ngb-pagination>';
+      const fixture = createTestComponent(html);
+
+      fixture.componentInstance.pageSize = 0;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['-« Previous', '-» Next']);
+
+      fixture.componentInstance.pageSize = NaN;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['-« Previous', '-» Next']);
+
+      fixture.componentInstance.pageSize = null;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['-« Previous', '-» Next']);
+    });
+
+    it('should handle edge "page" values', () => {
+      const html = '<ngb-pagination [collectionSize]="20" [page]="page"></ngb-pagination>';
+      const fixture = createTestComponent(html);
+
+      fixture.componentInstance.page = 0;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '» Next']);
+
+      fixture.componentInstance.page = 2016;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['« Previous', '1', '+2', '-» Next']);
+
+      fixture.componentInstance.page = NaN;
+      expectPages(fixture.nativeElement, ['« Previous', '1', '+2', '-» Next']);
+
+      fixture.componentInstance.page = null;
+      expectPages(fixture.nativeElement, ['« Previous', '1', '+2', '-» Next']);
+    });
+
+    it('should not emit "pageChange" for incorrect input values', fakeAsync(() => {
+         const html = `<ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize" [maxSize]="maxSize" 
+        (pageChange)="onPageChange($event)"></ngb-pagination>`;
+         const fixture = createTestComponent(html);
+         tick();
+
+         spyOn(fixture.componentInstance, 'onPageChange');
+
+         fixture.componentInstance.collectionSize = NaN;
+         fixture.detectChanges();
+         tick();
+
+         fixture.componentInstance.maxSize = NaN;
+         fixture.detectChanges();
+         tick();
+
+         fixture.componentInstance.pageSize = NaN;
+         fixture.detectChanges();
+         tick();
+
+         expect(fixture.componentInstance.onPageChange).not.toHaveBeenCalled();
+       }));
   });
 
   describe('Custom config', () => {
@@ -503,4 +604,6 @@ class TestComponent {
   maxSize = 0;
   ellipses = true;
   rotate = false;
+
+  onPageChange = () => {};
 }

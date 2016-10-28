@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output, OnChanges, ChangeDetectionStrategy, SimpleChanges} from '@angular/core';
-import {getValueInRange} from '../util/util';
+import {getValueInRange, isNumber} from '../util/util';
 import {NgbPaginationConfig} from './pagination-config';
 
 /**
@@ -118,42 +118,9 @@ export class NgbPagination implements OnChanges {
 
   hasNext(): boolean { return this.page < this.pageCount; }
 
-  selectPage(pageNumber: number): void {
-    this._setPageInRange(pageNumber);
-    this.ngOnChanges(null);
-  }
+  selectPage(pageNumber: number): void { this._updatePages(pageNumber); }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    // re-calculate new length of pages
-    this.pageCount = Math.ceil(this.collectionSize / this.pageSize);
-
-    // fill-in model needed to render pages
-    this.pages.length = 0;
-    for (let i = 1; i <= this.pageCount; i++) {
-      this.pages.push(i);
-    }
-
-    // set page within 1..max range
-    this._setPageInRange(this.page);
-
-    // apply maxSize if necessary
-    if (this.maxSize > 0 && this.pageCount > this.maxSize) {
-      let start = 0;
-      let end = this.pageCount;
-
-      // either paginating or rotating page numbers
-      if (this.rotate) {
-        [start, end] = this._applyRotation();
-      } else {
-        [start, end] = this._applyPagination();
-      }
-
-      this.pages = this.pages.slice(start, end);
-
-      // adding ellipses
-      this._applyEllipses(start, end);
-    }
-  }
+  ngOnChanges(changes: SimpleChanges): void { this._updatePages(this.page); }
 
   /**
    * @internal
@@ -222,6 +189,41 @@ export class NgbPagination implements OnChanges {
 
     if (this.page !== prevPageNo) {
       this.pageChange.emit(this.page);
+    }
+  }
+
+  private _updatePages(newPage: number) {
+    this.pageCount = Math.ceil(this.collectionSize / this.pageSize);
+
+    if (!isNumber(this.pageCount)) {
+      this.pageCount = 0;
+    }
+
+    // fill-in model needed to render pages
+    this.pages.length = 0;
+    for (let i = 1; i <= this.pageCount; i++) {
+      this.pages.push(i);
+    }
+
+    // set page within 1..max range
+    this._setPageInRange(newPage);
+
+    // apply maxSize if necessary
+    if (this.maxSize > 0 && this.pageCount > this.maxSize) {
+      let start = 0;
+      let end = this.pageCount;
+
+      // either paginating or rotating page numbers
+      if (this.rotate) {
+        [start, end] = this._applyRotation();
+      } else {
+        [start, end] = this._applyPagination();
+      }
+
+      this.pages = this.pages.slice(start, end);
+
+      // adding ellipses
+      this._applyEllipses(start, end);
     }
   }
 }
