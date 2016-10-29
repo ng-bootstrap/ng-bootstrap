@@ -1,4 +1,4 @@
-import {Injectable, ComponentFactoryResolver} from '@angular/core';
+import {Injectable, Injector, ComponentFactoryResolver} from '@angular/core';
 
 import {NgbModalStack} from './modal-stack';
 import {NgbModalRef} from './modal-ref';
@@ -35,7 +35,8 @@ export interface NgbModalOptions {
  */
 @Injectable()
 export class NgbModal {
-  constructor(private _moduleCFR: ComponentFactoryResolver, private _modalStack: NgbModalStack) {}
+  constructor(
+      private _moduleCFR: ComponentFactoryResolver, private _injector: Injector, private _modalStack: NgbModalStack) {}
 
   /**
    * Opens a new modal window with the specified content and using supplied options. Content can be provided
@@ -44,6 +45,6 @@ export class NgbModal {
    * NgbActiveModal class to close / dismiss modals from "inside" of a component.
    */
   open(content: any, options: NgbModalOptions = {}): NgbModalRef {
-    return this._modalStack.open(this._moduleCFR, content, options);
+    return this._modalStack.open(this._moduleCFR, this._injector, content, options);
   }
 }
