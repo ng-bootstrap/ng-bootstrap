@@ -256,6 +256,20 @@ describe('ngb-modal', () => {
       expect(fixture.nativeElement).not.toHaveBackdrop();
     });
 
+    it('should open and close modal without backdrop from template content', () => {
+      const modalInstance = fixture.componentInstance.openTpl({backdrop: false});
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement).toHaveModal('Hello, World!');
+      expect(fixture.nativeElement).not.toHaveBackdrop();
+
+      modalInstance.close('some reason');
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement).not.toHaveModal();
+      expect(fixture.nativeElement).not.toHaveBackdrop();
+    });
+
     it('should dismiss on backdrop click', () => {
       fixture.componentInstance.open('foo').result.catch(NOOP);
       fixture.detectChanges();

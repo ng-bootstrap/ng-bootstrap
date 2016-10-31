@@ -40,12 +40,11 @@ export class NgbModalContainer {
     let ngbModalRef: NgbModalRef;
 
     if (options.backdrop !== false) {
-      backdropCmptRef =
-          this._viewContainerRef.createComponent(this._backdropFactory, this._viewContainerRef.length, this._injector);
+      backdropCmptRef = this._viewContainerRef.createComponent(this._backdropFactory, 0, this._injector);
     }
 
     windowCmptRef = this._viewContainerRef.createComponent(
-        this._windowFactory, this._viewContainerRef.length, this._injector, contentRef.nodes);
+        this._windowFactory, this._viewContainerRef.length - 1, this._injector, contentRef.nodes);
 
     ngbModalRef = new NgbModalRef(this._viewContainerRef, windowCmptRef, contentRef, backdropCmptRef);
 
