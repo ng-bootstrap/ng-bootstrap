@@ -31,7 +31,7 @@ export interface StarTemplateContext {
   template: `
     <template #t let-fill="fill">{{ fill === 100 ? '&#9733;' : '&#9734;' }}</template>
     <span tabindex="0" (mouseleave)="reset()" role="slider" aria-valuemin="0"
-      [attr.aria-valuemax]="max" [attr.aria-valuenow]="rate" [attr.aria-valuetext]="ariaValueText">
+      [attr.aria-valuemax]="max" [attr.aria-valuenow]="rate" [attr.aria-valuetext]="ariaValueText()">
       <template ngFor [ngForOf]="range" let-index="index">
         <span class="sr-only">({{ index < rate ? '*' : ' ' }})</span>
         <span (mouseenter)="enter(index + 1)" (click)="update(index + 1)" 
@@ -91,7 +91,7 @@ export class NgbRating implements OnInit,
     this.readonly = config.readonly;
   }
 
-  get ariaValueText() { return `${this.rate} out of ${this.max}`; }
+  ariaValueText() { return `${this.rate} out of ${this.max}`; }
 
   enter(value: number): void {
     if (!this.readonly) {
