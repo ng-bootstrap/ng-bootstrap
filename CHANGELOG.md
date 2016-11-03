@@ -1,3 +1,26 @@
+<a name="1.0.0-alpha.11"></a>
+# [1.0.0-alpha.11](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.10...1.0.0-alpha.11) (2016-11-03)
+
+
+### Bug Fixes
+
+* **modal:** restore backdrop: false functionality ([0e2f386](https://github.com/ng-bootstrap/ng-bootstrap/commit/0e2f386)), closes [#989](https://github.com/ng-bootstrap/ng-bootstrap/issues/989) [#990](https://github.com/ng-bootstrap/ng-bootstrap/issues/990)
+* **modal:** use Injector of NgbModal for component content ([5172884](https://github.com/ng-bootstrap/ng-bootstrap/commit/5172884)), closes [#982](https://github.com/ng-bootstrap/ng-bootstrap/issues/982) [#983](https://github.com/ng-bootstrap/ng-bootstrap/issues/983)
+* **pagination:** better protect against invalid inputs ([a6ec937](https://github.com/ng-bootstrap/ng-bootstrap/commit/a6ec937)), closes [#898](https://github.com/ng-bootstrap/ng-bootstrap/issues/898) [#979](https://github.com/ng-bootstrap/ng-bootstrap/issues/979)
+* **rating:** restore compatibility with TypeScript 1.8 ([951e538](https://github.com/ng-bootstrap/ng-bootstrap/commit/951e538)), closes [#995](https://github.com/ng-bootstrap/ng-bootstrap/issues/995) [#996](https://github.com/ng-bootstrap/ng-bootstrap/issues/996)
+
+
+### Features
+
+* **datepicker:** ability to display several months ([a65cc30](https://github.com/ng-bootstrap/ng-bootstrap/commit/a65cc30)), closes [#977](https://github.com/ng-bootstrap/ng-bootstrap/issues/977)
+
+
+### BREAKING CHANGES
+
+* datepicker: datepicker navigation now must be hidden with `navigation='none'`and not `[showNavigation]='false'` as prevoiusly
+
+
+
 <a name="1.0.0-alpha.10"></a>
 # [1.0.0-alpha.10](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.9...1.0.0-alpha.10) (2016-10-28)
 
