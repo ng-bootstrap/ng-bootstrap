@@ -10,12 +10,13 @@ import {NgbDateStruct} from './ngb-date-struct';
 @Injectable()
 export class NgbDatepickerConfig {
   dayTemplate: TemplateRef<DayTemplateContext>;
+  displayMonths = 1;
   firstDayOfWeek = 1;
   markDisabled: (date: NgbDateStruct, current: {year: number, month: number}) => boolean;
   minDate: NgbDateStruct;
   maxDate: NgbDateStruct;
+  navigation: 'select' | 'arrows' | 'none' = 'select';
   outsideDays: 'visible' | 'collapsed' | 'hidden' = 'visible';
-  showNavigation = true;
   showWeekdays = true;
   showWeekNumbers = false;
   startDate: {year: number, month: number};

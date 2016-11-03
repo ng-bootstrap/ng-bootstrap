@@ -1,0 +1,31 @@
+
+<ngb-datepicker [displayMonths]="displayMonths" [navigation]="navigation"></ngb-datepicker>
+
+<hr/>
+
+<form class="form-inline">
+  <div class="form-group">
+    <div class="input-group">
+      <input class="form-control" placeholder="yyyy-mm-dd"
+            name="dp" [displayMonths]="displayMonths" [navigation]="navigation" ngbDatepicker #d="ngbDatepicker">
+      <div class="input-group-addon" (click)="d.toggle()" >
+        <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
+      </div>
+    </div>
+  </div>
+</form>
+
+<hr/>
+
+<select class="custom-select" [(ngModel)]="displayMonths">
+  <option [value]="1">One month</option>
+  <option [value]="2">Two months</option>
+  <option [value]="3">Three months</option>
+</select>
+
+<select class="custom-select" [(ngModel)]="navigation">
+  <option value="none">Without navigation</option>
+  <option value="select">With select boxes</option>
+  <option value="arrows">Without select boxes</option>
+</select>
+

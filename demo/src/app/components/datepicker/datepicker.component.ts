@@ -18,6 +18,9 @@ import {DEMO_SNIPPETS} from './demos';
       <ngbd-example-box demoTitle="Datepicker in a popup" [snippets]="snippets" component="datepicker" demo="popup">
         <ngbd-datepicker-popup></ngbd-datepicker-popup>
       </ngbd-example-box>
+      <ngbd-example-box demoTitle="Multiple months" [snippets]="snippets" component="datepicker" demo="multiple">
+        <ngbd-datepicker-multiple></ngbd-datepicker-multiple>
+      </ngbd-example-box>
       <ngbd-example-box demoTitle="Disabled datepicker" [snippets]="snippets" component="datepicker" demo="disabled">
         <ngbd-datepicker-disabled></ngbd-datepicker-disabled>
       </ngbd-example-box>

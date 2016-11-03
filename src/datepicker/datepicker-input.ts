@@ -47,6 +47,11 @@ export class NgbInputDatepicker implements ControlValueAccessor {
   @Input() dayTemplate: TemplateRef<DayTemplateContext>;
 
   /**
+   * Number of months to display
+   */
+  @Input() displayMonths: number;
+
+  /**
   * First day of the week. With default calendar we use ISO 8601: 1=Mon ... 7=Sun
    */
   @Input() firstDayOfWeek: number;
@@ -68,15 +73,16 @@ export class NgbInputDatepicker implements ControlValueAccessor {
   @Input() maxDate: NgbDateStruct;
 
   /**
+   * Navigation type: `select` (default with select boxes for month and year), `arrows`
+   * (without select boxes, only navigation arrows) or `none` (no navigation at all)
+   */
+  @Input() navigation: 'select' | 'arrows' | 'none';
+
+  /**
    * The way to display days that don't belong to current month: `visible` (default),
    * `hidden` (not displayed) or `collapsed` (not displayed with empty space collapsed)
    */
   @Input() outsideDays: 'visible' | 'collapsed' | 'hidden';
-
-  /**
-   * Whether to display navigation
-   */
-  @Input() showNavigation: boolean;
 
   /**
    * Whether to display days of the week
@@ -192,8 +198,8 @@ export class NgbInputDatepicker implements ControlValueAccessor {
   onBlur() { this._onTouched(); }
 
   private _applyDatepickerInputs(datepickerInstance: NgbDatepicker): void {
-    ['dayTemplate', 'firstDayOfWeek', 'markDisabled', 'minDate', 'maxDate', 'outsideDays', 'showNavigation',
-     'showWeekdays', 'showWeekNumbers']
+    ['dayTemplate', 'displayMonths', 'firstDayOfWeek', 'markDisabled', 'minDate', 'maxDate', 'navigation',
+     'outsideDays', 'showNavigation', 'showWeekdays', 'showWeekNumbers']
         .forEach((optionName: string) => {
           if (this[optionName] !== undefined) {
             datepickerInstance[optionName] = this[optionName];

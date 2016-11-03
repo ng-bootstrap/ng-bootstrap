@@ -5,33 +5,36 @@ import {NgbDatepickerI18n} from './datepicker-i18n';
 import {NgbCalendar} from './ngb-calendar';
 
 @Component({
-  selector: '[ngbDatepickerNavigation]',
+  selector: 'ngb-datepicker-navigation',
   styles: [`
-    td {
-      text-align: center;
-      padding-bottom: 0.25rem;
+    .collapsed {
+        margin-bottom: -1.7rem;
     }
   `],
   template: `
-    <tr>
-      <td>
-        <button type="button" (click)="doNavigate(navigation.PREV)" class="btn btn-sm btn-secondary btn-block" 
-          [disabled]="prevDisabled()">&lt;</button>
-      </td>
-      <td [attr.colspan]="showWeekNumbers ? 6 : 5">      
-        <ngb-datepicker-navigation-select *ngIf="type === 'select'"
-          [date]="date"
-          [minYear]="minDate.year"
-          [maxYear]="maxDate.year"
-          [disabled] = "disabled"
-          (select)="selectDate($event)">
-        </ngb-datepicker-navigation-select>
-      </td>
-      <td>
-        <button type="button" (click)="doNavigate(navigation.NEXT)" class="btn btn-sm btn-secondary btn-block" 
-          [disabled]="nextDisabled()">&gt;</button>
-      </td>
-    </tr>
+    <table class="w-100" [class.collapsed]="!showSelect">
+      <tr>
+        <td class="text-sm-left">
+          <button type="button" (click)="doNavigate(navigation.PREV)" class="btn btn-sm btn-secondary btn-inline" 
+            [disabled]="prevDisabled()">&lt;</button>
+        </td>
+        
+        <td *ngIf="showSelect">
+          <ngb-datepicker-navigation-select
+            [date]="firstDate"
+            [minYear]="minDate.year"
+            [maxYear]="maxDate.year"
+            [disabled] = "disabled"
+            (select)="selectDate($event)">
+          </ngb-datepicker-navigation-select>
+        </td>        
+        
+        <div class="text-sm-right">
+          <button type="button" (click)="doNavigate(navigation.NEXT)" class="next btn btn-sm btn-secondary btn-inline" 
+            [disabled]="nextDisabled()">&gt;</button>
+        </div>
+      </tr>
+    </table>
   `
 })
 export class NgbDatepickerNavigation {
@@ -39,10 +42,11 @@ export class NgbDatepickerNavigation {
 
   @Input() date: NgbDate;
   @Input() disabled: boolean;
+  @Input() firstDate: NgbDate;
   @Input() maxDate: NgbDate;
   @Input() minDate: NgbDate;
+  @Input() showSelect: boolean;
   @Input() showWeekNumbers: boolean;
-  @Input() type = 'select';
 
   @Output() navigate = new EventEmitter<NavigationEvent>();
   @Output() select = new EventEmitter<NgbDate>();
@@ -52,11 +56,11 @@ export class NgbDatepickerNavigation {
   doNavigate(event: NavigationEvent) { this.navigate.emit(event); }
 
   nextDisabled() {
-    return this.disabled || (this.maxDate && this._calendar.getNext(this.date, 'm').after(this.maxDate));
+    return this.disabled || (this.maxDate && this._calendar.getNext(this.firstDate, 'm').after(this.maxDate));
   }
 
   prevDisabled() {
-    return this.disabled || (this.minDate && this._calendar.getPrev(this.date, 'm').before(this.minDate));
+    return this.disabled || (this.minDate && this._calendar.getPrev(this.firstDate, 'm').before(this.minDate));
   }
 
   selectDate(date: NgbDate) { this.select.emit(date); }

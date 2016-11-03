@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, TemplateRef, forwardRef, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, TemplateRef, forwardRef, OnInit, SimpleChange, SimpleChanges} from '@angular/core';
 import {NG_VALUE_ACCESSOR, ControlValueAccessor} from '@angular/forms';
 import {NgbCalendar} from './ngb-calendar';
 import {NgbDate} from './ngb-date';
@@ -8,6 +8,7 @@ import {toInteger} from '../util/util';
 import {DayTemplateContext} from './datepicker-day-template-context';
 import {NgbDatepickerConfig} from './datepicker-config';
 import {NgbDateStruct} from './ngb-date-struct';
+import {NgbDatepickerI18n} from './datepicker-i18n';
 
 const NGB_DATEPICKER_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -21,32 +22,49 @@ const NGB_DATEPICKER_VALUE_ACCESSOR = {
 @Component({
   exportAs: 'ngbDatepicker',
   selector: 'ngb-datepicker',
+  host: {'class': 'd-inline-block'},
+  styles: [`
+    .month:first-child {
+      padding-left: 0 !important;
+    }
+  `],
   template: `
     <template #dt let-date="date" let-currentMonth="currentMonth" let-selected="selected" let-disabled="disabled">
        <div ngbDatepickerDayView [date]="date" [currentMonth]="currentMonth" [selected]="selected" [disabled]="disabled"></div>
     </template>
-    
+
+    <ngb-datepicker-navigation *ngIf="navigation !== 'none'"
+      [date]="_date"
+      [minDate]="_minDate"
+      [maxDate]="_maxDate"
+      [disabled]="disabled"
+      [showWeekNumbers]="showWeekNumbers"
+      [showSelect]="navigation === 'select'"
+      [firstDate]="months[0]?.firstDate"
+      (navigate)="onNavigateEvent($event)"
+      (select)="onNavigateDateSelect($event)">
+    </ngb-datepicker-navigation>
+
     <table>
-      <tbody *ngIf="showNavigation" ngbDatepickerNavigation
-        [date]="_date"
-        [minDate]="_minDate"
-        [maxDate]="_maxDate"
-        [disabled]="disabled"
-        [showWeekNumbers]="showWeekNumbers"
-        (navigate)="onNavigateEvent($event)"
-        (select)="onNavigateDateSelect($event)">
-      </tbody>
-      
-      <tbody ngbDatepickerMonthView
-        [month]="month"
-        [selectedDate]="model"
-        [dayTemplate]="dayTemplate || dt"
-        [showWeekdays]="showWeekdays"
-        [showWeekNumbers]="showWeekNumbers"
-        [disabled]="disabled"
-        [outsideDays]="outsideDays"
-        (select)="onDateSelect($event)">
-      </tbody>
+      <tr *ngIf="navigation !== 'select' || displayMonths > 1">
+        <td *ngFor="let month of months" class="text-xs-center font-weight-bold">
+          {{ i18n.getMonthName(month.number) }} {{ month.year }}
+        </td>
+      </tr>
+      <tr>
+        <td *ngFor="let month of months" class="pl-1 month">
+          <ngb-datepicker-month-view
+            [month]="month"
+            [selectedDate]="model"
+            [dayTemplate]="dayTemplate || dt"
+            [showWeekdays]="showWeekdays"
+            [showWeekNumbers]="showWeekNumbers"
+            [disabled]="disabled"
+            [outsideDays]="displayMonths === 1 ? outsideDays : 'hidden'"
+            (select)="onDateSelect($event)">
+          </ngb-datepicker-month-view>
+        </td>
+      </tr>
     </table>
   `,
   providers: [NGB_DATEPICKER_VALUE_ACCESSOR]
@@ -58,12 +76,17 @@ export class NgbDatepicker implements OnChanges,
   _minDate: NgbDate;
 
   model: NgbDate;
-  month: MonthViewModel;
+  months: MonthViewModel[] = [];
 
   /**
    * Reference for the custom template for the day display
    */
   @Input() dayTemplate: TemplateRef<DayTemplateContext>;
+
+  /**
+   * Number of months to display
+   */
+  @Input() displayMonths: number;
 
   /**
    * First day of the week. With default calendar we use ISO 8601: 'weekday' is 1=Mon ... 7=Sun
@@ -87,15 +110,16 @@ export class NgbDatepicker implements OnChanges,
   @Input() maxDate: NgbDateStruct;
 
   /**
+   * Navigation type: `select` (default with select boxes for month and year), `arrows`
+   * (without select boxes, only navigation arrows) or `none` (no navigation at all)
+   */
+  @Input() navigation: 'select' | 'arrows' | 'none';
+
+  /**
    * The way to display days that don't belong to current month: `visible` (default),
    * `hidden` (not displayed) or `collapsed` (not displayed with empty space collapsed)
    */
   @Input() outsideDays: 'visible' | 'collapsed' | 'hidden';
-
-  /**
-   * Whether to display navigation
-   */
-  @Input() showNavigation: boolean;
 
   /**
    * Whether to display days of the week
@@ -120,14 +144,17 @@ export class NgbDatepicker implements OnChanges,
   onChange = (_: any) => {};
   onTouched = () => {};
 
-  constructor(private _service: NgbDatepickerService, private _calendar: NgbCalendar, config: NgbDatepickerConfig) {
+  constructor(
+      private _service: NgbDatepickerService, private _calendar: NgbCalendar, public i18n: NgbDatepickerI18n,
+      config: NgbDatepickerConfig) {
     this.dayTemplate = config.dayTemplate;
+    this.displayMonths = config.displayMonths;
     this.firstDayOfWeek = config.firstDayOfWeek;
     this.markDisabled = config.markDisabled;
     this.minDate = config.minDate;
     this.maxDate = config.maxDate;
+    this.navigation = config.navigation;
     this.outsideDays = config.outsideDays;
-    this.showNavigation = config.showNavigation;
     this.showWeekdays = config.showWeekdays;
     this.showWeekNumbers = config.showWeekNumbers;
     this.startDate = config.startDate;
@@ -151,7 +178,17 @@ export class NgbDatepicker implements OnChanges,
 
   ngOnChanges(changes: SimpleChanges) {
     this._setDates();
-    this.navigateTo(this.startDate);
+    this._setViewWithinLimits(this.startDate ? NgbDate.from(this.startDate) : this._calendar.getToday());
+
+    if (changes['displayMonths']) {
+      this.displayMonths = toInteger(this.displayMonths);
+    }
+
+    // we have to force rebuild all months only if any of these inputs changes
+    if (['startDate', 'minDate', 'maxDate', 'navigation', 'firstDayOfWeek', 'markDisabled', 'displayMonths'].some(
+            input => !!changes[input])) {
+      this._updateData(true);
+    }
   }
 
   onDateSelect(date: NgbDate) {
@@ -162,7 +199,7 @@ export class NgbDatepicker implements OnChanges,
     this.onChange({year: date.year, month: date.month, day: date.day});
 
     // switch current month
-    if (this._date.month !== this.month.number) {
+    if (this._date.month !== this.months[0].number && this.displayMonths === 1) {
       this._updateData();
     }
   }
@@ -175,10 +212,10 @@ export class NgbDatepicker implements OnChanges,
   onNavigateEvent(event: NavigationEvent) {
     switch (event) {
       case NavigationEvent.PREV:
-        this._setViewWithinLimits(this._calendar.getPrev(this._date, 'm'));
+        this._setViewWithinLimits(this._calendar.getPrev(this.months[0].firstDate, 'm'));
         break;
       case NavigationEvent.NEXT:
-        this._setViewWithinLimits(this._calendar.getNext(this._date, 'm'));
+        this._setViewWithinLimits(this._calendar.getNext(this.months[0].firstDate, 'm'));
         break;
     }
 
@@ -222,8 +259,21 @@ export class NgbDatepicker implements OnChanges,
     }
   }
 
-  private _updateData() {
-    this.month = this._service.generateMonthViewModel(
-        this._date, this._minDate, this._maxDate, toInteger(this.firstDayOfWeek), this.markDisabled);
+  private _updateData(force = false) {
+    const newMonths = [];
+    for (let i = 0; i < this.displayMonths; i++) {
+      const newDate = this._calendar.getNext(this._date, 'm', i);
+      const index = this.months.findIndex(month => month.firstDate.equals(newDate));
+
+      if (force || index === -1) {
+        newMonths.push(
+            this._service.generateMonthViewModel(
+                newDate, this._minDate, this._maxDate, toInteger(this.firstDayOfWeek), this.markDisabled));
+      } else {
+        newMonths.push(this.months[index]);
+      }
+    }
+
+    this.months = newMonths;
   }
 }
