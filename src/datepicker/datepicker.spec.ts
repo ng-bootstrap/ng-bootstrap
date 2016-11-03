@@ -3,6 +3,7 @@ import {createGenericTestComponent} from '../test/common';
 import {getMonthSelect, getYearSelect, getNavigationLinks} from '../test/datepicker/common';
 
 import {Component, TemplateRef} from '@angular/core';
+import {By} from '@angular/platform-browser';
 import {FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators} from '@angular/forms';
 
 import {NgbDatepickerModule} from './datepicker.module';
@@ -11,6 +12,9 @@ import {NgbDatepickerConfig} from './datepicker-config';
 import {NgbDatepicker} from './datepicker';
 import {DayTemplateContext} from './datepicker-day-template-context';
 import {NgbDateStruct} from './ngb-date-struct';
+import {NgbDatepickerMonthView} from './datepicker-month-view';
+import {NgbDatepickerNavigationSelect} from './datepicker-navigation-select';
+import {NgbDatepickerNavigation} from './datepicker-navigation';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -29,12 +33,13 @@ function getDatepicker(element: HTMLElement): HTMLElement {
 
 function expectSameValues(datepicker: NgbDatepicker, config: NgbDatepickerConfig) {
   expect(datepicker.dayTemplate).toBe(config.dayTemplate);
+  expect(datepicker.displayMonths).toBe(config.displayMonths);
   expect(datepicker.firstDayOfWeek).toBe(config.firstDayOfWeek);
   expect(datepicker.markDisabled).toBe(config.markDisabled);
   expect(datepicker.minDate).toBe(config.minDate);
   expect(datepicker.maxDate).toBe(config.maxDate);
+  expect(datepicker.navigation).toBe(config.navigation);
   expect(datepicker.outsideDays).toBe(config.outsideDays);
-  expect(datepicker.showNavigation).toBe(config.showNavigation);
   expect(datepicker.showWeekdays).toBe(config.showWeekdays);
   expect(datepicker.showWeekNumbers).toBe(config.showWeekNumbers);
   expect(datepicker.startDate).toBe(config.startDate);
@@ -46,8 +51,8 @@ function customizeConfig(config: NgbDatepickerConfig) {
   config.markDisabled = (date, current) => false;
   config.minDate = {year: 2000, month: 1, day: 1};
   config.maxDate = {year: 2030, month: 12, day: 31};
+  config.navigation = 'none';
   config.outsideDays = 'collapsed';
-  config.showNavigation = false;
   config.showWeekdays = false;
   config.showWeekNumbers = true;
   config.startDate = {year: 2015, month: 1};
@@ -104,6 +109,96 @@ describe('ngb-datepicker', () => {
     expect(getDay(fixture.nativeElement, 24)).not.toHaveCssClass('text-muted');
     // 26 AUG 2016
     expect(getDay(fixture.nativeElement, 25)).toHaveCssClass('text-muted');
+  });
+
+  it('should support disabling dates via callback', () => {
+    const fixture = createTestComponent(
+        `<ngb-datepicker [startDate]="date" [minDate]="minDate" [maxDate]="maxDate" [markDisabled]="markDisabled"></ngb-datepicker>`);
+
+    // 22 AUG 2016
+    expect(getDay(fixture.nativeElement, 21)).toHaveCssClass('text-muted');
+  });
+
+  it('should display multiple months', () => {
+    const fixture = createTestComponent(`<ngb-datepicker [displayMonths]="displayMonths"></ngb-datepicker>`);
+
+    let months = fixture.debugElement.queryAll(By.directive(NgbDatepickerMonthView));
+    expect(months.length).toBe(1);
+
+    fixture.componentInstance.displayMonths = 3;
+    fixture.detectChanges();
+    months = fixture.debugElement.queryAll(By.directive(NgbDatepickerMonthView));
+    expect(months.length).toBe(3);
+  });
+
+  it('should switch navigation types', () => {
+    const fixture = createTestComponent(`<ngb-datepicker [navigation]="navigation"></ngb-datepicker>`);
+
+    expect(fixture.debugElement.query(By.directive(NgbDatepickerNavigationSelect))).not.toBeNull();
+    expect(fixture.debugElement.query(By.directive(NgbDatepickerNavigation))).not.toBeNull();
+
+    fixture.componentInstance.navigation = 'arrows';
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.directive(NgbDatepickerNavigationSelect))).toBeNull();
+    expect(fixture.debugElement.query(By.directive(NgbDatepickerNavigation))).not.toBeNull();
+
+    fixture.componentInstance.navigation = 'none';
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.directive(NgbDatepickerNavigationSelect))).toBeNull();
+    expect(fixture.debugElement.query(By.directive(NgbDatepickerNavigation))).toBeNull();
+  });
+
+  it('should override outside days to "hidden" if there are multiple months displayed', () => {
+    const fixture = createTestComponent(
+        `<ngb-datepicker [displayMonths]="displayMonths" [outsideDays]="'collapsed'"></ngb-datepicker>`);
+
+
+    let months = fixture.debugElement.queryAll(By.directive(NgbDatepickerMonthView));
+    expect(months[0].componentInstance.outsideDays).toBe('collapsed');
+
+    fixture.componentInstance.displayMonths = 2;
+    fixture.detectChanges();
+    months = fixture.debugElement.queryAll(By.directive(NgbDatepickerMonthView));
+    expect(months[0].componentInstance.outsideDays).toBe('hidden');
+  });
+
+  it('should toggle month names display for a single month', () => {
+    const fixture = createTestComponent(
+        `<ngb-datepicker [startDate]="date" [displayMonths]="1" [navigation]="navigation"></ngb-datepicker>`);
+
+    let sections = fixture.debugElement.queryAll(By.css('ngb-datepicker > table > tbody > tr'));
+    expect(sections.length).toBe(1);
+
+    fixture.componentInstance.navigation = 'arrows';
+    fixture.detectChanges();
+    sections = fixture.debugElement.queryAll(By.css('ngb-datepicker > table > tbody > tr'));
+    expect(sections.length).toBe(2);
+    expect(sections[0].children.map(c => c.nativeElement.innerText.trim())).toEqual(['Aug 2016']);
+
+    fixture.componentInstance.navigation = 'none';
+    fixture.detectChanges();
+    sections = fixture.debugElement.queryAll(By.css('ngb-datepicker > table > tbody > tr'));
+    expect(sections.length).toBe(2);
+    expect(sections[0].children.map(c => c.nativeElement.innerText.trim())).toEqual(['Aug 2016']);
+  });
+
+  it('should always display month names for multiple months', () => {
+    const fixture = createTestComponent(
+        `<ngb-datepicker [startDate]="date" [displayMonths]="3" [navigation]="navigation"></ngb-datepicker>`);
+
+    let sections = fixture.debugElement.queryAll(By.css('ngb-datepicker > table > tbody > tr'));
+    expect(sections.length).toBe(2);
+    expect(sections[0].children.map(c => c.nativeElement.innerText.trim())).toEqual([
+      'Aug 2016', 'Sep 2016', 'Oct 2016'
+    ]);
+
+    fixture.componentInstance.navigation = 'arrows';
+    fixture.detectChanges();
+    sections = fixture.debugElement.queryAll(By.css('ngb-datepicker > table > tbody > tr'));
+    expect(sections.length).toBe(2);
+    expect(sections[0].children.map(c => c.nativeElement.innerText.trim())).toEqual([
+      'Aug 2016', 'Sep 2016', 'Oct 2016'
+    ]);
   });
 
   describe('ngModel', () => {
@@ -272,7 +367,7 @@ describe('ngb-datepicker', () => {
     it('should work with template-driven form validation', async(() => {
          const fixture = createTestComponent(`
         <form>
-          <ngb-datepicker [startDate]="date" [minDate]="minDate" [maxDate]="maxDate" [(ngModel)]="model" name="date" required>            
+          <ngb-datepicker [startDate]="date" [minDate]="minDate" [maxDate]="maxDate" [(ngModel)]="model" name="date" required>
           </ngb-datepicker>
         </form>
       `);
@@ -384,6 +479,8 @@ describe('ngb-datepicker', () => {
 @Component({selector: 'test-cmp', template: ''})
 class TestComponent {
   date = {year: 2016, month: 8};
+  displayMonths = 1;
+  navigation = 'select';
   minDate: NgbDateStruct = {year: 2010, month: 1, day: 1};
   maxDate: NgbDateStruct = {year: 2020, month: 12, day: 31};
   form = new FormGroup({control: new FormControl('', Validators.required)});

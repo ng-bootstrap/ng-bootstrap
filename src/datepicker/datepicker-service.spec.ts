@@ -34,6 +34,7 @@ describe('ngb-datepicker-service', () => {
        expect(monthViewModel).toEqual({
          number: 1,
          year: 2000,
+         firstDate: new NgbDate(2000, 1, 1),
          weeks: [{number: 1, days: [{date: new NgbDate(2000, 1, 1), disabled: false}]}],
          weekdays: [1]
        });
@@ -46,6 +47,7 @@ describe('ngb-datepicker-service', () => {
        expect(monthViewModel).toEqual({
          number: 1,
          year: 2000,
+         firstDate: new NgbDate(2000, 1, 1),
          weeks: [{number: 1, days: [{date: new NgbDate(2000, 1, 1), disabled: true}]}],
          weekdays: [1]
        });
@@ -55,6 +57,7 @@ describe('ngb-datepicker-service', () => {
        expect(monthViewModel).toEqual({
          number: 1,
          year: 2000,
+         firstDate: new NgbDate(2000, 1, 1),
          weeks: [{number: 1, days: [{date: new NgbDate(2000, 1, 1), disabled: true}]}],
          weekdays: [1]
        });
@@ -67,6 +70,7 @@ describe('ngb-datepicker-service', () => {
        expect(monthViewModel).toEqual({
          number: 1,
          year: 2000,
+         firstDate: new NgbDate(2000, 1, 1),
          weeks: [{number: 1, days: [{date: new NgbDate(2000, 1, 1), disabled: true}]}],
          weekdays: [1]
        });
@@ -79,6 +83,7 @@ describe('ngb-datepicker-service', () => {
        expect(monthViewModel).toEqual({
          number: 1,
          year: 2000,
+         firstDate: new NgbDate(2000, 1, 1),
          weeks: [{number: 1, days: [{date: new NgbDate(2000, 1, 1), disabled: true}]}],
          weekdays: [1]
        });

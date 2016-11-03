@@ -11,6 +11,7 @@ export type WeekViewModel = {
 }
 
 export type MonthViewModel = {
+  firstDate: NgbDate,
   number: number,
   year: number,
   weeks: WeekViewModel[],
