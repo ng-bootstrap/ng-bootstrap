@@ -1,4 +1,14 @@
-import {Component, Input, OnChanges, TemplateRef, forwardRef, OnInit, SimpleChange, SimpleChanges} from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  TemplateRef,
+  forwardRef,
+  OnInit,
+  SimpleChanges,
+  EventEmitter,
+  Output
+} from '@angular/core';
 import {NG_VALUE_ACCESSOR, ControlValueAccessor} from '@angular/forms';
 import {NgbCalendar} from './ngb-calendar';
 import {NgbDate} from './ngb-date';
@@ -15,6 +25,21 @@ const NGB_DATEPICKER_VALUE_ACCESSOR = {
   useExisting: forwardRef(() => NgbDatepicker),
   multi: true
 };
+
+/**
+ * The payload of the datepicker navigation event
+ */
+export interface NgbDatepickerNavigateEvent {
+  /**
+   * Currently displayed month
+   */
+  current: {year: number, month: number};
+
+  /**
+   * Month we're navigating to
+   */
+  next: {year: number, month: number};
+}
 
 /**
  * A lightweight and highly configurable datepicker directive
@@ -138,6 +163,12 @@ export class NgbDatepicker implements OnChanges,
    * Use 'navigateTo(date)' as an alternative
    */
   @Input() startDate: {year: number, month: number};
+
+  /**
+   * An event fired when navigation happens and currently displayed month changes.
+   * See NgbDatepickerNavigateEvent for the payload info.
+   */
+  @Output() navigate = new EventEmitter<NgbDatepickerNavigateEvent>();
 
   disabled = false;
 
@@ -274,6 +305,17 @@ export class NgbDatepicker implements OnChanges,
       }
     }
 
+    const newDate = newMonths[0].firstDate;
+    const oldDate = this.months[0] ? this.months[0].firstDate : null;
+
     this.months = newMonths;
+
+    // emitting navigation event if the first month changes
+    if (!newDate.equals(oldDate)) {
+      this.navigate.emit({
+        current: oldDate ? {year: oldDate.year, month: oldDate.month} : null,
+        next: {year: newDate.year, month: newDate.month}
+      });
+    }
   }
 }

@@ -1,6 +1,6 @@
 import {NgModule, ModuleWithProviders} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {NgbDatepicker} from './datepicker';
+import {NgbDatepicker, NgbDatepickerNavigateEvent} from './datepicker';
 import {NgbDatepickerMonthView} from './datepicker-month-view';
 import {NgbDatepickerNavigation} from './datepicker-navigation';
 import {NgbInputDatepicker} from './datepicker-input';
@@ -13,7 +13,7 @@ import {NgbDatepickerService} from './datepicker-service';
 import {NgbDatepickerNavigationSelect} from './datepicker-navigation-select';
 import {NgbDatepickerConfig} from './datepicker-config';
 
-export {NgbDatepicker} from './datepicker';
+export {NgbDatepicker, NgbDatepickerNavigateEvent} from './datepicker';
 export {NgbInputDatepicker} from './datepicker-input';
 export {NgbDatepickerMonthView} from './datepicker-month-view';
 export {NgbDatepickerDayView} from './datepicker-day-view';

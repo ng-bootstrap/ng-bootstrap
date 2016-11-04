@@ -201,6 +201,59 @@ describe('ngb-datepicker', () => {
     ]);
   });
 
+  it('should emit navigate event when startDate is defined', () => {
+    TestBed.overrideComponent(
+        TestComponent,
+        {set: {template: `<ngb-datepicker [startDate]="date" (navigate)="onNavigate($event)"></ngb-datepicker>`}});
+    const fixture = TestBed.createComponent(TestComponent);
+
+    spyOn(fixture.componentInstance, 'onNavigate');
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.onNavigate).toHaveBeenCalledWith({current: null, next: {year: 2016, month: 8}});
+  });
+
+  it('should emit navigate event without startDate defined', () => {
+    TestBed.overrideComponent(
+        TestComponent, {set: {template: `<ngb-datepicker (navigate)="onNavigate($event)"></ngb-datepicker>`}});
+    const fixture = TestBed.createComponent(TestComponent);
+    const now = new Date();
+
+    spyOn(fixture.componentInstance, 'onNavigate');
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.onNavigate)
+        .toHaveBeenCalledWith({current: null, next: {year: now.getFullYear(), month: now.getMonth() + 1}});
+  });
+
+  it('should emit navigate event using built-in navigation arrows', () => {
+    const fixture =
+        createTestComponent(`<ngb-datepicker [startDate]="date" (navigate)="onNavigate($event)"></ngb-datepicker>`);
+
+    spyOn(fixture.componentInstance, 'onNavigate');
+    const navigation = getNavigationLinks(fixture.nativeElement);
+
+    // JUL 2016
+    navigation[0].click();
+    fixture.detectChanges();
+    expect(fixture.componentInstance.onNavigate)
+        .toHaveBeenCalledWith({current: {year: 2016, month: 8}, next: {year: 2016, month: 7}});
+  });
+
+  it('should emit navigate event using navigateTo({date})', () => {
+    const fixture =
+        createTestComponent(`<ngb-datepicker #dp [startDate]="date" (navigate)="onNavigate($event)"></ngb-datepicker>
+       <button id="btn"(click)="dp.navigateTo({year: 2015, month: 6})"></button>`);
+
+    spyOn(fixture.componentInstance, 'onNavigate');
+    const button = fixture.nativeElement.querySelector('button#btn');
+    button.click();
+
+    fixture.detectChanges();
+    expect(fixture.componentInstance.onNavigate)
+        .toHaveBeenCalledWith({current: {year: 2016, month: 8}, next: {year: 2015, month: 6}});
+  });
+
   describe('ngModel', () => {
 
     it('should update model based on calendar clicks', () => {
@@ -487,4 +540,5 @@ class TestComponent {
   disabledForm = new FormGroup({control: new FormControl({value: null, disabled: true})});
   model;
   markDisabled = (date: NgbDateStruct) => { return NgbDate.from(date).equals(new NgbDate(2016, 8, 22)); };
+  onNavigate = () => {};
 }
