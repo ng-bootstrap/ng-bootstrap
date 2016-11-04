@@ -10,6 +10,7 @@ const now = new Date();
 export class NgbdDatepickerBasic {
 
   model: NgbDateStruct;
+  date: {year: number, month: number};
 
   selectToday() {
     this.model = {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()};

@@ -1,6 +1,6 @@
 <p>Simple datepicker</p>
 
-<ngb-datepicker #dp [(ngModel)]="model"></ngb-datepicker>
+<ngb-datepicker #dp [(ngModel)]="model" (navigate)="date = $event.next"></ngb-datepicker>
 
 <hr/>
 
@@ -10,4 +10,5 @@
 
 <hr/>
 
+<pre>Month: {{ date.month }}.{{ date.year }}</pre>
 <pre>Model: {{ model | json }}</pre>

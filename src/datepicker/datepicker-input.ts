@@ -8,12 +8,14 @@ import {
   ComponentFactoryResolver,
   NgZone,
   TemplateRef,
-  forwardRef
+  forwardRef,
+  EventEmitter,
+  Output
 } from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 import {NgbDate} from './ngb-date';
-import {NgbDatepicker} from './datepicker';
+import {NgbDatepicker, NgbDatepickerNavigateEvent} from './datepicker';
 import {DayTemplateContext} from './datepicker-day-template-context';
 import {NgbDateParserFormatter} from './ngb-date-parser-formatter';
 
@@ -102,6 +104,12 @@ export class NgbInputDatepicker implements ControlValueAccessor {
    */
   @Input() startDate: {year: number, month: number};
 
+  /**
+   * An event fired when navigation happens and currently displayed month changes.
+   * See NgbDatepickerNavigateEvent for the payload info.
+   */
+  @Output() navigate = new EventEmitter<NgbDatepickerNavigateEvent>();
+
   private _onChange = (_: any) => {};
   private _onTouched = () => {};
 
@@ -151,6 +159,7 @@ export class NgbInputDatepicker implements ControlValueAccessor {
       this._applyPopupStyling(this._cRef.location.nativeElement);
       this._cRef.instance.writeValue(this._model);
       this._applyDatepickerInputs(this._cRef.instance);
+      this._subscribeForDatepickerOutputs(this._cRef.instance);
       this._cRef.instance.ngOnInit();
 
       // date selection event handling
@@ -212,6 +221,10 @@ export class NgbInputDatepicker implements ControlValueAccessor {
     this._renderer.setElementClass(nativeElement, 'dropdown-menu', true);
     this._renderer.setElementStyle(nativeElement, 'display', 'block');
     this._renderer.setElementStyle(nativeElement, 'padding', '0.40rem');
+  }
+
+  private _subscribeForDatepickerOutputs(datepickerInstance: NgbDatepicker) {
+    datepickerInstance.navigate.subscribe(date => this.navigate.emit(date));
   }
 
   private _writeModelValue(model: NgbDate) {
