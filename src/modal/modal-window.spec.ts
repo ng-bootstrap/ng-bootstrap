@@ -68,7 +68,7 @@ describe('ngb-modal-dialog', () => {
 
       fixture.componentInstance.dismissEvent.subscribe(($event) => {
         expect($event).toBe(ModalDismissReasons.BACKDROP_CLICK);
-        done(new Error('Should not trigger dismiss event'));
+        done.fail(new Error('Should not trigger dismiss event'));
       });
 
       fixture.nativeElement.querySelector('.modal-dialog').click();
@@ -81,7 +81,7 @@ describe('ngb-modal-dialog', () => {
 
       fixture.componentInstance.dismissEvent.subscribe(($event) => {
         expect($event).toBe(ModalDismissReasons.BACKDROP_CLICK);
-        done(new Error('Should not trigger dismiss event'));
+        done.fail(new Error('Should not trigger dismiss event'));
       });
 
       fixture.nativeElement.querySelector('.modal-dialog').click();
