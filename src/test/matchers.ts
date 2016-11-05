@@ -7,9 +7,7 @@ beforeEach(() => {
         return function(actual: HTMLElement, className: string) {
           return {
             pass: actual.classList.contains(className) === !isNot,
-            get message() {
-              return `Expected ${actual.outerHTML} ${isNot ? 'not ' : ''}to contain the CSS class "${className}"`;
-            }
+            message: `Expected ${actual.outerHTML} ${isNot ? 'not ' : ''}to contain the CSS class "${className}"`
           };
         };
       }

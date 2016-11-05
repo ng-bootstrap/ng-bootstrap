@@ -47,8 +47,6 @@ export function getBrowser(ua = window.navigator.userAgent) {
   if (browser === 'unknown') {
     throw new Error('Browser detection failed for: ' + ua);
   }
-
-  return browser;
 }
 
 export function isBrowser(browsers: Browser | Browser[], ua = window.navigator.userAgent) {
