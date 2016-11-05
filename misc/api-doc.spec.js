@@ -5,9 +5,6 @@ describe('APIDocVisitor', function() {
   it('should return [] if there are no docs to extract',
      function() { expect(apiDoc(['./misc/api-doc-test-cases/no-docs.ts'])).toEqual({}); });
 
-  it('should not extract anything from typings',
-     function() { expect(apiDoc(['./typings/globals/node/index.d.ts'])).toEqual({}); });
-
   it('should extract basic info from directives and components', function() {
     var docs = apiDoc(['misc/api-doc-test-cases/directives-no-in-out.ts']);
 
@@ -113,8 +110,7 @@ describe('APIDocVisitor', function() {
   });
 
   it('should extract documentation from services', function() {
-    var serviceDocs =
-        apiDoc(['./misc/api-doc-test-cases/services-with-methods.ts', './typings/index.d.ts']).ModalService;
+    var serviceDocs = apiDoc(['./misc/api-doc-test-cases/services-with-methods.ts']).ModalService;
 
     expect(serviceDocs.fileName).toBe('./misc/api-doc-test-cases/services-with-methods.ts');
     expect(serviceDocs.className).toBe('ModalService');

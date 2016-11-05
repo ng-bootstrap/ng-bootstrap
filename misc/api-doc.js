@@ -39,11 +39,6 @@ class APIDocVisitor {
       throw new Error(`File doesn't exist: ${fileName}.`)
     }
 
-    // don't extract anything from typings
-    if (/typings/.test(fileName)) {
-      return [];
-    }
-
     return sourceFile.statements.reduce((directivesSoFar, statement) => {
       if (statement.kind === ts.SyntaxKind.ClassDeclaration) {
         return directivesSoFar.concat(this.visitClassDeclaration(fileName, statement));
