@@ -5,6 +5,7 @@ export * from './carousel';
 export * from './collapse';
 export * from './datepicker';
 export * from './dropdown';
+export * from './mediaquery';
 export * from './modal';
 export * from './pagination';
 export * from './popover';
@@ -26,6 +27,7 @@ import {NgbdCarouselModule} from './carousel';
 import {NgbdCollapseModule} from './collapse';
 import {NgbdDatepickerModule} from './datepicker';
 import {NgbdDropdownModule} from './dropdown';
+import { NgbdMediaQuery, NgbdMediaQueryModule } from './mediaquery';
 import {NgbdModalModule} from './modal';
 import {NgbdPaginationModule} from './pagination';
 import {NgbdPopoverModule} from './popover';
@@ -46,6 +48,7 @@ import {NgbdTypeaheadModule} from './typeahead';
     NgbdCollapseModule,
     NgbdDatepickerModule,
     NgbdDropdownModule,
+    NgbdMediaQueryModule,
     NgbdModalModule,
     NgbdPaginationModule,
     NgbdPopoverModule,
@@ -64,6 +67,7 @@ import {NgbdTypeaheadModule} from './typeahead';
     NgbdCollapseModule,
     NgbdDatepickerModule,
     NgbdDropdownModule,
+    NgbdMediaQueryModule,
     NgbdModalModule,
     NgbdPaginationModule,
     NgbdPopoverModule,
