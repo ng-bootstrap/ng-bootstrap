@@ -14,6 +14,7 @@ var typescript = require('typescript');
 var exec = require('child_process').exec;
 var path = require('path');
 var os = require('os');
+var remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
 
 var PATHS = {
   src: 'src/**/*.ts',
@@ -24,7 +25,8 @@ var PATHS = {
   demoDist: 'demo/dist/**/*',
   typings: 'typings/index.d.ts',
   jasmineTypings: 'typings/globals/jasmine/index.d.ts',
-  demoApiDocs: 'demo/src'
+  demoApiDocs: 'demo/src',
+  coverageJson: 'coverage/json/coverage-final.json'
 };
 
 function platformPath(path) {
@@ -147,7 +149,7 @@ function startKarmaServer(isTddMode, isSaucelabs, done) {
   new karmaServer(config, done).start();
 }
 
-gulp.task('clean:tests', function() { return del('temp/'); });
+gulp.task('clean:tests', function() { return del(['temp/', 'coverage/']); });
 
 gulp.task('build:tests', ['clean:tests'], (cb) => {
   exec(path.join(__dirname, platformPath('/node_modules/.bin/tsc')), (e) => {
@@ -159,7 +161,15 @@ gulp.task('build:tests', ['clean:tests'], (cb) => {
 gulp.task(
     'ddescribe-iit', function() { return gulp.src(PATHS.specs).pipe(ddescribeIit({allowDisabledTests: false})); });
 
-gulp.task('test', ['build:tests'], function(done) { startKarmaServer(false, false, done); });
+gulp.task('test', ['build:tests'], function() {
+  startKarmaServer(false, false, () => {
+    return gulp.src(PATHS.coverageJson).pipe(remapIstanbul({reports: {'html': 'coverage/html'}}));
+  });
+});
+
+gulp.task('remap-coverage', function() {
+  return gulp.src(PATHS.coverageJson).pipe(remapIstanbul({reports: {'html': 'coverage/html'}}));
+});
 
 gulp.task('tdd', ['clean:tests'], (cb) => {
   var executable = path.join(__dirname, platformPath('/node_modules/.bin/tsc'));

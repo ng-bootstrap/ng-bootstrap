@@ -6,5 +6,6 @@ npm-debug.log
 .publish
 .sw*
 .idea
+coverage
 demo/src/api-docs.ts
 demo/src/public/**/plnkr.html
