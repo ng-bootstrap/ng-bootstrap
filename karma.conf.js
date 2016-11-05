@@ -33,7 +33,10 @@ module.exports = function(config) {
       {pattern: 'temp/**/*.js.map', included: false, watched: false}
     ],
 
-    preprocessors: {'temp/**/*.js': ['sourcemap']},
+    preprocessors: {
+      'temp/**/*.js': 'sourcemap',
+      'temp/**/!(*.spec|*.module).js': 'coverage'
+    },
 
     customLaunchers: {
       'SL_CHROME': {
@@ -92,7 +95,18 @@ module.exports = function(config) {
       }
     },
 
-    reporters: ['progress'],
+    reporters: ['progress', 'coverage'],
+
+    coverageReporter: {
+      dir: 'coverage/',
+      reporters: [{
+        type: 'json',
+        dir: 'coverage',
+        subdir: 'json',
+        file: 'coverage-final.json'
+      }]
+    },
+
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
