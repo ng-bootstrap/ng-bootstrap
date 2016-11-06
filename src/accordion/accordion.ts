@@ -55,7 +55,8 @@ export class NgbPanel {
   @Input() title: string;
 
   /**
-   *  Panel type (CSS class). Bootstrap 4 recognizes the following types: "success", "info", "warning" and "danger".
+   *  Accordion's types of panels to be applied per panel basis.
+   *  Bootstrap 4 recognizes the following types: "success", "info", "warning" and "danger".
    */
   @Input() type: string;
 
@@ -119,7 +120,8 @@ export class NgbAccordion implements AfterContentChecked {
   @Input('closeOthers') closeOtherPanels: boolean;
 
   /**
-   *  Type of accordion's panels. Bootstrap 4 recognizes the following types: "success", "info", "warning" and "danger".
+   *  Accordion's types of panels to be applied globally.
+   *  Bootstrap 4 recognizes the following types: "success", "info", "warning" and "danger".
    */
   @Input() type: string;
 
