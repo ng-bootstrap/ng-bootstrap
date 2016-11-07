@@ -62,6 +62,15 @@ describe('ngb-modal-dialog', () => {
       fixture.nativeElement.querySelector('.modal-dialog').click();
     });
 
+    it('should not dismiss on modal content click when there is active backdrop', (done) => {
+      fixture.detectChanges();
+      fixture.componentInstance.dismissEvent.subscribe(
+          () => { done.fail(new Error('Should not trigger dismiss event')); });
+
+      fixture.nativeElement.querySelector('.modal-content').click();
+      setTimeout(done, 200);
+    });
+
     it('should ignore backdrop clicks when there is no backdrop', (done) => {
       fixture.componentInstance.backdrop = false;
       fixture.detectChanges();
