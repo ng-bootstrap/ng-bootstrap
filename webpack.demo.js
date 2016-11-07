@@ -7,6 +7,7 @@ var autoprefixer = require('autoprefixer');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
+var aotplugin = require('@ngtools/webpack');
 
 /**
  * Env
@@ -80,7 +81,7 @@ module.exports = function makeWebpackConfig() {
       // Support for .ts files.
       {
         test: /\.ts$/,
-        loader: 'ts',
+        loader: isProd ? '@ngtools/webpack' : 'ts',
         exclude: [/node_modules\/(?!(ng2-.+))/]
       },
 
@@ -182,6 +183,12 @@ module.exports = function makeWebpackConfig() {
   // Add build specific plugins
   if (isProd) {
     config.plugins.push(
+      // Reference: https://github.com/angular/angular-cli/tree/master/packages/webpack
+      new aotplugin.AotPlugin({
+        tsConfigPath: './tsconfig-aot.json',
+        entryModule: './demo/src/app/app.module#NgbdModule'
+      }),
+
       // Reference: http://webpack.github.io/docs/list-of-plugins.html#noerrorsplugin
       // Only emit files when there are no errors
       new webpack.NoErrorsPlugin(),

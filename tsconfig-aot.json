@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ES5",
+    "module": "es2015",
+    "moduleResolution": "node",
+    "declaration": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "noEmitOnError": true,
+    "outDir": "temp",
+    "sourceMap": true,
+    "baseUrl": "./node_modules",
+    "paths": {
+      "@ng-bootstrap/ng-bootstrap": ["../src/index"]
+    }
+  },
+  "include": [
+    "./demo/src/main.ts"
+  ],
+  "angularCompilerOptions": {
+    "strictMetadataEmit": true
+  }
+}
