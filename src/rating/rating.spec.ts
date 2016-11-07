@@ -6,9 +6,25 @@ import {Component} from '@angular/core';
 import {NgbRatingModule} from './rating.module';
 import {NgbRating} from './rating';
 import {NgbRatingConfig} from './rating-config';
+import {By} from '@angular/platform-browser';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
+
+enum Key {
+  End = 35,
+  Home = 36,
+  ArrowLeft = 37,
+  ArrowUp = 38,
+  ArrowRight = 39,
+  ArrowDown = 40
+}
+
+function createKeyDownEvent(key: number) {
+  const event = {which: key, preventDefault: () => {}};
+  spyOn(event, 'preventDefault');
+  return event;
+}
 
 function getAriaState(compiled) {
   const stars = getStars(compiled, '.sr-only');
@@ -67,6 +83,25 @@ describe('ngb-rating', () => {
 
     const compiled = fixture.nativeElement;
     expect(getState(compiled)).toEqual([true, true, true, false, false]);
+  });
+
+  it('sets stars within 0..max limits', () => {
+    const fixture = createTestComponent('<ngb-rating [rate]="rate" max="5"></ngb-rating>');
+
+    const compiled = fixture.nativeElement;
+    expect(getState(compiled)).toEqual([true, true, true, false, false]);
+
+    fixture.componentInstance.rate = 0;
+    fixture.detectChanges();
+    expect(getState(compiled)).toEqual([false, false, false, false, false]);
+
+    fixture.componentInstance.rate = -5;
+    fixture.detectChanges();
+    expect(getState(compiled)).toEqual([false, false, false, false, false]);
+
+    fixture.componentInstance.rate = 20;
+    fixture.detectChanges();
+    expect(getState(compiled)).toEqual([true, true, true, true, true]);
   });
 
   it('handles correctly the click event', () => {
@@ -209,6 +244,63 @@ describe('ngb-rating', () => {
       fixture.detectChanges();
 
       expect(compiled.querySelector('span').getAttribute('aria-valuetext')).toBe('7 out of 10');
+    });
+  });
+
+  describe('Keyboard support', () => {
+
+    it('should handle arrow keys', () => {
+      const fixture = createTestComponent('<ngb-rating [rate]="3" [max]="5"></ngb-rating>');
+
+      const element = fixture.debugElement.query(By.directive(NgbRating));
+
+      // right -> +1
+      let event = createKeyDownEvent(Key.ArrowRight);
+      element.triggerEventHandler('keydown', event);
+      fixture.detectChanges();
+      expect(getState(element.nativeElement)).toEqual([true, true, true, true, false]);
+      expect(event.preventDefault).toHaveBeenCalled();
+
+      // up -> +1
+      event = createKeyDownEvent(Key.ArrowUp);
+      element.triggerEventHandler('keydown', event);
+      fixture.detectChanges();
+      expect(getState(element.nativeElement)).toEqual([true, true, true, true, true]);
+      expect(event.preventDefault).toHaveBeenCalled();
+
+      // left -> -1
+      event = createKeyDownEvent(Key.ArrowLeft);
+      element.triggerEventHandler('keydown', event);
+      fixture.detectChanges();
+      expect(getState(element.nativeElement)).toEqual([true, true, true, true, false]);
+      expect(event.preventDefault).toHaveBeenCalled();
+
+      // down -> -1
+      event = createKeyDownEvent(Key.ArrowDown);
+      element.triggerEventHandler('keydown', event);
+      fixture.detectChanges();
+      expect(getState(element.nativeElement)).toEqual([true, true, true, false, false]);
+      expect(event.preventDefault).toHaveBeenCalled();
+    });
+
+    it('should handle home/end keys', () => {
+      const fixture = createTestComponent('<ngb-rating [rate]="3" [max]="5"></ngb-rating>');
+
+      const element = fixture.debugElement.query(By.directive(NgbRating));
+
+      // home -> 0
+      let event = createKeyDownEvent(Key.Home);
+      element.triggerEventHandler('keydown', event);
+      fixture.detectChanges();
+      expect(getState(element.nativeElement)).toEqual([false, false, false, false, false]);
+      expect(event.preventDefault).toHaveBeenCalled();
+
+      // end -> max
+      event = createKeyDownEvent(Key.End);
+      element.triggerEventHandler('keydown', event);
+      fixture.detectChanges();
+      expect(getState(element.nativeElement)).toEqual([true, true, true, true, true]);
+      expect(event.preventDefault).toHaveBeenCalled();
     });
   });
 
