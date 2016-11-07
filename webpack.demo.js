@@ -34,9 +34,6 @@ module.exports = function makeWebpackConfig() {
     config.devtool = 'eval-source-map';
   }
 
-  // add debug messages
-  config.debug = !isProd;
-
   /**
    * Entry
    * Reference: http://webpack.github.io/docs/configuration.html#entry
@@ -63,9 +60,9 @@ module.exports = function makeWebpackConfig() {
    * Reference: http://webpack.github.io/docs/configuration.html#resolve
    */
   config.resolve = {
-    root: root('demo'),
+    modules: [root('demo'), 'node_modules'],
     // only discover files that have those extensions
-    extensions: ['', '.ts', '.js', '.css', '.scss', '.html'],
+    extensions: ['.ts', '.js', '.css', '.scss', '.html'],
 
     alias: {
       '@ng-bootstrap/ng-bootstrap': root('src/index.ts')
@@ -79,20 +76,11 @@ module.exports = function makeWebpackConfig() {
    * This handles most of the magic responsible for converting modules
    */
   config.module = {
-    loaders: [
+    rules: [
       // Support for .ts files.
       {
         test: /\.ts$/,
         loader: 'ts',
-        query: {
-          'ignoreDiagnostics': [
-            2403, // 2403 -> Subsequent variable declarations
-            2300, // 2300 -> Duplicate identifier
-            2374, // 2374 -> Duplicate number index signature
-            2375, // 2375 -> Duplicate string index signature
-            2502  // 2502 -> Referenced directly or indirectly
-          ]
-        },
         exclude: [/node_modules\/(?!(ng2-.+))/]
       },
 
@@ -110,7 +98,7 @@ module.exports = function makeWebpackConfig() {
       {
         test: /\.css$/,
         exclude: root('demo', 'src', 'app'),
-        loader: ExtractTextPlugin.extract('style', 'css?sourceMap!postcss')
+        loader: ExtractTextPlugin.extract({fallbackLoader: 'style', loader: 'css?sourceMap!postcss'})
       },
       // all css required in src/app files will be merged in js files
       {test: /\.css$/, include: root('demo', 'src', 'app'), loader: 'raw!postcss'},
@@ -121,7 +109,7 @@ module.exports = function makeWebpackConfig() {
       {
         test: /\.scss$/,
         exclude: root('src', 'app'),
-        loader: ExtractTextPlugin.extract('style', 'css?sourceMap!postcss!sass')
+        loader: ExtractTextPlugin.extract({fallbackLoader: 'style', loader: 'css?sourceMap!postcss!sass'})
       },
       // all css required in src/app files will be merged in js files
       {test: /\.scss$/, exclude: root('demo', 'src', 'style'), loader: 'raw!postcss!sass'},
@@ -132,7 +120,6 @@ module.exports = function makeWebpackConfig() {
 
       {test: /\.md$/, loader: 'html!markdown'}
     ],
-    postLoaders: [],
     noParse: [/.+zone\.js\/dist\/.+/]
   };
 
@@ -166,7 +153,30 @@ module.exports = function makeWebpackConfig() {
     // Extract css files
     // Reference: https://github.com/webpack/extract-text-webpack-plugin
     // Disabled when in test mode or not in build mode
-    new ExtractTextPlugin('css/[name].[hash].css', {disable: !isProd})
+    new ExtractTextPlugin({filename: 'css/[name].[hash].css', disable: !isProd}),
+
+    new webpack.LoaderOptionsPlugin({
+      // add debug messages
+      debug: !isProd,
+      minimize: isProd,
+      /**
+       * PostCSS
+       * Reference: https://github.com/postcss/autoprefixer-core
+       * Add vendor prefixes to your css
+       */
+      postcss: [
+        autoprefixer({
+          browsers: ['last 2 version']
+        })
+      ]
+    }),
+
+    // Workaround to remove Webpack warning in system_js_ng_module_factory_loader.js
+    // See https://github.com/angular/angular/issues/11580
+    new webpack.ContextReplacementPlugin(
+      /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
+      root('demo', 'src', 'app')
+    )
   ];
 
   // Add build specific plugins
@@ -176,15 +186,12 @@ module.exports = function makeWebpackConfig() {
       // Only emit files when there are no errors
       new webpack.NoErrorsPlugin(),
 
-      // Reference: http://webpack.github.io/docs/list-of-plugins.html#dedupeplugin
-      // Dedupe modules in the output
-      new webpack.optimize.DedupePlugin(),
-
       // Reference: http://webpack.github.io/docs/list-of-plugins.html#uglifyjsplugin
       // Minify all javascript, switch loaders to minimizing mode
       new webpack.optimize.UglifyJsPlugin({
-        comments: false,
-        mangle: true
+        mangle: true,
+        output: {comments: false},
+        sourceMap: true
       }),
 
       // Copy assets from the public folder
@@ -196,23 +203,12 @@ module.exports = function makeWebpackConfig() {
   }
 
   /**
-   * PostCSS
-   * Reference: https://github.com/postcss/autoprefixer-core
-   * Add vendor prefixes to your css
-   */
-  config.postcss = [
-    autoprefixer({
-      browsers: ['last 2 version']
-    })
-  ];
-
-  /**
    * Dev server configuration
    * Reference: http://webpack.github.io/docs/configuration.html#devserver
    * Reference: http://webpack.github.io/docs/webpack-dev-server.html
    */
   config.devServer = {
-    contentBase: './demo/src/public',
+    contentBase: 'demo/src/public',
     historyApiFallback: true,
     stats: 'minimal' // none (or false), errors-only, minimal, normal (or true) and verbose
   };

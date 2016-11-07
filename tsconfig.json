@@ -6,11 +6,14 @@
     "experimentalDecorators": true,
     "noEmitOnError": true,
     "outDir": "temp",
-    "sourceMap": true
+    "sourceMap": true,
+    "baseUrl": "./node_modules",
+    "paths": {
+      "@ng-bootstrap/ng-bootstrap": ["../src/index"]
+    }
   },
   "include": [
-    "src/**/*.ts",
-    "typings/index.d.ts"
+    "src/**/*.ts"
   ],
   "compileOnSave": false
 }
