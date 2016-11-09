@@ -273,7 +273,7 @@ export class NgbTypeahead implements ControlValueAccessor,
         this._closePopup();
       } else {
         this._openPopup();
-        this._windowRef.instance.activeIdx = this.focusFirst ? 0 : -1;
+        this._windowRef.instance.focusFirst = this.focusFirst;
         this._windowRef.instance.results = results;
         this._windowRef.instance.term = this._elementRef.nativeElement.value;
         if (this.resultFormatter) {

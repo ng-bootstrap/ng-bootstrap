@@ -329,7 +329,7 @@ describe('ngb-typeahead', () => {
       event = createKeyDownEvent(Key.ArrowDown);
       getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
       fixture.detectChanges();
-      expectWindowResults(compiled, ['+one', 'one more']);
+      expectWindowResults(compiled, ['one', 'one more']);
       expect(event.preventDefault).toHaveBeenCalled();
     });
 
