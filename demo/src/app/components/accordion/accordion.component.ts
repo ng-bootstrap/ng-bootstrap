@@ -20,6 +20,9 @@ import {DEMO_SNIPPETS} from './demos';
       <ngbd-example-box demoTitle="Toggle panels" [snippets]="snippets" component="accordion" demo="toggle">
         <ngbd-accordion-toggle></ngbd-accordion-toggle>
       </ngbd-example-box>
+      <ngbd-example-box demoTitle="Toggle panels using header" [snippets]="snippets" component="accordion" demo="headertoggle">
+        <ngbd-accordion-headertoggle></ngbd-accordion-headertoggle>
+      </ngbd-example-box>
       <ngbd-example-box demoTitle="Prevent panel toggle" [snippets]="snippets" component="accordion" demo="preventchange">
         <ngbd-accordion-preventchange></ngbd-accordion-preventchange>
       </ngbd-example-box>
