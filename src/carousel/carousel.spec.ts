@@ -323,17 +323,17 @@ describe('ngb-carousel', () => {
        const fixture = createTestComponent(html);
        expectActiveSlides(fixture.nativeElement, [true, false]);
 
-       fixture.debugElement.query(By.directive(NgbCarousel)).triggerEventHandler('keyup.arrowRight', {});  // next()
+       fixture.debugElement.query(By.directive(NgbCarousel)).triggerEventHandler('keydown.arrowRight', {});  // next()
        fixture.detectChanges();
        expectActiveSlides(fixture.nativeElement, [false, true]);
 
-       fixture.debugElement.query(By.directive(NgbCarousel)).triggerEventHandler('keyup.arrowLeft', {});  // prev()
+       fixture.debugElement.query(By.directive(NgbCarousel)).triggerEventHandler('keydown.arrowLeft', {});  // prev()
        fixture.detectChanges();
        expectActiveSlides(fixture.nativeElement, [true, false]);
 
        fixture.componentInstance.keyboard = false;
        fixture.detectChanges();
-       fixture.debugElement.query(By.directive(NgbCarousel)).triggerEventHandler('keyup.arrowRight', {});  // prev()
+       fixture.debugElement.query(By.directive(NgbCarousel)).triggerEventHandler('keydown.arrowRight', {});  // prev()
        fixture.detectChanges();
        expectActiveSlides(fixture.nativeElement, [true, false]);
 
@@ -355,13 +355,13 @@ describe('ngb-carousel', () => {
 
        fixture.componentInstance.keyboard = false;
        fixture.detectChanges();
-       fixture.debugElement.query(By.directive(NgbCarousel)).triggerEventHandler('keyup.arrowRight', {});  // prev()
+       fixture.debugElement.query(By.directive(NgbCarousel)).triggerEventHandler('keydown.arrowRight', {});  // prev()
        fixture.detectChanges();
        expectActiveSlides(fixture.nativeElement, [true, false]);
 
        fixture.componentInstance.keyboard = true;
        fixture.detectChanges();
-       fixture.debugElement.query(By.directive(NgbCarousel)).triggerEventHandler('keyup.arrowRight', {});  // next()
+       fixture.debugElement.query(By.directive(NgbCarousel)).triggerEventHandler('keydown.arrowRight', {});  // next()
        fixture.detectChanges();
        expectActiveSlides(fixture.nativeElement, [false, true]);
 
