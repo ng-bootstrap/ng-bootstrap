@@ -38,8 +38,8 @@ export class NgbSlide {
     'tabIndex': '0',
     '(mouseenter)': 'pause()',
     '(mouseleave)': 'cycle()',
-    '(keyup.arrowLeft)': 'keyPrev()',
-    '(keyup.arrowRight)': 'keyNext()'
+    '(keydown.arrowLeft)': 'keyPrev()',
+    '(keydown.arrowRight)': 'keyNext()'
   },
   template: `
     <ol class="carousel-indicators">
