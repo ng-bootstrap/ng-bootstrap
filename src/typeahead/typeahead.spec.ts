@@ -28,8 +28,9 @@ enum Key {
 }
 
 function createKeyDownEvent(key: number) {
-  const event = {which: key, preventDefault: () => {}};
+  const event = {which: key, preventDefault: () => {}, stopPropagation: () => {}};
   spyOn(event, 'preventDefault');
+  spyOn(event, 'stopPropagation');
   return event;
 }
 
@@ -231,6 +232,7 @@ describe('ngb-typeahead', () => {
            expectInputValue(compiled, 'one');
            expect(fixture.componentInstance.model).toBe('one');
            expect(event.preventDefault).toHaveBeenCalled();
+           expect(event.stopPropagation).toHaveBeenCalled();
          });
        }));
 
@@ -249,6 +251,7 @@ describe('ngb-typeahead', () => {
       expectInputValue(compiled, 'one');
       expect(fixture.componentInstance.model).toBe('one');
       expect(event.preventDefault).toHaveBeenCalled();
+      expect(event.stopPropagation).toHaveBeenCalled();
     });
 
     it('should make previous/next results active with up/down arrow keys', () => {
@@ -370,7 +373,7 @@ describe('ngb-typeahead', () => {
       expect(getWindow(compiled)).toBeNull();
       expectInputValue(compiled, 'o');
       expect(fixture.componentInstance.model).toBe('o');
-      expect(event.preventDefault).toHaveBeenCalled();
+      expect(event.preventDefault).not.toHaveBeenCalled();
     });
 
     it('should properly display results when an owning components using OnPush strategy', fakeAsync(() => {
