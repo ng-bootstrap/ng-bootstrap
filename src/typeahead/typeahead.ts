@@ -191,14 +191,14 @@ export class NgbTypeahead implements ControlValueAccessor,
     }
 
     if (Key[toString(event.which)]) {
-      event.preventDefault();
-
       switch (event.which) {
         case Key.ArrowDown:
+          event.preventDefault();
           this._windowRef.instance.next();
           this._showHint();
           break;
         case Key.ArrowUp:
+          event.preventDefault();
           this._windowRef.instance.prev();
           this._showHint();
           break;
@@ -206,11 +206,14 @@ export class NgbTypeahead implements ControlValueAccessor,
         case Key.Tab:
           const result = this._windowRef.instance.getActive();
           if (isDefined(result)) {
+            event.preventDefault();
+            event.stopPropagation();
             this._selectResult(result);
           }
           this._closePopup();
           break;
         case Key.Escape:
+          event.preventDefault();
           this.dismissPopup();
           break;
       }
