@@ -46,7 +46,7 @@ const NGB_TYPEAHEAD_VALUE_ACCESSOR = {
  */
 export interface NgbTypeaheadSelectItemEvent {
   /**
-   * An item about to be selected
+   * An item about to be selected. Null if selecting without focus on a result.
    */
   item: any;
 
@@ -54,6 +54,11 @@ export interface NgbTypeaheadSelectItemEvent {
    * Function that will prevent item selection if called
    */
   preventDefault: () => void;
+
+  /**
+   * The input target
+   */
+  target: any;
 }
 
 /**
@@ -187,6 +192,12 @@ export class NgbTypeahead implements ControlValueAccessor,
 
   handleKeyDown(event: KeyboardEvent) {
     if (!this._windowRef) {
+      if (event.which === Key.Enter) {
+        event.preventDefault();
+        // If no results and pressing enter, still fire select
+        this._selectResult(null);
+      }
+
       return;
     }
 
@@ -205,8 +216,9 @@ export class NgbTypeahead implements ControlValueAccessor,
         case Key.Enter:
         case Key.Tab:
           const result = this._windowRef.instance.getActive();
-          if (isDefined(result)) {
-            this._selectResult(result);
+          if (isDefined(result) || event.which === Key.Enter) {
+            // If result is undefined, but enter is pressed, still fire select
+            this._selectResult(result || null);
           }
           this._closePopup();
           break;
@@ -231,7 +243,8 @@ export class NgbTypeahead implements ControlValueAccessor,
 
   private _selectResult(result: any) {
     let defaultPrevented = false;
-    this.selectItem.emit({item: result, preventDefault: () => { defaultPrevented = true; }});
+    this.selectItem.emit(
+        {item: result, preventDefault: () => { defaultPrevented = true; }, target: this._elementRef.nativeElement});
 
     if (!defaultPrevented) {
       this.writeValue(result);

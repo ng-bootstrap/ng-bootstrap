@@ -373,6 +373,43 @@ describe('ngb-typeahead', () => {
       expect(event.preventDefault).toHaveBeenCalled();
     });
 
+    it('should select with empty on ENTER, close window and write to the input when focusFirst is false', () => {
+      const fixture =
+          createTestComponent(`<input type="text" [(ngModel)]="model" [ngbTypeahead]="find" [focusFirst]="false"/>`);
+      const compiled = fixture.nativeElement;
+
+      changeInput(compiled, 'o');
+      fixture.detectChanges();
+      expect(getWindow(compiled)).not.toBeNull();
+
+      const event = createKeyDownEvent(Key.Enter);
+      getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
+      fixture.detectChanges();
+      expect(getWindow(compiled)).toBeNull();
+      expectInputValue(compiled, '');
+      expect(fixture.componentInstance.model).toBeNull();
+      expect(event.preventDefault).toHaveBeenCalled();
+    });
+
+    it('should select with empty on ENTER with no results window and write to the input when focusFirst is false',
+       () => {
+         const fixture =
+             createTestComponent(`<input type="text" [(ngModel)]="model" [ngbTypeahead]="find" [focusFirst]="false"/>`);
+         const compiled = fixture.nativeElement;
+
+         changeInput(compiled, 'okjasdlkja;sdf');
+         fixture.detectChanges();
+         expect(getWindow(compiled)).toBeNull();
+
+         const event = createKeyDownEvent(Key.Enter);
+         getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
+         fixture.detectChanges();
+         expect(getWindow(compiled)).toBeNull();
+         expectInputValue(compiled, '');
+         expect(fixture.componentInstance.model).toBeNull();
+         expect(event.preventDefault).toHaveBeenCalled();
+       });
+
     it('should properly display results when an owning components using OnPush strategy', fakeAsync(() => {
          const fixture = createOnPushTestComponent(`<input type="text" [(ngModel)]="model" [ngbTypeahead]="find"/>`);
          const compiled = fixture.nativeElement;
