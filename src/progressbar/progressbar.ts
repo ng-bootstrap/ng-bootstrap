@@ -9,9 +9,8 @@ import {NgbProgressbarConfig} from './progressbar-config';
   selector: 'ngb-progressbar',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <progress class="progress {{type ? 'progress-' + type : ''}}" 
-      [class.progress-animated]="animated" 
-      [class.progress-striped]="striped"
+    <progress class="progress{{type ? ' progress-' + type : ''}}{{animated ? ' progress-animated' : ''}}{{striped ? 
+    ' progress-striped' : ''}}" 
       [max]="max" [value]="getValue()">
       <div class="progress">
         <span class="progress-bar" [style.width.%]="getPercentValue()"><ng-content></ng-content></span>

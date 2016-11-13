@@ -164,6 +164,19 @@ describe('ngb-progressbar', () => {
       expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('progress-striped');
       expect(getProgressbar(fixture.nativeElement)).not.toHaveCssClass('false');
     });
+
+    it('should stay striped when the type changes', () => {
+      const html = '<ngb-progressbar [value]="value" [type]="type" [striped]="true"></ngb-progressbar>';
+      const fixture = createTestComponent(html);
+
+      expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('progress-warning');
+      expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('progress-striped');
+
+      fixture.componentInstance.type = 'success';
+      fixture.detectChanges();
+      expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('progress-success');
+      expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('progress-striped');
+    });
   });
 
   describe('Custom config', () => {
