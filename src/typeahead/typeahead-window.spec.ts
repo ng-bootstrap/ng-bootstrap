@@ -138,9 +138,12 @@ describe('ngb-typeahead-window', () => {
 
       expectResults(fixture.nativeElement, ['+bar', 'baz']);
 
-      links[1].triggerEventHandler('click', {});
+      const event = jasmine.createSpyObj('event', ['preventDefault', 'stopPropagation']);
+      links[1].triggerEventHandler('click', event);
       fixture.detectChanges();
       expect(fixture.componentInstance.selected).toBe('baz');
+      expect(event.preventDefault).toHaveBeenCalled();
+      expect(event.stopPropagation).toHaveBeenCalled();
     });
 
     it('should return selected row via getActive()', () => {
