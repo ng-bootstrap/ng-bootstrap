@@ -8,23 +8,23 @@ export const DEMO_DIRECTIVES = [NgbdTooltipBasic, NgbdTooltipContainer, NgbdTool
 
 export const DEMO_SNIPPETS = {
   basic: {
-    code: require('!!prismjs?lang=typescript!./basic/tooltip-basic'),
-    markup: require('!!prismjs?lang=markup!./basic/tooltip-basic.html')
+    code: require('!!prismjs-loader?lang=typescript!./basic/tooltip-basic'),
+    markup: require('!!prismjs-loader?lang=markup!./basic/tooltip-basic.html')
   },
   container: {
-    code: require('!!prismjs?lang=typescript!./container/tooltip-container'),
-    markup: require('!!prismjs?lang=markup!./container/tooltip-container.html')
+    code: require('!!prismjs-loader?lang=typescript!./container/tooltip-container'),
+    markup: require('!!prismjs-loader?lang=markup!./container/tooltip-container.html')
   },
   tplcontent: {
-    code: require('!!prismjs?lang=typescript!./tplcontent/tooltip-tplcontent'),
-    markup: require('!!prismjs?lang=markup!./tplcontent/tooltip-tplcontent.html')
+    code: require('!!prismjs-loader?lang=typescript!./tplcontent/tooltip-tplcontent'),
+    markup: require('!!prismjs-loader?lang=markup!./tplcontent/tooltip-tplcontent.html')
   },
   triggers: {
-    code: require('!!prismjs?lang=typescript!./triggers/tooltip-triggers'),
-    markup: require('!!prismjs?lang=markup!./triggers/tooltip-triggers.html')
+    code: require('!!prismjs-loader?lang=typescript!./triggers/tooltip-triggers'),
+    markup: require('!!prismjs-loader?lang=markup!./triggers/tooltip-triggers.html')
   },
   config: {
-    code: require('!!prismjs?lang=typescript!./config/tooltip-config'),
-    markup: require('!!prismjs?lang=markup!./config/tooltip-config.html')
+    code: require('!!prismjs-loader?lang=typescript!./config/tooltip-config'),
+    markup: require('!!prismjs-loader?lang=markup!./config/tooltip-config.html')
   }
 };
