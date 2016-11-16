@@ -56,8 +56,8 @@ function genDemosIndex(component) {
 
   const demoSnippets = demoNames.map((demo) => {
     return `  '${demo}': {
-    'code': require('!!prismjs?lang=typescript!./${demo}/${component}-${demo}'), 
-    'markup': require('!!prismjs?lang=markup!./${demo}/${component}-${demo}.html')}`;
+    'code': require('!!prismjs-loader-loader?lang=typescript!./${demo}/${component}-${demo}'), 
+    'markup': require('!!prismjs-loader-loader?lang=markup!./${demo}/${component}-${demo}.html')}`;
   });
 
   return `${demoImports}

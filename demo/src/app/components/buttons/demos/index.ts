@@ -5,9 +5,9 @@ export const DEMO_DIRECTIVES = [NgbdButtonsCheckbox, NgbdButtonsRadio];
 
 export const DEMO_SNIPPETS = {
   checkbox: {
-    code: require('!!prismjs?lang=typescript!./checkbox/buttons-checkbox'),
-    markup: require('!!prismjs?lang=markup!./checkbox/buttons-checkbox.html')},
+    code: require('!!prismjs-loader?lang=typescript!./checkbox/buttons-checkbox'),
+    markup: require('!!prismjs-loader?lang=markup!./checkbox/buttons-checkbox.html')},
   radio: {
-    code: require('!!prismjs?lang=typescript!./radio/buttons-radio'),
-    markup: require('!!prismjs?lang=markup!./radio/buttons-radio.html')}
+    code: require('!!prismjs-loader?lang=typescript!./radio/buttons-radio'),
+    markup: require('!!prismjs-loader?lang=markup!./radio/buttons-radio.html')}
 };
