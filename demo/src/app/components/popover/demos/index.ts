@@ -16,27 +16,27 @@ export const DEMO_DIRECTIVES = [
 
 export const DEMO_SNIPPETS = {
   basic: {
-    code: require('!!prismjs?lang=typescript!./basic/popover-basic'),
-    markup: require('!!prismjs?lang=markup!./basic/popover-basic.html')
+    code: require('!!prismjs-loader?lang=typescript!./basic/popover-basic'),
+    markup: require('!!prismjs-loader?lang=markup!./basic/popover-basic.html')
   },
   tplcontent: {
-    code: require('!!prismjs?lang=typescript!./tplcontent/popover-tplcontent'),
-    markup: require('!!prismjs?lang=markup!./tplcontent/popover-tplcontent.html')
+    code: require('!!prismjs-loader?lang=typescript!./tplcontent/popover-tplcontent'),
+    markup: require('!!prismjs-loader?lang=markup!./tplcontent/popover-tplcontent.html')
   },
   triggers: {
-    code: require('!!prismjs?lang=typescript!./triggers/popover-triggers'),
-    markup: require('!!prismjs?lang=markup!./triggers/popover-triggers.html')
+    code: require('!!prismjs-loader?lang=typescript!./triggers/popover-triggers'),
+    markup: require('!!prismjs-loader?lang=markup!./triggers/popover-triggers.html')
   },
   visibility: {
-    code: require('!!prismjs?lang=typescript!./visibility/popover-visibility'),
-    markup: require('!!prismjs?lang=markup!./visibility/popover-visibility.html')
+    code: require('!!prismjs-loader?lang=typescript!./visibility/popover-visibility'),
+    markup: require('!!prismjs-loader?lang=markup!./visibility/popover-visibility.html')
   },
   container: {
-    code: require('!!prismjs?lang=typescript!./container/popover-container'),
-    markup: require('!!prismjs?lang=markup!./container/popover-container.html')
+    code: require('!!prismjs-loader?lang=typescript!./container/popover-container'),
+    markup: require('!!prismjs-loader?lang=markup!./container/popover-container.html')
   },
   config: {
-    code: require('!!prismjs?lang=typescript!./config/popover-config'),
-    markup: require('!!prismjs?lang=markup!./config/popover-config.html')
+    code: require('!!prismjs-loader?lang=typescript!./config/popover-config'),
+    markup: require('!!prismjs-loader?lang=markup!./config/popover-config.html')
   }
 };

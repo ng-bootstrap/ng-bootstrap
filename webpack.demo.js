@@ -81,7 +81,7 @@ module.exports = function makeWebpackConfig() {
       // Support for .ts files.
       {
         test: /\.ts$/,
-        loader: isProd ? '@ngtools/webpack' : 'ts',
+        loader: isProd ? '@ngtools/webpack' : 'ts-loader',
         exclude: [/node_modules\/(?!(ng2-.+))/]
       },
 
@@ -91,7 +91,7 @@ module.exports = function makeWebpackConfig() {
       },
 
       // copy those assets to output
-      {test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/, loader: 'file?name=fonts/[name].[hash].[ext]?'},
+      {test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/, loader: 'file-loader?name=fonts/[name].[hash].[ext]?'},
 
       // Support for CSS as raw text
       // use 'null' loader in test mode (https://github.com/webpack/null-loader)
@@ -99,10 +99,10 @@ module.exports = function makeWebpackConfig() {
       {
         test: /\.css$/,
         exclude: root('demo', 'src', 'app'),
-        loader: ExtractTextPlugin.extract({fallbackLoader: 'style', loader: 'css?sourceMap!postcss'})
+        loader: ExtractTextPlugin.extract({fallbackLoader: 'style-loader', loader: 'css-loader?sourceMap-loader!postcss-loader'})
       },
       // all css required in src/app files will be merged in js files
-      {test: /\.css$/, include: root('demo', 'src', 'app'), loader: 'raw!postcss'},
+      {test: /\.css$/, include: root('demo', 'src', 'app'), loader: 'raw-loader!postcss-loader'},
 
       // support for .scss files
       // use 'null' loader in test mode (https://github.com/webpack/null-loader)
@@ -110,16 +110,16 @@ module.exports = function makeWebpackConfig() {
       {
         test: /\.scss$/,
         exclude: root('src', 'app'),
-        loader: ExtractTextPlugin.extract({fallbackLoader: 'style', loader: 'css?sourceMap!postcss!sass'})
+        loader: ExtractTextPlugin.extract({fallbackLoader: 'style-loader', loader: 'css-loader?sourceMap-loader!postcss-loader!sass-loader'})
       },
       // all css required in src/app files will be merged in js files
-      {test: /\.scss$/, exclude: root('demo', 'src', 'style'), loader: 'raw!postcss!sass'},
+      {test: /\.scss$/, exclude: root('demo', 'src', 'style'), loader: 'raw-loader!postcss-loader!sass-loader'},
 
       // support for .html as raw text
       // todo: change the loader to something that adds a hash to images
-      {test: /\.html$/, loader: 'raw'},
+      {test: /\.html$/, loader: 'raw-loader'},
 
-      {test: /\.md$/, loader: 'html!markdown'}
+      {test: /\.md$/, loader: 'html-loader!markdown-loader'}
     ],
     noParse: [/.+zone\.js\/dist\/.+/]
   };

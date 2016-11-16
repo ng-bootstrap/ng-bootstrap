@@ -6,12 +6,12 @@ export const DEMO_DIRECTIVES = [NgbdDropdownBasic, NgbdDropdownConfig, NgbdDropd
 
 export const DEMO_SNIPPETS = {
   'basic': {
-    'code': require('!!prismjs?lang=typescript!./basic/dropdown-basic'),
-    'markup': require('!!prismjs?lang=markup!./basic/dropdown-basic.html')},
+    'code': require('!!prismjs-loader?lang=typescript!./basic/dropdown-basic'),
+    'markup': require('!!prismjs-loader?lang=markup!./basic/dropdown-basic.html')},
   'config': {
-    'code': require('!!prismjs?lang=typescript!./config/dropdown-config'),
-    'markup': require('!!prismjs?lang=markup!./config/dropdown-config.html')},
+    'code': require('!!prismjs-loader?lang=typescript!./config/dropdown-config'),
+    'markup': require('!!prismjs-loader?lang=markup!./config/dropdown-config.html')},
   'manual': {
-    'code': require('!!prismjs?lang=typescript!./manual/dropdown-manual'),
-    'markup': require('!!prismjs?lang=markup!./manual/dropdown-manual.html')}
+    'code': require('!!prismjs-loader?lang=typescript!./manual/dropdown-manual'),
+    'markup': require('!!prismjs-loader?lang=markup!./manual/dropdown-manual.html')}
 };

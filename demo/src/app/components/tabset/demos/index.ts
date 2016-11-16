@@ -9,23 +9,23 @@ export const DEMO_DIRECTIVES =
 
 export const DEMO_SNIPPETS = {
   basic: {
-    code: require('!!prismjs?lang=typescript!./basic/tabset-basic'),
-    markup: require('!!prismjs?lang=markup!./basic/tabset-basic.html')
+    code: require('!!prismjs-loader?lang=typescript!./basic/tabset-basic'),
+    markup: require('!!prismjs-loader?lang=markup!./basic/tabset-basic.html')
   },
   pills: {
-    code: require('!!prismjs?lang=typescript!./pills/tabset-pills'),
-    markup: require('!!prismjs?lang=markup!./pills/tabset-pills.html')
+    code: require('!!prismjs-loader?lang=typescript!./pills/tabset-pills'),
+    markup: require('!!prismjs-loader?lang=markup!./pills/tabset-pills.html')
   },
   preventchange: {
-    code: require('!!prismjs?lang=typescript!./preventchange/tabset-preventchange'),
-    markup: require('!!prismjs?lang=markup!./preventchange/tabset-preventchange.html')
+    code: require('!!prismjs-loader?lang=typescript!./preventchange/tabset-preventchange'),
+    markup: require('!!prismjs-loader?lang=markup!./preventchange/tabset-preventchange.html')
   },
   selectbyid: {
-    code: require('!!prismjs?lang=typescript!./selectbyid/tabset-selectbyid'),
-    markup: require('!!prismjs?lang=markup!./selectbyid/tabset-selectbyid.html')
+    code: require('!!prismjs-loader?lang=typescript!./selectbyid/tabset-selectbyid'),
+    markup: require('!!prismjs-loader?lang=markup!./selectbyid/tabset-selectbyid.html')
   },
   config: {
-    code: require('!!prismjs?lang=typescript!./config/tabset-config'),
-    markup: require('!!prismjs?lang=markup!./config/tabset-config.html')
+    code: require('!!prismjs-loader?lang=typescript!./config/tabset-config'),
+    markup: require('!!prismjs-loader?lang=markup!./config/tabset-config.html')
   }
 };

@@ -60,8 +60,8 @@
     "gulp-tslint": "^6.1.2",
     "gulp-util": "^3.0.7",
     "he": "^1.1.0",
-    "html-loader": "^0.4.4",
-    "html-webpack-plugin": "^2.16.1",
+    "html-loader": "0.4.4",
+    "html-webpack-plugin": "2.24.1",
     "ie-shim": "^0.1.0",
     "jasmine": "^2.5.2",
     "jasmine-core": "^2.5.2",
@@ -86,12 +86,12 @@
     "sass-loader": "^4.0.2",
     "style-loader": "^0.13.1",
     "systemjs": "^0.19.40",
-    "ts-loader": "^1.1.0",
+    "ts-loader": "1.2.1",
     "tslint": "^3.15.1",
     "typescript": "^2.0.6",
     "url-loader": "^0.5.7",
-    "webpack": "^2.1.0-beta.25",
-    "webpack-dev-server": "^2.1.0-beta.10",
+    "webpack": "2.1.0-beta.27",
+    "webpack-dev-server": "2.1.0-beta.11",
     "zone.js": "^0.6.23"
   }
 }

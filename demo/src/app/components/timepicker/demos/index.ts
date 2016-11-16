@@ -13,31 +13,31 @@ export const DEMO_DIRECTIVES = [
 
 export const DEMO_SNIPPETS = {
   basic: {
-    code: require('!!prismjs?lang=typescript!./basic/timepicker-basic'),
-    markup: require('!!prismjs?lang=markup!./basic/timepicker-basic.html')
+    code: require('!!prismjs-loader?lang=typescript!./basic/timepicker-basic'),
+    markup: require('!!prismjs-loader?lang=markup!./basic/timepicker-basic.html')
   },
   meridian: {
-    code: require('!!prismjs?lang=typescript!./meridian/timepicker-meridian'),
-    markup: require('!!prismjs?lang=markup!./meridian/timepicker-meridian.html')
+    code: require('!!prismjs-loader?lang=typescript!./meridian/timepicker-meridian'),
+    markup: require('!!prismjs-loader?lang=markup!./meridian/timepicker-meridian.html')
   },
   seconds: {
-    code: require('!!prismjs?lang=typescript!./seconds/timepicker-seconds'),
-    markup: require('!!prismjs?lang=markup!./seconds/timepicker-seconds.html')
+    code: require('!!prismjs-loader?lang=typescript!./seconds/timepicker-seconds'),
+    markup: require('!!prismjs-loader?lang=markup!./seconds/timepicker-seconds.html')
   },
   spinners: {
-    code: require('!!prismjs?lang=typescript!./spinners/timepicker-spinners'),
-    markup: require('!!prismjs?lang=markup!./spinners/timepicker-spinners.html')
+    code: require('!!prismjs-loader?lang=typescript!./spinners/timepicker-spinners'),
+    markup: require('!!prismjs-loader?lang=markup!./spinners/timepicker-spinners.html')
   },
   steps: {
-    code: require('!!prismjs?lang=typescript!./steps/timepicker-steps'),
-    markup: require('!!prismjs?lang=markup!./steps/timepicker-steps.html')
+    code: require('!!prismjs-loader?lang=typescript!./steps/timepicker-steps'),
+    markup: require('!!prismjs-loader?lang=markup!./steps/timepicker-steps.html')
   },
   validation: {
-    code: require('!!prismjs?lang=typescript!./validation/timepicker-validation'),
-    markup: require('!!prismjs?lang=markup!./validation/timepicker-validation.html')
+    code: require('!!prismjs-loader?lang=typescript!./validation/timepicker-validation'),
+    markup: require('!!prismjs-loader?lang=markup!./validation/timepicker-validation.html')
   },
   config: {
-    code: require('!!prismjs?lang=typescript!./config/timepicker-config'),
-    markup: require('!!prismjs?lang=markup!./config/timepicker-config.html')
+    code: require('!!prismjs-loader?lang=typescript!./config/timepicker-config'),
+    markup: require('!!prismjs-loader?lang=markup!./config/timepicker-config.html')
   }
 };

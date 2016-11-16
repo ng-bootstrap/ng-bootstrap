@@ -9,23 +9,23 @@ export const DEMO_DIRECTIVES =
 
 export const DEMO_SNIPPETS = {
   advanced: {
-    code: require('!!prismjs?lang=typescript!./advanced/pagination-advanced'),
-    markup: require('!!prismjs?lang=markup!./advanced/pagination-advanced.html')
+    code: require('!!prismjs-loader?lang=typescript!./advanced/pagination-advanced'),
+    markup: require('!!prismjs-loader?lang=markup!./advanced/pagination-advanced.html')
   },
   basic: {
-    code: require('!!prismjs?lang=typescript!./basic/pagination-basic'),
-    markup: require('!!prismjs?lang=markup!./basic/pagination-basic.html')
+    code: require('!!prismjs-loader?lang=typescript!./basic/pagination-basic'),
+    markup: require('!!prismjs-loader?lang=markup!./basic/pagination-basic.html')
   },
   size: {
-    code: require('!!prismjs?lang=typescript!./size/pagination-size'),
-    markup: require('!!prismjs?lang=markup!./size/pagination-size.html')
+    code: require('!!prismjs-loader?lang=typescript!./size/pagination-size'),
+    markup: require('!!prismjs-loader?lang=markup!./size/pagination-size.html')
   },
   config: {
-    code: require('!!prismjs?lang=typescript!./config/pagination-config'),
-    markup: require('!!prismjs?lang=markup!./config/pagination-config.html')
+    code: require('!!prismjs-loader?lang=typescript!./config/pagination-config'),
+    markup: require('!!prismjs-loader?lang=markup!./config/pagination-config.html')
   },
   text: {
-    code: require('!!prismjs?lang=typescript!./text/pagination-text'),
-    markup: require('!!prismjs?lang=markup!./text/pagination-text.html')
+    code: require('!!prismjs-loader?lang=typescript!./text/pagination-text'),
+    markup: require('!!prismjs-loader?lang=markup!./text/pagination-text.html')
   }
 };
