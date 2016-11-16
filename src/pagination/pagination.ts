@@ -13,15 +13,15 @@ import {NgbPaginationConfig} from './pagination-config';
       <ul [class]="'pagination' + (size ? ' pagination-' + size : '')">
         <li *ngIf="boundaryLinks" class="page-item" [class.disabled]="!hasPrevious()">
           <a aria-label="First" class="page-link" href (click)="!!selectPage(1)">
-            <span aria-hidden="true">&laquo;&laquo;</span>
-            <span class="sr-only">First</span>
+            <span aria-hidden="true" [innerHtml]="firstText"></span>
+            <span class="sr-only" [innerHtml]="_firstTextSr"></span>
           </a>                
         </li>
       
         <li *ngIf="directionLinks" class="page-item" [class.disabled]="!hasPrevious()">
           <a aria-label="Previous" class="page-link" href (click)="!!selectPage(page-1)">
-            <span aria-hidden="true">&laquo;</span>
-            <span class="sr-only">Previous</span>
+            <span aria-hidden="true" [innerHtml]="previousText"></span>
+            <span class="sr-only" [innerHtml]="_previousTextSr"></span>
           </a>
         </li>
 
@@ -33,15 +33,15 @@ import {NgbPaginationConfig} from './pagination-config';
 
         <li *ngIf="directionLinks" class="page-item" [class.disabled]="!hasNext()">
           <a aria-label="Next" class="page-link" href (click)="!!selectPage(page+1)">
-            <span aria-hidden="true">&raquo;</span>
-            <span class="sr-only">Next</span>
+            <span aria-hidden="true" [innerHtml]="nextText"></span>
+            <span class="sr-only" [innerHtml]="_nextTextSr"></span>
           </a>
         </li>
         
         <li *ngIf="boundaryLinks" class="page-item" [class.disabled]="!hasNext()">
           <a aria-label="Last" class="page-link" href (click)="!!selectPage(pageCount)">
-            <span aria-hidden="true">&raquo;&raquo;</span>
-            <span class="sr-only">Last</span>
+            <span aria-hidden="true" [innerHtml]="lastText"></span>
+            <span class="sr-only" [innerHtml]="_lastTextSr"></span>
           </a>                
         </li>        
       </ul>
@@ -49,6 +49,16 @@ import {NgbPaginationConfig} from './pagination-config';
   `
 })
 export class NgbPagination implements OnChanges {
+  private _firstText;
+  private _firstTextSr = 'First';
+  private _lastText;
+  private _lastTextSr = 'Last';
+  private _nextText;
+  private _nextTextSr = 'Next';
+  private _previousText;
+  private _previousTextSr = 'Previous';
+  private _defaultConfig: NgbPaginationConfig;
+
   pageCount = 0;
   pages: number[] = [];
 
@@ -68,6 +78,19 @@ export class NgbPagination implements OnChanges {
   @Input() ellipses: boolean;
 
   /**
+   * Text to display for the first page button.
+   */
+  @Input()
+  set firstText(value: string) {
+    this._firstText = value;
+    if (value !== this._defaultConfig.firstText) {
+      this._firstTextSr = value;
+    }
+  }
+
+  get firstText() { return this._firstText; }
+
+  /**
    *  Whether to rotate pages when maxSize > number of pages.
    *  Current page will be in the middle
    */
@@ -79,9 +102,35 @@ export class NgbPagination implements OnChanges {
   @Input() collectionSize: number;
 
   /**
+   * Text to display for the last page button.
+   */
+  @Input()
+  set lastText(value: string) {
+    this._lastText = value;
+    if (value !== this._defaultConfig.lastText) {
+      this._lastTextSr = value;
+    }
+  }
+
+  get lastText() { return this._lastText; }
+
+  /**
    *  Maximum number of pages to display.
    */
   @Input() maxSize: number;
+
+  /**
+   * Text to display for the next page button.
+   */
+  @Input()
+  set nextText(value: string) {
+    this._nextText = value;
+    if (value !== this._defaultConfig.nextText) {
+      this._nextTextSr = value;
+    }
+  }
+
+  get nextText() { return this._nextText; }
 
   /**
    *  Current page.
@@ -100,16 +149,34 @@ export class NgbPagination implements OnChanges {
   @Output() pageChange = new EventEmitter<number>(true);
 
   /**
+   * Text to display for the previous page button.
+   */
+  @Input()
+  set previousText(value: string) {
+    this._previousText = value;
+    if (value !== this._defaultConfig.previousText) {
+      this._previousTextSr = value;
+    }
+  }
+
+  get previousText() { return this._previousText; }
+
+  /**
    * Pagination display size: small or large
    */
   @Input() size: 'sm' | 'lg';
 
   constructor(config: NgbPaginationConfig) {
+    this._defaultConfig = config;
     this.boundaryLinks = config.boundaryLinks;
     this.directionLinks = config.directionLinks;
     this.ellipses = config.ellipses;
+    this._firstText = config.firstText;
+    this._lastText = config.lastText;
     this.maxSize = config.maxSize;
+    this._nextText = config.nextText;
     this.pageSize = config.pageSize;
+    this._previousText = config.previousText;
     this.rotate = config.rotate;
     this.size = config.size;
   }

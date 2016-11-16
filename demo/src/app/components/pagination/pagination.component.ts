@@ -19,6 +19,9 @@ import {DEMO_SNIPPETS} from './demos';
       <ngbd-example-box demoTitle="Global configuration of paginations" [snippets]="snippets" component="pagination" demo="config">
         <ngbd-pagination-config></ngbd-pagination-config>
       </ngbd-example-box>
+      <ngbd-example-box demoTitle="Custom text for navigation buttons" [snippets]="snippets" component="pagination" demo="text">
+        <ngbd-pagination-text></ngbd-pagination-text>
+      </ngbd-example-box>
     </ngbd-content-wrapper>
   `
 })
