@@ -1,3 +1,32 @@
+<a name="1.0.0-alpha.13"></a>
+# [1.0.0-alpha.13](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.12...1.0.0-alpha.13) (2016-11-11)
+
+This is a very small release that fixes a problem in the generated Typescript definition files (#1027).
+
+### Bug Fixes
+
+* don't add references to core-js in d.ts files ([d18b103](https://github.com/ng-bootstrap/ng-bootstrap/commit/d18b103)), closes [#1027](https://github.com/ng-bootstrap/ng-bootstrap/issues/1027) [#1028](https://github.com/ng-bootstrap/ng-bootstrap/issues/1028)
+
+
+
+<a name="1.0.0-alpha.12"></a>
+# [1.0.0-alpha.12](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.11...1.0.0-alpha.12) (2016-11-10)
+
+
+### Bug Fixes
+
+* **carousel:** enable key auto-repeat ([fb6294d](https://github.com/ng-bootstrap/ng-bootstrap/commit/fb6294d)), closes [#1025](https://github.com/ng-bootstrap/ng-bootstrap/issues/1025)
+* **modal:** don't stop propagation of click events from content ([6a2c074](https://github.com/ng-bootstrap/ng-bootstrap/commit/6a2c074)), closes [#1011](https://github.com/ng-bootstrap/ng-bootstrap/issues/1011) [#1013](https://github.com/ng-bootstrap/ng-bootstrap/issues/1013)
+* **typeahead:** properly respect focusFirst option ([282a089](https://github.com/ng-bootstrap/ng-bootstrap/commit/282a089)), closes [#876](https://github.com/ng-bootstrap/ng-bootstrap/issues/876) [#1021](https://github.com/ng-bootstrap/ng-bootstrap/issues/1021)
+
+
+### Features
+
+* **datepicker:** add navigation notification with 'navigate' output ([1639626](https://github.com/ng-bootstrap/ng-bootstrap/commit/1639626)), closes [#986](https://github.com/ng-bootstrap/ng-bootstrap/issues/986) [#1002](https://github.com/ng-bootstrap/ng-bootstrap/issues/1002)
+* **rating:** add keyboard support ([da0b6a0](https://github.com/ng-bootstrap/ng-bootstrap/commit/da0b6a0)), closes [#1015](https://github.com/ng-bootstrap/ng-bootstrap/issues/1015)
+
+
+
 <a name="1.0.0-alpha.11"></a>
 # [1.0.0-alpha.11](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.10...1.0.0-alpha.11) (2016-11-03)
 

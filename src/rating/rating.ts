@@ -11,6 +11,16 @@ import {
   ContentChild
 } from '@angular/core';
 import {NgbRatingConfig} from './rating-config';
+import {toString, getValueInRange} from '../util/util';
+
+enum Key {
+  End = 35,
+  Home = 36,
+  ArrowLeft = 37,
+  ArrowUp = 38,
+  ArrowRight = 39,
+  ArrowDown = 40
+}
 
 /**
  * Context for the custom star display template
@@ -28,6 +38,7 @@ export interface StarTemplateContext {
 @Component({
   selector: 'ngb-rating',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {'(keydown)': 'handleKeyDown($event)'},
   template: `
     <template #t let-fill="fill">{{ fill === 100 ? '&#9733;' : '&#9734;' }}</template>
     <span tabindex="0" (mouseleave)="reset()" role="slider" aria-valuemin="0"
@@ -100,6 +111,29 @@ export class NgbRating implements OnInit,
     this.hover.emit(value);
   }
 
+  handleKeyDown(event: KeyboardEvent) {
+    if (Key[toString(event.which)]) {
+      event.preventDefault();
+
+      switch (event.which) {
+        case Key.ArrowDown:
+        case Key.ArrowLeft:
+          this.update(this.rate - 1);
+          break;
+        case Key.ArrowUp:
+        case Key.ArrowRight:
+          this.update(this.rate + 1);
+          break;
+        case Key.Home:
+          this.update(0);
+          break;
+        case Key.End:
+          this.update(this.max);
+          break;
+      }
+    }
+  }
+
   getFillValue(index: number): number {
     const diff = this.rate - index;
 
@@ -128,9 +162,13 @@ export class NgbRating implements OnInit,
 
   update(value: number): void {
     if (!this.readonly) {
-      this._oldRate = value;
-      this.rate = value;
-      this.rateChange.emit(value);
+      const newRate = getValueInRange(value, this.max, 0);
+
+      if (this.rate !== newRate) {
+        this._oldRate = newRate;
+        this.rate = newRate;
+        this.rateChange.emit(newRate);
+      }
     }
   }
 }

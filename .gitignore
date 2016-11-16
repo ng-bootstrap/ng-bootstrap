@@ -7,5 +7,6 @@ npm-debug.log
 .sw*
 .idea
 .vscode
+coverage
 demo/src/api-docs.ts
 demo/src/public/**/plnkr.html

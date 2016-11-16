@@ -101,7 +101,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
           <template [ngIf]="meridian">
             <td>&nbsp;&nbsp;</td>
             <td>
-              <button type="button" class="btn btn-outline-primary" (click)="toggleMeridian()">{{model.hour > 12 ? 'PM' : 'AM'}}</button>
+              <button type="button" class="btn btn-outline-primary" (click)="toggleMeridian()">{{model.hour >= 12 ? 'PM' : 'AM'}}</button>
             </td>
           </template>
         </tr>
@@ -241,7 +241,17 @@ export class NgbTimepicker implements ControlValueAccessor,
     }
   }
 
-  formatHour(value: number) { return padNumber(isNumber(value) ? (value % (this.meridian ? 12 : 24)) : NaN); }
+  formatHour(value: number) {
+    if (isNumber(value)) {
+      if (this.meridian) {
+        return padNumber(value % 12 === 0 ? 12 : value % 12);
+      } else {
+        return padNumber(value % 24);
+      }
+    } else {
+      return padNumber(NaN);
+    }
+  }
 
   formatMinSec(value: number) { return padNumber(value); }
 
