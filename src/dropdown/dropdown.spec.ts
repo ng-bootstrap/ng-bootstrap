@@ -1,7 +1,7 @@
 import {TestBed, ComponentFixture, inject} from '@angular/core/testing';
 import {createGenericTestComponent} from '../test/common';
 
-import {Component} from '@angular/core';
+import {Component, ElementRef, Renderer, NgZone} from '@angular/core';
 import {By} from '@angular/platform-browser';
 
 import {NgbDropdownModule} from './dropdown.module';
@@ -22,7 +22,9 @@ describe('ngb-dropdown', () => {
 
   it('should initialize inputs with provided config', () => {
     const defaultConfig = new NgbDropdownConfig();
-    const dropdown = new NgbDropdown(defaultConfig);
+    const dropdown = new NgbDropdown(
+        <ElementRef>{}, defaultConfig, <Renderer>{attachViewAfter: () => {}, setElementClass: () => {}},
+        <NgZone>{onStable: {subscribe: () => ({unsubscribe: () => {}})}});
     expect(dropdown.up).toBe(defaultConfig.up);
     expect(dropdown.autoClose).toBe(defaultConfig.autoClose);
   });
@@ -410,6 +412,43 @@ describe('ngb-dropdown-toggle', () => {
       const compiled = fixture.nativeElement;
 
       expect(getDropdownEl(compiled)).toHaveCssClass('dropup');
+    });
+  });
+
+  describe('container', () => {
+    let config = new NgbDropdownConfig();
+    config.container = 'body';
+
+    beforeEach(() => {
+      TestBed.configureTestingModule(
+          {imports: [NgbDropdownModule.forRoot()], providers: [{provide: NgbDropdownConfig, useValue: config}]});
+    });
+
+    it('should toggle the menu on body', () => {
+      const html = `
+        <div ngbDropdown>
+            <button ngbDropdownToggle>Toggle dropdown 1</button>
+            <div ngbDropdownMenu>
+              <a class="dropdown-item">Action</a>
+            </div>
+        </div>
+      `;
+      const fixture = createTestComponent(html);
+      fixture.detectChanges();
+
+      const compiled = fixture.nativeElement;
+      const buttonEl = compiled.querySelector('button');
+      const dropdownMenu = compiled.querySelector('.dropdown-menu');
+
+      buttonEl.click();
+      fixture.detectChanges();
+
+      expect(document.querySelector('body > .dropdown-menu')).toBe(dropdownMenu);
+
+      buttonEl.click();
+      fixture.detectChanges();
+
+      expect(document.querySelector('body > .dropdown-menu')).toBeNull();
     });
   });
 });

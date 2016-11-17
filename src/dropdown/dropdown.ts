@@ -1,5 +1,18 @@
-import {Directive, Input, Output, EventEmitter, ElementRef} from '@angular/core';
+import {
+  Directive,
+  Input,
+  Output,
+  EventEmitter,
+  AfterContentInit,
+  OnDestroy,
+  ContentChild,
+  Renderer,
+  ComponentRef,
+  ElementRef,
+  NgZone
+} from '@angular/core';
 import {NgbDropdownConfig} from './dropdown-config';
+import {positionElements} from '../util/positioning';
 
 /**
  * Transforms a node into a dropdown.
@@ -15,7 +28,8 @@ import {NgbDropdownConfig} from './dropdown-config';
     '(document:click)': 'closeFromOutsideClick($event)'
   }
 })
-export class NgbDropdown {
+export class NgbDropdown implements AfterContentInit,
+    OnDestroy {
   private _toggleElement: any;
 
   /**
@@ -29,6 +43,12 @@ export class NgbDropdown {
   @Input() autoClose: boolean;
 
   /**
+   * A selector specifying the element the dropdown should be appended to.
+   * Currently only supports "body".
+   */
+  @Input() container: string;
+
+  /**
    *  Defines whether or not the dropdown-menu is open initially.
    */
   @Input('open') _open = false;
@@ -39,9 +59,16 @@ export class NgbDropdown {
    */
   @Output() openChange = new EventEmitter();
 
-  constructor(config: NgbDropdownConfig) {
+  @ContentChild(NgbDropdownMenu) private _dropdownMenu: NgbDropdownMenu;
+
+  private _zoneSubscription: any;
+
+  constructor(
+      private _elementRef: ElementRef, config: NgbDropdownConfig, private _renderer: Renderer,
+      private _ngZone: NgZone) {
     this.up = config.up;
     this.autoClose = config.autoClose;
+    this.container = config.container;
   }
 
 
@@ -55,6 +82,12 @@ export class NgbDropdown {
    */
   open(): void {
     if (!this._open) {
+      if (this.container === 'body') {
+        let container = window.document.querySelector(this.container);
+        this._renderer.attachViewAfter(container, this._dropdownMenu.elementRef.nativeElement);
+        this._renderer.setElementClass(container, 'open', true);
+      }
+
       this._open = true;
       this.openChange.emit(true);
     }
@@ -65,6 +98,12 @@ export class NgbDropdown {
    */
   close(): void {
     if (this._open) {
+      if (this.container === 'body') {
+        this._renderer.attachViewAfter(this._elementRef.nativeElement, this._dropdownMenu.elementRef.nativeElement);
+        let container = window.document.querySelector(this.container);
+        this._renderer.setElementClass(container, 'open', false);
+      }
+
       this._open = false;
       this.openChange.emit(false);
     }
@@ -93,12 +132,44 @@ export class NgbDropdown {
     }
   }
 
+  ngAfterContentInit() {
+    if (this.container === 'body') {
+      this._zoneSubscription = this._ngZone.onStable.subscribe(() => {
+        positionElements(
+            this._elementRef.nativeElement, this._dropdownMenu.elementRef.nativeElement,
+            this.up ? 'top-left' : 'bottom-left', this.container === 'body');
+      });
+    }
+  }
+
+  ngOnDestroy() {
+    this._removeMenu();
+    if (this._zoneSubscription) {
+      this._zoneSubscription.unsubscribe();
+    }
+  }
+
   /**
    * @internal
    */
   set toggleElement(toggleElement: any) { this._toggleElement = toggleElement; }
 
   private _isEventFromToggle($event) { return !!this._toggleElement && this._toggleElement.contains($event.target); }
+
+  private _removeMenu() {
+    if (this._dropdownMenu) {
+      this._dropdownMenu.elementRef.nativeElement.parentNode.removeChild(this._dropdownMenu);
+    }
+  }
+}
+
+/**
+ * Gives hook for dropdown to get dropdown menu. This directive is
+ * mandatory when appending to body
+ */
+@Directive({selector: '[ngbDropdownMenu]', host: {'class': 'dropdown-menu'}})
+export class NgbDropdownMenu {
+  constructor(public elementRef: ElementRef) {}
 }
 
 /**
