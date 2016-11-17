@@ -10,8 +10,12 @@ export class NgbPaginationConfig {
   boundaryLinks = false;
   directionLinks = true;
   ellipses = true;
+  firstText = '««';
+  lastText = '»»';
   maxSize = 0;
+  nextText = '»';
   pageSize = 10;
+  previousText = '«';
   rotate = false;
   size: 'sm' | 'lg';
 }
