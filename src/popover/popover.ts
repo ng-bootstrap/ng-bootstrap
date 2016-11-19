@@ -40,8 +40,13 @@ export class NgbPopoverWindow {
 /**
  * A lightweight, extensible directive for fancy popover creation.
  */
-@Directive({selector: '[ngbPopover]', exportAs: 'ngbPopover'})
-export class NgbPopover implements OnInit, OnDestroy {
+@Directive({
+  selector: '[ngbPopover]',
+  exportAs: 'ngbPopover',
+  host: {'(document:click)': '_handleClickOutsidePopover($event)'}
+})
+export class NgbPopover implements OnInit,
+    OnDestroy {
   /**
    * Content to be displayed as popover.
    */
@@ -77,6 +82,12 @@ export class NgbPopover implements OnInit, OnDestroy {
   private _unregisterListenersFn;
   private _zoneSubscription: any;
 
+  /**
+   * Set to `true` after the popover opens; used to cancel the document click
+   * handler so it doesn't immediately close the popover.
+   */
+  private _triggered: boolean;
+
   constructor(
       private _elementRef: ElementRef, private _renderer: Renderer, injector: Injector,
       componentFactoryResolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef, config: NgbPopoverConfig,
@@ -96,6 +107,36 @@ export class NgbPopover implements OnInit, OnDestroy {
     });
   }
 
+  private _handleClickOutsidePopover(e) {
+    if (this._triggered) {
+      return this._triggered = false;
+    }
+
+    if (!this._windowRef) {
+      return;
+    }
+
+    /* Make sure click didn't happen inside popover */
+    if (e.target !== this._windowRef.location.nativeElement &&
+        !this._windowRef.location.nativeElement.contains(e.target)) {
+      /**
+       * Trigger event called 'outsideClick' so that the `listenToTriggers` utility function automatically handles the
+       * close action when the close trigger is set to 'outsideClick'.
+       */
+      let ocEvent = document.createEvent('Event');
+      if (ocEvent.initEvent) {
+        /* IE-compatible event initialization */
+        ocEvent.initEvent('outsideClick', true, true);
+      } else {
+        /**
+         * IE-compatible solution is deprecated. Use Event constructor instead if `initEvent` becomes unavailable.
+         */
+        ocEvent = new Event('outsideClick');
+      }
+      this._elementRef.nativeElement.dispatchEvent(ocEvent);
+    }
+  }
+
   /**
    * Opens an element’s popover. This is considered a “manual” triggering of the popover.
    */
@@ -108,6 +149,8 @@ export class NgbPopover implements OnInit, OnDestroy {
       if (this.container === 'body') {
         window.document.querySelector(this.container).appendChild(this._windowRef.location.nativeElement);
       }
+
+      this._triggered = true;
 
       // we need to manually invoke change detection since events registered via
       // Renderer::listen() are not picked up by change detection with the OnPush strategy
@@ -124,6 +167,7 @@ export class NgbPopover implements OnInit, OnDestroy {
       this._popupService.close();
       this._windowRef = null;
       this.hidden.emit();
+      this._triggered = false;
     }
   }
 

@@ -400,6 +400,21 @@ describe('ngb-popover', () => {
       fixture.detectChanges();
       expect(getWindow(fixture.nativeElement)).toBeNull();
     });
+
+    it('should close the popover when the `outsideClick` close trigger is used', () => {
+      const fixture =
+          createTestComponent(`<div class="card" ngbPopover="Great tip!" triggers="click:outsideClick"></div>`);
+      const directive = fixture.debugElement.query(By.directive(NgbPopover));
+
+      /// Have to actually trigger the DOM event so that the document click handler gets called, too.
+      directive.nativeElement.click();
+      fixture.detectChanges();
+      expect(getWindow(fixture.nativeElement)).not.toBeNull();
+
+      window.document.body.click();
+      fixture.detectChanges();
+      expect(getWindow(fixture.nativeElement)).toBeNull();
+    });
   });
 
   describe('Custom config', () => {
