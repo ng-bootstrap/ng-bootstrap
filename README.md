@@ -37,7 +37,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [AppComponent, ...],
-  imports: [NgbModule.forRoot(), ...],  
+  imports: [NgbModule.forRoot(), ...],
   bootstrap: [AppComponent]
 })
 export class AppModule {
@@ -51,7 +51,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [OtherComponent, ...],
-  imports: [NgbModule, ...], 
+  imports: [NgbModule, ...],
 })
 export class OtherModule {
 }
@@ -66,6 +66,14 @@ map: {
   '@ng-bootstrap/ng-bootstrap': 'node_modules/@ng-bootstrap/ng-bootstrap/bundles/ng-bootstrap.js',
 }
 ```
+
+### Stylesheet
+Finally, add the bootstrap stylesheet to your `index.html` in the head section:
+
+```
+<link rel="stylesheet" href="http://v4-alpha.getbootstrap.com/dist/css/bootstrap.min.css" />
+```
+
 ## Supported browsers
 
 We support the same browsers and versions supported by both Bootstrap 4 and Angular 2, whichever is _more_ restrictive.
