@@ -1,4 +1,5 @@
 import {Component, Injectable, ViewChild, OnDestroy, NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {TestBed, ComponentFixture} from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
 
@@ -307,6 +308,16 @@ describe('ngb-modal', () => {
       fixture.detectChanges();
       expect(fixture.nativeElement).toHaveModal();
     });
+
+    it('should not dismiss on clicks that result in detached elements', () => {
+      fixture.componentInstance.openTplIf({});
+      fixture.detectChanges();
+      expect(fixture.nativeElement).toHaveModal();
+
+      (<HTMLElement>fixture.nativeElement.querySelector('button#if')).click();
+      fixture.detectChanges();
+      expect(fixture.nativeElement).toHaveModal();
+    });
   });
 
   describe('keyboard options', () => {
@@ -432,16 +443,23 @@ export class WithActiveModalCmpt {
     <template #destroyableContent><destroyable-cmpt></destroyable-cmpt></template>
     <template #contentWithClose let-close="close"><button id="close" (click)="close('myResult')">Close me</button></template>
     <template #contentWithDismiss let-dismiss="dismiss"><button id="dismiss" (click)="dismiss('myReason')">Dismiss me</button></template>
+    <template #contentWithIf>
+      <template [ngIf]="show">
+        <button id="if" (click)="show = false">Click me</button>
+      </template>
+    </template>
     <button id="open" (click)="open('from button')">Open</button>
   `
 })
 class TestComponent {
   name = 'World';
+  openedModal: NgbModalRef;
+  show = true;
   @ViewChild('content') tplContent;
   @ViewChild('destroyableContent') tplDestroyableContent;
   @ViewChild('contentWithClose') tplContentWithClose;
   @ViewChild('contentWithDismiss') tplContentWithDismiss;
-  openedModal: NgbModalRef;
+  @ViewChild('contentWithIf') tplContentWithIf;
 
   constructor(private modalService: NgbModal) {}
 
@@ -459,12 +477,13 @@ class TestComponent {
   openDestroyableTpl(options?: Object) { return this.modalService.open(this.tplDestroyableContent, options); }
   openTplClose(options?: Object) { return this.modalService.open(this.tplContentWithClose, options); }
   openTplDismiss(options?: Object) { return this.modalService.open(this.tplContentWithDismiss, options); }
+  openTplIf(options?: Object) { return this.modalService.open(this.tplContentWithIf, options); }
 }
 
 @NgModule({
   declarations: [TestComponent, DestroyableCmpt, WithActiveModalCmpt],
   exports: [TestComponent, DestroyableCmpt],
-  imports: [NgbModalModule.forRoot()],
+  imports: [CommonModule, NgbModalModule.forRoot()],
   entryComponents: [DestroyableCmpt, WithActiveModalCmpt],
   providers: [SpyService]
 })

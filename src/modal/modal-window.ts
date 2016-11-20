@@ -7,8 +7,7 @@ import {
   Renderer,
   OnInit,
   AfterViewInit,
-  OnDestroy,
-  ViewChild,
+  OnDestroy
 } from '@angular/core';
 
 import {ModalDismissReasons} from './modal-dismiss-reasons';
@@ -25,15 +24,13 @@ import {ModalDismissReasons} from './modal-dismiss-reasons';
   },
   template: `
     <div [class]="'modal-dialog' + (size ? ' modal-' + size : '')" role="document">
-        <div class="modal-content" #modalContent><ng-content></ng-content></div>
+        <div class="modal-content"><ng-content></ng-content></div>
     </div>
     `
 })
 export class NgbModalWindow implements OnInit,
     AfterViewInit, OnDestroy {
   private _elWithFocus: Element;  // element that is focused prior to modal opening
-
-  @ViewChild('modalContent') contentEl: ElementRef;
 
   @Input() backdrop: boolean | string = true;
   @Input() keyboard = true;
@@ -45,7 +42,7 @@ export class NgbModalWindow implements OnInit,
   constructor(private _elRef: ElementRef, private _renderer: Renderer) {}
 
   backdropClick($event): void {
-    if (this.backdrop === true && !this.contentEl.nativeElement.contains($event.target)) {
+    if (this.backdrop === true && this._elRef.nativeElement === $event.target) {
       this.dismiss(ModalDismissReasons.BACKDROP_CLICK);
     }
   }

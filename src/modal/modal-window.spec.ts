@@ -59,7 +59,7 @@ describe('ngb-modal-dialog', () => {
         done();
       });
 
-      fixture.nativeElement.querySelector('.modal-dialog').click();
+      fixture.nativeElement.click();
     });
 
     it('should not dismiss on modal content click when there is active backdrop', (done) => {
