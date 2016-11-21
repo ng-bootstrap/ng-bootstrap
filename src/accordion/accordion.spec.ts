@@ -56,8 +56,11 @@ describe('ngb-accordion', () => {
 
   it('should have no open panels', () => {
     const fixture = TestBed.createComponent(TestComponent);
+    const accordionEl = fixture.nativeElement.children[0];
     fixture.detectChanges();
     expectOpenPanels(fixture.nativeElement, [false, false, false]);
+    expect(accordionEl.getAttribute('role')).toBe('tablist');
+    expect(accordionEl.getAttribute('aria-multiselectable')).toBe('true');
   });
 
   it('should toggle panels based on "activeIds" values', () => {
@@ -140,6 +143,8 @@ describe('ngb-accordion', () => {
     const el = fixture.nativeElement;
 
     tc.closeOthers = true;
+    fixture.detectChanges();
+    expect(el.children[0].getAttribute('aria-multiselectable')).toBe('false');
 
     getButton(el, 0).click();
     fixture.detectChanges();

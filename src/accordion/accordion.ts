@@ -91,15 +91,18 @@ export interface NgbPanelChangeEvent {
 @Component({
   selector: 'ngb-accordion',
   exportAs: 'ngbAccordion',
+  host: {'role': 'tablist', '[attr.aria-multiselectable]': '!closeOtherPanels'},
   template: `
   <div class="card">
     <template ngFor let-panel [ngForOf]="panels">
-      <div [class]="'card-header ' + (panel.type ? 'card-'+panel.type: type ? 'card-'+type : '')" [class.active]="isOpen(panel.id)">
-        <a href (click)="!!toggle(panel.id)" [class.text-muted]="panel.disabled">
+      <div role="tab" id="{{panel.id}}-header" 
+        [class]="'card-header ' + (panel.type ? 'card-'+panel.type: type ? 'card-'+type : '')" [class.active]="isOpen(panel.id)">
+        <a href (click)="!!toggle(panel.id)" [class.text-muted]="panel.disabled" 
+          [attr.aria-expanded]="isOpen(panel.id)" [attr.aria-controls]="panel.id">
           {{panel.title}}<template [ngTemplateOutlet]="panel.titleTpl?.templateRef"></template>
         </a>
       </div>
-      <div class="card-block" *ngIf="isOpen(panel.id)">
+      <div id="{{panel.id}}" role="tabpanel" [attr.aria-labelledby]="panel.id + '-header'" class="card-block" *ngIf="isOpen(panel.id)">
         <template [ngTemplateOutlet]="panel.contentTpl.templateRef"></template>
       </div>
     </template>
