@@ -1,6 +1,15 @@
 export class NgbDate {
-  static from(date: {year: number, month: number, day?: number}) {
-    return date ? new NgbDate(date.year, date.month ? date.month : 1, date.day ? date.day : 1) : null;
+  static from(date: {year: number, month?: number, day?: number}) {
+    let nDate = date ? new NgbDate(date.year, date.month ? date.month : 1, date.day ? date.day : 1) : null;
+    if (nDate) {
+      // add 1 to year to prevent any date in last valid javascript Date being picked and causing issues around
+      // September
+      let jDate = new Date(nDate.year + 1, nDate.month - 1, nDate.day);
+      if (isNaN(jDate.getTime())) {
+        nDate = null;
+      }
+    }
+    return nDate;
   }
 
   constructor(public year: number, public month: number, public day: number) {}
