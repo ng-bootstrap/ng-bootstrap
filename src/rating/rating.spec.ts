@@ -105,13 +105,16 @@ describe('ngb-rating', () => {
   });
 
   it('handles correctly the click event', () => {
-    const fixture = createTestComponent('<ngb-rating rate="3" max="5"></ngb-rating>');
-
+    const fixture = createTestComponent('<ngb-rating [(rate)]="rate" max="5"></ngb-rating>');
     const compiled = fixture.nativeElement;
+    const ngbRating = fixture.debugElement.query(By.directive(NgbRating)).injector.get(NgbRating);
 
+    ngbRating.enter(2);  // simulate mouseenter
     getStar(compiled, 2).click();
     fixture.detectChanges();
+
     expect(getState(compiled)).toEqual([true, true, false, false, false]);
+    expect(fixture.componentInstance.rate).toBe(2);
   });
 
   it('should set pointer cursor on stars when not readonly', () => {
