@@ -32,16 +32,21 @@ export class NgbDatepickerNavigationSelect implements OnChanges {
 
   @Input() date: NgbDate;
   @Input() disabled: boolean;
-  @Input() maxYear: number;
-  @Input() minYear: number;
+  @Input() maxDate: NgbDate;
+  @Input() minDate: NgbDate;
 
   @Output() select = new EventEmitter<NgbDate>();
 
-  constructor(public i18n: NgbDatepickerI18n, calendar: NgbCalendar) { this.months = calendar.getMonths(); }
+  constructor(public i18n: NgbDatepickerI18n, private calendar: NgbCalendar) { this.months = calendar.getMonths(); }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['maxYear'] || changes['minYear']) {
+    if (changes['maxDate'] || changes['minDate']) {
       this._generateYears();
+      this._generateMonths();
+    }
+
+    if (changes['date'] && changes['date'].currentValue.year !== changes['date'].previousValue.year) {
+      this._generateMonths();
     }
   }
 
@@ -49,7 +54,21 @@ export class NgbDatepickerNavigationSelect implements OnChanges {
 
   changeYear(year: string) { this.select.emit(new NgbDate(toInteger(year), this.date.month, 1)); }
 
+  private _generateMonths() {
+    this.months = this.calendar.getMonths();
+
+    if (this.date.year === this.minDate.year) {
+      const index = this.months.findIndex(month => month === this.minDate.month);
+      this.months = this.months.slice(index);
+    }
+
+    if (this.date.year === this.maxDate.year) {
+      const index = this.months.findIndex(month => month === this.maxDate.month);
+      this.months = this.months.slice(0, index + 1);
+    }
+  }
+
   private _generateYears() {
-    this.years = Array.from({length: this.maxYear - this.minYear + 1}, (e, i) => this.minYear + i);
+    this.years = Array.from({length: this.maxDate.year - this.minDate.year + 1}, (e, i) => this.minDate.year + i);
   }
 }

@@ -31,36 +31,70 @@ describe('ngb-datepicker-navigation-select', () => {
 
   it('should generate month options correctly', () => {
     const fixture =
-        createTestComponent(`<ngb-datepicker-navigation-select [date]="date" [minYear]="minYear" [maxYear]="maxYear">`);
+        createTestComponent(`<ngb-datepicker-navigation-select [date]="date" [minDate]="minDate" [maxDate]="maxDate">`);
 
     expect(getOptionValues(getMonthSelect(fixture.nativeElement))).toEqual([
       '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'
     ]);
+
+    fixture.componentInstance.minDate = new NgbDate(2016, 7, 1);
+    fixture.detectChanges();
+    expect(getOptionValues(getMonthSelect(fixture.nativeElement))).toEqual(['7', '8', '9', '10', '11', '12']);
+
+    fixture.componentInstance.maxDate = new NgbDate(2016, 9, 1);
+    fixture.detectChanges();
+    expect(getOptionValues(getMonthSelect(fixture.nativeElement))).toEqual(['7', '8', '9']);
+
+    fixture.componentInstance.minDate = new NgbDate(2015, 1, 1);
+    fixture.detectChanges();
+    expect(getOptionValues(getMonthSelect(fixture.nativeElement))).toEqual([
+      '1', '2', '3', '4', '5', '6', '7', '8', '9'
+    ]);
+  });
+
+  it('should update months when current date changes', () => {
+    const fixture =
+        createTestComponent(`<ngb-datepicker-navigation-select [date]="date" [minDate]="minDate" [maxDate]="maxDate">`);
+
+    fixture.componentInstance.minDate = new NgbDate(2015, 7, 1);
+    fixture.componentInstance.maxDate = new NgbDate(2017, 7, 1);
+    fixture.detectChanges();
+    expect(getOptionValues(getMonthSelect(fixture.nativeElement))).toEqual([
+      '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'
+    ]);
+
+    fixture.componentInstance.date = new NgbDate(2015, 9, 1);
+    fixture.detectChanges();
+    expect(getOptionValues(getMonthSelect(fixture.nativeElement))).toEqual(['7', '8', '9', '10', '11', '12']);
+
+    fixture.componentInstance.date = new NgbDate(2017, 5, 1);
+    fixture.detectChanges();
+    expect(getOptionValues(getMonthSelect(fixture.nativeElement))).toEqual(['1', '2', '3', '4', '5', '6', '7']);
   });
 
   it('should generate year options correctly', () => {
     const fixture =
-        createTestComponent(`<ngb-datepicker-navigation-select [date]="date" [minYear]="minYear" [maxYear]="maxYear">`);
+        createTestComponent(`<ngb-datepicker-navigation-select [date]="date" [minDate]="minDate" [maxDate]="maxDate">`);
 
     const yearSelect = getYearSelect(fixture.nativeElement);
     expect(getOptionValues(yearSelect)).toEqual(['2015', '2016', '2017', '2018', '2019', '2020']);
 
-    fixture.componentInstance.maxYear = 2017;
+    fixture.componentInstance.maxDate = new NgbDate(2017, 1, 1);
     fixture.detectChanges();
     expect(getOptionValues(yearSelect)).toEqual(['2015', '2016', '2017']);
 
-    fixture.componentInstance.minYear = 2014;
+    fixture.componentInstance.minDate = new NgbDate(2014, 1, 1);
     fixture.detectChanges();
     expect(getOptionValues(yearSelect)).toEqual(['2014', '2015', '2016', '2017']);
 
-    fixture.componentInstance.minYear = 2017;
+    fixture.componentInstance.minDate = new NgbDate(2017, 1, 1);
     fixture.detectChanges();
     expect(getOptionValues(yearSelect)).toEqual(['2017']);
   });
 
   it('should send date selection events', () => {
     const fixture = createTestComponent(
-        `<ngb-datepicker-navigation-select [date]="date" [minYear]="minYear" [maxYear]="maxYear" (select)="onSelect($event)">`);
+        `<ngb-datepicker-navigation-select [date]="date" [minDate]="minDate" [maxDate]="maxDate" (select)="onSelect($event)">`);
 
     const monthSelect = getMonthSelect(fixture.nativeElement);
     const yearSelect = getYearSelect(fixture.nativeElement);
@@ -82,7 +116,7 @@ describe('ngb-datepicker-navigation-select', () => {
 
   it('should select months and years when date changes', () => {
     const fixture =
-        createTestComponent(`<ngb-datepicker-navigation-select [date]="date" [minYear]="minYear" [maxYear]="maxYear">`);
+        createTestComponent(`<ngb-datepicker-navigation-select [date]="date" [minDate]="minDate" [maxDate]="maxDate">`);
 
     expect(getMonthSelect(fixture.nativeElement).value).toBe('8');
     expect(getYearSelect(fixture.nativeElement).value).toBe('2016');
@@ -101,7 +135,7 @@ describe('ngb-datepicker-navigation-select', () => {
 
   it('should have disabled select boxes when disabled', () => {
     const fixture = createTestComponent(
-        `<ngb-datepicker-navigation-select [disabled]="true" [date]="date" [minYear]="minYear" [maxYear]="maxYear">`);
+        `<ngb-datepicker-navigation-select [disabled]="true" [date]="date" [minDate]="minDate" [maxDate]="maxDate">`);
 
     expect(getMonthSelect(fixture.nativeElement).disabled).toBe(true);
     expect(getYearSelect(fixture.nativeElement).disabled).toBe(true);
@@ -112,8 +146,8 @@ describe('ngb-datepicker-navigation-select', () => {
 @Component({selector: 'test-cmp', template: ''})
 class TestComponent {
   date = new NgbDate(2016, 8, 22);
-  minYear = 2015;
-  maxYear = 2020;
+  minDate = new NgbDate(2015, 1, 1);
+  maxDate = new NgbDate(2020, 1, 1);
 
   onSelect = () => {};
 }

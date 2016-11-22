@@ -59,13 +59,12 @@ export interface NgbDatepickerNavigateEvent {
     </template>
 
     <ngb-datepicker-navigation *ngIf="navigation !== 'none'"
-      [date]="_date"
+      [date]="months[0]?.firstDate"
       [minDate]="_minDate"
       [maxDate]="_maxDate"
       [disabled]="disabled"
       [showWeekNumbers]="showWeekNumbers"
       [showSelect]="navigation === 'select'"
-      [firstDate]="months[0]?.firstDate"
       (navigate)="onNavigateEvent($event)"
       (select)="onNavigateDateSelect($event)">
     </ngb-datepicker-navigation>
