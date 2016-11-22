@@ -164,7 +164,7 @@ export class NgbRating implements OnInit,
     if (!this.readonly) {
       const newRate = getValueInRange(value, this.max, 0);
 
-      if (this.rate !== newRate) {
+      if (this._oldRate !== newRate) {
         this._oldRate = newRate;
         this.rate = newRate;
         this.rateChange.emit(newRate);
