@@ -94,8 +94,8 @@ export interface NgbPanelChangeEvent {
   template: `
   <div class="card">
     <template ngFor let-panel [ngForOf]="panels">
-      <div [class]="'card-header ' + (panel.type ? 'card-'+panel.type: type ? 'card-'+type : '')" [class.active]="isOpen(panel.id)">
-        <a href (click)="!!toggle(panel.id)" [class.text-muted]="panel.disabled">
+      <div (click)="!!toggleHeader(panel.id)" [class]="'card-header ' + (panel.type ? 'card-'+panel.type: type ? 'card-'+type : '')" [class.active]="isOpen(panel.id)">
+        <a href (click)="!!toggleTitle(panel.id)" [class.text-muted]="panel.disabled">
           {{panel.title}}<template [ngTemplateOutlet]="panel.titleTpl?.templateRef"></template>
         </a>
       </div>
@@ -124,6 +124,11 @@ export class NgbAccordion implements AfterContentChecked {
    *  Bootstrap 4 recognizes the following types: "success", "info", "warning" and "danger".
    */
   @Input() type: string;
+
+  /**
+   * Toggle accordion by clicking header
+   */
+  @Input() toggleUsingHeader: boolean = false;
 
 
   /**
@@ -167,6 +172,18 @@ export class NgbAccordion implements AfterContentChecked {
         }
         this._updateActiveIds();
       }
+    }
+  }
+
+  toggleHeader(panelId: string) {
+    if (this.toggleUsingHeader) {
+      this.toggle(panelId);
+    }
+  }
+
+  toggleTitle(panelId: string) {
+    if (!this.toggleUsingHeader) {
+      this.toggle(panelId);
     }
   }
 
