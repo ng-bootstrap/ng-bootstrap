@@ -501,6 +501,39 @@ describe('ngb-typeahead', () => {
            expect(fixture.componentInstance.model).toBe('one');
          });
        }));
+
+    it('should clear model on user input when the editable option is on', async(() => {
+         const html = `
+            <form>
+              <input type="text" [(ngModel)]="model" name="control" required [ngbTypeahead]="find" [editable]="false"/>
+            </form>`;
+         const fixture = createTestComponent(html);
+         fixture.whenStable().then(() => {
+           fixture.detectChanges();
+           const compiled = fixture.nativeElement;
+           expect(getNativeInput(compiled)).toHaveCssClass('ng-invalid');
+           expect(getNativeInput(compiled)).not.toHaveCssClass('ng-valid');
+
+           changeInput(compiled, 'o');
+           fixture.detectChanges();
+           expect(getNativeInput(compiled)).toHaveCssClass('ng-invalid');
+           expect(getNativeInput(compiled)).not.toHaveCssClass('ng-valid');
+           expect(fixture.componentInstance.model).toBeUndefined();
+
+           const event = createKeyDownEvent(Key.Enter);
+           getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
+           fixture.detectChanges();
+           expect(getNativeInput(compiled)).not.toHaveCssClass('ng-invalid');
+           expect(getNativeInput(compiled)).toHaveCssClass('ng-valid');
+           expect(fixture.componentInstance.model).toBe('one');
+
+           changeInput(compiled, 'tw');
+           fixture.detectChanges();
+           expect(getNativeInput(compiled)).toHaveCssClass('ng-invalid');
+           expect(getNativeInput(compiled)).not.toHaveCssClass('ng-valid');
+           expect(fixture.componentInstance.model).toBeUndefined();
+         });
+       }));
   });
 
   describe('select event', () => {

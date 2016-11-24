@@ -156,7 +156,12 @@ export class NgbTypeahead implements ControlValueAccessor,
                 this._onChange(value);
               }
             })
-            .let (this.ngbTypeahead));
+            .let (this.ngbTypeahead)
+            .do(_ => {
+              if (!this.editable) {
+                this._onChange(undefined);
+              }
+            }));
   }
 
   ngOnDestroy() {
