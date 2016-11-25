@@ -1,3 +1,25 @@
+<a name="1.0.0-alpha.14"></a>
+# [1.0.0-alpha.14](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.13...1.0.0-alpha.14) (2016-11-25)
+
+
+### Bug Fixes
+
+* **datepicker:** navigation restrictions work with min- and maxDate ([a12c559](https://github.com/ng-bootstrap/ng-bootstrap/commit/a12c559)), closes [#1057](https://github.com/ng-bootstrap/ng-bootstrap/issues/1057) [#1077](https://github.com/ng-bootstrap/ng-bootstrap/issues/1077)
+* **demo:** upgrade webpack and loaders ([994deda](https://github.com/ng-bootstrap/ng-bootstrap/commit/994deda)), closes [#1047](https://github.com/ng-bootstrap/ng-bootstrap/issues/1047) [#1048](https://github.com/ng-bootstrap/ng-bootstrap/issues/1048)
+* **modal:** stricter interpretation of backdrop clicks ([3af8329](https://github.com/ng-bootstrap/ng-bootstrap/commit/3af8329)), closes [#1040](https://github.com/ng-bootstrap/ng-bootstrap/issues/1040) [#1042](https://github.com/ng-bootstrap/ng-bootstrap/issues/1042) [#1067](https://github.com/ng-bootstrap/ng-bootstrap/issues/1067)
+* **progressbar:** progress stays striped when type changes ([e3af043](https://github.com/ng-bootstrap/ng-bootstrap/commit/e3af043)), closes [#1035](https://github.com/ng-bootstrap/ng-bootstrap/issues/1035) [#1038](https://github.com/ng-bootstrap/ng-bootstrap/issues/1038)
+* **rating:** restore update on click functionality ([a64a8a0](https://github.com/ng-bootstrap/ng-bootstrap/commit/a64a8a0)), closes [#1072](https://github.com/ng-bootstrap/ng-bootstrap/issues/1072) [#1074](https://github.com/ng-bootstrap/ng-bootstrap/issues/1074)
+* **timepicker:** display 12 PM/AM when merdian is true ([91ca518](https://github.com/ng-bootstrap/ng-bootstrap/commit/91ca518)), closes [#1031](https://github.com/ng-bootstrap/ng-bootstrap/issues/1031) [#1033](https://github.com/ng-bootstrap/ng-bootstrap/issues/1033)
+* **typeahead:** clear model on user input when editable=false ([cfbc24a](https://github.com/ng-bootstrap/ng-bootstrap/commit/cfbc24a)), closes [#829](https://github.com/ng-bootstrap/ng-bootstrap/issues/829) [#1083](https://github.com/ng-bootstrap/ng-bootstrap/issues/1083)
+
+
+### Features
+
+* **accordion:** add aria attributes ([ed5d4ca](https://github.com/ng-bootstrap/ng-bootstrap/commit/ed5d4ca)), closes [#1070](https://github.com/ng-bootstrap/ng-bootstrap/issues/1070)
+* **typeahead:** do not trap keydown enter event ([1702df9](https://github.com/ng-bootstrap/ng-bootstrap/commit/1702df9)), closes [#958](https://github.com/ng-bootstrap/ng-bootstrap/issues/958) [#877](https://github.com/ng-bootstrap/ng-bootstrap/issues/877) [#980](https://github.com/ng-bootstrap/ng-bootstrap/issues/980) [#1032](https://github.com/ng-bootstrap/ng-bootstrap/issues/1032) [#1032](https://github.com/ng-bootstrap/ng-bootstrap/issues/1032)
+
+
+
 <a name="1.0.0-alpha.13"></a>
 # [1.0.0-alpha.13](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.12...1.0.0-alpha.13) (2016-11-11)
 
