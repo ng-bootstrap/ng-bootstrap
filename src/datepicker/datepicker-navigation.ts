@@ -29,10 +29,10 @@ import {NgbCalendar} from './ngb-calendar';
           </ngb-datepicker-navigation-select>
         </td>        
         
-        <div class="text-sm-right">
+        <td class="text-sm-right">
           <button type="button" (click)="doNavigate(navigation.NEXT)" class="next btn btn-sm btn-secondary btn-inline" 
             [disabled]="nextDisabled()">&gt;</button>
-        </div>
+        </td>
       </tr>
     </table>
   `
