@@ -21,6 +21,8 @@ export class NgbRadioGroup implements ControlValueAccessor {
   private _radios: Set<NgbRadio> = new Set<NgbRadio>();
   private _value = null;
 
+  get disabled() { return this._disabled; }
+
   onChange = (_: any) => {};
   onTouched = () => {};
 
@@ -29,7 +31,7 @@ export class NgbRadioGroup implements ControlValueAccessor {
     this.onChange(radio.value);
   }
 
-  onRadioValueUpdate() { this._updateRadios(); }
+  onRadioValueUpdate() { this._updateRadioValues(); }
 
   register(radio: NgbRadio) { this._radios.add(radio); }
 
@@ -38,18 +40,21 @@ export class NgbRadioGroup implements ControlValueAccessor {
   registerOnTouched(fn: () => any): void { this.onTouched = fn; }
 
   setDisabledState(isDisabled: boolean): void {
-    this._disabled = isDisabled;
-    this._updateRadios();
+    if (this._disabled !== isDisabled) {
+      this._disabled = isDisabled;
+      this._updateRadioDisableState();
+    }
   }
 
   unregister(radio: NgbRadio) { this._radios.delete(radio); }
 
   writeValue(value) {
     this._value = value;
-    this._updateRadios();
+    this._updateRadioValues();
   }
 
-  private _updateRadios() { this._radios.forEach((radio) => radio.update(this._value, this._disabled)); }
+  private _updateRadioValues() { this._radios.forEach((radio) => radio.updateValue(this._value)); }
+  private _updateRadioDisableState() { this._radios.forEach((radio) => radio.updateDisableState(this._disabled)); }
 }
 
 
@@ -98,13 +103,17 @@ export class NgbRadio implements OnDestroy {
   }
 
   @Input('checked')
-  set checked(value: any) {
-    this._checked = this._element.nativeElement.hasAttribute('checked') ? true : value;
-  }
+  set checked(value: any) { this._checked = this._element.nativeElement.hasAttribute('checked') ? true : value; }
 
   @Input('disabled')
   set disabled(value: any) {
-    this._disabled = this._element.nativeElement.hasAttribute('disabled') ? true : value;
+    // All values except for 'false' make the component disabled.
+    value = (value != null && value !== false) ? true : false;
+
+    this._disabled = (this._group && this._group.disabled) || value;
+    if (this._label) {
+      this._label.disabled = this._disabled;
+    }
   }
 
   set focused(isFocused: boolean) {
@@ -139,10 +148,10 @@ export class NgbRadio implements OnDestroy {
     }
   }
 
-  update(value, isDisabled) {
+  updateValue(value: any) {
     this._checked = (this.value === value && value !== null);
-    this._disabled = isDisabled;
-    this._label.active = this._checked;
-    this._label.disabled = this._disabled;
+    this._label.active = this.checked;
   }
+
+  updateDisableState(isDisabled) { this.disabled = isDisabled; }
 }

@@ -1,9 +1,9 @@
-import {TestBed, ComponentFixture, async} from '@angular/core/testing';
-import {By} from '@angular/platform-browser';
-import {createGenericTestComponent} from '../test/common';
-
 import {Component} from '@angular/core';
-import {Validators, FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {By} from '@angular/platform-browser';
+
+import {createGenericTestComponent} from '../test/common';
 
 import {NgbButtonsModule} from './radio.module';
 
@@ -318,6 +318,24 @@ describe('ngbRadioGroup', () => {
     expect(getGroupElement(fixture.nativeElement)).not.toHaveCssClass('ng-invalid');
   });
 
+  it('should toggle disabled state for default inputs of "type=radio"', () => {
+
+    const html = `
+      <label class="btn">          
+        <input type="radio" name="radio" [disabled]="disabled"/>
+      </label>`;
+
+    const fixture = createTestComponent(html);
+    expect(getLabel(fixture.nativeElement, 0)).toHaveCssClass('disabled');
+    expect(getInput(fixture.nativeElement, 0).hasAttribute('disabled')).toBeTruthy();
+
+    fixture.componentInstance.disabled = false;
+
+    fixture.detectChanges();
+    expect(getLabel(fixture.nativeElement, 0)).not.toHaveCssClass('disabled');
+    expect(getInput(fixture.nativeElement, 0).hasAttribute('disabled')).toBeFalsy();
+  });
+
   it('should disable label and input when it is disabled using reactive forms', () => {
     const html = `
       <form [formGroup]="disabledForm">
@@ -421,6 +439,27 @@ describe('ngbRadioGroup', () => {
     expect(getInput(fixture.nativeElement, 1).disabled).toBeFalsy();
 
   });
+
+  it('should disable a radio button when disabled attribute is used with ngbRadioGroup', async(() => {
+       const html1 = `
+          <div ngbRadioGroup ngModel>
+            <label class="btn">
+              <input type="radio" value="foo"/>
+            </label>        
+            <label class="btn">
+              <input type="radio" name="State" [value]="1" disabled /> Foo Foo <br>
+            </label>
+          </div>`;
+
+       const fixture = createTestComponent(html1);
+       fixture.autoDetectChanges();  // needed in order to emulate exact angular behaviour
+
+       fixture.whenStable().then(() => {
+         expect(getInput(fixture.nativeElement, 0).disabled).toBeFalsy();
+         expect(getInput(fixture.nativeElement, 1).disabled).toBeTruthy();
+       });
+
+     }));
 
   it('handle multiple cases for binded checked attribute.', () => {
     const html1 = `
