@@ -48,6 +48,14 @@ export class NgbDatepickerService {
     return month;
   }
 
+  toValidDate(date: {year: number, month: number, day?: number}, defaultValue?: NgbDate): NgbDate {
+    const ngbDate = NgbDate.from(date);
+    if (defaultValue === undefined) {
+      defaultValue = this._calendar.getToday();
+    }
+    return this._calendar.isValid(ngbDate) ? ngbDate : defaultValue;
+  }
+
   private _getFirstViewDate(date: NgbDate, firstDayOfWeek: number): NgbDate {
     const currentMonth = date.month;
     let today = new NgbDate(date.year, date.month, date.day);
