@@ -1,4 +1,13 @@
-import {Directive, ElementRef, forwardRef, Input, OnDestroy, Optional, Renderer} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Directive,
+  ElementRef,
+  forwardRef,
+  Input,
+  OnDestroy,
+  Optional,
+  Renderer
+} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 const NGB_RADIO_VALUE_ACCESSOR = {
@@ -54,7 +63,7 @@ export class NgbRadioGroup implements ControlValueAccessor {
   }
 
   private _updateRadioValues() { this._radios.forEach((radio) => radio.updateValue(this._value)); }
-  private _updateRadioDisableState() { this._radios.forEach((radio) => radio.updateDisableState(this._disabled)); }
+  private _updateRadioDisableState() { this._radios.forEach((radio) => radio.updateDisableState()); }
 }
 
 
@@ -85,7 +94,7 @@ export class NgbActiveLabel {
 })
 export class NgbRadio implements OnDestroy {
   private _checked: boolean;
-  private _disabled: boolean;
+  private _disabled: boolean = false;
   private _value: any = null;
 
   /**
@@ -110,12 +119,7 @@ export class NgbRadio implements OnDestroy {
   @Input('disabled')
   set disabled(value: any) {
     // All values except for 'false' make the component disabled.
-    value = (value != null && value !== false) ? true : false;
-
-    this._disabled = (this._group && this._group.disabled) || value;
-    if (this._label) {
-      this._label.disabled = this._disabled;
-    }
+    this._disabled = (value != null && value !== false) ? true : false;
   }
 
   set focused(isFocused: boolean) {
@@ -128,11 +132,17 @@ export class NgbRadio implements OnDestroy {
 
   get checked() { return this._checked; }
 
-  get disabled() { return this._disabled; }
+  get disabled() {
+    let result = (this._group && this._group.disabled) || this._disabled;
+    if (this._label) {
+      this._label.disabled = result;
+    }
+    return result;
+  }
 
   constructor(
       @Optional() private _group: NgbRadioGroup, @Optional() private _label: NgbActiveLabel,
-      private _renderer: Renderer, private _element: ElementRef) {
+      private _renderer: Renderer, private _element: ElementRef, private _crf: ChangeDetectorRef) {
     if (this._group) {
       this._group.register(this);
     }
@@ -155,5 +165,5 @@ export class NgbRadio implements OnDestroy {
     this._label.active = this.checked;
   }
 
-  updateDisableState(isDisabled) { this.disabled = isDisabled; }
+  updateDisableState() { this._crf.detectChanges(); }
 }

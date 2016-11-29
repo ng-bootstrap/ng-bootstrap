@@ -336,6 +336,65 @@ describe('ngbRadioGroup', () => {
     expect(getInput(fixture.nativeElement, 0).hasAttribute('disabled')).toBeFalsy();
   });
 
+  it('if ngbRadioGroup is disabled then inputs are disabled, otherwise inputs are disabled independently', async(() => {
+       const html = `
+          <div ngbRadioGroup ngModel [disabled]="disabled">
+            <label class="btn">          
+              <input id="1" type="radio" name="radio" [disabled]="disableInput"/>
+            </label>
+            <label class="btn">          
+              <input id="2" type="radio" name="radio"/>
+            </label>        
+          </div>`;
+
+       const fixture = createTestComponent(html);
+
+       fixture.whenStable()
+           .then(() => {
+             expect(getLabel(fixture.nativeElement, 0)).toHaveCssClass('disabled');
+             expect(getInput(fixture.nativeElement, 0).hasAttribute('disabled')).toBeTruthy();
+             expect(getLabel(fixture.nativeElement, 1)).toHaveCssClass('disabled');
+             expect(getInput(fixture.nativeElement, 1).hasAttribute('disabled')).toBeTruthy();
+
+             fixture.componentInstance.disabled = false;
+             fixture.detectChanges();
+             return fixture.whenStable();
+           })
+           .then(() => {
+             expect(getLabel(fixture.nativeElement, 0)).toHaveCssClass('disabled');
+             expect(getInput(fixture.nativeElement, 0).hasAttribute('disabled')).toBeTruthy();
+             expect(getLabel(fixture.nativeElement, 1)).not.toHaveCssClass('disabled');
+             expect(getInput(fixture.nativeElement, 1).hasAttribute('disabled')).toBeFalsy();
+
+             fixture.componentInstance.disableInput = false;
+             fixture.detectChanges();
+             return fixture.whenStable();
+           })
+           .then(() => {
+             expect(getLabel(fixture.nativeElement, 0)).not.toHaveCssClass('disabled');
+             expect(getInput(fixture.nativeElement, 0).hasAttribute('disabled')).toBeFalsy();
+
+             fixture.componentInstance.disableInput = true;
+             fixture.detectChanges();
+             return fixture.whenStable();
+           })
+           .then(() => {
+             expect(getLabel(fixture.nativeElement, 0)).toHaveCssClass('disabled');
+             expect(getInput(fixture.nativeElement, 0).hasAttribute('disabled')).toBeTruthy();
+
+             fixture.componentInstance.disableInput = false;
+             fixture.componentInstance.disabled = true;
+             fixture.detectChanges();
+             return fixture.whenStable();
+           })
+           .then(() => {
+             expect(getLabel(fixture.nativeElement, 0)).toHaveCssClass('disabled');
+             expect(getInput(fixture.nativeElement, 0).hasAttribute('disabled')).toBeTruthy();
+             expect(getLabel(fixture.nativeElement, 1)).toHaveCssClass('disabled');
+             expect(getInput(fixture.nativeElement, 1).hasAttribute('disabled')).toBeTruthy();
+           });
+     }));
+
   it('should disable label and input when it is disabled using reactive forms', () => {
     const html = `
       <form [formGroup]="disabledForm">
@@ -543,5 +602,6 @@ class TestComponent {
   values: any = ['one', 'two', 'three'];
   shown = true;
   disabled = true;
+  disableInput = true;
   checked: any;
 }
