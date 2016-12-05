@@ -27,10 +27,16 @@ function expectPages(nativeEl: HTMLElement, pagesDef: string[]): void {
       expect(pages[i]).not.toHaveCssClass('active');
       expect(pages[i]).toHaveCssClass('disabled');
       expect(normalizeText(pages[i].textContent)).toEqual(pageDef.substr(1));
+      if (normalizeText(pages[i].textContent) !== '...') {
+        expect(pages[i].querySelector('a').getAttribute('tabindex')).toEqual('-1');
+      }
     } else {
       expect(pages[i]).not.toHaveCssClass('active');
       expect(pages[i]).not.toHaveCssClass('disabled');
       expect(normalizeText(pages[i].textContent)).toEqual(pageDef);
+      if (normalizeText(pages[i].textContent) !== '...') {
+        expect(pages[i].querySelector('a').hasAttribute('tabindex')).toBeFalsy();
+      }
     }
   }
 }
