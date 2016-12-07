@@ -80,6 +80,23 @@ describe('ngb-tabset', () => {
     expectTabs(fixture.nativeElement, [true, false]);
   });
 
+  it('should have aria attributes', () => {
+    const fixture = createTestComponent(`
+      <ngb-tabset>
+        <ngb-tab title="foo"><template ngbTabContent>Foo</template></ngb-tab>
+        <ngb-tab title="bar"><template ngbTabContent>Bar</template></ngb-tab>
+      </ngb-tabset>
+    `);
+
+    const tabTitles = getTabTitles(fixture.nativeElement);
+    const tabContent = getTabContent(fixture.nativeElement);
+
+    expect(tabTitles[0].getAttribute('role')).toBe('tab');
+    expect(tabTitles[0].getAttribute('aria-expanded')).toBe('true');
+    expect(tabTitles[1].getAttribute('aria-expanded')).toBe('false');
+    expect(tabTitles[0].getAttribute('aria-controls')).toBe(tabContent[0].getAttribute('id'));
+  });
+
   it('should allow mix of text and HTML in tab titles', () => {
     const fixture = createTestComponent(`
       <ngb-tabset>
