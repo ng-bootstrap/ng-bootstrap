@@ -1,50 +1,83 @@
-import {NgbDateHijri} from './ngb-date-hijri';
+import {NgbDate} from '../ngb-date';
 import {NgbPeriod, NgbCalendar} from '../ngb-calendar';
 import {Injectable} from '@angular/core';
 
 @Injectable()
-export class NgbCalendarHijri extends NgbCalendar {
-  constructor(public dateModel: {new (...args: number[]): NgbDateHijri}) { super(); }
+export abstract class NgbCalendarHijri extends NgbCalendar {
   getDaysPerWeek() { return 7; }
 
-  getMonths() { return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]; }
+  getMonths() { return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]; }
 
   getWeeksPerMonth() { return 6; }
 
-  getNext(date: NgbDateHijri, period: NgbPeriod = 'd', number = 1) {
-    let islamicDate = new this.dateModel(date.year, date.month, date.day);
-    switch (period) {
-      case 'y':
-        return new this.dateModel(date.year + number, 0, 1);
-      case 'm':
-        islamicDate.setMonth(islamicDate.month + number);
-        islamicDate.setDay(1);
-        return islamicDate;
-      case 'd':
-        islamicDate.setDay(islamicDate.day + number);
-        return islamicDate;
-      default:
-        return date;
+  public setDay(date: NgbDate, dayValue: number): NgbDate {
+    dayValue = +dayValue;
+    let mdays = this.getDaysInIslamicMonth(date.month, date.year);
+    if (dayValue <= 0) {
+      while (dayValue <= 0) {
+        date = this.setMonth(date, date.month - 1);
+        mdays = this.getDaysInIslamicMonth(date.month, date.year);
+        dayValue += mdays;
+      }
+    } else if (dayValue > mdays) {
+      while (dayValue > mdays) {
+        dayValue -= mdays;
+        date = this.setMonth(date, date.month + 1);
+        mdays = this.getDaysInIslamicMonth(date.month, date.year);
+      }
     }
+    date.day = dayValue;
+    return date;
   }
 
-  getPrev(date: NgbDateHijri, period: NgbPeriod = 'd', number = 1) { return this.getNext(date, period, -number); }
-
-  getWeekday(date: NgbDateHijri) {
-    let islamicDate = new this.dateModel(date.year, date.month, date.day);
-    return islamicDate.toGregorian().getDay();
+  public setMonth(date: NgbDate, month: number): NgbDate {
+    month = +month;
+    date.year = date.year + Math.floor((month - 1) / 12);
+    date.month = Math.floor(((month - 1) % 12 + 12) % 12) + 1;
+    return date;
   }
 
-  getWeekNumber(week: NgbDateHijri[], firstDayOfWeek: number) {
-    const thursdayIndex = (4 + 7 - firstDayOfWeek) % 7;
-    let date = week[thursdayIndex];
-
-    const islamicDate = new this.dateModel(date.year, date.month, date.day);
-    const time = islamicDate.getTime();
-    islamicDate.setMonth(0);  // Compare with Muh 1
-    islamicDate.setDay(1);
-    return Math.floor(Math.round((time - islamicDate.getTime()) / 86400000) / 7) + 1;  // 24 * 60 * 60 * 1000
+  public setYear(date: NgbDate, yearValue: number): NgbDate {
+    date.year = +yearValue;
+    return date;
   }
 
-  getToday(): NgbDateHijri { return new this.dateModel(); }
+  abstract getWeekday(date: NgbDate): number;
+  abstract getNext(date: NgbDate, period?: NgbPeriod, number?: number): NgbDate;
+  abstract getPrev(date: NgbDate, period?: NgbPeriod, number?: number): NgbDate;
+
+  abstract getWeekNumber(week: NgbDate[], firstDayOfWeek: number): number;
+
+  abstract getToday(): NgbDate;
+
+  /**
+  * Returns the equivalent Hijri date value for a give input Gregorian date.
+  * `gdate` is s JS Date to be converted to Hijri.
+  */
+  abstract fromGregorian(gdate: Date): NgbDate;
+  /**
+  * Converts the current Hijri date to Gregorian.
+  */
+  abstract toGregorian(hijriDate: NgbDate): Date;
+  /**
+  * Returns the number of days in a specific Hijri month.
+  * `month` is 1 for Muharram, 2 for Safar, etc.
+  * `year` is any Hijri year.
+  */
+  public abstract getDaysInIslamicMonth(month: number, year: number): number;
+
+  protected _isIslamicLeapYear(year: number): boolean { return (14 + 11 * year) % 30 < 11; }
+  /**
+   * Returns the start of Hijri Month.
+   * `month` is 0 for Muharram, 1 for Safar, etc.
+   * `year` is any Hijri year.
+   */
+  protected _getMonthStart(year: number, month: number): number {
+    return Math.ceil(29.5 * month) + (year - 1) * 354 + Math.floor((3 + 11 * year) / 30.0);
+  }
+  /**
+   * Returns the start of Hijri year.
+   * `year` is any Hijri year.
+   */
+  protected _getYearStart(year: number): number { return (year - 1) * 354 + Math.floor((3 + 11 * year) / 30.0); }
 }
