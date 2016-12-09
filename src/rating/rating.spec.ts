@@ -28,7 +28,7 @@ function createKeyDownEvent(key: number) {
 
 function getAriaState(compiled) {
   const stars = getStars(compiled, '.sr-only');
-  return stars.map(star => star.textContent === '(*)' && star.textContent !== '( )');
+  return stars.map(star => star.textContent === '(*)');
 }
 
 function getStar(compiled, num: number) {
