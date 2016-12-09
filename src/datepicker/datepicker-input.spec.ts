@@ -83,6 +83,17 @@ describe('NgbInputDatepicker', () => {
       expect(fixture.componentInstance.date).toBeNull();
     });
 
+    it('should keep invalid input when a user enters invalid date with keepInvalidInput', fakeAsync(() => {
+      const fixture = createTestCmpt(`<input ngbDatepicker [(ngModel)]="date" [keepInvalidInput]="true">`);
+      const inputDebugEl = fixture.debugElement.query(By.css('input'));
+      inputDebugEl.nativeElement.value = 'aaa';
+
+      inputDebugEl.triggerEventHandler('change', {target: {value: 'aaa'}});
+      tick();
+      fixture.detectChanges();
+      expect(inputDebugEl.nativeElement.value).toEqual('aaa');
+    }));
+
     it('should propagate disabled state', fakeAsync(() => {
          const fixture = createTestCmpt(`
         <input ngbDatepicker [(ngModel)]="date" #d="ngbDatepicker" [disabled]="isDisabled">
