@@ -62,7 +62,7 @@ export class NgbInputDatepicker implements ControlValueAccessor {
    * Keep invalid dates in input field instead of resetting it to null.
    */
   @Input() keepInvalidInput: boolean;
-  
+
   /**
    * Callback to mark a given date as disabled.
    * 'Current' contains the month that will be displayed in the view
