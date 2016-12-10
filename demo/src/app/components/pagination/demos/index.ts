@@ -2,8 +2,10 @@ import {NgbdPaginationAdvanced} from './advanced/pagination-advanced';
 import {NgbdPaginationBasic} from './basic/pagination-basic';
 import {NgbdPaginationSize} from './size/pagination-size';
 import {NgbdPaginationConfig} from './config/pagination-config';
+import {NgbdPaginationText} from './text/pagination-text';
 
-export const DEMO_DIRECTIVES = [NgbdPaginationAdvanced, NgbdPaginationBasic, NgbdPaginationSize, NgbdPaginationConfig];
+export const DEMO_DIRECTIVES =
+    [NgbdPaginationAdvanced, NgbdPaginationBasic, NgbdPaginationSize, NgbdPaginationConfig, NgbdPaginationText];
 
 export const DEMO_SNIPPETS = {
   advanced: {
@@ -21,5 +23,9 @@ export const DEMO_SNIPPETS = {
   config: {
     code: require('!!prismjs-loader?lang=typescript!./config/pagination-config'),
     markup: require('!!prismjs-loader?lang=markup!./config/pagination-config.html')
+  },
+  text: {
+    code: require('!!prismjs-loader?lang=typescript!./text/pagination-text'),
+    markup: require('!!prismjs-loader?lang=markup!./text/pagination-text.html')
   }
 };
