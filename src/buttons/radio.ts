@@ -142,7 +142,9 @@ export class NgbRadio implements OnDestroy {
   update(value, isDisabled) {
     this._checked = (this.value === value && value !== null);
     this._disabled = isDisabled;
-    this._label.active = this._checked;
-    this._label.disabled = this._disabled;
+    if (this._label) {
+      this._label.active = this._checked;
+      this._label.disabled = this._disabled;
+    }
   }
 }
