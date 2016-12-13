@@ -51,8 +51,11 @@ function expectSameValues(pagination: NgbPagination, config: NgbPaginationConfig
   expect(pagination.boundaryLinks).toBe(config.boundaryLinks);
   expect(pagination.directionLinks).toBe(config.directionLinks);
   expect(pagination.ellipses).toBe(config.ellipses);
+  expect(pagination.lastText).toBe(config.lastText);
   expect(pagination.maxSize).toBe(config.maxSize);
+  expect(pagination.nextText).toBe(config.nextText);
   expect(pagination.pageSize).toBe(config.pageSize);
+  expect(pagination.previousText).toBe(config.previousText);
   expect(pagination.rotate).toBe(config.rotate);
   expect(pagination.size).toBe(config.size);
 }
@@ -519,6 +522,22 @@ describe('ngb-pagination', () => {
       expectPages(fixture.nativeElement, ['« Previous', '1', '+2', '-» Next']);
     });
 
+    it('should render and respond to direction links changes', () => {
+      const html = `<ngb-pagination [collectionSize]="collectionSize" [page]="1" [firstText]="firstText" 
+      [previousText]="previousText" [nextText]="nextText" [lastText]="lastText" 
+      [boundaryLinks]="boundaryLinks"></ngb-pagination>`;
+      const fixture = createTestComponent(html);
+
+      fixture.componentInstance.boundaryLinks = true;
+      fixture.componentInstance.collectionSize = 20;
+      fixture.componentInstance.firstText = 'TF';
+      fixture.componentInstance.previousText = 'TP';
+      fixture.componentInstance.nextText = 'TN';
+      fixture.componentInstance.lastText = 'TL';
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['-TF TF', '-TP TP', '+1', '2', 'TN TN', 'TL TL']);
+    });
+
     it('should not emit "pageChange" for incorrect input values', fakeAsync(() => {
          const html = `<ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize" [maxSize]="maxSize" 
         (pageChange)="onPageChange($event)"></ngb-pagination>`;
@@ -600,9 +619,13 @@ class TestComponent {
   page = 1;
   boundaryLinks = false;
   directionLinks = false;
+  firstText = '««';
+  lastText = '»»';
   size = '';
   maxSize = 0;
+  nextText = '»';
   ellipses = true;
+  previousText = '«';
   rotate = false;
 
   onPageChange = () => {};
