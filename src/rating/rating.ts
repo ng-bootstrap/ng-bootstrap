@@ -8,10 +8,13 @@ import {
   TemplateRef,
   OnChanges,
   SimpleChanges,
-  ContentChild
+  ContentChild,
+  forwardRef,
+  ChangeDetectorRef
 } from '@angular/core';
 import {NgbRatingConfig} from './rating-config';
 import {toString, getValueInRange} from '../util/util';
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 enum Key {
   End = 35,
@@ -32,6 +35,12 @@ export interface StarTemplateContext {
   fill: number;
 }
 
+const NGB_RATING_VALUE_ACCESSOR = {
+  provide: NG_VALUE_ACCESSOR,
+  useExisting: forwardRef(() => NgbRating),
+  multi: true
+};
+
 /**
  * Rating directive that will take care of visualising a star rating bar.
  */
@@ -51,10 +60,11 @@ export interface StarTemplateContext {
         </span>
       </template>
     </span>
-  `
+  `,
+  providers: [NGB_RATING_VALUE_ACCESSOR]
 })
-export class NgbRating implements OnInit,
-    OnChanges {
+export class NgbRating implements ControlValueAccessor,
+    OnInit, OnChanges {
   private _oldRate: number;
   range: number[] = [];
 
@@ -95,9 +105,12 @@ export class NgbRating implements OnInit,
    * An event fired when a user selects a new rating.
    * Event's payload equals to the newly selected rating.
    */
-  @Output() rateChange = new EventEmitter<number>();
+  @Output() rateChange = new EventEmitter<number>(true);
 
-  constructor(config: NgbRatingConfig) {
+  onChange = (_: any) => {};
+  onTouched = () => {};
+
+  constructor(config: NgbRatingConfig, private _changeDetectorRef: ChangeDetectorRef) {
     this.max = config.max;
     this.readonly = config.readonly;
   }
@@ -149,26 +162,38 @@ export class NgbRating implements OnInit,
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['rate']) {
+      this.update(this.rate);
       this._oldRate = this.rate;
     }
   }
 
   ngOnInit(): void { this.range = Array.from({length: this.max}, (v, k) => k + 1); }
 
+  registerOnChange(fn: (value: any) => any): void { this.onChange = fn; }
+
+  registerOnTouched(fn: () => any): void { this.onTouched = fn; }
+
   reset(): void {
     this.leave.emit(this.rate);
     this.rate = this._oldRate;
   }
 
-  update(value: number): void {
+  update(value: number, internalChange = true): void {
     if (!this.readonly) {
-      const newRate = getValueInRange(value, this.max, 0);
-
+      const newRate = value ? getValueInRange(value, this.max, 0) : 0;
       if (this._oldRate !== newRate) {
         this._oldRate = newRate;
         this.rate = newRate;
         this.rateChange.emit(newRate);
+        if (internalChange) {
+          this.onChange(this.rate);
+        }
       }
     }
+  }
+
+  writeValue(value) {
+    this.update(value, false);
+    this._changeDetectorRef.markForCheck();
   }
 }
