@@ -59,6 +59,11 @@ export class NgbInputDatepicker implements ControlValueAccessor {
   @Input() firstDayOfWeek: number;
 
   /**
+   * Keep invalid dates in input field instead of resetting it to null.
+   */
+  @Input() keepInvalidInput: boolean;
+
+  /**
    * Callback to mark a given date as disabled.
    * 'Current' contains the month that will be displayed in the view
    */
@@ -142,8 +147,10 @@ export class NgbInputDatepicker implements ControlValueAccessor {
 
   manualDateChange(value: string) {
     this._model = NgbDate.from(this._parserFormatter.parse(value));
-    this._onChange(this._model ? {year: this._model.year, month: this._model.month, day: this._model.day} : null);
-    this._writeModelValue(this._model);
+    if (!this.keepInvalidInput || this._model || !value) {
+      this._onChange(this._model ? {year: this._model.year, month: this._model.month, day: this._model.day} : null);
+      this._writeModelValue(this._model);
+    }
   }
 
   isOpen() { return !!this._cRef; }
