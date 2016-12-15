@@ -21,6 +21,7 @@ import {NgbDateParserFormatter} from './ngb-date-parser-formatter';
 
 import {positionElements} from '../util/positioning';
 import {NgbDateStruct} from './ngb-date-struct';
+import {NgbDatepickerService} from './datepicker-service';
 
 const NGB_DATEPICKER_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -99,7 +100,7 @@ export class NgbInputDatepicker implements ControlValueAccessor {
   /**
    * Date to open calendar with.
    * With default calendar we use ISO 8601: 'month' is 1=Jan ... 12=Dec.
-   * If nothing provided, calendar will open with current month.
+   * If nothing or invalid date provided, calendar will open with current month.
    * Use 'navigateTo(date)' as an alternative
    */
   @Input() startDate: {year: number, month: number};
@@ -116,7 +117,8 @@ export class NgbInputDatepicker implements ControlValueAccessor {
 
   constructor(
       private _parserFormatter: NgbDateParserFormatter, private _elRef: ElementRef, private _vcRef: ViewContainerRef,
-      private _renderer: Renderer, private _cfr: ComponentFactoryResolver, ngZone: NgZone) {
+      private _renderer: Renderer, private _cfr: ComponentFactoryResolver, ngZone: NgZone,
+      private _service: NgbDatepickerService) {
     this._zoneSubscription = ngZone.onStable.subscribe(() => {
       if (this._cRef) {
         positionElements(this._elRef.nativeElement, this._cRef.location.nativeElement, 'bottom-left');
@@ -129,7 +131,8 @@ export class NgbInputDatepicker implements ControlValueAccessor {
   registerOnTouched(fn: () => any): void { this._onTouched = fn; }
 
   writeValue(value) {
-    this._model = value ? new NgbDate(value.year, value.month, value.day) : null;
+    this._model =
+        value ? this._service.toValidDate({year: value.year, month: value.month, day: value.day}, null) : null;
     this._writeModelValue(this._model);
   }
 
@@ -141,7 +144,7 @@ export class NgbInputDatepicker implements ControlValueAccessor {
   }
 
   manualDateChange(value: string) {
-    this._model = NgbDate.from(this._parserFormatter.parse(value));
+    this._model = this._service.toValidDate(this._parserFormatter.parse(value), null);
     this._onChange(this._model ? {year: this._model.year, month: this._model.month, day: this._model.day} : null);
     this._writeModelValue(this._model);
   }
@@ -195,7 +198,7 @@ export class NgbInputDatepicker implements ControlValueAccessor {
   /**
    * Navigates current view to provided date.
    * With default calendar we use ISO 8601: 'month' is 1=Jan ... 12=Dec.
-   * If nothing provided calendar will open current month.
+   * If nothing or invalid date provided calendar will open current month.
    * Use 'startDate' input as an alternative
    */
   navigateTo(date?: {year: number, month: number}) {

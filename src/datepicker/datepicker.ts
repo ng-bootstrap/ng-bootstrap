@@ -158,7 +158,7 @@ export class NgbDatepicker implements OnChanges,
   /**
    * Date to open calendar with.
    * With default calendar we use ISO 8601: 'month' is 1=Jan ... 12=Dec.
-   * If nothing provided, calendar will open with current month.
+   * If nothing or invalid date provided, calendar will open with current month.
    * Use 'navigateTo(date)' as an alternative
    */
   @Input() startDate: {year: number, month: number};
@@ -193,22 +193,22 @@ export class NgbDatepicker implements OnChanges,
   /**
    * Navigates current view to provided date.
    * With default calendar we use ISO 8601: 'month' is 1=Jan ... 12=Dec.
-   * If nothing provided calendar will open current month.
+   * If nothing or invalid date provided calendar will open current month.
    * Use 'startDate' input as an alternative
    */
   navigateTo(date?: {year: number, month: number}) {
-    this._setViewWithinLimits(date ? NgbDate.from(date) : this._calendar.getToday());
+    this._setViewWithinLimits(this._service.toValidDate(date));
     this._updateData();
   }
 
   ngOnInit() {
     this._setDates();
-    this.navigateTo(this.startDate);
+    this.navigateTo(this._date);
   }
 
   ngOnChanges(changes: SimpleChanges) {
     this._setDates();
-    this._setViewWithinLimits(this.startDate ? NgbDate.from(this.startDate) : this._calendar.getToday());
+    this._setViewWithinLimits(this._date);
 
     if (changes['displayMonths']) {
       this.displayMonths = toInteger(this.displayMonths);
@@ -256,22 +256,24 @@ export class NgbDatepicker implements OnChanges,
 
   registerOnTouched(fn: () => any): void { this.onTouched = fn; }
 
-  writeValue(value) { this.model = value ? new NgbDate(value.year, value.month, value.day) : null; }
+  writeValue(value) { this.model = this._service.toValidDate(value, null); }
 
   setDisabledState(isDisabled: boolean) { this.disabled = isDisabled; }
 
   private _setDates() {
     this._maxDate = NgbDate.from(this.maxDate);
     this._minDate = NgbDate.from(this.minDate);
-    this._date = this.startDate ? NgbDate.from(this.startDate) : this._calendar.getToday();
+    this._date = this._service.toValidDate(this.startDate);
 
-    if (!this._minDate) {
+    if (!this._calendar.isValid(this._minDate)) {
       this._minDate = this._calendar.getPrev(this._date, 'y', 10);
+      this.minDate = {year: this._minDate.year, month: this._minDate.month, day: this._minDate.day};
     }
 
-    if (!this._maxDate) {
+    if (!this._calendar.isValid(this._maxDate)) {
       this._maxDate = this._calendar.getNext(this._date, 'y', 11);
       this._maxDate = this._calendar.getPrev(this._maxDate);
+      this.maxDate = {year: this._maxDate.year, month: this._maxDate.month, day: this._maxDate.day};
     }
 
     if (this._minDate && this._maxDate && this._maxDate.before(this._minDate)) {

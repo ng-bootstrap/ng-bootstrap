@@ -1,6 +1,6 @@
 import {TestBed, ComponentFixture, fakeAsync, tick} from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
-import {createGenericTestComponent} from '../test/common';
+import {createGenericTestComponent, isBrowser} from '../test/common';
 
 import {Component} from '@angular/core';
 import {FormsModule} from '@angular/forms';
@@ -75,11 +75,44 @@ describe('NgbInputDatepicker', () => {
       expect(fixture.componentInstance.date).toEqual({year: 2016, month: 9, day: 10});
     });
 
+    it('should set only valid dates', fakeAsync(() => {
+         const fixture = createTestCmpt(`<input ngbDatepicker [ngModel]="date">`);
+         const input = fixture.nativeElement.querySelector('input');
+
+         fixture.componentInstance.date = <any>{};
+         fixture.detectChanges();
+         tick();
+         expect(input.value).toBe('');
+
+         fixture.componentInstance.date = null;
+         fixture.detectChanges();
+         tick();
+         expect(input.value).toBe('');
+
+         fixture.componentInstance.date = <any>new Date();
+         fixture.detectChanges();
+         tick();
+         expect(input.value).toBe('');
+
+         fixture.componentInstance.date = undefined;
+         fixture.detectChanges();
+         tick();
+         expect(input.value).toBe('');
+
+         fixture.componentInstance.date = new NgbDate(300000, 1, 1);
+         fixture.detectChanges();
+         tick();
+         expect(input.value).toBe('');
+       }));
+
     it('should propagate null to model when a user enters invalid date', () => {
       const fixture = createTestCmpt(`<input ngbDatepicker [(ngModel)]="date">`);
       const inputDebugEl = fixture.debugElement.query(By.css('input'));
 
       inputDebugEl.triggerEventHandler('change', {target: {value: 'aaa'}});
+      expect(fixture.componentInstance.date).toBeNull();
+
+      inputDebugEl.triggerEventHandler('change', {target: {value: '300000-1-1'}});
       expect(fixture.componentInstance.date).toBeNull();
     });
 

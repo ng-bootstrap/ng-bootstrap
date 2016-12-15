@@ -1,5 +1,6 @@
 import {NgbCalendarGregorian} from './ngb-calendar';
 import {NgbDate} from './ngb-date';
+import {isBrowser} from '../test/common';
 
 describe('ngb-calendar-gregorian', () => {
 
@@ -62,5 +63,28 @@ describe('ngb-calendar-gregorian', () => {
   it('should subtract years from date', () => {
     expect(calendar.getPrev(new NgbDate(2016, 12, 22), 'y')).toEqual(new NgbDate(2015, 1, 1));
     expect(calendar.getPrev(new NgbDate(2017, 1, 22), 'y')).toEqual(new NgbDate(2016, 1, 1));
+  });
+
+  it('should check that NgbDate is a valid javascript date', () => {
+
+    // invalid values
+    expect(calendar.isValid(null)).toBeFalsy();
+    expect(calendar.isValid(undefined)).toBeFalsy();
+    expect(calendar.isValid(<any>NaN)).toBeFalsy();
+    expect(calendar.isValid(<any>new Date())).toBeFalsy();
+    expect(calendar.isValid(new NgbDate(null, null, null))).toBeFalsy();
+    expect(calendar.isValid(new NgbDate(undefined, undefined, undefined))).toBeFalsy();
+    expect(calendar.isValid(new NgbDate(NaN, NaN, NaN))).toBeFalsy();
+
+    // min/max dates
+    expect(calendar.isValid(new NgbDate(275760, 9, 12))).toBeTruthy();
+    expect(calendar.isValid(new NgbDate(275760, 9, 14))).toBeFalsy();
+    expect(calendar.isValid(new NgbDate(-271821, 4, 19))).toBeFalsy();
+    expect(calendar.isValid(new NgbDate(-271821, 4, 21))).toBeTruthy();
+
+    // valid dates
+    expect(calendar.isValid(new NgbDate(2016, 8, 8))).toBeTruthy();
+    expect(calendar.isValid(new NgbDate(0, 0, 0))).toBeTruthy();
+    expect(calendar.isValid(new NgbDate(-1, -1, -1))).toBeTruthy();
   });
 });

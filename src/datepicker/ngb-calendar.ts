@@ -1,11 +1,17 @@
 import {NgbDate} from './ngb-date';
 import {Injectable} from '@angular/core';
+import {isNumber} from '../util/util';
 
 function fromJSDate(jsDate: Date) {
   return new NgbDate(jsDate.getFullYear(), jsDate.getMonth() + 1, jsDate.getDate());
 }
 function toJSDate(date: NgbDate) {
-  return new Date(date.year, date.month - 1, date.day);
+  const jsDate = new Date(date.year, date.month - 1, date.day);
+  // this is done avoid 30 -> 1930 conversion
+  if (!isNaN(jsDate.getTime())) {
+    jsDate.setFullYear(date.year);
+  }
+  return jsDate;
 }
 
 export type NgbPeriod = 'y' | 'm' | 'd';
@@ -23,6 +29,8 @@ export abstract class NgbCalendar {
   abstract getWeekNumber(week: NgbDate[], firstDayOfWeek: number): number;
 
   abstract getToday(): NgbDate;
+
+  abstract isValid(date: NgbDate): boolean;
 }
 
 @Injectable()
@@ -79,4 +87,9 @@ export class NgbCalendarGregorian extends NgbCalendar {
   }
 
   getToday(): NgbDate { return fromJSDate(new Date()); }
+
+  isValid(date: NgbDate): boolean {
+    return date && isNumber(date.year) && isNumber(date.month) && isNumber(date.day) &&
+        !isNaN(toJSDate(date).getTime());
+  }
 }
