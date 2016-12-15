@@ -42,12 +42,12 @@ module.exports = function(config) {
       'SL_CHROME': {
         base: 'SauceLabs',
         browserName: 'chrome',
-        version: '52'
+        version: 'latest'
       },
       'SL_FIREFOX': {
         base: 'SauceLabs',
         browserName: 'firefox',
-        version: '46'
+        version: 'latest'
       },
       'SL_IE9': {
         base: 'SauceLabs',
@@ -67,17 +67,29 @@ module.exports = function(config) {
         platform: 'Windows 8.1',
         version: '11'
       },
-      'SL_EDGE': {
+      'SL_EDGE13': {
         base: 'SauceLabs',
         browserName: 'MicrosoftEdge',
         platform: 'Windows 10',
         version: '13.10586'
+      },
+      'SL_EDGE14': {
+        base: 'SauceLabs',
+        browserName: 'MicrosoftEdge',
+        platform: 'Windows 10',
+        version: '14.14393'
       },
       'SL_SAFARI9': {
         base: 'SauceLabs',
         browserName: 'safari',
         platform: 'OS X 10.11',
         version: '9.0'
+      },
+      'SL_SAFARI10': {
+        base: 'SauceLabs',
+        browserName: 'safari',
+        platform: 'OS X 10.11',
+        version: '10.0'
       }
     },
 
@@ -88,7 +100,6 @@ module.exports = function(config) {
       recordVideo: false,
       recordScreenshots: false,
       options: {
-        'selenium-version': '2.53.0',
         'command-timeout': 600,
         'idle-timeout': 600,
         'max-duration': 5400
