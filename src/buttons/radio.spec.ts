@@ -368,6 +368,36 @@ describe('ngbRadioGroup', () => {
            });
      }));
 
+  it('should disable individual label and input using template-driven forms', async(() => {
+       const html = `
+      <form>
+        <div ngbRadioGroup [(ngModel)]="model" name="control">
+          <label class="btn">
+            <input type="radio" value="foo" [disabled]="disabled"/>
+          </label>          
+        </div>
+      </form>`;
+
+       const fixture = createTestComponent(html);
+
+       fixture.whenStable()
+           .then(() => {
+             fixture.componentInstance.disabled = true;
+             fixture.detectChanges();
+             expect(getLabel(fixture.nativeElement, 0)).toHaveCssClass('disabled');
+             expect(getInput(fixture.nativeElement, 0).hasAttribute('disabled')).toBeTruthy();
+
+             fixture.componentInstance.disabled = false;
+             fixture.detectChanges();
+             return fixture.whenStable();
+           })
+           .then(() => {
+             fixture.detectChanges();
+             expect(getLabel(fixture.nativeElement, 0)).not.toHaveCssClass('disabled');
+             expect(getInput(fixture.nativeElement, 0).hasAttribute('disabled')).toBeFalsy();
+           });
+     }));
+
   it('should select a radio button when checked attribute is used', () => {
     const html1 = `
       <input type="radio" name="State" value="0" /> Foo <br>
@@ -419,7 +449,6 @@ describe('ngbRadioGroup', () => {
 
     expect(getInput(fixture.nativeElement, 0).disabled).toBeTruthy();
     expect(getInput(fixture.nativeElement, 1).disabled).toBeFalsy();
-
   });
 
   it('handle multiple cases for binded checked attribute.', () => {
