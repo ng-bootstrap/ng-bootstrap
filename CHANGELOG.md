@@ -1,3 +1,28 @@
+<a name="1.0.0-alpha.15"></a>
+# [1.0.0-alpha.15](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.14...1.0.0-alpha.15) (2016-12-15)
+
+
+### Bug Fixes
+
+* **buttons:** proerly handle disabled propery on a button level ([cc88ed2](https://github.com/ng-bootstrap/ng-bootstrap/commit/cc88ed2)), closes [#1088](https://github.com/ng-bootstrap/ng-bootstrap/issues/1088) [#1089](https://github.com/ng-bootstrap/ng-bootstrap/issues/1089) [#1095](https://github.com/ng-bootstrap/ng-bootstrap/issues/1095) [#1141](https://github.com/ng-bootstrap/ng-bootstrap/issues/1141)
+* **datepicker:** protect against invalid min, max and start dates ([186c0e1](https://github.com/ng-bootstrap/ng-bootstrap/commit/186c0e1)), closes [#1062](https://github.com/ng-bootstrap/ng-bootstrap/issues/1062) [#1092](https://github.com/ng-bootstrap/ng-bootstrap/issues/1092)
+* **datepicker:** use `td` in arrows navigation ([6b8827a](https://github.com/ng-bootstrap/ng-bootstrap/commit/6b8827a)), closes [#1086](https://github.com/ng-bootstrap/ng-bootstrap/issues/1086)
+* **pagination:** prevent focus of disabled selectors ([733fc54](https://github.com/ng-bootstrap/ng-bootstrap/commit/733fc54)), closes [#1108](https://github.com/ng-bootstrap/ng-bootstrap/issues/1108) [#1114](https://github.com/ng-bootstrap/ng-bootstrap/issues/1114) [#1114](https://github.com/ng-bootstrap/ng-bootstrap/issues/1114)
+
+
+### Features
+
+* **accordion:** add aria-selected ([d1abd37](https://github.com/ng-bootstrap/ng-bootstrap/commit/d1abd37)), closes [#1109](https://github.com/ng-bootstrap/ng-bootstrap/issues/1109)
+* **rating:** enable form integration ([c090a5a](https://github.com/ng-bootstrap/ng-bootstrap/commit/c090a5a)), closes [#1087](https://github.com/ng-bootstrap/ng-bootstrap/issues/1087) [#1097](https://github.com/ng-bootstrap/ng-bootstrap/issues/1097)
+* **tabs:** add aria ([97f116f](https://github.com/ng-bootstrap/ng-bootstrap/commit/97f116f)), closes [#1118](https://github.com/ng-bootstrap/ng-bootstrap/issues/1118) [#1120](https://github.com/ng-bootstrap/ng-bootstrap/issues/1120)
+
+
+### BREAKING CHANGES
+
+* rating: event emitter behind the 'rateChange' output emits asynchronously now
+
+
+
 <a name="1.0.0-alpha.14"></a>
 # [1.0.0-alpha.14](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.13...1.0.0-alpha.14) (2016-11-25)
 
