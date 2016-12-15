@@ -17,7 +17,6 @@ const NGB_RADIO_VALUE_ACCESSOR = {
   providers: [NGB_RADIO_VALUE_ACCESSOR]
 })
 export class NgbRadioGroup implements ControlValueAccessor {
-  private _disabled: boolean;
   private _radios: Set<NgbRadio> = new Set<NgbRadio>();
   private _value = null;
 
@@ -29,7 +28,7 @@ export class NgbRadioGroup implements ControlValueAccessor {
     this.onChange(radio.value);
   }
 
-  onRadioValueUpdate() { this._updateRadios(); }
+  onRadioValueUpdate() { this._updateRadiosValue(); }
 
   register(radio: NgbRadio) { this._radios.add(radio); }
 
@@ -37,19 +36,17 @@ export class NgbRadioGroup implements ControlValueAccessor {
 
   registerOnTouched(fn: () => any): void { this.onTouched = fn; }
 
-  setDisabledState(isDisabled: boolean): void {
-    this._disabled = isDisabled;
-    this._updateRadios();
-  }
+  setDisabledState(isDisabled: boolean): void { this._updateRadiosDisabled(isDisabled); }
 
   unregister(radio: NgbRadio) { this._radios.delete(radio); }
 
   writeValue(value) {
     this._value = value;
-    this._updateRadios();
+    this._updateRadiosValue();
   }
 
-  private _updateRadios() { this._radios.forEach((radio) => radio.update(this._value, this._disabled)); }
+  private _updateRadiosValue() { this._radios.forEach((radio) => radio.updateValue(this._value)); }
+  private _updateRadiosDisabled(isDisabled) { this._radios.forEach((radio) => radio.updateDisabled(isDisabled)); }
 }
 
 
@@ -103,8 +100,8 @@ export class NgbRadio implements OnDestroy {
   }
 
   @Input('disabled')
-  set disabled(value: any) {
-    this._disabled = this._element.nativeElement.hasAttribute('disabled') ? true : value;
+  set disabled(isDisabled: any) {
+    this.updateDisabled(isDisabled !== false);
   }
 
   set focused(isFocused: boolean) {
@@ -139,10 +136,15 @@ export class NgbRadio implements OnDestroy {
     }
   }
 
-  update(value, isDisabled) {
+  updateValue(value) {
     this._checked = (this.value === value && value !== null);
-    this._disabled = isDisabled;
     this._label.active = this._checked;
-    this._label.disabled = this._disabled;
+  }
+
+  updateDisabled(isDisabled) {
+    this._disabled = isDisabled;
+    if (this._label) {
+      this._label.disabled = this._disabled;
+    }
   }
 }
