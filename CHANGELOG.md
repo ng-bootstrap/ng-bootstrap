@@ -4,7 +4,7 @@
 
 ### Bug Fixes
 
-* **buttons:** proerly handle disabled propery on a button level ([cc88ed2](https://github.com/ng-bootstrap/ng-bootstrap/commit/cc88ed2)), closes [#1088](https://github.com/ng-bootstrap/ng-bootstrap/issues/1088) [#1089](https://github.com/ng-bootstrap/ng-bootstrap/issues/1089) [#1095](https://github.com/ng-bootstrap/ng-bootstrap/issues/1095) [#1141](https://github.com/ng-bootstrap/ng-bootstrap/issues/1141)
+* **buttons:** properly handle disabled property on a button level ([cc88ed2](https://github.com/ng-bootstrap/ng-bootstrap/commit/cc88ed2)), closes [#1088](https://github.com/ng-bootstrap/ng-bootstrap/issues/1088) [#1089](https://github.com/ng-bootstrap/ng-bootstrap/issues/1089) [#1095](https://github.com/ng-bootstrap/ng-bootstrap/issues/1095) [#1141](https://github.com/ng-bootstrap/ng-bootstrap/issues/1141)
 * **datepicker:** protect against invalid min, max and start dates ([186c0e1](https://github.com/ng-bootstrap/ng-bootstrap/commit/186c0e1)), closes [#1062](https://github.com/ng-bootstrap/ng-bootstrap/issues/1062) [#1092](https://github.com/ng-bootstrap/ng-bootstrap/issues/1092)
 * **datepicker:** use `td` in arrows navigation ([6b8827a](https://github.com/ng-bootstrap/ng-bootstrap/commit/6b8827a)), closes [#1086](https://github.com/ng-bootstrap/ng-bootstrap/issues/1086)
 * **pagination:** prevent focus of disabled selectors ([733fc54](https://github.com/ng-bootstrap/ng-bootstrap/commit/733fc54)), closes [#1108](https://github.com/ng-bootstrap/ng-bootstrap/issues/1108) [#1114](https://github.com/ng-bootstrap/ng-bootstrap/issues/1114) [#1114](https://github.com/ng-bootstrap/ng-bootstrap/issues/1114)
