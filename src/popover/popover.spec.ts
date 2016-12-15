@@ -98,6 +98,28 @@ describe('ngb-popover', () => {
       expect(getWindow(fixture.nativeElement)).toBeNull();
     });
 
+    it('should open and close a popover - default settings, content from a template and context supplied', () => {
+      const fixture = createTestComponent(`
+          <template #t let-name="name">Hello, {{name}}!</template>
+          <div [ngbPopover]="t" popoverTitle="Title"></div>`);
+      const directive = fixture.debugElement.query(By.directive(NgbPopover));
+      const defaultConfig = new NgbPopoverConfig();
+
+      directive.context.popover.open({name: 'John'});
+      fixture.detectChanges();
+      const windowEl = getWindow(fixture.nativeElement);
+
+      expect(windowEl).toHaveCssClass('popover');
+      expect(windowEl).toHaveCssClass(`popover-${defaultConfig.placement}`);
+      expect(windowEl.textContent.trim()).toBe('TitleHello, John!');
+      expect(windowEl.getAttribute('role')).toBe('tooltip');
+      expect(windowEl.parentNode).toBe(fixture.nativeElement);
+
+      directive.triggerEventHandler('click', {});
+      fixture.detectChanges();
+      expect(getWindow(fixture.nativeElement)).toBeNull();
+    });
+
     it('should properly destroy TemplateRef content', () => {
       const fixture = createTestComponent(`
           <template #t><destroyable-cmpt></destroyable-cmpt></template>

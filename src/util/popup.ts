@@ -24,9 +24,9 @@ export class PopupService<T> {
     this._windowFactory = componentFactoryResolver.resolveComponentFactory<T>(type);
   }
 
-  open(content?: string | TemplateRef<any>): ComponentRef<T> {
+  open(content?: string | TemplateRef<any>, context?: any): ComponentRef<T> {
     if (!this._windowRef) {
-      this._contentRef = this._getContentRef(content);
+      this._contentRef = this._getContentRef(content, context);
       this._windowRef =
           this._viewContainerRef.createComponent(this._windowFactory, 0, this._injector, this._contentRef.nodes);
     }
@@ -46,11 +46,11 @@ export class PopupService<T> {
     }
   }
 
-  private _getContentRef(content: string | TemplateRef<any>): ContentRef {
+  private _getContentRef(content: string | TemplateRef<any>, context?: any): ContentRef {
     if (!content) {
       return new ContentRef([]);
     } else if (content instanceof TemplateRef) {
-      const viewRef = this._viewContainerRef.createEmbeddedView(<TemplateRef<T>>content);
+      const viewRef = this._viewContainerRef.createEmbeddedView(<TemplateRef<T>>content, context);
       return new ContentRef([viewRef.rootNodes], viewRef);
     } else {
       return new ContentRef([[this._renderer.createText(null, `${content}`)]]);

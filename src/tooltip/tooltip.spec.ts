@@ -84,6 +84,25 @@ describe('ngb-tooltip', () => {
       expect(getWindow(fixture.nativeElement)).toBeNull();
     });
 
+    it('should open and close a tooltip - default settings, content from a template and context supplied', () => {
+      const fixture = createTestComponent(`<template #t let-name="name">Hello, {{name}}!</template><div [ngbTooltip]="t"></div>`);
+      const directive = fixture.debugElement.query(By.directive(NgbTooltip));
+
+      directive.context.tooltip.open({name: 'John'});
+      fixture.detectChanges();
+      const windowEl = getWindow(fixture.nativeElement);
+
+      expect(windowEl).toHaveCssClass('tooltip');
+      expect(windowEl).toHaveCssClass('tooltip-top');
+      expect(windowEl.textContent.trim()).toBe('Hello, John!');
+      expect(windowEl.getAttribute('role')).toBe('tooltip');
+      expect(windowEl.parentNode).toBe(fixture.nativeElement);
+
+      directive.triggerEventHandler('mouseleave', {});
+      fixture.detectChanges();
+      expect(getWindow(fixture.nativeElement)).toBeNull();
+    });
+
     it('should not open a tooltip if content is falsy', () => {
       const fixture = createTestComponent(`<div [ngbTooltip]="notExisting"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbTooltip));

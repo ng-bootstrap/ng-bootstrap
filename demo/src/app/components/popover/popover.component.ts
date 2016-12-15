@@ -19,6 +19,10 @@ import {DEMO_SNIPPETS} from './demos';
         <ngbd-popover-triggers></ngbd-popover-triggers>
       </ngbd-example-box>
       <ngbd-example-box
+        demoTitle="Context and manual triggers" [snippets]="snippets" component="popover" demo="tplwithcontext">
+        <ngbd-popover-tplwithcontext></ngbd-popover-tplwithcontext>
+      </ngbd-example-box>
+      <ngbd-example-box
         demoTitle="Popover visibility events" [snippets]="snippets" component="popover" demo="visibility">
         <ngbd-popover-visibility></ngbd-popover-visibility>
       </ngbd-example-box>
