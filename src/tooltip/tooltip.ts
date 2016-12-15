@@ -103,10 +103,11 @@ export class NgbTooltip implements OnInit, OnDestroy {
 
   /**
    * Opens an element’s tooltip. This is considered a “manual” triggering of the tooltip.
+   * The context is an optional value to be injected into the tooltip template when it is created.
    */
-  open() {
+  open(context?: any) {
     if (!this._windowRef && this._ngbTooltip) {
-      this._windowRef = this._popupService.open(this._ngbTooltip);
+      this._windowRef = this._popupService.open(this._ngbTooltip, context);
       this._windowRef.instance.placement = this.placement;
 
       if (this.container === 'body') {

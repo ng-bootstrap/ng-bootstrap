@@ -19,6 +19,10 @@ import {DEMO_SNIPPETS} from './demos';
         <ngbd-tooltip-triggers></ngbd-tooltip-triggers>
       </ngbd-example-box>
       <ngbd-example-box
+        demoTitle="Context and manual triggers" [snippets]="snippets" component="tooltip" demo="tplwithcontext">
+        <ngbd-tooltip-tplwithcontext></ngbd-tooltip-tplwithcontext>
+      </ngbd-example-box>
+      <ngbd-example-box
         demoTitle="Append tooltip in the body" [snippets]="snippets" component="tooltip" demo="container">
         <ngbd-tooltip-container></ngbd-tooltip-container>
       </ngbd-example-box>

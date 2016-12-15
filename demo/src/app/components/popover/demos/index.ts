@@ -1,5 +1,6 @@
 import {NgbdPopoverBasic} from './basic/popover-basic';
 import {NgbdPopoverTplcontent} from './tplcontent/popover-tplcontent';
+import {NgbdPopoverTplwithcontext} from './tplwithcontext/popover-tplwithcontext';
 import {NgbdPopoverTriggers} from './triggers/popover-triggers';
 import {NgbdPopoverVisibility} from './visibility/popover-visibility';
 import {NgbdPopoverContainer} from './container/popover-container';
@@ -8,6 +9,7 @@ import {NgbdPopoverConfig} from './config/popover-config';
 export const DEMO_DIRECTIVES = [
   NgbdPopoverBasic,
   NgbdPopoverTplcontent,
+  NgbdPopoverTplwithcontext,
   NgbdPopoverTriggers,
   NgbdPopoverVisibility,
   NgbdPopoverContainer,
@@ -26,6 +28,10 @@ export const DEMO_SNIPPETS = {
   triggers: {
     code: require('!!prismjs-loader?lang=typescript!./triggers/popover-triggers'),
     markup: require('!!prismjs-loader?lang=markup!./triggers/popover-triggers.html')
+  },
+  tplwithcontext: {
+    code: require('!!prismjs-loader?lang=typescript!./tplwithcontext/popover-tplwithcontext'),
+    markup: require('!!prismjs-loader?lang=markup!./tplwithcontext/popover-tplwithcontext.html')
   },
   visibility: {
     code: require('!!prismjs-loader?lang=typescript!./visibility/popover-visibility'),

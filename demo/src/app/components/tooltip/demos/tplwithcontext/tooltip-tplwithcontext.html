@@ -1,0 +1,17 @@
+<p>
+  You can optionally pass in a context when manually triggering a popover.
+</p>
+
+<template #tipContent let-greeting="greeting">{{greeting}}, <b>{{name}}</b>!</template>
+<p>
+  How would you like to greet <strong [ngbTooltip]="tipContent" #t="ngbTooltip" triggers="manual">me</strong>?
+</p>
+<button type="button" class="btn btn-secondary" (click)="changeGreeting({ greeting: 'Bonjour' })">
+  French
+</button>
+<button type="button" class="btn btn-secondary" (click)="changeGreeting({ greeting: 'Gutentag' })">
+  German
+</button>
+<button type="button" class="btn btn-secondary" (click)="changeGreeting({ greeting: 'Hello' })">
+  English
+</button>

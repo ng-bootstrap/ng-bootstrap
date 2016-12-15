@@ -98,10 +98,11 @@ export class NgbPopover implements OnInit, OnDestroy {
 
   /**
    * Opens an element’s popover. This is considered a “manual” triggering of the popover.
+   * The context is an optional value to be injected into the popover template when it is created.
    */
-  open() {
+  open(context?: any) {
     if (!this._windowRef) {
-      this._windowRef = this._popupService.open(this.ngbPopover);
+      this._windowRef = this._popupService.open(this.ngbPopover, context);
       this._windowRef.instance.placement = this.placement;
       this._windowRef.instance.title = this.popoverTitle;
 
