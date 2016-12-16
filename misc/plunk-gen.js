@@ -115,7 +115,12 @@ function generateIndexHtml() {
 }
 
 function generateConfigJs() {
-  return `System.config({
+  return `var ver = {
+    ng: '${versions.angular}',
+    ngRouter: '${versions.angularRouter}'
+  };
+  
+  System.config({
   //use typescript for compilation
   transpiler: 'typescript',
   //typescript compiler options
@@ -129,22 +134,14 @@ function generateConfigJs() {
 
     'app': './src',
 
-    '@angular/core': 'npm:@angular/core@${versions.angular}/bundles/core.umd.js',
-    '@angular/common': 'npm:@angular/common@${versions.angular}/bundles/common.umd.js',
-    '@angular/compiler': 'npm:@angular/compiler@${versions.angular}/bundles/compiler.umd.js',
-    '@angular/platform-browser': 'npm:@angular/platform-browser@${versions.angular}/bundles/platform-browser.umd.js',
-    '@angular/platform-browser-dynamic': 'npm:@angular/platform-browser-dynamic@${versions.angular}/bundles/platform-browser-dynamic.umd.js',
-    '@angular/http': 'npm:@angular/http@${versions.angular}/bundles/http.umd.js',
-    '@angular/router': 'npm:@angular/router@${versions.angularRouter}/bundles/router.umd.js',
-    '@angular/forms': 'npm:@angular/forms@${versions.angular}/bundles/forms.umd.js',
-
-    '@angular/core/testing': 'npm:@angular/core@${versions.angular}/bundles/core-testing.umd.js',
-    '@angular/common/testing': 'npm:@angular/common@${versions.angular}/bundles/common-testing.umd.js',
-    '@angular/compiler/testing': 'npm:@angular/compiler@${versions.angular}/bundles/compiler-testing.umd.js',
-    '@angular/platform-browser/testing': 'npm:@angular/platform-browser@${versions.angular}/bundles/platform-browser-testing.umd.js',
-    '@angular/platform-browser-dynamic/testing': 'npm:@angular/platform-browser-dynamic@${versions.angular}/bundles/platform-browser-dynamic-testing.umd.js',
-    '@angular/http/testing': 'npm:@angular/http@${versions.angular}/bundles/http-testing.umd.js',
-    '@angular/router/testing': 'npm:@angular/router@${versions.angularRouter}/bundles/router-testing.umd.js',
+    '@angular/core': 'npm:@angular/core@' + ver.ng + '/bundles/core.umd.js',
+    '@angular/common': 'npm:@angular/common@' + ver.ng + '/bundles/common.umd.js',
+    '@angular/compiler': 'npm:@angular/compiler@' + ver.ng + '/bundles/compiler.umd.js',
+    '@angular/platform-browser': 'npm:@angular/platform-browser@' + ver.ng + '/bundles/platform-browser.umd.js',
+    '@angular/platform-browser-dynamic': 'npm:@angular/platform-browser-dynamic@' + ver.ng + '/bundles/platform-browser-dynamic.umd.js',
+    '@angular/http': 'npm:@angular/http@' + ver.ng + '/bundles/http.umd.js',
+    '@angular/router': 'npm:@angular/router@' + ver.ngRouter + '/bundles/router.umd.js',
+    '@angular/forms': 'npm:@angular/forms@' + ver.ng + '/bundles/forms.umd.js',
 
     'rxjs': 'npm:rxjs@${versions.rxjs}',
     'typescript': 'npm:typescript@${versions.typescript}/lib/typescript.js',
