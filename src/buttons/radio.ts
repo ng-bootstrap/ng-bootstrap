@@ -19,6 +19,9 @@ const NGB_RADIO_VALUE_ACCESSOR = {
 export class NgbRadioGroup implements ControlValueAccessor {
   private _radios: Set<NgbRadio> = new Set<NgbRadio>();
   private _value = null;
+  private _disabled: boolean;
+
+  get disabled() { return this._disabled; }
 
   onChange = (_: any) => {};
   onTouched = () => {};
@@ -36,7 +39,10 @@ export class NgbRadioGroup implements ControlValueAccessor {
 
   registerOnTouched(fn: () => any): void { this.onTouched = fn; }
 
-  setDisabledState(isDisabled: boolean): void { this._updateRadiosDisabled(isDisabled); }
+  setDisabledState(isDisabled: boolean): void {
+    this._disabled = isDisabled;
+    this._updateRadiosDisabled();
+  }
 
   unregister(radio: NgbRadio) { this._radios.delete(radio); }
 
@@ -46,7 +52,7 @@ export class NgbRadioGroup implements ControlValueAccessor {
   }
 
   private _updateRadiosValue() { this._radios.forEach((radio) => radio.updateValue(this._value)); }
-  private _updateRadiosDisabled(isDisabled) { this._radios.forEach((radio) => radio.updateDisabled(isDisabled)); }
+  private _updateRadiosDisabled() { this._radios.forEach((radio) => radio.updateDisabled()); }
 }
 
 
@@ -101,7 +107,8 @@ export class NgbRadio implements OnDestroy {
 
   @Input('disabled')
   set disabled(isDisabled: any) {
-    this.updateDisabled(isDisabled !== false);
+    this._disabled = isDisabled !== false;
+    this.updateDisabled();
   }
 
   set focused(isFocused: boolean) {
@@ -114,7 +121,7 @@ export class NgbRadio implements OnDestroy {
 
   get checked() { return this._checked; }
 
-  get disabled() { return this._disabled; }
+  get disabled() { return (this._group && this._group.disabled) || this._disabled; }
 
   constructor(
       @Optional() private _group: NgbRadioGroup, @Optional() private _label: NgbActiveLabel,
@@ -141,10 +148,10 @@ export class NgbRadio implements OnDestroy {
     this._label.active = this._checked;
   }
 
-  updateDisabled(isDisabled) {
-    this._disabled = isDisabled;
+  updateDisabled() {
+    let disabled = (this._group && this._group.disabled) || this._disabled;
     if (this._label) {
-      this._label.disabled = this._disabled;
+      this._label.disabled = disabled;
     }
   }
 }

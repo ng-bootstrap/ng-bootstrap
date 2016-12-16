@@ -398,6 +398,62 @@ describe('ngbRadioGroup', () => {
            });
      }));
 
+  it('disable all radio buttons when group is disabled regardless of button disabled state', async(() => {
+       const html = `
+      <form>
+        <div ngbRadioGroup [(ngModel)]="model" name="control" [disabled]="groupDisabled">
+          <label class="btn">
+            <input type="radio" value="foo" [disabled]="disabled"/>
+          </label>          
+        </div>
+      </form>`;
+
+       const fixture = createTestComponent(html);
+
+       fixture.whenStable()
+           .then(() => {
+             expect(getLabel(fixture.nativeElement, 0)).toHaveCssClass('disabled');
+             expect(getInput(fixture.nativeElement, 0).hasAttribute('disabled')).toBeTruthy();
+
+             fixture.componentInstance.disabled = false;
+             fixture.detectChanges();
+             return fixture.whenStable();
+           })
+           .then(() => {
+             fixture.detectChanges();
+             expect(getLabel(fixture.nativeElement, 0)).toHaveCssClass('disabled');
+             expect(getInput(fixture.nativeElement, 0).hasAttribute('disabled')).toBeTruthy();
+           });
+     }));
+
+  it('button stays disabled when group is enabled', async(() => {
+       const html = `
+      <form>
+        <div ngbRadioGroup [(ngModel)]="model" name="control" [disabled]="groupDisabled">
+          <label class="btn">
+            <input type="radio" value="foo" [disabled]="disabled"/>
+          </label>          
+        </div>
+      </form>`;
+
+       const fixture = createTestComponent(html);
+
+       fixture.whenStable()
+           .then(() => {
+             expect(getLabel(fixture.nativeElement, 0)).toHaveCssClass('disabled');
+             expect(getInput(fixture.nativeElement, 0).hasAttribute('disabled')).toBeTruthy();
+
+             fixture.componentInstance.groupDisabled = false;
+             fixture.detectChanges();
+             return fixture.whenStable();
+           })
+           .then(() => {
+             fixture.detectChanges();
+             expect(getLabel(fixture.nativeElement, 0)).toHaveCssClass('disabled');
+             expect(getInput(fixture.nativeElement, 0).hasAttribute('disabled')).toBeTruthy();
+           });
+     }));
+
   it('should select a radio button when checked attribute is used', () => {
     const html1 = `
       <input type="radio" name="State" value="0" /> Foo <br>
@@ -533,5 +589,6 @@ class TestComponent {
   values: any = ['one', 'two', 'three'];
   shown = true;
   disabled = true;
+  groupDisabled = true;
   checked: any;
 }
