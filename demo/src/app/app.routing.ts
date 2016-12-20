@@ -18,7 +18,8 @@ import {
   NgbdTabs,
   NgbdTimepicker,
   NgbdTooltip,
-  NgbdTypeahead
+  NgbdTypeahead,
+  NgbdSelect
 } from './components';
 
 const routes: Routes = [
@@ -41,7 +42,8 @@ const routes: Routes = [
   {path: 'components/tabs', component: NgbdTabs},
   {path: 'components/timepicker', component: NgbdTimepicker},
   {path: 'components/tooltip', component: NgbdTooltip},
-  {path: 'components/typeahead', component: NgbdTypeahead}
+  {path: 'components/typeahead', component: NgbdTypeahead},
+  {path: 'components/select', component: NgbdSelect}
 ];
 
 export const routing: ModuleWithProviders = RouterModule.forRoot(routes, {useHash: true});

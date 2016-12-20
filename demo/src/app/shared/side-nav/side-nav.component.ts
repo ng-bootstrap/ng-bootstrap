@@ -18,6 +18,7 @@ export class SideNavComponent {
     'Popover',
     'Progressbar',
     'Rating',
+    'Select',
     'Tabs',
     'Timepicker',
     'Tooltip',

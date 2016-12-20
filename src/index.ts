@@ -16,6 +16,7 @@ import {NgbTabsetModule, NgbTabChangeEvent} from './tabset/tabset.module';
 import {NgbTimepickerModule} from './timepicker/timepicker.module';
 import {NgbTooltipModule} from './tooltip/tooltip.module';
 import {NgbTypeaheadModule, NgbTypeaheadSelectItemEvent} from './typeahead/typeahead.module';
+import {NgbSelectModule} from './select/select.module';
 
 export {NgbAccordionModule, NgbPanelChangeEvent, NgbAccordionConfig} from './accordion/accordion.module';
 export {NgbAlertModule, NgbAlertConfig} from './alert/alert.module';
@@ -46,11 +47,12 @@ export {NgbTabsetModule, NgbTabChangeEvent, NgbTabsetConfig} from './tabset/tabs
 export {NgbTimepickerModule, NgbTimepickerConfig, NgbTimeStruct} from './timepicker/timepicker.module';
 export {NgbTooltipModule, NgbTooltipConfig} from './tooltip/tooltip.module';
 export {NgbTypeaheadModule, NgbTypeaheadConfig, NgbTypeaheadSelectItemEvent} from './typeahead/typeahead.module';
+export {NgbSelectModule} from './select/select.module';
 
 const NGB_MODULES = [
   NgbAccordionModule, NgbAlertModule, NgbButtonsModule, NgbCarouselModule, NgbCollapseModule, NgbDatepickerModule,
   NgbDropdownModule, NgbModalModule, NgbPaginationModule, NgbPopoverModule, NgbProgressbarModule, NgbRatingModule,
-  NgbTabsetModule, NgbTimepickerModule, NgbTooltipModule, NgbTypeaheadModule
+  NgbTabsetModule, NgbTimepickerModule, NgbTooltipModule, NgbTypeaheadModule, NgbSelectModule
 ];
 
 @NgModule({
@@ -59,7 +61,7 @@ const NGB_MODULES = [
     NgbTooltipModule.forRoot(), NgbTypeaheadModule.forRoot(), NgbAccordionModule.forRoot(), NgbCarouselModule.forRoot(),
     NgbDatepickerModule.forRoot(), NgbDropdownModule.forRoot(), NgbModalModule.forRoot(), NgbPaginationModule.forRoot(),
     NgbPopoverModule.forRoot(), NgbProgressbarModule.forRoot(), NgbRatingModule.forRoot(), NgbTabsetModule.forRoot(),
-    NgbTimepickerModule.forRoot(), NgbTooltipModule.forRoot()
+    NgbTimepickerModule.forRoot(), NgbTooltipModule.forRoot(), NgbSelectModule.forRoot()
   ],
   exports: NGB_MODULES
 })
