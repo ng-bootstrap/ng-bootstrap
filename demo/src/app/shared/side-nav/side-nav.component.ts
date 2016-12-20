@@ -13,6 +13,7 @@ export class SideNavComponent {
     'Collapse',
     'Datepicker',
     'Dropdown',
+    'MediaQuery',
     'Modal',
     'Pagination',
     'Popover',

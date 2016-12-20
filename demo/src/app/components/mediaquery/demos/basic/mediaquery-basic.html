@@ -1,0 +1,10 @@
+<p>
+  Resize your browser window to see the changes.<br/>
+  Current width: <strong>{{ width }}</strong>
+</p>
+<div *ngIf="mdOrUp" style="min-width: 450px; background-color: aquamarine;">
+  This large div is only in the DOM for the <code>md</code> width and up.
+</div>
+<div *ngIf="!mdOrUp" style="max-width: 300px; background-color: lavender;">
+  This small div is only in the DOM for the <code>sm</code> width and down.
+</div>

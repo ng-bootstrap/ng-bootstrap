@@ -7,6 +7,7 @@ import {NgbCarouselModule} from './carousel/carousel.module';
 import {NgbCollapseModule} from './collapse/collapse.module';
 import {NgbDatepickerModule} from './datepicker/datepicker.module';
 import {NgbDropdownModule} from './dropdown/dropdown.module';
+import {NgbMediaQueryModule} from './mediaquery/mediaquery.module';
 import {NgbModalModule, NgbModal, NgbModalOptions, NgbModalRef, ModalDismissReasons} from './modal/modal.module';
 import {NgbPaginationModule} from './pagination/pagination.module';
 import {NgbPopoverModule} from './popover/popover.module';
@@ -30,6 +31,7 @@ export {
   NgbDateParserFormatter
 } from './datepicker/datepicker.module';
 export {NgbDropdownModule, NgbDropdownConfig} from './dropdown/dropdown.module';
+export {NgbMediaQueryModule, NgbMediaQuery} from './mediaquery/mediaquery.module';
 export {
   NgbModalModule,
   NgbModal,
@@ -57,9 +59,9 @@ const NGB_MODULES = [
   imports: [
     NgbAlertModule.forRoot(), NgbButtonsModule.forRoot(), NgbCollapseModule.forRoot(), NgbProgressbarModule.forRoot(),
     NgbTooltipModule.forRoot(), NgbTypeaheadModule.forRoot(), NgbAccordionModule.forRoot(), NgbCarouselModule.forRoot(),
-    NgbDatepickerModule.forRoot(), NgbDropdownModule.forRoot(), NgbModalModule.forRoot(), NgbPaginationModule.forRoot(),
-    NgbPopoverModule.forRoot(), NgbProgressbarModule.forRoot(), NgbRatingModule.forRoot(), NgbTabsetModule.forRoot(),
-    NgbTimepickerModule.forRoot(), NgbTooltipModule.forRoot()
+    NgbDatepickerModule.forRoot(), NgbDropdownModule.forRoot(), NgbMediaQueryModule.forRoot(), NgbModalModule.forRoot(),
+    NgbPaginationModule.forRoot(), NgbPopoverModule.forRoot(), NgbProgressbarModule.forRoot(),
+    NgbRatingModule.forRoot(), NgbTabsetModule.forRoot(), NgbTimepickerModule.forRoot(), NgbTooltipModule.forRoot()
   ],
   exports: NGB_MODULES
 })
