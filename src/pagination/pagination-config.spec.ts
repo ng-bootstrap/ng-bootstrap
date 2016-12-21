@@ -4,6 +4,7 @@ describe('ngb-pagination-config', () => {
   it('should have sensible default values', () => {
     const config = new NgbPaginationConfig();
 
+    expect(config.disabled).toBe(false);
     expect(config.boundaryLinks).toBe(false);
     expect(config.directionLinks).toBe(true);
     expect(config.ellipses).toBe(true);

@@ -7,6 +7,7 @@ import {Injectable} from '@angular/core';
  */
 @Injectable()
 export class NgbPaginationConfig {
+  disabled = false;
   boundaryLinks = false;
   directionLinks = true;
   ellipses = true;
