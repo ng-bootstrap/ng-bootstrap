@@ -548,7 +548,7 @@ describe('ngb-pagination', () => {
 
          expect(fixture.componentInstance.onPageChange).not.toHaveBeenCalled();
        }));
-       it('should set classes correctly for disabled state', fakeAsync(() => {
+    it('should set classes correctly for disabled state', fakeAsync(() => {
          const html = `<ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize" [maxSize]="maxSize" 
          [disabled]=true></ngb-pagination>`;
          const fixture = createTestComponent(html);
