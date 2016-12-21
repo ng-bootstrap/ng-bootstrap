@@ -54,6 +54,7 @@ function normalizeText(txt: string): string {
 }
 
 function expectSameValues(pagination: NgbPagination, config: NgbPaginationConfig) {
+  expect(pagination.disabled).toBe(config.disabled);
   expect(pagination.boundaryLinks).toBe(config.boundaryLinks);
   expect(pagination.directionLinks).toBe(config.directionLinks);
   expect(pagination.ellipses).toBe(config.ellipses);
@@ -547,6 +548,17 @@ describe('ngb-pagination', () => {
 
          expect(fixture.componentInstance.onPageChange).not.toHaveBeenCalled();
        }));
+    it('should set classes correctly for disabled state', fakeAsync(() => {
+         const html = `<ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize" [maxSize]="maxSize" 
+         [disabled]=true></ngb-pagination>`;
+         const fixture = createTestComponent(html);
+         tick();
+
+         const buttons = fixture.nativeElement.querySelectorAll('li');
+         for (let i = 0; i < buttons.length; i++) {
+           expect(buttons[i]).toHaveCssClass('disabled');
+         }
+       }));
   });
 
   describe('Custom config', () => {
@@ -576,6 +588,7 @@ describe('ngb-pagination', () => {
 
   describe('Custom config as provider', () => {
     let config = new NgbPaginationConfig();
+    config.disabled = true;
     config.boundaryLinks = true;
     config.directionLinks = false;
     config.ellipses = false;

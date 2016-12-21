@@ -16,7 +16,10 @@ import {DEMO_SNIPPETS} from './demos';
       <ngbd-example-box demoTitle="Pagination size" [snippets]="snippets" component="pagination" demo="size">
         <ngbd-pagination-size></ngbd-pagination-size>
       </ngbd-example-box>
-      <ngbd-example-box demoTitle="Global configuration of paginations" [snippets]="snippets" component="pagination" demo="config">
+      <ngbd-example-box demoTitle="Disabled pagination" [snippets]="snippets" component="pagination" demo="disabled">
+        <ngbd-pagination-disabled></ngbd-pagination-disabled>
+      </ngbd-example-box>
+      <ngbd-example-box demoTitle="Global configuration" [snippets]="snippets" component="pagination" demo="config">
         <ngbd-pagination-config></ngbd-pagination-config>
       </ngbd-example-box>
     </ngbd-content-wrapper>
