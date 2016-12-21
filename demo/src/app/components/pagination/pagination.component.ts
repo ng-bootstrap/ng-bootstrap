@@ -10,6 +10,9 @@ import {DEMO_SNIPPETS} from './demos';
       <ngbd-example-box demoTitle="Basic pagination" [snippets]="snippets" component="pagination" demo="basic">
         <ngbd-pagination-basic></ngbd-pagination-basic>
       </ngbd-example-box>
+      <ngbd-example-box demoTitle="Disabled pagination" [snippets]="snippets" component="pagination" demo="basic">
+        <ngbd-pagination-basic></ngbd-pagination-basic>
+      </ngbd-example-box>
       <ngbd-example-box demoTitle="Advanced pagination" [snippets]="snippets" component="pagination" demo="advanced">
         <ngbd-pagination-advanced></ngbd-pagination-advanced>
       </ngbd-example-box>
