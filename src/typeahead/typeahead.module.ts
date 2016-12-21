@@ -9,7 +9,7 @@ import {NgbTypeaheadConfig} from './typeahead-config';
 export {NgbHighlight} from './highlight';
 export {NgbTypeaheadWindow} from './typeahead-window';
 export {NgbTypeaheadConfig} from './typeahead-config';
-export {NgbTypeaheadSelectItemEvent} from './typeahead';
+export {NgbTypeahead, NgbTypeaheadSelectItemEvent} from './typeahead';
 
 @NgModule({
   declarations: [NgbTypeahead, NgbHighlight, NgbTypeaheadWindow],
