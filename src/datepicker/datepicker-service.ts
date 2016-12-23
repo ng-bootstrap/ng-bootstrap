@@ -12,7 +12,7 @@ export class NgbDatepickerService {
       markDisabled: (date: NgbDate, current: {month: number, year: number}) => boolean): MonthViewModel {
     const month: MonthViewModel = {firstDate: null, number: date.month, year: date.year, weeks: [], weekdays: []};
 
-    date = this._getFirstViewDate(date, firstDayOfWeek);
+    date = this.getFirstViewDate(date, firstDayOfWeek);
 
     // month has weeks
     for (let w = 0; w < this._calendar.getWeeksPerMonth(); w++) {
@@ -56,7 +56,7 @@ export class NgbDatepickerService {
     return this._calendar.isValid(ngbDate) ? ngbDate : defaultValue;
   }
 
-  private _getFirstViewDate(date: NgbDate, firstDayOfWeek: number): NgbDate {
+  protected getFirstViewDate(date: NgbDate, firstDayOfWeek: number): NgbDate {
     const currentMonth = date.month;
     let today = new NgbDate(date.year, date.month, date.day);
     let yesterday = this._calendar.getPrev(today);
