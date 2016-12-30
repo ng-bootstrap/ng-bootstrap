@@ -8,7 +8,7 @@ import {NgbDateStruct} from './ngb-date-struct';
       text-align: center;
       width: 2rem;
       height: 2rem;
-      line-height: 2rem;      
+      line-height: 2rem;
       border-radius: 0.25rem;
     }
     :host.outside {
