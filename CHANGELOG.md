@@ -1,3 +1,20 @@
+<a name="1.0.0-alpha.16"></a>
+# [1.0.0-alpha.16](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.15...1.0.0-alpha.16) (2017-01-02)
+
+
+### Bug Fixes
+
+* **buttons:** properly manage disabled state of group interactions ([e24f4c6](https://github.com/ng-bootstrap/ng-bootstrap/commit/e24f4c6)), closes [#1143](https://github.com/ng-bootstrap/ng-bootstrap/issues/1143) [#1148](https://github.com/ng-bootstrap/ng-bootstrap/issues/1148)
+
+
+### Features
+
+* export all directives ([4554855](https://github.com/ng-bootstrap/ng-bootstrap/commit/4554855)), closes [#779](https://github.com/ng-bootstrap/ng-bootstrap/issues/779) [#1154](https://github.com/ng-bootstrap/ng-bootstrap/issues/1154)
+* **pagination:** add disabled state support ([2827e50](https://github.com/ng-bootstrap/ng-bootstrap/commit/2827e50)), closes [#1153](https://github.com/ng-bootstrap/ng-bootstrap/issues/1153) [#1155](https://github.com/ng-bootstrap/ng-bootstrap/issues/1155)
+* **popover:** pass context to popup open method ([87d569b](https://github.com/ng-bootstrap/ng-bootstrap/commit/87d569b)), closes [#1145](https://github.com/ng-bootstrap/ng-bootstrap/issues/1145)
+
+
+
 <a name="1.0.0-alpha.15"></a>
 # [1.0.0-alpha.15](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.14...1.0.0-alpha.15) (2016-12-15)
 
