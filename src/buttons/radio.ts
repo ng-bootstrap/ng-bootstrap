@@ -22,6 +22,7 @@ export class NgbRadioGroup implements ControlValueAccessor {
   private _disabled: boolean;
 
   get disabled() { return this._disabled; }
+  set disabled(isDisabled: boolean) { this.setDisabledState(isDisabled); }
 
   onChange = (_: any) => {};
   onTouched = () => {};
