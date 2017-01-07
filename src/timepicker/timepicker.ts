@@ -48,19 +48,23 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
       cursor: not-allowed;
       opacity: .65;
     }
+    
+    input {
+      text-align: center;
+    }
   `],
   template: `
      <fieldset [disabled]="disabled" [class.disabled]="disabled">
       <table>
         <tr *ngIf="spinners">
-          <td class="text-xs-center">
+          <td class="text-center">
             <button type="button" class="btn-link" (click)="changeHour(hourStep)"
               [disabled]="disabled" [class.disabled]="disabled">
               <span class="chevron"></span>
             </button>
           </td>
           <td>&nbsp;</td>
-          <td class="text-xs-center">
+          <td class="text-center">
             <button type="button" class="btn-link" (click)="changeMinute(minuteStep)"
               [disabled]="disabled" [class.disabled]="disabled">
                 <span class="chevron"></span>
@@ -68,7 +72,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
           </td>
           <template [ngIf]="seconds">
             <td>&nbsp;</td>
-            <td class="text-xs-center">
+            <td class="text-center">
               <button type="button" class="btn-link" (click)="changeSecond(secondStep)"
                 [disabled]="disabled" [class.disabled]="disabled">
                 <span class="chevron"></span>
@@ -106,14 +110,14 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
           </template>
         </tr>
         <tr *ngIf="spinners">
-          <td class="text-xs-center">
+          <td class="text-center">
             <button type="button" class="btn-link" (click)="changeHour(-hourStep)" 
               [disabled]="disabled" [class.disabled]="disabled">
               <span class="chevron bottom"></span>
             </button>
           </td>
           <td>&nbsp;</td>
-          <td class="text-xs-center">
+          <td class="text-center">
             <button type="button" class="btn-link" (click)="changeMinute(-minuteStep)"
               [disabled]="disabled" [class.disabled]="disabled">
               <span class="chevron bottom"></span>
@@ -121,7 +125,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
           </td>
           <template [ngIf]="seconds">
             <td>&nbsp;</td>
-            <td class="text-xs-center">
+            <td class="text-center">
               <button type="button" class="btn-link" (click)="changeSecond(-secondStep)"
                 [disabled]="disabled" [class.disabled]="disabled">
                 <span class="chevron bottom"></span>
