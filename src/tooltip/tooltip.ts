@@ -25,10 +25,8 @@ import {NgbTooltipConfig} from './tooltip-config';
 @Component({
   selector: 'ngb-tooltip-window',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {'[class]': '"tooltip in tooltip-" + placement', 'role': 'tooltip'},
-  // TODO remove the div.tooltip-arrow, which is there only to maintain compatibility with bootstrap alpha.4
+  host: {'[class]': '"tooltip show tooltip-" + placement', 'role': 'tooltip'},
   template: `
-    <div class="tooltip-arrow"></div>
     <div class="tooltip-inner"><ng-content></ng-content></div>
     `
 })
