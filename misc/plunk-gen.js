@@ -96,7 +96,7 @@ function generateIndexHtml() {
   <head>
   <base href="." />
     <title>ng-bootstrap demo</title>
-    <link rel="stylesheet" href="http://v4-alpha.getbootstrap.com/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/${versions.bootstrap}/css/bootstrap.min.css" />
     <script src="https://unpkg.com/zone.js@${versions.zoneJs}/dist/zone.js"></script>
     <script src="https://unpkg.com/zone.js@${versions.zoneJs}/dist/long-stack-trace-zone.js"></script>
     <script src="https://unpkg.com/reflect-metadata@${versions.reflectMetadata}/Reflect.js"></script>
@@ -170,7 +170,8 @@ function getVersions() {
     ngBootstrap: packageJson.version,
     zoneJs: getVersion('zone.js'),
     systemjs: getVersion('systemjs'),
-    reflectMetadata: getVersion('reflect-metadata')
+    reflectMetadata: getVersion('reflect-metadata'),
+    bootstrap: getVersion('bootstrap')
   };
 }
 
