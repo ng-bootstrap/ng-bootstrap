@@ -34,7 +34,7 @@ describe('ngb-dropdown', () => {
     const compiled = fixture.nativeElement;
 
     expect(getDropdownEl(compiled)).toHaveCssClass('dropdown');
-    expect(getDropdownEl(compiled)).not.toHaveCssClass('open');
+    expect(getDropdownEl(compiled)).not.toHaveCssClass('show');
   });
 
   it('should be up if up input is true', () => {
@@ -53,7 +53,7 @@ describe('ngb-dropdown', () => {
     const compiled = fixture.nativeElement;
 
     expect(getDropdownEl(compiled)).toHaveCssClass('dropdown');
-    expect(getDropdownEl(compiled)).toHaveCssClass('open');
+    expect(getDropdownEl(compiled)).toHaveCssClass('show');
   });
 
   it('should toggle open class', () => {
@@ -64,17 +64,17 @@ describe('ngb-dropdown', () => {
 
     let dropdownEl = getDropdownEl(compiled);
 
-    expect(dropdownEl).not.toHaveCssClass('open');
+    expect(dropdownEl).not.toHaveCssClass('show');
 
     fixture.componentInstance.isOpen = true;
     fixture.detectChanges();
 
-    expect(dropdownEl).toHaveCssClass('open');
+    expect(dropdownEl).toHaveCssClass('show');
 
     fixture.componentInstance.isOpen = false;
     fixture.detectChanges();
 
-    expect(dropdownEl).not.toHaveCssClass('open');
+    expect(dropdownEl).not.toHaveCssClass('show');
   });
 
   it('should allow toggling dropdown from outside', () => {
@@ -91,19 +91,19 @@ describe('ngb-dropdown', () => {
 
     buttonEls[0].click();
     fixture.detectChanges();
-    expect(dropdownEl).toHaveCssClass('open');
+    expect(dropdownEl).toHaveCssClass('show');
 
     buttonEls[1].click();
     fixture.detectChanges();
-    expect(dropdownEl).not.toHaveCssClass('open');
+    expect(dropdownEl).not.toHaveCssClass('show');
 
     buttonEls[2].click();
     fixture.detectChanges();
-    expect(dropdownEl).toHaveCssClass('open');
+    expect(dropdownEl).toHaveCssClass('show');
 
     buttonEls[2].click();
     fixture.detectChanges();
-    expect(dropdownEl).not.toHaveCssClass('open');
+    expect(dropdownEl).not.toHaveCssClass('show');
   });
 
   it('should allow binding to open output', () => {
@@ -179,18 +179,18 @@ describe('ngb-dropdown-toggle', () => {
     let dropdownEl = getDropdownEl(compiled);
     let buttonEl = compiled.querySelector('button');
 
-    expect(dropdownEl).not.toHaveCssClass('open');
+    expect(dropdownEl).not.toHaveCssClass('show');
     expect(buttonEl.getAttribute('aria-haspopup')).toBe('true');
     expect(buttonEl.getAttribute('aria-expanded')).toBe('false');
 
     buttonEl.click();
     fixture.detectChanges();
-    expect(dropdownEl).toHaveCssClass('open');
+    expect(dropdownEl).toHaveCssClass('show');
     expect(buttonEl.getAttribute('aria-expanded')).toBe('true');
 
     buttonEl.click();
     fixture.detectChanges();
-    expect(dropdownEl).not.toHaveCssClass('open');
+    expect(dropdownEl).not.toHaveCssClass('show');
     expect(buttonEl.getAttribute('aria-expanded')).toBe('false');
   });
 
@@ -207,15 +207,15 @@ describe('ngb-dropdown-toggle', () => {
     let dropdownEl = getDropdownEl(compiled);
     let toggleEl = compiled.querySelector('.toggle');
 
-    expect(dropdownEl).not.toHaveCssClass('open');
+    expect(dropdownEl).not.toHaveCssClass('show');
 
     toggleEl.click();
     fixture.detectChanges();
-    expect(dropdownEl).toHaveCssClass('open');
+    expect(dropdownEl).toHaveCssClass('show');
 
     toggleEl.click();
     fixture.detectChanges();
-    expect(dropdownEl).not.toHaveCssClass('open');
+    expect(dropdownEl).not.toHaveCssClass('show');
   });
 
   it('should close on outside click', () => {
@@ -227,11 +227,11 @@ describe('ngb-dropdown-toggle', () => {
     let buttonEl = compiled.querySelector('button');
 
     fixture.detectChanges();
-    expect(dropdownEl).toHaveCssClass('open');
+    expect(dropdownEl).toHaveCssClass('show');
 
     buttonEl.click();
     fixture.detectChanges();
-    expect(dropdownEl).not.toHaveCssClass('open');
+    expect(dropdownEl).not.toHaveCssClass('show');
   });
 
   it('should not close on outside click if autoClose is set to false', () => {
@@ -243,11 +243,11 @@ describe('ngb-dropdown-toggle', () => {
     let buttonEl = compiled.querySelector('button');
 
     fixture.detectChanges();
-    expect(dropdownEl).toHaveCssClass('open');
+    expect(dropdownEl).toHaveCssClass('show');
 
     buttonEl.click();
     fixture.detectChanges();
-    expect(dropdownEl).toHaveCssClass('open');
+    expect(dropdownEl).toHaveCssClass('show');
   });
 
   it('should close on ESC', () => {
@@ -263,11 +263,11 @@ describe('ngb-dropdown-toggle', () => {
 
     buttonEl.click();
     fixture.detectChanges();
-    expect(dropdownEl).toHaveCssClass('open');
+    expect(dropdownEl).toHaveCssClass('show');
 
     fixture.debugElement.query(By.directive(NgbDropdown)).triggerEventHandler('keyup.esc', {});
     fixture.detectChanges();
-    expect(dropdownEl).not.toHaveCssClass('open');
+    expect(dropdownEl).not.toHaveCssClass('show');
   });
 
   it('should not close on ESC if autoClose is set to false', () => {
@@ -283,11 +283,11 @@ describe('ngb-dropdown-toggle', () => {
 
     buttonEl.click();
     fixture.detectChanges();
-    expect(dropdownEl).toHaveCssClass('open');
+    expect(dropdownEl).toHaveCssClass('show');
 
     fixture.debugElement.query(By.directive(NgbDropdown)).triggerEventHandler('keyup.esc', {});
     fixture.detectChanges();
-    expect(dropdownEl).toHaveCssClass('open');
+    expect(dropdownEl).toHaveCssClass('show');
   });
 
   it('should close on item click if autoClose is set to false', () => {
@@ -305,11 +305,11 @@ describe('ngb-dropdown-toggle', () => {
     let linkEl = compiled.querySelector('a');
 
     fixture.detectChanges();
-    expect(dropdownEl).toHaveCssClass('open');
+    expect(dropdownEl).toHaveCssClass('show');
 
     linkEl.click();
     fixture.detectChanges();
-    expect(dropdownEl).toHaveCssClass('open');
+    expect(dropdownEl).toHaveCssClass('show');
   });
 
   it('should close on item click', () => {
@@ -327,11 +327,11 @@ describe('ngb-dropdown-toggle', () => {
     let linkEl = compiled.querySelector('a');
 
     fixture.detectChanges();
-    expect(dropdownEl).toHaveCssClass('open');
+    expect(dropdownEl).toHaveCssClass('show');
 
     linkEl.click();
     fixture.detectChanges();
-    expect(dropdownEl).not.toHaveCssClass('open');
+    expect(dropdownEl).not.toHaveCssClass('show');
   });
 
 
@@ -357,18 +357,18 @@ describe('ngb-dropdown-toggle', () => {
     const dropdownEls = compiled.querySelectorAll('div[ngbDropdown]');
 
     fixture.detectChanges();
-    expect(dropdownEls[0]).not.toHaveCssClass('open');
-    expect(dropdownEls[1]).not.toHaveCssClass('open');
+    expect(dropdownEls[0]).not.toHaveCssClass('show');
+    expect(dropdownEls[1]).not.toHaveCssClass('show');
 
     buttonEls[0].click();
     fixture.detectChanges();
-    expect(dropdownEls[0]).toHaveCssClass('open');
-    expect(dropdownEls[1]).not.toHaveCssClass('open');
+    expect(dropdownEls[0]).toHaveCssClass('show');
+    expect(dropdownEls[1]).not.toHaveCssClass('show');
 
     buttonEls[1].click();
     fixture.detectChanges();
-    expect(dropdownEls[0]).not.toHaveCssClass('open');
-    expect(dropdownEls[1]).toHaveCssClass('open');
+    expect(dropdownEls[0]).not.toHaveCssClass('show');
+    expect(dropdownEls[1]).toHaveCssClass('show');
   });
 
   describe('Custom config', () => {
