@@ -8,8 +8,11 @@ import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
   encapsulation: ViewEncapsulation.None,
   styles: [`
     .dark-modal .modal-content {
-      background-color: black;
+      background-color: #292b2c;
       color: white;
+    }
+    .dark-modal .close {
+      color: white;   
     }
   `]
 })
