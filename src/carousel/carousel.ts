@@ -50,12 +50,12 @@ export class NgbSlide {
         <template [ngTemplateOutlet]="slide.tplRef"></template>
       </div>
     </div>
-    <a class="left carousel-control" role="button" (click)="cycleToPrev()">
-      <span class="icon-prev" aria-hidden="true"></span>
+    <a class="left carousel-control-prev" role="button" (click)="cycleToPrev()">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
       <span class="sr-only">Previous</span>
     </a>
-    <a class="right carousel-control" role="button" (click)="cycleToNext()">
-      <span class="icon-next" aria-hidden="true"></span>
+    <a class="right carousel-control-next" role="button" (click)="cycleToNext()">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
       <span class="sr-only">Next</span>
     </a>
     `
