@@ -40,7 +40,7 @@
     "@types/node": "^6.0.46",
     "angular2-template-loader": "^0.6.0",
     "autoprefixer": "^6.5.1",
-    "bootstrap": "^4.0.0-alpha.5",
+    "bootstrap": "4.0.0-alpha.5",
     "clang-format": "1.0.35",
     "classlist-polyfill": "^1.0.3",
     "copy-webpack-plugin": "^4.0.0",
