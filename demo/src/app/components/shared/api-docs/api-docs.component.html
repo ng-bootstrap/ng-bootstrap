@@ -6,12 +6,12 @@
     <table class="table table-sm table-hover">
       <tbody>
         <tr>
-          <td class="col-md-3">Selector</td>
-          <td class="col-md-9"><code>{{apiDocs.selector}}</code></td>
+          <td class="label-cell">Selector</td>
+          <td class="content-cell"><code>{{apiDocs.selector}}</code></td>
         </tr>
         <tr *ngIf="apiDocs.exportAs">
-          <td class="col-md-3">Exported as</td>
-          <td class="col-md-9"><code>{{apiDocs.exportAs}}</code></td>
+          <td class="label-cell">Exported as</td>
+          <td class="content-cell"><code>{{apiDocs.exportAs}}</code></td>
         </tr>
       </tbody>
     </table>
@@ -22,8 +22,8 @@
       <table class="table table-sm table-hover">
         <tbody>
         <tr *ngFor="let input of apiDocs.inputs">
-          <td class="col-md-3"><code>{{input.name}}</code></td>
-          <td class="col-md-9">
+          <td class="label-cell"><code>{{input.name}}</code></td>
+          <td class="content-cell">
             <div><i>Type: </i><code>{{ input.type }}</code></div>
             <template [ngIf]="defaultInputValue(input) || hasConfigProperty(input)">
               <div>
@@ -45,8 +45,8 @@
       <table class="table table-sm table-hover">
         <tbody>
           <tr *ngFor="let output of apiDocs.outputs">
-            <td class="col-md-3"><code>{{output.name}}</code></td>
-            <td class="col-md-9">{{output.description}}</td>
+            <td class="label-cell"><code>{{output.name}}</code></td>
+            <td class="content-cell">{{output.description}}</td>
           </tr>
         </tbody>
       </table>
@@ -59,8 +59,8 @@
       <table class="table table-sm table-hover">
         <tbody>
         <tr *ngFor="let method of apiDocs.methods">
-          <td class="col-md-3"><code>{{method.name}}</code></td>
-          <td class="col-md-9">
+          <td class="label-cell"><code>{{method.name}}</code></td>
+          <td class="content-cell">
             <div><i>Signature: </i><code>{{ methodSignature(method) }}</code></div>
             <div><i>Return type: </i><code>{{ method.returnType }}</code></div>
             <div style="margin: 10px 0">{{ method.description }}</div>

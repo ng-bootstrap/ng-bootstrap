@@ -11,7 +11,16 @@ import {Analytics} from '../../../shared/analytics/analytics';
 @Component({
   selector: 'ngbd-api-docs-class',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './api-docs-class.component.html'
+  templateUrl: './api-docs-class.component.html',
+  styles: [`
+    .label-cell {
+      width: 25%;
+    }
+    .content-cell {
+      width: 75%;
+    }
+    `
+  ]
 })
 export class NgbdApiDocsClass {
   apiDocs: ClassDesc;
