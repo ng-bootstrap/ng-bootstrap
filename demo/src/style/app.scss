@@ -15,7 +15,6 @@
 }
 
 .bd-masthead {
-  margin-top: 3.4rem;
   padding-top: 2rem;
   padding-bottom: 2rem;
   margin-bottom: 4rem;
@@ -42,15 +41,11 @@
 }
 
 .jumbotron {
-  margin-top: 3.4rem;
   color: #fff;
   border-radius: 0;
 }
 
-p.github-buttons {
-  iframe {
-    margin-left: 20px;
-  }
+.github-buttons {
 
   header & {
     margin-bottom: 0;

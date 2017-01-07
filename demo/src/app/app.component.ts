@@ -8,6 +8,8 @@ import '../style/app.scss';
   templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit {
+  navbarCollapsed = true;
+
   constructor(private _analytics: Analytics) {
   }
 
