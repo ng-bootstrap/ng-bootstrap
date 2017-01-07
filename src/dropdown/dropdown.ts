@@ -24,6 +24,11 @@ export class NgbDropdown {
   @Input() up: boolean;
 
   /**
+   * Indicates that the dropdown should open upwards
+   */
+  @Input() up = false;
+
+  /**
    * Indicates that dropdown should be closed when selecting one of dropdown items (click) or pressing ESC.
    */
   @Input() autoClose: boolean;
