@@ -10,7 +10,7 @@ import {NgbProgressbarConfig} from './progressbar-config';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="progress">
-      <div class="progress-bar {{type ? ' bg-' + type : ''}}{{animated ? ' progress-bar-animated' : ''}}{{striped ? 
+      <div class="progress-bar{{type ? ' bg-' + type : ''}}{{animated ? ' progress-bar-animated' : ''}}{{striped ? 
     ' progress-bar-striped' : ''}}" role="progressbar" [style.width.%]="getPercentValue()" 
     [attr.aria-valuenow]="getValue()" aria-valuemin="0" [attr.aria-valuemax]="max"></div>
     </div>
