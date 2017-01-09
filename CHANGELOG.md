@@ -1,3 +1,31 @@
+<a name="1.0.0-alpha.18"></a>
+# [1.0.0-alpha.18](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.17...1.0.0-alpha.18) (2017-01-09)
+
+This release adds full compatibility with Bootstrap CSS version 4.0.0-alpha.6!
+
+### Chores
+
+* upgrade documentation to bootstrap-4.0.0-alpha.6 ([4499927](https://github.com/ng-bootstrap/ng-bootstrap/commit/4499927)), closes [#1192](https://github.com/ng-bootstrap/ng-bootstrap/issues/1192)
+
+
+### Features
+
+* **carousel:** upgrade carousel to v4-alpha.6 ([e9f539a](https://github.com/ng-bootstrap/ng-bootstrap/commit/e9f539a)), closes [#1190](https://github.com/ng-bootstrap/ng-bootstrap/issues/1190)
+* **collapse:** upgrade collapse to v4-alpha.6 ([6cda8b3](https://github.com/ng-bootstrap/ng-bootstrap/commit/6cda8b3)), closes [#1183](https://github.com/ng-bootstrap/ng-bootstrap/issues/1183)
+* **datepicker:** upgrade datepicker to v4-alpha.6 ([b60e2d7](https://github.com/ng-bootstrap/ng-bootstrap/commit/b60e2d7)), closes [#1187](https://github.com/ng-bootstrap/ng-bootstrap/issues/1187)
+* **dropdown:** upgrade to 4.0.0-alpha.6 ([d8bfe37](https://github.com/ng-bootstrap/ng-bootstrap/commit/d8bfe37)), closes [#1180](https://github.com/ng-bootstrap/ng-bootstrap/issues/1180) [#1182](https://github.com/ng-bootstrap/ng-bootstrap/issues/1182)
+* **modal:** upgrade modal to v4-alpha.6 ([7ab022b](https://github.com/ng-bootstrap/ng-bootstrap/commit/7ab022b)), closes [#1185](https://github.com/ng-bootstrap/ng-bootstrap/issues/1185)
+* **popover:** upgrade popover to v4-alpha.6 ([60fd5d9](https://github.com/ng-bootstrap/ng-bootstrap/commit/60fd5d9)), closes [#1189](https://github.com/ng-bootstrap/ng-bootstrap/issues/1189)
+* **timepicker:** upgrade timepicker to v4-alpha.6 ([4288e22](https://github.com/ng-bootstrap/ng-bootstrap/commit/4288e22)), closes [#1186](https://github.com/ng-bootstrap/ng-bootstrap/issues/1186)
+* **tooltip:** upgrade tooltip to v4-alpha.6 ([0000aa3](https://github.com/ng-bootstrap/ng-bootstrap/commit/0000aa3)), closes [#1188](https://github.com/ng-bootstrap/ng-bootstrap/issues/1188)
+
+
+### BREAKING CHANGES
+
+* This version is compatible with bootstrap-4.0.0-alpha.6, and is not backward-compatible with previous versions of bootstrap. If you choose to upgrade to this version of ng-bootstrap, you will thus also have to migrate to bootstrap-4.0.0-alpha.6.
+
+
+
 <a name="1.0.0-alpha.17"></a>
 # [1.0.0-alpha.17](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.16...1.0.0-alpha.17) (2017-01-09)
 
