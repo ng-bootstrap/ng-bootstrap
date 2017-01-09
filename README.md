@@ -73,9 +73,11 @@ See [this](https://github.com/angular/angular/blob/master/README.md) for up-to-d
 
 * Chrome (45+)
 * Firefox (40+)
-* IE (9+) (but see [Bootstrap 4's notes](http://v4-alpha.getbootstrap.com/getting-started/browsers-devices/#internet-explorer-9) on IE9)
+* IE (10+) 
 * Edge (20+)
 * Safari (7+)
+
+Also check [Bootstrap 4's notes](http://v4-alpha.getbootstrap.com/getting-started/browsers-devices/#internet-explorer-9) on browsers support.
 
 ## Contributing to the project
 
