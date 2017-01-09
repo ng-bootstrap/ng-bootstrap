@@ -1,3 +1,16 @@
+<a name="1.0.0-alpha.17"></a>
+# [1.0.0-alpha.17](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.16...1.0.0-alpha.17) (2017-01-09)
+
+This is a very small release that restores TypeScript 1.8 compatibility. 
+Additionally it and fixes plunks to work with Bootstrap version 4.0.0-alpha.5 
+(this is in preparation for full support of Bootstrap 4.0.0-alpha.6)
+
+### Bug Fixes
+
+* **buttons:** restore TS 1.8 compatibility ([8cd6c62](https://github.com/ng-bootstrap/ng-bootstrap/commit/8cd6c62)), closes [#1175](https://github.com/ng-bootstrap/ng-bootstrap/issues/1175) [#1176](https://github.com/ng-bootstrap/ng-bootstrap/issues/1176)
+
+
+
 <a name="1.0.0-alpha.16"></a>
 # [1.0.0-alpha.16](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.15...1.0.0-alpha.16) (2017-01-02)
 
