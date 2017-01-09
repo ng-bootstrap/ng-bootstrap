@@ -71,7 +71,7 @@ export interface NgbDatepickerNavigateEvent {
 
     <table>
       <tr *ngIf="navigation !== 'select' || displayMonths > 1">
-        <td *ngFor="let month of months" class="text-xs-center font-weight-bold">
+        <td *ngFor="let month of months" class="text-center font-weight-bold">
           {{ i18n.getMonthName(month.number) }} {{ month.year }}
         </td>
       </tr>

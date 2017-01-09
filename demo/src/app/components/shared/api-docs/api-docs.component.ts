@@ -14,7 +14,16 @@ import {Analytics} from '../../../shared/analytics/analytics';
 @Component({
   selector: 'ngbd-api-docs',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './api-docs.component.html'
+  templateUrl: './api-docs.component.html',
+  styles: [`
+    .label-cell {
+      width: 25%;
+    }
+    .content-cell {
+      width: 75%;
+    }
+    `
+  ]
 })
 export class NgbdApiDocs {
 

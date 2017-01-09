@@ -30,10 +30,10 @@ import {DayTemplateContext} from './datepicker-day-template-context';
     <table>
       <tr *ngIf="showWeekdays">
         <td *ngIf="showWeekNumbers"></td>
-        <td *ngFor="let w of month.weekdays" class="weekday text-xs-center font-weight-bold">{{ i18n.getWeekdayName(w) }}</td>
+        <td *ngFor="let w of month.weekdays" class="weekday text-center font-weight-bold">{{ i18n.getWeekdayName(w) }}</td>
       </tr>
       <tr *ngFor="let week of month.weeks">
-        <td *ngIf="showWeekNumbers" class="weeknumber small text-xs-center">{{ week.number }}</td>
+        <td *ngIf="showWeekNumbers" class="weeknumber small text-center">{{ week.number }}</td>
         <td *ngFor="let day of week.days" (click)="doSelect(day)" class="day" [class.disabled]="isDisabled(day)"
         [class.collapsed]="isCollapsed(day)" [class.hidden]="isHidden(day)">
             <template [ngTemplateOutlet]="dayTemplate"

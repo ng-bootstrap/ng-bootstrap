@@ -1,8 +1,14 @@
-<header class="navbar navbar-light navbar-fixed-top">
-  <div class="container">
-    <nav>
-      <a class="navbar-brand" [routerLink]="['/']">ng-bootstrap</a>
-      <ul class="nav navbar-nav">
+<div class="container" style="padding-left: 0; padding-right: 0;">
+  <header class="navbar navbar-light navbar-fixed-top navbar-toggleable-md">
+    <button class="navbar-toggler navbar-toggler-right" type="button" (click)="navbarCollapsed = !navbarCollapsed"
+            [attr.aria-expanded]="!navbarCollapsed" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <a class="navbar-brand" [routerLink]="['/']">ng-bootstrap</a>
+
+    <div class="navbar-collapse" [ngbCollapse]="navbarCollapsed" id="navbarContent">
+      <ul class="navbar-nav mr-auto">
         <li class="nav-item" [routerLinkActive]="['active']">
           <a class="nav-link" [routerLink]="['/getting-started']">Getting Started</a>
         </li>
@@ -10,28 +16,31 @@
           <a class="nav-link" [routerLink]="['/components']">Components</a>
         </li>
       </ul>
-      <p class="github-buttons float-lg-right">
+
+      <span class="github-buttons">
         <a class="github-button"
-          href="https://github.com/ng-bootstrap/ng-bootstrap"
-          target="_blank"
-          data-style="mega"
-          data-count-href="/ng-bootstrap/ng-bootstrap/stargazers"
-          data-count-api="/repos/ng-bootstrap/ng-bootstrap#stargazers_count"
-          data-count-aria-label="# stargazers on GitHub"
-          aria-label="Star ng-bootstrap/ng-bootstrap on GitHub">Star</a>
+           href="https://github.com/ng-bootstrap/ng-bootstrap"
+           target="_blank"
+           data-style="mega"
+           data-count-href="/ng-bootstrap/ng-bootstrap/stargazers"
+           data-count-api="/repos/ng-bootstrap/ng-bootstrap#stargazers_count"
+           data-count-aria-label="# stargazers on GitHub"
+           aria-label="Star ng-bootstrap/ng-bootstrap on GitHub">Star</a>
         <a href="https://twitter.com/intent/tweet?button_hashtag=ngbootstrap"
-        class="twitter-hashtag-button"
-        data-size="large"
-        data-text="I&#39;m checking out ng-bootstrap, THE Angular 2 UI framework for Bootstrap CSS"
-        data-url="https://ng-bootstrap.github.io"
-        data-show-count="true">Tweet #ngbootstrap</a>
-      </p>
-    </nav>
-  </div>
-</header>
+           class="twitter-hashtag-button"
+           data-size="large"
+           data-text="I&#39;m checking out ng-bootstrap, THE Angular 2 UI framework for Bootstrap CSS"
+           data-url="https://ng-bootstrap.github.io"
+           data-show-count="true">Tweet #ngbootstrap</a>
+      </span>
+    </div>
+  </header>
+</div>
+
 <div>
   <router-outlet></router-outlet>
 </div>
+
 <footer class="bd-footer text-muted">
   <div class="container">
     <p>Designed and built by the <a href="https://github.com/orgs/ng-bootstrap/people" target="_blank">ng-bootstrap

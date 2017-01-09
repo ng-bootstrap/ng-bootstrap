@@ -4,10 +4,12 @@
   </div>
 </div>
 <div class="container">
-  <div class="col-md-9 col-md-float-3">
-    <ng-content></ng-content>
-  </div>
-  <div class="col-md-3 col-md-push-9">
-    <ngbd-side-nav></ngbd-side-nav>
+  <div class="row">
+    <div class="col-12 col-md-3 push-md-9 ">
+      <ngbd-side-nav></ngbd-side-nav>
+    </div>
+    <div class="col-12 col-md-9 pull-md-3">
+      <ng-content></ng-content>
+    </div>
   </div>
 </div>
