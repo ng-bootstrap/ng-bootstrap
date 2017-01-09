@@ -1,5 +1,6 @@
 import {TestBed, ComponentFixture} from '@angular/core/testing';
 import {createGenericTestComponent, isBrowser} from '../test/common';
+import {By} from '@angular/platform-browser';
 
 import {Component} from '@angular/core';
 
@@ -77,6 +78,7 @@ describe('ngb-datepicker-month-view', () => {
   });
 
   it('should send date selection events', () => {
+    const event = jasmine.createSpyObj('event', ['stopPropagation', 'preventDefault']);
     const fixture = createTestComponent(`
         <template #tpl let-date="date">{{ date.day }}</template>
         <ngb-datepicker-month-view [month]="month" [dayTemplate]="tpl" (select)="onClick($event)"></ngb-datepicker-month-view>
@@ -84,10 +86,12 @@ describe('ngb-datepicker-month-view', () => {
 
     spyOn(fixture.componentInstance, 'onClick');
 
-    const dates = getDates(fixture.nativeElement);
-    dates[0].click();
+    const dates = Array.from(fixture.debugElement.queryAll(By.css('td.day')));
+    dates[0].triggerEventHandler('click', event);
 
     expect(fixture.componentInstance.onClick).toHaveBeenCalledWith(new NgbDate(2016, 7, 22));
+    expect(event.stopPropagation).toHaveBeenCalled();
+    expect(event.preventDefault).toHaveBeenCalled();
   });
 
   it('should not send date selection events for disabled dates', () => {

@@ -34,7 +34,7 @@ import {DayTemplateContext} from './datepicker-day-template-context';
       </tr>
       <tr *ngFor="let week of month.weeks">
         <td *ngIf="showWeekNumbers" class="weeknumber small text-xs-center">{{ week.number }}</td>
-        <td *ngFor="let day of week.days" (click)="doSelect(day)" class="day" [class.disabled]="isDisabled(day)"
+        <td *ngFor="let day of week.days" (click)="doSelect($event, day)" class="day" [class.disabled]="isDisabled(day)"
         [class.collapsed]="isCollapsed(day)" [class.hidden]="isHidden(day)">
             <template [ngTemplateOutlet]="dayTemplate"
             [ngOutletContext]="{date: {year: day.date.year, month: day.date.month, day: day.date.day},
@@ -60,7 +60,9 @@ export class NgbDatepickerMonthView {
 
   constructor(public i18n: NgbDatepickerI18n) {}
 
-  doSelect(day: DayViewModel) {
+  doSelect(event, day: DayViewModel) {
+    event.preventDefault();
+    event.stopPropagation();
     if (!this.isDisabled(day) && !this.isCollapsed(day) && !this.isHidden(day)) {
       this.select.emit(NgbDate.from(day.date));
     }
