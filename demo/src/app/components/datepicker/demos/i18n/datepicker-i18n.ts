@@ -26,11 +26,14 @@ export class CustomDatepickerI18n extends NgbDatepickerI18n {
     super();
   }
 
-  getWeekdayName(weekday: number): string {
+  getWeekdayShortName(weekday: number): string {
     return I18N_VALUES[this._i18n.language].weekdays[weekday - 1];
   }
-  getMonthName(month: number): string {
+  getMonthShortName(month: number): string {
     return I18N_VALUES[this._i18n.language].months[month - 1];
+  }
+  getMonthFullName(month: number): string {
+    return this.getMonthShortName(month);
   }
 }
 

@@ -284,13 +284,13 @@ describe('ngb-datepicker', () => {
     fixture.detectChanges();
     months = fixture.debugElement.queryAll(By.css('.ngb-dp-month-name'));
     expect(months.length).toBe(1);
-    expect(months.map(c => c.nativeElement.innerText.trim())).toEqual(['Aug 2016']);
+    expect(months.map(c => c.nativeElement.innerText.trim())).toEqual(['August 2016']);
 
     fixture.componentInstance.navigation = 'none';
     fixture.detectChanges();
     months = fixture.debugElement.queryAll(By.css('.ngb-dp-month-name'));
     expect(months.length).toBe(1);
-    expect(months.map(c => c.nativeElement.innerText.trim())).toEqual(['Aug 2016']);
+    expect(months.map(c => c.nativeElement.innerText.trim())).toEqual(['August 2016']);
   });
 
   it('should always display month names for multiple months', () => {
@@ -299,13 +299,17 @@ describe('ngb-datepicker', () => {
 
     let months = fixture.debugElement.queryAll(By.css('.ngb-dp-month-name'));
     expect(months.length).toBe(3);
-    expect(months.map(c => c.nativeElement.innerText.trim())).toEqual(['Aug 2016', 'Sep 2016', 'Oct 2016']);
+    expect(months.map(c => c.nativeElement.innerText.trim())).toEqual([
+      'August 2016', 'September 2016', 'October 2016'
+    ]);
 
     fixture.componentInstance.navigation = 'arrows';
     fixture.detectChanges();
     months = fixture.debugElement.queryAll(By.css('.ngb-dp-month-name'));
     expect(months.length).toBe(3);
-    expect(months.map(c => c.nativeElement.innerText.trim())).toEqual(['Aug 2016', 'Sep 2016', 'Oct 2016']);
+    expect(months.map(c => c.nativeElement.innerText.trim())).toEqual([
+      'August 2016', 'September 2016', 'October 2016'
+    ]);
   });
 
   it('should emit navigate event when startDate is defined', () => {

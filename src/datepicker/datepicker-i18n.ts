@@ -1,7 +1,11 @@
 import {Injectable} from '@angular/core';
 
-const WEEKDAYS = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const WEEKDAYS_SHORT = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
+const MONTHS_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const MONTHS_FULL = [
+  'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November',
+  'December'
+];
 
 /**
  * Type of the service supplying month and weekday names to to NgbDatepicker component.
@@ -10,21 +14,29 @@ const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 @Injectable()
 export abstract class NgbDatepickerI18n {
   /**
-   * Returns the short week day name to display in the heading of the month view.
+   * Returns the short weekday name to display in the heading of the month view.
    * With default calendar we use ISO 8601: 'weekday' is 1=Mon ... 7=Sun
    */
-  abstract getWeekdayName(weekday: number): string;
+  abstract getWeekdayShortName(weekday: number): string;
 
   /**
-   * Returns the month name to display in the date picker navigation.
+   * Returns the short month name to display in the date picker navigation.
    * With default calendar we use ISO 8601: 'month' is 1=Jan ... 12=Dec
    */
-  abstract getMonthName(month: number): string;
+  abstract getMonthShortName(month: number): string;
+
+  /**
+   * Returns the full month name to display in the date picker navigation.
+   * With default calendar we use ISO 8601: 'month' is 1=January ... 12=December
+   */
+  abstract getMonthFullName(month: number): string;
 }
 
 @Injectable()
 export class NgbDatepickerI18nDefault extends NgbDatepickerI18n {
-  getWeekdayName(weekday: number): string { return WEEKDAYS[weekday - 1]; }
+  getWeekdayShortName(weekday: number): string { return WEEKDAYS_SHORT[weekday - 1]; }
 
-  getMonthName(month: number): string { return MONTHS[month - 1]; }
+  getMonthShortName(month: number): string { return MONTHS_SHORT[month - 1]; }
+
+  getMonthFullName(month: number): string { return MONTHS_FULL[month - 1]; }
 }
