@@ -17,4 +17,9 @@ export class NgbModalStack {
   }
 
   registerContainer(modalContainer: NgbModalContainer) { this.modalContainer = modalContainer; }
+  removeContainer(modalContainer: NgbModalContainer) {
+    if (modalContainer === this.modalContainer) {
+      this.modalContainer = null;
+    }
+  }
 }
