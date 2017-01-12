@@ -255,9 +255,9 @@ describe('ngb-tabset', () => {
     expect(fixture.nativeElement.querySelector('ul')).toHaveCssClass('justify-content-start');
   });
 
-  it('should have the nav center-aligned upon setting alignement center', () => {
+  it('should have the nav center-aligned upon setting justify center', () => {
     const fixture = createTestComponent(`
-         <ngb-tabset alignment="center">
+         <ngb-tabset justify="center">
            <ngb-tab title="bar"><template ngbTabContent>Bar</template></ngb-tab>
          </ngb-tabset>
        `);
@@ -265,9 +265,9 @@ describe('ngb-tabset', () => {
     expect(fixture.nativeElement.querySelector('ul')).toHaveCssClass('justify-content-center');
   });
 
-  it('should have the nav right-aligned upon setting alignement end', () => {
+  it('should have the nav right-aligned upon setting justify end', () => {
     const fixture = createTestComponent(`
-         <ngb-tabset alignment="end">
+         <ngb-tabset justify="end">
            <ngb-tab title="bar"><template ngbTabContent>Bar</template></ngb-tab>
          </ngb-tabset>
        `);

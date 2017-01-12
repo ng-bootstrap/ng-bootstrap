@@ -5,6 +5,6 @@ describe('ngb-tabset-config', () => {
     const config = new NgbTabsetConfig();
 
     expect(config.type).toBe('tabs');
-    expect(config.alignment).toBe('start');
+    expect(config.justify).toBe('start');
   });
 });
