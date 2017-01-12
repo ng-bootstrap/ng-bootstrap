@@ -234,6 +234,24 @@ describe('ngb-dropdown-toggle', () => {
     expect(dropdownEl).not.toHaveCssClass('show');
   });
 
+  it('should not close on outside click if right button click', () => {
+    const html = `<button>Outside</button><div ngbDropdown [open]="true"></div>`;
+
+    const fixture = createTestComponent(html);
+    const compiled = fixture.nativeElement;
+    let dropdownEl = getDropdownEl(compiled);
+    let buttonEl = compiled.querySelector('button');
+
+    fixture.detectChanges();
+    expect(dropdownEl).toHaveCssClass('show');
+
+    const evt = document.createEvent('MouseEvent');
+    evt.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 2, null);
+    buttonEl.dispatchEvent(evt);
+    fixture.detectChanges();
+    expect(dropdownEl).toHaveCssClass('show');
+  });
+
   it('should not close on outside click if autoClose is set to false', () => {
     const html = `<button>Outside</button><div ngbDropdown [open]="true" [autoClose]="false"></div>`;
 

@@ -82,7 +82,7 @@ export class NgbDropdown {
   }
 
   closeFromOutsideClick($event) {
-    if (this.autoClose && !this._isEventFromToggle($event)) {
+    if (this.autoClose && $event.button !== 2 && !this._isEventFromToggle($event)) {
       this.close();
     }
   }
