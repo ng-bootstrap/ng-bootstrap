@@ -245,6 +245,36 @@ describe('ngb-tabset', () => {
     expect(fixture.nativeElement.querySelector('ul')).not.toHaveCssClass('nav-tabs');
   });
 
+  it('should have the nav left-aligned by default', () => {
+    const fixture = createTestComponent(`
+         <ngb-tabset>
+           <ngb-tab title="bar"><template ngbTabContent>Bar</template></ngb-tab>
+         </ngb-tabset>
+       `);
+
+    expect(fixture.nativeElement.querySelector('ul')).toHaveCssClass('justify-content-start');
+  });
+
+  it('should have the nav center-aligned upon setting justify center', () => {
+    const fixture = createTestComponent(`
+         <ngb-tabset justify="center">
+           <ngb-tab title="bar"><template ngbTabContent>Bar</template></ngb-tab>
+         </ngb-tabset>
+       `);
+
+    expect(fixture.nativeElement.querySelector('ul')).toHaveCssClass('justify-content-center');
+  });
+
+  it('should have the nav right-aligned upon setting justify end', () => {
+    const fixture = createTestComponent(`
+         <ngb-tabset justify="end">
+           <ngb-tab title="bar"><template ngbTabContent>Bar</template></ngb-tab>
+         </ngb-tabset>
+       `);
+
+    expect(fixture.nativeElement.querySelector('ul')).toHaveCssClass('justify-content-end');
+  });
+
 
   it('should change active tab by calling select on an exported directive instance', () => {
     const fixture = createTestComponent(`

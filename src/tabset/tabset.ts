@@ -79,7 +79,7 @@ export interface NgbTabChangeEvent {
   selector: 'ngb-tabset',
   exportAs: 'ngbTabset',
   template: `
-    <ul [class]="'nav nav-' + type" role="tablist">
+    <ul [class]="'nav nav-' + type + ' justify-content-' + justify" role="tablist">
       <li class="nav-item" *ngFor="let tab of tabs">
         <a [id]="tab.id" class="nav-link" [class.active]="tab.id === activeId" [class.disabled]="tab.disabled"
           href (click)="!!select(tab.id)" role="tab" [attr.aria-controls]="tab.id + '-panel'" [attr.aria-expanded]="tab.id === activeId">
@@ -105,6 +105,11 @@ export class NgbTabset implements AfterContentChecked {
   @Input() activeId: string;
 
   /**
+   * The horizontal alignment of the nav with flexbox utilities. Can be one of 'start', 'center' or 'end'
+   */
+  @Input() justify: 'start' | 'center' | 'end';
+
+  /**
    * Type of navigation to be used for tabs. Can be one of 'tabs' or 'pills'.
    */
   @Input() type: 'tabs' | 'pills';
@@ -114,7 +119,10 @@ export class NgbTabset implements AfterContentChecked {
    */
   @Output() tabChange = new EventEmitter<NgbTabChangeEvent>();
 
-  constructor(config: NgbTabsetConfig) { this.type = config.type; }
+  constructor(config: NgbTabsetConfig) {
+    this.type = config.type;
+    this.justify = config.justify;
+  }
 
   /**
    * Selects the tab with the given id and shows its associated pane.

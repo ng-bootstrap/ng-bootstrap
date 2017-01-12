@@ -7,5 +7,6 @@ import {Injectable} from '@angular/core';
  */
 @Injectable()
 export class NgbTabsetConfig {
+  justify: 'start' | 'center' | 'end' = 'start';
   type: 'tabs' | 'pills' = 'tabs';
 }
