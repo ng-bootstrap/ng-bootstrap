@@ -10,5 +10,6 @@ export class NgbdTabsetConfig {
   constructor(config: NgbTabsetConfig) {
     // customize default values of tabsets used by this component tree
     config.type = 'pills';
+    config.alignment = 'center';
   }
 }
