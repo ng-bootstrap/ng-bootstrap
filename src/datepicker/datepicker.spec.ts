@@ -20,7 +20,7 @@ const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
 function getDates(element: HTMLElement): HTMLElement[] {
-  return <HTMLElement[]>Array.from(element.querySelectorAll('td.day'));
+  return <HTMLElement[]>Array.from(element.querySelectorAll('.ngb-dp-day'));
 }
 
 function getDay(element: HTMLElement, index: number): HTMLElement {
@@ -277,39 +277,35 @@ describe('ngb-datepicker', () => {
     const fixture = createTestComponent(
         `<ngb-datepicker [startDate]="date" [displayMonths]="1" [navigation]="navigation"></ngb-datepicker>`);
 
-    let sections = fixture.debugElement.queryAll(By.css('ngb-datepicker > table > tbody > tr'));
-    expect(sections.length).toBe(1);
+    let months = fixture.debugElement.queryAll(By.css('.ngb-dp-month-name'));
+    expect(months.length).toBe(0);
 
     fixture.componentInstance.navigation = 'arrows';
     fixture.detectChanges();
-    sections = fixture.debugElement.queryAll(By.css('ngb-datepicker > table > tbody > tr'));
-    expect(sections.length).toBe(2);
-    expect(sections[0].children.map(c => c.nativeElement.innerText.trim())).toEqual(['Aug 2016']);
+    months = fixture.debugElement.queryAll(By.css('.ngb-dp-month-name'));
+    expect(months.length).toBe(1);
+    expect(months.map(c => c.nativeElement.innerText.trim())).toEqual(['Aug 2016']);
 
     fixture.componentInstance.navigation = 'none';
     fixture.detectChanges();
-    sections = fixture.debugElement.queryAll(By.css('ngb-datepicker > table > tbody > tr'));
-    expect(sections.length).toBe(2);
-    expect(sections[0].children.map(c => c.nativeElement.innerText.trim())).toEqual(['Aug 2016']);
+    months = fixture.debugElement.queryAll(By.css('.ngb-dp-month-name'));
+    expect(months.length).toBe(1);
+    expect(months.map(c => c.nativeElement.innerText.trim())).toEqual(['Aug 2016']);
   });
 
   it('should always display month names for multiple months', () => {
     const fixture = createTestComponent(
         `<ngb-datepicker [startDate]="date" [displayMonths]="3" [navigation]="navigation"></ngb-datepicker>`);
 
-    let sections = fixture.debugElement.queryAll(By.css('ngb-datepicker > table > tbody > tr'));
-    expect(sections.length).toBe(2);
-    expect(sections[0].children.map(c => c.nativeElement.innerText.trim())).toEqual([
-      'Aug 2016', 'Sep 2016', 'Oct 2016'
-    ]);
+    let months = fixture.debugElement.queryAll(By.css('.ngb-dp-month-name'));
+    expect(months.length).toBe(3);
+    expect(months.map(c => c.nativeElement.innerText.trim())).toEqual(['Aug 2016', 'Sep 2016', 'Oct 2016']);
 
     fixture.componentInstance.navigation = 'arrows';
     fixture.detectChanges();
-    sections = fixture.debugElement.queryAll(By.css('ngb-datepicker > table > tbody > tr'));
-    expect(sections.length).toBe(2);
-    expect(sections[0].children.map(c => c.nativeElement.innerText.trim())).toEqual([
-      'Aug 2016', 'Sep 2016', 'Oct 2016'
-    ]);
+    months = fixture.debugElement.queryAll(By.css('.ngb-dp-month-name'));
+    expect(months.length).toBe(3);
+    expect(months.map(c => c.nativeElement.innerText.trim())).toEqual(['Aug 2016', 'Sep 2016', 'Oct 2016']);
   });
 
   it('should emit navigate event when startDate is defined', () => {
@@ -363,6 +359,44 @@ describe('ngb-datepicker', () => {
     fixture.detectChanges();
     expect(fixture.componentInstance.onNavigate)
         .toHaveBeenCalledWith({current: {year: 2016, month: 8}, next: {year: 2015, month: 6}});
+  });
+
+  it('should calculate header dimensions correctly', () => {
+    const datepicker = TestBed.createComponent(NgbDatepicker).componentInstance;
+
+    // 1, 'select', weekdays
+    expect(datepicker.getHeaderHeight()).toBe(4.25);
+    expect(datepicker.getHeaderMargin()).toBe(2);
+
+    // 1, 'select', no weekdays
+    datepicker.showWeekdays = false;
+    expect(datepicker.getHeaderHeight()).toBe(2.25);
+    expect(datepicker.getHeaderMargin()).toBe(0);
+
+    // 1, 'none', no weekdays
+    datepicker.navigation = 'none';
+    expect(datepicker.getHeaderHeight()).toBe(2.25);
+    expect(datepicker.getHeaderMargin()).toBe(2);
+
+    // 2, 'none', no weekdays
+    datepicker.displayMonths = 2;
+    expect(datepicker.getHeaderHeight()).toBe(2.25);
+    expect(datepicker.getHeaderMargin()).toBe(2);
+
+    // 2, 'select', no weekdays
+    datepicker.navigation = 'select';
+    expect(datepicker.getHeaderHeight()).toBe(4.25);
+    expect(datepicker.getHeaderMargin()).toBe(2);
+
+    // 2, 'select', weekdays
+    datepicker.showWeekdays = true;
+    expect(datepicker.getHeaderHeight()).toBe(6.25);
+    expect(datepicker.getHeaderMargin()).toBe(4);
+
+    // 2, 'none', weekdays
+    datepicker.navigation = 'none';
+    expect(datepicker.getHeaderHeight()).toBe(4.25);
+    expect(datepicker.getHeaderMargin()).toBe(4);
   });
 
   describe('ngModel', () => {
@@ -650,6 +684,7 @@ class TestComponent {
   form = new FormGroup({control: new FormControl('', Validators.required)});
   disabledForm = new FormGroup({control: new FormControl({value: null, disabled: true})});
   model;
+  showWeekdays = true;
   markDisabled = (date: NgbDateStruct) => { return NgbDate.from(date).equals(new NgbDate(2016, 8, 22)); };
   onNavigate = () => {};
 }

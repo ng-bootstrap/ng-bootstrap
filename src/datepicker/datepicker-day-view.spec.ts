@@ -40,16 +40,18 @@ describe('ngbDatepickerDayView', () => {
     expect(el).toHaveCssClass('text-muted');
   });
 
-  it('should apply text-muted style for days of a different month', () => {
+  it('should apply text-muted and outside classes for days of a different month', () => {
     const fixture = TestBed.createComponent(TestComponent);
     fixture.detectChanges();
 
     const el = getElement(fixture.nativeElement);
     expect(el).not.toHaveCssClass('text-muted');
+    expect(el).not.toHaveCssClass('outside');
 
     fixture.componentInstance.date = {year: 2016, month: 8, day: 22};
     fixture.detectChanges();
     expect(el).toHaveCssClass('text-muted');
+    expect(el).toHaveCssClass('outside');
   });
 
   it('should apply selected style', () => {

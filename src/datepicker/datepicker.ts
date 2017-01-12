@@ -47,36 +47,49 @@ export interface NgbDatepickerNavigateEvent {
 @Component({
   exportAs: 'ngbDatepicker',
   selector: 'ngb-datepicker',
-  host: {'class': 'd-inline-block'},
+  host: {'class': 'd-inline-block rounded'},
   styles: [`
-    .month:first-child {
-      padding-left: 0 !important;
+    :host {
+      border: 1px solid rgba(0, 0, 0, 0.125);
     }
+    .ngb-dp-header {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    }
+    .ngb-dp-month:first-child {
+      margin-left: 0 !important;
+    }    
+    .ngb-dp-month-name {
+      font-size: larger;
+      height: 2rem;
+      line-height: 2rem;
+    }    
   `],
   template: `
     <template #dt let-date="date" let-currentMonth="currentMonth" let-selected="selected" let-disabled="disabled">
        <div ngbDatepickerDayView [date]="date" [currentMonth]="currentMonth" [selected]="selected" [disabled]="disabled"></div>
     </template>
+    
+    <div class="ngb-dp-header bg-faded pt-1 rounded-top" [style.height.rem]="getHeaderHeight()" 
+      [style.marginBottom.rem]="-getHeaderMargin()">
+      <ngb-datepicker-navigation *ngIf="navigation !== 'none'"
+        [date]="months[0]?.firstDate"
+        [minDate]="_minDate"
+        [maxDate]="_maxDate"
+        [months]="months.length"
+        [disabled]="disabled"
+        [showWeekNumbers]="showWeekNumbers"
+        [showSelect]="navigation === 'select'"
+        (navigate)="onNavigateEvent($event)"
+        (select)="onNavigateDateSelect($event)">
+      </ngb-datepicker-navigation>
+    </div>
 
-    <ngb-datepicker-navigation *ngIf="navigation !== 'none'"
-      [date]="months[0]?.firstDate"
-      [minDate]="_minDate"
-      [maxDate]="_maxDate"
-      [disabled]="disabled"
-      [showWeekNumbers]="showWeekNumbers"
-      [showSelect]="navigation === 'select'"
-      (navigate)="onNavigateEvent($event)"
-      (select)="onNavigateDateSelect($event)">
-    </ngb-datepicker-navigation>
-
-    <table>
-      <tr *ngIf="navigation !== 'select' || displayMonths > 1">
-        <td *ngFor="let month of months" class="text-center font-weight-bold">
-          {{ i18n.getMonthName(month.number) }} {{ month.year }}
-        </td>
-      </tr>
-      <tr>
-        <td *ngFor="let month of months" class="pl-1 month">
+    <div class="ngb-dp-months d-flex px-1 pb-1">
+      <template ngFor let-month [ngForOf]="months" let-i="index">
+        <div class="ngb-dp-month d-block ml-3">            
+          <div *ngIf="navigation !== 'select' || displayMonths > 1" class="ngb-dp-month-name text-center">
+            {{ i18n.getMonthName(month.number) }} {{ month.year }}
+          </div>
           <ngb-datepicker-month-view
             [month]="month"
             [selectedDate]="model"
@@ -87,9 +100,9 @@ export interface NgbDatepickerNavigateEvent {
             [outsideDays]="displayMonths === 1 ? outsideDays : 'hidden'"
             (select)="onDateSelect($event)">
           </ngb-datepicker-month-view>
-        </td>
-      </tr>
-    </table>
+        </div>
+      </template>
+    </div>
   `,
   providers: [NGB_DATEPICKER_VALUE_ACCESSOR]
 })
@@ -188,6 +201,16 @@ export class NgbDatepicker implements OnChanges,
     this.showWeekdays = config.showWeekdays;
     this.showWeekNumbers = config.showWeekNumbers;
     this.startDate = config.startDate;
+  }
+
+  getHeaderHeight() {
+    const h = this.showWeekdays ? 6.25 : 4.25;
+    return this.displayMonths === 1 || this.navigation !== 'select' ? h - 2 : h;
+  }
+
+  getHeaderMargin() {
+    const m = this.showWeekdays ? 2 : 0;
+    return this.displayMonths !== 1 || this.navigation !== 'select' ? m + 2 : m;
   }
 
   /**
