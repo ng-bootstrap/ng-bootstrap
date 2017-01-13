@@ -15,4 +15,5 @@ export class NgbPaginationConfig {
   pageSize = 10;
   rotate = false;
   size: 'sm' | 'lg';
+  justify: 'start' | 'center' | 'end' = 'start';
 }

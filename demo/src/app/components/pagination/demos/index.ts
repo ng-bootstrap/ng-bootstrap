@@ -3,9 +3,11 @@ import {NgbdPaginationBasic} from './basic/pagination-basic';
 import {NgbdPaginationSize} from './size/pagination-size';
 import {NgbdPaginationConfig} from './config/pagination-config';
 import {NgbdPaginationDisabled} from './disabled/pagination-disabled';
+import {NgbdPaginationJustify} from './justify/pagination-justify';
 
 export const DEMO_DIRECTIVES = [
-  NgbdPaginationAdvanced, NgbdPaginationBasic, NgbdPaginationSize, NgbdPaginationConfig, NgbdPaginationDisabled
+  NgbdPaginationAdvanced, NgbdPaginationBasic, NgbdPaginationSize, NgbdPaginationConfig, NgbdPaginationDisabled,
+  NgbdPaginationJustify
 ];
 
 export const DEMO_SNIPPETS = {
@@ -28,5 +30,9 @@ export const DEMO_SNIPPETS = {
   config: {
     code: require('!!prismjs-loader?lang=typescript!./config/pagination-config'),
     markup: require('!!prismjs-loader?lang=markup!./config/pagination-config.html')
+  },
+  justify: {
+    code: require('!!prismjs-loader?lang=typescript!./justify/pagination-justify'),
+    markup: require('!!prismjs-loader?lang=markup!./justify/pagination-justify.html')
   }
 };

@@ -12,5 +12,6 @@ describe('ngb-pagination-config', () => {
     expect(config.pageSize).toBe(10);
     expect(config.rotate).toBe(false);
     expect(config.size).toBeUndefined();
+    expect(config.justify).toBe('start');
   });
 });

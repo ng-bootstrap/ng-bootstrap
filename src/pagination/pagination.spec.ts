@@ -559,6 +559,25 @@ describe('ngb-pagination', () => {
            expect(buttons[i]).toHaveCssClass('disabled');
          }
        }));
+
+    it('should be left aligned by default', () => {
+      const html = '<ngb-pagination [collectionSize]="20" [page]="page"></ngb-pagination>';
+      const fixture = createTestComponent(html);
+      expect(fixture.nativeElement.querySelector('ul')).toHaveCssClass('justify-content-start');
+    });
+
+    it('should be center aligned when justify is set to "center"', () => {
+      const html = '<ngb-pagination [collectionSize]="20" [page]="page" justify="center"></ngb-pagination>';
+      const fixture = createTestComponent(html);
+      expect(fixture.nativeElement.querySelector('ul')).toHaveCssClass('justify-content-center');
+    });
+
+
+    it('should be right aligned when justify is set to "end"', () => {
+      const html = '<ngb-pagination [collectionSize]="20" [page]="page" justify="end"></ngb-pagination>';
+      const fixture = createTestComponent(html);
+      expect(fixture.nativeElement.querySelector('ul')).toHaveCssClass('justify-content-end');
+    });
   });
 
   describe('Custom config', () => {
@@ -575,6 +594,7 @@ describe('ngb-pagination', () => {
       config.pageSize = 7;
       config.rotate = true;
       config.size = 'sm';
+      config.justify = 'center';
     }));
 
     it('should initialize inputs with provided config', () => {
@@ -596,6 +616,7 @@ describe('ngb-pagination', () => {
     config.pageSize = 7;
     config.rotate = true;
     config.size = 'sm';
+    config.justify = 'center';
 
     beforeEach(() => {
       TestBed.configureTestingModule(

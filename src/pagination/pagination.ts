@@ -10,7 +10,7 @@ import {NgbPaginationConfig} from './pagination-config';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <nav>
-      <ul [class]="'pagination' + (size ? ' pagination-' + size : '')">
+      <ul [class]="'pagination' + (size ? ' pagination-' + size : '') + ' justify-content-' + justify">
         <li *ngIf="boundaryLinks" class="page-item" 
           [class.disabled]="!hasPrevious() || disabled">
           <a aria-label="First" class="page-link" href (click)="!!selectPage(1)" [attr.tabindex]="hasPrevious() ? null : '-1'">
@@ -109,6 +109,11 @@ export class NgbPagination implements OnChanges {
    */
   @Input() size: 'sm' | 'lg';
 
+  /**
+   * Horizontal positioning with Flex justification: start, center, or end
+   */
+  @Input() justify: 'start' | 'center' | 'end';
+
   constructor(config: NgbPaginationConfig) {
     this.disabled = config.disabled;
     this.boundaryLinks = config.boundaryLinks;
@@ -118,6 +123,7 @@ export class NgbPagination implements OnChanges {
     this.pageSize = config.pageSize;
     this.rotate = config.rotate;
     this.size = config.size;
+    this.justify = config.justify;
   }
 
   hasPrevious(): boolean { return this.page > 1; }

@@ -22,6 +22,9 @@ import {DEMO_SNIPPETS} from './demos';
       <ngbd-example-box demoTitle="Global configuration" [snippets]="snippets" component="pagination" demo="config">
         <ngbd-pagination-config></ngbd-pagination-config>
       </ngbd-example-box>
+      <ngbd-example-box demoTitle="Justify configuration" [snippets]="snippets" component="pagination" demo="justify">
+        <ngbd-pagination-justify></ngbd-pagination-justify>
+      </ngbd-example-box>
     </ngbd-content-wrapper>
   `
 })
