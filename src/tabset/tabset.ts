@@ -105,14 +105,14 @@ export class NgbTabset implements AfterContentChecked {
   @Input() activeId: string;
 
   /**
-   * Type of navigation to be used for tabs. Can be one of 'tabs' or 'pills'.
-   */
-  @Input() type: 'tabs' | 'pills';
-
-  /**
    * The horizontal alignment of the nav with flexbox utilities. Can be one of 'start', 'center' or 'end'
    */
   @Input() justify: 'start' | 'center' | 'end';
+
+  /**
+   * Type of navigation to be used for tabs. Can be one of 'tabs' or 'pills'.
+   */
+  @Input() type: 'tabs' | 'pills';
 
   /**
    * A tab change event fired right before the tab selection happens. See NgbTabChangeEvent for payload details
