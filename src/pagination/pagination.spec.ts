@@ -54,10 +54,11 @@ function normalizeText(txt: string): string {
 }
 
 function expectSameValues(pagination: NgbPagination, config: NgbPaginationConfig) {
-  expect(pagination.disabled).toBe(config.disabled);
   expect(pagination.boundaryLinks).toBe(config.boundaryLinks);
   expect(pagination.directionLinks).toBe(config.directionLinks);
+  expect(pagination.disabled).toBe(config.disabled);
   expect(pagination.ellipses).toBe(config.ellipses);
+  expect(pagination.justify).toBe(config.justify);
   expect(pagination.maxSize).toBe(config.maxSize);
   expect(pagination.pageSize).toBe(config.pageSize);
   expect(pagination.rotate).toBe(config.rotate);
@@ -590,11 +591,11 @@ describe('ngb-pagination', () => {
       config.boundaryLinks = true;
       config.directionLinks = false;
       config.ellipses = false;
+      config.justify = 'center';
       config.maxSize = 42;
       config.pageSize = 7;
       config.rotate = true;
       config.size = 'sm';
-      config.justify = 'center';
     }));
 
     it('should initialize inputs with provided config', () => {
@@ -608,15 +609,15 @@ describe('ngb-pagination', () => {
 
   describe('Custom config as provider', () => {
     let config = new NgbPaginationConfig();
-    config.disabled = true;
     config.boundaryLinks = true;
     config.directionLinks = false;
+    config.disabled = true;
     config.ellipses = false;
+    config.justify = 'center';
     config.maxSize = 42;
     config.pageSize = 7;
     config.rotate = true;
     config.size = 'sm';
-    config.justify = 'center';
 
     beforeEach(() => {
       TestBed.configureTestingModule(
@@ -635,15 +636,15 @@ describe('ngb-pagination', () => {
 
 @Component({selector: 'test-cmp', template: ''})
 class TestComponent {
-  pageSize = 10;
-  collectionSize = 100;
-  page = 1;
   boundaryLinks = false;
+  collectionSize = 100;
   directionLinks = false;
-  size = '';
-  maxSize = 0;
   ellipses = true;
+  maxSize = 0;
+  page = 1;
+  pageSize = 10;
   rotate = false;
+  size = '';
 
   onPageChange = () => {};
 }
