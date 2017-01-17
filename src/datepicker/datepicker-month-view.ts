@@ -32,7 +32,7 @@ import {DayTemplateContext} from './datepicker-day-template-context';
     <div *ngIf="showWeekdays" class="ngb-dp-week d-flex">
       <div *ngIf="showWeekNumbers" class="ngb-dp-weekday"></div>
       <div *ngFor="let w of month.weekdays" class="ngb-dp-weekday small text-center text-info font-italic">
-        {{ i18n.getWeekdayName(w) }}
+        {{ i18n.getWeekdayShortName(w) }}
       </div>
     </div>
     <div *ngFor="let week of month.weeks" class="ngb-dp-week d-flex">
