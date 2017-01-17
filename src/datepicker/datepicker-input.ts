@@ -229,6 +229,10 @@ export class NgbInputDatepicker implements ControlValueAccessor {
     datepickerInstance.navigate.subscribe(date => this.navigate.emit(date));
   }
 
+  private _subscribeForDatepickerOutputs(datepickerInstance: NgbDatepicker) {
+    datepickerInstance.navigate.subscribe(date => this.navigate.emit(date));
+  }
+
   private _writeModelValue(model: NgbDate) {
     this._renderer.setElementProperty(this._elRef.nativeElement, 'value', this._parserFormatter.format(model));
     if (this.isOpen()) {
