@@ -116,6 +116,46 @@ describe('NgbInputDatepicker', () => {
       expect(fixture.componentInstance.date).toBeNull();
     });
 
+    it('should propagate null to model when a user date outside of specified range', () => {
+      const fixture = createTestCmpt(`<input ngbDatepicker [(ngModel)]="date" 
+          [minDate]="{year: 2010, month: 5, day: 1}" 
+          [maxDate]="{year: 2017, month: 2, day: 1}">`);
+      const inputDebugEl = fixture.debugElement.query(By.css('input'));
+
+      inputDebugEl.triggerEventHandler('change', {target: {value: '2000-01-15'}});
+      expect(fixture.componentInstance.date).toBeNull();
+
+      inputDebugEl.triggerEventHandler('change', {target: {value: '2020-1-1'}});
+      expect(fixture.componentInstance.date).toBeNull();
+
+      inputDebugEl.triggerEventHandler('change', {target: {value: '2015-9-11'}});
+      expect(fixture.componentInstance.date).toEqual({year: 2015, month: 9, day: 11});
+    });
+
+    it('should propagate null to model when a user date below min range', () => {
+      const fixture =
+          createTestCmpt(`<input ngbDatepicker [(ngModel)]="date" [minDate]="{year: 2010, month: 5, day: 1}">`);
+      const inputDebugEl = fixture.debugElement.query(By.css('input'));
+
+      inputDebugEl.triggerEventHandler('change', {target: {value: '2000-01-15'}});
+      expect(fixture.componentInstance.date).toBeNull();
+
+      inputDebugEl.triggerEventHandler('change', {target: {value: '2015-9-11'}});
+      expect(fixture.componentInstance.date).toEqual({year: 2015, month: 9, day: 11});
+    });
+
+    it('should propagate null to model when a user date above max range', () => {
+      const fixture =
+          createTestCmpt(`<input ngbDatepicker [(ngModel)]="date" [maxDate]="{year: 2017, month: 2, day: 1}">`);
+      const inputDebugEl = fixture.debugElement.query(By.css('input'));
+
+      inputDebugEl.triggerEventHandler('change', {target: {value: '2020-01-15'}});
+      expect(fixture.componentInstance.date).toBeNull();
+
+      inputDebugEl.triggerEventHandler('change', {target: {value: '2015-9-11'}});
+      expect(fixture.componentInstance.date).toEqual({year: 2015, month: 9, day: 11});
+    });
+
     it('should propagate disabled state', fakeAsync(() => {
          const fixture = createTestCmpt(`
         <input ngbDatepicker [(ngModel)]="date" #d="ngbDatepicker" [disabled]="isDisabled">
