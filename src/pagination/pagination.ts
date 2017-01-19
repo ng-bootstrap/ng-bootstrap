@@ -139,11 +139,15 @@ export class NgbPagination implements OnChanges {
   private _applyEllipses(start: number, end: number) {
     if (this.ellipses) {
       if (start > 0) {
-        this.pages.unshift(-1);
+        if (start > 1) {
+          this.pages.unshift(-1);
+        }
         this.pages.unshift(1);
       }
       if (end < this.pageCount) {
-        this.pages.push(-1);
+        if (end < (this.pageCount - 1)) {
+          this.pages.push(-1);
+        }
         this.pages.push(this.pageCount);
       }
     }

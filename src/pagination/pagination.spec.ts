@@ -417,7 +417,7 @@ describe('ngb-pagination', () => {
 
       fixture.componentInstance.page = 4;
       fixture.detectChanges();
-      expectPages(fixture.nativeElement, ['« Previous', '1', '-...', '+4', '5', '6', '-...', '7', '» Next']);
+      expectPages(fixture.nativeElement, ['« Previous', '1', '-...', '+4', '5', '6', '7', '» Next']);
 
       fixture.componentInstance.page = 7;
       fixture.detectChanges();
@@ -435,7 +435,19 @@ describe('ngb-pagination', () => {
 
       fixture.componentInstance.page = 3;
       fixture.detectChanges();
-      expectPages(fixture.nativeElement, ['« Previous', '1', '-...', '2', '+3', '4', '-...', '7', '» Next']);
+      expectPages(fixture.nativeElement, ['« Previous', '1', '2', '+3', '4', '-...', '7', '» Next']);
+
+      fixture.componentInstance.page = 4;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['« Previous', '1', '-...', '3', '+4', '5', '-...', '7', '» Next']);
+
+      fixture.componentInstance.page = 5;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['« Previous', '1', '-...', '4', '+5', '6', '7', '» Next']);
+
+      fixture.componentInstance.page = 6;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['« Previous', '1', '-...', '5', '+6', '7', '» Next']);
 
       fixture.componentInstance.page = 7;
       fixture.detectChanges();
