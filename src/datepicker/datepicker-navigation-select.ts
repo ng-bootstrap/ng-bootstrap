@@ -18,10 +18,10 @@ import {NgbCalendar} from './ngb-calendar';
     }
   `],
   template: `
-    <select [disabled]="disabled" class="custom-select d-inline-block" [value]="date.month" (change)="changeMonth($event.target.value)">
+    <select [disabled]="disabled" class="custom-select d-inline-block" [value]="date?.month" (change)="changeMonth($event.target.value)">
       <option *ngFor="let m of months" [value]="m">{{ i18n.getMonthShortName(m) }}</option>
     </select>` +
-      `<select [disabled]="disabled" class="custom-select d-inline-block" [value]="date.year" (change)="changeYear($event.target.value)">
+      `<select [disabled]="disabled" class="custom-select d-inline-block" [value]="date?.year" (change)="changeYear($event.target.value)">
       <option *ngFor="let y of years" [value]="y">{{ y }}</option>
     </select> 
   `  // template needs to be formatted in a certain way so we don't add empty text nodes
@@ -40,12 +40,8 @@ export class NgbDatepickerNavigationSelect implements OnChanges {
   constructor(public i18n: NgbDatepickerI18n, private calendar: NgbCalendar) { this.months = calendar.getMonths(); }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['maxDate'] || changes['minDate']) {
+    if (changes['maxDate'] || changes['minDate'] || changes['date']) {
       this._generateYears();
-      this._generateMonths();
-    }
-
-    if (changes['date'] && changes['date'].currentValue.year !== changes['date'].previousValue.year) {
       this._generateMonths();
     }
   }
@@ -57,12 +53,12 @@ export class NgbDatepickerNavigationSelect implements OnChanges {
   private _generateMonths() {
     this.months = this.calendar.getMonths();
 
-    if (this.date.year === this.minDate.year) {
+    if (this.date && this.date.year === this.minDate.year) {
       const index = this.months.findIndex(month => month === this.minDate.month);
       this.months = this.months.slice(index);
     }
 
-    if (this.date.year === this.maxDate.year) {
+    if (this.date && this.date.year === this.maxDate.year) {
       const index = this.months.findIndex(month => month === this.maxDate.month);
       this.months = this.months.slice(0, index + 1);
     }
