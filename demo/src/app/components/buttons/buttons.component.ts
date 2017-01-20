@@ -13,6 +13,9 @@ import {DEMO_SNIPPETS} from './demos';
       <ngbd-example-box demoTitle="Checkbox buttons" [snippets]="snippets" component="buttons" demo="checkbox">
         <ngbd-buttons-checkbox></ngbd-buttons-checkbox>
       </ngbd-example-box>
+      <ngbd-example-box demoTitle="Vertical buttons" [snippets]="snippets" component="buttons" demo="vertical">
+        <ngbd-buttons-vertical></ngbd-buttons-vertical>
+      </ngbd-example-box>
     </ngbd-content-wrapper>
   `
 })
