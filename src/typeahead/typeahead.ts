@@ -17,9 +17,11 @@ import {
 } from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {Observable} from 'rxjs/Observable';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Subscription} from 'rxjs/Subscription';
 import {letProto} from 'rxjs/operator/let';
 import {_do} from 'rxjs/operator/do';
+import {switchMap} from 'rxjs/operator/switchMap';
 import {fromEvent} from 'rxjs/observable/fromEvent';
 import {positionElements} from '../util/positioning';
 import {NgbTypeaheadWindow, ResultTemplateContext} from './typeahead-window';
@@ -86,6 +88,7 @@ export class NgbTypeahead implements ControlValueAccessor,
   private _subscription: Subscription;
   private _userInput: string;
   private _valueChanges: Observable<string>;
+  private _resubscribeTypeahead: BehaviorSubject<any>;
   private _windowRef: ComponentRef<NgbTypeaheadWindow>;
   private _zoneSubscription: any;
 
@@ -155,6 +158,8 @@ export class NgbTypeahead implements ControlValueAccessor,
 
     this._valueChanges = fromEvent(_elementRef.nativeElement, 'input', ($event) => $event.target.value);
 
+    this._resubscribeTypeahead = new BehaviorSubject(null);
+
     this._popupService = new PopupService<NgbTypeaheadWindow>(
         NgbTypeaheadWindow, _injector, _viewContainerRef, _renderer, componentFactoryResolver);
 
@@ -175,11 +180,12 @@ export class NgbTypeahead implements ControlValueAccessor,
       }
     });
     const results$ = letProto.call(inputValues$, this.ngbTypeahead);
-    const userInput$ = _do.call(results$, () => {
+    const processedResults$ = _do.call(results$, () => {
       if (!this.editable) {
         this._onChange(undefined);
       }
     });
+    const userInput$ = switchMap.call(this._resubscribeTypeahead, () => processedResults$);
     this._subscription = this._subscribeToUserInput(userInput$);
   }
 
@@ -208,7 +214,10 @@ export class NgbTypeahead implements ControlValueAccessor,
 
   isPopupOpen() { return this._windowRef != null; }
 
-  handleBlur() { this._onTouched(); }
+  handleBlur() {
+    this._resubscribeTypeahead.next(null);
+    this._onTouched();
+  }
 
   handleKeyDown(event: KeyboardEvent) {
     if (!this.isPopupOpen()) {
@@ -239,6 +248,7 @@ export class NgbTypeahead implements ControlValueAccessor,
           break;
         case Key.Escape:
           event.preventDefault();
+          this._resubscribeTypeahead.next(null);
           this.dismissPopup();
           break;
       }
@@ -267,6 +277,7 @@ export class NgbTypeahead implements ControlValueAccessor,
   private _selectResult(result: any) {
     let defaultPrevented = false;
     this.selectItem.emit({item: result, preventDefault: () => { defaultPrevented = true; }});
+    this._resubscribeTypeahead.next(null);
 
     if (!defaultPrevented) {
       this.writeValue(result);

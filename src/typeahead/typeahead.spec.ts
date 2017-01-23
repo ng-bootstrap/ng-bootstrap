@@ -19,6 +19,9 @@ const createTestComponent = (html: string) =>
 const createOnPushTestComponent = (html: string) =>
     createGenericTestComponent(html, TestOnPushComponent) as ComponentFixture<TestOnPushComponent>;
 
+const createAsyncTestComponent = (html: string) =>
+    createGenericTestComponent(html, TestAsyncComponent) as ComponentFixture<TestAsyncComponent>;
+
 enum Key {
   Tab = 9,
   Enter = 13,
@@ -54,6 +57,13 @@ function changeInput(element: any, value: string) {
   input.dispatchEvent(evt);
 }
 
+function blurInput(element: any) {
+  const input = getNativeInput(element);
+  const evt = document.createEvent('HTMLEvents');
+  evt.initEvent('blur', false, false);
+  input.dispatchEvent(evt);
+}
+
 function expectInputValue(element: HTMLElement, value: string) {
   expect(getNativeInput(element).value).toBe(value);
 }
@@ -68,7 +78,7 @@ describe('ngb-typeahead', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [TestComponent, TestOnPushComponent],
+      declarations: [TestComponent, TestOnPushComponent, TestAsyncComponent],
       imports: [NgbTypeaheadModule.forRoot(), FormsModule, ReactiveFormsModule]
     });
   });
@@ -384,6 +394,96 @@ describe('ngb-typeahead', () => {
          fixture.detectChanges();
          tick(250);
          expectWindowResults(compiled, ['+one', 'one more']);
+       }));
+  });
+
+  describe('with async typeahead function', () => {
+    it('should not display results when input is "blured"', fakeAsync(() => {
+         const fixture = createAsyncTestComponent(`<input type="text" [ngbTypeahead]="find"/>`);
+         const compiled = fixture.nativeElement;
+
+         changeInput(compiled, 'one');
+         fixture.detectChanges();
+
+         tick(50);
+
+         blurInput(compiled);
+         fixture.detectChanges();
+
+         tick(250);
+         expect(getWindow(compiled)).toBeNull();
+
+         // Make sure that it is resubscribed again
+         changeInput(compiled, 'two');
+         fixture.detectChanges();
+         tick(250);
+         expect(getWindow(compiled)).not.toBeNull();
+       }));
+
+    it('should not display results when "Escape" is pressed', fakeAsync(() => {
+         const fixture = createAsyncTestComponent(`<input type="text" [ngbTypeahead]="find"/>`);
+         const compiled = fixture.nativeElement;
+
+         // Change input first time
+         changeInput(compiled, 'one');
+         fixture.detectChanges();
+
+         // Results for first input are loaded
+         tick(250);
+         expect(getWindow(compiled)).not.toBeNull();
+
+         // Change input second time
+         changeInput(compiled, 'two');
+         fixture.detectChanges();
+         tick(50);
+
+         // Press Escape while second is still in proggress
+         const event = createKeyDownEvent(Key.Escape);
+         getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
+         fixture.detectChanges();
+
+         // Results for second input are loaded (window shouldn't be opened in this case)
+         tick(250);
+         expect(getWindow(compiled)).toBeNull();
+
+         // Make sure that it is resubscribed again
+         changeInput(compiled, 'three');
+         fixture.detectChanges();
+         tick(250);
+         expect(getWindow(compiled)).not.toBeNull();
+       }));
+
+    it('should not display results when value selected while new results are been loading', fakeAsync(() => {
+         const fixture = createAsyncTestComponent(`<input type="text" [ngbTypeahead]="find"/>`);
+         const compiled = fixture.nativeElement;
+
+         // Change input first time
+         changeInput(compiled, 'one');
+         fixture.detectChanges();
+
+         // Results for first input are loaded
+         tick(250);
+         expect(getWindow(compiled)).not.toBeNull();
+
+         // Change input second time
+         changeInput(compiled, 'two');
+         fixture.detectChanges();
+         tick(50);
+
+         // Select a value from first results list while second is still in proggress
+         getWindowLinks(fixture.debugElement)[0].triggerEventHandler('click', {});
+         fixture.detectChanges();
+         expect(getWindow(compiled)).toBeNull();
+
+         // Results for second input are loaded (window shouldn't be opened in this case)
+         tick(250);
+         expect(getWindow(compiled)).toBeNull();
+
+         // Make sure that it is resubscribed again
+         changeInput(compiled, 'three');
+         fixture.detectChanges();
+         tick(250);
+         expect(getWindow(compiled)).not.toBeNull();
        }));
   });
 
@@ -833,6 +933,15 @@ class TestComponent {
 
 @Component({selector: 'test-onpush-cmp', changeDetection: ChangeDetectionStrategy.OnPush, template: ''})
 class TestOnPushComponent {
+  private _strings = ['one', 'one more', 'two', 'three'];
+
+  find = (text$: Observable<string>) => {
+    return text$.debounceTime(200).map(text => this._strings.filter(v => v.startsWith(text)));
+  };
+}
+
+@Component({selector: 'test-async-cmp', template: ''})
+class TestAsyncComponent {
   private _strings = ['one', 'one more', 'two', 'three'];
 
   find = (text$: Observable<string>) => {
