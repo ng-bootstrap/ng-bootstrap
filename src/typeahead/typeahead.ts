@@ -21,6 +21,8 @@ import {Subscription} from 'rxjs/Subscription';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/let';
+import 'rxjs/add/operator/merge';
+import 'rxjs/add/operator/filter';
 import {positionElements} from '../util/positioning';
 import {NgbTypeaheadWindow, ResultTemplateContext} from './typeahead-window';
 import {PopupService} from '../util/popup';
@@ -77,10 +79,16 @@ export class NgbTypeahead implements ControlValueAccessor,
   private _popupService: PopupService<NgbTypeaheadWindow>;
   private _subscription: Subscription;
   private _userInput: string;
-  private _valueChanges: Observable<string>;
+  private _valueChanges: Observable<{value:string, updateCurrentValue:boolean}>;
+  private _focusChanges: Observable<{value:string, updateCurrentValue:boolean}>;
   private _windowRef: ComponentRef<NgbTypeaheadWindow>;
   private _zoneSubscription: any;
 
+
+  /**
+   * A flag indicating if model values should be restricted to the ones selected from the popup only.
+   */
+  @Input() searchOnFocus: boolean;
 
   /**
    * A flag indicating if model values should be restricted to the ones selected from the popup only.
@@ -135,7 +143,8 @@ export class NgbTypeahead implements ControlValueAccessor,
     this.focusFirst = config.focusFirst;
     this.showHint = config.showHint;
 
-    this._valueChanges = Observable.fromEvent(_elementRef.nativeElement, 'input', ($event) => $event.target.value);
+    this._valueChanges = Observable.fromEvent(_elementRef.nativeElement, 'input', ($event) => $event.target.value).map(v=>{return {value:v, updateCurrentValue:this.editable}});
+    this._focusChanges = Observable.fromEvent(_elementRef.nativeElement, 'focus', ()=>{return {value:this._elementRef.nativeElement.value, updateCurrentValue:false}}).filter(()=>{return this.searchOnFocus});
 
     this._popupService = new PopupService<NgbTypeaheadWindow>(
         NgbTypeaheadWindow, _injector, _viewContainerRef, _renderer, componentFactoryResolver);
@@ -149,15 +158,18 @@ export class NgbTypeahead implements ControlValueAccessor,
 
   ngOnInit() {
     this._subscription = this._subscribeToUserInput(
-        this._valueChanges
-            .do(value => {
-              this._userInput = value;
-              if (this.editable) {
-                this._onChange(value);
+        this._valueChanges.merge(this._focusChanges)
+            .do(valueObject => {
+              this._userInput = valueObject.value;
+              if (valueObject.updateCurrentValue) {
+                this._onChange(valueObject.value);
               }
-            })
+            }).map(vObj=>vObj.value)
             .let (this.ngbTypeahead)
             .do(_ => {
+              if(this._userInput == null){
+                this._userInput = this._elementRef.nativeElement.value;
+              };
               if (!this.editable) {
                 this._onChange(undefined);
               }
