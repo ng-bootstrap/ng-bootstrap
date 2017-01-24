@@ -186,7 +186,7 @@ module.exports = function makeWebpackConfig() {
       // Reference: https://github.com/angular/angular-cli/tree/master/packages/webpack
       new aotplugin.AotPlugin({
         tsConfigPath: './tsconfig-aot.json',
-        entryModule: './demo/src/app/app.module#NgbdModule'
+        entryModule: root('demo/src/app/') + 'app.module#NgbdModule'
       }),
 
       // Reference: http://webpack.github.io/docs/list-of-plugins.html#noerrorsplugin

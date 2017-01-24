@@ -260,7 +260,12 @@ gulp.task(
 
 gulp.task(
     'build:demo', ['clean:demo', 'generate-docs', 'generate-plunks'],
-    shell.task(['MODE=build webpack --config webpack.demo.js --progress --profile --bail']));
+    shell.task(['webpack --config webpack.demo.js --progress --profile --bail'], {env: {MODE: 'build'}}));
+
+gulp.task(
+    'demo-server:aot', ['generate-docs', 'generate-plunks'],
+    shell.task(
+        ['webpack-dev-server --port 9090 --config webpack.demo.js --inline --progress'], {env: {MODE: 'build'}}));
 
 gulp.task('demo-push', function() {
   return gulp.src(PATHS.demoDist)
