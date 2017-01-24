@@ -81,8 +81,7 @@ module.exports = function makeWebpackConfig() {
       // Support for .ts files.
       {
         test: /\.ts$/,
-        loader: isProd ? '@ngtools/webpack' : 'ts-loader',
-        exclude: [/node_modules\/(?!(ng2-.+))/]
+        loader: isProd ? '@ngtools/webpack' : 'ts-loader'
       },
 
       {
