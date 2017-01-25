@@ -12,5 +12,6 @@ describe('ngb-timepicker-config', () => {
     expect(config.secondStep).toBe(1);
     expect(config.disabled).toBe(false);
     expect(config.readonlyInputs).toBe(false);
+    expect(config.size).toBe('medium');
   });
 });
