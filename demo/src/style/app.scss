@@ -1,4 +1,13 @@
 // styles in src/style directory are applied to the whole page
+
+@mixin text-stroke-horizontal($width: 4px, $color: white) {
+  $text-shadow: ();
+  @for $w from -$width through $width {
+    $text-shadow: append($text-shadow, $w 0 $color, comma);
+  }
+  text-shadow: $text-shadow;
+}
+
 .navbar {
   background: rgba(255,255,255,0.95);
 }
@@ -137,23 +146,7 @@ div.api-doc-component > h2 {
   margin-top: 0.2em;
   margin-bottom: 1rem;
   line-height: 0.85em;
-  text-shadow:
-          0 0 3px #fff, /* stroke around*/
-          0 0 3px #fff,
-          0 0 3px #fff,
-          0 0 3px #fff,
-          0 0 3px #fff,
-          0 0 3px #fff,
-          0 0 3px #fff,
-          0 0 3px #fff,
-          0 0 3px #fff,
-          0 -5px 0 #fff, /* clear vertically*/
-          0 -1px 0 #fff,
-          0 -2px 0 #fff,
-          0 -3px 0 #fff,
-          0 -4px 0 #fff,
-          0 -5px 0 #fff,
-          0 -6px 0 #fff;
+  @include text-stroke-horizontal;
   box-shadow: 0 1px #fff, 0 3px #0275d8;
   word-spacing: 0.5em;
   font-size: 2.5em;
