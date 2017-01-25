@@ -55,6 +55,12 @@ export interface NgbDatepickerNavigateEvent {
     .ngb-dp-header {
       border-bottom: 1px solid rgba(0, 0, 0, 0.125);
     }
+    .ngb-dp-month {
+      pointer-events: none;
+    }
+    ngb-datepicker-month-view {
+      pointer-events: auto;
+    }
     .ngb-dp-month:first-child {
       margin-left: 0 !important;
     }    
