@@ -1,3 +1,40 @@
+<a name="1.0.0-alpha.19"></a>
+# [1.0.0-alpha.19](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.18...1.0.0-alpha.19) (2017-01-25)
+
+This release comes with many improvements to the datepicker: better layout as well as look & feel.
+We are also bumping up minimal Angular version to 2.3.1 - this is required so we can provide better APIs for modal. 
+
+### Chores
+
+* update angular version ([43b8e2b](https://github.com/ng-bootstrap/ng-bootstrap/commit/43b8e2b))
+
+### Bug Fixes
+
+* **datepicker:** account for undefined values in ngOnChanges ([8803847](https://github.com/ng-bootstrap/ng-bootstrap/commit/8803847)), closes [#1202](https://github.com/ng-bootstrap/ng-bootstrap/issues/1202) [#1229](https://github.com/ng-bootstrap/ng-bootstrap/issues/1229)
+* **dropdown:** do not close dropdown on right button click ([b6bb9e9](https://github.com/ng-bootstrap/ng-bootstrap/commit/b6bb9e9)), closes [#1211](https://github.com/ng-bootstrap/ng-bootstrap/issues/1211)
+* **pagination:** fix unnecessary ellipsis between sibling page numbers ([b607652](https://github.com/ng-bootstrap/ng-bootstrap/commit/b607652)), closes [#1166](https://github.com/ng-bootstrap/ng-bootstrap/issues/1166) [#1232](https://github.com/ng-bootstrap/ng-bootstrap/issues/1232) [#1233](https://github.com/ng-bootstrap/ng-bootstrap/issues/1233)
+
+### Features
+
+* **datepicker:** add full month name versions to i18n ([106fa82](https://github.com/ng-bootstrap/ng-bootstrap/commit/106fa82)), closes [#1217](https://github.com/ng-bootstrap/ng-bootstrap/issues/1217)
+* **datepicker:** improve default look and feel ([d88c8b7](https://github.com/ng-bootstrap/ng-bootstrap/commit/d88c8b7)), closes [#706](https://github.com/ng-bootstrap/ng-bootstrap/issues/706) [#1061](https://github.com/ng-bootstrap/ng-bootstrap/issues/1061) [#1205](https://github.com/ng-bootstrap/ng-bootstrap/issues/1205)
+* **tabset:** add an option for tabs horizontal alignment ([00114f3](https://github.com/ng-bootstrap/ng-bootstrap/commit/00114f3)), closes [#1210](https://github.com/ng-bootstrap/ng-bootstrap/issues/1210)
+
+
+### BREAKING CHANGES
+
+* minimal angular version was updated to 2.3.1.
+Angular@^2.3.1 will have to be used as a peer dependency from now on.
+
+* datepicker: `NgbDatepickerI18n` methods were renamed:
+
+`getWeekdayName` to `getWeekdayShortName`
+`getMonthName` to `getMonthShortName`
+
+* datepicker: switched to flex layout instead of table-based (drop IE9 support) and prefixed datepicker-related css classes with `ngb-dp-`
+
+
+
 <a name="1.0.0-alpha.18"></a>
 # [1.0.0-alpha.18](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.17...1.0.0-alpha.18) (2017-01-09)
 
