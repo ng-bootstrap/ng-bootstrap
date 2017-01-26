@@ -189,6 +189,13 @@ describe('ngb-progressbar', () => {
       expect(getProgressbar(fixture.nativeElement).getAttribute('aria-valuemin')).toBe('0');
       expect(getProgressbar(fixture.nativeElement).getAttribute('aria-valuemax')).toBe('150');
     });
+
+    it('should display the progress-bar label', () => {
+      const html = '<ngb-progressbar [value]="150" [max]="150">label goes here</ngb-progressbar>';
+      const fixture = createTestComponent(html);
+
+      expect(fixture.nativeElement.textContent).toContain('label goes here');
+    });
   });
 
   describe('Custom config', () => {
