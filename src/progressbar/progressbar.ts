@@ -13,7 +13,7 @@ import {NgbProgressbarConfig} from './progressbar-config';
       <div class="progress-bar{{type ? ' bg-' + type : ''}}{{animated ? ' progress-bar-animated' : ''}}{{striped ?
     ' progress-bar-striped' : ''}}" role="progressbar" [style.width.%]="getPercentValue()"
     [attr.aria-valuenow]="getValue()" aria-valuemin="0" [attr.aria-valuemax]="max">
-        <ng-content></ng-content>
+        <span *ngIf="showValue">{{getPercentValue()}}%</span><ng-content></ng-content>
       </div>
     </div>
   `
@@ -36,6 +36,11 @@ export class NgbProgressbar {
   @Input() striped: boolean;
 
   /**
+   * A flag indicating if the current percentage value should be shown.
+   */
+  @Input() showValue: boolean;
+
+  /**
    * Type of progress bar, can be one of "success", "info", "warning" or "danger".
    */
   @Input() type: string;
@@ -50,6 +55,7 @@ export class NgbProgressbar {
     this.animated = config.animated;
     this.striped = config.striped;
     this.type = config.type;
+    this.showValue = config.showValue;
   }
 
   getValue() { return getValueInRange(this.value, this.max); }
