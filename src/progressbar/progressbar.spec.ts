@@ -196,6 +196,13 @@ describe('ngb-progressbar', () => {
 
       expect(fixture.nativeElement.textContent).toContain('label goes here');
     });
+
+    it('should display the current percentage value', () => {
+      const html = '<ngb-progressbar [showValue]="true" [value]="150" [max]="150"></ngb-progressbar>';
+      const fixture = createTestComponent(html);
+
+      expect(fixture.nativeElement.textContent).toContain('100%');
+    });
   });
 
   describe('Custom config', () => {

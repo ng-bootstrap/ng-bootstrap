@@ -8,5 +8,6 @@ describe('ngb-progressbar-config', () => {
     expect(config.striped).toBe(false);
     expect(config.animated).toBe(false);
     expect(config.type).toBeUndefined();
+    expect(config.showValue).toBe(false);
   });
 });

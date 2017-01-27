@@ -11,4 +11,5 @@ export class NgbProgressbarConfig {
   animated = false;
   striped = false;
   type: string;
+  showValue: boolean = false;
 }
