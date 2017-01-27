@@ -15,7 +15,7 @@ import {NgbAlertConfig} from './alert-config';
   selector: 'ngb-alert',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div [class]="'alert alert-' + type" role="alert">
+    <div [class]="'alert alert-' + type + (dismissible ? ' alert-dismissible' : '')" role="alert">
       <button *ngIf="dismissible" type="button" class="close" aria-label="Close" (click)="closeHandler()">
             <span aria-hidden="true">&times;</span>
       </button>
