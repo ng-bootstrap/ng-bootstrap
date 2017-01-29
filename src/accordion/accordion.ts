@@ -34,7 +34,7 @@ export class NgbPanelContent {
 }
 
 /**
- * The NgbPanel directive represents an in individual panel with the title and collapsible
+ * The NgbPanel directive represents an individual panel with the title and collapsible
  * content
  */
 @Directive({selector: 'ngb-panel'})
