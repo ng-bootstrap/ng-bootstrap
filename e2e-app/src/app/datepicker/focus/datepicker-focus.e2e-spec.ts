@@ -270,36 +270,36 @@ describe('Datepicker', () => {
       await expectFocused(page.getDayElement(new Date(2018, 7, 31)), `Last day of month should be focused`);
     });
 
-    it(`should focus first day of previous month with 'PageUp'`, async() => {
+    it(`should focus same day of previous month with 'PageUp'`, async() => {
       await page.preSelectDate();  // 10 AUG 2018
       await page.openDatepicker();
 
       await sendKey(Key.PAGE_UP);
-      await expectFocused(page.getDayElement(new Date(2018, 6, 1)), `First day of previous month should be focused`);
+      await expectFocused(page.getDayElement(new Date(2018, 6, 10)), `Same day of previous month should be focused`);
     });
 
-    it(`should focus first day of next month with 'PageDown'`, async() => {
+    it(`should focus same day of next month with 'PageDown'`, async() => {
       await page.preSelectDate();  // 10 AUG 2018
       await page.openDatepicker();
 
       await sendKey(Key.PAGE_DOWN);
-      await expectFocused(page.getDayElement(new Date(2018, 8, 1)), `First day of next month should be focused`);
+      await expectFocused(page.getDayElement(new Date(2018, 8, 10)), `Same day of next month should be focused`);
     });
 
-    it(`should focus first day of previous year with 'Shift+PageUp'`, async() => {
+    it(`should focus same day of previous year with 'Shift+PageUp'`, async() => {
       await page.preSelectDate();  // 10 AUG 2018
       await page.openDatepicker();
 
       await sendKey(Key.SHIFT, Key.PAGE_UP);
-      await expectFocused(page.getDayElement(new Date(2017, 0, 1)), `First day of previous year should be focused`);
+      await expectFocused(page.getDayElement(new Date(2017, 7, 10)), `Same day of previous year should be focused`);
     });
 
-    it(`should focus first day of next year with 'Shift+PageDown'`, async() => {
+    it(`should focus same day of next year with 'Shift+PageDown'`, async() => {
       await page.preSelectDate();  // 10 AUG 2018
       await page.openDatepicker();
 
       await sendKey(Key.SHIFT, Key.PAGE_DOWN);
-      await expectFocused(page.getDayElement(new Date(2019, 0, 1)), `First day of next year should be focused`);
+      await expectFocused(page.getDayElement(new Date(2019, 7, 10)), `Same day of next year should be focused`);
     });
 
     it(`should focus min available day with 'Shift+Home'`, async() => {

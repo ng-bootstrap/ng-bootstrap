@@ -1022,20 +1022,20 @@ describe('ngb-datepicker-service', () => {
       // months
       service.focus(date);
       service.focusMove('m', 1);
-      expect(model.focusDate).toEqual(new NgbDate(2017, 6, 1));
+      expect(model.focusDate).toEqual(new NgbDate(2017, 6, 5));
 
       service.focus(date);
       service.focusMove('m', -1);
-      expect(model.focusDate).toEqual(new NgbDate(2017, 4, 1));
+      expect(model.focusDate).toEqual(new NgbDate(2017, 4, 5));
 
       // years
       service.focus(date);
       service.focusMove('y', 1);
-      expect(model.focusDate).toEqual(new NgbDate(2018, 1, 1));
+      expect(model.focusDate).toEqual(new NgbDate(2018, 5, 5));
 
       service.focus(date);
       service.focusMove('y', -1);
-      expect(model.focusDate).toEqual(new NgbDate(2016, 1, 1));
+      expect(model.focusDate).toEqual(new NgbDate(2016, 5, 5));
     });
 
     it(`should move focus when 'minDate' changes`, () => {
