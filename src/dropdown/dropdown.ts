@@ -1,4 +1,14 @@
-import {Directive, Input, Output, EventEmitter, ElementRef} from '@angular/core';
+import {
+  Directive,
+  Input,
+  Output,
+  EventEmitter,
+  ElementRef,
+  OnChanges,
+  OnInit,
+  OnDestroy,
+  Renderer
+} from '@angular/core';
 import {NgbDropdownConfig} from './dropdown-config';
 
 /**
@@ -12,11 +22,16 @@ import {NgbDropdownConfig} from './dropdown-config';
     '[class.dropup]': 'up',
     '[class.show]': 'isOpen()',
     '(keyup.esc)': 'closeFromOutsideEsc()',
-    '(document:click)': 'closeFromOutsideClick($event)'
   }
 })
-export class NgbDropdown {
+export class NgbDropdown implements OnInit,
+    OnDestroy {
   private _toggleElement: any;
+
+  /**
+   * Holds the remove listener method returned by listenGlobal
+   */
+  private _outsideClickListener;
 
   /**
    * Indicates that the dropdown should open upwards
@@ -39,11 +54,18 @@ export class NgbDropdown {
    */
   @Output() openChange = new EventEmitter();
 
-  constructor(config: NgbDropdownConfig) {
+  constructor(config: NgbDropdownConfig, private _renderer: Renderer) {
     this.up = config.up;
     this.autoClose = config.autoClose;
   }
 
+  ngOnInit() {
+    if (this._open) {
+      this._registerListener();
+    }
+  }
+
+  ngOnDestroy() { this.close(); }
 
   /**
    * Checks if the dropdown menu is open or not.
@@ -56,6 +78,7 @@ export class NgbDropdown {
   open(): void {
     if (!this._open) {
       this._open = true;
+      this._registerListener();
       this.openChange.emit(true);
     }
   }
@@ -66,6 +89,10 @@ export class NgbDropdown {
   close(): void {
     if (this._open) {
       this._open = false;
+
+      // Removes "listenGlobal" listener
+      this._outsideClickListener();
+
       this.openChange.emit(false);
     }
   }
@@ -99,6 +126,10 @@ export class NgbDropdown {
   set toggleElement(toggleElement: any) { this._toggleElement = toggleElement; }
 
   private _isEventFromToggle($event) { return !!this._toggleElement && this._toggleElement.contains($event.target); }
+
+  private _registerListener() {
+    this._outsideClickListener = this._renderer.listenGlobal('document', 'click', (e) => this.closeFromOutsideClick(e));
+  }
 }
 
 /**

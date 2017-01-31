@@ -1,7 +1,7 @@
 import {TestBed, ComponentFixture, inject} from '@angular/core/testing';
 import {createGenericTestComponent} from '../test/common';
 
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {By} from '@angular/platform-browser';
 
 import {NgbDropdownModule} from './dropdown.module';
@@ -21,8 +21,12 @@ describe('ngb-dropdown', () => {
   });
 
   it('should initialize inputs with provided config', () => {
+    const html = '<div ngbDropdown></div>';
+
+    const fixture = createTestComponent(html);
+    const dropdown = fixture.componentInstance.dropdown;
     const defaultConfig = new NgbDropdownConfig();
-    const dropdown = new NgbDropdown(defaultConfig);
+
     expect(dropdown.up).toBe(defaultConfig.up);
     expect(dropdown.autoClose).toBe(defaultConfig.autoClose);
   });
@@ -219,7 +223,7 @@ describe('ngb-dropdown-toggle', () => {
   });
 
   it('should close on outside click', () => {
-    const html = `<button>Outside</button><div ngbDropdown [open]="true"></div>`;
+    const html = `<button>Outside</button><div ngbDropdown [open]="true" (openChange)="called = true"></div>`;
 
     const fixture = createTestComponent(html);
     const compiled = fixture.nativeElement;
@@ -228,10 +232,12 @@ describe('ngb-dropdown-toggle', () => {
 
     fixture.detectChanges();
     expect(dropdownEl).toHaveCssClass('show');
+    expect(fixture.componentInstance.called).toBeFalsy();
 
     buttonEl.click();
     fixture.detectChanges();
     expect(dropdownEl).not.toHaveCssClass('show');
+    expect(fixture.componentInstance.called).toBeTruthy();
   });
 
   it('should not close on outside click if right button click', () => {
@@ -436,6 +442,9 @@ describe('ngb-dropdown-toggle', () => {
 class TestComponent {
   isOpen = false;
   stateChanges = [];
+  called = false;
+
+  @ViewChild(NgbDropdown) dropdown: NgbDropdown;
 
   recordStateChange($event) {
     this.stateChanges.push($event);
