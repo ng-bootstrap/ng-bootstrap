@@ -86,20 +86,20 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
         </tr>
         <tr>
           <td>
-            <input type="text" class="form-control" [ngClass]="setFormControlSize()" maxlength="2" size="2" placeholder="HH"
+            <input type="text" class="form-control" [ngClass]="setFormControlSize()" maxlength="2" size="3" placeholder="HH"
               [value]="formatHour(model?.hour)" (change)="updateHour($event.target.value)"
               [readonly]="readonlyInputs" [disabled]="disabled">
           </td>
           <td>&nbsp;:&nbsp;</td>
           <td>
-            <input type="text" class="form-control" [ngClass]="setFormControlSize()" maxlength="2" size="2" placeholder="MM"
+            <input type="text" class="form-control" [ngClass]="setFormControlSize()" maxlength="2" size="3" placeholder="MM"
               [value]="formatMinSec(model?.minute)" (change)="updateMinute($event.target.value)"
               [readonly]="readonlyInputs" [disabled]="disabled">
           </td>
           <template [ngIf]="seconds">
             <td>&nbsp;:&nbsp;</td>
             <td>
-              <input type="text" class="form-control" [ngClass]="setFormControlSize()" maxlength="2" size="2" placeholder="SS"
+              <input type="text" class="form-control" [ngClass]="setFormControlSize()" maxlength="2" size="3" placeholder="SS"
                 [value]="formatMinSec(model?.second)" (change)="updateSecond($event.target.value)"
                 [readonly]="readonlyInputs" [disabled]="disabled">
             </td>
