@@ -21,6 +21,7 @@ import {NgbDateParserFormatter} from './ngb-date-parser-formatter';
 
 import {positionElements} from '../util/positioning';
 import {NgbDateStruct} from './ngb-date-struct';
+import {NgbCalendar} from './ngb-calendar';
 import {NgbDatepickerService} from './datepicker-service';
 
 const NGB_DATEPICKER_VALUE_ACCESSOR = {
@@ -118,7 +119,7 @@ export class NgbInputDatepicker implements ControlValueAccessor {
   constructor(
       private _parserFormatter: NgbDateParserFormatter, private _elRef: ElementRef, private _vcRef: ViewContainerRef,
       private _renderer: Renderer, private _cfr: ComponentFactoryResolver, ngZone: NgZone,
-      private _service: NgbDatepickerService) {
+      private _service: NgbDatepickerService, private _calendar: NgbCalendar) {
     this._zoneSubscription = ngZone.onStable.subscribe(() => {
       if (this._cRef) {
         positionElements(this._elRef.nativeElement, this._cRef.location.nativeElement, 'bottom-left');
@@ -131,8 +132,8 @@ export class NgbInputDatepicker implements ControlValueAccessor {
   registerOnTouched(fn: () => any): void { this._onTouched = fn; }
 
   writeValue(value) {
-    this._model =
-        value ? this._service.toValidDate({year: value.year, month: value.month, day: value.day}, null) : null;
+    const ngbDate = value ? new NgbDate(value.year, value.month, value.day) : null;
+    this._model = this._calendar.isValid(value) ? ngbDate : null;
     this._writeModelValue(this._model);
   }
 

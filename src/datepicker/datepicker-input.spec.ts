@@ -103,6 +103,21 @@ describe('NgbInputDatepicker', () => {
          fixture.detectChanges();
          tick();
          expect(input.value).toBe('');
+
+         fixture.componentInstance.date = new NgbDate(2017, 2, null);
+         fixture.detectChanges();
+         tick();
+         expect(input.value).toBe('');
+
+         fixture.componentInstance.date = new NgbDate(2017, null, 5);
+         fixture.detectChanges();
+         tick();
+         expect(input.value).toBe('');
+
+         fixture.componentInstance.date = new NgbDate(null, 2, 5);
+         fixture.detectChanges();
+         tick();
+         expect(input.value).toBe('');
        }));
 
     it('should propagate null to model when a user enters invalid date', () => {
@@ -113,6 +128,9 @@ describe('NgbInputDatepicker', () => {
       expect(fixture.componentInstance.date).toBeNull();
 
       inputDebugEl.triggerEventHandler('change', {target: {value: '300000-1-1'}});
+      expect(fixture.componentInstance.date).toBeNull();
+
+      inputDebugEl.triggerEventHandler('change', {target: {value: '2017-2- '}});
       expect(fixture.componentInstance.date).toBeNull();
     });
 
