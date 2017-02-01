@@ -20,7 +20,8 @@ import {NgbDateStruct} from './ngb-date-struct';
     '[class.text-white]': 'selected',
     '[class.text-muted]': 'isMuted()',
     '[class.outside]': 'isMuted()',
-    '[class.btn-secondary]': '!disabled'
+    '[class.btn-secondary]': 'true',
+    '[class.active]': 'focused'
   },
   template: `{{ date.day }}`
 })
@@ -28,6 +29,7 @@ export class NgbDatepickerDayView {
   @Input() currentMonth: number;
   @Input() date: NgbDateStruct;
   @Input() disabled: boolean;
+  @Input() focused: boolean;
   @Input() selected: boolean;
 
   isMuted() { return !this.selected && (this.date.month !== this.currentMonth || this.disabled); }
