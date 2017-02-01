@@ -98,9 +98,11 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
           </td>
           <template [ngIf]="seconds">
             <td>&nbsp;:&nbsp;</td>
-            <input type="text" class="form-control" [ngClass]="setFormControlSize()" maxlength="2" size="2" placeholder="SS"
-              [value]="formatMinSec(model?.second)" (change)="updateSecond($event.target.value)"
-              [readonly]="readonlyInputs" [disabled]="disabled">
+            <td>
+              <input type="text" class="form-control" [ngClass]="setFormControlSize()" maxlength="2" size="2" placeholder="SS"
+                [value]="formatMinSec(model?.second)" (change)="updateSecond($event.target.value)"
+                [readonly]="readonlyInputs" [disabled]="disabled">
+            </td>
           </template>
           <template [ngIf]="meridian">
             <td>&nbsp;&nbsp;</td>
