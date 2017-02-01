@@ -12,7 +12,7 @@ import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
       display: inline-block;
       width: 2rem;
     }
-    .custom-day:hover {
+    .custom-day:hover, .custom-day.focused {
       background-color: #e6e6e6;
     }
     .weekend {

@@ -39,6 +39,7 @@ import {DayTemplateContext} from './datepicker-day-template-context';
             [ngOutletContext]="{date: {year: day.date.year, month: day.date.month, day: day.date.day},
               currentMonth: month.number,
               disabled: isDisabled(day),
+              focused: isFocused(day.date),
               selected: isSelected(day.date)}">
             </template>
           </template>
@@ -53,6 +54,7 @@ export class NgbDatepickerMonthView {
   @Input() month: MonthViewModel;
   @Input() outsideDays: 'visible' | 'hidden' | 'collapsed';
   @Input() selectedDate: NgbDate;
+  @Input() focusedDate: NgbDate;
   @Input() showWeekdays;
   @Input() showWeekNumbers;
 
@@ -68,7 +70,11 @@ export class NgbDatepickerMonthView {
 
   isDisabled(day: DayViewModel) { return this.disabled || day.disabled; }
 
-  isSelected(date: NgbDate) { return this.selectedDate && this.selectedDate.equals(date); }
+  isSelected(date: NgbDate) { return !!(this.selectedDate && this.selectedDate.equals(date)); }
+
+  isFocused(date: NgbDate) {
+    return !!(this.focusedDate && this.focusedDate.equals(date) && this.month.number === date.month);
+  }
 
   isCollapsed(week: WeekViewModel) {
     return this.outsideDays === 'collapsed' && week.days[0].date.month !== this.month.number &&
