@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 
 const WEEKDAYS_SHORT = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
+const WEEKDAYS_FULL = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 const MONTHS_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const MONTHS_FULL = [
   'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November',
@@ -20,6 +21,12 @@ export abstract class NgbDatepickerI18n {
   abstract getWeekdayShortName(weekday: number): string;
 
   /**
+   * Returns the full weekday name to be used in the aria-label of the default day view.
+   * With default calendar we use ISO 8601: 'weekday' is 1=Mon ... 7=Sun
+   */
+  abstract getWeekdayFullName(weekday: number): string;
+
+  /**
    * Returns the short month name to display in the date picker navigation.
    * With default calendar we use ISO 8601: 'month' is 1=Jan ... 12=Dec
    */
@@ -35,6 +42,8 @@ export abstract class NgbDatepickerI18n {
 @Injectable()
 export class NgbDatepickerI18nDefault extends NgbDatepickerI18n {
   getWeekdayShortName(weekday: number): string { return WEEKDAYS_SHORT[weekday - 1]; }
+
+  getWeekdayFullName(weekday: number): string { return WEEKDAYS_FULL[weekday - 1]; }
 
   getMonthShortName(month: number): string { return MONTHS_SHORT[month - 1]; }
 

@@ -37,10 +37,12 @@ import {DayTemplateContext} from './datepicker-day-template-context';
     </div>
     <div *ngFor="let week of month.weeks" class="ngb-dp-week d-flex">
       <div *ngIf="showWeekNumbers" class="ngb-dp-week-number small text-center font-italic text-muted">{{ week.number }}</div>
-      <div *ngFor="let day of week.days" (click)="doSelect(day)" class="ngb-dp-day" [class.disabled]="isDisabled(day)"
+      <div *ngFor="let day of week.days; let dayIndex = index" (click)="doSelect(day)" class="ngb-dp-day" [class.disabled]="isDisabled(day)"
       [class.collapsed]="isCollapsed(day)" [class.hidden]="isHidden(day)">
           <template [ngTemplateOutlet]="dayTemplate"
           [ngOutletContext]="{date: {year: day.date.year, month: day.date.month, day: day.date.day},
+            id: getId(day.date),
+            weekday: month.weekdays[dayIndex],
             currentMonth: month.number,
             disabled: isDisabled(day),
             selected: isSelected(day.date),
@@ -51,6 +53,7 @@ import {DayTemplateContext} from './datepicker-day-template-context';
   `
 })
 export class NgbDatepickerMonthView {
+  @Input() datepickerId: String;
   @Input() dayTemplate: TemplateRef<DayTemplateContext>;
   @Input() disabled: boolean;
   @Input() month: MonthViewModel;
@@ -81,4 +84,10 @@ export class NgbDatepickerMonthView {
   isCollapsed(day: DayViewModel) { return this.outsideDays === 'collapsed' && this.month.number !== day.date.month; }
 
   isHidden(day: DayViewModel) { return this.outsideDays === 'hidden' && this.month.number !== day.date.month; }
+
+  getId(date: NgbDate) {
+    if (this.month.number === date.month) {
+      return `${this.datepickerId}-${date.toString()}`;
+    }
+  }
 }

@@ -9,6 +9,7 @@ import {
   EventEmitter,
   Output,
   ElementRef,
+  NgZone,
   HostListener
 } from '@angular/core';
 import {NG_VALUE_ACCESSOR, ControlValueAccessor} from '@angular/forms';
@@ -43,13 +44,26 @@ export interface NgbDatepickerNavigateEvent {
   next: {year: number, month: number};
 }
 
+let nextId = 0;
+
 /**
  * A lightweight and highly configurable datepicker directive
  */
 @Component({
   exportAs: 'ngbDatepicker',
   selector: 'ngb-datepicker',
-  host: {'class': 'd-inline-block rounded', '[attr.tabindex]': 'disabled ? undefined : "0"'},
+  host: {
+    'class': 'd-inline-block rounded',
+    '[attr.tabindex]': 'disabled ? undefined : "0"',
+    '[id]': 'id',
+    // The following update is done manually in updateActiveDescendant because some browsers
+    // (such as Firefox and IE) do not accept in aria-activedescendant the id of an element which
+    // has just been inserted in the DOM, so it is necessary to update aria-activedescendant
+    // after a setTimeout.
+    // '[attr.aria-activedescendant]': 'getActiveDescendant()',
+    '[attr.aria-disabled]': 'disabled ? "true" : undefined',
+    'role': 'application'
+  },
   styles: [`
     :host {
       border: 1px solid rgba(0, 0, 0, 0.125);
@@ -73,9 +87,18 @@ export interface NgbDatepickerNavigateEvent {
     }
   `],
   template: `
-    <template #dt let-date="date" let-currentMonth="currentMonth" let-selected="selected" let-disabled="disabled" let-focused="focused">
+    <template #dt
+      let-id="id"
+      let-date="date"
+      let-weekday="weekday"
+      let-currentMonth="currentMonth"
+      let-selected="selected"
+      let-disabled="disabled"
+      let-focused="focused">
       <div ngbDatepickerDayView
+        [id]="id"
         [date]="date"
+        [weekday]="weekday"
         [currentMonth]="currentMonth"
         [selected]="selected"
         [disabled]="disabled"
@@ -105,6 +128,7 @@ export interface NgbDatepickerNavigateEvent {
             {{ i18n.getMonthFullName(month.number) }} {{ month.year }}
           </div>
           <ngb-datepicker-month-view
+            [datepickerId]="id"
             [month]="month"
             [selectedDate]="model"
             [focusedDate]="focusedDate"
@@ -130,6 +154,12 @@ export class NgbDatepicker implements OnChanges,
   model: NgbDate;
   months: MonthViewModel[] = [];
   focusedDate: NgbDate;
+
+  /**
+   *  An optional id for the datepicker. The id should be unique.
+   *  If not provided, it will be auto-generated.
+   */
+  @Input() id = `ngb-datepicker-${nextId++}`;
 
   /**
    * Reference for the custom template for the day display
@@ -205,7 +235,7 @@ export class NgbDatepicker implements OnChanges,
 
   constructor(
       private _service: NgbDatepickerService, private _calendar: NgbCalendar, public i18n: NgbDatepickerI18n,
-      config: NgbDatepickerConfig, private _elementRef: ElementRef) {
+      config: NgbDatepickerConfig, private _elementRef: ElementRef, private _zone: NgZone) {
     this.dayTemplate = config.dayTemplate;
     this.displayMonths = config.displayMonths;
     this.firstDayOfWeek = config.firstDayOfWeek;
@@ -227,6 +257,22 @@ export class NgbDatepicker implements OnChanges,
   getHeaderMargin() {
     const m = this.showWeekdays ? 2 : 0;
     return this.displayMonths !== 1 || this.navigation !== 'select' ? m + 2 : m;
+  }
+
+  getActiveDescendant() {
+    if (this.focusedDate) {
+      return `${this.id}-${this.focusedDate.toString()}`;
+    }
+  }
+
+  updateActiveDescendant() {
+    const nativeElement = this._elementRef.nativeElement as HTMLElement;
+    const activeDescendant = this.getActiveDescendant();
+    if (activeDescendant) {
+      nativeElement.setAttribute('aria-activedescendant', activeDescendant);
+    } else {
+      nativeElement.removeAttribute('aria-activedescendant');
+    }
   }
 
   /**
@@ -366,11 +412,13 @@ export class NgbDatepicker implements OnChanges,
     const lastDate = this.getLastDisplayedDate();
     const model = this.model;
     this.focusedDate = (!model || model.before(firstDate) || model.after(lastDate)) ? firstDate : model;
+    this.updateActiveDescendant();
   }
 
   @HostListener('blur', ['$event'])
   onBlur(event: FocusEvent) {
     this.focusedDate = null;
+    this.updateActiveDescendant();
   }
 
   @HostListener('mousedown', ['$event'])
@@ -441,6 +489,9 @@ export class NgbDatepicker implements OnChanges,
     if (newViewDate) {
       this._setViewWithinLimits(newViewDate);
       this._updateData();
+      this._zone.runOutsideAngular(() => { setTimeout(() => this.updateActiveDescendant(), 1); });
+    } else {
+      this.updateActiveDescendant();
     }
   }
 
