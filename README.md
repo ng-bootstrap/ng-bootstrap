@@ -1,15 +1,15 @@
-# NG Bootstrap - [Angular 2](http://angular.io/) directives specific to [Bootstrap 4](http://v4-alpha.getbootstrap.com/)
+# NG Bootstrap - [Angular](http://angular.io/) directives specific to [Bootstrap 4](http://v4-alpha.getbootstrap.com/)
 
 [![npm version](https://badge.fury.io/js/%40ng-bootstrap%2Fng-bootstrap.svg)](https://badge.fury.io/js/%40ng-bootstrap%2Fng-bootstrap)
 [![Build Status](https://travis-ci.org/ng-bootstrap/ng-bootstrap.svg?branch=master)](https://travis-ci.org/ng-bootstrap/ng-bootstrap)
 [![devDependency Status](https://david-dm.org/ng-bootstrap/ng-bootstrap/dev-status.svg?branch=master)](https://david-dm.org/ng-bootstrap/ng-bootstrap#info=devDependencies)
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/pkozlowski.svg)](https://saucelabs.com/u/pkozlowski)
 
-Welcome to the Angular 2 version of the [Angular UI Bootstrap](https://github.com/angular-ui/bootstrap) library.
+Welcome to the Angular version of the [Angular UI Bootstrap](https://github.com/angular-ui/bootstrap) library.
 This library is being built from scratch by the [ui-bootstrap team](https://github.com/angular-ui/bootstrap).
 We are using TypeScript and targeting the Bootstrap 4 CSS framework.
 
-As with Bootstrap 4 and Angular 2, this library is a work in progress. Please check out our list of
+As with Bootstrap 4, this library is a work in progress. Please check out our list of
 [issues](https://github.com/ng-bootstrap/ng-bootstrap/issues) to see all the things we are implementing.
 Feel free to make comments there.
 
@@ -18,7 +18,7 @@ Feel free to make comments there.
 View all the directives in action at https://ng-bootstrap.github.io
 
 ## Dependencies
-* [Angular 2](https://angular.io) (tested with 2.0.0)
+* [Angular](https://angular.io) (tested with 2.3.1)
 * [Bootstrap 4](https://v4-alpha.getbootstrap.com) (tested with 4.0.0-alpha.6)
 
 ## Installation
@@ -68,8 +68,8 @@ map: {
 ```
 ## Supported browsers
 
-We support the same browsers and versions supported by both Bootstrap 4 and Angular 2, whichever is _more_ restrictive.
-See [this](https://github.com/angular/angular/blob/master/README.md) for up-to-date Angular 2 browser support.
+We support the same browsers and versions supported by both Bootstrap 4 and Angular, whichever is _more_ restrictive.
+See [this](https://github.com/angular/angular/blob/master/README.md) for up-to-date Angular browser support.
 
 * Chrome (45+)
 * Firefox (40+)
