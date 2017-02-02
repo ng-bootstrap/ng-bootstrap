@@ -3,7 +3,7 @@
 We are always looking for quality contributions and will be happy to accept your Pull Requests as long as they adhere to some basic rules:
 
 * Please make sure that your contribution fits well in the project's context:
-  * we are aiming at rebuilding bootstrap components in pure Angular 2, without any dependencies on any external JavaScript library;
+  * we are aiming at rebuilding bootstrap components in pure Angular, without any dependencies on any external JavaScript library;
   * the only dependency should be bootstrap CSS and its markup structure
 * Please assure that you are submitting quality code, specifically make sure that:
   * your component has accompanying tests and all the tests are passing

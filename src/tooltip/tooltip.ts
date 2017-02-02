@@ -113,7 +113,7 @@ export class NgbTooltip implements OnInit, OnDestroy {
       }
 
       // we need to manually invoke change detection since events registered via
-      // Renderer::listen() - to be determined if this is a bug in the Angular 2
+      // Renderer::listen() - to be determined if this is a bug in the Angular itself
       this._windowRef.changeDetectorRef.markForCheck();
       this.shown.emit();
     }
