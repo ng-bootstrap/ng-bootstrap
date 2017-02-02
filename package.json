@@ -42,7 +42,6 @@
     "autoprefixer": "^6.5.1",
     "bootstrap": "4.0.0-alpha.6",
     "clang-format": "1.0.35",
-    "classlist-polyfill": "^1.0.3",
     "copy-webpack-plugin": "^4.0.0",
     "core-js": "^2.4.1",
     "css-loader": "^0.25.0",
