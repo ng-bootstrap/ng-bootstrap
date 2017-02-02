@@ -1,3 +1,24 @@
+<a name="1.0.0-alpha.20"></a>
+# [1.0.0-alpha.20](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.19...1.0.0-alpha.20) (2017-02-02)
+
+
+### Bug Fixes
+
+* **alert:** add missing alert-dismissible CSS class ([e2691b9](https://github.com/ng-bootstrap/ng-bootstrap/commit/e2691b9)), closes [#1267](https://github.com/ng-bootstrap/ng-bootstrap/issues/1267) [#1270](https://github.com/ng-bootstrap/ng-bootstrap/issues/1270)
+* **datepicker:** mark dates without a day as invalid ([c57f913](https://github.com/ng-bootstrap/ng-bootstrap/commit/c57f913)), closes [#1278](https://github.com/ng-bootstrap/ng-bootstrap/issues/1278) [#1279](https://github.com/ng-bootstrap/ng-bootstrap/issues/1279)
+* **datepicker:** navigation arrows not responding on Firefox when navigation=="arrows" ([e2410f9](https://github.com/ng-bootstrap/ng-bootstrap/commit/e2410f9)), closes [#1254](https://github.com/ng-bootstrap/ng-bootstrap/issues/1254)
+* **timepicker:** correct input alligements ([9649ab2](https://github.com/ng-bootstrap/ng-bootstrap/commit/9649ab2)), closes [#1280](https://github.com/ng-bootstrap/ng-bootstrap/issues/1280)
+* **typeahead:** don't modify Observable prototype ([ae6abb7](https://github.com/ng-bootstrap/ng-bootstrap/commit/ae6abb7)), closes [#1242](https://github.com/ng-bootstrap/ng-bootstrap/issues/1242) [#1256](https://github.com/ng-bootstrap/ng-bootstrap/issues/1256)
+
+
+### Features
+
+* **progressbar:** add possibility to specify progressbars content ([8e03090](https://github.com/ng-bootstrap/ng-bootstrap/commit/8e03090)), closes [#1251](https://github.com/ng-bootstrap/ng-bootstrap/issues/1251) [#1259](https://github.com/ng-bootstrap/ng-bootstrap/issues/1259)
+* **progressbar:** show current value of progressbar ([83e01de](https://github.com/ng-bootstrap/ng-bootstrap/commit/83e01de)), closes [#1251](https://github.com/ng-bootstrap/ng-bootstrap/issues/1251) [#1269](https://github.com/ng-bootstrap/ng-bootstrap/issues/1269)
+* **timepicker:** add input and meridian button sizing ([89c1e6b](https://github.com/ng-bootstrap/ng-bootstrap/commit/89c1e6b)), closes [#1094](https://github.com/ng-bootstrap/ng-bootstrap/issues/1094) [#1258](https://github.com/ng-bootstrap/ng-bootstrap/issues/1258)
+
+
+
 <a name="1.0.0-alpha.19"></a>
 # [1.0.0-alpha.19](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.18...1.0.0-alpha.19) (2017-01-25)
 
