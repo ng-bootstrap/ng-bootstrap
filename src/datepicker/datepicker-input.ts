@@ -107,6 +107,12 @@ export class NgbInputDatepicker implements ControlValueAccessor {
   @Input() startDate: {year: number, month: number};
 
   /**
+   * Date format for the input.
+   * With default we use ISO 8601: yyyy-mm-dd.
+   */
+  @Input() dateFormat: string = 'yyyy-mm-dd';
+
+  /**
    * An event fired when navigation happens and currently displayed month changes.
    * See NgbDatepickerNavigateEvent for the payload info.
    */
@@ -145,7 +151,7 @@ export class NgbInputDatepicker implements ControlValueAccessor {
   }
 
   manualDateChange(value: string) {
-    this._model = this._service.toValidDate(this._parserFormatter.parse(value), null);
+    this._model = this._service.toValidDate(this._parserFormatter.parse(value, this.dateFormat), null);
     this._onChange(this._model ? {year: this._model.year, month: this._model.month, day: this._model.day} : null);
     this._writeModelValue(this._model);
   }
@@ -231,7 +237,8 @@ export class NgbInputDatepicker implements ControlValueAccessor {
   }
 
   private _writeModelValue(model: NgbDate) {
-    this._renderer.setElementProperty(this._elRef.nativeElement, 'value', this._parserFormatter.format(model));
+    this._renderer.setElementProperty(
+        this._elRef.nativeElement, 'value', this._parserFormatter.format(model, this.dateFormat));
     if (this.isOpen()) {
       this._cRef.instance.writeValue(model);
       this._onTouched();
