@@ -22,7 +22,7 @@ function expectPages(nativeEl: HTMLElement, pagesDef: string[]): void {
     if (classIndicator === '+') {
       expect(pages[i]).toHaveCssClass('active');
       expect(pages[i]).not.toHaveCssClass('disabled');
-      expect(normalizeText(pages[i].textContent)).toEqual(pageDef.substr(1));
+      expect(normalizeText(pages[i].textContent)).toEqual(pageDef.substr(1) + ' (current)');
     } else if (classIndicator === '-') {
       expect(pages[i]).not.toHaveCssClass('active');
       expect(pages[i]).toHaveCssClass('disabled');
@@ -47,6 +47,10 @@ function getLink(nativeEl: HTMLElement, idx: number): HTMLAnchorElement {
 
 function getList(nativeEl: HTMLElement) {
   return <HTMLUListElement>nativeEl.querySelector('ul');
+}
+
+function getSpan(nativeEl: HTMLElement): HTMLSpanElement {
+  return <HTMLSpanElement>nativeEl.querySelector('span');
 }
 
 function normalizeText(txt: string): string {
@@ -539,7 +543,7 @@ describe('ngb-pagination', () => {
     });
 
     it('should not emit "pageChange" for incorrect input values', fakeAsync(() => {
-         const html = `<ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize" [maxSize]="maxSize" 
+         const html = `<ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize" [maxSize]="maxSize"
         (pageChange)="onPageChange($event)"></ngb-pagination>`;
          const fixture = createTestComponent(html);
          tick();
@@ -561,7 +565,7 @@ describe('ngb-pagination', () => {
          expect(fixture.componentInstance.onPageChange).not.toHaveBeenCalled();
        }));
     it('should set classes correctly for disabled state', fakeAsync(() => {
-         const html = `<ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize" [maxSize]="maxSize" 
+         const html = `<ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize" [maxSize]="maxSize"
          [disabled]=true></ngb-pagination>`;
          const fixture = createTestComponent(html);
          tick();
