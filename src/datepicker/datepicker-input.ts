@@ -1,27 +1,27 @@
 import {
-  Directive,
-  Input,
-  ComponentRef,
-  ElementRef,
-  ViewContainerRef,
-  Renderer,
   ComponentFactoryResolver,
-  NgZone,
-  TemplateRef,
-  forwardRef,
+  ComponentRef,
+  Directive,
+  ElementRef,
   EventEmitter,
-  Output
+  forwardRef,
+  Input,
+  NgZone,
+  Output,
+  Renderer,
+  TemplateRef,
+  ViewContainerRef
 } from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
-import {NgbDate} from './ngb-date';
+import {positionElements} from '../util/positioning';
+
 import {NgbDatepicker, NgbDatepickerNavigateEvent} from './datepicker';
 import {DayTemplateContext} from './datepicker-day-template-context';
-import {NgbDateParserFormatter} from './ngb-date-parser-formatter';
-
-import {positionElements} from '../util/positioning';
-import {NgbDateStruct} from './ngb-date-struct';
 import {NgbDatepickerService} from './datepicker-service';
+import {NgbDate} from './ngb-date';
+import {NgbDateParserFormatter} from './ngb-date-parser-formatter';
+import {NgbDateStruct} from './ngb-date-struct';
 
 const NGB_DATEPICKER_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -31,7 +31,8 @@ const NGB_DATEPICKER_VALUE_ACCESSOR = {
 
 /**
  * A directive that makes it possible to have datepickers on input fields.
- * Manages integration with the input field itself (data entry) and ngModel (validation etc.).
+ * Manages integration with the input field itself (data entry) and ngModel
+ * (validation etc.).
  */
 @Directive({
   selector: 'input[ngbDatepicker]',
@@ -55,7 +56,8 @@ export class NgbInputDatepicker implements ControlValueAccessor {
   @Input() displayMonths: number;
 
   /**
-  * First day of the week. With default calendar we use ISO 8601: 1=Mon ... 7=Sun
+  * First day of the week. With default calendar we use ISO 8601: 1=Mon ...
+  * 7=Sun
    */
   @Input() firstDayOfWeek: number;
 
@@ -66,24 +68,30 @@ export class NgbInputDatepicker implements ControlValueAccessor {
   @Input() markDisabled: (date: NgbDateStruct, current: {year: number, month: number}) => boolean;
 
   /**
-   * Min date for the navigation. If not provided will be 10 years before today or `startDate`
+   * Min date for the navigation. If not provided will be 10 years before today
+   * or `startDate`
    */
   @Input() minDate: NgbDateStruct;
 
   /**
-   * Max date for the navigation. If not provided will be 10 years from today or `startDate`
+   * Max date for the navigation. If not provided will be 10 years from today or
+   * `startDate`
    */
   @Input() maxDate: NgbDateStruct;
 
   /**
-   * Navigation type: `select` (default with select boxes for month and year), `arrows`
-   * (without select boxes, only navigation arrows) or `none` (no navigation at all)
+   * Navigation type: `select` (default with select boxes for month and year),
+   * `arrows`
+   * (without select boxes, only navigation arrows) or `none` (no navigation at
+   * all)
    */
   @Input() navigation: 'select' | 'arrows' | 'none';
 
   /**
-   * The way to display days that don't belong to current month: `visible` (default),
-   * `hidden` (not displayed) or `collapsed` (not displayed with empty space collapsed)
+   * The way to display days that don't belong to current month: `visible`
+   * (default),
+   * `hidden` (not displayed) or `collapsed` (not displayed with empty space
+   * collapsed)
    */
   @Input() outsideDays: 'visible' | 'collapsed' | 'hidden';
 
@@ -106,14 +114,14 @@ export class NgbInputDatepicker implements ControlValueAccessor {
   @Input() startDate: {year: number, month: number};
 
   /**
-   * An event fired when navigation happens and currently displayed month changes.
+   * An event fired when navigation happens and currently displayed month
+   * changes.
    * See NgbDatepickerNavigateEvent for the payload info.
    */
   @Output() navigate = new EventEmitter<NgbDatepickerNavigateEvent>();
 
   private _onChange = (_: any) => {};
   private _onTouched = () => {};
-
 
   constructor(
       private _parserFormatter: NgbDateParserFormatter, private _elRef: ElementRef, private _vcRef: ViewContainerRef,
@@ -182,6 +190,18 @@ export class NgbInputDatepicker implements ControlValueAccessor {
       this._vcRef.remove(this._vcRef.indexOf(this._cRef.hostView));
       this._cRef = null;
     }
+  }
+  /*
+   * Closes the datepicker popup in outside
+   */
+  shouldCloseOnOutsideEvent($event): boolean {
+    const inputClick = this._elRef.nativeElement.contains($event.target);
+    let popupClick = false;
+
+    if (this.isOpen() && this._cRef.location.nativeElement.contains($event.target)) {
+      popupClick = true;
+    }
+    return !inputClick && !popupClick;
   }
 
   /**

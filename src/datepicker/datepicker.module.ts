@@ -4,6 +4,7 @@ import {NgbDatepicker, NgbDatepickerNavigateEvent} from './datepicker';
 import {NgbDatepickerMonthView} from './datepicker-month-view';
 import {NgbDatepickerNavigation} from './datepicker-navigation';
 import {NgbInputDatepicker} from './datepicker-input';
+import {NgbDatepickerToggle} from './datepicker-toggle';
 import {FormsModule} from '@angular/forms';
 import {NgbDatepickerDayView} from './datepicker-day-view';
 import {NgbDatepickerI18n, NgbDatepickerI18nDefault} from './datepicker-i18n';
@@ -15,6 +16,7 @@ import {NgbDatepickerConfig} from './datepicker-config';
 
 export {NgbDatepicker, NgbDatepickerNavigateEvent} from './datepicker';
 export {NgbInputDatepicker} from './datepicker-input';
+export {NgbDatepickerToggle} from './datepicker-toggle';
 export {NgbDatepickerMonthView} from './datepicker-month-view';
 export {NgbDatepickerDayView} from './datepicker-day-view';
 export {NgbDatepickerNavigation} from './datepicker-navigation';
@@ -27,9 +29,9 @@ export {NgbDateParserFormatter} from './ngb-date-parser-formatter';
 @NgModule({
   declarations: [
     NgbDatepicker, NgbDatepickerMonthView, NgbDatepickerNavigation, NgbDatepickerNavigationSelect, NgbDatepickerDayView,
-    NgbInputDatepicker
+    NgbInputDatepicker, NgbDatepickerToggle
   ],
-  exports: [NgbDatepicker, NgbInputDatepicker],
+  exports: [NgbDatepicker, NgbInputDatepicker, NgbDatepickerToggle],
   imports: [CommonModule, FormsModule],
   entryComponents: [NgbDatepicker]
 })
