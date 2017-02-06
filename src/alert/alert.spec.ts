@@ -39,14 +39,19 @@ describe('ngb-alert', () => {
     expect(alertEl).toHaveCssClass('alert-success');
   });
 
-  it('should render close button when dismissible', () => {
+  it('should render close button and have "alert-dismissible" CSS class when dismissible', () => {
     const fixture = createTestComponent('<ngb-alert [dismissible]="true">Watch out!</ngb-alert>');
+    const alertEl = getAlertElement(fixture.nativeElement);
 
-    expect(getCloseButton(getAlertElement(fixture.nativeElement))).toBeTruthy();
+    expect(alertEl).toHaveCssClass('alert-dismissible');
+    expect(getCloseButton(alertEl)).toBeTruthy();
   });
 
-  it('should render close button only if dismissible', () => {
+  it('should render close button and not have "alert-dismissible" CSS class only if dismissible', () => {
     const fixture = createTestComponent(`<ngb-alert [dismissible]="false">Don't close!</ngb-alert>`);
+    const alertEl = getAlertElement(fixture.nativeElement);
+
+    expect(alertEl).not.toHaveCssClass('alert-dismissible');
     expect(getCloseButton(getAlertElement(fixture.nativeElement))).toBeFalsy();
   });
 

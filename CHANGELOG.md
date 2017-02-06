@@ -1,3 +1,89 @@
+<a name="1.0.0-alpha.20"></a>
+# [1.0.0-alpha.20](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.19...1.0.0-alpha.20) (2017-02-02)
+
+
+### Bug Fixes
+
+* **alert:** add missing alert-dismissible CSS class ([e2691b9](https://github.com/ng-bootstrap/ng-bootstrap/commit/e2691b9)), closes [#1267](https://github.com/ng-bootstrap/ng-bootstrap/issues/1267) [#1270](https://github.com/ng-bootstrap/ng-bootstrap/issues/1270)
+* **datepicker:** mark dates without a day as invalid ([c57f913](https://github.com/ng-bootstrap/ng-bootstrap/commit/c57f913)), closes [#1278](https://github.com/ng-bootstrap/ng-bootstrap/issues/1278) [#1279](https://github.com/ng-bootstrap/ng-bootstrap/issues/1279)
+* **datepicker:** navigation arrows not responding on Firefox when navigation=="arrows" ([e2410f9](https://github.com/ng-bootstrap/ng-bootstrap/commit/e2410f9)), closes [#1254](https://github.com/ng-bootstrap/ng-bootstrap/issues/1254)
+* **timepicker:** correct input alligements ([9649ab2](https://github.com/ng-bootstrap/ng-bootstrap/commit/9649ab2)), closes [#1280](https://github.com/ng-bootstrap/ng-bootstrap/issues/1280)
+* **typeahead:** don't modify Observable prototype ([ae6abb7](https://github.com/ng-bootstrap/ng-bootstrap/commit/ae6abb7)), closes [#1242](https://github.com/ng-bootstrap/ng-bootstrap/issues/1242) [#1256](https://github.com/ng-bootstrap/ng-bootstrap/issues/1256)
+
+
+### Features
+
+* **progressbar:** add possibility to specify progressbars content ([8e03090](https://github.com/ng-bootstrap/ng-bootstrap/commit/8e03090)), closes [#1251](https://github.com/ng-bootstrap/ng-bootstrap/issues/1251) [#1259](https://github.com/ng-bootstrap/ng-bootstrap/issues/1259)
+* **progressbar:** show current value of progressbar ([83e01de](https://github.com/ng-bootstrap/ng-bootstrap/commit/83e01de)), closes [#1251](https://github.com/ng-bootstrap/ng-bootstrap/issues/1251) [#1269](https://github.com/ng-bootstrap/ng-bootstrap/issues/1269)
+* **timepicker:** add input and meridian button sizing ([89c1e6b](https://github.com/ng-bootstrap/ng-bootstrap/commit/89c1e6b)), closes [#1094](https://github.com/ng-bootstrap/ng-bootstrap/issues/1094) [#1258](https://github.com/ng-bootstrap/ng-bootstrap/issues/1258)
+
+
+
+<a name="1.0.0-alpha.19"></a>
+# [1.0.0-alpha.19](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.18...1.0.0-alpha.19) (2017-01-25)
+
+This release comes with many improvements to the datepicker: better layout as well as look & feel.
+We are also bumping up minimal Angular version to 2.3.1 - this is required so we can provide better APIs for modal. 
+
+### Chores
+
+* update angular version ([43b8e2b](https://github.com/ng-bootstrap/ng-bootstrap/commit/43b8e2b))
+
+### Bug Fixes
+
+* **datepicker:** account for undefined values in ngOnChanges ([8803847](https://github.com/ng-bootstrap/ng-bootstrap/commit/8803847)), closes [#1202](https://github.com/ng-bootstrap/ng-bootstrap/issues/1202) [#1229](https://github.com/ng-bootstrap/ng-bootstrap/issues/1229)
+* **dropdown:** do not close dropdown on right button click ([b6bb9e9](https://github.com/ng-bootstrap/ng-bootstrap/commit/b6bb9e9)), closes [#1211](https://github.com/ng-bootstrap/ng-bootstrap/issues/1211)
+* **pagination:** fix unnecessary ellipsis between sibling page numbers ([b607652](https://github.com/ng-bootstrap/ng-bootstrap/commit/b607652)), closes [#1166](https://github.com/ng-bootstrap/ng-bootstrap/issues/1166) [#1232](https://github.com/ng-bootstrap/ng-bootstrap/issues/1232) [#1233](https://github.com/ng-bootstrap/ng-bootstrap/issues/1233)
+
+### Features
+
+* **datepicker:** add full month name versions to i18n ([106fa82](https://github.com/ng-bootstrap/ng-bootstrap/commit/106fa82)), closes [#1217](https://github.com/ng-bootstrap/ng-bootstrap/issues/1217)
+* **datepicker:** improve default look and feel ([d88c8b7](https://github.com/ng-bootstrap/ng-bootstrap/commit/d88c8b7)), closes [#706](https://github.com/ng-bootstrap/ng-bootstrap/issues/706) [#1061](https://github.com/ng-bootstrap/ng-bootstrap/issues/1061) [#1205](https://github.com/ng-bootstrap/ng-bootstrap/issues/1205)
+* **tabset:** add an option for tabs horizontal alignment ([00114f3](https://github.com/ng-bootstrap/ng-bootstrap/commit/00114f3)), closes [#1210](https://github.com/ng-bootstrap/ng-bootstrap/issues/1210)
+
+
+### BREAKING CHANGES
+
+* minimal angular version was updated to 2.3.1.
+Angular@^2.3.1 will have to be used as a peer dependency from now on.
+
+* datepicker: `NgbDatepickerI18n` methods were renamed:
+
+`getWeekdayName` to `getWeekdayShortName`
+`getMonthName` to `getMonthShortName`
+
+* datepicker: switched to flex layout instead of table-based (drop IE9 support) and prefixed datepicker-related css classes with `ngb-dp-`
+
+
+
+<a name="1.0.0-alpha.18"></a>
+# [1.0.0-alpha.18](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.17...1.0.0-alpha.18) (2017-01-09)
+
+This release adds full compatibility with Bootstrap CSS version 4.0.0-alpha.6!
+
+### Chores
+
+* upgrade documentation to bootstrap-4.0.0-alpha.6 ([4499927](https://github.com/ng-bootstrap/ng-bootstrap/commit/4499927)), closes [#1192](https://github.com/ng-bootstrap/ng-bootstrap/issues/1192)
+
+
+### Features
+
+* **carousel:** upgrade carousel to v4-alpha.6 ([e9f539a](https://github.com/ng-bootstrap/ng-bootstrap/commit/e9f539a)), closes [#1190](https://github.com/ng-bootstrap/ng-bootstrap/issues/1190)
+* **collapse:** upgrade collapse to v4-alpha.6 ([6cda8b3](https://github.com/ng-bootstrap/ng-bootstrap/commit/6cda8b3)), closes [#1183](https://github.com/ng-bootstrap/ng-bootstrap/issues/1183)
+* **datepicker:** upgrade datepicker to v4-alpha.6 ([b60e2d7](https://github.com/ng-bootstrap/ng-bootstrap/commit/b60e2d7)), closes [#1187](https://github.com/ng-bootstrap/ng-bootstrap/issues/1187)
+* **dropdown:** upgrade to 4.0.0-alpha.6 ([d8bfe37](https://github.com/ng-bootstrap/ng-bootstrap/commit/d8bfe37)), closes [#1180](https://github.com/ng-bootstrap/ng-bootstrap/issues/1180) [#1182](https://github.com/ng-bootstrap/ng-bootstrap/issues/1182)
+* **modal:** upgrade modal to v4-alpha.6 ([7ab022b](https://github.com/ng-bootstrap/ng-bootstrap/commit/7ab022b)), closes [#1185](https://github.com/ng-bootstrap/ng-bootstrap/issues/1185)
+* **popover:** upgrade popover to v4-alpha.6 ([60fd5d9](https://github.com/ng-bootstrap/ng-bootstrap/commit/60fd5d9)), closes [#1189](https://github.com/ng-bootstrap/ng-bootstrap/issues/1189)
+* **timepicker:** upgrade timepicker to v4-alpha.6 ([4288e22](https://github.com/ng-bootstrap/ng-bootstrap/commit/4288e22)), closes [#1186](https://github.com/ng-bootstrap/ng-bootstrap/issues/1186)
+* **tooltip:** upgrade tooltip to v4-alpha.6 ([0000aa3](https://github.com/ng-bootstrap/ng-bootstrap/commit/0000aa3)), closes [#1188](https://github.com/ng-bootstrap/ng-bootstrap/issues/1188)
+
+
+### BREAKING CHANGES
+
+* This version is compatible with bootstrap-4.0.0-alpha.6, and is not backward-compatible with previous versions of bootstrap. If you choose to upgrade to this version of ng-bootstrap, you will thus also have to migrate to bootstrap-4.0.0-alpha.6.
+
+
+
 <a name="1.0.0-alpha.17"></a>
 # [1.0.0-alpha.17](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.16...1.0.0-alpha.17) (2017-01-09)
 

@@ -18,9 +18,9 @@ import {
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {Observable} from 'rxjs/Observable';
 import {Subscription} from 'rxjs/Subscription';
-import 'rxjs/add/observable/fromEvent';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/let';
+import {letProto} from 'rxjs/operator/let';
+import {_do} from 'rxjs/operator/do';
+import {fromEvent} from 'rxjs/observable/fromEvent';
 import {positionElements} from '../util/positioning';
 import {NgbTypeaheadWindow, ResultTemplateContext} from './typeahead-window';
 import {PopupService} from '../util/popup';
@@ -135,7 +135,7 @@ export class NgbTypeahead implements ControlValueAccessor,
     this.focusFirst = config.focusFirst;
     this.showHint = config.showHint;
 
-    this._valueChanges = Observable.fromEvent(_elementRef.nativeElement, 'input', ($event) => $event.target.value);
+    this._valueChanges = fromEvent(_elementRef.nativeElement, 'input', ($event) => $event.target.value);
 
     this._popupService = new PopupService<NgbTypeaheadWindow>(
         NgbTypeaheadWindow, _injector, _viewContainerRef, _renderer, componentFactoryResolver);
@@ -147,24 +147,23 @@ export class NgbTypeahead implements ControlValueAccessor,
     });
   }
 
-  ngOnInit() {
-    this._subscription = this._subscribeToUserInput(
-        this._valueChanges
-            .do(value => {
-              this._userInput = value;
-              if (this.editable) {
-                this._onChange(value);
-              }
-            })
-            .let (this.ngbTypeahead)
-            .do(_ => {
-              if (!this.editable) {
-                this._onChange(undefined);
-              }
-            }));
+  ngOnInit(): void {
+    const inputValues$ = _do.call(this._valueChanges, value => {
+      this._userInput = value;
+      if (this.editable) {
+        this._onChange(value);
+      }
+    });
+    const results$ = letProto.call(inputValues$, this.ngbTypeahead);
+    const userInput$ = _do.call(results$, () => {
+      if (!this.editable) {
+        this._onChange(undefined);
+      }
+    });
+    this._subscription = this._subscribeToUserInput(userInput$);
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this._unsubscribeFromUserInput();
     this._zoneSubscription.unsubscribe();
   }

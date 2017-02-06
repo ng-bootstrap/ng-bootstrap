@@ -1,5 +1,5 @@
 import 'core-js/shim';
-import 'classlist-polyfill';
+
 require('zone.js/dist/zone');
 
 if (process.env.ENV === 'build') {

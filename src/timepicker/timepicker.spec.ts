@@ -59,6 +59,7 @@ function expectSameValues(timepicker: NgbTimepicker, config: NgbTimepickerConfig
   expect(timepicker.secondStep).toBe(config.secondStep);
   expect(timepicker.disabled).toBe(config.disabled);
   expect(timepicker.readonlyInputs).toBe(config.readonlyInputs);
+  expect(timepicker.size).toBe(config.size);
 }
 
 function customizeConfig(config: NgbTimepickerConfig) {

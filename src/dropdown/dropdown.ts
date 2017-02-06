@@ -10,7 +10,7 @@ import {NgbDropdownConfig} from './dropdown-config';
   host: {
     '[class.dropdown]': '!up',
     '[class.dropup]': 'up',
-    '[class.open]': 'isOpen()',
+    '[class.show]': 'isOpen()',
     '(keyup.esc)': 'closeFromOutsideEsc()',
     '(document:click)': 'closeFromOutsideClick($event)'
   }
@@ -82,7 +82,7 @@ export class NgbDropdown {
   }
 
   closeFromOutsideClick($event) {
-    if (this.autoClose && !this._isEventFromToggle($event)) {
+    if (this.autoClose && $event.button !== 2 && !this._isEventFromToggle($event)) {
       this.close();
     }
   }

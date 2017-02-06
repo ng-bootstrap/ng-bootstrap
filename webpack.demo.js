@@ -51,7 +51,7 @@ module.exports = function makeWebpackConfig() {
    */
   config.output = {
     path: root('demo', 'dist'),
-    publicPath: isProd ? '/' : 'http://localhost:9090/',
+    publicPath: '/',
     filename: isProd ? 'js/[name].[hash].js' : 'js/[name].js',
     chunkFilename: isProd ? '[id].[hash].chunk.js' : '[id].chunk.js'
   };
@@ -81,8 +81,7 @@ module.exports = function makeWebpackConfig() {
       // Support for .ts files.
       {
         test: /\.ts$/,
-        loader: isProd ? '@ngtools/webpack' : 'ts-loader',
-        exclude: [/node_modules\/(?!(ng2-.+))/]
+        loader: isProd ? '@ngtools/webpack' : 'ts-loader'
       },
 
       {
@@ -186,7 +185,7 @@ module.exports = function makeWebpackConfig() {
       // Reference: https://github.com/angular/angular-cli/tree/master/packages/webpack
       new aotplugin.AotPlugin({
         tsConfigPath: './tsconfig-aot.json',
-        entryModule: './demo/src/app/app.module#NgbdModule'
+        entryModule: root('demo/src/app/') + 'app.module#NgbdModule'
       }),
 
       // Reference: http://webpack.github.io/docs/list-of-plugins.html#noerrorsplugin

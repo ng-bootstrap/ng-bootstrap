@@ -4,16 +4,22 @@ import {NgbDateStruct} from './ngb-date-struct';
 @Component({
   selector: '[ngbDatepickerDayView]',
   styles: [`
-    :host {      
+    :host {
       text-align: center;
-      padding: 0.185rem 0.25rem;      
+      width: 2rem;
+      height: 2rem;
+      line-height: 2rem;      
       border-radius: 0.25rem;
+    }
+    :host.outside {
+      opacity: 0.5;
     }
   `],
   host: {
     '[class.bg-primary]': 'selected',
     '[class.text-white]': 'selected',
     '[class.text-muted]': 'isMuted()',
+    '[class.outside]': 'isMuted()',
     '[class.btn-secondary]': '!disabled'
   },
   template: `{{ date.day }}`

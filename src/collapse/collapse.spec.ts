@@ -26,7 +26,7 @@ describe('ngb-collapse', () => {
 
     const collapseEl = getCollapsibleContent(fixture.nativeElement);
 
-    expect(collapseEl).toHaveCssClass('in');
+    expect(collapseEl).toHaveCssClass('show');
     expect(collapseEl.getAttribute('aria-expanded')).toBe('true');
   });
 
@@ -38,7 +38,7 @@ describe('ngb-collapse', () => {
 
     const collapseEl = getCollapsibleContent(fixture.nativeElement);
 
-    expect(collapseEl).not.toHaveCssClass('in');
+    expect(collapseEl).not.toHaveCssClass('show');
     expect(collapseEl.getAttribute('aria-expanded')).toBe('false');
   });
 
@@ -48,15 +48,15 @@ describe('ngb-collapse', () => {
 
     const tc = fixture.componentInstance;
     const collapseEl = getCollapsibleContent(fixture.nativeElement);
-    expect(collapseEl).toHaveCssClass('in');
+    expect(collapseEl).toHaveCssClass('show');
 
     tc.collapsed = true;
     fixture.detectChanges();
-    expect(collapseEl).not.toHaveCssClass('in');
+    expect(collapseEl).not.toHaveCssClass('show');
 
     tc.collapsed = false;
     fixture.detectChanges();
-    expect(collapseEl).toHaveCssClass('in');
+    expect(collapseEl).toHaveCssClass('show');
   });
 
   it('should allow toggling collapse from outside', () => {
@@ -72,11 +72,11 @@ describe('ngb-collapse', () => {
 
     buttonEl.click();
     fixture.detectChanges();
-    expect(collapseEl).not.toHaveCssClass('in');
+    expect(collapseEl).not.toHaveCssClass('show');
 
     buttonEl.click();
     fixture.detectChanges();
-    expect(collapseEl).toHaveCssClass('in');
+    expect(collapseEl).toHaveCssClass('show');
   });
 });
 

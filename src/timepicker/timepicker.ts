@@ -32,14 +32,14 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
       vertical-align: middle;
       width: 0.71em;
     }
-    
+
     .chevron.bottom:before {
       top: -.3em;
       -webkit-transform: rotate(135deg);
       -ms-transform: rotate(135deg);
       transform: rotate(135deg);
     }
-    
+
     .btn-link {
       outline: 0;
     }
@@ -48,19 +48,23 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
       cursor: not-allowed;
       opacity: .65;
     }
+
+    input {
+      text-align: center;
+    }
   `],
   template: `
      <fieldset [disabled]="disabled" [class.disabled]="disabled">
       <table>
         <tr *ngIf="spinners">
-          <td class="text-xs-center">
+          <td class="text-center">
             <button type="button" class="btn-link" (click)="changeHour(hourStep)"
               [disabled]="disabled" [class.disabled]="disabled">
               <span class="chevron"></span>
             </button>
           </td>
           <td>&nbsp;</td>
-          <td class="text-xs-center">
+          <td class="text-center">
             <button type="button" class="btn-link" (click)="changeMinute(minuteStep)"
               [disabled]="disabled" [class.disabled]="disabled">
                 <span class="chevron"></span>
@@ -68,7 +72,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
           </td>
           <template [ngIf]="seconds">
             <td>&nbsp;</td>
-            <td class="text-xs-center">
+            <td class="text-center">
               <button type="button" class="btn-link" (click)="changeSecond(secondStep)"
                 [disabled]="disabled" [class.disabled]="disabled">
                 <span class="chevron"></span>
@@ -82,38 +86,41 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
         </tr>
         <tr>
           <td>
-            <input type="text" class="form-control" maxlength="2" size="2" placeholder="HH"
-              [value]="formatHour(model?.hour)" (change)="updateHour($event.target.value)" 
+            <input type="text" class="form-control" [ngClass]="setFormControlSize()" maxlength="2" size="2" placeholder="HH"
+              [value]="formatHour(model?.hour)" (change)="updateHour($event.target.value)"
               [readonly]="readonlyInputs" [disabled]="disabled">
           </td>
           <td>&nbsp;:&nbsp;</td>
           <td>
-            <input type="text" class="form-control" maxlength="2" size="2" placeholder="MM"
-              [value]="formatMinSec(model?.minute)" (change)="updateMinute($event.target.value)" 
+            <input type="text" class="form-control" [ngClass]="setFormControlSize()" maxlength="2" size="2" placeholder="MM"
+              [value]="formatMinSec(model?.minute)" (change)="updateMinute($event.target.value)"
               [readonly]="readonlyInputs" [disabled]="disabled">
           </td>
           <template [ngIf]="seconds">
             <td>&nbsp;:&nbsp;</td>
-            <input type="text" class="form-control" maxlength="2" size="2" placeholder="SS"
-              [value]="formatMinSec(model?.second)" (change)="updateSecond($event.target.value)" 
-              [readonly]="readonlyInputs" [disabled]="disabled">
+            <td>
+              <input type="text" class="form-control" [ngClass]="setFormControlSize()" maxlength="2" size="2" placeholder="SS"
+                [value]="formatMinSec(model?.second)" (change)="updateSecond($event.target.value)"
+                [readonly]="readonlyInputs" [disabled]="disabled">
+            </td>
           </template>
           <template [ngIf]="meridian">
             <td>&nbsp;&nbsp;</td>
             <td>
-              <button type="button" class="btn btn-outline-primary" (click)="toggleMeridian()">{{model.hour >= 12 ? 'PM' : 'AM'}}</button>
+              <button type="button" class="btn btn-outline-primary" [ngClass]="setMeridanSize()"
+                (click)="toggleMeridian()">{{model.hour >= 12 ? 'PM' : 'AM'}}</button>
             </td>
           </template>
         </tr>
         <tr *ngIf="spinners">
-          <td class="text-xs-center">
-            <button type="button" class="btn-link" (click)="changeHour(-hourStep)" 
+          <td class="text-center">
+            <button type="button" class="btn-link" (click)="changeHour(-hourStep)"
               [disabled]="disabled" [class.disabled]="disabled">
               <span class="chevron bottom"></span>
             </button>
           </td>
           <td>&nbsp;</td>
-          <td class="text-xs-center">
+          <td class="text-center">
             <button type="button" class="btn-link" (click)="changeMinute(-minuteStep)"
               [disabled]="disabled" [class.disabled]="disabled">
               <span class="chevron bottom"></span>
@@ -121,7 +128,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
           </td>
           <template [ngIf]="seconds">
             <td>&nbsp;</td>
-            <td class="text-xs-center">
+            <td class="text-center">
               <button type="button" class="btn-link" (click)="changeSecond(-secondStep)"
                 [disabled]="disabled" [class.disabled]="disabled">
                 <span class="chevron bottom"></span>
@@ -178,6 +185,11 @@ export class NgbTimepicker implements ControlValueAccessor,
    */
   @Input() readonlyInputs: boolean;
 
+  /**
+   * To set the size of the inputs and button
+   */
+  @Input() size: 'small' | 'medium' | 'large';
+
   constructor(config: NgbTimepickerConfig) {
     this.meridian = config.meridian;
     this.spinners = config.spinners;
@@ -187,6 +199,7 @@ export class NgbTimepicker implements ControlValueAccessor,
     this.secondStep = config.secondStep;
     this.disabled = config.disabled;
     this.readonlyInputs = config.readonlyInputs;
+    this.size = config.size;
   }
 
   onChange = (_: any) => {};
@@ -254,6 +267,10 @@ export class NgbTimepicker implements ControlValueAccessor,
   }
 
   formatMinSec(value: number) { return padNumber(value); }
+
+  setFormControlSize() { return {'form-control-sm': this.size === 'small', 'form-control-lg': this.size === 'large'}; }
+
+  setMeridanSize() { return {'btn-sm': this.size === 'small', 'btn-lg': this.size === 'large'}; }
 
 
   ngOnChanges(changes: SimpleChanges): void {

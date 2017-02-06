@@ -9,13 +9,13 @@ import {NgbProgressbarConfig} from './progressbar-config';
   selector: 'ngb-progressbar',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <progress class="progress{{type ? ' progress-' + type : ''}}{{animated ? ' progress-animated' : ''}}{{striped ? 
-    ' progress-striped' : ''}}" 
-      [max]="max" [value]="getValue()">
-      <div class="progress">
-        <span class="progress-bar" [style.width.%]="getPercentValue()"><ng-content></ng-content></span>
+    <div class="progress">
+      <div class="progress-bar{{type ? ' bg-' + type : ''}}{{animated ? ' progress-bar-animated' : ''}}{{striped ?
+    ' progress-bar-striped' : ''}}" role="progressbar" [style.width.%]="getPercentValue()"
+    [attr.aria-valuenow]="getValue()" aria-valuemin="0" [attr.aria-valuemax]="max">
+        <span *ngIf="showValue">{{getPercentValue()}}%</span><ng-content></ng-content>
       </div>
-    </progress>
+    </div>
   `
 })
 export class NgbProgressbar {
@@ -36,6 +36,11 @@ export class NgbProgressbar {
   @Input() striped: boolean;
 
   /**
+   * A flag indicating if the current percentage value should be shown.
+   */
+  @Input() showValue: boolean;
+
+  /**
    * Type of progress bar, can be one of "success", "info", "warning" or "danger".
    */
   @Input() type: string;
@@ -50,6 +55,7 @@ export class NgbProgressbar {
     this.animated = config.animated;
     this.striped = config.striped;
     this.type = config.type;
+    this.showValue = config.showValue;
   }
 
   getValue() { return getValueInRange(this.value, this.max); }

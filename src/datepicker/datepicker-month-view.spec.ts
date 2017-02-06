@@ -13,15 +13,15 @@ const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
 function getWeekdays(element: HTMLElement): HTMLElement[] {
-  return <HTMLElement[]>Array.from(element.querySelectorAll('td.weekday'));
+  return <HTMLElement[]>Array.from(element.querySelectorAll('.ngb-dp-weekday'));
 }
 
 function getWeekNumbers(element: HTMLElement): HTMLElement[] {
-  return <HTMLElement[]>Array.from(element.querySelectorAll('td.weeknumber'));
+  return <HTMLElement[]>Array.from(element.querySelectorAll('.ngb-dp-week-number'));
 }
 
 function getDates(element: HTMLElement): HTMLElement[] {
-  return <HTMLElement[]>Array.from(element.querySelectorAll('td.day'));
+  return <HTMLElement[]>Array.from(element.querySelectorAll('.ngb-dp-day'));
 }
 
 function expectWeekdays(element: HTMLElement, weekdays: string[]) {

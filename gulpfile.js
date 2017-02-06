@@ -137,9 +137,8 @@ function startKarmaServer(isTddMode, isSaucelabs, done) {
 
   if (isSaucelabs) {
     config['reporters'] = ['dots', 'saucelabs'];
-    config['browsers'] = [
-      'SL_CHROME', 'SL_FIREFOX', 'SL_IE9', 'SL_IE10', 'SL_IE11', 'SL_EDGE13', 'SL_EDGE14', 'SL_SAFARI9', 'SL_SAFARI10'
-    ];
+    config['browsers'] =
+        ['SL_CHROME', 'SL_FIREFOX', 'SL_IE10', 'SL_IE11', 'SL_EDGE13', 'SL_EDGE14', 'SL_SAFARI9', 'SL_SAFARI10'];
 
     if (process.env.TRAVIS) {
       var buildId = `TRAVIS #${process.env.TRAVIS_BUILD_NUMBER} (${process.env.TRAVIS_BUILD_ID})`;
@@ -261,7 +260,12 @@ gulp.task(
 
 gulp.task(
     'build:demo', ['clean:demo', 'generate-docs', 'generate-plunks'],
-    shell.task(['MODE=build webpack --config webpack.demo.js --progress --profile --bail']));
+    shell.task(['webpack --config webpack.demo.js --progress --profile --bail'], {env: {MODE: 'build'}}));
+
+gulp.task(
+    'demo-server:aot', ['generate-docs', 'generate-plunks'],
+    shell.task(
+        ['webpack-dev-server --port 9090 --config webpack.demo.js --inline --progress'], {env: {MODE: 'build'}}));
 
 gulp.task('demo-push', function() {
   return gulp.src(PATHS.demoDist)
