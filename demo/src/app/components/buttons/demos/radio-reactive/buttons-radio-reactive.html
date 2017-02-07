@@ -1,0 +1,15 @@
+<form [formGroup]="radioGroupForm">
+  <div ngbRadioGroup name="radioBasic" formControlName="model">
+    <label class="btn btn-primary">
+      <input type="radio" [value]="1"> Left (pre-checked)
+    </label>
+    <label class="btn btn-primary">
+      <input type="radio" value="middle"> Middle
+    </label>
+    <label class="btn btn-primary">
+      <input type="radio" [value]="false"> Right
+    </label>
+  </div>
+</form>
+<hr>
+<pre>{{radioGroupForm.value.model}}</pre>
