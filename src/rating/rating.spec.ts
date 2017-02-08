@@ -85,6 +85,33 @@ describe('ngb-rating', () => {
     expect(stars.length).toBe(3);
   });
 
+  it('handles the change event', fakeAsync(() => {
+       const fixture =
+           createTestComponent('<ngb-rating [(rate)]="currentRate" (rateChange)="onRateChange($event)"></ngb-rating>');
+       const el = fixture.debugElement;
+       const rating = el.query(By.directive(NgbRating)).children[0];
+
+       spyOn(fixture.componentInstance, 'onRateChange');
+
+       tick();
+
+       expect(fixture.componentInstance.onRateChange).not.toHaveBeenCalled();
+
+       // enter 2 -> 2/5, rate = 3
+       getDbgStar(el, 2).triggerEventHandler('mouseenter', {});
+       fixture.detectChanges();
+       tick();
+
+       expect(fixture.componentInstance.onRateChange).not.toHaveBeenCalled();
+
+       getStar(el.nativeElement, 2).click();
+       fixture.detectChanges();
+       tick();
+
+       expect(fixture.componentInstance.onRateChange).toHaveBeenCalled();
+
+     }));
+
   it('initializes the default star icons as selected', () => {
     const fixture = createTestComponent('<ngb-rating rate="3" max="5"></ngb-rating>');
 
@@ -577,4 +604,6 @@ class TestComponent {
   max = 10;
   model;
   rate = 3;
+
+  onRateChange = () => {};
 }
