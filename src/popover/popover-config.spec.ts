@@ -5,7 +5,7 @@ describe('ngb-popover-config', () => {
     const config = new NgbPopoverConfig();
 
     expect(config.placement).toBe('top');
-    expect(config.triggers).toBe('click');
+    expect(config.triggers).toBe('click/click');
     expect(config.container).toBeUndefined();
   });
 });

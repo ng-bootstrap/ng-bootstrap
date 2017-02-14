@@ -8,6 +8,6 @@ import {Injectable} from '@angular/core';
 @Injectable()
 export class NgbPopoverConfig {
   placement: 'top' | 'bottom' | 'left' | 'right' = 'top';
-  triggers = 'click';
+  triggers = 'click/click';
   container: string;
 }

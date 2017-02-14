@@ -214,7 +214,7 @@ describe('ngb-tooltip', () => {
     describe('triggers', () => {
 
       it('should support toggle triggers', () => {
-        const fixture = createTestComponent(`<div ngbTooltip="Great tip!" triggers="click"></div>`);
+        const fixture = createTestComponent(`<div ngbTooltip="Great tip!" triggers="click/click"></div>`);
         const directive = fixture.debugElement.query(By.directive(NgbTooltip));
 
         directive.triggerEventHandler('click', {});
@@ -227,7 +227,7 @@ describe('ngb-tooltip', () => {
       });
 
       it('should non-default toggle triggers', () => {
-        const fixture = createTestComponent(`<div ngbTooltip="Great tip!" triggers="mouseenter:click"></div>`);
+        const fixture = createTestComponent(`<div ngbTooltip="Great tip!" triggers="mouseenter/click"></div>`);
         const directive = fixture.debugElement.query(By.directive(NgbTooltip));
 
         directive.triggerEventHandler('mouseenter', {});
@@ -241,7 +241,7 @@ describe('ngb-tooltip', () => {
 
       it('should support multiple triggers', () => {
         const fixture =
-            createTestComponent(`<div ngbTooltip="Great tip!" triggers="mouseenter:mouseleave click"></div>`);
+            createTestComponent(`<div ngbTooltip="Great tip!" triggers="mouseenter click/mouseleave click"></div>`);
         const directive = fixture.debugElement.query(By.directive(NgbTooltip));
 
         directive.triggerEventHandler('mouseenter', {});
@@ -355,7 +355,7 @@ describe('ngb-tooltip', () => {
   describe('visibility', () => {
     it('should emit events when showing and hiding popover', () => {
       const fixture = createTestComponent(
-          `<div ngbTooltip="Great tip!" triggers="click" (shown)="shown()" (hidden)="hidden()"></div>`);
+          `<div ngbTooltip="Great tip!" triggers="click/click" (shown)="shown()" (hidden)="hidden()"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbTooltip));
 
       let shownSpy = spyOn(fixture.componentInstance, 'shown');
@@ -432,7 +432,7 @@ describe('ngb-tooltip', () => {
     beforeEach(inject([NgbTooltipConfig], (c: NgbTooltipConfig) => {
       config = c;
       config.placement = 'bottom';
-      config.triggers = 'click';
+      config.triggers = 'click/click';
       config.container = 'body';
     }));
 
@@ -450,7 +450,7 @@ describe('ngb-tooltip', () => {
   describe('Custom config as provider', () => {
     let config = new NgbTooltipConfig();
     config.placement = 'bottom';
-    config.triggers = 'click';
+    config.triggers = 'click/click';
     config.container = 'body';
 
     beforeEach(() => {

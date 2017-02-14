@@ -257,7 +257,7 @@ describe('ngb-popover', () => {
   describe('visibility', () => {
     it('should emit events when showing and hiding popover', () => {
       const fixture = createTestComponent(
-          `<div ngbPopover="Great tip!" triggers="click" (shown)="shown()" (hidden)="hidden()"></div>`);
+          `<div ngbPopover="Great tip!" triggers="click/click" (shown)="shown()" (hidden)="hidden()"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
       let shownSpy = spyOn(fixture.componentInstance, 'shown');
@@ -329,7 +329,7 @@ describe('ngb-popover', () => {
     });
 
     it('should support toggle triggers', () => {
-      const fixture = createTestComponent(`<div ngbPopover="Great tip!" triggers="click"></div>`);
+      const fixture = createTestComponent(`<div ngbPopover="Great tip!" triggers="click/click"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
       directive.triggerEventHandler('click', {});
@@ -342,7 +342,7 @@ describe('ngb-popover', () => {
     });
 
     it('should non-default toggle triggers', () => {
-      const fixture = createTestComponent(`<div ngbPopover="Great tip!" triggers="mouseenter:click"></div>`);
+      const fixture = createTestComponent(`<div ngbPopover="Great tip!" triggers="mouseenter/click"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
       directive.triggerEventHandler('mouseenter', {});
@@ -355,7 +355,7 @@ describe('ngb-popover', () => {
     });
 
     it('should support multiple triggers', () => {
-      const fixture = createTestComponent(`<div ngbPopover="Great tip!" triggers="mouseenter:mouseleave click"></div>`);
+      const fixture = createTestComponent(`<div ngbPopover="Great tip!" triggers="mouseenter/mouseleave click"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
       directive.triggerEventHandler('mouseenter', {});

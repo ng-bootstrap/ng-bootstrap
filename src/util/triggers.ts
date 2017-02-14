@@ -1,58 +1,122 @@
-export class Trigger {
-  constructor(public open: string, public close?: string) {
-    if (!close) {
-      this.close = open;
-    }
-  }
+import {Injector, Renderer, ComponentRef, ElementRef} from '@angular/core';
 
-  isManual() { return this.open === 'manual' || this.close === 'manual'; }
+export class Trigger {
+  constructor(public openers: string[], public closers: string[]) {}
+
+  isManual() { return this.openers.indexOf('manual') > -1 || this.closers.indexOf('manual') > -1; }
 }
 
 const DEFAULT_ALIASES = {
   hover: ['mouseenter', 'mouseleave']
 };
 
-export function parseTriggers(triggers: string, aliases = DEFAULT_ALIASES): Trigger[] {
-  const trimmedTriggers = (triggers || '').trim();
+export function parseTriggers(triggers: string, aliases = DEFAULT_ALIASES): Trigger {
+  let trimmedTriggers: string = (triggers || '').trim();
 
   if (trimmedTriggers.length === 0) {
-    return [];
+    return null;
   }
 
-  const parsedTriggers = trimmedTriggers.split(/\s+/).map(trigger => trigger.split(':')).map((triggerPair) => {
-    let alias = aliases[triggerPair[0]] || triggerPair;
-    return new Trigger(alias[0], alias[1]);
-  });
+  let openCloseTriggers: string[] = trimmedTriggers.split('/');
 
-  const manualTriggers = parsedTriggers.filter(triggerPair => triggerPair.isManual());
+  let openTriggers: string[];
+  let closeTriggers: string[];
 
+  if (openCloseTriggers.length > 2) {
+    throw 'Triggers parse error: triggers must have [openers]/[closers] form';
+  } else if (openCloseTriggers.length === 2) {
+    openTriggers = openCloseTriggers[0].split(/\s+/);
+    closeTriggers = openCloseTriggers[1] ? openCloseTriggers[1].split(/\s+/) : [];
+  } else if (openCloseTriggers.length === 1) {
+    openTriggers = openCloseTriggers[0].split(/\s+/);
+    closeTriggers = [];
+  }
+
+  // translate aliases
+  for (let i = 0; i < openTriggers.length; i++) {
+    let alias = (aliases[openTriggers[i]] || []);
+    if (alias[0]) {
+      openTriggers[i] = alias[0];
+    }
+    if (alias[1]) {
+      closeTriggers.push(alias[1]);
+    }
+  }
+
+  // manual exception
+  let manualTriggers = openTriggers.filter(t => t === 'manual');
   if (manualTriggers.length > 1) {
     throw 'Triggers parse error: only one manual trigger is allowed';
   }
-
-  if (manualTriggers.length === 1 && parsedTriggers.length > 1) {
+  if (manualTriggers.length === 1 && openTriggers.length > 1) {
     throw 'Triggers parse error: manual trigger can\'t be mixed with other triggers';
   }
 
-  return parsedTriggers;
+  manualTriggers = closeTriggers.filter(t => t === 'manual');
+  if (manualTriggers.length > 1) {
+    throw 'Triggers parse error: only one manual trigger is allowed';
+  }
+  if (manualTriggers.length === 1 && closeTriggers.length > 1) {
+    throw 'Triggers parse error: manual trigger can\'t be mixed with other triggers';
+  }
+
+  let trigger = new Trigger(openTriggers, closeTriggers);
+
+  return trigger;
 }
 
 const noopFn = () => {};
 
-export function listenToTriggers(renderer: any, nativeElement: any, triggers: string, openFn, closeFn, toggleFn) {
-  const parsedTriggers = parseTriggers(triggers);
-  const listeners = [];
+export function listenToOpenTriggers(
+    renderer: Renderer, nativeElement: any, triggers: string, openFn: Function, toggleFn: Function) {
+  const parsedTriggers: Trigger = parseTriggers(triggers);
+  const listeners: Function[] = [];
 
-  if (parsedTriggers.length === 1 && parsedTriggers[0].isManual()) {
+  if (parsedTriggers.isManual()) {
     return noopFn;
   }
 
-  parsedTriggers.forEach((trigger: Trigger) => {
-    if (trigger.open === trigger.close) {
-      listeners.push(renderer.listen(nativeElement, trigger.open, toggleFn));
+  parsedTriggers.openers.forEach((trigger: string) => {
+    if (parsedTriggers.closers.indexOf(trigger) > -1) {
+      if (trigger.indexOf(':') > -1) {
+        let evtWithTarget = trigger.split(':');
+        listeners.push(renderer.listenGlobal(evtWithTarget[0], evtWithTarget[1], toggleFn));
+      } else {
+        listeners.push(renderer.listen(nativeElement, trigger, toggleFn));
+      }
     } else {
-      listeners.push(
-          renderer.listen(nativeElement, trigger.open, openFn), renderer.listen(nativeElement, trigger.close, closeFn));
+      if (trigger.indexOf(':') > -1) {
+        let evtWithTarget = trigger.split(':');
+        listeners.push(renderer.listenGlobal(evtWithTarget[0], evtWithTarget[1], openFn));
+      } else {
+        listeners.push(renderer.listen(nativeElement, trigger, openFn));
+      }
+    }
+  });
+
+  return () => { listeners.forEach(unsubscribeFn => unsubscribeFn()); };
+}
+
+export function listenToCloseTriggers(renderer: Renderer, nativeElement: any, triggers: string, closeFn: Function) {
+  const parsedTriggers: Trigger = parseTriggers(triggers);
+  const listeners: Function[] = [];
+
+  if (parsedTriggers.isManual()) {
+    return noopFn;
+  }
+
+  parsedTriggers.closers.forEach((trigger: string) => {
+    if (parsedTriggers.openers.indexOf(trigger) === -1) {
+      if (trigger.indexOf(':') > -1) {
+        let evtWithTarget = trigger.split(':');
+        listeners.push(renderer.listenGlobal(evtWithTarget[0], evtWithTarget[1], ($event) => {
+          if (!nativeElement.contains($event.target)) {
+            closeFn();
+          }
+        }));
+      } else {
+        listeners.push(renderer.listen(nativeElement, trigger, closeFn));
+      }
     }
   });
 

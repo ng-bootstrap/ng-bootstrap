@@ -16,7 +16,7 @@ import {
   ComponentFactoryResolver,
   NgZone
 } from '@angular/core';
-import {listenToTriggers} from '../util/triggers';
+import {listenToOpenTriggers, listenToCloseTriggers} from '../util/triggers';
 import {positionElements} from '../util/positioning';
 import {PopupService} from '../util/popup';
 import {NgbTooltipConfig} from './tooltip-config';
@@ -67,7 +67,8 @@ export class NgbTooltip implements OnInit, OnDestroy {
   private _ngbTooltipWindowId = `ngb-tooltip-${nextId++}`;
   private _popupService: PopupService<NgbTooltipWindow>;
   private _windowRef: ComponentRef<NgbTooltipWindow>;
-  private _unregisterListenersFn;
+  private _unregisterOpenListenersFn;
+  private _unregisterCloseListenersFn;
   private _zoneSubscription: any;
 
   constructor(
@@ -122,18 +123,24 @@ export class NgbTooltip implements OnInit, OnDestroy {
       // Renderer::listen() - to be determined if this is a bug in the Angular itself
       this._windowRef.changeDetectorRef.markForCheck();
       this.shown.emit();
+
+      this._unregisterCloseListenersFn =
+          listenToCloseTriggers(this._renderer, this._elementRef.nativeElement, this.triggers, this.close.bind(this));
     }
   }
 
   /**
    * Closes an element’s tooltip. This is considered a “manual” triggering of the tooltip.
    */
-  close(): void {
+  close($event?: any): void {
     if (this._windowRef != null) {
       this._renderer.setElementAttribute(this._elementRef.nativeElement, 'aria-describedby', null);
       this._popupService.close();
       this._windowRef = null;
       this.hidden.emit();
+      if (this._unregisterCloseListenersFn) {
+        this._unregisterCloseListenersFn();
+      }
     }
   }
 
@@ -154,14 +161,16 @@ export class NgbTooltip implements OnInit, OnDestroy {
   isOpen(): boolean { return this._windowRef != null; }
 
   ngOnInit() {
-    this._unregisterListenersFn = listenToTriggers(
-        this._renderer, this._elementRef.nativeElement, this.triggers, this.open.bind(this), this.close.bind(this),
-        this.toggle.bind(this));
+    this._unregisterOpenListenersFn = listenToOpenTriggers(
+        this._renderer, this._elementRef.nativeElement, this.triggers, this.open.bind(this), this.toggle.bind(this));
   }
 
   ngOnDestroy() {
     this.close();
-    this._unregisterListenersFn();
+    this._unregisterOpenListenersFn();
+    if (this._unregisterCloseListenersFn) {
+      this._unregisterCloseListenersFn();
+    }
     this._zoneSubscription.unsubscribe();
   }
 }

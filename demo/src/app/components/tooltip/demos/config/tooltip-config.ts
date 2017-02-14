@@ -10,6 +10,6 @@ export class NgbdTooltipConfig {
   constructor(config: NgbTooltipConfig) {
     // customize default values of tooltips used by this component tree
     config.placement = 'right';
-    config.triggers = 'click';
+    config.triggers = 'click/document:click';
   }
 }
