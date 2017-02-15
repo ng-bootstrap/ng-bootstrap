@@ -36,7 +36,7 @@
     "@angular/platform-server": "2.3.1",
     "@angular/router": "3.3.1",
     "@ngtools/webpack": "1.2.4",
-    "@types/jasmine": "^2.5.37",
+    "@types/jasmine": "2.5.41",
     "@types/node": "^6.0.46",
     "angular2-template-loader": "^0.6.0",
     "autoprefixer": "^6.5.1",
