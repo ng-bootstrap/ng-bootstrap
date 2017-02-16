@@ -49,7 +49,14 @@ export interface NgbDatepickerNavigateEvent {
 @Component({
   exportAs: 'ngbDatepicker',
   selector: 'ngb-datepicker',
-  host: {'class': 'd-inline-block rounded', '[attr.tabindex]': 'disabled ? undefined : "0"'},
+  host: {
+    'class': 'd-inline-block rounded',
+    '[attr.tabindex]': 'disabled ? undefined : "0"',
+    '(blur)': 'focusedDate = null',
+    '(focus)': 'onFocus($event)',
+    '(keydown)': 'onKeyDown($event)',
+    '(mousedown)': 'onMouseDown($event)'
+  },
   styles: [`
     :host {
       border: 1px solid rgba(0, 0, 0, 0.125);
@@ -260,7 +267,7 @@ export class NgbDatepicker implements OnChanges,
     }
   }
 
-  isDisplayedDateSelectable(date: NgbDate) {
+  private _isDisplayedDateSelectable(date: NgbDate) {
     let selectable = false;
     const month = this.months.find(curMonth => curMonth.year === date.year && curMonth.number === date.month);
     if (month) {
@@ -300,10 +307,8 @@ export class NgbDatepicker implements OnChanges,
     this._updateData();
   }
 
-  @HostListener('keydown', ['$event'])
   onKeyDown(event: KeyboardEvent) {
-    let focusedDate = this.focusedDate;
-    if (!focusedDate) {
+    if (!this.focusedDate) {
       return;
     }
     switch (event.keyCode) {
@@ -325,14 +330,14 @@ export class NgbDatepicker implements OnChanges,
         if (event.shiftKey) {
           this._setFocusedDateWithinLimits(this._maxDate);
         } else {
-          this._setFocusedDateWithinLimits(this.getLastDisplayedDate());
+          this._setFocusedDateWithinLimits(this._getLastDisplayedDate());
         }
         break;
       case 36 /* home */:
         if (event.shiftKey) {
           this._setFocusedDateWithinLimits(this._minDate);
         } else {
-          this._setFocusedDateWithinLimits(this.getFirstDisplayedDate());
+          this._setFocusedDateWithinLimits(this._getFirstDisplayedDate());
         }
         break;
       case 37 /* left arrow */:
@@ -349,8 +354,8 @@ export class NgbDatepicker implements OnChanges,
         break;
       case 13 /* enter */:
       case 32 /* space */:
-        if (this.isDisplayedDateSelectable(focusedDate)) {
-          this.onDateSelect(NgbDate.from(focusedDate));
+        if (this._isDisplayedDateSelectable(this.focusedDate)) {
+          this.onDateSelect(NgbDate.from(this.focusedDate));
         }
         break;
       default:
@@ -360,20 +365,13 @@ export class NgbDatepicker implements OnChanges,
     event.stopPropagation();
   }
 
-  @HostListener('focus', ['$event'])
   onFocus(event: FocusEvent) {
-    const firstDate = this.getFirstDisplayedDate();
-    const lastDate = this.getLastDisplayedDate();
+    const firstDate = this._getFirstDisplayedDate();
+    const lastDate = this._getLastDisplayedDate();
     const model = this.model;
     this.focusedDate = (!model || model.before(firstDate) || model.after(lastDate)) ? firstDate : model;
   }
 
-  @HostListener('blur', ['$event'])
-  onBlur(event: FocusEvent) {
-    this.focusedDate = null;
-  }
-
-  @HostListener('mousedown', ['$event'])
   onMouseDown(event: MouseEvent) {
     // Internet Explorer has some issues to give focus to the right element when clicking
     // so this method is here to make IE behave correctly!
@@ -416,9 +414,9 @@ export class NgbDatepicker implements OnChanges,
     }
   }
 
-  private getFirstDisplayedDate() { return this.months[0].firstDate; }
+  private _getFirstDisplayedDate() { return this.months[0].firstDate; }
 
-  private getLastDisplayedDate() {
+  private _getLastDisplayedDate() {
     return this._calendar.getPrev(
         this._calendar.getNext(this.months[this.months.length - 1].firstDate, 'm', 1), 'd', 1);
   }
@@ -429,8 +427,8 @@ export class NgbDatepicker implements OnChanges,
     } else if (this._maxDate && date.after(this._maxDate)) {
       date = this._maxDate;
     }
-    const firstDate = this.getFirstDisplayedDate();
-    const lastDate = this.getLastDisplayedDate();
+    const firstDate = this._getFirstDisplayedDate();
+    const lastDate = this._getLastDisplayedDate();
     let newViewDate;
     if (date.before(firstDate)) {
       newViewDate = date;

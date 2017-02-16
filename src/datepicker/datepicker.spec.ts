@@ -45,10 +45,6 @@ function triggerKeyDown(element: DebugElement, keyCode: number, shiftKey = false
   return event;
 }
 
-function triggerFocus(element: DebugElement) {
-  element.triggerEventHandler('focus', null);
-}
-
 function expectFilteredDaysToBe(
     element: DebugElement, expectedDates: NgbDate[],
     filterFn: (dayView: NgbDatepickerDayView, element: DebugElement) => boolean) {
