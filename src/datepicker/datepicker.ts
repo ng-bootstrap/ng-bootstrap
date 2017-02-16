@@ -360,10 +360,10 @@ export class NgbDatepicker implements OnChanges,
   onNavigateEvent(event: NavigationEvent) {
     switch (event) {
       case NavigationEvent.PREV:
-        this._setRelativeFocusedDate('m', -1);
+        this._setViewWithinLimits(this._calendar.getPrev(this._getFirstDisplayedDate(), 'm'));
         break;
       case NavigationEvent.NEXT:
-        this._setRelativeFocusedDate('m', 1);
+        this._setViewWithinLimits(this._calendar.getNext(this._getFirstDisplayedDate(), 'm'));
         break;
     }
 
@@ -377,6 +377,19 @@ export class NgbDatepicker implements OnChanges,
   setDisabledState(isDisabled: boolean) { this.disabled = isDisabled; }
 
   writeValue(value) { this.model = this._service.toValidDate(value, null); }
+
+  private _checkFocusedDateVisible() {
+    const focusedDate = this.focusedDate;
+    if (focusedDate) {
+      const firstDisplayedDate = this._getFirstDisplayedDate();
+      const lastDisplayedDate = this._getLastDisplayedDate();
+      if (focusedDate.before(firstDisplayedDate)) {
+        this.focusedDate = firstDisplayedDate;
+      } else if (focusedDate.after(lastDisplayedDate)) {
+        this.focusedDate = lastDisplayedDate;
+      }
+    }
+  }
 
   private _getFirstDisplayedDate() { return this.months[0].firstDate; }
 
@@ -443,15 +456,7 @@ export class NgbDatepicker implements OnChanges,
   }
 
   private _setRelativeFocusedDate(period?: NgbPeriod, number?: number) {
-    let focusedDate = this.focusedDate;
-    let hasFocusedDate = !!focusedDate;
-    if (!hasFocusedDate) {
-      focusedDate = this._date;
-    }
-    this._setFocusedDateWithinLimits(this._calendar.getNext(focusedDate, period, number));
-    if (!hasFocusedDate) {
-      this.focusedDate = null;
-    }
+    this._setFocusedDateWithinLimits(this._calendar.getNext(this.focusedDate, period, number));
   }
 
   private _setViewWithinLimits(date: NgbDate) {
@@ -486,6 +491,8 @@ export class NgbDatepicker implements OnChanges,
 
     // emitting navigation event if the first month changes
     if (!newDate.equals(oldDate)) {
+      this._checkFocusedDateVisible();
+
       this.navigate.emit({
         current: oldDate ? {year: oldDate.year, month: oldDate.month} : null,
         next: {year: newDate.year, month: newDate.month}
