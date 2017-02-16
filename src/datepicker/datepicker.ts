@@ -134,9 +134,9 @@ export class NgbDatepicker implements OnChanges,
   _maxDate: NgbDate;
   _minDate: NgbDate;
 
+  focusedDate: NgbDate;
   model: NgbDate;
   months: MonthViewModel[] = [];
-  focusedDate: NgbDate;
 
   /**
    * Reference for the custom template for the day display
@@ -160,14 +160,14 @@ export class NgbDatepicker implements OnChanges,
   @Input() markDisabled: (date: NgbDateStruct, current: {year: number, month: number}) => boolean;
 
   /**
-   * Min date for the navigation. If not provided will be 10 years before today or `startDate`
-   */
-  @Input() minDate: NgbDateStruct;
-
-  /**
    * Max date for the navigation. If not provided will be 10 years from today or `startDate`
    */
   @Input() maxDate: NgbDateStruct;
+
+  /**
+   * Min date for the navigation. If not provided will be 10 years before today or `startDate`
+   */
+  @Input() minDate: NgbDateStruct;
 
   /**
    * Navigation type: `select` (default with select boxes for month and year), `arrows`
@@ -267,21 +267,6 @@ export class NgbDatepicker implements OnChanges,
     }
   }
 
-  private _isDisplayedDateSelectable(date: NgbDate) {
-    let selectable = false;
-    const month = this.months.find(curMonth => curMonth.year === date.year && curMonth.number === date.month);
-    if (month) {
-      month.weeks.find(week => {
-        const day = week.days.find(day => date.equals(day.date));
-        if (day && !day.disabled) {
-          selectable = true;
-        }
-        return !!day;
-      });
-    }
-    return selectable;
-  }
-
   onDateSelect(date: NgbDate) {
     this._setFocusedDateWithinLimits(date);
     this.onTouched();
@@ -289,22 +274,11 @@ export class NgbDatepicker implements OnChanges,
     this.onChange({year: date.year, month: date.month, day: date.day});
   }
 
-  onNavigateDateSelect(date: NgbDate) {
-    this._setViewWithinLimits(date);
-    this._updateData();
-  }
-
-  onNavigateEvent(event: NavigationEvent) {
-    switch (event) {
-      case NavigationEvent.PREV:
-        this._setRelativeFocusedDate('m', -1);
-        break;
-      case NavigationEvent.NEXT:
-        this._setRelativeFocusedDate('m', 1);
-        break;
-    }
-
-    this._updateData();
+  onFocus(event: FocusEvent) {
+    const firstDate = this._getFirstDisplayedDate();
+    const lastDate = this._getLastDisplayedDate();
+    const model = this.model;
+    this.focusedDate = (!model || model.before(firstDate) || model.after(lastDate)) ? firstDate : model;
   }
 
   onKeyDown(event: KeyboardEvent) {
@@ -365,13 +339,6 @@ export class NgbDatepicker implements OnChanges,
     event.stopPropagation();
   }
 
-  onFocus(event: FocusEvent) {
-    const firstDate = this._getFirstDisplayedDate();
-    const lastDate = this._getLastDisplayedDate();
-    const model = this.model;
-    this.focusedDate = (!model || model.before(firstDate) || model.after(lastDate)) ? firstDate : model;
-  }
-
   onMouseDown(event: MouseEvent) {
     // Internet Explorer has some issues to give focus to the right element when clicking
     // so this method is here to make IE behave correctly!
@@ -385,13 +352,53 @@ export class NgbDatepicker implements OnChanges,
     }
   }
 
+  onNavigateDateSelect(date: NgbDate) {
+    this._setViewWithinLimits(date);
+    this._updateData();
+  }
+
+  onNavigateEvent(event: NavigationEvent) {
+    switch (event) {
+      case NavigationEvent.PREV:
+        this._setRelativeFocusedDate('m', -1);
+        break;
+      case NavigationEvent.NEXT:
+        this._setRelativeFocusedDate('m', 1);
+        break;
+    }
+
+    this._updateData();
+  }
+
   registerOnChange(fn: (value: any) => any): void { this.onChange = fn; }
 
   registerOnTouched(fn: () => any): void { this.onTouched = fn; }
 
+  setDisabledState(isDisabled: boolean) { this.disabled = isDisabled; }
+
   writeValue(value) { this.model = this._service.toValidDate(value, null); }
 
-  setDisabledState(isDisabled: boolean) { this.disabled = isDisabled; }
+  private _getFirstDisplayedDate() { return this.months[0].firstDate; }
+
+  private _getLastDisplayedDate() {
+    return this._calendar.getPrev(
+        this._calendar.getNext(this.months[this.months.length - 1].firstDate, 'm', 1), 'd', 1);
+  }
+
+  private _isDisplayedDateSelectable(date: NgbDate) {
+    let selectable = false;
+    const month = this.months.find(curMonth => curMonth.year === date.year && curMonth.number === date.month);
+    if (month) {
+      month.weeks.find(week => {
+        const day = week.days.find(day => date.equals(day.date));
+        if (day && !day.disabled) {
+          selectable = true;
+        }
+        return !!day;
+      });
+    }
+    return selectable;
+  }
 
   private _setDates() {
     this._maxDate = NgbDate.from(this.maxDate);
@@ -412,13 +419,6 @@ export class NgbDatepicker implements OnChanges,
     if (this._minDate && this._maxDate && this._maxDate.before(this._minDate)) {
       throw new Error(`'maxDate' ${this._maxDate} should be greater than 'minDate' ${this._minDate}`);
     }
-  }
-
-  private _getFirstDisplayedDate() { return this.months[0].firstDate; }
-
-  private _getLastDisplayedDate() {
-    return this._calendar.getPrev(
-        this._calendar.getNext(this.months[this.months.length - 1].firstDate, 'm', 1), 'd', 1);
   }
 
   private _setFocusedDateWithinLimits(date: NgbDate) {

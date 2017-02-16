@@ -13,7 +13,7 @@ import {DayTemplateContext} from './datepicker-day-template-context';
     }
     .ngb-dp-day, .ngb-dp-weekday, .ngb-dp-week-number {
       width: 2rem;
-      height: 2rem;      
+      height: 2rem;
     }
     .ngb-dp-day {
       cursor: pointer;
@@ -51,10 +51,10 @@ import {DayTemplateContext} from './datepicker-day-template-context';
 export class NgbDatepickerMonthView {
   @Input() dayTemplate: TemplateRef<DayTemplateContext>;
   @Input() disabled: boolean;
+  @Input() focusedDate: NgbDate;
   @Input() month: MonthViewModel;
   @Input() outsideDays: 'visible' | 'hidden' | 'collapsed';
   @Input() selectedDate: NgbDate;
-  @Input() focusedDate: NgbDate;
   @Input() showWeekdays;
   @Input() showWeekNumbers;
 
@@ -68,20 +68,20 @@ export class NgbDatepickerMonthView {
     }
   }
 
-  isDisabled(day: DayViewModel) { return this.disabled || day.disabled; }
-
-  isSelected(date: NgbDate) { return !!(this.selectedDate && this.selectedDate.equals(date)); }
-
-  isFocused(date: NgbDate) {
-    return !!(this.focusedDate && this.focusedDate.equals(date) && this.month.number === date.month);
-  }
-
   isCollapsed(week: WeekViewModel) {
     return this.outsideDays === 'collapsed' && week.days[0].date.month !== this.month.number &&
         week.days[week.days.length - 1].date.month !== this.month.number;
   }
 
+  isDisabled(day: DayViewModel) { return this.disabled || day.disabled; }
+
+  isFocused(date: NgbDate) {
+    return !!(this.focusedDate && this.focusedDate.equals(date) && this.month.number === date.month);
+  }
+
   isHidden(day: DayViewModel) {
     return (this.outsideDays === 'hidden' || this.outsideDays === 'collapsed') && this.month.number !== day.date.month;
   }
+
+  isSelected(date: NgbDate) { return !!(this.selectedDate && this.selectedDate.equals(date)); }
 }
