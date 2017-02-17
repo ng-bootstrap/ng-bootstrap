@@ -1,7 +1,7 @@
 import {TestBed, ComponentFixture} from '@angular/core/testing';
 import {createGenericTestComponent} from '../test/common';
 
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 
 import {NgbTypeaheadWindow} from './typeahead-window';
 import {expectResults, getWindowLinks} from '../test/typeahead/common';
@@ -177,6 +177,30 @@ describe('ngb-typeahead-window', () => {
     });
   });
 
+  describe('accessibility', () => {
+
+    function getWindow(element): HTMLDivElement {
+      return <HTMLDivElement>element.querySelector('ngb-typeahead-window.dropdown-menu');
+    }
+
+    it('should add correct ARIA attributes', () => {
+      const fixture = createTestComponent(
+          '<ngb-typeahead-window id="test-typeahead" [results]="results" [term]="term"></ngb-typeahead-window>');
+      const compiled = fixture.nativeElement.querySelector('ngb-typeahead-window.dropdown-menu');
+
+      expect(compiled.getAttribute('role')).toBe('listbox');
+      expect(compiled.getAttribute('id')).toBe('test-typeahead');
+
+      const buttons = fixture.nativeElement.querySelectorAll('button');
+      expect(buttons.length).toBeGreaterThan(0);
+      for (let i = 0; i < buttons.length; i++) {
+        expect(buttons[i].getAttribute('id')).toBe('test-typeahead-' + i);
+        expect(buttons[i].getAttribute('role')).toBe('option');
+      }
+    });
+
+  });
+
 });
 
 @Component({selector: 'test-cmp', template: ''})
@@ -185,6 +209,8 @@ class TestComponent {
   results = ['bar', 'baz'];
   term = 'ba';
   selected: string;
+
+  @ViewChild(NgbTypeaheadWindow) popup: NgbTypeaheadWindow;
 
   formatterFn = (result) => { return result.toUpperCase(); };
 }
