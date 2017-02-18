@@ -93,7 +93,7 @@ export interface NgbPanelChangeEvent {
 
 /**
  * The NgbAccordion directive is a collection of panels.
- * It can assure that only panel can be opened at a time.
+ * It can assure that only one panel can be opened at a time.
  */
 @Component({
   selector: 'ngb-accordion',
