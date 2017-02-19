@@ -13,6 +13,8 @@ As with Bootstrap 4, this library is a work in progress. Please check out our li
 [issues](https://github.com/ng-bootstrap/ng-bootstrap/issues) to see all the things we are implementing.
 Feel free to make comments there.
 
+*If you need to make ng-bootstrap work with legacy Bootstrap v3.3.7 code, you can try an unofficial, work-in-progress, [CSS compatibility patch](https://github.com/ngTrumbitta/ng-bootstrap-to-bootstrap-3).*
+
 ## Demo
 
 View all the directives in action at https://ng-bootstrap.github.io
