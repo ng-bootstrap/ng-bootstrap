@@ -1,7 +1,8 @@
+import {By} from '@angular/platform-browser';
 import {TestBed, ComponentFixture, inject} from '@angular/core/testing';
 import {createGenericTestComponent} from '../test/common';
 
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 
 import {NgbTabsetModule} from './tabset.module';
 import {NgbTabsetConfig} from './tabset-config';
@@ -9,6 +10,10 @@ import {NgbTabset} from './tabset';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
+
+function getTabset(nativeEl: HTMLElement) {
+  return nativeEl.querySelector('ngb-tabset');
+}
 
 function getTabTitles(nativeEl: HTMLElement) {
   return nativeEl.querySelectorAll('.nav-link');
@@ -88,13 +93,17 @@ describe('ngb-tabset', () => {
       </ngb-tabset>
     `);
 
-    const tabTitles = getTabTitles(fixture.nativeElement);
-    const tabContent = getTabContent(fixture.nativeElement);
+    const compiled: HTMLElement = fixture.nativeElement;
+    const tabset = getTabset(compiled);
+    const tabTitles = getTabTitles(compiled);
+    const tabContent = getTabContent(compiled);
 
+    expect(tabset.getAttribute('role')).toBe('tabpanel');
     expect(tabTitles[0].getAttribute('role')).toBe('tab');
     expect(tabTitles[0].getAttribute('aria-expanded')).toBe('true');
     expect(tabTitles[1].getAttribute('aria-expanded')).toBe('false');
     expect(tabTitles[0].getAttribute('aria-controls')).toBe(tabContent[0].getAttribute('id'));
+    expect(tabContent[0].getAttribute('aria-expanded')).toBe('true');
   });
 
   it('should allow mix of text and HTML in tab titles', () => {
@@ -435,6 +444,7 @@ describe('ngb-tabset', () => {
 
 @Component({selector: 'test-cmp', template: ''})
 class TestComponent {
+  @ViewChild(NgbTabset) tabset: NgbTabset;
   activeTabId: string;
   changeCallback = (event: any) => {};
 }
