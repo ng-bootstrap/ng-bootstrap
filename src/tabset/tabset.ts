@@ -78,6 +78,7 @@ export interface NgbTabChangeEvent {
 @Component({
   selector: 'ngb-tabset',
   exportAs: 'ngbTabset',
+  host: {'role': 'tabpanel'},
   template: `
     <ul [class]="'nav nav-' + type + ' justify-content-' + justify" role="tablist">
       <li class="nav-item" *ngFor="let tab of tabs">
@@ -89,7 +90,9 @@ export interface NgbTabChangeEvent {
     </ul>
     <div class="tab-content">
       <template ngFor let-tab [ngForOf]="tabs">
-        <div class="tab-pane active" *ngIf="tab.id === activeId" role="tabpanel" [attr.aria-labelledby]="tab.id" id="{{tab.id}}-panel">
+        <div class="tab-pane active" *ngIf="tab.id === activeId" role="tabpanel"
+          [attr.aria-labelledby]="tab.id" id="{{tab.id}}-panel"
+          [attr.aria-expanded]="tab.id === activeId">
           <template [ngTemplateOutlet]="tab.contentTpl.templateRef"></template>
         </div>
       </template>
