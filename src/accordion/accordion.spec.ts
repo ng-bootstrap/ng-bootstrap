@@ -243,16 +243,6 @@ describe('ngb-accordion', () => {
     expectOpenPanels(fixture.nativeElement, [true, false, false]);
   });
 
-  it('should remove collapsed panels content from DOM', () => {
-    const fixture = TestBed.createComponent(TestComponent);
-    fixture.detectChanges();
-    expect(getPanelsContent(fixture.nativeElement).length).toBe(0);
-
-    getButton(fixture.nativeElement, 0).click();
-    fixture.detectChanges();
-    expect(getPanelsContent(fixture.nativeElement).length).toBe(1);
-  });
-
   it('should emit panel change event when toggling panels', () => {
     const fixture = TestBed.createComponent(TestComponent);
     fixture.detectChanges();
