@@ -1,13 +1,13 @@
 import {
   Component,
   Directive,
-  TemplateRef,
   ContentChildren,
   QueryList,
   Input,
   OnDestroy,
   AfterContentChecked,
-  OnInit
+  OnInit,
+  HostBinding
 } from '@angular/core';
 import {NgbCarouselConfig} from './carousel-config';
 
@@ -16,14 +16,23 @@ let nextId = 0;
 /**
  * Represents an individual slide to be used within a carousel.
  */
-@Directive({selector: 'template[ngbSlide]'})
+@Directive({
+  selector: 'ngb-slide',
+})
 export class NgbSlide {
   /**
    * Unique slide identifier. Must be unique for the entire document for proper accessibility support.
    * Will be auto-generated if not provided.
    */
+
   @Input() id = `ngb-slide-${nextId++}`;
-  constructor(public tplRef: TemplateRef<any>) {}
+
+  @HostBinding('class.active') @Input() active: boolean = false;
+
+  @HostBinding('class.carousel-item')
+  get item() {
+    return true;
+  }
 }
 
 /**
@@ -46,9 +55,7 @@ export class NgbSlide {
       <li *ngFor="let slide of slides" [id]="slide.id" [class.active]="slide.id === activeId" (click)="cycleToSelected(slide.id)"></li>
     </ol>
     <div class="carousel-inner" role="listbox">
-      <div *ngFor="let slide of slides" class="carousel-item" [class.active]="slide.id === activeId">
-        <template [ngTemplateOutlet]="slide.tplRef"></template>
-      </div>
+      <ng-content></ng-content>
     </div>
     <a class="left carousel-control-prev" role="button" (click)="cycleToPrev()">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -83,7 +90,26 @@ export class NgbCarousel implements AfterContentChecked,
   /**
    * The active slide id.
    */
-  @Input() activeId: string;
+  private _activeId: string;
+  @Input()
+  set activeId(value: string) {
+    if (value) {
+      this._activeId = value;
+
+      this.slides.forEach(slide => { slide.active = (slide.id === value); });
+    } else {
+      if (this.slides) {
+        if (this.slides.length) {
+          const firstSlideId = this.slides.first.id;
+
+          this._activeId = firstSlideId;
+
+          this.slides.forEach(slide => { slide.active = (slide.id === firstSlideId); });
+        }
+      }
+    }
+  }
+  get activeId(): string { return this._activeId; }
 
   constructor(config: NgbCarouselConfig) {
     this.interval = config.interval;
