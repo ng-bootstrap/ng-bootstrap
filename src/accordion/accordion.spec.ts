@@ -253,6 +253,26 @@ describe('ngb-accordion', () => {
     expect(getPanelsContent(fixture.nativeElement).length).toBe(1);
   });
 
+  it('should not remove collapsed panels content from DOM with `preserveNodes` flag', () => {
+    const testHtml = `
+    <ngb-accordion #acc="ngbAccordion" [preserveNodes]="true">
+     <ngb-panel *ngFor="let panel of panels" [id]="panel.id">
+       <template ngbPanelTitle>{{panel.title}}</template>
+       <template ngbPanelContent>{{panel.content}}</template>
+     </ngb-panel>
+    </ngb-accordion>
+    <button *ngFor="let panel of panels" (click)="acc.toggle(panel.id)">Toggle the panel {{ panel.id }}</button>
+    `;
+    const fixture = createTestComponent(testHtml);
+
+    fixture.detectChanges();
+
+    getButton(fixture.nativeElement, 0).click();
+    let panelContents = getPanelsContent(fixture.nativeElement);
+    expect(panelContents[0].hasAttribute('hidden')).toBe(true);
+    expect(panelContents.length).toBe(3);
+  });
+
   it('should emit panel change event when toggling panels', () => {
     const fixture = TestBed.createComponent(TestComponent);
     fixture.detectChanges();
