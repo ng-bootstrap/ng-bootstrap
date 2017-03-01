@@ -16,7 +16,7 @@ import {NgbAlertConfig} from './alert-config';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div [class]="'alert alert-' + type + (dismissible ? ' alert-dismissible' : '')" role="alert">
-      <button *ngIf="dismissible" type="button" class="close" aria-label="Close" (click)="closeHandler()">
+      <button *ngIf="dismissible" type="button" class="close" [attr.aria-label]="ariaCloseLabel" (click)="closeHandler()">
             <span aria-hidden="true">&times;</span>
       </button>
       <ng-content></ng-content>
@@ -29,10 +29,17 @@ export class NgbAlert {
    * form of an ×) will be displayed.
    */
   @Input() dismissible: boolean;
+
+  /**
+   * The aria-label to use on the close button.
+   */
+  @Input() ariaCloseLabel: string;
+
   /**
    * Alert type (CSS class). Bootstrap 4 recognizes the following types: "success", "info", "warning" and "danger".
    */
   @Input() type: string;
+
   /**
    * An event emitted when the close button is clicked. This event has no payload. Only relevant for dismissible alerts.
    */
@@ -41,6 +48,7 @@ export class NgbAlert {
   constructor(config: NgbAlertConfig) {
     this.dismissible = config.dismissible;
     this.type = config.type;
+    this.ariaCloseLabel = config.ariaCloseLabel;
   }
 
   closeHandler() { this.close.emit(null); }

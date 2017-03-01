@@ -11,39 +11,43 @@ import {NgbPaginationConfig} from './pagination-config';
   template: `
     <nav>
       <ul [class]="'pagination' + (size ? ' pagination-' + size : '')">
-        <li *ngIf="boundaryLinks" class="page-item" 
+        <li *ngIf="boundaryLinks" class="page-item"
           [class.disabled]="!hasPrevious() || disabled">
-          <a aria-label="First" class="page-link" href (click)="!!selectPage(1)" [attr.tabindex]="hasPrevious() ? null : '-1'">
+          <a [attr.aria-label]="ariaFirstPageLabel" class="page-link" href (click)="!!selectPage(1)"
+            [attr.tabindex]="hasPrevious() ? null : '-1'">
             <span aria-hidden="true">&laquo;&laquo;</span>
-            <span class="sr-only">First</span>
-          </a>                
-        </li>
-      
-        <li *ngIf="directionLinks" class="page-item" 
-          [class.disabled]="!hasPrevious() || disabled">
-          <a aria-label="Previous" class="page-link" href (click)="!!selectPage(page-1)" [attr.tabindex]="hasPrevious() ? null : '-1'">
-            <span aria-hidden="true">&laquo;</span>
-            <span class="sr-only">Previous</span>
+            <span class="sr-only">{{ ariaFirstPageLabel }}</span>
           </a>
         </li>
-        <li *ngFor="let pageNumber of pages" class="page-item" [class.active]="pageNumber === page" 
+
+        <li *ngIf="directionLinks" class="page-item"
+          [class.disabled]="!hasPrevious() || disabled">
+           <a [attr.aria-label]="ariaPreviousPageLabel" class="page-link" href (click)="!!selectPage(page-1)"
+            [attr.tabindex]="hasPrevious() ? null : '-1'">
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">{{ ariaPreviousPageLabel }}</span>
+          </a>
+        </li>
+        <li *ngFor="let pageNumber of pages" class="page-item" [class.active]="pageNumber === page"
           [class.disabled]="isEllipsis(pageNumber) || disabled">
           <a *ngIf="isEllipsis(pageNumber)" class="page-link">...</a>
           <a *ngIf="!isEllipsis(pageNumber)" class="page-link" href (click)="!!selectPage(pageNumber)">{{pageNumber}}</a>
         </li>
         <li *ngIf="directionLinks" class="page-item" [class.disabled]="!hasNext() || disabled">
-          <a aria-label="Next" class="page-link" href (click)="!!selectPage(page+1)" [attr.tabindex]="hasNext() ? null : '-1'">
+          <a [attr.aria-label]="ariaNextPageLabel" class="page-link" href (click)="!!selectPage(page+1)"
+            [attr.tabindex]="hasNext() ? null : '-1'">
             <span aria-hidden="true">&raquo;</span>
-            <span class="sr-only">Next</span>
+            <span class="sr-only">{{ ariaNextPageLabel }}</span>
           </a>
         </li>
-        
+
         <li *ngIf="boundaryLinks" class="page-item" [class.disabled]="!hasNext() || disabled">
-          <a aria-label="Last" class="page-link" href (click)="!!selectPage(pageCount)" [attr.tabindex]="hasNext() ? null : '-1'">
+          <a [attr.aria-label]="ariaLastPageLabel" class="page-link" href (click)="!!selectPage(pageCount)"
+            [attr.tabindex]="hasNext() ? null : '-1'">
             <span aria-hidden="true">&raquo;&raquo;</span>
-            <span class="sr-only">Last</span>
-          </a>                
-        </li>        
+            <span class="sr-only">{{ ariaLastPageLabel }}</span>
+          </a>
+        </li>
       </ul>
     </nav>
   `
@@ -109,6 +113,27 @@ export class NgbPagination implements OnChanges {
    */
   @Input() size: 'sm' | 'lg';
 
+  /**
+   * aria-label for the first page button
+   */
+  @Input() ariaFirstPageLabel: string;
+
+  /**
+   * aria-label for the previous page button
+   */
+  @Input() ariaPreviousPageLabel: string;
+
+  /**
+   * aria-label for the next page button
+   */
+  @Input() ariaNextPageLabel: string;
+
+  /**
+   * aria-label for the last page button
+   */
+  @Input() ariaLastPageLabel: string;
+
+
   constructor(config: NgbPaginationConfig) {
     this.disabled = config.disabled;
     this.boundaryLinks = config.boundaryLinks;
@@ -118,6 +143,11 @@ export class NgbPagination implements OnChanges {
     this.pageSize = config.pageSize;
     this.rotate = config.rotate;
     this.size = config.size;
+
+    this.ariaFirstPageLabel = config.ariaFirstPageLabel;
+    this.ariaPreviousPageLabel = config.ariaPreviousPageLabel;
+    this.ariaNextPageLabel = config.ariaNextPageLabel;
+    this.ariaLastPageLabel = config.ariaLastPageLabel;
   }
 
   hasPrevious(): boolean { return this.page > 1; }

@@ -12,5 +12,11 @@ describe('ngb-pagination-config', () => {
     expect(config.pageSize).toBe(10);
     expect(config.rotate).toBe(false);
     expect(config.size).toBeUndefined();
+
+    expect(config.ariaFirstPageLabel).toBe('First');
+    expect(config.ariaPreviousPageLabel).toBe('Previous');
+    expect(config.ariaNextPageLabel).toBe('Next');
+    expect(config.ariaLastPageLabel).toBe('Last');
+
   });
 });

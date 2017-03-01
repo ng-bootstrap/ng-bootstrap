@@ -6,5 +6,6 @@ describe('ngb-alert-config', () => {
 
     expect(config.dismissible).toBe(true);
     expect(config.type).toBe('warning');
+    expect(config.ariaCloseLabel).toBe('Close');
   });
 });
