@@ -1,6 +1,7 @@
 import {NgbDate} from '../ngb-date';
 import {NgbPeriod, NgbCalendar} from '../ngb-calendar';
 import {Injectable} from '@angular/core';
+import {isNumber} from '../../util/util';
 
 @Injectable()
 export abstract class NgbCalendarHijri extends NgbCalendar {
@@ -49,6 +50,11 @@ export abstract class NgbCalendarHijri extends NgbCalendar {
   abstract getWeekNumber(week: NgbDate[], firstDayOfWeek: number): number;
 
   abstract getToday(): NgbDate;
+
+  isValid(date: NgbDate): boolean {
+    return date && isNumber(date.year) && isNumber(date.month) && isNumber(date.day) &&
+        !isNaN(this.toGregorian(date).getTime());
+  }
 
   /**
   * Returns the equivalent Hijri date value for a give input Gregorian date.
