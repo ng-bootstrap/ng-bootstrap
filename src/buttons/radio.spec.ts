@@ -263,14 +263,45 @@ describe('ngbRadioGroup', () => {
        });
      }));
 
-  it('should add data-toggle="buttons" and "btn-group" CSS class to button group', () => {
+  it('should add data-toggle="buttons" to button group', () => {
     // Bootstrap for uses presence of data-toggle="buttons" to style radio buttons
     const html = `<div class="foo" ngbRadioGroup></div>`;
 
     const fixture = createTestComponent(html);
 
     expect(fixture.nativeElement.children[0].getAttribute('data-toggle')).toBe('buttons');
+  });
+
+  it('should add "btn-group" CSS class to button group when orientation is not specified', () => {
+    const html = `<div class="foo" ngbRadioGroup></div>`;
+
+    const fixture = createTestComponent(html);
+
     expect(fixture.nativeElement.children[0]).toHaveCssClass('btn-group');
+  });
+
+  it('should add "btn-group" CSS class to button group when orientation is "horizontal"', () => {
+    const html = `<div class="foo" ngbRadioGroup orientation="horizontal"></div>`;
+
+    const fixture = createTestComponent(html);
+
+    expect(fixture.nativeElement.children[0]).toHaveCssClass('btn-group');
+  });
+
+  it('should add "btn-group" CSS class to button group when orientation is ivalid value', () => {
+    const html = `<div class="foo" ngbRadioGroup orientation="something"></div>`;
+
+    const fixture = createTestComponent(html);
+
+    expect(fixture.nativeElement.children[0]).toHaveCssClass('btn-group');
+  });
+
+  it('should add "btn-group-vertical" CSS class to button group when orientation is "vertical"', () => {
+    const html = `<div class="foo" ngbRadioGroup orientation="vertical"></div>`;
+
+    const fixture = createTestComponent(html);
+
+    expect(fixture.nativeElement.children[0]).toHaveCssClass('btn-group-vertical');
   });
 
   it('should work with template-driven form validation', async(() => {
@@ -279,7 +310,7 @@ describe('ngbRadioGroup', () => {
           <div ngbRadioGroup [(ngModel)]="model" name="control" required>
             <label class="btn">
               <input type="radio" value="foo"/>
-            </label>          
+            </label>
           </div>
         </form>`;
 
@@ -303,7 +334,7 @@ describe('ngbRadioGroup', () => {
           <div ngbRadioGroup formControlName="control">
             <label class="btn">
               <input type="radio" value="foo"/>
-            </label>          
+            </label>
           </div>
         </form>`;
 
@@ -324,7 +355,7 @@ describe('ngbRadioGroup', () => {
         <div ngbRadioGroup formControlName="control">
           <label class="btn">
             <input type="radio" value="foo"/>
-          </label>          
+          </label>
         </div>
       </form>`;
 
@@ -345,7 +376,7 @@ describe('ngbRadioGroup', () => {
         <div ngbRadioGroup [(ngModel)]="model" name="control" [disabled]="disabled">
           <label class="btn">
             <input type="radio" value="foo"/>
-          </label>          
+          </label>
         </div>
       </form>`;
 
@@ -374,7 +405,7 @@ describe('ngbRadioGroup', () => {
         <div ngbRadioGroup [(ngModel)]="model" name="control">
           <label class="btn">
             <input type="radio" value="foo" [disabled]="disabled"/>
-          </label>          
+          </label>
         </div>
       </form>`;
 
@@ -404,7 +435,7 @@ describe('ngbRadioGroup', () => {
         <div ngbRadioGroup [(ngModel)]="model" name="control" [disabled]="groupDisabled">
           <label class="btn">
             <input type="radio" value="foo" [disabled]="disabled"/>
-          </label>          
+          </label>
         </div>
       </form>`;
 
@@ -432,7 +463,7 @@ describe('ngbRadioGroup', () => {
         <div ngbRadioGroup [(ngModel)]="model" name="control" [disabled]="groupDisabled">
           <label class="btn">
             <input type="radio" value="foo" [disabled]="disabled"/>
-          </label>          
+          </label>
         </div>
       </form>`;
 
