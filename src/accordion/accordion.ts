@@ -113,7 +113,7 @@ export interface NgbPanelChangeEvent {
       <div id="{{panel.id}}" role="tabpanel"
         [attr.aria-labelledby]="panel.id + '-header'" class="card-block"
         *ngIf="preserveNodes || isOpen(panel.id)"
-        [hidden]="preserveNodes ? !isOpen(panel.id) : null" >
+        [attr.hidden]="isHidden(panel.id)" >
         <template [ngTemplateOutlet]="panel.contentTpl.templateRef"></template>
       </div>
     </template>
@@ -206,6 +206,14 @@ export class NgbAccordion implements AfterContentChecked {
    * @internal
    */
   isOpen(panelId: string): boolean { return this._states.get(panelId); }
+
+  /**
+   * @internal
+   */
+  isHidden(panelId: string): boolean {
+    // Return `null` to avoid attribute insertion into the DOM
+    return this.preserveNodes && !this.isOpen(panelId) ? true : null;
+  }
 
   private _closeOthers(panelId: string) {
     this._states.forEach((state, id) => {

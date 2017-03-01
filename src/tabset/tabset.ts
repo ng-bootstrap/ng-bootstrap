@@ -92,7 +92,7 @@ export interface NgbTabChangeEvent {
       <template ngFor let-tab [ngForOf]="tabs">
         <div class="tab-pane active"
           *ngIf="preserveNodes || tab.id === activeId"
-          [hidden]="preserveNodes ? tab.id !== activeId : null"
+          [attr.hidden]="isHidden(tab.id)"
           role="tabpanel"
           [attr.aria-labelledby]="tab.id" id="{{tab.id}}-panel"
           [attr.aria-expanded]="tab.id === activeId">
@@ -157,6 +157,14 @@ export class NgbTabset implements AfterContentChecked {
     // auto-correct activeId that might have been set incorrectly as input
     let activeTab = this._getTabById(this.activeId);
     this.activeId = activeTab ? activeTab.id : (this.tabs.length ? this.tabs.first.id : null);
+  }
+
+  /**
+   * @internal
+   */
+  isHidden(tabId: string): boolean {
+    // Return `null` to avoid attribute insertion into the DOM
+    return this.preserveNodes && tabId !== this.activeId ? true : null;
   }
 
   private _getTabById(id: string): NgbTab {
