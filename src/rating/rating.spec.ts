@@ -111,6 +111,12 @@ describe('ngb-rating', () => {
     expect(getState(compiled)).toEqual([true, true, true, true, true]);
   });
 
+  it('should now fire change event initially', fakeAsync(() => {
+       const fixture = createTestComponent('<ngb-rating [rate]="3" (rateChange)="changed = true"></ngb-rating>');
+       tick();
+       expect(fixture.componentInstance.changed).toBeFalsy();
+     }));
+
   it('handles correctly the click event', fakeAsync(() => {
        const fixture = createTestComponent('<ngb-rating [(rate)]="rate" max="5"></ngb-rating>');
        const el = fixture.debugElement;
@@ -573,6 +579,7 @@ describe('ngb-rating', () => {
 
 @Component({selector: 'test-cmp', template: ''})
 class TestComponent {
+  changed = false;
   form = new FormGroup({rating: new FormControl(null, Validators.required)});
   max = 10;
   model;
