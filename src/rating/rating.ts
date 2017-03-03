@@ -51,9 +51,9 @@ const NGB_RATING_VALUE_ACCESSOR = {
   template: `
     <template #t let-fill="fill">{{ fill === 100 ? '&#9733;' : '&#9734;' }}</template>
     <span tabindex="0" (mouseleave)="reset()" role="slider" aria-valuemin="0"
-      [attr.aria-valuemax]="max" [attr.aria-valuenow]="rate" [attr.aria-valuetext]="ariaValueText()">
+      [attr.aria-valuemax]="max" [attr.aria-valuenow]="nextRate" [attr.aria-valuetext]="ariaValueText()">
       <template ngFor [ngForOf]="range" let-index="index">
-        <span class="sr-only">({{ index < rate ? '*' : ' ' }})</span>
+        <span class="sr-only">({{ index < nextRate ? '*' : ' ' }})</span>
         <span (mouseenter)="enter(index + 1)" (click)="update(index + 1)" 
         [style.cursor]="readonly ? 'default' : 'pointer'">
           <template [ngTemplateOutlet]="starTemplate || t" [ngOutletContext]="{fill: getFillValue(index)}"></template>
@@ -65,7 +65,7 @@ const NGB_RATING_VALUE_ACCESSOR = {
 })
 export class NgbRating implements ControlValueAccessor,
     OnInit, OnChanges {
-  private _oldRate: number;
+  nextRate: number;
   range: number[] = [];
 
   /**
@@ -115,11 +115,11 @@ export class NgbRating implements ControlValueAccessor,
     this.readonly = config.readonly;
   }
 
-  ariaValueText() { return `${this.rate} out of ${this.max}`; }
+  ariaValueText() { return `${this.nextRate} out of ${this.max}`; }
 
   enter(value: number): void {
     if (!this.readonly) {
-      this.rate = value;
+      this.nextRate = value;
     }
     this.hover.emit(value);
   }
@@ -148,7 +148,7 @@ export class NgbRating implements ControlValueAccessor,
   }
 
   getFillValue(index: number): number {
-    const diff = this.rate - index;
+    const diff = this.nextRate - index;
 
     if (diff >= 1) {
       return 100;
@@ -163,33 +163,33 @@ export class NgbRating implements ControlValueAccessor,
   ngOnChanges(changes: SimpleChanges) {
     if (changes['rate']) {
       this.update(this.rate);
-      this._oldRate = this.rate;
     }
   }
 
-  ngOnInit(): void { this.range = Array.from({length: this.max}, (v, k) => k + 1); }
+  ngOnInit(): void {
+    this.range = Array.from({length: this.max}, (v, k) => k + 1);
+    this.nextRate = this.rate;
+  }
 
   registerOnChange(fn: (value: any) => any): void { this.onChange = fn; }
 
   registerOnTouched(fn: () => any): void { this.onTouched = fn; }
 
   reset(): void {
-    this.leave.emit(this.rate);
-    this.rate = this._oldRate;
+    this.leave.emit(this.nextRate);
+    this.nextRate = this.rate;
   }
 
   update(value: number, internalChange = true): void {
-    if (!this.readonly) {
-      const newRate = value ? getValueInRange(value, this.max, 0) : 0;
-      if (this._oldRate !== newRate) {
-        this._oldRate = newRate;
-        this.rate = newRate;
-        this.rateChange.emit(newRate);
-        if (internalChange) {
-          this.onChange(this.rate);
-        }
-      }
+    const newRate = getValueInRange(value, this.max, 0);
+    if (!this.readonly && this.rate !== newRate) {
+      this.rate = newRate;
+      this.rateChange.emit(this.rate);
     }
+    if (internalChange) {
+      this.onChange(this.rate);
+    }
+    this.nextRate = this.rate;
   }
 
   writeValue(value) {
