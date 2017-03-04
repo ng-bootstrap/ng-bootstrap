@@ -74,6 +74,9 @@ let nextId = 0;
     'autocorrect': 'off',
     'role': 'combobox',
     'aria-autocomplete': 'list',
+    '[attr.aria-activedescendant]': 'activeDescendant',
+    '[attr.aria-owns]': 'popupId',
+    '[attr.aria-expanded]': 'isOpen'
   },
   providers: [NGB_TYPEAHEAD_VALUE_ACCESSOR]
 })
@@ -129,9 +132,9 @@ export class NgbTypeahead implements ControlValueAccessor,
    */
   @Output() selectItem = new EventEmitter<NgbTypeaheadSelectItemEvent>();
 
-  @HostBinding('attr.aria-activedescendant') activeDescendant: string = undefined;
-  @HostBinding('attr.aria-owns') popupId: string = `ngb-typeahead-${nextId++}`;
-  @HostBinding('attr.aria-expanded') isOpen: boolean = false;
+  activeDescendant: string;
+  popupId = `ngb-typeahead-${nextId++}`;
+  isOpen = false;
 
   private _onTouched = () => {};
   private _onChange = (_: any) => {};

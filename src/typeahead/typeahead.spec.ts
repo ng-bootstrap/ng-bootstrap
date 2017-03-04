@@ -606,6 +606,9 @@ describe('ngb-typeahead', () => {
          const input = getNativeInput(compiled);
          fixture.componentInstance.typeahead.popupId = 'test-typeahead';
          fixture.detectChanges();
+         expect(input.getAttribute('aria-owns')).toBe('test-typeahead');
+         expect(input.getAttribute('aria-expanded')).toBe('false');
+         expect(input.getAttribute('aria-activedescendant')).toBeFalsy();
 
          fixture.whenStable().then(() => {
            changeInput(compiled, 'o');

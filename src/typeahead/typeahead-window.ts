@@ -20,14 +20,14 @@ export interface ResultTemplateContext {
 @Component({
   selector: 'ngb-typeahead-window',
   exportAs: 'ngbTypeaheadWindow',
-  host: {'class': 'dropdown-menu', 'style': 'display: block', 'role': 'listbox'},
+  host: {'class': 'dropdown-menu', 'style': 'display: block', 'role': 'listbox', '[id]': 'id'},
   template: `
     <template #rt let-result="result" let-term="term" let-formatter="formatter">
       <ngb-highlight [result]="formatter(result)" [term]="term"></ngb-highlight>
     </template>
     <template ngFor [ngForOf]="results" let-result let-idx="index">
       <button type="button" class="dropdown-item" role="option"
-        [attr.id]="id + '-' + idx"
+        [id]="id + '-' + idx"
         [class.active]="idx === activeIdx"
         (mouseenter)="markActive(idx)"
         (click)="select(result)">
@@ -44,7 +44,7 @@ export class NgbTypeaheadWindow implements OnInit {
    *  An optional id for the typeahead. The id should be unique.
    *  If not provided, it will be auto-generated.
    */
-  @HostBinding('attr.id') @Input() id: string = undefined;
+  @Input() id: string;
 
   /**
    * Flag indicating if the first row should be active initially
@@ -83,7 +83,7 @@ export class NgbTypeaheadWindow implements OnInit {
 
   markActive(activeIdx: number) {
     this.activeIdx = activeIdx;
-    this.activeChangedEvent.emit(this.id + '-' + this.activeIdx);
+    this._activeChanged();
   }
 
   next() {
@@ -92,7 +92,7 @@ export class NgbTypeaheadWindow implements OnInit {
     } else {
       this.activeIdx++;
     }
-    this.activeChangedEvent.emit(this.id + '-' + this.activeIdx);
+    this._activeChanged();
   }
 
   prev() {
@@ -103,13 +103,21 @@ export class NgbTypeaheadWindow implements OnInit {
     } else {
       this.activeIdx--;
     }
-    this.activeChangedEvent.emit(this.id + '-' + this.activeIdx);
+    this._activeChanged();
   }
 
   select(item) { this.selectEvent.emit(item); }
 
   ngOnInit() {
     this.activeIdx = this.focusFirst ? 0 : -1;
-    this.activeChangedEvent.emit(this.id + '-' + this.activeIdx);
+    this._activeChanged();
+  }
+
+  private _activeChanged() {
+    if (this.activeIdx >= 0) {
+      this.activeChangedEvent.emit(this.id + '-' + this.activeIdx);
+    } else {
+      this.activeChangedEvent.emit(undefined);
+    }
   }
 }
