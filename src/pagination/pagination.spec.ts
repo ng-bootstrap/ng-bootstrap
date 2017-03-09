@@ -539,7 +539,7 @@ describe('ngb-pagination', () => {
     });
 
     it('should not emit "pageChange" for incorrect input values', fakeAsync(() => {
-         const html = `<ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize" [maxSize]="maxSize" 
+         const html = `<ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize" [maxSize]="maxSize"
         (pageChange)="onPageChange($event)"></ngb-pagination>`;
          const fixture = createTestComponent(html);
          tick();
@@ -560,9 +560,10 @@ describe('ngb-pagination', () => {
 
          expect(fixture.componentInstance.onPageChange).not.toHaveBeenCalled();
        }));
+
     it('should set classes correctly for disabled state', fakeAsync(() => {
-         const html = `<ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize" [maxSize]="maxSize" 
-         [disabled]=true></ngb-pagination>`;
+         const html = `<ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize" [maxSize]="maxSize"
+      [disabled]=true></ngb-pagination>`;
          const fixture = createTestComponent(html);
          tick();
 
@@ -570,6 +571,24 @@ describe('ngb-pagination', () => {
          for (let i = 0; i < buttons.length; i++) {
            expect(buttons[i]).toHaveCssClass('disabled');
          }
+       }));
+
+    it('should show custom text in direction and boundary links', fakeAsync(() => {
+         const html = `<ngb-pagination [collectionSize]="collectionSize" [page]="page" [maxSize]="maxSize"
+              [boundaryLinks]="boundaryLinks" [boundaryLinksFirst]="boundaryLinksFirst"
+              [boundaryLinksLast]="boundaryLinksLast" [directionLinksPrevious]="directionLinksPrevious"
+              [directionLinksNext]="directionLinksNext"></ngb-pagination>`;
+         const fixture = createTestComponent(html);
+         fixture.componentInstance.collectionSize = 30;
+         fixture.componentInstance.boundaryLinks = true;
+         fixture.componentInstance.boundaryLinksFirst = 'first';
+         fixture.componentInstance.boundaryLinksLast = 'last';
+         fixture.componentInstance.directionLinksPrevious = 'previous';
+         fixture.componentInstance.directionLinksNext = 'next';
+
+         fixture.detectChanges();
+         expectPages(
+             fixture.nativeElement, ['-first First', '-previous Previous', '+1', '2', '3', 'next Next', 'last Last']);
        }));
   });
 
@@ -581,7 +600,11 @@ describe('ngb-pagination', () => {
     beforeEach(inject([NgbPaginationConfig], (c: NgbPaginationConfig) => {
       config = c;
       config.boundaryLinks = true;
+      config.boundaryLinksFirst = 'first';
+      config.boundaryLinksLast = 'last';
       config.directionLinks = false;
+      config.directionLinksPrevious = 'previous';
+      config.directionLinksNext = 'next';
       config.ellipses = false;
       config.maxSize = 42;
       config.pageSize = 7;
@@ -602,7 +625,11 @@ describe('ngb-pagination', () => {
     let config = new NgbPaginationConfig();
     config.disabled = true;
     config.boundaryLinks = true;
+    config.boundaryLinksFirst = 'first';
+    config.boundaryLinksLast = 'last';
     config.directionLinks = false;
+    config.directionLinksPrevious = 'previous';
+    config.directionLinksNext = 'next';
     config.ellipses = false;
     config.maxSize = 42;
     config.pageSize = 7;
@@ -630,7 +657,11 @@ class TestComponent {
   collectionSize = 100;
   page = 1;
   boundaryLinks = false;
+  boundaryLinksFirst = '««';
+  boundaryLinksLast = '»»';
   directionLinks = false;
+  directionLinksPrevious = '«';
+  directionLinksNext = '»';
   size = '';
   maxSize = 0;
   ellipses = true;

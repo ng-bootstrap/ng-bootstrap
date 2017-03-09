@@ -14,7 +14,7 @@ import {NgbPaginationConfig} from './pagination-config';
         <li *ngIf="boundaryLinks" class="page-item boundary-link first"
           [class.disabled]="!hasPrevious() || disabled">
           <a aria-label="First" class="page-link" href (click)="!!selectPage(1)" [attr.tabindex]="hasPrevious() ? null : '-1'">
-            <span aria-hidden="true">&laquo;&laquo;</span>
+            <span aria-hidden="true">{{boundaryLinksFirst}}</span>
             <span class="sr-only">First</span>
           </a>
         </li>
@@ -22,7 +22,7 @@ import {NgbPaginationConfig} from './pagination-config';
         <li *ngIf="directionLinks" class="page-item direction-link previous"
           [class.disabled]="!hasPrevious() || disabled">
           <a aria-label="Previous" class="page-link" href (click)="!!selectPage(page-1)" [attr.tabindex]="hasPrevious() ? null : '-1'">
-            <span aria-hidden="true">&laquo;</span>
+            <span aria-hidden="true">{{directionLinksPrevious}}</span>
             <span class="sr-only">Previous</span>
           </a>
         </li>
@@ -33,14 +33,14 @@ import {NgbPaginationConfig} from './pagination-config';
         </li>
         <li *ngIf="directionLinks" class="page-item direction-link next" [class.disabled]="!hasNext() || disabled">
           <a aria-label="Next" class="page-link" href (click)="!!selectPage(page+1)" [attr.tabindex]="hasNext() ? null : '-1'">
-            <span aria-hidden="true">&raquo;</span>
+            <span aria-hidden="true">{{directionLinksNext}}</span>
             <span class="sr-only">Next</span>
           </a>
         </li>
 
         <li *ngIf="boundaryLinks" class="page-item boundary-link last" [class.disabled]="!hasNext() || disabled">
           <a aria-label="Last" class="page-link" href (click)="!!selectPage(pageCount)" [attr.tabindex]="hasNext() ? null : '-1'">
-            <span aria-hidden="true">&raquo;&raquo;</span>
+            <span aria-hidden="true">{{boundaryLinksLast}}</span>
             <span class="sr-only">Last</span>
           </a>
         </li>
@@ -63,9 +63,29 @@ export class NgbPagination implements OnChanges {
   @Input() boundaryLinks: boolean;
 
   /**
+   *  Text to display in the First boundary link
+   */
+  @Input() boundaryLinksFirst: string;
+
+  /**
+   *  Text to display in the Last boundary link
+   */
+  @Input() boundaryLinksLast: string;
+
+  /**
    *  Whether to show the "Next" and "Previous" page links
    */
   @Input() directionLinks: boolean;
+
+  /**
+   *  Text to display in the Previous direction link
+   */
+  @Input() directionLinksPrevious: string;
+
+  /**
+   *  Text to display in the Next direction link
+   */
+  @Input() directionLinksNext: string;
 
   /**
    *  Whether to show ellipsis symbols and first/last page numbers when maxSize > number of pages
@@ -112,7 +132,11 @@ export class NgbPagination implements OnChanges {
   constructor(config: NgbPaginationConfig) {
     this.disabled = config.disabled;
     this.boundaryLinks = config.boundaryLinks;
+    this.boundaryLinksFirst = config.boundaryLinksFirst;
+    this.boundaryLinksLast = config.boundaryLinksLast;
     this.directionLinks = config.directionLinks;
+    this.directionLinksPrevious = config.directionLinksPrevious;
+    this.directionLinksNext = config.directionLinksNext;
     this.ellipses = config.ellipses;
     this.maxSize = config.maxSize;
     this.pageSize = config.pageSize;

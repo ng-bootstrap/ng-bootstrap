@@ -9,7 +9,11 @@ import {Injectable} from '@angular/core';
 export class NgbPaginationConfig {
   disabled = false;
   boundaryLinks = false;
+  boundaryLinksFirst = '««';
+  boundaryLinksLast = '»»';
   directionLinks = true;
+  directionLinksPrevious = '«';
+  directionLinksNext = '»';
   ellipses = true;
   maxSize = 0;
   pageSize = 10;
