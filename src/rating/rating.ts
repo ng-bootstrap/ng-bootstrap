@@ -54,7 +54,7 @@ const NGB_RATING_VALUE_ACCESSOR = {
       [attr.aria-valuemax]="max" [attr.aria-valuenow]="rate" [attr.aria-valuetext]="ariaValueText()">
       <template ngFor [ngForOf]="range" let-index="index">
         <span class="sr-only">({{ index < rate ? '*' : ' ' }})</span>
-        <span (mouseenter)="enter(index + 1)" (click)="update(index + 1)" 
+        <span (mouseenter)="enter(index + 1)" (click)="update(index + 1)"
         [style.cursor]="readonly ? 'default' : 'pointer'">
           <template [ngTemplateOutlet]="starTemplate || t" [ngOutletContext]="{fill: getFillValue(index)}"></template>
         </span>
@@ -66,6 +66,7 @@ const NGB_RATING_VALUE_ACCESSOR = {
 export class NgbRating implements ControlValueAccessor,
     OnInit, OnChanges {
   private _oldRate: number;
+  private _initDone: boolean;
   range: number[] = [];
 
   /**
@@ -161,13 +162,19 @@ export class NgbRating implements ControlValueAccessor,
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['rate']) {
-      this.update(this.rate);
-      this._oldRate = this.rate;
+    if (this._initDone) {
+      if (changes['rate']) {
+        this.update(this.rate);
+        this._oldRate = this.rate;
+      }
     }
   }
 
-  ngOnInit(): void { this.range = Array.from({length: this.max}, (v, k) => k + 1); }
+  ngOnInit(): void {
+    this.range = Array.from({length: this.max}, (v, k) => k + 1);
+    this._oldRate = this.rate;
+    this._initDone = true;
+  }
 
   registerOnChange(fn: (value: any) => any): void { this.onChange = fn; }
 
