@@ -8,7 +8,7 @@ import {FormsModule} from '@angular/forms';
 import {NgbDatepickerDayView} from './datepicker-day-view';
 import {NgbDatepickerI18n, NgbDatepickerI18nDefault} from './datepicker-i18n';
 import {NgbCalendar, NgbCalendarGregorian} from './ngb-calendar';
-import {NgbDateParserFormatter, NgbDateISOParserFormatter} from './ngb-date-parser-formatter';
+import {NgbDateParserFormatter, NgbDateDefaultParserFormatter} from './ngb-date-parser-formatter';
 import {NgbDatepickerService} from './datepicker-service';
 import {NgbDatepickerNavigationSelect} from './datepicker-navigation-select';
 import {NgbDatepickerConfig} from './datepicker-config';
@@ -40,7 +40,7 @@ export class NgbDatepickerModule {
       providers: [
         {provide: NgbCalendar, useClass: NgbCalendarGregorian},
         {provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nDefault},
-        {provide: NgbDateParserFormatter, useClass: NgbDateISOParserFormatter}, NgbDatepickerService,
+        {provide: NgbDateParserFormatter, useClass: NgbDateDefaultParserFormatter}, NgbDatepickerService,
         NgbDatepickerConfig
       ]
     };

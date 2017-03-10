@@ -1,0 +1,26 @@
+<p>This datepicker uses a custom date format. Use: </p>
+<ul>
+  <li>'dd' for day</li>
+  <li>'mm' for month</li>
+  <li>'yyyy' for year</li>
+  <li>'/' or '-' for delimiting</li>
+</ul>
+<p>
+  You can choose order of date parts and the delimiter.
+  Some examples: 'dd-mm-yyyy', 'mm-dd-yyyy', 'yyyy-mm-dd', 'yyyy/mm/dd', 'dd/mm/yyyy'
+</p>
+
+<form class="form-inline">
+  <div class="form-group">
+    <div class="input-group">
+      <input class="form-control" placeholder="dd/mm/yyyy"
+             name="dp" ngbDatepicker [dateFormat]="dateFormat"  #d="ngbDatepicker">
+      <div class="input-group-addon" (click)="d.toggle()" >
+        <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
+      </div>
+    </div>
+  </div>
+</form>
+
+<hr/>
+<pre>Format: {{dateFormat}}</pre>

@@ -31,6 +31,9 @@ import {DEMO_SNIPPETS} from './demos';
       <ngbd-example-box demoTitle="Custom day view" [snippets]="snippets" component="datepicker" demo="customday">
         <ngbd-datepicker-customday></ngbd-datepicker-customday>
       </ngbd-example-box>
+      <ngbd-example-box demoTitle="Custom date format" [snippets]="snippets" component="datepicker" demo="customformat">
+        <ngbd-datepicker-customformat></ngbd-datepicker-customformat>
+      </ngbd-example-box>
       <ngbd-example-box demoTitle="Global configuration of datepickers" [snippets]="snippets" component="datepicker" demo="config">
         <ngbd-datepicker-config></ngbd-datepicker-config>
       </ngbd-example-box>
@@ -38,5 +41,5 @@ import {DEMO_SNIPPETS} from './demos';
   `
 })
 export class NgbdDatepicker {
-   snippets = DEMO_SNIPPETS;
+  snippets = DEMO_SNIPPETS;
 }
