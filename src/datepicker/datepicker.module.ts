@@ -9,12 +9,12 @@ import {NgbDatepickerDayView} from './datepicker-day-view';
 import {NgbDatepickerI18n, NgbDatepickerI18nDefault} from './datepicker-i18n';
 import {NgbCalendar, NgbCalendarGregorian} from './ngb-calendar';
 import {NgbDateParserFormatter, NgbDateISOParserFormatter} from './ngb-date-parser-formatter';
-import {NgbDatepickerService} from './datepicker-service';
 import {NgbDatepickerNavigationSelect} from './datepicker-navigation-select';
 import {NgbDatepickerConfig} from './datepicker-config';
 
 export {NgbDatepicker, NgbDatepickerNavigateEvent} from './datepicker';
 export {NgbInputDatepicker} from './datepicker-input';
+export {NgbCalendar} from './ngb-calendar';
 export {NgbDatepickerMonthView} from './datepicker-month-view';
 export {NgbDatepickerDayView} from './datepicker-day-view';
 export {NgbDatepickerNavigation} from './datepicker-navigation';
@@ -40,8 +40,7 @@ export class NgbDatepickerModule {
       providers: [
         {provide: NgbCalendar, useClass: NgbCalendarGregorian},
         {provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nDefault},
-        {provide: NgbDateParserFormatter, useClass: NgbDateISOParserFormatter}, NgbDatepickerService,
-        NgbDatepickerConfig
+        {provide: NgbDateParserFormatter, useClass: NgbDateISOParserFormatter}, NgbDatepickerConfig
       ]
     };
   }
