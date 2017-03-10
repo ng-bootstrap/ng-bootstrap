@@ -1,6 +1,6 @@
 import {NgbDate} from './ngb-date';
 import {Injectable} from '@angular/core';
-import {isNumber} from '../util/util';
+import {isInteger} from '../util/util';
 
 function fromJSDate(jsDate: Date) {
   return new NgbDate(jsDate.getFullYear(), jsDate.getMonth() + 1, jsDate.getDate());
@@ -89,7 +89,7 @@ export class NgbCalendarGregorian extends NgbCalendar {
   getToday(): NgbDate { return fromJSDate(new Date()); }
 
   isValid(date: NgbDate): boolean {
-    return date && isNumber(date.year) && isNumber(date.month) && isNumber(date.day) &&
+    return date && isInteger(date.year) && isInteger(date.month) && isInteger(date.day) &&
         !isNaN(toJSDate(date).getTime());
   }
 }

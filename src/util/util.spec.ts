@@ -1,4 +1,4 @@
-import {toInteger, toString, getValueInRange, isString} from './util';
+import {toInteger, toString, getValueInRange, isInteger, isString} from './util';
 
 describe('util', () => {
 
@@ -51,6 +51,25 @@ describe('util', () => {
     it('should take 0 as a default min bound', () => {
       expect(getValueInRange(11, 10)).toBe(10);
       expect(getValueInRange(-1, 10)).toBe(0);
+    });
+
+  });
+
+  describe('isInteger', () => {
+
+    it('should recognize integers', () => {
+      expect(isInteger(0)).toBeTruthy();
+      expect(isInteger(10)).toBeTruthy();
+      expect(isInteger(-110)).toBeTruthy();
+    });
+
+    it('should recognize non-integers', () => {
+      expect(isInteger(null)).toBeFalsy();
+      expect(isString([])).toBeFalsy();
+      expect(isString(undefined)).toBeFalsy();
+      expect(isInteger('2048')).toBeFalsy();
+      expect(isInteger(14.1)).toBeFalsy();
+      expect(isInteger(-14.1)).toBeFalsy();
     });
 
   });

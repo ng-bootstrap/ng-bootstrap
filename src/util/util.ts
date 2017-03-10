@@ -18,6 +18,10 @@ export function isNumber(value: any): boolean {
   return !isNaN(toInteger(value));
 }
 
+export function isInteger(value: any): boolean {
+  return typeof value === 'number' && isFinite(value) && Math.floor(value) === value;
+}
+
 export function isDefined(value: any): boolean {
   return value !== undefined && value !== null;
 }

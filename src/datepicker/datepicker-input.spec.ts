@@ -118,6 +118,11 @@ describe('NgbInputDatepicker', () => {
          fixture.detectChanges();
          tick();
          expect(input.value).toBe('');
+
+         fixture.componentInstance.date = new NgbDate(<any>'2017', <any>'03', <any>'10');
+         fixture.detectChanges();
+         tick();
+         expect(input.value).toBe('');
        }));
 
     it('should propagate null to model when a user enters invalid date', () => {
