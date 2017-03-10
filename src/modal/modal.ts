@@ -14,6 +14,11 @@ export interface NgbModalOptions {
   backdrop?: boolean | 'static';
 
   /**
+   * An element to which to attach newly opened modal windows.
+   */
+  container?: string;
+
+  /**
    * Whether to close the modal when escape key is pressed (true by default).
    */
   keyboard?: boolean;

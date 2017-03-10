@@ -1,4 +1,4 @@
-import {Injectable, ComponentRef, ViewRef, ViewContainerRef} from '@angular/core';
+import {Injectable, ComponentRef} from '@angular/core';
 
 import {NgbModalBackdrop} from './modal-backdrop';
 import {NgbModalWindow} from './modal-window';
@@ -49,8 +49,8 @@ export class NgbModalRef {
   result: Promise<any>;
 
   constructor(
-      private _viewContainerRef: ViewContainerRef, private _windowCmptRef: ComponentRef<NgbModalWindow>,
-      private _contentRef: ContentRef, private _backdropCmptRef?: ComponentRef<NgbModalBackdrop>) {
+      private _windowCmptRef: ComponentRef<NgbModalWindow>, private _contentRef: ContentRef,
+      private _backdropCmptRef?: ComponentRef<NgbModalBackdrop>) {
     _windowCmptRef.instance.dismissEvent.subscribe((reason: any) => { this.dismiss(reason); });
 
     this.result = new Promise((resolve, reject) => {
@@ -81,12 +81,18 @@ export class NgbModalRef {
   }
 
   private _removeModalElements() {
-    this._viewContainerRef.remove(this._viewContainerRef.indexOf(this._windowCmptRef.hostView));
+    const windowNativeEl = this._windowCmptRef.location.nativeElement;
+    windowNativeEl.parentNode.removeChild(windowNativeEl);
+    this._windowCmptRef.destroy();
+
     if (this._backdropCmptRef) {
-      this._viewContainerRef.remove(this._viewContainerRef.indexOf(this._backdropCmptRef.hostView));
+      const backdropNativeEl = this._backdropCmptRef.location.nativeElement;
+      backdropNativeEl.parentNode.removeChild(backdropNativeEl);
+      this._backdropCmptRef.destroy();
     }
+
     if (this._contentRef && this._contentRef.viewRef) {
-      this._viewContainerRef.remove(this._viewContainerRef.indexOf(this._contentRef.viewRef));
+      this._contentRef.viewRef.destroy();
     }
 
     this._windowCmptRef = null;
