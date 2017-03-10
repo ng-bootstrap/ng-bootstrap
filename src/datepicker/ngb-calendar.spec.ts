@@ -1,6 +1,5 @@
 import {NgbCalendarGregorian} from './ngb-calendar';
 import {NgbDate} from './ngb-date';
-import {isBrowser} from '../test/common';
 
 describe('ngb-calendar-gregorian', () => {
 
@@ -75,6 +74,7 @@ describe('ngb-calendar-gregorian', () => {
     expect(calendar.isValid(new NgbDate(null, null, null))).toBeFalsy();
     expect(calendar.isValid(new NgbDate(undefined, undefined, undefined))).toBeFalsy();
     expect(calendar.isValid(new NgbDate(NaN, NaN, NaN))).toBeFalsy();
+    expect(calendar.isValid(new NgbDate(<any>'2017', <any>'03', <any>'10'))).toBeFalsy();
 
     // min/max dates
     expect(calendar.isValid(new NgbDate(275760, 9, 12))).toBeTruthy();
