@@ -110,7 +110,7 @@ export interface NgbDatepickerNavigateEvent {
       </template>
     </div>
   `,
-  providers: [NGB_DATEPICKER_VALUE_ACCESSOR]
+  providers: [NGB_DATEPICKER_VALUE_ACCESSOR, NgbDatepickerService]
 })
 export class NgbDatepicker implements OnChanges,
     OnInit, ControlValueAccessor {

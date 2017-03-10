@@ -38,7 +38,7 @@ const NGB_DATEPICKER_VALUE_ACCESSOR = {
   selector: 'input[ngbDatepicker]',
   exportAs: 'ngbDatepicker',
   host: {'(change)': 'manualDateChange($event.target.value)', '(keyup.esc)': 'close()', '(blur)': 'onBlur()'},
-  providers: [NGB_DATEPICKER_VALUE_ACCESSOR]
+  providers: [NGB_DATEPICKER_VALUE_ACCESSOR, NgbDatepickerService]
 })
 export class NgbInputDatepicker implements ControlValueAccessor {
   private _cRef: ComponentRef<NgbDatepicker> = null;

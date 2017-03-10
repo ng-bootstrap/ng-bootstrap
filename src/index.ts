@@ -31,6 +31,7 @@ export {NgbButtonsModule, NgbRadioGroup} from './buttons/radio.module';
 export {NgbCarouselModule, NgbCarouselConfig, NgbCarousel, NgbSlide} from './carousel/carousel.module';
 export {NgbCollapseModule, NgbCollapse} from './collapse/collapse.module';
 export {
+  NgbCalendar,
   NgbDatepickerModule,
   NgbDatepickerI18n,
   NgbDatepickerConfig,
