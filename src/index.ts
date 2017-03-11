@@ -37,7 +37,8 @@ export {
   NgbDateStruct,
   NgbDateParserFormatter,
   NgbDatepicker,
-  NgbInputDatepicker
+  NgbInputDatepicker,
+  NgbDatepickerToggle
 } from './datepicker/datepicker.module';
 export {NgbDropdownModule, NgbDropdownConfig, NgbDropdown} from './dropdown/dropdown.module';
 export {
