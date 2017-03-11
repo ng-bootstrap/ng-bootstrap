@@ -90,7 +90,10 @@ export interface NgbTabChangeEvent {
     </ul>
     <div class="tab-content">
       <template ngFor let-tab [ngForOf]="tabs">
-        <div class="tab-pane active" *ngIf="tab.id === activeId" role="tabpanel"
+        <div
+          class="tab-pane {{tab.id === activeId ? 'active' : null}}"
+          *ngIf="!destroyOnHide || tab.id === activeId"
+          role="tabpanel"
           [attr.aria-labelledby]="tab.id" id="{{tab.id}}-panel"
           [attr.aria-expanded]="tab.id === activeId">
           <template [ngTemplateOutlet]="tab.contentTpl.templateRef"></template>
@@ -106,6 +109,11 @@ export class NgbTabset implements AfterContentChecked {
    * An identifier of an initially selected (active) tab. Use the "select" method to switch a tab programmatically.
    */
   @Input() activeId: string;
+
+  /**
+   * Whether the closed tabs should be hidden without destroying them
+   */
+  @Input() destroyOnHide: boolean = true;
 
   /**
    * The horizontal alignment of the nav with flexbox utilities. Can be one of 'start', 'center' or 'end'
