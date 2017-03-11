@@ -105,12 +105,13 @@ export interface NgbPanelChangeEvent {
           {{panel.title}}<ng-template [ngTemplateOutlet]="panel.titleTpl?.templateRef"></ng-template>
         </a>
       </div>
-      <div id="{{panel.id}}" role="tabpanel" [attr.aria-labelledby]="panel.id + '-header'" class="card-body" *ngIf="isOpen(panel.id)">
-        <ng-template [ngTemplateOutlet]="panel.contentTpl.templateRef"></ng-template>
+      <div id="{{panel.id}}" role="tabpanel" [attr.aria-labelledby]="panel.id + '-header'" 
+           class="card-body {{isOpen(panel.id) ? 'show' : null}}" *ngIf="!destroyOnHide || isOpen(panel.id)">
+           <ng-template [ngTemplateOutlet]="panel.contentTpl.templateRef"></ng-template>
       </div>
     </ng-template>
   </div>
-`
+  `
 })
 export class NgbAccordion implements AfterContentChecked {
   /**
@@ -134,6 +135,11 @@ export class NgbAccordion implements AfterContentChecked {
    *  Whether the other panels should be closed when a panel is opened
    */
   @Input('closeOthers') closeOtherPanels: boolean;
+
+  /**
+   * Whether the closed panels should be hidden without destroying them
+   */
+  @Input() destroyOnHide: boolean = true;
 
   /**
    *  Accordion's types of panels to be applied globally.
