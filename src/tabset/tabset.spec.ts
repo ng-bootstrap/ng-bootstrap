@@ -325,6 +325,24 @@ describe('ngb-tabset', () => {
     expectTabs(fixture.nativeElement, [true, false], [false, true]);
   });
 
+  it('should not remove inactive tabs content from DOM with `destroyOnHide` flag', () => {
+    const fixture = createTestComponent(`
+          <ngb-tabset #myTabSet="ngbTabset" [destroyOnHide]="false">
+            <ngb-tab id="myFirstTab" title="foo"><template ngbTabContent>Foo</template></ngb-tab>
+            <ngb-tab id="mySecondTab" title="bar"><template ngbTabContent>Bar</template></ngb-tab>
+          </ngb-tabset>
+          <button (click)="myTabSet.select('mySecondTab')">Select the second Tab</button>
+        `);
+
+    const button = getButton(fixture.nativeElement);
+
+    // Click on a button to select the second tab
+    (<HTMLElement>button[0]).click();
+    fixture.detectChanges();
+    let tabContents = getTabContent(fixture.nativeElement);
+    expect(tabContents.length).toBe(2);
+    expect(tabContents[1]).toHaveCssClass('active');
+  });
 
   it('should emit tab change event when switching tabs', () => {
     const fixture = createTestComponent(`
