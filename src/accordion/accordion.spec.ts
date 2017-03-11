@@ -396,6 +396,27 @@ describe('ngb-accordion', () => {
     expect(getPanelsContent(fixture.nativeElement).length).toBe(1);
   });
 
+  it('should not remove collapsed panels content from DOM with `destroyOnHide` flag', () => {
+    const testHtml = `
+    <ngb-accordion #acc="ngbAccordion" [closeOthers]="true" [destroyOnHide]="false">
+     <ngb-panel *ngFor="let panel of panels" [id]="panel.id">
+       <ng-template ngbPanelTitle>{{panel.title}}</ng-template>
+       <ng-template ngbPanelContent>{{panel.content}}</ng-template>
+     </ngb-panel>
+    </ngb-accordion>
+    <button *ngFor="let panel of panels" (click)="acc.toggle(panel.id)">Toggle the panel {{ panel.id }}</button>
+    `;
+    const fixture = createTestComponent(testHtml);
+
+    fixture.detectChanges();
+
+    getButton(fixture.nativeElement, 1).click();
+    fixture.detectChanges();
+    let panelContents = getPanelsContent(fixture.nativeElement);
+    expect(panelContents[1]).toHaveCssClass('show');
+    expect(panelContents.length).toBe(3);
+  });
+
   it('should emit panel change event when toggling panels', () => {
     const fixture = TestBed.createComponent(TestComponent);
     fixture.detectChanges();
