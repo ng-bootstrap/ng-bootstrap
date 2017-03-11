@@ -1,7 +1,8 @@
+import {By} from '@angular/platform-browser';
 import {TestBed, ComponentFixture, inject} from '@angular/core/testing';
 import {createGenericTestComponent} from '../test/common';
 
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 
 import {NgbTabsetModule} from './tabset.module';
 import {NgbTabsetConfig} from './tabset-config';
@@ -443,6 +444,7 @@ describe('ngb-tabset', () => {
 
 @Component({selector: 'test-cmp', template: ''})
 class TestComponent {
+  @ViewChild(NgbTabset) tabset: NgbTabset;
   activeTabId: string;
   changeCallback = (event: any) => {};
 }
