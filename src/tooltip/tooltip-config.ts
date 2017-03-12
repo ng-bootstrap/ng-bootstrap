@@ -10,4 +10,5 @@ export class NgbTooltipConfig {
   placement: 'top' | 'bottom' | 'left' | 'right' = 'top';
   triggers = 'hover';
   container: string;
+  customCssClasses: string[];
 }

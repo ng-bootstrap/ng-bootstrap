@@ -1,0 +1,22 @@
+@mixin tooltip-background-color-customizer($color) {
+  @each $position in right, left, top, bottom {
+    &.tooltip-#{$position} {
+      .tooltip-inner {
+        background-color: #{$color};
+
+        &::before {
+          border-#{$position}-color: #{$color};
+        }
+      }
+    }
+  }
+}
+
+.tooltip-red {
+  @include tooltip-background-color-customizer(red);
+}
+
+.tooltip-uppercase {
+  text-transform: uppercase;
+}
+
