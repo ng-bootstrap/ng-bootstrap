@@ -7,7 +7,8 @@ import {
   ViewContainerRef,
   ComponentFactoryResolver,
   ComponentFactory,
-  ComponentRef
+  ComponentRef,
+  OnDestroy
 } from '@angular/core';
 
 import {isDefined, isString} from '../util/util';
@@ -19,13 +20,13 @@ import {NgbModalStack} from './modal-stack';
 import {NgbActiveModal, NgbModalRef} from './modal-ref';
 
 @Directive({selector: 'template[ngbModalContainer]'})
-export class NgbModalContainer {
+export class NgbModalContainer implements OnDestroy {
   private _backdropFactory: ComponentFactory<NgbModalBackdrop>;
   private _windowFactory: ComponentFactory<NgbModalWindow>;
 
   constructor(
       private _injector: Injector, private _renderer: Renderer, private _viewContainerRef: ViewContainerRef,
-      private _componentFactoryResolver: ComponentFactoryResolver, ngbModalStack: NgbModalStack) {
+      private _componentFactoryResolver: ComponentFactoryResolver, private ngbModalStack: NgbModalStack) {
     this._backdropFactory = _componentFactoryResolver.resolveComponentFactory(NgbModalBackdrop);
     this._windowFactory = _componentFactoryResolver.resolveComponentFactory(NgbModalWindow);
 
@@ -56,6 +57,8 @@ export class NgbModalContainer {
 
     return ngbModalRef;
   }
+
+  ngOnDestroy() { this.ngbModalStack.removeContainer(this); }
 
   private _applyWindowOptions(windowInstance: NgbModalWindow, options: Object): void {
     ['backdrop', 'keyboard', 'size', 'windowClass'].forEach((optionName: string) => {
