@@ -1,0 +1,17 @@
+<p>Islamic Civil calendar</p>
+
+<ngb-datepicker #dp [(ngModel)]="model"
+                (navigate)="date = $event.next"
+                [firstDayOfWeek]="7">
+</ngb-datepicker>
+
+<hr/>
+
+<button class="btn btn-sm btn-outline-primary" (click)="selectToday()">Select Today</button>
+<button class="btn btn-sm btn-outline-primary" (click)="dp.navigateTo()">To current month</button>
+<button class="btn btn-sm btn-outline-primary" (click)="dp.navigateTo({year: 1434, month: 2})">To Saf. 1434</button>
+
+<hr/>
+
+<pre>Month: {{ date.month }}.{{ date.year }}</pre>
+<pre>Model: {{ model | json }}</pre>
