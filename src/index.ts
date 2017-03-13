@@ -32,6 +32,7 @@ export {NgbCarouselModule, NgbCarouselConfig, NgbCarousel, NgbSlide} from './car
 export {NgbCollapseModule, NgbCollapse} from './collapse/collapse.module';
 export {
   NgbCalendar,
+  NgbCalendarIslamicCivil,
   NgbDatepickerModule,
   NgbDatepickerI18n,
   NgbDatepickerConfig,
