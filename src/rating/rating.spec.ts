@@ -36,12 +36,12 @@ function getStar(compiled, num: number) {
   return getStars(compiled)[num - 1];
 }
 
-function getStars(element, selector = 'span > span:not(.sr-only)') {
+function getStars(element, selector = 'span:not(.sr-only)') {
   return <HTMLElement[]>Array.from(element.querySelectorAll(selector));
 }
 
 function getDbgStar(element, num: number) {
-  return element.queryAll(By.css('span > span:not(.sr-only)'))[num - 1];
+  return element.queryAll(By.css('span:not(.sr-only)'))[num - 1];
 }
 
 function getState(element: DebugElement | HTMLElement) {
@@ -175,7 +175,7 @@ describe('ngb-rating', () => {
   it('handles correctly the mouse enter/leave', () => {
     const fixture = createTestComponent('<ngb-rating [(rate)]="rate" max="5"></ngb-rating>');
     const el = fixture.debugElement;
-    const rating = el.query(By.directive(NgbRating)).children[0];
+    const rating = el.query(By.directive(NgbRating));
 
     // 3/5
     expect(getState(el)).toEqual([true, true, true, false, false]);
@@ -318,9 +318,9 @@ describe('ngb-rating', () => {
     it('contains aria-valuemax with the number of stars', () => {
       const fixture = createTestComponent('<ngb-rating [max]="max"></ngb-rating>');
 
-      const compiled = fixture.nativeElement;
+      const rating = fixture.debugElement.query(By.directive(NgbRating));
 
-      expect(compiled.querySelector('span').getAttribute('aria-valuemax')).toBe('10');
+      expect(rating.attributes['aria-valuemax']).toBe('10');
     });
 
     it('contains a hidden span for each star for screenreaders', () => {
@@ -336,38 +336,37 @@ describe('ngb-rating', () => {
       const fixture = createTestComponent('<ngb-rating rate="3" max="5"></ngb-rating>');
 
       const compiled = fixture.nativeElement;
-
       expect(getAriaState(compiled)).toEqual([true, true, true, false, false]);
     });
 
     it('contains aria-valuenow with the current rate', () => {
       const fixture = createTestComponent('<ngb-rating [max]="max" rate="3"></ngb-rating>');
 
-      const compiled = fixture.nativeElement;
+      const rating = fixture.debugElement.query(By.directive(NgbRating));
 
-      expect(compiled.querySelector('span').getAttribute('aria-valuenow')).toBe('3');
+      expect(rating.attributes['aria-valuenow']).toBe('3');
     });
 
     it('updates aria-valuenow when the rate changes', () => {
       const fixture = createTestComponent('<ngb-rating [max]="max" rate="3"></ngb-rating>');
 
-      const compiled = fixture.nativeElement;
+      const rating = fixture.debugElement.query(By.directive(NgbRating));
 
-      getStar(compiled, 7).click();
+      getStar(rating.nativeElement, 7).click();
       fixture.detectChanges();
 
-      expect(compiled.querySelector('span').getAttribute('aria-valuenow')).toBe('7');
+      expect(rating.attributes['aria-valuenow']).toBe('7');
     });
 
     it('updates aria-valuetext when the rate changes', () => {
       const fixture = createTestComponent('<ngb-rating [max]="max" rate="3"></ngb-rating>');
 
-      const compiled = fixture.nativeElement;
+      const rating = fixture.debugElement.query(By.directive(NgbRating));
 
-      getStar(compiled, 7).click();
+      getStar(rating.nativeElement, 7).click();
       fixture.detectChanges();
 
-      expect(compiled.querySelector('span').getAttribute('aria-valuetext')).toBe('7 out of 10');
+      expect(rating.attributes['aria-valuetext']).toBe('7 out of 10');
     });
   });
 
