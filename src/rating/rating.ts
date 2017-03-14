@@ -47,26 +47,32 @@ const NGB_RATING_VALUE_ACCESSOR = {
 @Component({
   selector: 'ngb-rating',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {'(keydown)': 'handleKeyDown($event)'},
+  host: {
+    'class': 'd-inline-flex',
+    'tabindex': '0',
+    'role': 'slider',
+    'attr.aria-valuemin': '0',
+    '[attr.aria-valuemax]': 'max',
+    '[attr.aria-valuenow]': 'nextRate',
+    '[attr.aria-valuetext]': 'ariaValueText()',
+    '(mouseleave)': 'reset()',
+    '(keydown)': 'handleKeyDown($event)'
+  },
   template: `
     <template #t let-fill="fill">{{ fill === 100 ? '&#9733;' : '&#9734;' }}</template>
-    <span tabindex="0" (mouseleave)="reset()" role="slider" aria-valuemin="0"
-      [attr.aria-valuemax]="max" [attr.aria-valuenow]="nextRate" [attr.aria-valuetext]="ariaValueText()">
-      <template ngFor [ngForOf]="range" let-index="index">
-        <span class="sr-only">({{ index < nextRate ? '*' : ' ' }})</span>
-        <span (mouseenter)="enter(index + 1)" (click)="update(index + 1)" 
-        [style.cursor]="readonly ? 'default' : 'pointer'">
-          <template [ngTemplateOutlet]="starTemplate || t" [ngOutletContext]="{fill: getFillValue(index)}"></template>
-        </span>
-      </template>
-    </span>
+    <template ngFor [ngForOf]="contexts" let-index="index">
+      <span class="sr-only">({{ index < nextRate ? '*' : ' ' }})</span>
+      <span (mouseenter)="enter(index + 1)" (click)="update(index + 1)" [style.cursor]="readonly ? 'default' : 'pointer'">
+        <template [ngTemplateOutlet]="starTemplate || t" [ngOutletContext]="contexts[index]"></template>
+      </span>
+    </template>
   `,
   providers: [NGB_RATING_VALUE_ACCESSOR]
 })
 export class NgbRating implements ControlValueAccessor,
     OnInit, OnChanges {
+  contexts: StarTemplateContext[] = [];
   nextRate: number;
-  range: number[] = [];
 
   /**
    * Maximal rating that can be given using this widget.
@@ -119,7 +125,7 @@ export class NgbRating implements ControlValueAccessor,
 
   enter(value: number): void {
     if (!this.readonly) {
-      this.nextRate = value;
+      this._updateState(value);
     }
     this.hover.emit(value);
   }
@@ -147,7 +153,44 @@ export class NgbRating implements ControlValueAccessor,
     }
   }
 
-  getFillValue(index: number): number {
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['rate']) {
+      this.update(this.rate);
+    }
+  }
+
+  ngOnInit(): void {
+    this.contexts = Array.from({length: this.max}, () => ({fill: 0}));
+    this._updateState(this.rate);
+  }
+
+  registerOnChange(fn: (value: any) => any): void { this.onChange = fn; }
+
+  registerOnTouched(fn: () => any): void { this.onTouched = fn; }
+
+  reset(): void {
+    this.leave.emit(this.nextRate);
+    this._updateState(this.rate);
+  }
+
+  update(value: number, internalChange = true): void {
+    const newRate = getValueInRange(value, this.max, 0);
+    if (!this.readonly && this.rate !== newRate) {
+      this.rate = newRate;
+      this.rateChange.emit(this.rate);
+    }
+    if (internalChange) {
+      this.onChange(this.rate);
+    }
+    this._updateState(this.rate);
+  }
+
+  writeValue(value) {
+    this.update(value, false);
+    this._changeDetectorRef.markForCheck();
+  }
+
+  private _getFillValue(index: number): number {
     const diff = this.nextRate - index;
 
     if (diff >= 1) {
@@ -160,40 +203,8 @@ export class NgbRating implements ControlValueAccessor,
     return 0;
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['rate']) {
-      this.update(this.rate);
-    }
-  }
-
-  ngOnInit(): void {
-    this.range = Array.from({length: this.max}, (v, k) => k + 1);
-    this.nextRate = this.rate;
-  }
-
-  registerOnChange(fn: (value: any) => any): void { this.onChange = fn; }
-
-  registerOnTouched(fn: () => any): void { this.onTouched = fn; }
-
-  reset(): void {
-    this.leave.emit(this.nextRate);
-    this.nextRate = this.rate;
-  }
-
-  update(value: number, internalChange = true): void {
-    const newRate = getValueInRange(value, this.max, 0);
-    if (!this.readonly && this.rate !== newRate) {
-      this.rate = newRate;
-      this.rateChange.emit(this.rate);
-    }
-    if (internalChange) {
-      this.onChange(this.rate);
-    }
-    this.nextRate = this.rate;
-  }
-
-  writeValue(value) {
-    this.update(value, false);
-    this._changeDetectorRef.markForCheck();
+  private _updateState(nextValue: number) {
+    this.nextRate = nextValue;
+    this.contexts.forEach((context, index) => context.fill = this._getFillValue(index));
   }
 }
