@@ -1,3 +1,30 @@
+<a name="1.0.0-alpha.21"></a>
+# [1.0.0-alpha.21](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.20...1.0.0-alpha.21) (2017-03-15)
+
+
+### Bug Fixes
+
+* **datepicker:** allow datepicker calendar override ([2792768](https://github.com/ng-bootstrap/ng-bootstrap/commit/2792768)), closes [#1366](https://github.com/ng-bootstrap/ng-bootstrap/issues/1366)
+* **datepicker:** protect against invalid inputs ([eaf2de1](https://github.com/ng-bootstrap/ng-bootstrap/commit/eaf2de1)), closes [#1308](https://github.com/ng-bootstrap/ng-bootstrap/issues/1308) [#1364](https://github.com/ng-bootstrap/ng-bootstrap/issues/1364)
+* **rating:** don't fire change event on init ([815cc20](https://github.com/ng-bootstrap/ng-bootstrap/commit/815cc20)), closes [#1282](https://github.com/ng-bootstrap/ng-bootstrap/issues/1282) [#1306](https://github.com/ng-bootstrap/ng-bootstrap/issues/1306) [#1357](https://github.com/ng-bootstrap/ng-bootstrap/issues/1357)
+
+
+### Features
+
+* **datepicker:** initial version of Hijri calendar ([1cf0c02](https://github.com/ng-bootstrap/ng-bootstrap/commit/1cf0c02))
+* **model:** introduce the 'container' option ([743db91](https://github.com/ng-bootstrap/ng-bootstrap/commit/743db91)), closes [#1018](https://github.com/ng-bootstrap/ng-bootstrap/issues/1018) [#1264](https://github.com/ng-bootstrap/ng-bootstrap/issues/1264) [#1373](https://github.com/ng-bootstrap/ng-bootstrap/issues/1373)
+* **tabset:** improve accessibility ([d7722ad](https://github.com/ng-bootstrap/ng-bootstrap/commit/d7722ad)), closes [#1327](https://github.com/ng-bootstrap/ng-bootstrap/issues/1327)
+* **tabset:** support nodes preservation ([79dd101](https://github.com/ng-bootstrap/ng-bootstrap/commit/79dd101)), closes [#1161](https://github.com/ng-bootstrap/ng-bootstrap/issues/1161) [#1369](https://github.com/ng-bootstrap/ng-bootstrap/issues/1369)
+
+
+### BREAKING CHANGES
+
+* model: The `ngbModalContainer` directive is no longer needed and was
+removed from this project. Just remove any references to the
+`<template ngbModalContainer></template>` from your projects.
+
+
+
 <a name="1.0.0-alpha.20"></a>
 # [1.0.0-alpha.20](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.19...1.0.0-alpha.20) (2017-02-02)
 
