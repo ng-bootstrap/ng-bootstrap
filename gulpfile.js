@@ -1,3 +1,4 @@
+var asyncDone = require('async-done');
 var gulp = require('gulp');
 var gutil = require('gulp-util');
 var ddescribeIit = require('gulp-ddescribe-iit');
@@ -162,9 +163,10 @@ gulp.task('build:tests', ['clean:tests'], (cb) => {
 gulp.task(
     'ddescribe-iit', function() { return gulp.src(PATHS.specs).pipe(ddescribeIit({allowDisabledTests: false})); });
 
-gulp.task('test', ['build:tests'], function() {
+gulp.task('test', ['build:tests'], function(done) {
   startKarmaServer(false, false, () => {
-    return gulp.src(PATHS.coverageJson).pipe(remapIstanbul({reports: {'html': 'coverage/html'}}));
+    asyncDone(
+        () => { return gulp.src(PATHS.coverageJson).pipe(remapIstanbul({reports: {'html': 'coverage/html'}})); }, done);
   });
 });
 
@@ -283,3 +285,5 @@ gulp.task(
     'deploy-demo', function(done) { runSequence('clean:demo', 'build:demo', 'demo-push', 'clean:demo-cache', done); });
 
 gulp.task('default', function(done) { runSequence('lint', 'enforce-format', 'ddescribe-iit', 'test', done); });
+
+gulp.task('ci', function(done) { runSequence('default', 'build:demo', done); });

@@ -39,6 +39,7 @@
     "@types/jasmine": "2.5.41",
     "@types/node": "^6.0.46",
     "angular2-template-loader": "^0.6.0",
+    "async-done": "^1.2.2",
     "autoprefixer": "^6.5.1",
     "bootstrap": "4.0.0-alpha.6",
     "clang-format": "1.0.35",
