@@ -9,7 +9,7 @@ const MONTHS_FULL = [
 ];
 
 @Injectable()
-class IslamicCivilI18n extends NgbDatepickerI18n {
+export class IslamicCivilI18n extends NgbDatepickerI18n {
 
 
   getWeekdayShortName(weekday: number) {
