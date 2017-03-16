@@ -181,28 +181,59 @@ describe('ngb-datepicker-month-view', () => {
   }
 
   it('should apply proper visibility to other months days', () => {
-    const fixture = createTestComponent(
-        '<ngb-datepicker-month-view [month]="month" [outsideDays]="outsideDays"></ngb-datepicker-month-view>');
+    const fixture = createTestComponent(`
+        <template #tpl let-date="date">{{ date.day }}</template>
+        <ngb-datepicker-month-view [month]="month" [outsideDays]="outsideDays" [dayTemplate]="tpl"></ngb-datepicker-month-view>
+    `);
 
     let dates = getDates(fixture.nativeElement);
     expect(dates[0]).not.toHaveCssClass('hidden');
-    expect(dates[0]).not.toHaveCssClass('collapsed');
     expect(dates[1]).not.toHaveCssClass('hidden');
-    expect(dates[1]).not.toHaveCssClass('collapsed');
+    expectDates(fixture.nativeElement, ['22', '23']);
 
     fixture.componentInstance.outsideDays = 'collapsed';
     fixture.detectChanges();
     expect(dates[0]).not.toHaveCssClass('hidden');
-    expect(dates[0]).not.toHaveCssClass('collapsed');
-    expect(dates[1]).not.toHaveCssClass('hidden');
-    expect(dates[1]).toHaveCssClass('collapsed');
+    expect(dates[1]).toHaveCssClass('hidden');
+    expectDates(fixture.nativeElement, ['22', '']);
 
     fixture.componentInstance.outsideDays = 'hidden';
     fixture.detectChanges();
     expect(dates[0]).not.toHaveCssClass('hidden');
-    expect(dates[0]).not.toHaveCssClass('collapsed');
     expect(dates[1]).toHaveCssClass('hidden');
-    expect(dates[1]).not.toHaveCssClass('collapsed');
+    expectDates(fixture.nativeElement, ['22', '']);
+  });
+
+  it('should collapse weeks outside of current month', () => {
+    const fixture = createTestComponent(`
+        <template #tpl let-date="date">{{ date.day }}</template>
+        <ngb-datepicker-month-view [month]="monthCollapsedWeeks" [outsideDays]="outsideDays" [dayTemplate]="tpl">        
+        </ngb-datepicker-month-view>
+    `);
+
+    expectDates(fixture.nativeElement, ['4', '1', '2', '3', '4', '1', '2', '3']);
+
+    fixture.componentInstance.outsideDays = 'collapsed';
+    fixture.detectChanges();
+    expectDates(fixture.nativeElement, ['', '1', '2', '3', '4', '']);
+
+    fixture.componentInstance.outsideDays = 'hidden';
+    fixture.detectChanges();
+    expectDates(fixture.nativeElement, ['', '1', '2', '3', '4', '', '', '']);
+  });
+
+  it('should collapse weeks regardless of "showWeekNumbers" value', () => {
+    const fixture = createTestComponent(`
+        <template #tpl let-date="date">{{ date.day }}</template>
+        <ngb-datepicker-month-view [month]="monthCollapsedWeeks" outsideDays="collapsed" [dayTemplate]="tpl">        
+        </ngb-datepicker-month-view>
+    `);
+
+    expectDates(fixture.nativeElement, ['', '1', '2', '3', '4', '']);
+
+    fixture.componentInstance.showWeekNumbers = true;
+    fixture.detectChanges();
+    expectDates(fixture.nativeElement, ['', '1', '2', '3', '4', '']);
   });
 
 });
@@ -218,6 +249,35 @@ class TestComponent {
       number: 2,
       days: [{date: new NgbDate(2016, 7, 22), disabled: false}, {date: new NgbDate(2016, 8, 23), disabled: false}]
     }]
+  };
+
+  monthCollapsedWeeks: MonthViewModel = {
+    firstDate: new NgbDate(2016, 8, 1),
+    year: 2016,
+    number: 8,
+    weekdays: [1, 2],
+    weeks: [
+      // month: 7, 8
+      {
+        number: 2,
+        days: [{date: new NgbDate(2016, 7, 4), disabled: false}, {date: new NgbDate(2016, 8, 1), disabled: false}]
+      },
+      // month: 8, 8
+      {
+        number: 3,
+        days: [{date: new NgbDate(2016, 8, 2), disabled: false}, {date: new NgbDate(2016, 8, 3), disabled: false}]
+      },
+      // month: 8, 9
+      {
+        number: 3,
+        days: [{date: new NgbDate(2016, 8, 4), disabled: false}, {date: new NgbDate(2016, 9, 1), disabled: false}]
+      },
+      // month: 9, 9 -> to collapse
+      {
+        number: 4,
+        days: [{date: new NgbDate(2016, 9, 2), disabled: false}, {date: new NgbDate(2016, 9, 3), disabled: false}]
+      }
+    ]
   };
 
   showWeekdays = true;
