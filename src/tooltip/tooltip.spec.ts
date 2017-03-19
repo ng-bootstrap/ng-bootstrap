@@ -58,11 +58,14 @@ describe('ngb-tooltip', () => {
       expect(windowEl).toHaveCssClass(`tooltip-${defaultConfig.placement}`);
       expect(windowEl.textContent.trim()).toBe('Great tip!');
       expect(windowEl.getAttribute('role')).toBe('tooltip');
+      expect(windowEl.getAttribute('id')).toBe('ngb-tooltip-0');
       expect(windowEl.parentNode).toBe(fixture.nativeElement);
+      expect(directive.nativeElement.getAttribute('aria-describedby')).toBe('ngb-tooltip-0');
 
       directive.triggerEventHandler('mouseleave', {});
       fixture.detectChanges();
       expect(getWindow(fixture.nativeElement)).toBeNull();
+      expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
     });
 
     it('should open and close a tooltip - default settings and content from a template', () => {
@@ -77,11 +80,14 @@ describe('ngb-tooltip', () => {
       expect(windowEl).toHaveCssClass('tooltip-top');
       expect(windowEl.textContent.trim()).toBe('Hello, World!');
       expect(windowEl.getAttribute('role')).toBe('tooltip');
+      expect(windowEl.getAttribute('id')).toBe('ngb-tooltip-1');
       expect(windowEl.parentNode).toBe(fixture.nativeElement);
+      expect(directive.nativeElement.getAttribute('aria-describedby')).toBe('ngb-tooltip-1');
 
       directive.triggerEventHandler('mouseleave', {});
       fixture.detectChanges();
       expect(getWindow(fixture.nativeElement)).toBeNull();
+      expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
     });
 
     it('should open and close a tooltip - default settings, content from a template and context supplied', () => {
@@ -96,11 +102,14 @@ describe('ngb-tooltip', () => {
       expect(windowEl).toHaveCssClass('tooltip-top');
       expect(windowEl.textContent.trim()).toBe('Hello, John!');
       expect(windowEl.getAttribute('role')).toBe('tooltip');
+      expect(windowEl.getAttribute('id')).toBe('ngb-tooltip-2');
       expect(windowEl.parentNode).toBe(fixture.nativeElement);
+      expect(directive.nativeElement.getAttribute('aria-describedby')).toBe('ngb-tooltip-2');
 
       directive.triggerEventHandler('mouseleave', {});
       fixture.detectChanges();
       expect(getWindow(fixture.nativeElement)).toBeNull();
+      expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
     });
 
     it('should not open a tooltip if content is falsy', () => {
