@@ -5,6 +5,10 @@
   "keywords": "Angular 2 Angular2 Bootstrap autocomplete accordion alert buttons carousel collapse dropdown pagination popover progressbar rating tabset timepicker tooltip typeahead",
   "author": "https://github.com/ng-bootstrap/ng-bootstrap/graphs/contributors",
   "main": "dist/index.js",
+  "engines": {
+    "node": ">=6.9.5 <7.0.0",
+    "npm": ">=3.10.7 <4.0.0"
+  },
   "scripts": {
     "install": "node misc/validate-commit.install.js",
     "test": "karma start karma.conf.js",
