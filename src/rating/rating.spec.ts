@@ -274,6 +274,17 @@ describe('ngb-rating', () => {
     expect(getStateText(compiled)).toEqual(['x', 'x', 'o', 'o']);
   });
 
+  it('should give priority to a custom star template as property binding when both are present', () => {
+    const fixture = createTestComponent(`
+      <template #t let-fill="fill">{{ fill === 100 ? 'x' : 'o' }}</template>
+      <ngb-rating [starTemplate]="t" rate="2" max="4">
+        <template let-fill="fill">{{ fill === 100 ? '1' : '0' }}</template>
+      </ngb-rating>`);
+
+    const compiled = fixture.nativeElement;
+    expect(getStateText(compiled)).toEqual(['x', 'x', 'o', 'o']);
+  });
+
   it('should prefer explicitly set custom template to a child one', () => {
     const fixture = createTestComponent(`
       <template #t let-fill="fill">{{ fill === 100 ? 'a' : 'b' }}</template>

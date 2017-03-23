@@ -63,7 +63,7 @@ const NGB_RATING_VALUE_ACCESSOR = {
     <template ngFor [ngForOf]="contexts" let-index="index">
       <span class="sr-only">({{ index < nextRate ? '*' : ' ' }})</span>
       <span (mouseenter)="enter(index + 1)" (click)="update(index + 1)" [style.cursor]="readonly ? 'default' : 'pointer'">
-        <template [ngTemplateOutlet]="starTemplate || t" [ngOutletContext]="contexts[index]"></template>
+        <template [ngTemplateOutlet]="starTemplate || startTemplateChild || t" [ngOutletContext]="contexts[index]"></template>
       </span>
     </template>
   `,
@@ -73,6 +73,7 @@ export class NgbRating implements ControlValueAccessor,
     OnInit, OnChanges {
   contexts: StarTemplateContext[] = [];
   nextRate: number;
+  @ContentChild(TemplateRef) startTemplateChild: TemplateRef<StarTemplateContext>;
 
   /**
    * Maximal rating that can be given using this widget.
@@ -93,7 +94,7 @@ export class NgbRating implements ControlValueAccessor,
    * A template to override star display.
    * Alternatively put a <template> as the only child of <ngb-rating> element
    */
-  @Input() @ContentChild(TemplateRef) starTemplate: TemplateRef<StarTemplateContext>;
+  @Input() starTemplate: TemplateRef<StarTemplateContext>;
 
   /**
    * An event fired when a user is hovering over a given rating.
