@@ -104,7 +104,7 @@ gulp.task('npm', function() {
 
   targetPkgJson.peerDependencies = {};
   Object.keys(pkgJson.dependencies).forEach(function(dependency) {
-    targetPkgJson.peerDependencies[dependency] = `^${pkgJson.dependencies[dependency]}`;
+    targetPkgJson.peerDependencies[dependency] = `^${pkgJson.dependencies[dependency]} || ^4.0.0`;
   });
 
   return gulp.src('README.md')
