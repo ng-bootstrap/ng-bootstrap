@@ -1,3 +1,15 @@
+<a name="1.0.0-alpha.22"></a>
+# [1.0.0-alpha.22](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.21...1.0.0-alpha.22) (2017-03-24)
+
+This is a small release that contains peerDependencies adjustments needed to support Angular 4.x. This library 
+was tested with the latest Angular and now fully supports both 4.x and 2.x.
+
+### Bug Fixes
+
+* **datepicker:** handle collapsed days/weeks properly ([4f54bfa](https://github.com/ng-bootstrap/ng-bootstrap/commit/4f54bfa)), closes [#1377](https://github.com/ng-bootstrap/ng-bootstrap/issues/1377) [#1383](https://github.com/ng-bootstrap/ng-bootstrap/issues/1383)
+
+
+
 <a name="1.0.0-alpha.21"></a>
 # [1.0.0-alpha.21](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.20...1.0.0-alpha.21) (2017-03-15)
 
