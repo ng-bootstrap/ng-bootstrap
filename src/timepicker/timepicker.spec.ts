@@ -855,6 +855,65 @@ describe('ngb-timepicker', () => {
     });
   });
 
+  describe('size', () => {
+
+    it('should add appropriate CSS classes to butons and inputs when size is small', () => {
+      const html = `<ngb-timepicker size="small"></ngb-timepicker>`;
+
+      const fixture = createTestComponent(html);
+      const buttons = getButtons(fixture.nativeElement);
+      const inputs = getInputs(fixture.nativeElement);
+      for (let i = 0; i < buttons.length; i++) {
+        expect(buttons[i]).toHaveCssClass('btn-sm');
+      }
+      for (let i = 0; i < inputs.length; i++) {
+        expect(inputs[i]).toHaveCssClass('form-control-sm');
+      }
+    });
+
+    it('should add appropriate CSS classes to butons and inputs when size is large', () => {
+      const html = `<ngb-timepicker size="large"></ngb-timepicker>`;
+
+      const fixture = createTestComponent(html);
+      const buttons = getButtons(fixture.nativeElement);
+      const inputs = getInputs(fixture.nativeElement);
+      for (let i = 0; i < buttons.length; i++) {
+        expect(buttons[i]).toHaveCssClass('btn-lg');
+      }
+      for (let i = 0; i < inputs.length; i++) {
+        expect(inputs[i]).toHaveCssClass('form-control-lg');
+      }
+    });
+
+    it('should not add special CSS classes to butons and inputs when size is medium', () => {
+      const html = `<ngb-timepicker size="medium"></ngb-timepicker>`;
+
+      const fixture = createTestComponent(html);
+      const buttons = getButtons(fixture.nativeElement);
+      const inputs = getInputs(fixture.nativeElement);
+      for (let i = 0; i < buttons.length; i++) {
+        expect(buttons[i]).not.toHaveCssClass('btn-lg');
+      }
+      for (let i = 0; i < inputs.length; i++) {
+        expect(inputs[i]).not.toHaveCssClass('form-control-lg');
+      }
+    });
+
+    it('should not add special CSS classes to butons and inputs when no size is specified', () => {
+      const html = `<ngb-timepicker></ngb-timepicker>`;
+
+      const fixture = createTestComponent(html);
+      const buttons = getButtons(fixture.nativeElement);
+      const inputs = getInputs(fixture.nativeElement);
+      for (let i = 0; i < buttons.length; i++) {
+        expect(buttons[i]).not.toHaveCssClass('btn-lg');
+      }
+      for (let i = 0; i < inputs.length; i++) {
+        expect(inputs[i]).not.toHaveCssClass('form-control-lg');
+      }
+    });
+  });
+
   describe('Custom config', () => {
     let config: NgbTimepickerConfig;
 
