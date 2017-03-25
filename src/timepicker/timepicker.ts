@@ -58,14 +58,14 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
       <table>
         <tr *ngIf="spinners">
           <td class="text-center">
-            <button type="button" class="btn-link" (click)="changeHour(hourStep)"
+            <button type="button" class="btn-link" [ngClass]="setButtonSize()" (click)="changeHour(hourStep)"
               [disabled]="disabled" [class.disabled]="disabled">
               <span class="chevron"></span>
             </button>
           </td>
           <td>&nbsp;</td>
           <td class="text-center">
-            <button type="button" class="btn-link" (click)="changeMinute(minuteStep)"
+            <button type="button" class="btn-link" [ngClass]="setButtonSize()" (click)="changeMinute(minuteStep)"
               [disabled]="disabled" [class.disabled]="disabled">
                 <span class="chevron"></span>
             </button>
@@ -73,7 +73,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
           <template [ngIf]="seconds">
             <td>&nbsp;</td>
             <td class="text-center">
-              <button type="button" class="btn-link" (click)="changeSecond(secondStep)"
+              <button type="button" class="btn-link" [ngClass]="setButtonSize()" (click)="changeSecond(secondStep)"
                 [disabled]="disabled" [class.disabled]="disabled">
                 <span class="chevron"></span>
               </button>
@@ -107,21 +107,21 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
           <template [ngIf]="meridian">
             <td>&nbsp;&nbsp;</td>
             <td>
-              <button type="button" class="btn btn-outline-primary" [ngClass]="setMeridanSize()"
+              <button type="button" class="btn btn-outline-primary" [ngClass]="setButtonSize()"
                 (click)="toggleMeridian()">{{model.hour >= 12 ? 'PM' : 'AM'}}</button>
             </td>
           </template>
         </tr>
         <tr *ngIf="spinners">
           <td class="text-center">
-            <button type="button" class="btn-link" (click)="changeHour(-hourStep)"
+            <button type="button" class="btn-link" [ngClass]="setButtonSize()" (click)="changeHour(-hourStep)"
               [disabled]="disabled" [class.disabled]="disabled">
               <span class="chevron bottom"></span>
             </button>
           </td>
           <td>&nbsp;</td>
           <td class="text-center">
-            <button type="button" class="btn-link" (click)="changeMinute(-minuteStep)"
+            <button type="button" class="btn-link" [ngClass]="setButtonSize()" (click)="changeMinute(-minuteStep)"
               [disabled]="disabled" [class.disabled]="disabled">
               <span class="chevron bottom"></span>
             </button>
@@ -129,7 +129,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
           <template [ngIf]="seconds">
             <td>&nbsp;</td>
             <td class="text-center">
-              <button type="button" class="btn-link" (click)="changeSecond(-secondStep)"
+              <button type="button" class="btn-link" [ngClass]="setButtonSize()" (click)="changeSecond(-secondStep)"
                 [disabled]="disabled" [class.disabled]="disabled">
                 <span class="chevron bottom"></span>
               </button>
@@ -270,7 +270,7 @@ export class NgbTimepicker implements ControlValueAccessor,
 
   setFormControlSize() { return {'form-control-sm': this.size === 'small', 'form-control-lg': this.size === 'large'}; }
 
-  setMeridanSize() { return {'btn-sm': this.size === 'small', 'btn-lg': this.size === 'large'}; }
+  setButtonSize() { return {'btn-sm': this.size === 'small', 'btn-lg': this.size === 'large'}; }
 
 
   ngOnChanges(changes: SimpleChanges): void {
