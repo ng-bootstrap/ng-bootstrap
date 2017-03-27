@@ -54,10 +54,11 @@ function normalizeText(txt: string): string {
 }
 
 function expectSameValues(pagination: NgbPagination, config: NgbPaginationConfig) {
-  expect(pagination.disabled).toBe(config.disabled);
   expect(pagination.boundaryLinks).toBe(config.boundaryLinks);
   expect(pagination.directionLinks).toBe(config.directionLinks);
+  expect(pagination.disabled).toBe(config.disabled);
   expect(pagination.ellipses).toBe(config.ellipses);
+  expect(pagination.justify).toBe(config.justify);
   expect(pagination.maxSize).toBe(config.maxSize);
   expect(pagination.pageSize).toBe(config.pageSize);
   expect(pagination.rotate).toBe(config.rotate);
@@ -571,6 +572,25 @@ describe('ngb-pagination', () => {
            expect(buttons[i]).toHaveCssClass('disabled');
          }
        }));
+
+    it('should be left aligned by default', () => {
+      const html = '<ngb-pagination [collectionSize]="20" [page]="page"></ngb-pagination>';
+      const fixture = createTestComponent(html);
+      expect(fixture.nativeElement.querySelector('ul')).toHaveCssClass('justify-content-start');
+    });
+
+    it('should be center aligned when justify is set to "center"', () => {
+      const html = '<ngb-pagination [collectionSize]="20" [page]="page" justify="center"></ngb-pagination>';
+      const fixture = createTestComponent(html);
+      expect(fixture.nativeElement.querySelector('ul')).toHaveCssClass('justify-content-center');
+    });
+
+
+    it('should be right aligned when justify is set to "end"', () => {
+      const html = '<ngb-pagination [collectionSize]="20" [page]="page" justify="end"></ngb-pagination>';
+      const fixture = createTestComponent(html);
+      expect(fixture.nativeElement.querySelector('ul')).toHaveCssClass('justify-content-end');
+    });
   });
 
   describe('Custom config', () => {
@@ -583,6 +603,7 @@ describe('ngb-pagination', () => {
       config.boundaryLinks = true;
       config.directionLinks = false;
       config.ellipses = false;
+      config.justify = 'center';
       config.maxSize = 42;
       config.pageSize = 7;
       config.rotate = true;
@@ -600,10 +621,11 @@ describe('ngb-pagination', () => {
 
   describe('Custom config as provider', () => {
     let config = new NgbPaginationConfig();
-    config.disabled = true;
     config.boundaryLinks = true;
     config.directionLinks = false;
+    config.disabled = true;
     config.ellipses = false;
+    config.justify = 'center';
     config.maxSize = 42;
     config.pageSize = 7;
     config.rotate = true;
@@ -626,15 +648,15 @@ describe('ngb-pagination', () => {
 
 @Component({selector: 'test-cmp', template: ''})
 class TestComponent {
-  pageSize = 10;
-  collectionSize = 100;
-  page = 1;
   boundaryLinks = false;
+  collectionSize = 100;
   directionLinks = false;
-  size = '';
-  maxSize = 0;
   ellipses = true;
+  maxSize = 0;
+  page = 1;
+  pageSize = 10;
   rotate = false;
+  size = '';
 
   onPageChange = () => {};
 }

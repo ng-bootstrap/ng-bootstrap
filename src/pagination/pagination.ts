@@ -10,7 +10,7 @@ import {NgbPaginationConfig} from './pagination-config';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <nav>
-      <ul [class]="'pagination' + (size ? ' pagination-' + size : '')">
+      <ul [class]="'pagination' + (size ? ' pagination-' + size : '') + ' justify-content-' + justify">
         <li *ngIf="boundaryLinks" class="page-item" 
           [class.disabled]="!hasPrevious() || disabled">
           <a aria-label="First" class="page-link" href (click)="!!selectPage(1)" [attr.tabindex]="hasPrevious() ? null : '-1'">
@@ -49,13 +49,8 @@ import {NgbPaginationConfig} from './pagination-config';
   `
 })
 export class NgbPagination implements OnChanges {
-  pageCount = 0;
   pages: number[] = [];
-
-  /**
-   * Whether to disable buttons from user input
-   */
-  @Input() disabled: boolean;
+  pageCount = 0;
 
   /**
    *  Whether to show the "First" and "Last" page links
@@ -63,9 +58,19 @@ export class NgbPagination implements OnChanges {
   @Input() boundaryLinks: boolean;
 
   /**
+   *  Number of items in collection.
+   */
+  @Input() collectionSize: number;
+
+  /**
    *  Whether to show the "Next" and "Previous" page links
    */
   @Input() directionLinks: boolean;
+
+  /**
+   * Whether to disable buttons from user input
+   */
+  @Input() disabled: boolean;
 
   /**
    *  Whether to show ellipsis symbols and first/last page numbers when maxSize > number of pages
@@ -73,15 +78,9 @@ export class NgbPagination implements OnChanges {
   @Input() ellipses: boolean;
 
   /**
-   *  Whether to rotate pages when maxSize > number of pages.
-   *  Current page will be in the middle
+   * Horizontal positioning with Flex justification: start, center, or end
    */
-  @Input() rotate: boolean;
-
-  /**
-   *  Number of items in collection.
-   */
-  @Input() collectionSize: number;
+  @Input() justify: 'start' | 'center' | 'end';
 
   /**
    *  Maximum number of pages to display.
@@ -99,25 +98,32 @@ export class NgbPagination implements OnChanges {
   @Input() pageSize: number;
 
   /**
-   *  An event fired when the page is changed.
-   *  Event's payload equals to the newly selected page.
+   *  Whether to rotate pages when maxSize > number of pages.
+   *  Current page will be in the middle
    */
-  @Output() pageChange = new EventEmitter<number>(true);
+  @Input() rotate: boolean;
 
   /**
    * Pagination display size: small or large
    */
   @Input() size: 'sm' | 'lg';
 
+  /**
+   *  An event fired when the page is changed.
+   *  Event's payload equals to the newly selected page.
+   */
+  @Output() pageChange = new EventEmitter<number>(true);
+
   constructor(config: NgbPaginationConfig) {
-    this.disabled = config.disabled;
     this.boundaryLinks = config.boundaryLinks;
     this.directionLinks = config.directionLinks;
+    this.disabled = config.disabled;
     this.ellipses = config.ellipses;
+    this.justify = config.justify;
     this.maxSize = config.maxSize;
-    this.pageSize = config.pageSize;
     this.rotate = config.rotate;
     this.size = config.size;
+    this.pageSize = config.pageSize;
   }
 
   hasPrevious(): boolean { return this.page > 1; }
