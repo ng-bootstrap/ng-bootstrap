@@ -5,7 +5,9 @@
         {{ demoTitle }}
       </span>
       <div class="float-right">
-        <img role="button" src="img/code-icon.png" (click)="toggleCode()" title="Show source code"/>
+        <button class="btn-link" (click)="toggleCode()" title="{{showCode ? 'Hide' : 'Show'}} source code">
+          <img src="img/code-icon.png" height="24" width="24"/>
+        </button>
         <a target="_blank" href="app/components/{{component}}/demos/{{demo}}/plnkr.html" title="Edit in Plnkr" >
           <img src="img/plunker-icon.png" height="24" width="24"/>
         </a>
