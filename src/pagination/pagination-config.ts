@@ -15,4 +15,9 @@ export class NgbPaginationConfig {
   pageSize = 10;
   rotate = false;
   size: 'sm' | 'lg';
+
+  ariaFirstPageLabel: string = 'First';
+  ariaPreviousPageLabel: string = 'Previous';
+  ariaNextPageLabel: string = 'Next';
+  ariaLastPageLabel: string = 'Last';
 }
