@@ -78,7 +78,6 @@ export interface NgbTabChangeEvent {
 @Component({
   selector: 'ngb-tabset',
   exportAs: 'ngbTabset',
-  host: {'role': 'tabpanel'},
   template: `
     <ul [class]="'nav nav-' + type + ' justify-content-' + justify" role="tablist">
       <li class="nav-item" *ngFor="let tab of tabs">

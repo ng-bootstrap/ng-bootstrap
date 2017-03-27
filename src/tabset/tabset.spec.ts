@@ -10,10 +10,6 @@ import {NgbTabset} from './tabset';
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
-function getTabset(nativeEl: HTMLElement) {
-  return nativeEl.querySelector('ngb-tabset');
-}
-
 function getTabTitles(nativeEl: HTMLElement) {
   return nativeEl.querySelectorAll('.nav-link');
 }
@@ -93,11 +89,9 @@ describe('ngb-tabset', () => {
     `);
 
     const compiled: HTMLElement = fixture.nativeElement;
-    const tabset = getTabset(compiled);
     const tabTitles = getTabTitles(compiled);
     const tabContent = getTabContent(compiled);
 
-    expect(tabset.getAttribute('role')).toBe('tabpanel');
     expect(tabTitles[0].getAttribute('role')).toBe('tab');
     expect(tabTitles[0].getAttribute('aria-expanded')).toBe('true');
     expect(tabTitles[1].getAttribute('aria-expanded')).toBe('false');
