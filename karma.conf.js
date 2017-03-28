@@ -7,22 +7,8 @@ module.exports = function(config) {
 
     files: [
       // For travis
-      // IE9, IE10 and IE11 polyfills
-      'node_modules/core-js/es6/symbol.js',
-      'node_modules/core-js/es6/object.js',
-      'node_modules/core-js/es6/function.js',
-      'node_modules/core-js/es6/parse-int.js',
-      'node_modules/core-js/es6/parse-float.js',
-      'node_modules/core-js/es6/number.js',
-      'node_modules/core-js/es6/math.js',
-      'node_modules/core-js/es6/string.js',
-      'node_modules/core-js/es6/date.js',
-      'node_modules/core-js/es6/array.js',
-      'node_modules/core-js/es6/regexp.js',
-      'node_modules/core-js/es6/map.js',
-      'node_modules/core-js/es6/set.js',
-      'node_modules/core-js/es6/reflect.js',
-      'node_modules/core-js/es7/reflect.js',
+      'node_modules/core-js/client/shim.js',
+ -    'node_modules/ie-shim/index.js',
       // paths loaded by Karma
       'node_modules/systemjs/dist/system-polyfills.js',
       'node_modules/systemjs/dist/system.src.js',
