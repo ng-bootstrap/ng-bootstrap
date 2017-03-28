@@ -18,32 +18,6 @@ System.config({
   map: {
     // our temp folder
     temp: 'temp',
-    // IE9, IE10 and IE11 polyfills
-    'core-js/es6/symbol': 'npm:core-js/es6/symbol.js',
-    'core-js/es6/object': 'npm:core-js/es6/object.js',
-    'core-js/es6/function': 'npm:core-js/es6/function.js',
-    'core-js/es6/parse-int': 'npm:core-js/es6/parse-int.js',
-    'core-js/es6/parse-float': 'npm:core-js/es6/parse-float.js',
-    'core-js/es6/number': 'npm:core-js/es6/number.js',
-    'core-js/es6/math': 'npm:core-js/es6/math.js',
-    'core-js/es6/string': 'npm:core-js/es6/string.js',
-    'core-js/es6/date': 'npm:core-js/es6/date.js',
-    'core-js/es6/array': 'npm:core-js/es6/array.js',
-    'core-js/es6/regexp': 'npm:core-js/es6/regexp.js',
-    'core-js/es6/map': 'npm:core-js/es6/map.js',
-    'core-js/es6/set': 'npm:core-js/es6/set.js',
-    // polyfills
-    'core-js/es6/reflect': 'npm:core-js/es6/reflect.js',
-    'core-js/es7/reflect': 'npm:core-js/es7/reflect.js',
-    'zone.js/dist/zone': 'npm:zone.js/dist/zone.js',
-    // override polyfills for tests
-    'zone.js/dist/long-stack-trace-zone': 'npm:zone.js/dist/long-stack-trace-zone.js',
-    'zone.js/dist/proxy': 'npm:zone.js/dist/proxy.js',
-    'zone.js/dist/sync-test': 'npm:zone.js/dist/sync-test.js',
-    'zone.js/dist/jasmine-patch': 'npm:zone.js/dist/jasmine-patch.js',
-    'zone.js/dist/async-test': 'npm:zone.js/dist/async-test.js',
-    'zone.js/dist/fake-async-test': 'npm:zone.js/dist/fake-async-test.js',
-
     // angular bundles
     '@angular/core': 'npm:@angular/core/bundles/core.umd.js',
     '@angular/common': 'npm:@angular/common/bundles/common.umd.js',
