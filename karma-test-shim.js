@@ -18,6 +18,16 @@ System.config({
   map: {
     // our temp folder
     temp: 'temp',
+    // polyfills
+    'core-js/es6/reflect': 'npm:core-js/es6/reflect.js',
+    'core-js/es7/reflect': 'npm:core-js/es7/reflect.js',
+    'zone.js/dist/zone': 'npm:zone.js/dist/zone.js',
+    'zone.js/dist/long-stack-trace-zone': 'npm:zone.js/dist/long-stack-trace-zone.js',
+    'zone.js/dist/proxy': 'npm:zone.js/dist/proxy.js',
+    'zone.js/dist/sync-test': 'npm:zone.js/dist/sync-test.js',
+    'zone.js/dist/jasmine-patch': 'npm:zone.js/dist/jasmine-patch.js',
+    'zone.js/dist/async-test': 'npm:zone.js/dist/async-test.js',
+    'zone.js/dist/fake-async-test': 'npm:zone.js/dist/fake-async-test.js',
 
     // angular bundles
     '@angular/core': 'npm:@angular/core/bundles/core.umd.js',
