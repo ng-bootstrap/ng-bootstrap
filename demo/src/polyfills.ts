@@ -20,6 +20,9 @@ import 'core-js/es7/reflect';
 /** Zone JS is required by Angular itself. **/
 import 'zone.js/dist/zone';
 
+declare var require: any;
+declare var process: any;
+
 if (process.env.ENV === 'build') {
   // Production
 
@@ -27,4 +30,9 @@ if (process.env.ENV === 'build') {
   // Development
   Error['stackTraceLimit'] = Infinity;
   require('zone.js/dist/long-stack-trace-zone');
+  require('zone.js/dist/proxy.js');
+  require('zone.js/dist/sync-test');
+  require('zone.js/dist/jasmine-patch');
+  require('zone.js/dist/async-test');
+  require('zone.js/dist/fake-async-test');
 }
