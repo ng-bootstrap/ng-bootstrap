@@ -18,6 +18,7 @@ System.config({
   map: {
     // our temp folder
     temp: 'temp',
+
     // angular bundles
     '@angular/core': 'npm:@angular/core/bundles/core.umd.js',
     '@angular/common': 'npm:@angular/common/bundles/common.umd.js',
@@ -49,7 +50,7 @@ System.config({
 System.import('@angular/core/testing')
     .then(function(coreTesting) {
       return System.import('@angular/platform-browser-dynamic/testing').then(function(browserTesting) {
-        coreTesting.getTestBed().initTestEnvironment(
+        coreTesting.TestBed.initTestEnvironment(
             browserTesting.BrowserDynamicTestingModule, browserTesting.platformBrowserDynamicTesting());
       });
     })
