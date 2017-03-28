@@ -98,7 +98,7 @@ module.exports = function makeWebpackConfig() {
       {
         test: /\.css$/,
         exclude: root('demo', 'src', 'app'),
-        loader: ExtractTextPlugin.extract({fallbackLoader: 'style-loader', loader: 'css-loader?sourceMap-loader!postcss-loader'})
+        loader: ExtractTextPlugin.extract({fallback: 'style-loader', loader: 'css-loader?sourceMap-loader!postcss-loader'})
       },
       // all css required in src/app files will be merged in js files
       {test: /\.css$/, include: root('demo', 'src', 'app'), loader: 'raw-loader!postcss-loader'},
@@ -109,7 +109,7 @@ module.exports = function makeWebpackConfig() {
       {
         test: /\.scss$/,
         exclude: root('src', 'app'),
-        loader: ExtractTextPlugin.extract({fallbackLoader: 'style-loader', loader: 'css-loader?sourceMap-loader!postcss-loader!sass-loader'})
+        loader: ExtractTextPlugin.extract({fallback: 'style-loader', loader: 'css-loader?sourceMap-loader!postcss-loader!sass-loader'})
       },
       // all css required in src/app files will be merged in js files
       {test: /\.scss$/, exclude: root('demo', 'src', 'style'), loader: 'raw-loader!postcss-loader!sass-loader'},
