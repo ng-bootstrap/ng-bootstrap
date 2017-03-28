@@ -8,7 +8,7 @@ describe('ngb-modal-dialog', () => {
   let fixture: ComponentFixture<NgbModalWindow>;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({declarations: [NgbModalWindow]});
+    TestBed.configureTestingModule({declarations: [NgbModalWindow]}).compileComponents();
     fixture = TestBed.createComponent(NgbModalWindow);
   });
 

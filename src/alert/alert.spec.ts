@@ -20,8 +20,10 @@ function getCloseButton(element: HTMLElement): HTMLButtonElement {
 
 describe('ngb-alert', () => {
 
-  beforeEach(
-      () => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbAlertModule.forRoot()]}); });
+  beforeEach(() => {
+    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbAlertModule.forRoot()]})
+        .compileComponents();
+  });
 
   it('should initialize inputs with default values', () => {
     const defaultConfig = new NgbAlertConfig();
@@ -58,7 +60,7 @@ describe('ngb-alert', () => {
   describe('Custom config', () => {
     let config: NgbAlertConfig;
 
-    beforeEach(() => { TestBed.configureTestingModule({imports: [NgbAlertModule.forRoot()]}); });
+    beforeEach(() => { TestBed.configureTestingModule({imports: [NgbAlertModule.forRoot()]}).compileComponents(); });
 
     beforeEach(inject([NgbAlertConfig], (c: NgbAlertConfig) => {
       config = c;
@@ -82,8 +84,10 @@ describe('ngb-alert', () => {
     config.type = 'success';
 
     beforeEach(() => {
-      TestBed.configureTestingModule(
-          {imports: [NgbAlertModule.forRoot()], providers: [{provide: NgbAlertConfig, useValue: config}]});
+      TestBed
+          .configureTestingModule(
+              {imports: [NgbAlertModule.forRoot()], providers: [{provide: NgbAlertConfig, useValue: config}]})
+          .compileComponents();
     });
 
     it('should initialize inputs with provided config as provider', () => {

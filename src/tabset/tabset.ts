@@ -17,7 +17,7 @@ let nextId = 0;
 /**
  * This directive should be used to wrap tab titles that need to contain HTML markup or other directives.
  */
-@Directive({selector: 'template[ngbTabTitle]'})
+@Directive({selector: 'ng-template[ngbTabTitle]'})
 export class NgbTabTitle {
   constructor(public templateRef: TemplateRef<any>) {}
 }
@@ -25,7 +25,7 @@ export class NgbTabTitle {
 /**
  * This directive must be used to wrap content to be displayed in a tab.
  */
-@Directive({selector: 'template[ngbTabContent]'})
+@Directive({selector: 'ng-template[ngbTabContent]'})
 export class NgbTabContent {
   constructor(public templateRef: TemplateRef<any>) {}
 }

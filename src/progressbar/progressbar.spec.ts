@@ -86,7 +86,8 @@ describe('ngb-progressbar', () => {
   describe('UI logic', () => {
 
     beforeEach(() => {
-      TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbProgressbarModule.forRoot()]});
+      TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbProgressbarModule.forRoot()]})
+          .compileComponents();
     });
 
     it('accepts a value and respond to value changes', () => {
@@ -208,7 +209,8 @@ describe('ngb-progressbar', () => {
   describe('Custom config', () => {
     let config: NgbProgressbarConfig;
 
-    beforeEach(() => { TestBed.configureTestingModule({imports: [NgbProgressbarModule.forRoot()]}); });
+    beforeEach(
+        () => { TestBed.configureTestingModule({imports: [NgbProgressbarModule.forRoot()]}).compileComponents(); });
 
     beforeEach(inject([NgbProgressbarConfig], (c: NgbProgressbarConfig) => {
       config = c;
@@ -238,8 +240,12 @@ describe('ngb-progressbar', () => {
     config.type = 'success';
 
     beforeEach(() => {
-      TestBed.configureTestingModule(
-          {imports: [NgbProgressbarModule.forRoot()], providers: [{provide: NgbProgressbarConfig, useValue: config}]});
+      TestBed
+          .configureTestingModule({
+            imports: [NgbProgressbarModule.forRoot()],
+            providers: [{provide: NgbProgressbarConfig, useValue: config}]
+          })
+          .compileComponents();
     });
 
     it('should initialize inputs with provided config as provider', () => {

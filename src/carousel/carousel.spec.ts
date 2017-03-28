@@ -1,4 +1,4 @@
-import {fakeAsync, discardPeriodicTasks, tick, TestBed, ComponentFixture, inject} from '@angular/core/testing';
+import {fakeAsync, discardPeriodicTasks, tick, TestBed, async, ComponentFixture, inject} from '@angular/core/testing';
 import {createGenericTestComponent} from '../test/common';
 
 import {By} from '@angular/platform-browser';
@@ -31,7 +31,8 @@ function expectActiveSlides(nativeEl: HTMLDivElement, active: boolean[]) {
 
 describe('ngb-carousel', () => {
   beforeEach(() => {
-    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbCarouselModule.forRoot()]});
+    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbCarouselModule.forRoot()]})
+        .compileComponents();
   });
 
   it('should initialize inputs with default values', () => {
@@ -375,7 +376,7 @@ describe('ngb-carousel', () => {
   describe('Custom config', () => {
     let config: NgbCarouselConfig;
 
-    beforeEach(() => { TestBed.configureTestingModule({imports: [NgbCarouselModule.forRoot()]}); });
+    beforeEach(() => { TestBed.configureTestingModule({imports: [NgbCarouselModule.forRoot()]}).compileComponents(); });
 
     beforeEach(inject([NgbCarouselConfig], (c: NgbCarouselConfig) => {
       config = c;
@@ -402,8 +403,10 @@ describe('ngb-carousel', () => {
     config.keyboard = false;
 
     beforeEach(() => {
-      TestBed.configureTestingModule(
-          {imports: [NgbCarouselModule.forRoot()], providers: [{provide: NgbCarouselConfig, useValue: config}]});
+      TestBed
+          .configureTestingModule(
+              {imports: [NgbCarouselModule.forRoot()], providers: [{provide: NgbCarouselConfig, useValue: config}]})
+          .compileComponents();
     });
 
     it('should initialize inputs with provided config as provider', () => {

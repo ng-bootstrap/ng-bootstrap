@@ -16,7 +16,7 @@ describe('ngb-collapse', () => {
   let html = `<div [ngbCollapse]="collapsed">Some content</div>`;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbCollapseModule]});
+    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbCollapseModule]}).compileComponents();
     TestBed.overrideComponent(TestComponent, {set: {template: html}});
   });
 

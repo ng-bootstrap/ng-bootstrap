@@ -14,7 +14,8 @@ describe('ngb-typeahead-window', () => {
 
   beforeEach(() => {
     TestBed.overrideModule(NgbTypeaheadModule, {set: {exports: [NgbTypeaheadWindow]}});
-    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbTypeaheadModule.forRoot()]});
+    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbTypeaheadModule.forRoot()]})
+        .compileComponents();
   });
 
   describe('display', () => {

@@ -52,8 +52,10 @@ function getButton(nativeEl: HTMLElement) {
 }
 
 describe('ngb-tabset', () => {
-  beforeEach(
-      () => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbTabsetModule.forRoot()]}); });
+  beforeEach(() => {
+    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbTabsetModule.forRoot()]})
+        .compileComponents();
+  });
 
   it('should initialize inputs with default values', () => {
     const defaultConfig = new NgbTabsetConfig();
@@ -418,7 +420,7 @@ describe('ngb-tabset', () => {
   describe('Custom config', () => {
     let config: NgbTabsetConfig;
 
-    beforeEach(() => { TestBed.configureTestingModule({imports: [NgbTabsetModule.forRoot()]}); });
+    beforeEach(() => { TestBed.configureTestingModule({imports: [NgbTabsetModule.forRoot()]}).compileComponents(); });
 
     beforeEach(inject([NgbTabsetConfig], (c: NgbTabsetConfig) => {
       config = c;
@@ -439,8 +441,10 @@ describe('ngb-tabset', () => {
     config.type = 'pills';
 
     beforeEach(() => {
-      TestBed.configureTestingModule(
-          {imports: [NgbTabsetModule.forRoot()], providers: [{provide: NgbTabsetConfig, useValue: config}]});
+      TestBed
+          .configureTestingModule(
+              {imports: [NgbTabsetModule.forRoot()], providers: [{provide: NgbTabsetConfig, useValue: config}]})
+          .compileComponents();
     });
 
     it('should initialize inputs with provided config as provider', () => {

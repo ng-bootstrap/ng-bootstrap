@@ -39,8 +39,10 @@ function getLabel(nativeEl: HTMLElement, idx: number): HTMLElement {
 
 describe('NgbActiveLabel', () => {
   beforeEach(() => {
-    TestBed.configureTestingModule(
-        {declarations: [TestComponent], imports: [NgbButtonsModule, FormsModule, ReactiveFormsModule]});
+    TestBed
+        .configureTestingModule(
+            {declarations: [TestComponent], imports: [NgbButtonsModule, FormsModule, ReactiveFormsModule]})
+        .compileComponents();
   });
 
   it('should not touch active class on labels not part of a group', () => {
@@ -60,8 +62,10 @@ describe('ngbRadioGroup', () => {
     </div>`;
 
   beforeEach(() => {
-    TestBed.configureTestingModule(
-        {declarations: [TestComponent], imports: [NgbButtonsModule, FormsModule, ReactiveFormsModule]});
+    TestBed
+        .configureTestingModule(
+            {declarations: [TestComponent], imports: [NgbButtonsModule, FormsModule, ReactiveFormsModule]})
+        .compileComponents();
     TestBed.overrideComponent(TestComponent, {set: {template: defaultHtml}});
   });
 
@@ -279,7 +283,7 @@ describe('ngbRadioGroup', () => {
           <div ngbRadioGroup [(ngModel)]="model" name="control" required>
             <label class="btn">
               <input type="radio" value="foo"/>
-            </label>          
+            </label>
           </div>
         </form>`;
 
@@ -303,7 +307,7 @@ describe('ngbRadioGroup', () => {
           <div ngbRadioGroup formControlName="control">
             <label class="btn">
               <input type="radio" value="foo"/>
-            </label>          
+            </label>
           </div>
         </form>`;
 
@@ -324,7 +328,7 @@ describe('ngbRadioGroup', () => {
         <div ngbRadioGroup formControlName="control">
           <label class="btn">
             <input type="radio" value="foo"/>
-          </label>          
+          </label>
         </div>
       </form>`;
 
@@ -345,7 +349,7 @@ describe('ngbRadioGroup', () => {
         <div ngbRadioGroup [(ngModel)]="model" name="control" [disabled]="disabled">
           <label class="btn">
             <input type="radio" value="foo"/>
-          </label>          
+          </label>
         </div>
       </form>`;
 
@@ -374,7 +378,7 @@ describe('ngbRadioGroup', () => {
         <div ngbRadioGroup [(ngModel)]="model" name="control">
           <label class="btn">
             <input type="radio" value="foo" [disabled]="disabled"/>
-          </label>          
+          </label>
         </div>
       </form>`;
 
@@ -404,7 +408,7 @@ describe('ngbRadioGroup', () => {
         <div ngbRadioGroup [(ngModel)]="model" name="control" [disabled]="groupDisabled">
           <label class="btn">
             <input type="radio" value="foo" [disabled]="disabled"/>
-          </label>          
+          </label>
         </div>
       </form>`;
 
@@ -432,7 +436,7 @@ describe('ngbRadioGroup', () => {
         <div ngbRadioGroup [(ngModel)]="model" name="control" [disabled]="groupDisabled">
           <label class="btn">
             <input type="radio" value="foo" [disabled]="disabled"/>
-          </label>          
+          </label>
         </div>
       </form>`;
 

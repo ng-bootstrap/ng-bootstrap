@@ -16,7 +16,7 @@ let nextId = 0;
 /**
  * Represents an individual slide to be used within a carousel.
  */
-@Directive({selector: 'template[ngbSlide]'})
+@Directive({selector: 'ng-template[ngbSlide]'})
 export class NgbSlide {
   /**
    * Unique slide identifier. Must be unique for the entire document for proper accessibility support.

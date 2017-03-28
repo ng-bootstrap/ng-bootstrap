@@ -56,8 +56,10 @@ function getStateText(compiled) {
 
 describe('ngb-rating', () => {
   beforeEach(() => {
-    TestBed.configureTestingModule(
-        {declarations: [TestComponent], imports: [NgbRatingModule.forRoot(), FormsModule, ReactiveFormsModule]});
+    TestBed
+        .configureTestingModule(
+            {declarations: [TestComponent], imports: [NgbRatingModule.forRoot(), FormsModule, ReactiveFormsModule]})
+        .compileComponents();
   });
 
   it('should initialize inputs with default values', () => {
@@ -537,7 +539,7 @@ describe('ngb-rating', () => {
   describe('Custom config', () => {
     let config: NgbRatingConfig;
 
-    beforeEach(() => { TestBed.configureTestingModule({imports: [NgbRatingModule.forRoot()]}); });
+    beforeEach(() => { TestBed.configureTestingModule({imports: [NgbRatingModule.forRoot()]}).compileComponents(); });
 
     beforeEach(inject([NgbRatingConfig], (c: NgbRatingConfig) => {
       config = c;
@@ -561,8 +563,10 @@ describe('ngb-rating', () => {
     config.readonly = true;
 
     beforeEach(() => {
-      TestBed.configureTestingModule(
-          {imports: [NgbRatingModule.forRoot()], providers: [{provide: NgbRatingConfig, useValue: config}]});
+      TestBed
+          .configureTestingModule(
+              {imports: [NgbRatingModule.forRoot()], providers: [{provide: NgbRatingConfig, useValue: config}]})
+          .compileComponents();
     });
 
     it('should initialize inputs with provided config as provider', () => {

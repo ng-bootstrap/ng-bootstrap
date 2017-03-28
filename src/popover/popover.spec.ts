@@ -21,7 +21,8 @@ const createOnPushTestComponent =
 
 describe('ngb-popover-window', () => {
   beforeEach(() => {
-    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbPopoverModule.forRoot()]});
+    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbPopoverModule.forRoot()]})
+        .compileComponents();
   });
 
   it('should render popover on top by default', () => {
@@ -46,11 +47,13 @@ describe('ngb-popover-window', () => {
 describe('ngb-popover', () => {
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [TestComponent, TestOnPushComponent, DestroyableCmpt],
-      imports: [NgbPopoverModule.forRoot()],
-      providers: [SpyService]
-    });
+    TestBed
+        .configureTestingModule({
+          declarations: [TestComponent, TestOnPushComponent, DestroyableCmpt],
+          imports: [NgbPopoverModule.forRoot()],
+          providers: [SpyService]
+        })
+        .compileComponents();
   });
 
   function getWindow(element) { return element.querySelector('ngb-popover-window'); }
@@ -156,8 +159,8 @@ describe('ngb-popover', () => {
     });
 
     it('should not leave dangling popovers in the DOM', () => {
-      const fixture =
-          createTestComponent(`<ng-template [ngIf]="show"><div ngbPopover="Great tip!" popoverTitle="Title"></div></ng-template>`);
+      const fixture = createTestComponent(
+          `<ng-template [ngIf]="show"><div ngbPopover="Great tip!" popoverTitle="Title"></div></ng-template>`);
       const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
       directive.triggerEventHandler('click', {});
@@ -316,7 +319,8 @@ describe('ngb-popover', () => {
 
   describe('triggers', () => {
     beforeEach(() => {
-      TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbPopoverModule.forRoot()]});
+      TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbPopoverModule.forRoot()]})
+          .compileComponents();
     });
 
     it('should support toggle triggers', () => {
@@ -428,7 +432,7 @@ describe('ngb-popover', () => {
     let config: NgbPopoverConfig;
 
     beforeEach(() => {
-      TestBed.configureTestingModule({imports: [NgbPopoverModule.forRoot()]});
+      TestBed.configureTestingModule({imports: [NgbPopoverModule.forRoot()]}).compileComponents();
       TestBed.overrideComponent(TestComponent, {set: {template: `<div ngbPopover="Great tip!"></div>`}});
     });
 
@@ -457,8 +461,10 @@ describe('ngb-popover', () => {
     config.triggers = 'hover';
 
     beforeEach(() => {
-      TestBed.configureTestingModule(
-          {imports: [NgbPopoverModule.forRoot()], providers: [{provide: NgbPopoverConfig, useValue: config}]});
+      TestBed
+          .configureTestingModule(
+              {imports: [NgbPopoverModule.forRoot()], providers: [{provide: NgbPopoverConfig, useValue: config}]})
+          .compileComponents();
     });
 
     it('should initialize inputs with provided config as provider', () => {

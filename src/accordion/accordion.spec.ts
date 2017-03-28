@@ -52,7 +52,8 @@ describe('ngb-accordion', () => {
   `;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbAccordionModule.forRoot()]});
+    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbAccordionModule.forRoot()]})
+        .compileComponents();
     TestBed.overrideComponent(TestComponent, {set: {template: html}});
   });
 
@@ -358,7 +359,8 @@ describe('ngb-accordion', () => {
   describe('Custom config', () => {
     let config: NgbAccordionConfig;
 
-    beforeEach(() => { TestBed.configureTestingModule({imports: [NgbAccordionModule.forRoot()]}); });
+    beforeEach(
+        () => { TestBed.configureTestingModule({imports: [NgbAccordionModule.forRoot()]}).compileComponents(); });
 
     beforeEach(inject([NgbAccordionConfig], (c: NgbAccordionConfig) => {
       config = c;
@@ -382,8 +384,10 @@ describe('ngb-accordion', () => {
     config.type = 'success';
 
     beforeEach(() => {
-      TestBed.configureTestingModule(
-          {imports: [NgbAccordionModule.forRoot()], providers: [{provide: NgbAccordionConfig, useValue: config}]});
+      TestBed
+          .configureTestingModule(
+              {imports: [NgbAccordionModule.forRoot()], providers: [{provide: NgbAccordionConfig, useValue: config}]})
+          .compileComponents();
     });
 
     it('should initialize inputs with provided config as provider', () => {

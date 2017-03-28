@@ -26,7 +26,8 @@ describe('ngb-datepicker-navigation-select', () => {
 
   beforeEach(() => {
     TestBed.overrideModule(NgbDatepickerModule, {set: {exports: [NgbDatepickerNavigationSelect]}});
-    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbDatepickerModule.forRoot()]});
+    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbDatepickerModule.forRoot()]})
+        .compileComponents();
   });
 
   it('should generate month options correctly', () => {
