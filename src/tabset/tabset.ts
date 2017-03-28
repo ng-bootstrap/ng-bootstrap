@@ -83,21 +83,21 @@ export interface NgbTabChangeEvent {
       <li class="nav-item" *ngFor="let tab of tabs">
         <a [id]="tab.id" class="nav-link" [class.active]="tab.id === activeId" [class.disabled]="tab.disabled"
           href (click)="!!select(tab.id)" role="tab" [attr.aria-controls]="tab.id + '-panel'" [attr.aria-expanded]="tab.id === activeId">
-          {{tab.title}}<template [ngTemplateOutlet]="tab.titleTpl?.templateRef"></template>
+          {{tab.title}}<ng-template [ngTemplateOutlet]="tab.titleTpl?.templateRef"></ng-template>
         </a>
       </li>
     </ul>
     <div class="tab-content">
-      <template ngFor let-tab [ngForOf]="tabs">
+      <ng-template ngFor let-tab [ngForOf]="tabs">
         <div
           class="tab-pane {{tab.id === activeId ? 'active' : null}}"
           *ngIf="!destroyOnHide || tab.id === activeId"
           role="tabpanel"
           [attr.aria-labelledby]="tab.id" id="{{tab.id}}-panel"
           [attr.aria-expanded]="tab.id === activeId">
-          <template [ngTemplateOutlet]="tab.contentTpl.templateRef"></template>
+          <ng-template [ngTemplateOutlet]="tab.contentTpl.templateRef"></ng-template>
         </div>
-      </template>
+      </ng-template>
     </div>
   `
 })
