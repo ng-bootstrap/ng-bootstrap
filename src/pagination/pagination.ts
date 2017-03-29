@@ -34,8 +34,8 @@ import {NgbPaginationConfig} from './pagination-config';
           ...
         </a>
         <a *ngIf="!isEllipsis(pageNumber)" class="page-link" href (click)="!!selectPage(pageNumber)"
-          [attr.aria-current]="pageNumber === page" [attr.tabindex]="(disabled ? '-1' : undefined)" [attr.aria-disabled]="disabled"
-          [attr.aria-label]="'Page ' + pageNumber + (pageNumber === page ? ' (current)' : '')">
+          [attr.aria-current]="(pageNumber === page ? true : undefined)" [attr.aria-disabled]="disabled"
+          [attr.aria-label]="'Page '+pageNumber+(pageNumber===page?' (current)':'')" [attr.tabindex]="(disabled ? '-1' : undefined)">
           {{pageNumber}}
         </a>
       </li>

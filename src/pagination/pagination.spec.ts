@@ -19,21 +19,29 @@ function expectPages(nativeEl: HTMLElement, pagesDef: string[]): void {
     let pageDef = pagesDef[i];
     let classIndicator = pageDef.charAt(0);
 
-    if (classIndicator === '+') {
+    if (classIndicator === '+') { // active
       expect(pages[i]).toHaveCssClass('active');
       expect(pages[i]).not.toHaveCssClass('disabled');
       expect(pages[i].querySelector('a').getAttribute('aria-label'))
           .toEqual('Page ' + pageDef.substr(1) + ' (current)');
       expect(pages[i].querySelector('a').getAttribute('aria-current')).toBeTruthy();
-    } else if (classIndicator === '-') {
+    } else if (classIndicator === '-') { // disabled
       expect(pages[i]).not.toHaveCssClass('active');
       expect(pages[i]).toHaveCssClass('disabled');
       expect(pages[i].querySelector('a').getAttribute('aria-disabled')).toBeTruthy();
-      expect(pages[i].querySelector('a').getAttribute('aria-current')).toBeFalsy();
+      expect(pages[i].querySelector('a').hasAttribute('aria-current')).toBeFalsy();
       expect(normalizeText(pages[i].textContent)).toEqual(pageDef.substr(1));
       if (normalizeText(pages[i].textContent) !== '...') {
         expect(pages[i].querySelector('a').getAttribute('tabindex')).toEqual('-1');
       }
+    } else if (classIndicator === '*') { // disabled active
+      expect(pages[i]).toHaveCssClass('active');
+      expect(pages[i]).toHaveCssClass('disabled');
+      expect(pages[i].querySelector('a').getAttribute('aria-disabled')).toBeTruthy();
+      expect(pages[i].querySelector('a').getAttribute('aria-current')).toBeTruthy();
+      expect(pages[i].querySelector('a').getAttribute('aria-label')).toEqual('Page ' + pageDef.substr(1) + ' (current)');
+      expect(normalizeText(pages[i].textContent)).toEqual(pageDef.substr(1));
+      expect(pages[i].querySelector('a').getAttribute('tabindex')).toEqual('-1');
     } else {
       expect(pages[i]).not.toHaveCssClass('active');
       expect(pages[i]).not.toHaveCssClass('disabled');
@@ -581,6 +589,27 @@ describe('ngb-pagination', () => {
            expect(buttons[i].querySelector('a').getAttribute('tabindex')).toEqual('-1');
          }
        }));
+
+    fit('should not update selected page model on click when disabled', () => {
+      const html =
+          '<ngb-pagination [collectionSize]="30" [disabled]="disabled" [page]="page" [directionLinks]="false"></ngb-pagination>';
+      const fixture = createTestComponent(html);
+
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['+1', '2', '3']);
+
+      fixture.componentInstance.disabled = true;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['*1', '-2', '-3']);
+
+      getLink(fixture.nativeElement, 2).click();
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['*1', '-2', '-3']);
+
+      fixture.componentInstance.disabled = false;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['+1', '2', '3']);
+    });
   });
 
   describe('Custom config', () => {
@@ -645,6 +674,7 @@ class TestComponent {
   maxSize = 0;
   ellipses = true;
   rotate = false;
+  disabled = false;
 
   onPageChange = () => {};
 }
