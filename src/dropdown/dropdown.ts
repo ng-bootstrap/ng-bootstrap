@@ -12,11 +12,13 @@ import {NgbDropdownConfig} from './dropdown-config';
     '[class.dropup]': 'up',
     '[class.show]': 'isOpen()',
     '(keyup.esc)': 'closeFromOutsideEsc()',
-    '(document:click)': 'closeFromOutsideClick($event)'
+    '(document:click)': 'closeFromOutsideClick($event)',
+    '(keydown)': 'keyboardEvent($event)'
   }
 })
 export class NgbDropdown {
   private _toggleElement: any;
+  private elementRef: any;
 
   /**
    * Indicates that the dropdown should open upwards
@@ -39,9 +41,10 @@ export class NgbDropdown {
    */
   @Output() openChange = new EventEmitter();
 
-  constructor(config: NgbDropdownConfig) {
+  constructor(config: NgbDropdownConfig, elementRef: ElementRef) {
     this.up = config.up;
     this.autoClose = config.autoClose;
+    this.elementRef = elementRef;
   }
 
 
@@ -66,6 +69,9 @@ export class NgbDropdown {
   close(): void {
     if (this._open) {
       this._open = false;
+      if (this._toggleElement) {
+        this._toggleElement.focus();
+      }
       this.openChange.emit(false);
     }
   }
@@ -92,6 +98,64 @@ export class NgbDropdown {
       this.close();
     }
   }
+
+  getActiveElmIndex(list): number {
+    let i = 0;
+    let position: number = -1;
+
+    for (let elm of list) {
+      if (elm === document.activeElement) {
+        position = i;
+      }
+      i++;
+    }
+    return position;
+  }
+
+
+  keyboardEvent($event): boolean {
+    if (['ArrowDown', 'ArrowUp'].indexOf($event.key) === -1) {
+      return true;
+    }
+
+    if (!this.isOpen()) {
+      this.open();
+    }
+
+    if (!this._toggleElement) {
+      return true;
+    }
+
+    let list: HTMLElement[] = this._toggleElement.nextElementSibling.children;
+
+    let position: number = this.getActiveElmIndex(list);
+
+    if ($event.key === 'ArrowDown') {
+      position++;
+    }
+
+    if ($event.key === 'ArrowUp') {
+      position--;
+    }
+
+    if (position >= list.length) {
+      position = list.length - 1;
+    }
+
+    if (position < 0) {
+      position = 0;
+    }
+
+    let elm: HTMLElement = list[position];
+
+    if (elm) {
+      elm.focus();
+      return false;
+    } else {
+      return true;
+    }
+  }
+
 
   /**
    * @internal

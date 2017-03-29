@@ -1,7 +1,7 @@
 import {TestBed, ComponentFixture, inject} from '@angular/core/testing';
 import {createGenericTestComponent} from '../test/common';
 
-import {Component} from '@angular/core';
+import {Component, ElementRef} from '@angular/core';
 import {By} from '@angular/platform-browser';
 
 import {NgbDropdownModule} from './dropdown.module';
@@ -22,7 +22,8 @@ describe('ngb-dropdown', () => {
 
   it('should initialize inputs with provided config', () => {
     const defaultConfig = new NgbDropdownConfig();
-    const dropdown = new NgbDropdown(defaultConfig);
+    const elementRef = new MockElementRef();
+    const dropdown = new NgbDropdown(defaultConfig, elementRef);
     expect(dropdown.up).toBe(defaultConfig.up);
     expect(dropdown.autoClose).toBe(defaultConfig.autoClose);
   });
@@ -160,6 +161,116 @@ describe('ngb-dropdown', () => {
     fixture.detectChanges();
     expect(fixture.componentInstance.isOpen).toBe(false);
     expect(fixture.componentInstance.stateChanges).toEqual([true, false]);
+  });
+
+  it('should open when ArrowDown was pressed', () => {
+    const html = `<div ngbDropdown (openChange)="recordStateChange($event)" #drop="ngbDropdown"></div>`;
+    const fixture = createTestComponent(html);
+    const compiled = fixture.nativeElement;
+
+    const event = new KeyboardEvent('keydown', {'key': 'ArrowDown'});
+
+    expect(fixture.componentInstance.isOpen).toBe(false);
+
+    compiled.querySelector('div').dispatchEvent(event);
+    fixture.detectChanges();
+    expect(fixture.componentInstance.isOpen).toBe(true);
+  });
+
+  it('should select the first element on ArrowDown if focus is not on any element in list', () => {
+    const html = `
+    <div ngbDropdown id="ngbDropdown" (openChange)="recordStateChange($event)">
+      <button ngbDropdownToggle>Toggle dropdown 1</button>
+      <div class="dropdown-menu">
+        <a class="dropdown-item">Action 1</a>
+        <a class="dropdown-item">Action 2</a>
+      </div>
+    </div>`;
+    const fixture = createTestComponent(html);
+    const compiled = fixture.nativeElement;
+    const dropDownElm = compiled.querySelector('#ngbDropdown');
+    const event = new KeyboardEvent('keydown', {'key': 'ArrowDown'});
+
+    fixture.componentInstance.isOpen = true;
+
+    const elms = compiled.querySelectorAll('.dropdown-item');
+    spyOn(elms[0], 'focus');
+    dropDownElm.dispatchEvent(event);
+    fixture.detectChanges();
+    expect(elms[0].focus).toHaveBeenCalled();
+  });
+
+  it('should select the next element on ArrowDown if is on a element in list', () => {
+    const html = `
+    <div ngbDropdown id="ngbDropdown" (openChange)="recordStateChange($event)">
+      <button ngbDropdownToggle>Toggle dropdown 1</button>
+      <div class="dropdown-menu">
+        <button class="dropdown-item">Action 1</button>
+        <button class="dropdown-item">Action 2</button>
+      </div>
+    </div>`;
+    const fixture = createTestComponent(html);
+    const compiled = fixture.nativeElement;
+    const dropDownElm = compiled.querySelector('#ngbDropdown');
+    const event = new KeyboardEvent('keydown', {'key': 'ArrowDown'});
+
+    fixture.componentInstance.isOpen = true;
+
+    const elms = compiled.querySelectorAll('.dropdown-item');
+    elms[0].focus();
+    spyOn(elms[1], 'focus');
+    dropDownElm.dispatchEvent(event);
+    fixture.detectChanges();
+    expect(elms[1].focus).toHaveBeenCalled();
+  });
+
+  it('should select the previous element on ArrowUp', () => {
+    const html = `
+    <div ngbDropdown id="ngbDropdown" (openChange)="recordStateChange($event)">
+      <button ngbDropdownToggle>Toggle dropdown 1</button>
+      <div class="dropdown-menu">
+        <button class="dropdown-item">Action 1</button>
+        <button class="dropdown-item">Action 2</button>
+      </div>
+    </div>`;
+    const fixture = createTestComponent(html);
+    const compiled = fixture.nativeElement;
+    const dropDownElm = compiled.querySelector('#ngbDropdown');
+    const event = new KeyboardEvent('keydown', {'key': 'ArrowUp'});
+
+    fixture.componentInstance.isOpen = true;
+
+    const elms = compiled.querySelectorAll('.dropdown-item');
+    elms[1].focus();
+    spyOn(elms[0], 'focus');
+    dropDownElm.dispatchEvent(event);
+    fixture.detectChanges();
+    expect(elms[0].focus).toHaveBeenCalled();
+
+  });
+
+  it('should stay on the same element on ArrowDown if the last element of the list is selected', () => {
+    const html = `
+    <div ngbDropdown id="ngbDropdown" (openChange)="recordStateChange($event)">
+      <button ngbDropdownToggle>Toggle dropdown 1</button>
+      <div class="dropdown-menu">
+        <button class="dropdown-item">Action 1</button>
+        <button class="dropdown-item">Action 2</button>
+      </div>
+    </div>`;
+    const fixture = createTestComponent(html);
+    const compiled = fixture.nativeElement;
+    const dropDownElm = compiled.querySelector('#ngbDropdown');
+    const event = new KeyboardEvent('keydown', {'key': 'ArrowDown'});
+
+    fixture.componentInstance.isOpen = true;
+
+    const elms = compiled.querySelectorAll('.dropdown-item');
+    elms[1].focus();
+    spyOn(elms[1], 'focus');
+    dropDownElm.dispatchEvent(event);
+    fixture.detectChanges();
+    expect(elms[1].focus).toHaveBeenCalled();
   });
 });
 
@@ -441,4 +552,8 @@ class TestComponent {
     this.stateChanges.push($event);
     this.isOpen = $event;
   }
+}
+
+export class MockElementRef extends ElementRef {
+  constructor() { super(null); }
 }
