@@ -22,10 +22,14 @@ function expectPages(nativeEl: HTMLElement, pagesDef: string[]): void {
     if (classIndicator === '+') {
       expect(pages[i]).toHaveCssClass('active');
       expect(pages[i]).not.toHaveCssClass('disabled');
-      expect(normalizeText(pages[i].textContent)).toEqual(pageDef.substr(1) + ' (current)');
+      expect(pages[i].querySelector('a').getAttribute('aria-label'))
+          .toEqual('Page ' + pageDef.substr(1) + ' (current)');
+      expect(pages[i].querySelector('a').getAttribute('aria-current')).toBeTruthy();
     } else if (classIndicator === '-') {
       expect(pages[i]).not.toHaveCssClass('active');
       expect(pages[i]).toHaveCssClass('disabled');
+      expect(pages[i].querySelector('a').getAttribute('aria-disabled')).toBeTruthy();
+      expect(pages[i].querySelector('a').getAttribute('aria-current')).toBeFalsy();
       expect(normalizeText(pages[i].textContent)).toEqual(pageDef.substr(1));
       if (normalizeText(pages[i].textContent) !== '...') {
         expect(pages[i].querySelector('a').getAttribute('tabindex')).toEqual('-1');
@@ -573,6 +577,8 @@ describe('ngb-pagination', () => {
          const buttons = fixture.nativeElement.querySelectorAll('li');
          for (let i = 0; i < buttons.length; i++) {
            expect(buttons[i]).toHaveCssClass('disabled');
+           expect(buttons[i].querySelector('a').getAttribute('aria-disabled')).toBeTruthy();
+           expect(buttons[i].querySelector('a').getAttribute('tabindex')).toEqual('-1');
          }
        }));
   });
