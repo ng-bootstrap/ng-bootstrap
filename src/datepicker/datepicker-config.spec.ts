@@ -11,7 +11,7 @@ describe('ngb-datepicker-config', () => {
     expect(config.minDate).toBeUndefined();
     expect(config.maxDate).toBeUndefined();
     expect(config.navigation).toBe('select');
-    expect(config.outsideDays).toBe('visible');
+    expect(config.outsideDays).toBeUndefined();
     expect(config.showWeekdays).toBe(true);
     expect(config.showWeekNumbers).toBe(false);
     expect(config.startDate).toBeUndefined();

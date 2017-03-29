@@ -103,7 +103,7 @@ export interface NgbDatepickerNavigateEvent {
             [showWeekdays]="showWeekdays"
             [showWeekNumbers]="showWeekNumbers"
             [disabled]="disabled"
-            [outsideDays]="displayMonths === 1 ? outsideDays : 'hidden'"
+            [outsideDays]="outsideDays || (displayMonths === 1 ? 'visible' : 'hidden')"
             (select)="onDateSelect($event)">
           </ngb-datepicker-month-view>
         </div>
