@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Subject} from 'rxjs/Subject';
+import 'rxjs/add/operator/debounceTime';
 
 @Component({
   selector: 'ngbd-alert-selfclosing',
