@@ -1,6 +1,11 @@
 import {Directive, Input, Output, EventEmitter, ElementRef} from '@angular/core';
 import {NgbDropdownConfig} from './dropdown-config';
 
+enum Key {
+  ArrowUp = 38,
+  ArrowDown = 40
+}
+
 /**
  * Transforms a node into a dropdown.
  */
@@ -114,7 +119,7 @@ export class NgbDropdown {
 
 
   keyboardEvent($event): boolean {
-    if (['ArrowDown', 'ArrowUp'].indexOf($event.key) === -1) {
+    if ([Key.ArrowDown, Key.ArrowUp].indexOf($event.which) === -1) {
       return true;
     }
 
@@ -130,12 +135,13 @@ export class NgbDropdown {
 
     let position: number = this.getActiveElmIndex(list);
 
-    if ($event.key === 'ArrowDown') {
-      position++;
-    }
-
-    if ($event.key === 'ArrowUp') {
-      position--;
+    switch ($event.which) {
+      case Key.ArrowDown:
+        position++;
+        break;
+      case Key.ArrowUp:
+        position--;
+        break;
     }
 
     if (position >= list.length) {
