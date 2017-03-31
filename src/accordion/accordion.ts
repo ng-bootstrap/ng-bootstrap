@@ -20,7 +20,7 @@ let nextId = 0;
 /**
  * This directive should be used to wrap accordion panel titles that need to contain HTML markup or other directives.
  */
-@Directive({selector: 'template[ngbPanelTitle]'})
+@Directive({selector: 'ng-template[ngbPanelTitle]'})
 export class NgbPanelTitle {
   constructor(public templateRef: TemplateRef<any>) {}
 }
@@ -28,7 +28,7 @@ export class NgbPanelTitle {
 /**
  * This directive must be used to wrap accordion panel content.
  */
-@Directive({selector: 'template[ngbPanelContent]'})
+@Directive({selector: 'ng-template[ngbPanelContent]'})
 export class NgbPanelContent {
   constructor(public templateRef: TemplateRef<any>) {}
 }
@@ -101,19 +101,19 @@ export interface NgbPanelChangeEvent {
   host: {'role': 'tablist', '[attr.aria-multiselectable]': '!closeOtherPanels'},
   template: `
   <div class="card">
-    <template ngFor let-panel [ngForOf]="panels">
+    <ng-template ngFor let-panel [ngForOf]="panels">
       <div role="tab" id="{{panel.id}}-header" [attr.aria-selected]="panel.focused"
         [class]="'card-header ' + (panel.type ? 'card-'+panel.type: type ? 'card-'+type : '')" [class.active]="isOpen(panel.id)">
-        <a href (click)="!!toggle(panel.id)" (focus)="panel.focused = true" 
-          (blur)="panel.focused = false" [class.text-muted]="panel.disabled" 
+        <a href (click)="!!toggle(panel.id)" (focus)="panel.focused = true"
+          (blur)="panel.focused = false" [class.text-muted]="panel.disabled"
           [attr.aria-expanded]="isOpen(panel.id)" [attr.aria-controls]="panel.id">
-          {{panel.title}}<template [ngTemplateOutlet]="panel.titleTpl?.templateRef"></template>
+          {{panel.title}}<ng-template [ngTemplateOutlet]="panel.titleTpl?.templateRef"></ng-template>
         </a>
       </div>
       <div id="{{panel.id}}" role="tabpanel" [attr.aria-labelledby]="panel.id + '-header'" class="card-block" *ngIf="isOpen(panel.id)">
-        <template [ngTemplateOutlet]="panel.contentTpl.templateRef"></template>
+        <ng-template [ngTemplateOutlet]="panel.contentTpl.templateRef"></ng-template>
       </div>
-    </template>
+    </ng-template>
   </div>
 `
 })

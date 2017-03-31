@@ -67,10 +67,12 @@ function expectWindowResults(element, expectedResults: string[]) {
 describe('ngb-typeahead', () => {
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [TestComponent, TestOnPushComponent],
-      imports: [NgbTypeaheadModule.forRoot(), FormsModule, ReactiveFormsModule]
-    });
+    TestBed
+        .configureTestingModule({
+          declarations: [TestComponent, TestOnPushComponent],
+          imports: [NgbTypeaheadModule.forRoot(), FormsModule, ReactiveFormsModule]
+        })
+        .compileComponents();
   });
 
   describe('valueaccessor', () => {
@@ -695,7 +697,8 @@ describe('ngb-typeahead', () => {
       beforeEach(() => {
         const config = new NgbTypeaheadConfig();
         config.showHint = true;
-        TestBed.configureTestingModule({providers: [{provide: NgbTypeaheadConfig, useValue: config}]});
+        TestBed.configureTestingModule({providers: [{provide: NgbTypeaheadConfig, useValue: config}]})
+            .compileComponents();
 
         TestBed.overrideComponent(
             TestComponent, {set: {template: '<input type="text" [(ngModel)]="model" [ngbTypeahead]="findAnywhere"/>'}});

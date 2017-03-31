@@ -26,8 +26,10 @@ class MockCalendar extends NgbCalendarGregorian {
 describe('ngb-datepicker-service', () => {
 
   beforeEach(() => {
-    TestBed.configureTestingModule(
-        {providers: [NgbDatepickerI18n, NgbDatepickerService, {provide: NgbCalendar, useClass: MockCalendar}]});
+    TestBed
+        .configureTestingModule(
+            {providers: [NgbDatepickerI18n, NgbDatepickerService, {provide: NgbCalendar, useClass: MockCalendar}]})
+        .compileComponents();
   });
 
   it('should generate month view model', inject([NgbDatepickerService, NgbCalendar], (service, calendar) => {
@@ -109,9 +111,12 @@ describe('ngb-datepicker-service', () => {
   describe('toValidDate() for Gregorian Calendar', () => {
 
     beforeEach(() => {
-      TestBed.configureTestingModule({
-        providers: [NgbDatepickerI18n, NgbDatepickerService, {provide: NgbCalendar, useClass: NgbCalendarGregorian}]
-      });
+      TestBed
+          .configureTestingModule({
+            providers:
+                [NgbDatepickerI18n, NgbDatepickerService, {provide: NgbCalendar, useClass: NgbCalendarGregorian}]
+          })
+          .compileComponents();
     });
 
     it('should convert a valid NgbDate', inject([NgbDatepickerService], (service) => {

@@ -17,8 +17,9 @@ const createTestCmpt = (html: string) =>
 describe('NgbInputDatepicker', () => {
 
   beforeEach(() => {
-    TestBed.configureTestingModule(
-        {declarations: [TestComponent], imports: [NgbDatepickerModule.forRoot(), FormsModule]});
+    TestBed
+        .configureTestingModule({declarations: [TestComponent], imports: [NgbDatepickerModule.forRoot(), FormsModule]})
+        .compileComponents();
   });
 
   describe('open, close and toggle', () => {
@@ -203,7 +204,7 @@ describe('NgbInputDatepicker', () => {
   describe('options', () => {
 
     it('should propagate the "dayTemplate" option', () => {
-      const fixture = createTestCmpt(`<template #t></template><input ngbDatepicker [dayTemplate]="t">`);
+      const fixture = createTestCmpt(`<ng-template #t></ng-template><input ngbDatepicker [dayTemplate]="t">`);
       const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
 
       dpInput.open();

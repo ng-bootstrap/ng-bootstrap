@@ -14,7 +14,8 @@ describe('ngb-typeahead-window', () => {
 
   beforeEach(() => {
     TestBed.overrideModule(NgbTypeaheadModule, {set: {exports: [NgbTypeaheadWindow]}});
-    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbTypeaheadModule.forRoot()]});
+    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbTypeaheadModule.forRoot()]})
+        .compileComponents();
   });
 
   describe('display', () => {
@@ -35,7 +36,7 @@ describe('ngb-typeahead-window', () => {
 
     it('should use a custom template if provided', () => {
       const fixture = createTestComponent(`
-           <template #rt let-r="result" let-t="term">{{r.toUpperCase()}}-{{t}}</template>
+           <ng-template #rt let-r="result" let-t="term">{{r.toUpperCase()}}-{{t}}</ng-template>
            <ngb-typeahead-window [results]="results" [term]="term" [resultTemplate]="rt"></ngb-typeahead-window>`);
 
       expectResults(fixture.nativeElement, ['+BAR-ba', 'BAZ-ba']);

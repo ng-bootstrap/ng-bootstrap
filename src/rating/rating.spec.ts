@@ -56,8 +56,10 @@ function getStateText(compiled) {
 
 describe('ngb-rating', () => {
   beforeEach(() => {
-    TestBed.configureTestingModule(
-        {declarations: [TestComponent], imports: [NgbRatingModule.forRoot(), FormsModule, ReactiveFormsModule]});
+    TestBed
+        .configureTestingModule(
+            {declarations: [TestComponent], imports: [NgbRatingModule.forRoot(), FormsModule, ReactiveFormsModule]})
+        .compileComponents();
   });
 
   it('should initialize inputs with default values', () => {
@@ -257,7 +259,7 @@ describe('ngb-rating', () => {
 
   it('should allow custom star template', () => {
     const fixture = createTestComponent(`
-      <template #t let-fill="fill">{{ fill === 100 ? 'x' : 'o' }}</template>
+      <ng-template #t let-fill="fill">{{ fill === 100 ? 'x' : 'o' }}</ng-template>
       <ngb-rating [starTemplate]="t" rate="2" max="4"></ngb-rating>`);
 
     const compiled = fixture.nativeElement;
@@ -267,7 +269,7 @@ describe('ngb-rating', () => {
   it('should allow custom template as a child element', () => {
     const fixture = createTestComponent(`
       <ngb-rating rate="2" max="4">
-        <template let-fill="fill">{{ fill === 100 ? 'x' : 'o' }}</template>
+        <ng-template let-fill="fill">{{ fill === 100 ? 'x' : 'o' }}</ng-template>
       </ngb-rating>`);
 
     const compiled = fixture.nativeElement;
@@ -276,9 +278,9 @@ describe('ngb-rating', () => {
 
   it('should prefer explicitly set custom template to a child one', () => {
     const fixture = createTestComponent(`
-      <template #t let-fill="fill">{{ fill === 100 ? 'a' : 'b' }}</template>
+      <ng-template #t let-fill="fill">{{ fill === 100 ? 'a' : 'b' }}</ng-template>
       <ngb-rating [starTemplate]="t" rate="2" max="4">
-        <template let-fill="fill">{{ fill === 100 ? 'c' : 'd' }}</template>
+        <ng-template let-fill="fill">{{ fill === 100 ? 'c' : 'd' }}</ng-template>
       </ngb-rating>`);
 
     const compiled = fixture.nativeElement;
@@ -287,7 +289,7 @@ describe('ngb-rating', () => {
 
   it('should calculate fill percentage correctly', () => {
     const fixture = createTestComponent(`
-      <template #t let-fill="fill">{{fill}}</template>
+      <ng-template #t let-fill="fill">{{fill}}</ng-template>
       <ngb-rating [starTemplate]="t" [rate]="rate" max="4"></ngb-rating>`);
 
     const compiled = fixture.nativeElement;
@@ -537,7 +539,7 @@ describe('ngb-rating', () => {
   describe('Custom config', () => {
     let config: NgbRatingConfig;
 
-    beforeEach(() => { TestBed.configureTestingModule({imports: [NgbRatingModule.forRoot()]}); });
+    beforeEach(() => { TestBed.configureTestingModule({imports: [NgbRatingModule.forRoot()]}).compileComponents(); });
 
     beforeEach(inject([NgbRatingConfig], (c: NgbRatingConfig) => {
       config = c;
@@ -561,8 +563,10 @@ describe('ngb-rating', () => {
     config.readonly = true;
 
     beforeEach(() => {
-      TestBed.configureTestingModule(
-          {imports: [NgbRatingModule.forRoot()], providers: [{provide: NgbRatingConfig, useValue: config}]});
+      TestBed
+          .configureTestingModule(
+              {imports: [NgbRatingModule.forRoot()], providers: [{provide: NgbRatingConfig, useValue: config}]})
+          .compileComponents();
     });
 
     it('should initialize inputs with provided config as provider', () => {
