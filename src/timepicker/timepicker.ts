@@ -70,7 +70,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
                 <span class="chevron"></span>
             </button>
           </td>
-          <template [ngIf]="seconds">
+          <ng-template [ngIf]="seconds">
             <td>&nbsp;</td>
             <td class="text-center">
               <button type="button" class="btn-link" [ngClass]="setButtonSize()" (click)="changeSecond(secondStep)"
@@ -78,11 +78,11 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
                 <span class="chevron"></span>
               </button>
             </td>
-          </template>
-          <template [ngIf]="meridian">
+          </ng-template>
+          <ng-template [ngIf]="meridian">
             <td>&nbsp;</td>
             <td>&nbsp;</td>
-          </template>
+          </ng-template>
         </tr>
         <tr>
           <td>
@@ -96,21 +96,21 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
               [value]="formatMinSec(model?.minute)" (change)="updateMinute($event.target.value)"
               [readonly]="readonlyInputs" [disabled]="disabled">
           </td>
-          <template [ngIf]="seconds">
+          <ng-template [ngIf]="seconds">
             <td>&nbsp;:&nbsp;</td>
             <td>
               <input type="text" class="form-control" [ngClass]="setFormControlSize()" maxlength="2" size="2" placeholder="SS"
                 [value]="formatMinSec(model?.second)" (change)="updateSecond($event.target.value)"
                 [readonly]="readonlyInputs" [disabled]="disabled">
             </td>
-          </template>
-          <template [ngIf]="meridian">
+          </ng-template>
+          <ng-template [ngIf]="meridian">
             <td>&nbsp;&nbsp;</td>
             <td>
               <button type="button" class="btn btn-outline-primary" [ngClass]="setButtonSize()"
                 (click)="toggleMeridian()">{{model.hour >= 12 ? 'PM' : 'AM'}}</button>
             </td>
-          </template>
+          </ng-template>
         </tr>
         <tr *ngIf="spinners">
           <td class="text-center">
@@ -126,7 +126,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
               <span class="chevron bottom"></span>
             </button>
           </td>
-          <template [ngIf]="seconds">
+          <ng-template [ngIf]="seconds">
             <td>&nbsp;</td>
             <td class="text-center">
               <button type="button" class="btn-link" [ngClass]="setButtonSize()" (click)="changeSecond(-secondStep)"
@@ -134,11 +134,11 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
                 <span class="chevron bottom"></span>
               </button>
             </td>
-          </template>
-          <template [ngIf]="meridian">
+          </ng-template>
+          <ng-template [ngIf]="meridian">
             <td>&nbsp;</td>
             <td>&nbsp;</td>
-          </template>
+          </ng-template>
         </tr>
       </table>
     </fieldset>

@@ -44,15 +44,16 @@ describe('ngb-accordion', () => {
     <ngb-accordion #acc="ngbAccordion" [closeOthers]="closeOthers" [activeIds]="activeIds"
       (panelChange)="changeCallback($event)" [type]="classType">
       <ngb-panel *ngFor="let panel of panels" [id]="panel.id" [disabled]="panel.disabled" [type]="panel.type">
-        <template ngbPanelTitle>{{panel.title}}</template>
-        <template ngbPanelContent>{{panel.content}}</template>
+        <ng-template ngbPanelTitle>{{panel.title}}</ng-template>
+        <ng-template ngbPanelContent>{{panel.content}}</ng-template>
       </ngb-panel>
     </ngb-accordion>
     <button *ngFor="let panel of panels" (click)="acc.toggle(panel.id)">Toggle the panel {{ panel.id }}</button>
   `;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbAccordionModule.forRoot()]});
+    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbAccordionModule.forRoot()]})
+        .compileComponents();
     TestBed.overrideComponent(TestComponent, {set: {template: html}});
   });
 
@@ -296,8 +297,8 @@ describe('ngb-accordion', () => {
     const testHtml = `
     <ngb-accordion #acc="ngbAccordion" [closeOthers]="closeOthers" [type]="classType">
      <ngb-panel *ngFor="let panel of panels" [id]="panel.id" [disabled]="panel.disabled">
-       <template ngbPanelTitle>{{panel.title}}</template>
-       <template ngbPanelContent>{{panel.content}}</template>
+       <ng-template ngbPanelTitle>{{panel.title}}</ng-template>
+       <ng-template ngbPanelContent>{{panel.content}}</ng-template>
      </ngb-panel>
     </ngb-accordion>
     <button *ngFor="let panel of panels" (click)="acc.toggle(panel.id)">Toggle the panel {{ panel.id }}</button>
@@ -358,7 +359,8 @@ describe('ngb-accordion', () => {
   describe('Custom config', () => {
     let config: NgbAccordionConfig;
 
-    beforeEach(() => { TestBed.configureTestingModule({imports: [NgbAccordionModule.forRoot()]}); });
+    beforeEach(
+        () => { TestBed.configureTestingModule({imports: [NgbAccordionModule.forRoot()]}).compileComponents(); });
 
     beforeEach(inject([NgbAccordionConfig], (c: NgbAccordionConfig) => {
       config = c;
@@ -382,8 +384,10 @@ describe('ngb-accordion', () => {
     config.type = 'success';
 
     beforeEach(() => {
-      TestBed.configureTestingModule(
-          {imports: [NgbAccordionModule.forRoot()], providers: [{provide: NgbAccordionConfig, useValue: config}]});
+      TestBed
+          .configureTestingModule(
+              {imports: [NgbAccordionModule.forRoot()], providers: [{provide: NgbAccordionConfig, useValue: config}]})
+          .compileComponents();
     });
 
     it('should initialize inputs with provided config as provider', () => {

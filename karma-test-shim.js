@@ -50,7 +50,7 @@ System.config({
 System.import('@angular/core/testing')
     .then(function(coreTesting) {
       return System.import('@angular/platform-browser-dynamic/testing').then(function(browserTesting) {
-        coreTesting.TestBed.initTestEnvironment(
+        coreTesting.getTestBed().initTestEnvironment(
             browserTesting.BrowserDynamicTestingModule, browserTesting.platformBrowserDynamicTesting());
       });
     })

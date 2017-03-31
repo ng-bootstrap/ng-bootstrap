@@ -15,7 +15,7 @@ const createOnPushTestComponent =
     (html: string) => <ComponentFixture<TestOnPushComponent>>createGenericTestComponent(html, TestOnPushComponent);
 
 describe('ngb-tooltip-window', () => {
-  beforeEach(() => { TestBed.configureTestingModule({imports: [NgbTooltipModule.forRoot()]}); });
+  beforeEach(() => { TestBed.configureTestingModule({imports: [NgbTooltipModule.forRoot()]}).compileComponents(); });
 
   it('should render tooltip on top by default', () => {
     const fixture = TestBed.createComponent(NgbTooltipWindow);
@@ -37,8 +37,10 @@ describe('ngb-tooltip-window', () => {
 describe('ngb-tooltip', () => {
 
   beforeEach(() => {
-    TestBed.configureTestingModule(
-        {declarations: [TestComponent, TestOnPushComponent], imports: [NgbTooltipModule.forRoot()]});
+    TestBed
+        .configureTestingModule(
+            {declarations: [TestComponent, TestOnPushComponent], imports: [NgbTooltipModule.forRoot()]})
+        .compileComponents();
   });
 
   function getWindow(element) { return element.querySelector('ngb-tooltip-window'); }
@@ -69,7 +71,7 @@ describe('ngb-tooltip', () => {
     });
 
     it('should open and close a tooltip - default settings and content from a template', () => {
-      const fixture = createTestComponent(`<template #t>Hello, {{name}}!</template><div [ngbTooltip]="t"></div>`);
+      const fixture = createTestComponent(`<ng-template #t>Hello, {{name}}!</ng-template><div [ngbTooltip]="t"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbTooltip));
 
       directive.triggerEventHandler('mouseenter', {});
@@ -91,7 +93,7 @@ describe('ngb-tooltip', () => {
     });
 
     it('should open and close a tooltip - default settings, content from a template and context supplied', () => {
-      const fixture = createTestComponent(`<template #t let-name="name">Hello, {{name}}!</template><div [ngbTooltip]="t"></div>`);
+      const fixture = createTestComponent(`<ng-template #t let-name="name">Hello, {{name}}!</ng-template><div [ngbTooltip]="t"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbTooltip));
 
       directive.context.tooltip.open({name: 'John'});
@@ -154,7 +156,7 @@ describe('ngb-tooltip', () => {
     });
 
     it('should not leave dangling tooltips in the DOM', () => {
-      const fixture = createTestComponent(`<template [ngIf]="show"><div ngbTooltip="Great tip!"></div></template>`);
+      const fixture = createTestComponent(`<ng-template [ngIf]="show"><div ngbTooltip="Great tip!"></div></ng-template>`);
       const directive = fixture.debugElement.query(By.directive(NgbTooltip));
 
       directive.triggerEventHandler('mouseenter', {});
@@ -168,9 +170,9 @@ describe('ngb-tooltip', () => {
 
     it('should properly cleanup tooltips with manual triggers', () => {
       const fixture = createTestComponent(`
-            <template [ngIf]="show">
+            <ng-template [ngIf]="show">
               <div ngbTooltip="Great tip!" triggers="manual" #t="ngbTooltip" (mouseenter)="t.open()"></div>
-            </template>`);
+            </ng-template>`);
       const directive = fixture.debugElement.query(By.directive(NgbTooltip));
 
       directive.triggerEventHandler('mouseenter', {});
@@ -425,7 +427,7 @@ describe('ngb-tooltip', () => {
     let config: NgbTooltipConfig;
 
     beforeEach(() => {
-      TestBed.configureTestingModule({imports: [NgbTooltipModule.forRoot()]});
+      TestBed.configureTestingModule({imports: [NgbTooltipModule.forRoot()]}).compileComponents();
       TestBed.overrideComponent(TestComponent, {set: {template: `<div ngbTooltip="Great tip!"></div>`}});
     });
 
@@ -454,8 +456,10 @@ describe('ngb-tooltip', () => {
     config.container = 'body';
 
     beforeEach(() => {
-      TestBed.configureTestingModule(
-          {imports: [NgbTooltipModule.forRoot()], providers: [{provide: NgbTooltipConfig, useValue: config}]});
+      TestBed
+          .configureTestingModule(
+              {imports: [NgbTooltipModule.forRoot()], providers: [{provide: NgbTooltipConfig, useValue: config}]})
+          .compileComponents();
     });
 
     it('should initialize inputs with provided config as provider', () => {

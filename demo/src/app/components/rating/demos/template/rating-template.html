@@ -1,9 +1,9 @@
 <p>Custom rating template provided as child element</p>
 
 <ngb-rating [(rate)]="currentRate">
-  <template let-fill="fill">
+  <ng-template let-fill="fill">
     <span class="star" [class.filled]="fill === 100">&#9733;</span>
-  </template>
+  </ng-template>
 </ngb-rating>
 <hr>
 <pre>Rate: <b>{{currentRate}}</b></pre>

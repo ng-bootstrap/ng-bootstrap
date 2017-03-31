@@ -1,4 +1,4 @@
-import {fakeAsync, discardPeriodicTasks, tick, TestBed, ComponentFixture, inject} from '@angular/core/testing';
+import {fakeAsync, discardPeriodicTasks, tick, TestBed, async, ComponentFixture, inject} from '@angular/core/testing';
 import {createGenericTestComponent} from '../test/common';
 
 import {By} from '@angular/platform-browser';
@@ -31,7 +31,8 @@ function expectActiveSlides(nativeEl: HTMLDivElement, active: boolean[]) {
 
 describe('ngb-carousel', () => {
   beforeEach(() => {
-    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbCarouselModule.forRoot()]});
+    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbCarouselModule.forRoot()]})
+        .compileComponents();
   });
 
   it('should initialize inputs with default values', () => {
@@ -46,8 +47,8 @@ describe('ngb-carousel', () => {
   it('should render slides and navigation indicators', fakeAsync(() => {
        const html = `
       <ngb-carousel>
-        <template ngbSlide>foo</template>
-        <template ngbSlide>bar</template>
+        <ng-template ngbSlide>foo</ng-template>
+        <ng-template ngbSlide>bar</ng-template>
       </ngb-carousel>
     `;
        const fixture = createTestComponent(html);
@@ -66,8 +67,8 @@ describe('ngb-carousel', () => {
   it('should mark the first slide as active by default', fakeAsync(() => {
        const html = `
       <ngb-carousel>
-        <template ngbSlide>foo</template>
-        <template ngbSlide>bar</template>
+        <ng-template ngbSlide>foo</ng-template>
+        <ng-template ngbSlide>bar</ng-template>
       </ngb-carousel>
     `;
 
@@ -81,8 +82,8 @@ describe('ngb-carousel', () => {
   it('should mark the requested slide as active', fakeAsync(() => {
        const html = `
        <ngb-carousel [activeId]="activeSlideId">
-         <template ngbSlide id="1">foo</template>
-         <template ngbSlide id="2">bar</template>
+         <ng-template ngbSlide id="1">foo</ng-template>
+         <ng-template ngbSlide id="2">bar</ng-template>
        </ngb-carousel>
      `;
 
@@ -98,8 +99,8 @@ describe('ngb-carousel', () => {
   it('should auto-correct when slide index is undefined', fakeAsync(() => {
        const html = `
             <ngb-carousel [activeId]="doesntExist">
-              <template ngbSlide>foo</template>
-              <template ngbSlide>bar</template>
+              <ng-template ngbSlide>foo</ng-template>
+              <ng-template ngbSlide>bar</ng-template>
             </ngb-carousel>
           `;
 
@@ -113,8 +114,8 @@ describe('ngb-carousel', () => {
   it('should change slide on indicator click', fakeAsync(() => {
        const html = `
       <ngb-carousel>
-        <template ngbSlide>foo</template>
-        <template ngbSlide>bar</template>
+        <ng-template ngbSlide>foo</ng-template>
+        <ng-template ngbSlide>bar</ng-template>
       </ngb-carousel>
     `;
 
@@ -134,8 +135,8 @@ describe('ngb-carousel', () => {
   it('should change slide on carousel control click', fakeAsync(() => {
        const html = `
       <ngb-carousel>
-        <template ngbSlide>foo</template>
-        <template ngbSlide>bar</template>
+        <ng-template ngbSlide>foo</ng-template>
+        <ng-template ngbSlide>bar</ng-template>
       </ngb-carousel>
     `;
 
@@ -160,8 +161,8 @@ describe('ngb-carousel', () => {
   it('should change slide on time passage (default interval value)', fakeAsync(() => {
        const html = `
       <ngb-carousel>
-        <template ngbSlide>foo</template>
-        <template ngbSlide>bar</template>
+        <ng-template ngbSlide>foo</ng-template>
+        <ng-template ngbSlide>bar</ng-template>
       </ngb-carousel>
     `;
 
@@ -179,8 +180,8 @@ describe('ngb-carousel', () => {
   it('should change slide on time passage (custom interval value)', fakeAsync(() => {
        const html = `
       <ngb-carousel [interval]="2000">
-        <template ngbSlide>foo</template>
-        <template ngbSlide>bar</template>
+        <ng-template ngbSlide>foo</ng-template>
+        <ng-template ngbSlide>bar</ng-template>
       </ngb-carousel>
     `;
 
@@ -202,8 +203,8 @@ describe('ngb-carousel', () => {
   it('should not change slide on time passage (custom interval value is zero)', fakeAsync(() => {
        const html = `
       <ngb-carousel [interval]="0">
-        <template ngbSlide>foo</template>
-        <template ngbSlide>bar</template>
+        <ng-template ngbSlide>foo</ng-template>
+        <ng-template ngbSlide>bar</ng-template>
       </ngb-carousel>
     `;
 
@@ -225,8 +226,8 @@ describe('ngb-carousel', () => {
   it('should pause / resume slide change with time passage on mouse enter / leave', fakeAsync(() => {
        const html = `
       <ngb-carousel>
-        <template ngbSlide>foo</template>
-        <template ngbSlide>bar</template>
+        <ng-template ngbSlide>foo</ng-template>
+        <ng-template ngbSlide>bar</ng-template>
       </ngb-carousel>
     `;
 
@@ -258,8 +259,8 @@ describe('ngb-carousel', () => {
   it('should wrap slide changes by default', fakeAsync(() => {
        const html = `
       <ngb-carousel>
-        <template ngbSlide>foo</template>
-        <template ngbSlide>bar</template>
+        <ng-template ngbSlide>foo</ng-template>
+        <ng-template ngbSlide>bar</ng-template>
       </ngb-carousel>
     `;
 
@@ -288,8 +289,8 @@ describe('ngb-carousel', () => {
   it('should not wrap slide changes by when requested', fakeAsync(() => {
        const html = `
       <ngb-carousel [wrap]="false">
-        <template ngbSlide>foo</template>
-        <template ngbSlide>bar</template>
+        <ng-template ngbSlide>foo</ng-template>
+        <ng-template ngbSlide>bar</ng-template>
       </ngb-carousel>
     `;
 
@@ -318,8 +319,8 @@ describe('ngb-carousel', () => {
   it('should change on key arrowRight and arrowLeft', fakeAsync(() => {
        const html = `
             <ngb-carousel [keyboard]="keyboard" [wrap]="false">
-              <template ngbSlide>foo</template>
-              <template ngbSlide>bar</template>
+              <ng-template ngbSlide>foo</ng-template>
+              <ng-template ngbSlide>bar</ng-template>
             </ngb-carousel>
           `;
 
@@ -348,8 +349,8 @@ describe('ngb-carousel', () => {
   it('should listen to keyevents based on keyboard attribute', fakeAsync(() => {
        const html = `
                <ngb-carousel [keyboard]="keyboard" >
-                 <template ngbSlide>foo</template>
-                 <template ngbSlide>bar</template>
+                 <ng-template ngbSlide>foo</ng-template>
+                 <ng-template ngbSlide>bar</ng-template>
                </ngb-carousel>
              `;
 
@@ -375,7 +376,7 @@ describe('ngb-carousel', () => {
   describe('Custom config', () => {
     let config: NgbCarouselConfig;
 
-    beforeEach(() => { TestBed.configureTestingModule({imports: [NgbCarouselModule.forRoot()]}); });
+    beforeEach(() => { TestBed.configureTestingModule({imports: [NgbCarouselModule.forRoot()]}).compileComponents(); });
 
     beforeEach(inject([NgbCarouselConfig], (c: NgbCarouselConfig) => {
       config = c;
@@ -402,8 +403,10 @@ describe('ngb-carousel', () => {
     config.keyboard = false;
 
     beforeEach(() => {
-      TestBed.configureTestingModule(
-          {imports: [NgbCarouselModule.forRoot()], providers: [{provide: NgbCarouselConfig, useValue: config}]});
+      TestBed
+          .configureTestingModule(
+              {imports: [NgbCarouselModule.forRoot()], providers: [{provide: NgbCarouselConfig, useValue: config}]})
+          .compileComponents();
     });
 
     it('should initialize inputs with provided config as provider', () => {
