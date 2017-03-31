@@ -1,12 +1,12 @@
 import {NgbdProgressbarBasic} from './basic/progressbar-basic';
-import {NgbdProgressbarShowValue} from './showvalue/progressbar-showvalue';
+import {NgbdProgressbarShowvalue} from './showvalue/progressbar-showvalue';
 import {NgbdProgressbarStriped} from './striped/progressbar-striped';
 import {NgbdProgressbarConfig} from './config/progressbar-config';
 import {NgbdProgressbarLabels} from './labels/progressbar-labels';
 
 export const DEMO_DIRECTIVES = [
   NgbdProgressbarBasic,
-  NgbdProgressbarShowValue,
+  NgbdProgressbarShowvalue,
   NgbdProgressbarStriped,
   NgbdProgressbarConfig,
   NgbdProgressbarLabels

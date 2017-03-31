@@ -22,10 +22,12 @@ import {positionElements} from '../util/positioning';
 import {PopupService} from '../util/popup';
 import {NgbPopoverConfig} from './popover-config';
 
+let nextId = 0;
+
 @Component({
   selector: 'ngb-popover-window',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {'[class]': '"popover show popover-" + placement', 'role': 'tooltip'},
+  host: {'[class]': '"popover show popover-" + placement', 'role': 'tooltip', '[id]': 'id'},
   template: `
     <h3 class="popover-title">{{title}}</h3><div class="popover-content"><ng-content></ng-content></div>
     `
@@ -33,6 +35,7 @@ import {NgbPopoverConfig} from './popover-config';
 export class NgbPopoverWindow {
   @Input() placement: 'top' | 'bottom' | 'left' | 'right' = 'top';
   @Input() title: string;
+  @Input() id: string;
 }
 
 /**
@@ -70,6 +73,7 @@ export class NgbPopover implements OnInit, OnDestroy {
    */
   @Output() hidden = new EventEmitter();
 
+  private _ngbPopoverWindowId = `ngb-popover-${nextId++}`;
   private _popupService: PopupService<NgbPopoverWindow>;
   private _windowRef: ComponentRef<NgbPopoverWindow>;
   private _unregisterListenersFn;
@@ -103,6 +107,9 @@ export class NgbPopover implements OnInit, OnDestroy {
       this._windowRef = this._popupService.open(this.ngbPopover, context);
       this._windowRef.instance.placement = this.placement;
       this._windowRef.instance.title = this.popoverTitle;
+      this._windowRef.instance.id = this._ngbPopoverWindowId;
+
+      this._renderer.setElementAttribute(this._elementRef.nativeElement, 'aria-describedby', this._ngbPopoverWindowId);
 
       if (this.container === 'body') {
         window.document.querySelector(this.container).appendChild(this._windowRef.location.nativeElement);
@@ -120,6 +127,7 @@ export class NgbPopover implements OnInit, OnDestroy {
    */
   close(): void {
     if (this._windowRef) {
+      this._renderer.setElementAttribute(this._elementRef.nativeElement, 'aria-describedby', null);
       this._popupService.close();
       this._windowRef = null;
       this.hidden.emit();
