@@ -146,6 +146,15 @@ export class NgbInputDatepicker implements ControlValueAccessor {
 
   manualDateChange(value: string) {
     this._model = this._service.toValidDate(this._parserFormatter.parse(value), null);
+
+    if (this._model && this.minDate && this._model.before(NgbDate.from(this.minDate))) {
+      this._model = null;
+    }
+
+    if (this._model && this.maxDate && this._model.after(NgbDate.from(this.maxDate))) {
+      this._model = null;
+    }
+
     this._onChange(this._model ? {year: this._model.year, month: this._model.month, day: this._model.day} : null);
     this._writeModelValue(this._model);
   }
