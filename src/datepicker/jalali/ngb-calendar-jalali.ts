@@ -9,77 +9,71 @@ import {isInteger} from '../../util/util';
 
 @Injectable()
 export abstract class NgbCalendarJalali extends NgbCalendar {
-    getDaysPerWeek() {
-        return 7;
+  getDaysPerWeek() { return 7; }
+
+  getMonths() { return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]; }
+
+  getWeeksPerMonth() { return 6; }
+
+  isValid(date: NgbDate): boolean {
+    return date && isInteger(date.year) && isInteger(date.month) && isInteger(date.day) &&
+        !isNaN(this.toGregorian(date).getTime());
+  }
+
+  setDay(date: NgbDate, day: number): NgbDate {
+    let mDays = this.getDaysInJalaliMonth(date.month, date.year);
+    if (day <= 0) {
+      while (day <= 0) {
+        date = this.setMonth(date, date.month - 1);
+        mDays = this.getDaysInJalaliMonth(date.month, date.year);
+        day += mDays;
+      }
+    } else if (day > mDays) {
+      while (day > mDays) {
+        day -= mDays;
+        date = this.setMonth(date, date.month + 1);
+        mDays = this.getDaysInJalaliMonth(date.month, date.year);
+      }
     }
+    date.day = day;
+    return date;
+  }
 
-    getMonths() {
-        return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-    }
+  setMonth(date: NgbDate, month: number): NgbDate {
+    month = +month;
+    date.year = date.year + Math.floor((month - 1) / 12);
+    date.month = Math.floor(((month - 1) % 12 + 12) % 12) + 1;
+    return date;
+  }
 
-    getWeeksPerMonth() {
-        return 6;
-    }
+  setYear(date: NgbDate, yearValue: number): NgbDate {
+    date.year = +yearValue;
+    return date;
+  }
 
-    isValid(date: NgbDate): boolean {
-        return date && isInteger(date.year) && isInteger(date.month) && isInteger(date.day) && !isNaN(this.toGregorian(date).getTime());
-    }
+  abstract getWeekday(date: NgbDate): number;
 
-    setDay(date: NgbDate, day: number): NgbDate {
-        let mDays = this.getDaysInJalaliMonth(date.month, date.year);
-        if (day <= 0) {
-            while (day <= 0) {
-                date = this.setMonth(date, date.month - 1);
-                mDays = this.getDaysInJalaliMonth(date.month, date.year);
-                day += mDays;
-            }
-        } else if (day > mDays) {
-            while (day > mDays) {
-                day -= mDays;
-                date = this.setMonth(date, date.month + 1);
-                mDays = this.getDaysInJalaliMonth(date.month, date.year);
-            }
-        }
-        date.day = day;
-        return date;
-    }
+  abstract getNext(date: NgbDate, period?: NgbPeriod, number?: number): NgbDate;
 
-    setMonth(date: NgbDate, month: number): NgbDate {
-        month = +month;
-        date.year = date.year + Math.floor((month - 1) / 12);
-        date.month = Math.floor(((month - 1) % 12 + 12) % 12) + 1;
-        return date;
-    }
+  abstract getPrev(date: NgbDate, period?: NgbPeriod, number?: number): NgbDate;
 
-    setYear(date: NgbDate, yearValue: number): NgbDate {
-        date.year = +yearValue;
-        return date;
-    }
+  abstract getWeekNumber(week: NgbDate[], firstDayOfWeek: number): number;
 
-    abstract getWeekday(date: NgbDate): number;
+  abstract getToday(): NgbDate;
 
-    abstract getNext(date: NgbDate, period?: NgbPeriod, number?: number): NgbDate;
+  /**
+   * Returns the equivalent jalali date value for a give input Gregorian date.
+   * `gDate` is s JS Date to be converted to jalali.
+   */
+  abstract fromGregorian(gDate: Date): NgbDate;
 
-    abstract getPrev(date: NgbDate, period?: NgbPeriod, number?: number): NgbDate;
+  /**
+   * Converts the current jalali date to Gregorian.
+   */
+  abstract toGregorian(jalaliDate: NgbDate): Date;
 
-    abstract getWeekNumber(week: NgbDate[], firstDayOfWeek: number): number;
-
-    abstract getToday(): NgbDate;
-
-    /**
-     * Returns the equivalent jalali date value for a give input Gregorian date.
-     * `gDate` is s JS Date to be converted to jalali.
-     */
-    abstract fromGregorian(gDate: Date): NgbDate;
-
-    /**
-     * Converts the current jalali date to Gregorian.
-     */
-    abstract toGregorian(jalaliDate: NgbDate): Date;
-
-    /**
-     * Returns the number of days in a specific jalali month.
-     */
-    abstract getDaysInJalaliMonth(month: number, year: number): number;
-
+  /**
+   * Returns the number of days in a specific jalali month.
+   */
+  abstract getDaysInJalaliMonth(month: number, year: number): number;
 }

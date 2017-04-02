@@ -16,7 +16,6 @@ function div(a: number, b: number) {
 
 @Injectable()
 export class NgbCalendarPersian extends NgbCalendarJalali {
-
   /**
    * Returns the equivalent jalali date value for a give input Gregorian date.
    * `gdate` is a JS Date to be converted to jalali.
@@ -25,10 +24,7 @@ export class NgbCalendarPersian extends NgbCalendarJalali {
   fromGregorian(gdate: Date): NgbDate {
     let message: string[] = gdate.toLocaleDateString().split('/');
 
-    const
-      gYear = +message[2],
-      gMonth = +message[0],
-      gDay = +message[1];
+    const gYear = +message[2], gMonth = +message[0], gDay = +message[1];
 
     let g2d = this.gregorianToDay(gYear, gMonth, gDay);
 
@@ -43,9 +39,7 @@ export class NgbCalendarPersian extends NgbCalendarJalali {
    @return Julian Day number
    */
   gregorianToDay(gy: number, gm: number, gd: number) {
-    let d = div((gy + div(gm - 8, 6) + 100100) * 1461, 4)
-      + div(153 * mod(gm + 9, 12) + 2, 5)
-      + gd - 34840408;
+    let d = div((gy + div(gm - 8, 6) + 100100) * 1461, 4) + div(153 * mod(gm + 9, 12) + 2, 5) + gd - 34840408;
     d = d - div(div(gy + 100100 + div(gm - 8, 6), 100) * 3, 4) + 752;
     return d;
   }
@@ -59,13 +53,9 @@ export class NgbCalendarPersian extends NgbCalendarJalali {
    jd: Jalali day (1 to 29/31)
    */
   dayToJalali(jdn: number) {
-    let gy = this.dayToGregorion(jdn).getFullYear() // Calculate Gregorian year (gy).
-      , jy = gy - 621
-      , r = this.jalCal(jy)
-      , jdn1f = this.gregorianToDay(gy, 3, r.march)
-      , jd
-      , jm
-      , k;
+    let gy = this.dayToGregorion(jdn).getFullYear()  // Calculate Gregorian year (gy).
+        ,
+        jy = gy - 621, r = this.jalCal(jy), jdn1f = this.gregorianToDay(gy, 3, r.march), jd, jm, k;
 
     // Find number of days that passed since 1 Farvardin.
     k = jdn - jdn1f;
@@ -158,20 +148,12 @@ export class NgbCalendarPersian extends NgbCalendarJalali {
    */
   jalCal(jy: number) {
     // Jalali years starting the 33-year rule.
-    let breaks = [-61, 9, 38, 199, 426, 686, 756, 818, 1111, 1181, 1210
-      , 1635, 2060, 2097, 2192, 2262, 2324, 2394, 2456, 3178
-    ]
-      , bl = breaks.length
-      , gy = jy + 621
-      , leapJ = -14
-      , jp = breaks[0]
-      , jm
-      , jump
-      , leap
-      , leapG
-      , march
-      , n
-      , i;
+    let breaks =
+            [
+              -61,  9,    38,   199,  426,  686,  756,  818,  1111, 1181,
+              1210, 1635, 2060, 2097, 2192, 2262, 2324, 2394, 2456, 3178
+            ],
+        bl = breaks.length, gy = jy + 621, leapJ = -14, jp = breaks[0], jm, jump, leap, leapG, march, n, i;
 
     if (jy < jp || jy >= breaks[bl - 1]) {
       throw new Error('Invalid Jalali year ' + jy);
@@ -211,11 +193,7 @@ export class NgbCalendarPersian extends NgbCalendarJalali {
       leap = 4;
     }
 
-    return {
-      leap: leap
-      , gy: gy
-      , march: march
-    };
+    return {leap: leap, gy: gy, march: march};
   }
 
 
@@ -223,15 +201,19 @@ export class NgbCalendarPersian extends NgbCalendarJalali {
    * Returns the number of days in a specific jalali month.
    */
   getDaysInJalaliMonth(month: number, year: number): number {
-    if (month <= 6) { return 31; }
-    if (month <= 11) { return 30; }
-    if (this.isLeapJalaliYear(year)) { return 30; }
+    if (month <= 6) {
+      return 31;
+    }
+    if (month <= 11) {
+      return 30;
+    }
+    if (this.isLeapJalaliYear(year)) {
+      return 30;
+    }
     return 29;
   }
 
-  isLeapJalaliYear(jy: number) {
-    return this.jalCal(jy).leap === 0;
-  }
+  isLeapJalaliYear(jy: number) { return this.jalCal(jy).leap === 0; }
 
   getNext(date: NgbDate, period: NgbPeriod = 'd', number = 1) {
     date = NgbDate.from(date);
@@ -253,9 +235,7 @@ export class NgbCalendarPersian extends NgbCalendarJalali {
     }
   }
 
-  getPrev(date: NgbDate, period: NgbPeriod = 'd', number = 1) {
-    return this.getNext(date, period, -number);
-  }
+  getPrev(date: NgbDate, period: NgbPeriod = 'd', number = 1) { return this.getNext(date, period, -number); }
 
   getWeekday(date: NgbDate) {
     const day = this.toGregorian(date).getDay();
@@ -279,7 +259,5 @@ export class NgbCalendarPersian extends NgbCalendarJalali {
     return Math.floor(Math.round((time - startDate.getTime()) / 86400000) / 7) + 1;
   }
 
-  getToday(): NgbDate {
-    return this.fromGregorian(new Date());
-  }
+  getToday(): NgbDate { return this.fromGregorian(new Date()); }
 }
