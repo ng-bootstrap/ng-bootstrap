@@ -25,6 +25,9 @@ export {NgbDatepickerConfig} from './datepicker-config';
 export {NgbDatepickerI18n} from './datepicker-i18n';
 export {NgbDateStruct} from './ngb-date-struct';
 export {NgbDateParserFormatter} from './ngb-date-parser-formatter';
+export {NgbCalendarJalali} from './jalali/ngb-calendar-jalali';
+export {NgbCalendarPersian} from './jalali/ngb-calendar-persian';
+export {NgbDatepickerI18nPersian} from './jalali/ngb-datepicker-i18n-persian';
 
 @NgModule({
   declarations: [
