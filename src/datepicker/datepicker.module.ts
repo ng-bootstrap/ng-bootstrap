@@ -28,6 +28,7 @@ export {NgbDate} from './ngb-date';
 export {NgbDateAdapter} from './adapters/ngb-date-adapter';
 export {NgbDateNativeAdapter} from './adapters/ngb-date-native-adapter';
 export {NgbDateParserFormatter} from './ngb-date-parser-formatter';
+export {NgbCalendarPersian} from './jalali/ngb-calendar-persian';
 
 @NgModule({
   declarations: [

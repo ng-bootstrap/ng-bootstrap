@@ -35,6 +35,7 @@ export {
   NgbPeriod,
   NgbCalendarIslamicCivil,
   NgbCalendarIslamicUmalqura,
+  NgbCalendarPersian,
   NgbDatepickerModule,
   NgbDatepickerI18n,
   NgbDatepickerConfig,
