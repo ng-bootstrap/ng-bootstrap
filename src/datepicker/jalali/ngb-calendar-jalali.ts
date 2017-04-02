@@ -29,14 +29,14 @@ export abstract class NgbCalendarJalali extends NgbCalendar {
         let mDays = this.getDaysInJalaliMonth(date.month, date.year);
         if (day <= 0) {
             while (day <= 0) {
-                date = NgbCalendarJalali.setMonth(date, date.month - 1);
+                date = this.setMonth(date, date.month - 1);
                 mDays = this.getDaysInJalaliMonth(date.month, date.year);
                 day += mDays;
             }
         } else if (day > mDays) {
             while (day > mDays) {
                 day -= mDays;
-                date = NgbCalendarJalali.setMonth(date, date.month + 1);
+                date = this.setMonth(date, date.month + 1);
                 mDays = this.getDaysInJalaliMonth(date.month, date.year);
             }
         }
@@ -44,14 +44,14 @@ export abstract class NgbCalendarJalali extends NgbCalendar {
         return date;
     }
 
-    static setMonth(date: NgbDate, month: number): NgbDate {
+    setMonth(date: NgbDate, month: number): NgbDate {
         month = +month;
         date.year = date.year + Math.floor((month - 1) / 12);
         date.month = Math.floor(((month - 1) % 12 + 12) % 12) + 1;
         return date;
     }
 
-    static setYear(date: NgbDate, yearValue: number): NgbDate {
+    setYear(date: NgbDate, yearValue: number): NgbDate {
         date.year = +yearValue;
         return date;
     }
