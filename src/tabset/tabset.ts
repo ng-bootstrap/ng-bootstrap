@@ -20,6 +20,16 @@ let nextId = 0;
 @Directive({selector: 'template[ngbTabTitle]'})
 export class NgbTabTitle {
   constructor(public templateRef: TemplateRef<any>) {}
+  
+  /**
+   * CSS classes to be added to the tab
+   * The CSS classes are updated as follows, depending on the type of the expression evaluation:
+   * - `string` - the CSS classes listed in the string (space delimited) are added,
+   * - `Array` - the CSS classes declared as Array elements are added,
+   * - `Object` - keys are CSS classes that get added when the expression given in the value
+   *              evaluates to a truthy value, otherwise they are removed.
+   */
+  @Input() ngbTabTitleClass: string|string[]|Set<string>|{[klass: string]: any};
 }
 
 /**
@@ -80,7 +90,7 @@ export interface NgbTabChangeEvent {
   exportAs: 'ngbTabset',
   template: `
     <ul [class]="'nav nav-' + type + ' justify-content-' + justify" role="tablist">
-      <li class="nav-item" *ngFor="let tab of tabs">
+      <li class="nav-item" *ngFor="let tab of tabs" [ngClass]="tab.titleTpl?.ngbTabTitleClass">
         <a [id]="tab.id" class="nav-link" [class.active]="tab.id === activeId" [class.disabled]="tab.disabled"
           href (click)="!!select(tab.id)" role="tab" [attr.aria-controls]="tab.id + '-panel'" [attr.aria-expanded]="tab.id === activeId">
           {{tab.title}}<template [ngTemplateOutlet]="tab.titleTpl?.templateRef"></template>
