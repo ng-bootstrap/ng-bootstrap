@@ -104,7 +104,7 @@ describe('ngb-tabset', () => {
       <ngb-tabset>
         <ngb-tab title="foo"><template ngbTabContent>Foo</template></ngb-tab>
         <ngb-tab>
-          <template ngbTabTitle [ngbTabTitleClass]="barClass"><b>bar</b></template>
+          <template ngbTabTitle [ngbTabTitleClass]="'barClass'"><b>bar</b></template>
           <template ngbTabContent>Bar</template>
         </ngb-tab>
         <ngb-tab title="baz">
@@ -118,7 +118,7 @@ describe('ngb-tabset', () => {
 
     expect(tabTitles[0].textContent).toMatch(/foo/);
     expect(tabTitles[1].innerHTML).toMatch(/<b>bar<\/b>/);
-    expect(tabTitles[1].parentElement.classList.contains("barClass")).toBe(true);
+    expect(tabTitles[1].classList.contains('barClass')).toBe(true);
     expect(tabTitles[2].textContent).toMatch(/bazbaz/);
   });
 
