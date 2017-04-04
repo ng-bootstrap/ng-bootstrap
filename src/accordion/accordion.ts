@@ -104,18 +104,22 @@ export interface NgbPanelChangeEvent {
     <template ngFor let-panel [ngForOf]="panels">
       <div role="tab" id="{{panel.id}}-header" [attr.aria-selected]="panel.focused"
         [class]="'card-header ' + (panel.type ? 'card-'+panel.type: type ? 'card-'+type : '')" [class.active]="isOpen(panel.id)">
-        <a href (click)="!!toggle(panel.id)" (focus)="panel.focused = true" 
-          (blur)="panel.focused = false" [class.text-muted]="panel.disabled" 
+        <a href (click)="!!toggle(panel.id)" (focus)="panel.focused = true"
+          (blur)="panel.focused = false" [class.text-muted]="panel.disabled"
           [attr.aria-expanded]="isOpen(panel.id)" [attr.aria-controls]="panel.id">
           {{panel.title}}<template [ngTemplateOutlet]="panel.titleTpl?.templateRef"></template>
         </a>
       </div>
-      <div id="{{panel.id}}" role="tabpanel" [attr.aria-labelledby]="panel.id + '-header'" class="card-block" *ngIf="isOpen(panel.id)">
+      <div id="{{panel.id}}" role="tabpanel"
+        *ngIf="!destroyOnHide || isOpen(panel.id)"
+        [attr.aria-labelledby]="panel.id + '-header'"
+        class="card-block {{isOpen(panel.id) ? 'show' : null}}"
+      >
         <template [ngTemplateOutlet]="panel.contentTpl.templateRef"></template>
       </div>
     </template>
   </div>
-`
+  `
 })
 export class NgbAccordion implements AfterContentChecked {
   /**
@@ -139,6 +143,11 @@ export class NgbAccordion implements AfterContentChecked {
    *  Whether the other panels should be closed when a panel is opened
    */
   @Input('closeOthers') closeOtherPanels: boolean;
+
+  /**
+   * Whether the closed panels should be hidden without destroying them
+   */
+  @Input() destroyOnHide: boolean = true;
 
   /**
    *  Accordion's types of panels to be applied globally.
