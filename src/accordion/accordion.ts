@@ -100,22 +100,27 @@ export interface NgbPanelChangeEvent {
   exportAs: 'ngbAccordion',
   host: {'role': 'tablist', '[attr.aria-multiselectable]': '!closeOtherPanels'},
   template: `
-  <div class="card">
     <template ngFor let-panel [ngForOf]="panels">
-      <div role="tab" id="{{panel.id}}-header" [attr.aria-selected]="panel.focused"
-        [class]="'card-header ' + (panel.type ? 'card-'+panel.type: type ? 'card-'+type : '')" [class.active]="isOpen(panel.id)">
-        <a href (click)="!!toggle(panel.id)" (focus)="panel.focused = true" 
-          (blur)="panel.focused = false" [class.text-muted]="panel.disabled" 
-          [attr.aria-expanded]="isOpen(panel.id)" [attr.aria-controls]="panel.id">
-          {{panel.title}}<template [ngTemplateOutlet]="panel.titleTpl?.templateRef"></template>
-        </a>
+      <div class="card">
+        <div role="tab" id="{{panel.id}}-header" [attr.aria-selected]="panel.focused"
+          [class]="'card-header ' + (panel.type ? 'card-'+panel.type: type ? 'card-'+type : '')"
+          [class.active]="isOpen(panel.id)">
+          <h5 class="mb-0">
+            <a href (click)="!!toggle(panel.id)" (focus)="panel.focused = true"
+              (blur)="panel.focused = false" [class.text-muted]="panel.disabled"
+              [attr.aria-expanded]="isOpen(panel.id)" [attr.aria-controls]="panel.id">
+              {{panel.title}}<template [ngTemplateOutlet]="panel.titleTpl?.templateRef"></template>
+            </a>
+          </h5>
+        </div>
+        <div id="{{panel.id}}" class="collapse" [class.show]="isOpen(panel.id)" role="tabpanel"
+          [attr.aria-labelledby]="panel.id + '-header'">
+          <div class="card-block">
+            <template [ngTemplateOutlet]="panel.contentTpl.templateRef"></template>
+          </div>
+        </div>
       </div>
-      <div id="{{panel.id}}" role="tabpanel" [attr.aria-labelledby]="panel.id + '-header'" class="card-block" *ngIf="isOpen(panel.id)">
-        <template [ngTemplateOutlet]="panel.contentTpl.templateRef"></template>
-      </div>
-    </template>
-  </div>
-`
+    </template>`
 })
 export class NgbAccordion implements AfterContentChecked {
   /**
