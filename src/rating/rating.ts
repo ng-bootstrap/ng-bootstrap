@@ -62,7 +62,7 @@ const NGB_RATING_VALUE_ACCESSOR = {
     <template #t let-fill="fill">{{ fill === 100 ? '&#9733;' : '&#9734;' }}</template>
     <template ngFor [ngForOf]="contexts" let-index="index">
       <span class="sr-only">({{ index < nextRate ? '*' : ' ' }})</span>
-      <span (mouseenter)="enter(index + 1)" (click)="update(index + 1)" [style.cursor]="readonly ? 'default' : 'pointer'">
+      <span (mouseenter)="enter(index + 1)" (click)="update(index + 1)" [style.cursor]="readonly || disabled ? 'default' : 'pointer'">
         <template [ngTemplateOutlet]="starTemplate || t" [ngOutletContext]="contexts[index]"></template>
       </span>
     </template>
@@ -72,7 +72,9 @@ const NGB_RATING_VALUE_ACCESSOR = {
 export class NgbRating implements ControlValueAccessor,
     OnInit, OnChanges {
   contexts: StarTemplateContext[] = [];
+  disabled = false;
   nextRate: number;
+
 
   /**
    * Maximal rating that can be given using this widget.
@@ -124,7 +126,7 @@ export class NgbRating implements ControlValueAccessor,
   ariaValueText() { return `${this.nextRate} out of ${this.max}`; }
 
   enter(value: number): void {
-    if (!this.readonly) {
+    if (!this.readonly && !this.disabled) {
       this._updateState(value);
     }
     this.hover.emit(value);
@@ -173,9 +175,11 @@ export class NgbRating implements ControlValueAccessor,
     this._updateState(this.rate);
   }
 
+  setDisabledState(isDisabled: boolean) { this.disabled = isDisabled; }
+
   update(value: number, internalChange = true): void {
     const newRate = getValueInRange(value, this.max, 0);
-    if (!this.readonly && this.rate !== newRate) {
+    if (!this.readonly && !this.disabled && this.rate !== newRate) {
       this.rate = newRate;
       this.rateChange.emit(this.rate);
     }

@@ -370,7 +370,7 @@ describe('ngb-rating', () => {
     });
   });
 
-  describe('Keyboard support', () => {
+  describe('keyboard support', () => {
 
     it('should handle arrow keys', () => {
       const fixture = createTestComponent('<ngb-rating [rate]="3" [max]="5"></ngb-rating>');
@@ -531,6 +531,27 @@ describe('ngb-rating', () => {
          expect(getState(element.nativeElement)).toEqual([true, true, true, true, false]);
          expect(fixture.componentInstance.form.get('rating').value).toBe(4);
          expect(element.nativeElement).toHaveCssClass('ng-valid');
+       }));
+
+    it('should disable widget when a control is disabled', fakeAsync(() => {
+         const html = `
+        <form [formGroup]="form">
+          <ngb-rating formControlName="rating" max="5"></ngb-rating>
+        </form>`;
+
+         const fixture = createTestComponent(html);
+         const element = fixture.debugElement.query(By.directive(NgbRating));
+
+         expect(getState(element.nativeElement)).toEqual([false, false, false, false, false]);
+         expect(fixture.componentInstance.form.get('rating').disabled).toBeFalsy();
+
+         fixture.componentInstance.form.get('rating').disable();
+         fixture.detectChanges();
+         expect(fixture.componentInstance.form.get('rating').disabled).toBeTruthy();
+
+         getStar(element.nativeElement, 3).click();
+         fixture.detectChanges();
+         expect(getState(element.nativeElement)).toEqual([false, false, false, false, false]);
        }));
   });
 
