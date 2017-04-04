@@ -10,9 +10,11 @@ import {
   TemplateRef,
   forwardRef,
   EventEmitter,
-  Output
+  Output,
+  OnChanges,
+  SimpleChanges
 } from '@angular/core';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {AbstractControl, ControlValueAccessor, Validator, NG_VALUE_ACCESSOR, NG_VALIDATORS} from '@angular/forms';
 
 import {NgbDate} from './ngb-date';
 import {NgbDatepicker, NgbDatepickerNavigateEvent} from './datepicker';
@@ -30,6 +32,12 @@ const NGB_DATEPICKER_VALUE_ACCESSOR = {
   multi: true
 };
 
+const NGB_DATEPICKER_VALIDATOR = {
+  provide: NG_VALIDATORS,
+  useExisting: forwardRef(() => NgbInputDatepicker),
+  multi: true
+};
+
 /**
  * A directive that makes it possible to have datepickers on input fields.
  * Manages integration with the input field itself (data entry) and ngModel (validation etc.).
@@ -38,9 +46,10 @@ const NGB_DATEPICKER_VALUE_ACCESSOR = {
   selector: 'input[ngbDatepicker]',
   exportAs: 'ngbDatepicker',
   host: {'(change)': 'manualDateChange($event.target.value)', '(keyup.esc)': 'close()', '(blur)': 'onBlur()'},
-  providers: [NGB_DATEPICKER_VALUE_ACCESSOR, NgbDatepickerService]
+  providers: [NGB_DATEPICKER_VALUE_ACCESSOR, NGB_DATEPICKER_VALIDATOR, NgbDatepickerService]
 })
-export class NgbInputDatepicker implements ControlValueAccessor {
+export class NgbInputDatepicker implements OnChanges,
+    ControlValueAccessor, Validator {
   private _cRef: ComponentRef<NgbDatepicker> = null;
   private _model: NgbDate;
   private _zoneSubscription: any;
@@ -114,6 +123,7 @@ export class NgbInputDatepicker implements ControlValueAccessor {
 
   private _onChange = (_: any) => {};
   private _onTouched = () => {};
+  private _validatorChange = () => {};
 
 
   constructor(
@@ -131,11 +141,7 @@ export class NgbInputDatepicker implements ControlValueAccessor {
 
   registerOnTouched(fn: () => any): void { this._onTouched = fn; }
 
-  writeValue(value) {
-    const ngbDate = value ? new NgbDate(value.year, value.month, value.day) : null;
-    this._model = this._calendar.isValid(value) ? ngbDate : null;
-    this._writeModelValue(this._model);
-  }
+  registerOnValidatorChange(fn: () => void): void { this._validatorChange = fn; };
 
   setDisabledState(isDisabled: boolean): void {
     this._renderer.setElementProperty(this._elRef.nativeElement, 'disabled', isDisabled);
@@ -144,9 +150,35 @@ export class NgbInputDatepicker implements ControlValueAccessor {
     }
   }
 
+  validate(c: AbstractControl): {[key: string]: any} {
+    const value = c.value;
+
+    if (value === null || value === undefined) {
+      return null;
+    }
+
+    if (!this._calendar.isValid(value)) {
+      return {'ngbDate': {invalid: c.value}};
+    }
+
+    if (this.minDate && NgbDate.from(value).before(NgbDate.from(this.minDate))) {
+      return {'ngbDate': {requiredBefore: this.minDate}};
+    }
+
+    if (this.maxDate && NgbDate.from(value).after(NgbDate.from(this.maxDate))) {
+      return {'ngbDate': {requiredAfter: this.maxDate}};
+    }
+  }
+
+  writeValue(value) {
+    const ngbDate = value ? new NgbDate(value.year, value.month, value.day) : null;
+    this._model = this._calendar.isValid(value) ? ngbDate : null;
+    this._writeModelValue(this._model);
+  }
+
   manualDateChange(value: string) {
     this._model = this._service.toValidDate(this._parserFormatter.parse(value), null);
-    this._onChange(this._model ? {year: this._model.year, month: this._model.month, day: this._model.day} : null);
+    this._onChange(this._model ? {year: this._model.year, month: this._model.month, day: this._model.day} : value);
     this._writeModelValue(this._model);
   }
 
@@ -209,6 +241,12 @@ export class NgbInputDatepicker implements ControlValueAccessor {
   }
 
   onBlur() { this._onTouched(); }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['minDate'] || changes['maxDate']) {
+      this._validatorChange();
+    }
+  }
 
   private _applyDatepickerInputs(datepickerInstance: NgbDatepicker): void {
     ['dayTemplate', 'displayMonths', 'firstDayOfWeek', 'markDisabled', 'minDate', 'maxDate', 'navigation',
