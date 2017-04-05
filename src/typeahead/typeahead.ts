@@ -98,6 +98,11 @@ export class NgbTypeahead implements ControlValueAccessor,
   @Input() inputFormatter: (value: any) => string;
 
   /**
+   * Max height of dropdown, if specified then scroll bar will appear in the dropdown.
+   */
+  @Input() maxHeight: string | number;
+
+  /**
    * A function to transform the provided observable text into the array of results.  Note that the "this" argument
    * is undefined so you need to explicitly bind it to a desired "this" target.
    */
@@ -185,6 +190,14 @@ export class NgbTypeahead implements ControlValueAccessor,
     }
   }
 
+  switchScrollOn() {
+    this._windowRef.location.nativeElement.style.maxHeight =
+      typeof this.maxHeight === 'string' ?
+        this.maxHeight :
+        this.maxHeight + 'px';
+    this._windowRef.location.nativeElement.style.overflowY = 'auto';
+  }
+
   isPopupOpen() { return this._windowRef != null; }
 
   handleBlur() { this._onTouched(); }
@@ -228,6 +241,9 @@ export class NgbTypeahead implements ControlValueAccessor,
     if (!this._windowRef) {
       this._windowRef = this._popupService.open();
       this._windowRef.instance.selectEvent.subscribe((result: any) => this._selectResultClosePopup(result));
+      if (this.maxHeight) {
+        this.switchScrollOn();
+      }
     }
   }
 
