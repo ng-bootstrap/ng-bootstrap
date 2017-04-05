@@ -31,14 +31,6 @@ function expectOpenPanels(nativeEl: HTMLElement, openPanelsDef: boolean[]) {
   expect(result).toEqual(openPanelsDef);
 }
 
-function expectAriaSelected(nativeEl: HTMLElement, ariaSelectedPanelsDef: boolean[]) {
-  const panels = getPanels(nativeEl);
-  expect(panels.length).toBe(ariaSelectedPanelsDef.length);
-
-  const result = panels.map(panel => (panel.getAttribute('aria-selected') === 'true'));
-  expect(result).toEqual(ariaSelectedPanelsDef);
-}
-
 describe('ngb-accordion', () => {
   let html = `
     <ngb-accordion #acc="ngbAccordion" [closeOthers]="closeOthers" [activeIds]="activeIds"
@@ -69,7 +61,6 @@ describe('ngb-accordion', () => {
     const el = fixture.nativeElement;
     fixture.detectChanges();
     expectOpenPanels(el, [false, false, false]);
-    expectAriaSelected(el, [false, false, false]);
     expect(accordionEl.getAttribute('role')).toBe('tablist');
     expect(accordionEl.getAttribute('aria-multiselectable')).toBe('true');
   });
@@ -327,32 +318,6 @@ describe('ngb-accordion', () => {
     expect(el[0]).toHaveCssClass('card-success');
     expect(el[1]).toHaveCssClass('card-danger');
     expect(el[2]).toHaveCssClass('card-warning');
-  });
-
-  it('should toggle aria-selected attribute of the focused panel', () => {
-    const fixture = TestBed.createComponent(TestComponent);
-    fixture.detectChanges();
-
-    const headingLinks = fixture.debugElement.queryAll(By.css('.card-header a'));
-
-    headingLinks[0].triggerEventHandler('focus', {});
-    fixture.detectChanges();
-    expectAriaSelected(fixture.nativeElement, [true, false, false]);
-
-    headingLinks[0].triggerEventHandler('blur', {});
-    headingLinks[1].triggerEventHandler('focus', {});
-    fixture.detectChanges();
-    expectAriaSelected(fixture.nativeElement, [false, true, false]);
-
-    headingLinks[1].triggerEventHandler('blur', {});
-    headingLinks[2].triggerEventHandler('focus', {});
-    fixture.detectChanges();
-    expectAriaSelected(fixture.nativeElement, [false, false, true]);
-
-    headingLinks[2].triggerEventHandler('blur', {});
-    headingLinks[1].triggerEventHandler('focus', {});
-    fixture.detectChanges();
-    expectAriaSelected(fixture.nativeElement, [false, true, false]);
   });
 
   describe('Custom config', () => {

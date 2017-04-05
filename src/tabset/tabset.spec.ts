@@ -41,8 +41,12 @@ function expectTabs(nativeEl: HTMLElement, active: boolean[], disabled?: boolean
 
     if (disabled[i]) {
       expect(tabTitles[i]).toHaveCssClass('disabled');
+      expect(tabTitles[i].getAttribute('aria-disabled')).toBe('true');
+      expect(tabTitles[i].getAttribute('tabindex')).toBe('-1');
     } else {
       expect(tabTitles[i]).not.toHaveCssClass('disabled');
+      expect(tabTitles[i].getAttribute('aria-disabled')).toBe('false');
+      expect(tabTitles[i].getAttribute('tabindex')).toBeNull();
     }
   }
 }

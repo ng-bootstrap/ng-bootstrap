@@ -40,11 +40,6 @@ export class NgbPanelContent {
 @Directive({selector: 'ngb-panel'})
 export class NgbPanel {
   /**
-   * Defines if the tab control is focused
-   */
-  focused: boolean = false;
-
-  /**
    *  A flag determining whether the panel is disabled or not.
    *  When disabled, the panel cannot be toggled.
    */
@@ -102,10 +97,9 @@ export interface NgbPanelChangeEvent {
   template: `
   <div class="card">
     <template ngFor let-panel [ngForOf]="panels">
-      <div role="tab" id="{{panel.id}}-header" [attr.aria-selected]="panel.focused"
+      <div role="tab" id="{{panel.id}}-header"
         [class]="'card-header ' + (panel.type ? 'card-'+panel.type: type ? 'card-'+type : '')" [class.active]="isOpen(panel.id)">
-        <a href (click)="!!toggle(panel.id)" (focus)="panel.focused = true" 
-          (blur)="panel.focused = false" [class.text-muted]="panel.disabled" 
+        <a href (click)="!!toggle(panel.id)" [class.text-muted]="panel.disabled"
           [attr.aria-expanded]="isOpen(panel.id)" [attr.aria-controls]="panel.id">
           {{panel.title}}<template [ngTemplateOutlet]="panel.titleTpl?.templateRef"></template>
         </a>
