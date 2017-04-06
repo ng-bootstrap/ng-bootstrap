@@ -28,7 +28,7 @@ export interface ResultTemplateContext {
     <template ngFor [ngForOf]="results" let-result let-idx="index">
       <button type="button" class="dropdown-item" [class.active]="idx === activeIdx" 
         (mouseenter)="markActive(idx)" 
-        (click)="select(result)">
+        (click)="select($event, result)">
           <template [ngTemplateOutlet]="resultTemplate || rt" 
           [ngOutletContext]="{result: result, term: term, formatter: formatter}"></template>
       </button>
@@ -91,7 +91,11 @@ export class NgbTypeaheadWindow implements OnInit {
     }
   }
 
-  select(item) { this.selectEvent.emit(item); }
+  select(event, item) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.selectEvent.emit(item);
+  }
 
   ngOnInit() { this.activeIdx = this.focusFirst ? 0 : -1; }
 }

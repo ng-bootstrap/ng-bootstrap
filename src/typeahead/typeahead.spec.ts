@@ -197,8 +197,11 @@ describe('ngb-typeahead', () => {
            fixture.detectChanges();
            expectWindowResults(compiled, ['+one', 'one more']);
 
-           getWindowLinks(fixture.debugElement)[0].triggerEventHandler('click', {});
+           const event = jasmine.createSpyObj('event', ['preventDefault', 'stopPropagation']);
+           getWindowLinks(fixture.debugElement)[0].triggerEventHandler('click', event);
            fixture.detectChanges();
+           expect(event.preventDefault).toHaveBeenCalled();
+           expect(event.stopPropagation).toHaveBeenCalled();
            expect(getWindow(compiled)).toBeNull();
            expectInputValue(compiled, 'one');
            expect(fixture.componentInstance.model).toBe('one');
@@ -209,7 +212,9 @@ describe('ngb-typeahead', () => {
            expectWindowResults(compiled, ['+one', 'one more']);
            expectInputValue(compiled, 'o');
 
-           getWindowLinks(fixture.debugElement)[0].triggerEventHandler('click', {});
+           getWindowLinks(fixture.debugElement)[0].triggerEventHandler('click', event);
+           expect(event.preventDefault).toHaveBeenCalledTimes(2);
+           expect(event.stopPropagation).toHaveBeenCalledTimes(2);
            fixture.detectChanges();
            expect(getWindow(compiled)).toBeNull();
            expectInputValue(compiled, 'one');
@@ -545,9 +550,12 @@ describe('ngb-typeahead', () => {
       // clicking selected
       changeInput(fixture.nativeElement, 'o');
       fixture.detectChanges();
-      getWindowLinks(fixture.debugElement)[0].triggerEventHandler('click', {});
+      const event = jasmine.createSpyObj('event', ['preventDefault', 'stopPropagation']);
+      getWindowLinks(fixture.debugElement)[0].triggerEventHandler('click', event);
       fixture.detectChanges();
 
+      expect(event.preventDefault).toHaveBeenCalled();
+      expect(event.stopPropagation).toHaveBeenCalled();
       expect(fixture.componentInstance.selectEventValue).toBe('one');
     });
 
@@ -559,9 +567,14 @@ describe('ngb-typeahead', () => {
          // clicking selected
          changeInput(fixture.nativeElement, 'o');
          fixture.detectChanges();
-         getWindowLinks(fixture.debugElement)[0].triggerEventHandler('click', {});
+         const event = jasmine.createSpyObj('event', ['preventDefault', 'stopPropagation']);
+         getWindowLinks(fixture.debugElement)[0].triggerEventHandler('click', event);
          fixture.detectChanges();
-         fixture.whenStable().then(() => { expect(fixture.componentInstance.model).toBe('o'); });
+         fixture.whenStable().then(() => {
+           expect(event.preventDefault).toHaveBeenCalled();
+           expect(event.stopPropagation).toHaveBeenCalled();
+           expect(fixture.componentInstance.model).toBe('o');
+         });
        }));
   });
 
