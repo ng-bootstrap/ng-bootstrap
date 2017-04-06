@@ -130,6 +130,7 @@ describe('ngb-typeahead', () => {
       const fixture = createTestComponent(`<input type="text" [ngbTypeahead]="find"/>`);
       const compiled = fixture.nativeElement;
       expect(getWindow(compiled)).toBeNull();
+      expect(fixture.componentInstance.typeahead.isOpen).toBeFalsy();
     });
 
     it('should not be opened when the model changes', async(() => {
@@ -139,6 +140,7 @@ describe('ngb-typeahead', () => {
          fixture.componentInstance.model = 'one';
          fixture.detectChanges();
          fixture.whenStable().then(() => { expect(getWindow(compiled)).toBeNull(); });
+         expect(fixture.componentInstance.typeahead.isOpen).toBeFalsy();
        }));
 
     it('should be opened when there are results', async(() => {
@@ -150,6 +152,7 @@ describe('ngb-typeahead', () => {
            fixture.detectChanges();
            expectWindowResults(compiled, ['+one', 'one more']);
            expect(fixture.componentInstance.model).toBe('one');
+           expect(fixture.componentInstance.typeahead.isOpen).toBeTruthy();
          });
        }));
 
@@ -158,6 +161,7 @@ describe('ngb-typeahead', () => {
       const compiled = fixture.nativeElement;
 
       expect(getWindow(compiled)).toBeNull();
+      expect(fixture.componentInstance.typeahead.isOpen).toBeFalsy();
     });
 
     it('should be closed on document click', () => {
@@ -167,9 +171,11 @@ describe('ngb-typeahead', () => {
       changeInput(compiled, 'one');
       fixture.detectChanges();
       expect(getWindow(compiled)).not.toBeNull();
+      expect(fixture.componentInstance.typeahead.isOpen).toBeTruthy();
 
       fixture.nativeElement.click();
       expect(getWindow(compiled)).toBeNull();
+      expect(fixture.componentInstance.typeahead.isOpen).toBeFalsy();
     });
 
     it('should be closed when ESC is pressed', () => {
@@ -179,11 +185,13 @@ describe('ngb-typeahead', () => {
       changeInput(compiled, 'one');
       fixture.detectChanges();
       expect(getWindow(compiled)).not.toBeNull();
+      expect(fixture.componentInstance.typeahead.isOpen).toBeTruthy();
 
       const event = createKeyDownEvent(Key.Escape);
       getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
       fixture.detectChanges();
       expect(getWindow(compiled)).toBeNull();
+      expect(fixture.componentInstance.typeahead.isOpen).toBeFalsy();
       expect(event.preventDefault).toHaveBeenCalled();
     });
 
@@ -575,6 +583,47 @@ describe('ngb-typeahead', () => {
       expect(input.getAttribute('autocapitalize')).toBe('off');
       expect(input.getAttribute('autocorrect')).toBe('off');
     });
+  });
+
+  describe('accessibility', () => {
+
+    it('should have correct role, aria-autocomplete, aria-expanded by default', () => {
+      const fixture = createTestComponent('<input type="text" [ngbTypeahead]="findObjects" />');
+      const input = getNativeInput(fixture.nativeElement);
+
+      fixture.componentInstance.typeahead.popupId = 'test-typeahead';
+      fixture.detectChanges();
+
+      expect(input.getAttribute('role')).toBe('combobox');
+      expect(input.getAttribute('aria-autocomplete')).toBe('list');
+      expect(input.getAttribute('aria-expanded')).toBe('false');
+      expect(input.getAttribute('aria-owns')).toBe('test-typeahead');
+    });
+
+    it('should have the correct ARIA attributes when interacting with input', async(() => {
+         const fixture = createTestComponent(`<input type="text" [(ngModel)]="model" [ngbTypeahead]="find"/>`);
+         const compiled = fixture.nativeElement;
+         const input = getNativeInput(compiled);
+         fixture.componentInstance.typeahead.popupId = 'test-typeahead';
+         fixture.detectChanges();
+         expect(input.getAttribute('aria-owns')).toBe('test-typeahead');
+         expect(input.getAttribute('aria-expanded')).toBe('false');
+         expect(input.getAttribute('aria-activedescendant')).toBeFalsy();
+
+         fixture.whenStable().then(() => {
+           changeInput(compiled, 'o');
+           fixture.detectChanges();
+           expectWindowResults(compiled, ['+one', 'one more']);
+           expect(input.getAttribute('aria-expanded')).toBe('true');
+           expect(input.getAttribute('aria-activedescendant')).toBe('test-typeahead-0');
+
+           const event = createKeyDownEvent(Key.ArrowDown);
+           getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
+           fixture.detectChanges();
+
+           expect(input.getAttribute('aria-activedescendant')).toBe('test-typeahead-1');
+         });
+       }));
   });
 
   if (!isBrowser(['ie', 'edge'])) {
