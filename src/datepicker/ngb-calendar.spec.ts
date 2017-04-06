@@ -64,9 +64,7 @@ describe('ngb-calendar-gregorian', () => {
     expect(calendar.getPrev(new NgbDate(2017, 1, 22), 'y')).toEqual(new NgbDate(2016, 1, 1));
   });
 
-  it('should check that NgbDate is a valid javascript date', () => {
-
-    // invalid values
+  it('should properly recognize invalid javascript date', () => {
     expect(calendar.isValid(null)).toBeFalsy();
     expect(calendar.isValid(undefined)).toBeFalsy();
     expect(calendar.isValid(<any>NaN)).toBeFalsy();
@@ -75,16 +73,23 @@ describe('ngb-calendar-gregorian', () => {
     expect(calendar.isValid(new NgbDate(undefined, undefined, undefined))).toBeFalsy();
     expect(calendar.isValid(new NgbDate(NaN, NaN, NaN))).toBeFalsy();
     expect(calendar.isValid(new NgbDate(<any>'2017', <any>'03', <any>'10'))).toBeFalsy();
+  });
 
-    // min/max dates
-    expect(calendar.isValid(new NgbDate(275760, 9, 12))).toBeTruthy();
+  it('should recognize dates outside of JS range as invalid', () => {
     expect(calendar.isValid(new NgbDate(275760, 9, 14))).toBeFalsy();
     expect(calendar.isValid(new NgbDate(-271821, 4, 19))).toBeFalsy();
-    expect(calendar.isValid(new NgbDate(-271821, 4, 21))).toBeTruthy();
-
-    // valid dates
-    expect(calendar.isValid(new NgbDate(2016, 8, 8))).toBeTruthy();
-    expect(calendar.isValid(new NgbDate(0, 0, 0))).toBeTruthy();
-    expect(calendar.isValid(new NgbDate(-1, -1, -1))).toBeTruthy();
   });
+
+  it('should recognize dates outside of calendar range as invalid', () => {
+    expect(calendar.isValid(new NgbDate(0, 0, 0))).toBeFalsy();
+    expect(calendar.isValid(new NgbDate(-1, -1, -1))).toBeFalsy();
+    expect(calendar.isValid(new NgbDate(2016, 17, 1))).toBeFalsy();
+    expect(calendar.isValid(new NgbDate(2017, 5, 35))).toBeFalsy();
+  });
+
+  it('should mark valid JS dates as valid', () => {
+    expect(calendar.isValid(new NgbDate(275760, 9, 12))).toBeTruthy();
+    expect(calendar.isValid(new NgbDate(2016, 8, 8))).toBeTruthy();
+  });
+
 });

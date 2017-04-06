@@ -117,7 +117,6 @@ describe('ngb-datepicker-service', () => {
     it('should convert a valid NgbDate', inject([NgbDatepickerService], (service) => {
          expect(service.toValidDate(new NgbDate(2016, 10, 5))).toEqual(new NgbDate(2016, 10, 5));
          expect(service.toValidDate({year: 2016, month: 10, day: 5})).toEqual(new NgbDate(2016, 10, 5));
-         expect(service.toValidDate(new NgbDate(999, 999, 999))).toEqual(new NgbDate(999, 999, 999));
        }));
 
     it('should return today for an invalid NgbDate',

@@ -89,7 +89,13 @@ export class NgbCalendarGregorian extends NgbCalendar {
   getToday(): NgbDate { return fromJSDate(new Date()); }
 
   isValid(date: NgbDate): boolean {
-    return date && isInteger(date.year) && isInteger(date.month) && isInteger(date.day) &&
-        !isNaN(toJSDate(date).getTime());
+    if (!date || !isInteger(date.year) || !isInteger(date.month) || !isInteger(date.day)) {
+      return false;
+    }
+
+    const jsDate = toJSDate(date);
+
+    return !isNaN(jsDate.getTime()) && jsDate.getFullYear() === date.year && jsDate.getMonth() + 1 === date.month &&
+        jsDate.getDate() === date.day;
   }
 }
