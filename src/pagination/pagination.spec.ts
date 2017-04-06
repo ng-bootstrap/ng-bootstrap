@@ -19,24 +19,23 @@ function expectPages(nativeEl: HTMLElement, pagesDef: string[]): void {
     let pageDef = pagesDef[i];
     let classIndicator = pageDef.charAt(0);
 
-    if (classIndicator === '+') {
+    if (classIndicator === '+') {  // active
       expect(pages[i]).toHaveCssClass('active');
       expect(pages[i]).not.toHaveCssClass('disabled');
-      expect(normalizeText(pages[i].textContent)).toEqual(pageDef.substr(1) + ' (current)');
-    } else if (classIndicator === '-') {
+      expect(pages[i].querySelectorAll('span')[0].textContent.trim().replace(/\s\s+/g, ' '))
+          .toEqual(pageDef.substr(1) + ' Page ' + pageDef.substr(1) + ' (current)');
+    } else if (classIndicator === '-') {  // disabled
       expect(pages[i]).not.toHaveCssClass('active');
       expect(pages[i]).toHaveCssClass('disabled');
-      expect(normalizeText(pages[i].textContent)).toEqual(pageDef.substr(1));
-      if (normalizeText(pages[i].textContent) !== '...') {
-        expect(pages[i].querySelector('a').getAttribute('tabindex')).toEqual('-1');
-      }
+      expect(pages[i].querySelectorAll('span')[0].textContent.trim().replace(/\s\s+/g, ' ')).toEqual(pageDef.substr(1));
+    } else if (classIndicator === '*') {  // disabled active
+      expect(pages[i]).toHaveCssClass('active');
+      expect(pages[i]).toHaveCssClass('disabled');
+      expect(pages[i].querySelectorAll('span')[0].textContent.trim().replace(/\s\s+/g, ' ')).toEqual(pageDef.substr(1));
     } else {
       expect(pages[i]).not.toHaveCssClass('active');
       expect(pages[i]).not.toHaveCssClass('disabled');
-      expect(normalizeText(pages[i].textContent)).toEqual(pageDef);
-      if (normalizeText(pages[i].textContent) !== '...') {
-        expect(pages[i].querySelector('a').hasAttribute('tabindex')).toBeFalsy();
-      }
+      expect(pages[i].querySelector('a').textContent.trim().replace(/\s\s+/g, ' ')).toEqual(pageDef);
     }
   }
 }
@@ -218,17 +217,9 @@ describe('ngb-pagination', () => {
       fixture.detectChanges();
       expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '» Next']);
 
-      getLink(fixture.nativeElement, 0).click();
-      fixture.detectChanges();
-      expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '» Next']);
-
       getLink(fixture.nativeElement, 4).click();
       fixture.detectChanges();
       expectPages(fixture.nativeElement, ['« Previous', '1', '+2', '3', '» Next']);
-
-      getLink(fixture.nativeElement, 4).click();
-      fixture.detectChanges();
-      expectPages(fixture.nativeElement, ['« Previous', '1', '2', '+3', '-» Next']);
 
       getLink(fixture.nativeElement, 4).click();
       fixture.detectChanges();
@@ -245,10 +236,6 @@ describe('ngb-pagination', () => {
       expectPages(fixture.nativeElement, ['-« Previous', '+1', '2', '3', '» Next']);
 
       fixture.componentInstance.boundaryLinks = true;
-      fixture.detectChanges();
-      expectPages(fixture.nativeElement, ['-«« First', '-« Previous', '+1', '2', '3', '» Next', '»» Last']);
-
-      getLink(fixture.nativeElement, 0).click();
       fixture.detectChanges();
       expectPages(fixture.nativeElement, ['-«« First', '-« Previous', '+1', '2', '3', '» Next', '»» Last']);
 
@@ -565,8 +552,7 @@ describe('ngb-pagination', () => {
          expect(fixture.componentInstance.onPageChange).not.toHaveBeenCalled();
        }));
     it('should set classes correctly for disabled state', fakeAsync(() => {
-         const html = `<ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize" [maxSize]="maxSize"
-         [disabled]=true></ngb-pagination>`;
+         const html = `<ngb-pagination [pageSize]="10" [disabled]=true></ngb-pagination>`;
          const fixture = createTestComponent(html);
          tick();
 
@@ -575,6 +561,7 @@ describe('ngb-pagination', () => {
            expect(buttons[i]).toHaveCssClass('disabled');
          }
        }));
+
   });
 
   describe('Custom config', () => {
@@ -639,6 +626,7 @@ class TestComponent {
   maxSize = 0;
   ellipses = true;
   rotate = false;
+  disabled = false;
 
   onPageChange = () => {};
 }

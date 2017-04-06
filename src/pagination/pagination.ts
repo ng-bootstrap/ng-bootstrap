@@ -11,41 +11,59 @@ import {NgbPaginationConfig} from './pagination-config';
   host: {'role': 'navigation'},
   template: `
     <ul [class]="'pagination' + (size ? ' pagination-' + size : '')">
-      <li *ngIf="boundaryLinks" class="page-item"
-        [class.disabled]="!hasPrevious() || disabled">
-        <a aria-label="First" class="page-link" href (click)="!!selectPage(1)" [attr.tabindex]="hasPrevious() ? null : '-1'">
+      <li *ngIf="boundaryLinks" class="page-item" [class.disabled]="!hasPrevious() || disabled">
+        <a *ngIf="hasPrevious() && !disabled" class="page-link" aria-label="First"  href (click)="!!selectPage(1)">
           <span aria-hidden="true">&laquo;&laquo;</span>
           <span class="sr-only">First</span>
         </a>
+        <span *ngIf="!hasPrevious() || disabled" class="page-link">
+          <span aria-hidden="true">&laquo;&laquo;</span>
+          <span class="sr-only">First</span>
+        </span>
       </li>
-
-      <li *ngIf="directionLinks" class="page-item"
-        [class.disabled]="!hasPrevious() || disabled">
-        <a aria-label="Previous" class="page-link" href (click)="!!selectPage(page-1)" [attr.tabindex]="hasPrevious() ? null : '-1'">
+      <li *ngIf="directionLinks" class="page-item" [class.disabled]="!hasPrevious() || disabled">
+        <a *ngIf="hasPrevious() && !disabled" class="page-link" aria-label="Previous" href (click)="!!selectPage(page-1)">
           <span aria-hidden="true">&laquo;</span>
           <span class="sr-only">Previous</span>
         </a>
+        <span *ngIf="!hasPrevious() || disabled" class="page-link">
+          <span aria-hidden="true">&laquo;</span>
+          <span class="sr-only">Previous</span>
+        </span>
       </li>
       <li *ngFor="let pageNumber of pages" class="page-item" [class.active]="pageNumber === page"
         [class.disabled]="isEllipsis(pageNumber) || disabled">
-        <a *ngIf="isEllipsis(pageNumber)" class="page-link">...</a>
-        <a *ngIf="!isEllipsis(pageNumber)" class="page-link" href (click)="!!selectPage(pageNumber)">
-          {{pageNumber}}
-          <span *ngIf="pageNumber === page" class="sr-only">(current)</span>
-        </a>
+        <span *ngIf="isEllipsis(pageNumber)" class="page-link">...</span>
+        <ng-container *ngIf="!isEllipsis(pageNumber)">
+          <a *ngIf="pageNumber!==page && !disabled" class="page-link" href (click)="!!selectPage(pageNumber)"
+            [attr.aria-label]="'Page '+pageNumber">
+            {{pageNumber}}
+          </a>
+          <span *ngIf="pageNumber === page || disabled" class="page-link">
+            <span aria-hidden="true">{{pageNumber}}</span>
+            <span class="sr-only">Page {{pageNumber}} {{pageNumber === page ? '(current)' : ''}}</span>
+          </span>
+        </ng-container>
       </li>
       <li *ngIf="directionLinks" class="page-item" [class.disabled]="!hasNext() || disabled">
-        <a aria-label="Next" class="page-link" href (click)="!!selectPage(page+1)" [attr.tabindex]="hasNext() ? null : '-1'">
+        <a *ngIf="hasNext() && !disabled" class="page-link" aria-label="Next" href (click)="!!selectPage(page+1)">
           <span aria-hidden="true">&raquo;</span>
           <span class="sr-only">Next</span>
         </a>
+        <span *ngIf="!hasNext() || disabled" class="page-link">
+          <span aria-hidden="true">&raquo;</span>
+          <span class="sr-only">Next</span>
+        </span>
       </li>
-
       <li *ngIf="boundaryLinks" class="page-item" [class.disabled]="!hasNext() || disabled">
-        <a aria-label="Last" class="page-link" href (click)="!!selectPage(pageCount)" [attr.tabindex]="hasNext() ? null : '-1'">
+        <a *ngIf="hasNext() && !disabled" class="page-link" aria-label="Last" href (click)="!!selectPage(pageCount)">
           <span aria-hidden="true">&raquo;&raquo;</span>
           <span class="sr-only">Last</span>
         </a>
+        <span *ngIf="!hasNext() || disabled" class="page-link">
+          <span aria-hidden="true">&raquo;&raquo;</span>
+          <span class="sr-only">Last</span>
+        </span>
       </li>
     </ul>
   `
@@ -126,7 +144,11 @@ export class NgbPagination implements OnChanges {
 
   hasNext(): boolean { return this.page < this.pageCount; }
 
-  selectPage(pageNumber: number): void { this._updatePages(pageNumber); }
+  selectPage(pageNumber: number): void {
+    if (!this.disabled) {
+      this._updatePages(pageNumber);
+    }
+  }
 
   ngOnChanges(changes: SimpleChanges): void { this._updatePages(this.page); }
 
