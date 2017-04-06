@@ -5,19 +5,19 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <a class="navbar-brand" [routerLink]="['/']">ng-bootstrap</a>
+    <a class="navbar-brand" [routerLink]="['/']" (click)="navbarCollapsed = true">ng-bootstrap</a>
 
     <div class="navbar-collapse" [ngbCollapse]="navbarCollapsed" id="navbarContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item" [routerLinkActive]="['active']">
-          <a class="nav-link" [routerLink]="['/getting-started']">Getting Started</a>
+          <a class="nav-link" [routerLink]="['/getting-started']" (click)="navbarCollapsed = true">Getting Started</a>
         </li>
         <li class="nav-item" [routerLinkActive]="['active']">
-          <a class="nav-link" [routerLink]="['/components']">Components</a>
+          <a class="nav-link" [routerLink]="['/components']" (click)="navbarCollapsed = true">Components</a>
         </li>
       </ul>
 
-      <span class="github-buttons">
+      <span class="github-buttons hidden-md-down">
         <a class="github-button"
            href="https://github.com/ng-bootstrap/ng-bootstrap"
            target="_blank"
