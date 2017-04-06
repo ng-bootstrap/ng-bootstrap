@@ -234,6 +234,25 @@ describe('ngb-accordion', () => {
     expectOpenPanels(fixture.nativeElement, [true, false, false]);
   });
 
+  it('should have correct ARIA attributes when disabled', () => {
+    const fixture = TestBed.createComponent(TestComponent);
+    const tc = fixture.componentInstance;
+
+    tc.activeIds = ['one'];
+    fixture.detectChanges();
+    let disabledPanelLink: HTMLAnchorElement = getPanels(fixture.nativeElement)[0].querySelector('a');
+    expectOpenPanels(fixture.nativeElement, [true, false, false]);
+    expect(disabledPanelLink.getAttribute('aria-disabled')).toBe('false');
+    expect(disabledPanelLink.getAttribute('tabindex')).toBeNull();
+
+    tc.panels[0].disabled = true;
+    fixture.detectChanges();
+    expectOpenPanels(fixture.nativeElement, [false, false, false]);
+    expect(disabledPanelLink.getAttribute('aria-disabled')).toBe('true');
+    expect(disabledPanelLink.getAttribute('tabindex')).toBe('-1');
+  });
+
+
   it('should remove collapsed panels content from DOM', () => {
     const fixture = TestBed.createComponent(TestComponent);
     fixture.detectChanges();
