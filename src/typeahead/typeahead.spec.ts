@@ -586,9 +586,21 @@ describe('ngb-typeahead', () => {
       fixture.detectChanges();
 
       expect(input.getAttribute('role')).toBe('combobox');
+      expect(input.getAttribute('aria-multiline')).toBe('false');
       expect(input.getAttribute('aria-autocomplete')).toBe('list');
       expect(input.getAttribute('aria-expanded')).toBe('false');
       expect(input.getAttribute('aria-owns')).toBeNull();
+      expect(input.getAttribute('aria-autocomplete')).toBe('list');
+      expect(input.getAttribute('aria-activedescendant')).toBeNull();
+    });
+
+    it('should correctly set aria-autocomplete depending on showHint', () => {
+      const fixture = createTestComponent('<input type="text" [ngbTypeahead]="findObjects"  [showHint]="true" />');
+      const input = getNativeInput(fixture.nativeElement);
+
+      fixture.detectChanges();
+
+      expect(input.getAttribute('aria-autocomplete')).toBe('both');
     });
 
     it('should have the correct ARIA attributes when interacting with input', async(() => {
@@ -605,10 +617,17 @@ describe('ngb-typeahead', () => {
            expect(input.getAttribute('aria-owns')).toMatch(/ngb-typeahead-[0-9]+/);
            expect(input.getAttribute('aria-activedescendant')).toMatch(/ngb-typeahead-[0-9]+-0/);
 
-           const event = createKeyDownEvent(Key.ArrowDown);
+           let event = createKeyDownEvent(Key.ArrowDown);
            getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
            fixture.detectChanges();
            expect(input.getAttribute('aria-activedescendant')).toMatch(/ngb-typeahead-[0-9]+-1/);
+
+           event = createKeyDownEvent(Key.Enter);
+           getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
+           fixture.detectChanges();
+           expect(input.getAttribute('aria-expanded')).toBe('false');
+           expect(input.getAttribute('aria-owns')).toBeNull();
+           expect(input.getAttribute('aria-activedescendant')).toBeNull();
          });
        }));
   });
