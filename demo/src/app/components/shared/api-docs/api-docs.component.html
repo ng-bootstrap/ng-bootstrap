@@ -18,7 +18,7 @@
 
   <template [ngIf]="apiDocs.inputs.length">
     <section>
-      <h3 id="inputs">Inputs</h3>
+      <h3>Inputs</h3>
       <table class="table table-sm table-hover">
         <tbody>
         <tr *ngFor="let input of apiDocs.inputs">
@@ -41,7 +41,7 @@
 
   <template [ngIf]="apiDocs.outputs.length">
     <section>
-      <h3 id="outputs">Outputs</h3>
+      <h3>Outputs</h3>
       <table class="table table-sm table-hover">
         <tbody>
           <tr *ngFor="let output of apiDocs.outputs">
@@ -55,7 +55,7 @@
 
   <template [ngIf]="apiDocs.methods.length && apiDocs.exportAs">
     <section>
-      <h3 id="methods">Methods</h3>
+      <h3>Methods</h3>
       <table class="table table-sm table-hover">
         <tbody>
         <tr *ngFor="let method of apiDocs.methods">

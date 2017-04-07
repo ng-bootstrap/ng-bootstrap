@@ -6,7 +6,7 @@
 
   <template [ngIf]="apiDocs.properties && apiDocs.properties.length">
     <section>
-      <h3 id="inputs">Properties</h3>
+      <h3>Properties</h3>
       <table class="table table-sm table-hover">
         <tbody>
         <tr *ngFor="let prop of apiDocs.properties">
@@ -26,7 +26,7 @@
 
   <template [ngIf]="apiDocs.methods && apiDocs.methods.length">
     <section>
-      <h3 id="methods">Methods</h3>
+      <h3>Methods</h3>
       <table class="table table-sm table-hover">
         <tbody>
         <tr *ngFor="let method of apiDocs.methods">
