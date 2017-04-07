@@ -5,7 +5,6 @@ import {
   ElementRef,
   EventEmitter,
   forwardRef,
-  HostBinding,
   Injector,
   Input,
   NgZone,
@@ -57,7 +56,7 @@ export interface NgbTypeaheadSelectItemEvent {
   preventDefault: () => void;
 }
 
-let nextId = 0;
+let nextWindowId = 0;
 
 /**
  * NgbTypeahead directive provides a simple way of creating powerful typeaheads from any text input
@@ -75,8 +74,8 @@ let nextId = 0;
     'role': 'combobox',
     'aria-autocomplete': 'list',
     '[attr.aria-activedescendant]': 'activeDescendant',
-    '[attr.aria-owns]': 'popupId',
-    '[attr.aria-expanded]': 'isOpen'
+    '[attr.aria-owns]': 'isPopupOpen() ? popupId : null',
+    '[attr.aria-expanded]': 'isPopupOpen()'
   },
   providers: [NGB_TYPEAHEAD_VALUE_ACCESSOR]
 })
@@ -133,8 +132,7 @@ export class NgbTypeahead implements ControlValueAccessor,
   @Output() selectItem = new EventEmitter<NgbTypeaheadSelectItemEvent>();
 
   activeDescendant: string;
-  popupId = `ngb-typeahead-${nextId++}`;
-  isOpen = false;
+  popupId = `ngb-typeahead-${nextWindowId++}`;
 
   private _onTouched = () => {};
   private _onChange = (_: any) => {};
@@ -153,7 +151,7 @@ export class NgbTypeahead implements ControlValueAccessor,
         NgbTypeaheadWindow, _injector, _viewContainerRef, _renderer, componentFactoryResolver);
 
     this._zoneSubscription = ngZone.onStable.subscribe(() => {
-      if (this.isOpen) {
+      if (this.isPopupOpen()) {
         positionElements(this._elementRef.nativeElement, this._windowRef.location.nativeElement, 'bottom-left');
       }
     });
@@ -197,12 +195,12 @@ export class NgbTypeahead implements ControlValueAccessor,
     }
   }
 
-  isPopupOpen() { return this.isOpen; }
+  isPopupOpen() { return this._windowRef != null; }
 
   handleBlur() { this._onTouched(); }
 
   handleKeyDown(event: KeyboardEvent) {
-    if (!this.isOpen) {
+    if (!this.isPopupOpen()) {
       return;
     }
 
@@ -237,25 +235,17 @@ export class NgbTypeahead implements ControlValueAccessor,
   }
 
   private _openPopup() {
-    if (!this.isOpen) {
+    if (!this.isPopupOpen()) {
       this._windowRef = this._popupService.open();
-
-      if (!this._windowRef.instance.id) {
-        this._windowRef.instance.id = this.popupId;
-      } else {
-        this.popupId = this._windowRef.instance.id;
-      }
-
+      this._windowRef.instance.id = this.popupId;
       this._windowRef.instance.selectEvent.subscribe((result: any) => this._selectResultClosePopup(result));
-      this._windowRef.instance.activeChangedEvent.subscribe((activeId: string) => this.activeDescendant = activeId);
-      this.isOpen = true;
+      this._windowRef.instance.activeChangeEvent.subscribe((activeId: string) => this.activeDescendant = activeId);
     }
   }
 
   private _closePopup() {
     this._popupService.close();
     this._windowRef = null;
-    this.isOpen = false;
     this.activeDescendant = undefined;
   }
 

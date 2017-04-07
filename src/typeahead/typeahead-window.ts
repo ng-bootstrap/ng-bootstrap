@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter, TemplateRef, HostBinding, OnInit} from '@angular/core';
+import {Component, Input, Output, EventEmitter, TemplateRef, OnInit} from '@angular/core';
 
 import {toString} from '../util/util';
 
@@ -41,8 +41,8 @@ export class NgbTypeaheadWindow implements OnInit {
   activeIdx = 0;
 
   /**
-   *  An optional id for the typeahead. The id should be unique.
-   *  If not provided, it will be auto-generated.
+   *  The id for the typeahead widnow. The id should be unique and the same
+   *  as the associated typeahead's id.
    */
   @Input() id: string;
 
@@ -77,7 +77,7 @@ export class NgbTypeaheadWindow implements OnInit {
    */
   @Output('select') selectEvent = new EventEmitter();
 
-  @Output('activeChanged') activeChangedEvent = new EventEmitter();
+  @Output('activeChange') activeChangeEvent = new EventEmitter();
 
   getActive() { return this.results[this.activeIdx]; }
 
@@ -114,10 +114,6 @@ export class NgbTypeaheadWindow implements OnInit {
   }
 
   private _activeChanged() {
-    if (this.activeIdx >= 0) {
-      this.activeChangedEvent.emit(this.id + '-' + this.activeIdx);
-    } else {
-      this.activeChangedEvent.emit(undefined);
-    }
+    this.activeChangeEvent.emit(this.activeIdx >= 0 ? this.id + '-' + this.activeIdx : undefined);
   }
 }
