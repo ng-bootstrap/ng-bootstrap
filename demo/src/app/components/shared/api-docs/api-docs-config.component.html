@@ -6,7 +6,7 @@
 
   <template [ngIf]="apiDocs.properties && apiDocs.properties.length">
     <section>
-      <h3 id="inputs">Properties</h3>
+      <h3>Properties</h3>
       <p>
         <template ngFor let-property [ngForOf]="apiDocs.properties">
           <code>{{ property.name }}</code>
