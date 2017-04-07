@@ -1,5 +1,5 @@
 <ngb-accordion #acc="ngbAccordion">
-  <ngb-panel id="1" title="First panel">
+  <ngb-panel id="toggle-1" title="First panel">
     <template ngbPanelContent>
       Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia
       aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
@@ -9,7 +9,7 @@
       labore sustainable VHS.
     </template>
   </ngb-panel>
-  <ngb-panel id="2" title="Second">
+  <ngb-panel id="toggle-2" title="Second">
     <template ngbPanelContent>
       Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia
       aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
@@ -22,6 +22,6 @@
 </ngb-accordion>
 
 <p>
-  <button class="btn btn-sm btn-outline-primary" (click)="acc.toggle('1')">Toggle first</button>
-  <button class="btn btn-sm btn-outline-primary" (click)="acc.toggle('2')">Toggle second</button>
+  <button class="btn btn-sm btn-outline-primary" (click)="acc.toggle('toggle-1')">Toggle first</button>
+  <button class="btn btn-sm btn-outline-primary" (click)="acc.toggle('toggle-2')">Toggle second</button>
 </p>
