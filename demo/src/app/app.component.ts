@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Analytics} from './shared/analytics/analytics';
+import {componentsList} from './shared';
 
 import '../style/app.scss';
 
@@ -9,6 +10,8 @@ import '../style/app.scss';
 })
 export class AppComponent implements OnInit {
   navbarCollapsed = true;
+
+  components = componentsList;
 
   constructor(private _analytics: Analytics) {
   }
