@@ -33,6 +33,7 @@ export {NgbCollapseModule, NgbCollapse} from './collapse/collapse.module';
 export {
   NgbCalendar,
   NgbCalendarIslamicCivil,
+  NgbCalendarIslamicUmalqura,
   NgbDatepickerModule,
   NgbDatepickerI18n,
   NgbDatepickerConfig,
