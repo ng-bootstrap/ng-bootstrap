@@ -11,17 +11,11 @@ import {Injectable} from '@angular/core';
  * http://cldr.unicode.org/development/development-process/design-proposals/islamic-calendar-types
  */
 
-
-function getDaysDiff(date1: Date, date2: Date): number {
-  const ONE_DAY = 1000 * 60 * 60 * 24;
-  const diff = Math.abs(date1.getTime() - date2.getTime());
-  return Math.round(diff / ONE_DAY);
-}
-
 const GREGORIAN_FIRST_DATE = new Date(1882, 10, 12);
 const GREGORIAN_LAST_DATE = new Date(2174, 10, 25);
 const HIJRI_BEGIN = 1300;
 const HIJRI_END = 1600;
+const ONE_DAY = 1000 * 60 * 60 * 24;
 
 const MONTH_LENGTH = [
   // 1300-1304
@@ -148,6 +142,11 @@ const MONTH_LENGTH = [
   '001010011101'
 ];
 
+function getDaysDiff(date1: Date, date2: Date): number {
+  const diff = Math.abs(date1.getTime() - date2.getTime());
+  return Math.round(diff / ONE_DAY);
+}
+
 @Injectable()
 export class NgbCalendarIslamicUmalqura extends NgbCalendarHijri {
   /**
@@ -262,7 +261,7 @@ export class NgbCalendarIslamicUmalqura extends NgbCalendarHijri {
     jsDate.setDate(jsDate.getDate() + 4 - (jsDate.getDay() || 7));  // Thursday
     const time = jsDate.getTime();
     const MuhDate = this.toGregorian(new NgbDate(date.year, 1, 1));  // Compare with Muharram 1
-    return Math.floor(Math.round((time - MuhDate.getTime()) / 86400000) / 7) + 1;
+    return Math.floor(Math.round((time - MuhDate.getTime()) / ONE_DAY) / 7) + 1;
   }
 
   getToday(): NgbDate { return this.fromGregorian(new Date()); }

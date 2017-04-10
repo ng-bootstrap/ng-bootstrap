@@ -849,8 +849,8 @@ describe('ngb-calendar-islamic-umalqura', () => {
   const calendar = new NgbCalendarIslamicUmalqura();
   describe('toGregorian', () => {
     DATE_TABLE.forEach(element => {
-      let iDate = new NgbDate(element[3], element[4], element[5]);
-      let gDate = new Date(element[0], element[1], element[2]);
+      const iDate = new NgbDate(element[3], element[4], element[5]);
+      const gDate = new Date(element[0], element[1], element[2]);
       it('should convert correctly from Hijri to Gregorian',
          () => { expect(calendar.toGregorian(iDate).getTime()).toEqual(gDate.getTime()); });
     });
@@ -858,9 +858,9 @@ describe('ngb-calendar-islamic-umalqura', () => {
 
   describe('fromGregorian', () => {
     DATE_TABLE.forEach(element => {
-      let iDate = new NgbDate(element[3], element[4], element[5]);
+      const iDate = new NgbDate(element[3], element[4], element[5]);
       const gDate = new Date(element[0], element[1], element[2]);
-      let iDate2 = calendar.fromGregorian(gDate);
+      const iDate2 = calendar.fromGregorian(gDate);
       it('should convert correctly from Gregorian to Hijri', () => { expect(iDate2.equals(iDate)).toBeTruthy(); });
     });
   });

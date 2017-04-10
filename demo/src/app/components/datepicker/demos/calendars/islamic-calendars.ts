@@ -85,9 +85,5 @@ export class NgbdIslamicCivil {
   ]
 })
 export class NgbdIslamicUmalqura extends NgbdIslamicCivil {
-  constructor(_i18n: I18n, calendar: NgbCalendar) {
-    super(_i18n, calendar);
-    this.name = 'Umalqura';
-  }
-
+  name = 'Umalqura';
 }
