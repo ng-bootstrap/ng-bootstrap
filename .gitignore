@@ -6,6 +6,8 @@ npm-debug.log
 .publish
 .sw*
 .idea
+.vscode
 coverage
 demo/src/api-docs.ts
 demo/src/public/**/plnkr.html
+local.docs.json
