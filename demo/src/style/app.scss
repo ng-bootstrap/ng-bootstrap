@@ -157,6 +157,23 @@ div.api-doc-component > h2 {
     border-bottom: 2px solid #fff;
     box-shadow: 0 1px #fff, 0 3px #014c8c;
     text-decoration: none;
+
+    & > .fragment {
+      display: inline-block;
+    }
+  }
+}
+
+a.fragment {
+  display: none;
+  line-height: inherit;
+  position: absolute;
+  margin-left: -1.2em;
+  padding-right: 0.5em;
+
+  & > img {
+    width: 1em;
+    height: 1em;
   }
 }
 
