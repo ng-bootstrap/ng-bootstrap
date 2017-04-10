@@ -2,8 +2,9 @@
   <div class="container">
     <img class="bd-booticon" src="img/logo.svg" alt="ng-bootstrap logo"/>
     <p class="lead hidden-md-down">
-      Bootstrap 4 components, powered by Angular and written by the angular-ui Team.
+      Bootstrap 4 components, powered by Angular
     </p>
+    <p>Currently at v{{version}}</p>
     <p class="lead">
       <a
         class="btn btn-outline-primary"
@@ -12,25 +13,86 @@
         class="btn btn-outline-primary"
         [routerLink]="['/getting-started']">Installation</a>
     </p>
-    <p>
-      Currently v{{version}}
-    </p>
   </div>
 </main>
 
 <section class="container">
-  <h2>Welcome</h2>
-  <p class="lead">
-     Here we are, the Angular version of the <a target="_blank" href="https://github.com/angular-ui/bootstrap">Angular UI Bootstrap</a>
-     library. This library is being built from scratch in Typescript using the Bootstrap 4 CSS framework.
-  </p>
-  <p class="lead">
-    To get started quickly you can follow <a [routerLink]="['/getting-started']">installation instructions</a> or just browse <a [routerLink]="['/components']">demos</a> for the existing components.
-  </p>
-  <p class="lead">
-    As Bootstrap 4, this library is a work in progress.
-    Please check out our <a href="https://github.com/ng-bootstrap/ng-bootstrap/wiki/Roadmap" target="_blank">roadmap</a> and
-    <a href="https://github.com/ng-bootstrap/ng-bootstrap/issues" target="_blank">list of issues</a> to see all the things we are implementing.
-    Feel free to make comments there.
-  </p>
+
+  <div class="row">
+    <div class="col-sm-2">
+      <img src="/img/cpu.svg" class="img-fluid hidden-xs-down" alt="Native widgets icon (computer chip)">
+    </div>
+    <div class="col-sm-4">
+      <h4>Native</h4>
+      <p class="text-muted">
+        Angular - specific widgets built from ground and using Bootstrap 4 CSS. APIs that makes sense in the Angular ecosystem.
+        No dependencies on 3rd party JavaScript.
+      </p>
+    </div>
+
+    <div class="col-sm-2">
+      <img src="/img/browser.svg" class="img-fluid hidden-xs-down" alt="UI Widgets icon">
+    </div>
+    <div class="col-sm-4">
+      <h4>Widgets</h4>
+      <p class="text-muted">
+        All the Bootstrap widgets (ex.
+        <a [routerLink]="['/components/carousel']">carousel</a>,
+        <a [routerLink]="['/components/modal']">modal</a>,
+        <a [routerLink]="['/components/popover']">popovers</a>,
+        <a [routerLink]="['/components/tooltip']">tooltips</a>,
+        <a [routerLink]="['/components/tabs']">tabs</a>, ...) and several additional goodies (
+        <a [routerLink]="['/components/datepicker']">datepicker</a>,
+        <a [routerLink]="['/components/rating']">rating</a>,
+        <a [routerLink]="['/components/timepicker']">timepicker</a>,
+        <a [routerLink]="['/components/typeahead']">typeahead</a>).
+      </p>
+    </div>
+  </div>
+
+  <div class="row mt-md-5">
+    <div class="col-sm-2">
+      <img src="/img/test.svg" class="img-fluid hidden-xs-down" alt="Quality icon">
+    </div>
+    <div class="col-sm-4">
+      <h4>Quality</h4>
+      <p class="text-muted">
+        All code is tested (almost 100% test coverage) and all changes reviewed. We are not cutting corners.
+      </p>
+    </div>
+
+    <div class="col-sm-2">
+      <img src="/img/escalator.svg" class="img-fluid hidden-xs-down" alt="Accessible icon (escalator)">
+    </div>
+    <div class="col-sm-4">
+      <h4>Accessible</h4>
+      <p class="text-muted">
+        All the widgets are accessible. We use proper HTML elements and required aria attributes.
+        Keyboard navigation and focus management works as expected.
+      </p>
+    </div>
+  </div>
+
+  <div class="row mt-md-5">
+    <div class="col-sm-2">
+      <img src="/img/team.svg" class="img-fluid hidden-xs-down" alt="Team icon">
+    </div>
+    <div class="col-sm-4">
+      <h4>Team</h4>
+      <p class="text-muted">
+        We've created <a href="https://angular-ui.github.io/bootstrap/" target="_blank">angular-ui/bootstrap</a> and have spent several years doing widget development. A number of team members are core Angular contributors.
+      </p>
+    </div>
+
+     <div class="col-sm-2">
+      <img src="/img/world.svg" class="img-fluid hidden-xs-down" alt="Community icon">
+    </div>
+    <div class="col-sm-4">
+      <h4>Community</h4>
+      <p class="text-muted">
+        We give back to the community be contributing to projects we build upon (Angular, Bootstrap). We support people on <a href="http://stackoverflow.com/questions/tagged/ng-bootstrap">Stack Overflow</a>.
+      </p>
+    </div>
+  </div>
+
 </section>
