@@ -1,20 +1,25 @@
 import {
+  AfterViewInit,
   Component,
-  Output,
+  ContentChild,
+  ContentChildren,
+  ElementRef,
   EventEmitter,
   Input,
-  ElementRef,
-  Renderer,
+  OnDestroy,
   OnInit,
-  AfterViewInit,
-  OnDestroy
+  Output,
+  Renderer
 } from '@angular/core';
 
 import {ModalDismissReasons} from './modal-dismiss-reasons';
 
+let nextId = 0;
+
 @Component({
   selector: 'ngb-modal-window',
   host: {
+    '[attr.aria-modal]': 'true',
     '[class]': '"modal fade show" + (windowClass ? " " + windowClass : "")',
     'role': 'dialog',
     'tabindex': '-1',
@@ -64,6 +69,7 @@ export class NgbModalWindow implements OnInit,
     if (!this._elRef.nativeElement.contains(document.activeElement)) {
       this._renderer.invokeElementMethod(this._elRef.nativeElement, 'focus', []);
     }
+    this._setAriaLabelledByToModal();
   }
 
   ngOnDestroy() {
@@ -75,5 +81,16 @@ export class NgbModalWindow implements OnInit,
 
     this._elWithFocus = null;
     this._renderer.setElementClass(document.body, 'modal-open', false);
+  }
+
+  private _setAriaLabelledByToModal(): void {
+    const modalHeader: HTMLHeadingElement = this._elRef.nativeElement.getElementsByClassName('modal-title')[0];
+    if (modalHeader) {
+      const modalHeaderId: string = modalHeader.getAttribute('id') === null || modalHeader.getAttribute('id') === '' ?
+          `modal-header-${nextId++}` :
+          modalHeader.getAttribute('id');
+      this._renderer.setElementAttribute(modalHeader, 'id', modalHeaderId);
+      this._renderer.setElementAttribute(this._elRef.nativeElement, 'aria-labelledby', modalHeaderId);
+    }
   }
 }

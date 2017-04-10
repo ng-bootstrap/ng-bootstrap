@@ -45,6 +45,7 @@ describe('ngb-modal-dialog', () => {
       const dialogEl: Element = fixture.nativeElement.querySelector('.modal-dialog');
 
       expect(fixture.nativeElement.getAttribute('role')).toBe('dialog');
+      expect(fixture.nativeElement.getAttribute('aria-modal')).toBeTruthy();
       expect(dialogEl.getAttribute('role')).toBe('document');
     });
   });
