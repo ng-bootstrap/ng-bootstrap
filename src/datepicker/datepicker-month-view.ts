@@ -23,28 +23,36 @@ import {DayTemplateContext} from './datepicker-day-template-context';
     }
   `],
   template: `
-    <div *ngIf="showWeekdays" class="ngb-dp-week d-flex">
-      <div *ngIf="showWeekNumbers" class="ngb-dp-weekday"></div>
-      <div *ngFor="let w of month.weekdays" class="ngb-dp-weekday small text-center text-info font-italic">
-        {{ i18n.getWeekdayShortName(w) }}
-      </div>
-    </div>
-    <template ngFor let-week [ngForOf]="month.weeks">
-      <div *ngIf="!isCollapsed(week)" class="ngb-dp-week d-flex">
-        <div *ngIf="showWeekNumbers" class="ngb-dp-week-number small text-center font-italic text-muted">{{ week.number }}</div>
-        <div *ngFor="let day of week.days" (click)="doSelect(day)" class="ngb-dp-day" [class.disabled]="isDisabled(day)"
-         [class.hidden]="isHidden(day)">
-          <template [ngIf]="!isHidden(day)">
-            <template [ngTemplateOutlet]="dayTemplate"
-            [ngOutletContext]="{date: {year: day.date.year, month: day.date.month, day: day.date.day},
-              currentMonth: month.number,
-              disabled: isDisabled(day),
-              selected: isSelected(day.date)}">
-            </template>
-          </template>
-        </div>
-      </div>
-    </template>
+    <table>
+      <thead *ngIf="showWeekdays">
+        <tr class="ngb-dp-week d-flex">
+          <th *ngIf="showWeekNumbers" scope="col" class="ngb-dp-weekday"></th>
+          <th scope="col" *ngFor="let w of month.weekdays" class="ngb-dp-weekday small text-center text-info font-italic">
+            {{ i18n.getWeekdayShortName(w) }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <template ngFor let-week [ngForOf]="month.weeks">
+          <tr *ngIf="!isCollapsed(week)" class="ngb-dp-week d-flex">
+              <th scope="row" *ngIf="showWeekNumbers"
+                  class="ngb-dp-week-number small text-center font-italic text-muted">{{ week.number }}</th>
+              <td *ngFor="let day of week.days" (click)="doSelect(day)" class="ngb-dp-day" [class.disabled]="isDisabled(day)"
+                  [class.hidden]="isHidden(day)" [attr.aria-disabled]="isDisabled(day)"
+                  [attr.aria-selected]="!!isSelected(day.date)">
+                <template [ngIf]="!isHidden(day)">
+                  <template [ngTemplateOutlet]="dayTemplate"
+                            [ngOutletContext]="{date: {year: day.date.year, month: day.date.month, day: day.date.day},
+                      currentMonth: month.number,
+                      disabled: isDisabled(day),
+                      selected: isSelected(day.date)}">
+                  </template>
+                </template>
+              </td>
+            </tr>
+        </template>
+      </tbody>
+    </table>
   `
 })
 export class NgbDatepickerMonthView {

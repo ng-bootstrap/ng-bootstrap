@@ -86,8 +86,20 @@ describe('ngb-datepicker-month-view', () => {
 
     const dates = getDates(fixture.nativeElement);
     dates[0].click();
-
     expect(fixture.componentInstance.onClick).toHaveBeenCalledWith(new NgbDate(2016, 7, 22));
+  });
+
+  it('should set aria-selected true on selected date', () => {
+    const fixture = createTestComponent(`
+        <template #tpl let-date="date">{{ date.day }}</template>
+        <ngb-datepicker-month-view [selectedDate]="selectedDate" [month]="month" 
+          [dayTemplate]="tpl" (select)="onClick($event)"></ngb-datepicker-month-view>
+      `);
+
+    const dates = getDates(fixture.nativeElement);
+    dates[0].click();
+    fixture.detectChanges();
+    expect(dates[0].getAttribute('aria-selected')).toBe('true');
   });
 
   it('should not send date selection events for disabled dates', () => {
@@ -103,7 +115,7 @@ describe('ngb-datepicker-month-view', () => {
 
     const dates = getDates(fixture.nativeElement);
     dates[0].click();
-
+    expect(dates[0].getAttribute('aria-disabled')).toBe('true');
     expect(fixture.componentInstance.onClick).not.toHaveBeenCalled();
   });
 
@@ -280,9 +292,10 @@ class TestComponent {
     ]
   };
 
+  selectedDate: NgbDate;
   showWeekdays = true;
   showWeekNumbers = true;
   outsideDays = 'visible';
-
-  onClick = () => {};
+  data = new NgbDate(2016, 7, 22);
+  onClick = (date: NgbDate) => { this.selectedDate = date; };
 }
