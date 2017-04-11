@@ -13,8 +13,10 @@ var aotplugin = require('@ngtools/webpack');
  * Env
  * Get npm lifecycle event to identify the environment
  */
+var entryPoints = ['polyfills', 'vendor', 'main'];
 var ENV = process.env.MODE;
 var isProd = ENV === 'build';
+var nodeModules = path.join(process.cwd(), 'node_modules');
 
 module.exports = function makeWebpackConfig() {
   /**
@@ -41,8 +43,7 @@ module.exports = function makeWebpackConfig() {
    */
   config.entry = {
     'polyfills': './demo/src/polyfills.ts',
-    'vendor': './demo/src/vendor.ts',
-    'app': './demo/src/main.ts' // our angular app
+    'main': './demo/src/main.ts'
   };
 
   /**
@@ -140,14 +141,30 @@ module.exports = function makeWebpackConfig() {
     }),
 
     new CommonsChunkPlugin({
-      name: ['vendor', 'polyfills']
+        "name": "vendor",
+        "minChunks": (module) => module.resource && module.resource.startsWith(nodeModules),
+        "chunks": [
+          "main"
+        ]
     }),
 
     // Inject script and link tags into html files
     // Reference: https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
       template: './demo/src/public/index.html',
-      chunksSortMode: 'dependency'
+      chunksSortMode: function sort(left, right) {
+        let leftIndex = entryPoints.indexOf(left.names[0]);
+        let rightindex = entryPoints.indexOf(right.names[0]);
+        if (leftIndex > rightindex) {
+          return 1;
+        }
+        else if (leftIndex < rightindex) {
+          return -1;
+        }
+        else {
+          return 0;
+        }
+      }
     }),
 
     // Extract css files
