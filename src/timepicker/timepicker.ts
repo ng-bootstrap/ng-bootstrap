@@ -61,6 +61,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
             <button type="button" class="btn-link" [ngClass]="setButtonSize()" (click)="changeHour(hourStep)"
               [disabled]="disabled" [class.disabled]="disabled">
               <span class="chevron"></span>
+              <span class="sr-only">Increment hours</span>
             </button>
           </td>
           <td>&nbsp;</td>
@@ -68,6 +69,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
             <button type="button" class="btn-link" [ngClass]="setButtonSize()" (click)="changeMinute(minuteStep)"
               [disabled]="disabled" [class.disabled]="disabled">
                 <span class="chevron"></span>
+                <span class="sr-only">Increment minutes</span>
             </button>
           </td>
           <template [ngIf]="seconds">
@@ -76,6 +78,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
               <button type="button" class="btn-link" [ngClass]="setButtonSize()" (click)="changeSecond(secondStep)"
                 [disabled]="disabled" [class.disabled]="disabled">
                 <span class="chevron"></span>
+                <span class="sr-only">Increment seconds</span>
               </button>
             </td>
           </template>
@@ -88,20 +91,20 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
           <td>
             <input type="text" class="form-control" [ngClass]="setFormControlSize()" maxlength="2" size="2" placeholder="HH"
               [value]="formatHour(model?.hour)" (change)="updateHour($event.target.value)"
-              [readonly]="readonlyInputs" [disabled]="disabled">
+              [readonly]="readonlyInputs" [disabled]="disabled" aria-label="Hours">
           </td>
           <td>&nbsp;:&nbsp;</td>
           <td>
             <input type="text" class="form-control" [ngClass]="setFormControlSize()" maxlength="2" size="2" placeholder="MM"
               [value]="formatMinSec(model?.minute)" (change)="updateMinute($event.target.value)"
-              [readonly]="readonlyInputs" [disabled]="disabled">
+              [readonly]="readonlyInputs" [disabled]="disabled" aria-label="Minutes">
           </td>
           <template [ngIf]="seconds">
             <td>&nbsp;:&nbsp;</td>
             <td>
               <input type="text" class="form-control" [ngClass]="setFormControlSize()" maxlength="2" size="2" placeholder="SS"
                 [value]="formatMinSec(model?.second)" (change)="updateSecond($event.target.value)"
-                [readonly]="readonlyInputs" [disabled]="disabled">
+                [readonly]="readonlyInputs" [disabled]="disabled" aria-label="Seconds">
             </td>
           </template>
           <template [ngIf]="meridian">
@@ -117,6 +120,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
             <button type="button" class="btn-link" [ngClass]="setButtonSize()" (click)="changeHour(-hourStep)"
               [disabled]="disabled" [class.disabled]="disabled">
               <span class="chevron bottom"></span>
+              <span class="sr-only">Decrement hours</span>
             </button>
           </td>
           <td>&nbsp;</td>
@@ -124,6 +128,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
             <button type="button" class="btn-link" [ngClass]="setButtonSize()" (click)="changeMinute(-minuteStep)"
               [disabled]="disabled" [class.disabled]="disabled">
               <span class="chevron bottom"></span>
+              <span class="sr-only">Decrement minutes</span>
             </button>
           </td>
           <template [ngIf]="seconds">
@@ -132,6 +137,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
               <button type="button" class="btn-link" [ngClass]="setButtonSize()" (click)="changeSecond(-secondStep)"
                 [disabled]="disabled" [class.disabled]="disabled">
                 <span class="chevron bottom"></span>
+                <span class="sr-only">Decrement seconds</span>
               </button>
             </td>
           </template>

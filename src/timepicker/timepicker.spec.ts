@@ -952,6 +952,54 @@ describe('ngb-timepicker', () => {
     });
   });
 
+  describe('accessibility', () => {
+
+    it('should have text for screen readers on buttons', async(() => {
+         const html = `<ngb-timepicker [(ngModel)]="model" [seconds]="true"></ngb-timepicker>`;
+
+         const fixture = createTestComponent(html);
+         fixture.componentInstance.model = {hour: 10, minute: 30, second: 0};
+         fixture.detectChanges();
+         fixture.whenStable()
+             .then(() => {
+               fixture.detectChanges();
+               return fixture.whenStable();
+             })
+             .then(() => {
+               const buttons = getButtons(fixture.nativeElement);
+
+               expect((<HTMLButtonElement>buttons[0]).querySelector('.sr-only').textContent).toBe('Increment hours');
+               expect((<HTMLButtonElement>buttons[1]).querySelector('.sr-only').textContent).toBe('Increment minutes');
+               expect((<HTMLButtonElement>buttons[2]).querySelector('.sr-only').textContent).toBe('Increment seconds');
+               expect((<HTMLButtonElement>buttons[3]).querySelector('.sr-only').textContent).toBe('Decrement hours');
+               expect((<HTMLButtonElement>buttons[4]).querySelector('.sr-only').textContent).toBe('Decrement minutes');
+               expect((<HTMLButtonElement>buttons[5]).querySelector('.sr-only').textContent).toBe('Decrement seconds');
+             });
+       }));
+
+    it('should have aria-label for inputs', async(() => {
+         const html = `<ngb-timepicker [(ngModel)]="model" [seconds]="true"></ngb-timepicker>`;
+
+         const fixture = createTestComponent(html);
+         fixture.componentInstance.model = {hour: 10, minute: 30, second: 0};
+         fixture.detectChanges();
+         fixture.whenStable()
+             .then(() => {
+               fixture.detectChanges();
+               return fixture.whenStable();
+             })
+             .then(() => {
+               const inputs = getInputs(fixture.nativeElement);
+
+               expect(inputs[0].getAttribute('aria-label')).toBe('Hours');
+               expect(inputs[1].getAttribute('aria-label')).toBe('Minutes');
+               expect(inputs[2].getAttribute('aria-label')).toBe('Seconds');
+             });
+       }));
+  });
+
+
+
   describe('Seconds handling', () => {
     it('should propagate seconds to 0 in model if seconds not shown and no second in initial model', async(() => {
          const html = `<ngb-timepicker [(ngModel)]="model" [seconds]="false"></ngb-timepicker>`;
