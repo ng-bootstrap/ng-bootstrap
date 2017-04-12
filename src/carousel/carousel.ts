@@ -45,7 +45,7 @@ export class NgbSlide {
     <ol class="carousel-indicators">
       <li *ngFor="let slide of slides" [id]="slide.id" [class.active]="slide.id === activeId" (click)="cycleToSelected(slide.id)"></li>
     </ol>
-    <div class="carousel-inner" role="listbox">
+    <div class="carousel-inner">
       <div *ngFor="let slide of slides" class="carousel-item" [class.active]="slide.id === activeId">
         <template [ngTemplateOutlet]="slide.tplRef"></template>
       </div>
