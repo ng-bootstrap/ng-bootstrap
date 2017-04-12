@@ -1,5 +1,6 @@
 <p>A typeahead example that uses a formatter function for string results</p>
 
-<input type="text" class="form-control" [(ngModel)]="model" [ngbTypeahead]="search" [resultFormatter]="formatter" />
+<label for="typeahead-format">Search for a state:</label>
+<input id="typeahead-format" type="text" class="form-control" [(ngModel)]="model" [ngbTypeahead]="search" [resultFormatter]="formatter" />
 <hr>
 <pre>Model: {{ model | json }}</pre>
