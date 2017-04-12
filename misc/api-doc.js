@@ -32,7 +32,7 @@ function isPrivateOrInternal(member) {
 
 class APIDocVisitor {
   constructor(fileNames) {
-    this.program = ts.createProgram(fileNames, {});
+    this.program = ts.createProgram(fileNames, {lib: ["lib.es6.d.ts"]});
     this.typeChecker = this.program.getTypeChecker(true);
   }
 

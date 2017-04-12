@@ -12,7 +12,8 @@
   "scripts": {
     "install": "node misc/validate-commit.install.js",
     "test": "karma start karma.conf.js",
-    "api-doc-tdd": "jasmine-node misc/api-doc.spec.js --autotest --watch misc/api-doc-test-cases/*.ts misc/api-doc.js"
+    "api-doc-tdd": "jasmine-node misc/api-doc.spec.js --autotest --watch misc/api-doc-test-cases/*.ts misc/api-doc.js",
+    "api-doc-test": "jasmine-node misc/api-doc.spec.js"
   },
   "repository": {
     "type": "git",
