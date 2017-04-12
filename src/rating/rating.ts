@@ -51,7 +51,7 @@ const NGB_RATING_VALUE_ACCESSOR = {
     'class': 'd-inline-flex',
     'tabindex': '0',
     'role': 'slider',
-    'attr.aria-valuemin': '0',
+    'aria-valuemin': '0',
     '[attr.aria-valuemax]': 'max',
     '[attr.aria-valuenow]': 'nextRate',
     '[attr.aria-valuetext]': 'ariaValueText()',
