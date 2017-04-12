@@ -1,3 +1,50 @@
+<a name="1.0.0-alpha.23"></a>
+# [1.0.0-alpha.23](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.22...1.0.0-alpha.23) (2017-04-12)
+
+
+### Bug Fixes
+
+* **accordion:** disabled links are announced and focusable ([e836798](https://github.com/ng-bootstrap/ng-bootstrap/commit/e836798)), closes [#1443](https://github.com/ng-bootstrap/ng-bootstrap/issues/1443)
+* **accordion:** remove aria-controls when panel is not in DOM ([44acc44](https://github.com/ng-bootstrap/ng-bootstrap/commit/44acc44)), closes [#1482](https://github.com/ng-bootstrap/ng-bootstrap/issues/1482)
+* **accordion:** remove unneded aria-selected ([92ae3fd](https://github.com/ng-bootstrap/ng-bootstrap/commit/92ae3fd)), closes [#1159](https://github.com/ng-bootstrap/ng-bootstrap/issues/1159) [#1438](https://github.com/ng-bootstrap/ng-bootstrap/issues/1438)
+* **carousel:** remove inappropriate role="listbox" from carousel ([39e1df5](https://github.com/ng-bootstrap/ng-bootstrap/commit/39e1df5)), closes [#1484](https://github.com/ng-bootstrap/ng-bootstrap/issues/1484)
+* **datepicker:** add stricter checks on dates validity ([184f45a](https://github.com/ng-bootstrap/ng-bootstrap/commit/184f45a)), closes [#1230](https://github.com/ng-bootstrap/ng-bootstrap/issues/1230) [#1442](https://github.com/ng-bootstrap/ng-bootstrap/issues/1442)
+* **pagination:** remove duplicate accessibility labels ([4960533](https://github.com/ng-bootstrap/ng-bootstrap/commit/4960533)), closes [#1429](https://github.com/ng-bootstrap/ng-bootstrap/issues/1429)
+* **rating:** correct aria attribute setting ([4575573](https://github.com/ng-bootstrap/ng-bootstrap/commit/4575573)), closes [#1479](https://github.com/ng-bootstrap/ng-bootstrap/issues/1479)
+* **rating:** properly support disabled control state ([a29da45](https://github.com/ng-bootstrap/ng-bootstrap/commit/a29da45)), closes [#1432](https://github.com/ng-bootstrap/ng-bootstrap/issues/1432) [#1435](https://github.com/ng-bootstrap/ng-bootstrap/issues/1435)
+* **tabs:** prevent focus of disabled tabs ([7d1dd97](https://github.com/ng-bootstrap/ng-bootstrap/commit/7d1dd97)), closes [#1430](https://github.com/ng-bootstrap/ng-bootstrap/issues/1430)
+* **tabs:** remove aria-controls when content is destroyed ([a2a8a74](https://github.com/ng-bootstrap/ng-bootstrap/commit/a2a8a74)), closes [#1485](https://github.com/ng-bootstrap/ng-bootstrap/issues/1485)
+* **tabset:** remove unneeded tabpanel role on container ([5005384](https://github.com/ng-bootstrap/ng-bootstrap/commit/5005384)), closes [#1409](https://github.com/ng-bootstrap/ng-bootstrap/issues/1409)
+* **timepicker:** improve accessibility ([b2942d3](https://github.com/ng-bootstrap/ng-bootstrap/commit/b2942d3)), closes [#1480](https://github.com/ng-bootstrap/ng-bootstrap/issues/1480)
+* **timepicker:** scale chevrons when size option is used ([493d0b3](https://github.com/ng-bootstrap/ng-bootstrap/commit/493d0b3)), closes [#1300](https://github.com/ng-bootstrap/ng-bootstrap/issues/1300) [#1405](https://github.com/ng-bootstrap/ng-bootstrap/issues/1405)
+* **typeahead:** fix ARIA attributes ([ba4f48f](https://github.com/ng-bootstrap/ng-bootstrap/commit/ba4f48f)), closes [#1454](https://github.com/ng-bootstrap/ng-bootstrap/issues/1454) [#1454](https://github.com/ng-bootstrap/ng-bootstrap/issues/1454)
+
+
+### Features
+
+* **datepicker:** add validation ([4cbea99](https://github.com/ng-bootstrap/ng-bootstrap/commit/4cbea99)), closes [#1222](https://github.com/ng-bootstrap/ng-bootstrap/issues/1222) [#1434](https://github.com/ng-bootstrap/ng-bootstrap/issues/1434)
+* **pagination:** improve accessibility ([424c38f](https://github.com/ng-bootstrap/ng-bootstrap/commit/424c38f)), closes [#1294](https://github.com/ng-bootstrap/ng-bootstrap/issues/1294)
+* **popover:** add aria-describedby to popover triggering element ([92e4804](https://github.com/ng-bootstrap/ng-bootstrap/commit/92e4804)), closes [#1412](https://github.com/ng-bootstrap/ng-bootstrap/issues/1412)
+* **tooltip:** add aria-describedby to tooltip triggering element ([0883635](https://github.com/ng-bootstrap/ng-bootstrap/commit/0883635)), closes [#1386](https://github.com/ng-bootstrap/ng-bootstrap/issues/1386)
+* **typeahead:** add accessibility support ([e1fa7a4](https://github.com/ng-bootstrap/ng-bootstrap/commit/e1fa7a4)), closes [#1321](https://github.com/ng-bootstrap/ng-bootstrap/issues/1321)
+
+
+### BREAKING CHANGES
+
+* **datepicker:** Datepickers in popups are much stricter about valid dates
+now and won't try to auto-correct invalid dates any more.
+For example 2017-99-99 was considered valid previously and
+auto-corrected. This is not the case any more. Please check
+control's validity to detect invalid dates entered by users.
+* **datepicker:** Invalid dates entered by a user into datepicker input are
+propagated to the model as-is. This is required to properly
+support validation and is in-line with behaviour of all the
+built-in Angular validators. From now on you need to check
+control's validity to determine if the entered date is valid
+or not.
+
+
+
 <a name="1.0.0-alpha.22"></a>
 # [1.0.0-alpha.22](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.21...1.0.0-alpha.22) (2017-03-24)
 
