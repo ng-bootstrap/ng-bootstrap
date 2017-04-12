@@ -252,6 +252,23 @@ describe('ngb-accordion', () => {
     expect(disabledPanelLink.getAttribute('tabindex')).toBe('-1');
   });
 
+  it('should remove aria-controls attribute when closed', () => {
+    const fixture = TestBed.createComponent(TestComponent);
+    const tc = fixture.componentInstance;
+
+    fixture.detectChanges();
+    const headingLinks = fixture.nativeElement.querySelectorAll('.card-header a');
+
+    expectOpenPanels(fixture.nativeElement, [false, false, false]);
+    expect(headingLinks[0].getAttribute('aria-controls')).toBeNull();
+
+    tc.activeIds = ['one'];
+    fixture.detectChanges();
+    const panelsContent = getPanelsContent(fixture.nativeElement);
+    expectOpenPanels(fixture.nativeElement, [true, false, false]);
+    expect(headingLinks[0].getAttribute('aria-controls')).toBe(panelsContent[0].id);
+  });
+
 
   it('should remove collapsed panels content from DOM', () => {
     const fixture = TestBed.createComponent(TestComponent);
