@@ -98,9 +98,53 @@ describe('ngb-tabset', () => {
 
     expect(tabTitles[0].getAttribute('role')).toBe('tab');
     expect(tabTitles[0].getAttribute('aria-expanded')).toBe('true');
+    expect(tabTitles[0].getAttribute('aria-controls')).toBe(tabContent[0].getAttribute('id'));
+
+    expect(tabContent[0].getAttribute('role')).toBe('tabpanel');
+    expect(tabContent[0].getAttribute('aria-expanded')).toBe('true');
+    expect(tabContent[0].getAttribute('aria-labelledby')).toBe(tabTitles[0].id);
+
+    expect(tabTitles[1].getAttribute('role')).toBe('tab');
     expect(tabTitles[1].getAttribute('aria-expanded')).toBe('false');
+    expect(tabTitles[1].getAttribute('aria-controls')).toBeNull();
+  });
+
+  it('should remove aria-controls when tab content is not in DOM', () => {
+    const fixture = createTestComponent(`
+      <ngb-tabset [destroyOnHide]="true">
+        <ngb-tab title="foo"><template ngbTabContent>Foo</template></ngb-tab>
+        <ngb-tab title="bar"><template ngbTabContent>Bar</template></ngb-tab>
+      </ngb-tabset>
+    `);
+
+    const compiled: HTMLElement = fixture.nativeElement;
+    const tabTitles = getTabTitles(compiled);
+    const tabContent = getTabContent(compiled);
+
     expect(tabTitles[0].getAttribute('aria-controls')).toBe(tabContent[0].getAttribute('id'));
     expect(tabContent[0].getAttribute('aria-expanded')).toBe('true');
+
+    expect(tabTitles[1].getAttribute('aria-controls')).toBeNull();
+    expect(tabContent[1]).toBeUndefined();
+  });
+
+  it('should have aria-controls and aria-expanded when tab content is hidden', () => {
+    const fixture = createTestComponent(`
+      <ngb-tabset [destroyOnHide]="false">
+        <ngb-tab title="foo"><template ngbTabContent>Foo</template></ngb-tab>
+        <ngb-tab title="bar"><template ngbTabContent>Bar</template></ngb-tab>
+      </ngb-tabset>
+    `);
+
+    const compiled: HTMLElement = fixture.nativeElement;
+    const tabTitles = getTabTitles(compiled);
+    const tabContent = getTabContent(compiled);
+
+    expect(tabTitles[0].getAttribute('aria-controls')).toBe(tabContent[0].id);
+    expect(tabContent[0].getAttribute('aria-expanded')).toBe('true');
+
+    expect(tabTitles[1].getAttribute('aria-controls')).toBe(tabContent[1].id);
+    expect(tabContent[1].getAttribute('aria-expanded')).toBe('false');
   });
 
   it('should allow mix of text and HTML in tab titles', () => {
