@@ -5,6 +5,8 @@
   {{ r.name}}
 </template>
 
-<input type="text" class="form-control" [(ngModel)]="model" [ngbTypeahead]="search" [resultTemplate]="rt" [inputFormatter]="formatter" />
+<label for="typeahead-template">Search for a state:</label>
+<input id="typeahead-template" type="text" class="form-control" [(ngModel)]="model" [ngbTypeahead]="search" [resultTemplate]="rt"
+  [inputFormatter]="formatter" />
 <hr>
 <pre>Model: {{ model | json }}</pre>
