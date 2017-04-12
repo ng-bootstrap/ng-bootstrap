@@ -13,7 +13,6 @@ var aotplugin = require('@ngtools/webpack');
  * Env
  * Get npm lifecycle event to identify the environment
  */
-var entryPoints = ['polyfills', 'vendor', 'main'];
 var ENV = process.env.MODE;
 var isProd = ENV === 'build';
 var nodeModules = path.join(process.cwd(), 'node_modules');
@@ -43,6 +42,10 @@ module.exports = function makeWebpackConfig() {
    */
   config.entry = {
     'polyfills': './demo/src/polyfills.ts',
+    'vendorStyles': [
+      './node_modules/prismjs/themes/prism.css',
+      './node_modules/bootstrap/dist/css/bootstrap.css'
+    ],
     'main': './demo/src/main.ts'
   };
 
@@ -148,23 +151,15 @@ module.exports = function makeWebpackConfig() {
         ]
     }),
 
+    new CommonsChunkPlugin({
+      names: ['vendor', 'polyfills', 'inline']
+    }),
+
     // Inject script and link tags into html files
     // Reference: https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
       template: './demo/src/public/index.html',
-      chunksSortMode: function sort(left, right) {
-        let leftIndex = entryPoints.indexOf(left.names[0]);
-        let rightindex = entryPoints.indexOf(right.names[0]);
-        if (leftIndex > rightindex) {
-          return 1;
-        }
-        else if (leftIndex < rightindex) {
-          return -1;
-        }
-        else {
-          return 0;
-        }
-      }
+      chunksSortMode: 'dependency'
     }),
 
     // Extract css files
