@@ -323,6 +323,14 @@ describe('ngb-rating', () => {
       expect(rating.attributes['aria-valuemax']).toBe('10');
     });
 
+    it('contains aria-valuemin', () => {
+      const fixture = createTestComponent('<ngb-rating [max]="max"></ngb-rating>');
+
+      const rating = fixture.debugElement.query(By.directive(NgbRating));
+
+      expect(rating.attributes['aria-valuemin']).toBe('0');
+    });
+
     it('contains a hidden span for each star for screenreaders', () => {
       const fixture = createTestComponent('<ngb-rating max="5"></ngb-rating>');
 
