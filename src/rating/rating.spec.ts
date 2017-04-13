@@ -376,6 +376,18 @@ describe('ngb-rating', () => {
 
       expect(rating.attributes['aria-valuetext']).toBe('7 out of 10');
     });
+
+    it('updates aria-disabled when readonly', () => {
+      const fixture = createTestComponent('<ngb-rating></ngb-rating>');
+      let ratingEl = fixture.debugElement.query(By.directive(NgbRating));
+      fixture.detectChanges();
+      expect(ratingEl.attributes['aria-disabled']).toBeNull();
+
+      let ratingComp = <NgbRating>ratingEl.componentInstance;
+      ratingComp.readonly = true;
+      fixture.detectChanges();
+      expect(ratingEl.attributes['aria-disabled']).toBe('true');
+    });
   });
 
   describe('keyboard support', () => {
