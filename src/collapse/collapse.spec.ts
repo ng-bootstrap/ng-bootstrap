@@ -20,17 +20,16 @@ describe('ngb-collapse', () => {
     TestBed.overrideComponent(TestComponent, {set: {template: html}});
   });
 
-  it('should have content open and aria-expanded true', () => {
+  it('should have content open', () => {
     const fixture = TestBed.createComponent(TestComponent);
     fixture.detectChanges();
 
     const collapseEl = getCollapsibleContent(fixture.nativeElement);
 
     expect(collapseEl).toHaveCssClass('show');
-    expect(collapseEl.getAttribute('aria-expanded')).toBe('true');
   });
 
-  it('should have content closed and aria-expanded false', () => {
+  it('should have content closed', () => {
     const fixture = TestBed.createComponent(TestComponent);
     const tc = fixture.componentInstance;
     tc.collapsed = true;
@@ -39,7 +38,6 @@ describe('ngb-collapse', () => {
     const collapseEl = getCollapsibleContent(fixture.nativeElement);
 
     expect(collapseEl).not.toHaveCssClass('show');
-    expect(collapseEl.getAttribute('aria-expanded')).toBe('false');
   });
 
   it('should toggle collapsed content based on bound model change', () => {
