@@ -131,7 +131,8 @@ describe('APIDocVisitor', function() {
   it('should extract documentation of properties from services', function() {
     var serviceDocs = apiDoc(['./misc/api-doc-test-cases/services-with-properties.ts']).ProgressbarConfig;
 
-    expect(serviceDocs.properties.length).toBe(2);
+    expect(serviceDocs.properties.length).toBe(3);
+
     expect(serviceDocs.properties[0].name).toBe('foo');
     expect(serviceDocs.properties[0].description).toBe('Voluntarily left without a default value.');
     expect(serviceDocs.properties[0].type).toBe('string');
@@ -141,6 +142,11 @@ describe('APIDocVisitor', function() {
     expect(serviceDocs.properties[1].description).toBe('Maximal value to be displayed in the progressbar.');
     expect(serviceDocs.properties[1].type).toBe('number');
     expect(serviceDocs.properties[1].defaultValue).toBe('100');
+
+    expect(serviceDocs.properties[2].name).toBe('noDescriptionButStillExtract');
+    expect(serviceDocs.properties[2].description).toBe('');
+    expect(serviceDocs.properties[2].type).toBe('string');
+    expect(serviceDocs.properties[2].defaultValue).toBe('sth');
   });
 
   it('should extract documentation from interfaces', function() {

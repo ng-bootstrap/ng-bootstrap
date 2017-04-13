@@ -101,13 +101,19 @@ export class NgbRadio implements OnDestroy {
     }
   }
 
+  /**
+   * A flag indicating if a given radio button is checked.
+   */
   @Input('checked')
-  set checked(value: any) {
+  set checked(value: boolean) {
     this._checked = this._element.nativeElement.hasAttribute('checked') ? true : value;
   }
 
+  /**
+   * A flag indicating if a given radio button is disabled.
+   */
   @Input('disabled')
-  set disabled(isDisabled: any) {
+  set disabled(isDisabled: boolean) {
     this._disabled = isDisabled !== false;
     this.updateDisabled();
   }
