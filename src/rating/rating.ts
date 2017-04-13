@@ -55,6 +55,7 @@ const NGB_RATING_VALUE_ACCESSOR = {
     '[attr.aria-valuemax]': 'max',
     '[attr.aria-valuenow]': 'nextRate',
     '[attr.aria-valuetext]': 'ariaValueText()',
+    '[attr.aria-disabled]': 'readonly ? true : null',
     '(mouseleave)': 'reset()',
     '(keydown)': 'handleKeyDown($event)'
   },
