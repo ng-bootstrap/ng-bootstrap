@@ -13,21 +13,34 @@ const ANGULAR_LIFECYCLE_METHODS = [
   'ngAfterViewInit', 'ngAfterViewChecked', 'writeValue', 'registerOnChange', 'registerOnTouched', 'setDisabledState'
 ];
 
+function hasNoJSDoc(member) {
+  if (!member.symbol) {
+    return true;
+  }
+
+  const jsDoc = ts.displayPartsToString(member.symbol.getDocumentationComment());
+  return jsDoc.trim().length === 0;
+}
+
 function isInternalMember(member) {
   if (!member.symbol) {
     return true;
   }
 
   const jsDoc = ts.displayPartsToString(member.symbol.getDocumentationComment());
-  return jsDoc.trim().length === 0 || jsDoc.indexOf('@internal') > -1;
+  return jsDoc.indexOf('@internal') > -1;
 }
 
 function isAngularLifecycleHook(methodName) {
   return ANGULAR_LIFECYCLE_METHODS.indexOf(methodName) >= 0;
 }
 
+function isPrivate(member) {
+  return (member.flags & ts.NodeFlags.Private) !== 0;
+}
+
 function isPrivateOrInternal(member) {
-  return ((member.flags & ts.NodeFlags.Private) !== 0) || isInternalMember(member);
+  return isPrivate(member) || hasNoJSDoc(member) || isInternalMember(member);
 }
 
 class APIDocVisitor {
@@ -139,16 +152,15 @@ class APIDocVisitor {
       } else if (outDecorator) {
         outputs.push(this.visitOutput(members[i], outDecorator));
 
-      } else if (!isPrivateOrInternal(members[i])) {
-        if ((members[i].kind === ts.SyntaxKind.MethodDeclaration ||
-             members[i].kind === ts.SyntaxKind.MethodSignature) &&
-            !isAngularLifecycleHook(members[i].name.text)) {
-          methods.push(this.visitMethodDeclaration(members[i]));
-        } else if (
-            members[i].kind === ts.SyntaxKind.PropertyDeclaration ||
-            members[i].kind === ts.SyntaxKind.PropertySignature || members[i].kind === ts.SyntaxKind.GetAccessor) {
-          properties.push(this.visitProperty(members[i]));
-        }
+      } else if (
+          (members[i].kind === ts.SyntaxKind.MethodDeclaration || members[i].kind === ts.SyntaxKind.MethodSignature) &&
+          !isAngularLifecycleHook(members[i].name.text) && !isPrivateOrInternal(members[i])) {
+        methods.push(this.visitMethodDeclaration(members[i]));
+      } else if (
+          (members[i].kind === ts.SyntaxKind.PropertyDeclaration ||
+           members[i].kind === ts.SyntaxKind.PropertySignature || members[i].kind === ts.SyntaxKind.GetAccessor) &&
+          !isPrivate(members[i]) && !isInternalMember(members[i])) {
+        properties.push(this.visitProperty(members[i]));
       }
     }
 
