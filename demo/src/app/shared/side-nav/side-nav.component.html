@@ -4,7 +4,7 @@
       <a class="bd-toc-link" [routerLink]="['/components']">
         <h4>Components</h4>
       </a>
-      <ul class="nav bd-sidenav">
+      <ul class="nav flex-column">
         <li *ngFor="let component of components" [routerLinkActive]="['active']">
           <a [routerLink]="['/components', component.toLowerCase()]">{{ component }}</a>
         </li>
