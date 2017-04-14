@@ -13,6 +13,7 @@ var tslint = require('gulp-tslint');
 var webpack = require('webpack');
 var typescript = require('typescript');
 var exec = require('child_process').exec;
+var spawn = require('child_process').spawn;
 var path = require('path');
 var os = require('os');
 var remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
@@ -22,7 +23,7 @@ var PATHS = {
   srcIndex: 'src/index.ts',
   specs: 'src/**/*.spec.ts',
   testHelpers: 'src/test/**/*.ts',
-  demo: 'demo/**/*.ts',
+  demo: 'demo/src/**/*.ts',
   demoDist: 'demo/dist/**/*',
   typings: 'typings/index.d.ts',
   jasmineTypings: 'typings/globals/jasmine/index.d.ts',
@@ -258,19 +259,35 @@ gulp.task('clean:demo', function() { return del('demo/dist'); });
 
 gulp.task('clean:demo-cache', function() { return del('.publish/'); });
 
-gulp.task(
-    'demo-server', ['generate-docs', 'generate-plunks'],
-    shell.task([`webpack-dev-server --port ${docsConfig.port} --config webpack.demo.js --inline --progress`]));
 
-gulp.task(
-    'build:demo', ['clean:demo', 'generate-docs', 'generate-plunks'],
-    shell.task(['webpack --config webpack.demo.js --progress --profile --bail'], {env: {MODE: 'build'}}));
+gulp.task('demo-server', ['generate-docs', 'generate-plunks'], function(cb) {
+  process.chdir('demo');
+  var cmd = spawn('ng', ['serve', '--port', docsConfig.port], {stdio: 'inherit'});
+  cmd.on('close', function(code) {
+    console.log('demo-server exited with code ' + code);
+    cb(code);
+  });
+});
 
-gulp.task(
-    'demo-server:aot', ['generate-docs', 'generate-plunks'],
-    shell.task(
-        [`webpack-dev-server --port ${docsConfig.port} --config webpack.demo.js --inline --progress`],
-        {env: {MODE: 'build'}}));
+
+gulp.task('build:demo', ['clean:demo', 'generate-docs', 'generate-plunks'], function(cb) {
+  process.chdir('demo');
+  var cmd = spawn('ng', ['build', '--prod', '--aot'], {stdio: 'inherit'});
+  cmd.on('close', function(code) {
+    console.log('build:demo exited with code ' + code);
+    cb(code);
+  });
+});
+
+gulp.task('demo-server:aot', ['clean:demo', 'generate-docs', 'generate-plunks'], function(cb) {
+  process.chdir('demo');
+  var cmd = spawn('ng', ['serve', '--port', docsConfig.port, '--aot'], {stdio: 'inherit'});
+  cmd.on('close', function(code) {
+    console.log('demo-server:aot exited with code ' + code);
+    cb(code);
+  });
+});
+
 
 gulp.task('demo-push', function() {
   return gulp.src(PATHS.demoDist)

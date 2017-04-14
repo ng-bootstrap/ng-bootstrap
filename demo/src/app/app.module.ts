@@ -25,5 +25,4 @@ import {NgbdSharedModule} from './shared';
   ],
   bootstrap: [AppComponent]
 })
-export class NgbdModule {
-}
+export class NgbdModule {}
