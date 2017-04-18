@@ -227,7 +227,7 @@ describe('ngb-timepicker', () => {
                expect(fixture.componentInstance.model).toEqual({hour: 11, minute: 30, second: 0});
 
 
-               (<HTMLButtonElement>buttons[2]).click();  // H-
+               (<HTMLButtonElement>buttons[1]).click();  // H-
                fixture.detectChanges();
                expectToDisplayTime(fixture.nativeElement, '10:30');
                expect(fixture.componentInstance.model).toEqual({hour: 10, minute: 30, second: 0});
@@ -257,7 +257,7 @@ describe('ngb-timepicker', () => {
                expectToDisplayTime(fixture.nativeElement, '00:30');
                expect(fixture.componentInstance.model).toEqual({hour: 0, minute: 30, second: 0});
 
-               (<HTMLButtonElement>buttons[2]).click();  // H-
+               (<HTMLButtonElement>buttons[1]).click();  // H-
                fixture.detectChanges();
                expectToDisplayTime(fixture.nativeElement, '23:30');
                expect(fixture.componentInstance.model).toEqual({hour: 23, minute: 30, second: 0});
@@ -282,7 +282,7 @@ describe('ngb-timepicker', () => {
                expectToDisplayTime(fixture.nativeElement, '10:30');
                expect(fixture.componentInstance.model).toEqual({hour: 10, minute: 30, second: 0});
 
-               (<HTMLButtonElement>buttons[1]).click();  // M+
+               (<HTMLButtonElement>buttons[2]).click();  // M+
                fixture.detectChanges();
                expectToDisplayTime(fixture.nativeElement, '10:31');
                expect(fixture.componentInstance.model).toEqual({hour: 10, minute: 31, second: 0});
@@ -311,7 +311,7 @@ describe('ngb-timepicker', () => {
                expectToDisplayTime(fixture.nativeElement, '22:59');
                expect(fixture.componentInstance.model).toEqual({hour: 22, minute: 59, second: 0});
 
-               (<HTMLButtonElement>buttons[1]).click();  // M+
+               (<HTMLButtonElement>buttons[2]).click();  // M+
                fixture.detectChanges();
                expect(fixture.componentInstance.model).toEqual({hour: 23, minute: 0, second: 0});
 
@@ -339,7 +339,7 @@ describe('ngb-timepicker', () => {
                expectToDisplayTime(fixture.nativeElement, '10:30:00');
                expect(fixture.componentInstance.model).toEqual({hour: 10, minute: 30, second: 0});
 
-               (<HTMLButtonElement>buttons[2]).click();  // S+
+               (<HTMLButtonElement>buttons[4]).click();  // S+
                fixture.detectChanges();
                expectToDisplayTime(fixture.nativeElement, '10:30:01');
                expect(fixture.componentInstance.model).toEqual({hour: 10, minute: 30, second: 1});
@@ -369,7 +369,7 @@ describe('ngb-timepicker', () => {
                expectToDisplayTime(fixture.nativeElement, '10:30:59');
                expect(fixture.componentInstance.model).toEqual({hour: 10, minute: 30, second: 59});
 
-               (<HTMLButtonElement>buttons[2]).click();  // S+
+               (<HTMLButtonElement>buttons[4]).click();  // S+
                fixture.detectChanges();
                expectToDisplayTime(fixture.nativeElement, '10:31:00');
                expect(fixture.componentInstance.model).toEqual({hour: 10, minute: 31, second: 0});
@@ -719,22 +719,22 @@ describe('ngb-timepicker', () => {
                expectToDisplayTime(fixture.nativeElement, '13:30:00');
                expect(fixture.componentInstance.model).toEqual({hour: 13, minute: 30, second: 0});
 
-               (<HTMLButtonElement>buttons[3]).click();  // H-
+               (<HTMLButtonElement>buttons[1]).click();  // H-
                fixture.detectChanges();
                expectToDisplayTime(fixture.nativeElement, '13:30:00');
                expect(fixture.componentInstance.model).toEqual({hour: 13, minute: 30, second: 0});
 
-               (<HTMLButtonElement>buttons[1]).click();  // M+
+               (<HTMLButtonElement>buttons[2]).click();  // M+
                fixture.detectChanges();
                expectToDisplayTime(fixture.nativeElement, '13:30:00');
                expect(fixture.componentInstance.model).toEqual({hour: 13, minute: 30, second: 0});
 
-               (<HTMLButtonElement>buttons[4]).click();  // M-
+               (<HTMLButtonElement>buttons[3]).click();  // M-
                fixture.detectChanges();
                expectToDisplayTime(fixture.nativeElement, '13:30:00');
                expect(fixture.componentInstance.model).toEqual({hour: 13, minute: 30, second: 0});
 
-               (<HTMLButtonElement>buttons[2]).click();  // S+
+               (<HTMLButtonElement>buttons[4]).click();  // S+
                fixture.detectChanges();
                expectToDisplayTime(fixture.nativeElement, '13:30:00');
                expect(fixture.componentInstance.model).toEqual({hour: 13, minute: 30, second: 0});
@@ -797,22 +797,22 @@ describe('ngb-timepicker', () => {
                expectToDisplayTime(fixture.nativeElement, '14:30:00');
                expect(fixture.componentInstance.model).toEqual({hour: 14, minute: 30, second: 0});
 
-               (<HTMLButtonElement>buttons[3]).click();  // H-
+               (<HTMLButtonElement>buttons[1]).click();  // H-
                fixture.detectChanges();
                expectToDisplayTime(fixture.nativeElement, '13:30:00');
                expect(fixture.componentInstance.model).toEqual({hour: 13, minute: 30, second: 0});
 
-               (<HTMLButtonElement>buttons[1]).click();  // M+
+               (<HTMLButtonElement>buttons[2]).click();  // M+
                fixture.detectChanges();
                expectToDisplayTime(fixture.nativeElement, '13:31:00');
                expect(fixture.componentInstance.model).toEqual({hour: 13, minute: 31, second: 0});
 
-               (<HTMLButtonElement>buttons[4]).click();  // M-
+               (<HTMLButtonElement>buttons[3]).click();  // M-
                fixture.detectChanges();
                expectToDisplayTime(fixture.nativeElement, '13:30:00');
                expect(fixture.componentInstance.model).toEqual({hour: 13, minute: 30, second: 0});
 
-               (<HTMLButtonElement>buttons[2]).click();  // S+
+               (<HTMLButtonElement>buttons[4]).click();  // S+
                fixture.detectChanges();
                expectToDisplayTime(fixture.nativeElement, '13:30:01');
                expect(fixture.componentInstance.model).toEqual({hour: 13, minute: 30, second: 1});
@@ -969,10 +969,10 @@ describe('ngb-timepicker', () => {
                const buttons = getButtons(fixture.nativeElement);
 
                expect((<HTMLButtonElement>buttons[0]).querySelector('.sr-only').textContent).toBe('Increment hours');
-               expect((<HTMLButtonElement>buttons[1]).querySelector('.sr-only').textContent).toBe('Increment minutes');
-               expect((<HTMLButtonElement>buttons[2]).querySelector('.sr-only').textContent).toBe('Increment seconds');
-               expect((<HTMLButtonElement>buttons[3]).querySelector('.sr-only').textContent).toBe('Decrement hours');
-               expect((<HTMLButtonElement>buttons[4]).querySelector('.sr-only').textContent).toBe('Decrement minutes');
+               expect((<HTMLButtonElement>buttons[1]).querySelector('.sr-only').textContent).toBe('Decrement hours');
+               expect((<HTMLButtonElement>buttons[2]).querySelector('.sr-only').textContent).toBe('Increment minutes');
+               expect((<HTMLButtonElement>buttons[3]).querySelector('.sr-only').textContent).toBe('Decrement minutes');
+               expect((<HTMLButtonElement>buttons[4]).querySelector('.sr-only').textContent).toBe('Increment seconds');
                expect((<HTMLButtonElement>buttons[5]).querySelector('.sr-only').textContent).toBe('Decrement seconds');
              });
        }));
