@@ -71,7 +71,7 @@ export interface NgbDatepickerNavigateEvent {
     }    
   `],
   template: `
-    <template #dt let-date="date" let-currentMonth="currentMonth" let-selected="selected" let-disabled="disabled">
+    <ng-template #dt let-date="date" let-currentMonth="currentMonth" let-selected="selected" let-disabled="disabled">
        <div ngbDatepickerDayView [date]="date" [currentMonth]="currentMonth" [selected]="selected" [disabled]="disabled"></div>
     </template>
     
@@ -91,7 +91,7 @@ export interface NgbDatepickerNavigateEvent {
     </div>
 
     <div class="ngb-dp-months d-flex px-1 pb-1">
-      <template ngFor let-month [ngForOf]="months" let-i="index">
+      <ng-template ngFor let-month [ngForOf]="months" let-i="index">
         <div class="ngb-dp-month d-block ml-3">            
           <div *ngIf="navigation !== 'select' || displayMonths > 1" class="ngb-dp-month-name text-center">
             {{ i18n.getMonthFullName(month.number) }} {{ month.year }}

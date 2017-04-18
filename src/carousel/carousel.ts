@@ -47,7 +47,7 @@ export class NgbSlide {
     </ol>
     <div class="carousel-inner">
       <div *ngFor="let slide of slides" class="carousel-item" [class.active]="slide.id === activeId">
-        <template [ngTemplateOutlet]="slide.tplRef"></template>
+        <ng-template [ngTemplateOutlet]="slide.tplRef"></template>
       </div>
     </div>
     <a class="left carousel-control-prev" role="button" (click)="cycleToPrev()">

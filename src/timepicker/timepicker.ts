@@ -72,7 +72,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
                 <span class="sr-only">Increment minutes</span>
             </button>
           </td>
-          <template [ngIf]="seconds">
+          <ng-template [ngIf]="seconds">
             <td>&nbsp;</td>
             <td class="text-center">
               <button type="button" class="btn-link" [ngClass]="setButtonSize()" (click)="changeSecond(secondStep)"
@@ -82,7 +82,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
               </button>
             </td>
           </template>
-          <template [ngIf]="meridian">
+          <ng-template [ngIf]="meridian">
             <td>&nbsp;</td>
             <td>&nbsp;</td>
           </template>
@@ -99,7 +99,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
               [value]="formatMinSec(model?.minute)" (change)="updateMinute($event.target.value)"
               [readonly]="readonlyInputs" [disabled]="disabled" aria-label="Minutes">
           </td>
-          <template [ngIf]="seconds">
+          <ng-template [ngIf]="seconds">
             <td>&nbsp;:&nbsp;</td>
             <td>
               <input type="text" class="form-control" [ngClass]="setFormControlSize()" maxlength="2" size="2" placeholder="SS"
@@ -107,7 +107,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
                 [readonly]="readonlyInputs" [disabled]="disabled" aria-label="Seconds">
             </td>
           </template>
-          <template [ngIf]="meridian">
+          <ng-template [ngIf]="meridian">
             <td>&nbsp;&nbsp;</td>
             <td>
               <button type="button" class="btn btn-outline-primary" [ngClass]="setButtonSize()"
@@ -131,7 +131,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
               <span class="sr-only">Decrement minutes</span>
             </button>
           </td>
-          <template [ngIf]="seconds">
+          <ng-template [ngIf]="seconds">
             <td>&nbsp;</td>
             <td class="text-center">
               <button type="button" class="btn-link" [ngClass]="setButtonSize()" (click)="changeSecond(-secondStep)"
@@ -141,7 +141,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
               </button>
             </td>
           </template>
-          <template [ngIf]="meridian">
+          <ng-template [ngIf]="meridian">
             <td>&nbsp;</td>
             <td>&nbsp;</td>
           </template>

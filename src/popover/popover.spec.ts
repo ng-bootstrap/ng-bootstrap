@@ -81,7 +81,7 @@ describe('ngb-popover', () => {
 
     it('should open and close a popover - default settings and content from a template', () => {
       const fixture = createTestComponent(`
-          <template #t>Hello, {{name}}!</template>
+          <ng-template #t>Hello, {{name}}!</template>
           <div [ngbPopover]="t" popoverTitle="Title"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbPopover));
       const defaultConfig = new NgbPopoverConfig();
@@ -106,7 +106,7 @@ describe('ngb-popover', () => {
 
     it('should open and close a popover - default settings, content from a template and context supplied', () => {
       const fixture = createTestComponent(`
-          <template #t let-name="name">Hello, {{name}}!</template>
+          <ng-template #t let-name="name">Hello, {{name}}!</template>
           <div [ngbPopover]="t" popoverTitle="Title"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbPopover));
       const defaultConfig = new NgbPopoverConfig();
@@ -131,7 +131,7 @@ describe('ngb-popover', () => {
 
     it('should properly destroy TemplateRef content', () => {
       const fixture = createTestComponent(`
-          <template #t><destroyable-cmpt></destroyable-cmpt></template>
+          <ng-template #t><destroyable-cmpt></destroyable-cmpt></template>
           <div [ngbPopover]="t" popoverTitle="Title"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbPopover));
       const spyService = fixture.debugElement.injector.get(SpyService);
@@ -166,7 +166,7 @@ describe('ngb-popover', () => {
 
     it('should not leave dangling popovers in the DOM', () => {
       const fixture =
-          createTestComponent(`<template [ngIf]="show"><div ngbPopover="Great tip!" popoverTitle="Title"></div></template>`);
+          createTestComponent(`<ng-template [ngIf]="show"><div ngbPopover="Great tip!" popoverTitle="Title"></div></template>`);
       const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
       directive.triggerEventHandler('click', {});
@@ -179,7 +179,7 @@ describe('ngb-popover', () => {
     });
 
     it('should properly cleanup popovers with manual triggers', () => {
-      const fixture = createTestComponent(`<template [ngIf]="show">
+      const fixture = createTestComponent(`<ng-template [ngIf]="show">
                                             <div ngbPopover="Great tip!" triggers="manual" #p="ngbPopover" (mouseenter)="p.open()"></div>
                                         </template>`);
       const directive = fixture.debugElement.query(By.directive(NgbPopover));

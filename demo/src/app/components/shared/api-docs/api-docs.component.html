@@ -19,7 +19,7 @@
       </tbody>
     </table>
 
-  <template [ngIf]="apiDocs.inputs.length">
+  <ng-template [ngIf]="apiDocs.inputs.length">
     <section>
       <h3>Inputs</h3>
       <table class="table table-sm table-hover">
@@ -28,7 +28,7 @@
           <td class="label-cell"><code>{{input.name}}</code></td>
           <td class="content-cell">
             <div><i>Type: </i><code>{{ input.type }}</code></div>
-            <template [ngIf]="defaultInputValue(input) || hasConfigProperty(input)">
+            <ng-template [ngIf]="defaultInputValue(input) || hasConfigProperty(input)">
               <div>
                 <span><i>Default value: </i><code>{{ defaultInputValue(input) || '-' }}</code></span>
                 <span *ngIf="hasConfigProperty(input)">&mdash; initialized from {{ configServiceName }} service</span>
@@ -42,7 +42,7 @@
     </section>
   </template>
 
-  <template [ngIf]="apiDocs.outputs.length">
+  <ng-template [ngIf]="apiDocs.outputs.length">
     <section>
       <h3>Outputs</h3>
       <table class="table table-sm table-hover">
@@ -56,7 +56,7 @@
     </section>
   </template>
 
-  <template [ngIf]="apiDocs.methods.length && apiDocs.exportAs">
+  <ng-template [ngIf]="apiDocs.methods.length && apiDocs.exportAs">
     <section>
       <h3>Methods</h3>
       <table class="table table-sm table-hover">
