@@ -58,7 +58,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
       <table>
         <tr *ngIf="spinners">
           <td class="text-center">
-            <button type="button" class="btn-link" [ngClass]="setButtonSize()" (click)="changeHour(hourStep)"
+            <button type="button" class="btn-link" tabindex="-1" [ngClass]="setButtonSize()" (click)="changeHour(hourStep)"
               [disabled]="disabled" [class.disabled]="disabled">
               <span class="chevron"></span>
               <span class="sr-only">Increment hours</span>
@@ -66,7 +66,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
           </td>
           <td>&nbsp;</td>
           <td class="text-center">
-            <button type="button" class="btn-link" [ngClass]="setButtonSize()" (click)="changeMinute(minuteStep)"
+            <button type="button" class="btn-link" tabindex="-1" [ngClass]="setButtonSize()" (click)="changeMinute(minuteStep)"
               [disabled]="disabled" [class.disabled]="disabled">
                 <span class="chevron"></span>
                 <span class="sr-only">Increment minutes</span>
@@ -75,7 +75,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
           <template [ngIf]="seconds">
             <td>&nbsp;</td>
             <td class="text-center">
-              <button type="button" class="btn-link" [ngClass]="setButtonSize()" (click)="changeSecond(secondStep)"
+              <button type="button" class="btn-link" tabindex="-1" [ngClass]="setButtonSize()" (click)="changeSecond(secondStep)"
                 [disabled]="disabled" [class.disabled]="disabled">
                 <span class="chevron"></span>
                 <span class="sr-only">Increment seconds</span>
@@ -117,7 +117,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
         </tr>
         <tr *ngIf="spinners">
           <td class="text-center">
-            <button type="button" class="btn-link" [ngClass]="setButtonSize()" (click)="changeHour(-hourStep)"
+            <button type="button" class="btn-link" tabindex="-1" [ngClass]="setButtonSize()" (click)="changeHour(-hourStep)"
               [disabled]="disabled" [class.disabled]="disabled">
               <span class="chevron bottom"></span>
               <span class="sr-only">Decrement hours</span>
@@ -125,7 +125,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
           </td>
           <td>&nbsp;</td>
           <td class="text-center">
-            <button type="button" class="btn-link" [ngClass]="setButtonSize()" (click)="changeMinute(-minuteStep)"
+            <button type="button" class="btn-link" tabindex="-1" [ngClass]="setButtonSize()" (click)="changeMinute(-minuteStep)"
               [disabled]="disabled" [class.disabled]="disabled">
               <span class="chevron bottom"></span>
               <span class="sr-only">Decrement minutes</span>
@@ -134,7 +134,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
           <template [ngIf]="seconds">
             <td>&nbsp;</td>
             <td class="text-center">
-              <button type="button" class="btn-link" [ngClass]="setButtonSize()" (click)="changeSecond(-secondStep)"
+              <button type="button" class="btn-link" tabindex="-1" [ngClass]="setButtonSize()" (click)="changeSecond(-secondStep)"
                 [disabled]="disabled" [class.disabled]="disabled">
                 <span class="chevron bottom"></span>
                 <span class="sr-only">Decrement seconds</span>

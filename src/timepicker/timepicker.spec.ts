@@ -996,6 +996,29 @@ describe('ngb-timepicker', () => {
                expect(inputs[2].getAttribute('aria-label')).toBe('Seconds');
              });
        }));
+
+    it('should not allow focus of spinner buttons', async(() => {
+         const html = `<ngb-timepicker [(ngModel)]="model" [seconds]="true"></ngb-timepicker>`;
+
+         const fixture = createTestComponent(html);
+         fixture.componentInstance.model = {hour: 10, minute: 30, second: 0};
+         fixture.detectChanges();
+         fixture.whenStable()
+             .then(() => {
+               fixture.detectChanges();
+               return fixture.whenStable();
+             })
+             .then(() => {
+               const buttons = getButtons(fixture.nativeElement);
+
+               expect((<HTMLButtonElement>buttons[0]).getAttribute('tabindex')).toBe('-1');
+               expect((<HTMLButtonElement>buttons[1]).getAttribute('tabindex')).toBe('-1');
+               expect((<HTMLButtonElement>buttons[2]).getAttribute('tabindex')).toBe('-1');
+               expect((<HTMLButtonElement>buttons[3]).getAttribute('tabindex')).toBe('-1');
+               expect((<HTMLButtonElement>buttons[4]).getAttribute('tabindex')).toBe('-1');
+               expect((<HTMLButtonElement>buttons[5]).getAttribute('tabindex')).toBe('-1');
+             });
+       }));
   });
 
 
