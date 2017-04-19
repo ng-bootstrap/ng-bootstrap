@@ -91,12 +91,14 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
           <td>
             <input type="text" class="form-control" [ngClass]="setFormControlSize()" maxlength="2" size="2" placeholder="HH"
               [value]="formatHour(model?.hour)" (change)="updateHour($event.target.value)"
+              (mousewheel)="mouseHour($event)" (keydown.ArrowDown)="keyDownHour($event)" (keydown.ArrowUp)="keyDownHour($event)"
               [readonly]="readonlyInputs" [disabled]="disabled" aria-label="Hours">
           </td>
           <td>&nbsp;:&nbsp;</td>
           <td>
             <input type="text" class="form-control" [ngClass]="setFormControlSize()" maxlength="2" size="2" placeholder="MM"
               [value]="formatMinSec(model?.minute)" (change)="updateMinute($event.target.value)"
+              (mousewheel)="mouseMinute($event)" (keydown.ArrowDown)="keyDownMinute($event)" (keydown.ArrowUp)="keyDownMinute($event)"
               [readonly]="readonlyInputs" [disabled]="disabled" aria-label="Minutes">
           </td>
           <template [ngIf]="seconds">
@@ -104,6 +106,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
             <td>
               <input type="text" class="form-control" [ngClass]="setFormControlSize()" maxlength="2" size="2" placeholder="SS"
                 [value]="formatMinSec(model?.second)" (change)="updateSecond($event.target.value)"
+                (mousewheel)="mouseSecond($event)" (keydown.ArrowDown)="keyDownSecond($event)" (keydown.ArrowUp)="keyDownSecond($event)"
                 [readonly]="readonlyInputs" [disabled]="disabled" aria-label="Seconds">
             </td>
           </template>
@@ -254,6 +257,48 @@ export class NgbTimepicker implements ControlValueAccessor,
     this.propagateModelChange();
   }
 
+  mouseHour(event: MouseWheelEvent) {
+    if (!this.disabled) {
+      let step: number = this.isScrollUp(event) ? this.hourStep : -this.hourStep;
+      this.changeHour(step);
+    }
+    event.preventDefault();
+  }
+
+  mouseMinute(event: MouseWheelEvent) {
+    if (!this.disabled) {
+      let step: number = this.isScrollUp(event) ? this.minuteStep : -this.minuteStep;
+      this.changeMinute(step);
+    }
+    event.preventDefault();
+  }
+
+  mouseSecond(event: MouseWheelEvent) {
+    if (!this.disabled) {
+      let step: number = this.isScrollUp(event) ? this.minuteStep : -this.minuteStep;
+      this.changeSecond(step);
+    }
+    event.preventDefault();
+  }
+
+  keyDownHour(event: KeyboardEvent) {
+    event.key === 'ArrowUp' ? this.changeHour(this.hourStep) : this.changeHour(-this.hourStep);
+    event.preventDefault();
+  }
+
+  keyDownMinute(event: KeyboardEvent) {
+    event.key === 'ArrowUp' ? this.changeMinute(this.minuteStep) : this.changeMinute(-this.minuteStep);
+    event.preventDefault();
+  }
+
+  keyDownSecond(event: KeyboardEvent) {
+    event.key === 'ArrowUp' ? this.changeSecond(this.secondStep) : this.changeSecond(-this.secondStep);
+    event.preventDefault();
+  }
+
+  /**
+   * @internal
+   */
   toggleMeridian() {
     if (this.meridian) {
       this.changeHour(12);
@@ -295,5 +340,10 @@ export class NgbTimepicker implements ControlValueAccessor,
     } else {
       this.onChange(null);
     }
+  }
+
+  private isScrollUp(event: MouseWheelEvent): boolean {
+    let delta: number = event.wheelDelta ? event.wheelDelta : -event.wheelDeltaY;
+    return event.detail > 0 || delta > 0;
   }
 }
