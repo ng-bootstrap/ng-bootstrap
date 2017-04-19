@@ -577,6 +577,15 @@ describe('ngbRadioGroup', () => {
 
     expect(() => { fixture.debugElement.query(By.css('Input')).triggerEventHandler('focus', {}); }).not.toThrow();
   });
+
+  describe('accessibility', () => {
+    it('should have "group" role', () => {
+      const fixture = TestBed.createComponent(TestComponent);
+      fixture.detectChanges();
+
+      expect(getGroupElement(fixture.nativeElement).getAttribute('role')).toBe('group');
+    });
+  });
 });
 
 @Component({selector: 'test-cmp', template: ''})
