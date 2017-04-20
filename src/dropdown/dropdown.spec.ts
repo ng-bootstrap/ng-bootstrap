@@ -22,7 +22,7 @@ describe('ngb-dropdown', () => {
 
   it('should initialize inputs with provided config', () => {
     const defaultConfig = new NgbDropdownConfig();
-    const dropdown = new NgbDropdown(defaultConfig);
+    const dropdown = new NgbDropdown((<any>window).Zone.current, defaultConfig);
     expect(dropdown.up).toBe(defaultConfig.up);
     expect(dropdown.autoClose).toBe(defaultConfig.autoClose);
   });

@@ -1,4 +1,4 @@
-import {Directive, Input, Output, EventEmitter, ElementRef} from '@angular/core';
+import {Directive, Input, Output, EventEmitter, ElementRef, NgZone} from '@angular/core';
 import {NgbDropdownConfig} from './dropdown-config';
 
 /**
@@ -39,7 +39,7 @@ export class NgbDropdown {
    */
   @Output() openChange = new EventEmitter();
 
-  constructor(config: NgbDropdownConfig) {
+  constructor(private _zone: NgZone, config: NgbDropdownConfig) {
     this.up = config.up;
     this.autoClose = config.autoClose;
   }
@@ -82,9 +82,11 @@ export class NgbDropdown {
   }
 
   closeFromOutsideClick($event) {
-    if (this.autoClose && $event.button !== 2 && !this._isEventFromToggle($event)) {
-      this.close();
-    }
+    this._zone.run(() => {
+      if (this.autoClose && $event.button !== 2 && !this._isEventFromToggle($event)) {
+        this.close();
+      }
+    });
   }
 
   closeFromOutsideEsc() {
