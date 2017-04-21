@@ -258,8 +258,8 @@ describe('ngb-carousel', () => {
   it('should wrap slide changes by default', fakeAsync(() => {
        const html = `
       <ngb-carousel>
-        <ng-template ngbSlide>foo</template>
-        <ng-template ngbSlide>bar</template>
+        <ng-template ngbSlide>foo</ng-template>
+        <ng-template ngbSlide>bar</ng-template>
       </ngb-carousel>
     `;
 

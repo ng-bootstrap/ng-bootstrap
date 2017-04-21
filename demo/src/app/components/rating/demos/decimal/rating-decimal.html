@@ -6,7 +6,7 @@
   <span *ngIf="fill < 100 && fill > 0" class="star">
     <span class="half" [style.width.%]="fill">&hearts;</span>&hearts;
   </span>
-</template>
+</ng-template>
 
 <ngb-rating [(rate)]="currentRate" [starTemplate]="t" [readonly]="true" max="5"></ngb-rating>
 

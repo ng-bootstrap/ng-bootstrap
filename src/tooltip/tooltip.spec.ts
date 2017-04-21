@@ -69,7 +69,7 @@ describe('ngb-tooltip', () => {
     });
 
     it('should open and close a tooltip - default settings and content from a template', () => {
-      const fixture = createTestComponent(`<ng-template #t>Hello, {{name}}!</template><div [ngbTooltip]="t"></div>`);
+      const fixture = createTestComponent(`<ng-template #t>Hello, {{name}}!</ng-template><div [ngbTooltip]="t"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbTooltip));
 
       directive.triggerEventHandler('mouseenter', {});
@@ -91,7 +91,7 @@ describe('ngb-tooltip', () => {
     });
 
     it('should open and close a tooltip - default settings, content from a template and context supplied', () => {
-      const fixture = createTestComponent(`<ng-template #t let-name="name">Hello, {{name}}!</template><div [ngbTooltip]="t"></div>`);
+      const fixture = createTestComponent(`<ng-template #t let-name="name">Hello, {{name}}!</ng-template><div [ngbTooltip]="t"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbTooltip));
 
       directive.context.tooltip.open({name: 'John'});
@@ -154,7 +154,7 @@ describe('ngb-tooltip', () => {
     });
 
     it('should not leave dangling tooltips in the DOM', () => {
-      const fixture = createTestComponent(`<ng-template [ngIf]="show"><div ngbTooltip="Great tip!"></div></template>`);
+      const fixture = createTestComponent(`<ng-template [ngIf]="show"><div ngbTooltip="Great tip!"></div></ng-template>`);
       const directive = fixture.debugElement.query(By.directive(NgbTooltip));
 
       directive.triggerEventHandler('mouseenter', {});
@@ -170,7 +170,7 @@ describe('ngb-tooltip', () => {
       const fixture = createTestComponent(`
             <ng-template [ngIf]="show">
               <div ngbTooltip="Great tip!" triggers="manual" #t="ngbTooltip" (mouseenter)="t.open()"></div>
-            </template>`);
+            </ng-template>`);
       const directive = fixture.debugElement.query(By.directive(NgbTooltip));
 
       directive.triggerEventHandler('mouseenter', {});

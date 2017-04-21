@@ -20,7 +20,7 @@ let nextId = 0;
 /**
  * This directive should be used to wrap accordion panel titles that need to contain HTML markup or other directives.
  */
-@Directive({selector: 'template[ngbPanelTitle]'})
+@Directive({selector: 'ng-template[ngbPanelTitle]'})
 export class NgbPanelTitle {
   constructor(public templateRef: TemplateRef<any>) {}
 }
@@ -28,7 +28,7 @@ export class NgbPanelTitle {
 /**
  * This directive must be used to wrap accordion panel content.
  */
-@Directive({selector: 'template[ngbPanelContent]'})
+@Directive({selector: 'ng-template[ngbPanelContent]'})
 export class NgbPanelContent {
   constructor(public templateRef: TemplateRef<any>) {}
 }

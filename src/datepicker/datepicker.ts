@@ -73,7 +73,7 @@ export interface NgbDatepickerNavigateEvent {
   template: `
     <ng-template #dt let-date="date" let-currentMonth="currentMonth" let-selected="selected" let-disabled="disabled">
        <div ngbDatepickerDayView [date]="date" [currentMonth]="currentMonth" [selected]="selected" [disabled]="disabled"></div>
-    </template>
+    </ng-template>
     
     <div class="ngb-dp-header bg-faded pt-1 rounded-top" [style.height.rem]="getHeaderHeight()" 
       [style.marginBottom.rem]="-getHeaderMargin()">
@@ -107,7 +107,7 @@ export interface NgbDatepickerNavigateEvent {
             (select)="onDateSelect($event)">
           </ngb-datepicker-month-view>
         </div>
-      </template>
+      </ng-template>
     </div>
   `,
   providers: [NGB_DATEPICKER_VALUE_ACCESSOR, NgbDatepickerService]

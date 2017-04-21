@@ -33,14 +33,14 @@
                 <span><i>Default value: </i><code>{{ defaultInputValue(input) || '-' }}</code></span>
                 <span *ngIf="hasConfigProperty(input)">&mdash; initialized from {{ configServiceName }} service</span>
               </div>
-            </template>
+            </ng-template>
             <div style="margin: 10px 0">{{ input.description }}</div>
           </td>
         </tr>
         </tbody>
       </table>
     </section>
-  </template>
+  </ng-template>
 
   <ng-template [ngIf]="apiDocs.outputs.length">
     <section>
@@ -54,7 +54,7 @@
         </tbody>
       </table>
     </section>
-  </template>
+  </ng-template>
 
   <ng-template [ngIf]="apiDocs.methods.length && apiDocs.exportAs">
     <section>
@@ -72,6 +72,6 @@
         </tbody>
       </table>
     </section>
-  </template>
+  </ng-template>
 </div>
 <hr/>

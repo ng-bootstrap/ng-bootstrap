@@ -40,11 +40,11 @@ import {DayTemplateContext} from './datepicker-day-template-context';
               currentMonth: month.number,
               disabled: isDisabled(day),
               selected: isSelected(day.date)}">
-            </template>
-          </template>
+            </ng-template>
+          </ng-template>
         </div>
       </div>
-    </template>
+    </ng-template>
   `
 })
 export class NgbDatepickerMonthView {

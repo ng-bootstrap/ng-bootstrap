@@ -514,15 +514,15 @@ export class WithActiveModalCmpt {
   selector: 'test-cmpt',
   template: `
     <div id="testContainer"></div>
-    <ng-template #content>Hello, {{name}}!</template>
-    <ng-template #destroyableContent><destroyable-cmpt></destroyable-cmpt></template>
-    <ng-template #contentWithClose let-close="close"><button id="close" (click)="close('myResult')">Close me</button></template>
-    <ng-template #contentWithDismiss let-dismiss="dismiss"><button id="dismiss" (click)="dismiss('myReason')">Dismiss me</button></template>
+    <ng-template #content>Hello, {{name}}!</ng-template>
+    <ng-template #destroyableContent><destroyable-cmpt></destroyable-cmpt></ng-template>
+    <ng-template #contentWithClose let-close="close"><button id="close" (click)="close('myResult')">Close me</button></ng-template>
+    <ng-template #contentWithDismiss let-dismiss="dismiss"><button id="dismiss" (click)="dismiss('myReason')">Dismiss me</button></ng-template>
     <ng-template #contentWithIf>
       <ng-template [ngIf]="show">
         <button id="if" (click)="show = false">Click me</button>
-      </template>
-    </template>
+      </ng-template>
+    </ng-template>
     <button id="open" (click)="open('from button')">Open</button>
   `
 })

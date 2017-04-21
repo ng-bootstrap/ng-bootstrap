@@ -3,7 +3,7 @@
 <ng-template #rt let-r="result" let-t="term">
   <img [src]="'https://upload.wikimedia.org/wikipedia/commons/thumb/' + r.flag" width="16">
   {{ r.name}}
-</template>
+</ng-template>
 
 <label for="typeahead-template">Search for a state:</label>
 <input id="typeahead-template" type="text" class="form-control" [(ngModel)]="model" [ngbTypeahead]="search" [resultTemplate]="rt"

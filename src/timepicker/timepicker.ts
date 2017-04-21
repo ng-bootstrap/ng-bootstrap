@@ -81,11 +81,11 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
                 <span class="sr-only">Increment seconds</span>
               </button>
             </td>
-          </template>
+          </ng-template>
           <ng-template [ngIf]="meridian">
             <td>&nbsp;</td>
             <td>&nbsp;</td>
-          </template>
+          </ng-template>
         </tr>
         <tr>
           <td>
@@ -106,14 +106,14 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
                 [value]="formatMinSec(model?.second)" (change)="updateSecond($event.target.value)"
                 [readonly]="readonlyInputs" [disabled]="disabled" aria-label="Seconds">
             </td>
-          </template>
+          </ng-template>
           <ng-template [ngIf]="meridian">
             <td>&nbsp;&nbsp;</td>
             <td>
               <button type="button" class="btn btn-outline-primary" [ngClass]="setButtonSize()"
                 (click)="toggleMeridian()">{{model.hour >= 12 ? 'PM' : 'AM'}}</button>
             </td>
-          </template>
+          </ng-template>
         </tr>
         <tr *ngIf="spinners">
           <td class="text-center">
@@ -140,11 +140,11 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
                 <span class="sr-only">Decrement seconds</span>
               </button>
             </td>
-          </template>
+          </ng-template>
           <ng-template [ngIf]="meridian">
             <td>&nbsp;</td>
             <td>&nbsp;</td>
-          </template>
+          </ng-template>
         </tr>
       </table>
     </fieldset>
