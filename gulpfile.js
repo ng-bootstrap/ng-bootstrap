@@ -260,32 +260,23 @@ gulp.task('clean:demo', function() { return del('demo/dist'); });
 gulp.task('clean:demo-cache', function() { return del('.publish/'); });
 
 
-gulp.task('demo-server', ['generate-docs', 'generate-plunks'], function(cb) {
+gulp.task('demo-server', ['generate-docs', 'generate-plunks'], function() {
   process.chdir('demo');
   var cmd = spawn('ng', ['serve', '--port', docsConfig.port], {stdio: 'inherit'});
-  cmd.on('close', function(code) {
-    console.log('demo-server exited with code ' + code);
-    cb(code);
-  });
+  cmd.on('error', function(err) { console.log('Failed to run child process : ' + err); });
 });
 
 
-gulp.task('build:demo', ['clean:demo', 'generate-docs', 'generate-plunks'], function(cb) {
+gulp.task('build:demo', ['clean:demo', 'generate-docs', 'generate-plunks'], function() {
   process.chdir('demo');
   var cmd = spawn('ng', ['build', '--prod', '--aot'], {stdio: 'inherit'});
-  cmd.on('close', function(code) {
-    console.log('build:demo exited with code ' + code);
-    cb(code);
-  });
+  cmd.on('error', function(err) { console.log('Failed to run child process : ' + err); });
 });
 
-gulp.task('demo-server:aot', ['clean:demo', 'generate-docs', 'generate-plunks'], function(cb) {
+gulp.task('demo-server:aot', ['clean:demo', 'generate-docs', 'generate-plunks'], function() {
   process.chdir('demo');
   var cmd = spawn('ng', ['serve', '--port', docsConfig.port, '--aot'], {stdio: 'inherit'});
-  cmd.on('close', function(code) {
-    console.log('demo-server:aot exited with code ' + code);
-    cb(code);
-  });
+  cmd.on('error', function(err) { console.log('Failed to run child process : ' + err); });
 });
 
 
