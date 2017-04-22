@@ -13,7 +13,7 @@ const NGB_RADIO_VALUE_ACCESSOR = {
  */
 @Directive({
   selector: '[ngbRadioGroup]',
-  host: {'data-toggle': 'buttons', 'class': 'btn-group'},
+  host: {'data-toggle': 'buttons', 'class': 'btn-group', 'role': 'group'},
   providers: [NGB_RADIO_VALUE_ACCESSOR]
 })
 export class NgbRadioGroup implements ControlValueAccessor {
