@@ -35,7 +35,7 @@ describe('ngb-typeahead-window', () => {
 
     it('should use a custom template if provided', () => {
       const fixture = createTestComponent(`
-           <template #rt let-r="result" let-t="term">{{r.toUpperCase()}}-{{t}}</template>
+           <ng-template #rt let-r="result" let-t="term">{{r.toUpperCase()}}-{{t}}</ng-template>
            <ngb-typeahead-window [results]="results" [term]="term" [resultTemplate]="rt"></ngb-typeahead-window>`);
 
       expectResults(fixture.nativeElement, ['+BAR-ba', 'BAZ-ba']);

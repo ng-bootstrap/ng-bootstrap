@@ -29,22 +29,22 @@ import {DayTemplateContext} from './datepicker-day-template-context';
         {{ i18n.getWeekdayShortName(w) }}
       </div>
     </div>
-    <template ngFor let-week [ngForOf]="month.weeks">
+    <ng-template ngFor let-week [ngForOf]="month.weeks">
       <div *ngIf="!isCollapsed(week)" class="ngb-dp-week d-flex">
         <div *ngIf="showWeekNumbers" class="ngb-dp-week-number small text-center font-italic text-muted">{{ week.number }}</div>
         <div *ngFor="let day of week.days" (click)="doSelect(day)" class="ngb-dp-day" [class.disabled]="isDisabled(day)"
          [class.hidden]="isHidden(day)">
-          <template [ngIf]="!isHidden(day)">
-            <template [ngTemplateOutlet]="dayTemplate"
+          <ng-template [ngIf]="!isHidden(day)">
+            <ng-template [ngTemplateOutlet]="dayTemplate"
             [ngOutletContext]="{date: {year: day.date.year, month: day.date.month, day: day.date.day},
               currentMonth: month.number,
               disabled: isDisabled(day),
               selected: isSelected(day.date)}">
-            </template>
-          </template>
+            </ng-template>
+          </ng-template>
         </div>
       </div>
-    </template>
+    </ng-template>
   `
 })
 export class NgbDatepickerMonthView {

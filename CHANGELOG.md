@@ -97,7 +97,7 @@ was tested with the latest Angular and now fully supports both 4.x and 2.x.
 
 * model: The `ngbModalContainer` directive is no longer needed and was
 removed from this project. Just remove any references to the
-`<template ngbModalContainer></template>` from your projects.
+`<ng-template ngbModalContainer></ng-template>` from your projects.
 
 
 
