@@ -1,3 +1,20 @@
+<a name="1.0.0-alpha.24"></a>
+# [1.0.0-alpha.24](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.23...1.0.0-alpha.24) (2017-04-22)
+
+
+### Bug Fixes
+
+* **buttons:** add `role="group"` to radio group ([c847a92](https://github.com/ng-bootstrap/ng-bootstrap/commit/c847a92)), closes [#1503](https://github.com/ng-bootstrap/ng-bootstrap/issues/1503)
+* **collapse:** remove aria-expanded from target ([a24b283](https://github.com/ng-bootstrap/ng-bootstrap/commit/a24b283)), closes [#1492](https://github.com/ng-bootstrap/ng-bootstrap/issues/1492)
+
+
+### Features
+
+* **rating:** set aria-disabled="true" when readonly ([c89f2c4](https://github.com/ng-bootstrap/ng-bootstrap/commit/c89f2c4)), closes [#1489](https://github.com/ng-bootstrap/ng-bootstrap/issues/1489)
+* **timepicker:** replace table layout with flexbox ([b94a126](https://github.com/ng-bootstrap/ng-bootstrap/commit/b94a126)), closes [#1498](https://github.com/ng-bootstrap/ng-bootstrap/issues/1498)
+
+
+
 <a name="1.0.0-alpha.23"></a>
 # [1.0.0-alpha.23](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.22...1.0.0-alpha.23) (2017-04-12)
 
