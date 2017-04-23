@@ -23,12 +23,19 @@ function hasNoJSDoc(member) {
 }
 
 function isInternalMember(member) {
-  if (!member.symbol) {
-    return true;
+  if (member.jsDoc && member.jsDoc.length > 0) {
+    for (var i = 0; i < member.jsDoc.length; i++) {
+      if (member.jsDoc[i].tags && member.jsDoc[i].tags.length > 0) {
+        for (var j = 0; j < member.jsDoc[i].tags.length; j++) {
+          if (member.jsDoc[i].tags[j].tagName.text === 'internal') {
+            return true;
+          }
+        }
+      }
+    }
   }
 
-  const jsDoc = ts.displayPartsToString(member.symbol.getDocumentationComment());
-  return jsDoc.indexOf('@internal') > -1;
+  return false;
 }
 
 function isAngularLifecycleHook(methodName) {
@@ -36,7 +43,7 @@ function isAngularLifecycleHook(methodName) {
 }
 
 function isPrivate(member) {
-  return (member.flags & ts.NodeFlags.Private) !== 0;
+  return (ts.getCombinedModifierFlags(member) & ts.ModifierFlags.Private) !== 0;
 }
 
 function isPrivateOrInternal(member) {

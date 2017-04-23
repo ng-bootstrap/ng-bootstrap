@@ -18,7 +18,7 @@ Feel free to make comments there.
 View all the directives in action at https://ng-bootstrap.github.io
 
 ## Dependencies
-* [Angular](https://angular.io) (tested with 2.3.1)
+* [Angular](https://angular.io) (tested with 4.0.3)
 * [Bootstrap 4](https://v4-alpha.getbootstrap.com) (tested with 4.0.0-alpha.6)
 
 ## Installation

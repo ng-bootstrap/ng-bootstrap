@@ -60,13 +60,13 @@ const NGB_RATING_VALUE_ACCESSOR = {
     '(keydown)': 'handleKeyDown($event)'
   },
   template: `
-    <template #t let-fill="fill">{{ fill === 100 ? '&#9733;' : '&#9734;' }}</template>
-    <template ngFor [ngForOf]="contexts" let-index="index">
+    <ng-template #t let-fill="fill">{{ fill === 100 ? '&#9733;' : '&#9734;' }}</ng-template>
+    <ng-template ngFor [ngForOf]="contexts" let-index="index">
       <span class="sr-only">({{ index < nextRate ? '*' : ' ' }})</span>
       <span (mouseenter)="enter(index + 1)" (click)="update(index + 1)" [style.cursor]="readonly || disabled ? 'default' : 'pointer'">
-        <template [ngTemplateOutlet]="starTemplate || t" [ngOutletContext]="contexts[index]"></template>
+        <ng-template [ngTemplateOutlet]="starTemplate || t" [ngOutletContext]="contexts[index]"></ng-template>
       </span>
-    </template>
+    </ng-template>
   `,
   providers: [NGB_RATING_VALUE_ACCESSOR]
 })
@@ -94,7 +94,7 @@ export class NgbRating implements ControlValueAccessor,
 
   /**
    * A template to override star display.
-   * Alternatively put a <template> as the only child of <ngb-rating> element
+   * Alternatively put a <ng-template> as the only child of <ngb-rating> element
    */
   @Input() @ContentChild(TemplateRef) starTemplate: TemplateRef<StarTemplateContext>;
 

@@ -313,7 +313,7 @@ describe('NgbInputDatepicker', () => {
   describe('options', () => {
 
     it('should propagate the "dayTemplate" option', () => {
-      const fixture = createTestCmpt(`<template #t></template><input ngbDatepicker [dayTemplate]="t">`);
+      const fixture = createTestCmpt(`<ng-template #t></ng-template><input ngbDatepicker [dayTemplate]="t">`);
       const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
 
       dpInput.open();

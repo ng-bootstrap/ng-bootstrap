@@ -7,16 +7,16 @@
   </h2>
   <p>{{apiDocs.description}}</p>
 
-  <template [ngIf]="apiDocs.properties && apiDocs.properties.length">
+  <ng-template [ngIf]="apiDocs.properties && apiDocs.properties.length">
     <section>
       <h3>Properties</h3>
       <p>
-        <template ngFor let-property [ngForOf]="apiDocs.properties">
+        <ng-template ngFor let-property [ngForOf]="apiDocs.properties">
           <code>{{ property.name }}</code>
-        </template>
+        </ng-template>
         <i>&mdash; Documentation available in {{ directiveName }}</i>
       </p>
     </section>
-  </template>
+  </ng-template>
 </div>
 <hr/>
