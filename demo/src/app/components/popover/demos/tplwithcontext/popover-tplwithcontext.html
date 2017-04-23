@@ -2,7 +2,7 @@
   You can optionally pass in a context when manually triggering a popover.
 </p>
 
-<template #popContent let-greeting="greeting">{{greeting}}, <b>{{name}}</b>!</template>
+<ng-template #popContent let-greeting="greeting">{{greeting}}, <b>{{name}}</b>!</ng-template>
 <p>
   How would you like to greet <strong [ngbPopover]="popContent" popoverTitle="Greeting" #p="ngbPopover" triggers="manual">me</strong>?
 </p>

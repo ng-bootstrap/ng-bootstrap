@@ -116,8 +116,7 @@ function generateIndexHtml() {
 
 function generateConfigJs() {
   return `var ver = {
-    ng: '${versions.angular}',
-    ngRouter: '${versions.angularRouter}'
+    ng: '${versions.angular}'
   };
   
   System.config({
@@ -140,7 +139,7 @@ function generateConfigJs() {
     '@angular/platform-browser': 'npm:@angular/platform-browser@' + ver.ng + '/bundles/platform-browser.umd.js',
     '@angular/platform-browser-dynamic': 'npm:@angular/platform-browser-dynamic@' + ver.ng + '/bundles/platform-browser-dynamic.umd.js',
     '@angular/http': 'npm:@angular/http@' + ver.ng + '/bundles/http.umd.js',
-    '@angular/router': 'npm:@angular/router@' + ver.ngRouter + '/bundles/router.umd.js',
+    '@angular/router': 'npm:@angular/router@' + ver.ng + '/bundles/router.umd.js',
     '@angular/forms': 'npm:@angular/forms@' + ver.ng + '/bundles/forms.umd.js',
 
     'rxjs': 'npm:rxjs@${versions.rxjs}',
