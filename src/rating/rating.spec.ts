@@ -172,6 +172,44 @@ describe('ngb-rating', () => {
     expect(fixture.componentInstance.rate).toBe(3);
   });
 
+  it('should not reset rating to 0 by default', fakeAsync(() => {
+       const fixture = createTestComponent('<ngb-rating [(rate)]="rate" max="5"></ngb-rating>');
+       const el = fixture.debugElement;
+
+       // 3/5 initially
+       expect(getState(el)).toEqual([true, true, true, false, false]);
+       expect(fixture.componentInstance.rate).toBe(3);
+
+       // click 3 -> 3/5
+       getStar(el.nativeElement, 3).click();
+       fixture.detectChanges();
+       expect(getState(el)).toEqual([true, true, true, false, false]);
+       expect(fixture.componentInstance.rate).toBe(3);
+     }));
+
+  it('should set `resettable` rating to 0', fakeAsync(() => {
+       const fixture = createTestComponent('<ngb-rating [(rate)]="rate" max="5" [resettable]="true"></ngb-rating>');
+       const el = fixture.debugElement;
+
+       // 3/5 initially
+       expect(getState(el)).toEqual([true, true, true, false, false]);
+       expect(fixture.componentInstance.rate).toBe(3);
+
+       // click 3 -> 0/5
+       getStar(el.nativeElement, 3).click();
+       tick();
+       fixture.detectChanges();
+       expect(getState(el)).toEqual([false, false, false, false, false]);
+       expect(fixture.componentInstance.rate).toBe(0);
+
+       // click 2 -> 2/5
+       getStar(el.nativeElement, 2).click();
+       tick();
+       fixture.detectChanges();
+       expect(getState(el)).toEqual([true, true, false, false, false]);
+       expect(fixture.componentInstance.rate).toBe(2);
+     }));
+
   it('handles correctly the mouse enter/leave', () => {
     const fixture = createTestComponent('<ngb-rating [(rate)]="rate" max="5"></ngb-rating>');
     const el = fixture.debugElement;
