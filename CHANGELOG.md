@@ -1,3 +1,18 @@
+<a name="1.0.0-alpha.25"></a>
+# [1.0.0-alpha.25](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.24...1.0.0-alpha.25) (2017-04-25)
+
+
+### Features
+
+* bump up Angular dependency to 4.0.3 ([26bc8df](https://github.com/ng-bootstrap/ng-bootstrap/commit/26bc8df)), closes [#1337](https://github.com/ng-bootstrap/ng-bootstrap/issues/1337) [#1415](https://github.com/ng-bootstrap/ng-bootstrap/issues/1415) [#1433](https://github.com/ng-bootstrap/ng-bootstrap/issues/1433) [#1439](https://github.com/ng-bootstrap/ng-bootstrap/issues/1439) [#1512](https://github.com/ng-bootstrap/ng-bootstrap/issues/1512)
+
+
+### BREAKING CHANGES
+
+* ng-bootstrap requires a minimal version of Angular 4.0.3
+
+
+
 <a name="1.0.0-alpha.24"></a>
 # [1.0.0-alpha.24](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.23...1.0.0-alpha.24) (2017-04-22)
 
