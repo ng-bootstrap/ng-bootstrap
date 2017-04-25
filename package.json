@@ -36,43 +36,21 @@
     "zone.js": "0.8.7"
   },
   "devDependencies": {
-
+    "@angular/cli": "^1.0.0",
     "@angular/compiler": "^4.0.0",
-
+    "@angular/compiler-cli": "^4.0.0",
     "@angular/http": "^4.0.0",
     "@angular/platform-browser": "^4.0.0",
     "@angular/platform-browser-dynamic": "^4.0.0",
     "@angular/router": "^4.0.0",
-
-
-
-
-    "@angular/compiler-cli": "^4.0.0",
-    "@types/node": "~6.0.60",
-    "codelyzer": "~2.0.0",
-    "jasmine-core": "~2.5.2",
-    "jasmine-spec-reporter": "~3.2.0",
-    "karma": "~1.4.1",
-    "karma-chrome-launcher": "~2.0.0",
-    "karma-cli": "~1.0.1",
-    "karma-jasmine": "~1.1.0",
-    "karma-jasmine-html-reporter": "^0.2.2",
-    "karma-coverage-istanbul-reporter": "^0.2.0",
-    "protractor": "~5.1.0",
-    "ts-node": "~2.0.0",
-    "tslint": "^3.15.1",
-    "typescript": "~2.2.0",
-
-
-
-    "@angular/cli": "1.0.0",
-
     "@types/jasmine": "2.5.41",
+    "@types/node": "~6.0.60",
     "angular2-template-loader": "^0.6.0",
     "async-done": "^1.2.2",
     "autoprefixer": "^6.5.1",
     "bootstrap": "4.0.0-alpha.6",
     "clang-format": "1.0.35",
+    "codelyzer": "~2.0.0",
     "copy-webpack-plugin": "^4.0.0",
     "core-js": "^2.4.1",
     "css-loader": "^0.25.0",
@@ -94,12 +72,17 @@
     "html-webpack-plugin": "2.24.1",
     "ie-shim": "^0.1.0",
     "jasmine": "^2.5.2",
-
+    "jasmine-core": "~2.5.2",
     "jasmine-node": "^1.14.5",
-
+    "jasmine-spec-reporter": "~3.2.0",
+    "karma": "~1.4.1",
+    "karma-chrome-launcher": "~2.0.0",
+    "karma-cli": "~1.0.1",
     "karma-coverage": "^1.1.1",
+    "karma-coverage-istanbul-reporter": "^0.2.0",
     "karma-firefox-launcher": "^1.0.0",
-
+    "karma-jasmine": "~1.1.0",
+    "karma-jasmine-html-reporter": "^0.2.2",
     "karma-sauce-launcher": "^1.1.0",
     "karma-sourcemap-loader": "^0.3.7",
     "mkdirp": "^0.5.1",
@@ -107,6 +90,7 @@
     "postcss-loader": "^1.1.0",
     "prismjs": "^1.5.1",
     "prismjs-loader": "0.0.4",
+    "protractor": "~5.1.0",
     "raw-loader": "^0.5.1",
     "reflect-metadata": "^0.1.8",
     "remap-istanbul": "^0.7.0",
@@ -116,7 +100,9 @@
     "style-loader": "^0.13.1",
     "systemjs": "^0.19.40",
     "ts-loader": "2.0.0",
-
+    "ts-node": "~2.0.0",
+    "tslint": "^3.15.1",
+    "typescript": "~2.2.0",
     "url-loader": "^0.5.7",
     "webpack": "2.2.0",
     "zone.js": "^0.7.2"
