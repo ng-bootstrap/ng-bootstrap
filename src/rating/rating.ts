@@ -63,7 +63,7 @@ const NGB_RATING_VALUE_ACCESSOR = {
     <ng-template #t let-fill="fill">{{ fill === 100 ? '&#9733;' : '&#9734;' }}</ng-template>
     <ng-template ngFor [ngForOf]="contexts" let-index="index">
       <span class="sr-only">({{ index < nextRate ? '*' : ' ' }})</span>
-      <span (mouseenter)="enter(index + 1)" (click)="update(index + 1)" [style.cursor]="readonly || disabled ? 'default' : 'pointer'">
+      <span (mouseenter)="enter(index + 1)" (click)="handleClick(index + 1)" [style.cursor]="readonly || disabled ? 'default' : 'pointer'">
         <ng-template [ngTemplateOutlet]="starTemplate || t" [ngOutletContext]="contexts[index]"></ng-template>
       </span>
     </ng-template>
@@ -91,6 +91,11 @@ export class NgbRating implements ControlValueAccessor,
    * A flag indicating if rating can be updated.
    */
   @Input() readonly: boolean;
+
+  /**
+   * A flag indicating if rating can be reset to 0 on mouse click
+   */
+  @Input() resettable: boolean;
 
   /**
    * A template to override star display.
@@ -132,6 +137,8 @@ export class NgbRating implements ControlValueAccessor,
     }
     this.hover.emit(value);
   }
+
+  handleClick(value: number) { this.update(this.resettable && this.rate === value ? 0 : value); }
 
   handleKeyDown(event: KeyboardEvent) {
     if (Key[toString(event.which)]) {
