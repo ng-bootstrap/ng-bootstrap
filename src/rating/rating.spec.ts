@@ -172,6 +172,44 @@ describe('ngb-rating', () => {
     expect(fixture.componentInstance.rate).toBe(3);
   });
 
+  it('should not reset rating to 0 by default', fakeAsync(() => {
+       const fixture = createTestComponent('<ngb-rating [(rate)]="rate" max="5"></ngb-rating>');
+       const el = fixture.debugElement;
+
+       // 3/5 initially
+       expect(getState(el)).toEqual([true, true, true, false, false]);
+       expect(fixture.componentInstance.rate).toBe(3);
+
+       // click 3 -> 3/5
+       getStar(el.nativeElement, 3).click();
+       fixture.detectChanges();
+       expect(getState(el)).toEqual([true, true, true, false, false]);
+       expect(fixture.componentInstance.rate).toBe(3);
+     }));
+
+  it('should set `resettable` rating to 0', fakeAsync(() => {
+       const fixture = createTestComponent('<ngb-rating [(rate)]="rate" max="5" [resettable]="true"></ngb-rating>');
+       const el = fixture.debugElement;
+
+       // 3/5 initially
+       expect(getState(el)).toEqual([true, true, true, false, false]);
+       expect(fixture.componentInstance.rate).toBe(3);
+
+       // click 3 -> 0/5
+       getStar(el.nativeElement, 3).click();
+       tick();
+       fixture.detectChanges();
+       expect(getState(el)).toEqual([false, false, false, false, false]);
+       expect(fixture.componentInstance.rate).toBe(0);
+
+       // click 2 -> 2/5
+       getStar(el.nativeElement, 2).click();
+       tick();
+       fixture.detectChanges();
+       expect(getState(el)).toEqual([true, true, false, false, false]);
+       expect(fixture.componentInstance.rate).toBe(2);
+     }));
+
   it('handles correctly the mouse enter/leave', () => {
     const fixture = createTestComponent('<ngb-rating [(rate)]="rate" max="5"></ngb-rating>');
     const el = fixture.debugElement;
@@ -257,7 +295,7 @@ describe('ngb-rating', () => {
 
   it('should allow custom star template', () => {
     const fixture = createTestComponent(`
-      <template #t let-fill="fill">{{ fill === 100 ? 'x' : 'o' }}</template>
+      <ng-template #t let-fill="fill">{{ fill === 100 ? 'x' : 'o' }}</ng-template>
       <ngb-rating [starTemplate]="t" rate="2" max="4"></ngb-rating>`);
 
     const compiled = fixture.nativeElement;
@@ -267,7 +305,7 @@ describe('ngb-rating', () => {
   it('should allow custom template as a child element', () => {
     const fixture = createTestComponent(`
       <ngb-rating rate="2" max="4">
-        <template let-fill="fill">{{ fill === 100 ? 'x' : 'o' }}</template>
+        <ng-template let-fill="fill">{{ fill === 100 ? 'x' : 'o' }}</ng-template>
       </ngb-rating>`);
 
     const compiled = fixture.nativeElement;
@@ -276,9 +314,9 @@ describe('ngb-rating', () => {
 
   it('should prefer explicitly set custom template to a child one', () => {
     const fixture = createTestComponent(`
-      <template #t let-fill="fill">{{ fill === 100 ? 'a' : 'b' }}</template>
+      <ng-template #t let-fill="fill">{{ fill === 100 ? 'a' : 'b' }}</ng-template>
       <ngb-rating [starTemplate]="t" rate="2" max="4">
-        <template let-fill="fill">{{ fill === 100 ? 'c' : 'd' }}</template>
+        <ng-template let-fill="fill">{{ fill === 100 ? 'c' : 'd' }}</ng-template>
       </ngb-rating>`);
 
     const compiled = fixture.nativeElement;
@@ -287,7 +325,7 @@ describe('ngb-rating', () => {
 
   it('should calculate fill percentage correctly', () => {
     const fixture = createTestComponent(`
-      <template #t let-fill="fill">{{fill}}</template>
+      <ng-template #t let-fill="fill">{{fill}}</ng-template>
       <ngb-rating [starTemplate]="t" [rate]="rate" max="4"></ngb-rating>`);
 
     const compiled = fixture.nativeElement;

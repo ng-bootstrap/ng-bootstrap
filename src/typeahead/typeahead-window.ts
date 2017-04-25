@@ -22,19 +22,19 @@ export interface ResultTemplateContext {
   exportAs: 'ngbTypeaheadWindow',
   host: {'class': 'dropdown-menu', 'style': 'display: block', 'role': 'listbox', '[id]': 'id'},
   template: `
-    <template #rt let-result="result" let-term="term" let-formatter="formatter">
+    <ng-template #rt let-result="result" let-term="term" let-formatter="formatter">
       <ngb-highlight [result]="formatter(result)" [term]="term"></ngb-highlight>
-    </template>
-    <template ngFor [ngForOf]="results" let-result let-idx="index">
+    </ng-template>
+    <ng-template ngFor [ngForOf]="results" let-result let-idx="index">
       <button type="button" class="dropdown-item" role="option"
         [id]="id + '-' + idx"
         [class.active]="idx === activeIdx"
         (mouseenter)="markActive(idx)"
         (click)="select(result)">
-          <template [ngTemplateOutlet]="resultTemplate || rt"
-          [ngOutletContext]="{result: result, term: term, formatter: formatter}"></template>
+          <ng-template [ngTemplateOutlet]="resultTemplate || rt"
+          [ngOutletContext]="{result: result, term: term, formatter: formatter}"></ng-template>
       </button>
-    </template>
+    </ng-template>
   `
 })
 export class NgbTypeaheadWindow implements OnInit {

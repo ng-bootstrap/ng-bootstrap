@@ -36,8 +36,8 @@ describe('ngb-accordion', () => {
     <ngb-accordion #acc="ngbAccordion" [closeOthers]="closeOthers" [activeIds]="activeIds"
       (panelChange)="changeCallback($event)" [type]="classType">
       <ngb-panel *ngFor="let panel of panels" [id]="panel.id" [disabled]="panel.disabled" [type]="panel.type">
-        <template ngbPanelTitle>{{panel.title}}</template>
-        <template ngbPanelContent>{{panel.content}}</template>
+        <ng-template ngbPanelTitle>{{panel.title}}</ng-template>
+        <ng-template ngbPanelContent>{{panel.content}}</ng-template>
       </ngb-panel>
     </ngb-accordion>
     <button *ngFor="let panel of panels" (click)="acc.toggle(panel.id)">Toggle the panel {{ panel.id }}</button>
@@ -323,8 +323,8 @@ describe('ngb-accordion', () => {
     const testHtml = `
     <ngb-accordion #acc="ngbAccordion" [closeOthers]="closeOthers" [type]="classType">
      <ngb-panel *ngFor="let panel of panels" [id]="panel.id" [disabled]="panel.disabled">
-       <template ngbPanelTitle>{{panel.title}}</template>
-       <template ngbPanelContent>{{panel.content}}</template>
+       <ng-template ngbPanelTitle>{{panel.title}}</ng-template>
+       <ng-template ngbPanelContent>{{panel.content}}</ng-template>
      </ngb-panel>
     </ngb-accordion>
     <button *ngFor="let panel of panels" (click)="acc.toggle(panel.id)">Toggle the panel {{ panel.id }}</button>

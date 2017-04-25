@@ -7,7 +7,7 @@
   </h2>
   <p>{{apiDocs.description}}</p>
 
-  <template [ngIf]="apiDocs.properties && apiDocs.properties.length">
+  <ng-template [ngIf]="apiDocs.properties && apiDocs.properties.length">
     <section>
       <h3>Properties</h3>
       <table class="table table-sm table-hover">
@@ -16,18 +16,18 @@
           <td class="label-cell"><code>{{prop.name}}</code></td>
           <td class="content-cell">
             <div><i>Type: </i><code>{{ prop.type }}</code></div>
-            <template [ngIf]="prop.defaultValue">
+            <ng-template [ngIf]="prop.defaultValue">
               <div><i>Default value: </i><code>{{prop.defaultValue || '-'}}</code></div>
-            </template>
+            </ng-template>
             <div style="margin: 10px 0">{{ prop.description }}</div>
           </td>
         </tr>
         </tbody>
       </table>
     </section>
-  </template>
+  </ng-template>
 
-  <template [ngIf]="apiDocs.methods && apiDocs.methods.length">
+  <ng-template [ngIf]="apiDocs.methods && apiDocs.methods.length">
     <section>
       <h3>Methods</h3>
       <table class="table table-sm table-hover">
@@ -43,6 +43,6 @@
         </tbody>
       </table>
     </section>
-  </template>
+  </ng-template>
 </div>
 <hr/>

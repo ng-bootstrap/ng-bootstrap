@@ -9,4 +9,5 @@ import {Injectable} from '@angular/core';
 export class NgbRatingConfig {
   max = 10;
   readonly = false;
+  resettable = false;
 }
