@@ -17,6 +17,7 @@ var spawn = require('child_process').spawn;
 var path = require('path');
 var os = require('os');
 var remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
+var rename = require('gulp-rename');
 
 var PATHS = {
   src: 'src/**/*.ts',
@@ -255,28 +256,46 @@ gulp.task('generate-plunks', function() {
   return gulpFile(plunks, {src: true}).pipe(gulp.dest('demo/src/public/app/components'));
 });
 
-gulp.task('clean:demo', function() { return del('demo/dist'); });
+gulp.task('clean:demo', function() {
+
+  spawn('npm', ['uninstall', '@ng-bootstrap/ng-bootstrap'], {stdio: 'inherit'}).on('error', function(err) {
+    console.log('Failed to run npm uninstall @ng-bootstrap/ng-bootstrap : ' + err);
+  });
+  return del('demo/dist');
+
+});
 
 gulp.task('clean:demo-cache', function() { return del('.publish/'); });
 
 
-gulp.task('demo-server', ['generate-docs', 'generate-plunks'], function() {
-  process.chdir('demo');
-  var cmd = spawn('ng', ['serve', '--port', docsConfig.port], {stdio: 'inherit'});
-  cmd.on('error', function(err) { console.log('Failed to run child process : ' + err); });
+gulp.task('demo-server', ['clean:demo', 'generate-docs', 'generate-plunks', 'angular-cli-jit'], function() {
+  spawn('ng', ['serve', '--port', docsConfig.port], {stdio: 'inherit'}).on('error', function(err) {
+    console.log('Failed to run child process : ' + err);
+  });
 });
 
 
-gulp.task('build:demo', ['clean:demo', 'generate-docs', 'generate-plunks'], function() {
-  process.chdir('demo');
-  var cmd = spawn('ng', ['build', '--prod', '--aot'], {stdio: 'inherit'});
-  cmd.on('error', function(err) { console.log('Failed to run child process : ' + err); });
+gulp.task('install-aot-build', shell.task(['npm install ./dist', 'ng build --prod --aot']));
+
+gulp.task('install-aot-serve', shell.task(['npm install ./dist', `ng serve --port ${docsConfig.port} --aot`]));
+
+
+gulp.task('angular-cli-aot', function() {
+  gulp.src(".angular-cli.aot.json").pipe(rename(".angular-cli.json")).pipe(gulp.dest("./"));
 });
 
-gulp.task('demo-server:aot', ['clean:demo', 'generate-docs', 'generate-plunks'], function() {
-  process.chdir('demo');
-  var cmd = spawn('ng', ['serve', '--port', docsConfig.port, '--aot'], {stdio: 'inherit'});
-  cmd.on('error', function(err) { console.log('Failed to run child process : ' + err); });
+gulp.task('angular-cli-jit', function() {
+  gulp.src(".angular-cli.jit.json").pipe(rename(".angular-cli.json")).pipe(gulp.dest("./"));
+});
+
+
+gulp.task('build:demo', function(done) {
+  runSequence('clean:demo', 'generate-docs', 'generate-plunks', 'angular-cli-aot', 'build', 'install-aot-build', done);
+});
+
+
+gulp.task('demo-server:aot', function(done) {
+  runSequence('clean:demo', 'generate-docs', 'generate-plunks', 'angular-cli-aot', 'build', 'install-aot-serve', done);
 });
 
 

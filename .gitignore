@@ -11,3 +11,4 @@ coverage
 demo/src/api-docs.ts
 demo/src/public/**/plnkr.html
 local.docs.json
+.angular-cli.json

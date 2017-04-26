@@ -5,8 +5,8 @@
   },
   "apps": [
     {
-      "root": "src",
-      "outDir": "dist",
+      "root": "demo/src",
+      "outDir": "demo/dist",
       "assets": [
         "assets",
         "favicon.ico"
@@ -15,13 +15,13 @@
       "main": "main.ts",
       "polyfills": "polyfills.ts",
       "test": "test.ts",
-      "tsconfig": "tsconfig.app.json",
+      "tsconfig": "tsconfig.aot.json",
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
         "styles.scss",
-        "../node_modules/prismjs/themes/prism.css",
-        "../node_modules/bootstrap/dist/css/bootstrap.css"
+        "../../node_modules/prismjs/themes/prism.css",
+        "../../node_modules/bootstrap/dist/css/bootstrap.css"
       ],
       "scripts": [],
       "environmentSource": "environments/environment.ts",
