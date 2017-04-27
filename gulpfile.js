@@ -259,7 +259,7 @@ gulp.task('generate-plunks', function() {
 gulp.task('clean:demo', function() {
 
   spawn('npm', ['uninstall', '@ng-bootstrap/ng-bootstrap'], {stdio: 'inherit'}).on('error', function(err) {
-    console.log('Failed to run npm uninstall @ng-bootstrap/ng-bootstrap : ' + err);
+    console.error(`Failed to run npm uninstall @ng-bootstrap/ng-bootstrap: ${err}`);
   });
   return del('demo/dist');
 
@@ -270,7 +270,7 @@ gulp.task('clean:demo-cache', function() { return del('.publish/'); });
 
 gulp.task('demo-server', ['clean:demo', 'generate-docs', 'generate-plunks', 'angular-cli-jit'], function() {
   spawn('ng', ['serve', '--port', docsConfig.port], {stdio: 'inherit'}).on('error', function(err) {
-    console.log('Failed to run child process : ' + err);
+    console.error(`Failed to run child process: ${err}`);
   });
 });
 
@@ -281,11 +281,11 @@ gulp.task('install-aot-serve', shell.task(['npm install ./dist', `ng serve --por
 
 
 gulp.task('angular-cli-aot', function() {
-  gulp.src(".angular-cli.aot.json").pipe(rename(".angular-cli.json")).pipe(gulp.dest("./"));
+  gulp.src('.angular-cli.aot.json').pipe(rename('.angular-cli.json')).pipe(gulp.dest('./'));
 });
 
 gulp.task('angular-cli-jit', function() {
-  gulp.src(".angular-cli.jit.json").pipe(rename(".angular-cli.json")).pipe(gulp.dest("./"));
+  gulp.src('.angular-cli.jit.json').pipe(rename('.angular-cli.json')).pipe(gulp.dest('./'));
 });
 
 
