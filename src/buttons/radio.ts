@@ -1,4 +1,4 @@
-import {Directive, forwardRef, Optional, Input, Renderer, ElementRef, OnDestroy} from '@angular/core';
+import {Directive, forwardRef, Optional, Input, Renderer2, ElementRef, OnDestroy} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 const NGB_RADIO_VALUE_ACCESSOR = {
@@ -59,13 +59,31 @@ export class NgbRadioGroup implements ControlValueAccessor {
 
 @Directive({selector: 'label.btn'})
 export class NgbActiveLabel {
-  constructor(private _renderer: Renderer, private _elRef: ElementRef) {}
+  constructor(private _renderer: Renderer2, private _elRef: ElementRef) {}
 
-  set active(isActive: boolean) { this._renderer.setElementClass(this._elRef.nativeElement, 'active', isActive); }
-  set disabled(isDisabled: boolean) {
-    this._renderer.setElementClass(this._elRef.nativeElement, 'disabled', isDisabled);
+  set active(isActive: boolean) {
+    if (isActive) {
+      this._renderer.addClass(this._elRef.nativeElement, 'active');
+    } else {
+      this._renderer.removeClass(this._elRef.nativeElement, 'active');
+    }
   }
-  set focused(isFocused: boolean) { this._renderer.setElementClass(this._elRef.nativeElement, 'focus', isFocused); }
+
+  set disabled(isDisabled: boolean) {
+    if (isDisabled) {
+      this._renderer.addClass(this._elRef.nativeElement, 'disabled');
+    } else {
+      this._renderer.removeClass(this._elRef.nativeElement, 'disabled');
+    }
+  }
+
+  set focused(isFocused: boolean) {
+    if (isFocused) {
+      this._renderer.addClass(this._elRef.nativeElement, 'focus');
+    } else {
+      this._renderer.removeClass(this._elRef.nativeElement, 'focus');
+    }
+  }
 }
 
 
@@ -94,7 +112,7 @@ export class NgbRadio implements OnDestroy {
   set value(value: any) {
     this._value = value;
     const stringValue = value ? value.toString() : '';
-    this._renderer.setElementProperty(this._element.nativeElement, 'value', stringValue);
+    this._renderer.setProperty(this._element.nativeElement, 'value', stringValue);
 
     if (this._group) {
       this._group.onRadioValueUpdate();
@@ -132,7 +150,7 @@ export class NgbRadio implements OnDestroy {
 
   constructor(
       @Optional() private _group: NgbRadioGroup, @Optional() private _label: NgbActiveLabel,
-      private _renderer: Renderer, private _element: ElementRef) {
+      private _renderer: Renderer2, private _element: ElementRef) {
     if (this._group) {
       this._group.register(this);
     }

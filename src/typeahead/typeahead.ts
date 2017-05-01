@@ -11,7 +11,7 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  Renderer,
+  Renderer2,
   TemplateRef,
   ViewContainerRef
 } from '@angular/core';
@@ -139,7 +139,7 @@ export class NgbTypeahead implements ControlValueAccessor,
   private _onChange = (_: any) => {};
 
   constructor(
-      private _elementRef: ElementRef, private _viewContainerRef: ViewContainerRef, private _renderer: Renderer,
+      private _elementRef: ElementRef, private _viewContainerRef: ViewContainerRef, private _renderer: Renderer2,
       private _injector: Injector, componentFactoryResolver: ComponentFactoryResolver, config: NgbTypeaheadConfig,
       ngZone: NgZone) {
     this.editable = config.editable;
@@ -186,7 +186,7 @@ export class NgbTypeahead implements ControlValueAccessor,
   writeValue(value) { this._writeInputValue(this._formatItemForInput(value)); }
 
   setDisabledState(isDisabled: boolean): void {
-    this._renderer.setElementProperty(this._elementRef.nativeElement, 'disabled', isDisabled);
+    this._renderer.setProperty(this._elementRef.nativeElement, 'disabled', isDisabled);
   }
 
   dismissPopup() {
@@ -272,8 +272,8 @@ export class NgbTypeahead implements ControlValueAccessor,
 
       if (userInputLowerCase === formattedVal.substr(0, this._userInput.length).toLowerCase()) {
         this._writeInputValue(this._userInput + formattedVal.substr(this._userInput.length));
-        this._renderer.invokeElementMethod(
-            this._elementRef.nativeElement, 'setSelectionRange', [this._userInput.length, formattedVal.length]);
+        this._elementRef.nativeElement['setSelectionRange'].apply(
+            this._elementRef.nativeElement, [this._userInput.length, formattedVal.length]);
       } else {
         this.writeValue(this._windowRef.instance.getActive());
       }
@@ -285,7 +285,7 @@ export class NgbTypeahead implements ControlValueAccessor,
   }
 
   private _writeInputValue(value: string): void {
-    this._renderer.setElementProperty(this._elementRef.nativeElement, 'value', value);
+    this._renderer.setProperty(this._elementRef.nativeElement, 'value', value);
   }
 
   private _subscribeToUserInput(userInput$: Observable<any[]>): Subscription {
