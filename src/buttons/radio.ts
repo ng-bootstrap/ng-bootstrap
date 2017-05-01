@@ -1,6 +1,6 @@
 import {Directive, forwardRef, Optional, Input, Renderer2, ElementRef, OnDestroy} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {NgbActiveLabel} from "./label";
+import {NgbActiveLabel} from './label';
 
 const NGB_RADIO_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
