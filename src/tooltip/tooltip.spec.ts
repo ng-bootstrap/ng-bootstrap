@@ -65,7 +65,7 @@ describe('ngb-tooltip', () => {
       directive.triggerEventHandler('mouseleave', {});
       fixture.detectChanges();
       expect(getWindow(fixture.nativeElement)).toBeNull();
-      expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
+      expect(directive.nativeElement.getAttribute('aria-describedby')).toBe('null');
     });
 
     it('should open and close a tooltip - default settings and content from a template', () => {
@@ -87,7 +87,7 @@ describe('ngb-tooltip', () => {
       directive.triggerEventHandler('mouseleave', {});
       fixture.detectChanges();
       expect(getWindow(fixture.nativeElement)).toBeNull();
-      expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
+      expect(directive.nativeElement.getAttribute('aria-describedby')).toBe('null');
     });
 
     it('should open and close a tooltip - default settings, content from a template and context supplied', () => {
@@ -109,7 +109,7 @@ describe('ngb-tooltip', () => {
       directive.triggerEventHandler('mouseleave', {});
       fixture.detectChanges();
       expect(getWindow(fixture.nativeElement)).toBeNull();
-      expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
+      expect(directive.nativeElement.getAttribute('aria-describedby')).toBe('null');
     });
 
     it('should not open a tooltip if content is falsy', () => {

@@ -76,7 +76,7 @@ describe('ngb-popover', () => {
       directive.triggerEventHandler('click', {});
       fixture.detectChanges();
       expect(getWindow(fixture.nativeElement)).toBeNull();
-      expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
+      expect(directive.nativeElement.getAttribute('aria-describedby')).toBe('null');
     });
 
     it('should open and close a popover - default settings and content from a template', () => {
@@ -101,7 +101,7 @@ describe('ngb-popover', () => {
       directive.triggerEventHandler('click', {});
       fixture.detectChanges();
       expect(getWindow(fixture.nativeElement)).toBeNull();
-      expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
+      expect(directive.nativeElement.getAttribute('aria-describedby')).toBe('null');
     });
 
     it('should open and close a popover - default settings, content from a template and context supplied', () => {
@@ -126,7 +126,7 @@ describe('ngb-popover', () => {
       directive.triggerEventHandler('click', {});
       fixture.detectChanges();
       expect(getWindow(fixture.nativeElement)).toBeNull();
-      expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
+      expect(directive.nativeElement.getAttribute('aria-describedby')).toBe('null');
     });
 
     it('should properly destroy TemplateRef content', () => {
