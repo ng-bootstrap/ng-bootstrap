@@ -1,5 +1,6 @@
-import {Directive, forwardRef, Optional, Input, Renderer, ElementRef, OnDestroy} from '@angular/core';
+import {Directive, forwardRef, Optional, Input, Renderer2, ElementRef, OnDestroy} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {NgbActiveLabel} from "./label";
 
 const NGB_RADIO_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -57,18 +58,6 @@ export class NgbRadioGroup implements ControlValueAccessor {
 }
 
 
-@Directive({selector: 'label.btn'})
-export class NgbActiveLabel {
-  constructor(private _renderer: Renderer, private _elRef: ElementRef) {}
-
-  set active(isActive: boolean) { this._renderer.setElementClass(this._elRef.nativeElement, 'active', isActive); }
-  set disabled(isDisabled: boolean) {
-    this._renderer.setElementClass(this._elRef.nativeElement, 'disabled', isDisabled);
-  }
-  set focused(isFocused: boolean) { this._renderer.setElementClass(this._elRef.nativeElement, 'focus', isFocused); }
-}
-
-
 /**
  * Marks an input of type "radio" as part of the NgbRadioGroup.
  */
@@ -89,12 +78,12 @@ export class NgbRadio implements OnDestroy {
 
   /**
    * You can specify model value of a given radio by binding to the value property.
-  */
+   */
   @Input('value')
   set value(value: any) {
     this._value = value;
     const stringValue = value ? value.toString() : '';
-    this._renderer.setElementProperty(this._element.nativeElement, 'value', stringValue);
+    this._renderer.setProperty(this._element.nativeElement, 'value', stringValue);
 
     if (this._group) {
       this._group.onRadioValueUpdate();
@@ -131,8 +120,8 @@ export class NgbRadio implements OnDestroy {
   get disabled() { return (this._group && this._group.disabled) || this._disabled; }
 
   constructor(
-      @Optional() private _group: NgbRadioGroup, @Optional() private _label: NgbActiveLabel,
-      private _renderer: Renderer, private _element: ElementRef) {
+    @Optional() private _group: NgbRadioGroup, @Optional() private _label: NgbActiveLabel,
+    private _renderer: Renderer2, private _element: ElementRef) {
     if (this._group) {
       this._group.register(this);
     }

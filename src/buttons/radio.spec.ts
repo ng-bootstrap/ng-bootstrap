@@ -37,18 +37,6 @@ function getLabel(nativeEl: HTMLElement, idx: number): HTMLElement {
   return <HTMLElement>nativeEl.querySelectorAll('label')[idx];
 }
 
-describe('NgbActiveLabel', () => {
-  beforeEach(() => {
-    TestBed.configureTestingModule(
-        {declarations: [TestComponent], imports: [NgbButtonsModule, FormsModule, ReactiveFormsModule]});
-  });
-
-  it('should not touch active class on labels not part of a group', () => {
-    const fixture = createTestComponent('<label class="btn" [class.active]="true"></label>');
-    expect(fixture.nativeElement.children[0]).toHaveCssClass('active');
-  });
-});
-
 describe('ngbRadioGroup', () => {
   const defaultHtml = `<div [(ngModel)]="model" ngbRadioGroup>
       <label class="btn">
