@@ -4,7 +4,7 @@ import {
   ComponentRef,
   ElementRef,
   ViewContainerRef,
-  Renderer,
+  Renderer2,
   ComponentFactoryResolver,
   NgZone,
   TemplateRef,
@@ -128,7 +128,7 @@ export class NgbInputDatepicker implements OnChanges,
 
   constructor(
       private _parserFormatter: NgbDateParserFormatter, private _elRef: ElementRef, private _vcRef: ViewContainerRef,
-      private _renderer: Renderer, private _cfr: ComponentFactoryResolver, ngZone: NgZone,
+      private _renderer: Renderer2, private _cfr: ComponentFactoryResolver, ngZone: NgZone,
       private _service: NgbDatepickerService, private _calendar: NgbCalendar) {
     this._zoneSubscription = ngZone.onStable.subscribe(() => {
       if (this._cRef) {
@@ -144,7 +144,7 @@ export class NgbInputDatepicker implements OnChanges,
   registerOnValidatorChange(fn: () => void): void { this._validatorChange = fn; };
 
   setDisabledState(isDisabled: boolean): void {
-    this._renderer.setElementProperty(this._elRef.nativeElement, 'disabled', isDisabled);
+    this._renderer.setProperty(this._elRef.nativeElement, 'disabled', isDisabled);
     if (this.isOpen()) {
       this._cRef.instance.setDisabledState(isDisabled);
     }
@@ -260,8 +260,8 @@ export class NgbInputDatepicker implements OnChanges,
   }
 
   private _applyPopupStyling(nativeElement: any) {
-    this._renderer.setElementClass(nativeElement, 'dropdown-menu', true);
-    this._renderer.setElementStyle(nativeElement, 'padding', '0');
+    this._renderer.addClass(nativeElement, 'dropdown-menu');
+    this._renderer.setStyle(nativeElement, 'padding', '0');
   }
 
   private _subscribeForDatepickerOutputs(datepickerInstance: NgbDatepicker) {
@@ -269,7 +269,7 @@ export class NgbInputDatepicker implements OnChanges,
   }
 
   private _writeModelValue(model: NgbDate) {
-    this._renderer.setElementProperty(this._elRef.nativeElement, 'value', this._parserFormatter.format(model));
+    this._renderer.setProperty(this._elRef.nativeElement, 'value', this._parserFormatter.format(model));
     if (this.isOpen()) {
       this._cRef.instance.writeValue(model);
       this._onTouched();

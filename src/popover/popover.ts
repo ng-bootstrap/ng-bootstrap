@@ -8,7 +8,7 @@ import {
   OnInit,
   OnDestroy,
   Injector,
-  Renderer,
+  Renderer2,
   ComponentRef,
   ElementRef,
   TemplateRef,
@@ -80,7 +80,7 @@ export class NgbPopover implements OnInit, OnDestroy {
   private _zoneSubscription: any;
 
   constructor(
-      private _elementRef: ElementRef, private _renderer: Renderer, injector: Injector,
+      private _elementRef: ElementRef, private _renderer: Renderer2, injector: Injector,
       componentFactoryResolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef, config: NgbPopoverConfig,
       ngZone: NgZone) {
     this.placement = config.placement;
@@ -109,7 +109,7 @@ export class NgbPopover implements OnInit, OnDestroy {
       this._windowRef.instance.title = this.popoverTitle;
       this._windowRef.instance.id = this._ngbPopoverWindowId;
 
-      this._renderer.setElementAttribute(this._elementRef.nativeElement, 'aria-describedby', this._ngbPopoverWindowId);
+      this._renderer.setAttribute(this._elementRef.nativeElement, 'aria-describedby', this._ngbPopoverWindowId);
 
       if (this.container === 'body') {
         window.document.querySelector(this.container).appendChild(this._windowRef.location.nativeElement);
@@ -127,7 +127,7 @@ export class NgbPopover implements OnInit, OnDestroy {
    */
   close(): void {
     if (this._windowRef) {
-      this._renderer.setElementAttribute(this._elementRef.nativeElement, 'aria-describedby', null);
+      this._renderer.removeAttribute(this._elementRef.nativeElement, 'aria-describedby');
       this._popupService.close();
       this._windowRef = null;
       this.hidden.emit();

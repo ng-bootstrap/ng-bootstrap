@@ -122,6 +122,7 @@ export class NgbRadio implements OnDestroy {
   constructor(
     @Optional() private _group: NgbRadioGroup, @Optional() private _label: NgbActiveLabel,
     private _renderer: Renderer2, private _element: ElementRef) {
+
     if (this._group) {
       this._group.register(this);
     }
