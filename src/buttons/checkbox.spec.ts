@@ -8,7 +8,7 @@ import {Validators, FormControl, FormGroup, FormsModule, ReactiveFormsModule} fr
 import {NgbButtonsModule} from './radio.module';
 
 const createTestComponent = (html: string) =>
-  createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
+    createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
 function getInput(nativeEl: HTMLElement, idx: number): HTMLInputElement {
   return <HTMLInputElement>nativeEl.querySelectorAll('input')[idx];
@@ -32,7 +32,7 @@ describe('ngbCheckbox', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule(
-      {declarations: [TestComponent], imports: [NgbButtonsModule, FormsModule, ReactiveFormsModule]});
+        {declarations: [TestComponent], imports: [NgbButtonsModule, FormsModule, ReactiveFormsModule]});
     TestBed.overrideComponent(TestComponent, {set: {template: defaultHtml}});
   });
 

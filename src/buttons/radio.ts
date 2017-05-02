@@ -1,6 +1,6 @@
 import {Directive, forwardRef, Optional, Input, Renderer2, ElementRef, OnDestroy} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {NgbActiveLabel} from "./label";
+import {NgbActiveLabel} from './label';
 
 const NGB_RADIO_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -120,8 +120,8 @@ export class NgbRadio implements OnDestroy {
   get disabled() { return (this._group && this._group.disabled) || this._disabled; }
 
   constructor(
-    @Optional() private _group: NgbRadioGroup, @Optional() private _label: NgbActiveLabel,
-    private _renderer: Renderer2, private _element: ElementRef) {
+      @Optional() private _group: NgbRadioGroup, @Optional() private _label: NgbActiveLabel,
+      private _renderer: Renderer2, private _element: ElementRef) {
     if (this._group) {
       this._group.register(this);
     }

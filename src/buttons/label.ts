@@ -1,8 +1,7 @@
-import {Directive, Renderer2, ElementRef} from "@angular/core";
+import {Directive, Renderer2, ElementRef} from '@angular/core';
 
 @Directive({selector: 'label.btn'})
 export class NgbActiveLabel {
-
   constructor(private _renderer: Renderer2, private _elRef: ElementRef) {}
 
   set active(isActive: boolean) {
