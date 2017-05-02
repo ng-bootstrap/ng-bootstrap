@@ -502,6 +502,7 @@ describe('ngb-rating', () => {
                fixture.detectChanges();
                expect(getState(element.nativeElement)).toEqual([false, false, false, false, false]);
                expect(element.nativeElement).toHaveCssClass('ng-invalid');
+               expect(element.nativeElement).toHaveCssClass('ng-untouched');
 
                fixture.componentInstance.model = 1;
                fixture.detectChanges();
@@ -511,6 +512,7 @@ describe('ngb-rating', () => {
                fixture.detectChanges();
                expect(getState(element.nativeElement)).toEqual([true, false, false, false, false]);
                expect(element.nativeElement).toHaveCssClass('ng-valid');
+               expect(element.nativeElement).toHaveCssClass('ng-untouched');
 
                fixture.componentInstance.model = 0;
                fixture.detectChanges();
@@ -520,6 +522,7 @@ describe('ngb-rating', () => {
                fixture.detectChanges();
                expect(getState(element.nativeElement)).toEqual([false, false, false, false, false]);
                expect(element.nativeElement).toHaveCssClass('ng-valid');
+               expect(element.nativeElement).toHaveCssClass('ng-untouched');
              });
        }));
 
@@ -534,16 +537,19 @@ describe('ngb-rating', () => {
 
       expect(getState(element.nativeElement)).toEqual([false, false, false, false, false]);
       expect(element.nativeElement).toHaveCssClass('ng-invalid');
+      expect(element.nativeElement).toHaveCssClass('ng-untouched');
 
       fixture.componentInstance.form.patchValue({rating: 3});
       fixture.detectChanges();
       expect(getState(element.nativeElement)).toEqual([true, true, true, false, false]);
       expect(element.nativeElement).toHaveCssClass('ng-valid');
+      expect(element.nativeElement).toHaveCssClass('ng-untouched');
 
       fixture.componentInstance.form.patchValue({rating: 0});
       fixture.detectChanges();
       expect(getState(element.nativeElement)).toEqual([false, false, false, false, false]);
       expect(element.nativeElement).toHaveCssClass('ng-valid');
+      expect(element.nativeElement).toHaveCssClass('ng-untouched');
     });
 
     it('should handle clicks and update form control', () => {
@@ -557,11 +563,13 @@ describe('ngb-rating', () => {
 
       expect(getState(element.nativeElement)).toEqual([false, false, false, false, false]);
       expect(element.nativeElement).toHaveCssClass('ng-invalid');
+      expect(element.nativeElement).toHaveCssClass('ng-untouched');
 
       getStar(element.nativeElement, 3).click();
       fixture.detectChanges();
       expect(getState(element.nativeElement)).toEqual([true, true, true, false, false]);
       expect(element.nativeElement).toHaveCssClass('ng-valid');
+      expect(element.nativeElement).toHaveCssClass('ng-touched');
     });
 
     it('should work with both rate input and form control', fakeAsync(() => {
@@ -610,6 +618,24 @@ describe('ngb-rating', () => {
          getStar(element.nativeElement, 3).click();
          fixture.detectChanges();
          expect(getState(element.nativeElement)).toEqual([false, false, false, false, false]);
+       }));
+
+    it('should mark control as touched on blur', fakeAsync(() => {
+         const html = `
+        <form [formGroup]="form">
+          <ngb-rating formControlName="rating" max="5"></ngb-rating>
+        </form>`;
+
+         const fixture = createTestComponent(html);
+         const element = fixture.debugElement.query(By.directive(NgbRating));
+
+         expect(getState(element.nativeElement)).toEqual([false, false, false, false, false]);
+         expect(element.nativeElement).toHaveCssClass('ng-untouched');
+
+         element.triggerEventHandler('blur', {});
+         fixture.detectChanges();
+         expect(getState(element.nativeElement)).toEqual([false, false, false, false, false]);
+         expect(element.nativeElement).toHaveCssClass('ng-touched');
        }));
   });
 

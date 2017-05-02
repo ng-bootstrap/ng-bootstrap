@@ -56,8 +56,9 @@ const NGB_RATING_VALUE_ACCESSOR = {
     '[attr.aria-valuenow]': 'nextRate',
     '[attr.aria-valuetext]': 'ariaValueText()',
     '[attr.aria-disabled]': 'readonly ? true : null',
-    '(mouseleave)': 'reset()',
-    '(keydown)': 'handleKeyDown($event)'
+    '(blur)': 'handleBlur()',
+    '(keydown)': 'handleKeyDown($event)',
+    '(mouseleave)': 'reset()'
   },
   template: `
     <ng-template #t let-fill="fill">{{ fill === 100 ? '&#9733;' : '&#9734;' }}</ng-template>
@@ -138,6 +139,8 @@ export class NgbRating implements ControlValueAccessor,
     this.hover.emit(value);
   }
 
+  handleBlur() { this.onTouched(); }
+
   handleClick(value: number) { this.update(this.resettable && this.rate === value ? 0 : value); }
 
   handleKeyDown(event: KeyboardEvent) {
@@ -193,6 +196,7 @@ export class NgbRating implements ControlValueAccessor,
     }
     if (internalChange) {
       this.onChange(this.rate);
+      this.onTouched();
     }
     this._updateState(this.rate);
   }
