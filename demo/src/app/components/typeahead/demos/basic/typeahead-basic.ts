@@ -25,6 +25,15 @@ export class NgbdTypeaheadBasic {
     text$
       .debounceTime(200)
       .distinctUntilChanged()
+      .map(term => this.sanitize(term))
       .map(term => term.length < 2 ? []
         : states.filter(v => new RegExp(term, 'gi').test(v)).splice(0, 10));
+
+  sanitize(term) {
+    if (!term) {
+      return term;
+    }
+    return term.replace(/[\?\*\[\]\(\)\{\}\\\^\$]/g, '\\$&');
+  }
+
 }
