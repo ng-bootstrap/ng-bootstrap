@@ -12,6 +12,7 @@ import {
   EventEmitter,
   Output,
   OnChanges,
+  OnDestroy,
   SimpleChanges
 } from '@angular/core';
 import {AbstractControl, ControlValueAccessor, Validator, NG_VALUE_ACCESSOR, NG_VALIDATORS} from '@angular/forms';
@@ -49,7 +50,7 @@ const NGB_DATEPICKER_VALIDATOR = {
   providers: [NGB_DATEPICKER_VALUE_ACCESSOR, NGB_DATEPICKER_VALIDATOR, NgbDatepickerService]
 })
 export class NgbInputDatepicker implements OnChanges,
-    ControlValueAccessor, Validator {
+    OnDestroy, ControlValueAccessor, Validator {
   private _cRef: ComponentRef<NgbDatepicker> = null;
   private _model: NgbDate;
   private _zoneSubscription: any;
@@ -246,6 +247,11 @@ export class NgbInputDatepicker implements OnChanges,
     if (changes['minDate'] || changes['maxDate']) {
       this._validatorChange();
     }
+  }
+
+  ngOnDestroy() {
+    this.close();
+    this._zoneSubscription.unsubscribe();
   }
 
   private _applyDatepickerInputs(datepickerInstance: NgbDatepicker): void {
