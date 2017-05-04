@@ -27,15 +27,7 @@ export class NgbdTypeaheadFormat {
     text$
       .debounceTime(200)
       .distinctUntilChanged()
-      .map(term => this.sanitize(term))
       .map(term => term === '' ? []
-        : states.filter(v => new RegExp(term, 'gi').test(v)).slice(0, 10));
-
-  sanitize(term) {
-    if (!term) {
-      return term;
-    }
-    return term.replace(/[\?\*\[\]\(\)\{\}\\\^\$]/g, '\\$&');
-  }
+        : states.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10));
 
 }
