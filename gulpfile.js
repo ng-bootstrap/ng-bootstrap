@@ -13,16 +13,18 @@ var tslint = require('gulp-tslint');
 var webpack = require('webpack');
 var typescript = require('typescript');
 var exec = require('child_process').exec;
+var spawn = require('child_process').spawn;
 var path = require('path');
 var os = require('os');
 var remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
+var rename = require('gulp-rename');
 
 var PATHS = {
   src: 'src/**/*.ts',
   srcIndex: 'src/index.ts',
   specs: 'src/**/*.spec.ts',
   testHelpers: 'src/test/**/*.ts',
-  demo: 'demo/**/*.ts',
+  demo: 'demo/src/**/*.ts',
   demoDist: 'demo/dist/**/*',
   typings: 'typings/index.d.ts',
   jasmineTypings: 'typings/globals/jasmine/index.d.ts',
@@ -254,23 +256,48 @@ gulp.task('generate-plunks', function() {
   return gulpFile(plunks, {src: true}).pipe(gulp.dest('demo/src/public/app/components'));
 });
 
-gulp.task('clean:demo', function() { return del('demo/dist'); });
+gulp.task('clean:demo', function() {
+
+  spawn('npm', ['uninstall', '@ng-bootstrap/ng-bootstrap'], {stdio: 'inherit'}).on('error', function(err) {
+    console.error(`Failed to run npm uninstall @ng-bootstrap/ng-bootstrap: ${err}`);
+  });
+  return del('demo/dist');
+
+});
 
 gulp.task('clean:demo-cache', function() { return del('.publish/'); });
 
-gulp.task(
-    'demo-server', ['generate-docs', 'generate-plunks'],
-    shell.task([`webpack-dev-server --port ${docsConfig.port} --config webpack.demo.js --inline --progress`]));
 
-gulp.task(
-    'build:demo', ['clean:demo', 'generate-docs', 'generate-plunks'],
-    shell.task(['webpack --config webpack.demo.js --progress --profile --bail'], {env: {MODE: 'build'}}));
+gulp.task('demo-server', ['clean:demo', 'generate-docs', 'generate-plunks', 'angular-cli-jit'], function() {
+  spawn('ng', ['serve', '--port', docsConfig.port], {stdio: 'inherit'}).on('error', function(err) {
+    console.error(`Failed to run child process: ${err}`);
+  });
+});
 
-gulp.task(
-    'demo-server:aot', ['generate-docs', 'generate-plunks'],
-    shell.task(
-        [`webpack-dev-server --port ${docsConfig.port} --config webpack.demo.js --inline --progress`],
-        {env: {MODE: 'build'}}));
+
+gulp.task('install-aot-build', shell.task(['npm install ./dist', 'ng build --prod --aot']));
+
+gulp.task('install-aot-serve', shell.task(['npm install ./dist', `ng serve --port ${docsConfig.port} --aot`]));
+
+
+gulp.task('angular-cli-aot', function() {
+  gulp.src('.angular-cli.aot.json').pipe(rename('.angular-cli.json')).pipe(gulp.dest('./'));
+});
+
+gulp.task('angular-cli-jit', function() {
+  gulp.src('.angular-cli.jit.json').pipe(rename('.angular-cli.json')).pipe(gulp.dest('./'));
+});
+
+
+gulp.task('build:demo', function(done) {
+  runSequence('clean:demo', 'generate-docs', 'generate-plunks', 'angular-cli-aot', 'build', 'install-aot-build', done);
+});
+
+
+gulp.task('demo-server:aot', function(done) {
+  runSequence('clean:demo', 'generate-docs', 'generate-plunks', 'angular-cli-aot', 'build', 'install-aot-serve', done);
+});
+
 
 gulp.task('demo-push', function() {
   return gulp.src(PATHS.demoDist)
