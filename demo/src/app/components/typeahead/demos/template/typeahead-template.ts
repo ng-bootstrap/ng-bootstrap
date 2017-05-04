@@ -70,17 +70,9 @@ export class NgbdTypeaheadTemplate {
   search = (text$: Observable<string>) =>
     text$
       .debounceTime(200)
-      .map(term => this.sanitize(term))
       .map(term => term === '' ? []
-        : statesWithFlags.filter(v => new RegExp(term, 'gi').test(v.name)).slice(0, 10));
+        : statesWithFlags.filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10));
 
   formatter = (x: {name: string}) => x.name;
-
-  sanitize(term) {
-    if (!term) {
-      return term;
-    }
-    return term.replace(/[\?\*\[\]\(\)\{\}\\\^\$]/g, '\\$&');
-  }
 
 }
