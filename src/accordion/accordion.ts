@@ -178,7 +178,7 @@ export class NgbAccordion implements AfterContentChecked {
   ngAfterContentChecked() {
     // active id updates
     if (isString(this.activeIds)) {
-      this.activeIds = (this.activeIds as string).split(/\s*,\s*/);
+      this.activeIds = this.activeIds.split(/\s*,\s*/);
     }
     this._updateStates();
 
