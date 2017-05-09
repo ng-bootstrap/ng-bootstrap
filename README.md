@@ -57,6 +57,48 @@ export class OtherModule {
 }
 ```
 
+### Including only what you need
+For production scenarios, you will likely only want to include the parts of ng-bootstrap that you are using in your application.
+To do so, you can import only the specific modules that you need. For example:
+
+ ```js
+ import {NgbModalModule, NgbDropdownModule, NgbRatingModule} from '@ng-bootstrap/ng-bootstrap';
+ 
+ @NgModule({
+   declarations: [...],
+   imports: [
+      NgbModalModule.forRoot(),
+      NgbDropdownModule.forRoot(),
+      NgbRatingModule.forRoot(),
+      ...
+    ], 
+ })
+ export class AppModule {
+ }
+ ```
+ 
+ Any ng-bootstrap modules that you import in lazily loaded feature modules must also be imported in your main "AppModule" using the `.forRoot()` method.
+ Also note that components in your lazily loaded modules should use deep imports to avoid bringing in unused code. For example,
+ one common way to open ng-bootstrap modals is by doing the following:
+ 
+ ```js
+ constructor(private modalService: NgbModal) {
+    
+ }
+ 
+   
+ 
+ openModal() {
+   this.modalService.open(SomeModalComponent);
+ }
+ ```
+ 
+ If this were a component in a lazily loaded module, you would want to import `NgbModal` in the following way:
+  
+  `import { NgbModal } from '@ng-bootstrap/ng-bootstrap/modal/modal';` 
+
+
+
 ### SystemJS
 If you are using SystemJS, you should also adjust your configuration to point to the UMD bundle.
 
