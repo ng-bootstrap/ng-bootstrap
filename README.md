@@ -62,8 +62,10 @@ For production scenarios, you will likely only want to include the parts of ng-b
 To do so, you can import only the specific modules that you need. For example:
 
  ```js
- import {NgbModalModule, NgbDropdownModule, NgbRatingModule} from '@ng-bootstrap/ng-bootstrap';
- 
+ import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap/modal/modal.module';
+ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap/dropdown/dropdown.module';
+ import { NgbRatingModule } from '@ng-bootstrap/ng-bootstrap/rating/rating.module';
+   
  @NgModule({
    declarations: [...],
    imports: [
@@ -94,8 +96,10 @@ To do so, you can import only the specific modules that you need. For example:
  ```
  
  If this were a component in a lazily loaded module, you would want to import `NgbModal` in the following way:
-  
-  `import { NgbModal } from '@ng-bootstrap/ng-bootstrap/modal/modal';` 
+
+ ```js
+  import { NgbModal } from '@ng-bootstrap/ng-bootstrap/modal/modal';
+ ``` 
 
 
 
