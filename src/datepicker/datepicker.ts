@@ -1,4 +1,7 @@
+import {Subscription} from 'rxjs/Subscription';
 import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   Input,
   OnChanges,
@@ -8,19 +11,20 @@ import {
   SimpleChanges,
   EventEmitter,
   Output,
-  ElementRef,
-  HostListener
+  OnDestroy
 } from '@angular/core';
 import {NG_VALUE_ACCESSOR, ControlValueAccessor} from '@angular/forms';
-import {NgbCalendar, NgbPeriod} from './ngb-calendar';
+import {NgbCalendar} from './ngb-calendar';
 import {NgbDate} from './ngb-date';
 import {NgbDatepickerService} from './datepicker-service';
-import {MonthViewModel, NavigationEvent} from './datepicker-view-model';
+import {NgbDatepickerKeyMapService} from './datepicker-keymap-service';
+import {DatepickerViewModel, NavigationEvent} from './datepicker-view-model';
 import {toInteger} from '../util/util';
 import {DayTemplateContext} from './datepicker-day-template-context';
 import {NgbDatepickerConfig} from './datepicker-config';
 import {NgbDateStruct} from './ngb-date-struct';
 import {NgbDatepickerI18n} from './datepicker-i18n';
+import {isChangedDate} from './datepicker-tools';
 
 const NGB_DATEPICKER_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -49,13 +53,13 @@ export interface NgbDatepickerNavigateEvent {
 @Component({
   exportAs: 'ngbDatepicker',
   selector: 'ngb-datepicker',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     'class': 'd-inline-block rounded',
     '[attr.tabindex]': 'disabled ? undefined : "0"',
-    '(blur)': 'focusedDate = null',
-    '(focus)': 'onFocus($event)',
-    '(keydown)': 'onKeyDown($event)',
-    '(mousedown)': 'onMouseDown($event)'
+    '(blur)': 'showFocus(false)',
+    '(focus)': 'showFocus(true)',
+    '(keydown)': 'onKeyDown($event)'
   },
   styles: [`
     :host {
@@ -91,13 +95,13 @@ export interface NgbDatepickerNavigateEvent {
     </ng-template>
 
     <div class="ngb-dp-header bg-faded pt-1 rounded-top" [style.height.rem]="getHeaderHeight()"
-      [style.marginBottom.rem]="-getHeaderMargin()">
+         [style.marginBottom.rem]="-getHeaderMargin()">
       <ngb-datepicker-navigation *ngIf="navigation !== 'none'"
-        [date]="months[0]?.firstDate"
-        [minDate]="_minDate"
-        [maxDate]="_maxDate"
-        [months]="months.length"
-        [disabled]="disabled"
+        [date]="model.firstDate"
+        [minDate]="model.minDate"
+        [maxDate]="model.maxDate"
+        [months]="model.months.length"
+        [disabled]="model.disabled"
         [showWeekNumbers]="showWeekNumbers"
         [showSelect]="navigation === 'select'"
         (navigate)="onNavigateEvent($event)"
@@ -106,38 +110,30 @@ export interface NgbDatepickerNavigateEvent {
     </div>
 
     <div class="ngb-dp-months d-flex px-1 pb-1">
-      <ng-template ngFor let-month [ngForOf]="months" let-i="index">
+      <ng-template ngFor let-month [ngForOf]="model.months" let-i="index">
         <div class="ngb-dp-month d-block ml-3">
           <div *ngIf="navigation !== 'select' || displayMonths > 1" class="ngb-dp-month-name text-center">
             {{ i18n.getMonthFullName(month.number) }} {{ month.year }}
           </div>
           <ngb-datepicker-month-view
             [month]="month"
-            [selectedDate]="model"
-            [focusedDate]="focusedDate"
             [dayTemplate]="dayTemplate || dt"
             [showWeekdays]="showWeekdays"
             [showWeekNumbers]="showWeekNumbers"
-            [disabled]="disabled"
-            [outsideDays]="displayMonths === 1 ? outsideDays : 'hidden'"
+            [outsideDays]="(displayMonths === 1 ? outsideDays : 'hidden')"
             (select)="onDateSelect($event)">
           </ngb-datepicker-month-view>
         </div>
       </ng-template>
     </div>
   `,
-  providers: [NGB_DATEPICKER_VALUE_ACCESSOR, NgbDatepickerService]
+  providers: [NGB_DATEPICKER_VALUE_ACCESSOR, NgbDatepickerService, NgbDatepickerKeyMapService]
 })
-export class NgbDatepicker implements OnChanges,
-    OnInit, ControlValueAccessor {
-  _date: NgbDate;
-  _maxDate: NgbDate;
-  _minDate: NgbDate;
+export class NgbDatepicker implements OnDestroy,
+    OnChanges, OnInit, ControlValueAccessor {
+  model: DatepickerViewModel;
 
-  focusedDate: NgbDate;
-  model: NgbDate;
-  months: MonthViewModel[] = [];
-
+  private _subscription: Subscription;
   /**
    * Reference for the custom template for the day display
    */
@@ -205,14 +201,13 @@ export class NgbDatepicker implements OnChanges,
    */
   @Output() navigate = new EventEmitter<NgbDatepickerNavigateEvent>();
 
-  disabled = false;
-
   onChange = (_: any) => {};
   onTouched = () => {};
 
   constructor(
-      private _service: NgbDatepickerService, private _calendar: NgbCalendar, public i18n: NgbDatepickerI18n,
-      config: NgbDatepickerConfig, private _elementRef: ElementRef) {
+      private _keyMapService: NgbDatepickerKeyMapService, public _service: NgbDatepickerService,
+      private _calendar: NgbCalendar, public i18n: NgbDatepickerI18n, config: NgbDatepickerConfig,
+      private _cd: ChangeDetectorRef) {
     this.dayTemplate = config.dayTemplate;
     this.displayMonths = config.displayMonths;
     this.firstDayOfWeek = config.firstDayOfWeek;
@@ -224,6 +219,32 @@ export class NgbDatepicker implements OnChanges,
     this.showWeekdays = config.showWeekdays;
     this.showWeekNumbers = config.showWeekNumbers;
     this.startDate = config.startDate;
+
+    this._subscription = _service.model$.subscribe(model => {
+      const newDate = model.firstDate;
+      const oldDate = this.model ? this.model.firstDate : null;
+      const newSelectedDate = model.selectedDate;
+      const oldSelectedDate = this.model ? this.model.selectedDate : null;
+
+      this.model = model;
+
+      // handling selection change
+      if (isChangedDate(newSelectedDate, oldSelectedDate)) {
+        this.onTouched();
+        this.onChange(
+            newSelectedDate ? {year: newSelectedDate.year, month: newSelectedDate.month, day: newSelectedDate.day} :
+                              null);
+      }
+
+      // emitting navigation event if the first month changes
+      if (!newDate.equals(oldDate)) {
+        this.navigate.emit({
+          current: oldDate ? {year: oldDate.year, month: oldDate.month} : null,
+          next: {year: newDate.year, month: newDate.month}
+        });
+      }
+      _cd.markForCheck();
+    });
   }
 
   getHeaderHeight() {
@@ -243,260 +264,74 @@ export class NgbDatepicker implements OnChanges,
    * Use 'startDate' input as an alternative
    */
   navigateTo(date?: {year: number, month: number}) {
-    this._setViewWithinLimits(this._service.toValidDate(date));
-    this._updateData();
+    this._service.open(date ? new NgbDate(date.year, date.month, 1) : this._calendar.getToday());
   }
 
+  ngOnDestroy() { this._subscription.unsubscribe(); }
+
   ngOnInit() {
-    this._setDates();
-    this.navigateTo(this._date);
+    if (this.model === undefined) {
+      this._service.displayMonths = toInteger(this.displayMonths);
+      this._service.markDisabled = this.markDisabled;
+      this._service.firstDayOfWeek = this.firstDayOfWeek;
+      this._setDates();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this._setDates();
-    this._setViewWithinLimits(this._date);
-
     if (changes['displayMonths']) {
-      this.displayMonths = toInteger(this.displayMonths);
+      this._service.displayMonths = toInteger(this.displayMonths);
     }
-
-    // we have to force rebuild all months only if any of these inputs changes
-    if (['startDate', 'minDate', 'maxDate', 'navigation', 'firstDayOfWeek', 'markDisabled', 'displayMonths'].some(
-            input => !!changes[input])) {
-      this._updateData(true);
+    if (changes['markDisabled']) {
+      this._service.markDisabled = this.markDisabled;
     }
+    if (changes['firstDayOfWeek']) {
+      this._service.firstDayOfWeek = this.firstDayOfWeek;
+    }
+    this._setDates();
   }
 
   onDateSelect(date: NgbDate) {
-    this._setFocusedDateWithinLimits(date);
-    this.onTouched();
+    this._service.focus(date);
     this.writeValue(date);
-    this.onChange({year: date.year, month: date.month, day: date.day});
   }
 
-  onFocus(event: FocusEvent) {
-    const firstDate = this._getFirstDisplayedDate();
-    const lastDate = this._getLastDisplayedDate();
-    const model = this.model;
-    this.focusedDate = (!model || model.before(firstDate) || model.after(lastDate)) ? firstDate : model;
-  }
+  onKeyDown(event: KeyboardEvent) { this._keyMapService.processKey(event); }
 
-  onKeyDown(event: KeyboardEvent) {
-    if (!this.focusedDate) {
-      return;
-    }
-    switch (event.keyCode) {
-      case 33 /* page up */:
-        if (event.shiftKey) {
-          this._setRelativeFocusedDate('y', -1);
-        } else {
-          this._setRelativeFocusedDate('m', -1);
-        }
-        break;
-      case 34 /* page down */:
-        if (event.shiftKey) {
-          this._setRelativeFocusedDate('y', 1);
-        } else {
-          this._setRelativeFocusedDate('m', 1);
-        }
-        break;
-      case 35 /* end */:
-        if (event.shiftKey) {
-          this._setFocusedDateWithinLimits(this._maxDate);
-        } else {
-          this._setFocusedDateWithinLimits(this._getLastDisplayedDate());
-        }
-        break;
-      case 36 /* home */:
-        if (event.shiftKey) {
-          this._setFocusedDateWithinLimits(this._minDate);
-        } else {
-          this._setFocusedDateWithinLimits(this._getFirstDisplayedDate());
-        }
-        break;
-      case 37 /* left arrow */:
-        this._setRelativeFocusedDate('d', -1);
-        break;
-      case 38 /* up arrow */:
-        this._setRelativeFocusedDate('d', -this._calendar.getDaysPerWeek());
-        break;
-      case 39 /* right arrow */:
-        this._setRelativeFocusedDate('d', 1);
-        break;
-      case 40 /* down arrow */:
-        this._setRelativeFocusedDate('d', this._calendar.getDaysPerWeek());
-        break;
-      case 13 /* enter */:
-      case 32 /* space */:
-        if (this._isDisplayedDateSelectable(this.focusedDate)) {
-          this.onDateSelect(NgbDate.from(this.focusedDate));
-        }
-        break;
-      default:
-        return;
-    }
-    event.preventDefault();
-    event.stopPropagation();
-  }
-
-  onMouseDown(event: MouseEvent) {
-    // Internet Explorer has some issues to give focus to the right element when clicking
-    // so this method is here to make IE behave correctly!
-    const target = <HTMLElement>event.target;
-    const tagName = target.tagName.toLowerCase();
-    if (tagName !== 'select' && tagName !== 'input' && tagName !== 'option') {
-      if (!this.focusedDate) {
-        this._elementRef.nativeElement.focus();
-      }
-      event.preventDefault();
-    }
-  }
-
-  onNavigateDateSelect(date: NgbDate) {
-    this._setViewWithinLimits(date);
-    this._updateData();
-  }
+  onNavigateDateSelect(date: NgbDate) { this._service.open(date); }
 
   onNavigateEvent(event: NavigationEvent) {
     switch (event) {
       case NavigationEvent.PREV:
-        this._setViewWithinLimits(this._calendar.getPrev(this._getFirstDisplayedDate(), 'm'));
+        this._service.open(this._calendar.getPrev(this.model.firstDate, 'm', 1));
         break;
       case NavigationEvent.NEXT:
-        this._setViewWithinLimits(this._calendar.getNext(this._getFirstDisplayedDate(), 'm'));
+        this._service.open(this._calendar.getNext(this.model.firstDate, 'm', 1));
         break;
     }
-
-    this._updateData();
   }
 
   registerOnChange(fn: (value: any) => any): void { this.onChange = fn; }
 
   registerOnTouched(fn: () => any): void { this.onTouched = fn; }
 
-  setDisabledState(isDisabled: boolean) { this.disabled = isDisabled; }
+  setDisabledState(isDisabled: boolean) { this._service.disabled = isDisabled; }
 
-  writeValue(value) { this.model = this._service.toValidDate(value, null); }
+  showFocus(focusVisible: boolean) { this._service.focusVisible = focusVisible; }
 
-  private _checkFocusedDateVisible() {
-    const focusedDate = this.focusedDate;
-    if (focusedDate) {
-      const firstDisplayedDate = this._getFirstDisplayedDate();
-      const lastDisplayedDate = this._getLastDisplayedDate();
-      if (focusedDate.before(firstDisplayedDate)) {
-        this.focusedDate = firstDisplayedDate;
-      } else if (focusedDate.after(lastDisplayedDate)) {
-        this.focusedDate = lastDisplayedDate;
-      }
-    }
-  }
-
-  private _getFirstDisplayedDate() { return this.months[0].firstDate; }
-
-  private _getLastDisplayedDate() {
-    return this._calendar.getPrev(
-        this._calendar.getNext(this.months[this.months.length - 1].firstDate, 'm', 1), 'd', 1);
-  }
-
-  private _isDisplayedDateSelectable(date: NgbDate) {
-    let selectable = false;
-    const month = this.months.find(curMonth => curMonth.year === date.year && curMonth.number === date.month);
-    if (month) {
-      month.weeks.find(week => {
-        const day = week.days.find(day => date.equals(day.date));
-        if (day && !day.disabled) {
-          selectable = true;
-        }
-        return !!day;
-      });
-    }
-    return selectable;
-  }
+  writeValue(value) { this._service.select(value); }
 
   private _setDates() {
-    this._maxDate = NgbDate.from(this.maxDate);
-    this._minDate = NgbDate.from(this.minDate);
-    this._date = this._service.toValidDate(this.startDate);
+    const startDate = this._service.toValidDate(this.startDate, this._calendar.getToday());
+    const minDate = this._service.toValidDate(this.minDate, this._calendar.getPrev(startDate, 'y', 10));
+    const maxDate =
+        this._service.toValidDate(this.maxDate, this._calendar.getPrev(this._calendar.getNext(startDate, 'y', 11)));
 
-    if (!this._calendar.isValid(this._minDate)) {
-      this._minDate = this._calendar.getPrev(this._date, 'y', 10);
-      this.minDate = {year: this._minDate.year, month: this._minDate.month, day: this._minDate.day};
-    }
+    this.minDate = {year: minDate.year, month: minDate.month, day: minDate.day};
+    this.maxDate = {year: maxDate.year, month: maxDate.month, day: maxDate.day};
 
-    if (!this._calendar.isValid(this._maxDate)) {
-      this._maxDate = this._calendar.getNext(this._date, 'y', 11);
-      this._maxDate = this._calendar.getPrev(this._maxDate);
-      this.maxDate = {year: this._maxDate.year, month: this._maxDate.month, day: this._maxDate.day};
-    }
-
-    if (this._minDate && this._maxDate && this._maxDate.before(this._minDate)) {
-      throw new Error(`'maxDate' ${this._maxDate} should be greater than 'minDate' ${this._minDate}`);
-    }
-  }
-
-  private _setFocusedDateWithinLimits(date: NgbDate) {
-    if (this._minDate && date.before(this._minDate)) {
-      date = this._minDate;
-    } else if (this._maxDate && date.after(this._maxDate)) {
-      date = this._maxDate;
-    }
-    const firstDate = this._getFirstDisplayedDate();
-    const lastDate = this._getLastDisplayedDate();
-    let newViewDate;
-    if (date.before(firstDate)) {
-      newViewDate = date;
-    } else if (date.after(lastDate)) {
-      newViewDate = this._calendar.getPrev(date, 'm', this.displayMonths - 1);
-    }
-    this.focusedDate = date;
-    if (newViewDate) {
-      this._setViewWithinLimits(newViewDate);
-      this._updateData();
-    }
-  }
-
-  private _setRelativeFocusedDate(period?: NgbPeriod, number?: number) {
-    this._setFocusedDateWithinLimits(this._calendar.getNext(this.focusedDate, period, number));
-  }
-
-  private _setViewWithinLimits(date: NgbDate) {
-    if (this._minDate && date.before(this._minDate)) {
-      this._date = new NgbDate(this._minDate.year, this._minDate.month, 1);
-    } else if (this._maxDate && date.after(this._maxDate)) {
-      this._date = new NgbDate(this._maxDate.year, this._maxDate.month, 1);
-    } else {
-      this._date = new NgbDate(date.year, date.month, 1);
-    }
-  }
-
-  private _updateData(force = false) {
-    const newMonths = [];
-    for (let i = 0; i < this.displayMonths; i++) {
-      const newDate = this._calendar.getNext(this._date, 'm', i);
-      const index = this.months.findIndex(month => month.firstDate.equals(newDate));
-
-      if (force || index === -1) {
-        newMonths.push(
-            this._service.generateMonthViewModel(
-                newDate, this._minDate, this._maxDate, toInteger(this.firstDayOfWeek), this.markDisabled));
-      } else {
-        newMonths.push(this.months[index]);
-      }
-    }
-
-    const newDate = newMonths[0].firstDate;
-    const oldDate = this.months[0] ? this.months[0].firstDate : null;
-
-    this.months = newMonths;
-
-    // emitting navigation event if the first month changes
-    if (!newDate.equals(oldDate)) {
-      this._checkFocusedDateVisible();
-
-      this.navigate.emit({
-        current: oldDate ? {year: oldDate.year, month: oldDate.month} : null,
-        next: {year: newDate.year, month: newDate.month}
-      });
-    }
+    this._service.minDate = minDate;
+    this._service.maxDate = maxDate;
+    this.navigateTo(startDate);
   }
 }

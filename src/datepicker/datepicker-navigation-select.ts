@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ChangeDetectionStrategy} from '@angular/core';
 import {NgbDate} from './ngb-date';
 import {toInteger} from '../util/util';
 import {NgbDatepickerI18n} from './datepicker-i18n';
@@ -6,6 +6,7 @@ import {NgbCalendar} from './ngb-calendar';
 
 @Component({
   selector: 'ngb-datepicker-navigation-select',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [`
     select {
       /* to align with btn-sm */
@@ -33,7 +34,7 @@ import {NgbCalendar} from './ngb-calendar';
       tabindex="-1">
         <option *ngFor="let y of years" [value]="y">{{ y }}</option>
     </select> 
-  `  // template needs to be formatted in a certain way so we don't add empty text nodes
+  `
 })
 export class NgbDatepickerNavigationSelect implements OnChanges {
   months: number[];
