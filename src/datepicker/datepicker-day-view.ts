@@ -1,14 +1,15 @@
-import {Component, Input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import {NgbDateStruct} from './ngb-date-struct';
 
 @Component({
   selector: '[ngbDatepickerDayView]',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [`
     :host {
       text-align: center;
       width: 2rem;
       height: 2rem;
-      line-height: 2rem;      
+      line-height: 2rem;
       border-radius: 0.25rem;
     }
     :host.outside {
@@ -16,11 +17,11 @@ import {NgbDateStruct} from './ngb-date-struct';
     }
   `],
   host: {
+    'class': 'btn-secondary',
     '[class.bg-primary]': 'selected',
     '[class.text-white]': 'selected',
     '[class.text-muted]': 'isMuted()',
     '[class.outside]': 'isMuted()',
-    '[class.btn-secondary]': 'true',
     '[class.active]': 'focused'
   },
   template: `{{ date.day }}`

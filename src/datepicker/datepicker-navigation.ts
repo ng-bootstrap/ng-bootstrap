@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter} from '@angular/core';
+import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
 import {NavigationEvent} from './datepicker-view-model';
 import {NgbDate} from './ngb-date';
 import {NgbDatepickerI18n} from './datepicker-i18n';
@@ -6,6 +6,7 @@ import {NgbCalendar} from './ngb-calendar';
 
 @Component({
   selector: 'ngb-datepicker-navigation',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {'class': 'd-flex justify-content-between', '[class.collapsed]': '!showSelect'},
   styles: [`
     :host {
