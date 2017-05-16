@@ -1,3 +1,19 @@
+<a name="1.0.0-alpha.26"></a>
+# [1.0.0-alpha.26](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.25...1.0.0-alpha.26) (2017-05-16)
+
+
+### Bug Fixes
+
+* **datepicker:** prevent memory leak caused by ngZone subscription ([c0c093b](https://github.com/ng-bootstrap/ng-bootstrap/commit/c0c093b)), closes [#1534](https://github.com/ng-bootstrap/ng-bootstrap/issues/1534)
+* **rating:** properly propagate control's touched state ([53aa678](https://github.com/ng-bootstrap/ng-bootstrap/commit/53aa678)), closes [#1514](https://github.com/ng-bootstrap/ng-bootstrap/issues/1514) [#1532](https://github.com/ng-bootstrap/ng-bootstrap/issues/1532)
+
+
+### Features
+
+* **rating:** allow set rating to 0 on click ([e3100e5](https://github.com/ng-bootstrap/ng-bootstrap/commit/e3100e5)), closes [#1284](https://github.com/ng-bootstrap/ng-bootstrap/issues/1284) [#1515](https://github.com/ng-bootstrap/ng-bootstrap/issues/1515)
+
+
+
 <a name="1.0.0-alpha.25"></a>
 # [1.0.0-alpha.25](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.24...1.0.0-alpha.25) (2017-04-25)
 
