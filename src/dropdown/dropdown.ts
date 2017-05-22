@@ -120,3 +120,5 @@ export class NgbDropdownToggle {
 
   toggleOpen() { this.dropdown.toggle(); }
 }
+
+export const NGB_DROPDOWN_DIRECTIVES = [NgbDropDown, NgbDropDownLabel];
