@@ -98,6 +98,13 @@ export class NgbInputDatepicker implements OnChanges,
    */
   @Input() outsideDays: 'visible' | 'collapsed' | 'hidden';
 
+
+  /**
+   * Placement of a datepicker popup. Accepts: "top", "bottom", "left", "right", "bottom-left",
+   * "bottom-right" etc.
+   */
+  @Input() placement = 'bottom-left';
+
   /**
    * Whether to display days of the week
    */
@@ -133,7 +140,7 @@ export class NgbInputDatepicker implements OnChanges,
       private _service: NgbDatepickerService, private _calendar: NgbCalendar) {
     this._zoneSubscription = ngZone.onStable.subscribe(() => {
       if (this._cRef) {
-        positionElements(this._elRef.nativeElement, this._cRef.location.nativeElement, 'bottom-left');
+        positionElements(this._elRef.nativeElement, this._cRef.location.nativeElement, this.placement);
       }
     });
   }
