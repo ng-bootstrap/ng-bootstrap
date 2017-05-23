@@ -48,6 +48,9 @@ describe('NgbInputDatepicker', () => {
       fixture.detectChanges();
       expect(fixture.nativeElement.querySelector('ngb-datepicker')).toBeNull();
     });
+
+    it('should support the "position" option',
+       () => { createTestCmpt(`<input ngbDatepicker #d="ngbDatepicker" [placement]="'bottom-right'">`); });
   });
 
   describe('ngModel interactions', () => {
