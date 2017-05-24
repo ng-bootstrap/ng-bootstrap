@@ -9,6 +9,7 @@ module.exports = function(config) {
       // For travis
       'node_modules/core-js/client/shim.js',
       'node_modules/ie-shim/index.js',
+      'node_modules/hammerjs/hammer.js',
       // paths loaded by Karma
       'node_modules/systemjs/dist/system-polyfills.js',
       'node_modules/systemjs/dist/system.src.js',
