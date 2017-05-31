@@ -5,6 +5,7 @@ existing issues (both open and closed) prior to opening any new issue and ensure
 ### Bug description:
 
 ### Link to minimally-working plunker that reproduces the issue:
+You can use this template as a starting point: http://plnkr.co/edit/l7oMt8?p=preview
 
 You can fork a plunker from one of our [demos](https://ng-bootstrap.github.io/#/components) and use it as a starting point.
 Please note that we can _not_ act on bug reports without a minimal reproduction scenario in plunker. Here is why:
