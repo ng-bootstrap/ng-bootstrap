@@ -1,0 +1,17 @@
+<p>Persian calendar</p>
+
+<ngb-datepicker #dp [(ngModel)]="model"
+                (navigate)="date = $event.next"
+                [firstDayOfWeek]="6">
+</ngb-datepicker>
+
+<hr/>
+
+<button class="btn btn-sm btn-outline-primary mr-2" (click)="selectToday()">Select Today</button>
+<button class="btn btn-sm btn-outline-primary mr-2" (click)="dp.navigateTo()">To current month</button>
+<button class="btn btn-sm btn-outline-primary mr-2" (click)="dp.navigateTo({year: 1396, month: 4})">To Tir. 1396</button>
+
+<hr/>
+
+<pre>Month: {{ date.month }}.{{ date.year }}</pre>
+<pre>Model: {{ model | json }}</pre>
