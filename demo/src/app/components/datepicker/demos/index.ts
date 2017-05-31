@@ -8,11 +8,12 @@ import {NgbdDatepickerCustomday} from './customday/datepicker-customday';
 import {NgbdDatepickerMultiple} from './multiple/datepicker-multiple';
 import {NgbdDatepickerCalendars, NgbdIslamicCivil, NgbdIslamicUmalqura} from './calendars/datepicker-calendars';
 import {NgbdDatepickerRange} from './range/datepicker-range';
+import {NgbdDatepickerJalali} from './jalali/datepicker-jalali';
 
 export const DEMO_DIRECTIVES = [
   NgbdDatepickerBasic, NgbdDatepickerPopup, NgbdDatepickerDisabled, NgbdDatepickerI18n,
   NgbdDatepickerCustomday, NgbdDatepickerConfig, NgbdDatepickerMultiple, NgbdDatepickerCalendars,
-  NgbdDatepickerRange, NgbdIslamicCivil, NgbdIslamicUmalqura, NgbdDatepickerAdapter
+  NgbdDatepickerRange, NgbdIslamicCivil, NgbdIslamicUmalqura, NgbdDatepickerAdapter, NgbdDatepickerJalali
 ];
 
 export const DEMO_SNIPPETS = {
@@ -47,6 +48,10 @@ export const DEMO_SNIPPETS = {
   'calendars': {
     'code': require('!!raw-loader!./calendars/datepicker-calendars'),
     'markup': require('!!raw-loader!./calendars/datepicker-calendars.html')
+  },
+  'jalali': {
+    'code': require('!!raw-loader!./jalali/datepicker-jalali'),
+    'markup': require('!!raw-loader!./jalali/datepicker-jalali.html')
   },
   'adapter': {
     'code': require('!!raw-loader!./adapter/datepicker-adapter'),
