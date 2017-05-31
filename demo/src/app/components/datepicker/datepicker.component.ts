@@ -30,6 +30,10 @@ import {DEMO_SNIPPETS} from './demos';
       </ngbd-example-box>
       <ngbd-example-box demoTitle="Custom day view" [snippets]="snippets" component="datepicker" demo="customday">
         <ngbd-datepicker-customday></ngbd-datepicker-customday>
+      </ngbd-example-box>  
+      
+      <ngbd-example-box demoTitle="Jalali" [snippets]="snippets" component="datepicker" demo="jalali">
+        <ngbd-datepicker-jalali></ngbd-datepicker-jalali>
       </ngbd-example-box>
       <ngbd-example-box demoTitle="Alternative calendars" [snippets]="snippets" component="datepicker" demo="calendars">
         <ngbd-datepicker-calendars></ngbd-datepicker-calendars>
