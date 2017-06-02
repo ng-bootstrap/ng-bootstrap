@@ -70,7 +70,8 @@ export {
   NgbTypeaheadModule,
   NgbTypeaheadConfig,
   NgbTypeaheadSelectItemEvent,
-  NgbTypeahead
+  NgbTypeahead,
+  NgbHighlight
 } from './typeahead/typeahead.module';
 
 const NGB_MODULES = [
