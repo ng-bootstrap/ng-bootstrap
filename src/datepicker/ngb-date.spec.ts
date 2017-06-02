@@ -60,4 +60,13 @@ describe('ngb-date', () => {
       expect(date.after(new NgbDate(2017, 8, 18))).toBeFalsy();
     });
   });
+
+  describe('from', () => {
+    it('should return null for invalid object', () => { expect(NgbDate.from(null)).toBeNull(); });
+    it('should return null for dates that are not convertable to javascript Date objects', () => {
+      expect(NgbDate.from({year: 275760, month: 10, day: 1})).toBeNull();
+      expect(NgbDate.from({year: 275759, month: 1, day: 11}).equals(new NgbDate(275759, 1, 11))).toBeTruthy();
+      expect(NgbDate.from({year: -275760, day: 1})).toBeNull();
+    });
+  });
 });
