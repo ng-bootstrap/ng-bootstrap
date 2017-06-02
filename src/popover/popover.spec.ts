@@ -478,6 +478,19 @@ describe('ngb-popover', () => {
       expect(popover.triggers).toBe(config.triggers);
     });
   });
+
+  describe('popover class', () => {
+    it('should add a custom css class to the popover window', () => {
+      const fixture = createTestComponent(`<div ngbPopover="Great tip!" popoverClass="custom-class"></div>`);
+      const directive = fixture.debugElement.query(By.directive(NgbPopover));
+
+      directive.triggerEventHandler('click', {});
+      fixture.detectChanges();
+      const windowEl = getWindow(fixture.nativeElement);
+
+      expect(windowEl).toHaveCssClass('custom-class');
+    });
+  });
 });
 
 @Component({selector: 'test-cmpt', template: ``})
