@@ -111,7 +111,7 @@ describe('ngb-popover', () => {
       const directive = fixture.debugElement.query(By.directive(NgbPopover));
       const defaultConfig = new NgbPopoverConfig();
 
-      directive.context.popover.open({name: 'John'});
+      directive.context.popover.open({context: {name: 'John'}});
       fixture.detectChanges();
       const windowEl = getWindow(fixture.nativeElement);
 
@@ -220,6 +220,19 @@ describe('ngb-popover', () => {
 
       expect(windowEl).toHaveCssClass('popover');
       expect(windowEl).toHaveCssClass('popover-left');
+      expect(windowEl.textContent.trim()).toBe('Great tip!');
+    });
+
+    it('should properly position popovers when open trigged manually with placement supplied', () => {
+      const fixture = createTestComponent(`<div ngbPopover="Great tip!"></div>`);
+      const directive = fixture.debugElement.query(By.directive(NgbPopover));
+
+      directive.context.popover.open({placement: 'top'});
+      fixture.detectChanges();
+      const windowEl = getWindow(fixture.nativeElement);
+
+      expect(windowEl).toHaveCssClass('popover');
+      expect(windowEl).toHaveCssClass('popover-top');
       expect(windowEl.textContent.trim()).toBe('Great tip!');
     });
   });

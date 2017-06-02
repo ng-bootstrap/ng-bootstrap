@@ -24,6 +24,21 @@ import {NgbPopoverConfig} from './popover-config';
 
 let nextId = 0;
 
+/**
+ * Represent options available when opening popover.
+ */
+export interface NgbPopoverOptions {
+  /**
+   * Placement of a popover. Accepts: "top", "bottom", "left", "right"
+  */
+  placement?: 'top' | 'bottom' | 'left' | 'right';
+
+  /**
+   * The context is a value to be injected into the popover template when it is created.
+   */
+  context?: any;
+}
+
 @Component({
   selector: 'ngb-popover-window',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -100,12 +115,11 @@ export class NgbPopover implements OnInit, OnDestroy {
 
   /**
    * Opens an element’s popover. This is considered a “manual” triggering of the popover.
-   * The context is an optional value to be injected into the popover template when it is created.
    */
-  open(context?: any) {
+  open(options: NgbPopoverOptions = {}) {
     if (!this._windowRef) {
-      this._windowRef = this._popupService.open(this.ngbPopover, context);
-      this._windowRef.instance.placement = this.placement;
+      this._windowRef = this._popupService.open(this.ngbPopover, options.context);
+      this._windowRef.instance.placement = options.placement || this.placement;
       this._windowRef.instance.title = this.popoverTitle;
       this._windowRef.instance.id = this._ngbPopoverWindowId;
 
