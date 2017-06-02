@@ -94,7 +94,7 @@ export interface NgbDatepickerNavigateEvent {
       <ng-template ngFor let-month [ngForOf]="months" let-i="index">
         <div class="ngb-dp-month d-block ml-3">            
           <div *ngIf="navigation !== 'select' || displayMonths > 1" class="ngb-dp-month-name text-center">
-            {{ i18n.getMonthFullName(month.number) }} {{ month.year }}
+            {{ i18n.getMonthFullName(month.number) }} <span class="ngb-dp-year">{{ month.year }}</span>
           </div>
           <ngb-datepicker-month-view
             [month]="month"
