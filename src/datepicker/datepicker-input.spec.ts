@@ -87,7 +87,7 @@ describe('NgbInputDatepicker', () => {
       const fixture = createTestCmpt(`<input ngbDatepicker [(ngModel)]="date">`);
       const inputDebugEl = fixture.debugElement.query(By.css('input'));
 
-      inputDebugEl.triggerEventHandler('change', {target: {value: '2016-09-10'}});
+      inputDebugEl.triggerEventHandler('input', {target: {value: '2016-09-10'}});
       expect(fixture.componentInstance.date).toEqual({year: 2016, month: 9, day: 10});
     });
 
@@ -312,12 +312,12 @@ describe('NgbInputDatepicker', () => {
            const inputDebugEl = fixture.debugElement.query(By.css('input'));
            const form = fixture.debugElement.query(By.directive(NgForm)).injector.get(NgForm);
 
-           inputDebugEl.triggerEventHandler('change', {target: {value: '2016-09-10'}});
+           inputDebugEl.triggerEventHandler('input', {target: {value: '2016-09-10'}});
            fixture.detectChanges();
            tick();
            expect(form.control.valid).toBeTruthy();
 
-           inputDebugEl.triggerEventHandler('change', {target: {value: 'invalid'}});
+           inputDebugEl.triggerEventHandler('input', {target: {value: 'invalid'}});
            fixture.detectChanges();
            tick();
            expect(form.control.invalid).toBeTruthy();
