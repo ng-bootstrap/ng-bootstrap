@@ -46,7 +46,7 @@ const NGB_DATEPICKER_VALIDATOR = {
 @Directive({
   selector: 'input[ngbDatepicker]',
   exportAs: 'ngbDatepicker',
-  host: {'(change)': 'manualDateChange($event.target.value)', '(keyup.esc)': 'close()', '(blur)': 'onBlur()'},
+  host: {'(input)': 'manualDateChange($event.target.value)', '(keyup.esc)': 'close()', '(blur)': 'onBlur()'},
   providers: [NGB_DATEPICKER_VALUE_ACCESSOR, NGB_DATEPICKER_VALIDATOR, NgbDatepickerService]
 })
 export class NgbInputDatepicker implements OnChanges,
