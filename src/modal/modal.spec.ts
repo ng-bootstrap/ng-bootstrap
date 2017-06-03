@@ -1,4 +1,4 @@
-import {Component, Injectable, ViewChild, OnDestroy, NgModule, getDebugNode, DebugElement} from '@angular/core';
+﻿import {Component, Injectable, ViewChild, OnDestroy, NgModule, getDebugNode, DebugElement} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {TestBed, ComponentFixture} from '@angular/core/testing';
 
@@ -532,7 +532,7 @@ export class WithActiveModalCmpt {
 })
 class TestComponent {
   name = 'World';
-  openedModal: NgbModalRef;
+  openedModal: NgbModalRef<any>;
   show = true;
   @ViewChild('content') tplContent;
   @ViewChild('destroyableContent') tplDestroyableContent;
@@ -552,7 +552,7 @@ class TestComponent {
     }
   }
   openTpl(options?: Object) { return this.modalService.open(this.tplContent, options); }
-  openCmpt(cmptType: any, options?: Object) { return this.modalService.open(cmptType, options); }
+  openCmpt<T>(cmptType: T, options?: Object) { return this.modalService.open(cmptType, options); }
   openDestroyableTpl(options?: Object) { return this.modalService.open(this.tplDestroyableContent, options); }
   openTplClose(options?: Object) { return this.modalService.open(this.tplContentWithClose, options); }
   openTplDismiss(options?: Object) { return this.modalService.open(this.tplContentWithDismiss, options); }

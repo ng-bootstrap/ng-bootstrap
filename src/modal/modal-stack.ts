@@ -1,4 +1,4 @@
-import {
+﻿import {
   ApplicationRef,
   Injectable,
   Injector,
@@ -28,7 +28,7 @@ export class NgbModalStack {
     this._windowFactory = _componentFactoryResolver.resolveComponentFactory(NgbModalWindow);
   }
 
-  open(moduleCFR: ComponentFactoryResolver, contentInjector: Injector, content: any, options): NgbModalRef {
+  open<T>(moduleCFR: ComponentFactoryResolver, contentInjector: Injector, content: T, options): NgbModalRef<T> {
     const containerSelector = options.container || 'body';
     const containerEl = document.querySelector(containerSelector);
 
@@ -41,7 +41,7 @@ export class NgbModalStack {
 
     let windowCmptRef: ComponentRef<NgbModalWindow>;
     let backdropCmptRef: ComponentRef<NgbModalBackdrop>;
-    let ngbModalRef: NgbModalRef;
+    let ngbModalRef: NgbModalRef<T>;
 
 
     if (options.backdrop !== false) {
@@ -53,7 +53,7 @@ export class NgbModalStack {
     this._applicationRef.attachView(windowCmptRef.hostView);
     containerEl.appendChild(windowCmptRef.location.nativeElement);
 
-    ngbModalRef = new NgbModalRef(windowCmptRef, contentRef, backdropCmptRef);
+    ngbModalRef = new NgbModalRef<T>(windowCmptRef, contentRef, backdropCmptRef);
 
     activeModal.close = (result: any) => { ngbModalRef.close(result); };
     activeModal.dismiss = (reason: any) => { ngbModalRef.dismiss(reason); };
