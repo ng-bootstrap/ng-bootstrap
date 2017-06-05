@@ -23,6 +23,12 @@ import {DEMO_SNIPPETS} from './demos';
       <ngbd-example-box demoTitle="Prevent tab change" [snippets]="snippets" component="tabset" demo="preventchange">
         <ngbd-tabset-preventchange></ngbd-tabset-preventchange>
       </ngbd-example-box>
+      <ngbd-example-box demoTitle="Nav justification" [snippets]="snippets" component="tabset" demo="justify">
+        <ngbd-tabset-justify></ngbd-tabset-justify>
+      </ngbd-example-box>
+      <ngbd-example-box demoTitle="Nav orientation" [snippets]="snippets" component="tabset" demo="orientation">
+        <ngbd-tabset-orientation></ngbd-tabset-orientation>
+      </ngbd-example-box>
       <ngbd-example-box demoTitle="Global configuration of tabs" [snippets]="snippets" component="tabset" demo="config">
         <ngbd-tabset-config></ngbd-tabset-config>
       </ngbd-example-box>

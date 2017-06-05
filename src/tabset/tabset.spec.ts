@@ -295,7 +295,7 @@ describe('ngb-tabset', () => {
     expect(fixture.nativeElement.querySelector('ul')).not.toHaveCssClass('nav-tabs');
   });
 
-  it('should have the nav left-aligned by default', () => {
+  it('should have the "justify-content-start" class by default', () => {
     const fixture = createTestComponent(`
          <ngb-tabset>
            <ngb-tab title="bar"><ng-template ngbTabContent>Bar</ng-template></ngb-tab>
@@ -305,7 +305,7 @@ describe('ngb-tabset', () => {
     expect(fixture.nativeElement.querySelector('ul')).toHaveCssClass('justify-content-start');
   });
 
-  it('should have the nav center-aligned upon setting justify center', () => {
+  it('should have the "justify-content-center" class upon setting justify to center', () => {
     const fixture = createTestComponent(`
          <ngb-tabset justify="center">
            <ngb-tab title="bar"><ng-template ngbTabContent>Bar</ng-template></ngb-tab>
@@ -315,7 +315,7 @@ describe('ngb-tabset', () => {
     expect(fixture.nativeElement.querySelector('ul')).toHaveCssClass('justify-content-center');
   });
 
-  it('should have the nav right-aligned upon setting justify end', () => {
+  it('should have the "justify-content-end" upon setting justify to end', () => {
     const fixture = createTestComponent(`
          <ngb-tabset justify="end">
            <ngb-tab title="bar"><ng-template ngbTabContent>Bar</ng-template></ngb-tab>
@@ -323,6 +323,48 @@ describe('ngb-tabset', () => {
        `);
 
     expect(fixture.nativeElement.querySelector('ul')).toHaveCssClass('justify-content-end');
+  });
+
+  it('should have the "nav-fill" class upon setting justify to fill', () => {
+    const fixture = createTestComponent(`
+        <ngb-tabset justify="fill">
+          <ngb-tab title="bar"><ng-template ngbTabContent>Bar</ng-template></ngb-tab>
+        </ngb-tabset>
+      `);
+
+    expect(fixture.nativeElement.querySelector('ul')).toHaveCssClass('nav-fill');
+  });
+
+  it('should have the "nav-justified" class upon setting justify to justified', () => {
+    const fixture = createTestComponent(`
+        <ngb-tabset justify="justified">
+          <ngb-tab title="bar"><ng-template ngbTabContent>Bar</ng-template></ngb-tab>
+        </ngb-tabset>
+      `);
+
+    expect(fixture.nativeElement.querySelector('ul')).toHaveCssClass('nav-justified');
+  });
+
+  it('should have the "justify-content-start" class upon setting orientation to horizontal', () => {
+    const fixture = createTestComponent(`
+        <ngb-tabset orientation="horizontal">
+          <ngb-tab title="bar"><ng-template ngbTabContent>Bar</ng-template></ngb-tab>
+        </ngb-tabset>
+      `);
+
+    expect(fixture.nativeElement.querySelector('ul')).not.toHaveCssClass('flex-column');
+    expect(fixture.nativeElement.querySelector('ul')).toHaveCssClass('justify-content-start');
+  });
+
+  it('should have the "flex-column" class upon setting orientation to vertical', () => {
+    const fixture = createTestComponent(`
+        <ngb-tabset orientation="vertical">
+          <ngb-tab title="bar"><ng-template ngbTabContent>Bar</ng-template></ngb-tab>
+        </ngb-tabset>
+      `);
+
+    expect(fixture.nativeElement.querySelector('ul')).toHaveCssClass('flex-column');
+    expect(fixture.nativeElement.querySelector('ul')).not.toHaveCssClass('justify-content-start');
   });
 
 

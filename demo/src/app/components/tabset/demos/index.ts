@@ -3,9 +3,13 @@ import {NgbdTabsetPills} from './pills/tabset-pills';
 import {NgbdTabsetPreventchange} from './preventchange/tabset-preventchange';
 import {NgbdTabsetSelectbyid} from './selectbyid/tabset-selectbyid';
 import {NgbdTabsetConfig} from './config/tabset-config';
+import {NgbdTabsetJustify} from './justify/tabset-justify';
+import {NgbdTabsetOrientation} from './orientation/tabset-orientation';
 
-export const DEMO_DIRECTIVES =
-    [NgbdTabsetBasic, NgbdTabsetPills, NgbdTabsetPreventchange, NgbdTabsetSelectbyid, NgbdTabsetConfig];
+export const DEMO_DIRECTIVES = [
+  NgbdTabsetBasic, NgbdTabsetPills, NgbdTabsetPreventchange, NgbdTabsetSelectbyid,
+  NgbdTabsetConfig, NgbdTabsetJustify, NgbdTabsetOrientation
+];
 
 export const DEMO_SNIPPETS = {
   'basic': {
@@ -23,6 +27,14 @@ export const DEMO_SNIPPETS = {
   'selectbyid': {
     'code': require('!!prismjs-loader?lang=typescript!./selectbyid/tabset-selectbyid'),
     'markup': require('!!prismjs-loader?lang=markup!./selectbyid/tabset-selectbyid.html')
+  },
+  'justify': {
+    'code': require('!!prismjs-loader?lang=typescript!./justify/tabset-justify'),
+    'markup': require('!!prismjs-loader?lang=markup!./justify/tabset-justify.html')
+  },
+  'orientation': {
+    'code': require('!!prismjs-loader?lang=typescript!./orientation/tabset-orientation'),
+    'markup': require('!!prismjs-loader?lang=markup!./orientation/tabset-orientation.html')
   },
   'config': {
     'code': require('!!prismjs-loader?lang=typescript!./config/tabset-config'),
