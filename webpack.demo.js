@@ -57,7 +57,7 @@ module.exports = function makeWebpackConfig() {
     path: root('demo', 'dist'),
     publicPath: '/',
     filename: isProd ? 'js/[name].[hash].js' : 'js/[name].js',
-    chunkFilename: isProd ? '[id].[hash].chunk.js' : '[id].chunk.js'
+    chunkFilename: isProd ? 'js/[id].[chunkhash].chunk.js' : 'js/[id].chunk.js'
   };
 
   /**
@@ -217,6 +217,14 @@ module.exports = function makeWebpackConfig() {
       new CopyWebpackPlugin([{
         from: root('demo/src/public')
       }])
+    );
+  } else {
+    config.plugins.push(
+      // Paths for lazy loaded routes in dev mode
+      new webpack.ContextReplacementPlugin(/.*/, root('demo', 'src', 'app'), {
+        "demo/src/app/getting-started/index": "./getting-started/index.ts",
+        "demo/src/app/components/index": "./components/index.ts"
+      })
     );
   }
 

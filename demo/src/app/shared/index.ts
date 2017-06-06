@@ -2,7 +2,6 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterModule} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {JsonpModule} from '@angular/http';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
@@ -21,8 +20,7 @@ export {componentsList} from './side-nav/side-nav.component';
     SideNavComponent,
     NgbModule,
     FormsModule,
-    ReactiveFormsModule,
-    JsonpModule
+    ReactiveFormsModule
   ],
   declarations: [
     ContentWrapper,

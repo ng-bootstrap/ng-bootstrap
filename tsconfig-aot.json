@@ -10,13 +10,15 @@
     "noEmitOnError": true,
     "outDir": "temp",
     "sourceMap": true,
-    "baseUrl": "./node_modules",
+    "baseUrl": ".",
     "paths": {
-      "@ng-bootstrap/ng-bootstrap": ["../src/index"]
+      "@ng-bootstrap/ng-bootstrap": ["src/index"]
     }
   },
   "include": [
-    "./demo/src/main.ts"
+    "./demo/src/main.ts",
+    "./demo/src/app/getting-started/index.ts",
+    "./demo/src/app/components/index.ts"
   ],
   "angularCompilerOptions": {
     "strictMetadataEmit": true
