@@ -12,7 +12,7 @@ export class NgbdButtonsRadioReactive implements OnInit {
 
   ngOnInit() {
     this.radioGroupForm = this.formBuilder.group({
-      model: 1
+      'model': 1
     });
   }
 }

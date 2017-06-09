@@ -13,19 +13,19 @@ export const DEMO_DIRECTIVES = [
 ];
 
 export const DEMO_SNIPPETS = {
-  basic: {
-    code: require('!!prismjs-loader?lang=typescript!./basic/progressbar-basic'),
-    markup: require('!!prismjs-loader?lang=markup!./basic/progressbar-basic.html')},
-  showvalue: {
-    code: require('!!prismjs-loader?lang=typescript!./showvalue/progressbar-showvalue'),
-    markup: require('!!prismjs-loader?lang=markup!./showvalue/progressbar-showvalue.html')},
-  striped: {
-    code: require('!!prismjs-loader?lang=typescript!./striped/progressbar-striped'),
-    markup: require('!!prismjs-loader?lang=markup!./striped/progressbar-striped.html')},
-  labels: {
-    code: require('!!prismjs-loader?lang=typescript!./labels/progressbar-labels'),
-    markup: require('!!prismjs-loader?lang=markup!./labels/progressbar-labels.html')},
-  config: {
-    code: require('!!prismjs-loader?lang=typescript!./config/progressbar-config'),
-    markup: require('!!prismjs-loader?lang=markup!./config/progressbar-config.html')}
+  'basic': {
+    'code': require('!!prismjs-loader?lang=typescript!./basic/progressbar-basic'),
+    'markup': require('!!prismjs-loader?lang=markup!./basic/progressbar-basic.html')},
+  'showvalue': {
+    'code': require('!!prismjs-loader?lang=typescript!./showvalue/progressbar-showvalue'),
+    'markup': require('!!prismjs-loader?lang=markup!./showvalue/progressbar-showvalue.html')},
+  'striped': {
+    'code': require('!!prismjs-loader?lang=typescript!./striped/progressbar-striped'),
+    'markup': require('!!prismjs-loader?lang=markup!./striped/progressbar-striped.html')},
+  'labels': {
+    'code': require('!!prismjs-loader?lang=typescript!./labels/progressbar-labels'),
+    'markup': require('!!prismjs-loader?lang=markup!./labels/progressbar-labels.html')},
+  'config': {
+    'code': require('!!prismjs-loader?lang=typescript!./config/progressbar-config'),
+    'markup': require('!!prismjs-loader?lang=markup!./config/progressbar-config.html')}
 };
