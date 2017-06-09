@@ -17,12 +17,12 @@
       <ngb-tabset>
         <ngb-tab title="html">
           <ng-template ngbTabContent>
-            <pre class="language-html"><code class="language-html" [innerHTML]="snippets[demo].markup"></code></pre>
+            <pre class="language-html"><code class="language-html" [innerHTML]="snippets[demo]['markup']"></code></pre>
           </ng-template>
         </ngb-tab>
         <ngb-tab title="typescript">
           <ng-template ngbTabContent>
-            <pre class="language-typescript"><code class="language-typescript" [innerHTML]="snippets[demo].code"></code></pre>
+            <pre class="language-typescript"><code class="language-typescript" [innerHTML]="snippets[demo]['code']"></code></pre>
           </ng-template>
         </ngb-tab>
       </ngb-tabset>
