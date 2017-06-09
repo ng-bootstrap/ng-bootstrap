@@ -87,12 +87,12 @@ export class Positioning {
     const placementSecondary = placement.split('-')[1] || 'center';
 
     let targetElPosition: ClientRect = {
-      height: targetElBCR.height || targetElement.offsetHeight,
-      width: targetElBCR.width || targetElement.offsetWidth,
-      top: 0,
-      bottom: targetElBCR.height || targetElement.offsetHeight,
-      left: 0,
-      right: targetElBCR.width || targetElement.offsetWidth
+      'height': targetElBCR.height || targetElement.offsetHeight,
+      'width': targetElBCR.width || targetElement.offsetWidth,
+      'top': 0,
+      'bottom': targetElBCR.height || targetElement.offsetHeight,
+      'left': 0,
+      'right': targetElBCR.width || targetElement.offsetWidth
     };
 
     switch (placementPrimary) {
