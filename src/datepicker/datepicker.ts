@@ -57,7 +57,6 @@ export interface NgbDatepickerNavigateEvent {
   selector: 'ngb-datepicker',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    'class': 'd-inline-block rounded',
     'tabindex': '0',
     '[attr.tabindex]': 'model.disabled ? undefined : "0"',
     '(blur)': 'showFocus(false)',
@@ -67,23 +66,43 @@ export interface NgbDatepickerNavigateEvent {
   styles: [`
     :host {
       border: 1px solid rgba(0, 0, 0, 0.125);
-    }
-    .ngb-dp-header {
-      border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+      border-radius: 0.25rem;
+      display: inline-block;
     }
     .ngb-dp-month {
       pointer-events: none;
     }
+    .ngb-dp-header {
+      border-bottom: 0px;
+      border-radius: .25rem 0.25rem 0rem 0rem;
+      padding-top: 0.25rem;
+    }
     ngb-datepicker-month-view {
       pointer-events: auto;
-    }
-    .ngb-dp-month:first-child {
-      margin-left: 0 !important;
     }
     .ngb-dp-month-name {
       font-size: larger;
       height: 2rem;
       line-height: 2rem;
+      text-align: center;
+    }
+    /deep/ .ngb-dp-month + .ngb-dp-month > ngb-datepicker-month-view > .ngb-dp-week {
+      padding-left: 1rem;
+    }
+    /deep/ .ngb-dp-month + .ngb-dp-month > .ngb-dp-month-name {
+      padding-left: 1rem;
+    }
+    /deep/ .ngb-dp-month:last-child .ngb-dp-week {
+      padding-right: .25rem;
+    }
+    /deep/ .ngb-dp-month:first-child .ngb-dp-week {
+      padding-left: .25rem;
+    }
+    /deep/ .ngb-dp-month > ngb-datepicker-month-view > .ngb-dp-week:last-child {
+      padding-bottom: .25rem;
+    }
+    .ngb-dp-months {
+      display: flex;
     }
   `],
   template: `
@@ -97,13 +116,12 @@ export interface NgbDatepickerNavigateEvent {
       </div>
     </ng-template>
 
-    <div class="ngb-dp-header bg-light pt-1 rounded-top" [style.height.rem]="getHeaderHeight()"
-         [style.marginBottom.rem]="-getHeaderMargin()">
-      <ngb-datepicker-navigation *ngIf="model.navigation !== 'none'"
+    <div class="ngb-dp-header bg-light">
+      <ngb-datepicker-navigation *ngIf="navigation !== 'none'"
         [date]="model.firstDate"
         [minDate]="model.minDate"
         [maxDate]="model.maxDate"
-        [months]="model.months.length"
+        [months]="model.months"
         [disabled]="model.disabled"
         [showWeekNumbers]="showWeekNumbers"
         [showSelect]="model.navigation === 'select'"
@@ -112,10 +130,11 @@ export interface NgbDatepickerNavigateEvent {
       </ngb-datepicker-navigation>
     </div>
 
-    <div class="ngb-dp-months d-flex px-1 pb-1">
+    <div class="ngb-dp-months">
       <ng-template ngFor let-month [ngForOf]="model.months" let-i="index">
-        <div class="ngb-dp-month d-block ml-3">
-          <div *ngIf="model.navigation !== 'select' || displayMonths > 1" class="ngb-dp-month-name text-center">
+        <div class="ngb-dp-month d-block">
+          <div *ngIf="navigation === 'none' || (displayMonths > 1 && navigation === 'select')"
+                class="ngb-dp-month-name bg-light">
             {{ i18n.getMonthFullName(month.number) }} {{ month.year }}
           </div>
           <ngb-datepicker-month-view
@@ -261,16 +280,6 @@ export class NgbDatepicker implements OnDestroy,
    * Manually focus the datepicker
    */
   focus() { this._elementRef.nativeElement.focus(); }
-
-  getHeaderHeight() {
-    const h = this.showWeekdays ? 6.25 : 4.25;
-    return this.displayMonths === 1 || this.navigation !== 'select' ? h - 2 : h;
-  }
-
-  getHeaderMargin() {
-    const m = this.showWeekdays ? 2 : 0;
-    return this.displayMonths !== 1 || this.navigation !== 'select' ? m + 2 : m;
-  }
 
   /**
    * Navigates current view to provided date.

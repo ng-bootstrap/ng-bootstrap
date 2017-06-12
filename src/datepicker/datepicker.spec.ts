@@ -396,44 +396,6 @@ describe('ngb-datepicker', () => {
         .toHaveBeenCalledWith({current: {year: 2016, month: 8}, next: {year: 2015, month: 6}});
   });
 
-  it('should calculate header dimensions correctly', () => {
-    const datepicker = TestBed.createComponent(NgbDatepicker).componentInstance;
-
-    // 1, 'select', weekdays
-    expect(datepicker.getHeaderHeight()).toBe(4.25);
-    expect(datepicker.getHeaderMargin()).toBe(2);
-
-    // 1, 'select', no weekdays
-    datepicker.showWeekdays = false;
-    expect(datepicker.getHeaderHeight()).toBe(2.25);
-    expect(datepicker.getHeaderMargin()).toBe(0);
-
-    // 1, 'none', no weekdays
-    datepicker.navigation = 'none';
-    expect(datepicker.getHeaderHeight()).toBe(2.25);
-    expect(datepicker.getHeaderMargin()).toBe(2);
-
-    // 2, 'none', no weekdays
-    datepicker.displayMonths = 2;
-    expect(datepicker.getHeaderHeight()).toBe(2.25);
-    expect(datepicker.getHeaderMargin()).toBe(2);
-
-    // 2, 'select', no weekdays
-    datepicker.navigation = 'select';
-    expect(datepicker.getHeaderHeight()).toBe(4.25);
-    expect(datepicker.getHeaderMargin()).toBe(2);
-
-    // 2, 'select', weekdays
-    datepicker.showWeekdays = true;
-    expect(datepicker.getHeaderHeight()).toBe(6.25);
-    expect(datepicker.getHeaderMargin()).toBe(4);
-
-    // 2, 'none', weekdays
-    datepicker.navigation = 'none';
-    expect(datepicker.getHeaderHeight()).toBe(4.25);
-    expect(datepicker.getHeaderMargin()).toBe(4);
-  });
-
   it('should allow focusing datepicker programmatically', () => {
     const datepicker = TestBed.createComponent(NgbDatepicker);
     expect(datepicker.nativeElement.getAttribute('tabindex')).toBe('0');
