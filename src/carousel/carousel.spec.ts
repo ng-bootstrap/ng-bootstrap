@@ -255,6 +255,39 @@ describe('ngb-carousel', () => {
        discardPeriodicTasks();
      }));
 
+  it('should pause / resume slide change with time passage on mouse enter / leave', fakeAsync(() => {
+       const html = `
+      <ngb-carousel [playOnMouseenter]="true">
+        <ng-template ngbSlide>foo</ng-template>
+        <ng-template ngbSlide>bar</ng-template>
+      </ngb-carousel>
+    `;
+
+       const fixture = createTestComponent(html);
+
+       const carouselDebugEl = fixture.debugElement.query(By.directive(NgbCarousel));
+
+       expectActiveSlides(fixture.nativeElement, [true, false]);
+
+       carouselDebugEl.triggerEventHandler('mouseenter', {});
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [true, false]);
+
+       tick(6000);
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [false, true]);
+
+       carouselDebugEl.triggerEventHandler('mouseleave', {});
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [false, true]);
+
+       tick(6000);
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [true, false]);
+
+       discardPeriodicTasks();
+     }));
+
   it('should wrap slide changes by default', fakeAsync(() => {
        const html = `
       <ngb-carousel>

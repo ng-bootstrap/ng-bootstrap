@@ -36,7 +36,7 @@ export class NgbSlide {
     'class': 'carousel slide',
     '[style.display]': '"block"',
     'tabIndex': '0',
-    '(mouseenter)': 'pause()',
+    '(mouseenter)': 'cycleOrPause()',
     '(mouseleave)': 'cycle()',
     '(keydown.arrowLeft)': 'keyPrev()',
     '(keydown.arrowRight)': 'keyNext()'
@@ -84,6 +84,11 @@ export class NgbCarousel implements AfterContentChecked,
    * The active slide id.
    */
   @Input() activeId: string;
+
+  /**
+   * Whether to cycle slides when mouseenter is triggered
+   */
+  @Input() playOnMouseenter: boolean;
 
   constructor(config: NgbCarouselConfig) {
     this.interval = config.interval;
@@ -134,6 +139,14 @@ export class NgbCarousel implements AfterContentChecked,
    */
   cycle() { this._startTimer(); }
 
+  cycleOrPause() {
+    if (this.playOnMouseenter) {
+      this.cycle();
+    } else {
+      this.pause();
+    }
+  }
+
   cycleToNext() { this.cycleToSelected(this._getNextSlide(this.activeId)); }
 
   cycleToPrev() { this.cycleToSelected(this._getPrevSlide(this.activeId)); }
@@ -163,12 +176,15 @@ export class NgbCarousel implements AfterContentChecked,
   }
 
   private _startTimer() {
-    if (this.interval > 0) {
+    if (this.interval > 0 && !this._slideChangeInterval) {
       this._slideChangeInterval = setInterval(() => { this.cycleToNext(); }, this.interval);
     }
   }
 
-  private _stopTimer() { clearInterval(this._slideChangeInterval); }
+  private _stopTimer() {
+    clearInterval(this._slideChangeInterval);
+    this._slideChangeInterval = null;
+  }
 
   private _getSlideById(slideId: string): NgbSlide {
     let slideWithId: NgbSlide[] = this.slides.filter(slide => slide.id === slideId);
