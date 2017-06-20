@@ -26,6 +26,27 @@ export interface WindowTemplateContext {
 /**
  * Context for the typeahead result template in case you want to override the default one
  */
+export interface WindowTemplateContext {
+  /**
+   * Your typeahead results data model
+   */
+  results: any;
+
+  /**
+   * Search term from the input used to get current result
+   */
+  term: string;
+
+  /**
+   * Typeahead window context
+   */
+  context: NgbTypeaheadWindow;
+}
+
+
+/**
+ * Context for the typeahead result template in case you want to override the default one
+ */
 export interface ResultTemplateContext {
   /**
    * Your typeahead result data model
