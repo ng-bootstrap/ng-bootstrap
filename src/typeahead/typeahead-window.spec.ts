@@ -40,6 +40,31 @@ describe('ngb-typeahead-window', () => {
 
       expectResults(fixture.nativeElement, ['+BAR-ba', 'BAZ-ba']);
     });
+
+    it('should use a custom window template if provided', () => {
+      const fixture = createTestComponent(`
+           <ng-template #wt let-results="results" let-term="term" let-context="context">
+            <button *ngFor="let result of results; let idx = index"
+             class="dropdown-item" [class.active]="idx === context.activeIdx">
+             {{result.toUpperCase()}}-{{term}}
+            </button>
+           </ng-template>
+           <ngb-typeahead-window [results]="results" [term]="term" [windowTemplate]="wt"></ngb-typeahead-window>`);
+
+      expectResults(fixture.nativeElement, ['+BAR-ba', 'BAZ-ba']);
+    });
+
+    it('should use a custom no results template if provided', () => {
+      const fixture = createTestComponent(`
+           <ng-template #nr let-term="term"><div class="no-results">No results for {{term}}</div></ng-template>
+           <ngb-typeahead-window [results]="[]" [term]="term" [noResultsTemplate]="wt"></ngb-typeahead-window>`);
+
+      const buttons = fixture.nativeElement.querySelectorAll('button.dropdown-item');
+      expect(buttons.length).toEqual(0);
+
+      const noResultsDiv = fixture.nativeElement.querySelector('div.no-results');
+      expect(noResultsDiv.textContent).toEqual('No results for ba');
+    });
   });
 
   describe('active row', () => {

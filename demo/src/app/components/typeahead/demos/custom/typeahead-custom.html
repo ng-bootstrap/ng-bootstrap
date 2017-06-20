@@ -1,0 +1,20 @@
+<p>A typeahead example that uses a custom templates for the drop down window.</p>
+
+<ng-template #wt let-results="results" let-term="term" let-context="context">
+  <div *ngIf="results.length > 0" class="msg">States matching '{{ term }}':</div>
+  <div *ngFor="let result of results; let idx = index" class="dropdown-item" role="option" [class.active]="idx === context.activeIdx"
+    (mouseenter)="context.markActive(idx)" (click)="context.select(result)">
+    <span class="abbr">{{ result.abbr }}</span>
+    <span class="name">{{ result.name }}</span>
+  </div>
+</ng-template>
+
+<ng-template #nr let-term="term">
+  <div class="dropdown-item">No results were found for {{term}}</div>
+</ng-template>
+
+<label for="typeahead-template">Search for a state:</label>
+<input id="typeahead-template" type="text" class="form-control" [(ngModel)]="model" [ngbTypeahead]="search" [windowTemplate]="wt"
+  [noResultsTemplate]="nr" [inputFormatter]="formatter" />
+<hr>
+<pre>Model: {{ model | json }}</pre>
