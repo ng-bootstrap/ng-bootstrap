@@ -21,6 +21,9 @@ import {DEMO_SNIPPETS} from './demos';
       <ngbd-example-box demoTitle="Template for results" [snippets]="snippets" component="typeahead" demo="template">
         <ngbd-typeahead-template></ngbd-typeahead-template>
       </ngbd-example-box>
+      <ngbd-example-box demoTitle="Custom templates" [snippets]="snippets" component="typeahead" demo="custom">
+        <ngbd-typeahead-custom></ngbd-typeahead-custom>
+      </ngbd-example-box>
       <ngbd-example-box demoTitle="Global configuration of typeaheads" [snippets]="snippets" component="typeahead" demo="config">
         <ngbd-typeahead-config></ngbd-typeahead-config>
       </ngbd-example-box>
