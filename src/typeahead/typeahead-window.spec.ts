@@ -57,7 +57,7 @@ describe('ngb-typeahead-window', () => {
     it('should use a custom no results template if provided', () => {
       const fixture = createTestComponent(`
            <ng-template #nr let-term="term"><div class="no-results">No results for {{term}}</div></ng-template>
-           <ngb-typeahead-window [results]="[]" [term]="term" [noResultsTemplate]="wt"></ngb-typeahead-window>`);
+           <ngb-typeahead-window [results]="[]" [term]="term" [noResultsTemplate]="nr"></ngb-typeahead-window>`);
 
       const buttons = fixture.nativeElement.querySelectorAll('button.dropdown-item');
       expect(buttons.length).toEqual(0);

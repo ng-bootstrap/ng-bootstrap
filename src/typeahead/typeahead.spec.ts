@@ -166,13 +166,14 @@ describe('ngb-typeahead', () => {
        <input type="text" [ngbTypeahead]="find" [noResultsTemplate]="nr"/>`);
       const compiled = fixture.nativeElement;
 
-      fixture.whenStable().then(() => {
-        changeInput(compiled, 'findNothing');
-        fixture.detectChanges();
-        expectWindowResults(compiled, []);
-        expect(fixture.componentInstance.model).toBeNull();
-        expect(getWindow(compiled).querySelector('div.no-results').textContent).toEqual('No results');
-      });
+      changeInput(compiled, 'findNothing');
+      fixture.detectChanges();
+
+      expectWindowResults(compiled, []);
+      expect(fixture.componentInstance.model).toBeUndefined();
+
+      const window = getWindow(compiled);
+      expect(window.querySelector('div.no-results').textContent).toEqual('No results');
     });
 
     it('should be closed on document click', () => {
