@@ -37,6 +37,6 @@ export interface InputDesc extends PropertyDesc {}
 export interface OutputDesc extends PropertyDesc {}
 
 export function signature(method: MethodDesc): string {
-  const args = method.args.map(arg => `${arg.name}: ${arg.type}`).join(', ');
+  const args = method['args'].map(arg => `${arg.name}: ${arg.type}`).join(', ');
   return `${method.name}(${args})`;
 }

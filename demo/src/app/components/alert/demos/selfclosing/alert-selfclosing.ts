@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Subject} from 'rxjs/Subject';
-import 'rxjs/add/operator/debounceTime';
+import {debounceTime} from 'rxjs/operator/debounceTime';
 
 @Component({
   selector: 'ngbd-alert-selfclosing',
@@ -16,7 +16,7 @@ export class NgbdAlertSelfclosing implements OnInit {
     setTimeout(() => this.staticAlertClosed = true, 20000);
 
     this._success.subscribe((message) => this.successMessage = message);
-    this._success.debounceTime(5000).subscribe(() => this.successMessage = null);
+    debounceTime.call(this._success, 5000).subscribe(() => this.successMessage = null);
   }
 
   public changeSuccessMessage() {

@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Router, NavigationEnd} from '@angular/router';
 import {Location} from '@angular/common';
 
-import 'rxjs/add/operator/filter';
+import {filter} from 'rxjs/operator/filter';
 
 declare const ga: any;
 
@@ -24,9 +24,10 @@ export class Analytics {
    */
   trackPageViews() {
     if (this._enabled) {
-      this._router.events.filter((event) => event instanceof NavigationEnd).subscribe(() => {
-        ga('send', {hitType: 'pageview', page: this._location.path()});
-      });
+      filter.call(this._router.events, (event) => event instanceof NavigationEnd)
+        .subscribe(() => {
+          ga('send', {hitType: 'pageview', page: this._location.path()});
+        });
     }
   }
 

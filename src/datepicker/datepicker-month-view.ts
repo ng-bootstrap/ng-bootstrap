@@ -36,10 +36,7 @@ import {DayTemplateContext} from './datepicker-day-template-context';
          [class.hidden]="isHidden(day)">
           <ng-template [ngIf]="!isHidden(day)">
             <ng-template [ngTemplateOutlet]="dayTemplate"
-            [ngOutletContext]="{date: {year: day.date.year, month: day.date.month, day: day.date.day},
-              currentMonth: month.number,
-              disabled: isDisabled(day),
-              selected: isSelected(day.date)}">
+            [ngOutletContext]="_getDayContext(day, month)">
             </ng-template>
           </ng-template>
         </div>
@@ -64,6 +61,15 @@ export class NgbDatepickerMonthView {
     if (!this.isDisabled(day) && !this.isHidden(day)) {
       this.select.emit(NgbDate.from(day.date));
     }
+  }
+
+  _getDayContext(day: any, month: any) {
+    return {
+      date: {year: day.date.year, month: day.date.month, day: day.date.day},
+      currentMonth: month.number,
+      disabled: this.isDisabled(day),
+      selected: this.isSelected(day.date)
+    };
   }
 
   isDisabled(day: DayViewModel) { return this.disabled || day.disabled; }

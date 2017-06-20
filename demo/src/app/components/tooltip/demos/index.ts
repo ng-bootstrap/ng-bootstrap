@@ -15,28 +15,28 @@ export const DEMO_DIRECTIVES = [
 ];
 
 export const DEMO_SNIPPETS = {
-  basic: {
-    code: require('!!prismjs-loader?lang=typescript!./basic/tooltip-basic'),
-    markup: require('!!prismjs-loader?lang=markup!./basic/tooltip-basic.html')
+  'basic': {
+    'code': require('!!prismjs-loader?lang=typescript!./basic/tooltip-basic'),
+    'markup': require('!!prismjs-loader?lang=markup!./basic/tooltip-basic.html')
   },
-  container: {
-    code: require('!!prismjs-loader?lang=typescript!./container/tooltip-container'),
-    markup: require('!!prismjs-loader?lang=markup!./container/tooltip-container.html')
+  'container': {
+    'code': require('!!prismjs-loader?lang=typescript!./container/tooltip-container'),
+    'markup': require('!!prismjs-loader?lang=markup!./container/tooltip-container.html')
   },
-  tplcontent: {
-    code: require('!!prismjs-loader?lang=typescript!./tplcontent/tooltip-tplcontent'),
-    markup: require('!!prismjs-loader?lang=markup!./tplcontent/tooltip-tplcontent.html')
+  'tplcontent': {
+    'code': require('!!prismjs-loader?lang=typescript!./tplcontent/tooltip-tplcontent'),
+    'markup': require('!!prismjs-loader?lang=markup!./tplcontent/tooltip-tplcontent.html')
   },
-  triggers: {
-    code: require('!!prismjs-loader?lang=typescript!./triggers/tooltip-triggers'),
-    markup: require('!!prismjs-loader?lang=markup!./triggers/tooltip-triggers.html')
+  'triggers': {
+    'code': require('!!prismjs-loader?lang=typescript!./triggers/tooltip-triggers'),
+    'markup': require('!!prismjs-loader?lang=markup!./triggers/tooltip-triggers.html')
   },
-  tplwithcontext: {
-    code: require('!!prismjs-loader?lang=typescript!./tplwithcontext/tooltip-tplwithcontext'),
-    markup: require('!!prismjs-loader?lang=markup!./tplwithcontext/tooltip-tplwithcontext.html')
+  'tplwithcontext': {
+    'code': require('!!prismjs-loader?lang=typescript!./tplwithcontext/tooltip-tplwithcontext'),
+    'markup': require('!!prismjs-loader?lang=markup!./tplwithcontext/tooltip-tplwithcontext.html')
   },
-  config: {
-    code: require('!!prismjs-loader?lang=typescript!./config/tooltip-config'),
-    markup: require('!!prismjs-loader?lang=markup!./config/tooltip-config.html')
+  'config': {
+    'code': require('!!prismjs-loader?lang=typescript!./config/tooltip-config'),
+    'markup': require('!!prismjs-loader?lang=markup!./config/tooltip-config.html')
   }
 };
