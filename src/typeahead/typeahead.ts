@@ -306,7 +306,8 @@ export class NgbTypeahead implements ControlValueAccessor,
 
   private _subscribeToUserInput(userInput$: Observable<any[]>): Subscription {
     return userInput$.subscribe((results) => {
-      if ((!results || results.length === 0) && !this.noResultsTemplate) {
+      if ((!results || results.length === 0) &&
+          (!this.noResultsTemplate || this._elementRef.nativeElement.value.length === 0)) {
         this._closePopup();
       } else {
         this._openPopup();
