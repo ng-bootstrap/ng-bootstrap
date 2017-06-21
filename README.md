@@ -13,12 +13,24 @@ As with Bootstrap 4, this library is a work in progress. Please check out our li
 [issues](https://github.com/ng-bootstrap/ng-bootstrap/issues) to see all the things we are implementing.
 Feel free to make comments there.
 
+## Table of Contents
+
+- [Demo](#demo)
+- [Dependencies](#dependencies)
+- [Installation](#installation)
+  - [SystemJS](#systemjs)
+- [Supported browsers](#supported-browsers)
+- [Contributing to the project](#contributing-to-the-project)
+- [Getting Help](#getting-help)
+- [You think you've found a bug?](#you-think-youve-found-a-bug)
+- [Code of Conduct](#code-of-conduct)
+
 ## Demo
 
 View all the directives in action at https://ng-bootstrap.github.io
 
 ## Dependencies
-* [Angular](https://angular.io) (tested with 2.3.1)
+* [Angular](https://angular.io) (tested with 4.0.3)
 * [Bootstrap 4](https://v4-alpha.getbootstrap.com) (tested with 4.0.0-alpha.6)
 
 ## Installation

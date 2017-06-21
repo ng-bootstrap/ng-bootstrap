@@ -8,7 +8,7 @@ import {
   OnInit,
   OnDestroy,
   Injector,
-  Renderer,
+  Renderer2,
   ComponentRef,
   ElementRef,
   TemplateRef,
@@ -71,7 +71,7 @@ export class NgbTooltip implements OnInit, OnDestroy {
   private _zoneSubscription: any;
 
   constructor(
-      private _elementRef: ElementRef, private _renderer: Renderer, injector: Injector,
+      private _elementRef: ElementRef, private _renderer: Renderer2, injector: Injector,
       componentFactoryResolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef, config: NgbTooltipConfig,
       ngZone: NgZone) {
     this.placement = config.placement;
@@ -112,7 +112,7 @@ export class NgbTooltip implements OnInit, OnDestroy {
       this._windowRef.instance.placement = this.placement;
       this._windowRef.instance.id = this._ngbTooltipWindowId;
 
-      this._renderer.setElementAttribute(this._elementRef.nativeElement, 'aria-describedby', this._ngbTooltipWindowId);
+      this._renderer.setAttribute(this._elementRef.nativeElement, 'aria-describedby', this._ngbTooltipWindowId);
 
       if (this.container === 'body') {
         window.document.querySelector(this.container).appendChild(this._windowRef.location.nativeElement);
@@ -130,7 +130,7 @@ export class NgbTooltip implements OnInit, OnDestroy {
    */
   close(): void {
     if (this._windowRef != null) {
-      this._renderer.setElementAttribute(this._elementRef.nativeElement, 'aria-describedby', null);
+      this._renderer.removeAttribute(this._elementRef.nativeElement, 'aria-describedby');
       this._popupService.close();
       this._windowRef = null;
       this.hidden.emit();

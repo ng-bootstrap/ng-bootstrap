@@ -1,12 +1,12 @@
 <p>Custom rating template provided via a variable. Shows fine-grained rating display</p>
 
-<template #t let-fill="fill">
+<ng-template #t let-fill="fill">
   <span *ngIf="fill === 100" class="star full">&hearts;</span>
   <span *ngIf="fill === 0" class="star">&hearts;</span>
   <span *ngIf="fill < 100 && fill > 0" class="star">
     <span class="half" [style.width.%]="fill">&hearts;</span>&hearts;
   </span>
-</template>
+</ng-template>
 
 <ngb-rating [(rate)]="currentRate" [starTemplate]="t" [readonly]="true" max="5"></ngb-rating>
 

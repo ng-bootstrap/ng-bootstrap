@@ -1,32 +1,35 @@
 <div class="api-doc-component">
   <h2>
+    <a [routerLink]="" fragment="{{apiDocs.className}}" ngbdFragment>
+      <img src="img/link-symbol.svg" alt="Anchor link to: {{apiDocs.className}}"/>
+    </a>
     <a (click)="trackSourceClick()" href="https://github.com/ng-bootstrap/ng-bootstrap/tree/master/{{apiDocs.fileName}}" target="_blank">{{apiDocs.className}}</a>
   </h2>
   <p>{{apiDocs.description}}</p>
 
-  <template [ngIf]="apiDocs.properties && apiDocs.properties.length">
+  <ng-template [ngIf]="apiDocs.properties && apiDocs.properties.length">
     <section>
-      <h3 id="inputs">Properties</h3>
+      <h3>Properties</h3>
       <table class="table table-sm table-hover">
         <tbody>
         <tr *ngFor="let prop of apiDocs.properties">
           <td class="label-cell"><code>{{prop.name}}</code></td>
           <td class="content-cell">
             <div><i>Type: </i><code>{{ prop.type }}</code></div>
-            <template [ngIf]="prop.defaultValue">
+            <ng-template [ngIf]="prop.defaultValue">
               <div><i>Default value: </i><code>{{prop.defaultValue || '-'}}</code></div>
-            </template>
+            </ng-template>
             <div style="margin: 10px 0">{{ prop.description }}</div>
           </td>
         </tr>
         </tbody>
       </table>
     </section>
-  </template>
+  </ng-template>
 
-  <template [ngIf]="apiDocs.methods && apiDocs.methods.length">
+  <ng-template [ngIf]="apiDocs.methods && apiDocs.methods.length">
     <section>
-      <h3 id="methods">Methods</h3>
+      <h3>Methods</h3>
       <table class="table table-sm table-hover">
         <tbody>
         <tr *ngFor="let method of apiDocs.methods">
@@ -40,6 +43,6 @@
         </tbody>
       </table>
     </section>
-  </template>
+  </ng-template>
 </div>
 <hr/>

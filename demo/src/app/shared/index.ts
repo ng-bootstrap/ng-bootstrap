@@ -10,6 +10,8 @@ import {ContentWrapper} from './content-wrapper/content-wrapper.component';
 import {SideNavComponent} from './side-nav/side-nav.component';
 import {Analytics} from './analytics/analytics';
 
+export {componentsList} from './side-nav/side-nav.component';
+
 @NgModule({
   imports: [CommonModule, RouterModule],
   exports: [
@@ -28,4 +30,5 @@ import {Analytics} from './analytics/analytics';
   ],
   providers: [Analytics]
 })
-export class NgbdSharedModule {}
+export class NgbdSharedModule {
+}

@@ -6,5 +6,6 @@ describe('ngb-rating-config', () => {
 
     expect(config.max).toBe(10);
     expect(config.readonly).toBe(false);
+    expect(config.resettable).toBe(false);
   });
 });

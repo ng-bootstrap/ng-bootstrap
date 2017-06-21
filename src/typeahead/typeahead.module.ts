@@ -13,7 +13,7 @@ export {NgbTypeahead, NgbTypeaheadSelectItemEvent} from './typeahead';
 
 @NgModule({
   declarations: [NgbTypeahead, NgbHighlight, NgbTypeaheadWindow],
-  exports: [NgbTypeahead],
+  exports: [NgbTypeahead, NgbHighlight],
   imports: [CommonModule],
   entryComponents: [NgbTypeaheadWindow]
 })

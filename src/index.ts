@@ -68,6 +68,7 @@ export {
 export {NgbTimepickerModule, NgbTimepickerConfig, NgbTimeStruct, NgbTimepicker} from './timepicker/timepicker.module';
 export {NgbTooltipModule, NgbTooltipConfig, NgbTooltip} from './tooltip/tooltip.module';
 export {
+  NgbHighlight,
   NgbTypeaheadModule,
   NgbTypeaheadConfig,
   NgbTypeaheadSelectItemEvent,

@@ -13,17 +13,15 @@ import {NgbPaginationConfig} from './pagination-config';
     <ul [class]="'pagination' + (size ? ' pagination-' + size : '')">
       <li *ngIf="boundaryLinks" class="page-item"
         [class.disabled]="!hasPrevious() || disabled">
-        <a aria-label="First" class="page-link" href (click)="!!selectPage(1)" [attr.tabindex]="hasPrevious() ? null : '-1'">
+        <a aria-label="First" class="page-link" href (click)="!!selectPage(1)" [attr.tabindex]="(hasPrevious() ? null : '-1')">
           <span aria-hidden="true">&laquo;&laquo;</span>
-          <span class="sr-only">First</span>
         </a>
       </li>
 
       <li *ngIf="directionLinks" class="page-item"
         [class.disabled]="!hasPrevious() || disabled">
-        <a aria-label="Previous" class="page-link" href (click)="!!selectPage(page-1)" [attr.tabindex]="hasPrevious() ? null : '-1'">
+        <a aria-label="Previous" class="page-link" href (click)="!!selectPage(page-1)" [attr.tabindex]="(hasPrevious() ? null : '-1')">
           <span aria-hidden="true">&laquo;</span>
-          <span class="sr-only">Previous</span>
         </a>
       </li>
       <li *ngFor="let pageNumber of pages" class="page-item" [class.active]="pageNumber === page"
@@ -35,16 +33,14 @@ import {NgbPaginationConfig} from './pagination-config';
         </a>
       </li>
       <li *ngIf="directionLinks" class="page-item" [class.disabled]="!hasNext() || disabled">
-        <a aria-label="Next" class="page-link" href (click)="!!selectPage(page+1)" [attr.tabindex]="hasNext() ? null : '-1'">
+        <a aria-label="Next" class="page-link" href (click)="!!selectPage(page+1)" [attr.tabindex]="(hasNext() ? null : '-1')">
           <span aria-hidden="true">&raquo;</span>
-          <span class="sr-only">Next</span>
         </a>
       </li>
 
       <li *ngIf="boundaryLinks" class="page-item" [class.disabled]="!hasNext() || disabled">
-        <a aria-label="Last" class="page-link" href (click)="!!selectPage(pageCount)" [attr.tabindex]="hasNext() ? null : '-1'">
+        <a aria-label="Last" class="page-link" href (click)="!!selectPage(pageCount)" [attr.tabindex]="(hasNext() ? null : '-1')">
           <span aria-hidden="true">&raquo;&raquo;</span>
-          <span class="sr-only">Last</span>
         </a>
       </li>
     </ul>
