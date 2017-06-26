@@ -155,13 +155,14 @@ div.api-doc-component > h2 {
     text-decoration: none;
 
     & > .fragment {
-      display: inline-block;
+      opacity: 1;
     }
   }
 }
 
 a.fragment {
-  display: none;
+  opacity: 0;
+  transition: opacity 125ms ease;
   line-height: inherit;
   position: absolute;
   margin-left: -1.2em;
