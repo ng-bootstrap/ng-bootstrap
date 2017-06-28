@@ -222,7 +222,9 @@ export class NgbTimepicker implements ControlValueAccessor,
   }
 
   updateHour(newVal: string) {
-    this.model.updateHour(toInteger(newVal));
+    const isPM = this.model.hour >= 12;
+    const enteredHour = toInteger(newVal);
+    this.model.updateHour((this.meridian ? enteredHour % 12 : enteredHour) + (this.meridian && isPM ? 12 : 0));
     this.propagateModelChange();
   }
 
