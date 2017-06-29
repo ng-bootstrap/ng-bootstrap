@@ -1,12 +1,34 @@
 <div class="jumbotron">
   <div class="container">
-    <h1>{{ component }}</h1>
+    <h1>{{ title || component }}</h1>
   </div>
 </div>
 <div class="container">
   <div class="row">
     <div class="col-12 col-lg-9">
-      <ng-content></ng-content>
+      <ngb-tabset
+        class="root-nav"
+        *ngIf="component; else page"
+        (tabChange)="tabChange($event)"
+        [activeId]="activeTab"
+      >
+        <ngb-tab title="API" id="api">
+          <ng-template ngbTabContent>
+            <ng-content select="ngbd-api-docs"></ng-content>
+            <ng-content select="ngbd-api-docs-class"></ng-content>
+            <ng-content select="ngbd-api-docs-config"></ng-content>
+          </ng-template>
+        </ngb-tab>
+        <ngb-tab title="Examples" id="examples">
+          <ng-template ngbTabContent>
+            <ng-content select="ngbd-example-box"></ng-content>
+          </ng-template>
+        </ngb-tab>
+      </ngb-tabset>
+
+      <ng-template #page>
+        <ng-content></ng-content>
+      </ng-template>
     </div>
     <div class="col-12 col-lg-3 hidden-md-down">
       <ngbd-side-nav></ngbd-side-nav>

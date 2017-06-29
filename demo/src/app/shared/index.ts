@@ -13,7 +13,7 @@ import {Analytics} from './analytics/analytics';
 export {componentsList} from './side-nav/side-nav.component';
 
 @NgModule({
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, NgbModule],
   exports: [
     CommonModule,
     RouterModule,
