@@ -186,7 +186,7 @@ export class NgbInputDatepicker implements OnChanges,
 
   manualDateChange(value: string) {
     this._model = this._service.toValidDate(this._parserFormatter.parse(value), null);
-    this._onChange(this._model ? {year: this._model.year, month: this._model.month, day: this._model.day} : value);
+    this._onChange(this._model ? this._model.toStruct() : (value === '' ? null : value));
     this._writeModelValue(this._model);
   }
 
