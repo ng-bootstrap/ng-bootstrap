@@ -60,7 +60,7 @@ function expectInputValue(element: HTMLElement, value: string) {
 
 function expectWindowResults(element, expectedResults: string[]) {
   const window = getWindow(element);
-  expect(getWindow).not.toBeNull();
+  expect(window).not.toBeNull();
   expectResults(window, expectedResults);
 }
 
