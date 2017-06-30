@@ -1,3 +1,24 @@
+<a name="1.0.0-alpha.27"></a>
+# [1.0.0-alpha.27](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.26...1.0.0-alpha.27) (2017-06-30)
+
+
+### Bug Fixes
+
+* support closure-compiler in the library ([5cfd9e4](https://github.com/ng-bootstrap/ng-bootstrap/commit/5cfd9e4))
+* **datepicker:** consider empty string inputs as valid ([95d1668](https://github.com/ng-bootstrap/ng-bootstrap/commit/95d1668)), closes [#1588](https://github.com/ng-bootstrap/ng-bootstrap/issues/1588) [#1637](https://github.com/ng-bootstrap/ng-bootstrap/issues/1637)
+* **popover:** popover not positioned properly ([85fadb8](https://github.com/ng-bootstrap/ng-bootstrap/commit/85fadb8)), closes [#1649](https://github.com/ng-bootstrap/ng-bootstrap/issues/1649)
+* **positioning:** top-right, right-bottom, bottom-right, left-bottom ([4689b4b](https://github.com/ng-bootstrap/ng-bootstrap/commit/4689b4b)), closes [#1561](https://github.com/ng-bootstrap/ng-bootstrap/issues/1561)
+* **tooltip:** properly position tooltips close to container edges ([4a221c1](https://github.com/ng-bootstrap/ng-bootstrap/commit/4a221c1)), closes [#1263](https://github.com/ng-bootstrap/ng-bootstrap/issues/1263) [#1371](https://github.com/ng-bootstrap/ng-bootstrap/issues/1371) [#1643](https://github.com/ng-bootstrap/ng-bootstrap/issues/1643)
+
+
+### Features
+
+* **carousel:** add event on carousel slide with direction info ([5d79c00](https://github.com/ng-bootstrap/ng-bootstrap/commit/5d79c00)), closes [#1356](https://github.com/ng-bootstrap/ng-bootstrap/issues/1356) [#1406](https://github.com/ng-bootstrap/ng-bootstrap/issues/1406)
+* **datepicker:** allow positioning of datepicker popup ([3e22a63](https://github.com/ng-bootstrap/ng-bootstrap/commit/3e22a63)), closes [#1082](https://github.com/ng-bootstrap/ng-bootstrap/issues/1082) [#1570](https://github.com/ng-bootstrap/ng-bootstrap/issues/1570)
+* **typeahead:** export the NgbHighlight component ([a89cc97](https://github.com/ng-bootstrap/ng-bootstrap/commit/a89cc97)), closes [#1553](https://github.com/ng-bootstrap/ng-bootstrap/issues/1553) [#1555](https://github.com/ng-bootstrap/ng-bootstrap/issues/1555)
+
+
+
 <a name="1.0.0-alpha.26"></a>
 # [1.0.0-alpha.26](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.25...1.0.0-alpha.26) (2017-05-16)
 
