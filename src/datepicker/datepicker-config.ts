@@ -16,7 +16,7 @@ export class NgbDatepickerConfig {
   minDate: NgbDateStruct;
   maxDate: NgbDateStruct;
   navigation: 'select' | 'arrows' | 'none' = 'select';
-  outsideDays: 'visible' | 'collapsed' | 'hidden' = 'visible';
+  outsideDays: 'visible' | 'collapsed' | 'hidden';
   showWeekdays = true;
   showWeekNumbers = false;
   startDate: {year: number, month: number};
