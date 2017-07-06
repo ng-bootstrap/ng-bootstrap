@@ -130,7 +130,7 @@ export interface NgbDatepickerNavigateEvent {
         <div class="ngb-dp-month">
           <div *ngIf="navigation === 'none' || (displayMonths > 1 && navigation === 'select')"
                 class="ngb-dp-month-name bg-light">
-            {{ i18n.getMonthFullName(month.number) }} {{ i18n.getYearNumerals(month.year) }}
+            {{ i18n.getMonthFullName(month.number, month.year) }} {{ i18n.getYearNumerals(month.year) }}
           </div>
           <ngb-datepicker-month-view
             [month]="month"
