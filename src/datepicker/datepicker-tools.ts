@@ -47,7 +47,7 @@ export function generateSelectBoxMonths(calendar: NgbCalendar, date: NgbDate, mi
     return [];
   }
 
-  let months = calendar.getMonths();
+  let months = calendar.getMonths(date.year);
 
   if (minDate && date.year === minDate.year) {
     const index = months.findIndex(month => month === minDate.month);

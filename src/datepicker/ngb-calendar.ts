@@ -35,7 +35,7 @@ export abstract class NgbCalendar {
    * Returns an array of months per year.
    * With default calendar we use ISO 8601 and return [1, 2, ..., 12];
    */
-  abstract getMonths(): number[];
+  abstract getMonths(year?: number): number[];
 
   /**
    * Returns number of weeks per month.
