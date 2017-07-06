@@ -1,0 +1,19 @@
+<p>Hebrew calendar</p>
+
+<ngb-datepicker #dp2 [(ngModel)]="model"
+                (navigate)="date = $event.next"
+                [firstDayOfWeek]="7">
+</ngb-datepicker>
+
+<hr/>
+
+<button class="btn btn-sm btn-outline-primary" (click)="selectToday()">Select Today</button>
+<button class="btn btn-sm btn-outline-primary" (click)="dp2.navigateTo()">To current month</button>
+<button class="btn btn-sm btn-outline-primary" (click)="dp2.navigateTo({year: 5776, month: 6})">To Adar I 5776</button>
+<button class="btn btn-sm btn-outline-primary" (click)="changeDirection(); dp2.setDirection(direction)">{{ direction.toUpperCase() }}</button>
+
+<hr/>
+
+<pre>Month: {{ date.month }}.{{ date.year }}</pre>
+<pre>Model: {{ model | json }}</pre>
+<div>Greg.date: {{ getGregorian() }}</div>

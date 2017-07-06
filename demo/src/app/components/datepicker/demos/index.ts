@@ -6,10 +6,13 @@ import {NgbdDatepickerPopup} from './popup/datepicker-popup';
 import {NgbdDatepickerCustomday} from './customday/datepicker-customday';
 import {NgbdDatepickerMultiple} from './multiple/datepicker-multiple';
 import {NgbdDatepickerCalendars} from './calendars/datepicker-calendars';
+import {NgbdDatepickerAra}  from './calendars/datepicker-ara';
+import {NgbdDatepickerHeb}  from './calendars/datepicker-heb';
 
 export const DEMO_DIRECTIVES = [
   NgbdDatepickerBasic, NgbdDatepickerPopup, NgbdDatepickerDisabled, NgbdDatepickerI18n,
-  NgbdDatepickerCustomday, NgbdDatepickerConfig, NgbdDatepickerMultiple, NgbdDatepickerCalendars
+  NgbdDatepickerCustomday, NgbdDatepickerConfig, NgbdDatepickerMultiple, NgbdDatepickerCalendars,
+  NgbdDatepickerAra, NgbdDatepickerHeb
 ];
 
 export const DEMO_SNIPPETS = {
