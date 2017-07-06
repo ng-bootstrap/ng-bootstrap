@@ -1,5 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {NgbDateStruct} from './ngb-date-struct';
+import {NgbCalendar} from './ngb-calendar';
 
 @Component({
   selector: '[ngbDatepickerDayView]',
@@ -22,13 +23,15 @@ import {NgbDateStruct} from './ngb-date-struct';
     '[class.outside]': 'isMuted()',
     '[class.btn-secondary]': '!disabled'
   },
-  template: `{{ date.day }}`
+  template: `{{ this._calendar.displayNumerals(date.day) }}`
 })
 export class NgbDatepickerDayView {
   @Input() currentMonth: number;
   @Input() date: NgbDateStruct;
   @Input() disabled: boolean;
   @Input() selected: boolean;
+
+  constructor(private _calendar: NgbCalendar) { ; };
 
   isMuted() { return !this.selected && (this.date.month !== this.currentMonth || this.disabled); }
 }

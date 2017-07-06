@@ -19,7 +19,7 @@ export type NgbPeriod = 'y' | 'm' | 'd';
 @Injectable()
 export abstract class NgbCalendar {
   abstract getDaysPerWeek(): number;
-  abstract getMonths(): number[];
+  abstract getMonths(year?: number): number[];
   abstract getWeeksPerMonth(): number;
   abstract getWeekday(date: NgbDate): number;
 
@@ -31,6 +31,11 @@ export abstract class NgbCalendar {
   abstract getToday(): NgbDate;
 
   abstract isValid(date: NgbDate): boolean;
+
+  getDirection(): 'ltr' | 'rtl' { return 'ltr'; };
+  setDirection(dir: 'ltr' | 'rtl'): void { ; };
+  displayNumerals(numerals?: number): number | string { return numerals; };
+  specifyMonth(date: NgbDate, year: number): number { return date.month; };
 }
 
 @Injectable()
