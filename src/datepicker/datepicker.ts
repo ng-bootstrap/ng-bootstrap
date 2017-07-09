@@ -76,7 +76,7 @@ export interface NgbDatepickerNavigateEvent {
     </ng-template>
     
     <div class="ngb-dp-header bg-faded pt-1 rounded-top" [style.height.rem]="getHeaderHeight()" 
-      [style.marginBottom.rem]="-getHeaderMargin()">
+      [style.marginBottom.rem]="-getHeaderMargin()" [style.direction]="direction">
       <ngb-datepicker-navigation *ngIf="navigation !== 'none'"
         [date]="months[0]?.firstDate"
         [minDate]="_minDate"
@@ -85,6 +85,7 @@ export interface NgbDatepickerNavigateEvent {
         [disabled]="disabled"
         [showWeekNumbers]="showWeekNumbers"
         [showSelect]="navigation === 'select'"
+        [direction]="direction"
         (navigate)="onNavigateEvent($event)"
         (select)="onNavigateDateSelect($event)">
       </ngb-datepicker-navigation>
@@ -92,7 +93,7 @@ export interface NgbDatepickerNavigateEvent {
 
     <div class="ngb-dp-months d-flex px-1 pb-1">
       <ng-template ngFor let-month [ngForOf]="months" let-i="index">
-        <div class="ngb-dp-month d-block ml-3">            
+        <div class="ngb-dp-month d-block ml-3" [style.direction]="direction">            
           <div *ngIf="navigation !== 'select' || displayMonths > 1" class="ngb-dp-month-name text-center">
             {{ i18n.getMonthFullName(month.number) }} {{ month.year }}
           </div>
@@ -189,6 +190,7 @@ export class NgbDatepicker implements OnChanges,
   @Output() navigate = new EventEmitter<NgbDatepickerNavigateEvent>();
 
   disabled = false;
+  direction: 'ltr' | 'rtl' | 'auto';
 
   onChange = (_: any) => {};
   onTouched = () => {};
@@ -207,6 +209,10 @@ export class NgbDatepicker implements OnChanges,
     this.showWeekdays = config.showWeekdays;
     this.showWeekNumbers = config.showWeekNumbers;
     this.startDate = config.startDate;
+    if (config.direction !== 'auto') {
+      this._calendar.setDirection(config.direction);
+    }
+    this.direction = this._calendar.getDirection();
   }
 
   getHeaderHeight() {
@@ -288,6 +294,12 @@ export class NgbDatepicker implements OnChanges,
   writeValue(value) { this.model = this._service.toValidDate(value, null); }
 
   setDisabledState(isDisabled: boolean) { this.disabled = isDisabled; }
+
+  setDirection(direction: 'ltr' | 'rtl'): void {
+    this.i18n.setDirection(direction);
+    this._calendar.setDirection(direction);
+    this.direction = direction;
+  }
 
   private _setDates() {
     this._maxDate = NgbDate.from(this.maxDate);

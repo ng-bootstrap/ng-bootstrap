@@ -44,7 +44,7 @@ import {NgbCalendar} from './ngb-calendar';
   `],
   template: `
     <button type="button" class="btn-link" (click)="!!doNavigate(navigation.PREV)" [disabled]="prevDisabled()">
-      <span class="ngb-dp-navigation-chevron"></span>    
+      <span class="ngb-dp-navigation-chevron" [class.right]="direction==='rtl'"></span>    
     </button>
     
     <ngb-datepicker-navigation-select *ngIf="showSelect" class="d-block" [style.width.rem]="months * 9"
@@ -52,11 +52,12 @@ import {NgbCalendar} from './ngb-calendar';
       [minDate]="minDate"
       [maxDate]="maxDate"
       [disabled] = "disabled"
+      [direction]="direction"
       (select)="selectDate($event)">
     </ngb-datepicker-navigation-select>
     
     <button type="button" class="btn-link" (click)="!!doNavigate(navigation.NEXT)" [disabled]="nextDisabled()">
-      <span class="ngb-dp-navigation-chevron right"></span>
+      <span class="ngb-dp-navigation-chevron" [class.right]="direction!=='rtl'"></span>
     </button>
   `
 })
@@ -70,6 +71,7 @@ export class NgbDatepickerNavigation {
   @Input() months: number;
   @Input() showSelect: boolean;
   @Input() showWeekNumbers: boolean;
+  @Input() direction: 'ltr' | 'rtl' | 'auto';
 
   @Output() navigate = new EventEmitter<NavigationEvent>();
   @Output() select = new EventEmitter<NgbDate>();

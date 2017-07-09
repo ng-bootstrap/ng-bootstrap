@@ -23,13 +23,15 @@ export abstract class NgbDatepickerI18n {
    * Returns the short month name to display in the date picker navigation.
    * With default calendar we use ISO 8601: 'month' is 1=Jan ... 12=Dec
    */
-  abstract getMonthShortName(month: number): string;
+  abstract getMonthShortName(month: number, year?: number): string;
 
   /**
    * Returns the full month name to display in the date picker navigation.
    * With default calendar we use ISO 8601: 'month' is 1=January ... 12=December
    */
-  abstract getMonthFullName(month: number): string;
+  abstract getMonthFullName(month: number, year?: number): string;
+
+  setDirection(direction: 'ltr' | 'rtl'): void {}
 }
 
 @Injectable()

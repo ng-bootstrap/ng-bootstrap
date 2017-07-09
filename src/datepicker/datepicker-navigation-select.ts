@@ -16,13 +16,18 @@ import {NgbCalendar} from './ngb-calendar';
       height: inherit;
       width: 50%;
     }
+    .custom-select.left-arrows {
+        background-position: left 0.550rem center !important;
+    }
   `],
   template: `
-    <select [disabled]="disabled" class="custom-select d-inline-block" [value]="date?.month" (change)="changeMonth($event.target.value)">
-      <option *ngFor="let m of months" [value]="m">{{ i18n.getMonthShortName(m) }}</option>
+    <select [disabled]="disabled" class="custom-select d-inline-block" [value]="date?.month" (change)="changeMonth($event.target.value)" 
+          [class.left-arrows]="direction==='rtl'"> 
+      <option *ngFor="let m of months" [value]="m">{{ i18n.getMonthShortName(m, date?.year) }}</option>
     </select>` +
-      `<select [disabled]="disabled" class="custom-select d-inline-block" [value]="date?.year" (change)="changeYear($event.target.value)">
-      <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+      `<select [disabled]="disabled" class="custom-select d-inline-block" [value]="date?.year" (change)="changeYear($event.target.value)" 
+          [class.left-arrows]="direction==='rtl'">
+      <option *ngFor="let y of years" [value]="y">{{ calendar.displayNumerals(y) }}</option>
     </select> 
   `  // template needs to be formatted in a certain way so we don't add empty text nodes
 })
@@ -34,6 +39,7 @@ export class NgbDatepickerNavigationSelect implements OnChanges {
   @Input() disabled: boolean;
   @Input() maxDate: NgbDate;
   @Input() minDate: NgbDate;
+  @Input() direction: 'ltr' | 'rtl' = 'ltr';
 
   @Output() select = new EventEmitter<NgbDate>();
 
@@ -48,10 +54,12 @@ export class NgbDatepickerNavigationSelect implements OnChanges {
 
   changeMonth(month: string) { this.select.emit(new NgbDate(this.date.year, toInteger(month), 1)); }
 
-  changeYear(year: string) { this.select.emit(new NgbDate(toInteger(year), this.date.month, 1)); }
+  changeYear(year: string) {
+    this.select.emit(new NgbDate(toInteger(year), this.calendar.specifyMonth(this.date, toInteger(year)), 1));
+  }
 
   private _generateMonths() {
-    this.months = this.calendar.getMonths();
+    this.months = this.date ? this.calendar.getMonths(this.date.year) : this.calendar.getMonths();
 
     if (this.date && this.date.year === this.minDate.year) {
       const index = this.months.findIndex(month => month === this.minDate.month);

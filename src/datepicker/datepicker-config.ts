@@ -20,4 +20,5 @@ export class NgbDatepickerConfig {
   showWeekdays = true;
   showWeekNumbers = false;
   startDate: {year: number, month: number};
+  direction: 'ltr' | 'rtl' | 'auto' = 'auto';
 }

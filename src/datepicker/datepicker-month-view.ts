@@ -1,6 +1,7 @@
 import {Component, Input, TemplateRef, Output, EventEmitter} from '@angular/core';
 import {MonthViewModel, DayViewModel, WeekViewModel} from './datepicker-view-model';
 import {NgbDate} from './ngb-date';
+import {NgbCalendar} from './ngb-calendar';
 import {NgbDatepickerI18n} from './datepicker-i18n';
 import {DayTemplateContext} from './datepicker-day-template-context';
 
@@ -31,7 +32,9 @@ import {DayTemplateContext} from './datepicker-day-template-context';
     </div>
     <ng-template ngFor let-week [ngForOf]="month.weeks">
       <div *ngIf="!isCollapsed(week)" class="ngb-dp-week d-flex">
-        <div *ngIf="showWeekNumbers" class="ngb-dp-week-number small text-center font-italic text-muted">{{ week.number }}</div>
+        <div *ngIf="showWeekNumbers" class="ngb-dp-week-number small text-center font-italic text-muted">
+            {{ this.calendar.displayNumerals(week.number) }}
+        </div>
         <div *ngFor="let day of week.days" (click)="doSelect(day)" class="ngb-dp-day" [class.disabled]="isDisabled(day)"
          [class.hidden]="isHidden(day)">
           <ng-template [ngIf]="!isHidden(day)">
@@ -55,7 +58,7 @@ export class NgbDatepickerMonthView {
 
   @Output() select = new EventEmitter<NgbDate>();
 
-  constructor(public i18n: NgbDatepickerI18n) {}
+  constructor(public i18n: NgbDatepickerI18n, private calendar: NgbCalendar) {}
 
   doSelect(day: DayViewModel) {
     if (!this.isDisabled(day) && !this.isHidden(day)) {
