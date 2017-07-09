@@ -23,7 +23,7 @@ import {NgbCalendar} from './ngb-calendar';
     '[class.outside]': 'isMuted()',
     '[class.btn-secondary]': '!disabled'
   },
-  template: `{{ this._calendar.displayNumerals(date.day) }}`
+  template: `{{ this.calendar.displayNumerals(date.day) }}`
 })
 export class NgbDatepickerDayView {
   @Input() currentMonth: number;
@@ -31,7 +31,7 @@ export class NgbDatepickerDayView {
   @Input() disabled: boolean;
   @Input() selected: boolean;
 
-  constructor(private _calendar: NgbCalendar) { ; };
+  constructor(public calendar: NgbCalendar) { ; };
 
   isMuted() { return !this.selected && (this.date.month !== this.currentMonth || this.disabled); }
 }
