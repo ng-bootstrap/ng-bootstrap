@@ -1,14 +1,12 @@
-import {Injectable} from '@angular/core';
-
-const WEEKDAYS_SHORT = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
-const MONTHS_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-const MONTHS_FULL = [
-  'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November',
-  'December'
-];
+import {Injectable, Inject, LOCALE_ID} from '@angular/core';
+import {DatePipe} from '@angular/common';
 
 /**
- * Type of the service supplying month and weekday names to to NgbDatepicker component.
+ * NgbDatePicker automatically translates the days of week and months using the Date pipe of Angular,
+ * using the locale specified with LOCALE_ID.
+ *
+ * If you want to customize the translations you can use this service,
+ * supplying month and weekday names to to NgbDatepicker component.
  * See the i18n demo for how to extend this class and define a custom provider for i18n.
  */
 @Injectable()
@@ -34,9 +32,35 @@ export abstract class NgbDatepickerI18n {
 
 @Injectable()
 export class NgbDatepickerI18nDefault extends NgbDatepickerI18n {
-  getWeekdayShortName(weekday: number): string { return WEEKDAYS_SHORT[weekday - 1]; }
+  private _datePipe: DatePipe;
 
-  getMonthShortName(month: number): string { return MONTHS_SHORT[month - 1]; }
+  private _weekDays = new Array<string>(7);
 
-  getMonthFullName(month: number): string { return MONTHS_FULL[month - 1]; }
+  private _months = new Array<string>(12);
+
+  private _shortMonths = new Array<string>(12);
+
+  constructor(@Inject(LOCALE_ID) locale: string) {
+    super();
+    this._datePipe = new DatePipe(locale);
+
+    for (let i = 0; i < this._weekDays.length; i++) {
+      const date = new Date(0);
+      date.setDate(5 + i);
+      this._weekDays[i] = this._datePipe.transform(date, 'EEE');
+    }
+
+    console.log(this._weekDays);
+
+    for (let i = 0; i < this._months.length; i++) {
+      const date = new Date(0);
+      date.setMonth(i);
+      this._months[i] = this._datePipe.transform(date, 'MMMM');
+      this._shortMonths[i] = this._datePipe.transform(date, 'MMM');
+    }
+  }
+
+  getWeekdayShortName(weekday: number): string { return this._weekDays[weekday - 1]; }
+  getMonthShortName(month: number): string { return this._shortMonths[month - 1]; }
+  getMonthFullName(month: number): string { return this._months[month - 1]; }
 }

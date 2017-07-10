@@ -50,7 +50,7 @@ describe('ngb-datepicker-month-view', () => {
     const fixture = createTestComponent(
         '<ngb-datepicker-month-view [month]="month" [showWeekdays]="showWeekdays"></ngb-datepicker-month-view>');
 
-    expectWeekdays(fixture.nativeElement, ['Mo']);
+    expectWeekdays(fixture.nativeElement, ['Mon']);
 
     fixture.componentInstance.showWeekdays = false;
     fixture.detectChanges();
@@ -110,7 +110,7 @@ describe('ngb-datepicker-month-view', () => {
   it('should not send date selection events if disabled', () => {
     const fixture = createTestComponent(`
         <ng-template #tpl let-date="date">{{ date.day }}</ng-template>
-        <ngb-datepicker-month-view [month]="month" [dayTemplate]="tpl" [disabled]="true" (select)="onClick($event)">        
+        <ngb-datepicker-month-view [month]="month" [dayTemplate]="tpl" [disabled]="true" (select)="onClick($event)">
         </ngb-datepicker-month-view>
       `);
 
@@ -153,7 +153,7 @@ describe('ngb-datepicker-month-view', () => {
     it('should set default cursor for all dates if disabled', () => {
       const fixture = createTestComponent(`
         <ng-template #tpl let-date="date">{{ date.day }}</ng-template>
-        <ngb-datepicker-month-view [month]="month" [dayTemplate]="tpl" (change)="onClick($event)" [disabled]="true">        
+        <ngb-datepicker-month-view [month]="month" [dayTemplate]="tpl" (change)="onClick($event)" [disabled]="true">
         </ngb-datepicker-month-view>
       `);
 
@@ -207,7 +207,7 @@ describe('ngb-datepicker-month-view', () => {
   it('should collapse weeks outside of current month', () => {
     const fixture = createTestComponent(`
         <ng-template #tpl let-date="date">{{ date.day }}</ng-template>
-        <ngb-datepicker-month-view [month]="monthCollapsedWeeks" [outsideDays]="outsideDays" [dayTemplate]="tpl">        
+        <ngb-datepicker-month-view [month]="monthCollapsedWeeks" [outsideDays]="outsideDays" [dayTemplate]="tpl">
         </ngb-datepicker-month-view>
     `);
 
@@ -225,7 +225,7 @@ describe('ngb-datepicker-month-view', () => {
   it('should collapse weeks regardless of "showWeekNumbers" value', () => {
     const fixture = createTestComponent(`
         <ng-template #tpl let-date="date">{{ date.day }}</ng-template>
-        <ngb-datepicker-month-view [month]="monthCollapsedWeeks" outsideDays="collapsed" [dayTemplate]="tpl">        
+        <ngb-datepicker-month-view [month]="monthCollapsedWeeks" outsideDays="collapsed" [dayTemplate]="tpl">
         </ngb-datepicker-month-view>
     `);
 
