@@ -309,6 +309,22 @@ describe('NgbInputDatepicker', () => {
            tick();
            expect(form.control.invalid).toBeTruthy();
          }));
+
+      it('should consider empty strings as valid', fakeAsync(() => {
+           const fixture = createTestCmpt(`<form><input ngbDatepicker [(ngModel)]="date" name="dp"></form>`);
+           const inputDebugEl = fixture.debugElement.query(By.css('input'));
+           const form = fixture.debugElement.query(By.directive(NgForm)).injector.get(NgForm);
+
+           inputDebugEl.triggerEventHandler('change', {target: {value: '2016-09-10'}});
+           fixture.detectChanges();
+           tick();
+           expect(form.control.valid).toBeTruthy();
+
+           inputDebugEl.triggerEventHandler('change', {target: {value: ''}});
+           fixture.detectChanges();
+           tick();
+           expect(form.control.valid).toBeTruthy();
+         }));
     });
 
   });
