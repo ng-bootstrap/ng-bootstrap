@@ -1,3 +1,26 @@
+<a name="1.0.0-alpha.28"></a>
+# [1.0.0-alpha.28](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.27...1.0.0-alpha.28) (2017-07-11)
+
+
+### Bug Fixes
+
+* **datepicker:** use noon instead of midnight for date conversion ([2fdd8f1](https://github.com/ng-bootstrap/ng-bootstrap/commit/2fdd8f1)), closes [#1615](https://github.com/ng-bootstrap/ng-bootstrap/issues/1615) [#1676](https://github.com/ng-bootstrap/ng-bootstrap/issues/1676)
+* **timepicker:** respect meridian setting when entring hours ([62c5ae3](https://github.com/ng-bootstrap/ng-bootstrap/commit/62c5ae3)), closes [#1631](https://github.com/ng-bootstrap/ng-bootstrap/issues/1631) [#1636](https://github.com/ng-bootstrap/ng-bootstrap/issues/1636)
+* **typeahead:** avoid unnecessary re-creation of DOM nodes ([0c19153](https://github.com/ng-bootstrap/ng-bootstrap/commit/0c19153)), closes [#1659](https://github.com/ng-bootstrap/ng-bootstrap/issues/1659) [#1674](https://github.com/ng-bootstrap/ng-bootstrap/issues/1674)
+
+
+### Features
+
+* **datepicker:** add keyboard navigation ([bd94215](https://github.com/ng-bootstrap/ng-bootstrap/commit/bd94215))
+
+
+### BREAKING CHANGES
+
+* **datepicker:** component uses `ChangeDetectionStrategy.OnPush` now for most of the internal implementation.
+Things like the dynamic internationalization or calendar change might not work anymore as these are injected services. Any internal changes in these services in runtime will not trigger datepicker re-rendering.
+
+
+
 <a name="1.0.0-alpha.27"></a>
 # [1.0.0-alpha.27](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.26...1.0.0-alpha.27) (2017-06-30)
 
