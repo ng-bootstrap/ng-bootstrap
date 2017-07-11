@@ -6,7 +6,7 @@ function fromJSDate(jsDate: Date) {
   return new NgbDate(jsDate.getFullYear(), jsDate.getMonth() + 1, jsDate.getDate());
 }
 function toJSDate(date: NgbDate) {
-  const jsDate = new Date(date.year, date.month - 1, date.day);
+  const jsDate = new Date(date.year, date.month - 1, date.day, 12);
   // this is done avoid 30 -> 1930 conversion
   if (!isNaN(jsDate.getTime())) {
     jsDate.setFullYear(date.year);
@@ -48,7 +48,7 @@ export class NgbCalendarGregorian extends NgbCalendar {
       case 'y':
         return new NgbDate(date.year + number, 1, 1);
       case 'm':
-        jsDate = new Date(date.year, date.month + number - 1, 1);
+        jsDate = new Date(date.year, date.month + number - 1, 1, 12);
         break;
       case 'd':
         jsDate.setDate(jsDate.getDate() + number);
