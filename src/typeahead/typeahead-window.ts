@@ -32,7 +32,7 @@ export interface ResultTemplateContext {
         (mouseenter)="markActive(idx)"
         (click)="select(result)">
           <ng-template [ngTemplateOutlet]="resultTemplate || rt"
-          [ngOutletContext]="_getResultContext(result)"></ng-template>
+          [ngOutletContext]="{result: result, term: term, formatter: formatter}"></ng-template>
       </button>
     </ng-template>
   `
@@ -78,8 +78,6 @@ export class NgbTypeaheadWindow implements OnInit {
   @Output('select') selectEvent = new EventEmitter();
 
   @Output('activeChange') activeChangeEvent = new EventEmitter();
-
-  _getResultContext(result: any) { return {result: result, term: this.term, formatter: this.formatter}; }
 
   getActive() { return this.results[this.activeIdx]; }
 
