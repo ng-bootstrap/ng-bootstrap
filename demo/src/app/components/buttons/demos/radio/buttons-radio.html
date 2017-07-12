@@ -1,12 +1,12 @@
 <div [(ngModel)]="model" ngbRadioGroup name="radioBasic">
-  <label class="btn btn-primary">
-    <input type="radio" [value]="1"> Left (pre-checked)
+  <label ngbButtonLabel class="btn-primary">
+    <input ngbButton type="radio" [value]="1"> Left (pre-checked)
   </label>
-  <label class="btn btn-primary">
-    <input type="radio" value="middle"> Middle
+  <label ngbButtonLabel class="btn-primary">
+    <input ngbButton type="radio" value="middle"> Middle
   </label>
-  <label class="btn btn-primary">
-    <input type="radio" [value]="false"> Right
+  <label ngbButtonLabel class="btn-primary">
+    <input ngbButton type="radio" [value]="false"> Right
   </label>
 </div>
 <hr>
