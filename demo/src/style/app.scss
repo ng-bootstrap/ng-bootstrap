@@ -231,7 +231,7 @@ ngbd-component-wrapper, ngbd-page-wrapper {
   > .nav-tabs {
     transform: translateY(-$offset);
 
-    .nav-link, .nav-link:not(.active):hover {
+    .nav-link:not(.active) {
       color: #f9f9f9;
     }
 
