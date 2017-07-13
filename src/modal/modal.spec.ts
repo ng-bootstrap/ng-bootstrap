@@ -473,6 +473,34 @@ describe('ngb-modal', () => {
       modalInstance.close('ok!');
       expect(document.activeElement).toBe(document.body);
     });
+
+    it('should return focus to body if the opening element is not stored as previously focused element', () => {
+      fixture.detectChanges();
+      const openElement = fixture.nativeElement.querySelector('#open-no-focus');
+
+      openElement.click();
+      fixture.detectChanges();
+      expect(fixture.nativeElement).toHaveModal('from non focusable element');
+      expect(document.activeElement).toBe(document.querySelector('ngb-modal-window'));
+
+      fixture.componentInstance.close();
+      expect(fixture.nativeElement).not.toHaveModal();
+      expect(document.activeElement).toBe(document.body);
+    });
+
+    it('should return focus to body if the opening element is stored but cannot be focused', () => {
+      fixture.detectChanges();
+      const openElement = fixture.nativeElement.querySelector('#open-no-focus-ie');
+
+      openElement.click();
+      fixture.detectChanges();
+      expect(fixture.nativeElement).toHaveModal('from non focusable element but stored as activeElement on IE');
+      expect(document.activeElement).toBe(document.querySelector('ngb-modal-window'));
+
+      fixture.componentInstance.close();
+      expect(fixture.nativeElement).not.toHaveModal();
+      expect(document.activeElement).toBe(document.body);
+    });
   });
 
   describe('window element ordering', () => {
@@ -528,6 +556,12 @@ export class WithActiveModalCmpt {
       </ng-template>
     </ng-template>
     <button id="open" (click)="open('from button')">Open</button>
+    <div id="open-no-focus" (click)="open('from non focusable element')">Open</div>
+    <div
+      id="open-no-focus-ie"
+      (click)="open('from non focusable element but stored as activeElement on IE')"
+      style="display: inline-block;"
+    >Open</div>
   `
 })
 class TestComponent {
