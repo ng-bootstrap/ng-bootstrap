@@ -1,5 +1,5 @@
 <div class="container" style="padding-left: 0; padding-right: 0;">
-  <header class="navbar navbar-light navbar-fixed-top navbar-toggleable-md">
+  <header class="navbar navbar-light navbar-fixed-top navbar-expand-lg">
     <button class="navbar-toggler navbar-toggler-right" type="button" (click)="navbarCollapsed = !navbarCollapsed"
             [attr.aria-expanded]="!navbarCollapsed" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -15,12 +15,12 @@
         <li class="nav-item" [routerLinkActive]="['active']">
           <a class="nav-link" [routerLink]="['/components']" (click)="navbarCollapsed = true">Components</a>
         </li>
-        <li class="nav-item hidden-lg-up" *ngFor="let component of components" [routerLinkActive]="['active']">
+        <li class="nav-item d-lg-none" *ngFor="let component of components" [routerLinkActive]="['active']">
           <a class="nav-link" [routerLink]="['/components', component.toLowerCase()]" (click)="navbarCollapsed = true">{{ component }}</a>
         </li>
       </ul>
 
-      <span class="github-buttons hidden-md-down">
+      <span class="github-buttons d-none d-lg-inline">
         <a class="github-button"
            href="https://github.com/ng-bootstrap/ng-bootstrap"
            target="_blank"
