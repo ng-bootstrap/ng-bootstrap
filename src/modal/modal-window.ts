@@ -67,13 +67,18 @@ export class NgbModalWindow implements OnInit,
   }
 
   ngOnDestroy() {
-    if (this._elWithFocus && document.body.contains(this._elWithFocus)) {
-      this._elWithFocus['focus'].apply(this._elWithFocus, []);
+    const body = document.body;
+    const elWithFocus = this._elWithFocus;
+
+    let elementToFocus;
+    if (elWithFocus && elWithFocus['focus'] && body.contains(elWithFocus)) {
+      elementToFocus = elWithFocus;
     } else {
-      document.body['focus'].apply(document.body, []);
+      elementToFocus = body;
     }
+    elementToFocus['focus'].apply(elementToFocus, []);
 
     this._elWithFocus = null;
-    this._renderer.removeClass(document.body, 'modal-open');
+    this._renderer.removeClass(body, 'modal-open');
   }
 }
