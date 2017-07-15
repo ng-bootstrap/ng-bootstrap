@@ -1,4 +1,13 @@
-import {Component, Injectable, ViewChild, OnDestroy, NgModule, getDebugNode, DebugElement} from '@angular/core';
+import {
+  Component,
+  Injectable,
+  ViewChild,
+  OnDestroy,
+  NgModule,
+  getDebugNode,
+  DebugElement,
+  ReflectiveInjector
+} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {TestBed, ComponentFixture} from '@angular/core/testing';
 
@@ -8,6 +17,11 @@ const NOOP = () => {};
 
 @Injectable()
 class SpyService {
+  called = false;
+}
+
+@Injectable()
+class CustomSpyService {
   called = false;
 }
 
@@ -446,6 +460,21 @@ describe('ngb-modal', () => {
 
   });
 
+  describe('custom injector option', () => {
+
+    it('should render modal with a custom injector', () => {
+      const customInjector = ReflectiveInjector.resolveAndCreate([CustomSpyService]);
+      const modalInstance = fixture.componentInstance.openCmpt(CustomInjectorCmpt, {injector: customInjector});
+      fixture.detectChanges();
+      expect(fixture.nativeElement).toHaveModal('Some content');
+
+      modalInstance.close();
+      fixture.detectChanges();
+      expect(fixture.nativeElement).not.toHaveModal();
+    });
+
+  });
+
   describe('focus management', () => {
 
     it('should focus modal window and return focus to previously focused element', () => {
@@ -523,6 +552,13 @@ describe('ngb-modal', () => {
   });
 });
 
+@Component({selector: 'custom-injector-cmpt', template: 'Some content'})
+export class CustomInjectorCmpt implements OnDestroy {
+  constructor(private _spyService: CustomSpyService) {}
+
+  ngOnDestroy(): void { this._spyService.called = true; }
+}
+
 @Component({selector: 'destroyable-cmpt', template: 'Some content'})
 export class DestroyableCmpt implements OnDestroy {
   constructor(private _spyService: SpyService) {}
@@ -594,10 +630,10 @@ class TestComponent {
 }
 
 @NgModule({
-  declarations: [TestComponent, DestroyableCmpt, WithActiveModalCmpt],
+  declarations: [TestComponent, CustomInjectorCmpt, DestroyableCmpt, WithActiveModalCmpt],
   exports: [TestComponent, DestroyableCmpt],
   imports: [CommonModule, NgbModalModule.forRoot()],
-  entryComponents: [DestroyableCmpt, WithActiveModalCmpt],
+  entryComponents: [CustomInjectorCmpt, DestroyableCmpt, WithActiveModalCmpt],
   providers: [SpyService]
 })
 class NgbModalTestModule {
