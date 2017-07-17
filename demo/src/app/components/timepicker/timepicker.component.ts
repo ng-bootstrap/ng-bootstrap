@@ -4,7 +4,7 @@ import {DEMO_SNIPPETS} from './demos';
 @Component({
   selector: 'ngbd-timepicker',
   template: `
-    <ngbd-content-wrapper component="Timepicker">
+    <ngbd-component-wrapper component="Timepicker">
       <ngbd-api-docs directive="NgbTimepicker"></ngbd-api-docs>
       <ngbd-api-docs-class type="NgbTimeStruct"></ngbd-api-docs-class>
       <ngbd-api-docs-config type="NgbTimepickerConfig"></ngbd-api-docs-config>
@@ -29,7 +29,7 @@ import {DEMO_SNIPPETS} from './demos';
       <ngbd-example-box demoTitle="Global configuration of timepickers" [snippets]="snippets" component="timepicker" demo="config">
         <ngbd-timepicker-config></ngbd-timepicker-config>
       </ngbd-example-box>
-    </ngbd-content-wrapper>
+    </ngbd-component-wrapper>
   `
 })
 export class NgbdTimepicker {

@@ -4,7 +4,7 @@ import {DEMO_SNIPPETS} from './demos';
 @Component({
   selector: 'ngbd-alert',
   template: `
-    <ngbd-content-wrapper component="Alert">
+    <ngbd-component-wrapper component="Alert">
       <ngbd-api-docs directive="NgbAlert"></ngbd-api-docs>
       <ngbd-api-docs-config type="NgbAlertConfig"></ngbd-api-docs-config>
       <ngbd-example-box demoTitle="Basic Alert" [snippets]="snippets" component="alert" demo="basic">
@@ -22,7 +22,7 @@ import {DEMO_SNIPPETS} from './demos';
       <ngbd-example-box demoTitle="Global configuration of alerts" [snippets]="snippets" component="alert" demo="config">
         <ngbd-alert-config></ngbd-alert-config>
       </ngbd-example-box>
-    </ngbd-content-wrapper>
+    </ngbd-component-wrapper>
   `
 })
 export class NgbdAlert {
