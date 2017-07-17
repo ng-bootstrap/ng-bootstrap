@@ -1,16 +1,14 @@
-import {Component, Input, OnChanges} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 
 const DEFAULT_TAB = 'api';
 const VALID_TABS = [DEFAULT_TAB, 'examples'];
 
 @Component({
-  selector: 'ngbd-content-wrapper',
-  templateUrl: './content-wrapper.component.html'
+  selector: 'ngbd-component-wrapper',
+  templateUrl: './component-wrapper.component.html'
 })
-export class ContentWrapper {
-  @Input()
-  public title: string | false = false;
+export class ComponentWrapper {
 
   @Input()
   public component: string;

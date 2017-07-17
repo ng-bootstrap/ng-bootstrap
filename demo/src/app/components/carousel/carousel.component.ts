@@ -4,7 +4,7 @@ import {DEMO_SNIPPETS} from './demos';
 @Component({
   selector: 'ngbd-carousel',
   template: `
-    <ngbd-content-wrapper component="Carousel">
+    <ngbd-component-wrapper component="Carousel">
       <ngbd-api-docs directive="NgbCarousel"></ngbd-api-docs>
       <ngbd-api-docs directive="NgbSlide"></ngbd-api-docs>
       <ngbd-api-docs-class type="NgbSlideEvent"></ngbd-api-docs-class>
@@ -15,7 +15,7 @@ import {DEMO_SNIPPETS} from './demos';
       <ngbd-example-box demoTitle="Global configuration of carousels" [snippets]="snippets" component="carousel" demo="config">
         <ngbd-carousel-config></ngbd-carousel-config>
       </ngbd-example-box>
-    </ngbd-content-wrapper>
+    </ngbd-component-wrapper>
   `
 })
 export class NgbdCarousel {
