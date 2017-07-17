@@ -1,9 +1,13 @@
 import {NgModule, ModuleWithProviders} from '@angular/core';
-import {NgbRadio, NgbActiveLabel, NgbRadioGroup} from './radio';
+import {NgbRadio, NgbRadioGroup} from './radio';
+import {NgbCheckbox} from './checkbox';
+import {NgbActiveLabel} from './label';
 
-export {NgbRadio, NgbActiveLabel, NgbRadioGroup} from './radio';
+export {NgbRadio, NgbRadioGroup} from './radio';
+export {NgbCheckbox} from './checkbox';
+export {NgbActiveLabel} from './label';
 
-const NGB_RADIO_DIRECTIVES = [NgbRadio, NgbActiveLabel, NgbRadioGroup];
+const NGB_RADIO_DIRECTIVES = [NgbRadio, NgbActiveLabel, NgbRadioGroup, NgbCheckbox];
 
 @NgModule({declarations: NGB_RADIO_DIRECTIVES, exports: NGB_RADIO_DIRECTIVES})
 export class NgbButtonsModule {

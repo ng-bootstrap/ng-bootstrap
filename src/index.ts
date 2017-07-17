@@ -27,7 +27,7 @@ export {
   NgbPanelContent
 } from './accordion/accordion.module';
 export {NgbAlertModule, NgbAlertConfig, NgbAlert} from './alert/alert.module';
-export {NgbButtonsModule, NgbRadioGroup} from './buttons/radio.module';
+export {NgbButtonsModule, NgbRadioGroup, NgbCheckbox} from './buttons/radio.module';
 export {NgbCarouselModule, NgbCarouselConfig, NgbCarousel, NgbSlide} from './carousel/carousel.module';
 export {NgbCollapseModule, NgbCollapse} from './collapse/collapse.module';
 export {

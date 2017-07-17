@@ -1,5 +1,6 @@
 import {Directive, forwardRef, Optional, Input, Renderer2, ElementRef, OnDestroy} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {NgbActiveLabel} from './label';
 
 const NGB_RADIO_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -57,36 +58,6 @@ export class NgbRadioGroup implements ControlValueAccessor {
 }
 
 
-@Directive({selector: 'label.btn'})
-export class NgbActiveLabel {
-  constructor(private _renderer: Renderer2, private _elRef: ElementRef) {}
-
-  set active(isActive: boolean) {
-    if (isActive) {
-      this._renderer.addClass(this._elRef.nativeElement, 'active');
-    } else {
-      this._renderer.removeClass(this._elRef.nativeElement, 'active');
-    }
-  }
-
-  set disabled(isDisabled: boolean) {
-    if (isDisabled) {
-      this._renderer.addClass(this._elRef.nativeElement, 'disabled');
-    } else {
-      this._renderer.removeClass(this._elRef.nativeElement, 'disabled');
-    }
-  }
-
-  set focused(isFocused: boolean) {
-    if (isFocused) {
-      this._renderer.addClass(this._elRef.nativeElement, 'focus');
-    } else {
-      this._renderer.removeClass(this._elRef.nativeElement, 'focus');
-    }
-  }
-}
-
-
 /**
  * Marks an input of type "radio" as part of the NgbRadioGroup.
  */
@@ -107,7 +78,7 @@ export class NgbRadio implements OnDestroy {
 
   /**
    * You can specify model value of a given radio by binding to the value property.
-  */
+   */
   @Input('value')
   set value(value: any) {
     this._value = value;
