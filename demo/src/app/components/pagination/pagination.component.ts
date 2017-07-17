@@ -4,7 +4,7 @@ import {DEMO_SNIPPETS} from './demos';
 @Component({
   selector: 'ngbd-pagination',
   template: `
-    <ngbd-content-wrapper component="Pagination">
+    <ngbd-component-wrapper component="Pagination">
       <ngbd-api-docs directive="NgbPagination"></ngbd-api-docs>
       <ngbd-api-docs-config type="NgbPaginationConfig"></ngbd-api-docs-config>
       <ngbd-example-box demoTitle="Basic pagination" [snippets]="snippets" component="pagination" demo="basic">
@@ -22,7 +22,7 @@ import {DEMO_SNIPPETS} from './demos';
       <ngbd-example-box demoTitle="Global configuration" [snippets]="snippets" component="pagination" demo="config">
         <ngbd-pagination-config></ngbd-pagination-config>
       </ngbd-example-box>
-    </ngbd-content-wrapper>
+    </ngbd-component-wrapper>
   `
 })
 export class NgbdPagination {

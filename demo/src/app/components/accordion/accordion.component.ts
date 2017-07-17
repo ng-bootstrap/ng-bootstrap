@@ -4,7 +4,7 @@ import {DEMO_SNIPPETS} from './demos';
 @Component({
   selector: 'ngbd-accordion',
   template: `
-    <ngbd-content-wrapper component="Accordion">
+    <ngbd-component-wrapper component="Accordion">
       <ngbd-api-docs directive="NgbAccordion"></ngbd-api-docs>
       <ngbd-api-docs directive="NgbPanel"></ngbd-api-docs>
       <ngbd-api-docs directive="NgbPanelTitle"></ngbd-api-docs>
@@ -26,7 +26,7 @@ import {DEMO_SNIPPETS} from './demos';
       <ngbd-example-box demoTitle="Global configuration of accordions" [snippets]="snippets" component="accordion" demo="config">
         <ngbd-accordion-config></ngbd-accordion-config>
       </ngbd-example-box>
-    </ngbd-content-wrapper>
+    </ngbd-component-wrapper>
   `
 })
 export class NgbdAccordion {

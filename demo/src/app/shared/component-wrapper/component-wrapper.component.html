@@ -1,6 +1,6 @@
 <div class="jumbotron">
   <div class="container">
-    <h1>{{ title || component }}</h1>
+    <h1>{{ component }}</h1>
   </div>
 </div>
 <div class="container">
@@ -8,7 +8,6 @@
     <div class="col-12 col-lg-9">
       <ngb-tabset
         class="root-nav"
-        *ngIf="component; else page"
         (tabChange)="tabChange($event)"
         [activeId]="activeTab"
       >
@@ -25,10 +24,6 @@
           </ng-template>
         </ngb-tab>
       </ngb-tabset>
-
-      <ng-template #page>
-        <ng-content></ng-content>
-      </ng-template>
     </div>
     <div class="col-12 col-lg-3 hidden-md-down">
       <ngbd-side-nav></ngbd-side-nav>

@@ -6,7 +6,8 @@ import {JsonpModule} from '@angular/http';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
-import {ContentWrapper} from './content-wrapper/content-wrapper.component';
+import {ComponentWrapper} from './component-wrapper/component-wrapper.component';
+import {PageWrapper} from './page-wrapper/page-wrapper.component';
 import {SideNavComponent} from './side-nav/side-nav.component';
 import {Analytics} from './analytics/analytics';
 
@@ -17,7 +18,8 @@ export {componentsList} from './side-nav/side-nav.component';
   exports: [
     CommonModule,
     RouterModule,
-    ContentWrapper,
+    ComponentWrapper,
+    PageWrapper,
     SideNavComponent,
     NgbModule,
     FormsModule,
@@ -25,7 +27,8 @@ export {componentsList} from './side-nav/side-nav.component';
     JsonpModule
   ],
   declarations: [
-    ContentWrapper,
+    ComponentWrapper,
+    PageWrapper,
     SideNavComponent,
   ],
   providers: [Analytics]

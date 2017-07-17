@@ -4,7 +4,7 @@ import {DEMO_SNIPPETS} from './demos';
 @Component({
   selector: 'ngbd-tabs',
   template: `
-    <ngbd-content-wrapper component="Tabs">
+    <ngbd-component-wrapper component="Tabs">
       <ngbd-api-docs directive="NgbTabset"></ngbd-api-docs>
       <ngbd-api-docs directive="NgbTab"></ngbd-api-docs>
       <ngbd-api-docs directive="NgbTabTitle"></ngbd-api-docs>
@@ -26,7 +26,7 @@ import {DEMO_SNIPPETS} from './demos';
       <ngbd-example-box demoTitle="Global configuration of tabs" [snippets]="snippets" component="tabset" demo="config">
         <ngbd-tabset-config></ngbd-tabset-config>
       </ngbd-example-box>
-    </ngbd-content-wrapper>
+    </ngbd-component-wrapper>
   `
 })
 export class NgbdTabs {

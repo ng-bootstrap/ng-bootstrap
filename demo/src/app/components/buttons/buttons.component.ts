@@ -4,7 +4,7 @@ import {DEMO_SNIPPETS} from './demos';
 @Component({
   selector: 'ngbd-buttons',
   template: `
-    <ngbd-content-wrapper component="Buttons">
+    <ngbd-component-wrapper component="Buttons">
       <ngbd-api-docs directive="NgbRadioGroup"></ngbd-api-docs>
       <ngbd-api-docs directive="NgbRadio"></ngbd-api-docs>
       <ngbd-example-box demoTitle="Radio buttons" [snippets]="snippets" component="buttons" demo="radio">
@@ -19,7 +19,7 @@ import {DEMO_SNIPPETS} from './demos';
       <ngbd-example-box demoTitle="Checkbox buttons (Reactive Forms)" [snippets]="snippets" component="buttons" demo="checkboxReactive">
         <ngbd-buttons-checkbox-reactive></ngbd-buttons-checkbox-reactive>
       </ngbd-example-box>
-    </ngbd-content-wrapper>
+    </ngbd-component-wrapper>
   `
 })
 export class NgbdButtons {
