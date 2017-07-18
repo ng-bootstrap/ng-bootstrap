@@ -1,13 +1,13 @@
 <form [formGroup]="checkboxGroupForm">
   <div class="btn-group" data-toggle="buttons">
-    <label class="btn btn-primary" [class.active]="checkboxGroupForm.value.left">
-      <input type="checkbox" formControlName="left"> Left (pre-checked)
+    <label class="btn-primary" ngbButtonLabel>
+      <input type="checkbox" formControlName="left" ngbButton> Left (pre-checked)
     </label>
-    <label class="btn btn-primary" [class.active]="checkboxGroupForm.value.middle">
-      <input type="checkbox" formControlName="middle"> Middle
+    <label class="btn-primary" ngbButtonLabel>
+      <input type="checkbox" formControlName="middle" ngbButton> Middle
     </label>
-    <label class="btn btn-primary" [class.active]="checkboxGroupForm.value.right">
-      <input type="checkbox" formControlName="right"> Right
+    <label class="btn-primary" ngbButtonLabel>
+      <input type="checkbox" formControlName="right" ngbButton> Right
     </label>
   </div>
 </form>
