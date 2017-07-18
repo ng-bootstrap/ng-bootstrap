@@ -1,6 +1,8 @@
 import {Directive, forwardRef, Input, Renderer2, ElementRef, OnDestroy} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
+import {NgbButtonLabel} from './label';
+
 const NGB_RADIO_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => NgbRadioGroup),
@@ -54,36 +56,6 @@ export class NgbRadioGroup implements ControlValueAccessor {
 
   private _updateRadiosValue() { this._radios.forEach((radio) => radio.updateValue(this._value)); }
   private _updateRadiosDisabled() { this._radios.forEach((radio) => radio.updateDisabled()); }
-}
-
-
-@Directive({selector: '[ngbButtonLabel]', host: {'[class.btn]': 'true'}})
-export class NgbButtonLabel {
-  constructor(private _renderer: Renderer2, private _elRef: ElementRef) {}
-
-  set active(isActive: boolean) {
-    if (isActive) {
-      this._renderer.addClass(this._elRef.nativeElement, 'active');
-    } else {
-      this._renderer.removeClass(this._elRef.nativeElement, 'active');
-    }
-  }
-
-  set disabled(isDisabled: boolean) {
-    if (isDisabled) {
-      this._renderer.addClass(this._elRef.nativeElement, 'disabled');
-    } else {
-      this._renderer.removeClass(this._elRef.nativeElement, 'disabled');
-    }
-  }
-
-  set focused(isFocused: boolean) {
-    if (isFocused) {
-      this._renderer.addClass(this._elRef.nativeElement, 'focus');
-    } else {
-      this._renderer.removeClass(this._elRef.nativeElement, 'focus');
-    }
-  }
 }
 
 
