@@ -126,7 +126,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
         <div *ngIf="meridian" class="ngb-tp-meridian">
           <button type="button" class="btn btn-outline-primary" [ngClass]="setButtonSize()"
             [disabled]="disabled" [class.disabled]="disabled"
-            (click)="toggleMeridian()">{{model.hour >= 12 ? 'PM' : 'AM'}}</button>
+            (click)="toggleMeridian()">{{model?.hour >= 12 ? 'PM' : 'AM'}}</button>
         </div>
       </div>
     </fieldset>
