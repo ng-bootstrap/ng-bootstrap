@@ -27,10 +27,19 @@ let nextId = 0;
 @Component({
   selector: 'ngb-popover-window',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {'[class]': '"popover show popover-" + placement', 'role': 'tooltip', '[id]': 'id'},
+  host: {'[class]': '"popover bs-popover-" + placement', 'role': 'tooltip', '[id]': 'id'},
   template: `
-    <h3 class="popover-title">{{title}}</h3><div class="popover-content"><ng-content></ng-content></div>
-    `
+    <div class="arrow"></div>
+    <h3 class="popover-header">{{title}}</h3><div class="popover-body"><ng-content></ng-content></div>`,
+  styles: [`
+    :host.bs-popover-top .arrow, :host.bs-popover-bottom .arrow {
+      left: 50%;
+    }
+
+    :host.bs-popover-left .arrow, :host.bs-popover-right .arrow {
+      top: 50%;
+    }
+  `]
 })
 export class NgbPopoverWindow {
   @Input() placement: 'top' | 'bottom' | 'left' | 'right' = 'top';
