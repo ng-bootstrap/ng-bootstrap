@@ -26,10 +26,17 @@ let nextId = 0;
 @Component({
   selector: 'ngb-tooltip-window',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {'[class]': '"tooltip show tooltip-" + placement', 'role': 'tooltip', '[id]': 'id'},
-  template: `
-    <div class="tooltip-inner"><ng-content></ng-content></div>
-    `
+  host: {'[class]': '"tooltip show bs-tooltip-" + placement', 'role': 'tooltip', '[id]': 'id'},
+  template: `<div class="arrow"></div><div class="tooltip-inner"><ng-content></ng-content></div>`,
+  styles: [`
+    :host.bs-tooltip-top .arrow, :host.bs-tooltip-bottom .arrow {
+      left: 50%;
+    }
+
+    :host.bs-tooltip-left .arrow, :host.bs-tooltip-right .arrow {
+      top: 50%;
+    }
+  `]
 })
 export class NgbTooltipWindow {
   @Input() placement: 'top' | 'bottom' | 'left' | 'right' = 'top';

@@ -22,7 +22,7 @@ describe('ngb-tooltip-window', () => {
     fixture.detectChanges();
 
     expect(fixture.nativeElement).toHaveCssClass('tooltip');
-    expect(fixture.nativeElement).toHaveCssClass('tooltip-top');
+    expect(fixture.nativeElement).toHaveCssClass('bs-tooltip-top');
     expect(fixture.nativeElement.getAttribute('role')).toBe('tooltip');
   });
 
@@ -30,7 +30,7 @@ describe('ngb-tooltip-window', () => {
     const fixture = TestBed.createComponent(NgbTooltipWindow);
     fixture.componentInstance.placement = 'left';
     fixture.detectChanges();
-    expect(fixture.nativeElement).toHaveCssClass('tooltip-left');
+    expect(fixture.nativeElement).toHaveCssClass('bs-tooltip-left');
   });
 });
 
@@ -55,7 +55,7 @@ describe('ngb-tooltip', () => {
       const windowEl = getWindow(fixture.nativeElement);
 
       expect(windowEl).toHaveCssClass('tooltip');
-      expect(windowEl).toHaveCssClass(`tooltip-${defaultConfig.placement}`);
+      expect(windowEl).toHaveCssClass(`bs-tooltip-${defaultConfig.placement}`);
       expect(windowEl.textContent.trim()).toBe('Great tip!');
       expect(windowEl.getAttribute('role')).toBe('tooltip');
       expect(windowEl.getAttribute('id')).toBe('ngb-tooltip-0');
@@ -77,7 +77,7 @@ describe('ngb-tooltip', () => {
       const windowEl = getWindow(fixture.nativeElement);
 
       expect(windowEl).toHaveCssClass('tooltip');
-      expect(windowEl).toHaveCssClass('tooltip-top');
+      expect(windowEl).toHaveCssClass('bs-tooltip-top');
       expect(windowEl.textContent.trim()).toBe('Hello, World!');
       expect(windowEl.getAttribute('role')).toBe('tooltip');
       expect(windowEl.getAttribute('id')).toBe('ngb-tooltip-1');
@@ -99,7 +99,7 @@ describe('ngb-tooltip', () => {
       const windowEl = getWindow(fixture.nativeElement);
 
       expect(windowEl).toHaveCssClass('tooltip');
-      expect(windowEl).toHaveCssClass('tooltip-top');
+      expect(windowEl).toHaveCssClass('bs-tooltip-top');
       expect(windowEl.textContent.trim()).toBe('Hello, John!');
       expect(windowEl.getAttribute('role')).toBe('tooltip');
       expect(windowEl.getAttribute('id')).toBe('ngb-tooltip-2');
@@ -193,7 +193,7 @@ describe('ngb-tooltip', () => {
         const windowEl = getWindow(fixture.nativeElement);
 
         expect(windowEl).toHaveCssClass('tooltip');
-        expect(windowEl).toHaveCssClass('tooltip-left');
+        expect(windowEl).toHaveCssClass('bs-tooltip-left');
         expect(windowEl.textContent.trim()).toBe('Great tip!');
       });
 
@@ -206,7 +206,7 @@ describe('ngb-tooltip', () => {
         const windowEl = getWindow(fixture.nativeElement);
 
         expect(windowEl).toHaveCssClass('tooltip');
-        expect(windowEl).toHaveCssClass('tooltip-left');
+        expect(windowEl).toHaveCssClass('bs-tooltip-left');
         expect(windowEl.textContent.trim()).toBe('Great tip!');
       });
     });
