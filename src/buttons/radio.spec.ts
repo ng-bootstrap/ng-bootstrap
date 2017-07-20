@@ -459,11 +459,13 @@ describe('ngbRadioGroup', () => {
     const inputDebugEls = fixture.debugElement.queryAll(By.css('Input'));
 
     inputDebugEls[0].triggerEventHandler('focus', {});
+    fixture.detectChanges();
     expect(inputDebugEls[0].nativeElement.parentNode).toHaveCssClass('focus');
     expect(inputDebugEls[1].nativeElement.parentNode).not.toHaveCssClass('focus');
 
     inputDebugEls[0].triggerEventHandler('blur', {});
     inputDebugEls[1].triggerEventHandler('focus', {});
+    fixture.detectChanges();
     expect(inputDebugEls[0].nativeElement.parentNode).not.toHaveCssClass('focus');
     expect(inputDebugEls[1].nativeElement.parentNode).toHaveCssClass('focus');
   });

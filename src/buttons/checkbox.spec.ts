@@ -141,9 +141,11 @@ describe('NgbCheckBox', () => {
       const inputDebugEl = fixture.debugElement.query(By.directive(NgbCheckBox));
 
       inputDebugEl.triggerEventHandler('focus', {});
+      fixture.detectChanges();
       expect(getLabel(fixture.debugElement.nativeElement)).toHaveCssClass('focus');
 
       inputDebugEl.triggerEventHandler('blur', {});
+      fixture.detectChanges();
       expect(getLabel(fixture.debugElement.nativeElement)).not.toHaveCssClass('focus');
     });
 
