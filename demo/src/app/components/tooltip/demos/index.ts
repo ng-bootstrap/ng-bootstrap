@@ -4,6 +4,7 @@ import {NgbdTooltipTplcontent} from './tplcontent/tooltip-tplcontent';
 import {NgbdTooltipTplwithcontext} from './tplwithcontext/tooltip-tplwithcontext';
 import {NgbdTooltipTriggers} from './triggers/tooltip-triggers';
 import {NgbdTooltipConfig} from './config/tooltip-config';
+import {NgbdTooltipAuto} from './auto/tooltip-auto';
 
 export const DEMO_DIRECTIVES = [
   NgbdTooltipBasic,
@@ -11,6 +12,7 @@ export const DEMO_DIRECTIVES = [
   NgbdTooltipTplcontent,
   NgbdTooltipTriggers,
   NgbdTooltipConfig,
+  NgbdTooltipAuto,
   NgbdTooltipTplwithcontext
 ];
 
@@ -38,5 +40,9 @@ export const DEMO_SNIPPETS = {
   'config': {
     'code': require('!!prismjs-loader?lang=typescript!./config/tooltip-config'),
     'markup': require('!!prismjs-loader?lang=markup!./config/tooltip-config.html')
+  },
+  'auto': {
+    'code': require('!!prismjs-loader?lang=typescript!./auto/tooltip-auto'),
+    'markup': require('!!prismjs-loader?lang=markup!./auto/tooltip-auto.html')
   }
 };
