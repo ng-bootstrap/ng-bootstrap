@@ -578,6 +578,172 @@ describe('ngb-timepicker', () => {
                expect(meridianButton.innerHTML).toBe('AM');
              });
        }));
+
+
+    it('should respect meridian when propagating model (PM)', async(() => {
+         const html = `<ngb-timepicker [(ngModel)]="model" [meridian]="true"></ngb-timepicker>`;
+
+         const fixture = createTestComponent(html);
+         fixture.componentInstance.model = {hour: 14, minute: 30};
+         fixture.detectChanges();
+
+         const inputs = fixture.debugElement.queryAll(By.css('input'));
+
+         fixture.whenStable()
+             .then(() => {
+               inputs[0].triggerEventHandler('change', createChangeEvent('3'));
+               fixture.detectChanges();
+               return fixture.whenStable();
+             })
+             .then(() => { expect(fixture.componentInstance.model).toEqual({hour: 15, minute: 30, second: 0}); });
+       }));
+
+    it('should respect meridian when propagating model (AM)', async(() => {
+         const html = `<ngb-timepicker [(ngModel)]="model" [meridian]="true"></ngb-timepicker>`;
+
+         const fixture = createTestComponent(html);
+         fixture.componentInstance.model = {hour: 9, minute: 30};
+         fixture.detectChanges();
+
+         const inputs = fixture.debugElement.queryAll(By.css('input'));
+
+         fixture.whenStable()
+             .then(() => {
+               inputs[0].triggerEventHandler('change', createChangeEvent('10'));
+               fixture.detectChanges();
+               return fixture.whenStable();
+             })
+             .then(() => { expect(fixture.componentInstance.model).toEqual({hour: 10, minute: 30, second: 0}); });
+       }));
+
+    it('should interpret 12 as midnight (00:00) when meridian is set to AM', async(() => {
+         const html = `<ngb-timepicker [(ngModel)]="model" [meridian]="true"></ngb-timepicker>`;
+
+         const fixture = createTestComponent(html);
+         fixture.componentInstance.model = {hour: 9, minute: 0};
+         fixture.detectChanges();
+
+         const inputs = fixture.debugElement.queryAll(By.css('input'));
+
+         fixture.whenStable()
+             .then(() => {
+               inputs[0].triggerEventHandler('change', createChangeEvent('12'));
+               fixture.detectChanges();
+               return fixture.whenStable();
+             })
+             .then(() => { expect(fixture.componentInstance.model).toEqual({hour: 0, minute: 0, second: 0}); });
+       }));
+
+    it('should interpret 12 as noon (12:00) when meridian is set to PM', async(() => {
+         const html = `<ngb-timepicker [(ngModel)]="model" [meridian]="true"></ngb-timepicker>`;
+
+         const fixture = createTestComponent(html);
+         fixture.componentInstance.model = {hour: 18, minute: 0};
+         fixture.detectChanges();
+
+         const inputs = fixture.debugElement.queryAll(By.css('input'));
+
+         fixture.whenStable()
+             .then(() => {
+               inputs[0].triggerEventHandler('change', createChangeEvent('12'));
+               fixture.detectChanges();
+               return fixture.whenStable();
+             })
+             .then(() => { expect(fixture.componentInstance.model).toEqual({hour: 12, minute: 0, second: 0}); });
+       }));
+
+    it('should interpret hour more than 12 as 24h value (AM)', async(() => {
+         const html = `<ngb-timepicker [(ngModel)]="model" [meridian]="true"></ngb-timepicker>`;
+
+         const fixture = createTestComponent(html);
+         fixture.componentInstance.model = {hour: 7, minute: 30, second: 0};
+         fixture.detectChanges();
+
+         const inputs = fixture.debugElement.queryAll(By.css('input'));
+         const meridianButton = <HTMLButtonElement>getMeridianButton(fixture.nativeElement);
+
+         fixture.whenStable()
+             .then(() => {
+               inputs[0].triggerEventHandler('change', createChangeEvent('22'));
+               fixture.detectChanges();
+               return fixture.whenStable();
+             })
+             .then(() => {
+               expectToDisplayTime(fixture.nativeElement, '10:30');
+               expect(meridianButton.innerHTML).toBe('PM');
+               expect(fixture.componentInstance.model).toEqual({hour: 22, minute: 30, second: 0});
+             });
+       }));
+
+    it('should interpret hour more than 12 as 24h value (PM)', async(() => {
+         const html = `<ngb-timepicker [(ngModel)]="model" [meridian]="true"></ngb-timepicker>`;
+
+         const fixture = createTestComponent(html);
+         fixture.componentInstance.model = {hour: 15, minute: 30, second: 0};
+         fixture.detectChanges();
+
+         const inputs = fixture.debugElement.queryAll(By.css('input'));
+         const meridianButton = <HTMLButtonElement>getMeridianButton(fixture.nativeElement);
+
+         fixture.whenStable()
+             .then(() => {
+               inputs[0].triggerEventHandler('change', createChangeEvent('22'));
+               fixture.detectChanges();
+               return fixture.whenStable();
+             })
+             .then(() => {
+               expectToDisplayTime(fixture.nativeElement, '10:30');
+               expect(meridianButton.innerHTML).toBe('PM');
+               expect(fixture.componentInstance.model).toEqual({hour: 22, minute: 30, second: 0});
+             });
+       }));
+
+    it('should use remainder of division by 24 as a value in 24h format when hour > 24 (AM)', async(() => {
+         const html = `<ngb-timepicker [(ngModel)]="model" [meridian]="true"></ngb-timepicker>`;
+
+         const fixture = createTestComponent(html);
+         fixture.componentInstance.model = {hour: 7, minute: 30, second: 0};
+         fixture.detectChanges();
+
+         const inputs = fixture.debugElement.queryAll(By.css('input'));
+         const meridianButton = <HTMLButtonElement>getMeridianButton(fixture.nativeElement);
+
+         fixture.whenStable()
+             .then(() => {
+               inputs[0].triggerEventHandler('change', createChangeEvent(`${24 + 9}`));
+               fixture.detectChanges();
+               return fixture.whenStable();
+             })
+             .then(() => {
+               expectToDisplayTime(fixture.nativeElement, '09:30');
+               expect(meridianButton.innerHTML).toBe('AM');
+               expect(fixture.componentInstance.model).toEqual({hour: 9, minute: 30, second: 0});
+             });
+       }));
+
+    it('should use remainder of division by 24 as a value in 24h format when hour > 24 (PM)', async(() => {
+         const html = `<ngb-timepicker [(ngModel)]="model" [meridian]="true"></ngb-timepicker>`;
+
+         const fixture = createTestComponent(html);
+         fixture.componentInstance.model = {hour: 15, minute: 30, second: 0};
+         fixture.detectChanges();
+
+         const inputs = fixture.debugElement.queryAll(By.css('input'));
+         const meridianButton = <HTMLButtonElement>getMeridianButton(fixture.nativeElement);
+
+         fixture.whenStable()
+             .then(() => {
+               inputs[0].triggerEventHandler('change', createChangeEvent(`${24 + 9}`));
+               fixture.detectChanges();
+               return fixture.whenStable();
+             })
+             .then(() => {
+               expectToDisplayTime(fixture.nativeElement, '09:30');
+               expect(meridianButton.innerHTML).toBe('AM');
+               expect(fixture.componentInstance.model).toEqual({hour: 9, minute: 30, second: 0});
+             });
+       }));
+
   });
 
   describe('forms', () => {
@@ -668,78 +834,6 @@ describe('ngb-timepicker', () => {
 
       expect(fixture.componentInstance.model).toBeNull();
     });
-
-    it('should respect meridian when propagating model (PM)', async(() => {
-         const html = `<ngb-timepicker [(ngModel)]="model" [meridian]="true"></ngb-timepicker>`;
-
-         const fixture = createTestComponent(html);
-         fixture.componentInstance.model = {hour: 14, minute: 30};
-         fixture.detectChanges();
-
-         const inputs = fixture.debugElement.queryAll(By.css('input'));
-
-         fixture.whenStable()
-             .then(() => {
-               inputs[0].triggerEventHandler('change', createChangeEvent('3'));
-               fixture.detectChanges();
-               return fixture.whenStable();
-             })
-             .then(() => { expect(fixture.componentInstance.model).toEqual({hour: 15, minute: 30, second: 0}); });
-       }));
-
-    it('should respect meridian when propagating model (AM)', async(() => {
-         const html = `<ngb-timepicker [(ngModel)]="model" [meridian]="true"></ngb-timepicker>`;
-
-         const fixture = createTestComponent(html);
-         fixture.componentInstance.model = {hour: 9, minute: 30};
-         fixture.detectChanges();
-
-         const inputs = fixture.debugElement.queryAll(By.css('input'));
-
-         fixture.whenStable()
-             .then(() => {
-               inputs[0].triggerEventHandler('change', createChangeEvent('10'));
-               fixture.detectChanges();
-               return fixture.whenStable();
-             })
-             .then(() => { expect(fixture.componentInstance.model).toEqual({hour: 10, minute: 30, second: 0}); });
-       }));
-
-    it('should interpret 12 as midnight (00:00) when meridian is set to AM', async(() => {
-         const html = `<ngb-timepicker [(ngModel)]="model" [meridian]="true"></ngb-timepicker>`;
-
-         const fixture = createTestComponent(html);
-         fixture.componentInstance.model = {hour: 9, minute: 0};
-         fixture.detectChanges();
-
-         const inputs = fixture.debugElement.queryAll(By.css('input'));
-
-         fixture.whenStable()
-             .then(() => {
-               inputs[0].triggerEventHandler('change', createChangeEvent('12'));
-               fixture.detectChanges();
-               return fixture.whenStable();
-             })
-             .then(() => { expect(fixture.componentInstance.model).toEqual({hour: 0, minute: 0, second: 0}); });
-       }));
-
-    it('should interpret 12 as noon (12:00) when meridian is set to PM', async(() => {
-         const html = `<ngb-timepicker [(ngModel)]="model" [meridian]="true"></ngb-timepicker>`;
-
-         const fixture = createTestComponent(html);
-         fixture.componentInstance.model = {hour: 18, minute: 0};
-         fixture.detectChanges();
-
-         const inputs = fixture.debugElement.queryAll(By.css('input'));
-
-         fixture.whenStable()
-             .then(() => {
-               inputs[0].triggerEventHandler('change', createChangeEvent('12'));
-               fixture.detectChanges();
-               return fixture.whenStable();
-             })
-             .then(() => { expect(fixture.componentInstance.model).toEqual({hour: 12, minute: 0, second: 0}); });
-       }));
 
     it('should not submit form when spinners clicked', async(() => {
          const html = `<form (ngSubmit)="onSubmit()">
