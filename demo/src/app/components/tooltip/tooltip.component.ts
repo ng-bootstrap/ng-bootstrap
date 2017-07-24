@@ -31,7 +31,7 @@ import {DEMO_SNIPPETS} from './demos';
         <ngbd-tooltip-config></ngbd-tooltip-config>
       </ngbd-example-box>
       <ngbd-example-box
-        demoTitle="Automatically positioning" [snippets]="snippets" component="tooltip" demo="auto">
+        demoTitle="Automatic positioning" [snippets]="snippets" component="tooltip" demo="auto">
         <ngbd-tooltip-auto></ngbd-tooltip-auto>
       </ngbd-example-box>
     </ngbd-component-wrapper>

@@ -1,3 +1,4 @@
+import {NgbdPopoverAuto} from './auto/popover-auto';
 import {NgbdPopoverBasic} from './basic/popover-basic';
 import {NgbdPopoverTplcontent} from './tplcontent/popover-tplcontent';
 import {NgbdPopoverTplwithcontext} from './tplwithcontext/popover-tplwithcontext';
@@ -7,6 +8,7 @@ import {NgbdPopoverContainer} from './container/popover-container';
 import {NgbdPopoverConfig} from './config/popover-config';
 
 export const DEMO_DIRECTIVES = [
+  NgbdPopoverAuto,
   NgbdPopoverBasic,
   NgbdPopoverTplcontent,
   NgbdPopoverTplwithcontext,
@@ -44,5 +46,9 @@ export const DEMO_SNIPPETS = {
   'config': {
     'code': require('!!prismjs-loader?lang=typescript!./config/popover-config'),
     'markup': require('!!prismjs-loader?lang=markup!./config/popover-config.html')
-  }
+  },
+  'auto': {
+    'code': require('!!prismjs-loader?lang=typescript!./auto/popover-auto'),
+    'markup': require('!!prismjs-loader?lang=markup!./auto/popover-auto.html')
+  },
 };

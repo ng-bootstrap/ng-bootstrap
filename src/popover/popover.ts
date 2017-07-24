@@ -18,7 +18,7 @@ import {
 } from '@angular/core';
 
 import {listenToTriggers} from '../util/triggers';
-import {positionElements} from '../util/positioning';
+import {positionElements, positionService} from '../util/positioning';
 import {PopupService} from '../util/popup';
 import {NgbPopoverConfig} from './popover-config';
 
@@ -27,13 +27,13 @@ let nextId = 0;
 @Component({
   selector: 'ngb-popover-window',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {'[class]': '"popover show popover-" + placement', 'role': 'tooltip', '[id]': 'id'},
+  host: {'[class]': '"popover show"', 'role': 'tooltip', '[id]': 'id'},
   template: `
     <h3 class="popover-title">{{title}}</h3><div class="popover-content"><ng-content></ng-content></div>
     `
 })
 export class NgbPopoverWindow {
-  @Input() placement: 'top' | 'bottom' | 'left' | 'right' = 'top';
+  @Input() placement: 'top' | 'bottom' | 'left' | 'right' | string = 'top';
   @Input() title: string;
   @Input() id: string;
 }
@@ -91,9 +91,23 @@ export class NgbPopover implements OnInit, OnDestroy {
 
     this._zoneSubscription = ngZone.onStable.subscribe(() => {
       if (this._windowRef) {
-        positionElements(
-            this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
-            this.container === 'body');
+        let targetElement = <HTMLElement>this._windowRef.location.nativeElement;
+        const oldPlacement = this._windowRef.instance.placement;
+
+        this._renderer.removeClass(targetElement, `popover-${oldPlacement}`);
+
+        let position = positionService.positionElements(
+            this._elementRef.nativeElement, targetElement, this.placement, this.container === 'body');
+
+        // new class could change size of the window - so automatic positioning is not very accurate
+        // if it's only arrow - than not so obvious
+        this._renderer.addClass(targetElement, `popover-${position.placement}`);
+
+        // position = positionService.positionElements(
+        // this._elementRef.nativeElement, targetElement, position.placement, this.container === 'body');
+        this._windowRef.instance.placement = position.placement;
+        targetElement.style.top = `${position.top}px`;
+        targetElement.style.left = `${position.left}px`;
       }
     });
   }
@@ -105,7 +119,7 @@ export class NgbPopover implements OnInit, OnDestroy {
   open(context?: any) {
     if (!this._windowRef) {
       this._windowRef = this._popupService.open(this.ngbPopover, context);
-      this._windowRef.instance.placement = this.placement;
+      // this._windowRef.instance.placement = this.placement;
       this._windowRef.instance.title = this.popoverTitle;
       this._windowRef.instance.id = this._ngbPopoverWindowId;
 
@@ -116,9 +130,9 @@ export class NgbPopover implements OnInit, OnDestroy {
       }
 
       // position popover along the element
-      positionElements(
-          this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
-          this.container === 'body');
+      // positionElements(
+      //     this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
+      //     this.container === 'body');
 
       // we need to manually invoke change detection since events registered via
       // Renderer::listen() are not picked up by change detection with the OnPush strategy

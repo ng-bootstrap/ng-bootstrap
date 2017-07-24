@@ -82,22 +82,20 @@ export class NgbTooltip implements OnInit, OnDestroy {
 
     this._zoneSubscription = ngZone.onStable.subscribe(() => {
       if (this._windowRef) {
-        var targetElement = <HTMLElement>this._windowRef.location.nativeElement;
+        let targetElement = <HTMLElement>this._windowRef.location.nativeElement;
         const oldPlacement = this._windowRef.instance.placement;
 
         this._renderer.removeClass(targetElement, `tooltip-${oldPlacement}`);
 
-        var position = positionService.positionElements(
-            this._elementRef.nativeElement, targetElement, this.placement,
-            this.container === 'body');
+        let position = positionService.positionElements(
+            this._elementRef.nativeElement, targetElement, this.placement, this.container === 'body');
 
         // new class could change size of the tooltip - so automatic positioning is not very accurate
-        // it it's only arrow - than not so obvious
+        // if it's only arrow - than not so obvious
         this._renderer.addClass(targetElement, `tooltip-${position.placement}`);
 
         position = positionService.positionElements(
-            this._elementRef.nativeElement, targetElement, position.placement,
-            this.container === 'body');
+            this._elementRef.nativeElement, targetElement, position.placement, this.container === 'body');
         this._windowRef.instance.placement = position.placement;
         targetElement.style.top = `${position.top}px`;
         targetElement.style.left = `${position.left}px`;
