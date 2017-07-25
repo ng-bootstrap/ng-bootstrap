@@ -5,9 +5,10 @@ import {
   ContentChildren,
   QueryList,
   Input,
-  OnDestroy,
   AfterContentChecked,
   OnInit,
+  OnChanges,
+  OnDestroy,
   Output,
   EventEmitter
 } from '@angular/core';
@@ -64,7 +65,7 @@ export class NgbSlide {
     `
 })
 export class NgbCarousel implements AfterContentChecked,
-    OnDestroy, OnInit {
+    OnDestroy, OnInit, OnChanges {
   @ContentChildren(NgbSlide) slides: QueryList<NgbSlide>;
   private _slideChangeInterval;
 
@@ -106,6 +107,12 @@ export class NgbCarousel implements AfterContentChecked,
   }
 
   ngOnInit() { this._startTimer(); }
+
+  ngOnChanges(changes) {
+    if ('interval' in changes && !changes['interval'].isFirstChange()) {
+      this._restartTimer();
+    }
+  }
 
   ngOnDestroy() { clearInterval(this._slideChangeInterval); }
 
