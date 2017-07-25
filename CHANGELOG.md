@@ -1,3 +1,61 @@
+<a name="1.0.0-alpha.29"></a>
+# [1.0.0-alpha.29](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.28...1.0.0-alpha.29) (2017-07-25)
+
+
+### Bug Fixes
+
+* **buttons:** make buttons selectors more specific ([f9bc76e](https://github.com/ng-bootstrap/ng-bootstrap/commit/f9bc76e)), closes [#1125](https://github.com/ng-bootstrap/ng-bootstrap/issues/1125) [#1678](https://github.com/ng-bootstrap/ng-bootstrap/issues/1678)
+* **modal:** don't try to focus non-focusable elements ([0c03671](https://github.com/ng-bootstrap/ng-bootstrap/commit/0c03671)), closes [#1627](https://github.com/ng-bootstrap/ng-bootstrap/issues/1627) [#1691](https://github.com/ng-bootstrap/ng-bootstrap/issues/1691)
+* **timepicker:** account for CD before model write (meridian case) ([ffd86bc](https://github.com/ng-bootstrap/ng-bootstrap/commit/ffd86bc)), closes [#1696](https://github.com/ng-bootstrap/ng-bootstrap/issues/1696) [#1699](https://github.com/ng-bootstrap/ng-bootstrap/issues/1699)
+* **timepicker:** switch to PM when hour > 12 ([5cbb429](https://github.com/ng-bootstrap/ng-bootstrap/commit/5cbb429)), closes [#1680](https://github.com/ng-bootstrap/ng-bootstrap/issues/1680) [#1684](https://github.com/ng-bootstrap/ng-bootstrap/issues/1684)
+
+
+### Features
+
+* **buttons:** add support for checkbox buttons ([b433e7b](https://github.com/ng-bootstrap/ng-bootstrap/commit/b433e7b)), closes [#890](https://github.com/ng-bootstrap/ng-bootstrap/issues/890) [#1688](https://github.com/ng-bootstrap/ng-bootstrap/issues/1688)
+
+
+### BREAKING CHANGES
+
+* **buttons:** The `NgbButtonsModule` changed location (path) and content. This path
+might need adjusting for people importing individual modules.
+Before: `import {NgbButtonsModule} from './buttons/radio.module'`
+After:  `import {NgbButtonsModule} from './buttons/buttons.module'`
+
+The `NgbButtonsModule` now contains both checkbox and radio buttons.
+* **buttons:** Selectors for radio buttons related directives were changed and now both label
+and input require ng-bootstrap specific attributes as selectors.
+
+Before:
+
+```
+<div [(ngModel)]="model" ngbRadioGroup>
+  <label class="btn">
+    <input type="radio" name="radio" [value]="values[0]"/> {{ values[0] }}
+  </label>
+  <label class="btn">
+    <input type="radio" name="radio" [value]="values[1]"/> {{ values[1] }}
+  </label>
+</div>
+```
+
+After:
+
+```
+<div [(ngModel)]="model" ngbRadioGroup>
+  <label ngbButtonLabel>
+    <input ngbButton type="radio" name="radio" [value]="values[0]"/> {{ values[0] }}
+  </label>
+  <label ngbButtonLabel>
+    <input ngbButton type="radio" name="radio" [value]="values[1]"/> {{ values[1] }}
+  </label>
+</div>
+```
+
+Notice new `ngbButtonLabel` and `ngbButton` attributes that act as new selectors.
+
+
+
 <a name="1.0.0-alpha.28"></a>
 # [1.0.0-alpha.28](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.27...1.0.0-alpha.28) (2017-07-11)
 
