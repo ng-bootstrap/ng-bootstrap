@@ -780,6 +780,38 @@ describe('ngb-timepicker', () => {
              });
        }));
 
+    it('should work with template-driven form validation when meridian is true', async(() => {
+         const html = `
+          <form>
+            <ngb-timepicker [(ngModel)]="model" name="control"></ngb-timepicker>
+          </form>`;
+
+         const fixture = createTestComponent(html);
+         const compiled = fixture.nativeElement;
+         fixture.detectChanges();
+         fixture.whenStable()
+             .then(() => {
+               fixture.detectChanges();
+               return fixture.whenStable();
+             })
+             .then(() => {
+               expect(getTimepicker(compiled)).toHaveCssClass('ng-valid');
+               expect(getTimepicker(compiled)).not.toHaveCssClass('ng-invalid');
+
+               fixture.componentInstance.model = {hour: 11, minute: 0, second: 0};
+               fixture.detectChanges();
+               return fixture.whenStable();
+             })
+             .then(() => {
+               fixture.detectChanges();
+               return fixture.whenStable();
+             })
+             .then(() => {
+               expect(getTimepicker(compiled)).toHaveCssClass('ng-valid');
+               expect(getTimepicker(compiled)).not.toHaveCssClass('ng-invalid');
+             });
+       }));
+
     it('should work with model-driven form validation', async(() => {
          const html = `
           <form [formGroup]="form">
