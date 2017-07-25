@@ -292,6 +292,35 @@ describe('ngb-carousel', () => {
        discardPeriodicTasks();
      }));
 
+  it('should change slide with different rate when interval value changed', fakeAsync(() => {
+       const html = `
+      <ngb-carousel [interval]="interval">
+        <ng-template ngbSlide>foo</ng-template>
+        <ng-template ngbSlide>bar</ng-template>
+        <ng-template ngbSlide>zoo</ng-template>
+      </ngb-carousel>
+    `;
+
+       const fixture = createTestComponent(html);
+       fixture.componentInstance.interval = 5000;
+       fixture.detectChanges();
+
+       expectActiveSlides(fixture.nativeElement, [true, false, false]);
+
+       tick(5001);
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [false, true, false]);
+
+       fixture.componentInstance.interval = 1000;
+       fixture.detectChanges();
+
+       tick(1001);
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [false, false, true]);
+
+       discardPeriodicTasks();
+     }));
+
   it('should pause / resume slide change with time passage on mouse enter / leave', fakeAsync(() => {
        const html = `
       <ngb-carousel>
@@ -491,6 +520,7 @@ describe('ngb-carousel', () => {
 
 @Component({selector: 'test-cmp', template: ''})
 class TestComponent {
+  interval;
   activeSlideId;
   keyboard = true;
   carouselSlideCallBack = (event: NgbSlideEvent) => {};
