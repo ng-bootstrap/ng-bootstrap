@@ -25,6 +25,13 @@ function expectRadios(element: HTMLElement, states: number[]) {
   }
 }
 
+function expectNameOnAllInputs(element: HTMLElement, name: string) {
+  const inputs = element.querySelectorAll('input');
+  for (let i = 0; i < inputs.length; i++) {
+    expect(inputs[i].getAttribute('name')).toBe(name);
+  }
+}
+
 function getGroupElement(nativeEl: HTMLElement): HTMLDivElement {
   return <HTMLDivElement>nativeEl.querySelector('div[ngbRadioGroup]');
 }
@@ -468,6 +475,62 @@ describe('ngbRadioGroup', () => {
     fixture.detectChanges();
     expect(inputDebugEls[0].nativeElement.parentNode).not.toHaveCssClass('focus');
     expect(inputDebugEls[1].nativeElement.parentNode).toHaveCssClass('focus');
+  });
+
+  it('should generate input names automatically if no name specified anywhere', () => {
+    const fixture = createTestComponent(`
+      <div [(ngModel)]="model" ngbRadioGroup>
+        <label ngbButtonLabel>
+          <input ngbButton type="radio" [value]="values[0]"/> {{ values[0] }}
+        </label>
+        <label ngbButtonLabel>
+          <input ngbButton type="radio" [value]="values[1]"/> {{ values[1] }}
+        </label>
+      </div>
+    `);
+    fixture.detectChanges();
+
+    const inputs = fixture.nativeElement.querySelectorAll('input');
+    const distinctNames = new Set();
+    for (let i = 0; i < inputs.length; i++) {
+      distinctNames.add(inputs[i].getAttribute('name'));
+    }
+    expect(distinctNames.size).toBe(1);
+    expect(distinctNames.values().next().value).toMatch(/ngb-radio-\d+/);
+  });
+
+  it('should set input names from group name if inputs don\'t have a name', () => {
+    const fixture = createTestComponent(`
+      <div [(ngModel)]="model" ngbRadioGroup name="foo">
+        <label ngbButtonLabel>
+          <input ngbButton type="radio" [value]="values[0]"/> {{ values[0] }}
+        </label>
+        <label ngbButtonLabel>
+          <input ngbButton type="radio" [value]="values[1]"/> {{ values[1] }}
+        </label>
+      </div>
+    `);
+    fixture.detectChanges();
+
+    const inputs = fixture.nativeElement.querySelectorAll('input');
+    expectNameOnAllInputs(fixture.nativeElement, 'foo');
+  });
+
+  it('should honor the input names if specified', () => {
+    const fixture = createTestComponent(`
+      <div [(ngModel)]="model" ngbRadioGroup name="foo">
+        <label ngbButtonLabel>
+          <input ngbButton name="bar" type="radio" [value]="values[0]"/> {{ values[0] }}
+        </label>
+        <label ngbButtonLabel>
+          <input ngbButton [name]="'bar'" type="radio" [value]="values[1]"/> {{ values[1] }}
+        </label>
+      </div>
+    `);
+    fixture.detectChanges();
+
+    const inputs = fixture.nativeElement.querySelectorAll('input');
+    expectNameOnAllInputs(fixture.nativeElement, 'bar');
   });
 
   describe('accessibility', () => {
