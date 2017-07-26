@@ -9,6 +9,8 @@ const NGB_RADIO_VALUE_ACCESSOR = {
   multi: true
 };
 
+let nextId = 0;
+
 /**
  * Easily create Bootstrap-style radio buttons. A value of a selected button is bound to a variable
  * specified via ngModel.
@@ -25,6 +27,12 @@ export class NgbRadioGroup implements ControlValueAccessor {
 
   get disabled() { return this._disabled; }
   set disabled(isDisabled: boolean) { this.setDisabledState(isDisabled); }
+
+  /**
+   * The name of the group. Unless enclosed inputs specify a name, this name is used as the name of the
+   * enclosed inputs. If not specified, a name is generated automatically.
+   */
+  @Input() name = `ngb-radio-${nextId++}`;
 
   onChange = (_: any) => {};
   onTouched = () => {};
@@ -67,6 +75,7 @@ export class NgbRadioGroup implements ControlValueAccessor {
   host: {
     '[checked]': 'checked',
     '[disabled]': 'disabled',
+    '[name]': 'nameAttr',
     '(change)': 'onChange()',
     '(focus)': 'focused = true',
     '(blur)': 'focused = false'
@@ -78,8 +87,14 @@ export class NgbRadio implements OnDestroy {
   private _value: any = null;
 
   /**
+   * The name of the input. All inputs of a group should have the same name. If not specified,
+   * the name of the enclosing group is used.
+   */
+  @Input() name: string;
+
+  /**
    * You can specify model value of a given radio by binding to the value property.
-  */
+   */
   @Input('value')
   set value(value: any) {
     this._value = value;
@@ -108,6 +123,8 @@ export class NgbRadio implements OnDestroy {
   get disabled() { return this._group.disabled || this._disabled; }
 
   get value() { return this._value; }
+
+  get nameAttr() { return this.name || this._group.name; }
 
   constructor(
       private _group: NgbRadioGroup, private _label: NgbButtonLabel, private _renderer: Renderer2,
