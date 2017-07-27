@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
-import {map} from 'rxjs/operator/map';
-import {debounceTime} from 'rxjs/operator/debounceTime';
-import {distinctUntilChanged} from 'rxjs/operator/distinctUntilChanged';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
 
 const states = ['Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Arkansas', 'California', 'Colorado',
   'Connecticut', 'Delaware', 'District Of Columbia', 'Federated States Of Micronesia', 'Florida', 'Georgia',
@@ -24,6 +24,10 @@ export class NgbdTypeaheadFormat {
   formatter = (result: string) => result.toUpperCase();
 
   search = (text$: Observable<string>) =>
-    map.call(distinctUntilChanged.call(debounceTime.call(text$, 200)),
-      term => term === '' ? [] : states.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10));
+    text$
+      .debounceTime(200)
+      .distinctUntilChanged()
+      .map(term => term === '' ? []
+        : states.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10));
+
 }
