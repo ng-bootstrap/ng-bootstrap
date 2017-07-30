@@ -1,9 +1,9 @@
-<div [(ngModel)]="language" ngbRadioGroup>
-  <label class="btn btn-primary">
-    <input type="radio" value="en"> English
+<div [(ngModel)]="language" ngbRadioGroup name="language">
+  <label ngbButtonLabel class="btn btn-primary">
+    <input ngbButton type="radio" value="en"> English
   </label>
-  <label class="btn btn-primary">
-    <input type="radio" value="fr"> Français
+  <label ngbButtonLabel class="btn btn-primary">
+    <input ngbButton type="radio" value="fr"> Français
   </label>
 </div>
 <hr>
