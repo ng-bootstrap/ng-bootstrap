@@ -11,7 +11,8 @@ import {
   SimpleChanges,
   EventEmitter,
   Output,
-  OnDestroy
+  OnDestroy,
+  ElementRef
 } from '@angular/core';
 import {NG_VALUE_ACCESSOR, ControlValueAccessor} from '@angular/forms';
 import {NgbCalendar} from './ngb-calendar';
@@ -56,7 +57,8 @@ export interface NgbDatepickerNavigateEvent {
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     'class': 'd-inline-block rounded',
-    '[attr.tabindex]': 'disabled ? undefined : "0"',
+    'tabindex': '0',
+    '[attr.tabindex]': 'model.disabled ? undefined : "0"',
     '(blur)': 'showFocus(false)',
     '(focus)': 'showFocus(true)',
     '(keydown)': 'onKeyDown($event)'
@@ -207,7 +209,7 @@ export class NgbDatepicker implements OnDestroy,
   constructor(
       private _keyMapService: NgbDatepickerKeyMapService, public _service: NgbDatepickerService,
       private _calendar: NgbCalendar, public i18n: NgbDatepickerI18n, config: NgbDatepickerConfig,
-      private _cd: ChangeDetectorRef) {
+      private _cd: ChangeDetectorRef, private _elementRef: ElementRef) {
     this.dayTemplate = config.dayTemplate;
     this.displayMonths = config.displayMonths;
     this.firstDayOfWeek = config.firstDayOfWeek;
@@ -246,6 +248,11 @@ export class NgbDatepicker implements OnDestroy,
       _cd.markForCheck();
     });
   }
+
+  /**
+   * Manually focus the datepicker
+   */
+  focus() { this._elementRef.nativeElement.focus(); }
 
   getHeaderHeight() {
     const h = this.showWeekdays ? 6.25 : 4.25;
