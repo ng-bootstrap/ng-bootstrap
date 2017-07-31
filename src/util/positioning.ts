@@ -1,7 +1,9 @@
 // previous version:
 // https://github.com/angular-ui/bootstrap/blob/07c31d0731f7cb068a1932b8e01d2312b796b4ec/src/position/position.js
 export class Positioning {
-  private getStyle(element: HTMLElement, prop: string): string { return window.getComputedStyle(element)[prop]; }
+  private getAllStyles(element: HTMLElement) { return window.getComputedStyle(element); }
+
+  private getStyle(element: HTMLElement, prop: string): string { return this.getAllStyles(element)[prop]; }
 
   private isStaticPositioned(element: HTMLElement): boolean {
     return (this.getStyle(element, 'position') || 'static') === 'static';
@@ -82,6 +84,7 @@ export class Positioning {
   positionElements(hostElement: HTMLElement, targetElement: HTMLElement, placement: string, appendToBody?: boolean):
       ClientRect {
     const hostElPosition = appendToBody ? this.offset(hostElement, false) : this.position(hostElement, false);
+    const targetElStyles = this.getAllStyles(targetElement);
     const targetElBCR = targetElement.getBoundingClientRect();
     const placementPrimary = placement.split('-')[0] || 'top';
     const placementSecondary = placement.split('-')[1] || 'center';
@@ -97,13 +100,15 @@ export class Positioning {
 
     switch (placementPrimary) {
       case 'top':
-        targetElPosition.top = hostElPosition.top - targetElement.offsetHeight;
+        targetElPosition.top =
+            hostElPosition.top - (targetElement.offsetHeight + parseFloat(targetElStyles.marginBottom));
         break;
       case 'bottom':
         targetElPosition.top = hostElPosition.top + hostElPosition.height;
         break;
       case 'left':
-        targetElPosition.left = hostElPosition.left - targetElement.offsetWidth;
+        targetElPosition.left =
+            hostElPosition.left - (targetElement.offsetWidth + parseFloat(targetElStyles.marginRight));
         break;
       case 'right':
         targetElPosition.left = hostElPosition.left + hostElPosition.width;
