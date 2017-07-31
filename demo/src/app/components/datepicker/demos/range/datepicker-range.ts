@@ -1,10 +1,20 @@
 import {Component} from '@angular/core';
 import {NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
-import {after, before, equals} from './tools';
+
+const equals = (one: NgbDateStruct, two: NgbDateStruct) =>
+  one && two && two.year === one.year && two.month === one.month && two.day === one.day;
+
+const before = (one: NgbDateStruct, two: NgbDateStruct) =>
+  !one || !two ? false : one.year === two.year ? one.month === two.month ? one.day === two.day
+    ? false : one.day < two.day : one.month < two.month : one.year < two.year;
+
+const after = (one: NgbDateStruct, two: NgbDateStruct) =>
+  !one || !two ? false : one.year === two.year ? one.month === two.month ? one.day === two.day
+    ? false : one.day > two.day : one.month > two.month : one.year > two.year;
 
 @Component({
-  selector: 'ngbd-datepicker-range-inline',
-  templateUrl: './datepicker-range-inline.html',
+  selector: 'ngbd-datepicker-range',
+  templateUrl: './datepicker-range.html',
   styles: [`
     .custom-day {
       text-align: center;
@@ -25,7 +35,7 @@ import {after, before, equals} from './tools';
     }
   `]
 })
-export class NgbdDatepickerRangeInline {
+export class NgbdDatepickerRange {
 
   hoveredDate: NgbDateStruct;
 
