@@ -51,6 +51,19 @@ describe('NgbInputDatepicker', () => {
 
     it('should support the "position" option',
        () => { createTestCmpt(`<input ngbDatepicker #d="ngbDatepicker" [placement]="'bottom-right'">`); });
+
+    it('should focus the datepicker after opening', () => {
+      const fixture = createTestCmpt(`
+          <input ngbDatepicker #d="ngbDatepicker">
+          <button (click)="open(d)">Open</button>
+      `);
+
+      // open
+      const button = fixture.nativeElement.querySelector('button');
+      button.click();
+      fixture.detectChanges();
+      expect(document.activeElement).toBe(fixture.nativeElement.querySelector('ngb-datepicker'));
+    });
   });
 
   describe('ngModel interactions', () => {

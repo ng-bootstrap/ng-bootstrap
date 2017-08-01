@@ -434,6 +434,14 @@ describe('ngb-datepicker', () => {
     expect(datepicker.getHeaderMargin()).toBe(4);
   });
 
+  it('should allow focusing datepicker programmatically', () => {
+    const datepicker = TestBed.createComponent(NgbDatepicker);
+    expect(datepicker.nativeElement.getAttribute('tabindex')).toBe('0');
+
+    datepicker.componentInstance.focus();
+    expect(document.activeElement).toBe(datepicker.nativeElement);
+  });
+
   describe('ngModel', () => {
 
     it('should update model based on calendar clicks', async(() => {
@@ -851,6 +859,7 @@ describe('ngb-datepicker', () => {
          for (let index = 0; index < 31; index++) {
            expect(getDay(fixture.nativeElement, index)).toHaveCssClass('text-muted');
          }
+         expect(fixture.nativeElement.querySelector('ngb-datepicker').getAttribute('tabindex')).toBeFalsy();
        }));
   });
 
