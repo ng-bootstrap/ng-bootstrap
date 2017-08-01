@@ -2,7 +2,7 @@ import {NgModule, ModuleWithProviders} from '@angular/core';
 
 import {NgbAccordionModule, NgbPanelChangeEvent} from './accordion/accordion.module';
 import {NgbAlertModule} from './alert/alert.module';
-import {NgbButtonsModule} from './buttons/radio.module';
+import {NgbButtonsModule} from './buttons/buttons.module';
 import {NgbCarouselModule} from './carousel/carousel.module';
 import {NgbCollapseModule} from './collapse/collapse.module';
 import {NgbDatepickerModule} from './datepicker/datepicker.module';
@@ -27,7 +27,7 @@ export {
   NgbPanelContent
 } from './accordion/accordion.module';
 export {NgbAlertModule, NgbAlertConfig, NgbAlert} from './alert/alert.module';
-export {NgbButtonsModule, NgbRadioGroup} from './buttons/radio.module';
+export {NgbButtonsModule, NgbCheckBox, NgbRadioGroup} from './buttons/buttons.module';
 export {NgbCarouselModule, NgbCarouselConfig, NgbCarousel, NgbSlide} from './carousel/carousel.module';
 export {NgbCollapseModule, NgbCollapse} from './collapse/collapse.module';
 export {

@@ -64,7 +64,7 @@ export interface NoResultsTemplateContext {
           (mouseenter)="context.markActive(idx)"
           (click)="context.select(result)">
             <ng-template [ngTemplateOutlet]="resultTemplate || rt"
-            [ngOutletContext]="_getResultContext(result)"></ng-template>
+          [ngOutletContext]="{result: result, term: term, formatter: formatter}"></ng-template>
         </button>
       </ng-template>
     </ng-template>
@@ -151,10 +151,8 @@ export class NgbTypeaheadWindow implements OnInit {
 
   _getWindowContext() { return this._context; }
 
-  _getResultContext(result: any) { return {result: result, term: this.term, formatter: this.formatter}; }
 
   _getNoResultsContext() { return {term: this.term}; }
-
   getActive() { return this.results[this.activeIdx]; }
 
   markActive(activeIdx: number) {

@@ -4,7 +4,7 @@ import {DEMO_SNIPPETS} from './demos';
 @Component({
   selector: 'ngbd-datepicker',
   template: `
-    <ngbd-content-wrapper component="Datepicker">
+    <ngbd-component-wrapper component="Datepicker">
       <ngbd-api-docs directive="NgbDatepicker"></ngbd-api-docs>
       <ngbd-api-docs directive="NgbInputDatepicker"></ngbd-api-docs>
       <ngbd-api-docs-class type="NgbDateStruct"></ngbd-api-docs-class>
@@ -22,6 +22,9 @@ import {DEMO_SNIPPETS} from './demos';
       <ngbd-example-box demoTitle="Multiple months" [snippets]="snippets" component="datepicker" demo="multiple">
         <ngbd-datepicker-multiple></ngbd-datepicker-multiple>
       </ngbd-example-box>
+      <ngbd-example-box demoTitle="Range selection" [snippets]="snippets" component="datepicker" demo="range">
+        <ngbd-datepicker-range></ngbd-datepicker-range>
+      </ngbd-example-box>
       <ngbd-example-box demoTitle="Disabled datepicker" [snippets]="snippets" component="datepicker" demo="disabled">
         <ngbd-datepicker-disabled></ngbd-datepicker-disabled>
       </ngbd-example-box>
@@ -33,11 +36,11 @@ import {DEMO_SNIPPETS} from './demos';
       </ngbd-example-box>
       <ngbd-example-box demoTitle="Alternative calendars" [snippets]="snippets" component="datepicker" demo="calendars">
         <ngbd-datepicker-calendars></ngbd-datepicker-calendars>
-      </ngbd-example-box>      
+      </ngbd-example-box>
       <ngbd-example-box demoTitle="Global configuration of datepickers" [snippets]="snippets" component="datepicker" demo="config">
         <ngbd-datepicker-config></ngbd-datepicker-config>
       </ngbd-example-box>
-    </ngbd-content-wrapper>
+    </ngbd-component-wrapper>
   `
 })
 export class NgbdDatepicker {

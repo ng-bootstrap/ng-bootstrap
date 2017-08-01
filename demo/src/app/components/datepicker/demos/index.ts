@@ -6,10 +6,12 @@ import {NgbdDatepickerPopup} from './popup/datepicker-popup';
 import {NgbdDatepickerCustomday} from './customday/datepicker-customday';
 import {NgbdDatepickerMultiple} from './multiple/datepicker-multiple';
 import {NgbdDatepickerCalendars} from './calendars/datepicker-calendars';
+import {NgbdDatepickerRange} from './range/datepicker-range';
 
 export const DEMO_DIRECTIVES = [
   NgbdDatepickerBasic, NgbdDatepickerPopup, NgbdDatepickerDisabled, NgbdDatepickerI18n,
-  NgbdDatepickerCustomday, NgbdDatepickerConfig, NgbdDatepickerMultiple, NgbdDatepickerCalendars
+  NgbdDatepickerCustomday, NgbdDatepickerConfig, NgbdDatepickerMultiple, NgbdDatepickerCalendars,
+  NgbdDatepickerRange
 ];
 
 export const DEMO_SNIPPETS = {
@@ -36,6 +38,10 @@ export const DEMO_SNIPPETS = {
   'multiple': {
     'code': require('!!prismjs-loader?lang=typescript!./multiple/datepicker-multiple'),
     'markup': require('!!prismjs-loader?lang=markup!./multiple/datepicker-multiple.html')
+  },
+  'range': {
+    'code': require('!!prismjs-loader?lang=typescript!./range/datepicker-range'),
+    'markup': require('!!prismjs-loader?lang=markup!./range/datepicker-range.html')
   },
   'calendars': {
   'code': require('!!prismjs-loader?lang=typescript!./calendars/datepicker-calendars'),

@@ -5,7 +5,7 @@ import {By} from '@angular/platform-browser';
 import {Component} from '@angular/core';
 
 import {NgbCarouselModule} from './carousel.module';
-import {NgbCarousel} from './carousel';
+import {NgbCarousel, NgbSlideEvent, NgbSlideEventDirection} from './carousel';
 import {NgbCarouselConfig} from './carousel-config';
 
 const createTestComponent = (html: string) =>
@@ -130,6 +130,41 @@ describe('ngb-carousel', () => {
        discardPeriodicTasks();
      }));
 
+  it('should fire a slide event with correct direction on indicator click', fakeAsync(() => {
+       const html = `
+      <ngb-carousel (slide)="carouselSlideCallBack($event)">
+        <ng-template ngbSlide>foo</ng-template>
+        <ng-template ngbSlide>bar</ng-template>
+        <ng-template ngbSlide>pluto</ng-template>
+      </ngb-carousel>
+    `;
+
+       const fixture = createTestComponent(html);
+       const indicatorElms = fixture.nativeElement.querySelectorAll('ol.carousel-indicators > li');
+       const spyCallBack = spyOn(fixture.componentInstance, 'carouselSlideCallBack');
+
+       indicatorElms[1].click();
+       fixture.detectChanges();
+       expect(fixture.componentInstance.carouselSlideCallBack).toHaveBeenCalledWith(jasmine.objectContaining({
+         direction: NgbSlideEventDirection.LEFT
+       }));
+
+       spyCallBack.calls.reset();
+       indicatorElms[0].click();
+       fixture.detectChanges();
+       expect(fixture.componentInstance.carouselSlideCallBack).toHaveBeenCalledWith(jasmine.objectContaining({
+         direction: NgbSlideEventDirection.RIGHT
+       }));
+
+       spyCallBack.calls.reset();
+       indicatorElms[2].click();
+       fixture.detectChanges();
+       expect(fixture.componentInstance.carouselSlideCallBack).toHaveBeenCalledWith(jasmine.objectContaining({
+         direction: NgbSlideEventDirection.LEFT
+       }));
+
+       discardPeriodicTasks();
+     }));
 
   it('should change slide on carousel control click', fakeAsync(() => {
        const html = `
@@ -153,6 +188,41 @@ describe('ngb-carousel', () => {
        prevControlElm.click();  // prev
        fixture.detectChanges();
        expectActiveSlides(fixture.nativeElement, [true, false]);
+
+       discardPeriodicTasks();
+     }));
+
+  it('should fire a slide event with correct direction on carousel control click', fakeAsync(() => {
+       const html = `
+      <ngb-carousel (slide)="carouselSlideCallBack($event)">
+        <ng-template ngbSlide>foo</ng-template>
+        <ng-template ngbSlide>bar</ng-template>
+      </ngb-carousel>
+    `;
+
+       const fixture = createTestComponent(html);
+       const prevControlElm = fixture.nativeElement.querySelector('.carousel-control-prev');
+       const nextControlElm = fixture.nativeElement.querySelector('.carousel-control-next');
+       const spyCallBack = spyOn(fixture.componentInstance, 'carouselSlideCallBack');
+
+       prevControlElm.click();
+       fixture.detectChanges();
+       expect(fixture.componentInstance.carouselSlideCallBack).toHaveBeenCalledWith(jasmine.objectContaining({
+         direction: NgbSlideEventDirection.RIGHT
+       }));
+       spyCallBack.calls.reset();
+       nextControlElm.click();
+       fixture.detectChanges();
+       expect(fixture.componentInstance.carouselSlideCallBack).toHaveBeenCalledWith(jasmine.objectContaining({
+         direction: NgbSlideEventDirection.LEFT
+       }));
+
+       spyCallBack.calls.reset();
+       prevControlElm.click();
+       fixture.detectChanges();
+       expect(fixture.componentInstance.carouselSlideCallBack).toHaveBeenCalledWith(jasmine.objectContaining({
+         direction: NgbSlideEventDirection.RIGHT
+       }));
 
        discardPeriodicTasks();
      }));
@@ -218,6 +288,35 @@ describe('ngb-carousel', () => {
        tick(1200);
        fixture.detectChanges();
        expectActiveSlides(fixture.nativeElement, [true, false]);
+
+       discardPeriodicTasks();
+     }));
+
+  it('should change slide with different rate when interval value changed', fakeAsync(() => {
+       const html = `
+      <ngb-carousel [interval]="interval">
+        <ng-template ngbSlide>foo</ng-template>
+        <ng-template ngbSlide>bar</ng-template>
+        <ng-template ngbSlide>zoo</ng-template>
+      </ngb-carousel>
+    `;
+
+       const fixture = createTestComponent(html);
+       fixture.componentInstance.interval = 5000;
+       fixture.detectChanges();
+
+       expectActiveSlides(fixture.nativeElement, [true, false, false]);
+
+       tick(5001);
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [false, true, false]);
+
+       fixture.componentInstance.interval = 1000;
+       fixture.detectChanges();
+
+       tick(1001);
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [false, false, true]);
 
        discardPeriodicTasks();
      }));
@@ -421,6 +520,8 @@ describe('ngb-carousel', () => {
 
 @Component({selector: 'test-cmp', template: ''})
 class TestComponent {
+  interval;
   activeSlideId;
   keyboard = true;
+  carouselSlideCallBack = (event: NgbSlideEvent) => {};
 }

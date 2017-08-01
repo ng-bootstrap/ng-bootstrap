@@ -1,14 +1,13 @@
 import {Component, Injectable} from '@angular/core';
 import {Jsonp, URLSearchParams} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
-import {map} from 'rxjs/operator/map';
-import {debounceTime} from 'rxjs/operator/debounceTime';
-import {distinctUntilChanged} from 'rxjs/operator/distinctUntilChanged';
-import {_catch} from 'rxjs/operator/catch';
-import {_do} from 'rxjs/operator/do';
-import {switchMap} from 'rxjs/operator/switchMap';
-import {of} from 'rxjs/observable/of';
-
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/switchMap';
 
 @Injectable()
 export class WikipediaService {
@@ -16,7 +15,7 @@ export class WikipediaService {
 
   search(term: string) {
     if (term === '') {
-      return of.call([]);
+      return Observable.of([]);
     }
 
     let wikiUrl = 'https://en.wikipedia.org/w/api.php';
@@ -26,8 +25,9 @@ export class WikipediaService {
     params.set('format', 'json');
     params.set('callback', 'JSONP_CALLBACK');
 
-    return map.call(this._jsonp.get(wikiUrl, {search: params}),
-      response => <string[]> response.json()[1]);
+    return this._jsonp
+      .get(wikiUrl, {search: params})
+      .map(response => <string[]> response.json()[1]);
   }
 }
 
@@ -45,20 +45,16 @@ export class NgbdTypeaheadHttp {
   constructor(private _service: WikipediaService) {}
 
   search = (text$: Observable<string>) =>
-    _do.call(
-      switchMap.call(
-        _do.call(
-          distinctUntilChanged.call(
-            debounceTime.call(text$, 300)),
-          () => this.searching = true),
-        term =>
-          _catch.call(
-            _do.call(this._service.search(term), () => this.searchFailed = false),
-            () => {
-              this.searchFailed = true;
-              return of.call([]);
-            }
-          )
-      ),
-      () => this.searching = false);
+    text$
+      .debounceTime(300)
+      .distinctUntilChanged()
+      .do(() => this.searching = true)
+      .switchMap(term =>
+        this._service.search(term)
+          .do(() => this.searchFailed = false)
+          .catch(() => {
+            this.searchFailed = true;
+            return Observable.of([]);
+          }))
+      .do(() => this.searching = false);
 }

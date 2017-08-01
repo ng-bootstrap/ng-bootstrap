@@ -1,4 +1,13 @@
-import {Component, Injectable, ViewChild, OnDestroy, NgModule, getDebugNode, DebugElement} from '@angular/core';
+import {
+  Component,
+  Injectable,
+  ViewChild,
+  OnDestroy,
+  NgModule,
+  getDebugNode,
+  DebugElement,
+  ReflectiveInjector
+} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {TestBed, ComponentFixture} from '@angular/core/testing';
 
@@ -8,6 +17,11 @@ const NOOP = () => {};
 
 @Injectable()
 class SpyService {
+  called = false;
+}
+
+@Injectable()
+class CustomSpyService {
   called = false;
 }
 
@@ -446,6 +460,21 @@ describe('ngb-modal', () => {
 
   });
 
+  describe('custom injector option', () => {
+
+    it('should render modal with a custom injector', () => {
+      const customInjector = ReflectiveInjector.resolveAndCreate([CustomSpyService]);
+      const modalInstance = fixture.componentInstance.openCmpt(CustomInjectorCmpt, {injector: customInjector});
+      fixture.detectChanges();
+      expect(fixture.nativeElement).toHaveModal('Some content');
+
+      modalInstance.close();
+      fixture.detectChanges();
+      expect(fixture.nativeElement).not.toHaveModal();
+    });
+
+  });
+
   describe('focus management', () => {
 
     it('should focus modal window and return focus to previously focused element', () => {
@@ -473,6 +502,34 @@ describe('ngb-modal', () => {
       modalInstance.close('ok!');
       expect(document.activeElement).toBe(document.body);
     });
+
+    it('should return focus to body if the opening element is not stored as previously focused element', () => {
+      fixture.detectChanges();
+      const openElement = fixture.nativeElement.querySelector('#open-no-focus');
+
+      openElement.click();
+      fixture.detectChanges();
+      expect(fixture.nativeElement).toHaveModal('from non focusable element');
+      expect(document.activeElement).toBe(document.querySelector('ngb-modal-window'));
+
+      fixture.componentInstance.close();
+      expect(fixture.nativeElement).not.toHaveModal();
+      expect(document.activeElement).toBe(document.body);
+    });
+
+    it('should return focus to body if the opening element is stored but cannot be focused', () => {
+      fixture.detectChanges();
+      const openElement = fixture.nativeElement.querySelector('#open-no-focus-ie');
+
+      openElement.click();
+      fixture.detectChanges();
+      expect(fixture.nativeElement).toHaveModal('from non focusable element but stored as activeElement on IE');
+      expect(document.activeElement).toBe(document.querySelector('ngb-modal-window'));
+
+      fixture.componentInstance.close();
+      expect(fixture.nativeElement).not.toHaveModal();
+      expect(document.activeElement).toBe(document.body);
+    });
   });
 
   describe('window element ordering', () => {
@@ -494,6 +551,13 @@ describe('ngb-modal', () => {
     });
   });
 });
+
+@Component({selector: 'custom-injector-cmpt', template: 'Some content'})
+export class CustomInjectorCmpt implements OnDestroy {
+  constructor(private _spyService: CustomSpyService) {}
+
+  ngOnDestroy(): void { this._spyService.called = true; }
+}
 
 @Component({selector: 'destroyable-cmpt', template: 'Some content'})
 export class DestroyableCmpt implements OnDestroy {
@@ -528,6 +592,12 @@ export class WithActiveModalCmpt {
       </ng-template>
     </ng-template>
     <button id="open" (click)="open('from button')">Open</button>
+    <div id="open-no-focus" (click)="open('from non focusable element')">Open</div>
+    <div
+      id="open-no-focus-ie"
+      (click)="open('from non focusable element but stored as activeElement on IE')"
+      style="display: inline-block;"
+    >Open</div>
   `
 })
 class TestComponent {
@@ -560,10 +630,10 @@ class TestComponent {
 }
 
 @NgModule({
-  declarations: [TestComponent, DestroyableCmpt, WithActiveModalCmpt],
+  declarations: [TestComponent, CustomInjectorCmpt, DestroyableCmpt, WithActiveModalCmpt],
   exports: [TestComponent, DestroyableCmpt],
   imports: [CommonModule, NgbModalModule.forRoot()],
-  entryComponents: [DestroyableCmpt, WithActiveModalCmpt],
+  entryComponents: [CustomInjectorCmpt, DestroyableCmpt, WithActiveModalCmpt],
   providers: [SpyService]
 })
 class NgbModalTestModule {
