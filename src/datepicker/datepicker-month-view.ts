@@ -13,7 +13,7 @@ import {DayTemplateContext} from './datepicker-day-template-context';
     }
     .ngb-dp-day, .ngb-dp-weekday, .ngb-dp-week-number {
       width: 2rem;
-      height: 2rem;      
+      height: 2rem;
     }
     .ngb-dp-day {
       cursor: pointer;
@@ -32,12 +32,10 @@ import {DayTemplateContext} from './datepicker-day-template-context';
     <ng-template ngFor let-week [ngForOf]="month.weeks">
       <div *ngIf="!isCollapsed(week)" class="ngb-dp-week d-flex">
         <div *ngIf="showWeekNumbers" class="ngb-dp-week-number small text-center font-italic text-muted">{{ week.number }}</div>
-        <div *ngFor="let day of week.days" (click)="doSelect(day)" class="ngb-dp-day" [class.disabled]="isDisabled(day)"
+        <div *ngFor="let day of week.days" (click)="doSelect(day)" class="ngb-dp-day" [class.disabled]="day.context.disabled"
          [class.hidden]="isHidden(day)">
           <ng-template [ngIf]="!isHidden(day)">
-            <ng-template [ngTemplateOutlet]="dayTemplate"
-            [ngOutletContext]="_getDayContext(day, month)">
-            </ng-template>
+            <ng-template [ngTemplateOutlet]="dayTemplate" [ngOutletContext]="day.context"></ng-template>
           </ng-template>
         </div>
       </div>
@@ -46,10 +44,8 @@ import {DayTemplateContext} from './datepicker-day-template-context';
 })
 export class NgbDatepickerMonthView {
   @Input() dayTemplate: TemplateRef<DayTemplateContext>;
-  @Input() disabled: boolean;
   @Input() month: MonthViewModel;
   @Input() outsideDays: 'visible' | 'hidden' | 'collapsed';
-  @Input() selectedDate: NgbDate;
   @Input() showWeekdays;
   @Input() showWeekNumbers;
 
@@ -58,23 +54,10 @@ export class NgbDatepickerMonthView {
   constructor(public i18n: NgbDatepickerI18n) {}
 
   doSelect(day: DayViewModel) {
-    if (!this.isDisabled(day) && !this.isHidden(day)) {
+    if (!day.context.disabled && !this.isHidden(day)) {
       this.select.emit(NgbDate.from(day.date));
     }
   }
-
-  _getDayContext(day: any, month: any) {
-    return {
-      date: {year: day.date.year, month: day.date.month, day: day.date.day},
-      currentMonth: month.number,
-      disabled: this.isDisabled(day),
-      selected: this.isSelected(day.date)
-    };
-  }
-
-  isDisabled(day: DayViewModel) { return this.disabled || day.disabled; }
-
-  isSelected(date: NgbDate) { return this.selectedDate && this.selectedDate.equals(date); }
 
   isCollapsed(week: WeekViewModel) {
     return this.outsideDays === 'collapsed' && week.days[0].date.month !== this.month.number &&

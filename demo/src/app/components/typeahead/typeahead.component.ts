@@ -4,7 +4,7 @@ import {DEMO_SNIPPETS} from './demos';
 @Component({
   selector: 'ngbd-typeahead',
   template: `
-    <ngbd-content-wrapper component="Typeahead">
+    <ngbd-component-wrapper component="Typeahead">
       <ngbd-api-docs directive="NgbTypeahead"></ngbd-api-docs>
       <ngbd-api-docs-class type="NgbTypeaheadSelectItemEvent"></ngbd-api-docs-class>
       <ngbd-api-docs-class type="ResultTemplateContext"></ngbd-api-docs-class>
@@ -24,7 +24,7 @@ import {DEMO_SNIPPETS} from './demos';
       <ngbd-example-box demoTitle="Global configuration of typeaheads" [snippets]="snippets" component="typeahead" demo="config">
         <ngbd-typeahead-config></ngbd-typeahead-config>
       </ngbd-example-box>
-    </ngbd-content-wrapper>
+    </ngbd-component-wrapper>
   `
 })
 export class NgbdTypeahead {
