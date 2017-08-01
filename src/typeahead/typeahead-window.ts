@@ -3,7 +3,7 @@ import {Component, Input, Output, EventEmitter, TemplateRef, OnInit} from '@angu
 import {toString} from '../util/util';
 
 /**
- * Context for the typeahead result template in case you want to override the default one
+ * Context for the typeahead window template in case you want to override the default one
  */
 export interface WindowTemplateContext {
   /**
@@ -64,7 +64,7 @@ export interface NoResultsTemplateContext {
           (mouseenter)="context.markActive(idx)"
           (click)="context.select(result)">
             <ng-template [ngTemplateOutlet]="resultTemplate || rt"
-          [ngOutletContext]="{result: result, term: term, formatter: formatter}"></ng-template>
+            [ngOutletContext]="{result: result, term: term, formatter: formatter}"></ng-template>
         </button>
       </ng-template>
     </ng-template>
