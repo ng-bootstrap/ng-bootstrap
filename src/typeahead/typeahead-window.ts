@@ -24,7 +24,7 @@ export interface WindowTemplateContext {
 
 
 /**
- * Context for the typeahead result template in case you want to override the default one
+ * Context for the typeahead window template in case you want to override the default one
  */
 export interface WindowTemplateContext {
   /**
