@@ -202,6 +202,33 @@ describe('NgbInputDatepicker', () => {
        }));
   });
 
+  describe('manual data entry', () => {
+
+    it('should reformat value entered by a user when it is valid', fakeAsync(() => {
+         const fixture = createTestCmpt(`<input ngbDatepicker (ngModelChange)="date">`);
+         const inputDebugEl = fixture.debugElement.query(By.css('input'));
+
+         inputDebugEl.triggerEventHandler('change', {target: {value: '2016-9-1'}});
+         tick();
+         fixture.detectChanges();
+
+         expect(inputDebugEl.nativeElement.value).toBe('2016-09-01');
+       }));
+
+    it('should retain value entered by a user if it is not valid', fakeAsync(() => {
+         const fixture = createTestCmpt(`<input ngbDatepicker (ngModelChange)="date">`);
+         const inputDebugEl = fixture.debugElement.query(By.css('input'));
+
+         inputDebugEl.nativeElement.value = '2016-09-aa';
+         inputDebugEl.triggerEventHandler('change', {target: {value: inputDebugEl.nativeElement.value}});
+         tick();
+         fixture.detectChanges();
+
+         expect(inputDebugEl.nativeElement.value).toBe('2016-09-aa');
+       }));
+
+  });
+
   describe('validation', () => {
 
     describe('values set from model', () => {
