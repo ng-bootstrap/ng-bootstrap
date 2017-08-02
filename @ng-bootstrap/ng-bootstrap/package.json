@@ -1,0 +1,94 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "@ng-bootstrap/ng-bootstrap@1.0.0-alpha.17",
+        "scope": "@ng-bootstrap",
+        "escapedName": "@ng-bootstrap%2fng-bootstrap",
+        "name": "@ng-bootstrap/ng-bootstrap",
+        "rawSpec": "1.0.0-alpha.17",
+        "spec": "1.0.0-alpha.17",
+        "type": "version"
+      },
+      "/Users/Derek/Downloads/temp"
+    ]
+  ],
+  "_from": "@ng-bootstrap/ng-bootstrap@1.0.0-alpha.17",
+  "_id": "@ng-bootstrap/ng-bootstrap@1.0.0-alpha.17",
+  "_inCache": true,
+  "_location": "/@ng-bootstrap/ng-bootstrap",
+  "_nodeVersion": "5.4.1",
+  "_npmOperationalInternal": {
+    "host": "packages-12-west.internal.npmjs.com",
+    "tmp": "tmp/ng-bootstrap-1.0.0-alpha.17.tgz_1483954535073_0.9303041705861688"
+  },
+  "_npmUser": {
+    "name": "ng-bootstrap",
+    "email": "foxandxss@gmail.com"
+  },
+  "_npmVersion": "3.5.3",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "@ng-bootstrap/ng-bootstrap@1.0.0-alpha.17",
+    "scope": "@ng-bootstrap",
+    "escapedName": "@ng-bootstrap%2fng-bootstrap",
+    "name": "@ng-bootstrap/ng-bootstrap",
+    "rawSpec": "1.0.0-alpha.17",
+    "spec": "1.0.0-alpha.17",
+    "type": "version"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/@ng-bootstrap/ng-bootstrap/-/ng-bootstrap-1.0.0-alpha.17.tgz",
+  "_shasum": "e221f579d07ee99be915bd81b45b2e540d153e31",
+  "_shrinkwrap": null,
+  "_spec": "@ng-bootstrap/ng-bootstrap@1.0.0-alpha.17",
+  "_where": "/Users/Derek/Downloads/temp",
+  "author": {
+    "name": "https://github.com/ng-bootstrap/ng-bootstrap/graphs/contributors"
+  },
+  "bugs": {
+    "url": "https://github.com/ng-bootstrap/ng-bootstrap/issues"
+  },
+  "dependencies": {},
+  "description": "Angular 2 powered Bootstrap",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "e221f579d07ee99be915bd81b45b2e540d153e31",
+    "tarball": "https://registry.npmjs.org/@ng-bootstrap/ng-bootstrap/-/ng-bootstrap-1.0.0-alpha.17.tgz"
+  },
+  "homepage": "https://github.com/ng-bootstrap/ng-bootstrap#readme",
+  "keywords": [
+    "Angular 2 Angular2 Bootstrap autocomplete accordion alert buttons carousel collapse dropdown pagination popover progressbar rating tabset timepicker tooltip typeahead"
+  ],
+  "license": {
+    "type": "MIT",
+    "url": "https://raw.githubusercontent.com/ng-bootstrap/ng-bootstrap/master/LICENSE"
+  },
+  "main": "bundles/ng-bootstrap.js",
+  "maintainers": [
+    {
+      "name": "ng-bootstrap",
+      "email": "foxandxss@gmail.com"
+    }
+  ],
+  "module": "index.js",
+  "name": "@ng-bootstrap/ng-bootstrap",
+  "optionalDependencies": {},
+  "peerDependencies": {
+    "@angular/core": "^2.0.0",
+    "@angular/common": "^2.0.0",
+    "@angular/forms": "^2.0.0"
+  },
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ng-bootstrap/ng-bootstrap.git"
+  },
+  "scripts": {},
+  "typings": "index.d.ts",
+  "version": "1.0.0-alpha.17"
+}
