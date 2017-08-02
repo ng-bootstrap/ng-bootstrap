@@ -2,10 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 
 @Component({
-  selector: 'ngbd-buttons-radio-reactive',
-  templateUrl: './buttons-radio-reactive.html'
+  selector: 'ngbd-buttons-radioreactive',
+  templateUrl: './buttons-radioreactive.html'
 })
-export class NgbdButtonsRadioReactive implements OnInit {
+export class NgbdButtonsRadioreactive implements OnInit {
   public radioGroupForm: FormGroup;
 
   constructor(private formBuilder: FormBuilder) {}
