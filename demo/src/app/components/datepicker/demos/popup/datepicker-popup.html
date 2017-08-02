@@ -3,9 +3,9 @@
     <div class="input-group">
       <input class="form-control" placeholder="yyyy-mm-dd"
              name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker">
-      <div class="input-group-addon" (click)="d.toggle()" >
+      <button class="input-group-addon" (click)="d.toggle()" type="button">
         <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
-      </div>
+      </button>
     </div>
   </div>
 </form>
