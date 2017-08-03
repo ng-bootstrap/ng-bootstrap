@@ -1,3 +1,22 @@
+<a name="1.0.0-alpha.30"></a>
+# [1.0.0-alpha.30](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.29...1.0.0-alpha.30) (2017-08-03)
+
+
+### Bug Fixes
+
+* **buttons:** set name on radio inputs to fix keyboard navigation ([3bfd82d](https://github.com/ng-bootstrap/ng-bootstrap/commit/3bfd82d)), closes [#1704](https://github.com/ng-bootstrap/ng-bootstrap/issues/1704) [#1706](https://github.com/ng-bootstrap/ng-bootstrap/issues/1706)
+* **carousel:** restart timer when interval changed ([ae4e3e9](https://github.com/ng-bootstrap/ng-bootstrap/commit/ae4e3e9)), closes [#1690](https://github.com/ng-bootstrap/ng-bootstrap/issues/1690) [#1702](https://github.com/ng-bootstrap/ng-bootstrap/issues/1702)
+* **datepicker:** focus datepicker after opening it inside the popup ([0dbe0cb](https://github.com/ng-bootstrap/ng-bootstrap/commit/0dbe0cb)), closes [#1708](https://github.com/ng-bootstrap/ng-bootstrap/issues/1708) [#1717](https://github.com/ng-bootstrap/ng-bootstrap/issues/1717)
+* **datepicker:** propagate model and validation state on 'input' event ([38b8ffa](https://github.com/ng-bootstrap/ng-bootstrap/commit/38b8ffa)), closes [#1225](https://github.com/ng-bootstrap/ng-bootstrap/issues/1225) [#1605](https://github.com/ng-bootstrap/ng-bootstrap/issues/1605)
+* **datepicker:** retain manually entered values even if invalid ([4bd81c3](https://github.com/ng-bootstrap/ng-bootstrap/commit/4bd81c3)), closes [#1710](https://github.com/ng-bootstrap/ng-bootstrap/issues/1710) [#1725](https://github.com/ng-bootstrap/ng-bootstrap/issues/1725)
+
+
+### Features
+
+* **modal:** add injector option ([0829b30](https://github.com/ng-bootstrap/ng-bootstrap/commit/0829b30)), closes [#1686](https://github.com/ng-bootstrap/ng-bootstrap/issues/1686) [#1685](https://github.com/ng-bootstrap/ng-bootstrap/issues/1685)
+
+
+
 <a name="1.0.0-alpha.29"></a>
 # [1.0.0-alpha.29](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.28...1.0.0-alpha.29) (2017-07-25)
 
