@@ -11,13 +11,14 @@ import {NgbDateStruct} from './ngb-date-struct';
       height: 2rem;
       line-height: 2rem;
       border-radius: 0.25rem;
+      background: transparent;
     }
     :host.outside {
       opacity: 0.5;
     }
   `],
   host: {
-    'class': 'btn-secondary',
+    'class': 'btn-light',
     '[class.bg-primary]': 'selected',
     '[class.text-white]': 'selected',
     '[class.text-muted]': 'isMuted()',

@@ -96,7 +96,7 @@ export interface NgbDatepickerNavigateEvent {
       </div>
     </ng-template>
 
-    <div class="ngb-dp-header bg-faded pt-1 rounded-top" [style.height.rem]="getHeaderHeight()"
+    <div class="ngb-dp-header bg-light pt-1 rounded-top" [style.height.rem]="getHeaderHeight()"
          [style.marginBottom.rem]="-getHeaderMargin()">
       <ngb-datepicker-navigation *ngIf="navigation !== 'none'"
         [date]="model.firstDate"
