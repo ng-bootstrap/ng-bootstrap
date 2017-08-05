@@ -565,6 +565,37 @@ describe('ngb-typeahead', () => {
        }));
   });
 
+  describe('container', () => {
+
+    it('should be appended to the element matching the selector passed to "container"', () => {
+      const selector = 'body';
+      const fixture = createTestComponent(`<input [ngbTypeahead]="find" container="${selector}"/>`);
+
+      changeInput(fixture.nativeElement, 'one');
+      fixture.detectChanges();
+
+      expect(getWindow(fixture.nativeElement)).toBeNull();
+      expect(getWindow(document.querySelector(selector))).not.toBeNull();
+    });
+
+    it('should properly destroy typeahead window when the "container" option is used', () => {
+      const selector = 'body';
+      const fixture = createTestComponent(`<input *ngIf="show" [ngbTypeahead]="find" container="${selector}"/>`);
+
+      changeInput(fixture.nativeElement, 'one');
+      fixture.detectChanges();
+
+      expect(getWindow(fixture.nativeElement)).toBeNull();
+      expect(getWindow(document.querySelector(selector))).not.toBeNull();
+
+      fixture.componentInstance.show = false;
+      fixture.detectChanges();
+
+      expect(getWindow(fixture.nativeElement)).toBeNull();
+      expect(getWindow(document.querySelector(selector))).toBeNull();
+    });
+  });
+
   describe('auto attributes', () => {
 
     it('should have autocomplete, autocapitalize and autocorrect attributes set to off', () => {
@@ -774,6 +805,7 @@ class TestComponent {
 
   model: any;
   selectEventValue: any;
+  show = true;
 
   form = new FormGroup({control: new FormControl('', Validators.required)});
 
