@@ -11,5 +11,6 @@ export class NgbdTooltipConfig {
     // customize default values of tooltips used by this component tree
     config.placement = 'right';
     config.triggers = 'click';
+    config.customCssClasses = ['tooltip-red', 'tooltip-uppercase'];
   }
 }

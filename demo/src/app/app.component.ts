@@ -4,6 +4,7 @@ import {Analytics} from './shared/analytics/analytics';
 import {componentsList} from './shared';
 
 import '../style/app.scss';
+import '../style/custom-tooltip.scss';
 
 @Component({
   selector: 'ngbd-app',

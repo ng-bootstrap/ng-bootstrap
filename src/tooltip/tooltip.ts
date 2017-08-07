@@ -26,14 +26,20 @@ let nextId = 0;
 @Component({
   selector: 'ngb-tooltip-window',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {'[class]': '"tooltip show tooltip-" + placement', 'role': 'tooltip', '[id]': 'id'},
+  host: {'[class]': 'hostClasses', 'role': 'tooltip', '[id]': 'id'},
   template: `
     <div class="tooltip-inner"><ng-content></ng-content></div>
     `
 })
 export class NgbTooltipWindow {
   @Input() placement: 'top' | 'bottom' | 'left' | 'right' = 'top';
+  @Input() customCssClasses: string[] = [];
   @Input() id: string;
+
+  get hostClasses(): string {
+    return `tooltip show tooltip-${this.placement} ${this.customCssClasses.map(
+        (cssClass: string) => cssClass).join(' ')}`;
+  }
 }
 
 /**
@@ -54,6 +60,10 @@ export class NgbTooltip implements OnInit, OnDestroy {
    * Currently only supports "body".
    */
   @Input() container: string;
+  /**
+   * Specifies an array of custom css classes to be applied to the tooltip
+   */
+  @Input() customCssClasses: string[] = [];
   /**
    * Emits an event when the tooltip is shown
    */
@@ -77,6 +87,7 @@ export class NgbTooltip implements OnInit, OnDestroy {
     this.placement = config.placement;
     this.triggers = config.triggers;
     this.container = config.container;
+    this.customCssClasses.push(...config.customCssClasses);
     this._popupService = new PopupService<NgbTooltipWindow>(
         NgbTooltipWindow, injector, viewContainerRef, _renderer, componentFactoryResolver);
 
@@ -110,6 +121,7 @@ export class NgbTooltip implements OnInit, OnDestroy {
     if (!this._windowRef && this._ngbTooltip) {
       this._windowRef = this._popupService.open(this._ngbTooltip, context);
       this._windowRef.instance.placement = this.placement;
+      this._windowRef.instance.customCssClasses.push(...this.customCssClasses);
       this._windowRef.instance.id = this._ngbTooltipWindowId;
 
       this._renderer.setAttribute(this._elementRef.nativeElement, 'aria-describedby', this._ngbTooltipWindowId);
