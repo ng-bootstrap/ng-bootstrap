@@ -91,6 +91,12 @@ export class NgbTypeahead implements ControlValueAccessor,
 
 
   /**
+   * A selector specifying the element the tooltip should be appended to.
+   * Currently only supports "body".
+   */
+  @Input() container: string;
+
+  /**
    * A flag indicating if model values should be restricted to the ones selected from the popup only.
    */
   @Input() editable: boolean;
@@ -142,6 +148,7 @@ export class NgbTypeahead implements ControlValueAccessor,
       private _elementRef: ElementRef, private _viewContainerRef: ViewContainerRef, private _renderer: Renderer2,
       private _injector: Injector, componentFactoryResolver: ComponentFactoryResolver, config: NgbTypeaheadConfig,
       ngZone: NgZone) {
+    this.container = config.container;
     this.editable = config.editable;
     this.focusFirst = config.focusFirst;
     this.showHint = config.showHint;
@@ -153,7 +160,9 @@ export class NgbTypeahead implements ControlValueAccessor,
 
     this._zoneSubscription = ngZone.onStable.subscribe(() => {
       if (this.isPopupOpen()) {
-        positionElements(this._elementRef.nativeElement, this._windowRef.location.nativeElement, 'bottom-left');
+        positionElements(
+            this._elementRef.nativeElement, this._windowRef.location.nativeElement, 'bottom-left',
+            this.container === 'body');
       }
     });
   }
@@ -175,6 +184,7 @@ export class NgbTypeahead implements ControlValueAccessor,
   }
 
   ngOnDestroy(): void {
+    this._closePopup();
     this._unsubscribeFromUserInput();
     this._zoneSubscription.unsubscribe();
   }
@@ -241,6 +251,10 @@ export class NgbTypeahead implements ControlValueAccessor,
       this._windowRef.instance.id = this.popupId;
       this._windowRef.instance.selectEvent.subscribe((result: any) => this._selectResultClosePopup(result));
       this._windowRef.instance.activeChangeEvent.subscribe((activeId: string) => this.activeDescendant = activeId);
+
+      if (this.container === 'body') {
+        window.document.querySelector(this.container).appendChild(this._windowRef.location.nativeElement);
+      }
     }
   }
 
