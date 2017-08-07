@@ -208,7 +208,14 @@ export class NgbTypeahead implements ControlValueAccessor,
 
   isPopupOpen() { return this._windowRef != null; }
 
-  handleBlur() { this._onTouched(); }
+  handleBlur() {
+    if (!this.editable) {
+      this._userInput = null;
+      this._onChange(undefined);
+      this.writeValue(undefined);
+    }
+    this._onTouched();
+  }
 
   handleKeyDown(event: KeyboardEvent) {
     if (!this.isPopupOpen()) {
