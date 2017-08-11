@@ -1,5 +1,48 @@
-import {Directive, Input, Output, EventEmitter, ElementRef} from '@angular/core';
+import {
+  forwardRef,
+  Inject,
+  Directive,
+  Input,
+  Output,
+  EventEmitter,
+  ElementRef,
+  ContentChild,
+  OnChanges,
+  SimpleChanges
+} from '@angular/core';
 import {NgbDropdownConfig} from './dropdown-config';
+
+/**
+ */
+@Directive(
+    {selector: '[ngbDropdownMenu]', host: {'[class.dropdown-menu]': 'true', '[class.show]': 'dropdown.isOpen()'}})
+export class NgbDropdownMenu {
+  isOpen = false;
+
+  constructor(@Inject(forwardRef(() => NgbDropdown)) public dropdown, private _elementRef: ElementRef) {}
+
+  isEventFrom($event) { return this._elementRef.nativeElement.contains($event.target); }
+}
+
+/**
+ * Allows the dropdown to be toggled via click. This directive is optional.
+ */
+@Directive({
+  selector: '[ngbDropdownToggle]',
+  host: {
+    'class': 'dropdown-toggle',
+    'aria-haspopup': 'true',
+    '[attr.aria-expanded]': 'dropdown.isOpen()',
+    '(click)': 'toggleOpen()'
+  }
+})
+export class NgbDropdownToggle {
+  constructor(@Inject(forwardRef(() => NgbDropdown)) public dropdown, private _elementRef: ElementRef) {}
+
+  toggleOpen() { this.dropdown.toggle(); }
+
+  isEventFrom($event) { return this._elementRef.nativeElement.contains($event.target); }
+}
 
 /**
  * Transforms a node into a dropdown.
@@ -12,11 +55,13 @@ import {NgbDropdownConfig} from './dropdown-config';
     '[class.dropup]': 'up',
     '[class.show]': 'isOpen()',
     '(keyup.esc)': 'closeFromOutsideEsc()',
-    '(document:click)': 'closeFromOutsideClick($event)'
+    '(document:click)': 'closeFromClick($event)'
   }
 })
 export class NgbDropdown {
-  private _toggleElement: any;
+  @ContentChild(NgbDropdownMenu) private _menu: NgbDropdownMenu;
+
+  @ContentChild(NgbDropdownToggle) private _toggle: NgbDropdownToggle;
 
   /**
    * Indicates that the dropdown should open upwards
@@ -25,8 +70,12 @@ export class NgbDropdown {
 
   /**
    * Indicates that dropdown should be closed when selecting one of dropdown items (click) or pressing ESC.
+   * When it is true (default) dropdowns are automatically closed on both outside and inside (menu) clicks.
+   * When it is false dropdowns are never automatically closed.
+   * When it is 'outside' dropdowns are automatically closed on outside clicks but not on menu clicks.
+   * When it is 'inside' dropdowns are automatically on menu clicks but not on outside clicks.
    */
-  @Input() autoClose: boolean;
+  @Input() autoClose: boolean | 'outside' | 'inside';
 
   /**
    *  Defines whether or not the dropdown-menu is open initially.
@@ -43,7 +92,6 @@ export class NgbDropdown {
     this.up = config.up;
     this.autoClose = config.autoClose;
   }
-
 
   /**
    * Checks if the dropdown menu is open or not.
@@ -81,9 +129,15 @@ export class NgbDropdown {
     }
   }
 
-  closeFromOutsideClick($event) {
+  closeFromClick($event) {
     if (this.autoClose && $event.button !== 2 && !this._isEventFromToggle($event)) {
-      this.close();
+      if (this.autoClose === true) {
+        this.close();
+      } else if (this.autoClose === 'inside' && this._isEventFromMenu($event)) {
+        this.close();
+      } else if (this.autoClose === 'outside' && !this._isEventFromMenu($event)) {
+        this.close();
+      }
     }
   }
 
@@ -93,30 +147,7 @@ export class NgbDropdown {
     }
   }
 
-  /**
-   * @internal
-   */
-  set toggleElement(toggleElement: any) { this._toggleElement = toggleElement; }
+  private _isEventFromToggle($event) { return this._toggle ? this._toggle.isEventFrom($event) : false; }
 
-  private _isEventFromToggle($event) { return !!this._toggleElement && this._toggleElement.contains($event.target); }
-}
-
-/**
- * Allows the dropdown to be toggled via click. This directive is optional.
- */
-@Directive({
-  selector: '[ngbDropdownToggle]',
-  host: {
-    'class': 'dropdown-toggle',
-    'aria-haspopup': 'true',
-    '[attr.aria-expanded]': 'dropdown.isOpen()',
-    '(click)': 'toggleOpen()'
-  }
-})
-export class NgbDropdownToggle {
-  constructor(public dropdown: NgbDropdown, elementRef: ElementRef) {
-    dropdown.toggleElement = elementRef.nativeElement;
-  }
-
-  toggleOpen() { this.dropdown.toggle(); }
+  private _isEventFromMenu($event) { return this._menu ? this._menu.isEventFrom($event) : false; }
 }
