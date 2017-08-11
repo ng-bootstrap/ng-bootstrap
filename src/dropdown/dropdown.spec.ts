@@ -308,11 +308,11 @@ describe('ngb-dropdown-toggle', () => {
     expect(dropdownEl).toHaveCssClass('show');
   });
 
-  it('should close on item click if autoClose is set to false', () => {
+  it('should not close on item click if autoClose is set to false', () => {
     const html = `
       <div ngbDropdown [open]="true" [autoClose]="false">
           <button ngbDropdownToggle>Toggle dropdown</button>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
+          <div ngbDropdownMenu>
             <a class="dropdown-item">Action</a>
           </div>
       </div>`;
@@ -330,11 +330,11 @@ describe('ngb-dropdown-toggle', () => {
     expect(dropdownEl).toHaveCssClass('show');
   });
 
-  it('should close on item click', () => {
+  it('should close on item click by default', () => {
     const html = `
       <div ngbDropdown [open]="true">
           <button ngbDropdownToggle>Toggle dropdown</button>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
+          <div ngbDropdownMenu aria-labelledby="dropdownMenu1">
             <a class="dropdown-item">Action</a>
           </div>
       </div>`;
@@ -357,13 +357,13 @@ describe('ngb-dropdown-toggle', () => {
     const html = `
       <div ngbDropdown>
           <button ngbDropdownToggle>Toggle dropdown 1</button>
-          <div class="dropdown-menu">
+          <div ngbDropdownMenu>
             <a class="dropdown-item">Action 1</a>
           </div>
       </div>
       <div ngbDropdown>
           <button ngbDropdownToggle>Toggle dropdown 2</button>
-          <div class="dropdown-menu">
+          <div ngbDropdownMenu>
             <a class="dropdown-item">Action 2</a>
           </div>
       </div>`;
@@ -387,6 +387,71 @@ describe('ngb-dropdown-toggle', () => {
     fixture.detectChanges();
     expect(dropdownEls[0]).not.toHaveCssClass('show');
     expect(dropdownEls[1]).toHaveCssClass('show');
+  });
+
+  describe('outside and inside clicks', () => {
+
+    it('should not close on menu clicks when the "outside" option is used', () => {
+
+      const html = `
+      <div ngbDropdown [open]="true" autoClose="outside">
+          <button ngbDropdownToggle>Toggle dropdown</button>
+          <div ngbDropdownMenu>
+            <a class="dropdown-item">Action</a>
+          </div>
+      </div>`;
+
+      const fixture = createTestComponent(html);
+      const compiled = fixture.nativeElement;
+      const dropdownEl = getDropdownEl(compiled);
+      const buttonEl = compiled.querySelector('button');
+      let linkEl = compiled.querySelector('a');
+
+      fixture.detectChanges();
+      expect(dropdownEl).toHaveCssClass('show');
+
+      // remains open on item click
+      linkEl.click();
+      fixture.detectChanges();
+      expect(dropdownEl).toHaveCssClass('show');
+
+      // but closes on toggle button click
+      buttonEl.click();
+      fixture.detectChanges();
+      expect(dropdownEl).not.toHaveCssClass('show');
+    });
+
+    it('should not close on outside clicks when the "inside" option is used', () => {
+
+      const html = `
+      <button id="outside">Outside</button>
+      <div ngbDropdown [open]="true" autoClose="inside">
+          <button ngbDropdownToggle>Toggle dropdown</button>
+          <div ngbDropdownMenu>
+            <a class="dropdown-item">Action</a>
+          </div>
+      </div>`;
+
+      const fixture = createTestComponent(html);
+      const compiled = fixture.nativeElement;
+      const dropdownEl = getDropdownEl(compiled);
+      const buttonEl = compiled.querySelector('#outside');
+      let linkEl = compiled.querySelector('a');
+
+      fixture.detectChanges();
+      expect(dropdownEl).toHaveCssClass('show');
+
+      // remains open on outside click
+      buttonEl.click();
+      fixture.detectChanges();
+      expect(dropdownEl).toHaveCssClass('show');
+
+      // but closes on item click
+      linkEl.click();
+      fixture.detectChanges();
+      expect(dropdownEl).not.toHaveCssClass('show');
+    });
+
   });
 
   describe('Custom config', () => {
