@@ -1,3 +1,66 @@
+<a name="1.0.0-beta.1"></a>
+# [1.0.0-beta.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.31...1.0.0-beta.1) (2017-08-11)
+
+ng-bootstrap goes BETA (and requires Bootstrap CSS 4.0.0-beta now)!
+
+### Bug Fixes
+
+* **dropdown:** update for Bootstrap4.beta ([877c696](https://github.com/ng-bootstrap/ng-bootstrap/commit/877c696)), closes [#1745](https://github.com/ng-bootstrap/ng-bootstrap/issues/1745)
+* **popover:** account for margins when positioning popovers ([5a7df43](https://github.com/ng-bootstrap/ng-bootstrap/commit/5a7df43))
+
+
+### Features
+
+* **buttons:** allow vertical radio buttons ([a38257d](https://github.com/ng-bootstrap/ng-bootstrap/commit/a38257d)), closes [#1231](https://github.com/ng-bootstrap/ng-bootstrap/issues/1231) [#1238](https://github.com/ng-bootstrap/ng-bootstrap/issues/1238) [#1733](https://github.com/ng-bootstrap/ng-bootstrap/issues/1733)
+* **dropdown:** distinguish inside and outside clicks for autoClose ([bb975af](https://github.com/ng-bootstrap/ng-bootstrap/commit/bb975af)), closes [#1022](https://github.com/ng-bootstrap/ng-bootstrap/issues/1022)
+
+
+### BREAKING CHANGES
+
+* ng-bootstrap now requires Bootstrap CSS 4.0.0-beta
+* **buttons:** The `btn-group` CSS class needs to added explicitly for radio buttons.
+
+Before:
+
+```
+<div ngbRadioGroup ...>
+  ...
+</div>
+```
+
+After:
+
+```
+<div class="btn-group" ngbRadioGroup ...>
+  ...
+</div>
+```
+* **dropdown:** Dropdown menu now requires usage of the new `ngbDropdownMenu` directive.
+
+Before:
+
+```html
+<div ngbDropdown>
+  <button ngbDropdownToggle>Toggle dropdown</button>
+  <div class="dropdown-menu">
+    <a class="dropdown-item">Action</a>
+  </div>
+</div>
+```
+
+After (notice **ngbDropdownMenu**):
+
+```html
+<div ngbDropdown>
+  <button ngbDropdownToggle>Toggle dropdown</button>
+  <div ngbDropdownMenu>
+    <a class="dropdown-item">Action</a>
+  </div>
+</div>
+```
+
+
+
 <a name="1.0.0-alpha.31"></a>
 # [1.0.0-alpha.31](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.30...1.0.0-alpha.31) (2017-08-11)
 
