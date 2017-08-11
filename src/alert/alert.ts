@@ -30,7 +30,8 @@ export class NgbAlert {
    */
   @Input() dismissible: boolean;
   /**
-   * Alert type (CSS class). Bootstrap 4 recognizes the following types: "success", "info", "warning" and "danger".
+   * Alert type (CSS class). Bootstrap 4 recognizes the following types: "success", "info", "warning", "danger",
+   * "primary", "secondary", "light", "dark".
    */
   @Input() type: string;
   /**
