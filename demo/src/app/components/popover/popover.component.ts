@@ -34,6 +34,10 @@ import {DEMO_SNIPPETS} from './demos';
         demoTitle="Global configuration of popovers" [snippets]="snippets" component="popover" demo="config">
         <ngbd-popover-config></ngbd-popover-config>
       </ngbd-example-box>
+      <ngbd-example-box
+        demoTitle="Automatic positioning" [snippets]="snippets" component="popover" demo="auto">
+        <ngbd-popover-auto></ngbd-popover-auto>
+      </ngbd-example-box>
     </ngbd-component-wrapper>
   `
 })

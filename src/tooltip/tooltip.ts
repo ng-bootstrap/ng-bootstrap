@@ -17,7 +17,7 @@ import {
   NgZone
 } from '@angular/core';
 import {listenToTriggers} from '../util/triggers';
-import {positionElements} from '../util/positioning';
+import {positionService} from '../util/positioning';
 import {PopupService} from '../util/popup';
 import {NgbTooltipConfig} from './tooltip-config';
 
@@ -26,13 +26,13 @@ let nextId = 0;
 @Component({
   selector: 'ngb-tooltip-window',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {'[class]': '"tooltip show tooltip-" + placement', 'role': 'tooltip', '[id]': 'id'},
+  host: {'[class]': '"tooltip show"', 'role': 'tooltip', '[id]': 'id'},
   template: `
     <div class="tooltip-inner"><ng-content></ng-content></div>
     `
 })
 export class NgbTooltipWindow {
-  @Input() placement: 'top' | 'bottom' | 'left' | 'right' = 'top';
+  @Input() placement: 'top' | 'bottom' | 'left' | 'right' | string = 'top';
   @Input() id: string;
 }
 
@@ -82,9 +82,23 @@ export class NgbTooltip implements OnInit, OnDestroy {
 
     this._zoneSubscription = ngZone.onStable.subscribe(() => {
       if (this._windowRef) {
-        positionElements(
-            this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
-            this.container === 'body');
+        let targetElement = <HTMLElement>this._windowRef.location.nativeElement;
+        const oldPlacement = this._windowRef.instance.placement;
+
+        this._renderer.removeClass(targetElement, `tooltip-${oldPlacement}`);
+
+        let position = positionService.positionElements(
+            this._elementRef.nativeElement, targetElement, this.placement, this.container === 'body');
+
+        // new class could change size of the tooltip - so automatic positioning is not very accurate
+        // if it's only arrow - than not so obvious
+        this._renderer.addClass(targetElement, `tooltip-${position.placement}`);
+
+        position = positionService.positionElements(
+            this._elementRef.nativeElement, targetElement, position.placement, this.container === 'body');
+        this._windowRef.instance.placement = position.placement;
+        targetElement.style.top = `${position.top}px`;
+        targetElement.style.left = `${position.left}px`;
       }
     });
   }
@@ -109,7 +123,7 @@ export class NgbTooltip implements OnInit, OnDestroy {
   open(context?: any) {
     if (!this._windowRef && this._ngbTooltip) {
       this._windowRef = this._popupService.open(this._ngbTooltip, context);
-      this._windowRef.instance.placement = this.placement;
+      // this._windowRef.instance.placement = this.placement;
       this._windowRef.instance.id = this._ngbTooltipWindowId;
 
       this._renderer.setAttribute(this._elementRef.nativeElement, 'aria-describedby', this._ngbTooltipWindowId);
@@ -119,9 +133,11 @@ export class NgbTooltip implements OnInit, OnDestroy {
       }
 
       // position tooltip along the element
-      positionElements(
-          this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
-          this.container === 'body');
+      // const position = positionElements(
+      //     this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
+      //     this.container === 'body');
+
+      // this._windowRef.instance.placement = position.placement;
 
       // we need to manually invoke change detection since events registered via
       // Renderer::listen() - to be determined if this is a bug in the Angular itself
