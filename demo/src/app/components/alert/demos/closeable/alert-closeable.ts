@@ -28,6 +28,22 @@ export class NgbdAlertCloseable {
       id: 4,
       type: 'danger',
       message: 'This is a danger alert',
+    }, {
+      id: 5,
+      type: 'primary',
+      message: 'This is a primary alert',
+    }, {
+      id: 6,
+      type: 'secondary',
+      message: 'This is a secondary alert',
+    }, {
+      id: 7,
+      type: 'light',
+      message: 'This is a light alert',
+    }, {
+      id: 8,
+      type: 'dark',
+      message: 'This is a dark alert',
     });
     this.backup = this.alerts.map((alert: IAlert) => Object.assign({}, alert));
   }
