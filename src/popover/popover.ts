@@ -27,7 +27,7 @@ let nextId = 0;
 @Component({
   selector: 'ngb-popover-window',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {'[class]': '"popover show popover-" + placement', 'role': 'tooltip', '[id]': 'id'},
+  host: {'[class]': '"popover show popover-" + placement + " " + cssClass', 'role': 'tooltip', '[id]': 'id'},
   template: `
     <h3 class="popover-title">{{title}}</h3><div class="popover-content"><ng-content></ng-content></div>
     `
@@ -36,6 +36,7 @@ export class NgbPopoverWindow {
   @Input() placement: 'top' | 'bottom' | 'left' | 'right' = 'top';
   @Input() title: string;
   @Input() id: string;
+  @Input() cssClass: string;
 }
 
 /**
@@ -64,6 +65,10 @@ export class NgbPopover implements OnInit, OnDestroy {
    * Currently only supports "body".
    */
   @Input() container: string;
+  /**
+   * A custom css class to add to the popover window container.
+   */
+  @Input() popoverClass: string;
   /**
    * Emits an event when the popover is shown
    */
@@ -108,6 +113,7 @@ export class NgbPopover implements OnInit, OnDestroy {
       this._windowRef.instance.placement = this.placement;
       this._windowRef.instance.title = this.popoverTitle;
       this._windowRef.instance.id = this._ngbPopoverWindowId;
+      this._windowRef.instance.cssClass = this.popoverClass;
 
       this._renderer.setAttribute(this._elementRef.nativeElement, 'aria-describedby', this._ngbPopoverWindowId);
 
