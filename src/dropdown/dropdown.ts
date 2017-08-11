@@ -1,11 +1,25 @@
-import {forwardRef, Inject, Directive, Input, Output, EventEmitter, ElementRef, ContentChild} from '@angular/core';
+import {
+  forwardRef,
+  Inject,
+  Directive,
+  Input,
+  Output,
+  EventEmitter,
+  ElementRef,
+  ContentChild,
+  OnChanges,
+  SimpleChanges
+} from '@angular/core';
 import {NgbDropdownConfig} from './dropdown-config';
 
 /**
  */
-@Directive({selector: '[ngbDropdownMenu]', host: {'[class.dropdown-menu]': 'true'}})
+@Directive(
+    {selector: '[ngbDropdownMenu]', host: {'[class.dropdown-menu]': 'true', '[class.show]': 'dropdown.isOpen()'}})
 export class NgbDropdownMenu {
-  constructor(private _elementRef: ElementRef) {}
+  isOpen = false;
+
+  constructor(@Inject(forwardRef(() => NgbDropdown)) public dropdown, private _elementRef: ElementRef) {}
 
   isEventFrom($event) { return this._elementRef.nativeElement.contains($event.target); }
 }
@@ -56,6 +70,10 @@ export class NgbDropdown {
 
   /**
    * Indicates that dropdown should be closed when selecting one of dropdown items (click) or pressing ESC.
+   * When it is true (default) dropdowns are automatically closed on both outside and inside (menu) clicks.
+   * When it is false dropdowns are never automatically closed.
+   * When it is 'outside' dropdowns are automatically closed on outside clicks but not on menu clicks.
+   * When it is 'inside' dropdowns are automatically on menu clicks but not on outside clicks.
    */
   @Input() autoClose: boolean | 'outside' | 'inside';
 
@@ -74,7 +92,6 @@ export class NgbDropdown {
     this.up = config.up;
     this.autoClose = config.autoClose;
   }
-
 
   /**
    * Checks if the dropdown menu is open or not.
@@ -130,19 +147,7 @@ export class NgbDropdown {
     }
   }
 
-  private _isEventFromToggle($event) {
-    if (this._toggle) {
-      return this._toggle.isEventFrom($event);
-    }
+  private _isEventFromToggle($event) { return this._toggle ? this._toggle.isEventFrom($event) : false; }
 
-    return false;
-  }
-
-  private _isEventFromMenu($event) {
-    if (this._menu) {
-      return this._menu.isEventFrom($event);
-    }
-
-    return false;
-  }
+  private _isEventFromMenu($event) { return this._menu ? this._menu.isEventFrom($event) : false; }
 }
