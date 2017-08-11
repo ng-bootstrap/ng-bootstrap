@@ -15,8 +15,41 @@ function getDropdownEl(tc) {
   return tc.querySelector(`[ngbDropdown]`);
 }
 
+function getMenuEl(tc) {
+  return tc.querySelector(`[ngbDropdownMenu]`);
+}
+
+const jasmineMatchers = {
+  toBeShown: function(util, customEqualityTests) {
+    return {
+      compare: function(actual, content?, selector?) {
+        const dropdownEl = getDropdownEl(actual);
+        const menuEl = getMenuEl(actual);
+        const isOpen = dropdownEl.classList.contains('show') && menuEl.classList.contains('show');
+
+        return {
+          pass: isOpen,
+          message: `Expected ${actual.outerHTML} to have the "show class on both container and menu"`
+        };
+      },
+      negativeCompare: function(actual) {
+        const dropdownEl = getDropdownEl(actual);
+        const menuEl = getMenuEl(actual);
+        const isClosed = !dropdownEl.classList.contains('show') && !menuEl.classList.contains('show');
+
+        return {
+          pass: isClosed,
+          message: `Expected ${actual.outerHTML} not to have the "show class both container and menu"`
+        };
+      }
+    };
+  }
+};
+
 describe('ngb-dropdown', () => {
+
   beforeEach(() => {
+    jasmine.addMatchers(jasmineMatchers);
     TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbDropdownModule.forRoot()]});
   });
 
@@ -28,13 +61,13 @@ describe('ngb-dropdown', () => {
   });
 
   it('should be closed and down by default', () => {
-    const html = `<div ngbDropdown></div>`;
+    const html = `<div ngbDropdown><div ngbDropdownMenu></div></div>`;
 
     const fixture = createTestComponent(html);
     const compiled = fixture.nativeElement;
 
     expect(getDropdownEl(compiled)).toHaveCssClass('dropdown');
-    expect(getDropdownEl(compiled)).not.toHaveCssClass('show');
+    expect(compiled).not.toBeShown();
   });
 
   it('should be up if up input is true', () => {
@@ -47,34 +80,30 @@ describe('ngb-dropdown', () => {
   });
 
   it('should be open initially if open expression is true', () => {
-    const html = `<div ngbDropdown [open]="true"></div>`;
+    const html = `<div ngbDropdown [open]="true"><div ngbDropdownMenu></div></div>`;
 
     const fixture = createTestComponent(html);
     const compiled = fixture.nativeElement;
 
     expect(getDropdownEl(compiled)).toHaveCssClass('dropdown');
-    expect(getDropdownEl(compiled)).toHaveCssClass('show');
+    expect(compiled).toBeShown();
   });
 
-  it('should toggle open class', () => {
-    const html = `<div ngbDropdown [open]="isOpen"></div>`;
+  it('should toggle open on "open" binding change', () => {
+    const html = `<div ngbDropdown [open]="isOpen"><div ngbDropdownMenu></div></div>`;
 
     const fixture = createTestComponent(html);
     const compiled = fixture.nativeElement;
 
-    let dropdownEl = getDropdownEl(compiled);
-
-    expect(dropdownEl).not.toHaveCssClass('show');
+    expect(compiled).not.toBeShown();
 
     fixture.componentInstance.isOpen = true;
     fixture.detectChanges();
-
-    expect(dropdownEl).toHaveCssClass('show');
+    expect(compiled).toBeShown();
 
     fixture.componentInstance.isOpen = false;
     fixture.detectChanges();
-
-    expect(dropdownEl).not.toHaveCssClass('show');
+    expect(compiled).not.toBeShown();
   });
 
   it('should allow toggling dropdown from outside', () => {
@@ -82,28 +111,27 @@ describe('ngb-dropdown', () => {
       <button (click)="drop.open(); $event.stopPropagation()">Open</button>
       <button (click)="drop.close(); $event.stopPropagation()">Close</button>
       <button (click)="drop.toggle(); $event.stopPropagation()">Toggle</button>
-      <div ngbDropdown #drop="ngbDropdown"></div>`;
+      <div ngbDropdown #drop="ngbDropdown"><div ngbDropdownMenu></div></div>`;
 
     const fixture = createTestComponent(html);
     const compiled = fixture.nativeElement;
-    let dropdownEl = getDropdownEl(compiled);
     let buttonEls = compiled.querySelectorAll('button');
 
     buttonEls[0].click();
     fixture.detectChanges();
-    expect(dropdownEl).toHaveCssClass('show');
+    expect(compiled).toBeShown();
 
     buttonEls[1].click();
     fixture.detectChanges();
-    expect(dropdownEl).not.toHaveCssClass('show');
+    expect(compiled).not.toBeShown();
 
     buttonEls[2].click();
     fixture.detectChanges();
-    expect(dropdownEl).toHaveCssClass('show');
+    expect(compiled).toBeShown();
 
     buttonEls[2].click();
     fixture.detectChanges();
-    expect(dropdownEl).not.toHaveCssClass('show');
+    expect(compiled).not.toBeShown();
   });
 
   it('should allow binding to open output', () => {
@@ -165,6 +193,7 @@ describe('ngb-dropdown', () => {
 
 describe('ngb-dropdown-toggle', () => {
   beforeEach(() => {
+    jasmine.addMatchers(jasmineMatchers);
     TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbDropdownModule.forRoot()]});
   });
 
@@ -172,6 +201,7 @@ describe('ngb-dropdown-toggle', () => {
     const html = `
       <div ngbDropdown>
           <button ngbDropdownToggle>Toggle dropdown</button>
+          <div ngbDropdownMenu></div>
       </div>`;
 
     const fixture = createTestComponent(html);
@@ -185,12 +215,12 @@ describe('ngb-dropdown-toggle', () => {
 
     buttonEl.click();
     fixture.detectChanges();
-    expect(dropdownEl).toHaveCssClass('show');
+    expect(compiled).toBeShown();
     expect(buttonEl.getAttribute('aria-expanded')).toBe('true');
 
     buttonEl.click();
     fixture.detectChanges();
-    expect(dropdownEl).not.toHaveCssClass('show');
+    expect(compiled).not.toBeShown();
     expect(buttonEl.getAttribute('aria-expanded')).toBe('false');
   });
 
@@ -200,112 +230,113 @@ describe('ngb-dropdown-toggle', () => {
           <button ngbDropdownToggle>
             <span class="toggle">Toggle dropdown</span>
           </button>
+          <div ngbDropdownMenu></div>
       </div>`;
 
     const fixture = createTestComponent(html);
     const compiled = fixture.nativeElement;
-    let dropdownEl = getDropdownEl(compiled);
-    let toggleEl = compiled.querySelector('.toggle');
+    const toggleEl = compiled.querySelector('.toggle');
 
-    expect(dropdownEl).not.toHaveCssClass('show');
-
-    toggleEl.click();
-    fixture.detectChanges();
-    expect(dropdownEl).toHaveCssClass('show');
+    expect(compiled).not.toBeShown();
 
     toggleEl.click();
     fixture.detectChanges();
-    expect(dropdownEl).not.toHaveCssClass('show');
+    expect(compiled).toBeShown();
+
+    toggleEl.click();
+    fixture.detectChanges();
+    expect(compiled).not.toBeShown();
   });
 
   it('should close on outside click', () => {
-    const html = `<button>Outside</button><div ngbDropdown [open]="true"></div>`;
+    const html = `<button>Outside</button><div ngbDropdown [open]="true"><div ngbDropdownMenu></div></div>`;
 
     const fixture = createTestComponent(html);
     const compiled = fixture.nativeElement;
-    let dropdownEl = getDropdownEl(compiled);
-    let buttonEl = compiled.querySelector('button');
+    const buttonEl = compiled.querySelector('button');
 
     fixture.detectChanges();
-    expect(dropdownEl).toHaveCssClass('show');
+    expect(compiled).toBeShown();
 
     buttonEl.click();
     fixture.detectChanges();
-    expect(dropdownEl).not.toHaveCssClass('show');
+    expect(compiled).not.toBeShown();
   });
 
   it('should not close on outside click if right button click', () => {
-    const html = `<button>Outside</button><div ngbDropdown [open]="true"></div>`;
+    const html = `<button>Outside</button><div ngbDropdown [open]="true"><div ngbDropdownMenu></div></div>`;
 
     const fixture = createTestComponent(html);
     const compiled = fixture.nativeElement;
-    let dropdownEl = getDropdownEl(compiled);
-    let buttonEl = compiled.querySelector('button');
+    const buttonEl = compiled.querySelector('button');
 
     fixture.detectChanges();
-    expect(dropdownEl).toHaveCssClass('show');
+    expect(compiled).toBeShown();
 
     const evt = document.createEvent('MouseEvent');
     evt.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 2, null);
     buttonEl.dispatchEvent(evt);
     fixture.detectChanges();
-    expect(dropdownEl).toHaveCssClass('show');
+    expect(compiled).toBeShown();
   });
 
   it('should not close on outside click if autoClose is set to false', () => {
-    const html = `<button>Outside</button><div ngbDropdown [open]="true" [autoClose]="false"></div>`;
+    const html = `
+      <button>Outside</button>
+      <div ngbDropdown [open]="true" [autoClose]="false">
+        <div ngbDropdownMenu></div>
+      </div>`;
 
     const fixture = createTestComponent(html);
     const compiled = fixture.nativeElement;
-    let dropdownEl = getDropdownEl(compiled);
     let buttonEl = compiled.querySelector('button');
 
     fixture.detectChanges();
-    expect(dropdownEl).toHaveCssClass('show');
+    expect(compiled).toBeShown();
 
     buttonEl.click();
     fixture.detectChanges();
-    expect(dropdownEl).toHaveCssClass('show');
+    expect(compiled).toBeShown();
   });
 
   it('should close on ESC', () => {
     const html = `
       <div ngbDropdown>
           <button ngbDropdownToggle>Toggle dropdown</button>
+          <div ngbDropdownMenu></div>
       </div>`;
 
     const fixture = createTestComponent(html);
     const compiled = fixture.nativeElement;
-    let dropdownEl = getDropdownEl(compiled);
-    let buttonEl = compiled.querySelector('button');
+    const buttonEl = compiled.querySelector('button');
 
     buttonEl.click();
     fixture.detectChanges();
-    expect(dropdownEl).toHaveCssClass('show');
+    expect(compiled).toBeShown();
 
     fixture.debugElement.query(By.directive(NgbDropdown)).triggerEventHandler('keyup.esc', {});
     fixture.detectChanges();
-    expect(dropdownEl).not.toHaveCssClass('show');
+    expect(compiled).not.toBeShown();
   });
 
   it('should not close on ESC if autoClose is set to false', () => {
     const html = `
       <div ngbDropdown [autoClose]="false">
           <button ngbDropdownToggle>Toggle dropdown</button>
+          <div ngbDropdownMenu></div>
       </div>`;
 
     const fixture = createTestComponent(html);
     const compiled = fixture.nativeElement;
-    let dropdownEl = getDropdownEl(compiled);
-    let buttonEl = compiled.querySelector('button');
+    const buttonEl = compiled.querySelector('button');
 
     buttonEl.click();
     fixture.detectChanges();
-    expect(dropdownEl).toHaveCssClass('show');
+    expect(compiled).toBeShown();
 
     fixture.debugElement.query(By.directive(NgbDropdown)).triggerEventHandler('keyup.esc', {});
     fixture.detectChanges();
-    expect(dropdownEl).toHaveCssClass('show');
+    expect(compiled).toBeShown();
   });
 
   it('should not close on item click if autoClose is set to false', () => {
@@ -319,15 +350,14 @@ describe('ngb-dropdown-toggle', () => {
 
     const fixture = createTestComponent(html);
     const compiled = fixture.nativeElement;
-    let dropdownEl = getDropdownEl(compiled);
-    let linkEl = compiled.querySelector('a');
+    const linkEl = compiled.querySelector('a');
 
     fixture.detectChanges();
-    expect(dropdownEl).toHaveCssClass('show');
+    expect(compiled).toBeShown();
 
     linkEl.click();
     fixture.detectChanges();
-    expect(dropdownEl).toHaveCssClass('show');
+    expect(compiled).toBeShown();
   });
 
   it('should close on item click by default', () => {
@@ -341,15 +371,14 @@ describe('ngb-dropdown-toggle', () => {
 
     const fixture = createTestComponent(html);
     const compiled = fixture.nativeElement;
-    let dropdownEl = getDropdownEl(compiled);
-    let linkEl = compiled.querySelector('a');
+    const linkEl = compiled.querySelector('a');
 
     fixture.detectChanges();
-    expect(dropdownEl).toHaveCssClass('show');
+    expect(compiled).toBeShown();
 
     linkEl.click();
     fixture.detectChanges();
-    expect(dropdownEl).not.toHaveCssClass('show');
+    expect(compiled).not.toBeShown();
   });
 
 
@@ -403,22 +432,21 @@ describe('ngb-dropdown-toggle', () => {
 
       const fixture = createTestComponent(html);
       const compiled = fixture.nativeElement;
-      const dropdownEl = getDropdownEl(compiled);
       const buttonEl = compiled.querySelector('button');
-      let linkEl = compiled.querySelector('a');
+      const linkEl = compiled.querySelector('a');
 
       fixture.detectChanges();
-      expect(dropdownEl).toHaveCssClass('show');
+      expect(compiled).toBeShown();
 
       // remains open on item click
       linkEl.click();
       fixture.detectChanges();
-      expect(dropdownEl).toHaveCssClass('show');
+      expect(compiled).toBeShown();
 
       // but closes on toggle button click
       buttonEl.click();
       fixture.detectChanges();
-      expect(dropdownEl).not.toHaveCssClass('show');
+      expect(compiled).not.toBeShown();
     });
 
     it('should not close on outside clicks when the "inside" option is used', () => {
@@ -434,22 +462,21 @@ describe('ngb-dropdown-toggle', () => {
 
       const fixture = createTestComponent(html);
       const compiled = fixture.nativeElement;
-      const dropdownEl = getDropdownEl(compiled);
       const buttonEl = compiled.querySelector('#outside');
-      let linkEl = compiled.querySelector('a');
+      const linkEl = compiled.querySelector('a');
 
       fixture.detectChanges();
-      expect(dropdownEl).toHaveCssClass('show');
+      expect(compiled).toBeShown();
 
       // remains open on outside click
       buttonEl.click();
       fixture.detectChanges();
-      expect(dropdownEl).toHaveCssClass('show');
+      expect(compiled).toBeShown();
 
       // but closes on item click
       linkEl.click();
       fixture.detectChanges();
-      expect(dropdownEl).not.toHaveCssClass('show');
+      expect(compiled).not.toBeShown();
     });
 
   });
