@@ -1,3 +1,19 @@
+<a name="1.0.0-alpha.31"></a>
+# [1.0.0-alpha.31](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.30...1.0.0-alpha.31) (2017-08-11)
+
+This is the last alpha release of ng-bootstrap. Next stop - beta!
+
+### Bug Fixes
+
+* **typeahead:** resubscribe for value changes on blur, esc, enter ([47797d3](https://github.com/ng-bootstrap/ng-bootstrap/commit/47797d3)), closes [#723](https://github.com/ng-bootstrap/ng-bootstrap/issues/723) [#1244](https://github.com/ng-bootstrap/ng-bootstrap/issues/1244)
+
+
+### Features
+
+* **typeahead:** add support for the 'container' input ([bc3fd61](https://github.com/ng-bootstrap/ng-bootstrap/commit/bc3fd61)), closes [#1105](https://github.com/ng-bootstrap/ng-bootstrap/issues/1105) [#1731](https://github.com/ng-bootstrap/ng-bootstrap/issues/1731)
+
+
+
 <a name="1.0.0-alpha.30"></a>
 # [1.0.0-alpha.30](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.29...1.0.0-alpha.30) (2017-08-03)
 
