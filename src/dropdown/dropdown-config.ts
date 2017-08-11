@@ -9,4 +9,5 @@ import {Injectable, TemplateRef} from '@angular/core';
 export class NgbDropdownConfig {
   up = false;
   autoClose = true;
+  closeFromInsideClick = true;
 }

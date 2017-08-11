@@ -29,6 +29,12 @@ export class NgbDropdown {
   @Input() autoClose: boolean;
 
   /**
+   * Indicates that dropdown should be closed from a click within the dropdown. If autoClose is false, then this is not
+   * taken into account.
+   */
+  @Input() closeFromInsideClick: boolean;
+
+  /**
    *  Defines whether or not the dropdown-menu is open initially.
    */
   @Input('open') _open = false;
@@ -39,9 +45,10 @@ export class NgbDropdown {
    */
   @Output() openChange = new EventEmitter();
 
-  constructor(config: NgbDropdownConfig) {
+  constructor(config: NgbDropdownConfig, private elementRef: ElementRef) {
     this.up = config.up;
     this.autoClose = config.autoClose;
+    this.closeFromInsideClick = config.closeFromInsideClick;
   }
 
 
@@ -82,7 +89,8 @@ export class NgbDropdown {
   }
 
   closeFromOutsideClick($event) {
-    if (this.autoClose && $event.button !== 2 && !this._isEventFromToggle($event)) {
+    if (this.autoClose && this._shouldcloseFromInsideClick($event) && $event.button !== 2 &&
+        !this._isEventFromToggle($event)) {
       this.close();
     }
   }
@@ -99,6 +107,10 @@ export class NgbDropdown {
   set toggleElement(toggleElement: any) { this._toggleElement = toggleElement; }
 
   private _isEventFromToggle($event) { return !!this._toggleElement && this._toggleElement.contains($event.target); }
+
+  private _shouldcloseFromInsideClick($event) {
+    return this.closeFromInsideClick || !this.elementRef.nativeElement.contains($event.target);
+  }
 }
 
 /**

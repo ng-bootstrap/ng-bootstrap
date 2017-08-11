@@ -22,7 +22,7 @@ describe('ngb-dropdown', () => {
 
   it('should initialize inputs with provided config', () => {
     const defaultConfig = new NgbDropdownConfig();
-    const dropdown = new NgbDropdown(defaultConfig);
+    const dropdown = new NgbDropdown(defaultConfig, createTestComponent('<div></div>'));
     expect(dropdown.up).toBe(defaultConfig.up);
     expect(dropdown.autoClose).toBe(defaultConfig.autoClose);
   });
@@ -387,6 +387,28 @@ describe('ngb-dropdown-toggle', () => {
     fixture.detectChanges();
     expect(dropdownEls[0]).not.toHaveCssClass('show');
     expect(dropdownEls[1]).toHaveCssClass('show');
+  });
+
+  it('should not close on item click if closeFromInsideClick is set to false', () => {
+    const html = `
+      <div ngbDropdown [open]="true" [closeFromInsideClick]="false">
+          <button ngbDropdownToggle>Toggle dropdown</button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
+            <a class="dropdown-item">Action</a>
+          </div>
+      </div>`;
+
+    const fixture = createTestComponent(html);
+    const compiled = fixture.nativeElement;
+    let dropdownEl = getDropdownEl(compiled);
+    let linkEl = compiled.querySelector('a');
+
+    fixture.detectChanges();
+    expect(dropdownEl).toHaveCssClass('show');
+
+    linkEl.click();
+    fixture.detectChanges();
+    expect(dropdownEl).toHaveCssClass('show');
   });
 
   describe('Custom config', () => {

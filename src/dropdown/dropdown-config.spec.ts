@@ -6,5 +6,6 @@ describe('ngb-dropdown-config', () => {
 
     expect(config.up).toBe(false);
     expect(config.autoClose).toBe(true);
+    expect(config.closeFromInsideClick).toBe(true);
   });
 });
