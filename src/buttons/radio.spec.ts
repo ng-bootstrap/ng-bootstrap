@@ -258,14 +258,13 @@ describe('ngbRadioGroup', () => {
        });
      }));
 
-  it('should add data-toggle="buttons" and "btn-group" CSS class to button group', () => {
+  it('should add data-toggle="buttons" to button group', () => {
     // Bootstrap for uses presence of data-toggle="buttons" to style radio buttons
     const html = `<div class="foo" ngbRadioGroup></div>`;
 
     const fixture = createTestComponent(html);
 
     expect(fixture.nativeElement.children[0].getAttribute('data-toggle')).toBe('buttons');
-    expect(fixture.nativeElement.children[0]).toHaveCssClass('btn-group');
   });
 
   it('should work with template-driven form validation', async(() => {
