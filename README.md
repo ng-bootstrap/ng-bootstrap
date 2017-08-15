@@ -89,7 +89,7 @@ See [this](https://github.com/angular/angular/blob/master/README.md) for up-to-d
 * Edge (20+)
 * Safari (7+)
 
-Also check [Bootstrap 4's notes](http://v4-alpha.getbootstrap.com/getting-started/browsers-devices/#internet-explorer-9) on browsers support.
+Also check [Bootstrap 4's notes](https://getbootstrap.com/docs/4.0/getting-started/browsers-devices/#supported-browsers) on browsers support.
 
 ## Contributing to the project
 
