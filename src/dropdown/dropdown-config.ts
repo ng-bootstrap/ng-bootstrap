@@ -8,5 +8,5 @@ import {Injectable, TemplateRef} from '@angular/core';
 @Injectable()
 export class NgbDropdownConfig {
   up = false;
-  autoClose = true;
+  autoClose: boolean | 'outside' | 'inside' = true;
 }
