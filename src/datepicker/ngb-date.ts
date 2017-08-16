@@ -1,3 +1,14 @@
+import {Injectable, Inject, forwardRef} from '@angular/core';
+import {NgbDateParserFormatter} from './ngb-date-parser-formatter';
+
+export class NgbDateService {
+  constructor(@Inject(forwardRef(() => NgbDateParserFormatter)) private _parserFormatter: NgbDateParserFormatter) {}
+
+  create(value: any): NgbDate { return this._parserFormatter.fromInput(value); }
+
+  getValue(date: NgbDate): any { return this._parserFormatter.toOutput(date); }
+}
+
 export class NgbDate {
   static from(date: {year: number, month: number, day?: number}) {
     return date ? new NgbDate(date.year, date.month, date.day ? date.day : 1) : null;

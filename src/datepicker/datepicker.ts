@@ -16,7 +16,7 @@ import {
 } from '@angular/core';
 import {NG_VALUE_ACCESSOR, ControlValueAccessor} from '@angular/forms';
 import {NgbCalendar} from './ngb-calendar';
-import {NgbDate} from './ngb-date';
+import {NgbDate, NgbDateService} from './ngb-date';
 import {NgbDatepickerService} from './datepicker-service';
 import {NgbDatepickerKeyMapService} from './datepicker-keymap-service';
 import {DatepickerViewModel, NavigationEvent} from './datepicker-view-model';
@@ -209,7 +209,7 @@ export class NgbDatepicker implements OnDestroy,
   constructor(
       private _keyMapService: NgbDatepickerKeyMapService, public _service: NgbDatepickerService,
       private _calendar: NgbCalendar, public i18n: NgbDatepickerI18n, config: NgbDatepickerConfig,
-      private _cd: ChangeDetectorRef, private _elementRef: ElementRef) {
+      private _cd: ChangeDetectorRef, private _elementRef: ElementRef, private _ngbDateService: NgbDateService) {
     this.dayTemplate = config.dayTemplate;
     this.displayMonths = config.displayMonths;
     this.firstDayOfWeek = config.firstDayOfWeek;
@@ -233,9 +233,7 @@ export class NgbDatepicker implements OnDestroy,
       // handling selection change
       if (isChangedDate(newSelectedDate, oldSelectedDate)) {
         this.onTouched();
-        this.onChange(
-            newSelectedDate ? {year: newSelectedDate.year, month: newSelectedDate.month, day: newSelectedDate.day} :
-                              null);
+        this.onChange(newSelectedDate ? this._ngbDateService.getValue(newSelectedDate) : null);
       }
 
       // emitting navigation event if the first month changes
@@ -326,7 +324,7 @@ export class NgbDatepicker implements OnDestroy,
 
   showFocus(focusVisible: boolean) { this._service.focusVisible = focusVisible; }
 
-  writeValue(value) { this._service.select(value); }
+  writeValue(value) { this._service.select(this._ngbDateService.create(value)); }
 
   private _setDates() {
     const startDate = this._service.toValidDate(this.startDate, this._calendar.getToday());
