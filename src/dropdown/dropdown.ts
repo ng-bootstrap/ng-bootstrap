@@ -7,10 +7,10 @@ import {
   EventEmitter,
   ElementRef,
   ContentChild,
-  OnChanges,
-  SimpleChanges
+  NgZone
 } from '@angular/core';
 import {NgbDropdownConfig} from './dropdown-config';
+import {positionElements} from '../util/positioning';
 
 /**
  */
@@ -22,6 +22,8 @@ export class NgbDropdownMenu {
   constructor(@Inject(forwardRef(() => NgbDropdown)) public dropdown, private _elementRef: ElementRef) {}
 
   isEventFrom($event) { return this._elementRef.nativeElement.contains($event.target); }
+
+  position(triggerEl, placement) { positionElements(triggerEl, this._elementRef.nativeElement, placement); }
 }
 
 /**
@@ -37,7 +39,11 @@ export class NgbDropdownMenu {
   }
 })
 export class NgbDropdownToggle {
-  constructor(@Inject(forwardRef(() => NgbDropdown)) public dropdown, private _elementRef: ElementRef) {}
+  anchorEl;
+
+  constructor(@Inject(forwardRef(() => NgbDropdown)) public dropdown, private _elementRef: ElementRef) {
+    this.anchorEl = _elementRef.nativeElement;
+  }
 
   toggleOpen() { this.dropdown.toggle(); }
 
@@ -51,22 +57,19 @@ export class NgbDropdownToggle {
   selector: '[ngbDropdown]',
   exportAs: 'ngbDropdown',
   host: {
-    '[class.dropdown]': '!up',
-    '[class.dropup]': 'up',
+    '[class.dropdown]': 'isDown()',
+    '[class.dropup]': 'isUp()',
     '[class.show]': 'isOpen()',
     '(keyup.esc)': 'closeFromOutsideEsc()',
     '(document:click)': 'closeFromClick($event)'
   }
 })
 export class NgbDropdown {
+  private _zoneSubscription: any;
+
   @ContentChild(NgbDropdownMenu) private _menu: NgbDropdownMenu;
 
   @ContentChild(NgbDropdownToggle) private _toggle: NgbDropdownToggle;
-
-  /**
-   * Indicates that the dropdown should open upwards
-   */
-  @Input() up: boolean;
 
   /**
    * Indicates that dropdown should be closed when selecting one of dropdown items (click) or pressing ESC.
@@ -83,15 +86,25 @@ export class NgbDropdown {
   @Input('open') _open = false;
 
   /**
+   * Placement of a dropdown. Use "top-right" for dropups.
+   */
+  @Input() placement = '';
+
+  /**
    *  An event fired when the dropdown is opened or closed.
    *  Event's payload equals whether dropdown is open.
    */
   @Output() openChange = new EventEmitter();
 
-  constructor(config: NgbDropdownConfig) {
-    this.up = config.up;
+  constructor(config: NgbDropdownConfig, ngZone: NgZone) {
+    this.placement = config.placement;
     this.autoClose = config.autoClose;
+    this._zoneSubscription = ngZone.onStable.subscribe(() => { this._positionMenu(); });
   }
+
+  isUp() { return this.placement.indexOf('top') !== -1; }
+
+  isDown() { return this.placement.indexOf('bottom') !== -1; }
 
   /**
    * Checks if the dropdown menu is open or not.
@@ -104,6 +117,7 @@ export class NgbDropdown {
   open(): void {
     if (!this._open) {
       this._open = true;
+      this._positionMenu();
       this.openChange.emit(true);
     }
   }
@@ -147,7 +161,15 @@ export class NgbDropdown {
     }
   }
 
+  ngOnDestroy() { this._zoneSubscription.unsubscribe(); }
+
   private _isEventFromToggle($event) { return this._toggle ? this._toggle.isEventFrom($event) : false; }
 
   private _isEventFromMenu($event) { return this._menu ? this._menu.isEventFrom($event) : false; }
+
+  private _positionMenu() {
+    if (this.isOpen() && this._menu && this._toggle) {
+      this._menu.position(this._toggle.anchorEl, this.placement);
+    }
+  }
 }

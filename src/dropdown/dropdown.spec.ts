@@ -53,13 +53,6 @@ describe('ngb-dropdown', () => {
     TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbDropdownModule.forRoot()]});
   });
 
-  it('should initialize inputs with provided config', () => {
-    const defaultConfig = new NgbDropdownConfig();
-    const dropdown = new NgbDropdown(defaultConfig);
-    expect(dropdown.up).toBe(defaultConfig.up);
-    expect(dropdown.autoClose).toBe(defaultConfig.autoClose);
-  });
-
   it('should be closed and down by default', () => {
     const html = `<div ngbDropdown><div ngbDropdownMenu></div></div>`;
 
@@ -70,8 +63,8 @@ describe('ngb-dropdown', () => {
     expect(compiled).not.toBeShown();
   });
 
-  it('should be up if up input is true', () => {
-    const html = `<div ngbDropdown [up]="true"></div>`;
+  it('should have dropup CSS class if placed on top', () => {
+    const html = `<div ngbDropdown placement="top"></div>`;
 
     const fixture = createTestComponent(html);
     const compiled = fixture.nativeElement;
@@ -491,7 +484,7 @@ describe('ngb-dropdown-toggle', () => {
 
     beforeEach(inject([NgbDropdownConfig], (c: NgbDropdownConfig) => {
       config = c;
-      config.up = true;
+      config.placement = 'top-right';
     }));
 
     it('should initialize inputs with provided config', () => {
@@ -506,7 +499,7 @@ describe('ngb-dropdown-toggle', () => {
 
   describe('Custom config as provider', () => {
     let config = new NgbDropdownConfig();
-    config.up = true;
+    config.placement = 'top-right';
 
     beforeEach(() => {
       TestBed.configureTestingModule(
