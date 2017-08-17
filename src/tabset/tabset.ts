@@ -79,8 +79,8 @@ export interface NgbTabChangeEvent {
   selector: 'ngb-tabset',
   exportAs: 'ngbTabset',
   template: `
-    <ul [class]="'nav nav-' + type + ' justify-content-' + justify" role="tablist">
-      <li class="nav-item" *ngFor="let tab of tabs">
+    <ul [class]="'nav nav-' + type + ' d-inline-block w-100 flex-column flex-row justify-content-' + justify" role="tablist">
+      <li class="nav-item float-sm-left" *ngFor="let tab of tabs">
         <a [id]="tab.id" class="nav-link" [class.active]="tab.id === activeId" [class.disabled]="tab.disabled"
           href (click)="!!select(tab.id)" role="tab" [attr.tabindex]="(tab.disabled ? '-1': undefined)"
           [attr.aria-controls]="(!destroyOnHide || tab.id === activeId ? tab.id + '-panel' : null)"
