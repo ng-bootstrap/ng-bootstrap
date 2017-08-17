@@ -79,7 +79,9 @@ export interface NgbTabChangeEvent {
   selector: 'ngb-tabset',
   exportAs: 'ngbTabset',
   template: `
-    <ul [class]="'nav nav-' + type + ' justify-content-' + justify" role="tablist">
+    <ul [class]="'nav nav-' + type + (justify=='justified'?' nav-justified':'') 
+                                   + (justify=='fill'?' nav-fill':'') 
+                                   + ' justify-content-' + justify" role="tablist">
       <li class="nav-item" *ngFor="let tab of tabs">
         <a [id]="tab.id" class="nav-link" [class.active]="tab.id === activeId" [class.disabled]="tab.disabled"
           href (click)="!!select(tab.id)" role="tab" [attr.tabindex]="(tab.disabled ? '-1': undefined)"
