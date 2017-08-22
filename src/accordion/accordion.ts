@@ -95,22 +95,22 @@ export interface NgbPanelChangeEvent {
   exportAs: 'ngbAccordion',
   host: {'role': 'tablist', '[attr.aria-multiselectable]': '!closeOtherPanels'},
   template: `
-  <div class="card">
     <ng-template ngFor let-panel [ngForOf]="panels">
-      <div role="tab" id="{{panel.id}}-header"
-        [class]="'card-header ' + (panel.type ? 'card-'+panel.type: type ? 'card-'+type : '')" [class.active]="isOpen(panel.id)">
-        <a href (click)="!!toggle(panel.id)" [class.text-muted]="panel.disabled" [attr.tabindex]="(panel.disabled ? '-1' : null)"
-          [attr.aria-expanded]="isOpen(panel.id)" [attr.aria-controls]="(isOpen(panel.id) ? panel.id : null)"
-          [attr.aria-disabled]="panel.disabled">
-          {{panel.title}}<ng-template [ngTemplateOutlet]="panel.titleTpl?.templateRef"></ng-template>
-        </a>
-      </div>
-      <div id="{{panel.id}}" role="tabpanel" [attr.aria-labelledby]="panel.id + '-header'" 
-           class="card-body {{isOpen(panel.id) ? 'show' : null}}" *ngIf="!destroyOnHide || isOpen(panel.id)">
-           <ng-template [ngTemplateOutlet]="panel.contentTpl.templateRef"></ng-template>
+      <div class="card">
+        <div role="tab" id="{{panel.id}}-header"
+          [class]="'card-header ' + (panel.type ? 'card-'+panel.type: type ? 'card-'+type : '')" [class.active]="isOpen(panel.id)">
+          <a href (click)="!!toggle(panel.id)" [class.text-muted]="panel.disabled" [attr.tabindex]="(panel.disabled ? '-1' : null)"
+            [attr.aria-expanded]="isOpen(panel.id)" [attr.aria-controls]="(isOpen(panel.id) ? panel.id : null)"
+            [attr.aria-disabled]="panel.disabled">
+            {{panel.title}}<ng-template [ngTemplateOutlet]="panel.titleTpl?.templateRef"></ng-template>
+          </a>
+        </div>
+        <div id="{{panel.id}}" role="tabpanel" [attr.aria-labelledby]="panel.id + '-header'" 
+             class="card-body {{isOpen(panel.id) ? 'show' : null}}" *ngIf="!destroyOnHide || isOpen(panel.id)">
+             <ng-template [ngTemplateOutlet]="panel.contentTpl.templateRef"></ng-template>
+        </div>
       </div>
     </ng-template>
-  </div>
   `
 })
 export class NgbAccordion implements AfterContentChecked {
