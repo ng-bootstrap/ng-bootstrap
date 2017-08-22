@@ -15,6 +15,12 @@
     </li>
   </ul>
 
+  <ngb-alert type="warning" [dismissible]="false">
+    <p>Should I add <b>bootstrap.js</b> or <b>bootstrap.min.js</b> to my project?</p>
+
+    No, the goal of ng-bootstrap is to <i>completely replace</i> JavaScript implementation for components. Nor should you include other dependencies like jQuery or popper.js. It is not necessary and might interfere with ng-bootstrap code.
+  </ngb-alert>
+
   <h3>
     Supported browsers
   </h3>
