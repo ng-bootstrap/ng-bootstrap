@@ -1,5 +1,4 @@
 import {TestBed, ComponentFixture, inject} from '@angular/core/testing';
-import {By} from '@angular/platform-browser';
 import {createGenericTestComponent} from '../test/common';
 
 import {Component} from '@angular/core';
@@ -12,15 +11,15 @@ const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
 function getPanels(element: HTMLElement): HTMLDivElement[] {
-  return <HTMLDivElement[]>Array.from(element.querySelectorAll('div .card-header'));
+  return <HTMLDivElement[]>Array.from(element.querySelectorAll('.card > .card-header'));
 }
 
 function getPanelsContent(element: HTMLElement): HTMLDivElement[] {
-  return <HTMLDivElement[]>Array.from(element.querySelectorAll('div .card-body'));
+  return <HTMLDivElement[]>Array.from(element.querySelectorAll('.card > .card-body'));
 }
 
 function getPanelsTitle(element: HTMLElement): HTMLDivElement[] {
-  return <HTMLDivElement[]>Array.from(element.querySelectorAll('div .card-header a'));
+  return <HTMLDivElement[]>Array.from(element.querySelectorAll('.card > .card-header a'));
 }
 
 function getButton(element: HTMLElement, index: number): HTMLButtonElement {
