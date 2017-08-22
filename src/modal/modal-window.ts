@@ -11,6 +11,9 @@ import {
 } from '@angular/core';
 
 import {ModalDismissReasons} from './modal-dismiss-reasons';
+import {trigger, transition, style, animate, useAnimation} from '@angular/animations';
+import {fadeIn, fadeOut} from '../animations/fade';
+import {AnimationsHelper} from '../util/animations-helper';
 
 @Component({
   selector: 'ngb-modal-window',
@@ -20,13 +23,39 @@ import {ModalDismissReasons} from './modal-dismiss-reasons';
     'tabindex': '-1',
     'style': 'display: block;',
     '(keyup.esc)': 'escKey($event)',
-    '(click)': 'backdropClick($event)'
+    '(click)': 'backdropClick($event)',
+    '[@modalBackdrop]': 'animationsHelper.state',
+    '(@modalBackdrop.done)': 'animationsHelper.stateChanges.next($event)'
   },
   template: `
-    <div [class]="'modal-dialog' + (size ? ' modal-' + size : '')" role="document">
+    <div
+      [@modalWindow]="animationsHelper.state"
+      [class]="'modal-dialog' + (size ? ' modal-' + size : '')" 
+      role="document">
         <div class="modal-content"><ng-content></ng-content></div>
     </div>
-    `
+  `,
+  animations: [
+    trigger(
+        'modalWindow',
+        [
+          transition(
+              'void => enter',
+              [
+                style({transform: 'translate(0, -25%)'}),
+                animate('.3s ease-out', style({transform: 'translate(0, 0)'}))
+              ]),
+          transition(
+              'enter => exit',
+              [
+                style({transform: 'translate(0, 0)'}),
+                animate('.3s ease-out', style({transform: 'translate(0, -25%)'}))
+              ])
+        ]),
+    trigger(
+        'modalBackdrop',
+        [transition('void => enter', useAnimation(fadeIn)), transition('enter => exit', useAnimation(fadeOut))])
+  ]
 })
 export class NgbModalWindow implements OnInit,
     AfterViewInit, OnDestroy {
@@ -38,6 +67,8 @@ export class NgbModalWindow implements OnInit,
   @Input() windowClass: string;
 
   @Output('dismiss') dismissEvent = new EventEmitter();
+
+  animationsHelper = new AnimationsHelper();
 
   constructor(private _elRef: ElementRef, private _renderer: Renderer2) {}
 

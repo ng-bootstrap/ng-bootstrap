@@ -1,5 +1,6 @@
 import {Injectable, ComponentRef} from '@angular/core';
 
+
 import {NgbModalBackdrop} from './modal-backdrop';
 import {NgbModalWindow} from './modal-window';
 
@@ -81,22 +82,33 @@ export class NgbModalRef {
   }
 
   private _removeModalElements() {
-    const windowNativeEl = this._windowCmptRef.location.nativeElement;
-    windowNativeEl.parentNode.removeChild(windowNativeEl);
-    this._windowCmptRef.destroy();
+    const windowExitAnimationCompleted =
+        this._windowCmptRef.instance.animationsHelper.triggerExitAnimation().then(() => {
+          const windowNativeEl = this._windowCmptRef.location.nativeElement;
+          windowNativeEl.parentNode.removeChild(windowNativeEl);
+          this._windowCmptRef.destroy();
+          this._windowCmptRef = null;
+        });
+
+    const animationsCompleted = [windowExitAnimationCompleted];
 
     if (this._backdropCmptRef) {
-      const backdropNativeEl = this._backdropCmptRef.location.nativeElement;
-      backdropNativeEl.parentNode.removeChild(backdropNativeEl);
-      this._backdropCmptRef.destroy();
+      const backdropExitAnimationCompleted =
+          this._backdropCmptRef.instance.animationsHelper.triggerExitAnimation().then(() => {
+            const backdropNativeEl = this._backdropCmptRef.location.nativeElement;
+            backdropNativeEl.parentNode.removeChild(backdropNativeEl);
+            this._backdropCmptRef.destroy();
+            this._backdropCmptRef = null;
+          });
+      animationsCompleted.push(backdropExitAnimationCompleted);
     }
 
-    if (this._contentRef && this._contentRef.viewRef) {
-      this._contentRef.viewRef.destroy();
-    }
+    Promise.all(animationsCompleted).then(() => {
+      if (this._contentRef && this._contentRef.viewRef) {
+        this._contentRef.viewRef.destroy();
+      }
 
-    this._windowCmptRef = null;
-    this._backdropCmptRef = null;
-    this._contentRef = null;
+      this._contentRef = null;
+    });
   }
 }

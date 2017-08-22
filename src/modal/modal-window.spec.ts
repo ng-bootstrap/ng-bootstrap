@@ -1,4 +1,5 @@
 import {TestBed, ComponentFixture} from '@angular/core/testing';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 
 import {NgbModalWindow} from './modal-window';
 import {ModalDismissReasons} from './modal-dismiss-reasons';
@@ -8,7 +9,7 @@ describe('ngb-modal-dialog', () => {
   let fixture: ComponentFixture<NgbModalWindow>;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({declarations: [NgbModalWindow]});
+    TestBed.configureTestingModule({declarations: [NgbModalWindow], imports: [NoopAnimationsModule]});
     fixture = TestBed.createComponent(NgbModalWindow);
   });
 
