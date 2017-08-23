@@ -1,3 +1,39 @@
+<a name="1.0.0-beta.2"></a>
+# [1.0.0-beta.2](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-beta.1...1.0.0-beta.2) (2017-08-23)
+
+
+### Bug Fixes
+
+* **accordion:** allign with Bootstrap 4.beta markup ([e32fb24](https://github.com/ng-bootstrap/ng-bootstrap/commit/e32fb24)), closes [#1050](https://github.com/ng-bootstrap/ng-bootstrap/issues/1050) [#1332](https://github.com/ng-bootstrap/ng-bootstrap/issues/1332)
+* **dropdown:** correct TS typings ([9447f5d](https://github.com/ng-bootstrap/ng-bootstrap/commit/9447f5d)), closes [#1754](https://github.com/ng-bootstrap/ng-bootstrap/issues/1754)
+* **dropdown:** restore support for dropups ([c7a16a5](https://github.com/ng-bootstrap/ng-bootstrap/commit/c7a16a5)), closes [#1747](https://github.com/ng-bootstrap/ng-bootstrap/issues/1747) [#1752](https://github.com/ng-bootstrap/ng-bootstrap/issues/1752)
+
+
+### Features
+
+* **accordion:** support nodes preservation ([f6cf01b](https://github.com/ng-bootstrap/ng-bootstrap/commit/f6cf01b)), closes [#1370](https://github.com/ng-bootstrap/ng-bootstrap/issues/1370)
+* **tabset:** add nav justification and orientation ([73ba757](https://github.com/ng-bootstrap/ng-bootstrap/commit/73ba757)), closes [#1472](https://github.com/ng-bootstrap/ng-bootstrap/issues/1472) [#1239](https://github.com/ng-bootstrap/ng-bootstrap/issues/1239)
+
+
+### BREAKING CHANGES
+
+* **dropdown:** The `up` input is no longer supported by you can use more flexible
+`placement` setting now.
+
+Before:
+
+```html
+<div ngbDropdown [up]="true">
+```
+
+After:
+
+```html
+<div ngbDropdown placement="top-right">
+```
+
+
+
 <a name="1.0.0-beta.1"></a>
 # [1.0.0-beta.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-alpha.31...1.0.0-beta.1) (2017-08-11)
 
