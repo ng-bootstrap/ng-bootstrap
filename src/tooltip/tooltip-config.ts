@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Placement} from '../util/positioning';
+import {PlacementArray} from '../util/positioning';
 
 /**
  * Configuration service for the NgbTooltip directive.
@@ -8,7 +8,7 @@ import {Placement} from '../util/positioning';
  */
 @Injectable()
 export class NgbTooltipConfig {
-  placement: Placement = 'top';
+  placement: PlacementArray = 'top';
   triggers = 'hover';
   container: string;
 }

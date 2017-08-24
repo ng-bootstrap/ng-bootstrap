@@ -144,16 +144,93 @@ export class Positioning {
 
     return targetElPosition;
   }
+
+  // get the availble placements of the target element in the viewport dependeing on the host element
+  getAvailablePlacements(hostElement: HTMLElement, targetElement: HTMLElement): string[] {
+    let availablePlacements: Array<string> = [];
+    let hostElemClientRect = hostElement.getBoundingClientRect();
+    let targetElemClientRect = targetElement.getBoundingClientRect();
+    let html = document.documentElement;
+
+    // left: check if target width can be placed between host left and viewport start and also height of target is
+    // inside viewport
+    if (hostElemClientRect.left - targetElemClientRect.width > 0 &&
+        (hostElemClientRect.top + hostElemClientRect.height / 2 - targetElement.offsetHeight / 2) > 0) {
+      availablePlacements.splice(availablePlacements.length, 1, 'left');
+    }
+
+    // top: target height is less than host top
+    if (targetElemClientRect.height < hostElemClientRect.top) {
+      availablePlacements.splice(availablePlacements.length, 1, 'top');
+    }
+
+    // right: check if target width can be placed between host right and viewport end and also height of target is
+    // inside viewport
+    if ((window.innerWidth || html.clientWidth) - hostElemClientRect.right > targetElemClientRect.width &&
+        (hostElemClientRect.top + hostElemClientRect.height / 2 - targetElement.offsetHeight / 2) > 0) {
+      availablePlacements.splice(availablePlacements.length, 1, 'right');
+    }
+
+    // bottom: check if there is enough space between host bottom and viewport end for target height
+    if ((window.innerHeight || html.clientHeight) - hostElemClientRect.bottom > targetElemClientRect.height) {
+      availablePlacements.splice(availablePlacements.length, 1, 'bottom');
+    }
+
+    return availablePlacements;
+  }
 }
 
 const positionService = new Positioning();
-export function positionElements(
-    hostElement: HTMLElement, targetElement: HTMLElement, placement: string, appendToBody?: boolean): void {
-  const pos = positionService.positionElements(hostElement, targetElement, placement, appendToBody);
 
-  targetElement.style.top = `${pos.top}px`;
-  targetElement.style.left = `${pos.left}px`;
+/*
+ * Accept the placement array and applies the appropriate placement dependent on the viewport.
+ * Returns the applied placement.
+ * In case of auto placement, placements are selected in order 'top', 'bottom', 'left', 'right'.
+ * */
+export function positionElements(
+    hostElement: HTMLElement, targetElement: HTMLElement, placement: string | Placement | PlacementArray,
+    appendToBody?: boolean): Placement {
+  let placementVals: Array<Placement> = Array.isArray(placement) ? placement : [placement as Placement];
+
+  // replace auto placement with other placements
+  let hasAuto = placementVals.findIndex(val => val === 'auto');
+  if (hasAuto >= 0) {
+    ['top', 'right', 'bottom', 'left'].forEach(function(obj) {
+      if (placementVals.find(val => val.search('^' + obj + '|^' + obj + '-') !== -1) == null) {
+        placementVals.splice(hasAuto++, 1, obj as Placement);
+      }
+    });
+  }
+
+  // coordinates where to position
+  let topVal = 0, leftVal = 0;
+  let appliedPlacement: Placement;
+  // get available placements
+  let availablePlacements = positionService.getAvailablePlacements(hostElement, targetElement);
+
+  // iterate over all the passed placements
+  for (let { item, index } of toItemIndexes(placementVals)) {
+    // check if passed placement is present in the available placement or otherwise apply the last placement in the
+    // passed placement list
+    if ((availablePlacements.find(val => val === item.split('-')[0]) != null) || (placementVals.length === index + 1)) {
+      appliedPlacement = <Placement>item;
+      const pos = positionService.positionElements(hostElement, targetElement, item, appendToBody);
+      topVal = pos.top;
+      leftVal = pos.left;
+      break;
+    }
+  }
+  targetElement.style.top = `${topVal}px`;
+  targetElement.style.left = `${leftVal}px`;
+  return appliedPlacement;
 }
 
-export type Placement = 'top' | 'bottom' | 'left' | 'right' | 'top-left' | 'top-right' | 'bottom-left' |
+// function to get index and item of an array
+function toItemIndexes<T>(a: T[]) {
+  return a.map((item, index) => ({item, index}));
+}
+
+export type Placement = 'auto' | 'top' | 'bottom' | 'left' | 'right' | 'top-left' | 'top-right' | 'bottom-left' |
     'bottom-right' | 'left-top' | 'left-bottom' | 'right-top' | 'right-bottom';
+
+export type PlacementArray = Placement | Array<Placement>;
