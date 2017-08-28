@@ -20,8 +20,9 @@ import {
   NgbdTooltip,
   NgbdTypeahead
 } from './components';
+import {DEFAULT_TAB} from './shared/component-wrapper/component-wrapper.component';
 
-const DEFAULT_API_PATH = {path: '', pathMatch: 'full', redirectTo: 'api'};
+const DEFAULT_API_PATH = {path: '', pathMatch: 'full', redirectTo: DEFAULT_TAB};
 
 const componentRoutes = [{
     path: 'components/accordion',
