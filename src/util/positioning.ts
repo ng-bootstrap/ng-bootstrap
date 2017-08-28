@@ -155,8 +155,5 @@ export function positionElements(
   targetElement.style.left = `${pos.left}px`;
 }
 
-type PlacementSimpleType = 'top' | 'bottom' | 'left' | 'right';
-type PlacementExtendedType = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'left-top' | 'left-bottom' |
-    'right-top' | 'right-bottom';
-
-export type PlacementType = PlacementSimpleType | PlacementExtendedType;
+export type PlacementType = 'top' | 'bottom' | 'left' | 'right' | 'top-left' | 'top-right' | 'bottom-left' |
+    'bottom-right' | 'left-top' | 'left-bottom' | 'right-top' | 'right-bottom';
