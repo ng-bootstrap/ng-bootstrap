@@ -245,3 +245,26 @@ ngbd-component-wrapper, ngbd-page-wrapper {
     transform: translateY(-$offset / 2);
   }
 }
+
+@mixin center-nav-tab-on-small-screens() {
+  .jumbotron > .container {
+    margin-bottom: 2rem;
+    h1 {
+      text-align: center;
+    }
+  }
+
+  .root-nav {
+    ul {
+      justify-content: center !important;
+    }
+  }
+}
+
+@media (max-width: 768px) and (orientation:portrait) {
+  @include center-nav-tab-on-small-screens();
+}
+
+@media (max-width: 568px) and (max-height: 320px)  {
+  @include center-nav-tab-on-small-screens();
+}

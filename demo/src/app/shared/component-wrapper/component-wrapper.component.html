@@ -11,16 +11,16 @@
         (tabChange)="tabChange($event)"
         [activeId]="activeTab"
       >
+        <ngb-tab title="Examples" id="examples">
+          <ng-template ngbTabContent>
+            <ng-content select="ngbd-example-box"></ng-content>
+          </ng-template>
+        </ngb-tab>
         <ngb-tab title="API" id="api">
           <ng-template ngbTabContent>
             <ng-content select="ngbd-api-docs"></ng-content>
             <ng-content select="ngbd-api-docs-class"></ng-content>
             <ng-content select="ngbd-api-docs-config"></ng-content>
-          </ng-template>
-        </ngb-tab>
-        <ngb-tab title="Examples" id="examples">
-          <ng-template ngbTabContent>
-            <ng-content select="ngbd-example-box"></ng-content>
           </ng-template>
         </ngb-tab>
       </ngb-tabset>
