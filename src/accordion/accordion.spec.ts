@@ -6,6 +6,7 @@ import {Component} from '@angular/core';
 import {NgbAccordionModule} from './accordion.module';
 import {NgbAccordionConfig} from './accordion-config';
 import {NgbAccordion} from './accordion';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -52,7 +53,8 @@ describe('ngb-accordion', () => {
   `;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbAccordionModule.forRoot()]});
+    TestBed.configureTestingModule(
+        {declarations: [TestComponent], imports: [NgbAccordionModule.forRoot(), NoopAnimationsModule]});
     TestBed.overrideComponent(TestComponent, {set: {template: html}});
   });
 
