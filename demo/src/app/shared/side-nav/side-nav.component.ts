@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 export const componentsList = [
   'Accordion',
@@ -24,5 +24,6 @@ export const componentsList = [
   templateUrl: './side-nav.component.html',
 })
 export class SideNavComponent {
+  @Input() activeTab: String;
   components = componentsList;
 }
