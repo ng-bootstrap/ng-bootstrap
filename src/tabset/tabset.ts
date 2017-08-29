@@ -11,6 +11,8 @@ import {
   EventEmitter
 } from '@angular/core';
 import {NgbTabsetConfig} from './tabset-config';
+import {transition, trigger, useAnimation} from '@angular/animations';
+import {fadeIn} from '../animations/fade';
 
 let nextId = 0;
 
@@ -93,6 +95,7 @@ export interface NgbTabChangeEvent {
       <ng-template ngFor let-tab [ngForOf]="tabs">
         <div
           class="tab-pane {{tab.id === activeId ? 'active' : null}}"
+          [@fade]="tab.id === activeId ? tabEnterAnimationState : ''"
           *ngIf="!destroyOnHide || tab.id === activeId"
           role="tabpanel"
           [attr.aria-labelledby]="tab.id" id="{{tab.id}}-panel"
@@ -101,7 +104,8 @@ export interface NgbTabChangeEvent {
         </div>
       </ng-template>
     </div>
-  `
+  `,
+  animations: [trigger('fade', [transition('* => in', useAnimation(fadeIn))])]
 })
 export class NgbTabset implements AfterContentChecked {
   justifyClass: string;
@@ -148,6 +152,8 @@ export class NgbTabset implements AfterContentChecked {
    */
   @Output() tabChange = new EventEmitter<NgbTabChangeEvent>();
 
+  tabEnterAnimationState;
+
   constructor(config: NgbTabsetConfig) {
     this.type = config.type;
     this.justify = config.justify;
@@ -169,6 +175,7 @@ export class NgbTabset implements AfterContentChecked {
       if (!defaultPrevented) {
         this.activeId = selectedTab.id;
       }
+      this.tabEnterAnimationState = 'in';
     }
   }
 

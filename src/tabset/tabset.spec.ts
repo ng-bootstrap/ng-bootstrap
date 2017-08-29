@@ -6,6 +6,7 @@ import {Component} from '@angular/core';
 import {NgbTabsetModule} from './tabset.module';
 import {NgbTabsetConfig} from './tabset-config';
 import {NgbTabset} from './tabset';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -56,8 +57,10 @@ function getButton(nativeEl: HTMLElement) {
 }
 
 describe('ngb-tabset', () => {
-  beforeEach(
-      () => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbTabsetModule.forRoot()]}); });
+  beforeEach(() => {
+    TestBed.configureTestingModule(
+        {declarations: [TestComponent], imports: [NgbTabsetModule.forRoot(), NoopAnimationsModule]});
+  });
 
   it('should initialize inputs with default values', () => {
     const defaultConfig = new NgbTabsetConfig();
@@ -165,7 +168,7 @@ describe('ngb-tabset', () => {
     const tabTitles = getTabTitles(fixture.nativeElement);
 
     expect(tabTitles[0].textContent).toMatch(/foo/);
-    expect(tabTitles[1].innerHTML).toMatch(/<b>bar<\/b>/);
+    expect(tabTitles[1].innerHTML).toMatch(/<b( class=""|)>bar<\/b>/);
     expect(tabTitles[2].textContent).toMatch(/bazbaz/);
   });
 
