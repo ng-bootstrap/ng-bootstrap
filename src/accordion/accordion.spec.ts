@@ -1,11 +1,12 @@
 import {TestBed, ComponentFixture, inject} from '@angular/core/testing';
 import {createGenericTestComponent} from '../test/common';
 
-import {Component} from '@angular/core';
+import {Component, NgZone} from '@angular/core';
 
 import {NgbAccordionModule} from './accordion.module';
 import {NgbAccordionConfig} from './accordion-config';
 import {NgbAccordion} from './accordion';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -15,7 +16,7 @@ function getPanels(element: HTMLElement): HTMLDivElement[] {
 }
 
 function getPanelsContent(element: HTMLElement): HTMLDivElement[] {
-  return <HTMLDivElement[]>Array.from(element.querySelectorAll('.card > .card-body'));
+  return <HTMLDivElement[]>Array.from(element.querySelectorAll('.card > div > .card-body'));
 }
 
 function getPanelsTitle(element: HTMLElement): HTMLDivElement[] {
@@ -52,13 +53,14 @@ describe('ngb-accordion', () => {
   `;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbAccordionModule.forRoot()]});
+    TestBed.configureTestingModule(
+        {declarations: [TestComponent], imports: [NgbAccordionModule.forRoot(), NoopAnimationsModule]});
     TestBed.overrideComponent(TestComponent, {set: {template: html}});
   });
 
   it('should initialize inputs with default values', () => {
     const defaultConfig = new NgbAccordionConfig();
-    const accordionCmp = new NgbAccordion(defaultConfig);
+    const accordionCmp = new NgbAccordion(defaultConfig, TestBed.get(NgZone));
     expect(accordionCmp.type).toBe(defaultConfig.type);
     expect(accordionCmp.closeOtherPanels).toBe(defaultConfig.closeOthers);
   });
@@ -246,7 +248,7 @@ describe('ngb-accordion', () => {
     expect(contents.length).not.toBe(0);
 
     contents.forEach((content: HTMLElement, idx: number) => {
-      expect(content.getAttribute('aria-labelledby')).toBe(`${content.id}-header`);
+      expect(content.parentElement.getAttribute('aria-labelledby')).toBe(`${content.parentElement.id}-header`);
       expect(content.textContent.trim()).toBe(originalContent[idx].content);
     });
   });
@@ -381,7 +383,7 @@ describe('ngb-accordion', () => {
     fixture.detectChanges();
     const panelsContent = getPanelsContent(fixture.nativeElement);
     expectOpenPanels(fixture.nativeElement, [true, false, false]);
-    expect(headingLinks[0].getAttribute('aria-controls')).toBe(panelsContent[0].id);
+    expect(headingLinks[0].getAttribute('aria-controls')).toBe(panelsContent[0].parentElement.id);
   });
 
 
@@ -501,7 +503,7 @@ describe('ngb-accordion', () => {
     headers.forEach((header: HTMLElement) => expect(header.getAttribute('role')).toBe('tab'));
 
     const contents = getPanelsContent(fixture.nativeElement);
-    contents.forEach((content: HTMLElement) => expect(content.getAttribute('role')).toBe('tabpanel'));
+    contents.forEach((content: HTMLElement) => expect(content.parentElement.getAttribute('role')).toBe('tabpanel'));
   });
 
   describe('Custom config', () => {

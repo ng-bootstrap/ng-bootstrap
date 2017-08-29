@@ -1,11 +1,13 @@
 import {
   AfterContentChecked,
+  AfterViewInit,
   Component,
   ContentChild,
   ContentChildren,
   Directive,
   EventEmitter,
   Input,
+  NgZone,
   Output,
   QueryList,
   TemplateRef
@@ -14,6 +16,8 @@ import {
 import {isString} from '../util/util';
 
 import {NgbAccordionConfig} from './accordion-config';
+import {animate, style, transition, trigger} from '@angular/animations';
+import {take} from 'rxjs/operator/take';
 
 let nextId = 0;
 
@@ -96,24 +100,41 @@ export interface NgbPanelChangeEvent {
   host: {'role': 'tablist', '[attr.aria-multiselectable]': '!closeOtherPanels'},
   template: `
     <ng-template ngFor let-panel [ngForOf]="panels">
-      <div class="card">
-        <div role="tab" id="{{panel.id}}-header"
-          [class]="'card-header ' + (panel.type ? 'card-'+panel.type: type ? 'card-'+type : '')" [class.active]="isOpen(panel.id)">
+      <div class="card" [@.disabled]="animationsDisabled">
+        <div
+          role="tab"
+          id="{{panel.id}}-header"
+          [class]="'card-header ' + (panel.type ? 'card-'+panel.type: type ? 'card-'+type : '')"
+          [class.active]="isOpen(panel.id)">
           <a href (click)="!!toggle(panel.id)" [class.text-muted]="panel.disabled" [attr.tabindex]="(panel.disabled ? '-1' : null)"
             [attr.aria-expanded]="isOpen(panel.id)" [attr.aria-controls]="(isOpen(panel.id) ? panel.id : null)"
             [attr.aria-disabled]="panel.disabled">
             {{panel.title}}<ng-template [ngTemplateOutlet]="panel.titleTpl?.templateRef"></ng-template>
           </a>
         </div>
-        <div id="{{panel.id}}" role="tabpanel" [attr.aria-labelledby]="panel.id + '-header'" 
-             class="card-body {{isOpen(panel.id) ? 'show' : null}}" *ngIf="!destroyOnHide || isOpen(panel.id)">
-             <ng-template [ngTemplateOutlet]="panel.contentTpl.templateRef"></ng-template>
+        <div
+          id="{{panel.id}}"
+          role="tabpanel"
+          [attr.aria-labelledby]="panel.id + '-header'"
+          *ngIf="!destroyOnHide || isOpen(panel.id)"
+          [@collapse]="isOpen(panel.id) ? 'open' : 'closed'">
+          <div class="card-body {{isOpen(panel.id) ? 'show' : null}}">
+            <ng-template [ngTemplateOutlet]="panel.contentTpl.templateRef"></ng-template>
+          </div>
         </div>
       </div>
     </ng-template>
-  `
+  `,
+  animations: [trigger(
+      'collapse',
+      [
+        transition('* => open', [style({height: 0, overflow: 'hidden'}), animate('.35s ease', style({height: '*'}))]),
+        transition(
+            'open => *', [style({height: '*', overflow: 'hidden'}), animate('.35s ease', style({height: 0}))])
+      ])]
 })
-export class NgbAccordion implements AfterContentChecked {
+export class NgbAccordion implements AfterContentChecked,
+    AfterViewInit {
   /**
    * A map that stores each panel state
    */
@@ -152,7 +173,9 @@ export class NgbAccordion implements AfterContentChecked {
    */
   @Output() panelChange = new EventEmitter<NgbPanelChangeEvent>();
 
-  constructor(config: NgbAccordionConfig) {
+  animationsDisabled = true;
+
+  constructor(config: NgbAccordionConfig, private ngZone: NgZone) {
     this.type = config.type;
     this.closeOtherPanels = config.closeOthers;
   }
@@ -193,6 +216,11 @@ export class NgbAccordion implements AfterContentChecked {
       this._closeOthers(this.activeIds[0]);
       this._updateActiveIds();
     }
+  }
+
+  ngAfterViewInit() {
+    // prevent ExpressionChangedAfterItWasChecked exception
+    take.call(this.ngZone.onStable, 1).subscribe(() => { this.animationsDisabled = false; });
   }
 
   /**
