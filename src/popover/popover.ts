@@ -21,6 +21,9 @@ import {listenToTriggers} from '../util/triggers';
 import {positionElements, Placement} from '../util/positioning';
 import {PopupService} from '../util/popup';
 import {NgbPopoverConfig} from './popover-config';
+import {transition, trigger, useAnimation} from '@angular/animations';
+import {fadeIn, fadeOut} from '../animations/fade';
+import {AnimationsHelper} from '../util/animations-helper';
 
 let nextId = 0;
 
@@ -30,7 +33,9 @@ let nextId = 0;
   host: {
     '[class]': '"popover bs-popover-" + placement.split("-")[0]+" bs-popover-" + placement',
     'role': 'tooltip',
-    '[id]': 'id'
+    '[id]': 'id',
+    '[@fade]': 'animationsHelper.state',
+    '(@fade.done)': 'animationsHelper.stateChanges.next($event)'
   },
   template: `
     <div class="arrow"></div>
@@ -52,21 +57,16 @@ let nextId = 0;
     :host.bs-popover-left .arrow, :host.bs-popover-right .arrow {
       top: 50%;
     }
-    
-    :host.bs-popover-left-top .arrow, :host.bs-popover-right-top .arrow {
-      top: 0.7em;
-    }
-
-    :host.bs-popover-left-bottom .arrow, :host.bs-popover-right-bottom .arrow {
-      top: auto;
-      bottom: 0.7em;
-    }
-  `]
+  `],
+  animations: [trigger(
+      'fade',
+      [transition('void => enter', useAnimation(fadeIn)), transition('enter => exit', useAnimation(fadeOut))])]
 })
 export class NgbPopoverWindow {
   @Input() placement: Placement = 'top';
   @Input() title: string;
   @Input() id: string;
+  animationsHelper = new AnimationsHelper();
 }
 
 /**
@@ -165,10 +165,17 @@ export class NgbPopover implements OnInit, OnDestroy {
    */
   close(): void {
     if (this._windowRef) {
-      this._renderer.removeAttribute(this._elementRef.nativeElement, 'aria-describedby');
-      this._popupService.close();
-      this._windowRef = null;
-      this.hidden.emit();
+      // exit animations never complete if the element is moved outside of the host element container, so just skip the
+      // exit animation
+      const exitCompleted = this.container === 'body' ?
+          Promise.resolve() :
+          this._windowRef.instance.animationsHelper.triggerExitAnimation();
+      exitCompleted.then(() => {
+        this._renderer.removeAttribute(this._elementRef.nativeElement, 'aria-describedby');
+        this._popupService.close();
+        this._windowRef = null;
+        this.hidden.emit();
+      });
     }
   }
 
