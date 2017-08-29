@@ -17,7 +17,7 @@ import {
   NgZone
 } from '@angular/core';
 import {listenToTriggers} from '../util/triggers';
-import {positionElements, PlacementType} from '../util/positioning';
+import {positionElements, Placement} from '../util/positioning';
 import {PopupService} from '../util/popup';
 import {NgbTooltipConfig} from './tooltip-config';
 
@@ -61,7 +61,7 @@ let nextId = 0;
   `]
 })
 export class NgbTooltipWindow {
-  @Input() placement: PlacementType = 'top';
+  @Input() placement: Placement = 'top';
   @Input() id: string;
 }
 
@@ -73,7 +73,7 @@ export class NgbTooltip implements OnInit, OnDestroy {
   /**
    * Placement of a tooltip. Accepts: "top", "bottom", "left", "right"
    */
-  @Input() placement: PlacementType;
+  @Input() placement: Placement;
   /**
    * Specifies events that should trigger. Supports a space separated list of event names.
    */

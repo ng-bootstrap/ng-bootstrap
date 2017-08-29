@@ -18,7 +18,7 @@ import {
 } from '@angular/core';
 
 import {listenToTriggers} from '../util/triggers';
-import {positionElements, PlacementType} from '../util/positioning';
+import {positionElements, Placement} from '../util/positioning';
 import {PopupService} from '../util/popup';
 import {NgbPopoverConfig} from './popover-config';
 
@@ -64,7 +64,7 @@ let nextId = 0;
   `]
 })
 export class NgbPopoverWindow {
-  @Input() placement: PlacementType = 'top';
+  @Input() placement: Placement = 'top';
   @Input() title: string;
   @Input() id: string;
 }
@@ -87,7 +87,7 @@ export class NgbPopover implements OnInit, OnDestroy {
    *    "top", "top-left", "top-right", "bottom", "bottom-left", "bottom-right",
    *    "left", "left-top", "left-bottom", "right", "right-top", "right-bottom"
    */
-  @Input() placement: PlacementType;
+  @Input() placement: Placement;
   /**
    * Specifies events that should trigger. Supports a space separated list of event names.
    */

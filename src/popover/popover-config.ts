@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {PlacementType} from '../util/positioning';
+import {Placement} from '../util/positioning';
 
 /**
  * Configuration service for the NgbPopover directive.
@@ -8,7 +8,7 @@ import {PlacementType} from '../util/positioning';
  */
 @Injectable()
 export class NgbPopoverConfig {
-  placement: PlacementType = 'top';
+  placement: Placement = 'top';
   triggers = 'click';
   container: string;
 }
