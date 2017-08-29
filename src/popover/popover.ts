@@ -21,13 +21,22 @@ import {listenToTriggers} from '../util/triggers';
 import {positionElements} from '../util/positioning';
 import {PopupService} from '../util/popup';
 import {NgbPopoverConfig} from './popover-config';
+import {transition, trigger, useAnimation} from '@angular/animations';
+import {fadeIn, fadeOut} from '../animations/fade';
+import {AnimationsHelper} from '../util/animations-helper';
 
 let nextId = 0;
 
 @Component({
   selector: 'ngb-popover-window',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {'[class]': '"popover bs-popover-" + placement', 'role': 'tooltip', '[id]': 'id'},
+  host: {
+    '[class]': '"popover bs-popover-" + placement',
+    'role': 'tooltip',
+    '[id]': 'id',
+    '[@fade]': 'animationsHelper.state',
+    '(@fade.done)': 'animationsHelper.stateChanges.next($event)'
+  },
   template: `
     <div class="arrow"></div>
     <h3 class="popover-header">{{title}}</h3><div class="popover-body"><ng-content></ng-content></div>`,
@@ -39,12 +48,16 @@ let nextId = 0;
     :host.bs-popover-left .arrow, :host.bs-popover-right .arrow {
       top: 50%;
     }
-  `]
+  `],
+  animations: [trigger(
+      'fade',
+      [transition('void => enter', useAnimation(fadeIn)), transition('enter => exit', useAnimation(fadeOut))])]
 })
 export class NgbPopoverWindow {
   @Input() placement: 'top' | 'bottom' | 'left' | 'right' = 'top';
   @Input() title: string;
   @Input() id: string;
+  animationsHelper = new AnimationsHelper();
 }
 
 /**
@@ -141,10 +154,12 @@ export class NgbPopover implements OnInit, OnDestroy {
    */
   close(): void {
     if (this._windowRef) {
-      this._renderer.removeAttribute(this._elementRef.nativeElement, 'aria-describedby');
-      this._popupService.close();
-      this._windowRef = null;
-      this.hidden.emit();
+      this._windowRef.instance.animationsHelper.triggerExitAnimation().then(() => {
+        this._renderer.removeAttribute(this._elementRef.nativeElement, 'aria-describedby');
+        this._popupService.close();
+        this._windowRef = null;
+        this.hidden.emit();
+      });
     }
   }
 
