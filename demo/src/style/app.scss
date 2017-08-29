@@ -1,13 +1,5 @@
 // styles in src/style directory are applied to the whole page
 
-@mixin text-stroke-horizontal($width: 4px, $color: white) {
-  $text-shadow: ();
-  @for $w from -$width through $width {
-    $text-shadow: append($text-shadow, $w 0 $color, comma);
-  }
-  text-shadow: $text-shadow;
-}
-
 .navbar {
   background: rgba(255,255,255,0.95);
 }
@@ -132,40 +124,42 @@
 }
 
 div.api-doc-component {
-  margin-bottom: 20px;
-}
+  margin-bottom: 3rem;
 
-div.api-doc-component > h2 > a {
-  text-decoration: none;
-}
+  > h2, > h3 {
+    .github-link {
+      transition: opacity .5s;
+      opacity: .3;
+    }
 
-div.api-doc-component > h2 > a:hover {
-  text-decoration: none;
-}
+    &:hover {
+      .github-link {
+        opacity: 1;
+      }
+      & > .title-fragment {
+        opacity: 1;
+      }
+    }
+  }
 
-div.api-doc-component > h2 {
-  margin-top: 0.2em;
-  margin-bottom: 1rem;
-  line-height: 0.85em;
-  @include text-stroke-horizontal;
-  box-shadow: 0 1px #fff, 0 3px #0275d8;
-  word-spacing: 0.5em;
-  font-size: 2.5em;
-  border-bottom: 2px solid #fff;
-  display: table;
+  section {
+    margin-top: 3rem;
+    h4 {
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+    }
 
-  &:hover {
-    border-bottom: 2px solid #fff;
-    box-shadow: 0 1px #fff, 0 3px #014c8c;
-    text-decoration: none;
-
-    & > .fragment {
-      opacity: 1;
+    .meta {
+      font-size: .8rem;
+      margin-bottom: 1rem;
+      > div {
+        margin-bottom: .5rem;
+      }
     }
   }
 }
 
-a.fragment {
+a.title-fragment {
   opacity: 0;
   transition: opacity 125ms ease;
   line-height: inherit;
@@ -200,14 +194,17 @@ div.component-demo {
   }
 }
 
+ngbd-api-docs, ngbd-api-docs-class, ngbd-api-docs-config {
+  display: block;
 
-section {
-  margin-top: 30px;
+  &:not(:first-child) {
+    margin-top: 3rem;
+    border-top: 1px solid #999;
+    padding-top: 1rem;
+  }
 }
 
-section h3 {
-  margin-bottom: 10px;
-}
+
 
 // override prism theme background color to inline it with bootstrap colors
 code[class*="language-"],
