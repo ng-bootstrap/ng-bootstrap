@@ -65,7 +65,7 @@ const NGB_RATING_VALUE_ACCESSOR = {
     <ng-template ngFor [ngForOf]="contexts" let-index="index">
       <span class="sr-only">({{ index < nextRate ? '*' : ' ' }})</span>
       <span (mouseenter)="enter(index + 1)" (click)="handleClick(index + 1)" [style.cursor]="readonly || disabled ? 'default' : 'pointer'">
-        <ng-template [ngTemplateOutlet]="starTemplate || t" [ngOutletContext]="contexts[index]"></ng-template>
+        <ng-template [ngTemplateOutlet]="starTemplate || t" [ngTemplateOutletContext]="contexts[index]"></ng-template>
       </span>
     </ng-template>
   `,
