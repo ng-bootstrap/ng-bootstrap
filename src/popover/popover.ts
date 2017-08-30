@@ -18,7 +18,7 @@ import {
 } from '@angular/core';
 
 import {listenToTriggers} from '../util/triggers';
-import {positionElements} from '../util/positioning';
+import {positionElements, Placement} from '../util/positioning';
 import {PopupService} from '../util/popup';
 import {NgbPopoverConfig} from './popover-config';
 
@@ -27,7 +27,11 @@ let nextId = 0;
 @Component({
   selector: 'ngb-popover-window',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {'[class]': '"popover bs-popover-" + placement', 'role': 'tooltip', '[id]': 'id'},
+  host: {
+    '[class]': '"popover bs-popover-" + placement.split("-")[0]+" bs-popover-" + placement',
+    'role': 'tooltip',
+    '[id]': 'id'
+  },
   template: `
     <div class="arrow"></div>
     <h3 class="popover-header">{{title}}</h3><div class="popover-body"><ng-content></ng-content></div>`,
@@ -36,13 +40,31 @@ let nextId = 0;
       left: 50%;
     }
 
+    :host.bs-popover-top-left .arrow, :host.bs-popover-bottom-left .arrow {
+      left: 2em;
+    }
+
+    :host.bs-popover-top-right .arrow, :host.bs-popover-bottom-right .arrow {
+      left: auto;
+      right: 2em;
+    }
+
     :host.bs-popover-left .arrow, :host.bs-popover-right .arrow {
       top: 50%;
+    }
+    
+    :host.bs-popover-left-top .arrow, :host.bs-popover-right-top .arrow {
+      top: 0.7em;
+    }
+
+    :host.bs-popover-left-bottom .arrow, :host.bs-popover-right-bottom .arrow {
+      top: auto;
+      bottom: 0.7em;
     }
   `]
 })
 export class NgbPopoverWindow {
-  @Input() placement: 'top' | 'bottom' | 'left' | 'right' = 'top';
+  @Input() placement: Placement = 'top';
   @Input() title: string;
   @Input() id: string;
 }
@@ -61,9 +83,11 @@ export class NgbPopover implements OnInit, OnDestroy {
    */
   @Input() popoverTitle: string;
   /**
-   * Placement of a popover. Accepts: "top", "bottom", "left", "right"
+   * Placement of a popover accepts:
+   *    "top", "top-left", "top-right", "bottom", "bottom-left", "bottom-right",
+   *    "left", "left-top", "left-bottom", "right", "right-top", "right-bottom"
    */
-  @Input() placement: 'top' | 'bottom' | 'left' | 'right';
+  @Input() placement: Placement;
   /**
    * Specifies events that should trigger. Supports a space separated list of event names.
    */
@@ -101,7 +125,7 @@ export class NgbPopover implements OnInit, OnDestroy {
     this._zoneSubscription = ngZone.onStable.subscribe(() => {
       if (this._windowRef) {
         positionElements(
-            this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
+            this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement.toString(),
             this.container === 'body');
       }
     });
@@ -126,7 +150,7 @@ export class NgbPopover implements OnInit, OnDestroy {
 
       // position popover along the element
       positionElements(
-          this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
+          this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement.toString(),
           this.container === 'body');
 
       // we need to manually invoke change detection since events registered via
