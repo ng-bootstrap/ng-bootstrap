@@ -32,7 +32,7 @@ export interface ResultTemplateContext {
         (mouseenter)="markActive(idx)"
         (click)="select(result)">
           <ng-template [ngTemplateOutlet]="resultTemplate || rt"
-          [ngOutletContext]="{result: result, term: term, formatter: formatter}"></ng-template>
+          [ngTemplateOutletContext]="{result: result, term: term, formatter: formatter}"></ng-template>
       </button>
     </ng-template>
   `
