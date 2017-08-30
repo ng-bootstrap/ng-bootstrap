@@ -64,7 +64,7 @@ export interface NoResultsTemplateContext {
           (mouseenter)="context.markActive(idx)"
           (click)="context.select(result)">
             <ng-template [ngTemplateOutlet]="resultTemplate || rt"
-            [ngOutletContext]="{result: result, term: term, formatter: formatter}"></ng-template>
+          [ngTemplateOutletContext]="{result: result, term: term, formatter: formatter}"></ng-template>
         </button>
       </ng-template>
     </ng-template>
