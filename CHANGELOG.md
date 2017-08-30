@@ -1,3 +1,13 @@
+<a name="1.0.0-beta.3"></a>
+# [1.0.0-beta.3](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-beta.2...1.0.0-beta.3) (2017-08-30)
+
+
+### Bug Fixes
+
+* restore compatibility with Angular 5.x ([f92f1e5](https://github.com/ng-bootstrap/ng-bootstrap/commit/f92f1e5)), closes [#1791](https://github.com/ng-bootstrap/ng-bootstrap/issues/1791) [#1792](https://github.com/ng-bootstrap/ng-bootstrap/issues/1792)
+
+
+
 <a name="1.0.0-beta.2"></a>
 # [1.0.0-beta.2](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-beta.1...1.0.0-beta.2) (2017-08-23)
 
