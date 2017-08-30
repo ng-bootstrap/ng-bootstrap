@@ -5,14 +5,14 @@
 </div>
 <div class="container">
   <div class="row">
-        <div class="col-12 col-lg-9">
-            <ngb-tabset
-              class="root-nav"
-              (tabChange)="tabChange($event)"
-              [activeId]="activeTab"
-            >
-              <ngb-tab title="Examples" id="examples">
-                <ng-template ngbTabContent>
+    <div class="col-12 col-lg-9">
+      <ngb-tabset
+        class="root-nav"
+        (tabChange)="tabChange($event)"
+        [activeId]="activeTab"
+      >
+        <ngb-tab title="Examples" id="examples">
+          <ng-template ngbTabContent>
             <ng-content select="ngbd-example-box"></ng-content>
           </ng-template>
         </ngb-tab>

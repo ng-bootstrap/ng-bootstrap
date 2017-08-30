@@ -29,7 +29,7 @@ export class SideNavComponent {
   components = componentsList;
 
   constructor(private router: Router) {}
-  
+
   isActive(currentRoute: any[]): boolean {
     return this.router.isActive(this.router.createUrlTree(currentRoute), true);
   }
