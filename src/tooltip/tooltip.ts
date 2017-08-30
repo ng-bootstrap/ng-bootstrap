@@ -71,7 +71,9 @@ export class NgbTooltipWindow {
 @Directive({selector: '[ngbTooltip]', exportAs: 'ngbTooltip'})
 export class NgbTooltip implements OnInit, OnDestroy {
   /**
-   * Placement of a tooltip. Accepts: "top", "bottom", "left", "right"
+   * Placement of a tooltip accepts:
+   *    "top", "top-left", "top-right", "bottom", "bottom-left", "bottom-right",
+   *    "left", "left-top", "left-bottom", "right", "right-top", "right-bottom"
    */
   @Input() placement: Placement;
   /**
