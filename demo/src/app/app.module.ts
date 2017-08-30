@@ -9,6 +9,7 @@ import {AppComponent} from './app.component';
 import {routing} from './app.routing';
 import {NgbdDemoModule} from './components';
 import {NgbdSharedModule} from './shared';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import {NgbdSharedModule} from './shared';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     routing,
     NgbModule.forRoot(),
     NgbdDemoModule,
