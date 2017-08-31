@@ -154,3 +154,6 @@ export function positionElements(
   targetElement.style.top = `${pos.top}px`;
   targetElement.style.left = `${pos.left}px`;
 }
+
+export type Placement = 'top' | 'bottom' | 'left' | 'right' | 'top-left' | 'top-right' | 'bottom-left' |
+    'bottom-right' | 'left-top' | 'left-bottom' | 'right-top' | 'right-bottom';

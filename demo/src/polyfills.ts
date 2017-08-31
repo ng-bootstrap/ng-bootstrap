@@ -1,4 +1,5 @@
 import 'core-js/shim';
+import 'web-animations-js';
 
 require('zone.js/dist/zone');
 

@@ -1,6 +1,6 @@
 {
   "name": "ng-bootstrap",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta.3",
   "description": "Angular powered Bootstrap",
   "keywords": [
     "angular",
@@ -31,7 +31,7 @@
   },
   "scripts": {
     "install": "node misc/validate-commit.install.js",
-    "test": "karma start karma.conf.js",
+    "test": "gulp",
     "api-doc-tdd": "jasmine-node misc/api-doc.spec.js --autotest --watch misc/api-doc-test-cases/*.ts misc/api-doc.js",
     "api-doc-test": "jasmine-node misc/api-doc.spec.js"
   },
@@ -116,6 +116,7 @@
     "tslint": "^3.15.1",
     "typescript": "2.1.5",
     "url-loader": "^0.5.7",
+    "web-animations-js": "^2.3.1",
     "webpack": "2.2.0",
     "webpack-dev-server": "2.2.0",
     "zone.js": "0.8.10"
