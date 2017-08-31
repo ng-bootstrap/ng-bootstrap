@@ -15,6 +15,11 @@ export class ComponentWrapper {
 
   public activeTab: string;
 
+  public fileTypes = [
+    ['T', 'HTML template file', 'btn-secondary'],
+    ['C', 'Component typescript file', 'btn-info'],
+  ];
+
   constructor(private route: ActivatedRoute, private router: Router) {
     this.route.params.subscribe(params => {
       const tab = params['tab'];

@@ -1,34 +1,40 @@
 <div class="component-demo">
+  <h2>
+    {{ demoTitle }}
+    <a
+      class="plunker"
+      target="_blank" href="app/components/{{component}}/demos/{{demo}}/plnkr.html"
+      title="Edit in Plunker"
+    >
+      <img src="img/plunker-icon.png" height="24" width="24" alt="Plunker icon"/>
+    </a>
+  </h2>
   <div class="card">
-    <div class="card-header">
-      <span class="h3">
-        {{ demoTitle }}
-      </span>
-      <div class="float-right">
-        <button class="btn-link" (click)="toggleCode()" title="{{showCode ? 'Hide' : 'Show'}} source code">
-          <img src="img/code-icon.png" height="24" width="24" alt="Source code icon"/>
-        </button>
-        <a target="_blank" href="app/components/{{component}}/demos/{{demo}}/plnkr.html" title="Edit in Plunker" >
-          <img src="img/plunker-icon.png" height="24" width="24" alt="Plunker icon"/>
-        </a>
-      </div>
-    </div>
-    <div class="card-body" *ngIf="showCode">
-      <ngb-tabset>
-        <ngb-tab title="html">
-          <ng-template ngbTabContent>
-            <pre class="language-html"><code class="language-html" [innerHTML]="snippets[demo]['markup']"></code></pre>
-          </ng-template>
-        </ngb-tab>
-        <ngb-tab title="typescript">
-          <ng-template ngbTabContent>
-            <pre class="language-typescript"><code class="language-typescript" [innerHTML]="snippets[demo]['code']"></code></pre>
-          </ng-template>
-        </ngb-tab>
-      </ngb-tabset>
-    </div>
     <div class="card-body">
       <ng-content></ng-content>
     </div>
+    <ngb-tabset
+      class="tabset-code"
+      [activeId]="selectedTab"
+    >
+      <ngb-tab id="html">
+        <ng-template ngbTabTitle>
+          <small class="badge badge-secondary" title="HTML template">T</small>
+          <span>{{component}}-{{demo}}.html</span>
+        </ng-template>
+        <ng-template ngbTabContent>
+          <pre class="language-html"><code class="language-html" [innerHTML]="snippets[demo]['markup']"></code></pre>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab id="typescript">
+        <ng-template ngbTabTitle>
+          <small class="badge badge-info" title="Component class">C</small>
+          <span>{{component}}-{{demo}}.ts</span>
+        </ng-template>
+        <ng-template ngbTabContent>
+          <pre class="language-typescript"><code class="language-typescript" [innerHTML]="snippets[demo]['code']"></code></pre>
+        </ng-template>
+      </ngb-tab>
+    </ngb-tabset>
   </div>
 </div>
