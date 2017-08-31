@@ -174,7 +174,52 @@ a.title-fragment {
 }
 
 div.component-demo {
-  margin-bottom: 15px;
+  margin-bottom: 3rem;
+  h2 {
+    margin-bottom: 1rem;
+
+    .plunker {
+      opacity: 0.3;
+      transition: opacity .5s;
+    }
+    &:hover {
+      .plunker {
+        opacity: 1;
+      }
+    }
+  }
+
+  .tabset-code {
+    .nav {
+      margin: 0;
+      padding: .5rem 1.25rem 0;
+      font-size: 80%;
+
+      .nav-link.active {
+        background-color: #f5f2f0;
+        border-bottom: 1px solid #f5f2f0;
+      }
+
+      .nav-link:not(.active) {
+        color: #999;
+        &:hover {
+          color: #666;
+        }
+      }
+    }
+
+    .tab-content {
+      overflow: hidden;
+    }
+
+    pre {
+      margin: 0;
+    }
+  }
+}
+
+.examples-legend {
+  font-size: 80%;
 }
 
 .bd-footer {
