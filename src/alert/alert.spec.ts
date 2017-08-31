@@ -2,6 +2,7 @@ import {TestBed, ComponentFixture, inject} from '@angular/core/testing';
 import {createGenericTestComponent} from '../test/common';
 
 import {Component} from '@angular/core';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 
 import {NgbAlertModule} from './alert.module';
 import {NgbAlert} from './alert';
@@ -20,8 +21,10 @@ function getCloseButton(element: HTMLElement): HTMLButtonElement {
 
 describe('ngb-alert', () => {
 
-  beforeEach(
-      () => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbAlertModule.forRoot()]}); });
+  beforeEach(() => {
+    TestBed.configureTestingModule(
+        {declarations: [TestComponent], imports: [NoopAnimationsModule, NgbAlertModule.forRoot()]});
+  });
 
   it('should initialize inputs with default values', () => {
     const defaultConfig = new NgbAlertConfig();
