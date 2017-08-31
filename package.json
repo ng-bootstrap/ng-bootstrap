@@ -51,7 +51,8 @@
     "@angular/animations": "4.2.0",
     "@angular/common": "4.2.0",
     "@angular/core": "4.2.0",
-    "@angular/forms": "4.2.0"
+    "@angular/forms": "4.2.0",
+    "web-animations-js": "^2.3.1"
   },
   "devDependencies": {
     "@angular/compiler": "4.2.0",
