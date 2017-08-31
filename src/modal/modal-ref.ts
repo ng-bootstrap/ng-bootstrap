@@ -50,7 +50,7 @@ export class NgbModalRef {
 
   constructor(
       private _windowCmptRef: ComponentRef<NgbModalWindow>, private _contentRef: ContentRef,
-      private _backdropCmptRef?: ComponentRef<NgbModalBackdrop>) {
+      private _backdropCmptRef?: ComponentRef<NgbModalBackdrop>, private _beforeDismiss?: Function) {
     _windowCmptRef.instance.dismissEvent.subscribe((reason: any) => { this.dismiss(reason); });
 
     this.result = new Promise((resolve, reject) => {
@@ -75,8 +75,10 @@ export class NgbModalRef {
    */
   dismiss(reason?: any): void {
     if (this._windowCmptRef) {
-      this._reject(reason);
-      this._removeModalElements();
+      if (!this._beforeDismiss || this._beforeDismiss() !== false) {
+        this._reject(reason);
+        this._removeModalElements();
+      }
     }
   }
 

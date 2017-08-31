@@ -14,6 +14,12 @@ export interface NgbModalOptions {
   backdrop?: boolean | 'static';
 
   /**
+   * Function called when a modal will be dismissed.
+   * If this function returns false, the modal is not dismissed.
+   */
+  beforeDismiss?: () => boolean;
+
+  /**
    * An element to which to attach newly opened modal windows.
    */
   container?: string;
