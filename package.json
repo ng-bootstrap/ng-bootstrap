@@ -116,6 +116,7 @@
     "tslint": "^3.15.1",
     "typescript": "2.1.5",
     "url-loader": "^0.5.7",
+    "web-animations-js": "^2.3.1",
     "webpack": "2.2.0",
     "webpack-dev-server": "2.2.0",
     "zone.js": "0.8.10"
