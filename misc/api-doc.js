@@ -80,26 +80,30 @@ class APIDocVisitor {
     var className = interfaceDeclaration.name.text;
     var members = this.visitMembers(interfaceDeclaration.members);
 
-    return [{fileName, className, description, methods: members.methods, properties: members.properties}];
+    return [
+      {fileName, className, description, type: 'Interface', methods: members.methods, properties: members.properties}
+    ];
   }
 
   visitClassDeclaration(fileName, classDeclaration) {
     var symbol = this.program.getTypeChecker().getSymbolAtLocation(classDeclaration.name);
     var description = ts.displayPartsToString(symbol.getDocumentationComment());
     var className = classDeclaration.name.text;
+    var decorators = classDeclaration.decorators;
     var directiveInfo;
     var members;
 
-    if (classDeclaration.decorators) {
-      for (var i = 0; i < classDeclaration.decorators.length; i++) {
-        if (this.isDirectiveDecorator(classDeclaration.decorators[i])) {
-          directiveInfo = this.visitDirectiveDecorator(classDeclaration.decorators[i]);
+    if (decorators) {
+      for (var i = 0; i < decorators.length; i++) {
+        if (this.isDirectiveDecorator(decorators[i])) {
+          directiveInfo = this.visitDirectiveDecorator(decorators[i]);
           members = this.visitMembers(classDeclaration.members);
 
           return [{
             fileName,
             className,
             description,
+            type: directiveInfo.type,
             selector: directiveInfo.selector,
             exportAs: directiveInfo.exportAs,
             inputs: members.inputs,
@@ -107,16 +111,25 @@ class APIDocVisitor {
             properties: members.properties,
             methods: members.methods
           }];
-        } else if (this.isServiceDecorator(classDeclaration.decorators[i])) {
+        } else if (this.isServiceDecorator(decorators[i])) {
           members = this.visitMembers(classDeclaration.members);
 
-          return [{fileName, className, description, methods: members.methods, properties: members.properties}];
+          return [{
+            fileName,
+            className,
+            description,
+            type: 'Service',
+            methods: members.methods,
+            properties: members.properties
+          }];
         }
       }
     } else if (description) {
       members = this.visitMembers(classDeclaration.members);
 
-      return [{fileName, className, description, methods: members.methods, properties: members.properties}];
+      return [
+        {fileName, className, description, type: 'Class', methods: members.methods, properties: members.properties}
+      ];
     }
 
     // a class that is not a directive or a service, not documented for now
@@ -127,6 +140,7 @@ class APIDocVisitor {
     var selector;
     var exportAs;
     var properties = decorator.expression.arguments[0].properties;
+    var type = decorator.expression.expression.text;
 
     for (var i = 0; i < properties.length; i++) {
       if (properties[i].name.text === 'selector') {
@@ -139,7 +153,7 @@ class APIDocVisitor {
       }
     }
 
-    return {selector, exportAs};
+    return {selector, exportAs, type};
   }
 
   visitMembers(members) {
