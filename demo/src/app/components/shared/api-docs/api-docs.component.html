@@ -1,40 +1,51 @@
 <div class="api-doc-component">
-  <h2>
-    <a [routerLink]="" fragment="{{apiDocs.className}}" ngbdFragment>
+  <h2 class="title">
+    <a
+      [routerLink]=""
+      fragment="{{apiDocs.className}}" ngbdFragment
+      title="Anchor link to: {{apiDocs.className}}"
+    >
       <img src="img/link-symbol.svg" alt="Anchor link to: {{apiDocs.className}}"/>
     </a>
-    <a (click)="trackSourceClick()" href="https://github.com/ng-bootstrap/ng-bootstrap/tree/master/{{apiDocs.fileName}}" target="_blank">{{apiDocs.className}}</a>
+    <span>{{apiDocs.className}}</span>
+    <a
+      class="github-link"
+      (click)="trackSourceClick()"
+      href="https://github.com/ng-bootstrap/ng-bootstrap/tree/master/{{apiDocs.fileName}}"
+      target="_blank"
+      title="Link to Github: {{apiDocs.className}}"
+    >
+      <img src="img/github.svg" alt="Link to Github {{apiDocs.className}}"/>
+    </a>
   </h2>
-  <p>{{apiDocs.description}}</p>
-    <table class="table table-sm table-hover">
-      <tbody>
-        <tr>
-          <td class="label-cell">Selector</td>
-          <td class="content-cell"><code>{{apiDocs.selector}}</code></td>
-        </tr>
-        <tr *ngIf="apiDocs.exportAs">
-          <td class="label-cell">Exported as</td>
-          <td class="content-cell"><code>{{apiDocs.exportAs}}</code></td>
-        </tr>
-      </tbody>
-    </table>
+  <h5><small class="text-muted">Directive</small></h5>
+  <p class="lead">
+    {{apiDocs.description}}
+  </p>
+
+  <section>
+    <h4>Selector <small><code>{{apiDocs.selector}}</code></small></h4>
+    <h6 *ngIf="apiDocs.exportAs">Exported as <small><code>{{apiDocs.exportAs}}</code></small></h6>
+  </section>
 
   <ng-template [ngIf]="apiDocs.inputs.length">
     <section>
-      <h3>Inputs</h3>
-      <table class="table table-sm table-hover">
+      <h4>Inputs</h4>
+      <table class="table table-sm">
         <tbody>
         <tr *ngFor="let input of apiDocs.inputs">
           <td class="label-cell"><code>{{input.name}}</code></td>
           <td class="content-cell">
-            <div><i>Type: </i><code>{{ input.type }}</code></div>
-            <ng-template [ngIf]="defaultInputValue(input) || hasConfigProperty(input)">
+            <p class="description">{{ input.description }}</p>
+            <div class="meta">
               <div>
+                <i>Type: </i><code>{{ input.type }}</code>
+              </div>
+              <div *ngIf="defaultInputValue(input) || hasConfigProperty(input)">
                 <span><i>Default value: </i><code>{{ defaultInputValue(input) || '-' }}</code></span>
                 <span *ngIf="hasConfigProperty(input)">&mdash; initialized from {{ configServiceName }} service</span>
               </div>
-            </ng-template>
-            <div style="margin: 10px 0">{{ input.description }}</div>
+            </div>
           </td>
         </tr>
         </tbody>
@@ -44,8 +55,8 @@
 
   <ng-template [ngIf]="apiDocs.outputs.length">
     <section>
-      <h3>Outputs</h3>
-      <table class="table table-sm table-hover">
+      <h4>Outputs</h4>
+      <table class="table table-sm">
         <tbody>
           <tr *ngFor="let output of apiDocs.outputs">
             <td class="label-cell"><code>{{output.name}}</code></td>
@@ -58,20 +69,21 @@
 
   <ng-template [ngIf]="apiDocs.methods.length && apiDocs.exportAs">
     <section>
-      <h3>Methods</h3>
-      <table class="table table-sm table-hover">
+      <h4>Methods</h4>
+      <table class="table table-sm">
         <tbody>
-        <tr *ngFor="let method of apiDocs.methods">
-          <td class="label-cell"><code>{{method.name}}</code></td>
-          <td class="content-cell">
-            <div><i>Signature: </i><code>{{ methodSignature(method) }}</code></div>
-            <div><i>Return type: </i><code>{{ method.returnType }}</code></div>
-            <div style="margin: 10px 0">{{ method.description }}</div>
-          </td>
-        </tr>
+          <tr *ngFor="let method of apiDocs.methods">
+            <td class="label-cell"><code>{{method.name}}</code></td>
+            <td class="content-cell">
+                <p>
+                    <code>{{methodSignature(method)}}</code>
+                    <small class="text-muted" title="Return type">=&gt; {{ method.returnType }}</small>
+                </p>
+                <p>{{ method.description }}</p>
+            </td>
+          </tr>
         </tbody>
       </table>
     </section>
   </ng-template>
 </div>
-<hr/>

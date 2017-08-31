@@ -1,25 +1,44 @@
 <div class="api-doc-component">
-  <h2>
-    <a [routerLink]="" fragment="{{apiDocs.className}}" ngbdFragment>
+  <h3>
+    <a
+      class="title-fragment"
+      [routerLink]=""
+      fragment="{{apiDocs.className}}" ngbdFragment
+      title="Anchor link to: {{apiDocs.className}}"
+    >
       <img src="img/link-symbol.svg" alt="Anchor link to: {{apiDocs.className}}"/>
     </a>
-    <a (click)="trackSourceClick()" href="https://github.com/ng-bootstrap/ng-bootstrap/tree/master/{{apiDocs.fileName}}" target="_blank">{{apiDocs.className}}</a>
-  </h2>
-  <p>{{apiDocs.description}}</p>
+    {{apiDocs.className}}
+    <a
+      class="github-link"
+      (click)="trackSourceClick()"
+      href="https://github.com/ng-bootstrap/ng-bootstrap/tree/master/{{apiDocs.fileName}}"
+      target="_blank"
+      title="Link to Github: {{apiDocs.className}}"
+    >
+      <img src="img/github.svg" alt="Link to Github {{apiDocs.className}}"/>
+    </a>
+  </h3>
+  <h5><small class="text-muted">Class / Service</small></h5>
+  <p class="lead">{{apiDocs.description}}</p>
 
   <ng-template [ngIf]="apiDocs.properties && apiDocs.properties.length">
     <section>
-      <h3>Properties</h3>
-      <table class="table table-sm table-hover">
+      <h4>Properties</h4>
+      <table class="table table-sm">
         <tbody>
         <tr *ngFor="let prop of apiDocs.properties">
           <td class="label-cell"><code>{{prop.name}}</code></td>
           <td class="content-cell">
-            <div><i>Type: </i><code>{{ prop.type }}</code></div>
-            <ng-template [ngIf]="prop.defaultValue">
-              <div><i>Default value: </i><code>{{prop.defaultValue || '-'}}</code></div>
-            </ng-template>
-            <div style="margin: 10px 0">{{ prop.description }}</div>
+            <p>{{ prop.description }}</p>
+            <div class="meta">
+              <div>
+                <i>Type: </i><code>{{ prop.type }}</code>
+              </div>
+              <div *ngIf="prop.defaultValue">
+                <i>Default value: </i><code>{{prop.defaultValue || '-'}}</code>
+              </div>
+            </div>
           </td>
         </tr>
         </tbody>
@@ -29,20 +48,22 @@
 
   <ng-template [ngIf]="apiDocs.methods && apiDocs.methods.length">
     <section>
-      <h3>Methods</h3>
-      <table class="table table-sm table-hover">
+      <h4>Methods</h4>
+      <table class="table table-sm">
         <tbody>
-        <tr *ngFor="let method of apiDocs.methods">
-          <td class="label-cell"><code>{{method.name}}</code></td>
-          <td class="content-cell">
-            <div><i>Signature: </i><code>{{ methodSignature(method) }}</code></div>
-            <div><i>Return type: </i><code>{{ method.returnType }}</code></div>
-            <div style="margin: 10px 0">{{ method.description }}</div>
-          </td>
-        </tr>
+          <tr *ngFor="let method of apiDocs.methods">
+            <td class="label-cell"><code>{{method.name}}</code></td>
+            <td class="content-cell">
+                <p>
+                    <code>{{methodSignature(method)}}</code>
+                    <small class="text-muted" title="Return type">=&gt; {{ method.returnType }}</small>
+                </p>
+                <p>{{ method.description }}</p>
+            </td>
+          </tr>
         </tbody>
       </table>
     </section>
   </ng-template>
 </div>
-<hr/>
+

@@ -1,22 +1,37 @@
 <div (click)="trackSourceClick()" class="api-doc-component">
-  <h2>
-    <a [routerLink]="" fragment="{{apiDocs.className}}" ngbdFragment>
+  <h3>
+    <a
+      class="title-fragment"
+      [routerLink]=""
+      fragment="{{apiDocs.className}}"
+      ngbdFragment
+      title="Anchor link to: {{apiDocs.className}}"
+    >
       <img src="img/link-symbol.svg" alt="Anchor link to: {{apiDocs.className}}"/>
     </a>
-    <a href="https://github.com/ng-bootstrap/ng-bootstrap/tree/master/{{apiDocs.fileName}}" target="_blank">{{apiDocs.className}}</a>
-  </h2>
-  <p>{{apiDocs.description}}</p>
+    {{apiDocs.className}}
+    <a
+      class="github-link"
+      href="https://github.com/ng-bootstrap/ng-bootstrap/tree/master/{{apiDocs.fileName}}"
+      target="_blank"
+      title="Link to Github: {{apiDocs.className}}"
+    >
+      <img src="img/github.svg" alt="Link to Github {{apiDocs.className}}"/>
+    </a>
+  </h3>
+  <h5><small class="text-muted">Configuration</small></h5>
+  <p class="lead">{{apiDocs.description}}</p>
 
   <ng-template [ngIf]="apiDocs.properties && apiDocs.properties.length">
     <section>
-      <h3>Properties</h3>
+      <h4>Properties</h4>
       <p>
         <ng-template ngFor let-property [ngForOf]="apiDocs.properties">
           <code>{{ property.name }}</code>
         </ng-template>
-        <i>&mdash; Documentation available in {{ directiveName }}</i>
+        <i>&mdash; Documentation available in <a [routerLink]="" fragment="{{directiveName}}">{{ directiveName }}</a></i>
       </p>
     </section>
   </ng-template>
 </div>
-<hr/>
+
