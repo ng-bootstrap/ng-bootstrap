@@ -1,11 +1,7 @@
-import {
-  Component,
-  Input,
-  Output,
-  EventEmitter,
-  ChangeDetectionStrategy,
-} from '@angular/core';
+import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
+import {trigger, transition, useAnimation} from '@angular/animations';
 
+import {fadeOut} from '../animations/fade';
 import {NgbAlertConfig} from './alert-config';
 
 /**
@@ -14,14 +10,19 @@ import {NgbAlertConfig} from './alert-config';
 @Component({
   selector: 'ngb-alert',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [trigger('fadeOut', [transition(':leave', useAnimation(fadeOut, {params: {opacity: 1}}))])],
+  host: {
+    '[class]': '"alert alert-" + type + (dismissible ? " alert-dismissible" : "")',
+    'role': 'alert',
+    '[style.display]': '"block"',
+    '[@fadeOut]': ''
+  },
   template: `
-    <div [class]="'alert alert-' + type + (dismissible ? ' alert-dismissible' : '')" role="alert">
-      <button *ngIf="dismissible" type="button" class="close" aria-label="Close" (click)="closeHandler()">
-            <span aria-hidden="true">&times;</span>
-      </button>
-      <ng-content></ng-content>
-    </div>
-    `
+    <button *ngIf="dismissible" type="button" class="close" aria-label="Close" (click)="closeHandler()">
+          <span aria-hidden="true">&times;</span>
+    </button>
+    <ng-content></ng-content>
+    `,
 })
 export class NgbAlert {
   /**

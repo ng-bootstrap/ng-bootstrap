@@ -1,6 +1,6 @@
-<p *ngFor="let alert of alerts">
-  <ngb-alert [type]="alert.type" (close)="closeAlert(alert)">{{ alert.message }}</ngb-alert>
-</p>
+<ngb-alert [type]="alert.type" (close)="closeAlert(alert)" *ngFor="let alert of alerts">
+  {{ alert.message }}
+</ngb-alert>
 <p>
   <button type="button" class="btn btn-primary" (click)="reset()">Reset</button>
 </p>
