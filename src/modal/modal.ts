@@ -19,6 +19,11 @@ export interface NgbModalOptions {
   container?: string;
 
   /**
+   * Injector to use for modal content.
+   */
+  injector?: Injector;
+
+  /**
    * Whether to close the modal when escape key is pressed (true by default).
    */
   keyboard?: boolean;

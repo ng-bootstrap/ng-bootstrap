@@ -1,23 +1,27 @@
 <div class="container" style="padding-left: 0; padding-right: 0;">
-  <header class="navbar navbar-light navbar-fixed-top navbar-toggleable-md">
+  <header class="navbar navbar-light navbar-fixed-top navbar-expand-lg">
+
+    <a class="navbar-brand" [routerLink]="['/']" (click)="navbarCollapsed = true">ng-bootstrap</a>
+
     <button class="navbar-toggler navbar-toggler-right" type="button" (click)="navbarCollapsed = !navbarCollapsed"
             [attr.aria-expanded]="!navbarCollapsed" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <a class="navbar-brand" [routerLink]="['/']">ng-bootstrap</a>
-
     <div class="navbar-collapse" [ngbCollapse]="navbarCollapsed" id="navbarContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item" [routerLinkActive]="['active']">
-          <a class="nav-link" [routerLink]="['/getting-started']">Getting Started</a>
+          <a class="nav-link" [routerLink]="['/getting-started']" (click)="navbarCollapsed = true">Getting Started</a>
         </li>
         <li class="nav-item" [routerLinkActive]="['active']">
-          <a class="nav-link" [routerLink]="['/components']">Components</a>
+          <a class="nav-link" [routerLink]="['/components']" (click)="navbarCollapsed = true">Components</a>
+        </li>
+        <li class="nav-item d-lg-none" *ngFor="let component of components" [routerLinkActive]="['active']">
+          <a class="nav-link" [routerLink]="['/components', component.toLowerCase()]" (click)="navbarCollapsed = true">{{ component }}</a>
         </li>
       </ul>
 
-      <span class="github-buttons">
+      <span class="github-buttons d-none d-lg-inline">
         <a class="github-button"
            href="https://github.com/ng-bootstrap/ng-bootstrap"
            target="_blank"
@@ -51,6 +55,12 @@
     <p>
       Documentation licensed under <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank">CC BY 3.0</a>.
       Design and content of the documentation site heavily inspired by the <a href="http://v4-alpha.getbootstrap.com/"
-                                                                              target="_blank">original design</a>.</p>
+                                                                              target="_blank">original Bootstrap design</a>.</p>
+    <p>Icons made by
+      <a href="http://www.flaticon.com/authors/eucalyp" target="_blank">Eucalyp</a>,
+      <a href="http://www.flaticon.com/authors/freepik" target="_blank">Freepik</a>,
+      <a href="http://www.flaticon.com/authors/nikita-golubev" target="_blank">Nikita Golubev</a> and
+      <a href="http://www.flaticon.com/authors/pixel-perfect" target="_blank">Pixel perfect</a>
+      from <a href="http://www.flaticon.com" target="_blank">www.flaticon.com</a></p>
   </div>
 </footer>

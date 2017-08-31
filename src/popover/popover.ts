@@ -8,7 +8,7 @@ import {
   OnInit,
   OnDestroy,
   Injector,
-  Renderer,
+  Renderer2,
   ComponentRef,
   ElementRef,
   TemplateRef,
@@ -27,10 +27,19 @@ let nextId = 0;
 @Component({
   selector: 'ngb-popover-window',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {'[class]': '"popover show popover-" + placement', 'role': 'tooltip', '[id]': 'id'},
+  host: {'[class]': '"popover bs-popover-" + placement', 'role': 'tooltip', '[id]': 'id'},
   template: `
-    <h3 class="popover-title">{{title}}</h3><div class="popover-content"><ng-content></ng-content></div>
-    `
+    <div class="arrow"></div>
+    <h3 class="popover-header">{{title}}</h3><div class="popover-body"><ng-content></ng-content></div>`,
+  styles: [`
+    :host.bs-popover-top .arrow, :host.bs-popover-bottom .arrow {
+      left: 50%;
+    }
+
+    :host.bs-popover-left .arrow, :host.bs-popover-right .arrow {
+      top: 50%;
+    }
+  `]
 })
 export class NgbPopoverWindow {
   @Input() placement: 'top' | 'bottom' | 'left' | 'right' = 'top';
@@ -81,7 +90,7 @@ export class NgbPopover implements OnInit, OnDestroy {
   private _zoneSubscription: any;
 
   constructor(
-      private _elementRef: ElementRef, private _renderer: Renderer, injector: Injector,
+      private _elementRef: ElementRef, private _renderer: Renderer2, injector: Injector,
       componentFactoryResolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef, config: NgbPopoverConfig,
       ngZone: NgZone) {
     this.placement = config.placement;
@@ -110,11 +119,16 @@ export class NgbPopover implements OnInit, OnDestroy {
       this._windowRef.instance.title = this.popoverTitle;
       this._windowRef.instance.id = this._ngbPopoverWindowId;
 
-      this._renderer.setElementAttribute(this._elementRef.nativeElement, 'aria-describedby', this._ngbPopoverWindowId);
+      this._renderer.setAttribute(this._elementRef.nativeElement, 'aria-describedby', this._ngbPopoverWindowId);
 
       if (this.container === 'body') {
         window.document.querySelector(this.container).appendChild(this._windowRef.location.nativeElement);
       }
+
+      // position popover along the element
+      positionElements(
+          this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
+          this.container === 'body');
 
       // we need to manually invoke change detection since events registered via
       // Renderer::listen() are not picked up by change detection with the OnPush strategy
@@ -131,7 +145,7 @@ export class NgbPopover implements OnInit, OnDestroy {
    */
   close(): void {
     if (this._windowRef) {
-      this._renderer.setElementAttribute(this._elementRef.nativeElement, 'aria-describedby', null);
+      this._renderer.removeAttribute(this._elementRef.nativeElement, 'aria-describedby');
       this._popupService.close();
       this._windowRef = null;
       this.hidden.emit();

@@ -22,4 +22,6 @@ export class ProgressbarConfig {
    * @internal
    */
   notForDocumentation;
+
+  noDescriptionButStillExtract = 'sth';
 }

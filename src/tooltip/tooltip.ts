@@ -8,7 +8,7 @@ import {
   OnInit,
   OnDestroy,
   Injector,
-  Renderer,
+  Renderer2,
   ComponentRef,
   ElementRef,
   TemplateRef,
@@ -26,10 +26,17 @@ let nextId = 0;
 @Component({
   selector: 'ngb-tooltip-window',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {'[class]': '"tooltip show tooltip-" + placement', 'role': 'tooltip', '[id]': 'id'},
-  template: `
-    <div class="tooltip-inner"><ng-content></ng-content></div>
-    `
+  host: {'[class]': '"tooltip show bs-tooltip-" + placement', 'role': 'tooltip', '[id]': 'id'},
+  template: `<div class="arrow"></div><div class="tooltip-inner"><ng-content></ng-content></div>`,
+  styles: [`
+    :host.bs-tooltip-top .arrow, :host.bs-tooltip-bottom .arrow {
+      left: 50%;
+    }
+
+    :host.bs-tooltip-left .arrow, :host.bs-tooltip-right .arrow {
+      top: 50%;
+    }
+  `]
 })
 export class NgbTooltipWindow {
   @Input() placement: 'top' | 'bottom' | 'left' | 'right' = 'top';
@@ -72,7 +79,7 @@ export class NgbTooltip implements OnInit, OnDestroy {
   private _zoneSubscription: any;
 
   constructor(
-      private _elementRef: ElementRef, private _renderer: Renderer, injector: Injector,
+      private _elementRef: ElementRef, private _renderer: Renderer2, injector: Injector,
       componentFactoryResolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef, config: NgbTooltipConfig,
       ngZone: NgZone) {
     this.placement = config.placement;
@@ -113,11 +120,16 @@ export class NgbTooltip implements OnInit, OnDestroy {
       this._windowRef.instance.placement = this.placement;
       this._windowRef.instance.id = this._ngbTooltipWindowId;
 
-      this._renderer.setElementAttribute(this._elementRef.nativeElement, 'aria-describedby', this._ngbTooltipWindowId);
+      this._renderer.setAttribute(this._elementRef.nativeElement, 'aria-describedby', this._ngbTooltipWindowId);
 
       if (this.container === 'body') {
         window.document.querySelector(this.container).appendChild(this._windowRef.location.nativeElement);
       }
+
+      // position tooltip along the element
+      positionElements(
+          this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
+          this.container === 'body');
 
       // we need to manually invoke change detection since events registered via
       // Renderer::listen() - to be determined if this is a bug in the Angular itself
@@ -134,7 +146,7 @@ export class NgbTooltip implements OnInit, OnDestroy {
    */
   close($event?: any): void {
     if (this._windowRef != null) {
-      this._renderer.setElementAttribute(this._elementRef.nativeElement, 'aria-describedby', null);
+      this._renderer.removeAttribute(this._elementRef.nativeElement, 'aria-describedby');
       this._popupService.close();
       this._windowRef = null;
       this.hidden.emit();

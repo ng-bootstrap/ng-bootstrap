@@ -4,15 +4,18 @@ import {
   ComponentRef,
   ElementRef,
   ViewContainerRef,
-  Renderer,
+  Renderer2,
   ComponentFactoryResolver,
   NgZone,
   TemplateRef,
   forwardRef,
   EventEmitter,
-  Output
+  Output,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges
 } from '@angular/core';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {AbstractControl, ControlValueAccessor, Validator, NG_VALUE_ACCESSOR, NG_VALIDATORS} from '@angular/forms';
 
 import {NgbDate} from './ngb-date';
 import {NgbDatepicker, NgbDatepickerNavigateEvent} from './datepicker';
@@ -30,6 +33,12 @@ const NGB_DATEPICKER_VALUE_ACCESSOR = {
   multi: true
 };
 
+const NGB_DATEPICKER_VALIDATOR = {
+  provide: NG_VALIDATORS,
+  useExisting: forwardRef(() => NgbInputDatepicker),
+  multi: true
+};
+
 /**
  * A directive that makes it possible to have datepickers on input fields.
  * Manages integration with the input field itself (data entry) and ngModel (validation etc.).
@@ -37,10 +46,16 @@ const NGB_DATEPICKER_VALUE_ACCESSOR = {
 @Directive({
   selector: 'input[ngbDatepicker]',
   exportAs: 'ngbDatepicker',
-  host: {'(change)': 'manualDateChange($event.target.value)', '(keyup.esc)': 'close()', '(blur)': 'onBlur()'},
-  providers: [NGB_DATEPICKER_VALUE_ACCESSOR, NgbDatepickerService]
+  host: {
+    '(input)': 'manualDateChange($event.target.value)',
+    '(change)': 'manualDateChange($event.target.value, true)',
+    '(keyup.esc)': 'close()',
+    '(blur)': 'onBlur()'
+  },
+  providers: [NGB_DATEPICKER_VALUE_ACCESSOR, NGB_DATEPICKER_VALIDATOR, NgbDatepickerService]
 })
-export class NgbInputDatepicker implements ControlValueAccessor {
+export class NgbInputDatepicker implements OnChanges,
+    OnDestroy, ControlValueAccessor, Validator {
   private _cRef: ComponentRef<NgbDatepicker> = null;
   private _model: NgbDate;
   private _zoneSubscription: any;
@@ -88,6 +103,13 @@ export class NgbInputDatepicker implements ControlValueAccessor {
    */
   @Input() outsideDays: 'visible' | 'collapsed' | 'hidden';
 
+
+  /**
+   * Placement of a datepicker popup. Accepts: "top", "bottom", "left", "right", "bottom-left",
+   * "bottom-right" etc.
+   */
+  @Input() placement = 'bottom-left';
+
   /**
    * Whether to display days of the week
    */
@@ -114,15 +136,16 @@ export class NgbInputDatepicker implements ControlValueAccessor {
 
   private _onChange = (_: any) => {};
   private _onTouched = () => {};
+  private _validatorChange = () => {};
 
 
   constructor(
       private _parserFormatter: NgbDateParserFormatter, private _elRef: ElementRef, private _vcRef: ViewContainerRef,
-      private _renderer: Renderer, private _cfr: ComponentFactoryResolver, ngZone: NgZone,
+      private _renderer: Renderer2, private _cfr: ComponentFactoryResolver, ngZone: NgZone,
       private _service: NgbDatepickerService, private _calendar: NgbCalendar) {
     this._zoneSubscription = ngZone.onStable.subscribe(() => {
       if (this._cRef) {
-        positionElements(this._elRef.nativeElement, this._cRef.location.nativeElement, 'bottom-left');
+        positionElements(this._elRef.nativeElement, this._cRef.location.nativeElement, this.placement);
       }
     });
   }
@@ -131,23 +154,47 @@ export class NgbInputDatepicker implements ControlValueAccessor {
 
   registerOnTouched(fn: () => any): void { this._onTouched = fn; }
 
+  registerOnValidatorChange(fn: () => void): void { this._validatorChange = fn; };
+
+  setDisabledState(isDisabled: boolean): void {
+    this._renderer.setProperty(this._elRef.nativeElement, 'disabled', isDisabled);
+    if (this.isOpen()) {
+      this._cRef.instance.setDisabledState(isDisabled);
+    }
+  }
+
+  validate(c: AbstractControl): {[key: string]: any} {
+    const value = c.value;
+
+    if (value === null || value === undefined) {
+      return null;
+    }
+
+    if (!this._calendar.isValid(value)) {
+      return {'ngbDate': {invalid: c.value}};
+    }
+
+    if (this.minDate && NgbDate.from(value).before(NgbDate.from(this.minDate))) {
+      return {'ngbDate': {requiredBefore: this.minDate}};
+    }
+
+    if (this.maxDate && NgbDate.from(value).after(NgbDate.from(this.maxDate))) {
+      return {'ngbDate': {requiredAfter: this.maxDate}};
+    }
+  }
+
   writeValue(value) {
     const ngbDate = value ? new NgbDate(value.year, value.month, value.day) : null;
     this._model = this._calendar.isValid(value) ? ngbDate : null;
     this._writeModelValue(this._model);
   }
 
-  setDisabledState(isDisabled: boolean): void {
-    this._renderer.setElementProperty(this._elRef.nativeElement, 'disabled', isDisabled);
-    if (this.isOpen()) {
-      this._cRef.instance.setDisabledState(isDisabled);
-    }
-  }
-
-  manualDateChange(value: string) {
+  manualDateChange(value: string, updateView = false) {
     this._model = this._service.toValidDate(this._parserFormatter.parse(value), null);
-    this._onChange(this._model ? {year: this._model.year, month: this._model.month, day: this._model.day} : null);
-    this._writeModelValue(this._model);
+    this._onChange(this._model ? this._model.toStruct() : (value === '' ? null : value));
+    if (updateView && this._model) {
+      this._writeModelValue(this._model);
+    }
   }
 
   isOpen() { return !!this._cRef; }
@@ -172,6 +219,9 @@ export class NgbInputDatepicker implements ControlValueAccessor {
         this._onChange(selectedDate);
         this.close();
       });
+
+      // focus handling
+      this._cRef.instance.focus();
     }
   }
 
@@ -210,6 +260,17 @@ export class NgbInputDatepicker implements ControlValueAccessor {
 
   onBlur() { this._onTouched(); }
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['minDate'] || changes['maxDate']) {
+      this._validatorChange();
+    }
+  }
+
+  ngOnDestroy() {
+    this.close();
+    this._zoneSubscription.unsubscribe();
+  }
+
   private _applyDatepickerInputs(datepickerInstance: NgbDatepicker): void {
     ['dayTemplate', 'displayMonths', 'firstDayOfWeek', 'markDisabled', 'minDate', 'maxDate', 'navigation',
      'outsideDays', 'showNavigation', 'showWeekdays', 'showWeekNumbers']
@@ -222,8 +283,8 @@ export class NgbInputDatepicker implements ControlValueAccessor {
   }
 
   private _applyPopupStyling(nativeElement: any) {
-    this._renderer.setElementClass(nativeElement, 'dropdown-menu', true);
-    this._renderer.setElementStyle(nativeElement, 'padding', '0');
+    this._renderer.addClass(nativeElement, 'dropdown-menu');
+    this._renderer.setStyle(nativeElement, 'padding', '0');
   }
 
   private _subscribeForDatepickerOutputs(datepickerInstance: NgbDatepicker) {
@@ -231,7 +292,7 @@ export class NgbInputDatepicker implements ControlValueAccessor {
   }
 
   private _writeModelValue(model: NgbDate) {
-    this._renderer.setElementProperty(this._elRef.nativeElement, 'value', this._parserFormatter.format(model));
+    this._renderer.setProperty(this._elRef.nativeElement, 'value', this._parserFormatter.format(model));
     if (this.isOpen()) {
       this._cRef.instance.writeValue(model);
       this._onTouched();

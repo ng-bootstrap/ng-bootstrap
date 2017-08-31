@@ -70,7 +70,7 @@ describe('ngb-datepicker-month-view', () => {
 
   it('should use custom template to display dates', () => {
     const fixture = createTestComponent(`
-        <template #tpl let-date="date">{{ date.day }}</template>
+        <ng-template #tpl let-date="date">{{ date.day }}</ng-template>
         <ngb-datepicker-month-view [month]="month" [dayTemplate]="tpl"></ngb-datepicker-month-view>
       `);
     expectDates(fixture.nativeElement, ['22', '23']);
@@ -78,7 +78,7 @@ describe('ngb-datepicker-month-view', () => {
 
   it('should send date selection events', () => {
     const fixture = createTestComponent(`
-        <template #tpl let-date="date">{{ date.day }}</template>
+        <ng-template #tpl let-date="date">{{ date.day }}</ng-template>
         <ngb-datepicker-month-view [month]="month" [dayTemplate]="tpl" (select)="onClick($event)"></ngb-datepicker-month-view>
       `);
 
@@ -92,28 +92,11 @@ describe('ngb-datepicker-month-view', () => {
 
   it('should not send date selection events for disabled dates', () => {
     const fixture = createTestComponent(`
-        <template #tpl let-date="date">{{ date.day }}</template>
+        <ng-template #tpl let-date="date">{{ date.day }}</ng-template>
         <ngb-datepicker-month-view [month]="month" [dayTemplate]="tpl" (select)="onClick($event)"></ngb-datepicker-month-view>
       `);
 
-    fixture.componentInstance.month.weeks[0].days[0].disabled = true;
-    fixture.detectChanges();
-
-    spyOn(fixture.componentInstance, 'onClick');
-
-    const dates = getDates(fixture.nativeElement);
-    dates[0].click();
-
-    expect(fixture.componentInstance.onClick).not.toHaveBeenCalled();
-  });
-
-  it('should not send date selection events if disabled', () => {
-    const fixture = createTestComponent(`
-        <template #tpl let-date="date">{{ date.day }}</template>
-        <ngb-datepicker-month-view [month]="month" [dayTemplate]="tpl" [disabled]="true" (select)="onClick($event)">        
-        </ngb-datepicker-month-view>
-      `);
-
+    fixture.componentInstance.month.weeks[0].days[0].context.disabled = true;
     fixture.detectChanges();
 
     spyOn(fixture.componentInstance, 'onClick');
@@ -127,7 +110,7 @@ describe('ngb-datepicker-month-view', () => {
   if (!isBrowser('ie9')) {
     it('should set cursor to pointer', () => {
       const fixture = createTestComponent(`
-        <template #tpl let-date="date">{{ date.day }}</template>
+        <ng-template #tpl let-date="date">{{ date.day }}</ng-template>
         <ngb-datepicker-month-view [month]="month" [dayTemplate]="tpl" (change)="onClick($event)"></ngb-datepicker-month-view>
       `);
 
@@ -139,28 +122,17 @@ describe('ngb-datepicker-month-view', () => {
   if (!isBrowser('ie9')) {
     it('should set default cursor for disabled dates', () => {
       const fixture = createTestComponent(`
-        <template #tpl let-date="date">{{ date.day }}</template>
+        <ng-template #tpl let-date="date">{{ date.day }}</ng-template>
         <ngb-datepicker-month-view [month]="month" [dayTemplate]="tpl" (change)="onClick($event)"></ngb-datepicker-month-view>
       `);
 
-      fixture.componentInstance.month.weeks[0].days[0].disabled = true;
+      const newMonth = Object.assign({}, fixture.componentInstance.month);
+      newMonth.weeks[0].days[0].context.disabled = true;
+      fixture.componentInstance.month = newMonth;
       fixture.detectChanges();
 
       const dates = getDates(fixture.nativeElement);
       expect(window.getComputedStyle(dates[0]).getPropertyValue('cursor')).toBe('default');
-    });
-
-    it('should set default cursor for all dates if disabled', () => {
-      const fixture = createTestComponent(`
-        <template #tpl let-date="date">{{ date.day }}</template>
-        <ngb-datepicker-month-view [month]="month" [dayTemplate]="tpl" (change)="onClick($event)" [disabled]="true">        
-        </ngb-datepicker-month-view>
-      `);
-
-      fixture.detectChanges();
-
-      const dates = getDates(fixture.nativeElement);
-      dates.forEach((date) => expect(window.getComputedStyle(date).getPropertyValue('cursor')).toBe('default'));
     });
 
     it('should set default cursor for other months days', () => {
@@ -182,7 +154,7 @@ describe('ngb-datepicker-month-view', () => {
 
   it('should apply proper visibility to other months days', () => {
     const fixture = createTestComponent(`
-        <template #tpl let-date="date">{{ date.day }}</template>
+        <ng-template #tpl let-date="date">{{ date.day }}</ng-template>
         <ngb-datepicker-month-view [month]="month" [outsideDays]="outsideDays" [dayTemplate]="tpl"></ngb-datepicker-month-view>
     `);
 
@@ -206,8 +178,8 @@ describe('ngb-datepicker-month-view', () => {
 
   it('should collapse weeks outside of current month', () => {
     const fixture = createTestComponent(`
-        <template #tpl let-date="date">{{ date.day }}</template>
-        <ngb-datepicker-month-view [month]="monthCollapsedWeeks" [outsideDays]="outsideDays" [dayTemplate]="tpl">        
+        <ng-template #tpl let-date="date">{{ date.day }}</ng-template>
+        <ngb-datepicker-month-view [month]="monthCollapsedWeeks" [outsideDays]="outsideDays" [dayTemplate]="tpl">
         </ngb-datepicker-month-view>
     `);
 
@@ -224,8 +196,8 @@ describe('ngb-datepicker-month-view', () => {
 
   it('should collapse weeks regardless of "showWeekNumbers" value', () => {
     const fixture = createTestComponent(`
-        <template #tpl let-date="date">{{ date.day }}</template>
-        <ngb-datepicker-month-view [month]="monthCollapsedWeeks" outsideDays="collapsed" [dayTemplate]="tpl">        
+        <ng-template #tpl let-date="date">{{ date.day }}</ng-template>
+        <ngb-datepicker-month-view [month]="monthCollapsedWeeks" outsideDays="collapsed" [dayTemplate]="tpl">
         </ngb-datepicker-month-view>
     `);
 
@@ -242,17 +214,40 @@ describe('ngb-datepicker-month-view', () => {
 class TestComponent {
   month: MonthViewModel = {
     firstDate: new NgbDate(2016, 7, 22),
+    lastDate: new NgbDate(2016, 7, 23),
     year: 2016,
     number: 7,
     weekdays: [1],
     weeks: [{
       number: 2,
-      days: [{date: new NgbDate(2016, 7, 22), disabled: false}, {date: new NgbDate(2016, 8, 23), disabled: false}]
+      days: [
+        {
+          date: new NgbDate(2016, 7, 22),
+          context: {
+            currentMonth: 7,
+            date: {year: 2016, month: 7, day: 22},
+            disabled: false,
+            focused: false,
+            selected: false
+          }
+        },
+        {
+          date: new NgbDate(2016, 8, 23),
+          context: {
+            currentMonth: 7,
+            date: {year: 2016, month: 8, day: 23},
+            disabled: false,
+            focused: false,
+            selected: false
+          }
+        }
+      ]
     }]
   };
 
   monthCollapsedWeeks: MonthViewModel = {
     firstDate: new NgbDate(2016, 8, 1),
+    lastDate: new NgbDate(2016, 8, 31),
     year: 2016,
     number: 8,
     weekdays: [1, 2],
@@ -260,22 +255,106 @@ class TestComponent {
       // month: 7, 8
       {
         number: 2,
-        days: [{date: new NgbDate(2016, 7, 4), disabled: false}, {date: new NgbDate(2016, 8, 1), disabled: false}]
+        days: [
+          {
+            date: new NgbDate(2016, 7, 4),
+            context: {
+              currentMonth: 8,
+              date: {year: 2016, month: 7, day: 4},
+              disabled: false,
+              focused: false,
+              selected: false
+            }
+          },
+          {
+            date: new NgbDate(2016, 8, 1),
+            context: {
+              currentMonth: 8,
+              date: {year: 2016, month: 8, day: 1},
+              disabled: false,
+              focused: false,
+              selected: false
+            }
+          }
+        ]
       },
       // month: 8, 8
       {
         number: 3,
-        days: [{date: new NgbDate(2016, 8, 2), disabled: false}, {date: new NgbDate(2016, 8, 3), disabled: false}]
+        days: [
+          {
+            date: new NgbDate(2016, 8, 2),
+            context: {
+              currentMonth: 8,
+              date: {year: 2016, month: 8, day: 2},
+              disabled: false,
+              focused: false,
+              selected: false
+            }
+          },
+          {
+            date: new NgbDate(2016, 8, 3),
+            context: {
+              currentMonth: 8,
+              date: {year: 2016, month: 8, day: 3},
+              disabled: false,
+              focused: false,
+              selected: false
+            }
+          }
+        ]
       },
       // month: 8, 9
       {
         number: 3,
-        days: [{date: new NgbDate(2016, 8, 4), disabled: false}, {date: new NgbDate(2016, 9, 1), disabled: false}]
+        days: [
+          {
+            date: new NgbDate(2016, 8, 4),
+            context: {
+              currentMonth: 8,
+              date: {year: 2016, month: 8, day: 4},
+              disabled: false,
+              focused: false,
+              selected: false
+            }
+          },
+          {
+            date: new NgbDate(2016, 9, 1),
+            context: {
+              currentMonth: 8,
+              date: {year: 2016, month: 9, day: 1},
+              disabled: false,
+              focused: false,
+              selected: false
+            }
+          }
+        ]
       },
       // month: 9, 9 -> to collapse
       {
         number: 4,
-        days: [{date: new NgbDate(2016, 9, 2), disabled: false}, {date: new NgbDate(2016, 9, 3), disabled: false}]
+        days: [
+          {
+            date: new NgbDate(2016, 9, 2),
+            context: {
+              currentMonth: 8,
+              date: {year: 2016, month: 9, day: 2},
+              disabled: false,
+              focused: false,
+              selected: false
+            }
+          },
+          {
+            date: new NgbDate(2016, 9, 3),
+            context: {
+              currentMonth: 8,
+              date: {year: 2016, month: 9, day: 3},
+              disabled: false,
+              focused: false,
+              selected: false
+            }
+          }
+        ]
       }
     ]
   };

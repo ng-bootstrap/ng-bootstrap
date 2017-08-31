@@ -1,10 +1,12 @@
 <p>A typeahead example that uses custom template for results display and uses object as a model</p>
 
-<template #rt let-r="result" let-t="term">
-  <img [src]="'https://upload.wikimedia.org/wikipedia/commons/thumb/' + r.flag" width="16">
+<ng-template #rt let-r="result" let-t="term">
+  <img [src]="'https://upload.wikimedia.org/wikipedia/commons/thumb/' + r['flag']" width="16">
   {{ r.name}}
-</template>
+</ng-template>
 
-<input type="text" class="form-control" [(ngModel)]="model" [ngbTypeahead]="search" [resultTemplate]="rt" [inputFormatter]="formatter" />
+<label for="typeahead-template">Search for a state:</label>
+<input id="typeahead-template" type="text" class="form-control" [(ngModel)]="model" [ngbTypeahead]="search" [resultTemplate]="rt"
+  [inputFormatter]="formatter" />
 <hr>
 <pre>Model: {{ model | json }}</pre>

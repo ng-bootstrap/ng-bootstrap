@@ -115,7 +115,7 @@ describe('Positioning', () => {
     let position = positioning.positionElements(element, targetElement, 'top-right');
 
     expect(position.top).toBe(50);
-    expect(position.left).toBe(450);
+    expect(position.left).toBe(350);
   });
 
   it('should position the element bottom-left', () => {
@@ -136,7 +136,7 @@ describe('Positioning', () => {
     let position = positioning.positionElements(element, targetElement, 'bottom-right');
 
     expect(position.top).toBe(300);
-    expect(position.left).toBe(450);
+    expect(position.left).toBe(350);
   });
 
   it('should position the element left-top', () => {
@@ -156,7 +156,7 @@ describe('Positioning', () => {
   it('should position the element left-bottom', () => {
     let position = positioning.positionElements(element, targetElement, 'left-bottom');
 
-    expect(position.top).toBe(300);
+    expect(position.top).toBe(250);
     expect(position.left).toBe(50);
   });
 
@@ -177,7 +177,7 @@ describe('Positioning', () => {
   it('should position the element right-bottom', () => {
     let position = positioning.positionElements(element, targetElement, 'right-bottom');
 
-    expect(position.top).toBe(300);
+    expect(position.top).toBe(250);
     expect(position.left).toBe(450);
   });
 

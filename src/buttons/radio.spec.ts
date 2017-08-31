@@ -5,7 +5,7 @@ import {createGenericTestComponent} from '../test/common';
 import {Component} from '@angular/core';
 import {Validators, FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 
-import {NgbButtonsModule} from './radio.module';
+import {NgbButtonsModule} from './buttons.module';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -25,6 +25,13 @@ function expectRadios(element: HTMLElement, states: number[]) {
   }
 }
 
+function expectNameOnAllInputs(element: HTMLElement, name: string) {
+  const inputs = element.querySelectorAll('input');
+  for (let i = 0; i < inputs.length; i++) {
+    expect(inputs[i].getAttribute('name')).toBe(name);
+  }
+}
+
 function getGroupElement(nativeEl: HTMLElement): HTMLDivElement {
   return <HTMLDivElement>nativeEl.querySelector('div[ngbRadioGroup]');
 }
@@ -37,25 +44,13 @@ function getLabel(nativeEl: HTMLElement, idx: number): HTMLElement {
   return <HTMLElement>nativeEl.querySelectorAll('label')[idx];
 }
 
-describe('NgbActiveLabel', () => {
-  beforeEach(() => {
-    TestBed.configureTestingModule(
-        {declarations: [TestComponent], imports: [NgbButtonsModule, FormsModule, ReactiveFormsModule]});
-  });
-
-  it('should not touch active class on labels not part of a group', () => {
-    const fixture = createTestComponent('<label class="btn" [class.active]="true"></label>');
-    expect(fixture.nativeElement.children[0]).toHaveCssClass('active');
-  });
-});
-
 describe('ngbRadioGroup', () => {
   const defaultHtml = `<div [(ngModel)]="model" ngbRadioGroup>
-      <label class="btn">
-        <input type="radio" name="radio" [value]="values[0]"/> {{ values[0] }}
+      <label ngbButtonLabel>
+        <input ngbButton type="radio" name="radio" [value]="values[0]"/> {{ values[0] }}
       </label>
-      <label class="btn">
-        <input type="radio" name="radio" [value]="values[1]"/> {{ values[1] }}
+      <label ngbButtonLabel>
+        <input ngbButton type="radio" name="radio" [value]="values[1]"/> {{ values[1] }}
       </label>
     </div>`;
 
@@ -199,8 +194,8 @@ describe('ngbRadioGroup', () => {
   it('can be used with ngFor', async(() => {
 
        const forHtml = `<div [(ngModel)]="model" ngbRadioGroup>
-          <label *ngFor="let v of values" class="btn">
-            <input type="radio" name="radio" [value]="v"/> {{ v }}
+          <label *ngFor="let v of values" ngbButtonLabel>
+            <input ngbButton type="radio" name="radio" [value]="v"/> {{ v }}
           </label>
         </div>`;
 
@@ -220,11 +215,11 @@ describe('ngbRadioGroup', () => {
   it('cleans up the model when radio inputs are added / removed', async(() => {
 
        const ifHtml = `<div [(ngModel)]="model" ngbRadioGroup>
-        <label class="btn">
-          <input type="radio" name="radio" [value]="values[0]"/> {{ values[0] }}
+        <label ngbButtonLabel>
+          <input ngbButton type="radio" name="radio" [value]="values[0]"/> {{ values[0] }}
         </label>
-        <label *ngIf="shown" class="btn">
-          <input type="radio" name="radio" [value]="values[1]"/> {{ values[1] }}
+        <label *ngIf="shown" ngbButtonLabel>
+          <input ngbButton type="radio" name="radio" [value]="values[1]"/> {{ values[1] }}
         </label>
       </div>`;
        const fixture = createTestComponent(ifHtml);
@@ -263,22 +258,21 @@ describe('ngbRadioGroup', () => {
        });
      }));
 
-  it('should add data-toggle="buttons" and "btn-group" CSS class to button group', () => {
+  it('should add data-toggle="buttons" to button group', () => {
     // Bootstrap for uses presence of data-toggle="buttons" to style radio buttons
     const html = `<div class="foo" ngbRadioGroup></div>`;
 
     const fixture = createTestComponent(html);
 
     expect(fixture.nativeElement.children[0].getAttribute('data-toggle')).toBe('buttons');
-    expect(fixture.nativeElement.children[0]).toHaveCssClass('btn-group');
   });
 
   it('should work with template-driven form validation', async(() => {
        const html = `
         <form>
           <div ngbRadioGroup [(ngModel)]="model" name="control" required>
-            <label class="btn">
-              <input type="radio" value="foo"/>
+            <label ngbButtonLabel>
+              <input ngbButton type="radio" value="foo"/>
             </label>          
           </div>
         </form>`;
@@ -301,8 +295,8 @@ describe('ngbRadioGroup', () => {
     const html = `
         <form [formGroup]="form">
           <div ngbRadioGroup formControlName="control">
-            <label class="btn">
-              <input type="radio" value="foo"/>
+            <label ngbButtonLabel>
+              <input ngbButton type="radio" value="foo"/>
             </label>          
           </div>
         </form>`;
@@ -322,8 +316,8 @@ describe('ngbRadioGroup', () => {
     const html = `
       <form [formGroup]="disabledForm">
         <div ngbRadioGroup formControlName="control">
-          <label class="btn">
-            <input type="radio" value="foo"/>
+          <label ngbButtonLabel>
+            <input ngbButton type="radio" value="foo"/>
           </label>          
         </div>
       </form>`;
@@ -343,8 +337,8 @@ describe('ngbRadioGroup', () => {
        const html = `
       <form>
         <div ngbRadioGroup [(ngModel)]="model" name="control" [disabled]="disabled">
-          <label class="btn">
-            <input type="radio" value="foo"/>
+          <label ngbButtonLabel>
+            <input ngbButton type="radio" value="foo"/>
           </label>          
         </div>
       </form>`;
@@ -372,8 +366,8 @@ describe('ngbRadioGroup', () => {
        const html = `
       <form>
         <div ngbRadioGroup [(ngModel)]="model" name="control">
-          <label class="btn">
-            <input type="radio" value="foo" [disabled]="disabled"/>
+          <label ngbButtonLabel>
+            <input ngbButton type="radio" value="foo" [disabled]="disabled"/>
           </label>          
         </div>
       </form>`;
@@ -402,8 +396,8 @@ describe('ngbRadioGroup', () => {
        const html = `
       <form>
         <div ngbRadioGroup [(ngModel)]="model" name="control" [disabled]="groupDisabled">
-          <label class="btn">
-            <input type="radio" value="foo" [disabled]="disabled"/>
+          <label ngbButtonLabel>
+            <input ngbButton type="radio" value="foo" [disabled]="disabled"/>
           </label>          
         </div>
       </form>`;
@@ -430,8 +424,8 @@ describe('ngbRadioGroup', () => {
        const html = `
       <form>
         <div ngbRadioGroup [(ngModel)]="model" name="control" [disabled]="groupDisabled">
-          <label class="btn">
-            <input type="radio" value="foo" [disabled]="disabled"/>
+          <label ngbButtonLabel>
+            <input ngbButton type="radio" value="foo" [disabled]="disabled"/>
           </label>          
         </div>
       </form>`;
@@ -454,106 +448,15 @@ describe('ngbRadioGroup', () => {
            });
      }));
 
-  it('should select a radio button when checked attribute is used', () => {
-    const html1 = `
-      <input type="radio" name="State" value="0" /> Foo <br>
-      <input type="radio" name="State" [value]="1" checked /> Foo Foo <br>`;
-
-    const fixture = createTestComponent(html1);
-    // checking initial values
-    fixture.detectChanges();
-
-    expect(getInput(fixture.nativeElement, 0).checked).toBeFalsy();
-    expect(getInput(fixture.nativeElement, 1).checked).toBeTruthy();
-  });
-
-  it('should select a radio button when checked attribute with value is used', () => {
-    const html1 = `
-      <input type="radio" name="State" value="0" checked="checked"/> Foo <br>
-      <input type="radio" name="State" [value]="1"  /> Foo Foo <br>`;
-
-    const fixture = createTestComponent(html1);
-    // checking initial values
-    fixture.detectChanges();
-
-    expect(getInput(fixture.nativeElement, 0).checked).toBeTruthy();
-    expect(getInput(fixture.nativeElement, 1).checked).toBeFalsy();
-
-  });
-
-  it('should disable a radio button when disabled attribute is used', () => {
-    const html1 = `
-      <input type="radio" name="State" value="0" /> Foo <br>
-      <input type="radio" name="State" [value]="1" disabled /> Foo Foo <br>`;
-
-    const fixture = createTestComponent(html1);
-    // checking initial values
-    fixture.detectChanges();
-
-    expect(getInput(fixture.nativeElement, 0).disabled).toBeFalsy();
-    expect(getInput(fixture.nativeElement, 1).disabled).toBeTruthy();
-  });
-
-  it('should disable a radio button when disabled attribute with value is used', () => {
-    const html1 = `
-      <input type="radio" name="State" value="0" disabled="disabled"/> Foo <br>
-      <input type="radio" name="State" [value]="1"  /> Foo Foo <br>`;
-
-    const fixture = createTestComponent(html1);
-    // checking initial values
-    fixture.detectChanges();
-
-    expect(getInput(fixture.nativeElement, 0).disabled).toBeTruthy();
-    expect(getInput(fixture.nativeElement, 1).disabled).toBeFalsy();
-  });
-
-  it('handle multiple cases for binded checked attribute.', () => {
-    const html1 = `
-      <input type="radio" name="State" value="0" [checked]="checked"/> Foo <br>
-      <input type="radio" name="State" [value]="1" /> Foo Foo <br>`;
-
-    const fixture = createTestComponent(html1);
-
-    // checking initial values which is undefined
-    fixture.detectChanges();
-    expect(getInput(fixture.nativeElement, 0).checked).toBeFalsy();
-    expect(getInput(fixture.nativeElement, 1).checked).toBeFalsy();
-
-    // put checked to false
-    fixture.componentInstance.checked = false;
-    fixture.detectChanges();
-    expect(getInput(fixture.nativeElement, 0).checked).toBeFalsy();
-    expect(getInput(fixture.nativeElement, 1).checked).toBeFalsy();
-
-    // put checked to null
-    fixture.componentInstance.checked = null;
-    fixture.detectChanges();
-    expect(getInput(fixture.nativeElement, 0).checked).toBeFalsy();
-    expect(getInput(fixture.nativeElement, 1).checked).toBeFalsy();
-
-    // put checked to empty string
-    fixture.componentInstance.checked = '';
-    fixture.detectChanges();
-    expect(getInput(fixture.nativeElement, 0).checked).toBeFalsy();
-    expect(getInput(fixture.nativeElement, 1).checked).toBeFalsy();
-
-    // put checked to a string value
-    fixture.componentInstance.checked = 'false';
-    fixture.detectChanges();
-    // it should be true, anything else than "" is true
-    expect(getInput(fixture.nativeElement, 0).checked).toBeTruthy();
-    expect(getInput(fixture.nativeElement, 1).checked).toBeFalsy();
-
-  });
 
   it('should add / remove "focus" class on labels', () => {
     const fixture = createTestComponent(`
       <div [(ngModel)]="model" ngbRadioGroup>
-        <label class="btn">
-          <input type="radio" name="radio" [value]="values[0]"/> {{ values[0] }}
+        <label ngbButtonLabel>
+          <input ngbButton type="radio" name="radio" [value]="values[0]"/> {{ values[0] }}
         </label>
-        <label class="btn">
-          <input type="radio" name="radio" [value]="values[1]"/> {{ values[1] }}
+        <label ngbButtonLabel>
+          <input ngbButton type="radio" name="radio" [value]="values[1]"/> {{ values[1] }}
         </label>
       </div>
     `);
@@ -562,20 +465,80 @@ describe('ngbRadioGroup', () => {
     const inputDebugEls = fixture.debugElement.queryAll(By.css('Input'));
 
     inputDebugEls[0].triggerEventHandler('focus', {});
+    fixture.detectChanges();
     expect(inputDebugEls[0].nativeElement.parentNode).toHaveCssClass('focus');
     expect(inputDebugEls[1].nativeElement.parentNode).not.toHaveCssClass('focus');
 
     inputDebugEls[0].triggerEventHandler('blur', {});
     inputDebugEls[1].triggerEventHandler('focus', {});
+    fixture.detectChanges();
     expect(inputDebugEls[0].nativeElement.parentNode).not.toHaveCssClass('focus');
     expect(inputDebugEls[1].nativeElement.parentNode).toHaveCssClass('focus');
   });
 
-  it('should do nothing when a standalone radio button is focused', () => {
-    const fixture = createTestComponent(`<input type="radio" name="state" value="0"/> Foo <br>`);
+  it('should generate input names automatically if no name specified anywhere', () => {
+    const fixture = createTestComponent(`
+      <div [(ngModel)]="model" ngbRadioGroup>
+        <label ngbButtonLabel>
+          <input ngbButton type="radio" [value]="values[0]"/> {{ values[0] }}
+        </label>
+        <label ngbButtonLabel>
+          <input ngbButton type="radio" [value]="values[1]"/> {{ values[1] }}
+        </label>
+      </div>
+    `);
     fixture.detectChanges();
 
-    expect(() => { fixture.debugElement.query(By.css('Input')).triggerEventHandler('focus', {}); }).not.toThrow();
+    const inputs = fixture.nativeElement.querySelectorAll('input');
+    const distinctNames = new Set();
+    for (let i = 0; i < inputs.length; i++) {
+      distinctNames.add(inputs[i].getAttribute('name'));
+    }
+    expect(distinctNames.size).toBe(1);
+    expect(distinctNames.values().next().value).toMatch(/ngb-radio-\d+/);
+  });
+
+  it('should set input names from group name if inputs don\'t have a name', () => {
+    const fixture = createTestComponent(`
+      <div [(ngModel)]="model" ngbRadioGroup name="foo">
+        <label ngbButtonLabel>
+          <input ngbButton type="radio" [value]="values[0]"/> {{ values[0] }}
+        </label>
+        <label ngbButtonLabel>
+          <input ngbButton type="radio" [value]="values[1]"/> {{ values[1] }}
+        </label>
+      </div>
+    `);
+    fixture.detectChanges();
+
+    const inputs = fixture.nativeElement.querySelectorAll('input');
+    expectNameOnAllInputs(fixture.nativeElement, 'foo');
+  });
+
+  it('should honor the input names if specified', () => {
+    const fixture = createTestComponent(`
+      <div [(ngModel)]="model" ngbRadioGroup name="foo">
+        <label ngbButtonLabel>
+          <input ngbButton name="bar" type="radio" [value]="values[0]"/> {{ values[0] }}
+        </label>
+        <label ngbButtonLabel>
+          <input ngbButton [name]="'bar'" type="radio" [value]="values[1]"/> {{ values[1] }}
+        </label>
+      </div>
+    `);
+    fixture.detectChanges();
+
+    const inputs = fixture.nativeElement.querySelectorAll('input');
+    expectNameOnAllInputs(fixture.nativeElement, 'bar');
+  });
+
+  describe('accessibility', () => {
+    it('should have "group" role', () => {
+      const fixture = TestBed.createComponent(TestComponent);
+      fixture.detectChanges();
+
+      expect(getGroupElement(fixture.nativeElement).getAttribute('role')).toBe('group');
+    });
   });
 });
 

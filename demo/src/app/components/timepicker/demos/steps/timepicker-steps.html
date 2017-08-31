@@ -1,18 +1,18 @@
-<ngb-timepicker [(ngModel)]="time" [seconds]="true" 
+<ngb-timepicker [(ngModel)]="time" [seconds]="true"
     [hourStep]="hourStep" [minuteStep]="minuteStep" [secondStep]="secondStep"></ngb-timepicker>
 
 <div class="row">
     <div class="col-sm-3">
         <label for="changeHourStep">Hour Step</label>
-        <input type="number" class="form-control form-control-sm" [(ngModel)]="hourStep" />
-    </div>    
+        <input id="changeHourStep" type="number" class="form-control form-control-sm" [(ngModel)]="hourStep" />
+    </div>
     <div class="col-sm-3">
         <label for="changeMinuteStep">Minute Step</label>
-        <input type="number" class="form-control form-control-sm" [(ngModel)]="minuteStep" />
+        <input id="changeMinuteStep" type="number" class="form-control form-control-sm" [(ngModel)]="minuteStep" />
     </div>
     <div class="col-sm-3">
         <label for="changeSecondStep">Second Step</label>
-        <input type="number" class="form-control form-control-sm" [(ngModel)]="secondStep" />
+        <input id="changeSecondStep" type="number" class="form-control form-control-sm" [(ngModel)]="secondStep" />
     </div>
 </div>
 <hr>

@@ -1,51 +1,93 @@
-import {NgbCalendar} from './ngb-calendar';
+import {NgbCalendar, NgbPeriod} from './ngb-calendar';
 import {NgbDate} from './ngb-date';
-import {MonthViewModel, DayViewModel} from './datepicker-view-model';
+import {DatepickerViewModel, NgbMarkDisabled} from './datepicker-view-model';
 import {Injectable} from '@angular/core';
+import {isInteger} from '../util/util';
+import {Subject} from 'rxjs/Subject';
+import {buildMonths, checkDateInRange, checkMinBeforeMax, isChangedDate, isDateSelectable} from './datepicker-tools';
+
+import {filter} from 'rxjs/operator/filter';
 
 @Injectable()
 export class NgbDatepickerService {
+  private _model$ = new Subject<DatepickerViewModel>();
+
+  private _state: DatepickerViewModel =
+      {disabled: false, displayMonths: 1, firstDayOfWeek: 1, focusVisible: false, months: [], selectedDate: null};
+
+  get model$() { return filter.call(this._model$.asObservable(), model => model.months.length > 0); }
+
+  set disabled(disabled: boolean) {
+    if (this._state.disabled !== disabled) {
+      this._nextState({disabled: disabled});
+    }
+  }
+
+  set displayMonths(months: number) {
+    if (isInteger(months) && months > 0 && this._state.displayMonths !== months) {
+      this._nextState({displayMonths: months});
+    }
+  }
+
+  set firstDayOfWeek(firstDayOfWeek: number) {
+    if (isInteger(firstDayOfWeek) && firstDayOfWeek >= 0 && this._state.firstDayOfWeek !== firstDayOfWeek) {
+      this._nextState({firstDayOfWeek: firstDayOfWeek});
+    }
+  }
+
+  set focusVisible(focusVisible: boolean) {
+    if (this._state.focusVisible !== focusVisible && !this._state.disabled) {
+      this._nextState({focusVisible: focusVisible});
+    }
+  }
+
+  set maxDate(date: NgbDate) {
+    if (date === undefined || this._calendar.isValid(date) && isChangedDate(this._state.maxDate, date)) {
+      this._nextState({maxDate: date});
+    }
+  }
+
+  set markDisabled(markDisabled: NgbMarkDisabled) {
+    if (this._state.markDisabled !== markDisabled) {
+      this._nextState({markDisabled: markDisabled});
+    }
+  }
+
+  set minDate(date: NgbDate) {
+    if (date === undefined || this._calendar.isValid(date) && isChangedDate(this._state.minDate, date)) {
+      this._nextState({minDate: date});
+    }
+  }
+
   constructor(private _calendar: NgbCalendar) {}
 
-  generateMonthViewModel(
-      date: NgbDate, minDate: NgbDate, maxDate: NgbDate, firstDayOfWeek: number,
-      markDisabled: (date: NgbDate, current: {month: number, year: number}) => boolean): MonthViewModel {
-    const month: MonthViewModel = {firstDate: null, number: date.month, year: date.year, weeks: [], weekdays: []};
-
-    date = this._getFirstViewDate(date, firstDayOfWeek);
-
-    // month has weeks
-    for (let w = 0; w < this._calendar.getWeeksPerMonth(); w++) {
-      const days: DayViewModel[] = [];
-
-      // week has days
-      for (let d = 0; d < this._calendar.getDaysPerWeek(); d++) {
-        if (w === 0) {
-          month.weekdays.push(this._calendar.getWeekday(date));
-        }
-
-        const newDate = new NgbDate(date.year, date.month, date.day);
-
-        let disabled = (minDate && newDate.before(minDate)) || (maxDate && newDate.after(maxDate));
-        if (!disabled && markDisabled) {
-          disabled = markDisabled(newDate, {month: month.number, year: month.year});
-        }
-
-        // saving first date of the month
-        if (month.firstDate === null && date.month === month.number) {
-          month.firstDate = newDate;
-        }
-
-        days.push({date: newDate, disabled: disabled});
-
-        date = this._calendar.getNext(date);
-      }
-
-      month.weeks.push(
-          {number: this._calendar.getWeekNumber(days.map(day => NgbDate.from(day.date)), firstDayOfWeek), days: days});
+  focus(date: NgbDate) {
+    if (!this._state.disabled && this._calendar.isValid(date) && isChangedDate(this._state.focusDate, date)) {
+      this._nextState({focusDate: date});
     }
+  }
 
-    return month;
+  focusMove(period?: NgbPeriod, number?: number) {
+    this.focus(this._calendar.getNext(this._state.focusDate, period, number));
+  }
+
+  focusSelect() {
+    if (isDateSelectable(this._state.months, this._state.focusDate)) {
+      this.select(this._state.focusDate);
+    }
+  }
+
+  open(date: NgbDate) {
+    if (!this._state.disabled && this._calendar.isValid(date)) {
+      this._nextState({firstDate: date});
+    }
+  }
+
+  select(date: NgbDate) {
+    const validDate = this.toValidDate(date, null);
+    if (!this._state.disabled && isChangedDate(this._state.selectedDate, validDate)) {
+      this._nextState({selectedDate: validDate});
+    }
   }
 
   toValidDate(date: {year: number, month: number, day?: number}, defaultValue?: NgbDate): NgbDate {
@@ -56,23 +98,97 @@ export class NgbDatepickerService {
     return this._calendar.isValid(ngbDate) ? ngbDate : defaultValue;
   }
 
-  private _getFirstViewDate(date: NgbDate, firstDayOfWeek: number): NgbDate {
-    const currentMonth = date.month;
-    let today = new NgbDate(date.year, date.month, date.day);
-    let yesterday = this._calendar.getPrev(today);
+  private _nextState(patch: Partial<DatepickerViewModel>) {
+    const newState = this._updateState(patch);
+    this._patchContexts(newState);
+    this._state = newState;
+    this._model$.next(this._state);
+  }
 
-    const firstDayOfCurrentMonthIsAlsoFirstDayOfWeek =
-        () => { return today.month !== yesterday.month && firstDayOfWeek === this._calendar.getWeekday(today); };
+  private _patchContexts(state: DatepickerViewModel) {
+    state.months.forEach(month => {
+      month.weeks.forEach(week => {
+        week.days.forEach(day => {
 
-    const reachedTheFirstDayOfTheLastWeekOfPreviousMonth =
-        () => { return today.month !== currentMonth && firstDayOfWeek === this._calendar.getWeekday(today); };
+          // patch focus flag
+          if (state.focusDate) {
+            day.context.focused = state.focusDate.equals(day.date) && state.focusVisible;
+          }
 
-    // going back in time
-    while (!reachedTheFirstDayOfTheLastWeekOfPreviousMonth() && !firstDayOfCurrentMonthIsAlsoFirstDayOfWeek()) {
-      today = new NgbDate(yesterday.year, yesterday.month, yesterday.day);
-      yesterday = this._calendar.getPrev(yesterday);
+          // override context disabled
+          if (state.disabled === true) {
+            day.context.disabled = true;
+          }
+
+          // patch selection flag
+          if (state.selectedDate !== undefined) {
+            day.context.selected = state.selectedDate !== null && state.selectedDate.equals(day.date);
+          }
+        });
+      });
+    });
+  }
+
+  private _updateState(patch: Partial<DatepickerViewModel>): DatepickerViewModel {
+    // patching fields
+    const state = Object.assign({}, this._state, patch);
+
+    let startDate = state.firstDate;
+
+    // min/max dates changed
+    if ('minDate' in patch || 'maxDate' in patch) {
+      checkMinBeforeMax(state.minDate, state.maxDate);
+      state.focusDate = checkDateInRange(state.focusDate, state.minDate, state.maxDate);
+      state.firstDate = checkDateInRange(state.firstDate, state.minDate, state.maxDate);
+      startDate = state.focusDate;
     }
 
-    return today;
+    // disabled
+    if ('disabled' in patch) {
+      state.focusVisible = false;
+    }
+
+    // focus date changed
+    if ('focusDate' in patch) {
+      state.focusDate = checkDateInRange(state.focusDate, state.minDate, state.maxDate);
+      startDate = state.focusDate;
+
+      // nothing to rebuild if only focus changed and it is still visible
+      if (state.months.length !== 0 && !state.focusDate.before(state.firstDate) &&
+          !state.focusDate.after(state.lastDate)) {
+        return state;
+      }
+    }
+
+    // first date changed
+    if ('firstDate' in patch) {
+      state.firstDate = checkDateInRange(state.firstDate, state.minDate, state.maxDate);
+      startDate = state.firstDate;
+    }
+
+    // rebuilding months
+    if (startDate) {
+      const forceRebuild = 'firstDayOfWeek' in patch || 'markDisabled' in patch || 'minDate' in patch ||
+          'maxDate' in patch || 'disabled' in patch;
+
+      const months = buildMonths(
+          this._calendar, state.months, startDate, state.minDate, state.maxDate, state.displayMonths,
+          state.firstDayOfWeek, state.markDisabled, forceRebuild);
+
+      // updating months and boundary dates
+      state.months = months;
+      state.firstDate = months.length > 0 ? months[0].firstDate : undefined;
+      state.lastDate = months.length > 0 ? months[months.length - 1].lastDate : undefined;
+
+      // adjusting focus after months were built
+      if ('firstDate' in patch) {
+        if (state.focusDate === undefined || state.focusDate.before(state.firstDate) ||
+            state.focusDate.after(state.lastDate)) {
+          state.focusDate = startDate;
+        }
+      }
+    }
+
+    return state;
   }
 }

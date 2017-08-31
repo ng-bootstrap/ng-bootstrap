@@ -8,6 +8,7 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/merge';
 
 @Injectable()
 export class WikipediaService {
@@ -41,6 +42,7 @@ export class NgbdTypeaheadHttp {
   model: any;
   searching = false;
   searchFailed = false;
+  hideSearchingWhenUnsubscribed = new Observable(() => () => this.searching = false);
 
   constructor(private _service: WikipediaService) {}
 
@@ -51,10 +53,11 @@ export class NgbdTypeaheadHttp {
       .do(() => this.searching = true)
       .switchMap(term =>
         this._service.search(term)
-            .do(() => this.searchFailed = false)
-            .catch(() => {
-              this.searchFailed = true;
-              return Observable.of([]);
-            }))
-      .do(() => this.searching = false);
+          .do(() => this.searchFailed = false)
+          .catch(() => {
+            this.searchFailed = true;
+            return Observable.of([]);
+          }))
+      .do(() => this.searching = false)
+      .merge(this.hideSearchingWhenUnsubscribed);
 }

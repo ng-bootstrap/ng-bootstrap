@@ -5,7 +5,7 @@ import {DEMO_SNIPPETS} from './demos';
 @Component({
   selector: 'ngbd-modal',
   template: `
-    <ngbd-content-wrapper component="Modal">
+    <ngbd-component-wrapper component="Modal">
       <ngbd-api-docs-class type="NgbModal"></ngbd-api-docs-class>
       <ngbd-api-docs-class type="NgbModalOptions"></ngbd-api-docs-class>
       <ngbd-api-docs-class type="NgbModalRef"></ngbd-api-docs-class>
@@ -19,7 +19,7 @@ import {DEMO_SNIPPETS} from './demos';
       <ngbd-example-box demoTitle="Modal with custom class" [snippets]="snippets" component="modal" demo="customclass">
           <ngbd-modal-customclass></ngbd-modal-customclass>
       </ngbd-example-box>
-    </ngbd-content-wrapper>
+    </ngbd-component-wrapper>
   `
 })
 export class NgbdModal {

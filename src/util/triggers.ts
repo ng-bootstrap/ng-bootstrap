@@ -7,7 +7,7 @@ export class Trigger {
 }
 
 const DEFAULT_ALIASES = {
-  hover: ['mouseenter', 'mouseleave']
+  'hover': ['mouseenter', 'mouseleave']
 };
 
 export function parseTriggers(triggers: string, aliases = DEFAULT_ALIASES): Trigger {
