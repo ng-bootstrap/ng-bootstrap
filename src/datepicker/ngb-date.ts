@@ -1,13 +1,5 @@
 import {Injectable, Inject, forwardRef} from '@angular/core';
-import {NgbDateModelAdapter} from './ngb-date-model-adapter';
-
-export class NgbDateService {
-  constructor(@Inject(forwardRef(() => NgbDateModelAdapter)) private _modelAdapter: NgbDateModelAdapter) {}
-
-  create(value: any): NgbDate { return this._modelAdapter.modelToNgbDate(value); }
-
-  getValue(date: NgbDate): any { return this._modelAdapter.ngbDateToModel(date); }
-}
+import {NgbDateAdapter} from './ngb-date-adapter';
 
 export class NgbDate {
   static from(date: {year: number, month: number, day?: number}) {

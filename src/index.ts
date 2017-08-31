@@ -34,10 +34,12 @@ export {
   NgbCalendar,
   NgbCalendarIslamicCivil,
   NgbDatepickerModule,
+  NgbDate,
   NgbDatepickerI18n,
   NgbDatepickerConfig,
   NgbDateStruct,
   NgbDateParserFormatter,
+  NgbDateAdapter,
   NgbDatepicker,
   NgbInputDatepicker
 } from './datepicker/datepicker.module';
