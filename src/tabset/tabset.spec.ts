@@ -1,4 +1,4 @@
-import {TestBed, ComponentFixture, inject} from '@angular/core/testing';
+import {TestBed, ComponentFixture, inject, fakeAsync, flush} from '@angular/core/testing';
 import {createGenericTestComponent} from '../test/common';
 
 import {Component} from '@angular/core';
@@ -6,6 +6,7 @@ import {Component} from '@angular/core';
 import {NgbTabsetModule} from './tabset.module';
 import {NgbTabsetConfig} from './tabset-config';
 import {NgbTabset} from './tabset';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -56,8 +57,10 @@ function getButton(nativeEl: HTMLElement) {
 }
 
 describe('ngb-tabset', () => {
-  beforeEach(
-      () => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbTabsetModule.forRoot()]}); });
+  beforeEach(() => {
+    TestBed.configureTestingModule(
+        {declarations: [TestComponent], imports: [NgbTabsetModule.forRoot(), NoopAnimationsModule]});
+  });
 
   it('should initialize inputs with default values', () => {
     const defaultConfig = new NgbTabsetConfig();
@@ -165,7 +168,7 @@ describe('ngb-tabset', () => {
     const tabTitles = getTabTitles(fixture.nativeElement);
 
     expect(tabTitles[0].textContent).toMatch(/foo/);
-    expect(tabTitles[1].innerHTML).toMatch(/<b>bar<\/b>/);
+    expect(tabTitles[1].innerHTML).toMatch(/<b( class=""|)>bar<\/b>/);
     expect(tabTitles[2].textContent).toMatch(/bazbaz/);
   });
 
@@ -213,24 +216,26 @@ describe('ngb-tabset', () => {
   });
 
 
-  it('should change active tab on tab title click', () => {
-    const fixture = createTestComponent(`
+  it('should change active tab on tab title click', fakeAsync(() => {
+       const fixture = createTestComponent(`
       <ngb-tabset>
         <ngb-tab title="foo"><ng-template ngbTabContent>Foo</ng-template></ngb-tab>
         <ngb-tab title="bar"><ng-template ngbTabContent>Bar</ng-template></ngb-tab>
       </ngb-tabset>
     `);
 
-    const tabTitles = getTabTitles(fixture.nativeElement);
+       const tabTitles = getTabTitles(fixture.nativeElement);
 
-    (<HTMLElement>tabTitles[1]).click();
-    fixture.detectChanges();
-    expectTabs(fixture.nativeElement, [false, true]);
+       (<HTMLElement>tabTitles[1]).click();
+       fixture.detectChanges();
+       flush();
+       expectTabs(fixture.nativeElement, [false, true]);
 
-    (<HTMLElement>tabTitles[0]).click();
-    fixture.detectChanges();
-    expectTabs(fixture.nativeElement, [true, false]);
-  });
+       (<HTMLElement>tabTitles[0]).click();
+       fixture.detectChanges();
+       flush();
+       expectTabs(fixture.nativeElement, [true, false]);
+     }));
 
 
   it('should support disabled tabs', () => {
@@ -368,8 +373,8 @@ describe('ngb-tabset', () => {
   });
 
 
-  it('should change active tab by calling select on an exported directive instance', () => {
-    const fixture = createTestComponent(`
+  it('should change active tab by calling select on an exported directive instance', fakeAsync(() => {
+       const fixture = createTestComponent(`
           <ngb-tabset #myTabSet="ngbTabset">
             <ngb-tab id="myFirstTab" title="foo"><ng-template ngbTabContent>Foo</ng-template></ngb-tab>
             <ngb-tab id="mySecondTab" title="bar"><ng-template ngbTabContent>Bar</ng-template></ngb-tab>
@@ -378,22 +383,25 @@ describe('ngb-tabset', () => {
           <button (click)="myTabSet.select('mySecondTab')">Select the second Tab</button>
         `);
 
-    const button = getButton(fixture.nativeElement);
+       const button = getButton(fixture.nativeElement);
 
-    // Click on a button to select the second tab
-    (<HTMLElement>button[1]).click();
-    fixture.detectChanges();
-    expectTabs(fixture.nativeElement, [false, true]);
+       // Click on a button to select the second tab
+       (<HTMLElement>button[1]).click();
+       fixture.detectChanges();
+       flush();
+       expectTabs(fixture.nativeElement, [false, true]);
 
-    // Click on a button to select the first tab
-    (<HTMLElement>button[0]).click();
-    fixture.detectChanges();
-    expectTabs(fixture.nativeElement, [true, false]);
-  });
+       // Click on a button to select the first tab
+       (<HTMLElement>button[0]).click();
+       fixture.detectChanges();
+       flush();
+       expectTabs(fixture.nativeElement, [true, false]);
+     }));
 
 
-  it('should not change active tab by calling select on an exported directive instance in case of disable tab', () => {
-    const fixture = createTestComponent(`
+  it('should not change active tab by calling select on an exported directive instance in case of disable tab',
+     fakeAsync(() => {
+       const fixture = createTestComponent(`
           <ngb-tabset #myTabSet="ngbTabset">
             <ngb-tab id="myFirstTab" title="foo"><ng-template ngbTabContent>Foo</ng-template></ngb-tab>
             <ngb-tab id="mySecondTab" title="bar" [disabled]="true"><ng-template ngbTabContent>Bar</ng-template></ngb-tab>
@@ -401,16 +409,17 @@ describe('ngb-tabset', () => {
           <button (click)="myTabSet.select('mySecondTab')">Select the second Tab</button>
         `);
 
-    const button = getButton(fixture.nativeElement);
+       const button = getButton(fixture.nativeElement);
 
-    // Click on a button to select the second disabled tab (should not change active tab).
-    (<HTMLElement>button[0]).click();
-    fixture.detectChanges();
-    expectTabs(fixture.nativeElement, [true, false], [false, true]);
-  });
+       // Click on a button to select the second disabled tab (should not change active tab).
+       (<HTMLElement>button[0]).click();
+       fixture.detectChanges();
+       flush();
+       expectTabs(fixture.nativeElement, [true, false], [false, true]);
+     }));
 
-  it('should not remove inactive tabs content from DOM with `destroyOnHide` flag', () => {
-    const fixture = createTestComponent(`
+  it('should not remove inactive tabs content from DOM with `destroyOnHide` flag', fakeAsync(() => {
+       const fixture = createTestComponent(`
           <ngb-tabset #myTabSet="ngbTabset" [destroyOnHide]="false">
             <ngb-tab id="myFirstTab" title="foo"><ng-template ngbTabContent>Foo</ng-template></ngb-tab>
             <ngb-tab id="mySecondTab" title="bar"><ng-template ngbTabContent>Bar</ng-template></ngb-tab>
@@ -418,18 +427,19 @@ describe('ngb-tabset', () => {
           <button (click)="myTabSet.select('mySecondTab')">Select the second Tab</button>
         `);
 
-    const button = getButton(fixture.nativeElement);
+       const button = getButton(fixture.nativeElement);
 
-    // Click on a button to select the second tab
-    (<HTMLElement>button[0]).click();
-    fixture.detectChanges();
-    let tabContents = getTabContent(fixture.nativeElement);
-    expect(tabContents.length).toBe(2);
-    expect(tabContents[1]).toHaveCssClass('active');
-  });
+       // Click on a button to select the second tab
+       (<HTMLElement>button[0]).click();
+       fixture.detectChanges();
+       flush();
+       let tabContents = getTabContent(fixture.nativeElement);
+       expect(tabContents.length).toBe(2);
+       expect(tabContents[1]).toHaveCssClass('active');
+     }));
 
-  it('should emit tab change event when switching tabs', () => {
-    const fixture = createTestComponent(`
+  it('should emit tab change event when switching tabs', fakeAsync(() => {
+       const fixture = createTestComponent(`
           <ngb-tabset #myTabSet="ngbTabset" (tabChange)="changeCallback($event)">
             <ngb-tab id="first" title="first"><ng-template ngbTabContent>First</ng-template></ngb-tab>
             <ngb-tab id="second" title="second"><ng-template ngbTabContent>Second</ng-template></ngb-tab>
@@ -438,25 +448,27 @@ describe('ngb-tabset', () => {
           <button (click)="myTabSet.select('second')">Select the second Tab</button>
         `);
 
-    const button = getButton(fixture.nativeElement);
+       const button = getButton(fixture.nativeElement);
 
-    spyOn(fixture.componentInstance, 'changeCallback');
+       spyOn(fixture.componentInstance, 'changeCallback');
 
-    // Select the second tab -> change event
-    (<HTMLElement>button[1]).click();
-    fixture.detectChanges();
-    expect(fixture.componentInstance.changeCallback)
-        .toHaveBeenCalledWith(jasmine.objectContaining({activeId: 'first', nextId: 'second'}));
+       // Select the second tab -> change event
+       (<HTMLElement>button[1]).click();
+       fixture.detectChanges();
+       flush();
+       expect(fixture.componentInstance.changeCallback)
+           .toHaveBeenCalledWith(jasmine.objectContaining({activeId: 'first', nextId: 'second'}));
 
-    // Select the first tab again -> change event
-    (<HTMLElement>button[0]).click();
-    fixture.detectChanges();
-    expect(fixture.componentInstance.changeCallback)
-        .toHaveBeenCalledWith(jasmine.objectContaining({activeId: 'second', nextId: 'first'}));
-  });
+       // Select the first tab again -> change event
+       (<HTMLElement>button[0]).click();
+       fixture.detectChanges();
+       flush();
+       expect(fixture.componentInstance.changeCallback)
+           .toHaveBeenCalledWith(jasmine.objectContaining({activeId: 'second', nextId: 'first'}));
+     }));
 
-  it('should not emit tab change event when selecting currently active and disabled tabs', () => {
-    const fixture = createTestComponent(`
+  it('should not emit tab change event when selecting currently active and disabled tabs', fakeAsync(() => {
+       const fixture = createTestComponent(`
           <ngb-tabset #myTabSet="ngbTabset" (tabChange)="changeCallback($event)">
             <ngb-tab id="first" title="first"><ng-template ngbTabContent>First</ng-template></ngb-tab>
             <ngb-tab id="second" title="second" [disabled]="true"><ng-template ngbTabContent>Second</ng-template></ngb-tab>
@@ -465,23 +477,25 @@ describe('ngb-tabset', () => {
           <button (click)="myTabSet.select('second')">Select the second Tab</button>
         `);
 
-    const button = getButton(fixture.nativeElement);
+       const button = getButton(fixture.nativeElement);
 
-    spyOn(fixture.componentInstance, 'changeCallback');
+       spyOn(fixture.componentInstance, 'changeCallback');
 
-    // Select the currently active tab -> no change event
-    (<HTMLElement>button[0]).click();
-    fixture.detectChanges();
-    expect(fixture.componentInstance.changeCallback).not.toHaveBeenCalled();
+       // Select the currently active tab -> no change event
+       (<HTMLElement>button[0]).click();
+       fixture.detectChanges();
+       flush();
+       expect(fixture.componentInstance.changeCallback).not.toHaveBeenCalled();
 
-    // Select the disabled tab -> no change event
-    (<HTMLElement>button[1]).click();
-    fixture.detectChanges();
-    expect(fixture.componentInstance.changeCallback).not.toHaveBeenCalled();
-  });
+       // Select the disabled tab -> no change event
+       (<HTMLElement>button[1]).click();
+       fixture.detectChanges();
+       flush();
+       expect(fixture.componentInstance.changeCallback).not.toHaveBeenCalled();
+     }));
 
-  it('should cancel tab change when preventDefault() is called', () => {
-    const fixture = createTestComponent(`
+  it('should cancel tab change when preventDefault() is called', fakeAsync(() => {
+       const fixture = createTestComponent(`
           <ngb-tabset #myTabSet="ngbTabset" (tabChange)="changeCallback($event)">
             <ngb-tab id="first" title="first"><ng-template ngbTabContent>First</ng-template></ngb-tab>
             <ngb-tab id="second" title="second"><ng-template ngbTabContent>Second</ng-template></ngb-tab>
@@ -490,20 +504,21 @@ describe('ngb-tabset', () => {
           <button (click)="myTabSet.select('second')">Select the second Tab</button>
         `);
 
-    const button = getButton(fixture.nativeElement);
+       const button = getButton(fixture.nativeElement);
 
-    let changeEvent = null;
-    fixture.componentInstance.changeCallback = (event) => {
-      changeEvent = event;
-      event.preventDefault();
-    };
+       let changeEvent = null;
+       fixture.componentInstance.changeCallback = (event) => {
+         changeEvent = event;
+         event.preventDefault();
+       };
 
-    // Select the second tab -> selection will be canceled
-    (<HTMLElement>button[1]).click();
-    fixture.detectChanges();
-    expect(changeEvent).toEqual(jasmine.objectContaining({activeId: 'first', nextId: 'second'}));
-    expectTabs(fixture.nativeElement, [true, false]);
-  });
+       // Select the second tab -> selection will be canceled
+       (<HTMLElement>button[1]).click();
+       fixture.detectChanges();
+       flush();
+       expect(changeEvent).toEqual(jasmine.objectContaining({activeId: 'first', nextId: 'second'}));
+       expectTabs(fixture.nativeElement, [true, false]);
+     }));
 
   describe('Custom config', () => {
     let config: NgbTabsetConfig;
