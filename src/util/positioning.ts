@@ -152,22 +152,26 @@ export class Positioning {
     let targetElemClientRect = targetElement.getBoundingClientRect();
     let html = document.documentElement;
 
-    // left placement available
-    if (hostElemClientRect.left - targetElemClientRect.width > 0) {
+    // left: check if target width can be placed between host left and viewport start and also height of target is
+    // inside viewport
+    if (hostElemClientRect.left - targetElemClientRect.width > 0 &&
+        (hostElemClientRect.top + hostElemClientRect.height / 2 - targetElement.offsetHeight / 2) > 0) {
       availablePlacements.splice(availablePlacements.length, 1, 'left');
     }
 
-    // top placement available
+    // top: target height is less than host top
     if (targetElemClientRect.height < hostElemClientRect.top) {
       availablePlacements.splice(availablePlacements.length, 1, 'top');
     }
 
-    // right placement available
-    if ((window.innerWidth || html.clientWidth) - hostElemClientRect.right > targetElemClientRect.width) {
+    // right: check if target width can be placed between host right and viewport end and also height of target is
+    // inside viewport
+    if ((window.innerWidth || html.clientWidth) - hostElemClientRect.right > targetElemClientRect.width &&
+        (hostElemClientRect.top + hostElemClientRect.height / 2 - targetElement.offsetHeight / 2) > 0) {
       availablePlacements.splice(availablePlacements.length, 1, 'right');
     }
 
-    // bottom placement available
+    // bottom: check if there is enough space between host bottom and viewport end for target height
     if ((window.innerHeight || html.clientHeight) - hostElemClientRect.bottom > targetElemClientRect.height) {
       availablePlacements.splice(availablePlacements.length, 1, 'bottom');
     }
