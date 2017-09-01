@@ -14,6 +14,9 @@ import {DEMO_SNIPPETS} from './demos';
       <ngbd-example-box demoTitle="Manual triggers" [snippets]="snippets" component="dropdown" demo="manual">
         <ngbd-dropdown-manual></ngbd-dropdown-manual>
       </ngbd-example-box>
+      <ngbd-example-box demoTitle="Button groups and split buttons" [snippets]="snippets" component="dropdown" demo="split">
+        <ngbd-dropdown-split></ngbd-dropdown-split>
+      </ngbd-example-box>
       <ngbd-example-box demoTitle="Global configuration of dropdowns" [snippets]="snippets" component="dropdown" demo="config">
         <ngbd-dropdown-config></ngbd-dropdown-config>
       </ngbd-example-box>
