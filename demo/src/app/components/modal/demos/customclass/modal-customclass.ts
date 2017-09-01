@@ -1,4 +1,4 @@
-import {Component, ViewEncapsulation} from '@angular/core';
+import {Component, ViewEncapsulation, TemplateRef} from '@angular/core';
 
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
@@ -22,7 +22,7 @@ export class NgbdModalCustomclass {
   constructor(private modalService: NgbModal) {}
 
   open(content) {
-    this.modalService.open(content, { windowClass: 'dark-modal' });
+    this.modalService.open<TemplateRef<any>>(content, { windowClass: 'dark-modal' });
   }
 
 }

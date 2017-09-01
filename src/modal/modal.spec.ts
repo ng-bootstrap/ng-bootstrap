@@ -6,7 +6,8 @@ import {
   NgModule,
   getDebugNode,
   DebugElement,
-  ReflectiveInjector
+  ReflectiveInjector,
+  TemplateRef
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {TestBed, ComponentFixture} from '@angular/core/testing';
@@ -602,7 +603,7 @@ export class WithActiveModalCmpt {
 })
 class TestComponent {
   name = 'World';
-  openedModal: NgbModalRef;
+  openedModal: NgbModalRef<TemplateRef<any>>;
   show = true;
   @ViewChild('content') tplContent;
   @ViewChild('destroyableContent') tplDestroyableContent;
@@ -613,7 +614,7 @@ class TestComponent {
   constructor(private modalService: NgbModal) {}
 
   open(content: string, options?: Object) {
-    this.openedModal = this.modalService.open(content, options);
+    this.openedModal = this.modalService.open<TemplateRef<any>>(content, options);
     return this.openedModal;
   }
   close() {

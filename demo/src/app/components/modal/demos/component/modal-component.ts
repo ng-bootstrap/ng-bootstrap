@@ -33,7 +33,7 @@ export class NgbdModalComponent {
   constructor(private modalService: NgbModal) {}
 
   open() {
-    const modalRef = this.modalService.open(NgbdModalContent);
+    const modalRef = this.modalService.open<NgbdModalContent>(NgbdModalContent);
     modalRef.componentInstance.name = 'World';
   }
 }
