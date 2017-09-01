@@ -222,6 +222,20 @@ describe('ngb-popover', () => {
       expect(windowEl).toHaveCssClass('bs-popover-left');
       expect(windowEl.textContent.trim()).toBe('Great tip!');
     });
+
+    it('should have proper arrow placement', () => {
+      const fixture = createTestComponent(`<div ngbPopover="Great tip!" placement="right-top"></div>`);
+      const directive = fixture.debugElement.query(By.directive(NgbPopover));
+
+      directive.triggerEventHandler('click', {});
+      fixture.detectChanges();
+      const windowEl = getWindow(fixture.nativeElement);
+
+      expect(windowEl).toHaveCssClass('popover');
+      expect(windowEl).toHaveCssClass('bs-popover-right');
+      expect(windowEl).toHaveCssClass('bs-popover-right-top');
+      expect(windowEl.textContent.trim()).toBe('Great tip!');
+    });
   });
 
   describe('container', () => {

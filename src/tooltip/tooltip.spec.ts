@@ -209,6 +209,20 @@ describe('ngb-tooltip', () => {
         expect(windowEl).toHaveCssClass('bs-tooltip-left');
         expect(windowEl.textContent.trim()).toBe('Great tip!');
       });
+
+      it('should have proper arrow placement', () => {
+        const fixture = createTestComponent(`<div ngbTooltip="Great tip!" placement="right-top"></div>`);
+        const directive = fixture.debugElement.query(By.directive(NgbTooltip));
+
+        directive.triggerEventHandler('mouseenter', {});
+        fixture.detectChanges();
+        const windowEl = getWindow(fixture.nativeElement);
+
+        expect(windowEl).toHaveCssClass('tooltip');
+        expect(windowEl).toHaveCssClass('bs-tooltip-right');
+        expect(windowEl).toHaveCssClass('bs-tooltip-right-top');
+        expect(windowEl.textContent.trim()).toBe('Great tip!');
+      });
     });
 
     describe('triggers', () => {
