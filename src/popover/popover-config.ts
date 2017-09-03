@@ -9,6 +9,6 @@ import {Placement} from '../util/positioning';
 @Injectable()
 export class NgbPopoverConfig {
   placement: Placement = 'top';
-  triggers = 'click';
+  triggers = 'click/click';
   container: string;
 }

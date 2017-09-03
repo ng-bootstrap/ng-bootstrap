@@ -17,7 +17,7 @@ import {
   NgZone
 } from '@angular/core';
 
-import {listenToTriggers} from '../util/triggers';
+import {listenToOpenTriggers, listenToCloseTriggers} from '../util/triggers';
 import {positionElements, Placement} from '../util/positioning';
 import {PopupService} from '../util/popup';
 import {NgbPopoverConfig} from './popover-config';
@@ -109,7 +109,8 @@ export class NgbPopover implements OnInit, OnDestroy {
   private _ngbPopoverWindowId = `ngb-popover-${nextId++}`;
   private _popupService: PopupService<NgbPopoverWindow>;
   private _windowRef: ComponentRef<NgbPopoverWindow>;
-  private _unregisterListenersFn;
+  private _unregisterOpenListenersFn;
+  private _unregisterCloseListenersFn;
   private _zoneSubscription: any;
 
   constructor(
@@ -157,6 +158,9 @@ export class NgbPopover implements OnInit, OnDestroy {
       // Renderer::listen() are not picked up by change detection with the OnPush strategy
       this._windowRef.changeDetectorRef.markForCheck();
       this.shown.emit();
+
+      this._unregisterCloseListenersFn =
+          listenToCloseTriggers(this._renderer, this._elementRef.nativeElement, this.triggers, this.close.bind(this));
     }
   }
 
@@ -169,6 +173,9 @@ export class NgbPopover implements OnInit, OnDestroy {
       this._popupService.close();
       this._windowRef = null;
       this.hidden.emit();
+      if (this._unregisterCloseListenersFn) {
+        this._unregisterCloseListenersFn();
+      }
     }
   }
 
@@ -189,14 +196,16 @@ export class NgbPopover implements OnInit, OnDestroy {
   isOpen(): boolean { return this._windowRef != null; }
 
   ngOnInit() {
-    this._unregisterListenersFn = listenToTriggers(
-        this._renderer, this._elementRef.nativeElement, this.triggers, this.open.bind(this), this.close.bind(this),
-        this.toggle.bind(this));
+    this._unregisterOpenListenersFn = listenToOpenTriggers(
+        this._renderer, this._elementRef.nativeElement, this.triggers, this.open.bind(this), this.toggle.bind(this));
   }
 
   ngOnDestroy() {
     this.close();
-    this._unregisterListenersFn();
+    this._unregisterOpenListenersFn();
+    if (this._unregisterCloseListenersFn) {
+      this._unregisterCloseListenersFn();
+    }
     this._zoneSubscription.unsubscribe();
   }
 }
