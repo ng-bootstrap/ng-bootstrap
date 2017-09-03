@@ -18,7 +18,7 @@ import {
 } from '@angular/core';
 
 import {listenToTriggers} from '../util/triggers';
-import {positionElements, Placement} from '../util/positioning';
+import {positionElements, Placement, PlacementArray} from '../util/positioning';
 import {PopupService} from '../util/popup';
 import {NgbPopoverConfig} from './popover-config';
 
@@ -67,6 +67,21 @@ export class NgbPopoverWindow {
   @Input() placement: Placement = 'top';
   @Input() title: string;
   @Input() id: string;
+
+  constructor(private _element: ElementRef, private _renderer: Renderer2) {}
+
+  applyPlacement(_placement: Placement) {
+    // remove the current placement classes
+    this._renderer.removeClass(this._element.nativeElement, 'bs-popover-' + this.placement.toString().split('-')[0]);
+    this._renderer.removeClass(this._element.nativeElement, 'bs-popover-' + this.placement.toString());
+
+    // set the new placement classes
+    this.placement = _placement;
+
+    // apply the new placement
+    this._renderer.addClass(this._element.nativeElement, 'bs-popover-' + this.placement.toString().split('-')[0]);
+    this._renderer.addClass(this._element.nativeElement, 'bs-popover-' + this.placement.toString());
+  }
 }
 
 /**
@@ -86,8 +101,9 @@ export class NgbPopover implements OnInit, OnDestroy {
    * Placement of a popover accepts:
    *    "top", "top-left", "top-right", "bottom", "bottom-left", "bottom-right",
    *    "left", "left-top", "left-bottom", "right", "right-top", "right-bottom"
+   * and array of above values.
    */
-  @Input() placement: Placement;
+  @Input() placement: PlacementArray;
   /**
    * Specifies events that should trigger. Supports a space separated list of event names.
    */
@@ -124,9 +140,10 @@ export class NgbPopover implements OnInit, OnDestroy {
 
     this._zoneSubscription = ngZone.onStable.subscribe(() => {
       if (this._windowRef) {
-        positionElements(
-            this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement.toString(),
-            this.container === 'body');
+        this._windowRef.instance.applyPlacement(
+            positionElements(
+                this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
+                this.container === 'body'));
       }
     });
   }
@@ -138,7 +155,6 @@ export class NgbPopover implements OnInit, OnDestroy {
   open(context?: any) {
     if (!this._windowRef) {
       this._windowRef = this._popupService.open(this.ngbPopover, context);
-      this._windowRef.instance.placement = this.placement;
       this._windowRef.instance.title = this.popoverTitle;
       this._windowRef.instance.id = this._ngbPopoverWindowId;
 
@@ -148,14 +164,16 @@ export class NgbPopover implements OnInit, OnDestroy {
         window.document.querySelector(this.container).appendChild(this._windowRef.location.nativeElement);
       }
 
-      // position popover along the element
-      positionElements(
-          this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement.toString(),
-          this.container === 'body');
-
-      // we need to manually invoke change detection since events registered via
-      // Renderer::listen() are not picked up by change detection with the OnPush strategy
+      // apply styling to set basic css-classes on target element, before going for positioning
+      this._windowRef.changeDetectorRef.detectChanges();
       this._windowRef.changeDetectorRef.markForCheck();
+
+      // position popover along the element
+      this._windowRef.instance.applyPlacement(
+          positionElements(
+              this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
+              this.container === 'body'));
+
       this.shown.emit();
     }
   }
