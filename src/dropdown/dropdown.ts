@@ -7,23 +7,44 @@ import {
   EventEmitter,
   ElementRef,
   ContentChild,
-  NgZone
+  NgZone,
+  Renderer2,
+  OnInit
 } from '@angular/core';
 import {NgbDropdownConfig} from './dropdown-config';
-import {positionElements} from '../util/positioning';
+import {positionElements, PlacementArray, Placement} from '../util/positioning';
 
 /**
  */
 @Directive(
     {selector: '[ngbDropdownMenu]', host: {'[class.dropdown-menu]': 'true', '[class.show]': 'dropdown.isOpen()'}})
 export class NgbDropdownMenu {
+  placement: Placement = 'bottom';
   isOpen = false;
 
-  constructor(@Inject(forwardRef(() => NgbDropdown)) public dropdown, private _elementRef: ElementRef) {}
+  constructor(
+      @Inject(forwardRef(() => NgbDropdown)) public dropdown, private _elementRef: ElementRef,
+      private _renderer: Renderer2) {}
 
   isEventFrom($event) { return this._elementRef.nativeElement.contains($event.target); }
 
-  position(triggerEl, placement) { positionElements(triggerEl, this._elementRef.nativeElement, placement); }
+  position(triggerEl, placement) {
+    this.applyPlacement(positionElements(triggerEl, this._elementRef.nativeElement, placement));
+  }
+
+  applyPlacement(_placement: Placement) {
+    // remove the current placement classes
+    this._renderer.removeClass(this._elementRef.nativeElement.parentElement, 'dropup');
+    this.placement = _placement;
+    /**
+     * apply the new placement
+     * change the class only in case of top to show up arrow
+     * or use defualt which is dropdown to show down arrow
+     */
+    if (_placement.search('^top') !== -1) {
+      this._renderer.addClass(this._elementRef.nativeElement.parentElement, 'dropup');
+    }
+  }
 }
 
 /**
@@ -57,14 +78,12 @@ export class NgbDropdownToggle {
   selector: '[ngbDropdown]',
   exportAs: 'ngbDropdown',
   host: {
-    '[class.dropdown]': 'isDown()',
-    '[class.dropup]': 'isUp()',
     '[class.show]': 'isOpen()',
     '(keyup.esc)': 'closeFromOutsideEsc()',
     '(document:click)': 'closeFromClick($event)'
   }
 })
-export class NgbDropdown {
+export class NgbDropdown implements OnInit {
   private _zoneSubscription: any;
 
   @ContentChild(NgbDropdownMenu) private _menu: NgbDropdownMenu;
@@ -86,9 +105,12 @@ export class NgbDropdown {
   @Input('open') _open = false;
 
   /**
-   * Placement of a dropdown. Use "top-right" for dropups.
+   * Placement of a popover accepts:
+   *    "top", "top-left", "top-right", "bottom", "bottom-left", "bottom-right",
+   *    "left", "left-top", "left-bottom", "right", "right-top", "right-bottom"
+   * and array of above values.
    */
-  @Input() placement = '';
+  @Input() placement: PlacementArray;
 
   /**
    *  An event fired when the dropdown is opened or closed.
@@ -102,9 +124,11 @@ export class NgbDropdown {
     this._zoneSubscription = ngZone.onStable.subscribe(() => { this._positionMenu(); });
   }
 
-  isUp() { return this.placement.indexOf('top') !== -1; }
-
-  isDown() { return this.placement.indexOf('bottom') !== -1; }
+  ngOnInit() {
+    if (this._menu) {
+      this._menu.applyPlacement(Array.isArray(this.placement) ? (this.placement[0]) : this.placement as Placement);
+    }
+  }
 
   /**
    * Checks if the dropdown menu is open or not.
