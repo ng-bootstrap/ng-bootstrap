@@ -54,17 +54,28 @@ describe('ngb-dropdown', () => {
   });
 
   it('should be closed and down by default', () => {
-    const html = `<div ngbDropdown><div ngbDropdownMenu></div></div>`;
+    const html = `
+      <div ngbDropdown>
+          <div ngbDropdownMenu>
+            <a class="dropdown-item">dropDown item</a>
+            <a class="dropdown-item">dropDown item</a>
+          </div>
+      </div>`;
 
     const fixture = createTestComponent(html);
     const compiled = fixture.nativeElement;
 
-    expect(getDropdownEl(compiled)).toHaveCssClass('dropdown');
     expect(compiled).not.toBeShown();
   });
 
   it('should have dropup CSS class if placed on top', () => {
-    const html = `<div ngbDropdown placement="top"></div>`;
+    const html = `
+      <div ngbDropdown placement="top">
+          <div ngbDropdownMenu>
+            <a class="dropdown-item">dropDown item</a>
+            <a class="dropdown-item">dropDown item</a>
+          </div>
+      </div>`;
 
     const fixture = createTestComponent(html);
     const compiled = fixture.nativeElement;
@@ -73,12 +84,17 @@ describe('ngb-dropdown', () => {
   });
 
   it('should be open initially if open expression is true', () => {
-    const html = `<div ngbDropdown [open]="true"><div ngbDropdownMenu></div></div>`;
+    const html = `
+      <div ngbDropdown [open]="true">
+          <div ngbDropdownMenu>
+            <a class="dropdown-item">dropDown item</a>
+            <a class="dropdown-item">dropDown item</a>
+          </div>
+      </div>`;
 
     const fixture = createTestComponent(html);
     const compiled = fixture.nativeElement;
 
-    expect(getDropdownEl(compiled)).toHaveCssClass('dropdown');
     expect(compiled).toBeShown();
   });
 
@@ -479,7 +495,17 @@ describe('ngb-dropdown-toggle', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({imports: [NgbDropdownModule.forRoot()]});
-      TestBed.overrideComponent(TestComponent, {set: {template: '<div ngbDropdown></div>'}});
+      TestBed.overrideComponent(TestComponent, {
+        set: {
+          template: `
+      <div ngbDropdown>
+          <div ngbDropdownMenu>
+            <a class="dropdown-item">dropDown item</a>
+            <a class="dropdown-item">dropDown item</a>
+          </div>
+      </div>`
+        }
+      });
     });
 
     beforeEach(inject([NgbDropdownConfig], (c: NgbDropdownConfig) => {
@@ -507,7 +533,13 @@ describe('ngb-dropdown-toggle', () => {
     });
 
     it('should initialize inputs with provided config as provider', () => {
-      const fixture = createTestComponent('<div ngbDropdown></div>');
+      const fixture = createTestComponent(`
+      <div ngbDropdown>
+          <div ngbDropdownMenu>
+            <a class="dropdown-item">dropup item</a>
+            <a class="dropdown-item">dropup item</a>
+          </div>
+      </div>`);
       fixture.detectChanges();
 
       const compiled = fixture.nativeElement;
