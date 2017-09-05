@@ -16,10 +16,13 @@ import {
   ComponentFactoryResolver,
   NgZone
 } from '@angular/core';
+import {transition, trigger, useAnimation} from '@angular/animations';
 import {listenToTriggers} from '../util/triggers';
 import {positionElements, Placement} from '../util/positioning';
 import {PopupService} from '../util/popup';
 import {NgbTooltipConfig} from './tooltip-config';
+import {fadeIn, fadeOut} from '../animations/fade';
+import {AnimationsHelper} from '../util/animations-helper';
 
 let nextId = 0;
 
@@ -29,7 +32,9 @@ let nextId = 0;
   host: {
     '[class]': '"tooltip show bs-tooltip-" + placement.split("-")[0]+" bs-tooltip-" + placement',
     'role': 'tooltip',
-    '[id]': 'id'
+    '[id]': 'id',
+    '[@fade]': 'animationsHelper.state',
+    '(@fade.done)': 'animationsHelper.stateChanges.next($event)'
   },
   template: `<div class="arrow"></div><div class="tooltip-inner"><ng-content></ng-content></div>`,
   styles: [`
@@ -58,11 +63,15 @@ let nextId = 0;
       top: auto;
       bottom: 0.7em;
     }
-  `]
+  `],
+  animations: [trigger(
+      'fade',
+      [transition('void => enter', useAnimation(fadeIn)), transition('enter => exit', useAnimation(fadeOut))])]
 })
 export class NgbTooltipWindow {
   @Input() placement: Placement = 'top';
   @Input() id: string;
+  animationsHelper = new AnimationsHelper();
 }
 
 /**
@@ -166,10 +175,15 @@ export class NgbTooltip implements OnInit, OnDestroy {
    */
   close(): void {
     if (this._windowRef != null) {
-      this._renderer.removeAttribute(this._elementRef.nativeElement, 'aria-describedby');
-      this._popupService.close();
-      this._windowRef = null;
-      this.hidden.emit();
+      const exitCompleted = this.container === 'body' ?
+          Promise.resolve() :
+          this._windowRef.instance.animationsHelper.triggerExitAnimation();
+      exitCompleted.then(() => {
+        this._renderer.removeAttribute(this._elementRef.nativeElement, 'aria-describedby');
+        this._popupService.close();
+        this._windowRef = null;
+        this.hidden.emit();
+      });
     }
   }
 
