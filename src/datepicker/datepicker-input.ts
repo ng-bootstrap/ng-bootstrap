@@ -22,7 +22,7 @@ import {NgbDatepicker, NgbDatepickerNavigateEvent} from './datepicker';
 import {DayTemplateContext} from './datepicker-day-template-context';
 import {NgbDateParserFormatter} from './ngb-date-parser-formatter';
 
-import {positionElements} from '../util/positioning';
+import {positionElements, PlacementArray} from '../util/positioning';
 import {NgbDateStruct} from './ngb-date-struct';
 import {NgbCalendar} from './ngb-calendar';
 import {NgbDatepickerService} from './datepicker-service';
@@ -103,12 +103,13 @@ export class NgbInputDatepicker implements OnChanges,
    */
   @Input() outsideDays: 'visible' | 'collapsed' | 'hidden';
 
-
   /**
-   * Placement of a datepicker popup. Accepts: "top", "bottom", "left", "right", "bottom-left",
-   * "bottom-right" etc.
-   */
-  @Input() placement = 'bottom-left';
+      * Placement of a datepicker popup accepts:
+      *    "top", "top-left", "top-right", "bottom", "bottom-left", "bottom-right",
+      *    "left", "left-top", "left-bottom", "right", "right-top", "right-bottom"
+      * and array of above values.
+      */
+  @Input() placement: PlacementArray = 'bottom-left';
 
   /**
    * Whether to display days of the week
