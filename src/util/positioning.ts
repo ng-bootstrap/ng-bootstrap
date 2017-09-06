@@ -154,29 +154,75 @@ export class Positioning {
 
     // left: check if target width can be placed between host left and viewport start and also height of target is
     // inside viewport
-    if (hostElemClientRect.left - targetElemClientRect.width > 0 &&
-        (hostElemClientRect.top + hostElemClientRect.height / 2 - targetElement.offsetHeight / 2) > 0) {
-      availablePlacements.splice(availablePlacements.length, 1, 'left');
+    if (targetElemClientRect.width < hostElemClientRect.left) {
+      // check for left only
+      if ((hostElemClientRect.top + hostElemClientRect.height / 2 - targetElement.offsetHeight / 2) > 0) {
+        availablePlacements.splice(availablePlacements.length, 1, 'left');
+      }
+      // check for left-top and left-bottom
+      this.setSecondaryPlacementForLeftRight(hostElemClientRect, targetElemClientRect, 'left', availablePlacements);
     }
 
     // top: target height is less than host top
     if (targetElemClientRect.height < hostElemClientRect.top) {
       availablePlacements.splice(availablePlacements.length, 1, 'top');
+      this.setSecondaryPlacementForTopBottom(hostElemClientRect, targetElemClientRect, 'top', availablePlacements);
     }
 
     // right: check if target width can be placed between host right and viewport end and also height of target is
     // inside viewport
-    if ((window.innerWidth || html.clientWidth) - hostElemClientRect.right > targetElemClientRect.width &&
-        (hostElemClientRect.top + hostElemClientRect.height / 2 - targetElement.offsetHeight / 2) > 0) {
-      availablePlacements.splice(availablePlacements.length, 1, 'right');
+    if ((window.innerWidth || html.clientWidth) - hostElemClientRect.right > targetElemClientRect.width) {
+      // check for right only
+      if ((hostElemClientRect.top + hostElemClientRect.height / 2 - targetElement.offsetHeight / 2) > 0) {
+        availablePlacements.splice(availablePlacements.length, 1, 'right');
+      }
+      // check for right-top and right-bottom
+      this.setSecondaryPlacementForLeftRight(hostElemClientRect, targetElemClientRect, 'right', availablePlacements);
     }
 
     // bottom: check if there is enough space between host bottom and viewport end for target height
     if ((window.innerHeight || html.clientHeight) - hostElemClientRect.bottom > targetElemClientRect.height) {
       availablePlacements.splice(availablePlacements.length, 1, 'bottom');
+      this.setSecondaryPlacementForTopBottom(hostElemClientRect, targetElemClientRect, 'bottom', availablePlacements);
     }
 
     return availablePlacements;
+  }
+
+  /**
+   * check if secondary placement for left and right are available i.e. left-top, left-bottom, right-top, right-bottom
+   * primaryplacement: left|right
+   * availablePlacementArr: array in which available placemets to be set
+   */
+  private setSecondaryPlacementForLeftRight(
+      hostElemClientRect: ClientRect, targetElemClientRect: ClientRect, primaryPlacement: string,
+      availablePlacementArr: Array<string>) {
+    let html = document.documentElement;
+    // check for left-bottom
+    if (targetElemClientRect.height <= hostElemClientRect.bottom) {
+      availablePlacementArr.splice(availablePlacementArr.length, 1, primaryPlacement + '-bottom');
+    }
+    if ((window.innerHeight || html.clientHeight) - hostElemClientRect.top >= targetElemClientRect.height) {
+      availablePlacementArr.splice(availablePlacementArr.length, 1, primaryPlacement + '-top');
+    }
+  }
+
+  /**
+   * check if secondary placement for top and bottom are available i.e. top-left, top-right, bottom-left, bottom-right
+   * primaryplacement: top|bottom
+   * availablePlacementArr: array in which available placemets to be set
+   */
+  private setSecondaryPlacementForTopBottom(
+      hostElemClientRect: ClientRect, targetElemClientRect: ClientRect, primaryPlacement: string,
+      availablePlacementArr: Array<string>) {
+    let html = document.documentElement;
+    // check for left-bottom
+    if ((window.innerHeight || html.clientHeight) - hostElemClientRect.left >= targetElemClientRect.width) {
+      availablePlacementArr.splice(availablePlacementArr.length, 1, primaryPlacement + '-left');
+    }
+    if (targetElemClientRect.width <= hostElemClientRect.right) {
+      availablePlacementArr.splice(availablePlacementArr.length, 1, primaryPlacement + '-right');
+    }
   }
 }
 
@@ -207,12 +253,11 @@ export function positionElements(
   let appliedPlacement: Placement;
   // get available placements
   let availablePlacements = positionService.getAvailablePlacements(hostElement, targetElement);
-
   // iterate over all the passed placements
   for (let { item, index } of toItemIndexes(placementVals)) {
     // check if passed placement is present in the available placement or otherwise apply the last placement in the
     // passed placement list
-    if ((availablePlacements.find(val => val === item.split('-')[0]) != null) || (placementVals.length === index + 1)) {
+    if ((availablePlacements.find(val => val === item) != null) || (placementVals.length === index + 1)) {
       appliedPlacement = <Placement>item;
       const pos = positionService.positionElements(hostElement, targetElement, item, appendToBody);
       topVal = pos.top;
