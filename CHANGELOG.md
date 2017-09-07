@@ -1,3 +1,25 @@
+<a name="1.0.0-beta.4"></a>
+# [1.0.0-beta.4](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-beta.3...1.0.0-beta.4) (2017-09-07)
+
+Lot's of positioning updates in this release. Now you can use more positioning options and auto-positioning for
+all widgets that open popups.
+
+### Bug Fixes
+
+* **positioning:** check for secondary available placements ([0f92c80](https://github.com/ng-bootstrap/ng-bootstrap/commit/0f92c80)), closes [#1819](https://github.com/ng-bootstrap/ng-bootstrap/issues/1819)
+
+
+### Features
+
+* add support for "auto" placement and multi-placement ([b73023a](https://github.com/ng-bootstrap/ng-bootstrap/commit/b73023a)), closes [#992](https://github.com/ng-bootstrap/ng-bootstrap/issues/992) [#1782](https://github.com/ng-bootstrap/ng-bootstrap/issues/1782)
+* support more positioning options for tooltips and popovers ([4f1e518](https://github.com/ng-bootstrap/ng-bootstrap/commit/4f1e518)), closes [#857](https://github.com/ng-bootstrap/ng-bootstrap/issues/857) [#1772](https://github.com/ng-bootstrap/ng-bootstrap/issues/1772)
+* **datepicker:** add support for placement "auto" ([d8bee8e](https://github.com/ng-bootstrap/ng-bootstrap/commit/d8bee8e)), closes [#1257](https://github.com/ng-bootstrap/ng-bootstrap/issues/1257) [#1820](https://github.com/ng-bootstrap/ng-bootstrap/issues/1820)
+* **dropdown:** auto and array support in placement ([6123780](https://github.com/ng-bootstrap/ng-bootstrap/commit/6123780)), closes [#1171](https://github.com/ng-bootstrap/ng-bootstrap/issues/1171) [#1814](https://github.com/ng-bootstrap/ng-bootstrap/issues/1814)
+* **modal:** add 'beforeDismiss' option ([a758eae](https://github.com/ng-bootstrap/ng-bootstrap/commit/a758eae)), closes [#1598](https://github.com/ng-bootstrap/ng-bootstrap/issues/1598) [#1799](https://github.com/ng-bootstrap/ng-bootstrap/issues/1799)
+* **typeahead:** added support for placement ([a053819](https://github.com/ng-bootstrap/ng-bootstrap/commit/a053819)), closes [#1767](https://github.com/ng-bootstrap/ng-bootstrap/issues/1767) [#1821](https://github.com/ng-bootstrap/ng-bootstrap/issues/1821)
+
+
+
 <a name="1.0.0-beta.3"></a>
 # [1.0.0-beta.3](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-beta.2...1.0.0-beta.3) (2017-08-30)
 
