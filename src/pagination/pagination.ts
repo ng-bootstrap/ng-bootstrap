@@ -97,6 +97,11 @@ export class NgbPagination implements OnChanges {
   @Input() pageSize: number;
 
   /**
+   * Defines how the pagination data should be manipulated.
+   */
+  @Input() immutable: boolean = true;
+
+  /**
    *  An event fired when the page is changed.
    *  Event's payload equals to the newly selected page.
    */
@@ -124,7 +129,11 @@ export class NgbPagination implements OnChanges {
 
   selectPage(pageNumber: number): void { this._updatePages(pageNumber); }
 
-  ngOnChanges(changes: SimpleChanges): void { this._updatePages(this.page); }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.immutable) {
+      this._updatePages(this.page);
+    }
+  }
 
   /**
    * @internal
