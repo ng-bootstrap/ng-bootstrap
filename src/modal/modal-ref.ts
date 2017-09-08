@@ -1,4 +1,4 @@
-import {Injectable, ComponentRef} from '@angular/core';
+import {ComponentRef} from '@angular/core';
 
 import {NgbModalBackdrop} from './modal-backdrop';
 import {NgbModalWindow} from './modal-window';
@@ -9,7 +9,6 @@ import {ContentRef} from '../util/popup';
  * A reference to an active (currently opened) modal. Instances of this class
  * can be injected into components passed as modal content.
  */
-@Injectable()
 export class NgbActiveModal {
   /**
    * Can be used to close a modal, passing an optional result.
@@ -25,7 +24,6 @@ export class NgbActiveModal {
 /**
  * A reference to a newly opened modal.
  */
-@Injectable()
 export class NgbModalRef {
   private _resolve: (result?: any) => void;
   private _reject: (reason?: any) => void;
