@@ -10,7 +10,6 @@ export class ExampleBoxComponent {
   @Input() component: string;
   @Input() demo: string;
   @Input() snippets: Object;
-  @Input() selectedTab = 'html';
 
   constructor(private _analytics: Analytics) {}
 }
