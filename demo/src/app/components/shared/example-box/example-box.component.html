@@ -13,11 +13,8 @@
     <div class="card-body">
       <ng-content></ng-content>
     </div>
-    <ngb-tabset
-      class="tabset-code"
-      [activeId]="selectedTab"
-    >
-      <ngb-tab id="html">
+    <ngb-tabset class="tabset-code">
+      <ngb-tab id="{{component}}-{{demo}}-html">
         <ng-template ngbTabTitle>
           <small class="badge badge-secondary" title="HTML template">T</small>
           <span>{{component}}-{{demo}}.html</span>
@@ -26,7 +23,7 @@
           <pre class="language-html"><code class="language-html" [innerHTML]="snippets[demo]['markup']"></code></pre>
         </ng-template>
       </ngb-tab>
-      <ngb-tab id="typescript">
+      <ngb-tab id="{{component}}-{{demo}}-typescript">
         <ng-template ngbTabTitle>
           <small class="badge badge-info" title="Component class">C</small>
           <span>{{component}}-{{demo}}.ts</span>
