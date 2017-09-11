@@ -1,81 +1,97 @@
-import {TestBed, ComponentFixture} from '@angular/core/testing';
+import {TestBed, ComponentFixture, fakeAsync, tick} from '@angular/core/testing';
 import {createGenericTestComponent} from '../test/common';
+import {By} from '@angular/platform-browser';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 
 import {Component} from '@angular/core';
 
-import {NgbCollapseModule} from './collapse.module';
+import {NgbCollapseModule, NgbCollapse} from './collapse.module';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
-function getCollapsibleContent(element: HTMLElement): HTMLDivElement {
-  return <HTMLDivElement>element.querySelector('.collapse');
+function getCollapsible(fixture: ComponentFixture<TestComponent>): HTMLElement {
+  return fixture.debugElement.query(By.directive(NgbCollapse)).nativeElement;
 }
 
 describe('ngb-collapse', () => {
   let html = `<div [ngbCollapse]="collapsed">Some content</div>`;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbCollapseModule]});
+    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NoopAnimationsModule, NgbCollapseModule]});
     TestBed.overrideComponent(TestComponent, {set: {template: html}});
   });
 
-  it('should have content open', () => {
-    const fixture = TestBed.createComponent(TestComponent);
-    fixture.detectChanges();
-
-    const collapseEl = getCollapsibleContent(fixture.nativeElement);
-
-    expect(collapseEl).toHaveCssClass('show');
+  beforeEach(() => {
+    jasmine.addMatchers({
+      toBeExpanded: function(util, customEqualityTests) {
+        return {
+          compare: function(collapseEl: HTMLElement) {
+            return {pass: collapseEl.offsetHeight > 0, message: `Expected ${collapseEl.outerHTML} to have height > 0`};
+          },
+          negativeCompare: function(collapseEl: HTMLElement) {
+            return {pass: collapseEl.offsetHeight === 0, message: `Expected ${collapseEl.outerHTML} to have height 0`};
+          }
+        };
+      }
+    });
   });
 
-  it('should have content closed', () => {
+  it('should have content open by default', () => {
+    const fixture = TestBed.createComponent(TestComponent);
+
+    fixture.detectChanges();
+    expect(getCollapsible(fixture)).toBeExpanded();
+  });
+
+  it('should have content closed when [ngbCollapse] binding evaluates to true', () => {
     const fixture = TestBed.createComponent(TestComponent);
     const tc = fixture.componentInstance;
     tc.collapsed = true;
     fixture.detectChanges();
 
-    const collapseEl = getCollapsibleContent(fixture.nativeElement);
-
-    expect(collapseEl).not.toHaveCssClass('show');
+    expect(getCollapsible(fixture)).not.toBeExpanded();
   });
 
-  it('should toggle collapsed content based on bound model change', () => {
-    const fixture = TestBed.createComponent(TestComponent);
-    fixture.detectChanges();
+  it('should toggle collapsed content based on bound model change', fakeAsync(() => {
+       const fixture = TestBed.createComponent(TestComponent);
+       fixture.detectChanges();
 
-    const tc = fixture.componentInstance;
-    const collapseEl = getCollapsibleContent(fixture.nativeElement);
-    expect(collapseEl).toHaveCssClass('show');
+       const tc = fixture.componentInstance;
+       const collapseEl = getCollapsible(fixture);
+       expect(collapseEl).toBeExpanded();
 
-    tc.collapsed = true;
-    fixture.detectChanges();
-    expect(collapseEl).not.toHaveCssClass('show');
+       tc.collapsed = true;
+       fixture.detectChanges();
+       tick();
+       expect(collapseEl).not.toBeExpanded();
 
-    tc.collapsed = false;
-    fixture.detectChanges();
-    expect(collapseEl).toHaveCssClass('show');
-  });
+       tc.collapsed = false;
+       fixture.detectChanges();
+       tick();
+       expect(collapseEl).toBeExpanded();
+     }));
 
-  it('should allow toggling collapse from outside', () => {
-    html = `
+  it('should allow toggling collapse from outside', fakeAsync(() => {
+       html = `
       <button (click)="collapse.collapsed = !collapse.collapsed">Collapse</button>
-      <div [ngbCollapse] #collapse="ngbCollapse"></div>`;
+      <div [ngbCollapse] #collapse="ngbCollapse">content</div>`;
 
-    const fixture = createTestComponent(html);
+       const fixture = createTestComponent(html);
 
-    const compiled = fixture.nativeElement;
-    const collapseEl = getCollapsibleContent(compiled);
-    const buttonEl = compiled.querySelector('button');
+       const collapseEl = getCollapsible(fixture);
+       const buttonEl = fixture.nativeElement.querySelector('button');
 
-    buttonEl.click();
-    fixture.detectChanges();
-    expect(collapseEl).not.toHaveCssClass('show');
+       buttonEl.click();
+       fixture.detectChanges();
+       tick();
+       expect(collapseEl).not.toBeExpanded();
 
-    buttonEl.click();
-    fixture.detectChanges();
-    expect(collapseEl).toHaveCssClass('show');
-  });
+       buttonEl.click();
+       fixture.detectChanges();
+       tick();
+       expect(collapseEl).toBeExpanded();
+     }));
 });
 
 @Component({selector: 'test-cmp', template: ''})

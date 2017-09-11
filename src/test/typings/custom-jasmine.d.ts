@@ -4,5 +4,6 @@ declare module jasmine {
     toHaveModal(content?: string | string[], selector?: string): boolean;
     toHaveBackdrop(): boolean;
     toBeShown(): boolean;
+    toBeExpanded(): boolean;
   }
 }
