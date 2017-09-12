@@ -1,3 +1,4 @@
+import {Injectable} from '@angular/core';
 import {NgbDateStruct} from './ngb-date-struct';
 import {NgbDate} from './ngb-date';
 
@@ -7,6 +8,7 @@ import {NgbDate} from './ngb-date';
  * A default implementation converting from and to NgbDateStruct is provided for retro-compatibility,
  * but you can provide another implementation to use an alternative format, ie for using with native Date Object.
  */
+@Injectable()
 export abstract class NgbDateAdapter<T> {
   /**
    * Converts user-model date into an NgbDate for internal use in the library
@@ -24,6 +26,7 @@ export abstract class NgbDateAdapter<T> {
   abstract toModel(date: NgbDate): T;
 }
 
+@Injectable()
 export class NgbDateStructAdapter extends NgbDateAdapter<NgbDateStruct> {
   /**
    * Converts a NgbDateStruct value into NgbDate value

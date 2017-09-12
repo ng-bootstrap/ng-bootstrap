@@ -1,12 +1,13 @@
-import {Component} from '@angular/core';
-import {NgbDateStruct, NgbDateAdapter, NgbDate} from '@ng-bootstrap/ng-bootstrap';
+import {Component, Injectable} from '@angular/core';
+import {NgbDateAdapter, NgbDate} from '@ng-bootstrap/ng-bootstrap';
 
 const now = new Date();
 
 /**
  * Example of a Native Date adapter
  */
-class NgbDateNativeAdapter extends NgbDateAdapter<Date> {
+@Injectable()
+export class NgbDateNativeAdapter extends NgbDateAdapter<Date> {
 
     fromModel(date: Date): NgbDate {
         return date ? new NgbDate(date.getFullYear(), date.getMonth() + 1, date.getDate() || 1) : null;

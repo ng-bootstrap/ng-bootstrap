@@ -1,5 +1,3 @@
-import {Injectable, Inject, forwardRef} from '@angular/core';
-import {NgbDateAdapter} from './ngb-date-adapter';
 
 export class NgbDate {
   static from(date: {year: number, month: number, day?: number}) {

@@ -1,6 +1,5 @@
 import {padNumber, toInteger, isNumber} from '../util/util';
 import {NgbDateStruct} from './ngb-date-struct';
-import {NgbDate} from './ngb-date';
 
 /**
  * Abstract type serving as a DI token for the service parsing and formatting dates for the NgbInputDatepicker
