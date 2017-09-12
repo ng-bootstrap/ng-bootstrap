@@ -111,7 +111,12 @@ export interface NgbPanelChangeEvent {
         </div>
       </div>
     </ng-template>
-  `
+  `,
+  styles: [`
+    .card-header:not(.active) {
+      border-bottom: none;
+    }
+  `]
 })
 export class NgbAccordion implements AfterContentChecked {
   /**
