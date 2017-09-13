@@ -21,6 +21,7 @@ import {listenToTriggers} from '../util/triggers';
 import {positionElements, Placement, PlacementArray} from '../util/positioning';
 import {PopupService} from '../util/popup';
 import {NgbPopoverConfig} from './popover-config';
+import {AutoCloseNotifyService} from '../util/autoclosenotify.service';
 
 let nextId = 0;
 
@@ -114,6 +115,14 @@ export class NgbPopover implements OnInit, OnDestroy {
    */
   @Input() container: string;
   /**
+   * Indicates that popover should be closed when selecting one of popover items (click) or pressing ESC.
+   * When it is true (default) popover are automatically closed on both outside and inside (menu) clicks.
+   * When it is false popover are never automatically closed.
+   * When it is 'outside' popover are automatically closed on outside clicks but not on menu clicks.
+   * When it is 'inside' popover are automatically on menu clicks but not on outside clicks.
+   */
+  @Input() autoClose: boolean | 'outside' | 'inside';
+  /**
    * Emits an event when the popover is shown
    */
   @Output() shown = new EventEmitter();
@@ -127,14 +136,16 @@ export class NgbPopover implements OnInit, OnDestroy {
   private _windowRef: ComponentRef<NgbPopoverWindow>;
   private _unregisterListenersFn;
   private _zoneSubscription: any;
+  private _unregisterAutoCloseNotifyhandler: Function;
 
   constructor(
       private _elementRef: ElementRef, private _renderer: Renderer2, injector: Injector,
       componentFactoryResolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef, config: NgbPopoverConfig,
-      ngZone: NgZone) {
+      ngZone: NgZone, private _autoCloseNotifyService: AutoCloseNotifyService) {
     this.placement = config.placement;
     this.triggers = config.triggers;
     this.container = config.container;
+    this.autoClose = config.autoClose;
     this._popupService = new PopupService<NgbPopoverWindow>(
         NgbPopoverWindow, injector, viewContainerRef, _renderer, componentFactoryResolver);
 
@@ -175,6 +186,10 @@ export class NgbPopover implements OnInit, OnDestroy {
               this.container === 'body'));
 
       this.shown.emit();
+
+      // register for click and esc key events
+      this._unregisterAutoCloseNotifyhandler =
+          this._autoCloseNotifyService.register(this.autoCloseNotifyHandler.bind(this));
     }
   }
 
@@ -187,6 +202,7 @@ export class NgbPopover implements OnInit, OnDestroy {
       this._popupService.close();
       this._windowRef = null;
       this.hidden.emit();
+      this._unregisterAutoCloseNotifyhandler();
     }
   }
 
@@ -216,5 +232,43 @@ export class NgbPopover implements OnInit, OnDestroy {
     this.close();
     this._unregisterListenersFn();
     this._zoneSubscription.unsubscribe();
+  }
+
+  /**
+   * handler for the AutoCloseNotifyService to recieve the click and esc events for autoclose feature
+   */
+  private autoCloseNotifyHandler(event: Event) {
+    let isInside = false;
+    let clickedComponent = event.target;
+    if (event.type === this._autoCloseNotifyService.mouseEvent && this.autoClose &&
+        clickedComponent !== this._elementRef.nativeElement) {
+      do {
+        if (clickedComponent === this._windowRef.location.nativeElement) {
+          isInside = true;
+          break;
+        }
+        clickedComponent = (<HTMLElement>clickedComponent).parentNode;
+      } while (clickedComponent);
+
+      this.closeFromClick(event, isInside);
+    } else if (event.type === this._autoCloseNotifyService.keyboardEvent) {
+      this.closeFromOutsideEsc();
+    }
+  }
+
+  private closeFromClick($event, isInside: boolean) {
+    if (this.autoClose === true) {
+      this.close();
+    } else if (this.autoClose === 'inside' && isInside) {
+      this.close();
+    } else if (this.autoClose === 'outside' && !isInside) {
+      this.close();
+    }
+  }
+
+  private closeFromOutsideEsc() {
+    if (this.autoClose) {
+      this.close();
+    }
   }
 }

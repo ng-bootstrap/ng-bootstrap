@@ -192,8 +192,115 @@ describe('ngb-popover', () => {
       fixture.detectChanges();
       expect(getWindow(fixture.nativeElement)).toBeNull();
     });
-  });
 
+    it('should not close on outside click if autoClose is set to false', () => {
+      const html = `
+      <button>Outside</button>
+      <div ngbPopover="Great tip!" popoverTitle="Title" [autoClose]="false">
+      </div>`;
+
+      const fixture = createTestComponent(html);
+      let buttonEl = fixture.nativeElement.querySelector('button');
+
+      const directive = fixture.debugElement.query(By.directive(NgbPopover));
+
+      directive.triggerEventHandler('click', {});
+
+      fixture.detectChanges();
+      expect(getWindow(fixture.nativeElement)).not.toBeNull();
+
+      buttonEl.click();
+      fixture.detectChanges();
+      expect(getWindow(fixture.nativeElement)).not.toBeNull();
+    });
+
+    it('should close on ESC', () => {
+      const html = `
+      <button type="button" class="btn btn-outline-secondary" placement="top"
+        ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." popoverTitle="Popover on top">
+        Popover on top
+      </button>`;
+
+      const fixture = createTestComponent(html);
+      const buttonEl = fixture.nativeElement.querySelector('button');
+
+      const directive = fixture.debugElement.query(By.directive(NgbPopover));
+
+      buttonEl.click();
+      fixture.detectChanges();
+      expect(getWindow(fixture.nativeElement)).not.toBeNull();
+
+      const evt = document.createEvent('Event') as any;
+      evt.initEvent('keyup', true, true);
+      evt.key = 'Escape';
+      document.dispatchEvent(evt);
+
+      fixture.detectChanges();
+      expect(getWindow(fixture.nativeElement)).toBeNull();
+    });
+
+    it('should not close on ESC if autoClose is set to false', () => {
+      const html = `
+      <button type="button" class="btn btn-outline-secondary" placement="top" 
+        ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." popoverTitle="Popover on top" [autoClose]="false">
+        Popover on top
+      </button>`;
+
+      const fixture = createTestComponent(html);
+      const buttonEl = fixture.nativeElement.querySelector('button');
+
+      buttonEl.click();
+      fixture.detectChanges();
+      expect(getWindow(fixture.nativeElement)).not.toBeNull();
+
+      const evt = document.createEvent('Event') as any;
+      evt.initEvent('keyup', true, true);
+      evt.key = 'Escape';
+      document.dispatchEvent(evt);
+
+      fixture.detectChanges();
+      expect(getWindow(fixture.nativeElement)).not.toBeNull();
+    });
+
+    it('should not close on item click if autoClose is set to outside', () => {
+      const html = `
+      <button type="button" class="btn btn-outline-secondary" placement="top"
+        ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." popoverTitle="Popover on top" [autoClose]="outside">
+        Popover on top
+      </button>`;
+
+      const fixture = createTestComponent(html);
+      const buttonEl = fixture.nativeElement.querySelector('button');
+
+      buttonEl.click();
+      fixture.detectChanges();
+      expect(getWindow(fixture.nativeElement)).not.toBeNull();
+
+      fixture.nativeElement.click();
+      fixture.detectChanges();
+      expect(getWindow(fixture.nativeElement)).not.toBeNull();
+    });
+
+    it('should not close on outside click if autoClose is set to inside', () => {
+      const html = `
+      <button type="button" class="btn btn-outline-secondary" placement="top"
+        ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." popoverTitle="Popover on top" [autoClose]="inside">
+        Popover on top
+      </button>`;
+
+      const fixture = createTestComponent(html);
+      const buttonEl = fixture.nativeElement.querySelector('button');
+
+      buttonEl.click();
+      fixture.detectChanges();
+      expect(getWindow(fixture.nativeElement)).not.toBeNull();
+
+      fixture.nativeElement.click();
+      fixture.detectChanges();
+      expect(getWindow(fixture.nativeElement)).not.toBeNull();
+    });
+
+  });
 
   describe('positioning', () => {
 
