@@ -6,8 +6,11 @@ import {Component, DebugElement, ViewChild, ChangeDetectionStrategy} from '@angu
 import {Validators, FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {By} from '@angular/platform-browser';
 import {Observable} from 'rxjs/Observable';
+import {Subject} from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/merge';
+import 'rxjs/add/operator/filter';
 
 import {NgbTypeahead} from './typeahead';
 import {NgbTypeaheadModule} from './typeahead.module';
@@ -181,6 +184,105 @@ describe('ngb-typeahead', () => {
       fixture.nativeElement.click();
       expect(getWindow(compiled)).toBeNull();
     });
+
+    it('should not be closed on input click', () => {
+      const fixture = createTestComponent(`<input type="text" [ngbTypeahead]="find"/>`);
+      const compiled = fixture.nativeElement;
+
+      changeInput(compiled, 'one');
+      fixture.detectChanges();
+      expect(getWindow(compiled)).not.toBeNull();
+
+      getNativeInput(compiled).click();
+      expect(getWindow(compiled)).not.toBeNull();
+    });
+
+    it('should open on focus or click', async(async() => {
+         const fixture = createTestComponent(`<input
+        type="text"
+        [ngbTypeahead]="find"
+        (focus)="focus$.next($event.target.value)"
+        (click)="click$.next($event.target.value)"
+      />`);
+         const compiled = fixture.nativeElement;
+
+         let searchCount = 0;
+         fixture.componentInstance.findOutput$.subscribe(() => searchCount++);
+         const checkSearchCount = (expected, context) => {
+           expect(searchCount).toBe(expected, `Search count is not correct: ${context}`);
+           searchCount = 0;
+         };
+
+         const checkWindowIsClosed = () => {
+           expect(getWindow(compiled)).toBeNull();
+           expect(fixture.componentInstance.model).toBe(undefined);
+           expect(getNativeInput(compiled).value).toBe('');
+         };
+
+         const checkWindowIsOpen = () => { expect(getWindow(compiled)).not.toBeNull(); };
+
+         // focusing the input triggers a search and opens the dropdown
+         getNativeInput(compiled).focus();
+         // on IE the focus can be asynchronous, so we need to wait a tick before continuing
+         await new Promise(resolve => setTimeout(resolve, 0));
+         checkSearchCount(1, 'on first focus');
+         checkWindowIsOpen();
+
+         // clicking again in the input while the dropdown is open doesn't trigger a new search and keeps the dropdown
+         // open
+         getNativeInput(compiled).click();
+         checkSearchCount(0, 'on input click when dropdown already open');
+         checkWindowIsOpen();
+
+         // closing the dropdown but keeping focus
+         const event = createKeyDownEvent(Key.Escape);
+         getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
+         fixture.detectChanges();
+         checkWindowIsClosed();
+
+         // clicking again in the input while already focused but dropdown closed triggers a search and opens the
+         // dropdown
+         getNativeInput(compiled).click();
+         checkSearchCount(1, 'on input click when input is already focused but dropdown is closed');
+         checkWindowIsOpen();
+
+         // closing the dropdown and losing focus
+         fixture.nativeElement.click();
+         getNativeInput(compiled).blur();
+         checkWindowIsClosed();
+
+         // Clicking directly, putting focus at the same time, triggers only one search and opens the dropdown
+         getNativeInput(compiled).click();
+         checkSearchCount(1, 'on input focus specifically with a click');
+         checkWindowIsOpen();
+       }));
+
+    it('should preserve value previously selected with mouse when reopening with focus then closing without selection',
+       () => {
+         const fixture = createTestComponent(`<input type="text" [ngbTypeahead]="find"/>`);
+         const compiled = fixture.nativeElement;
+
+         fixture.whenStable().then(() => {
+           // open with partial input
+           changeInput(compiled, 'o');
+           fixture.detectChanges();
+
+           // select with click
+           getWindowLinks(fixture.debugElement)[0].triggerEventHandler('click', {});
+           fixture.detectChanges();
+           expectInputValue(compiled, 'one');
+
+           // open again but with focus
+           getNativeInput(compiled).blur();
+           getNativeInput(compiled).focus();
+
+           // close without selecting a new value
+           const event = createKeyDownEvent(Key.Escape);
+           getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
+           fixture.detectChanges();
+           expectInputValue(compiled, 'one');
+         });
+       });
 
     it('should be closed when ESC is pressed', () => {
       const fixture = createTestComponent(`<input type="text" [ngbTypeahead]="find"/>`);
@@ -909,9 +1011,18 @@ class TestComponent {
 
   form = new FormGroup({control: new FormControl('', Validators.required)});
 
-  @ViewChild(NgbTypeahead) typeahead: NgbTypeahead;
+  findOutput$: Observable<any[]>;
 
-  find = (text$: Observable<string>) => { return text$.map(text => this._strings.filter(v => v.startsWith(text))); };
+  @ViewChild(NgbTypeahead) typeahead: NgbTypeahead;
+  public focus$ = new Subject<string>();
+  public click$ = new Subject<string>();
+
+  find = (text$: Observable<string>) => {
+    this.findOutput$ = text$.merge(this.focus$)
+                           .merge(this.click$.filter(() => !this.typeahead.isPopupOpen()))
+                           .map(text => this._strings.filter(v => v.startsWith(text)));
+    return this.findOutput$;
+  };
 
   findAnywhere =
       (text$: Observable<string>) => { return text$.map(text => this._strings.filter(v => v.indexOf(text) > -1)); };
