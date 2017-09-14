@@ -37,3 +37,15 @@ export function padNumber(value: number) {
 export function regExpEscape(text) {
   return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 }
+
+/**
+ * @param possibleAncestor Element to verify as being the reference element or one of its ancestors
+ * @param reference The reference element to check against
+ */
+export function isElementOrAncestorOf(possibleAncestor, reference) {
+  let currentNode = reference;
+  while (isDefined(currentNode) && currentNode !== possibleAncestor) {
+    currentNode = currentNode.parentNode;
+  }
+  return currentNode === possibleAncestor;
+}
