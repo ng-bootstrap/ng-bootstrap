@@ -1,3 +1,13 @@
+<a name="1.0.0-beta.5"></a>
+# [1.0.0-beta.5](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-beta.4...1.0.0-beta.5) (2017-09-14)
+
+
+### Bug Fixes
+
+* **modal:** remove unnecessary Injectable annotation ([0bf798d](https://github.com/ng-bootstrap/ng-bootstrap/commit/0bf798d)), closes [#1832](https://github.com/ng-bootstrap/ng-bootstrap/issues/1832) [#1833](https://github.com/ng-bootstrap/ng-bootstrap/issues/1833)
+
+
+
 <a name="1.0.0-beta.4"></a>
 # [1.0.0-beta.4](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-beta.3...1.0.0-beta.4) (2017-09-07)
 
