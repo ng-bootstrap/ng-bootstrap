@@ -83,6 +83,21 @@ describe('ngb-dropdown', () => {
     expect(getDropdownEl(compiled)).toHaveCssClass('dropup');
   });
 
+  it('should have dropdown CSS class if placement is other than top', () => {
+    const html = `
+      <div ngbDropdown placement="bottom">
+          <div ngbDropdownMenu>
+            <a class="dropdown-item">dropDown item</a>
+            <a class="dropdown-item">dropDown item</a>
+          </div>
+      </div>`;
+
+    const fixture = createTestComponent(html);
+    const compiled = fixture.nativeElement;
+
+    expect(getDropdownEl(compiled)).toHaveCssClass('dropdown');
+  });
+
   it('should be open initially if open expression is true', () => {
     const html = `
       <div ngbDropdown [open]="true">
