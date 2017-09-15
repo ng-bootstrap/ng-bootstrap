@@ -38,6 +38,7 @@ let nextId = 0;
   styles: [`
     :host.bs-popover-top .arrow, :host.bs-popover-bottom .arrow {
       left: 50%;
+      margin-left: -5px;
     }
 
     :host.bs-popover-top-left .arrow, :host.bs-popover-bottom-left .arrow {
@@ -51,6 +52,7 @@ let nextId = 0;
 
     :host.bs-popover-left .arrow, :host.bs-popover-right .arrow {
       top: 50%;
+      margin-top: -5px;
     }
     
     :host.bs-popover-left-top .arrow, :host.bs-popover-right-top .arrow {
