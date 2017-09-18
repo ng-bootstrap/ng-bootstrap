@@ -130,6 +130,12 @@ export class NgbInputDatepicker implements OnChanges,
   @Input() startDate: {year: number, month: number};
 
   /**
+   * A selector specifying the element the datepicker popup should be appended to.
+   * Currently only supports "body".
+   */
+  @Input() container: string;
+
+  /**
    * An event fired when navigation happens and currently displayed month changes.
    * See NgbDatepickerNavigateEvent for the payload info.
    */
@@ -146,7 +152,8 @@ export class NgbInputDatepicker implements OnChanges,
       private _service: NgbDatepickerService, private _calendar: NgbCalendar) {
     this._zoneSubscription = ngZone.onStable.subscribe(() => {
       if (this._cRef) {
-        positionElements(this._elRef.nativeElement, this._cRef.location.nativeElement, this.placement);
+        positionElements(
+            this._elRef.nativeElement, this._cRef.location.nativeElement, this.placement, this.container === 'body');
       }
     });
   }
@@ -223,6 +230,10 @@ export class NgbInputDatepicker implements OnChanges,
 
       // focus handling
       this._cRef.instance.focus();
+
+      if (this.container === 'body') {
+        window.document.querySelector(this.container).appendChild(this._cRef.location.nativeElement);
+      }
     }
   }
 
