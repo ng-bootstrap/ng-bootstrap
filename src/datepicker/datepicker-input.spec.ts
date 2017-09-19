@@ -522,6 +522,49 @@ describe('NgbInputDatepicker', () => {
           .toHaveBeenCalledWith({current: {year: 2016, month: 9}, next: {year: 2018, month: 4}});
     });
   });
+
+  describe('container', () => {
+
+    it('should be appended to the element matching the selector passed to "container"', () => {
+      const selector = 'body';
+      const fixture = createTestCmpt(`
+          <input ngbDatepicker #d="ngbDatepicker" container="${selector}">
+          <button (click)="open(d)">Open</button>
+      `);
+
+      // open date-picker
+      const button = fixture.nativeElement.querySelector('button');
+      button.click();
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.querySelector('ngb-datepicker')).toBeNull();
+      expect(document.querySelector(selector).querySelector('ngb-datepicker')).not.toBeNull();
+    });
+
+    it('should properly destroy datepicker window when the "container" option is used', () => {
+      const selector = 'body';
+      const fixture = createTestCmpt(`
+          <input ngbDatepicker #d="ngbDatepicker" container="${selector}">
+          <button (click)="open(d)">Open</button>
+          <button (click)="close(d)">Close</button>
+      `);
+
+      // open date-picker
+      const buttons = fixture.nativeElement.querySelectorAll('button');
+      buttons[0].click();  // open button
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.querySelector('ngb-datepicker')).toBeNull();
+      expect(document.querySelector(selector).querySelector('ngb-datepicker')).not.toBeNull();
+
+      // close date-picker
+      buttons[1].click();  // close button
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.querySelector('ngb-datepicker')).toBeNull();
+      expect(document.querySelector(selector).querySelector('ngb-datepicker')).toBeNull();
+    });
+  });
 });
 
 @Component({selector: 'test-cmp', template: ''})
