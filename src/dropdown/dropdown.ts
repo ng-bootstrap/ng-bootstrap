@@ -8,8 +8,9 @@ import {
   ElementRef,
   ContentChild,
   NgZone,
+  OnInit,
   Renderer2,
-  OnInit
+  ChangeDetectorRef
 } from '@angular/core';
 import {NgbDropdownConfig} from './dropdown-config';
 import {positionElements, PlacementArray, Placement} from '../util/positioning';
@@ -79,14 +80,11 @@ export class NgbDropdownToggle {
 @Directive({
   selector: '[ngbDropdown]',
   exportAs: 'ngbDropdown',
-  host: {
-    '[class.show]': 'isOpen()',
-    '(keyup.esc)': 'closeFromOutsideEsc()',
-    '(document:click)': 'closeFromClick($event)'
-  }
+  host: {'[class.show]': 'isOpen()', '(keyup.esc)': 'closeFromOutsideEsc()'}
 })
 export class NgbDropdown implements OnInit {
   private _zoneSubscription: any;
+  private _globalClickListener;
 
   @ContentChild(NgbDropdownMenu) private _menu: NgbDropdownMenu;
 
@@ -120,7 +118,9 @@ export class NgbDropdown implements OnInit {
    */
   @Output() openChange = new EventEmitter();
 
-  constructor(config: NgbDropdownConfig, ngZone: NgZone) {
+  constructor(
+      config: NgbDropdownConfig, ngZone: NgZone, private _renderer: Renderer2,
+      private _changeDetectorRef: ChangeDetectorRef) {
     this.placement = config.placement;
     this.autoClose = config.autoClose;
     this._zoneSubscription = ngZone.onStable.subscribe(() => { this._positionMenu(); });
@@ -129,6 +129,10 @@ export class NgbDropdown implements OnInit {
   ngOnInit() {
     if (this._menu) {
       this._menu.applyPlacement(Array.isArray(this.placement) ? (this.placement[0]) : this.placement as Placement);
+    }
+
+    if (this._open) {
+      this._listenToGlobalClick();
     }
   }
 
@@ -145,6 +149,7 @@ export class NgbDropdown implements OnInit {
       this._open = true;
       this._positionMenu();
       this.openChange.emit(true);
+      this._listenToGlobalClick();
     }
   }
 
@@ -155,6 +160,7 @@ export class NgbDropdown implements OnInit {
     if (this._open) {
       this._open = false;
       this.openChange.emit(false);
+      this._unsubscribeFromGlobalClickListener();
     }
   }
 
@@ -187,7 +193,10 @@ export class NgbDropdown implements OnInit {
     }
   }
 
-  ngOnDestroy() { this._zoneSubscription.unsubscribe(); }
+  ngOnDestroy() {
+    this._zoneSubscription.unsubscribe();
+    this._unsubscribeFromGlobalClickListener();
+  }
 
   private _isEventFromToggle($event) { return this._toggle ? this._toggle.isEventFrom($event) : false; }
 
@@ -196,6 +205,19 @@ export class NgbDropdown implements OnInit {
   private _positionMenu() {
     if (this.isOpen() && this._menu && this._toggle) {
       this._menu.position(this._toggle.anchorEl, this.placement);
+    }
+  }
+
+  private _listenToGlobalClick() {
+    this._globalClickListener = this._renderer.listen('document', 'click', (e) => {
+      this.closeFromClick(e);
+      this._changeDetectorRef.detectChanges();
+    });
+  }
+
+  private _unsubscribeFromGlobalClickListener() {
+    if (this._globalClickListener) {
+      this._globalClickListener();
     }
   }
 }
