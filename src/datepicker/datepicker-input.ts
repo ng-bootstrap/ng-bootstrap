@@ -221,6 +221,9 @@ export class NgbInputDatepicker implements OnChanges,
         this.close();
       });
 
+      // forward disabled state
+      this._cRef.instance.setDisabledState(this._elRef.nativeElement.disabled);
+
       // focus handling
       this._cRef.instance.focus();
     }
