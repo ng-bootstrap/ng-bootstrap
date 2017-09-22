@@ -160,6 +160,10 @@ describe('NgbInputDatepicker', () => {
          expect(input.disabled).toBeTruthy();
          expect(buttonInDatePicker.disabled).toBeTruthy();
 
+         // check if ngb-datepicker popup is disabled
+         const navItem = fixture.nativeElement.querySelector('ngb-datepicker-navigation');
+         expect(navItem.getAttribute('ng-reflect-disabled')).toBeTruthy();
+
          fixture.componentInstance.isDisabled = false;
          fixture.detectChanges();
          tick();
