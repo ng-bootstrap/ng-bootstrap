@@ -80,7 +80,7 @@ export class NgbCarousel implements AfterContentChecked,
   @Input() wrap: boolean;
 
   /**
-   * A flag for allowing navigation via keyboard
+   * A flag for allowing navigation via keyboard.
    */
   @Input() keyboard: boolean;
 
@@ -90,7 +90,7 @@ export class NgbCarousel implements AfterContentChecked,
   @Input() activeId: string;
 
   /**
-   * Whether carousel can be paused
+   * Whether carousel can be paused.
    */
   @Input() allowPause: boolean;
 
