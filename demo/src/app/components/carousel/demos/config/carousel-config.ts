@@ -12,5 +12,6 @@ export class NgbdCarouselConfig {
     config.interval = 10000;
     config.wrap = false;
     config.keyboard = false;
+    config.allowPause = false;
   }
 }
