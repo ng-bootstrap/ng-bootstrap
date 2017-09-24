@@ -93,6 +93,7 @@ export class NgbCarousel implements AfterContentChecked,
    * Whether carousel can be paused
    */
   @Input() allowPause: boolean;
+
   /**
    * A carousel slide event fired when the slide transition is completed.
    * See NgbSlideEvent for payload details
@@ -156,7 +157,7 @@ export class NgbCarousel implements AfterContentChecked,
   /**
    * Restarts cycling through the carousel slides from left to right.
    */
-  cycle() { 
+  cycle() {
     if (this.allowPause) {
       this._startTimer();
     }
