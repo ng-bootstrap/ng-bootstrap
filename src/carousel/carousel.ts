@@ -104,6 +104,7 @@ export class NgbCarousel implements AfterContentChecked,
     this.interval = config.interval;
     this.wrap = config.wrap;
     this.keyboard = config.keyboard;
+    this.allowPause = config.allowPause;
   }
 
   ngAfterContentChecked() {
