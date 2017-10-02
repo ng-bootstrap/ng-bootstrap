@@ -149,6 +149,11 @@ export class NgbTypeahead implements ControlValueAccessor,
   @Input() placement: PlacementArray = 'bottom-left';
 
   /**
+   * A CSS max-height value to limit the height of the dropdown and be able to scroll through its list of results.
+   */
+  @Input() maxHeight: string;
+
+  /**
    * An event emitted when a match is selected. Event payload is of type NgbTypeaheadSelectItemEvent.
    */
   @Output() selectItem = new EventEmitter<NgbTypeaheadSelectItemEvent>();
@@ -288,6 +293,7 @@ export class NgbTypeahead implements ControlValueAccessor,
       this._windowRef.instance.id = this.popupId;
       this._windowRef.instance.selectEvent.subscribe((result: any) => this._selectResultClosePopup(result));
       this._windowRef.instance.activeChangeEvent.subscribe((activeId: string) => this.activeDescendant = activeId);
+      this._windowRef.instance.maxHeight = this.maxHeight;
 
       if (this.container === 'body') {
         window.document.querySelector(this.container).appendChild(this._windowRef.location.nativeElement);

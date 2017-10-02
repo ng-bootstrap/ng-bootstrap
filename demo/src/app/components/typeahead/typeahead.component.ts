@@ -15,6 +15,9 @@ import {DEMO_SNIPPETS} from './demos';
       <ngbd-example-box demoTitle="Open on focus" [snippets]="snippets" component="typeahead" demo="focus">
         <ngbd-typeahead-focus></ngbd-typeahead-focus>
       </ngbd-example-box>
+      <ngbd-example-box demoTitle="Typeahead with max-height" [snippets]="snippets" component="typeahead" demo="scroll">
+        <ngbd-typeahead-scroll></ngbd-typeahead-scroll>
+      </ngbd-example-box>
       <ngbd-example-box demoTitle="Formatted results" [snippets]="snippets" component="typeahead" demo="format">
         <ngbd-typeahead-format></ngbd-typeahead-format>
       </ngbd-example-box>

@@ -1,0 +1,10 @@
+A typeahead with a maximum height:
+<ul>
+  <li>uses the <code>maxHeight</code> input property to give a <code>max-height</code> CSS value</li>
+  <li>limit the height to make around 5 results fit</li>
+</ul>
+
+<label for="typeahead-scroll">Search for a state:</label>
+<input id="typeahead-scroll" type="text" class="form-control" [(ngModel)]="model" [ngbTypeahead]="search" [maxHeight]='maxHeight' />
+<hr>
+<pre>Model: {{ model | json }}</pre>
