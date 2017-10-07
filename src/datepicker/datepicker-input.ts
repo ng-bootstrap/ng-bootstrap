@@ -50,7 +50,8 @@ const NGB_DATEPICKER_VALIDATOR = {
     '(input)': 'manualDateChange($event.target.value)',
     '(change)': 'manualDateChange($event.target.value, true)',
     '(keyup.esc)': 'close()',
-    '(blur)': 'onBlur()'
+    '(blur)': 'onBlur()',
+    '[disabled]': 'disabled'
   },
   providers: [NGB_DATEPICKER_VALUE_ACCESSOR, NGB_DATEPICKER_VALIDATOR, NgbDatepickerService]
 })
@@ -141,6 +142,19 @@ export class NgbInputDatepicker implements OnChanges,
    */
   @Output() navigate = new EventEmitter<NgbDatepickerNavigateEvent>();
 
+  @Input()
+  get disabled() {
+    return !!this._disabled;
+  }
+  set disabled(value: any) {
+    let isDisabled = value != null && `${value}` !== 'false';
+    this._disabled = isDisabled;
+    if (this.isOpen()) {
+      this._setDatepickerDisabledState(isDisabled);
+    }
+  }
+
+  private _disabled: boolean;
   private _onChange = (_: any) => {};
   private _onTouched = () => {};
   private _validatorChange = () => {};
@@ -164,12 +178,7 @@ export class NgbInputDatepicker implements OnChanges,
 
   registerOnValidatorChange(fn: () => void): void { this._validatorChange = fn; };
 
-  setDisabledState(isDisabled: boolean): void {
-    this._renderer.setProperty(this._elRef.nativeElement, 'disabled', isDisabled);
-    if (this.isOpen()) {
-      this._cRef.instance.setDisabledState(isDisabled);
-    }
-  }
+  setDisabledState(isDisabled: boolean): void { this.disabled = isDisabled; }
 
   validate(c: AbstractControl): {[key: string]: any} {
     const value = c.value;
@@ -230,6 +239,8 @@ export class NgbInputDatepicker implements OnChanges,
 
       // focus handling
       this._cRef.instance.focus();
+
+      this._setDatepickerDisabledState(this.disabled);
 
       if (this.container === 'body') {
         window.document.querySelector(this.container).appendChild(this._cRef.location.nativeElement);
@@ -310,4 +321,6 @@ export class NgbInputDatepicker implements OnChanges,
       this._onTouched();
     }
   }
+
+  private _setDatepickerDisabledState(isDisabled: boolean) { this._cRef.instance.setDisabledState(isDisabled); }
 }
