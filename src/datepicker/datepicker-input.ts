@@ -312,6 +312,7 @@ export class NgbInputDatepicker implements OnChanges,
 
   private _subscribeForDatepickerOutputs(datepickerInstance: NgbDatepicker) {
     datepickerInstance.navigate.subscribe(date => this.navigate.emit(date));
+    datepickerInstance.onSelect.subscribe(() => this.close());
   }
 
   private _writeModelValue(model: NgbDate) {

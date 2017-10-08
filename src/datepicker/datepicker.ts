@@ -136,6 +136,7 @@ export class NgbDatepicker implements OnDestroy,
   model: DatepickerViewModel;
 
   private _subscription: Subscription;
+  private _selectSubscription: Subscription;
   /**
    * Reference for the custom template for the day display
    */
@@ -203,6 +204,11 @@ export class NgbDatepicker implements OnDestroy,
    */
   @Output() navigate = new EventEmitter<NgbDatepickerNavigateEvent>();
 
+  /**
+   * An event fired when select happens.
+   */
+  @Output() onSelect = new EventEmitter<NgbDateStruct>();
+
   onChange = (_: any) => {};
   onTouched = () => {};
 
@@ -221,6 +227,8 @@ export class NgbDatepicker implements OnDestroy,
     this.showWeekdays = config.showWeekdays;
     this.showWeekNumbers = config.showWeekNumbers;
     this.startDate = config.startDate;
+
+    this._selectSubscription = _service.select$.subscribe(newSelectedDate => { this.onSelect.emit(newSelectedDate); });
 
     this._subscription = _service.model$.subscribe(model => {
       const newDate = model.firstDate;
@@ -274,7 +282,10 @@ export class NgbDatepicker implements OnDestroy,
     this._service.open(date ? new NgbDate(date.year, date.month, 1) : this._calendar.getToday());
   }
 
-  ngOnDestroy() { this._subscription.unsubscribe(); }
+  ngOnDestroy() {
+    this._subscription.unsubscribe();
+    this._selectSubscription.unsubscribe();
+  }
 
   ngOnInit() {
     if (this.model === undefined) {
@@ -300,7 +311,7 @@ export class NgbDatepicker implements OnDestroy,
 
   onDateSelect(date: NgbDate) {
     this._service.focus(date);
-    this.writeValue(date);
+    this._service.manuallySelect(date);
   }
 
   onKeyDown(event: KeyboardEvent) { this._keyMapService.processKey(event); }
