@@ -64,6 +64,26 @@ describe('NgbInputDatepicker', () => {
       fixture.detectChanges();
       expect(document.activeElement).toBe(fixture.nativeElement.querySelector('ngb-datepicker'));
     });
+
+    it('should close datepicker on select', () => {
+      const fixture = createTestCmpt(`
+          <input ngbDatepicker #d="ngbDatepicker">
+          <button (click)="open(d)">Open</button>`);
+
+      const buttons = fixture.nativeElement.querySelectorAll('button');
+
+      // open
+      const button = fixture.nativeElement.querySelector('button');
+      button.click();
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('ngb-datepicker')).not.toBeNull();
+
+      // select
+      const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
+      dp.onSelect.emit();
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('ngb-datepicker')).toBeNull();
+    });
   });
 
   describe('ngModel interactions', () => {

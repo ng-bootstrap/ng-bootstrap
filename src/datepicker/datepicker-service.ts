@@ -5,17 +5,23 @@ import {Injectable} from '@angular/core';
 import {isInteger} from '../util/util';
 import {Subject} from 'rxjs/Subject';
 import {buildMonths, checkDateInRange, checkMinBeforeMax, isChangedDate, isDateSelectable} from './datepicker-tools';
+import {NgbDateStruct} from './ngb-date-struct';
 
 import {filter} from 'rxjs/operator/filter';
+import {Observable} from 'rxjs/Observable';
 
 @Injectable()
 export class NgbDatepickerService {
   private _model$ = new Subject<DatepickerViewModel>();
 
+  private _select$ = new Subject<NgbDateStruct>();
+
   private _state: DatepickerViewModel =
       {disabled: false, displayMonths: 1, firstDayOfWeek: 1, focusVisible: false, months: [], selectedDate: null};
 
   get model$() { return filter.call(this._model$.asObservable(), model => model.months.length > 0); }
+
+  get select$(): Observable<NgbDateStruct> { return this._select$.asObservable(); }
 
   set disabled(disabled: boolean) {
     if (this._state.disabled !== disabled) {
@@ -73,13 +79,21 @@ export class NgbDatepickerService {
 
   focusSelect() {
     if (isDateSelectable(this._state.months, this._state.focusDate)) {
-      this.select(this._state.focusDate);
+      this.manuallySelect(this._state.focusDate);
     }
   }
 
   open(date: NgbDate) {
     if (!this._state.disabled && this._calendar.isValid(date)) {
       this._nextState({firstDate: date});
+    }
+  }
+
+  manuallySelect(date: NgbDate) {
+    const validDate = this.toValidDate(date, null);
+    if (isDateSelectable(this._state.months, validDate)) {
+      this.select(validDate);
+      this._select$.next(validDate);
     }
   }
 
