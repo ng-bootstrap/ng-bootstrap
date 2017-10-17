@@ -36,6 +36,7 @@ import {NgbCalendar} from './ngb-calendar';
     }
     .btn-link {
       cursor: pointer;
+      border: 0;
       outline: 0;
     }
     .btn-link[disabled] {
