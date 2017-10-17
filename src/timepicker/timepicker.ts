@@ -58,6 +58,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
     }
 
     .btn-link {
+      border: 0;
       outline: 0;
     }
 
