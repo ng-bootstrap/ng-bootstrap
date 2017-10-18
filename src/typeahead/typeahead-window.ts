@@ -90,20 +90,16 @@ export interface NoResultsTemplateContext {
       </ng-template>
     </ng-template>
     <ng-template [ngTemplateOutlet]="windowTemplate || wt"
-      [ngOutletContext]="_getWindowContext()"> 
+      [ngTemplateOutletContext]="{results: results, term: term, context: this}"> 
     </ng-template>
     <ng-template *ngIf="!results || results.length === 0"
       [ngTemplateOutlet]="noResultsTemplate"
-      [ngOutletContext]="_getNoResultsContext()">
+      [ngTemplateOutletContext]="{term: term}">
     </ng-template>
   `
 })
 export class NgbTypeaheadWindow implements OnInit {
-  private _results: Array<any>;
-  private _term: string;
-  private _context: WindowTemplateContext = {results: this._results, term: this._term, context: this};
   activeIdx = 0;
-
 
   /**
    *  The id for the typeahead widnow. The id should be unique and the same
@@ -120,27 +116,13 @@ export class NgbTypeaheadWindow implements OnInit {
    * Typeahead match results to be displayed. Created as get and set so the ngOutletContext is only recreated on data
    * changes.
    */
-  @Input()
-  get results() {
-    return this._results;
-  };
-  set results(value: any) {
-    this._results = value;
-    this._context.results = value;
-  }
+  @Input() results;
 
   /**
    * Search term used to get current results. Created as get and set so the ngOutletContext is only recreated on data
    * changes.
    */
-  @Input()
-  get term(): string {
-    return this._term;
-  };
-  set term(value: string) {
-    this._term = value;
-    this._context.term = value;
-  }
+  @Input() term: string;
 
   /**
    * A function used to format a given result before display. This function should return a formatted string without any
@@ -170,10 +152,6 @@ export class NgbTypeaheadWindow implements OnInit {
 
   @Output('activeChange') activeChangeEvent = new EventEmitter();
 
-  _getWindowContext() { return this._context; }
-
-
-  _getNoResultsContext() { return {term: this.term}; }
   getActive() { return this.results[this.activeIdx]; }
 
   markActive(activeIdx: number) {
