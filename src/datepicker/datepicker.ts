@@ -24,6 +24,7 @@ import {toInteger} from '../util/util';
 import {DayTemplateContext} from './datepicker-day-template-context';
 import {NgbDatepickerConfig} from './datepicker-config';
 import {NgbDateStruct} from './ngb-date-struct';
+import {NgbDateAdapter} from './ngb-date-adapter';
 import {NgbDatepickerI18n} from './datepicker-i18n';
 import {isChangedDate} from './datepicker-tools';
 
@@ -209,7 +210,7 @@ export class NgbDatepicker implements OnDestroy,
   constructor(
       private _keyMapService: NgbDatepickerKeyMapService, public _service: NgbDatepickerService,
       private _calendar: NgbCalendar, public i18n: NgbDatepickerI18n, config: NgbDatepickerConfig,
-      private _cd: ChangeDetectorRef, private _elementRef: ElementRef) {
+      private _cd: ChangeDetectorRef, private _elementRef: ElementRef, private _ngbDateAdapter: NgbDateAdapter<any>) {
     this.dayTemplate = config.dayTemplate;
     this.displayMonths = config.displayMonths;
     this.firstDayOfWeek = config.firstDayOfWeek;
@@ -233,9 +234,7 @@ export class NgbDatepicker implements OnDestroy,
       // handling selection change
       if (isChangedDate(newSelectedDate, oldSelectedDate)) {
         this.onTouched();
-        this.onChange(
-            newSelectedDate ? {year: newSelectedDate.year, month: newSelectedDate.month, day: newSelectedDate.day} :
-                              null);
+        this.onChange(this._ngbDateAdapter.toModel(newSelectedDate));
       }
 
       // emitting navigation event if the first month changes
@@ -300,7 +299,7 @@ export class NgbDatepicker implements OnDestroy,
 
   onDateSelect(date: NgbDate) {
     this._service.focus(date);
-    this.writeValue(date);
+    this.writeValue(this._ngbDateAdapter.toModel(date));
   }
 
   onKeyDown(event: KeyboardEvent) { this._keyMapService.processKey(event); }
@@ -326,7 +325,7 @@ export class NgbDatepicker implements OnDestroy,
 
   showFocus(focusVisible: boolean) { this._service.focusVisible = focusVisible; }
 
-  writeValue(value) { this._service.select(value); }
+  writeValue(value) { this._service.select(this._ngbDateAdapter.fromModel(value)); }
 
   private _setDates() {
     const startDate = this._service.toValidDate(this.startDate, this._calendar.getToday());

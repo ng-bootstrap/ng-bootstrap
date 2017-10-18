@@ -12,6 +12,7 @@ import {DEMO_SNIPPETS} from './demos';
       <ngbd-api-docs-class type="NgbDatepickerNavigateEvent"></ngbd-api-docs-class>
       <ngbd-api-docs-class type="NgbDatepickerI18n"></ngbd-api-docs-class>
       <ngbd-api-docs-class type="NgbDateParserFormatter"></ngbd-api-docs-class>
+      <ngbd-api-docs-class type="NgbDateAdapter"></ngbd-api-docs-class>
       <ngbd-api-docs-config type="NgbDatepickerConfig"></ngbd-api-docs-config>
       <ngbd-example-box demoTitle="Basic datepicker" [snippets]="snippets" component="datepicker" demo="basic">
         <ngbd-datepicker-basic></ngbd-datepicker-basic>
@@ -28,6 +29,9 @@ import {DEMO_SNIPPETS} from './demos';
       <ngbd-example-box demoTitle="Disabled datepicker" [snippets]="snippets" component="datepicker" demo="disabled">
         <ngbd-datepicker-disabled></ngbd-datepicker-disabled>
       </ngbd-example-box>
+      <ngbd-example-box demoTitle="Custom date adapter" [snippets]="snippets" component="datepicker" demo="adapter">
+        <ngbd-datepicker-adapter></ngbd-datepicker-adapter>
+      </ngbd-example-box>
       <ngbd-example-box demoTitle="Internationalization of datepickers" [snippets]="snippets" component="datepicker" demo="i18n">
         <ngbd-datepicker-i18n></ngbd-datepicker-i18n>
       </ngbd-example-box>
@@ -37,6 +41,7 @@ import {DEMO_SNIPPETS} from './demos';
       <ngbd-example-box demoTitle="Alternative calendars" [snippets]="snippets" component="datepicker" demo="calendars">
         <ngbd-datepicker-calendars></ngbd-datepicker-calendars>
       </ngbd-example-box>
+
       <ngbd-example-box demoTitle="Global configuration of datepickers" [snippets]="snippets" component="datepicker" demo="config">
         <ngbd-datepicker-config></ngbd-datepicker-config>
       </ngbd-example-box>
