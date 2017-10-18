@@ -58,6 +58,7 @@ const NGB_DATEPICKER_VALIDATOR = {
 export class NgbInputDatepicker implements OnChanges,
     OnDestroy, ControlValueAccessor, Validator {
   private _cRef: ComponentRef<NgbDatepicker> = null;
+  private _disabled: boolean;
   private _model: NgbDate;
   private _zoneSubscription: any;
 
@@ -144,17 +145,16 @@ export class NgbInputDatepicker implements OnChanges,
 
   @Input()
   get disabled() {
-    return !!this._disabled;
+    return this._disabled;
   }
   set disabled(value: any) {
-    let isDisabled = value != null && `${value}` !== 'false';
-    this._disabled = isDisabled;
+    this._disabled = value === '' || (value && value !== 'false');
+
     if (this.isOpen()) {
-      this._setDatepickerDisabledState(isDisabled);
+      this._cRef.instance.setDisabledState(this._disabled);
     }
   }
 
-  private _disabled: boolean;
   private _onChange = (_: any) => {};
   private _onTouched = () => {};
   private _validatorChange = () => {};
@@ -240,7 +240,7 @@ export class NgbInputDatepicker implements OnChanges,
       // focus handling
       this._cRef.instance.focus();
 
-      this._setDatepickerDisabledState(this.disabled);
+      this._cRef.instance.setDisabledState(this.disabled);
 
       if (this.container === 'body') {
         window.document.querySelector(this.container).appendChild(this._cRef.location.nativeElement);
@@ -321,6 +321,4 @@ export class NgbInputDatepicker implements OnChanges,
       this._onTouched();
     }
   }
-
-  private _setDatepickerDisabledState(isDisabled: boolean) { this._cRef.instance.setDisabledState(isDisabled); }
 }
