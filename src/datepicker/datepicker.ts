@@ -98,14 +98,14 @@ export interface NgbDatepickerNavigateEvent {
 
     <div class="ngb-dp-header bg-light pt-1 rounded-top" [style.height.rem]="getHeaderHeight()"
          [style.marginBottom.rem]="-getHeaderMargin()">
-      <ngb-datepicker-navigation *ngIf="navigation !== 'none'"
+      <ngb-datepicker-navigation *ngIf="model.navigation !== 'none'"
         [date]="model.firstDate"
         [minDate]="model.minDate"
         [maxDate]="model.maxDate"
         [months]="model.months.length"
         [disabled]="model.disabled"
         [showWeekNumbers]="showWeekNumbers"
-        [showSelect]="navigation === 'select'"
+        [showSelect]="model.navigation === 'select'"
         (navigate)="onNavigateEvent($event)"
         (select)="onNavigateDateSelect($event)">
       </ngb-datepicker-navigation>
@@ -114,7 +114,7 @@ export interface NgbDatepickerNavigateEvent {
     <div class="ngb-dp-months d-flex px-1 pb-1">
       <ng-template ngFor let-month [ngForOf]="model.months" let-i="index">
         <div class="ngb-dp-month d-block ml-3">
-          <div *ngIf="navigation !== 'select' || displayMonths > 1" class="ngb-dp-month-name text-center">
+          <div *ngIf="model.navigation !== 'select' || displayMonths > 1" class="ngb-dp-month-name text-center">
             {{ i18n.getMonthFullName(month.number) }} {{ month.year }}
           </div>
           <ngb-datepicker-month-view
@@ -293,6 +293,7 @@ export class NgbDatepicker implements OnDestroy,
       this._service.displayMonths = toInteger(this.displayMonths);
       this._service.markDisabled = this.markDisabled;
       this._service.firstDayOfWeek = this.firstDayOfWeek;
+      this._service.navigation = this.navigation;
       this._setDates();
     }
   }
@@ -306,6 +307,9 @@ export class NgbDatepicker implements OnDestroy,
     }
     if (changes['firstDayOfWeek']) {
       this._service.firstDayOfWeek = this.firstDayOfWeek;
+    }
+    if (changes['navigation']) {
+      this._service.navigation = this.navigation;
     }
     this._setDates();
   }
