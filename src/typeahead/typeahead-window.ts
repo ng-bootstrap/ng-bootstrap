@@ -2,26 +2,6 @@ import {Component, Input, Output, EventEmitter, TemplateRef, OnInit} from '@angu
 
 import {toString} from '../util/util';
 
-/**
- * Context for the typeahead window template in case you want to override the default one
- */
-export interface WindowTemplateContext {
-  /**
-   * Your typeahead results data model
-   */
-  results: any;
-
-  /**
-   * Search term from the input used to get current result
-   */
-  term: string;
-
-  /**
-   * Typeahead window context
-   */
-  context: NgbTypeaheadWindow;
-}
-
 
 /**
  * Context for the typeahead window template in case you want to override the default one

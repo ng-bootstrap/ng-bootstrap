@@ -177,12 +177,12 @@ describe('ngb-typeahead', () => {
       const compiled = fixture.nativeElement;
 
       fixture.whenStable().then(() => {
-      changeInput(compiled, 'findNothing');
-      fixture.detectChanges();
+        changeInput(compiled, 'findNothing');
+        fixture.detectChanges();
 
-      expectWindowResults(compiled, []);
+        expectWindowResults(compiled, []);
 
-      const window = getWindow(compiled);
+        const window = getWindow(compiled);
       });
     });
 
