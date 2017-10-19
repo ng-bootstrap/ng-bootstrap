@@ -160,6 +160,11 @@ describe('NgbInputDatepicker', () => {
          expect(input.disabled).toBeTruthy();
          expect(buttonInDatePicker.disabled).toBeTruthy();
 
+         const dayElements = fixture.nativeElement.querySelectorAll('ngb-datepicker-month-view .ngb-dp-day');
+         expect(dayElements[1]).toHaveCssClass('disabled');
+         expect(dayElements[11]).toHaveCssClass('disabled');
+         expect(dayElements[21]).toHaveCssClass('disabled');
+
          fixture.componentInstance.isDisabled = false;
          fixture.detectChanges();
          tick();
@@ -168,7 +173,50 @@ describe('NgbInputDatepicker', () => {
          expect(fixture.nativeElement.querySelector('ngb-datepicker')).not.toBeNull();
          expect(input.disabled).toBeFalsy();
          expect(buttonInDatePicker.disabled).toBeFalsy();
+
+         const dayElements2 = fixture.nativeElement.querySelectorAll('ngb-datepicker-month-view .ngb-dp-day');
+         expect(dayElements2[1]).not.toHaveCssClass('disabled');
+         expect(dayElements2[11]).not.toHaveCssClass('disabled');
+         expect(dayElements2[21]).not.toHaveCssClass('disabled');
        }));
+
+    it('should propagate disabled state without form control', () => {
+      const fixture = createTestCmpt(`
+        <input ngbDatepicker #d="ngbDatepicker" [disabled]="isDisabled">
+        <button (click)="open(d)">Open</button>`);
+      fixture.componentInstance.isDisabled = true;
+      fixture.detectChanges();
+
+      const button = fixture.nativeElement.querySelector('button');
+      const input = fixture.nativeElement.querySelector('input');
+
+      expect(input.disabled).toBeTruthy();
+
+      button.click();  // open
+      fixture.detectChanges();
+      const buttonInDatePicker = fixture.nativeElement.querySelector('ngb-datepicker button');
+
+      expect(fixture.nativeElement.querySelector('ngb-datepicker')).not.toBeNull();
+      expect(input.disabled).toBeTruthy();
+      expect(buttonInDatePicker.disabled).toBeTruthy();
+
+      const dayElements = fixture.nativeElement.querySelectorAll('ngb-datepicker-month-view .ngb-dp-day');
+      expect(dayElements[1]).toHaveCssClass('disabled');
+      expect(dayElements[11]).toHaveCssClass('disabled');
+      expect(dayElements[21]).toHaveCssClass('disabled');
+
+      fixture.componentInstance.isDisabled = false;
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.querySelector('ngb-datepicker')).not.toBeNull();
+      expect(input.disabled).toBeFalsy();
+      expect(buttonInDatePicker.disabled).toBeFalsy();
+
+      const dayElements2 = fixture.nativeElement.querySelectorAll('ngb-datepicker-month-view .ngb-dp-day');
+      expect(dayElements2[1]).not.toHaveCssClass('disabled');
+      expect(dayElements2[11]).not.toHaveCssClass('disabled');
+      expect(dayElements2[21]).not.toHaveCssClass('disabled');
+    });
 
     it('should propagate touched state on (blur)', fakeAsync(() => {
          const fixture = createTestCmpt(`<input ngbDatepicker [(ngModel)]="date">`);
@@ -201,6 +249,7 @@ describe('NgbInputDatepicker', () => {
          expect(inputDebugEl.classes['ng-touched']).toBeTruthy();
        }));
   });
+
 
   describe('manual data entry', () => {
 
@@ -520,6 +569,49 @@ describe('NgbInputDatepicker', () => {
       dp.navigateTo({year: 2018, month: 4});
       expect(fixture.componentInstance.onNavigate)
           .toHaveBeenCalledWith({current: {year: 2016, month: 9}, next: {year: 2018, month: 4}});
+    });
+  });
+
+  describe('container', () => {
+
+    it('should be appended to the element matching the selector passed to "container"', () => {
+      const selector = 'body';
+      const fixture = createTestCmpt(`
+          <input ngbDatepicker #d="ngbDatepicker" container="${selector}">
+          <button (click)="open(d)">Open</button>
+      `);
+
+      // open date-picker
+      const button = fixture.nativeElement.querySelector('button');
+      button.click();
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.querySelector('ngb-datepicker')).toBeNull();
+      expect(document.querySelector(selector).querySelector('ngb-datepicker')).not.toBeNull();
+    });
+
+    it('should properly destroy datepicker window when the "container" option is used', () => {
+      const selector = 'body';
+      const fixture = createTestCmpt(`
+          <input ngbDatepicker #d="ngbDatepicker" container="${selector}">
+          <button (click)="open(d)">Open</button>
+          <button (click)="close(d)">Close</button>
+      `);
+
+      // open date-picker
+      const buttons = fixture.nativeElement.querySelectorAll('button');
+      buttons[0].click();  // open button
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.querySelector('ngb-datepicker')).toBeNull();
+      expect(document.querySelector(selector).querySelector('ngb-datepicker')).not.toBeNull();
+
+      // close date-picker
+      buttons[1].click();  // close button
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.querySelector('ngb-datepicker')).toBeNull();
+      expect(document.querySelector(selector).querySelector('ngb-datepicker')).toBeNull();
     });
   });
 });

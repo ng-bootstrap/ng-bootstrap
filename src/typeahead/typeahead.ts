@@ -23,7 +23,7 @@ import {letProto} from 'rxjs/operator/let';
 import {_do} from 'rxjs/operator/do';
 import {switchMap} from 'rxjs/operator/switchMap';
 import {fromEvent} from 'rxjs/observable/fromEvent';
-import {positionElements} from '../util/positioning';
+import {positionElements, PlacementArray} from '../util/positioning';
 import {NgbTypeaheadWindow, ResultTemplateContext} from './typeahead-window';
 import {PopupService} from '../util/popup';
 import {toString, isDefined} from '../util/util';
@@ -136,6 +136,13 @@ export class NgbTypeahead implements ControlValueAccessor,
    */
   @Input() showHint: boolean;
 
+  /** Placement of a typeahead accepts:
+   *    "top", "top-left", "top-right", "bottom", "bottom-left", "bottom-right",
+   *    "left", "left-top", "left-bottom", "right", "right-top", "right-bottom"
+   * and array of above values.
+  */
+  @Input() placement: PlacementArray = 'bottom-left';
+
   /**
    * An event emitted when a match is selected. Event payload is of type NgbTypeaheadSelectItemEvent.
    */
@@ -155,6 +162,7 @@ export class NgbTypeahead implements ControlValueAccessor,
     this.editable = config.editable;
     this.focusFirst = config.focusFirst;
     this.showHint = config.showHint;
+    this.placement = config.placement;
 
     this._valueChanges = fromEvent(_elementRef.nativeElement, 'input', ($event) => $event.target.value);
 
@@ -166,7 +174,7 @@ export class NgbTypeahead implements ControlValueAccessor,
     this._zoneSubscription = ngZone.onStable.subscribe(() => {
       if (this.isPopupOpen()) {
         positionElements(
-            this._elementRef.nativeElement, this._windowRef.location.nativeElement, 'bottom-left',
+            this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
             this.container === 'body');
       }
     });

@@ -8,7 +8,7 @@ export interface NgbDateStruct {
   year: number;
 
   /**
-   * The month, with default calendar we use ISO 8601: 1=Jan ... 12=Dec
+   * The month, for example 1=Jan ... 12=Dec
    */
   month: number;
 

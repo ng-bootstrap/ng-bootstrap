@@ -367,6 +367,43 @@ describe('ngb-modal', () => {
     });
   });
 
+  describe('beforeDismiss options', () => {
+
+    it('should not dismiss when the callback returns false', () => {
+      const modalInstance = fixture.componentInstance.openTplDismiss({beforeDismiss: () => { return false; }});
+      fixture.detectChanges();
+      expect(fixture.nativeElement).toHaveModal();
+
+      (<HTMLElement>document.querySelector('button#dismiss')).click();
+      fixture.detectChanges();
+      expect(fixture.nativeElement).toHaveModal();
+
+      modalInstance.close();
+      fixture.detectChanges();
+      expect(fixture.nativeElement).not.toHaveModal();
+    });
+
+    it('should dimiss when the callback does not return false', () => {
+      fixture.componentInstance.openTplDismiss({beforeDismiss: () => {}});
+      fixture.detectChanges();
+      expect(fixture.nativeElement).toHaveModal();
+
+      (<HTMLElement>document.querySelector('button#dismiss')).click();
+      fixture.detectChanges();
+      expect(fixture.nativeElement).not.toHaveModal();
+    });
+
+    it('should dismiss when the callback is not defined', () => {
+      fixture.componentInstance.openTplDismiss({});
+      fixture.detectChanges();
+      expect(fixture.nativeElement).toHaveModal();
+
+      (<HTMLElement>document.querySelector('button#dismiss')).click();
+      fixture.detectChanges();
+      expect(fixture.nativeElement).not.toHaveModal();
+    });
+  });
+
   describe('container options', () => {
 
     it('should attach window and backdrop elements to the specified container', () => {
