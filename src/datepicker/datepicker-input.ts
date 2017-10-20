@@ -58,7 +58,7 @@ const NGB_DATEPICKER_VALIDATOR = {
 export class NgbInputDatepicker implements OnChanges,
     OnDestroy, ControlValueAccessor, Validator {
   private _cRef: ComponentRef<NgbDatepicker> = null;
-  private _disabled: boolean;
+  private _disabled = false;
   private _model: NgbDate;
   private _zoneSubscription: any;
 
@@ -225,10 +225,10 @@ export class NgbInputDatepicker implements OnChanges,
       this._cRef = this._vcRef.createComponent(cf);
 
       this._applyPopupStyling(this._cRef.location.nativeElement);
-      this._cRef.instance.writeValue(this._model);
       this._applyDatepickerInputs(this._cRef.instance);
       this._subscribeForDatepickerOutputs(this._cRef.instance);
       this._cRef.instance.ngOnInit();
+      this._cRef.instance.writeValue(this._model);
 
       // date selection event handling
       this._cRef.instance.registerOnChange((selectedDate) => {
@@ -312,7 +312,7 @@ export class NgbInputDatepicker implements OnChanges,
 
   private _subscribeForDatepickerOutputs(datepickerInstance: NgbDatepicker) {
     datepickerInstance.navigate.subscribe(date => this.navigate.emit(date));
-    datepickerInstance.onSelect.subscribe(() => this.close());
+    datepickerInstance.select.subscribe(() => { this.close(); });
   }
 
   private _writeModelValue(model: NgbDate) {

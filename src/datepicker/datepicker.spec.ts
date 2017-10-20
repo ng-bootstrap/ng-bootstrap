@@ -444,7 +444,7 @@ describe('ngb-datepicker', () => {
 
   it('should emit select event when select date', () => {
     const fixture =
-        createTestComponent(`<ngb-datepicker #dp [startDate]="date" (onSelect)="onSelect($event)"></ngb-datepicker>`);
+        createTestComponent(`<ngb-datepicker #dp [startDate]="date" (select)="onSelect($event)"></ngb-datepicker>`);
 
     spyOn(fixture.componentInstance, 'onSelect');
     let dates = getDates(fixture.nativeElement);
@@ -456,7 +456,7 @@ describe('ngb-datepicker', () => {
 
   it('should emit select event twice when select same date twice', () => {
     const fixture =
-        createTestComponent(`<ngb-datepicker #dp [startDate]="date" (onSelect)="onSelect($event)"></ngb-datepicker>`);
+        createTestComponent(`<ngb-datepicker #dp [startDate]="date" (select)="onSelect($event)"></ngb-datepicker>`);
 
     spyOn(fixture.componentInstance, 'onSelect');
     let dates = getDates(fixture.nativeElement);
@@ -472,7 +472,7 @@ describe('ngb-datepicker', () => {
 
   it('should emit select event twice when press enter key twice', () => {
     const fixture =
-        createTestComponent(`<ngb-datepicker #dp [startDate]="date" (onSelect)="onSelect($event)"></ngb-datepicker>`);
+        createTestComponent(`<ngb-datepicker #dp [startDate]="date" (select)="onSelect($event)"></ngb-datepicker>`);
     const datepicker = fixture.debugElement.query(By.directive(NgbDatepicker));
 
     spyOn(fixture.componentInstance, 'onSelect');
@@ -493,7 +493,7 @@ describe('ngb-datepicker', () => {
 
   it('should emit select event twice when press space key twice', () => {
     const fixture =
-        createTestComponent(`<ngb-datepicker #dp [startDate]="date" (onSelect)="onSelect($event)"></ngb-datepicker>`);
+        createTestComponent(`<ngb-datepicker #dp [startDate]="date" (select)="onSelect($event)"></ngb-datepicker>`);
     const datepicker = fixture.debugElement.query(By.directive(NgbDatepicker));
 
     spyOn(fixture.componentInstance, 'onSelect');

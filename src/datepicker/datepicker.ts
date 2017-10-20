@@ -205,9 +205,10 @@ export class NgbDatepicker implements OnDestroy,
   @Output() navigate = new EventEmitter<NgbDatepickerNavigateEvent>();
 
   /**
-   * An event fired when select happens.
+   * An event fired when user selects a date using keyboard or mouse.
+   * The payload of the event is currently selected NgbDateStruct.
    */
-  @Output() onSelect = new EventEmitter<NgbDateStruct>();
+  @Output() select = new EventEmitter<NgbDateStruct>();
 
   onChange = (_: any) => {};
   onTouched = () => {};
@@ -228,7 +229,7 @@ export class NgbDatepicker implements OnDestroy,
     this.showWeekNumbers = config.showWeekNumbers;
     this.startDate = config.startDate;
 
-    this._selectSubscription = _service.select$.subscribe(newSelectedDate => { this.onSelect.emit(newSelectedDate); });
+    this._selectSubscription = _service.select$.subscribe(date => { this.select.emit(date.toStruct()); });
 
     this._subscription = _service.model$.subscribe(model => {
       const newDate = model.firstDate;
@@ -311,7 +312,7 @@ export class NgbDatepicker implements OnDestroy,
 
   onDateSelect(date: NgbDate) {
     this._service.focus(date);
-    this._service.manuallySelect(date);
+    this._service.select(date, {emitEvent: true});
   }
 
   onKeyDown(event: KeyboardEvent) { this._keyMapService.processKey(event); }
