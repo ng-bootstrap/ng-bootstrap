@@ -80,7 +80,7 @@ describe('NgbInputDatepicker', () => {
 
       // select
       const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
-      dp.onSelect.emit();
+      dp.select.emit();
       fixture.detectChanges();
       expect(fixture.nativeElement.querySelector('ngb-datepicker')).toBeNull();
     });
