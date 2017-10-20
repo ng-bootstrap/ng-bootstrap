@@ -12,4 +12,5 @@ export class NgbProgressbarConfig {
   striped = false;
   type: string;
   showValue: boolean = false;
+  height: string;
 }

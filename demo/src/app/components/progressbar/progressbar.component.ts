@@ -19,6 +19,9 @@ import {DEMO_SNIPPETS} from './demos';
       <ngbd-example-box demoTitle="Progress bars with custom labels" [snippets]="snippets" component="progressbar" demo="labels">
         <ngbd-progressbar-labels></ngbd-progressbar-labels>
       </ngbd-example-box>
+      <ngbd-example-box demoTitle="Progress bars with height" [snippets]="snippets" component="progressbar" demo="height">
+        <ngbd-progressbar-height></ngbd-progressbar-height>
+      </ngbd-example-box>
       <ngbd-example-box demoTitle="Global configuration of progress bars" [snippets]="snippets" component="progressbar" demo="config">
         <ngbd-progressbar-config></ngbd-progressbar-config>
       </ngbd-example-box>
