@@ -14,6 +14,10 @@ function getBarWidth(nativeEl): string {
   return getProgressbar(nativeEl).style.width;
 }
 
+function getBarHeight(nativeEl): string {
+  return nativeEl.querySelector('.progress').style.height;
+}
+
 function getBarValue(nativeEl): number {
   return parseInt(getProgressbar(nativeEl).getAttribute('aria-valuenow'), 10);
 }
@@ -202,6 +206,13 @@ describe('ngb-progressbar', () => {
       const fixture = createTestComponent(html);
 
       expect(fixture.nativeElement.textContent).toContain('100%');
+    });
+
+    it('should accepts height values', () => {
+      const html = '<ngb-progressbar [value]="150" height="10px"></ngb-progressbar>';
+      const fixture = createTestComponent(html);
+
+      expect(getBarHeight(fixture.nativeElement)).toBe('10px');
     });
   });
 
