@@ -141,7 +141,7 @@ function startKarmaServer(isTddMode, isSaucelabs, done) {
   if (isSaucelabs) {
     config['reporters'] = ['dots', 'saucelabs'];
     config['browsers'] =
-        ['SL_CHROME', 'SL_FIREFOX', 'SL_IE10', 'SL_IE11', 'SL_EDGE13', 'SL_EDGE14', 'SL_SAFARI9', 'SL_SAFARI10'];
+        ['SL_CHROME', 'SL_FIREFOX', 'SL_IE10', 'SL_IE11', 'SL_EDGE14', 'SL_EDGE15', 'SL_SAFARI10', 'SL_SAFARI11'];
 
     if (process.env.TRAVIS) {
       var buildId = `TRAVIS #${process.env.TRAVIS_BUILD_NUMBER} (${process.env.TRAVIS_BUILD_ID})`;
