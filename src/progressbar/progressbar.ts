@@ -1,4 +1,12 @@
-import {Component, Input, ChangeDetectionStrategy} from '@angular/core';
+import {
+  Component,
+  Input,
+  ChangeDetectionStrategy,
+  ContentChildren,
+  QueryList,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
 import {getValueInRange} from '../util/util';
 import {NgbProgressbarConfig} from './progressbar-config';
 
@@ -9,12 +17,15 @@ import {NgbProgressbarConfig} from './progressbar-config';
   selector: 'ngb-progressbar',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="progress" [style.height]="height">
+    <ng-template #bar>
       <div class="progress-bar{{type ? ' bg-' + type : ''}}{{animated ? ' progress-bar-animated' : ''}}{{striped ?
-    ' progress-bar-striped' : ''}}" role="progressbar" [style.width.%]="getPercentValue()"
-    [attr.aria-valuenow]="getValue()" aria-valuemin="0" [attr.aria-valuemax]="max">
-        <span *ngIf="showValue">{{getPercentValue()}}%</span><ng-content></ng-content>
-      </div>
+        ' progress-bar-striped' : ''}}" role="progressbar" [style.width.%]="getPercentValue()"
+        [attr.aria-valuenow]="getValue()" aria-valuemin="0" [attr.aria-valuemax]="max">
+            <span *ngIf="showValue">{{getPercentValue()}}%</span><ng-content></ng-content>
+          </div>
+    </ng-template>
+    <div class="progress" [style.height]="height">
+      <ng-template [ngTemplateOutlet]="bar"></ng-template>
     </div>
   `
 })
@@ -55,6 +66,8 @@ export class NgbProgressbar {
    */
   @Input() height: string;
 
+  @ViewChild('bar') barTplRef: TemplateRef<any>;
+
   constructor(config: NgbProgressbarConfig) {
     this.max = config.max;
     this.animated = config.animated;
@@ -67,4 +80,26 @@ export class NgbProgressbar {
   getValue() { return getValueInRange(this.value, this.max); }
 
   getPercentValue() { return 100 * this.getValue() / this.max; }
+}
+
+/**
+ * Directive that can be used to show stacked progress bars.
+ */
+@Component({
+  selector: 'ngb-progressbar-stack',
+  template: `
+    <div class="progress" [style.height]="height">
+      <ng-template ngFor let-bar [ngForOf]="bars">
+        <ng-template [ngTemplateOutlet]="bar.barTplRef"></ng-template>
+      </ng-template>
+    </div>
+  `
+})
+export class NgbProgressbarStack {
+  /**
+   * Height of the progress bar. Accepts any valid CSS height values, ex. '2rem'
+   */
+  @Input() height: string;
+
+  @ContentChildren(NgbProgressbar) bars: QueryList<NgbProgressbar>;
 }

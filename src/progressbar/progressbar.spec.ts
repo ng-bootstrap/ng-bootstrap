@@ -10,8 +10,16 @@ import {NgbProgressbarConfig} from './progressbar-config';
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
+function getProgressBarWidth(barEl): string {
+  return barEl.style.width;
+}
+
+function getProgressBarValue(barEl): number {
+  return parseInt(barEl.getAttribute('aria-valuenow'), 10);
+}
+
 function getBarWidth(nativeEl): string {
-  return getProgressbar(nativeEl).style.width;
+  return getProgressBarWidth(getProgressbar(nativeEl));
 }
 
 function getBarHeight(nativeEl): string {
@@ -19,11 +27,15 @@ function getBarHeight(nativeEl): string {
 }
 
 function getBarValue(nativeEl): number {
-  return parseInt(getProgressbar(nativeEl).getAttribute('aria-valuenow'), 10);
+  return getProgressBarValue(getProgressbar(nativeEl));
 }
 
 function getProgressbar(nativeEl: Element): HTMLElement {
   return nativeEl.querySelector('.progress-bar') as HTMLElement;
+}
+
+function getStackedProgressBars(nativeEl: Element): NodeListOf<Element> {
+  return nativeEl.querySelectorAll('.progress-bar');
 }
 
 describe('ngb-progressbar', () => {
@@ -266,6 +278,75 @@ describe('ngb-progressbar', () => {
   });
 });
 
+describe('ngb-progressbar-stack', () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbProgressbarModule.forRoot()]});
+  });
+
+  it('should render bars and display correct value for each bar', () => {
+    const fixture = createTestComponent(`
+      <ngb-progressbar-stack>
+        <ngb-progressbar [showValue]="true" [value]="100" [max]="200" type="warning" 
+                         [striped]="true" [animated]="false"></ngb-progressbar>
+        <ngb-progressbar [showValue]="true" [value]="55" type="success" [striped]="false" [animated]="true"></ngb-progressbar>
+      </ngb-progressbar-stack>
+    `);
+
+    const bars = getStackedProgressBars(fixture.nativeElement);
+
+    expect(bars.length).toBe(2);
+    expect(getProgressBarWidth(bars[0])).toBe('50%');
+    expect(getProgressBarValue(bars[0])).toBe(100);
+    expect(bars[0]).toHaveCssClass('bg-warning');
+    expect(bars[0]).toHaveCssClass('progress-bar-striped');
+    expect(bars[0]).not.toHaveCssClass('progress-bar-animated');
+
+    expect(getProgressBarWidth(bars[1])).toBe('55%');
+    expect(getProgressBarValue(bars[1])).toBe(55);
+    expect(bars[1]).toHaveCssClass('bg-success');
+    expect(bars[1]).not.toHaveCssClass('progress-bar-striped');
+    expect(bars[1]).toHaveCssClass('progress-bar-animated');
+  });
+
+  it('should set height value in stack level and ignore height in progressbar', () => {
+    const fixture = createTestComponent(`
+      <ngb-progressbar-stack height="10px">
+        <ngb-progressbar [value]="10" height="1px"></ngb-progressbar>
+        <ngb-progressbar [value]="20" height="2px"></ngb-progressbar>
+        <ngb-progressbar [value]="30" height="3px"></ngb-progressbar>        
+      </ngb-progressbar-stack>
+    `);
+
+    expect(getBarHeight(fixture.nativeElement)).toBe('10px');
+  });
+
+  it('should conditionally show and hide stacked bars', () => {
+    const fixture = createTestComponent(`
+      <ngb-progressbar-stack>
+        <ngb-progressbar [value]="10" *ngIf="showStackedBar"></ngb-progressbar>
+        <ngb-progressbar [value]="20"></ngb-progressbar>
+        <ngb-progressbar [value]="30"></ngb-progressbar>        
+      </ngb-progressbar-stack>
+    `);
+
+    let bars = getStackedProgressBars(fixture.nativeElement);
+    expect(bars.length).toBe(3);
+    expect(getProgressBarValue(bars[0])).toBe(10);
+
+    fixture.componentInstance.showStackedBar = false;
+    fixture.detectChanges();
+    bars = getStackedProgressBars(fixture.nativeElement);
+    expect(bars.length).toBe(2);
+    expect(getProgressBarValue(bars[0])).toBe(20);
+
+    fixture.componentInstance.showStackedBar = true;
+    fixture.detectChanges();
+    bars = getStackedProgressBars(fixture.nativeElement);
+    expect(bars.length).toBe(3);
+    expect(getProgressBarValue(bars[0])).toBe(10);
+  });
+});
+
 @Component({selector: 'test-cmp', template: ''})
 class TestComponent {
   value = 10;
@@ -273,4 +354,6 @@ class TestComponent {
   animated = true;
   striped = true;
   type = 'warning';
+
+  showStackedBar = true;
 }
