@@ -49,7 +49,7 @@ let nextId = 0;
     :host.bs-tooltip-left .arrow, :host.bs-tooltip-right .arrow {
       top: 50%;
     }
-    
+
     :host.bs-tooltip-left-top .arrow, :host.bs-tooltip-right-top .arrow {
       top: 0.7em;
     }
@@ -116,6 +116,7 @@ export class NgbTooltip implements OnInit, OnDestroy {
   private _windowRef: ComponentRef<NgbTooltipWindow>;
   private _unregisterListenersFn;
   private _zoneSubscription: any;
+  private _elementTitle: string;
 
   constructor(
       private _elementRef: ElementRef, private _renderer: Renderer2, injector: Injector,
@@ -143,6 +144,13 @@ export class NgbTooltip implements OnInit, OnDestroy {
   @Input()
   set ngbTooltip(value: string | TemplateRef<any>) {
     this._ngbTooltip = value;
+    const htmlElement: HTMLElement = this._elementRef.nativeElement;
+    this._elementTitle = htmlElement.getAttribute('title');
+
+    if (!value && this._elementTitle) {
+      this._renderer.removeAttribute(htmlElement, 'title');
+      this._ngbTooltip = this._elementTitle;
+    }
     if (!value && this._windowRef) {
       this.close();
     }
@@ -187,6 +195,9 @@ export class NgbTooltip implements OnInit, OnDestroy {
   close(): void {
     if (this._windowRef != null) {
       this._renderer.removeAttribute(this._elementRef.nativeElement, 'aria-describedby');
+      if (this._elementTitle) {
+        this._renderer.setAttribute(this._elementRef.nativeElement, 'title', this._elementTitle);
+      }
       this._popupService.close();
       this._windowRef = null;
       this.hidden.emit();
