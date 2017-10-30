@@ -61,30 +61,30 @@ module.exports = function(config) {
         platform: 'Windows 8.1',
         version: '11'
       },
-      'SL_EDGE13': {
-        base: 'SauceLabs',
-        browserName: 'MicrosoftEdge',
-        platform: 'Windows 10',
-        version: '13.10586'
-      },
       'SL_EDGE14': {
         base: 'SauceLabs',
         browserName: 'MicrosoftEdge',
         platform: 'Windows 10',
         version: '14.14393'
       },
-      'SL_SAFARI9': {
+      'SL_EDGE15': {
         base: 'SauceLabs',
-        browserName: 'safari',
-        platform: 'OS X 10.11',
-        version: '9.0'
+        browserName: 'MicrosoftEdge',
+        platform: 'Windows 10',
+        version: '15.15063'
       },
       'SL_SAFARI10': {
         base: 'SauceLabs',
         browserName: 'safari',
         platform: 'OS X 10.11',
         version: '10.0'
-      }
+      },
+      'SL_SAFARI11': {
+        base: 'SauceLabs',
+        browserName: 'safari',
+        platform: 'macOS 10.12',
+        version: '11.0'
+      },
     },
 
     sauceLabs: {
