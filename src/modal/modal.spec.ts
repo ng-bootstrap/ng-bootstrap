@@ -639,7 +639,7 @@ export class WithActiveModalCmpt {
 })
 class TestComponent {
   name = 'World';
-  openedModal: NgbModalRef;
+  openedModal: NgbModalRef<any>;
   show = true;
   @ViewChild('content') tplContent;
   @ViewChild('destroyableContent') tplDestroyableContent;
