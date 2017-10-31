@@ -26,5 +26,6 @@ export class NgbdTypeaheadBasic {
       .debounceTime(200)
       .distinctUntilChanged()
       .map(term => term.length < 2 ? []
-        : states.filter(v => new RegExp(term, 'gi').test(v)).splice(0, 10));
+        : states.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10));
+
 }

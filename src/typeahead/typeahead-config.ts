@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {PlacementArray} from '../util/positioning';
 
 /**
  * Configuration service for the NgbTypeahead component.
@@ -7,7 +8,9 @@ import {Injectable} from '@angular/core';
  */
 @Injectable()
 export class NgbTypeaheadConfig {
+  container;
   editable = true;
   focusFirst = true;
   showHint = false;
+  placement: PlacementArray = 'bottom-left';
 }

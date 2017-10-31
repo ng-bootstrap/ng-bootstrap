@@ -17,7 +17,7 @@ let nextId = 0;
 /**
  * This directive should be used to wrap tab titles that need to contain HTML markup or other directives.
  */
-@Directive({selector: 'template[ngbTabTitle]'})
+@Directive({selector: 'ng-template[ngbTabTitle]'})
 export class NgbTabTitle {
   constructor(public templateRef: TemplateRef<any>) {}
 }
@@ -25,7 +25,7 @@ export class NgbTabTitle {
 /**
  * This directive must be used to wrap content to be displayed in a tab.
  */
-@Directive({selector: 'template[ngbTabContent]'})
+@Directive({selector: 'ng-template[ngbTabContent]'})
 export class NgbTabContent {
   constructor(public templateRef: TemplateRef<any>) {}
 }
@@ -79,30 +79,33 @@ export interface NgbTabChangeEvent {
   selector: 'ngb-tabset',
   exportAs: 'ngbTabset',
   template: `
-    <ul [class]="'nav nav-' + type + ' justify-content-' + justify" role="tablist">
+    <ul [class]="'nav nav-' + type + (orientation == 'horizontal'?  ' ' + justifyClass : ' flex-column')" role="tablist">
       <li class="nav-item" *ngFor="let tab of tabs">
         <a [id]="tab.id" class="nav-link" [class.active]="tab.id === activeId" [class.disabled]="tab.disabled"
           href (click)="!!select(tab.id)" role="tab" [attr.tabindex]="(tab.disabled ? '-1': undefined)"
-          [attr.aria-controls]="tab.id + '-panel'" [attr.aria-expanded]="tab.id === activeId" [attr.aria-disabled]="tab.disabled">
-          {{tab.title}}<template [ngTemplateOutlet]="tab.titleTpl?.templateRef"></template>
+          [attr.aria-controls]="(!destroyOnHide || tab.id === activeId ? tab.id + '-panel' : null)"
+          [attr.aria-expanded]="tab.id === activeId" [attr.aria-disabled]="tab.disabled">
+          {{tab.title}}<ng-template [ngTemplateOutlet]="tab.titleTpl?.templateRef"></ng-template>
         </a>
       </li>
     </ul>
     <div class="tab-content">
-      <template ngFor let-tab [ngForOf]="tabs">
+      <ng-template ngFor let-tab [ngForOf]="tabs">
         <div
           class="tab-pane {{tab.id === activeId ? 'active' : null}}"
           *ngIf="!destroyOnHide || tab.id === activeId"
           role="tabpanel"
           [attr.aria-labelledby]="tab.id" id="{{tab.id}}-panel"
           [attr.aria-expanded]="tab.id === activeId">
-          <template [ngTemplateOutlet]="tab.contentTpl.templateRef"></template>
+          <ng-template [ngTemplateOutlet]="tab.contentTpl.templateRef"></ng-template>
         </div>
-      </template>
+      </ng-template>
     </div>
   `
 })
 export class NgbTabset implements AfterContentChecked {
+  justifyClass: string;
+
   @ContentChildren(NgbTab) tabs: QueryList<NgbTab>;
 
   /**
@@ -116,9 +119,24 @@ export class NgbTabset implements AfterContentChecked {
   @Input() destroyOnHide: boolean = true;
 
   /**
-   * The horizontal alignment of the nav with flexbox utilities. Can be one of 'start', 'center' or 'end'
+   * The horizontal alignment of the nav with flexbox utilities. Can be one of 'start', 'center', 'end', 'fill' or
+   * 'justified'
+   * The default value is 'start'.
    */
-  @Input() justify: 'start' | 'center' | 'end';
+  @Input()
+  set justify(className: 'start' | 'center' | 'end' | 'fill' | 'justified') {
+    if (className === 'fill' || className === 'justified') {
+      this.justifyClass = `nav-${className}`;
+    } else {
+      this.justifyClass = `justify-content-${className}`;
+    }
+  }
+
+  /**
+   * The orientation of the nav (horizontal or vertical).
+   * The default value is 'horizontal'.
+   */
+  @Input() orientation: 'horizontal' | 'vertical';
 
   /**
    * Type of navigation to be used for tabs. Can be one of 'tabs' or 'pills'.
@@ -133,6 +151,7 @@ export class NgbTabset implements AfterContentChecked {
   constructor(config: NgbTabsetConfig) {
     this.type = config.type;
     this.justify = config.justify;
+    this.orientation = config.orientation;
   }
 
   /**

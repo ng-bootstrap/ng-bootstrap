@@ -8,7 +8,7 @@ import {
   OnInit,
   OnDestroy,
   Injector,
-  Renderer,
+  Renderer2,
   ComponentRef,
   ElementRef,
   TemplateRef,
@@ -17,7 +17,7 @@ import {
   NgZone
 } from '@angular/core';
 import {listenToTriggers} from '../util/triggers';
-import {positionElements} from '../util/positioning';
+import {positionElements, Placement, PlacementArray} from '../util/positioning';
 import {PopupService} from '../util/popup';
 import {NgbTooltipConfig} from './tooltip-config';
 
@@ -26,14 +26,58 @@ let nextId = 0;
 @Component({
   selector: 'ngb-tooltip-window',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {'[class]': '"tooltip show tooltip-" + placement', 'role': 'tooltip', '[id]': 'id'},
-  template: `
-    <div class="tooltip-inner"><ng-content></ng-content></div>
-    `
+  host: {
+    '[class]': '"tooltip show bs-tooltip-" + placement.split("-")[0]+" bs-tooltip-" + placement',
+    'role': 'tooltip',
+    '[id]': 'id'
+  },
+  template: `<div class="arrow"></div><div class="tooltip-inner"><ng-content></ng-content></div>`,
+  styles: [`
+    :host.bs-tooltip-top .arrow, :host.bs-tooltip-bottom .arrow {
+      left: 50%;
+    }
+
+    :host.bs-tooltip-top-left .arrow, :host.bs-tooltip-bottom-left .arrow {
+      left: 1em;
+    }
+
+    :host.bs-tooltip-top-right .arrow, :host.bs-tooltip-bottom-right .arrow {
+      left: auto;
+      right: 1em;
+    }
+
+    :host.bs-tooltip-left .arrow, :host.bs-tooltip-right .arrow {
+      top: 50%;
+    }
+    
+    :host.bs-tooltip-left-top .arrow, :host.bs-tooltip-right-top .arrow {
+      top: 0.7em;
+    }
+
+    :host.bs-tooltip-left-bottom .arrow, :host.bs-tooltip-right-bottom .arrow {
+      top: auto;
+      bottom: 0.7em;
+    }
+  `]
 })
 export class NgbTooltipWindow {
-  @Input() placement: 'top' | 'bottom' | 'left' | 'right' = 'top';
+  @Input() placement: Placement = 'top';
   @Input() id: string;
+
+  constructor(private _element: ElementRef, private _renderer: Renderer2) {}
+
+  applyPlacement(_placement: Placement) {
+    // remove the current placement classes
+    this._renderer.removeClass(this._element.nativeElement, 'bs-tooltip-' + this.placement.toString().split('-')[0]);
+    this._renderer.removeClass(this._element.nativeElement, 'bs-tooltip-' + this.placement.toString());
+
+    // set the new placement classes
+    this.placement = _placement;
+
+    // apply the new placement
+    this._renderer.addClass(this._element.nativeElement, 'bs-tooltip-' + this.placement.toString().split('-')[0]);
+    this._renderer.addClass(this._element.nativeElement, 'bs-tooltip-' + this.placement.toString());
+  }
 }
 
 /**
@@ -42,9 +86,12 @@ export class NgbTooltipWindow {
 @Directive({selector: '[ngbTooltip]', exportAs: 'ngbTooltip'})
 export class NgbTooltip implements OnInit, OnDestroy {
   /**
-   * Placement of a tooltip. Accepts: "top", "bottom", "left", "right"
-   */
-  @Input() placement: 'top' | 'bottom' | 'left' | 'right';
+    * Placement of a popover accepts:
+    *    "top", "top-left", "top-right", "bottom", "bottom-left", "bottom-right",
+    *    "left", "left-top", "left-bottom", "right", "right-top", "right-bottom"
+    * and array of above values.
+    */
+  @Input() placement: PlacementArray;
   /**
    * Specifies events that should trigger. Supports a space separated list of event names.
    */
@@ -71,7 +118,7 @@ export class NgbTooltip implements OnInit, OnDestroy {
   private _zoneSubscription: any;
 
   constructor(
-      private _elementRef: ElementRef, private _renderer: Renderer, injector: Injector,
+      private _elementRef: ElementRef, private _renderer: Renderer2, injector: Injector,
       componentFactoryResolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef, config: NgbTooltipConfig,
       ngZone: NgZone) {
     this.placement = config.placement;
@@ -82,9 +129,10 @@ export class NgbTooltip implements OnInit, OnDestroy {
 
     this._zoneSubscription = ngZone.onStable.subscribe(() => {
       if (this._windowRef) {
-        positionElements(
-            this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
-            this.container === 'body');
+        this._windowRef.instance.applyPlacement(
+            positionElements(
+                this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
+                this.container === 'body'));
       }
     });
   }
@@ -109,18 +157,26 @@ export class NgbTooltip implements OnInit, OnDestroy {
   open(context?: any) {
     if (!this._windowRef && this._ngbTooltip) {
       this._windowRef = this._popupService.open(this._ngbTooltip, context);
-      this._windowRef.instance.placement = this.placement;
       this._windowRef.instance.id = this._ngbTooltipWindowId;
 
-      this._renderer.setElementAttribute(this._elementRef.nativeElement, 'aria-describedby', this._ngbTooltipWindowId);
+      this._renderer.setAttribute(this._elementRef.nativeElement, 'aria-describedby', this._ngbTooltipWindowId);
 
       if (this.container === 'body') {
         window.document.querySelector(this.container).appendChild(this._windowRef.location.nativeElement);
       }
 
-      // we need to manually invoke change detection since events registered via
-      // Renderer::listen() - to be determined if this is a bug in the Angular itself
+      this._windowRef.instance.placement = Array.isArray(this.placement) ? this.placement[0] : this.placement;
+
+      // apply styling to set basic css-classes on target element, before going for positioning
+      this._windowRef.changeDetectorRef.detectChanges();
       this._windowRef.changeDetectorRef.markForCheck();
+
+      // position tooltip along the element
+      this._windowRef.instance.applyPlacement(
+          positionElements(
+              this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
+              this.container === 'body'));
+
       this.shown.emit();
     }
   }
@@ -130,7 +186,7 @@ export class NgbTooltip implements OnInit, OnDestroy {
    */
   close(): void {
     if (this._windowRef != null) {
-      this._renderer.setElementAttribute(this._elementRef.nativeElement, 'aria-describedby', null);
+      this._renderer.removeAttribute(this._elementRef.nativeElement, 'aria-describedby');
       this._popupService.close();
       this._windowRef = null;
       this.hidden.emit();

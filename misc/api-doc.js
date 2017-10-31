@@ -13,26 +13,46 @@ const ANGULAR_LIFECYCLE_METHODS = [
   'ngAfterViewInit', 'ngAfterViewChecked', 'writeValue', 'registerOnChange', 'registerOnTouched', 'setDisabledState'
 ];
 
-function isInternalMember(member) {
+function hasNoJSDoc(member) {
   if (!member.symbol) {
     return true;
   }
 
   const jsDoc = ts.displayPartsToString(member.symbol.getDocumentationComment());
-  return jsDoc.trim().length === 0 || jsDoc.indexOf('@internal') > -1;
+  return jsDoc.trim().length === 0;
+}
+
+function isInternalMember(member) {
+  if (member.jsDoc && member.jsDoc.length > 0) {
+    for (var i = 0; i < member.jsDoc.length; i++) {
+      if (member.jsDoc[i].tags && member.jsDoc[i].tags.length > 0) {
+        for (var j = 0; j < member.jsDoc[i].tags.length; j++) {
+          if (member.jsDoc[i].tags[j].tagName.text === 'internal') {
+            return true;
+          }
+        }
+      }
+    }
+  }
+
+  return false;
 }
 
 function isAngularLifecycleHook(methodName) {
   return ANGULAR_LIFECYCLE_METHODS.indexOf(methodName) >= 0;
 }
 
+function isPrivate(member) {
+  return (ts.getCombinedModifierFlags(member) & ts.ModifierFlags.Private) !== 0;
+}
+
 function isPrivateOrInternal(member) {
-  return ((member.flags & ts.NodeFlags.Private) !== 0) || isInternalMember(member);
+  return isPrivate(member) || hasNoJSDoc(member) || isInternalMember(member);
 }
 
 class APIDocVisitor {
   constructor(fileNames) {
-    this.program = ts.createProgram(fileNames, {});
+    this.program = ts.createProgram(fileNames, {lib: ["lib.es6.d.ts"]});
     this.typeChecker = this.program.getTypeChecker(true);
   }
 
@@ -60,26 +80,30 @@ class APIDocVisitor {
     var className = interfaceDeclaration.name.text;
     var members = this.visitMembers(interfaceDeclaration.members);
 
-    return [{fileName, className, description, methods: members.methods, properties: members.properties}];
+    return [
+      {fileName, className, description, type: 'Interface', methods: members.methods, properties: members.properties}
+    ];
   }
 
   visitClassDeclaration(fileName, classDeclaration) {
     var symbol = this.program.getTypeChecker().getSymbolAtLocation(classDeclaration.name);
     var description = ts.displayPartsToString(symbol.getDocumentationComment());
     var className = classDeclaration.name.text;
+    var decorators = classDeclaration.decorators;
     var directiveInfo;
     var members;
 
-    if (classDeclaration.decorators) {
-      for (var i = 0; i < classDeclaration.decorators.length; i++) {
-        if (this.isDirectiveDecorator(classDeclaration.decorators[i])) {
-          directiveInfo = this.visitDirectiveDecorator(classDeclaration.decorators[i]);
+    if (decorators) {
+      for (var i = 0; i < decorators.length; i++) {
+        if (this.isDirectiveDecorator(decorators[i])) {
+          directiveInfo = this.visitDirectiveDecorator(decorators[i]);
           members = this.visitMembers(classDeclaration.members);
 
           return [{
             fileName,
             className,
             description,
+            type: directiveInfo.type,
             selector: directiveInfo.selector,
             exportAs: directiveInfo.exportAs,
             inputs: members.inputs,
@@ -87,16 +111,25 @@ class APIDocVisitor {
             properties: members.properties,
             methods: members.methods
           }];
-        } else if (this.isServiceDecorator(classDeclaration.decorators[i])) {
+        } else if (this.isServiceDecorator(decorators[i])) {
           members = this.visitMembers(classDeclaration.members);
 
-          return [{fileName, className, description, methods: members.methods, properties: members.properties}];
+          return [{
+            fileName,
+            className,
+            description,
+            type: 'Service',
+            methods: members.methods,
+            properties: members.properties
+          }];
         }
       }
     } else if (description) {
       members = this.visitMembers(classDeclaration.members);
 
-      return [{fileName, className, description, methods: members.methods, properties: members.properties}];
+      return [
+        {fileName, className, description, type: 'Class', methods: members.methods, properties: members.properties}
+      ];
     }
 
     // a class that is not a directive or a service, not documented for now
@@ -107,6 +140,7 @@ class APIDocVisitor {
     var selector;
     var exportAs;
     var properties = decorator.expression.arguments[0].properties;
+    var type = decorator.expression.expression.text;
 
     for (var i = 0; i < properties.length; i++) {
       if (properties[i].name.text === 'selector') {
@@ -119,7 +153,7 @@ class APIDocVisitor {
       }
     }
 
-    return {selector, exportAs};
+    return {selector, exportAs, type};
   }
 
   visitMembers(members) {
@@ -139,16 +173,15 @@ class APIDocVisitor {
       } else if (outDecorator) {
         outputs.push(this.visitOutput(members[i], outDecorator));
 
-      } else if (!isPrivateOrInternal(members[i])) {
-        if ((members[i].kind === ts.SyntaxKind.MethodDeclaration ||
-             members[i].kind === ts.SyntaxKind.MethodSignature) &&
-            !isAngularLifecycleHook(members[i].name.text)) {
-          methods.push(this.visitMethodDeclaration(members[i]));
-        } else if (
-            members[i].kind === ts.SyntaxKind.PropertyDeclaration ||
-            members[i].kind === ts.SyntaxKind.PropertySignature || members[i].kind === ts.SyntaxKind.GetAccessor) {
-          properties.push(this.visitProperty(members[i]));
-        }
+      } else if (
+          (members[i].kind === ts.SyntaxKind.MethodDeclaration || members[i].kind === ts.SyntaxKind.MethodSignature) &&
+          !isAngularLifecycleHook(members[i].name.text) && !isPrivateOrInternal(members[i])) {
+        methods.push(this.visitMethodDeclaration(members[i]));
+      } else if (
+          (members[i].kind === ts.SyntaxKind.PropertyDeclaration ||
+           members[i].kind === ts.SyntaxKind.PropertySignature || members[i].kind === ts.SyntaxKind.GetAccessor) &&
+          !isPrivate(members[i]) && !isInternalMember(members[i])) {
+        properties.push(this.visitProperty(members[i]));
       }
     }
 

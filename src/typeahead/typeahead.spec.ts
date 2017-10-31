@@ -19,6 +19,9 @@ const createTestComponent = (html: string) =>
 const createOnPushTestComponent = (html: string) =>
     createGenericTestComponent(html, TestOnPushComponent) as ComponentFixture<TestOnPushComponent>;
 
+const createAsyncTestComponent = (html: string) =>
+    createGenericTestComponent(html, TestAsyncComponent) as ComponentFixture<TestAsyncComponent>;
+
 enum Key {
   Tab = 9,
   Enter = 13,
@@ -54,13 +57,20 @@ function changeInput(element: any, value: string) {
   input.dispatchEvent(evt);
 }
 
+function blurInput(element: any) {
+  const input = getNativeInput(element);
+  const evt = document.createEvent('HTMLEvents');
+  evt.initEvent('blur', false, false);
+  input.dispatchEvent(evt);
+}
+
 function expectInputValue(element: HTMLElement, value: string) {
   expect(getNativeInput(element).value).toBe(value);
 }
 
 function expectWindowResults(element, expectedResults: string[]) {
   const window = getWindow(element);
-  expect(getWindow).not.toBeNull();
+  expect(window).not.toBeNull();
   expectResults(window, expectedResults);
 }
 
@@ -68,7 +78,7 @@ describe('ngb-typeahead', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [TestComponent, TestOnPushComponent],
+      declarations: [TestComponent, TestOnPushComponent, TestAsyncComponent],
       imports: [NgbTypeaheadModule.forRoot(), FormsModule, ReactiveFormsModule]
     });
   });
@@ -387,6 +397,96 @@ describe('ngb-typeahead', () => {
        }));
   });
 
+  describe('with async typeahead function', () => {
+    it('should not display results when input is "blured"', fakeAsync(() => {
+         const fixture = createAsyncTestComponent(`<input type="text" [ngbTypeahead]="find"/>`);
+         const compiled = fixture.nativeElement;
+
+         changeInput(compiled, 'one');
+         fixture.detectChanges();
+
+         tick(50);
+
+         blurInput(compiled);
+         fixture.detectChanges();
+
+         tick(250);
+         expect(getWindow(compiled)).toBeNull();
+
+         // Make sure that it is resubscribed again
+         changeInput(compiled, 'two');
+         fixture.detectChanges();
+         tick(250);
+         expect(getWindow(compiled)).not.toBeNull();
+       }));
+
+    it('should not display results when "Escape" is pressed', fakeAsync(() => {
+         const fixture = createAsyncTestComponent(`<input type="text" [ngbTypeahead]="find"/>`);
+         const compiled = fixture.nativeElement;
+
+         // Change input first time
+         changeInput(compiled, 'one');
+         fixture.detectChanges();
+
+         // Results for first input are loaded
+         tick(250);
+         expect(getWindow(compiled)).not.toBeNull();
+
+         // Change input second time
+         changeInput(compiled, 'two');
+         fixture.detectChanges();
+         tick(50);
+
+         // Press Escape while second is still in proggress
+         const event = createKeyDownEvent(Key.Escape);
+         getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
+         fixture.detectChanges();
+
+         // Results for second input are loaded (window shouldn't be opened in this case)
+         tick(250);
+         expect(getWindow(compiled)).toBeNull();
+
+         // Make sure that it is resubscribed again
+         changeInput(compiled, 'three');
+         fixture.detectChanges();
+         tick(250);
+         expect(getWindow(compiled)).not.toBeNull();
+       }));
+
+    it('should not display results when value selected while new results are been loading', fakeAsync(() => {
+         const fixture = createAsyncTestComponent(`<input type="text" [ngbTypeahead]="find"/>`);
+         const compiled = fixture.nativeElement;
+
+         // Change input first time
+         changeInput(compiled, 'one');
+         fixture.detectChanges();
+
+         // Results for first input are loaded
+         tick(250);
+         expect(getWindow(compiled)).not.toBeNull();
+
+         // Change input second time
+         changeInput(compiled, 'two');
+         fixture.detectChanges();
+         tick(50);
+
+         // Select a value from first results list while second is still in proggress
+         getWindowLinks(fixture.debugElement)[0].triggerEventHandler('click', {});
+         fixture.detectChanges();
+         expect(getWindow(compiled)).toBeNull();
+
+         // Results for second input are loaded (window shouldn't be opened in this case)
+         tick(250);
+         expect(getWindow(compiled)).toBeNull();
+
+         // Make sure that it is resubscribed again
+         changeInput(compiled, 'three');
+         fixture.detectChanges();
+         tick(250);
+         expect(getWindow(compiled)).not.toBeNull();
+       }));
+  });
+
   describe('objects', () => {
 
     it('should work with custom objects as values', async(() => {
@@ -565,6 +665,37 @@ describe('ngb-typeahead', () => {
        }));
   });
 
+  describe('container', () => {
+
+    it('should be appended to the element matching the selector passed to "container"', () => {
+      const selector = 'body';
+      const fixture = createTestComponent(`<input [ngbTypeahead]="find" container="${selector}"/>`);
+
+      changeInput(fixture.nativeElement, 'one');
+      fixture.detectChanges();
+
+      expect(getWindow(fixture.nativeElement)).toBeNull();
+      expect(getWindow(document.querySelector(selector))).not.toBeNull();
+    });
+
+    it('should properly destroy typeahead window when the "container" option is used', () => {
+      const selector = 'body';
+      const fixture = createTestComponent(`<input *ngIf="show" [ngbTypeahead]="find" container="${selector}"/>`);
+
+      changeInput(fixture.nativeElement, 'one');
+      fixture.detectChanges();
+
+      expect(getWindow(fixture.nativeElement)).toBeNull();
+      expect(getWindow(document.querySelector(selector))).not.toBeNull();
+
+      fixture.componentInstance.show = false;
+      fixture.detectChanges();
+
+      expect(getWindow(fixture.nativeElement)).toBeNull();
+      expect(getWindow(document.querySelector(selector))).toBeNull();
+    });
+  });
+
   describe('auto attributes', () => {
 
     it('should have autocomplete, autocapitalize and autocorrect attributes set to off', () => {
@@ -586,9 +717,21 @@ describe('ngb-typeahead', () => {
       fixture.detectChanges();
 
       expect(input.getAttribute('role')).toBe('combobox');
+      expect(input.getAttribute('aria-multiline')).toBe('false');
       expect(input.getAttribute('aria-autocomplete')).toBe('list');
       expect(input.getAttribute('aria-expanded')).toBe('false');
       expect(input.getAttribute('aria-owns')).toBeNull();
+      expect(input.getAttribute('aria-autocomplete')).toBe('list');
+      expect(input.getAttribute('aria-activedescendant')).toBeNull();
+    });
+
+    it('should correctly set aria-autocomplete depending on showHint', () => {
+      const fixture = createTestComponent('<input type="text" [ngbTypeahead]="findObjects"  [showHint]="true" />');
+      const input = getNativeInput(fixture.nativeElement);
+
+      fixture.detectChanges();
+
+      expect(input.getAttribute('aria-autocomplete')).toBe('both');
     });
 
     it('should have the correct ARIA attributes when interacting with input', async(() => {
@@ -605,10 +748,17 @@ describe('ngb-typeahead', () => {
            expect(input.getAttribute('aria-owns')).toMatch(/ngb-typeahead-[0-9]+/);
            expect(input.getAttribute('aria-activedescendant')).toMatch(/ngb-typeahead-[0-9]+-0/);
 
-           const event = createKeyDownEvent(Key.ArrowDown);
+           let event = createKeyDownEvent(Key.ArrowDown);
            getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
            fixture.detectChanges();
            expect(input.getAttribute('aria-activedescendant')).toMatch(/ngb-typeahead-[0-9]+-1/);
+
+           event = createKeyDownEvent(Key.Enter);
+           getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
+           fixture.detectChanges();
+           expect(input.getAttribute('aria-expanded')).toBe('false');
+           expect(input.getAttribute('aria-owns')).toBeNull();
+           expect(input.getAttribute('aria-activedescendant')).toBeNull();
          });
        }));
   });
@@ -755,6 +905,7 @@ class TestComponent {
 
   model: any;
   selectEventValue: any;
+  show = true;
 
   form = new FormGroup({control: new FormControl('', Validators.required)});
 
@@ -782,6 +933,15 @@ class TestComponent {
 
 @Component({selector: 'test-onpush-cmp', changeDetection: ChangeDetectionStrategy.OnPush, template: ''})
 class TestOnPushComponent {
+  private _strings = ['one', 'one more', 'two', 'three'];
+
+  find = (text$: Observable<string>) => {
+    return text$.debounceTime(200).map(text => this._strings.filter(v => v.startsWith(text)));
+  };
+}
+
+@Component({selector: 'test-async-cmp', template: ''})
+class TestAsyncComponent {
   private _strings = ['one', 'one more', 'two', 'three'];
 
   find = (text$: Observable<string>) => {

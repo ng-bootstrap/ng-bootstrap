@@ -1,5 +1,7 @@
-import {Directive, forwardRef, Optional, Input, Renderer, ElementRef, OnDestroy} from '@angular/core';
+import {Directive, forwardRef, Input, Renderer2, ElementRef, OnDestroy} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+
+import {NgbButtonLabel} from './label';
 
 const NGB_RADIO_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -7,13 +9,15 @@ const NGB_RADIO_VALUE_ACCESSOR = {
   multi: true
 };
 
+let nextId = 0;
+
 /**
  * Easily create Bootstrap-style radio buttons. A value of a selected button is bound to a variable
  * specified via ngModel.
  */
 @Directive({
   selector: '[ngbRadioGroup]',
-  host: {'data-toggle': 'buttons', 'class': 'btn-group'},
+  host: {'data-toggle': 'buttons', 'role': 'group'},
   providers: [NGB_RADIO_VALUE_ACCESSOR]
 })
 export class NgbRadioGroup implements ControlValueAccessor {
@@ -23,6 +27,12 @@ export class NgbRadioGroup implements ControlValueAccessor {
 
   get disabled() { return this._disabled; }
   set disabled(isDisabled: boolean) { this.setDisabledState(isDisabled); }
+
+  /**
+   * The name of the group. Unless enclosed inputs specify a name, this name is used as the name of the
+   * enclosed inputs. If not specified, a name is generated automatically.
+   */
+  @Input() name = `ngb-radio-${nextId++}`;
 
   onChange = (_: any) => {};
   onTouched = () => {};
@@ -57,26 +67,15 @@ export class NgbRadioGroup implements ControlValueAccessor {
 }
 
 
-@Directive({selector: 'label.btn'})
-export class NgbActiveLabel {
-  constructor(private _renderer: Renderer, private _elRef: ElementRef) {}
-
-  set active(isActive: boolean) { this._renderer.setElementClass(this._elRef.nativeElement, 'active', isActive); }
-  set disabled(isDisabled: boolean) {
-    this._renderer.setElementClass(this._elRef.nativeElement, 'disabled', isDisabled);
-  }
-  set focused(isFocused: boolean) { this._renderer.setElementClass(this._elRef.nativeElement, 'focus', isFocused); }
-}
-
-
 /**
  * Marks an input of type "radio" as part of the NgbRadioGroup.
  */
 @Directive({
-  selector: 'input[type=radio]',
+  selector: '[ngbButton][type=radio]',
   host: {
     '[checked]': 'checked',
     '[disabled]': 'disabled',
+    '[name]': 'nameAttr',
     '(change)': 'onChange()',
     '(focus)': 'focused = true',
     '(blur)': 'focused = false'
@@ -88,26 +87,27 @@ export class NgbRadio implements OnDestroy {
   private _value: any = null;
 
   /**
+   * The name of the input. All inputs of a group should have the same name. If not specified,
+   * the name of the enclosing group is used.
+   */
+  @Input() name: string;
+
+  /**
    * You can specify model value of a given radio by binding to the value property.
-  */
+   */
   @Input('value')
   set value(value: any) {
     this._value = value;
     const stringValue = value ? value.toString() : '';
-    this._renderer.setElementProperty(this._element.nativeElement, 'value', stringValue);
-
-    if (this._group) {
-      this._group.onRadioValueUpdate();
-    }
+    this._renderer.setProperty(this._element.nativeElement, 'value', stringValue);
+    this._group.onRadioValueUpdate();
   }
 
-  @Input('checked')
-  set checked(value: any) {
-    this._checked = this._element.nativeElement.hasAttribute('checked') ? true : value;
-  }
-
+  /**
+   * A flag indicating if a given radio button is disabled.
+   */
   @Input('disabled')
-  set disabled(isDisabled: any) {
+  set disabled(isDisabled: boolean) {
     this._disabled = isDisabled !== false;
     this.updateDisabled();
   }
@@ -118,41 +118,28 @@ export class NgbRadio implements OnDestroy {
     }
   }
 
-  get value() { return this._value; }
-
   get checked() { return this._checked; }
 
-  get disabled() { return (this._group && this._group.disabled) || this._disabled; }
+  get disabled() { return this._group.disabled || this._disabled; }
+
+  get value() { return this._value; }
+
+  get nameAttr() { return this.name || this._group.name; }
 
   constructor(
-      @Optional() private _group: NgbRadioGroup, @Optional() private _label: NgbActiveLabel,
-      private _renderer: Renderer, private _element: ElementRef) {
-    if (this._group) {
-      this._group.register(this);
-    }
+      private _group: NgbRadioGroup, private _label: NgbButtonLabel, private _renderer: Renderer2,
+      private _element: ElementRef) {
+    this._group.register(this);
   }
 
-  ngOnDestroy() {
-    if (this._group) {
-      this._group.unregister(this);
-    }
-  }
+  ngOnDestroy() { this._group.unregister(this); }
 
-  onChange() {
-    if (this._group) {
-      this._group.onRadioChange(this);
-    }
-  }
+  onChange() { this._group.onRadioChange(this); }
 
   updateValue(value) {
-    this._checked = (this.value === value && value !== null);
+    this._checked = this.value === value;
     this._label.active = this._checked;
   }
 
-  updateDisabled() {
-    let disabled = (this._group && this._group.disabled) || this._disabled;
-    if (this._label) {
-      this._label.disabled = disabled;
-    }
-  }
+  updateDisabled() { this._label.disabled = this.disabled; }
 }

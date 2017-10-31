@@ -4,7 +4,7 @@ import {DEMO_SNIPPETS} from './demos';
 @Component({
   selector: 'ngbd-tooltip',
   template: `
-    <ngbd-content-wrapper component="Tooltip">
+    <ngbd-component-wrapper component="Tooltip">
       <ngbd-api-docs directive="NgbTooltip"></ngbd-api-docs>
       <ngbd-api-docs-config type="NgbTooltipConfig"></ngbd-api-docs-config>
       <ngbd-example-box demoTitle="Quick and easy tooltips" [snippets]="snippets" component="tooltip" demo="basic">
@@ -30,7 +30,7 @@ import {DEMO_SNIPPETS} from './demos';
         demoTitle="Global configuration of tooltips" [snippets]="snippets" component="tooltip" demo="config">
         <ngbd-tooltip-config></ngbd-tooltip-config>
       </ngbd-example-box>
-    </ngbd-content-wrapper>
+    </ngbd-component-wrapper>
   `
 })
 export class NgbdTooltip {

@@ -4,7 +4,7 @@ import {DEMO_SNIPPETS} from './demos';
 @Component({
   selector: 'ngbd-popover',
   template: `
-    <ngbd-content-wrapper component="Popover">
+    <ngbd-component-wrapper component="Popover">
       <ngbd-api-docs directive="NgbPopover"></ngbd-api-docs>
       <ngbd-api-docs-config type="NgbPopoverConfig"></ngbd-api-docs-config>
       <ngbd-example-box demoTitle="Quick and easy popovers" [snippets]="snippets" component="popover" demo="basic">
@@ -34,7 +34,7 @@ import {DEMO_SNIPPETS} from './demos';
         demoTitle="Global configuration of popovers" [snippets]="snippets" component="popover" demo="config">
         <ngbd-popover-config></ngbd-popover-config>
       </ngbd-example-box>
-    </ngbd-content-wrapper>
+    </ngbd-component-wrapper>
   `
 })
 export class NgbdPopover {

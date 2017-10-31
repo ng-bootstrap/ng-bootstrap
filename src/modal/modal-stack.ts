@@ -37,7 +37,7 @@ export class NgbModalStack {
     }
 
     const activeModal = new NgbActiveModal();
-    const contentRef = this._getContentRef(moduleCFR, contentInjector, content, activeModal);
+    const contentRef = this._getContentRef(moduleCFR, options.injector || contentInjector, content, activeModal);
 
     let windowCmptRef: ComponentRef<NgbModalWindow>;
     let backdropCmptRef: ComponentRef<NgbModalBackdrop>;
@@ -53,7 +53,7 @@ export class NgbModalStack {
     this._applicationRef.attachView(windowCmptRef.hostView);
     containerEl.appendChild(windowCmptRef.location.nativeElement);
 
-    ngbModalRef = new NgbModalRef(windowCmptRef, contentRef, backdropCmptRef);
+    ngbModalRef = new NgbModalRef(windowCmptRef, contentRef, backdropCmptRef, options.beforeDismiss);
 
     activeModal.close = (result: any) => { ngbModalRef.close(result); };
     activeModal.dismiss = (reason: any) => { ngbModalRef.dismiss(reason); };

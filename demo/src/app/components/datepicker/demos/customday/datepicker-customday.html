@@ -5,16 +5,16 @@
     <div class="input-group">
       <input class="form-control" placeholder="yyyy-mm-dd"
              name="dp" [(ngModel)]="model" ngbDatepicker [dayTemplate]="customDay" [markDisabled]="isDisabled" #d="ngbDatepicker">
-      <div class="input-group-addon" (click)="d.toggle()" >
+      <button class="input-group-addon" (click)="d.toggle()" type="button">
         <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
-      </div>
+      </button>
     </div>
   </div>
 </form>
 
-<template #customDay let-date="date" let-currentMonth="currentMonth" let-selected="selected" let-disabled="disabled">
-  <span class="custom-day" [class.weekend]="isWeekend(date)"
+<ng-template #customDay let-date="date" let-currentMonth="currentMonth" let-selected="selected" let-disabled="disabled" let-focused="focused">
+  <span class="custom-day" [class.weekend]="isWeekend(date)" [class.focused]="focused"
         [class.bg-primary]="selected" [class.hidden]="date.month !== currentMonth" [class.text-muted]="disabled">
     {{ date.day }}
   </span>
-</template>
+</ng-template>

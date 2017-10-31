@@ -10,15 +10,15 @@ export function getValueInRange(value: number, max: number, min = 0): number {
   return Math.max(Math.min(value, max), min);
 }
 
-export function isString(value: any): boolean {
+export function isString(value: any): value is string {
   return typeof value === 'string';
 }
 
-export function isNumber(value: any): boolean {
+export function isNumber(value: any): value is number {
   return !isNaN(toInteger(value));
 }
 
-export function isInteger(value: any): boolean {
+export function isInteger(value: any): value is number {
   return typeof value === 'number' && isFinite(value) && Math.floor(value) === value;
 }
 

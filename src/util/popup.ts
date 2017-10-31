@@ -3,7 +3,7 @@ import {
   TemplateRef,
   ViewRef,
   ViewContainerRef,
-  Renderer,
+  Renderer2,
   ComponentRef,
   ComponentFactory,
   ComponentFactoryResolver
@@ -19,7 +19,7 @@ export class PopupService<T> {
   private _contentRef: ContentRef;
 
   constructor(
-      type: any, private _injector: Injector, private _viewContainerRef: ViewContainerRef, private _renderer: Renderer,
+      type: any, private _injector: Injector, private _viewContainerRef: ViewContainerRef, private _renderer: Renderer2,
       componentFactoryResolver: ComponentFactoryResolver) {
     this._windowFactory = componentFactoryResolver.resolveComponentFactory<T>(type);
   }
@@ -53,7 +53,7 @@ export class PopupService<T> {
       const viewRef = this._viewContainerRef.createEmbeddedView(<TemplateRef<T>>content, context);
       return new ContentRef([viewRef.rootNodes], viewRef);
     } else {
-      return new ContentRef([[this._renderer.createText(null, `${content}`)]]);
+      return new ContentRef([[this._renderer.createText(`${content}`)]]);
     }
   }
 }

@@ -13,5 +13,6 @@ export class NgbdProgressbarConfig {
     config.striped = true;
     config.animated = true;
     config.type = 'success';
+    config.height = '20px';
   }
 }

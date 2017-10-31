@@ -20,7 +20,7 @@ let nextId = 0;
 /**
  * This directive should be used to wrap accordion panel titles that need to contain HTML markup or other directives.
  */
-@Directive({selector: 'template[ngbPanelTitle]'})
+@Directive({selector: 'ng-template[ngbPanelTitle]'})
 export class NgbPanelTitle {
   constructor(public templateRef: TemplateRef<any>) {}
 }
@@ -28,7 +28,7 @@ export class NgbPanelTitle {
 /**
  * This directive must be used to wrap accordion panel content.
  */
-@Directive({selector: 'template[ngbPanelContent]'})
+@Directive({selector: 'ng-template[ngbPanelContent]'})
 export class NgbPanelContent {
   constructor(public templateRef: TemplateRef<any>) {}
 }
@@ -50,6 +50,11 @@ export class NgbPanel {
    *  If not provided, it will be auto-generated.
    */
   @Input() id = `ngb-panel-${nextId++}`;
+
+  /**
+   * A flag telling if the panel is currently open
+   */
+  isOpen = false;
 
   /**
    *  The title for the panel.
@@ -95,33 +100,25 @@ export interface NgbPanelChangeEvent {
   exportAs: 'ngbAccordion',
   host: {'role': 'tablist', '[attr.aria-multiselectable]': '!closeOtherPanels'},
   template: `
-  <div class="card">
-    <template ngFor let-panel [ngForOf]="panels">
-      <div role="tab" id="{{panel.id}}-header"
-        [class]="'card-header ' + (panel.type ? 'card-'+panel.type: type ? 'card-'+type : '')" [class.active]="isOpen(panel.id)">
-        <a href (click)="!!toggle(panel.id)" [class.text-muted]="panel.disabled" [attr.tabindex]="(panel.disabled ? '-1' : null)"
-          [attr.aria-expanded]="isOpen(panel.id)" [attr.aria-controls]="panel.id" [attr.aria-disabled]="panel.disabled">
-          {{panel.title}}<template [ngTemplateOutlet]="panel.titleTpl?.templateRef"></template>
-        </a>
+    <ng-template ngFor let-panel [ngForOf]="panels">
+      <div class="card">
+        <div role="tab" id="{{panel.id}}-header"
+          [class]="'card-header ' + (panel.type ? 'card-'+panel.type: type ? 'card-'+type : '')" [class.active]="panel.isOpen">
+          <a href (click)="!!toggle(panel.id)" [class.text-muted]="panel.disabled" [attr.tabindex]="(panel.disabled ? '-1' : null)"
+            [attr.aria-expanded]="panel.isOpen" [attr.aria-controls]="(panel.isOpen ? panel.id : null)"
+            [attr.aria-disabled]="panel.disabled">
+            {{panel.title}}<ng-template [ngTemplateOutlet]="panel.titleTpl?.templateRef"></ng-template>
+          </a>
+        </div>
+        <div id="{{panel.id}}" role="tabpanel" [attr.aria-labelledby]="panel.id + '-header'" 
+             class="card-body {{panel.isOpen ? 'show' : null}}" *ngIf="!destroyOnHide || panel.isOpen">
+             <ng-template [ngTemplateOutlet]="panel.contentTpl.templateRef"></ng-template>
+        </div>
       </div>
-      <div id="{{panel.id}}" role="tabpanel" [attr.aria-labelledby]="panel.id + '-header'" class="card-block" *ngIf="isOpen(panel.id)">
-        <template [ngTemplateOutlet]="panel.contentTpl.templateRef"></template>
-      </div>
-    </template>
-  </div>
-`
+    </ng-template>
+  `
 })
 export class NgbAccordion implements AfterContentChecked {
-  /**
-   * A map that stores each panel state
-   */
-  private _states: Map<string, boolean> = new Map<string, boolean>();
-
-  /**
-   * A map that stores references to all panels
-   */
-  private _panelRefs: Map<string, NgbPanel> = new Map<string, NgbPanel>();
-
   @ContentChildren(NgbPanel) panels: QueryList<NgbPanel>;
 
   /**
@@ -133,6 +130,11 @@ export class NgbAccordion implements AfterContentChecked {
    *  Whether the other panels should be closed when a panel is opened
    */
   @Input('closeOthers') closeOtherPanels: boolean;
+
+  /**
+   * Whether the closed panels should be hidden without destroying them
+   */
+  @Input() destroyOnHide: boolean = true;
 
   /**
    *  Accordion's types of panels to be applied globally.
@@ -154,17 +156,16 @@ export class NgbAccordion implements AfterContentChecked {
    * Programmatically toggle a panel with a given id.
    */
   toggle(panelId: string) {
-    const panel = this._panelRefs.get(panelId);
+    const panel = this.panels.find(p => p.id === panelId);
 
     if (panel && !panel.disabled) {
-      const nextState = !this._states.get(panelId);
       let defaultPrevented = false;
 
       this.panelChange.emit(
-          {panelId: panelId, nextState: nextState, preventDefault: () => { defaultPrevented = true; }});
+          {panelId: panelId, nextState: !panel.isOpen, preventDefault: () => { defaultPrevented = true; }});
 
       if (!defaultPrevented) {
-        this._states.set(panelId, nextState);
+        panel.isOpen = !panel.isOpen;
 
         if (this.closeOtherPanels) {
           this._closeOthers(panelId);
@@ -177,9 +178,11 @@ export class NgbAccordion implements AfterContentChecked {
   ngAfterContentChecked() {
     // active id updates
     if (isString(this.activeIds)) {
-      this.activeIds = (this.activeIds as string).split(/\s*,\s*/);
+      this.activeIds = this.activeIds.split(/\s*,\s*/);
     }
-    this._updateStates();
+
+    // update panels open states
+    this.panels.forEach(panel => panel.isOpen = !panel.disabled && this.activeIds.indexOf(panel.id) > -1);
 
     // closeOthers updates
     if (this.activeIds.length > 1 && this.closeOtherPanels) {
@@ -188,30 +191,15 @@ export class NgbAccordion implements AfterContentChecked {
     }
   }
 
-  /**
-   * @internal
-   */
-  isOpen(panelId: string): boolean { return this._states.get(panelId); }
-
   private _closeOthers(panelId: string) {
-    this._states.forEach((state, id) => {
-      if (id !== panelId) {
-        this._states.set(id, false);
+    this.panels.forEach(panel => {
+      if (panel.id !== panelId) {
+        panel.isOpen = false;
       }
     });
   }
 
   private _updateActiveIds() {
-    this.activeIds =
-        this.panels.toArray().filter(panel => this.isOpen(panel.id) && !panel.disabled).map(panel => panel.id);
-  }
-
-  private _updateStates() {
-    this._states.clear();
-    this._panelRefs.clear();
-    this.panels.toArray().forEach((panel) => {
-      this._states.set(panel.id, this.activeIds.indexOf(panel.id) > -1 && !panel.disabled);
-      this._panelRefs.set(panel.id, panel);
-    });
+    this.activeIds = this.panels.filter(panel => panel.isOpen && !panel.disabled).map(panel => panel.id);
   }
 }

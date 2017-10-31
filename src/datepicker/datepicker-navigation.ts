@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter} from '@angular/core';
+import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
 import {NavigationEvent} from './datepicker-view-model';
 import {NgbDate} from './ngb-date';
 import {NgbDatepickerI18n} from './datepicker-i18n';
@@ -6,6 +6,7 @@ import {NgbCalendar} from './ngb-calendar';
 
 @Component({
   selector: 'ngb-datepicker-navigation',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {'class': 'd-flex justify-content-between', '[class.collapsed]': '!showSelect'},
   styles: [`
     :host {
@@ -35,6 +36,7 @@ import {NgbCalendar} from './ngb-calendar';
     }
     .btn-link {
       cursor: pointer;
+      border: 0;
       outline: 0;
     }
     .btn-link[disabled] {
@@ -43,7 +45,7 @@ import {NgbCalendar} from './ngb-calendar';
     }    
   `],
   template: `
-    <button type="button" class="btn-link" (click)="!!doNavigate(navigation.PREV)" [disabled]="prevDisabled()">
+    <button type="button" class="btn-link" (click)="!!doNavigate(navigation.PREV)" [disabled]="prevDisabled()" tabindex="-1">
       <span class="ngb-dp-navigation-chevron"></span>    
     </button>
     
@@ -55,7 +57,7 @@ import {NgbCalendar} from './ngb-calendar';
       (select)="selectDate($event)">
     </ngb-datepicker-navigation-select>
     
-    <button type="button" class="btn-link" (click)="!!doNavigate(navigation.NEXT)" [disabled]="nextDisabled()">
+    <button type="button" class="btn-link" (click)="!!doNavigate(navigation.NEXT)" [disabled]="nextDisabled()" tabindex="-1">
       <span class="ngb-dp-navigation-chevron right"></span>
     </button>
   `

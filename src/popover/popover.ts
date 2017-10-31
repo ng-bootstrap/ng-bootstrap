@@ -8,7 +8,7 @@ import {
   OnInit,
   OnDestroy,
   Injector,
-  Renderer,
+  Renderer2,
   ComponentRef,
   ElementRef,
   TemplateRef,
@@ -18,7 +18,7 @@ import {
 } from '@angular/core';
 
 import {listenToTriggers} from '../util/triggers';
-import {positionElements} from '../util/positioning';
+import {positionElements, Placement, PlacementArray} from '../util/positioning';
 import {PopupService} from '../util/popup';
 import {NgbPopoverConfig} from './popover-config';
 
@@ -27,15 +27,63 @@ let nextId = 0;
 @Component({
   selector: 'ngb-popover-window',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {'[class]': '"popover show popover-" + placement', 'role': 'tooltip', '[id]': 'id'},
+  host: {
+    '[class]': '"popover bs-popover-" + placement.split("-")[0]+" bs-popover-" + placement',
+    'role': 'tooltip',
+    '[id]': 'id'
+  },
   template: `
-    <h3 class="popover-title">{{title}}</h3><div class="popover-content"><ng-content></ng-content></div>
-    `
+    <div class="arrow"></div>
+    <h3 class="popover-header">{{title}}</h3><div class="popover-body"><ng-content></ng-content></div>`,
+  styles: [`
+    :host.bs-popover-top .arrow, :host.bs-popover-bottom .arrow {
+      left: 50%;
+      margin-left: -5px;
+    }
+
+    :host.bs-popover-top-left .arrow, :host.bs-popover-bottom-left .arrow {
+      left: 2em;
+    }
+
+    :host.bs-popover-top-right .arrow, :host.bs-popover-bottom-right .arrow {
+      left: auto;
+      right: 2em;
+    }
+
+    :host.bs-popover-left .arrow, :host.bs-popover-right .arrow {
+      top: 50%;
+      margin-top: -5px;
+    }
+    
+    :host.bs-popover-left-top .arrow, :host.bs-popover-right-top .arrow {
+      top: 0.7em;
+    }
+
+    :host.bs-popover-left-bottom .arrow, :host.bs-popover-right-bottom .arrow {
+      top: auto;
+      bottom: 0.7em;
+    }
+  `]
 })
 export class NgbPopoverWindow {
-  @Input() placement: 'top' | 'bottom' | 'left' | 'right' = 'top';
+  @Input() placement: Placement = 'top';
   @Input() title: string;
   @Input() id: string;
+
+  constructor(private _element: ElementRef, private _renderer: Renderer2) {}
+
+  applyPlacement(_placement: Placement) {
+    // remove the current placement classes
+    this._renderer.removeClass(this._element.nativeElement, 'bs-popover-' + this.placement.toString().split('-')[0]);
+    this._renderer.removeClass(this._element.nativeElement, 'bs-popover-' + this.placement.toString());
+
+    // set the new placement classes
+    this.placement = _placement;
+
+    // apply the new placement
+    this._renderer.addClass(this._element.nativeElement, 'bs-popover-' + this.placement.toString().split('-')[0]);
+    this._renderer.addClass(this._element.nativeElement, 'bs-popover-' + this.placement.toString());
+  }
 }
 
 /**
@@ -52,9 +100,12 @@ export class NgbPopover implements OnInit, OnDestroy {
    */
   @Input() popoverTitle: string;
   /**
-   * Placement of a popover. Accepts: "top", "bottom", "left", "right"
+   * Placement of a popover accepts:
+   *    "top", "top-left", "top-right", "bottom", "bottom-left", "bottom-right",
+   *    "left", "left-top", "left-bottom", "right", "right-top", "right-bottom"
+   * and array of above values.
    */
-  @Input() placement: 'top' | 'bottom' | 'left' | 'right';
+  @Input() placement: PlacementArray;
   /**
    * Specifies events that should trigger. Supports a space separated list of event names.
    */
@@ -80,7 +131,7 @@ export class NgbPopover implements OnInit, OnDestroy {
   private _zoneSubscription: any;
 
   constructor(
-      private _elementRef: ElementRef, private _renderer: Renderer, injector: Injector,
+      private _elementRef: ElementRef, private _renderer: Renderer2, injector: Injector,
       componentFactoryResolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef, config: NgbPopoverConfig,
       ngZone: NgZone) {
     this.placement = config.placement;
@@ -91,9 +142,10 @@ export class NgbPopover implements OnInit, OnDestroy {
 
     this._zoneSubscription = ngZone.onStable.subscribe(() => {
       if (this._windowRef) {
-        positionElements(
-            this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
-            this.container === 'body');
+        this._windowRef.instance.applyPlacement(
+            positionElements(
+                this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
+                this.container === 'body'));
       }
     });
   }
@@ -105,19 +157,25 @@ export class NgbPopover implements OnInit, OnDestroy {
   open(context?: any) {
     if (!this._windowRef) {
       this._windowRef = this._popupService.open(this.ngbPopover, context);
-      this._windowRef.instance.placement = this.placement;
       this._windowRef.instance.title = this.popoverTitle;
       this._windowRef.instance.id = this._ngbPopoverWindowId;
 
-      this._renderer.setElementAttribute(this._elementRef.nativeElement, 'aria-describedby', this._ngbPopoverWindowId);
+      this._renderer.setAttribute(this._elementRef.nativeElement, 'aria-describedby', this._ngbPopoverWindowId);
 
       if (this.container === 'body') {
         window.document.querySelector(this.container).appendChild(this._windowRef.location.nativeElement);
       }
 
-      // we need to manually invoke change detection since events registered via
-      // Renderer::listen() are not picked up by change detection with the OnPush strategy
+      // apply styling to set basic css-classes on target element, before going for positioning
+      this._windowRef.changeDetectorRef.detectChanges();
       this._windowRef.changeDetectorRef.markForCheck();
+
+      // position popover along the element
+      this._windowRef.instance.applyPlacement(
+          positionElements(
+              this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
+              this.container === 'body'));
+
       this.shown.emit();
     }
   }
@@ -127,7 +185,7 @@ export class NgbPopover implements OnInit, OnDestroy {
    */
   close(): void {
     if (this._windowRef) {
-      this._renderer.setElementAttribute(this._elementRef.nativeElement, 'aria-describedby', null);
+      this._renderer.removeAttribute(this._elementRef.nativeElement, 'aria-describedby');
       this._popupService.close();
       this._windowRef = null;
       this.hidden.emit();

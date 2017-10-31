@@ -23,6 +23,18 @@ describe('APIDocVisitor', function() {
     expect(docs.Bar.description).toBe('Bar doc');
   });
 
+  it('should extract basic type info from classes', function() {
+    var docs = apiDoc(['misc/api-doc-test-cases/types.ts']);
+
+    expect(Object.keys(docs).length).toBe(5);
+
+    expect(docs.NgbDirective.type).toBe('Directive');
+    expect(docs.NgbComponent.type).toBe('Component');
+    expect(docs.NgbService.type).toBe('Service');
+    expect(docs.NgbClass.type).toBe('Class');
+    expect(docs.NgbInterface.type).toBe('Interface');
+  });
+
   it('should extract inputs info', function() {
     var inputDocs = apiDoc(['./misc/api-doc-test-cases/directives-with-inputs.ts']).Foo.inputs;
 
@@ -131,7 +143,8 @@ describe('APIDocVisitor', function() {
   it('should extract documentation of properties from services', function() {
     var serviceDocs = apiDoc(['./misc/api-doc-test-cases/services-with-properties.ts']).ProgressbarConfig;
 
-    expect(serviceDocs.properties.length).toBe(2);
+    expect(serviceDocs.properties.length).toBe(3);
+
     expect(serviceDocs.properties[0].name).toBe('foo');
     expect(serviceDocs.properties[0].description).toBe('Voluntarily left without a default value.');
     expect(serviceDocs.properties[0].type).toBe('string');
@@ -141,6 +154,11 @@ describe('APIDocVisitor', function() {
     expect(serviceDocs.properties[1].description).toBe('Maximal value to be displayed in the progressbar.');
     expect(serviceDocs.properties[1].type).toBe('number');
     expect(serviceDocs.properties[1].defaultValue).toBe('100');
+
+    expect(serviceDocs.properties[2].name).toBe('noDescriptionButStillExtract');
+    expect(serviceDocs.properties[2].description).toBe('');
+    expect(serviceDocs.properties[2].type).toBe('string');
+    expect(serviceDocs.properties[2].defaultValue).toBe('sth');
   });
 
   it('should extract documentation from interfaces', function() {

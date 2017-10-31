@@ -30,6 +30,8 @@ var PATHS = {
   coverageJson: 'coverage/json/coverage-final.json'
 };
 
+const docsConfig = Object.assign({port: 9090}, getLocalConfig());
+
 function platformPath(path) {
   return /^win/.test(os.platform()) ? `${path}.cmd` : path;
 }
@@ -104,7 +106,7 @@ gulp.task('npm', function() {
 
   targetPkgJson.peerDependencies = {};
   Object.keys(pkgJson.dependencies).forEach(function(dependency) {
-    targetPkgJson.peerDependencies[dependency] = `^${pkgJson.dependencies[dependency]} || ^4.0.0`;
+    targetPkgJson.peerDependencies[dependency] = `^${pkgJson.dependencies[dependency]}`;
   });
 
   return gulp.src('README.md')
@@ -139,7 +141,7 @@ function startKarmaServer(isTddMode, isSaucelabs, done) {
   if (isSaucelabs) {
     config['reporters'] = ['dots', 'saucelabs'];
     config['browsers'] =
-        ['SL_CHROME', 'SL_FIREFOX', 'SL_IE10', 'SL_IE11', 'SL_EDGE13', 'SL_EDGE14', 'SL_SAFARI9', 'SL_SAFARI10'];
+        ['SL_CHROME', 'SL_FIREFOX', 'SL_IE10', 'SL_IE11', 'SL_EDGE14', 'SL_EDGE15', 'SL_SAFARI10', 'SL_SAFARI11'];
 
     if (process.env.TRAVIS) {
       var buildId = `TRAVIS #${process.env.TRAVIS_BUILD_NUMBER} (${process.env.TRAVIS_BUILD_ID})`;
@@ -258,7 +260,7 @@ gulp.task('clean:demo-cache', function() { return del('.publish/'); });
 
 gulp.task(
     'demo-server', ['generate-docs', 'generate-plunks'],
-    shell.task(['webpack-dev-server --port 9090 --config webpack.demo.js --inline --progress']));
+    shell.task([`webpack-dev-server --port ${docsConfig.port} --config webpack.demo.js --inline --progress`]));
 
 gulp.task(
     'build:demo', ['clean:demo', 'generate-docs', 'generate-plunks'],
@@ -267,7 +269,8 @@ gulp.task(
 gulp.task(
     'demo-server:aot', ['generate-docs', 'generate-plunks'],
     shell.task(
-        ['webpack-dev-server --port 9090 --config webpack.demo.js --inline --progress'], {env: {MODE: 'build'}}));
+        [`webpack-dev-server --port ${docsConfig.port} --config webpack.demo.js --inline --progress`],
+        {env: {MODE: 'build'}}));
 
 gulp.task('demo-push', function() {
   return gulp.src(PATHS.demoDist)
@@ -287,3 +290,13 @@ gulp.task(
 gulp.task('default', function(done) { runSequence('lint', 'enforce-format', 'ddescribe-iit', 'test', done); });
 
 gulp.task('ci', function(done) { runSequence('default', 'build:demo', done); });
+
+function getLocalConfig() {
+  try {
+    require.resolve('./local.docs.json');
+  } catch (e) {
+    return {};
+  }
+
+  return require('./local.docs.json');
+}

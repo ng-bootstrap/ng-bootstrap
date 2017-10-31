@@ -4,7 +4,7 @@ import {
   EventEmitter,
   Input,
   ElementRef,
-  Renderer,
+  Renderer2,
   OnInit,
   AfterViewInit,
   OnDestroy
@@ -39,7 +39,7 @@ export class NgbModalWindow implements OnInit,
 
   @Output('dismiss') dismissEvent = new EventEmitter();
 
-  constructor(private _elRef: ElementRef, private _renderer: Renderer) {}
+  constructor(private _elRef: ElementRef, private _renderer: Renderer2) {}
 
   backdropClick($event): void {
     if (this.backdrop === true && this._elRef.nativeElement === $event.target) {
@@ -57,23 +57,28 @@ export class NgbModalWindow implements OnInit,
 
   ngOnInit() {
     this._elWithFocus = document.activeElement;
-    this._renderer.setElementClass(document.body, 'modal-open', true);
+    this._renderer.addClass(document.body, 'modal-open');
   }
 
   ngAfterViewInit() {
     if (!this._elRef.nativeElement.contains(document.activeElement)) {
-      this._renderer.invokeElementMethod(this._elRef.nativeElement, 'focus', []);
+      this._elRef.nativeElement['focus'].apply(this._elRef.nativeElement, []);
     }
   }
 
   ngOnDestroy() {
-    if (this._elWithFocus && document.body.contains(this._elWithFocus)) {
-      this._renderer.invokeElementMethod(this._elWithFocus, 'focus', []);
+    const body = document.body;
+    const elWithFocus = this._elWithFocus;
+
+    let elementToFocus;
+    if (elWithFocus && elWithFocus['focus'] && body.contains(elWithFocus)) {
+      elementToFocus = elWithFocus;
     } else {
-      this._renderer.invokeElementMethod(document.body, 'focus', []);
+      elementToFocus = body;
     }
+    elementToFocus['focus'].apply(elementToFocus, []);
 
     this._elWithFocus = null;
-    this._renderer.setElementClass(document.body, 'modal-open', false);
+    this._renderer.removeClass(body, 'modal-open');
   }
 }

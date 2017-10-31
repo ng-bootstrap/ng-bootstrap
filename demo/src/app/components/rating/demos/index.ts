@@ -9,28 +9,28 @@ export const DEMO_DIRECTIVES = [NgbdRatingBasic, NgbdRatingConfig,
   NgbdRatingTemplate, NgbdRatingEvents, NgbdRatingDecimal, NgbdRatingForm];
 
 export const DEMO_SNIPPETS = {
-  basic: {
-    code: require('!!prismjs-loader?lang=typescript!./basic/rating-basic'),
-    markup: require('!!prismjs-loader?lang=markup!./basic/rating-basic.html')
+  'basic': {
+    'code': require('!!prismjs-loader?lang=typescript!./basic/rating-basic'),
+    'markup': require('!!prismjs-loader?lang=markup!./basic/rating-basic.html')
   },
-  events: {
-    code: require('!!prismjs-loader?lang=typescript!./events/rating-events'),
-    markup: require('!!prismjs-loader?lang=markup!./events/rating-events.html')
+  'events': {
+    'code': require('!!prismjs-loader?lang=typescript!./events/rating-events'),
+    'markup': require('!!prismjs-loader?lang=markup!./events/rating-events.html')
   },
-  template: {
-    code: require('!!prismjs-loader?lang=typescript!./template/rating-template'),
-    markup: require('!!prismjs-loader?lang=markup!./template/rating-template.html')
+  'template': {
+    'code': require('!!prismjs-loader?lang=typescript!./template/rating-template'),
+    'markup': require('!!prismjs-loader?lang=markup!./template/rating-template.html')
   },
-  decimal: {
-    code: require('!!prismjs-loader?lang=typescript!./decimal/rating-decimal'),
-    markup: require('!!prismjs-loader?lang=markup!./decimal/rating-decimal.html')
+  'decimal': {
+    'code': require('!!prismjs-loader?lang=typescript!./decimal/rating-decimal'),
+    'markup': require('!!prismjs-loader?lang=markup!./decimal/rating-decimal.html')
   },
-  form: {
-    code: require('!!prismjs-loader?lang=typescript!./form/rating-form'),
-    markup: require('!!prismjs-loader?lang=markup!./form/rating-form.html')
+  'form': {
+    'code': require('!!prismjs-loader?lang=typescript!./form/rating-form'),
+    'markup': require('!!prismjs-loader?lang=markup!./form/rating-form.html')
   },
-  config: {
-    code: require('!!prismjs-loader?lang=typescript!./config/rating-config'),
-    markup: require('!!prismjs-loader?lang=markup!./config/rating-config.html')
+  'config': {
+    'code': require('!!prismjs-loader?lang=typescript!./config/rating-config'),
+    'markup': require('!!prismjs-loader?lang=markup!./config/rating-config.html')
   }
 };

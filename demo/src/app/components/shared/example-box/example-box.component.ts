@@ -10,14 +10,6 @@ export class ExampleBoxComponent {
   @Input() component: string;
   @Input() demo: string;
   @Input() snippets: Object;
-  showCode = false;
 
   constructor(private _analytics: Analytics) {}
-
-  toggleCode() {
-    this.showCode = !this.showCode;
-    if (this.showCode) {
-      this._analytics.trackEvent('Demo code view', this.demoTitle);
-    }
-  }
 }

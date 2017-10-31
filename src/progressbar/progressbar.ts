@@ -9,7 +9,7 @@ import {NgbProgressbarConfig} from './progressbar-config';
   selector: 'ngb-progressbar',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="progress">
+    <div class="progress" [style.height]="height">
       <div class="progress-bar{{type ? ' bg-' + type : ''}}{{animated ? ' progress-bar-animated' : ''}}{{striped ?
     ' progress-bar-striped' : ''}}" role="progressbar" [style.width.%]="getPercentValue()"
     [attr.aria-valuenow]="getValue()" aria-valuemin="0" [attr.aria-valuemax]="max">
@@ -50,12 +50,18 @@ export class NgbProgressbar {
    */
   @Input() value = 0;
 
+  /**
+   * Height of the progress bar. Accepts any valid CSS height values, ex. '2rem'
+   */
+  @Input() height: string;
+
   constructor(config: NgbProgressbarConfig) {
     this.max = config.max;
     this.animated = config.animated;
     this.striped = config.striped;
     this.type = config.type;
     this.showValue = config.showValue;
+    this.height = config.height;
   }
 
   getValue() { return getValueInRange(this.value, this.max); }

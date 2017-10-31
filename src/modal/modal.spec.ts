@@ -1,4 +1,13 @@
-import {Component, Injectable, ViewChild, OnDestroy, NgModule, getDebugNode, DebugElement} from '@angular/core';
+import {
+  Component,
+  Injectable,
+  ViewChild,
+  OnDestroy,
+  NgModule,
+  getDebugNode,
+  DebugElement,
+  ReflectiveInjector
+} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {TestBed, ComponentFixture} from '@angular/core/testing';
 
@@ -8,6 +17,11 @@ const NOOP = () => {};
 
 @Injectable()
 class SpyService {
+  called = false;
+}
+
+@Injectable()
+class CustomSpyService {
   called = false;
 }
 
@@ -353,6 +367,43 @@ describe('ngb-modal', () => {
     });
   });
 
+  describe('beforeDismiss options', () => {
+
+    it('should not dismiss when the callback returns false', () => {
+      const modalInstance = fixture.componentInstance.openTplDismiss({beforeDismiss: () => { return false; }});
+      fixture.detectChanges();
+      expect(fixture.nativeElement).toHaveModal();
+
+      (<HTMLElement>document.querySelector('button#dismiss')).click();
+      fixture.detectChanges();
+      expect(fixture.nativeElement).toHaveModal();
+
+      modalInstance.close();
+      fixture.detectChanges();
+      expect(fixture.nativeElement).not.toHaveModal();
+    });
+
+    it('should dimiss when the callback does not return false', () => {
+      fixture.componentInstance.openTplDismiss({beforeDismiss: () => {}});
+      fixture.detectChanges();
+      expect(fixture.nativeElement).toHaveModal();
+
+      (<HTMLElement>document.querySelector('button#dismiss')).click();
+      fixture.detectChanges();
+      expect(fixture.nativeElement).not.toHaveModal();
+    });
+
+    it('should dismiss when the callback is not defined', () => {
+      fixture.componentInstance.openTplDismiss({});
+      fixture.detectChanges();
+      expect(fixture.nativeElement).toHaveModal();
+
+      (<HTMLElement>document.querySelector('button#dismiss')).click();
+      fixture.detectChanges();
+      expect(fixture.nativeElement).not.toHaveModal();
+    });
+  });
+
   describe('container options', () => {
 
     it('should attach window and backdrop elements to the specified container', () => {
@@ -446,6 +497,21 @@ describe('ngb-modal', () => {
 
   });
 
+  describe('custom injector option', () => {
+
+    it('should render modal with a custom injector', () => {
+      const customInjector = ReflectiveInjector.resolveAndCreate([CustomSpyService]);
+      const modalInstance = fixture.componentInstance.openCmpt(CustomInjectorCmpt, {injector: customInjector});
+      fixture.detectChanges();
+      expect(fixture.nativeElement).toHaveModal('Some content');
+
+      modalInstance.close();
+      fixture.detectChanges();
+      expect(fixture.nativeElement).not.toHaveModal();
+    });
+
+  });
+
   describe('focus management', () => {
 
     it('should focus modal window and return focus to previously focused element', () => {
@@ -473,6 +539,34 @@ describe('ngb-modal', () => {
       modalInstance.close('ok!');
       expect(document.activeElement).toBe(document.body);
     });
+
+    it('should return focus to body if the opening element is not stored as previously focused element', () => {
+      fixture.detectChanges();
+      const openElement = fixture.nativeElement.querySelector('#open-no-focus');
+
+      openElement.click();
+      fixture.detectChanges();
+      expect(fixture.nativeElement).toHaveModal('from non focusable element');
+      expect(document.activeElement).toBe(document.querySelector('ngb-modal-window'));
+
+      fixture.componentInstance.close();
+      expect(fixture.nativeElement).not.toHaveModal();
+      expect(document.activeElement).toBe(document.body);
+    });
+
+    it('should return focus to body if the opening element is stored but cannot be focused', () => {
+      fixture.detectChanges();
+      const openElement = fixture.nativeElement.querySelector('#open-no-focus-ie');
+
+      openElement.click();
+      fixture.detectChanges();
+      expect(fixture.nativeElement).toHaveModal('from non focusable element but stored as activeElement on IE');
+      expect(document.activeElement).toBe(document.querySelector('ngb-modal-window'));
+
+      fixture.componentInstance.close();
+      expect(fixture.nativeElement).not.toHaveModal();
+      expect(document.activeElement).toBe(document.body);
+    });
   });
 
   describe('window element ordering', () => {
@@ -495,6 +589,13 @@ describe('ngb-modal', () => {
   });
 });
 
+@Component({selector: 'custom-injector-cmpt', template: 'Some content'})
+export class CustomInjectorCmpt implements OnDestroy {
+  constructor(private _spyService: CustomSpyService) {}
+
+  ngOnDestroy(): void { this._spyService.called = true; }
+}
+
 @Component({selector: 'destroyable-cmpt', template: 'Some content'})
 export class DestroyableCmpt implements OnDestroy {
   constructor(private _spyService: SpyService) {}
@@ -514,16 +615,26 @@ export class WithActiveModalCmpt {
   selector: 'test-cmpt',
   template: `
     <div id="testContainer"></div>
-    <template #content>Hello, {{name}}!</template>
-    <template #destroyableContent><destroyable-cmpt></destroyable-cmpt></template>
-    <template #contentWithClose let-close="close"><button id="close" (click)="close('myResult')">Close me</button></template>
-    <template #contentWithDismiss let-dismiss="dismiss"><button id="dismiss" (click)="dismiss('myReason')">Dismiss me</button></template>
-    <template #contentWithIf>
-      <template [ngIf]="show">
+    <ng-template #content>Hello, {{name}}!</ng-template>
+    <ng-template #destroyableContent><destroyable-cmpt></destroyable-cmpt></ng-template>
+    <ng-template #contentWithClose let-close="close">
+      <button id="close" (click)="close('myResult')">Close me</button>
+    </ng-template>
+    <ng-template #contentWithDismiss let-dismiss="dismiss">
+      <button id="dismiss" (click)="dismiss('myReason')">Dismiss me</button>
+    </ng-template>
+    <ng-template #contentWithIf>
+      <ng-template [ngIf]="show">
         <button id="if" (click)="show = false">Click me</button>
-      </template>
-    </template>
+      </ng-template>
+    </ng-template>
     <button id="open" (click)="open('from button')">Open</button>
+    <div id="open-no-focus" (click)="open('from non focusable element')">Open</div>
+    <div
+      id="open-no-focus-ie"
+      (click)="open('from non focusable element but stored as activeElement on IE')"
+      style="display: inline-block;"
+    >Open</div>
   `
 })
 class TestComponent {
@@ -556,10 +667,10 @@ class TestComponent {
 }
 
 @NgModule({
-  declarations: [TestComponent, DestroyableCmpt, WithActiveModalCmpt],
+  declarations: [TestComponent, CustomInjectorCmpt, DestroyableCmpt, WithActiveModalCmpt],
   exports: [TestComponent, DestroyableCmpt],
   imports: [CommonModule, NgbModalModule.forRoot()],
-  entryComponents: [DestroyableCmpt, WithActiveModalCmpt],
+  entryComponents: [CustomInjectorCmpt, DestroyableCmpt, WithActiveModalCmpt],
   providers: [SpyService]
 })
 class NgbModalTestModule {
