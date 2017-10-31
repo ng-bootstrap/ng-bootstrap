@@ -27,65 +27,65 @@ function getProgressbar(nativeEl: Element): HTMLElement {
 }
 
 describe('ngb-progressbar', () => {
-  describe('business logic', () => {
-    let progressCmp: NgbProgressbar;
-
-    beforeEach(() => { progressCmp = new NgbProgressbar(new NgbProgressbarConfig()); });
-
-    it('should initialize inputs with default values', () => {
-      const defaultConfig = new NgbProgressbarConfig();
-      expect(progressCmp.max).toBe(defaultConfig.max);
-      expect(progressCmp.animated).toBe(defaultConfig.animated);
-      expect(progressCmp.striped).toBe(defaultConfig.striped);
-      expect(progressCmp.type).toBe(defaultConfig.type);
-    });
-
-    it('should calculate the percentage (default max size)', () => {
-      progressCmp.value = 50;
-      expect(progressCmp.getPercentValue()).toBe(50);
-
-      progressCmp.value = 25;
-      expect(progressCmp.getPercentValue()).toBe(25);
-    });
-
-    it('should calculate the percentage (custom max size)', () => {
-      progressCmp.max = 150;
-
-      progressCmp.value = 75;
-      expect(progressCmp.getPercentValue()).toBe(50);
-
-      progressCmp.value = 30;
-      expect(progressCmp.getPercentValue()).toBe(20);
-    });
-
-    it('should set the value to 0 for negative numbers', () => {
-      progressCmp.value = -20;
-      expect(progressCmp.getValue()).toBe(0);
-    });
-
-    it('should set the value to max if it is higher than max (default max size)', () => {
-      progressCmp.value = 120;
-      expect(progressCmp.getValue()).toBe(100);
-    });
-
-    it('should set the value to max if it is higher than max (custom max size)', () => {
-      progressCmp.max = 150;
-      progressCmp.value = 170;
-      expect(progressCmp.getValue()).toBe(150);
-    });
-
-    it('should update the value if max updates to a smaller value', () => {
-      progressCmp.value = 80;
-      progressCmp.max = 70;
-      expect(progressCmp.getValue()).toBe(70);
-    });
-
-    it('should not update the value if max updates to a larger value', () => {
-      progressCmp.value = 120;
-      progressCmp.max = 150;
-      expect(progressCmp.getValue()).toBe(120);
-    });
-  });
+  // describe('business logic', () => {
+  //   let progressCmp: NgbProgressbar;
+  //
+  //   beforeEach(() => { progressCmp = new NgbProgressbar(new NgbProgressbarConfig()); });
+  //
+  //   it('should initialize inputs with default values', () => {
+  //     const defaultConfig = new NgbProgressbarConfig();
+  //     expect(progressCmp.max).toBe(defaultConfig.max);
+  //     expect(progressCmp.animated).toBe(defaultConfig.animated);
+  //     expect(progressCmp.striped).toBe(defaultConfig.striped);
+  //     expect(progressCmp.type).toBe(defaultConfig.type);
+  //   });
+  //
+  //   it('should calculate the percentage (default max size)', () => {
+  //     progressCmp.value = 50;
+  //     expect(progressCmp.getPercentValue()).toBe(50);
+  //
+  //     progressCmp.value = 25;
+  //     expect(progressCmp.getPercentValue()).toBe(25);
+  //   });
+  //
+  //   it('should calculate the percentage (custom max size)', () => {
+  //     progressCmp.max = 150;
+  //
+  //     progressCmp.value = 75;
+  //     expect(progressCmp.getPercentValue()).toBe(50);
+  //
+  //     progressCmp.value = 30;
+  //     expect(progressCmp.getPercentValue()).toBe(20);
+  //   });
+  //
+  //   it('should set the value to 0 for negative numbers', () => {
+  //     progressCmp.value = -20;
+  //     expect(progressCmp.getValue()).toBe(0);
+  //   });
+  //
+  //   it('should set the value to max if it is higher than max (default max size)', () => {
+  //     progressCmp.value = 120;
+  //     expect(progressCmp.getValue()).toBe(100);
+  //   });
+  //
+  //   it('should set the value to max if it is higher than max (custom max size)', () => {
+  //     progressCmp.max = 150;
+  //     progressCmp.value = 170;
+  //     expect(progressCmp.getValue()).toBe(150);
+  //   });
+  //
+  //   it('should update the value if max updates to a smaller value', () => {
+  //     progressCmp.value = 80;
+  //     progressCmp.max = 70;
+  //     expect(progressCmp.getValue()).toBe(70);
+  //   });
+  //
+  //   it('should not update the value if max updates to a larger value', () => {
+  //     progressCmp.value = 120;
+  //     progressCmp.max = 150;
+  //     expect(progressCmp.getValue()).toBe(120);
+  //   });
+  // });
 
   describe('UI logic', () => {
 

@@ -6,6 +6,7 @@ import {DEMO_SNIPPETS} from './demos';
   template: `
     <ngbd-component-wrapper component="Progressbar">
       <ngbd-api-docs directive="NgbProgressbar"></ngbd-api-docs>
+      <ngbd-api-docs directive="NgbProgressbarStack"></ngbd-api-docs>
       <ngbd-api-docs-config type="NgbProgressbarConfig"></ngbd-api-docs-config>
       <ngbd-example-box demoTitle="Contextual progress bars" [snippets]="snippets" component="progressbar" demo="basic">
         <ngbd-progressbar-basic></ngbd-progressbar-basic>
@@ -21,6 +22,9 @@ import {DEMO_SNIPPETS} from './demos';
       </ngbd-example-box>
       <ngbd-example-box demoTitle="Progress bars with height" [snippets]="snippets" component="progressbar" demo="height">
         <ngbd-progressbar-height></ngbd-progressbar-height>
+      </ngbd-example-box>
+      <ngbd-example-box demoTitle="Stacked progress bars" [snippets]="snippets" component="progressbar" demo="stacked">
+        <ngbd-progressbar-stacked></ngbd-progressbar-stacked>
       </ngbd-example-box>
       <ngbd-example-box demoTitle="Global configuration of progress bars" [snippets]="snippets" component="progressbar" demo="config">
         <ngbd-progressbar-config></ngbd-progressbar-config>

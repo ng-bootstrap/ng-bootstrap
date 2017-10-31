@@ -1,13 +1,17 @@
 import {NgModule, ModuleWithProviders} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
-import {NgbProgressbar} from './progressbar';
+import {NgbProgressbar, NgbProgressbarStack, NgbBar} from './progressbar';
 import {NgbProgressbarConfig} from './progressbar-config';
 
-export {NgbProgressbar} from './progressbar';
+export {NgbProgressbar, NgbProgressbarStack, NgbBar} from './progressbar';
 export {NgbProgressbarConfig} from './progressbar-config';
 
-@NgModule({declarations: [NgbProgressbar], exports: [NgbProgressbar], imports: [CommonModule]})
+@NgModule({
+  declarations: [NgbProgressbar, NgbProgressbarStack, NgbBar],
+  exports: [NgbProgressbar, NgbProgressbarStack, NgbBar],
+  imports: [CommonModule]
+})
 export class NgbProgressbarModule {
   static forRoot(): ModuleWithProviders { return {ngModule: NgbProgressbarModule, providers: [NgbProgressbarConfig]}; }
 }
