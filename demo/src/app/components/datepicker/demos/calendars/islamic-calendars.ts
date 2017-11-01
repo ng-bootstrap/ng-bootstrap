@@ -4,10 +4,6 @@ import {NgbDateStruct, NgbCalendar, NgbCalendarIslamicCivil, NgbCalendarIslamicU
 
 
 const I18N_VALUES = {
-  en: {
-    weekdays: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
-    months: ['Muh.', 'Saf.', 'Rab. I', 'Rab. II', 'Jum. I', 'Jum. II', 'Raj.', 'Sha.', 'Ram.', 'Shaw.', 'Dhuʻl-Q.', 'Dhuʻl-H.']
-  },
   ar: {
     weekdays: ['ن', 'ث', 'ر', 'خ', 'ج', 'س', 'ح'],
     months: ['محرم', 'صفر', 'ربيع الأول', 'ربيع الآخر', 'جمادى الأولى', 'جمادى الآخرة', 'رجب', 'شعبان', 'رمضان', 'شوال',
@@ -17,7 +13,7 @@ const I18N_VALUES = {
 
 @Injectable()
 export class I18n {
-  language = 'en';
+  language = 'ar';
 }
 
 @Injectable()
@@ -60,13 +56,6 @@ export class NgbdIslamicCivil {
     this.today = calendar.getToday();
   }
 
-  set language(language: string) {
-    this._i18n.language = language;
-  }
-
-  get language() {
-    return this._i18n.language;
-  }
   selectToday() {
     this.model = {
       year: this.today.year,

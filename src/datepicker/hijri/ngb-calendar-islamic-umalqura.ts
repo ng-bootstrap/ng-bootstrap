@@ -16,6 +16,7 @@ const GREGORIAN_LAST_DATE = new Date(2174, 10, 25);
 const HIJRI_BEGIN = 1300;
 const HIJRI_END = 1600;
 const ONE_DAY = 1000 * 60 * 60 * 24;
+const ISLAMIC_CIVIL = new NgbCalendarIslamicCivil();
 
 const MONTH_LENGTH = [
   // 1300-1304
@@ -160,7 +161,7 @@ export class NgbCalendarIslamicUmalqura extends NgbCalendarHijri {
       let year = 1300;
       for (let i = 0; i < MONTH_LENGTH.length; i++, year++) {
         for (let j = 0; j < 12; j++) {
-          let numOfDays = parseInt(MONTH_LENGTH[i][j], 10) + 29;
+          let numOfDays = +MONTH_LENGTH[i][j] + 29;
           if (daysDiff <= numOfDays) {
             hDay = daysDiff + 1;
             if (hDay > numOfDays) {
@@ -179,7 +180,7 @@ export class NgbCalendarIslamicUmalqura extends NgbCalendarHijri {
         }
       }
     } else {
-      return new NgbCalendarIslamicCivil().fromGregorian(gDate);
+      return ISLAMIC_CIVIL.fromGregorian(gDate);
     }
   }
   /**
@@ -194,11 +195,11 @@ export class NgbCalendarIslamicUmalqura extends NgbCalendarHijri {
     if (hYear >= HIJRI_BEGIN && hYear <= HIJRI_END) {
       for (let y = 0; y < hYear - HIJRI_BEGIN; y++) {
         for (let m = 0; m < 12; m++) {
-          dayDiff += parseInt(MONTH_LENGTH[y][m], 10) + 29;
+          dayDiff += +MONTH_LENGTH[y][m] + 29;
         }
       }
       for (let m = 0; m < hMonth; m++) {
-        dayDiff += parseInt(MONTH_LENGTH[hYear - HIJRI_BEGIN][m], 10) + 29;
+        dayDiff += +MONTH_LENGTH[hYear - HIJRI_BEGIN][m] + 29;
       }
       gDate.setDate(GREGORIAN_FIRST_DATE.getDate() + dayDiff);
     } else {
