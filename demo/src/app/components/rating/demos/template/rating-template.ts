@@ -11,6 +11,12 @@ import {Component} from '@angular/core';
     .filled {
       color: #1e90ff;
     }
+    .bad {
+      color: #deb0b0;
+    }
+    .filled.bad {
+      color: #ff1e1e;
+    }
   `]
 })
 export class NgbdRatingTemplate {

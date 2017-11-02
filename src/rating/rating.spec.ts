@@ -352,6 +352,36 @@ describe('ngb-rating', () => {
     expect(getStateText(compiled)).toEqual(['100', '100', '100', '100']);
   });
 
+  it('should allow custom star template based on index', () => {
+    const fixture = createTestComponent(`
+      <ng-template #t let-index="index">{{ index === 1 ? 'x' : 'o' }}</ng-template>
+      <ngb-rating [starTemplate]="t" rate="2" max="4"></ngb-rating>`);
+
+    const compiled = fixture.nativeElement;
+    expect(getStateText(compiled)).toEqual(['o', 'x', 'o', 'o']);
+  });
+
+  it('should allow custom template based on index as a child element', () => {
+    const fixture = createTestComponent(`
+      <ngb-rating rate="2" max="4">
+        <ng-template let-index="index">{{ index === 1 ? 'x' : 'o' }}</ng-template>
+      </ngb-rating>`);
+
+    const compiled = fixture.nativeElement;
+    expect(getStateText(compiled)).toEqual(['o', 'x', 'o', 'o']);
+  });
+
+  it('should prefer explicitly set custom template based on index to a child one', () => {
+    const fixture = createTestComponent(`
+      <ng-template #t let-index="index">{{ index === 1 ? 'a' : 'b' }}</ng-template>
+      <ngb-rating [starTemplate]="t" rate="2" max="4">
+        <ng-template let-index="index">{{ index === 1 ? 'c' : 'd' }}</ng-template>
+      </ngb-rating>`);
+
+    const compiled = fixture.nativeElement;
+    expect(getStateText(compiled)).toEqual(['b', 'a', 'b', 'b']);
+  });
+
   describe('aria support', () => {
     it('contains aria-valuemax with the number of stars', () => {
       const fixture = createTestComponent('<ngb-rating [max]="max"></ngb-rating>');
