@@ -11,6 +11,10 @@ import {DEMO_SNIPPETS} from './demos';
         <ngbd-tooltip-basic></ngbd-tooltip-basic>
       </ngbd-example-box>
       <ngbd-example-box
+        demoTitle="Optionally use HTML title attribute" [snippets]="snippets" component="tooltip" demo="title">
+        <ngbd-tooltip-title></ngbd-tooltip-title>
+      </ngbd-example-box>
+      <ngbd-example-box
         demoTitle="HTML and bindings in tooltips" [snippets]="snippets" component="tooltip" demo="tplcontent">
         <ngbd-tooltip-tplcontent></ngbd-tooltip-tplcontent>
       </ngbd-example-box>

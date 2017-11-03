@@ -465,6 +465,26 @@ describe('ngb-tooltip', () => {
     });
   });
 
+  describe('Use title attribute as content', () => {
+    it('should get tooltip content from the title attribute when present', () => {
+      const elementTitle = 'Great tip!';
+      const fixture = createTestComponent(`<div title="${elementTitle}" ngbTooltip></div>`);
+      const directive = fixture.debugElement.query(By.directive(NgbTooltip));
+      const defaultConfig = new NgbTooltipConfig();
+
+      directive.triggerEventHandler('mouseenter', {});
+      fixture.detectChanges();
+      const windowEl = getWindow(fixture.nativeElement);
+
+      expect(windowEl.textContent.trim()).toBe('Great tip!');
+      expect(directive.nativeElement.getAttribute('title')).toBeNull();
+
+      directive.triggerEventHandler('mouseleave', {});
+      fixture.detectChanges();
+      expect(directive.nativeElement.getAttribute('title')).toEqual(elementTitle);
+    });
+  });
+
   describe('Custom config', () => {
     let config: NgbTooltipConfig;
 
