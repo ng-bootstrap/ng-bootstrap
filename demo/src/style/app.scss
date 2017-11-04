@@ -310,3 +310,20 @@ ngbd-component-wrapper, ngbd-page-wrapper {
 @media (max-width: 568px) and (max-height: 320px)  {
   @include center-nav-tab-on-small-screens();
 }
+
+.custom-tooltip .tooltip-inner {
+  background-color: green;
+  color: yellow;
+}
+.custom-tooltip.tooltip.bs-tooltip-top .arrow::before {
+  border-top-color: green;
+}
+.custom-tooltip.tooltip.bs-tooltip-right .arrow::before {
+  border-right-color: green;
+}
+.custom-tooltip.tooltip.bs-tooltip-bottom .arrow::before {
+  border-bottom-color: green;
+}
+.custom-tooltip.tooltip.bs-tooltip-left .arrow::before {
+  border-left-color: green;
+}

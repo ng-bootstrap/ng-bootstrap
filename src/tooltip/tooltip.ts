@@ -27,7 +27,7 @@ let nextId = 0;
   selector: 'ngb-tooltip-window',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class]': '"tooltip show bs-tooltip-" + placement.split("-")[0]+" bs-tooltip-" + placement',
+    '[class]': '"tooltip show bs-tooltip-" + placement.split("-")[0]+" bs-tooltip-" + placement + " " + class',
     'role': 'tooltip',
     '[id]': 'id'
   },
@@ -49,7 +49,7 @@ let nextId = 0;
     :host.bs-tooltip-left .arrow, :host.bs-tooltip-right .arrow {
       top: 50%;
     }
-    
+
     :host.bs-tooltip-left-top .arrow, :host.bs-tooltip-right-top .arrow {
       top: 0.7em;
     }
@@ -63,6 +63,7 @@ let nextId = 0;
 export class NgbTooltipWindow {
   @Input() placement: Placement = 'top';
   @Input() id: string;
+  @Input() class: string;
 
   constructor(private _element: ElementRef, private _renderer: Renderer2) {}
 
@@ -101,6 +102,10 @@ export class NgbTooltip implements OnInit, OnDestroy {
    * Currently only supports "body".
    */
   @Input() container: string;
+  /**
+   * Custom class of the tooltip.
+   */
+  @Input('ngbTooltipClass') class: string;
   /**
    * Emits an event when the tooltip is shown
    */
@@ -158,6 +163,7 @@ export class NgbTooltip implements OnInit, OnDestroy {
     if (!this._windowRef && this._ngbTooltip) {
       this._windowRef = this._popupService.open(this._ngbTooltip, context);
       this._windowRef.instance.id = this._ngbTooltipWindowId;
+      this._windowRef.instance.class = this.class;
 
       this._renderer.setAttribute(this._elementRef.nativeElement, 'aria-describedby', this._ngbTooltipWindowId);
 

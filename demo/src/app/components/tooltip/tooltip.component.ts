@@ -30,6 +30,10 @@ import {DEMO_SNIPPETS} from './demos';
         demoTitle="Global configuration of tooltips" [snippets]="snippets" component="tooltip" demo="config">
         <ngbd-tooltip-config></ngbd-tooltip-config>
       </ngbd-example-box>
+      <ngbd-example-box
+        demoTitle="Custom class in tooltips" [snippets]="snippets" component="tooltip" demo="class">
+       <ngbd-tooltip-class></ngbd-tooltip-class>
+      </ngbd-example-box>
     </ngbd-component-wrapper>
   `
 })
