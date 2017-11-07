@@ -7,7 +7,7 @@ var autoprefixer = require('autoprefixer');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
-var AngularCompilerPlugin = require('@ngtools/webpack');
+var ngToolsWebpack = require('@ngtools/webpack');
 
 /**
  * Env
@@ -195,7 +195,7 @@ module.exports = function makeWebpackConfig() {
   if (isProd) {
     config.plugins.push(
       // Reference: https://github.com/angular/angular-cli/tree/master/packages/webpack
-      new AngularCompilerPlugin({
+      new ngToolsWebpack.AngularCompilerPlugin({
         tsConfigPath: './tsconfig-aot.json',
         entryModule: root('demo/src/app/') + 'app.module#NgbdModule'
       }),
