@@ -57,16 +57,6 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
       transform: rotate(135deg);
     }
 
-    .btn-link {
-      border: 0;
-      outline: 0;
-    }
-
-    .btn-link.disabled {
-      cursor: not-allowed;
-      opacity: .65;
-    }
-
     input {
       text-align: center;
       display: inline-block;
@@ -77,7 +67,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
     <fieldset [disabled]="disabled" [class.disabled]="disabled">
       <div class="ngb-tp">
         <div class="ngb-tp-hour">
-          <button *ngIf="spinners" type="button" class="btn-link" [ngClass]="setButtonSize()" (click)="changeHour(hourStep)"
+          <button *ngIf="spinners" type="button" class="btn btn-link" [ngClass]="setButtonSize()" (click)="changeHour(hourStep)"
             [disabled]="disabled" [class.disabled]="disabled">
             <span class="chevron"></span>
             <span class="sr-only">Increment hours</span>
@@ -85,7 +75,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
           <input type="text" class="form-control" [ngClass]="setFormControlSize()" maxlength="2" size="2" placeholder="HH"
             [value]="formatHour(model?.hour)" (change)="updateHour($event.target.value)"
             [readonly]="readonlyInputs" [disabled]="disabled" aria-label="Hours">
-          <button *ngIf="spinners" type="button" class="btn-link" [ngClass]="setButtonSize()" (click)="changeHour(-hourStep)"
+          <button *ngIf="spinners" type="button" class="btn btn-link" [ngClass]="setButtonSize()" (click)="changeHour(-hourStep)"
             [disabled]="disabled" [class.disabled]="disabled">
             <span class="chevron bottom"></span>
             <span class="sr-only">Decrement hours</span>
@@ -93,7 +83,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
         </div>
         <div class="ngb-tp-spacer">:</div>
         <div class="ngb-tp-minute">
-          <button *ngIf="spinners" type="button" class="btn-link" [ngClass]="setButtonSize()" (click)="changeMinute(minuteStep)"
+          <button *ngIf="spinners" type="button" class="btn btn-link" [ngClass]="setButtonSize()" (click)="changeMinute(minuteStep)"
             [disabled]="disabled" [class.disabled]="disabled">
             <span class="chevron"></span>
             <span class="sr-only">Increment minutes</span>
@@ -101,7 +91,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
           <input type="text" class="form-control" [ngClass]="setFormControlSize()" maxlength="2" size="2" placeholder="MM"
             [value]="formatMinSec(model?.minute)" (change)="updateMinute($event.target.value)"
             [readonly]="readonlyInputs" [disabled]="disabled" aria-label="Minutes">
-          <button *ngIf="spinners" type="button" class="btn-link" [ngClass]="setButtonSize()" (click)="changeMinute(-minuteStep)"
+          <button *ngIf="spinners" type="button" class="btn btn-link" [ngClass]="setButtonSize()" (click)="changeMinute(-minuteStep)"
             [disabled]="disabled" [class.disabled]="disabled">
             <span class="chevron bottom"></span>
             <span class="sr-only">Decrement minutes</span>
@@ -109,7 +99,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
         </div>
         <div *ngIf="seconds" class="ngb-tp-spacer">:</div>
         <div *ngIf="seconds" class="ngb-tp-second">
-          <button *ngIf="spinners" type="button" class="btn-link" [ngClass]="setButtonSize()" (click)="changeSecond(secondStep)"
+          <button *ngIf="spinners" type="button" class="btn btn-link" [ngClass]="setButtonSize()" (click)="changeSecond(secondStep)"
             [disabled]="disabled" [class.disabled]="disabled">
             <span class="chevron"></span>
             <span class="sr-only">Increment seconds</span>
@@ -117,7 +107,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
           <input type="text" class="form-control" [ngClass]="setFormControlSize()" maxlength="2" size="2" placeholder="SS"
             [value]="formatMinSec(model?.second)" (change)="updateSecond($event.target.value)"
             [readonly]="readonlyInputs" [disabled]="disabled" aria-label="Seconds">
-          <button *ngIf="spinners" type="button" class="btn-link" [ngClass]="setButtonSize()" (click)="changeSecond(-secondStep)"
+          <button *ngIf="spinners" type="button" class="btn btn-link" [ngClass]="setButtonSize()" (click)="changeSecond(-secondStep)"
             [disabled]="disabled" [class.disabled]="disabled">
             <span class="chevron bottom"></span>
             <span class="sr-only">Decrement seconds</span>
