@@ -511,6 +511,20 @@ describe('ngb-tooltip', () => {
       expect(tooltip.container).toBe(config.container);
     });
   });
+
+  describe('class', () => {
+    it('should have a class when the "ngbTooltipClass" option is used', () => {
+      const fixture = createTestComponent(`<div ngbTooltip="Great tip!" ngbTooltipClass="custom"></div>`);
+      const directive = fixture.debugElement.query(By.directive(NgbTooltip));
+      const defaultConfig = new NgbTooltipConfig();
+
+      directive.triggerEventHandler('mouseenter', {});
+      fixture.detectChanges();
+      const windowEl = getWindow(fixture.nativeElement);
+
+      expect(windowEl).toHaveCssClass('custom');
+    });
+  });
 });
 
 @Component({selector: 'test-cmpt', template: ``})
