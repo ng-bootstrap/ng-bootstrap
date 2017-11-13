@@ -12,7 +12,7 @@ import {
   Output,
   EventEmitter
 } from '@angular/core';
-import { trigger, style, transition, animate } from '@angular/animations';
+import {trigger, style, transition, animate} from '@angular/animations';
 import {NgbCarouselConfig} from './carousel-config';
 
 let nextId = 0;
@@ -197,9 +197,9 @@ export class NgbCarousel implements AfterContentChecked,
 
   cycleToSelected(slideIdx: string, direction: NgbSlideEventDirection) {
     let selectedSlide = this._getSlideById(slideIdx);
-    if (selectedSlide) {
-      this.currentId = this.activeId;
+    if (selectedSlide && !this.transition) {
       if (selectedSlide.id !== this.activeId) {
+        this.currentId = this.activeId;
         this.prevId = (direction === NgbSlideEventDirection.LEFT ? selectedSlide.id : undefined);
         this.nextId = (direction === NgbSlideEventDirection.RIGHT ? selectedSlide.id : undefined);
         this.direction = direction;
@@ -208,7 +208,8 @@ export class NgbCarousel implements AfterContentChecked,
 
         this.slide.emit({prev: this.currentId, current: selectedSlide.id, direction: direction});
       } else {
-        this.activeId = selectedSlide.id;
+        this.currentId = this._activeId = selectedSlide.id;
+        this.transitionDone();
       }
     }
   }
