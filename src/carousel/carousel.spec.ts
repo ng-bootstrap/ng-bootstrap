@@ -3,6 +3,7 @@ import {createGenericTestComponent} from '../test/common';
 
 import {By} from '@angular/platform-browser';
 import {Component} from '@angular/core';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 
 import {NgbCarouselModule} from './carousel.module';
 import {NgbCarousel, NgbSlideEvent, NgbSlideEventDirection} from './carousel';
@@ -31,7 +32,8 @@ function expectActiveSlides(nativeEl: HTMLDivElement, active: boolean[]) {
 
 describe('ngb-carousel', () => {
   beforeEach(() => {
-    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbCarouselModule.forRoot()]});
+    TestBed.configureTestingModule(
+        {declarations: [TestComponent], imports: [NgbCarouselModule.forRoot(), NoopAnimationsModule]});
   });
 
   it('should initialize inputs with default values', () => {
@@ -125,6 +127,8 @@ describe('ngb-carousel', () => {
 
        indicatorElms[1].click();
        fixture.detectChanges();
+       tick(600);  // wait for animation to finish
+       fixture.detectChanges();
        expectActiveSlides(fixture.nativeElement, [false, true]);
 
        discardPeriodicTasks();
@@ -149,6 +153,8 @@ describe('ngb-carousel', () => {
          direction: NgbSlideEventDirection.LEFT
        }));
 
+       fixture.detectChanges();
+       tick(600);  // wait for animation to finish
        spyCallBack.calls.reset();
        indicatorElms[0].click();
        fixture.detectChanges();
@@ -156,6 +162,8 @@ describe('ngb-carousel', () => {
          direction: NgbSlideEventDirection.RIGHT
        }));
 
+       fixture.detectChanges();
+       tick(600);  // wait for animation to finish
        spyCallBack.calls.reset();
        indicatorElms[2].click();
        fixture.detectChanges();
@@ -183,9 +191,13 @@ describe('ngb-carousel', () => {
 
        nextControlElm.click();  // next
        fixture.detectChanges();
+       tick(600);  // wait for animation to finish
+       fixture.detectChanges();
        expectActiveSlides(fixture.nativeElement, [false, true]);
 
        prevControlElm.click();  // prev
+       fixture.detectChanges();
+       tick(600);  // wait for animation to finish
        fixture.detectChanges();
        expectActiveSlides(fixture.nativeElement, [true, false]);
 
@@ -210,6 +222,9 @@ describe('ngb-carousel', () => {
        expect(fixture.componentInstance.carouselSlideCallBack).toHaveBeenCalledWith(jasmine.objectContaining({
          direction: NgbSlideEventDirection.RIGHT
        }));
+
+       fixture.detectChanges();
+       tick(600);  // wait for animation to finish
        spyCallBack.calls.reset();
        nextControlElm.click();
        fixture.detectChanges();
@@ -217,6 +232,8 @@ describe('ngb-carousel', () => {
          direction: NgbSlideEventDirection.LEFT
        }));
 
+       fixture.detectChanges();
+       tick(600);  // wait for animation to finish
        spyCallBack.calls.reset();
        prevControlElm.click();
        fixture.detectChanges();
@@ -241,6 +258,8 @@ describe('ngb-carousel', () => {
 
        tick(6000);
        fixture.detectChanges();
+       tick(600);  // wait for animation to finish
+       fixture.detectChanges();
        expectActiveSlides(fixture.nativeElement, [false, true]);
 
        discardPeriodicTasks();
@@ -260,9 +279,13 @@ describe('ngb-carousel', () => {
 
        tick(1000);
        fixture.detectChanges();
+       tick(600);  // wait for animation to finish
+       fixture.detectChanges();
        expectActiveSlides(fixture.nativeElement, [true, false]);
 
        tick(1200);
+       fixture.detectChanges();
+       tick(600);  // wait for animation to finish
        fixture.detectChanges();
        expectActiveSlides(fixture.nativeElement, [false, true]);
 
@@ -283,9 +306,13 @@ describe('ngb-carousel', () => {
 
        tick(1000);
        fixture.detectChanges();
+       tick(600);  // wait for animation to finish
+       fixture.detectChanges();
        expectActiveSlides(fixture.nativeElement, [true, false]);
 
        tick(1200);
+       fixture.detectChanges();
+       tick(600);  // wait for animation to finish
        fixture.detectChanges();
        expectActiveSlides(fixture.nativeElement, [true, false]);
 
@@ -309,12 +336,16 @@ describe('ngb-carousel', () => {
 
        tick(5001);
        fixture.detectChanges();
+       tick(600);  // wait for animation to finish
+       fixture.detectChanges();
        expectActiveSlides(fixture.nativeElement, [false, true, false]);
 
        fixture.componentInstance.interval = 1000;
        fixture.detectChanges();
 
        tick(1001);
+       fixture.detectChanges();
+       tick(600);  // wait for animation to finish
        fixture.detectChanges();
        expectActiveSlides(fixture.nativeElement, [false, false, true]);
 
@@ -337,17 +368,25 @@ describe('ngb-carousel', () => {
 
        carouselDebugEl.triggerEventHandler('mouseenter', {});
        fixture.detectChanges();
+       tick(600);  // wait for animation to finish
+       fixture.detectChanges();
        expectActiveSlides(fixture.nativeElement, [true, false]);
 
        tick(6000);
+       fixture.detectChanges();
+       tick(600);  // wait for animation to finish
        fixture.detectChanges();
        expectActiveSlides(fixture.nativeElement, [true, false]);
 
        carouselDebugEl.triggerEventHandler('mouseleave', {});
        fixture.detectChanges();
+       tick(600);  // wait for animation to finish
+       fixture.detectChanges();
        expectActiveSlides(fixture.nativeElement, [true, false]);
 
        tick(6000);
+       fixture.detectChanges();
+       tick(600);  // wait for animation to finish
        fixture.detectChanges();
        expectActiveSlides(fixture.nativeElement, [false, true]);
 
@@ -371,13 +410,19 @@ describe('ngb-carousel', () => {
 
        nextControlElm.click();  // next
        fixture.detectChanges();
+       tick(600);  // wait for animation to finish
+       fixture.detectChanges();
        expectActiveSlides(fixture.nativeElement, [false, true]);
 
        nextControlElm.click();  // next
        fixture.detectChanges();
+       tick(600);  // wait for animation to finish
+       fixture.detectChanges();
        expectActiveSlides(fixture.nativeElement, [true, false]);
 
        prevControlElm.click();  // prev
+       fixture.detectChanges();
+       tick(600);  // wait for animation to finish
        fixture.detectChanges();
        expectActiveSlides(fixture.nativeElement, [false, true]);
 
@@ -401,13 +446,19 @@ describe('ngb-carousel', () => {
 
        prevControlElm.click();  // prev
        fixture.detectChanges();
+       tick(600);  // wait for animation to finish
+       fixture.detectChanges();
        expectActiveSlides(fixture.nativeElement, [true, false]);
 
        nextControlElm.click();  // next
        fixture.detectChanges();
+       tick(600);  // wait for animation to finish
+       fixture.detectChanges();
        expectActiveSlides(fixture.nativeElement, [false, true]);
 
        nextControlElm.click();  // next
+       fixture.detectChanges();
+       tick(600);  // wait for animation to finish
        fixture.detectChanges();
        expectActiveSlides(fixture.nativeElement, [false, true]);
 
@@ -427,15 +478,21 @@ describe('ngb-carousel', () => {
 
        fixture.debugElement.query(By.directive(NgbCarousel)).triggerEventHandler('keydown.arrowRight', {});  // next()
        fixture.detectChanges();
+       tick(600);  // wait for animation to finish
+       fixture.detectChanges();
        expectActiveSlides(fixture.nativeElement, [false, true]);
 
        fixture.debugElement.query(By.directive(NgbCarousel)).triggerEventHandler('keydown.arrowLeft', {});  // prev()
+       fixture.detectChanges();
+       tick(600);  // wait for animation to finish
        fixture.detectChanges();
        expectActiveSlides(fixture.nativeElement, [true, false]);
 
        fixture.componentInstance.keyboard = false;
        fixture.detectChanges();
        fixture.debugElement.query(By.directive(NgbCarousel)).triggerEventHandler('keydown.arrowRight', {});  // prev()
+       fixture.detectChanges();
+       tick(600);  // wait for animation to finish
        fixture.detectChanges();
        expectActiveSlides(fixture.nativeElement, [true, false]);
 
@@ -459,11 +516,15 @@ describe('ngb-carousel', () => {
        fixture.detectChanges();
        fixture.debugElement.query(By.directive(NgbCarousel)).triggerEventHandler('keydown.arrowRight', {});  // prev()
        fixture.detectChanges();
+       tick(600);  // wait for animation to finish
+       fixture.detectChanges();
        expectActiveSlides(fixture.nativeElement, [true, false]);
 
        fixture.componentInstance.keyboard = true;
        fixture.detectChanges();
        fixture.debugElement.query(By.directive(NgbCarousel)).triggerEventHandler('keydown.arrowRight', {});  // next()
+       fixture.detectChanges();
+       tick(600);  // wait for animation to finish
        fixture.detectChanges();
        expectActiveSlides(fixture.nativeElement, [false, true]);
 
