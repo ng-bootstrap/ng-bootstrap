@@ -12,6 +12,7 @@ import {
   Output,
   EventEmitter
 } from '@angular/core';
+import { trigger, style, transition, animate } from '@angular/animations';
 import {NgbCarouselConfig} from './carousel-config';
 
 let nextId = 0;
@@ -44,13 +45,38 @@ export class NgbSlide {
     '(keydown.arrowLeft)': 'keyPrev()',
     '(keydown.arrowRight)': 'keyNext()'
   },
+  animations: [
+    trigger('transition', [
+      transition('* => active_left', [style({ transform: 'translateX(0)' }),
+      animate('.6s ease', style({ transform: 'translateX(-100%)' }))]),
+
+      transition('* => active_right', [style({ transform: 'translateX(0)' }),
+      animate('.6s ease', style({ transform: 'translateX(100%)' }))]),
+
+      transition('* => left', [style({ transform: 'translateX(100%)' }),
+      animate('.6s ease', style({ transform: 'translateX(0)' }))]),
+
+      transition('* => right', [style({ transform: 'translateX(-100%)' }),
+      animate('.6s ease', style({ transform: 'translateX(0)' }))]),
+    ])
+  ],
   template: `
     <ol class="carousel-indicators">
-      <li *ngFor="let slide of slides" [id]="slide.id" [class.active]="slide.id === activeId" 
+      <li *ngFor="let slide of slides" [id]="slide.id" [class.active]="slide.id === activeId"
           (click)="cycleToSelected(slide.id, _getSlideEventDirection(activeId, slide.id))"></li>
     </ol>
     <div class="carousel-inner">
-      <div *ngFor="let slide of slides" class="carousel-item" [class.active]="slide.id === activeId">
+      <div *ngFor="let slide of slides" class="carousel-item"
+        [class.active]="slide.id === currentId"
+        [class.carousel-item-prev]="slide.id === prevId"
+        [class.carousel-item-next]="slide.id === nextId"
+        [@transition]="(
+          transition &&
+          (slide.id === currentId || slide.id === prevId || slide.id === nextId) ?
+          (slide.id === currentId ? 'active_' : '') + direction :
+          ''
+        )"
+        (@transition.done)="transitionDone()">
         <ng-template [ngTemplateOutlet]="slide.tplRef"></ng-template>
       </div>
     </div>
@@ -68,6 +94,12 @@ export class NgbCarousel implements AfterContentChecked,
     OnDestroy, OnInit, OnChanges {
   @ContentChildren(NgbSlide) slides: QueryList<NgbSlide>;
   private _slideChangeInterval;
+  private _activeId: string;
+  currentId: string;
+  prevId: string;
+  nextId: string;
+  direction: NgbSlideEventDirection;
+  transition: boolean;
 
   /**
    * Amount of time in milliseconds before next slide is shown.
@@ -87,7 +119,12 @@ export class NgbCarousel implements AfterContentChecked,
   /**
    * The active slide id.
    */
-  @Input() activeId: string;
+  @Input()
+  set activeId(value: string) {
+    this.currentId = this._activeId = value;
+  }
+
+  get activeId(): string { return this._activeId; }
 
   /**
    * A carousel slide event fired when the slide transition is completed.
@@ -102,6 +139,10 @@ export class NgbCarousel implements AfterContentChecked,
   }
 
   ngAfterContentChecked() {
+    if (this.transition) {
+      return;
+    }
+
     let activeSlide = this._getSlideById(this.activeId);
     this.activeId = activeSlide ? activeSlide.id : (this.slides.length ? this.slides.first.id : null);
   }
@@ -157,11 +198,27 @@ export class NgbCarousel implements AfterContentChecked,
   cycleToSelected(slideIdx: string, direction: NgbSlideEventDirection) {
     let selectedSlide = this._getSlideById(slideIdx);
     if (selectedSlide) {
+      this.currentId = this.activeId;
       if (selectedSlide.id !== this.activeId) {
-        this.slide.emit({prev: this.activeId, current: selectedSlide.id, direction: direction});
+        this.prevId = (direction === NgbSlideEventDirection.LEFT ? selectedSlide.id : undefined);
+        this.nextId = (direction === NgbSlideEventDirection.RIGHT ? selectedSlide.id : undefined);
+        this.direction = direction;
+        this._activeId = selectedSlide.id;
+        this.transition = true;
+
+        this.slide.emit({prev: this.currentId, current: selectedSlide.id, direction: direction});
+      } else {
+        this.activeId = selectedSlide.id;
       }
-      this.activeId = selectedSlide.id;
     }
+  }
+
+  transitionDone() {
+    this.transition = false;
+    this.prevId = undefined;
+    this.nextId = undefined;
+    this.direction = undefined;
+    this.currentId = this.activeId;
   }
 
   keyPrev() {
