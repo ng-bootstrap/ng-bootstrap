@@ -48,17 +48,17 @@
   },
   "homepage": "https://github.com/ng-bootstrap/ng-bootstrap#readme",
   "dependencies": {
-    "@angular/core": "5.0.0",
-    "@angular/common": "5.0.0",
-    "@angular/forms": "5.0.0"
+    "@angular/core": "5.0.2",
+    "@angular/common": "5.0.2",
+    "@angular/forms": "5.0.2"
   },
   "devDependencies": {
-    "@angular/compiler": "5.0.0",
-    "@angular/compiler-cli": "5.0.0",
-    "@angular/http": "5.0.0",
-    "@angular/platform-browser": "5.0.0",
-    "@angular/platform-browser-dynamic": "5.0.0",
-    "@angular/router": "5.0.0",
+    "@angular/compiler": "5.0.2",
+    "@angular/compiler-cli": "5.0.2",
+    "@angular/http": "5.0.2",
+    "@angular/platform-browser": "5.0.2",
+    "@angular/platform-browser-dynamic": "5.0.2",
+    "@angular/router": "5.0.2",
     "@ngtools/webpack": "1.8.2",
     "@types/jasmine": "2.5.41",
     "@types/node": "^6.0.46",
@@ -99,7 +99,7 @@
     "karma-sauce-launcher": "^1.1.0",
     "karma-sourcemap-loader": "^0.3.7",
     "mkdirp": "^0.5.1",
-    "node-sass": "^3.10.1",
+    "node-sass": "^4.6.1",
     "postcss-loader": "^1.1.0",
     "prismjs": "^1.5.1",
     "prismjs-loader": "0.0.4",
@@ -115,7 +115,7 @@
     "tslint": "^3.15.1",
     "typescript": "2.4.2",
     "url-loader": "^0.5.7",
-    "webpack": "2.2.0",
+    "webpack": "3.8.1",
     "webpack-dev-server": "2.2.0",
     "zone.js": "0.8.10"
   }
