@@ -59,7 +59,7 @@
     "@angular/platform-browser": "5.0.0",
     "@angular/platform-browser-dynamic": "5.0.0",
     "@angular/router": "5.0.0",
-    "@ngtools/webpack": "1.8.0",
+    "@ngtools/webpack": "1.8.2",
     "@types/jasmine": "2.5.41",
     "@types/node": "^6.0.46",
     "angular2-template-loader": "^0.6.0",
