@@ -15,8 +15,15 @@ export class NgbDatepickerService {
 
   private _select$ = new Subject<NgbDate>();
 
-  private _state: DatepickerViewModel =
-      {disabled: false, displayMonths: 1, firstDayOfWeek: 1, focusVisible: false, months: [], selectedDate: null};
+  private _state: DatepickerViewModel = {
+    disabled: false,
+    displayMonths: 1,
+    firstDayOfWeek: 1,
+    focusVisible: false,
+    months: [],
+    navigation: 'select',
+    selectedDate: null
+  };
 
   get model$(): Observable<DatepickerViewModel> {
     return filter.call(this._model$.asObservable(), model => model.months.length > 0);
@@ -63,6 +70,12 @@ export class NgbDatepickerService {
   set minDate(date: NgbDate) {
     if (date === undefined || this._calendar.isValid(date) && isChangedDate(this._state.minDate, date)) {
       this._nextState({minDate: date});
+    }
+  }
+
+  set navigation(navigation: 'select' | 'arrows' | 'none') {
+    if (this._state.navigation !== navigation) {
+      this._nextState({navigation: navigation});
     }
   }
 

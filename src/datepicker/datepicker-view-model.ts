@@ -36,6 +36,7 @@ export type DatepickerViewModel = {
   maxDate?: NgbDate,
   minDate?: NgbDate,
   months: MonthViewModel[],
+  navigation: 'select' | 'arrows' | 'none',
   selectedDate: NgbDate
 }
 // clang-format on

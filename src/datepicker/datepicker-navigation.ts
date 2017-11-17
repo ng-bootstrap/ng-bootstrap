@@ -14,7 +14,7 @@ import {NgbCalendar} from './ngb-calendar';
       line-height: 1.85rem;
     }
     :host.collapsed {
-      margin-bottom: -2rem;        
+      margin-bottom: -2rem;
     }
     .ngb-dp-navigation-chevron::before {
       border-style: solid;
@@ -27,28 +27,18 @@ import {NgbCalendar} from './ngb-calendar';
       -ms-transform: rotate(-135deg);
       width: 0.75em;
       margin: 0 0 0 0.5rem;
-    }    
+    }
     .ngb-dp-navigation-chevron.right:before {
       -webkit-transform: rotate(45deg);
       -ms-transform: rotate(45deg);
       transform: rotate(45deg);
       margin: 0 0.5rem 0 0;
     }
-    .btn-link {
-      cursor: pointer;
-      border: 0;
-      outline: 0;
-    }
-    .btn-link[disabled] {
-      cursor: not-allowed;
-      opacity: .65;
-    }    
   `],
   template: `
-    <button type="button" class="btn-link" (click)="!!doNavigate(navigation.PREV)" [disabled]="prevDisabled()" tabindex="-1">
-      <span class="ngb-dp-navigation-chevron"></span>    
+    <button type="button" class="btn btn-sm btn-link" (click)="!!doNavigate(navigation.PREV)" [disabled]="prevDisabled()" tabindex="-1">
+      <span class="ngb-dp-navigation-chevron"></span>
     </button>
-    
     <ngb-datepicker-navigation-select *ngIf="showSelect" class="d-block" [style.width.rem]="months * 9"
       [date]="date"
       [minDate]="minDate"
@@ -56,8 +46,7 @@ import {NgbCalendar} from './ngb-calendar';
       [disabled] = "disabled"
       (select)="selectDate($event)">
     </ngb-datepicker-navigation-select>
-    
-    <button type="button" class="btn-link" (click)="!!doNavigate(navigation.NEXT)" [disabled]="nextDisabled()" tabindex="-1">
+    <button type="button" class="btn btn-sm btn-link" (click)="!!doNavigate(navigation.NEXT)" [disabled]="nextDisabled()" tabindex="-1">
       <span class="ngb-dp-navigation-chevron right"></span>
     </button>
   `

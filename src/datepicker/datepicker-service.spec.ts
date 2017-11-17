@@ -408,6 +408,28 @@ describe('ngb-datepicker-service', () => {
 
   });
 
+  describe(`navigation`, () => {
+
+    it(`should emit navigation values`, () => {
+      // default = 'selected'
+      service.focus(new NgbDate(2015, 5, 1));
+      expect(model.navigation).toEqual('select');
+
+      service.navigation = 'none';
+      expect(model.navigation).toEqual('none');
+
+      service.navigation = 'arrows';
+      expect(model.navigation).toEqual('arrows');
+    });
+
+    it(`should not emit the same 'navigation' value twice`, () => {
+      service.focus(new NgbDate(2017, 5, 1));
+
+      service.navigation = 'select';  // ignored
+      expect(mock.onNext).toHaveBeenCalledTimes(1);
+    });
+  });
+
   describe(`markDisabled`, () => {
 
     it(`should mark dates as disabled by passing 'markDisabled'`, () => {
