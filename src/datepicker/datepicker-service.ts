@@ -92,7 +92,9 @@ export class NgbDatepickerService {
   }
 
   focusSelect() {
-    if (isDateSelectable(this._state.months, this._state.focusDate)) {
+    if (isDateSelectable(
+            this._state.focusDate, this._state.minDate, this._state.maxDate, this._state.disabled,
+            this._state.markDisabled)) {
       this.select(this._state.focusDate, {emitEvent: true});
     }
   }
@@ -110,7 +112,9 @@ export class NgbDatepickerService {
         this._nextState({selectedDate: validDate});
       }
 
-      if (options.emitEvent && isDateSelectable(this._state.months, validDate)) {
+      if (options.emitEvent &&
+          isDateSelectable(
+              validDate, this._state.minDate, this._state.maxDate, this._state.disabled, this._state.markDisabled)) {
         this._select$.next(validDate);
       }
     }
@@ -213,7 +217,7 @@ export class NgbDatepickerService {
 
       // reset selected date if 'markDisabled' returns true
       if ('selectedDate' in patch && state.selectedDate !== null) {
-        if (!isDateSelectable(state.months, state.selectedDate)) {
+        if (!isDateSelectable(state.selectedDate, state.minDate, state.maxDate, state.disabled, state.markDisabled)) {
           state.selectedDate = null;
         }
       }
