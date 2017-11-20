@@ -25,4 +25,12 @@
 
 <button class="btn btn-sm btn-outline-primary" (click)="acc.toggle('toggle-1')">Toggle first</button>
 <button class="btn btn-sm btn-outline-primary" (click)="acc.toggle('toggle-2')">Toggle second</button>
-
+<button class="btn btn-sm btn-outline-primary" (click)="acc.collapse('toggle-1')">Collapse first</button>
+<button class="btn btn-sm btn-outline-primary" (click)="acc.collapse('toggle-2')">Collapse second</button>
+<button class="btn btn-sm btn-outline-primary" (click)="acc.collapseAll()">Collapse all</button>
+<button class="btn btn-sm btn-outline-primary">
+  First Open:<span class="badge badge-light">{{ acc.isExpanded('toggle-1') }}</span>
+</button>
+<button class="btn btn-sm btn-outline-primary">
+  Second Open:<span class="badge badge-light">{{ acc.isExpanded('toggle-2') }}</span>
+</button>

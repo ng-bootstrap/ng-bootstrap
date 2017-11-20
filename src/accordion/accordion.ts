@@ -110,7 +110,7 @@ export interface NgbPanelChangeEvent {
             {{panel.title}}<ng-template [ngTemplateOutlet]="panel.titleTpl?.templateRef"></ng-template>
           </a>
         </div>
-        <div id="{{panel.id}}" role="tabpanel" [attr.aria-labelledby]="panel.id + '-header'" 
+        <div id="{{panel.id}}" role="tabpanel" [attr.aria-labelledby]="panel.id + '-header'"
              class="card-body {{panel.isOpen ? 'show' : null}}" *ngIf="!destroyOnHide || panel.isOpen">
              <ng-template [ngTemplateOutlet]="panel.contentTpl.templateRef"></ng-template>
         </div>
@@ -173,6 +173,44 @@ export class NgbAccordion implements AfterContentChecked {
         this._updateActiveIds();
       }
     }
+  }
+
+  /**
+   * Programmatically expand a panel with a given id if it is closed.
+   */
+  expand(panelId: string) {
+    const panel = this.panels.find(p => p.id === panelId);
+
+    if (panel && !panel.disabled && !panel.isOpen) {
+      this.toggle(panelId);
+    }
+  }
+
+  /**
+   * Programmatically collapse a panel with a given id if it is open.
+   */
+  collapse(panelId: string) {
+    const panel = this.panels.find(p => p.id === panelId);
+
+    if (panel && !panel.disabled && panel.isOpen) {
+      this.toggle(panelId);
+    }
+  }
+
+  /**
+   * Programmatically collapse all panels.
+   */
+  collapseAll() {
+    this.panels.forEach(panel => { panel.isOpen = false; });
+    this._updateActiveIds();
+  }
+
+  /**
+   * Returns if a panel is currently expanded.
+   */
+  isExpanded(panelId): boolean {
+    const panel = this.panels.find(p => p.id === panelId);
+    return panel.isOpen;
   }
 
   ngAfterContentChecked() {
