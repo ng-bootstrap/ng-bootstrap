@@ -1,6 +1,7 @@
 import {NgbDate} from './ngb-date';
 import {DayViewModel, MonthViewModel, NgbMarkDisabled} from './datepicker-view-model';
 import {NgbCalendar} from './ngb-calendar';
+import {isDefined} from '../util/util';
 
 export function isChangedDate(prev: NgbDate, next: NgbDate) {
   return !dateComparator(prev, next);
@@ -27,20 +28,17 @@ export function checkDateInRange(date: NgbDate, minDate: NgbDate, maxDate: NgbDa
   return date;
 }
 
-export function isDateSelectable(months: MonthViewModel[], date: NgbDate) {
-  let selectable = false;
-  const month = months.find(curMonth => curMonth.year === date.year && curMonth.number === date.month);
-  if (month) {
-    month.weeks.find(week => {
-      const day = week.days.find(day => date.equals(day.date));
-      if (day && !day.context.disabled) {
-        selectable = true;
-      }
-      return !!day;
-    });
-  }
-
-  return selectable;
+export function isDateSelectable(
+    date: NgbDate, minDate: NgbDate, maxDate: NgbDate, isDisabled: boolean, markDisabled?: NgbMarkDisabled) {
+  // clang-format off
+  return !(
+    !isDefined(date) ||
+    isDisabled ||
+    (markDisabled && markDisabled(date, {year: date.year, month: date.month})) ||
+    (minDate && date.before(minDate)) ||
+    (maxDate && date.after(maxDate))
+  );
+  // clang-format on
 }
 
 export function buildMonths(

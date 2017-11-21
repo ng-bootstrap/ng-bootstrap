@@ -1,0 +1,15 @@
+<p>This datepicker uses a custom Date adapter that let you use your own model implementation.
+In the example we are converting from and to a JS native Date object</p>
+
+<ngb-datepicker #dp [(ngModel)]="model" (navigate)="date = $event.next"></ngb-datepicker>
+
+<hr/>
+
+<button class="btn btn-sm btn-outline-primary" (click)="selectToday()">Select Today</button>
+<button class="btn btn-sm btn-outline-primary" (click)="dp.navigateTo()">To current month</button>
+<button class="btn btn-sm btn-outline-primary" (click)="dp.navigateTo({year: 2013, month: 2})">To Feb 2013</button>
+
+<hr/>
+
+<pre>Month: {{ date.month }}.{{ date.year }}</pre>
+<pre>Model: {{ model?.toString() }}</pre>
