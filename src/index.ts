@@ -15,7 +15,7 @@ import {NgbRatingModule} from './rating/rating.module';
 import {NgbTabsetModule, NgbTabChangeEvent} from './tabset/tabset.module';
 import {NgbTimepickerModule} from './timepicker/timepicker.module';
 import {NgbTooltipModule} from './tooltip/tooltip.module';
-import {NgbTypeaheadModule, NgbTypeaheadSelectItemEvent} from './typeahead/typeahead.module';
+import {NgbTypeaheadModule, NgbTypeaheadSelectItemEvent, NgbTypeaheadInitParams} from './typeahead/typeahead.module';
 
 export {
   NgbAccordionModule,
@@ -72,6 +72,7 @@ export {
   NgbTypeaheadModule,
   NgbTypeaheadConfig,
   NgbTypeaheadSelectItemEvent,
+  NgbTypeaheadInitParams,
   NgbTypeahead
 } from './typeahead/typeahead.module';
 

@@ -3,13 +3,13 @@ import {CommonModule} from '@angular/common';
 
 import {NgbHighlight} from './highlight';
 import {NgbTypeaheadWindow} from './typeahead-window';
-import {NgbTypeahead, NgbTypeaheadSelectItemEvent} from './typeahead';
+import {NgbTypeahead, NgbTypeaheadSelectItemEvent, NgbTypeaheadInitParams} from './typeahead';
 import {NgbTypeaheadConfig} from './typeahead-config';
 
 export {NgbHighlight} from './highlight';
 export {NgbTypeaheadWindow} from './typeahead-window';
 export {NgbTypeaheadConfig} from './typeahead-config';
-export {NgbTypeahead, NgbTypeaheadSelectItemEvent} from './typeahead';
+export {NgbTypeahead, NgbTypeaheadSelectItemEvent, NgbTypeaheadInitParams} from './typeahead';
 
 @NgModule({
   declarations: [NgbTypeahead, NgbHighlight, NgbTypeaheadWindow],
