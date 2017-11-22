@@ -58,6 +58,11 @@ export interface NgbModalOptions {
    * @since 1.1.0
    */
   backdropClass?: string;
+
+  /**
+   * Sets the aria attribute aria-labelledby.
+   */
+  ariaLabelledBy?: string;
 }
 
 /**

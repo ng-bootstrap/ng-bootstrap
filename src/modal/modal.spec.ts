@@ -657,7 +657,26 @@ describe('ngb-modal', () => {
       fixture.detectChanges();
       expect(fixture.nativeElement).not.toHaveModal();
     });
+  });
 
+  describe('accessibility', () => {
+    function testAttributes(modalOptions, expectedAttributes) {
+      const modalInstance = fixture.componentInstance.open('foo', modalOptions);
+      fixture.detectChanges();
+
+      const modalElement = <HTMLElement>document.querySelector('ngb-modal-window');
+      expectedAttributes.forEach(([name, value]) => expect(modalElement.getAttribute(name)).toBe(value));
+
+      modalInstance.close('some result');
+      fixture.detectChanges();
+      expect(fixture.nativeElement).not.toHaveModal();
+    }
+
+    it('should support aria-labelledby', () => {
+      const id = 'aria-labelledby-id';
+
+      testAttributes({ariaLabelledBy: id}, [['aria-labelledby', id]]);
+    });
   });
 });
 
