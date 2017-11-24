@@ -182,6 +182,18 @@ describe('ngb-typeahead', () => {
       expect(getWindow(compiled)).toBeNull();
     });
 
+    it('should not be closed on input click', () => {
+      const fixture = createTestComponent(`<input type="text" [ngbTypeahead]="find"/>`);
+      const compiled = fixture.nativeElement;
+
+      changeInput(compiled, 'one');
+      fixture.detectChanges();
+      expect(getWindow(compiled)).not.toBeNull();
+
+      getNativeInput(compiled).click();
+      expect(getWindow(compiled)).not.toBeNull();
+    });
+
     it('should be closed when ESC is pressed', () => {
       const fixture = createTestComponent(`<input type="text" [ngbTypeahead]="find"/>`);
       const compiled = fixture.nativeElement;
