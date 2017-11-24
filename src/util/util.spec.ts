@@ -1,4 +1,4 @@
-import {toInteger, toString, getValueInRange, isInteger, isString} from './util';
+import {toInteger, toString, getValueInRange, isInteger, isString, isElementOrAncestorOf} from './util';
 
 describe('util', () => {
 
@@ -88,6 +88,48 @@ describe('util', () => {
       expect(isString(undefined)).toBeFalsy();
     });
 
+  });
+
+  describe('isElementOrAncestorOf', () => {
+    it('should return true when element is the reference one', () => {
+      const reference = document.createElement('div');
+      const element = reference;
+
+      expect(isElementOrAncestorOf(element, reference)).toBeTruthy();
+    });
+
+    it('should return true when element is an ancestor of reference one', () => {
+      const reference = document.createElement('div');
+      const intermediate = document.createElement('div');
+      const element = document.createElement('div');
+
+      element.appendChild(intermediate);
+      intermediate.appendChild(reference);
+
+      expect(isElementOrAncestorOf(element, reference)).toBeTruthy();
+    });
+
+    it('should return false when element is a descendent of reference one', () => {
+      const reference = document.createElement('div');
+      const intermediate = document.createElement('div');
+      const element = document.createElement('div');
+
+      reference.appendChild(intermediate);
+      intermediate.appendChild(element);
+
+      expect(isElementOrAncestorOf(element, reference)).toBeFalsy();
+    });
+
+    it('should return false when element is in a different branch of the one containing the reference element', () => {
+      const reference = document.createElement('div');
+      const intermediate = document.createElement('div');
+      const element = document.createElement('div');
+
+      intermediate.appendChild(reference);
+      intermediate.appendChild(element);
+
+      expect(isElementOrAncestorOf(element, reference)).toBeFalsy();
+    });
   });
 
 });

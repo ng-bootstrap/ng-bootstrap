@@ -26,7 +26,7 @@ import {fromEvent} from 'rxjs/observable/fromEvent';
 import {positionElements, PlacementArray} from '../util/positioning';
 import {NgbTypeaheadWindow, ResultTemplateContext} from './typeahead-window';
 import {PopupService} from '../util/popup';
-import {toString, isDefined} from '../util/util';
+import {toString, isDefined, isElementOrAncestorOf} from '../util/util';
 import {NgbTypeaheadConfig} from './typeahead-config';
 
 enum Key {
@@ -69,7 +69,7 @@ let nextWindowId = 0;
   host: {
     '(blur)': 'handleBlur()',
     '[class.open]': 'isPopupOpen()',
-    '(document:click)': 'dismissPopup()',
+    '(document:click)': 'onDocumentClick($event)',
     '(keydown)': 'handleKeyDown($event)',
     'autocomplete': 'off',
     'autocapitalize': 'off',
@@ -214,6 +214,21 @@ export class NgbTypeahead implements ControlValueAccessor,
     this._renderer.setProperty(this._elementRef.nativeElement, 'disabled', isDisabled);
   }
 
+  onDocumentClick(event) {
+    if (this.isPopupOpen()) {
+      if (!this._isClickInWidget(event)) {
+        this.dismissPopup();
+      }
+    }
+  }
+
+  private _isClickInWidget(event) {
+    const target = event.target;
+
+    const input = this._viewContainerRef.element.nativeElement;
+    return isElementOrAncestorOf(input, target);
+  }
+
   /**
    * Dismisses typeahead popup window
    */
@@ -296,6 +311,7 @@ export class NgbTypeahead implements ControlValueAccessor,
 
     if (!defaultPrevented) {
       this.writeValue(result);
+      this._userInput = result;
       this._onChange(result);
     }
   }
@@ -306,7 +322,7 @@ export class NgbTypeahead implements ControlValueAccessor,
   }
 
   private _showHint() {
-    if (this.showHint) {
+    if (this.showHint && this._userInput != null) {
       const userInputLowerCase = this._userInput.toLowerCase();
       const formattedVal = this._formatItemForInput(this._windowRef.instance.getActive());
 
@@ -325,7 +341,7 @@ export class NgbTypeahead implements ControlValueAccessor,
   }
 
   private _writeInputValue(value: string): void {
-    this._renderer.setProperty(this._elementRef.nativeElement, 'value', value);
+    this._renderer.setProperty(this._elementRef.nativeElement, 'value', toString(value));
   }
 
   private _subscribeToUserInput(userInput$: Observable<any[]>): Subscription {
