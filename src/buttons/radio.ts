@@ -116,6 +116,9 @@ export class NgbRadio implements OnDestroy {
     if (this._label) {
       this._label.focused = isFocused;
     }
+    if (!isFocused) {
+      this._group.onTouched();
+    }
   }
 
   get checked() { return this._checked; }
