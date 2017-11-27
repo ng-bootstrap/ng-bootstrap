@@ -1,5 +1,6 @@
 import {TestBed, ComponentFixture, inject} from '@angular/core/testing';
 import {createGenericTestComponent} from '../test/common';
+import {Key} from '../util/key';
 
 import {Component} from '@angular/core';
 import {By} from '@angular/platform-browser';
@@ -17,6 +18,15 @@ function getDropdownEl(tc) {
 
 function getMenuEl(tc) {
   return tc.querySelector(`[ngbDropdownMenu]`);
+}
+
+function createFakeEscapeKeyUpEvent(): Event {
+  const key = Key.Escape;
+  const event = document.createEvent('KeyboardEvent') as any;
+  let initEvent = (event.initKeyEvent || event.initKeyboardEvent).bind(event);
+  initEvent('keyup', true, true, window, 0, 0, 0, 0, 0, key);
+  Object.defineProperties(event, {which: {get: () => key}});
+  return event;
 }
 
 const jasmineMatchers = {
@@ -361,44 +371,87 @@ describe('ngb-dropdown-toggle', () => {
     expect(compiled).toBeShown();
   });
 
-  it('should close on ESC', () => {
-    const html = `
-      <div ngbDropdown>
-          <button ngbDropdownToggle>Toggle dropdown</button>
-          <div ngbDropdownMenu></div>
-      </div>`;
+  describe('escape closing', () => {
+    it('should close on ESC from anywhere', () => {
+      const fixture = createTestComponent(`
+          <div ngbDropdown [autoClose]="true">
+              <button ngbDropdownToggle>Toggle dropdown</button>
+              <div ngbDropdownMenu></div>
+          </div>`);
+      const compiled = fixture.nativeElement;
 
-    const fixture = createTestComponent(html);
-    const compiled = fixture.nativeElement;
-    const buttonEl = compiled.querySelector('button');
+      compiled.querySelector('button').click();
+      fixture.detectChanges();
+      expect(compiled).toBeShown();
 
-    buttonEl.click();
-    fixture.detectChanges();
-    expect(compiled).toBeShown();
+      document.dispatchEvent(createFakeEscapeKeyUpEvent());
+      fixture.detectChanges();
 
-    fixture.debugElement.query(By.directive(NgbDropdown)).triggerEventHandler('keyup.esc', {});
-    fixture.detectChanges();
-    expect(compiled).not.toBeShown();
-  });
+      expect(compiled).not.toBeShown();
+    });
+    it('should close on ESC from the toggling button', () => {
+      const fixture = createTestComponent(`
+        <div ngbDropdown [autoClose]="true">
+            <button ngbDropdownToggle>Toggle dropdown</button>
+            <div ngbDropdownMenu></div>
+        </div>`);
+      const compiled = fixture.nativeElement;
+      const buttonElement = compiled.querySelector('button');
 
-  it('should not close on ESC if autoClose is set to false', () => {
-    const html = `
-      <div ngbDropdown [autoClose]="false">
-          <button ngbDropdownToggle>Toggle dropdown</button>
-          <div ngbDropdownMenu></div>
-      </div>`;
+      buttonElement.click();
+      fixture.detectChanges();
+      expect(compiled).toBeShown();
 
-    const fixture = createTestComponent(html);
-    const compiled = fixture.nativeElement;
-    const buttonEl = compiled.querySelector('button');
+      buttonElement.dispatchEvent(createFakeEscapeKeyUpEvent());
+      fixture.detectChanges();
 
-    buttonEl.click();
-    fixture.detectChanges();
-    expect(compiled).toBeShown();
+      expect(compiled).not.toBeShown();
+    });
 
-    fixture.debugElement.query(By.directive(NgbDropdown)).triggerEventHandler('keyup.esc', {});
-    fixture.detectChanges();
-    expect(compiled).toBeShown();
+    it('should not close on ESC from the toggling button if autoClose is set to false', () => {
+      const fixture = createTestComponent(`
+        <div ngbDropdown [autoClose]="false">
+            <button ngbDropdownToggle>Toggle dropdown</button>
+            <div ngbDropdownMenu></div>
+        </div>`);
+      const compiled = fixture.nativeElement;
+      const buttonElement = compiled.querySelector('button');
+
+      buttonElement.click();
+      fixture.detectChanges();
+      expect(compiled).toBeShown();
+
+      buttonElement.dispatchEvent(createFakeEscapeKeyUpEvent());
+      fixture.detectChanges();
+
+      const expectation = expect(compiled);
+      expectation.toBeShown();
+      buttonElement.click();
+      fixture.detectChanges();
+      expectation.not.toBeShown();
+    });
+    it('should not close on ESC from anywhere if autoClose is set to false', () => {
+      const fixture = createTestComponent(`
+          <div ngbDropdown [autoClose]="false">
+              <button ngbDropdownToggle>Toggle dropdown</button>
+              <div ngbDropdownMenu></div>
+          </div>`);
+      const compiled = fixture.nativeElement;
+      const buttonElement = compiled.querySelector('button');
+
+      buttonElement.click();
+      fixture.detectChanges();
+      expect(compiled).toBeShown();
+
+      document.dispatchEvent(createFakeEscapeKeyUpEvent());
+      fixture.detectChanges();
+
+      const expectation = expect(compiled);
+      expectation.toBeShown();
+      buttonElement.click();
+      fixture.detectChanges();
+      expectation.not.toBeShown();
+    });
   });
 
   it('should not close on item click if autoClose is set to false', () => {
