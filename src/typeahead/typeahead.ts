@@ -65,10 +65,11 @@ let nextWindowId = 0;
  */
 @Directive({
   selector: 'input[ngbTypeahead]',
+  exportAs: 'ngbTypeahead',
   host: {
     '(blur)': 'handleBlur()',
     '[class.open]': 'isPopupOpen()',
-    '(document:click)': 'dismissPopup()',
+    '(document:click)': 'onDocumentClick($event)',
     '(keydown)': 'handleKeyDown($event)',
     'autocomplete': 'off',
     'autocapitalize': 'off',
@@ -213,6 +214,15 @@ export class NgbTypeahead implements ControlValueAccessor,
     this._renderer.setProperty(this._elementRef.nativeElement, 'disabled', isDisabled);
   }
 
+  onDocumentClick(event) {
+    if (event.target !== this._elementRef.nativeElement) {
+      this.dismissPopup();
+    }
+  }
+
+  /**
+   * Dismisses typeahead popup window
+   */
   dismissPopup() {
     if (this.isPopupOpen()) {
       this._closePopup();
@@ -220,6 +230,9 @@ export class NgbTypeahead implements ControlValueAccessor,
     }
   }
 
+  /**
+   * Returns true if the typeahead popup window is displayed
+   */
   isPopupOpen() { return this._windowRef != null; }
 
   handleBlur() {
