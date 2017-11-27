@@ -3,7 +3,7 @@ import {By} from '@angular/platform-browser';
 import {createGenericTestComponent} from '../test/common';
 
 import {Component} from '@angular/core';
-import {Validators, FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {Validators, FormControl, FormGroup, FormsModule, ReactiveFormsModule, NgModel} from '@angular/forms';
 
 import {NgbButtonsModule} from './buttons.module';
 
@@ -474,6 +474,31 @@ describe('ngbRadioGroup', () => {
     fixture.detectChanges();
     expect(inputDebugEls[0].nativeElement.parentNode).not.toHaveCssClass('focus');
     expect(inputDebugEls[1].nativeElement.parentNode).toHaveCssClass('focus');
+  });
+
+  it('should mark form control as touched when label loses focus', () => {
+    const fixture = createTestComponent(`
+      <div [(ngModel)]="model" ngbRadioGroup>
+        <label ngbButtonLabel>
+          <input ngbButton type="radio" name="radio" [value]="values[0]"/> {{ values[0] }}
+        </label>
+        <label ngbButtonLabel>
+          <input ngbButton type="radio" name="radio" [value]="values[1]"/> {{ values[1] }}
+        </label>
+      </div>
+    `);
+    fixture.detectChanges();
+
+    const inputDebugEls = fixture.debugElement.queryAll(By.css('Input'));
+    const ngModel = fixture.debugElement.query(By.directive(NgModel)).injector.get(NgModel);
+
+    inputDebugEls[0].triggerEventHandler('focus', {});
+    fixture.detectChanges();
+    expect(ngModel.touched).toBe(false);
+
+    inputDebugEls[0].triggerEventHandler('blur', {});
+    fixture.detectChanges();
+    expect(ngModel.touched).toBe(true);
   });
 
   it('should generate input names automatically if no name specified anywhere', () => {
