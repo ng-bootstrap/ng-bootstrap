@@ -76,7 +76,7 @@ export class NgbSlide {
           (slide.id === currentId ? 'active_' : '') + direction :
           ''
         )"
-        (@transition.done)="transitionDone()">
+        (@transition.done)="transitionDone(slide.id)">
         <ng-template [ngTemplateOutlet]="slide.tplRef"></ng-template>
       </div>
     </div>
@@ -125,6 +125,12 @@ export class NgbCarousel implements AfterContentChecked,
   }
 
   get activeId(): string { return this._activeId; }
+
+  /**
+   * A carousel slide event fired when the slide transition is initialized.
+   * See NgbSlideEvent for payload details
+   */
+  @Output() slideinit = new EventEmitter<NgbSlideEvent>();
 
   /**
    * A carousel slide event fired when the slide transition is completed.
@@ -206,20 +212,32 @@ export class NgbCarousel implements AfterContentChecked,
         this._activeId = selectedSlide.id;
         this.transition = true;
 
-        this.slide.emit({prev: this.currentId, current: selectedSlide.id, direction: direction});
+        this.slideinit.emit({prev: this.currentId, current: selectedSlide.id, direction: direction});
       } else {
         this.currentId = this._activeId = selectedSlide.id;
-        this.transitionDone();
+        this.transitionDone(selectedSlide.id);
       }
     }
   }
 
-  transitionDone() {
+  transitionDone(id: string) {
+    if (id !== this.activeId) {
+      return;
+    }
+
+    let cid: string = this.currentId;
+    let dir: NgbSlideEventDirection = this.direction;
+
     this.transition = false;
     this.prevId = undefined;
     this.nextId = undefined;
     this.direction = undefined;
     this.currentId = this.activeId;
+
+    /* this needs to be done last */
+    if (cid !== this.activeId) {
+      this.slide.emit({prev: cid, current: this.activeId, direction: dir});
+    }
   }
 
   keyPrev() {
