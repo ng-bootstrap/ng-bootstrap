@@ -310,3 +310,26 @@ ngbd-component-wrapper, ngbd-page-wrapper {
 @media (max-width: 568px) and (max-height: 320px)  {
   @include center-nav-tab-on-small-screens();
 }
+
+// Right-To-Left layout for the Islamic Calendars
+ngb-datepicker.rtl {
+	direction: rtl;
+}
+
+ngb-datepicker.rtl ngb-datepicker-navigation-select select.custom-select {
+  background-position: left 0.25rem center;
+}
+
+ngb-datepicker.rtl .ngb-dp-navigation-chevron.right:before {
+  transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
+  -ms-transform: rotate(-135deg);
+  margin: 0 0 0 0.5rem;
+}
+
+ngb-datepicker.rtl .ngb-dp-navigation-chevron::before {
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  margin: 0 0.5rem 0 0;
+}
