@@ -66,6 +66,7 @@ function expectSameValues(pagination: NgbPagination, config: NgbPaginationConfig
   expect(pagination.pageSize).toBe(config.pageSize);
   expect(pagination.rotate).toBe(config.rotate);
   expect(pagination.size).toBe(config.size);
+  expect(pagination.justify).toBe(config.justify);
 }
 
 describe('ngb-pagination', () => {
@@ -330,6 +331,35 @@ describe('ngb-pagination', () => {
       expect(listEl).toHaveCssClass('pagination-123');
     });
 
+    it('should render and respond to justify change', () => {
+      const html = '<ngb-pagination [collectionSize]="20" [page]="1" [justify]="justify"></ngb-pagination>';
+
+      const fixture = createTestComponent(html);
+      const listEl = getList(fixture.nativeElement);
+
+      // default case
+      expectPages(fixture.nativeElement, ['-«', '+1', '2', '»']);
+      expect(listEl).toHaveCssClass('pagination');
+
+      // center
+      fixture.componentInstance.justify = 'center';
+      fixture.detectChanges();
+      expect(listEl).toHaveCssClass('pagination');
+      expect(listEl).toHaveCssClass('justify-content-center');
+
+      // removing center
+      fixture.componentInstance.justify = '';
+      fixture.detectChanges();
+      expect(listEl).toHaveCssClass('pagination');
+      expect(listEl).not.toHaveCssClass('justify-content-center');
+
+      // arbitrary string
+      fixture.componentInstance.justify = '123';
+      fixture.detectChanges();
+      expect(listEl).toHaveCssClass('pagination');
+      expect(listEl).toHaveCssClass('justify-content-123');
+    });
+
     it('should render and respond to maxSize change correctly', () => {
       const html =
           '<ngb-pagination [collectionSize]="70" [page]="page" [maxSize]="maxSize" [ellipses]="ellipses"></ngb-pagination>';
@@ -589,6 +619,7 @@ describe('ngb-pagination', () => {
       config.pageSize = 7;
       config.rotate = true;
       config.size = 'sm';
+      config.justify = 'center';
     }));
 
     it('should initialize inputs with provided config', () => {
@@ -610,6 +641,7 @@ describe('ngb-pagination', () => {
     config.pageSize = 7;
     config.rotate = true;
     config.size = 'sm';
+    config.justify = 'center';
 
     beforeEach(() => {
       TestBed.configureTestingModule(
@@ -634,6 +666,7 @@ class TestComponent {
   boundaryLinks = false;
   directionLinks = false;
   size = '';
+  justify = '';
   maxSize = 0;
   ellipses = true;
   rotate = false;

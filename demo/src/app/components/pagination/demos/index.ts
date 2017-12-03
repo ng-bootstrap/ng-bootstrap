@@ -1,11 +1,12 @@
 import {NgbdPaginationAdvanced} from './advanced/pagination-advanced';
 import {NgbdPaginationBasic} from './basic/pagination-basic';
 import {NgbdPaginationSize} from './size/pagination-size';
+import {NgbdPaginationJustify} from './justify/pagination-justify';
 import {NgbdPaginationConfig} from './config/pagination-config';
 import {NgbdPaginationDisabled} from './disabled/pagination-disabled';
 
 export const DEMO_DIRECTIVES = [
-  NgbdPaginationAdvanced, NgbdPaginationBasic, NgbdPaginationSize, NgbdPaginationConfig, NgbdPaginationDisabled
+  NgbdPaginationAdvanced, NgbdPaginationBasic, NgbdPaginationSize, NgbdPaginationJustify, NgbdPaginationConfig, NgbdPaginationDisabled
 ];
 
 export const DEMO_SNIPPETS = {
@@ -20,6 +21,10 @@ export const DEMO_SNIPPETS = {
   'size': {
     'code': require('!!prismjs-loader?lang=typescript!./size/pagination-size'),
     'markup': require('!!prismjs-loader?lang=markup!./size/pagination-size.html')
+  },
+  'justify': {
+    'code': require('!!prismjs-loader?lang=typescript!./justify/pagination-justify'),
+    'markup': require('!!prismjs-loader?lang=markup!./justify/pagination-justify.html')
   },
   'disabled': {
     'code': require('!!prismjs-loader?lang=typescript!./disabled/pagination-disabled'),
