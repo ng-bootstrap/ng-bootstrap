@@ -1,5 +1,5 @@
 import {Component, Injectable} from '@angular/core';
-import {Jsonp, URLSearchParams} from '@angular/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
@@ -10,25 +10,27 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/merge';
 
+const WIKI_URL = 'https://en.wikipedia.org/w/api.php';
+const PARAMS = new HttpParams({
+  fromObject: {
+    action: 'opensearch',
+    format: 'json',
+    origin: '*'
+  }
+});
+
 @Injectable()
 export class WikipediaService {
-  constructor(private _jsonp: Jsonp) {}
+  constructor(private http: HttpClient) {}
 
   search(term: string) {
     if (term === '') {
       return Observable.of([]);
     }
 
-    let wikiUrl = 'https://en.wikipedia.org/w/api.php';
-    let params = new URLSearchParams();
-    params.set('search', term);
-    params.set('action', 'opensearch');
-    params.set('format', 'json');
-    params.set('callback', 'JSONP_CALLBACK');
-
-    return this._jsonp
-      .get(wikiUrl, {search: params})
-      .map(response => <string[]> response.json()[1]);
+    return this.http
+      .get(WIKI_URL, {params: PARAMS.set('search', term)})
+      .map(response => response[1]);
   }
 }
 
