@@ -311,6 +311,7 @@ export class NgbInputDatepicker implements OnChanges,
   private _applyPopupStyling(nativeElement: any) {
     this._renderer.addClass(nativeElement, 'dropdown-menu');
     this._renderer.setStyle(nativeElement, 'padding', '0');
+    this._renderer.addClass(nativeElement, 'show');
   }
 
   private _subscribeForDatepickerOutputs(datepickerInstance: NgbDatepicker) {
