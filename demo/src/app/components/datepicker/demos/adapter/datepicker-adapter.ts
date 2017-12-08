@@ -1,21 +1,19 @@
 import {Component, Injectable} from '@angular/core';
 import {NgbDateAdapter, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 
-const now = new Date();
-
 /**
  * Example of a Native Date adapter
  */
 @Injectable()
 export class NgbDateNativeAdapter extends NgbDateAdapter<Date> {
 
-    fromModel(date: Date): NgbDateStruct {
-        return date ? {year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate() || 1} : null;
-    }
+  fromModel(date: Date): NgbDateStruct {
+    return (date && date.getFullYear) ? {year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate()} : null;
+  }
 
-    toModel(date: NgbDateStruct): Date {
-        return date ? new Date(date.year, date.month - 1, date.day, 0, 0, 0) : null;
-    }
+  toModel(date: NgbDateStruct): Date {
+    return date ? new Date(Date.UTC(date.year, date.month - 1, date.day)) : null;
+  }
 }
 
 @Component({
@@ -28,10 +26,10 @@ export class NgbDateNativeAdapter extends NgbDateAdapter<Date> {
 })
 export class NgbdDatepickerAdapter {
 
-  model: Date;
-  date: {year: number, month: number};
+  model1: Date;
+  model2: Date;
 
-  selectToday() {
-    this.model = now;
+  get today() {
+    return new Date();
   }
 }
