@@ -1,7 +1,7 @@
 import {Component, Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
+import {of} from 'rxjs/observable/of';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
@@ -25,7 +25,7 @@ export class WikipediaService {
 
   search(term: string) {
     if (term === '') {
-      return Observable.of([]);
+      return of([]);
     }
 
     return this.http
@@ -58,7 +58,7 @@ export class NgbdTypeaheadHttp {
           .do(() => this.searchFailed = false)
           .catch(() => {
             this.searchFailed = true;
-            return Observable.of([]);
+            return of([]);
           }))
       .do(() => this.searching = false)
       .merge(this.hideSearchingWhenUnsubscribed);
