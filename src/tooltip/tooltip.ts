@@ -16,6 +16,9 @@ import {
   ComponentFactoryResolver,
   NgZone
 } from '@angular/core';
+
+import {first} from 'rxjs/operator/first';
+
 import {listenToTriggers} from '../util/triggers';
 import {positionElements, Placement, PlacementArray} from '../util/positioning';
 import {PopupService} from '../util/popup';
@@ -120,14 +123,14 @@ export class NgbTooltip implements OnInit, OnDestroy {
   constructor(
       private _elementRef: ElementRef, private _renderer: Renderer2, injector: Injector,
       componentFactoryResolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef, config: NgbTooltipConfig,
-      ngZone: NgZone) {
+      private _ngZone: NgZone) {
     this.placement = config.placement;
     this.triggers = config.triggers;
     this.container = config.container;
     this._popupService = new PopupService<NgbTooltipWindow>(
         NgbTooltipWindow, injector, viewContainerRef, _renderer, componentFactoryResolver);
 
-    this._zoneSubscription = ngZone.onStable.subscribe(() => {
+    this._zoneSubscription = this._ngZone.onStable.subscribe(() => {
       if (this._windowRef) {
         this._windowRef.instance.applyPlacement(
             positionElements(
@@ -177,7 +180,7 @@ export class NgbTooltip implements OnInit, OnDestroy {
               this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
               this.container === 'body'));
 
-      this.shown.emit();
+      first.call(this._ngZone.onStable.asObservable()).subscribe(() => { this.shown.emit(); });
     }
   }
 
