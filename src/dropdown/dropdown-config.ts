@@ -1,4 +1,5 @@
-import {Injectable, TemplateRef} from '@angular/core';
+import {Injectable} from '@angular/core';
+import {PlacementArray} from '../util/positioning';
 
 /**
  * Configuration service for the NgbDropdown directive.
@@ -7,6 +8,6 @@ import {Injectable, TemplateRef} from '@angular/core';
  */
 @Injectable()
 export class NgbDropdownConfig {
-  up = false;
-  autoClose = true;
+  autoClose: boolean | 'outside' | 'inside' = true;
+  placement: PlacementArray = 'bottom-left';
 }

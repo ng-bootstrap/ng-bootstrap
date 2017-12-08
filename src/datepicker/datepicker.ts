@@ -23,6 +23,7 @@ import {DatepickerViewModel, NavigationEvent} from './datepicker-view-model';
 import {toInteger} from '../util/util';
 import {DayTemplateContext} from './datepicker-day-template-context';
 import {NgbDatepickerConfig} from './datepicker-config';
+import {NgbDateAdapter} from './ngb-date-adapter';
 import {NgbDateStruct} from './ngb-date-struct';
 import {NgbDatepickerI18n} from './datepicker-i18n';
 import {isChangedDate} from './datepicker-tools';
@@ -96,16 +97,16 @@ export interface NgbDatepickerNavigateEvent {
       </div>
     </ng-template>
 
-    <div class="ngb-dp-header bg-faded pt-1 rounded-top" [style.height.rem]="getHeaderHeight()"
+    <div class="ngb-dp-header bg-light pt-1 rounded-top" [style.height.rem]="getHeaderHeight()"
          [style.marginBottom.rem]="-getHeaderMargin()">
-      <ngb-datepicker-navigation *ngIf="navigation !== 'none'"
+      <ngb-datepicker-navigation *ngIf="model.navigation !== 'none'"
         [date]="model.firstDate"
         [minDate]="model.minDate"
         [maxDate]="model.maxDate"
         [months]="model.months.length"
         [disabled]="model.disabled"
         [showWeekNumbers]="showWeekNumbers"
-        [showSelect]="navigation === 'select'"
+        [showSelect]="model.navigation === 'select'"
         (navigate)="onNavigateEvent($event)"
         (select)="onNavigateDateSelect($event)">
       </ngb-datepicker-navigation>
@@ -114,7 +115,7 @@ export interface NgbDatepickerNavigateEvent {
     <div class="ngb-dp-months d-flex px-1 pb-1">
       <ng-template ngFor let-month [ngForOf]="model.months" let-i="index">
         <div class="ngb-dp-month d-block ml-3">
-          <div *ngIf="navigation !== 'select' || displayMonths > 1" class="ngb-dp-month-name text-center">
+          <div *ngIf="model.navigation !== 'select' || displayMonths > 1" class="ngb-dp-month-name text-center">
             {{ i18n.getMonthFullName(month.number) }} {{ month.year }}
           </div>
           <ngb-datepicker-month-view
@@ -136,6 +137,7 @@ export class NgbDatepicker implements OnDestroy,
   model: DatepickerViewModel;
 
   private _subscription: Subscription;
+  private _selectSubscription: Subscription;
   /**
    * Reference for the custom template for the day display
    */
@@ -203,13 +205,19 @@ export class NgbDatepicker implements OnDestroy,
    */
   @Output() navigate = new EventEmitter<NgbDatepickerNavigateEvent>();
 
+  /**
+   * An event fired when user selects a date using keyboard or mouse.
+   * The payload of the event is currently selected NgbDateStruct.
+   */
+  @Output() select = new EventEmitter<NgbDateStruct>();
+
   onChange = (_: any) => {};
   onTouched = () => {};
 
   constructor(
       private _keyMapService: NgbDatepickerKeyMapService, public _service: NgbDatepickerService,
       private _calendar: NgbCalendar, public i18n: NgbDatepickerI18n, config: NgbDatepickerConfig,
-      private _cd: ChangeDetectorRef, private _elementRef: ElementRef) {
+      private _cd: ChangeDetectorRef, private _elementRef: ElementRef, private _ngbDateAdapter: NgbDateAdapter<any>) {
     this.dayTemplate = config.dayTemplate;
     this.displayMonths = config.displayMonths;
     this.firstDayOfWeek = config.firstDayOfWeek;
@@ -222,6 +230,8 @@ export class NgbDatepicker implements OnDestroy,
     this.showWeekNumbers = config.showWeekNumbers;
     this.startDate = config.startDate;
 
+    this._selectSubscription = _service.select$.subscribe(date => { this.select.emit(date.toStruct()); });
+
     this._subscription = _service.model$.subscribe(model => {
       const newDate = model.firstDate;
       const oldDate = this.model ? this.model.firstDate : null;
@@ -233,9 +243,7 @@ export class NgbDatepicker implements OnDestroy,
       // handling selection change
       if (isChangedDate(newSelectedDate, oldSelectedDate)) {
         this.onTouched();
-        this.onChange(
-            newSelectedDate ? {year: newSelectedDate.year, month: newSelectedDate.month, day: newSelectedDate.day} :
-                              null);
+        this.onChange(this._ngbDateAdapter.toModel(newSelectedDate));
       }
 
       // emitting navigation event if the first month changes
@@ -274,13 +282,17 @@ export class NgbDatepicker implements OnDestroy,
     this._service.open(date ? new NgbDate(date.year, date.month, 1) : this._calendar.getToday());
   }
 
-  ngOnDestroy() { this._subscription.unsubscribe(); }
+  ngOnDestroy() {
+    this._subscription.unsubscribe();
+    this._selectSubscription.unsubscribe();
+  }
 
   ngOnInit() {
     if (this.model === undefined) {
       this._service.displayMonths = toInteger(this.displayMonths);
       this._service.markDisabled = this.markDisabled;
       this._service.firstDayOfWeek = this.firstDayOfWeek;
+      this._service.navigation = this.navigation;
       this._setDates();
     }
   }
@@ -295,12 +307,15 @@ export class NgbDatepicker implements OnDestroy,
     if (changes['firstDayOfWeek']) {
       this._service.firstDayOfWeek = this.firstDayOfWeek;
     }
+    if (changes['navigation']) {
+      this._service.navigation = this.navigation;
+    }
     this._setDates();
   }
 
   onDateSelect(date: NgbDate) {
     this._service.focus(date);
-    this.writeValue(date);
+    this._service.select(date, {emitEvent: true});
   }
 
   onKeyDown(event: KeyboardEvent) { this._keyMapService.processKey(event); }
@@ -326,7 +341,7 @@ export class NgbDatepicker implements OnDestroy,
 
   showFocus(focusVisible: boolean) { this._service.focusVisible = focusVisible; }
 
-  writeValue(value) { this._service.select(value); }
+  writeValue(value) { this._service.select(NgbDate.from(this._ngbDateAdapter.fromModel(value))); }
 
   private _setDates() {
     const startDate = this._service.toValidDate(this.startDate, this._calendar.getToday());

@@ -1,8 +1,8 @@
 import {Component, Input} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 
-const DEFAULT_TAB = 'api';
-const VALID_TABS = [DEFAULT_TAB, 'examples'];
+export const DEFAULT_TAB = 'examples';
+const VALID_TABS = [DEFAULT_TAB, 'api'];
 
 @Component({
   selector: 'ngbd-component-wrapper',
@@ -14,6 +14,11 @@ export class ComponentWrapper {
   public component: string;
 
   public activeTab: string;
+
+  public fileTypes = [
+    ['T', 'HTML template file', 'btn-secondary'],
+    ['C', 'Component typescript file', 'btn-info'],
+  ];
 
   constructor(private route: ActivatedRoute, private router: Router) {
     this.route.params.subscribe(params => {

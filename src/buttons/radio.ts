@@ -17,7 +17,7 @@ let nextId = 0;
  */
 @Directive({
   selector: '[ngbRadioGroup]',
-  host: {'data-toggle': 'buttons', 'class': 'btn-group', 'role': 'group'},
+  host: {'data-toggle': 'buttons', 'role': 'group'},
   providers: [NGB_RADIO_VALUE_ACCESSOR]
 })
 export class NgbRadioGroup implements ControlValueAccessor {
@@ -115,6 +115,9 @@ export class NgbRadio implements OnDestroy {
   set focused(isFocused: boolean) {
     if (this._label) {
       this._label.focused = isFocused;
+    }
+    if (!isFocused) {
+      this._group.onTouched();
     }
   }
 

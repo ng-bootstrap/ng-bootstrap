@@ -79,7 +79,7 @@ export interface NgbTabChangeEvent {
   selector: 'ngb-tabset',
   exportAs: 'ngbTabset',
   template: `
-    <ul [class]="'nav nav-' + type + ' justify-content-' + justify" role="tablist">
+    <ul [class]="'nav nav-' + type + (orientation == 'horizontal'?  ' ' + justifyClass : ' flex-column')" role="tablist">
       <li class="nav-item" *ngFor="let tab of tabs">
         <a [id]="tab.id" class="nav-link" [class.active]="tab.id === activeId" [class.disabled]="tab.disabled"
           href (click)="!!select(tab.id)" role="tab" [attr.tabindex]="(tab.disabled ? '-1': undefined)"
@@ -104,6 +104,8 @@ export interface NgbTabChangeEvent {
   `
 })
 export class NgbTabset implements AfterContentChecked {
+  justifyClass: string;
+
   @ContentChildren(NgbTab) tabs: QueryList<NgbTab>;
 
   /**
@@ -117,9 +119,24 @@ export class NgbTabset implements AfterContentChecked {
   @Input() destroyOnHide: boolean = true;
 
   /**
-   * The horizontal alignment of the nav with flexbox utilities. Can be one of 'start', 'center' or 'end'
+   * The horizontal alignment of the nav with flexbox utilities. Can be one of 'start', 'center', 'end', 'fill' or
+   * 'justified'
+   * The default value is 'start'.
    */
-  @Input() justify: 'start' | 'center' | 'end';
+  @Input()
+  set justify(className: 'start' | 'center' | 'end' | 'fill' | 'justified') {
+    if (className === 'fill' || className === 'justified') {
+      this.justifyClass = `nav-${className}`;
+    } else {
+      this.justifyClass = `justify-content-${className}`;
+    }
+  }
+
+  /**
+   * The orientation of the nav (horizontal or vertical).
+   * The default value is 'horizontal'.
+   */
+  @Input() orientation: 'horizontal' | 'vertical';
 
   /**
    * Type of navigation to be used for tabs. Can be one of 'tabs' or 'pills'.
@@ -134,6 +151,7 @@ export class NgbTabset implements AfterContentChecked {
   constructor(config: NgbTabsetConfig) {
     this.type = config.type;
     this.justify = config.justify;
+    this.orientation = config.orientation;
   }
 
   /**

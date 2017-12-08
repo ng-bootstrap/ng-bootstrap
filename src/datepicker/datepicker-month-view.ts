@@ -35,7 +35,7 @@ import {DayTemplateContext} from './datepicker-day-template-context';
         <div *ngFor="let day of week.days" (click)="doSelect(day)" class="ngb-dp-day" [class.disabled]="day.context.disabled"
          [class.hidden]="isHidden(day)">
           <ng-template [ngIf]="!isHidden(day)">
-            <ng-template [ngTemplateOutlet]="dayTemplate" [ngOutletContext]="day.context"></ng-template>
+            <ng-template [ngTemplateOutlet]="dayTemplate" [ngTemplateOutletContext]="day.context"></ng-template>
           </ng-template>
         </div>
       </div>

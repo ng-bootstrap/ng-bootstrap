@@ -22,7 +22,7 @@ import {NgbDatepicker, NgbDatepickerNavigateEvent} from './datepicker';
 import {DayTemplateContext} from './datepicker-day-template-context';
 import {NgbDateParserFormatter} from './ngb-date-parser-formatter';
 
-import {positionElements} from '../util/positioning';
+import {positionElements, PlacementArray} from '../util/positioning';
 import {NgbDateStruct} from './ngb-date-struct';
 import {NgbCalendar} from './ngb-calendar';
 import {NgbDatepickerService} from './datepicker-service';
@@ -46,12 +46,19 @@ const NGB_DATEPICKER_VALIDATOR = {
 @Directive({
   selector: 'input[ngbDatepicker]',
   exportAs: 'ngbDatepicker',
-  host: {'(change)': 'manualDateChange($event.target.value)', '(keyup.esc)': 'close()', '(blur)': 'onBlur()'},
+  host: {
+    '(input)': 'manualDateChange($event.target.value)',
+    '(change)': 'manualDateChange($event.target.value, true)',
+    '(keyup.esc)': 'close()',
+    '(blur)': 'onBlur()',
+    '[disabled]': 'disabled'
+  },
   providers: [NGB_DATEPICKER_VALUE_ACCESSOR, NGB_DATEPICKER_VALIDATOR, NgbDatepickerService]
 })
 export class NgbInputDatepicker implements OnChanges,
     OnDestroy, ControlValueAccessor, Validator {
   private _cRef: ComponentRef<NgbDatepicker> = null;
+  private _disabled = false;
   private _model: NgbDate;
   private _zoneSubscription: any;
 
@@ -98,12 +105,13 @@ export class NgbInputDatepicker implements OnChanges,
    */
   @Input() outsideDays: 'visible' | 'collapsed' | 'hidden';
 
-
   /**
-   * Placement of a datepicker popup. Accepts: "top", "bottom", "left", "right", "bottom-left",
-   * "bottom-right" etc.
-   */
-  @Input() placement = 'bottom-left';
+      * Placement of a datepicker popup accepts:
+      *    "top", "top-left", "top-right", "bottom", "bottom-left", "bottom-right",
+      *    "left", "left-top", "left-bottom", "right", "right-top", "right-bottom"
+      * and array of above values.
+      */
+  @Input() placement: PlacementArray = 'bottom-left';
 
   /**
    * Whether to display days of the week
@@ -124,10 +132,28 @@ export class NgbInputDatepicker implements OnChanges,
   @Input() startDate: {year: number, month: number};
 
   /**
+   * A selector specifying the element the datepicker popup should be appended to.
+   * Currently only supports "body".
+   */
+  @Input() container: string;
+
+  /**
    * An event fired when navigation happens and currently displayed month changes.
    * See NgbDatepickerNavigateEvent for the payload info.
    */
   @Output() navigate = new EventEmitter<NgbDatepickerNavigateEvent>();
+
+  @Input()
+  get disabled() {
+    return this._disabled;
+  }
+  set disabled(value: any) {
+    this._disabled = value === '' || (value && value !== 'false');
+
+    if (this.isOpen()) {
+      this._cRef.instance.setDisabledState(this._disabled);
+    }
+  }
 
   private _onChange = (_: any) => {};
   private _onTouched = () => {};
@@ -140,7 +166,8 @@ export class NgbInputDatepicker implements OnChanges,
       private _service: NgbDatepickerService, private _calendar: NgbCalendar) {
     this._zoneSubscription = ngZone.onStable.subscribe(() => {
       if (this._cRef) {
-        positionElements(this._elRef.nativeElement, this._cRef.location.nativeElement, this.placement);
+        positionElements(
+            this._elRef.nativeElement, this._cRef.location.nativeElement, this.placement, this.container === 'body');
       }
     });
   }
@@ -151,12 +178,7 @@ export class NgbInputDatepicker implements OnChanges,
 
   registerOnValidatorChange(fn: () => void): void { this._validatorChange = fn; };
 
-  setDisabledState(isDisabled: boolean): void {
-    this._renderer.setProperty(this._elRef.nativeElement, 'disabled', isDisabled);
-    if (this.isOpen()) {
-      this._cRef.instance.setDisabledState(isDisabled);
-    }
-  }
+  setDisabledState(isDisabled: boolean): void { this.disabled = isDisabled; }
 
   validate(c: AbstractControl): {[key: string]: any} {
     const value = c.value;
@@ -184,10 +206,12 @@ export class NgbInputDatepicker implements OnChanges,
     this._writeModelValue(this._model);
   }
 
-  manualDateChange(value: string) {
+  manualDateChange(value: string, updateView = false) {
     this._model = this._service.toValidDate(this._parserFormatter.parse(value), null);
     this._onChange(this._model ? this._model.toStruct() : (value === '' ? null : value));
-    this._writeModelValue(this._model);
+    if (updateView && this._model) {
+      this._writeModelValue(this._model);
+    }
   }
 
   isOpen() { return !!this._cRef; }
@@ -201,10 +225,10 @@ export class NgbInputDatepicker implements OnChanges,
       this._cRef = this._vcRef.createComponent(cf);
 
       this._applyPopupStyling(this._cRef.location.nativeElement);
-      this._cRef.instance.writeValue(this._model);
       this._applyDatepickerInputs(this._cRef.instance);
       this._subscribeForDatepickerOutputs(this._cRef.instance);
       this._cRef.instance.ngOnInit();
+      this._cRef.instance.writeValue(this._model);
 
       // date selection event handling
       this._cRef.instance.registerOnChange((selectedDate) => {
@@ -215,6 +239,12 @@ export class NgbInputDatepicker implements OnChanges,
 
       // focus handling
       this._cRef.instance.focus();
+
+      this._cRef.instance.setDisabledState(this.disabled);
+
+      if (this.container === 'body') {
+        window.document.querySelector(this.container).appendChild(this._cRef.location.nativeElement);
+      }
     }
   }
 
@@ -282,6 +312,7 @@ export class NgbInputDatepicker implements OnChanges,
 
   private _subscribeForDatepickerOutputs(datepickerInstance: NgbDatepicker) {
     datepickerInstance.navigate.subscribe(date => this.navigate.emit(date));
+    datepickerInstance.select.subscribe(() => { this.close(); });
   }
 
   private _writeModelValue(model: NgbDate) {

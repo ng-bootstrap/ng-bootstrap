@@ -1,5 +1,4 @@
 import {TestBed, ComponentFixture, inject} from '@angular/core/testing';
-import {By} from '@angular/platform-browser';
 import {createGenericTestComponent} from '../test/common';
 
 import {Component} from '@angular/core';
@@ -12,15 +11,15 @@ const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
 function getPanels(element: HTMLElement): HTMLDivElement[] {
-  return <HTMLDivElement[]>Array.from(element.querySelectorAll('div .card-header'));
+  return <HTMLDivElement[]>Array.from(element.querySelectorAll('.card > .card-header'));
 }
 
 function getPanelsContent(element: HTMLElement): HTMLDivElement[] {
-  return <HTMLDivElement[]>Array.from(element.querySelectorAll('div .card-block'));
+  return <HTMLDivElement[]>Array.from(element.querySelectorAll('.card > .card-body'));
 }
 
 function getPanelsTitle(element: HTMLElement): HTMLDivElement[] {
-  return <HTMLDivElement[]>Array.from(element.querySelectorAll('div .card-header a'));
+  return <HTMLDivElement[]>Array.from(element.querySelectorAll('.card > .card-header a'));
 }
 
 function getButton(element: HTMLElement, index: number): HTMLButtonElement {
@@ -252,6 +251,24 @@ describe('ngb-accordion', () => {
     });
   });
 
+  it('should have the appropriate CSS visibility classes', () => {
+    const fixture = TestBed.createComponent(TestComponent);
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement;
+    fixture.componentInstance.activeIds = 'one,two,three';
+
+    fixture.detectChanges();
+
+    const contents = getPanelsContent(compiled);
+    expect(contents.length).not.toBe(0);
+
+    contents.forEach((content: HTMLElement) => {
+      expect(content).toHaveCssClass('collapse');
+      expect(content).toHaveCssClass('show');
+    });
+  });
+
   it('should only open one at a time', () => {
     const fixture = TestBed.createComponent(TestComponent);
     const tc = fixture.componentInstance;
@@ -394,6 +411,27 @@ describe('ngb-accordion', () => {
     getButton(fixture.nativeElement, 0).click();
     fixture.detectChanges();
     expect(getPanelsContent(fixture.nativeElement).length).toBe(1);
+  });
+
+  it('should not remove collapsed panels content from DOM with `destroyOnHide` flag', () => {
+    const testHtml = `
+    <ngb-accordion #acc="ngbAccordion" [closeOthers]="true" [destroyOnHide]="false">
+     <ngb-panel *ngFor="let panel of panels" [id]="panel.id">
+       <ng-template ngbPanelTitle>{{panel.title}}</ng-template>
+       <ng-template ngbPanelContent>{{panel.content}}</ng-template>
+     </ngb-panel>
+    </ngb-accordion>
+    <button *ngFor="let panel of panels" (click)="acc.toggle(panel.id)">Toggle the panel {{ panel.id }}</button>
+    `;
+    const fixture = createTestComponent(testHtml);
+
+    fixture.detectChanges();
+
+    getButton(fixture.nativeElement, 1).click();
+    fixture.detectChanges();
+    let panelContents = getPanelsContent(fixture.nativeElement);
+    expect(panelContents[1]).toHaveCssClass('show');
+    expect(panelContents.length).toBe(3);
   });
 
   it('should emit panel change event when toggling panels', () => {

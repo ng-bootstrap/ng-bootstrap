@@ -1,4 +1,11 @@
-import {buildMonth, buildMonths, checkDateInRange, dateComparator, getFirstViewDate} from './datepicker-tools';
+import {
+  buildMonth,
+  buildMonths,
+  checkDateInRange,
+  dateComparator,
+  getFirstViewDate,
+  isDateSelectable
+} from './datepicker-tools';
 import {NgbDate} from './ngb-date';
 import {NgbCalendar, NgbCalendarGregorian} from './ngb-calendar';
 import {TestBed} from '@angular/core/testing';
@@ -328,6 +335,43 @@ describe(`datepicker-tools`, () => {
     months.forEach(month => {
       it(`should return the correct first view date`,
          () => { expect(getFirstViewDate(calendar, month.date, 1)).toEqual(month.first); });
+    });
+  });
+
+  describe(`isDateSelectable()`, () => {
+
+    // disabling 15th of any month
+    const markDisabled: NgbMarkDisabled = (date, month) => date.day === 15;
+
+    it(`should return false if date is invalid`, () => {
+      expect(isDateSelectable(null, null, null, false)).toBeFalsy();
+      expect(isDateSelectable(undefined, null, null, false)).toBeFalsy();
+    });
+
+    it(`should return false if datepicker is disabled`, () => {
+      expect(isDateSelectable(new NgbDate(2016, 11, 10), null, null, true)).toBeFalsy();
+      expect(isDateSelectable(new NgbDate(2017, 11, 10), null, null, true)).toBeFalsy();
+      expect(isDateSelectable(new NgbDate(2018, 11, 10), null, null, true)).toBeFalsy();
+    });
+
+    it(`should take into account markDisabled values`, () => {
+      expect(isDateSelectable(new NgbDate(2016, 11, 15), null, null, false, markDisabled)).toBeFalsy();
+      expect(isDateSelectable(new NgbDate(2017, 11, 15), null, null, false, markDisabled)).toBeFalsy();
+      expect(isDateSelectable(new NgbDate(2018, 11, 15), null, null, false, markDisabled)).toBeFalsy();
+    });
+
+    it(`should take into account minDate values`, () => {
+      expect(isDateSelectable(new NgbDate(2017, 11, 10), new NgbDate(2018, 11, 10), null, false)).toBeFalsy();
+    });
+
+    it(`should take into account maxDate values`, () => {
+      expect(isDateSelectable(new NgbDate(2017, 11, 10), null, new NgbDate(2016, 11, 10), false)).toBeFalsy();
+    });
+
+    it(`should return true for normal values`, () => {
+      expect(isDateSelectable(new NgbDate(2016, 11, 10), null, null, false)).toBeTruthy();
+      expect(isDateSelectable(new NgbDate(2017, 11, 10), null, null, false)).toBeTruthy();
+      expect(isDateSelectable(new NgbDate(2018, 11, 10), null, null, false)).toBeTruthy();
     });
   });
 

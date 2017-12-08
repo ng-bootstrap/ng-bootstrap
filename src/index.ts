@@ -33,6 +33,7 @@ export {NgbCollapseModule, NgbCollapse} from './collapse/collapse.module';
 export {
   NgbCalendar,
   NgbCalendarIslamicCivil,
+  NgbCalendarIslamicUmalqura,
   NgbCalendarPersian,
   NgbDatepickerI18nPersian,
   NgbDatepickerModule,
@@ -40,6 +41,7 @@ export {
   NgbDatepickerConfig,
   NgbDateStruct,
   NgbDateParserFormatter,
+  NgbDateAdapter,
   NgbDatepicker,
   NgbInputDatepicker
 } from './datepicker/datepicker.module';
@@ -74,6 +76,8 @@ export {
   NgbTypeaheadSelectItemEvent,
   NgbTypeahead
 } from './typeahead/typeahead.module';
+
+export {Placement} from './util/positioning';
 
 const NGB_MODULES = [
   NgbAccordionModule, NgbAlertModule, NgbButtonsModule, NgbCarouselModule, NgbCollapseModule, NgbDatepickerModule,

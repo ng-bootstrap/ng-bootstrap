@@ -23,6 +23,18 @@ describe('APIDocVisitor', function() {
     expect(docs.Bar.description).toBe('Bar doc');
   });
 
+  it('should extract basic type info from classes', function() {
+    var docs = apiDoc(['misc/api-doc-test-cases/types.ts']);
+
+    expect(Object.keys(docs).length).toBe(5);
+
+    expect(docs.NgbDirective.type).toBe('Directive');
+    expect(docs.NgbComponent.type).toBe('Component');
+    expect(docs.NgbService.type).toBe('Service');
+    expect(docs.NgbClass.type).toBe('Class');
+    expect(docs.NgbInterface.type).toBe('Interface');
+  });
+
   it('should extract inputs info', function() {
     var inputDocs = apiDoc(['./misc/api-doc-test-cases/directives-with-inputs.ts']).Foo.inputs;
 

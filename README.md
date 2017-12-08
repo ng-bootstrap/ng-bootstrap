@@ -1,4 +1,4 @@
-# NG Bootstrap - [Angular](http://angular.io/) directives specific to [Bootstrap 4](http://v4-alpha.getbootstrap.com/)
+# NG Bootstrap - [Angular](http://angular.io/) directives specific to [Bootstrap 4](https://getbootstrap.com/)
 
 [![npm version](https://badge.fury.io/js/%40ng-bootstrap%2Fng-bootstrap.svg)](https://badge.fury.io/js/%40ng-bootstrap%2Fng-bootstrap)
 [![Build Status](https://travis-ci.org/ng-bootstrap/ng-bootstrap.svg?branch=master)](https://travis-ci.org/ng-bootstrap/ng-bootstrap)
@@ -30,8 +30,8 @@ Feel free to make comments there.
 View all the directives in action at https://ng-bootstrap.github.io
 
 ## Dependencies
-* [Angular](https://angular.io) (tested with 4.0.3)
-* [Bootstrap 4](https://v4-alpha.getbootstrap.com) (tested with 4.0.0-alpha.6)
+* [Angular](https://angular.io) (tested with 5.0.2)
+* [Bootstrap 4](https://www.getbootstrap.com) (tested with 4.0.0-beta.2)
 
 ## Installation
 After installing the above dependencies, install `ng-bootstrap` via:
@@ -89,7 +89,7 @@ See [this](https://github.com/angular/angular/blob/master/README.md) for up-to-d
 * Edge (20+)
 * Safari (7+)
 
-Also check [Bootstrap 4's notes](http://v4-alpha.getbootstrap.com/getting-started/browsers-devices/#internet-explorer-9) on browsers support.
+Also check [Bootstrap 4's notes](https://getbootstrap.com/docs/4.0/getting-started/browsers-devices/#supported-browsers) on browsers support.
 
 ## Contributing to the project
 
