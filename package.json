@@ -39,10 +39,7 @@
     "type": "git",
     "url": "git+https://github.com/ng-bootstrap/ng-bootstrap.git"
   },
-  "license": {
-    "type": "MIT",
-    "url": "https://raw.githubusercontent.com/ng-bootstrap/ng-bootstrap/master/LICENSE"
-  },
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/ng-bootstrap/ng-bootstrap/issues"
   },
