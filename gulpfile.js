@@ -23,7 +23,10 @@ var PATHS = {
   specs: 'src/**/*.spec.ts',
   testHelpers: 'src/test/**/*.ts',
   demo: 'demo/**/*.ts',
+  demoDistRoot: 'demo/dist',
   demoDist: 'demo/dist/**/*',
+  demoFrameworkVersionOutputFilename: 'version.ts',
+  demoFrameworkVersionOutputFolder: 'demo/src/app/default',
   typings: 'typings/index.d.ts',
   jasmineTypings: 'typings/globals/jasmine/index.d.ts',
   demoApiDocs: 'demo/src',
@@ -201,6 +204,8 @@ gulp.task('saucelabs', ['build:tests'], function(done) {
   });
 });
 
+gulp.task('e2e', shell.task(['ng e2e']));
+
 // Formatting
 
 gulp.task('lint', function() {
@@ -270,23 +275,29 @@ gulp.task('generate-stackblitzes', function() {
   return gulpFile(stackblitzes, {src: true}).pipe(gulp.dest('demo/src/public/app/components'));
 });
 
-gulp.task('clean:demo', function() { return del('demo/dist'); });
+gulp.task('clean:demo', function() { return del(PATHS.demoDistRoot); });
 
 gulp.task('clean:demo-cache', function() { return del('.publish/'); });
 
-gulp.task(
-    'demo-server', ['generate-docs', 'generate-plunks', 'generate-stackblitzes'],
-    shell.task([`webpack-dev-server --port ${docsConfig.port} --config webpack.demo.js --inline --progress`]));
+gulp.task('generate-version-module', function() {
+  const {version} = require('./package.json');
+  const code = `export default '${version}';\n`;
+
+  return gulpFile(PATHS.demoFrameworkVersionOutputFilename, code, {src: true})
+      .pipe(gulp.dest(PATHS.demoFrameworkVersionOutputFolder));
+});
 
 gulp.task(
-    'build:demo', ['clean:demo', 'generate-docs', 'generate-plunks', 'generate-stackblitzes'],
-    shell.task(['webpack --config webpack.demo.js --progress --profile --bail'], {env: {MODE: 'build'}}));
+    'demo-server', ['generate-docs', 'generate-plunks', 'generate-version-module', 'generate-stackblitzes'],
+    shell.task([`ng serve --port ${docsConfig.port} --dev`]));
 
 gulp.task(
-    'demo-server:aot', ['generate-docs', 'generate-plunks', 'generate-stackblitzes'],
-    shell.task(
-        [`webpack-dev-server --port ${docsConfig.port} --config webpack.demo.js --inline --progress`],
-        {env: {MODE: 'build'}}));
+    'build:demo', ['clean:demo', 'generate-docs', 'generate-plunks', 'generate-version-module', 'generate-stackblitzes'],
+    shell.task(['ng build --prod']));
+
+gulp.task(
+    'demo-server:aot', ['generate-docs', 'generate-plunks', 'generate-version-module', 'generate-stackblitzes'],
+    shell.task([`ng serve --port ${docsConfig.port} --prod`]));
 
 gulp.task('demo-push', function() {
   return gulp.src(PATHS.demoDist)
