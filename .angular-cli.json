@@ -1,0 +1,61 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "project": {
+    "name": "ng-bootstrap"
+  },
+  "apps": [
+    {
+      "outDir": "demo/dist",
+
+      "root": "demo/src/public",
+
+      "index": "index.html",
+      "assets": [
+        "img/**",
+        "app/**"
+      ],
+
+      "tsconfig": "../../../tsconfig-aot.json",
+      "main": "../main.ts",
+      "polyfills": "../polyfills.ts",
+      "styles": [
+        "../style/app.scss",
+        "../../../node_modules/prismjs/themes/prism.css",
+        "../../../node_modules/bootstrap/dist/css/bootstrap.css"
+      ],
+
+      "prefix": "ngbd"
+    }
+  ],
+  "e2e": {
+    "protractor": {
+      "config": "./protractor.conf.js"
+    }
+  },
+  "lint": [
+    {
+      "project": "tsconfig.json",
+      "exclude": "**/node_modules/**"
+    },
+    {
+      "project": "tsconfig-aot.json",
+      "exclude": "**/node_modules/**"
+    },
+    {
+      "project": "e2e/tsconfig.e2e.json",
+      "exclude": "**/node_modules/**"
+    }
+  ],
+  "test": {
+    "karma": {
+      "config": "./karma.conf.js"
+    }
+  },
+  "defaults": {
+    "styleExt": "scss",
+    "component": {
+      "inlineStyle": true,
+      "inlineTemplate": true
+    }
+  }
+}
