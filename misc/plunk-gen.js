@@ -32,7 +32,7 @@ import { ${demoImports} } from '${demoImport}';
   selector: 'my-app',
   template: \`
     <div class="container-fluid">
-    
+
     <hr>
     <p>
       This is a demo plnkr forked from the <strong>ng-bootstrap</strong> project: Angular powered Bootstrap.
@@ -119,7 +119,7 @@ function generateConfigJs() {
   return `var ver = {
     ng: '${versions.angular}'
   };
-  
+
   System.config({
   //use typescript for compilation
   transpiler: 'typescript',
@@ -182,16 +182,22 @@ function getVersions() {
     zoneJs: getVersion('zone.js'),
     coreJs: getVersion('core-js'),
     systemjs: getVersion('systemjs'),
-    reflectMetadata: getVersion('reflect-metadata'),
+    reflectMetadata: getVersion('reflect-metadata', JSON.parse(fs.readFileSync('node_modules/@angular/compiler-cli/package.json'))),
     bootstrap: getVersion('bootstrap')
   };
 }
 
-function getVersion(name) {
-  var value = packageJson.dependencies[name] || packageJson.devDependencies[name];
+function getVersion(name, givenPackageJson) {
+  if (givenPackageJson == null) {
+    givenPackageJson = packageJson;
+  }
+
+  var value = givenPackageJson.dependencies[name] || givenPackageJson.devDependencies[name];
+
   if (!value) {
     throw `couldn't find version for ${name} in package.json`;
   }
+
   return value;
 }
 
