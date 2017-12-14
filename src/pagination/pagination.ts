@@ -126,9 +126,6 @@ export class NgbPagination implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void { this._updatePages(this.page); }
 
-  /**
-   * @internal
-   */
   isEllipsis(pageNumber): boolean { return pageNumber === -1; }
 
   /**
