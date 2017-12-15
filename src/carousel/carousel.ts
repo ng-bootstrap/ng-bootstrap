@@ -46,8 +46,8 @@ export class NgbSlide {
   },
   template: `
     <ol class="carousel-indicators">
-      <li *ngFor="let slide of slides" [id]="slide.id" [class.active]="slide.id === activeId" 
-          (click)="cycleToSelected(slide.id, _getSlideEventDirection(activeId, slide.id))"></li>
+      <li *ngFor="let slide of slides" [id]="slide.id" [class.active]="slide.id === activeId"
+          (click)="cycleToSelected(slide.id, getSlideEventDirection(activeId, slide.id))"></li>
     </ol>
     <div class="carousel-inner">
       <div *ngFor="let slide of slides" class="carousel-item" [class.active]="slide.id === activeId">
@@ -120,7 +120,7 @@ export class NgbCarousel implements AfterContentChecked,
    * Navigate to a slide with the specified identifier.
    */
   select(slideId: string) {
-    this.cycleToSelected(slideId, this._getSlideEventDirection(this.activeId, slideId));
+    this.cycleToSelected(slideId, this.getSlideEventDirection(this.activeId, slideId));
     this._restartTimer();
   }
 
@@ -162,6 +162,13 @@ export class NgbCarousel implements AfterContentChecked,
       }
       this.activeId = selectedSlide.id;
     }
+  }
+
+  getSlideEventDirection(currentActiveSlideId: string, nextActiveSlideId: string): NgbSlideEventDirection {
+    const currentActiveSlideIdx = this._getSlideIdxById(currentActiveSlideId);
+    const nextActiveSlideIdx = this._getSlideIdxById(nextActiveSlideId);
+
+    return currentActiveSlideIdx > nextActiveSlideIdx ? NgbSlideEventDirection.RIGHT : NgbSlideEventDirection.LEFT;
   }
 
   keyPrev() {
@@ -214,13 +221,6 @@ export class NgbCarousel implements AfterContentChecked,
 
     return isFirstSlide ? (this.wrap ? slideArr[slideArr.length - 1].id : slideArr[0].id) :
                           slideArr[currentSlideIdx - 1].id;
-  }
-
-  private _getSlideEventDirection(currentActiveSlideId: string, nextActiveSlideId: string): NgbSlideEventDirection {
-    const currentActiveSlideIdx = this._getSlideIdxById(currentActiveSlideId);
-    const nextActiveSlideIdx = this._getSlideIdxById(nextActiveSlideId);
-
-    return currentActiveSlideIdx > nextActiveSlideIdx ? NgbSlideEventDirection.RIGHT : NgbSlideEventDirection.LEFT;
   }
 }
 
