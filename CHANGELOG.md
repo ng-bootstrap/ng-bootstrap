@@ -1,3 +1,22 @@
+<a name="1.0.0-beta.8"></a>
+# [1.0.0-beta.8](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-beta.7...1.0.0-beta.8) (2017-12-15)
+
+
+### Bug Fixes
+
+* **carousel:** use only public methods in template ([da31c3e](https://github.com/ng-bootstrap/ng-bootstrap/commit/da31c3e)), closes [#2038](https://github.com/ng-bootstrap/ng-bootstrap/issues/2038) [#2040](https://github.com/ng-bootstrap/ng-bootstrap/issues/2040)
+* **datepicker:** support `NgbDateAdapter` in `NgbInputDatepicker` ([0e325ca](https://github.com/ng-bootstrap/ng-bootstrap/commit/0e325ca)), closes [#2002](https://github.com/ng-bootstrap/ng-bootstrap/issues/2002) [#2003](https://github.com/ng-bootstrap/ng-bootstrap/issues/2003)
+* **pagination:** remove internal annotation ([f1137aa](https://github.com/ng-bootstrap/ng-bootstrap/commit/f1137aa)), closes [#2038](https://github.com/ng-bootstrap/ng-bootstrap/issues/2038) [#2041](https://github.com/ng-bootstrap/ng-bootstrap/issues/2041)
+* **positioning:** fix positioning with the width constraint ([0df398c](https://github.com/ng-bootstrap/ng-bootstrap/commit/0df398c)), closes [#1876](https://github.com/ng-bootstrap/ng-bootstrap/issues/1876) [#1902](https://github.com/ng-bootstrap/ng-bootstrap/issues/1902)
+
+
+### Features
+
+* **datepicker:** simplify css handling of the navigation system ([9a27911](https://github.com/ng-bootstrap/ng-bootstrap/commit/9a27911)), closes [#1614](https://github.com/ng-bootstrap/ng-bootstrap/issues/1614)
+* **typeahead:** allow search on focus and click ([96d073d](https://github.com/ng-bootstrap/ng-bootstrap/commit/96d073d)), closes [#698](https://github.com/ng-bootstrap/ng-bootstrap/issues/698) [#1990](https://github.com/ng-bootstrap/ng-bootstrap/issues/1990)
+
+
+
 <a name="1.0.0-beta.7"></a>
 # [1.0.0-beta.7](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-beta.6...1.0.0-beta.7) (2017-12-08)
 
