@@ -29,6 +29,10 @@ export class PopupService<T> {
       this._contentRef = this._getContentRef(content, context);
       this._windowRef =
           this._viewContainerRef.createComponent(this._windowFactory, 0, this._injector, this._contentRef.nodes);
+
+      // Do not allow scroll bar to appear upon insertion.
+      this._renderer.setStyle(this._windowRef.location.nativeElement, 'left', -100000 + 'px');
+      this._renderer.setStyle(this._windowRef.location.nativeElement, 'top', -100000 + 'px');
     }
 
     return this._windowRef;
