@@ -258,22 +258,13 @@ describe('ngbRadioGroup', () => {
        });
      }));
 
-  it('should add data-toggle="buttons" to button group', () => {
-    // Bootstrap for uses presence of data-toggle="buttons" to style radio buttons
-    const html = `<div class="foo" ngbRadioGroup></div>`;
-
-    const fixture = createTestComponent(html);
-
-    expect(fixture.nativeElement.children[0].getAttribute('data-toggle')).toBe('buttons');
-  });
-
   it('should work with template-driven form validation', async(() => {
        const html = `
         <form>
           <div ngbRadioGroup [(ngModel)]="model" name="control" required>
             <label ngbButtonLabel>
               <input ngbButton type="radio" value="foo"/>
-            </label>          
+            </label>
           </div>
         </form>`;
 
@@ -297,7 +288,7 @@ describe('ngbRadioGroup', () => {
           <div ngbRadioGroup formControlName="control">
             <label ngbButtonLabel>
               <input ngbButton type="radio" value="foo"/>
-            </label>          
+            </label>
           </div>
         </form>`;
 
@@ -318,7 +309,7 @@ describe('ngbRadioGroup', () => {
         <div ngbRadioGroup formControlName="control">
           <label ngbButtonLabel>
             <input ngbButton type="radio" value="foo"/>
-          </label>          
+          </label>
         </div>
       </form>`;
 
@@ -339,7 +330,7 @@ describe('ngbRadioGroup', () => {
         <div ngbRadioGroup [(ngModel)]="model" name="control" [disabled]="disabled">
           <label ngbButtonLabel>
             <input ngbButton type="radio" value="foo"/>
-          </label>          
+          </label>
         </div>
       </form>`;
 
@@ -368,7 +359,7 @@ describe('ngbRadioGroup', () => {
         <div ngbRadioGroup [(ngModel)]="model" name="control">
           <label ngbButtonLabel>
             <input ngbButton type="radio" value="foo" [disabled]="disabled"/>
-          </label>          
+          </label>
         </div>
       </form>`;
 
@@ -398,7 +389,7 @@ describe('ngbRadioGroup', () => {
         <div ngbRadioGroup [(ngModel)]="model" name="control" [disabled]="groupDisabled">
           <label ngbButtonLabel>
             <input ngbButton type="radio" value="foo" [disabled]="disabled"/>
-          </label>          
+          </label>
         </div>
       </form>`;
 
@@ -426,7 +417,7 @@ describe('ngbRadioGroup', () => {
         <div ngbRadioGroup [(ngModel)]="model" name="control" [disabled]="groupDisabled">
           <label ngbButtonLabel>
             <input ngbButton type="radio" value="foo" [disabled]="disabled"/>
-          </label>          
+          </label>
         </div>
       </form>`;
 

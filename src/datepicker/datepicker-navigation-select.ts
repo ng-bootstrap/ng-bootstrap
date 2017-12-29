@@ -8,7 +8,7 @@ import {NgbCalendar} from './ngb-calendar';
   selector: 'ngb-datepicker-navigation-select',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [`
-    select {
+    :host>select {
       /* to align with btn-sm */
       padding: 0.25rem 0.5rem;
       font-size: 0.875rem;

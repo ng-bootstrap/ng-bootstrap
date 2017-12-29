@@ -8,9 +8,11 @@
     <div class="input-group">
       <input class="form-control" placeholder="yyyy-mm-dd"
             name="dp" [displayMonths]="displayMonths" [navigation]="navigation" ngbDatepicker #d="ngbDatepicker">
-      <button class="input-group-addon" (click)="d.toggle()" type="button">
-        <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
-      </button>
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+          <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
+        </button>
+      </div>
     </div>
   </div>
 </form>
