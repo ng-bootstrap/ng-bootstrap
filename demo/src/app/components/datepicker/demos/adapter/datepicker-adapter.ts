@@ -12,7 +12,7 @@ export class NgbDateNativeAdapter extends NgbDateAdapter<Date> {
   }
 
   toModel(date: NgbDateStruct): Date {
-    return date ? new Date(Date.UTC(date.year, date.month - 1, date.day)) : null;
+    return date ? new Date(date.year, date.month - 1, date.day) : null;
   }
 }
 
