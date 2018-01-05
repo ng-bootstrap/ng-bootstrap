@@ -21,7 +21,7 @@ import {NgbActiveModal, NgbModalRef} from './modal-ref';
 @Injectable()
 export class NgbModalStack {
   private _document: any;
-  private _windowAttributes = ['backdrop', 'keyboard', 'size', 'windowClass'];
+  private _windowAttributes = ['backdrop', 'centered', 'keyboard', 'size', 'windowClass'];
 
   constructor(
       private _applicationRef: ApplicationRef, private _injector: Injector,

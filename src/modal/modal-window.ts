@@ -24,7 +24,7 @@ import {ModalDismissReasons} from './modal-dismiss-reasons';
     '(click)': 'backdropClick($event)'
   },
   template: `
-    <div [class]="'modal-dialog' + (size ? ' modal-' + size : '')" role="document">
+    <div [class]="'modal-dialog' + (size ? ' modal-' + size : '') + (centered ? ' modal-dialog-centered' : '')" role="document">
         <div class="modal-content"><ng-content></ng-content></div>
     </div>
     `
@@ -35,6 +35,7 @@ export class NgbModalWindow implements OnInit,
   private _elWithFocus: Element;  // element that is focused prior to modal opening
 
   @Input() backdrop: boolean | string = true;
+  @Input() centered: string;
   @Input() keyboard = true;
   @Input() size: string;
   @Input() windowClass: string;
