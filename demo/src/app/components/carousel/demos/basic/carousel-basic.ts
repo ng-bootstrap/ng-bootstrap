@@ -5,4 +5,5 @@ import {Component} from '@angular/core';
   templateUrl: './carousel-basic.html'
 })
 export class NgbdCarouselBasic {
+  images = [1, 2, 3].map(() => `https://picsum.photos/900/500?image=${Math.floor(Math.random() * 1000)}`);
 }
