@@ -56,6 +56,7 @@ describe('ngb-dropdown', () => {
   it('should be closed and down by default', () => {
     const html = `
       <div ngbDropdown>
+          <button ngbDropdownAnchor></button>
           <div ngbDropdownMenu>
             <a class="dropdown-item">dropDown item</a>
             <a class="dropdown-item">dropDown item</a>
@@ -71,6 +72,7 @@ describe('ngb-dropdown', () => {
   it('should have dropup CSS class if placed on top', () => {
     const html = `
       <div ngbDropdown placement="top">
+          <button ngbDropdownAnchor></button>
           <div ngbDropdownMenu>
             <a class="dropdown-item">dropDown item</a>
             <a class="dropdown-item">dropDown item</a>
@@ -86,6 +88,7 @@ describe('ngb-dropdown', () => {
   it('should have dropdown CSS class if placement is other than top', () => {
     const html = `
       <div ngbDropdown placement="bottom">
+          <button ngbDropdownAnchor></button>
           <div ngbDropdownMenu>
             <a class="dropdown-item">dropDown item</a>
             <a class="dropdown-item">dropDown item</a>
@@ -101,6 +104,7 @@ describe('ngb-dropdown', () => {
   it('should be open initially if open expression is true', () => {
     const html = `
       <div ngbDropdown [open]="true">
+          <button ngbDropdownAnchor></button>
           <div ngbDropdownMenu>
             <a class="dropdown-item">dropDown item</a>
             <a class="dropdown-item">dropDown item</a>
@@ -114,7 +118,11 @@ describe('ngb-dropdown', () => {
   });
 
   it('should toggle open on "open" binding change', () => {
-    const html = `<div ngbDropdown [open]="isOpen"><div ngbDropdownMenu></div></div>`;
+    const html = `
+      <div ngbDropdown [open]="isOpen">
+        <button ngbDropdownAnchor></button>
+        <div ngbDropdownMenu></div>
+      </div>`;
 
     const fixture = createTestComponent(html);
     const compiled = fixture.nativeElement;
@@ -135,7 +143,10 @@ describe('ngb-dropdown', () => {
       <button (click)="drop.open(); $event.stopPropagation()">Open</button>
       <button (click)="drop.close(); $event.stopPropagation()">Close</button>
       <button (click)="drop.toggle(); $event.stopPropagation()">Toggle</button>
-      <div ngbDropdown #drop="ngbDropdown"><div ngbDropdownMenu></div></div>`;
+      <div ngbDropdown #drop="ngbDropdown">
+        <button ngbDropdownAnchor></button>
+        <div ngbDropdownMenu></div>
+      </div>`;
 
     const fixture = createTestComponent(html);
     const compiled = fixture.nativeElement;
@@ -273,7 +284,12 @@ describe('ngb-dropdown-toggle', () => {
   });
 
   it('should close on outside click', () => {
-    const html = `<button>Outside</button><div ngbDropdown [open]="true"><div ngbDropdownMenu></div></div>`;
+    const html = `
+      <button>Outside</button>
+      <div ngbDropdown [open]="true">
+        <button ngbDropdownAnchor></button>
+        <div ngbDropdownMenu></div>
+      </div>`;
 
     const fixture = createTestComponent(html);
     const compiled = fixture.nativeElement;
@@ -288,7 +304,12 @@ describe('ngb-dropdown-toggle', () => {
   });
 
   it('should not close on outside click if right button click', () => {
-    const html = `<button>Outside</button><div ngbDropdown [open]="true"><div ngbDropdownMenu></div></div>`;
+    const html = `
+      <button>Outside</button>
+      <div ngbDropdown [open]="true">
+        <button ngbDropdownAnchor></button>
+        <div ngbDropdownMenu></div>
+      </div>`;
 
     const fixture = createTestComponent(html);
     const compiled = fixture.nativeElement;
@@ -308,6 +329,7 @@ describe('ngb-dropdown-toggle', () => {
     const html = `
       <button>Outside</button>
       <div ngbDropdown [open]="true" [autoClose]="false">
+        <button ngbDropdownAnchor></button>
         <div ngbDropdownMenu></div>
       </div>`;
 
