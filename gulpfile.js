@@ -254,20 +254,36 @@ gulp.task('generate-plunks', function() {
   return gulpFile(plunks, {src: true}).pipe(gulp.dest('demo/src/public/app/components'));
 });
 
+gulp.task('generate-stackblitzes', function() {
+  var getStackblitz = require('./misc/stackblitz-gen');
+  var demoGenUtils = require('./misc/demo-gen-utils');
+  var stackblitzes = [];
+
+  demoGenUtils.getDemoComponentNames().forEach(function(componentName) {
+    stackblitzes = stackblitzes.concat(demoGenUtils.getDemoNames(componentName).reduce(function(soFar, demoName) {
+      soFar.push(
+          {name: `${componentName}/demos/${demoName}/stackblitz.html`, source: getStackblitz(componentName, demoName)});
+      return soFar;
+    }, []));
+  });
+
+  return gulpFile(stackblitzes, {src: true}).pipe(gulp.dest('demo/src/public/app/components'));
+});
+
 gulp.task('clean:demo', function() { return del('demo/dist'); });
 
 gulp.task('clean:demo-cache', function() { return del('.publish/'); });
 
 gulp.task(
-    'demo-server', ['generate-docs', 'generate-plunks'],
+    'demo-server', ['generate-docs', 'generate-plunks', 'generate-stackblitzes'],
     shell.task([`webpack-dev-server --port ${docsConfig.port} --config webpack.demo.js --inline --progress`]));
 
 gulp.task(
-    'build:demo', ['clean:demo', 'generate-docs', 'generate-plunks'],
+    'build:demo', ['clean:demo', 'generate-docs', 'generate-plunks', 'generate-stackblitzes'],
     shell.task(['webpack --config webpack.demo.js --progress --profile --bail'], {env: {MODE: 'build'}}));
 
 gulp.task(
-    'demo-server:aot', ['generate-docs', 'generate-plunks'],
+    'demo-server:aot', ['generate-docs', 'generate-plunks', 'generate-stackblitzes'],
     shell.task(
         [`webpack-dev-server --port ${docsConfig.port} --config webpack.demo.js --inline --progress`],
         {env: {MODE: 'build'}}));
