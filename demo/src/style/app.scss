@@ -178,12 +178,12 @@ div.component-demo {
   h2 {
     margin-bottom: 1rem;
 
-    .plunker {
+    .plunker, .stackblitz {
       opacity: 0.3;
       transition: opacity .5s;
     }
     &:hover {
-      .plunker {
+      .plunker, .stackblitz {
         opacity: 1;
       }
     }
