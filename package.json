@@ -62,7 +62,7 @@
     "angular2-template-loader": "^0.6.0",
     "async-done": "^1.2.2",
     "autoprefixer": "^7.2.2",
-    "bootstrap": "4.0.0-beta.3",
+    "bootstrap": "4.0.0",
     "clang-format": "1.0.35",
     "copy-webpack-plugin": "^4.2.3",
     "core-js": "^2.4.1",
