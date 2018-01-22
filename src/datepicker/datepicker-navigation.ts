@@ -110,7 +110,9 @@ export class NgbDatepickerNavigation {
 
   prevDisabled() {
     const prevDate = this._calendar.getPrev(this.date, 'm');
-    return this.disabled || (this.minDate && prevDate.year <= this.minDate.year && prevDate.month < this.minDate.month);
+    return this.disabled ||
+        (this.minDate && (prevDate.year === this.minDate.year && prevDate.month < this.minDate.month ||
+                          prevDate.year < this.minDate.year && this.minDate.month === 1));
   }
 
   selectDate(date: NgbDate) { this.select.emit(date); }
