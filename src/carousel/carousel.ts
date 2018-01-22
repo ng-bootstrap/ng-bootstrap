@@ -45,6 +45,11 @@ export class NgbSlide {
     '(keydown.arrowLeft)': 'keyPrev()',
     '(keydown.arrowRight)': 'keyNext()'
   },
+  styles: [`
+    .carousel-item {
+      transition: none; /* Firefox/Edge fix: disable bootstraps css animations */
+    }
+  `],
   animations: [
     trigger('transition', [
       transition('* => active_left', [style({ transform: 'translateX(0)' }),
