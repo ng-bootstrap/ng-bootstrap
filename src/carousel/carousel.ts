@@ -62,7 +62,7 @@ export class NgbSlide {
       animate('.6s ease', style({ transform: 'translateX(0)' }))]),
 
       transition('* => right', [style({ transform: 'translateX(-100%)' }),
-      animate('.6s ease', style({ transform: 'translateX(0)' }))]),
+      animate('.6s ease', style({ transform: 'translateX(0)' }))])
     ])
   ],
   template: `
