@@ -33,7 +33,7 @@ export class NgbDateStructAdapter extends NgbDateAdapter<NgbDateStruct> {
    * @return {NgbDateStruct}
    */
   fromModel(date: NgbDateStruct): NgbDateStruct {
-    return date ? {year: date.year, month: date.month, day: date.day || 1} : null;
+    return (date && date.year && date.month && date.day) ? {year: date.year, month: date.month, day: date.day} : null;
   }
 
   /**
@@ -42,6 +42,6 @@ export class NgbDateStructAdapter extends NgbDateAdapter<NgbDateStruct> {
    * @return {NgbDateStruct}
    */
   toModel(date: NgbDateStruct): NgbDateStruct {
-    return date ? {year: date.year, month: date.month, day: date.day || 1} : null;
+    return (date && date.year && date.month && date.day) ? {year: date.year, month: date.month, day: date.day} : null;
   }
 }

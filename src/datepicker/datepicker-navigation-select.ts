@@ -8,32 +8,33 @@ import {NgbCalendar} from './ngb-calendar';
   selector: 'ngb-datepicker-navigation-select',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [`
-    select {
+    :host>select {
       /* to align with btn-sm */
       padding: 0.25rem 0.5rem;
-      font-size: 0.875rem;      
+      font-size: 0.875rem;
       line-height: 1.25;
       /* to cancel the custom height set by custom-select */
       height: inherit;
       width: 50%;
+      display: inline-block;
     }
   `],
   template: `
     <select
       [disabled]="disabled"
-      class="custom-select d-inline-block"
+      class="custom-select"
       [value]="date?.month"
       (change)="changeMonth($event.target.value)"
       tabindex="-1">
         <option *ngFor="let m of months" [value]="m">{{ i18n.getMonthShortName(m) }}</option>
     </select><select
       [disabled]="disabled"
-      class="custom-select d-inline-block"
+      class="custom-select"
       [value]="date?.year"
       (change)="changeYear($event.target.value)"
       tabindex="-1">
         <option *ngFor="let y of years" [value]="y">{{ y }}</option>
-    </select> 
+    </select>
   `
 })
 export class NgbDatepickerNavigationSelect implements OnChanges {
