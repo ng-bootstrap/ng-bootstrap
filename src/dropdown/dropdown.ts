@@ -34,17 +34,17 @@ export class NgbDropdownMenu {
 
   applyPlacement(_placement: Placement) {
     // remove the current placement classes
-    this._renderer.removeClass(this._elementRef.nativeElement.parentElement, 'dropup');
-    this._renderer.removeClass(this._elementRef.nativeElement.parentElement, 'dropdown');
+    this._renderer.removeClass(this._elementRef.nativeElement.parentNode, 'dropup');
+    this._renderer.removeClass(this._elementRef.nativeElement.parentNode, 'dropdown');
     this.placement = _placement;
     /**
      * apply the new placement
      * in case of top use up-arrow or down-arrow otherwise
      */
     if (_placement.search('^top') !== -1) {
-      this._renderer.addClass(this._elementRef.nativeElement.parentElement, 'dropup');
+      this._renderer.addClass(this._elementRef.nativeElement.parentNode, 'dropup');
     } else {
-      this._renderer.addClass(this._elementRef.nativeElement.parentElement, 'dropdown');
+      this._renderer.addClass(this._elementRef.nativeElement.parentNode, 'dropdown');
     }
   }
 }

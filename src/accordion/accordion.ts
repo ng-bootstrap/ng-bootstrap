@@ -110,8 +110,8 @@ export interface NgbPanelChangeEvent {
             {{panel.title}}<ng-template [ngTemplateOutlet]="panel.titleTpl?.templateRef"></ng-template>
           </a>
         </div>
-        <div id="{{panel.id}}" role="tabpanel" [attr.aria-labelledby]="panel.id + '-header'" 
-             class="card-body {{panel.isOpen ? 'show' : null}}" *ngIf="!destroyOnHide || panel.isOpen">
+        <div id="{{panel.id}}" role="tabpanel" [attr.aria-labelledby]="panel.id + '-header'"
+             class="card-body collapse {{panel.isOpen ? 'show' : null}}" *ngIf="!destroyOnHide || panel.isOpen">
              <ng-template [ngTemplateOutlet]="panel.contentTpl.templateRef"></ng-template>
         </div>
       </div>

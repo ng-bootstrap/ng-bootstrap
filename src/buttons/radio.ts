@@ -15,11 +15,7 @@ let nextId = 0;
  * Easily create Bootstrap-style radio buttons. A value of a selected button is bound to a variable
  * specified via ngModel.
  */
-@Directive({
-  selector: '[ngbRadioGroup]',
-  host: {'data-toggle': 'buttons', 'role': 'group'},
-  providers: [NGB_RADIO_VALUE_ACCESSOR]
-})
+@Directive({selector: '[ngbRadioGroup]', host: {'role': 'group'}, providers: [NGB_RADIO_VALUE_ACCESSOR]})
 export class NgbRadioGroup implements ControlValueAccessor {
   private _radios: Set<NgbRadio> = new Set<NgbRadio>();
   private _value = null;
@@ -115,6 +111,9 @@ export class NgbRadio implements OnDestroy {
   set focused(isFocused: boolean) {
     if (this._label) {
       this._label.focused = isFocused;
+    }
+    if (!isFocused) {
+      this._group.onTouched();
     }
   }
 

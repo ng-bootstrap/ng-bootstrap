@@ -729,6 +729,20 @@ describe('ngb-datepicker-service', () => {
       expect(mockSelect.onNext).toHaveBeenCalledTimes(1);
     });
 
+    it(`should emit date selection event for non-visible dates'`, () => {
+      const date = new NgbDate(2017, 5, 5);
+      service.focus(date);
+      expect(model.selectedDate).toBeNull();
+      expect(selectDate).toBeNull();
+
+      let invisibleDate = new NgbDate(2016, 5, 5);
+      service.select(invisibleDate, {emitEvent: true});
+      expect(model.selectedDate).toEqual(invisibleDate);
+      expect(selectDate).toEqual(invisibleDate);
+
+      expect(mockSelect.onNext).toHaveBeenCalledTimes(1);
+    });
+
     it(`should not emit date selection event for disabled dates'`, () => {
       // marking 5th day of each month as disabled
       service.markDisabled = (date) => date && date.day === 5;

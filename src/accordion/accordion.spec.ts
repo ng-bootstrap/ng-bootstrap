@@ -251,6 +251,24 @@ describe('ngb-accordion', () => {
     });
   });
 
+  it('should have the appropriate CSS visibility classes', () => {
+    const fixture = TestBed.createComponent(TestComponent);
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement;
+    fixture.componentInstance.activeIds = 'one,two,three';
+
+    fixture.detectChanges();
+
+    const contents = getPanelsContent(compiled);
+    expect(contents.length).not.toBe(0);
+
+    contents.forEach((content: HTMLElement) => {
+      expect(content).toHaveCssClass('collapse');
+      expect(content).toHaveCssClass('show');
+    });
+  });
+
   it('should only open one at a time', () => {
     const fixture = TestBed.createComponent(TestComponent);
     const tc = fixture.componentInstance;

@@ -34,7 +34,7 @@ let nextId = 0;
   template: `<div class="arrow"></div><div class="tooltip-inner"><ng-content></ng-content></div>`,
   styles: [`
     :host.bs-tooltip-top .arrow, :host.bs-tooltip-bottom .arrow {
-      left: 50%;
+      left: calc(50% - 0.4rem);
     }
 
     :host.bs-tooltip-top-left .arrow, :host.bs-tooltip-bottom-left .arrow {
@@ -43,20 +43,20 @@ let nextId = 0;
 
     :host.bs-tooltip-top-right .arrow, :host.bs-tooltip-bottom-right .arrow {
       left: auto;
-      right: 1em;
+      right: 0.8rem;
     }
 
     :host.bs-tooltip-left .arrow, :host.bs-tooltip-right .arrow {
-      top: 50%;
+      top: calc(50% - 0.4rem);
     }
     
     :host.bs-tooltip-left-top .arrow, :host.bs-tooltip-right-top .arrow {
-      top: 0.7em;
+      top: 0.4rem;
     }
 
     :host.bs-tooltip-left-bottom .arrow, :host.bs-tooltip-right-bottom .arrow {
       top: auto;
-      bottom: 0.7em;
+      bottom: 0.4rem;
     }
   `]
 })

@@ -65,10 +65,11 @@ let nextWindowId = 0;
  */
 @Directive({
   selector: 'input[ngbTypeahead]',
+  exportAs: 'ngbTypeahead',
   host: {
     '(blur)': 'handleBlur()',
     '[class.open]': 'isPopupOpen()',
-    '(document:click)': 'dismissPopup()',
+    '(document:click)': 'onDocumentClick($event)',
     '(keydown)': 'handleKeyDown($event)',
     'autocomplete': 'off',
     'autocapitalize': 'off',
@@ -86,7 +87,7 @@ export class NgbTypeahead implements ControlValueAccessor,
     OnInit, OnDestroy {
   private _popupService: PopupService<NgbTypeaheadWindow>;
   private _subscription: Subscription;
-  private _userInput: string;
+  private _inputValueBackup: string;
   private _valueChanges: Observable<string>;
   private _resubscribeTypeahead: BehaviorSubject<any>;
   private _windowRef: ComponentRef<NgbTypeaheadWindow>;
@@ -182,7 +183,7 @@ export class NgbTypeahead implements ControlValueAccessor,
 
   ngOnInit(): void {
     const inputValues$ = _do.call(this._valueChanges, value => {
-      this._userInput = value;
+      this._inputValueBackup = value;
       if (this.editable) {
         this._onChange(value);
       }
@@ -213,13 +214,25 @@ export class NgbTypeahead implements ControlValueAccessor,
     this._renderer.setProperty(this._elementRef.nativeElement, 'disabled', isDisabled);
   }
 
-  dismissPopup() {
-    if (this.isPopupOpen()) {
-      this._closePopup();
-      this._writeInputValue(this._userInput);
+  onDocumentClick(event) {
+    if (event.target !== this._elementRef.nativeElement) {
+      this.dismissPopup();
     }
   }
 
+  /**
+   * Dismisses typeahead popup window
+   */
+  dismissPopup() {
+    if (this.isPopupOpen()) {
+      this._closePopup();
+      this._writeInputValue(this._inputValueBackup);
+    }
+  }
+
+  /**
+   * Returns true if the typeahead popup window is displayed
+   */
   isPopupOpen() { return this._windowRef != null; }
 
   handleBlur() {
@@ -265,6 +278,7 @@ export class NgbTypeahead implements ControlValueAccessor,
 
   private _openPopup() {
     if (!this.isPopupOpen()) {
+      this._inputValueBackup = this._elementRef.nativeElement.value;
       this._windowRef = this._popupService.open();
       this._windowRef.instance.id = this.popupId;
       this._windowRef.instance.selectEvent.subscribe((result: any) => this._selectResultClosePopup(result));
@@ -299,14 +313,14 @@ export class NgbTypeahead implements ControlValueAccessor,
   }
 
   private _showHint() {
-    if (this.showHint) {
-      const userInputLowerCase = this._userInput.toLowerCase();
+    if (this.showHint && this._inputValueBackup != null) {
+      const userInputLowerCase = this._inputValueBackup.toLowerCase();
       const formattedVal = this._formatItemForInput(this._windowRef.instance.getActive());
 
-      if (userInputLowerCase === formattedVal.substr(0, this._userInput.length).toLowerCase()) {
-        this._writeInputValue(this._userInput + formattedVal.substr(this._userInput.length));
+      if (userInputLowerCase === formattedVal.substr(0, this._inputValueBackup.length).toLowerCase()) {
+        this._writeInputValue(this._inputValueBackup + formattedVal.substr(this._inputValueBackup.length));
         this._elementRef.nativeElement['setSelectionRange'].apply(
-            this._elementRef.nativeElement, [this._userInput.length, formattedVal.length]);
+            this._elementRef.nativeElement, [this._inputValueBackup.length, formattedVal.length]);
       } else {
         this.writeValue(this._windowRef.instance.getActive());
       }
@@ -318,7 +332,7 @@ export class NgbTypeahead implements ControlValueAccessor,
   }
 
   private _writeInputValue(value: string): void {
-    this._renderer.setProperty(this._elementRef.nativeElement, 'value', value);
+    this._renderer.setProperty(this._elementRef.nativeElement, 'value', toString(value));
   }
 
   private _subscribeToUserInput(userInput$: Observable<any[]>): Subscription {
