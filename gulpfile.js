@@ -109,7 +109,7 @@ gulp.task('npm', function() {
     targetPkgJson.peerDependencies[dependency] = `^${pkgJson.dependencies[dependency]}`;
   });
 
-  return gulp.src('README.md')
+  return gulp.src(['README.md', 'LICENSE'])
       .pipe(gulpFile('package.json', JSON.stringify(targetPkgJson, null, 2)))
       .pipe(gulp.dest('dist'));
 });
