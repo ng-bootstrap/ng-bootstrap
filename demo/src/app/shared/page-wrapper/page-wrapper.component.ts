@@ -6,5 +6,5 @@ import {Component, Input} from '@angular/core';
 })
 export class PageWrapper {
   @Input()
-  public title: string;
+  pageTitle: string;
 }
