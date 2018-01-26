@@ -2,8 +2,12 @@ import {ComponentRef} from '@angular/core';
 
 import {NgbModalBackdrop} from './modal-backdrop';
 import {NgbModalWindow} from './modal-window';
+import {ModalDismissReasons} from './modal-dismiss-reasons';
 
 import {ContentRef} from '../util/popup';
+import {AutoCloseService, Subscriber} from '../util/autoclose.service';
+
+
 
 /**
  * A reference to an active (currently opened) modal. Instances of this class
@@ -28,6 +32,10 @@ export class NgbModalRef {
   private _resolve: (result?: any) => void;
   private _reject: (reason?: any) => void;
 
+  private _autoCloseSubscriber: Subscriber;
+
+
+
   /**
    * The instance of component used as modal's content.
    * Undefined when a TemplateRef is used as modal's content.
@@ -47,8 +55,9 @@ export class NgbModalRef {
   result: Promise<any>;
 
   constructor(
-      private _windowCmptRef: ComponentRef<NgbModalWindow>, private _contentRef: ContentRef,
-      private _backdropCmptRef?: ComponentRef<NgbModalBackdrop>, private _beforeDismiss?: Function) {
+      autoCloseService: AutoCloseService, private _windowCmptRef: ComponentRef<NgbModalWindow>,
+      private _contentRef: ContentRef, private _backdropCmptRef?: ComponentRef<NgbModalBackdrop>,
+      private _beforeDismiss?: Function) {
     _windowCmptRef.instance.dismissEvent.subscribe((reason: any) => { this.dismiss(reason); });
 
     this.result = new Promise((resolve, reject) => {
@@ -56,6 +65,27 @@ export class NgbModalRef {
       this._reject = reject;
     });
     this.result.then(null, () => {});
+
+    this._autoCloseSubscriber = autoCloseService.createSubscriber({
+      shouldAutoClose: () => true,
+      isTargetInside: (target) => target === this._windowCmptRef.location.nativeElement,
+      shouldCloseOnEscape: ({event}) => {
+        const instance = this._windowCmptRef.instance;
+        return instance.keyboard && !event.defaultPrevented;
+      },
+      shouldCloseOnClickOutside: () => false,
+      shouldCloseOnClickInside: ({event}) => this._windowCmptRef.instance.backdrop === true,
+      close: (event, {reason}) => {
+        if (reason === 'escape') {
+          this.dismiss(ModalDismissReasons.ESC);
+        } else if (reason === 'inside_click') {
+          this.dismiss(ModalDismissReasons.BACKDROP_CLICK);
+        } else {
+          this.close();
+        }
+      }
+    });
+    this._autoCloseSubscriber.subscribe();
   }
 
   /**
@@ -63,6 +93,7 @@ export class NgbModalRef {
    */
   close(result?: any): void {
     if (this._windowCmptRef) {
+      this._autoCloseSubscriber.unsubscribe();
       this._resolve(result);
       this._removeModalElements();
     }
@@ -78,6 +109,7 @@ export class NgbModalRef {
    */
   dismiss(reason?: any): void {
     if (this._windowCmptRef) {
+      this._autoCloseSubscriber.unsubscribe();
       if (!this._beforeDismiss) {
         this._dismiss(reason);
       } else {
