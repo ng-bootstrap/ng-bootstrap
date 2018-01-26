@@ -1,15 +1,18 @@
-<button type="button" class="btn btn-outline-secondary mr-2" placement="top"
-        ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." popoverTitle="Popover on top">
+<button type="button" class="btn btn-outline-secondary" placement="top"
+        ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." popoverTitle="Popover on top"
+        [autoClose]="true">
   Popover on top
 </button>
 
-<button type="button" class="btn btn-outline-secondary mr-2" placement="right"
-        ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." popoverTitle="Popover on right">
+<button type="button" class="btn btn-outline-secondary" placement="right"
+        ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." popoverTitle="Popover on right"
+        [autoClose]="'inside'">
   Popover on right
 </button>
 
-<button type="button" class="btn btn-outline-secondary mr-2" placement="bottom"
-        ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." popoverTitle="Popover on bottom">
+<button type="button" class="btn btn-outline-secondary" placement="bottom"
+        ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." popoverTitle="Popover on bottom"
+        [autoClose]="'outside'">
   Popover on bottom
 </button>
 

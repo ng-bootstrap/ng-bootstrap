@@ -5,4 +5,7 @@ import {Component} from '@angular/core';
   templateUrl: './dropdown-basic.html'
 })
 export class NgbdDropdownBasic {
+    public onClick(message: string) {
+        console.log(message);
+    }
 }
