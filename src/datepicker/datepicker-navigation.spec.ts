@@ -30,7 +30,7 @@ describe('ngb-datepicker-navigation', () => {
   });
 
   it('should toggle navigation select component', () => {
-    const fixture = createTestComponent(`<ngb-datepicker-navigation [showSelect]="showSelect" [date]="date" 
+    const fixture = createTestComponent(`<ngb-datepicker-navigation [showSelect]="showSelect" [date]="date"
           [minDate]="minDate" [maxDate]="maxDate"></ngb-datepicker-navigation>`);
 
     expect(fixture.debugElement.query(By.directive(NgbDatepickerNavigationSelect))).not.toBeNull();
@@ -43,7 +43,7 @@ describe('ngb-datepicker-navigation', () => {
   });
 
   it('should send date selection event', () => {
-    const fixture = createTestComponent(`<ngb-datepicker-navigation [showSelect]="true" [date]="date" 
+    const fixture = createTestComponent(`<ngb-datepicker-navigation [showSelect]="true" [date]="date"
           [minDate]="minDate" [maxDate]="maxDate" (select)="onSelect($event)"></ngb-datepicker-navigation>`);
 
     const monthSelect = getMonthSelect(fixture.nativeElement);
@@ -58,7 +58,7 @@ describe('ngb-datepicker-navigation', () => {
   });
 
   it('should make prev navigation button disabled', () => {
-    const fixture = createTestComponent(`<ngb-datepicker-navigation [showSelect]="true" [date]="date" 
+    const fixture = createTestComponent(`<ngb-datepicker-navigation [showSelect]="true" [date]="date"
           [minDate]="minDate" [maxDate]="maxDate"></ngb-datepicker-navigation>`);
 
     const links = getNavigationLinks(fixture.nativeElement);
@@ -75,10 +75,15 @@ describe('ngb-datepicker-navigation', () => {
     fixture.componentInstance.date = new NgbDate(2016, 9, 1);
     fixture.detectChanges();
     expect(links[0].hasAttribute('disabled')).toBeFalsy();
+
+    fixture.componentInstance.minDate = new NgbDate(2016, 1, 1);
+    fixture.componentInstance.date = new NgbDate(2016, 1, 1);
+    fixture.detectChanges();
+    expect(links[0].hasAttribute('disabled')).toBeTruthy();
   });
 
   it('should make next navigation button disabled', () => {
-    const fixture = createTestComponent(`<ngb-datepicker-navigation [showSelect]="true" [date]="date" 
+    const fixture = createTestComponent(`<ngb-datepicker-navigation [showSelect]="true" [date]="date"
           [minDate]="minDate" [maxDate]="maxDate"></ngb-datepicker-navigation>`);
 
     const links = getNavigationLinks(fixture.nativeElement);
@@ -95,10 +100,15 @@ describe('ngb-datepicker-navigation', () => {
     fixture.componentInstance.date = new NgbDate(2016, 7, 1);
     fixture.detectChanges();
     expect(links[1].hasAttribute('disabled')).toBeFalsy();
+
+    fixture.componentInstance.maxDate = new NgbDate(2016, 12, 31);
+    fixture.componentInstance.date = new NgbDate(2016, 12, 31);
+    fixture.detectChanges();
+    expect(links[1].hasAttribute('disabled')).toBeTruthy();
   });
 
   it('should have disabled navigation buttons and year and month select boxes when disabled', () => {
-    const fixture = createTestComponent(`<ngb-datepicker-navigation [disabled]="true" [showSelect]="true" 
+    const fixture = createTestComponent(`<ngb-datepicker-navigation [disabled]="true" [showSelect]="true"
           [date]="date" [minDate]="minDate" [maxDate]="maxDate"></ngb-datepicker-navigation>`);
 
     const links = getNavigationLinks(fixture.nativeElement);
@@ -109,7 +119,7 @@ describe('ngb-datepicker-navigation', () => {
   });
 
   it('should send navigation events', () => {
-    const fixture = createTestComponent(`<ngb-datepicker-navigation [date]="date" [minDate]="minDate" 
+    const fixture = createTestComponent(`<ngb-datepicker-navigation [date]="date" [minDate]="minDate"
           [maxDate]="maxDate" (navigate)="onNavigate($event)"></ngb-datepicker-navigation>`);
 
     const links = getNavigationLinks(fixture.nativeElement);
@@ -125,7 +135,7 @@ describe('ngb-datepicker-navigation', () => {
   });
 
   it('should have buttons of type button', () => {
-    const fixture = createTestComponent(`<ngb-datepicker-navigation [date]="date" [minDate]="minDate" 
+    const fixture = createTestComponent(`<ngb-datepicker-navigation [date]="date" [minDate]="minDate"
         [maxDate]="maxDate"></ngb-datepicker-navigation>`);
 
     const links = getNavigationLinks(fixture.nativeElement);
