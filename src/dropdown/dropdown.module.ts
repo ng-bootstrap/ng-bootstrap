@@ -1,5 +1,6 @@
 import {NgModule, ModuleWithProviders} from '@angular/core';
 import {NgbDropdown, NgbDropdownAnchor, NgbDropdownToggle, NgbDropdownMenu} from './dropdown';
+import {AutoCloseService} from '../util/autoclose.service';
 import {NgbDropdownConfig} from './dropdown-config';
 
 export {NgbDropdown, NgbDropdownToggle, NgbDropdownMenu} from './dropdown';
@@ -9,5 +10,7 @@ const NGB_DROPDOWN_DIRECTIVES = [NgbDropdown, NgbDropdownAnchor, NgbDropdownTogg
 
 @NgModule({declarations: NGB_DROPDOWN_DIRECTIVES, exports: NGB_DROPDOWN_DIRECTIVES})
 export class NgbDropdownModule {
-  static forRoot(): ModuleWithProviders { return {ngModule: NgbDropdownModule, providers: [NgbDropdownConfig]}; }
+  static forRoot(): ModuleWithProviders {
+    return {ngModule: NgbDropdownModule, providers: [NgbDropdownConfig, AutoCloseService]};
+  }
 }
