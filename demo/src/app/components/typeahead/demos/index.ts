@@ -1,19 +1,22 @@
 import {NgbdTypeaheadFormat} from './format/typeahead-format';
 import {NgbdTypeaheadHttp} from './http/typeahead-http';
 import {NgbdTypeaheadBasic} from './basic/typeahead-basic';
+import {NgbdTypeaheadFocus} from './focus/typeahead-focus';
 import {NgbdTypeaheadTemplate} from './template/typeahead-template';
 import {NgbdTypeaheadCustom} from './custom/typeahead-custom';
 import {NgbdTypeaheadConfig} from './config/typeahead-config';
 
-export const DEMO_DIRECTIVES = [
-  NgbdTypeaheadFormat, NgbdTypeaheadHttp, NgbdTypeaheadBasic, NgbdTypeaheadTemplate, NgbdTypeaheadCustom,
-  NgbdTypeaheadConfig
-];
+export const DEMO_DIRECTIVES =
+    [NgbdTypeaheadFormat, NgbdTypeaheadHttp, NgbdTypeaheadBasic, NgbdTypeaheadFocus, NgbdTypeaheadTemplate, NgbdTypeaheadConfig];
 
 export const DEMO_SNIPPETS = {
   'basic': {
     'code': require('!!prismjs-loader?lang=typescript!./basic/typeahead-basic'),
     'markup': require('!!prismjs-loader?lang=markup!./basic/typeahead-basic.html')
+  },
+  'focus': {
+    'code': require('!!prismjs-loader?lang=typescript!./focus/typeahead-focus'),
+    'markup': require('!!prismjs-loader?lang=markup!./focus/typeahead-focus.html')
   },
   'format': {
     'code': require('!!prismjs-loader?lang=typescript!./format/typeahead-format'),

@@ -4,6 +4,7 @@ import {NgbCalendar, NgbCalendarGregorian} from './ngb-calendar';
 import {NgbDate} from './ngb-date';
 import {Subscription} from 'rxjs/Subscription';
 import {DatepickerViewModel} from './datepicker-view-model';
+import {NgbDateStruct} from './ngb-date-struct';
 
 describe('ngb-datepicker-service', () => {
 
@@ -11,6 +12,8 @@ describe('ngb-datepicker-service', () => {
   let calendar: NgbCalendar;
   let model: DatepickerViewModel;
   let mock: {onNext};
+  let selectDate: NgbDateStruct;
+  let mockSelect: {onNext};
 
   let subscriptions: Subscription[];
 
@@ -25,12 +28,18 @@ describe('ngb-datepicker-service', () => {
     service = TestBed.get(NgbDatepickerService);
     subscriptions = [];
     model = undefined;
+    selectDate = null;
 
     mock = {onNext: () => {}};
     spyOn(mock, 'onNext');
 
+    mockSelect = {onNext: () => {}};
+    spyOn(mockSelect, 'onNext');
+
     // subscribing
-    subscriptions.push(service.model$.subscribe(mock.onNext), service.model$.subscribe(m => model = m));
+    subscriptions.push(
+        service.model$.subscribe(mock.onNext), service.model$.subscribe(m => model = m),
+        service.select$.subscribe(mockSelect.onNext), service.select$.subscribe(d => selectDate = d));
   });
 
   afterEach(() => { subscriptions.forEach(s => s.unsubscribe()); });
@@ -399,6 +408,28 @@ describe('ngb-datepicker-service', () => {
 
   });
 
+  describe(`navigation`, () => {
+
+    it(`should emit navigation values`, () => {
+      // default = 'selected'
+      service.focus(new NgbDate(2015, 5, 1));
+      expect(model.navigation).toEqual('select');
+
+      service.navigation = 'none';
+      expect(model.navigation).toEqual('none');
+
+      service.navigation = 'arrows';
+      expect(model.navigation).toEqual('arrows');
+    });
+
+    it(`should not emit the same 'navigation' value twice`, () => {
+      service.focus(new NgbDate(2017, 5, 1));
+
+      service.navigation = 'select';  // ignored
+      expect(mock.onNext).toHaveBeenCalledTimes(1);
+    });
+  });
+
   describe(`markDisabled`, () => {
 
     it(`should mark dates as disabled by passing 'markDisabled'`, () => {
@@ -634,13 +665,24 @@ describe('ngb-datepicker-service', () => {
 
   describe(`selection handling`, () => {
 
+    it(`should generate months for initial selection`, () => {
+      const date = new NgbDate(2017, 5, 5);
+      service.select(date);
+      expect(model.months.length).toBe(1);
+      expect(model.selectedDate).toEqual(date);
+    });
+
     it(`should select currently focused date with 'focusSelect()'`, () => {
       const date = new NgbDate(2017, 5, 5);
       service.focus(date);
       expect(model.selectedDate).toBeNull();
+      expect(selectDate).toBeNull();
 
       service.focusSelect();
       expect(model.selectedDate).toEqual(date);
+      expect(selectDate).toEqual(date);
+
+      expect(mockSelect.onNext).toHaveBeenCalledTimes(1);
     });
 
     it(`should not select disabled dates with 'focusSelect()'`, () => {
@@ -652,9 +694,90 @@ describe('ngb-datepicker-service', () => {
       service.focus(date);
       expect(model.focusDate).toEqual(date);
       expect(model.selectedDate).toBeNull();
+      expect(selectDate).toBeNull();
 
       service.focusSelect();
       expect(model.selectedDate).toBeNull();
+      expect(selectDate).toBeNull();
+
+      expect(mockSelect.onNext).not.toHaveBeenCalled();
+    });
+
+    it(`should not emit selection event by default`, () => {
+      const date = new NgbDate(2017, 5, 5);
+      service.select(date);
+      expect(mockSelect.onNext).not.toHaveBeenCalled();
+    });
+
+    it(`should not emit selection event for null values`, () => {
+      const date = new NgbDate(2017, 5, 5);
+      service.select(null, {emitEvent: true});
+
+      expect(mockSelect.onNext).not.toHaveBeenCalled();
+    });
+
+    it(`should emit date selection event'`, () => {
+      const date = new NgbDate(2017, 5, 5);
+      service.focus(date);
+      expect(model.selectedDate).toBeNull();
+      expect(selectDate).toBeNull();
+
+      service.select(date, {emitEvent: true});
+      expect(model.selectedDate).toEqual(date);
+      expect(selectDate).toEqual(date);
+
+      expect(mockSelect.onNext).toHaveBeenCalledTimes(1);
+    });
+
+    it(`should emit date selection event for non-visible dates'`, () => {
+      const date = new NgbDate(2017, 5, 5);
+      service.focus(date);
+      expect(model.selectedDate).toBeNull();
+      expect(selectDate).toBeNull();
+
+      let invisibleDate = new NgbDate(2016, 5, 5);
+      service.select(invisibleDate, {emitEvent: true});
+      expect(model.selectedDate).toEqual(invisibleDate);
+      expect(selectDate).toEqual(invisibleDate);
+
+      expect(mockSelect.onNext).toHaveBeenCalledTimes(1);
+    });
+
+    it(`should not emit date selection event for disabled dates'`, () => {
+      // marking 5th day of each month as disabled
+      service.markDisabled = (date) => date && date.day === 5;
+
+      // focusing MAY, 5
+      const date = new NgbDate(2017, 5, 5);
+      service.focus(date);
+      expect(model.selectedDate).toBeNull();
+      expect(selectDate).toBeNull();
+
+      service.select(date, {emitEvent: true});
+      expect(model.selectedDate).toBeNull();
+      expect(selectDate).toBeNull();
+
+      expect(mockSelect.onNext).not.toHaveBeenCalled();
+    });
+
+    it(`should emit date selection event when focusing on the same date twice`, () => {
+      const date = new NgbDate(2017, 5, 5);
+      service.focus(date);
+
+      service.focusSelect();
+      service.focusSelect();
+
+      expect(mockSelect.onNext).toHaveBeenCalledTimes(2);
+    });
+
+    it(`should emit date selection event when selecting the same date twice`, () => {
+      const date = new NgbDate(2017, 5, 5);
+      service.focus(date);
+
+      service.select(date, {emitEvent: true});
+      service.select(date, {emitEvent: true});
+
+      expect(mockSelect.onNext).toHaveBeenCalledTimes(2);
     });
   });
 

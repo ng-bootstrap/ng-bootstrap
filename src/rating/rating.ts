@@ -33,6 +33,11 @@ export interface StarTemplateContext {
    * Star fill percentage. An integer value between 0 and 100
    */
   fill: number;
+
+  /**
+   * Index of the star.
+   */
+  index: number;
 }
 
 const NGB_RATING_VALUE_ACCESSOR = {
@@ -173,7 +178,7 @@ export class NgbRating implements ControlValueAccessor,
   }
 
   ngOnInit(): void {
-    this.contexts = Array.from({length: this.max}, () => ({fill: 0}));
+    this.contexts = Array.from({length: this.max}, (v, k) => ({fill: 0, index: k}));
     this._updateState(this.rate);
   }
 

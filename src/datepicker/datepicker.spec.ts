@@ -396,50 +396,82 @@ describe('ngb-datepicker', () => {
         .toHaveBeenCalledWith({current: {year: 2016, month: 8}, next: {year: 2015, month: 6}});
   });
 
-  it('should calculate header dimensions correctly', () => {
-    const datepicker = TestBed.createComponent(NgbDatepicker).componentInstance;
-
-    // 1, 'select', weekdays
-    expect(datepicker.getHeaderHeight()).toBe(4.25);
-    expect(datepicker.getHeaderMargin()).toBe(2);
-
-    // 1, 'select', no weekdays
-    datepicker.showWeekdays = false;
-    expect(datepicker.getHeaderHeight()).toBe(2.25);
-    expect(datepicker.getHeaderMargin()).toBe(0);
-
-    // 1, 'none', no weekdays
-    datepicker.navigation = 'none';
-    expect(datepicker.getHeaderHeight()).toBe(2.25);
-    expect(datepicker.getHeaderMargin()).toBe(2);
-
-    // 2, 'none', no weekdays
-    datepicker.displayMonths = 2;
-    expect(datepicker.getHeaderHeight()).toBe(2.25);
-    expect(datepicker.getHeaderMargin()).toBe(2);
-
-    // 2, 'select', no weekdays
-    datepicker.navigation = 'select';
-    expect(datepicker.getHeaderHeight()).toBe(4.25);
-    expect(datepicker.getHeaderMargin()).toBe(2);
-
-    // 2, 'select', weekdays
-    datepicker.showWeekdays = true;
-    expect(datepicker.getHeaderHeight()).toBe(6.25);
-    expect(datepicker.getHeaderMargin()).toBe(4);
-
-    // 2, 'none', weekdays
-    datepicker.navigation = 'none';
-    expect(datepicker.getHeaderHeight()).toBe(4.25);
-    expect(datepicker.getHeaderMargin()).toBe(4);
-  });
-
   it('should allow focusing datepicker programmatically', () => {
     const datepicker = TestBed.createComponent(NgbDatepicker);
     expect(datepicker.nativeElement.getAttribute('tabindex')).toBe('0');
 
     datepicker.componentInstance.focus();
     expect(document.activeElement).toBe(datepicker.nativeElement);
+  });
+
+  it('should emit select event when select date', () => {
+    const fixture =
+        createTestComponent(`<ngb-datepicker #dp [startDate]="date" (select)="onSelect($event)"></ngb-datepicker>`);
+
+    spyOn(fixture.componentInstance, 'onSelect');
+    let dates = getDates(fixture.nativeElement);
+    dates[11].click();
+
+    fixture.detectChanges();
+    expect(fixture.componentInstance.onSelect).toHaveBeenCalledTimes(1);
+  });
+
+  it('should emit select event twice when select same date twice', () => {
+    const fixture =
+        createTestComponent(`<ngb-datepicker #dp [startDate]="date" (select)="onSelect($event)"></ngb-datepicker>`);
+
+    spyOn(fixture.componentInstance, 'onSelect');
+    let dates = getDates(fixture.nativeElement);
+
+    dates[11].click();
+    fixture.detectChanges();
+
+    dates[11].click();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.onSelect).toHaveBeenCalledTimes(2);
+  });
+
+  it('should emit select event twice when press enter key twice', () => {
+    const fixture =
+        createTestComponent(`<ngb-datepicker #dp [startDate]="date" (select)="onSelect($event)"></ngb-datepicker>`);
+    const datepicker = fixture.debugElement.query(By.directive(NgbDatepicker));
+
+    spyOn(fixture.componentInstance, 'onSelect');
+
+    datepicker.triggerEventHandler('focus', {});
+    fixture.detectChanges();
+
+    triggerKeyDown(datepicker, 13 /* enter */);
+    fixture.detectChanges();
+
+    datepicker.triggerEventHandler('focus', {});
+    fixture.detectChanges();
+
+    triggerKeyDown(datepicker, 13 /* enter */);
+    fixture.detectChanges();
+    expect(fixture.componentInstance.onSelect).toHaveBeenCalledTimes(2);
+  });
+
+  it('should emit select event twice when press space key twice', () => {
+    const fixture =
+        createTestComponent(`<ngb-datepicker #dp [startDate]="date" (select)="onSelect($event)"></ngb-datepicker>`);
+    const datepicker = fixture.debugElement.query(By.directive(NgbDatepicker));
+
+    spyOn(fixture.componentInstance, 'onSelect');
+
+    datepicker.triggerEventHandler('focus', {});
+    fixture.detectChanges();
+
+    triggerKeyDown(datepicker, 32 /* space */);
+    fixture.detectChanges();
+
+    datepicker.triggerEventHandler('focus', {});
+    fixture.detectChanges();
+
+    triggerKeyDown(datepicker, 32 /* space */);
+    fixture.detectChanges();
+    expect(fixture.componentInstance.onSelect).toHaveBeenCalledTimes(2);
   });
 
   describe('ngModel', () => {
@@ -912,4 +944,5 @@ class TestComponent {
   showWeekdays = true;
   markDisabled = (date: NgbDateStruct) => { return NgbDate.from(date).equals(new NgbDate(2016, 8, 22)); };
   onNavigate = () => {};
+  onSelect = () => {};
 }

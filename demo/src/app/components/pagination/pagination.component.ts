@@ -16,6 +16,9 @@ import {DEMO_SNIPPETS} from './demos';
       <ngbd-example-box demoTitle="Pagination size" [snippets]="snippets" component="pagination" demo="size">
         <ngbd-pagination-size></ngbd-pagination-size>
       </ngbd-example-box>
+      <ngbd-example-box demoTitle="Pagination alignment" [snippets]="snippets" component="pagination" demo="justify">
+        <ngbd-pagination-justify></ngbd-pagination-justify>
+      </ngbd-example-box>
       <ngbd-example-box demoTitle="Disabled pagination" [snippets]="snippets" component="pagination" demo="disabled">
         <ngbd-pagination-disabled></ngbd-pagination-disabled>
       </ngbd-example-box>

@@ -2,10 +2,10 @@ import {TestBed, ComponentFixture, fakeAsync, tick} from '@angular/core/testing'
 import {By} from '@angular/platform-browser';
 import {createGenericTestComponent} from '../test/common';
 
-import {Component} from '@angular/core';
+import {Component, Injectable} from '@angular/core';
 import {FormsModule, NgForm} from '@angular/forms';
 
-import {NgbDatepickerModule} from './datepicker.module';
+import {NgbDateAdapter, NgbDatepickerModule} from './datepicker.module';
 import {NgbInputDatepicker} from './datepicker-input';
 import {NgbDatepicker} from './datepicker';
 import {NgbDateStruct} from './ngb-date-struct';
@@ -13,6 +13,9 @@ import {NgbDate} from './ngb-date';
 
 const createTestCmpt = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
+
+const createTestNativeCmpt = (html: string) =>
+    createGenericTestComponent(html, TestNativeComponent) as ComponentFixture<TestNativeComponent>;
 
 describe('NgbInputDatepicker', () => {
 
@@ -63,6 +66,26 @@ describe('NgbInputDatepicker', () => {
       button.click();
       fixture.detectChanges();
       expect(document.activeElement).toBe(fixture.nativeElement.querySelector('ngb-datepicker'));
+    });
+
+    it('should close datepicker on select', () => {
+      const fixture = createTestCmpt(`
+          <input ngbDatepicker #d="ngbDatepicker">
+          <button (click)="open(d)">Open</button>`);
+
+      const buttons = fixture.nativeElement.querySelectorAll('button');
+
+      // open
+      const button = fixture.nativeElement.querySelector('button');
+      button.click();
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('ngb-datepicker')).not.toBeNull();
+
+      // select
+      const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
+      dp.select.emit();
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('ngb-datepicker')).toBeNull();
     });
   });
 
@@ -614,7 +637,56 @@ describe('NgbInputDatepicker', () => {
       expect(document.querySelector(selector).querySelector('ngb-datepicker')).toBeNull();
     });
   });
+
+  describe('Native adapter', () => {
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        declarations: [TestNativeComponent],
+        imports: [NgbDatepickerModule.forRoot(), FormsModule],
+        providers: [{provide: NgbDateAdapter, useClass: NgbDateNativeAdapter}]
+      });
+    });
+
+    it('should format bound date as ISO (by default) in the input field', fakeAsync(() => {
+         const fixture = createTestNativeCmpt(`<input ngbDatepicker [ngModel]="date">`);
+         const input = fixture.nativeElement.querySelector('input');
+
+         fixture.componentInstance.date = new Date(2018, 0, 3);
+         fixture.detectChanges();
+         tick();
+         expect(input.value).toBe('2018-01-03');
+
+         fixture.componentInstance.date = new Date(2018, 10, 13);
+         fixture.detectChanges();
+         tick();
+         expect(input.value).toBe('2018-11-13');
+       }));
+
+    it('should parse user-entered date as ISO (by default)', () => {
+      const fixture = createTestNativeCmpt(`<input ngbDatepicker [(ngModel)]="date">`);
+      const inputDebugEl = fixture.debugElement.query(By.css('input'));
+
+      inputDebugEl.triggerEventHandler('input', {target: {value: '2018-01-03'}});
+      expect(fixture.componentInstance.date).toEqual(new Date(2018, 0, 3));
+    });
+  });
 });
+
+@Injectable()
+class NgbDateNativeAdapter extends NgbDateAdapter<Date> {
+  fromModel(date: Date): NgbDateStruct {
+    return (date && date.getFullYear) ? {year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate()} :
+                                        null;
+  }
+
+  toModel(date: NgbDateStruct): Date { return date ? new Date(date.year, date.month - 1, date.day) : null; }
+}
+
+@Component({selector: 'test-native-cmp', template: ''})
+class TestNativeComponent {
+  date: Date;
+}
 
 @Component({selector: 'test-cmp', template: ''})
 class TestComponent {
