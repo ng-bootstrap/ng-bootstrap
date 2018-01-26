@@ -1,3 +1,14 @@
+<a name="1.0.0"></a>
+# [1.0.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-beta.9...1.0.0) (2018-01-26)
+
+This is the first, stable release of ng-bootstrap!
+
+### Bug Fixes
+
+* **datepicker:** disable back navigation arrow ([384b2e8](https://github.com/ng-bootstrap/ng-bootstrap/commit/384b2e8)), closes [#2093](https://github.com/ng-bootstrap/ng-bootstrap/issues/2093) [#2110](https://github.com/ng-bootstrap/ng-bootstrap/issues/2110)
+* **datepicker:** fix datepicker display in IE10 ([1cfaef0](https://github.com/ng-bootstrap/ng-bootstrap/commit/1cfaef0)), closes [#2094](https://github.com/ng-bootstrap/ng-bootstrap/issues/2094) [#2121](https://github.com/ng-bootstrap/ng-bootstrap/issues/2121)
+
+
 <a name="1.0.0-beta.9"></a>
 # [1.0.0-beta.9](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-beta.8...1.0.0-beta.9) (2018-01-05)
 
