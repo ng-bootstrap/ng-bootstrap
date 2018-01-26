@@ -102,6 +102,8 @@ export interface NgbDatepickerNavigateEvent {
       padding-bottom: .25rem;
     }
     .ngb-dp-months {
+      display: -webkit-box;
+      display: -ms-flexbox;
       display: flex;
     }
   `],

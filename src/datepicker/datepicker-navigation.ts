@@ -4,6 +4,7 @@ import {NgbDate} from './ngb-date';
 import {NgbDatepickerI18n} from './datepicker-i18n';
 import {NgbCalendar} from './ngb-calendar';
 
+// The -ms- and -webkit- element for the CSS can be removed if we are generating the CSS using SASS.
 @Component({
   selector: 'ngb-datepicker-navigation',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -11,6 +12,8 @@ import {NgbCalendar} from './ngb-calendar';
     :host {
       height: 2rem;
       line-height: 1.85rem;
+      display: -webkit-box;
+      display: -ms-flexbox;
       display: flex;
     }
     .ngb-dp-navigation-chevron::before {
@@ -30,7 +33,11 @@ import {NgbCalendar} from './ngb-calendar';
       transform: rotate(45deg);
     }
     .ngb-dp-arrow {
+      display: -webkit-box;
+      display: -ms-flexbox;
       display: flex;
+      -webkit-box-flex: 1 1 auto;
+      -ms-flex: 1 1 auto;
       flex-basis: auto;
       flex-grow: 1;
       padding-right: 0px;
@@ -40,6 +47,8 @@ import {NgbCalendar} from './ngb-calendar';
       height: 2rem;
     }
     .ngb-dp-arrow.right {
+      -webkit-box-pack: end;
+      -ms-flex-pack: end;
       justify-content: flex-end;
     }
     .ngb-dp-arrow-btn {
@@ -52,6 +61,8 @@ import {NgbCalendar} from './ngb-calendar';
       text-align: center;
     }
     .ngb-dp-navigation-select {
+      -webkit-box-flex: 1 1 9rem;
+      -ms-flex:  1 1 9rem;
       flex-grow: 1;
       flex-basis: 9rem;
     }

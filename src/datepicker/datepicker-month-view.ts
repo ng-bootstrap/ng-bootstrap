@@ -16,6 +16,8 @@ import {DayTemplateContext} from './datepicker-day-template-context';
     }
     .ngb-dp-week {
         border-radius: 0.25rem;
+        display: -webkit-box;
+        display: -ms-flexbox;
         display: flex;
     }
     .ngb-dp-weekdays {
