@@ -93,7 +93,6 @@
     "protractor": "~5.1.2",
     "prismjs": "^1.5.1",
     "prismjs-loader": "0.0.4",
-    "reflect-metadata": "^0.1.8",
     "remap-istanbul": "^0.7.0",
     "run-sequence": "^1.2.2",
     "rxjs": "^5.5.2",
