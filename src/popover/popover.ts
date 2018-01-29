@@ -22,6 +22,8 @@ import {
 import {listenToTriggers} from '../util/triggers';
 import {positionElements, Placement, PlacementArray} from '../util/positioning';
 import {PopupService} from '../util/popup';
+import {AutoCloseService, Subscriber, AutoCloseType} from '../util/autoclose.service';
+
 import {NgbPopoverConfig} from './popover-config';
 
 let nextId = 0;
@@ -74,7 +76,11 @@ export class NgbPopoverWindow {
   @Input() id: string;
   @Input() popoverClass: string;
 
-  constructor(private _element: ElementRef<HTMLElement>, private _renderer: Renderer2) {}
+  anchorEl;
+
+  constructor(private _element: ElementRef<HTMLElement>, private _renderer: Renderer2) {
+    this.anchorEl = _element.nativeElement;
+  }
 
   applyPlacement(_placement: Placement) {
     // remove the current placement classes
@@ -115,6 +121,14 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
    */
   @Input() triggers: string;
   /**
+   * Toggles and configures the autoclose feature.
+   * When false, it will never automatically close using this feature (triggers might do so though).
+   * When true, the widget will close on clicks inside, outside and on escape key press.
+   * When 'outside', the widget will close on clicks outside of it and on escape key press.
+   * When 'inside', the widget will close on clicks inside of it and on escape key press.
+   */
+  @Input() autoClose: AutoCloseType;
+  /**
    * A selector specifying the element the popover should be appended to.
    * Currently only supports "body".
    */
@@ -145,6 +159,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
   private _windowRef: ComponentRef<NgbPopoverWindow>;
   private _unregisterListenersFn;
   private _zoneSubscription: any;
+  private _autoCloseSubscriber: Subscriber;
   private _isDisabled(): boolean {
     if (this.disablePopover) {
       return true;
@@ -158,7 +173,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
   constructor(
       private _elementRef: ElementRef<HTMLElement>, private _renderer: Renderer2, injector: Injector,
       componentFactoryResolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef, config: NgbPopoverConfig,
-      ngZone: NgZone) {
+      ngZone: NgZone, autoCloseService: AutoCloseService) {
     this.placement = config.placement;
     this.triggers = config.triggers;
     this.container = config.container;
@@ -175,6 +190,12 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
                 this.container === 'body'));
       }
     });
+    this._autoCloseSubscriber = autoCloseService.createSubscriber(autoCloseService.subscriptionSpecFactory({
+      getAutoClose: () => this.autoClose,
+      getElementsInside: () => [this._windowRef.instance.anchorEl],
+      getTogglingElement: () => this._elementRef.nativeElement,
+      close: () => this.close()
+    }));
   }
 
   /**
@@ -204,6 +225,8 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
               this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
               this.container === 'body'));
 
+      this._autoCloseSubscriber.subscribe();
+
       this.shown.emit();
     }
   }
@@ -213,6 +236,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
    */
   close(): void {
     if (this._windowRef) {
+      this._autoCloseSubscriber.unsubscribe();
       this._renderer.removeAttribute(this._elementRef.nativeElement, 'aria-describedby');
       this._popupService.close();
       this._windowRef = null;
