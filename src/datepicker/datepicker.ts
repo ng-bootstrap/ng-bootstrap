@@ -265,6 +265,8 @@ export class NgbDatepicker implements OnDestroy,
       if (isChangedDate(newSelectedDate, oldSelectedDate)) {
         this.onTouched();
         this.onChange(this._ngbDateAdapter.toModel(newSelectedDate));
+      } else if (model.focusVisible === false) {
+        this.onTouched();
       }
 
       // emitting navigation event if the first month changes
