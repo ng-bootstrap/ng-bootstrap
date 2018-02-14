@@ -18,14 +18,20 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
   selector: 'ngb-timepicker',
   styles: [`
     .ngb-tp {
+      display: -ms-flexbox;
       display: flex;
+      -ms-flex-align: center;
       align-items: center;
     }
 
     .ngb-tp-hour, .ngb-tp-minute, .ngb-tp-second, .ngb-tp-meridian {
+      display: -ms-flexbox;
       display: flex;
+      -ms-flex-direction: column;
       flex-direction: column;
+      -ms-flex-align: center;
       align-items: center;
+      -ms-flex-pack: distribute;
       justify-content: space-around;
     }
 
