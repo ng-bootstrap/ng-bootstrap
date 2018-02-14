@@ -73,8 +73,6 @@ describe('NgbInputDatepicker', () => {
           <input ngbDatepicker #d="ngbDatepicker">
           <button (click)="open(d)">Open</button>`);
 
-      const buttons = fixture.nativeElement.querySelectorAll('button');
-
       // open
       const button = fixture.nativeElement.querySelector('button');
       button.click();
@@ -86,6 +84,28 @@ describe('NgbInputDatepicker', () => {
       dp.select.emit();
       fixture.detectChanges();
       expect(fixture.nativeElement.querySelector('ngb-datepicker')).toBeNull();
+    });
+
+
+    it('should focus back input after select event', () => {
+      const fixture = createTestCmpt(`
+          <input ngbDatepicker #d="ngbDatepicker">
+          <button (click)="open(d)">Open</button>`);
+
+      // open
+      const button = fixture.nativeElement.querySelector('button');
+      const input = fixture.nativeElement.querySelector('input');
+      button.click();
+      fixture.detectChanges();
+      // the focus is not on the input
+      expect(document.activeElement === input).toBeFalsy();
+
+      // select
+      const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
+      dp.select.emit();
+      fixture.detectChanges();
+      // the focus is on the input
+      expect(document.activeElement === input).toBeTruthy();
     });
   });
 
@@ -190,7 +210,7 @@ describe('NgbInputDatepicker', () => {
 
          fixture.componentInstance.isDisabled = false;
          fixture.detectChanges();
-         tick();
+         tick(2); // 2 because of the fix for IE in the datepicker about accessibility attribute
          fixture.detectChanges();
 
          expect(fixture.nativeElement.querySelector('ngb-datepicker')).not.toBeNull();
@@ -266,7 +286,7 @@ describe('NgbInputDatepicker', () => {
 
          buttonDebugEl.triggerEventHandler('click', {});  // open
          inputDebugEl.triggerEventHandler('change', {target: {value: '2016-09-10'}});
-         tick();
+         tick(2); // 2 because of the fix for IE in the datepicker about accessibility attribute
          fixture.detectChanges();
 
          expect(inputDebugEl.classes['ng-touched']).toBeTruthy();
@@ -571,6 +591,7 @@ describe('NgbInputDatepicker', () => {
          tick();
          fixture.detectChanges();
          dpInput.open();
+         tick(2); // 2 because of the fix for IE in the datepicker about accessibility attribute
          fixture.detectChanges();
 
          const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);

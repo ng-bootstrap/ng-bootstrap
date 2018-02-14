@@ -4,7 +4,10 @@ import {NgbDatepickerI18n} from '@ng-bootstrap/ng-bootstrap';
 const I18N_VALUES = {
   'fr': {
     weekdays: ['Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa', 'Di'],
-    months: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Aou', 'Sep', 'Oct', 'Nov', 'Déc'],
+    weekdaysFull: ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'],
+    months: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'],
+    monthsFull: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+    msg: ['Aller au mois précédent', 'Aller au mois suivant']
   }
   // other languages you would support
 };
@@ -27,11 +30,17 @@ export class CustomDatepickerI18n extends NgbDatepickerI18n {
   getWeekdayShortName(weekday: number): string {
     return I18N_VALUES[this._i18n.language].weekdays[weekday - 1];
   }
+  getWeekdayFullName(weekday: number): string {
+    return I18N_VALUES[this._i18n.language].weekdaysFull[weekday - 1];
+  }
   getMonthShortName(month: number): string {
     return I18N_VALUES[this._i18n.language].months[month - 1];
   }
   getMonthFullName(month: number): string {
-    return this.getMonthShortName(month);
+    return I18N_VALUES[this._i18n.language].monthsFull[month - 1];
+  }
+  getMsg(number: number): string {
+    return I18N_VALUES[this._i18n.language].msg[number - 1];
   }
 }
 

@@ -113,7 +113,7 @@ describe(`datepicker-tools`, () => {
     months.forEach(refMonth => {
       it(`should build month (${refMonth.date.year} - ${refMonth.date.month}) correctly`, () => {
 
-        let month = buildMonth(calendar, refMonth.date, undefined, undefined, 1, undefined);
+        let month = buildMonth(calendar, refMonth.date, undefined, undefined, 1, undefined, 'ngb-datepicker-1');
 
         expect(month).toBeTruthy();
         expect(month.year).toEqual(refMonth.date.year);
@@ -128,12 +128,14 @@ describe(`datepicker-tools`, () => {
         expect(month.weeks[0].days.length).toEqual(7);
         expect(month.weeks[0].days[0].date).toEqual(refMonth.firstWeek.date);
         expect(month.weeks[0].days[0].context.disabled).toBe(false);
+        expect(month.weeks[0].days[0].context.id).toBe('ngb-datepicker-1-' + refMonth.firstWeek.date.toString());
 
         // Last week, last day
         expect(month.weeks[5].number).toEqual(refMonth.lastWeek.number);
         expect(month.weeks[5].days.length).toEqual(7);
         expect(month.weeks[5].days[6].date).toEqual(refMonth.lastWeek.date);
         expect(month.weeks[5].days[6].context.disabled).toBe(false);
+        expect(month.weeks[5].days[6].context.id).toBe('ngb-datepicker-1-' + refMonth.lastWeek.date.toString());
       });
     });
 
@@ -142,7 +144,7 @@ describe(`datepicker-tools`, () => {
       const markDisabled: NgbMarkDisabled = (date) => date.day === 2;
 
       // MAY 2017
-      let month = buildMonth(calendar, new NgbDate(2017, 5, 5), undefined, undefined, 1, markDisabled);
+      let month = buildMonth(calendar, new NgbDate(2017, 5, 5), undefined, undefined, 1, markDisabled, undefined);
 
       // 2 MAY - disabled
       expect(month.weeks[0].days[0].context.disabled).toBe(false);
@@ -158,7 +160,7 @@ describe(`datepicker-tools`, () => {
       // MAY 2017
       const minDate = new NgbDate(2017, 5, 10);
       const maxDate = new NgbDate(2017, 5, 10);
-      buildMonth(calendar, new NgbDate(2017, 5, 5), minDate, maxDate, 1, mock.markDisabled);
+      buildMonth(calendar, new NgbDate(2017, 5, 5), minDate, maxDate, 1, mock.markDisabled, undefined);
 
       // called one time, because it should be used only inside min-max range
       expect(mock.markDisabled).toHaveBeenCalledWith(new NgbDate(2017, 5, 10), {year: 2017, month: 5});
@@ -170,7 +172,7 @@ describe(`datepicker-tools`, () => {
 
       // MAY 2017
       const minDate = new NgbDate(2017, 5, 3);
-      const month = buildMonth(calendar, new NgbDate(2017, 5, 5), minDate, undefined, 1, markDisabled);
+      const month = buildMonth(calendar, new NgbDate(2017, 5, 5), minDate, undefined, 1, markDisabled, undefined);
 
       // MIN = 2, so 1-2 MAY - disabled
       expect(month.weeks[0].days[0].context.disabled).toBe(true);
@@ -184,7 +186,7 @@ describe(`datepicker-tools`, () => {
 
       // MAY 2017
       const maxDate = new NgbDate(2017, 5, 2);
-      const month = buildMonth(calendar, new NgbDate(2017, 5, 5), undefined, maxDate, 1, markDisabled);
+      const month = buildMonth(calendar, new NgbDate(2017, 5, 5), undefined, maxDate, 1, markDisabled, undefined);
 
       // MAX = 2, so 3-4 MAY - disabled
       expect(month.weeks[0].days[0].context.disabled).toBe(false);
@@ -195,12 +197,12 @@ describe(`datepicker-tools`, () => {
 
     it(`should rotate days of the week`, () => {
       // SUN = 7
-      let month = buildMonth(calendar, new NgbDate(2017, 5, 5), undefined, undefined, 7, undefined);
+      let month = buildMonth(calendar, new NgbDate(2017, 5, 5), undefined, undefined, 7, undefined, undefined);
       expect(month.weekdays).toEqual([7, 1, 2, 3, 4, 5, 6]);
       expect(month.weeks[0].days[0].date).toEqual(new NgbDate(2017, 4, 30));
 
       // WED = 3
-      month = buildMonth(calendar, new NgbDate(2017, 5, 5), undefined, undefined, 3, undefined);
+      month = buildMonth(calendar, new NgbDate(2017, 5, 5), undefined, undefined, 3, undefined, undefined);
       expect(month.weekdays).toEqual([3, 4, 5, 6, 7, 1, 2]);
       expect(month.weeks[0].days[0].date).toEqual(new NgbDate(2017, 4, 26));
     });
@@ -218,12 +220,12 @@ describe(`datepicker-tools`, () => {
     it(`should generate 'displayMonths' number of months`, () => {
       let displayMonths = 1;
       let months =
-          buildMonths(calendar, [], new NgbDate(2017, 5, 5), undefined, undefined, displayMonths, 1, undefined, false);
+          buildMonths(calendar, [], new NgbDate(2017, 5, 5), undefined, undefined, displayMonths, 1, undefined, false, undefined);
       expect(months.length).toBe(1);
 
       displayMonths = 2;
       months =
-          buildMonths(calendar, [], new NgbDate(2017, 5, 5), undefined, undefined, displayMonths, 1, undefined, false);
+          buildMonths(calendar, [], new NgbDate(2017, 5, 5), undefined, undefined, displayMonths, 1, undefined, false, undefined);
       expect(months.length).toBe(2);
     });
 
@@ -232,24 +234,24 @@ describe(`datepicker-tools`, () => {
       const june = new NgbDate(2017, 6, 5);
 
       // one same month
-      let months = buildMonths(calendar, [], may, undefined, undefined, 1, 1, undefined, false);
-      let newMonths = buildMonths(calendar, months, may, undefined, undefined, 1, 1, undefined, false);
+      let months = buildMonths(calendar, [], may, undefined, undefined, 1, 1, undefined, false, undefined);
+      let newMonths = buildMonths(calendar, months, may, undefined, undefined, 1, 1, undefined, false, undefined);
 
       expect(months.length).toBe(1);
       expect(newMonths.length).toBe(1);
       expect(months[0]).toBe(newMonths[0]);
 
       // one new month
-      months = buildMonths(calendar, [], may, undefined, undefined, 1, 1, undefined, false);
-      newMonths = buildMonths(calendar, months, june, undefined, undefined, 1, 1, undefined, false);
+      months = buildMonths(calendar, [], may, undefined, undefined, 1, 1, undefined, false, undefined);
+      newMonths = buildMonths(calendar, months, june, undefined, undefined, 1, 1, undefined, false, undefined);
 
       expect(months.length).toBe(1);
       expect(newMonths.length).toBe(1);
       expect(months[0]).not.toBe(newMonths[0]);
 
       // two same months
-      months = buildMonths(calendar, [], may, undefined, undefined, 2, 1, undefined, false);
-      newMonths = buildMonths(calendar, months, may, undefined, undefined, 2, 1, undefined, false);
+      months = buildMonths(calendar, [], may, undefined, undefined, 2, 1, undefined, false, undefined);
+      newMonths = buildMonths(calendar, months, may, undefined, undefined, 2, 1, undefined, false, undefined);
 
       expect(months.length).toBe(2);
       expect(newMonths.length).toBe(2);
@@ -257,8 +259,8 @@ describe(`datepicker-tools`, () => {
       expect(months[1]).toBe(newMonths[1]);
 
       // two months, one overlaps
-      months = buildMonths(calendar, [], may, undefined, undefined, 2, 1, undefined, false);
-      newMonths = buildMonths(calendar, months, june, undefined, undefined, 2, 1, undefined, false);
+      months = buildMonths(calendar, [], may, undefined, undefined, 2, 1, undefined, false, undefined);
+      newMonths = buildMonths(calendar, months, june, undefined, undefined, 2, 1, undefined, false, undefined);
 
       expect(months.length).toBe(2);
       expect(newMonths.length).toBe(2);
@@ -272,24 +274,24 @@ describe(`datepicker-tools`, () => {
       const june = new NgbDate(2017, 6, 5);
 
       // one same month
-      let months = buildMonths(calendar, [], may, undefined, undefined, 1, 1, undefined, true);
-      let newMonths = buildMonths(calendar, months, may, undefined, undefined, 1, 1, undefined, true);
+      let months = buildMonths(calendar, [], may, undefined, undefined, 1, 1, undefined, true, undefined);
+      let newMonths = buildMonths(calendar, months, may, undefined, undefined, 1, 1, undefined, true, undefined);
 
       expect(months.length).toBe(1);
       expect(newMonths.length).toBe(1);
       expect(months[0]).not.toBe(newMonths[0]);
 
       // one new month
-      months = buildMonths(calendar, [], may, undefined, undefined, 1, 1, undefined, true);
-      newMonths = buildMonths(calendar, months, june, undefined, undefined, 1, 1, undefined, true);
+      months = buildMonths(calendar, [], may, undefined, undefined, 1, 1, undefined, true, undefined);
+      newMonths = buildMonths(calendar, months, june, undefined, undefined, 1, 1, undefined, true, undefined);
 
       expect(months.length).toBe(1);
       expect(newMonths.length).toBe(1);
       expect(months[0]).not.toBe(newMonths[0]);
 
       // two same months
-      months = buildMonths(calendar, [], may, undefined, undefined, 2, 1, undefined, true);
-      newMonths = buildMonths(calendar, months, may, undefined, undefined, 2, 1, undefined, true);
+      months = buildMonths(calendar, [], may, undefined, undefined, 2, 1, undefined, true, undefined);
+      newMonths = buildMonths(calendar, months, may, undefined, undefined, 2, 1, undefined, true, undefined);
 
       expect(months.length).toBe(2);
       expect(newMonths.length).toBe(2);
@@ -297,8 +299,8 @@ describe(`datepicker-tools`, () => {
       expect(months[1]).not.toBe(newMonths[1]);
 
       // two months, one overlaps
-      months = buildMonths(calendar, [], may, undefined, undefined, 2, 1, undefined, true);
-      newMonths = buildMonths(calendar, months, june, undefined, undefined, 2, 1, undefined, true);
+      months = buildMonths(calendar, [], may, undefined, undefined, 2, 1, undefined, true, undefined);
+      newMonths = buildMonths(calendar, months, june, undefined, undefined, 2, 1, undefined, true, undefined);
 
       expect(months.length).toBe(2);
       expect(newMonths.length).toBe(2);

@@ -7,7 +7,8 @@ import {
 const I18N_VALUES = {
   weekdays: ['ن', 'ث', 'ر', 'خ', 'ج', 'س', 'ح'],
   months: ['محرم', 'صفر', 'ربيع الأول', 'ربيع الآخر', 'جمادى الأولى', 'جمادى الآخرة', 'رجب', 'شعبان', 'رمضان', 'شوال',
-    'ذو القعدة', 'ذو الحجة']
+    'ذو القعدة', 'ذو الحجة'],
+  msg: ['Go to previous month', 'Go to next month']
 };
 
 @Injectable()
@@ -17,12 +18,20 @@ export class IslamicI18n extends NgbDatepickerI18n {
     return I18N_VALUES.weekdays[weekday - 1];
   }
 
+  getWeekdayFullName(weekday: number) {
+    return this.getMonthShortName(weekday);
+  }
+
   getMonthShortName(month: number) {
     return I18N_VALUES.months[month - 1];
   }
 
   getMonthFullName(month: number) {
     return this.getMonthShortName(month);
+  }
+
+  getMsg(number: number) {
+    return I18N_VALUES.msg[number - 1];
   }
 }
 

@@ -1,6 +1,6 @@
 import {TestBed, ComponentFixture} from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
-import {createGenericTestComponent} from '../test/common';
+import {createGenericTestComponent, testAttribute} from '../test/common';
 import {getMonthSelect, getYearSelect, getNavigationLinks} from '../test/datepicker/common';
 
 import {Component} from '@angular/core';
@@ -142,10 +142,21 @@ describe('ngb-datepicker-navigation', () => {
     links.forEach((link) => { expect(link.getAttribute('type')).toBe('button'); });
   });
 
+  it('should have accessibility elements', () => {
+    const fixture = createTestComponent(`<ngb-datepicker-navigation [datepickerId]="datepickerId" [date]="date" [minDate]="minDate"
+        [maxDate]="maxDate"></ngb-datepicker-navigation>`);
+
+    const hiddenAccessibilyElement =    fixture.debugElement.queryAll(By.css('.hidden'));
+    expect(hiddenAccessibilyElement.length).toBe(2);
+    testAttribute(hiddenAccessibilyElement[0].nativeElement, 'id', 'ngb-datepicker-0-btn-prev-label');
+    testAttribute(hiddenAccessibilyElement[1].nativeElement, 'id', 'ngb-datepicker-0-btn-next-label');
+  });
+
 });
 
 @Component({selector: 'test-cmp', template: ''})
 class TestComponent {
+  datepickerId = 'ngb-datepicker-0';
   date = new NgbDate(2016, 8, 1);
   minDate = new NgbDate(2015, 0, 1);
   maxDate = new NgbDate(2020, 11, 31);

@@ -9,6 +9,8 @@ import {buildMonths, checkDateInRange, checkMinBeforeMax, isChangedDate, isDateS
 import {filter} from 'rxjs/operator/filter';
 import {Observable} from 'rxjs/Observable';
 
+let nextId = 0;
+
 @Injectable()
 export class NgbDatepickerService {
   private _model$ = new Subject<DatepickerViewModel>();
@@ -22,7 +24,8 @@ export class NgbDatepickerService {
     focusVisible: false,
     months: [],
     navigation: 'select',
-    selectedDate: null
+    selectedDate: null,
+    datepickerId: `ngb-datepicker-${nextId++}`
   };
 
   get model$(): Observable<DatepickerViewModel> {
@@ -208,7 +211,7 @@ export class NgbDatepickerService {
 
       const months = buildMonths(
           this._calendar, state.months, startDate, state.minDate, state.maxDate, state.displayMonths,
-          state.firstDayOfWeek, state.markDisabled, forceRebuild);
+          state.firstDayOfWeek, state.markDisabled, forceRebuild, state.datepickerId);
 
       // updating months and boundary dates
       state.months = months;

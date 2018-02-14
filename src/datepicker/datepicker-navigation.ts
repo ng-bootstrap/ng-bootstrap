@@ -66,19 +66,25 @@ import {NgbCalendar} from './ngb-calendar';
       flex-grow: 1;
       flex-basis: 9rem;
     }
+    .hidden {
+      display: none;
+    }
   `],
   template: `
   <div class="ngb-dp-arrow">
-    <button type="button" class="btn btn-link ngb-dp-arrow-btn"
-            (click)="!!doNavigate(navigation.PREV)" [disabled]="prevDisabled()" tabindex="-1">
+    <button type="button" class="btn btn-link ngb-dp-arrow-btn" [attr.aria-labelledby]="datepickerId + '-btn-prev-label'"
+            (click)="!!doNavigate(navigation.PREV)" [disabled]="prevDisabled()" tabindex="-1"
+            title="{{ i18n.getMsg(1) }}">
       <span class="ngb-dp-navigation-chevron"></span>
     </button>
+    <div [attr.id]="datepickerId + '-btn-prev-label'" class="hidden">{{ i18n.getMsg(1) }}</div>
   </div>
     <ngb-datepicker-navigation-select *ngIf="showSelect" class="d-block ngb-dp-navigation-select"
+      [datepickerId]="datepickerId"
       [date]="date"
       [minDate]="minDate"
       [maxDate]="maxDate"
-      [disabled] = "disabled"
+      [disabled]="disabled"
       (select)="selectDate($event)">
     </ngb-datepicker-navigation-select>
 
@@ -90,16 +96,19 @@ import {NgbCalendar} from './ngb-calendar';
       <div class="ngb-dp-arrow" *ngIf="i !== months.length - 1"></div>
     </ng-template>
     <div class="ngb-dp-arrow right">
-    <button type="button" class="btn btn-link ngb-dp-arrow-btn"
-            (click)="!!doNavigate(navigation.NEXT)" [disabled]="nextDisabled()" tabindex="-1">
+    <button type="button" class="btn btn-link ngb-dp-arrow-btn" [attr.aria-labelledby]="datepickerId + '-btn-next-label'"
+            (click)="!!doNavigate(navigation.NEXT)" [disabled]="nextDisabled()" tabindex="-1"
+            title="{{ i18n.getMsg(2) }}">
       <span class="ngb-dp-navigation-chevron"></span>
     </button>
+    <div [attr.id]="datepickerId + '-btn-next-label'" class="hidden">{{ i18n.getMsg(2) }}</div>
     </div>
     `
 })
 export class NgbDatepickerNavigation {
   navigation = NavigationEvent;
 
+  @Input() datepickerId: String;
   @Input() date: NgbDate;
   @Input() disabled: boolean;
   @Input() maxDate: NgbDate;

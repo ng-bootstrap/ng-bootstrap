@@ -4,9 +4,22 @@ import {NgbDateStruct} from './ngb-date-struct';
  */
 export interface DayTemplateContext {
   /**
+   * Id to be used for the day (will be referenced by the aria-activedescendent attribute
+   * of the datepicker when the day is focused). This can be undefined if no id has to be
+   * used (for days outside the current month).
+   */
+  id: string;
+
+  /**
    * Month currently displayed by the datepicker
    */
   currentMonth: number;
+
+  /**
+   * Day of the week
+   * With default calendar we use ISO 8601: 'weekday' is 1=Mon ... 7=Sun
+   */
+  weekday: number;
 
   /**
    * Date that corresponds to the template

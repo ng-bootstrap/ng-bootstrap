@@ -59,3 +59,8 @@ export function isBrowser(browsers: Browser | Browser[], ua = window.navigator.u
     return browsersStr.indexOf(browser) > -1;
   }
 }
+
+export function testAttribute(element: HTMLElement, name: string, value: string) {
+  expect(element.hasAttribute(name)).toBeTruthy();
+  expect(element.getAttribute(name)).toBe(value);
+}
