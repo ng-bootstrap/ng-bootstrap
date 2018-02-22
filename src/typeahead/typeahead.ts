@@ -24,7 +24,12 @@ import {_do} from 'rxjs/operator/do';
 import {switchMap} from 'rxjs/operator/switchMap';
 import {fromEvent} from 'rxjs/observable/fromEvent';
 import {positionElements, PlacementArray} from '../util/positioning';
-import {NgbTypeaheadWindow, ResultTemplateContext} from './typeahead-window';
+import {
+  NgbTypeaheadWindow,
+  ResultTemplateContext,
+  NoResultsTemplateContext,
+  WindowTemplateContext
+} from './typeahead-window';
 import {PopupService} from '../util/popup';
 import {toString, isDefined} from '../util/util';
 import {NgbTypeaheadConfig} from './typeahead-config';
@@ -128,9 +133,20 @@ export class NgbTypeahead implements ControlValueAccessor,
   @Input() resultFormatter: (value: any) => string;
 
   /**
+   * A template to override the dropdown window default display. WindowTemplate will override any result template that
+   * is set.
+   */
+  @Input() windowTemplate: TemplateRef<WindowTemplateContext>;
+
+  /**
    * A template to override a matching result default display
    */
   @Input() resultTemplate: TemplateRef<ResultTemplateContext>;
+
+  /**
+   * A template used to display a no results message in the dropdown window
+   */
+  @Input() noResultsTemplate: TemplateRef<NoResultsTemplateContext>;
 
   /**
    * Show hint when an option in the result list matches.
@@ -337,7 +353,8 @@ export class NgbTypeahead implements ControlValueAccessor,
 
   private _subscribeToUserInput(userInput$: Observable<any[]>): Subscription {
     return userInput$.subscribe((results) => {
-      if (!results || results.length === 0) {
+      if ((!results || results.length === 0) &&
+          (!this.noResultsTemplate || this._elementRef.nativeElement.value.length === 0)) {
         this._closePopup();
       } else {
         this._openPopup();
@@ -347,8 +364,14 @@ export class NgbTypeahead implements ControlValueAccessor,
         if (this.resultFormatter) {
           this._windowRef.instance.formatter = this.resultFormatter;
         }
+        if (this.windowTemplate) {
+          this._windowRef.instance.windowTemplate = this.windowTemplate;
+        }
         if (this.resultTemplate) {
           this._windowRef.instance.resultTemplate = this.resultTemplate;
+        }
+        if (this.noResultsTemplate) {
+          this._windowRef.instance.noResultsTemplate = this.noResultsTemplate;
         }
         this._showHint();
 

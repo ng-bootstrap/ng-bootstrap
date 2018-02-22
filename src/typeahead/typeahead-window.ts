@@ -2,6 +2,28 @@ import {Component, Input, Output, EventEmitter, TemplateRef, OnInit} from '@angu
 
 import {toString} from '../util/util';
 
+
+/**
+ * Context for the typeahead window template in case you want to override the default one
+ */
+export interface WindowTemplateContext {
+  /**
+   * Your typeahead results data model
+   */
+  results: any;
+
+  /**
+   * Search term from the input used to get current result
+   */
+  term: string;
+
+  /**
+   * Typeahead window context
+   */
+  context: NgbTypeaheadWindow;
+}
+
+
 /**
  * Context for the typeahead result template in case you want to override the default one
  */
@@ -17,6 +39,16 @@ export interface ResultTemplateContext {
   term: string;
 }
 
+/**
+ * Context for the typeahead no results template
+ */
+export interface NoResultsTemplateContext {
+  /**
+   * Search term from the input that did not return any results
+   */
+  term: string;
+}
+
 @Component({
   selector: 'ngb-typeahead-window',
   exportAs: 'ngbTypeaheadWindow',
@@ -25,15 +57,24 @@ export interface ResultTemplateContext {
     <ng-template #rt let-result="result" let-term="term" let-formatter="formatter">
       <ngb-highlight [result]="formatter(result)" [term]="term"></ngb-highlight>
     </ng-template>
-    <ng-template ngFor [ngForOf]="results" let-result let-idx="index">
-      <button type="button" class="dropdown-item" role="option"
-        [id]="id + '-' + idx"
-        [class.active]="idx === activeIdx"
-        (mouseenter)="markActive(idx)"
-        (click)="select(result)">
-          <ng-template [ngTemplateOutlet]="resultTemplate || rt"
+    <ng-template #wt let-results="results" let-context="context">
+      <ng-template ngFor [ngForOf]="results" let-result let-idx="index">
+        <button type="button" class="dropdown-item" role="option"
+          [id]="id + '-' + idx"
+          [class.active]="idx === activeIdx"
+          (mouseenter)="context.markActive(idx)"
+          (click)="context.select(result)">
+            <ng-template [ngTemplateOutlet]="resultTemplate || rt"
           [ngTemplateOutletContext]="{result: result, term: term, formatter: formatter}"></ng-template>
-      </button>
+        </button>
+      </ng-template>
+    </ng-template>
+    <ng-template [ngTemplateOutlet]="windowTemplate || wt"
+      [ngTemplateOutletContext]="{results: results, term: term, context: this}"> 
+    </ng-template>
+    <ng-template *ngIf="!results || results.length === 0"
+      [ngTemplateOutlet]="noResultsTemplate"
+      [ngTemplateOutletContext]="{term: term}">
     </ng-template>
   `
 })
@@ -52,12 +93,14 @@ export class NgbTypeaheadWindow implements OnInit {
   @Input() focusFirst = true;
 
   /**
-   * Typeahead match results to be displayed
+   * Typeahead match results to be displayed. Created as get and set so the ngOutletContext is only recreated on data
+   * changes.
    */
   @Input() results;
 
   /**
-   * Search term used to get current results
+   * Search term used to get current results. Created as get and set so the ngOutletContext is only recreated on data
+   * changes.
    */
   @Input() term: string;
 
@@ -71,6 +114,16 @@ export class NgbTypeaheadWindow implements OnInit {
    * A template to override a matching result default display
    */
   @Input() resultTemplate: TemplateRef<ResultTemplateContext>;
+
+  /**
+   * A template used to display a no results message in the dropdown window
+   */
+  @Input() noResultsTemplate: TemplateRef<any>;
+
+  /**
+   * A template to override a matching result default display
+   */
+  @Input() windowTemplate: TemplateRef<WindowTemplateContext>;
 
   /**
    * Event raised when user selects a particular result row
