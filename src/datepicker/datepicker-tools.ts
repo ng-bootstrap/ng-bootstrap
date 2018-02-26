@@ -43,14 +43,15 @@ export function isDateSelectable(
 
 export function buildMonths(
     calendar: NgbCalendar, months: MonthViewModel[], date: NgbDate, minDate: NgbDate, maxDate: NgbDate,
-    displayMonths: number, firstDayOfWeek: number, markDisabled: NgbMarkDisabled, force: boolean): MonthViewModel[] {
+    displayMonths: number, firstDayOfWeek: number, markDisabled: NgbMarkDisabled, force: boolean,
+    datepickerId: string): MonthViewModel[] {
   const newMonths = [];
   for (let i = 0; i < displayMonths; i++) {
     const newDate = calendar.getNext(date, 'm', i);
     const index = months.findIndex(month => month.firstDate.equals(newDate));
 
     if (force || index === -1) {
-      newMonths.push(buildMonth(calendar, newDate, minDate, maxDate, firstDayOfWeek, markDisabled));
+      newMonths.push(buildMonth(calendar, newDate, minDate, maxDate, firstDayOfWeek, markDisabled, datepickerId));
     } else {
       newMonths.push(months[index]);
     }
@@ -61,7 +62,7 @@ export function buildMonths(
 
 export function buildMonth(
     calendar: NgbCalendar, date: NgbDate, minDate: NgbDate, maxDate: NgbDate, firstDayOfWeek: number,
-    markDisabled: NgbMarkDisabled): MonthViewModel {
+    markDisabled: NgbMarkDisabled, datepickerId: string): MonthViewModel {
   const month:
       MonthViewModel = {firstDate: null, lastDate: null, number: date.month, year: date.year, weeks: [], weekdays: []};
 
@@ -99,7 +100,9 @@ export function buildMonth(
       days.push({
         date: newDate,
         context: {
+          id: `${datepickerId}-${newDate.toString()}`,
           date: {year: newDate.year, month: newDate.month, day: newDate.day},
+          weekday: month.weekdays[day],
           currentMonth: month.number,
           disabled: disabled,
           focused: false,

@@ -259,6 +259,7 @@ export class NgbInputDatepicker implements OnChanges,
       this._vcRef.remove(this._vcRef.indexOf(this._cRef.hostView));
       this._cRef = null;
     }
+    this._elRef.nativeElement.focus();
   }
 
   /**

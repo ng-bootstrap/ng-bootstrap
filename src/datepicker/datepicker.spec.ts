@@ -1,5 +1,5 @@
-import {TestBed, ComponentFixture, async, inject} from '@angular/core/testing';
-import {createGenericTestComponent} from '../test/common';
+import {TestBed, ComponentFixture, async, inject, fakeAsync, tick} from '@angular/core/testing';
+import {createGenericTestComponent, testAttribute} from '../test/common';
 import {getMonthSelect, getYearSelect, getNavigationLinks} from '../test/datepicker/common';
 
 import {Component, TemplateRef, DebugElement} from '@angular/core';
@@ -814,6 +814,82 @@ describe('ngb-datepicker', () => {
       expectSelectedDate(datepicker, null);
     });
 
+  });
+
+  describe('accessibility', () => {
+    const template = `<ngb-datepicker #dp
+    [startDate]="date" [minDate]="minDate"
+    [maxDate]="maxDate" [displayMonths]="2"
+    [markDisabled]="markDisabled"></ngb-datepicker>`;
+
+    it('should change aria-active-descendant when select date', fakeAsync(() => {
+      const fixture = createTestComponent(template);
+      const datepicker = fixture.debugElement.query(By.directive(NgbDatepicker));
+      const datepickerId = datepicker.componentInstance.getDatepickerId();
+      let dp = getDatepicker(fixture.nativeElement);
+      tick(2); // tick is 2 because of the IE fix.
+      fixture.detectChanges();
+      testAttribute(dp, 'aria-activedescendant', datepickerId + '-2016-8-1');
+      let dates = getDates(fixture.nativeElement);
+      dates[11].click();
+      tick(2);
+      fixture.detectChanges();
+      testAttribute(dp, 'aria-activedescendant', datepickerId + '-2016-8-12');
+    }));
+    it('should change aria-activedescendant with keyboard navigation', fakeAsync(() => {
+      const fixture = createTestComponent(template);
+
+      const datepicker = fixture.debugElement.query(By.directive(NgbDatepicker));
+      const datepickerId = datepicker.componentInstance.getDatepickerId();
+      let dp = getDatepicker(fixture.nativeElement);
+      expect(dp.hasAttribute('aria-activedescendant')).toBeFalsy();
+
+      datepicker.triggerEventHandler('focus', {});
+      tick(2);
+      fixture.detectChanges();
+      testAttribute(dp, 'aria-activedescendant', datepickerId + '-2016-8-1');
+
+      triggerKeyDown(datepicker, 40 /* down arrow */);
+      tick(2);
+      fixture.detectChanges();
+      testAttribute(dp, 'aria-activedescendant', datepickerId + '-2016-8-8');
+
+      triggerKeyDown(datepicker, 39 /* right arrow */);
+      tick(2);
+      fixture.detectChanges();
+      testAttribute(dp, 'aria-activedescendant', datepickerId + '-2016-8-9');
+
+      triggerKeyDown(datepicker, 38 /* up arrow */);
+      tick(2);
+      fixture.detectChanges();
+      testAttribute(dp, 'aria-activedescendant', datepickerId + '-2016-8-2');
+
+      triggerKeyDown(datepicker, 37 /* left arrow */);
+      tick(2);
+      fixture.detectChanges();
+      testAttribute(dp, 'aria-activedescendant', datepickerId + '-2016-8-1');
+
+      triggerKeyDown(datepicker, 33 /* page up */);
+      tick(2);
+      fixture.detectChanges();
+      testAttribute(dp, 'aria-activedescendant', datepickerId + '-2016-7-1');
+
+      triggerKeyDown(datepicker, 34 /* page down */);
+      tick(2);
+      fixture.detectChanges();
+      expectFocusedDate(datepicker, new NgbDate(2016, 8, 1));
+      testAttribute(dp, 'aria-activedescendant', datepickerId + '-2016-8-1');
+
+      triggerKeyDown(datepicker, 33 /* page up */, true /* shift */);
+      tick(2);
+      fixture.detectChanges();
+      testAttribute(dp, 'aria-activedescendant', datepickerId + '-2015-1-1');
+
+      triggerKeyDown(datepicker, 34 /* page down */, true /* shift */);
+      tick(2);
+      fixture.detectChanges();
+      testAttribute(dp, 'aria-activedescendant', datepickerId + '-2016-1-1');
+    }));
   });
 
   describe('forms', () => {

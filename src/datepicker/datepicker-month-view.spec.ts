@@ -224,6 +224,8 @@ class TestComponent {
         {
           date: new NgbDate(2016, 7, 22),
           context: {
+            id: undefined,
+            weekday: undefined,
             currentMonth: 7,
             date: {year: 2016, month: 7, day: 22},
             disabled: false,
@@ -234,6 +236,8 @@ class TestComponent {
         {
           date: new NgbDate(2016, 8, 23),
           context: {
+            id: undefined,
+            weekday: undefined,
             currentMonth: 7,
             date: {year: 2016, month: 8, day: 23},
             disabled: false,
@@ -259,6 +263,8 @@ class TestComponent {
           {
             date: new NgbDate(2016, 7, 4),
             context: {
+              id: undefined,
+              weekday: undefined,
               currentMonth: 8,
               date: {year: 2016, month: 7, day: 4},
               disabled: false,
@@ -269,6 +275,8 @@ class TestComponent {
           {
             date: new NgbDate(2016, 8, 1),
             context: {
+              id: undefined,
+              weekday: undefined,
               currentMonth: 8,
               date: {year: 2016, month: 8, day: 1},
               disabled: false,
@@ -285,6 +293,8 @@ class TestComponent {
           {
             date: new NgbDate(2016, 8, 2),
             context: {
+              id: undefined,
+              weekday: undefined,
               currentMonth: 8,
               date: {year: 2016, month: 8, day: 2},
               disabled: false,
@@ -295,6 +305,8 @@ class TestComponent {
           {
             date: new NgbDate(2016, 8, 3),
             context: {
+              id: undefined,
+              weekday: undefined,
               currentMonth: 8,
               date: {year: 2016, month: 8, day: 3},
               disabled: false,
@@ -311,6 +323,8 @@ class TestComponent {
           {
             date: new NgbDate(2016, 8, 4),
             context: {
+              id: undefined,
+              weekday: undefined,
               currentMonth: 8,
               date: {year: 2016, month: 8, day: 4},
               disabled: false,
@@ -321,6 +335,8 @@ class TestComponent {
           {
             date: new NgbDate(2016, 9, 1),
             context: {
+              id: undefined,
+              weekday: undefined,
               currentMonth: 8,
               date: {year: 2016, month: 9, day: 1},
               disabled: false,
@@ -337,6 +353,8 @@ class TestComponent {
           {
             date: new NgbDate(2016, 9, 2),
             context: {
+              id: undefined,
+              weekday: undefined,
               currentMonth: 8,
               date: {year: 2016, month: 9, day: 2},
               disabled: false,
@@ -347,6 +365,8 @@ class TestComponent {
           {
             date: new NgbDate(2016, 9, 3),
             context: {
+              id: undefined,
+              weekday: undefined,
               currentMonth: 8,
               date: {year: 2016, month: 9, day: 3},
               disabled: false,

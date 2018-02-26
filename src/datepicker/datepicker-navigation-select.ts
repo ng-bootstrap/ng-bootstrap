@@ -18,6 +18,9 @@ import {NgbCalendar} from './ngb-calendar';
       width: 50%;
       display: inline-block;
     }
+    .hidden {
+      display: none;
+    }
   `],
   template: `
     <select
@@ -26,7 +29,9 @@ import {NgbCalendar} from './ngb-calendar';
       [value]="date?.month"
       (change)="changeMonth($event.target.value)"
       tabindex="-1">
-        <option *ngFor="let m of months" [value]="m">{{ i18n.getMonthShortName(m) }}</option>
+        <option *ngFor="let m of months"
+        [attr.aria-labelledby]="datepickerId + '-' + i18n.getMonthShortName(m)"
+         [value]="m">{{ i18n.getMonthShortName(m) }}</option>
     </select><select
       [disabled]="disabled"
       class="custom-select"
@@ -35,12 +40,15 @@ import {NgbCalendar} from './ngb-calendar';
       tabindex="-1">
         <option *ngFor="let y of years" [value]="y">{{ y }}</option>
     </select>
+    <div *ngFor="let m of months"
+      [attr.id]="datepickerId + '-' + i18n.getMonthShortName(m)" class="hidden">{{ i18n.getMonthFullName(m) }}</div>
   `
 })
 export class NgbDatepickerNavigationSelect implements OnChanges {
   months: number[];
   years: number[] = [];
 
+  @Input() datepickerId: String;
   @Input() date: NgbDate;
   @Input() disabled: boolean;
   @Input() maxDate: NgbDate;

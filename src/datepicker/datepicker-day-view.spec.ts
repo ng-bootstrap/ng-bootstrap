@@ -4,6 +4,9 @@ import {Component} from '@angular/core';
 import {NgbDatepickerModule} from './datepicker.module';
 import {NgbDatepickerDayView} from './datepicker-day-view';
 import {NgbDateStruct} from './ngb-date-struct';
+import {NgbDatepickerI18n, NgbDatepickerI18nDefault} from './datepicker-i18n';
+import {testAttribute} from '../test/common';
+
 
 function getElement(element: HTMLElement): HTMLElement {
   return <HTMLElement>element.querySelector('[ngbDatepickerDayView]');
@@ -80,14 +83,38 @@ describe('ngbDatepickerDayView', () => {
   });
 });
 
+describe('ngbDatepickerDayView Accessibility', () => {
+  beforeEach(() => {
+    TestBed.overrideModule(NgbDatepickerModule, {set: {exports: [NgbDatepickerDayView]}});
+    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbDatepickerModule.forRoot()]});
+  });
+
+  it('should change aria-label with display of a new date', () => {
+    const fixture = TestBed.createComponent(TestComponent);
+    fixture.detectChanges();
+
+    const el = getElement(fixture.nativeElement);
+    testAttribute(el, 'aria-label', 'Friday 22 July 2016');
+
+    fixture.componentInstance.date = {year: 2016, month: 7, day: 25};
+    fixture.componentInstance.weekday = 1;
+    fixture.detectChanges();
+    testAttribute(el, 'aria-label', 'Monday 25 July 2016');
+  });
+
+});
+
 @Component({
   selector: 'test-cmp',
   template:
-      '<div ngbDatepickerDayView [date]="date" [currentMonth]="currentMonth" [selected]="selected" [disabled]="disabled"></div>'
+      `<div ngbDatepickerDayView [id]="id" [weekday]="weekday" [date]="date"
+      [currentMonth]="currentMonth" [selected]="selected" [disabled]="disabled"></div>`
 })
 class TestComponent {
   currentMonth = 7;
   date: NgbDateStruct = {year: 2016, month: 7, day: 22};
   disabled = false;
   selected = false;
+  weekday = 5; // Friday
+  id = 'ngb-datepicker-0-' + this.date.toString() ;
 }

@@ -49,6 +49,8 @@ export interface NgbDatepickerNavigateEvent {
   next: {year: number, month: number};
 }
 
+let nextId = 0;
+
 /**
  * A lightweight and highly configurable datepicker directive
  */
@@ -61,7 +63,16 @@ export interface NgbDatepickerNavigateEvent {
     '[attr.tabindex]': 'model.disabled ? undefined : "0"',
     '(blur)': 'showFocus(false)',
     '(focus)': 'showFocus(true)',
-    '(keydown)': 'onKeyDown($event)'
+    '(keydown)': 'onKeyDown($event)',
+    'role': 'application',
+    '[id]': 'model.datepickerId',
+    // The following update is done manually in updateActiveDescendant because of IE
+    // do not accept in aria-activedescendant the id of an element which
+    // has just been inserted in the DOM, so it is necessary to update aria-activedescendant
+    // after a setTimeout.
+    // getActiveDescendant() can be used directly as soon as IE fix the issue.
+    '[attr.aria-activedescendant]': 'activeDescendant',
+    '[attr.aria-disabled]': 'isDisabled() ? "true" : undefined'
   },
   styles: [`
     :host {
@@ -108,9 +119,18 @@ export interface NgbDatepickerNavigateEvent {
     }
   `],
   template: `
-    <ng-template #dt let-date="date" let-currentMonth="currentMonth" let-selected="selected" let-disabled="disabled" let-focused="focused">
+    <ng-template #dt
+      let-id="id"
+      let-date="date"
+      let-weekday="weekday"
+      let-currentMonth="currentMonth"
+      let-selected="selected"
+      let-disabled="disabled"
+      let-focused="focused">
       <div ngbDatepickerDayView
+        [id]="id"
         [date]="date"
+        [weekday]="weekday"
         [currentMonth]="currentMonth"
         [selected]="selected"
         [disabled]="disabled"
@@ -120,6 +140,7 @@ export interface NgbDatepickerNavigateEvent {
 
     <div class="ngb-dp-header bg-light">
       <ngb-datepicker-navigation *ngIf="navigation !== 'none'"
+        [datepickerId]="model.datepickerId"
         [date]="model.firstDate"
         [minDate]="model.minDate"
         [maxDate]="model.maxDate"
@@ -156,9 +177,11 @@ export interface NgbDatepickerNavigateEvent {
 export class NgbDatepicker implements OnDestroy,
     OnChanges, OnInit, ControlValueAccessor {
   model: DatepickerViewModel;
+  activeDescendant: string;
 
   private _subscription: Subscription;
   private _selectSubscription: Subscription;
+
   /**
    * Reference for the custom template for the day display
    */
@@ -258,7 +281,12 @@ export class NgbDatepicker implements OnDestroy,
       const oldDate = this.model ? this.model.firstDate : null;
       const newSelectedDate = model.selectedDate;
       const oldSelectedDate = this.model ? this.model.selectedDate : null;
-
+      const oldFocusDate = this.model ? this.model.focusDate : null;
+      // Fix for IE
+      if (oldFocusDate !== model.focusDate) {
+        setTimeout(() => { this.activeDescendant = this.getActiveDescendantId(); this._cd.markForCheck(); }, 1);
+      }
+      // End of fix for IE
       this.model = model;
 
       // handling selection change
@@ -350,6 +378,8 @@ export class NgbDatepicker implements OnDestroy,
 
   setDisabledState(isDisabled: boolean) { this._service.disabled = isDisabled; }
 
+  isDisabled() { return this._service.disabled; }
+
   showFocus(focusVisible: boolean) { this._service.focusVisible = focusVisible; }
 
   writeValue(value) { this._service.select(NgbDate.from(this._ngbDateAdapter.fromModel(value))); }
@@ -366,5 +396,18 @@ export class NgbDatepicker implements OnDestroy,
     this._service.minDate = minDate;
     this._service.maxDate = maxDate;
     this.navigateTo(startDate);
+  }
+
+  // Must be the same as the one given for the day.context id
+  getActiveDescendantId() {
+    if (this.model.focusDate) {
+      return `${this.model.datepickerId}-${this.model.focusDate.toString()}`;
+    }
+  }
+  /**
+   * Get the id that will be used in html id attribute and in accessibility aria attribute.
+   */
+  getDatepickerId() {
+    return this.model ? this.model.datepickerId : null;
   }
 }
