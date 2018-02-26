@@ -608,6 +608,25 @@ describe('NgbInputDatepicker', () => {
       expect(fixture.componentInstance.onNavigate)
           .toHaveBeenCalledWith({current: {year: 2016, month: 9}, next: {year: 2018, month: 4}});
     });
+
+    it(`should relay the 'dateSelect' event`, () => {
+      const fixture = createTestCmpt(`
+          <input ngbDatepicker #d="ngbDatepicker" (dateSelect)="onDateSelect($event)">
+          <button (click)="open(d)">Open</button>`);
+
+      const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
+      spyOn(fixture.componentInstance, 'onDateSelect');
+
+      // open
+      dpInput.open();
+      fixture.detectChanges();
+
+      // select
+      const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
+      dp.select.emit({year: 2018, month: 4, day: 5});
+      fixture.detectChanges();
+      expect(fixture.componentInstance.onDateSelect).toHaveBeenCalledWith({year: 2018, month: 4, day: 5});
+    });
   });
 
   describe('container', () => {
@@ -709,6 +728,8 @@ class TestComponent {
   isDisabled;
 
   onNavigate() {}
+
+  onDateSelect() {}
 
   open(d: NgbInputDatepicker) { d.open(); }
 

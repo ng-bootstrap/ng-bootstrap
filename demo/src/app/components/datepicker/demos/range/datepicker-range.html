@@ -1,6 +1,6 @@
 <p>Example of the range selection</p>
 
-<ngb-datepicker #dp ngModel (ngModelChange)="onDateChange($event)" [displayMonths]="2" [dayTemplate]="t">
+<ngb-datepicker #dp (select)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="t">
 </ngb-datepicker>
 
 <ng-template #t let-date="date" let-focused="focused">
