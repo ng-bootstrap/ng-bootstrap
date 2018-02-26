@@ -145,6 +145,12 @@ export class NgbInputDatepicker implements OnChanges,
   @Input() container: string;
 
   /**
+   * An event fired when user selects a date using keyboard or mouse.
+   * The payload of the event is currently selected NgbDateStruct.
+   */
+  @Output() dateSelect = new EventEmitter<NgbDateStruct>();
+
+  /**
    * An event fired when navigation happens and currently displayed month changes.
    * See NgbDatepickerNavigateEvent for the payload info.
    */
@@ -324,7 +330,8 @@ export class NgbInputDatepicker implements OnChanges,
 
   private _subscribeForDatepickerOutputs(datepickerInstance: NgbDatepicker) {
     datepickerInstance.navigate.subscribe(date => this.navigate.emit(date));
-    datepickerInstance.select.subscribe(() => {
+    datepickerInstance.select.subscribe(date => {
+      this.dateSelect.emit(date);
       if (this.autoClose) {
         this.close();
       }

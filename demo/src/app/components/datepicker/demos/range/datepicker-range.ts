@@ -47,7 +47,7 @@ export class NgbdDatepickerRange {
     this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
   }
 
-  onDateChange(date: NgbDateStruct) {
+  onDateSelection(date: NgbDateStruct) {
     if (!this.fromDate && !this.toDate) {
       this.fromDate = date;
     } else if (this.fromDate && !this.toDate && after(date, this.fromDate)) {
