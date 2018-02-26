@@ -64,6 +64,12 @@ export class NgbInputDatepicker implements OnChanges,
   private _zoneSubscription: any;
 
   /**
+   * Indicates whether the datepicker popup should be closed automatically after date selection or not.
+   * If the value is 'false', the popup can be closed via 'close()' or 'toggle()' methods
+   */
+  @Input() autoClose = true;
+
+  /**
    * Reference for the custom template for the day display
    */
   @Input() dayTemplate: TemplateRef<DayTemplateContext>;
@@ -237,7 +243,9 @@ export class NgbInputDatepicker implements OnChanges,
       this._cRef.instance.registerOnChange((selectedDate) => {
         this.writeValue(selectedDate);
         this._onChange(selectedDate);
-        this.close();
+        if (this.autoClose) {
+          this.close();
+        }
       });
 
       // focus handling
@@ -316,7 +324,11 @@ export class NgbInputDatepicker implements OnChanges,
 
   private _subscribeForDatepickerOutputs(datepickerInstance: NgbDatepicker) {
     datepickerInstance.navigate.subscribe(date => this.navigate.emit(date));
-    datepickerInstance.select.subscribe(() => { this.close(); });
+    datepickerInstance.select.subscribe(() => {
+      if (this.autoClose) {
+        this.close();
+      }
+    });
   }
 
   private _writeModelValue(model: NgbDate) {

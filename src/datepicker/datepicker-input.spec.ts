@@ -68,12 +68,10 @@ describe('NgbInputDatepicker', () => {
       expect(document.activeElement).toBe(fixture.nativeElement.querySelector('ngb-datepicker'));
     });
 
-    it('should close datepicker on select', () => {
+    it('should close datepicker on date selection', () => {
       const fixture = createTestCmpt(`
           <input ngbDatepicker #d="ngbDatepicker">
           <button (click)="open(d)">Open</button>`);
-
-      const buttons = fixture.nativeElement.querySelectorAll('button');
 
       // open
       const button = fixture.nativeElement.querySelector('button');
@@ -86,6 +84,24 @@ describe('NgbInputDatepicker', () => {
       dp.select.emit();
       fixture.detectChanges();
       expect(fixture.nativeElement.querySelector('ngb-datepicker')).toBeNull();
+    });
+
+    it(`should not close datepicker if 'autoClose' set to 'false'`, () => {
+      const fixture = createTestCmpt(`
+          <input ngbDatepicker #d="ngbDatepicker" [autoClose]="false">
+          <button (click)="open(d)">Open</button>`);
+
+      // open
+      const button = fixture.nativeElement.querySelector('button');
+      button.click();
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('ngb-datepicker')).not.toBeNull();
+
+      // select
+      const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
+      dp.select.emit();
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('ngb-datepicker')).not.toBeNull();
     });
   });
 
@@ -272,7 +288,6 @@ describe('NgbInputDatepicker', () => {
          expect(inputDebugEl.classes['ng-touched']).toBeTruthy();
        }));
   });
-
 
   describe('manual data entry', () => {
 
