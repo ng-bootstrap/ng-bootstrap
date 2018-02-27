@@ -28,7 +28,7 @@ export class NgbModalStack {
     this._windowFactory = _componentFactoryResolver.resolveComponentFactory(NgbModalWindow);
   }
 
-  open(moduleCFR: ComponentFactoryResolver, contentInjector: Injector, content: any, options): NgbModalRef {
+  open<T>(moduleCFR: ComponentFactoryResolver, contentInjector: Injector, content: any, options): NgbModalRef<T> {
     const containerSelector = options.container || 'body';
     const containerEl = document.querySelector(containerSelector);
 
@@ -41,7 +41,7 @@ export class NgbModalStack {
 
     let windowCmptRef: ComponentRef<NgbModalWindow>;
     let backdropCmptRef: ComponentRef<NgbModalBackdrop>;
-    let ngbModalRef: NgbModalRef;
+    let ngbModalRef: NgbModalRef<any>;
 
 
     if (options.backdrop !== false) {

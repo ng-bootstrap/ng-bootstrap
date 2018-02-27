@@ -24,7 +24,7 @@ export class NgbActiveModal {
 /**
  * A reference to a newly opened modal.
  */
-export class NgbModalRef {
+export class NgbModalRef<T> {
   private _resolve: (result?: any) => void;
   private _reject: (reason?: any) => void;
 
@@ -32,14 +32,14 @@ export class NgbModalRef {
    * The instance of component used as modal's content.
    * Undefined when a TemplateRef is used as modal's content.
    */
-  get componentInstance(): any {
+  get componentInstance(): T {
     if (this._contentRef.componentRef) {
       return this._contentRef.componentRef.instance;
     }
   }
 
   // only needed to keep TS1.8 compatibility
-  set componentInstance(instance: any) {}
+  set componentInstance(instance: T) {}
 
   /**
    * A promise that is resolved when a modal is closed and rejected when a modal is dismissed.
