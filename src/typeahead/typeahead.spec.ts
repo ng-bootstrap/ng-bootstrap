@@ -12,6 +12,8 @@ import {NgbTypeaheadModule} from './typeahead.module';
 import {NgbTypeaheadConfig} from './typeahead-config';
 import {debounceTime, filter, map, merge} from 'rxjs/operators';
 
+import {ARIA_LIVE_DELAY} from '../util/accessibility/live';
+
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
@@ -78,7 +80,8 @@ describe('ngb-typeahead', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [TestComponent, TestOnPushComponent, TestAsyncComponent],
-      imports: [NgbTypeaheadModule.forRoot(), FormsModule, ReactiveFormsModule]
+      imports: [NgbTypeaheadModule.forRoot(), FormsModule, ReactiveFormsModule],
+      providers: [{provide: ARIA_LIVE_DELAY, useValue: null}]
     });
   });
 
