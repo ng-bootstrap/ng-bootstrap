@@ -978,6 +978,21 @@ describe('ngb-typeahead', () => {
              expect(inputEl.selectionEnd).toBe(2);
            });
          }));
+
+      it('should not show hint when there is no result selected', async(() => {
+           const fixture = createTestComponent(
+               `<input type="text" [(ngModel)]="model" [ngbTypeahead]="find" [showHint]="true" [focusFirst]="false"/>`);
+           fixture.detectChanges();
+           const compiled = fixture.nativeElement;
+           const inputEl = getNativeInput(compiled);
+
+           fixture.whenStable().then(() => {
+             changeInput(compiled, 'on');
+             fixture.detectChanges();
+             expectWindowResults(compiled, ['one', 'one more']);
+             expect(inputEl.value).toBe('on');
+           });
+         }));
     });
 
     describe('Custom config', () => {
