@@ -79,6 +79,8 @@ export class NgbTypeaheadWindow implements OnInit {
 
   @Output('activeChange') activeChangeEvent = new EventEmitter();
 
+  hasActive() { return this.activeIdx > -1 && this.activeIdx < this.results.length; }
+
   getActive() { return this.results[this.activeIdx]; }
 
   markActive(activeIdx: number) {
