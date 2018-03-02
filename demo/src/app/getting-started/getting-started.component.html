@@ -14,9 +14,18 @@
       <a href="https://www.getbootstrap.com" target="_blank">Bootstrap CSS</a> (tested with 4.0.0)
     </li>
   </ul>
+  <p>
+    To install bootstrap:
+  </p>
+  <pre>npm install bootstrap</pre>
+  
+  <p>
+    Once bootstrap has installed, reference its css from your `styles.css` file:
+  </p>
+  <pre>@import "../node_modules/bootstrap/dist/css/bootstrap.css"</pre>
 
   <ngb-alert type="warning" [dismissible]="false">
-    <p>Should I add <b>bootstrap.js</b> or <b>bootstrap.min.js</b> to my project?</p>
+    <p>Should I add the Bootstrap JavaScript files e.g. <b>bootstrap.js</b> or <b>bootstrap.min.js</b>, to my project?</p>
 
     No, the goal of ng-bootstrap is to <i>completely replace</i> JavaScript implementation for components. Nor should you include other dependencies like jQuery or popper.js. It is not necessary and might interfere with ng-bootstrap code.
   </ngb-alert>
