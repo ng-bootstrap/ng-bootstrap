@@ -2,7 +2,7 @@ import {TestBed, ComponentFixture, inject} from '@angular/core/testing';
 import {createGenericTestComponent} from '../test/common';
 
 import {By} from '@angular/platform-browser';
-import {Component, ViewChild, ChangeDetectionStrategy} from '@angular/core';
+import {Component, ViewChild, ChangeDetectionStrategy, TemplateRef, ViewContainerRef} from '@angular/core';
 
 import {NgbTooltipModule} from './tooltip.module';
 import {NgbTooltipWindow, NgbTooltip} from './tooltip';
@@ -511,6 +511,22 @@ describe('ngb-tooltip', () => {
       expect(tooltip.container).toBe(config.container);
     });
   });
+
+  describe('non-regression', () => {
+
+    /**
+     * Under very specific conditions ngOnDestroy can be invoked without calling ngOnInit first.
+     * See discussion in https://github.com/ng-bootstrap/ng-bootstrap/issues/2199 for more details.
+     */
+    it('should not try to call listener cleanup function when no listeners registered', () => {
+      const fixture = createTestComponent(`
+        <ng-template #tpl><div ngbTooltip="Great tip!"></div></ng-template>
+        <button (click)="createAndDestroyTplWithATooltip(tpl)"></button>
+      `);
+      const buttonEl = fixture.debugElement.query(By.css('button'));
+      buttonEl.triggerEventHandler('click', {});
+    });
+  });
 });
 
 @Component({selector: 'test-cmpt', template: ``})
@@ -522,6 +538,13 @@ export class TestComponent {
 
   shown() {}
   hidden() {}
+
+  constructor(private _vcRef: ViewContainerRef) {}
+
+  createAndDestroyTplWithATooltip(tpl: TemplateRef<any>) {
+    this._vcRef.createEmbeddedView(tpl, {}, 0);
+    this._vcRef.remove(0);
+  }
 }
 
 @Component({selector: 'test-onpush-cmpt', changeDetection: ChangeDetectionStrategy.OnPush, template: ``})
