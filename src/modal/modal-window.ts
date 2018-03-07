@@ -1,8 +1,10 @@
+import {DOCUMENT} from '@angular/common';
 import {
   Component,
   Output,
   EventEmitter,
   Input,
+  Inject,
   ElementRef,
   Renderer2,
   OnInit,
@@ -30,6 +32,7 @@ import {ModalDismissReasons} from './modal-dismiss-reasons';
 })
 export class NgbModalWindow implements OnInit,
     AfterViewInit, OnDestroy {
+  private _document: any;
   private _elWithFocus: Element;  // element that is focused prior to modal opening
 
   @Input() backdrop: boolean | string = true;
@@ -39,7 +42,9 @@ export class NgbModalWindow implements OnInit,
 
   @Output('dismiss') dismissEvent = new EventEmitter();
 
-  constructor(private _elRef: ElementRef, private _renderer: Renderer2) {}
+  constructor(@Inject(DOCUMENT) document, private _elRef: ElementRef, private _renderer: Renderer2) {
+    this._document = document;
+  }
 
   backdropClick($event): void {
     if (this.backdrop === true && this._elRef.nativeElement === $event.target) {
@@ -56,8 +61,8 @@ export class NgbModalWindow implements OnInit,
   dismiss(reason): void { this.dismissEvent.emit(reason); }
 
   ngOnInit() {
-    this._elWithFocus = document.activeElement;
-    this._renderer.addClass(document.body, 'modal-open');
+    this._elWithFocus = this._document.activeElement;
+    this._renderer.addClass(this._document.body, 'modal-open');
   }
 
   ngAfterViewInit() {
@@ -67,7 +72,7 @@ export class NgbModalWindow implements OnInit,
   }
 
   ngOnDestroy() {
-    const body = document.body;
+    const body = this._document.body;
     const elWithFocus = this._elWithFocus;
 
     let elementToFocus;
