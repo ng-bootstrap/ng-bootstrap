@@ -41,6 +41,30 @@ export function isDateSelectable(
   // clang-format on
 }
 
+export function generateSelectBoxMonths(calendar: NgbCalendar, date: NgbDate, minDate: NgbDate, maxDate: NgbDate) {
+  if (!date || !minDate || !maxDate) {
+    return [];
+  }
+
+  let months = calendar.getMonths();
+
+  if (date.year === minDate.year) {
+    const index = months.findIndex(month => month === minDate.month);
+    months = months.slice(index);
+  }
+
+  if (date.year === maxDate.year) {
+    const index = months.findIndex(month => month === maxDate.month);
+    months = months.slice(0, index + 1);
+  }
+
+  return months;
+}
+
+export function generateSelectBoxYears(minDate: NgbDate, maxDate: NgbDate): number[] {
+  return (minDate && maxDate) ? Array.from({length: maxDate.year - minDate.year + 1}, (e, i) => minDate.year + i) : [];
+}
+
 export function buildMonths(
     calendar: NgbCalendar, months: MonthViewModel[], date: NgbDate, minDate: NgbDate, maxDate: NgbDate,
     displayMonths: number, firstDayOfWeek: number, markDisabled: NgbMarkDisabled, force: boolean): MonthViewModel[] {

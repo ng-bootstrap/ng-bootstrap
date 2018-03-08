@@ -37,6 +37,10 @@ export type DatepickerViewModel = {
   minDate?: NgbDate,
   months: MonthViewModel[],
   navigation: 'select' | 'arrows' | 'none',
+  selectBoxes: {
+    years: number[],
+    months: number[]
+  },
   selectedDate: NgbDate
 }
 // clang-format on

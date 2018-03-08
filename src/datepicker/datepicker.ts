@@ -127,6 +127,7 @@ export interface NgbDatepickerNavigateEvent {
         [disabled]="model.disabled"
         [showWeekNumbers]="showWeekNumbers"
         [showSelect]="model.navigation === 'select'"
+        [selectBoxes]="model.selectBoxes"
         (navigate)="onNavigateEvent($event)"
         (select)="onNavigateDateSelect($event)">
       </ngb-datepicker-navigation>

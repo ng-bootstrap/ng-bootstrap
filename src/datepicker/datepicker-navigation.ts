@@ -76,9 +76,9 @@ import {NgbCalendar} from './ngb-calendar';
   </div>
     <ngb-datepicker-navigation-select *ngIf="showSelect" class="d-block ngb-dp-navigation-select"
       [date]="date"
-      [minDate]="minDate"
-      [maxDate]="maxDate"
       [disabled] = "disabled"
+      [months]="selectBoxes.months"
+      [years]="selectBoxes.years"
       (select)="selectDate($event)">
     </ngb-datepicker-navigation-select>
 
@@ -106,6 +106,7 @@ export class NgbDatepickerNavigation {
   @Input() minDate: NgbDate;
   @Input() months: MonthViewModel[] = [];
   @Input() showSelect: boolean;
+  @Input() selectBoxes: {years: number[], months: number[]};
   @Input() showWeekNumbers: boolean;
 
   @Output() navigate = new EventEmitter<NavigationEvent>();
