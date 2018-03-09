@@ -1,3 +1,16 @@
+<a name="1.0.1"></a>
+## [1.0.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0...1.0.1) (2018-03-09)
+
+
+### Bug Fixes
+
+* **modal:** support server rendering with lazy loading ([02f6f7a](https://github.com/ng-bootstrap/ng-bootstrap/commit/02f6f7a)), closes [#1968](https://github.com/ng-bootstrap/ng-bootstrap/issues/1968) [#2180](https://github.com/ng-bootstrap/ng-bootstrap/issues/2180)
+* **timepicker:** Add CSS for IE10 flexbox ([7c0d6d7](https://github.com/ng-bootstrap/ng-bootstrap/commit/7c0d6d7)), closes [#2163](https://github.com/ng-bootstrap/ng-bootstrap/issues/2163) [#2167](https://github.com/ng-bootstrap/ng-bootstrap/issues/2167)
+* **tooltip:** unregister event listener functions only if present ([b9ad060](https://github.com/ng-bootstrap/ng-bootstrap/commit/b9ad060)), closes [#2199](https://github.com/ng-bootstrap/ng-bootstrap/issues/2199) [#2205](https://github.com/ng-bootstrap/ng-bootstrap/issues/2205)
+* **typeahead:** don't show hint if there is no active option ([5d20d1f](https://github.com/ng-bootstrap/ng-bootstrap/commit/5d20d1f)), closes [#2185](https://github.com/ng-bootstrap/ng-bootstrap/issues/2185) [#2198](https://github.com/ng-bootstrap/ng-bootstrap/issues/2198)
+
+
+
 <a name="1.0.0"></a>
 # [1.0.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0-beta.9...1.0.0) (2018-01-26)
 
