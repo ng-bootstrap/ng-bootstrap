@@ -4,7 +4,15 @@ import {DatepickerViewModel, NgbMarkDisabled} from './datepicker-view-model';
 import {Injectable} from '@angular/core';
 import {isInteger} from '../util/util';
 import {Subject} from 'rxjs/Subject';
-import {buildMonths, checkDateInRange, checkMinBeforeMax, isChangedDate, isDateSelectable} from './datepicker-tools';
+import {
+  buildMonths,
+  checkDateInRange,
+  checkMinBeforeMax,
+  isChangedDate,
+  isDateSelectable,
+  generateSelectBoxYears,
+  generateSelectBoxMonths
+} from './datepicker-tools';
 
 import {filter} from 'rxjs/operator/filter';
 import {Observable} from 'rxjs/Observable';
@@ -22,6 +30,7 @@ export class NgbDatepickerService {
     focusVisible: false,
     months: [],
     navigation: 'select',
+    selectBoxes: {years: [], months: []},
     selectedDate: null
   };
 
@@ -228,6 +237,23 @@ export class NgbDatepickerService {
             state.focusDate.after(state.lastDate)) {
           state.focusDate = startDate;
         }
+      }
+
+      // adjusting months/years for the select box navigation
+      if (state.navigation === 'select') {
+        // years ->  boundaries (min/max were changed)
+        if ('minDate' in patch || 'maxDate' in patch || state.selectBoxes.years.length === 0) {
+          state.selectBoxes.years = generateSelectBoxYears(state.minDate, state.maxDate);
+        }
+
+        // months -> when current year or boundaries change
+        if ('minDate' in patch || 'maxDate' in patch || state.selectBoxes.months.length === 0 ||
+            this._state.firstDate.year !== state.firstDate.year) {
+          state.selectBoxes.months =
+              generateSelectBoxMonths(this._calendar, state.focusDate, state.minDate, state.maxDate);
+        }
+      } else {
+        state.selectBoxes = {years: [], months: []};
       }
     }
 

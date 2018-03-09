@@ -428,6 +428,59 @@ describe('ngb-datepicker-service', () => {
       service.navigation = 'select';  // ignored
       expect(mock.onNext).toHaveBeenCalledTimes(1);
     });
+
+    describe(`select`, () => {
+
+      it(`should not generate 'months' and 'years' for non-select navigations`, () => {
+        service.minDate = new NgbDate(2010, 5, 1);
+        service.maxDate = new NgbDate(2012, 5, 1);
+        service.focus(new NgbDate(2011, 5, 1));
+        expect(model.selectBoxes.years).not.toEqual([]);
+        expect(model.selectBoxes.months).not.toEqual([]);
+
+        service.navigation = 'none';
+        expect(model.selectBoxes.years).toEqual([]);
+        expect(model.selectBoxes.months).toEqual([]);
+
+        service.navigation = 'arrows';
+        expect(model.selectBoxes.years).toEqual([]);
+        expect(model.selectBoxes.months).toEqual([]);
+      });
+
+      it(`should generate 'months' and 'years' for given min/max dates`, () => {
+        service.minDate = new NgbDate(2010, 5, 1);
+        service.maxDate = new NgbDate(2012, 5, 1);
+        service.focus(new NgbDate(2011, 5, 1));
+
+        expect(model.selectBoxes.years).toEqual([2010, 2011, 2012]);
+        expect(model.selectBoxes.months).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+
+        service.focus(new NgbDate(2010, 5, 1));
+        expect(model.selectBoxes.years).toEqual([2010, 2011, 2012]);
+        expect(model.selectBoxes.months).toEqual([5, 6, 7, 8, 9, 10, 11, 12]);
+
+        service.focus(new NgbDate(2012, 5, 1));
+        expect(model.selectBoxes.years).toEqual([2010, 2011, 2012]);
+        expect(model.selectBoxes.months).toEqual([1, 2, 3, 4, 5]);
+      });
+
+      it(`should update 'months' and 'years' when  min/max dates change`, () => {
+        service.minDate = new NgbDate(2010, 5, 1);
+        service.maxDate = new NgbDate(2012, 5, 1);
+        service.focus(new NgbDate(2011, 5, 1));
+
+        expect(model.selectBoxes.years).toEqual([2010, 2011, 2012]);
+        expect(model.selectBoxes.months).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+
+        service.minDate = new NgbDate(2011, 2, 1);
+        expect(model.selectBoxes.years).toEqual([2011, 2012]);
+        expect(model.selectBoxes.months).toEqual([2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+
+        service.maxDate = new NgbDate(2011, 8, 1);
+        expect(model.selectBoxes.years).toEqual([2011]);
+        expect(model.selectBoxes.months).toEqual([2, 3, 4, 5, 6, 7, 8]);
+      });
+    });
   });
 
   describe(`markDisabled`, () => {
