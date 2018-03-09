@@ -23,7 +23,7 @@ import {ModalDismissReasons} from './modal-dismiss-reasons';
     '(click)': 'backdropClick($event)'
   },
   template: `
-    <div [class]="'modal-dialog' + (size ? ' modal-' + size : '')" role="document">
+    <div [class]="'modal-dialog' + (size ? ' modal-' + size : '') + (verticallyCentered ? ' modal-dialog-centered' : '')" role="document">
         <div class="modal-content"><ng-content></ng-content></div>
     </div>
     `
@@ -35,6 +35,7 @@ export class NgbModalWindow implements OnInit,
   @Input() backdrop: boolean | string = true;
   @Input() keyboard = true;
   @Input() size: string;
+  @Input() verticallyCentered: string;
   @Input() windowClass: string;
 
   @Output('dismiss') dismissEvent = new EventEmitter();

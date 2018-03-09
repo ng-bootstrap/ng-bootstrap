@@ -16,8 +16,8 @@ import {DEMO_SNIPPETS} from './demos';
       <ngbd-example-box demoTitle="Components as content" [snippets]="snippets" component="modal" demo="component">
           <ngbd-modal-component></ngbd-modal-component>
       </ngbd-example-box>
-      <ngbd-example-box demoTitle="Modal with custom class" [snippets]="snippets" component="modal" demo="customclass">
-          <ngbd-modal-customclass></ngbd-modal-customclass>
+      <ngbd-example-box demoTitle="Modal with options" [snippets]="snippets" component="modal" demo="options">
+          <ngbd-modal-options></ngbd-modal-options>
       </ngbd-example-box>
     </ngbd-component-wrapper>
   `

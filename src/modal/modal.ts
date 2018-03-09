@@ -40,6 +40,11 @@ export interface NgbModalOptions {
   size?: 'sm' | 'lg';
 
   /**
+   * To center the modal vertically (false by default).
+   */
+  verticallyCentered?: boolean;
+
+  /**
    * Custom class to append to the modal window
    */
   windowClass?: string;
