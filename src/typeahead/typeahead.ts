@@ -313,7 +313,7 @@ export class NgbTypeahead implements ControlValueAccessor,
   }
 
   private _showHint() {
-    if (this.showHint && this._inputValueBackup != null) {
+    if (this.showHint && this._windowRef.instance.hasActive() && this._inputValueBackup != null) {
       const userInputLowerCase = this._inputValueBackup.toLowerCase();
       const formattedVal = this._formatItemForInput(this._windowRef.instance.getActive());
 
@@ -350,12 +350,13 @@ export class NgbTypeahead implements ControlValueAccessor,
         if (this.resultTemplate) {
           this._windowRef.instance.resultTemplate = this.resultTemplate;
         }
-        this._showHint();
 
         // The observable stream we are subscribing to might have async steps
         // and if a component containing typeahead is using the OnPush strategy
         // the change detection turn wouldn't be invoked automatically.
         this._windowRef.changeDetectorRef.detectChanges();
+
+        this._showHint();
       }
     });
   }
