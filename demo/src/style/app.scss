@@ -179,6 +179,7 @@ div.component-demo {
     margin-bottom: 1rem;
 
     .plunker, .stackblitz {
+      text-decoration: none;
       opacity: 0.3;
       transition: opacity .5s;
     }
