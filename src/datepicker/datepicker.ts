@@ -121,12 +121,11 @@ export interface NgbDatepickerNavigateEvent {
     <div class="ngb-dp-header bg-light">
       <ngb-datepicker-navigation *ngIf="navigation !== 'none'"
         [date]="model.firstDate"
-        [minDate]="model.minDate"
-        [maxDate]="model.maxDate"
         [months]="model.months"
         [disabled]="model.disabled"
-        [showWeekNumbers]="showWeekNumbers"
         [showSelect]="model.navigation === 'select'"
+        [prevDisabled]="model.prevDisabled"
+        [nextDisabled]="model.nextDisabled"
         [selectBoxes]="model.selectBoxes"
         (navigate)="onNavigateEvent($event)"
         (select)="onNavigateDateSelect($event)">

@@ -65,6 +65,16 @@ export function generateSelectBoxYears(minDate: NgbDate, maxDate: NgbDate): numb
   return (minDate && maxDate) ? Array.from({length: maxDate.year - minDate.year + 1}, (e, i) => minDate.year + i) : [];
 }
 
+export function nextMonthDisabled(calendar: NgbCalendar, date: NgbDate, maxDate: NgbDate) {
+  return maxDate && calendar.getNext(date, 'm').after(maxDate);
+}
+
+export function prevMonthDisabled(calendar: NgbCalendar, date: NgbDate, minDate: NgbDate) {
+  const prevDate = calendar.getPrev(date, 'm');
+  return minDate && (prevDate.year === minDate.year && prevDate.month < minDate.month ||
+                     prevDate.year < minDate.year && minDate.month === 1);
+}
+
 export function buildMonths(
     calendar: NgbCalendar, months: MonthViewModel[], date: NgbDate, minDate: NgbDate, maxDate: NgbDate,
     displayMonths: number, firstDayOfWeek: number, markDisabled: NgbMarkDisabled, force: boolean): MonthViewModel[] {
