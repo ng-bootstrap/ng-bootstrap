@@ -1,4 +1,4 @@
-<div class="api-doc-component">
+<div class="api-doc-component" [class.deprecated]="apiDocs.deprecated">
   <h3>
     <a
       class="title-fragment"
@@ -19,7 +19,8 @@
       <img src="img/github.svg" alt="Link to Github {{apiDocs.className}}"/>
     </a>
   </h3>
-  <ngbd-api-docs-badge [type]="apiDocs.type"></ngbd-api-docs-badge>
+  <ngbd-api-docs-badge [type]="apiDocs.type" [deprecated]="apiDocs.deprecated"></ngbd-api-docs-badge>
+  <p *ngIf="apiDocs.deprecated">{{ apiDocs.deprecated.description }}</p>
   <p class="lead">{{apiDocs.description}}</p>
 
   <ng-template [ngIf]="apiDocs.properties && apiDocs.properties.length">
@@ -27,10 +28,15 @@
       <h4>Properties</h4>
       <table class="table table-sm">
         <tbody>
-        <tr *ngFor="let prop of apiDocs.properties">
-          <td class="label-cell"><code>{{prop.name}}</code></td>
+        <tr *ngFor="let prop of apiDocs.properties" [class.deprecated]="prop.deprecated">
+          <td class="label-cell">
+            <code>{{prop.name}}</code><br>
+            <span *ngIf="prop.since" class="badge badge-info">since {{ prop.since.version }}</span>
+            <span *ngIf="prop.deprecated" class="badge badge-secondary">deprecated {{ prop.deprecated.version }}</span>
+          </td>
           <td class="content-cell">
-            <p>{{ prop.description }}</p>
+            <p *ngIf="prop.deprecated">{{ prop.deprecated.description }}</p>
+            <p class="description">{{ prop.description }}</p>
             <div class="meta">
               <div>
                 <i>Type: </i><code>{{ prop.type }}</code>
@@ -51,14 +57,19 @@
       <h4>Methods</h4>
       <table class="table table-sm">
         <tbody>
-          <tr *ngFor="let method of apiDocs.methods">
-            <td class="label-cell"><code>{{method.name}}</code></td>
+          <tr *ngFor="let method of apiDocs.methods" [class.deprecated]="method.deprecated">
+            <td class="label-cell">
+              <code>{{method.name}}</code><br>
+              <span *ngIf="method.since" class="badge badge-info">since {{ method.since.version }}</span>
+              <span *ngIf="method.deprecated" class="badge badge-secondary">deprecated {{ method.deprecated.version }}</span>
+            </td>
             <td class="content-cell">
-                <p>
+                <p class="signature">
                     <code>{{methodSignature(method)}}</code>
                     <small class="text-muted" title="Return type">=&gt; {{ method.returnType }}</small>
                 </p>
-                <p>{{ method.description }}</p>
+                <p *ngIf="method.deprecated">{{ method.deprecated.description }}</p>
+                <p class="description">{{ method.description }}</p>
             </td>
           </tr>
         </tbody>

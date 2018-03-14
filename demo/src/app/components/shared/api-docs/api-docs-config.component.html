@@ -1,4 +1,4 @@
-<div (click)="trackSourceClick()" class="api-doc-component">
+<div (click)="trackSourceClick()" class="api-doc-component" [class.deprecated]="apiDocs.deprecated">
   <h3>
     <a
       class="title-fragment"
@@ -19,13 +19,14 @@
       <img src="img/github.svg" alt="Link to Github {{apiDocs.className}}"/>
     </a>
   </h3>
-  <ngbd-api-docs-badge type="Configuration"></ngbd-api-docs-badge>
+  <ngbd-api-docs-badge type="Configuration" [deprecated]="apiDocs.deprecated"></ngbd-api-docs-badge>
+  <p *ngIf="apiDocs.deprecated">{{ apiDocs.deprecated.description }}</p>
   <p class="lead">{{apiDocs.description}}</p>
 
   <ng-template [ngIf]="apiDocs.properties && apiDocs.properties.length">
     <section>
       <h4>Properties</h4>
-      <p>
+      <p class="description">
         <ng-template ngFor let-property [ngForOf]="apiDocs.properties">
           <code>{{ property.name }}</code>
         </ng-template>
