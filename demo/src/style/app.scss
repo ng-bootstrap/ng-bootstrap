@@ -10,6 +10,24 @@
   height: 256px;
 }
 
+.deprecated {
+  h3 {
+    text-decoration: line-through;
+  }
+
+  h5 {
+    display: inline-block;
+  }
+
+  td.label-cell code, p.signature, code.selector, code.export-as {
+    text-decoration: line-through;
+  }
+
+  .description, .meta, .lead {
+    opacity: 0.5;
+  }
+}
+
 .bd-masthead, .jumbotron {
   background-color: #0143A3;
   background: linear-gradient(135deg, #0143A3, #0273D4);

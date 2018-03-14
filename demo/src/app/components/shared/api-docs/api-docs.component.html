@@ -1,5 +1,5 @@
-<div class="api-doc-component">
-  <h2 class="title">
+<div class="api-doc-component" [class.deprecated]="apiDocs.deprecated">
+  <h3 class="title">
     <a
       [routerLink]=""
       fragment="{{apiDocs.className}}" ngbdFragment
@@ -17,15 +17,16 @@
     >
       <img src="img/github.svg" alt="Link to Github {{apiDocs.className}}"/>
     </a>
-  </h2>
-  <ngbd-api-docs-badge [type]="apiDocs.type"></ngbd-api-docs-badge>
+  </h3>
+  <ngbd-api-docs-badge [type]="apiDocs.type" [deprecated]="apiDocs.deprecated"></ngbd-api-docs-badge>
+  <p *ngIf="apiDocs.deprecated">{{ apiDocs.deprecated.description }}</p>
   <p class="lead">
     {{apiDocs.description}}
   </p>
 
   <section>
-    <h4>Selector <small><code>{{apiDocs.selector}}</code></small></h4>
-    <h6 *ngIf="apiDocs.exportAs">Exported as <small><code>{{apiDocs.exportAs}}</code></small></h6>
+    <h4>Selector <small><code class="selector">{{apiDocs.selector}}</code></small></h4>
+    <h6 *ngIf="apiDocs.exportAs">Exported as <small><code class="export-as">{{apiDocs.exportAs}}</code></small></h6>
   </section>
 
   <ng-template [ngIf]="apiDocs.inputs.length">
@@ -33,9 +34,14 @@
       <h4>Inputs</h4>
       <table class="table table-sm">
         <tbody>
-        <tr *ngFor="let input of apiDocs.inputs">
-          <td class="label-cell"><code>{{input.name}}</code></td>
+        <tr *ngFor="let input of apiDocs.inputs" [class.deprecated]="input.deprecated">
+          <td class="label-cell">
+            <code>{{input.name}}</code><br>
+            <span *ngIf="input.since" class="badge badge-info">since {{ input.since.version }}</span>
+            <span *ngIf="input.deprecated" class="badge badge-secondary">deprecated {{ input.deprecated.version }}</span>
+          </td>
           <td class="content-cell">
+            <p *ngIf="input.deprecated">{{ input.deprecated.description }}</p>
             <p class="description">{{ input.description }}</p>
             <div class="meta">
               <div>
@@ -58,9 +64,16 @@
       <h4>Outputs</h4>
       <table class="table table-sm">
         <tbody>
-          <tr *ngFor="let output of apiDocs.outputs">
-            <td class="label-cell"><code>{{output.name}}</code></td>
-            <td class="content-cell">{{output.description}}</td>
+          <tr *ngFor="let output of apiDocs.outputs" [class.deprecated]="output.deprecated">
+            <td class="label-cell">
+              <code>{{output.name}}</code><br>
+              <span *ngIf="output.since" class="badge badge-info">since {{ output.since.version }}</span>
+              <span *ngIf="output.deprecated" class="badge badge-secondary">deprecated {{ output.deprecated.version }}</span>
+            </td>
+            <td class="content-cell">
+              <p *ngIf="output.deprecated">{{ output.deprecated.description }}</p>
+              <p class="description">{{ output.description }}</p>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -72,14 +85,19 @@
       <h4>Methods</h4>
       <table class="table table-sm">
         <tbody>
-          <tr *ngFor="let method of apiDocs.methods">
-            <td class="label-cell"><code>{{method.name}}</code></td>
+          <tr *ngFor="let method of apiDocs.methods" [class.deprecated]="method.deprecated">
+            <td class="label-cell">
+              <code>{{method.name}}</code><br>
+              <span *ngIf="method.since" class="badge badge-info">since {{ method.since.version }}</span>
+              <span *ngIf="method.deprecated" class="badge badge-secondary">deprecated {{ method.deprecated.version }}</span>
+            </td>
             <td class="content-cell">
-                <p>
+                <p class="signature">
                     <code>{{methodSignature(method)}}</code>
                     <small class="text-muted" title="Return type">=&gt; {{ method.returnType }}</small>
                 </p>
-                <p>{{ method.description }}</p>
+                <p *ngIf="method.deprecated">{{ method.deprecated.description }}</p>
+                <p class="description">{{ method.description }}</p>
             </td>
           </tr>
         </tbody>

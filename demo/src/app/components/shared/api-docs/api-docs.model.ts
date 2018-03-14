@@ -3,6 +3,8 @@ export interface ClassDesc {
   fileName: string;
   className: string;
   description: string;
+  deprecated?: VersionDesc;
+  since?: VersionDesc;
   properties: PropertyDesc[];
   methods: MethodDesc[];
 }
@@ -18,14 +20,23 @@ export interface PropertyDesc {
   name: string;
   type: string;
   description: string;
+  deprecated?: VersionDesc;
+  since?: VersionDesc;
   defaultValue?: string;
 }
 
 export interface MethodDesc {
   name: string;
   description: string;
+  deprecated?: VersionDesc;
+  since?: VersionDesc;
   args: ArgumentDesc[];
   returnType: string;
+}
+
+export interface VersionDesc {
+  version: string;
+  description: string;
 }
 
 export interface ArgumentDesc {
