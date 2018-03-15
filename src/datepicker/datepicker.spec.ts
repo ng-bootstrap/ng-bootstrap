@@ -151,80 +151,126 @@ describe('ngb-datepicker', () => {
     expect(getYearSelect(fixture.nativeElement).value).toBe(currentYear);
   });
 
-  it('should handle incorrect minDate values', () => {
-    const fixture = createTestComponent(
-        `<ngb-datepicker [minDate]="minDate" [maxDate]="maxDate" [startDate]="date"></ngb-datepicker>`);
+  it('should allow infinite navigation when min/max dates are not set', () => {
+    const fixture = createTestComponent(`<ngb-datepicker [startDate]="date"></ngb-datepicker>`);
+
+    fixture.detectChanges();
+    expect(getMonthSelect(fixture.nativeElement).value).toBe('8');
+    expect(getYearSelect(fixture.nativeElement).value).toBe('2016');
+
+    fixture.componentInstance.date = {year: 1066, month: 2};
+    fixture.detectChanges();
+    expect(getMonthSelect(fixture.nativeElement).value).toBe('2');
+    expect(getYearSelect(fixture.nativeElement).value).toBe('1066');
+
+    fixture.componentInstance.date = {year: 3066, month: 5};
+    fixture.detectChanges();
+    expect(getMonthSelect(fixture.nativeElement).value).toBe('5');
+    expect(getYearSelect(fixture.nativeElement).value).toBe('3066');
+  });
+
+  it('should allow setting minDate separately', () => {
+    const fixture = createTestComponent(`<ngb-datepicker [minDate]="minDate" [startDate]="date"></ngb-datepicker>`);
+
+    fixture.componentInstance.minDate = {year: 2000, month: 5, day: 20};
+    fixture.detectChanges();
+    expect(getMonthSelect(fixture.nativeElement).value).toBe('8');
+    expect(getYearSelect(fixture.nativeElement).value).toBe('2016');
+
+    fixture.componentInstance.date = {year: 1000, month: 2};
+    fixture.detectChanges();
+    expect(getMonthSelect(fixture.nativeElement).value).toBe('5');
+    expect(getYearSelect(fixture.nativeElement).value).toBe('2000');
+
+    fixture.componentInstance.date = {year: 3000, month: 5};
+    fixture.detectChanges();
+    expect(getMonthSelect(fixture.nativeElement).value).toBe('5');
+    expect(getYearSelect(fixture.nativeElement).value).toBe('3000');
+  });
+
+  it('should allow setting maxDate separately', () => {
+    const fixture = createTestComponent(`<ngb-datepicker [maxDate]="maxDate" [startDate]="date"></ngb-datepicker>`);
+
+    fixture.componentInstance.maxDate = {year: 2050, month: 5, day: 20};
+    fixture.detectChanges();
+    expect(getMonthSelect(fixture.nativeElement).value).toBe('8');
+    expect(getYearSelect(fixture.nativeElement).value).toBe('2016');
+
+    fixture.componentInstance.date = {year: 3000, month: 2};
+    fixture.detectChanges();
+    expect(getMonthSelect(fixture.nativeElement).value).toBe('5');
+    expect(getYearSelect(fixture.nativeElement).value).toBe('2050');
+
+    fixture.componentInstance.date = {year: 1000, month: 5};
+    fixture.detectChanges();
+    expect(getMonthSelect(fixture.nativeElement).value).toBe('5');
+    expect(getYearSelect(fixture.nativeElement).value).toBe('1000');
+  });
+
+  it('should handle minDate edge case values', () => {
+    const fixture = createTestComponent(`<ngb-datepicker [minDate]="minDate" [startDate]="date"></ngb-datepicker>`);
 
     function expectMinDate(year: number, month: number) {
-      fixture.componentInstance.date = {year: 0, month: 1};
+      fixture.componentInstance.date = {year: 1000, month: 1};
       fixture.detectChanges();
       expect(getMonthSelect(fixture.nativeElement).value).toBe(`${month}`);
       expect(getYearSelect(fixture.nativeElement).value).toBe(`${year}`);
-
-      // resetting
-      fixture.componentInstance.date = {year: 1000, month: 1};
-      fixture.detectChanges();
     }
 
     expectMinDate(2010, 1);
 
-    fixture.componentInstance.minDate = null;
-    fixture.detectChanges();
-    expectMinDate(990, 1);
-
-    fixture.componentInstance.minDate = undefined;
-    fixture.detectChanges();
-    expectMinDate(990, 1);
-
+    // ignored
     fixture.componentInstance.minDate = <any>{};
-    fixture.detectChanges();
-    expectMinDate(990, 1);
+    expectMinDate(2010, 1);
 
+    // ignored
     fixture.componentInstance.minDate = <any>new Date();
-    fixture.detectChanges();
-    expectMinDate(990, 1);
+    expectMinDate(2010, 1);
 
+    // ignored
     fixture.componentInstance.minDate = new NgbDate(3000000, 1, 1);
-    fixture.detectChanges();
-    expectMinDate(990, 1);
+    expectMinDate(2010, 1);
+
+    // resetting
+    fixture.componentInstance.minDate = null;
+    expectMinDate(1000, 1);
+
+    // resetting
+    fixture.componentInstance.minDate = undefined;
+    expectMinDate(1000, 1);
   });
 
-  it('should handle incorrect maxDate values', () => {
-    const fixture = createTestComponent(
-        `<ngb-datepicker [minDate]="minDate" [maxDate]="maxDate" [startDate]="date"></ngb-datepicker>`);
+  it('should handle maxDate edge case values', () => {
+    const fixture = createTestComponent(`<ngb-datepicker [maxDate]="maxDate" [startDate]="date"></ngb-datepicker>`);
 
     function expectMaxDate(year: number, month: number) {
       fixture.componentInstance.date = {year: 10000, month: 1};
       fixture.detectChanges();
       expect(getMonthSelect(fixture.nativeElement).value).toBe(`${month}`);
       expect(getYearSelect(fixture.nativeElement).value).toBe(`${year}`);
-
-      // resetting
-      fixture.componentInstance.date = {year: 3000, month: 1};
-      fixture.detectChanges();
     }
 
     expectMaxDate(2020, 12);
 
-    fixture.componentInstance.maxDate = null;
-    fixture.detectChanges();
-    expectMaxDate(3010, 12);
-
-    fixture.componentInstance.maxDate = undefined;
-    fixture.detectChanges();
-    expectMaxDate(3010, 12);
-
+    // ignored
     fixture.componentInstance.maxDate = <any>{};
-    fixture.detectChanges();
-    expectMaxDate(3010, 12);
+    expectMaxDate(2020, 12);
 
+    // ignored
     fixture.componentInstance.maxDate = <any>new Date();
-    fixture.detectChanges();
-    expectMaxDate(3010, 12);
+    expectMaxDate(2020, 12);
 
+    // ignored
     fixture.componentInstance.maxDate = new NgbDate(3000000, 1, 1);
-    fixture.detectChanges();
-    expectMaxDate(3010, 12);
+    expectMaxDate(2020, 12);
+
+    // resetting
+    fixture.componentInstance.maxDate = null;
+    expectMaxDate(10000, 1);
+
+    // resetting
+    fixture.componentInstance.maxDate = undefined;
+    expectMaxDate(10000, 1);
   });
 
   it('should support disabling dates via callback', () => {
