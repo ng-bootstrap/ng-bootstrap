@@ -11,7 +11,9 @@ import {
   isChangedDate,
   isDateSelectable,
   generateSelectBoxYears,
-  generateSelectBoxMonths
+  generateSelectBoxMonths,
+  prevMonthDisabled,
+  nextMonthDisabled
 } from './datepicker-tools';
 
 import {filter} from 'rxjs/operator/filter';
@@ -30,6 +32,8 @@ export class NgbDatepickerService {
     focusVisible: false,
     months: [],
     navigation: 'select',
+    prevDisabled: false,
+    nextDisabled: false,
     selectBoxes: {years: [], months: []},
     selectedDate: null
   };
@@ -254,6 +258,17 @@ export class NgbDatepickerService {
         }
       } else {
         state.selectBoxes = {years: [], months: []};
+      }
+
+      // updating navigation arrows -> boundaries change (min/max) or month/year changes
+      if (state.navigation === 'arrows' || state.navigation === 'select') {
+        const monthChanged = !this._state.firstDate || this._state.firstDate.month !== state.firstDate.month;
+        const yearChanged = !this._state.firstDate || this._state.firstDate.year !== state.firstDate.year;
+
+        if (monthChanged || yearChanged || 'minDate' in patch || 'maxDate' in patch || 'disabled' in patch) {
+          state.prevDisabled = state.disabled || prevMonthDisabled(this._calendar, state.firstDate, state.minDate);
+          state.nextDisabled = state.disabled || nextMonthDisabled(this._calendar, state.lastDate, state.maxDate);
+        }
       }
     }
 

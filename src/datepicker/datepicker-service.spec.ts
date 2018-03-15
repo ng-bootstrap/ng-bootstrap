@@ -385,6 +385,20 @@ describe('ngb-datepicker-service', () => {
       expect(model.focusVisible).toBeFalsy();
     });
 
+    it(`should disable navigation arrows`, () => {
+      service.focus(new NgbDate(2017, 5, 2));
+      expect(model.prevDisabled).toBeFalsy();
+      expect(model.nextDisabled).toBeFalsy();
+
+      service.disabled = true;
+      expect(model.prevDisabled).toBeTruthy();
+      expect(model.nextDisabled).toBeTruthy();
+
+      service.disabled = false;
+      expect(model.prevDisabled).toBeFalsy();
+      expect(model.nextDisabled).toBeFalsy();
+    });
+
   });
 
   describe(`focusVisible`, () => {
@@ -479,6 +493,82 @@ describe('ngb-datepicker-service', () => {
         service.maxDate = new NgbDate(2011, 8, 1);
         expect(model.selectBoxes.years).toEqual([2011]);
         expect(model.selectBoxes.months).toEqual([2, 3, 4, 5, 6, 7, 8]);
+      });
+    });
+
+    describe(`arrows`, () => {
+
+      it(`should be enabled by default`, () => {
+        service.focus(new NgbDate(2018, 3, 10));
+        expect(model.prevDisabled).toBeFalsy();
+        expect(model.nextDisabled).toBeFalsy();
+      });
+
+      it(`should use initial 'minDate' and 'maxDate' values`, () => {
+        service.minDate = new NgbDate(2018, 3, 10);
+        service.maxDate = new NgbDate(2018, 3, 10);
+        service.focus(new NgbDate(2018, 3, 10));
+        expect(model.prevDisabled).toBeTruthy();
+        expect(model.nextDisabled).toBeTruthy();
+      });
+
+      it(`should react to 'minDate' changes`, () => {
+        service.focus(new NgbDate(2018, 3, 10));
+        service.minDate = new NgbDate(2018, 3, 1);
+        expect(model.prevDisabled).toBeTruthy();
+
+        service.minDate = new NgbDate(2018, 2, 1);
+        expect(model.prevDisabled).toBeFalsy();
+
+        service.minDate = new NgbDate(2018, 2, 28);
+        expect(model.prevDisabled).toBeFalsy();
+      });
+
+      it(`should react to 'maxDate' changes`, () => {
+        service.focus(new NgbDate(2018, 3, 10));
+        service.maxDate = new NgbDate(2018, 3, 31);
+        expect(model.nextDisabled).toBeTruthy();
+
+        service.maxDate = new NgbDate(2018, 4, 1);
+        expect(model.nextDisabled).toBeFalsy();
+
+        service.maxDate = new NgbDate(2018, 4, 30);
+        expect(model.nextDisabled).toBeFalsy();
+      });
+
+      it(`should react to 'minDate' changes with multiple months`, () => {
+        service.displayMonths = 2;
+        service.minDate = new NgbDate(2018, 3, 1);
+        service.open(new NgbDate(2018, 3, 10));  // open: [MAR, APR], focus: MAR
+        expect(model.prevDisabled).toBeTruthy();
+
+        service.focus(new NgbDate(2018, 4, 10));  // open [MAR, APR], focus: APR
+        expect(model.prevDisabled).toBeTruthy();
+
+        service.open(new NgbDate(2018, 4, 10));  // open [APR, MAY], focus: APR
+        expect(model.prevDisabled).toBeFalsy();
+
+        service.focus(new NgbDate(2018, 5, 10));  // open [APR, MAY], focus: MAY
+        expect(model.prevDisabled).toBeFalsy();
+      });
+
+      it(`should react to 'maxDate' changes with multiple months`, () => {
+        service.displayMonths = 2;
+        service.maxDate = new NgbDate(2018, 3, 10);
+        service.open(new NgbDate(2018, 3, 1));  // open: [MAR, APR], focus: MAR
+        expect(model.nextDisabled).toBeTruthy();
+
+        service.open(new NgbDate(2018, 2, 1));  // open: [FEB, MAR], focus: FEB
+        expect(model.nextDisabled).toBeTruthy();
+
+        service.focus(new NgbDate(2018, 3, 1));  // open: [FEB, MAR], focus: MAR
+        expect(model.nextDisabled).toBeTruthy();
+
+        service.open(new NgbDate(2018, 1, 1));  // open: [JAN, FEB], focus: JAN
+        expect(model.nextDisabled).toBeFalsy();
+
+        service.focus(new NgbDate(2018, 2, 1));  // open: [JAN, FEB], focus: FEB
+        expect(model.nextDisabled).toBeFalsy();
       });
     });
   });

@@ -37,6 +37,8 @@ export type DatepickerViewModel = {
   minDate?: NgbDate,
   months: MonthViewModel[],
   navigation: 'select' | 'arrows' | 'none',
+  prevDisabled: boolean,
+  nextDisabled: boolean,
   selectBoxes: {
     years: number[],
     months: number[]
