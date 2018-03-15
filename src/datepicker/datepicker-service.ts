@@ -69,7 +69,7 @@ export class NgbDatepickerService {
   }
 
   set maxDate(date: NgbDate) {
-    if (date === undefined || this._calendar.isValid(date) && isChangedDate(this._state.maxDate, date)) {
+    if (date == null || this._calendar.isValid(date) && isChangedDate(this._state.maxDate, date)) {
       this._nextState({maxDate: date});
     }
   }
@@ -81,7 +81,7 @@ export class NgbDatepickerService {
   }
 
   set minDate(date: NgbDate) {
-    if (date === undefined || this._calendar.isValid(date) && isChangedDate(this._state.minDate, date)) {
+    if (date == null || this._calendar.isValid(date) && isChangedDate(this._state.minDate, date)) {
       this._nextState({minDate: date});
     }
   }
@@ -113,8 +113,9 @@ export class NgbDatepickerService {
   }
 
   open(date: NgbDate) {
-    if (!this._state.disabled && this._calendar.isValid(date)) {
-      this._nextState({firstDate: date});
+    const validDate = this.toValidDate(date, this._calendar.getToday());
+    if (!this._state.disabled) {
+      this._nextState({firstDate: validDate});
     }
   }
 
@@ -244,15 +245,16 @@ export class NgbDatepickerService {
       }
 
       // adjusting months/years for the select box navigation
+      const yearChanged = !this._state.firstDate || this._state.firstDate.year !== state.firstDate.year;
+      const monthChanged = !this._state.firstDate || this._state.firstDate.month !== state.firstDate.month;
       if (state.navigation === 'select') {
         // years ->  boundaries (min/max were changed)
-        if ('minDate' in patch || 'maxDate' in patch || state.selectBoxes.years.length === 0) {
-          state.selectBoxes.years = generateSelectBoxYears(state.minDate, state.maxDate);
+        if ('minDate' in patch || 'maxDate' in patch || state.selectBoxes.years.length === 0 || yearChanged) {
+          state.selectBoxes.years = generateSelectBoxYears(state.focusDate, state.minDate, state.maxDate);
         }
 
         // months -> when current year or boundaries change
-        if ('minDate' in patch || 'maxDate' in patch || state.selectBoxes.months.length === 0 ||
-            this._state.firstDate.year !== state.firstDate.year) {
+        if ('minDate' in patch || 'maxDate' in patch || state.selectBoxes.months.length === 0 || yearChanged) {
           state.selectBoxes.months =
               generateSelectBoxMonths(this._calendar, state.focusDate, state.minDate, state.maxDate);
         }
@@ -261,14 +263,10 @@ export class NgbDatepickerService {
       }
 
       // updating navigation arrows -> boundaries change (min/max) or month/year changes
-      if (state.navigation === 'arrows' || state.navigation === 'select') {
-        const monthChanged = !this._state.firstDate || this._state.firstDate.month !== state.firstDate.month;
-        const yearChanged = !this._state.firstDate || this._state.firstDate.year !== state.firstDate.year;
-
-        if (monthChanged || yearChanged || 'minDate' in patch || 'maxDate' in patch || 'disabled' in patch) {
-          state.prevDisabled = state.disabled || prevMonthDisabled(this._calendar, state.firstDate, state.minDate);
-          state.nextDisabled = state.disabled || nextMonthDisabled(this._calendar, state.lastDate, state.maxDate);
-        }
+      if ((state.navigation === 'arrows' || state.navigation === 'select') &&
+          (monthChanged || yearChanged || 'minDate' in patch || 'maxDate' in patch || 'disabled' in patch)) {
+        state.prevDisabled = state.disabled || prevMonthDisabled(this._calendar, state.firstDate, state.minDate);
+        state.nextDisabled = state.disabled || nextMonthDisabled(this._calendar, state.lastDate, state.maxDate);
       }
     }
 

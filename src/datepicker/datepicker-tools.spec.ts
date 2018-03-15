@@ -3,8 +3,10 @@ import {
   buildMonths,
   checkDateInRange,
   dateComparator,
+  generateSelectBoxMonths,
   getFirstViewDate,
-  isDateSelectable
+  isDateSelectable,
+  generateSelectBoxYears
 } from './datepicker-tools';
 import {NgbDate} from './ngb-date';
 import {NgbCalendar, NgbCalendarGregorian} from './ngb-calendar';
@@ -372,6 +374,86 @@ describe(`datepicker-tools`, () => {
       expect(isDateSelectable(new NgbDate(2016, 11, 10), null, null, false)).toBeTruthy();
       expect(isDateSelectable(new NgbDate(2017, 11, 10), null, null, false)).toBeTruthy();
       expect(isDateSelectable(new NgbDate(2018, 11, 10), null, null, false)).toBeTruthy();
+    });
+  });
+
+  describe(`generateSelectBoxMonths`, () => {
+
+    let calendar: NgbCalendar;
+
+    beforeAll(() => {
+      TestBed.configureTestingModule({providers: [{provide: NgbCalendar, useClass: NgbCalendarGregorian}]});
+      calendar = TestBed.get(NgbCalendar);
+    });
+
+    const test = (minDate, date, maxDate, result) => {
+      expect(generateSelectBoxMonths(calendar, date, minDate, maxDate)).toEqual(result);
+    };
+
+    it(`should handle edge cases`, () => {
+      test(new NgbDate(2018, 6, 1), null, new NgbDate(2018, 6, 10), []);
+      test(null, null, null, []);
+    });
+
+    it(`should generate months correctly`, () => {
+      // clang-format off
+      // different years
+      test(new NgbDate(2017, 1, 1), new NgbDate(2018, 1, 1),  new NgbDate(2019, 1, 1),  [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+      test(null,                    new NgbDate(2018, 6, 10), null,                     [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+      test(null,                    new NgbDate(2018, 1, 1),  new NgbDate(2019, 1, 1),  [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+      test(new NgbDate(2017, 1, 1), new NgbDate(2018, 1, 1),  null,                     [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+
+      // same 'min year'
+      test(new NgbDate(2018, 1, 1), new NgbDate(2018, 6, 10), new NgbDate(2020, 1, 2),  [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+      test(new NgbDate(2018, 6, 1), new NgbDate(2018, 6, 10), new NgbDate(2020, 1, 2),  [6, 7, 8, 9, 10, 11, 12]);
+      test(new NgbDate(2018, 6, 1), new NgbDate(2018, 6, 10), null,                     [6, 7, 8, 9, 10, 11, 12]);
+
+      // same 'max' year
+      test(new NgbDate(2017, 1, 1), new NgbDate(2018, 6, 10), new NgbDate(2018, 12, 1), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+      test(new NgbDate(2017, 1, 1), new NgbDate(2018, 6, 10), new NgbDate(2018, 6, 10), [1, 2, 3, 4, 5, 6]);
+      test(null,                    new NgbDate(2018, 6, 10), new NgbDate(2018, 6, 10), [1, 2, 3, 4, 5, 6]);
+
+      // same 'min' and 'max years'
+      test(new NgbDate(2018, 1, 1), new NgbDate(2018, 6, 10), new NgbDate(2018, 12, 1), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+      test(new NgbDate(2018, 3, 1), new NgbDate(2018, 6, 10), new NgbDate(2018, 12, 1), [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+      test(new NgbDate(2018, 3, 1), new NgbDate(2018, 6, 10), null,                     [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+      test(null,                    new NgbDate(2018, 6, 10), new NgbDate(2018, 8, 1),  [1, 2, 3, 4, 5, 6, 7, 8]);
+      test(new NgbDate(2018, 3, 1), new NgbDate(2018, 6, 10), new NgbDate(2018, 8, 1),  [3, 4, 5, 6, 7, 8] );
+      test(new NgbDate(2018, 6, 1), new NgbDate(2018, 6, 10), new NgbDate(2018, 6, 10), [6]);
+      // clang-format on
+    });
+  });
+
+  describe(`generateSelectBoxYears`, () => {
+
+    const test =
+        (minDate, date, maxDate, result) => { expect(generateSelectBoxYears(date, minDate, maxDate)).toEqual(result); };
+    const range = (start, end) => Array.from({length: end - start + 1}, (e, i) => start + i);
+
+    it(`should handle edge cases`, () => {
+      test(new NgbDate(2018, 6, 1), null, new NgbDate(2018, 6, 10), []);
+      test(null, null, null, []);
+    });
+
+    it(`should generate years correctly`, () => {
+      // both 'min' and 'max' are set
+      test(new NgbDate(2017, 1, 1), new NgbDate(2018, 1, 1), new NgbDate(2019, 1, 1), range(2017, 2019));
+      test(new NgbDate(2000, 1, 1), new NgbDate(2018, 1, 1), new NgbDate(3000, 1, 1), range(2000, 3000));
+      test(new NgbDate(2018, 1, 1), new NgbDate(2018, 1, 1), new NgbDate(2018, 1, 1), [2018]);
+
+      // 'min' is not set
+      test(null, new NgbDate(2018, 1, 1), new NgbDate(2019, 1, 1), range(2008, 2019));
+      test(null, new NgbDate(2018, 1, 1), new NgbDate(3000, 1, 1), range(2008, 3000));
+      test(null, new NgbDate(2018, 1, 1), new NgbDate(2018, 1, 1), range(2008, 2018));
+
+      // 'max' is not set
+      test(new NgbDate(2017, 1, 1), new NgbDate(2018, 1, 1), null, range(2017, 2028));
+      test(new NgbDate(2000, 1, 1), new NgbDate(2018, 1, 1), null, range(2000, 2028));
+      test(new NgbDate(2018, 1, 1), new NgbDate(2018, 1, 1), null, range(2018, 2028));
+
+      // both are not set
+      test(null, new NgbDate(2018, 1, 1), null, range(2008, 2028));
+      test(null, new NgbDate(2000, 1, 1), null, range(1990, 2010));
     });
   });
 
