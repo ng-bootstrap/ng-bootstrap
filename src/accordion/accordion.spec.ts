@@ -10,6 +10,10 @@ import {NgbAccordion} from './accordion';
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
+function getPanelCards(element: HTMLElement): HTMLDivElement[] {
+  return <HTMLDivElement[]>Array.from(element.querySelectorAll('.card'));
+}
+
 function getPanels(element: HTMLElement): HTMLDivElement[] {
   return <HTMLDivElement[]>Array.from(element.querySelectorAll('.card > .card-header'));
 }
@@ -27,7 +31,7 @@ function getButton(element: HTMLElement, index: number): HTMLButtonElement {
 }
 
 function expectOpenPanels(nativeEl: HTMLElement, openPanelsDef: boolean[]) {
-  const panels = getPanels(nativeEl);
+  const panels = getPanelCards(nativeEl);
   expect(panels.length).toBe(openPanelsDef.length);
 
   const panelsHeaders = getPanelsTitle(nativeEl);
