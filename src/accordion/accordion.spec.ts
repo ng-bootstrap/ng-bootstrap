@@ -489,9 +489,9 @@ describe('ngb-accordion', () => {
     fixture.detectChanges();
 
     let el = fixture.nativeElement.querySelectorAll('.card-header');
-    expect(el[0]).toHaveCssClass('card-warning');
-    expect(el[1]).toHaveCssClass('card-warning');
-    expect(el[2]).toHaveCssClass('card-warning');
+    expect(el[0]).toHaveCssClass('bg-warning');
+    expect(el[1]).toHaveCssClass('bg-warning');
+    expect(el[2]).toHaveCssClass('bg-warning');
   });
 
   it('should override the type in accordion with type in panel', () => {
@@ -505,9 +505,9 @@ describe('ngb-accordion', () => {
     fixture.detectChanges();
 
     let el = fixture.nativeElement.querySelectorAll('.card-header');
-    expect(el[0]).toHaveCssClass('card-success');
-    expect(el[1]).toHaveCssClass('card-danger');
-    expect(el[2]).toHaveCssClass('card-warning');
+    expect(el[0]).toHaveCssClass('bg-success');
+    expect(el[1]).toHaveCssClass('bg-danger');
+    expect(el[2]).toHaveCssClass('bg-warning');
   });
 
   it('should have the proper roles', () => {
