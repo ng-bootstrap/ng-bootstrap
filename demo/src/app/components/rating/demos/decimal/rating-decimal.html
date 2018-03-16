@@ -1,9 +1,7 @@
 <p>Custom rating template provided via a variable. Shows fine-grained rating display</p>
 
 <ng-template #t let-fill="fill">
-  <span *ngIf="fill === 100" class="star full">&hearts;</span>
-  <span *ngIf="fill === 0" class="star">&hearts;</span>
-  <span *ngIf="fill < 100 && fill > 0" class="star">
+  <span class="star" [class.full]="fill === 100">
     <span class="half" [style.width.%]="fill">&hearts;</span>&hearts;
   </span>
 </ng-template>
