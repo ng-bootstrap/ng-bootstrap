@@ -22,7 +22,8 @@ import {ModalDismissReasons} from './modal-dismiss-reasons';
     'tabindex': '-1',
     'style': 'display: block;',
     '(keyup.esc)': 'escKey($event)',
-    '(click)': 'backdropClick($event)'
+    '(mousedown)': 'backdropClick($event)',
+    '(touchstart)': 'backdropClick($event)'
   },
   template: `
     <div [class]="'modal-dialog' + (size ? ' modal-' + size : '')" role="document">
