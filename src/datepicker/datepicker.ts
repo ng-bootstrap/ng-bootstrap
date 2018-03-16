@@ -181,12 +181,12 @@ export class NgbDatepicker implements OnDestroy,
   @Input() markDisabled: (date: NgbDateStruct, current: {year: number, month: number}) => boolean;
 
   /**
-   * Max date for the navigation. If not provided will be 10 years from today or `startDate`
+   * Max date for the navigation. If not provided, 'year' select box will display 10 years after current month
    */
   @Input() maxDate: NgbDateStruct;
 
   /**
-   * Min date for the navigation. If not provided will be 10 years before today or `startDate`
+   * Min date for the navigation. If not provided, 'year' select box will display 10 years before current month
    */
   @Input() minDate: NgbDateStruct;
 
@@ -289,9 +289,7 @@ export class NgbDatepicker implements OnDestroy,
    * If nothing or invalid date provided calendar will open current month.
    * Use 'startDate' input as an alternative
    */
-  navigateTo(date?: {year: number, month: number}) {
-    this._service.open(date ? new NgbDate(date.year, date.month, 1) : this._calendar.getToday());
-  }
+  navigateTo(date?: {year: number, month: number}) { this._service.open(NgbDate.from(date)); }
 
   ngOnDestroy() {
     this._subscription.unsubscribe();
@@ -304,7 +302,9 @@ export class NgbDatepicker implements OnDestroy,
       this._service.markDisabled = this.markDisabled;
       this._service.firstDayOfWeek = this.firstDayOfWeek;
       this._service.navigation = this.navigation;
-      this._setDates();
+      this._service.minDate = NgbDate.from(this.minDate);
+      this._service.maxDate = NgbDate.from(this.maxDate);
+      this.navigateTo(this.startDate);
     }
   }
 
@@ -321,7 +321,15 @@ export class NgbDatepicker implements OnDestroy,
     if (changes['navigation']) {
       this._service.navigation = this.navigation;
     }
-    this._setDates();
+    if (changes['minDate']) {
+      this._service.minDate = NgbDate.from(this.minDate);
+    }
+    if (changes['maxDate']) {
+      this._service.maxDate = NgbDate.from(this.maxDate);
+    }
+    if (changes['startDate']) {
+      this.navigateTo(this.startDate);
+    }
   }
 
   onDateSelect(date: NgbDate) {
@@ -353,18 +361,4 @@ export class NgbDatepicker implements OnDestroy,
   showFocus(focusVisible: boolean) { this._service.focusVisible = focusVisible; }
 
   writeValue(value) { this._service.select(NgbDate.from(this._ngbDateAdapter.fromModel(value))); }
-
-  private _setDates() {
-    const startDate = this._service.toValidDate(this.startDate, this._calendar.getToday());
-    const minDate = this._service.toValidDate(this.minDate, this._calendar.getPrev(startDate, 'y', 10));
-    const maxDate =
-        this._service.toValidDate(this.maxDate, this._calendar.getPrev(this._calendar.getNext(startDate, 'y', 11)));
-
-    this.minDate = {year: minDate.year, month: minDate.month, day: minDate.day};
-    this.maxDate = {year: maxDate.year, month: maxDate.month, day: maxDate.day};
-
-    this._service.minDate = minDate;
-    this._service.maxDate = maxDate;
-    this.navigateTo(startDate);
-  }
 }

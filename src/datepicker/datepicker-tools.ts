@@ -42,18 +42,18 @@ export function isDateSelectable(
 }
 
 export function generateSelectBoxMonths(calendar: NgbCalendar, date: NgbDate, minDate: NgbDate, maxDate: NgbDate) {
-  if (!date || !minDate || !maxDate) {
+  if (!date) {
     return [];
   }
 
   let months = calendar.getMonths();
 
-  if (date.year === minDate.year) {
+  if (minDate && date.year === minDate.year) {
     const index = months.findIndex(month => month === minDate.month);
     months = months.slice(index);
   }
 
-  if (date.year === maxDate.year) {
+  if (maxDate && date.year === maxDate.year) {
     const index = months.findIndex(month => month === maxDate.month);
     months = months.slice(0, index + 1);
   }
@@ -61,8 +61,15 @@ export function generateSelectBoxMonths(calendar: NgbCalendar, date: NgbDate, mi
   return months;
 }
 
-export function generateSelectBoxYears(minDate: NgbDate, maxDate: NgbDate): number[] {
-  return (minDate && maxDate) ? Array.from({length: maxDate.year - minDate.year + 1}, (e, i) => minDate.year + i) : [];
+export function generateSelectBoxYears(date: NgbDate, minDate: NgbDate, maxDate: NgbDate) {
+  if (!date) {
+    return [];
+  }
+
+  const start = minDate && minDate.year || date.year - 10;
+  const end = maxDate && maxDate.year || date.year + 10;
+
+  return Array.from({length: end - start + 1}, (e, i) => start + i);
 }
 
 export function nextMonthDisabled(calendar: NgbCalendar, date: NgbDate, maxDate: NgbDate) {
