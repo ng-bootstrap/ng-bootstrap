@@ -50,7 +50,7 @@
     "@angular/forms": "5.0.2"
   },
   "devDependencies": {
-    "@angular/cli": "1.7.0-beta.1",
+    "@angular/cli": "1.7.3",
     "@angular/compiler": "5.0.2",
     "@angular/compiler-cli": "5.0.2",
     "@angular/http": "5.0.2",
