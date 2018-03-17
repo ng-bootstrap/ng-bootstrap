@@ -116,6 +116,10 @@ export class NgbPopover implements OnInit, OnDestroy {
    */
   @Input() container: string;
   /**
+   * A flag indicating if a given popover is disabled and should not be displayed.
+   */
+  @Input() disabled = false;
+  /**
    * Emits an event when the popover is shown
    */
   @Output() shown = new EventEmitter();
@@ -155,7 +159,7 @@ export class NgbPopover implements OnInit, OnDestroy {
    * The context is an optional value to be injected into the popover template when it is created.
    */
   open(context?: any) {
-    if (!this._windowRef) {
+    if (!this._windowRef && !this.disabled) {
       this._windowRef = this._popupService.open(this.ngbPopover, context);
       this._windowRef.instance.title = this.popoverTitle;
       this._windowRef.instance.id = this._ngbPopoverWindowId;
