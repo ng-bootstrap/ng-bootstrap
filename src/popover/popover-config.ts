@@ -11,4 +11,5 @@ export class NgbPopoverConfig {
   placement: PlacementArray = 'top';
   triggers = 'click';
   container: string;
+  disablePopover = false;
 }
