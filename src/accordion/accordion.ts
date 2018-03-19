@@ -63,7 +63,8 @@ export class NgbPanel {
 
   /**
    *  Accordion's types of panels to be applied per panel basis.
-   *  Bootstrap 4 recognizes the following types: "success", "info", "warning" and "danger".
+   *  Bootstrap recognizes the following types: "primary", "secondary", "success", "danger", "warning", "info", "light"
+   * and "dark"
    */
   @Input() type: string;
 
@@ -103,7 +104,7 @@ export interface NgbPanelChangeEvent {
     <ng-template ngFor let-panel [ngForOf]="panels">
       <div class="card">
         <div role="tab" id="{{panel.id}}-header"
-          [class]="'card-header ' + (panel.type ? 'card-'+panel.type: type ? 'card-'+type : '')" [class.active]="panel.isOpen">
+          [class]="'card-header ' + (panel.type ? 'bg-'+panel.type: type ? 'bg-'+type : '')" [class.active]="panel.isOpen">
           <a href (click)="!!toggle(panel.id)" [class.text-muted]="panel.disabled" [attr.tabindex]="(panel.disabled ? '-1' : null)"
             [attr.aria-expanded]="panel.isOpen" [attr.aria-controls]="(panel.isOpen ? panel.id : null)"
             [attr.aria-disabled]="panel.disabled">
@@ -138,7 +139,8 @@ export class NgbAccordion implements AfterContentChecked {
 
   /**
    *  Accordion's types of panels to be applied globally.
-   *  Bootstrap 4 recognizes the following types: "success", "info", "warning" and "danger".
+   *  Bootstrap recognizes the following types: "primary", "secondary", "success", "danger", "warning", "info", "light"
+   * and "dark
    */
   @Input() type: string;
 
