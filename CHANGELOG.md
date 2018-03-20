@@ -1,3 +1,17 @@
+<a name="1.0.2"></a>
+## [1.0.2](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.1...1.0.2) (2018-03-19)
+
+
+### Bug Fixes
+
+* **accordion:** restore 'type' input behaviour for styling panels ([9b62d75](https://github.com/ng-bootstrap/ng-bootstrap/commit/9b62d75)), closes [#1897](https://github.com/ng-bootstrap/ng-bootstrap/issues/1897) [#2227](https://github.com/ng-bootstrap/ng-bootstrap/issues/2227)
+* **datepicker:** add class "show" to visible datepicker dropdown ([6938e4b](https://github.com/ng-bootstrap/ng-bootstrap/commit/6938e4b)), closes [#2088](https://github.com/ng-bootstrap/ng-bootstrap/issues/2088) [#2013](https://github.com/ng-bootstrap/ng-bootstrap/issues/2013)
+* **datepicker:** optional min/max dates for infinite navigation ([3a1a341](https://github.com/ng-bootstrap/ng-bootstrap/commit/3a1a341)), closes [#1732](https://github.com/ng-bootstrap/ng-bootstrap/issues/1732) [#2219](https://github.com/ng-bootstrap/ng-bootstrap/issues/2219)
+* **demo:** avoid removing DOM elements in decimal rating demo ([40a8281](https://github.com/ng-bootstrap/ng-bootstrap/commit/40a8281)), closes [#2178](https://github.com/ng-bootstrap/ng-bootstrap/issues/2178) [#2225](https://github.com/ng-bootstrap/ng-bootstrap/issues/2225)
+* **modal:** don't use inline styles ([5f14b4e](https://github.com/ng-bootstrap/ng-bootstrap/commit/5f14b4e)), closes [#2085](https://github.com/ng-bootstrap/ng-bootstrap/issues/2085) [#2223](https://github.com/ng-bootstrap/ng-bootstrap/issues/2223)
+* **typeahead:** fix SSR (universal) rendering ([2c5a354](https://github.com/ng-bootstrap/ng-bootstrap/commit/2c5a354)), closes [#2190](https://github.com/ng-bootstrap/ng-bootstrap/issues/2190) [#2139](https://github.com/ng-bootstrap/ng-bootstrap/issues/2139) [#2224](https://github.com/ng-bootstrap/ng-bootstrap/issues/2224)
+
+
 <a name="1.0.1"></a>
 ## [1.0.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.0...1.0.1) (2018-03-09)
 
