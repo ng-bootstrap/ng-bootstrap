@@ -1,5 +1,6 @@
 import {NgModule, ModuleWithProviders} from '@angular/core';
 
+import {NgbA11yModule} from './a11y/a11y.module';
 import {NgbAccordionModule, NgbPanelChangeEvent} from './accordion/accordion.module';
 import {NgbAlertModule} from './alert/alert.module';
 import {NgbButtonsModule} from './buttons/buttons.module';
@@ -17,6 +18,13 @@ import {NgbTimepickerModule} from './timepicker/timepicker.module';
 import {NgbTooltipModule} from './tooltip/tooltip.module';
 import {NgbTypeaheadModule, NgbTypeaheadSelectItemEvent} from './typeahead/typeahead.module';
 
+export {
+  NgbPlatform,
+  NgbInteractivityChecker,
+  NgbFocusTrapFactory,
+  NgbFocusTrapDirective,
+  NgbFocusTrap,
+} from './a11y/a11y.module';
 export {
   NgbAccordionModule,
   NgbPanelChangeEvent,
@@ -80,7 +88,7 @@ export {Placement} from './util/positioning';
 const NGB_MODULES = [
   NgbAccordionModule, NgbAlertModule, NgbButtonsModule, NgbCarouselModule, NgbCollapseModule, NgbDatepickerModule,
   NgbDropdownModule, NgbModalModule, NgbPaginationModule, NgbPopoverModule, NgbProgressbarModule, NgbRatingModule,
-  NgbTabsetModule, NgbTimepickerModule, NgbTooltipModule, NgbTypeaheadModule
+  NgbTabsetModule, NgbTimepickerModule, NgbTooltipModule, NgbTypeaheadModule, NgbA11yModule
 ];
 
 @NgModule({
@@ -89,7 +97,7 @@ const NGB_MODULES = [
     NgbTooltipModule.forRoot(), NgbTypeaheadModule.forRoot(), NgbAccordionModule.forRoot(), NgbCarouselModule.forRoot(),
     NgbDatepickerModule.forRoot(), NgbDropdownModule.forRoot(), NgbModalModule.forRoot(), NgbPaginationModule.forRoot(),
     NgbPopoverModule.forRoot(), NgbProgressbarModule.forRoot(), NgbRatingModule.forRoot(), NgbTabsetModule.forRoot(),
-    NgbTimepickerModule.forRoot(), NgbTooltipModule.forRoot()
+    NgbTimepickerModule.forRoot(), NgbTooltipModule.forRoot(), NgbA11yModule.forRoot()
   ],
   exports: NGB_MODULES
 })

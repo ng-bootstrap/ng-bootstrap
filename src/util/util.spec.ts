@@ -1,4 +1,4 @@
-import {toInteger, toString, getValueInRange, isInteger, isString} from './util';
+import {toInteger, toString, toBoolean, getValueInRange, isInteger, isString} from './util';
 
 describe('util', () => {
 
@@ -19,6 +19,20 @@ describe('util', () => {
       expect(toInteger('10')).toBe(10);
       expect(toInteger('10.1')).toBe(10);
       expect(toInteger('10.9')).toBe(10);
+    });
+
+  });
+
+  describe('toBoolean', () => {
+
+    it('should be noop for booleans', () => {
+      expect(toBoolean(true)).toBe(true);
+      expect(toBoolean(false)).toBe(false);
+    });
+
+    it('should parse strings', () => {
+      expect(toBoolean('true')).toBe(true);
+      expect(toBoolean('false')).toBe(false);
     });
 
   });

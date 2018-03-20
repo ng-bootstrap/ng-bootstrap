@@ -6,6 +6,10 @@ export function toString(value: any): string {
   return (value !== undefined && value !== null) ? `${value}` : '';
 }
 
+export function toBoolean(value: any): boolean {
+  return value != null && `${value}` !== 'false';
+}
+
 export function getValueInRange(value: number, max: number, min = 0): number {
   return Math.max(Math.min(value, max), min);
 }

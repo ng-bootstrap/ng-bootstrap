@@ -24,7 +24,7 @@ import {ModalDismissReasons} from './modal-dismiss-reasons';
     '(click)': 'backdropClick($event)'
   },
   template: `
-    <div [class]="'modal-dialog' + (size ? ' modal-' + size : '')" role="document">
+    <div ngbTrapFocus [class]="'modal-dialog' + (size ? ' modal-' + size : '')" role="document">
         <div class="modal-content"><ng-content></ng-content></div>
     </div>
     `
