@@ -118,7 +118,7 @@ export class NgbPopover implements OnInit, OnDestroy {
   /**
    * A flag indicating if a given popover is disabled and should not be displayed.
    */
-  @Input() disablePopover = false;
+  @Input() disablePopover: boolean;
   /**
    * Emits an event when the popover is shown
    */
@@ -141,6 +141,7 @@ export class NgbPopover implements OnInit, OnDestroy {
     this.placement = config.placement;
     this.triggers = config.triggers;
     this.container = config.container;
+    this.disablePopover = config.disablePopover;
     this._popupService = new PopupService<NgbPopoverWindow>(
         NgbPopoverWindow, injector, viewContainerRef, _renderer, componentFactoryResolver);
 
