@@ -70,6 +70,7 @@ let nextWindowId = 0;
     '(blur)': 'handleBlur()',
     '[class.open]': 'isPopupOpen()',
     '(document:click)': 'onDocumentClick($event)',
+    '(document:touchstart)': 'onDocumentClick($event)',
     '(keydown)': 'handleKeyDown($event)',
     'autocomplete': 'off',
     'autocapitalize': 'off',
