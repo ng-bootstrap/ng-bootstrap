@@ -15,21 +15,24 @@ import {NgbDatepickerI18n} from './datepicker-i18n';
       display: -ms-flexbox;
       display: flex;
     }
-    .ngb-dp-navigation-chevron::before {
+    .ngb-dp-navigation-chevron {
       border-style: solid;
       border-width: 0.2em 0.2em 0 0;
-      content: '';
       display: inline-block;
       width: 0.75em;
       height: 0.75em;
+      margin-left: 0.25em;
+      margin-right: 0.15em;
       transform: rotate(-135deg);
       -webkit-transform: rotate(-135deg);
       -ms-transform: rotate(-135deg);
     }
-    .right .ngb-dp-navigation-chevron:before {
+    .right .ngb-dp-navigation-chevron {
       -webkit-transform: rotate(45deg);
       -ms-transform: rotate(45deg);
       transform: rotate(45deg);
+      margin-left: 0.15em;
+      margin-right: 0.25em;
     }
     .ngb-dp-arrow {
       display: -webkit-box;
@@ -51,7 +54,15 @@ import {NgbDatepickerI18n} from './datepicker-i18n';
       justify-content: flex-end;
     }
     .ngb-dp-arrow-btn {
-      padding: 0rem 1rem;
+      padding: 0rem 0.25rem;
+      margin: 0rem 0.5rem;
+      border: none;
+      background-color: transparent;
+      z-index: 1;
+    }
+    .ngb-dp-arrow-btn:focus {
+      outline-style: auto;
+      outline-width: 1px;
     }
     .ngb-dp-month-name {
       font-size: larger;
@@ -69,7 +80,7 @@ import {NgbDatepickerI18n} from './datepicker-i18n';
   template: `
   <div class="ngb-dp-arrow">
     <button type="button" class="btn btn-link ngb-dp-arrow-btn"
-            (click)="!!navigate.emit(navigation.PREV)" [disabled]="prevDisabled" tabindex="-1">
+            (click)="!!navigate.emit(navigation.PREV)" [disabled]="prevDisabled">
       <span class="ngb-dp-navigation-chevron"></span>
     </button>
   </div>
@@ -90,7 +101,7 @@ import {NgbDatepickerI18n} from './datepicker-i18n';
     </ng-template>
     <div class="ngb-dp-arrow right">
     <button type="button" class="btn btn-link ngb-dp-arrow-btn"
-            (click)="!!navigate.emit(navigation.NEXT)" [disabled]="nextDisabled" tabindex="-1">
+            (click)="!!navigate.emit(navigation.NEXT)" [disabled]="nextDisabled">
       <span class="ngb-dp-navigation-chevron"></span>
     </button>
     </div>

@@ -6,7 +6,7 @@ import {DayTemplateContext} from './datepicker-day-template-context';
 
 @Component({
   selector: 'ngb-datepicker-month-view',
-  host: {'class': 'd-block'},
+  host: {'class': 'd-block', 'role': 'grid'},
   styles: [`
     .ngb-dp-weekday, .ngb-dp-week-number {
       line-height: 2rem;
@@ -43,10 +43,12 @@ import {DayTemplateContext} from './datepicker-day-template-context';
       </div>
     </div>
     <ng-template ngFor let-week [ngForOf]="month.weeks">
-      <div *ngIf="!isCollapsed(week)" class="ngb-dp-week">
+      <div *ngIf="!isCollapsed(week)" class="ngb-dp-week" role="row">
         <div *ngIf="showWeekNumbers" class="ngb-dp-week-number small text-center font-italic text-muted">{{ week.number }}</div>
-        <div *ngFor="let day of week.days" (click)="doSelect(day)" class="ngb-dp-day" [class.disabled]="day.context.disabled"
-         [class.hidden]="isHidden(day)">
+        <div *ngFor="let day of week.days" (click)="doSelect(day)" class="ngb-dp-day" role="gridcell"
+          [class.disabled]="day.context.disabled"
+          [tabindex]="day.tabindex"
+          [class.hidden]="isHidden(day)">
           <ng-template [ngIf]="!isHidden(day)">
             <ng-template [ngTemplateOutlet]="dayTemplate" [ngTemplateOutletContext]="day.context"></ng-template>
           </ng-template>

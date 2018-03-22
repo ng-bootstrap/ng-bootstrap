@@ -65,7 +65,7 @@ describe('NgbInputDatepicker', () => {
       const button = fixture.nativeElement.querySelector('button');
       button.click();
       fixture.detectChanges();
-      expect(document.activeElement).toBe(fixture.nativeElement.querySelector('ngb-datepicker'));
+      expect(document.activeElement).toBe(fixture.nativeElement.querySelector('div.ngb-dp-day[tabindex="0"]'));
     });
 
     it('should close datepicker on date selection', () => {
