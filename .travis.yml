@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - "6"
+  - "8"
 
 env:
   global:
@@ -15,17 +15,19 @@ addons:
 before_install:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
-  - npm install --quiet -g gulp
+  - yarn global add gulp
 
 install:
-  - npm install
+  - yarn
+
+cache: yarn
 
 before_script:
   - mkdir -p $LOGS_DIR
   - ./scripts/sauce_connect_setup.sh
 
 script:
-  - gulp ci && npm run api-doc-test
+  - gulp ci && yarn run api-doc-test
   - ./scripts/sauce_connect_block.sh
   - gulp saucelabs
 
