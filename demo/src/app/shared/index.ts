@@ -11,6 +11,9 @@ import {PageWrapper} from './page-wrapper/page-wrapper.component';
 import {SideNavComponent} from './side-nav/side-nav.component';
 import {Analytics} from './analytics/analytics';
 
+import {NgbdCodeComponent} from './code/code.component';
+import {CodeHighlightService} from './code/code-highlight.service';
+
 export {componentsList} from './side-nav/side-nav.component';
 
 @NgModule({
@@ -21,6 +24,7 @@ export {componentsList} from './side-nav/side-nav.component';
     ComponentWrapper,
     PageWrapper,
     SideNavComponent,
+    NgbdCodeComponent,
     NgbModule,
     FormsModule,
     ReactiveFormsModule,
@@ -30,8 +34,9 @@ export {componentsList} from './side-nav/side-nav.component';
     ComponentWrapper,
     PageWrapper,
     SideNavComponent,
+    NgbdCodeComponent
   ],
-  providers: [Analytics]
+  providers: [Analytics, CodeHighlightService]
 })
 export class NgbdSharedModule {
 }

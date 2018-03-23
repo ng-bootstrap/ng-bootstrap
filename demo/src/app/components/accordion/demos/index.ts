@@ -9,23 +9,23 @@ export const DEMO_DIRECTIVES =
 
 export const DEMO_SNIPPETS = {
   'basic': {
-    'code': require('!!prismjs-loader?lang=typescript!./basic/accordion-basic'),
-    'markup': require('!!prismjs-loader?lang=markup!./basic/accordion-basic.html')
+    'code': require('!!raw-loader!./basic/accordion-basic'),
+    'markup': require('!!raw-loader!./basic/accordion-basic.html')
   },
   'preventchange': {
-    'code': require('!!prismjs-loader?lang=typescript!./preventchange/accordion-preventchange'),
-    'markup': require('!!prismjs-loader?lang=markup!./preventchange/accordion-preventchange.html')
+    'code': require('!!raw-loader!./preventchange/accordion-preventchange'),
+    'markup': require('!!raw-loader!./preventchange/accordion-preventchange.html')
   },
   'static': {
-    'code': require('!!prismjs-loader?lang=typescript!./static/accordion-static'),
-    'markup': require('!!prismjs-loader?lang=markup!./static/accordion-static.html')
+    'code': require('!!raw-loader!./static/accordion-static'),
+    'markup': require('!!raw-loader!./static/accordion-static.html')
   },
   'toggle': {
-    'code': require('!!prismjs-loader?lang=typescript!./toggle/accordion-toggle'),
-    'markup': require('!!prismjs-loader?lang=markup!./toggle/accordion-toggle.html')
+    'code': require('!!raw-loader!./toggle/accordion-toggle'),
+    'markup': require('!!raw-loader!./toggle/accordion-toggle.html')
   },
   'config': {
-    'code': require('!!prismjs-loader?lang=typescript!./config/accordion-config'),
-    'markup': require('!!prismjs-loader?lang=markup!./config/accordion-config.html')
+    'code': require('!!raw-loader!./config/accordion-config'),
+    'markup': require('!!raw-loader!./config/accordion-config.html')
   }
 };

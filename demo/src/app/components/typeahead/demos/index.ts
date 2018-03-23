@@ -10,27 +10,27 @@ export const DEMO_DIRECTIVES =
 
 export const DEMO_SNIPPETS = {
   'basic': {
-    'code': require('!!prismjs-loader?lang=typescript!./basic/typeahead-basic'),
-    'markup': require('!!prismjs-loader?lang=markup!./basic/typeahead-basic.html')
+    'code': require('!!raw-loader!./basic/typeahead-basic'),
+    'markup': require('!!raw-loader!./basic/typeahead-basic.html')
   },
   'focus': {
-    'code': require('!!prismjs-loader?lang=typescript!./focus/typeahead-focus'),
-    'markup': require('!!prismjs-loader?lang=markup!./focus/typeahead-focus.html')
+    'code': require('!!raw-loader!./focus/typeahead-focus'),
+    'markup': require('!!raw-loader!./focus/typeahead-focus.html')
   },
   'format': {
-    'code': require('!!prismjs-loader?lang=typescript!./format/typeahead-format'),
-    'markup': require('!!prismjs-loader?lang=markup!./format/typeahead-format.html')
+    'code': require('!!raw-loader!./format/typeahead-format'),
+    'markup': require('!!raw-loader!./format/typeahead-format.html')
   },
   'http': {
-    'code': require('!!prismjs-loader?lang=typescript!./http/typeahead-http'),
-    'markup': require('!!prismjs-loader?lang=markup!./http/typeahead-http.html')
+    'code': require('!!raw-loader!./http/typeahead-http'),
+    'markup': require('!!raw-loader!./http/typeahead-http.html')
   },
   'template': {
-    'code': require('!!prismjs-loader?lang=typescript!./template/typeahead-template'),
-    'markup': require('!!prismjs-loader?lang=markup!./template/typeahead-template.html')
+    'code': require('!!raw-loader!./template/typeahead-template'),
+    'markup': require('!!raw-loader!./template/typeahead-template.html')
   },
   'config': {
-    'code': require('!!prismjs-loader?lang=typescript!./config/typeahead-config'),
-    'markup': require('!!prismjs-loader?lang=markup!./config/typeahead-config.html')
+    'code': require('!!raw-loader!./config/typeahead-config'),
+    'markup': require('!!raw-loader!./config/typeahead-config.html')
   }
 };
