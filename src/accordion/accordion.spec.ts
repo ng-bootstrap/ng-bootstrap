@@ -232,6 +232,35 @@ describe('ngb-accordion', () => {
     titles.forEach((title: HTMLElement, idx: number) => { expect(title.textContent.trim()).toBe(`Panel ${idx + 1}`); });
   });
 
+  it('should not pick up titles from nested accordions', () => {
+    const testHtml = `
+    <ngb-accordion activeIds="open_me">
+     <ngb-panel title="parent title" id="open_me">
+       <ng-template ngbPanelContent>
+         <ngb-accordion>
+           <ngb-panel>
+             <ng-template ngbPanelTitle>child title</ng-template>
+             <ng-template ngbPanelContent>child content</ng-template>
+           </ngb-panel>     
+          </ngb-accordion>
+       </ng-template>
+     </ngb-panel>     
+    </ngb-accordion>
+    `;
+    const fixture = createTestComponent(testHtml);
+    // additional change detection is required to reproduce the problem in the test environment
+    fixture.detectChanges();
+
+    const titles = getPanelsTitle(fixture.nativeElement);
+    const parentTitle = titles[0].textContent.trim();
+    const childTitle = titles[1].textContent.trim();
+
+    expect(parentTitle).toContain('parent title');
+    expect(parentTitle).not.toContain('child title');
+    expect(childTitle).toContain('child title');
+    expect(childTitle).not.toContain('parent title');
+  });
+
   it('should have the appropriate content', () => {
     const fixture = TestBed.createComponent(TestComponent);
     fixture.detectChanges();
