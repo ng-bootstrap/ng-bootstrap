@@ -136,6 +136,17 @@ describe('ngb-tooltip', () => {
       expect(getWindow(fixture.nativeElement)).toBeNull();
     });
 
+    it('should not open a tooltip if [disableTooltip] flag', () => {
+      const fixture = createTestComponent(`<div [ngbTooltip]="Disabled!" [disableTooltip]="true"></div>`);
+      const directive = fixture.debugElement.query(By.directive(NgbTooltip));
+
+      directive.triggerEventHandler('mouseenter', {});
+      fixture.detectChanges();
+      const windowEl = getWindow(fixture.nativeElement);
+
+      expect(windowEl).toBeNull();
+    });
+
     it('should allow re-opening previously closed tooltips', () => {
       const fixture = createTestComponent(`<div ngbTooltip="Great tip!"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbTooltip));
