@@ -169,6 +169,35 @@ describe('ngb-tabset', () => {
     expect(tabTitles[2].textContent).toMatch(/bazbaz/);
   });
 
+  it('should not pick up titles from nested tabsets', () => {
+    const testHtml = `
+    <ngb-tabset>
+      <ngb-tab title="parent">
+        <ng-template ngbTabContent>
+          <ngb-tabset>
+            <ngb-tab>
+              <ng-template ngbTabTitle>child</ng-template>
+              <ng-template ngbTabContent></ng-template>
+            </ngb-tab>
+          </ngb-tabset>        
+        </ng-template>
+      </ngb-tab>      
+    </ngb-tabset>        
+    `;
+    const fixture = createTestComponent(testHtml);
+    // additional change detection is required to reproduce the problem in the test environment
+    fixture.detectChanges();
+
+    const titles = getTabTitles(fixture.nativeElement);
+    const parentTitle = titles[0].textContent.trim();
+    const childTitle = titles[1].textContent.trim();
+
+    expect(parentTitle).toContain('parent');
+    expect(parentTitle).not.toContain('child');
+    expect(childTitle).toContain('child');
+    expect(childTitle).not.toContain('parent');
+  });
+
 
   it('should not crash for empty tabsets', () => {
     const fixture = createTestComponent(`<ngb-tabset activeId="2"></ngb-tabset>`);
