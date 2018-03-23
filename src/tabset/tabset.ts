@@ -109,7 +109,7 @@ export interface NgbTabChangeEvent {
           role="tabpanel"
           [attr.aria-labelledby]="tab.id" id="{{tab.id}}-panel"
           [attr.aria-expanded]="tab.id === activeId">
-          <ng-template [ngTemplateOutlet]="tab.contentTpl.templateRef"></ng-template>
+          <ng-template [ngTemplateOutlet]="tab.contentTpl?.templateRef"></ng-template>
         </div>
       </ng-template>
     </div>
