@@ -1,3 +1,9 @@
+<a name="1.0.4"></a>
+## [1.0.4](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.3...1.0.4) (2018-03-23)
+
+This release contains the same code as 1.0.3 but we need to push another version due to npm errors while publishing 1.0.3
+
+
 <a name="1.0.3"></a>
 ## [1.0.3](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.2...1.0.3) (2018-03-23)
 
