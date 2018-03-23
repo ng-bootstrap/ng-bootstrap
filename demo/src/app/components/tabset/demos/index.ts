@@ -13,31 +13,31 @@ export const DEMO_DIRECTIVES = [
 
 export const DEMO_SNIPPETS = {
   'basic': {
-    'code': require('!!prismjs-loader?lang=typescript!./basic/tabset-basic'),
-    'markup': require('!!prismjs-loader?lang=markup!./basic/tabset-basic.html')
+    'code': require('!!raw-loader!./basic/tabset-basic'),
+    'markup': require('!!raw-loader!./basic/tabset-basic.html')
   },
   'pills': {
-    'code': require('!!prismjs-loader?lang=typescript!./pills/tabset-pills'),
-    'markup': require('!!prismjs-loader?lang=markup!./pills/tabset-pills.html')
+    'code': require('!!raw-loader!./pills/tabset-pills'),
+    'markup': require('!!raw-loader!./pills/tabset-pills.html')
   },
   'preventchange': {
-    'code': require('!!prismjs-loader?lang=typescript!./preventchange/tabset-preventchange'),
-    'markup': require('!!prismjs-loader?lang=markup!./preventchange/tabset-preventchange.html')
+    'code': require('!!raw-loader!./preventchange/tabset-preventchange'),
+    'markup': require('!!raw-loader!./preventchange/tabset-preventchange.html')
   },
   'selectbyid': {
-    'code': require('!!prismjs-loader?lang=typescript!./selectbyid/tabset-selectbyid'),
-    'markup': require('!!prismjs-loader?lang=markup!./selectbyid/tabset-selectbyid.html')
+    'code': require('!!raw-loader!./selectbyid/tabset-selectbyid'),
+    'markup': require('!!raw-loader!./selectbyid/tabset-selectbyid.html')
   },
   'justify': {
-    'code': require('!!prismjs-loader?lang=typescript!./justify/tabset-justify'),
-    'markup': require('!!prismjs-loader?lang=markup!./justify/tabset-justify.html')
+    'code': require('!!raw-loader!./justify/tabset-justify'),
+    'markup': require('!!raw-loader!./justify/tabset-justify.html')
   },
   'orientation': {
-    'code': require('!!prismjs-loader?lang=typescript!./orientation/tabset-orientation'),
-    'markup': require('!!prismjs-loader?lang=markup!./orientation/tabset-orientation.html')
+    'code': require('!!raw-loader!./orientation/tabset-orientation'),
+    'markup': require('!!raw-loader!./orientation/tabset-orientation.html')
   },
   'config': {
-    'code': require('!!prismjs-loader?lang=typescript!./config/tabset-config'),
-    'markup': require('!!prismjs-loader?lang=markup!./config/tabset-config.html')
+    'code': require('!!raw-loader!./config/tabset-config'),
+    'markup': require('!!raw-loader!./config/tabset-config.html')
   }
 };

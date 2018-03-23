@@ -7,15 +7,15 @@ export const DEMO_DIRECTIVES = [NgbdDropdownBasic, NgbdDropdownConfig, NgbdDropd
 
 export const DEMO_SNIPPETS = {
   'basic': {
-    'code': require('!!prismjs-loader?lang=typescript!./basic/dropdown-basic'),
-    'markup': require('!!prismjs-loader?lang=markup!./basic/dropdown-basic.html')},
+    'code': require('!!raw-loader!./basic/dropdown-basic'),
+    'markup': require('!!raw-loader!./basic/dropdown-basic.html')},
   'config': {
-    'code': require('!!prismjs-loader?lang=typescript!./config/dropdown-config'),
-    'markup': require('!!prismjs-loader?lang=markup!./config/dropdown-config.html')},
+    'code': require('!!raw-loader!./config/dropdown-config'),
+    'markup': require('!!raw-loader!./config/dropdown-config.html')},
   'manual': {
-    'code': require('!!prismjs-loader?lang=typescript!./manual/dropdown-manual'),
-    'markup': require('!!prismjs-loader?lang=markup!./manual/dropdown-manual.html')},
+    'code': require('!!raw-loader!./manual/dropdown-manual'),
+    'markup': require('!!raw-loader!./manual/dropdown-manual.html')},
   'split': {
-    'code': require('!!prismjs-loader?lang=typescript!./split/dropdown-split'),
-    'markup': require('!!prismjs-loader?lang=markup!./split/dropdown-split.html')}
+    'code': require('!!raw-loader!./split/dropdown-split'),
+    'markup': require('!!raw-loader!./split/dropdown-split.html')}
 };

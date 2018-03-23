@@ -5,11 +5,11 @@ export const DEMO_DIRECTIVES = [NgbdCarouselBasic, NgbdCarouselConfig];
 
 export const DEMO_SNIPPETS = {
   'basic': {
-    'code': require('!!prismjs-loader?lang=typescript!./basic/carousel-basic'),
-    'markup': require('!!prismjs-loader?lang=markup!./basic/carousel-basic.html')
+    'code': require('!!raw-loader!./basic/carousel-basic'),
+    'markup': require('!!raw-loader!./basic/carousel-basic.html')
   },
   'config': {
-    'code': require('!!prismjs-loader?lang=typescript!./config/carousel-config'),
-    'markup': require('!!prismjs-loader?lang=markup!./config/carousel-config.html')
+    'code': require('!!raw-loader!./config/carousel-config'),
+    'markup': require('!!raw-loader!./config/carousel-config.html')
   }
 };

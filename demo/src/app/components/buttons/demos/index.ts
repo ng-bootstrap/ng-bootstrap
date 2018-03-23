@@ -7,15 +7,15 @@ export const DEMO_DIRECTIVES = [NgbdButtonsCheckbox, NgbdButtonsCheckboxreactive
 
 export const DEMO_SNIPPETS = {
   'checkbox': {
-    'code': require('!!prismjs-loader?lang=typescript!./checkbox/buttons-checkbox'),
-    'markup': require('!!prismjs-loader?lang=markup!./checkbox/buttons-checkbox.html')},
+    'code': require('!!raw-loader!./checkbox/buttons-checkbox'),
+    'markup': require('!!raw-loader!./checkbox/buttons-checkbox.html')},
   'checkboxreactive': {
-    'code': require('!!prismjs-loader?lang=typescript!./checkboxreactive/buttons-checkboxreactive'),
-      'markup': require('!!prismjs-loader?lang=markup!./checkboxreactive/buttons-checkboxreactive.html')},
+    'code': require('!!raw-loader!./checkboxreactive/buttons-checkboxreactive'),
+      'markup': require('!!raw-loader!./checkboxreactive/buttons-checkboxreactive.html')},
   'radio': {
-    'code': require('!!prismjs-loader?lang=typescript!./radio/buttons-radio'),
-    'markup': require('!!prismjs-loader?lang=markup!./radio/buttons-radio.html')},
+    'code': require('!!raw-loader!./radio/buttons-radio'),
+    'markup': require('!!raw-loader!./radio/buttons-radio.html')},
   'radioreactive': {
-    'code': require('!!prismjs-loader?lang=typescript!./radioreactive/buttons-radioreactive'),
-    'markup': require('!!prismjs-loader?lang=markup!./radioreactive/buttons-radioreactive.html')}
+    'code': require('!!raw-loader!./radioreactive/buttons-radioreactive'),
+    'markup': require('!!raw-loader!./radioreactive/buttons-radioreactive.html')}
 };
