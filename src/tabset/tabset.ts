@@ -48,8 +48,20 @@ export class NgbTab {
    */
   @Input() disabled = false;
 
-  @ContentChild(NgbTabContent) contentTpl: NgbTabContent;
-  @ContentChild(NgbTabTitle) titleTpl: NgbTabTitle;
+  titleTpl: NgbTabTitle | null;
+  contentTpl: NgbTabContent | null;
+
+  @ContentChildren(NgbTabTitle, {descendants: false}) titleTpls: QueryList<NgbTabTitle>;
+  @ContentChildren(NgbTabContent, {descendants: false}) contentTpls: QueryList<NgbTabContent>;
+
+  ngAfterContentChecked() {
+    // We are using @ContentChildren instead of @ContantChild as in the Angular version being used
+    // only @ContentChildren allows us to specify the {descendants: false} option.
+    // Without {descendants: false} we are hitting bugs described in:
+    // https://github.com/ng-bootstrap/ng-bootstrap/issues/2240
+    this.titleTpl = this.titleTpls.first;
+    this.contentTpl = this.contentTpls.first;
+  }
 }
 
 /**
