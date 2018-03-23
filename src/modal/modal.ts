@@ -48,6 +48,11 @@ export interface NgbModalOptions {
    * Custom class to append to the modal window
    */
   windowClass?: string;
+
+  /**
+   * Custom class to append to the modal backdrop
+   */
+  backdropClass?: string;
 }
 
 /**

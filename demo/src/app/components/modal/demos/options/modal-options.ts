@@ -14,6 +14,9 @@ import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
     .dark-modal .close {
       color: white;
     }
+    .light-blue-backdrop {
+      background-color: #5cb3fd;
+    }
   `]
 })
 export class NgbdModalOptions {
@@ -21,7 +24,11 @@ export class NgbdModalOptions {
 
   constructor(private modalService: NgbModal) {}
 
-  openCustomClass(content) {
+  openBackDropCustomClass(content) {
+    this.modalService.open(content, {backdropClass: 'light-blue-backdrop'});
+  }
+
+  openWindowCustomClass(content) {
     this.modalService.open(content, { windowClass: 'dark-modal' });
   }
 

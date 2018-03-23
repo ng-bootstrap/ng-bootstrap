@@ -22,6 +22,7 @@ import {NgbActiveModal, NgbModalRef} from './modal-ref';
 export class NgbModalStack {
   private _document: any;
   private _windowAttributes = ['backdrop', 'centered', 'keyboard', 'size', 'windowClass'];
+  private _backdropAttributes = ['backdropClass'];
 
   constructor(
       private _applicationRef: ApplicationRef, private _injector: Injector,
@@ -49,6 +50,10 @@ export class NgbModalStack {
     activeModal.dismiss = (reason: any) => { ngbModalRef.dismiss(reason); };
 
     this._applyWindowOptions(windowCmptRef.instance, options);
+
+    if (backdropCmptRef && backdropCmptRef.instance) {
+      this._applyBackdropOptions(backdropCmptRef.instance, options);
+    }
     return ngbModalRef;
   }
 
@@ -73,6 +78,14 @@ export class NgbModalStack {
     this._windowAttributes.forEach((optionName: string) => {
       if (isDefined(options[optionName])) {
         windowInstance[optionName] = options[optionName];
+      }
+    });
+  }
+
+  private _applyBackdropOptions(backdropInstance: NgbModalBackdrop, options: Object): void {
+    this._backdropAttributes.forEach((optionName: string) => {
+      if (isDefined(options[optionName])) {
+        backdropInstance[optionName] = options[optionName];
       }
     });
   }
