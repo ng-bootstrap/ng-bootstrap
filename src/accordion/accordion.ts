@@ -1,7 +1,6 @@
 import {
   AfterContentChecked,
   Component,
-  ContentChild,
   ContentChildren,
   Directive,
   EventEmitter,
@@ -38,7 +37,7 @@ export class NgbPanelContent {
  * content
  */
 @Directive({selector: 'ngb-panel'})
-export class NgbPanel {
+export class NgbPanel implements AfterContentChecked {
   /**
    *  A flag determining whether the panel is disabled or not.
    *  When disabled, the panel cannot be toggled.
@@ -68,8 +67,20 @@ export class NgbPanel {
    */
   @Input() type: string;
 
-  @ContentChild(NgbPanelContent) contentTpl: NgbPanelContent;
-  @ContentChild(NgbPanelTitle) titleTpl: NgbPanelTitle;
+  titleTpl: NgbPanelTitle | null;
+  contentTpl: NgbPanelContent | null;
+
+  @ContentChildren(NgbPanelTitle, {descendants: false}) titleTpls: QueryList<NgbPanelTitle>;
+  @ContentChildren(NgbPanelContent, {descendants: false}) contentTpls: QueryList<NgbPanelContent>;
+
+  ngAfterContentChecked() {
+    // We are using @ContentChildren instead of @ContantChild as in the Angular version being used
+    // only @ContentChildren allows us to specify the {descendants: false} option.
+    // Without {descendants: false} we are hitting bugs described in:
+    // https://github.com/ng-bootstrap/ng-bootstrap/issues/2240
+    this.titleTpl = this.titleTpls.first;
+    this.contentTpl = this.contentTpls.first;
+  }
 }
 
 /**
