@@ -147,6 +147,17 @@ describe('ngb-popover', () => {
       expect(spyService.called).toBeTruthy();
     });
 
+    it('should not open a popover if [disablePopover] flag', () => {
+      const fixture = createTestComponent(`<div [ngbPopover]="Disabled!" [disablePopover]="true"></div>`);
+      const directive = fixture.debugElement.query(By.directive(NgbPopover));
+
+      directive.triggerEventHandler('click', {});
+      fixture.detectChanges();
+      const windowEl = getWindow(fixture.nativeElement);
+
+      expect(windowEl).toBeNull();
+    });
+
     it('should allow re-opening previously closed popovers', () => {
       const fixture = createTestComponent(`<div ngbPopover="Great tip!" popoverTitle="Title"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbPopover));
