@@ -19,6 +19,9 @@ import {DEMO_SNIPPETS} from './demos';
       <ngbd-example-box demoTitle="Modal with custom class" [snippets]="snippets" component="modal" demo="customclass">
           <ngbd-modal-customclass></ngbd-modal-customclass>
       </ngbd-example-box>
+      <ngbd-example-box demoTitle="Modal draggable" [snippets]="snippets" component="modal" demo="draggable">
+          <ngbd-modal-draggable></ngbd-modal-draggable>
+      </ngbd-example-box>
     </ngbd-component-wrapper>
   `
 })

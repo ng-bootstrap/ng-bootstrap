@@ -1,8 +1,9 @@
 import {NgbdModalBasic} from './basic/modal-basic';
 import {NgbdModalComponent, NgbdModalContent} from './component/modal-component';
 import {NgbdModalCustomclass} from './customclass/modal-customclass';
+import {NgbdModalDraggable} from './draggable/modal-draggable';
 
-export const DEMO_DIRECTIVES = [NgbdModalBasic, NgbdModalComponent, NgbdModalCustomclass];
+export const DEMO_DIRECTIVES = [NgbdModalBasic, NgbdModalComponent, NgbdModalCustomclass, NgbdModalDraggable];
 export {NgbdModalContent} from './component/modal-component';
 
 export const DEMO_SNIPPETS = {
@@ -14,5 +15,8 @@ export const DEMO_SNIPPETS = {
     'markup': require('!!prismjs-loader?lang=markup!./component/modal-component.html')},
   'customclass': {
     'code': require('!!prismjs-loader?lang=typescript!./customclass/modal-customclass'),
-    'markup': require('!!prismjs-loader?lang=markup!./customclass/modal-customclass.html')}
+    'markup': require('!!prismjs-loader?lang=markup!./customclass/modal-customclass.html')},
+  'draggable': {
+    'code': require('!!prismjs-loader?lang=typescript!./draggable/modal-draggable'),
+    'markup': require('!!prismjs-loader?lang=markup!./draggable/modal-draggable.html')}
 };
