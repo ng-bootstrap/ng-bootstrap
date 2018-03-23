@@ -261,6 +261,20 @@ describe('ngb-accordion', () => {
     expect(childTitle).not.toContain('parent title');
   });
 
+  it('should not crash for an empty accordion', () => {
+    const fixture = createTestComponent('<ngb-accordion></ngb-accordion>');
+    expect(getPanels(fixture.nativeElement).length).toBe(0);
+  });
+
+  it('should not crash for panels without content', () => {
+    const fixture =
+        createTestComponent('<ngb-accordion activeIds="open_me"><ngb-panel id="open_me"></ngb-panel></ngb-accordion>');
+    const panelsContent = getPanelsContent(fixture.nativeElement);
+
+    expect(panelsContent.length).toBe(1);
+    expect(panelsContent[0].textContent.trim()).toBe('');
+  });
+
   it('should have the appropriate content', () => {
     const fixture = TestBed.createComponent(TestComponent);
     fixture.detectChanges();
