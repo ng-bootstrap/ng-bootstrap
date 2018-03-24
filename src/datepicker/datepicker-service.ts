@@ -17,7 +17,7 @@ import {
   nextMonthDisabled
 } from './datepicker-tools';
 
-import {filter} from 'rxjs/operator/filter';
+import {filter} from 'rxjs/operators';
 import {Observable} from 'rxjs/Observable';
 
 @Injectable()
@@ -39,11 +39,9 @@ export class NgbDatepickerService {
     selectedDate: null
   };
 
-  get model$(): Observable<DatepickerViewModel> {
-    return filter.call(this._model$.asObservable(), model => model.months.length > 0);
-  }
+  get model$(): Observable<DatepickerViewModel> { return this._model$.pipe(filter(model => model.months.length > 0)); }
 
-  get select$(): Observable<NgbDate> { return filter.call(this._select$.asObservable(), date => date !== null); }
+  get select$(): Observable<NgbDate> { return this._select$.pipe(filter(date => date !== null)); }
 
   set disabled(disabled: boolean) {
     if (this._state.disabled !== disabled) {

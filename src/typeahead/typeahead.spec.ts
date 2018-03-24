@@ -7,14 +7,11 @@ import {Validators, FormControl, FormGroup, FormsModule, ReactiveFormsModule} fr
 import {By} from '@angular/platform-browser';
 import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/merge';
-import 'rxjs/add/operator/filter';
 
 import {NgbTypeahead} from './typeahead';
 import {NgbTypeaheadModule} from './typeahead.module';
 import {NgbTypeaheadConfig} from './typeahead-config';
+import {debounceTime, filter, map, merge} from 'rxjs/operators';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -1051,19 +1048,21 @@ class TestComponent {
   click$ = new Subject<string>();
 
   find = (text$: Observable<string>) => {
-    this.findOutput$ = text$.merge(this.focus$)
-                           .merge(this.click$.filter(() => !this.typeahead.isPopupOpen()))
-                           .map(text => this._strings.filter(v => v.startsWith(text)));
+    this.findOutput$ = text$.pipe(
+        merge(this.focus$), merge(this.click$.pipe(filter(() => !this.typeahead.isPopupOpen()))),
+        map(text => this._strings.filter(v => v.startsWith(text))));
     return this.findOutput$;
   };
 
-  findAnywhere =
-      (text$: Observable<string>) => { return text$.map(text => this._strings.filter(v => v.indexOf(text) > -1)); };
+  findAnywhere = (text$: Observable<string>) => {
+    return text$.pipe(map(text => this._strings.filter(v => v.indexOf(text) > -1)));
+  };
 
-  findNothing = (text$: Observable<string>) => { return text$.map(text => []); };
+  findNothing = (text$: Observable<string>) => { return text$.pipe(map(text => [])); };
 
-  findObjects =
-      (text$: Observable<string>) => { return text$.map(text => this._objects.filter(v => v.value.startsWith(text))); };
+  findObjects = (text$: Observable<string>) => {
+    return text$.pipe(map(text => this._objects.filter(v => v.value.startsWith(text))));
+  };
 
   formatter = (obj: {id: number, value: string}) => { return `${obj.id} ${obj.value}`; };
 
@@ -1080,7 +1079,7 @@ class TestOnPushComponent {
   private _strings = ['one', 'one more', 'two', 'three'];
 
   find = (text$: Observable<string>) => {
-    return text$.debounceTime(200).map(text => this._strings.filter(v => v.startsWith(text)));
+    return text$.pipe(debounceTime(200), map(text => this._strings.filter(v => v.startsWith(text))));
   };
 }
 
@@ -1089,6 +1088,6 @@ class TestAsyncComponent {
   private _strings = ['one', 'one more', 'two', 'three'];
 
   find = (text$: Observable<string>) => {
-    return text$.debounceTime(200).map(text => this._strings.filter(v => v.startsWith(text)));
+    return text$.pipe(debounceTime(200), map(text => this._strings.filter(v => v.startsWith(text))));
   };
 }
