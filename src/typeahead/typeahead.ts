@@ -25,7 +25,7 @@ import {NgbTypeaheadWindow, ResultTemplateContext} from './typeahead-window';
 import {PopupService} from '../util/popup';
 import {toString, isDefined} from '../util/util';
 import {NgbTypeaheadConfig} from './typeahead-config';
-import {switchMap, tap} from 'rxjs/operators';
+import {map, switchMap, tap} from 'rxjs/operators';
 
 enum Key {
   Tab = 9,
@@ -163,7 +163,8 @@ export class NgbTypeahead implements ControlValueAccessor,
     this.showHint = config.showHint;
     this.placement = config.placement;
 
-    this._valueChanges = fromEvent(_elementRef.nativeElement, 'input', ($event) => $event.target.value);
+    this._valueChanges = fromEvent<Event>(_elementRef.nativeElement, 'input')
+                             .pipe(map($event => ($event.target as HTMLInputElement).value));
 
     this._resubscribeTypeahead = new BehaviorSubject(null);
 
