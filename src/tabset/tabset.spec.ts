@@ -201,8 +201,12 @@ describe('ngb-tabset', () => {
 
   it('should not crash for empty tabsets', () => {
     const fixture = createTestComponent(`<ngb-tabset activeId="2"></ngb-tabset>`);
-
     expectTabs(fixture.nativeElement, []);
+  });
+
+  it('should not crash for tabsets with empty tab content', () => {
+    const fixture = createTestComponent(`<ngb-tabset><ngb-tab></ngb-tab></ngb-tabset>`);
+    expectTabs(fixture.nativeElement, [true]);
   });
 
 
