@@ -562,6 +562,21 @@ describe('ngb-pagination', () => {
 
          expect(fixture.componentInstance.onPageChange).not.toHaveBeenCalled();
        }));
+
+    it('should not emit "pageChange" when collection size is not set', fakeAsync(() => {
+         const html = `<ngb-pagination [page]="page" (pageChange)="onPageChange($event)"></ngb-pagination>`;
+         const fixture = createTestComponent(html);
+         tick();
+
+         spyOn(fixture.componentInstance, 'onPageChange');
+
+         fixture.componentInstance.page = 5;
+         fixture.detectChanges();
+         tick();
+
+         expect(fixture.componentInstance.onPageChange).not.toHaveBeenCalled();
+       }));
+
     it('should set classes correctly for disabled state', fakeAsync(() => {
          const html = `<ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize" [maxSize]="maxSize"
          [disabled]=true></ngb-pagination>`;
