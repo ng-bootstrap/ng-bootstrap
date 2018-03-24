@@ -1,5 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
+var rxPaths = require('rxjs/_esm5/path-mapping');
 
 // Webpack Plugins
 var CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin;
@@ -60,6 +61,11 @@ module.exports = function makeWebpackConfig() {
     chunkFilename: isProd ? '[id].[hash].chunk.js' : '[id].chunk.js'
   };
 
+  // allow tree shaking of pipeable operators.
+  // See https://github.com/ReactiveX/rxjs/blob/master/doc/pipeable-operators.md#build-and-treeshaking
+  var alias = rxPaths();
+  alias['@ng-bootstrap/ng-bootstrap'] = root('src/index.ts');
+
   /**
    * Resolve
    * Reference: https://webpack.js.org/configuration/resolve/
@@ -69,9 +75,7 @@ module.exports = function makeWebpackConfig() {
     // only discover files that have those extensions
     extensions: ['.ts', '.js', '.css', '.scss', '.html'],
 
-    alias: {
-      '@ng-bootstrap/ng-bootstrap': root('src/index.ts')
-    }
+    alias: alias
   };
 
   /**

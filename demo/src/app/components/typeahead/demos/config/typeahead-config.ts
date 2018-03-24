@@ -1,9 +1,7 @@
 import {Component} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {NgbTypeaheadConfig} from '@ng-bootstrap/ng-bootstrap';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
+import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
 
 const states = ['Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Arkansas', 'California', 'Colorado',
   'Connecticut', 'Delaware', 'District Of Columbia', 'Federated States Of Micronesia', 'Florida', 'Georgia',
@@ -29,9 +27,10 @@ export class NgbdTypeaheadConfig {
   }
 
   search = (text$: Observable<string>) =>
-    text$
-      .debounceTime(200)
-      .distinctUntilChanged()
-      .map(term => term.length < 2 ? []
-        : states.filter(v => v.toLowerCase().startsWith(term.toLocaleLowerCase())).splice(0, 10));
+    text$.pipe(
+      debounceTime(200),
+      distinctUntilChanged(),
+      map(term => term.length < 2 ? []
+        : states.filter(v => v.toLowerCase().startsWith(term.toLocaleLowerCase())).splice(0, 10))
+    );
 }
