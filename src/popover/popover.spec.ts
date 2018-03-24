@@ -147,6 +147,17 @@ describe('ngb-popover', () => {
       expect(spyService.called).toBeTruthy();
     });
 
+    it('should not open a popover if content and title are empty', () => {
+      const fixture = createTestComponent(`<div [ngbPopover]="" [popoverTitle]=""></div>`);
+      const directive = fixture.debugElement.query(By.directive(NgbPopover));
+
+      directive.triggerEventHandler('click', {});
+      fixture.detectChanges();
+      const windowEl = getWindow(fixture.nativeElement);
+
+      expect(windowEl).toBeNull();
+    });
+
     it('should not open a popover if [disablePopover] flag', () => {
       const fixture = createTestComponent(`<div [ngbPopover]="Disabled!" [disablePopover]="true"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbPopover));
@@ -156,6 +167,44 @@ describe('ngb-popover', () => {
       const windowEl = getWindow(fixture.nativeElement);
 
       expect(windowEl).toBeNull();
+    });
+
+    it('should close the popover if content and title become empty', () => {
+      const fixture = createTestComponent(`<div [ngbPopover]="name" [popoverTitle]="title"></div>`);
+      const directive = fixture.debugElement.query(By.directive(NgbPopover));
+
+      directive.triggerEventHandler('click', {});
+      fixture.detectChanges();
+      expect(getWindow(fixture.nativeElement)).not.toBeNull();
+
+      fixture.componentInstance.name = '';
+      fixture.componentInstance.title = '';
+      fixture.detectChanges();
+      expect(getWindow(fixture.nativeElement)).toBeNull();
+    });
+
+    it('should open the popover if content is empty but title has value', () => {
+      const fixture = createTestComponent(`<div [ngbPopover]="" popoverTitle="title"></div>`);
+      const directive = fixture.debugElement.query(By.directive(NgbPopover));
+
+      directive.triggerEventHandler('click', {});
+      fixture.detectChanges();
+      const windowEl = getWindow(fixture.nativeElement);
+
+      expect(windowEl).not.toBeNull();
+    });
+
+    it('should not close the popover if content becomes empty but title has value', () => {
+      const fixture = createTestComponent(`<div [ngbPopover]="name" popoverTitle="title"></div>`);
+      const directive = fixture.debugElement.query(By.directive(NgbPopover));
+
+      directive.triggerEventHandler('click', {});
+      fixture.detectChanges();
+      expect(getWindow(fixture.nativeElement)).not.toBeNull();
+
+      fixture.componentInstance.name = '';
+      fixture.detectChanges();
+      expect(getWindow(fixture.nativeElement)).not.toBeNull();
     });
 
     it('should allow re-opening previously closed popovers', () => {
