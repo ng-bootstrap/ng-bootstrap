@@ -102,6 +102,10 @@ export class NgbTooltip implements OnInit, OnDestroy {
    */
   @Input() container: string;
   /**
+   * A flag indicating if a given tooltip is disabled and should not be displayed.
+   */
+  @Input() disableTooltip: boolean;
+  /**
    * Emits an event when the tooltip is shown
    */
   @Output() shown = new EventEmitter();
@@ -124,6 +128,7 @@ export class NgbTooltip implements OnInit, OnDestroy {
     this.placement = config.placement;
     this.triggers = config.triggers;
     this.container = config.container;
+    this.disableTooltip = config.disableTooltip;
     this._popupService = new PopupService<NgbTooltipWindow>(
         NgbTooltipWindow, injector, viewContainerRef, _renderer, componentFactoryResolver);
 
@@ -155,7 +160,7 @@ export class NgbTooltip implements OnInit, OnDestroy {
    * The context is an optional value to be injected into the tooltip template when it is created.
    */
   open(context?: any) {
-    if (!this._windowRef && this._ngbTooltip) {
+    if (!this._windowRef && this._ngbTooltip && !this.disableTooltip) {
       this._windowRef = this._popupService.open(this._ngbTooltip, context);
       this._windowRef.instance.id = this._ngbTooltipWindowId;
 
