@@ -239,17 +239,9 @@ export class NgbDatepicker implements OnDestroy,
       private _keyMapService: NgbDatepickerKeyMapService, public _service: NgbDatepickerService,
       private _calendar: NgbCalendar, public i18n: NgbDatepickerI18n, config: NgbDatepickerConfig,
       private _cd: ChangeDetectorRef, private _elementRef: ElementRef, private _ngbDateAdapter: NgbDateAdapter<any>) {
-    this.dayTemplate = config.dayTemplate;
-    this.displayMonths = config.displayMonths;
-    this.firstDayOfWeek = config.firstDayOfWeek;
-    this.markDisabled = config.markDisabled;
-    this.minDate = config.minDate;
-    this.maxDate = config.maxDate;
-    this.navigation = config.navigation;
-    this.outsideDays = config.outsideDays;
-    this.showWeekdays = config.showWeekdays;
-    this.showWeekNumbers = config.showWeekNumbers;
-    this.startDate = config.startDate;
+    ['dayTemplate', 'displayMonths', 'firstDayOfWeek', 'markDisabled', 'minDate', 'maxDate', 'navigation',
+     'outsideDays', 'showWeekdays', 'showWeekNumbers', 'startDate']
+        .forEach(input => this[input] = config[input]);
 
     this._selectSubscription = _service.select$.subscribe(date => { this.select.emit(date.toStruct()); });
 
@@ -298,36 +290,18 @@ export class NgbDatepicker implements OnDestroy,
 
   ngOnInit() {
     if (this.model === undefined) {
-      this._service.displayMonths = toInteger(this.displayMonths);
-      this._service.markDisabled = this.markDisabled;
-      this._service.firstDayOfWeek = this.firstDayOfWeek;
-      this._service.navigation = this.navigation;
-      this._service.minDate = NgbDate.from(this.minDate);
-      this._service.maxDate = NgbDate.from(this.maxDate);
+      ['displayMonths', 'markDisabled', 'firstDayOfWeek', 'navigation', 'minDate', 'maxDate'].forEach(
+          input => this._service[input] = this[input]);
       this.navigateTo(this.startDate);
     }
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['displayMonths']) {
-      this._service.displayMonths = toInteger(this.displayMonths);
-    }
-    if (changes['markDisabled']) {
-      this._service.markDisabled = this.markDisabled;
-    }
-    if (changes['firstDayOfWeek']) {
-      this._service.firstDayOfWeek = this.firstDayOfWeek;
-    }
-    if (changes['navigation']) {
-      this._service.navigation = this.navigation;
-    }
-    if (changes['minDate']) {
-      this._service.minDate = NgbDate.from(this.minDate);
-    }
-    if (changes['maxDate']) {
-      this._service.maxDate = NgbDate.from(this.maxDate);
-    }
-    if (changes['startDate']) {
+    ['displayMonths', 'markDisabled', 'firstDayOfWeek', 'navigation', 'minDate', 'maxDate']
+        .filter(input => input in changes)
+        .forEach(input => this._service[input] = this[input]);
+
+    if ('startDate' in changes) {
       this.navigateTo(this.startDate);
     }
   }

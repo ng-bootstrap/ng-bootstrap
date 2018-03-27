@@ -219,17 +219,17 @@ describe('ngb-datepicker', () => {
 
     expectMinDate(2010, 1);
 
-    // ignored
+    // resetting
     fixture.componentInstance.minDate = <any>{};
-    expectMinDate(2010, 1);
+    expectMinDate(1000, 1);
 
-    // ignored
+    // resetting
     fixture.componentInstance.minDate = <any>new Date();
-    expectMinDate(2010, 1);
+    expectMinDate(1000, 1);
 
-    // ignored
+    // resetting
     fixture.componentInstance.minDate = new NgbDate(3000000, 1, 1);
-    expectMinDate(2010, 1);
+    expectMinDate(1000, 1);
 
     // resetting
     fixture.componentInstance.minDate = null;
@@ -252,17 +252,17 @@ describe('ngb-datepicker', () => {
 
     expectMaxDate(2020, 12);
 
-    // ignored
+    // resetting
     fixture.componentInstance.maxDate = <any>{};
-    expectMaxDate(2020, 12);
+    expectMaxDate(10000, 1);
 
-    // ignored
+    // resetting
     fixture.componentInstance.maxDate = <any>new Date();
-    expectMaxDate(2020, 12);
+    expectMaxDate(10000, 1);
 
-    // ignored
+    // resetting
     fixture.componentInstance.maxDate = new NgbDate(3000000, 1, 1);
-    expectMaxDate(2020, 12);
+    expectMaxDate(10000, 1);
 
     // resetting
     fixture.componentInstance.maxDate = null;

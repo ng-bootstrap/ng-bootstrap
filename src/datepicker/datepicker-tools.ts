@@ -1,5 +1,5 @@
 import {NgbDate} from './ngb-date';
-import {DayViewModel, MonthViewModel, NgbMarkDisabled} from './datepicker-view-model';
+import {DatepickerViewModel, DayViewModel, MonthViewModel} from './datepicker-view-model';
 import {NgbCalendar} from './ngb-calendar';
 import {isDefined} from '../util/util';
 
@@ -28,12 +28,12 @@ export function checkDateInRange(date: NgbDate, minDate: NgbDate, maxDate: NgbDa
   return date;
 }
 
-export function isDateSelectable(
-    date: NgbDate, minDate: NgbDate, maxDate: NgbDate, isDisabled: boolean, markDisabled?: NgbMarkDisabled) {
+export function isDateSelectable(date: NgbDate, state: DatepickerViewModel) {
+  const {minDate, maxDate, disabled, markDisabled} = state;
   // clang-format off
   return !(
     !isDefined(date) ||
-    isDisabled ||
+    disabled ||
     (markDisabled && markDisabled(date, {year: date.year, month: date.month})) ||
     (minDate && date.before(minDate)) ||
     (maxDate && date.after(maxDate))
@@ -83,15 +83,15 @@ export function prevMonthDisabled(calendar: NgbCalendar, date: NgbDate, minDate:
 }
 
 export function buildMonths(
-    calendar: NgbCalendar, months: MonthViewModel[], date: NgbDate, minDate: NgbDate, maxDate: NgbDate,
-    displayMonths: number, firstDayOfWeek: number, markDisabled: NgbMarkDisabled, force: boolean): MonthViewModel[] {
+    calendar: NgbCalendar, date: NgbDate, state: DatepickerViewModel, force: boolean): MonthViewModel[] {
+  const {displayMonths, months} = state;
   const newMonths = [];
   for (let i = 0; i < displayMonths; i++) {
     const newDate = calendar.getNext(date, 'm', i);
     const index = months.findIndex(month => month.firstDate.equals(newDate));
 
     if (force || index === -1) {
-      newMonths.push(buildMonth(calendar, newDate, minDate, maxDate, firstDayOfWeek, markDisabled));
+      newMonths.push(buildMonth(calendar, newDate, state));
     } else {
       newMonths.push(months[index]);
     }
@@ -100,9 +100,8 @@ export function buildMonths(
   return newMonths;
 }
 
-export function buildMonth(
-    calendar: NgbCalendar, date: NgbDate, minDate: NgbDate, maxDate: NgbDate, firstDayOfWeek: number,
-    markDisabled: NgbMarkDisabled): MonthViewModel {
+export function buildMonth(calendar: NgbCalendar, date: NgbDate, state: DatepickerViewModel): MonthViewModel {
+  const {minDate, maxDate, firstDayOfWeek, markDisabled} = state;
   const month:
       MonthViewModel = {firstDate: null, lastDate: null, number: date.month, year: date.year, weeks: [], weekdays: []};
 
