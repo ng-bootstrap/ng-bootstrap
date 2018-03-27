@@ -216,7 +216,11 @@ export class NgbTypeahead implements ControlValueAccessor,
   }
 
   onDocumentClick(event) {
-    if (event.target !== this._elementRef.nativeElement) {
+    if (event.target !== this._elementRef.nativeElement &&
+      (!this._windowRef ||
+       !this._windowRef.location ||
+       !this._windowRef.location.nativeElement ||
+       !this._elementClassNameContains(event.target, this._windowRef.location.nativeElement.className))) {
       this.dismissPopup();
     }
   }
@@ -275,6 +279,19 @@ export class NgbTypeahead implements ControlValueAccessor,
           break;
       }
     }
+  }
+
+  private _elementClassNameContains(element: any, className: string): boolean {
+    if (!element) {
+      return false;
+    }
+
+    if (element.className &&
+        element.className === className) {
+      return true;
+    }
+
+    return this._elementClassNameContains(element.parentElement, className);
   }
 
   private _openPopup() {
