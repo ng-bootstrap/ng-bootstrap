@@ -320,23 +320,50 @@ describe(`datepicker-tools`, () => {
     });
 
     const months = [
-      {date: new NgbDate(2017, 1, 10), first: new NgbDate(2016, 12, 26)},
-      {date: new NgbDate(2017, 2, 10), first: new NgbDate(2017, 1, 30)},
-      {date: new NgbDate(2017, 3, 10), first: new NgbDate(2017, 2, 27)},
-      {date: new NgbDate(2017, 4, 10), first: new NgbDate(2017, 3, 27)},
-      {date: new NgbDate(2017, 5, 10), first: new NgbDate(2017, 5, 1)},
-      {date: new NgbDate(2017, 6, 10), first: new NgbDate(2017, 5, 29)},
-      {date: new NgbDate(2017, 7, 10), first: new NgbDate(2017, 6, 26)},
-      {date: new NgbDate(2017, 8, 10), first: new NgbDate(2017, 7, 31)},
-      {date: new NgbDate(2017, 9, 10), first: new NgbDate(2017, 8, 28)},
-      {date: new NgbDate(2017, 10, 10), first: new NgbDate(2017, 9, 25)},
-      {date: new NgbDate(2017, 11, 10), first: new NgbDate(2017, 10, 30)},
-      {date: new NgbDate(2017, 12, 10), first: new NgbDate(2017, 11, 27)}
+      // Mon
+      {start: 1, date: new NgbDate(2017, 1, 10), first: new NgbDate(2016, 12, 26)},
+      {start: 1, date: new NgbDate(2017, 2, 10), first: new NgbDate(2017, 1, 30)},
+      {start: 1, date: new NgbDate(2017, 3, 10), first: new NgbDate(2017, 2, 27)},
+      {start: 1, date: new NgbDate(2017, 4, 10), first: new NgbDate(2017, 3, 27)},
+      {start: 1, date: new NgbDate(2017, 5, 10), first: new NgbDate(2017, 5, 1)},
+      {start: 1, date: new NgbDate(2017, 6, 10), first: new NgbDate(2017, 5, 29)},
+      {start: 1, date: new NgbDate(2017, 7, 10), first: new NgbDate(2017, 6, 26)},
+      {start: 1, date: new NgbDate(2017, 8, 10), first: new NgbDate(2017, 7, 31)},
+      {start: 1, date: new NgbDate(2017, 9, 10), first: new NgbDate(2017, 8, 28)},
+      {start: 1, date: new NgbDate(2017, 10, 10), first: new NgbDate(2017, 9, 25)},
+      {start: 1, date: new NgbDate(2017, 11, 10), first: new NgbDate(2017, 10, 30)},
+      {start: 1, date: new NgbDate(2017, 12, 10), first: new NgbDate(2017, 11, 27)},
+      // Sun
+      {start: 7, date: new NgbDate(2017, 1, 10), first: new NgbDate(2017, 1, 1)},
+      {start: 7, date: new NgbDate(2017, 2, 10), first: new NgbDate(2017, 1, 29)},
+      {start: 7, date: new NgbDate(2017, 3, 10), first: new NgbDate(2017, 2, 26)},
+      {start: 7, date: new NgbDate(2017, 4, 10), first: new NgbDate(2017, 3, 26)},
+      {start: 7, date: new NgbDate(2017, 5, 10), first: new NgbDate(2017, 4, 30)},
+      {start: 7, date: new NgbDate(2017, 6, 10), first: new NgbDate(2017, 5, 28)},
+      {start: 7, date: new NgbDate(2017, 7, 10), first: new NgbDate(2017, 6, 25)},
+      {start: 7, date: new NgbDate(2017, 8, 10), first: new NgbDate(2017, 7, 30)},
+      {start: 7, date: new NgbDate(2017, 9, 10), first: new NgbDate(2017, 8, 27)},
+      {start: 7, date: new NgbDate(2017, 10, 10), first: new NgbDate(2017, 10, 1)},
+      {start: 7, date: new NgbDate(2017, 11, 10), first: new NgbDate(2017, 10, 29)},
+      {start: 7, date: new NgbDate(2017, 12, 10), first: new NgbDate(2017, 11, 26)},
+      // Wed
+      {start: 3, date: new NgbDate(2017, 1, 10), first: new NgbDate(2016, 12, 28)},
+      {start: 3, date: new NgbDate(2017, 2, 10), first: new NgbDate(2017, 2, 1)},
+      {start: 3, date: new NgbDate(2017, 3, 10), first: new NgbDate(2017, 3, 1)},
+      {start: 3, date: new NgbDate(2017, 4, 10), first: new NgbDate(2017, 3, 29)},
+      {start: 3, date: new NgbDate(2017, 5, 10), first: new NgbDate(2017, 4, 26)},
+      {start: 3, date: new NgbDate(2017, 6, 10), first: new NgbDate(2017, 5, 31)},
+      {start: 3, date: new NgbDate(2017, 7, 10), first: new NgbDate(2017, 6, 28)},
+      {start: 3, date: new NgbDate(2017, 8, 10), first: new NgbDate(2017, 7, 26)},
+      {start: 3, date: new NgbDate(2017, 9, 10), first: new NgbDate(2017, 8, 30)},
+      {start: 3, date: new NgbDate(2017, 10, 10), first: new NgbDate(2017, 9, 27)},
+      {start: 3, date: new NgbDate(2017, 11, 10), first: new NgbDate(2017, 11, 1)},
+      {start: 3, date: new NgbDate(2017, 12, 10), first: new NgbDate(2017, 11, 29)}
     ];
 
     months.forEach(month => {
       it(`should return the correct first view date`,
-         () => { expect(getFirstViewDate(calendar, month.date, 1)).toEqual(month.first); });
+         () => { expect(getFirstViewDate(calendar, month.date, month.start)).toEqual(month.first); });
     });
   });
 

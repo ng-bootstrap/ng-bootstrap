@@ -159,21 +159,8 @@ export function buildMonth(
 }
 
 export function getFirstViewDate(calendar: NgbCalendar, date: NgbDate, firstDayOfWeek: number): NgbDate {
-  const currentMonth = date.month;
-  let today = new NgbDate(date.year, date.month, date.day);
-  let yesterday = calendar.getPrev(today);
-
-  const firstDayOfCurrentMonthIsAlsoFirstDayOfWeek =
-      () => { return today.month !== yesterday.month && firstDayOfWeek === calendar.getWeekday(today); };
-
-  const reachedTheFirstDayOfTheLastWeekOfPreviousMonth =
-      () => { return today.month !== currentMonth && firstDayOfWeek === calendar.getWeekday(today); };
-
-  // going back in time
-  while (!reachedTheFirstDayOfTheLastWeekOfPreviousMonth() && !firstDayOfCurrentMonthIsAlsoFirstDayOfWeek()) {
-    today = new NgbDate(yesterday.year, yesterday.month, yesterday.day);
-    yesterday = calendar.getPrev(yesterday);
-  }
-
-  return today;
+  const daysPerWeek = calendar.getDaysPerWeek();
+  const firstMonthDate = new NgbDate(date.year, date.month, 1);
+  const dayOfWeek = calendar.getWeekday(firstMonthDate) % daysPerWeek;
+  return calendar.getPrev(firstMonthDate, 'd', (daysPerWeek + dayOfWeek - firstDayOfWeek) % daysPerWeek);
 }
