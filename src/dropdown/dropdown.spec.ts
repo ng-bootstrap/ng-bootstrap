@@ -1,4 +1,4 @@
-import {TestBed, ComponentFixture, inject} from '@angular/core/testing';
+import {ComponentFixture, inject, TestBed} from '@angular/core/testing';
 import {createGenericTestComponent} from '../test/common';
 
 import {Component} from '@angular/core';
@@ -53,7 +53,26 @@ describe('ngb-dropdown', () => {
     TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbDropdownModule.forRoot()]});
   });
 
-  it('should be closed and down by default', () => {
+  it('should be closed and down by default by a random click', () => {
+    const html = `
+      <div ngbDropdown [open]="true">
+          <div ngbDropdownMenu>
+            <a class="dropdown-item">dropDown item</a>
+            <a class="dropdown-item">dropDown item</a>
+          </div>
+      </div>`;
+
+    const fixture = createTestComponent(html);
+    const compiled = fixture.nativeElement;
+
+    expect(compiled).toBeShown();
+
+    document.body.click();
+
+    expect(compiled).not.toBeShown();
+  });
+
+  it('should be closed by an outside click by default', () => {
     const html = `
       <div ngbDropdown>
           <div ngbDropdownMenu>
@@ -64,7 +83,6 @@ describe('ngb-dropdown', () => {
 
     const fixture = createTestComponent(html);
     const compiled = fixture.nativeElement;
-
     expect(compiled).not.toBeShown();
   });
 
