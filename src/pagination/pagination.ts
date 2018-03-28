@@ -87,9 +87,9 @@ export class NgbPagination implements OnChanges {
   @Input() maxSize: number;
 
   /**
-   *  Current page.
+   *  Current page. Page numbers start with 1
    */
-  @Input() page = 0;
+  @Input() page = 1;
 
   /**
    *  Number of items per page.
@@ -99,6 +99,8 @@ export class NgbPagination implements OnChanges {
   /**
    *  An event fired when the page is changed.
    *  Event's payload equals to the newly selected page.
+   *  Will fire only if collection size is set and all values are valid.
+   *  Page numbers start with 1
    */
   @Output() pageChange = new EventEmitter<number>(true);
 
@@ -192,7 +194,7 @@ export class NgbPagination implements OnChanges {
     const prevPageNo = this.page;
     this.page = getValueInRange(newPageNo, this.pageCount, 1);
 
-    if (this.page !== prevPageNo) {
+    if (this.page !== prevPageNo && isNumber(this.collectionSize)) {
       this.pageChange.emit(this.page);
     }
   }
