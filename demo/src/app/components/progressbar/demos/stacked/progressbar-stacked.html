@@ -1,0 +1,8 @@
+<p><ngb-progressbar-stack>
+  <ngb-progressbar showValue="true" type="success" [value]="25"></ngb-progressbar>
+  <ngb-progressbar showValue="true" type="warning" [value]="55"></ngb-progressbar>
+</ngb-progressbar-stack></p>
+
+<p><ngb-progressbar-stack height="30px">
+  <ngb-progressbar [showValue]="bar.showValue" [type]="bar.type" [value]="bar.value" [striped]="bar.striped" *ngFor="let bar of bars"></ngb-progressbar>
+</ngb-progressbar-stack></p>

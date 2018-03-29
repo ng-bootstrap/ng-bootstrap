@@ -4,6 +4,7 @@ import {NgbdProgressbarStriped} from './striped/progressbar-striped';
 import {NgbdProgressbarConfig} from './config/progressbar-config';
 import {NgbdProgressbarLabels} from './labels/progressbar-labels';
 import { NgbdProgressbarHeight } from './height/progressbar-height';
+import { NgbdProgressbarStacked } from './stacked/progressbar-stacked';
 
 export const DEMO_DIRECTIVES = [
   NgbdProgressbarBasic,
@@ -11,7 +12,8 @@ export const DEMO_DIRECTIVES = [
   NgbdProgressbarStriped,
   NgbdProgressbarConfig,
   NgbdProgressbarLabels,
-  NgbdProgressbarHeight
+  NgbdProgressbarHeight,
+  NgbdProgressbarStacked
 ];
 
 export const DEMO_SNIPPETS = {
@@ -30,6 +32,9 @@ export const DEMO_SNIPPETS = {
   'height': {
     'code': require('!!prismjs-loader?lang=typescript!./height/progressbar-height'),
     'markup': require('!!prismjs-loader?lang=markup!./height/progressbar-height.html')},
+  'stacked': {
+    'code': require('!!prismjs-loader?lang=typescript!./stacked/progressbar-stacked'),
+    'markup': require('!!prismjs-loader?lang=markup!./stacked/progressbar-stacked.html')},
   'config': {
     'code': require('!!prismjs-loader?lang=typescript!./config/progressbar-config'),
     'markup': require('!!prismjs-loader?lang=markup!./config/progressbar-config.html')}
