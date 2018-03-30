@@ -65,7 +65,9 @@ export class NgbInputDatepicker implements OnChanges,
 
   /**
    * Indicates whether the datepicker popup should be closed automatically after date selection or not.
-   * If the value is 'false', the popup can be closed via 'close()' or 'toggle()' methods
+   * If the value is 'false', the popup can be closed via 'close()' or 'toggle()' methods.
+   *
+   * @since 1.0.0
    */
   @Input() autoClose = true;
 
@@ -147,6 +149,8 @@ export class NgbInputDatepicker implements OnChanges,
   /**
    * An event fired when user selects a date using keyboard or mouse.
    * The payload of the event is currently selected NgbDateStruct.
+   *
+   * @since 1.0.0
    */
   @Output() dateSelect = new EventEmitter<NgbDateStruct>();
 

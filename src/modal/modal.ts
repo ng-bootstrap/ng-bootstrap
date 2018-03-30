@@ -21,6 +21,8 @@ export interface NgbModalOptions {
 
   /**
    * To center the modal vertically (false by default).
+   *
+   * @since 1.0.0
    */
   centered?: boolean;
 
@@ -51,6 +53,8 @@ export interface NgbModalOptions {
 
   /**
    * Custom class to append to the modal backdrop
+   *
+   * @since 1.0.0
    */
   backdropClass?: string;
 }

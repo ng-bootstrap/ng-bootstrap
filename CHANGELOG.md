@@ -1,3 +1,26 @@
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.4...1.1.0) (2018-03-30)
+
+
+### Bug Fixes
+
+* **accordion:** don't crash for panels with no content ([da96dec](https://github.com/ng-bootstrap/ng-bootstrap/commit/da96dec)), closes [#2250](https://github.com/ng-bootstrap/ng-bootstrap/issues/2250) [#2251](https://github.com/ng-bootstrap/ng-bootstrap/issues/2251)
+* **pagination:** emit page change only when collection size is set ([51a2a29](https://github.com/ng-bootstrap/ng-bootstrap/commit/51a2a29)), closes [#1841](https://github.com/ng-bootstrap/ng-bootstrap/issues/1841) [#2257](https://github.com/ng-bootstrap/ng-bootstrap/issues/2257)
+* **tabset:** don't crash for tabs with no content ([3b3c979](https://github.com/ng-bootstrap/ng-bootstrap/commit/3b3c979)), closes [#2252](https://github.com/ng-bootstrap/ng-bootstrap/issues/2252)
+
+
+### Features
+
+* **datepicker:** ability to prevent popup from closing automatically ([7201af3](https://github.com/ng-bootstrap/ng-bootstrap/commit/7201af3)), closes [#1984](https://github.com/ng-bootstrap/ng-bootstrap/issues/1984) [#2192](https://github.com/ng-bootstrap/ng-bootstrap/issues/2192)
+* **datepicker:** add 'dateSelect' output for date selection listening ([acad88a](https://github.com/ng-bootstrap/ng-bootstrap/commit/acad88a)), closes [#2181](https://github.com/ng-bootstrap/ng-bootstrap/issues/2181) [#2254](https://github.com/ng-bootstrap/ng-bootstrap/issues/2254)
+* **dropdown:** allow using any event to toggle dropdowns ([25e0d39](https://github.com/ng-bootstrap/ng-bootstrap/commit/25e0d39)), closes [#1115](https://github.com/ng-bootstrap/ng-bootstrap/issues/1115) [#1926](https://github.com/ng-bootstrap/ng-bootstrap/issues/1926) [#2082](https://github.com/ng-bootstrap/ng-bootstrap/issues/2082)
+* **modal:** add 'backdropClass' option ([5ffaabc](https://github.com/ng-bootstrap/ng-bootstrap/commit/5ffaabc)), closes [#2166](https://github.com/ng-bootstrap/ng-bootstrap/issues/2166) [#2248](https://github.com/ng-bootstrap/ng-bootstrap/issues/2248)
+* **modal:** add vertically centered option ([00e79c4](https://github.com/ng-bootstrap/ng-bootstrap/commit/00e79c4)), closes [#1124](https://github.com/ng-bootstrap/ng-bootstrap/issues/1124) [#2074](https://github.com/ng-bootstrap/ng-bootstrap/issues/2074)
+* **popover:** introduce disabled flag ([234bab3](https://github.com/ng-bootstrap/ng-bootstrap/commit/234bab3)), closes [#2188](https://github.com/ng-bootstrap/ng-bootstrap/issues/2188) [#2229](https://github.com/ng-bootstrap/ng-bootstrap/issues/2229)
+* **tooltip:** intoduce disabled flag ([e05a99f](https://github.com/ng-bootstrap/ng-bootstrap/commit/e05a99f)), closes [#2253](https://github.com/ng-bootstrap/ng-bootstrap/issues/2253)
+
+
+
 <a name="1.0.4"></a>
 ## [1.0.4](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.3...1.0.4) (2018-03-23)
 

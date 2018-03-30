@@ -103,6 +103,8 @@ export class NgbTooltip implements OnInit, OnDestroy {
   @Input() container: string;
   /**
    * A flag indicating if a given tooltip is disabled and should not be displayed.
+   *
+   * @since 1.0.0
    */
   @Input() disableTooltip: boolean;
   /**
