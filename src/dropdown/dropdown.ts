@@ -55,7 +55,7 @@ export class NgbDropdownMenu {
  * doesn't listen to click events to toggle dropdown menu thus enabling support for
  * events other than click.
  *
- * @since 1.0.0
+ * @since 1.1.0
  */
 @Directive({
   selector: '[ngbDropdownAnchor]',
