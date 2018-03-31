@@ -29,7 +29,7 @@ function expectActiveSlides(nativeEl: HTMLDivElement, active: boolean[]) {
   }
 }
 
-describe('ngb-carousel', () => {
+fdescribe('ngb-carousel', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbCarouselModule.forRoot()]});
   });
@@ -42,6 +42,8 @@ describe('ngb-carousel', () => {
     expect(carousel.wrap).toBe(defaultConfig.wrap);
     expect(carousel.keyboard).toBe(defaultConfig.keyboard);
     expect(carousel.pauseOnHover).toBe(defaultConfig.pauseOnHover);
+    expect(carousel.showNavigationIndicators).toBe(defaultConfig.showNavigationIndicators);
+    expect(carousel.showNavigationArrows).toBe(defaultConfig.showNavigationArrows);
   });
 
   it('should render slides and navigation indicators', fakeAsync(() => {
@@ -59,6 +61,7 @@ describe('ngb-carousel', () => {
        expect(slideElms[1].textContent).toMatch(/bar/);
 
        expect(fixture.nativeElement.querySelectorAll('ol.carousel-indicators > li').length).toBe(2);
+       expect(fixture.nativeElement.querySelectorAll('[role="button"]').length).toBe(2);
 
        discardPeriodicTasks();
      }));
@@ -516,6 +519,45 @@ describe('ngb-carousel', () => {
 
      }));
 
+  it('should render navigation indicators according to the flags', fakeAsync(() => {
+       const html = `
+    <ngb-carousel [showNavigationIndicators]="showNavigationIndicators">
+      <ng-template ngbSlide>foo</ng-template>
+    </ngb-carousel>
+  `;
+       const fixture = createTestComponent(html);
+
+       const slideElms = fixture.nativeElement.querySelectorAll('.carousel-item');
+       expect(slideElms.length).toBe(1);
+       expect(slideElms[0].textContent).toMatch(/foo/);
+       expect(fixture.nativeElement.querySelectorAll('ol.carousel-indicators > li').length).toBe(1);
+
+       fixture.componentInstance.showNavigationIndicators = false;
+       fixture.detectChanges();
+       expect(fixture.nativeElement.querySelectorAll('ol.carousel-indicators > li').length).toBe(0);
+
+       discardPeriodicTasks();
+     }));
+
+  it('should render navigation buttons according to the flags', fakeAsync(() => {
+       const html = `
+    <ngb-carousel [showNavigationArrows]="showNavigationArrows">
+      <ng-template ngbSlide>foo</ng-template>
+    </ngb-carousel>
+  `;
+       const fixture = createTestComponent(html);
+
+       const slideElms = fixture.nativeElement.querySelectorAll('.carousel-item');
+       expect(slideElms.length).toBe(1);
+       expect(fixture.nativeElement.querySelectorAll('[role="button"]').length).toBe(2);
+
+       fixture.componentInstance.showNavigationArrows = false;
+       fixture.detectChanges();
+       expect(fixture.nativeElement.querySelectorAll('[role="button"]').length).toBe(0);
+
+       discardPeriodicTasks();
+     }));
+
   describe('Custom config', () => {
     let config: NgbCarouselConfig;
 
@@ -527,6 +569,8 @@ describe('ngb-carousel', () => {
       config.wrap = false;
       config.keyboard = false;
       config.pauseOnHover = false;
+      config.showNavigationIndicators = true;
+      config.showNavigationArrows = true;
     }));
 
     it('should initialize inputs with provided config', () => {
@@ -538,6 +582,8 @@ describe('ngb-carousel', () => {
       expect(carousel.wrap).toBe(config.wrap);
       expect(carousel.keyboard).toBe(config.keyboard);
       expect(carousel.pauseOnHover).toBe(config.pauseOnHover);
+      expect(carousel.showNavigationIndicators).toBe(config.showNavigationIndicators);
+      expect(carousel.showNavigationArrows).toBe(config.showNavigationArrows);
     });
   });
 
@@ -547,7 +593,8 @@ describe('ngb-carousel', () => {
     config.wrap = false;
     config.keyboard = false;
     config.pauseOnHover = false;
-
+    config.showNavigationIndicators = true;
+    config.showNavigationArrows = true;
 
     beforeEach(() => {
       TestBed.configureTestingModule(
@@ -563,6 +610,8 @@ describe('ngb-carousel', () => {
       expect(carousel.wrap).toBe(config.wrap);
       expect(carousel.keyboard).toBe(config.keyboard);
       expect(carousel.pauseOnHover).toBe(config.pauseOnHover);
+      expect(carousel.showNavigationIndicators).toBe(config.showNavigationIndicators);
+      expect(carousel.showNavigationArrows).toBe(config.showNavigationArrows);
     });
   });
 
@@ -574,5 +623,7 @@ class TestComponent {
   activeSlideId;
   keyboard = true;
   pauseOnHover = true;
+  showNavigationArrows = true;
+  showNavigationIndicators = true;
   carouselSlideCallBack = (event: NgbSlideEvent) => {};
 }

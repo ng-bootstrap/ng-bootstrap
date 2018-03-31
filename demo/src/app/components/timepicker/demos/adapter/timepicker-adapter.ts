@@ -1,6 +1,5 @@
 import {Component, Injectable} from '@angular/core';
 import {NgbTimeStruct, NgbTimeAdapter} from '@ng-bootstrap/ng-bootstrap';
-import {NgbDateNativeAdapter} from '../../../datepicker/demos/adapter/datepicker-adapter';
 
 /**
  * Example of a String Time adapter

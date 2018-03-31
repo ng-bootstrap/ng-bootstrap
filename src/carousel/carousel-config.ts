@@ -11,4 +11,6 @@ export class NgbCarouselConfig {
   wrap = true;
   keyboard = true;
   pauseOnHover = true;
+  showNavigationArrows = true;
+  showNavigationIndicators = true;
 }

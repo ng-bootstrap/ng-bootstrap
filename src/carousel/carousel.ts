@@ -45,7 +45,7 @@ export class NgbSlide {
     '(keydown.arrowRight)': 'keyNext()'
   },
   template: `
-    <ol class="carousel-indicators">
+    <ol class="carousel-indicators" *ngIf="showNavigationIndicators">
       <li *ngFor="let slide of slides" [id]="slide.id" [class.active]="slide.id === activeId"
           (click)="cycleToSelected(slide.id, getSlideEventDirection(activeId, slide.id))"></li>
     </ol>
@@ -54,11 +54,11 @@ export class NgbSlide {
         <ng-template [ngTemplateOutlet]="slide.tplRef"></ng-template>
       </div>
     </div>
-    <a class="carousel-control-prev" role="button" (click)="cycleToPrev()">
+    <a class="carousel-control-prev" role="button" (click)="cycleToPrev()" *ngIf="showNavigationArrows">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
       <span class="sr-only" i18n="@@ngb.carousel.previous">Previous</span>
     </a>
-    <a class="carousel-control-next" role="button" (click)="cycleToNext()">
+    <a class="carousel-control-next" role="button" (click)="cycleToNext()" *ngIf="showNavigationArrows">
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
       <span class="sr-only" i18n="@@ngb.carousel.next">Next</span>
     </a>
@@ -68,6 +68,12 @@ export class NgbCarousel implements AfterContentChecked,
     OnDestroy, OnInit, OnChanges {
   @ContentChildren(NgbSlide) slides: QueryList<NgbSlide>;
   private _slideChangeInterval;
+
+  /**
+   * The active slide id.
+   */
+  @Input() activeId: string;
+
 
   /**
    * Amount of time in milliseconds before next slide is shown.
@@ -91,9 +97,16 @@ export class NgbCarousel implements AfterContentChecked,
   @Input() pauseOnHover: boolean;
 
   /**
-   * The active slide id.
+   * A flag to show / hide navigation arrows.
+   * @since 2.2.0
    */
-  @Input() activeId: string;
+  @Input() showNavigationArrows: boolean;
+
+  /**
+   * A flag to show / hide navigation indicators.
+   * @since 2.2.0
+   */
+  @Input() showNavigationIndicators: boolean;
 
   /**
    * A carousel slide event fired when the slide transition is completed.
@@ -106,6 +119,8 @@ export class NgbCarousel implements AfterContentChecked,
     this.wrap = config.wrap;
     this.keyboard = config.keyboard;
     this.pauseOnHover = config.pauseOnHover;
+    this.showNavigationArrows = config.showNavigationArrows;
+    this.showNavigationIndicators = config.showNavigationIndicators;
   }
 
   ngAfterContentChecked() {

@@ -8,5 +8,7 @@ describe('ngb-carousel-config', () => {
     expect(config.keyboard).toBe(true);
     expect(config.wrap).toBe(true);
     expect(config.pauseOnHover).toBe(true);
+    expect(config.showNavigationIndicators).toBe(true);
+    expect(config.showNavigationArrows).toBe(true);
   });
 });
