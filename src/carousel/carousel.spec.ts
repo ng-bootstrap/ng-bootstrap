@@ -41,6 +41,8 @@ describe('ngb-carousel', () => {
     expect(carousel.interval).toBe(defaultConfig.interval);
     expect(carousel.wrap).toBe(defaultConfig.wrap);
     expect(carousel.keyboard).toBe(defaultConfig.keyboard);
+    expect(carousel.hideIndicator).toBe(defaultConfig.hideIndicator);
+    expect(carousel.hideNavigation).toBe(defaultConfig.hideNavigation);
   });
 
   it('should render slides and navigation indicators', fakeAsync(() => {
@@ -58,6 +60,7 @@ describe('ngb-carousel', () => {
        expect(slideElms[1].textContent).toMatch(/bar/);
 
        expect(fixture.nativeElement.querySelectorAll('ol.carousel-indicators > li').length).toBe(2);
+       expect(fixture.nativeElement.querySelectorAll('[role="button"]').length).toBe(2);
 
        discardPeriodicTasks();
      }));
@@ -481,6 +484,8 @@ describe('ngb-carousel', () => {
       config.interval = 1000;
       config.wrap = false;
       config.keyboard = false;
+      config.hideIndicator = true;
+      config.hideNavigation = true;
     }));
 
     it('should initialize inputs with provided config', () => {
@@ -491,6 +496,8 @@ describe('ngb-carousel', () => {
       expect(carousel.interval).toBe(config.interval);
       expect(carousel.wrap).toBe(config.wrap);
       expect(carousel.keyboard).toBe(config.keyboard);
+      expect(carousel.hideIndicator).toBe(config.hideIndicator);
+      expect(carousel.hideNavigation).toBe(config.hideNavigation);
     });
   });
 
@@ -499,6 +506,8 @@ describe('ngb-carousel', () => {
     config.interval = 1000;
     config.wrap = false;
     config.keyboard = false;
+    config.hideIndicator = true;
+    config.hideNavigation = true;
 
     beforeEach(() => {
       TestBed.configureTestingModule(
@@ -513,8 +522,44 @@ describe('ngb-carousel', () => {
       expect(carousel.interval).toBe(config.interval);
       expect(carousel.wrap).toBe(config.wrap);
       expect(carousel.keyboard).toBe(config.keyboard);
+      expect(carousel.hideIndicator).toBe(config.hideIndicator);
+      expect(carousel.hideNavigation).toBe(config.hideNavigation);
     });
   });
+
+  it('should render navigation indicators according to the flags', fakeAsync(() => {
+       const html = `
+    <ngb-carousel [hideIndicator]="true">
+      <ng-template ngbSlide>foo</ng-template>
+    </ngb-carousel>
+  `;
+       const fixture = createTestComponent(html);
+
+       const slideElms = fixture.nativeElement.querySelectorAll('.carousel-item');
+       expect(slideElms.length).toBe(1);
+       expect(slideElms[0].textContent).toMatch(/foo/);
+
+       expect(fixture.nativeElement.querySelectorAll('ol.carousel-indicators > li').length).toBe(0);
+
+       discardPeriodicTasks();
+     }));
+
+  it('should render navigation buttons according to the flags', fakeAsync(() => {
+       const html = `
+    <ngb-carousel [hideNavigation]="true">
+      <ng-template ngbSlide>foo</ng-template>
+    </ngb-carousel>
+  `;
+       const fixture = createTestComponent(html);
+
+       const slideElms = fixture.nativeElement.querySelectorAll('.carousel-item');
+       expect(slideElms.length).toBe(1);
+       expect(slideElms[0].textContent).toMatch(/foo/);
+
+       expect(fixture.nativeElement.querySelectorAll('[role="button"]').length).toBe(0);
+
+       discardPeriodicTasks();
+     }));
 
 });
 
@@ -523,5 +568,7 @@ class TestComponent {
   interval;
   activeSlideId;
   keyboard = true;
+  hideIndicator = false;
+  hideNavigation = false;
   carouselSlideCallBack = (event: NgbSlideEvent) => {};
 }

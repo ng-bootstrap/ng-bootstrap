@@ -7,5 +7,7 @@ describe('ngb-carousel-config', () => {
     expect(config.interval).toBe(5000);
     expect(config.keyboard).toBe(true);
     expect(config.wrap).toBe(true);
+    expect(config.hideIndicator).toBe(false);
+    expect(config.hideNavigation).toBe(false);
   });
 });
