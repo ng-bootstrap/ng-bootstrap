@@ -53,7 +53,7 @@ describe('ngb-datepicker-service', () => {
 
   describe(`min/max dates`, () => {
 
-    it(`should emit undefined, null and valid 'minDate' values`, () => {
+    it(`should emit null and valid 'minDate' values`, () => {
       // valid
       const minDate = new NgbDate(2017, 5, 1);
       service.minDate = minDate;
@@ -64,18 +64,18 @@ describe('ngb-datepicker-service', () => {
       service.minDate = null;
       expect(model.minDate).toBeNull();
 
-      // undefined
+      // undefined -> ignore
       service.minDate = undefined;
-      expect(model.minDate).toBeUndefined();
+      expect(model.minDate).toBeNull();
 
       // invalid -> ignore
       service.minDate = new NgbDate(-2, 0, null);
-      expect(model.minDate).toBeUndefined();
+      expect(model.minDate).toBeNull();
 
-      expect(mock.onNext).toHaveBeenCalledTimes(3);
+      expect(mock.onNext).toHaveBeenCalledTimes(2);
     });
 
-    it(`should emit undefined, null and valid 'maxDate' values`, () => {
+    it(`should emit null and valid 'maxDate' values`, () => {
       // valid
       const maxDate = new NgbDate(2017, 5, 1);
       service.maxDate = maxDate;
@@ -86,15 +86,15 @@ describe('ngb-datepicker-service', () => {
       service.maxDate = null;
       expect(model.maxDate).toBeNull();
 
-      // undefined
+      // undefined -> ignore
       service.maxDate = undefined;
-      expect(model.maxDate).toBeUndefined();
+      expect(model.maxDate).toBeNull();
 
       // invalid -> ignore
       service.maxDate = new NgbDate(-2, 0, null);
-      expect(model.maxDate).toBeUndefined();
+      expect(model.maxDate).toBeNull();
 
-      expect(mock.onNext).toHaveBeenCalledTimes(3);
+      expect(mock.onNext).toHaveBeenCalledTimes(2);
     });
 
     it(`should not emit the same 'minDate' value twice`, () => {

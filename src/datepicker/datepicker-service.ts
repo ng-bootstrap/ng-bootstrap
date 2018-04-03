@@ -1,8 +1,9 @@
 import {NgbCalendar, NgbPeriod} from './ngb-calendar';
 import {NgbDate} from './ngb-date';
+import {NgbDateStruct} from './ngb-date-struct';
 import {DatepickerViewModel, NgbMarkDisabled} from './datepicker-view-model';
 import {Injectable} from '@angular/core';
-import {isInteger} from '../util/util';
+import {isInteger, toInteger} from '../util/util';
 import {Subject} from 'rxjs/Subject';
 import {
   buildMonths,
@@ -46,49 +47,53 @@ export class NgbDatepickerService {
 
   set disabled(disabled: boolean) {
     if (this._state.disabled !== disabled) {
-      this._nextState({disabled: disabled});
+      this._nextState({disabled});
     }
   }
 
-  set displayMonths(months: number) {
-    if (isInteger(months) && months > 0 && this._state.displayMonths !== months) {
-      this._nextState({displayMonths: months});
+  set displayMonths(displayMonths: number) {
+    displayMonths = toInteger(displayMonths);
+    if (isInteger(displayMonths) && displayMonths > 0 && this._state.displayMonths !== displayMonths) {
+      this._nextState({displayMonths});
     }
   }
 
   set firstDayOfWeek(firstDayOfWeek: number) {
+    firstDayOfWeek = toInteger(firstDayOfWeek);
     if (isInteger(firstDayOfWeek) && firstDayOfWeek >= 0 && this._state.firstDayOfWeek !== firstDayOfWeek) {
-      this._nextState({firstDayOfWeek: firstDayOfWeek});
+      this._nextState({firstDayOfWeek});
     }
   }
 
   set focusVisible(focusVisible: boolean) {
     if (this._state.focusVisible !== focusVisible && !this._state.disabled) {
-      this._nextState({focusVisible: focusVisible});
+      this._nextState({focusVisible});
     }
   }
 
-  set maxDate(date: NgbDate) {
-    if (date == null || this._calendar.isValid(date) && isChangedDate(this._state.maxDate, date)) {
-      this._nextState({maxDate: date});
+  set maxDate(date: NgbDateStruct) {
+    const maxDate = this.toValidDate(date, null);
+    if (isChangedDate(this._state.maxDate, maxDate)) {
+      this._nextState({maxDate});
     }
   }
 
   set markDisabled(markDisabled: NgbMarkDisabled) {
     if (this._state.markDisabled !== markDisabled) {
-      this._nextState({markDisabled: markDisabled});
+      this._nextState({markDisabled});
     }
   }
 
-  set minDate(date: NgbDate) {
-    if (date == null || this._calendar.isValid(date) && isChangedDate(this._state.minDate, date)) {
-      this._nextState({minDate: date});
+  set minDate(date: NgbDateStruct) {
+    const minDate = this.toValidDate(date, null);
+    if (isChangedDate(this._state.minDate, minDate)) {
+      this._nextState({minDate});
     }
   }
 
   set navigation(navigation: 'select' | 'arrows' | 'none') {
     if (this._state.navigation !== navigation) {
-      this._nextState({navigation: navigation});
+      this._nextState({navigation});
     }
   }
 
@@ -105,31 +110,27 @@ export class NgbDatepickerService {
   }
 
   focusSelect() {
-    if (isDateSelectable(
-            this._state.focusDate, this._state.minDate, this._state.maxDate, this._state.disabled,
-            this._state.markDisabled)) {
+    if (isDateSelectable(this._state.focusDate, this._state)) {
       this.select(this._state.focusDate, {emitEvent: true});
     }
   }
 
   open(date: NgbDate) {
-    const validDate = this.toValidDate(date, this._calendar.getToday());
+    const firstDate = this.toValidDate(date, this._calendar.getToday());
     if (!this._state.disabled) {
-      this._nextState({firstDate: validDate});
+      this._nextState({firstDate});
     }
   }
 
   select(date: NgbDate, options: {emitEvent?: boolean} = {}) {
-    const validDate = this.toValidDate(date, null);
+    const selectedDate = this.toValidDate(date, null);
     if (!this._state.disabled) {
-      if (isChangedDate(this._state.selectedDate, validDate)) {
-        this._nextState({selectedDate: validDate});
+      if (isChangedDate(this._state.selectedDate, selectedDate)) {
+        this._nextState({selectedDate});
       }
 
-      if (options.emitEvent &&
-          isDateSelectable(
-              validDate, this._state.minDate, this._state.maxDate, this._state.disabled, this._state.markDisabled)) {
-        this._select$.next(validDate);
+      if (options.emitEvent && isDateSelectable(selectedDate, this._state)) {
+        this._select$.next(selectedDate);
       }
     }
   }
@@ -220,9 +221,7 @@ export class NgbDatepickerService {
       const forceRebuild = 'firstDayOfWeek' in patch || 'markDisabled' in patch || 'minDate' in patch ||
           'maxDate' in patch || 'disabled' in patch;
 
-      const months = buildMonths(
-          this._calendar, state.months, startDate, state.minDate, state.maxDate, state.displayMonths,
-          state.firstDayOfWeek, state.markDisabled, forceRebuild);
+      const months = buildMonths(this._calendar, startDate, state, forceRebuild);
 
       // updating months and boundary dates
       state.months = months;
@@ -230,10 +229,8 @@ export class NgbDatepickerService {
       state.lastDate = months.length > 0 ? months[months.length - 1].lastDate : undefined;
 
       // reset selected date if 'markDisabled' returns true
-      if ('selectedDate' in patch && state.selectedDate !== null) {
-        if (!isDateSelectable(state.selectedDate, state.minDate, state.maxDate, state.disabled, state.markDisabled)) {
-          state.selectedDate = null;
-        }
+      if ('selectedDate' in patch && !isDateSelectable(state.selectedDate, state)) {
+        state.selectedDate = null;
       }
 
       // adjusting focus after months were built
