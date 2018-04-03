@@ -19,7 +19,7 @@
       <img src="img/github.svg" alt="Link to Github {{apiDocs.className}}"/>
     </a>
   </h3>
-  <ngbd-api-docs-badge [type]="apiDocs.type" [deprecated]="apiDocs.deprecated"></ngbd-api-docs-badge>
+  <ngbd-api-docs-badge [type]="apiDocs.type" [deprecated]="apiDocs.deprecated" [since]="apiDocs.since"></ngbd-api-docs-badge>
   <p *ngIf="apiDocs.deprecated">{{ apiDocs.deprecated.description }}</p>
   <p class="lead">{{apiDocs.description}}</p>
 
