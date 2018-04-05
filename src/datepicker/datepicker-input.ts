@@ -150,7 +150,7 @@ export class NgbInputDatepicker implements OnChanges,
    * An event fired when user selects a date using keyboard or mouse.
    * The payload of the event is currently selected NgbDateStruct.
    *
-   * @since 1.1.0
+   * @since 1.1.1
    */
   @Output() dateSelect = new EventEmitter<NgbDateStruct>();
 
@@ -253,9 +253,6 @@ export class NgbInputDatepicker implements OnChanges,
       this._cRef.instance.registerOnChange((selectedDate) => {
         this.writeValue(selectedDate);
         this._onChange(selectedDate);
-        if (this.autoClose) {
-          this.close();
-        }
       });
 
       // focus handling
