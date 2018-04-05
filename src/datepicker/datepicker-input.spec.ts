@@ -609,23 +609,37 @@ describe('NgbInputDatepicker', () => {
           .toHaveBeenCalledWith({current: {year: 2016, month: 9}, next: {year: 2018, month: 4}});
     });
 
-    it(`should relay the 'dateSelect' event`, () => {
+    it('should emit both "dateSelect" and "onModelChange" events', () => {
       const fixture = createTestCmpt(`
-          <input ngbDatepicker #d="ngbDatepicker" (dateSelect)="onDateSelect($event)">
-          <button (click)="open(d)">Open</button>`);
+          <input ngbDatepicker ngModel [startDate]="{year: 2018, month: 3}" 
+          (ngModelChange)="onModelChange($event)" (dateSelect)="onDateSelect($event)">`);
 
       const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
       spyOn(fixture.componentInstance, 'onDateSelect');
+      spyOn(fixture.componentInstance, 'onModelChange');
 
       // open
       dpInput.open();
       fixture.detectChanges();
 
-      // select
-      const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
-      dp.select.emit({year: 2018, month: 4, day: 5});
+      // click on a date
+      fixture.nativeElement.querySelectorAll('.ngb-dp-day')[3].click();  // 1 MAR 2018
       fixture.detectChanges();
-      expect(fixture.componentInstance.onDateSelect).toHaveBeenCalledWith({year: 2018, month: 4, day: 5});
+      expect(fixture.componentInstance.onDateSelect).toHaveBeenCalledTimes(1);
+      expect(fixture.componentInstance.onModelChange).toHaveBeenCalledTimes(1);
+
+      // open again
+      dpInput.open();
+      fixture.detectChanges();
+
+      // click the same date
+      fixture.nativeElement.querySelectorAll('.ngb-dp-day')[3].click();  // 1 MAR 2018
+      fixture.detectChanges();
+      expect(fixture.componentInstance.onDateSelect).toHaveBeenCalledTimes(2);
+      expect(fixture.componentInstance.onModelChange).toHaveBeenCalledTimes(1);
+
+      expect(fixture.componentInstance.onDateSelect).toHaveBeenCalledWith({year: 2018, month: 3, day: 1});
+      expect(fixture.componentInstance.onModelChange).toHaveBeenCalledWith({year: 2018, month: 3, day: 1});
     });
   });
 
@@ -730,6 +744,8 @@ class TestComponent {
   onNavigate() {}
 
   onDateSelect() {}
+
+  onModelChange() {}
 
   open(d: NgbInputDatepicker) { d.open(); }
 
