@@ -56,12 +56,12 @@ function genDemosIndex(component) {
 
   const demoSnippets = demoNames.map((demo) => {
     return `  '${demo}': {
-    'code': require('!!prismjs-loader-loader?lang=typescript!./${demo}/${component}-${demo}'), 
-    'markup': require('!!prismjs-loader-loader?lang=markup!./${demo}/${component}-${demo}.html')}`;
+    'code': require('!!raw-loader!./${demo}/${component}-${demo}'),
+    'markup': require('!!raw-loader!./${demo}/${component}-${demo}.html')}`;
   });
 
   return `${demoImports}
-  
+
 export const DEMO_DIRECTIVES = [${demoDirectives.join(', ')}];
 
 export const DEMO_SNIPPETS = {

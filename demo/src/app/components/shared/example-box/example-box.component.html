@@ -27,7 +27,7 @@
           <span>{{component}}-{{demo}}.html</span>
         </ng-template>
         <ng-template ngbTabContent>
-          <pre class="language-html"><code class="language-html" [innerHTML]="snippets[demo]['markup']"></code></pre>
+          <ngbd-code [code]="snippets[demo]['markup']" lang="html"></ngbd-code>
         </ng-template>
       </ngb-tab>
       <ngb-tab id="{{component}}-{{demo}}-typescript">
@@ -36,7 +36,7 @@
           <span>{{component}}-{{demo}}.ts</span>
         </ng-template>
         <ng-template ngbTabContent>
-          <pre class="language-typescript"><code class="language-typescript" [innerHTML]="snippets[demo]['code']"></code></pre>
+          <ngbd-code [code]="snippets[demo]['code']" lang="typescript"></ngbd-code>
         </ng-template>
       </ngb-tab>
     </ngb-tabset>

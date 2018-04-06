@@ -10,27 +10,27 @@ export const DEMO_DIRECTIVES = [NgbdRatingBasic, NgbdRatingConfig,
 
 export const DEMO_SNIPPETS = {
   'basic': {
-    'code': require('!!prismjs-loader?lang=typescript!./basic/rating-basic'),
-    'markup': require('!!prismjs-loader?lang=markup!./basic/rating-basic.html')
+    'code': require('!!raw-loader!./basic/rating-basic'),
+    'markup': require('!!raw-loader!./basic/rating-basic.html')
   },
   'events': {
-    'code': require('!!prismjs-loader?lang=typescript!./events/rating-events'),
-    'markup': require('!!prismjs-loader?lang=markup!./events/rating-events.html')
+    'code': require('!!raw-loader!./events/rating-events'),
+    'markup': require('!!raw-loader!./events/rating-events.html')
   },
   'template': {
-    'code': require('!!prismjs-loader?lang=typescript!./template/rating-template'),
-    'markup': require('!!prismjs-loader?lang=markup!./template/rating-template.html')
+    'code': require('!!raw-loader!./template/rating-template'),
+    'markup': require('!!raw-loader!./template/rating-template.html')
   },
   'decimal': {
-    'code': require('!!prismjs-loader?lang=typescript!./decimal/rating-decimal'),
-    'markup': require('!!prismjs-loader?lang=markup!./decimal/rating-decimal.html')
+    'code': require('!!raw-loader!./decimal/rating-decimal'),
+    'markup': require('!!raw-loader!./decimal/rating-decimal.html')
   },
   'form': {
-    'code': require('!!prismjs-loader?lang=typescript!./form/rating-form'),
-    'markup': require('!!prismjs-loader?lang=markup!./form/rating-form.html')
+    'code': require('!!raw-loader!./form/rating-form'),
+    'markup': require('!!raw-loader!./form/rating-form.html')
   },
   'config': {
-    'code': require('!!prismjs-loader?lang=typescript!./config/rating-config'),
-    'markup': require('!!prismjs-loader?lang=markup!./config/rating-config.html')
+    'code': require('!!raw-loader!./config/rating-config'),
+    'markup': require('!!raw-loader!./config/rating-config.html')
   }
 };
