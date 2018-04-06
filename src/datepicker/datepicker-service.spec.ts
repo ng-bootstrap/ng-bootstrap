@@ -2,7 +2,7 @@ import {TestBed} from '@angular/core/testing';
 import {NgbDatepickerService} from './datepicker-service';
 import {NgbCalendar, NgbCalendarGregorian} from './ngb-calendar';
 import {NgbDate} from './ngb-date';
-import {Subscription} from 'rxjs/Subscription';
+import {Subscription} from 'rxjs';
 import {DatepickerViewModel} from './datepicker-view-model';
 import {NgbDateStruct} from './ngb-date-struct';
 

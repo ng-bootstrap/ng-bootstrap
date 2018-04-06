@@ -46,18 +46,18 @@
   },
   "homepage": "https://github.com/ng-bootstrap/ng-bootstrap#readme",
   "dependencies": {
-    "@angular/common": "5.0.2",
-    "@angular/core": "5.0.2",
-    "@angular/forms": "5.0.2"
+    "@angular/common": "6.0.0-rc.2",
+    "@angular/core": "6.0.0-rc.2",
+    "@angular/forms": "6.0.0-rc.2"
   },
   "devDependencies": {
-    "@angular/compiler": "5.0.2",
-    "@angular/compiler-cli": "5.0.2",
-    "@angular/http": "5.0.2",
-    "@angular/platform-browser": "5.0.2",
-    "@angular/platform-browser-dynamic": "5.0.2",
-    "@angular/router": "5.0.2",
-    "@ngtools/webpack": "^1.10.2",
+    "@angular/compiler": "6.0.0-rc.2",
+    "@angular/compiler-cli": "6.0.0-rc.2",
+    "@angular/http": "6.0.0-rc.2",
+    "@angular/platform-browser": "6.0.0-rc.2",
+    "@angular/platform-browser-dynamic": "6.0.0-rc.2",
+    "@angular/router": "6.0.0-rc.2",
+    "@ngtools/webpack": "6.0.0-rc.2.4",
     "@types/jasmine": "~2.8.3",
     "@types/node": "^6.0.46",
     "@types/prismjs": "^1.9.0",
@@ -106,16 +106,16 @@
     "reflect-metadata": "^0.1.8",
     "remap-istanbul": "^0.11.0",
     "run-sequence": "^1.2.2",
-    "rxjs": "^5.5.2",
+    "rxjs": "6.0.0-smoosh.2",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.20.3",
     "systemjs": "^0.19.40",
     "ts-loader": "^3.5.0",
     "tslint": "^3.15.1",
-    "typescript": "2.4.2",
+    "typescript": "^2.7.2",
     "url-loader": "^1.0.1",
     "webpack": "^3.11.0",
     "webpack-dev-server": "^2.11.2",
-    "zone.js": "0.8.10"
+    "zone.js": "~0.8.20"
   }
 }
