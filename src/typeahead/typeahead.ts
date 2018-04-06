@@ -19,15 +19,13 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {Observable} from 'rxjs/Observable';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Subscription} from 'rxjs/Subscription';
-import {letProto} from 'rxjs/operator/let';
-import {_do} from 'rxjs/operator/do';
-import {switchMap} from 'rxjs/operator/switchMap';
 import {fromEvent} from 'rxjs/observable/fromEvent';
 import {positionElements, PlacementArray} from '../util/positioning';
 import {NgbTypeaheadWindow, ResultTemplateContext} from './typeahead-window';
 import {PopupService} from '../util/popup';
 import {toString, isDefined} from '../util/util';
 import {NgbTypeaheadConfig} from './typeahead-config';
+import {map, switchMap, tap} from 'rxjs/operators';
 
 enum Key {
   Tab = 9,
@@ -165,7 +163,8 @@ export class NgbTypeahead implements ControlValueAccessor,
     this.showHint = config.showHint;
     this.placement = config.placement;
 
-    this._valueChanges = fromEvent(_elementRef.nativeElement, 'input', ($event) => $event.target.value);
+    this._valueChanges = fromEvent<Event>(_elementRef.nativeElement, 'input')
+                             .pipe(map($event => ($event.target as HTMLInputElement).value));
 
     this._resubscribeTypeahead = new BehaviorSubject(null);
 
@@ -182,19 +181,19 @@ export class NgbTypeahead implements ControlValueAccessor,
   }
 
   ngOnInit(): void {
-    const inputValues$ = _do.call(this._valueChanges, value => {
+    const inputValues$ = this._valueChanges.pipe(tap(value => {
       this._inputValueBackup = value;
       if (this.editable) {
         this._onChange(value);
       }
-    });
-    const results$ = letProto.call(inputValues$, this.ngbTypeahead);
-    const processedResults$ = _do.call(results$, () => {
+    }));
+    const results$ = inputValues$.pipe(this.ngbTypeahead);
+    const processedResults$ = results$.pipe(tap(() => {
       if (!this.editable) {
         this._onChange(undefined);
       }
-    });
-    const userInput$ = switchMap.call(this._resubscribeTypeahead, () => processedResults$);
+    }));
+    const userInput$ = this._resubscribeTypeahead.pipe(switchMap(() => processedResults$));
     this._subscription = this._subscribeToUserInput(userInput$);
   }
 
