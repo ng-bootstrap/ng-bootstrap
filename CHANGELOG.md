@@ -1,3 +1,13 @@
+<a name="1.1.1"></a>
+## [1.1.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.1.0...1.1.1) (2018-04-06)
+
+
+### Bug Fixes
+
+* **datepicker:** emit 'selectEvent' when datepicker model changes ([4a0ec89](https://github.com/ng-bootstrap/ng-bootstrap/commit/4a0ec89)), closes [#2278](https://github.com/ng-bootstrap/ng-bootstrap/issues/2278) [#2281](https://github.com/ng-bootstrap/ng-bootstrap/issues/2281)
+
+
+
 <a name="1.1.0"></a>
 # [1.1.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.0.4...1.1.0) (2018-03-30)
 
