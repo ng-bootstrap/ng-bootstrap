@@ -4,7 +4,7 @@ import {NgbDateStruct} from './ngb-date-struct';
 import {DatepickerViewModel, NgbMarkDisabled} from './datepicker-view-model';
 import {Injectable} from '@angular/core';
 import {isInteger, toInteger} from '../util/util';
-import {Subject} from 'rxjs/Subject';
+import {Observable, Subject} from 'rxjs';
 import {
   buildMonths,
   checkDateInRange,
@@ -18,7 +18,6 @@ import {
 } from './datepicker-tools';
 
 import {filter} from 'rxjs/operators';
-import {Observable} from 'rxjs/Observable';
 
 @Injectable()
 export class NgbDatepickerService {

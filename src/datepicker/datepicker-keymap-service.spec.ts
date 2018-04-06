@@ -2,7 +2,7 @@ import {NgbDatepickerKeyMapService} from './datepicker-keymap-service';
 import {NgbCalendar, NgbCalendarGregorian} from './ngb-calendar';
 import {NgbDatepickerService} from './datepicker-service';
 import {TestBed} from '@angular/core/testing';
-import {Subject} from 'rxjs/Subject';
+import {Subject} from 'rxjs';
 import {NgbDate} from './ngb-date';
 
 enum Key {
