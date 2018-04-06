@@ -569,14 +569,14 @@ describe('NgbInputDatepicker', () => {
     });
 
     it('should propagate the "startDate" option', () => {
-      const fixture = createTestCmpt(`<input ngbDatepicker [startDate]="{year: 2016, month: 9, day: 13}">`);
+      const fixture = createTestCmpt(`<input ngbDatepicker [startDate]="{year: 2016, month: 9}">`);
       const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
 
       dpInput.open();
       fixture.detectChanges();
 
       const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
-      expect(dp.startDate).toEqual({year: 2016, month: 9, day: 13});
+      expect(dp.startDate).toEqual({year: 2016, month: 9});
     });
 
     it('should propagate model as "startDate" option when "startDate" not provided', fakeAsync(() => {

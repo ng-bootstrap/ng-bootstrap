@@ -1,7 +1,7 @@
 # Building and Testing ng-bootstrap
 
 This document describes how to set up your development environment to build and test ng-bootstrap.
-It also explains the basic mechanics of using `git`, `node`, and `npm`.
+It also explains the basic mechanics of using `git`, `node`, and `yarn`.
 
 * [Prerequisite Software](#prerequisite-software)
 * [Getting the Sources](#getting-the-sources)
@@ -22,9 +22,10 @@ following products on your development machine:
   [Windows](http://windows.github.com)); [GitHub's Guide to Installing
   Git](https://help.github.com/articles/set-up-git) is a good source of information.
 
-* [Node.js](http://nodejs.org), (version `>=4.2.1 <6`) which is used to run tests, and generate distributable files. We also use Node's Package Manager, `npm` 
-  (version `>3.8.x`), which comes with Node. Depending on your system, you can install Node either from 
+* [Node.js](https://nodejs.org), (version `>=8.9.0 <9`) which is used to run tests, and generate distributable files. Depending on your system, you can install Node either from 
   source or as a pre-packaged bundle.
+
+* [Yarn](https://yarnpkg.com) we use Yarn to manage dependencies, `yarn` (version `>1.3.0`). Please, see installation instructions on their site.
 
 * [Chrome](https://www.google.es/chrome/browser/desktop/index.html), we use Chrome to run our tests.
 
@@ -56,12 +57,12 @@ Next, install the JavaScript modules needed to build and test ng-bootstrap:
 
 ```shell
 # Install ng-bootstrap project dependencies (package.json)
-npm install
+yarn
 ```
 
 Globally install gulp as follows:
 
-* `npm install -g gulp` (you might need to prefix this command with `sudo`)
+* `yarn global add gulp`
 
 ## Build commands
 
