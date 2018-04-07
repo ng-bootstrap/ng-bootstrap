@@ -188,6 +188,44 @@ export class NgbAccordion implements AfterContentChecked {
     }
   }
 
+  /**
+   * Programmatically expand a panel with a given id if it is closed.
+   */
+  expand(panelId: string) {
+    const panel = this.panels.find(p => p.id === panelId);
+
+    if (panel && !panel.disabled && !panel.isOpen) {
+      this.toggle(panelId);
+    }
+  }
+
+  /**
+   * Programmatically collapse a panel with a given id if it is open.
+   */
+  collapse(panelId: string) {
+    const panel = this.panels.find(p => p.id === panelId);
+
+    if (panel && !panel.disabled && panel.isOpen) {
+      this.toggle(panelId);
+    }
+  }
+
+  /**
+   * Programmatically collapse all panels.
+   */
+  collapseAll() {
+    this.panels.forEach(panel => { panel.isOpen = false; });
+    this._updateActiveIds();
+  }
+
+  /**
+   * Returns if a panel is currently expanded.
+   */
+  isExpanded(panelId): boolean {
+    const panel = this.panels.find(p => p.id === panelId);
+    return panel.isOpen;
+  }
+
   ngAfterContentChecked() {
     // active id updates
     if (isString(this.activeIds)) {

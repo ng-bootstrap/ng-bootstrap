@@ -49,6 +49,9 @@ describe('ngb-accordion', () => {
       </ngb-panel>
     </ngb-accordion>
     <button *ngFor="let panel of panels" (click)="acc.toggle(panel.id)">Toggle the panel {{ panel.id }}</button>
+    <button *ngFor="let panel of panels" (click)="acc.collapse(panel.id)">Collapse the panel {{ panel.id }}</button>
+    <button *ngFor="let panel of panels" (click)="acc.expand(panel.id)">Expand the panel {{ panel.id }}</button>
+    <button (click)="acc.collapseAll()">Collapse all panels</button>
   `;
 
   beforeEach(() => {
@@ -143,6 +146,42 @@ describe('ngb-accordion', () => {
     getButton(el, 2).click();
     fixture.detectChanges();
     expectOpenPanels(el, [false, false, false]);
+  });
+
+  it('should expand and collapse panels independently', () => {
+    const fixture = TestBed.createComponent(TestComponent);
+    fixture.detectChanges();
+
+    const el = fixture.nativeElement;
+
+    getButton(el, 7).click();
+    fixture.detectChanges();
+    expectOpenPanels(el, [false, true, false]);
+
+    getButton(el, 6).click();
+    fixture.detectChanges();
+    expectOpenPanels(el, [true, true, false]);
+
+    getButton(el, 6).click();
+    fixture.detectChanges();
+    expectOpenPanels(el, [true, true, false]);
+
+    getButton(el, 4).click();
+    fixture.detectChanges();
+    expectOpenPanels(el, [true, false, false]);
+
+    getButton(el, 8).click();
+    fixture.detectChanges();
+    expectOpenPanels(el, [true, false, true]);
+
+    getButton(el, 9).click();
+    fixture.detectChanges();
+    expectOpenPanels(el, [false, false, false]);
+
+    getButton(el, 9).click();
+    fixture.detectChanges();
+    expectOpenPanels(el, [false, false, false]);
+
   });
 
   it('should allow only one panel to be active with "closeOthers" flag', () => {
