@@ -1,5 +1,13 @@
 <div class="component-demo">
+  <a [id]="demo"></a>
   <h2>
+    <a
+      [routerLink]=""
+      [fragment]="demo" ngbdFragment
+      title="Anchor link to demo: {{demo}}"
+    >
+      <img src="img/link-symbol.svg" alt="Anchor link to: {{demo}}"/>
+    </a>
     {{ demoTitle }}
     <a
       class="plunker"
