@@ -179,10 +179,10 @@ describe('ngb-tabset', () => {
               <ng-template ngbTabTitle>child</ng-template>
               <ng-template ngbTabContent></ng-template>
             </ngb-tab>
-          </ngb-tabset>        
+          </ngb-tabset>
         </ng-template>
-      </ngb-tab>      
-    </ngb-tabset>        
+      </ngb-tab>
+    </ngb-tabset>
     `;
     const fixture = createTestComponent(testHtml);
     // additional change detection is required to reproduce the problem in the test environment

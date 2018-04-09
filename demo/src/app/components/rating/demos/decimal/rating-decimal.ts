@@ -5,7 +5,7 @@ import {Component} from '@angular/core';
   templateUrl: './rating-decimal.html',
   styles: [`
     .star {
-      position: relative;  
+      position: relative;
       display: inline-block;
       font-size: 3rem;
       color: #d3d3d3;
