@@ -1,8 +1,15 @@
 import {NgbDatepickerI18nDefault} from './datepicker-i18n';
+import {TestBed} from '@angular/core/testing';
+import {LOCALE_ID} from '@angular/core';
 
 describe('ngb-datepicker-i18n-default', () => {
 
-  const i18n = new NgbDatepickerI18nDefault();
+  let i18n: NgbDatepickerI18nDefault;
+
+  beforeEach(() => {
+    const locale: string = TestBed.get(LOCALE_ID);
+    i18n = new NgbDatepickerI18nDefault(locale);
+  });
 
   it('should return abbreviated month name', () => {
     expect(i18n.getMonthShortName(0)).toBe(undefined);
