@@ -19,6 +19,6 @@
     "./demo/src/*.ts"
   ],
   "angularCompilerOptions": {
-    "strictMetadataEmit": true
+    "strictMetadataEmit": false
   }
 }
