@@ -19,6 +19,7 @@
     "./demo/src/*.ts"
   ],
   "angularCompilerOptions": {
-    "strictMetadataEmit": false
+    "strictMetadataEmit": false,
+    "preserveWhitespaces": true
   }
 }
