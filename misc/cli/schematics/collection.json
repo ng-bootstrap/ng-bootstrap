@@ -1,0 +1,9 @@
+{
+  "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "schematics": {
+    "ng-add": {
+      "description": "ng add '@ng-bootstrap/ng-bootstrap' schematic.",
+      "factory": "./ng-add/index"
+    }
+  }
+}

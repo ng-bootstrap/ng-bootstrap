@@ -2,6 +2,23 @@
 # yarn lockfile v1
 
 
+"@angular-devkit/core@0.5.4", "@angular-devkit/core@^0.5.4":
+  version "0.5.4"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-0.5.4.tgz#94b7462f5039cf811c7e06db0c87bb2299d61c71"
+  dependencies:
+    ajv "~5.5.1"
+    chokidar "^1.7.0"
+    rxjs "^6.0.0-beta.3"
+    source-map "^0.5.6"
+
+"@angular-devkit/schematics@^0.5.4":
+  version "0.5.4"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-0.5.4.tgz#6a4b0abb30091fa1a5d0751737f9ed036ac8704f"
+  dependencies:
+    "@angular-devkit/core" "0.5.4"
+    "@ngtools/json-schema" "^1.1.0"
+    rxjs "^6.0.0-beta.3"
+
 "@angular/common@6.0.0-rc.3":
   version "6.0.0-rc.3"
   resolved "https://registry.yarnpkg.com/@angular/common/-/common-6.0.0-rc.3.tgz#361af1aaa19a24d42724c9088ecebe316f1c58e9"
@@ -58,6 +75,10 @@
   resolved "https://registry.yarnpkg.com/@angular/router/-/router-6.0.0-rc.3.tgz#67e134582fae35fd395c87efd47f87efcd641a03"
   dependencies:
     tslib "^1.9.0"
+
+"@ngtools/json-schema@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@ngtools/json-schema/-/json-schema-1.1.0.tgz#c3a0c544d62392acc2813a42c8a0dc6f58f86922"
 
 "@ngtools/webpack@1.10.2":
   version "1.10.2"
@@ -161,7 +182,7 @@ ajv@^4.9.1:
     co "^4.6.0"
     json-stable-stringify "^1.0.1"
 
-ajv@^5.0.0, ajv@^5.1.0:
+ajv@^5.0.0, ajv@^5.1.0, ajv@~5.5.1:
   version "5.5.2"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-5.5.2.tgz#73b5eeca3fab653e3d3f9422b341ad42205dc965"
   dependencies:
@@ -1112,7 +1133,7 @@ chalk@~2.2.0:
     escape-string-regexp "^1.0.5"
     supports-color "^4.0.0"
 
-chokidar@^1.4.1, chokidar@^1.4.2:
+chokidar@^1.4.1, chokidar@^1.4.2, chokidar@^1.7.0:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-1.7.0.tgz#798e689778151c8076b4b360e5edd28cda2bb468"
   dependencies:
@@ -7036,6 +7057,12 @@ run-sequence@^1.2.2:
 rxjs@6.0.0-rc.1:
   version "6.0.0-rc.1"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.0.0-rc.1.tgz#24de21d36803d022c5823f44dc51eaf6074fa85c"
+  dependencies:
+    tslib "^1.9.0"
+
+rxjs@^6.0.0-beta.3:
+  version "6.0.0-tactical-rc.1"
+  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.0.0-tactical-rc.1.tgz#1fe1f1204132d1c71c72f249a487f8e76a5ec1d5"
   dependencies:
     tslib "^1.9.0"
 

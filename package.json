@@ -58,6 +58,8 @@
     "@angular/platform-browser-dynamic": "6.0.0-rc.3",
     "@angular/router": "6.0.0-rc.3",
     "@ngtools/webpack": "1.10.2",
+    "@angular-devkit/core": "^0.5.4",
+    "@angular-devkit/schematics": "^0.5.4",
     "@types/jasmine": "~2.8.3",
     "@types/node": "^6.0.46",
     "@types/prismjs": "^1.9.0",
