@@ -4,7 +4,6 @@ import {
   Injectable,
   Injector,
   Inject,
-  ReflectiveInjector,
   ComponentFactory,
   ComponentFactoryResolver,
   ComponentRef,
@@ -119,8 +118,7 @@ export class NgbModalStack {
       moduleCFR: ComponentFactoryResolver, contentInjector: Injector, content: any,
       context: NgbActiveModal): ContentRef {
     const contentCmptFactory = moduleCFR.resolveComponentFactory(content);
-    const modalContentInjector =
-        ReflectiveInjector.resolveAndCreate([{provide: NgbActiveModal, useValue: context}], contentInjector);
+    const modalContentInjector = Injector.create([{provide: NgbActiveModal, useValue: context}], contentInjector);
     const componentRef = contentCmptFactory.create(modalContentInjector);
     this._applicationRef.attachView(componentRef.hostView);
     return new ContentRef([[componentRef.location.nativeElement]], componentRef.hostView, componentRef);
