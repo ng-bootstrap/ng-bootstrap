@@ -205,6 +205,9 @@ div.component-demo {
       .plunker, .stackblitz {
         opacity: 1;
       }
+      & > .title-fragment {
+        opacity: 1;
+      }
     }
   }
 
