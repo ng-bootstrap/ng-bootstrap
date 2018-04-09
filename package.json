@@ -116,6 +116,6 @@
     "url-loader": "^1.0.1",
     "webpack": "^3.11.0",
     "webpack-dev-server": "^2.11.2",
-    "zone.js": "~0.8.20"
+    "zone.js": "^0.8.25"
   }
 }
