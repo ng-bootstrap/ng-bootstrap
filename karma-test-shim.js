@@ -42,9 +42,13 @@ System.config({
     '@angular/forms/testing': 'npm:@angular/forms/bundles/forms-testing.umd.js',
 
     // other libraries
-    'rxjs': 'npm:rxjs'
+    'rxjs': 'npm:rxjs',
+    'tslib': 'npm:tslib/tslib.js'
   },
-  packages: {temp: {main: 'core.js', defaultExtension: 'js'}, rxjs: {defaultExtension: 'js'}}
+  packages: {
+    temp: {main: 'core.js', defaultExtension: 'js'},
+    rxjs: {main: 'index.js', defaultExtension: 'js'}, 'rxjs/operators': {main: 'index.js', defaultExtension: 'js'}
+  }
 });
 
 System.import('@angular/core/testing')
