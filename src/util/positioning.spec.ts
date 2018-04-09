@@ -8,14 +8,14 @@ describe('Positioning', () => {
   const bodyWidth = document.body.style.width;
 
   function createElement(height: number, width: number, marginTop: number, marginLeft: number): HTMLElement {
-    let element = document.createElement('div');
-    element.style.display = 'inline-block';
-    element.style.height = height + 'px';
-    element.style.width = width + 'px';
-    element.style.marginTop = marginTop + 'px';
-    element.style.marginLeft = marginLeft + 'px';
+    let el = document.createElement('div');
+    el.style.display = 'inline-block';
+    el.style.height = height + 'px';
+    el.style.width = width + 'px';
+    el.style.marginTop = marginTop + 'px';
+    el.style.marginLeft = marginLeft + 'px';
 
-    return element;
+    return el;
   }
 
   let element = createElement(200, 300, 100, 150);

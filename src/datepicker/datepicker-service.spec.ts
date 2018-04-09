@@ -939,7 +939,7 @@ describe('ngb-datepicker-service', () => {
 
     it(`should not select disabled dates with 'focusSelect()'`, () => {
       // marking 5th day of each month as disabled
-      service.markDisabled = (date) => date && date.day === 5;
+      service.markDisabled = (d) => d && d.day === 5;
 
       // focusing MAY, 5
       const date = new NgbDate(2017, 5, 5);
@@ -997,7 +997,7 @@ describe('ngb-datepicker-service', () => {
 
     it(`should not emit date selection event for disabled dates'`, () => {
       // marking 5th day of each month as disabled
-      service.markDisabled = (date) => date && date.day === 5;
+      service.markDisabled = (d) => d && d.day === 5;
 
       // focusing MAY, 5
       const date = new NgbDate(2017, 5, 5);

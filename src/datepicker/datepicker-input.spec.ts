@@ -611,7 +611,7 @@ describe('NgbInputDatepicker', () => {
 
     it('should emit both "dateSelect" and "onModelChange" events', () => {
       const fixture = createTestCmpt(`
-          <input ngbDatepicker ngModel [startDate]="{year: 2018, month: 3}" 
+          <input ngbDatepicker ngModel [startDate]="{year: 2018, month: 3}"
           (ngModelChange)="onModelChange($event)" (dateSelect)="onDateSelect($event)">`);
 
       const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);

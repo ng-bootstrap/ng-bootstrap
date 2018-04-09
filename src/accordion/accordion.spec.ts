@@ -241,10 +241,10 @@ describe('ngb-accordion', () => {
            <ngb-panel>
              <ng-template ngbPanelTitle>child title</ng-template>
              <ng-template ngbPanelContent>child content</ng-template>
-           </ngb-panel>     
+           </ngb-panel>
           </ngb-accordion>
        </ng-template>
-     </ngb-panel>     
+     </ngb-panel>
     </ngb-accordion>
     `;
     const fixture = createTestComponent(testHtml);

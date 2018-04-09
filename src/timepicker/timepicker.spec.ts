@@ -944,20 +944,29 @@ describe('ngb-timepicker', () => {
              });
        }));
 
-    it('should have disabled class, when it is disabled', () => {
-      const html = `<ngb-timepicker [(ngModel)]="model" [seconds]="true" [disabled]="disabled"></ngb-timepicker>`;
+    it('should have disabled class, when it is disabled', async(() => {
+         const html = `<ngb-timepicker [(ngModel)]="model" [seconds]="true" [disabled]="disabled"></ngb-timepicker>`;
 
-      const fixture = createTestComponent(html);
-      fixture.detectChanges();
+         const fixture = createTestComponent(html);
+         fixture.detectChanges();
+         fixture.whenStable()
+             .then(() => {
+               fixture.detectChanges();
+               return fixture.whenStable();
+             })
+             .then(() => {
+               let fieldset = getFieldsetElement(fixture.nativeElement);
+               expect(fieldset.hasAttribute('disabled')).toBeTruthy();
 
-      let fieldset = getFieldsetElement(fixture.nativeElement);
-      expect(fieldset.hasAttribute('disabled')).toBeTruthy;
-
-      fixture.componentInstance.disabled = false;
-      fixture.detectChanges();
-      fieldset = getFieldsetElement(fixture.nativeElement);
-      expect(fieldset.hasAttribute('disabled')).toBeFalsy;
-    });
+               fixture.componentInstance.disabled = false;
+               fixture.detectChanges();
+               fixture.whenStable().then(() => {
+                 fixture.detectChanges();
+                 fieldset = getFieldsetElement(fixture.nativeElement);
+                 expect(fieldset.hasAttribute('disabled')).toBeFalsy();
+               });
+             });
+       }));
 
     it('should have disabled attribute when it is disabled using reactive forms', async(() => {
          const html = `<form [formGroup]="disabledForm"><ngb-timepicker formControlName="control"></ngb-timepicker></form>`;
