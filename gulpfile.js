@@ -11,7 +11,6 @@ var gulpFormat = require('gulp-clang-format');
 var runSequence = require('run-sequence');
 var tslint = require('gulp-tslint');
 var webpack = require('webpack');
-var typescript = require('typescript');
 var exec = require('child_process').exec;
 var path = require('path');
 var os = require('os');
@@ -184,10 +183,10 @@ gulp.task('tdd', ['clean:tests'], (cb) => {
     cb(e && e.signal !== 'SIGINT' ? e : undefined);
   }).stdout.on('data', function(data) {
 
-    console.log(data);
+    console.log(data.replace('\x1Bc', '').trim());
 
     // starting karma in tdd as soon as 'tsc -w' finishes first compilation
-    if (!startedKarma) {
+    if (!startedKarma && data.includes('Compilation complete')) {
       startedKarma = true;
       startKarmaServer(true, false, function(err) { process.exit(err ? 1 : 0); });
     }
