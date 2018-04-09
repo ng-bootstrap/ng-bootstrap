@@ -32,7 +32,7 @@
       <ngb-tab id="{{component}}-{{demo}}-html">
         <ng-template ngbTabTitle>
           <small class="badge badge-secondary" title="HTML template">T</small>
-          <span>{{component}}-{{demo}}.html</span>
+          <span class="ml-2">{{component}}-{{demo}}.html</span>
         </ng-template>
         <ng-template ngbTabContent>
           <ngbd-code [code]="snippets[demo]['markup']" lang="html"></ngbd-code>
@@ -41,7 +41,7 @@
       <ngb-tab id="{{component}}-{{demo}}-typescript">
         <ng-template ngbTabTitle>
           <small class="badge badge-info" title="Component class">C</small>
-          <span>{{component}}-{{demo}}.ts</span>
+          <span class="ml-2">{{component}}-{{demo}}.ts</span>
         </ng-template>
         <ng-template ngbTabContent>
           <ngbd-code [code]="snippets[demo]['code']" lang="typescript"></ngbd-code>

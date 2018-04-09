@@ -17,9 +17,8 @@
             <div class="examples-legend">
               <strong>Legend</strong>
               <p>
-                <ng-container *ngFor="let type of fileTypes; last as last">
-                  <small class="badge {{type[2]}}">{{type[0]}}</small> {{type[1]}}
-                  <ng-container *ngIf="!last">&nbsp;</ng-container>
+                <ng-container *ngFor="let type of fileTypes;">
+                  <small class="badge {{type[2]}} mr-2">{{type[0]}}</small>{{type[1]}}<br>
                 </ng-container>
               </p>
             </div>
