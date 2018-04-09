@@ -47,6 +47,10 @@
     width: 80%;
     font-size: 2rem;
     color: #fff;
+
+    a {
+      margin: 0 0.5rem;
+    }
   }
 
   .btn {
@@ -75,6 +79,10 @@
   ngbd-default & {
     text-align: center;
     margin-top: 2rem;
+  }
+
+  > iframe, > a {
+    margin-left: 0.5rem;
   }
 }
 
@@ -200,6 +208,7 @@ div.component-demo {
       text-decoration: none;
       opacity: 0.3;
       transition: opacity .5s;
+      margin-left: 0.3rem;
     }
     &:hover {
       .plunker, .stackblitz {
