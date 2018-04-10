@@ -38,7 +38,7 @@ export class NgbTab {
   /**
    * Unique tab identifier. Must be unique for the entire document for proper accessibility support.
    */
-  @Input() id: string = `ngb-tab-${nextId++}`;
+  @Input() id = `ngb-tab-${nextId++}`;
   /**
    * Simple (string only) title. Use the "NgbTabTitle" directive for more complex use-cases.
    */
@@ -128,7 +128,7 @@ export class NgbTabset implements AfterContentChecked {
   /**
    * Whether the closed tabs should be hidden without destroying them
    */
-  @Input() destroyOnHide: boolean = true;
+  @Input() destroyOnHide = true;
 
   /**
    * The horizontal alignment of the nav with flexbox utilities. Can be one of 'start', 'center', 'end', 'fill' or

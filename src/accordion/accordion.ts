@@ -146,7 +146,7 @@ export class NgbAccordion implements AfterContentChecked {
   /**
    * Whether the closed panels should be hidden without destroying them
    */
-  @Input() destroyOnHide: boolean = true;
+  @Input() destroyOnHide = true;
 
   /**
    *  Accordion's types of panels to be applied globally.

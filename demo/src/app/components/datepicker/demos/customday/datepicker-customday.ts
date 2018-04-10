@@ -5,7 +5,7 @@ import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
   selector: 'ngbd-datepicker-customday',
   templateUrl: './datepicker-customday.html',
   styles: [`
-    .custom-day {      
+    .custom-day {
       text-align: center;
       padding: 0.185rem 0.25rem;
       border-radius: 0.25rem;

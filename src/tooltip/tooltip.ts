@@ -49,7 +49,7 @@ let nextId = 0;
     :host.bs-tooltip-left .arrow, :host.bs-tooltip-right .arrow {
       top: calc(50% - 0.4rem);
     }
-    
+
     :host.bs-tooltip-left-top .arrow, :host.bs-tooltip-right-top .arrow {
       top: 0.4rem;
     }

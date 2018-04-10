@@ -54,7 +54,7 @@ let nextId = 0;
       top: 50%;
       margin-top: -5px;
     }
-    
+
     :host.bs-popover-left-top .arrow, :host.bs-popover-right-top .arrow {
       top: 0.7em;
     }
