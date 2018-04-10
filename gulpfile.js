@@ -12,6 +12,7 @@ var runSequence = require('run-sequence');
 var tslint = require('gulp-tslint');
 var webpack = require('webpack');
 var exec = require('child_process').exec;
+var fs = require('fs');
 var path = require('path');
 var os = require('os');
 var remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
@@ -92,6 +93,7 @@ gulp.task('umd', function(cb) {
 
 gulp.task('npm', function() {
   var pkgJson = require('./package.json');
+  var schematicsCollection = fs.readFileSync('./misc/cli/schematics/collection.json', 'utf8');
   var targetPkgJson = {};
   var fieldsToCopy = ['version', 'description', 'keywords', 'author', 'repository', 'license', 'bugs', 'homepage'];
 
@@ -101,6 +103,7 @@ gulp.task('npm', function() {
 
   targetPkgJson['main'] = 'bundles/ng-bootstrap.js';
   targetPkgJson['module'] = 'index.js';
+  targetPkgJson['schematics'] = './schematics/collection.json';
   targetPkgJson['typings'] = 'index.d.ts';
 
   targetPkgJson.peerDependencies = {};
@@ -110,6 +113,7 @@ gulp.task('npm', function() {
 
   return gulp.src(['README.md', 'LICENSE'])
       .pipe(gulpFile('package.json', JSON.stringify(targetPkgJson, null, 2)))
+      .pipe(gulpFile('schematics/collection.json', schematicsCollection))
       .pipe(gulp.dest('dist'));
 });
 
@@ -292,11 +296,22 @@ gulp.task('demo-push', function() {
       .pipe(ghPages({remoteUrl: "https://github.com/ng-bootstrap/ng-bootstrap.github.io.git", branch: "master"}));
 });
 
+// CLI schematics
+gulp.task('clean:schematics', function() { return del('dist/schematics'); });
+
+gulp.task('build:schematics', ['clean:schematics'], function(cb) {
+  exec(path.join(__dirname, platformPath('/node_modules/.bin/tsc') + ' -p misc/cli/tsconfig.json'), (e) => {
+    if (e) console.log(e);
+    cb();
+  }).stdout.on('data', function(data) { console.log(data); });
+});
+
 // Public Tasks
 gulp.task('clean', ['clean:build', 'clean:tests', 'clean:demo', 'clean:demo-cache']);
 
 gulp.task('build', function(done) {
-  runSequence('lint', 'enforce-format', 'ddescribe-iit', 'test', 'clean:build', 'ngc', 'umd', 'npm', done);
+  runSequence(
+      'lint', 'enforce-format', 'ddescribe-iit', 'test', 'clean:build', 'ngc', 'umd', 'build:schematics', 'npm', done);
 });
 
 gulp.task(
