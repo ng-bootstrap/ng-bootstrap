@@ -1,4 +1,5 @@
 import {Subscription} from 'rxjs';
+import {take} from 'rxjs/operators';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -12,7 +13,8 @@ import {
   EventEmitter,
   Output,
   OnDestroy,
-  ElementRef
+  ElementRef,
+  NgZone
 } from '@angular/core';
 import {NG_VALUE_ACCESSOR, ControlValueAccessor} from '@angular/forms';
 import {NgbCalendar} from './ngb-calendar';
@@ -56,13 +58,6 @@ export interface NgbDatepickerNavigateEvent {
   exportAs: 'ngbDatepicker',
   selector: 'ngb-datepicker',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    'tabindex': '0',
-    '[attr.tabindex]': 'model.disabled ? undefined : "0"',
-    '(blur)': 'showFocus(false)',
-    '(focus)': 'showFocus(true)',
-    '(keydown)': 'onKeyDown($event)'
-  },
   styles: [`
     :host {
       border: 1px solid rgba(0, 0, 0, 0.125);
@@ -132,7 +127,7 @@ export interface NgbDatepickerNavigateEvent {
       </ngb-datepicker-navigation>
     </div>
 
-    <div class="ngb-dp-months">
+    <div class="ngb-dp-months" (keydown)="onKeyDown($event)" (focusin)="showFocus(true)" (focusout)="showFocus(false)">
       <ng-template ngFor let-month [ngForOf]="model.months" let-i="index">
         <div class="ngb-dp-month d-block">
           <div *ngIf="navigation === 'none' || (displayMonths > 1 && navigation === 'select')"
@@ -238,7 +233,8 @@ export class NgbDatepicker implements OnDestroy,
   constructor(
       private _keyMapService: NgbDatepickerKeyMapService, public _service: NgbDatepickerService,
       private _calendar: NgbCalendar, public i18n: NgbDatepickerI18n, config: NgbDatepickerConfig,
-      private _cd: ChangeDetectorRef, private _elementRef: ElementRef, private _ngbDateAdapter: NgbDateAdapter<any>) {
+      private _cd: ChangeDetectorRef, private _elementRef: ElementRef, private _ngbDateAdapter: NgbDateAdapter<any>,
+      private _ngZone: NgZone) {
     ['dayTemplate', 'displayMonths', 'firstDayOfWeek', 'markDisabled', 'minDate', 'maxDate', 'navigation',
      'outsideDays', 'showWeekdays', 'showWeekNumbers', 'startDate']
         .forEach(input => this[input] = config[input]);
@@ -250,6 +246,8 @@ export class NgbDatepicker implements OnDestroy,
       const oldDate = this.model ? this.model.firstDate : null;
       const newSelectedDate = model.selectedDate;
       const oldSelectedDate = this.model ? this.model.selectedDate : null;
+      const newFocusedDate = model.focusDate;
+      const oldFocusedDate = this.model ? this.model.focusDate : null;
 
       this.model = model;
 
@@ -257,6 +255,11 @@ export class NgbDatepicker implements OnDestroy,
       if (isChangedDate(newSelectedDate, oldSelectedDate)) {
         this.onTouched();
         this.onChange(this._ngbDateAdapter.toModel(newSelectedDate));
+      }
+
+      // handling focus change
+      if (isChangedDate(newFocusedDate, oldFocusedDate) && oldFocusedDate && model.focusVisible) {
+        this.focus();
       }
 
       // emitting navigation event if the first month changes
@@ -271,9 +274,16 @@ export class NgbDatepicker implements OnDestroy,
   }
 
   /**
-   * Manually focus the datepicker
+   * Manually focus the focusable day in the datepicker
    */
-  focus() { this._elementRef.nativeElement.focus(); }
+  focus() {
+    this._ngZone.onStable.asObservable().pipe(take(1)).subscribe(() => {
+      const elementToFocus = this._elementRef.nativeElement.querySelector('div.ngb-dp-day[tabindex="0"]');
+      if (elementToFocus) {
+        elementToFocus.focus();
+      }
+    });
+  }
 
   /**
    * Navigates current view to provided date.
