@@ -10,15 +10,18 @@ import {DayTemplateContext} from './datepicker-day-template-context';
   styles: [`
     .ngb-dp-weekday, .ngb-dp-week-number {
       line-height: 2rem;
+      text-align: center;
+      font-style: italic;
     }
     .ngb-dp-weekday {
       color: #5bc0de;
+      color: var(--info);
     }
     .ngb-dp-week {
-        border-radius: 0.25rem;
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
+      border-radius: 0.25rem;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
     }
     .ngb-dp-weekdays {
       border-bottom: 1px solid rgba(0, 0, 0, 0.125);
@@ -38,13 +41,13 @@ import {DayTemplateContext} from './datepicker-day-template-context';
   template: `
     <div *ngIf="showWeekdays" class="ngb-dp-week ngb-dp-weekdays bg-light">
       <div *ngIf="showWeekNumbers" class="ngb-dp-weekday ngb-dp-showweek"></div>
-      <div *ngFor="let w of month.weekdays" class="ngb-dp-weekday small text-center font-italic">
+      <div *ngFor="let w of month.weekdays" class="ngb-dp-weekday small">
         {{ i18n.getWeekdayShortName(w) }}
       </div>
     </div>
     <ng-template ngFor let-week [ngForOf]="month.weeks">
       <div *ngIf="!isCollapsed(week)" class="ngb-dp-week" role="row">
-        <div *ngIf="showWeekNumbers" class="ngb-dp-week-number small text-center font-italic text-muted">{{ week.number }}</div>
+        <div *ngIf="showWeekNumbers" class="ngb-dp-week-number small text-muted">{{ week.number }}</div>
         <div *ngFor="let day of week.days" (click)="doSelect(day)" class="ngb-dp-day" role="gridcell"
           [class.disabled]="day.context.disabled"
           [tabindex]="day.tabindex"
