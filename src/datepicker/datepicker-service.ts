@@ -157,6 +157,9 @@ export class NgbDatepickerService {
             day.context.focused = state.focusDate.equals(day.date) && state.focusVisible;
           }
 
+          day.tabindex =
+              (!state.disabled && day.date.equals(state.focusDate) && state.focusDate.month === month.number) ? 0 : -1;
+
           // override context disabled
           if (state.disabled === true) {
             day.context.disabled = true;

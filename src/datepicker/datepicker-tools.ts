@@ -144,7 +144,8 @@ export function buildMonth(calendar: NgbCalendar, date: NgbDate, state: Datepick
           disabled: disabled,
           focused: false,
           selected: false
-        }
+        },
+        tabindex: -1
       });
 
       date = nextDate;

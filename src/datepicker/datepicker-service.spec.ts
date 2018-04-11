@@ -17,7 +17,9 @@ describe('ngb-datepicker-service', () => {
 
   let subscriptions: Subscription[];
 
-  const getDay = (n: number) => model.months[0].weeks[0].days[n];
+  const getDayInMonth = (monthIndex: number, weekIndex: number, dayIndex: number) =>
+      model.months[monthIndex].weeks[weekIndex].days[dayIndex];
+  const getDay = (n: number) => getDayInMonth(0, 0, n);
   const getDayCtx = (n: number) => getDay(n).context;
 
   beforeEach(() => {
@@ -302,6 +304,21 @@ describe('ngb-datepicker-service', () => {
       expect(model.months.length).toBe(1);
       expect(model.months[0]).toBe(month);
       expect(getDay(0).date).toBe(date);
+    });
+
+    it(`should change the tabindex when changing the current month`, () => {
+      service.displayMonths = 2;
+      service.focus(new NgbDate(2018, 3, 31));
+
+      expect(getDayInMonth(0, 4, 5).tabindex).toEqual(0);   // 31 march in the first month block
+      expect(getDayInMonth(1, 0, 5).tabindex).toEqual(-1);  // 31 march in the second month block
+
+      service.focusMove('d', 1);
+      expect(getDayInMonth(0, 4, 5).tabindex).toEqual(-1);  // 31 march in the first month block
+      expect(getDayInMonth(1, 0, 5).tabindex).toEqual(-1);  // 31 march in the second month block
+      expect(getDayInMonth(0, 4, 6).tabindex).toEqual(-1);  // 1st april in the first month block
+      expect(getDayInMonth(1, 0, 6).tabindex).toEqual(0);   // 1st april in the second month block
+
     });
   });
 
@@ -1053,26 +1070,34 @@ describe('ngb-datepicker-service', () => {
       expect(getDayCtx(0).currentMonth).toBe(10);
     });
 
-    it(`should update 'focused' flag for day template`, () => {
+    it(`should update 'focused' flag and tabindex for day template`, () => {
       // off
       service.focus(new NgbDate(2017, 5, 1));
       expect(getDayCtx(0).focused).toBeFalsy();
       expect(getDayCtx(1).focused).toBeFalsy();
+      expect(getDay(0).tabindex).toEqual(0);
+      expect(getDay(1).tabindex).toEqual(-1);
 
       // on
       service.focusVisible = true;
       expect(getDayCtx(0).focused).toBeTruthy();
       expect(getDayCtx(1).focused).toBeFalsy();
+      expect(getDay(0).tabindex).toEqual(0);
+      expect(getDay(1).tabindex).toEqual(-1);
 
       // move
       service.focusMove('d', 1);
       expect(getDayCtx(0).focused).toBeFalsy();
       expect(getDayCtx(1).focused).toBeTruthy();
+      expect(getDay(0).tabindex).toEqual(-1);
+      expect(getDay(1).tabindex).toEqual(0);
 
       // off
       service.focusVisible = false;
       expect(getDayCtx(0).focused).toBeFalsy();
       expect(getDayCtx(1).focused).toBeFalsy();
+      expect(getDay(0).tabindex).toEqual(-1);
+      expect(getDay(1).tabindex).toEqual(0);
     });
 
     it(`should update 'selected' flag for day template`, () => {

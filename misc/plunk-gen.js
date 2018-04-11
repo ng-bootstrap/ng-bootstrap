@@ -45,13 +45,13 @@ import { ${demoImports} } from '${demoImport}';
   \`
 })
 export class App {
-}   
+}
 
 @NgModule({
-  imports: [BrowserModule, FormsModule, ReactiveFormsModule, HttpClientModule, NgbModule.forRoot()], 
+  imports: [BrowserModule, FormsModule, ReactiveFormsModule, HttpClientModule, NgbModule.forRoot()],
   declarations: [App, ${demoImports}]${needsEntryCmpt ? `,\n  entryComponents: [${entryCmptClass}],` : ','}
   bootstrap: [App]
-}) 
+})
 export class AppModule {}
 `;
 }
@@ -76,7 +76,7 @@ function generatePlnkrContent(componentName, demoName) {
 <body>
   <form id="mainForm" method="post" action="${plnkrUrl}">
     <input type="hidden" name="description" value="Example usage of the ${componentName} widget from https://ng-bootstrap.github.io">
-${generateTags(['Angular', 'Bootstrap', 'ng-bootstrap', capitalize(componentName)])}  
+${generateTags(['Angular', 'Bootstrap', 'ng-bootstrap', capitalize(componentName)])}
     <input type="hidden" name="files[index.html]" value="${he.encode(generateIndexHtml())}">
     <input type="hidden" name="files[config.js]" value="${he.encode(generateConfigJs())}">
     <input type="hidden" name="files[src/main.ts]" value="${he.encode(contentMainTs)}">
@@ -131,7 +131,7 @@ function generateConfigJs() {
     'typescript': {
       "exports": "ts"
     }
-  },  
+  },
   paths: {
     'npm:': 'https://unpkg.com/'
   },
@@ -150,7 +150,6 @@ function generateConfigJs() {
     '@angular/forms': 'npm:@angular/forms@' + ver.ng + '/bundles/forms.umd.js',
 
     'rxjs': 'npm:rxjs@${versions.rxjs}',
-    'rxjs/operators': 'npm:rxjs@${versions.rxjs}/operators/index.js',
     'tslib': 'npm:tslib/tslib.js',
     'typescript': 'npm:typescript@${versions.typescript}/lib/typescript.js',
 
@@ -162,6 +161,11 @@ function generateConfigJs() {
       defaultExtension: 'ts'
     },
     rxjs: {
+      main: 'index.js',
+      defaultExtension: 'js'
+    },
+    'rxjs/operators': {
+      main: 'index.js',
       defaultExtension: 'js'
     }
   }

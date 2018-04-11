@@ -63,12 +63,10 @@ gulp.task('umd', function(cb) {
   }
 
   function rxjsExternal(context, request, cb) {
-    if (/^rxjs\/add\/observable\//.test(request)) {
-      return cb(null, {root: ['Rx', 'Observable'], commonjs: request, commonjs2: request, amd: request});
-    } else if (/^rxjs\/add\/operator\//.test(request)) {
-      return cb(null, {root: ['Rx', 'Observable', 'prototype'], commonjs: request, commonjs2: request, amd: request});
-    } else if (/^rxjs\//.test(request)) {
-      return cb(null, {root: ['Rx'], commonjs: request, commonjs2: request, amd: request});
+    if (request == 'rxjs/operators') {
+      return cb(null, {root: ['rxjs', 'operators'], commonjs: request, commonjs2: request, amd: request});
+    } else if (request == 'rxjs') {
+      return cb(null, {root: ['rxjs'], commonjs: request, commonjs2: request, amd: request});
     }
     cb();
   }

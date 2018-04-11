@@ -255,6 +255,8 @@ export class NgbInputDatepicker implements OnChanges,
         this._onChange(selectedDate);
       });
 
+      this._cRef.changeDetectorRef.detectChanges();
+
       // focus handling
       this._cRef.instance.focus();
 
