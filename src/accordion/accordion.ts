@@ -110,7 +110,7 @@ export interface NgbPanelChangeEvent {
 @Component({
   selector: 'ngb-accordion',
   exportAs: 'ngbAccordion',
-  host: {'role': 'tablist', '[attr.aria-multiselectable]': '!closeOtherPanels'},
+  host: {'class': 'accordion', 'role': 'tablist', '[attr.aria-multiselectable]': '!closeOtherPanels'},
   template: `
     <ng-template ngFor let-panel [ngForOf]="panels">
       <div class="card">
