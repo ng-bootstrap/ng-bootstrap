@@ -7,7 +7,8 @@ export type NgbMarkDisabled = (date: NgbDateStruct, current: {year: number, mont
 export type DayViewModel = {
   date: NgbDate,
   context: DayTemplateContext,
-  tabindex: number
+  tabindex: number,
+  ariaLabel: string
 }
 
 export type WeekViewModel = {

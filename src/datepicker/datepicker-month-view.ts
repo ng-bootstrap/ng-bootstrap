@@ -51,7 +51,8 @@ import {DayTemplateContext} from './datepicker-day-template-context';
         <div *ngFor="let day of week.days" (click)="doSelect(day)" class="ngb-dp-day" role="gridcell"
           [class.disabled]="day.context.disabled"
           [tabindex]="day.tabindex"
-          [class.hidden]="isHidden(day)">
+          [class.hidden]="isHidden(day)"
+          [attr.aria-label]="day.ariaLabel">
           <ng-template [ngIf]="!isHidden(day)">
             <ng-template [ngTemplateOutlet]="dayTemplate" [ngTemplateOutletContext]="day.context"></ng-template>
           </ng-template>

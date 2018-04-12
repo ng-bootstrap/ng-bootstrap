@@ -5,6 +5,8 @@ import {NgbDate} from './ngb-date';
 import {Subscription} from 'rxjs';
 import {DatepickerViewModel} from './datepicker-view-model';
 import {NgbDateStruct} from './ngb-date-struct';
+import {NgbDatepickerI18n, NgbDatepickerI18nDefault} from './datepicker-i18n';
+import {DatePipe} from '@angular/common';
 
 describe('ngb-datepicker-service', () => {
 
@@ -23,8 +25,12 @@ describe('ngb-datepicker-service', () => {
   const getDayCtx = (n: number) => getDay(n).context;
 
   beforeEach(() => {
-    TestBed.configureTestingModule(
-        {providers: [NgbDatepickerService, {provide: NgbCalendar, useClass: NgbCalendarGregorian}]});
+    TestBed.configureTestingModule({
+      providers: [
+        NgbDatepickerService, {provide: NgbCalendar, useClass: NgbCalendarGregorian},
+        {provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nDefault}, DatePipe
+      ]
+    });
 
     calendar = TestBed.get(NgbCalendar);
     service = TestBed.get(NgbDatepickerService);
@@ -318,6 +324,25 @@ describe('ngb-datepicker-service', () => {
       expect(getDayInMonth(1, 0, 5).tabindex).toEqual(-1);  // 31 march in the second month block
       expect(getDayInMonth(0, 4, 6).tabindex).toEqual(-1);  // 1st april in the first month block
       expect(getDayInMonth(1, 0, 6).tabindex).toEqual(0);   // 1st april in the second month block
+
+    });
+
+    it(`should set the aria-label when changing the current month`, () => {
+      service.displayMonths = 2;
+      service.focus(new NgbDate(2018, 3, 31));
+
+      expect(getDayInMonth(0, 4, 5).ariaLabel)
+          .toEqual('Saturday, March 31, 2018');  // 31 march in the first month block
+      expect(getDayInMonth(1, 0, 5).ariaLabel)
+          .toEqual('Saturday, March 31, 2018');  // 31 march in the second month block
+
+      service.focusMove('d', 1);
+      expect(getDayInMonth(0, 4, 5).ariaLabel)
+          .toEqual('Saturday, March 31, 2018');  // 31 march in the first month block
+      expect(getDayInMonth(1, 0, 5).ariaLabel)
+          .toEqual('Saturday, March 31, 2018');                                   // 31 march in the second month block
+      expect(getDayInMonth(0, 4, 6).ariaLabel).toEqual('Sunday, April 1, 2018');  // 1st april in the first month block
+      expect(getDayInMonth(1, 0, 6).ariaLabel).toEqual('Sunday, April 1, 2018');  // 1st april in the second month block
 
     });
   });

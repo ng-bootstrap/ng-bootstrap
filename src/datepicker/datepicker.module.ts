@@ -1,5 +1,5 @@
 import {NgModule, ModuleWithProviders} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {CommonModule, DatePipe} from '@angular/common';
 import {NgbDatepicker, NgbDatepickerNavigateEvent} from './datepicker';
 import {NgbDatepickerMonthView} from './datepicker-month-view';
 import {NgbDatepickerNavigation} from './datepicker-navigation';
@@ -47,7 +47,7 @@ export class NgbDatepickerModule {
         {provide: NgbCalendar, useClass: NgbCalendarGregorian},
         {provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nDefault},
         {provide: NgbDateParserFormatter, useClass: NgbDateISOParserFormatter},
-        {provide: NgbDateAdapter, useClass: NgbDateStructAdapter}, NgbDatepickerConfig
+        {provide: NgbDateAdapter, useClass: NgbDateStructAdapter}, NgbDatepickerConfig, DatePipe
       ]
     };
   }

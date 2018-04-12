@@ -18,6 +18,7 @@ import {
 } from './datepicker-tools';
 
 import {filter} from 'rxjs/operators';
+import {NgbDatepickerI18n} from './datepicker-i18n';
 
 @Injectable()
 export class NgbDatepickerService {
@@ -94,7 +95,7 @@ export class NgbDatepickerService {
     }
   }
 
-  constructor(private _calendar: NgbCalendar) {}
+  constructor(private _calendar: NgbCalendar, private _i18n: NgbDatepickerI18n) {}
 
   focus(date: NgbDate) {
     if (!this._state.disabled && this._calendar.isValid(date) && isChangedDate(this._state.focusDate, date)) {
@@ -159,7 +160,6 @@ export class NgbDatepickerService {
 
           day.tabindex =
               (!state.disabled && day.date.equals(state.focusDate) && state.focusDate.month === month.number) ? 0 : -1;
-
           // override context disabled
           if (state.disabled === true) {
             day.context.disabled = true;
@@ -221,7 +221,7 @@ export class NgbDatepickerService {
       const forceRebuild = 'firstDayOfWeek' in patch || 'markDisabled' in patch || 'minDate' in patch ||
           'maxDate' in patch || 'disabled' in patch;
 
-      const months = buildMonths(this._calendar, startDate, state, forceRebuild);
+      const months = buildMonths(this._calendar, startDate, state, this._i18n, forceRebuild);
 
       // updating months and boundary dates
       state.months = months;
