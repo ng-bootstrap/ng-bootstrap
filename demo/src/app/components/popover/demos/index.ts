@@ -4,6 +4,7 @@ import {NgbdPopoverTplwithcontext} from './tplwithcontext/popover-tplwithcontext
 import {NgbdPopoverTriggers} from './triggers/popover-triggers';
 import {NgbdPopoverVisibility} from './visibility/popover-visibility';
 import {NgbdPopoverContainer} from './container/popover-container';
+import {NgbdPopoverCustomClass} from './custom-class/popover-custom-class';
 import {NgbdPopoverConfig} from './config/popover-config';
 
 export const DEMO_DIRECTIVES = [
@@ -13,6 +14,7 @@ export const DEMO_DIRECTIVES = [
   NgbdPopoverTriggers,
   NgbdPopoverVisibility,
   NgbdPopoverContainer,
+  NgbdPopoverCustomClass,
   NgbdPopoverConfig
 ];
 
@@ -40,6 +42,10 @@ export const DEMO_SNIPPETS = {
   'container': {
     'code': require('!!raw-loader!./container/popover-container'),
     'markup': require('!!raw-loader!./container/popover-container.html')
+  },
+  'custom-class': {
+    'code': require('!!raw-loader!./custom-class/popover-custom-class'),
+    'markup': require('!!raw-loader!./custom-class/popover-custom-class.html')
   },
   'config': {
     'code': require('!!raw-loader!./config/popover-config'),

@@ -31,6 +31,10 @@ import {DEMO_SNIPPETS} from './demos';
         <ngbd-popover-container></ngbd-popover-container>
       </ngbd-example-box>
       <ngbd-example-box
+        demoTitle="Popover with custom class" [snippets]="snippets" component="popover" demo="custom-class">
+        <ngbd-popover-custom-class></ngbd-popover-custom-class>
+      </ngbd-example-box>
+      <ngbd-example-box
         demoTitle="Global configuration of popovers" [snippets]="snippets" component="popover" demo="config">
         <ngbd-popover-config></ngbd-popover-config>
       </ngbd-example-box>
