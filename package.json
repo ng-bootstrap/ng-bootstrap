@@ -48,7 +48,8 @@
   "dependencies": {
     "@angular/common": "6.0.0-rc.3",
     "@angular/core": "6.0.0-rc.3",
-    "@angular/forms": "6.0.0-rc.3"
+    "@angular/forms": "6.0.0-rc.3",
+    "rxjs": "6.0.0-rc.1"
   },
   "devDependencies": {
     "@angular/compiler": "6.0.0-rc.3",
@@ -106,7 +107,6 @@
     "reflect-metadata": "^0.1.8",
     "remap-istanbul": "^0.11.0",
     "run-sequence": "^1.2.2",
-    "rxjs": "6.0.0-rc.1",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.20.3",
     "systemjs": "^0.19.40",
