@@ -23,7 +23,7 @@ import {DatepickerViewModel, NavigationEvent} from './datepicker-view-model';
 import {toInteger} from '../util/util';
 import {DayTemplateContext} from './datepicker-day-template-context';
 import {NgbDatepickerConfig} from './datepicker-config';
-import {NgbDateAdapter} from './ngb-date-adapter';
+import {NgbDateAdapter} from './adapters/ngb-date-adapter';
 import {NgbDateStruct} from './ngb-date-struct';
 import {NgbDatepickerI18n} from './datepicker-i18n';
 import {isChangedDate} from './datepicker-tools';

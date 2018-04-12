@@ -24,7 +24,7 @@ import {NgbDateParserFormatter} from './ngb-date-parser-formatter';
 
 import {positionElements, PlacementArray} from '../util/positioning';
 import {NgbDateStruct} from './ngb-date-struct';
-import {NgbDateAdapter} from './ngb-date-adapter';
+import {NgbDateAdapter} from './adapters/ngb-date-adapter';
 import {NgbCalendar} from './ngb-calendar';
 import {NgbDatepickerService} from './datepicker-service';
 
