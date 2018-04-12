@@ -1,4 +1,5 @@
 import {TestBed, ComponentFixture, inject} from '@angular/core/testing';
+import {By} from '@angular/platform-browser';
 import {createGenericTestComponent} from '../test/common';
 
 import {Component} from '@angular/core';
@@ -71,6 +72,12 @@ describe('ngb-accordion', () => {
     expectOpenPanels(el, [false, false, false]);
     expect(accordionEl.getAttribute('role')).toBe('tablist');
     expect(accordionEl.getAttribute('aria-multiselectable')).toBe('true');
+  });
+
+  it('should have proper css classes', () => {
+    const fixture = TestBed.createComponent(TestComponent);
+    const accordion = fixture.debugElement.query(By.directive(NgbAccordion));
+    expect(accordion.nativeElement).toHaveCssClass('accordion');
   });
 
   it('should toggle panels based on "activeIds" values', () => {
