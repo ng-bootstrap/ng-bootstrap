@@ -5,5 +5,5 @@ import {Component} from '@angular/core';
   templateUrl: './popover-visibility.html'
 })
 export class NgbdPopoverVisibility {
-
+  isOpen: boolean;
 }
