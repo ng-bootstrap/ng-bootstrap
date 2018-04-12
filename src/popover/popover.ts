@@ -30,7 +30,8 @@ let nextId = 0;
   selector: 'ngb-popover-window',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class]': '"popover bs-popover-" + placement.split("-")[0]+" bs-popover-" + placement',
+    '[class]':
+        '"popover bs-popover-" + placement.split("-")[0]+" bs-popover-" + placement + (popoverClass ? " " + popoverClass : "")',
     'role': 'tooltip',
     '[id]': 'id'
   },
@@ -71,6 +72,7 @@ export class NgbPopoverWindow {
   @Input() placement: Placement = 'top';
   @Input() title: string;
   @Input() id: string;
+  @Input() popoverClass: string;
 
   constructor(private _element: ElementRef<HTMLElement>, private _renderer: Renderer2) {}
 
@@ -124,6 +126,12 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
    */
   @Input() disablePopover: boolean;
   /**
+   * An optional class applied to ngb-popover-window
+   *
+   * @since 2.2.0
+   */
+  @Input() popoverClass: string;
+  /**
    * Emits an event when the popover is shown
    */
   @Output() shown = new EventEmitter();
@@ -155,6 +163,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
     this.triggers = config.triggers;
     this.container = config.container;
     this.disablePopover = config.disablePopover;
+    this.popoverClass = config.popoverClass;
     this._popupService = new PopupService<NgbPopoverWindow>(
         NgbPopoverWindow, injector, viewContainerRef, _renderer, componentFactoryResolver);
 
@@ -176,6 +185,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
     if (!this._windowRef && !this._isDisabled()) {
       this._windowRef = this._popupService.open(this.ngbPopover, context);
       this._windowRef.instance.title = this.popoverTitle;
+      this._windowRef.instance.popoverClass = this.popoverClass;
       this._windowRef.instance.id = this._ngbPopoverWindowId;
 
       this._renderer.setAttribute(this._elementRef.nativeElement, 'aria-describedby', this._ngbPopoverWindowId);
