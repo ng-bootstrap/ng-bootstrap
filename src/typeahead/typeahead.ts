@@ -346,6 +346,7 @@ export class NgbTypeahead implements ControlValueAccessor,
         if (this.resultTemplate) {
           this._windowRef.instance.resultTemplate = this.resultTemplate;
         }
+        this._windowRef.instance.resetActive();
 
         // The observable stream we are subscribing to might have async steps
         // and if a component containing typeahead is using the OnPush strategy
