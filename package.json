@@ -46,18 +46,18 @@
   },
   "homepage": "https://github.com/ng-bootstrap/ng-bootstrap#readme",
   "dependencies": {
-    "@angular/common": "6.0.0-rc.3",
-    "@angular/core": "6.0.0-rc.3",
-    "@angular/forms": "6.0.0-rc.3",
-    "rxjs": "6.0.0-rc.1"
+    "@angular/common": "6.0.0-rc.4",
+    "@angular/core": "6.0.0-rc.4",
+    "@angular/forms": "6.0.0-rc.4",
+    "rxjs": "6.0.0-turbo-rc.4"
   },
   "devDependencies": {
-    "@angular/compiler": "6.0.0-rc.3",
-    "@angular/compiler-cli": "6.0.0-rc.3",
-    "@angular/http": "6.0.0-rc.3",
-    "@angular/platform-browser": "6.0.0-rc.3",
-    "@angular/platform-browser-dynamic": "6.0.0-rc.3",
-    "@angular/router": "6.0.0-rc.3",
+    "@angular/compiler": "6.0.0-rc.4",
+    "@angular/compiler-cli": "6.0.0-rc.4",
+    "@angular/http": "6.0.0-rc.4",
+    "@angular/platform-browser": "6.0.0-rc.4",
+    "@angular/platform-browser-dynamic": "6.0.0-rc.4",
+    "@angular/router": "6.0.0-rc.4",
     "@ngtools/webpack": "1.10.2",
     "@types/jasmine": "~2.8.3",
     "@types/node": "^6.0.46",
