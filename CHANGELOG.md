@@ -1,3 +1,15 @@
+<a name="1.1.2"></a>
+## [1.1.2](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.1.1...1.1.2) (2018-04-13)
+
+
+### Bug Fixes
+
+* **accordion:** add 'accordion' css class ([c69fa0e](https://github.com/ng-bootstrap/ng-bootstrap/commit/c69fa0e)), closes [#2304](https://github.com/ng-bootstrap/ng-bootstrap/issues/2304)
+* **dropdown:** correct dropup position with Bootstrap 4.1 ([557e4c5](https://github.com/ng-bootstrap/ng-bootstrap/commit/557e4c5)), closes [#2297](https://github.com/ng-bootstrap/ng-bootstrap/issues/2297) [#2313](https://github.com/ng-bootstrap/ng-bootstrap/issues/2313)
+* **typeahead:** reset active index when results change ([8fcd006](https://github.com/ng-bootstrap/ng-bootstrap/commit/8fcd006)), closes [#2303](https://github.com/ng-bootstrap/ng-bootstrap/issues/2303) [#2312](https://github.com/ng-bootstrap/ng-bootstrap/issues/2312)
+
+
+
 <a name="1.1.1"></a>
 ## [1.1.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.1.0...1.1.1) (2018-04-06)
 
