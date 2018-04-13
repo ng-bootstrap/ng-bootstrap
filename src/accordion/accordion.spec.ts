@@ -19,8 +19,8 @@ function getPanelsContent(element: HTMLElement): HTMLDivElement[] {
   return <HTMLDivElement[]>Array.from(element.querySelectorAll('.card > .card-body'));
 }
 
-function getPanelsTitle(element: HTMLElement): HTMLDivElement[] {
-  return <HTMLDivElement[]>Array.from(element.querySelectorAll('.card > .card-header a'));
+function getPanelsTitle(element: HTMLElement): HTMLAnchorElement[] {
+  return <HTMLAnchorElement[]>Array.from(element.querySelectorAll('.card > .card-header a'));
 }
 
 function getButton(element: HTMLElement, index: number): HTMLButtonElement {
@@ -28,15 +28,18 @@ function getButton(element: HTMLElement, index: number): HTMLButtonElement {
 }
 
 function expectOpenPanels(nativeEl: HTMLElement, openPanelsDef: boolean[]) {
+  const noOfOpenPanels = openPanelsDef.reduce((soFar, def) => def ? soFar + 1 : soFar, 0);
   const panels = getPanels(nativeEl);
   expect(panels.length).toBe(openPanelsDef.length);
 
-  const panelsHeaders = getPanelsTitle(nativeEl);
-  panelsHeaders.forEach((header: HTMLElement, index: number) => {
-    expect(header.getAttribute('aria-expanded')).toBe(openPanelsDef[index].toString());
-  });
+  const panelsTitles = getPanelsTitle(nativeEl);
+  const result = panelsTitles.map((titleEl: HTMLAnchorElement) => titleEl.getAttribute('aria-expanded') === 'true');
 
-  const result = panels.map(panel => panel.classList.contains('active'));
+  const panelContents = getPanelsContent(nativeEl);
+  panelContents.forEach(
+      (panelContent: HTMLDivElement) => { expect(panelContent.classList.contains('show')).toBeTruthy(); });
+
+  expect(panelContents.length).toBe(noOfOpenPanels);
   expect(result).toEqual(openPanelsDef);
 }
 
