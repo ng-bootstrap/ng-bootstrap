@@ -16,8 +16,10 @@ import {positionElements, PlacementArray, Placement} from '../util/positioning';
 
 /**
  */
-@Directive(
-    {selector: '[ngbDropdownMenu]', host: {'[class.dropdown-menu]': 'true', '[class.show]': 'dropdown.isOpen()'}})
+@Directive({
+  selector: '[ngbDropdownMenu]',
+  host: {'[class.dropdown-menu]': 'true', '[class.show]': 'dropdown.isOpen()', '[attr.x-placement]': 'placement'}
+})
 export class NgbDropdownMenu {
   placement: Placement = 'bottom';
   isOpen = false;

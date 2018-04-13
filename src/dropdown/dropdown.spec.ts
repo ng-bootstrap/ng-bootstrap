@@ -101,6 +101,22 @@ describe('ngb-dropdown', () => {
     expect(getDropdownEl(compiled)).toHaveCssClass('dropdown');
   });
 
+  it('should have x-placement attribute reflecting placement', () => {
+    const html = `
+      <div ngbDropdown placement="bottom-right">
+          <button ngbDropdownAnchor></button>
+          <div ngbDropdownMenu>
+            <a class="dropdown-item">dropDown item</a>
+            <a class="dropdown-item">dropDown item</a>
+          </div>
+      </div>`;
+
+    const fixture = createTestComponent(html);
+    const compiled = fixture.nativeElement;
+
+    expect(getMenuEl(compiled).getAttribute('x-placement')).toBe('bottom-right');
+  });
+
   it('should be open initially if open expression is true', () => {
     const html = `
       <div ngbDropdown [open]="true">
