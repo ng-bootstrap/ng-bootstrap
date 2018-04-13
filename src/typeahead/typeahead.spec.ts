@@ -434,6 +434,28 @@ describe('ngb-typeahead', () => {
       expectWindowResults(compiled, ['one', 'one more']);
     });
 
+    it('should reset active index when result changes', () => {
+      const fixture = createTestComponent(`<input type="text" [ngbTypeahead]="find"/>`);
+      const compiled = fixture.nativeElement;
+
+      changeInput(compiled, 'o');
+      fixture.detectChanges();
+      expectWindowResults(compiled, ['+one', 'one more']);
+
+      // move down to highlight the second item
+      let event = createKeyDownEvent(Key.ArrowDown);
+      getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
+      fixture.detectChanges();
+      expectWindowResults(compiled, ['one', '+one more']);
+      expect(event.preventDefault).toHaveBeenCalled();
+
+      // change search criteria to reset results while the popup stays open
+      changeInput(compiled, 't');
+      fixture.detectChanges();
+      expectWindowResults(compiled, ['+two', 'three']);
+    });
+
+
     it('should properly make previous/next results active with down arrow keys when focusFirst is false', () => {
       const fixture = createTestComponent(`<input type="text" [ngbTypeahead]="find" [focusFirst]="false"/>`);
       const compiled = fixture.nativeElement;
