@@ -108,12 +108,14 @@ export class NgbTypeaheadWindow implements OnInit {
     this._activeChanged();
   }
 
-  select(item) { this.selectEvent.emit(item); }
-
-  ngOnInit() {
+  resetActive() {
     this.activeIdx = this.focusFirst ? 0 : -1;
     this._activeChanged();
   }
+
+  select(item) { this.selectEvent.emit(item); }
+
+  ngOnInit() { this.resetActive(); }
 
   private _activeChanged() {
     this.activeChangeEvent.emit(this.activeIdx >= 0 ? this.id + '-' + this.activeIdx : undefined);
