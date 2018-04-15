@@ -506,7 +506,7 @@ describe('ngb-timepicker', () => {
              })
              .then(() => {
                expectToDisplayTime(fixture.nativeElement, '01:30:00');
-               expect(meridianButton.innerHTML).toBe('PM');
+               expect(meridianButton.textContent).toBe('PM');
 
                fixture.componentInstance.model = {hour: 1, minute: 30, second: 0};
                fixture.detectChanges();
@@ -518,7 +518,7 @@ describe('ngb-timepicker', () => {
              })
              .then(() => {
                expectToDisplayTime(fixture.nativeElement, '01:30:00');
-               expect(meridianButton.innerHTML).toBe('AM');
+               expect(meridianButton.textContent).toBe('AM');
              });
        }));
 
@@ -536,7 +536,7 @@ describe('ngb-timepicker', () => {
              })
              .then(() => {
                expectToDisplayTime(fixture.nativeElement, '12:30:00');
-               expect(meridianButton.innerHTML).toBe('PM');
+               expect(meridianButton.textContent).toBe('PM');
 
                fixture.componentInstance.model = {hour: 0, minute: 30, second: 0};
                fixture.detectChanges();
@@ -548,7 +548,7 @@ describe('ngb-timepicker', () => {
              })
              .then(() => {
                expectToDisplayTime(fixture.nativeElement, '12:30:00');
-               expect(meridianButton.innerHTML).toBe('AM');
+               expect(meridianButton.textContent).toBe('AM');
              });
        }));
 
@@ -566,7 +566,7 @@ describe('ngb-timepicker', () => {
              })
              .then(() => {
                expectToDisplayTime(fixture.nativeElement, '01:30:00');
-               expect(meridianButton.innerHTML).toBe('PM');
+               expect(meridianButton.textContent).toBe('PM');
 
                meridianButton.click();
                fixture.detectChanges();
@@ -575,7 +575,7 @@ describe('ngb-timepicker', () => {
              .then(() => {
                expectToDisplayTime(fixture.nativeElement, '01:30:00');
                expect(fixture.componentInstance.model).toEqual({hour: 1, minute: 30, second: 0});
-               expect(meridianButton.innerHTML).toBe('AM');
+               expect(meridianButton.textContent).toBe('AM');
              });
        }));
 
@@ -670,7 +670,7 @@ describe('ngb-timepicker', () => {
              })
              .then(() => {
                expectToDisplayTime(fixture.nativeElement, '10:30');
-               expect(meridianButton.innerHTML).toBe('PM');
+               expect(meridianButton.textContent).toBe('PM');
                expect(fixture.componentInstance.model).toEqual({hour: 22, minute: 30, second: 0});
              });
        }));
@@ -693,7 +693,7 @@ describe('ngb-timepicker', () => {
              })
              .then(() => {
                expectToDisplayTime(fixture.nativeElement, '10:30');
-               expect(meridianButton.innerHTML).toBe('PM');
+               expect(meridianButton.textContent).toBe('PM');
                expect(fixture.componentInstance.model).toEqual({hour: 22, minute: 30, second: 0});
              });
        }));
@@ -716,7 +716,7 @@ describe('ngb-timepicker', () => {
              })
              .then(() => {
                expectToDisplayTime(fixture.nativeElement, '09:30');
-               expect(meridianButton.innerHTML).toBe('AM');
+               expect(meridianButton.textContent).toBe('AM');
                expect(fixture.componentInstance.model).toEqual({hour: 9, minute: 30, second: 0});
              });
        }));
@@ -739,7 +739,7 @@ describe('ngb-timepicker', () => {
              })
              .then(() => {
                expectToDisplayTime(fixture.nativeElement, '09:30');
-               expect(meridianButton.innerHTML).toBe('AM');
+               expect(meridianButton.textContent).toBe('AM');
                expect(fixture.componentInstance.model).toEqual({hour: 9, minute: 30, second: 0});
              });
        }));

@@ -13,15 +13,17 @@ import {NgbPaginationConfig} from './pagination-config';
     <ul [class]="'pagination' + (size ? ' pagination-' + size : '')">
       <li *ngIf="boundaryLinks" class="page-item"
         [class.disabled]="!hasPrevious() || disabled">
-        <a aria-label="First" class="page-link" href (click)="!!selectPage(1)" [attr.tabindex]="(hasPrevious() ? null : '-1')">
-          <span aria-hidden="true">&laquo;&laquo;</span>
+        <a aria-label="First" i18n-aria-label="@@ngb.pagination.first-aria" class="page-link" href
+          (click)="!!selectPage(1)" [attr.tabindex]="(hasPrevious() ? null : '-1')">
+          <span aria-hidden="true" i18n="@@ngb.pagination.first">&laquo;&laquo;</span>
         </a>
       </li>
 
       <li *ngIf="directionLinks" class="page-item"
         [class.disabled]="!hasPrevious() || disabled">
-        <a aria-label="Previous" class="page-link" href (click)="!!selectPage(page-1)" [attr.tabindex]="(hasPrevious() ? null : '-1')">
-          <span aria-hidden="true">&laquo;</span>
+        <a aria-label="Previous" i18n-aria-label="@@ngb.pagination.previous-aria" class="page-link" href
+          (click)="!!selectPage(page-1)" [attr.tabindex]="(hasPrevious() ? null : '-1')">
+          <span aria-hidden="true" i18n="@@ngb.pagination.previous">&laquo;</span>
         </a>
       </li>
       <li *ngFor="let pageNumber of pages" class="page-item" [class.active]="pageNumber === page"
@@ -33,14 +35,16 @@ import {NgbPaginationConfig} from './pagination-config';
         </a>
       </li>
       <li *ngIf="directionLinks" class="page-item" [class.disabled]="!hasNext() || disabled">
-        <a aria-label="Next" class="page-link" href (click)="!!selectPage(page+1)" [attr.tabindex]="(hasNext() ? null : '-1')">
-          <span aria-hidden="true">&raquo;</span>
+        <a aria-label="Next" i18n-aria-label="@@ngb.pagination.next-aria" class="page-link" href
+          (click)="!!selectPage(page+1)" [attr.tabindex]="(hasNext() ? null : '-1')">
+          <span aria-hidden="true" i18n="@@ngb.pagination.next">&raquo;</span>
         </a>
       </li>
 
       <li *ngIf="boundaryLinks" class="page-item" [class.disabled]="!hasNext() || disabled">
-        <a aria-label="Last" class="page-link" href (click)="!!selectPage(pageCount)" [attr.tabindex]="(hasNext() ? null : '-1')">
-          <span aria-hidden="true">&raquo;&raquo;</span>
+        <a aria-label="Last" i18n-aria-label="@@ngb.pagination.last-aria" class="page-link" href
+          (click)="!!selectPage(pageCount)" [attr.tabindex]="(hasNext() ? null : '-1')">
+          <span aria-hidden="true" i18n="@@ngb.pagination.last">&raquo;&raquo;</span>
         </a>
       </li>
     </ul>
