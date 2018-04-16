@@ -25,7 +25,7 @@ export class NgbDropdownMenu {
   isOpen = false;
 
   constructor(
-      @Inject(forwardRef(() => NgbDropdown)) public dropdown, private _elementRef: ElementRef,
+      @Inject(forwardRef(() => NgbDropdown)) public dropdown, private _elementRef: ElementRef<HTMLElement>,
       private _renderer: Renderer2) {}
 
   isEventFrom($event) { return this._elementRef.nativeElement.contains($event.target); }
@@ -66,7 +66,7 @@ export class NgbDropdownMenu {
 export class NgbDropdownAnchor {
   anchorEl;
 
-  constructor(@Inject(forwardRef(() => NgbDropdown)) public dropdown, private _elementRef: ElementRef) {
+  constructor(@Inject(forwardRef(() => NgbDropdown)) public dropdown, private _elementRef: ElementRef<HTMLElement>) {
     this.anchorEl = _elementRef.nativeElement;
   }
 
@@ -88,7 +88,9 @@ export class NgbDropdownAnchor {
   providers: [{provide: NgbDropdownAnchor, useExisting: forwardRef(() => NgbDropdownToggle)}]
 })
 export class NgbDropdownToggle extends NgbDropdownAnchor {
-  constructor(@Inject(forwardRef(() => NgbDropdown)) dropdown, elementRef: ElementRef) { super(dropdown, elementRef); }
+  constructor(@Inject(forwardRef(() => NgbDropdown)) dropdown, elementRef: ElementRef<HTMLElement>) {
+    super(dropdown, elementRef);
+  }
 
   toggleOpen() { this.dropdown.toggle(); }
 }

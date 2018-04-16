@@ -64,7 +64,7 @@ export class NgbTooltipWindow {
   @Input() placement: Placement = 'top';
   @Input() id: string;
 
-  constructor(private _element: ElementRef, private _renderer: Renderer2) {}
+  constructor(private _element: ElementRef<HTMLElement>, private _renderer: Renderer2) {}
 
   applyPlacement(_placement: Placement) {
     // remove the current placement classes
@@ -124,7 +124,7 @@ export class NgbTooltip implements OnInit, OnDestroy {
   private _zoneSubscription: any;
 
   constructor(
-      private _elementRef: ElementRef, private _renderer: Renderer2, injector: Injector,
+      private _elementRef: ElementRef<HTMLElement>, private _renderer: Renderer2, injector: Injector,
       componentFactoryResolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef, config: NgbTooltipConfig,
       ngZone: NgZone) {
     this.placement = config.placement;

@@ -96,7 +96,7 @@ class FocusTrapComponent implements AfterViewInit,
     OnDestroy {
   focusTrap: NgbFocusTrap | null = null;
   constructor(
-      private _focusTrapFactory: NgbFocusTrapFactory, private _element: ElementRef,
+      private _focusTrapFactory: NgbFocusTrapFactory, private _element: ElementRef<HTMLElement>,
       @Inject(Autofocus) private _autofocus) {}
 
   ngAfterViewInit() { this.focusTrap = this._focusTrapFactory.create(this._element.nativeElement, this._autofocus); }
