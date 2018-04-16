@@ -231,8 +231,8 @@ export class NgbDatepicker implements OnDestroy,
   constructor(
       private _keyMapService: NgbDatepickerKeyMapService, public _service: NgbDatepickerService,
       private _calendar: NgbCalendar, public i18n: NgbDatepickerI18n, config: NgbDatepickerConfig,
-      private _cd: ChangeDetectorRef, private _elementRef: ElementRef, private _ngbDateAdapter: NgbDateAdapter<any>,
-      private _ngZone: NgZone) {
+      private _cd: ChangeDetectorRef, private _elementRef: ElementRef<HTMLElement>,
+      private _ngbDateAdapter: NgbDateAdapter<any>, private _ngZone: NgZone) {
     ['dayTemplate', 'displayMonths', 'firstDayOfWeek', 'markDisabled', 'minDate', 'maxDate', 'navigation',
      'outsideDays', 'showWeekdays', 'showWeekNumbers', 'startDate']
         .forEach(input => this[input] = config[input]);
@@ -276,7 +276,8 @@ export class NgbDatepicker implements OnDestroy,
    */
   focus() {
     this._ngZone.onStable.asObservable().pipe(take(1)).subscribe(() => {
-      const elementToFocus = this._elementRef.nativeElement.querySelector('div.ngb-dp-day[tabindex="0"]');
+      const elementToFocus =
+          this._elementRef.nativeElement.querySelector<HTMLDivElement>('div.ngb-dp-day[tabindex="0"]');
       if (elementToFocus) {
         elementToFocus.focus();
       }

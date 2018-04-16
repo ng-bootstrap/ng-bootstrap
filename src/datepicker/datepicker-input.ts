@@ -180,9 +180,9 @@ export class NgbInputDatepicker implements OnChanges,
 
 
   constructor(
-      private _parserFormatter: NgbDateParserFormatter, private _elRef: ElementRef, private _vcRef: ViewContainerRef,
-      private _renderer: Renderer2, private _cfr: ComponentFactoryResolver, ngZone: NgZone,
-      private _service: NgbDatepickerService, private _calendar: NgbCalendar,
+      private _parserFormatter: NgbDateParserFormatter, private _elRef: ElementRef<HTMLInputElement>,
+      private _vcRef: ViewContainerRef, private _renderer: Renderer2, private _cfr: ComponentFactoryResolver,
+      ngZone: NgZone, private _service: NgbDatepickerService, private _calendar: NgbCalendar,
       private _ngbDateAdapter: NgbDateAdapter<any>, private _focusTrapFactory: NgbFocusTrapFactory) {
     this._zoneSubscription = ngZone.onStable.subscribe(() => {
       if (this._cRef) {

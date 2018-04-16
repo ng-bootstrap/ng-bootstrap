@@ -72,7 +72,7 @@ export class NgbPopoverWindow {
   @Input() title: string;
   @Input() id: string;
 
-  constructor(private _element: ElementRef, private _renderer: Renderer2) {}
+  constructor(private _element: ElementRef<HTMLElement>, private _renderer: Renderer2) {}
 
   applyPlacement(_placement: Placement) {
     // remove the current placement classes
@@ -148,7 +148,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
   }
 
   constructor(
-      private _elementRef: ElementRef, private _renderer: Renderer2, injector: Injector,
+      private _elementRef: ElementRef<HTMLElement>, private _renderer: Renderer2, injector: Injector,
       componentFactoryResolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef, config: NgbPopoverConfig,
       ngZone: NgZone) {
     this.placement = config.placement;
