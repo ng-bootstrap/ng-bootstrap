@@ -139,17 +139,23 @@ function getVersions() {
     ngBootstrap: packageJson.version,
     zoneJs: getVersion('zone.js'),
     coreJs: getVersion('core-js'),
-    systemjs: getVersion('systemjs'),
-    reflectMetadata: getVersion('reflect-metadata'),
+    systemjs: '^0.19.40',
+    reflectMetadata: getVersion('reflect-metadata', JSON.parse(fs.readFileSync('node_modules/@angular/compiler-cli/package.json'))),
     bootstrap: getVersion('bootstrap')
   };
 }
 
-function getVersion(name) {
-  var value = packageJson.dependencies[name] || packageJson.devDependencies[name];
+function getVersion(name, givenPackageJson) {
+  if (givenPackageJson == null) {
+    givenPackageJson = packageJson;
+  }
+
+  var value = givenPackageJson.dependencies[name] || givenPackageJson.devDependencies[name];
+
   if (!value) {
     throw `couldn't find version for ${name} in package.json`;
   }
+
   return value;
 }
 

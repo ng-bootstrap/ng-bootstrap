@@ -27,9 +27,9 @@ before_script:
   - ./scripts/sauce_connect_setup.sh
 
 script:
-  - gulp ci && yarn run api-doc-test
+  - yarn ci && yarn api-doc:test
   - ./scripts/sauce_connect_block.sh
-  - gulp saucelabs
+  - yarn saucelabs
 
 after_script:
   - ./scripts/sauce_connect_teardown.sh
