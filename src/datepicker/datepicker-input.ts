@@ -23,6 +23,7 @@ import {DayTemplateContext} from './datepicker-day-template-context';
 import {NgbDateParserFormatter} from './ngb-date-parser-formatter';
 
 import {positionElements, PlacementArray} from '../util/positioning';
+import {NgbFocusTrap, NgbFocusTrapFactory} from '../util/focus-trap';
 import {NgbDateStruct} from './ngb-date-struct';
 import {NgbDateAdapter} from './ngb-date-adapter';
 import {NgbCalendar} from './ngb-calendar';
@@ -62,6 +63,7 @@ export class NgbInputDatepicker implements OnChanges,
   private _disabled = false;
   private _model: NgbDate;
   private _zoneSubscription: any;
+  private _focusTrap: NgbFocusTrap | null = null;
 
   /**
    * Indicates whether the datepicker popup should be closed automatically after date selection or not.
@@ -181,7 +183,7 @@ export class NgbInputDatepicker implements OnChanges,
       private _parserFormatter: NgbDateParserFormatter, private _elRef: ElementRef, private _vcRef: ViewContainerRef,
       private _renderer: Renderer2, private _cfr: ComponentFactoryResolver, ngZone: NgZone,
       private _service: NgbDatepickerService, private _calendar: NgbCalendar,
-      private _ngbDateAdapter: NgbDateAdapter<any>) {
+      private _ngbDateAdapter: NgbDateAdapter<any>, private _focusTrapFactory: NgbFocusTrapFactory) {
     this._zoneSubscription = ngZone.onStable.subscribe(() => {
       if (this._cRef) {
         positionElements(
@@ -257,14 +259,16 @@ export class NgbInputDatepicker implements OnChanges,
 
       this._cRef.changeDetectorRef.detectChanges();
 
-      // focus handling
-      this._cRef.instance.focus();
-
       this._cRef.instance.setDisabledState(this.disabled);
 
       if (this.container === 'body') {
         window.document.querySelector(this.container).appendChild(this._cRef.location.nativeElement);
       }
+
+      this._focusTrap = this._focusTrapFactory.create(this._cRef.location.nativeElement, true);
+
+      // focus handling
+      this._cRef.instance.focus();
     }
   }
 
@@ -275,6 +279,8 @@ export class NgbInputDatepicker implements OnChanges,
     if (this.isOpen()) {
       this._vcRef.remove(this._vcRef.indexOf(this._cRef.hostView));
       this._cRef = null;
+      this._focusTrap.destroy();
+      this._focusTrap = null;
     }
   }
 
