@@ -15,9 +15,10 @@ export interface NgbModalOptions {
 
   /**
    * Function called when a modal will be dismissed.
-   * If this function returns false, the modal is not dismissed.
+   * If this function returns false, the promise is resolved with false or the promise is rejected, the modal is not
+   * dismissed.
    */
-  beforeDismiss?: () => boolean;
+  beforeDismiss?: () => boolean | Promise<boolean>;
 
   /**
    * To center the modal vertically (false by default).
