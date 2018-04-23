@@ -68,14 +68,31 @@ export class NgbModalRef {
     }
   }
 
+  private _dismiss(reason?: any) {
+    this._reject(reason);
+    this._removeModalElements();
+  }
+
   /**
    * Can be used to dismiss a modal, passing an optional reason.
    */
   dismiss(reason?: any): void {
     if (this._windowCmptRef) {
-      if (!this._beforeDismiss || this._beforeDismiss() !== false) {
-        this._reject(reason);
-        this._removeModalElements();
+      if (!this._beforeDismiss) {
+        this._dismiss(reason);
+      } else {
+        const dismiss = this._beforeDismiss();
+        if (dismiss && dismiss.then) {
+          dismiss.then(
+              result => {
+                if (result !== false) {
+                  this._dismiss(reason);
+                }
+              },
+              () => {});
+        } else if (dismiss !== false) {
+          this._dismiss(reason);
+        }
       }
     }
   }
