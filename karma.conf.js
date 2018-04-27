@@ -53,7 +53,7 @@ module.exports = function(config) {
       'SL_IE10': {
         base: 'SauceLabs',
         browserName: 'internet explorer',
-        platform: 'Windows 2012',
+        platform: 'Windows 8',
         version: '10'
       },
       'SL_IE11': {
@@ -62,11 +62,11 @@ module.exports = function(config) {
         platform: 'Windows 8.1',
         version: '11'
       },
-      'SL_EDGE14': {
+      'SL_EDGE16': {
         base: 'SauceLabs',
         browserName: 'MicrosoftEdge',
         platform: 'Windows 10',
-        version: '14.14393'
+        version: '16.16299'
       },
       'SL_EDGE15': {
         base: 'SauceLabs',
@@ -77,13 +77,13 @@ module.exports = function(config) {
       'SL_SAFARI10': {
         base: 'SauceLabs',
         browserName: 'safari',
-        platform: 'OS X 10.11',
-        version: '10.0'
+        platform: 'macOS 10.12',
+        version: '10.1'
       },
       'SL_SAFARI11': {
         base: 'SauceLabs',
         browserName: 'safari',
-        platform: 'macOS 10.12',
+        platform: 'macOS 10.13',
         version: '11.0'
       },
     },
@@ -119,9 +119,9 @@ module.exports = function(config) {
     autoWatch: true,
     browsers: ['Chrome'],
     singleRun: false,
-    captureTimeout: 60000,
-    browserDisconnectTimeout: 60000,
+    captureTimeout: 180000,
+    browserDisconnectTimeout: 180000,
     browserDisconnectTolerance: 3,
-    browserNoActivityTimeout: 60000
+    browserNoActivityTimeout: 300000
   });
 };
