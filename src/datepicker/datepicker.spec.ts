@@ -42,10 +42,10 @@ function getSelectedDays(element: DebugElement): DebugElement[] {
 
 function focusDay() {
   const element = document.querySelector('div.ngb-dp-day[tabindex="0"]') as HTMLElement;
-  element.focus();
   const evt = document.createEvent('Event');
   evt.initEvent('focusin', true, false);
   element.dispatchEvent(evt);
+  element.focus();
 }
 
 function triggerKeyDown(element: DebugElement, keyCode: number, shiftKey = false) {
@@ -737,6 +737,23 @@ describe('ngb-datepicker', () => {
                expect(getMonthSelect(fixture.nativeElement).disabled).toBeTruthy();
              });
        }));
+  });
+
+  describe('aria attributes', () => {
+    const template = `<ngb-datepicker #dp
+        [startDate]="date"></ngb-datepicker>
+        `;
+
+    it('should contains aria-label on the days', () => {
+      const fixture = createTestComponent(template);
+
+      const datepicker = fixture.debugElement.query(By.directive(NgbDatepicker));
+      const dates = getDates(fixture.nativeElement);
+
+      dates.forEach(function(date) {
+        expect(date.getAttribute('aria-label')).toBeDefined('Missing aria-label attribute on a day');
+      });
+    });
   });
 
   describe('keyboard navigation', () => {

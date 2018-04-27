@@ -12,6 +12,8 @@ import {NgbDate} from './ngb-date';
 import {NgbCalendar, NgbCalendarGregorian} from './ngb-calendar';
 import {TestBed} from '@angular/core/testing';
 import {DatepickerViewModel, NgbMarkDisabled} from './datepicker-view-model';
+import {NgbDatepickerI18n, NgbDatepickerI18nDefault} from './datepicker-i18n';
+import {DatePipe} from '@angular/common';
 
 describe(`datepicker-tools`, () => {
 
@@ -74,10 +76,17 @@ describe(`datepicker-tools`, () => {
   describe(`buildMonth()`, () => {
 
     let calendar: NgbCalendar;
+    let i18n: NgbDatepickerI18n;
 
     beforeAll(() => {
-      TestBed.configureTestingModule({providers: [{provide: NgbCalendar, useClass: NgbCalendarGregorian}]});
+      TestBed.configureTestingModule({
+        providers: [
+          {provide: NgbCalendar, useClass: NgbCalendarGregorian},
+          {provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nDefault}, DatePipe
+        ]
+      });
       calendar = TestBed.get(NgbCalendar);
+      i18n = TestBed.get(NgbDatepickerI18n);
     });
 
     // TODO: this should be automated somehow, ex. generate next 10 years or something
@@ -115,7 +124,7 @@ describe(`datepicker-tools`, () => {
     months.forEach(refMonth => {
       it(`should build month (${refMonth.date.year} - ${refMonth.date.month}) correctly`, () => {
 
-        let month = buildMonth(calendar, refMonth.date, { firstDayOfWeek: 1 } as DatepickerViewModel);
+        let month = buildMonth(calendar, refMonth.date, { firstDayOfWeek: 1 } as DatepickerViewModel, i18n);
 
         expect(month).toBeTruthy();
         expect(month.year).toEqual(refMonth.date.year);
@@ -144,8 +153,8 @@ describe(`datepicker-tools`, () => {
       const markDisabled: NgbMarkDisabled = (date) => date.day === 2;
 
       // MAY 2017
-      let month =
-          buildMonth(calendar, new NgbDate(2017, 5, 5), { firstDayOfWeek: 1, markDisabled } as DatepickerViewModel);
+      let month = buildMonth(
+          calendar, new NgbDate(2017, 5, 5), { firstDayOfWeek: 1, markDisabled } as DatepickerViewModel, i18n);
 
       // 2 MAY - disabled
       expect(month.weeks[0].days[0].context.disabled).toBe(false);
@@ -165,7 +174,7 @@ describe(`datepicker-tools`, () => {
         maxDate: new NgbDate(2017, 5, 10),
         markDisabled: mock.markDisabled
       } as DatepickerViewModel;
-      buildMonth(calendar, new NgbDate(2017, 5, 5), state);
+      buildMonth(calendar, new NgbDate(2017, 5, 5), state, i18n);
 
       // called one time, because it should be used only inside min-max range
       expect(mock.markDisabled).toHaveBeenCalledWith(new NgbDate(2017, 5, 10), {year: 2017, month: 5});
@@ -177,7 +186,7 @@ describe(`datepicker-tools`, () => {
 
       // MAY 2017
       let state = { firstDayOfWeek: 1, minDate: new NgbDate(2017, 5, 3), markDisabled } as DatepickerViewModel;
-      const month = buildMonth(calendar, new NgbDate(2017, 5, 5), state);
+      const month = buildMonth(calendar, new NgbDate(2017, 5, 5), state, i18n);
 
       // MIN = 2, so 1-2 MAY - disabled
       expect(month.weeks[0].days[0].context.disabled).toBe(true);
@@ -191,7 +200,7 @@ describe(`datepicker-tools`, () => {
 
       // MAY 2017
       let state = { firstDayOfWeek: 1, maxDate: new NgbDate(2017, 5, 2), markDisabled } as DatepickerViewModel;
-      const month = buildMonth(calendar, new NgbDate(2017, 5, 5), state);
+      const month = buildMonth(calendar, new NgbDate(2017, 5, 5), state, i18n);
 
       // MAX = 2, so 3-4 MAY - disabled
       expect(month.weeks[0].days[0].context.disabled).toBe(false);
@@ -202,12 +211,12 @@ describe(`datepicker-tools`, () => {
 
     it(`should rotate days of the week`, () => {
       // SUN = 7
-      let month = buildMonth(calendar, new NgbDate(2017, 5, 5), { firstDayOfWeek: 7 } as DatepickerViewModel);
+      let month = buildMonth(calendar, new NgbDate(2017, 5, 5), { firstDayOfWeek: 7 } as DatepickerViewModel, i18n);
       expect(month.weekdays).toEqual([7, 1, 2, 3, 4, 5, 6]);
       expect(month.weeks[0].days[0].date).toEqual(new NgbDate(2017, 4, 30));
 
       // WED = 3
-      month = buildMonth(calendar, new NgbDate(2017, 5, 5), { firstDayOfWeek: 3 } as DatepickerViewModel);
+      month = buildMonth(calendar, new NgbDate(2017, 5, 5), { firstDayOfWeek: 3 } as DatepickerViewModel, i18n);
       expect(month.weekdays).toEqual([3, 4, 5, 6, 7, 1, 2]);
       expect(month.weeks[0].days[0].date).toEqual(new NgbDate(2017, 4, 26));
     });
@@ -216,19 +225,26 @@ describe(`datepicker-tools`, () => {
   describe(`buildMonths()`, () => {
 
     let calendar: NgbCalendar;
+    let i18n: NgbDatepickerI18n;
 
     beforeAll(() => {
-      TestBed.configureTestingModule({providers: [{provide: NgbCalendar, useClass: NgbCalendarGregorian}]});
+      TestBed.configureTestingModule({
+        providers: [
+          {provide: NgbCalendar, useClass: NgbCalendarGregorian},
+          {provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nDefault}, DatePipe
+        ]
+      });
       calendar = TestBed.get(NgbCalendar);
+      i18n = TestBed.get(NgbDatepickerI18n);
     });
 
     it(`should generate 'displayMonths' number of months`, () => {
       let state = { displayMonths: 1, firstDayOfWeek: 1, months: [] } as DatepickerViewModel;
-      let months = buildMonths(calendar, new NgbDate(2017, 5, 5), state, false);
+      let months = buildMonths(calendar, new NgbDate(2017, 5, 5), state, i18n, false);
       expect(months.length).toBe(1);
 
       state.displayMonths = 2;
-      months = buildMonths(calendar, new NgbDate(2017, 5, 5), state, false);
+      months = buildMonths(calendar, new NgbDate(2017, 5, 5), state, i18n, false);
       expect(months.length).toBe(2);
     });
 
@@ -238,8 +254,8 @@ describe(`datepicker-tools`, () => {
 
       // one same month
       let state = { displayMonths: 1, firstDayOfWeek: 1, months: [] } as DatepickerViewModel;
-      state.months = buildMonths(calendar, may, state, false);
-      let newMonths = buildMonths(calendar, may, state, false);
+      state.months = buildMonths(calendar, may, state, i18n, false);
+      let newMonths = buildMonths(calendar, may, state, i18n, false);
 
       expect(state.months.length).toBe(1);
       expect(newMonths.length).toBe(1);
@@ -247,8 +263,8 @@ describe(`datepicker-tools`, () => {
 
       // one new month
       state = { displayMonths: 1, firstDayOfWeek: 1, months: [] } as DatepickerViewModel;
-      state.months = buildMonths(calendar, may, state, false);
-      newMonths = buildMonths(calendar, june, state, false);
+      state.months = buildMonths(calendar, may, state, i18n, false);
+      newMonths = buildMonths(calendar, june, state, i18n, false);
 
       expect(state.months.length).toBe(1);
       expect(newMonths.length).toBe(1);
@@ -256,8 +272,8 @@ describe(`datepicker-tools`, () => {
 
       // two same months
       state = { displayMonths: 2, firstDayOfWeek: 1, months: [] } as DatepickerViewModel;
-      state.months = buildMonths(calendar, may, state, false);
-      newMonths = buildMonths(calendar, may, state, false);
+      state.months = buildMonths(calendar, may, state, i18n, false);
+      newMonths = buildMonths(calendar, may, state, i18n, false);
 
       expect(state.months.length).toBe(2);
       expect(newMonths.length).toBe(2);
@@ -266,8 +282,8 @@ describe(`datepicker-tools`, () => {
 
       // two months, one overlaps
       state = { displayMonths: 2, firstDayOfWeek: 1, months: [] } as DatepickerViewModel;
-      state.months = buildMonths(calendar, may, state, false);
-      newMonths = buildMonths(calendar, june, state, false);
+      state.months = buildMonths(calendar, may, state, i18n, false);
+      newMonths = buildMonths(calendar, june, state, i18n, false);
 
       expect(state.months.length).toBe(2);
       expect(newMonths.length).toBe(2);
@@ -282,8 +298,8 @@ describe(`datepicker-tools`, () => {
 
       // one same month
       let state = { displayMonths: 1, firstDayOfWeek: 1, months: [] } as DatepickerViewModel;
-      state.months = buildMonths(calendar, may, state, true);
-      let newMonths = buildMonths(calendar, may, state, true);
+      state.months = buildMonths(calendar, may, state, i18n, true);
+      let newMonths = buildMonths(calendar, may, state, i18n, true);
 
       expect(state.months.length).toBe(1);
       expect(newMonths.length).toBe(1);
@@ -291,8 +307,8 @@ describe(`datepicker-tools`, () => {
 
       // one new month
       state = { displayMonths: 1, firstDayOfWeek: 1, months: [] } as DatepickerViewModel;
-      state.months = buildMonths(calendar, may, state, true);
-      newMonths = buildMonths(calendar, june, state, true);
+      state.months = buildMonths(calendar, may, state, i18n, true);
+      newMonths = buildMonths(calendar, june, state, i18n, true);
 
       expect(state.months.length).toBe(1);
       expect(newMonths.length).toBe(1);
@@ -300,8 +316,8 @@ describe(`datepicker-tools`, () => {
 
       // two same months
       state = { displayMonths: 2, firstDayOfWeek: 1, months: [] } as DatepickerViewModel;
-      state.months = buildMonths(calendar, may, state, true);
-      newMonths = buildMonths(calendar, may, state, true);
+      state.months = buildMonths(calendar, may, state, i18n, true);
+      newMonths = buildMonths(calendar, may, state, i18n, true);
 
       expect(state.months.length).toBe(2);
       expect(newMonths.length).toBe(2);
@@ -310,8 +326,8 @@ describe(`datepicker-tools`, () => {
 
       // two months, one overlaps
       state = { displayMonths: 2, firstDayOfWeek: 1, months: [] } as DatepickerViewModel;
-      state.months = buildMonths(calendar, may, state, true);
-      newMonths = buildMonths(calendar, june, state, true);
+      state.months = buildMonths(calendar, may, state, i18n, true);
+      newMonths = buildMonths(calendar, june, state, i18n, true);
 
       expect(state.months.length).toBe(2);
       expect(newMonths.length).toBe(2);

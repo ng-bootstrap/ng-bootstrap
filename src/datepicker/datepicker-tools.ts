@@ -2,6 +2,7 @@ import {NgbDate} from './ngb-date';
 import {DatepickerViewModel, DayViewModel, MonthViewModel} from './datepicker-view-model';
 import {NgbCalendar} from './ngb-calendar';
 import {isDefined} from '../util/util';
+import {NgbDatepickerI18n} from './datepicker-i18n';
 
 export function isChangedDate(prev: NgbDate, next: NgbDate) {
   return !dateComparator(prev, next);
@@ -83,7 +84,8 @@ export function prevMonthDisabled(calendar: NgbCalendar, date: NgbDate, minDate:
 }
 
 export function buildMonths(
-    calendar: NgbCalendar, date: NgbDate, state: DatepickerViewModel, force: boolean): MonthViewModel[] {
+    calendar: NgbCalendar, date: NgbDate, state: DatepickerViewModel, i18n: NgbDatepickerI18n,
+    force: boolean): MonthViewModel[] {
   const {displayMonths, months} = state;
   const newMonths = [];
   for (let i = 0; i < displayMonths; i++) {
@@ -91,7 +93,7 @@ export function buildMonths(
     const index = months.findIndex(month => month.firstDate.equals(newDate));
 
     if (force || index === -1) {
-      newMonths.push(buildMonth(calendar, newDate, state));
+      newMonths.push(buildMonth(calendar, newDate, state, i18n));
     } else {
       newMonths.push(months[index]);
     }
@@ -100,7 +102,8 @@ export function buildMonths(
   return newMonths;
 }
 
-export function buildMonth(calendar: NgbCalendar, date: NgbDate, state: DatepickerViewModel): MonthViewModel {
+export function buildMonth(
+    calendar: NgbCalendar, date: NgbDate, state: DatepickerViewModel, i18n: NgbDatepickerI18n): MonthViewModel {
   const {minDate, maxDate, firstDayOfWeek, markDisabled} = state;
   const month:
       MonthViewModel = {firstDate: null, lastDate: null, number: date.month, year: date.year, weeks: [], weekdays: []};
@@ -119,6 +122,8 @@ export function buildMonth(calendar: NgbCalendar, date: NgbDate, state: Datepick
 
       const newDate = new NgbDate(date.year, date.month, date.day);
       const nextDate = calendar.getNext(newDate);
+
+      const ariaLabel = i18n.getDayAriaLabel(newDate);
 
       // marking date as disabled
       let disabled = !!((minDate && newDate.before(minDate)) || (maxDate && newDate.after(maxDate)));
@@ -145,7 +150,7 @@ export function buildMonth(calendar: NgbCalendar, date: NgbDate, state: Datepick
           focused: false,
           selected: false
         },
-        tabindex: -1
+        tabindex: -1, ariaLabel
       });
 
       date = nextDate;
