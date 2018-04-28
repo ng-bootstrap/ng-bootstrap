@@ -5,6 +5,7 @@ import {NgbHighlight} from './highlight';
 import {NgbTypeaheadWindow} from './typeahead-window';
 import {NgbTypeahead, NgbTypeaheadSelectItemEvent} from './typeahead';
 import {NgbTypeaheadConfig} from './typeahead-config';
+import {Live, ARIA_LIVE_DELAY, DEFAULT_ARIA_LIVE_DELAY} from './../util/accessibility/live';
 
 export {NgbHighlight} from './highlight';
 export {NgbTypeaheadWindow} from './typeahead-window';
@@ -18,5 +19,10 @@ export {NgbTypeahead, NgbTypeaheadSelectItemEvent} from './typeahead';
   entryComponents: [NgbTypeaheadWindow]
 })
 export class NgbTypeaheadModule {
-  static forRoot(): ModuleWithProviders { return {ngModule: NgbTypeaheadModule, providers: [NgbTypeaheadConfig]}; }
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: NgbTypeaheadModule,
+      providers: [Live, NgbTypeaheadConfig, {provide: ARIA_LIVE_DELAY, useValue: DEFAULT_ARIA_LIVE_DELAY}]
+    };
+  }
 }
