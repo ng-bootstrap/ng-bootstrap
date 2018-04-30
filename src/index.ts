@@ -65,7 +65,13 @@ export {
   NgbTabContent,
   NgbTabTitle
 } from './tabset/tabset.module';
-export {NgbTimepickerModule, NgbTimepickerConfig, NgbTimeStruct, NgbTimepicker} from './timepicker/timepicker.module';
+export {
+  NgbTimepickerModule,
+  NgbTimepickerConfig,
+  NgbTimeStruct,
+  NgbTimepicker,
+  NgbTimeAdapter
+} from './timepicker/timepicker.module';
 export {NgbTooltipModule, NgbTooltipConfig, NgbTooltip} from './tooltip/tooltip.module';
 export {
   NgbHighlight,
