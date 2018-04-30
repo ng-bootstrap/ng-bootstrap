@@ -7,6 +7,7 @@ import {DEMO_SNIPPETS} from './demos';
     <ngbd-component-wrapper component="Timepicker">
       <ngbd-api-docs directive="NgbTimepicker"></ngbd-api-docs>
       <ngbd-api-docs-class type="NgbTimeStruct"></ngbd-api-docs-class>
+      <ngbd-api-docs-class type="NgbTimeAdapter"></ngbd-api-docs-class>
       <ngbd-api-docs-config type="NgbTimepickerConfig"></ngbd-api-docs-config>
       <ngbd-example-box demoTitle="Timepicker" [snippets]="snippets" component="timepicker" demo="basic">
         <ngbd-timepicker-basic></ngbd-timepicker-basic>
@@ -25,6 +26,9 @@ import {DEMO_SNIPPETS} from './demos';
       </ngbd-example-box>
       <ngbd-example-box demoTitle="Custom validation" [snippets]="snippets" component="timepicker" demo="validation">
         <ngbd-timepicker-validation></ngbd-timepicker-validation>
+      </ngbd-example-box>
+      <ngbd-example-box demoTitle="Custom time adapter" [snippets]="snippets" component="timepicker" demo="adapter">
+        <ngbd-timepicker-adapter></ngbd-timepicker-adapter>
       </ngbd-example-box>
       <ngbd-example-box demoTitle="Global configuration of timepickers" [snippets]="snippets" component="timepicker" demo="config">
         <ngbd-timepicker-config></ngbd-timepicker-config>

@@ -1,9 +1,10 @@
-import {Component, Input, forwardRef, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, forwardRef, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
-import {isNumber, padNumber, toInteger, isDefined} from '../util/util';
+import {isNumber, padNumber, toInteger} from '../util/util';
 import {NgbTime} from './ngb-time';
 import {NgbTimepickerConfig} from './timepicker-config';
+import {NgbTimeAdapter} from './ngb-time-adapter';
 
 const NGB_TIMEPICKER_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -188,7 +189,7 @@ export class NgbTimepicker implements ControlValueAccessor,
    */
   @Input() size: 'small' | 'medium' | 'large';
 
-  constructor(config: NgbTimepickerConfig) {
+  constructor(config: NgbTimepickerConfig, private _ngbTimeAdapter: NgbTimeAdapter<any>) {
     this.meridian = config.meridian;
     this.spinners = config.spinners;
     this.seconds = config.seconds;
@@ -204,8 +205,9 @@ export class NgbTimepicker implements ControlValueAccessor,
   onTouched = () => {};
 
   writeValue(value) {
-    this.model = value ? new NgbTime(value.hour, value.minute, value.second) : new NgbTime();
-    if (!this.seconds && (!value || !isNumber(value.second))) {
+    const structValue = this._ngbTimeAdapter.fromModel(value);
+    this.model = structValue ? new NgbTime(structValue.hour, structValue.minute, structValue.second) : new NgbTime();
+    if (!this.seconds && (!structValue || !isNumber(structValue.second))) {
       this.model.second = 0;
     }
   }
@@ -289,9 +291,10 @@ export class NgbTimepicker implements ControlValueAccessor,
       this.onTouched();
     }
     if (this.model.isValid(this.seconds)) {
-      this.onChange({hour: this.model.hour, minute: this.model.minute, second: this.model.second});
+      this.onChange(
+          this._ngbTimeAdapter.toModel({hour: this.model.hour, minute: this.model.minute, second: this.model.second}));
     } else {
-      this.onChange(null);
+      this.onChange(this._ngbTimeAdapter.toModel(null));
     }
   }
 }
