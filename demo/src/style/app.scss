@@ -1,75 +1,39 @@
 // styles in src/style directory are applied to the whole page
 
-.navbar {
-  background: rgba(255,255,255,0.95);
+header.navbar {
+  background: linear-gradient(135deg, #0143a3, #0273d4);
 }
 
-.bd-booticon {
-  margin: 1.25rem;
-  width: 256px;
-  height: 256px;
+.masthead {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
 }
 
-.deprecated {
-  h3 {
-    text-decoration: line-through;
-  }
-
-  h5 {
-    display: inline-block;
-  }
-
-  td.label-cell code, p.signature, code.selector, code.export-as {
-    text-decoration: line-through;
-  }
-
-  .description, .meta, .lead {
-    opacity: 0.5;
+.masthead-followup {
+  img {
+    width: 64px;
+    height: 64px;
   }
 }
 
-.bd-masthead, .jumbotron {
-  background-color: #0143A3;
-  background: linear-gradient(135deg, #0143A3, #0273D4);
-}
+.footer {
+  padding: 3rem 0;
+  // margin-top: 3rem;
+  font-size: 85%;
+  // background-color: #f7f7f7;
+  text-align: left;
 
-.bd-masthead {
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-  margin-bottom: 4rem;
-  text-align: center;
-  color: #efefef;
-
-  .lead {
-    margin-right: auto;
-    margin-bottom: 2rem;
-    margin-left: auto;
-    width: 80%;
-    font-size: 2rem;
-    color: #fff;
-
-    a {
-      margin: 0 0.5rem;
-    }
+  p {
+    margin-bottom: 0;
   }
 
-  .btn {
-    color: #fff;
-    border-color: #fff;
-    &:hover {
-      background-color: #f7f7f7;
-      color: #0273D4;
-    }
+  a {
+    font-weight: 500;
+    color: #55595c;
   }
-}
-
-.jumbotron {
-  color: #fff;
-  border-radius: 0;
 }
 
 .github-buttons {
-
   header & {
     margin-bottom: 0;
     margin-top: 4px;
@@ -81,81 +45,114 @@
     margin-top: 2rem;
   }
 
-  > iframe, > a {
+  > iframe,
+  > a {
     margin-left: 0.5rem;
   }
 }
 
-@media (min-width: 768px) {
-  .bd-sidebar {
-    padding-left: 1rem;
+.sidebar-collapsed {
+  margin-left: -15px;
+  margin-right: -15px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
 
-    display: inline-block;
-    position: -webkit-sticky;
-    position: sticky;
-    top: 1rem;
+.sidebar {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 1rem;
+}
+
+header.title {
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
+.toc {
+  margin-left: -15px;
+  margin-right: -15px;
+
+  .toc-item {
+    .toc-link {
+      display: block;
+      padding: 0.25rem 1.5rem;
+      color: rgba(0, 0, 0, 0.65);
+    }
+
+    .nav > li > a {
+      font-size: 90%;
+
+      &:hover, &:focus {
+        text-decoration: none;
+        color:#0275d8;
+      }
+    }
+
+    .nav > li.active > a {
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.85);
+    }
+
+    &.active {
+      margin-top: 2rem;
+
+      > .toc-link {
+        font-weight: 500;
+        color: rgba(0, 0, 0, 0.85);
+      }
+    }
   }
 }
 
-.bd-toc-link {
-  display: block;
-  padding: .25rem .75rem;
-  color: #55595c;
+.contextual-nav .nav {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+
+  a {
+    color: inherit;
+  }
 }
 
-.bd-toc-link:focus,
-.bd-toc-link:hover {
-  color: #0275d8;
-  text-decoration: none;
+.deprecated {
+  h3 {
+    text-decoration: line-through;
+  }
+
+  h5 {
+    display: inline-block;
+  }
+
+  td.label-cell code,
+  p.signature,
+  code.selector,
+  code.export-as {
+    text-decoration: line-through;
+  }
+
+  .description,
+  .meta,
+  .lead {
+    opacity: 0.5;
+  }
 }
 
-.active > .bd-toc-link {
-  font-weight: 500;
-  color: #373a3c;
+.root-nav {
+  .tab-content {
+    padding-top: 3rem;
+  }
 }
 
-.bd-toc-item.active {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-}
-
-.bd-toc-item:first-child {
-  margin-top: 0;
-}
-
-.bd-toc-item:last-child {
-  margin-bottom: 2rem;
-}
-
-.bd-sidebar .nav > li > a {
-  display: block;
-  padding: .25rem .75rem;
-  font-size: 90%;
-  color: #99979c;
-}
-
-.bd-sidebar .nav > li > a:focus,
-.bd-sidebar .nav > li > a:hover {
-  color: #0275d8;
-  text-decoration: none;
-  background-color: transparent;
-}
-
-.bd-sidebar .nav > .active:focus > a,
-.bd-sidebar .nav > .active:hover > a,
-.bd-sidebar .nav > .active > a {
-  font-weight: 500;
-  color: #373a3c;
-  background-color: transparent;
-}
 
 div.api-doc-component {
   margin-bottom: 3rem;
 
-  > h2, > h3 {
+  > h2,
+  > h3 {
     .github-link {
-      transition: opacity .5s;
-      opacity: .3;
+      transition: opacity 0.5s;
+      opacity: 0.3;
+      margin-left: .5rem;
     }
 
     &:hover {
@@ -176,10 +173,10 @@ div.api-doc-component {
     }
 
     .meta {
-      font-size: .8rem;
+      font-size: 0.8rem;
       margin-bottom: 1rem;
       > div {
-        margin-bottom: .5rem;
+        margin-bottom: 0.5rem;
       }
     }
   }
@@ -204,14 +201,16 @@ div.component-demo {
   h2 {
     margin-bottom: 1rem;
 
-    .plunker, .stackblitz {
+    .plunker,
+    .stackblitz {
       text-decoration: none;
       opacity: 0.3;
-      transition: opacity .5s;
+      transition: opacity 0.5s;
       margin-left: 0.3rem;
     }
     &:hover {
-      .plunker, .stackblitz {
+      .plunker,
+      .stackblitz {
         opacity: 1;
       }
       & > .title-fragment {
@@ -223,7 +222,7 @@ div.component-demo {
   .tabset-code {
     .nav {
       margin: 0;
-      padding: .5rem 1.25rem 0;
+      padding: 0.5rem 1.25rem 0;
       font-size: 80%;
 
       .nav-link.active {
@@ -253,24 +252,9 @@ div.component-demo {
   font-size: 80%;
 }
 
-.bd-footer {
-  padding: 3rem 0;
-  margin-top: 3rem;
-  font-size: 85%;
-  background-color: #f7f7f7;
-  text-align: left;
-
-  p {
-    margin-bottom: 0;
-  }
-
-  a {
-    font-weight: 500;
-    color: #55595c;
-  }
-}
-
-ngbd-api-docs, ngbd-api-docs-class, ngbd-api-docs-config {
+ngbd-api-docs,
+ngbd-api-docs-class,
+ngbd-api-docs-config {
   display: block;
 
   &:not(:first-child) {
@@ -280,43 +264,15 @@ ngbd-api-docs, ngbd-api-docs-class, ngbd-api-docs-config {
   }
 }
 
-
-
 // override prism theme background color to inline it with bootstrap colors
-code[class*="language-"],
-pre[class*="language-"] {
+code[class*='language-'],
+pre[class*='language-'] {
   background-color: #f5f5f5; // same as bootstrap card header
 }
 
 span.token.tag {
   font-size: 1em;
   padding: 0;
-}
-
-ngbd-component-wrapper, ngbd-page-wrapper {
-  .jumbotron {
-    border-radius: 0;
-  }
-}
-
-.root-nav {
-  $offset: 73px;
-  > .nav-tabs {
-    transform: translateY(-$offset);
-
-    .nav-link:not(.active) {
-      color: #f9f9f9;
-    }
-
-    .nav-link:not(.active):hover {
-      background-color: rgba(255,255,255, 0.15);
-      border-color: rgba(255,255,255, 0.15);
-    }
-  }
-
-  > .tab-content {
-    transform: translateY(-$offset / 2);
-  }
 }
 
 @mixin center-nav-tab-on-small-screens() {
@@ -334,17 +290,17 @@ ngbd-component-wrapper, ngbd-page-wrapper {
   }
 }
 
-@media (max-width: 768px) and (orientation:portrait) {
+@media (max-width: 768px) and (orientation: portrait) {
   @include center-nav-tab-on-small-screens();
 }
 
-@media (max-width: 568px) and (max-height: 320px)  {
+@media (max-width: 568px) and (max-height: 320px) {
   @include center-nav-tab-on-small-screens();
 }
 
 // Right-To-Left layout for the Islamic Calendars
 ngb-datepicker.rtl {
-	direction: rtl;
+  direction: rtl;
 }
 
 ngb-datepicker.rtl ngb-datepicker-navigation-select select.custom-select {
