@@ -847,6 +847,14 @@ describe('ngb-typeahead', () => {
       expect(input.getAttribute('autocapitalize')).toBe('off');
       expect(input.getAttribute('autocorrect')).toBe('off');
     });
+
+    it('should have configurable autocomplete attribute', () => {
+      const fixture =
+          createTestComponent('<input type="text" [ngbTypeahead]="findObjects" autocomplete="ignored-123456"/>');
+      const input = getNativeInput(fixture.nativeElement);
+
+      expect(input.getAttribute('autocomplete')).toBe('ignored-123456');
+    });
   });
 
   describe('accessibility', () => {

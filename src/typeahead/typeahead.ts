@@ -67,7 +67,7 @@ let nextWindowId = 0;
     '[class.open]': 'isPopupOpen()',
     '(document:click)': 'onDocumentClick($event)',
     '(keydown)': 'handleKeyDown($event)',
-    'autocomplete': 'off',
+    '[autocomplete]': 'autocomplete',
     'autocapitalize': 'off',
     'autocorrect': 'off',
     'role': 'combobox',
@@ -89,6 +89,12 @@ export class NgbTypeahead implements ControlValueAccessor,
   private _windowRef: ComponentRef<NgbTypeaheadWindow>;
   private _zoneSubscription: any;
 
+  /**
+   * Value for the configurable autocomplete attribute.
+   * Defaults to 'off' to disable the native browser autocomplete, but this standard value does not seem
+   * to be always correctly taken into account.
+   */
+  @Input() autocomplete = 'off';
 
   /**
    * A selector specifying the element the tooltip should be appended to.
