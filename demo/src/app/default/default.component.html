@@ -1,98 +1,89 @@
-<main class="bd-masthead">
+<main class="masthead">
   <div class="container">
-    <img class="bd-booticon" src="img/logo.svg" alt="ng-bootstrap logo"/>
-    <p class="lead d-none d-md-block">
-      Bootstrap 4 components, powered by Angular
-    </p>
-    <p>Currently at v{{version}}</p>
-    <p class="lead">
-      <a
-        class="btn btn-outline-primary"
-        [routerLink]="['/components']">Demo</a>
-      <a
-        class="btn btn-outline-primary"
-        [routerLink]="['/getting-started']">Installation</a>
-    </p>
+    <div class="row align-items-center">
+      <div class="col-6 mx-auto col-md-6">
+        <img class="img-fluid mb-3 mb-md-0" src="img/logo-stack.png" alt="ng-bootstrap logo"/>
+      </div>
+      <div class="col-md-6 text-center text-md-left pr-md-5">
+        <h1>Bootstrap widgets</h1>
+        <h3 class="text-secondary">The angular way</h3>
+        <p class="lead">
+          Angular specific widgets built from the ground up only using Bootstrap 4 CSS, with APIs that makes sense in the Angular ecosystem.
+        </p>
+        <p class="lead">No dependencies on 3rd party JavaScript.</p>
+        <p class="text-muted mb-4">Currently at v{{version}}</p>
+        <div class="d-flex flex-column flex-md-row lead mb-3">
+          <a
+            class="btn btn-lg btn-outline-primary mb-3 mb-md-0 mr-md-3"
+            routerLink="/components">Demo</a>
+          <a
+            class="btn btn-lg btn-outline-secondary"
+            routerLink="/getting-started">Installation</a>
+        </div>
+      </div>
+    </div>
   </div>
 </main>
 
-<section class="container">
-
-  <div class="row">
-    <div class="col-sm-2">
-      <img src="/img/cpu.svg" class="img-fluid d-none d-sm-block" alt="Native widgets icon (computer chip)">
-    </div>
-    <div class="col-sm-4">
-      <h4>Native</h4>
-      <p class="text-muted">
-        Angular - specific widgets built from ground and using Bootstrap 4 CSS. APIs that makes sense in the Angular ecosystem.
-        No dependencies on 3rd party JavaScript.
+<div class="masthead-followup">
+  <div class="row m-0 border border-white">
+    <div class="col-12 col-md-4 p-3 p-md-5 bg-light border border-white">
+      <img src="/img/cpu.svg" class="text-primary mb-2" alt="Native widgets icon (computer chip)">
+      <h3>Native</h3>
+      <p>
+        As simple as just Angular &amp; Bootstrap CSS. Nothing else. If you know Angular, you also know Ng-Boostrap.
       </p>
+      <a class="btn btn-outline-primary" routerLink='/getting-started'>Get started now</a>
     </div>
 
-    <div class="col-sm-2">
-      <img src="/img/browser.svg" class="img-fluid d-none d-sm-block" alt="UI Widgets icon">
-    </div>
-    <div class="col-sm-4">
-      <h4>Widgets</h4>
-      <p class="text-muted">
+    <div class="col-12 col-md-4 p-3 p-md-5 bg-light border border-white">
+      <img src="/img/browser.svg" class="mb-2" alt="UI Widgets icon">
+      <h3>Widgets</h3>
+      <p>
         All the Bootstrap widgets (ex.
-        <a [routerLink]="['/components/carousel']">carousel</a>,
-        <a [routerLink]="['/components/modal']">modal</a>,
-        <a [routerLink]="['/components/popover']">popovers</a>,
-        <a [routerLink]="['/components/tooltip']">tooltips</a>,
-        <a [routerLink]="['/components/tabs']">tabs</a>, ...) and several additional goodies (
-        <a [routerLink]="['/components/datepicker']">datepicker</a>,
-        <a [routerLink]="['/components/rating']">rating</a>,
-        <a [routerLink]="['/components/timepicker']">timepicker</a>,
-        <a [routerLink]="['/components/typeahead']">typeahead</a>).
+        <a routerLink="/components/carousel">carousel</a>,
+        <a routerLink="/components/modal">modal</a>,
+        <a routerLink="/components/popover">popovers</a>,
+        <a routerLink="/components/tooltip">tooltips</a>,
+        <a routerLink="/components/tabs">tabs</a>, ...) and several additional goodies
+        (<a routerLink="/components/datepicker">datepicker</a>,
+        <a routerLink="/components/rating">rating</a>,
+        <a routerLink="/components/timepicker">timepicker</a>,
+        <a routerLink="/components/typeahead">typeahead</a>).
       </p>
+      <a class="btn btn-outline-primary" routerLink='/components'>See all widgets</a>
     </div>
-  </div>
 
-  <div class="row mt-md-5">
-    <div class="col-sm-2">
-      <img src="/img/test.svg" class="img-fluid d-none d-sm-block" alt="Quality icon">
-    </div>
-    <div class="col-sm-4">
-      <h4>Quality</h4>
+    <div class="col-12 col-md-4 p-3 p-md-5 bg-light border border-white">
+      <img src="/img/test.svg" class="mb-2" alt="Quality icon">
+      <h3>Quality</h3>
       <p class="text-muted">
         All code is tested (almost 100% test coverage) and all changes reviewed. We are not cutting corners.
       </p>
     </div>
-
-    <div class="col-sm-2">
-      <img src="/img/escalator.svg" class="img-fluid d-none d-sm-block" alt="Accessible icon (escalator)">
-    </div>
-    <div class="col-sm-4">
-      <h4>Accessible</h4>
-      <p class="text-muted">
+    <div class="w-100"></div>
+    <div class="col-12 col-md-4 p-3 p-md-5 bg-light border border-white">
+      <img src="/img/escalator.svg" class="mb-2" alt="Accessible icon (escalator)">
+      <h3>Accessible</h3>
+      <p>
         All the widgets are accessible. We use proper HTML elements and required aria attributes.
         Keyboard navigation and focus management works as expected.
       </p>
     </div>
-  </div>
-
-  <div class="row mt-md-5">
-    <div class="col-sm-2">
-      <img src="/img/team.svg" class="img-fluid d-none d-sm-block" alt="Team icon">
-    </div>
-    <div class="col-sm-4">
-      <h4>Team</h4>
+    <div class="col-12 col-md-4 p-3 p-md-5 bg-light border border-white">
+      <img src="/img/team.svg" class="mb-2" alt="Team icon">
+      <h3>Team</h3>
       <p class="text-muted">
         We've created <a href="https://angular-ui.github.io/bootstrap/" target="_blank">angular-ui/bootstrap</a> and have spent several years doing widget development. A number of team members are core Angular contributors.
       </p>
     </div>
-
-     <div class="col-sm-2">
-      <img src="/img/world.svg" class="img-fluid d-none d-sm-block" alt="Community icon">
-    </div>
-    <div class="col-sm-4">
-      <h4>Community</h4>
+    <div class="col-12 col-md-4 p-3 p-md-5 bg-light border border-white">
+      <img src="/img/world.svg" class="mb-2" alt="Community icon">
+      <h3>Community</h3>
       <p class="text-muted">
-        We give back to the community by contributing to projects we build upon (Angular, Bootstrap). We support people on <a href="http://stackoverflow.com/questions/tagged/ng-bootstrap">Stack Overflow</a>.
+        We give back to the community by contributing to projects we build upon (Angular, Bootstrap).
       </p>
+      <a class="btn btn-outline-primary" href="http://stackoverflow.com/questions/tagged/ng-bootstrap">See our support on Stack Overflow</a>
     </div>
   </div>
-
-</section>
+</div>
