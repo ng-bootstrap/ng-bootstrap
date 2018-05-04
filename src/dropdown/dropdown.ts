@@ -190,14 +190,26 @@ export class NgbDropdown implements OnInit {
   }
 
   closeFromClick($event) {
-    if (this.autoClose && $event.button !== 2 && !this._isEventFromToggle($event)) {
+    if (!this.autoClose) {
+      return;
+    }
+    let doClose = false;
+    if ($event.button !== 2 && !this._isEventFromToggle($event)) {
       if (this.autoClose === true) {
-        this.close();
+        doClose = true;
       } else if (this.autoClose === 'inside' && this._isEventFromMenu($event)) {
-        this.close();
+        doClose = true;
       } else if (this.autoClose === 'outside' && !this._isEventFromMenu($event)) {
-        this.close();
+        doClose = true;
       }
+    }
+    if (doClose) {
+      if ($event) {
+        $event.preventDefault();
+        $event.stopImmediatePropagation();
+        $event.stopPropagation();
+      }
+      this.close();
     }
   }
 
