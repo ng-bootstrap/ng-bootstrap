@@ -102,11 +102,11 @@ export class NgbDropdownToggle extends NgbDropdownAnchor {
   host: {
     '[class.show]': 'isOpen()',
     '(keyup.esc)': 'closeFromOutsideEsc()',
-    '(document:click)': 'closeFromClick($event)'
   }
 })
 export class NgbDropdown implements OnInit {
   private _zoneSubscription: any;
+  private _documentClickListener: any;
 
   @ContentChild(NgbDropdownMenu) private _menu: NgbDropdownMenu;
 
@@ -140,7 +140,7 @@ export class NgbDropdown implements OnInit {
    */
   @Output() openChange = new EventEmitter();
 
-  constructor(config: NgbDropdownConfig, ngZone: NgZone) {
+  constructor(config: NgbDropdownConfig, ngZone: NgZone, private _renderer: Renderer2) {
     this.placement = config.placement;
     this.autoClose = config.autoClose;
     this._zoneSubscription = ngZone.onStable.subscribe(() => { this._positionMenu(); });
@@ -164,6 +164,7 @@ export class NgbDropdown implements OnInit {
     if (!this._open) {
       this._open = true;
       this._positionMenu();
+      this._bindDocumentClickListener();
       this.openChange.emit(true);
     }
   }
@@ -174,6 +175,7 @@ export class NgbDropdown implements OnInit {
   close(): void {
     if (this._open) {
       this._open = false;
+      this._unbindDocumentClickListener();
       this.openChange.emit(false);
     }
   }
@@ -204,11 +206,6 @@ export class NgbDropdown implements OnInit {
       }
     }
     if (doClose) {
-      if ($event) {
-        $event.preventDefault();
-        $event.stopImmediatePropagation();
-        $event.stopPropagation();
-      }
       this.close();
     }
   }
@@ -220,6 +217,23 @@ export class NgbDropdown implements OnInit {
   }
 
   ngOnDestroy() { this._zoneSubscription.unsubscribe(); }
+
+  private _bindDocumentClickListener() {
+    if (!this._documentClickListener) {
+      this._documentClickListener = this._renderer.listen('document', 'click', ($event) => {
+        if (this.isOpen()) {
+          this.closeFromClick($event);
+        }
+      });
+    }
+  }
+
+  private _unbindDocumentClickListener() {
+    if (this._documentClickListener) {
+      this._documentClickListener();
+      this._documentClickListener = null;
+    }
+  }
 
   private _isEventFromToggle($event) { return this._anchor ? this._anchor.isEventFrom($event) : false; }
 
