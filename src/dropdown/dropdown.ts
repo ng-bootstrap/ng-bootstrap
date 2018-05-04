@@ -106,7 +106,7 @@ export class NgbDropdownToggle extends NgbDropdownAnchor {
 })
 export class NgbDropdown implements OnInit {
   private _zoneSubscription: any;
-  private _documentClickListener: any;
+  private _documentClickListener: () => void;
 
   @ContentChild(NgbDropdownMenu) private _menu: NgbDropdownMenu;
 
@@ -144,6 +144,7 @@ export class NgbDropdown implements OnInit {
     this.placement = config.placement;
     this.autoClose = config.autoClose;
     this._zoneSubscription = ngZone.onStable.subscribe(() => { this._positionMenu(); });
+    this._documentClickListener = null;
   }
 
   ngOnInit() {
@@ -216,7 +217,10 @@ export class NgbDropdown implements OnInit {
     }
   }
 
-  ngOnDestroy() { this._zoneSubscription.unsubscribe(); }
+  ngOnDestroy() {
+    this._unbindDocumentClickListener();
+    this._zoneSubscription.unsubscribe();
+  }
 
   private _bindDocumentClickListener() {
     if (!this._documentClickListener) {
