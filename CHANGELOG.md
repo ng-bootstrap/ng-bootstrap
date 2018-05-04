@@ -1,3 +1,47 @@
+<a name="2.0.0"></a>
+# [2.0.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.1.1...2.0.0) (2018-05-04)
+
+This is a major release of ng-bootstrap. It is fully compatible with Angular / RxJS 6.x.
+Please pay attention to the breaking changes section when upgrading.
+
+### Bug Fixes
+
+* **accordion:** add 'accordion' css class ([d014d0e](https://github.com/ng-bootstrap/ng-bootstrap/commit/d014d0e)), closes [#2304](https://github.com/ng-bootstrap/ng-bootstrap/issues/2304)
+* **accordion:** remove active class from open panel titles ([f804649](https://github.com/ng-bootstrap/ng-bootstrap/commit/f804649)), closes [#2307](https://github.com/ng-bootstrap/ng-bootstrap/issues/2307) [#2221](https://github.com/ng-bootstrap/ng-bootstrap/issues/2221)
+* **datepicker:** allow weekday and week number css to be overridden ([57bf8f8](https://github.com/ng-bootstrap/ng-bootstrap/commit/57bf8f8)), closes [#2296](https://github.com/ng-bootstrap/ng-bootstrap/issues/2296)
+* **dropdown:** correct dropup position with Bootstrap 4.1 ([91c166d](https://github.com/ng-bootstrap/ng-bootstrap/commit/91c166d)), closes [#2297](https://github.com/ng-bootstrap/ng-bootstrap/issues/2297) [#2313](https://github.com/ng-bootstrap/ng-bootstrap/issues/2313)
+* **modal:** don't use deprecated 'ReflectiveInjector' ([0f8055f](https://github.com/ng-bootstrap/ng-bootstrap/commit/0f8055f)), closes [#2285](https://github.com/ng-bootstrap/ng-bootstrap/issues/2285)
+* **typeahead:** reset active index when results change ([46a4b3b](https://github.com/ng-bootstrap/ng-bootstrap/commit/46a4b3b)), closes [#2303](https://github.com/ng-bootstrap/ng-bootstrap/issues/2303) [#2312](https://github.com/ng-bootstrap/ng-bootstrap/issues/2312)
+
+
+### Features
+
+* focustrap standalone service ([6961cb3](https://github.com/ng-bootstrap/ng-bootstrap/commit/6961cb3)), closes [#2322](https://github.com/ng-bootstrap/ng-bootstrap/issues/2322)
+* **datepicker:** add 'aria-label' attribute for days ([d52059b](https://github.com/ng-bootstrap/ng-bootstrap/commit/d52059b)), closes [#2319](https://github.com/ng-bootstrap/ng-bootstrap/issues/2319)
+* **datepicker:** allow focusing calendar days and navigation separately ([2daf038](https://github.com/ng-bootstrap/ng-bootstrap/commit/2daf038)), closes [#1716](https://github.com/ng-bootstrap/ng-bootstrap/issues/1716) [#2270](https://github.com/ng-bootstrap/ng-bootstrap/issues/2270)
+* **datepicker:** focustrap for datepicker in popup ([e7179cd](https://github.com/ng-bootstrap/ng-bootstrap/commit/e7179cd)), closes [#2332](https://github.com/ng-bootstrap/ng-bootstrap/issues/2332)
+* **datepicker:** use the angular locale API ([7959a15](https://github.com/ng-bootstrap/ng-bootstrap/commit/7959a15)), closes [#2065](https://github.com/ng-bootstrap/ng-bootstrap/issues/2065) [#2066](https://github.com/ng-bootstrap/ng-bootstrap/issues/2066)
+* **popover:** conditional popover ([9de58e6](https://github.com/ng-bootstrap/ng-bootstrap/commit/9de58e6)), closes [#2188](https://github.com/ng-bootstrap/ng-bootstrap/issues/2188) [#2217](https://github.com/ng-bootstrap/ng-bootstrap/issues/2217)
+* **typeahead:** accessibility, options summary status message ([f65b8a4](https://github.com/ng-bootstrap/ng-bootstrap/commit/f65b8a4)), closes [#2197](https://github.com/ng-bootstrap/ng-bootstrap/issues/2197) [#1945](https://github.com/ng-bootstrap/ng-bootstrap/issues/1945)
+
+
+### BREAKING CHANGES
+
+* **datepicker:** if you're using a custom `NgbDatepickerI18n` implementation, you'll have to implement an additional method: `getDayAriaLabel(date: NgbDateStruct): string`. It returns the string that will be set for the `aria-label` attribute for each displayed day. If you're not using the custom service, the `aria-label` will default to the value returned by the angular `DatePipe` with `'fullDate'` format.
+* **accordion:** The "active" CSS class is no longer added to headers of an active panel.
+This change assures that markup used by ng-bootstrap is in-line with the
+markup described in:
+https://getbootstrap.com/docs/4.0/components/collapse/#accordion-example
+* **popover:** Popovers with an empty title and content are considered disabled and won't open by default.
+* **datepicker:** The datepicker is no longer focusable as a whole component. Instead, the focus is allowed on each element inside the datepicker (navigation buttons, select boxes, focusable day) in the natural order. The datepicker `.focus()` method will now only focus one day and not the whole component.
+* **datepicker:** if your application provides a LOCALE_ID other than
+the default en-US, registers the locale data for this locale, and
+doesn't use a custom NgbDatepickerI18n, then the days and months
+of the datepicker won't be displayed in English anymore, but in the
+langguage of the provided locale.
+
+
+
 <a name="1.1.1"></a>
 ## [1.1.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.1.0...1.1.1) (2018-04-06)
 
