@@ -221,7 +221,7 @@ export class NgbDropdown implements OnInit {
 
   ngOnDestroy() { this._zoneSubscription.unsubscribe(); }
 
-  private _isEventFromToggle($event) { return this._anchor.isEventFrom($event); }
+  private _isEventFromToggle($event) { return this._anchor ? this._anchor.isEventFrom($event) : false; }
 
   private _isEventFromMenu($event) { return this._menu ? this._menu.isEventFrom($event) : false; }
 
