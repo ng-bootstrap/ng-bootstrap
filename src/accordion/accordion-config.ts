@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {NgbAccordionModule} from './accordion.module';
 
 /**
  * Configuration service for the NgbAccordion component.
