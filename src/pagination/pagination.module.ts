@@ -9,5 +9,4 @@ export {NgbPaginationConfig} from './pagination-config';
 
 @NgModule({declarations: [NgbPagination], exports: [NgbPagination], imports: [CommonModule]})
 export class NgbPaginationModule {
-  static forRoot(): ModuleWithProviders { return {ngModule: NgbPaginationModule, providers: [NgbPaginationConfig]}; }
 }

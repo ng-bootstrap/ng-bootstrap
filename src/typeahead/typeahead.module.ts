@@ -16,13 +16,8 @@ export {NgbTypeahead, NgbTypeaheadSelectItemEvent} from './typeahead';
   declarations: [NgbTypeahead, NgbHighlight, NgbTypeaheadWindow],
   exports: [NgbTypeahead, NgbHighlight],
   imports: [CommonModule],
-  entryComponents: [NgbTypeaheadWindow]
+  entryComponents: [NgbTypeaheadWindow],
+  providers: [Live, {provide: ARIA_LIVE_DELAY, useValue: DEFAULT_ARIA_LIVE_DELAY}]
 })
 export class NgbTypeaheadModule {
-  static forRoot(): ModuleWithProviders {
-    return {
-      ngModule: NgbTypeaheadModule,
-      providers: [Live, NgbTypeaheadConfig, {provide: ARIA_LIVE_DELAY, useValue: DEFAULT_ARIA_LIVE_DELAY}]
-    };
-  }
 }

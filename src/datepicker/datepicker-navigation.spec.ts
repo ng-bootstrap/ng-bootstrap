@@ -26,7 +26,7 @@ describe('ngb-datepicker-navigation', () => {
   beforeEach(() => {
     TestBed.overrideModule(
         NgbDatepickerModule, {set: {exports: [NgbDatepickerNavigation, NgbDatepickerNavigationSelect]}});
-    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbDatepickerModule.forRoot()]});
+    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbDatepickerModule]});
   });
 
   it('should toggle navigation select component', () => {

@@ -15,7 +15,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [AppComponent, ...],
-  imports: [NgbModule.forRoot(), ...],
+  imports: [NgbModule, ...],
   bootstrap: [AppComponent]
 })
 export class AppModule {

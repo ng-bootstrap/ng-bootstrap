@@ -9,5 +9,4 @@ export {NgbCarouselConfig} from './carousel-config';
 
 @NgModule({declarations: NGB_CAROUSEL_DIRECTIVES, exports: NGB_CAROUSEL_DIRECTIVES, imports: [CommonModule]})
 export class NgbCarouselModule {
-  static forRoot(): ModuleWithProviders { return {ngModule: NgbCarouselModule, providers: [NgbCarouselConfig]}; }
 }

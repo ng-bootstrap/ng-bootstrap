@@ -12,5 +12,4 @@ const NGB_BUTTON_DIRECTIVES = [NgbButtonLabel, NgbCheckBox, NgbRadioGroup, NgbRa
 
 @NgModule({declarations: NGB_BUTTON_DIRECTIVES, exports: NGB_BUTTON_DIRECTIVES})
 export class NgbButtonsModule {
-  static forRoot(): ModuleWithProviders { return {ngModule: NgbButtonsModule, providers: []}; }
 }
