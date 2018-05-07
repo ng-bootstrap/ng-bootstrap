@@ -115,14 +115,15 @@ export interface NgbPanelChangeEvent {
     <ng-template ngFor let-panel [ngForOf]="panels">
       <div class="card">
         <div role="tab" id="{{panel.id}}-header" [class]="'card-header ' + (panel.type ? 'bg-'+panel.type: type ? 'bg-'+type : '')">
-          <a href (click)="!!toggle(panel.id)" [class.text-muted]="panel.disabled" [attr.tabindex]="(panel.disabled ? '-1' : null)"
-            [attr.aria-expanded]="panel.isOpen" [attr.aria-controls]="(panel.isOpen ? panel.id : null)"
-            [attr.aria-disabled]="panel.disabled">
-            {{panel.title}}<ng-template [ngTemplateOutlet]="panel.titleTpl?.templateRef"></ng-template>
-          </a>
+          <h5 class="mb-0">
+            <button class="btn btn-link" (click)="!!toggle(panel.id)" [disabled]="panel.disabled" [class.collapsed]="panel.isOpen"
+              [attr.aria-expanded]="panel.isOpen" [attr.aria-controls]="panel.id">
+              {{panel.title}}<ng-template [ngTemplateOutlet]="panel.titleTpl?.templateRef"></ng-template>
+            </button>
+          </h5>
         </div>
         <div id="{{panel.id}}" role="tabpanel" [attr.aria-labelledby]="panel.id + '-header'"
-             class="card-body collapse {{panel.isOpen ? 'show' : null}}" *ngIf="!destroyOnHide || panel.isOpen">
+             class="card-body collapse" [class.show]="panel.isOpen" *ngIf="!destroyOnHide || panel.isOpen">
              <ng-template [ngTemplateOutlet]="panel.contentTpl?.templateRef"></ng-template>
         </div>
       </div>
