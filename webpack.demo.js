@@ -1,5 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
+var rxPaths = require('rxjs/_esm5/path-mapping');
 
 // Webpack Plugins
 var CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin;
@@ -20,14 +21,14 @@ var nodeModules = path.join(process.cwd(), 'node_modules');
 module.exports = function makeWebpackConfig() {
   /**
    * Config
-   * Reference: http://webpack.github.io/docs/configuration.html
+   * Reference: https://webpack.js.org/configuration/
    * This is the object where all configuration gets set
    */
   var config = {};
 
   /**
    * Devtool
-   * Reference: http://webpack.github.io/docs/configuration.html#devtool
+   * Reference: https://webpack.js.org/configuration/devtool/
    * Type of sourcemap to use per build type
    */
   if (isProd) {
@@ -38,20 +39,20 @@ module.exports = function makeWebpackConfig() {
 
   /**
    * Entry
-   * Reference: http://webpack.github.io/docs/configuration.html#entry
+   * Reference: https://webpack.js.org/concepts/entry-points/
    */
   config.entry = {
-    'polyfills': './demo/src/polyfills.ts',
-    'vendorStyles': [
+    polyfills: './demo/src/polyfills.ts',
+    vendorStyles: [
       './node_modules/prismjs/themes/prism.css',
       './node_modules/bootstrap/dist/css/bootstrap.css'
     ],
-    'main': './demo/src/main.ts'
+    main: './demo/src/main.ts'
   };
 
   /**
    * Output
-   * Reference: http://webpack.github.io/docs/configuration.html#output
+   * Reference: https://webpack.js.org/concepts/output/
    */
   config.output = {
     path: root('demo', 'dist'),
@@ -60,24 +61,27 @@ module.exports = function makeWebpackConfig() {
     chunkFilename: isProd ? '[id].[hash].chunk.js' : '[id].chunk.js'
   };
 
+  // allow tree shaking of pipeable operators.
+  // See https://github.com/ReactiveX/rxjs/blob/master/doc/pipeable-operators.md#build-and-treeshaking
+  var alias = rxPaths();
+  alias['@ng-bootstrap/ng-bootstrap'] = root('src/index.ts');
+
   /**
    * Resolve
-   * Reference: http://webpack.github.io/docs/configuration.html#resolve
+   * Reference: https://webpack.js.org/configuration/resolve/
    */
   config.resolve = {
     modules: [root('demo'), 'node_modules'],
     // only discover files that have those extensions
     extensions: ['.ts', '.js', '.css', '.scss', '.html'],
 
-    alias: {
-      '@ng-bootstrap/ng-bootstrap': root('src/index.ts')
-    }
+    alias: alias
   };
 
   /**
    * Loaders
-   * Reference: http://webpack.github.io/docs/configuration.html#module-loaders
-   * List: http://webpack.github.io/docs/list-of-loaders.html
+   * Reference: https://webpack.js.org/concepts/loaders/
+   * List: https://webpack.js.org/loaders/
    * This handles most of the magic responsible for converting modules
    */
   config.module = {
@@ -97,23 +101,34 @@ module.exports = function makeWebpackConfig() {
       {test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/, use: 'file-loader?name=fonts/[name].[hash].[ext]?'},
 
       // Support for CSS as raw text
-      // use 'null' loader in test mode (https://github.com/webpack/null-loader)
+      // use 'null' loader in test mode (https://webpack.js.org/loaders/null-loader/)
       // all css in src/style will be bundled in an external css file
       {
         test: /\.css$/,
         exclude: root('demo', 'src', 'app'),
-        use: ExtractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader?sourceMap-loader!postcss-loader'})
+        use: ExtractTextPlugin.extract({
+          fallback: {
+            loader: 'style-loader',
+            options: {
+              insertAt: 'top'
+            }
+          },
+          use: 'css-loader?sourceMap-loader!postcss-loader'
+        })
       },
       // all css required in src/app files will be merged in js files
       {test: /\.css$/, include: root('demo', 'src', 'app'), use: 'raw-loader!postcss-loader'},
 
       // support for .scss files
-      // use 'null' loader in test mode (https://github.com/webpack/null-loader)
+      // use 'null' loader in test mode (https://webpack.js.org/loaders/null-loader/)
       // all css in src/style will be bundled in an external css file
       {
         test: /\.scss$/,
         exclude: root('src', 'app'),
-        use: ExtractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader?sourceMap-loader!postcss-loader!sass-loader'})
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: 'css-loader?sourceMap-loader!postcss-loader!sass-loader'
+        })
       },
       // all css required in src/app files will be merged in js files
       {test: /\.scss$/, exclude: root('demo', 'src', 'style'), use: 'raw-loader!postcss-loader!sass-loader'},
@@ -129,12 +144,12 @@ module.exports = function makeWebpackConfig() {
 
   /**
    * Plugins
-   * Reference: http://webpack.github.io/docs/configuration.html#plugins
-   * List: http://webpack.github.io/docs/list-of-plugins.html
+   * Reference: https://webpack.js.org/configuration/plugins/
+   * List: https://webpack.js.org/plugins/
    */
   config.plugins = [
     // Define env variables to help with builds
-    // Reference: https://webpack.github.io/docs/list-of-plugins.html#defineplugin
+    // Reference: https://webpack.js.org/plugins/define-plugin/
     new webpack.DefinePlugin({
       // Environment helpers
       'process.env': {
@@ -144,11 +159,11 @@ module.exports = function makeWebpackConfig() {
     }),
 
     new CommonsChunkPlugin({
-        "name": "vendor",
-        "minChunks": (module) => module.resource && module.resource.startsWith(nodeModules),
-        "chunks": [
-          "main"
-        ]
+      name: 'vendor',
+      minChunks: (module) => module.resource && module.resource.startsWith(nodeModules),
+      chunks: [
+        'main'
+      ]
     }),
 
     new CommonsChunkPlugin({
@@ -163,7 +178,7 @@ module.exports = function makeWebpackConfig() {
     }),
 
     // Extract css files
-    // Reference: https://github.com/webpack/extract-text-webpack-plugin
+    // Reference: https://webpack.js.org/plugins/extract-text-webpack-plugin/
     // Disabled when in test mode or not in build mode
     new ExtractTextPlugin({filename: 'css/[name].[hash].css', disable: !isProd}),
 
@@ -186,7 +201,7 @@ module.exports = function makeWebpackConfig() {
     // Workaround to remove Webpack warning in system_js_ng_module_factory_loader.js
     // See https://github.com/angular/angular/issues/11580
     new webpack.ContextReplacementPlugin(
-      /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
+      /\@angular(\\|\/)core(\\|\/)esm5/,
       root('demo', 'src', 'app')
     )
   ];
@@ -200,11 +215,11 @@ module.exports = function makeWebpackConfig() {
         entryModule: root('demo/src/app/') + 'app.module#NgbdModule'
       }),
 
-      // Reference: http://webpack.github.io/docs/list-of-plugins.html#noerrorsplugin
+      // Reference: https://webpack.js.org/plugins/no-emit-on-errors-plugin/
       // Only emit files when there are no errors
       new webpack.NoEmitOnErrorsPlugin(),
 
-      // Reference: http://webpack.github.io/docs/list-of-plugins.html#uglifyjsplugin
+      // Reference: https://webpack.js.org/plugins/uglifyjs-webpack-plugin/
       // Minify all javascript, switch loaders to minimizing mode
       new webpack.optimize.UglifyJsPlugin({
         mangle: true,
@@ -222,8 +237,7 @@ module.exports = function makeWebpackConfig() {
 
   /**
    * Dev server configuration
-   * Reference: http://webpack.github.io/docs/configuration.html#devserver
-   * Reference: http://webpack.github.io/docs/webpack-dev-server.html
+   * Reference: https://webpack.js.org/configuration/dev-server/
    */
   config.devServer = {
     contentBase: 'demo/src/public',

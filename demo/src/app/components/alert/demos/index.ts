@@ -9,23 +9,23 @@ export const DEMO_DIRECTIVES =
 
 export const DEMO_SNIPPETS = {
   'basic': {
-    'code': require('!!prismjs-loader?lang=typescript!./basic/alert-basic'),
-    'markup': require('!!prismjs-loader?lang=markup!./basic/alert-basic.html')
+    'code': require('!!raw-loader!./basic/alert-basic'),
+    'markup': require('!!raw-loader!./basic/alert-basic.html')
   },
   'closeable': {
-    'code': require('!!prismjs-loader?lang=typescript!./closeable/alert-closeable'),
-    'markup': require('!!prismjs-loader?lang=markup!./closeable/alert-closeable.html')
+    'code': require('!!raw-loader!./closeable/alert-closeable'),
+    'markup': require('!!raw-loader!./closeable/alert-closeable.html')
   },
   'custom': {
-    'code': require('!!prismjs-loader?lang=typescript!./custom/alert-custom'),
-    'markup': require('!!prismjs-loader?lang=markup!./custom/alert-custom.html')
+    'code': require('!!raw-loader!./custom/alert-custom'),
+    'markup': require('!!raw-loader!./custom/alert-custom.html')
   },
   'selfclosing': {
-    'code': require('!!prismjs-loader?lang=typescript!./selfclosing/alert-selfclosing'),
-    'markup': require('!!prismjs-loader?lang=markup!./selfclosing/alert-selfclosing.html')
+    'code': require('!!raw-loader!./selfclosing/alert-selfclosing'),
+    'markup': require('!!raw-loader!./selfclosing/alert-selfclosing.html')
   },
   'config': {
-    'code': require('!!prismjs-loader?lang=typescript!./config/alert-config'),
-    'markup': require('!!prismjs-loader?lang=markup!./config/alert-config.html')
+    'code': require('!!raw-loader!./config/alert-config'),
+    'markup': require('!!raw-loader!./config/alert-config.html')
   }
 };

@@ -1,4 +1,5 @@
 import {TestBed, ComponentFixture, inject} from '@angular/core/testing';
+import {By} from '@angular/platform-browser';
 import {createGenericTestComponent} from '../test/common';
 
 import {Component} from '@angular/core';
@@ -18,8 +19,8 @@ function getPanelsContent(element: HTMLElement): HTMLDivElement[] {
   return <HTMLDivElement[]>Array.from(element.querySelectorAll('.card > .card-body'));
 }
 
-function getPanelsTitle(element: HTMLElement): HTMLDivElement[] {
-  return <HTMLDivElement[]>Array.from(element.querySelectorAll('.card > .card-header a'));
+function getPanelsTitle(element: HTMLElement): HTMLAnchorElement[] {
+  return <HTMLAnchorElement[]>Array.from(element.querySelectorAll('.card > .card-header a'));
 }
 
 function getButton(element: HTMLElement, index: number): HTMLButtonElement {
@@ -27,15 +28,18 @@ function getButton(element: HTMLElement, index: number): HTMLButtonElement {
 }
 
 function expectOpenPanels(nativeEl: HTMLElement, openPanelsDef: boolean[]) {
+  const noOfOpenPanels = openPanelsDef.reduce((soFar, def) => def ? soFar + 1 : soFar, 0);
   const panels = getPanels(nativeEl);
   expect(panels.length).toBe(openPanelsDef.length);
 
-  const panelsHeaders = getPanelsTitle(nativeEl);
-  panelsHeaders.forEach((header: HTMLElement, index: number) => {
-    expect(header.getAttribute('aria-expanded')).toBe(openPanelsDef[index].toString());
-  });
+  const panelsTitles = getPanelsTitle(nativeEl);
+  const result = panelsTitles.map((titleEl: HTMLAnchorElement) => titleEl.getAttribute('aria-expanded') === 'true');
 
-  const result = panels.map(panel => panel.classList.contains('active'));
+  const panelContents = getPanelsContent(nativeEl);
+  panelContents.forEach(
+      (panelContent: HTMLDivElement) => { expect(panelContent.classList.contains('show')).toBeTruthy(); });
+
+  expect(panelContents.length).toBe(noOfOpenPanels);
   expect(result).toEqual(openPanelsDef);
 }
 
@@ -71,6 +75,12 @@ describe('ngb-accordion', () => {
     expectOpenPanels(el, [false, false, false]);
     expect(accordionEl.getAttribute('role')).toBe('tablist');
     expect(accordionEl.getAttribute('aria-multiselectable')).toBe('true');
+  });
+
+  it('should have proper css classes', () => {
+    const fixture = TestBed.createComponent(TestComponent);
+    const accordion = fixture.debugElement.query(By.directive(NgbAccordion));
+    expect(accordion.nativeElement).toHaveCssClass('accordion');
   });
 
   it('should toggle panels based on "activeIds" values', () => {
@@ -230,6 +240,49 @@ describe('ngb-accordion', () => {
     const titles = getPanelsTitle(fixture.nativeElement);
 
     titles.forEach((title: HTMLElement, idx: number) => { expect(title.textContent.trim()).toBe(`Panel ${idx + 1}`); });
+  });
+
+  it('should not pick up titles from nested accordions', () => {
+    const testHtml = `
+    <ngb-accordion activeIds="open_me">
+     <ngb-panel title="parent title" id="open_me">
+       <ng-template ngbPanelContent>
+         <ngb-accordion>
+           <ngb-panel>
+             <ng-template ngbPanelTitle>child title</ng-template>
+             <ng-template ngbPanelContent>child content</ng-template>
+           </ngb-panel>
+          </ngb-accordion>
+       </ng-template>
+     </ngb-panel>
+    </ngb-accordion>
+    `;
+    const fixture = createTestComponent(testHtml);
+    // additional change detection is required to reproduce the problem in the test environment
+    fixture.detectChanges();
+
+    const titles = getPanelsTitle(fixture.nativeElement);
+    const parentTitle = titles[0].textContent.trim();
+    const childTitle = titles[1].textContent.trim();
+
+    expect(parentTitle).toContain('parent title');
+    expect(parentTitle).not.toContain('child title');
+    expect(childTitle).toContain('child title');
+    expect(childTitle).not.toContain('parent title');
+  });
+
+  it('should not crash for an empty accordion', () => {
+    const fixture = createTestComponent('<ngb-accordion></ngb-accordion>');
+    expect(getPanels(fixture.nativeElement).length).toBe(0);
+  });
+
+  it('should not crash for panels without content', () => {
+    const fixture =
+        createTestComponent('<ngb-accordion activeIds="open_me"><ngb-panel id="open_me"></ngb-panel></ngb-accordion>');
+    const panelsContent = getPanelsContent(fixture.nativeElement);
+
+    expect(panelsContent.length).toBe(1);
+    expect(panelsContent[0].textContent.trim()).toBe('');
   });
 
   it('should have the appropriate content', () => {
@@ -489,9 +542,9 @@ describe('ngb-accordion', () => {
     fixture.detectChanges();
 
     let el = fixture.nativeElement.querySelectorAll('.card-header');
-    expect(el[0]).toHaveCssClass('card-warning');
-    expect(el[1]).toHaveCssClass('card-warning');
-    expect(el[2]).toHaveCssClass('card-warning');
+    expect(el[0]).toHaveCssClass('bg-warning');
+    expect(el[1]).toHaveCssClass('bg-warning');
+    expect(el[2]).toHaveCssClass('bg-warning');
   });
 
   it('should override the type in accordion with type in panel', () => {
@@ -505,9 +558,9 @@ describe('ngb-accordion', () => {
     fixture.detectChanges();
 
     let el = fixture.nativeElement.querySelectorAll('.card-header');
-    expect(el[0]).toHaveCssClass('card-success');
-    expect(el[1]).toHaveCssClass('card-danger');
-    expect(el[2]).toHaveCssClass('card-warning');
+    expect(el[0]).toHaveCssClass('bg-success');
+    expect(el[1]).toHaveCssClass('bg-danger');
+    expect(el[2]).toHaveCssClass('bg-warning');
   });
 
   it('should have the proper roles', () => {

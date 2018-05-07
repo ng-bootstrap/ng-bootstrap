@@ -20,7 +20,7 @@ export interface ResultTemplateContext {
 @Component({
   selector: 'ngb-typeahead-window',
   exportAs: 'ngbTypeaheadWindow',
-  host: {'class': 'dropdown-menu', 'style': 'display: block', 'role': 'listbox', '[id]': 'id'},
+  host: {'class': 'dropdown-menu show', 'role': 'listbox', '[id]': 'id'},
   template: `
     <ng-template #rt let-result="result" let-term="term" let-formatter="formatter">
       <ngb-highlight [result]="formatter(result)" [term]="term"></ngb-highlight>
@@ -79,6 +79,8 @@ export class NgbTypeaheadWindow implements OnInit {
 
   @Output('activeChange') activeChangeEvent = new EventEmitter();
 
+  hasActive() { return this.activeIdx > -1 && this.activeIdx < this.results.length; }
+
   getActive() { return this.results[this.activeIdx]; }
 
   markActive(activeIdx: number) {
@@ -106,12 +108,14 @@ export class NgbTypeaheadWindow implements OnInit {
     this._activeChanged();
   }
 
-  select(item) { this.selectEvent.emit(item); }
-
-  ngOnInit() {
+  resetActive() {
     this.activeIdx = this.focusFirst ? 0 : -1;
     this._activeChanged();
   }
+
+  select(item) { this.selectEvent.emit(item); }
+
+  ngOnInit() { this.resetActive(); }
 
   private _activeChanged() {
     this.activeChangeEvent.emit(this.activeIdx >= 0 ? this.id + '-' + this.activeIdx : undefined);

@@ -20,6 +20,13 @@ export interface NgbModalOptions {
   beforeDismiss?: () => boolean;
 
   /**
+   * To center the modal vertically (false by default).
+   *
+   * @since 1.1.0
+   */
+  centered?: boolean;
+
+  /**
    * An element to which to attach newly opened modal windows.
    */
   container?: string;
@@ -43,6 +50,13 @@ export interface NgbModalOptions {
    * Custom class to append to the modal window
    */
   windowClass?: string;
+
+  /**
+   * Custom class to append to the modal backdrop
+   *
+   * @since 1.1.0
+   */
+  backdropClass?: string;
 }
 
 /**

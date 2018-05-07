@@ -217,7 +217,7 @@ export class Positioning {
       availablePlacementArr: Array<string>) {
     let html = document.documentElement;
     // check for left-bottom
-    if ((window.innerHeight || html.clientHeight) - hostElemClientRect.left >= targetElemClientRect.width) {
+    if ((window.innerWidth || html.clientWidth) - hostElemClientRect.left >= targetElemClientRect.width) {
       availablePlacementArr.splice(availablePlacementArr.length, 1, primaryPlacement + '-left');
     }
     if (targetElemClientRect.width <= hostElemClientRect.right) {

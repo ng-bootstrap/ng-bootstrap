@@ -23,7 +23,9 @@ import {DayTemplateContext} from './datepicker-day-template-context';
 import {NgbDateParserFormatter} from './ngb-date-parser-formatter';
 
 import {positionElements, PlacementArray} from '../util/positioning';
+import {NgbFocusTrap, NgbFocusTrapFactory} from '../util/focus-trap';
 import {NgbDateStruct} from './ngb-date-struct';
+import {NgbDateAdapter} from './ngb-date-adapter';
 import {NgbCalendar} from './ngb-calendar';
 import {NgbDatepickerService} from './datepicker-service';
 
@@ -61,6 +63,15 @@ export class NgbInputDatepicker implements OnChanges,
   private _disabled = false;
   private _model: NgbDate;
   private _zoneSubscription: any;
+  private _focusTrap: NgbFocusTrap | null = null;
+
+  /**
+   * Indicates whether the datepicker popup should be closed automatically after date selection or not.
+   * If the value is 'false', the popup can be closed via 'close()' or 'toggle()' methods.
+   *
+   * @since 1.1.0
+   */
+  @Input() autoClose = true;
 
   /**
    * Reference for the custom template for the day display
@@ -138,6 +149,14 @@ export class NgbInputDatepicker implements OnChanges,
   @Input() container: string;
 
   /**
+   * An event fired when user selects a date using keyboard or mouse.
+   * The payload of the event is currently selected NgbDateStruct.
+   *
+   * @since 1.1.1
+   */
+  @Output() dateSelect = new EventEmitter<NgbDateStruct>();
+
+  /**
    * An event fired when navigation happens and currently displayed month changes.
    * See NgbDatepickerNavigateEvent for the payload info.
    */
@@ -163,7 +182,8 @@ export class NgbInputDatepicker implements OnChanges,
   constructor(
       private _parserFormatter: NgbDateParserFormatter, private _elRef: ElementRef, private _vcRef: ViewContainerRef,
       private _renderer: Renderer2, private _cfr: ComponentFactoryResolver, ngZone: NgZone,
-      private _service: NgbDatepickerService, private _calendar: NgbCalendar) {
+      private _service: NgbDatepickerService, private _calendar: NgbCalendar,
+      private _ngbDateAdapter: NgbDateAdapter<any>, private _focusTrapFactory: NgbFocusTrapFactory) {
     this._zoneSubscription = ngZone.onStable.subscribe(() => {
       if (this._cRef) {
         positionElements(
@@ -187,28 +207,29 @@ export class NgbInputDatepicker implements OnChanges,
       return null;
     }
 
-    if (!this._calendar.isValid(value)) {
+    const ngbDate = this._fromDateStruct(this._ngbDateAdapter.fromModel(value));
+
+    if (!this._calendar.isValid(ngbDate)) {
       return {'ngbDate': {invalid: c.value}};
     }
 
-    if (this.minDate && NgbDate.from(value).before(NgbDate.from(this.minDate))) {
+    if (this.minDate && ngbDate.before(NgbDate.from(this.minDate))) {
       return {'ngbDate': {requiredBefore: this.minDate}};
     }
 
-    if (this.maxDate && NgbDate.from(value).after(NgbDate.from(this.maxDate))) {
+    if (this.maxDate && ngbDate.after(NgbDate.from(this.maxDate))) {
       return {'ngbDate': {requiredAfter: this.maxDate}};
     }
   }
 
   writeValue(value) {
-    const ngbDate = value ? new NgbDate(value.year, value.month, value.day) : null;
-    this._model = this._calendar.isValid(value) ? ngbDate : null;
+    this._model = this._fromDateStruct(this._ngbDateAdapter.fromModel(value));
     this._writeModelValue(this._model);
   }
 
   manualDateChange(value: string, updateView = false) {
-    this._model = this._service.toValidDate(this._parserFormatter.parse(value), null);
-    this._onChange(this._model ? this._model.toStruct() : (value === '' ? null : value));
+    this._model = this._fromDateStruct(this._parserFormatter.parse(value));
+    this._onChange(this._model ? this._ngbDateAdapter.toModel(this._model) : (value === '' ? null : value));
     if (updateView && this._model) {
       this._writeModelValue(this._model);
     }
@@ -228,23 +249,26 @@ export class NgbInputDatepicker implements OnChanges,
       this._applyDatepickerInputs(this._cRef.instance);
       this._subscribeForDatepickerOutputs(this._cRef.instance);
       this._cRef.instance.ngOnInit();
-      this._cRef.instance.writeValue(this._model);
+      this._cRef.instance.writeValue(this._ngbDateAdapter.toModel(this._model));
 
       // date selection event handling
       this._cRef.instance.registerOnChange((selectedDate) => {
         this.writeValue(selectedDate);
         this._onChange(selectedDate);
-        this.close();
       });
 
-      // focus handling
-      this._cRef.instance.focus();
+      this._cRef.changeDetectorRef.detectChanges();
 
       this._cRef.instance.setDisabledState(this.disabled);
 
       if (this.container === 'body') {
         window.document.querySelector(this.container).appendChild(this._cRef.location.nativeElement);
       }
+
+      this._focusTrap = this._focusTrapFactory.create(this._cRef.location.nativeElement, true);
+
+      // focus handling
+      this._cRef.instance.focus();
     }
   }
 
@@ -255,6 +279,8 @@ export class NgbInputDatepicker implements OnChanges,
     if (this.isOpen()) {
       this._vcRef.remove(this._vcRef.indexOf(this._cRef.hostView));
       this._cRef = null;
+      this._focusTrap.destroy();
+      this._focusTrap = null;
     }
   }
 
@@ -308,18 +334,29 @@ export class NgbInputDatepicker implements OnChanges,
   private _applyPopupStyling(nativeElement: any) {
     this._renderer.addClass(nativeElement, 'dropdown-menu');
     this._renderer.setStyle(nativeElement, 'padding', '0');
+    this._renderer.addClass(nativeElement, 'show');
   }
 
   private _subscribeForDatepickerOutputs(datepickerInstance: NgbDatepicker) {
     datepickerInstance.navigate.subscribe(date => this.navigate.emit(date));
-    datepickerInstance.select.subscribe(() => { this.close(); });
+    datepickerInstance.select.subscribe(date => {
+      this.dateSelect.emit(date);
+      if (this.autoClose) {
+        this.close();
+      }
+    });
   }
 
   private _writeModelValue(model: NgbDate) {
     this._renderer.setProperty(this._elRef.nativeElement, 'value', this._parserFormatter.format(model));
     if (this.isOpen()) {
-      this._cRef.instance.writeValue(model);
+      this._cRef.instance.writeValue(this._ngbDateAdapter.toModel(model));
       this._onTouched();
     }
+  }
+
+  private _fromDateStruct(date: NgbDateStruct): NgbDate {
+    const ngbDate = date ? new NgbDate(date.year, date.month, date.day) : null;
+    return this._calendar.isValid(ngbDate) ? ngbDate : null;
   }
 }

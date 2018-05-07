@@ -24,7 +24,7 @@ function generateAppTsContent(componentName, demoName) {
 import { Component, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { JsonpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ${demoImports} } from '${demoImport}';
 
@@ -45,13 +45,13 @@ import { ${demoImports} } from '${demoImport}';
   \`
 })
 export class App {
-}   
+}
 
 @NgModule({
-  imports: [BrowserModule, FormsModule, ReactiveFormsModule, JsonpModule, NgbModule.forRoot()], 
-  declarations: [App, ${demoImports}]${needsEntryCmpt ? `,\n  entryComponents: [${entryCmptClass}],` : ''}
+  imports: [BrowserModule, FormsModule, ReactiveFormsModule, HttpClientModule, NgbModule.forRoot()],
+  declarations: [App, ${demoImports}]${needsEntryCmpt ? `,\n  entryComponents: [${entryCmptClass}],` : ','}
   bootstrap: [App]
-}) 
+})
 export class AppModule {}
 `;
 }
@@ -76,7 +76,7 @@ function generatePlnkrContent(componentName, demoName) {
 <body>
   <form id="mainForm" method="post" action="${plnkrUrl}">
     <input type="hidden" name="description" value="Example usage of the ${componentName} widget from https://ng-bootstrap.github.io">
-${generateTags(['Angular', 'Bootstrap', 'ng-bootstrap', capitalize(componentName)])}  
+${generateTags(['Angular', 'Bootstrap', 'ng-bootstrap', capitalize(componentName)])}
     <input type="hidden" name="files[index.html]" value="${he.encode(generateIndexHtml())}">
     <input type="hidden" name="files[config.js]" value="${he.encode(generateConfigJs())}">
     <input type="hidden" name="files[src/main.ts]" value="${he.encode(contentMainTs)}">
@@ -127,6 +127,11 @@ function generateConfigJs() {
   typescriptOptions: {
     emitDecoratorMetadata: true
   },
+  meta: {
+    'typescript': {
+      "exports": "ts"
+    }
+  },
   paths: {
     'npm:': 'https://unpkg.com/'
   },
@@ -136,6 +141,7 @@ function generateConfigJs() {
 
     '@angular/core': 'npm:@angular/core@' + ver.ng + '/bundles/core.umd.js',
     '@angular/common': 'npm:@angular/common@' + ver.ng + '/bundles/common.umd.js',
+    '@angular/common/http': 'npm:@angular/common@' + ver.ng + '/bundles/common-http.umd.js',
     '@angular/compiler': 'npm:@angular/compiler@' + ver.ng + '/bundles/compiler.umd.js',
     '@angular/platform-browser': 'npm:@angular/platform-browser@' + ver.ng + '/bundles/platform-browser.umd.js',
     '@angular/platform-browser-dynamic': 'npm:@angular/platform-browser-dynamic@' + ver.ng + '/bundles/platform-browser-dynamic.umd.js',
@@ -144,6 +150,7 @@ function generateConfigJs() {
     '@angular/forms': 'npm:@angular/forms@' + ver.ng + '/bundles/forms.umd.js',
 
     'rxjs': 'npm:rxjs@${versions.rxjs}',
+    'tslib': 'npm:tslib/tslib.js',
     'typescript': 'npm:typescript@${versions.typescript}/lib/typescript.js',
 
     '@ng-bootstrap/ng-bootstrap': 'npm:@ng-bootstrap/ng-bootstrap@${versions.ngBootstrap}/bundles/ng-bootstrap.js'
@@ -154,6 +161,11 @@ function generateConfigJs() {
       defaultExtension: 'ts'
     },
     rxjs: {
+      main: 'index.js',
+      defaultExtension: 'js'
+    },
+    'rxjs/operators': {
+      main: 'index.js',
       defaultExtension: 'js'
     }
   }

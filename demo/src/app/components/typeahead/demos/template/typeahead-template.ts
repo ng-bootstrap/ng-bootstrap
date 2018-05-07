@@ -1,9 +1,8 @@
 import {Component} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/map';
+import {Observable} from 'rxjs';
+import {debounceTime, map} from 'rxjs/operators';
 
-const statesWithFlags = [
+const statesWithFlags: {name: string, flag: string}[] = [
   {'name': 'Alabama', 'flag': '5/5c/Flag_of_Alabama.svg/45px-Flag_of_Alabama.svg.png'},
   {'name': 'Alaska', 'flag': 'e/e6/Flag_of_Alaska.svg/43px-Flag_of_Alaska.svg.png'},
   {'name': 'Arizona', 'flag': '9/9d/Flag_of_Arizona.svg/45px-Flag_of_Arizona.svg.png'},
@@ -68,10 +67,11 @@ export class NgbdTypeaheadTemplate {
   public model: any;
 
   search = (text$: Observable<string>) =>
-    text$
-      .debounceTime(200)
-      .map(term => term === '' ? []
-        : statesWithFlags.filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10));
+    text$.pipe(
+      debounceTime(200),
+      map(term => term === '' ? []
+        : statesWithFlags.filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
+    );
 
   formatter = (x: {name: string}) => x.name;
 

@@ -2,9 +2,11 @@ import {TestBed} from '@angular/core/testing';
 import {NgbDatepickerService} from './datepicker-service';
 import {NgbCalendar, NgbCalendarGregorian} from './ngb-calendar';
 import {NgbDate} from './ngb-date';
-import {Subscription} from 'rxjs/Subscription';
+import {Subscription} from 'rxjs';
 import {DatepickerViewModel} from './datepicker-view-model';
 import {NgbDateStruct} from './ngb-date-struct';
+import {NgbDatepickerI18n, NgbDatepickerI18nDefault} from './datepicker-i18n';
+import {DatePipe} from '@angular/common';
 
 describe('ngb-datepicker-service', () => {
 
@@ -17,12 +19,18 @@ describe('ngb-datepicker-service', () => {
 
   let subscriptions: Subscription[];
 
-  const getDay = (n: number) => model.months[0].weeks[0].days[n];
+  const getDayInMonth = (monthIndex: number, weekIndex: number, dayIndex: number) =>
+      model.months[monthIndex].weeks[weekIndex].days[dayIndex];
+  const getDay = (n: number) => getDayInMonth(0, 0, n);
   const getDayCtx = (n: number) => getDay(n).context;
 
   beforeEach(() => {
-    TestBed.configureTestingModule(
-        {providers: [NgbDatepickerService, {provide: NgbCalendar, useClass: NgbCalendarGregorian}]});
+    TestBed.configureTestingModule({
+      providers: [
+        NgbDatepickerService, {provide: NgbCalendar, useClass: NgbCalendarGregorian},
+        {provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nDefault}, DatePipe
+      ]
+    });
 
     calendar = TestBed.get(NgbCalendar);
     service = TestBed.get(NgbDatepickerService);
@@ -53,46 +61,46 @@ describe('ngb-datepicker-service', () => {
 
   describe(`min/max dates`, () => {
 
-    it(`should emit only undefined and valid 'minDate' values`, () => {
+    it(`should emit null and valid 'minDate' values`, () => {
       // valid
       const minDate = new NgbDate(2017, 5, 1);
       service.minDate = minDate;
       service.focus(new NgbDate(2017, 5, 1));
       expect(model.minDate).toEqual(minDate);
 
-      // undefined
-      service.minDate = undefined;
-      expect(model.minDate).toBeUndefined();
-
-      // null -> ignore
+      // null
       service.minDate = null;
-      expect(model.minDate).toBeUndefined();
+      expect(model.minDate).toBeNull();
+
+      // undefined -> ignore
+      service.minDate = undefined;
+      expect(model.minDate).toBeNull();
 
       // invalid -> ignore
       service.minDate = new NgbDate(-2, 0, null);
-      expect(model.minDate).toBeUndefined();
+      expect(model.minDate).toBeNull();
 
       expect(mock.onNext).toHaveBeenCalledTimes(2);
     });
 
-    it(`should emit only undefined and valid 'maxDate' values`, () => {
+    it(`should emit null and valid 'maxDate' values`, () => {
       // valid
       const maxDate = new NgbDate(2017, 5, 1);
       service.maxDate = maxDate;
       service.focus(new NgbDate(2017, 5, 1));
       expect(model.maxDate).toEqual(maxDate);
 
-      // undefined
-      service.maxDate = undefined;
-      expect(model.maxDate).toBeUndefined();
-
-      // null -> ignore
+      // null
       service.maxDate = null;
-      expect(model.maxDate).toBeUndefined();
+      expect(model.maxDate).toBeNull();
+
+      // undefined -> ignore
+      service.maxDate = undefined;
+      expect(model.maxDate).toBeNull();
 
       // invalid -> ignore
       service.maxDate = new NgbDate(-2, 0, null);
-      expect(model.maxDate).toBeUndefined();
+      expect(model.maxDate).toBeNull();
 
       expect(mock.onNext).toHaveBeenCalledTimes(2);
     });
@@ -303,6 +311,40 @@ describe('ngb-datepicker-service', () => {
       expect(model.months[0]).toBe(month);
       expect(getDay(0).date).toBe(date);
     });
+
+    it(`should change the tabindex when changing the current month`, () => {
+      service.displayMonths = 2;
+      service.focus(new NgbDate(2018, 3, 31));
+
+      expect(getDayInMonth(0, 4, 5).tabindex).toEqual(0);   // 31 march in the first month block
+      expect(getDayInMonth(1, 0, 5).tabindex).toEqual(-1);  // 31 march in the second month block
+
+      service.focusMove('d', 1);
+      expect(getDayInMonth(0, 4, 5).tabindex).toEqual(-1);  // 31 march in the first month block
+      expect(getDayInMonth(1, 0, 5).tabindex).toEqual(-1);  // 31 march in the second month block
+      expect(getDayInMonth(0, 4, 6).tabindex).toEqual(-1);  // 1st april in the first month block
+      expect(getDayInMonth(1, 0, 6).tabindex).toEqual(0);   // 1st april in the second month block
+
+    });
+
+    it(`should set the aria-label when changing the current month`, () => {
+      service.displayMonths = 2;
+      service.focus(new NgbDate(2018, 3, 31));
+
+      expect(getDayInMonth(0, 4, 5).ariaLabel)
+          .toEqual('Saturday, March 31, 2018');  // 31 march in the first month block
+      expect(getDayInMonth(1, 0, 5).ariaLabel)
+          .toEqual('Saturday, March 31, 2018');  // 31 march in the second month block
+
+      service.focusMove('d', 1);
+      expect(getDayInMonth(0, 4, 5).ariaLabel)
+          .toEqual('Saturday, March 31, 2018');  // 31 march in the first month block
+      expect(getDayInMonth(1, 0, 5).ariaLabel)
+          .toEqual('Saturday, March 31, 2018');                                   // 31 march in the second month block
+      expect(getDayInMonth(0, 4, 6).ariaLabel).toEqual('Sunday, April 1, 2018');  // 1st april in the first month block
+      expect(getDayInMonth(1, 0, 6).ariaLabel).toEqual('Sunday, April 1, 2018');  // 1st april in the second month block
+
+    });
   });
 
   describe(`disabled`, () => {
@@ -385,6 +427,20 @@ describe('ngb-datepicker-service', () => {
       expect(model.focusVisible).toBeFalsy();
     });
 
+    it(`should disable navigation arrows`, () => {
+      service.focus(new NgbDate(2017, 5, 2));
+      expect(model.prevDisabled).toBeFalsy();
+      expect(model.nextDisabled).toBeFalsy();
+
+      service.disabled = true;
+      expect(model.prevDisabled).toBeTruthy();
+      expect(model.nextDisabled).toBeTruthy();
+
+      service.disabled = false;
+      expect(model.prevDisabled).toBeFalsy();
+      expect(model.nextDisabled).toBeFalsy();
+    });
+
   });
 
   describe(`focusVisible`, () => {
@@ -427,6 +483,236 @@ describe('ngb-datepicker-service', () => {
 
       service.navigation = 'select';  // ignored
       expect(mock.onNext).toHaveBeenCalledTimes(1);
+    });
+
+    describe(`select`, () => {
+
+      const range = (start, end) => Array.from({length: end - start + 1}, (e, i) => start + i);
+
+      it(`should not generate 'months' and 'years' for non-select navigations`, () => {
+        service.minDate = new NgbDate(2010, 5, 1);
+        service.maxDate = new NgbDate(2012, 5, 1);
+        service.focus(new NgbDate(2011, 5, 1));
+        expect(model.selectBoxes.years).not.toEqual([]);
+        expect(model.selectBoxes.months).not.toEqual([]);
+
+        service.navigation = 'none';
+        expect(model.selectBoxes.years).toEqual([]);
+        expect(model.selectBoxes.months).toEqual([]);
+
+        service.navigation = 'arrows';
+        expect(model.selectBoxes.years).toEqual([]);
+        expect(model.selectBoxes.months).toEqual([]);
+      });
+
+      it(`should generate 'months' and 'years' for given min/max dates`, () => {
+        service.minDate = new NgbDate(2010, 5, 1);
+        service.maxDate = new NgbDate(2012, 5, 1);
+        service.focus(new NgbDate(2011, 5, 1));
+
+        expect(model.selectBoxes.years).toEqual([2010, 2011, 2012]);
+        expect(model.selectBoxes.months).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+
+        service.focus(new NgbDate(2010, 5, 1));
+        expect(model.selectBoxes.years).toEqual([2010, 2011, 2012]);
+        expect(model.selectBoxes.months).toEqual([5, 6, 7, 8, 9, 10, 11, 12]);
+
+        service.focus(new NgbDate(2012, 5, 1));
+        expect(model.selectBoxes.years).toEqual([2010, 2011, 2012]);
+        expect(model.selectBoxes.months).toEqual([1, 2, 3, 4, 5]);
+      });
+
+      it(`should update 'months' and 'years' when  min/max dates change`, () => {
+        service.minDate = new NgbDate(2010, 5, 1);
+        service.maxDate = new NgbDate(2012, 5, 1);
+        service.focus(new NgbDate(2011, 5, 1));
+
+        expect(model.selectBoxes.years).toEqual([2010, 2011, 2012]);
+        expect(model.selectBoxes.months).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+
+        service.minDate = new NgbDate(2011, 2, 1);
+        expect(model.selectBoxes.years).toEqual([2011, 2012]);
+        expect(model.selectBoxes.months).toEqual([2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+
+        service.maxDate = new NgbDate(2011, 8, 1);
+        expect(model.selectBoxes.years).toEqual([2011]);
+        expect(model.selectBoxes.months).toEqual([2, 3, 4, 5, 6, 7, 8]);
+      });
+
+      it(`should generate [-10, +10] 'years' when min/max dates are missing`, () => {
+        const year = calendar.getToday().year;
+        service.open(null);
+        expect(model.selectBoxes.years).toEqual(range(year - 10, year + 10));
+
+        service.focus(new NgbDate(2011, 1, 1));
+        expect(model.selectBoxes.years).toEqual(range(2001, 2021));
+
+        service.focus(new NgbDate(2020, 1, 1));
+        expect(model.selectBoxes.years).toEqual(range(2010, 2030));
+      });
+
+      it(`should generate [min, +10] 'years' when max date is missing`, () => {
+        service.minDate = new NgbDate(2010, 1, 1);
+        service.open(new NgbDate(2011, 1, 1));
+        expect(model.selectBoxes.years).toEqual(range(2010, 2021));
+
+        service.minDate = new NgbDate(2015, 1, 1);
+        expect(model.selectBoxes.years).toEqual(range(2015, 2025));
+
+        service.minDate = new NgbDate(1000, 1, 1);
+        expect(model.selectBoxes.years).toEqual(range(1000, 2025));
+      });
+
+      it(`should generate [min, +10] 'years' when min date is missing`, () => {
+        service.maxDate = new NgbDate(2010, 1, 1);
+        service.open(new NgbDate(2009, 1, 1));
+        expect(model.selectBoxes.years).toEqual(range(1999, 2010));
+
+        service.maxDate = new NgbDate(2005, 1, 1);
+        expect(model.selectBoxes.years).toEqual(range(1995, 2005));
+
+        service.maxDate = new NgbDate(3000, 1, 1);
+        expect(model.selectBoxes.years).toEqual(range(1995, 3000));
+      });
+
+      it(`should generate 'months' when min/max dates are missing`, () => {
+        service.open(null);
+        expect(model.selectBoxes.months).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+
+        service.focus(new NgbDate(2010, 1, 1));
+        expect(model.selectBoxes.months).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+      });
+
+      it(`should generate 'months' and 'years' when resetting min/max dates`, () => {
+        service.minDate = new NgbDate(2010, 3, 1);
+        service.maxDate = new NgbDate(2010, 8, 1);
+        service.open(new NgbDate(2010, 5, 10));
+        expect(model.selectBoxes.months).toEqual([3, 4, 5, 6, 7, 8]);
+        expect(model.selectBoxes.years).toEqual([2010]);
+
+        service.minDate = null;
+        expect(model.selectBoxes.months).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
+        expect(model.selectBoxes.years).toEqual(range(2000, 2010));
+
+        service.maxDate = null;
+        expect(model.selectBoxes.months).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+        expect(model.selectBoxes.years).toEqual(range(2000, 2020));
+      });
+
+      it(`should generate 'months' when max date is missing`, () => {
+        service.minDate = new NgbDate(2010, 1, 1);
+        service.open(new NgbDate(2010, 5, 1));
+        expect(model.selectBoxes.months).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+
+        service.minDate = new NgbDate(2010, 4, 1);
+        expect(model.selectBoxes.months).toEqual([4, 5, 6, 7, 8, 9, 10, 11, 12]);
+      });
+
+      it(`should generate 'months' when min date is missing`, () => {
+        service.maxDate = new NgbDate(2010, 12, 1);
+        service.open(new NgbDate(2010, 5, 1));
+        expect(model.selectBoxes.months).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+
+        service.maxDate = new NgbDate(2010, 7, 1);
+        expect(model.selectBoxes.months).toEqual([1, 2, 3, 4, 5, 6, 7]);
+      });
+
+      it(`should rebuild 'months' and 'years' only when year change`, () => {
+        service.focus(new NgbDate(2010, 5, 1));
+        let months = model.selectBoxes.months;
+        let years = model.selectBoxes.years;
+
+        // focusing -> nothing
+        service.focus(new NgbDate(2010, 5, 10));
+        expect(model.selectBoxes.months).toBe(months);
+        expect(model.selectBoxes.years).toBe(years);
+
+        // month changes -> nothing
+        service.focus(new NgbDate(2010, 6, 1));
+        expect(model.selectBoxes.months).toBe(months);
+        expect(model.selectBoxes.years).toBe(years);
+
+        // year changes -> rebuilding both
+        service.focus(new NgbDate(2011, 6, 1));
+        expect(model.selectBoxes.months).not.toBe(months);
+        expect(model.selectBoxes.years).not.toBe(years);
+      });
+    });
+
+    describe(`arrows`, () => {
+
+      it(`should be enabled by default`, () => {
+        service.focus(new NgbDate(2018, 3, 10));
+        expect(model.prevDisabled).toBeFalsy();
+        expect(model.nextDisabled).toBeFalsy();
+      });
+
+      it(`should use initial 'minDate' and 'maxDate' values`, () => {
+        service.minDate = new NgbDate(2018, 3, 10);
+        service.maxDate = new NgbDate(2018, 3, 10);
+        service.focus(new NgbDate(2018, 3, 10));
+        expect(model.prevDisabled).toBeTruthy();
+        expect(model.nextDisabled).toBeTruthy();
+      });
+
+      it(`should react to 'minDate' changes`, () => {
+        service.focus(new NgbDate(2018, 3, 10));
+        service.minDate = new NgbDate(2018, 3, 1);
+        expect(model.prevDisabled).toBeTruthy();
+
+        service.minDate = new NgbDate(2018, 2, 1);
+        expect(model.prevDisabled).toBeFalsy();
+
+        service.minDate = new NgbDate(2018, 2, 28);
+        expect(model.prevDisabled).toBeFalsy();
+      });
+
+      it(`should react to 'maxDate' changes`, () => {
+        service.focus(new NgbDate(2018, 3, 10));
+        service.maxDate = new NgbDate(2018, 3, 31);
+        expect(model.nextDisabled).toBeTruthy();
+
+        service.maxDate = new NgbDate(2018, 4, 1);
+        expect(model.nextDisabled).toBeFalsy();
+
+        service.maxDate = new NgbDate(2018, 4, 30);
+        expect(model.nextDisabled).toBeFalsy();
+      });
+
+      it(`should react to 'minDate' changes with multiple months`, () => {
+        service.displayMonths = 2;
+        service.minDate = new NgbDate(2018, 3, 1);
+        service.open(new NgbDate(2018, 3, 10));  // open: [MAR, APR], focus: MAR
+        expect(model.prevDisabled).toBeTruthy();
+
+        service.focus(new NgbDate(2018, 4, 10));  // open [MAR, APR], focus: APR
+        expect(model.prevDisabled).toBeTruthy();
+
+        service.open(new NgbDate(2018, 4, 10));  // open [APR, MAY], focus: APR
+        expect(model.prevDisabled).toBeFalsy();
+
+        service.focus(new NgbDate(2018, 5, 10));  // open [APR, MAY], focus: MAY
+        expect(model.prevDisabled).toBeFalsy();
+      });
+
+      it(`should react to 'maxDate' changes with multiple months`, () => {
+        service.displayMonths = 2;
+        service.maxDate = new NgbDate(2018, 3, 10);
+        service.open(new NgbDate(2018, 3, 1));  // open: [MAR, APR], focus: MAR
+        expect(model.nextDisabled).toBeTruthy();
+
+        service.open(new NgbDate(2018, 2, 1));  // open: [FEB, MAR], focus: FEB
+        expect(model.nextDisabled).toBeTruthy();
+
+        service.focus(new NgbDate(2018, 3, 1));  // open: [FEB, MAR], focus: MAR
+        expect(model.nextDisabled).toBeTruthy();
+
+        service.open(new NgbDate(2018, 1, 1));  // open: [JAN, FEB], focus: JAN
+        expect(model.nextDisabled).toBeFalsy();
+
+        service.focus(new NgbDate(2018, 2, 1));  // open: [JAN, FEB], focus: FEB
+        expect(model.nextDisabled).toBeFalsy();
+      });
     });
   });
 
@@ -586,6 +872,14 @@ describe('ngb-datepicker-service', () => {
 
   describe(`view change handling`, () => {
 
+    it(`should open current month if nothing is provided`, () => {
+      const today = calendar.getToday();
+      service.open(null);
+      expect(model.months.length).toBe(1);
+      expect(model.firstDate).toEqual(new NgbDate(today.year, today.month, 1));
+      expect(model.focusDate).toEqual(today);
+    });
+
     it(`should open month and set up focus correctly`, () => {
       service.open(new NgbDate(2017, 5, 5));
       expect(model.months.length).toBe(1);
@@ -687,7 +981,7 @@ describe('ngb-datepicker-service', () => {
 
     it(`should not select disabled dates with 'focusSelect()'`, () => {
       // marking 5th day of each month as disabled
-      service.markDisabled = (date) => date && date.day === 5;
+      service.markDisabled = (d) => d && d.day === 5;
 
       // focusing MAY, 5
       const date = new NgbDate(2017, 5, 5);
@@ -745,7 +1039,7 @@ describe('ngb-datepicker-service', () => {
 
     it(`should not emit date selection event for disabled dates'`, () => {
       // marking 5th day of each month as disabled
-      service.markDisabled = (date) => date && date.day === 5;
+      service.markDisabled = (d) => d && d.day === 5;
 
       // focusing MAY, 5
       const date = new NgbDate(2017, 5, 5);
@@ -801,26 +1095,34 @@ describe('ngb-datepicker-service', () => {
       expect(getDayCtx(0).currentMonth).toBe(10);
     });
 
-    it(`should update 'focused' flag for day template`, () => {
+    it(`should update 'focused' flag and tabindex for day template`, () => {
       // off
       service.focus(new NgbDate(2017, 5, 1));
       expect(getDayCtx(0).focused).toBeFalsy();
       expect(getDayCtx(1).focused).toBeFalsy();
+      expect(getDay(0).tabindex).toEqual(0);
+      expect(getDay(1).tabindex).toEqual(-1);
 
       // on
       service.focusVisible = true;
       expect(getDayCtx(0).focused).toBeTruthy();
       expect(getDayCtx(1).focused).toBeFalsy();
+      expect(getDay(0).tabindex).toEqual(0);
+      expect(getDay(1).tabindex).toEqual(-1);
 
       // move
       service.focusMove('d', 1);
       expect(getDayCtx(0).focused).toBeFalsy();
       expect(getDayCtx(1).focused).toBeTruthy();
+      expect(getDay(0).tabindex).toEqual(-1);
+      expect(getDay(1).tabindex).toEqual(0);
 
       // off
       service.focusVisible = false;
       expect(getDayCtx(0).focused).toBeFalsy();
       expect(getDayCtx(1).focused).toBeFalsy();
+      expect(getDay(0).tabindex).toEqual(-1);
+      expect(getDay(1).tabindex).toEqual(0);
     });
 
     it(`should update 'selected' flag for day template`, () => {

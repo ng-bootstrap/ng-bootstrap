@@ -50,6 +50,21 @@ function isPrivateOrInternal(member) {
   return isPrivate(member) || hasNoJSDoc(member) || isInternalMember(member);
 }
 
+function getJsDocTags(symbol) {
+  // clang-format off
+  return !symbol ? {}
+    : symbol.getJsDocTags()
+        .filter(el => ['deprecated', 'since'].includes(el.name))
+        .reduce(
+          (obj, el) => {
+            const[version, ...rest] = el.text.split(' ');
+            obj[el.name] = {version, description: rest.join(' ').trim()};
+            return obj;
+          }, {}
+        );
+  // clang-format on
+}
+
 class APIDocVisitor {
   constructor(fileNames) {
     this.program = ts.createProgram(fileNames, {lib: ["lib.es6.d.ts"]});
@@ -77,17 +92,26 @@ class APIDocVisitor {
   visitInterfaceDeclaration(fileName, interfaceDeclaration) {
     var symbol = this.program.getTypeChecker().getSymbolAtLocation(interfaceDeclaration.name);
     var description = ts.displayPartsToString(symbol.getDocumentationComment());
+    var {deprecated, since} = getJsDocTags(symbol);
     var className = interfaceDeclaration.name.text;
     var members = this.visitMembers(interfaceDeclaration.members);
 
-    return [
-      {fileName, className, description, type: 'Interface', methods: members.methods, properties: members.properties}
-    ];
+    return [{
+      fileName,
+      className,
+      description,
+      deprecated,
+      since,
+      type: 'Interface',
+      methods: members.methods,
+      properties: members.properties
+    }];
   }
 
   visitClassDeclaration(fileName, classDeclaration) {
     var symbol = this.program.getTypeChecker().getSymbolAtLocation(classDeclaration.name);
     var description = ts.displayPartsToString(symbol.getDocumentationComment());
+    var {deprecated, since} = getJsDocTags(symbol);
     var className = classDeclaration.name.text;
     var decorators = classDeclaration.decorators;
     var directiveInfo;
@@ -103,6 +127,8 @@ class APIDocVisitor {
             fileName,
             className,
             description,
+            deprecated,
+            since,
             type: directiveInfo.type,
             selector: directiveInfo.selector,
             exportAs: directiveInfo.exportAs,
@@ -118,6 +144,8 @@ class APIDocVisitor {
             fileName,
             className,
             description,
+            deprecated,
+            since,
             type: 'Service',
             methods: members.methods,
             properties: members.properties
@@ -127,9 +155,16 @@ class APIDocVisitor {
     } else if (description) {
       members = this.visitMembers(classDeclaration.members);
 
-      return [
-        {fileName, className, description, type: 'Class', methods: members.methods, properties: members.properties}
-      ];
+      return [{
+        fileName,
+        className,
+        description,
+        deprecated,
+        since,
+        type: 'Class',
+        methods: members.methods,
+        properties: members.properties
+      }];
     }
 
     // a class that is not a directive or a service, not documented for now
@@ -166,22 +201,24 @@ class APIDocVisitor {
     for (var i = 0; i < members.length; i++) {
       inputDecorator = this.getDecoratorOfType(members[i], 'Input');
       outDecorator = this.getDecoratorOfType(members[i], 'Output');
+      var {deprecated, since} = getJsDocTags(members[i].symbol);
+      var releaseInfo = {deprecated, since};
 
       if (inputDecorator) {
-        inputs.push(this.visitInput(members[i], inputDecorator));
+        inputs.push(Object.assign(this.visitInput(members[i], inputDecorator), releaseInfo));
 
       } else if (outDecorator) {
-        outputs.push(this.visitOutput(members[i], outDecorator));
+        outputs.push(Object.assign(this.visitOutput(members[i], outDecorator), releaseInfo));
 
       } else if (
           (members[i].kind === ts.SyntaxKind.MethodDeclaration || members[i].kind === ts.SyntaxKind.MethodSignature) &&
           !isAngularLifecycleHook(members[i].name.text) && !isPrivateOrInternal(members[i])) {
-        methods.push(this.visitMethodDeclaration(members[i]));
+        methods.push(Object.assign(this.visitMethodDeclaration(members[i]), releaseInfo));
       } else if (
           (members[i].kind === ts.SyntaxKind.PropertyDeclaration ||
            members[i].kind === ts.SyntaxKind.PropertySignature || members[i].kind === ts.SyntaxKind.GetAccessor) &&
           !isPrivate(members[i]) && !isInternalMember(members[i])) {
-        properties.push(this.visitProperty(members[i]));
+        properties.push(Object.assign(this.visitProperty(members[i]), releaseInfo));
       }
     }
 

@@ -1,18 +1,18 @@
 import {NgbdModalBasic} from './basic/modal-basic';
 import {NgbdModalComponent, NgbdModalContent} from './component/modal-component';
-import {NgbdModalCustomclass} from './customclass/modal-customclass';
+import {NgbdModalOptions} from './options/modal-options';
 
-export const DEMO_DIRECTIVES = [NgbdModalBasic, NgbdModalComponent, NgbdModalCustomclass];
+export const DEMO_DIRECTIVES = [NgbdModalBasic, NgbdModalComponent, NgbdModalOptions];
 export {NgbdModalContent} from './component/modal-component';
 
 export const DEMO_SNIPPETS = {
   'basic': {
-    'code': require('!!prismjs-loader?lang=typescript!./basic/modal-basic'),
-    'markup': require('!!prismjs-loader?lang=markup!./basic/modal-basic.html')},
+    'code': require('!!raw-loader!./basic/modal-basic'),
+    'markup': require('!!raw-loader!./basic/modal-basic.html')},
   'component': {
-    'code': require('!!prismjs-loader?lang=typescript!./component/modal-component'),
-    'markup': require('!!prismjs-loader?lang=markup!./component/modal-component.html')},
-  'customclass': {
-    'code': require('!!prismjs-loader?lang=typescript!./customclass/modal-customclass'),
-    'markup': require('!!prismjs-loader?lang=markup!./customclass/modal-customclass.html')}
+    'code': require('!!raw-loader!./component/modal-component'),
+    'markup': require('!!raw-loader!./component/modal-component.html')},
+  'options': {
+    'code': require('!!raw-loader!./options/modal-options'),
+    'markup': require('!!raw-loader!./options/modal-options.html')}
 };

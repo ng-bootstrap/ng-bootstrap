@@ -229,7 +229,9 @@ class TestComponent {
             disabled: false,
             focused: false,
             selected: false
-          }
+          },
+          tabindex: -1,
+          ariaLabel: 'Monday'
         },
         {
           date: new NgbDate(2016, 8, 23),
@@ -239,7 +241,9 @@ class TestComponent {
             disabled: false,
             focused: false,
             selected: false
-          }
+          },
+          tabindex: -1,
+          ariaLabel: 'Tuesday'
         }
       ]
     }]
@@ -264,7 +268,9 @@ class TestComponent {
               disabled: false,
               focused: false,
               selected: false
-            }
+            },
+            tabindex: -1,
+            ariaLabel: 'Monday'
           },
           {
             date: new NgbDate(2016, 8, 1),
@@ -274,7 +280,9 @@ class TestComponent {
               disabled: false,
               focused: false,
               selected: false
-            }
+            },
+            tabindex: -1,
+            ariaLabel: 'Monday'
           }
         ]
       },
@@ -290,7 +298,9 @@ class TestComponent {
               disabled: false,
               focused: false,
               selected: false
-            }
+            },
+            tabindex: -1,
+            ariaLabel: 'Friday'
           },
           {
             date: new NgbDate(2016, 8, 3),
@@ -300,7 +310,9 @@ class TestComponent {
               disabled: false,
               focused: false,
               selected: false
-            }
+            },
+            tabindex: -1,
+            ariaLabel: 'Saturday'
           }
         ]
       },
@@ -316,7 +328,9 @@ class TestComponent {
               disabled: false,
               focused: false,
               selected: false
-            }
+            },
+            tabindex: -1,
+            ariaLabel: 'Sunday'
           },
           {
             date: new NgbDate(2016, 9, 1),
@@ -326,7 +340,9 @@ class TestComponent {
               disabled: false,
               focused: false,
               selected: false
-            }
+            },
+            tabindex: -1,
+            ariaLabel: 'Saturday'
           }
         ]
       },
@@ -342,7 +358,9 @@ class TestComponent {
               disabled: false,
               focused: false,
               selected: false
-            }
+            },
+            tabindex: -1,
+            ariaLabel: 'Sunday'
           },
           {
             date: new NgbDate(2016, 9, 3),
@@ -352,7 +370,9 @@ class TestComponent {
               disabled: false,
               focused: false,
               selected: false
-            }
+            },
+            tabindex: -1,
+            ariaLabel: 'Monday'
           }
         ]
       }

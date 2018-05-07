@@ -7,6 +7,7 @@ import {
   ChangeDetectionStrategy,
   OnInit,
   OnDestroy,
+  OnChanges,
   Injector,
   Renderer2,
   ComponentRef,
@@ -14,7 +15,8 @@ import {
   TemplateRef,
   ViewContainerRef,
   ComponentFactoryResolver,
-  NgZone
+  NgZone,
+  SimpleChanges
 } from '@angular/core';
 
 import {listenToTriggers} from '../util/triggers';
@@ -54,7 +56,7 @@ let nextId = 0;
       top: 50%;
       margin-top: -5px;
     }
-    
+
     :host.bs-popover-left-top .arrow, :host.bs-popover-right-top .arrow {
       top: 0.7em;
     }
@@ -90,13 +92,13 @@ export class NgbPopoverWindow {
  * A lightweight, extensible directive for fancy popover creation.
  */
 @Directive({selector: '[ngbPopover]', exportAs: 'ngbPopover'})
-export class NgbPopover implements OnInit, OnDestroy {
+export class NgbPopover implements OnInit, OnDestroy, OnChanges {
   /**
-   * Content to be displayed as popover.
+   * Content to be displayed as popover. If title and content are empty, the popover won't open.
    */
   @Input() ngbPopover: string | TemplateRef<any>;
   /**
-   * Title of a popover.
+   * Title of a popover. If title and content are empty, the popover won't open.
    */
   @Input() popoverTitle: string;
   /**
@@ -116,6 +118,12 @@ export class NgbPopover implements OnInit, OnDestroy {
    */
   @Input() container: string;
   /**
+   * A flag indicating if a given popover is disabled and should not be displayed.
+   *
+   * @since 1.1.0
+   */
+  @Input() disablePopover: boolean;
+  /**
    * Emits an event when the popover is shown
    */
   @Output() shown = new EventEmitter();
@@ -129,6 +137,15 @@ export class NgbPopover implements OnInit, OnDestroy {
   private _windowRef: ComponentRef<NgbPopoverWindow>;
   private _unregisterListenersFn;
   private _zoneSubscription: any;
+  private _isDisabled(): boolean {
+    if (this.disablePopover) {
+      return true;
+    }
+    if (!this.ngbPopover && !this.popoverTitle) {
+      return true;
+    }
+    return false;
+  }
 
   constructor(
       private _elementRef: ElementRef, private _renderer: Renderer2, injector: Injector,
@@ -137,6 +154,7 @@ export class NgbPopover implements OnInit, OnDestroy {
     this.placement = config.placement;
     this.triggers = config.triggers;
     this.container = config.container;
+    this.disablePopover = config.disablePopover;
     this._popupService = new PopupService<NgbPopoverWindow>(
         NgbPopoverWindow, injector, viewContainerRef, _renderer, componentFactoryResolver);
 
@@ -155,7 +173,7 @@ export class NgbPopover implements OnInit, OnDestroy {
    * The context is an optional value to be injected into the popover template when it is created.
    */
   open(context?: any) {
-    if (!this._windowRef) {
+    if (!this._windowRef && !this._isDisabled()) {
       this._windowRef = this._popupService.open(this.ngbPopover, context);
       this._windowRef.instance.title = this.popoverTitle;
       this._windowRef.instance.id = this._ngbPopoverWindowId;
@@ -212,6 +230,13 @@ export class NgbPopover implements OnInit, OnDestroy {
     this._unregisterListenersFn = listenToTriggers(
         this._renderer, this._elementRef.nativeElement, this.triggers, this.open.bind(this), this.close.bind(this),
         this.toggle.bind(this));
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    // close popover if title and content become empty, or disablePopover set to true
+    if ((changes['ngbPopover'] || changes['popoverTitle'] || changes['disablePopover']) && this._isDisabled()) {
+      this.close();
+    }
   }
 
   ngOnDestroy() {

@@ -223,4 +223,34 @@ describe('APIDocVisitor', function() {
     expect(classDocs.methods[0].returnType).toBe('void');
   });
 
+  it('should extract deprecation information', function() {
+    var docs = apiDoc(['misc/api-doc-test-cases/release-deprecation.ts']);
+
+    expect(docs.NgbDirective.deprecated).toEqual({version: '2.0.0', description: 'description'});
+    expect(docs.NgbComponent.deprecated).toEqual({version: '2.0.0', description: 'description'});
+    expect(docs.NgbService.deprecated).toEqual({version: '2.0.0', description: 'description'});
+    expect(docs.NgbClass.deprecated).toEqual({version: '2.0.0', description: 'description'});
+    expect(docs.NgbInterface.deprecated).toEqual({version: '2.0.0', description: 'description'});
+
+    expect(docs.NgbDirective.inputs[0].deprecated).toEqual({version: '2.0.0', description: 'description'});
+    expect(docs.NgbDirective.outputs[0].deprecated).toEqual({version: '2.0.0', description: 'description'});
+    expect(docs.NgbDirective.properties[0].deprecated).toEqual({version: '2.0.0', description: 'description'});
+    expect(docs.NgbDirective.methods[0].deprecated).toEqual({version: '2.0.0', description: 'description'});
+  });
+
+  it('should extract feature introduction information', function() {
+    var docs = apiDoc(['misc/api-doc-test-cases/release-features.ts']);
+
+    expect(docs.NgbDirective.since).toEqual({version: '2.0.0', description: ''});
+    expect(docs.NgbComponent.since).toEqual({version: '2.0.0', description: ''});
+    expect(docs.NgbService.since).toEqual({version: '2.0.0', description: ''});
+    expect(docs.NgbClass.since).toEqual({version: '2.0.0', description: ''});
+    expect(docs.NgbInterface.since).toEqual({version: '2.0.0', description: ''});
+
+    expect(docs.NgbDirective.inputs[0].since).toEqual({version: '2.0.0', description: ''});
+    expect(docs.NgbDirective.outputs[0].since).toEqual({version: '2.0.0', description: ''});
+    expect(docs.NgbDirective.properties[0].since).toEqual({version: '2.0.0', description: ''});
+    expect(docs.NgbDirective.methods[0].since).toEqual({version: '2.0.0', description: ''});
+  });
+
 });

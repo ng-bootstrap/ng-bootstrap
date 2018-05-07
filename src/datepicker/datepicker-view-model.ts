@@ -6,7 +6,9 @@ export type NgbMarkDisabled = (date: NgbDateStruct, current: {year: number, mont
 
 export type DayViewModel = {
   date: NgbDate,
-  context: DayTemplateContext
+  context: DayTemplateContext,
+  tabindex: number,
+  ariaLabel: string
 }
 
 export type WeekViewModel = {
@@ -37,6 +39,12 @@ export type DatepickerViewModel = {
   minDate?: NgbDate,
   months: MonthViewModel[],
   navigation: 'select' | 'arrows' | 'none',
+  prevDisabled: boolean,
+  nextDisabled: boolean,
+  selectBoxes: {
+    years: number[],
+    months: number[]
+  },
   selectedDate: NgbDate
 }
 // clang-format on

@@ -38,7 +38,7 @@ export class NgbTab {
   /**
    * Unique tab identifier. Must be unique for the entire document for proper accessibility support.
    */
-  @Input() id: string = `ngb-tab-${nextId++}`;
+  @Input() id = `ngb-tab-${nextId++}`;
   /**
    * Simple (string only) title. Use the "NgbTabTitle" directive for more complex use-cases.
    */
@@ -48,8 +48,20 @@ export class NgbTab {
    */
   @Input() disabled = false;
 
-  @ContentChild(NgbTabContent) contentTpl: NgbTabContent;
-  @ContentChild(NgbTabTitle) titleTpl: NgbTabTitle;
+  titleTpl: NgbTabTitle | null;
+  contentTpl: NgbTabContent | null;
+
+  @ContentChildren(NgbTabTitle, {descendants: false}) titleTpls: QueryList<NgbTabTitle>;
+  @ContentChildren(NgbTabContent, {descendants: false}) contentTpls: QueryList<NgbTabContent>;
+
+  ngAfterContentChecked() {
+    // We are using @ContentChildren instead of @ContantChild as in the Angular version being used
+    // only @ContentChildren allows us to specify the {descendants: false} option.
+    // Without {descendants: false} we are hitting bugs described in:
+    // https://github.com/ng-bootstrap/ng-bootstrap/issues/2240
+    this.titleTpl = this.titleTpls.first;
+    this.contentTpl = this.contentTpls.first;
+  }
 }
 
 /**
@@ -97,7 +109,7 @@ export interface NgbTabChangeEvent {
           role="tabpanel"
           [attr.aria-labelledby]="tab.id" id="{{tab.id}}-panel"
           [attr.aria-expanded]="tab.id === activeId">
-          <ng-template [ngTemplateOutlet]="tab.contentTpl.templateRef"></ng-template>
+          <ng-template [ngTemplateOutlet]="tab.contentTpl?.templateRef"></ng-template>
         </div>
       </ng-template>
     </div>
@@ -116,7 +128,7 @@ export class NgbTabset implements AfterContentChecked {
   /**
    * Whether the closed tabs should be hidden without destroying them
    */
-  @Input() destroyOnHide: boolean = true;
+  @Input() destroyOnHide = true;
 
   /**
    * The horizontal alignment of the nav with flexbox utilities. Can be one of 'start', 'center', 'end', 'fill' or

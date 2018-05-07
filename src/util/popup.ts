@@ -5,7 +5,6 @@ import {
   ViewContainerRef,
   Renderer2,
   ComponentRef,
-  ComponentFactory,
   ComponentFactoryResolver
 } from '@angular/core';
 
@@ -14,21 +13,19 @@ export class ContentRef {
 }
 
 export class PopupService<T> {
-  private _windowFactory: ComponentFactory<T>;
   private _windowRef: ComponentRef<T>;
   private _contentRef: ContentRef;
 
   constructor(
-      type: any, private _injector: Injector, private _viewContainerRef: ViewContainerRef, private _renderer: Renderer2,
-      componentFactoryResolver: ComponentFactoryResolver) {
-    this._windowFactory = componentFactoryResolver.resolveComponentFactory<T>(type);
-  }
+      private _type: any, private _injector: Injector, private _viewContainerRef: ViewContainerRef,
+      private _renderer: Renderer2, private _componentFactoryResolver: ComponentFactoryResolver) {}
 
   open(content?: string | TemplateRef<any>, context?: any): ComponentRef<T> {
     if (!this._windowRef) {
       this._contentRef = this._getContentRef(content, context);
-      this._windowRef =
-          this._viewContainerRef.createComponent(this._windowFactory, 0, this._injector, this._contentRef.nodes);
+      this._windowRef = this._viewContainerRef.createComponent(
+          this._componentFactoryResolver.resolveComponentFactory<T>(this._type), 0, this._injector,
+          this._contentRef.nodes);
     }
 
     return this._windowRef;

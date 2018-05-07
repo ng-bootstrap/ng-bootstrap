@@ -15,7 +15,7 @@ cd `dirname $0`
 # before_script:
 #   - curl https://gist.github.com/santiycr/5139565/raw/sauce_connect_setup.sh | bash
 
-CONNECT_URL="https://saucelabs.com/downloads/sc-4.3.11-linux.tar.gz"
+CONNECT_URL="https://saucelabs.com/downloads/sc-4.4.12-linux.tar.gz"
 CONNECT_DIR="/tmp/sauce-connect-$RANDOM"
 CONNECT_DOWNLOAD="sc-latest-linux.tar.gz"
 

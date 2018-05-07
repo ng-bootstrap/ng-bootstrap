@@ -6,10 +6,26 @@ import {DayTemplateContext} from './datepicker-day-template-context';
 
 @Component({
   selector: 'ngb-datepicker-month-view',
-  host: {'class': 'd-block'},
+  host: {'class': 'd-block', 'role': 'grid'},
   styles: [`
     .ngb-dp-weekday, .ngb-dp-week-number {
       line-height: 2rem;
+      text-align: center;
+      font-style: italic;
+    }
+    .ngb-dp-weekday {
+      color: #5bc0de;
+      color: var(--info);
+    }
+    .ngb-dp-week {
+      border-radius: 0.25rem;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+    }
+    .ngb-dp-weekdays {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+      border-radius: 0rem;
     }
     .ngb-dp-day, .ngb-dp-weekday, .ngb-dp-week-number {
       width: 2rem;
@@ -23,17 +39,20 @@ import {DayTemplateContext} from './datepicker-day-template-context';
     }
   `],
   template: `
-    <div *ngIf="showWeekdays" class="ngb-dp-week d-flex">
-      <div *ngIf="showWeekNumbers" class="ngb-dp-weekday"></div>
-      <div *ngFor="let w of month.weekdays" class="ngb-dp-weekday small text-center text-info font-italic">
+    <div *ngIf="showWeekdays" class="ngb-dp-week ngb-dp-weekdays bg-light">
+      <div *ngIf="showWeekNumbers" class="ngb-dp-weekday ngb-dp-showweek"></div>
+      <div *ngFor="let w of month.weekdays" class="ngb-dp-weekday small">
         {{ i18n.getWeekdayShortName(w) }}
       </div>
     </div>
     <ng-template ngFor let-week [ngForOf]="month.weeks">
-      <div *ngIf="!isCollapsed(week)" class="ngb-dp-week d-flex">
-        <div *ngIf="showWeekNumbers" class="ngb-dp-week-number small text-center font-italic text-muted">{{ week.number }}</div>
-        <div *ngFor="let day of week.days" (click)="doSelect(day)" class="ngb-dp-day" [class.disabled]="day.context.disabled"
-         [class.hidden]="isHidden(day)">
+      <div *ngIf="!isCollapsed(week)" class="ngb-dp-week" role="row">
+        <div *ngIf="showWeekNumbers" class="ngb-dp-week-number small text-muted">{{ week.number }}</div>
+        <div *ngFor="let day of week.days" (click)="doSelect(day)" class="ngb-dp-day" role="gridcell"
+          [class.disabled]="day.context.disabled"
+          [tabindex]="day.tabindex"
+          [class.hidden]="isHidden(day)"
+          [attr.aria-label]="day.ariaLabel">
           <ng-template [ngIf]="!isHidden(day)">
             <ng-template [ngTemplateOutlet]="dayTemplate" [ngTemplateOutletContext]="day.context"></ng-template>
           </ng-template>

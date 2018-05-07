@@ -11,4 +11,5 @@ export class NgbTooltipConfig {
   placement: PlacementArray = 'top';
   triggers = 'hover';
   container: string;
+  disableTooltip = false;
 }
