@@ -243,7 +243,12 @@ const positionService = new Positioning();
 /*
  * Accept the placement array and applies the appropriate placement dependent on the viewport.
  * Returns the applied placement.
- * In case of auto placement, placements are selected in order 'top', 'bottom', 'left', 'right'.
+ * In case of auto placement, placements are selected in order
+ *   'top', 'bottom', 'left', 'right',
+ *   'top-left', 'top-right',
+ *   'bottom-left', 'bottom-right',
+ *   'left-top', 'left-bottom',
+ *   'right-top', 'right-bottom'.
  * */
 export function positionElements(
     hostElement: HTMLElement, targetElement: HTMLElement, placement: string | Placement | PlacementArray,
@@ -253,8 +258,10 @@ export function positionElements(
   // replace auto placement with other placements
   let hasAuto = placementVals.findIndex(val => val === 'auto');
   if (hasAuto >= 0) {
-    ['top', 'right', 'bottom', 'left'].forEach(function(obj) {
-      if (placementVals.find(val => val.search('^' + obj + '|^' + obj + '-') !== -1) == null) {
+    ['top', 'bottom', 'left', 'right', 'top-left', 'top-right', 'bottom-left', 'bottom-right', 'left-top',
+     'left-bottom', 'right-top', 'right-bottom',
+    ].forEach(function(obj) {
+      if (placementVals.find(val => val.search('^' + obj) !== -1) == null) {
         placementVals.splice(hasAuto++, 1, obj as Placement);
       }
     });
