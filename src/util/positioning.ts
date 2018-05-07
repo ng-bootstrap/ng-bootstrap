@@ -151,12 +151,17 @@ export class Positioning {
     let hostElemClientRect = hostElement.getBoundingClientRect();
     let targetElemClientRect = targetElement.getBoundingClientRect();
     let html = document.documentElement;
+    let windowHeight = window.innerHeight || html.clientHeight;
+    let windowWidth = window.innerWidth || html.clientWidth;
+    let hostElemClientRectHorCenter = hostElemClientRect.left + hostElemClientRect.width / 2;
+    let hostElemClientRectVerCenter = hostElemClientRect.top + hostElemClientRect.height / 2;
 
     // left: check if target width can be placed between host left and viewport start and also height of target is
     // inside viewport
     if (targetElemClientRect.width < hostElemClientRect.left) {
       // check for left only
-      if ((hostElemClientRect.top + hostElemClientRect.height / 2 - targetElement.offsetHeight / 2) > 0) {
+      if (hostElemClientRectVerCenter > targetElemClientRect.height / 2 &&
+          windowHeight - hostElemClientRectVerCenter > targetElemClientRect.height / 2) {
         availablePlacements.splice(availablePlacements.length, 1, 'left');
       }
       // check for left-top and left-bottom
@@ -165,15 +170,19 @@ export class Positioning {
 
     // top: target height is less than host top
     if (targetElemClientRect.height < hostElemClientRect.top) {
-      availablePlacements.splice(availablePlacements.length, 1, 'top');
+      if (hostElemClientRectHorCenter > targetElemClientRect.width / 2 &&
+          windowWidth - hostElemClientRectHorCenter > targetElemClientRect.width / 2) {
+        availablePlacements.splice(availablePlacements.length, 1, 'top');
+      }
       this.setSecondaryPlacementForTopBottom(hostElemClientRect, targetElemClientRect, 'top', availablePlacements);
     }
 
     // right: check if target width can be placed between host right and viewport end and also height of target is
     // inside viewport
-    if ((window.innerWidth || html.clientWidth) - hostElemClientRect.right > targetElemClientRect.width) {
+    if (windowWidth - hostElemClientRect.right > targetElemClientRect.width) {
       // check for right only
-      if ((hostElemClientRect.top + hostElemClientRect.height / 2 - targetElement.offsetHeight / 2) > 0) {
+      if (hostElemClientRectVerCenter > targetElemClientRect.height / 2 &&
+          windowHeight - hostElemClientRectVerCenter > targetElemClientRect.height / 2) {
         availablePlacements.splice(availablePlacements.length, 1, 'right');
       }
       // check for right-top and right-bottom
@@ -181,8 +190,11 @@ export class Positioning {
     }
 
     // bottom: check if there is enough space between host bottom and viewport end for target height
-    if ((window.innerHeight || html.clientHeight) - hostElemClientRect.bottom > targetElemClientRect.height) {
-      availablePlacements.splice(availablePlacements.length, 1, 'bottom');
+    if (windowHeight - hostElemClientRect.bottom > targetElemClientRect.height) {
+      if (hostElemClientRectHorCenter > targetElemClientRect.width / 2 &&
+          windowWidth - hostElemClientRectHorCenter > targetElemClientRect.width / 2) {
+        availablePlacements.splice(availablePlacements.length, 1, 'bottom');
+      }
       this.setSecondaryPlacementForTopBottom(hostElemClientRect, targetElemClientRect, 'bottom', availablePlacements);
     }
 
