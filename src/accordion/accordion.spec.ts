@@ -20,7 +20,7 @@ function getPanelsContent(element: HTMLElement): HTMLDivElement[] {
 }
 
 function getPanelsTitle(element: HTMLElement): HTMLAnchorElement[] {
-  return <HTMLAnchorElement[]>Array.from(element.querySelectorAll('.card > .card-header a'));
+  return <HTMLAnchorElement[]>Array.from(element.querySelectorAll('.card > .card-header button'));
 }
 
 function getButton(element: HTMLElement, index: number): HTMLButtonElement {
@@ -328,7 +328,7 @@ describe('ngb-accordion', () => {
     tc.closeOthers = true;
     fixture.detectChanges();
 
-    const headingLinks = fixture.nativeElement.querySelectorAll('.card-header a');
+    const headingLinks = fixture.nativeElement.querySelectorAll('.card-header button');
 
     headingLinks[0].click();
     fixture.detectChanges();
@@ -360,7 +360,7 @@ describe('ngb-accordion', () => {
     tc.panels[0].disabled = true;
     fixture.detectChanges();
 
-    const headingLinks = fixture.nativeElement.querySelectorAll('.card-header a');
+    const headingLinks = fixture.nativeElement.querySelectorAll('.card-header button');
 
     headingLinks[0].click();
     fixture.detectChanges();
@@ -377,7 +377,7 @@ describe('ngb-accordion', () => {
     fixture.detectChanges();
     expectOpenPanels(el, [false, false, false]);
 
-    const headingLinks = fixture.nativeElement.querySelectorAll('.card-header a')[0];
+    const headingLinks = fixture.nativeElement.querySelectorAll('.card-header button')[0];
 
     headingLinks.click();
     fixture.detectChanges();
@@ -411,7 +411,7 @@ describe('ngb-accordion', () => {
 
     tc.activeIds = ['one'];
     fixture.detectChanges();
-    let disabledPanelLink: HTMLAnchorElement = getPanels(fixture.nativeElement)[0].querySelector('a');
+    let disabledPanelLink: HTMLAnchorElement = getPanels(fixture.nativeElement)[0].querySelector('h5 > button');
     expectOpenPanels(fixture.nativeElement, [true, false, false]);
     expect(disabledPanelLink.getAttribute('aria-disabled')).toBe('false');
     expect(disabledPanelLink.getAttribute('tabindex')).toBeNull();
@@ -429,13 +429,13 @@ describe('ngb-accordion', () => {
 
     fixture.detectChanges();
 
-    const disabledPanelLink: HTMLAnchorElement = getPanels(fixture.nativeElement)[0].querySelector('a');
+    const disabledPanelLink: HTMLAnchorElement = getPanels(fixture.nativeElement)[0].querySelector('h5 > button');
     fixture.detectChanges();
-    expect(disabledPanelLink.classList.contains('text-muted')).toBeFalsy();
+    expect(disabledPanelLink.getAttribute('disabled')).toBeNull();
 
     tc.panels[0].disabled = true;
     fixture.detectChanges();
-    expect(disabledPanelLink.classList.contains('text-muted')).toBeTruthy();
+    expect(disabledPanelLink.getAttribute('disabled')).not.toBeNull();
   });
 
   it('should remove aria-controls attribute when closed', () => {
@@ -443,7 +443,7 @@ describe('ngb-accordion', () => {
     const tc = fixture.componentInstance;
 
     fixture.detectChanges();
-    const headingLinks = fixture.nativeElement.querySelectorAll('.card-header a');
+    const headingLinks = fixture.nativeElement.querySelectorAll('.card-header button');
 
     expectOpenPanels(fixture.nativeElement, [false, false, false]);
     expect(headingLinks[0].getAttribute('aria-controls')).toBeNull();
