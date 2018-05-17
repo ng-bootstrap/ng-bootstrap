@@ -6,7 +6,9 @@ import {
   NgModule,
   getDebugNode,
   DebugElement,
-  Injector
+  Injector,
+  ComponentFactoryResolver,
+  Compiler
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {TestBed, ComponentFixture} from '@angular/core/testing';
@@ -28,6 +30,7 @@ class CustomSpyService {
 describe('ngb-modal', () => {
 
   let fixture: ComponentFixture<TestComponent>;
+  let compiler: Compiler;
 
   beforeEach(() => {
     jasmine.addMatchers({
@@ -88,6 +91,7 @@ describe('ngb-modal', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({imports: [NgbModalTestModule]});
     fixture = TestBed.createComponent(TestComponent);
+    compiler = TestBed.get(Compiler);
   });
 
   afterEach(() => {
@@ -527,6 +531,22 @@ describe('ngb-modal', () => {
 
   });
 
+  describe('custom moduleCFR option', () => {
+    it('should render modal with a custom moduleCFR', () => {
+      const componentFactories = compiler.compileModuleAndAllComponentsSync(NgbModalCFRTestModule).componentFactories;
+      const cfr = fixture.componentRef.injector.get(ComponentFactoryResolver);
+      cfr._factories.clear();
+      componentFactories.forEach(
+          componentFactory => { cfr._factories.set(componentFactory.componentType, componentFactory); });
+      const modalInstance = fixture.componentInstance.openCmpt(CustomCFRCmpt, {moduleCFR: cfr});
+      fixture.detectChanges();
+      expect(fixture.nativeElement).toHaveModal('Some content');
+      modalInstance.close();
+      fixture.detectChanges();
+      expect(fixture.nativeElement).not.toHaveModal();
+    });
+  });
+
   describe('focus management', () => {
 
     it('should focus modal window and return focus to previously focused element', () => {
@@ -619,6 +639,11 @@ describe('ngb-modal', () => {
   });
 });
 
+@Component({selector: 'custom-cfr-cmpt', template: 'Some content'})
+export class CustomCFRCmpt {
+  constructor() {}
+}
+
 @Component({selector: 'custom-injector-cmpt', template: 'Some content'})
 export class CustomInjectorCmpt implements OnDestroy {
   constructor(private _spyService: CustomSpyService) {}
@@ -704,4 +729,12 @@ class TestComponent {
   providers: [SpyService]
 })
 class NgbModalTestModule {
+}
+
+@NgModule({
+  declarations: [CustomCFRCmpt],
+  imports: [CommonModule, NgbModalModule.forRoot()],
+  entryComponents: [CustomCFRCmpt],
+})
+class NgbModalCFRTestModule {
 }

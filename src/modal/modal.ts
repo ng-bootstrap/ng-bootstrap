@@ -42,6 +42,11 @@ export interface NgbModalOptions {
   keyboard?: boolean;
 
   /**
+   * ComponentFactoryResolver to use for modal content.
+   */
+  moduleCFR?: ComponentFactoryResolver;
+
+  /**
    * Size of a new modal window.
    */
   size?: 'sm' | 'lg';
