@@ -38,7 +38,8 @@ export class NgbModalStack {
     }
 
     const activeModal = new NgbActiveModal();
-    const contentRef = this._getContentRef(moduleCFR, options.injector || contentInjector, content, activeModal);
+    const contentRef =
+        this._getContentRef(options.moduleCFR || moduleCFR, options.injector || contentInjector, content, activeModal);
 
     let backdropCmptRef: ComponentRef<NgbModalBackdrop> =
         options.backdrop !== false ? this._attachBackdrop(containerEl) : null;
