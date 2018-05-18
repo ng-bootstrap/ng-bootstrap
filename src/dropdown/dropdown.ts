@@ -102,11 +102,11 @@ export class NgbDropdownToggle extends NgbDropdownAnchor {
   host: {
     '[class.show]': 'isOpen()',
     '(keyup.esc)': 'closeFromOutsideEsc()',
-    '(document:click)': 'closeFromClick($event)'
   }
 })
 export class NgbDropdown implements OnInit {
   private _zoneSubscription: any;
+  private _documentClickListener: () => void;
 
   @ContentChild(NgbDropdownMenu) private _menu: NgbDropdownMenu;
 
@@ -140,10 +140,11 @@ export class NgbDropdown implements OnInit {
    */
   @Output() openChange = new EventEmitter();
 
-  constructor(config: NgbDropdownConfig, ngZone: NgZone) {
+  constructor(config: NgbDropdownConfig, ngZone: NgZone, private _renderer: Renderer2) {
     this.placement = config.placement;
     this.autoClose = config.autoClose;
     this._zoneSubscription = ngZone.onStable.subscribe(() => { this._positionMenu(); });
+    this._documentClickListener = null;
   }
 
   ngOnInit() {
@@ -164,6 +165,7 @@ export class NgbDropdown implements OnInit {
     if (!this._open) {
       this._open = true;
       this._positionMenu();
+      this._bindDocumentClickListener();
       this.openChange.emit(true);
     }
   }
@@ -174,6 +176,7 @@ export class NgbDropdown implements OnInit {
   close(): void {
     if (this._open) {
       this._open = false;
+      this._unbindDocumentClickListener();
       this.openChange.emit(false);
     }
   }
@@ -190,14 +193,21 @@ export class NgbDropdown implements OnInit {
   }
 
   closeFromClick($event) {
-    if (this.autoClose && $event.button !== 2 && !this._isEventFromToggle($event)) {
+    if (!this.autoClose) {
+      return;
+    }
+    let doClose = false;
+    if ($event.button !== 2 && !this._isEventFromToggle($event)) {
       if (this.autoClose === true) {
-        this.close();
+        doClose = true;
       } else if (this.autoClose === 'inside' && this._isEventFromMenu($event)) {
-        this.close();
+        doClose = true;
       } else if (this.autoClose === 'outside' && !this._isEventFromMenu($event)) {
-        this.close();
+        doClose = true;
       }
+    }
+    if (doClose) {
+      this.close();
     }
   }
 
@@ -207,9 +217,29 @@ export class NgbDropdown implements OnInit {
     }
   }
 
-  ngOnDestroy() { this._zoneSubscription.unsubscribe(); }
+  ngOnDestroy() {
+    this._unbindDocumentClickListener();
+    this._zoneSubscription.unsubscribe();
+  }
 
-  private _isEventFromToggle($event) { return this._anchor.isEventFrom($event); }
+  private _bindDocumentClickListener() {
+    if (!this._documentClickListener) {
+      this._documentClickListener = this._renderer.listen('document', 'click', ($event) => {
+        if (this.isOpen()) {
+          this.closeFromClick($event);
+        }
+      });
+    }
+  }
+
+  private _unbindDocumentClickListener() {
+    if (this._documentClickListener) {
+      this._documentClickListener();
+      this._documentClickListener = null;
+    }
+  }
+
+  private _isEventFromToggle($event) { return this._anchor ? this._anchor.isEventFrom($event) : false; }
 
   private _isEventFromMenu($event) { return this._menu ? this._menu.isEventFrom($event) : false; }
 
