@@ -1,15 +1,12 @@
-<div class="jumbotron">
-  <div class="container">
-    <h1>{{ pageTitle }}</h1>
-  </div>
-</div>
-<div class="container">
-  <div class="row">
-    <div class="col-12 col-lg-9">
+<header class="d-flex flex-column flex-md-row align-items-md-center p-5 bg-light">
+  <h1 class="mt-0">{{ pageTitle }}</h1>
+</header>
+
+<div class="container-fluid mb-5">
+  <div class="row my-3">
+    <div
+      class="col-12 col-xl-10 py-3 px-5">
       <ng-content></ng-content>
-    </div>
-    <div class="col-12 col-lg-3 hidden-md-down">
-      <ngbd-side-nav></ngbd-side-nav>
     </div>
   </div>
 </div>
