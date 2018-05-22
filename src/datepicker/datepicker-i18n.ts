@@ -30,7 +30,9 @@ export abstract class NgbDatepickerI18n {
   abstract getMonthFullName(month: number): string;
 
   /**
-   * Returns the aria-label string for a day
+   * Returns the value of the 'aria-label' attribute for a specific date
+   *
+   * @since 2.0.0
    */
   abstract getDayAriaLabel(date: NgbDateStruct): string;
 }
