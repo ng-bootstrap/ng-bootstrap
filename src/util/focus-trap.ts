@@ -26,7 +26,6 @@ enum DIRECTION {
 export class NgbFocusTrap {
   private _removeDocumentListener;
   private _direction: DIRECTION = DIRECTION.FORWARD;
-  private _previouslyFocused: HTMLElement | null = null;
   private _endOfDocument: HTMLElement | null = null;
 
   /**
@@ -65,7 +64,6 @@ export class NgbFocusTrap {
     });
 
     if (autofocus === true) {
-      this._previouslyFocused = document.activeElement as HTMLElement;
       this._focusInitial();
     }
   }
@@ -109,9 +107,6 @@ export class NgbFocusTrap {
   destroy() {
     this._removeDocumentListener();
     this._document.body.removeChild(this._endOfDocument);
-    if (this._previouslyFocused) {
-      this._previouslyFocused.focus();
-    }
   }
 }
 

@@ -48,7 +48,7 @@ describe('ngbFocusTrap', () => {
     });
   });
 
-  it('should save/restore focused element when autofocus is set', () => {
+  it('should focus element decorated with ngbAutofocus when created', () => {
     TestBed.configureTestingModule({
       declarations: [TestComponent, FocusTrapComponent],
       providers: [NgbFocusTrapFactory, {provide: Autofocus, useValue: true}]
@@ -71,7 +71,7 @@ describe('ngbFocusTrap', () => {
     // let's destroy the focustrap (removing <focus-trapped>)
     instance.show = false;
     fixture.detectChanges();
-    expect(document.activeElement).toBe(initial);
+    expect(document.activeElement).not.toBe(button);
   });
 });
 
