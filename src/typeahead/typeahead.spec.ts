@@ -134,6 +134,33 @@ describe('ngb-typeahead', () => {
              })
              .then(() => { expectInputValue(el, 'TEXT'); });
        }));
+
+    it('should use custom input formatter with falsy values', async(() => {
+         const html = '<input [(ngModel)]="model" [ngbTypeahead]="findNothing" [inputFormatter]="uppercaseFormatter"/>';
+         const fixture = createTestComponent(html);
+         const el = fixture.nativeElement;
+         const comp = fixture.componentInstance;
+         expectInputValue(el, '');
+
+         comp.model = null;
+         fixture.detectChanges();
+         fixture.whenStable()
+             .then(() => {
+               expectInputValue(el, '');
+
+               comp.model = 0;
+               fixture.detectChanges();
+               return fixture.whenStable();
+             })
+             .then(() => {
+               expectInputValue(el, '0');
+
+               comp.model = false;
+               fixture.detectChanges();
+               return fixture.whenStable();
+             })
+             .then(() => { expectInputValue(el, 'FALSE'); });
+       }));
   });
 
   describe('window', () => {
@@ -1098,9 +1125,9 @@ class TestComponent {
 
   formatter = (obj: {id: number, value: string}) => { return `${obj.id} ${obj.value}`; };
 
-  uppercaseFormatter = s => s.toUpperCase();
+  uppercaseFormatter = s => `${s}`.toUpperCase();
 
-  uppercaseObjFormatter = (obj: {value: string}) => { return obj.value.toUpperCase(); };
+  uppercaseObjFormatter = (obj: {value: string}) => { return `${obj.value}`.toUpperCase(); };
 
 
   onSelect($event) { this.selectEventValue = $event; }
