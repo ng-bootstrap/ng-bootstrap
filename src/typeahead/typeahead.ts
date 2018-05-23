@@ -331,7 +331,7 @@ export class NgbTypeahead implements ControlValueAccessor,
   }
 
   private _formatItemForInput(item: any): string {
-    return item && this.inputFormatter ? this.inputFormatter(item) : toString(item);
+    return item != null && this.inputFormatter ? this.inputFormatter(item) : toString(item);
   }
 
   private _writeInputValue(value: string): void {
