@@ -1,17 +1,19 @@
 import {DOCUMENT} from '@angular/common';
 import {
-  Component,
-  Output,
-  EventEmitter,
-  Input,
-  Inject,
-  ElementRef,
-  Renderer2,
-  OnInit,
   AfterViewInit,
-  OnDestroy
+  Component,
+  ElementRef,
+  EventEmitter,
+  Inject,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  Renderer2,
+  ViewChild,
 } from '@angular/core';
 
+import {NgbFocusTrap, NgbFocusTrapFactory} from '../util/focus-trap';
 import {ModalDismissReasons} from './modal-dismiss-reasons';
 
 @Component({
@@ -25,14 +27,14 @@ import {ModalDismissReasons} from './modal-dismiss-reasons';
   },
   template: `
     <div [class]="'modal-dialog' + (size ? ' modal-' + size : '') + (centered ? ' modal-dialog-centered' : '')" role="document">
-        <div class="modal-content"><ng-content></ng-content></div>
+        <div #content class="modal-content"><ng-content></ng-content></div>
     </div>
     `
 })
 export class NgbModalWindow implements OnInit,
     AfterViewInit, OnDestroy {
-  private _document: any;
-  private _elWithFocus: Element;  // element that is focused prior to modal opening
+  private _focusTrap: NgbFocusTrap | null = null;
+  @ViewChild('content') private _trapWrapper;
 
   @Input() backdrop: boolean | string = true;
   @Input() centered: string;
@@ -42,9 +44,10 @@ export class NgbModalWindow implements OnInit,
 
   @Output('dismiss') dismissEvent = new EventEmitter();
 
-  constructor(@Inject(DOCUMENT) document, private _elRef: ElementRef, private _renderer: Renderer2) {
-    this._document = document;
-  }
+
+  constructor(
+      @Inject(DOCUMENT) private _document: Document, private _elRef: ElementRef, private _renderer: Renderer2,
+      private _focusTrapFactory: NgbFocusTrapFactory) {}
 
   backdropClick($event): void {
     if (this.backdrop === true && this._elRef.nativeElement === $event.target) {
@@ -60,30 +63,18 @@ export class NgbModalWindow implements OnInit,
 
   dismiss(reason): void { this.dismissEvent.emit(reason); }
 
-  ngOnInit() {
-    this._elWithFocus = this._document.activeElement;
-    this._renderer.addClass(this._document.body, 'modal-open');
-  }
+  ngOnInit() { this._renderer.addClass(this._document.body, 'modal-open'); }
 
   ngAfterViewInit() {
+    this._focusTrap = this._focusTrapFactory.create(this._trapWrapper.nativeElement, true);
     if (!this._elRef.nativeElement.contains(document.activeElement)) {
       this._elRef.nativeElement['focus'].apply(this._elRef.nativeElement, []);
     }
   }
 
   ngOnDestroy() {
-    const body = this._document.body;
-    const elWithFocus = this._elWithFocus;
-
-    let elementToFocus;
-    if (elWithFocus && elWithFocus['focus'] && body.contains(elWithFocus)) {
-      elementToFocus = elWithFocus;
-    } else {
-      elementToFocus = body;
-    }
-    elementToFocus['focus'].apply(elementToFocus, []);
-
-    this._elWithFocus = null;
-    this._renderer.removeClass(body, 'modal-open');
+    this._focusTrap.destroy();
+    this._focusTrap = null;
+    this._renderer.removeClass(this._document.body, 'modal-open');
   }
 }

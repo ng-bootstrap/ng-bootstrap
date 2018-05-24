@@ -1,14 +1,15 @@
-import {TestBed, ComponentFixture} from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {NgbModalWindow} from './modal-window';
+import {NgbFocusTrapFactory} from '../util/focus-trap';
 import {ModalDismissReasons} from './modal-dismiss-reasons';
+import {NgbModalWindow} from './modal-window';
 
 describe('ngb-modal-dialog', () => {
 
   let fixture: ComponentFixture<NgbModalWindow>;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({declarations: [NgbModalWindow]});
+    TestBed.configureTestingModule({declarations: [NgbModalWindow], providers: [NgbFocusTrapFactory]});
     fixture = TestBed.createComponent(NgbModalWindow);
   });
 
