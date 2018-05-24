@@ -8,14 +8,9 @@ import {NgbDatepickerI18n} from './datepicker-i18n';
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [`
     :host>select {
-      /* to align with btn-sm */
-      padding: 0.25rem 0.5rem;
+      padding: 0 0.5rem;
       font-size: 0.875rem;
-      line-height: 1.25;
-      /* to cancel the custom height set by custom-select */
-      height: inherit;
-      width: 50%;
-      display: inline-block;
+      height: 1.85rem;
     }
   `],
   template: `
