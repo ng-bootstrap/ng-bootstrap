@@ -6,8 +6,11 @@ import {DayTemplateContext} from './datepicker-day-template-context';
 
 @Component({
   selector: 'ngb-datepicker-month-view',
-  host: {'class': 'd-block', 'role': 'grid'},
+  host: {'role': 'grid'},
   styles: [`
+    :host {
+      display: block;
+    }
     .ngb-dp-weekday, .ngb-dp-week-number {
       line-height: 2rem;
       text-align: center;
@@ -19,13 +22,12 @@ import {DayTemplateContext} from './datepicker-day-template-context';
     }
     .ngb-dp-week {
       border-radius: 0.25rem;
-      display: -webkit-box;
       display: -ms-flexbox;
       display: flex;
     }
     .ngb-dp-weekdays {
       border-bottom: 1px solid rgba(0, 0, 0, 0.125);
-      border-radius: 0rem;
+      border-radius: 0;
     }
     .ngb-dp-day, .ngb-dp-weekday, .ngb-dp-week-number {
       width: 2rem;

@@ -22,7 +22,6 @@ import {NgbDate} from './ngb-date';
 import {NgbDatepickerService} from './datepicker-service';
 import {NgbDatepickerKeyMapService} from './datepicker-keymap-service';
 import {DatepickerViewModel, NavigationEvent} from './datepicker-view-model';
-import {toInteger} from '../util/util';
 import {DayTemplateContext} from './datepicker-day-template-context';
 import {NgbDatepickerConfig} from './datepicker-config';
 import {NgbDateAdapter} from './ngb-date-adapter';
@@ -60,7 +59,7 @@ export interface NgbDatepickerNavigateEvent {
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [`
     :host {
-      border: 1px solid rgba(0, 0, 0, 0.125);
+      border: 1px solid #dfdfdf;
       border-radius: 0.25rem;
       display: inline-block;
     }
@@ -68,8 +67,8 @@ export interface NgbDatepickerNavigateEvent {
       pointer-events: none;
     }
     .ngb-dp-header {
-      border-bottom: 0px;
-      border-radius: .25rem 0.25rem 0rem 0rem;
+      border-bottom: 0;
+      border-radius: 0.25rem 0.25rem 0 0;
       padding-top: 0.25rem;
     }
     ngb-datepicker-month-view {
@@ -97,7 +96,6 @@ export interface NgbDatepickerNavigateEvent {
       padding-bottom: .25rem;
     }
     .ngb-dp-months {
-      display: -webkit-box;
       display: -ms-flexbox;
       display: flex;
     }
@@ -129,7 +127,7 @@ export interface NgbDatepickerNavigateEvent {
 
     <div class="ngb-dp-months" (keydown)="onKeyDown($event)" (focusin)="showFocus(true)" (focusout)="showFocus(false)">
       <ng-template ngFor let-month [ngForOf]="model.months" let-i="index">
-        <div class="ngb-dp-month d-block">
+        <div class="ngb-dp-month">
           <div *ngIf="navigation === 'none' || (displayMonths > 1 && navigation === 'select')"
                 class="ngb-dp-month-name bg-light">
             {{ i18n.getMonthFullName(month.number) }} {{ month.year }}
