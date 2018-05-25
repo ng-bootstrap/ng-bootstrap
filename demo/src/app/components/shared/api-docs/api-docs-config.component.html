@@ -28,7 +28,7 @@
       <h4>Properties</h4>
       <p class="description">
         <ng-template ngFor let-property [ngForOf]="apiDocs.properties">
-          <code>{{ property.name }}</code>
+          <code>{{ property.name }}</code>&ngsp;
         </ng-template>
         <i>&mdash; Documentation available in <a [routerLink]="" fragment="{{directiveName}}">{{ directiveName }}</a></i>
       </p>
