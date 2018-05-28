@@ -833,6 +833,44 @@ describe('ngb-typeahead', () => {
        }));
   });
 
+  describe('keep dropdown open on item select', () => {
+
+    it('should keep dropdown window open after selecting on an dropdown item', () => {
+      const fixture =
+          createTestComponent(`<input type="text" [(ngModel)]="model" [ngbTypeahead]="find" [closeOnSelect]="false"/>`);
+
+      // clicking selected
+      changeInput(fixture.nativeElement, 'o');
+      fixture.detectChanges();
+      getWindowLinks(fixture.debugElement)[0].triggerEventHandler('click', {});
+      fixture.detectChanges();
+      expect(getWindow(fixture.nativeElement)).not.toBeNull();
+
+      const enterEvent = createKeyDownEvent(Key.Enter);
+      getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
+      fixture.detectChanges();
+      expect(getWindow(fixture.nativeElement)).not.toBeNull();
+
+      const tabEvent = createKeyDownEvent(Key.Enter);
+      getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
+      fixture.detectChanges();
+      expect(getWindow(fixture.nativeElement)).not.toBeNull();
+    });
+
+    it('should close dropdown window when click on document', () => {
+      const fixture =
+          createTestComponent(`<input type="text" [(ngModel)]="model" [ngbTypeahead]="find" [closeOnSelect]="false"/>`);
+
+      // clicking selected
+      changeInput(fixture.nativeElement, 'o');
+      fixture.detectChanges();
+
+      fixture.nativeElement.click();
+      fixture.detectChanges();
+      expect(getWindow(fixture.nativeElement)).toBeNull();
+    });
+  });
+
   describe('container', () => {
 
     it('should be appended to the element matching the selector passed to "container"', () => {

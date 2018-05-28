@@ -12,5 +12,6 @@ export class NgbTypeaheadConfig {
   editable = true;
   focusFirst = true;
   showHint = false;
+  closeOnSelect = true;
   placement: PlacementArray = 'bottom-left';
 }
