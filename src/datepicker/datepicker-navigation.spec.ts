@@ -112,6 +112,16 @@ describe('ngb-datepicker-navigation', () => {
     links.forEach((link) => { expect(link.getAttribute('type')).toBe('button'); });
   });
 
+  it('should have correct titles and aria attributes on buttons', () => {
+    const fixture = createTestComponent(`<ngb-datepicker-navigation></ngb-datepicker-navigation>`);
+
+    const links = getNavigationLinks(fixture.nativeElement);
+    expect(links[0].getAttribute('aria-label')).toBe('Previous month');
+    expect(links[1].getAttribute('aria-label')).toBe('Next month');
+    expect(links[0].getAttribute('title')).toBe('Previous month');
+    expect(links[1].getAttribute('title')).toBe('Next month');
+  });
+
 });
 
 @Component({selector: 'test-cmp', template: ''})
