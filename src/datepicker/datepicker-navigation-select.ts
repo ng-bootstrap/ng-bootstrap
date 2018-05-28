@@ -8,6 +8,9 @@ import {NgbDatepickerI18n} from './datepicker-i18n';
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [`
     :host>select {
+      display: flex;
+      display: -ms-flexbox;
+      -ms-flex: 1 1 auto;
       padding: 0 0.5rem;
       font-size: 0.875rem;
       height: 1.85rem;
