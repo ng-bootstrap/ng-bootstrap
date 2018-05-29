@@ -643,6 +643,33 @@ describe('NgbInputDatepicker', () => {
     });
   });
 
+  describe('focus', () => {
+
+    it('should re-focus elements inside the datepicker', () => {
+      const fixture = createTestCmpt(`
+          <input ngbDatepicker #d="ngbDatepicker">
+          <button id="open-button" (click)="open(d)">Open</button>
+          <button id="outside-button">Outside button</button>
+      `);
+
+      // open
+      fixture.nativeElement.querySelector('#open-button').click();
+      fixture.detectChanges();
+      const firstDay = fixture.nativeElement.querySelector('div.ngb-dp-day[tabindex="0"]');
+      expect(document.activeElement).toBe(firstDay);
+
+      // bring focus outside
+      const outsideButton = fixture.nativeElement.querySelector('#outside-button');
+      outsideButton.focus();
+      expect(document.activeElement).toBe(outsideButton);
+      expect(document.activeElement).not.toBe(firstDay);
+
+      // click somewhere inside (week day header)
+      fixture.nativeElement.querySelector('.ngb-dp-weekday').click();
+      expect(document.activeElement).toBe(firstDay);
+    });
+  });
+
   describe('container', () => {
 
     it('should be appended to the element matching the selector passed to "container"', () => {

@@ -1,78 +1,41 @@
-import {AfterViewInit, Component, ElementRef, Inject, InjectionToken, OnDestroy, ViewChild} from '@angular/core';
-import {ComponentFixture, inject, TestBed} from '@angular/core/testing';
+import {Component, ElementRef} from '@angular/core';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {NgbFocusTrap, NgbFocusTrapFactory} from './focus-trap';
-
-const getElement = (element: HTMLElement, selector: string): HTMLElement => {
-  return element.querySelector(selector) as HTMLElement;
-};
-
-const Autofocus = new InjectionToken('autofocus');
+import {ngbFocusTrap} from './focus-trap';
+import {Subject} from 'rxjs/internal/Subject';
 
 describe('ngbFocusTrap', () => {
-  beforeEach(() => { TestBed.configureTestingModule({providers: [NgbFocusTrapFactory]}); });
 
-  it('should be instantiated manually', inject([NgbFocusTrapFactory], (focusTrapFactory: NgbFocusTrapFactory) => {
-       const element = document.createElement('div');
-       const focusTrap = focusTrapFactory.create(element);
-       expect(focusTrap).toBeDefined();
-       focusTrap.destroy();
-     }));
+  let fixture: ComponentFixture<TestComponent>;
+  let instance;
 
-  describe('navigation', () => {
-    let fixture: ComponentFixture<TestComponent>;
-    let instance;
-
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        declarations: [TestComponent, FocusTrapComponent],
-        providers: [NgbFocusTrapFactory, {provide: Autofocus, useValue: false}]
-      });
-      fixture = TestBed.createComponent(TestComponent);
-      instance = fixture.componentInstance;
-      fixture.detectChanges();
-    });
-
-    it('should intercept any outside focus when already instantiated', () => {
-      const initial = document.querySelector('#initial') as HTMLElement;
-      const link = getElement(fixture.nativeElement, 'a');
-      initial.focus();
-      expect(document.activeElement).toBe(link);
-    });
-
-    it('should create/remove the end of document anchor accordingly', () => {
-      expect(document.body.querySelector('.ngb-focustrap-eod')).toBeDefined();
-      instance.show = false;
-      fixture.detectChanges();
-      expect(document.body.querySelector('.ngb-focustrap-eod')).toBeNull();
-    });
+  beforeEach(() => {
+    TestBed.configureTestingModule({declarations: [TestComponent, FocusTrapComponent]});
+    fixture = TestBed.createComponent(TestComponent);
+    instance = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
-  it('should focus element decorated with ngbAutofocus when created', () => {
-    TestBed.configureTestingModule({
-      declarations: [TestComponent, FocusTrapComponent],
-      providers: [NgbFocusTrapFactory, {provide: Autofocus, useValue: true}]
-    });
-    const fixture = TestBed.createComponent(TestComponent);
-    const instance = fixture.componentInstance;
-    instance.show = false;
-    fixture.detectChanges();
-
-    // put focus somewhere
-    const initial = document.querySelector('#initial') as HTMLElement;
-    initial.focus();
-
-    // let's create the focustrap with autofocus (via <focus-trapped>)
+  it('should re-focus previously focused element inside the focus trap element', () => {
     instance.show = true;
     fixture.detectChanges();
-    const button = getElement(fixture.nativeElement, 'button');
-    expect(document.activeElement).toBe(button);
 
-    // let's destroy the focustrap (removing <focus-trapped>)
-    instance.show = false;
-    fixture.detectChanges();
-    expect(document.activeElement).not.toBe(button);
+    // initial focus inside
+    const initiallyFocused = document.querySelector('[autofocus]') as HTMLElement;
+    initiallyFocused.focus();
+
+    // focus outside
+    const outsideElement = document.querySelector('#outside') as HTMLElement;
+    outsideElement.focus();
+    expect(document.activeElement).toBe(outsideElement);
+    expect(document.activeElement).not.toBe(initiallyFocused);
+
+    // click inside
+    const insideElement = document.querySelector('select') as HTMLElement;
+    insideElement.click();
+    expect(document.activeElement).toBe(initiallyFocused);
   });
+
 });
 
 @Component({
@@ -81,7 +44,7 @@ describe('ngbFocusTrap', () => {
     <div>
       <a href="http://whatever.com">link</a>
       <span>not important</span>
-      <button ngbAutofocus>button</button>
+      <button autofocus>button</button>
       <span>not important</span>
       <select>
         <option>not important</option>
@@ -92,32 +55,22 @@ describe('ngbFocusTrap', () => {
     </div>
   `,
 })
-class FocusTrapComponent implements AfterViewInit,
-    OnDestroy {
-  focusTrap: NgbFocusTrap | null = null;
-  constructor(
-      private _focusTrapFactory: NgbFocusTrapFactory, private _element: ElementRef<HTMLElement>,
-      @Inject(Autofocus) private _autofocus) {}
+class FocusTrapComponent {
+  private _takeUntil$ = new Subject();
 
-  ngAfterViewInit() { this.focusTrap = this._focusTrapFactory.create(this._element.nativeElement, this._autofocus); }
+  constructor(element: ElementRef<HTMLElement>) { ngbFocusTrap(element.nativeElement, this._takeUntil$); }
 
-  ngOnDestroy() {
-    if (this.focusTrap) {
-      this.focusTrap.destroy();
-      this.focusTrap = null;
-    }
-  }
+  ngOnDestroy() { this._takeUntil$.next(); }
 }
 
 @Component({
   template: `
     <div>
-      <input type="text" id="initial" />
+      <input type="text" id="outside" />
       <focus-trapped *ngIf="show"></focus-trapped>
     </div>
   `
 })
 class TestComponent {
   show = true;
-  @ViewChild(FocusTrapComponent) wrapper;
 }

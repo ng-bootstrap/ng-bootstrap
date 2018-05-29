@@ -1,7 +1,6 @@
 import {NgModule, ModuleWithProviders} from '@angular/core';
 import {CommonModule, DatePipe} from '@angular/common';
 import {FormsModule} from '@angular/forms';
-import {NgbFocusTrapFactory} from '../util/focus-trap';
 import {NgbDatepicker, NgbDatepickerNavigateEvent} from './datepicker';
 import {NgbDatepickerMonthView} from './datepicker-month-view';
 import {NgbDatepickerNavigation} from './datepicker-navigation';
@@ -48,7 +47,7 @@ export class NgbDatepickerModule {
         {provide: NgbCalendar, useClass: NgbCalendarGregorian},
         {provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nDefault},
         {provide: NgbDateParserFormatter, useClass: NgbDateISOParserFormatter},
-        {provide: NgbDateAdapter, useClass: NgbDateStructAdapter}, NgbDatepickerConfig, NgbFocusTrapFactory, DatePipe
+        {provide: NgbDateAdapter, useClass: NgbDateStructAdapter}, NgbDatepickerConfig, DatePipe
       ]
     };
   }
