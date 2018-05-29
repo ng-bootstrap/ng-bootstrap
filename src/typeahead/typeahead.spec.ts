@@ -833,7 +833,7 @@ describe('ngb-typeahead', () => {
        }));
   });
 
-  describe('keep dropdown open on item select', () => {
+  describe('closeOnSelect property', () => {
 
     it('should keep dropdown window open after selecting on an dropdown item', () => {
       const fixture =
@@ -847,12 +847,12 @@ describe('ngb-typeahead', () => {
       expect(getWindow(fixture.nativeElement)).not.toBeNull();
 
       const enterEvent = createKeyDownEvent(Key.Enter);
-      getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
+      getDebugInput(fixture.debugElement).triggerEventHandler('keydown', enterEvent);
       fixture.detectChanges();
       expect(getWindow(fixture.nativeElement)).not.toBeNull();
 
       const tabEvent = createKeyDownEvent(Key.Enter);
-      getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
+      getDebugInput(fixture.debugElement).triggerEventHandler('keydown', tabEvent);
       fixture.detectChanges();
       expect(getWindow(fixture.nativeElement)).not.toBeNull();
     });
