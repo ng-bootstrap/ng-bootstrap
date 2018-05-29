@@ -1,4 +1,4 @@
-import {Component, Input, ContentChildren} from '@angular/core';
+import {Component, Input, ContentChildren, OnInit, NgZone} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 
 import {ExampleBoxComponent} from '../../components/shared/example-box';
@@ -20,7 +20,7 @@ export class ComponentWrapper {
 
   sidebarCollapsed = true;
 
-  // TODO: change to @ContentChild(OVerviewBoxComponent) when implemented
+  // TODO: change to @ContentChild(OverviewBoxComponent) when implemented
   hasOverview = false;
 
   @ContentChildren(ExampleBoxComponent) demos;
@@ -31,9 +31,10 @@ export class ComponentWrapper {
 
   @ContentChildren(NgbdApiDocsConfig) apiDocsConfig;
 
-  isMobile: boolean;
+  isSmallScreenOrLess: boolean;
+  isLargeScreenOrLess: boolean;
 
-  constructor(private route: ActivatedRoute, private router: Router) {
+  constructor(private route: ActivatedRoute, private router: Router, ngZone: NgZone) {
     this.route.params.subscribe(params => {
       const tab = params['tab'];
       if (VALID_TABS.indexOf(tab) !== -1) {
@@ -46,8 +47,16 @@ export class ComponentWrapper {
 
     // information extracted from https://getbootstrap.com/docs/4.1/layout/overview/
     // TODO: we should implements our own mediamatcher, according to bootstrap layout.
-    const mobileQL = window.matchMedia('(max-width: 767.98px)');
-    this.isMobile = mobileQL.matches;
-    mobileQL.addListener((event) => { this.isMobile = event.matches; });
+    const smallScreenQL = matchMedia('(max-width: 767.98px)');
+    smallScreenQL.addListener((event) => ngZone.run(() => this.isSmallScreenOrLess = event.matches));
+    this.isSmallScreenOrLess = smallScreenQL.matches;
+
+    const largeScreenQL = matchMedia('(max-width: 1199.98px)');
+    this.isLargeScreenOrLess = largeScreenQL.matches;
+    largeScreenQL.addListener((event) => ngZone.run(() => this.isLargeScreenOrLess = event.matches));
+  }
+
+  tabChange(event) {
+    this.router.navigate(['..', event.nextId], {relativeTo: this.route});
   }
 }

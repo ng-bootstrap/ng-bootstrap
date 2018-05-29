@@ -26,58 +26,50 @@
     </div>
 
     <div class="col-12 col-lg-10">
-      <header class="bg-light py-3 py-md-5 px-4 px-lg-5 d-flex d-md-block align-items-center title">
-        <h1 class="mr-auto mr-md-none">{{ component }}</h1>
-        <nav class="d-flex">
-          <a
-            *ngIf="hasOverview"
-            class="btn btn-sm mr-1"
-            [class.btn-info]="activeTab === 'overview'"
-            [class.btn-outline-info]="activeTab !== 'overview'"
-            [routerLink]="['/components', component.toLowerCase(), 'overview']"
-          >Overview</a>
+      <header class="bg-light pt-4 pb-md-5 px-4 px-lg-5 d-flex d-md-block align-items-center title">
+        <h1 class="mb-4 mr-auto mr-md-none">{{ component }}</h1>
 
-          <div class="btn-group mr-1 d-xl-none">
+        <ul class="nav nav-tabs px-4 px-lg-5 content-tabset" [class.justify-content-start]="isLargeScreenOrLess" [class.justify-content-end]="isSmallScreenOrLess">
+          <li class="nav-item" *ngIf="hasOverview">
             <a
-              class="btn btn-sm"
-              [class.btn-info]="activeTab === 'examples'"
-              [class.btn-outline-info]="activeTab !== 'examples'"
-              [routerLink]="['/components', component.toLowerCase(), 'examples']"
-            >Examples</a>
-            <div class="btn-group" ngbDropdown [placement]="isMobile ? 'bottom-right' : 'bottom-left'" role="group" aria-label="Examples list">
-                <button
-                  class="btn btn-sm dropdown-toggle-split"
-                  [class.btn-info]="activeTab === 'examples'"
-                  [class.btn-outline-info]="activeTab !== 'examples'"
-                  ngbDropdownToggle></button>
-                <div
-                  class="dropdown-menu"
-                  [class.dropdown-menu-right]="isMobile"
-                  ngbDropdownMenu>
-                  <a [routerLink]="['/components', component.toLowerCase(), 'examples']" [fragment]="demo.demo" *ngFor="let demo of demos" class="dropdown-item">{{demo.demoTitle}}</a>
-                </div>
-              </div>
-          </div>
+              class="nav-link"
+              [class.active]="activeTab === 'overview'"
+              [routerLink]="['/components', component.toLowerCase(), 'overview']"
+            >Overview</a>
+          </li>
 
-          <a
-            class="btn btn-sm d-none d-xl-block mr-1 "
-            [class.btn-info]="activeTab === 'examples'"
-            [class.btn-outline-info]="activeTab !== 'examples'"
-            [routerLink]="['/components', component.toLowerCase(), 'examples']"
-          >Examples</a>
+          <li *ngIf="isLargeScreenOrLess" class="nav-item" ngbDropdown [placement]="isSmallScreenOrLess ? 'bottom-right' : 'bottom-left'">
+            <a class="nav-link" [routerLink]="['..', 'examples']" [class.active]="activeTab === 'examples'">
+              Examples
+              <a class="dropdown-toggle" ngbDropdownToggle><span class="caret"></span></a>
+            </a>
+            <div
+              class="dropdown-menu"
+              [class.dropdown-menu-right]="isMobile"
+              ngbDropdownMenu
+              >
+               <a [routerLink]="['/components', component.toLowerCase(), 'examples']" [fragment]="demo.demo" *ngFor="let demo of demos" class="dropdown-item">{{demo.demoTitle}}</a>
+            </div>
+          </li>
 
-          <a
-            class="btn btn-sm"
-            [class.btn-info]="activeTab === 'api'"
-            [class.btn-outline-info]="activeTab !== 'api'"
-            [routerLink]="['/components', component.toLowerCase(), 'api']"
-          >API</a>
-        </nav>
+          <li *ngIf="!isLargeScreenOrLess" class="nav-item">
+            <a class="nav-link" [routerLink]="['..', 'examples']" [class.active]="activeTab === 'examples'">
+              Examples
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['..', 'api']" [class.active]="activeTab === 'api'">Api</a>
+          </li>
+        </ul>
       </header>
 
       <section class="row py-5 px-2 px-md-4 px-lg-5">
-        <div class="col-12 col-xl-9 px-md-0 pr-xl-4">
-          <ng-template [ngIf]="activeTab === 'examples'">
+        <div
+          [ngSwitch]="activeTab"
+          class="col-12 col-xl-9 px-md-0 pr-xl-4"
+        >
+          <ng-container *ngSwitchCase="'examples'">
             <ng-content select="ngbd-example-box"></ng-content>
             <div class="examples-legend">
               <strong>Legend</strong>
@@ -87,39 +79,43 @@
                 </ng-container>
               </p>
             </div>
-          </ng-template>
+          </ng-container>
 
-          <ng-template [ngIf]="activeTab === 'api'">
+          <ng-container *ngSwitchCase="'api'">
             <ng-content select="ngbd-api-docs"></ng-content>
             <ng-content select="ngbd-api-docs-class"></ng-content>
             <ng-content select="ngbd-api-docs-config"></ng-content>
-          </ng-template>
+          </ng-container>
         </div>
 
-        <div class="col-12 col-xl-3 d-none d-xl-block contextual-nav">
-          <ul class="nav flex-column text-muted pt-4">
-            <ng-template [ngIf]="activeTab === 'examples'">
-              <li *ngFor="let demo of demos" class="nav-item">
-                <a class="nav-link" [routerLink]="['/components', component.toLowerCase(), 'examples']" [fragment]="demo.demo">{{demo.demoTitle}}</a>
-              </li>
-            </ng-template>
-            <ng-template [ngIf]="activeTab === 'api'">
-              <li *ngFor="let api of apiDocs" class="nav-item">
-                <a class="nav-link" [routerLink]="['/components', component.toLowerCase(), 'api']" [fragment]="api.apiDocs.className">{{api.apiDocs.className}}</a>
-              </li>
-              <li *ngIf="apiDocsClass.length" class="nav-item">&nbsp;</li>
-              <li *ngFor="let api of apiDocsClass" class="nav-item">
-                <a class="nav-link" [routerLink]="['/components', component.toLowerCase(), 'api']" [fragment]="api.apiDocs.className">{{api.apiDocs.className}}</a>
-              </li>
-              <li *ngIf="apiDocsConfig.length" class="nav-item">&nbsp;</li>
-              <li *ngFor="let api of apiDocsConfig" class="nav-item">
-                <a class="nav-link" [routerLink]="['/components', component.toLowerCase(), 'api']" [fragment]="api.apiDocs.className">{{api.apiDocs.className}}</a>
-              </li>
-            </ng-template>
+        <div
+          [ngSwitch]="activeTab"
+          class="col-12 col-xl-3 d-none d-xl-block contextual-nav"
+        >
+          <ul
+            *ngSwitchCase="'examples'"
+            class="nav flex-column text-muted pt-4"
+          >
+            <li *ngFor="let demo of demos" class="nav-item">
+              <a class="nav-link" [routerLink]="['/components', component.toLowerCase(), 'examples']" [fragment]="demo.demo">{{demo.demoTitle}}</a>
+            </li>
+          </ul>
+
+          <ul *ngSwitchCase="'api'" class="nav flex-column text-muted pt-4">
+            <li *ngFor="let api of apiDocs" class="nav-item">
+              <a class="nav-link" [routerLink]="['/components', component.toLowerCase(), 'api']" [fragment]="api.apiDocs.className">{{api.apiDocs.className}}</a>
+            </li>
+            <li *ngIf="apiDocsClass.length" class="nav-item">&nbsp;</li>
+            <li *ngFor="let api of apiDocsClass" class="nav-item">
+              <a class="nav-link" [routerLink]="['/components', component.toLowerCase(), 'api']" [fragment]="api.apiDocs.className">{{api.apiDocs.className}}</a>
+            </li>
+            <li *ngIf="apiDocsConfig.length" class="nav-item">&nbsp;</li>
+            <li *ngFor="let api of apiDocsConfig" class="nav-item">
+              <a class="nav-link" [routerLink]="['/components', component.toLowerCase(), 'api']" [fragment]="api.apiDocs.className">{{api.apiDocs.className}}</a>
+            </li>
           </ul>
         </div>
       </section>
-
     </div>
   </div>
 </div>
