@@ -4,11 +4,6 @@ header.navbar {
   background: linear-gradient(135deg, #0143a3, #0273d4);
 }
 
-.masthead {
-  padding-top: 5rem;
-  padding-bottom: 5rem;
-}
-
 .masthead-followup {
   img {
     width: 64px;
@@ -66,6 +61,28 @@ header.navbar {
 header.title {
   margin-left: -15px;
   margin-right: -15px;
+  position: relative;
+
+  .content-tabset {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    .nav-link {
+      border-style: solid;
+      border-width: 3px 1px 1px;
+      border-radius: 3px 3px 0 0;
+    }
+
+    .nav-link:not(.active):hover {
+      border-color: transparent;
+    }
+
+    .active {
+      border-top-color: #28a745;
+    }
+  }
 }
 
 .toc {
@@ -111,6 +128,12 @@ header.title {
 
   a {
     color: inherit;
+    font-size: 90%;
+    padding: .25rem 1rem;
+  }
+
+  a:hover {
+    color: #0275d8;
   }
 }
 
@@ -134,12 +157,6 @@ header.title {
   .meta,
   .lead {
     opacity: 0.5;
-  }
-}
-
-.root-nav {
-  .tab-content {
-    padding-top: 3rem;
   }
 }
 
@@ -273,29 +290,6 @@ pre[class*='language-'] {
 span.token.tag {
   font-size: 1em;
   padding: 0;
-}
-
-@mixin center-nav-tab-on-small-screens() {
-  .jumbotron > .container {
-    margin-bottom: 2rem;
-    h1 {
-      text-align: center;
-    }
-  }
-
-  .root-nav {
-    ul {
-      justify-content: center !important;
-    }
-  }
-}
-
-@media (max-width: 768px) and (orientation: portrait) {
-  @include center-nav-tab-on-small-screens();
-}
-
-@media (max-width: 568px) and (max-height: 320px) {
-  @include center-nav-tab-on-small-screens();
 }
 
 // Right-To-Left layout for the Islamic Calendars
