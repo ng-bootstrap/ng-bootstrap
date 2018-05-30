@@ -13,7 +13,8 @@ import {
   Output,
   OnChanges,
   OnDestroy,
-  SimpleChanges
+  SimpleChanges,
+  Inject
 } from '@angular/core';
 import {AbstractControl, ControlValueAccessor, Validator, NG_VALUE_ACCESSOR, NG_VALIDATORS} from '@angular/forms';
 
@@ -28,6 +29,9 @@ import {NgbDateStruct} from './ngb-date-struct';
 import {NgbDateAdapter} from './ngb-date-adapter';
 import {NgbCalendar} from './ngb-calendar';
 import {NgbDatepickerService} from './datepicker-service';
+import {DOCUMENT} from '@angular/common';
+import {fromEvent} from 'rxjs';
+import {filter, take} from 'rxjs/operators';
 
 const NGB_DATEPICKER_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -51,7 +55,6 @@ const NGB_DATEPICKER_VALIDATOR = {
   host: {
     '(input)': 'manualDateChange($event.target.value)',
     '(change)': 'manualDateChange($event.target.value, true)',
-    '(keyup.esc)': 'close()',
     '(blur)': 'onBlur()',
     '[disabled]': 'disabled'
   },
@@ -181,10 +184,11 @@ export class NgbInputDatepicker implements OnChanges,
 
   constructor(
       private _parserFormatter: NgbDateParserFormatter, private _elRef: ElementRef, private _vcRef: ViewContainerRef,
-      private _renderer: Renderer2, private _cfr: ComponentFactoryResolver, ngZone: NgZone,
+      private _renderer: Renderer2, private _cfr: ComponentFactoryResolver, private _ngZone: NgZone,
       private _service: NgbDatepickerService, private _calendar: NgbCalendar,
-      private _ngbDateAdapter: NgbDateAdapter<any>, private _focusTrapFactory: NgbFocusTrapFactory) {
-    this._zoneSubscription = ngZone.onStable.subscribe(() => {
+      private _ngbDateAdapter: NgbDateAdapter<any>, private _focusTrapFactory: NgbFocusTrapFactory,
+      @Inject(DOCUMENT) private _document: Document) {
+    this._zoneSubscription = _ngZone.onStable.subscribe(() => {
       if (this._cRef) {
         positionElements(
             this._elRef.nativeElement, this._cRef.location.nativeElement, this.placement, this.container === 'body');
@@ -269,6 +273,13 @@ export class NgbInputDatepicker implements OnChanges,
 
       // focus handling
       this._cRef.instance.focus();
+
+      // closing on ESC
+      this._ngZone.runOutsideAngular(() => {
+        fromEvent(this._document, 'keyup')
+            .pipe(filter((evt: KeyboardEvent) => evt.key === 'Escape'), take(1))
+            .subscribe(() => this.close());
+      });
     }
   }
 
