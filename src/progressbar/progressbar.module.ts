@@ -9,5 +9,4 @@ export {NgbProgressbarConfig} from './progressbar-config';
 
 @NgModule({declarations: [NgbProgressbar], exports: [NgbProgressbar], imports: [CommonModule]})
 export class NgbProgressbarModule {
-  static forRoot(): ModuleWithProviders { return {ngModule: NgbProgressbarModule, providers: [NgbProgressbarConfig]}; }
 }

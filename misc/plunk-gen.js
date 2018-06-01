@@ -32,7 +32,7 @@ import { ${demoImports} } from '${demoImport}';
   selector: 'my-app',
   template: \`
     <div class="container-fluid">
-    
+
     <hr>
     <p>
       This is a demo plnkr forked from the <strong>ng-bootstrap</strong> project: Angular powered Bootstrap.
@@ -48,7 +48,7 @@ export class App {
 }
 
 @NgModule({
-  imports: [BrowserModule, FormsModule, ReactiveFormsModule, HttpClientModule, NgbModule.forRoot()],
+  imports: [BrowserModule, FormsModule, ReactiveFormsModule, HttpClientModule, NgbModule],
   declarations: [App, ${demoImports}]${needsEntryCmpt ? `,\n  entryComponents: [${entryCmptClass}],` : ','}
   bootstrap: [App]
 })
@@ -119,7 +119,7 @@ function generateConfigJs() {
   return `var ver = {
     ng: '${versions.angular}'
   };
-  
+
   System.config({
   //use typescript for compilation
   transpiler: 'typescript',

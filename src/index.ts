@@ -83,20 +83,6 @@ const NGB_MODULES = [
   NgbTabsetModule, NgbTimepickerModule, NgbTooltipModule, NgbTypeaheadModule
 ];
 
-@NgModule({
-  imports: [
-    NgbAlertModule.forRoot(), NgbButtonsModule.forRoot(), NgbCollapseModule.forRoot(), NgbProgressbarModule.forRoot(),
-    NgbTooltipModule.forRoot(), NgbTypeaheadModule.forRoot(), NgbAccordionModule.forRoot(), NgbCarouselModule.forRoot(),
-    NgbDatepickerModule.forRoot(), NgbDropdownModule.forRoot(), NgbModalModule.forRoot(), NgbPaginationModule.forRoot(),
-    NgbPopoverModule.forRoot(), NgbProgressbarModule.forRoot(), NgbRatingModule.forRoot(), NgbTabsetModule.forRoot(),
-    NgbTimepickerModule.forRoot(), NgbTooltipModule.forRoot()
-  ],
-  exports: NGB_MODULES
-})
-export class NgbRootModule {
-}
-
 @NgModule({imports: NGB_MODULES, exports: NGB_MODULES})
 export class NgbModule {
-  static forRoot(): ModuleWithProviders { return {ngModule: NgbRootModule}; }
 }

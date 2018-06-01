@@ -38,18 +38,13 @@ export {NgbDateParserFormatter} from './ngb-date-parser-formatter';
   ],
   exports: [NgbDatepicker, NgbInputDatepicker],
   imports: [CommonModule, FormsModule],
-  entryComponents: [NgbDatepicker]
+  entryComponents: [NgbDatepicker],
+  providers: [
+    {provide: NgbCalendar, useClass: NgbCalendarGregorian},
+    {provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nDefault},
+    {provide: NgbDateParserFormatter, useClass: NgbDateISOParserFormatter},
+    {provide: NgbDateAdapter, useClass: NgbDateStructAdapter}, NgbFocusTrapFactory, DatePipe
+  ]
 })
 export class NgbDatepickerModule {
-  static forRoot(): ModuleWithProviders {
-    return {
-      ngModule: NgbDatepickerModule,
-      providers: [
-        {provide: NgbCalendar, useClass: NgbCalendarGregorian},
-        {provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nDefault},
-        {provide: NgbDateParserFormatter, useClass: NgbDateISOParserFormatter},
-        {provide: NgbDateAdapter, useClass: NgbDateStructAdapter}, NgbDatepickerConfig, NgbFocusTrapFactory, DatePipe
-      ]
-    };
-  }
 }

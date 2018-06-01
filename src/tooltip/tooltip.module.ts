@@ -10,5 +10,4 @@ export {Placement} from '../util/positioning';
 
 @NgModule({declarations: [NgbTooltip, NgbTooltipWindow], exports: [NgbTooltip], entryComponents: [NgbTooltipWindow]})
 export class NgbTooltipModule {
-  static forRoot(): ModuleWithProviders { return {ngModule: NgbTooltipModule, providers: [NgbTooltipConfig]}; }
 }

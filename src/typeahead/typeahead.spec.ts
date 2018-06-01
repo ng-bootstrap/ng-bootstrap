@@ -80,7 +80,7 @@ describe('ngb-typeahead', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [TestComponent, TestOnPushComponent, TestAsyncComponent],
-      imports: [NgbTypeaheadModule.forRoot(), FormsModule, ReactiveFormsModule],
+      imports: [NgbTypeaheadModule, FormsModule, ReactiveFormsModule],
       providers: [{provide: ARIA_LIVE_DELAY, useValue: null}]
     });
   });

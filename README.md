@@ -42,21 +42,20 @@ Once installed you need to import our main module:
 ```js
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 ```
-The only remaining part is to list the imported module in your application module. The exact method will be slightly
-different for the root (top-level) module for which you should end up with the code similar to (notice `NgbModule.forRoot()`):
+The only remaining part is to list the imported module in your application module:
 ```js
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [AppComponent, ...],
-  imports: [NgbModule.forRoot(), ...],  
+  imports: [NgbModule, ...],
   bootstrap: [AppComponent]
 })
 export class AppModule {
 }
 ```
 
-Other modules in your application can simply import `NgbModule`:
+Other modules in your application can also import `NgbModule`:
 
 ```js
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';

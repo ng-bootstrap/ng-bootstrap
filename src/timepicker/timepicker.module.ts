@@ -10,5 +10,4 @@ export {NgbTimeStruct} from './ngb-time-struct';
 
 @NgModule({declarations: [NgbTimepicker], exports: [NgbTimepicker], imports: [CommonModule]})
 export class NgbTimepickerModule {
-  static forRoot(): ModuleWithProviders { return {ngModule: NgbTimepickerModule, providers: [NgbTimepickerConfig]}; }
 }

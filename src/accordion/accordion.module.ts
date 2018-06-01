@@ -11,5 +11,4 @@ const NGB_ACCORDION_DIRECTIVES = [NgbAccordion, NgbPanel, NgbPanelTitle, NgbPane
 
 @NgModule({declarations: NGB_ACCORDION_DIRECTIVES, exports: NGB_ACCORDION_DIRECTIVES, imports: [CommonModule]})
 export class NgbAccordionModule {
-  static forRoot(): ModuleWithProviders { return {ngModule: NgbAccordionModule, providers: [NgbAccordionConfig]}; }
 }

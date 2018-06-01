@@ -43,13 +43,12 @@
 
   <p>
     The only remaining part is to list the imported module in your root module and any additional application modules that make use
-    of the components in this library. The exact method will be slightly different for the root (top-level) module for which you
-    should end up with the code similar to (notice <code>NgbModule.forRoot()</code>):
+    of the components in this library:
   </p>
 
   <ngbd-code [code]="codeRoot" lang="typescript"></ngbd-code>
 
-  <p>Other modules in your application can simply import <code>NgbModule</code>:</p>
+  <p>Other modules in your application can also import <code>NgbModule</code>:</p>
 
   <ngbd-code [code]="codeOther" lang="typescript"></ngbd-code>
   <br>
