@@ -1,5 +1,6 @@
 
-<ngb-datepicker [displayMonths]="displayMonths" [navigation]="navigation" [showWeekNumbers]="showWeekNumbers">
+<ngb-datepicker [displayMonths]="displayMonths" [navigation]="navigation"
+                [showWeekNumbers]="showWeekNumbers" [outsideDays]="outsideDays">
 </ngb-datepicker>
 
 <hr/>
@@ -8,7 +9,7 @@
   <div class="form-group">
     <div class="input-group">
       <input class="form-control" placeholder="yyyy-mm-dd"
-             name="dp" [displayMonths]="displayMonths" [navigation]="navigation"
+             name="dp" [displayMonths]="displayMonths" [navigation]="navigation" [outsideDays]="outsideDays"
              [showWeekNumbers]="showWeekNumbers" ngbDatepicker #d="ngbDatepicker">
       <div class="input-group-append">
         <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
@@ -21,7 +22,7 @@
 
 <hr/>
 
-<div class="d-flex">
+<div class="d-flex flex-wrap align-content-between p-2">
   <select class="custom-select" [(ngModel)]="displayMonths">
     <option [ngValue]="1">One month</option>
     <option [ngValue]="2">Two months</option>
@@ -37,6 +38,12 @@
   <select class="custom-select" [(ngModel)]="showWeekNumbers">
     <option [ngValue]="true">Week numbers</option>
     <option [ngValue]="false">No week numbers</option>
+  </select>
+
+  <select class="custom-select" [(ngModel)]="outsideDays">
+    <option value="visible">Visible outside days</option>
+    <option value="hidden">Hidden outside days</option>
+    <option value="collapsed">Collapsed outside days</option>
   </select>
 </div>
 
