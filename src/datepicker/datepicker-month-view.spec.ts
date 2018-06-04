@@ -50,7 +50,7 @@ describe('ngb-datepicker-month-view', () => {
     const fixture = createTestComponent(
         '<ngb-datepicker-month-view [month]="month" [showWeekdays]="showWeekdays"></ngb-datepicker-month-view>');
 
-    expectWeekdays(fixture.nativeElement, ['Mo']);
+    expectWeekdays(fixture.nativeElement, ['Mo', 'Tu']);
 
     fixture.componentInstance.showWeekdays = false;
     fixture.detectChanges();
@@ -61,7 +61,7 @@ describe('ngb-datepicker-month-view', () => {
     const fixture = createTestComponent(
         '<ngb-datepicker-month-view [month]="month" [showWeekNumbers]="showWeekNumbers"></ngb-datepicker-month-view>');
 
-    expectWeekNumbers(fixture.nativeElement, ['2']);
+    expectWeekNumbers(fixture.nativeElement, ['1', '2', '3']);
 
     fixture.componentInstance.showWeekNumbers = false;
     fixture.detectChanges();
@@ -73,7 +73,7 @@ describe('ngb-datepicker-month-view', () => {
         <ng-template #tpl let-date="date">{{ date.day }}</ng-template>
         <ngb-datepicker-month-view [month]="month" [dayTemplate]="tpl"></ngb-datepicker-month-view>
       `);
-    expectDates(fixture.nativeElement, ['22', '23']);
+    expectDates(fixture.nativeElement, ['', '1', '2', '3', '4', '']);
   });
 
   it('should send date selection events', () => {
@@ -85,171 +85,83 @@ describe('ngb-datepicker-month-view', () => {
     spyOn(fixture.componentInstance, 'onClick');
 
     const dates = getDates(fixture.nativeElement);
-    dates[0].click();
+    dates[1].click();
 
-    expect(fixture.componentInstance.onClick).toHaveBeenCalledWith(new NgbDate(2016, 7, 22));
+    expect(fixture.componentInstance.onClick).toHaveBeenCalledWith(new NgbDate(2016, 8, 1));
   });
 
-  it('should not send date selection events for disabled dates', () => {
+  it('should not send date selection events for hidden and disabled dates', () => {
     const fixture = createTestComponent(`
         <ng-template #tpl let-date="date">{{ date.day }}</ng-template>
         <ngb-datepicker-month-view [month]="month" [dayTemplate]="tpl" (select)="onClick($event)"></ngb-datepicker-month-view>
       `);
 
-    fixture.componentInstance.month.weeks[0].days[0].context.disabled = true;
-    fixture.detectChanges();
-
     spyOn(fixture.componentInstance, 'onClick');
 
     const dates = getDates(fixture.nativeElement);
-    dates[0].click();
+    dates[0].click();  // hidden
+    dates[2].click();  // disabled
 
     expect(fixture.componentInstance.onClick).not.toHaveBeenCalled();
   });
 
-  if (!isBrowser('ie9')) {
-    it('should set cursor to pointer', () => {
-      const fixture = createTestComponent(`
-        <ng-template #tpl let-date="date">{{ date.day }}</ng-template>
-        <ngb-datepicker-month-view [month]="month" [dayTemplate]="tpl" (change)="onClick($event)"></ngb-datepicker-month-view>
-      `);
+  it('should set cursor to pointer or default', () => {
+    const fixture = createTestComponent(`
+      <ng-template #tpl let-date="date">{{ date.day }}</ng-template>
+      <ngb-datepicker-month-view [month]="month" [dayTemplate]="tpl" (change)="onClick($event)"></ngb-datepicker-month-view>
+    `);
 
-      const dates = getDates(fixture.nativeElement);
-      expect(window.getComputedStyle(dates[0]).getPropertyValue('cursor')).toBe('pointer');
-    });
-  }
+    const dates = getDates(fixture.nativeElement);
+    // hidden
+    expect(window.getComputedStyle(dates[0]).getPropertyValue('cursor')).toBe('default');
+    // normal
+    expect(window.getComputedStyle(dates[1]).getPropertyValue('cursor')).toBe('pointer');
+    // disabled
+    expect(window.getComputedStyle(dates[2]).getPropertyValue('cursor')).toBe('default');
+  });
 
-  if (!isBrowser('ie9')) {
-    it('should set default cursor for disabled dates', () => {
-      const fixture = createTestComponent(`
-        <ng-template #tpl let-date="date">{{ date.day }}</ng-template>
-        <ngb-datepicker-month-view [month]="month" [dayTemplate]="tpl" (change)="onClick($event)"></ngb-datepicker-month-view>
-      `);
-
-      const newMonth = Object.assign({}, fixture.componentInstance.month);
-      newMonth.weeks[0].days[0].context.disabled = true;
-      fixture.componentInstance.month = newMonth;
-      fixture.detectChanges();
-
-      const dates = getDates(fixture.nativeElement);
-      expect(window.getComputedStyle(dates[0]).getPropertyValue('cursor')).toBe('default');
-    });
-
-    it('should set default cursor for other months days', () => {
-      const fixture = createTestComponent(
-          '<ngb-datepicker-month-view [month]="month" [outsideDays]="outsideDays"></ngb-datepicker-month-view>');
-
-      const dates = getDates(fixture.nativeElement);
-      expect(window.getComputedStyle(dates[1]).getPropertyValue('cursor')).toBe('pointer');
-
-      fixture.componentInstance.outsideDays = 'collapsed';
-      fixture.detectChanges();
-      expect(window.getComputedStyle(dates[1]).getPropertyValue('cursor')).toBe('default');
-
-      fixture.componentInstance.outsideDays = 'hidden';
-      fixture.detectChanges();
-      expect(window.getComputedStyle(dates[1]).getPropertyValue('cursor')).toBe('default');
-    });
-  }
-
-  it('should apply proper visibility to other months days', () => {
+  it('should apply correct CSS classes to days', () => {
     const fixture = createTestComponent(`
         <ng-template #tpl let-date="date">{{ date.day }}</ng-template>
-        <ngb-datepicker-month-view [month]="month" [outsideDays]="outsideDays" [dayTemplate]="tpl"></ngb-datepicker-month-view>
+        <ngb-datepicker-month-view [month]="month" [dayTemplate]="tpl"></ngb-datepicker-month-view>
     `);
 
     let dates = getDates(fixture.nativeElement);
-    expect(dates[0]).not.toHaveCssClass('hidden');
+    // hidden
+    expect(dates[0]).toHaveCssClass('hidden');
+    expect(dates[0]).not.toHaveCssClass('disabled');
+    // normal
     expect(dates[1]).not.toHaveCssClass('hidden');
-    expectDates(fixture.nativeElement, ['22', '23']);
-
-    fixture.componentInstance.outsideDays = 'collapsed';
-    fixture.detectChanges();
-    expect(dates[0]).not.toHaveCssClass('hidden');
-    expect(dates[1]).toHaveCssClass('hidden');
-    expectDates(fixture.nativeElement, ['22', '']);
-
-    fixture.componentInstance.outsideDays = 'hidden';
-    fixture.detectChanges();
-    expect(dates[0]).not.toHaveCssClass('hidden');
-    expect(dates[1]).toHaveCssClass('hidden');
-    expectDates(fixture.nativeElement, ['22', '']);
+    expect(dates[1]).not.toHaveCssClass('disabled');
+    // disabled
+    expect(dates[2]).not.toHaveCssClass('hidden');
+    expect(dates[2]).toHaveCssClass('disabled');
   });
 
-  it('should collapse weeks outside of current month', () => {
+  it('should not display collapsed weeks', () => {
     const fixture = createTestComponent(`
         <ng-template #tpl let-date="date">{{ date.day }}</ng-template>
-        <ngb-datepicker-month-view [month]="monthCollapsedWeeks" [outsideDays]="outsideDays" [dayTemplate]="tpl">
-        </ngb-datepicker-month-view>
-    `);
-
-    expectDates(fixture.nativeElement, ['4', '1', '2', '3', '4', '1', '2', '3']);
-
-    fixture.componentInstance.outsideDays = 'collapsed';
-    fixture.detectChanges();
-    expectDates(fixture.nativeElement, ['', '1', '2', '3', '4', '']);
-
-    fixture.componentInstance.outsideDays = 'hidden';
-    fixture.detectChanges();
-    expectDates(fixture.nativeElement, ['', '1', '2', '3', '4', '', '', '']);
-  });
-
-  it('should collapse weeks regardless of "showWeekNumbers" value', () => {
-    const fixture = createTestComponent(`
-        <ng-template #tpl let-date="date">{{ date.day }}</ng-template>
-        <ngb-datepicker-month-view [month]="monthCollapsedWeeks" outsideDays="collapsed" [dayTemplate]="tpl">
+        <ngb-datepicker-month-view [month]="month" [dayTemplate]="tpl">
         </ngb-datepicker-month-view>
     `);
 
     expectDates(fixture.nativeElement, ['', '1', '2', '3', '4', '']);
-
-    fixture.componentInstance.showWeekNumbers = true;
-    fixture.detectChanges();
-    expectDates(fixture.nativeElement, ['', '1', '2', '3', '4', '']);
   });
 
+  it('should add correct aria-label attribute', () => {
+    const fixture = createTestComponent(`
+        <ng-template #tpl let-date="date">{{ date.day }}</ng-template>
+        <ngb-datepicker-month-view [month]="month" [dayTemplate]="tpl"></ngb-datepicker-month-view>
+    `);
+
+    let dates = getDates(fixture.nativeElement);
+    expect(dates[0].getAttribute('aria-label')).toBe('Monday');
+  });
 });
 
 @Component({selector: 'test-cmp', template: ''})
 class TestComponent {
   month: MonthViewModel = {
-    firstDate: new NgbDate(2016, 7, 22),
-    lastDate: new NgbDate(2016, 7, 23),
-    year: 2016,
-    number: 7,
-    weekdays: [1],
-    weeks: [{
-      number: 2,
-      days: [
-        {
-          date: new NgbDate(2016, 7, 22),
-          context: {
-            currentMonth: 7,
-            date: {year: 2016, month: 7, day: 22},
-            disabled: false,
-            focused: false,
-            selected: false
-          },
-          tabindex: -1,
-          ariaLabel: 'Monday'
-        },
-        {
-          date: new NgbDate(2016, 8, 23),
-          context: {
-            currentMonth: 7,
-            date: {year: 2016, month: 8, day: 23},
-            disabled: false,
-            focused: false,
-            selected: false
-          },
-          tabindex: -1,
-          ariaLabel: 'Tuesday'
-        }
-      ]
-    }]
-  };
-
-  monthCollapsedWeeks: MonthViewModel = {
     firstDate: new NgbDate(2016, 8, 1),
     lastDate: new NgbDate(2016, 8, 31),
     year: 2016,
@@ -258,7 +170,7 @@ class TestComponent {
     weeks: [
       // month: 7, 8
       {
-        number: 2,
+        number: 1,
         days: [
           {
             date: new NgbDate(2016, 7, 4),
@@ -270,7 +182,8 @@ class TestComponent {
               selected: false
             },
             tabindex: -1,
-            ariaLabel: 'Monday'
+            ariaLabel: 'Monday',
+            hidden: true
           },
           {
             date: new NgbDate(2016, 8, 1),
@@ -282,25 +195,28 @@ class TestComponent {
               selected: false
             },
             tabindex: -1,
-            ariaLabel: 'Monday'
+            ariaLabel: 'Monday',
+            hidden: false
           }
-        ]
+        ],
+        collapsed: false
       },
       // month: 8, 8
       {
-        number: 3,
+        number: 2,
         days: [
           {
             date: new NgbDate(2016, 8, 2),
             context: {
               currentMonth: 8,
               date: {year: 2016, month: 8, day: 2},
-              disabled: false,
+              disabled: true,
               focused: false,
               selected: false
             },
             tabindex: -1,
-            ariaLabel: 'Friday'
+            ariaLabel: 'Friday',
+            hidden: false
           },
           {
             date: new NgbDate(2016, 8, 3),
@@ -312,9 +228,11 @@ class TestComponent {
               selected: false
             },
             tabindex: -1,
-            ariaLabel: 'Saturday'
+            ariaLabel: 'Saturday',
+            hidden: false
           }
-        ]
+        ],
+        collapsed: false
       },
       // month: 8, 9
       {
@@ -330,7 +248,8 @@ class TestComponent {
               selected: false
             },
             tabindex: -1,
-            ariaLabel: 'Sunday'
+            ariaLabel: 'Sunday',
+            hidden: false
           },
           {
             date: new NgbDate(2016, 9, 1),
@@ -342,9 +261,11 @@ class TestComponent {
               selected: false
             },
             tabindex: -1,
-            ariaLabel: 'Saturday'
+            ariaLabel: 'Saturday',
+            hidden: true
           }
-        ]
+        ],
+        collapsed: false
       },
       // month: 9, 9 -> to collapse
       {
@@ -360,7 +281,8 @@ class TestComponent {
               selected: false
             },
             tabindex: -1,
-            ariaLabel: 'Sunday'
+            ariaLabel: 'Sunday',
+            hidden: true
           },
           {
             date: new NgbDate(2016, 9, 3),
@@ -372,9 +294,11 @@ class TestComponent {
               selected: false
             },
             tabindex: -1,
-            ariaLabel: 'Monday'
+            ariaLabel: 'Monday',
+            hidden: true
           }
-        ]
+        ],
+        collapsed: true
       }
     ]
   };

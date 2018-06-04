@@ -137,7 +137,6 @@ export interface NgbDatepickerNavigateEvent {
             [dayTemplate]="dayTemplate || dt"
             [showWeekdays]="showWeekdays"
             [showWeekNumbers]="showWeekNumbers"
-            [outsideDays]="(displayMonths === 1 ? outsideDays : 'hidden')"
             (select)="onDateSelect($event)">
           </ngb-datepicker-month-view>
         </div>
@@ -299,14 +298,14 @@ export class NgbDatepicker implements OnDestroy,
 
   ngOnInit() {
     if (this.model === undefined) {
-      ['displayMonths', 'markDisabled', 'firstDayOfWeek', 'navigation', 'minDate', 'maxDate'].forEach(
+      ['displayMonths', 'markDisabled', 'firstDayOfWeek', 'navigation', 'minDate', 'maxDate', 'outsideDays'].forEach(
           input => this._service[input] = this[input]);
       this.navigateTo(this.startDate);
     }
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    ['displayMonths', 'markDisabled', 'firstDayOfWeek', 'navigation', 'minDate', 'maxDate']
+    ['displayMonths', 'markDisabled', 'firstDayOfWeek', 'navigation', 'minDate', 'maxDate', 'outsideDays']
         .filter(input => input in changes)
         .forEach(input => this._service[input] = this[input]);
 

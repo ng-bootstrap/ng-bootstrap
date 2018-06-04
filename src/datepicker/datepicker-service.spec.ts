@@ -19,10 +19,9 @@ describe('ngb-datepicker-service', () => {
 
   let subscriptions: Subscription[];
 
-  const getDayInMonth = (monthIndex: number, weekIndex: number, dayIndex: number) =>
-      model.months[monthIndex].weeks[weekIndex].days[dayIndex];
-  const getDay = (n: number) => getDayInMonth(0, 0, n);
-  const getDayCtx = (n: number) => getDay(n).context;
+  const getWeek = (week: number, month = 0) => model.months[month].weeks[week];
+  const getDay = (day: number, week = 0, month = 0) => getWeek(week, month).days[day];
+  const getDayCtx = (day: number) => getDay(day).context;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -316,14 +315,14 @@ describe('ngb-datepicker-service', () => {
       service.displayMonths = 2;
       service.focus(new NgbDate(2018, 3, 31));
 
-      expect(getDayInMonth(0, 4, 5).tabindex).toEqual(0);   // 31 march in the first month block
-      expect(getDayInMonth(1, 0, 5).tabindex).toEqual(-1);  // 31 march in the second month block
+      expect(getDay(5, 4, 0).tabindex).toEqual(0);   // 31 march in the first month block
+      expect(getDay(5, 0, 1).tabindex).toEqual(-1);  // 31 march in the second month block
 
       service.focusMove('d', 1);
-      expect(getDayInMonth(0, 4, 5).tabindex).toEqual(-1);  // 31 march in the first month block
-      expect(getDayInMonth(1, 0, 5).tabindex).toEqual(-1);  // 31 march in the second month block
-      expect(getDayInMonth(0, 4, 6).tabindex).toEqual(-1);  // 1st april in the first month block
-      expect(getDayInMonth(1, 0, 6).tabindex).toEqual(0);   // 1st april in the second month block
+      expect(getDay(5, 4, 0).tabindex).toEqual(-1);  // 31 march in the first month block
+      expect(getDay(5, 0, 1).tabindex).toEqual(-1);  // 31 march in the second month block
+      expect(getDay(6, 4, 0).tabindex).toEqual(-1);  // 1st april in the first month block
+      expect(getDay(6, 0, 1).tabindex).toEqual(0);   // 1st april in the second month block
 
     });
 
@@ -331,18 +330,14 @@ describe('ngb-datepicker-service', () => {
       service.displayMonths = 2;
       service.focus(new NgbDate(2018, 3, 31));
 
-      expect(getDayInMonth(0, 4, 5).ariaLabel)
-          .toEqual('Saturday, March 31, 2018');  // 31 march in the first month block
-      expect(getDayInMonth(1, 0, 5).ariaLabel)
-          .toEqual('Saturday, March 31, 2018');  // 31 march in the second month block
+      expect(getDay(5, 4, 0).ariaLabel).toEqual('Saturday, March 31, 2018');  // 31 march in the first month block
+      expect(getDay(5, 0, 1).ariaLabel).toEqual('Saturday, March 31, 2018');  // 31 march in the second month block
 
       service.focusMove('d', 1);
-      expect(getDayInMonth(0, 4, 5).ariaLabel)
-          .toEqual('Saturday, March 31, 2018');  // 31 march in the first month block
-      expect(getDayInMonth(1, 0, 5).ariaLabel)
-          .toEqual('Saturday, March 31, 2018');                                   // 31 march in the second month block
-      expect(getDayInMonth(0, 4, 6).ariaLabel).toEqual('Sunday, April 1, 2018');  // 1st april in the first month block
-      expect(getDayInMonth(1, 0, 6).ariaLabel).toEqual('Sunday, April 1, 2018');  // 1st april in the second month block
+      expect(getDay(5, 4, 0).ariaLabel).toEqual('Saturday, March 31, 2018');  // 31 march in the first month block
+      expect(getDay(5, 0, 1).ariaLabel).toEqual('Saturday, March 31, 2018');  // 31 march in the second month block
+      expect(getDay(6, 4, 0).ariaLabel).toEqual('Sunday, April 1, 2018');     // 1st april in the first month block
+      expect(getDay(6, 0, 1).ariaLabel).toEqual('Sunday, April 1, 2018');     // 1st april in the second month block
 
     });
   });
@@ -713,6 +708,176 @@ describe('ngb-datepicker-service', () => {
         service.focus(new NgbDate(2018, 2, 1));  // open: [JAN, FEB], focus: FEB
         expect(model.nextDisabled).toBeFalsy();
       });
+    });
+  });
+
+  describe(`outsideDays`, () => {
+
+    it(`should emit 'outsideDays' values`, () => {
+      service.focus(new NgbDate(2015, 5, 1));
+      expect(model.outsideDays).toEqual('visible');
+
+      service.outsideDays = 'hidden';
+      expect(model.outsideDays).toEqual('hidden');
+
+      service.outsideDays = 'collapsed';
+      expect(model.outsideDays).toEqual('collapsed');
+    });
+
+    it(`should not emit the same 'outsideDays' value twice`, () => {
+      service.focus(new NgbDate(2017, 5, 1));
+
+      service.outsideDays = 'visible';  // ignored
+      expect(mock.onNext).toHaveBeenCalledTimes(1);
+    });
+
+    it(`should not hide days when 'outsideDays' is 'visible'`, () => {
+      // single month
+      service.outsideDays = 'visible';
+      service.focus(new NgbDate(2018, 5, 1));
+
+      expect(getDay(0, 0).hidden).toBeFalsy();  // 30 APR
+      expect(getWeek(0).collapsed).toBeFalsy();
+
+      expect(getDay(0, 1).hidden).toBeFalsy();  // 7 MAY
+      expect(getWeek(1).collapsed).toBeFalsy();
+
+      expect(getDay(0, 5).hidden).toBeFalsy();  // 7 JUN
+      expect(getWeek(5).collapsed).toBeFalsy();
+
+      // multiple months
+      // days is between two month must stay hidden regardless of outside days value
+      service.displayMonths = 2;
+
+      // MAY 2018
+      expect(getDay(0, 0, 0).hidden).toBeFalsy();  // 30 APR
+      expect(getWeek(0, 0).collapsed).toBeFalsy();
+
+      expect(getDay(0, 1, 0).hidden).toBeFalsy();  // 7 MAY
+      expect(getWeek(1, 0).collapsed).toBeFalsy();
+
+      expect(getDay(0, 5, 0).hidden).toBeTruthy();  // 7 JUN
+      expect(getWeek(5, 0).collapsed).toBeFalsy();
+
+      // JUNE 2018
+      expect(getDay(0, 0, 1).hidden).toBeTruthy();  // 28 MAY
+      expect(getWeek(0, 1).collapsed).toBeFalsy();
+
+      expect(getDay(0, 1).hidden).toBeFalsy();  // 4 JUN
+      expect(getWeek(1, 1).collapsed).toBeFalsy();
+
+      expect(getDay(0, 5, 1).hidden).toBeFalsy();  // 2 JUL
+      expect(getWeek(5, 1).collapsed).toBeFalsy();
+
+      // Edge case -> in between years
+      service.focus(new NgbDate(2018, 12, 1));
+
+      // DEC 2018
+      expect(getDay(0, 0, 0).hidden).toBeFalsy();  // 26 NOV
+      expect(getWeek(0, 0).collapsed).toBeFalsy();
+
+      expect(getDay(0, 1, 0).hidden).toBeFalsy();  // 3 DEC
+      expect(getWeek(1, 0).collapsed).toBeFalsy();
+
+      expect(getDay(1, 5, 0).hidden).toBeTruthy();  // 1 JAN
+      expect(getWeek(5, 0).collapsed).toBeFalsy();
+
+      // JAN 2019
+      expect(getDay(0, 0, 1).hidden).toBeTruthy();  // 31 DEC
+      expect(getWeek(0, 1).collapsed).toBeFalsy();
+
+      expect(getDay(0, 1).hidden).toBeFalsy();  // 7 JAN
+      expect(getWeek(1, 1).collapsed).toBeFalsy();
+
+      expect(getDay(0, 5, 1).hidden).toBeFalsy();  // 4 FEB
+      expect(getWeek(5, 1).collapsed).toBeFalsy();
+    });
+
+    it(`should hide days when 'outsideDays' is 'hidden'`, () => {
+      // single month
+      service.outsideDays = 'hidden';
+      service.focus(new NgbDate(2018, 5, 1));
+
+      expect(getDay(0, 0).hidden).toBeTruthy();  // 30, APR
+      expect(getWeek(0).collapsed).toBeFalsy();
+
+      expect(getDay(0, 1).hidden).toBeFalsy();  // 7, MAY
+      expect(getWeek(1).collapsed).toBeFalsy();
+
+      expect(getDay(0, 5).hidden).toBeTruthy();  // 7, JUN
+      expect(getWeek(5).collapsed).toBeFalsy();
+
+      // multiple months
+      service.displayMonths = 2;
+
+      // MAY 2018
+      expect(getDay(0, 0, 0).hidden).toBeTruthy();  // 30 APR
+      expect(getWeek(0, 0).collapsed).toBeFalsy();
+
+      expect(getDay(0, 1, 0).hidden).toBeFalsy();  // 7 MAY
+      expect(getWeek(1, 0).collapsed).toBeFalsy();
+
+      expect(getDay(0, 5, 0).hidden).toBeTruthy();  // 7 JUN
+      expect(getWeek(5, 0).collapsed).toBeFalsy();
+
+      // JUNE 2018
+      expect(getDay(0, 0, 1).hidden).toBeTruthy();  // 28 MAY
+      expect(getWeek(0, 1).collapsed).toBeFalsy();
+
+      expect(getDay(0, 1).hidden).toBeFalsy();  // 4 JUN
+      expect(getWeek(1, 1).collapsed).toBeFalsy();
+
+      expect(getDay(0, 5, 1).hidden).toBeTruthy();  // 2 JUL
+      expect(getWeek(5, 1).collapsed).toBeFalsy();
+    });
+
+    it(`should hide days when 'outsideDays' is 'collapsed'`, () => {
+      // single month
+      service.outsideDays = 'collapsed';
+      service.focus(new NgbDate(2018, 5, 1));
+
+      expect(getDay(0, 0).hidden).toBeTruthy();  // 30, APR
+      expect(getWeek(0).collapsed).toBeFalsy();
+
+      expect(getDay(0, 1).hidden).toBeFalsy();  // 7, MAY
+      expect(getWeek(1).collapsed).toBeFalsy();
+
+      expect(getDay(0, 5).hidden).toBeTruthy();  // 7, JUN
+      expect(getWeek(5).collapsed).toBeTruthy();
+
+      // multiple months
+      service.displayMonths = 2;
+
+      // MAY 2018
+      expect(getDay(0, 0, 0).hidden).toBeTruthy();  // 30 APR
+      expect(getWeek(0, 0).collapsed).toBeFalsy();
+
+      expect(getDay(0, 1, 0).hidden).toBeFalsy();  // 7 MAY
+      expect(getWeek(1, 0).collapsed).toBeFalsy();
+
+      expect(getDay(0, 5, 0).hidden).toBeTruthy();  // 7 JUN
+      expect(getWeek(5, 0).collapsed).toBeTruthy();
+
+      // JUNE 2018
+      expect(getDay(0, 0, 1).hidden).toBeTruthy();  // 28 MAY
+      expect(getWeek(0, 1).collapsed).toBeFalsy();
+
+      expect(getDay(0, 1).hidden).toBeFalsy();  // 4 JUN
+      expect(getWeek(1, 1).collapsed).toBeFalsy();
+
+      expect(getDay(0, 5, 1).hidden).toBeTruthy();  // 2 JUL
+      expect(getWeek(5, 1).collapsed).toBeTruthy();
+    });
+
+    it(`should toggle days when 'outsideDays' changes`, () => {
+      service.outsideDays = 'visible';
+      service.focus(new NgbDate(2018, 5, 1));
+      expect(getDay(0).hidden).toBeFalsy();  // 30, APR
+      expect(getWeek(5).collapsed).toBeFalsy();
+
+      service.outsideDays = 'collapsed';
+      expect(getDay(0).hidden).toBeTruthy();  // 30, APR
+      expect(getWeek(5).collapsed).toBeTruthy();
     });
   });
 

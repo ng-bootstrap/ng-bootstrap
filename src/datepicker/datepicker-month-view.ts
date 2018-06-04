@@ -1,5 +1,5 @@
 import {Component, Input, TemplateRef, Output, EventEmitter} from '@angular/core';
-import {MonthViewModel, DayViewModel, WeekViewModel} from './datepicker-view-model';
+import {MonthViewModel, DayViewModel} from './datepicker-view-model';
 import {NgbDate} from './ngb-date';
 import {NgbDatepickerI18n} from './datepicker-i18n';
 import {DayTemplateContext} from './datepicker-day-template-context';
@@ -48,14 +48,14 @@ import {DayTemplateContext} from './datepicker-day-template-context';
       </div>
     </div>
     <ng-template ngFor let-week [ngForOf]="month.weeks">
-      <div *ngIf="!isCollapsed(week)" class="ngb-dp-week" role="row">
+      <div *ngIf="!week.collapsed" class="ngb-dp-week" role="row">
         <div *ngIf="showWeekNumbers" class="ngb-dp-week-number small text-muted">{{ week.number }}</div>
         <div *ngFor="let day of week.days" (click)="doSelect(day)" class="ngb-dp-day" role="gridcell"
           [class.disabled]="day.context.disabled"
           [tabindex]="day.tabindex"
-          [class.hidden]="isHidden(day)"
+          [class.hidden]="day.hidden"
           [attr.aria-label]="day.ariaLabel">
-          <ng-template [ngIf]="!isHidden(day)">
+          <ng-template [ngIf]="!day.hidden">
             <ng-template [ngTemplateOutlet]="dayTemplate" [ngTemplateOutletContext]="day.context"></ng-template>
           </ng-template>
         </div>
@@ -66,7 +66,6 @@ import {DayTemplateContext} from './datepicker-day-template-context';
 export class NgbDatepickerMonthView {
   @Input() dayTemplate: TemplateRef<DayTemplateContext>;
   @Input() month: MonthViewModel;
-  @Input() outsideDays: 'visible' | 'hidden' | 'collapsed';
   @Input() showWeekdays;
   @Input() showWeekNumbers;
 
@@ -75,17 +74,8 @@ export class NgbDatepickerMonthView {
   constructor(public i18n: NgbDatepickerI18n) {}
 
   doSelect(day: DayViewModel) {
-    if (!day.context.disabled && !this.isHidden(day)) {
+    if (!day.context.disabled && !day.hidden) {
       this.select.emit(NgbDate.from(day.date));
     }
-  }
-
-  isCollapsed(week: WeekViewModel) {
-    return this.outsideDays === 'collapsed' && week.days[0].date.month !== this.month.number &&
-        week.days[week.days.length - 1].date.month !== this.month.number;
-  }
-
-  isHidden(day: DayViewModel) {
-    return (this.outsideDays === 'hidden' || this.outsideDays === 'collapsed') && this.month.number !== day.date.month;
   }
 }

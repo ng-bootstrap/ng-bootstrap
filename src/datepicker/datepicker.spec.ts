@@ -383,20 +383,6 @@ describe('ngb-datepicker', () => {
     expect(fixture.debugElement.query(By.directive(NgbDatepickerNavigation))).toBeNull();
   });
 
-  it('should override outside days to "hidden" if there are multiple months displayed', () => {
-    const fixture = createTestComponent(
-        `<ngb-datepicker [displayMonths]="displayMonths" [outsideDays]="'collapsed'"></ngb-datepicker>`);
-
-
-    let months = fixture.debugElement.queryAll(By.directive(NgbDatepickerMonthView));
-    expect(months[0].componentInstance.outsideDays).toBe('collapsed');
-
-    fixture.componentInstance.displayMonths = 2;
-    fixture.detectChanges();
-    months = fixture.debugElement.queryAll(By.directive(NgbDatepickerMonthView));
-    expect(months[0].componentInstance.outsideDays).toBe('hidden');
-  });
-
   it('should toggle month names display for a single month', () => {
     const fixture = createTestComponent(
         `<ngb-datepicker [startDate]="date" [displayMonths]="1" [navigation]="navigation"></ngb-datepicker>`);

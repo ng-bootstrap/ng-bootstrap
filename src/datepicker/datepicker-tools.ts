@@ -104,7 +104,7 @@ export function buildMonths(
 
 export function buildMonth(
     calendar: NgbCalendar, date: NgbDate, state: DatepickerViewModel, i18n: NgbDatepickerI18n): MonthViewModel {
-  const {minDate, maxDate, firstDayOfWeek, markDisabled} = state;
+  const {minDate, maxDate, firstDayOfWeek, markDisabled, outsideDays} = state;
   const month:
       MonthViewModel = {firstDate: null, lastDate: null, number: date.month, year: date.year, weeks: [], weekdays: []};
 
@@ -145,19 +145,23 @@ export function buildMonth(
         date: newDate,
         context: {
           date: {year: newDate.year, month: newDate.month, day: newDate.day},
-          currentMonth: month.number,
-          disabled: disabled,
+          currentMonth: month.number, disabled,
           focused: false,
           selected: false
         },
-        tabindex: -1, ariaLabel
+        tabindex: -1, ariaLabel,
+        hidden: false
       });
 
       date = nextDate;
     }
 
+    // marking week as collapsed
+    const collapsed = outsideDays === 'collapsed' && days[0].date.month !== month.number &&
+        days[days.length - 1].date.month !== month.number;
+
     month.weeks.push(
-        {number: calendar.getWeekNumber(days.map(day => NgbDate.from(day.date)), firstDayOfWeek), days: days});
+        {number: calendar.getWeekNumber(days.map(day => NgbDate.from(day.date)), firstDayOfWeek), days, collapsed});
   }
 
   return month;
