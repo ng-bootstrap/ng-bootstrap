@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {NgbDateStruct} from './ngb-date-struct';
+import {NgbDateStruct} from '../ngb-date-struct';
 
 /**
  * Abstract type serving as a DI token for the service converting from your application Date model to internal

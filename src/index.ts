@@ -40,6 +40,7 @@ export {
   NgbDateStruct,
   NgbDateParserFormatter,
   NgbDateAdapter,
+  NgbDateNativeAdapter,
   NgbDatepicker,
   NgbInputDatepicker
 } from './datepicker/datepicker.module';
