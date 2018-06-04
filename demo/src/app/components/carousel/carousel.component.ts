@@ -15,7 +15,7 @@ import {DEMO_SNIPPETS} from './demos';
       <ngbd-example-box demoTitle="Global configuration of carousels" [snippets]="snippets" component="carousel" demo="config">
         <ngbd-carousel-config></ngbd-carousel-config>
       </ngbd-example-box>
-      <ngbd-example-box demoTitle="Hiding unnecessary navigation items" [snippets]="snippets" component="carousel" demo="navigation">
+      <ngbd-example-box demoTitle="Hide navigation items" [snippets]="snippets" component="carousel" demo="navigation">
         <ngbd-carousel-navigation></ngbd-carousel-navigation>
       </ngbd-example-box>
     </ngbd-component-wrapper>

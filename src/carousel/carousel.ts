@@ -195,9 +195,9 @@ export class NgbCarousel implements AfterContentChecked,
     }
   }
 
-  showNavigation(): boolean { return !this.hideNavigation || (this.slides != null && this.slides.length > 1); }
+  showNavigation(): boolean { return !this.hideNavigation; }
 
-  showIndicator(): boolean { return !this.hideIndicator || (this.slides != null && this.slides.length > 1); }
+  showIndicator(): boolean { return !this.hideIndicator; }
 
   private _restartTimer() {
     this._stopTimer();

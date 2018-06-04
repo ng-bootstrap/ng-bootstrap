@@ -1,8 +1,9 @@
 <ngb-carousel *ngIf="images" [hideNavigation]="true" [hideIndicator]="true">
   <ng-template ngbSlide>
     <img [src]="images[0]" alt="Random first slide">
+    <img [src]="images[1]" alt="Random second slide">
     <div class="carousel-caption">
-      <p>This carousel hides navigation items when there is only one slide.</p>
+      <p>This carousel hides navigation items.</p>
     </div>
   </ng-template>
 </ngb-carousel>
