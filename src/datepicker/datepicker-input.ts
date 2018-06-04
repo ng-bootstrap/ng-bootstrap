@@ -23,11 +23,13 @@ import {DayTemplateContext} from './datepicker-day-template-context';
 import {NgbDateParserFormatter} from './ngb-date-parser-formatter';
 
 import {positionElements, PlacementArray} from '../util/positioning';
-import {NgbFocusTrap, NgbFocusTrapFactory} from '../util/focus-trap';
+import {ngbFocusTrap} from '../util/focus-trap';
 import {NgbDateStruct} from './ngb-date-struct';
 import {NgbDateAdapter} from './ngb-date-adapter';
 import {NgbCalendar} from './ngb-calendar';
 import {NgbDatepickerService} from './datepicker-service';
+
+import {Subject} from 'rxjs';
 
 const NGB_DATEPICKER_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -59,11 +61,11 @@ const NGB_DATEPICKER_VALIDATOR = {
 })
 export class NgbInputDatepicker implements OnChanges,
     OnDestroy, ControlValueAccessor, Validator {
+  private _closed$ = new Subject();
   private _cRef: ComponentRef<NgbDatepicker> = null;
   private _disabled = false;
   private _model: NgbDate;
   private _zoneSubscription: any;
-  private _focusTrap: NgbFocusTrap | null = null;
 
   /**
    * Indicates whether the datepicker popup should be closed automatically after date selection or not.
@@ -84,7 +86,7 @@ export class NgbInputDatepicker implements OnChanges,
   @Input() displayMonths: number;
 
   /**
-  * First day of the week. With default calendar we use ISO 8601: 1=Mon ... 7=Sun
+   * First day of the week. With default calendar we use ISO 8601: 1=Mon ... 7=Sun
    */
   @Input() firstDayOfWeek: number;
 
@@ -117,11 +119,11 @@ export class NgbInputDatepicker implements OnChanges,
   @Input() outsideDays: 'visible' | 'collapsed' | 'hidden';
 
   /**
-      * Placement of a datepicker popup accepts:
-      *    "top", "top-left", "top-right", "bottom", "bottom-left", "bottom-right",
-      *    "left", "left-top", "left-bottom", "right", "right-top", "right-bottom"
-      * and array of above values.
-      */
+   * Placement of a datepicker popup accepts:
+   *    "top", "top-left", "top-right", "bottom", "bottom-left", "bottom-right",
+   *    "left", "left-top", "left-bottom", "right", "right-top", "right-bottom"
+   * and array of above values.
+   */
   @Input() placement: PlacementArray = 'bottom-left';
 
   /**
@@ -183,7 +185,7 @@ export class NgbInputDatepicker implements OnChanges,
       private _parserFormatter: NgbDateParserFormatter, private _elRef: ElementRef<HTMLInputElement>,
       private _vcRef: ViewContainerRef, private _renderer: Renderer2, private _cfr: ComponentFactoryResolver,
       ngZone: NgZone, private _service: NgbDatepickerService, private _calendar: NgbCalendar,
-      private _ngbDateAdapter: NgbDateAdapter<any>, private _focusTrapFactory: NgbFocusTrapFactory) {
+      private _ngbDateAdapter: NgbDateAdapter<any>) {
     this._zoneSubscription = ngZone.onStable.subscribe(() => {
       if (this._cRef) {
         positionElements(
@@ -265,9 +267,9 @@ export class NgbInputDatepicker implements OnChanges,
         window.document.querySelector(this.container).appendChild(this._cRef.location.nativeElement);
       }
 
-      this._focusTrap = this._focusTrapFactory.create(this._cRef.location.nativeElement, true);
-
       // focus handling
+      ngbFocusTrap(this._cRef.location.nativeElement, this._closed$);
+
       this._cRef.instance.focus();
     }
   }
@@ -279,8 +281,7 @@ export class NgbInputDatepicker implements OnChanges,
     if (this.isOpen()) {
       this._vcRef.remove(this._vcRef.indexOf(this._cRef.hostView));
       this._cRef = null;
-      this._focusTrap.destroy();
-      this._focusTrap = null;
+      this._closed$.next();
     }
   }
 
