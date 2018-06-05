@@ -41,6 +41,7 @@ describe('ngb-carousel', () => {
     expect(carousel.interval).toBe(defaultConfig.interval);
     expect(carousel.wrap).toBe(defaultConfig.wrap);
     expect(carousel.keyboard).toBe(defaultConfig.keyboard);
+    expect(carousel.mouse).toBe(defaultConfig.mouse);
   });
 
   it('should render slides and navigation indicators', fakeAsync(() => {
@@ -321,9 +322,53 @@ describe('ngb-carousel', () => {
        discardPeriodicTasks();
      }));
 
+  it('should listen to mouse events based on mouse attribute', fakeAsync(() => {
+
+       const html = `
+    <ngb-carousel [mouse]='mouse'>
+      <ng-template ngbSlide>foo</ng-template>
+      <ng-template ngbSlide>bar</ng-template>
+    </ngb-carousel>
+  `
+
+           const fixture = createTestComponent(html);
+
+       const carouselDebugEl = fixture.debugElement.query(By.directive(NgbCarousel));
+
+       expectActiveSlides(fixture.nativeElement, [true, false]);
+
+       carouselDebugEl.triggerEventHandler('mouseenter', {});
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [true, false]);
+
+       tick(6000);
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [true, false]);
+
+       carouselDebugEl.triggerEventHandler('mouseleave', {});
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [true, false]);
+
+       tick(6000);
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [false, true]);
+
+       fixture.componentInstance.mouse = false;
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [false, true]);
+
+       carouselDebugEl.triggerEventHandler('mouseenter', {});
+       fixture.detectChanges();
+
+       tick(6000);
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [true, false]);
+       discardPeriodicTasks();
+     }));
+
   it('should pause / resume slide change with time passage on mouse enter / leave', fakeAsync(() => {
        const html = `
-      <ngb-carousel>
+      <ngb-carousel [mouse]='mouse'>
         <ng-template ngbSlide>foo</ng-template>
         <ng-template ngbSlide>bar</ng-template>
       </ngb-carousel>
@@ -351,6 +396,23 @@ describe('ngb-carousel', () => {
        fixture.detectChanges();
        expectActiveSlides(fixture.nativeElement, [false, true]);
 
+       fixture.componentInstance.mouse = false;
+       fixture.detectChanges();
+       carouselDebugEl.triggerEventHandler('mouseenter', {});
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [false, true]);
+
+       tick(6000);
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [true, false]);
+
+       carouselDebugEl.triggerEventHandler('mouseleave', {});
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [true, false]);
+
+       tick(6000);
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [false, true]);
        discardPeriodicTasks();
      }));
 
@@ -481,6 +543,7 @@ describe('ngb-carousel', () => {
       config.interval = 1000;
       config.wrap = false;
       config.keyboard = false;
+      config.mouse = false;
     }));
 
     it('should initialize inputs with provided config', () => {
@@ -491,6 +554,7 @@ describe('ngb-carousel', () => {
       expect(carousel.interval).toBe(config.interval);
       expect(carousel.wrap).toBe(config.wrap);
       expect(carousel.keyboard).toBe(config.keyboard);
+      expect(carousel.mouse).toBe(config.mouse);
     });
   });
 
@@ -499,6 +563,8 @@ describe('ngb-carousel', () => {
     config.interval = 1000;
     config.wrap = false;
     config.keyboard = false;
+    config.mouse = false;
+
 
     beforeEach(() => {
       TestBed.configureTestingModule(
@@ -513,6 +579,7 @@ describe('ngb-carousel', () => {
       expect(carousel.interval).toBe(config.interval);
       expect(carousel.wrap).toBe(config.wrap);
       expect(carousel.keyboard).toBe(config.keyboard);
+      expect(carousel.mouse).toBe(config.mouse);
     });
   });
 
@@ -523,5 +590,6 @@ class TestComponent {
   interval;
   activeSlideId;
   keyboard = true;
+  mouse = true;
   carouselSlideCallBack = (event: NgbSlideEvent) => {};
 }

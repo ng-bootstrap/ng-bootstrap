@@ -10,4 +10,5 @@ export class NgbCarouselConfig {
   interval = 5000;
   wrap = true;
   keyboard = true;
+  mouse = true;
 }
