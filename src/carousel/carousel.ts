@@ -39,8 +39,8 @@ export class NgbSlide {
     'class': 'carousel slide',
     '[style.display]': '"block"',
     'tabIndex': '0',
-    '(mouseenter)': 'pause()',
-    '(mouseleave)': 'cycle()',
+    '(mouseenter)': 'mouseEventPause()',
+    '(mouseleave)': 'mouseEventCycle()',
     '(keydown.arrowLeft)': 'keyPrev()',
     '(keydown.arrowRight)': 'keyNext()'
   },
@@ -85,6 +85,10 @@ export class NgbCarousel implements AfterContentChecked,
   @Input() keyboard: boolean;
 
   /**
+   * A flag to enable/disable mouse events
+   */
+  @Input() mouse: boolean;
+  /**
    * The active slide id.
    */
   @Input() activeId: string;
@@ -99,6 +103,7 @@ export class NgbCarousel implements AfterContentChecked,
     this.interval = config.interval;
     this.wrap = config.wrap;
     this.keyboard = config.keyboard;
+    this.mouse = config.mouse;
   }
 
   ngAfterContentChecked() {
@@ -180,6 +185,18 @@ export class NgbCarousel implements AfterContentChecked,
   keyNext() {
     if (this.keyboard) {
       this.next();
+    }
+  }
+
+  mouseEventPause() {
+    if (this.mouse) {
+      this.pause();
+    }
+  }
+
+  mouseEventCycle() {
+    if (this.mouse) {
+      this.cycle();
     }
   }
 

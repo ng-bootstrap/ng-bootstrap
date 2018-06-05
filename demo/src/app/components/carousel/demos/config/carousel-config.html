@@ -7,14 +7,21 @@
     </div>
   </ng-template>
   <ng-template ngbSlide>
-    <img [src]="images[1]"  alt="Random second slide">
+    <img [src]="images[1]" alt="Random second slide">
+    <div class="carousel-caption">
+      <h3>No mouse events...</h3>
+      <p>This carousel doesn't pause or resume on mouse events</p>
+    </div>
+  </ng-template>
+  <ng-template ngbSlide>
+    <img [src]="images[2]"  alt="Random third slide">
     <div class="carousel-caption">
       <h3>No keyboard...</h3>
       <p>This carousel uses customized default values.</p>
     </div>
   </ng-template>
   <ng-template ngbSlide>
-    <img [src]="images[2]" alt="Random third slide">
+    <img [src]="images[3]" alt="Random fourth slide">
     <div class="carousel-caption">
       <h3>And no wrap after last slide.</h3>
       <p>This carousel uses customized default values.</p>
