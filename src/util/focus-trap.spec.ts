@@ -2,7 +2,7 @@ import {Component, ElementRef} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ngbFocusTrap} from './focus-trap';
-import {Subject} from 'rxjs/internal/Subject';
+import {Subject} from 'rxjs';
 
 describe('ngbFocusTrap', () => {
 
