@@ -17,6 +17,18 @@ const createTestCmpt = (html: string) =>
 const createTestNativeCmpt = (html: string) =>
     createGenericTestComponent(html, TestNativeComponent) as ComponentFixture<TestNativeComponent>;
 
+enum Key {
+  Escape = 27
+}
+
+function dispatchKeyUpEvent(key: Key) {
+  const event = document.createEvent('KeyboardEvent') as any;
+  let initEventFn = (event.initKeyEvent || event.initKeyboardEvent).bind(event);
+  initEventFn('keyup', true, true, window, 0, 0, 0, 0, 0, key);
+  Object.defineProperties(event, {which: {get: () => key}});
+  document.dispatchEvent(event);
+}
+
 describe('NgbInputDatepicker', () => {
 
   beforeEach(() => {
@@ -66,6 +78,22 @@ describe('NgbInputDatepicker', () => {
       button.click();
       fixture.detectChanges();
       expect(document.activeElement).toBe(fixture.nativeElement.querySelector('div.ngb-dp-day[tabindex="0"]'));
+    });
+
+    it('should close datepicker on ESC key', () => {
+      const fixture = createTestCmpt(`
+          <input ngbDatepicker #d="ngbDatepicker">
+          <button (click)="open(d)">Open</button>`);
+
+      // open
+      const button = fixture.nativeElement.querySelector('button');
+      button.click();
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('ngb-datepicker')).not.toBeNull();
+
+      // dispatch escape
+      dispatchKeyUpEvent(Key.Escape);
+      expect(fixture.nativeElement.querySelector('ngb-datepicker')).toBeNull();
     });
 
     it('should close datepicker on date selection', () => {

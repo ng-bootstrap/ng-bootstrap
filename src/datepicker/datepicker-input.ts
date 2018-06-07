@@ -13,9 +13,11 @@ import {
   Output,
   OnChanges,
   OnDestroy,
-  SimpleChanges
+  SimpleChanges,
+  Inject
 } from '@angular/core';
 import {AbstractControl, ControlValueAccessor, Validator, NG_VALUE_ACCESSOR, NG_VALIDATORS} from '@angular/forms';
+import {DOCUMENT} from '@angular/common';
 
 import {NgbDate} from './ngb-date';
 import {NgbDatepicker, NgbDatepickerNavigateEvent} from './datepicker';
@@ -29,7 +31,8 @@ import {NgbDateAdapter} from './adapters/ngb-date-adapter';
 import {NgbCalendar} from './ngb-calendar';
 import {NgbDatepickerService} from './datepicker-service';
 
-import {Subject} from 'rxjs';
+import {Subject, fromEvent} from 'rxjs';
+import {filter, takeUntil} from 'rxjs/operators';
 
 const NGB_DATEPICKER_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -43,6 +46,10 @@ const NGB_DATEPICKER_VALIDATOR = {
   multi: true
 };
 
+enum Key {
+  Escape = 27
+}
+
 /**
  * A directive that makes it possible to have datepickers on input fields.
  * Manages integration with the input field itself (data entry) and ngModel (validation etc.).
@@ -53,7 +60,6 @@ const NGB_DATEPICKER_VALIDATOR = {
   host: {
     '(input)': 'manualDateChange($event.target.value)',
     '(change)': 'manualDateChange($event.target.value, true)',
-    '(keyup.esc)': 'close()',
     '(blur)': 'onBlur()',
     '[disabled]': 'disabled'
   },
@@ -185,7 +191,7 @@ export class NgbInputDatepicker implements OnChanges,
       private _parserFormatter: NgbDateParserFormatter, private _elRef: ElementRef<HTMLInputElement>,
       private _vcRef: ViewContainerRef, private _renderer: Renderer2, private _cfr: ComponentFactoryResolver,
       ngZone: NgZone, private _service: NgbDatepickerService, private _calendar: NgbCalendar,
-      private _ngbDateAdapter: NgbDateAdapter<any>) {
+      private _ngbDateAdapter: NgbDateAdapter<any>, @Inject(DOCUMENT) private _document: any) {
     this._zoneSubscription = ngZone.onStable.subscribe(() => {
       if (this._cRef) {
         positionElements(
@@ -271,6 +277,11 @@ export class NgbInputDatepicker implements OnChanges,
       ngbFocusTrap(this._cRef.location.nativeElement, this._closed$);
 
       this._cRef.instance.focus();
+
+      // closing on ESC
+      fromEvent<KeyboardEvent>(this._document, 'keyup')
+          .pipe(takeUntil(this._closed$), filter(e => e.which === Key.Escape))
+          .subscribe(() => this.close());
     }
   }
 
