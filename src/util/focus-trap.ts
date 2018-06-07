@@ -1,4 +1,4 @@
-import {fromEvent, Observable} from 'rxjs/index';
+import {fromEvent, Observable} from 'rxjs';
 import {filter, map, takeUntil, withLatestFrom} from 'rxjs/operators';
 
 enum Key {
