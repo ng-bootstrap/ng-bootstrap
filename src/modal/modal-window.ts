@@ -13,6 +13,7 @@ import {
 } from '@angular/core';
 
 import {ModalDismissReasons} from './modal-dismiss-reasons';
+import {ngbFocusTrap} from '../util/focus-trap';
 
 @Component({
   selector: 'ngb-modal-window',
@@ -44,6 +45,7 @@ export class NgbModalWindow implements OnInit,
 
   constructor(@Inject(DOCUMENT) document, private _elRef: ElementRef<HTMLElement>, private _renderer: Renderer2) {
     this._document = document;
+    ngbFocusTrap(this._elRef.nativeElement, this.dismissEvent);
   }
 
   backdropClick($event): void {
