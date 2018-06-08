@@ -49,7 +49,7 @@ export class NgbSlide {
       <li *ngFor="let slide of slides" [id]="slide.id" [class.active]="slide.id === activeId"
           (click)="cycleToSelected(slide.id, getSlideEventDirection(activeId, slide.id))"></li>
     </ol>
-    <div class="carousel-inner">
+    <div class="carousel-inner" (swipe)="swipeCycle($event)">
       <div *ngFor="let slide of slides" class="carousel-item" [class.active]="slide.id === activeId">
         <ng-template [ngTemplateOutlet]="slide.tplRef"></ng-template>
       </div>
@@ -180,6 +180,14 @@ export class NgbCarousel implements AfterContentChecked,
   keyNext() {
     if (this.keyboard) {
       this.next();
+    }
+  }
+
+  swipeCycle($event) {
+    if ($event.deltaX > 0) {
+      this.cycleToPrev();
+    } else {
+      this.cycleToNext();
     }
   }
 

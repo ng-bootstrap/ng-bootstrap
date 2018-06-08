@@ -166,6 +166,50 @@ describe('ngb-carousel', () => {
        discardPeriodicTasks();
      }));
 
+  it('should cycle to previous slide on swipe right', fakeAsync(() => {
+       const html = `
+      <ngb-carousel>
+        <ng-template ngbSlide>foo</ng-template>
+        <ng-template ngbSlide>bar</ng-template>
+        <ng-template ngbSlide>baz</ng-template>
+      </ngb-carousel>
+    `;
+
+       const fixture = createTestComponent(html);
+       const containerEl = fixture.debugElement.query(By.css('.carousel-inner'));
+
+       expectActiveSlides(fixture.nativeElement, [true, false, false]);
+
+       containerEl.triggerEventHandler('swipe', {deltaX: 10});
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [false, false, true]);
+
+       discardPeriodicTasks();
+     }));
+
+
+  it('should cycle to next slide on swipe left', fakeAsync(() => {
+       const html = `
+      <ngb-carousel>
+        <ng-template ngbSlide>foo</ng-template>
+        <ng-template ngbSlide>bar</ng-template>
+        <ng-template ngbSlide>baz</ng-template>
+      </ngb-carousel>
+    `;
+
+       const fixture = createTestComponent(html);
+       const containerEl = fixture.debugElement.query(By.css('.carousel-inner'));
+
+       expectActiveSlides(fixture.nativeElement, [true, false, false]);
+
+       containerEl.triggerEventHandler('swipe', {deltaX: -15});
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [false, true, false]);
+
+       discardPeriodicTasks();
+     }));
+
+
   it('should change slide on carousel control click', fakeAsync(() => {
        const html = `
       <ngb-carousel>

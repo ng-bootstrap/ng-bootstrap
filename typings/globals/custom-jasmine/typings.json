@@ -1,0 +1,8 @@
+{
+  "resolution": "main",
+  "tree": {
+    "src": "/Users/wesleycho/repositories/ng-bootstrap/src/util/typings/custom-jasmine.d.ts",
+    "raw": "file:src/util/typings/custom-jasmine.d.ts",
+    "typings": "/Users/wesleycho/repositories/ng-bootstrap/src/util/typings/custom-jasmine.d.ts"
+  }
+}
