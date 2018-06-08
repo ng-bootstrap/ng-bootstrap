@@ -93,6 +93,8 @@ export class NgbTypeahead implements ControlValueAccessor,
    * Value for the configurable autocomplete attribute.
    * Defaults to 'off' to disable the native browser autocomplete, but this standard value does not seem
    * to be always correctly taken into account.
+   *
+   * @since 2.1.0
    */
   @Input() autocomplete = 'off';
 
