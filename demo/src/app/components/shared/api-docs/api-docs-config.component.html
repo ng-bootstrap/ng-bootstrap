@@ -28,10 +28,10 @@
       <h4>Properties</h4>
       <p class="description">
         <ng-template ngFor let-property [ngForOf]="apiDocs.properties">
-          <code>{{ property.name }}</code>&ngsp;
+          <code class="pr-2">{{ property.name }}</code>&ngsp;
         </ng-template>
-        <i>&mdash; Documentation available in <a [routerLink]="" fragment="{{directiveName}}">{{ directiveName }}</a></i>
       </p>
+      <p class="mt-3">Documentation available in <a [routerLink]="" fragment="{{directiveName}}">{{ directiveName }}</a></p>
     </section>
   </ng-template>
 </div>
