@@ -100,7 +100,7 @@ export class NgbCarousel implements AfterContentChecked,
    */
   @Output() slide = new EventEmitter<NgbSlideEvent>();
 
-  constructor(private config: NgbCarouselConfig) {
+  constructor(config: NgbCarouselConfig) {
     this.interval = config.interval;
     this.wrap = config.wrap;
     this.keyboard = config.keyboard;
