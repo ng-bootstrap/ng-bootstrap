@@ -85,9 +85,10 @@ export class NgbCarousel implements AfterContentChecked,
   @Input() keyboard: boolean;
 
   /**
-   * A flag to enable/disable mouse events
+   * A flag to enable or disable mouse events
    */
-  @Input() mouse: boolean;
+  @Input() pauseOnHover: boolean;
+
   /**
    * The active slide id.
    */
@@ -99,11 +100,11 @@ export class NgbCarousel implements AfterContentChecked,
    */
   @Output() slide = new EventEmitter<NgbSlideEvent>();
 
-  constructor(config: NgbCarouselConfig) {
+  constructor(private config: NgbCarouselConfig) {
     this.interval = config.interval;
     this.wrap = config.wrap;
     this.keyboard = config.keyboard;
-    this.mouse = config.mouse;
+    this.pauseOnHover = config.pauseOnHover;
   }
 
   ngAfterContentChecked() {
@@ -189,13 +190,13 @@ export class NgbCarousel implements AfterContentChecked,
   }
 
   mouseEventPause() {
-    if (this.mouse) {
+    if (this.pauseOnHover) {
       this.pause();
     }
   }
 
   mouseEventCycle() {
-    if (this.mouse) {
+    if (this.pauseOnHover) {
       this.cycle();
     }
   }
