@@ -36,7 +36,10 @@ let nextId = 0;
   },
   template: `
     <div class="arrow"></div>
-    <h3 class="popover-header">{{title}}</h3><div class="popover-body"><ng-content></ng-content></div>`,
+    <h3 class="popover-header" *ngIf="title">{{title}}</h3>
+    <div class="popover-body">
+      <ng-content></ng-content>
+    </div>`,
   styles: [`
     :host.bs-popover-top .arrow, :host.bs-popover-bottom .arrow {
       left: 50%;
