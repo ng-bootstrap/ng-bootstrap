@@ -1,4 +1,6 @@
 import {TestBed, ComponentFixture} from '@angular/core/testing';
+import {isDefined} from '../util/util';
+import {NAMES_TO_SPECS} from '../util/keys';
 
 export function createGenericTestComponent<T>(html: string, type: {new (...args: any[]): T}): ComponentFixture<T> {
   TestBed.overrideComponent(type, {set: {template: html}});
@@ -58,4 +60,40 @@ export function isBrowser(browsers: Browser | Browser[], ua = window.navigator.u
   } else {
     return browsersStr.indexOf(browser) > -1;
   }
+}
+
+export interface FakeEvent extends Event {
+  which: number;
+  keyCode: number;
+  key: string;
+}
+
+export function createKeyboardEvent(input): Event {
+  if (!isDefined(input)) {
+    input = {};
+  }
+
+  let {type, name, options} = input;
+
+  if (!isDefined(type)) {
+    type = 'keyup';
+  }
+
+  const event = new Event(type, {bubbles: true}) as FakeEvent;
+
+  if (isDefined(name)) {
+    const spec = NAMES_TO_SPECS[name];
+    if (isDefined(spec)) {
+      const {key, code} = spec;
+      event.which = code;
+      event.keyCode = code;
+      event.key = key;
+    }
+  }
+
+  if (isDefined(options)) {
+    Object.assign(event, options);
+  }
+
+  return event;
 }

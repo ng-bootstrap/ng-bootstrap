@@ -222,8 +222,7 @@ gulp.task('enforce-format', function() {
 function doCheckFormat() {
   return gulp
       .src([
-        'gulpfile.js', 'karma-test-shim.js', 'misc/api-doc.js', 'misc/api-doc.spec.js', 'misc/demo-gen.js', PATHS.src,
-        '!src/util/keys.ts'
+        'gulpfile.js', 'karma-test-shim.js', 'misc/api-doc.js', 'misc/api-doc.spec.js', 'misc/demo-gen.js', PATHS.src
       ])
       .pipe(gulpFormat.checkFormat('file', clangFormat));
 }

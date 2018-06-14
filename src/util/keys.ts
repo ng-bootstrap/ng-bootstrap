@@ -15,6 +15,7 @@ export interface KeySpec {
   code: number;
 }
 
+// clang-format off
 const KEY_SPECS_INPUTS: KeySpecInput[] = [
   {               keys: ['Tab'                  ], code:  9},
   {               keys: ['Enter'                ], code: 13},
@@ -31,6 +32,7 @@ const KEY_SPECS_INPUTS: KeySpecInput[] = [
   {               keys: ['ArrowRight', 'Right'  ], code: 39},
   {               keys: ['ArrowDown' , 'Down'   ], code: 40}
 ];
+// clang-format on
 
 export const KEY_SPECS: KeySpec[] = KEY_SPECS_INPUTS.map(({name, keys, code}: KeySpecInput) => {
   const key = keys[0];
@@ -79,6 +81,7 @@ export function getKeyPropertyFromEvent(property: string, event: KeyboardEvent):
   return isDefined(spec) ? spec[property] : null;
 }
 
+// clang-format off
 export function getKey    (event: KeyboardEvent): string { return getKeyPropertyFromEvent('key' , event); }
 export function getKeyCode(event: KeyboardEvent): number { return getKeyPropertyFromEvent('code', event); }
 export function getKeyName(event: KeyboardEvent): string { return getKeyPropertyFromEvent('name', event); }
@@ -104,41 +107,4 @@ export function isArrowLeft (event: KeyboardEvent): boolean { return checkKey('A
 export function isArrowUp   (event: KeyboardEvent): boolean { return checkKey('ArrowUp'   , event); }
 export function isArrowRight(event: KeyboardEvent): boolean { return checkKey('ArrowRight', event); }
 export function isArrowDown (event: KeyboardEvent): boolean { return checkKey('ArrowDown' , event); }
-
-
-
-export interface FakeEvent extends Event {
-  which: number;
-  keyCode: number;
-  key: string;
-};
-
-export function createKeyboardEvent(input): Event {
-  if (!isDefined(input)) {
-    input = {};
-  }
-
-  let {type, name, options} = input;
-
-  if (!isDefined(type)) {
-    type = 'keyup';
-  }
-
-  const event = new Event(type, {bubbles: true}) as FakeEvent;
-
-  if (isDefined(name)) {
-    const spec = NAMES_TO_SPECS[name];
-    if (isDefined(spec)) {
-      const {key, code} = spec;
-      event.which = code;
-      event.keyCode = code;
-      event.key = key;
-    }
-  }
-
-  if (isDefined(options)) {
-    Object.assign(event, options);
-  }
-
-  return event;
-}
+// clang-format on
