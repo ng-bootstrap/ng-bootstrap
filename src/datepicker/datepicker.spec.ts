@@ -366,6 +366,52 @@ describe('ngb-datepicker', () => {
     expect(months.length).toBe(3);
   });
 
+  it('should reuse DOM elements when changing month (single month display)', () => {
+    const fixture = createTestComponent(`<ngb-datepicker [startDate]="date"></ngb-datepicker>`);
+
+    // AUG 2016
+    const oldDates = getDates(fixture.nativeElement);
+    const navigation = getNavigationLinks(fixture.nativeElement);
+    expect(oldDates[0].innerText.trim()).toBe('1');
+
+    // JUL 2016
+    navigation[0].click();
+    fixture.detectChanges();
+
+    const newDates = getDates(fixture.nativeElement);
+    expect(newDates[0].innerText.trim()).toBe('27');
+
+    expect(oldDates).toEqual(newDates);
+  });
+
+  it('should reuse DOM elements when changing month (multiple months display)', () => {
+    const fixture = createTestComponent(`<ngb-datepicker [displayMonths]="2" [startDate]="date"></ngb-datepicker>`);
+
+    // AUG 2016 and SEP 2016
+    const oldDates = getDates(fixture.nativeElement);
+    const oldAugDates = oldDates.slice(0, 42);
+    const oldSepDates = oldDates.slice(42);
+
+    const navigation = getNavigationLinks(fixture.nativeElement);
+    expect(oldAugDates[0].innerText.trim()).toBe('1');
+    expect(oldSepDates[3].innerText.trim()).toBe('1');
+
+    // JUL 2016 and AUG 2016
+    navigation[0].click();
+    fixture.detectChanges();
+
+    const newDates = getDates(fixture.nativeElement);
+    const newJulDates = newDates.slice(0, 42);
+    const newAugDates = newDates.slice(42);
+
+    expect(newJulDates[0].innerText.trim()).toBe('27');
+    expect(newAugDates[0].innerText.trim()).toBe('1');
+
+    // DOM elements were reused:
+    expect(newAugDates).toEqual(oldAugDates);
+    expect(newJulDates).toEqual(oldSepDates);
+  });
+
   it('should switch navigation types', () => {
     const fixture = createTestComponent(`<ngb-datepicker [navigation]="navigation"></ngb-datepicker>`);
 

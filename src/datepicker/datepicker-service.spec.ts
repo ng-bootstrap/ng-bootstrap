@@ -158,29 +158,22 @@ describe('ngb-datepicker-service', () => {
       expect(getDayCtx(5).disabled).toBe(true);  // 6 MAY
     });
 
-    it(`should rebuild month when 'min/maxDates' change and visible`, () => {
+    it(`should update month when 'min/maxDates' change and visible`, () => {
       // MAY 2017
       service.focus(new NgbDate(2017, 5, 5));
       expect(model.months.length).toBe(1);
       expect(model.minDate).toBeUndefined();
       expect(model.maxDate).toBeUndefined();
 
-      const month = model.months[0];
-      const date = month.weeks[0].days[0].date;
-
       // MIN -> 5 MAY, 2017
       service.minDate = new NgbDate(2017, 5, 5);
       expect(model.months.length).toBe(1);
-      expect(model.months[0]).not.toBe(month);
       expect(getDayCtx(0).disabled).toBe(true);
-      expect(getDay(0).date).not.toBe(date);
 
       // MAX -> 10 MAY, 2017
       service.maxDate = new NgbDate(2017, 5, 10);
       expect(model.months.length).toBe(1);
-      expect(model.months[0]).not.toBe(month);
       expect(model.months[0].weeks[4].days[0].context.disabled).toBe(true);
-      expect(model.months[0].weeks[0].days[0].date).not.toBe(date);
     });
   });
 
@@ -233,18 +226,19 @@ describe('ngb-datepicker-service', () => {
       expect(model.months[0].weekdays[0]).toBe(4);
     });
 
-    it(`should rebuild months when 'firstDayOfWeek' changes`, () => {
+    it(`should update months when 'firstDayOfWeek' changes`, () => {
       service.focus(new NgbDate(2017, 5, 5));
       expect(model.months.length).toBe(1);
       expect(model.firstDayOfWeek).toBe(1);
 
-      const month = model.months[0];
-      const date = month.weeks[0].days[0].date;
+      const oldFirstDate = getDay(0).date.toString();
+      expect(oldFirstDate).toBe('2017-5-1');
 
       service.firstDayOfWeek = 3;
       expect(model.months.length).toBe(1);
-      expect(model.months[0]).not.toBe(month);
-      expect(getDay(0).date).not.toBe(date);
+      expect(model.firstDayOfWeek).toBe(3);
+      const newFirstDate = getDay(0).date.toString();
+      expect(newFirstDate).toBe('2017-4-26');
     });
   });
 
@@ -905,17 +899,16 @@ describe('ngb-datepicker-service', () => {
       expect(day.context.disabled).toBe(true);
     });
 
-    it(`should rebuild months when 'markDisabled changes'`, () => {
+    it(`should update months when 'markDisabled changes'`, () => {
       // MAY 2017
       service.markDisabled = (_) => true;
       service.focus(new NgbDate(2017, 5, 1));
 
-      const month = model.months[0];
-      const date = month.weeks[0].days[0].date;
+      expect(getDay(0).context.disabled).toBe(true);
 
-      service.markDisabled = (_) => true;
-      expect(model.months[0]).not.toBe(month);
-      expect(getDay(0).date).not.toBe(date);
+      service.markDisabled = (_) => false;
+
+      expect(getDay(0).context.disabled).toBe(false);
     });
   });
 
