@@ -263,13 +263,13 @@ export class NgbDatepickerService {
       if (state.navigation === 'select') {
         // years ->  boundaries (min/max were changed)
         if ('minDate' in patch || 'maxDate' in patch || state.selectBoxes.years.length === 0 || yearChanged) {
-          state.selectBoxes.years = generateSelectBoxYears(state.focusDate, state.minDate, state.maxDate);
+          state.selectBoxes.years = generateSelectBoxYears(state.firstDate, state.minDate, state.maxDate);
         }
 
         // months -> when current year or boundaries change
         if ('minDate' in patch || 'maxDate' in patch || state.selectBoxes.months.length === 0 || yearChanged) {
           state.selectBoxes.months =
-              generateSelectBoxMonths(this._calendar, state.focusDate, state.minDate, state.maxDate);
+              generateSelectBoxMonths(this._calendar, state.firstDate, state.minDate, state.maxDate);
         }
       } else {
         state.selectBoxes = {years: [], months: []};
