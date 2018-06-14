@@ -612,6 +612,16 @@ describe('ngb-datepicker-service', () => {
         expect(model.selectBoxes.months).toEqual([1, 2, 3, 4, 5, 6, 7]);
       });
 
+      it(`should generate 'months' based on the first date, not the focus date`, () => {
+        service.displayMonths = 2;
+        service.maxDate = new NgbDate(2017, 1, 11);
+        service.open(new NgbDate(2017, 1, 1));
+        expect(model.selectBoxes.months).toEqual([1]);
+
+        service.open(new NgbDate(2016, 12, 1));
+        expect(model.selectBoxes.months).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+      });
+
       it(`should rebuild 'months' and 'years' only when year change`, () => {
         service.focus(new NgbDate(2010, 5, 1));
         let months = model.selectBoxes.months;
