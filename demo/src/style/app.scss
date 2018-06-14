@@ -326,3 +326,9 @@ ngb-datepicker.rtl .ngb-dp-navigation-chevron::before {
   -ms-transform: rotate(45deg);
   margin: 0 0.5rem 0 0;
 }
+
+ngb-carousel {
+  .carousel-item img {
+    width: 100%;
+  }
+}
