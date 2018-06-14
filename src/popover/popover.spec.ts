@@ -35,6 +35,13 @@ describe('ngb-popover-window', () => {
     expect(fixture.nativeElement.querySelector('.popover-header').textContent).toBe('Test title');
   });
 
+  it('should not render popover title node if title is not set', () => {
+    const fixture = TestBed.createComponent(NgbPopoverWindow);
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('.popover-header')).toBeNull();
+  });
+
   it('should position popovers as requested', () => {
     const fixture = TestBed.createComponent(NgbPopoverWindow);
     fixture.componentInstance.placement = 'left';
