@@ -660,22 +660,18 @@ describe('ngb-modal', () => {
   });
 
   describe('accessibility', () => {
-    function testAttributes(modalOptions, expectedAttributes) {
-      const modalInstance = fixture.componentInstance.open('foo', modalOptions);
+    it('should support aria-labelledby', () => {
+      const id = 'aria-labelledby-id';
+
+      const modalInstance = fixture.componentInstance.open('foo', {ariaLabelledBy: id});
       fixture.detectChanges();
 
       const modalElement = <HTMLElement>document.querySelector('ngb-modal-window');
-      expectedAttributes.forEach(([name, value]) => expect(modalElement.getAttribute(name)).toBe(value));
+      expect(modalElement.getAttribute('aria-labelledby')).toBe(id);
 
       modalInstance.close('some result');
       fixture.detectChanges();
       expect(fixture.nativeElement).not.toHaveModal();
-    }
-
-    it('should support aria-labelledby', () => {
-      const id = 'aria-labelledby-id';
-
-      testAttributes({ariaLabelledBy: id}, [['aria-labelledby', id]]);
     });
   });
 });
