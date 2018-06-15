@@ -1,7 +1,7 @@
 import {Component, Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
-import {catchError, debounceTime, distinctUntilChanged, map, tap, switchMap, merge} from 'rxjs/operators';
+import {catchError, debounceTime, distinctUntilChanged, map, tap, switchMap} from 'rxjs/operators';
 
 const WIKI_URL = 'https://en.wikipedia.org/w/api.php';
 const PARAMS = new HttpParams({
@@ -38,7 +38,6 @@ export class NgbdTypeaheadHttp {
   model: any;
   searching = false;
   searchFailed = false;
-  hideSearchingWhenUnsubscribed = new Observable(() => () => this.searching = false);
 
   constructor(private _service: WikipediaService) {}
 
@@ -55,7 +54,6 @@ export class NgbdTypeaheadHttp {
             return of([]);
           }))
       ),
-      tap(() => this.searching = false),
-      merge(this.hideSearchingWhenUnsubscribed)
+      tap(() => this.searching = false)
     );
 }
