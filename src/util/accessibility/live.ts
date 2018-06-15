@@ -11,15 +11,20 @@ export const DEFAULT_ARIA_LIVE_DELAY: ARIA_LIVE_DELAY_TYPE = 100;
 
 
 
-function createLiveElement(document): HTMLElement {
-  const element = document.createElement('div');
+function getLiveElement(document: any, lazyCreate = false): HTMLElement | null {
+  let element = document.body.querySelector('#ngb-live') as HTMLElement;
 
-  element.setAttribute('aria-live', 'polite');
-  element.setAttribute('aria-atomic', 'true');
+  if (element == null && lazyCreate) {
+    element = document.createElement('div');
 
-  element.classList.add('sr-only');
+    element.setAttribute('id', 'ngb-live');
+    element.setAttribute('aria-live', 'polite');
+    element.setAttribute('aria-atomic', 'true');
 
-  document.body.appendChild(element);
+    element.classList.add('sr-only');
+
+    document.body.appendChild(element);
+  }
 
   return element;
 }
@@ -28,16 +33,17 @@ function createLiveElement(document): HTMLElement {
 
 @Injectable()
 export class Live implements OnDestroy {
-  private _element: HTMLElement;
+  constructor(@Inject(DOCUMENT) private _document: any, @Inject(ARIA_LIVE_DELAY) private _delay: any) {}
 
-  constructor(@Inject(DOCUMENT) document: any, @Inject(ARIA_LIVE_DELAY) private _delay: ARIA_LIVE_DELAY_TYPE) {
-    this._element = createLiveElement(document);
+  ngOnDestroy() {
+    const element = getLiveElement(this._document);
+    if (element) {
+      element.parentElement.removeChild(element);
+    }
   }
 
-  ngOnDestroy() { this._element.parentElement.removeChild(this._element); }
-
-  say(message: string): void {
-    const element = this._element;
+  say(message: string) {
+    const element = getLiveElement(this._document, true);
     const delay = this._delay;
 
     element.textContent = '';
