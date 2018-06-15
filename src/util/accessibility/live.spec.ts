@@ -5,15 +5,14 @@ import {Live, ARIA_LIVE_DELAY} from './live';
 
 
 
-function getLiveElement(): Element {
-  return document.body.querySelector('[aria-live]');
+function getLiveElement(): Element | null {
+  return document.body.querySelector('#ngb-live');
 }
 
 
 
 describe('LiveAnnouncer', () => {
   let live: Live;
-  let liveElement: Element;
   let fixture: ComponentFixture<TestComponent>;
 
   const say = () => { fixture.debugElement.query(By.css('button')).nativeElement.click(); };
@@ -26,15 +25,14 @@ describe('LiveAnnouncer', () => {
 
     beforeEach(inject([Live], (_live: Live) => {
       live = _live;
-      liveElement = getLiveElement();
       fixture = TestBed.createComponent(TestComponent);
     }));
 
     it('should correctly update the text message', () => {
       say();
+      const liveElement = getLiveElement();
       expect(liveElement.textContent).toBe('test');
-
-      live.ngOnDestroy();
+      expect(liveElement.id).toBe('ngb-live');
     });
 
     it('should remove the used element from the DOM on destroy', () => {
