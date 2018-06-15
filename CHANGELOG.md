@@ -1,3 +1,16 @@
+<a name="2.1.1"></a>
+## [2.1.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/2.1.0...2.1.1) (2018-06-15)
+
+
+### Bug Fixes
+
+* **datepicker:** properly display month select box when 'displayMonths' > 1 ([18acd62](https://github.com/ng-bootstrap/ng-bootstrap/commit/18acd62)), closes [#2377](https://github.com/ng-bootstrap/ng-bootstrap/issues/2377) [#2452](https://github.com/ng-bootstrap/ng-bootstrap/issues/2452)
+* **live:** use a single DOM element for Live Announcer ([31968ad](https://github.com/ng-bootstrap/ng-bootstrap/commit/31968ad)), closes [#2458](https://github.com/ng-bootstrap/ng-bootstrap/issues/2458)
+* **positioning:** add missing primary position checks ([54168ea](https://github.com/ng-bootstrap/ng-bootstrap/commit/54168ea))
+* **positioning:** add secondary positions to auto conversion ([7208006](https://github.com/ng-bootstrap/ng-bootstrap/commit/7208006)), closes [#1899](https://github.com/ng-bootstrap/ng-bootstrap/issues/1899)
+
+
+
 <a name="2.1.0"></a>
 # [2.1.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/2.0.0...2.1.0) (2018-06-08)
 
