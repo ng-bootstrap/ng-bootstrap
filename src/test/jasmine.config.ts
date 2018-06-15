@@ -1,3 +1,7 @@
+// Timeouts
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 2000;
+
+// Matchers
 beforeEach(() => {
   jasmine.addMatchers({
     toHaveCssClass: function(util, customEqualityTests) {

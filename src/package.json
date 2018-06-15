@@ -1,0 +1,42 @@
+{
+  "name": "@ng-bootstrap/ng-bootstrap",
+  "version": "2.2.0",
+  "description": "Angular powered Bootstrap",
+  "keywords": [
+    "angular",
+    "bootstrap",
+    "components",
+    "accordion",
+    "alert",
+    "buttons",
+    "carousel",
+    "collapse",
+    "datepicker",
+    "dropdown",
+    "modal",
+    "pagination",
+    "popover",
+    "progressbar",
+    "rating",
+    "tabset",
+    "timepicker",
+    "tooltip",
+    "typeahead"
+  ],
+  "author": "https://github.com/ng-bootstrap/ng-bootstrap/graphs/contributors",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ng-bootstrap/ng-bootstrap.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ng-bootstrap/ng-bootstrap/issues"
+  },
+  "homepage": "https://github.com/ng-bootstrap/ng-bootstrap#readme",
+  "peerDependencies": {
+    "@angular/common": "^6.0.0",
+    "@angular/core": "^6.0.0",
+    "@angular/forms": "^6.0.0",
+    "rxjs": "^6.0.0"
+  }
+}

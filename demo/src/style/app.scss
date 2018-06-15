@@ -53,7 +53,6 @@ header.navbar {
 }
 
 .sidebar {
-  position: -webkit-sticky;
   position: sticky;
   top: 1rem;
 }
@@ -122,7 +121,6 @@ header.title {
 }
 
 .contextual-nav .nav {
-  position: -webkit-sticky;
   position: sticky;
   top: 0;
 
@@ -316,15 +314,11 @@ ngb-datepicker.rtl .ngb-dp-arrow-btn {
 
 ngb-datepicker.rtl .ngb-dp-arrow.right .ngb-dp-navigation-chevron:before {
   transform: rotate(-135deg);
-  -webkit-transform: rotate(-135deg);
-  -ms-transform: rotate(-135deg);
   margin: 0 0 0 0.5rem;
 }
 
 ngb-datepicker.rtl .ngb-dp-navigation-chevron::before {
   transform: rotate(45deg);
-  -webkit-transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
   margin: 0 0.5rem 0 0;
 }
 
