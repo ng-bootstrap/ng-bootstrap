@@ -87,37 +87,61 @@ export function buildMonths(
     calendar: NgbCalendar, date: NgbDate, state: DatepickerViewModel, i18n: NgbDatepickerI18n,
     force: boolean): MonthViewModel[] {
   const {displayMonths, months} = state;
-  const newMonths = [];
-  for (let i = 0; i < displayMonths; i++) {
-    const newDate = calendar.getNext(date, 'm', i);
-    const index = months.findIndex(month => month.firstDate.equals(newDate));
+  // move old months to a temporary array
+  const monthsToReuse = months.splice(0, months.length);
 
-    if (force || index === -1) {
-      newMonths.push(buildMonth(calendar, newDate, state, i18n));
-    } else {
-      newMonths.push(months[index]);
+  // generate new first dates, nullify or reuse months
+  const firstDates = Array.from({length: displayMonths}, (_, i) => {
+    const firstDate = calendar.getNext(date, 'm', i);
+    months[i] = null;
+
+    if (!force) {
+      const reusedIndex = monthsToReuse.findIndex(month => month.firstDate.equals(firstDate));
+      // move reused month back to months
+      if (reusedIndex !== -1) {
+        months[i] = monthsToReuse.splice(reusedIndex, 1)[0];
+      }
     }
-  }
 
-  return newMonths;
+    return firstDate;
+  });
+
+  // rebuild nullified months
+  firstDates.forEach((firstDate, i) => {
+    if (months[i] === null) {
+      months[i] = buildMonth(calendar, firstDate, state, i18n, monthsToReuse.shift() || {} as MonthViewModel);
+    }
+  });
+
+  return months;
 }
 
 export function buildMonth(
-    calendar: NgbCalendar, date: NgbDate, state: DatepickerViewModel, i18n: NgbDatepickerI18n): MonthViewModel {
+    calendar: NgbCalendar, date: NgbDate, state: DatepickerViewModel, i18n: NgbDatepickerI18n,
+    month: MonthViewModel = {} as MonthViewModel): MonthViewModel {
   const {minDate, maxDate, firstDayOfWeek, markDisabled, outsideDays} = state;
-  const month:
-      MonthViewModel = {firstDate: null, lastDate: null, number: date.month, year: date.year, weeks: [], weekdays: []};
+
+  month.firstDate = null;
+  month.lastDate = null;
+  month.number = date.month;
+  month.year = date.year;
+  month.weeks = month.weeks || [];
+  month.weekdays = month.weekdays || [];
 
   date = getFirstViewDate(calendar, date, firstDayOfWeek);
 
   // month has weeks
   for (let week = 0; week < calendar.getWeeksPerMonth(); week++) {
-    const days: DayViewModel[] = [];
+    let weekObject = month.weeks[week];
+    if (!weekObject) {
+      weekObject = month.weeks[week] = {number: 0, days: [], collapsed: true};
+    }
+    const days = weekObject.days;
 
     // week has days
     for (let day = 0; day < calendar.getDaysPerWeek(); day++) {
       if (week === 0) {
-        month.weekdays.push(calendar.getWeekday(date));
+        month.weekdays[day] = calendar.getWeekday(date);
       }
 
       const newDate = new NgbDate(date.year, date.month, date.day);
@@ -141,27 +165,29 @@ export function buildMonth(
         month.lastDate = newDate;
       }
 
-      days.push({
-        date: newDate,
-        context: {
-          date: {year: newDate.year, month: newDate.month, day: newDate.day},
-          currentMonth: month.number, disabled,
-          focused: false,
-          selected: false
-        },
-        tabindex: -1, ariaLabel,
-        hidden: false
+      let dayObject = days[day];
+      if (!dayObject) {
+        dayObject = days[day] = {} as DayViewModel;
+      }
+      dayObject.date = newDate;
+      dayObject.context = Object.assign(dayObject.context || {}, {
+        date: {year: newDate.year, month: newDate.month, day: newDate.day},
+        currentMonth: month.number, disabled,
+        focused: false,
+        selected: false
       });
+      dayObject.tabindex = -1;
+      dayObject.ariaLabel = ariaLabel;
+      dayObject.hidden = false;
 
       date = nextDate;
     }
 
-    // marking week as collapsed
-    const collapsed = outsideDays === 'collapsed' && days[0].date.month !== month.number &&
-        days[days.length - 1].date.month !== month.number;
+    weekObject.number = calendar.getWeekNumber(days.map(day => NgbDate.from(day.date)), firstDayOfWeek);
 
-    month.weeks.push(
-        {number: calendar.getWeekNumber(days.map(day => NgbDate.from(day.date)), firstDayOfWeek), days, collapsed});
+    // marking week as collapsed
+    weekObject.collapsed = outsideDays === 'collapsed' && days[0].date.month !== month.number &&
+        days[days.length - 1].date.month !== month.number;
   }
 
   return month;
