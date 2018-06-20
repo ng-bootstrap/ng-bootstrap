@@ -45,7 +45,7 @@ export class NgbSlide {
     '(keydown.arrowRight)': 'keyNext()'
   },
   template: `
-    <ol class="carousel-indicators">
+    <ol class="carousel-indicators" *ngIf="showIndicator()">
       <li *ngFor="let slide of slides" [id]="slide.id" [class.active]="slide.id === activeId"
           (click)="cycleToSelected(slide.id, getSlideEventDirection(activeId, slide.id))"></li>
     </ol>
@@ -54,11 +54,11 @@ export class NgbSlide {
         <ng-template [ngTemplateOutlet]="slide.tplRef"></ng-template>
       </div>
     </div>
-    <a class="carousel-control-prev" role="button" (click)="cycleToPrev()">
+    <a class="carousel-control-prev" role="button" (click)="cycleToPrev()" *ngIf="showNavigation()">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
       <span class="sr-only" i18n="@@ngb.carousel.previous">Previous</span>
     </a>
-    <a class="carousel-control-next" role="button" (click)="cycleToNext()">
+    <a class="carousel-control-next" role="button" (click)="cycleToNext()" *ngIf="showNavigation()">
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
       <span class="sr-only" i18n="@@ngb.carousel.next">Next</span>
     </a>
@@ -90,6 +90,16 @@ export class NgbCarousel implements AfterContentChecked,
   @Input() activeId: string;
 
   /**
+   * A flag for hiding the navigation buttons if there is only one slide
+   */
+  @Input() hideNavigation: boolean;
+
+  /**
+   * A flag for hiding the indicatiors if there is only one slide
+   */
+  @Input() hideIndicator: boolean;
+
+  /**
    * A carousel slide event fired when the slide transition is completed.
    * See NgbSlideEvent for payload details
    */
@@ -99,6 +109,8 @@ export class NgbCarousel implements AfterContentChecked,
     this.interval = config.interval;
     this.wrap = config.wrap;
     this.keyboard = config.keyboard;
+    this.hideNavigation = config.hideNavigation;
+    this.hideIndicator = config.hideIndicator;
   }
 
   ngAfterContentChecked() {
@@ -182,6 +194,10 @@ export class NgbCarousel implements AfterContentChecked,
       this.next();
     }
   }
+
+  showNavigation(): boolean { return !this.hideNavigation; }
+
+  showIndicator(): boolean { return !this.hideIndicator; }
 
   private _restartTimer() {
     this._stopTimer();
