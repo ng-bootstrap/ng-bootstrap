@@ -1,13 +1,15 @@
 import {TestBed, ComponentFixture, async, inject} from '@angular/core/testing';
 import {createGenericTestComponent} from '../test/common';
 
-import {Component} from '@angular/core';
+import {Component, Injectable} from '@angular/core';
 import {By} from '@angular/platform-browser';
 import {Validators, FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import {NgbTimepickerModule} from './timepicker.module';
 import {NgbTimepickerConfig} from './timepicker-config';
 import {NgbTimepicker} from './timepicker';
+import {NgbTimeAdapter, NgbTimeStructAdapter} from './ngb-time-adapter';
+import {NgbTimeStruct} from './ngb-time-struct';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -83,7 +85,7 @@ describe('ngb-timepicker', () => {
   describe('initialization', () => {
     it('should initialize inputs with provided config', () => {
       const defaultConfig = new NgbTimepickerConfig();
-      const timepicker = new NgbTimepicker(new NgbTimepickerConfig());
+      const timepicker = new NgbTimepicker(new NgbTimepickerConfig(), new NgbTimeStructAdapter());
       expectSameValues(timepicker, defaultConfig);
     });
   });
@@ -1295,6 +1297,74 @@ describe('ngb-timepicker', () => {
              });
        }));
   });
+
+  describe('Custom adapter', () => {
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        declarations: [TestComponent],
+        imports: [NgbTimepickerModule.forRoot(), FormsModule],
+        providers: [{provide: NgbTimeAdapter, useClass: StringTimeAdapter}]
+      });
+    });
+
+    it('should display the right time when model is a string parsed by a custom time adapter', async(() => {
+         const html = `<ngb-timepicker [(ngModel)]="model"></ngb-timepicker>`;
+         const fixture = createTestComponent(html);
+
+         fixture.componentInstance.model = null;
+         fixture.detectChanges();
+
+         fixture.detectChanges();
+         fixture.whenStable()
+             .then(() => {
+               fixture.detectChanges();
+               return fixture.whenStable();
+             })
+             .then(() => { expectToDisplayTime(fixture.nativeElement, ':'); })
+             .then(() => {
+               fixture.componentInstance.model = '09:25:00';
+               fixture.detectChanges();
+               return fixture.whenStable()
+             })
+             .then(() => {
+               fixture.detectChanges();
+               return fixture.whenStable();
+             })
+             .then(() => { expectToDisplayTime(fixture.nativeElement, '09:25'); });
+       }));
+
+    it('should write the entered value as a string formatted by a custom time adapter', () => {
+      const html = `<ngb-timepicker [(ngModel)]="model"></ngb-timepicker>`;
+
+      const fixture = createTestComponent(html);
+      fixture.componentInstance.model = null;
+      fixture.detectChanges();
+      fixture.whenStable()
+          .then(() => {
+            fixture.detectChanges();
+            return fixture.whenStable();
+          })
+          .then(() => {
+
+            const inputs = fixture.debugElement.queryAll(By.css('input'));
+            inputs[0].triggerEventHandler('change', createChangeEvent('11'));
+            fixture.detectChanges();
+            expectToDisplayTime(fixture.nativeElement, '11:');
+            expect(fixture.componentInstance.model).toBeNull();
+
+            inputs[1].triggerEventHandler('change', createChangeEvent('5'));
+            fixture.detectChanges();
+            expectToDisplayTime(fixture.nativeElement, '11:05');
+            expect(fixture.componentInstance.model).toEqual('11:05:00');
+
+            inputs[0].triggerEventHandler('change', createChangeEvent('aa'));
+            fixture.detectChanges();
+            expectToDisplayTime(fixture.nativeElement, ':05');
+            expect(fixture.componentInstance.model).toBeNull();
+          });
+    });
+  });
 });
 
 
@@ -1310,4 +1380,24 @@ class TestComponent {
   showSeconds = true;
 
   onSubmit() { this.submitted = true; }
+}
+
+@Injectable()
+class StringTimeAdapter extends NgbTimeAdapter<string> {
+  fromModel(value: string): NgbTimeStruct {
+    if (!value) {
+      return null;
+    }
+    const split = value.split(':');
+    return {hour: parseInt(split[0], 10), minute: parseInt(split[1], 10), second: parseInt(split[2], 10)};
+  }
+
+  toModel(time: NgbTimeStruct): string {
+    if (!time) {
+      return null;
+    }
+    return `${this.pad(time.hour)}:${this.pad(time.minute)}:${this.pad(time.second)}`;
+  }
+
+  private pad(i: number): string { return i < 10 ? `0${i}` : `${i}`; }
 }
