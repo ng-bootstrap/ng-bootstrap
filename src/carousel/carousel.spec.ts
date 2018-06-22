@@ -29,7 +29,7 @@ function expectActiveSlides(nativeEl: HTMLDivElement, active: boolean[]) {
   }
 }
 
-fdescribe('ngb-carousel', () => {
+describe('ngb-carousel', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbCarouselModule.forRoot()]});
   });
