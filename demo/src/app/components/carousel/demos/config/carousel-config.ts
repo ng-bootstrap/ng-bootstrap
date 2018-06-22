@@ -16,6 +16,7 @@ export class NgbdCarouselConfig implements OnInit {
     config.interval = 10000;
     config.wrap = false;
     config.keyboard = false;
+    config.allowPause = false;
   }
 
   ngOnInit() {

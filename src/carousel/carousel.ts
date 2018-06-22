@@ -80,7 +80,7 @@ export class NgbCarousel implements AfterContentChecked,
   @Input() wrap: boolean;
 
   /**
-   * A flag for allowing navigation via keyboard
+   * A flag for allowing navigation via keyboard.
    */
   @Input() keyboard: boolean;
 
@@ -88,6 +88,11 @@ export class NgbCarousel implements AfterContentChecked,
    * The active slide id.
    */
   @Input() activeId: string;
+
+  /**
+   * Whether carousel can be paused.
+   */
+  @Input() allowPause: boolean;
 
   /**
    * A carousel slide event fired when the slide transition is completed.
@@ -99,6 +104,7 @@ export class NgbCarousel implements AfterContentChecked,
     this.interval = config.interval;
     this.wrap = config.wrap;
     this.keyboard = config.keyboard;
+    this.allowPause = config.allowPause;
   }
 
   ngAfterContentChecked() {
@@ -143,12 +149,20 @@ export class NgbCarousel implements AfterContentChecked,
   /**
    * Stops the carousel from cycling through items.
    */
-  pause() { this._stopTimer(); }
+  pause() {
+    if (this.allowPause) {
+      this._stopTimer();
+    }
+  }
 
   /**
    * Restarts cycling through the carousel slides from left to right.
    */
-  cycle() { this._startTimer(); }
+  cycle() {
+    if (this.allowPause) {
+      this._startTimer();
+    }
+  }
 
   cycleToNext() { this.cycleToSelected(this._getNextSlide(this.activeId), NgbSlideEventDirection.LEFT); }
 

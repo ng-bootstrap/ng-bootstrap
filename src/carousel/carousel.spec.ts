@@ -41,6 +41,7 @@ describe('ngb-carousel', () => {
     expect(carousel.interval).toBe(defaultConfig.interval);
     expect(carousel.wrap).toBe(defaultConfig.wrap);
     expect(carousel.keyboard).toBe(defaultConfig.keyboard);
+    expect(carousel.allowPause).toBe(defaultConfig.allowPause);
   });
 
   it('should render slides and navigation indicators', fakeAsync(() => {
@@ -481,6 +482,7 @@ describe('ngb-carousel', () => {
       config.interval = 1000;
       config.wrap = false;
       config.keyboard = false;
+      config.allowPause = false;
     }));
 
     it('should initialize inputs with provided config', () => {
@@ -491,6 +493,7 @@ describe('ngb-carousel', () => {
       expect(carousel.interval).toBe(config.interval);
       expect(carousel.wrap).toBe(config.wrap);
       expect(carousel.keyboard).toBe(config.keyboard);
+      expect(carousel.allowPause).toBe(config.allowPause);
     });
   });
 
@@ -499,6 +502,7 @@ describe('ngb-carousel', () => {
     config.interval = 1000;
     config.wrap = false;
     config.keyboard = false;
+    config.allowPause = false;
 
     beforeEach(() => {
       TestBed.configureTestingModule(
@@ -513,6 +517,7 @@ describe('ngb-carousel', () => {
       expect(carousel.interval).toBe(config.interval);
       expect(carousel.wrap).toBe(config.wrap);
       expect(carousel.keyboard).toBe(config.keyboard);
+      expect(carousel.allowPause).toBe(config.allowPause);
     });
   });
 
@@ -523,5 +528,6 @@ class TestComponent {
   interval;
   activeSlideId;
   keyboard = true;
+  allowPause = true;
   carouselSlideCallBack = (event: NgbSlideEvent) => {};
 }
