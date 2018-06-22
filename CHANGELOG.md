@@ -1,3 +1,14 @@
+<a name="2.1.2"></a>
+## [2.1.2](https://github.com/ng-bootstrap/ng-bootstrap/compare/2.1.1...2.1.2) (2018-06-22)
+
+
+### Bug Fixes
+
+* **datepicker:** fix ExpressionChangedAfterItHasBeenCheckedError when switching between months ([b47f981](https://github.com/ng-bootstrap/ng-bootstrap/commit/b47f981)), closes [#2408](https://github.com/ng-bootstrap/ng-bootstrap/issues/2408) [#2462](https://github.com/ng-bootstrap/ng-bootstrap/issues/2462)
+* **timepicker:** fix placeholder width issues on iOS ([e65d5cf](https://github.com/ng-bootstrap/ng-bootstrap/commit/e65d5cf)), closes [#2460](https://github.com/ng-bootstrap/ng-bootstrap/issues/2460)
+
+
+
 <a name="2.1.1"></a>
 ## [2.1.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/2.1.0...2.1.1) (2018-06-15)
 
