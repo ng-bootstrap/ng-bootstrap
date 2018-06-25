@@ -13,6 +13,7 @@ import {NgbTypeaheadConfig} from './typeahead-config';
 import {debounceTime, filter, map, merge} from 'rxjs/operators';
 
 import {ARIA_LIVE_DELAY} from '../util/accessibility/live';
+import {Key} from '../util/key';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -22,14 +23,6 @@ const createOnPushTestComponent = (html: string) =>
 
 const createAsyncTestComponent = (html: string) =>
     createGenericTestComponent(html, TestAsyncComponent) as ComponentFixture<TestAsyncComponent>;
-
-enum Key {
-  Tab = 9,
-  Enter = 13,
-  Escape = 27,
-  ArrowUp = 38,
-  ArrowDown = 40
-}
 
 function createKeyDownEvent(key: number) {
   const event = {which: key, preventDefault: () => {}, stopPropagation: () => {}};

@@ -14,16 +14,8 @@ import {
 } from '@angular/core';
 import {NgbRatingConfig} from './rating-config';
 import {toString, getValueInRange} from '../util/util';
+import {Key} from '../util/key';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
-
-enum Key {
-  End = 35,
-  Home = 36,
-  ArrowLeft = 37,
-  ArrowUp = 38,
-  ArrowRight = 39,
-  ArrowDown = 40
-}
 
 /**
  * Context for the custom star display template

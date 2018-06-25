@@ -1,5 +1,6 @@
 import {TestBed, ComponentFixture, inject, async, fakeAsync, tick} from '@angular/core/testing';
 import {createGenericTestComponent} from '../test/common';
+import {Key} from '../util/key';
 
 import {Component, DebugElement} from '@angular/core';
 import {FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators} from '@angular/forms';
@@ -11,15 +12,6 @@ import {By} from '@angular/platform-browser';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
-
-enum Key {
-  End = 35,
-  Home = 36,
-  ArrowLeft = 37,
-  ArrowUp = 38,
-  ArrowRight = 39,
-  ArrowDown = 40
-}
 
 function createKeyDownEvent(key: number) {
   const event = {which: key, preventDefault: () => {}};

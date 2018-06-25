@@ -21,17 +21,10 @@ import {positionElements, PlacementArray} from '../util/positioning';
 import {NgbTypeaheadWindow, ResultTemplateContext} from './typeahead-window';
 import {PopupService} from '../util/popup';
 import {toString, isDefined} from '../util/util';
+import {Key} from '../util/key';
 import {Live} from '../util/accessibility/live';
 import {NgbTypeaheadConfig} from './typeahead-config';
 import {map, switchMap, tap} from 'rxjs/operators';
-
-enum Key {
-  Tab = 9,
-  Enter = 13,
-  Escape = 27,
-  ArrowUp = 38,
-  ArrowDown = 40
-}
 
 const NGB_TYPEAHEAD_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
