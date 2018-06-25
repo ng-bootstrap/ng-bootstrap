@@ -26,6 +26,7 @@ import {NgbDateParserFormatter} from './ngb-date-parser-formatter';
 
 import {positionElements, PlacementArray} from '../util/positioning';
 import {ngbFocusTrap} from '../util/focus-trap';
+import {Key} from '../util/key';
 import {NgbDateStruct} from './ngb-date-struct';
 import {NgbDateAdapter} from './adapters/ngb-date-adapter';
 import {NgbCalendar} from './ngb-calendar';
@@ -45,10 +46,6 @@ const NGB_DATEPICKER_VALIDATOR = {
   useExisting: forwardRef(() => NgbInputDatepicker),
   multi: true
 };
-
-enum Key {
-  Escape = 27
-}
 
 /**
  * A directive that makes it possible to have datepickers on input fields.

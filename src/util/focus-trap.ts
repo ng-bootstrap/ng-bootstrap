@@ -1,9 +1,6 @@
 import {fromEvent, Observable} from 'rxjs';
 import {filter, map, takeUntil, withLatestFrom} from 'rxjs/operators';
-
-enum Key {
-  Tab = 9
-}
+import {Key} from '../util/key';
 
 const FOCUSABLE_ELEMENTS_SELECTOR = [
   'a[href]', 'button:not([disabled])', 'input:not([disabled]):not([type="hidden"])', 'select:not([disabled])',

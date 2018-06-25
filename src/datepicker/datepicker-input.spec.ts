@@ -4,6 +4,7 @@ import {createGenericTestComponent} from '../test/common';
 
 import {Component, Injectable} from '@angular/core';
 import {FormsModule, NgForm} from '@angular/forms';
+import {Key} from '../util/key';
 
 import {NgbDateAdapter, NgbDatepickerModule} from './datepicker.module';
 import {NgbInputDatepicker} from './datepicker-input';
@@ -16,10 +17,6 @@ const createTestCmpt = (html: string) =>
 
 const createTestNativeCmpt = (html: string) =>
     createGenericTestComponent(html, TestNativeComponent) as ComponentFixture<TestNativeComponent>;
-
-enum Key {
-  Escape = 27
-}
 
 function dispatchKeyUpEvent(key: Key) {
   const event = document.createEvent('KeyboardEvent') as any;
