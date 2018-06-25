@@ -4,19 +4,7 @@ import {NgbDatepickerService} from './datepicker-service';
 import {TestBed} from '@angular/core/testing';
 import {Subject} from 'rxjs';
 import {NgbDate} from './ngb-date';
-
-enum Key {
-  Enter = 13,
-  Space = 32,
-  PageUp = 33,
-  PageDown = 34,
-  End = 35,
-  Home = 36,
-  ArrowLeft = 37,
-  ArrowUp = 38,
-  ArrowRight = 39,
-  ArrowDown = 40
-}
+import {Key} from '../util/key';
 
 const event = (keyCode: number, shift = false) =>
     <any>({which: keyCode, shiftKey: shift, preventDefault: () => {}, stopPropagation: () => {}});
