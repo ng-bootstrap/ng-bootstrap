@@ -161,11 +161,12 @@ header.title {
 }
 
 
-div.api-doc-component {
+div.api-doc-component,
+div.overview-component {
   margin-bottom: 3rem;
 
-  > h2,
-  > h3 {
+  h2,
+  h3 {
     .github-link {
       transition: opacity 0.5s;
       opacity: 0.3;

@@ -10,9 +10,9 @@
     <ul class="nav flex-column">
       <li
         *ngFor="let component of components"
-        [class.active]="isActive(['/components', component.toLowerCase(), activeTab])"
+        [class.active]="isActive(['/components', component.toLowerCase()], false)"
       >
-        <a class="toc-link" [routerLink]="['/components', component.toLowerCase(), activeTab]">{{ component }}</a>
+        <a class="toc-link" [routerLink]="['/components', component.toLowerCase()]">{{ component }}</a>
       </li>
     </ul>
   </div>
