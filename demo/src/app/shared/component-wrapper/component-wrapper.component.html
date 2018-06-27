@@ -21,7 +21,6 @@
         id="doc-nav"
         [ngbCollapse]="sidebarCollapsed"
         class="d-lg-block my-3 collpase sidebar"
-        [activeTab]="activeTab"
       ></ngbd-side-nav>
     </div>
 
@@ -30,7 +29,7 @@
         <h1 class="mb-4 mr-auto mr-md-none">{{ component }}</h1>
 
         <ul class="nav nav-tabs px-4 px-lg-5 content-tabset" [class.justify-content-start]="isLargeScreenOrLess" [class.justify-content-end]="isSmallScreenOrLess">
-          <li class="nav-item" *ngIf="hasOverview">
+          <li class="nav-item" *ngIf="overview">
             <a
               class="nav-link"
               [class.active]="activeTab === 'overview'"
@@ -69,6 +68,10 @@
           [ngSwitch]="activeTab"
           class="col-12 col-xl-9 px-md-0 pr-xl-4"
         >
+          <ng-container *ngSwitchCase="'overview'">
+            <ng-content select="ngbd-overview"></ng-content>
+          </ng-container>
+
           <ng-container *ngSwitchCase="'examples'">
             <ng-content select="ngbd-example-box"></ng-content>
             <div class="examples-legend">

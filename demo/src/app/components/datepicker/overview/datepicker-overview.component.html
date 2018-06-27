@@ -1,0 +1,426 @@
+<p>
+  Datepicker will help you with date selection.
+  It can be used either inline with <code>NgbDatepicker</code> component or as a
+  popup on any input element with <code>NgbInputDatepicker</code> directive.
+  It also comes with the list of services to do formatting, calendars and i18n.
+</p>
+<p>
+  We try to keep API of our components simple, but introduce extension points,
+  so you could enrich and reuse them.
+
+  Here is a short example of the vacation range picker that displays holidays with tooltips
+  and disables weekends.
+</p>
+
+<ngbd-datepicker-demo-overview class="d-block my-4"></ngbd-datepicker-demo-overview>
+
+<p>
+  To understand the concepts behind the datepicker, here are some topics to look at:
+</p>
+<ol>
+  <li><a [routerLink]="" fragment="basic-usage">Basic usage</a></li>
+  <li><a [routerLink]="" fragment="getting-date">Getting/setting a date</a></li>
+  <li><a [routerLink]="" fragment="navigation">Moving around</a></li>
+  <li><a [routerLink]="" fragment="date-model">Date model and format</a></li>
+  <li><a [routerLink]="" fragment="day-template">Day display customization</a></li>
+  <li><a [routerLink]="" fragment="limiting-dates">Disabling and limiting dates</a></li>
+  <li><a [routerLink]="" fragment="range">Range selection</a></li>
+  <li><a [routerLink]="" fragment="calendars">Alternative calendars</a></li>
+  <li><a [routerLink]="" fragment="i18n">Internationalization</a></li>
+  <li><a [routerLink]="" fragment="keyboard-shortcuts">Keyboard shortcuts</a></li>
+</ol>
+
+
+
+<!-- BASIC USAGE -->
+<section>
+  <h2>
+    <a class="title-fragment" [routerLink]="" fragment="basic-usage" ngbdFragment>
+      <img src="img/link-symbol.svg" />
+    </a>
+    Basic Usage
+  </h2>
+
+  <p>
+    Datepicker can be used either inline or inside of the popup.
+  </p>
+  <p>
+    In the example below the template variable <code>#d</code> will point
+    to the instance of the <code>NgbDatepicker</code> component in the first case.
+    In the second it will point to the instance of the <code>NgbInputDatepicker</code>
+    directive that will handle the popup containing inline datepicker.
+  </p>
+
+  <ngbd-code lang="html" [code]="snippets.basic"></ngbd-code>
+
+  <p>
+    See the <a routerLink="../api" fragment="NgbDatepicker">NgbDatepicker API</a>
+    and the <a routerLink="../api" fragment="NgbInputDatepicker">NgbInputDatepicker API</a>
+    for details on all available inputs, outputs and methods.
+
+    You can customize the number of displayed months, the way navigation
+    between months and years looks like, week numbers, etc.
+  </p>
+
+  <p>
+    If you have a very specific case of the datepicker popup,
+    you could always create you own one and use the inline datepicker inside.
+  </p>
+
+  <h4>Handling the popup</h4>
+
+  <p>
+    It's up to you do decide when the datepicker popup should be opened and closed.
+    The API contains <code>.open()</code>, <code>.close()</code> and <code>.toggle()</code>
+    methods.
+  </p>
+
+  <p>
+    By default the popup element is attached after the input in the DOM.
+    You have also the option of attaching it to the document body by setting the
+    <code>[container]</code> input to <code>'body'</code>
+  </p>
+
+  <ngbd-code lang="html" [code]="snippets.popup"></ngbd-code>
+
+  <p>
+    The popup will be closed when pressing the <code>Escape</code> key and when
+    a date is selected via keyboard or mouse.
+    It can stay open after date selection if you set <code>[autoClose]</code> input to <code>false</code>
+  </p>
+</section>
+
+
+
+<!-- GETTING / SETTING A DATE -->
+<section>
+  <h2>
+    <a class="title-fragment" [routerLink]="" fragment="getting-date" ngbdFragment>
+      <img src="img/link-symbol.svg" />
+    </a>
+    Getting/setting a date
+  </h2>
+
+  <p>
+    You have several ways of knowing when user selects a date. The date is selected
+    either by clicking on it, pressing <code>Space</code> or <code>Enter</code>,
+    typing text in the input or programmatically.
+  </p>
+
+  <p>
+    Datepicker is integrated with Angular forms and works with both reactive
+    and template-driven forms. So you could use <code>[(ngModel)]</code>,
+    <code>[formControl]</code>, <code>formControlName</code>, etc. Using
+    <code>ngModel</code> will allow you both to get and set selected value.
+  </p>
+
+  <p>
+    The model, however, will NOT be a native javascript date,
+    see the following section for more info.
+  </p>
+
+  <ngbd-code lang="html" [code]="snippets.form"></ngbd-code>
+
+  <p>
+    Alternatively you could use the <code>(dateSelect)</code> or <code>(select)</code> outputs.
+    The difference from <code>ngModel</code> is that outputs will continue emitting the same value,
+    if user clicks on the same date. <code>NgModel</code> will do it only once.
+  </p>
+
+  <ngbd-code lang="html" [code]="snippets.selection"></ngbd-code>
+</section>
+
+
+
+<!-- MOVING AROUND-->
+<section>
+  <h2>
+    <a class="title-fragment" [routerLink]="" fragment="navigation" ngbdFragment>
+      <img src="img/link-symbol.svg" />
+    </a>
+    Moving around
+  </h2>
+
+  <p>
+    Date selection and navigation are two different things.
+    You might have a date selected in January, but August currently displayed.
+  </p>
+
+  <p>
+    Datepicker fully supports keyboard navigation and screen readers. You can navigate
+    between controls using <code>Tab</code> (focus will be trapped in the popup), move
+    date focus with arrow keys, home, page up/down and use <code>Shift</code> modifier
+    for faster navigation.
+  </p>
+
+  <p>
+    From the API, you could tell datepicker to open a specific month initially
+    via the <code>[startDate]</code> input or via the <code>.navigateTo()</code> method
+  </p>
+
+  <ngbd-code lang="html" [code]="snippets.navigation"></ngbd-code>
+</section>
+
+
+
+<!-- DISABLING/LIMITING DATES-->
+<section>
+  <h2>
+    <a class="title-fragment" [routerLink]="" fragment="limiting-dates" ngbdFragment>
+      <img src="img/link-symbol.svg" />
+    </a>
+    Disabling and limiting dates
+  </h2>
+
+  <p>
+    You can limit the dates available for navigation and selection using
+    <code>[minDate]</code> and <code>[maxDate]</code> inputs. If you don't specify
+    any of them, you'll have infinite navigation and the year select box
+    will display [-10, +10] years from currently visible month.
+  </p>
+
+  <p>
+    If you want to disable some dates for selection (ex. weekends), you have to
+    provide the <code>[markDisabled]</code> function that will mark certain dates
+    not selectable. It will be called for each newly visible day when you navigate
+    between months.
+  </p>
+
+  <ngbd-code style="position: relative; top: 0.25rem" lang="typescript" [code]="snippets.disablingTS"></ngbd-code>
+  <ngbd-code style="position: relative; bottom: 0.25rem" lang="html" [code]="snippets.disablingHTML"></ngbd-code>
+</section>
+
+
+
+<!-- DATE MODEL-->
+<section>
+  <h2>
+    <a class="title-fragment" [routerLink]="" fragment="date-model" ngbdFragment>
+      <img src="img/link-symbol.svg" />
+    </a>
+    Date model and format
+  </h2>
+
+  <ngb-alert [dismissible]="false">
+    Note: this should change in the near future with using native <code>Date</code>
+    for all public APIs
+  </ngb-alert>
+
+  <p>
+    Datepicker uses <code>NgbDateStruct</code> as a model and not the native
+    <code>Date</code> object. It's a simple data structure with 3 fields.
+    Also note that months start with 1 (as in ISO 8601).
+  </p>
+
+  <ngbd-code lang="typescript" [code]="snippets.dateStruct"></ngbd-code>
+
+  <p>
+    You can tell datepicker to use the native javascript date adapter (bundled with ng-bootstrap) as in the
+    <a routerLink="../examples" fragment="adapter">custom date adapter example</a>. For now
+    the adapter works only for the form integration, so for instance <code>(ngModelChange)</code>
+    will return a native date object. All other APIs continue to use <code>NgbDateStruct</code>
+  </p>
+
+  <p>
+    You can also create your own adapters if necessary by extending and implementing the
+    <code>NgbDateAdapter</code> methods.
+  </p>
+
+  <ngbd-code lang="typescript" [code]="snippets.adapter"></ngbd-code>
+
+  <h4>Input date parsing and formatting</h4>
+
+  <p>
+    In the case of the <code>NgbInputDatepicker</code> you should be able to parse
+    and format the text entered in the input. This is not as easy task as it seems,
+    because you have to account for various formats and locales.
+    For now internally there is a service that does default formatting using ISO 8601 format.
+  </p>
+
+  <ngbd-code lang="typescript" [code]="snippets.formatter"></ngbd-code>
+
+  <p>
+    If the entered input value is invalid, the form model will contain the entered text.
+  </p>
+
+</section>
+
+
+
+<!-- DAY CUSTOMIZATION-->
+<section>
+  <h2>
+    <a class="title-fragment" [routerLink]="" fragment="day-template" ngbdFragment>
+      <img src="img/link-symbol.svg" />
+    </a>
+    Day display customization
+  </h2>
+
+  <p>
+    You can completely replace how each date is rendered by providing a custom template
+    and rendering anything you want inside. You'll get a date context available inside
+    the template with info on whether current date is disabled, selected, focused, etc.
+  </p>
+
+  <p>
+    For more info on what is provided in the template context,
+    see the <a routerLink="../api" fragment="DayTemplateContext">DayTemplateContext API</a>
+  </p>
+
+  <ngbd-code lang="html" [code]="snippets.dayTemplate"></ngbd-code>
+</section>
+
+
+
+<!-- RANGE SELECTION -->
+<section>
+  <h2>
+    <a class="title-fragment" [routerLink]="" fragment="range" ngbdFragment>
+      <img src="img/link-symbol.svg" />
+    </a>
+    Range selection
+  </h2>
+
+  <p>
+    The datepicker model is a single date, however you still can implement range selection
+    functionality. With <code>(select)</code> and <code>(dateSelect)</code> outputs you'll know
+    which dates are being selected and with the <code>[dayTemplate]</code> input
+    you can customize the way any particular date looks.
+    If you want to use the <code>NgbDatepickerInput</code>, you can also tell the popup
+    to stay open by tuning the <code>[autoClose]</code> input.
+    Check the <a routerLink="../examples" fragment="range">range selection example</a>
+    and the initial demo on this page for more details.
+  </p>
+
+  <p>
+    If you can't use the <code>NgbDatepickerInput</code> directive, you should
+    create your own popup and use <code>NgbDatepicker</code> inside of it. In this case
+    we'll handle everything related to date selection and navigation for you and you can create
+    a completely customized popup with any data model you want.
+  </p>
+</section>
+
+
+
+<!-- CALENDARS -->
+<section>
+  <h2>
+    <a class="title-fragment" [routerLink]="" fragment="calendars" ngbdFragment>
+      <img src="img/link-symbol.svg" />
+    </a>
+    Alternative calendars
+  </h2>
+
+  <p>
+    Internally datepicker uses <code>NgbCalendar</code> implementation for the Gregorian
+    calendar. This could be extended to support and calendar that has notion of days, months and years.
+  </p>
+
+  <p>For instance, there are other Islamic calendar implementations available:</p>
+  <ul>
+    <li><code>NgbCalendarIslamicCivil</code></li>
+    <li><code>NgbCalendarIslamicUmalqura</code></li>
+    <li><code>NgbCalendarHijri</code></li>
+  </ul>
+
+  <p>
+    To use any of them, simply provide a different calendar implementation
+  </p>
+
+  <ngbd-code lang="typescript" [code]="snippets.calendars"></ngbd-code>
+
+</section>
+
+
+
+<!-- I18N -->
+<section>
+  <h2>
+    <a class="title-fragment" [routerLink]="" fragment="i18n" ngbdFragment>
+      <img src="img/link-symbol.svg" />
+    </a>
+    Internationalization
+  </h2>
+
+  <p>
+    Since the 2.0.0 release datepicker will use the
+    <a href="https://angular.io/guide/i18n#setting-up-the-locale-of-your-app">application locale</a>
+    if it is present to get translations of weekdays and month names. The internal service that does
+    translation is called <code>NgbDatepickerI18n</code> and you could provide your own implementation
+    if necessary.
+  </p>
+
+  <ngbd-code lang="typescript" [code]="snippets.i18n"></ngbd-code>
+
+  <p>
+    The next/previous button labels can be translated using the standard Angular i18n
+    mechanism. For example, previous month label is extracted under <code>the ngb.datepicker.previous-month</code>
+    name.
+  </p>
+</section>
+
+
+
+<!-- Keyboard -->
+<section>
+  <h2>
+    <a class="title-fragment" [routerLink]="" fragment="keyboard-shortcuts" ngbdFragment>
+      <img src="img/link-symbol.svg" />
+    </a>
+    Keyboard shortcuts
+  </h2>
+
+  <table class="table mt-4">
+    <tbody>
+      <tr>
+        <td><code>Space / Enter</code></td>
+        <td>Selects currently focused date if it is not disabled</td>
+      </tr>
+      <tr>
+        <td><code>Escape</code></td>
+        <td>Closes the datepicker popup (unless <code>[autoClose]</code> is false)</td>
+      </tr>
+      <tr>
+        <td><code>Arrow(Up|Down|Left|Right)</code></td>
+        <td>Moves day focus inside the months view</td>
+      </tr>
+      <tr>
+        <td><code>Shift + Arrow(Up|Down|Left|Right)</code></td>
+        <td>Selects currently focused date (if it is not disabled)</td>
+      </tr>
+      <tr>
+        <td><code>Home</code></td>
+        <td>Moves focus to the the first day of currently opened first month</td>
+      </tr>
+      <tr>
+        <td><code>End</code></td>
+        <td>Moves focus to the the last day of currently opened last month</td>
+      </tr>
+      <tr>
+        <td><code>Shift + Home</code></td>
+        <td>Moves focus to the <code>minDate</code> (if set)</td>
+      </tr>
+      <tr>
+        <td><code>Shift + End</code></td>
+        <td>Moves focus to the <code>maxDate</code> (if set)</td>
+      </tr>
+      <tr>
+        <td><code>PageDown</code></td>
+        <td>Moves focus to the previous month</td>
+      </tr>
+      <tr>
+        <td><code>PageUp</code></td>
+        <td>Moves focus to the next month</td>
+      </tr>
+      <tr>
+        <td><code>Shift + PageDown</code></td>
+        <td>Moves focus to the previous year</td>
+      </tr>
+      <tr>
+        <td><code>Shift + PageUp</code></td>
+        <td>Moves focus to the next year</td>
+      </tr>
+    </tbody>
+  </table>
+
+</section>

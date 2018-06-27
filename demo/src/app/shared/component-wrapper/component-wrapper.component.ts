@@ -1,11 +1,11 @@
-import {Component, Input, ContentChildren, OnInit, NgZone} from '@angular/core';
+import {Component, ContentChild, ContentChildren, Input, NgZone} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 
 import {ExampleBoxComponent} from '../../components/shared/example-box';
 import {NgbdApiDocs, NgbdApiDocsClass, NgbdApiDocsConfig} from '../../components/shared/api-docs';
+import {NgbdOverviewComponent} from '../../components/shared/overview';
 
-export const DEFAULT_TAB = 'examples';
-const VALID_TABS = [DEFAULT_TAB, 'api'];
+const VALID_TABS = ['overview', 'examples', 'api'];
 
 @Component({selector: 'ngbd-component-wrapper', templateUrl: './component-wrapper.component.html'})
 export class ComponentWrapper {
@@ -20,8 +20,7 @@ export class ComponentWrapper {
 
   sidebarCollapsed = true;
 
-  // TODO: change to @ContentChild(OverviewBoxComponent) when implemented
-  hasOverview = false;
+  @ContentChild(NgbdOverviewComponent) overview;
 
   @ContentChildren(ExampleBoxComponent) demos;
 
@@ -40,7 +39,7 @@ export class ComponentWrapper {
       if (VALID_TABS.indexOf(tab) !== -1) {
         this.activeTab = tab;
       } else {
-        this.router.navigate(['..', DEFAULT_TAB], {relativeTo: this.route});
+        this.router.navigate(['..'], {relativeTo: this.route});
       }
       document.body.scrollIntoView();
     });
