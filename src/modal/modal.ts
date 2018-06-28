@@ -8,6 +8,11 @@ import {NgbModalRef} from './modal-ref';
  */
 export interface NgbModalOptions {
   /**
+   * Sets the aria attribute aria-labelledby.
+   */
+  ariaLabelledBy?: string;
+
+  /**
    * Whether a backdrop element should be created for a given modal (true by default).
    * Alternatively, specify 'static' for a backdrop which doesn't close the modal on click.
    */

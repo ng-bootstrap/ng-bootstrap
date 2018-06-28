@@ -22,7 +22,8 @@ import {ngbFocusTrap} from '../util/focus-trap';
     'role': 'dialog',
     'tabindex': '-1',
     '(keyup.esc)': 'escKey($event)',
-    '(click)': 'backdropClick($event)'
+    '(click)': 'backdropClick($event)',
+    '[attr.aria-labelledby]': 'ariaLabelledBy',
   },
   template: `
     <div [class]="'modal-dialog' + (size ? ' modal-' + size : '') + (centered ? ' modal-dialog-centered' : '')" role="document">
@@ -35,6 +36,7 @@ export class NgbModalWindow implements OnInit,
   private _document: any;
   private _elWithFocus: Element;  // element that is focused prior to modal opening
 
+  @Input() ariaLabelledBy: string;
   @Input() backdrop: boolean | string = true;
   @Input() centered: string;
   @Input() keyboard = true;
