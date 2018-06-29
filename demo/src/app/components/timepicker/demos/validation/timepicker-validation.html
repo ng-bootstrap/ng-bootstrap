@@ -1,7 +1,7 @@
 <p>Illustrates custom validation, you have to select time between 12:00 and 13:59</p>
 
 <div class="form-group">
-  <ngb-timepicker [(ngModel)]="time" [formControl]="ctrl" required></ngb-timepicker>
+  <ngb-timepicker [formControl]="ctrl" required></ngb-timepicker>
   <div *ngIf="ctrl.valid" class="small form-text text-success">Great choice</div>
   <div class="small form-text text-danger" *ngIf="!ctrl.valid">
     <div *ngIf="ctrl.errors['required']">Select some time during lunchtime</div>
@@ -11,4 +11,4 @@
 </div>
 
 <hr>
-<pre>Selected time: {{time | json}}</pre>
+<pre>Selected time: {{ctrl.value | json}}</pre>
