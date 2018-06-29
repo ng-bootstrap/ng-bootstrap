@@ -1,16 +1,20 @@
 import {NgModule} from '@angular/core';
 
 import {NgbdSharedModule} from '../../shared';
-import {ExampleBoxComponent} from './example-box/example-box.component';
-import {NgbdApiDocs} from './api-docs/api-docs.component';
-import {NgbdApiDocsBadge} from './api-docs/api-docs-badge.component';
-import {NgbdApiDocsClass} from './api-docs/api-docs-class.component';
-import {NgbdApiDocsConfig} from './api-docs/api-docs-config.component';
-import {NgbdFragment} from './fragment/fragment.directive';
+import {ExampleBoxComponent} from './example-box';
+import {NgbdApiDocs, NgbdApiDocsBadge, NgbdApiDocsClass, NgbdApiDocsConfig} from './api-docs';
+import {NgbdFragment} from './fragment';
+import {NgbdOverviewComponent} from './overview';
 
 @NgModule({
   imports: [NgbdSharedModule],
-  declarations: [ExampleBoxComponent, NgbdApiDocsBadge, NgbdApiDocs, NgbdApiDocsClass, NgbdApiDocsConfig, NgbdFragment],
-  exports: [ExampleBoxComponent, NgbdApiDocsBadge, NgbdApiDocs, NgbdApiDocsClass, NgbdApiDocsConfig, NgbdFragment]
+  declarations: [
+    ExampleBoxComponent, NgbdApiDocsBadge, NgbdApiDocs, NgbdApiDocsClass, NgbdApiDocsConfig,
+    NgbdFragment, NgbdOverviewComponent
+  ],
+  exports: [
+    ExampleBoxComponent, NgbdApiDocsBadge, NgbdApiDocs, NgbdApiDocsClass, NgbdApiDocsConfig,
+    NgbdFragment, NgbdOverviewComponent
+  ]
 })
 export class NgbdComponentsSharedModule {}

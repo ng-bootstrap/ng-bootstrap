@@ -20,9 +20,9 @@ import {
   NgbdTooltip,
   NgbdTypeahead
 } from './components';
-import {DEFAULT_TAB} from './shared/component-wrapper/component-wrapper.component';
 
-const DEFAULT_API_PATH = {path: '', pathMatch: 'full', redirectTo: DEFAULT_TAB};
+const DEFAULT_API_PATH = {path: '', pathMatch: 'full', redirectTo: 'examples'};
+const DEFAULT_API_PATH_OVERVIEW = {path: '', pathMatch: 'full', redirectTo: 'overview'};
 
 const componentRoutes = [{
     path: 'components/accordion',
@@ -57,7 +57,7 @@ const componentRoutes = [{
   }, {
     path: 'components/datepicker',
     children: [
-      DEFAULT_API_PATH,
+      DEFAULT_API_PATH_OVERVIEW,
       {path: ':tab', component: NgbdDatepicker}
     ]
   }, {
