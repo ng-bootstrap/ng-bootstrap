@@ -41,6 +41,18 @@ describe('ngb-popover-window', () => {
     fixture.detectChanges();
     expect(fixture.nativeElement).toHaveCssClass('bs-popover-left');
   });
+
+  it('should optionally have a custom class', () => {
+    const fixture = TestBed.createComponent(NgbPopoverWindow);
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement).not.toHaveCssClass('my-custom-class');
+
+    fixture.componentInstance.popoverClass = 'my-custom-class';
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement).toHaveCssClass('my-custom-class');
+  });
 });
 
 describe('ngb-popover', () => {
@@ -122,6 +134,30 @@ describe('ngb-popover', () => {
       expect(windowEl.getAttribute('id')).toBe('ngb-popover-2');
       expect(windowEl.parentNode).toBe(fixture.nativeElement);
       expect(directive.nativeElement.getAttribute('aria-describedby')).toBe('ngb-popover-2');
+
+      directive.triggerEventHandler('click', {});
+      fixture.detectChanges();
+      expect(getWindow(fixture.nativeElement)).toBeNull();
+      expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
+    });
+
+    it('should open and close a popover - default settings and custom class', () => {
+      const fixture = createTestComponent(`
+        <div ngbPopover="Great tip!" popoverTitle="Title" popoverClass="my-custom-class"></div>`);
+      const directive = fixture.debugElement.query(By.directive(NgbPopover));
+
+      directive.triggerEventHandler('click', {});
+      fixture.detectChanges();
+      const windowEl = getWindow(fixture.nativeElement);
+
+      expect(windowEl).toHaveCssClass('popover');
+      expect(windowEl).toHaveCssClass('bs-popover-top');
+      expect(windowEl).toHaveCssClass('my-custom-class');
+      expect(windowEl.textContent.trim()).toBe('TitleGreat tip!');
+      expect(windowEl.getAttribute('role')).toBe('tooltip');
+      expect(windowEl.getAttribute('id')).toBe('ngb-popover-3');
+      expect(windowEl.parentNode).toBe(fixture.nativeElement);
+      expect(directive.nativeElement.getAttribute('aria-describedby')).toBe('ngb-popover-3');
 
       directive.triggerEventHandler('click', {});
       fixture.detectChanges();
@@ -549,6 +585,7 @@ describe('ngb-popover', () => {
       config.placement = 'bottom';
       config.triggers = 'hover';
       config.container = 'body';
+      config.popoverClass = 'my-custom-class';
     }));
 
     it('should initialize inputs with provided config', () => {
@@ -560,6 +597,7 @@ describe('ngb-popover', () => {
       expect(popover.placement).toBe(config.placement);
       expect(popover.triggers).toBe(config.triggers);
       expect(popover.container).toBe(config.container);
+      expect(popover.popoverClass).toBe(config.popoverClass);
     });
   });
 
@@ -567,6 +605,7 @@ describe('ngb-popover', () => {
     let config = new NgbPopoverConfig();
     config.placement = 'bottom';
     config.triggers = 'hover';
+    config.popoverClass = 'my-custom-class';
 
     beforeEach(() => {
       TestBed.configureTestingModule(
@@ -579,6 +618,7 @@ describe('ngb-popover', () => {
 
       expect(popover.placement).toBe(config.placement);
       expect(popover.triggers).toBe(config.triggers);
+      expect(popover.popoverClass).toBe(config.popoverClass);
     });
   });
 });

@@ -12,4 +12,5 @@ export class NgbPopoverConfig {
   triggers = 'click';
   container: string;
   disablePopover = false;
+  popoverClass: string;
 }
