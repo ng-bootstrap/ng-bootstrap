@@ -71,11 +71,11 @@ const after = (one: NgbDateStruct, two: NgbDateStruct) =>
       color: white;
       background-color: coral;
     }
-    .range:not(.holiday,.weekend), .custom-day:not(.weekend,.holiday):hover {
+    .range:not(.holiday):not(.weekend), .custom-day:not(.weekend):not(.holiday):hover {
       background-color: rgb(2, 117, 216);
       color: white;
     }
-    .faded:not(.holiday,.weekend) {
+    .faded:not(.holiday):not(.weekend) {
       background-color: rgba(2, 117, 216, 0.5);
     }
   `],
