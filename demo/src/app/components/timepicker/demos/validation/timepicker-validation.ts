@@ -6,7 +6,6 @@ import {FormControl} from '@angular/forms';
   templateUrl: './timepicker-validation.html'
 })
 export class NgbdTimepickerValidation {
-  time;
 
   ctrl = new FormControl('', (control: FormControl) => {
     const value = control.value;
