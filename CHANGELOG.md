@@ -1,3 +1,22 @@
+<a name="2.2.0"></a>
+# [2.2.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/2.1.2...2.2.0) (2018-06-29)
+
+
+### Bug Fixes
+
+* **accordion:** update generated markup to Bootstrap HTML / CSS ([9b2b0bc](https://github.com/ng-bootstrap/ng-bootstrap/commit/9b2b0bc)), closes [#2368](https://github.com/ng-bootstrap/ng-bootstrap/issues/2368)
+
+
+### Features
+
+* **carousel:** add flags controlling display of navigation arrows and indicators ([ec4e939](https://github.com/ng-bootstrap/ng-bootstrap/commit/ec4e939)), closes [#2274](https://github.com/ng-bootstrap/ng-bootstrap/issues/2274) [#2275](https://github.com/ng-bootstrap/ng-bootstrap/issues/2275)
+* **carousel:** add input to control pause on mouseover ([8d54cac](https://github.com/ng-bootstrap/ng-bootstrap/commit/8d54cac)), closes [#1163](https://github.com/ng-bootstrap/ng-bootstrap/issues/1163) [#2436](https://github.com/ng-bootstrap/ng-bootstrap/issues/2436)
+* **modal:** aria-labelledby attribute for modal window ([3cc6fa7](https://github.com/ng-bootstrap/ng-bootstrap/commit/3cc6fa7)), closes [#1477](https://github.com/ng-bootstrap/ng-bootstrap/issues/1477) [#2049](https://github.com/ng-bootstrap/ng-bootstrap/issues/2049)
+* **popover:** ability to add custom CSS classes to pover window ([483bd05](https://github.com/ng-bootstrap/ng-bootstrap/commit/483bd05)), closes [#1441](https://github.com/ng-bootstrap/ng-bootstrap/issues/1441) [#2310](https://github.com/ng-bootstrap/ng-bootstrap/issues/2310)
+* **timepicker:** add custom time adapter support ([7eaa7e7](https://github.com/ng-bootstrap/ng-bootstrap/commit/7eaa7e7)), closes [#545](https://github.com/ng-bootstrap/ng-bootstrap/issues/545) [#2347](https://github.com/ng-bootstrap/ng-bootstrap/issues/2347)
+
+
+
 <a name="2.1.2"></a>
 ## [2.1.2](https://github.com/ng-bootstrap/ng-bootstrap/compare/2.1.1...2.1.2) (2018-06-22)
 

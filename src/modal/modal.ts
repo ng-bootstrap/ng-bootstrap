@@ -8,7 +8,9 @@ import {NgbModalRef} from './modal-ref';
  */
 export interface NgbModalOptions {
   /**
-   * Sets the aria attribute aria-labelledby.
+   * Sets the aria attribute aria-labelledby to a modal window.
+   *
+   * @since 2.2.0
    */
   ariaLabelledBy?: string;
 

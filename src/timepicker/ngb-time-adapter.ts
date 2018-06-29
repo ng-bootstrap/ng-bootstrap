@@ -7,6 +7,8 @@ import {isInteger} from '../util/util';
  * NgbTimeStruct model.
  * A default implementation converting from and to NgbTimeStruct is provided for retro-compatibility,
  * but you can provide another implementation to use an alternative format, ie for using with native Date Object.
+ *
+ * @since 2.2.0
  */
 @Injectable()
 export abstract class NgbTimeAdapter<T> {
