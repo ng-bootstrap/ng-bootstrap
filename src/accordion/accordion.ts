@@ -113,7 +113,7 @@ export interface NgbPanelChangeEvent {
   host: {'class': 'accordion', 'role': 'tablist', '[attr.aria-multiselectable]': '!closeOtherPanels'},
   template: `
     <ng-template ngFor let-panel [ngForOf]="panels">
-      <div class="card">
+      <div class="card" [class.open]="panel.isOpen">
         <div role="tab" id="{{panel.id}}-header" [class]="'card-header ' + (panel.type ? 'bg-'+panel.type: type ? 'bg-'+type : '')">
           <h5 class="mb-0">
             <button class="btn btn-link" (click)="!!toggle(panel.id)" [disabled]="panel.disabled" [class.collapsed]="panel.isOpen"
