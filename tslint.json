@@ -1,4 +1,7 @@
 {
+  "rulesDirectory": [
+    "node_modules/tslint-jasmine-rules/dist"
+  ],
   "rules": {
     "class-name": true,
     "comment-format": [
@@ -88,6 +91,8 @@
       "check-operator",
       "check-separator",
       "check-type"
-    ]
+    ],
+    "no-focused-tests": true,
+    "no-disabled-tests": true
   }
 }

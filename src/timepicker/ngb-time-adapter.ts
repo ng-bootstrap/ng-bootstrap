@@ -14,16 +14,12 @@ import {isInteger} from '../util/util';
 export abstract class NgbTimeAdapter<T> {
   /**
    * Converts user-model date into an NgbTimeStruct for internal use in the library
-   * @param  {any}     value any value that end user uses as the time model, ie: NgbTimeStruct, Date, "HH:mm:ss"
-   * @return {NgbTimeStruct}
    */
   abstract fromModel(value: T): NgbTimeStruct;
 
   /**
    * Converts internal time value NgbTimeStruct to user-model date
-   * The returned type is suposed to be of the same type as fromModel() input-value param
-   * @param  {NgbTimeStruct} time internal NgbTimeStruct date representation
-   * @return {any}
+   * The returned type is supposed to be of the same type as fromModel() input-value param
    */
   abstract toModel(time: NgbTimeStruct): T;
 }
@@ -32,8 +28,6 @@ export abstract class NgbTimeAdapter<T> {
 export class NgbTimeStructAdapter extends NgbTimeAdapter<NgbTimeStruct> {
   /**
    * Converts a NgbTimeStruct value into NgbTimeStruct value
-   * @param  {NgbTimeStruct} value
-   * @return {NgbTimeStruct}
    */
   fromModel(time: NgbTimeStruct): NgbTimeStruct {
     return (time && isInteger(time.hour) && isInteger(time.minute)) ?
@@ -43,8 +37,6 @@ export class NgbTimeStructAdapter extends NgbTimeAdapter<NgbTimeStruct> {
 
   /**
    * Converts a NgbTimeStruct value into NgbTimeStruct value
-   * @param  {NgbTimeStruct} value
-   * @return {NgbTimeStruct}
    */
   toModel(time: NgbTimeStruct): NgbTimeStruct {
     return (time && isInteger(time.hour) && isInteger(time.minute)) ?

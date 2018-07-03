@@ -5,7 +5,8 @@ const capitalize = require('./demo-gen-utils').capitalize;
 const plnkrUrl = 'http://plnkr.co/edit/?p=preview';
 
 const contentMainTs = fs.readFileSync('misc/plunker-builder-templates/main.ts').toString();
-const packageJson = JSON.parse(fs.readFileSync('package.json'));
+const packageJson = JSON.parse(fs.readFileSync('package.json').toString());
+const ngBootstrap = JSON.parse(fs.readFileSync('src/package.json').toString()).version;
 const versions = getVersions();
 
 const ENTRY_CMPTS = {
@@ -32,7 +33,7 @@ import { ${demoImports} } from '${demoImport}';
   selector: 'my-app',
   template: \`
     <div class="container-fluid">
-    
+
     <hr>
     <p>
       This is a demo plnkr forked from the <strong>ng-bootstrap</strong> project: Angular powered Bootstrap.
@@ -119,7 +120,7 @@ function generateConfigJs() {
   return `var ver = {
     ng: '${versions.angular}'
   };
-  
+
   System.config({
   //use typescript for compilation
   transpiler: 'typescript',
@@ -178,20 +179,26 @@ function getVersions() {
     angular: getVersion('@angular/core'),
     typescript: getVersion('typescript'),
     rxjs: getVersion('rxjs'),
-    ngBootstrap: packageJson.version,
+    ngBootstrap,
     zoneJs: getVersion('zone.js'),
     coreJs: getVersion('core-js'),
-    systemjs: getVersion('systemjs'),
-    reflectMetadata: getVersion('reflect-metadata'),
+    systemjs: '^0.19.40',
+    reflectMetadata: getVersion('reflect-metadata', JSON.parse(fs.readFileSync('node_modules/@angular/compiler-cli/package.json').toString())),
     bootstrap: getVersion('bootstrap')
   };
 }
 
-function getVersion(name) {
-  var value = packageJson.dependencies[name] || packageJson.devDependencies[name];
+function getVersion(name, givenPackageJson) {
+  if (givenPackageJson == null) {
+    givenPackageJson = packageJson;
+  }
+
+  var value = givenPackageJson.dependencies[name] || givenPackageJson.devDependencies[name];
+
   if (!value) {
     throw `couldn't find version for ${name} in package.json`;
   }
+
   return value;
 }
 
