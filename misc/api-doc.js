@@ -65,6 +65,30 @@ function getJsDocTags(symbol) {
   // clang-format on
 }
 
+function getTypeParameter(program, declaration) {
+  // getting type of 'Class <T = number>'
+  var type = program.getTypeChecker().getTypeAtLocation(declaration);
+
+  // checking if '<...>' part is present
+  if (type.typeParameters) {
+    // getting 'T' parameter from declaration
+    var parameter = type.typeParameters[0].symbol;
+    var parameterString = parameter.getName();
+
+    // checking if there is a default type value (ex. '= number')
+    var defaultType = program.getTypeChecker().getTypeAtLocation(parameter.getDeclarations()[0].default);
+
+    // default type can be a 'unknown', base type (ex. 'number') or another symbol
+    if (defaultType && defaultType.intrinsicName !== 'unknown') {
+      parameterString +=
+          defaultType.intrinsicName ? ` = ${defaultType.intrinsicName}` : ` = ${defaultType.symbol.getName()}`;
+    }
+    return parameterString;
+  } else {
+    return undefined;
+  }
+}
+
 class APIDocVisitor {
   constructor(fileNames) {
     this.program = ts.createProgram(fileNames, {lib: ["lib.es6.d.ts"]});
@@ -94,6 +118,7 @@ class APIDocVisitor {
     var description = ts.displayPartsToString(symbol.getDocumentationComment());
     var {deprecated, since} = getJsDocTags(symbol);
     var className = interfaceDeclaration.name.text;
+    var typeParameter = getTypeParameter(this.program, interfaceDeclaration.name);
     var members = this.visitMembers(interfaceDeclaration.members);
 
     return [{
@@ -102,6 +127,7 @@ class APIDocVisitor {
       description,
       deprecated,
       since,
+      typeParameter,
       type: 'Interface',
       methods: members.methods,
       properties: members.properties
@@ -113,6 +139,7 @@ class APIDocVisitor {
     var description = ts.displayPartsToString(symbol.getDocumentationComment());
     var {deprecated, since} = getJsDocTags(symbol);
     var className = classDeclaration.name.text;
+    var typeParameter = getTypeParameter(this.program, classDeclaration.name);
     var decorators = classDeclaration.decorators;
     var directiveInfo;
     var members;
@@ -129,6 +156,7 @@ class APIDocVisitor {
             description,
             deprecated,
             since,
+            typeParameter,
             type: directiveInfo.type,
             selector: directiveInfo.selector,
             exportAs: directiveInfo.exportAs,
@@ -146,6 +174,7 @@ class APIDocVisitor {
             description,
             deprecated,
             since,
+            typeParameter,
             type: 'Service',
             methods: members.methods,
             properties: members.properties
