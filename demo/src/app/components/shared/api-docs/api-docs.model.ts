@@ -1,5 +1,6 @@
 export interface ClassDesc {
   type: string;
+  typeParameter: string;
   fileName: string;
   className: string;
   description: string;
