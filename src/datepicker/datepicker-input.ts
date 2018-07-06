@@ -32,8 +32,8 @@ import {NgbDateAdapter} from './adapters/ngb-date-adapter';
 import {NgbCalendar} from './ngb-calendar';
 import {NgbDatepickerService} from './datepicker-service';
 
-import {Subject, fromEvent} from 'rxjs';
-import {filter, takeUntil} from 'rxjs/operators';
+import {Subject, fromEvent, race} from 'rxjs';
+import {filter, take, takeUntil} from 'rxjs/operators';
 
 const NGB_DATEPICKER_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -64,6 +64,7 @@ const NGB_DATEPICKER_VALIDATOR = {
 })
 export class NgbInputDatepicker implements OnChanges,
     OnDestroy, ControlValueAccessor, Validator {
+  private _clickableElements = new Set<HTMLElement>();
   private _closed$ = new Subject();
   private _cRef: ComponentRef<NgbDatepicker> = null;
   private _disabled = false;
@@ -71,12 +72,15 @@ export class NgbInputDatepicker implements OnChanges,
   private _zoneSubscription: any;
 
   /**
-   * Indicates whether the datepicker popup should be closed automatically after date selection or not.
-   * If the value is 'false', the popup can be closed via 'close()' or 'toggle()' methods.
+   * Indicates whether the datepicker popup should be closed automatically after date selection / outside click or not.
    *
-   * @since 1.1.0
+   * By default the popup will close on both date selection and outside click. If the value is 'false' the popup has to
+   * be closed manually via '.close()' or '.toggle()' methods. If the value is set to 'inside' the popup will close on
+   * date selection only. For the 'outside' the popup will close only on the outside click.
+   *
+   * @since 3.0.0
    */
-  @Input() autoClose = true;
+  @Input() autoClose: boolean | 'inside' | 'outside' = true;
 
   /**
    * Reference for the custom template for the day display
@@ -276,9 +280,30 @@ export class NgbInputDatepicker implements OnChanges,
       this._cRef.instance.focus();
 
       // closing on ESC
-      fromEvent<KeyboardEvent>(this._document, 'keyup')
-          .pipe(takeUntil(this._closed$), filter(e => e.which === Key.Escape))
-          .subscribe(() => this.close());
+      // clang-format off
+      const escapes$ = fromEvent<KeyboardEvent>(this._document, 'keyup')
+        .pipe(
+          takeUntil(this._closed$),
+          filter(e => e.which === Key.Escape)
+        );
+
+      // closing on outside clicks
+      const outsideClicks$ = this.autoClose === true || this.autoClose === 'outside' ?
+        fromEvent<MouseEvent>(this._document, 'click')
+          .pipe(
+            takeUntil(this._closed$),
+            filter(e => {
+              const clickableElements = [
+                this._elRef.nativeElement,
+                this._cRef.location.nativeElement,
+                ...Array.from(this._clickableElements)
+              ];
+              return !clickableElements.some(el => el && el.contains(e.target))
+            })
+          ) : null;
+      // clang-format on
+
+      race<Event>([escapes$, outsideClicks$]).pipe(take(1)).subscribe(() => this.close());
     }
   }
 
@@ -301,6 +326,18 @@ export class NgbInputDatepicker implements OnChanges,
       this.close();
     } else {
       this.open();
+    }
+  }
+
+  /**
+   * Registers an html element outside of the datepicker popup as clickable.
+   * Clicking on this element will not close the datepicker popup
+   *
+   * @since 3.0.0
+   */
+  registerClickableElement(element: HTMLElement) {
+    if (element) {
+      this._clickableElements.add(element);
     }
   }
 
@@ -350,7 +387,7 @@ export class NgbInputDatepicker implements OnChanges,
     datepickerInstance.navigate.subscribe(date => this.navigate.emit(date));
     datepickerInstance.select.subscribe(date => {
       this.dateSelect.emit(date);
-      if (this.autoClose) {
+      if (this.autoClose === true || this.autoClose === 'inside') {
         this.close();
       }
     });
