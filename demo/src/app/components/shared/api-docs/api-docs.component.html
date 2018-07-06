@@ -7,7 +7,9 @@
     >
       <img src="img/link-symbol.svg" alt="Anchor link to: {{apiDocs.className}}"/>
     </a>
-    <span>{{apiDocs.className}}</span>
+    <span>
+      {{apiDocs.className}}<span class="text-muted font-weight-light" *ngIf="apiDocs.typeParameter">&lt;{{apiDocs.typeParameter}}&gt;</span>
+    </span>
     <a
       class="github-link"
       (click)="trackSourceClick()"

@@ -253,4 +253,14 @@ describe('APIDocVisitor', function() {
     expect(docs.NgbDirective.methods[0].since).toEqual({version: '2.0.0', description: ''});
   });
 
+  it('should extract class and interface type parameters', function() {
+    var docs = apiDoc(['misc/api-doc-test-cases/type-parameters.ts']);
+
+    expect(docs.NoParameterComponent.typeParameter).toBeUndefined();
+    expect(docs.ParameterComponent.typeParameter).toEqual('C');
+    expect(docs.NoParameterInterface.typeParameter).toBeUndefined();
+    expect(docs.ParameterInterface.typeParameter).toEqual('I = NoParameterInterface');
+    expect(docs.NoParameterService.typeParameter).toBeUndefined();
+    expect(docs.ParameterService.typeParameter).toEqual('S = number');
+  });
 });
