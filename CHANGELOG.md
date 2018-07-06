@@ -1,3 +1,53 @@
+<a name="3.0.0-beta.1"></a>
+# [3.0.0-beta.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/2.2.0...3.0.0-beta.1) (2018-07-06)
+
+
+### Bug Fixes
+
+* **dropdown:** close on escape from anywhere ([2495570](https://github.com/ng-bootstrap/ng-bootstrap/commit/2495570)), closes [#1741](https://github.com/ng-bootstrap/ng-bootstrap/issues/1741) [#2051](https://github.com/ng-bootstrap/ng-bootstrap/issues/2051)
+* **progressbar:** add missing i18n id specifier ([69956fe](https://github.com/ng-bootstrap/ng-bootstrap/commit/69956fe)), closes [#2493](https://github.com/ng-bootstrap/ng-bootstrap/issues/2493)
+
+
+### Features
+
+* **datepicker:** close popup on outside click ([a9ab409](https://github.com/ng-bootstrap/ng-bootstrap/commit/a9ab409)), closes [#783](https://github.com/ng-bootstrap/ng-bootstrap/issues/783) [#2440](https://github.com/ng-bootstrap/ng-bootstrap/issues/2440)
+
+
+### BREAKING CHANGES
+
+* The library is now delivered in Angular Package Format (APF) v6.0 (https://goo.gl/jB3GVv) using @angular/cli 6.
+
+One notable change is that delivered UMD bundle is now located in 'bundles/ng-bootstrap.umd.js' instead of 'bundles/ng-bootstrap.js'.
+
+Also ES5 code is now delivered as a flat version by default, so 'module' in the 'package.json' is now poining to 'fesm5/ng-bootstrap.js' and not 'index.js'.
+You can still find all the ES5 code in the 'esm5' folder if necessary.
+
+Please examine the contents of the delivered package, if you have a custom build configuration.
+
+
+* **datepicker:** datepicker popup will now close on outside click by default.
+
+Because of this datepicker will NOT open with `(click)="d.open()"` and `(click)="d.toggle()"`
+unless you mark the element with click handler with `[ngbDatepickerToggle]="d"`
+
+BEFORE:
+```html
+<input ngbDatepicker #d="ngbDatepicker" />
+<button (click)="d.toggle()">...</button>
+<button (click)="d.open()">...</button>
+```
+
+AFTER:
+```html
+<input ngbDatepicker #d="ngbDatepicker" />
+<button [ngbDatepickerToggle]="d" (click)="d.toggle()">...</button>
+<button [ngbDatepickerToggle]="d" (click)="d.open()">...</button>
+```
+
+Also note that `[autoClose]` input now accepts additional 'inside' and 'outside' values.
+
+
+
 <a name="2.2.0"></a>
 # [2.2.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/2.1.2...2.2.0) (2018-06-29)
 
