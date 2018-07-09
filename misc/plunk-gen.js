@@ -154,7 +154,7 @@ function generateConfigJs() {
     'tslib': 'npm:tslib/tslib.js',
     'typescript': 'npm:typescript@${versions.typescript}/lib/typescript.js',
 
-    '@ng-bootstrap/ng-bootstrap': 'npm:@ng-bootstrap/ng-bootstrap@${versions.ngBootstrap}/bundles/ng-bootstrap.js'
+    '@ng-bootstrap/ng-bootstrap': 'npm:@ng-bootstrap/ng-bootstrap@${versions.ngBootstrap}/bundles/ng-bootstrap.umd.js'
   },
   packages: {
     app: {
