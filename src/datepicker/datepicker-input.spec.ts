@@ -1,6 +1,6 @@
 import {TestBed, ComponentFixture, fakeAsync, tick} from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
-import {createGenericTestComponent} from '../test/common';
+import {createGenericTestComponent, createKeyEvent} from '../test/common';
 
 import {Component, Injectable} from '@angular/core';
 import {FormsModule, NgForm} from '@angular/forms';
@@ -19,11 +19,7 @@ const createTestNativeCmpt = (html: string) =>
     createGenericTestComponent(html, TestNativeComponent) as ComponentFixture<TestNativeComponent>;
 
 function dispatchKeyUpEvent(key: Key) {
-  const event = document.createEvent('KeyboardEvent') as any;
-  let initEventFn = (event.initKeyEvent || event.initKeyboardEvent).bind(event);
-  initEventFn('keyup', true, true, window, 0, 0, 0, 0, 0, key);
-  Object.defineProperties(event, {which: {get: () => key}});
-  document.dispatchEvent(event);
+  document.dispatchEvent(createKeyEvent(key));
 }
 
 describe('NgbInputDatepicker', () => {
