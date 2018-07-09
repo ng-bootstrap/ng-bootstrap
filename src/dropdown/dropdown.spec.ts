@@ -1,5 +1,5 @@
 import {TestBed, ComponentFixture, inject} from '@angular/core/testing';
-import {createGenericTestComponent} from '../test/common';
+import {createGenericTestComponent, createKeyEvent} from '../test/common';
 import {Key} from '../util/key';
 
 import {Component} from '@angular/core';
@@ -21,12 +21,7 @@ function getMenuEl(tc) {
 }
 
 function createFakeEscapeKeyUpEvent(): Event {
-  const key = Key.Escape;
-  const event = document.createEvent('KeyboardEvent') as any;
-  let initEvent = (event.initKeyEvent || event.initKeyboardEvent).bind(event);
-  initEvent('keyup', true, true, window, 0, 0, 0, 0, 0, key);
-  Object.defineProperties(event, {which: {get: () => key}});
-  return event;
+  return createKeyEvent(Key.Escape);
 }
 
 const jasmineMatchers = {
