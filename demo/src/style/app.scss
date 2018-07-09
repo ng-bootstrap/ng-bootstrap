@@ -28,22 +28,8 @@ header.navbar {
   }
 }
 
-.github-buttons {
-  header & {
-    margin-bottom: 0;
-    margin-top: 4px;
-    padding-left: 0;
-  }
-
-  ngbd-default & {
-    text-align: center;
-    margin-top: 2rem;
-  }
-
-  > iframe,
-  > a {
-    margin-left: 0.5rem;
-  }
+.social-buttons > iframe {
+  margin-left: 0.75rem;
 }
 
 .sidebar-collapsed {
