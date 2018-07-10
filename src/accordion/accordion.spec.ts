@@ -16,7 +16,7 @@ function getPanels(element: HTMLElement): HTMLDivElement[] {
 }
 
 function getPanelsContent(element: HTMLElement): HTMLDivElement[] {
-  return <HTMLDivElement[]>Array.from(element.querySelectorAll('.card > .card-body'));
+  return <HTMLDivElement[]>Array.from(element.querySelectorAll('.card > .collapse'));
 }
 
 function getPanelsTitle(element: HTMLElement): HTMLButtonElement[] {
