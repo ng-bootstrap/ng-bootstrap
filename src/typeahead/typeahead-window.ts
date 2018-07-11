@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter, TemplateRef, OnInit} from '@angular/core';
+import {Component, Input, Output, EventEmitter, TemplateRef, OnInit, ElementRef} from '@angular/core';
 
 import {toString} from '../util/util';
 
@@ -79,9 +79,13 @@ export class NgbTypeaheadWindow implements OnInit {
 
   @Output('activeChange') activeChangeEvent = new EventEmitter();
 
+  constructor(private _elementRef: ElementRef) {}
+
   hasActive() { return this.activeIdx > -1 && this.activeIdx < this.results.length; }
 
   getActive() { return this.results[this.activeIdx]; }
+
+  isEventFrom($event) { return this._elementRef.nativeElement.contains($event.target); }
 
   markActive(activeIdx: number) {
     this.activeIdx = activeIdx;

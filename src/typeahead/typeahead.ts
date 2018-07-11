@@ -108,6 +108,11 @@ export class NgbTypeahead implements ControlValueAccessor,
   @Input() focusFirst: boolean;
 
   /**
+   * A flag indication whether to close the popup after selecting an item
+   */
+  @Input() closeOnSelect: boolean;
+
+  /**
    * A function to convert a given value into string to display in the input field
    */
   @Input() inputFormatter: (value: any) => string;
@@ -161,6 +166,7 @@ export class NgbTypeahead implements ControlValueAccessor,
     this.focusFirst = config.focusFirst;
     this.showHint = config.showHint;
     this.placement = config.placement;
+    this.closeOnSelect = config.closeOnSelect;
 
     this._valueChanges = fromEvent<Event>(_elementRef.nativeElement, 'input')
                              .pipe(map($event => ($event.target as HTMLInputElement).value));
@@ -213,7 +219,7 @@ export class NgbTypeahead implements ControlValueAccessor,
   }
 
   onDocumentClick(event) {
-    if (event.target !== this._elementRef.nativeElement) {
+    if (event.target !== this._elementRef.nativeElement && this._isEventFromMenu(event)) {
       this.dismissPopup();
     }
   }
@@ -263,7 +269,9 @@ export class NgbTypeahead implements ControlValueAccessor,
             event.stopPropagation();
             this._selectResult(result);
           }
-          this._closePopup();
+          if (this.closeOnSelect) {
+            this._closePopup();
+          }
           break;
         case Key.Escape:
           event.preventDefault();
@@ -307,7 +315,9 @@ export class NgbTypeahead implements ControlValueAccessor,
 
   private _selectResultClosePopup(result: any) {
     this._selectResult(result);
-    this._closePopup();
+    if (this.closeOnSelect) {
+      this._closePopup();
+    }
   }
 
   private _showHint() {
@@ -368,4 +378,6 @@ export class NgbTypeahead implements ControlValueAccessor,
     }
     this._subscription = null;
   }
+
+  private _isEventFromMenu($event) { return this._windowRef ? !this._windowRef.instance.isEventFrom($event) : false; }
 }
