@@ -19,6 +19,7 @@ import {
 
 import {filter} from 'rxjs/operators';
 import {NgbDatepickerI18n} from './datepicker-i18n';
+import {NgbDateAdapter} from './adapters/ngb-date-adapter';
 
 @Injectable()
 export class NgbDatepickerService {
@@ -102,7 +103,8 @@ export class NgbDatepickerService {
     }
   }
 
-  constructor(private _calendar: NgbCalendar, private _i18n: NgbDatepickerI18n) {}
+  constructor(
+      private _calendar: NgbCalendar, private _i18n: NgbDatepickerI18n, private _dateAdapter: NgbDateAdapter<any>) {}
 
   focus(date: NgbDate) {
     if (!this._state.disabled && this._calendar.isValid(date) && isChangedDate(this._state.focusDate, date)) {
@@ -115,7 +117,7 @@ export class NgbDatepickerService {
   }
 
   focusSelect() {
-    if (isDateSelectable(this._state.focusDate, this._state)) {
+    if (isDateSelectable(this._state.focusDate, this._state, this._dateAdapter)) {
       this.select(this._state.focusDate, {emitEvent: true});
     }
   }
@@ -134,7 +136,7 @@ export class NgbDatepickerService {
         this._nextState({selectedDate});
       }
 
-      if (options.emitEvent && isDateSelectable(selectedDate, this._state)) {
+      if (options.emitEvent && isDateSelectable(selectedDate, this._state, this._dateAdapter)) {
         this._select$.next(selectedDate);
       }
     }
@@ -237,7 +239,7 @@ export class NgbDatepickerService {
       const forceRebuild = 'firstDayOfWeek' in patch || 'markDisabled' in patch || 'minDate' in patch ||
           'maxDate' in patch || 'disabled' in patch || 'outsideDays' in patch;
 
-      const months = buildMonths(this._calendar, startDate, state, this._i18n, forceRebuild);
+      const months = buildMonths(this._calendar, startDate, state, this._i18n, this._dateAdapter, forceRebuild);
 
       // updating months and boundary dates
       state.months = months;
@@ -245,7 +247,7 @@ export class NgbDatepickerService {
       state.lastDate = months.length > 0 ? months[months.length - 1].lastDate : undefined;
 
       // reset selected date if 'markDisabled' returns true
-      if ('selectedDate' in patch && !isDateSelectable(state.selectedDate, state)) {
+      if ('selectedDate' in patch && !isDateSelectable(state.selectedDate, state, this._dateAdapter)) {
         state.selectedDate = null;
       }
 

@@ -8,17 +8,17 @@ import {NgbDateStruct} from '../ngb-date-struct';
  * but you can provide another implementation to use an alternative format, ie for using with native Date Object.
  */
 @Injectable()
-export abstract class NgbDateAdapter<T> {
+export abstract class NgbDateAdapter<D> {
   /**
    * Converts user-model date into an NgbDateStruct for internal use in the library
    */
-  abstract fromModel(value: T): NgbDateStruct;
+  abstract fromModel(value: D): NgbDateStruct;
 
   /**
    * Converts internal date value NgbDateStruct to user-model date
    * The returned type is suposed to be of the same type as fromModel() input-value param
    */
-  abstract toModel(date: NgbDateStruct): T;
+  abstract toModel(date: NgbDateStruct): D;
 }
 
 @Injectable()

@@ -34,7 +34,7 @@ describe('ngb-date-native model adapter', () => {
     });
 
     it('should convert a valid date',
-       () => { expect(adapter.toModel({year: 2016, month: 10, day: 15})).toEqual(new Date(2016, 9, 15)); });
+       () => { expect(adapter.toModel({year: 2016, month: 10, day: 15})).toEqual(new Date(2016, 9, 15, 12)); });
   });
 
 });

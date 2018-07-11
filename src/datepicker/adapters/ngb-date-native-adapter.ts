@@ -10,6 +10,6 @@ export class NgbDateNativeAdapter extends NgbDateAdapter<Date> {
   }
 
   toModel(date: NgbDateStruct): Date {
-    return date && date.year && date.month ? new Date(date.year, date.month - 1, date.day) : null;
+    return date && date.year && date.month ? new Date(date.year, date.month - 1, date.day, 12) : null;
   }
 }
