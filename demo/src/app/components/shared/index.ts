@@ -4,17 +4,17 @@ import {NgbdSharedModule} from '../../shared';
 import {ExampleBoxComponent} from './example-box';
 import {NgbdApiDocs, NgbdApiDocsBadge, NgbdApiDocsClass, NgbdApiDocsConfig} from './api-docs';
 import {NgbdFragment} from './fragment';
-import {NgbdOverviewComponent} from './overview';
+import {NgbdOverviewDirective, NgbdOverviewSectionComponent} from './overview';
 
 @NgModule({
   imports: [NgbdSharedModule],
   declarations: [
     ExampleBoxComponent, NgbdApiDocsBadge, NgbdApiDocs, NgbdApiDocsClass, NgbdApiDocsConfig,
-    NgbdFragment, NgbdOverviewComponent
+    NgbdFragment, NgbdOverviewDirective, NgbdOverviewSectionComponent
   ],
   exports: [
     ExampleBoxComponent, NgbdApiDocsBadge, NgbdApiDocs, NgbdApiDocsClass, NgbdApiDocsConfig,
-    NgbdFragment, NgbdOverviewComponent
+    NgbdFragment, NgbdOverviewDirective, NgbdOverviewSectionComponent
   ]
 })
 export class NgbdComponentsSharedModule {}

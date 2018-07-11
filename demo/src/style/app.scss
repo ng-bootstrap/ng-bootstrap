@@ -145,8 +145,7 @@ header.title {
 }
 
 
-div.api-doc-component,
-div.overview-component {
+div.api-doc-component, [ngbdOverview] {
   margin-bottom: 3rem;
 
   h2,
@@ -167,7 +166,7 @@ div.overview-component {
     }
   }
 
-  section {
+  section, ngbd-overview-section {
     margin-top: 3rem;
     h4 {
       margin-top: 2rem;

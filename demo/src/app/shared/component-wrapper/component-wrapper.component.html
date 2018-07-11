@@ -69,7 +69,7 @@
           class="col-12 col-xl-9 px-md-0 pr-xl-4"
         >
           <ng-container *ngSwitchCase="'overview'">
-            <ng-content select="ngbd-overview"></ng-content>
+            <ng-content select="[ngbdOverview]"></ng-content>
           </ng-container>
 
           <ng-container *ngSwitchCase="'examples'">
@@ -95,6 +95,15 @@
           [ngSwitch]="activeTab"
           class="col-12 col-xl-3 d-none d-xl-block contextual-nav"
         >
+          <ul
+            *ngSwitchCase="'overview'"
+            class="nav flex-column text-muted pt-4"
+          >
+            <li *ngFor="let section of overviewSections" class="nav-item">
+              <a class="nav-link" [routerLink]="['/components', component.toLowerCase(), 'overview']" [fragment]="section.fragment">{{section.title}}</a>
+            </li>
+          </ul>
+
           <ul
             *ngSwitchCase="'examples'"
             class="nav flex-column text-muted pt-4"

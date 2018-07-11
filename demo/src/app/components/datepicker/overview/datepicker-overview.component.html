@@ -14,33 +14,10 @@
 
 <ngbd-datepicker-demo-overview class="d-block my-4"></ngbd-datepicker-demo-overview>
 
-<p>
-  To understand the concepts behind the datepicker, here are some topics to look at:
-</p>
-<ol>
-  <li><a [routerLink]="" fragment="basic-usage">Basic usage</a></li>
-  <li><a [routerLink]="" fragment="getting-date">Getting/setting a date</a></li>
-  <li><a [routerLink]="" fragment="navigation">Moving around</a></li>
-  <li><a [routerLink]="" fragment="date-model">Date model and format</a></li>
-  <li><a [routerLink]="" fragment="day-template">Day display customization</a></li>
-  <li><a [routerLink]="" fragment="limiting-dates">Disabling and limiting dates</a></li>
-  <li><a [routerLink]="" fragment="range">Range selection</a></li>
-  <li><a [routerLink]="" fragment="calendars">Alternative calendars</a></li>
-  <li><a [routerLink]="" fragment="i18n">Internationalization</a></li>
-  <li><a [routerLink]="" fragment="keyboard-shortcuts">Keyboard shortcuts</a></li>
-</ol>
-
 
 
 <!-- BASIC USAGE -->
-<section>
-  <h2>
-    <a class="title-fragment" [routerLink]="" fragment="basic-usage" ngbdFragment>
-      <img src="img/link-symbol.svg" />
-    </a>
-    Basic Usage
-  </h2>
-
+<ngbd-overview-section [section]="sections['basic']">
   <p>
     Datepicker can be used either inline or inside of the popup.
   </p>
@@ -88,19 +65,12 @@
     a date is selected via keyboard or mouse.
     It can stay open after date selection if you set <code>[autoClose]</code> input to <code>false</code>
   </p>
-</section>
+</ngbd-overview-section>
 
 
 
 <!-- GETTING / SETTING A DATE -->
-<section>
-  <h2>
-    <a class="title-fragment" [routerLink]="" fragment="getting-date" ngbdFragment>
-      <img src="img/link-symbol.svg" />
-    </a>
-    Getting/setting a date
-  </h2>
-
+<ngbd-overview-section [section]="sections['gettingDate']">
   <p>
     You have several ways of knowing when user selects a date. The date is selected
     either by clicking on it, pressing <code>Space</code> or <code>Enter</code>,
@@ -128,19 +98,12 @@
   </p>
 
   <ngbd-code lang="html" [code]="snippets.selection"></ngbd-code>
-</section>
+</ngbd-overview-section>
 
 
 
 <!-- MOVING AROUND-->
-<section>
-  <h2>
-    <a class="title-fragment" [routerLink]="" fragment="navigation" ngbdFragment>
-      <img src="img/link-symbol.svg" />
-    </a>
-    Moving around
-  </h2>
-
+<ngbd-overview-section [section]="sections['navigation']">
   <p>
     Date selection and navigation are two different things.
     You might have a date selected in January, but August currently displayed.
@@ -159,19 +122,12 @@
   </p>
 
   <ngbd-code lang="html" [code]="snippets.navigation"></ngbd-code>
-</section>
+</ngbd-overview-section>
 
 
 
 <!-- DISABLING/LIMITING DATES-->
-<section>
-  <h2>
-    <a class="title-fragment" [routerLink]="" fragment="limiting-dates" ngbdFragment>
-      <img src="img/link-symbol.svg" />
-    </a>
-    Disabling and limiting dates
-  </h2>
-
+<ngbd-overview-section [section]="sections['disabling']">
   <p>
     You can limit the dates available for navigation and selection using
     <code>[minDate]</code> and <code>[maxDate]</code> inputs. If you don't specify
@@ -188,19 +144,12 @@
 
   <ngbd-code style="position: relative; top: 0.25rem" lang="typescript" [code]="snippets.disablingTS"></ngbd-code>
   <ngbd-code style="position: relative; bottom: 0.25rem" lang="html" [code]="snippets.disablingHTML"></ngbd-code>
-</section>
+</ngbd-overview-section>
 
 
 
 <!-- DATE MODEL-->
-<section>
-  <h2>
-    <a class="title-fragment" [routerLink]="" fragment="date-model" ngbdFragment>
-      <img src="img/link-symbol.svg" />
-    </a>
-    Date model and format
-  </h2>
-
+<ngbd-overview-section [section]="sections['model']">
   <ngb-alert [dismissible]="false">
     Note: this should change in the near future with using native <code>Date</code>
     for all public APIs
@@ -243,19 +192,12 @@
     If the entered input value is invalid, the form model will contain the entered text.
   </p>
 
-</section>
+</ngbd-overview-section>
 
 
 
 <!-- DAY CUSTOMIZATION-->
-<section>
-  <h2>
-    <a class="title-fragment" [routerLink]="" fragment="day-template" ngbdFragment>
-      <img src="img/link-symbol.svg" />
-    </a>
-    Day display customization
-  </h2>
-
+<ngbd-overview-section [section]="sections['customization']">
   <p>
     You can completely replace how each date is rendered by providing a custom template
     and rendering anything you want inside. You'll get a date context available inside
@@ -268,19 +210,12 @@
   </p>
 
   <ngbd-code lang="html" [code]="snippets.dayTemplate"></ngbd-code>
-</section>
+</ngbd-overview-section>
 
 
 
 <!-- RANGE SELECTION -->
-<section>
-  <h2>
-    <a class="title-fragment" [routerLink]="" fragment="range" ngbdFragment>
-      <img src="img/link-symbol.svg" />
-    </a>
-    Range selection
-  </h2>
-
+<ngbd-overview-section [section]="sections['range']">
   <p>
     The datepicker model is a single date, however you still can implement range selection
     functionality. With <code>(select)</code> and <code>(dateSelect)</code> outputs you'll know
@@ -298,19 +233,12 @@
     we'll handle everything related to date selection and navigation for you and you can create
     a completely customized popup with any data model you want.
   </p>
-</section>
+</ngbd-overview-section>
 
 
 
 <!-- CALENDARS -->
-<section>
-  <h2>
-    <a class="title-fragment" [routerLink]="" fragment="calendars" ngbdFragment>
-      <img src="img/link-symbol.svg" />
-    </a>
-    Alternative calendars
-  </h2>
-
+<ngbd-overview-section [section]="sections['calendars']">
   <p>
     Internally datepicker uses <code>NgbCalendar</code> implementation for the Gregorian
     calendar. This could be extended to support and calendar that has notion of days, months and years.
@@ -329,19 +257,12 @@
 
   <ngbd-code lang="typescript" [code]="snippets.calendars"></ngbd-code>
 
-</section>
+</ngbd-overview-section>
 
 
 
 <!-- I18N -->
-<section>
-  <h2>
-    <a class="title-fragment" [routerLink]="" fragment="i18n" ngbdFragment>
-      <img src="img/link-symbol.svg" />
-    </a>
-    Internationalization
-  </h2>
-
+<ngbd-overview-section [section]="sections['i18n']">
   <p>
     Since the 2.0.0 release datepicker will use the
     <a href="https://angular.io/guide/i18n#setting-up-the-locale-of-your-app">application locale</a>
@@ -357,19 +278,12 @@
     mechanism. For example, previous month label is extracted under <code>the ngb.datepicker.previous-month</code>
     name.
   </p>
-</section>
+</ngbd-overview-section>
 
 
 
 <!-- Keyboard -->
-<section>
-  <h2>
-    <a class="title-fragment" [routerLink]="" fragment="keyboard-shortcuts" ngbdFragment>
-      <img src="img/link-symbol.svg" />
-    </a>
-    Keyboard shortcuts
-  </h2>
-
+<ngbd-overview-section [section]="sections['shortcuts']">
   <table class="table mt-4">
     <tbody>
       <tr>
@@ -423,4 +337,4 @@
     </tbody>
   </table>
 
-</section>
+</ngbd-overview-section>

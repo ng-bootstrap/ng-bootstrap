@@ -1,13 +1,12 @@
 import {Component} from '@angular/core';
 import {DEMO_SNIPPETS} from './demos';
+import {NgbdOverview} from '../shared/overview';
 
 @Component({
   selector: 'ngbd-datepicker',
   template: `
-    <ngbd-component-wrapper component="Datepicker">
-      <ngbd-overview>
-        <ngbd-datepicker-overview></ngbd-datepicker-overview>
-      </ngbd-overview>
+    <ngbd-component-wrapper component="Datepicker" [sections]="overview.sections">
+      <ngbd-datepicker-overview ngbdOverview [sections]="overview.sections"></ngbd-datepicker-overview>
       <ngbd-api-docs directive="NgbDatepicker"></ngbd-api-docs>
       <ngbd-api-docs directive="NgbInputDatepicker"></ngbd-api-docs>
       <ngbd-api-docs directive="NgbDatepickerToggle"></ngbd-api-docs>
@@ -53,4 +52,49 @@ import {DEMO_SNIPPETS} from './demos';
 })
 export class NgbdDatepicker {
    snippets = DEMO_SNIPPETS;
+
+   overview: NgbdOverview = {
+     sections: {
+       basic: {
+         title: 'Basic Usage',
+         fragment: 'basic-usage'
+       },
+       gettingDate: {
+         title: 'Getting/setting a date',
+         fragment: 'getting-date'
+       },
+       navigation: {
+         title: 'Moving around',
+         fragment: 'navigation'
+       },
+       disabling: {
+         title: 'Disabling and limiting dates',
+         fragment: 'limiting-dates'
+       },
+       model: {
+         title: 'Date model and format',
+         fragment: 'date-model'
+       },
+       customization: {
+         title: 'Day display customization',
+         fragment: 'day-template'
+       },
+       range: {
+         title: 'Range selection',
+         fragment: 'range'
+       },
+       calendars: {
+         title: 'Alternative calendars',
+         fragment: 'calendars'
+       },
+       i18n: {
+         title: 'Internationalization',
+         fragment: 'i18n'
+       },
+       shortcuts: {
+         title: 'Keyboard shortcuts',
+         fragment: 'keyboard-shortcuts'
+       }
+     }
+   };
 }

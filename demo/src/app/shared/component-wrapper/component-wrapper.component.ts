@@ -3,13 +3,17 @@ import {ActivatedRoute, Router} from '@angular/router';
 
 import {ExampleBoxComponent} from '../../components/shared/example-box';
 import {NgbdApiDocs, NgbdApiDocsClass, NgbdApiDocsConfig} from '../../components/shared/api-docs';
-import {NgbdOverviewComponent} from '../../components/shared/overview';
+import {NgbdOverviewDirective, NgbdOverviewSection} from '../../components/shared/overview';
 
 const VALID_TABS = ['overview', 'examples', 'api'];
 
 @Component({selector: 'ngbd-component-wrapper', templateUrl: './component-wrapper.component.html'})
 export class ComponentWrapper {
   @Input() component: string;
+
+  @Input() set sections(sections: {[name: string]: NgbdOverviewSection}) {
+    this.overviewSections = Object.keys(sections).map(name => sections[name]);
+  };
 
   activeTab: string;
 
@@ -18,9 +22,11 @@ export class ComponentWrapper {
     ['C', 'Component typescript file', 'btn-info'],
   ];
 
+  overviewSections: NgbdOverviewSection[] = [];
+
   sidebarCollapsed = true;
 
-  @ContentChild(NgbdOverviewComponent) overview;
+  @ContentChild(NgbdOverviewDirective) overview;
 
   @ContentChildren(ExampleBoxComponent) demos;
 
