@@ -62,11 +62,11 @@ const NGB_DATEPICKER_VALIDATOR = {
   },
   providers: [NGB_DATEPICKER_VALUE_ACCESSOR, NGB_DATEPICKER_VALIDATOR, NgbDatepickerService]
 })
-export class NgbInputDatepicker implements OnChanges,
-    OnDestroy, ControlValueAccessor, Validator {
+export class NgbInputDatepicker<D = NgbDateStruct>
+    implements OnChanges, OnDestroy, ControlValueAccessor, Validator {
   private _clickableElements = new Set<HTMLElement>();
   private _closed$ = new Subject();
-  private _cRef: ComponentRef<NgbDatepicker> = null;
+  private _cRef: ComponentRef<NgbDatepicker<D>> = null;
   private _disabled = false;
   private _model: NgbDate;
   private _zoneSubscription: any;
@@ -85,7 +85,7 @@ export class NgbInputDatepicker implements OnChanges,
   /**
    * Reference for the custom template for the day display
    */
-  @Input() dayTemplate: TemplateRef<DayTemplateContext>;
+  @Input() dayTemplate: TemplateRef<DayTemplateContext<D>>;
 
   /**
    * Number of months to display
@@ -101,17 +101,17 @@ export class NgbInputDatepicker implements OnChanges,
    * Callback to mark a given date as disabled.
    * 'Current' contains the month that will be displayed in the view
    */
-  @Input() markDisabled: (date: NgbDateStruct, current: {year: number, month: number}) => boolean;
+  @Input() markDisabled: (date: D, current: {year: number, month: number}) => boolean;
 
   /**
    * Min date for the navigation. If not provided will be 10 years before today or `startDate`
    */
-  @Input() minDate: NgbDateStruct;
+  @Input() minDate: D;
 
   /**
    * Max date for the navigation. If not provided will be 10 years from today or `startDate`
    */
-  @Input() maxDate: NgbDateStruct;
+  @Input() maxDate: D;
 
   /**
    * Navigation type: `select` (default with select boxes for month and year), `arrows`
@@ -163,7 +163,7 @@ export class NgbInputDatepicker implements OnChanges,
    *
    * @since 1.1.1
    */
-  @Output() dateSelect = new EventEmitter<NgbDateStruct>();
+  @Output() dateSelect = new EventEmitter<D>();
 
   /**
    * An event fired when navigation happens and currently displayed month changes.
@@ -192,7 +192,7 @@ export class NgbInputDatepicker implements OnChanges,
       private _parserFormatter: NgbDateParserFormatter, private _elRef: ElementRef<HTMLInputElement>,
       private _vcRef: ViewContainerRef, private _renderer: Renderer2, private _cfr: ComponentFactoryResolver,
       ngZone: NgZone, private _service: NgbDatepickerService, private _calendar: NgbCalendar,
-      private _ngbDateAdapter: NgbDateAdapter<any>, @Inject(DOCUMENT) private _document: any) {
+      private _dateAdapter: NgbDateAdapter<D>, @Inject(DOCUMENT) private _document: any) {
     this._zoneSubscription = ngZone.onStable.subscribe(() => {
       if (this._cRef) {
         positionElements(
@@ -216,29 +216,29 @@ export class NgbInputDatepicker implements OnChanges,
       return null;
     }
 
-    const ngbDate = this._fromDateStruct(this._ngbDateAdapter.fromModel(value));
+    const ngbDate = this._fromDateStruct(this._dateAdapter.fromModel(value));
 
     if (!this._calendar.isValid(ngbDate)) {
       return {'ngbDate': {invalid: c.value}};
     }
 
-    if (this.minDate && ngbDate.before(NgbDate.from(this.minDate))) {
+    if (this.minDate && ngbDate.before(NgbDate.from(this._dateAdapter.fromModel(this.minDate)))) {
       return {'ngbDate': {requiredBefore: this.minDate}};
     }
 
-    if (this.maxDate && ngbDate.after(NgbDate.from(this.maxDate))) {
+    if (this.maxDate && ngbDate.after(NgbDate.from(this._dateAdapter.fromModel(this.maxDate)))) {
       return {'ngbDate': {requiredAfter: this.maxDate}};
     }
   }
 
   writeValue(value) {
-    this._model = this._fromDateStruct(this._ngbDateAdapter.fromModel(value));
+    this._model = this._fromDateStruct(this._dateAdapter.fromModel(value));
     this._writeModelValue(this._model);
   }
 
   manualDateChange(value: string, updateView = false) {
     this._model = this._fromDateStruct(this._parserFormatter.parse(value));
-    this._onChange(this._model ? this._ngbDateAdapter.toModel(this._model) : (value === '' ? null : value));
+    this._onChange(this._model ? this._dateAdapter.toModel(this._model) : (value === '' ? null : value));
     if (updateView && this._model) {
       this._writeModelValue(this._model);
     }
@@ -252,13 +252,13 @@ export class NgbInputDatepicker implements OnChanges,
   open() {
     if (!this.isOpen()) {
       const cf = this._cfr.resolveComponentFactory(NgbDatepicker);
-      this._cRef = this._vcRef.createComponent(cf);
+      this._cRef = this._vcRef.createComponent(cf) as ComponentRef<NgbDatepicker<D>>;
 
       this._applyPopupStyling(this._cRef.location.nativeElement);
       this._applyDatepickerInputs(this._cRef.instance);
       this._subscribeForDatepickerOutputs(this._cRef.instance);
       this._cRef.instance.ngOnInit();
-      this._cRef.instance.writeValue(this._ngbDateAdapter.toModel(this._model));
+      this._cRef.instance.writeValue(this._dateAdapter.toModel(this._model));
 
       // date selection event handling
       this._cRef.instance.registerOnChange((selectedDate) => {
@@ -366,7 +366,7 @@ export class NgbInputDatepicker implements OnChanges,
     this._zoneSubscription.unsubscribe();
   }
 
-  private _applyDatepickerInputs(datepickerInstance: NgbDatepicker): void {
+  private _applyDatepickerInputs(datepickerInstance: NgbDatepicker<D>): void {
     ['dayTemplate', 'displayMonths', 'firstDayOfWeek', 'markDisabled', 'minDate', 'maxDate', 'navigation',
      'outsideDays', 'showNavigation', 'showWeekdays', 'showWeekNumbers']
         .forEach((optionName: string) => {
@@ -383,7 +383,7 @@ export class NgbInputDatepicker implements OnChanges,
     this._renderer.addClass(nativeElement, 'show');
   }
 
-  private _subscribeForDatepickerOutputs(datepickerInstance: NgbDatepicker) {
+  private _subscribeForDatepickerOutputs(datepickerInstance: NgbDatepicker<D>) {
     datepickerInstance.navigate.subscribe(date => this.navigate.emit(date));
     datepickerInstance.select.subscribe(date => {
       this.dateSelect.emit(date);
@@ -396,7 +396,7 @@ export class NgbInputDatepicker implements OnChanges,
   private _writeModelValue(model: NgbDate) {
     this._renderer.setProperty(this._elRef.nativeElement, 'value', this._parserFormatter.format(model));
     if (this.isOpen()) {
-      this._cRef.instance.writeValue(this._ngbDateAdapter.toModel(model));
+      this._cRef.instance.writeValue(this._dateAdapter.toModel(model));
       this._onTouched();
     }
   }
