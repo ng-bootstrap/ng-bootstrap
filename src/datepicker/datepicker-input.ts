@@ -32,8 +32,8 @@ import {NgbDateAdapter} from './adapters/ngb-date-adapter';
 import {NgbCalendar} from './ngb-calendar';
 import {NgbDatepickerService} from './datepicker-service';
 
-import {Subject, fromEvent, race} from 'rxjs';
-import {filter, take, takeUntil} from 'rxjs/operators';
+import {Subject, fromEvent, race, NEVER} from 'rxjs';
+import {filter, takeUntil} from 'rxjs/operators';
 
 const NGB_DATEPICKER_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -191,9 +191,9 @@ export class NgbInputDatepicker<D = NgbDateStruct>
   constructor(
       private _parserFormatter: NgbDateParserFormatter, private _elRef: ElementRef<HTMLInputElement>,
       private _vcRef: ViewContainerRef, private _renderer: Renderer2, private _cfr: ComponentFactoryResolver,
-      ngZone: NgZone, private _service: NgbDatepickerService, private _calendar: NgbCalendar,
+      private _ngZone: NgZone, private _service: NgbDatepickerService, private _calendar: NgbCalendar,
       private _dateAdapter: NgbDateAdapter<D>, @Inject(DOCUMENT) private _document: any) {
-    this._zoneSubscription = ngZone.onStable.subscribe(() => {
+    this._zoneSubscription = _ngZone.onStable.subscribe(() => {
       if (this._cRef) {
         positionElements(
             this._elRef.nativeElement, this._cRef.location.nativeElement, this.placement, this.container === 'body');
@@ -279,31 +279,18 @@ export class NgbInputDatepicker<D = NgbDateStruct>
 
       this._cRef.instance.focus();
 
-      // closing on ESC
-      // clang-format off
-      const escapes$ = fromEvent<KeyboardEvent>(this._document, 'keyup')
-        .pipe(
-          takeUntil(this._closed$),
-          filter(e => e.which === Key.Escape)
-        );
+      // closing on ESC and outside clicks
+      this._ngZone.runOutsideAngular(() => {
+        const escapes$ = fromEvent<KeyboardEvent>(this._document, 'keyup')
+                             .pipe(takeUntil(this._closed$), filter(e => e.which === Key.Escape));
 
-      // closing on outside clicks
-      const outsideClicks$ = this.autoClose === true || this.autoClose === 'outside' ?
-        fromEvent<MouseEvent>(this._document, 'click')
-          .pipe(
-            takeUntil(this._closed$),
-            filter(e => {
-              const clickableElements = [
-                this._elRef.nativeElement,
-                this._cRef.location.nativeElement,
-                ...Array.from(this._clickableElements)
-              ];
-              return !clickableElements.some(el => el && el.contains(e.target))
-            })
-          ) : null;
-      // clang-format on
+        const outsideClicks$ = this.autoClose === true || this.autoClose === 'outside' ?
+            fromEvent<MouseEvent>(this._document, 'click')
+                .pipe(takeUntil(this._closed$), filter(event => this._shouldCloseOnOutsideClick(event))) :
+            NEVER;
 
-      race<Event>([escapes$, outsideClicks$]).pipe(take(1)).subscribe(() => this.close());
+        race<Event>([escapes$, outsideClicks$]).subscribe(() => this._ngZone.run(() => this.close()));
+      });
     }
   }
 
@@ -381,6 +368,12 @@ export class NgbInputDatepicker<D = NgbDateStruct>
     this._renderer.addClass(nativeElement, 'dropdown-menu');
     this._renderer.setStyle(nativeElement, 'padding', '0');
     this._renderer.addClass(nativeElement, 'show');
+  }
+
+  private _shouldCloseOnOutsideClick(event: MouseEvent) {
+    const clickableElements =
+        [this._elRef.nativeElement, this._cRef.location.nativeElement, ...Array.from(this._clickableElements)];
+    return !clickableElements.some(el => el && el.contains(event.target));
   }
 
   private _subscribeForDatepickerOutputs(datepickerInstance: NgbDatepicker<D>) {
