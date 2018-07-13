@@ -144,6 +144,11 @@ class APIDocVisitor {
     var directiveInfo;
     var members;
 
+    // If there is no top documention comment, consider it private, we skip it.
+    if (!description) {
+      return [];
+    }
+
     if (decorators) {
       for (var i = 0; i < decorators.length; i++) {
         if (this.isDirectiveDecorator(decorators[i])) {
