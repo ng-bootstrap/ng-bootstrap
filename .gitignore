@@ -2,6 +2,7 @@
 /dist/
 /temp/
 /demo/dist/
+/e2e-app/dist/
 npm-debug.log
 .publish
 .sw*
