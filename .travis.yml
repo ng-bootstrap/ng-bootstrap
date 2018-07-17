@@ -10,7 +10,7 @@ env:
     - LOGS_DIR=/tmp/logs
 
 addons:
-  firefox: "latest"
+  chrome: stable
 
 before_install:
   - export DISPLAY=:99.0
