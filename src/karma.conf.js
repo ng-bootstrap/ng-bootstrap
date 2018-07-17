@@ -1,7 +1,7 @@
 // Configuration used for local testing and Travis CI
 
 const reporters = process.env.TRAVIS ? ['dots'] : ['progress'];
-const browsers = process.env.TRAVIS ? ['Firefox'] : ['Chrome'];
+const browsers = process.env.TRAVIS ? ['ChromeHeadlessNoSandbox'] : ['Chrome'];
 
 module.exports = function (config) {
   config.set({
@@ -18,6 +18,12 @@ module.exports = function (config) {
       dir: require('path').join(__dirname, '..', 'coverage'),
       reports: ['html', 'json', 'lcovonly'],
       fixWebpackSourcePaths: true
+    },
+    customLaunchers: {
+      ChromeHeadlessNoSandbox: {
+        base: 'ChromeHeadless',
+        flags: ['--no-sandbox']
+      }
     },
     reporters,
     port: 9876,
