@@ -1,4 +1,4 @@
-import {toInteger, toString, getValueInRange, isInteger, isString} from './util';
+import {toInteger, toString, getValueInRange, isInteger, isString, padNumber} from './util';
 
 describe('util', () => {
 
@@ -72,6 +72,36 @@ describe('util', () => {
       expect(isInteger(-14.1)).toBeFalsy();
     });
 
+  });
+
+  describe('padNumber', () => {
+
+    it('should ignore non-numbers', () => {
+      expect(padNumber(null)).toBe('');
+      expect(padNumber(undefined)).toBe('');
+      expect(padNumber(<any>'string')).toBe('');
+    });
+
+    it('should have default padding of 2', () => {
+      expect(padNumber(0)).toBe('00');
+      expect(padNumber(1)).toBe('01');
+      expect(padNumber(11)).toBe('11');
+      expect(padNumber(111)).toBe('111');
+    });
+
+    it('work with negative numbers', () => {
+      expect(padNumber(-1)).toBe('-01');
+      expect(padNumber(-11)).toBe('-11');
+      expect(padNumber(-111)).toBe('-111');
+    });
+
+    it('should work with custom padding', () => {
+      expect(padNumber(1, 4)).toBe('0001');
+      expect(padNumber(11, 4)).toBe('0011');
+      expect(padNumber(111, 4)).toBe('0111');
+      expect(padNumber(1111, 4)).toBe('1111');
+      expect(padNumber(11111, 4)).toBe('11111');
+    });
   });
 
   describe('isString', () => {

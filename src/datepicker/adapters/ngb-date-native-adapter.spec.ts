@@ -1,4 +1,5 @@
 import {NgbDateNativeAdapter} from './ngb-date-native-adapter';
+import {NgbDate} from '../ngb-date';
 
 describe('ngb-date-native model adapter', () => {
   let adapter: NgbDateNativeAdapter;
@@ -18,7 +19,7 @@ describe('ngb-date-native model adapter', () => {
     });
 
     it('should convert valid date',
-       () => { expect(adapter.fromModel(new Date(2016, 4, 1))).toEqual({year: 2016, month: 5, day: 1}); });
+       () => { expect(adapter.fromModel(new Date(2016, 4, 1))).toEqual(new NgbDate(2016, 5, 1)); });
   });
 
   describe('toModel', () => {
@@ -34,7 +35,7 @@ describe('ngb-date-native model adapter', () => {
     });
 
     it('should convert a valid date',
-       () => { expect(adapter.toModel({year: 2016, month: 10, day: 15})).toEqual(new Date(2016, 9, 15, 12)); });
+       () => { expect(adapter.toModel(new NgbDate(2016, 10, 15))).toEqual(new Date(2016, 9, 15, 12)); });
   });
 
 });

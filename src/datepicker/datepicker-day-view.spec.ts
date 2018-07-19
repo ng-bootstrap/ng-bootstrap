@@ -3,7 +3,7 @@ import {TestBed} from '@angular/core/testing';
 import {Component} from '@angular/core';
 import {NgbDatepickerModule} from './datepicker.module';
 import {NgbDatepickerDayView} from './datepicker-day-view';
-import {NgbDateStruct} from './ngb-date-struct';
+import {NgbDate} from './ngb-date';
 
 function getElement(element: HTMLElement): HTMLElement {
   return <HTMLElement>element.querySelector('[ngbDatepickerDayView]');
@@ -23,7 +23,7 @@ describe('ngbDatepickerDayView', () => {
     const el = getElement(fixture.nativeElement);
     expect(el.innerText).toBe('22');
 
-    fixture.componentInstance.date = {year: 2016, month: 7, day: 25};
+    fixture.componentInstance.date = new NgbDate(2016, 7, 25);
     fixture.detectChanges();
     expect(el.innerText).toBe('25');
   });
@@ -48,7 +48,7 @@ describe('ngbDatepickerDayView', () => {
     expect(el).not.toHaveCssClass('text-muted');
     expect(el).not.toHaveCssClass('outside');
 
-    fixture.componentInstance.date = {year: 2016, month: 8, day: 22};
+    fixture.componentInstance.date = new NgbDate(2016, 8, 22);
     fixture.detectChanges();
     expect(el).toHaveCssClass('text-muted');
     expect(el).toHaveCssClass('outside');
@@ -87,7 +87,7 @@ describe('ngbDatepickerDayView', () => {
 })
 class TestComponent {
   currentMonth = 7;
-  date: NgbDateStruct = {year: 2016, month: 7, day: 22};
+  date: NgbDate = new NgbDate(2016, 7, 22);
   disabled = false;
   selected = false;
 }

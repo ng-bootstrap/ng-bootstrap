@@ -11,6 +11,7 @@ import {NgbdOverview} from '../shared/overview';
       <ngbd-api-docs directive="NgbInputDatepicker"></ngbd-api-docs>
       <ngbd-api-docs directive="NgbDatepickerToggle"></ngbd-api-docs>
       <ngbd-api-docs-class type="NgbDateStruct"></ngbd-api-docs-class>
+      <ngbd-api-docs-class type="NgbDate"></ngbd-api-docs-class>
       <ngbd-api-docs-class type="DayTemplateContext"></ngbd-api-docs-class>
       <ngbd-api-docs-class type="NgbDatepickerNavigateEvent"></ngbd-api-docs-class>
       <ngbd-api-docs-class type="NgbDatepickerI18n"></ngbd-api-docs-class>

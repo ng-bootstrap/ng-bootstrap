@@ -140,7 +140,7 @@ ADAPTERS.forEach(adapter => {
       createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
   const fromStruct = (date: NgbDateStruct): SupportedDate =>
-      (adapter.instance as NgbDateAdapter<SupportedDate>).toModel(date);
+      (adapter.instance as NgbDateAdapter<SupportedDate>).toModel(NgbDate.from(date));
 
   const toStruct = (date: SupportedDate): NgbDateStruct =>
       (adapter.instance as NgbDateAdapter<SupportedDate>).fromModel(date);
@@ -172,7 +172,7 @@ ADAPTERS.forEach(adapter => {
     it('should throw if max date is before min date', () => {
       expect(() => {
         createTestComponent('<ngb-datepicker [minDate]="maxDate" [maxDate]="minDate"></ngb-datepicker>');
-      }).toThrowError(`'maxDate' 2010-1-1 should be greater than 'minDate' 2020-12-31`);
+      }).toThrowError(`'maxDate' 2010-01-01 should be greater than 'minDate' 2020-12-31`);
     });
 
     it('should handle incorrect startDate values', () => {

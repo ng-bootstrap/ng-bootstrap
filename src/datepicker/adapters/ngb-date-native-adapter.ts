@@ -1,15 +1,14 @@
 import {Injectable} from '@angular/core';
 import {NgbDateAdapter} from './ngb-date-adapter';
-import {NgbDateStruct} from '../ngb-date-struct';
+import {NgbDate} from '../ngb-date';
 
 @Injectable()
 export class NgbDateNativeAdapter extends NgbDateAdapter<Date> {
-  fromModel(date: Date): NgbDateStruct {
-    return (date && date.getFullYear) ? {year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate()} :
-                                        null;
+  fromModel(date: Date): NgbDate {
+    return (date && date.getFullYear) ? new NgbDate(date.getFullYear(), date.getMonth() + 1, date.getDate()) : null;
   }
 
-  toModel(date: NgbDateStruct): Date {
+  toModel(date: NgbDate): Date {
     return date && date.year && date.month ? new Date(date.year, date.month - 1, date.day, 12) : null;
   }
 }

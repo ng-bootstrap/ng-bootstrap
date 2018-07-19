@@ -12,7 +12,7 @@ import {NgbCalendar, NgbCalendarGregorian} from './ngb-calendar';
 import {NgbCalendarIslamicCivil} from './hijri/ngb-calendar-islamic-civil';
 import {NgbCalendarIslamicUmalqura} from './hijri/ngb-calendar-islamic-umalqura';
 import {NgbDateParserFormatter, NgbDateISOParserFormatter} from './ngb-date-parser-formatter';
-import {NgbDateAdapter, NgbDateStructAdapter} from './adapters/ngb-date-adapter';
+import {NgbDateAdapter, NgbDateDefaultAdapter} from './adapters/ngb-date-adapter';
 import {NgbDatepickerNavigationSelect} from './datepicker-navigation-select';
 import {NgbDatepickerConfig} from './datepicker-config';
 
@@ -29,6 +29,7 @@ export {NgbDatepickerNavigationSelect} from './datepicker-navigation-select';
 export {NgbDatepickerConfig} from './datepicker-config';
 export {NgbDatepickerI18n} from './datepicker-i18n';
 export {NgbDateStruct} from './ngb-date-struct';
+export {NgbDate} from './ngb-date';
 export {NgbDateAdapter} from './adapters/ngb-date-adapter';
 export {NgbDateNativeAdapter} from './adapters/ngb-date-native-adapter';
 export {NgbDateParserFormatter} from './ngb-date-parser-formatter';
@@ -50,7 +51,7 @@ export class NgbDatepickerModule {
         {provide: NgbCalendar, useClass: NgbCalendarGregorian},
         {provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nDefault},
         {provide: NgbDateParserFormatter, useClass: NgbDateISOParserFormatter},
-        {provide: NgbDateAdapter, useClass: NgbDateStructAdapter}, NgbDatepickerConfig, DatePipe
+        {provide: NgbDateAdapter, useClass: NgbDateDefaultAdapter}, NgbDatepickerConfig, DatePipe
       ]
     };
   }

@@ -60,4 +60,19 @@ describe('ngb-date', () => {
       expect(date.after(new NgbDate(2017, 8, 18))).toBeFalsy();
     });
   });
+
+  describe('toString', () => {
+    it('should return the ISO string for correct dates', () => {
+      expect(new NgbDate(2010, 12, 12).toString()).toBe('2010-12-12');
+      expect(new NgbDate(2, 2, 2).toString()).toBe('0002-02-02');
+      expect(new NgbDate(-2, 2, 2).toString()).toBe('-0002-02-02');
+      expect(new NgbDate(10000, 2, 2).toString()).toBe('10000-02-02');
+    });
+
+    it('should work for partial dates', () => {
+      expect(new NgbDate(2010, null, null).toString()).toBe('2010--');
+      expect(new NgbDate(2010, 12, null).toString()).toBe('2010-12-');
+      expect(new NgbDate(2010, null, 12).toString()).toBe('2010--12');
+    });
+  });
 });

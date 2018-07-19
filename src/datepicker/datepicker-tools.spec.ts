@@ -14,8 +14,7 @@ import {TestBed} from '@angular/core/testing';
 import {DatepickerViewModel, NgbMarkDisabled, MonthViewModel} from './datepicker-view-model';
 import {NgbDatepickerI18n, NgbDatepickerI18nDefault} from './datepicker-i18n';
 import {DatePipe} from '@angular/common';
-import {NgbDateStruct} from './ngb-date-struct';
-import {NgbDateAdapter, NgbDateStructAdapter} from './adapters/ngb-date-adapter';
+import {NgbDateAdapter, NgbDateDefaultAdapter} from './adapters/ngb-date-adapter';
 
 describe(`datepicker-tools`, () => {
 
@@ -79,14 +78,14 @@ describe(`datepicker-tools`, () => {
 
     let calendar: NgbCalendar;
     let i18n: NgbDatepickerI18n;
-    let dateAdapter: NgbDateAdapter<NgbDateStruct>;
+    let dateAdapter: NgbDateAdapter<NgbDate>;
 
     beforeAll(() => {
       TestBed.configureTestingModule({
         providers: [
           {provide: NgbCalendar, useClass: NgbCalendarGregorian},
           {provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nDefault},
-          {provide: NgbDateAdapter, useClass: NgbDateStructAdapter}, DatePipe
+          {provide: NgbDateAdapter, useClass: NgbDateDefaultAdapter}, DatePipe
         ]
       });
       calendar = TestBed.get(NgbCalendar);
@@ -184,7 +183,7 @@ describe(`datepicker-tools`, () => {
       buildMonth(calendar, new NgbDate(2017, 5, 5), state, i18n, dateAdapter);
 
       // called one time, because it should be used only inside min-max range
-      expect(mock.markDisabled).toHaveBeenCalledWith({year: 2017, month: 5, day: 10}, {year: 2017, month: 5});
+      expect(mock.markDisabled).toHaveBeenCalledWith(new NgbDate(2017, 5, 10), {year: 2017, month: 5});
       expect(mock.markDisabled).toHaveBeenCalledTimes(1);
     });
 
@@ -235,7 +234,7 @@ describe(`datepicker-tools`, () => {
 
     let calendar: NgbCalendar;
     let i18n: NgbDatepickerI18n;
-    let dateAdapter: NgbDateAdapter<NgbDateStruct>;
+    let dateAdapter: NgbDateAdapter<NgbDate>;
 
 
     beforeAll(() => {
@@ -243,7 +242,7 @@ describe(`datepicker-tools`, () => {
         providers: [
           {provide: NgbCalendar, useClass: NgbCalendarGregorian},
           {provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nDefault},
-          {provide: NgbDateAdapter, useClass: NgbDateStructAdapter}, DatePipe
+          {provide: NgbDateAdapter, useClass: NgbDateDefaultAdapter}, DatePipe
         ]
       });
       calendar = TestBed.get(NgbCalendar);
@@ -516,7 +515,7 @@ describe(`datepicker-tools`, () => {
 
   describe(`isDateSelectable()`, () => {
 
-    const adapter = new NgbDateStructAdapter();
+    const adapter = new NgbDateDefaultAdapter();
 
     // disabling 15th of any month
     const markDisabled: NgbMarkDisabled = (date, month) => date.day === 15;

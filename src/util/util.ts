@@ -26,9 +26,14 @@ export function isDefined(value: any): boolean {
   return value !== undefined && value !== null;
 }
 
-export function padNumber(value: number) {
+export function padNumber(value: number, length = 2) {
   if (isNumber(value)) {
-    return `0${value}`.slice(-2);
+    const sign = Math.sign(value) === -1 ? '-' : '';
+    let str = `${Math.abs(value)}`;
+    while (str.length < length) {
+      str = '0' + str;
+    }
+    return sign + str;
   } else {
     return '';
   }
