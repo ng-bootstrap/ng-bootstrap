@@ -17,8 +17,12 @@ import {DOCUMENT} from '@angular/common';
 import {fromEvent} from 'rxjs';
 import {filter, takeUntil} from 'rxjs/operators';
 import {NgbDropdownConfig} from './dropdown-config';
+import {isDefined} from '../util/util';
 import {positionElements, PlacementArray, Placement} from '../util/positioning';
 import {Key} from '../util/key';
+import {AutoCloseService, Subscriber, AutoCloseType} from '../util/autoclose.service';
+
+
 
 /**
  */
@@ -29,10 +33,13 @@ import {Key} from '../util/key';
 export class NgbDropdownMenu {
   placement: Placement = 'bottom';
   isOpen = false;
+  anchorEl;
 
   constructor(
       @Inject(forwardRef(() => NgbDropdown)) public dropdown, private _elementRef: ElementRef<HTMLElement>,
-      private _renderer: Renderer2) {}
+      private _renderer: Renderer2) {
+    this.anchorEl = _elementRef.nativeElement;
+  }
 
   isEventFrom($event) { return this._elementRef.nativeElement.contains($event.target); }
 
@@ -75,8 +82,6 @@ export class NgbDropdownAnchor {
   constructor(@Inject(forwardRef(() => NgbDropdown)) public dropdown, private _elementRef: ElementRef<HTMLElement>) {
     this.anchorEl = _elementRef.nativeElement;
   }
-
-  isEventFrom($event) { return this._elementRef.nativeElement.contains($event.target); }
 }
 
 /**
@@ -107,11 +112,12 @@ export class NgbDropdownToggle extends NgbDropdownAnchor {
 @Directive({
   selector: '[ngbDropdown]',
   exportAs: 'ngbDropdown',
-  host: {'[class.show]': 'isOpen()', '(document:click)': 'closeFromClick($event)'}
+  host: {'[class.show]': 'isOpen()'}
 })
 export class NgbDropdown implements OnInit,
     OnDestroy {
   private _zoneSubscription: any;
+  private _autoCloseSubscriber: Subscriber;
 
   @ContentChild(NgbDropdownMenu) private _menu: NgbDropdownMenu;
 
@@ -124,7 +130,7 @@ export class NgbDropdown implements OnInit,
    * When it is 'outside' dropdowns are automatically closed on outside clicks but not on menu clicks.
    * When it is 'inside' dropdowns are automatically on menu clicks but not on outside clicks.
    */
-  @Input() autoClose: boolean | 'outside' | 'inside';
+  @Input() autoClose: AutoCloseType;
 
   /**
    *  Defines whether or not the dropdown-menu is open initially.
@@ -147,15 +153,24 @@ export class NgbDropdown implements OnInit,
 
   constructor(
       private _changeDetector: ChangeDetectorRef, config: NgbDropdownConfig, @Inject(DOCUMENT) private _document: any,
-      private _ngZone: NgZone) {
+      private _ngZone: NgZone, autoCloseService: AutoCloseService) {
     this.placement = config.placement;
     this.autoClose = config.autoClose;
     this._zoneSubscription = _ngZone.onStable.subscribe(() => { this._positionMenu(); });
+    this._autoCloseSubscriber = autoCloseService.createSubscriber(autoCloseService.subscriptionSpecFactory({
+      getAutoClose: () => this.autoClose,
+      getElementsInside: () => isDefined(this._menu) ? [this._menu.anchorEl] : [],
+      getTogglingElement: () => isDefined(this._anchor) ? this._anchor.anchorEl : null,
+      close: () => this.close()
+    }));
   }
 
   ngOnInit() {
     if (this._menu) {
       this._menu.applyPlacement(Array.isArray(this.placement) ? (this.placement[0]) : this.placement as Placement);
+    }
+    if (this.isOpen()) {
+      this._autoCloseSubscriber.subscribe();
     }
   }
 
@@ -171,6 +186,7 @@ export class NgbDropdown implements OnInit,
     if (!this._open) {
       this._open = true;
       this._positionMenu();
+      this._autoCloseSubscriber.subscribe();
       this.openChange.emit(true);
       this._ngZone.runOutsideAngular(
           () => fromEvent<KeyboardEvent>(this._document, 'keyup')
@@ -190,6 +206,7 @@ export class NgbDropdown implements OnInit,
   close(): void {
     if (this._open) {
       this._open = false;
+      this._autoCloseSubscriber.unsubscribe();
       this.openChange.emit(false);
     }
   }
@@ -205,29 +222,10 @@ export class NgbDropdown implements OnInit,
     }
   }
 
-  closeFromClick($event) {
-    if (this.autoClose && $event.button !== 2 && !this._isEventFromToggle($event)) {
-      if (this.autoClose === true) {
-        this.close();
-      } else if (this.autoClose === 'inside' && this._isEventFromMenu($event)) {
-        this.close();
-      } else if (this.autoClose === 'outside' && !this._isEventFromMenu($event)) {
-        this.close();
-      }
-    }
+  ngOnDestroy() {
+    this._autoCloseSubscriber.unsubscribe();
+    this._zoneSubscription.unsubscribe();
   }
-
-  closeFromOutsideEsc() {
-    if (this.autoClose) {
-      this.close();
-    }
-  }
-
-  ngOnDestroy() { this._zoneSubscription.unsubscribe(); }
-
-  private _isEventFromToggle($event) { return this._anchor.isEventFrom($event); }
-
-  private _isEventFromMenu($event) { return this._menu ? this._menu.isEventFrom($event) : false; }
 
   private _positionMenu() {
     if (this.isOpen() && this._menu) {

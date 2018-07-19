@@ -7,6 +7,8 @@ import {Validators, FormControl, FormGroup, FormsModule, ReactiveFormsModule} fr
 import {By} from '@angular/platform-browser';
 import {Observable, Subject} from 'rxjs';
 
+import {createKeyboardEvent} from '../util/keys';
+
 import {NgbTypeahead} from './typeahead';
 import {NgbTypeaheadModule} from './typeahead.module';
 import {NgbTypeaheadConfig} from './typeahead-config';
@@ -200,7 +202,7 @@ describe('ngb-typeahead', () => {
       fixture.detectChanges();
       expect(getWindow(compiled)).not.toBeNull();
 
-      fixture.nativeElement.click();
+      fixture.nativeElement.dispatchEvent(new MouseEvent('mousedown', {bubbles: true, button: 0}));
       expect(getWindow(compiled)).toBeNull();
     });
 
@@ -224,8 +226,9 @@ describe('ngb-typeahead', () => {
       fixture.detectChanges();
       expect(getWindow(compiled)).not.toBeNull();
 
-      const event = createKeyDownEvent(Key.Escape);
-      getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
+      const event = createKeyboardEvent({type: 'keydown', name: 'Escape'});
+      spyOn(event, 'preventDefault');
+      document.dispatchEvent(event);
       fixture.detectChanges();
       expect(getWindow(compiled)).toBeNull();
       expect(event.preventDefault).toHaveBeenCalled();
@@ -493,9 +496,8 @@ describe('ngb-typeahead', () => {
          fixture.detectChanges();
          tick(50);
 
-         // Press Escape while second is still in proggress
-         const event = createKeyDownEvent(Key.Escape);
-         getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
+         // Press Escape while second is still in progress
+         document.dispatchEvent(createKeyboardEvent({type: 'keydown', name: 'Escape'}));
          fixture.detectChanges();
 
          // Results for second input are loaded (window shouldn't be opened in this case)
@@ -914,8 +916,7 @@ describe('ngb-typeahead', () => {
              expect(inputEl.selectionStart).toBe(2);
              expect(inputEl.selectionEnd).toBe(3);
 
-             const event = createKeyDownEvent(Key.Escape);
-             getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
+             document.dispatchEvent(createKeyboardEvent({type: 'keydown', name: 'Escape'}));
              fixture.detectChanges();
              expect(inputEl.value).toBe('on');
              expect(inputEl.selectionStart).toBe(2);

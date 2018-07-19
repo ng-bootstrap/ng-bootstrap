@@ -1,6 +1,8 @@
 import {NgModule, ModuleWithProviders} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
+import {AutoCloseService} from '../util/autoclose.service';
+
 import {NgbHighlight} from './highlight';
 import {NgbTypeaheadWindow} from './typeahead-window';
 import {NgbTypeahead, NgbTypeaheadSelectItemEvent} from './typeahead';
@@ -22,7 +24,8 @@ export class NgbTypeaheadModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: NgbTypeaheadModule,
-      providers: [Live, NgbTypeaheadConfig, {provide: ARIA_LIVE_DELAY, useValue: DEFAULT_ARIA_LIVE_DELAY}]
+      providers:
+          [Live, NgbTypeaheadConfig, {provide: ARIA_LIVE_DELAY, useValue: DEFAULT_ARIA_LIVE_DELAY}, AutoCloseService]
     };
   }
 }

@@ -19,6 +19,8 @@ import {
 import {AbstractControl, ControlValueAccessor, Validator, NG_VALUE_ACCESSOR, NG_VALIDATORS} from '@angular/forms';
 import {DOCUMENT} from '@angular/common';
 
+import {AutoCloseService, Subscriber} from '../util/autoclose.service';
+
 import {NgbDate} from './ngb-date';
 import {NgbDatepicker, NgbDatepickerNavigateEvent} from './datepicker';
 import {DayTemplateContext} from './datepicker-day-template-context';
@@ -70,6 +72,13 @@ export class NgbInputDatepicker<D = NgbDateStruct>
   private _disabled = false;
   private _model: NgbDate;
   private _zoneSubscription: any;
+  private _autoCloseSubscriber: Subscriber;
+
+  /**
+   * The element used to toggle the visibility of the datepicker.
+   * Used mainly to avoid handling automatically the datepicker visibility when clicking on this toggling element.
+   */
+  @Input('ngbDatepicker') togglingElement: HTMLElement | null;
 
   /**
    * Indicates whether the datepicker popup should be closed automatically after date selection / outside click or not.
@@ -192,13 +201,21 @@ export class NgbInputDatepicker<D = NgbDateStruct>
       private _parserFormatter: NgbDateParserFormatter, private _elRef: ElementRef<HTMLInputElement>,
       private _vcRef: ViewContainerRef, private _renderer: Renderer2, private _cfr: ComponentFactoryResolver,
       private _ngZone: NgZone, private _service: NgbDatepickerService, private _calendar: NgbCalendar,
-      private _dateAdapter: NgbDateAdapter<D>, @Inject(DOCUMENT) private _document: any) {
+      private _dateAdapter: NgbDateAdapter<D>, @Inject(DOCUMENT) private _document: any,
+      autoCloseService: AutoCloseService) {
     this._zoneSubscription = _ngZone.onStable.subscribe(() => {
       if (this._cRef) {
         positionElements(
             this._elRef.nativeElement, this._cRef.location.nativeElement, this.placement, this.container === 'body');
       }
     });
+
+    this._autoCloseSubscriber = autoCloseService.createSubscriber(autoCloseService.subscriptionSpecFactory({
+      getAutoClose: () => 'outside',
+      getElementsInside: () => [this._cRef.location.nativeElement, this._elRef.nativeElement],
+      getTogglingElement: () => this.togglingElement,
+      close: () => this.close()
+    }));
   }
 
   registerOnChange(fn: (value: any) => any): void { this._onChange = fn; }
@@ -251,6 +268,7 @@ export class NgbInputDatepicker<D = NgbDateStruct>
    */
   open() {
     if (!this.isOpen()) {
+      this._autoCloseSubscriber.subscribe();
       const cf = this._cfr.resolveComponentFactory(NgbDatepicker);
       this._cRef = this._vcRef.createComponent(cf) as ComponentRef<NgbDatepicker<D>>;
 
@@ -299,6 +317,7 @@ export class NgbInputDatepicker<D = NgbDateStruct>
    */
   close() {
     if (this.isOpen()) {
+      this._autoCloseSubscriber.unsubscribe();
       this._vcRef.remove(this._vcRef.indexOf(this._cRef.hostView));
       this._cRef = null;
       this._closed$.next();

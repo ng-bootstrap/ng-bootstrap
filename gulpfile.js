@@ -21,7 +21,7 @@ gulp.task('check-format', function() {
   return gulp
       .src([
         'gulpfile.js', 'karma-test-shim.js', 'misc/api-doc.js', 'misc/api-doc.spec.js', 'misc/demo-gen.js',
-        'src/**/*.ts'
+        'src/**/*.ts', '!src/util/keys.ts'
       ])
       .pipe(gulpFormat.checkFormat('file', clangFormat))
       .on('warning', function(e) {
