@@ -63,6 +63,10 @@ export class NgbdDatepicker {
          title: 'Getting/setting a date',
          fragment: 'getting-date'
        },
+       model: {
+         title: 'Date model and format',
+         fragment: 'date-model'
+       },
        navigation: {
          title: 'Moving around',
          fragment: 'navigation'
@@ -70,10 +74,6 @@ export class NgbdDatepicker {
        disabling: {
          title: 'Disabling and limiting dates',
          fragment: 'limiting-dates'
-       },
-       model: {
-         title: 'Date model and format',
-         fragment: 'date-model'
        },
        customization: {
          title: 'Day display customization',

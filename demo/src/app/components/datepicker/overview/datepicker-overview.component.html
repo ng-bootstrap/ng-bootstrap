@@ -21,26 +21,27 @@
   <p>
     Datepicker can be used either inline or inside of the popup.
   </p>
-  <p>
-    In the example below the template variable <code>#d</code> will point
-    to the instance of the <code>NgbDatepicker</code> component in the first case.
-    In the second it will point to the instance of the <code>NgbInputDatepicker</code>
-    directive that will handle the popup containing inline datepicker.
-  </p>
 
   <ngbd-code lang="html" [code]="snippets.basic"></ngbd-code>
 
   <p>
+    In the example above the template variable <code>#d</code> will point
+    to the instance of the <code>NgbDatepicker</code> component in the first case.
+    In the second it will point to the instance of the <code>NgbInputDatepicker</code>
+    directive that handles the popup with inline datepicker component.
+  </p>
+
+  <p>
     See the <a routerLink="../api" fragment="NgbDatepicker">NgbDatepicker API</a>
     and the <a routerLink="../api" fragment="NgbInputDatepicker">NgbInputDatepicker API</a>
-    for details on all available inputs, outputs and methods.
+    for details on available inputs, outputs and methods.
 
     You can customize the number of displayed months, the way navigation
     between months and years looks like, week numbers, etc.
   </p>
 
   <p>
-    If you have a very specific case of the datepicker popup,
+    If you have a very specific use case for the datepicker popup,
     you could always create you own one and use the inline datepicker inside.
   </p>
 
@@ -61,7 +62,7 @@
   <ngbd-code lang="html" [code]="snippets.popup"></ngbd-code>
 
   <p>
-    The popup will be closed when pressing the <code>Escape</code> key and when
+    The popup will be closed with <code>Escape</code> key and when
     a date is selected via keyboard or mouse.
     It can stay open after date selection if you set <code>[autoClose]</code> input to <code>false</code>
   </p>
@@ -85,8 +86,8 @@
   </p>
 
   <p>
-    The model, however, will NOT be a native javascript date,
-    see the following section for more info.
+    The model, however, is NOT a native javascript date, see the following
+    <a routerLink="./" [fragment]="sections['model'].fragment">Date Model</a> section for more info.
   </p>
 
   <ngbd-code lang="html" [code]="snippets.form"></ngbd-code>
@@ -98,6 +99,50 @@
   </p>
 
   <ngbd-code lang="html" [code]="snippets.selection"></ngbd-code>
+</ngbd-overview-section>
+
+
+
+<!-- DATE MODEL-->
+<ngbd-overview-section [section]="sections['model']">
+  <p>
+    You've probably noticed that the datepicker uses a generic model type <code>&lt;D&gt;</code>
+    for all of its public APIs. By default  <code>&lt;D = NgbDateStruct&gt;</code> and not the native
+    <code>Date</code> object. It's a simple data structure with 3 fields and months starting with 1 (as in ISO 8601).
+  </p>
+
+  <ngbd-code lang="typescript" [code]="snippets.dateStruct"></ngbd-code>
+
+  <p>
+    If you want to use a native <code>Date</code> (or any other model type for that matter),
+    you can tell datepicker to use a date adapter (native javascript Date one is bundled with ng-bootstrap) as in the
+    <a routerLink="../examples" fragment="adapter">custom date adapter example</a>.
+  </p>
+
+  <ngbd-code lang="typescript" [code]="snippets.nativeAdapter"></ngbd-code>
+
+  <p>
+    You can also create your own adapters if necessary by extending and implementing the
+    <code>NgbDateAdapter</code> methods.
+  </p>
+
+  <ngbd-code lang="typescript" [code]="snippets.adapter"></ngbd-code>
+
+  <h4>Input date parsing and formatting</h4>
+
+  <p>
+    In the case of the <code>NgbInputDatepicker</code> you should be able to parse
+    and format the text entered in the input. This is not as easy task as it seems,
+    because you have to account for various formats and locales.
+    For now internally there is a service that does default formatting using ISO 8601 format.
+  </p>
+
+  <ngbd-code lang="typescript" [code]="snippets.formatter"></ngbd-code>
+
+  <p>
+    If the entered input value is invalid, the form model will contain the entered text.
+  </p>
+
 </ngbd-overview-section>
 
 
@@ -117,8 +162,8 @@
   </p>
 
   <p>
-    From the API, you could tell datepicker to open a specific month initially
-    via the <code>[startDate]</code> input or via the <code>.navigateTo()</code> method
+    With the API you can tell datepicker to initially open a specific month
+    via the <code>[startDate]</code> input or go to any month via the <code>.navigateTo()</code> method
   </p>
 
   <ngbd-code lang="html" [code]="snippets.navigation"></ngbd-code>
@@ -144,54 +189,6 @@
 
   <ngbd-code style="position: relative; top: 0.25rem" lang="typescript" [code]="snippets.disablingTS"></ngbd-code>
   <ngbd-code style="position: relative; bottom: 0.25rem" lang="html" [code]="snippets.disablingHTML"></ngbd-code>
-</ngbd-overview-section>
-
-
-
-<!-- DATE MODEL-->
-<ngbd-overview-section [section]="sections['model']">
-  <ngb-alert [dismissible]="false">
-    Note: this should change in the near future with using native <code>Date</code>
-    for all public APIs
-  </ngb-alert>
-
-  <p>
-    Datepicker uses <code>NgbDateStruct</code> as a model and not the native
-    <code>Date</code> object. It's a simple data structure with 3 fields.
-    Also note that months start with 1 (as in ISO 8601).
-  </p>
-
-  <ngbd-code lang="typescript" [code]="snippets.dateStruct"></ngbd-code>
-
-  <p>
-    You can tell datepicker to use the native javascript date adapter (bundled with ng-bootstrap) as in the
-    <a routerLink="../examples" fragment="adapter">custom date adapter example</a>. For now
-    the adapter works only for the form integration, so for instance <code>(ngModelChange)</code>
-    will return a native date object. All other APIs continue to use <code>NgbDateStruct</code>
-  </p>
-
-  <p>
-    You can also create your own adapters if necessary by extending and implementing the
-    <code>NgbDateAdapter</code> methods.
-  </p>
-
-  <ngbd-code lang="typescript" [code]="snippets.adapter"></ngbd-code>
-
-  <h4>Input date parsing and formatting</h4>
-
-  <p>
-    In the case of the <code>NgbInputDatepicker</code> you should be able to parse
-    and format the text entered in the input. This is not as easy task as it seems,
-    because you have to account for various formats and locales.
-    For now internally there is a service that does default formatting using ISO 8601 format.
-  </p>
-
-  <ngbd-code lang="typescript" [code]="snippets.formatter"></ngbd-code>
-
-  <p>
-    If the entered input value is invalid, the form model will contain the entered text.
-  </p>
-
 </ngbd-overview-section>
 
 
