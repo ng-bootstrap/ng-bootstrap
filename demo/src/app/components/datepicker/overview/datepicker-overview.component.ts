@@ -41,18 +41,19 @@ export class NgbdDatepickerOverviewComponent {
     dateStruct: `
 const date: NgbDateStruct = { day: 14, month: 7, year: 1789 }; // July, 14 1789
 `,
+    nativeAdapter: `
+// native adapter is bundled with library
+providers: [{provide: NgbDateAdapter, useClass: NgbDateNativeAdapter}]
+`,
     adapter: `
 @Injectable()
-export abstract class NgbDateAdapter<T> {
-  abstract fromModel(value: T): NgbDateStruct; // from your model -> internal model
-  abstract toModel(date: NgbDateStruct): T; // from internal model -> your mode
+export abstract class NgbDateAdapter<D> {
+  abstract fromModel(value: D): NgbDateStruct; // from your model -> internal model
+  abstract toModel(date: NgbDateStruct): D; // from internal model -> your mode
 }
 
 // create your own if necessary
 providers: [{provide: NgbDateAdapter, useClass: YourOwnDateAdapter}]
-
-// native adapter is bundled with library
-providers: [{provide: NgbDateAdapter, useClass: NgbDateNativeAdapter}]
 `,
     formatter: `
 @Injectable()
