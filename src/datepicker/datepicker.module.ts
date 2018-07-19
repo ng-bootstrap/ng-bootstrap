@@ -19,7 +19,7 @@ import {NgbDatepickerConfig} from './datepicker-config';
 export {NgbDatepicker, NgbDatepickerNavigateEvent} from './datepicker';
 export {NgbInputDatepicker} from './datepicker-input';
 export {NgbDatepickerToggle} from './datepicker-toggle';
-export {NgbCalendar} from './ngb-calendar';
+export {NgbCalendar, NgbPeriod} from './ngb-calendar';
 export {NgbCalendarIslamicCivil} from './hijri/ngb-calendar-islamic-civil';
 export {NgbCalendarIslamicUmalqura} from './hijri/ngb-calendar-islamic-umalqura';
 export {NgbDatepickerMonthView} from './datepicker-month-view';
