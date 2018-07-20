@@ -103,7 +103,7 @@ export interface NgbDatepickerNavigateEvent {
   template: `
     <ng-template #dt let-date="date" let-currentMonth="currentMonth" let-selected="selected" let-disabled="disabled" let-focused="focused">
       <div ngbDatepickerDayView
-        [date]="dateAdapter.fromModel(date)"
+        [date]="date"
         [currentMonth]="currentMonth"
         [selected]="selected"
         [disabled]="disabled"
@@ -145,8 +145,8 @@ export interface NgbDatepickerNavigateEvent {
   `,
   providers: [NGB_DATEPICKER_VALUE_ACCESSOR, NgbDatepickerService, NgbDatepickerKeyMapService]
 })
-export class NgbDatepicker<D = NgbDateStruct>
-    implements OnDestroy, OnChanges, OnInit, ControlValueAccessor {
+export class NgbDatepicker implements OnDestroy,
+    OnChanges, OnInit, ControlValueAccessor {
   model: DatepickerViewModel;
 
   private _subscription: Subscription;
@@ -154,7 +154,7 @@ export class NgbDatepicker<D = NgbDateStruct>
   /**
    * Reference for the custom template for the day display
    */
-  @Input() dayTemplate: TemplateRef<DayTemplateContext<D>>;
+  @Input() dayTemplate: TemplateRef<DayTemplateContext>;
 
   /**
    * Number of months to display
@@ -170,17 +170,17 @@ export class NgbDatepicker<D = NgbDateStruct>
    * Callback to mark a given date as disabled.
    * 'Current' contains the month that will be displayed in the view
    */
-  @Input() markDisabled: (date: D, current: {year: number, month: number}) => boolean;
+  @Input() markDisabled: (date: NgbDateStruct, current: {year: number, month: number}) => boolean;
 
   /**
    * Max date for the navigation. If not provided, 'year' select box will display 10 years after current month
    */
-  @Input() maxDate: D;
+  @Input() maxDate: NgbDateStruct;
 
   /**
    * Min date for the navigation. If not provided, 'year' select box will display 10 years before current month
    */
-  @Input() minDate: D;
+  @Input() minDate: NgbDateStruct;
 
   /**
    * Navigation type: `select` (default with select boxes for month and year), `arrows`
@@ -222,22 +222,21 @@ export class NgbDatepicker<D = NgbDateStruct>
    * An event fired when user selects a date using keyboard or mouse.
    * The payload of the event is currently selected NgbDateStruct.
    */
-  @Output() select = new EventEmitter<D>();
+  @Output() select = new EventEmitter<NgbDateStruct>();
 
   onChange = (_: any) => {};
   onTouched = () => {};
 
   constructor(
       private _keyMapService: NgbDatepickerKeyMapService, public _service: NgbDatepickerService,
-      private _calendar: NgbCalendar, public i18n: NgbDatepickerI18n, config: NgbDatepickerConfig<D>,
+      private _calendar: NgbCalendar, public i18n: NgbDatepickerI18n, config: NgbDatepickerConfig,
       private _cd: ChangeDetectorRef, private _elementRef: ElementRef<HTMLElement>,
-      public dateAdapter: NgbDateAdapter<D>, private _ngZone: NgZone) {
+      private _ngbDateAdapter: NgbDateAdapter<any>, private _ngZone: NgZone) {
     ['dayTemplate', 'displayMonths', 'firstDayOfWeek', 'markDisabled', 'minDate', 'maxDate', 'navigation',
      'outsideDays', 'showWeekdays', 'showWeekNumbers', 'startDate']
         .forEach(input => this[input] = config[input]);
 
-    this._selectSubscription =
-        _service.select$.subscribe(date => { this.select.emit(this.dateAdapter.toModel(date)); });
+    this._selectSubscription = _service.select$.subscribe(date => { this.select.emit(date.toStruct()); });
 
     this._subscription = _service.model$.subscribe(model => {
       const newDate = model.firstDate;
@@ -252,7 +251,7 @@ export class NgbDatepicker<D = NgbDateStruct>
       // handling selection change
       if (isChangedDate(newSelectedDate, oldSelectedDate)) {
         this.onTouched();
-        this.onChange(this.dateAdapter.toModel(newSelectedDate));
+        this.onChange(this._ngbDateAdapter.toModel(newSelectedDate));
       }
 
       // handling focus change
@@ -299,28 +298,16 @@ export class NgbDatepicker<D = NgbDateStruct>
 
   ngOnInit() {
     if (this.model === undefined) {
-      ['displayMonths', 'firstDayOfWeek', 'navigation', 'outsideDays', 'markDisabled'].forEach(
+      ['displayMonths', 'markDisabled', 'firstDayOfWeek', 'navigation', 'minDate', 'maxDate', 'outsideDays'].forEach(
           input => this._service[input] = this[input]);
-
-      this._service.minDate = this.dateAdapter.fromModel(this.minDate);
-      this._service.maxDate = this.dateAdapter.fromModel(this.maxDate);
-
       this.navigateTo(this.startDate);
     }
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    ['displayMonths', 'firstDayOfWeek', 'navigation', 'outsideDays', 'markDisabled']
+    ['displayMonths', 'markDisabled', 'firstDayOfWeek', 'navigation', 'minDate', 'maxDate', 'outsideDays']
         .filter(input => input in changes)
         .forEach(input => this._service[input] = this[input]);
-
-    if ('minDate' in changes) {
-      this._service.minDate = this.dateAdapter.fromModel(this.minDate);
-    }
-
-    if ('maxDate' in changes) {
-      this._service.maxDate = this.dateAdapter.fromModel(this.maxDate);
-    }
 
     if ('startDate' in changes) {
       this.navigateTo(this.startDate);
@@ -355,5 +342,5 @@ export class NgbDatepicker<D = NgbDateStruct>
 
   showFocus(focusVisible: boolean) { this._service.focusVisible = focusVisible; }
 
-  writeValue(value) { this._service.select(NgbDate.from(this.dateAdapter.fromModel(value))); }
+  writeValue(value) { this._service.select(NgbDate.from(this._ngbDateAdapter.fromModel(value))); }
 }

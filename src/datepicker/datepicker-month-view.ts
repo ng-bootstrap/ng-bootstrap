@@ -64,7 +64,7 @@ import {DayTemplateContext} from './datepicker-day-template-context';
   `
 })
 export class NgbDatepickerMonthView {
-  @Input() dayTemplate: TemplateRef<DayTemplateContext<any>>;
+  @Input() dayTemplate: TemplateRef<DayTemplateContext>;
   @Input() month: MonthViewModel;
   @Input() showWeekdays;
   @Input() showWeekNumbers;
