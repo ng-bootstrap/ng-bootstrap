@@ -3,7 +3,6 @@ import {DatepickerViewModel, DayViewModel, MonthViewModel} from './datepicker-vi
 import {NgbCalendar} from './ngb-calendar';
 import {isDefined} from '../util/util';
 import {NgbDatepickerI18n} from './datepicker-i18n';
-import {NgbDateAdapter} from './adapters/ngb-date-adapter';
 
 export function isChangedDate(prev: NgbDate, next: NgbDate) {
   return !dateComparator(prev, next);
@@ -30,13 +29,13 @@ export function checkDateInRange(date: NgbDate, minDate: NgbDate, maxDate: NgbDa
   return date;
 }
 
-export function isDateSelectable<D>(date: NgbDate, state: DatepickerViewModel, dateAdapter: NgbDateAdapter<D>) {
+export function isDateSelectable(date: NgbDate, state: DatepickerViewModel) {
   const {minDate, maxDate, disabled, markDisabled} = state;
   // clang-format off
   return !(
     !isDefined(date) ||
     disabled ||
-    (markDisabled && markDisabled(dateAdapter.toModel(date), {year: date.year, month: date.month})) ||
+    (markDisabled && markDisabled(date, {year: date.year, month: date.month})) ||
     (minDate && date.before(minDate)) ||
     (maxDate && date.after(maxDate))
   );
@@ -84,9 +83,9 @@ export function prevMonthDisabled(calendar: NgbCalendar, date: NgbDate, minDate:
                      prevDate.year < minDate.year && minDate.month === 1);
 }
 
-export function buildMonths<D>(
+export function buildMonths(
     calendar: NgbCalendar, date: NgbDate, state: DatepickerViewModel, i18n: NgbDatepickerI18n,
-    dateAdapter: NgbDateAdapter<D>, force: boolean): MonthViewModel[] {
+    force: boolean): MonthViewModel[] {
   const {displayMonths, months} = state;
   // move old months to a temporary array
   const monthsToReuse = months.splice(0, months.length);
@@ -110,17 +109,16 @@ export function buildMonths<D>(
   // rebuild nullified months
   firstDates.forEach((firstDate, i) => {
     if (months[i] === null) {
-      months[i] =
-          buildMonth(calendar, firstDate, state, i18n, dateAdapter, monthsToReuse.shift() || {} as MonthViewModel);
+      months[i] = buildMonth(calendar, firstDate, state, i18n, monthsToReuse.shift() || {} as MonthViewModel);
     }
   });
 
   return months;
 }
 
-export function buildMonth<D>(
+export function buildMonth(
     calendar: NgbCalendar, date: NgbDate, state: DatepickerViewModel, i18n: NgbDatepickerI18n,
-    dateAdapter: NgbDateAdapter<D>, month: MonthViewModel = {} as MonthViewModel): MonthViewModel {
+    month: MonthViewModel = {} as MonthViewModel): MonthViewModel {
   const {minDate, maxDate, firstDayOfWeek, markDisabled, outsideDays} = state;
 
   month.firstDate = null;
@@ -147,7 +145,6 @@ export function buildMonth<D>(
       }
 
       const newDate = new NgbDate(date.year, date.month, date.day);
-      const newUserDate = dateAdapter.toModel(newDate);
       const nextDate = calendar.getNext(newDate);
 
       const ariaLabel = i18n.getDayAriaLabel(newDate);
@@ -155,7 +152,7 @@ export function buildMonth<D>(
       // marking date as disabled
       let disabled = !!((minDate && newDate.before(minDate)) || (maxDate && newDate.after(maxDate)));
       if (!disabled && markDisabled) {
-        disabled = markDisabled(newUserDate, {month: month.number, year: month.year});
+        disabled = markDisabled(newDate, {month: month.number, year: month.year});
       }
 
       // saving first date of the month
@@ -173,13 +170,12 @@ export function buildMonth<D>(
         dayObject = days[day] = {} as DayViewModel;
       }
       dayObject.date = newDate;
-      dayObject.context = {
-        ...dayObject.context || {},
-        date: newUserDate,
+      dayObject.context = Object.assign(dayObject.context || {}, {
+        date: {year: newDate.year, month: newDate.month, day: newDate.day},
         currentMonth: month.number, disabled,
         focused: false,
         selected: false
-      };
+      });
       dayObject.tabindex = -1;
       dayObject.ariaLabel = ariaLabel;
       dayObject.hidden = false;

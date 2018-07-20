@@ -1,11 +1,12 @@
 import {NgbDate} from './ngb-date';
+import {NgbDateStruct} from './ngb-date-struct';
 import {DayTemplateContext} from './datepicker-day-template-context';
 
-export type NgbMarkDisabled = (date: any, current: {year: number, month: number}) => boolean;
+export type NgbMarkDisabled = (date: NgbDateStruct, current: {year: number, month: number}) => boolean;
 
 export type DayViewModel = {
   date: NgbDate,
-  context: DayTemplateContext<any>,
+  context: DayTemplateContext,
   tabindex: number,
   ariaLabel: string,
   hidden: boolean
