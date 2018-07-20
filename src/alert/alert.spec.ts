@@ -33,6 +33,7 @@ describe('ngb-alert', () => {
 
     expect(alertCmp.dismissible).toBe(defaultConfig.dismissible);
     expect(alertCmp.type).toBe(defaultConfig.type);
+    expect(alertCmp.customClass).toBe(defaultConfig.customClass);
   });
 
   it('should apply those default values to the template', () => {

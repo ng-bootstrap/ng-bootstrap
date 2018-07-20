@@ -7,6 +7,7 @@ import {Injectable} from '@angular/core';
  */
 @Injectable()
 export class NgbAlertConfig {
-  dismissible = true;
-  type = 'warning';
+  dismissible: boolean = true;
+  type: string = 'warning';
+  customClass: string = '';
 }

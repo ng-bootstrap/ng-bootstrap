@@ -15,7 +15,7 @@ import {NgbAlertConfig} from './alert-config';
   selector: 'ngb-alert',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div [class]="'alert alert-' + type + (dismissible ? ' alert-dismissible' : '')" role="alert">
+    <div [class]="'alert alert-' + type + (dismissible ? ' alert-dismissible' : '') + customClass" role="alert">
       <button *ngIf="dismissible" type="button" class="close" aria-label="Close" i18n-aria-label="@@ngb.alert.close"
         (click)="closeHandler()">
         <span aria-hidden="true">&times;</span>
@@ -36,6 +36,10 @@ export class NgbAlert {
    */
   @Input() type: string;
   /**
+   * Alert customClass (CSS class). It adds custom class to alert box
+   */
+  @Input() customClass: string;
+  /**
    * An event emitted when the close button is clicked. This event has no payload. Only relevant for dismissible alerts.
    */
   @Output() close = new EventEmitter();
@@ -43,6 +47,7 @@ export class NgbAlert {
   constructor(config: NgbAlertConfig) {
     this.dismissible = config.dismissible;
     this.type = config.type;
+    this.customClass = config.customClass;
   }
 
   closeHandler() { this.close.emit(null); }
