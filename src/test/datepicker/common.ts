@@ -1,6 +1,6 @@
 import {NgbDateNativeAdapter} from '../../datepicker/adapters/ngb-date-native-adapter';
 import {NgbDateStruct} from '../../datepicker/ngb-date-struct';
-import {NgbDateStructAdapter} from '../../datepicker/adapters/ngb-date-adapter';
+import {NgbDateDefaultAdapter} from '../../datepicker/adapters/ngb-date-adapter';
 
 export function getNavigationLinks(element: HTMLElement): HTMLElement[] {
   return <HTMLElement[]>Array.from(element.querySelectorAll('button'));
@@ -17,6 +17,6 @@ export function getYearSelect(element: HTMLElement): HTMLSelectElement {
 export type SupportedDate = Date | NgbDateStruct;
 
 export const ADAPTERS = [
-  {type: NgbDateStructAdapter, instance: new NgbDateStructAdapter()},
+  {type: NgbDateDefaultAdapter, instance: new NgbDateDefaultAdapter()},
   {type: NgbDateNativeAdapter, instance: new NgbDateNativeAdapter()}
 ];

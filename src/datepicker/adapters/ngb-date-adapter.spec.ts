@@ -1,9 +1,10 @@
-import {NgbDateStructAdapter} from './ngb-date-adapter';
+import {NgbDateDefaultAdapter} from './ngb-date-adapter';
+import {NgbDate} from '../ngb-date';
 
 describe('ngb-date model adapter', () => {
-  let adapter: NgbDateStructAdapter;
+  let adapter: NgbDateDefaultAdapter;
 
-  beforeEach(() => { adapter = new NgbDateStructAdapter(); });
+  beforeEach(() => { adapter = new NgbDateDefaultAdapter(); });
 
   describe('fromModel', () => {
 
@@ -19,7 +20,7 @@ describe('ngb-date model adapter', () => {
     });
 
     it('should convert valid date',
-       () => { expect(adapter.fromModel({year: 2016, month: 5, day: 1})).toEqual({year: 2016, month: 5, day: 1}); });
+       () => { expect(adapter.fromModel({year: 2016, month: 5, day: 1})).toEqual(new NgbDate(2016, 5, 1)); });
   });
 
   describe('toModel', () => {
@@ -35,8 +36,10 @@ describe('ngb-date model adapter', () => {
       expect(adapter.toModel(<any>{year: 2017, month: 10})).toBeNull();
     });
 
-    it('should convert a valid date',
-       () => { expect(adapter.toModel({year: 2016, month: 10, day: 15})).toEqual({year: 2016, month: 10, day: 15}); });
+    it('should convert a valid date', () => {
+      const date = new NgbDate(2016, 10, 15);
+      expect(adapter.toModel(date)).toBe(date);
+    });
   });
 
 });

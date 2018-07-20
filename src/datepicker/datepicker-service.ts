@@ -1,6 +1,5 @@
 import {NgbCalendar, NgbPeriod} from './ngb-calendar';
 import {NgbDate} from './ngb-date';
-import {NgbDateStruct} from './ngb-date-struct';
 import {DatepickerViewModel, NgbMarkDisabled} from './datepicker-view-model';
 import {Injectable} from '@angular/core';
 import {isInteger, toInteger} from '../util/util';
@@ -71,7 +70,7 @@ export class NgbDatepickerService {
     }
   }
 
-  set maxDate(date: NgbDateStruct) {
+  set maxDate(date: NgbDate) {
     const maxDate = this.toValidDate(date, null);
     if (isChangedDate(this._state.maxDate, maxDate)) {
       this._nextState({maxDate});
@@ -84,7 +83,7 @@ export class NgbDatepickerService {
     }
   }
 
-  set minDate(date: NgbDateStruct) {
+  set minDate(date: NgbDate) {
     const minDate = this.toValidDate(date, null);
     if (isChangedDate(this._state.minDate, minDate)) {
       this._nextState({minDate});

@@ -27,7 +27,7 @@ ADAPTERS.forEach(adapter => {
       createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
   const fromStruct = (date: NgbDateStruct): SupportedDate =>
-      (adapter.instance as NgbDateAdapter<SupportedDate>).toModel(date);
+      (adapter.instance as NgbDateAdapter<SupportedDate>).toModel(NgbDate.from(date));
 
   describe(`NgbInputDatepicker (${adapter.type.name})`, () => {
 

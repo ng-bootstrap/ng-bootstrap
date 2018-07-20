@@ -4,10 +4,9 @@ import {NgbCalendar, NgbCalendarGregorian} from './ngb-calendar';
 import {NgbDate} from './ngb-date';
 import {Subscription} from 'rxjs';
 import {DatepickerViewModel} from './datepicker-view-model';
-import {NgbDateStruct} from './ngb-date-struct';
 import {NgbDatepickerI18n, NgbDatepickerI18nDefault} from './datepicker-i18n';
 import {DatePipe} from '@angular/common';
-import {NgbDateAdapter, NgbDateStructAdapter} from './adapters/ngb-date-adapter';
+import {NgbDateAdapter, NgbDateDefaultAdapter} from './adapters/ngb-date-adapter';
 
 describe('ngb-datepicker-service', () => {
 
@@ -15,7 +14,7 @@ describe('ngb-datepicker-service', () => {
   let calendar: NgbCalendar;
   let model: DatepickerViewModel;
   let mock: {onNext};
-  let selectDate: NgbDateStruct;
+  let selectDate: NgbDate;
   let mockSelect: {onNext};
 
   let subscriptions: Subscription[];
@@ -29,7 +28,7 @@ describe('ngb-datepicker-service', () => {
       providers: [
         NgbDatepickerService, {provide: NgbCalendar, useClass: NgbCalendarGregorian},
         {provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nDefault},
-        {provide: NgbDateAdapter, useClass: NgbDateStructAdapter}, DatePipe
+        {provide: NgbDateAdapter, useClass: NgbDateDefaultAdapter}, DatePipe
       ]
     });
 
@@ -234,13 +233,13 @@ describe('ngb-datepicker-service', () => {
       expect(model.firstDayOfWeek).toBe(1);
 
       const oldFirstDate = getDay(0).date.toString();
-      expect(oldFirstDate).toBe('2017-5-1');
+      expect(oldFirstDate).toBe('2017-05-01');
 
       service.firstDayOfWeek = 3;
       expect(model.months.length).toBe(1);
       expect(model.firstDayOfWeek).toBe(3);
       const newFirstDate = getDay(0).date.toString();
-      expect(newFirstDate).toBe('2017-4-26');
+      expect(newFirstDate).toBe('2017-04-26');
     });
   });
 
@@ -1249,12 +1248,12 @@ describe('ngb-datepicker-service', () => {
 
     it(`should generate 'date' for day template`, () => {
       service.focus(new NgbDate(2017, 5, 1));
-      expect(getDayCtx(0).date).toEqual({year: 2017, month: 5, day: 1});
-      expect(getDayCtx(1).date).toEqual({year: 2017, month: 5, day: 2});
+      expect(getDayCtx(0).date).toEqual(new NgbDate(2017, 5, 1));
+      expect(getDayCtx(1).date).toEqual(new NgbDate(2017, 5, 2));
 
       service.focus(new NgbDate(2017, 10, 1));
-      expect(getDayCtx(0).date).toEqual({year: 2017, month: 9, day: 25});
-      expect(getDayCtx(1).date).toEqual({year: 2017, month: 9, day: 26});
+      expect(getDayCtx(0).date).toEqual(new NgbDate(2017, 9, 25));
+      expect(getDayCtx(1).date).toEqual(new NgbDate(2017, 9, 26));
     });
 
     it(`should generate 'currentMonth' for day template`, () => {
