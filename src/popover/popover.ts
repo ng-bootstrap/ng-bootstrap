@@ -8,6 +8,7 @@ import {
   OnInit,
   OnDestroy,
   OnChanges,
+  Inject,
   Injector,
   Renderer2,
   ComponentRef,
@@ -18,10 +19,15 @@ import {
   NgZone,
   SimpleChanges
 } from '@angular/core';
+import {DOCUMENT} from '@angular/common';
+import {fromEvent, race} from 'rxjs';
+import {filter, takeUntil} from 'rxjs/operators';
 
 import {listenToTriggers} from '../util/triggers';
 import {positionElements, Placement, PlacementArray} from '../util/positioning';
 import {PopupService} from '../util/popup';
+import {Key} from '../util/key';
+
 import {NgbPopoverConfig} from './popover-config';
 
 let nextId = 0;
@@ -88,6 +94,15 @@ export class NgbPopoverWindow {
     this._renderer.addClass(this._element.nativeElement, 'bs-popover-' + this.placement.toString().split('-')[0]);
     this._renderer.addClass(this._element.nativeElement, 'bs-popover-' + this.placement.toString());
   }
+
+  /**
+   * Tells whether the event has been triggered from this component's subtree or not.
+   *
+   * @param event the event to check
+   *
+   * @return whether the event has been triggered from this component's subtree or not.
+   */
+  isEventFrom(event: Event): boolean { return this._element.nativeElement.contains(event.target as HTMLElement); }
 }
 
 /**
@@ -95,6 +110,16 @@ export class NgbPopoverWindow {
  */
 @Directive({selector: '[ngbPopover]', exportAs: 'ngbPopover'})
 export class NgbPopover implements OnInit, OnDestroy, OnChanges {
+  /**
+   * Indicates whether the popover should be closed on Escape key and inside/outside clicks.
+   *
+   * - true (default): closes on both outside and inside clicks as well as Escape presses
+   * - false: disables the autoClose feature (NB: triggers still apply)
+   * - 'inside': closes on inside clicks as well as Escape presses
+   * - 'outside': closes on outside clicks (sometimes also achievable through triggers)
+   * as well as Escape presses
+   */
+  @Input() autoClose: boolean | 'inside' | 'outside';
   /**
    * Content to be displayed as popover. If title and content are empty, the popover won't open.
    */
@@ -158,7 +183,8 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
   constructor(
       private _elementRef: ElementRef<HTMLElement>, private _renderer: Renderer2, injector: Injector,
       componentFactoryResolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef, config: NgbPopoverConfig,
-      ngZone: NgZone) {
+      private _ngZone: NgZone, @Inject(DOCUMENT) private _document: any) {
+    this.autoClose = config.autoClose;
     this.placement = config.placement;
     this.triggers = config.triggers;
     this.container = config.container;
@@ -167,7 +193,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
     this._popupService = new PopupService<NgbPopoverWindow>(
         NgbPopoverWindow, injector, viewContainerRef, _renderer, componentFactoryResolver);
 
-    this._zoneSubscription = ngZone.onStable.subscribe(() => {
+    this._zoneSubscription = _ngZone.onStable.subscribe(() => {
       if (this._windowRef) {
         this._windowRef.instance.applyPlacement(
             positionElements(
@@ -191,7 +217,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
       this._renderer.setAttribute(this._elementRef.nativeElement, 'aria-describedby', this._ngbPopoverWindowId);
 
       if (this.container === 'body') {
-        window.document.querySelector(this.container).appendChild(this._windowRef.location.nativeElement);
+        this._document.querySelector(this.container).appendChild(this._windowRef.location.nativeElement);
       }
 
       // apply styling to set basic css-classes on target element, before going for positioning
@@ -203,6 +229,27 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
           positionElements(
               this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
               this.container === 'body'));
+
+      if (this.autoClose) {
+        this._ngZone.runOutsideAngular(() => {
+          // prevents automatic closing right after an opening by putting a guard for the time of one event handling
+          // pass
+          // use case: click event would reach an element opening the popover first, then reach the autoClose handler
+          // which would close it
+          let justOpened = true;
+          requestAnimationFrame(() => justOpened = false);
+
+          const escapes$ = fromEvent<KeyboardEvent>(this._document, 'keyup')
+                               .pipe(takeUntil(this.hidden), filter(event => event.which === Key.Escape));
+
+          const clicks$ = fromEvent<MouseEvent>(this._document, 'click')
+                              .pipe(
+                                  takeUntil(this.hidden), filter(() => !justOpened),
+                                  filter(event => this._shouldCloseFromClick(event)));
+
+          race<Event>([escapes$, clicks$]).subscribe(() => this._ngZone.run(() => this.close()));
+        });
+      }
 
       this.shown.emit();
     }
@@ -253,5 +300,23 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
     this.close();
     this._unregisterListenersFn();
     this._zoneSubscription.unsubscribe();
+  }
+
+  private _shouldCloseFromClick(event: MouseEvent) {
+    if (event.button !== 2) {
+      if (this.autoClose === true) {
+        return true;
+      } else if (this.autoClose === 'inside' && this._isEventFromPopover(event)) {
+        return true;
+      } else if (this.autoClose === 'outside' && !this._isEventFromPopover(event)) {
+        return true
+      }
+    }
+    return false;
+  }
+
+  private _isEventFromPopover(event: MouseEvent) {
+    const popup = this._windowRef.instance;
+    return popup ? popup.isEventFrom(event) : false;
   }
 }
