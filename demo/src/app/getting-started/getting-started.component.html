@@ -4,16 +4,40 @@
   </h3>
   <p>
     This repository contains a set of native Angular directives based on Bootstrap's markup and CSS.
-    As a result no dependency on jQuery or Bootstrap's JavaScript is required. The only required dependencies are:
+    As a result no dependency on jQuery or Bootstrap's JavaScript is required.
   </p>
-  <ul>
-    <li>
-      <a href="https://angular.io" target="_blank">Angular</a> (<em>requires</em> Angular version 6 or higher, tested with 6.0.0)
-    </li>
-    <li>
-      <a href="https://www.getbootstrap.com" target="_blank">Bootstrap CSS</a> (tested with 4.0.0)
-    </li>
-  </ul>
+
+  <p>
+    Here is a list of minimal required versions of <a href="https://angular.io" target="_blank">Angular</a>
+    and <a href="https://www.getbootstrap.com" target="_blank">Bootstrap</a> CSS for ng-bootstrap:
+  </p>
+
+  <table class="table" style="width: auto">
+    <thead>
+      <tr>
+        <th scope="col">ng-bootstrap</th>
+        <th scope="col">Angular</th>
+        <th scope="col">Bootstrap CSS</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">1.x.x</th>
+        <td>5.0.2</td>
+        <td>4.0.0</td>
+      </tr>
+      <tr>
+        <th scope="row">2.x.x</th>
+        <td>6.0.0</td>
+        <td>4.0.0</td>
+      </tr>
+      <tr>
+        <th scope="row">3.x.x</th>
+        <td>6.1.0</td>
+        <td>4.0.0</td>
+      </tr>
+    </tbody>
+  </table>
 
   <ngb-alert type="warning" [dismissible]="false">
     <p>Should I add <b>bootstrap.js</b> or <b>bootstrap.min.js</b> to my project?</p>
