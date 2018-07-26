@@ -192,6 +192,17 @@ describe('ngb-typeahead', () => {
       expect(getWindow(compiled)).toBeNull();
     });
 
+    it('should work when returning null as results', async(() => {
+         const fixture = createTestComponent(`<input type="text" [ngbTypeahead]="findNull"/>`);
+         const compiled = fixture.nativeElement;
+
+         fixture.whenStable().then(() => {
+           changeInput(compiled, 'one');
+           fixture.detectChanges();
+           expect(getWindow(compiled)).toBeNull();
+         });
+       }));
+
     it('should be closed on document click', () => {
       const fixture = createTestComponent(`<input type="text" [ngbTypeahead]="find"/>`);
       const compiled = fixture.nativeElement;
@@ -1006,6 +1017,8 @@ class TestComponent {
   };
 
   findNothing = (text$: Observable<string>) => { return text$.pipe(map(text => [])); };
+
+  findNull = (text$: Observable<string>) => { return text$.pipe(map(text => null)); };
 
   findObjects = (text$: Observable<string>) => {
     return text$.pipe(map(text => this._objects.filter(v => v.value.startsWith(text))));

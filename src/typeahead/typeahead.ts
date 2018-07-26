@@ -357,7 +357,9 @@ export class NgbTypeahead implements ControlValueAccessor,
 
         this._showHint();
       }
-      const count = results.length;
+
+      // live announcer
+      const count = results ? results.length : 0;
       this._live.say(count === 0 ? 'No results available' : `${count} result${count === 1 ? '' : 's'} available`);
     });
   }
