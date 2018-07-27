@@ -20,10 +20,10 @@ export function checkMinBeforeMax(minDate: NgbDate, maxDate: NgbDate) {
 
 export function checkDateInRange(date: NgbDate, minDate: NgbDate, maxDate: NgbDate): NgbDate {
   if (date && minDate && date.before(minDate)) {
-    return NgbDate.from(minDate);
+    return minDate;
   }
   if (date && maxDate && date.after(maxDate)) {
-    return NgbDate.from(maxDate);
+    return maxDate;
   }
 
   return date;
@@ -170,12 +170,9 @@ export function buildMonth(
         dayObject = days[day] = {} as DayViewModel;
       }
       dayObject.date = newDate;
-      dayObject.context = Object.assign(dayObject.context || {}, {
-        date: {year: newDate.year, month: newDate.month, day: newDate.day},
-        currentMonth: month.number, disabled,
-        focused: false,
-        selected: false
-      });
+      dayObject.context = Object.assign(
+          dayObject.context || {},
+          {date: newDate, currentMonth: month.number, disabled, focused: false, selected: false});
       dayObject.tabindex = -1;
       dayObject.ariaLabel = ariaLabel;
       dayObject.hidden = false;
@@ -183,7 +180,7 @@ export function buildMonth(
       date = nextDate;
     }
 
-    weekObject.number = calendar.getWeekNumber(days.map(day => NgbDate.from(day.date)), firstDayOfWeek);
+    weekObject.number = calendar.getWeekNumber(days.map(day => day.date), firstDayOfWeek);
 
     // marking week as collapsed
     weekObject.collapsed = outsideDays === 'collapsed' && days[0].date.month !== month.number &&

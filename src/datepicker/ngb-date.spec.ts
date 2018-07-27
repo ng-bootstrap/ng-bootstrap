@@ -2,6 +2,23 @@ import {NgbDate} from './ngb-date';
 
 describe('ngb-date', () => {
 
+  describe('from', () => {
+
+    it('should create a date from a structure',
+       () => { expect(NgbDate.from({year: 2010, month: 10, day: 2})).toEqual(new NgbDate(2010, 10, 2)); });
+
+    it('should work with non-numeric values', () => {
+      expect(NgbDate.from({year: null, month: null, day: null})).toEqual(new NgbDate(null, null, null));
+      expect(NgbDate.from({year: undefined, month: undefined, day: undefined})).toEqual(new NgbDate(null, null, null));
+      expect(NgbDate.from({year: <any>'2010', month: <any>'10', day: <any>'2'})).toEqual(new NgbDate(null, null, null));
+    });
+
+    it('should return the same NgbDate object', () => {
+      const date = new NgbDate(2010, 10, 10);
+      expect(NgbDate.from(date)).toBe(date);
+    });
+  });
+
   describe('equals', () => {
     const date = new NgbDate(2016, 8, 18);
 

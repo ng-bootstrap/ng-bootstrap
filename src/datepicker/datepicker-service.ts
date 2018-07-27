@@ -70,7 +70,7 @@ export class NgbDatepickerService {
     }
   }
 
-  set maxDate(date: NgbDateStruct) {
+  set maxDate(date: NgbDate) {
     const maxDate = this.toValidDate(date, null);
     if (isChangedDate(this._state.maxDate, maxDate)) {
       this._nextState({maxDate});
@@ -83,7 +83,7 @@ export class NgbDatepickerService {
     }
   }
 
-  set minDate(date: NgbDateStruct) {
+  set minDate(date: NgbDate) {
     const minDate = this.toValidDate(date, null);
     if (isChangedDate(this._state.minDate, minDate)) {
       this._nextState({minDate});
@@ -140,7 +140,7 @@ export class NgbDatepickerService {
     }
   }
 
-  toValidDate(date: {year: number, month: number, day?: number}, defaultValue?: NgbDate): NgbDate {
+  toValidDate(date: NgbDateStruct, defaultValue?: NgbDate): NgbDate {
     const ngbDate = NgbDate.from(date);
     if (defaultValue === undefined) {
       defaultValue = this._calendar.getToday();

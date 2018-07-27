@@ -101,7 +101,7 @@ export class NgbInputDatepicker implements OnChanges,
    * Callback to mark a given date as disabled.
    * 'Current' contains the month that will be displayed in the view
    */
-  @Input() markDisabled: (date: NgbDateStruct, current: {year: number, month: number}) => boolean;
+  @Input() markDisabled: (date: NgbDate, current: {year: number, month: number}) => boolean;
 
   /**
    * Min date for the navigation. If not provided will be 10 years before today or `startDate`
@@ -159,11 +159,11 @@ export class NgbInputDatepicker implements OnChanges,
 
   /**
    * An event fired when user selects a date using keyboard or mouse.
-   * The payload of the event is currently selected NgbDateStruct.
+   * The payload of the event is currently selected NgbDate.
    *
    * @since 1.1.1
    */
-  @Output() dateSelect = new EventEmitter<NgbDateStruct>();
+  @Output() dateSelect = new EventEmitter<NgbDate>();
 
   /**
    * An event fired when navigation happens and currently displayed month changes.
