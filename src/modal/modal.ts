@@ -71,7 +71,7 @@ export interface NgbModalOptions {
  * A service to open modal windows. Creating a modal is straightforward: create a template and pass it as an argument to
  * the "open" method!
  */
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class NgbModal {
   constructor(
       private _moduleCFR: ComponentFactoryResolver, private _injector: Injector, private _modalStack: NgbModalStack) {}

@@ -63,17 +63,10 @@
 
   <p>Once installed you need to import our main module.</p>
 
-  <ngbd-code [code]="codeImport" lang="typescript"></ngbd-code>
-
-  <p>
-    The only remaining part is to list the imported module in your root module and any additional application modules that make use
-    of the components in this library. The exact method will be slightly different for the root (top-level) module for which you
-    should end up with the code similar to (notice <code>NgbModule.forRoot()</code>):
-  </p>
-
   <ngbd-code [code]="codeRoot" lang="typescript"></ngbd-code>
 
-  <p>Other modules in your application can simply import <code>NgbModule</code>:</p>
+  <p>Alternatively you could only import modules with components you need, ex. pagination and alert.
+    The resulting bundle will be smaller in this case.</p>
 
   <ngbd-code [code]="codeOther" lang="typescript"></ngbd-code>
   <br>
