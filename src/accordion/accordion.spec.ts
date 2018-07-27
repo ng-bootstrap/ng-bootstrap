@@ -33,7 +33,11 @@ function expectOpenPanels(nativeEl: HTMLElement, openPanelsDef: boolean[]) {
   expect(panels.length).toBe(openPanelsDef.length);
 
   const panelsTitles = getPanelsTitle(nativeEl);
-  const result = panelsTitles.map((titleEl: HTMLButtonElement) => titleEl.getAttribute('aria-expanded') === 'true');
+  const result = panelsTitles.map((titleEl: HTMLButtonElement) => {
+    const isAriaExpanded = titleEl.getAttribute('aria-expanded') === 'true';
+    const isCSSCollapsed = titleEl.classList.contains('collapsed');
+    return isAriaExpanded === !isCSSCollapsed ? isAriaExpanded : fail('inconsistent state');
+  });
 
   const panelContents = getPanelsContent(nativeEl);
   panelContents.forEach(
