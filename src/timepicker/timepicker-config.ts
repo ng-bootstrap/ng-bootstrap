@@ -5,7 +5,7 @@ import {Injectable} from '@angular/core';
  * You can inject this service, typically in your root component, and customize the values of its properties in
  * order to provide default values for all the timepickers used in the application.
  */
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class NgbTimepickerConfig {
   meridian = false;
   spinners = true;

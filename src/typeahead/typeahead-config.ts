@@ -6,7 +6,7 @@ import {PlacementArray} from '../util/positioning';
  * You can inject this service, typically in your root component, and customize the values of its properties in
  * order to provide default values for all the typeaheads used in the application.
  */
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class NgbTypeaheadConfig {
   container;
   editable = true;

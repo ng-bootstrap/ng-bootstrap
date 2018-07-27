@@ -18,7 +18,7 @@ import {NgbModalBackdrop} from './modal-backdrop';
 import {NgbModalWindow} from './modal-window';
 import {NgbActiveModal, NgbModalRef} from './modal-ref';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class NgbModalStack {
   private _windowAttributes = ['ariaLabelledBy', 'backdrop', 'centered', 'keyboard', 'size', 'windowClass'];
   private _backdropAttributes = ['backdropClass'];

@@ -17,7 +17,7 @@ export type CompensationReverter = () => void;
  * It allows to compensate the lack of a vertical scrollbar by adding an
  * equivalent padding on the right of the body, and to remove this compensation.
  */
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class ScrollBar {
   constructor(@Inject(DOCUMENT) private _document) {}
 
