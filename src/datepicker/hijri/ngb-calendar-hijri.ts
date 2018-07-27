@@ -30,7 +30,7 @@ export abstract class NgbCalendarHijri extends NgbCalendar {
   getWeeksPerMonth() { return 6; }
 
   getNext(date: NgbDate, period: NgbPeriod = 'd', number = 1) {
-    date = NgbDate.from(date);
+    date = new NgbDate(date.year, date.month, date.day);
 
     switch (period) {
       case 'y':

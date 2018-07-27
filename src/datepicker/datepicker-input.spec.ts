@@ -750,7 +750,7 @@ describe('NgbInputDatepicker', () => {
          fixture.detectChanges();
 
          const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
-         expect(dp.startDate).toEqual(NgbDate.from({year: 2016, month: 9, day: 13}));
+         expect(dp.startDate).toEqual(new NgbDate(2016, 9, 13));
        }));
 
     it('should relay the "navigate" event', () => {
@@ -799,7 +799,7 @@ describe('NgbInputDatepicker', () => {
       expect(fixture.componentInstance.onDateSelect).toHaveBeenCalledTimes(2);
       expect(fixture.componentInstance.onModelChange).toHaveBeenCalledTimes(1);
 
-      expect(fixture.componentInstance.onDateSelect).toHaveBeenCalledWith({year: 2018, month: 3, day: 1});
+      expect(fixture.componentInstance.onDateSelect).toHaveBeenCalledWith(new NgbDate(2018, 3, 1));
       expect(fixture.componentInstance.onModelChange).toHaveBeenCalledWith({year: 2018, month: 3, day: 1});
     });
   });

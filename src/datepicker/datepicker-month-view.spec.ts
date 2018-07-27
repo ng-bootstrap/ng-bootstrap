@@ -174,26 +174,14 @@ class TestComponent {
         days: [
           {
             date: new NgbDate(2016, 7, 4),
-            context: {
-              currentMonth: 8,
-              date: {year: 2016, month: 7, day: 4},
-              disabled: false,
-              focused: false,
-              selected: false
-            },
+            context: {currentMonth: 8, date: new NgbDate(2016, 7, 4), disabled: false, focused: false, selected: false},
             tabindex: -1,
             ariaLabel: 'Monday',
             hidden: true
           },
           {
             date: new NgbDate(2016, 8, 1),
-            context: {
-              currentMonth: 8,
-              date: {year: 2016, month: 8, day: 1},
-              disabled: false,
-              focused: false,
-              selected: false
-            },
+            context: {currentMonth: 8, date: new NgbDate(2016, 8, 1), disabled: false, focused: false, selected: false},
             tabindex: -1,
             ariaLabel: 'Monday',
             hidden: false
@@ -207,26 +195,14 @@ class TestComponent {
         days: [
           {
             date: new NgbDate(2016, 8, 2),
-            context: {
-              currentMonth: 8,
-              date: {year: 2016, month: 8, day: 2},
-              disabled: true,
-              focused: false,
-              selected: false
-            },
+            context: {currentMonth: 8, date: new NgbDate(2016, 8, 2), disabled: true, focused: false, selected: false},
             tabindex: -1,
             ariaLabel: 'Friday',
             hidden: false
           },
           {
             date: new NgbDate(2016, 8, 3),
-            context: {
-              currentMonth: 8,
-              date: {year: 2016, month: 8, day: 3},
-              disabled: false,
-              focused: false,
-              selected: false
-            },
+            context: {currentMonth: 8, date: new NgbDate(2016, 8, 3), disabled: false, focused: false, selected: false},
             tabindex: -1,
             ariaLabel: 'Saturday',
             hidden: false
@@ -240,26 +216,14 @@ class TestComponent {
         days: [
           {
             date: new NgbDate(2016, 8, 4),
-            context: {
-              currentMonth: 8,
-              date: {year: 2016, month: 8, day: 4},
-              disabled: false,
-              focused: false,
-              selected: false
-            },
+            context: {currentMonth: 8, date: new NgbDate(2016, 8, 4), disabled: false, focused: false, selected: false},
             tabindex: -1,
             ariaLabel: 'Sunday',
             hidden: false
           },
           {
             date: new NgbDate(2016, 9, 1),
-            context: {
-              currentMonth: 8,
-              date: {year: 2016, month: 9, day: 1},
-              disabled: false,
-              focused: false,
-              selected: false
-            },
+            context: {currentMonth: 8, date: new NgbDate(2016, 9, 1), disabled: false, focused: false, selected: false},
             tabindex: -1,
             ariaLabel: 'Saturday',
             hidden: true
@@ -273,26 +237,14 @@ class TestComponent {
         days: [
           {
             date: new NgbDate(2016, 9, 2),
-            context: {
-              currentMonth: 8,
-              date: {year: 2016, month: 9, day: 2},
-              disabled: false,
-              focused: false,
-              selected: false
-            },
+            context: {currentMonth: 8, date: new NgbDate(2016, 9, 2), disabled: false, focused: false, selected: false},
             tabindex: -1,
             ariaLabel: 'Sunday',
             hidden: true
           },
           {
             date: new NgbDate(2016, 9, 3),
-            context: {
-              currentMonth: 8,
-              date: {year: 2016, month: 9, day: 3},
-              disabled: false,
-              focused: false,
-              selected: false
-            },
+            context: {currentMonth: 8, date: new NgbDate(2016, 9, 3), disabled: false, focused: false, selected: false},
             tabindex: -1,
             ariaLabel: 'Monday',
             hidden: true

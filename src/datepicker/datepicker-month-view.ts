@@ -75,7 +75,7 @@ export class NgbDatepickerMonthView {
 
   doSelect(day: DayViewModel) {
     if (!day.context.disabled && !day.hidden) {
-      this.select.emit(NgbDate.from(day.date));
+      this.select.emit(day.date);
     }
   }
 }

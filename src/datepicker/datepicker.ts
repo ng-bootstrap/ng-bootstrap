@@ -170,7 +170,7 @@ export class NgbDatepicker implements OnDestroy,
    * Callback to mark a given date as disabled.
    * 'Current' contains the month that will be displayed in the view
    */
-  @Input() markDisabled: (date: NgbDateStruct, current: {year: number, month: number}) => boolean;
+  @Input() markDisabled: (date: NgbDate, current: {year: number, month: number}) => boolean;
 
   /**
    * Max date for the navigation. If not provided, 'year' select box will display 10 years after current month
@@ -220,9 +220,9 @@ export class NgbDatepicker implements OnDestroy,
 
   /**
    * An event fired when user selects a date using keyboard or mouse.
-   * The payload of the event is currently selected NgbDateStruct.
+   * The payload of the event is currently selected NgbDate.
    */
-  @Output() select = new EventEmitter<NgbDateStruct>();
+  @Output() select = new EventEmitter<NgbDate>();
 
   onChange = (_: any) => {};
   onTouched = () => {};
@@ -236,7 +236,7 @@ export class NgbDatepicker implements OnDestroy,
      'outsideDays', 'showWeekdays', 'showWeekNumbers', 'startDate']
         .forEach(input => this[input] = config[input]);
 
-    this._selectSubscription = _service.select$.subscribe(date => { this.select.emit(date.toStruct()); });
+    this._selectSubscription = _service.select$.subscribe(date => { this.select.emit(date); });
 
     this._subscription = _service.model$.subscribe(model => {
       const newDate = model.firstDate;
@@ -289,7 +289,9 @@ export class NgbDatepicker implements OnDestroy,
    * If nothing or invalid date provided calendar will open current month.
    * Use 'startDate' input as an alternative
    */
-  navigateTo(date?: {year: number, month: number}) { this._service.open(NgbDate.from(date)); }
+  navigateTo(date?: {year: number, month: number}) {
+    this._service.open(NgbDate.from(date ? {...date, day: 1} : null));
+  }
 
   ngOnDestroy() {
     this._subscription.unsubscribe();
