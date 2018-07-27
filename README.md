@@ -30,8 +30,14 @@ Feel free to make comments there.
 View all the directives in action at https://ng-bootstrap.github.io
 
 ## Dependencies
-* [Angular](https://angular.io) (tested with 6.0.0)
-* [Bootstrap 4](https://www.getbootstrap.com) (tested with 4.0.0)
+The only two dependencies are [Angular](https://angular.io) and [Bootstrap 4](https://www.getbootstrap.com) CSS. 
+Here is the list of minimal required versions:
+
+| ng-bootstrap | Angular | Bootstrap CSS |
+| ------------ | ------- | ------------- |
+| 1.x.x        | 5.0.2   | 4.0.0         |
+| 2.x.x        | 6.0.0   | 4.0.0         |
+| 3.x.x        | 6.1.0   | 4.0.0         |
 
 ## Installation
 After installing the above dependencies, install `ng-bootstrap` via:
