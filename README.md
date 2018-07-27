@@ -47,31 +47,28 @@ npm install --save @ng-bootstrap/ng-bootstrap
 Once installed you need to import our main module:
 ```js
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-```
-The only remaining part is to list the imported module in your application module. The exact method will be slightly
-different for the root (top-level) module for which you should end up with the code similar to (notice `NgbModule.forRoot()`):
-```js
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
-  declarations: [AppComponent, ...],
-  imports: [NgbModule.forRoot(), ...],  
-  bootstrap: [AppComponent]
+  ...
+  imports: [NgbModule, ...],
+  ...
 })
-export class AppModule {
+export class YourAppModule {
 }
 ```
 
-Other modules in your application can simply import `NgbModule`:
+Alternatively you could only import modules with components you need, ex. pagination and alert. 
+The resulting bundle will be smaller in this case.
 
 ```js
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbPaginationModule, NgbAlertModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
-  declarations: [OtherComponent, ...],
-  imports: [NgbModule, ...], 
+  ...
+  imports: [NgbPaginationModule, NgbAlertModule, ...],
+  ...
 })
-export class OtherModule {
+export class YourAppModule {
 }
 ```
 
