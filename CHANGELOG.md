@@ -1,3 +1,17 @@
+<a name="2.2.1"></a>
+## [2.2.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/2.2.0...2.2.1) (2018-07-27)
+
+
+### Bug Fixes
+
+* **dropdown:** close on escape from anywhere ([c26732f](https://github.com/ng-bootstrap/ng-bootstrap/commit/c26732f)), closes [#1741](https://github.com/ng-bootstrap/ng-bootstrap/issues/1741) [#2051](https://github.com/ng-bootstrap/ng-bootstrap/issues/2051)
+* **dropdown:** remove global document click listener ([bd95f1f](https://github.com/ng-bootstrap/ng-bootstrap/commit/bd95f1f)), closes [#900](https://github.com/ng-bootstrap/ng-bootstrap/issues/900) [#2518](https://github.com/ng-bootstrap/ng-bootstrap/issues/2518) [#2871316695d8d2da5a8b0144c0a69de17e480019](https://github.com/ng-bootstrap/ng-bootstrap/issues/2871316695d8d2da5a8b0144c0a69de17e480019)
+* **modal:** adjust modal background to avoid shifting ([efe01f1](https://github.com/ng-bootstrap/ng-bootstrap/commit/efe01f1)), closes [#641](https://github.com/ng-bootstrap/ng-bootstrap/issues/641) [#2508](https://github.com/ng-bootstrap/ng-bootstrap/issues/2508)
+* **progressbar:** add missing i18n id specifier ([becb208](https://github.com/ng-bootstrap/ng-bootstrap/commit/becb208)), closes [#2493](https://github.com/ng-bootstrap/ng-bootstrap/issues/2493)
+* **typeahead:** don't fail when user returns falsy results ([39a58a3](https://github.com/ng-bootstrap/ng-bootstrap/commit/39a58a3)), closes [#2530](https://github.com/ng-bootstrap/ng-bootstrap/issues/2530) [#2550](https://github.com/ng-bootstrap/ng-bootstrap/issues/2550)
+
+
+
 <a name="3.0.0-beta.1"></a>
 # [3.0.0-beta.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/2.2.0...3.0.0-beta.1) (2018-07-06)
 
