@@ -5,7 +5,6 @@ import {NgbDatepicker} from './datepicker';
 import {NgbDatepickerMonthView} from './datepicker-month-view';
 import {NgbDatepickerNavigation} from './datepicker-navigation';
 import {NgbInputDatepicker} from './datepicker-input';
-import {NgbDatepickerToggle} from './datepicker-toggle';
 import {NgbDatepickerDayView} from './datepicker-day-view';
 import {NgbDatepickerI18n, NgbDatepickerI18nDefault} from './datepicker-i18n';
 import {NgbCalendar, NgbCalendarGregorian} from './ngb-calendar';
@@ -15,7 +14,6 @@ import {NgbDatepickerNavigationSelect} from './datepicker-navigation-select';
 
 export {NgbDatepicker, NgbDatepickerNavigateEvent} from './datepicker';
 export {NgbInputDatepicker} from './datepicker-input';
-export {NgbDatepickerToggle} from './datepicker-toggle';
 export {NgbCalendar, NgbPeriod} from './ngb-calendar';
 export {NgbCalendarIslamicCivil} from './hijri/ngb-calendar-islamic-civil';
 export {NgbCalendarIslamicUmalqura} from './hijri/ngb-calendar-islamic-umalqura';
@@ -34,9 +32,9 @@ export {NgbDateParserFormatter} from './ngb-date-parser-formatter';
 @NgModule({
   declarations: [
     NgbDatepicker, NgbDatepickerMonthView, NgbDatepickerNavigation, NgbDatepickerNavigationSelect, NgbDatepickerDayView,
-    NgbInputDatepicker, NgbDatepickerToggle
+    NgbInputDatepicker
   ],
-  exports: [NgbDatepicker, NgbInputDatepicker, NgbDatepickerToggle],
+  exports: [NgbDatepicker, NgbInputDatepicker],
   imports: [CommonModule, FormsModule],
   providers: [
     {provide: NgbCalendar, useClass: NgbCalendarGregorian},

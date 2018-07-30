@@ -12,7 +12,7 @@
              name="dp" [displayMonths]="displayMonths" [navigation]="navigation" [outsideDays]="outsideDays"
              [showWeekNumbers]="showWeekNumbers" ngbDatepicker #d="ngbDatepicker">
       <div class="input-group-append">
-        <button type="button" class="btn btn-outline-secondary" [ngbDatepickerToggle]="d" (click)="d.toggle()">
+        <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
           <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
         </button>
       </div>
