@@ -44,8 +44,7 @@ export {
   NgbDateAdapter,
   NgbDateNativeAdapter,
   NgbDatepicker,
-  NgbInputDatepicker,
-  NgbDatepickerToggle
+  NgbInputDatepicker
 } from './datepicker/datepicker.module';
 export {NgbDropdownModule, NgbDropdownConfig, NgbDropdown} from './dropdown/dropdown.module';
 export {
