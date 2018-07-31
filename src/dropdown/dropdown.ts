@@ -14,7 +14,7 @@ import {
   ChangeDetectorRef
 } from '@angular/core';
 import {DOCUMENT} from '@angular/common';
-import {fromEvent, race} from 'rxjs';
+import {fromEvent, race, Subject, Subscription} from 'rxjs';
 import {filter, takeUntil} from 'rxjs/operators';
 import {NgbDropdownConfig} from './dropdown-config';
 import {positionElements, PlacementArray, Placement} from '../util/positioning';
@@ -106,7 +106,8 @@ export class NgbDropdownToggle extends NgbDropdownAnchor {
  */
 @Directive({selector: '[ngbDropdown]', exportAs: 'ngbDropdown', host: {'[class.show]': 'isOpen()'}})
 export class NgbDropdown implements OnInit, OnDestroy {
-  private _zoneSubscription: any;
+  private _closed$ = new Subject<void>();
+  private _zoneSubscription: Subscription;
 
   @ContentChild(NgbDropdownMenu) private _menu: NgbDropdownMenu;
 
@@ -179,16 +180,15 @@ export class NgbDropdown implements OnInit, OnDestroy {
     if (this.autoClose) {
       this._ngZone.runOutsideAngular(() => {
         const escapes$ = fromEvent<KeyboardEvent>(this._document, 'keyup')
-                             .pipe(
-                                 takeUntil(this.openChange.pipe(filter(opened => !opened))),
-                                 filter(event => event.which === Key.Escape));
+                             .pipe(takeUntil(this._closed$), filter(event => event.which === Key.Escape));
 
         const clicks$ = fromEvent<MouseEvent>(this._document, 'click')
-                            .pipe(
-                                takeUntil(this.openChange.pipe(filter(opened => !opened))),
-                                filter(event => this._shouldCloseFromClick(event)));
+                            .pipe(takeUntil(this._closed$), filter(event => this._shouldCloseFromClick(event)));
 
-        race<Event>([escapes$, clicks$]).subscribe(() => this._ngZone.run(() => this.close()));
+        race<Event>([escapes$, clicks$]).pipe(takeUntil(this._closed$)).subscribe(() => this._ngZone.run(() => {
+          this.close();
+          this._changeDetector.markForCheck();
+        }));
       });
     }
   }
@@ -199,6 +199,7 @@ export class NgbDropdown implements OnInit, OnDestroy {
   close(): void {
     if (this._open) {
       this._open = false;
+      this._closed$.next();
       this.openChange.emit(false);
     }
   }
@@ -227,7 +228,10 @@ export class NgbDropdown implements OnInit, OnDestroy {
     return false;
   }
 
-  ngOnDestroy() { this._zoneSubscription.unsubscribe(); }
+  ngOnDestroy() {
+    this._closed$.next();
+    this._zoneSubscription.unsubscribe();
+  }
 
   private _isEventFromToggle($event) { return this._anchor.isEventFrom($event); }
 
