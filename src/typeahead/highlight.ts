@@ -2,14 +2,14 @@ import {Component, Input, OnChanges, ChangeDetectionStrategy, SimpleChanges} fro
 import {regExpEscape, toString} from '../util/util';
 
 /**
- * Directive that can be used inside a custom result template in order to highlight the term inside the text of the
+ * A component that can be used inside a custom result template in order to highlight the term inside the text of the
  * result
  */
 @Component({
   selector: 'ngb-highlight',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<ng-template ngFor [ngForOf]="parts" let-part let-isOdd="odd">` +
-      `<span *ngIf="isOdd" class="{{highlightClass}}">{{part}}</span><ng-template [ngIf]="!isOdd">{{part}}</ng-template>` +
+      `<span *ngIf="isOdd; else even" [class]="highlightClass">{{part}}</span><ng-template #even>{{part}}</ng-template>` +
       `</ng-template>`,  // template needs to be formatted in a certain way so we don't add empty text nodes
   styles: [`
     .ngb-highlight {
