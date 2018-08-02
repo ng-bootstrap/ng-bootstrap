@@ -1,3 +1,4 @@
+import {NgbdPopoverAutoClose} from './autoclose/popover-autoclose';
 import {NgbdPopoverBasic} from './basic/popover-basic';
 import {NgbdPopoverTplcontent} from './tplcontent/popover-tplcontent';
 import {NgbdPopoverTplwithcontext} from './tplwithcontext/popover-tplwithcontext';
@@ -8,6 +9,7 @@ import {NgbdPopoverCustomClass} from './custom-class/popover-custom-class';
 import {NgbdPopoverConfig} from './config/popover-config';
 
 export const DEMO_DIRECTIVES = [
+  NgbdPopoverAutoClose,
   NgbdPopoverBasic,
   NgbdPopoverTplcontent,
   NgbdPopoverTplwithcontext,
@@ -30,6 +32,10 @@ export const DEMO_SNIPPETS = {
   'triggers': {
     'code': require('!!raw-loader!./triggers/popover-triggers'),
     'markup': require('!!raw-loader!./triggers/popover-triggers.html')
+  },
+  'autoclose': {
+    'code': require('!!raw-loader!./autoclose/popover-autoclose'),
+    'markup': require('!!raw-loader!./autoclose/popover-autoclose.html')
   },
   'tplwithcontext': {
     'code': require('!!raw-loader!./tplwithcontext/popover-tplwithcontext'),
