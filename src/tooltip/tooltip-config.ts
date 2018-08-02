@@ -14,4 +14,6 @@ export class NgbTooltipConfig {
   container: string;
   disableTooltip = false;
   tooltipClass: string;
+  openDelay = 0;
+  closeDelay = 0;
 }

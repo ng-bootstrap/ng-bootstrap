@@ -10,6 +10,7 @@ import { NgbdTooltipBasic } from './demos/basic/tooltip-basic';
 import { NgbdTooltipConfig } from './demos/config/tooltip-config';
 import { NgbdTooltipContainer } from './demos/container/tooltip-container';
 import { NgbdTooltipCustomclass } from './demos/customclass/tooltip-customclass';
+import { NgbdTooltipDelay } from './demos/delay/tooltip-delay';
 import { NgbdTooltipTplcontent } from './demos/tplcontent/tooltip-tplcontent';
 import { NgbdTooltipTplwithcontext } from './demos/tplwithcontext/tooltip-tplwithcontext';
 import { NgbdTooltipTriggers } from './demos/triggers/tooltip-triggers';
@@ -18,6 +19,7 @@ const DEMO_DIRECTIVES = [
   NgbdTooltipBasic,
   NgbdTooltipContainer,
   NgbdTooltipCustomclass,
+  NgbdTooltipDelay,
   NgbdTooltipTplcontent,
   NgbdTooltipTriggers,
   NgbdTooltipAutoclose,
@@ -55,6 +57,12 @@ const DEMOS = {
     type: NgbdTooltipTplwithcontext,
     code: require('!!raw-loader!./demos/tplwithcontext/tooltip-tplwithcontext'),
     markup: require('!!raw-loader!./demos/tplwithcontext/tooltip-tplwithcontext.html')
+  },
+  delay: {
+    title: 'Open and close delays',
+    type: NgbdTooltipDelay,
+    code: require('!!raw-loader!./demos/delay/tooltip-delay'),
+    markup: require('!!raw-loader!./demos/delay/tooltip-delay.html')
   },
   container: {
     title: 'Append tooltip in the body',
