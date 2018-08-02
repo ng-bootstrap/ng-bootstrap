@@ -1,6 +1,10 @@
 import {Component, Input, OnChanges, ChangeDetectionStrategy, SimpleChanges} from '@angular/core';
 import {regExpEscape, toString} from '../util/util';
 
+/**
+ * Directive that can be used inside a custom result template in order to highlight the term inside the text of the
+ * result
+ */
 @Component({
   selector: 'ngb-highlight',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -16,8 +20,19 @@ import {regExpEscape, toString} from '../util/util';
 export class NgbHighlight implements OnChanges {
   parts: string[];
 
+  /**
+   * The CSS class of the span elements wrapping the term inside the result
+   */
   @Input() highlightClass = 'ngb-highlight';
+
+  /**
+   * The result text to display. If the term is found inside this text, it's highlighted
+   */
   @Input() result: string;
+
+  /**
+   * The searched term
+   */
   @Input() term: string;
 
   ngOnChanges(changes: SimpleChanges) {
