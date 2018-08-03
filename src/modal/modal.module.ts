@@ -4,7 +4,8 @@ import {NgbModalBackdrop} from './modal-backdrop';
 import {NgbModalWindow} from './modal-window';
 import {NgbModal} from './modal';
 
-export {NgbModal, NgbModalOptions} from './modal';
+export {NgbModal} from './modal';
+export {NgbModalConfig, NgbModalOptions} from './modal-config';
 export {NgbModalRef, NgbActiveModal} from './modal-ref';
 export {ModalDismissReasons} from './modal-dismiss-reasons';
 
