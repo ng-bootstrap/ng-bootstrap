@@ -7,7 +7,14 @@ import {NgbCarouselModule} from './carousel/carousel.module';
 import {NgbCollapseModule} from './collapse/collapse.module';
 import {NgbDatepickerModule} from './datepicker/datepicker.module';
 import {NgbDropdownModule} from './dropdown/dropdown.module';
-import {NgbModalModule, NgbModal, NgbModalOptions, NgbModalRef, ModalDismissReasons} from './modal/modal.module';
+import {
+  NgbModalModule,
+  NgbModal,
+  NgbModalConfig,
+  NgbModalOptions,
+  NgbModalRef,
+  ModalDismissReasons
+} from './modal/modal.module';
 import {NgbPaginationModule} from './pagination/pagination.module';
 import {NgbPopoverModule} from './popover/popover.module';
 import {NgbProgressbarModule} from './progressbar/progressbar.module';
@@ -51,6 +58,7 @@ export {NgbDropdownModule, NgbDropdownConfig, NgbDropdown} from './dropdown/drop
 export {
   NgbModalModule,
   NgbModal,
+  NgbModalConfig,
   NgbModalOptions,
   NgbActiveModal,
   NgbModalRef,
