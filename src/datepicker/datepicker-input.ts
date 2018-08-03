@@ -64,7 +64,6 @@ const NGB_DATEPICKER_VALIDATOR = {
 })
 export class NgbInputDatepicker implements OnChanges,
     OnDestroy, ControlValueAccessor, Validator {
-  private _clickableElements = new Set<HTMLElement>();
   private _closed$ = new Subject();
   private _cRef: ComponentRef<NgbDatepicker> = null;
   private _disabled = false;
@@ -281,13 +280,23 @@ export class NgbInputDatepicker implements OnChanges,
 
       // closing on ESC and outside clicks
       this._ngZone.runOutsideAngular(() => {
+
         const escapes$ = fromEvent<KeyboardEvent>(this._document, 'keyup')
                              .pipe(takeUntil(this._closed$), filter(e => e.which === Key.Escape));
 
-        const outsideClicks$ = this.autoClose === true || this.autoClose === 'outside' ?
-            fromEvent<MouseEvent>(this._document, 'click')
-                .pipe(takeUntil(this._closed$), filter(event => this._shouldCloseOnOutsideClick(event))) :
-            NEVER;
+        let outsideClicks$;
+        if (this.autoClose === true || this.autoClose === 'outside') {
+          // we don't know how the popup was opened, so if it was opened with a click,
+          // we have to skip the first one to avoid closing it immediately
+          let isOpening = true;
+          requestAnimationFrame(() => isOpening = false);
+
+          outsideClicks$ =
+              fromEvent<MouseEvent>(this._document, 'click')
+                  .pipe(takeUntil(this._closed$), filter(event => !isOpening && this._shouldCloseOnOutsideClick(event)))
+        } else {
+          outsideClicks$ = NEVER;
+        }
 
         race<Event>([escapes$, outsideClicks$]).subscribe(() => this._ngZone.run(() => this.close()));
       });
@@ -313,18 +322,6 @@ export class NgbInputDatepicker implements OnChanges,
       this.close();
     } else {
       this.open();
-    }
-  }
-
-  /**
-   * Registers an html element outside of the datepicker popup as clickable.
-   * Clicking on this element will not close the datepicker popup
-   *
-   * @since 3.0.0
-   */
-  registerClickableElement(element: HTMLElement) {
-    if (element) {
-      this._clickableElements.add(element);
     }
   }
 
@@ -371,9 +368,7 @@ export class NgbInputDatepicker implements OnChanges,
   }
 
   private _shouldCloseOnOutsideClick(event: MouseEvent) {
-    const clickableElements =
-        [this._elRef.nativeElement, this._cRef.location.nativeElement, ...Array.from(this._clickableElements)];
-    return !clickableElements.some(el => el && el.contains(event.target));
+    return ![this._elRef.nativeElement, this._cRef.location.nativeElement].some(el => el.contains(event.target));
   }
 
   private _subscribeForDatepickerOutputs(datepickerInstance: NgbDatepicker) {

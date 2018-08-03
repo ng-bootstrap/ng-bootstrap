@@ -20,7 +20,7 @@ In this example we are converting from and to a JS native Date object</p>
           <input class="form-control" placeholder="yyyy-mm-dd"
                  name="d2" #c2="ngModel" [(ngModel)]="model2" ngbDatepicker #d2="ngbDatepicker">
           <div class="input-group-append">
-            <button type="button" class="btn btn-outline-secondary" [ngbDatepickerToggle]="d2" (click)="d2.toggle()">
+            <button class="btn btn-outline-secondary" (click)="d2.toggle()" type="button">
               <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
             </button>
           </div>

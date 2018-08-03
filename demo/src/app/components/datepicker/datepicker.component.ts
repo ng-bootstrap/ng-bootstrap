@@ -9,7 +9,6 @@ import {NgbdOverview} from '../shared/overview';
       <ngbd-datepicker-overview ngbdOverview [sections]="overview.sections"></ngbd-datepicker-overview>
       <ngbd-api-docs directive="NgbDatepicker"></ngbd-api-docs>
       <ngbd-api-docs directive="NgbInputDatepicker"></ngbd-api-docs>
-      <ngbd-api-docs directive="NgbDatepickerToggle"></ngbd-api-docs>
       <ngbd-api-docs-class type="NgbDateStruct"></ngbd-api-docs-class>
       <ngbd-api-docs-class type="NgbDate"></ngbd-api-docs-class>
       <ngbd-api-docs-class type="DayTemplateContext"></ngbd-api-docs-class>
