@@ -4,6 +4,7 @@ describe('ngb-tooltip-config', () => {
   it('should have sensible default values', () => {
     const config = new NgbTooltipConfig();
 
+    expect(config.autoClose).toBe(true);
     expect(config.placement).toBe('top');
     expect(config.triggers).toBe('hover');
     expect(config.container).toBeUndefined();

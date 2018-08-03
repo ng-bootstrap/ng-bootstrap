@@ -1,3 +1,4 @@
+import {NgbdTooltipAutoClose} from './autoclose/tooltip-autoclose';
 import {NgbdTooltipBasic} from './basic/tooltip-basic';
 import {NgbdTooltipContainer} from './container/tooltip-container';
 import {NgbdTooltipTplcontent} from './tplcontent/tooltip-tplcontent';
@@ -6,6 +7,7 @@ import {NgbdTooltipTriggers} from './triggers/tooltip-triggers';
 import {NgbdTooltipConfig} from './config/tooltip-config';
 
 export const DEMO_DIRECTIVES = [
+  NgbdTooltipAutoClose,
   NgbdTooltipBasic,
   NgbdTooltipContainer,
   NgbdTooltipTplcontent,
@@ -30,6 +32,10 @@ export const DEMO_SNIPPETS = {
   'triggers': {
     'code': require('!!raw-loader!./triggers/tooltip-triggers'),
     'markup': require('!!raw-loader!./triggers/tooltip-triggers.html')
+  },
+  'autoclose': {
+    'code': require('!!raw-loader!./autoclose/tooltip-autoclose'),
+    'markup': require('!!raw-loader!./autoclose/tooltip-autoclose.html')
   },
   'tplwithcontext': {
     'code': require('!!raw-loader!./tplwithcontext/tooltip-tplwithcontext'),
