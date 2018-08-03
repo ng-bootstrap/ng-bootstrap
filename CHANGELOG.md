@@ -1,3 +1,13 @@
+<a name="2.2.2"></a>
+## [2.2.2](https://github.com/ng-bootstrap/ng-bootstrap/compare/2.2.1...2.2.2) (2018-08-03)
+
+
+### Bug Fixes
+
+* **dropdown:** close dropdown correctly inside the OnPush component ([75060ca](https://github.com/ng-bootstrap/ng-bootstrap/commit/75060ca)), closes [#2561](https://github.com/ng-bootstrap/ng-bootstrap/issues/2561) [#2559](https://github.com/ng-bootstrap/ng-bootstrap/issues/2559)
+
+
+
 <a name="2.2.1"></a>
 ## [2.2.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/2.2.0...2.2.1) (2018-07-27)
 
