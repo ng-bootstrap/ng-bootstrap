@@ -8,11 +8,12 @@ import {NgbdDatepickerCustomday} from './customday/datepicker-customday';
 import {NgbdDatepickerMultiple} from './multiple/datepicker-multiple';
 import {NgbdDatepickerCalendars, NgbdIslamicCivil, NgbdIslamicUmalqura} from './calendars/datepicker-calendars';
 import {NgbdDatepickerRange} from './range/datepicker-range';
+import {NgbdDatepickerJalali} from './jalali/datepicker-jalali';
 
 export const DEMO_DIRECTIVES = [
   NgbdDatepickerBasic, NgbdDatepickerPopup, NgbdDatepickerDisabled, NgbdDatepickerI18n,
   NgbdDatepickerCustomday, NgbdDatepickerConfig, NgbdDatepickerMultiple, NgbdDatepickerCalendars,
-  NgbdDatepickerRange, NgbdIslamicCivil, NgbdIslamicUmalqura, NgbdDatepickerAdapter
+  NgbdDatepickerRange, NgbdIslamicCivil, NgbdIslamicUmalqura, NgbdDatepickerAdapter, NgbdDatepickerJalali
 ];
 
 export const DEMO_SNIPPETS = {
@@ -43,6 +44,10 @@ export const DEMO_SNIPPETS = {
   'range': {
     'code': require('!!raw-loader!./range/datepicker-range'),
     'markup': require('!!raw-loader!./range/datepicker-range.html')
+  },
+  'jalali': {
+    'code': require('!!prismjs-loader?lang=typescript!./jalali/datepicker-jalali'),
+    'markup': require('!!prismjs-loader?lang=markup!./jalali/datepicker-jalali.html')
   },
   'calendars': {
     'code': require('!!raw-loader!./calendars/datepicker-calendars'),
