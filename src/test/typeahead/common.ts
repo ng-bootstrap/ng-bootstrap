@@ -19,10 +19,10 @@ export function expectResults(nativeEl: HTMLElement, resultsDef: string[]): void
     let classIndicator = resultDef.charAt(0);
 
     if (classIndicator === '+') {
-      expect(pages[i]).toHaveCssClass('active');
+      expect(pages[i]).toHaveCssClass('hover');
       expect(normalizeText(pages[i].textContent)).toEqual(resultDef.substr(1));
     } else {
-      expect(pages[i]).not.toHaveCssClass('active');
+      expect(pages[i]).not.toHaveCssClass('hover');
       expect(normalizeText(pages[i].textContent)).toEqual(resultDef);
     }
   }

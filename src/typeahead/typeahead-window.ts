@@ -28,7 +28,7 @@ export interface ResultTemplateContext {
     <ng-template ngFor [ngForOf]="results" let-result let-idx="index">
       <button type="button" class="dropdown-item" role="option"
         [id]="id + '-' + idx"
-        [class.active]="idx === activeIdx"
+        [class.hover]="idx === activeIdx"
         (mouseenter)="markActive(idx)"
         (click)="select(result)">
           <ng-template [ngTemplateOutlet]="resultTemplate || rt"
