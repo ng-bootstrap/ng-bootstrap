@@ -5,12 +5,12 @@ import {expectResults, getWindowLinks} from '../test/typeahead/common';
 import {Component, DebugElement, ViewChild, ChangeDetectionStrategy} from '@angular/core';
 import {Validators, FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {By} from '@angular/platform-browser';
-import {Observable, Subject} from 'rxjs';
+import {Observable, Subject, merge} from 'rxjs';
 
 import {NgbTypeahead} from './typeahead';
 import {NgbTypeaheadModule} from './typeahead.module';
 import {NgbTypeaheadConfig} from './typeahead-config';
-import {debounceTime, filter, map, merge} from 'rxjs/operators';
+import {debounceTime, filter, map} from 'rxjs/operators';
 
 import {ARIA_LIVE_DELAY} from '../util/accessibility/live';
 import {Key} from '../util/key';
@@ -1006,9 +1006,9 @@ class TestComponent {
   click$ = new Subject<string>();
 
   find = (text$: Observable<string>) => {
-    this.findOutput$ = text$.pipe(
-        merge(this.focus$), merge(this.click$.pipe(filter(() => !this.typeahead.isPopupOpen()))),
-        map(text => this._strings.filter(v => v.startsWith(text))));
+    const clicks$ = this.click$.pipe(filter(() => !this.typeahead.isPopupOpen()));
+    this.findOutput$ =
+        merge(text$, this.focus$, clicks$).pipe(map(text => this._strings.filter(v => v.startsWith(text))));
     return this.findOutput$;
   };
 
