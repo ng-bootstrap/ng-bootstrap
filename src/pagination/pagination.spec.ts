@@ -38,6 +38,23 @@ function expectPages(nativeEl: HTMLElement, pagesDef: string[]): void {
         expect(pages[i].querySelector('a').hasAttribute('tabindex')).toBeFalsy();
       }
     }
+    if (normalizeText(pages[i].textContent) === '...') {
+      expect(pages[i]).toHaveCssClass('ngb-pagination-ellipsis');
+    } else {
+      expect(pages[i]).not.toHaveCssClass('ngb-pagination-ellipsis');
+    }
+    if (normalizeText(pages[i].textContent) === '«') {
+      expect(pages[i]).toHaveCssClass('ngb-pagination-previous');
+    }
+    if (normalizeText(pages[i].textContent) === '»') {
+      expect(pages[i]).toHaveCssClass('ngb-pagination-next');
+    }
+    if (normalizeText(pages[i].textContent) === '««') {
+      expect(pages[i]).toHaveCssClass('ngb-pagination-first');
+    }
+    if (normalizeText(pages[i].textContent) === '»»') {
+      expect(pages[i]).toHaveCssClass('ngb-pagination-last');
+    }
   }
 }
 
