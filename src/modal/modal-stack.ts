@@ -120,7 +120,8 @@ export class NgbModalStack {
       moduleCFR: ComponentFactoryResolver, contentInjector: Injector, content: any,
       context: NgbActiveModal): ContentRef {
     const contentCmptFactory = moduleCFR.resolveComponentFactory(content);
-    const modalContentInjector = Injector.create([{provide: NgbActiveModal, useValue: context}], contentInjector);
+    const modalContentInjector =
+        Injector.create({providers: [{provide: NgbActiveModal, useValue: context}], parent: contentInjector});
     const componentRef = contentCmptFactory.create(modalContentInjector);
     this._applicationRef.attachView(componentRef.hostView);
     return new ContentRef([[componentRef.location.nativeElement]], componentRef.hostView, componentRef);

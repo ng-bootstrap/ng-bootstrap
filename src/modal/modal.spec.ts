@@ -557,7 +557,8 @@ describe('ngb-modal', () => {
   describe('custom injector option', () => {
 
     it('should render modal with a custom injector', () => {
-      const customInjector = Injector.create([{provide: CustomSpyService, useClass: CustomSpyService, deps: []}]);
+      const customInjector =
+          Injector.create({providers: [{provide: CustomSpyService, useClass: CustomSpyService, deps: []}]});
       const modalInstance = fixture.componentInstance.openCmpt(CustomInjectorCmpt, {injector: customInjector});
       fixture.detectChanges();
       expect(fixture.nativeElement).toHaveModal('Some content');
