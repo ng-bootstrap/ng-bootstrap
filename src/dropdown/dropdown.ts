@@ -222,7 +222,7 @@ export class NgbDropdown implements OnInit, OnDestroy {
       } else if (this.autoClose === 'inside' && this._isEventFromMenu(event)) {
         return true;
       } else if (this.autoClose === 'outside' && !this._isEventFromMenu(event)) {
-        return true
+        return true;
       }
     }
     return false;

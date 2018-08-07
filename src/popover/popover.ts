@@ -309,7 +309,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
       } else if (this.autoClose === 'inside' && this._isEventFromPopover(event)) {
         return true;
       } else if (this.autoClose === 'outside' && !this._isEventFromPopover(event)) {
-        return true
+        return true;
       }
     }
     return false;

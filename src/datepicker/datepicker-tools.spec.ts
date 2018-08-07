@@ -274,7 +274,7 @@ describe(`datepicker-tools`, () => {
               const monthsNumber = actualMonthsStorage.length;
               if (expectedMonthsStorage.length !== monthsNumber) {
                 throw 'the number of months';
-              };
+              }
               for (let i = 0; i < monthsNumber; i++) {
                 const storage1 = actualMonthsStorage[i];
                 const storage2 = expectedMonthsStorage[i];
@@ -290,8 +290,9 @@ describe(`datepicker-tools`, () => {
                 }
               }
               return {
-                pass: true, message: 'Expected different months data structures, but the same data structure was found.'
-              }
+                pass: true,
+                message: 'Expected different months data structures, but the same data structure was found.'
+              };
             } catch (e) {
               return {
                 pass: false,

@@ -12,7 +12,7 @@ import {NgbTooltipConfig} from './tooltip-config';
 
 function dispatchEscapeKeyUpEvent() {
   document.dispatchEvent(createKeyEvent(Key.Escape));
-};
+}
 
 const createTestComponent =
     (html: string) => <ComponentFixture<TestComponent>>createGenericTestComponent(html, TestComponent);

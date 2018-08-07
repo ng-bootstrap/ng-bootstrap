@@ -332,9 +332,9 @@ describe('ngb-carousel', () => {
       <ng-template ngbSlide>foo</ng-template>
       <ng-template ngbSlide>bar</ng-template>
     </ngb-carousel>
-  `
+  `;
 
-           const fixture = createTestComponent(html);
+       const fixture = createTestComponent(html);
 
        const carouselDebugEl = fixture.debugElement.query(By.directive(NgbCarousel));
 

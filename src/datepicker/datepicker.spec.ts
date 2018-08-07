@@ -65,7 +65,7 @@ function triggerKeyDown(element: DebugElement, keyCode: number, shiftKey = false
 
 function getMonthContainer(datepicker: DebugElement) {
   return datepicker.query(By.css('div.ngb-dp-months'));
-};
+}
 
 function expectSelectedDate(element: DebugElement, selectedDate: NgbDate) {
   // checking we have 1 day with .selected class
