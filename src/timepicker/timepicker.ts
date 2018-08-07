@@ -81,16 +81,16 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
     <fieldset [disabled]="disabled" [class.disabled]="disabled">
       <div class="ngb-tp">
         <div class="ngb-tp-input-container ngb-tp-hour">
-          <button *ngIf="spinners" type="button" class="btn btn-link" [ngClass]="setButtonSize()" (click)="changeHour(hourStep)"
+          <button *ngIf="spinners" type="button" class="btn btn-link" [ngClass]="buttonSizeClass" (click)="changeHour(hourStep)"
             [disabled]="disabled" [class.disabled]="disabled">
             <span class="chevron"></span>
             <span class="sr-only" i18n="@@ngb.timepicker.increment-hours">Increment hours</span>
           </button>
-          <input type="text" class="form-control" [ngClass]="setFormControlSize()" maxlength="2"
+          <input type="text" class="form-control" [ngClass]="formControlSizeClass" maxlength="2"
             placeholder="HH" i18n-placeholder="@@ngb.timepicker.HH"
             [value]="formatHour(model?.hour)" (change)="updateHour($event.target.value)"
             [readonly]="readonlyInputs" [disabled]="disabled" aria-label="Hours" i18n-aria-label="@@ngb.timepicker.hours">
-          <button *ngIf="spinners" type="button" class="btn btn-link" [ngClass]="setButtonSize()" (click)="changeHour(-hourStep)"
+          <button *ngIf="spinners" type="button" class="btn btn-link" [ngClass]="buttonSizeClass" (click)="changeHour(-hourStep)"
             [disabled]="disabled" [class.disabled]="disabled">
             <span class="chevron bottom"></span>
             <span class="sr-only" i18n="@@ngb.timepicker.decrement-hours">Decrement hours</span>
@@ -98,16 +98,16 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
         </div>
         <div class="ngb-tp-spacer">:</div>
         <div class="ngb-tp-input-container ngb-tp-minute">
-          <button *ngIf="spinners" type="button" class="btn btn-link" [ngClass]="setButtonSize()" (click)="changeMinute(minuteStep)"
+          <button *ngIf="spinners" type="button" class="btn btn-link" [ngClass]="buttonSizeClass" (click)="changeMinute(minuteStep)"
             [disabled]="disabled" [class.disabled]="disabled">
             <span class="chevron"></span>
             <span class="sr-only" i18n="@@ngb.timepicker.increment-minutes">Increment minutes</span>
           </button>
-          <input type="text" class="form-control" [ngClass]="setFormControlSize()" maxlength="2"
+          <input type="text" class="form-control" [ngClass]="formControlSizeClass" maxlength="2"
             placeholder="MM" i18n-placeholder="@@ngb.timepicker.MM"
             [value]="formatMinSec(model?.minute)" (change)="updateMinute($event.target.value)"
             [readonly]="readonlyInputs" [disabled]="disabled" aria-label="Minutes" i18n-aria-label="@@ngb.timepicker.minutes">
-          <button *ngIf="spinners" type="button" class="btn btn-link" [ngClass]="setButtonSize()" (click)="changeMinute(-minuteStep)"
+          <button *ngIf="spinners" type="button" class="btn btn-link" [ngClass]="buttonSizeClass" (click)="changeMinute(-minuteStep)"
             [disabled]="disabled" [class.disabled]="disabled">
             <span class="chevron bottom"></span>
             <span class="sr-only"  i18n="@@ngb.timepicker.decrement-minutes">Decrement minutes</span>
@@ -115,16 +115,16 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
         </div>
         <div *ngIf="seconds" class="ngb-tp-spacer">:</div>
         <div *ngIf="seconds" class="ngb-tp-input-container ngb-tp-second">
-          <button *ngIf="spinners" type="button" class="btn btn-link" [ngClass]="setButtonSize()" (click)="changeSecond(secondStep)"
+          <button *ngIf="spinners" type="button" class="btn btn-link" [ngClass]="buttonSizeClass" (click)="changeSecond(secondStep)"
             [disabled]="disabled" [class.disabled]="disabled">
             <span class="chevron"></span>
             <span class="sr-only" i18n="@@ngb.timepicker.increment-seconds">Increment seconds</span>
           </button>
-          <input type="text" class="form-control" [ngClass]="setFormControlSize()" maxlength="2"
+          <input type="text" class="form-control" [ngClass]="formControlSizeClass" maxlength="2"
             placeholder="SS" i18n-placeholder="@@ngb.timepicker.SS"
             [value]="formatMinSec(model?.second)" (change)="updateSecond($event.target.value)"
             [readonly]="readonlyInputs" [disabled]="disabled" aria-label="Seconds" i18n-aria-label="@@ngb.timepicker.seconds">
-          <button *ngIf="spinners" type="button" class="btn btn-link" [ngClass]="setButtonSize()" (click)="changeSecond(-secondStep)"
+          <button *ngIf="spinners" type="button" class="btn btn-link" [ngClass]="buttonSizeClass" (click)="changeSecond(-secondStep)"
             [disabled]="disabled" [class.disabled]="disabled">
             <span class="chevron bottom"></span>
             <span class="sr-only" i18n="@@ngb.timepicker.decrement-seconds">Decrement seconds</span>
@@ -132,7 +132,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
         </div>
         <div *ngIf="meridian" class="ngb-tp-spacer"></div>
         <div *ngIf="meridian" class="ngb-tp-meridian">
-          <button type="button" class="btn btn-outline-primary" [ngClass]="setButtonSize()"
+          <button type="button" class="btn btn-outline-primary" [ngClass]="buttonSizeClass"
             [disabled]="disabled" [class.disabled]="disabled"
                   (click)="toggleMeridian()">
             <ng-container *ngIf="model?.hour >= 12; else am" i18n="@@ngb.timepicker.PM">PM</ng-container>
@@ -148,6 +148,8 @@ export class NgbTimepicker implements ControlValueAccessor,
     OnChanges {
   disabled: boolean;
   model: NgbTime;
+  buttonSizeClass: string;
+  formControlSizeClass: string;
 
   /**
    * Whether to display 12H or 24H mode.
@@ -274,15 +276,23 @@ export class NgbTimepicker implements ControlValueAccessor,
 
   formatMinSec(value: number) { return padNumber(value); }
 
-  setFormControlSize() { return {'form-control-sm': this.size === 'small', 'form-control-lg': this.size === 'large'}; }
-
-  setButtonSize() { return {'btn-sm': this.size === 'small', 'btn-lg': this.size === 'large'}; }
-
-
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['seconds'] && !this.seconds && this.model && !isNumber(this.model.second)) {
       this.model.second = 0;
       this.propagateModelChange(false);
+    }
+    if (changes['size']) {
+      const newSize = changes['size'].currentValue;
+      const buttonSizeClassMap = {
+        small: 'btn-sm',
+        large: 'btn-lg'
+      };
+      const formSizeClassMap = {
+        small: 'form-control-sm',
+        large: 'form-control-lg'
+      };
+      this.buttonSizeClass = buttonSizeClassMap[newSize];
+      this.formControlSizeClass = formSizeClassMap[newSize];
     }
   }
 
