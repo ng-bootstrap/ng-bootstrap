@@ -283,14 +283,8 @@ export class NgbTimepicker implements ControlValueAccessor,
     }
     if (changes['size']) {
       const newSize = changes['size'].currentValue;
-      const buttonSizeClassMap = {
-        small: 'btn-sm',
-        large: 'btn-lg'
-      };
-      const formSizeClassMap = {
-        small: 'form-control-sm',
-        large: 'form-control-lg'
-      };
+      const buttonSizeClassMap = {small: 'btn-sm', large: 'btn-lg'};
+      const formSizeClassMap = {small: 'form-control-sm', large: 'form-control-lg'};
       this.buttonSizeClass = buttonSizeClassMap[newSize];
       this.formControlSizeClass = formSizeClassMap[newSize];
     }
