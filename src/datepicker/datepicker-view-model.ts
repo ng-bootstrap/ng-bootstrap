@@ -10,13 +10,13 @@ export type DayViewModel = {
   tabindex: number,
   ariaLabel: string,
   hidden: boolean
-}
+};
 
 export type WeekViewModel = {
   number: number,
   days: DayViewModel[],
   collapsed: boolean
-}
+};
 
 export type MonthViewModel = {
   firstDate: NgbDate,
@@ -49,7 +49,7 @@ export type DatepickerViewModel = {
     months: number[]
   },
   selectedDate: NgbDate
-}
+};
 // clang-format on
 
 export enum NavigationEvent {

@@ -204,7 +204,7 @@ export class NgbInputDatepicker implements OnChanges,
 
   registerOnTouched(fn: () => any): void { this._onTouched = fn; }
 
-  registerOnValidatorChange(fn: () => void): void { this._validatorChange = fn; };
+  registerOnValidatorChange(fn: () => void): void { this._validatorChange = fn; }
 
   setDisabledState(isDisabled: boolean): void { this.disabled = isDisabled; }
 
@@ -293,7 +293,8 @@ export class NgbInputDatepicker implements OnChanges,
 
           outsideClicks$ =
               fromEvent<MouseEvent>(this._document, 'click')
-                  .pipe(takeUntil(this._closed$), filter(event => !isOpening && this._shouldCloseOnOutsideClick(event)))
+                  .pipe(
+                      takeUntil(this._closed$), filter(event => !isOpening && this._shouldCloseOnOutsideClick(event)));
         } else {
           outsideClicks$ = NEVER;
         }

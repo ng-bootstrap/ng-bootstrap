@@ -1005,24 +1005,27 @@ class TestComponent {
   focus$ = new Subject<string>();
   click$ = new Subject<string>();
 
-  find = (text$: Observable<string>) => {
-    const clicks$ = this.click$.pipe(filter(() => !this.typeahead.isPopupOpen()));
-    this.findOutput$ =
-        merge(text$, this.focus$, clicks$).pipe(map(text => this._strings.filter(v => v.startsWith(text))));
-    return this.findOutput$;
-  };
+  find =
+      (text$: Observable<string>) => {
+        const clicks$ = this.click$.pipe(filter(() => !this.typeahead.isPopupOpen()));
+        this.findOutput$ =
+            merge(text$, this.focus$, clicks$).pipe(map(text => this._strings.filter(v => v.startsWith(text))));
+        return this.findOutput$;
+      }
 
-  findAnywhere = (text$: Observable<string>) => {
-    return text$.pipe(map(text => this._strings.filter(v => v.indexOf(text) > -1)));
-  };
+  findAnywhere =
+      (text$: Observable<string>) => {
+        return text$.pipe(map(text => this._strings.filter(v => v.indexOf(text) > -1)));
+      }
 
   findNothing = (text$: Observable<string>) => { return text$.pipe(map(text => [])); };
 
   findNull = (text$: Observable<string>) => { return text$.pipe(map(text => null)); };
 
-  findObjects = (text$: Observable<string>) => {
-    return text$.pipe(map(text => this._objects.filter(v => v.value.startsWith(text))));
-  };
+  findObjects =
+      (text$: Observable<string>) => {
+        return text$.pipe(map(text => this._objects.filter(v => v.value.startsWith(text))));
+      }
 
   formatter = (obj: {id: number, value: string}) => { return `${obj.id} ${obj.value}`; };
 
@@ -1040,7 +1043,7 @@ class TestOnPushComponent {
 
   find = (text$: Observable<string>) => {
     return text$.pipe(debounceTime(200), map(text => this._strings.filter(v => v.startsWith(text))));
-  };
+  }
 }
 
 @Component({selector: 'test-async-cmp', template: ''})
@@ -1049,5 +1052,5 @@ class TestAsyncComponent {
 
   find = (text$: Observable<string>) => {
     return text$.pipe(debounceTime(200), map(text => this._strings.filter(v => v.startsWith(text))));
-  };
+  }
 }

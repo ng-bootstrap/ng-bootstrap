@@ -183,7 +183,7 @@ export class NgbDatepickerService {
           if (month.number !== day.date.month) {
             day.hidden = outsideDays === 'hidden' || outsideDays === 'collapsed' ||
                 (displayMonths > 1 && day.date.after(months[0].firstDate) &&
-                 day.date.before(months[displayMonths - 1].lastDate))
+                 day.date.before(months[displayMonths - 1].lastDate));
           }
         });
       });

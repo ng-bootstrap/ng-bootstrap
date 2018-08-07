@@ -1325,7 +1325,7 @@ describe('ngb-timepicker', () => {
              .then(() => {
                fixture.componentInstance.model = '09:25:00';
                fixture.detectChanges();
-               return fixture.whenStable()
+               return fixture.whenStable();
              })
              .then(() => {
                fixture.detectChanges();

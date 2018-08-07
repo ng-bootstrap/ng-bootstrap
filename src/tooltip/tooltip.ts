@@ -287,7 +287,7 @@ export class NgbTooltip implements OnInit, OnDestroy {
       } else if (this.autoClose === 'inside' && this._isEventFromTooltip(event)) {
         return true;
       } else if (this.autoClose === 'outside' && !this._isEventFromTooltip(event)) {
-        return true
+        return true;
       }
     }
     return false;

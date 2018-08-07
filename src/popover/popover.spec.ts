@@ -12,7 +12,7 @@ import {NgbPopoverConfig} from './popover-config';
 
 function dispatchEscapeKeyUpEvent() {
   document.dispatchEvent(createKeyEvent(Key.Escape));
-};
+}
 
 @Injectable()
 class SpyService {
