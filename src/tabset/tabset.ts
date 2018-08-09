@@ -151,9 +151,9 @@ export class NgbTabset implements AfterContentChecked {
   @Input() orientation: 'horizontal' | 'vertical';
 
   /**
-   * Type of navigation to be used for tabs. Can be one of 'tabs' or 'pills'.
+   * Type of navigation to be used for tabs. Can be one of 'tabs' or 'pills' or 'bordered'.
    */
-  @Input() type: 'tabs' | 'pills';
+  @Input() type: 'tabs' | 'pills' | 'bordered';
 
   /**
    * A tab change event fired right before the tab selection happens. See NgbTabChangeEvent for payload details
