@@ -1,11 +1,14 @@
-import {Directive, Input} from '@angular/core';
+import { Directive, Input } from '@angular/core';
 
+/**
+ * Foo doc
+ */
 @Directive({
   selector: '[foo]'
 })
 export class Foo {
 
-  @Input() fooBoolean: boolean = false;
-  @Input() fooNumber: number = 5;
-  @Input() fooString: string = 'bar';
+  @Input() fooBoolean = false;
+  @Input() fooNumber = 5;
+  @Input() fooString = 'bar';
 }
