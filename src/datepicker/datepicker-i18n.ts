@@ -1,6 +1,5 @@
 import {Inject, Injectable, LOCALE_ID} from '@angular/core';
-import {FormStyle, getLocaleDayNames, getLocaleMonthNames, TranslationWidth} from '@angular/common';
-import {DatePipe} from '@angular/common';
+import {FormStyle, getLocaleDayNames, getLocaleMonthNames, TranslationWidth, formatDate} from '@angular/common';
 import {NgbDateStruct} from './ngb-date-struct';
 
 /**
@@ -43,7 +42,7 @@ export class NgbDatepickerI18nDefault extends NgbDatepickerI18n {
   private _monthsShort: Array<string>;
   private _monthsFull: Array<string>;
 
-  constructor(@Inject(LOCALE_ID) private _locale: string, private _datePipe: DatePipe) {
+  constructor(@Inject(LOCALE_ID) private _locale: string) {
     super();
 
     const weekdaysStartingOnSunday = getLocaleDayNames(_locale, FormStyle.Standalone, TranslationWidth.Short);
@@ -61,6 +60,6 @@ export class NgbDatepickerI18nDefault extends NgbDatepickerI18n {
 
   getDayAriaLabel(date: NgbDateStruct): string {
     const jsDate = new Date(date.year, date.month - 1, date.day);
-    return this._datePipe.transform(jsDate, 'fullDate', null, this._locale);
+    return formatDate(jsDate, 'fullDate', this._locale);
   }
 }

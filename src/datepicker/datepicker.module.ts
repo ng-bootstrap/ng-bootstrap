@@ -1,5 +1,5 @@
 import {NgModule, ModuleWithProviders} from '@angular/core';
-import {CommonModule, DatePipe} from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {NgbDatepicker} from './datepicker';
 import {NgbDatepickerMonthView} from './datepicker-month-view';
@@ -41,7 +41,7 @@ export {NgbCalendarPersian} from './jalali/ngb-calendar-persian';
     {provide: NgbCalendar, useClass: NgbCalendarGregorian},
     {provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nDefault},
     {provide: NgbDateParserFormatter, useClass: NgbDateISOParserFormatter},
-    {provide: NgbDateAdapter, useClass: NgbDateStructAdapter}, DatePipe
+    {provide: NgbDateAdapter, useClass: NgbDateStructAdapter}
   ],
   entryComponents: [NgbDatepicker]
 })
