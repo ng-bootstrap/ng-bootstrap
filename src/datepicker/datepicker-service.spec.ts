@@ -5,7 +5,6 @@ import {NgbDate} from './ngb-date';
 import {Subscription} from 'rxjs';
 import {DatepickerViewModel} from './datepicker-view-model';
 import {NgbDatepickerI18n, NgbDatepickerI18nDefault} from './datepicker-i18n';
-import {DatePipe} from '@angular/common';
 
 describe('ngb-datepicker-service', () => {
 
@@ -26,7 +25,7 @@ describe('ngb-datepicker-service', () => {
     TestBed.configureTestingModule({
       providers: [
         NgbDatepickerService, {provide: NgbCalendar, useClass: NgbCalendarGregorian},
-        {provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nDefault}, DatePipe
+        {provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nDefault}
       ]
     });
 

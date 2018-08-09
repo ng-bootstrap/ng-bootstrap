@@ -13,7 +13,6 @@ import {NgbCalendar, NgbCalendarGregorian} from './ngb-calendar';
 import {TestBed} from '@angular/core/testing';
 import {DatepickerViewModel, NgbMarkDisabled, MonthViewModel} from './datepicker-view-model';
 import {NgbDatepickerI18n, NgbDatepickerI18nDefault} from './datepicker-i18n';
-import {DatePipe} from '@angular/common';
 
 describe(`datepicker-tools`, () => {
 
@@ -82,7 +81,7 @@ describe(`datepicker-tools`, () => {
       TestBed.configureTestingModule({
         providers: [
           {provide: NgbCalendar, useClass: NgbCalendarGregorian},
-          {provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nDefault}, DatePipe
+          {provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nDefault}
         ]
       });
       calendar = TestBed.get(NgbCalendar);
@@ -231,7 +230,7 @@ describe(`datepicker-tools`, () => {
       TestBed.configureTestingModule({
         providers: [
           {provide: NgbCalendar, useClass: NgbCalendarGregorian},
-          {provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nDefault}, DatePipe
+          {provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nDefault}
         ]
       });
       calendar = TestBed.get(NgbCalendar);
