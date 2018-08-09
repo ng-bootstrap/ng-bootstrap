@@ -4,17 +4,6 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { DefaultComponent } from './default';
 import { GettingStarted } from './getting-started';
 
-const DEFAULT_API_PATH = {
-  path: '',
-  pathMatch: 'full',
-  redirectTo: 'examples'
-};
-const DEFAULT_API_PATH_OVERVIEW = {
-  path: '',
-  pathMatch: 'full',
-  redirectTo: 'overview'
-};
-
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
   { path: 'home', component: DefaultComponent },

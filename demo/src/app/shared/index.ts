@@ -8,7 +8,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Analytics } from './analytics/analytics';
 import { CodeHighlightService } from './code/code-highlight.service';
 import { NgbdCodeComponent } from './code/code.component';
-import { ComponentWrapper } from './component-wrapper/component.component';
+import { ComponentWrapper } from './component-wrapper/component-wrapper.component';
 import { PageWrapper } from './page-wrapper/page-wrapper.component';
 import { SideNavComponent } from './side-nav/side-nav.component';
 

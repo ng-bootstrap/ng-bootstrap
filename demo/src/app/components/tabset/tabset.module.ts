@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { NgbdSharedModule } from '../../shared';
-import { ComponentWrapper } from '../../shared/component-wrapper/component.component';
+import { ComponentWrapper } from '../../shared/component-wrapper/component-wrapper.component';
 import { NgbdComponentsSharedModule } from '../shared';
 import { getApis, NgbdApiPage } from '../shared/api-page/api.component';
 import { NgbdExamplesPage } from '../shared/examples-page/examples.component';

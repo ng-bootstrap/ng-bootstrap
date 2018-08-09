@@ -8,7 +8,7 @@ import { NgbdExamplesPage } from '../../components/shared/examples-page/examples
 
 @Component({
   selector: 'component-wrapper',
-  templateUrl: 'component.component.html'
+  templateUrl: 'component-wrapper.component.html'
 })
 
 export class ComponentWrapper {
@@ -54,7 +54,7 @@ export class ComponentWrapper {
         fragment: item,
         title: item
       }));
-    }
+    };
     this.tableOfContent = [];
     if (component instanceof NgbdExamplesPage) {
       this.tableOfContent = component.demos.map(demo => {
@@ -62,7 +62,7 @@ export class ComponentWrapper {
           fragment: demo.id,
           title: demo.title
         };
-      })
+      });
     } else if (component instanceof NgbdApiPage) {
       let toc = [
         ...getLinks(component.components)
