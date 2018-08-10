@@ -1,9 +1,9 @@
 import {TestBed} from '@angular/core/testing';
 
 import {Component} from '@angular/core';
-import {NgbDatepickerModule} from './datepicker.module';
 import {NgbDatepickerDayView} from './datepicker-day-view';
 import {NgbDate} from './ngb-date';
+import {NgbDatepickerI18n, NgbDatepickerI18nDefault} from './datepicker-i18n';
 
 function getElement(element: HTMLElement): HTMLElement {
   return <HTMLElement>element.querySelector('[ngbDatepickerDayView]');
@@ -12,8 +12,10 @@ function getElement(element: HTMLElement): HTMLElement {
 describe('ngbDatepickerDayView', () => {
 
   beforeEach(() => {
-    TestBed.overrideModule(NgbDatepickerModule, {set: {exports: [NgbDatepickerDayView]}});
-    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbDatepickerModule.forRoot()]});
+    TestBed.configureTestingModule({
+      declarations: [TestComponent, NgbDatepickerDayView],
+      providers: [{provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nDefault}]
+    });
   });
 
   it('should display date', () => {

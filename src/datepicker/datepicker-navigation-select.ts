@@ -29,7 +29,7 @@ import {NgbDatepickerI18n} from './datepicker-i18n';
       class="custom-select"
       [value]="date?.year"
       (change)="changeYear($event.target.value)">
-        <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+        <option *ngFor="let y of years" [value]="y">{{ i18n.getYearNumerals(y) }}</option>
     </select>
   `
 })

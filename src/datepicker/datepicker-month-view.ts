@@ -49,7 +49,7 @@ import {DayTemplateContext} from './datepicker-day-template-context';
     </div>
     <ng-template ngFor let-week [ngForOf]="month.weeks">
       <div *ngIf="!week.collapsed" class="ngb-dp-week" role="row">
-        <div *ngIf="showWeekNumbers" class="ngb-dp-week-number small text-muted">{{ week.number }}</div>
+        <div *ngIf="showWeekNumbers" class="ngb-dp-week-number small text-muted">{{ i18n.getWeekNumerals(week.number) }}</div>
         <div *ngFor="let day of week.days" (click)="doSelect(day)" class="ngb-dp-day" role="gridcell"
           [class.disabled]="day.context.disabled"
           [tabindex]="day.tabindex"
