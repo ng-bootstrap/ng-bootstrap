@@ -168,25 +168,48 @@ export class NgbAccordion implements AfterContentChecked {
   }
 
   /**
-   * Programmatically toggle a panel with a given id.
+   * Checks if a panel with a given id is expanded or not.
+   */
+  isExpanded(panelId: string): boolean { return this.activeIds.indexOf(panelId) > -1; }
+
+  /**
+   * Expands a panel with a given id. Has no effect if the panel is already expanded or disabled.
+   */
+  expand(panelId: string): void { this._changeOpenState(this._findPanelById(panelId), true); }
+
+  /**
+   * Expands all panels if [closeOthers]="false". For the [closeOthers]="true" case will have no effect if there is an
+   * open panel, otherwise the first panel will be expanded.
+   */
+  expandAll(): void {
+    if (this.closeOtherPanels) {
+      if (this.activeIds.length === 0 && this.panels.length) {
+        this._changeOpenState(this.panels.first, true);
+      }
+    } else {
+      this.panels.forEach(panel => this._changeOpenState(panel, true));
+    }
+  }
+
+  /**
+   * Collapses a panel with a given id. Has no effect if the panel is already collapsed or disabled.
+   */
+  collapse(panelId: string) { this._changeOpenState(this._findPanelById(panelId), false); }
+
+  /**
+   * Collapses all open panels.
+   */
+  collapseAll() {
+    this.panels.forEach((panel) => { this._changeOpenState(panel, false); });
+  }
+
+  /**
+   * Programmatically toggle a panel with a given id. Has no effect if the panel is disabled.
    */
   toggle(panelId: string) {
-    const panel = this.panels.find(p => p.id === panelId);
-
-    if (panel && !panel.disabled) {
-      let defaultPrevented = false;
-
-      this.panelChange.emit(
-          {panelId: panelId, nextState: !panel.isOpen, preventDefault: () => { defaultPrevented = true; }});
-
-      if (!defaultPrevented) {
-        panel.isOpen = !panel.isOpen;
-
-        if (this.closeOtherPanels) {
-          this._closeOthers(panelId);
-        }
-        this._updateActiveIds();
-      }
+    const panel = this._findPanelById(panelId);
+    if (panel) {
+      this._changeOpenState(panel, !panel.isOpen);
     }
   }
 
@@ -206,6 +229,24 @@ export class NgbAccordion implements AfterContentChecked {
     }
   }
 
+  private _changeOpenState(panel: NgbPanel, nextState: boolean) {
+    if (panel && !panel.disabled && panel.isOpen !== nextState) {
+      let defaultPrevented = false;
+
+      this.panelChange.emit(
+          {panelId: panel.id, nextState: nextState, preventDefault: () => { defaultPrevented = true; }});
+
+      if (!defaultPrevented) {
+        panel.isOpen = nextState;
+
+        if (nextState && this.closeOtherPanels) {
+          this._closeOthers(panel.id);
+        }
+        this._updateActiveIds();
+      }
+    }
+  }
+
   private _closeOthers(panelId: string) {
     this.panels.forEach(panel => {
       if (panel.id !== panelId) {
@@ -213,6 +254,8 @@ export class NgbAccordion implements AfterContentChecked {
       }
     });
   }
+
+  private _findPanelById(panelId: string): NgbPanel | null { return this.panels.find(p => p.id === panelId); }
 
   private _updateActiveIds() {
     this.activeIds = this.panels.filter(panel => panel.isOpen && !panel.disabled).map(panel => panel.id);
