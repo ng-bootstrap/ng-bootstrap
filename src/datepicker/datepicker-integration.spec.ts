@@ -39,6 +39,9 @@ describe('ngb-datepicker integration', () => {
       // alphabetic months: Jan -> A, Feb -> B, etc
       getMonthShortName(month: number) { return ALPHABET[month - 1]; }
 
+      // alphabetic months: Jan -> A, Feb -> B, etc
+      getMonthFullName(month: number) { return ALPHABET[month - 1]; }
+
       // alphabetic days: 1 -> A, 2 -> B, etc
       getDayNumerals(date: NgbDateStruct) { return ALPHABET[date.day - 1]; }
 
@@ -59,6 +62,7 @@ describe('ngb-datepicker integration', () => {
                             [minDate]="{year: 2017, month: 1, day: 1}"
                             [maxDate]="{year: 2019, month: 12, day: 31}"
                             [showWeekNumbers]="true"
+                            [displayMonths]="2"
             ></ngb-datepicker>`,
           providers: [{provide: NgbDatepickerI18n, useClass: CustomI18n}]
         }
@@ -78,7 +82,7 @@ describe('ngb-datepicker integration', () => {
       // month view that displays JAN 2018 starts directly with week 01
       const weekNumberElements = fixture.nativeElement.querySelectorAll('.ngb-dp-week-number');
       const weekNumbers = Array.from(weekNumberElements).map((o: HTMLElement) => o.innerHTML);
-      expect(weekNumbers.join('')).toEqual(ALPHABET.slice(0, 6));
+      expect(weekNumbers.slice(0, 6).join('')).toEqual(ALPHABET.slice(0, 6));
     });
 
     it('should allow overriding day numerals', () => {
@@ -93,6 +97,13 @@ describe('ngb-datepicker integration', () => {
       const yearOptions = getYearSelect(fixture.nativeElement).querySelectorAll('option');
       const years = Array.from(yearOptions).map(o => o.innerText);
       expect(years).toEqual(['7102', '8102', '9102']);
+    });
+
+    it('should allow overriding year and month numerals for multiple months', () => {
+      // we have JAN 2018 and FEB 2018 -> A 8102 and B 8102
+      const monthNameElements = fixture.nativeElement.querySelectorAll('.ngb-dp-month-name');
+      const monthNames = Array.from(monthNameElements).map((o: HTMLElement) => o.innerText.trim());
+      expect(monthNames).toEqual(['A 8102', 'B 8102']);
     });
   });
 });
