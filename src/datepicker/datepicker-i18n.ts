@@ -34,6 +34,22 @@ export abstract class NgbDatepickerI18n {
    * @since 2.0.0
    */
   abstract getDayAriaLabel(date: NgbDateStruct): string;
+
+  /**
+   * Returns the textual representation of a day that is rendered in a day cell
+   */
+  getDayNumerals(date: NgbDateStruct): string { return `${date.day}`; }
+
+  /**
+   * Returns the textual representation of a week number rendered by date picker
+   */
+  getWeekNumerals(weekNumber: number): string { return `${weekNumber}`; }
+
+  /**
+   * Returns the textual representation of a year that is rendered
+   * in date picker year select box
+   */
+  getYearNumerals(year: number): string { return `${year}`; }
 }
 
 @Injectable()
