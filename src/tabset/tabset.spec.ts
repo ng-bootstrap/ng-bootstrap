@@ -328,6 +328,18 @@ describe('ngb-tabset', () => {
     expect(fixture.nativeElement.querySelector('ul')).not.toHaveCssClass('nav-tabs');
   });
 
+  it('should allow arbitrary nav type', () => {
+    const fixture = createTestComponent(`
+         <ngb-tabset type="bordered">
+           <ngb-tab title="bar"><ng-template ngbTabContent>Bar</ng-template></ngb-tab>
+         </ngb-tabset>
+       `);
+
+    expect(fixture.nativeElement.querySelector('ul')).toHaveCssClass('nav-bordered');
+    expect(fixture.nativeElement.querySelector('ul')).not.toHaveCssClass('nav-pills');
+    expect(fixture.nativeElement.querySelector('ul')).not.toHaveCssClass('nav-tabs');
+  });
+
   it('should have the "justify-content-start" class by default', () => {
     const fixture = createTestComponent(`
          <ngb-tabset>
