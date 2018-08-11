@@ -284,27 +284,15 @@ ngb-datepicker.rtl {
 ngb-datepicker.rtl ngb-datepicker-navigation-select select.custom-select {
   background-position: left 0.25rem center;
 }
-// Useful to modify this to flex-start for multiple calendar only
-ngb-datepicker.rtl .ngb-dp-arrow.right {
-  justify-content: center;
-}
-// Useful to modify this to flex-end for multiple calendar only
-ngb-datepicker.rtl .ngb-dp-arrow {
-  justify-content: center;
-}
 
-ngb-datepicker.rtl .ngb-dp-arrow-btn {
-  padding: 0;
-}
-
-ngb-datepicker.rtl .ngb-dp-arrow.right .ngb-dp-navigation-chevron:before {
+ngb-datepicker.rtl .ngb-dp-arrow.right .ngb-dp-navigation-chevron {
   transform: rotate(-135deg);
-  margin: 0 0 0 0.5rem;
+  margin: 0 0 0 0.25rem;
 }
 
-ngb-datepicker.rtl .ngb-dp-navigation-chevron::before {
+ngb-datepicker.rtl .ngb-dp-navigation-chevron {
   transform: rotate(45deg);
-  margin: 0 0.5rem 0 0;
+  margin: 0 0.25rem 0 0;
 }
 
 ngb-carousel {
