@@ -1,3 +1,75 @@
+<a name="3.0.0"></a>
+# [3.0.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/3.0.0-beta.1...3.0.0) (2018-08-13)
+
+ng-bootstrap 3.0.0 requires Angular version `^6.1.0` and is delivered in Angular Package Format (APF) v6.0 (https://goo.gl/jB3GVv) using @angular/cli 6.
+
+### Bug Fixes
+
+* **accordion:** correct "collapsed" CSS class usage ([25b5bee](https://github.com/ng-bootstrap/ng-bootstrap/commit/25b5bee)), closes [#2553](https://github.com/ng-bootstrap/ng-bootstrap/issues/2553) [#2555](https://github.com/ng-bootstrap/ng-bootstrap/issues/2555)
+* **accordion:** the markup should follow the boostrap one ([8ddc363](https://github.com/ng-bootstrap/ng-bootstrap/commit/8ddc363)), closes [#2511](https://github.com/ng-bootstrap/ng-bootstrap/issues/2511)
+* **carousel:** make it work inside the 'OnPush' components ([827dfcb](https://github.com/ng-bootstrap/ng-bootstrap/commit/827dfcb)), closes [#2597](https://github.com/ng-bootstrap/ng-bootstrap/issues/2597) [#2599](https://github.com/ng-bootstrap/ng-bootstrap/issues/2599)
+* **datepicker:** correctly override year numerals for multiple months ([#2596](https://github.com/ng-bootstrap/ng-bootstrap/issues/2596)) ([bc540e9](https://github.com/ng-bootstrap/ng-bootstrap/commit/bc540e9))
+* **demo:** missing / in bootstrap href link ([42b1470](https://github.com/ng-bootstrap/ng-bootstrap/commit/42b1470)), closes [#2584](https://github.com/ng-bootstrap/ng-bootstrap/issues/2584) [#2586](https://github.com/ng-bootstrap/ng-bootstrap/issues/2586)
+* **dropdown:** close dropdown correctly inside the OnPush component ([a2dea82](https://github.com/ng-bootstrap/ng-bootstrap/commit/a2dea82)), closes [#2561](https://github.com/ng-bootstrap/ng-bootstrap/issues/2561) [#2559](https://github.com/ng-bootstrap/ng-bootstrap/issues/2559)
+* **dropdown:** remove global document click listener ([d80204c](https://github.com/ng-bootstrap/ng-bootstrap/commit/d80204c)), closes [#900](https://github.com/ng-bootstrap/ng-bootstrap/issues/900) [#2518](https://github.com/ng-bootstrap/ng-bootstrap/issues/2518)
+* **modal:** adjust modal background to avoid shifting ([2871316](https://github.com/ng-bootstrap/ng-bootstrap/commit/2871316)), closes [#641](https://github.com/ng-bootstrap/ng-bootstrap/issues/641) [#2508](https://github.com/ng-bootstrap/ng-bootstrap/issues/2508)
+* **modal:** use correct ComponentFactoryResolver ([8d72f37](https://github.com/ng-bootstrap/ng-bootstrap/commit/8d72f37)), closes [#2588](https://github.com/ng-bootstrap/ng-bootstrap/issues/2588)
+* **typeahead:** don't fail when user returns falsy results ([de613ae](https://github.com/ng-bootstrap/ng-bootstrap/commit/de613ae)), closes [#2530](https://github.com/ng-bootstrap/ng-bootstrap/issues/2530) [#2550](https://github.com/ng-bootstrap/ng-bootstrap/issues/2550)
+
+
+### Chores
+
+* bump minimal required version of Angular to 6.1 ([335598c](https://github.com/ng-bootstrap/ng-bootstrap/commit/335598c)), closes [#2548](https://github.com/ng-bootstrap/ng-bootstrap/issues/2548)
+
+
+### Code Refactoring
+
+* **alert:** remove intermediate 'div' element ([c9c463d](https://github.com/ng-bootstrap/ng-bootstrap/commit/c9c463d)), closes [#2544](https://github.com/ng-bootstrap/ng-bootstrap/issues/2544) [#2552](https://github.com/ng-bootstrap/ng-bootstrap/issues/2552)
+
+
+### Features
+
+* **datepicker:** allow overriding day, week number and year numerals ([91c04e9](https://github.com/ng-bootstrap/ng-bootstrap/commit/91c04e9)), closes [#2593](https://github.com/ng-bootstrap/ng-bootstrap/issues/2593)
+* **datepicker:** close popup on outside click ([347f0ff](https://github.com/ng-bootstrap/ng-bootstrap/commit/347f0ff)), closes [#2558](https://github.com/ng-bootstrap/ng-bootstrap/issues/2558)
+* **datepicker:** initial version of Jalali calendar ([e465fa6](https://github.com/ng-bootstrap/ng-bootstrap/commit/e465fa6))
+* **datepicker:** make 'NgbDate' part of a public API ([122f93f](https://github.com/ng-bootstrap/ng-bootstrap/commit/122f93f)), closes [#2540](https://github.com/ng-bootstrap/ng-bootstrap/issues/2540)
+* **popover:** autoclose ([6e2340d](https://github.com/ng-bootstrap/ng-bootstrap/commit/6e2340d)), closes [#933](https://github.com/ng-bootstrap/ng-bootstrap/issues/933) [#2554](https://github.com/ng-bootstrap/ng-bootstrap/issues/2554)
+* **tabset:** allow arbitrary nav type ([#2592](https://github.com/ng-bootstrap/ng-bootstrap/issues/2592)) ([1e68401](https://github.com/ng-bootstrap/ng-bootstrap/commit/1e68401)), closes [#1661](https://github.com/ng-bootstrap/ng-bootstrap/issues/1661)
+* **tooltip:** autoclose ([fa765a8](https://github.com/ng-bootstrap/ng-bootstrap/commit/fa765a8)), closes [#2571](https://github.com/ng-bootstrap/ng-bootstrap/issues/2571)
+
+
+### BREAKING CHANGES
+
+* for ng-bootstrap 3.0.0 minimal required version of Angular is 6.1.0
+* The library is now delivered in Angular Package Format (APF) v6.0 (https://goo.gl/jB3GVv) using @angular/cli 6.
+
+One notable change is that delivered UMD bundle is now located in 'bundles/ng-bootstrap.umd.js' instead of 'bundles/ng-bootstrap.js'.
+
+Also ES5 code is now delivered as a flat version by default, so 'module' in the 'package.json' is now poining to 'fesm5/ng-bootstrap.js' and not 'index.js'.
+You can still find all the ES5 code in the 'esm5' folder if necessary.
+
+Please examine the contents of the delivered package, if you have a custom build configuration.
+* **alert:** markup generated by `<ngb-alert>` was simplified, there is no more intermediate `<div>` element
+
+Before:
+```
+<ngb-alert>
+  <div role="alert" class="alert alert-warning">
+    Hello there
+  </div>
+</ngb-alert>
+```
+
+After:
+```
+<ngb-alert role="alert" class="alert alert-warning">
+  Hello there
+</ngb-alert>
+```
+
+
+
+
 <a name="2.2.2"></a>
 ## [2.2.2](https://github.com/ng-bootstrap/ng-bootstrap/compare/2.2.1...2.2.2) (2018-08-03)
 
