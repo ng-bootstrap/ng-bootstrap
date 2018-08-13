@@ -6,4 +6,4 @@ import {Component} from '@angular/core';
   selector: 'ngbd-tooltip-autoclose',
   templateUrl: './tooltip-autoclose.html'
 })
-export class NgbdTooltipAutoClose {}
+export class NgbdTooltipAutoclose {}
