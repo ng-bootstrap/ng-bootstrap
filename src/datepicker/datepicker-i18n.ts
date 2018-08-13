@@ -37,17 +37,23 @@ export abstract class NgbDatepickerI18n {
 
   /**
    * Returns the textual representation of a day that is rendered in a day cell
+   *
+   * @since 3.0.0
    */
   getDayNumerals(date: NgbDateStruct): string { return `${date.day}`; }
 
   /**
    * Returns the textual representation of a week number rendered by date picker
+   *
+   * @since 3.0.0
    */
   getWeekNumerals(weekNumber: number): string { return `${weekNumber}`; }
 
   /**
    * Returns the textual representation of a year that is rendered
    * in date picker year select box
+   *
+   * @since 3.0.0
    */
   getYearNumerals(year: number): string { return `${year}`; }
 }
