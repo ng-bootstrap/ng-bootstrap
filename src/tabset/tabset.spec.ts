@@ -197,6 +197,16 @@ describe('ngb-tabset', () => {
     expect(childTitle).not.toContain('parent');
   });
 
+  it('should use the provided href on the tab title', () => {
+    const fixture = createTestComponent(`
+      <ngb-tabset>
+        <ngb-tab title="foo" href="/my-href"><ng-template ngbTabContent>Foo</ng-template></ngb-tab>
+        <ngb-tab title="bar"><ng-template ngbTabContent>Bar</ng-template></ngb-tab>
+      </ngb-tabset>
+    `);
+    const titles = getTabTitles(fixture.nativeElement);
+    expect(titles[0].getAttribute('href')).toBe('/my-href');
+  });
 
   it('should not crash for empty tabsets', () => {
     const fixture = createTestComponent(`<ngb-tabset activeId="2"></ngb-tabset>`);

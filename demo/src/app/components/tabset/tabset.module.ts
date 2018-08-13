@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 
 import { NgbdSharedModule } from '../../shared';
+import { NgbTabsetRoutingModule } from '@ng-bootstrap/ng-bootstrap/tabset/routing';
 import { ComponentWrapper } from '../../shared/component-wrapper/component-wrapper.component';
 import { NgbdComponentsSharedModule, NgbdDemoList } from '../shared';
 import { NgbdApiPage } from '../shared/api-page/api.component';
@@ -11,12 +12,14 @@ import { NgbdTabsetJustify } from './demos/justify/tabset-justify';
 import { NgbdTabsetOrientation } from './demos/orientation/tabset-orientation';
 import { NgbdTabsetPills } from './demos/pills/tabset-pills';
 import { NgbdTabsetPreventchange } from './demos/preventchange/tabset-preventchange';
+import { NgbdTabsetRouter } from './demos/router/tabset-router';
 import { NgbdTabsetSelectbyid } from './demos/selectbyid/tabset-selectbyid';
 
 const DEMO_DIRECTIVES = [
   NgbdTabsetBasic,
   NgbdTabsetPills,
   NgbdTabsetPreventchange,
+  NgbdTabsetRouter,
   NgbdTabsetSelectbyid,
   NgbdTabsetConfig,
   NgbdTabsetJustify,
@@ -60,6 +63,12 @@ const DEMOS = {
     code: require('!!raw-loader!./demos/orientation/tabset-orientation'),
     markup: require('!!raw-loader!./demos/orientation/tabset-orientation.html')
   },
+  router: {
+    title: 'Router',
+    type: NgbdTabsetRouter,
+    code: require('!!raw-loader!./demos/router/tabset-router'),
+    markup: require('!!raw-loader!./demos/router/tabset-router.html')
+  },
   config: {
     title: 'Global configuration of tabs',
     type: NgbdTabsetConfig,
@@ -74,7 +83,14 @@ export const ROUTES = [
     path: '',
     component: ComponentWrapper,
     children: [
-      { path: 'examples', component: NgbdExamplesPage },
+      {
+        path: 'examples',
+        component: NgbdExamplesPage, children: [
+          {path: 'firstTab', children: []},
+          {path: 'secondTab', children: []},
+          {path: 'thirdTab', children: []}
+        ]
+      },
       { path: 'api', component: NgbdApiPage }
     ]
   }
@@ -83,7 +99,8 @@ export const ROUTES = [
 @NgModule({
   imports: [
     NgbdSharedModule,
-    NgbdComponentsSharedModule
+    NgbdComponentsSharedModule,
+    NgbTabsetRoutingModule
   ],
   declarations: DEMO_DIRECTIVES,
   entryComponents: DEMO_DIRECTIVES

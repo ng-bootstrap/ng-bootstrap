@@ -1,0 +1,31 @@
+<p>In order to easily synchronize the <code>&lt;ngb-tabset&gt;</code> with the Angular router, some directives are provided in the
+  <code>NgbTabsetRoutingModule</code> module, which is not in the main entry point of ng-bootstrap (to avoid adding a general dependency
+  on the Angular router).</p>
+<p>The <code>NgbTabsetRoutingModule</code> module has to be imported from <code>'@ng-bootstrap/ng-bootstrap/tabset/routing'</code>.</p>
+<p>All child <code>&lt;ngb-tab&gt;</code> elements must be linked with a route using the standard
+  <a href="https://angular.io/api/router/RouterLink#description">routerLink</a> directive.</p>
+<p>The corresponding routes have to be defined in the configuration of the Angular router.</p>
+<p>The <code>&lt;ngb-tabset&gt;</code> should only be used on those configured routes. If no child <code>&lt;ngb-tab&gt;</code> element matches,
+  the <code>&lt;ngb-tabset&gt;</code> will not change the active tab (and if there is no active tab, the default behavior of the normal
+  <code>&lt;ngb-tabset&gt;</code> component is to select the first tab).</p>
+<p>The content of the tabs can be defined either in the corresponding <code>&lt;ng-template ngbTabContent&gt;</code> elements, or as the
+component property defined in the router configuration (if the <code>&lt;router-outlet&gt;</code> element is included in the page).</p>
+
+<ngb-tabset routerControlled>
+  <ngb-tab title="First" routerLink="firstTab" fragment="router">
+    <ng-template ngbTabContent>
+      First content
+    </ng-template>
+  </ngb-tab>
+  <ngb-tab title="Second" routerLink="secondTab" fragment="router">
+    <ng-template ngbTabContent>
+      Second content
+    </ng-template>
+  </ngb-tab>
+  <ngb-tab routerLink="thirdTab" fragment="router">
+    <ng-template ngbTabTitle>Third</ng-template>
+    <ng-template ngbTabContent>
+      Third content
+    </ng-template>
+  </ngb-tab>
+</ngb-tabset>

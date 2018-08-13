@@ -5,7 +5,10 @@
     "types": [
       "jasmine",
       "node"
-    ]
+    ],
+    "paths": {
+      "@ng-bootstrap/ng-bootstrap": ["src/index"]
+    }
   },
   "files": [
     "./test.ts"
