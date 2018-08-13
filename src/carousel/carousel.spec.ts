@@ -2,7 +2,7 @@ import {fakeAsync, discardPeriodicTasks, tick, TestBed, ComponentFixture, inject
 import {createGenericTestComponent} from '../test/common';
 
 import {By} from '@angular/platform-browser';
-import {Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 
 import {NgbCarouselModule} from './carousel.module';
 import {NgbCarousel, NgbSlideEvent, NgbSlideEventDirection} from './carousel';
@@ -31,12 +31,13 @@ function expectActiveSlides(nativeEl: HTMLDivElement, active: boolean[]) {
 
 describe('ngb-carousel', () => {
   beforeEach(() => {
-    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbCarouselModule.forRoot()]});
+    TestBed.configureTestingModule(
+        {declarations: [TestComponent, TestComponentOnPush], imports: [NgbCarouselModule.forRoot()]});
   });
 
   it('should initialize inputs with default values', () => {
     const defaultConfig = new NgbCarouselConfig();
-    const carousel = new NgbCarousel(new NgbCarouselConfig(), null, null);
+    const carousel = new NgbCarousel(new NgbCarouselConfig(), null, null, null);
 
     expect(carousel.interval).toBe(defaultConfig.interval);
     expect(carousel.wrap).toBe(defaultConfig.wrap);
@@ -240,6 +241,18 @@ describe('ngb-carousel', () => {
     `;
 
        const fixture = createTestComponent(html);
+
+       expectActiveSlides(fixture.nativeElement, [true, false]);
+
+       tick(6000);
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [false, true]);
+
+       discardPeriodicTasks();
+     }));
+
+  it('should change slide on time passage in OnPush component (default interval value)', fakeAsync(() => {
+       const fixture = createTestComponent('<test-cmp-on-push></test-cmp-on-push>');
 
        expectActiveSlides(fixture.nativeElement, [true, false]);
 
@@ -626,4 +639,17 @@ class TestComponent {
   showNavigationArrows = true;
   showNavigationIndicators = true;
   carouselSlideCallBack = (event: NgbSlideEvent) => {};
+}
+
+@Component({
+  selector: 'test-cmp-on-push',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <ngb-carousel>
+      <ng-template ngbSlide>foo</ng-template>
+      <ng-template ngbSlide>bar</ng-template>
+    </ngb-carousel>
+  `
+})
+class TestComponentOnPush {
 }
