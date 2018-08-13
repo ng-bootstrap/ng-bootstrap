@@ -1,6 +1,8 @@
 import {
   AfterContentChecked,
   AfterContentInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ContentChildren,
   Directive,
@@ -43,6 +45,7 @@ export class NgbSlide {
 @Component({
   selector: 'ngb-carousel',
   exportAs: 'ngbCarousel',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     'class': 'carousel slide',
     '[style.display]': '"block"',
@@ -124,7 +127,9 @@ export class NgbCarousel implements AfterContentChecked,
    */
   @Output() slide = new EventEmitter<NgbSlideEvent>();
 
-  constructor(config: NgbCarouselConfig, @Inject(PLATFORM_ID) private _platformId, private _ngZone: NgZone) {
+  constructor(
+      config: NgbCarouselConfig, @Inject(PLATFORM_ID) private _platformId, private _ngZone: NgZone,
+      private _cd: ChangeDetectorRef) {
     this.interval = config.interval;
     this.wrap = config.wrap;
     this.keyboard = config.keyboard;
@@ -142,7 +147,10 @@ export class NgbCarousel implements AfterContentChecked,
             .pipe(
                 map(() => this.interval), filter(interval => interval > 0),
                 switchMap(interval => timer(interval).pipe(takeUntil(this._stop$))))
-            .subscribe(() => this._ngZone.run(() => this.next()));
+            .subscribe(() => this._ngZone.run(() => {
+              this.next();
+              this._cd.detectChanges();
+            }));
 
         this._start$.next();
       });
