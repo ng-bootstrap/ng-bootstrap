@@ -13,13 +13,18 @@ const ENTRY_CMPTS = {
   modal: ['component']
 };
 
-function generateAppTsContent(componentName, demoName) {
+function generateAppTsContent(componentName, demoName, filePath) {
   const demoClassName = `Ngbd${capitalize(componentName)}${capitalize(demoName)}`;
   const demoImport = `./${componentName}-${demoName}`;
   const demoSelector = `ngbd-${componentName}-${demoName}`;
   const needsEntryCmpt = ENTRY_CMPTS.hasOwnProperty(componentName) && ENTRY_CMPTS[componentName].indexOf(demoName) > -1;
   const entryCmptClass =  needsEntryCmpt ? `Ngbd${capitalize(componentName)}Content` : null;
   const demoImports = needsEntryCmpt ? `${demoClassName}, ${entryCmptClass}` : demoClassName;
+
+  const file = fs.readFileSync(filePath).toString();
+  if (!file.includes(demoClassName)) {
+    throw new Error(`Expecting demo class name in ${filePath} to be '${demoClassName}' (note the case)`);
+  }
 
   return `
 import { Component, NgModule } from '@angular/core';
@@ -81,7 +86,7 @@ ${generateTags(['Angular', 'Bootstrap', 'ng-bootstrap', capitalize(componentName
     <input type="hidden" name="files[index.html]" value="${he.encode(generateIndexHtml())}">
     <input type="hidden" name="files[config.js]" value="${he.encode(generateConfigJs())}">
     <input type="hidden" name="files[src/main.ts]" value="${he.encode(contentMainTs)}">
-    <input type="hidden" name="files[src/app.ts]" value="${he.encode(generateAppTsContent(componentName, demoName))}">
+    <input type="hidden" name="files[src/app.ts]" value="${he.encode(generateAppTsContent(componentName, demoName, `${basePath}.ts`))}">
     <input type="hidden" name="files[src/${fileName}.ts]" value="${he.encode(codeContent.replace(`./${demoTplPath}`, `src/${demoTplPath}`))}">
     <input type="hidden" name="files[src/${fileName}.html]" value="${he.encode(markupContent)}">
   </form>

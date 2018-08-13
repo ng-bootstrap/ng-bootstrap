@@ -6,4 +6,4 @@ import {Component} from '@angular/core';
   selector: 'ngbd-popover-autoclose',
   templateUrl: './popover-autoclose.html'
 })
-export class NgbdPopoverAutoClose {}
+export class NgbdPopoverAutoclose {}

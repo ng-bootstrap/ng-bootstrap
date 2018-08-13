@@ -31,7 +31,7 @@ ${generateTags(['Angular', 'Bootstrap', 'ng-bootstrap', capitalize(componentName
     <input type="hidden" name="files[main.ts]" value="${he.encode(getStackblitzTemplate('main.ts'))}">
     <input type="hidden" name="files[polyfills.ts]" value="${he.encode(getStackblitzTemplate('polyfills.ts'))}">
     <input type="hidden" name="files[styles.css]" value="${he.encode(getStackblitzTemplate('styles.css'))}">
-    <input type="hidden" name="files[app/app.module.ts]" value="${he.encode(generateAppModuleTsContent(componentName, demoName))}">
+    <input type="hidden" name="files[app/app.module.ts]" value="${he.encode(generateAppModuleTsContent(componentName, demoName, `${basePath}.ts`))}">
     <input type="hidden" name="files[app/app.component.ts]" value="${he.encode(getStackblitzTemplate('app/app.component.ts'))}">
     <input type="hidden" name="files[app/app.component.html]" value="${he.encode(generateAppComponentHtmlContent(componentName, demoName))}">
     <input type="hidden" name="files[app/${fileName}.ts]" value="${he.encode(codeContent)}">
@@ -84,12 +84,17 @@ function generateAppComponentHtmlContent(componentName, demoName) {
 `;
 }
 
-function generateAppModuleTsContent(componentName, demoName) {
+function generateAppModuleTsContent(componentName, demoName, filePath) {
   const demoClassName = `Ngbd${capitalize(componentName)}${capitalize(demoName)}`;
   const demoImport = `./${componentName}-${demoName}`;
   const needsEntryCmpt = ENTRY_CMPTS.hasOwnProperty(componentName) && ENTRY_CMPTS[componentName].indexOf(demoName) > -1;
   const entryCmptClass =  needsEntryCmpt ? `Ngbd${capitalize(componentName)}Content` : null;
   const demoImports = needsEntryCmpt ? `${demoClassName}, ${entryCmptClass}` : demoClassName;
+
+  const file = fs.readFileSync(filePath).toString();
+  if (!file.includes(demoClassName)) {
+    throw new Error(`Expecting demo class name in ${filePath} to be '${demoClassName}' (note the case)`);
+  }
 
   return `
 import { NgModule } from '@angular/core';

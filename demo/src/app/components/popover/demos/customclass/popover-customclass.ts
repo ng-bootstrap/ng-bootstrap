@@ -1,8 +1,8 @@
 import {Component, ViewEncapsulation} from '@angular/core';
 
 @Component({
-  selector: 'ngbd-popover-custom-class',
-  templateUrl: './popover-custom-class.html',
+  selector: 'ngbd-popover-customclass',
+  templateUrl: './popover-customclass.html',
   encapsulation: ViewEncapsulation.None,
   styles: [`
     .my-custom-class {
@@ -14,5 +14,5 @@ import {Component, ViewEncapsulation} from '@angular/core';
     }
   `]
 })
-export class NgbdPopoverCustomClass {
+export class NgbdPopoverCustomclass {
 }
