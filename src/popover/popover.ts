@@ -118,6 +118,8 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
    * - 'inside': closes on inside clicks as well as Escape presses
    * - 'outside': closes on outside clicks (sometimes also achievable through triggers)
    * as well as Escape presses
+   *
+   * @since 3.0.0
    */
   @Input() autoClose: boolean | 'inside' | 'outside';
   /**
