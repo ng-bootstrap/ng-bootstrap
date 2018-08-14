@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512">
+  <defs>
+    <linearGradient id="a">
+      <stop offset="0" stop-color="#0143a3"/>
+      <stop offset="1" stop-color="#0273d4"/>
+    </linearGradient>
+    <linearGradient xlink:href="#a" id="b" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1.33396 0 0 1.33396 404.049 -265.9)" x1="-111" y1="967.862" x2="-110.5" y2="617.362"/>
+  </defs>
+  <path d="M255.71 558.533l207.07 81.226-20.02 272.853-185.907 113.26-187.05-114.404L50.356 640.33z" fill="url(#b)" fill-rule="evenodd" transform="translate(0 -540.362)"/>
+  <path d="M255.142 18.01l1.716 467.404 185.675-113.635 19.725-272.724z" fill-rule="evenodd" fill-opacity=".098"/>
+  <path d="M220.151 247.738v77.444h45.872q23.078 0 34.12-9.485 11.186-9.628 11.186-29.308 0-19.82-11.185-29.165-11.043-9.486-34.12-9.486H220.15zm0-86.93v63.71h42.333q20.953 0 31.147-7.786 10.336-7.929 10.336-24.069 0-15.998-10.336-23.927-10.194-7.928-31.147-7.928H220.15zm-28.6-23.503h73.056q32.705 0 50.403 13.592 17.697 13.592 17.697 38.651 0 19.397-9.06 30.865-9.062 11.468-26.618 14.3 21.096 4.53 32.705 18.971 11.751 14.3 11.751 35.82 0 28.316-19.255 43.749-19.254 15.432-54.791 15.432h-75.887v-211.38z" style="stroke:none;stroke-opacity:1" font-weight="400" font-size="40" font-family="sans-serif" letter-spacing="0" word-spacing="0" fill="#fff"/>
+</svg>

@@ -8,6 +8,13 @@ import {NgbModalRef} from './modal-ref';
  */
 export interface NgbModalOptions {
   /**
+   * Sets the aria attribute aria-labelledby to a modal window.
+   *
+   * @since 2.2.0
+   */
+  ariaLabelledBy?: string;
+
+  /**
    * Whether a backdrop element should be created for a given modal (true by default).
    * Alternatively, specify 'static' for a backdrop which doesn't close the modal on click.
    */
@@ -15,9 +22,10 @@ export interface NgbModalOptions {
 
   /**
    * Function called when a modal will be dismissed.
-   * If this function returns false, the modal is not dismissed.
+   * If this function returns false, the promise is resolved with false or the promise is rejected, the modal is not
+   * dismissed.
    */
-  beforeDismiss?: () => boolean;
+  beforeDismiss?: () => boolean | Promise<boolean>;
 
   /**
    * To center the modal vertically (false by default).
@@ -63,7 +71,7 @@ export interface NgbModalOptions {
  * A service to open modal windows. Creating a modal is straightforward: create a template and pass it as an argument to
  * the "open" method!
  */
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class NgbModal {
   constructor(
       private _moduleCFR: ComponentFactoryResolver, private _injector: Injector, private _modalStack: NgbModalStack) {}

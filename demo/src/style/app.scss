@@ -1,13 +1,124 @@
 // styles in src/style directory are applied to the whole page
 
-.navbar {
-  background: rgba(255,255,255,0.95);
+header.navbar {
+  background: linear-gradient(135deg, #0143a3, #0273d4);
 }
 
-.bd-booticon {
-  margin: 1.25rem;
-  width: 256px;
-  height: 256px;
+.masthead-followup {
+  img {
+    width: 64px;
+    height: 64px;
+  }
+}
+
+.footer {
+  padding: 3rem 0;
+  // margin-top: 3rem;
+  font-size: 85%;
+  // background-color: #f7f7f7;
+  text-align: left;
+
+  p {
+    margin-bottom: 0;
+  }
+
+  a {
+    font-weight: 500;
+    color: #55595c;
+  }
+}
+
+.social-buttons > iframe {
+  margin-left: 0.75rem;
+}
+
+.sidebar-collapsed {
+  margin-left: -15px;
+  margin-right: -15px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.sidebar {
+  position: sticky;
+  top: 1rem;
+}
+
+header.title {
+  margin-left: -15px;
+  margin-right: -15px;
+  position: relative;
+
+  .content-tabset {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    .nav-link {
+      border-style: solid;
+      border-width: 3px 1px 1px;
+      border-radius: 3px 3px 0 0;
+    }
+
+    .nav-link:not(.active):hover {
+      border-color: transparent;
+    }
+
+    .active {
+      border-top-color: #28a745;
+    }
+  }
+}
+
+.toc {
+  margin-left: -15px;
+  margin-right: -15px;
+
+  .toc-item {
+    .toc-link {
+      display: block;
+      padding: 0.25rem 1.5rem;
+      color: rgba(0, 0, 0, 0.65);
+    }
+
+    .nav > li > a {
+      font-size: 90%;
+
+      &:hover, &:focus {
+        text-decoration: none;
+        color:#0275d8;
+      }
+    }
+
+    .nav > li.active > a {
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.85);
+    }
+
+    &.active {
+      margin-top: 2rem;
+
+      > .toc-link {
+        font-weight: 500;
+        color: rgba(0, 0, 0, 0.85);
+      }
+    }
+  }
+}
+
+.contextual-nav .nav {
+  position: sticky;
+  top: 0;
+
+  a {
+    color: inherit;
+    font-size: 90%;
+    padding: .25rem 1rem;
+  }
+
+  a:hover {
+    color: #0275d8;
+  }
 }
 
 .deprecated {
@@ -19,143 +130,30 @@
     display: inline-block;
   }
 
-  td.label-cell code, p.signature, code.selector, code.export-as {
+  td.label-cell code,
+  p.signature,
+  code.selector,
+  code.export-as {
     text-decoration: line-through;
   }
 
-  .description, .meta, .lead {
+  .description,
+  .meta,
+  .lead {
     opacity: 0.5;
   }
 }
 
-.bd-masthead, .jumbotron {
-  background-color: #0143A3;
-  background: linear-gradient(135deg, #0143A3, #0273D4);
-}
 
-.bd-masthead {
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-  margin-bottom: 4rem;
-  text-align: center;
-  color: #efefef;
-
-  .lead {
-    margin-right: auto;
-    margin-bottom: 2rem;
-    margin-left: auto;
-    width: 80%;
-    font-size: 2rem;
-    color: #fff;
-
-    a {
-      margin: 0 0.5rem;
-    }
-  }
-
-  .btn {
-    color: #fff;
-    border-color: #fff;
-    &:hover {
-      background-color: #f7f7f7;
-      color: #0273D4;
-    }
-  }
-}
-
-.jumbotron {
-  color: #fff;
-  border-radius: 0;
-}
-
-.github-buttons {
-
-  header & {
-    margin-bottom: 0;
-    margin-top: 4px;
-    padding-left: 0;
-  }
-
-  ngbd-default & {
-    text-align: center;
-    margin-top: 2rem;
-  }
-
-  > iframe, > a {
-    margin-left: 0.5rem;
-  }
-}
-
-@media (min-width: 768px) {
-  .bd-sidebar {
-    padding-left: 1rem;
-
-    display: inline-block;
-    position: -webkit-sticky;
-    position: sticky;
-    top: 1rem;
-  }
-}
-
-.bd-toc-link {
-  display: block;
-  padding: .25rem .75rem;
-  color: #55595c;
-}
-
-.bd-toc-link:focus,
-.bd-toc-link:hover {
-  color: #0275d8;
-  text-decoration: none;
-}
-
-.active > .bd-toc-link {
-  font-weight: 500;
-  color: #373a3c;
-}
-
-.bd-toc-item.active {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-}
-
-.bd-toc-item:first-child {
-  margin-top: 0;
-}
-
-.bd-toc-item:last-child {
-  margin-bottom: 2rem;
-}
-
-.bd-sidebar .nav > li > a {
-  display: block;
-  padding: .25rem .75rem;
-  font-size: 90%;
-  color: #99979c;
-}
-
-.bd-sidebar .nav > li > a:focus,
-.bd-sidebar .nav > li > a:hover {
-  color: #0275d8;
-  text-decoration: none;
-  background-color: transparent;
-}
-
-.bd-sidebar .nav > .active:focus > a,
-.bd-sidebar .nav > .active:hover > a,
-.bd-sidebar .nav > .active > a {
-  font-weight: 500;
-  color: #373a3c;
-  background-color: transparent;
-}
-
-div.api-doc-component {
+div.api-doc-component, [ngbdOverview] {
   margin-bottom: 3rem;
 
-  > h2, > h3 {
+  h2,
+  h3 {
     .github-link {
-      transition: opacity .5s;
-      opacity: .3;
+      transition: opacity 0.5s;
+      opacity: 0.3;
+      margin-left: .5rem;
     }
 
     &:hover {
@@ -168,7 +166,7 @@ div.api-doc-component {
     }
   }
 
-  section {
+  section, ngbd-overview-section {
     margin-top: 3rem;
     h4 {
       margin-top: 2rem;
@@ -176,10 +174,10 @@ div.api-doc-component {
     }
 
     .meta {
-      font-size: .8rem;
+      font-size: 0.8rem;
       margin-bottom: 1rem;
       > div {
-        margin-bottom: .5rem;
+        margin-bottom: 0.5rem;
       }
     }
   }
@@ -204,14 +202,16 @@ div.component-demo {
   h2 {
     margin-bottom: 1rem;
 
-    .plunker, .stackblitz {
+    .plunker,
+    .stackblitz {
       text-decoration: none;
       opacity: 0.3;
-      transition: opacity .5s;
+      transition: opacity 0.5s;
       margin-left: 0.3rem;
     }
     &:hover {
-      .plunker, .stackblitz {
+      .plunker,
+      .stackblitz {
         opacity: 1;
       }
       & > .title-fragment {
@@ -223,7 +223,7 @@ div.component-demo {
   .tabset-code {
     .nav {
       margin: 0;
-      padding: .5rem 1.25rem 0;
+      padding: 0.5rem 1.25rem 0;
       font-size: 80%;
 
       .nav-link.active {
@@ -253,24 +253,9 @@ div.component-demo {
   font-size: 80%;
 }
 
-.bd-footer {
-  padding: 3rem 0;
-  margin-top: 3rem;
-  font-size: 85%;
-  background-color: #f7f7f7;
-  text-align: left;
-
-  p {
-    margin-bottom: 0;
-  }
-
-  a {
-    font-weight: 500;
-    color: #55595c;
-  }
-}
-
-ngbd-api-docs, ngbd-api-docs-class, ngbd-api-docs-config {
+ngbd-api-docs,
+ngbd-api-docs-class,
+ngbd-api-docs-config {
   display: block;
 
   &:not(:first-child) {
@@ -280,11 +265,9 @@ ngbd-api-docs, ngbd-api-docs-class, ngbd-api-docs-config {
   }
 }
 
-
-
 // override prism theme background color to inline it with bootstrap colors
-code[class*="language-"],
-pre[class*="language-"] {
+code[class*='language-'],
+pre[class*='language-'] {
   background-color: #f5f5f5; // same as bootstrap card header
 }
 
@@ -293,86 +276,27 @@ span.token.tag {
   padding: 0;
 }
 
-ngbd-component-wrapper, ngbd-page-wrapper {
-  .jumbotron {
-    border-radius: 0;
-  }
-}
-
-.root-nav {
-  $offset: 73px;
-  > .nav-tabs {
-    transform: translateY(-$offset);
-
-    .nav-link:not(.active) {
-      color: #f9f9f9;
-    }
-
-    .nav-link:not(.active):hover {
-      background-color: rgba(255,255,255, 0.15);
-      border-color: rgba(255,255,255, 0.15);
-    }
-  }
-
-  > .tab-content {
-    transform: translateY(-$offset / 2);
-  }
-}
-
-@mixin center-nav-tab-on-small-screens() {
-  .jumbotron > .container {
-    margin-bottom: 2rem;
-    h1 {
-      text-align: center;
-    }
-  }
-
-  .root-nav {
-    ul {
-      justify-content: center !important;
-    }
-  }
-}
-
-@media (max-width: 768px) and (orientation:portrait) {
-  @include center-nav-tab-on-small-screens();
-}
-
-@media (max-width: 568px) and (max-height: 320px)  {
-  @include center-nav-tab-on-small-screens();
-}
-
 // Right-To-Left layout for the Islamic Calendars
 ngb-datepicker.rtl {
-	direction: rtl;
+  direction: rtl;
 }
 
 ngb-datepicker.rtl ngb-datepicker-navigation-select select.custom-select {
   background-position: left 0.25rem center;
 }
-// Useful to modify this to flex-start for multiple calendar only
-ngb-datepicker.rtl .ngb-dp-arrow.right {
-  justify-content: center;
-}
-// Useful to modify this to flex-end for multiple calendar only
-ngb-datepicker.rtl .ngb-dp-arrow {
-  justify-content: center;
-}
 
-ngb-datepicker.rtl .ngb-dp-arrow-btn {
-  padding: 0;
-}
-
-ngb-datepicker.rtl .ngb-dp-arrow.right .ngb-dp-navigation-chevron:before {
+ngb-datepicker.rtl .ngb-dp-arrow.right .ngb-dp-navigation-chevron {
   transform: rotate(-135deg);
-  -webkit-transform: rotate(-135deg);
-  -ms-transform: rotate(-135deg);
-  margin: 0 0 0 0.5rem;
+  margin: 0 0 0 0.25rem;
 }
 
-ngb-datepicker.rtl .ngb-dp-navigation-chevron::before {
+ngb-datepicker.rtl .ngb-dp-navigation-chevron {
   transform: rotate(45deg);
-  -webkit-transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
-  margin: 0 0.5rem 0 0;
+  margin: 0 0.25rem 0 0;
+}
+
+ngb-carousel {
+  .carousel-item img {
+    width: 100%;
+  }
 }

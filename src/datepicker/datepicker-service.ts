@@ -33,6 +33,7 @@ export class NgbDatepickerService {
     focusVisible: false,
     months: [],
     navigation: 'select',
+    outsideDays: 'visible',
     prevDisabled: false,
     nextDisabled: false,
     selectBoxes: {years: [], months: []},
@@ -69,7 +70,7 @@ export class NgbDatepickerService {
     }
   }
 
-  set maxDate(date: NgbDateStruct) {
+  set maxDate(date: NgbDate) {
     const maxDate = this.toValidDate(date, null);
     if (isChangedDate(this._state.maxDate, maxDate)) {
       this._nextState({maxDate});
@@ -82,7 +83,7 @@ export class NgbDatepickerService {
     }
   }
 
-  set minDate(date: NgbDateStruct) {
+  set minDate(date: NgbDate) {
     const minDate = this.toValidDate(date, null);
     if (isChangedDate(this._state.minDate, minDate)) {
       this._nextState({minDate});
@@ -92,6 +93,12 @@ export class NgbDatepickerService {
   set navigation(navigation: 'select' | 'arrows' | 'none') {
     if (this._state.navigation !== navigation) {
       this._nextState({navigation});
+    }
+  }
+
+  set outsideDays(outsideDays: 'visible' | 'collapsed' | 'hidden') {
+    if (this._state.outsideDays !== outsideDays) {
+      this._nextState({outsideDays});
     }
   }
 
@@ -133,7 +140,7 @@ export class NgbDatepickerService {
     }
   }
 
-  toValidDate(date: {year: number, month: number, day?: number}, defaultValue?: NgbDate): NgbDate {
+  toValidDate(date: NgbDateStruct, defaultValue?: NgbDate): NgbDate {
     const ngbDate = NgbDate.from(date);
     if (defaultValue === undefined) {
       defaultValue = this._calendar.getToday();
@@ -149,25 +156,34 @@ export class NgbDatepickerService {
   }
 
   private _patchContexts(state: DatepickerViewModel) {
+    const {months, displayMonths, selectedDate, focusDate, focusVisible, disabled, outsideDays} = state;
     state.months.forEach(month => {
       month.weeks.forEach(week => {
         week.days.forEach(day => {
 
           // patch focus flag
-          if (state.focusDate) {
-            day.context.focused = state.focusDate.equals(day.date) && state.focusVisible;
+          if (focusDate) {
+            day.context.focused = focusDate.equals(day.date) && focusVisible;
           }
 
-          day.tabindex =
-              (!state.disabled && day.date.equals(state.focusDate) && state.focusDate.month === month.number) ? 0 : -1;
+          // calculating tabindex
+          day.tabindex = !disabled && day.date.equals(focusDate) && focusDate.month === month.number ? 0 : -1;
+
           // override context disabled
-          if (state.disabled === true) {
+          if (disabled === true) {
             day.context.disabled = true;
           }
 
           // patch selection flag
-          if (state.selectedDate !== undefined) {
-            day.context.selected = state.selectedDate !== null && state.selectedDate.equals(day.date);
+          if (selectedDate !== undefined) {
+            day.context.selected = selectedDate !== null && selectedDate.equals(day.date);
+          }
+
+          // visibility
+          if (month.number !== day.date.month) {
+            day.hidden = outsideDays === 'hidden' || outsideDays === 'collapsed' ||
+                (displayMonths > 1 && day.date.after(months[0].firstDate) &&
+                 day.date.before(months[displayMonths - 1].lastDate));
           }
         });
       });
@@ -219,7 +235,7 @@ export class NgbDatepickerService {
     // rebuilding months
     if (startDate) {
       const forceRebuild = 'firstDayOfWeek' in patch || 'markDisabled' in patch || 'minDate' in patch ||
-          'maxDate' in patch || 'disabled' in patch;
+          'maxDate' in patch || 'disabled' in patch || 'outsideDays' in patch;
 
       const months = buildMonths(this._calendar, startDate, state, this._i18n, forceRebuild);
 
@@ -247,13 +263,13 @@ export class NgbDatepickerService {
       if (state.navigation === 'select') {
         // years ->  boundaries (min/max were changed)
         if ('minDate' in patch || 'maxDate' in patch || state.selectBoxes.years.length === 0 || yearChanged) {
-          state.selectBoxes.years = generateSelectBoxYears(state.focusDate, state.minDate, state.maxDate);
+          state.selectBoxes.years = generateSelectBoxYears(state.firstDate, state.minDate, state.maxDate);
         }
 
         // months -> when current year or boundaries change
         if ('minDate' in patch || 'maxDate' in patch || state.selectBoxes.months.length === 0 || yearChanged) {
           state.selectBoxes.months =
-              generateSelectBoxMonths(this._calendar, state.focusDate, state.minDate, state.maxDate);
+              generateSelectBoxMonths(this._calendar, state.firstDate, state.minDate, state.maxDate);
         }
       } else {
         state.selectBoxes = {years: [], months: []};

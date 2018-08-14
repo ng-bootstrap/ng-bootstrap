@@ -13,6 +13,7 @@ import {
 } from '@angular/core';
 
 import {ModalDismissReasons} from './modal-dismiss-reasons';
+import {ngbFocusTrap} from '../util/focus-trap';
 
 @Component({
   selector: 'ngb-modal-window',
@@ -21,7 +22,8 @@ import {ModalDismissReasons} from './modal-dismiss-reasons';
     'role': 'dialog',
     'tabindex': '-1',
     '(keyup.esc)': 'escKey($event)',
-    '(click)': 'backdropClick($event)'
+    '(click)': 'backdropClick($event)',
+    '[attr.aria-labelledby]': 'ariaLabelledBy',
   },
   template: `
     <div [class]="'modal-dialog' + (size ? ' modal-' + size : '') + (centered ? ' modal-dialog-centered' : '')" role="document">
@@ -34,6 +36,7 @@ export class NgbModalWindow implements OnInit,
   private _document: any;
   private _elWithFocus: Element;  // element that is focused prior to modal opening
 
+  @Input() ariaLabelledBy: string;
   @Input() backdrop: boolean | string = true;
   @Input() centered: string;
   @Input() keyboard = true;
@@ -42,8 +45,9 @@ export class NgbModalWindow implements OnInit,
 
   @Output('dismiss') dismissEvent = new EventEmitter();
 
-  constructor(@Inject(DOCUMENT) document, private _elRef: ElementRef, private _renderer: Renderer2) {
+  constructor(@Inject(DOCUMENT) document, private _elRef: ElementRef<HTMLElement>, private _renderer: Renderer2) {
     this._document = document;
+    ngbFocusTrap(this._elRef.nativeElement, this.dismissEvent);
   }
 
   backdropClick($event): void {

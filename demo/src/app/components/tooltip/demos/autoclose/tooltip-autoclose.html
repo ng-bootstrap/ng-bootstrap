@@ -1,0 +1,41 @@
+<p>As for some other popup-based widgets, you can set the tooltip to close automatically upon some events.</p>
+<p>In the following examples, they will all close on <code>Escape</code> as well as:</p>
+
+<ul>
+  <li>
+    click inside:
+    <button
+      type="button" class="btn btn-outline-secondary"
+      triggers="click" [autoClose]="'inside'" ngbTooltip="Click inside or press Escape to close"
+    >
+        Click to toggle
+    </button>
+  </li>
+
+  <li>
+    click outside:
+    <button
+      type="button" class="btn btn-outline-secondary"
+      triggers="click" [autoClose]="'outside'" ngbTooltip="Click outside or press Escape to close"
+    >
+      Click to toggle
+    </button>
+  </li>
+
+  <li>
+      all clicks:
+      <button
+        type="button" class="btn btn-outline-secondary"
+        triggers="click" [autoClose]="true" ngbTooltip="Click anywhere or press Escape to close (try the toggling element too)"
+        #tooltip3="ngbTooltip"
+      >
+          Click to toggle
+      </button>
+
+      &nbsp;
+
+      <button type="button" class="btn btn-outline-secondary mr-2" (click)="tooltip3.toggle()">
+        Click to toggle the external tooltip
+      </button>
+    </li>
+</ul>

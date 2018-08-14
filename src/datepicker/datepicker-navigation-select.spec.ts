@@ -11,9 +11,8 @@ import {NgbDate} from './ngb-date';
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
-function getOptionValues(element: HTMLSelectElement): string[] {
-  return Array.from(element.options).map(x => (x as HTMLOptionElement).value);
-}
+const getOptions = (element: HTMLSelectElement): HTMLOptionElement[] => Array.from(element.options);
+const getOptionValues = (element: HTMLSelectElement): string[] => getOptions(element).map(x => x.value);
 
 function changeSelect(element: HTMLSelectElement, value: string) {
   element.value = value;
@@ -102,12 +101,22 @@ describe('ngb-datepicker-navigation-select', () => {
     expect(getYearSelect(fixture.nativeElement).disabled).toBe(true);
   });
 
+  it('should have correct aria attributes on select boxes', () => {
+    const fixture =
+        createTestComponent(`<ngb-datepicker-navigation-select [date]="date" [months]="[7, 8, 9]" [years]="years">`);
+
+    getOptions(getMonthSelect(fixture.nativeElement)).forEach((option, index) => {
+      expect(option.getAttribute('aria-label')).toBe(fixture.componentInstance.ariaMonths[index]);
+    });
+  });
+
 });
 
 @Component({selector: 'test-cmp', template: ''})
 class TestComponent {
   date = new NgbDate(2016, 8, 22);
   months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  ariaMonths = ['July', 'August', 'September'];
   years = [2015, 2016, 2017];
 
   onSelect = () => {};

@@ -32,14 +32,18 @@ export {NgbCarouselModule, NgbCarouselConfig, NgbCarousel, NgbSlide} from './car
 export {NgbCollapseModule, NgbCollapse} from './collapse/collapse.module';
 export {
   NgbCalendar,
+  NgbPeriod,
   NgbCalendarIslamicCivil,
   NgbCalendarIslamicUmalqura,
+  NgbCalendarPersian,
   NgbDatepickerModule,
   NgbDatepickerI18n,
   NgbDatepickerConfig,
   NgbDateStruct,
+  NgbDate,
   NgbDateParserFormatter,
   NgbDateAdapter,
+  NgbDateNativeAdapter,
   NgbDatepicker,
   NgbInputDatepicker
 } from './datepicker/datepicker.module';
@@ -65,7 +69,13 @@ export {
   NgbTabContent,
   NgbTabTitle
 } from './tabset/tabset.module';
-export {NgbTimepickerModule, NgbTimepickerConfig, NgbTimeStruct, NgbTimepicker} from './timepicker/timepicker.module';
+export {
+  NgbTimepickerModule,
+  NgbTimepickerConfig,
+  NgbTimeStruct,
+  NgbTimepicker,
+  NgbTimeAdapter
+} from './timepicker/timepicker.module';
 export {NgbTooltipModule, NgbTooltipConfig, NgbTooltip} from './tooltip/tooltip.module';
 export {
   NgbHighlight,
@@ -83,20 +93,23 @@ const NGB_MODULES = [
   NgbTabsetModule, NgbTimepickerModule, NgbTooltipModule, NgbTypeaheadModule
 ];
 
-@NgModule({
-  imports: [
-    NgbAlertModule.forRoot(), NgbButtonsModule.forRoot(), NgbCollapseModule.forRoot(), NgbProgressbarModule.forRoot(),
-    NgbTooltipModule.forRoot(), NgbTypeaheadModule.forRoot(), NgbAccordionModule.forRoot(), NgbCarouselModule.forRoot(),
-    NgbDatepickerModule.forRoot(), NgbDropdownModule.forRoot(), NgbModalModule.forRoot(), NgbPaginationModule.forRoot(),
-    NgbPopoverModule.forRoot(), NgbProgressbarModule.forRoot(), NgbRatingModule.forRoot(), NgbTabsetModule.forRoot(),
-    NgbTimepickerModule.forRoot(), NgbTooltipModule.forRoot()
-  ],
-  exports: NGB_MODULES
-})
+/**
+ * NgbRootModule is no longer necessary, you can simply import NgbModule
+ * Will be removed in 4.0.0.
+ *
+ * @deprecated 3.0.0
+ */
+@NgModule({imports: [NGB_MODULES], exports: NGB_MODULES})
 export class NgbRootModule {
 }
 
 @NgModule({imports: NGB_MODULES, exports: NGB_MODULES})
 export class NgbModule {
+  /**
+   * Importing with '.forRoot()' is no longer necessary, you can simply import the module.
+   * Will be removed in 4.0.0.
+   *
+   * @deprecated 3.0.0
+   */
   static forRoot(): ModuleWithProviders { return {ngModule: NgbRootModule}; }
 }

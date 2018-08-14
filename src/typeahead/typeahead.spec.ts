@@ -5,14 +5,15 @@ import {expectResults, getWindowLinks} from '../test/typeahead/common';
 import {Component, DebugElement, ViewChild, ChangeDetectionStrategy} from '@angular/core';
 import {Validators, FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {By} from '@angular/platform-browser';
-import {Observable, Subject} from 'rxjs';
+import {Observable, Subject, merge} from 'rxjs';
 
 import {NgbTypeahead} from './typeahead';
 import {NgbTypeaheadModule} from './typeahead.module';
 import {NgbTypeaheadConfig} from './typeahead-config';
-import {debounceTime, filter, map, merge} from 'rxjs/operators';
+import {debounceTime, filter, map} from 'rxjs/operators';
 
 import {ARIA_LIVE_DELAY} from '../util/accessibility/live';
+import {Key} from '../util/key';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -22,14 +23,6 @@ const createOnPushTestComponent = (html: string) =>
 
 const createAsyncTestComponent = (html: string) =>
     createGenericTestComponent(html, TestAsyncComponent) as ComponentFixture<TestAsyncComponent>;
-
-enum Key {
-  Tab = 9,
-  Enter = 13,
-  Escape = 27,
-  ArrowUp = 38,
-  ArrowDown = 40
-}
 
 function createKeyDownEvent(key: number) {
   const event = {which: key, preventDefault: () => {}, stopPropagation: () => {}};
@@ -134,6 +127,33 @@ describe('ngb-typeahead', () => {
              })
              .then(() => { expectInputValue(el, 'TEXT'); });
        }));
+
+    it('should use custom input formatter with falsy values', async(() => {
+         const html = '<input [(ngModel)]="model" [ngbTypeahead]="findNothing" [inputFormatter]="uppercaseFormatter"/>';
+         const fixture = createTestComponent(html);
+         const el = fixture.nativeElement;
+         const comp = fixture.componentInstance;
+         expectInputValue(el, '');
+
+         comp.model = null;
+         fixture.detectChanges();
+         fixture.whenStable()
+             .then(() => {
+               expectInputValue(el, '');
+
+               comp.model = 0;
+               fixture.detectChanges();
+               return fixture.whenStable();
+             })
+             .then(() => {
+               expectInputValue(el, '0');
+
+               comp.model = false;
+               fixture.detectChanges();
+               return fixture.whenStable();
+             })
+             .then(() => { expectInputValue(el, 'FALSE'); });
+       }));
   });
 
   describe('window', () => {
@@ -172,6 +192,17 @@ describe('ngb-typeahead', () => {
       expect(getWindow(compiled)).toBeNull();
     });
 
+    it('should work when returning null as results', async(() => {
+         const fixture = createTestComponent(`<input type="text" [ngbTypeahead]="findNull"/>`);
+         const compiled = fixture.nativeElement;
+
+         fixture.whenStable().then(() => {
+           changeInput(compiled, 'one');
+           fixture.detectChanges();
+           expect(getWindow(compiled)).toBeNull();
+         });
+       }));
+
     it('should be closed on document click', () => {
       const fixture = createTestComponent(`<input type="text" [ngbTypeahead]="find"/>`);
       const compiled = fixture.nativeElement;
@@ -194,111 +225,6 @@ describe('ngb-typeahead', () => {
 
       getNativeInput(compiled).click();
       expect(getWindow(compiled)).not.toBeNull();
-    });
-
-    describe('open on focus and click', () => {
-      const createFixture = () => createTestComponent(`<input
-        type="text"
-        [ngbTypeahead]="find"
-        (focus)="focus$.next($event.target.value)"
-        (click)="click$.next($event.target.value)"
-      />`);
-
-      // on IE the focus & blur can be asynchronous, so we need to wait a bit before continuing
-      const delay = () => new Promise(resolve => setTimeout(resolve, 25));
-      const focus = async(input) => {
-        input.focus();
-        await delay();
-      };
-      const blur = async(input) => {
-        input.blur();
-        await delay();
-      };
-
-      it('should open on focus or click', async(async() => {
-           const fixture = createFixture();
-           const compiled = fixture.nativeElement;
-           const input = getNativeInput(compiled);
-
-           let searchCount = 0;
-           fixture.componentInstance.findOutput$.subscribe(() => searchCount++);
-           const checkSearchCount = (expected, context) => {
-             expect(searchCount).toBe(expected, `Search count is not correct: ${context}`);
-             searchCount = 0;
-           };
-
-           const checkWindowIsClosed = () => {
-             expect(getWindow(compiled)).toBeNull();
-             expect(fixture.componentInstance.model).toBe(undefined);
-             expect(input.value).toBe('');
-           };
-
-           const checkWindowIsOpen = () => { expect(getWindow(compiled)).not.toBeNull(); };
-
-           // focusing the input triggers a search and opens the dropdown
-           await focus(input);
-           checkSearchCount(1, 'on first focus');
-           checkWindowIsOpen();
-
-           // clicking again in the input while the dropdown is open doesn't trigger a new search and keeps the dropdown
-           // open
-           input.click();
-           checkSearchCount(0, 'on input click when dropdown already open');
-           checkWindowIsOpen();
-
-           // closing the dropdown but keeping focus
-           const event = createKeyDownEvent(Key.Escape);
-           getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
-           fixture.detectChanges();
-           checkWindowIsClosed();
-
-           // clicking again in the input while already focused but dropdown closed triggers a search and opens the
-           // dropdown
-           input.click();
-           checkSearchCount(1, 'on input click when input is already focused but dropdown is closed');
-           checkWindowIsOpen();
-
-           // closing the dropdown and losing focus
-           fixture.nativeElement.click();
-           await blur(input);
-           checkWindowIsClosed();
-
-           // Clicking directly, putting focus at the same time, triggers only one search and opens the dropdown
-           input.click();
-           checkSearchCount(1, 'on input focus specifically with a click');
-           checkWindowIsOpen();
-         }));
-
-      it('should preserve value previously selected with mouse when reopening with focus then closing without selection',
-         async(async() => {
-           const fixture = createFixture();
-           const compiled = fixture.nativeElement;
-           const input = getNativeInput(compiled);
-
-           await fixture.whenStable();
-           // open with partial input
-           changeInput(compiled, 'o');
-           fixture.detectChanges();
-           expect(getWindow(compiled)).not.toBeNull('Window should be opened after typing in the input');
-
-           // select with click
-           getWindowLinks(fixture.debugElement)[0].triggerEventHandler('click', {});
-           fixture.detectChanges();
-           expectInputValue(compiled, 'one');
-           expect(getWindow(compiled)).toBeNull('Window should be closed after selecting option with the mouse');
-
-           // open again but with focus
-           await blur(input);
-           await focus(input);
-           expect(getWindow(compiled)).not.toBeNull('Window should be opened after focusing back the input');
-
-           // close without selecting a new value
-           const event = createKeyDownEvent(Key.Escape);
-           getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
-           fixture.detectChanges();
-           expect(getWindow(compiled)).toBeNull('Window should be closed after pressing escape');
-           expectInputValue(compiled, 'one');
-         }));
     });
 
     it('should be closed when ESC is pressed', () => {
@@ -847,6 +773,14 @@ describe('ngb-typeahead', () => {
       expect(input.getAttribute('autocapitalize')).toBe('off');
       expect(input.getAttribute('autocorrect')).toBe('off');
     });
+
+    it('should have configurable autocomplete attribute', () => {
+      const fixture =
+          createTestComponent('<input type="text" [ngbTypeahead]="findObjects" autocomplete="ignored-123456"/>');
+      const input = getNativeInput(fixture.nativeElement);
+
+      expect(input.getAttribute('autocomplete')).toBe('ignored-123456');
+    });
   });
 
   describe('accessibility', () => {
@@ -1071,28 +1005,33 @@ class TestComponent {
   focus$ = new Subject<string>();
   click$ = new Subject<string>();
 
-  find = (text$: Observable<string>) => {
-    this.findOutput$ = text$.pipe(
-        merge(this.focus$), merge(this.click$.pipe(filter(() => !this.typeahead.isPopupOpen()))),
-        map(text => this._strings.filter(v => v.startsWith(text))));
-    return this.findOutput$;
-  };
+  find =
+      (text$: Observable<string>) => {
+        const clicks$ = this.click$.pipe(filter(() => !this.typeahead.isPopupOpen()));
+        this.findOutput$ =
+            merge(text$, this.focus$, clicks$).pipe(map(text => this._strings.filter(v => v.startsWith(text))));
+        return this.findOutput$;
+      }
 
-  findAnywhere = (text$: Observable<string>) => {
-    return text$.pipe(map(text => this._strings.filter(v => v.indexOf(text) > -1)));
-  };
+  findAnywhere =
+      (text$: Observable<string>) => {
+        return text$.pipe(map(text => this._strings.filter(v => v.indexOf(text) > -1)));
+      }
 
   findNothing = (text$: Observable<string>) => { return text$.pipe(map(text => [])); };
 
-  findObjects = (text$: Observable<string>) => {
-    return text$.pipe(map(text => this._objects.filter(v => v.value.startsWith(text))));
-  };
+  findNull = (text$: Observable<string>) => { return text$.pipe(map(text => null)); };
+
+  findObjects =
+      (text$: Observable<string>) => {
+        return text$.pipe(map(text => this._objects.filter(v => v.value.startsWith(text))));
+      }
 
   formatter = (obj: {id: number, value: string}) => { return `${obj.id} ${obj.value}`; };
 
-  uppercaseFormatter = s => s.toUpperCase();
+  uppercaseFormatter = s => `${s}`.toUpperCase();
 
-  uppercaseObjFormatter = (obj: {value: string}) => { return obj.value.toUpperCase(); };
+  uppercaseObjFormatter = (obj: {value: string}) => { return `${obj.value}`.toUpperCase(); };
 
 
   onSelect($event) { this.selectEventValue = $event; }
@@ -1104,7 +1043,7 @@ class TestOnPushComponent {
 
   find = (text$: Observable<string>) => {
     return text$.pipe(debounceTime(200), map(text => this._strings.filter(v => v.startsWith(text))));
-  };
+  }
 }
 
 @Component({selector: 'test-async-cmp', template: ''})
@@ -1113,5 +1052,5 @@ class TestAsyncComponent {
 
   find = (text$: Observable<string>) => {
     return text$.pipe(debounceTime(200), map(text => this._strings.filter(v => v.startsWith(text))));
-  };
+  }
 }

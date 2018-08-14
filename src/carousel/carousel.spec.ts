@@ -2,7 +2,7 @@ import {fakeAsync, discardPeriodicTasks, tick, TestBed, ComponentFixture, inject
 import {createGenericTestComponent} from '../test/common';
 
 import {By} from '@angular/platform-browser';
-import {Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 
 import {NgbCarouselModule} from './carousel.module';
 import {NgbCarousel, NgbSlideEvent, NgbSlideEventDirection} from './carousel';
@@ -31,16 +31,20 @@ function expectActiveSlides(nativeEl: HTMLDivElement, active: boolean[]) {
 
 describe('ngb-carousel', () => {
   beforeEach(() => {
-    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbCarouselModule.forRoot()]});
+    TestBed.configureTestingModule(
+        {declarations: [TestComponent, TestComponentOnPush], imports: [NgbCarouselModule.forRoot()]});
   });
 
   it('should initialize inputs with default values', () => {
     const defaultConfig = new NgbCarouselConfig();
-    const carousel = new NgbCarousel(new NgbCarouselConfig());
+    const carousel = new NgbCarousel(new NgbCarouselConfig(), null, null, null);
 
     expect(carousel.interval).toBe(defaultConfig.interval);
     expect(carousel.wrap).toBe(defaultConfig.wrap);
     expect(carousel.keyboard).toBe(defaultConfig.keyboard);
+    expect(carousel.pauseOnHover).toBe(defaultConfig.pauseOnHover);
+    expect(carousel.showNavigationIndicators).toBe(defaultConfig.showNavigationIndicators);
+    expect(carousel.showNavigationArrows).toBe(defaultConfig.showNavigationArrows);
   });
 
   it('should render slides and navigation indicators', fakeAsync(() => {
@@ -58,6 +62,7 @@ describe('ngb-carousel', () => {
        expect(slideElms[1].textContent).toMatch(/bar/);
 
        expect(fixture.nativeElement.querySelectorAll('ol.carousel-indicators > li').length).toBe(2);
+       expect(fixture.nativeElement.querySelectorAll('[role="button"]').length).toBe(2);
 
        discardPeriodicTasks();
      }));
@@ -246,6 +251,18 @@ describe('ngb-carousel', () => {
        discardPeriodicTasks();
      }));
 
+  it('should change slide on time passage in OnPush component (default interval value)', fakeAsync(() => {
+       const fixture = createTestComponent('<test-cmp-on-push></test-cmp-on-push>');
+
+       expectActiveSlides(fixture.nativeElement, [true, false]);
+
+       tick(6000);
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [false, true]);
+
+       discardPeriodicTasks();
+     }));
+
   it('should change slide on time passage (custom interval value)', fakeAsync(() => {
        const html = `
       <ngb-carousel [interval]="2000">
@@ -318,6 +335,50 @@ describe('ngb-carousel', () => {
        fixture.detectChanges();
        expectActiveSlides(fixture.nativeElement, [false, false, true]);
 
+       discardPeriodicTasks();
+     }));
+
+  it('should listen to mouse events based on pauseOnHover attribute', fakeAsync(() => {
+
+       const html = `
+    <ngb-carousel [pauseOnHover]="pauseOnHover">
+      <ng-template ngbSlide>foo</ng-template>
+      <ng-template ngbSlide>bar</ng-template>
+    </ngb-carousel>
+  `;
+
+       const fixture = createTestComponent(html);
+
+       const carouselDebugEl = fixture.debugElement.query(By.directive(NgbCarousel));
+
+       expectActiveSlides(fixture.nativeElement, [true, false]);
+
+       carouselDebugEl.triggerEventHandler('mouseenter', {});
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [true, false]);
+
+       tick(6000);
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [true, false]);
+
+       carouselDebugEl.triggerEventHandler('mouseleave', {});
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [true, false]);
+
+       tick(6000);
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [false, true]);
+
+       fixture.componentInstance.pauseOnHover = false;
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [false, true]);
+
+       carouselDebugEl.triggerEventHandler('mouseenter', {});
+       fixture.detectChanges();
+
+       tick(6000);
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [true, false]);
        discardPeriodicTasks();
      }));
 
@@ -471,6 +532,45 @@ describe('ngb-carousel', () => {
 
      }));
 
+  it('should render navigation indicators according to the flags', fakeAsync(() => {
+       const html = `
+    <ngb-carousel [showNavigationIndicators]="showNavigationIndicators">
+      <ng-template ngbSlide>foo</ng-template>
+    </ngb-carousel>
+  `;
+       const fixture = createTestComponent(html);
+
+       const slideElms = fixture.nativeElement.querySelectorAll('.carousel-item');
+       expect(slideElms.length).toBe(1);
+       expect(slideElms[0].textContent).toMatch(/foo/);
+       expect(fixture.nativeElement.querySelectorAll('ol.carousel-indicators > li').length).toBe(1);
+
+       fixture.componentInstance.showNavigationIndicators = false;
+       fixture.detectChanges();
+       expect(fixture.nativeElement.querySelectorAll('ol.carousel-indicators > li').length).toBe(0);
+
+       discardPeriodicTasks();
+     }));
+
+  it('should render navigation buttons according to the flags', fakeAsync(() => {
+       const html = `
+    <ngb-carousel [showNavigationArrows]="showNavigationArrows">
+      <ng-template ngbSlide>foo</ng-template>
+    </ngb-carousel>
+  `;
+       const fixture = createTestComponent(html);
+
+       const slideElms = fixture.nativeElement.querySelectorAll('.carousel-item');
+       expect(slideElms.length).toBe(1);
+       expect(fixture.nativeElement.querySelectorAll('[role="button"]').length).toBe(2);
+
+       fixture.componentInstance.showNavigationArrows = false;
+       fixture.detectChanges();
+       expect(fixture.nativeElement.querySelectorAll('[role="button"]').length).toBe(0);
+
+       discardPeriodicTasks();
+     }));
+
   describe('Custom config', () => {
     let config: NgbCarouselConfig;
 
@@ -481,6 +581,9 @@ describe('ngb-carousel', () => {
       config.interval = 1000;
       config.wrap = false;
       config.keyboard = false;
+      config.pauseOnHover = false;
+      config.showNavigationIndicators = true;
+      config.showNavigationArrows = true;
     }));
 
     it('should initialize inputs with provided config', () => {
@@ -491,6 +594,9 @@ describe('ngb-carousel', () => {
       expect(carousel.interval).toBe(config.interval);
       expect(carousel.wrap).toBe(config.wrap);
       expect(carousel.keyboard).toBe(config.keyboard);
+      expect(carousel.pauseOnHover).toBe(config.pauseOnHover);
+      expect(carousel.showNavigationIndicators).toBe(config.showNavigationIndicators);
+      expect(carousel.showNavigationArrows).toBe(config.showNavigationArrows);
     });
   });
 
@@ -499,6 +605,9 @@ describe('ngb-carousel', () => {
     config.interval = 1000;
     config.wrap = false;
     config.keyboard = false;
+    config.pauseOnHover = false;
+    config.showNavigationIndicators = true;
+    config.showNavigationArrows = true;
 
     beforeEach(() => {
       TestBed.configureTestingModule(
@@ -513,6 +622,9 @@ describe('ngb-carousel', () => {
       expect(carousel.interval).toBe(config.interval);
       expect(carousel.wrap).toBe(config.wrap);
       expect(carousel.keyboard).toBe(config.keyboard);
+      expect(carousel.pauseOnHover).toBe(config.pauseOnHover);
+      expect(carousel.showNavigationIndicators).toBe(config.showNavigationIndicators);
+      expect(carousel.showNavigationArrows).toBe(config.showNavigationArrows);
     });
   });
 
@@ -523,5 +635,21 @@ class TestComponent {
   interval;
   activeSlideId;
   keyboard = true;
+  pauseOnHover = true;
+  showNavigationArrows = true;
+  showNavigationIndicators = true;
   carouselSlideCallBack = (event: NgbSlideEvent) => {};
+}
+
+@Component({
+  selector: 'test-cmp-on-push',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <ngb-carousel>
+      <ng-template ngbSlide>foo</ng-template>
+      <ng-template ngbSlide>bar</ng-template>
+    </ngb-carousel>
+  `
+})
+class TestComponentOnPush {
 }

@@ -12,26 +12,26 @@ import {
 
 import {ContentRef} from '../util/popup';
 import {isDefined, isString} from '../util/util';
+import {ScrollBar} from '../util/scrollbar';
 
 import {NgbModalBackdrop} from './modal-backdrop';
 import {NgbModalWindow} from './modal-window';
 import {NgbActiveModal, NgbModalRef} from './modal-ref';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class NgbModalStack {
-  private _document: any;
-  private _windowAttributes = ['backdrop', 'centered', 'keyboard', 'size', 'windowClass'];
+  private _windowAttributes = ['ariaLabelledBy', 'backdrop', 'centered', 'keyboard', 'size', 'windowClass'];
   private _backdropAttributes = ['backdropClass'];
 
   constructor(
-      private _applicationRef: ApplicationRef, private _injector: Injector,
-      private _componentFactoryResolver: ComponentFactoryResolver, @Inject(DOCUMENT) document) {
-    this._document = document;
-  }
+      private _applicationRef: ApplicationRef, private _injector: Injector, @Inject(DOCUMENT) private _document,
+      private _scrollBar: ScrollBar) {}
 
   open(moduleCFR: ComponentFactoryResolver, contentInjector: Injector, content: any, options): NgbModalRef {
     const containerEl =
         isDefined(options.container) ? this._document.querySelector(options.container) : this._document.body;
+
+    const revertPaddingForScrollBar = this._scrollBar.compensate();
 
     if (!containerEl) {
       throw new Error(`The specified modal container "${options.container || 'body'}" was not found in the DOM.`);
@@ -41,10 +41,11 @@ export class NgbModalStack {
     const contentRef = this._getContentRef(moduleCFR, options.injector || contentInjector, content, activeModal);
 
     let backdropCmptRef: ComponentRef<NgbModalBackdrop> =
-        options.backdrop !== false ? this._attachBackdrop(containerEl) : null;
-    let windowCmptRef: ComponentRef<NgbModalWindow> = this._attachWindowComponent(containerEl, contentRef);
+        options.backdrop !== false ? this._attachBackdrop(moduleCFR, containerEl) : null;
+    let windowCmptRef: ComponentRef<NgbModalWindow> = this._attachWindowComponent(moduleCFR, containerEl, contentRef);
     let ngbModalRef: NgbModalRef = new NgbModalRef(windowCmptRef, contentRef, backdropCmptRef, options.beforeDismiss);
 
+    ngbModalRef.result.then(revertPaddingForScrollBar, revertPaddingForScrollBar);
     activeModal.close = (result: any) => { ngbModalRef.close(result); };
     activeModal.dismiss = (reason: any) => { ngbModalRef.dismiss(reason); };
 
@@ -56,17 +57,17 @@ export class NgbModalStack {
     return ngbModalRef;
   }
 
-  private _attachBackdrop(containerEl: any): ComponentRef<NgbModalBackdrop> {
-    let backdropFactory: ComponentFactory<NgbModalBackdrop> =
-        this._componentFactoryResolver.resolveComponentFactory(NgbModalBackdrop);
+  private _attachBackdrop(moduleCFR: ComponentFactoryResolver, containerEl: any): ComponentRef<NgbModalBackdrop> {
+    let backdropFactory = moduleCFR.resolveComponentFactory(NgbModalBackdrop);
     let backdropCmptRef = backdropFactory.create(this._injector);
     this._applicationRef.attachView(backdropCmptRef.hostView);
     containerEl.appendChild(backdropCmptRef.location.nativeElement);
     return backdropCmptRef;
   }
 
-  private _attachWindowComponent(containerEl: any, contentRef: any): ComponentRef<NgbModalWindow> {
-    let windowFactory = this._componentFactoryResolver.resolveComponentFactory(NgbModalWindow);
+  private _attachWindowComponent(moduleCFR: ComponentFactoryResolver, containerEl: any, contentRef: any):
+      ComponentRef<NgbModalWindow> {
+    let windowFactory = moduleCFR.resolveComponentFactory(NgbModalWindow);
     let windowCmptRef = windowFactory.create(this._injector, contentRef.nodes);
     this._applicationRef.attachView(windowCmptRef.hostView);
     containerEl.appendChild(windowCmptRef.location.nativeElement);
@@ -118,7 +119,8 @@ export class NgbModalStack {
       moduleCFR: ComponentFactoryResolver, contentInjector: Injector, content: any,
       context: NgbActiveModal): ContentRef {
     const contentCmptFactory = moduleCFR.resolveComponentFactory(content);
-    const modalContentInjector = Injector.create([{provide: NgbActiveModal, useValue: context}], contentInjector);
+    const modalContentInjector =
+        Injector.create({providers: [{provide: NgbActiveModal, useValue: context}], parent: contentInjector});
     const componentRef = contentCmptFactory.create(modalContentInjector);
     this._applicationRef.attachView(componentRef.hostView);
     return new ContentRef([[componentRef.location.nativeElement]], componentRef.hostView, componentRef);

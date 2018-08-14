@@ -1,4 +1,4 @@
-import {NgbDateStruct} from './ngb-date-struct';
+import {NgbDate} from './ngb-date';
 /**
  * Context for the datepicker 'day' template in case you want to override the default one
  */
@@ -11,7 +11,7 @@ export interface DayTemplateContext {
   /**
    * Date that corresponds to the template
    */
-  date: NgbDateStruct;
+  date: NgbDate;
 
   /**
    * True if current date is disabled

@@ -151,12 +151,17 @@ export class Positioning {
     let hostElemClientRect = hostElement.getBoundingClientRect();
     let targetElemClientRect = targetElement.getBoundingClientRect();
     let html = document.documentElement;
+    let windowHeight = window.innerHeight || html.clientHeight;
+    let windowWidth = window.innerWidth || html.clientWidth;
+    let hostElemClientRectHorCenter = hostElemClientRect.left + hostElemClientRect.width / 2;
+    let hostElemClientRectVerCenter = hostElemClientRect.top + hostElemClientRect.height / 2;
 
     // left: check if target width can be placed between host left and viewport start and also height of target is
     // inside viewport
     if (targetElemClientRect.width < hostElemClientRect.left) {
       // check for left only
-      if ((hostElemClientRect.top + hostElemClientRect.height / 2 - targetElement.offsetHeight / 2) > 0) {
+      if (hostElemClientRectVerCenter > targetElemClientRect.height / 2 &&
+          windowHeight - hostElemClientRectVerCenter > targetElemClientRect.height / 2) {
         availablePlacements.splice(availablePlacements.length, 1, 'left');
       }
       // check for left-top and left-bottom
@@ -165,15 +170,19 @@ export class Positioning {
 
     // top: target height is less than host top
     if (targetElemClientRect.height < hostElemClientRect.top) {
-      availablePlacements.splice(availablePlacements.length, 1, 'top');
+      if (hostElemClientRectHorCenter > targetElemClientRect.width / 2 &&
+          windowWidth - hostElemClientRectHorCenter > targetElemClientRect.width / 2) {
+        availablePlacements.splice(availablePlacements.length, 1, 'top');
+      }
       this.setSecondaryPlacementForTopBottom(hostElemClientRect, targetElemClientRect, 'top', availablePlacements);
     }
 
     // right: check if target width can be placed between host right and viewport end and also height of target is
     // inside viewport
-    if ((window.innerWidth || html.clientWidth) - hostElemClientRect.right > targetElemClientRect.width) {
+    if (windowWidth - hostElemClientRect.right > targetElemClientRect.width) {
       // check for right only
-      if ((hostElemClientRect.top + hostElemClientRect.height / 2 - targetElement.offsetHeight / 2) > 0) {
+      if (hostElemClientRectVerCenter > targetElemClientRect.height / 2 &&
+          windowHeight - hostElemClientRectVerCenter > targetElemClientRect.height / 2) {
         availablePlacements.splice(availablePlacements.length, 1, 'right');
       }
       // check for right-top and right-bottom
@@ -181,8 +190,11 @@ export class Positioning {
     }
 
     // bottom: check if there is enough space between host bottom and viewport end for target height
-    if ((window.innerHeight || html.clientHeight) - hostElemClientRect.bottom > targetElemClientRect.height) {
-      availablePlacements.splice(availablePlacements.length, 1, 'bottom');
+    if (windowHeight - hostElemClientRect.bottom > targetElemClientRect.height) {
+      if (hostElemClientRectHorCenter > targetElemClientRect.width / 2 &&
+          windowWidth - hostElemClientRectHorCenter > targetElemClientRect.width / 2) {
+        availablePlacements.splice(availablePlacements.length, 1, 'bottom');
+      }
       this.setSecondaryPlacementForTopBottom(hostElemClientRect, targetElemClientRect, 'bottom', availablePlacements);
     }
 
@@ -231,7 +243,12 @@ const positionService = new Positioning();
 /*
  * Accept the placement array and applies the appropriate placement dependent on the viewport.
  * Returns the applied placement.
- * In case of auto placement, placements are selected in order 'top', 'bottom', 'left', 'right'.
+ * In case of auto placement, placements are selected in order
+ *   'top', 'bottom', 'left', 'right',
+ *   'top-left', 'top-right',
+ *   'bottom-left', 'bottom-right',
+ *   'left-top', 'left-bottom',
+ *   'right-top', 'right-bottom'.
  * */
 export function positionElements(
     hostElement: HTMLElement, targetElement: HTMLElement, placement: string | Placement | PlacementArray,
@@ -241,8 +258,10 @@ export function positionElements(
   // replace auto placement with other placements
   let hasAuto = placementVals.findIndex(val => val === 'auto');
   if (hasAuto >= 0) {
-    ['top', 'right', 'bottom', 'left'].forEach(function(obj) {
-      if (placementVals.find(val => val.search('^' + obj + '|^' + obj + '-') !== -1) == null) {
+    ['top', 'bottom', 'left', 'right', 'top-left', 'top-right', 'bottom-left', 'bottom-right', 'left-top',
+     'left-bottom', 'right-top', 'right-bottom',
+    ].forEach(function(obj) {
+      if (placementVals.find(val => val.search('^' + obj) !== -1) == null) {
         placementVals.splice(hasAuto++, 1, obj as Placement);
       }
     });

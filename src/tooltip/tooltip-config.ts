@@ -6,8 +6,9 @@ import {PlacementArray} from '../util/positioning';
  * You can inject this service, typically in your root component, and customize the values of its properties in
  * order to provide default values for all the tooltips used in the application.
  */
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class NgbTooltipConfig {
+  autoClose: boolean | 'inside' | 'outside' = true;
   placement: PlacementArray = 'top';
   triggers = 'hover';
   container: string;

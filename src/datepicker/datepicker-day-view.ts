@@ -1,5 +1,6 @@
 import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
-import {NgbDateStruct} from './ngb-date-struct';
+import {NgbDate} from './ngb-date';
+import {NgbDatepickerI18n} from './datepicker-i18n';
 
 @Component({
   selector: '[ngbDatepickerDayView]',
@@ -25,14 +26,16 @@ import {NgbDateStruct} from './ngb-date-struct';
     '[class.outside]': 'isMuted()',
     '[class.active]': 'focused'
   },
-  template: `{{ date.day }}`
+  template: `{{ i18n.getDayNumerals(date) }}`
 })
 export class NgbDatepickerDayView {
   @Input() currentMonth: number;
-  @Input() date: NgbDateStruct;
+  @Input() date: NgbDate;
   @Input() disabled: boolean;
   @Input() focused: boolean;
   @Input() selected: boolean;
+
+  constructor(public i18n: NgbDatepickerI18n) {}
 
   isMuted() { return !this.selected && (this.date.month !== this.currentMonth || this.disabled); }
 }

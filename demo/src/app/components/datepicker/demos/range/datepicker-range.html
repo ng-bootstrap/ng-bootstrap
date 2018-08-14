@@ -6,7 +6,7 @@
 <ng-template #t let-date="date" let-focused="focused">
   <span class="custom-day"
         [class.focused]="focused"
-        [class.range]="isFrom(date) || isTo(date) || isInside(date) || isHovered(date)"
+        [class.range]="isRange(date)"
         [class.faded]="isHovered(date) || isInside(date)"
         (mouseenter)="hoveredDate = date"
         (mouseleave)="hoveredDate = null">

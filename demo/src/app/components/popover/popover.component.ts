@@ -19,6 +19,10 @@ import {DEMO_SNIPPETS} from './demos';
         <ngbd-popover-triggers></ngbd-popover-triggers>
       </ngbd-example-box>
       <ngbd-example-box
+        demoTitle="Automatic closing with keyboard and mouse" [snippets]="snippets" component="popover" demo="autoclose">
+        <ngbd-popover-autoclose></ngbd-popover-autoclose>
+      </ngbd-example-box>
+      <ngbd-example-box
         demoTitle="Context and manual triggers" [snippets]="snippets" component="popover" demo="tplwithcontext">
         <ngbd-popover-tplwithcontext></ngbd-popover-tplwithcontext>
       </ngbd-example-box>
@@ -29,6 +33,10 @@ import {DEMO_SNIPPETS} from './demos';
       <ngbd-example-box
         demoTitle="Append popover in the body" [snippets]="snippets" component="popover" demo="container">
         <ngbd-popover-container></ngbd-popover-container>
+      </ngbd-example-box>
+      <ngbd-example-box
+        demoTitle="Popover with custom class" [snippets]="snippets" component="popover" demo="customclass">
+        <ngbd-popover-customclass></ngbd-popover-customclass>
       </ngbd-example-box>
       <ngbd-example-box
         demoTitle="Global configuration of popovers" [snippets]="snippets" component="popover" demo="config">

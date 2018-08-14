@@ -1,3 +1,220 @@
+<a name="3.0.0"></a>
+# [3.0.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/3.0.0-beta.1...3.0.0) (2018-08-13)
+
+ng-bootstrap 3.0.0 requires Angular version `^6.1.0` and is delivered in Angular Package Format (APF) v6.0 (https://goo.gl/jB3GVv) using @angular/cli 6.
+
+### Bug Fixes
+
+* **accordion:** correct "collapsed" CSS class usage ([25b5bee](https://github.com/ng-bootstrap/ng-bootstrap/commit/25b5bee)), closes [#2553](https://github.com/ng-bootstrap/ng-bootstrap/issues/2553) [#2555](https://github.com/ng-bootstrap/ng-bootstrap/issues/2555)
+* **accordion:** the markup should follow the boostrap one ([8ddc363](https://github.com/ng-bootstrap/ng-bootstrap/commit/8ddc363)), closes [#2511](https://github.com/ng-bootstrap/ng-bootstrap/issues/2511)
+* **carousel:** make it work inside the 'OnPush' components ([827dfcb](https://github.com/ng-bootstrap/ng-bootstrap/commit/827dfcb)), closes [#2597](https://github.com/ng-bootstrap/ng-bootstrap/issues/2597) [#2599](https://github.com/ng-bootstrap/ng-bootstrap/issues/2599)
+* **datepicker:** correctly override year numerals for multiple months ([#2596](https://github.com/ng-bootstrap/ng-bootstrap/issues/2596)) ([bc540e9](https://github.com/ng-bootstrap/ng-bootstrap/commit/bc540e9))
+* **demo:** missing / in bootstrap href link ([42b1470](https://github.com/ng-bootstrap/ng-bootstrap/commit/42b1470)), closes [#2584](https://github.com/ng-bootstrap/ng-bootstrap/issues/2584) [#2586](https://github.com/ng-bootstrap/ng-bootstrap/issues/2586)
+* **dropdown:** close dropdown correctly inside the OnPush component ([a2dea82](https://github.com/ng-bootstrap/ng-bootstrap/commit/a2dea82)), closes [#2561](https://github.com/ng-bootstrap/ng-bootstrap/issues/2561) [#2559](https://github.com/ng-bootstrap/ng-bootstrap/issues/2559)
+* **dropdown:** remove global document click listener ([d80204c](https://github.com/ng-bootstrap/ng-bootstrap/commit/d80204c)), closes [#900](https://github.com/ng-bootstrap/ng-bootstrap/issues/900) [#2518](https://github.com/ng-bootstrap/ng-bootstrap/issues/2518)
+* **modal:** adjust modal background to avoid shifting ([2871316](https://github.com/ng-bootstrap/ng-bootstrap/commit/2871316)), closes [#641](https://github.com/ng-bootstrap/ng-bootstrap/issues/641) [#2508](https://github.com/ng-bootstrap/ng-bootstrap/issues/2508)
+* **modal:** use correct ComponentFactoryResolver ([8d72f37](https://github.com/ng-bootstrap/ng-bootstrap/commit/8d72f37)), closes [#2588](https://github.com/ng-bootstrap/ng-bootstrap/issues/2588)
+* **typeahead:** don't fail when user returns falsy results ([de613ae](https://github.com/ng-bootstrap/ng-bootstrap/commit/de613ae)), closes [#2530](https://github.com/ng-bootstrap/ng-bootstrap/issues/2530) [#2550](https://github.com/ng-bootstrap/ng-bootstrap/issues/2550)
+
+
+### Chores
+
+* bump minimal required version of Angular to 6.1 ([335598c](https://github.com/ng-bootstrap/ng-bootstrap/commit/335598c)), closes [#2548](https://github.com/ng-bootstrap/ng-bootstrap/issues/2548)
+
+
+### Code Refactoring
+
+* **alert:** remove intermediate 'div' element ([c9c463d](https://github.com/ng-bootstrap/ng-bootstrap/commit/c9c463d)), closes [#2544](https://github.com/ng-bootstrap/ng-bootstrap/issues/2544) [#2552](https://github.com/ng-bootstrap/ng-bootstrap/issues/2552)
+
+
+### Features
+
+* **datepicker:** allow overriding day, week number and year numerals ([91c04e9](https://github.com/ng-bootstrap/ng-bootstrap/commit/91c04e9)), closes [#2593](https://github.com/ng-bootstrap/ng-bootstrap/issues/2593)
+* **datepicker:** close popup on outside click ([347f0ff](https://github.com/ng-bootstrap/ng-bootstrap/commit/347f0ff)), closes [#2558](https://github.com/ng-bootstrap/ng-bootstrap/issues/2558)
+* **datepicker:** initial version of Jalali calendar ([e465fa6](https://github.com/ng-bootstrap/ng-bootstrap/commit/e465fa6))
+* **datepicker:** make 'NgbDate' part of a public API ([122f93f](https://github.com/ng-bootstrap/ng-bootstrap/commit/122f93f)), closes [#2540](https://github.com/ng-bootstrap/ng-bootstrap/issues/2540)
+* **popover:** autoclose ([6e2340d](https://github.com/ng-bootstrap/ng-bootstrap/commit/6e2340d)), closes [#933](https://github.com/ng-bootstrap/ng-bootstrap/issues/933) [#2554](https://github.com/ng-bootstrap/ng-bootstrap/issues/2554)
+* **tabset:** allow arbitrary nav type ([#2592](https://github.com/ng-bootstrap/ng-bootstrap/issues/2592)) ([1e68401](https://github.com/ng-bootstrap/ng-bootstrap/commit/1e68401)), closes [#1661](https://github.com/ng-bootstrap/ng-bootstrap/issues/1661)
+* **tooltip:** autoclose ([fa765a8](https://github.com/ng-bootstrap/ng-bootstrap/commit/fa765a8)), closes [#2571](https://github.com/ng-bootstrap/ng-bootstrap/issues/2571)
+
+
+### BREAKING CHANGES
+
+* for ng-bootstrap 3.0.0 minimal required version of Angular is 6.1.0
+* The library is now delivered in Angular Package Format (APF) v6.0 (https://goo.gl/jB3GVv) using @angular/cli 6.
+
+One notable change is that delivered UMD bundle is now located in 'bundles/ng-bootstrap.umd.js' instead of 'bundles/ng-bootstrap.js'.
+
+Also ES5 code is now delivered as a flat version by default, so 'module' in the 'package.json' is now poining to 'fesm5/ng-bootstrap.js' and not 'index.js'.
+You can still find all the ES5 code in the 'esm5' folder if necessary.
+
+Please examine the contents of the delivered package, if you have a custom build configuration.
+* **alert:** markup generated by `<ngb-alert>` was simplified, there is no more intermediate `<div>` element
+
+Before:
+```
+<ngb-alert>
+  <div role="alert" class="alert alert-warning">
+    Hello there
+  </div>
+</ngb-alert>
+```
+
+After:
+```
+<ngb-alert role="alert" class="alert alert-warning">
+  Hello there
+</ngb-alert>
+```
+
+
+
+
+<a name="2.2.2"></a>
+## [2.2.2](https://github.com/ng-bootstrap/ng-bootstrap/compare/2.2.1...2.2.2) (2018-08-03)
+
+
+### Bug Fixes
+
+* **dropdown:** close dropdown correctly inside the OnPush component ([75060ca](https://github.com/ng-bootstrap/ng-bootstrap/commit/75060ca)), closes [#2561](https://github.com/ng-bootstrap/ng-bootstrap/issues/2561) [#2559](https://github.com/ng-bootstrap/ng-bootstrap/issues/2559)
+
+
+
+<a name="2.2.1"></a>
+## [2.2.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/2.2.0...2.2.1) (2018-07-27)
+
+
+### Bug Fixes
+
+* **dropdown:** close on escape from anywhere ([c26732f](https://github.com/ng-bootstrap/ng-bootstrap/commit/c26732f)), closes [#1741](https://github.com/ng-bootstrap/ng-bootstrap/issues/1741) [#2051](https://github.com/ng-bootstrap/ng-bootstrap/issues/2051)
+* **dropdown:** remove global document click listener ([bd95f1f](https://github.com/ng-bootstrap/ng-bootstrap/commit/bd95f1f)), closes [#900](https://github.com/ng-bootstrap/ng-bootstrap/issues/900) [#2518](https://github.com/ng-bootstrap/ng-bootstrap/issues/2518) [#2871316695d8d2da5a8b0144c0a69de17e480019](https://github.com/ng-bootstrap/ng-bootstrap/issues/2871316695d8d2da5a8b0144c0a69de17e480019)
+* **modal:** adjust modal background to avoid shifting ([efe01f1](https://github.com/ng-bootstrap/ng-bootstrap/commit/efe01f1)), closes [#641](https://github.com/ng-bootstrap/ng-bootstrap/issues/641) [#2508](https://github.com/ng-bootstrap/ng-bootstrap/issues/2508)
+* **progressbar:** add missing i18n id specifier ([becb208](https://github.com/ng-bootstrap/ng-bootstrap/commit/becb208)), closes [#2493](https://github.com/ng-bootstrap/ng-bootstrap/issues/2493)
+* **typeahead:** don't fail when user returns falsy results ([39a58a3](https://github.com/ng-bootstrap/ng-bootstrap/commit/39a58a3)), closes [#2530](https://github.com/ng-bootstrap/ng-bootstrap/issues/2530) [#2550](https://github.com/ng-bootstrap/ng-bootstrap/issues/2550)
+
+
+
+<a name="3.0.0-beta.1"></a>
+# [3.0.0-beta.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/2.2.0...3.0.0-beta.1) (2018-07-06)
+
+
+### Bug Fixes
+
+* **dropdown:** close on escape from anywhere ([2495570](https://github.com/ng-bootstrap/ng-bootstrap/commit/2495570)), closes [#1741](https://github.com/ng-bootstrap/ng-bootstrap/issues/1741) [#2051](https://github.com/ng-bootstrap/ng-bootstrap/issues/2051)
+* **progressbar:** add missing i18n id specifier ([69956fe](https://github.com/ng-bootstrap/ng-bootstrap/commit/69956fe)), closes [#2493](https://github.com/ng-bootstrap/ng-bootstrap/issues/2493)
+
+
+### Features
+
+* **datepicker:** close popup on outside click ([a9ab409](https://github.com/ng-bootstrap/ng-bootstrap/commit/a9ab409)), closes [#783](https://github.com/ng-bootstrap/ng-bootstrap/issues/783) [#2440](https://github.com/ng-bootstrap/ng-bootstrap/issues/2440)
+
+
+### BREAKING CHANGES
+
+* The library is now delivered in Angular Package Format (APF) v6.0 (https://goo.gl/jB3GVv) using @angular/cli 6.
+
+One notable change is that delivered UMD bundle is now located in 'bundles/ng-bootstrap.umd.js' instead of 'bundles/ng-bootstrap.js'.
+
+Also ES5 code is now delivered as a flat version by default, so 'module' in the 'package.json' is now poining to 'fesm5/ng-bootstrap.js' and not 'index.js'.
+You can still find all the ES5 code in the 'esm5' folder if necessary.
+
+Please examine the contents of the delivered package, if you have a custom build configuration.
+
+
+* **datepicker:** datepicker popup will now close on outside click by default.
+
+Because of this datepicker will NOT open with `(click)="d.open()"` and `(click)="d.toggle()"`
+unless you mark the element with click handler with `[ngbDatepickerToggle]="d"`
+
+BEFORE:
+```html
+<input ngbDatepicker #d="ngbDatepicker" />
+<button (click)="d.toggle()">...</button>
+<button (click)="d.open()">...</button>
+```
+
+AFTER:
+```html
+<input ngbDatepicker #d="ngbDatepicker" />
+<button [ngbDatepickerToggle]="d" (click)="d.toggle()">...</button>
+<button [ngbDatepickerToggle]="d" (click)="d.open()">...</button>
+```
+
+Also note that `[autoClose]` input now accepts additional 'inside' and 'outside' values.
+
+
+
+<a name="2.2.0"></a>
+# [2.2.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/2.1.2...2.2.0) (2018-06-29)
+
+
+### Bug Fixes
+
+* **accordion:** update generated markup to Bootstrap HTML / CSS ([9b2b0bc](https://github.com/ng-bootstrap/ng-bootstrap/commit/9b2b0bc)), closes [#2368](https://github.com/ng-bootstrap/ng-bootstrap/issues/2368)
+
+
+### Features
+
+* **carousel:** add flags controlling display of navigation arrows and indicators ([ec4e939](https://github.com/ng-bootstrap/ng-bootstrap/commit/ec4e939)), closes [#2274](https://github.com/ng-bootstrap/ng-bootstrap/issues/2274) [#2275](https://github.com/ng-bootstrap/ng-bootstrap/issues/2275)
+* **carousel:** add input to control pause on mouseover ([8d54cac](https://github.com/ng-bootstrap/ng-bootstrap/commit/8d54cac)), closes [#1163](https://github.com/ng-bootstrap/ng-bootstrap/issues/1163) [#2436](https://github.com/ng-bootstrap/ng-bootstrap/issues/2436)
+* **modal:** aria-labelledby attribute for modal window ([3cc6fa7](https://github.com/ng-bootstrap/ng-bootstrap/commit/3cc6fa7)), closes [#1477](https://github.com/ng-bootstrap/ng-bootstrap/issues/1477) [#2049](https://github.com/ng-bootstrap/ng-bootstrap/issues/2049)
+* **popover:** ability to add custom CSS classes to pover window ([483bd05](https://github.com/ng-bootstrap/ng-bootstrap/commit/483bd05)), closes [#1441](https://github.com/ng-bootstrap/ng-bootstrap/issues/1441) [#2310](https://github.com/ng-bootstrap/ng-bootstrap/issues/2310)
+* **timepicker:** add custom time adapter support ([7eaa7e7](https://github.com/ng-bootstrap/ng-bootstrap/commit/7eaa7e7)), closes [#545](https://github.com/ng-bootstrap/ng-bootstrap/issues/545) [#2347](https://github.com/ng-bootstrap/ng-bootstrap/issues/2347)
+
+
+
+<a name="2.1.2"></a>
+## [2.1.2](https://github.com/ng-bootstrap/ng-bootstrap/compare/2.1.1...2.1.2) (2018-06-22)
+
+
+### Bug Fixes
+
+* **datepicker:** fix ExpressionChangedAfterItHasBeenCheckedError when switching between months ([b47f981](https://github.com/ng-bootstrap/ng-bootstrap/commit/b47f981)), closes [#2408](https://github.com/ng-bootstrap/ng-bootstrap/issues/2408) [#2462](https://github.com/ng-bootstrap/ng-bootstrap/issues/2462)
+* **timepicker:** fix placeholder width issues on iOS ([e65d5cf](https://github.com/ng-bootstrap/ng-bootstrap/commit/e65d5cf)), closes [#2460](https://github.com/ng-bootstrap/ng-bootstrap/issues/2460)
+
+
+
+<a name="2.1.1"></a>
+## [2.1.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/2.1.0...2.1.1) (2018-06-15)
+
+
+### Bug Fixes
+
+* **datepicker:** properly display month select box when 'displayMonths' > 1 ([18acd62](https://github.com/ng-bootstrap/ng-bootstrap/commit/18acd62)), closes [#2377](https://github.com/ng-bootstrap/ng-bootstrap/issues/2377) [#2452](https://github.com/ng-bootstrap/ng-bootstrap/issues/2452)
+* **live:** use a single DOM element for Live Announcer ([31968ad](https://github.com/ng-bootstrap/ng-bootstrap/commit/31968ad)), closes [#2458](https://github.com/ng-bootstrap/ng-bootstrap/issues/2458)
+* **positioning:** add missing primary position checks ([54168ea](https://github.com/ng-bootstrap/ng-bootstrap/commit/54168ea))
+* **positioning:** add secondary positions to auto conversion ([7208006](https://github.com/ng-bootstrap/ng-bootstrap/commit/7208006)), closes [#1899](https://github.com/ng-bootstrap/ng-bootstrap/issues/1899)
+
+
+
+<a name="2.1.0"></a>
+# [2.1.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/2.0.0...2.1.0) (2018-06-08)
+
+
+### Bug Fixes
+
+* **datepicker:** display 'outsideDays' correctly for multiple months ([26b8f3b](https://github.com/ng-bootstrap/ng-bootstrap/commit/26b8f3b)), closes [#2421](https://github.com/ng-bootstrap/ng-bootstrap/issues/2421) [#2035](https://github.com/ng-bootstrap/ng-bootstrap/issues/2035)
+* **datepicker:** fix month/year select boxes widths in IE10 ([f266b7f](https://github.com/ng-bootstrap/ng-bootstrap/commit/f266b7f)), closes [#2414](https://github.com/ng-bootstrap/ng-bootstrap/issues/2414)
+* use correct rxjs imports for focus trap ([2315c8c](https://github.com/ng-bootstrap/ng-bootstrap/commit/2315c8c)), closes [#2439](https://github.com/ng-bootstrap/ng-bootstrap/issues/2439)
+* **datepicker:** fix select width with bootsrap 4.1 ([342b640](https://github.com/ng-bootstrap/ng-bootstrap/commit/342b640)), closes [#2443](https://github.com/ng-bootstrap/ng-bootstrap/issues/2443)
+* **datepicker:** prevent focustrap to resotre focus on destroy ([dcd7111](https://github.com/ng-bootstrap/ng-bootstrap/commit/dcd7111)), closes [#2372](https://github.com/ng-bootstrap/ng-bootstrap/issues/2372) [#2392](https://github.com/ng-bootstrap/ng-bootstrap/issues/2392)
+* **datepicker:** simplify CSS and navigation styles ([d349edb](https://github.com/ng-bootstrap/ng-bootstrap/commit/d349edb)), closes [#2401](https://github.com/ng-bootstrap/ng-bootstrap/issues/2401) [#2402](https://github.com/ng-bootstrap/ng-bootstrap/issues/2402)
+* **datepicker:** simplify focus trap with observables ([25c1394](https://github.com/ng-bootstrap/ng-bootstrap/commit/25c1394)), closes [#2419](https://github.com/ng-bootstrap/ng-bootstrap/issues/2419) [#2406](https://github.com/ng-bootstrap/ng-bootstrap/issues/2406) [#2390](https://github.com/ng-bootstrap/ng-bootstrap/issues/2390) [#2372](https://github.com/ng-bootstrap/ng-bootstrap/issues/2372)
+* **typeahead:** use custom input formatter with falsy values ([b73f350](https://github.com/ng-bootstrap/ng-bootstrap/commit/b73f350)), closes [#2389](https://github.com/ng-bootstrap/ng-bootstrap/issues/2389) [#2399](https://github.com/ng-bootstrap/ng-bootstrap/issues/2399)
+
+
+### Features
+
+* add support for i18n of static text in component templates ([65c232d](https://github.com/ng-bootstrap/ng-bootstrap/commit/65c232d)), closes [#2314](https://github.com/ng-bootstrap/ng-bootstrap/issues/2314) [#2317](https://github.com/ng-bootstrap/ng-bootstrap/issues/2317)
+* **datepicker:** add aria attributes for navigation ([cd01d32](https://github.com/ng-bootstrap/ng-bootstrap/commit/cd01d32)), closes [#2345](https://github.com/ng-bootstrap/ng-bootstrap/issues/2345)
+* **datepicker:** add native js date adapter ([cd14b96](https://github.com/ng-bootstrap/ng-bootstrap/commit/cd14b96)), closes [#2305](https://github.com/ng-bootstrap/ng-bootstrap/issues/2305)
+* **datepicker:** close datepicker popup on ESC from anywhere ([2666d8b](https://github.com/ng-bootstrap/ng-bootstrap/commit/2666d8b)), closes [#2432](https://github.com/ng-bootstrap/ng-bootstrap/issues/2432)
+* **modal:** focus is now trapped inside any opened modal ([cf48325](https://github.com/ng-bootstrap/ng-bootstrap/commit/cf48325)), closes [#642](https://github.com/ng-bootstrap/ng-bootstrap/issues/642) [#2441](https://github.com/ng-bootstrap/ng-bootstrap/issues/2441)
+* **modal:** support for promises in beforeDismiss hook ([cca789f](https://github.com/ng-bootstrap/ng-bootstrap/commit/cca789f)), closes [#2340](https://github.com/ng-bootstrap/ng-bootstrap/issues/2340)
+* **typeahead:** add input reflecting the 'autocomplete' attribute ([3a7ca58](https://github.com/ng-bootstrap/ng-bootstrap/commit/3a7ca58)), closes [#2194](https://github.com/ng-bootstrap/ng-bootstrap/issues/2194) [#2366](https://github.com/ng-bootstrap/ng-bootstrap/issues/2366)
+
+
+
 <a name="2.0.0"></a>
 # [2.0.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/1.1.1...2.0.0) (2018-05-04)
 

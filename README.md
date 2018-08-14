@@ -30,8 +30,14 @@ Feel free to make comments there.
 View all the directives in action at https://ng-bootstrap.github.io
 
 ## Dependencies
-* [Angular](https://angular.io) (tested with 5.0.2)
-* [Bootstrap 4](https://www.getbootstrap.com) (tested with 4.0.0)
+The only two dependencies are [Angular](https://angular.io) and [Bootstrap 4](https://www.getbootstrap.com) CSS. 
+Here is the list of minimal required versions:
+
+| ng-bootstrap | Angular | Bootstrap CSS |
+| ------------ | ------- | ------------- |
+| 1.x.x        | 5.0.2   | 4.0.0         |
+| 2.x.x        | 6.0.0   | 4.0.0         |
+| 3.x.x        | 6.1.0   | 4.0.0         |
 
 ## Installation
 After installing the above dependencies, install `ng-bootstrap` via:
@@ -41,31 +47,28 @@ npm install --save @ng-bootstrap/ng-bootstrap
 Once installed you need to import our main module:
 ```js
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-```
-The only remaining part is to list the imported module in your application module. The exact method will be slightly
-different for the root (top-level) module for which you should end up with the code similar to (notice `NgbModule.forRoot()`):
-```js
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
-  declarations: [AppComponent, ...],
-  imports: [NgbModule.forRoot(), ...],  
-  bootstrap: [AppComponent]
+  ...
+  imports: [NgbModule, ...],
+  ...
 })
-export class AppModule {
+export class YourAppModule {
 }
 ```
 
-Other modules in your application can simply import `NgbModule`:
+Alternatively you could only import modules with components you need, ex. pagination and alert. 
+The resulting bundle will be smaller in this case.
 
 ```js
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbPaginationModule, NgbAlertModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
-  declarations: [OtherComponent, ...],
-  imports: [NgbModule, ...], 
+  ...
+  imports: [NgbPaginationModule, NgbAlertModule, ...],
+  ...
 })
-export class OtherModule {
+export class YourAppModule {
 }
 ```
 

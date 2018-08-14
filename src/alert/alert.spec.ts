@@ -29,8 +29,7 @@ describe('ngb-alert', () => {
 
   it('should initialize inputs with default values', () => {
     const defaultConfig = new NgbAlertConfig();
-    const alertCmp = new NgbAlert(new NgbAlertConfig());
-
+    const alertCmp = TestBed.createComponent(NgbAlert).componentInstance;
     expect(alertCmp.dismissible).toBe(defaultConfig.dismissible);
     expect(alertCmp.type).toBe(defaultConfig.type);
   });
@@ -50,6 +49,28 @@ describe('ngb-alert', () => {
 
     expect(alertEl.getAttribute('role')).toEqual('alert');
     expect(alertEl).toHaveCssClass('alert-success');
+  });
+
+  it('should allow changing alert type', () => {
+    const fixture = createTestComponent('<ngb-alert [type]="type">Cool!</ngb-alert>');
+    const alertEl = getAlertElement(fixture.nativeElement);
+
+    expect(alertEl).toHaveCssClass('alert-success');
+    expect(alertEl).not.toHaveCssClass('alert-warning');
+
+    fixture.componentInstance.type = 'warning';
+    fixture.detectChanges();
+    expect(alertEl).not.toHaveCssClass('alert-success');
+    expect(alertEl).toHaveCssClass('alert-warning');
+  });
+
+  it('should allow adding custom CSS classes', () => {
+    const fixture = createTestComponent('<ngb-alert type="success" class="myClass">Cool!</ngb-alert>');
+    const alertEl = getAlertElement(fixture.nativeElement);
+
+    expect(alertEl).toHaveCssClass('alert');
+    expect(alertEl).toHaveCssClass('alert-success');
+    expect(alertEl).toHaveCssClass('myClass');
   });
 
   it('should render close button when dismissible', () => {
@@ -138,4 +159,5 @@ describe('ngb-alert', () => {
 class TestComponent {
   name = 'World';
   closed = false;
+  type = 'success';
 }

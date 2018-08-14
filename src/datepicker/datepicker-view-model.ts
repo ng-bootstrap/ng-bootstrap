@@ -8,13 +8,15 @@ export type DayViewModel = {
   date: NgbDate,
   context: DayTemplateContext,
   tabindex: number,
-  ariaLabel: string
-}
+  ariaLabel: string,
+  hidden: boolean
+};
 
 export type WeekViewModel = {
   number: number,
-  days: DayViewModel[]
-}
+  days: DayViewModel[],
+  collapsed: boolean
+};
 
 export type MonthViewModel = {
   firstDate: NgbDate,
@@ -39,6 +41,7 @@ export type DatepickerViewModel = {
   minDate?: NgbDate,
   months: MonthViewModel[],
   navigation: 'select' | 'arrows' | 'none',
+  outsideDays: 'visible' | 'collapsed' | 'hidden',
   prevDisabled: boolean,
   nextDisabled: boolean,
   selectBoxes: {
@@ -46,7 +49,7 @@ export type DatepickerViewModel = {
     months: number[]
   },
   selectedDate: NgbDate
-}
+};
 // clang-format on
 
 export enum NavigationEvent {

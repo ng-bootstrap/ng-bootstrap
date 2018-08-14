@@ -8,14 +8,13 @@ import {NgbDatepickerI18n} from './datepicker-i18n';
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [`
     :host>select {
-      /* to align with btn-sm */
-      padding: 0.25rem 0.5rem;
+      display: flex;
+      display: -ms-flexbox;
+      -ms-flex: 1 1 auto;
+      width: 100%;
+      padding: 0 0.5rem;
       font-size: 0.875rem;
-      line-height: 1.25;
-      /* to cancel the custom height set by custom-select */
-      height: inherit;
-      width: 50%;
-      display: inline-block;
+      height: 1.85rem;
     }
   `],
   template: `
@@ -24,13 +23,13 @@ import {NgbDatepickerI18n} from './datepicker-i18n';
       class="custom-select"
       [value]="date?.month"
       (change)="changeMonth($event.target.value)">
-        <option *ngFor="let m of months" [value]="m">{{ i18n.getMonthShortName(m) }}</option>
+        <option *ngFor="let m of months" [attr.aria-label]="i18n.getMonthFullName(m)" [value]="m">{{ i18n.getMonthShortName(m) }}</option>
     </select><select
       [disabled]="disabled"
       class="custom-select"
       [value]="date?.year"
       (change)="changeYear($event.target.value)">
-        <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+        <option *ngFor="let y of years" [value]="y">{{ i18n.getYearNumerals(y) }}</option>
     </select>
   `
 })

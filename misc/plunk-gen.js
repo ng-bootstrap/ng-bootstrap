@@ -5,20 +5,26 @@ const capitalize = require('./demo-gen-utils').capitalize;
 const plnkrUrl = 'http://plnkr.co/edit/?p=preview';
 
 const contentMainTs = fs.readFileSync('misc/plunker-builder-templates/main.ts').toString();
-const packageJson = JSON.parse(fs.readFileSync('package.json'));
+const packageJson = JSON.parse(fs.readFileSync('package.json').toString());
+const ngBootstrap = JSON.parse(fs.readFileSync('src/package.json').toString()).version;
 const versions = getVersions();
 
 const ENTRY_CMPTS = {
   modal: ['component']
 };
 
-function generateAppTsContent(componentName, demoName) {
+function generateAppTsContent(componentName, demoName, filePath) {
   const demoClassName = `Ngbd${capitalize(componentName)}${capitalize(demoName)}`;
   const demoImport = `./${componentName}-${demoName}`;
   const demoSelector = `ngbd-${componentName}-${demoName}`;
   const needsEntryCmpt = ENTRY_CMPTS.hasOwnProperty(componentName) && ENTRY_CMPTS[componentName].indexOf(demoName) > -1;
   const entryCmptClass =  needsEntryCmpt ? `Ngbd${capitalize(componentName)}Content` : null;
   const demoImports = needsEntryCmpt ? `${demoClassName}, ${entryCmptClass}` : demoClassName;
+
+  const file = fs.readFileSync(filePath).toString();
+  if (!file.includes(demoClassName)) {
+    throw new Error(`Expecting demo class name in ${filePath} to be '${demoClassName}' (note the case)`);
+  }
 
   return `
 import { Component, NgModule } from '@angular/core';
@@ -32,7 +38,7 @@ import { ${demoImports} } from '${demoImport}';
   selector: 'my-app',
   template: \`
     <div class="container-fluid">
-    
+
     <hr>
     <p>
       This is a demo plnkr forked from the <strong>ng-bootstrap</strong> project: Angular powered Bootstrap.
@@ -80,7 +86,7 @@ ${generateTags(['Angular', 'Bootstrap', 'ng-bootstrap', capitalize(componentName
     <input type="hidden" name="files[index.html]" value="${he.encode(generateIndexHtml())}">
     <input type="hidden" name="files[config.js]" value="${he.encode(generateConfigJs())}">
     <input type="hidden" name="files[src/main.ts]" value="${he.encode(contentMainTs)}">
-    <input type="hidden" name="files[src/app.ts]" value="${he.encode(generateAppTsContent(componentName, demoName))}">
+    <input type="hidden" name="files[src/app.ts]" value="${he.encode(generateAppTsContent(componentName, demoName, `${basePath}.ts`))}">
     <input type="hidden" name="files[src/${fileName}.ts]" value="${he.encode(codeContent.replace(`./${demoTplPath}`, `src/${demoTplPath}`))}">
     <input type="hidden" name="files[src/${fileName}.html]" value="${he.encode(markupContent)}">
   </form>
@@ -119,7 +125,7 @@ function generateConfigJs() {
   return `var ver = {
     ng: '${versions.angular}'
   };
-  
+
   System.config({
   //use typescript for compilation
   transpiler: 'typescript',
@@ -153,7 +159,7 @@ function generateConfigJs() {
     'tslib': 'npm:tslib/tslib.js',
     'typescript': 'npm:typescript@${versions.typescript}/lib/typescript.js',
 
-    '@ng-bootstrap/ng-bootstrap': 'npm:@ng-bootstrap/ng-bootstrap@${versions.ngBootstrap}/bundles/ng-bootstrap.js'
+    '@ng-bootstrap/ng-bootstrap': 'npm:@ng-bootstrap/ng-bootstrap@${versions.ngBootstrap}/bundles/ng-bootstrap.umd.js'
   },
   packages: {
     app: {
@@ -178,20 +184,26 @@ function getVersions() {
     angular: getVersion('@angular/core'),
     typescript: getVersion('typescript'),
     rxjs: getVersion('rxjs'),
-    ngBootstrap: packageJson.version,
+    ngBootstrap,
     zoneJs: getVersion('zone.js'),
     coreJs: getVersion('core-js'),
-    systemjs: getVersion('systemjs'),
-    reflectMetadata: getVersion('reflect-metadata'),
+    systemjs: '^0.19.40',
+    reflectMetadata: getVersion('reflect-metadata', JSON.parse(fs.readFileSync('node_modules/@angular/compiler-cli/package.json').toString())),
     bootstrap: getVersion('bootstrap')
   };
 }
 
-function getVersion(name) {
-  var value = packageJson.dependencies[name] || packageJson.devDependencies[name];
+function getVersion(name, givenPackageJson) {
+  if (givenPackageJson == null) {
+    givenPackageJson = packageJson;
+  }
+
+  var value = givenPackageJson.dependencies[name] || givenPackageJson.devDependencies[name];
+
   if (!value) {
     throw `couldn't find version for ${name} in package.json`;
   }
+
   return value;
 }
 

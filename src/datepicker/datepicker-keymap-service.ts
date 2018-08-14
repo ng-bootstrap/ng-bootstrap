@@ -2,20 +2,8 @@ import {Injectable} from '@angular/core';
 import {NgbDatepickerService} from './datepicker-service';
 import {NgbCalendar} from './ngb-calendar';
 import {toString} from '../util/util';
+import {Key} from '../util/key';
 import {NgbDate} from './ngb-date';
-
-enum Key {
-  Enter = 13,
-  Space = 32,
-  PageUp = 33,
-  PageDown = 34,
-  End = 35,
-  Home = 36,
-  ArrowLeft = 37,
-  ArrowUp = 38,
-  ArrowRight = 39,
-  ArrowDown = 40
-}
 
 @Injectable()
 export class NgbDatepickerKeyMapService {

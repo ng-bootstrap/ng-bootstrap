@@ -9,7 +9,7 @@ import {
   Injector
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {TestBed, ComponentFixture} from '@angular/core/testing';
+import {TestBed, ComponentFixture, async} from '@angular/core/testing';
 
 import {NgbModalModule, NgbModal, NgbActiveModal, NgbModalRef} from './modal.module';
 
@@ -393,6 +393,48 @@ describe('ngb-modal', () => {
       expect(fixture.nativeElement).not.toHaveModal();
     });
 
+    it('should not dismiss when the returned promise is resolved with false', async(() => {
+         const modalInstance = fixture.componentInstance.openTplDismiss({beforeDismiss: () => Promise.resolve(false)});
+         fixture.detectChanges();
+         expect(fixture.nativeElement).toHaveModal();
+
+         (<HTMLElement>document.querySelector('button#dismiss')).click();
+         fixture.detectChanges();
+         fixture.whenStable().then(() => {
+           expect(fixture.nativeElement).toHaveModal();
+
+           modalInstance.close();
+           fixture.detectChanges();
+           expect(fixture.nativeElement).not.toHaveModal();
+         });
+       }));
+
+    it('should not dismiss when the returned promise is rejected', async(() => {
+         const modalInstance = fixture.componentInstance.openTplDismiss({beforeDismiss: () => Promise.reject('error')});
+         fixture.detectChanges();
+         expect(fixture.nativeElement).toHaveModal();
+
+         (<HTMLElement>document.querySelector('button#dismiss')).click();
+         fixture.detectChanges();
+         fixture.whenStable().then(() => {
+           expect(fixture.nativeElement).toHaveModal();
+
+           modalInstance.close();
+           fixture.detectChanges();
+           expect(fixture.nativeElement).not.toHaveModal();
+         });
+       }));
+
+    it('should dismiss when the returned promise is not resolved with false', async(() => {
+         fixture.componentInstance.openTplDismiss({beforeDismiss: () => Promise.resolve()});
+         fixture.detectChanges();
+         expect(fixture.nativeElement).toHaveModal();
+
+         (<HTMLElement>document.querySelector('button#dismiss')).click();
+         fixture.detectChanges();
+         fixture.whenStable().then(() => { expect(fixture.nativeElement).not.toHaveModal(); });
+       }));
+
     it('should dismiss when the callback is not defined', () => {
       fixture.componentInstance.openTplDismiss({});
       fixture.detectChanges();
@@ -515,7 +557,8 @@ describe('ngb-modal', () => {
   describe('custom injector option', () => {
 
     it('should render modal with a custom injector', () => {
-      const customInjector = Injector.create([{provide: CustomSpyService, useClass: CustomSpyService, deps: []}]);
+      const customInjector =
+          Injector.create({providers: [{provide: CustomSpyService, useClass: CustomSpyService, deps: []}]});
       const modalInstance = fixture.componentInstance.openCmpt(CustomInjectorCmpt, {injector: customInjector});
       fixture.detectChanges();
       expect(fixture.nativeElement).toHaveModal('Some content');
@@ -615,7 +658,22 @@ describe('ngb-modal', () => {
       fixture.detectChanges();
       expect(fixture.nativeElement).not.toHaveModal();
     });
+  });
 
+  describe('accessibility', () => {
+    it('should support aria-labelledby', () => {
+      const id = 'aria-labelledby-id';
+
+      const modalInstance = fixture.componentInstance.open('foo', {ariaLabelledBy: id});
+      fixture.detectChanges();
+
+      const modalElement = <HTMLElement>document.querySelector('ngb-modal-window');
+      expect(modalElement.getAttribute('aria-labelledby')).toBe(id);
+
+      modalInstance.close('some result');
+      fixture.detectChanges();
+      expect(fixture.nativeElement).not.toHaveModal();
+    });
   });
 });
 

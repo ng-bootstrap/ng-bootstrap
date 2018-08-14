@@ -65,7 +65,7 @@ function triggerKeyDown(element: DebugElement, keyCode: number, shiftKey = false
 
 function getMonthContainer(datepicker: DebugElement) {
   return datepicker.query(By.css('div.ngb-dp-months'));
-};
+}
 
 function expectSelectedDate(element: DebugElement, selectedDate: NgbDate) {
   // checking we have 1 day with .selected class
@@ -366,6 +366,52 @@ describe('ngb-datepicker', () => {
     expect(months.length).toBe(3);
   });
 
+  it('should reuse DOM elements when changing month (single month display)', () => {
+    const fixture = createTestComponent(`<ngb-datepicker [startDate]="date"></ngb-datepicker>`);
+
+    // AUG 2016
+    const oldDates = getDates(fixture.nativeElement);
+    const navigation = getNavigationLinks(fixture.nativeElement);
+    expect(oldDates[0].innerText.trim()).toBe('1');
+
+    // JUL 2016
+    navigation[0].click();
+    fixture.detectChanges();
+
+    const newDates = getDates(fixture.nativeElement);
+    expect(newDates[0].innerText.trim()).toBe('27');
+
+    expect(oldDates).toEqual(newDates);
+  });
+
+  it('should reuse DOM elements when changing month (multiple months display)', () => {
+    const fixture = createTestComponent(`<ngb-datepicker [displayMonths]="2" [startDate]="date"></ngb-datepicker>`);
+
+    // AUG 2016 and SEP 2016
+    const oldDates = getDates(fixture.nativeElement);
+    const oldAugDates = oldDates.slice(0, 42);
+    const oldSepDates = oldDates.slice(42);
+
+    const navigation = getNavigationLinks(fixture.nativeElement);
+    expect(oldAugDates[0].innerText.trim()).toBe('1');
+    expect(oldSepDates[3].innerText.trim()).toBe('1');
+
+    // JUL 2016 and AUG 2016
+    navigation[0].click();
+    fixture.detectChanges();
+
+    const newDates = getDates(fixture.nativeElement);
+    const newJulDates = newDates.slice(0, 42);
+    const newAugDates = newDates.slice(42);
+
+    expect(newJulDates[0].innerText.trim()).toBe('27');
+    expect(newAugDates[0].innerText.trim()).toBe('1');
+
+    // DOM elements were reused:
+    expect(newAugDates).toEqual(oldAugDates);
+    expect(newJulDates).toEqual(oldSepDates);
+  });
+
   it('should switch navigation types', () => {
     const fixture = createTestComponent(`<ngb-datepicker [navigation]="navigation"></ngb-datepicker>`);
 
@@ -381,20 +427,6 @@ describe('ngb-datepicker', () => {
     fixture.detectChanges();
     expect(fixture.debugElement.query(By.directive(NgbDatepickerNavigationSelect))).toBeNull();
     expect(fixture.debugElement.query(By.directive(NgbDatepickerNavigation))).toBeNull();
-  });
-
-  it('should override outside days to "hidden" if there are multiple months displayed', () => {
-    const fixture = createTestComponent(
-        `<ngb-datepicker [displayMonths]="displayMonths" [outsideDays]="'collapsed'"></ngb-datepicker>`);
-
-
-    let months = fixture.debugElement.queryAll(By.directive(NgbDatepickerMonthView));
-    expect(months[0].componentInstance.outsideDays).toBe('collapsed');
-
-    fixture.componentInstance.displayMonths = 2;
-    fixture.detectChanges();
-    months = fixture.debugElement.queryAll(By.directive(NgbDatepickerMonthView));
-    expect(months[0].componentInstance.outsideDays).toBe('hidden');
   });
 
   it('should toggle month names display for a single month', () => {

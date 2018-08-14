@@ -4,9 +4,7 @@ import {NgbCalendar, NgbCalendarGregorian} from './ngb-calendar';
 import {NgbDate} from './ngb-date';
 import {Subscription} from 'rxjs';
 import {DatepickerViewModel} from './datepicker-view-model';
-import {NgbDateStruct} from './ngb-date-struct';
 import {NgbDatepickerI18n, NgbDatepickerI18nDefault} from './datepicker-i18n';
-import {DatePipe} from '@angular/common';
 
 describe('ngb-datepicker-service', () => {
 
@@ -14,21 +12,20 @@ describe('ngb-datepicker-service', () => {
   let calendar: NgbCalendar;
   let model: DatepickerViewModel;
   let mock: {onNext};
-  let selectDate: NgbDateStruct;
+  let selectDate: NgbDate;
   let mockSelect: {onNext};
 
   let subscriptions: Subscription[];
 
-  const getDayInMonth = (monthIndex: number, weekIndex: number, dayIndex: number) =>
-      model.months[monthIndex].weeks[weekIndex].days[dayIndex];
-  const getDay = (n: number) => getDayInMonth(0, 0, n);
-  const getDayCtx = (n: number) => getDay(n).context;
+  const getWeek = (week: number, month = 0) => model.months[month].weeks[week];
+  const getDay = (day: number, week = 0, month = 0) => getWeek(week, month).days[day];
+  const getDayCtx = (day: number) => getDay(day).context;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         NgbDatepickerService, {provide: NgbCalendar, useClass: NgbCalendarGregorian},
-        {provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nDefault}, DatePipe
+        {provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nDefault}
       ]
     });
 
@@ -159,29 +156,22 @@ describe('ngb-datepicker-service', () => {
       expect(getDayCtx(5).disabled).toBe(true);  // 6 MAY
     });
 
-    it(`should rebuild month when 'min/maxDates' change and visible`, () => {
+    it(`should update month when 'min/maxDates' change and visible`, () => {
       // MAY 2017
       service.focus(new NgbDate(2017, 5, 5));
       expect(model.months.length).toBe(1);
       expect(model.minDate).toBeUndefined();
       expect(model.maxDate).toBeUndefined();
 
-      const month = model.months[0];
-      const date = month.weeks[0].days[0].date;
-
       // MIN -> 5 MAY, 2017
       service.minDate = new NgbDate(2017, 5, 5);
       expect(model.months.length).toBe(1);
-      expect(model.months[0]).not.toBe(month);
       expect(getDayCtx(0).disabled).toBe(true);
-      expect(getDay(0).date).not.toBe(date);
 
       // MAX -> 10 MAY, 2017
       service.maxDate = new NgbDate(2017, 5, 10);
       expect(model.months.length).toBe(1);
-      expect(model.months[0]).not.toBe(month);
       expect(model.months[0].weeks[4].days[0].context.disabled).toBe(true);
-      expect(model.months[0].weeks[0].days[0].date).not.toBe(date);
     });
   });
 
@@ -234,18 +224,19 @@ describe('ngb-datepicker-service', () => {
       expect(model.months[0].weekdays[0]).toBe(4);
     });
 
-    it(`should rebuild months when 'firstDayOfWeek' changes`, () => {
+    it(`should update months when 'firstDayOfWeek' changes`, () => {
       service.focus(new NgbDate(2017, 5, 5));
       expect(model.months.length).toBe(1);
       expect(model.firstDayOfWeek).toBe(1);
 
-      const month = model.months[0];
-      const date = month.weeks[0].days[0].date;
+      const oldFirstDate = getDay(0).date;
+      expect(oldFirstDate).toEqual(new NgbDate(2017, 5, 1));
 
       service.firstDayOfWeek = 3;
       expect(model.months.length).toBe(1);
-      expect(model.months[0]).not.toBe(month);
-      expect(getDay(0).date).not.toBe(date);
+      expect(model.firstDayOfWeek).toBe(3);
+      const newFirstDate = getDay(0).date;
+      expect(newFirstDate).toEqual(new NgbDate(2017, 4, 26));
     });
   });
 
@@ -316,14 +307,14 @@ describe('ngb-datepicker-service', () => {
       service.displayMonths = 2;
       service.focus(new NgbDate(2018, 3, 31));
 
-      expect(getDayInMonth(0, 4, 5).tabindex).toEqual(0);   // 31 march in the first month block
-      expect(getDayInMonth(1, 0, 5).tabindex).toEqual(-1);  // 31 march in the second month block
+      expect(getDay(5, 4, 0).tabindex).toEqual(0);   // 31 march in the first month block
+      expect(getDay(5, 0, 1).tabindex).toEqual(-1);  // 31 march in the second month block
 
       service.focusMove('d', 1);
-      expect(getDayInMonth(0, 4, 5).tabindex).toEqual(-1);  // 31 march in the first month block
-      expect(getDayInMonth(1, 0, 5).tabindex).toEqual(-1);  // 31 march in the second month block
-      expect(getDayInMonth(0, 4, 6).tabindex).toEqual(-1);  // 1st april in the first month block
-      expect(getDayInMonth(1, 0, 6).tabindex).toEqual(0);   // 1st april in the second month block
+      expect(getDay(5, 4, 0).tabindex).toEqual(-1);  // 31 march in the first month block
+      expect(getDay(5, 0, 1).tabindex).toEqual(-1);  // 31 march in the second month block
+      expect(getDay(6, 4, 0).tabindex).toEqual(-1);  // 1st april in the first month block
+      expect(getDay(6, 0, 1).tabindex).toEqual(0);   // 1st april in the second month block
 
     });
 
@@ -331,18 +322,14 @@ describe('ngb-datepicker-service', () => {
       service.displayMonths = 2;
       service.focus(new NgbDate(2018, 3, 31));
 
-      expect(getDayInMonth(0, 4, 5).ariaLabel)
-          .toEqual('Saturday, March 31, 2018');  // 31 march in the first month block
-      expect(getDayInMonth(1, 0, 5).ariaLabel)
-          .toEqual('Saturday, March 31, 2018');  // 31 march in the second month block
+      expect(getDay(5, 4, 0).ariaLabel).toEqual('Saturday, March 31, 2018');  // 31 march in the first month block
+      expect(getDay(5, 0, 1).ariaLabel).toEqual('Saturday, March 31, 2018');  // 31 march in the second month block
 
       service.focusMove('d', 1);
-      expect(getDayInMonth(0, 4, 5).ariaLabel)
-          .toEqual('Saturday, March 31, 2018');  // 31 march in the first month block
-      expect(getDayInMonth(1, 0, 5).ariaLabel)
-          .toEqual('Saturday, March 31, 2018');                                   // 31 march in the second month block
-      expect(getDayInMonth(0, 4, 6).ariaLabel).toEqual('Sunday, April 1, 2018');  // 1st april in the first month block
-      expect(getDayInMonth(1, 0, 6).ariaLabel).toEqual('Sunday, April 1, 2018');  // 1st april in the second month block
+      expect(getDay(5, 4, 0).ariaLabel).toEqual('Saturday, March 31, 2018');  // 31 march in the first month block
+      expect(getDay(5, 0, 1).ariaLabel).toEqual('Saturday, March 31, 2018');  // 31 march in the second month block
+      expect(getDay(6, 4, 0).ariaLabel).toEqual('Sunday, April 1, 2018');     // 1st april in the first month block
+      expect(getDay(6, 0, 1).ariaLabel).toEqual('Sunday, April 1, 2018');     // 1st april in the second month block
 
     });
   });
@@ -617,6 +604,16 @@ describe('ngb-datepicker-service', () => {
         expect(model.selectBoxes.months).toEqual([1, 2, 3, 4, 5, 6, 7]);
       });
 
+      it(`should generate 'months' based on the first date, not the focus date`, () => {
+        service.displayMonths = 2;
+        service.maxDate = new NgbDate(2017, 1, 11);
+        service.open(new NgbDate(2017, 1, 1));
+        expect(model.selectBoxes.months).toEqual([1]);
+
+        service.open(new NgbDate(2016, 12, 1));
+        expect(model.selectBoxes.months).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+      });
+
       it(`should rebuild 'months' and 'years' only when year change`, () => {
         service.focus(new NgbDate(2010, 5, 1));
         let months = model.selectBoxes.months;
@@ -716,6 +713,176 @@ describe('ngb-datepicker-service', () => {
     });
   });
 
+  describe(`outsideDays`, () => {
+
+    it(`should emit 'outsideDays' values`, () => {
+      service.focus(new NgbDate(2015, 5, 1));
+      expect(model.outsideDays).toEqual('visible');
+
+      service.outsideDays = 'hidden';
+      expect(model.outsideDays).toEqual('hidden');
+
+      service.outsideDays = 'collapsed';
+      expect(model.outsideDays).toEqual('collapsed');
+    });
+
+    it(`should not emit the same 'outsideDays' value twice`, () => {
+      service.focus(new NgbDate(2017, 5, 1));
+
+      service.outsideDays = 'visible';  // ignored
+      expect(mock.onNext).toHaveBeenCalledTimes(1);
+    });
+
+    it(`should not hide days when 'outsideDays' is 'visible'`, () => {
+      // single month
+      service.outsideDays = 'visible';
+      service.focus(new NgbDate(2018, 5, 1));
+
+      expect(getDay(0, 0).hidden).toBeFalsy();  // 30 APR
+      expect(getWeek(0).collapsed).toBeFalsy();
+
+      expect(getDay(0, 1).hidden).toBeFalsy();  // 7 MAY
+      expect(getWeek(1).collapsed).toBeFalsy();
+
+      expect(getDay(0, 5).hidden).toBeFalsy();  // 7 JUN
+      expect(getWeek(5).collapsed).toBeFalsy();
+
+      // multiple months
+      // days is between two month must stay hidden regardless of outside days value
+      service.displayMonths = 2;
+
+      // MAY 2018
+      expect(getDay(0, 0, 0).hidden).toBeFalsy();  // 30 APR
+      expect(getWeek(0, 0).collapsed).toBeFalsy();
+
+      expect(getDay(0, 1, 0).hidden).toBeFalsy();  // 7 MAY
+      expect(getWeek(1, 0).collapsed).toBeFalsy();
+
+      expect(getDay(0, 5, 0).hidden).toBeTruthy();  // 7 JUN
+      expect(getWeek(5, 0).collapsed).toBeFalsy();
+
+      // JUNE 2018
+      expect(getDay(0, 0, 1).hidden).toBeTruthy();  // 28 MAY
+      expect(getWeek(0, 1).collapsed).toBeFalsy();
+
+      expect(getDay(0, 1).hidden).toBeFalsy();  // 4 JUN
+      expect(getWeek(1, 1).collapsed).toBeFalsy();
+
+      expect(getDay(0, 5, 1).hidden).toBeFalsy();  // 2 JUL
+      expect(getWeek(5, 1).collapsed).toBeFalsy();
+
+      // Edge case -> in between years
+      service.focus(new NgbDate(2018, 12, 1));
+
+      // DEC 2018
+      expect(getDay(0, 0, 0).hidden).toBeFalsy();  // 26 NOV
+      expect(getWeek(0, 0).collapsed).toBeFalsy();
+
+      expect(getDay(0, 1, 0).hidden).toBeFalsy();  // 3 DEC
+      expect(getWeek(1, 0).collapsed).toBeFalsy();
+
+      expect(getDay(1, 5, 0).hidden).toBeTruthy();  // 1 JAN
+      expect(getWeek(5, 0).collapsed).toBeFalsy();
+
+      // JAN 2019
+      expect(getDay(0, 0, 1).hidden).toBeTruthy();  // 31 DEC
+      expect(getWeek(0, 1).collapsed).toBeFalsy();
+
+      expect(getDay(0, 1).hidden).toBeFalsy();  // 7 JAN
+      expect(getWeek(1, 1).collapsed).toBeFalsy();
+
+      expect(getDay(0, 5, 1).hidden).toBeFalsy();  // 4 FEB
+      expect(getWeek(5, 1).collapsed).toBeFalsy();
+    });
+
+    it(`should hide days when 'outsideDays' is 'hidden'`, () => {
+      // single month
+      service.outsideDays = 'hidden';
+      service.focus(new NgbDate(2018, 5, 1));
+
+      expect(getDay(0, 0).hidden).toBeTruthy();  // 30, APR
+      expect(getWeek(0).collapsed).toBeFalsy();
+
+      expect(getDay(0, 1).hidden).toBeFalsy();  // 7, MAY
+      expect(getWeek(1).collapsed).toBeFalsy();
+
+      expect(getDay(0, 5).hidden).toBeTruthy();  // 7, JUN
+      expect(getWeek(5).collapsed).toBeFalsy();
+
+      // multiple months
+      service.displayMonths = 2;
+
+      // MAY 2018
+      expect(getDay(0, 0, 0).hidden).toBeTruthy();  // 30 APR
+      expect(getWeek(0, 0).collapsed).toBeFalsy();
+
+      expect(getDay(0, 1, 0).hidden).toBeFalsy();  // 7 MAY
+      expect(getWeek(1, 0).collapsed).toBeFalsy();
+
+      expect(getDay(0, 5, 0).hidden).toBeTruthy();  // 7 JUN
+      expect(getWeek(5, 0).collapsed).toBeFalsy();
+
+      // JUNE 2018
+      expect(getDay(0, 0, 1).hidden).toBeTruthy();  // 28 MAY
+      expect(getWeek(0, 1).collapsed).toBeFalsy();
+
+      expect(getDay(0, 1).hidden).toBeFalsy();  // 4 JUN
+      expect(getWeek(1, 1).collapsed).toBeFalsy();
+
+      expect(getDay(0, 5, 1).hidden).toBeTruthy();  // 2 JUL
+      expect(getWeek(5, 1).collapsed).toBeFalsy();
+    });
+
+    it(`should hide days when 'outsideDays' is 'collapsed'`, () => {
+      // single month
+      service.outsideDays = 'collapsed';
+      service.focus(new NgbDate(2018, 5, 1));
+
+      expect(getDay(0, 0).hidden).toBeTruthy();  // 30, APR
+      expect(getWeek(0).collapsed).toBeFalsy();
+
+      expect(getDay(0, 1).hidden).toBeFalsy();  // 7, MAY
+      expect(getWeek(1).collapsed).toBeFalsy();
+
+      expect(getDay(0, 5).hidden).toBeTruthy();  // 7, JUN
+      expect(getWeek(5).collapsed).toBeTruthy();
+
+      // multiple months
+      service.displayMonths = 2;
+
+      // MAY 2018
+      expect(getDay(0, 0, 0).hidden).toBeTruthy();  // 30 APR
+      expect(getWeek(0, 0).collapsed).toBeFalsy();
+
+      expect(getDay(0, 1, 0).hidden).toBeFalsy();  // 7 MAY
+      expect(getWeek(1, 0).collapsed).toBeFalsy();
+
+      expect(getDay(0, 5, 0).hidden).toBeTruthy();  // 7 JUN
+      expect(getWeek(5, 0).collapsed).toBeTruthy();
+
+      // JUNE 2018
+      expect(getDay(0, 0, 1).hidden).toBeTruthy();  // 28 MAY
+      expect(getWeek(0, 1).collapsed).toBeFalsy();
+
+      expect(getDay(0, 1).hidden).toBeFalsy();  // 4 JUN
+      expect(getWeek(1, 1).collapsed).toBeFalsy();
+
+      expect(getDay(0, 5, 1).hidden).toBeTruthy();  // 2 JUL
+      expect(getWeek(5, 1).collapsed).toBeTruthy();
+    });
+
+    it(`should toggle days when 'outsideDays' changes`, () => {
+      service.outsideDays = 'visible';
+      service.focus(new NgbDate(2018, 5, 1));
+      expect(getDay(0).hidden).toBeFalsy();  // 30, APR
+      expect(getWeek(5).collapsed).toBeFalsy();
+
+      service.outsideDays = 'collapsed';
+      expect(getDay(0).hidden).toBeTruthy();  // 30, APR
+      expect(getWeek(5).collapsed).toBeTruthy();
+    });
+  });
+
   describe(`markDisabled`, () => {
 
     it(`should mark dates as disabled by passing 'markDisabled'`, () => {
@@ -730,17 +897,16 @@ describe('ngb-datepicker-service', () => {
       expect(day.context.disabled).toBe(true);
     });
 
-    it(`should rebuild months when 'markDisabled changes'`, () => {
+    it(`should update months when 'markDisabled changes'`, () => {
       // MAY 2017
       service.markDisabled = (_) => true;
       service.focus(new NgbDate(2017, 5, 1));
 
-      const month = model.months[0];
-      const date = month.weeks[0].days[0].date;
+      expect(getDay(0).context.disabled).toBe(true);
 
-      service.markDisabled = (_) => true;
-      expect(model.months[0]).not.toBe(month);
-      expect(getDay(0).date).not.toBe(date);
+      service.markDisabled = (_) => false;
+
+      expect(getDay(0).context.disabled).toBe(false);
     });
   });
 
@@ -1079,12 +1245,12 @@ describe('ngb-datepicker-service', () => {
 
     it(`should generate 'date' for day template`, () => {
       service.focus(new NgbDate(2017, 5, 1));
-      expect(getDayCtx(0).date).toEqual({year: 2017, month: 5, day: 1});
-      expect(getDayCtx(1).date).toEqual({year: 2017, month: 5, day: 2});
+      expect(getDayCtx(0).date).toEqual(new NgbDate(2017, 5, 1));
+      expect(getDayCtx(1).date).toEqual(new NgbDate(2017, 5, 2));
 
       service.focus(new NgbDate(2017, 10, 1));
-      expect(getDayCtx(0).date).toEqual({year: 2017, month: 9, day: 25});
-      expect(getDayCtx(1).date).toEqual({year: 2017, month: 9, day: 26});
+      expect(getDayCtx(0).date).toEqual(new NgbDate(2017, 9, 25));
+      expect(getDayCtx(1).date).toEqual(new NgbDate(2017, 9, 26));
     });
 
     it(`should generate 'currentMonth' for day template`, () => {

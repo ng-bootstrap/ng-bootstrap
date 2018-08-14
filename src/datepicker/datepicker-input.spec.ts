@@ -1,9 +1,10 @@
 import {TestBed, ComponentFixture, fakeAsync, tick} from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
-import {createGenericTestComponent} from '../test/common';
+import {createGenericTestComponent, createKeyEvent} from '../test/common';
 
 import {Component, Injectable} from '@angular/core';
 import {FormsModule, NgForm} from '@angular/forms';
+import {Key} from '../util/key';
 
 import {NgbDateAdapter, NgbDatepickerModule} from './datepicker.module';
 import {NgbInputDatepicker} from './datepicker-input';
@@ -16,6 +17,10 @@ const createTestCmpt = (html: string) =>
 
 const createTestNativeCmpt = (html: string) =>
     createGenericTestComponent(html, TestNativeComponent) as ComponentFixture<TestNativeComponent>;
+
+function dispatchKeyUpEvent(key: Key) {
+  document.dispatchEvent(createKeyEvent(key));
+}
 
 describe('NgbInputDatepicker', () => {
 
@@ -68,6 +73,22 @@ describe('NgbInputDatepicker', () => {
       expect(document.activeElement).toBe(fixture.nativeElement.querySelector('div.ngb-dp-day[tabindex="0"]'));
     });
 
+    it('should close datepicker on ESC key', () => {
+      const fixture = createTestCmpt(`
+          <input ngbDatepicker #d="ngbDatepicker">
+          <button (click)="open(d)">Open</button>`);
+
+      // open
+      const button = fixture.nativeElement.querySelector('button');
+      button.click();
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('ngb-datepicker')).not.toBeNull();
+
+      // dispatch escape
+      dispatchKeyUpEvent(Key.Escape);
+      expect(fixture.nativeElement.querySelector('ngb-datepicker')).toBeNull();
+    });
+
     it('should close datepicker on date selection', () => {
       const fixture = createTestCmpt(`
           <input ngbDatepicker #d="ngbDatepicker">
@@ -86,10 +107,51 @@ describe('NgbInputDatepicker', () => {
       expect(fixture.nativeElement.querySelector('ngb-datepicker')).toBeNull();
     });
 
+    it('should close datepicker on outside click', fakeAsync(() => {
+         const fixture = createTestCmpt(`
+          <input ngbDatepicker #d="ngbDatepicker">
+          <button (click)="open(d)">Open</button>
+          <button id="outside-button">Outside button</button>
+      `);
+
+         // open
+         const button = fixture.nativeElement.querySelector('button');
+         button.click();
+         fixture.detectChanges();
+         tick(16);  // flushing RAF in .open()
+         expect(fixture.nativeElement.querySelector('ngb-datepicker')).not.toBeNull();
+
+         // click outside
+         const outsideButton = fixture.nativeElement.querySelector('#outside-button');
+         outsideButton.click();
+         fixture.detectChanges();
+         expect(fixture.nativeElement.querySelector('ngb-datepicker')).toBeNull();
+       }));
+
+    it('should not close datepicker when clicking on input element', () => {
+      const fixture = createTestCmpt(`
+          <input ngbDatepicker #d="ngbDatepicker">
+          <button (click)="open(d)">Open</button>`);
+
+      // open
+      const button = fixture.nativeElement.querySelector('button');
+      button.click();
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('ngb-datepicker')).not.toBeNull();
+
+      // click on input
+      const input = fixture.nativeElement.querySelector('input[ngbDatepicker]');
+      input.click();
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('ngb-datepicker')).not.toBeNull();
+    });
+
     it(`should not close datepicker if 'autoClose' set to 'false'`, () => {
       const fixture = createTestCmpt(`
           <input ngbDatepicker #d="ngbDatepicker" [autoClose]="false">
-          <button (click)="open(d)">Open</button>`);
+          <button (click)="open(d)">Open</button>
+          <button id="outside-button">Outside button</button>
+      `);
 
       // open
       const button = fixture.nativeElement.querySelector('button');
@@ -102,7 +164,66 @@ describe('NgbInputDatepicker', () => {
       dp.select.emit();
       fixture.detectChanges();
       expect(fixture.nativeElement.querySelector('ngb-datepicker')).not.toBeNull();
+
+      // click outside
+      const outsideButton = fixture.nativeElement.querySelector('#outside-button');
+      outsideButton.click();
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('ngb-datepicker')).not.toBeNull();
     });
+
+    it(`should close datepicker only on date selection if 'autoClose' set to 'inside'`, () => {
+      const fixture = createTestCmpt(`
+          <input ngbDatepicker #d="ngbDatepicker" autoClose="inside">
+          <button (click)="open(d)">Open</button>
+          <button id="outside-button">Outside button</button>
+      `);
+
+      // open
+      const button = fixture.nativeElement.querySelector('button');
+      button.click();
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('ngb-datepicker')).not.toBeNull();
+
+      // click outside
+      const outsideButton = fixture.nativeElement.querySelector('#outside-button');
+      outsideButton.click();
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('ngb-datepicker')).not.toBeNull();
+
+      // select
+      const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
+      dp.select.emit();
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('ngb-datepicker')).toBeNull();
+    });
+
+    it(`should close datepicker only on outside click if 'autoClose' set to 'outside'`, fakeAsync(() => {
+         const fixture = createTestCmpt(`
+          <input ngbDatepicker #d="ngbDatepicker" autoClose="outside">
+          <button (click)="open(d)">Open</button>
+          <button id="outside-button">Outside button</button>
+      `);
+
+         // open
+         const button = fixture.nativeElement.querySelector('button');
+         button.click();
+         fixture.detectChanges();
+         tick(16);  // flushing RAF in .open()
+         expect(fixture.nativeElement.querySelector('ngb-datepicker')).not.toBeNull();
+
+         // select
+         const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
+         dp.select.emit();
+         fixture.detectChanges();
+         expect(fixture.nativeElement.querySelector('ngb-datepicker')).not.toBeNull();
+
+         // click outside
+         const outsideButton = fixture.nativeElement.querySelector('#outside-button');
+         outsideButton.click();
+         fixture.detectChanges();
+         expect(fixture.nativeElement.querySelector('ngb-datepicker')).toBeNull();
+       }));
   });
 
   describe('ngModel interactions', () => {
@@ -589,7 +710,7 @@ describe('NgbInputDatepicker', () => {
          fixture.detectChanges();
 
          const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
-         expect(dp.startDate).toEqual(NgbDate.from({year: 2016, month: 9, day: 13}));
+         expect(dp.startDate).toEqual(new NgbDate(2016, 9, 13));
        }));
 
     it('should relay the "navigate" event', () => {
@@ -638,7 +759,7 @@ describe('NgbInputDatepicker', () => {
       expect(fixture.componentInstance.onDateSelect).toHaveBeenCalledTimes(2);
       expect(fixture.componentInstance.onModelChange).toHaveBeenCalledTimes(1);
 
-      expect(fixture.componentInstance.onDateSelect).toHaveBeenCalledWith({year: 2018, month: 3, day: 1});
+      expect(fixture.componentInstance.onDateSelect).toHaveBeenCalledWith(new NgbDate(2018, 3, 1));
       expect(fixture.componentInstance.onModelChange).toHaveBeenCalledWith({year: 2018, month: 3, day: 1});
     });
   });
