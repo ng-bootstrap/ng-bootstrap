@@ -93,16 +93,6 @@ const NGB_MODULES = [
   NgbTabsetModule, NgbTimepickerModule, NgbTooltipModule, NgbTypeaheadModule
 ];
 
-/**
- * NgbRootModule is no longer necessary, you can simply import NgbModule
- * Will be removed in 4.0.0.
- *
- * @deprecated 3.0.0
- */
-@NgModule({imports: [NGB_MODULES], exports: NGB_MODULES})
-export class NgbRootModule {
-}
-
 @NgModule({imports: NGB_MODULES, exports: NGB_MODULES})
 export class NgbModule {
   /**
@@ -111,5 +101,5 @@ export class NgbModule {
    *
    * @deprecated 3.0.0
    */
-  static forRoot(): ModuleWithProviders { return {ngModule: NgbRootModule}; }
+  static forRoot(): ModuleWithProviders { return {ngModule: NgbModule}; }
 }
