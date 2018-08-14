@@ -79,7 +79,7 @@ describe('ngb-timepicker', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule(
-        {declarations: [TestComponent], imports: [NgbTimepickerModule.forRoot(), FormsModule, ReactiveFormsModule]});
+        {declarations: [TestComponent], imports: [NgbTimepickerModule, FormsModule, ReactiveFormsModule]});
   });
 
   describe('initialization', () => {
@@ -1127,7 +1127,7 @@ describe('ngb-timepicker', () => {
     let config: NgbTimepickerConfig;
 
     beforeEach(() => {
-      TestBed.configureTestingModule({imports: [NgbTimepickerModule.forRoot()]});
+      TestBed.configureTestingModule({imports: [NgbTimepickerModule]});
       TestBed.overrideComponent(NgbTimepicker, {set: {template: ''}});
     });
 
@@ -1150,7 +1150,7 @@ describe('ngb-timepicker', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule(
-          {imports: [NgbTimepickerModule.forRoot()], providers: [{provide: NgbTimepickerConfig, useValue: config}]});
+          {imports: [NgbTimepickerModule], providers: [{provide: NgbTimepickerConfig, useValue: config}]});
     });
 
     it('should initialize inputs with provided config as provider', () => {
@@ -1303,7 +1303,7 @@ describe('ngb-timepicker', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         declarations: [TestComponent],
-        imports: [NgbTimepickerModule.forRoot(), FormsModule],
+        imports: [NgbTimepickerModule, FormsModule],
         providers: [{provide: NgbTimeAdapter, useClass: StringTimeAdapter}]
       });
     });

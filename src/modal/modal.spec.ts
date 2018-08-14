@@ -757,7 +757,7 @@ class TestComponent {
 @NgModule({
   declarations: [TestComponent, CustomInjectorCmpt, DestroyableCmpt, WithActiveModalCmpt],
   exports: [TestComponent, DestroyableCmpt],
-  imports: [CommonModule, NgbModalModule.forRoot()],
+  imports: [CommonModule, NgbModalModule],
   entryComponents: [CustomInjectorCmpt, DestroyableCmpt, WithActiveModalCmpt],
   providers: [SpyService]
 })
