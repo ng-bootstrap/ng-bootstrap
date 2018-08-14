@@ -140,7 +140,7 @@ describe('ngb-datepicker', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule(
-        {declarations: [TestComponent], imports: [NgbDatepickerModule.forRoot(), FormsModule, ReactiveFormsModule]});
+        {declarations: [TestComponent], imports: [NgbDatepickerModule, FormsModule, ReactiveFormsModule]});
   });
 
   it('should initialize inputs with provided config', () => {
@@ -1053,7 +1053,7 @@ describe('ngb-datepicker', () => {
   describe('Custom config', () => {
     let config: NgbDatepickerConfig;
 
-    beforeEach(() => { TestBed.configureTestingModule({imports: [NgbDatepickerModule.forRoot()]}); });
+    beforeEach(() => { TestBed.configureTestingModule({imports: [NgbDatepickerModule]}); });
 
     beforeEach(inject([NgbDatepickerConfig], (c: NgbDatepickerConfig) => {
       config = c;
@@ -1074,7 +1074,7 @@ describe('ngb-datepicker', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule(
-          {imports: [NgbDatepickerModule.forRoot()], providers: [{provide: NgbDatepickerConfig, useValue: config}]});
+          {imports: [NgbDatepickerModule], providers: [{provide: NgbDatepickerConfig, useValue: config}]});
     });
 
     it('should initialize inputs with provided config as provider', () => {

@@ -25,8 +25,7 @@ function dispatchKeyUpEvent(key: Key) {
 describe('NgbInputDatepicker', () => {
 
   beforeEach(() => {
-    TestBed.configureTestingModule(
-        {declarations: [TestComponent], imports: [NgbDatepickerModule.forRoot(), FormsModule]});
+    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbDatepickerModule, FormsModule]});
   });
 
   describe('open, close and toggle', () => {
@@ -812,7 +811,7 @@ describe('NgbInputDatepicker', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         declarations: [TestNativeComponent],
-        imports: [NgbDatepickerModule.forRoot(), FormsModule],
+        imports: [NgbDatepickerModule, FormsModule],
         providers: [{provide: NgbDateAdapter, useClass: NgbDateNativeAdapter}]
       });
     });

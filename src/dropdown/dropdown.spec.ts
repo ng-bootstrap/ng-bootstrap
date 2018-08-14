@@ -53,7 +53,7 @@ describe('ngb-dropdown', () => {
 
   beforeEach(() => {
     jasmine.addMatchers(jasmineMatchers);
-    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbDropdownModule.forRoot()]});
+    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbDropdownModule]});
   });
 
   it('should be closed and down by default', () => {
@@ -248,8 +248,7 @@ describe('ngb-dropdown', () => {
 describe('ngb-dropdown-toggle', () => {
   beforeEach(() => {
     jasmine.addMatchers(jasmineMatchers);
-    TestBed.configureTestingModule(
-        {declarations: [TestComponent, TestClickCloseOnPush], imports: [NgbDropdownModule.forRoot()]});
+    TestBed.configureTestingModule({declarations: [TestComponent, TestClickCloseOnPush], imports: [NgbDropdownModule]});
   });
 
   it('should toggle dropdown on click', () => {
@@ -611,7 +610,7 @@ describe('ngb-dropdown-toggle', () => {
     let config: NgbDropdownConfig;
 
     beforeEach(() => {
-      TestBed.configureTestingModule({imports: [NgbDropdownModule.forRoot()]});
+      TestBed.configureTestingModule({imports: [NgbDropdownModule]});
       TestBed.overrideComponent(TestComponent, {
         set: {
           template: `
@@ -646,7 +645,7 @@ describe('ngb-dropdown-toggle', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule(
-          {imports: [NgbDropdownModule.forRoot()], providers: [{provide: NgbDropdownConfig, useValue: config}]});
+          {imports: [NgbDropdownModule], providers: [{provide: NgbDropdownConfig, useValue: config}]});
     });
 
     it('should initialize inputs with provided config as provider', () => {

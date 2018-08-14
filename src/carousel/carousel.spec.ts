@@ -31,8 +31,7 @@ function expectActiveSlides(nativeEl: HTMLDivElement, active: boolean[]) {
 
 describe('ngb-carousel', () => {
   beforeEach(() => {
-    TestBed.configureTestingModule(
-        {declarations: [TestComponent, TestComponentOnPush], imports: [NgbCarouselModule.forRoot()]});
+    TestBed.configureTestingModule({declarations: [TestComponent, TestComponentOnPush], imports: [NgbCarouselModule]});
   });
 
   it('should initialize inputs with default values', () => {
@@ -574,7 +573,7 @@ describe('ngb-carousel', () => {
   describe('Custom config', () => {
     let config: NgbCarouselConfig;
 
-    beforeEach(() => { TestBed.configureTestingModule({imports: [NgbCarouselModule.forRoot()]}); });
+    beforeEach(() => { TestBed.configureTestingModule({imports: [NgbCarouselModule]}); });
 
     beforeEach(inject([NgbCarouselConfig], (c: NgbCarouselConfig) => {
       config = c;
@@ -611,7 +610,7 @@ describe('ngb-carousel', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule(
-          {imports: [NgbCarouselModule.forRoot()], providers: [{provide: NgbCarouselConfig, useValue: config}]});
+          {imports: [NgbCarouselModule], providers: [{provide: NgbCarouselConfig, useValue: config}]});
     });
 
     it('should initialize inputs with provided config as provider', () => {
