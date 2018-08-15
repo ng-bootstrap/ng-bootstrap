@@ -570,6 +570,65 @@ describe('ngbRadioGroup', () => {
     expectNameOnAllInputs(fixture.nativeElement, 'bar');
   });
 
+  it('should be possible to change values and uncheck a radio input', () => {
+    const fixture = createTestComponent(`
+      <div [(ngModel)]="model" ngbRadioGroup [uncheckable]="true" >
+        <label ngbButtonLabel>
+          <input ngbButton type="radio" [value]="values[0]"/> {{ values[0] }}
+        </label>
+        <label ngbButtonLabel>
+          <input ngbButton type="radio" [value]="values[1]"/> {{ values[1] }}
+        </label>
+      </div>
+    `);
+
+    let values = fixture.componentInstance.values;
+
+    fixture.detectChanges();
+
+    fixture.componentInstance.model = null;
+    fixture.detectChanges();
+    fixture.whenStable()
+        .then(() => {
+          // clicking first radio
+          getInput(fixture.nativeElement, 0).click();
+          fixture.detectChanges();
+          expectRadios(fixture.nativeElement, [1, 0]);
+          expect(fixture.componentInstance.model).toBe('one');
+          return fixture.whenStable();
+        })
+        .then(() => {
+          // clicking second radio
+          getInput(fixture.nativeElement, 1).click();
+          fixture.detectChanges();
+          expectRadios(fixture.nativeElement, [0, 1]);
+          expect(fixture.componentInstance.model).toBe('two');
+        })
+        .then(() => {
+          // clicking second radio again
+          getInput(fixture.nativeElement, 1).click();
+          fixture.detectChanges();
+          expectRadios(fixture.nativeElement, [0, 0]);
+          expect(fixture.componentInstance.model).toBe(null);
+        })
+        .then(() => {
+          // clicking first radio
+          getInput(fixture.nativeElement, 0).click();
+          fixture.detectChanges();
+          expectRadios(fixture.nativeElement, [1, 0]);
+          expect(fixture.componentInstance.model).toBe('one');
+          return fixture.whenStable();
+        })
+        .then(() => {
+          // clicking first radio again
+          getInput(fixture.nativeElement, 0).click();
+          fixture.detectChanges();
+          expectRadios(fixture.nativeElement, [0, 0]);
+          expect(fixture.componentInstance.model).toBe(null);
+          return fixture.whenStable();
+        });
+  });
+
   describe('accessibility', () => {
     it('should have "group" role', () => {
       const fixture = TestBed.createComponent(TestComponent);

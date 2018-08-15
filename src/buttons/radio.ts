@@ -36,12 +36,17 @@ export class NgbRadioGroup implements ControlValueAccessor {
    */
   @Input() name = `ngb-radio-${nextId++}`;
 
+  /**
+   * A flag indicating if the radio buttons can be unchecked
+   */
+  @Input() uncheckable = false;
+
   onChange = (_: any) => {};
   onTouched = () => {};
 
-  onRadioChange(radio: NgbRadio) {
-    this.writeValue(radio.value);
-    this.onChange(radio.value);
+  onRadioChange(value: any) {
+    this.writeValue(value);
+    this.onChange(value);
   }
 
   onRadioValueUpdate() { this._updateRadiosValue(); }
@@ -80,6 +85,7 @@ export class NgbRadioGroup implements ControlValueAccessor {
     '[disabled]': 'disabled',
     '[name]': 'nameAttr',
     '(change)': 'onChange()',
+    '(click)': 'onClick()',
     '(focus)': 'focused = true',
     '(blur)': 'focused = false'
   }
@@ -145,7 +151,13 @@ export class NgbRadio implements OnDestroy {
 
   ngOnDestroy() { this._group.unregister(this); }
 
-  onChange() { this._group.onRadioChange(this); }
+  onChange() { this._group.onRadioChange(this.value); }
+
+  onClick() {
+    if (this._checked && this._group.uncheckable) {
+      this._group.onRadioChange(null);
+    }
+  }
 
   updateValue(value) {
     // label won't be updated, if it is inside the OnPush component when [ngModel] changes
