@@ -14,7 +14,8 @@ describe('ngb-typeahead-window', () => {
 
   beforeEach(() => {
     TestBed.overrideModule(NgbTypeaheadModule, {set: {exports: [NgbTypeaheadWindow]}});
-    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbTypeaheadModule.forRoot()]});
+    TestBed.configureTestingModule(
+        {declarations: [TestComponent, TestMaxHeightComponent], imports: [NgbTypeaheadModule.forRoot()]});
   });
 
   describe('display', () => {
@@ -128,6 +129,104 @@ describe('ngb-typeahead-window', () => {
       fixture.detectChanges();
       expectResults(fixture.nativeElement, ['bar', '+baz']);
     });
+
+    describe(
+        'automatic scroll to newly active row when window height is limited and navigation is done through keyboard',
+        () => {
+          const testScroll = ({menuHeight, itemHeight, run}) => {
+            const html = `
+          <button (click)="w.next()">+</button>
+          <button (click)="w.prev()">-</button>
+          <ngb-typeahead-window
+            [results]="results"
+            [term]="term"
+            #w="ngbTypeaheadWindow"
+
+            maxHeight="${menuHeight}px"
+          ></ngb-typeahead-window>`;
+            const fixture = createGenericTestComponent(html, TestMaxHeightComponent);
+            const buttons = fixture.nativeElement.querySelectorAll('button');
+            const menu = fixture.nativeElement.querySelector('.dropdown-menu');
+
+            menu.style.width = '10em';
+            Array.from(fixture.nativeElement.querySelectorAll('.dropdown-item'))
+                .forEach((button: HTMLButtonElement) => {
+                  Object.assign(button.style, {width: '100%', height: `${itemHeight}px`});
+                });
+
+            const checkZone = (zone, innerDirection, spec) => {
+              const menuRect = menu.getBoundingClientRect();
+              const activeElementRect =
+                  fixture.nativeElement.querySelector('.dropdown-item.active').getBoundingClientRect();
+
+              const menuPosition = menuRect[zone];
+              const activeElementPosition = activeElementRect[zone];
+              const difference = menuPosition - activeElementPosition;
+
+              if (zone === spec.alignedZone) {
+                // We have a bit of tolerance here (5px)
+                expect(Math.abs(difference))
+                    .toBeLessThanOrEqual(5, `zone ${zone} should be aligned with the dropdown's edge;
+                  dropdown edge position: ${menuPosition};
+                  item edge position: ${activeElementPosition};
+                  `);
+              } else {
+                expect(difference * innerDirection <= 0)
+                    .toBe(
+                        zone !== spec.outside,
+                        `zone ${zone} should be ${spec.outside ? 'outside' : 'inside'} the dropdown;
+                  dropdown edge position: ${menuPosition};
+                  item edge position: ${activeElementPosition};
+                  `);
+              }
+            };
+
+            const pressButtonAndCheckZones = (index, spec) => {
+              buttons[index].click();
+              fixture.detectChanges();
+
+              checkZone('bottom', -1, spec);
+              checkZone('top', +1, spec);
+            };
+            const next = (spec) => pressButtonAndCheckZones(0, spec);
+            const previous = (spec) => pressButtonAndCheckZones(1, spec);
+
+            const api = {next, previous};
+            run(api);
+          };
+
+          it('should align active item edge depending on navigation direction', () => {
+            testScroll({
+              menuHeight: 75,
+              itemHeight: 50,
+              run: ({next, previous}) => {
+                next({alignedZone: 'bottom'});      // top => middle
+                next({alignedZone: 'bottom'});      // middle => bottom
+                next({alignedZone: 'top'});         // bottom => top
+                previous({alignedZone: 'bottom'});  // top => bottom
+                previous({alignedZone: 'top'});     // bottom => middle
+                previous({alignedZone: 'top'});     // middle => top
+              }
+            });
+          });
+
+          it('should always align top if item cannot fit entirely', () => {
+            testScroll({
+              menuHeight: 25,
+              itemHeight: 50,
+              run: ({next, previous}) => {
+                const spec = {alignedZone: 'top', outside: 'bottom'};
+
+                next(spec);      // top => middle
+                next(spec);      // middle => bottom
+                next(spec);      // bottom => top
+                previous(spec);  // top => bottom
+                previous(spec);  // bottom => middle
+                previous(spec);  // middle => top
+              }
+            });
+          });
+        });
   });
 
   describe('result selection', () => {
@@ -208,6 +307,21 @@ class TestComponent {
   active: string;
   results = ['bar', 'baz'];
   term = 'ba';
+  selected: string;
+
+  @ViewChild(NgbTypeaheadWindow) popup: NgbTypeaheadWindow;
+
+  formatterFn = (result) => { return result.toUpperCase(); };
+}
+
+@Component({
+  selector: 'test-max-height-cmp',
+  template: '',
+})
+class TestMaxHeightComponent {
+  active: string;
+  results = ['top', 'middle', 'bottom'];
+  term = '';
   selected: string;
 
   @ViewChild(NgbTypeaheadWindow) popup: NgbTypeaheadWindow;
