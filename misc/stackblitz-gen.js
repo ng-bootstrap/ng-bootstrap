@@ -24,7 +24,7 @@ function generateStackblitzContent(componentName, demoName) {
 <body>
   <form id="mainForm" method="post" action="${stackblitzUrl}">
     <input type="hidden" name="description" value="Example usage of the ${componentName} widget from https://ng-bootstrap.github.io">
-${generateTags(['Angular', 'Bootstrap', 'ng-bootstrap', capitalize(componentName)])}  
+${generateTags(['Angular', 'Bootstrap', 'ng-bootstrap', capitalize(componentName)])}
 
     <input type="hidden" name="files[.angular-cli.json]" value="${he.encode(getStackblitzTemplate('.angular-cli.json'))}">
     <input type="hidden" name="files[index.html]" value="${he.encode(generateIndexHtml())}">
@@ -36,7 +36,7 @@ ${generateTags(['Angular', 'Bootstrap', 'ng-bootstrap', capitalize(componentName
     <input type="hidden" name="files[app/app.component.html]" value="${he.encode(generateAppComponentHtmlContent(componentName, demoName))}">
     <input type="hidden" name="files[app/${fileName}.ts]" value="${he.encode(codeContent)}">
     <input type="hidden" name="files[app/${fileName}.html]" value="${he.encode(markupContent)}">
-    
+
     <input type="hidden" name="dependencies" value="${he.encode(JSON.stringify(generateDependencies()))}">
   </form>
   <script>document.getElementById("mainForm").submit();</script>
@@ -55,12 +55,13 @@ function generateIndexHtml() {
   <head>
     <title>ng-bootstrap demo</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/${versions.bootstrap}/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
   </head>
 
   <body>
     <my-app>loading...</my-app>
   </body>
-  
+
 </html>`;
 }
 
@@ -69,7 +70,7 @@ function generateAppComponentHtmlContent(componentName, demoName) {
 
   return `
 <div class="container-fluid">
-    
+
   <hr>
 
   <p>
@@ -106,10 +107,10 @@ import { AppComponent } from './app.component';
 import { ${demoImports} } from '${demoImport}';
 
 @NgModule({
-  imports: [BrowserModule, FormsModule, ReactiveFormsModule, HttpClientModule, NgbModule.forRoot()], 
+  imports: [BrowserModule, FormsModule, ReactiveFormsModule, HttpClientModule, NgbModule.forRoot()],
   declarations: [AppComponent, ${demoImports}]${needsEntryCmpt ? `,\n  entryComponents: [${entryCmptClass}],` : ','}
   bootstrap: [AppComponent]
-}) 
+})
 export class AppModule {}
 `;
 }

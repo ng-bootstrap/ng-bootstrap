@@ -103,6 +103,7 @@ function generateIndexHtml() {
   <base href="." />
     <title>ng-bootstrap demo</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/${versions.bootstrap}/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
     <script src="https://unpkg.com/core-js@${versions.coreJs}/client/shim.js"></script>
     <script src="https://unpkg.com/zone.js@${versions.zoneJs}/dist/zone.js"></script>
     <script src="https://unpkg.com/zone.js@${versions.zoneJs}/dist/long-stack-trace-zone.js"></script>
