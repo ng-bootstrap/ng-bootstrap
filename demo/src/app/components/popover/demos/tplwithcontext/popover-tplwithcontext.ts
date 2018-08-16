@@ -7,11 +7,11 @@ import {Component} from '@angular/core';
 export class NgbdPopoverTplwithcontext {
   name = 'World';
 
-  toggleWithGreeting(popover, greeting: string) {
+  toggleWithGreeting(popover, greeting: string, language: string) {
     if (popover.isOpen()) {
       popover.close();
     } else {
-      popover.open({greeting});
+      popover.open({greeting, language});
     }
   }
 }
