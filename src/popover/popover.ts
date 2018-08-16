@@ -43,7 +43,11 @@ let nextId = 0;
   },
   template: `
     <div class="arrow"></div>
-    <h3 class="popover-header">{{title}}</h3><div class="popover-body"><ng-content></ng-content></div>`,
+    <h3 class="popover-header">
+      <ng-template #simpleTitle>{{title}}</ng-template>
+      <ng-template [ngTemplateOutlet]="isTitleTemplate() ? title : simpleTitle" [ngTemplateOutletContext]="context"></ng-template>
+    </h3>
+    <div class="popover-body"><ng-content></ng-content></div>`,
   styles: [`
     :host.bs-popover-top .arrow, :host.bs-popover-bottom .arrow {
       left: 50%;
@@ -76,11 +80,14 @@ let nextId = 0;
 })
 export class NgbPopoverWindow {
   @Input() placement: Placement = 'top';
-  @Input() title: string;
+  @Input() title: string | TemplateRef<any>;
   @Input() id: string;
   @Input() popoverClass: string;
+  @Input() context: any;
 
   constructor(private _element: ElementRef<HTMLElement>, private _renderer: Renderer2) {}
+
+  isTitleTemplate() { return this.title instanceof TemplateRef; }
 
   applyPlacement(_placement: Placement) {
     // remove the current placement classes
@@ -129,7 +136,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
   /**
    * Title of a popover. If title and content are empty, the popover won't open.
    */
-  @Input() popoverTitle: string;
+  @Input() popoverTitle: string | TemplateRef<any>;
   /**
    * Placement of a popover accepts:
    *    "top", "top-left", "top-right", "bottom", "bottom-left", "bottom-right",
@@ -213,6 +220,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
     if (!this._windowRef && !this._isDisabled()) {
       this._windowRef = this._popupService.open(this.ngbPopover, context);
       this._windowRef.instance.title = this.popoverTitle;
+      this._windowRef.instance.context = context;
       this._windowRef.instance.popoverClass = this.popoverClass;
       this._windowRef.instance.id = this._ngbPopoverWindowId;
 

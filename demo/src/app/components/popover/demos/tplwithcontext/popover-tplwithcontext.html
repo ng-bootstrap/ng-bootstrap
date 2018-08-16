@@ -3,24 +3,25 @@
 </p>
 
 <ng-template #popContent let-greeting="greeting">{{greeting}}, <b>{{name}}</b>!</ng-template>
+<ng-template #popTitle let-language="language">Greeting in {{language}}</ng-template>
 <button
   type="button" class="btn btn-outline-secondary mr-2"
-  [ngbPopover]="popContent" popoverTitle="Greeting"
-  triggers="manual" #p1="ngbPopover" (click)="toggleWithGreeting(p1, 'Bonjour')"
+  [ngbPopover]="popContent" [popoverTitle]="popTitle"
+  triggers="manual" #p1="ngbPopover" (click)="toggleWithGreeting(p1, 'Bonjour', 'French')"
 >
   French
 </button>
 <button
   type="button" class="btn btn-outline-secondary mr-2"
-  [ngbPopover]="popContent" popoverTitle="Greeting"
-  triggers="manual" #p2="ngbPopover" (click)="toggleWithGreeting(p2, 'Gutentag')"
+  [ngbPopover]="popContent" [popoverTitle]="popTitle"
+  triggers="manual" #p2="ngbPopover" (click)="toggleWithGreeting(p2, 'Gutentag', 'German')"
 >
   German
 </button>
 <button
   type="button" class="btn btn-outline-secondary mr-2"
-  [ngbPopover]="popContent" popoverTitle="Greeting"
-  triggers="manual" #p3="ngbPopover" (click)="toggleWithGreeting(p3, 'Hello')"
+  [ngbPopover]="popContent" [popoverTitle]="popTitle"
+  triggers="manual" #p3="ngbPopover" (click)="toggleWithGreeting(p3, 'Hello', 'English')"
 >
   English
 </button>

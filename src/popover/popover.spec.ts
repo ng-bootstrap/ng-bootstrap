@@ -2,7 +2,7 @@ import {TestBed, ComponentFixture, inject, fakeAsync, tick} from '@angular/core/
 import {createGenericTestComponent, createKeyEvent} from '../test/common';
 
 import {By} from '@angular/platform-browser';
-import {Component, ViewChild, ChangeDetectionStrategy, Injectable, OnDestroy} from '@angular/core';
+import {Component, ViewChild, ChangeDetectionStrategy, Injectable, OnDestroy, TemplateRef} from '@angular/core';
 
 import {Key} from '../util/key';
 
@@ -167,6 +167,42 @@ describe('ngb-popover', () => {
       fixture.detectChanges();
       expect(getWindow(fixture.nativeElement)).toBeNull();
       expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
+    });
+
+    it('should accept a template for the title and properly destroy it when closing', () => {
+      const fixture = createTestComponent(`
+          <ng-template #t>Hello, {{name}}! <destroyable-cmpt></destroyable-cmpt></ng-template>
+          <div ngbPopover="Body" [popoverTitle]="t"></div>`);
+      const directive = fixture.debugElement.query(By.directive(NgbPopover));
+      const spyService = fixture.debugElement.injector.get(SpyService);
+
+      directive.triggerEventHandler('click', {});
+      fixture.detectChanges();
+      const windowEl = getWindow(fixture.nativeElement);
+      expect(windowEl.textContent.trim()).toBe('Hello, World! Some contentBody');
+      expect(spyService.called).toBeFalsy();
+
+      directive.triggerEventHandler('click', {});
+      fixture.detectChanges();
+      expect(getWindow(fixture.nativeElement)).toBeNull();
+      expect(spyService.called).toBeTruthy();
+    });
+
+    it('should pass the context to the template for the title', () => {
+      const fixture = createTestComponent(`
+          <ng-template #t let-greeting="greeting">{{greeting}}, {{name}}!</ng-template>
+          <div ngbPopover="!!" [popoverTitle]="t"></div>`);
+      const directive = fixture.debugElement.query(By.directive(NgbPopover));
+
+      fixture.componentInstance.name = 'tout le monde';
+      fixture.componentInstance.popover.open({greeting: 'Bonjour'});
+      fixture.detectChanges();
+      const windowEl = getWindow(fixture.nativeElement);
+      expect(windowEl.textContent.trim()).toBe('Bonjour, tout le monde!!!');
+
+      directive.triggerEventHandler('click', {});
+      fixture.detectChanges();
+      expect(getWindow(fixture.nativeElement)).toBeNull();
     });
 
     it('should properly destroy TemplateRef content', () => {
