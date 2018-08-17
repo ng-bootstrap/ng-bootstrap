@@ -12,6 +12,10 @@ const ENTRY_CMPTS = {
   modal: ['component']
 };
 
+function generateDemosCSS() {
+  return fs.readFileSync('demo/src/style/demos.css').toString();
+}
+
 function generateStackblitzContent(componentName, demoName) {
   const fileName = `${componentName}-${demoName}`;
   const basePath = `demo/src/app/components/${componentName}/demos/${demoName}/${fileName}`;
@@ -30,7 +34,7 @@ ${generateTags(['Angular', 'Bootstrap', 'ng-bootstrap', capitalize(componentName
     <input type="hidden" name="files[index.html]" value="${he.encode(generateIndexHtml())}">
     <input type="hidden" name="files[main.ts]" value="${he.encode(getStackblitzTemplate('main.ts'))}">
     <input type="hidden" name="files[polyfills.ts]" value="${he.encode(getStackblitzTemplate('polyfills.ts'))}">
-    <input type="hidden" name="files[styles.css]" value="${he.encode(getStackblitzTemplate('styles.css'))}">
+    <input type="hidden" name="files[styles.css]" value="${he.encode(generateDemosCSS())}">
     <input type="hidden" name="files[app/app.module.ts]" value="${he.encode(generateAppModuleTsContent(componentName, demoName, `${basePath}.ts`))}">
     <input type="hidden" name="files[app/app.component.ts]" value="${he.encode(getStackblitzTemplate('app/app.component.ts'))}">
     <input type="hidden" name="files[app/app.component.html]" value="${he.encode(generateAppComponentHtmlContent(componentName, demoName))}">
