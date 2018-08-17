@@ -13,4 +13,5 @@ export class NgbTooltipConfig {
   triggers = 'hover';
   container: string;
   disableTooltip = false;
+  tooltipClass: string;
 }
