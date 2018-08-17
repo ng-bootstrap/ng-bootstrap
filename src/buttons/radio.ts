@@ -84,7 +84,6 @@ export class NgbRadioGroup implements ControlValueAccessor {
     '[checked]': 'checked',
     '[disabled]': 'disabled',
     '[name]': 'nameAttr',
-    '(change)': 'onChange()',
     '(click)': 'onClick()',
     '(focus)': 'focused = true',
     '(blur)': 'focused = false'
@@ -151,11 +150,13 @@ export class NgbRadio implements OnDestroy {
 
   ngOnDestroy() { this._group.unregister(this); }
 
-  onChange() { this._group.onRadioChange(this.value); }
-
   onClick() {
-    if (this._checked && this._group.uncheckable) {
-      this._group.onRadioChange(null);
+    if (this._checked) {
+      if (this._group.uncheckable) {
+        this._group.onRadioChange(null);
+      }
+    } else {
+      this._group.onRadioChange(this.value);
     }
   }
 
