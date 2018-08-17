@@ -71,7 +71,8 @@
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/prismjs/themes/prism.css",
-              "demo/src/style/app.scss"
+              "demo/src/style/app.scss",
+              "demo/src/style/demos.css"
             ],
             "scripts": []
           },

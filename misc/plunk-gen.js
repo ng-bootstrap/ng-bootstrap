@@ -68,6 +68,10 @@ function generateTags(tags) {
   }).join('\n');
 }
 
+function generateDemosCSS() {
+  return fs.readFileSync('demo/src/style/demos.css').toString();
+}
+
 function generatePlnkrContent(componentName, demoName) {
   const fileName = `${componentName}-${demoName}`;
   const basePath = `demo/src/app/components/${componentName}/demos/${demoName}/${fileName}`;
@@ -84,6 +88,7 @@ function generatePlnkrContent(componentName, demoName) {
     <input type="hidden" name="description" value="Example usage of the ${componentName} widget from https://ng-bootstrap.github.io">
 ${generateTags(['Angular', 'Bootstrap', 'ng-bootstrap', capitalize(componentName)])}
     <input type="hidden" name="files[index.html]" value="${he.encode(generateIndexHtml())}">
+    <input type="hidden" name="files[styles.css]" value="${he.encode(generateDemosCSS())}">
     <input type="hidden" name="files[config.js]" value="${he.encode(generateConfigJs())}">
     <input type="hidden" name="files[src/main.ts]" value="${he.encode(contentMainTs)}">
     <input type="hidden" name="files[src/app.ts]" value="${he.encode(generateAppTsContent(componentName, demoName, `${basePath}.ts`))}">
@@ -103,6 +108,7 @@ function generateIndexHtml() {
   <base href="." />
     <title>ng-bootstrap demo</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/${versions.bootstrap}/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="styles.css" />
     <script src="https://unpkg.com/core-js@${versions.coreJs}/client/shim.js"></script>
     <script src="https://unpkg.com/zone.js@${versions.zoneJs}/dist/zone.js"></script>
     <script src="https://unpkg.com/zone.js@${versions.zoneJs}/dist/long-stack-trace-zone.js"></script>
