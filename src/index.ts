@@ -46,6 +46,7 @@ export {
   NgbCalendarPersian,
   NgbDatepickerModule,
   NgbDatepickerI18n,
+  NgbDatepickerI18nHebrew,
   NgbDatepickerConfig,
   NgbDateStruct,
   NgbDate,
