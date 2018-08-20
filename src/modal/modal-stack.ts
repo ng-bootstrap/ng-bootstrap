@@ -4,7 +4,6 @@ import {
   Injectable,
   Injector,
   Inject,
-  ComponentFactory,
   ComponentFactoryResolver,
   ComponentRef,
   TemplateRef
@@ -22,6 +21,7 @@ import {NgbActiveModal, NgbModalRef} from './modal-ref';
 export class NgbModalStack {
   private _windowAttributes = ['ariaLabelledBy', 'backdrop', 'centered', 'keyboard', 'size', 'windowClass'];
   private _backdropAttributes = ['backdropClass'];
+  private _modalRefs: NgbModalRef[] = [];
 
   constructor(
       private _applicationRef: ApplicationRef, private _injector: Injector, @Inject(DOCUMENT) private _document,
@@ -45,6 +45,7 @@ export class NgbModalStack {
     let windowCmptRef: ComponentRef<NgbModalWindow> = this._attachWindowComponent(moduleCFR, containerEl, contentRef);
     let ngbModalRef: NgbModalRef = new NgbModalRef(windowCmptRef, contentRef, backdropCmptRef, options.beforeDismiss);
 
+    this._registerModalRef(ngbModalRef);
     ngbModalRef.result.then(revertPaddingForScrollBar, revertPaddingForScrollBar);
     activeModal.close = (result: any) => { ngbModalRef.close(result); };
     activeModal.dismiss = (reason: any) => { ngbModalRef.dismiss(reason); };
@@ -56,6 +57,8 @@ export class NgbModalStack {
     }
     return ngbModalRef;
   }
+
+  dismissAll(reason?: any) { this._modalRefs.forEach(ngbModalRef => ngbModalRef.dismiss(reason)); }
 
   private _attachBackdrop(moduleCFR: ComponentFactoryResolver, containerEl: any): ComponentRef<NgbModalBackdrop> {
     let backdropFactory = moduleCFR.resolveComponentFactory(NgbModalBackdrop);
@@ -124,5 +127,16 @@ export class NgbModalStack {
     const componentRef = contentCmptFactory.create(modalContentInjector);
     this._applicationRef.attachView(componentRef.hostView);
     return new ContentRef([[componentRef.location.nativeElement]], componentRef.hostView, componentRef);
+  }
+
+  private _registerModalRef(ngbModalRef: NgbModalRef) {
+    const unregisterModalRef = () => {
+      const index = this._modalRefs.indexOf(ngbModalRef);
+      if (index > -1) {
+        this._modalRefs.splice(index, 1);
+      }
+    };
+    this._modalRefs.push(ngbModalRef);
+    ngbModalRef.result.then(unregisterModalRef, unregisterModalRef);
   }
 }
