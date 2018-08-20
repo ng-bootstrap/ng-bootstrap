@@ -16,11 +16,15 @@ function toJSDate(date: NgbDate) {
 
 export type NgbPeriod = 'y' | 'm' | 'd';
 
+export function NGB_DATEPICKER_CALENDAR_FACTORY() {
+  return new NgbCalendarGregorian();
+}
+
 /**
  * Calendar used by the datepicker.
  * Default implementation uses Gregorian calendar.
  */
-@Injectable()
+@Injectable({providedIn: 'root', useFactory: NGB_DATEPICKER_CALENDAR_FACTORY})
 export abstract class NgbCalendar {
   /**
    * Returns number of days per week.
