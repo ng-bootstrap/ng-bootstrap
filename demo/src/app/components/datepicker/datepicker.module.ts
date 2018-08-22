@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
 
 import { NgbdSharedModule } from '../../shared';
 import { ComponentWrapper } from '../../shared/component-wrapper/component-wrapper.component';
-import { NgbdComponentsSharedModule } from '../shared';
-import { getApis, NgbdApiPage } from '../shared/api-page/api.component';
+import { NgbdComponentsSharedModule, NgbdDemoList } from '../shared';
+import { NgbdApiPage } from '../shared/api-page/api.component';
 import { NgbdExamplesPage } from '../shared/examples-page/examples.component';
 import { NgbdDatepickerAdapter } from './demos/adapter/datepicker-adapter';
 import { NgbdDatepickerBasic } from './demos/basic/datepicker-basic';
@@ -36,7 +35,7 @@ const DEMO_DIRECTIVES = [
   NgbdDatepickerAdapter
 ];
 
-const overview = {
+const OVERVIEW = {
   'basic-usage': 'Basic Usage',
   'getting-date': 'Getting/setting a date',
   'date-model': 'Date model and format',
@@ -49,7 +48,7 @@ const overview = {
   'keyboard-shortcuts': 'Keyboard shortcuts'
 };
 
-const demos = {
+const DEMOS = {
   basic: {
     title: 'Basic datepicker',
     type: NgbdDatepickerBasic,
@@ -118,14 +117,12 @@ const demos = {
   }
 };
 
-const apis = getApis('datepicker');
-
-const ROUTES = [
+export const ROUTES = [
   { path: '', pathMatch: 'full', redirectTo: 'overview' },
   {
     path: '',
     component: ComponentWrapper,
-    data: { overview, demos, apis },
+    data: { OVERVIEW },
     children: [
       { path: 'overview', component: NgbdDatepickerOverviewComponent },
       { path: 'examples', component: NgbdExamplesPage },
@@ -137,10 +134,8 @@ const ROUTES = [
 @NgModule({
   imports: [
     NgbdSharedModule,
-    NgbdComponentsSharedModule,
-    RouterModule.forChild(ROUTES)
+    NgbdComponentsSharedModule
   ],
-  exports: [RouterModule],
   declarations: [
     ...DEMO_DIRECTIVES,
     NgbdDatepickerOverviewComponent,
@@ -148,4 +143,8 @@ const ROUTES = [
   ],
   entryComponents: DEMO_DIRECTIVES
 })
-export class NgbdDatepickerModule {}
+export class NgbdDatepickerModule {
+  constructor(demoList: NgbdDemoList) {
+    demoList.register('datepicker', DEMOS, OVERVIEW);
+  }
+}

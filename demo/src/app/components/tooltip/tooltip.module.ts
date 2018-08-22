@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
 
 import { NgbdSharedModule } from '../../shared';
 import { ComponentWrapper } from '../../shared/component-wrapper/component-wrapper.component';
-import { NgbdComponentsSharedModule } from '../shared';
-import { getApis, NgbdApiPage } from '../shared/api-page/api.component';
+import { NgbdComponentsSharedModule, NgbdDemoList } from '../shared';
+import { NgbdApiPage } from '../shared/api-page/api.component';
 import { NgbdExamplesPage } from '../shared/examples-page/examples.component';
 import { NgbdTooltipAutoclose } from './demos/autoclose/tooltip-autoclose';
 import { NgbdTooltipBasic } from './demos/basic/tooltip-basic';
@@ -24,7 +23,7 @@ const DEMO_DIRECTIVES = [
   NgbdTooltipTplwithcontext
 ];
 
-const demos = {
+const DEMOS = {
   basic: {
     title: 'Quick and easy tooltips',
     type: NgbdTooltipBasic,
@@ -69,14 +68,11 @@ const demos = {
   }
 };
 
-const apis = getApis('tooltip');
-
-const ROUTES = [
+export const ROUTES = [
   { path: '', pathMatch: 'full', redirectTo: 'examples' },
   {
     path: '',
     component: ComponentWrapper,
-    data: { demos, apis },
     children: [
       { path: 'examples', component: NgbdExamplesPage },
       { path: 'api', component: NgbdApiPage }
@@ -87,11 +83,13 @@ const ROUTES = [
 @NgModule({
   imports: [
     NgbdSharedModule,
-    NgbdComponentsSharedModule,
-    RouterModule.forChild(ROUTES)
+    NgbdComponentsSharedModule
   ],
-  exports: [RouterModule],
   declarations: DEMO_DIRECTIVES,
   entryComponents: DEMO_DIRECTIVES
 })
-export class NgbdTooltipModule {}
+export class NgbdTooltipModule {
+  constructor(demoList: NgbdDemoList) {
+    demoList.register('tooltip', DEMOS);
+  }
+}

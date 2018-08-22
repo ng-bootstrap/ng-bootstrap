@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 
+import { NgbdDemoList } from '../../shared';
 import { NgbdOverview } from '../../shared/overview';
 
 @Component({
@@ -103,15 +103,7 @@ providers: [{provide: NgbDatepickerI18n, useClass: YourOwnDatepickerI18n}]
 
   sections: NgbdOverview = {};
 
-  constructor(route: ActivatedRoute) {
-    const { overview } = route.parent.snapshot.data;
-    if (overview) {
-      Object.keys(overview).map(fragment => {
-        this.sections[fragment] = {
-          fragment,
-          title: overview[fragment]
-        };
-      });
-    }
+  constructor(demoList: NgbdDemoList) {
+    this.sections = demoList.getOverviewSections('datepicker');
   }
 }

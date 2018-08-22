@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
 
 import { NgbdSharedModule } from '../../shared';
 import { ComponentWrapper } from '../../shared/component-wrapper/component-wrapper.component';
-import { NgbdComponentsSharedModule } from '../shared';
-import { getApis, NgbdApiPage } from '../shared/api-page/api.component';
+import { NgbdComponentsSharedModule, NgbdDemoList } from '../shared';
+import { NgbdApiPage } from '../shared/api-page/api.component';
 import { NgbdExamplesPage } from '../shared/examples-page/examples.component';
 import { NgbdButtonsCheckbox } from './demos/checkbox/buttons-checkbox';
 import { NgbdButtonsCheckboxreactive } from './demos/checkboxreactive/buttons-checkboxreactive';
@@ -13,7 +12,7 @@ import { NgbdButtonsRadioreactive } from './demos/radioreactive/buttons-radiorea
 
 const DEMO_DIRECTIVES = [NgbdButtonsCheckbox, NgbdButtonsCheckboxreactive, NgbdButtonsRadio, NgbdButtonsRadioreactive];
 
-const demos = {
+const DEMOS = {
   checkbox: {
     title: 'Checkbox buttons',
     type: NgbdButtonsCheckbox,
@@ -37,16 +36,12 @@ const demos = {
     type: NgbdButtonsRadioreactive,
     code: require('!!raw-loader!./demos/radioreactive/buttons-radioreactive'),
     markup: require('!!raw-loader!./demos/radioreactive/buttons-radioreactive.html')
-  }
-};
+  }};
 
-const apis = getApis('buttons');
-
-const ROUTES = [
+export const ROUTES = [
   { path: '', pathMatch: 'full', redirectTo: 'examples' },
   { path: '',
     component: ComponentWrapper,
-    data: { demos, apis },
     children: [
       { path: 'examples', component: NgbdExamplesPage },
       { path: 'api', component: NgbdApiPage }
@@ -55,9 +50,12 @@ const ROUTES = [
 ];
 
 @NgModule({
-  imports: [NgbdSharedModule, NgbdComponentsSharedModule, RouterModule.forChild(ROUTES)],
-  exports: [RouterModule],
+  imports: [NgbdSharedModule, NgbdComponentsSharedModule ],
   declarations: DEMO_DIRECTIVES,
   entryComponents: DEMO_DIRECTIVES
 })
-export class NgbdButtonsModule {}
+export class NgbdButtonsModule {
+  constructor(demoList: NgbdDemoList) {
+    demoList.register('buttons', DEMOS);
+  }
+}

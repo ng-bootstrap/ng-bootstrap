@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
 
 import { NgbdSharedModule } from '../../shared';
 import { ComponentWrapper } from '../../shared/component-wrapper/component-wrapper.component';
-import { NgbdComponentsSharedModule } from '../shared';
-import { getApis, NgbdApiPage } from '../shared/api-page/api.component';
+import { NgbdComponentsSharedModule, NgbdDemoList } from '../shared';
+import { NgbdApiPage } from '../shared/api-page/api.component';
 import { NgbdExamplesPage } from '../shared/examples-page/examples.component';
 import { NgbdModalBasic } from './demos/basic/modal-basic';
 import { NgbdModalComponent, NgbdModalContent } from './demos/component/modal-component';
@@ -12,7 +11,7 @@ import { NgbdModalOptions } from './demos/options/modal-options';
 
 const DEMO_DIRECTIVES = [NgbdModalBasic, NgbdModalComponent, NgbdModalOptions];
 
-const demos = {
+const DEMOS = {
   basic: {
     title: 'Modal with default options',
     type: NgbdModalBasic,
@@ -33,14 +32,11 @@ const demos = {
   }
 };
 
-const apis = getApis('modal');
-
-const ROUTES = [
+export const ROUTES = [
   { path: '', pathMatch: 'full', redirectTo: 'examples' },
   {
     path: '',
     component: ComponentWrapper,
-    data: { demos, apis },
     children: [
       { path: 'examples', component: NgbdExamplesPage },
       { path: 'api', component: NgbdApiPage }
@@ -51,11 +47,13 @@ const ROUTES = [
 @NgModule({
   imports: [
     NgbdSharedModule,
-    NgbdComponentsSharedModule,
-    RouterModule.forChild(ROUTES)
+    NgbdComponentsSharedModule
   ],
-  exports: [RouterModule],
   declarations: [NgbdModalContent, ...DEMO_DIRECTIVES],
-  entryComponents: DEMO_DIRECTIVES
+  entryComponents: [NgbdModalContent, ...DEMO_DIRECTIVES]
 })
-export class NgbdModalModule {}
+export class NgbdModalModule {
+  constructor(demoList: NgbdDemoList) {
+    demoList.register('modal', DEMOS);
+  }
+}

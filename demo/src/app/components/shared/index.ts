@@ -8,6 +8,8 @@ import { NgbdExamplesPage } from './examples-page/examples.component';
 import { NgbdFragment } from './fragment';
 import { NgbdOverviewDirective, NgbdOverviewSectionComponent } from './overview';
 
+export * from './demo-list';
+
 @NgModule({
   imports: [NgbdSharedModule],
   declarations: [

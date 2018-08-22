@@ -31,7 +31,6 @@ export function getApis(component) {
   return { components, classes, configs };
 }
 
-
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -46,7 +45,8 @@ export class NgbdApiPage {
   configs: string[];
 
   constructor(route: ActivatedRoute) {
-    const { apis } = route.parent.snapshot.data;
+    const component = route.parent.parent.snapshot.url[1].path;
+    const apis = getApis(component);
     this.components = apis.components.sort();
     this.classes = apis.classes.sort();
     this.configs = apis.configs.sort();

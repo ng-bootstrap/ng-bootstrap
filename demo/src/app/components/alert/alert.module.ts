@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
 
 import { NgbdSharedModule } from '../../shared';
 import { ComponentWrapper } from '../../shared/component-wrapper/component-wrapper.component';
-import { NgbdComponentsSharedModule } from '../shared';
-import { getApis, NgbdApiPage } from '../shared/api-page/api.component';
+import { NgbdComponentsSharedModule, NgbdDemoList } from '../shared';
+import { NgbdApiPage } from '../shared/api-page/api.component';
 import { NgbdExamplesPage } from '../shared/examples-page/examples.component';
 import { NgbdAlertBasic } from './demos/basic/alert-basic';
 import { NgbdAlertCloseable } from './demos/closeable/alert-closeable';
@@ -14,7 +13,7 @@ import { NgbdAlertSelfclosing } from './demos/selfclosing/alert-selfclosing';
 
 const DEMO_DIRECTIVES = [NgbdAlertBasic, NgbdAlertCloseable, NgbdAlertSelfclosing, NgbdAlertCustom, NgbdAlertConfig];
 
-const demos = {
+const DEMOS = {
   basic: {
     title: 'Basic Alert',
     type: NgbdAlertBasic,
@@ -47,13 +46,10 @@ const demos = {
   }
 };
 
-const apis = getApis('alert');
-
-const ROUTES = [
+export const ROUTES = [
   { path: '', pathMatch: 'full', redirectTo: 'examples' },
   { path: '',
     component: ComponentWrapper,
-    data: { demos, apis },
     children: [
       { path: 'examples', component: NgbdExamplesPage },
       { path: 'api', component: NgbdApiPage }
@@ -62,9 +58,12 @@ const ROUTES = [
 ];
 
 @NgModule({
-  imports: [NgbdSharedModule, NgbdComponentsSharedModule, RouterModule.forChild(ROUTES)],
-  exports: [RouterModule],
+  imports: [NgbdSharedModule, NgbdComponentsSharedModule ],
   declarations: DEMO_DIRECTIVES,
   entryComponents: DEMO_DIRECTIVES
 })
-export class NgbdAlertModule {}
+export class NgbdAlertModule {
+  constructor(demoList: NgbdDemoList) {
+    demoList.register('alert', DEMOS);
+  }
+}

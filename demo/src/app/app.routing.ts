@@ -1,8 +1,25 @@
 import { ModuleWithProviders } from '@angular/core';
-import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
+import { ROUTES as ACCORDION_ROUTES } from './components/accordion/accordion.module';
+import { ROUTES as ALERT_ROUTES } from './components/alert/alert.module';
+import { ROUTES as BUTTONS_ROUTES } from './components/buttons/buttons.module';
+import { ROUTES as CAROUSEL_ROUTES } from './components/carousel/carousel.module';
+import { ROUTES as COLLAPSE_ROUTES } from './components/collapse/collapse.module';
+import { ROUTES as DATEPICKER_ROUTES } from './components/datepicker/datepicker.module';
+import { ROUTES as DROPDOWN_ROUTES } from './components/dropdown/dropdown.module';
+import { ROUTES as MODAL_ROUTES } from './components/modal/modal.module';
+import { ROUTES as PAGINATION_ROUTES } from './components/pagination/pagination.module';
+import { ROUTES as POPOVER_ROUTES } from './components/popover/popover.module';
+import { ROUTES as PROGRESSBAR_ROUTES } from './components/progressbar/progressbar.module';
+import { ROUTES as RATING_ROUTES } from './components/rating/rating.module';
+import { ROUTES as TABSET_ROUTES } from './components/tabset/tabset.module';
+import { ROUTES as TIMEPICKER_ROUTES } from './components/timepicker/timepicker.module';
+import { ROUTES as TOOLTIP_ROUTES } from './components/tooltip/tooltip.module';
+import { ROUTES as TYPEAHEAD_ROUTES } from './components/typeahead/typeahead.module';
 import { DefaultComponent } from './default';
 import { GettingStarted } from './getting-started';
+
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
@@ -11,73 +28,72 @@ const routes: Routes = [
   { path: 'components', pathMatch: 'full', redirectTo: 'components/accordion' },
   {
     path: 'components/accordion',
-    loadChildren: './components/accordion/accordion.module#NgbdAccordionModule'
+    children: ACCORDION_ROUTES
   },
   {
     path: 'components/alert',
-    loadChildren: './components/alert/alert.module#NgbdAlertModule'
+    children: ALERT_ROUTES
   },
   {
     path: 'components/buttons',
-    loadChildren: './components/buttons/buttons.module#NgbdButtonsModule'
+    children: BUTTONS_ROUTES
   },
   {
     path: 'components/carousel',
-    loadChildren: './components/carousel/carousel.module#NgbdCarouselModule'
+    children: CAROUSEL_ROUTES
   },
   {
     path: 'components/collapse',
-    loadChildren: './components/collapse/collapse.module#NgbdCollapseModule'
+    children: COLLAPSE_ROUTES
   },
   {
     path: 'components/datepicker',
-    loadChildren: './components/datepicker/datepicker.module#NgbdDatepickerModule'
+    children: DATEPICKER_ROUTES
   },
   {
     path: 'components/dropdown',
-    loadChildren: './components/dropdown/dropdown.module#NgbdDropdownModule'
+    children: DROPDOWN_ROUTES
   },
   {
     path: 'components/modal',
-    loadChildren: './components/modal/modal.module#NgbdModalModule'
+    children: MODAL_ROUTES
   },
   {
     path: 'components/pagination',
-    loadChildren: './components/pagination/pagination.module#NgbdPaginationModule'
+    children: PAGINATION_ROUTES
   },
   {
     path: 'components/popover',
-    loadChildren: './components/popover/popover.module#NgbdPopoverModule'
+    children: POPOVER_ROUTES
   },
   {
     path: 'components/progressbar',
-    loadChildren: './components/progressbar/progressbar.module#NgbdProgressbarModule'
+    children: PROGRESSBAR_ROUTES
   },
   {
     path: 'components/rating',
-    loadChildren: './components/rating/rating.module#NgbdRatingModule'
+    children: RATING_ROUTES
   },
   {
     path: 'components/tabs',
-    loadChildren: './components/tabset/tabset.module#NgbdTabsetModule'
+    children: TABSET_ROUTES
   },
   {
     path: 'components/timepicker',
-    loadChildren: './components/timepicker/timepicker.module#NgbdTimepickerModule'
+    children: TIMEPICKER_ROUTES
   },
   {
     path: 'components/tooltip',
-    loadChildren: './components/tooltip/tooltip.module#NgbdTooltipModule'
+    children: TOOLTIP_ROUTES
   },
   {
     path: 'components/typeahead',
-    loadChildren: './components/typeahead/typeahead.module#NgbdTypeaheadModule'
+    children: TYPEAHEAD_ROUTES
   },
   { path: '**', redirectTo: 'home' }
 ];
 
 export const routing: ModuleWithProviders = RouterModule.forRoot(routes, {
   enableTracing: false,
-  useHash: true,
-  preloadingStrategy: PreloadAllModules
+  useHash: true
 });

@@ -1,17 +1,16 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
 
 import { NgbdSharedModule } from '../../shared';
 import { ComponentWrapper } from '../../shared/component-wrapper/component-wrapper.component';
-import { NgbdComponentsSharedModule } from '../shared';
-import { getApis, NgbdApiPage } from '../shared/api-page/api.component';
+import { NgbdComponentsSharedModule, NgbdDemoList } from '../shared';
+import { NgbdApiPage } from '../shared/api-page/api.component';
 import { NgbdExamplesPage } from '../shared/examples-page/examples.component';
 import { NgbdRatingBasic } from './demos/basic/rating-basic';
 import { NgbdRatingConfig } from './demos/config/rating-config';
-import { NgbdRatingTemplate } from './demos/template/rating-template';
-import { NgbdRatingEvents } from './demos/events/rating-events';
 import { NgbdRatingDecimal } from './demos/decimal/rating-decimal';
+import { NgbdRatingEvents } from './demos/events/rating-events';
 import { NgbdRatingForm } from './demos/form/rating-form';
+import { NgbdRatingTemplate } from './demos/template/rating-template';
 
 const DEMO_DIRECTIVES = [
   NgbdRatingBasic,
@@ -22,7 +21,7 @@ const DEMO_DIRECTIVES = [
   NgbdRatingForm
 ];
 
-const demos = {
+const DEMOS = {
   basic: {
     title: 'Basic demo',
     type: NgbdRatingBasic,
@@ -61,14 +60,11 @@ const demos = {
   }
 };
 
-const apis = getApis('rating');
-
-const ROUTES = [
+export const ROUTES = [
   { path: '', pathMatch: 'full', redirectTo: 'examples' },
   {
     path: '',
     component: ComponentWrapper,
-    data: { demos, apis },
     children: [
       { path: 'examples', component: NgbdExamplesPage },
       { path: 'api', component: NgbdApiPage }
@@ -79,11 +75,13 @@ const ROUTES = [
 @NgModule({
   imports: [
     NgbdSharedModule,
-    NgbdComponentsSharedModule,
-    RouterModule.forChild(ROUTES)
+    NgbdComponentsSharedModule
   ],
-  exports: [RouterModule],
   declarations: DEMO_DIRECTIVES,
   entryComponents: DEMO_DIRECTIVES
 })
-export class NgbdRatingModule {}
+export class NgbdRatingModule {
+  constructor(demoList: NgbdDemoList) {
+    demoList.register('rating', DEMOS);
+  }
+}
