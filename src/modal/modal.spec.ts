@@ -222,17 +222,19 @@ describe('ngb-modal', () => {
         fixture.whenStable().then(() => { expect(rejectReason).toBe('myReason'); });
       });
 
-      it('should add / remove "modal-open" class to body when modal is open', () => {
-        const modalRef = fixture.componentInstance.open('bar');
-        fixture.detectChanges();
-        expect(fixture.nativeElement).toHaveModal();
-        expect(document.body).toHaveCssClass('modal-open');
+      it('should add / remove "modal-open" class to body when modal is open', async(() => {
+           const modalRef = fixture.componentInstance.open('bar');
+           fixture.detectChanges();
+           expect(fixture.nativeElement).toHaveModal();
+           expect(document.body).toHaveCssClass('modal-open');
 
-        modalRef.close('bar result');
-        fixture.detectChanges();
-        expect(fixture.nativeElement).not.toHaveModal();
-        expect(document.body).not.toHaveCssClass('modal-open');
-      });
+           modalRef.close('bar result');
+           fixture.detectChanges();
+           fixture.whenStable().then(() => {
+             expect(fixture.nativeElement).not.toHaveModal();
+             expect(document.body).not.toHaveCssClass('modal-open');
+           });
+         }));
 
       it('should not throw when close called multiple times', () => {
         const modalInstance = fixture.componentInstance.open('foo');
@@ -281,6 +283,31 @@ describe('ngb-modal', () => {
         fixture.detectChanges();
         expect(fixture.nativeElement).not.toHaveModal();
       });
+    });
+
+    describe('stacked  modals', () => {
+
+      it('should not remove "modal-open" class on body when closed modal is not last', async(() => {
+           const modalRef1 = fixture.componentInstance.open('foo');
+           const modalRef2 = fixture.componentInstance.open('bar');
+           fixture.detectChanges();
+           expect(fixture.nativeElement).toHaveModal();
+           expect(document.body).toHaveCssClass('modal-open');
+
+           modalRef1.close('foo result');
+           fixture.detectChanges();
+           fixture.whenStable().then(() => {
+             expect(fixture.nativeElement).toHaveModal();
+             expect(document.body).toHaveCssClass('modal-open');
+
+             modalRef2.close('bar result');
+             fixture.detectChanges();
+             fixture.whenStable().then(() => {
+               expect(fixture.nativeElement).not.toHaveModal();
+               expect(document.body).not.toHaveCssClass('modal-open');
+             });
+           });
+         }));
     });
 
     describe('backdrop options', () => {

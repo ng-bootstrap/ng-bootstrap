@@ -8,8 +8,9 @@ import { NgbdExamplesPage } from '../shared/examples-page/examples.component';
 import { NgbdModalBasic } from './demos/basic/modal-basic';
 import { NgbdModalComponent, NgbdModalContent } from './demos/component/modal-component';
 import { NgbdModalOptions } from './demos/options/modal-options';
+import { NgbdModal1Content, NgbdModal2Content, NgbdModalStacked } from './demos/stacked/modal-stacked';
 
-const DEMO_DIRECTIVES = [NgbdModalBasic, NgbdModalComponent, NgbdModalOptions];
+const DEMO_DIRECTIVES = [NgbdModalBasic, NgbdModalComponent, NgbdModalOptions, NgbdModalStacked];
 
 const DEMOS = {
   basic: {
@@ -29,6 +30,12 @@ const DEMOS = {
     type: NgbdModalOptions,
     code: require('!!raw-loader!./demos/options/modal-options'),
     markup: require('!!raw-loader!./demos/options/modal-options.html')
+  },
+  stacked: {
+    title: 'Stacked modals',
+    type: NgbdModalStacked,
+    code: require('!!raw-loader!./demos/stacked/modal-stacked'),
+    markup: require('!!raw-loader!./demos/stacked/modal-stacked.html')
   }
 };
 
@@ -49,8 +56,8 @@ export const ROUTES = [
     NgbdSharedModule,
     NgbdComponentsSharedModule
   ],
-  declarations: [NgbdModalContent, ...DEMO_DIRECTIVES],
-  entryComponents: [NgbdModalContent, ...DEMO_DIRECTIVES]
+  declarations: [NgbdModalContent, NgbdModal1Content, NgbdModal2Content, ...DEMO_DIRECTIVES],
+  entryComponents: [NgbdModalContent, NgbdModal1Content, NgbdModal2Content, ...DEMO_DIRECTIVES]
 })
 export class NgbdModalModule {
   constructor(demoList: NgbdDemoList) {

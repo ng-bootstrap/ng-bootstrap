@@ -6,7 +6,8 @@ import {
   Inject,
   ComponentFactoryResolver,
   ComponentRef,
-  TemplateRef
+  TemplateRef,
+  RendererFactory2
 } from '@angular/core';
 
 import {ContentRef} from '../util/popup';
@@ -25,13 +26,19 @@ export class NgbModalStack {
 
   constructor(
       private _applicationRef: ApplicationRef, private _injector: Injector, @Inject(DOCUMENT) private _document,
-      private _scrollBar: ScrollBar) {}
+      private _scrollBar: ScrollBar, private _rendererFactory: RendererFactory2) {}
 
   open(moduleCFR: ComponentFactoryResolver, contentInjector: Injector, content: any, options): NgbModalRef {
     const containerEl =
         isDefined(options.container) ? this._document.querySelector(options.container) : this._document.body;
+    const renderer = this._rendererFactory.createRenderer(null, null);
 
     const revertPaddingForScrollBar = this._scrollBar.compensate();
+    const removeBodyClass = () => {
+      if (!this._modalRefs.length) {
+        renderer.removeClass(this._document.body, 'modal-open');
+      }
+    };
 
     if (!containerEl) {
       throw new Error(`The specified modal container "${options.container || 'body'}" was not found in the DOM.`);
@@ -47,10 +54,14 @@ export class NgbModalStack {
 
     this._registerModalRef(ngbModalRef);
     ngbModalRef.result.then(revertPaddingForScrollBar, revertPaddingForScrollBar);
+    ngbModalRef.result.then(removeBodyClass, removeBodyClass);
     activeModal.close = (result: any) => { ngbModalRef.close(result); };
     activeModal.dismiss = (reason: any) => { ngbModalRef.dismiss(reason); };
 
     this._applyWindowOptions(windowCmptRef.instance, options);
+    if (this._modalRefs.length === 1) {
+      renderer.addClass(this._document.body, 'modal-open');
+    }
 
     if (backdropCmptRef && backdropCmptRef.instance) {
       this._applyBackdropOptions(backdropCmptRef.instance, options);

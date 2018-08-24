@@ -6,7 +6,6 @@ import {
   Input,
   Inject,
   ElementRef,
-  Renderer2,
   OnInit,
   AfterViewInit,
   OnDestroy
@@ -45,7 +44,7 @@ export class NgbModalWindow implements OnInit,
 
   @Output('dismiss') dismissEvent = new EventEmitter();
 
-  constructor(@Inject(DOCUMENT) document, private _elRef: ElementRef<HTMLElement>, private _renderer: Renderer2) {
+  constructor(@Inject(DOCUMENT) document, private _elRef: ElementRef<HTMLElement>) {
     this._document = document;
     ngbFocusTrap(this._elRef.nativeElement, this.dismissEvent);
   }
@@ -64,10 +63,7 @@ export class NgbModalWindow implements OnInit,
 
   dismiss(reason): void { this.dismissEvent.emit(reason); }
 
-  ngOnInit() {
-    this._elWithFocus = this._document.activeElement;
-    this._renderer.addClass(this._document.body, 'modal-open');
-  }
+  ngOnInit() { this._elWithFocus = this._document.activeElement; }
 
   ngAfterViewInit() {
     if (!this._elRef.nativeElement.contains(document.activeElement)) {
@@ -88,6 +84,5 @@ export class NgbModalWindow implements OnInit,
     elementToFocus['focus'].apply(elementToFocus, []);
 
     this._elWithFocus = null;
-    this._renderer.removeClass(body, 'modal-open');
   }
 }
