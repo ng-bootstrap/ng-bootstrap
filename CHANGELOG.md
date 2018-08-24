@@ -1,3 +1,22 @@
+<a name="3.1.0"></a>
+# [3.1.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/3.0.0...3.1.0) (2018-08-24)
+
+
+### Bug Fixes
+
+* **timepicker:** avoid unnecessary CSS class mutation in the DOM ([47e91ba](https://github.com/ng-bootstrap/ng-bootstrap/commit/47e91ba)), closes [#2582](https://github.com/ng-bootstrap/ng-bootstrap/issues/2582) [#2617](https://github.com/ng-bootstrap/ng-bootstrap/issues/2617)
+* provide overrideable services at the root level ([#2627](https://github.com/ng-bootstrap/ng-bootstrap/issues/2627)) ([88e5e98](https://github.com/ng-bootstrap/ng-bootstrap/commit/88e5e98)), closes [#2618](https://github.com/ng-bootstrap/ng-bootstrap/issues/2618)
+
+
+### Features
+
+* **accordion:** add expand / collapse methods ([e64f2ff](https://github.com/ng-bootstrap/ng-bootstrap/commit/e64f2ff)), closes [#1970](https://github.com/ng-bootstrap/ng-bootstrap/issues/1970) [#1978](https://github.com/ng-bootstrap/ng-bootstrap/issues/1978) [#2595](https://github.com/ng-bootstrap/ng-bootstrap/issues/2595)
+* **modal:** add global config for modals ([3d8c08a](https://github.com/ng-bootstrap/ng-bootstrap/commit/3d8c08a)), closes [#2487](https://github.com/ng-bootstrap/ng-bootstrap/issues/2487) [#2573](https://github.com/ng-bootstrap/ng-bootstrap/issues/2573)
+* **modal:** add new dismissAll method ([daf6645](https://github.com/ng-bootstrap/ng-bootstrap/commit/daf6645)), closes [#1963](https://github.com/ng-bootstrap/ng-bootstrap/issues/1963) [#2633](https://github.com/ng-bootstrap/ng-bootstrap/issues/2633)
+* **popover:** allow templates as popover title ([340c9b3](https://github.com/ng-bootstrap/ng-bootstrap/commit/340c9b3)), closes [#1221](https://github.com/ng-bootstrap/ng-bootstrap/issues/1221) [#2621](https://github.com/ng-bootstrap/ng-bootstrap/issues/2621)
+
+
+
 <a name="3.0.0"></a>
 # [3.0.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/3.0.0-beta.1...3.0.0) (2018-08-13)
 
