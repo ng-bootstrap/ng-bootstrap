@@ -1,4 +1,4 @@
-import {Directive, forwardRef, Input, Renderer2, ElementRef, OnDestroy} from '@angular/core';
+import {Directive, ElementRef, forwardRef, Input, OnDestroy, Renderer2} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 import {NgbButtonLabel} from './label';
@@ -129,6 +129,7 @@ export class NgbRadio implements OnDestroy {
       private _group: NgbRadioGroup, private _label: NgbButtonLabel, private _renderer: Renderer2,
       private _element: ElementRef<HTMLInputElement>) {
     this._group.register(this);
+    this.updateDisabled();
   }
 
   ngOnDestroy() { this._group.unregister(this); }

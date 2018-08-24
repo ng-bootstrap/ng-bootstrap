@@ -1,10 +1,9 @@
-import {TestBed, ComponentFixture, async} from '@angular/core/testing';
-import {By} from '@angular/platform-browser';
-import {createGenericTestComponent} from '../test/common';
-
 import {Component} from '@angular/core';
-import {Validators, FormControl, FormGroup, FormsModule, ReactiveFormsModule, NgModel} from '@angular/forms';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {FormControl, FormGroup, FormsModule, NgModel, ReactiveFormsModule, Validators} from '@angular/forms';
+import {By} from '@angular/platform-browser';
 
+import {createGenericTestComponent} from '../test/common';
 import {NgbButtonsModule} from './buttons.module';
 
 const createTestComponent = (html: string) =>
@@ -322,6 +321,28 @@ describe('ngbRadioGroup', () => {
     fixture.detectChanges();
     expect(getLabel(fixture.nativeElement, 0)).not.toHaveCssClass('disabled');
     expect(getInput(fixture.nativeElement, 0).hasAttribute('disabled')).toBeFalsy();
+  });
+
+  it('should disable label and input when added dynamically in reactive forms', () => {
+    const forHtml = `
+      <form [formGroup]="disabledForm">
+        <div ngbRadioGroup formControlName="control">
+          <label ngbButtonLabel *ngIf="shown">
+            <input ngbButton type="radio" name="radio" [value]="'one'"/> One
+          </label>
+        </div>
+      </form>
+    `;
+
+    const fixture = createTestComponent(forHtml);
+    fixture.componentInstance.shown = false;
+    fixture.componentInstance.disabledForm.disable();
+    fixture.detectChanges();
+
+    fixture.componentInstance.shown = true;
+    fixture.detectChanges();
+    expect(getLabel(fixture.nativeElement, 0)).toHaveCssClass('disabled');
+    expect(getInput(fixture.nativeElement, 0).hasAttribute('disabled')).toBeTruthy();
   });
 
   it('should disable label and input when it is disabled using template-driven forms', async(() => {
