@@ -1,5 +1,8 @@
 import {Directive, Input} from '@angular/core';
 
+/**
+ * Foo doc
+ */
 @Directive({
   selector: '[foo]'
 })
