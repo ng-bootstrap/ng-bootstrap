@@ -119,7 +119,7 @@ describe('ngb-datepicker-navigation-select', () => {
 
   });
 
-  it('should have correct aria attributes on select elements', () => {
+  it('should have correct title attributes on select elements', () => {
     const fixture =
         createTestComponent(`<ngb-datepicker-navigation-select [date]="date" [months]="[7, 8, 9]" [years]="years">`);
 
