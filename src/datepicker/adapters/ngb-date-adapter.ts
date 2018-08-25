@@ -20,7 +20,7 @@ export abstract class NgbDateAdapter<D> {
 
   /**
    * Converts internal date value NgbDateStruct to user-model date
-   * The returned type is suposed to be of the same type as fromModel() input-value param
+   * The returned type is supposed to be of the same type as fromModel() input-value param
    */
   abstract toModel(date: NgbDateStruct): D;
 }

@@ -145,7 +145,7 @@ export class Positioning {
     return targetElPosition;
   }
 
-  // get the availble placements of the target element in the viewport dependeing on the host element
+  // get the available placements of the target element in the viewport depending on the host element
   getAvailablePlacements(hostElement: HTMLElement, targetElement: HTMLElement): string[] {
     let availablePlacements: Array<string> = [];
     let hostElemClientRect = hostElement.getBoundingClientRect();
@@ -204,7 +204,7 @@ export class Positioning {
   /**
    * check if secondary placement for left and right are available i.e. left-top, left-bottom, right-top, right-bottom
    * primaryplacement: left|right
-   * availablePlacementArr: array in which available placemets to be set
+   * availablePlacementArr: array in which available placements to be set
    */
   private setSecondaryPlacementForLeftRight(
       hostElemClientRect: ClientRect, targetElemClientRect: ClientRect, primaryPlacement: string,
@@ -222,7 +222,7 @@ export class Positioning {
   /**
    * check if secondary placement for top and bottom are available i.e. top-left, top-right, bottom-left, bottom-right
    * primaryplacement: top|bottom
-   * availablePlacementArr: array in which available placemets to be set
+   * availablePlacementArr: array in which available placements to be set
    */
   private setSecondaryPlacementForTopBottom(
       hostElemClientRect: ClientRect, targetElemClientRect: ClientRect, primaryPlacement: string,
