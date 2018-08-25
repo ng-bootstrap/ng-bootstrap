@@ -1,26 +1,26 @@
-import {Component, Directive, Injectable} from '@angular/core';
+import { Component, Directive, Injectable } from '@angular/core';
 
-@Directive({
-  selector: '[ngbDirective]'
-})
 /**
  * Should be 'Directive'
  */
+@Directive({
+  selector: '[ngbDirective]'
+})
 export class NgbDirective {}
 
-@Component({
-  selector: 'ngb-component'
-})
 /**
  * Should be 'Component'
  */
+@Component({
+  selector: 'ngb-component'
+})
 export class NgbComponent {}
 
 
-@Injectable()
 /**
  * Should be 'Service'
  */
+@Injectable()
 export class NgbService {}
 
 /**

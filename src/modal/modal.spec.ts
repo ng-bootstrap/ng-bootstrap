@@ -248,6 +248,24 @@ describe('ngb-modal', () => {
         expect(fixture.nativeElement).not.toHaveModal();
       });
 
+      it('should dismiss with dismissAll', () => {
+        fixture.componentInstance.open('foo');
+        fixture.detectChanges();
+        expect(fixture.nativeElement).toHaveModal('foo');
+
+        fixture.componentInstance.dismissAll('dismissAllArg');
+        fixture.detectChanges();
+        expect(fixture.nativeElement).not.toHaveModal();
+      });
+
+      it('should not throw when dismissAll called with no active modal', () => {
+        expect(fixture.nativeElement).not.toHaveModal();
+
+        fixture.componentInstance.dismissAll();
+        fixture.detectChanges();
+        expect(fixture.nativeElement).not.toHaveModal();
+      });
+
       it('should not throw when dismiss called multiple times', () => {
         const modalRef = fixture.componentInstance.open('foo');
         modalRef.result.catch(NOOP);
@@ -786,6 +804,7 @@ class TestComponent {
       this.openedModal.close('ok');
     }
   }
+  dismissAll(reason?: any) { this.modalService.dismissAll(reason); }
   openTpl(options?: Object) { return this.modalService.open(this.tplContent, options); }
   openCmpt(cmptType: any, options?: Object) { return this.modalService.open(cmptType, options); }
   openDestroyableTpl(options?: Object) { return this.modalService.open(this.tplDestroyableContent, options); }

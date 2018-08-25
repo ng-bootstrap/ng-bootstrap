@@ -1,16 +1,18 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
-import {NgbDateParserFormatter, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
-import {NgbdOverviewSection} from '../../shared/overview';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+
+import { NgbdDemoList } from '../../shared';
+import { NgbdOverview } from '../../shared/overview';
 
 @Component({
   selector: 'ngbd-datepicker-overview',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './datepicker-overview.component.html'
+  templateUrl: './datepicker-overview.component.html',
+  host: {
+    '[class.overview]': 'true'
+  }
 })
 
 export class NgbdDatepickerOverviewComponent {
-
-  @Input() sections: { [name: string]: NgbdOverviewSection };
 
   snippets = {
     basic: `
@@ -98,4 +100,10 @@ export abstract class NgbDatepickerI18n {
 providers: [{provide: NgbDatepickerI18n, useClass: YourOwnDatepickerI18n}]
 `
   };
+
+  sections: NgbdOverview = {};
+
+  constructor(demoList: NgbdDemoList) {
+    this.sections = demoList.getOverviewSections('datepicker');
+  }
 }

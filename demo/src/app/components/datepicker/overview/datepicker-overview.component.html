@@ -17,7 +17,7 @@
 
 
 <!-- BASIC USAGE -->
-<ngbd-overview-section [section]="sections['basic']">
+<ngbd-overview-section [section]="sections['basic-usage']">
   <p>
     Datepicker can be used either inline or inside of the popup.
   </p>
@@ -71,7 +71,7 @@
 
 
 <!-- GETTING / SETTING A DATE -->
-<ngbd-overview-section [section]="sections['gettingDate']">
+<ngbd-overview-section [section]="sections['getting-date']">
   <p>
     You have several ways of knowing when user selects a date. The date is selected
     either by clicking on it, pressing <code>Space</code> or <code>Enter</code>,
@@ -87,7 +87,7 @@
 
   <p>
     The model, however, is NOT a native javascript date, see the following
-    <a routerLink="./" [fragment]="sections['model'].fragment">Date Model</a> section for more info.
+    <a routerLink="./" [fragment]="sections['date-model'].fragment">Date Model</a> section for more info.
   </p>
 
   <ngbd-code lang="html" [code]="snippets.form"></ngbd-code>
@@ -104,7 +104,7 @@
 
 
 <!-- DATE MODEL-->
-<ngbd-overview-section [section]="sections['model']">
+<ngbd-overview-section [section]="sections['date-model']">
   <p>
     Datepicker uses <code>NgbDateStruct</code> as a model and not the native
     <code>Date</code> object. It's a simple data structure with 3 fields.
@@ -173,7 +173,7 @@
 
 
 <!-- DISABLING/LIMITING DATES-->
-<ngbd-overview-section [section]="sections['disabling']">
+<ngbd-overview-section [section]="sections['limiting-dates']">
   <p>
     You can limit the dates available for navigation and selection using
     <code>[minDate]</code> and <code>[maxDate]</code> inputs. If you don't specify
@@ -195,7 +195,7 @@
 
 
 <!-- DAY CUSTOMIZATION-->
-<ngbd-overview-section [section]="sections['customization']">
+<ngbd-overview-section [section]="sections['day-template']">
   <p>
     You can completely replace how each date is rendered by providing a custom template
     and rendering anything you want inside. You'll get a date context available inside
@@ -281,7 +281,7 @@
 
 
 <!-- Keyboard -->
-<ngbd-overview-section [section]="sections['shortcuts']">
+<ngbd-overview-section [section]="sections['keyboard-shortcuts']">
   <table class="table mt-4">
     <tbody>
       <tr>
