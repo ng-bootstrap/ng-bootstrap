@@ -119,6 +119,15 @@ describe('ngb-datepicker-navigation-select', () => {
 
   });
 
+  it('should have correct aria attributes on select elements', () => {
+    const fixture =
+        createTestComponent(`<ngb-datepicker-navigation-select [date]="date" [months]="[7, 8, 9]" [years]="years">`);
+
+    expect(getMonthSelect(fixture.nativeElement).getAttribute('title')).toBe('Select month');
+    expect(getYearSelect(fixture.nativeElement).getAttribute('title')).toBe('Select year');
+
+  });
+
 });
 
 @Component({selector: 'test-cmp', template: ''})
