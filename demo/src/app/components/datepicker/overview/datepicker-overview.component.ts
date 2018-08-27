@@ -85,7 +85,10 @@ const isDisabled = (date: NgbDateStruct, current: {month: number}) => day.date =
 </ngb-datepicker>
 `,
   calendars: `
-providers: [{provide: NgbCalendar, useClass: NgbCalendarHijri}]
+providers: [
+  {provide: NgbCalendar, useClass: NgbCalendarHebrew},
+  {provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nHebrew}
+]
 `,
   i18n: `
 @Injectable()
