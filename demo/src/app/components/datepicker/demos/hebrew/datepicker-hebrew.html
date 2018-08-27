@@ -1,0 +1,13 @@
+<p>Hebrew calendar</p>
+
+<ngb-datepicker class="rtl" #dp [(ngModel)]="model" [displayMonths]="2" [firstDayOfWeek]="7">
+</ngb-datepicker>
+
+<hr/>
+
+<button class="btn btn-sm btn-outline-primary mr-2" (click)="selectToday()">Select Today</button>
+<button class="btn btn-sm btn-outline-primary mr-2" (click)="dp.navigateTo()">To current month</button>
+
+<hr/>
+
+<pre>Model: {{ model | json }}</pre>
