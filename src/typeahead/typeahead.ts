@@ -149,6 +149,7 @@ export class NgbTypeahead implements ControlValueAccessor,
   activeDescendant: string;
   popupId = `ngb-typeahead-${nextWindowId++}`;
 
+  private _model: any;
   private _onTouched = () => {};
   private _onChange = (_: any) => {};
 
@@ -183,13 +184,13 @@ export class NgbTypeahead implements ControlValueAccessor,
     const inputValues$ = this._valueChanges.pipe(tap(value => {
       this._inputValueBackup = value;
       if (this.editable) {
-        this._onChange(value);
+        this._callOnChange(value);
       }
     }));
     const results$ = inputValues$.pipe(this.ngbTypeahead);
     const processedResults$ = results$.pipe(tap(() => {
       if (!this.editable) {
-        this._onChange(undefined);
+        this._callOnChange(undefined);
       }
     }));
     const userInput$ = this._resubscribeTypeahead.pipe(switchMap(() => processedResults$));
@@ -206,7 +207,10 @@ export class NgbTypeahead implements ControlValueAccessor,
 
   registerOnTouched(fn: () => any): void { this._onTouched = fn; }
 
-  writeValue(value) { this._writeInputValue(this._formatItemForInput(value)); }
+  writeValue(value) {
+    this._model = value;
+    this._writeInputValue(this._formatItemForInput(value));
+  }
 
   setDisabledState(isDisabled: boolean): void {
     this._renderer.setProperty(this._elementRef.nativeElement, 'disabled', isDisabled);
@@ -224,7 +228,7 @@ export class NgbTypeahead implements ControlValueAccessor,
   dismissPopup() {
     if (this.isPopupOpen()) {
       this._closePopup();
-      this._writeInputValue(this._inputValueBackup);
+      this._writeInputValue(this.editable ? this._inputValueBackup : null);
     }
   }
 
@@ -235,6 +239,9 @@ export class NgbTypeahead implements ControlValueAccessor,
 
   handleBlur() {
     this._resubscribeTypeahead.next(null);
+    if (this._inputDifferentFromModel()) {
+      this._writeInputValue(null);
+    }
     this._onTouched();
   }
 
@@ -301,7 +308,7 @@ export class NgbTypeahead implements ControlValueAccessor,
 
     if (!defaultPrevented) {
       this.writeValue(result);
-      this._onChange(result);
+      this._callOnChange(result);
     }
   }
 
@@ -369,5 +376,14 @@ export class NgbTypeahead implements ControlValueAccessor,
       this._subscription.unsubscribe();
     }
     this._subscription = null;
+  }
+
+  private _callOnChange(value: any) {
+    this._model = value;
+    this._onChange(value);
+  }
+
+  private _inputDifferentFromModel(): boolean {
+    return this._formatItemForInput(this._model) !== this._elementRef.nativeElement.value;
   }
 }

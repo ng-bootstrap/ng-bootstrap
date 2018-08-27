@@ -732,6 +732,122 @@ describe('ngb-typeahead', () => {
        }));
   });
 
+  describe('input clearing when invalid', () => {
+    it('should clear input on dismiss when not editable', async(async() => {
+         const fixture = createTestComponent(
+             `<input type="text" [(ngModel)]="model" [ngbTypeahead]="findAnywhere" [editable]="false"/>`);
+         fixture.detectChanges();
+         const compiled = fixture.nativeElement;
+         const inputEl = getNativeInput(compiled);
+
+         await fixture.whenStable();
+         changeInput(compiled, 'on');
+         fixture.detectChanges();
+         expectWindowResults(compiled, ['+one', 'one more']);
+
+         const event = createKeyDownEvent(Key.Escape);
+         getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
+         fixture.detectChanges();
+         expect(inputEl.value).toBe('');
+         expect(fixture.componentInstance.model).toBeUndefined();
+       }));
+
+    it('should not clear input on dismiss when editable', async(async() => {
+         const fixture = createTestComponent(`<input type="text" [(ngModel)]="model" [ngbTypeahead]="findAnywhere"/>`);
+         fixture.detectChanges();
+         const compiled = fixture.nativeElement;
+         const inputEl = getNativeInput(compiled);
+
+         await fixture.whenStable();
+         changeInput(compiled, 'on');
+         fixture.detectChanges();
+         expectWindowResults(compiled, ['+one', 'one more']);
+
+         const event = createKeyDownEvent(Key.Escape);
+         getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
+         fixture.detectChanges();
+         expect(inputEl.value).toBe('on');
+         expect(fixture.componentInstance.model).toBe('on');
+       }));
+
+    it('should clear input on blur when changed and not editable', async(async() => {
+         const fixture = createTestComponent(
+             `<input type="text" [(ngModel)]="model" [ngbTypeahead]="findAnywhere" [editable]="false"/>`);
+         fixture.detectChanges();
+         const compiled = fixture.nativeElement;
+         const inputEl = getNativeInput(compiled);
+
+         // select an item
+         changeInput(compiled, 'on');
+         fixture.detectChanges();
+         expectWindowResults(compiled, ['+one', 'one more']);
+
+         getWindowLinks(fixture.debugElement)[0].triggerEventHandler('click', {});
+         fixture.detectChanges();
+         expect(getWindow(compiled)).toBeNull();
+         expectInputValue(compiled, 'one');
+         expect(fixture.componentInstance.model).toBe('one');
+
+         // change input
+         changeInput(compiled, 'on');
+         fixture.detectChanges();
+         expectInputValue(compiled, 'on');
+         expect(fixture.componentInstance.model).toBeUndefined();
+         blurInput(compiled);
+         expect(inputEl.value).toBe('');
+       }));
+
+    it('should not clear input on blur when not changed and not editable', async(async() => {
+         const fixture = createTestComponent(
+             `<input type="text" [(ngModel)]="model" [ngbTypeahead]="findAnywhere" [editable]="false"/>`);
+         fixture.detectChanges();
+         const compiled = fixture.nativeElement;
+         const inputEl = getNativeInput(compiled);
+
+         // select an item
+         changeInput(compiled, 'on');
+         fixture.detectChanges();
+         expectWindowResults(compiled, ['+one', 'one more']);
+
+         getWindowLinks(fixture.debugElement)[0].triggerEventHandler('click', {});
+         fixture.detectChanges();
+         expect(getWindow(compiled)).toBeNull();
+         expectInputValue(compiled, 'one');
+         expect(fixture.componentInstance.model).toBe('one');
+
+         // change input
+         blurInput(compiled);
+         expect(inputEl.value).toBe('one');
+         expect(fixture.componentInstance.model).toBe('one');
+       }));
+
+    it('should not clear input on blur when changed and editable', async(async() => {
+         const fixture = createTestComponent(`<input type="text" [(ngModel)]="model" [ngbTypeahead]="findAnywhere"/>`);
+         fixture.detectChanges();
+         const compiled = fixture.nativeElement;
+         const inputEl = getNativeInput(compiled);
+
+         // select an item
+         changeInput(compiled, 'on');
+         fixture.detectChanges();
+         expectWindowResults(compiled, ['+one', 'one more']);
+
+         getWindowLinks(fixture.debugElement)[0].triggerEventHandler('click', {});
+         fixture.detectChanges();
+         expect(getWindow(compiled)).toBeNull();
+         expectInputValue(compiled, 'one');
+         expect(fixture.componentInstance.model).toBe('one');
+
+         // change input
+         changeInput(compiled, 'on');
+         fixture.detectChanges();
+         expectInputValue(compiled, 'on');
+         expect(fixture.componentInstance.model).toBe('on');
+         blurInput(compiled);
+         expect(inputEl.value).toBe('on');
+       }));
+  });
+
   describe('container', () => {
 
     it('should be appended to the element matching the selector passed to "container"', () => {

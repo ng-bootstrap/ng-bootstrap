@@ -5,7 +5,12 @@ A typeahead example that gets values from a static <code>string[]</code>
   <li>limits to 10 results</li>
 </ul>
 
-<label for="typeahead-basic">Search for a state:</label>
-<input id="typeahead-basic" type="text" class="form-control" [(ngModel)]="model" [ngbTypeahead]="search"/>
+<p><label for="typeahead-basic-editable">Search for a state (editable):</label></p>
+<pre>Model: {{ modelEditable | json }}</pre>
+<p><input id="typeahead-basic-editable" type="text" class="form-control" [(ngModel)]="modelEditable" [ngbTypeahead]="search"/></p>
+
+<p><label for="typeahead-basic-non-editable">Search for a state (non-editable):</label></p>
+<pre>Model: {{ modelNonEditable | json }}</pre>
+<p><input id="typeahead-basic-non-editable" type="text" class="form-control" [(ngModel)]="modelNonEditable" [ngbTypeahead]="search" [editable]="false"/></p>
+
 <hr>
-<pre>Model: {{ model | json }}</pre>

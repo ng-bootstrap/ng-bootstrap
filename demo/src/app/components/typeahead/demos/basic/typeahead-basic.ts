@@ -17,7 +17,8 @@ const states = ['Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Arkansas', 'C
   styles: [`.form-control { width: 300px; }`]
 })
 export class NgbdTypeaheadBasic {
-  public model: any;
+  public modelEditable: any;
+  public modelNonEditable: any;
 
   search = (text$: Observable<string>) =>
     text$.pipe(
