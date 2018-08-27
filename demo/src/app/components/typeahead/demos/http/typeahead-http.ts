@@ -55,5 +55,5 @@ export class NgbdTypeaheadHttp {
           }))
       ),
       tap(() => this.searching = false)
-    );
+    )
 }

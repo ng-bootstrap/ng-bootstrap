@@ -10,5 +10,5 @@ export class NgbdTabsetPreventchange {
       if ($event.nextId === 'tab-preventchange2') {
         $event.preventDefault();
       }
-    };
+    }
 }

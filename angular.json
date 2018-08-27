@@ -106,6 +106,18 @@
               "browserTarget": "demo:build:production"
             }
           }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "demo/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "**/api-docs.ts"
+            ]
+          }
         }
       }
     }
