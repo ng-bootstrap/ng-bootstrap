@@ -30,7 +30,8 @@ Feel free to make comments there.
 View all the directives in action at https://ng-bootstrap.github.io
 
 ## Dependencies
-The only two dependencies are [Angular](https://angular.io) and [Bootstrap 4](https://www.getbootstrap.com) CSS. 
+
+The only two dependencies are [Angular](https://angular.io) and [Bootstrap 4](https://www.getbootstrap.com) CSS.
 Here is the list of minimal required versions:
 
 | ng-bootstrap | Angular | Bootstrap CSS |
@@ -40,11 +41,15 @@ Here is the list of minimal required versions:
 | 3.x.x        | 6.1.0   | 4.0.0         |
 
 ## Installation
+
 After installing the above dependencies, install `ng-bootstrap` via:
+
 ```shell
 npm install --save @ng-bootstrap/ng-bootstrap
 ```
+
 Once installed you need to import our main module:
+
 ```js
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
@@ -57,7 +62,7 @@ export class YourAppModule {
 }
 ```
 
-Alternatively you could only import modules with components you need, ex. pagination and alert. 
+Alternatively you could only import modules with components you need, ex. pagination and alert.
 The resulting bundle will be smaller in this case.
 
 ```js
@@ -73,24 +78,27 @@ export class YourAppModule {
 ```
 
 ### SystemJS
+
 If you are using SystemJS, you should also adjust your configuration to point to the UMD bundle.
 
 In your systemjs config file, `map` needs to tell the System loader where to look for `ng-bootstrap`:
+
 ```js
 map: {
   '@ng-bootstrap/ng-bootstrap': 'node_modules/@ng-bootstrap/ng-bootstrap/bundles/ng-bootstrap.js',
 }
 ```
+
 ## Supported browsers
 
 We support the same browsers and versions supported by both Bootstrap 4 and Angular, whichever is _more_ restrictive.
 See [this](https://github.com/angular/angular/blob/master/README.md) for up-to-date Angular browser support.
 
-* Chrome (45+)
-* Firefox (40+)
-* IE (10+) 
-* Edge (20+)
-* Safari (7+)
+- Chrome (45+)
+- Firefox (40+)
+- IE (10+)
+- Edge (20+)
+- Safari (7+)
 
 Also check [Bootstrap 4's notes](https://getbootstrap.com/docs/4.0/getting-started/browsers-devices/#supported-browsers) on browsers support.
 
@@ -103,19 +111,21 @@ Please check the [CONTRIBUTING.md](CONTRIBUTING.md) doc for contribution guideli
 Please, do not open issues for the general support questions as we want to keep GitHub issues for bug reports and feature requests. You've got much better chances of getting your question answered on [StackOverflow](http://stackoverflow.com/questions/tagged/ng-bootstrap) where maintainers are looking at questions tagged with `ng-bootstrap`.
 
 StackOverflow is a much better place to ask questions since:
-* there are hundreds of people willing to help on StackOverflow
-* questions and answers stay available for public viewing so your question / answer might help someone else
-* SO voting system assures that the best answers are prominently visible.
+
+- there are hundreds of people willing to help on StackOverflow
+- questions and answers stay available for public viewing so your question / answer might help someone else
+- SO voting system assures that the best answers are prominently visible.
 
 To save your and our time we will be systematically closing all the issues that are requests for general support and redirecting people to StackOverflow.
 
 ## You think you've found a bug?
 
 Oh, we are ashamed and want to fix it ASAP! But before fixing a bug we need to reproduce and confirm it. In order to reproduce bugs we will systematically ask you to provide a _minimal_ reproduction scenario using http://plnkr.co. Having a live, reproducible scenario gives us wealth of important information without going back & forth to you with additional questions like:
-* version of Angular used
-* version of this library that you are using
-* 3rd-party libraries used, if any
-* and most importantly - a use-case that fails
+
+- version of Angular used
+- version of this library that you are using
+- 3rd-party libraries used, if any
+- and most importantly - a use-case that fails
 
 A minimal reproduce scenario using http://plnkr.co/ allows us to quickly confirm a bug (or point out coding problem) as well as confirm that we are fixing the right problem.
 The best part is that you do not need to create plunks from scratch - you can fork one from our [demo page](https://ng-bootstrap.github.io/#/components).
@@ -127,3 +137,10 @@ Unfortunately we are not able to investigate / fix bugs without a minimal reprod
 ## Code of Conduct
 
 Please take a moment and read our [Code of Conduct](CODE_OF_CONDUCT.md)
+
+## Updating Upstream
+
+```shell
+git fetch upstream
+git pull upstream master
+```
