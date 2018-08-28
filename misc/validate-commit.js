@@ -28,7 +28,7 @@ var TYPES = {
 };
 
 
-var error = function() {
+var error = function () {
   // gitx does not display it
   // http://gitx.lighthouseapp.com/projects/17830/tickets/294-feature-display-hook-error-message-when-hook-fails
   // https://groups.google.com/group/gitx/browse_thread/thread/a03bcab60844b812
@@ -36,7 +36,7 @@ var error = function() {
 };
 
 
-var validateMessage = function(message) {
+var validateMessage = function (message) {
   var isValid = true;
 
   if (IGNORED.test(message)) {
@@ -78,7 +78,7 @@ var validateMessage = function(message) {
 };
 
 
-var firstLineFromBuffer = function(buffer) {
+var firstLineFromBuffer = function (buffer) {
   return buffer.toString().split('\n').shift();
 };
 
@@ -88,19 +88,19 @@ var firstLineFromBuffer = function(buffer) {
 exports.validateMessage = validateMessage;
 
 // hacky start if not run by jasmine :-D
-if (process.argv.join('').indexOf('jasmine-node') === -1) {
-  var commitMsgFile = process.argv[2];
-  var incorrectLogFile = commitMsgFile.replace('COMMIT_EDITMSG', 'logs/incorrect-commit-msgs');
+// if (process.argv.join('').indexOf('jasmine-node') === -1) {
+//   var commitMsgFile = process.argv[2];
+//   var incorrectLogFile = commitMsgFile.replace('COMMIT_EDITMSG', 'logs/incorrect-commit-msgs');
 
-  fs.readFile(commitMsgFile, function(err, buffer) {
-    var msg = firstLineFromBuffer(buffer);
+//   fs.readFile(commitMsgFile, function (err, buffer) {
+//     var msg = firstLineFromBuffer(buffer);
 
-    if (!validateMessage(msg)) {
-      fs.appendFile(incorrectLogFile, msg + '\n', function() {
-        process.exit(1);
-      });
-    } else {
-      process.exit(0);
-    }
-  });
-}
+//     if (!validateMessage(msg)) {
+//       fs.appendFile(incorrectLogFile, msg + '\n', function () {
+//         process.exit(1);
+//       });
+//     } else {
+//       process.exit(0);
+//     }
+//   });
+// }
