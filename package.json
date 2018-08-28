@@ -25,7 +25,8 @@
     "ngb:build": "ng build ng-bootstrap --prod && yarn ngb:static",
     "demo:serve": "ng serve demo --host 0.0.0.0",
     "demo:static": "gulp demo-generate-static",
-    "demo:build": "gulp demo-generate-static && ng build demo --prod",
+    "demo:lint": "ng lint demo",
+    "demo:build": "yarn demo:lint && gulp demo-generate-static && ng build demo --prod",
     "demo:deploy": "yarn demo:build && yarn demo:push",
     "ci": "yarn test && yarn build --progress false"
   },
