@@ -9,7 +9,9 @@ import {
   TemplateRef,
   RendererFactory2
 } from '@angular/core';
+import {Subject} from 'rxjs';
 
+import {ngbFocusTrap} from '../util/focus-trap';
 import {ContentRef} from '../util/popup';
 import {isDefined, isString} from '../util/util';
 import {ScrollBar} from '../util/scrollbar';
@@ -23,10 +25,20 @@ export class NgbModalStack {
   private _windowAttributes = ['ariaLabelledBy', 'backdrop', 'centered', 'keyboard', 'size', 'windowClass'];
   private _backdropAttributes = ['backdropClass'];
   private _modalRefs: NgbModalRef[] = [];
+  private _windowCmpts: ComponentRef<NgbModalWindow>[] = [];
+  private _activeWindowCmptHasChanged = new Subject();
 
   constructor(
       private _applicationRef: ApplicationRef, private _injector: Injector, @Inject(DOCUMENT) private _document,
-      private _scrollBar: ScrollBar, private _rendererFactory: RendererFactory2) {}
+      private _scrollBar: ScrollBar, private _rendererFactory: RendererFactory2) {
+    // Trap focus on active WindowCmpt
+    this._activeWindowCmptHasChanged.subscribe(() => {
+      if (this._windowCmpts.length) {
+        const activeWindowCmpt = this._windowCmpts[this._windowCmpts.length - 1];
+        ngbFocusTrap(activeWindowCmpt.location.nativeElement, this._activeWindowCmptHasChanged);
+      }
+    });
+  }
 
   open(moduleCFR: ComponentFactoryResolver, contentInjector: Injector, content: any, options): NgbModalRef {
     const containerEl =
@@ -53,6 +65,7 @@ export class NgbModalStack {
     let ngbModalRef: NgbModalRef = new NgbModalRef(windowCmptRef, contentRef, backdropCmptRef, options.beforeDismiss);
 
     this._registerModalRef(ngbModalRef);
+    this._registerWindowCmpt(windowCmptRef);
     ngbModalRef.result.then(revertPaddingForScrollBar, revertPaddingForScrollBar);
     ngbModalRef.result.then(removeBodyClass, removeBodyClass);
     activeModal.close = (result: any) => { ngbModalRef.close(result); };
@@ -149,5 +162,18 @@ export class NgbModalStack {
     };
     this._modalRefs.push(ngbModalRef);
     ngbModalRef.result.then(unregisterModalRef, unregisterModalRef);
+  }
+
+  private _registerWindowCmpt(ngbWindowCmpt: ComponentRef<NgbModalWindow>) {
+    this._windowCmpts.push(ngbWindowCmpt);
+    this._activeWindowCmptHasChanged.next();
+
+    ngbWindowCmpt.onDestroy(() => {
+      const index = this._windowCmpts.indexOf(ngbWindowCmpt);
+      if (index > -1) {
+        this._windowCmpts.splice(index, 1);
+        this._activeWindowCmptHasChanged.next();
+      }
+    });
   }
 }

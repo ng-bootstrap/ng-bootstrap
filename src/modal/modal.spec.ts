@@ -308,6 +308,26 @@ describe('ngb-modal', () => {
              });
            });
          }));
+
+      it('should dismiss modals on ESC in correct order', () => {
+        fixture.componentInstance.open('foo').result.catch(NOOP);
+        fixture.componentInstance.open('bar').result.catch(NOOP);
+        const ngbModalWindow1 = document.querySelectorAll('ngb-modal-window')[0];
+        const ngbModalWindow2 = document.querySelectorAll('ngb-modal-window')[1];
+        fixture.detectChanges();
+        expect(fixture.nativeElement).toHaveModal(['foo', 'bar']);
+        expect(document.activeElement).toBe(ngbModalWindow2);
+
+        (<DebugElement>getDebugNode(document.activeElement)).triggerEventHandler('keyup.esc', {});
+        fixture.detectChanges();
+        expect(fixture.nativeElement).toHaveModal(['foo']);
+        expect(document.activeElement).toBe(ngbModalWindow1);
+
+        (<DebugElement>getDebugNode(document.activeElement)).triggerEventHandler('keyup.esc', {});
+        fixture.detectChanges();
+        expect(fixture.nativeElement).not.toHaveModal();
+        expect(document.activeElement).toBe(document.body);
+      });
     });
 
     describe('backdrop options', () => {
