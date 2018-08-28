@@ -9,6 +9,7 @@ import { NgbdTooltipAutoclose } from './demos/autoclose/tooltip-autoclose';
 import { NgbdTooltipBasic } from './demos/basic/tooltip-basic';
 import { NgbdTooltipConfig } from './demos/config/tooltip-config';
 import { NgbdTooltipContainer } from './demos/container/tooltip-container';
+import { NgbdTooltipCustomclass } from './demos/customclass/tooltip-customclass';
 import { NgbdTooltipTplcontent } from './demos/tplcontent/tooltip-tplcontent';
 import { NgbdTooltipTplwithcontext } from './demos/tplwithcontext/tooltip-tplwithcontext';
 import { NgbdTooltipTriggers } from './demos/triggers/tooltip-triggers';
@@ -16,6 +17,7 @@ import { NgbdTooltipTriggers } from './demos/triggers/tooltip-triggers';
 const DEMO_DIRECTIVES = [
   NgbdTooltipBasic,
   NgbdTooltipContainer,
+  NgbdTooltipCustomclass,
   NgbdTooltipTplcontent,
   NgbdTooltipTriggers,
   NgbdTooltipAutoclose,
@@ -59,6 +61,12 @@ const DEMOS = {
     type: NgbdTooltipContainer,
     code: require('!!raw-loader!./demos/container/tooltip-container'),
     markup: require('!!raw-loader!./demos/container/tooltip-container.html')
+  },
+  'customclass': {
+    title: 'Tooltip with custom class',
+    type: NgbdTooltipCustomclass,
+    code: require('!!raw-loader!./demos/customclass/tooltip-customclass'),
+    markup: require('!!raw-loader!./demos/customclass/tooltip-customclass.html')
   },
   config: {
     title: 'Global configuration of tooltips',

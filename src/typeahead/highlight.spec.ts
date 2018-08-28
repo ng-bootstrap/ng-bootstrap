@@ -100,19 +100,19 @@ describe('ngb-highlight', () => {
     expect(highlightHtml(fixture)).toBe(`<span class="ngb-highlight">0</span>`);
   });
 
-  it('should not higlight anything for blank term', () => {
+  it('should not highlight anything for blank term', () => {
     const fixture = createTestComponent('<ngb-highlight result="1null23" [term]="null"></ngb-highlight>');
 
     expect(highlightHtml(fixture)).toBe('1null23');
   });
 
-  it('should not higlight anything for blank term', () => {
+  it('should not highlight anything for blank term', () => {
     const fixture = createTestComponent(`<ngb-highlight result="123" [term]="''"></ngb-highlight>`);
 
     expect(highlightHtml(fixture)).toBe('123');
   });
 
-  it('should properly higlight zeros', () => {
+  it('should properly highlight zeros', () => {
     const fixture = createTestComponent(`<ngb-highlight result="0123" [term]="0"></ngb-highlight>`);
 
     expect(highlightHtml(fixture)).toBe('<span class="ngb-highlight">0</span>123');

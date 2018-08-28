@@ -504,7 +504,7 @@ describe('ngb-typeahead', () => {
          fixture.detectChanges();
          tick(50);
 
-         // Press Escape while second is still in proggress
+         // Press Escape while second is still in progress
          const event = createKeyDownEvent(Key.Escape);
          getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
          fixture.detectChanges();
@@ -537,7 +537,7 @@ describe('ngb-typeahead', () => {
          fixture.detectChanges();
          tick(50);
 
-         // Select a value from first results list while second is still in proggress
+         // Select a value from first results list while second is still in progress
          getWindowLinks(fixture.debugElement)[0].triggerEventHandler('click', {});
          fixture.detectChanges();
          expect(getWindow(compiled)).toBeNull();

@@ -1066,7 +1066,7 @@ describe('ngb-timepicker', () => {
 
   describe('size', () => {
 
-    it('should add appropriate CSS classes to butons and inputs when size is small', () => {
+    it('should add appropriate CSS classes to buttons and inputs when size is small', () => {
       const html = `<ngb-timepicker size="small"></ngb-timepicker>`;
 
       const fixture = createTestComponent(html);
@@ -1080,7 +1080,7 @@ describe('ngb-timepicker', () => {
       }
     });
 
-    it('should add appropriate CSS classes to butons and inputs when size is large', () => {
+    it('should add appropriate CSS classes to buttons and inputs when size is large', () => {
       const html = `<ngb-timepicker size="large"></ngb-timepicker>`;
 
       const fixture = createTestComponent(html);
@@ -1094,7 +1094,7 @@ describe('ngb-timepicker', () => {
       }
     });
 
-    it('should not add special CSS classes to butons and inputs when size is medium', () => {
+    it('should not add special CSS classes to buttons and inputs when size is medium', () => {
       const html = `<ngb-timepicker size="medium"></ngb-timepicker>`;
 
       const fixture = createTestComponent(html);
@@ -1108,7 +1108,7 @@ describe('ngb-timepicker', () => {
       }
     });
 
-    it('should not add special CSS classes to butons and inputs when no size is specified', () => {
+    it('should not add special CSS classes to buttons and inputs when no size is specified', () => {
       const html = `<ngb-timepicker></ngb-timepicker>`;
 
       const fixture = createTestComponent(html);

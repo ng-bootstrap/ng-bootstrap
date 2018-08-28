@@ -38,6 +38,19 @@ describe('ngb-tooltip-window', () => {
     fixture.detectChanges();
     expect(fixture.nativeElement).toHaveCssClass('bs-tooltip-left');
   });
+
+  it('should optionally have a custom class', () => {
+    const fixture = TestBed.createComponent(NgbTooltipWindow);
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement).not.toHaveCssClass('my-custom-class');
+
+    fixture.componentInstance.tooltipClass = 'my-custom-class';
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement).toHaveCssClass('my-custom-class');
+  });
+
 });
 
 describe('ngb-tooltip', () => {
@@ -110,6 +123,30 @@ describe('ngb-tooltip', () => {
       expect(windowEl.getAttribute('id')).toBe('ngb-tooltip-2');
       expect(windowEl.parentNode).toBe(fixture.nativeElement);
       expect(directive.nativeElement.getAttribute('aria-describedby')).toBe('ngb-tooltip-2');
+
+      directive.triggerEventHandler('mouseleave', {});
+      fixture.detectChanges();
+      expect(getWindow(fixture.nativeElement)).toBeNull();
+      expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
+    });
+
+    it('should open and close a tooltip - default settings and custom class', () => {
+      const fixture = createTestComponent(`
+        <div ngbTooltip="Great tip!" tooltipClass="my-custom-class"></div>`);
+      const directive = fixture.debugElement.query(By.directive(NgbTooltip));
+
+      directive.triggerEventHandler('mouseenter', {});
+      fixture.detectChanges();
+      const windowEl = getWindow(fixture.nativeElement);
+
+      expect(windowEl).toHaveCssClass('tooltip');
+      expect(windowEl).toHaveCssClass('bs-tooltip-top');
+      expect(windowEl).toHaveCssClass('my-custom-class');
+      expect(windowEl.textContent.trim()).toBe('Great tip!');
+      expect(windowEl.getAttribute('role')).toBe('tooltip');
+      expect(windowEl.getAttribute('id')).toBe('ngb-tooltip-3');
+      expect(windowEl.parentNode).toBe(fixture.nativeElement);
+      expect(directive.nativeElement.getAttribute('aria-describedby')).toBe('ngb-tooltip-3');
 
       directive.triggerEventHandler('mouseleave', {});
       fixture.detectChanges();
@@ -700,6 +737,7 @@ describe('ngb-tooltip', () => {
       config.placement = 'bottom';
       config.triggers = 'click';
       config.container = 'body';
+      config.tooltipClass = 'my-custom-class';
     }));
 
     it('should initialize inputs with provided config', () => {
@@ -710,6 +748,7 @@ describe('ngb-tooltip', () => {
       expect(tooltip.placement).toBe(config.placement);
       expect(tooltip.triggers).toBe(config.triggers);
       expect(tooltip.container).toBe(config.container);
+      expect(tooltip.tooltipClass).toBe(config.tooltipClass);
     });
   });
 
@@ -718,6 +757,7 @@ describe('ngb-tooltip', () => {
     config.placement = 'bottom';
     config.triggers = 'click';
     config.container = 'body';
+    config.tooltipClass = 'my-custom-class';
 
     beforeEach(() => {
       TestBed.configureTestingModule(
@@ -731,6 +771,7 @@ describe('ngb-tooltip', () => {
       expect(tooltip.placement).toBe(config.placement);
       expect(tooltip.triggers).toBe(config.triggers);
       expect(tooltip.container).toBe(config.container);
+      expect(tooltip.tooltipClass).toBe(config.tooltipClass);
     });
   });
 

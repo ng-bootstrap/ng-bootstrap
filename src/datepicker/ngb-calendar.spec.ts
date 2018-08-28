@@ -5,7 +5,7 @@ describe('ngb-calendar-gregorian', () => {
 
   const calendar = new NgbCalendarGregorian();
 
-  it('should return todays date', () => {
+  it('should return today\'s date', () => {
     const jsToday = new Date();
     const today = new NgbDate(jsToday.getFullYear(), jsToday.getMonth() + 1, jsToday.getDate());
 

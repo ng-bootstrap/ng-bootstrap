@@ -71,7 +71,7 @@ export class NgbdTypeaheadTemplate {
       debounceTime(200),
       map(term => term === '' ? []
         : statesWithFlags.filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
-    );
+    )
 
   formatter = (x: {name: string}) => x.name;
 

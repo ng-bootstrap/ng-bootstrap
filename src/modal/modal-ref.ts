@@ -38,9 +38,6 @@ export class NgbModalRef {
     }
   }
 
-  // only needed to keep TS1.8 compatibility
-  set componentInstance(instance: any) {}
-
   /**
    * A promise that is resolved when a modal is closed and rejected when a modal is dismissed.
    */
