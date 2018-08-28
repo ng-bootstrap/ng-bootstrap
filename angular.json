@@ -120,6 +120,106 @@
           }
         }
       }
+    },
+    "e2e-app": {
+      "root": "e2e-app",
+      "sourceRoot": "e2e-app/src",
+      "projectType": "application",
+      "prefix": "app",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "e2e-app/dist",
+            "index": "e2e-app/src/index.html",
+            "main": "e2e-app/src/main.ts",
+            "polyfills": "e2e-app/src/polyfills.ts",
+            "tsConfig": "e2e-app/tsconfig.json",
+            "assets": [
+              "e2e-app/src/favicon.ico"
+            ],
+            "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.css",
+              "e2e-app/src/style/app.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "e2e-app/src/environments/environment.ts",
+                  "with": "e2e-app/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "e2e-app:build",
+            "progress": false
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "e2e-app:build:production",
+              "progress": false
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "e2e-app/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "e2e": {
+      "root": "e2e-app/e2e",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "e2e-app/e2e/protractor.conf.js",
+            "devServerTarget": "e2e-app:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "e2e-app:serve:production"
+            },
+            "noserve": {
+              "devServerTarget": ""
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": "e2e-app/e2e/tsconfig.json",
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "cli": {
