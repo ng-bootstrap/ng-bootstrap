@@ -35,7 +35,8 @@ let nextId = 0;
   selector: 'ngb-tooltip-window',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class]': '"tooltip show bs-tooltip-" + placement.split("-")[0]+" bs-tooltip-" + placement',
+    '[class]':
+        '"tooltip show bs-tooltip-" + placement.split("-")[0]+" bs-tooltip-" + placement + (tooltipClass ? " " + tooltipClass : "")',
     'role': 'tooltip',
     '[id]': 'id'
   },
@@ -71,6 +72,7 @@ let nextId = 0;
 export class NgbTooltipWindow {
   @Input() placement: Placement = 'top';
   @Input() id: string;
+  @Input() tooltipClass: string;
 
   constructor(private _element: ElementRef<HTMLElement>, private _renderer: Renderer2) {}
 
@@ -136,6 +138,10 @@ export class NgbTooltip implements OnInit, OnDestroy {
    */
   @Input() disableTooltip: boolean;
   /**
+   * An optional class applied to ngb-tooltip-window
+   */
+  @Input() tooltipClass: string;
+  /**
    * Emits an event when the tooltip is shown
    */
   @Output() shown = new EventEmitter();
@@ -160,6 +166,7 @@ export class NgbTooltip implements OnInit, OnDestroy {
     this.triggers = config.triggers;
     this.container = config.container;
     this.disableTooltip = config.disableTooltip;
+    this.tooltipClass = config.tooltipClass;
     this._popupService = new PopupService<NgbTooltipWindow>(
         NgbTooltipWindow, injector, viewContainerRef, _renderer, componentFactoryResolver);
 
@@ -193,6 +200,7 @@ export class NgbTooltip implements OnInit, OnDestroy {
   open(context?: any) {
     if (!this._windowRef && this._ngbTooltip && !this.disableTooltip) {
       this._windowRef = this._popupService.open(this._ngbTooltip, context);
+      this._windowRef.instance.tooltipClass = this.tooltipClass;
       this._windowRef.instance.id = this._ngbTooltipWindowId;
 
       this._renderer.setAttribute(this._elementRef.nativeElement, 'aria-describedby', this._ngbTooltipWindowId);
