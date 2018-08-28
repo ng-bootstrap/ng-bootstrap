@@ -404,7 +404,7 @@ describe('ngb-modal', () => {
         expect(fixture.nativeElement).not.toHaveModal();
       });
 
-      it('should dimiss when the callback does not return false', () => {
+      it('should dismiss when the callback does not return false', () => {
         fixture.componentInstance.openTplDismiss({beforeDismiss: () => {}});
         fixture.detectChanges();
         expect(fixture.nativeElement).toHaveModal();
@@ -481,7 +481,7 @@ describe('ngb-modal', () => {
         expect(fixture.nativeElement).not.toHaveModal();
       });
 
-      it('should throw when the specified container element doesnt exist', () => {
+      it('should throw when the specified container element doesn\'t exist', () => {
         const brokenSelector = '#notInTheDOM';
         expect(() => {
           fixture.componentInstance.open('foo', {container: brokenSelector});

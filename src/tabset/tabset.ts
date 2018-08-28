@@ -55,7 +55,7 @@ export class NgbTab {
   @ContentChildren(NgbTabContent, {descendants: false}) contentTpls: QueryList<NgbTabContent>;
 
   ngAfterContentChecked() {
-    // We are using @ContentChildren instead of @ContantChild as in the Angular version being used
+    // We are using @ContentChildren instead of @ContentChild as in the Angular version being used
     // only @ContentChildren allows us to specify the {descendants: false} option.
     // Without {descendants: false} we are hitting bugs described in:
     // https://github.com/ng-bootstrap/ng-bootstrap/issues/2240

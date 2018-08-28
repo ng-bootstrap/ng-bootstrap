@@ -41,7 +41,7 @@ export class NgbTypeaheadWindow implements OnInit {
   activeIdx = 0;
 
   /**
-   *  The id for the typeahead widnow. The id should be unique and the same
+   *  The id for the typeahead window. The id should be unique and the same
    *  as the associated typeahead's id.
    */
   @Input() id: string;

@@ -75,7 +75,7 @@ export class YourAppModule {
 ### SystemJS
 If you are using SystemJS, you should also adjust your configuration to point to the UMD bundle.
 
-In your systemjs config file, `map` needs to tell the System loader where to look for `ng-bootstrap`:
+In your SystemJS config file, `map` needs to tell the System loader where to look for `ng-bootstrap`:
 ```js
 map: {
   '@ng-bootstrap/ng-bootstrap': 'node_modules/@ng-bootstrap/ng-bootstrap/bundles/ng-bootstrap.js',

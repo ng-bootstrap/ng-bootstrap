@@ -144,7 +144,7 @@ class APIDocVisitor {
     var directiveInfo;
     var members;
 
-    // If there is no top documention comment, consider it private, we skip it.
+    // If there is no top documentation comment, consider it private, we skip it.
     if (!description) {
       return [];
     }
