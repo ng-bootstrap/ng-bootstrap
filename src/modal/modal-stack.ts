@@ -6,9 +6,12 @@ import {
   Inject,
   ComponentFactoryResolver,
   ComponentRef,
-  TemplateRef
+  TemplateRef,
+  RendererFactory2
 } from '@angular/core';
+import {Subject} from 'rxjs';
 
+import {ngbFocusTrap} from '../util/focus-trap';
 import {ContentRef} from '../util/popup';
 import {isDefined, isString} from '../util/util';
 import {ScrollBar} from '../util/scrollbar';
@@ -22,16 +25,32 @@ export class NgbModalStack {
   private _windowAttributes = ['ariaLabelledBy', 'backdrop', 'centered', 'keyboard', 'size', 'windowClass'];
   private _backdropAttributes = ['backdropClass'];
   private _modalRefs: NgbModalRef[] = [];
+  private _windowCmpts: ComponentRef<NgbModalWindow>[] = [];
+  private _activeWindowCmptHasChanged = new Subject();
 
   constructor(
       private _applicationRef: ApplicationRef, private _injector: Injector, @Inject(DOCUMENT) private _document,
-      private _scrollBar: ScrollBar) {}
+      private _scrollBar: ScrollBar, private _rendererFactory: RendererFactory2) {
+    // Trap focus on active WindowCmpt
+    this._activeWindowCmptHasChanged.subscribe(() => {
+      if (this._windowCmpts.length) {
+        const activeWindowCmpt = this._windowCmpts[this._windowCmpts.length - 1];
+        ngbFocusTrap(activeWindowCmpt.location.nativeElement, this._activeWindowCmptHasChanged);
+      }
+    });
+  }
 
   open(moduleCFR: ComponentFactoryResolver, contentInjector: Injector, content: any, options): NgbModalRef {
     const containerEl =
         isDefined(options.container) ? this._document.querySelector(options.container) : this._document.body;
+    const renderer = this._rendererFactory.createRenderer(null, null);
 
     const revertPaddingForScrollBar = this._scrollBar.compensate();
+    const removeBodyClass = () => {
+      if (!this._modalRefs.length) {
+        renderer.removeClass(this._document.body, 'modal-open');
+      }
+    };
 
     if (!containerEl) {
       throw new Error(`The specified modal container "${options.container || 'body'}" was not found in the DOM.`);
@@ -46,11 +65,16 @@ export class NgbModalStack {
     let ngbModalRef: NgbModalRef = new NgbModalRef(windowCmptRef, contentRef, backdropCmptRef, options.beforeDismiss);
 
     this._registerModalRef(ngbModalRef);
+    this._registerWindowCmpt(windowCmptRef);
     ngbModalRef.result.then(revertPaddingForScrollBar, revertPaddingForScrollBar);
+    ngbModalRef.result.then(removeBodyClass, removeBodyClass);
     activeModal.close = (result: any) => { ngbModalRef.close(result); };
     activeModal.dismiss = (reason: any) => { ngbModalRef.dismiss(reason); };
 
     this._applyWindowOptions(windowCmptRef.instance, options);
+    if (this._modalRefs.length === 1) {
+      renderer.addClass(this._document.body, 'modal-open');
+    }
 
     if (backdropCmptRef && backdropCmptRef.instance) {
       this._applyBackdropOptions(backdropCmptRef.instance, options);
@@ -138,5 +162,18 @@ export class NgbModalStack {
     };
     this._modalRefs.push(ngbModalRef);
     ngbModalRef.result.then(unregisterModalRef, unregisterModalRef);
+  }
+
+  private _registerWindowCmpt(ngbWindowCmpt: ComponentRef<NgbModalWindow>) {
+    this._windowCmpts.push(ngbWindowCmpt);
+    this._activeWindowCmptHasChanged.next();
+
+    ngbWindowCmpt.onDestroy(() => {
+      const index = this._windowCmpts.indexOf(ngbWindowCmpt);
+      if (index > -1) {
+        this._windowCmpts.splice(index, 1);
+        this._activeWindowCmptHasChanged.next();
+      }
+    });
   }
 }

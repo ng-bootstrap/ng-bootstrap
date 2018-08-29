@@ -222,17 +222,19 @@ describe('ngb-modal', () => {
         fixture.whenStable().then(() => { expect(rejectReason).toBe('myReason'); });
       });
 
-      it('should add / remove "modal-open" class to body when modal is open', () => {
-        const modalRef = fixture.componentInstance.open('bar');
-        fixture.detectChanges();
-        expect(fixture.nativeElement).toHaveModal();
-        expect(document.body).toHaveCssClass('modal-open');
+      it('should add / remove "modal-open" class to body when modal is open', async(() => {
+           const modalRef = fixture.componentInstance.open('bar');
+           fixture.detectChanges();
+           expect(fixture.nativeElement).toHaveModal();
+           expect(document.body).toHaveCssClass('modal-open');
 
-        modalRef.close('bar result');
-        fixture.detectChanges();
-        expect(fixture.nativeElement).not.toHaveModal();
-        expect(document.body).not.toHaveCssClass('modal-open');
-      });
+           modalRef.close('bar result');
+           fixture.detectChanges();
+           fixture.whenStable().then(() => {
+             expect(fixture.nativeElement).not.toHaveModal();
+             expect(document.body).not.toHaveCssClass('modal-open');
+           });
+         }));
 
       it('should not throw when close called multiple times', () => {
         const modalInstance = fixture.componentInstance.open('foo');
@@ -280,6 +282,51 @@ describe('ngb-modal', () => {
         modalRef.dismiss('some reason');
         fixture.detectChanges();
         expect(fixture.nativeElement).not.toHaveModal();
+      });
+    });
+
+    describe('stacked  modals', () => {
+
+      it('should not remove "modal-open" class on body when closed modal is not last', async(() => {
+           const modalRef1 = fixture.componentInstance.open('foo');
+           const modalRef2 = fixture.componentInstance.open('bar');
+           fixture.detectChanges();
+           expect(fixture.nativeElement).toHaveModal();
+           expect(document.body).toHaveCssClass('modal-open');
+
+           modalRef1.close('foo result');
+           fixture.detectChanges();
+           fixture.whenStable().then(() => {
+             expect(fixture.nativeElement).toHaveModal();
+             expect(document.body).toHaveCssClass('modal-open');
+
+             modalRef2.close('bar result');
+             fixture.detectChanges();
+             fixture.whenStable().then(() => {
+               expect(fixture.nativeElement).not.toHaveModal();
+               expect(document.body).not.toHaveCssClass('modal-open');
+             });
+           });
+         }));
+
+      it('should dismiss modals on ESC in correct order', () => {
+        fixture.componentInstance.open('foo').result.catch(NOOP);
+        fixture.componentInstance.open('bar').result.catch(NOOP);
+        const ngbModalWindow1 = document.querySelectorAll('ngb-modal-window')[0];
+        const ngbModalWindow2 = document.querySelectorAll('ngb-modal-window')[1];
+        fixture.detectChanges();
+        expect(fixture.nativeElement).toHaveModal(['foo', 'bar']);
+        expect(document.activeElement).toBe(ngbModalWindow2);
+
+        (<DebugElement>getDebugNode(document.activeElement)).triggerEventHandler('keyup.esc', {});
+        fixture.detectChanges();
+        expect(fixture.nativeElement).toHaveModal(['foo']);
+        expect(document.activeElement).toBe(ngbModalWindow1);
+
+        (<DebugElement>getDebugNode(document.activeElement)).triggerEventHandler('keyup.esc', {});
+        fixture.detectChanges();
+        expect(fixture.nativeElement).not.toHaveModal();
+        expect(document.activeElement).toBe(document.body);
       });
     });
 
