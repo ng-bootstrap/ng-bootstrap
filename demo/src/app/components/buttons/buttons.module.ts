@@ -13,6 +13,7 @@ import { NgbdButtonsRadio } from './demos/radio/buttons-radio';
 import { NgbdButtonsRadioModule } from './demos/radio/buttons-radio.module';
 import { NgbdButtonsRadioReactiveModule } from './demos/radioreactive/buttons-radio-reactive.module';
 import { NgbdButtonsRadioreactive } from './demos/radioreactive/buttons-radioreactive';
+import { NgbdButtonsRadiouncheckable } from './demos/radiouncheckable/buttons-radiouncheckable';
 
 const DEMOS = {
   checkbox: {
@@ -38,6 +39,12 @@ const DEMOS = {
     type: NgbdButtonsRadioreactive,
     code: require('!!raw-loader!./demos/radioreactive/buttons-radioreactive').default,
     markup: require('!!raw-loader!./demos/radioreactive/buttons-radioreactive.html').default
+  }
+  radiouncheckable: {
+    title: 'Radio buttons (Uncheckable)',
+    type: NgbdButtonsRadiouncheckable,
+    code: require('!!raw-loader!./demos/radiouncheckable/buttons-radiouncheckable'),
+    markup: require('!!raw-loader!./demos/radiouncheckable/buttons-radiouncheckable.html')
   }
 };
 
