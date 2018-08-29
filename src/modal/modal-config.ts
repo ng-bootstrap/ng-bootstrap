@@ -73,6 +73,6 @@ export interface NgbModalOptions {
 */
 @Injectable({providedIn: 'root'})
 export class NgbModalConfig implements NgbModalOptions {
-  backdrop = true;
+  backdrop: boolean | 'static' = true;
   keyboard = true;
 }
