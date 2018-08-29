@@ -43,7 +43,7 @@ let nextId = 0;
   },
   template: `
     <div class="arrow"></div>
-    <h3 class="popover-header">
+    <h3 class="popover-header" *ngIf="title != null">
       <ng-template #simpleTitle>{{title}}</ng-template>
       <ng-template [ngTemplateOutlet]="isTitleTemplate() ? title : simpleTitle" [ngTemplateOutletContext]="context"></ng-template>
     </h3>
@@ -80,7 +80,7 @@ let nextId = 0;
 })
 export class NgbPopoverWindow {
   @Input() placement: Placement = 'top';
-  @Input() title: string | TemplateRef<any>;
+  @Input() title: undefined | string | TemplateRef<any>;
   @Input() id: string;
   @Input() popoverClass: string;
   @Input() context: any;
