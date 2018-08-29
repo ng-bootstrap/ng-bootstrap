@@ -29,7 +29,7 @@ export class NgbModalStack {
   private _activeWindowCmptHasChanged = new Subject();
 
   constructor(
-      private _applicationRef: ApplicationRef, private _injector: Injector, @Inject(DOCUMENT) private _document,
+      private _applicationRef: ApplicationRef, private _injector: Injector, @Inject(DOCUMENT) private _document: any,
       private _scrollBar: ScrollBar, private _rendererFactory: RendererFactory2) {
     // Trap focus on active WindowCmpt
     this._activeWindowCmptHasChanged.subscribe(() => {

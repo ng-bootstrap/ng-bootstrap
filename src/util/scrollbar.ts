@@ -19,7 +19,7 @@ export type CompensationReverter = () => void;
  */
 @Injectable({providedIn: 'root'})
 export class ScrollBar {
-  constructor(@Inject(DOCUMENT) private _document) {}
+  constructor(@Inject(DOCUMENT) private _document: any) {}
 
   /**
    * Detects if a scrollbar is present and if yes, already compensates for its

@@ -31,7 +31,6 @@ import {ModalDismissReasons} from './modal-dismiss-reasons';
 })
 export class NgbModalWindow implements OnInit,
     AfterViewInit, OnDestroy {
-  private _document: any;
   private _elWithFocus: Element;  // element that is focused prior to modal opening
 
   @Input() ariaLabelledBy: string;
@@ -43,7 +42,7 @@ export class NgbModalWindow implements OnInit,
 
   @Output('dismiss') dismissEvent = new EventEmitter();
 
-  constructor(@Inject(DOCUMENT) document, private _elRef: ElementRef<HTMLElement>) { this._document = document; }
+  constructor(@Inject(DOCUMENT) private _document: any, private _elRef: ElementRef<HTMLElement>) {}
 
   backdropClick($event): void {
     if (this.backdrop === true && this._elRef.nativeElement === $event.target) {
