@@ -1,4 +1,4 @@
-# NG Bootstrap - [Angular](http://angular.io/) directives specific to [Bootstrap 4](https://getbootstrap.com/)
+# NG Bootstrap - [Angular](https://angular.io/) directives specific to [Bootstrap 4](https://getbootstrap.com/)
 
 [![npm version](https://badge.fury.io/js/%40ng-bootstrap%2Fng-bootstrap.svg)](https://badge.fury.io/js/%40ng-bootstrap%2Fng-bootstrap)
 [![Build Status](https://travis-ci.org/ng-bootstrap/ng-bootstrap.svg?branch=master)](https://travis-ci.org/ng-bootstrap/ng-bootstrap)
@@ -30,7 +30,7 @@ Feel free to make comments there.
 View all the directives in action at https://ng-bootstrap.github.io
 
 ## Dependencies
-The only two dependencies are [Angular](https://angular.io) and [Bootstrap 4](https://www.getbootstrap.com) CSS. 
+The only two dependencies are [Angular](https://angular.io) and [Bootstrap 4](https://getbootstrap.com) CSS. 
 Here is the list of minimal required versions:
 
 | ng-bootstrap | Angular | Bootstrap CSS |
@@ -84,7 +84,7 @@ map: {
 ## Supported browsers
 
 We support the same browsers and versions supported by both Bootstrap 4 and Angular, whichever is _more_ restrictive.
-See [this](https://github.com/angular/angular/blob/master/README.md) for up-to-date Angular browser support.
+See [this](https://angular.io/guide/browser-support) for up-to-date Angular browser support.
 
 * Chrome (45+)
 * Firefox (40+)
