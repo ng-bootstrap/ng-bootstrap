@@ -223,6 +223,16 @@ describe('ngb-popover', () => {
       expect(spyService.called).toBeTruthy();
     });
 
+    it('should not show a header if title is empty', () => {
+      const fixture = createTestComponent(`<div ngbPopover="Great tip!"></div>`);
+      const directive = fixture.debugElement.query(By.directive(NgbPopover));
+
+      directive.triggerEventHandler('click', {});
+      fixture.detectChanges();
+      const windowEl = getWindow(fixture.nativeElement);
+      expect(windowEl.querySelector('.popover-header')).toBeNull();
+    });
+
     it('should not open a popover if content and title are empty', () => {
       const fixture = createTestComponent(`<div [ngbPopover]="" [popoverTitle]=""></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbPopover));
