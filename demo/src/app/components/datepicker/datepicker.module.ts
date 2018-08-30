@@ -13,6 +13,7 @@ import { NgbdDatepickerCustomday } from './demos/customday/datepicker-customday'
 import { NgbdDatepickerDisabled } from './demos/disabled/datepicker-disabled';
 import { NgbdDatepickerI18n } from './demos/i18n/datepicker-i18n';
 import { NgbdDatepickerJalali } from './demos/jalali/datepicker-jalali';
+import { NgbdDatepickerHebrew } from './demos/hebrew/datepicker-hebrew';
 import { NgbdDatepickerMultiple } from './demos/multiple/datepicker-multiple';
 import { NgbdDatepickerPopup } from './demos/popup/datepicker-popup';
 import { NgbdDatepickerRange } from './demos/range/datepicker-range';
@@ -27,6 +28,7 @@ const DEMO_DIRECTIVES = [
   NgbdDatepickerCustomday,
   NgbdDatepickerConfig,
   NgbdDatepickerMultiple,
+  NgbdDatepickerHebrew,
   NgbdDatepickerCalendars,
   NgbdDatepickerJalali,
   NgbdDatepickerRange,
@@ -96,6 +98,12 @@ const DEMOS = {
     type: NgbdDatepickerCustomday,
     code: require('!!raw-loader!./demos/customday/datepicker-customday'),
     markup: require('!!raw-loader!./demos/customday/datepicker-customday.html')
+  },
+  hebrew: {
+    title: 'Hebrew',
+    type: NgbdDatepickerHebrew,
+    code: require('!!raw-loader!./demos/hebrew/datepicker-hebrew'),
+    markup: require('!!raw-loader!./demos/hebrew/datepicker-hebrew.html')
   },
   calendars: {
     title: 'Alternative calendars',
