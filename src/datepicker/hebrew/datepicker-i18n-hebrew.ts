@@ -9,6 +9,9 @@ const MONTHS = ['תשרי', 'חשון', 'כסלו', 'טבת', 'שבט', 'אדר'
 const MONTHS_LEAP =
     ['תשרי', 'חשון', 'כסלו', 'טבת', 'שבט', 'אדר א׳', 'אדר ב׳', 'ניסן', 'אייר', 'סיון', 'תמוז', 'אב', 'אלול'];
 
+/**
+ * @since 3.2.0
+ */
 @Injectable()
 export class NgbDatepickerI18nHebrew extends NgbDatepickerI18n {
   getMonthShortName(month: number, year?: number): string { return this.getMonthFullName(month, year); }

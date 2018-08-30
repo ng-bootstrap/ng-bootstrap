@@ -2,6 +2,9 @@ import {Injectable} from '@angular/core';
 import {NgbDateAdapter} from './ngb-date-adapter';
 import {NgbDateStruct} from '../ngb-date-struct';
 
+/**
+ * @since 3.2.0
+ */
 @Injectable()
 export class NgbDateNativeUTCAdapter extends NgbDateAdapter<Date> {
   fromModel(date: Date): NgbDateStruct {

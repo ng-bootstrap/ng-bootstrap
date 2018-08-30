@@ -139,6 +139,8 @@ export class NgbTooltip implements OnInit, OnDestroy {
   @Input() disableTooltip: boolean;
   /**
    * An optional class applied to ngb-tooltip-window
+   *
+   * @since 3.2.0
    */
   @Input() tooltipClass: string;
   /**

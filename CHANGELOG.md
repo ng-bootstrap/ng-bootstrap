@@ -1,3 +1,25 @@
+<a name="3.2.0"></a>
+# [3.2.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/3.1.0...3.2.0) (2018-08-30)
+
+
+### Bug Fixes
+
+* **popover:** don't show header if title is empty ([f1ec90b](https://github.com/ng-bootstrap/ng-bootstrap/commit/f1ec90b)), closes [#2653](https://github.com/ng-bootstrap/ng-bootstrap/issues/2653) [#2661](https://github.com/ng-bootstrap/ng-bootstrap/issues/2661)
+* **radio:** properly set disabled state on labels ([9b19171](https://github.com/ng-bootstrap/ng-bootstrap/commit/9b19171)), closes [#2635](https://github.com/ng-bootstrap/ng-bootstrap/issues/2635) [#2639](https://github.com/ng-bootstrap/ng-bootstrap/issues/2639)
+
+
+### Features
+
+* **datepicker:** add aria-labels and titles for navigation select elements ([dcdb5fc](https://github.com/ng-bootstrap/ng-bootstrap/commit/dcdb5fc)), closes [#2636](https://github.com/ng-bootstrap/ng-bootstrap/issues/2636) [#2543](https://github.com/ng-bootstrap/ng-bootstrap/issues/2543)
+* **datepicker:** add hebrew i18n ([2d68122](https://github.com/ng-bootstrap/ng-bootstrap/commit/2d68122)), closes [#2606](https://github.com/ng-bootstrap/ng-bootstrap/issues/2606)
+* **datepicker:** Hebrew calendar support ([8404994](https://github.com/ng-bootstrap/ng-bootstrap/commit/8404994))
+* **datepicker:** Add NgbDateNativeUTCAdapter ([f847791](https://github.com/ng-bootstrap/ng-bootstrap/commit/f847791)), closes [#2631](https://github.com/ng-bootstrap/ng-bootstrap/issues/2631) [#2659](https://github.com/ng-bootstrap/ng-bootstrap/issues/2659)
+* **modal:** add implicit context for template based modals ([6e4f9e7](https://github.com/ng-bootstrap/ng-bootstrap/commit/6e4f9e7)), closes [#2669](https://github.com/ng-bootstrap/ng-bootstrap/issues/2669)
+* **modal:** add support for stacked modals ([2409572](https://github.com/ng-bootstrap/ng-bootstrap/commit/2409572)), closes [#2640](https://github.com/ng-bootstrap/ng-bootstrap/issues/2640) [#643](https://github.com/ng-bootstrap/ng-bootstrap/issues/643)
+* **tooltip:** ability to add custom CSS classes to tooltip window ([709d6b6](https://github.com/ng-bootstrap/ng-bootstrap/commit/709d6b6)), closes [#2625](https://github.com/ng-bootstrap/ng-bootstrap/issues/2625) [#1349](https://github.com/ng-bootstrap/ng-bootstrap/issues/1349)
+
+
+
 <a name="3.1.0"></a>
 # [3.1.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/3.0.0...3.1.0) (2018-08-24)
 
