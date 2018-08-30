@@ -1048,6 +1048,46 @@ describe('ngb-datepicker', () => {
          }
          expect(fixture.nativeElement.querySelector('ngb-datepicker').getAttribute('tabindex')).toBeFalsy();
        }));
+
+    it('should not change again the value in the model on a change coming from the model (template-driven form)',
+       async(() => {
+         const html = `<form>
+             <ngb-datepicker [startDate]="date" [minDate]="minDate" [maxDate]="maxDate" [(ngModel)]="model" name="date">
+             </ngb-datepicker>
+           </form>`;
+
+         const fixture = createTestComponent(html);
+         fixture.detectChanges();
+
+         const value = new NgbDate(2018, 7, 28);
+         fixture.componentInstance.model = value;
+
+         fixture.detectChanges();
+         fixture.whenStable().then(() => { expect(fixture.componentInstance.model).toBe(value); });
+       }));
+
+    it('should not change again the value in the model on a change coming from the model (reactive form)', async(() => {
+         const html = `<form [formGroup]="form">
+             <ngb-datepicker [startDate]="date" [minDate]="minDate" [maxDate]="maxDate" formControlName="control">
+             </ngb-datepicker>
+           </form>`;
+
+         const fixture = createTestComponent(html);
+         fixture.detectChanges();
+
+         const formChangeSpy = jasmine.createSpy('form change');
+         const form = fixture.componentInstance.form;
+         form.valueChanges.subscribe(formChangeSpy);
+         const controlValue = new NgbDate(2018, 7, 28);
+         form.setValue({control: controlValue});
+
+         fixture.detectChanges();
+         fixture.whenStable().then(() => {
+           expect(formChangeSpy).toHaveBeenCalledTimes(1);
+           expect(form.value.control).toBe(controlValue);
+         });
+       }));
+
   });
 
   describe('Custom config', () => {
