@@ -26,6 +26,7 @@ export {NgbDateStruct} from './ngb-date-struct';
 export {NgbDate} from './ngb-date';
 export {NgbDateAdapter} from './adapters/ngb-date-adapter';
 export {NgbDateNativeAdapter} from './adapters/ngb-date-native-adapter';
+export {NgbDateNativeUTCAdapter} from './adapters/ngb-date-native-utc-adapter';
 export {NgbDateParserFormatter} from './ngb-date-parser-formatter';
 
 @NgModule({

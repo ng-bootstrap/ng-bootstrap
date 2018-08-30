@@ -53,6 +53,7 @@ export {
   NgbDateParserFormatter,
   NgbDateAdapter,
   NgbDateNativeAdapter,
+  NgbDateNativeUTCAdapter,
   NgbDatepicker,
   NgbInputDatepicker
 } from './datepicker/datepicker.module';
