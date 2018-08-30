@@ -9,8 +9,9 @@ import { NgbdModalBasic } from './demos/basic/modal-basic';
 import { NgbdModalComponent, NgbdModalContent } from './demos/component/modal-component';
 import { NgbdModalOptions } from './demos/options/modal-options';
 import { NgbdModal1Content, NgbdModal2Content, NgbdModalStacked } from './demos/stacked/modal-stacked';
+import { NgbdModalConfig } from './demos/config/modal-config';
 
-const DEMO_DIRECTIVES = [NgbdModalBasic, NgbdModalComponent, NgbdModalOptions, NgbdModalStacked];
+const DEMO_DIRECTIVES = [NgbdModalBasic, NgbdModalComponent, NgbdModalOptions, NgbdModalStacked, NgbdModalConfig];
 
 const DEMOS = {
   basic: {
@@ -36,6 +37,12 @@ const DEMOS = {
     type: NgbdModalStacked,
     code: require('!!raw-loader!./demos/stacked/modal-stacked'),
     markup: require('!!raw-loader!./demos/stacked/modal-stacked.html')
+  },
+  config: {
+    title: 'Global configuration of modals',
+    type: NgbdModalConfig,
+    code: require('!!raw-loader!./demos/config/modal-config'),
+    markup: require('!!raw-loader!./demos/config/modal-config.html')
   }
 };
 
