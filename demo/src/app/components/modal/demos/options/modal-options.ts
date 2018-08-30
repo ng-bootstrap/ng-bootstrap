@@ -1,6 +1,5 @@
-import {Component, ViewEncapsulation} from '@angular/core';
-
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { Component, ViewEncapsulation } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'ngbd-modal-options',
@@ -43,5 +42,4 @@ export class NgbdModalOptions {
   openVerticallyCentered(content) {
     this.modalService.open(content, { centered: true });
   }
-
 }

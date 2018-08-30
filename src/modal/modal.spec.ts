@@ -1,18 +1,18 @@
+import {CommonModule} from '@angular/common';
 import {
   Component,
-  Injectable,
-  ViewChild,
-  OnDestroy,
-  NgModule,
-  getDebugNode,
   DebugElement,
-  Injector
+  getDebugNode,
+  Injectable,
+  Injector,
+  NgModule,
+  OnDestroy,
+  ViewChild
 } from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {TestBed, ComponentFixture, async} from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {NgbModalModule, NgbModal, NgbActiveModal, NgbModalRef} from './modal.module';
 import {NgbModalConfig} from './modal-config';
+import {NgbActiveModal, NgbModal, NgbModalModule, NgbModalRef} from './modal.module';
 
 const NOOP = () => {};
 
@@ -188,6 +188,26 @@ describe('ngb-modal', () => {
 
       it('should open and dismiss modal from inside', () => {
         fixture.componentInstance.openTplDismiss().result.catch(NOOP);
+        fixture.detectChanges();
+        expect(fixture.nativeElement).toHaveModal();
+
+        (<HTMLElement>document.querySelector('button#dismiss')).click();
+        fixture.detectChanges();
+        expect(fixture.nativeElement).not.toHaveModal();
+      });
+
+      it('should open and close modal from template implicit context', () => {
+        fixture.componentInstance.openTplImplicitContext();
+        fixture.detectChanges();
+        expect(fixture.nativeElement).toHaveModal();
+
+        (<HTMLElement>document.querySelector('button#close')).click();
+        fixture.detectChanges();
+        expect(fixture.nativeElement).not.toHaveModal();
+      });
+
+      it('should open and dismiss modal from template implicit context', () => {
+        fixture.componentInstance.openTplImplicitContext().result.catch(NOOP);
         fixture.detectChanges();
         expect(fixture.nativeElement).toHaveModal();
 
@@ -816,6 +836,10 @@ export class WithActiveModalCmpt {
     <ng-template #contentWithDismiss let-dismiss="dismiss">
       <button id="dismiss" (click)="dismiss('myReason')">Dismiss me</button>
     </ng-template>
+    <ng-template #contentWithImplicitContext let-modal>
+      <button id="close" (click)="modal.close('myResult')">Close me</button>
+      <button id="dismiss" (click)="modal.dismiss('myReason')">Dismiss me</button>
+    </ng-template>
     <ng-template #contentWithIf>
       <ng-template [ngIf]="show">
         <button id="if" (click)="show = false">Click me</button>
@@ -838,6 +862,7 @@ class TestComponent {
   @ViewChild('destroyableContent') tplDestroyableContent;
   @ViewChild('contentWithClose') tplContentWithClose;
   @ViewChild('contentWithDismiss') tplContentWithDismiss;
+  @ViewChild('contentWithImplicitContext') tplContentWithImplicitContext;
   @ViewChild('contentWithIf') tplContentWithIf;
 
   constructor(private modalService: NgbModal) {}
@@ -857,6 +882,9 @@ class TestComponent {
   openDestroyableTpl(options?: Object) { return this.modalService.open(this.tplDestroyableContent, options); }
   openTplClose(options?: Object) { return this.modalService.open(this.tplContentWithClose, options); }
   openTplDismiss(options?: Object) { return this.modalService.open(this.tplContentWithDismiss, options); }
+  openTplImplicitContext(options?: Object) {
+    return this.modalService.open(this.tplContentWithImplicitContext, options);
+  }
   openTplIf(options?: Object) { return this.modalService.open(this.tplContentWithIf, options); }
 }
 
