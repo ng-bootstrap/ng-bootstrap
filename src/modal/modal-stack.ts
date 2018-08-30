@@ -1,24 +1,23 @@
 import {DOCUMENT} from '@angular/common';
 import {
   ApplicationRef,
-  Injectable,
-  Injector,
-  Inject,
   ComponentFactoryResolver,
   ComponentRef,
+  Inject,
+  Injectable,
+  Injector,
+  RendererFactory2,
   TemplateRef,
-  RendererFactory2
 } from '@angular/core';
 import {Subject} from 'rxjs';
 
 import {ngbFocusTrap} from '../util/focus-trap';
 import {ContentRef} from '../util/popup';
-import {isDefined, isString} from '../util/util';
 import {ScrollBar} from '../util/scrollbar';
-
+import {isDefined, isString} from '../util/util';
 import {NgbModalBackdrop} from './modal-backdrop';
-import {NgbModalWindow} from './modal-window';
 import {NgbActiveModal, NgbModalRef} from './modal-ref';
+import {NgbModalWindow} from './modal-window';
 
 @Injectable({providedIn: 'root'})
 export class NgbModalStack {
@@ -119,19 +118,24 @@ export class NgbModalStack {
 
   private _getContentRef(
       moduleCFR: ComponentFactoryResolver, contentInjector: Injector, content: any,
-      context: NgbActiveModal): ContentRef {
+      activeModal: NgbActiveModal): ContentRef {
     if (!content) {
       return new ContentRef([]);
     } else if (content instanceof TemplateRef) {
-      return this._createFromTemplateRef(content, context);
+      return this._createFromTemplateRef(content, activeModal);
     } else if (isString(content)) {
       return this._createFromString(content);
     } else {
-      return this._createFromComponent(moduleCFR, contentInjector, content, context);
+      return this._createFromComponent(moduleCFR, contentInjector, content, activeModal);
     }
   }
 
-  private _createFromTemplateRef(content: TemplateRef<any>, context: NgbActiveModal): ContentRef {
+  private _createFromTemplateRef(content: TemplateRef<any>, activeModal: NgbActiveModal): ContentRef {
+    const context = {
+      $implicit: activeModal,
+      close(result) { activeModal.close(result); },
+      dismiss(reason) { activeModal.dismiss(reason); }
+    };
     const viewRef = content.createEmbeddedView(context);
     this._applicationRef.attachView(viewRef);
     return new ContentRef([viewRef.rootNodes], viewRef);
