@@ -5,7 +5,7 @@ import {NgbDateStruct} from '../ngb-date-struct';
 @Injectable()
 export class NgbDateNativeUTCAdapter extends NgbDateAdapter<Date> {
   fromModel(date: Date): NgbDateStruct {
-    return (date && date.getUTCFullYear) ?
+    return (date instanceof Date) ?
         {year: date.getUTCFullYear(), month: date.getUTCMonth() + 1, day: date.getUTCDate()} :
         null;
   }
