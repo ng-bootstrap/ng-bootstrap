@@ -1,0 +1,14 @@
+<ngb-timepicker [(ngModel)]="time" [size]="size"></ngb-timepicker>
+
+<hr>
+
+<div class="input-group">
+  <div class="input-group-prepend">
+    <label class="input-group-text" for="timepicker-size">Size</label>
+  </div>
+  <select class="form-control" id="timepicker-size" [(ngModel)]="size">
+    <option value="small">Small</option>
+    <option value="medium">Medium</option>
+    <option value="large">Large</option>
+  </select>
+</div>
