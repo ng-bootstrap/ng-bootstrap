@@ -11,6 +11,7 @@ import {NgbDatepickerI18n} from './datepicker-i18n';
     :host {
       display: -ms-flexbox;
       display: flex;
+      -ms-flex-align: center;
       align-items: center;
     }
     .ngb-dp-navigation-chevron {
@@ -21,11 +22,11 @@ import {NgbDatepickerI18n} from './datepicker-i18n';
       height: 0.75em;
       margin-left: 0.25em;
       margin-right: 0.15em;
+      -webkit-transform: rotate(-135deg);
       transform: rotate(-135deg);
-      -ms-transform: rotate(-135deg);
     }
     .right .ngb-dp-navigation-chevron {
-      -ms-transform: rotate(45deg);
+      -webkit-transform: rotate(45deg);
       transform: rotate(45deg);
       margin-left: 0.15em;
       margin-right: 0.25em;
@@ -34,7 +35,7 @@ import {NgbDatepickerI18n} from './datepicker-i18n';
       display: -ms-flexbox;
       display: flex;
       -ms-flex: 1 1 auto;
-      flex-grow: 1;
+      flex: 1 1 auto;
       padding-right: 0;
       padding-left: 0;
       margin: 0;
@@ -65,8 +66,7 @@ import {NgbDatepickerI18n} from './datepicker-i18n';
       display: -ms-flexbox;
       display: flex;
       -ms-flex: 1 1 9rem;
-      flex-grow: 1;
-      flex-basis: 9rem;
+      flex: 1 1 9rem;
     }
   `],
   template: `
