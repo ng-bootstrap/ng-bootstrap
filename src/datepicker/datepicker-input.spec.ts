@@ -250,6 +250,36 @@ describe('NgbInputDatepicker', () => {
       expect(fixture.componentInstance.date).toEqual({year: 2016, month: 9, day: 10});
     });
 
+    it('should not update the model twice with the same value on input and on change', fakeAsync(() => {
+         const fixture =
+             createTestCmpt(`<input ngbDatepicker [(ngModel)]="date" (ngModelChange)="onModelChange($event)">`);
+         const componentInstance = fixture.componentInstance;
+         const inputDebugEl = fixture.debugElement.query(By.css('input'));
+         spyOn(componentInstance, 'onModelChange');
+
+         tick();
+         fixture.detectChanges();
+
+         inputDebugEl.triggerEventHandler('input', {target: {value: '2018-08-29'}});
+         tick();
+         fixture.detectChanges();
+
+         const value = componentInstance.date;
+         expect(value).toEqual({year: 2018, month: 8, day: 29});
+         expect(componentInstance.onModelChange).toHaveBeenCalledTimes(1);
+         expect(componentInstance.onModelChange).toHaveBeenCalledWith(value);
+
+         inputDebugEl.triggerEventHandler('change', {target: {value: '2018-08-29'}});
+
+         tick();
+         fixture.detectChanges();
+
+         expect(fixture.componentInstance.date).toBe(value);
+
+         // the value is still the same, there should not be new calls of onModelChange:
+         expect(componentInstance.onModelChange).toHaveBeenCalledTimes(1);
+       }));
+
     it('should set only valid dates', fakeAsync(() => {
          const fixture = createTestCmpt(`<input ngbDatepicker [ngModel]="date">`);
          const input = fixture.nativeElement.querySelector('input');
