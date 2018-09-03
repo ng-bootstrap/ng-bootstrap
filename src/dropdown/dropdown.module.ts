@@ -1,10 +1,10 @@
 import {NgModule, ModuleWithProviders} from '@angular/core';
-import {NgbDropdown, NgbDropdownAnchor, NgbDropdownToggle, NgbDropdownMenu} from './dropdown';
+import {NgbDropdown, NgbDropdownAnchor, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownItem} from './dropdown';
 
-export {NgbDropdown, NgbDropdownAnchor, NgbDropdownToggle, NgbDropdownMenu} from './dropdown';
+export {NgbDropdown, NgbDropdownAnchor, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownItem} from './dropdown';
 export {NgbDropdownConfig} from './dropdown-config';
 
-const NGB_DROPDOWN_DIRECTIVES = [NgbDropdown, NgbDropdownAnchor, NgbDropdownToggle, NgbDropdownMenu];
+const NGB_DROPDOWN_DIRECTIVES = [NgbDropdown, NgbDropdownAnchor, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownItem];
 
 @NgModule({declarations: NGB_DROPDOWN_DIRECTIVES, exports: NGB_DROPDOWN_DIRECTIVES})
 export class NgbDropdownModule {
