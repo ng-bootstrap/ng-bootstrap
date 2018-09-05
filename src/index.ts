@@ -109,7 +109,12 @@ export {
   NgbTabset,
   NgbTabsetConfig,
   NgbTabsetModule,
-  NgbTabTitle
+  NgbTabTitle,
+  NgbTabDirective,
+  NgbTabLinkDirective,
+  NgbTabsetDirective,
+  NgbTabsetOutlet,
+  NgbSelfControlledTabset
 } from './tabset/tabset.module';
 export {
   NgbTimeAdapter,
