@@ -13,9 +13,6 @@ import {
 } from './hebrew';
 
 /**
- * The Hebrew or Jewish calendar is a lunisolar calendar.
- * In Israel, it is used for religious purposes and frequently - as an official calendar for civil purposes.
- *
  * @since 3.2.0
  */
 @Injectable()
