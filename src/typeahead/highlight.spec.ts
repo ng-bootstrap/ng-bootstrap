@@ -118,6 +118,13 @@ describe('ngb-highlight', () => {
     expect(highlightHtml(fixture)).toBe('<span class="ngb-highlight">0</span>123');
   });
 
+  it('should highlight multiple terms', () => {
+    const fixture = createTestComponent(`<ngb-highlight result="foosball bar" [term]="['foo','bar']"></ngb-highlight>`);
+
+    expect(highlightHtml(fixture))
+        .toBe('<span class="ngb-highlight">foo</span>sball <span class="ngb-highlight">bar</span>');
+  });
+
   it('should support custom highlight class', () => {
     const fixture = createTestComponent('<ngb-highlight result="123" [term]="2" highlightClass="my"></ngb-highlight>');
 

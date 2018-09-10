@@ -27,18 +27,25 @@ export class NgbHighlight implements OnChanges {
   @Input() result: string;
 
   /**
-   * The searched term
+   * The searched term(s)
    */
-  @Input() term: string;
+  @Input() term: string | string[];
 
   ngOnChanges(changes: SimpleChanges) {
     const resultStr = toString(this.result);
     const resultLC = resultStr.toLowerCase();
-    const termLC = toString(this.term).toLowerCase();
-    let currentIdx = 0;
+    let termsLC: string[];
+    if (this.term instanceof Array) {
+      termsLC = this.term.map(term => toString(term).toLowerCase());
+    } else {
+      termsLC = [toString(this.term).toLowerCase()];
+    }
+    termsLC = termsLC.filter(termLC => termLC.length > 0);
 
-    if (termLC.length > 0) {
-      this.parts = resultLC.split(new RegExp(`(${regExpEscape(termLC)})`)).map((part) => {
+    if (termsLC.length > 0) {
+      let currentIdx = 0;
+      const regex = '(' + termsLC.map(termLC => `${regExpEscape(termLC)}`).join('|') + ')';
+      this.parts = resultLC.split(new RegExp(regex)).map((part) => {
         const originalPart = resultStr.substr(currentIdx, part.length);
         currentIdx += part.length;
         return originalPart;
