@@ -22,7 +22,7 @@
     "e2e-app:serve": "ng serve e2e-app",
     "ngb:static": "gulp copy-license",
     "ngb:lint": "ng lint ng-bootstrap",
-    "ngb:test": "ng test ng-bootstrap --code-coverage --source-map false --progress false --watch false",
+    "ngb:test": "ng test ng-bootstrap --code-coverage --source-map true --progress false --watch false",
     "ngb:tdd": "ng test ng-bootstrap --source-map false",
     "ngb:e2e": "ng e2e --prod",
     "ngb:e2e-noserve": "ng e2e -c noserve",
