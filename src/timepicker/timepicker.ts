@@ -63,7 +63,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
       -webkit-transform: rotate(-45deg);
       -ms-transform: rotate(-45deg);
       vertical-align: middle;
-      width: 0.71em;
+      width: 0.69em;
     }
 
     .chevron.bottom:before {
