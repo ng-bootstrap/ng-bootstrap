@@ -59,7 +59,6 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
       left: 0.05em;
       position: relative;
       top: 0.15em;
-      -webkit-transform: rotate(-45deg);
       transform: rotate(-45deg);
       vertical-align: middle;
       width: 0.71em;
@@ -67,7 +66,6 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
 
     .chevron.bottom:before {
       top: -.3em;
-      -webkit-transform: rotate(135deg);
       transform: rotate(135deg);
     }
 

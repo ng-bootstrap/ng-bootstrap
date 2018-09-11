@@ -22,11 +22,9 @@ import {NgbDatepickerI18n} from './datepicker-i18n';
       height: 0.75em;
       margin-left: 0.25em;
       margin-right: 0.15em;
-      -webkit-transform: rotate(-135deg);
       transform: rotate(-135deg);
     }
     .right .ngb-dp-navigation-chevron {
-      -webkit-transform: rotate(45deg);
       transform: rotate(45deg);
       margin-left: 0.15em;
       margin-right: 0.25em;
