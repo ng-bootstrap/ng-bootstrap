@@ -72,6 +72,11 @@ export class YourAppModule {
 }
 ```
 
+Remind to import in index.html file, the bootstrap css file like 
+```html
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+```
+
 ### SystemJS
 If you are using SystemJS, you should also adjust your configuration to point to the UMD bundle.
 
