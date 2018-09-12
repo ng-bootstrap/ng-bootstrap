@@ -90,6 +90,6 @@ export const ROUTES = [
 })
 export class NgbdTabsetModule {
   constructor(demoList: NgbdDemoList) {
-    demoList.register('tabs', DEMOS);
+    demoList.register('tabset', DEMOS);
   }
 }

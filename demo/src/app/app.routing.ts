@@ -75,7 +75,7 @@ const routes: Routes = [
     children: RATING_ROUTES
   },
   {
-    path: 'components/tabs',
+    path: 'components/tabset',
     children: TABSET_ROUTES
   },
   {
