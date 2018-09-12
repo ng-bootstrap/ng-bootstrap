@@ -27,11 +27,7 @@ import {NgbAlertConfig} from './alert-config';
     </button>
     <ng-content></ng-content>
     `,
-  styles: [`
-    :host {
-      display: block;
-    }
-  `]
+  styleUrls: ['./alert.scss']
 })
 export class NgbAlert implements OnInit,
     OnChanges {

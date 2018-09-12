@@ -17,62 +17,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
  */
 @Component({
   selector: 'ngb-timepicker',
-  styles: [`
-
-    :host {
-      font-size: 1rem;
-    }
-
-    .ngb-tp {
-      display: -ms-flexbox;
-      display: flex;
-      -ms-flex-align: center;
-      align-items: center;
-    }
-
-    .ngb-tp-input-container {
-      width: 4em;
-    }
-
-    .ngb-tp-hour, .ngb-tp-minute, .ngb-tp-second, .ngb-tp-meridian {
-      display: -ms-flexbox;
-      display: flex;
-      -ms-flex-direction: column;
-      flex-direction: column;
-      -ms-flex-align: center;
-      align-items: center;
-      -ms-flex-pack: distribute;
-      justify-content: space-around;
-    }
-
-    .ngb-tp-spacer {
-      width: 1em;
-      text-align: center;
-    }
-
-    .chevron::before {
-      border-style: solid;
-      border-width: 0.29em 0.29em 0 0;
-      content: '';
-      display: inline-block;
-      height: 0.69em;
-      left: 0.05em;
-      position: relative;
-      top: 0.15em;
-      transform: rotate(-45deg);
-      vertical-align: middle;
-      width: 0.69em;
-    }
-
-    .chevron.bottom:before {
-      top: -.3em;
-      transform: rotate(135deg);
-    }
-
-    input {
-      text-align: center;
-    }
-  `],
+  styleUrls: ['./timepicker.scss'],
   template: `
     <fieldset [disabled]="disabled" [class.disabled]="disabled">
       <div class="ngb-tp">
