@@ -9,7 +9,8 @@ const ngBootstrap = JSON.parse(fs.readFileSync('src/package.json').toString()).v
 const versions = getVersions();
 
 const ENTRY_CMPTS = {
-  modal: ['component']
+  'modal-component': ['NgbdModalContent'],
+  'modal-stacked': ['NgbdModal1Content', 'NgbdModal2Content']
 };
 
 function generateDemosCSS() {
@@ -91,9 +92,8 @@ function generateAppComponentHtmlContent(componentName, demoName) {
 function generateAppModuleTsContent(componentName, demoName, filePath) {
   const demoClassName = `Ngbd${capitalize(componentName)}${capitalize(demoName)}`;
   const demoImport = `./${componentName}-${demoName}`;
-  const needsEntryCmpt = ENTRY_CMPTS.hasOwnProperty(componentName) && ENTRY_CMPTS[componentName].indexOf(demoName) > -1;
-  const entryCmptClass =  needsEntryCmpt ? `Ngbd${capitalize(componentName)}Content` : null;
-  const demoImports = needsEntryCmpt ? `${demoClassName}, ${entryCmptClass}` : demoClassName;
+  const entryCmptClasses = (ENTRY_CMPTS[`${componentName}-${demoName}`] || []).join(', ');
+  const demoImports = entryCmptClasses ? `${demoClassName}, ${entryCmptClasses}` : demoClassName;
 
   const file = fs.readFileSync(filePath).toString();
   if (!file.includes(demoClassName)) {
@@ -111,7 +111,7 @@ import { ${demoImports} } from '${demoImport}';
 
 @NgModule({
   imports: [BrowserModule, FormsModule, ReactiveFormsModule, HttpClientModule, NgbModule.forRoot()], 
-  declarations: [AppComponent, ${demoImports}]${needsEntryCmpt ? `,\n  entryComponents: [${entryCmptClass}],` : ','}
+  declarations: [AppComponent, ${demoImports}]${entryCmptClasses ? `,\n  entryComponents: [${entryCmptClasses}],` : ','}
   bootstrap: [AppComponent]
 }) 
 export class AppModule {}
