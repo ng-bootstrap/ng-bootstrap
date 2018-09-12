@@ -7,13 +7,11 @@ import { NgbdApiPage } from '../shared/api-page/api.component';
 import { NgbdExamplesPage } from '../shared/examples-page/examples.component';
 import { NgbdDatepickerAdapter } from './demos/adapter/datepicker-adapter';
 import { NgbdDatepickerBasic } from './demos/basic/datepicker-basic';
-import { NgbdDatepickerCalendars, NgbdIslamicCivil, NgbdIslamicUmalqura } from './demos/calendars/datepicker-calendars';
+import { DEMO_CALENDAR_DIRECTIVES, NgbdDatepickerCalendarsComponent } from './calendars/datepicker-calendars.component';
 import { NgbdDatepickerConfig } from './demos/config/datepicker-config';
 import { NgbdDatepickerCustomday } from './demos/customday/datepicker-customday';
 import { NgbdDatepickerDisabled } from './demos/disabled/datepicker-disabled';
 import { NgbdDatepickerI18n } from './demos/i18n/datepicker-i18n';
-import { NgbdDatepickerJalali } from './demos/jalali/datepicker-jalali';
-import { NgbdDatepickerHebrew } from './demos/hebrew/datepicker-hebrew';
 import { NgbdDatepickerMultiple } from './demos/multiple/datepicker-multiple';
 import { NgbdDatepickerPopup } from './demos/popup/datepicker-popup';
 import { NgbdDatepickerRange } from './demos/range/datepicker-range';
@@ -28,12 +26,7 @@ const DEMO_DIRECTIVES = [
   NgbdDatepickerCustomday,
   NgbdDatepickerConfig,
   NgbdDatepickerMultiple,
-  NgbdDatepickerHebrew,
-  NgbdDatepickerCalendars,
-  NgbdDatepickerJalali,
   NgbdDatepickerRange,
-  NgbdIslamicCivil,
-  NgbdIslamicUmalqura,
   NgbdDatepickerAdapter
 ];
 
@@ -45,7 +38,6 @@ const OVERVIEW = {
   'limiting-dates': 'Disabling and limiting dates',
   'day-template': 'Day display customization',
   range: 'Range selection',
-  calendars: 'Alternative calendars',
   i18n: 'Internationalization',
   'keyboard-shortcuts': 'Keyboard shortcuts'
 };
@@ -99,24 +91,6 @@ const DEMOS = {
     code: require('!!raw-loader!./demos/customday/datepicker-customday'),
     markup: require('!!raw-loader!./demos/customday/datepicker-customday.html')
   },
-  hebrew: {
-    title: 'Hebrew',
-    type: NgbdDatepickerHebrew,
-    code: require('!!raw-loader!./demos/hebrew/datepicker-hebrew'),
-    markup: require('!!raw-loader!./demos/hebrew/datepicker-hebrew.html')
-  },
-  calendars: {
-    title: 'Alternative calendars',
-    type: NgbdDatepickerCalendars,
-    code: require('!!raw-loader!./demos/calendars/datepicker-calendars'),
-    markup: require('!!raw-loader!./demos/calendars/datepicker-calendars.html')
-  },
-  jalali: {
-    title: 'Jalali',
-    type: NgbdDatepickerJalali,
-    code: require('!!raw-loader!./demos/jalali/datepicker-jalali'),
-    markup: require('!!raw-loader!./demos/jalali/datepicker-jalali.html')
-  },
   config: {
     title: 'Global configuration of datepickers',
     type: NgbdDatepickerConfig,
@@ -134,6 +108,7 @@ export const ROUTES = [
     children: [
       { path: 'overview', component: NgbdDatepickerOverviewComponent },
       { path: 'examples', component: NgbdExamplesPage },
+      { path: 'calendars', component: NgbdDatepickerCalendarsComponent },
       { path: 'api', component: NgbdApiPage }
     ]
   }
@@ -146,10 +121,12 @@ export const ROUTES = [
   ],
   declarations: [
     ...DEMO_DIRECTIVES,
+    ...DEMO_CALENDAR_DIRECTIVES,
+    NgbdDatepickerCalendarsComponent,
     NgbdDatepickerOverviewComponent,
     NgbdDatepickerOverviewDemoComponent
   ],
-  entryComponents: DEMO_DIRECTIVES
+  entryComponents: [...DEMO_DIRECTIVES, ...DEMO_CALENDAR_DIRECTIVES]
 })
 export class NgbdDatepickerModule {
   constructor(demoList: NgbdDemoList) {

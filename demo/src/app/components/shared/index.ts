@@ -33,7 +33,8 @@ export * from './demo-list';
     NgbdOverviewDirective,
     NgbdOverviewSectionComponent,
     NgbdExamplesPage,
-    NgbdApiPage
+    NgbdApiPage,
+    NgbdWidgetDemoComponent
   ]
 })
 export class NgbdComponentsSharedModule {}
