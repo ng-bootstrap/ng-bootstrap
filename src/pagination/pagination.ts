@@ -21,7 +21,7 @@ import {NgbPaginationConfig} from './pagination-config';
 
       <li *ngIf="directionLinks" title="{{!hasPrevious() || disabled ? 'Previous Page (disabled)' : 'Previous Page'}}" class="page-item"
           [class.disabled]="!hasPrevious() || disabled">
-        <a aria-label="Previous Page" id="paginationPagePrev" i18n-aria-label="@@ngb.pagination.previous-aria" class="page-link" 
+        <a aria-label="Previous Page" id="paginationPagePrev" i18n-aria-label="@@ngb.pagination.previous-aria" class="page-link"
            href (click)="!!selectPage(page-1)" [attr.tabindex]="(hasPrevious() ? null : '-1')">
           <span aria-hidden="true" i18n="@@ngb.pagination.previous">&laquo;</span>
         </a>
@@ -36,7 +36,7 @@ import {NgbPaginationConfig} from './pagination-config';
           <span *ngIf="pageNumber === page" class="sr-only">(current)</span>
         </a>
       </li>
-      <li *ngIf="directionLinks" title="{{!hasNext() || disabled ? 'Next Page (disabled)' : 'Next Page'}}" class="page-item" 
+      <li *ngIf="directionLinks" title="{{!hasNext() || disabled ? 'Next Page (disabled)' : 'Next Page'}}" class="page-item"
           [class.disabled]="!hasNext() || disabled">
         <a aria-label="Next Page" id="paginationPageNext" i18n-aria-label="@@ngb.pagination.next-aria" class="page-link" href
            (click)="!!selectPage(page+1)" [attr.tabindex]="(hasNext() ? null : '-1')">
@@ -44,7 +44,7 @@ import {NgbPaginationConfig} from './pagination-config';
         </a>
       </li>
 
-      <li *ngIf="boundaryLinks" title="{{!hasNext() || disabled ? 'Last Page (disabled)' : 'Last Page'}}" class="page-item" 
+      <li *ngIf="boundaryLinks" title="{{!hasNext() || disabled ? 'Last Page (disabled)' : 'Last Page'}}" class="page-item"
           [class.disabled]="!hasNext() || disabled">
         <a aria-label="Last Page" id="paginationPageLast" i18n-aria-label="@@ngb.pagination.last-aria" class="page-link" href
            (click)="!!selectPage(pageCount)" [attr.tabindex]="(hasNext() ? null : '-1')">
