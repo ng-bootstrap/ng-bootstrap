@@ -149,6 +149,7 @@ export class NgbDatepicker implements OnDestroy,
     OnChanges, OnInit, ControlValueAccessor {
   model: DatepickerViewModel;
 
+  private _controlValue: NgbDate;
   private _subscription: Subscription;
   private _selectSubscription: Subscription;
   /**
@@ -242,14 +243,14 @@ export class NgbDatepicker implements OnDestroy,
       const newDate = model.firstDate;
       const oldDate = this.model ? this.model.firstDate : null;
       const newSelectedDate = model.selectedDate;
-      const oldSelectedDate = this.model ? this.model.selectedDate : null;
       const newFocusedDate = model.focusDate;
       const oldFocusedDate = this.model ? this.model.focusDate : null;
 
       this.model = model;
 
       // handling selection change
-      if (isChangedDate(newSelectedDate, oldSelectedDate)) {
+      if (isChangedDate(newSelectedDate, this._controlValue)) {
+        this._controlValue = newSelectedDate;
         this.onTouched();
         this.onChange(this._ngbDateAdapter.toModel(newSelectedDate));
       }
@@ -344,5 +345,8 @@ export class NgbDatepicker implements OnDestroy,
 
   showFocus(focusVisible: boolean) { this._service.focusVisible = focusVisible; }
 
-  writeValue(value) { this._service.select(NgbDate.from(this._ngbDateAdapter.fromModel(value))); }
+  writeValue(value) {
+    this._controlValue = NgbDate.from(this._ngbDateAdapter.fromModel(value));
+    this._service.select(this._controlValue);
+  }
 }

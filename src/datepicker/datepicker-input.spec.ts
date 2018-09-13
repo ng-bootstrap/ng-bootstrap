@@ -226,6 +226,43 @@ describe('NgbInputDatepicker', () => {
   });
 
   describe('ngModel interactions', () => {
+    it('should not change again the value in the model on a change coming from the model (popup closed)',
+       fakeAsync(() => {
+         const fixture = createTestCmpt(`<input ngbDatepicker [(ngModel)]="date">`);
+         fixture.detectChanges();
+
+         const input = fixture.nativeElement.querySelector('input');
+
+         const value = new NgbDate(2018, 8, 29);
+         fixture.componentInstance.date = value;
+
+         fixture.detectChanges();
+         tick();
+         expect(fixture.componentInstance.date).toBe(value);
+         expect(input.value).toBe('2018-08-29');
+       }));
+
+    it('should not change again the value in the model on a change coming from the model (popup opened)',
+       fakeAsync(() => {
+         const fixture = createTestCmpt(`<input ngbDatepicker [(ngModel)]="date" #d="ngbDatepicker">
+      <button (click)="open(d)">Open</button>`);
+         fixture.detectChanges();
+
+         const button = fixture.nativeElement.querySelector('button');
+         const input = fixture.nativeElement.querySelector('input');
+
+         button.click();  // open
+         tick();
+         fixture.detectChanges();
+
+         const value = new NgbDate(2018, 8, 29);
+         fixture.componentInstance.date = value;
+         fixture.detectChanges();
+         tick();
+         expect(fixture.componentInstance.date).toBe(value);
+         expect(input.value).toBe('2018-08-29');
+       }));
+
 
     it('should format bound date as ISO (by default) in the input field', fakeAsync(() => {
          const fixture = createTestCmpt(`<input ngbDatepicker [ngModel]="date">`);
