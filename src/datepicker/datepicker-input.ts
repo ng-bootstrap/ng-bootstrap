@@ -68,6 +68,7 @@ export class NgbInputDatepicker implements OnChanges,
   private _cRef: ComponentRef<NgbDatepicker> = null;
   private _disabled = false;
   private _model: NgbDate;
+  private _inputValue: string;
   private _zoneSubscription: any;
 
   /**
@@ -236,8 +237,14 @@ export class NgbInputDatepicker implements OnChanges,
   }
 
   manualDateChange(value: string, updateView = false) {
-    this._model = this._fromDateStruct(this._parserFormatter.parse(value));
-    this._onChange(this._model ? this._dateAdapter.toModel(this._model) : (value === '' ? null : value));
+    const inputValueChanged = value !== this._inputValue;
+    if (inputValueChanged) {
+      this._inputValue = value;
+      this._model = this._fromDateStruct(this._parserFormatter.parse(value));
+    }
+    if (inputValueChanged || !updateView) {
+      this._onChange(this._model ? this._dateAdapter.toModel(this._model) : (value === '' ? null : value));
+    }
     if (updateView && this._model) {
       this._writeModelValue(this._model);
     }
@@ -383,7 +390,9 @@ export class NgbInputDatepicker implements OnChanges,
   }
 
   private _writeModelValue(model: NgbDate) {
-    this._renderer.setProperty(this._elRef.nativeElement, 'value', this._parserFormatter.format(model));
+    const value = this._parserFormatter.format(model);
+    this._inputValue = value;
+    this._renderer.setProperty(this._elRef.nativeElement, 'value', value);
     if (this.isOpen()) {
       this._cRef.instance.writeValue(this._dateAdapter.toModel(model));
       this._onTouched();
