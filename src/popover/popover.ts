@@ -308,7 +308,11 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 
   ngOnDestroy() {
     this.close();
-    this._unregisterListenersFn();
+    // This check is needed as it might happen that ngOnDestroy is called before ngOnInit
+    // under certain conditions, see: https://github.com/ng-bootstrap/ng-bootstrap/issues/2199
+    if (this._unregisterListenersFn) {
+      this._unregisterListenersFn();
+    }
     this._zoneSubscription.unsubscribe();
   }
 
