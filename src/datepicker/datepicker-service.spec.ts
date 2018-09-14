@@ -883,6 +883,35 @@ describe('ngb-datepicker-service', () => {
     });
   });
 
+  describe(`dayTemplateData`, () => {
+
+    it(`should not pass anything to the template by default`, () => {
+      // MAY 2017
+      service.focus(new NgbDate(2017, 5, 1));
+      expect(getDay(0).context.data).toBeUndefined();
+    });
+
+    it(`should pass arbitrary data to the template`, () => {
+      service.dayTemplateData = () => 'data';
+
+      // MAY 2017
+      service.focus(new NgbDate(2017, 5, 1));
+      expect(getDay(0).context.data).toBe('data');
+    });
+
+    it(`should update months when 'dayTemplateData' changes`, () => {
+      // MAY 2017
+      service.dayTemplateData = () => 'one';
+      service.focus(new NgbDate(2017, 5, 1));
+
+      expect(getDay(0).context.data).toBe('one');
+
+      service.dayTemplateData = (_) => 'two';
+
+      expect(getDay(0).context.data).toBe('two');
+    });
+  });
+
   describe(`markDisabled`, () => {
 
     it(`should mark dates as disabled by passing 'markDisabled'`, () => {

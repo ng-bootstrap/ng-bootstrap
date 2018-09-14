@@ -119,7 +119,7 @@ export function buildMonths(
 export function buildMonth(
     calendar: NgbCalendar, date: NgbDate, state: DatepickerViewModel, i18n: NgbDatepickerI18n,
     month: MonthViewModel = {} as MonthViewModel): MonthViewModel {
-  const {minDate, maxDate, firstDayOfWeek, markDisabled, outsideDays} = state;
+  const {dayTemplateData, minDate, maxDate, firstDayOfWeek, markDisabled, outsideDays} = state;
 
   month.firstDate = null;
   month.lastDate = null;
@@ -155,6 +155,10 @@ export function buildMonth(
         disabled = markDisabled(newDate, {month: month.number, year: month.year});
       }
 
+      // adding user-provided data to the context
+      let contextUserData =
+          dayTemplateData ? dayTemplateData(newDate, {month: month.number, year: month.year}) : undefined;
+
       // saving first date of the month
       if (month.firstDate === null && newDate.month === month.number) {
         month.firstDate = newDate;
@@ -170,9 +174,13 @@ export function buildMonth(
         dayObject = days[day] = {} as DayViewModel;
       }
       dayObject.date = newDate;
-      dayObject.context = Object.assign(
-          dayObject.context || {},
-          {date: newDate, currentMonth: month.number, disabled, focused: false, selected: false});
+      dayObject.context = Object.assign(dayObject.context || {}, {
+        date: newDate,
+        data: contextUserData,
+        currentMonth: month.number, disabled,
+        focused: false,
+        selected: false
+      });
       dayObject.tabindex = -1;
       dayObject.ariaLabel = ariaLabel;
       dayObject.hidden = false;

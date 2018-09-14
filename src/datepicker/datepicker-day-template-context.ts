@@ -9,6 +9,13 @@ export interface DayTemplateContext {
   currentMonth: number;
 
   /**
+   * Any data you pass using `dayTemplateData` input in the datepicker
+   *
+   * @since 3.3.0
+   */
+  data?: any;
+
+  /**
    * Date that corresponds to the template
    */
   date: NgbDate;

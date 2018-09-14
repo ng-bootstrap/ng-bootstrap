@@ -1,7 +1,7 @@
 import {NgbCalendar, NgbPeriod} from './ngb-calendar';
 import {NgbDate} from './ngb-date';
 import {NgbDateStruct} from './ngb-date-struct';
-import {DatepickerViewModel, NgbMarkDisabled} from './datepicker-view-model';
+import {DatepickerViewModel, NgbDayTemplateData, NgbMarkDisabled} from './datepicker-view-model';
 import {Injectable} from '@angular/core';
 import {isInteger, toInteger} from '../util/util';
 import {Observable, Subject} from 'rxjs';
@@ -43,6 +43,12 @@ export class NgbDatepickerService {
   get model$(): Observable<DatepickerViewModel> { return this._model$.pipe(filter(model => model.months.length > 0)); }
 
   get select$(): Observable<NgbDate> { return this._select$.pipe(filter(date => date !== null)); }
+
+  set dayTemplateData(dayTemplateData: NgbDayTemplateData) {
+    if (this._state.dayTemplateData !== dayTemplateData) {
+      this._nextState({dayTemplateData});
+    }
+  }
 
   set disabled(disabled: boolean) {
     if (this._state.disabled !== disabled) {
@@ -234,8 +240,8 @@ export class NgbDatepickerService {
 
     // rebuilding months
     if (startDate) {
-      const forceRebuild = 'firstDayOfWeek' in patch || 'markDisabled' in patch || 'minDate' in patch ||
-          'maxDate' in patch || 'disabled' in patch || 'outsideDays' in patch;
+      const forceRebuild = 'dayTemplateData' in patch || 'firstDayOfWeek' in patch || 'markDisabled' in patch ||
+          'minDate' in patch || 'maxDate' in patch || 'disabled' in patch || 'outsideDays' in patch;
 
       const months = buildMonths(this._calendar, startDate, state, this._i18n, forceRebuild);
 
