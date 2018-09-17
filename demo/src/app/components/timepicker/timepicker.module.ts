@@ -11,6 +11,7 @@ import { NgbdTimepickerConfig } from './demos/config/timepicker-config';
 import { NgbdTimepickerMeridian } from './demos/meridian/timepicker-meridian';
 import { NgbdTimepickerSeconds } from './demos/seconds/timepicker-seconds';
 import { NgbdTimepickerSpinners } from './demos/spinners/timepicker-spinners';
+import { NgbdTimepickerSizes } from './demos/sizes/timepicker-sizes';
 import { NgbdTimepickerSteps } from './demos/steps/timepicker-steps';
 import { NgbdTimepickerValidation } from './demos/validation/timepicker-validation';
 
@@ -19,6 +20,7 @@ const DEMO_DIRECTIVES = [
   NgbdTimepickerMeridian,
   NgbdTimepickerSeconds,
   NgbdTimepickerSpinners,
+  NgbdTimepickerSizes,
   NgbdTimepickerSteps,
   NgbdTimepickerValidation,
   NgbdTimepickerAdapter,
@@ -49,6 +51,12 @@ const DEMOS = {
     type: NgbdTimepickerSpinners,
     code: require('!!raw-loader!./demos/spinners/timepicker-spinners'),
     markup: require('!!raw-loader!./demos/spinners/timepicker-spinners.html')
+  },
+  sizes: {
+    title: 'Sizes',
+    type: NgbdTimepickerSizes,
+    code: require('!!raw-loader!./demos/sizes/timepicker-sizes'),
+    markup: require('!!raw-loader!./demos/sizes/timepicker-sizes.html')
   },
   steps: {
     title: 'Custom steps',

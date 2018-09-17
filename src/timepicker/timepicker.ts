@@ -34,6 +34,14 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
       width: 4em;
     }
 
+    .ngb-tp.ngb-tp-sm > .ngb-tp-input-container {
+      width: 3em;
+    }
+
+    .ngb-tp.ngb-tp-lg > .ngb-tp-input-container {
+      width: 5em;
+    }
+
     .ngb-tp-hour, .ngb-tp-minute, .ngb-tp-second, .ngb-tp-meridian {
       display: -ms-flexbox;
       display: flex;
@@ -75,7 +83,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
   `],
   template: `
     <fieldset [disabled]="disabled" [class.disabled]="disabled">
-      <div class="ngb-tp">
+      <div class="ngb-tp" [class.ngb-tp-sm]="isSmallSize" [class.ngb-tp-lg]="isLargeSize">
         <div class="ngb-tp-input-container ngb-tp-hour">
           <button *ngIf="spinners" type="button" (click)="changeHour(hourStep)"
             class="btn btn-link" [class.btn-sm]="isSmallSize" [class.btn-lg]="isLargeSize" [class.disabled]="disabled"

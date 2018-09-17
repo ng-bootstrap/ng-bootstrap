@@ -1070,8 +1070,10 @@ describe('ngb-timepicker', () => {
       const html = `<ngb-timepicker size="small"></ngb-timepicker>`;
 
       const fixture = createTestComponent(html);
+      const container = fixture.nativeElement.querySelector('.ngb-tp');
       const buttons = getButtons(fixture.nativeElement);
       const inputs = getInputs(fixture.nativeElement);
+      expect(container).toHaveCssClass('ngb-tp-sm');
       for (let i = 0; i < buttons.length; i++) {
         expect(buttons[i]).toHaveCssClass('btn-sm');
       }
@@ -1084,8 +1086,10 @@ describe('ngb-timepicker', () => {
       const html = `<ngb-timepicker size="large"></ngb-timepicker>`;
 
       const fixture = createTestComponent(html);
+      const container = fixture.nativeElement.querySelector('.ngb-tp');
       const buttons = getButtons(fixture.nativeElement);
       const inputs = getInputs(fixture.nativeElement);
+      expect(container).toHaveCssClass('ngb-tp-lg');
       for (let i = 0; i < buttons.length; i++) {
         expect(buttons[i]).toHaveCssClass('btn-lg');
       }
@@ -1098,8 +1102,10 @@ describe('ngb-timepicker', () => {
       const html = `<ngb-timepicker size="medium"></ngb-timepicker>`;
 
       const fixture = createTestComponent(html);
+      const container = fixture.nativeElement.querySelector('.ngb-tp');
       const buttons = getButtons(fixture.nativeElement);
       const inputs = getInputs(fixture.nativeElement);
+      expect(container).not.toHaveCssClass('ngb-tp-lg');
       for (let i = 0; i < buttons.length; i++) {
         expect(buttons[i]).not.toHaveCssClass('btn-lg');
       }
@@ -1112,8 +1118,10 @@ describe('ngb-timepicker', () => {
       const html = `<ngb-timepicker></ngb-timepicker>`;
 
       const fixture = createTestComponent(html);
+      const container = fixture.nativeElement.querySelector('.ngb-tp');
       const buttons = getButtons(fixture.nativeElement);
       const inputs = getInputs(fixture.nativeElement);
+      expect(container).not.toHaveCssClass('ngb-tp-lg');
       for (let i = 0; i < buttons.length; i++) {
         expect(buttons[i]).not.toHaveCssClass('btn-lg');
       }
