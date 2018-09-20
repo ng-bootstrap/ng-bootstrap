@@ -1,19 +1,20 @@
 import {Injectable} from '@angular/core';
-import {NgbDateAdapter} from './ngb-date-adapter';
 import {NgbDateStruct} from '../ngb-date-struct';
+import {NgbDateNativeAdapter} from './ngb-date-native-adapter';
 
 /**
  * @since 3.2.0
  */
 @Injectable()
-export class NgbDateNativeUTCAdapter extends NgbDateAdapter<Date> {
-  fromModel(date: Date): NgbDateStruct {
-    return (date instanceof Date) ?
-        {year: date.getUTCFullYear(), month: date.getUTCMonth() + 1, day: date.getUTCDate()} :
-        null;
+export class NgbDateNativeUTCAdapter extends NgbDateNativeAdapter {
+  protected _fromNativeDate(date: Date): NgbDateStruct {
+    return {year: date.getUTCFullYear(), month: date.getUTCMonth() + 1, day: date.getUTCDate()};
   }
 
-  toModel(date: NgbDateStruct): Date {
-    return date && date.year && date.month ? new Date(Date.UTC(date.year, date.month - 1, date.day)) : null;
+  protected _toNativeDate(date: NgbDateStruct): Date {
+    const jsDate = new Date(Date.UTC(date.year, date.month - 1, date.day));
+    // avoid 30 -> 1930 conversion
+    jsDate.setUTCFullYear(date.year);
+    return jsDate;
   }
 }
