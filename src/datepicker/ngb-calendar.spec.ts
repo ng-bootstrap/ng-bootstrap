@@ -92,4 +92,6 @@ describe('ngb-calendar-gregorian', () => {
     expect(calendar.isValid(new NgbDate(2016, 8, 8))).toBeTruthy();
   });
 
+  it('should dates with year 0 as invalid', () => { expect(calendar.isValid(new NgbDate(0, 1, 1))).toBeFalsy(); });
+
 });

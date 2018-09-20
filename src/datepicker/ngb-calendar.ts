@@ -138,6 +138,11 @@ export class NgbCalendarGregorian extends NgbCalendar {
       return false;
     }
 
+    // year 0 doesn't exist in Gregorian calendar
+    if (date.year === 0) {
+      return false;
+    }
+
     const jsDate = toJSDate(date);
 
     return !isNaN(jsDate.getTime()) && jsDate.getFullYear() === date.year && jsDate.getMonth() + 1 === date.month &&
