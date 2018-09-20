@@ -235,20 +235,24 @@ a.title-fragment {
 div.component-demo {
   margin-bottom: 3rem;
   h2 {
+    display: flex;
     margin-bottom: 1rem;
 
-    .plunker,
+    span {
+      flex-grow: 1;
+    }
+
     .stackblitz {
-      text-decoration: none;
-      opacity: 0.3;
-      transition: opacity 0.5s;
-      margin-left: 0.3rem;
+      display: flex;
+      align-items: center;
+      align-self: center;
+
+      .stackblitz-icon {
+        height: 1.2rem;
+        margin-left: -0.5rem;
+      }
     }
     &:hover {
-      .plunker,
-      .stackblitz {
-        opacity: 1;
-      }
       & > .title-fragment {
         opacity: 1;
       }

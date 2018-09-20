@@ -39,21 +39,6 @@ gulp.task('generate-docs', function() {
   return gulpFile('api-docs.ts', docs, {src: true}).pipe(gulp.dest('demo/src'));
 });
 
-gulp.task('generate-plunks', function() {
-  const getPlunker = require('./misc/plunk-gen');
-  const demoGenUtils = require('./misc/demo-gen-utils');
-  let plunks = [];
-
-  demoGenUtils.getDemoComponentNames().forEach(function(componentName) {
-    plunks = plunks.concat(demoGenUtils.getDemoNames(componentName).reduce(function(soFar, demoName) {
-      soFar.push({name: `${componentName}/demos/${demoName}/plnkr.html`, source: getPlunker(componentName, demoName)});
-      return soFar;
-    }, []));
-  });
-
-  return gulpFile(plunks, {src: true}).pipe(gulp.dest('demo/src/public/app/components'));
-});
-
 gulp.task('generate-stackblitzes', function() {
   const getStackblitz = require('./misc/stackblitz-gen');
   const demoGenUtils = require('./misc/demo-gen-utils');
@@ -70,7 +55,7 @@ gulp.task('generate-stackblitzes', function() {
   return gulpFile(stackblitzes, {src: true}).pipe(gulp.dest('demo/src/public/app/components'));
 });
 
-gulp.task('demo-generate-static', ['generate-docs', 'generate-plunks', 'generate-stackblitzes']);
+gulp.task('demo-generate-static', ['generate-docs', 'generate-stackblitzes']);
 
 gulp.task('copy-license', function() {
   return gulp.src(['LICENSE', 'README.md']).pipe(gulp.dest('dist/ng-bootstrap'));
