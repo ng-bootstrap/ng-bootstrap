@@ -169,9 +169,13 @@ describe('NgbInputDatepicker', () => {
       outsideButton.click();
       fixture.detectChanges();
       expect(fixture.nativeElement.querySelector('ngb-datepicker')).not.toBeNull();
+
+      // escape
+      dispatchKeyUpEvent(Key.Escape);
+      expect(fixture.nativeElement.querySelector('ngb-datepicker')).not.toBeNull();
     });
 
-    it(`should close datepicker only on date selection if 'autoClose' set to 'inside'`, () => {
+    it(`should close datepicker only on date selection and Escape if 'autoClose' set to 'inside'`, () => {
       const fixture = createTestCmpt(`
           <input ngbDatepicker #d="ngbDatepicker" autoClose="inside">
           <button (click)="open(d)">Open</button>
@@ -195,9 +199,18 @@ describe('NgbInputDatepicker', () => {
       dp.select.emit();
       fixture.detectChanges();
       expect(fixture.nativeElement.querySelector('ngb-datepicker')).toBeNull();
+
+      // open
+      button.click();
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('ngb-datepicker')).not.toBeNull();
+
+      // escape
+      dispatchKeyUpEvent(Key.Escape);
+      expect(fixture.nativeElement.querySelector('ngb-datepicker')).toBeNull();
     });
 
-    it(`should close datepicker only on outside click if 'autoClose' set to 'outside'`, fakeAsync(() => {
+    it(`should close datepicker only on outside click and Escape if 'autoClose' set to 'outside'`, fakeAsync(() => {
          const fixture = createTestCmpt(`
           <input ngbDatepicker #d="ngbDatepicker" autoClose="outside">
           <button (click)="open(d)">Open</button>
@@ -221,6 +234,15 @@ describe('NgbInputDatepicker', () => {
          const outsideButton = fixture.nativeElement.querySelector('#outside-button');
          outsideButton.click();
          fixture.detectChanges();
+         expect(fixture.nativeElement.querySelector('ngb-datepicker')).toBeNull();
+
+         // open
+         button.click();
+         fixture.detectChanges();
+         expect(fixture.nativeElement.querySelector('ngb-datepicker')).not.toBeNull();
+
+         // escape
+         dispatchKeyUpEvent(Key.Escape);
          expect(fixture.nativeElement.querySelector('ngb-datepicker')).toBeNull();
        }));
   });

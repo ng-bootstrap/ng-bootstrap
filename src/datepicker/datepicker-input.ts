@@ -286,28 +286,30 @@ export class NgbInputDatepicker implements OnChanges,
       this._cRef.instance.focus();
 
       // closing on ESC and outside clicks
-      this._ngZone.runOutsideAngular(() => {
+      if (this.autoClose) {
+        this._ngZone.runOutsideAngular(() => {
 
-        const escapes$ = fromEvent<KeyboardEvent>(this._document, 'keyup')
-                             .pipe(takeUntil(this._closed$), filter(e => e.which === Key.Escape));
+          const escapes$ = fromEvent<KeyboardEvent>(this._document, 'keyup')
+                               .pipe(takeUntil(this._closed$), filter(e => e.which === Key.Escape));
 
-        let outsideClicks$;
-        if (this.autoClose === true || this.autoClose === 'outside') {
-          // we don't know how the popup was opened, so if it was opened with a click,
-          // we have to skip the first one to avoid closing it immediately
-          let isOpening = true;
-          requestAnimationFrame(() => isOpening = false);
+          let outsideClicks$;
+          if (this.autoClose === true || this.autoClose === 'outside') {
+            // we don't know how the popup was opened, so if it was opened with a click,
+            // we have to skip the first one to avoid closing it immediately
+            let isOpening = true;
+            requestAnimationFrame(() => isOpening = false);
 
-          outsideClicks$ =
-              fromEvent<MouseEvent>(this._document, 'click')
-                  .pipe(
-                      takeUntil(this._closed$), filter(event => !isOpening && this._shouldCloseOnOutsideClick(event)));
-        } else {
-          outsideClicks$ = NEVER;
-        }
+            outsideClicks$ = fromEvent<MouseEvent>(this._document, 'click')
+                                 .pipe(
+                                     takeUntil(this._closed$),
+                                     filter(event => !isOpening && this._shouldCloseOnOutsideClick(event)));
+          } else {
+            outsideClicks$ = NEVER;
+          }
 
-        race<Event>([escapes$, outsideClicks$]).subscribe(() => this._ngZone.run(() => this.close()));
-      });
+          race<Event>([escapes$, outsideClicks$]).subscribe(() => this._ngZone.run(() => this.close()));
+        });
+      }
     }
   }
 
