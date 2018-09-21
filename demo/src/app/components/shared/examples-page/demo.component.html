@@ -4,12 +4,10 @@
     <a [routerLink]="" [fragment]="id" ngbdFragment title="Anchor link to demo: {{id}}">
       <img src="img/link-symbol.svg" alt="Anchor link to: {{id}}" />
     </a>
-    {{ demoTitle }}
-    <a class="plunker" target="_blank" href="app/components/{{component}}/demos/{{id}}/plnkr.html" title="Edit in Plunker">
-      <img src="img/plunker-icon.png" height="24" width="24" alt="Plunker icon" />
-    </a>
-    <a class="stackblitz" target="_blank" href="app/components/{{component}}/demos/{{id}}/stackblitz.html" title="Edit in StackBlitz">
-      <img src="img/stackblitz-icon.svg" height="22" alt="StackBlitz icon" />
+    <span>{{ demoTitle }}</span>
+    <a role="button" class="stackblitz btn btn-light" target="_blank" href="app/components/{{component}}/demos/{{id}}/stackblitz.html" title="Edit in StackBlitz">
+      <img class="stackblitz-icon" src="img/stackblitz-icon.svg" alt="StackBlitz icon"/>
+      StackBlitz
     </a>
   </h2>
   <div class="card">

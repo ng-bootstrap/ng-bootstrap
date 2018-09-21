@@ -111,18 +111,18 @@ To save your and our time we will be systematically closing all the issues that 
 
 ## You think you've found a bug?
 
-Oh, we are ashamed and want to fix it ASAP! But before fixing a bug we need to reproduce and confirm it. In order to reproduce bugs we will systematically ask you to provide a _minimal_ reproduction scenario using http://plnkr.co. Having a live, reproducible scenario gives us wealth of important information without going back & forth to you with additional questions like:
+Oh, we are ashamed and want to fix it ASAP! But before fixing a bug we need to reproduce and confirm it. In order to reproduce bugs we will systematically ask you to provide a _minimal_ reproduction scenario using https://stackblitz.com. Having a live, reproducible scenario gives us wealth of important information without going back & forth to you with additional questions like:
 * version of Angular used
 * version of this library that you are using
 * 3rd-party libraries used, if any
 * and most importantly - a use-case that fails
 
-A minimal reproduce scenario using http://plnkr.co/ allows us to quickly confirm a bug (or point out coding problem) as well as confirm that we are fixing the right problem.
-The best part is that you do not need to create plunks from scratch - you can fork one from our [demo page](https://ng-bootstrap.github.io/#/components).
+A minimal reproduce scenario using https://stackblitz.com allows us to quickly confirm a bug (or point out coding problem) as well as confirm that we are fixing the right problem.
+The best part is that you do not need to create StackBlitzes from scratch - you can fork one from our [demo page](https://ng-bootstrap.github.io/#/components).
 
-We will be insisting on a minimal reproduce scenario in order to save maintainers time and ultimately be able to fix more bugs. Interestingly, from our experience users often find coding problems themselves while preparing a minimal plunk. We understand that sometimes it might be hard to extract essentials bits of code from a larger code-base but we really need to isolate the problem before we can fix it.
+We will be insisting on a minimal reproduce scenario in order to save maintainers time and ultimately be able to fix more bugs. Interestingly, from our experience users often find coding problems themselves while preparing a minimal StackBlitz. We understand that sometimes it might be hard to extract essentials bits of code from a larger code-base but we really need to isolate the problem before we can fix it.
 
-Unfortunately we are not able to investigate / fix bugs without a minimal reproduce scenario using http://plnkr.co, so if we don't hear back from you we are going to close an issue that don't have enough info to be reproduced.
+Unfortunately we are not able to investigate / fix bugs without a minimal reproduce scenario using https://stackblitz.com, so if we don't hear back from you we are going to close an issue that don't have enough info to be reproduced.
 
 ## Code of Conduct
 

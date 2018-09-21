@@ -148,7 +148,6 @@ function getVersions() {
     ngBootstrap,
     zoneJs: getVersion('zone.js'),
     coreJs: getVersion('core-js'),
-    systemjs: '^0.19.40',
     reflectMetadata: getVersion('reflect-metadata', JSON.parse(fs.readFileSync('node_modules/@angular/compiler-cli/package.json').toString())),
     bootstrap: getVersion('bootstrap')
   };
