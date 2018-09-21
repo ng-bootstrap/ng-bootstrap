@@ -106,6 +106,13 @@ export class NgbInputDatepicker implements OnChanges,
   @Input() firstDayOfWeek: number;
 
   /**
+   * Reference for the custom template for the footer inside datepicker
+   *
+   * @since 3.3.0
+   */
+  @Input() footerTemplate: TemplateRef<any>;
+
+  /**
    * Callback to mark a given date as disabled.
    * 'Current' contains the month that will be displayed in the view
    */
@@ -369,8 +376,8 @@ export class NgbInputDatepicker implements OnChanges,
   }
 
   private _applyDatepickerInputs(datepickerInstance: NgbDatepicker): void {
-    ['dayTemplate', 'dayTemplateData', 'displayMonths', 'firstDayOfWeek', 'markDisabled', 'minDate', 'maxDate',
-     'navigation', 'outsideDays', 'showNavigation', 'showWeekdays', 'showWeekNumbers']
+    ['dayTemplate', 'dayTemplateData', 'displayMonths', 'firstDayOfWeek', 'footerTemplate', 'markDisabled', 'minDate',
+     'maxDate', 'navigation', 'outsideDays', 'showNavigation', 'showWeekdays', 'showWeekNumbers']
         .forEach((optionName: string) => {
           if (this[optionName] !== undefined) {
             datepickerInstance[optionName] = this[optionName];

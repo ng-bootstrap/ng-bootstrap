@@ -114,6 +114,7 @@ function expectSameValues(datepicker: NgbDatepicker, config: NgbDatepickerConfig
   expect(datepicker.dayTemplateData).toBe(config.dayTemplateData);
   expect(datepicker.displayMonths).toBe(config.displayMonths);
   expect(datepicker.firstDayOfWeek).toBe(config.firstDayOfWeek);
+  expect(datepicker.footerTemplate).toBe(config.footerTemplate);
   expect(datepicker.markDisabled).toBe(config.markDisabled);
   expect(datepicker.minDate).toEqual(config.minDate);
   expect(datepicker.maxDate).toEqual(config.maxDate);
@@ -128,6 +129,7 @@ function customizeConfig(config: NgbDatepickerConfig) {
   config.dayTemplate = {} as TemplateRef<DayTemplateContext>;
   config.dayTemplateData = (date, current) => 42;
   config.firstDayOfWeek = 2;
+  config.footerTemplate = {} as TemplateRef<any>;
   config.markDisabled = (date, current) => false;
   config.minDate = {year: 2000, month: 1, day: 1};
   config.maxDate = {year: 2030, month: 12, day: 31};
@@ -612,6 +614,15 @@ describe('ngb-datepicker', () => {
     triggerKeyDown(getMonthContainer(datepicker), 32 /* space */);
     fixture.detectChanges();
     expect(fixture.componentInstance.onSelect).toHaveBeenCalledTimes(2);
+  });
+
+  it('should insert an embedded view for footer when `footerTemplate` provided', () => {
+    const fixture = createTestComponent(`<ngb-datepicker #dp [footerTemplate]="footerTemplate"></ngb-datepicker>
+      <ng-template #footerTemplate><span id="myDatepickerFooter">My footer</span></ng-template>`);
+
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('#myDatepickerFooter')).not.toBeNull();
   });
 
   describe('ngModel', () => {
