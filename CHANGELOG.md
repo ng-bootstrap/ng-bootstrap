@@ -1,6 +1,24 @@
+<a name="3.2.2"></a>
+## [3.2.2](https://github.com/ng-bootstrap/ng-bootstrap/compare/3.2.1...3.2.2) (2018-09-21)
+
+
+### Bug Fixes
+
+* **datepicker:** fix 'util' import and use 'isInteger' ([#2738](https://github.com/ng-bootstrap/ng-bootstrap/issues/2738)) ([e3fa911](https://github.com/ng-bootstrap/ng-bootstrap/commit/e3fa911))
+* **datepicker:** avoid updating the model twice (on input and on change) ([b44c6d7](https://github.com/ng-bootstrap/ng-bootstrap/commit/b44c6d7)), closes [#2642](https://github.com/ng-bootstrap/ng-bootstrap/issues/2642) [#2684](https://github.com/ng-bootstrap/ng-bootstrap/issues/2684)
+* **datepicker:** convert years 0-99 correctly with native adapters ([#2732](https://github.com/ng-bootstrap/ng-bootstrap/issues/2732)) ([8ed7ce5](https://github.com/ng-bootstrap/ng-bootstrap/commit/8ed7ce5)), closes [#2731](https://github.com/ng-bootstrap/ng-bootstrap/issues/2731)
+* **datepicker:** don't close on Escape if autoClose is false ([83b49c2](https://github.com/ng-bootstrap/ng-bootstrap/commit/83b49c2)), closes [#2704](https://github.com/ng-bootstrap/ng-bootstrap/issues/2704) [#2713](https://github.com/ng-bootstrap/ng-bootstrap/issues/2713)
+* **datepicker:** mark year 0 as invalid in Gregorian calendar ([#2733](https://github.com/ng-bootstrap/ng-bootstrap/issues/2733)) ([dd788a0](https://github.com/ng-bootstrap/ng-bootstrap/commit/dd788a0)), closes [#2721](https://github.com/ng-bootstrap/ng-bootstrap/issues/2721)
+* **datepicker:** no longer trigger onChange when the value is equivalent ([f8977be](https://github.com/ng-bootstrap/ng-bootstrap/commit/f8977be)), closes [#2668](https://github.com/ng-bootstrap/ng-bootstrap/issues/2668)
+* **popover:** unregister event listener functions only if present ([#2699](https://github.com/ng-bootstrap/ng-bootstrap/issues/2699)) ([5dd4e1e](https://github.com/ng-bootstrap/ng-bootstrap/commit/5dd4e1e)), closes [#2688](https://github.com/ng-bootstrap/ng-bootstrap/issues/2688)
+* **timepicker:** match chevron width and height ([2d6a586](https://github.com/ng-bootstrap/ng-bootstrap/commit/2d6a586)), closes [#2663](https://github.com/ng-bootstrap/ng-bootstrap/issues/2663) [#2674](https://github.com/ng-bootstrap/ng-bootstrap/issues/2674)
+
+
+
 <a name="3.2.1"></a>
 ## [3.2.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/3.2.0...3.2.1) (2018-09-21)
 
+WARNING! The 3.2.1 release is broken (incorrect import of the util package) and should not be used. Please use 3.2.2 instead.
 
 ### Bug Fixes
 
