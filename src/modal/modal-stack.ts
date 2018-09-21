@@ -83,6 +83,8 @@ export class NgbModalStack {
 
   dismissAll(reason?: any) { this._modalRefs.forEach(ngbModalRef => ngbModalRef.dismiss(reason)); }
 
+  hasOpenModals(): boolean { return this._modalRefs.length > 0; }
+
   private _attachBackdrop(moduleCFR: ComponentFactoryResolver, containerEl: any): ComponentRef<NgbModalBackdrop> {
     let backdropFactory = moduleCFR.resolveComponentFactory(NgbModalBackdrop);
     let backdropCmptRef = backdropFactory.create(this._injector);

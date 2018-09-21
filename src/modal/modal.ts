@@ -31,4 +31,9 @@ export class NgbModal {
    * @since 3.1.0
    */
   dismissAll(reason?: any) { this._modalStack.dismissAll(reason); }
+
+  /**
+   * Indicates if there are currently any open modal windows in the application.
+   */
+  hasOpenModals(): boolean { return this._modalStack.hasOpenModals(); }
 }

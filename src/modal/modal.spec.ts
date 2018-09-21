@@ -303,6 +303,19 @@ describe('ngb-modal', () => {
         fixture.detectChanges();
         expect(fixture.nativeElement).not.toHaveModal();
       });
+
+      it('should indicate if there are open modal windows', async(() => {
+           fixture.componentInstance.open('foo');
+           fixture.detectChanges();
+           expect(fixture.nativeElement).toHaveModal('foo');
+           expect(fixture.componentInstance.modalService.hasOpenModals()).toBeTruthy();
+
+           fixture.componentInstance.dismissAll();
+           fixture.detectChanges();
+           expect(fixture.nativeElement).not.toHaveModal();
+           fixture.whenStable().then(
+               () => { expect(fixture.componentInstance.modalService.hasOpenModals()).toBeFalsy(); });
+         }));
     });
 
     describe('stacked  modals', () => {
@@ -865,7 +878,7 @@ class TestComponent {
   @ViewChild('contentWithImplicitContext') tplContentWithImplicitContext;
   @ViewChild('contentWithIf') tplContentWithIf;
 
-  constructor(private modalService: NgbModal) {}
+  constructor(public modalService: NgbModal) {}
 
   open(content: string, options?: Object) {
     this.openedModal = this.modalService.open(content, options);
