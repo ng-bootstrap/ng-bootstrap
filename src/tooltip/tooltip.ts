@@ -41,33 +41,7 @@ let nextId = 0;
     '[id]': 'id'
   },
   template: `<div class="arrow"></div><div class="tooltip-inner"><ng-content></ng-content></div>`,
-  styles: [`
-    :host.bs-tooltip-top .arrow, :host.bs-tooltip-bottom .arrow {
-      left: calc(50% - 0.4rem);
-    }
-
-    :host.bs-tooltip-top-left .arrow, :host.bs-tooltip-bottom-left .arrow {
-      left: 1em;
-    }
-
-    :host.bs-tooltip-top-right .arrow, :host.bs-tooltip-bottom-right .arrow {
-      left: auto;
-      right: 0.8rem;
-    }
-
-    :host.bs-tooltip-left .arrow, :host.bs-tooltip-right .arrow {
-      top: calc(50% - 0.4rem);
-    }
-
-    :host.bs-tooltip-left-top .arrow, :host.bs-tooltip-right-top .arrow {
-      top: 0.4rem;
-    }
-
-    :host.bs-tooltip-left-bottom .arrow, :host.bs-tooltip-right-bottom .arrow {
-      top: auto;
-      bottom: 0.4rem;
-    }
-  `]
+  styleUrls: ['./tooltip.scss']
 })
 export class NgbTooltipWindow {
   @Input() placement: Placement = 'top';

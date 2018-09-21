@@ -3,70 +3,10 @@ import {NavigationEvent, MonthViewModel} from './datepicker-view-model';
 import {NgbDate} from './ngb-date';
 import {NgbDatepickerI18n} from './datepicker-i18n';
 
-// The -ms- and -webkit- element for the CSS can be removed if we are generating the CSS using SASS.
 @Component({
   selector: 'ngb-datepicker-navigation',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styles: [`
-    :host {
-      display: -ms-flexbox;
-      display: flex;
-      -ms-flex-align: center;
-      align-items: center;
-    }
-    .ngb-dp-navigation-chevron {
-      border-style: solid;
-      border-width: 0.2em 0.2em 0 0;
-      display: inline-block;
-      width: 0.75em;
-      height: 0.75em;
-      margin-left: 0.25em;
-      margin-right: 0.15em;
-      transform: rotate(-135deg);
-    }
-    .right .ngb-dp-navigation-chevron {
-      transform: rotate(45deg);
-      margin-left: 0.15em;
-      margin-right: 0.25em;
-    }
-    .ngb-dp-arrow {
-      display: -ms-flexbox;
-      display: flex;
-      -ms-flex: 1 1 auto;
-      flex: 1 1 auto;
-      padding-right: 0;
-      padding-left: 0;
-      margin: 0;
-      width: 2rem;
-      height: 2rem;
-    }
-    .ngb-dp-arrow.right {
-      -ms-flex-pack: end;
-      justify-content: flex-end;
-    }
-    .ngb-dp-arrow-btn {
-      padding: 0 0.25rem;
-      margin: 0 0.5rem;
-      border: none;
-      background-color: transparent;
-      z-index: 1;
-    }
-    .ngb-dp-arrow-btn:focus {
-      outline: auto 1px;
-    }
-    .ngb-dp-month-name {
-      font-size: larger;
-      height: 2rem;
-      line-height: 2rem;
-      text-align: center;
-    }
-    .ngb-dp-navigation-select {
-      display: -ms-flexbox;
-      display: flex;
-      -ms-flex: 1 1 9rem;
-      flex: 1 1 9rem;
-    }
-  `],
+  styleUrls: ['./datepicker-navigation.scss'],
   template: `
     <div class="ngb-dp-arrow">
       <button type="button" class="btn btn-link ngb-dp-arrow-btn" (click)="!!navigate.emit(navigation.PREV)" [disabled]="prevDisabled"

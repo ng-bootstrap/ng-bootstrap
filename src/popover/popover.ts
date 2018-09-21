@@ -48,35 +48,7 @@ let nextId = 0;
       <ng-template [ngTemplateOutlet]="isTitleTemplate() ? title : simpleTitle" [ngTemplateOutletContext]="context"></ng-template>
     </h3>
     <div class="popover-body"><ng-content></ng-content></div>`,
-  styles: [`
-    :host.bs-popover-top .arrow, :host.bs-popover-bottom .arrow {
-      left: 50%;
-      margin-left: -5px;
-    }
-
-    :host.bs-popover-top-left .arrow, :host.bs-popover-bottom-left .arrow {
-      left: 2em;
-    }
-
-    :host.bs-popover-top-right .arrow, :host.bs-popover-bottom-right .arrow {
-      left: auto;
-      right: 2em;
-    }
-
-    :host.bs-popover-left .arrow, :host.bs-popover-right .arrow {
-      top: 50%;
-      margin-top: -5px;
-    }
-
-    :host.bs-popover-left-top .arrow, :host.bs-popover-right-top .arrow {
-      top: 0.7em;
-    }
-
-    :host.bs-popover-left-bottom .arrow, :host.bs-popover-right-bottom .arrow {
-      top: auto;
-      bottom: 0.7em;
-    }
-  `]
+  styleUrls: ['./popover.scss']
 })
 export class NgbPopoverWindow {
   @Input() placement: Placement = 'top';

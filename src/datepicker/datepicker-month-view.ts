@@ -7,39 +7,7 @@ import {DayTemplateContext} from './datepicker-day-template-context';
 @Component({
   selector: 'ngb-datepicker-month-view',
   host: {'role': 'grid'},
-  styles: [`
-    :host {
-      display: block;
-    }
-    .ngb-dp-weekday, .ngb-dp-week-number {
-      line-height: 2rem;
-      text-align: center;
-      font-style: italic;
-    }
-    .ngb-dp-weekday {
-      color: #5bc0de;
-      color: var(--info);
-    }
-    .ngb-dp-week {
-      border-radius: 0.25rem;
-      display: -ms-flexbox;
-      display: flex;
-    }
-    .ngb-dp-weekdays {
-      border-bottom: 1px solid rgba(0, 0, 0, 0.125);
-      border-radius: 0;
-    }
-    .ngb-dp-day, .ngb-dp-weekday, .ngb-dp-week-number {
-      width: 2rem;
-      height: 2rem;
-    }
-    .ngb-dp-day {
-      cursor: pointer;
-    }
-    .ngb-dp-day.disabled, .ngb-dp-day.hidden {
-      cursor: default;
-    }
-  `],
+  styleUrls: ['./datepicker-month-view.scss'],
   template: `
     <div *ngIf="showWeekdays" class="ngb-dp-week ngb-dp-weekdays bg-light">
       <div *ngIf="showWeekNumbers" class="ngb-dp-weekday ngb-dp-showweek"></div>

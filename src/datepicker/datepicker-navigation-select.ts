@@ -6,15 +6,7 @@ import {NgbDatepickerI18n} from './datepicker-i18n';
 @Component({
   selector: 'ngb-datepicker-navigation-select',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styles: [`
-    :host>select {
-      -ms-flex: 1 1 auto;
-      flex: 1 1 auto;
-      padding: 0 0.5rem;
-      font-size: 0.875rem;
-      height: 1.85rem;
-    }
-  `],
+  styleUrls: ['./datepicker-navigation-select.scss'],
   template: `
     <select
       [disabled]="disabled"

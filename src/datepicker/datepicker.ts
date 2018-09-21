@@ -57,49 +57,7 @@ export interface NgbDatepickerNavigateEvent {
   exportAs: 'ngbDatepicker',
   selector: 'ngb-datepicker',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styles: [`
-    :host {
-      border: 1px solid #dfdfdf;
-      border-radius: 0.25rem;
-      display: inline-block;
-    }
-    .ngb-dp-month {
-      pointer-events: none;
-    }
-    .ngb-dp-header {
-      border-bottom: 0;
-      border-radius: 0.25rem 0.25rem 0 0;
-      padding-top: 0.25rem;
-    }
-    ngb-datepicker-month-view {
-      pointer-events: auto;
-    }
-    .ngb-dp-month-name {
-      font-size: larger;
-      height: 2rem;
-      line-height: 2rem;
-      text-align: center;
-    }
-    /deep/ .ngb-dp-month + .ngb-dp-month > ngb-datepicker-month-view > .ngb-dp-week {
-      padding-left: 1rem;
-    }
-    /deep/ .ngb-dp-month + .ngb-dp-month > .ngb-dp-month-name {
-      padding-left: 1rem;
-    }
-    /deep/ .ngb-dp-month:last-child .ngb-dp-week {
-      padding-right: .25rem;
-    }
-    /deep/ .ngb-dp-month:first-child .ngb-dp-week {
-      padding-left: .25rem;
-    }
-    /deep/ .ngb-dp-month > ngb-datepicker-month-view > .ngb-dp-week:last-child {
-      padding-bottom: .25rem;
-    }
-    .ngb-dp-months {
-      display: -ms-flexbox;
-      display: flex;
-    }
-  `],
+  styleUrls: ['./datepicker.scss'],
   template: `
     <ng-template #dt let-date="date" let-currentMonth="currentMonth" let-selected="selected" let-disabled="disabled" let-focused="focused">
       <div ngbDatepickerDayView
