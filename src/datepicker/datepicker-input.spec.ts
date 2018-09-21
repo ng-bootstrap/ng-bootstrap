@@ -711,6 +711,17 @@ describe('NgbInputDatepicker', () => {
       expect(dp.firstDayOfWeek).toBe(5);
     });
 
+    it('should propagate the "footerTemplate" option', () => {
+      const fixture = createTestCmpt(`<ng-template #t></ng-template><input ngbDatepicker [footerTemplate]="t">`);
+      const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
+
+      dpInput.open();
+      fixture.detectChanges();
+
+      const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
+      expect(dp.footerTemplate).toBeDefined();
+    });
+
     it('should propagate the "markDisabled" option', () => {
       const fixture = createTestCmpt(`<input ngbDatepicker [markDisabled]="noop">`);
       const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);

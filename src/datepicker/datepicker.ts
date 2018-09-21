@@ -100,6 +100,8 @@ export interface NgbDatepickerNavigateEvent {
         </div>
       </ng-template>
     </div>
+
+    <ng-template [ngTemplateOutlet]="footerTemplate"></ng-template>
   `,
   providers: [NGB_DATEPICKER_VALUE_ACCESSOR, NgbDatepickerService, NgbDatepickerKeyMapService]
 })
@@ -132,6 +134,13 @@ export class NgbDatepicker implements OnDestroy,
    * First day of the week. With default calendar we use ISO 8601: 'weekday' is 1=Mon ... 7=Sun
    */
   @Input() firstDayOfWeek: number;
+
+  /**
+   * Reference for the custom template for the footer
+   *
+   * @since 3.3.0
+   */
+  @Input() footerTemplate: TemplateRef<any>;
 
   /**
    * Callback to mark a given date as disabled.
@@ -199,8 +208,8 @@ export class NgbDatepicker implements OnDestroy,
       private _calendar: NgbCalendar, public i18n: NgbDatepickerI18n, config: NgbDatepickerConfig,
       private _cd: ChangeDetectorRef, private _elementRef: ElementRef<HTMLElement>,
       private _ngbDateAdapter: NgbDateAdapter<any>, private _ngZone: NgZone) {
-    ['dayTemplate', 'dayTemplateData', 'displayMonths', 'firstDayOfWeek', 'markDisabled', 'minDate', 'maxDate',
-     'navigation', 'outsideDays', 'showWeekdays', 'showWeekNumbers', 'startDate']
+    ['dayTemplate', 'dayTemplateData', 'displayMonths', 'firstDayOfWeek', 'footerTemplate', 'markDisabled', 'minDate',
+     'maxDate', 'navigation', 'outsideDays', 'showWeekdays', 'showWeekNumbers', 'startDate']
         .forEach(input => this[input] = config[input]);
 
     this._selectSubscription = _service.select$.subscribe(date => { this.select.emit(date); });
