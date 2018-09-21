@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {NgbDateStruct} from '../ngb-date-struct';
-import {isNumber} from 'util';
+import {isInteger} from '../../util/util';
 
 export function NGB_DATEPICKER_DATE_ADAPTER_FACTORY() {
   return new NgbDateStructAdapter();
@@ -32,7 +32,7 @@ export class NgbDateStructAdapter extends NgbDateAdapter<NgbDateStruct> {
    * Converts a NgbDateStruct value into NgbDateStruct value
    */
   fromModel(date: NgbDateStruct): NgbDateStruct {
-    return (date && isNumber(date.year) && isNumber(date.month) && isNumber(date.day)) ?
+    return (date && isInteger(date.year) && isInteger(date.month) && isInteger(date.day)) ?
         {year: date.year, month: date.month, day: date.day} :
         null;
   }
@@ -41,7 +41,7 @@ export class NgbDateStructAdapter extends NgbDateAdapter<NgbDateStruct> {
    * Converts a NgbDateStruct value into NgbDateStruct value
    */
   toModel(date: NgbDateStruct): NgbDateStruct {
-    return (date && isNumber(date.year) && isNumber(date.month) && isNumber(date.day)) ?
+    return (date && isInteger(date.year) && isInteger(date.month) && isInteger(date.day)) ?
         {year: date.year, month: date.month, day: date.day} :
         null;
   }
