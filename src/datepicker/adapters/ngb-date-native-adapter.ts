@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {NgbDateAdapter} from './ngb-date-adapter';
 import {NgbDateStruct} from '../ngb-date-struct';
-import {isNumber} from 'util';
+import {isInteger} from '../../util/util';
 
 @Injectable()
 export class NgbDateNativeAdapter extends NgbDateAdapter<Date> {
@@ -10,7 +10,8 @@ export class NgbDateNativeAdapter extends NgbDateAdapter<Date> {
   }
 
   toModel(date: NgbDateStruct): Date {
-    return date && isNumber(date.year) && isNumber(date.month) && isNumber(date.day) ? this._toNativeDate(date) : null;
+    return date && isInteger(date.year) && isInteger(date.month) && isInteger(date.day) ? this._toNativeDate(date) :
+                                                                                          null;
   }
 
   protected _fromNativeDate(date: Date): NgbDateStruct {
