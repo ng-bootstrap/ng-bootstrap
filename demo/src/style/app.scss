@@ -185,16 +185,24 @@ div.api-doc-component, .overview {
 
   h2,
   h3 {
-    .github-link {
-      transition: opacity 0.5s;
-      opacity: 0.3;
-      margin-left: .5rem;
+    display: flex;
+
+    > span {
+      flex-grow: 1;
+    }
+
+    .github {
+      display: flex;
+      align-items: center;
+      align-self: center;
+
+      .github-icon {
+        height: 1.2rem;
+        margin-right: 0.5rem;
+      }
     }
 
     &:hover {
-      .github-link {
-        opacity: 1;
-      }
       & > .title-fragment {
         opacity: 1;
       }
