@@ -1,13 +1,13 @@
 import {ModuleWithProviders} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {DatepickerFocustrapComponent} from './datepicker/focustrap/datepicker-focustrap.component';
+import {DatepickerFocusComponent} from './datepicker/focus/datepicker-focus.component';
 import {ModalFocustrapComponent} from './modal/focustrap/modal-focustrap.component';
 
 const routes: Routes = [
   {
     path: 'datepicker',
     children: [
-      {path: 'focustrap', component: DatepickerFocustrapComponent}
+      {path: 'focus', component: DatepickerFocusComponent}
     ]
   },
   {
