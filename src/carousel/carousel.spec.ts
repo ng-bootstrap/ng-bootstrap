@@ -81,6 +81,21 @@ describe('ngb-carousel', () => {
        discardPeriodicTasks();
      }));
 
+  it('should work without any slides', fakeAsync(() => {
+       const fixture = createTestComponent(`<ngb-carousel [interval]="1000"></ngb-carousel>`);
+
+       tick(1001);
+       fixture.detectChanges();
+
+       const carousel = fixture.nativeElement.querySelector('ngb-carousel');
+       const slides = fixture.nativeElement.querySelectorAll('.carousel-item');
+
+       expect(carousel).toBeTruthy();
+       expect(slides.length).toBe(0);
+
+       discardPeriodicTasks();
+     }));
+
 
   it('should mark the requested slide as active', fakeAsync(() => {
        const html = `
