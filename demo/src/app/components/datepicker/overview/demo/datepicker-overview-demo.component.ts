@@ -15,9 +15,7 @@ import {NgbCalendar, NgbDate, NgbDateNativeAdapter} from '@ng-bootstrap/ng-boots
       </p>
     </div>
 
-    <ng-template #dayTemplate let-date="date" let-focused="focused"
-                 let-currentMonth="currentMonth" let-disabled="disabled">
-
+    <ng-template #dayTemplate let-date>
       <span class="custom-day" [ngbTooltip]="getTooltip(date)" container="body"
             [class.holiday]="!!isHoliday(date)"
             [class.weekend]="isWeekend(date)"

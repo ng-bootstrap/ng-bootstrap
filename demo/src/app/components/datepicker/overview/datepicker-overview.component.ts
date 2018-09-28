@@ -68,7 +68,7 @@ export abstract class NgbDateParserFormatter {
 providers: [{provide: NgbDateParserFormatter, useClass: YourOwnParserFormatter}]
 `,
     dayTemplate: `
-<ng-template #t let-date="date">
+<ng-template #t let-date>
 	{{ date.day }}
 </ng-template>
 

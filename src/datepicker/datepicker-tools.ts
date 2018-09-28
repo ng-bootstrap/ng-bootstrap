@@ -175,6 +175,7 @@ export function buildMonth(
       }
       dayObject.date = newDate;
       dayObject.context = Object.assign(dayObject.context || {}, {
+        $implicit: newDate,
         date: newDate,
         data: contextUserData,
         currentMonth: month.number, disabled,
