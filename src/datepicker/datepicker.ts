@@ -116,6 +116,14 @@ export class NgbDatepicker implements OnDestroy,
   @Input() dayTemplate: TemplateRef<DayTemplateContext>;
 
   /**
+   * Callback to pass any arbitrary data to the custom day template context
+   * 'Current' contains the month that will be displayed in the view
+   *
+   * @since 3.3.0
+   */
+  @Input() dayTemplateData: (date: NgbDate, current: {year: number, month: number}) => any;
+
+  /**
    * Number of months to display
    */
   @Input() displayMonths: number;
@@ -191,8 +199,8 @@ export class NgbDatepicker implements OnDestroy,
       private _calendar: NgbCalendar, public i18n: NgbDatepickerI18n, config: NgbDatepickerConfig,
       private _cd: ChangeDetectorRef, private _elementRef: ElementRef<HTMLElement>,
       private _ngbDateAdapter: NgbDateAdapter<any>, private _ngZone: NgZone) {
-    ['dayTemplate', 'displayMonths', 'firstDayOfWeek', 'markDisabled', 'minDate', 'maxDate', 'navigation',
-     'outsideDays', 'showWeekdays', 'showWeekNumbers', 'startDate']
+    ['dayTemplate', 'dayTemplateData', 'displayMonths', 'firstDayOfWeek', 'markDisabled', 'minDate', 'maxDate',
+     'navigation', 'outsideDays', 'showWeekdays', 'showWeekNumbers', 'startDate']
         .forEach(input => this[input] = config[input]);
 
     this._selectSubscription = _service.select$.subscribe(date => { this.select.emit(date); });
@@ -259,14 +267,16 @@ export class NgbDatepicker implements OnDestroy,
 
   ngOnInit() {
     if (this.model === undefined) {
-      ['displayMonths', 'markDisabled', 'firstDayOfWeek', 'navigation', 'minDate', 'maxDate', 'outsideDays'].forEach(
-          input => this._service[input] = this[input]);
+      ['dayTemplateData', 'displayMonths', 'markDisabled', 'firstDayOfWeek', 'navigation', 'minDate', 'maxDate',
+       'outsideDays']
+          .forEach(input => this._service[input] = this[input]);
       this.navigateTo(this.startDate);
     }
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    ['displayMonths', 'markDisabled', 'firstDayOfWeek', 'navigation', 'minDate', 'maxDate', 'outsideDays']
+    ['dayTemplateData', 'displayMonths', 'markDisabled', 'firstDayOfWeek', 'navigation', 'minDate', 'maxDate',
+     'outsideDays']
         .filter(input => input in changes)
         .forEach(input => this._service[input] = this[input]);
 

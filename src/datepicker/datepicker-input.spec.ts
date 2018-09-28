@@ -678,6 +678,17 @@ describe('NgbInputDatepicker', () => {
       expect(dp.dayTemplate).toBeDefined();
     });
 
+    it('should propagate the "dayTemplateData" option', () => {
+      const fixture = createTestCmpt(`<input ngbDatepicker [dayTemplateData]="noop">`);
+      const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
+
+      dpInput.open();
+      fixture.detectChanges();
+
+      const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
+      expect(dp.dayTemplateData).toBeDefined();
+    });
+
     it('should propagate the "displayMonths" option', () => {
       const fixture = createTestCmpt(`<input ngbDatepicker [displayMonths]="3">`);
       const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);

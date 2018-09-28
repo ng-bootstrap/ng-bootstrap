@@ -88,6 +88,14 @@ export class NgbInputDatepicker implements OnChanges,
   @Input() dayTemplate: TemplateRef<DayTemplateContext>;
 
   /**
+   * Callback to pass any arbitrary data to the custom day template context
+   * 'Current' contains the month that will be displayed in the view
+   *
+   * @since 3.3.0
+   */
+  @Input() dayTemplateData: (date: NgbDate, current: {year: number, month: number}) => any;
+
+  /**
    * Number of months to display
    */
   @Input() displayMonths: number;
@@ -361,8 +369,8 @@ export class NgbInputDatepicker implements OnChanges,
   }
 
   private _applyDatepickerInputs(datepickerInstance: NgbDatepicker): void {
-    ['dayTemplate', 'displayMonths', 'firstDayOfWeek', 'markDisabled', 'minDate', 'maxDate', 'navigation',
-     'outsideDays', 'showNavigation', 'showWeekdays', 'showWeekNumbers']
+    ['dayTemplate', 'dayTemplateData', 'displayMonths', 'firstDayOfWeek', 'markDisabled', 'minDate', 'maxDate',
+     'navigation', 'outsideDays', 'showNavigation', 'showWeekdays', 'showWeekNumbers']
         .forEach((optionName: string) => {
           if (this[optionName] !== undefined) {
             datepickerInstance[optionName] = this[optionName];

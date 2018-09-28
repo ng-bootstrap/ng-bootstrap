@@ -111,6 +111,7 @@ function expectFocusedDate(element: DebugElement, focusableDate: NgbDate, isFocu
 
 function expectSameValues(datepicker: NgbDatepicker, config: NgbDatepickerConfig) {
   expect(datepicker.dayTemplate).toBe(config.dayTemplate);
+  expect(datepicker.dayTemplateData).toBe(config.dayTemplateData);
   expect(datepicker.displayMonths).toBe(config.displayMonths);
   expect(datepicker.firstDayOfWeek).toBe(config.firstDayOfWeek);
   expect(datepicker.markDisabled).toBe(config.markDisabled);
@@ -125,6 +126,7 @@ function expectSameValues(datepicker: NgbDatepicker, config: NgbDatepickerConfig
 
 function customizeConfig(config: NgbDatepickerConfig) {
   config.dayTemplate = {} as TemplateRef<DayTemplateContext>;
+  config.dayTemplateData = (date, current) => 42;
   config.firstDayOfWeek = 2;
   config.markDisabled = (date, current) => false;
   config.minDate = {year: 2000, month: 1, day: 1};
@@ -320,14 +322,6 @@ describe('ngb-datepicker', () => {
     expectMaxDate(10000, 1);
   });
 
-  it('should support disabling dates via callback', () => {
-    const fixture = createTestComponent(
-        `<ngb-datepicker [startDate]="date" [minDate]="minDate" [maxDate]="maxDate" [markDisabled]="markDisabled"></ngb-datepicker>`);
-
-    // 22 AUG 2016
-    expect(getDay(fixture.nativeElement, 21)).toHaveCssClass('text-muted');
-  });
-
   it('should support disabling dates via min/max dates', () => {
     const fixture = createTestComponent(
         `<ngb-datepicker [startDate]="date" [minDate]="minDate" [maxDate]="maxDate"></ngb-datepicker>`);
@@ -352,6 +346,16 @@ describe('ngb-datepicker', () => {
 
     // 22 AUG 2016
     expect(getDay(fixture.nativeElement, 21)).toHaveCssClass('text-muted');
+  });
+
+  it('should support passing custom data to the day template', () => {
+    const fixture = createTestComponent(`
+      <ng-template #dt let-date="date" let-data="data"><div>{{ date.day }}{{ data }}</div></ng-template>
+      <ngb-datepicker [startDate]="date" [dayTemplate]="dt" [dayTemplateData]="dayTemplateData"></ngb-datepicker>
+    `);
+
+    // 22 AUG 2016
+    expect(getDay(fixture.nativeElement, 21).innerText).toBe('22!');
   });
 
   it('should display multiple months', () => {
@@ -1137,6 +1141,7 @@ class TestComponent {
   disabledForm = new FormGroup({control: new FormControl({value: null, disabled: true})});
   model;
   showWeekdays = true;
+  dayTemplateData = () => '!';
   markDisabled = (date: NgbDateStruct) => { return NgbDate.from(date).equals(new NgbDate(2016, 8, 22)); };
   onNavigate = () => {};
   onSelect = () => {};
