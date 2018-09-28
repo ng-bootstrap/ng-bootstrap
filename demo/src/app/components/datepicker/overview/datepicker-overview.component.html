@@ -209,6 +209,13 @@
   </p>
 
   <ngbd-code lang="html" [code]="snippets.dayTemplate"></ngbd-code>
+
+  <ngb-alert class="mt-3" [dismissible]="false">
+    Note that before v3.3.0 there is no <code>$implicit</code> template property and you have to specify
+    <code>let-date="date"</code> in the template.
+    See <a href="https://angular.io/api/common/NgTemplateOutlet#example">$implicit example</a> in Angular documentation.
+  </ngb-alert>
+
 </ngbd-overview-section>
 
 

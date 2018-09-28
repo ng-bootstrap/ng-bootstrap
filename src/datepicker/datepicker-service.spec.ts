@@ -1282,6 +1282,11 @@ describe('ngb-datepicker-service', () => {
       expect(getDayCtx(1).date).toEqual(new NgbDate(2017, 9, 26));
     });
 
+    it(`should generate date as $implicit value for day template`, () => {
+      service.focus(new NgbDate(2017, 5, 1));
+      expect(getDayCtx(0).$implicit).toEqual(new NgbDate(2017, 5, 1));
+    });
+
     it(`should generate 'currentMonth' for day template`, () => {
       service.focus(new NgbDate(2017, 5, 1));
       expect(getDayCtx(0).currentMonth).toBe(5);

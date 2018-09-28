@@ -4,6 +4,14 @@ import {NgbDate} from './ngb-date';
  */
 export interface DayTemplateContext {
   /**
+   * Date that corresponds to the template. Same as 'date' property.
+   * Can be used for convenience as a default template key, ex. 'let-d')
+   *
+   * @since 3.3.0
+   */
+  $implicit: NgbDate;
+
+  /**
    * Month currently displayed by the datepicker
    */
   currentMonth: number;
