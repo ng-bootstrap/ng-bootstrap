@@ -207,10 +207,16 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
       this._windowRef.changeDetectorRef.markForCheck();
 
       // position popover along the element
-      this._windowRef.instance.applyPlacement(
-          positionElements(
-              this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
-              this.container === 'body'));
+      this._ngZone.runOutsideAngular(() => {
+        requestAnimationFrame(() => {
+          this._ngZone.run(() => {
+            this._windowRef.instance.applyPlacement(
+                positionElements(
+                    this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
+                    this.container === 'body'));
+          });
+        });
+      });
 
       if (this.autoClose) {
         this._ngZone.runOutsideAngular(() => {
