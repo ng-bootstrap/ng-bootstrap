@@ -89,7 +89,7 @@ exports.validateMessage = validateMessage;
 
 // hacky start if not run by jasmine :-D
 if (process.argv.join('').indexOf('jasmine-node') === -1) {
-  var commitMsgFile = process.argv[2];
+  var commitMsgFile = process.argv[2] || process.env.GIT_PARAMS;
   var incorrectLogFile = commitMsgFile.replace('COMMIT_EDITMSG', 'logs/incorrect-commit-msgs');
 
   fs.readFile(commitMsgFile, function(err, buffer) {
