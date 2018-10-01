@@ -15,7 +15,7 @@ export class NgbdWidgetDemoComponent {
 
   constructor(private _analytics: Analytics) {}
 
-  trackSourceClick() {
+  trackStackBlitzClick() {
     this._analytics.trackEvent('StackBlitz View', this.component + ' ' + this.id);
   }
 }
