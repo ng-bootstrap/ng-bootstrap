@@ -68,6 +68,7 @@ export class NgbInputDatepicker implements OnChanges,
   private _cRef: ComponentRef<NgbDatepicker> = null;
   private _disabled = false;
   private _model: NgbDate;
+  private _inputValue: string;
   private _zoneSubscription: any;
 
   /**
@@ -85,6 +86,14 @@ export class NgbInputDatepicker implements OnChanges,
    * Reference for the custom template for the day display
    */
   @Input() dayTemplate: TemplateRef<DayTemplateContext>;
+
+  /**
+   * Callback to pass any arbitrary data to the custom day template context
+   * 'Current' contains the month that will be displayed in the view
+   *
+   * @since 3.3.0
+   */
+  @Input() dayTemplateData: (date: NgbDate, current: {year: number, month: number}) => any;
 
   /**
    * Number of months to display
@@ -236,8 +245,14 @@ export class NgbInputDatepicker implements OnChanges,
   }
 
   manualDateChange(value: string, updateView = false) {
-    this._model = this._fromDateStruct(this._parserFormatter.parse(value));
-    this._onChange(this._model ? this._dateAdapter.toModel(this._model) : (value === '' ? null : value));
+    const inputValueChanged = value !== this._inputValue;
+    if (inputValueChanged) {
+      this._inputValue = value;
+      this._model = this._fromDateStruct(this._parserFormatter.parse(value));
+    }
+    if (inputValueChanged || !updateView) {
+      this._onChange(this._model ? this._dateAdapter.toModel(this._model) : (value === '' ? null : value));
+    }
     if (updateView && this._model) {
       this._writeModelValue(this._model);
     }
@@ -279,28 +294,30 @@ export class NgbInputDatepicker implements OnChanges,
       this._cRef.instance.focus();
 
       // closing on ESC and outside clicks
-      this._ngZone.runOutsideAngular(() => {
+      if (this.autoClose) {
+        this._ngZone.runOutsideAngular(() => {
 
-        const escapes$ = fromEvent<KeyboardEvent>(this._document, 'keyup')
-                             .pipe(takeUntil(this._closed$), filter(e => e.which === Key.Escape));
+          const escapes$ = fromEvent<KeyboardEvent>(this._document, 'keyup')
+                               .pipe(takeUntil(this._closed$), filter(e => e.which === Key.Escape));
 
-        let outsideClicks$;
-        if (this.autoClose === true || this.autoClose === 'outside') {
-          // we don't know how the popup was opened, so if it was opened with a click,
-          // we have to skip the first one to avoid closing it immediately
-          let isOpening = true;
-          requestAnimationFrame(() => isOpening = false);
+          let outsideClicks$;
+          if (this.autoClose === true || this.autoClose === 'outside') {
+            // we don't know how the popup was opened, so if it was opened with a click,
+            // we have to skip the first one to avoid closing it immediately
+            let isOpening = true;
+            requestAnimationFrame(() => isOpening = false);
 
-          outsideClicks$ =
-              fromEvent<MouseEvent>(this._document, 'click')
-                  .pipe(
-                      takeUntil(this._closed$), filter(event => !isOpening && this._shouldCloseOnOutsideClick(event)));
-        } else {
-          outsideClicks$ = NEVER;
-        }
+            outsideClicks$ = fromEvent<MouseEvent>(this._document, 'click')
+                                 .pipe(
+                                     takeUntil(this._closed$),
+                                     filter(event => !isOpening && this._shouldCloseOnOutsideClick(event)));
+          } else {
+            outsideClicks$ = NEVER;
+          }
 
-        race<Event>([escapes$, outsideClicks$]).subscribe(() => this._ngZone.run(() => this.close()));
-      });
+          race<Event>([escapes$, outsideClicks$]).subscribe(() => this._ngZone.run(() => this.close()));
+        });
+      }
     }
   }
 
@@ -352,8 +369,8 @@ export class NgbInputDatepicker implements OnChanges,
   }
 
   private _applyDatepickerInputs(datepickerInstance: NgbDatepicker): void {
-    ['dayTemplate', 'displayMonths', 'firstDayOfWeek', 'markDisabled', 'minDate', 'maxDate', 'navigation',
-     'outsideDays', 'showNavigation', 'showWeekdays', 'showWeekNumbers']
+    ['dayTemplate', 'dayTemplateData', 'displayMonths', 'firstDayOfWeek', 'markDisabled', 'minDate', 'maxDate',
+     'navigation', 'outsideDays', 'showNavigation', 'showWeekdays', 'showWeekNumbers']
         .forEach((optionName: string) => {
           if (this[optionName] !== undefined) {
             datepickerInstance[optionName] = this[optionName];
@@ -383,7 +400,9 @@ export class NgbInputDatepicker implements OnChanges,
   }
 
   private _writeModelValue(model: NgbDate) {
-    this._renderer.setProperty(this._elRef.nativeElement, 'value', this._parserFormatter.format(model));
+    const value = this._parserFormatter.format(model);
+    this._inputValue = value;
+    this._renderer.setProperty(this._elRef.nativeElement, 'value', value);
     if (this.isOpen()) {
       this._cRef.instance.writeValue(this._dateAdapter.toModel(model));
       this._onTouched();

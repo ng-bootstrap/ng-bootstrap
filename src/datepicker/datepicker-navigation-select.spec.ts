@@ -25,7 +25,7 @@ describe('ngb-datepicker-navigation-select', () => {
 
   beforeEach(() => {
     TestBed.overrideModule(NgbDatepickerModule, {set: {exports: [NgbDatepickerNavigationSelect]}});
-    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbDatepickerModule.forRoot()]});
+    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbDatepickerModule]});
   });
 
   it('should generate month options correctly', () => {
@@ -101,13 +101,31 @@ describe('ngb-datepicker-navigation-select', () => {
     expect(getYearSelect(fixture.nativeElement).disabled).toBe(true);
   });
 
-  it('should have correct aria attributes on select boxes', () => {
+  it('should have correct aria attributes on select options', () => {
     const fixture =
         createTestComponent(`<ngb-datepicker-navigation-select [date]="date" [months]="[7, 8, 9]" [years]="years">`);
 
     getOptions(getMonthSelect(fixture.nativeElement)).forEach((option, index) => {
       expect(option.getAttribute('aria-label')).toBe(fixture.componentInstance.ariaMonths[index]);
     });
+  });
+
+  it('should have correct aria attributes on select elements', () => {
+    const fixture =
+        createTestComponent(`<ngb-datepicker-navigation-select [date]="date" [months]="[7, 8, 9]" [years]="years">`);
+
+    expect(getMonthSelect(fixture.nativeElement).getAttribute('aria-label')).toBe('Select month');
+    expect(getYearSelect(fixture.nativeElement).getAttribute('aria-label')).toBe('Select year');
+
+  });
+
+  it('should have correct title attributes on select elements', () => {
+    const fixture =
+        createTestComponent(`<ngb-datepicker-navigation-select [date]="date" [months]="[7, 8, 9]" [years]="years">`);
+
+    expect(getMonthSelect(fixture.nativeElement).getAttribute('title')).toBe('Select month');
+    expect(getYearSelect(fixture.nativeElement).getAttribute('title')).toBe('Select year');
+
   });
 
 });

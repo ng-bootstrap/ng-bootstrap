@@ -3,6 +3,7 @@ import {NgbDateStruct} from './ngb-date-struct';
 import {DayTemplateContext} from './datepicker-day-template-context';
 
 export type NgbMarkDisabled = (date: NgbDateStruct, current: {year: number, month: number}) => boolean;
+export type NgbDayTemplateData = (date: NgbDateStruct, current: {year: number, month: number}) => any;
 
 export type DayViewModel = {
   date: NgbDate,
@@ -29,6 +30,7 @@ export type MonthViewModel = {
 
 // clang-format off
 export type DatepickerViewModel = {
+  dayTemplateData?: NgbDayTemplateData,
   disabled: boolean,
   displayMonths: number,
   firstDate?: NgbDate,

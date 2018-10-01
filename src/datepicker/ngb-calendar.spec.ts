@@ -5,7 +5,7 @@ describe('ngb-calendar-gregorian', () => {
 
   const calendar = new NgbCalendarGregorian();
 
-  it('should return todays date', () => {
+  it('should return today\'s date', () => {
     const jsToday = new Date();
     const today = new NgbDate(jsToday.getFullYear(), jsToday.getMonth() + 1, jsToday.getDate());
 
@@ -91,5 +91,7 @@ describe('ngb-calendar-gregorian', () => {
     expect(calendar.isValid(new NgbDate(275760, 9, 12))).toBeTruthy();
     expect(calendar.isValid(new NgbDate(2016, 8, 8))).toBeTruthy();
   });
+
+  it('should dates with year 0 as invalid', () => { expect(calendar.isValid(new NgbDate(0, 1, 1))).toBeFalsy(); });
 
 });

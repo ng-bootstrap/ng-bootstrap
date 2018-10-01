@@ -1,37 +1,55 @@
 import {DOCUMENT} from '@angular/common';
 import {
   ApplicationRef,
-  Injectable,
-  Injector,
-  Inject,
-  ComponentFactory,
   ComponentFactoryResolver,
   ComponentRef,
-  TemplateRef
+  Inject,
+  Injectable,
+  Injector,
+  RendererFactory2,
+  TemplateRef,
 } from '@angular/core';
+import {Subject} from 'rxjs';
 
+import {ngbFocusTrap} from '../util/focus-trap';
 import {ContentRef} from '../util/popup';
-import {isDefined, isString} from '../util/util';
 import {ScrollBar} from '../util/scrollbar';
-
+import {isDefined, isString} from '../util/util';
 import {NgbModalBackdrop} from './modal-backdrop';
-import {NgbModalWindow} from './modal-window';
 import {NgbActiveModal, NgbModalRef} from './modal-ref';
+import {NgbModalWindow} from './modal-window';
 
 @Injectable({providedIn: 'root'})
 export class NgbModalStack {
   private _windowAttributes = ['ariaLabelledBy', 'backdrop', 'centered', 'keyboard', 'size', 'windowClass'];
   private _backdropAttributes = ['backdropClass'];
+  private _modalRefs: NgbModalRef[] = [];
+  private _windowCmpts: ComponentRef<NgbModalWindow>[] = [];
+  private _activeWindowCmptHasChanged = new Subject();
 
   constructor(
-      private _applicationRef: ApplicationRef, private _injector: Injector, @Inject(DOCUMENT) private _document,
-      private _scrollBar: ScrollBar) {}
+      private _applicationRef: ApplicationRef, private _injector: Injector, @Inject(DOCUMENT) private _document: any,
+      private _scrollBar: ScrollBar, private _rendererFactory: RendererFactory2) {
+    // Trap focus on active WindowCmpt
+    this._activeWindowCmptHasChanged.subscribe(() => {
+      if (this._windowCmpts.length) {
+        const activeWindowCmpt = this._windowCmpts[this._windowCmpts.length - 1];
+        ngbFocusTrap(activeWindowCmpt.location.nativeElement, this._activeWindowCmptHasChanged);
+      }
+    });
+  }
 
   open(moduleCFR: ComponentFactoryResolver, contentInjector: Injector, content: any, options): NgbModalRef {
     const containerEl =
         isDefined(options.container) ? this._document.querySelector(options.container) : this._document.body;
+    const renderer = this._rendererFactory.createRenderer(null, null);
 
     const revertPaddingForScrollBar = this._scrollBar.compensate();
+    const removeBodyClass = () => {
+      if (!this._modalRefs.length) {
+        renderer.removeClass(this._document.body, 'modal-open');
+      }
+    };
 
     if (!containerEl) {
       throw new Error(`The specified modal container "${options.container || 'body'}" was not found in the DOM.`);
@@ -45,17 +63,25 @@ export class NgbModalStack {
     let windowCmptRef: ComponentRef<NgbModalWindow> = this._attachWindowComponent(moduleCFR, containerEl, contentRef);
     let ngbModalRef: NgbModalRef = new NgbModalRef(windowCmptRef, contentRef, backdropCmptRef, options.beforeDismiss);
 
+    this._registerModalRef(ngbModalRef);
+    this._registerWindowCmpt(windowCmptRef);
     ngbModalRef.result.then(revertPaddingForScrollBar, revertPaddingForScrollBar);
+    ngbModalRef.result.then(removeBodyClass, removeBodyClass);
     activeModal.close = (result: any) => { ngbModalRef.close(result); };
     activeModal.dismiss = (reason: any) => { ngbModalRef.dismiss(reason); };
 
     this._applyWindowOptions(windowCmptRef.instance, options);
+    if (this._modalRefs.length === 1) {
+      renderer.addClass(this._document.body, 'modal-open');
+    }
 
     if (backdropCmptRef && backdropCmptRef.instance) {
       this._applyBackdropOptions(backdropCmptRef.instance, options);
     }
     return ngbModalRef;
   }
+
+  dismissAll(reason?: any) { this._modalRefs.forEach(ngbModalRef => ngbModalRef.dismiss(reason)); }
 
   private _attachBackdrop(moduleCFR: ComponentFactoryResolver, containerEl: any): ComponentRef<NgbModalBackdrop> {
     let backdropFactory = moduleCFR.resolveComponentFactory(NgbModalBackdrop);
@@ -92,19 +118,24 @@ export class NgbModalStack {
 
   private _getContentRef(
       moduleCFR: ComponentFactoryResolver, contentInjector: Injector, content: any,
-      context: NgbActiveModal): ContentRef {
+      activeModal: NgbActiveModal): ContentRef {
     if (!content) {
       return new ContentRef([]);
     } else if (content instanceof TemplateRef) {
-      return this._createFromTemplateRef(content, context);
+      return this._createFromTemplateRef(content, activeModal);
     } else if (isString(content)) {
       return this._createFromString(content);
     } else {
-      return this._createFromComponent(moduleCFR, contentInjector, content, context);
+      return this._createFromComponent(moduleCFR, contentInjector, content, activeModal);
     }
   }
 
-  private _createFromTemplateRef(content: TemplateRef<any>, context: NgbActiveModal): ContentRef {
+  private _createFromTemplateRef(content: TemplateRef<any>, activeModal: NgbActiveModal): ContentRef {
+    const context = {
+      $implicit: activeModal,
+      close(result) { activeModal.close(result); },
+      dismiss(reason) { activeModal.dismiss(reason); }
+    };
     const viewRef = content.createEmbeddedView(context);
     this._applicationRef.attachView(viewRef);
     return new ContentRef([viewRef.rootNodes], viewRef);
@@ -124,5 +155,29 @@ export class NgbModalStack {
     const componentRef = contentCmptFactory.create(modalContentInjector);
     this._applicationRef.attachView(componentRef.hostView);
     return new ContentRef([[componentRef.location.nativeElement]], componentRef.hostView, componentRef);
+  }
+
+  private _registerModalRef(ngbModalRef: NgbModalRef) {
+    const unregisterModalRef = () => {
+      const index = this._modalRefs.indexOf(ngbModalRef);
+      if (index > -1) {
+        this._modalRefs.splice(index, 1);
+      }
+    };
+    this._modalRefs.push(ngbModalRef);
+    ngbModalRef.result.then(unregisterModalRef, unregisterModalRef);
+  }
+
+  private _registerWindowCmpt(ngbWindowCmpt: ComponentRef<NgbModalWindow>) {
+    this._windowCmpts.push(ngbWindowCmpt);
+    this._activeWindowCmptHasChanged.next();
+
+    ngbWindowCmpt.onDestroy(() => {
+      const index = this._windowCmpts.indexOf(ngbWindowCmpt);
+      if (index > -1) {
+        this._windowCmpts.splice(index, 1);
+        this._activeWindowCmptHasChanged.next();
+      }
+    });
   }
 }

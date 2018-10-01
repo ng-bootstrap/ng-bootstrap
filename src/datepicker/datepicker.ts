@@ -57,49 +57,7 @@ export interface NgbDatepickerNavigateEvent {
   exportAs: 'ngbDatepicker',
   selector: 'ngb-datepicker',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styles: [`
-    :host {
-      border: 1px solid #dfdfdf;
-      border-radius: 0.25rem;
-      display: inline-block;
-    }
-    .ngb-dp-month {
-      pointer-events: none;
-    }
-    .ngb-dp-header {
-      border-bottom: 0;
-      border-radius: 0.25rem 0.25rem 0 0;
-      padding-top: 0.25rem;
-    }
-    ngb-datepicker-month-view {
-      pointer-events: auto;
-    }
-    .ngb-dp-month-name {
-      font-size: larger;
-      height: 2rem;
-      line-height: 2rem;
-      text-align: center;
-    }
-    /deep/ .ngb-dp-month + .ngb-dp-month > ngb-datepicker-month-view > .ngb-dp-week {
-      padding-left: 1rem;
-    }
-    /deep/ .ngb-dp-month + .ngb-dp-month > .ngb-dp-month-name {
-      padding-left: 1rem;
-    }
-    /deep/ .ngb-dp-month:last-child .ngb-dp-week {
-      padding-right: .25rem;
-    }
-    /deep/ .ngb-dp-month:first-child .ngb-dp-week {
-      padding-left: .25rem;
-    }
-    /deep/ .ngb-dp-month > ngb-datepicker-month-view > .ngb-dp-week:last-child {
-      padding-bottom: .25rem;
-    }
-    .ngb-dp-months {
-      display: -ms-flexbox;
-      display: flex;
-    }
-  `],
+  styleUrls: ['./datepicker.scss'],
   template: `
     <ng-template #dt let-date="date" let-currentMonth="currentMonth" let-selected="selected" let-disabled="disabled" let-focused="focused">
       <div ngbDatepickerDayView
@@ -130,7 +88,7 @@ export interface NgbDatepickerNavigateEvent {
         <div class="ngb-dp-month">
           <div *ngIf="navigation === 'none' || (displayMonths > 1 && navigation === 'select')"
                 class="ngb-dp-month-name bg-light">
-            {{ i18n.getMonthFullName(month.number) }} {{ i18n.getYearNumerals(month.year) }}
+            {{ i18n.getMonthFullName(month.number, month.year) }} {{ i18n.getYearNumerals(month.year) }}
           </div>
           <ngb-datepicker-month-view
             [month]="month"
@@ -149,12 +107,21 @@ export class NgbDatepicker implements OnDestroy,
     OnChanges, OnInit, ControlValueAccessor {
   model: DatepickerViewModel;
 
+  private _controlValue: NgbDate;
   private _subscription: Subscription;
   private _selectSubscription: Subscription;
   /**
    * Reference for the custom template for the day display
    */
   @Input() dayTemplate: TemplateRef<DayTemplateContext>;
+
+  /**
+   * Callback to pass any arbitrary data to the custom day template context
+   * 'Current' contains the month that will be displayed in the view
+   *
+   * @since 3.3.0
+   */
+  @Input() dayTemplateData: (date: NgbDate, current: {year: number, month: number}) => any;
 
   /**
    * Number of months to display
@@ -232,8 +199,8 @@ export class NgbDatepicker implements OnDestroy,
       private _calendar: NgbCalendar, public i18n: NgbDatepickerI18n, config: NgbDatepickerConfig,
       private _cd: ChangeDetectorRef, private _elementRef: ElementRef<HTMLElement>,
       private _ngbDateAdapter: NgbDateAdapter<any>, private _ngZone: NgZone) {
-    ['dayTemplate', 'displayMonths', 'firstDayOfWeek', 'markDisabled', 'minDate', 'maxDate', 'navigation',
-     'outsideDays', 'showWeekdays', 'showWeekNumbers', 'startDate']
+    ['dayTemplate', 'dayTemplateData', 'displayMonths', 'firstDayOfWeek', 'markDisabled', 'minDate', 'maxDate',
+     'navigation', 'outsideDays', 'showWeekdays', 'showWeekNumbers', 'startDate']
         .forEach(input => this[input] = config[input]);
 
     this._selectSubscription = _service.select$.subscribe(date => { this.select.emit(date); });
@@ -242,14 +209,14 @@ export class NgbDatepicker implements OnDestroy,
       const newDate = model.firstDate;
       const oldDate = this.model ? this.model.firstDate : null;
       const newSelectedDate = model.selectedDate;
-      const oldSelectedDate = this.model ? this.model.selectedDate : null;
       const newFocusedDate = model.focusDate;
       const oldFocusedDate = this.model ? this.model.focusDate : null;
 
       this.model = model;
 
       // handling selection change
-      if (isChangedDate(newSelectedDate, oldSelectedDate)) {
+      if (isChangedDate(newSelectedDate, this._controlValue)) {
+        this._controlValue = newSelectedDate;
         this.onTouched();
         this.onChange(this._ngbDateAdapter.toModel(newSelectedDate));
       }
@@ -300,14 +267,16 @@ export class NgbDatepicker implements OnDestroy,
 
   ngOnInit() {
     if (this.model === undefined) {
-      ['displayMonths', 'markDisabled', 'firstDayOfWeek', 'navigation', 'minDate', 'maxDate', 'outsideDays'].forEach(
-          input => this._service[input] = this[input]);
+      ['dayTemplateData', 'displayMonths', 'markDisabled', 'firstDayOfWeek', 'navigation', 'minDate', 'maxDate',
+       'outsideDays']
+          .forEach(input => this._service[input] = this[input]);
       this.navigateTo(this.startDate);
     }
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    ['displayMonths', 'markDisabled', 'firstDayOfWeek', 'navigation', 'minDate', 'maxDate', 'outsideDays']
+    ['dayTemplateData', 'displayMonths', 'markDisabled', 'firstDayOfWeek', 'navigation', 'minDate', 'maxDate',
+     'outsideDays']
         .filter(input => input in changes)
         .forEach(input => this._service[input] = this[input]);
 
@@ -344,5 +313,8 @@ export class NgbDatepicker implements OnDestroy,
 
   showFocus(focusVisible: boolean) { this._service.focusVisible = focusVisible; }
 
-  writeValue(value) { this._service.select(NgbDate.from(this._ngbDateAdapter.fromModel(value))); }
+  writeValue(value) {
+    this._controlValue = NgbDate.from(this._ngbDateAdapter.fromModel(value));
+    this._service.select(this._controlValue);
+  }
 }

@@ -8,9 +8,8 @@ import {NgbDatepickerI18n, NgbDatepickerI18nDefault} from './datepicker-i18n';
 
 describe('ngb-datepicker integration', () => {
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbDatepickerModule.forRoot()]});
-  });
+  beforeEach(
+      () => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbDatepickerModule]}); });
 
   it('should allow overriding datepicker calendar', () => {
 

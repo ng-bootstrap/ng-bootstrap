@@ -2,13 +2,17 @@ import {Inject, Injectable, LOCALE_ID} from '@angular/core';
 import {FormStyle, getLocaleDayNames, getLocaleMonthNames, TranslationWidth, formatDate} from '@angular/common';
 import {NgbDateStruct} from './ngb-date-struct';
 
+export function NGB_DATEPICKER_18N_FACTORY(locale) {
+  return new NgbDatepickerI18nDefault(locale);
+}
+
 /**
  * Type of the service supplying month and weekday names to to NgbDatepicker component.
  * The default implementation of this service honors the Angular locale, and uses the registered locale data,
  * as explained in the Angular i18n guide.
  * See the i18n demo for how to extend this class and define a custom provider for i18n.
  */
-@Injectable()
+@Injectable({providedIn: 'root', useFactory: NGB_DATEPICKER_18N_FACTORY, deps: [LOCALE_ID]})
 export abstract class NgbDatepickerI18n {
   /**
    * Returns the short weekday name to display in the heading of the month view.
@@ -20,13 +24,13 @@ export abstract class NgbDatepickerI18n {
    * Returns the short month name to display in the date picker navigation.
    * With default calendar we use ISO 8601: 'month' is 1=Jan ... 12=Dec
    */
-  abstract getMonthShortName(month: number): string;
+  abstract getMonthShortName(month: number, year?: number): string;
 
   /**
    * Returns the full month name to display in the date picker navigation.
    * With default calendar we use ISO 8601: 'month' is 1=January ... 12=December
    */
-  abstract getMonthFullName(month: number): string;
+  abstract getMonthFullName(month: number, year?: number): string;
 
   /**
    * Returns the value of the 'aria-label' attribute for a specific date

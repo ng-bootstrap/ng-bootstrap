@@ -2,7 +2,8 @@
   Datepicker will help you with date selection.
   It can be used either inline with <code>NgbDatepicker</code> component or as a
   popup on any input element with <code>NgbInputDatepicker</code> directive.
-  It also comes with the list of services to do formatting, calendars and i18n.
+  It also comes with the list of services to do date formatting, i18n and
+  <a routerLink="../calendars">alternative calendars support</a>.
 </p>
 <p>
   We try to keep API of our components simple, but introduce extension points,
@@ -17,7 +18,7 @@
 
 
 <!-- BASIC USAGE -->
-<ngbd-overview-section [section]="sections['basic']">
+<ngbd-overview-section [section]="sections['basic-usage']">
   <p>
     Datepicker can be used either inline or inside of the popup.
   </p>
@@ -71,7 +72,7 @@
 
 
 <!-- GETTING / SETTING A DATE -->
-<ngbd-overview-section [section]="sections['gettingDate']">
+<ngbd-overview-section [section]="sections['getting-date']">
   <p>
     You have several ways of knowing when user selects a date. The date is selected
     either by clicking on it, pressing <code>Space</code> or <code>Enter</code>,
@@ -87,7 +88,7 @@
 
   <p>
     The model, however, is NOT a native javascript date, see the following
-    <a routerLink="./" [fragment]="sections['model'].fragment">Date Model</a> section for more info.
+    <a routerLink="./" [fragment]="sections['date-model'].fragment">Date Model</a> section for more info.
   </p>
 
   <ngbd-code lang="html" [code]="snippets.form"></ngbd-code>
@@ -104,7 +105,7 @@
 
 
 <!-- DATE MODEL-->
-<ngbd-overview-section [section]="sections['model']">
+<ngbd-overview-section [section]="sections['date-model']">
   <p>
     Datepicker uses <code>NgbDateStruct</code> as a model and not the native
     <code>Date</code> object. It's a simple data structure with 3 fields.
@@ -173,7 +174,7 @@
 
 
 <!-- DISABLING/LIMITING DATES-->
-<ngbd-overview-section [section]="sections['disabling']">
+<ngbd-overview-section [section]="sections['limiting-dates']">
   <p>
     You can limit the dates available for navigation and selection using
     <code>[minDate]</code> and <code>[maxDate]</code> inputs. If you don't specify
@@ -195,7 +196,7 @@
 
 
 <!-- DAY CUSTOMIZATION-->
-<ngbd-overview-section [section]="sections['customization']">
+<ngbd-overview-section [section]="sections['day-template']">
   <p>
     You can completely replace how each date is rendered by providing a custom template
     and rendering anything you want inside. You'll get a date context available inside
@@ -208,6 +209,13 @@
   </p>
 
   <ngbd-code lang="html" [code]="snippets.dayTemplate"></ngbd-code>
+
+  <ngb-alert class="mt-3" [dismissible]="false">
+    Note that before v3.3.0 there is no <code>$implicit</code> template property and you have to specify
+    <code>let-date="date"</code> in the template.
+    See <a href="https://angular.io/api/common/NgTemplateOutlet#example">$implicit example</a> in Angular documentation.
+  </ngb-alert>
+
 </ngbd-overview-section>
 
 
@@ -235,30 +243,6 @@
 
 
 
-<!-- CALENDARS -->
-<ngbd-overview-section [section]="sections['calendars']">
-  <p>
-    Internally datepicker uses <code>NgbCalendar</code> implementation for the Gregorian
-    calendar. This could be extended to support and calendar that has notion of days, months and years.
-  </p>
-
-  <p>For instance, there are other Islamic calendar implementations available:</p>
-  <ul>
-    <li><code>NgbCalendarIslamicCivil</code></li>
-    <li><code>NgbCalendarIslamicUmalqura</code></li>
-    <li><code>NgbCalendarHijri</code></li>
-  </ul>
-
-  <p>
-    To use any of them, simply provide a different calendar implementation
-  </p>
-
-  <ngbd-code lang="typescript" [code]="snippets.calendars"></ngbd-code>
-
-</ngbd-overview-section>
-
-
-
 <!-- I18N -->
 <ngbd-overview-section [section]="sections['i18n']">
   <p>
@@ -273,7 +257,7 @@
 
   <p>
     The next/previous button labels can be translated using the standard Angular i18n
-    mechanism. For example, previous month label is extracted under <code>the ngb.datepicker.previous-month</code>
+    mechanism. For example, previous month label is extracted under the <code>ngb.datepicker.previous-month</code>
     name.
   </p>
 </ngbd-overview-section>
@@ -281,7 +265,7 @@
 
 
 <!-- Keyboard -->
-<ngbd-overview-section [section]="sections['shortcuts']">
+<ngbd-overview-section [section]="sections['keyboard-shortcuts']">
   <table class="table mt-4">
     <tbody>
       <tr>

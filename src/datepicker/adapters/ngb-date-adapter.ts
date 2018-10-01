@@ -1,5 +1,10 @@
 import {Injectable} from '@angular/core';
 import {NgbDateStruct} from '../ngb-date-struct';
+import {isInteger} from '../../util/util';
+
+export function NGB_DATEPICKER_DATE_ADAPTER_FACTORY() {
+  return new NgbDateStructAdapter();
+}
 
 /**
  * Abstract type serving as a DI token for the service converting from your application Date model to internal
@@ -7,7 +12,7 @@ import {NgbDateStruct} from '../ngb-date-struct';
  * A default implementation converting from and to NgbDateStruct is provided for retro-compatibility,
  * but you can provide another implementation to use an alternative format, ie for using with native Date Object.
  */
-@Injectable()
+@Injectable({providedIn: 'root', useFactory: NGB_DATEPICKER_DATE_ADAPTER_FACTORY})
 export abstract class NgbDateAdapter<D> {
   /**
    * Converts user-model date into an NgbDateStruct for internal use in the library
@@ -16,7 +21,7 @@ export abstract class NgbDateAdapter<D> {
 
   /**
    * Converts internal date value NgbDateStruct to user-model date
-   * The returned type is suposed to be of the same type as fromModel() input-value param
+   * The returned type is supposed to be of the same type as fromModel() input-value param
    */
   abstract toModel(date: NgbDateStruct): D;
 }
@@ -27,13 +32,17 @@ export class NgbDateStructAdapter extends NgbDateAdapter<NgbDateStruct> {
    * Converts a NgbDateStruct value into NgbDateStruct value
    */
   fromModel(date: NgbDateStruct): NgbDateStruct {
-    return (date && date.year && date.month && date.day) ? {year: date.year, month: date.month, day: date.day} : null;
+    return (date && isInteger(date.year) && isInteger(date.month) && isInteger(date.day)) ?
+        {year: date.year, month: date.month, day: date.day} :
+        null;
   }
 
   /**
    * Converts a NgbDateStruct value into NgbDateStruct value
    */
   toModel(date: NgbDateStruct): NgbDateStruct {
-    return (date && date.year && date.month && date.day) ? {year: date.year, month: date.month, day: date.day} : null;
+    return (date && isInteger(date.year) && isInteger(date.month) && isInteger(date.day)) ?
+        {year: date.year, month: date.month, day: date.day} :
+        null;
   }
 }

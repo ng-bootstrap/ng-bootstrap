@@ -7,7 +7,14 @@ import {NgbCarouselModule} from './carousel/carousel.module';
 import {NgbCollapseModule} from './collapse/collapse.module';
 import {NgbDatepickerModule} from './datepicker/datepicker.module';
 import {NgbDropdownModule} from './dropdown/dropdown.module';
-import {NgbModalModule, NgbModal, NgbModalOptions, NgbModalRef, ModalDismissReasons} from './modal/modal.module';
+import {
+  NgbModalModule,
+  NgbModal,
+  NgbModalConfig,
+  NgbModalOptions,
+  NgbModalRef,
+  ModalDismissReasons
+} from './modal/modal.module';
 import {NgbPaginationModule} from './pagination/pagination.module';
 import {NgbPopoverModule} from './popover/popover.module';
 import {NgbProgressbarModule} from './progressbar/progressbar.module';
@@ -35,15 +42,18 @@ export {
   NgbPeriod,
   NgbCalendarIslamicCivil,
   NgbCalendarIslamicUmalqura,
+  NgbCalendarHebrew,
   NgbCalendarPersian,
   NgbDatepickerModule,
   NgbDatepickerI18n,
+  NgbDatepickerI18nHebrew,
   NgbDatepickerConfig,
   NgbDateStruct,
   NgbDate,
   NgbDateParserFormatter,
   NgbDateAdapter,
   NgbDateNativeAdapter,
+  NgbDateNativeUTCAdapter,
   NgbDatepicker,
   NgbInputDatepicker
 } from './datepicker/datepicker.module';
@@ -51,6 +61,7 @@ export {NgbDropdownModule, NgbDropdownConfig, NgbDropdown} from './dropdown/drop
 export {
   NgbModalModule,
   NgbModal,
+  NgbModalConfig,
   NgbModalOptions,
   NgbActiveModal,
   NgbModalRef,
@@ -93,16 +104,6 @@ const NGB_MODULES = [
   NgbTabsetModule, NgbTimepickerModule, NgbTooltipModule, NgbTypeaheadModule
 ];
 
-/**
- * NgbRootModule is no longer necessary, you can simply import NgbModule
- * Will be removed in 4.0.0.
- *
- * @deprecated 3.0.0
- */
-@NgModule({imports: [NGB_MODULES], exports: NGB_MODULES})
-export class NgbRootModule {
-}
-
 @NgModule({imports: NGB_MODULES, exports: NGB_MODULES})
 export class NgbModule {
   /**
@@ -111,5 +112,5 @@ export class NgbModule {
    *
    * @deprecated 3.0.0
    */
-  static forRoot(): ModuleWithProviders { return {ngModule: NgbRootModule}; }
+  static forRoot(): ModuleWithProviders { return {ngModule: NgbModule}; }
 }

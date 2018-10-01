@@ -1,11 +1,17 @@
 import {padNumber, toInteger, isNumber} from '../util/util';
 import {NgbDateStruct} from './ngb-date-struct';
+import {Injectable} from '@angular/core';
+
+export function NGB_DATEPICKER_PARSER_FORMATTER_FACTORY() {
+  return new NgbDateISOParserFormatter();
+}
 
 /**
  * Abstract type serving as a DI token for the service parsing and formatting dates for the NgbInputDatepicker
  * directive. A default implementation using the ISO 8601 format is provided, but you can provide another implementation
  * to use an alternative format.
  */
+@Injectable({providedIn: 'root', useFactory: NGB_DATEPICKER_PARSER_FORMATTER_FACTORY})
 export abstract class NgbDateParserFormatter {
   /**
    * Parses the given value to an NgbDateStruct. Implementations should try their best to provide a result, even
@@ -22,6 +28,7 @@ export abstract class NgbDateParserFormatter {
   abstract format(date: NgbDateStruct): string;
 }
 
+@Injectable()
 export class NgbDateISOParserFormatter extends NgbDateParserFormatter {
   parse(value: string): NgbDateStruct {
     if (value) {

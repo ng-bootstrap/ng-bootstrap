@@ -5,19 +5,7 @@ import {NgbDatepickerI18n} from './datepicker-i18n';
 @Component({
   selector: '[ngbDatepickerDayView]',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styles: [`
-    :host {
-      text-align: center;
-      width: 2rem;
-      height: 2rem;
-      line-height: 2rem;
-      border-radius: 0.25rem;
-      background: transparent;
-    }
-    :host.outside {
-      opacity: 0.5;
-    }
-  `],
+  styleUrls: ['./datepicker-day-view.scss'],
   host: {
     'class': 'btn-light',
     '[class.bg-primary]': 'selected',

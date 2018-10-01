@@ -1,53 +1,40 @@
-import {Component, ContentChild, ContentChildren, Input, NgZone} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import { Component, NgZone } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
-import {ExampleBoxComponent} from '../../components/shared/example-box';
-import {NgbdApiDocs, NgbdApiDocsClass, NgbdApiDocsConfig} from '../../components/shared/api-docs';
-import {NgbdOverviewDirective, NgbdOverviewSection} from '../../components/shared/overview';
+import { NgbdApiPage } from '../../components/shared/api-page/api.component';
+import { NgbdExamplesPage } from '../../components/shared/examples-page/examples.component';
 
-const VALID_TABS = ['overview', 'examples', 'api'];
 
-@Component({selector: 'ngbd-component-wrapper', templateUrl: './component-wrapper.component.html'})
+@Component({
+  selector: 'component-wrapper',
+  templateUrl: 'component-wrapper.component.html'
+})
+
 export class ComponentWrapper {
-  @Input() component: string;
+  activeTab = 'examples';
 
-  @Input() set sections(sections: {[name: string]: NgbdOverviewSection}) {
-    this.overviewSections = Object.keys(sections).map(name => sections[name]);
-  };
+  component: string;
 
-  activeTab: string;
-
-  fileTypes = [
-    ['T', 'HTML template file', 'btn-secondary'],
-    ['C', 'Component typescript file', 'btn-info'],
-  ];
-
-  overviewSections: NgbdOverviewSection[] = [];
+  isLargeScreenOrLess: boolean;
+  isSmallScreenOrLess: boolean;
 
   sidebarCollapsed = true;
 
-  @ContentChild(NgbdOverviewDirective) overview;
+  tableOfContent: any[] = [];
 
-  @ContentChildren(ExampleBoxComponent) demos;
+  constructor(public route: ActivatedRoute, private _router: Router, ngZone: NgZone) {
+    // This component is used in route definition 'components'
+    // So next child route will always be ':componentType' & next one will always be ':pageType' (or tab)
+    this._router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      const parentRoute = this.route.snapshot.parent;
+      const tabRoute = this.route.snapshot.firstChild;
 
-  @ContentChildren(NgbdApiDocs) apiDocs;
+      this.component = parentRoute.url[1].path;
+      this.activeTab = tabRoute.url[0].path;
 
-  @ContentChildren(NgbdApiDocsClass) apiDocsClass;
-
-  @ContentChildren(NgbdApiDocsConfig) apiDocsConfig;
-
-  isSmallScreenOrLess: boolean;
-  isLargeScreenOrLess: boolean;
-
-  constructor(private route: ActivatedRoute, private router: Router, ngZone: NgZone) {
-    this.route.params.subscribe(params => {
-      const tab = params['tab'];
-      if (VALID_TABS.indexOf(tab) !== -1) {
-        this.activeTab = tab;
-      } else {
-        this.router.navigate(['..'], {relativeTo: this.route});
-      }
-      document.body.scrollIntoView();
     });
 
     // information extracted from https://getbootstrap.com/docs/4.1/layout/overview/
@@ -61,7 +48,41 @@ export class ComponentWrapper {
     largeScreenQL.addListener((event) => ngZone.run(() => this.isLargeScreenOrLess = event.matches));
   }
 
-  tabChange(event) {
-    this.router.navigate(['..', event.nextId], {relativeTo: this.route});
+  updateNavigation(component) {
+    const getLinks = (typeCollection) => {
+      return typeCollection.map(item => ({
+        fragment: item,
+        title: item
+      }));
+    };
+    this.tableOfContent = [];
+    if (component instanceof NgbdExamplesPage) {
+      this.tableOfContent = component.demos.map(demo => {
+        return {
+          fragment: demo.id,
+          title: demo.title
+        };
+      });
+    } else if (component instanceof NgbdApiPage) {
+      let toc = [
+        ...getLinks(component.components)
+      ];
+
+      if (component.classes.length > 0) {
+        const klasses = getLinks(component.classes);
+        toc = toc.concat(toc.length > 0  ? [{}, ...klasses] : klasses);
+      }
+
+      if (component.configs.length > 0) {
+        const configs = getLinks(component.configs);
+        toc = toc.concat(toc.length > 0  ? [{}, ...configs] : configs);
+      }
+
+      this.tableOfContent = toc;
+
+    } else /* Overview */ {
+      // TODO: maybe we should also have an abstract class to test instanceof
+      this.tableOfContent = Object.values(component.sections).map(section => section);
+    }
   }
 }

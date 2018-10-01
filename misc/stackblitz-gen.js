@@ -9,8 +9,13 @@ const ngBootstrap = JSON.parse(fs.readFileSync('src/package.json').toString()).v
 const versions = getVersions();
 
 const ENTRY_CMPTS = {
-  modal: ['component']
+  'modal-component': ['NgbdModalContent'],
+  'modal-stacked': ['NgbdModal1Content', 'NgbdModal2Content']
 };
+
+function generateDemosCSS() {
+  return fs.readFileSync('demo/src/style/demos.css').toString();
+}
 
 function generateStackblitzContent(componentName, demoName) {
   const fileName = `${componentName}-${demoName}`;
@@ -30,7 +35,7 @@ ${generateTags(['Angular', 'Bootstrap', 'ng-bootstrap', capitalize(componentName
     <input type="hidden" name="files[index.html]" value="${he.encode(generateIndexHtml())}">
     <input type="hidden" name="files[main.ts]" value="${he.encode(getStackblitzTemplate('main.ts'))}">
     <input type="hidden" name="files[polyfills.ts]" value="${he.encode(getStackblitzTemplate('polyfills.ts'))}">
-    <input type="hidden" name="files[styles.css]" value="${he.encode(getStackblitzTemplate('styles.css'))}">
+    <input type="hidden" name="files[styles.css]" value="${he.encode(generateDemosCSS())}">
     <input type="hidden" name="files[app/app.module.ts]" value="${he.encode(generateAppModuleTsContent(componentName, demoName, `${basePath}.ts`))}">
     <input type="hidden" name="files[app/app.component.ts]" value="${he.encode(getStackblitzTemplate('app/app.component.ts'))}">
     <input type="hidden" name="files[app/app.component.html]" value="${he.encode(generateAppComponentHtmlContent(componentName, demoName))}">
@@ -87,9 +92,8 @@ function generateAppComponentHtmlContent(componentName, demoName) {
 function generateAppModuleTsContent(componentName, demoName, filePath) {
   const demoClassName = `Ngbd${capitalize(componentName)}${capitalize(demoName)}`;
   const demoImport = `./${componentName}-${demoName}`;
-  const needsEntryCmpt = ENTRY_CMPTS.hasOwnProperty(componentName) && ENTRY_CMPTS[componentName].indexOf(demoName) > -1;
-  const entryCmptClass =  needsEntryCmpt ? `Ngbd${capitalize(componentName)}Content` : null;
-  const demoImports = needsEntryCmpt ? `${demoClassName}, ${entryCmptClass}` : demoClassName;
+  const entryCmptClasses = (ENTRY_CMPTS[`${componentName}-${demoName}`] || []).join(', ');
+  const demoImports = entryCmptClasses ? `${demoClassName}, ${entryCmptClasses}` : demoClassName;
 
   const file = fs.readFileSync(filePath).toString();
   if (!file.includes(demoClassName)) {
@@ -107,7 +111,7 @@ import { ${demoImports} } from '${demoImport}';
 
 @NgModule({
   imports: [BrowserModule, FormsModule, ReactiveFormsModule, HttpClientModule, NgbModule.forRoot()], 
-  declarations: [AppComponent, ${demoImports}]${needsEntryCmpt ? `,\n  entryComponents: [${entryCmptClass}],` : ','}
+  declarations: [AppComponent, ${demoImports}]${entryCmptClasses ? `,\n  entryComponents: [${entryCmptClasses}],` : ','}
   bootstrap: [AppComponent]
 }) 
 export class AppModule {}
@@ -144,7 +148,6 @@ function getVersions() {
     ngBootstrap,
     zoneJs: getVersion('zone.js'),
     coreJs: getVersion('core-js'),
-    systemjs: '^0.19.40',
     reflectMetadata: getVersion('reflect-metadata', JSON.parse(fs.readFileSync('node_modules/@angular/compiler-cli/package.json').toString())),
     bootstrap: getVersion('bootstrap')
   };

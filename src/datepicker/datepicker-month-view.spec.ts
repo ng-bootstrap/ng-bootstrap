@@ -43,7 +43,7 @@ describe('ngb-datepicker-month-view', () => {
 
   beforeEach(() => {
     TestBed.overrideModule(NgbDatepickerModule, {set: {exports: [NgbDatepickerMonthView, NgbDatepickerDayView]}});
-    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbDatepickerModule.forRoot()]});
+    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbDatepickerModule]});
   });
 
   it('should show/hide weekdays', () => {
@@ -71,6 +71,14 @@ describe('ngb-datepicker-month-view', () => {
   it('should use custom template to display dates', () => {
     const fixture = createTestComponent(`
         <ng-template #tpl let-date="date">{{ date.day }}</ng-template>
+        <ngb-datepicker-month-view [month]="month" [dayTemplate]="tpl"></ngb-datepicker-month-view>
+      `);
+    expectDates(fixture.nativeElement, ['', '1', '2', '3', '4', '']);
+  });
+
+  it('should use "date" as an implicit value for the template', () => {
+    const fixture = createTestComponent(`
+        <ng-template #tpl let-d>{{ d.day }}</ng-template>
         <ngb-datepicker-month-view [month]="month" [dayTemplate]="tpl"></ngb-datepicker-month-view>
       `);
     expectDates(fixture.nativeElement, ['', '1', '2', '3', '4', '']);
@@ -174,14 +182,28 @@ class TestComponent {
         days: [
           {
             date: new NgbDate(2016, 7, 4),
-            context: {currentMonth: 8, date: new NgbDate(2016, 7, 4), disabled: false, focused: false, selected: false},
+            context: {
+              currentMonth: 8,
+              $implicit: new NgbDate(2016, 7, 4),
+              date: new NgbDate(2016, 7, 4),
+              disabled: false,
+              focused: false,
+              selected: false
+            },
             tabindex: -1,
             ariaLabel: 'Monday',
             hidden: true
           },
           {
             date: new NgbDate(2016, 8, 1),
-            context: {currentMonth: 8, date: new NgbDate(2016, 8, 1), disabled: false, focused: false, selected: false},
+            context: {
+              currentMonth: 8,
+              $implicit: new NgbDate(2016, 8, 1),
+              date: new NgbDate(2016, 8, 1),
+              disabled: false,
+              focused: false,
+              selected: false
+            },
             tabindex: -1,
             ariaLabel: 'Monday',
             hidden: false
@@ -195,14 +217,28 @@ class TestComponent {
         days: [
           {
             date: new NgbDate(2016, 8, 2),
-            context: {currentMonth: 8, date: new NgbDate(2016, 8, 2), disabled: true, focused: false, selected: false},
+            context: {
+              currentMonth: 8,
+              $implicit: new NgbDate(2016, 8, 2),
+              date: new NgbDate(2016, 8, 2),
+              disabled: true,
+              focused: false,
+              selected: false
+            },
             tabindex: -1,
             ariaLabel: 'Friday',
             hidden: false
           },
           {
             date: new NgbDate(2016, 8, 3),
-            context: {currentMonth: 8, date: new NgbDate(2016, 8, 3), disabled: false, focused: false, selected: false},
+            context: {
+              currentMonth: 8,
+              $implicit: new NgbDate(2016, 8, 3),
+              date: new NgbDate(2016, 8, 3),
+              disabled: false,
+              focused: false,
+              selected: false
+            },
             tabindex: -1,
             ariaLabel: 'Saturday',
             hidden: false
@@ -216,14 +252,28 @@ class TestComponent {
         days: [
           {
             date: new NgbDate(2016, 8, 4),
-            context: {currentMonth: 8, date: new NgbDate(2016, 8, 4), disabled: false, focused: false, selected: false},
+            context: {
+              currentMonth: 8,
+              $implicit: new NgbDate(2016, 8, 4),
+              date: new NgbDate(2016, 8, 4),
+              disabled: false,
+              focused: false,
+              selected: false
+            },
             tabindex: -1,
             ariaLabel: 'Sunday',
             hidden: false
           },
           {
             date: new NgbDate(2016, 9, 1),
-            context: {currentMonth: 8, date: new NgbDate(2016, 9, 1), disabled: false, focused: false, selected: false},
+            context: {
+              currentMonth: 8,
+              $implicit: new NgbDate(2016, 9, 1),
+              date: new NgbDate(2016, 9, 1),
+              disabled: false,
+              focused: false,
+              selected: false
+            },
             tabindex: -1,
             ariaLabel: 'Saturday',
             hidden: true
@@ -237,14 +287,28 @@ class TestComponent {
         days: [
           {
             date: new NgbDate(2016, 9, 2),
-            context: {currentMonth: 8, date: new NgbDate(2016, 9, 2), disabled: false, focused: false, selected: false},
+            context: {
+              currentMonth: 8,
+              $implicit: new NgbDate(2016, 9, 2),
+              date: new NgbDate(2016, 9, 2),
+              disabled: false,
+              focused: false,
+              selected: false
+            },
             tabindex: -1,
             ariaLabel: 'Sunday',
             hidden: true
           },
           {
             date: new NgbDate(2016, 9, 3),
-            context: {currentMonth: 8, date: new NgbDate(2016, 9, 3), disabled: false, focused: false, selected: false},
+            context: {
+              currentMonth: 8,
+              $implicit: new NgbDate(2016, 9, 3),
+              date: new NgbDate(2016, 9, 3),
+              disabled: false,
+              focused: false,
+              selected: false
+            },
             tabindex: -1,
             ariaLabel: 'Monday',
             hidden: true

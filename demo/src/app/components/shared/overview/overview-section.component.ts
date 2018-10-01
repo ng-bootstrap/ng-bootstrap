@@ -1,5 +1,6 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
-import {NgbdOverviewSection} from './overview';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+
+import { NgbdOverviewSection } from './overview';
 
 @Component({
   selector: 'ngbd-overview-section',
@@ -18,7 +19,6 @@ import {NgbdOverviewSection} from './overview';
     <ng-content></ng-content>
   `
 })
-
 export class NgbdOverviewSectionComponent {
   @Input() section: NgbdOverviewSection;
 }

@@ -89,7 +89,12 @@ Runs unit tests for the library in watch mode without any additional checks
 
 #### `yarn test`
 
-Checks formatting, linting and runs all tests for the library with coverage
+Checks formatting, linting and runs all unit tests for the library with coverage
+
+#### `yarn e2e`
+
+Runs all protractor tests for the library in production mode. We use them to check focus handling, browser styles, layout, etc.
+(For debugging/development it is also possible to separately serve the e2e test application with `yarn e2e-app:serve` and run protractor with `yarn ngb:e2e-noserve`)
 
 #### `yarn ci`
 

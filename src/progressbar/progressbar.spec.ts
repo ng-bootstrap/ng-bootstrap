@@ -89,9 +89,8 @@ describe('ngb-progressbar', () => {
 
   describe('UI logic', () => {
 
-    beforeEach(() => {
-      TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbProgressbarModule.forRoot()]});
-    });
+    beforeEach(
+        () => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbProgressbarModule]}); });
 
     it('accepts a value and respond to value changes', () => {
       const html = '<ngb-progressbar [value]="value"></ngb-progressbar>';
@@ -219,7 +218,7 @@ describe('ngb-progressbar', () => {
   describe('Custom config', () => {
     let config: NgbProgressbarConfig;
 
-    beforeEach(() => { TestBed.configureTestingModule({imports: [NgbProgressbarModule.forRoot()]}); });
+    beforeEach(() => { TestBed.configureTestingModule({imports: [NgbProgressbarModule]}); });
 
     beforeEach(inject([NgbProgressbarConfig], (c: NgbProgressbarConfig) => {
       config = c;
@@ -250,7 +249,7 @@ describe('ngb-progressbar', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule(
-          {imports: [NgbProgressbarModule.forRoot()], providers: [{provide: NgbProgressbarConfig, useValue: config}]});
+          {imports: [NgbProgressbarModule], providers: [{provide: NgbProgressbarConfig, useValue: config}]});
     });
 
     it('should initialize inputs with provided config as provider', () => {

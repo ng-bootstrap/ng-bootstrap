@@ -16,11 +16,15 @@ function toJSDate(date: NgbDate) {
 
 export type NgbPeriod = 'y' | 'm' | 'd';
 
+export function NGB_DATEPICKER_CALENDAR_FACTORY() {
+  return new NgbCalendarGregorian();
+}
+
 /**
  * Calendar used by the datepicker.
  * Default implementation uses Gregorian calendar.
  */
-@Injectable()
+@Injectable({providedIn: 'root', useFactory: NGB_DATEPICKER_CALENDAR_FACTORY})
 export abstract class NgbCalendar {
   /**
    * Returns number of days per week.
@@ -31,7 +35,7 @@ export abstract class NgbCalendar {
    * Returns an array of months per year.
    * With default calendar we use ISO 8601 and return [1, 2, ..., 12];
    */
-  abstract getMonths(): number[];
+  abstract getMonths(year?: number): number[];
 
   /**
    * Returns number of weeks per month.
@@ -131,6 +135,11 @@ export class NgbCalendarGregorian extends NgbCalendar {
 
   isValid(date: NgbDate): boolean {
     if (!date || !isInteger(date.year) || !isInteger(date.month) || !isInteger(date.day)) {
+      return false;
+    }
+
+    // year 0 doesn't exist in Gregorian calendar
+    if (date.year === 0) {
       return false;
     }
 

@@ -9,12 +9,16 @@
       "check-space"
     ],
     "curly": true,
+    "deprecation": {
+      "severity": "warning"
+    },
     "eofline": true,
     "forin": true,
     "import-blacklist": [
       true,
       "rxjs/Rx",
-      "rxjs/index"
+      "rxjs/index",
+      "util"
     ],
     "indent": [
       true,

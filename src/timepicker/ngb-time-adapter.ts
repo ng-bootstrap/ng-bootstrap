@@ -2,6 +2,10 @@ import {Injectable} from '@angular/core';
 import {NgbTimeStruct} from './ngb-time-struct';
 import {isInteger} from '../util/util';
 
+export function NGB_DATEPICKER_TIME_ADAPTER_FACTORY() {
+  return new NgbTimeStructAdapter();
+}
+
 /**
  * Abstract type serving as a DI token for the service converting from your application Time model to internal
  * NgbTimeStruct model.
@@ -10,7 +14,7 @@ import {isInteger} from '../util/util';
  *
  * @since 2.2.0
  */
-@Injectable()
+@Injectable({providedIn: 'root', useFactory: NGB_DATEPICKER_TIME_ADAPTER_FACTORY})
 export abstract class NgbTimeAdapter<T> {
   /**
    * Converts user-model date into an NgbTimeStruct for internal use in the library

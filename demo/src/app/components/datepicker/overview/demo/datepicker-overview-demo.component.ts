@@ -15,9 +15,7 @@ import {NgbCalendar, NgbDate, NgbDateNativeAdapter} from '@ng-bootstrap/ng-boots
       </p>
     </div>
 
-    <ng-template #dayTemplate let-date="date" let-focused="focused"
-                 let-currentMonth="currentMonth" let-disabled="disabled">
-
+    <ng-template #dayTemplate let-date>
       <span class="custom-day" [ngbTooltip]="getTooltip(date)" container="body"
             [class.holiday]="!!isHoliday(date)"
             [class.weekend]="isWeekend(date)"
@@ -134,8 +132,19 @@ export class NgbdDatepickerOverviewDemoComponent {
     return date;
   }
 
-  isWeekend = (date: NgbDate) => this.calendar.getWeekday(date) >= 6;
-  isRange = (date: NgbDate) => date.equals(this.fromDate) || date.equals(this.toDate) || this.isInside(date) || this.isHovered(date);
-  isHovered = (date: NgbDate) => this.fromDate && !this.toDate && this.hoveredDate && date.after(this.fromDate) && date.before(this.hoveredDate);
-  isInside = (date: NgbDate) => date.after(this.fromDate) && date.before(this.toDate);
+  isWeekend(date: NgbDate) {
+    return this.calendar.getWeekday(date) >= 6;
+  }
+
+  isRange(date: NgbDate) {
+    return date.equals(this.fromDate) || date.equals(this.toDate) || this.isInside(date) || this.isHovered(date);
+  }
+
+  isHovered(date: NgbDate) {
+    return this.fromDate && !this.toDate && this.hoveredDate && date.after(this.fromDate) && date.before(this.hoveredDate);
+  }
+
+  isInside(date: NgbDate) {
+    return date.after(this.fromDate) && date.before(this.toDate);
+  }
 }

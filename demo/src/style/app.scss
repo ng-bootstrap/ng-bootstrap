@@ -36,6 +36,7 @@ header.navbar {
   margin-left: -15px;
   margin-right: -15px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 }
 
 .sidebar {
@@ -66,6 +67,40 @@ header.title {
 
     .active {
       border-top-color: #28a745;
+    }
+
+    .navigation-dropdown {
+      cursor: pointer;
+
+      .nav-link {
+        padding-right: 0.3rem;
+        line-height: 1em;
+        border-color: transparent;
+        background: none;
+        color: #007bff;
+        &:hover {
+          color: #0056b3;
+        }
+      }
+
+      .dropdown-toggle:after {
+        display: none;
+      }
+
+      .dropdown-menu {
+        border-color: #d9d9d9;
+      }
+
+      svg {
+        width: 22px;
+        height: 22px;
+      }
+
+      &.show {
+        .nav-link {
+          color: #0056b3;
+        }
+      }
     }
   }
 }
@@ -145,7 +180,7 @@ header.title {
 }
 
 
-div.api-doc-component, [ngbdOverview] {
+div.api-doc-component, .overview {
   margin-bottom: 3rem;
 
   h2,
@@ -200,20 +235,24 @@ a.title-fragment {
 div.component-demo {
   margin-bottom: 3rem;
   h2 {
+    display: flex;
     margin-bottom: 1rem;
 
-    .plunker,
+    span {
+      flex-grow: 1;
+    }
+
     .stackblitz {
-      text-decoration: none;
-      opacity: 0.3;
-      transition: opacity 0.5s;
-      margin-left: 0.3rem;
+      display: flex;
+      align-items: center;
+      align-self: center;
+
+      .stackblitz-icon {
+        height: 1.2rem;
+        margin-left: -0.5rem;
+      }
     }
     &:hover {
-      .plunker,
-      .stackblitz {
-        opacity: 1;
-      }
       & > .title-fragment {
         opacity: 1;
       }
