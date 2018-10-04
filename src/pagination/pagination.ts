@@ -11,39 +11,43 @@ import {NgbPaginationConfig} from './pagination-config';
   host: {'role': 'navigation'},
   template: `
     <ul [class]="'pagination' + (size ? ' pagination-' + size : '')">
-      <li *ngIf="boundaryLinks" class="page-item"
-        [class.disabled]="!hasPrevious() || disabled">
-        <a aria-label="First" i18n-aria-label="@@ngb.pagination.first-aria" class="page-link" href
-          (click)="!!selectPage(1)" [attr.tabindex]="(hasPrevious() ? null : '-1')">
+      <li *ngIf="boundaryLinks" title="{{!hasPrevious() || disabled ? 'First Page (disabled)' : 'First Page'}}" class="page-item"
+          [class.disabled]="!hasPrevious() || disabled">
+        <a aria-label="First Page" id="paginationPageFirst" i18n-aria-label="@@ngb.pagination.first-aria" class="page-link" href
+           (click)="!!selectPage(1)" [attr.tabindex]="(hasPrevious() ? null : '-1')">
           <span aria-hidden="true" i18n="@@ngb.pagination.first">&laquo;&laquo;</span>
         </a>
       </li>
 
-      <li *ngIf="directionLinks" class="page-item"
-        [class.disabled]="!hasPrevious() || disabled">
-        <a aria-label="Previous" i18n-aria-label="@@ngb.pagination.previous-aria" class="page-link" href
-          (click)="!!selectPage(page-1)" [attr.tabindex]="(hasPrevious() ? null : '-1')">
+      <li *ngIf="directionLinks" title="{{!hasPrevious() || disabled ? 'Previous Page (disabled)' : 'Previous Page'}}" class="page-item"
+          [class.disabled]="!hasPrevious() || disabled">
+        <a aria-label="Previous Page" id="paginationPagePrev" i18n-aria-label="@@ngb.pagination.previous-aria" class="page-link"
+           href (click)="!!selectPage(page-1)" [attr.tabindex]="(hasPrevious() ? null : '-1')">
           <span aria-hidden="true" i18n="@@ngb.pagination.previous">&laquo;</span>
         </a>
       </li>
       <li *ngFor="let pageNumber of pages" class="page-item" [class.active]="pageNumber === page"
-        [class.disabled]="isEllipsis(pageNumber) || disabled">
+          [class.disabled]="isEllipsis(pageNumber) || disabled">
         <a *ngIf="isEllipsis(pageNumber)" class="page-link">...</a>
-        <a *ngIf="!isEllipsis(pageNumber)" class="page-link" href (click)="!!selectPage(pageNumber)">
+        <a *ngIf="!isEllipsis(pageNumber)" id="paginationPage{{pageNumber}}" class="page-link"
+           title="{{pageNumber===page ? 'Page ' + pageNumber + ' (current)' : 'Page ' + pageNumber}}"
+           href (click)="!!selectPage(pageNumber)">
           {{pageNumber}}
           <span *ngIf="pageNumber === page" class="sr-only">(current)</span>
         </a>
       </li>
-      <li *ngIf="directionLinks" class="page-item" [class.disabled]="!hasNext() || disabled">
-        <a aria-label="Next" i18n-aria-label="@@ngb.pagination.next-aria" class="page-link" href
-          (click)="!!selectPage(page+1)" [attr.tabindex]="(hasNext() ? null : '-1')">
-          <span aria-hidden="true" i18n="@@ngb.pagination.next">&raquo;</span>
+      <li *ngIf="directionLinks" title="{{!hasNext() || disabled ? 'Next Page (disabled)' : 'Next Page'}}" class="page-item"
+          [class.disabled]="!hasNext() || disabled">
+        <a aria-label="Next Page" id="paginationPageNext" i18n-aria-label="@@ngb.pagination.next-aria" class="page-link" href
+           (click)="!!selectPage(page+1)" [attr.tabindex]="(hasNext() ? null : '-1')">
+         <span aria-hidden="true" i18n="@@ngb.pagination.next">&raquo;</span>
         </a>
       </li>
 
-      <li *ngIf="boundaryLinks" class="page-item" [class.disabled]="!hasNext() || disabled">
-        <a aria-label="Last" i18n-aria-label="@@ngb.pagination.last-aria" class="page-link" href
-          (click)="!!selectPage(pageCount)" [attr.tabindex]="(hasNext() ? null : '-1')">
+      <li *ngIf="boundaryLinks" title="{{!hasNext() || disabled ? 'Last Page (disabled)' : 'Last Page'}}" class="page-item"
+          [class.disabled]="!hasNext() || disabled">
+        <a aria-label="Last Page" id="paginationPageLast" i18n-aria-label="@@ngb.pagination.last-aria" class="page-link" href
+           (click)="!!selectPage(pageCount)" [attr.tabindex]="(hasNext() ? null : '-1')">
           <span aria-hidden="true" i18n="@@ngb.pagination.last">&raquo;&raquo;</span>
         </a>
       </li>
