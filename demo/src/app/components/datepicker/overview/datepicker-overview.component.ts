@@ -74,6 +74,13 @@ providers: [{provide: NgbDateParserFormatter, useClass: YourOwnParserFormatter}]
 
 <ngbDatepicker [dayTemplate]=“t”/>
 `,
+    footerTemplate: `
+<ng-template #t>
+  <button (click)="model = today">Today</button>
+</ng-template>
+
+<ngbDatepicker [footerTemplate]=“t”/>
+`,
   disablingTS: `
 // disable the 13th of each month
 const isDisabled = (date: NgbDateStruct, current: {month: number}) => day.date === 13;

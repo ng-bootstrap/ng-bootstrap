@@ -10,6 +10,7 @@ import { NgbdDatepickerBasic } from './demos/basic/datepicker-basic';
 import { DEMO_CALENDAR_DIRECTIVES, NgbdDatepickerCalendarsComponent } from './calendars/datepicker-calendars.component';
 import { NgbdDatepickerConfig } from './demos/config/datepicker-config';
 import { NgbdDatepickerCustomday } from './demos/customday/datepicker-customday';
+import { NgbdDatepickerFootertemplate } from './demos/footertemplate/datepicker-footertemplate';
 import { NgbdDatepickerDisabled } from './demos/disabled/datepicker-disabled';
 import { NgbdDatepickerI18n } from './demos/i18n/datepicker-i18n';
 import { NgbdDatepickerMultiple } from './demos/multiple/datepicker-multiple';
@@ -24,6 +25,7 @@ const DEMO_DIRECTIVES = [
   NgbdDatepickerDisabled,
   NgbdDatepickerI18n,
   NgbdDatepickerCustomday,
+  NgbdDatepickerFootertemplate,
   NgbdDatepickerConfig,
   NgbdDatepickerMultiple,
   NgbdDatepickerRange,
@@ -37,6 +39,7 @@ const OVERVIEW = {
   navigation: 'Moving around',
   'limiting-dates': 'Disabling and limiting dates',
   'day-template': 'Day display customization',
+  'footer-template': 'Custom footer',
   range: 'Range selection',
   i18n: 'Internationalization',
   'keyboard-shortcuts': 'Keyboard shortcuts'
@@ -90,6 +93,12 @@ const DEMOS = {
     type: NgbdDatepickerCustomday,
     code: require('!!raw-loader!./demos/customday/datepicker-customday'),
     markup: require('!!raw-loader!./demos/customday/datepicker-customday.html')
+  },
+  footertemplate: {
+    title: 'Footer template',
+    type: NgbdDatepickerFootertemplate,
+    code: require('!!raw-loader!./demos/footertemplate/datepicker-footertemplate'),
+    markup: require('!!raw-loader!./demos/footertemplate/datepicker-footertemplate.html')
   },
   config: {
     title: 'Global configuration of datepickers',
