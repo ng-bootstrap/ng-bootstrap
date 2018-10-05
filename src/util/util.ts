@@ -67,9 +67,13 @@ if (typeof Element !== 'undefined' && !Element.prototype.closest) {
 }
 
 export function closest(element: HTMLElement, selector): HTMLElement | null {
-  if (!selector) {
-    return null;
-  }
+  return selector ? element.closest(selector) : null;
+}
 
-  return element.closest(selector);
+/**
+ * Force a browser reflow
+ * @param element element where to apply the reflow
+ */
+export function reflow(element: HTMLElement) {
+  return (element || document.body).offsetHeight;
 }
