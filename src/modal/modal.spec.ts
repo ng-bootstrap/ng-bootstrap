@@ -675,14 +675,13 @@ describe('ngb-modal', () => {
 
     describe('focus management', () => {
 
-      it('should focus modal window and return focus to previously focused element', () => {
+      it('should return focus to previously focused element', () => {
         fixture.detectChanges();
         const openButtonEl = fixture.nativeElement.querySelector('button#open');
         openButtonEl.focus();
         openButtonEl.click();
         fixture.detectChanges();
         expect(fixture.nativeElement).toHaveModal('from button');
-        expect(document.activeElement).toBe(document.querySelector('ngb-modal-window'));
 
         fixture.componentInstance.close();
         expect(fixture.nativeElement).not.toHaveModal();
@@ -726,6 +725,37 @@ describe('ngb-modal', () => {
         fixture.componentInstance.close();
         expect(fixture.nativeElement).not.toHaveModal();
         expect(document.activeElement).toBe(document.body);
+      });
+
+      describe('initial focus', () => {
+        it('should focus the proper specified element when [ngbAutofocus] is used', () => {
+          fixture.detectChanges();
+          const modal = fixture.componentInstance.openCmpt(WithAutofocusModalCmpt);
+          fixture.detectChanges();
+
+          expect(document.activeElement).toBe(document.querySelector('button.withNgbAutofocus'));
+          modal.close();
+        });
+
+        it('should focus the first focusable element when [ngbAutofocus] is not used', () => {
+          fixture.detectChanges();
+          const modal = fixture.componentInstance.openCmpt(WithFirstFocusableModalCmpt);
+          fixture.detectChanges();
+
+          expect(document.activeElement).toBe(document.querySelector('button.firstFocusable'));
+          modal.close();
+          fixture.detectChanges();
+        });
+
+        it('should focus modal window as a default fallback option', () => {
+          fixture.detectChanges();
+          const modal = fixture.componentInstance.open('content');
+          fixture.detectChanges();
+
+          expect(document.activeElement).toBe(document.querySelector('ngb-modal-window'));
+          modal.close();
+          fixture.detectChanges();
+        });
       });
     });
 
@@ -837,6 +867,21 @@ export class WithActiveModalCmpt {
   close() { this.activeModal.close('from inside'); }
 }
 
+@Component(
+    {selector: 'modal-autofocus-cmpt', template: `<button class="withNgbAutofocus" ngbAutofocus>Click Me</button>`})
+export class WithAutofocusModalCmpt {
+}
+
+@Component({
+  selector: 'modal-firstfocusable-cmpt',
+  template: `
+  <button class="firstFocusable close">Close</button>
+  <button class="other">Other button</button>
+`
+})
+export class WithFirstFocusableModalCmpt {
+}
+
 @Component({
   selector: 'test-cmpt',
   template: `
@@ -902,10 +947,14 @@ class TestComponent {
 }
 
 @NgModule({
-  declarations: [TestComponent, CustomInjectorCmpt, DestroyableCmpt, WithActiveModalCmpt],
+  declarations: [
+    TestComponent, CustomInjectorCmpt, DestroyableCmpt, WithActiveModalCmpt, WithAutofocusModalCmpt,
+    WithFirstFocusableModalCmpt
+  ],
   exports: [TestComponent, DestroyableCmpt],
   imports: [CommonModule, NgbModalModule],
-  entryComponents: [CustomInjectorCmpt, DestroyableCmpt, WithActiveModalCmpt],
+  entryComponents:
+      [CustomInjectorCmpt, DestroyableCmpt, WithActiveModalCmpt, WithAutofocusModalCmpt, WithFirstFocusableModalCmpt],
   providers: [SpyService]
 })
 class NgbModalTestModule {

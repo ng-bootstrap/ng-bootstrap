@@ -7,11 +7,19 @@ import { NgbdApiPage } from '../shared/api-page/api.component';
 import { NgbdExamplesPage } from '../shared/examples-page/examples.component';
 import { NgbdModalBasic } from './demos/basic/modal-basic';
 import { NgbdModalComponent, NgbdModalContent } from './demos/component/modal-component';
+import { NgbdModalConfig } from './demos/config/modal-config';
+import { NgbdModalConfirm, NgbdModalConfirmAutofocus, NgbdModalFocus } from './demos/focus/modal-focus';
 import { NgbdModalOptions } from './demos/options/modal-options';
 import { NgbdModal1Content, NgbdModal2Content, NgbdModalStacked } from './demos/stacked/modal-stacked';
-import { NgbdModalConfig } from './demos/config/modal-config';
 
-const DEMO_DIRECTIVES = [NgbdModalBasic, NgbdModalComponent, NgbdModalOptions, NgbdModalStacked, NgbdModalConfig];
+const DEMO_DIRECTIVES = [
+  NgbdModalBasic,
+  NgbdModalComponent,
+  NgbdModalOptions,
+  NgbdModalStacked,
+  NgbdModalConfig,
+  NgbdModalFocus
+];
 
 const DEMOS = {
   basic: {
@@ -25,6 +33,12 @@ const DEMOS = {
     type: NgbdModalComponent,
     code: require('!!raw-loader!./demos/component/modal-component'),
     markup: require('!!raw-loader!./demos/component/modal-component.html')
+  },
+  focus: {
+    title: 'Focus management',
+    type: NgbdModalFocus,
+    code: require('!!raw-loader!./demos/focus/modal-focus'),
+    markup: require('!!raw-loader!./demos/focus/modal-focus.html')
   },
   options: {
     title: 'Modal with options',
@@ -59,12 +73,23 @@ export const ROUTES = [
 ];
 
 @NgModule({
-  imports: [
-    NgbdSharedModule,
-    NgbdComponentsSharedModule
+  imports: [NgbdSharedModule, NgbdComponentsSharedModule],
+  declarations: [
+    NgbdModalContent,
+    NgbdModal1Content,
+    NgbdModal2Content,
+    NgbdModalConfirm,
+    NgbdModalConfirmAutofocus,
+    ...DEMO_DIRECTIVES
   ],
-  declarations: [NgbdModalContent, NgbdModal1Content, NgbdModal2Content, ...DEMO_DIRECTIVES],
-  entryComponents: [NgbdModalContent, NgbdModal1Content, NgbdModal2Content, ...DEMO_DIRECTIVES]
+  entryComponents: [
+    NgbdModalContent,
+    NgbdModal1Content,
+    NgbdModal2Content,
+    NgbdModalConfirm,
+    NgbdModalConfirmAutofocus,
+    ...DEMO_DIRECTIVES
+  ]
 })
 export class NgbdModalModule {
   constructor(demoList: NgbdDemoList) {
