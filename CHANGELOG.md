@@ -1,3 +1,24 @@
+<a name="3.3.0"></a>
+# [3.3.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/3.2.2...3.3.0) (2018-10-05)
+
+
+### Bug Fixes
+
+* **accordion:** don't submit HTML form when toggling panels ([c585124](https://github.com/ng-bootstrap/ng-bootstrap/commit/c585124)), closes [#2760](https://github.com/ng-bootstrap/ng-bootstrap/issues/2760) [#2762](https://github.com/ng-bootstrap/ng-bootstrap/issues/2762)
+* **carousel:** don't crash if there are no slides ([#2748](https://github.com/ng-bootstrap/ng-bootstrap/issues/2748)) ([cf6c541](https://github.com/ng-bootstrap/ng-bootstrap/commit/cf6c541)), closes [#2746](https://github.com/ng-bootstrap/ng-bootstrap/issues/2746)
+* update templates for TS 3.1 compatibility ([59f90ae](https://github.com/ng-bootstrap/ng-bootstrap/commit/59f90ae)), closes [#2755](https://github.com/ng-bootstrap/ng-bootstrap/issues/2755) [#2763](https://github.com/ng-bootstrap/ng-bootstrap/issues/2763)
+
+
+### Features
+
+* **datepicker:** add $implicit property for day template context ([a00273d](https://github.com/ng-bootstrap/ng-bootstrap/commit/a00273d)), closes [#2729](https://github.com/ng-bootstrap/ng-bootstrap/issues/2729)
+* **datepicker:** add footerTemplate property ([c380272](https://github.com/ng-bootstrap/ng-bootstrap/commit/c380272)), closes [#1197](https://github.com/ng-bootstrap/ng-bootstrap/issues/1197) [#2739](https://github.com/ng-bootstrap/ng-bootstrap/issues/2739)
+* **datepicker:** allow to pass user data to the day template context ([d83a5c5](https://github.com/ng-bootstrap/ng-bootstrap/commit/d83a5c5)), closes [#2716](https://github.com/ng-bootstrap/ng-bootstrap/issues/2716)
+* **modal:** add [ngbAutofocus] option ([#2737](https://github.com/ng-bootstrap/ng-bootstrap/issues/2737)) ([10fd5e4](https://github.com/ng-bootstrap/ng-bootstrap/commit/10fd5e4)), closes [#938](https://github.com/ng-bootstrap/ng-bootstrap/issues/938) [#2718](https://github.com/ng-bootstrap/ng-bootstrap/issues/2718) [#2728](https://github.com/ng-bootstrap/ng-bootstrap/issues/2728)
+* **modal:** allow checking if there are open modals ([#2740](https://github.com/ng-bootstrap/ng-bootstrap/issues/2740)) ([7402ef3](https://github.com/ng-bootstrap/ng-bootstrap/commit/7402ef3)), closes [#1600](https://github.com/ng-bootstrap/ng-bootstrap/issues/1600)
+
+
+
 <a name="3.2.2"></a>
 ## [3.2.2](https://github.com/ng-bootstrap/ng-bootstrap/compare/3.2.1...3.2.2) (2018-09-21)
 
