@@ -1,16 +1,17 @@
 import {DOCUMENT} from '@angular/common';
 import {
-  Component,
-  Output,
-  EventEmitter,
-  Input,
-  Inject,
-  ElementRef,
-  OnInit,
   AfterViewInit,
-  OnDestroy
+  Component,
+  ElementRef,
+  EventEmitter,
+  Inject,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output
 } from '@angular/core';
 
+import {getFocusableBoundaryElements} from '../util/focus-trap';
 import {ModalDismissReasons} from './modal-dismiss-reasons';
 
 @Component({
@@ -62,7 +63,11 @@ export class NgbModalWindow implements OnInit,
 
   ngAfterViewInit() {
     if (!this._elRef.nativeElement.contains(document.activeElement)) {
-      this._elRef.nativeElement['focus'].apply(this._elRef.nativeElement, []);
+      const autoFocusable = this._elRef.nativeElement.querySelector(`[ngbAutofocus]`) as HTMLElement;
+      const firstFocusable = getFocusableBoundaryElements(this._elRef.nativeElement)[0];
+
+      const elementToFocus = autoFocusable || firstFocusable || this._elRef.nativeElement;
+      elementToFocus.focus();
     }
   }
 
@@ -76,8 +81,7 @@ export class NgbModalWindow implements OnInit,
     } else {
       elementToFocus = body;
     }
-    elementToFocus['focus'].apply(elementToFocus, []);
-
+    elementToFocus.focus();
     this._elWithFocus = null;
   }
 }
