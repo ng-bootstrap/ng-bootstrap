@@ -5,7 +5,7 @@
       <img src="img/link-symbol.svg" alt="Anchor link to: {{id}}" />
     </a>
     <span>{{ demoTitle }}</span>
-    <a role="button" class="stackblitz btn btn-light" target="_blank" href="app/components/{{component}}/demos/{{id}}/stackblitz.html" title="Edit in StackBlitz">
+    <a role="button" (click)="trackStackBlitzClick()" class="stackblitz btn btn-light" target="_blank" href="app/components/{{component}}/demos/{{id}}/stackblitz.html" title="Edit in StackBlitz">
       <img class="stackblitz-icon" src="img/stackblitz-icon.svg" alt="StackBlitz icon"/>
       StackBlitz
     </a>

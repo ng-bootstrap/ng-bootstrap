@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { Analytics } from '../../../shared/analytics/analytics';
 
 @Component({
   selector: 'ngbd-widget-demo',
@@ -11,4 +12,10 @@ export class NgbdWidgetDemoComponent {
   @Input() id: string;
   @Input() code: string;
   @Input() markup: string;
+
+  constructor(private _analytics: Analytics) {}
+
+  trackStackBlitzClick() {
+    this._analytics.trackEvent('StackBlitz View', this.component + ' ' + this.id);
+  }
 }
