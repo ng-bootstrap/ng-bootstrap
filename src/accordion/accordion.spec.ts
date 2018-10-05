@@ -22,7 +22,7 @@ function getPanelsTitle(element: HTMLElement): HTMLButtonElement[] {
 }
 
 function getButton(element: HTMLElement, index: number): HTMLButtonElement {
-  return <HTMLButtonElement>element.querySelectorAll('button')[index];
+  return <HTMLButtonElement>element.querySelectorAll('button[type="button"]')[index];
 }
 
 function expectOpenPanels(nativeEl: HTMLElement, openPanelsDef: boolean[]) {
