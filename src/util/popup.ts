@@ -6,8 +6,13 @@ import {
   Renderer2,
   ComponentRef,
   ComponentFactoryResolver,
-  ApplicationRef
+  ApplicationRef,
+  NgZone
 } from '@angular/core';
+import {NgbRunTransition} from '../util/transition/ngbTransition';
+import {NgbPopupFadingTransition} from '../util/transition/ngbFadingTransition';
+import {take} from 'rxjs/operators';
+import {of, Observable} from 'rxjs';
 
 export class ContentRef {
   constructor(public nodes: any[], public viewRef?: ViewRef, public componentRef?: ComponentRef<any>) {}
@@ -19,10 +24,10 @@ export class PopupService<T> {
 
   constructor(
       private _type: any, private _injector: Injector, private _viewContainerRef: ViewContainerRef,
-      private _renderer: Renderer2, private _componentFactoryResolver: ComponentFactoryResolver,
-      private _applicationRef: ApplicationRef) {}
+      private _renderer: Renderer2, private _ngZone: NgZone,
+      private _componentFactoryResolver: ComponentFactoryResolver, private _applicationRef: ApplicationRef) {}
 
-  open(content?: string | TemplateRef<any>, context?: any): ComponentRef<T> {
+  open(content?: string | TemplateRef<any>, context?: any, animation = true): ComponentRef<T> {
     if (!this._windowRef) {
       this._contentRef = this._getContentRef(content, context);
       this._windowRef = this._viewContainerRef.createComponent(
@@ -30,20 +35,35 @@ export class PopupService<T> {
           this._injector, this._contentRef.nodes);
     }
 
+    const element = this._windowRef.location.nativeElement;
+
+    this._ngZone.onStable.pipe(take(1)).subscribe(
+        () => { NgbRunTransition(element, NgbPopupFadingTransition, {animation, data: {showElement: true}}); });
+
     return this._windowRef;
   }
 
-  close() {
+  close(animation = true): Observable<any> {
+    let observable;
     if (this._windowRef) {
-      this._viewContainerRef.remove(this._viewContainerRef.indexOf(this._windowRef.hostView));
-      this._windowRef = null;
-
-      if (this._contentRef?.viewRef) {
-        this._applicationRef.detachView(this._contentRef.viewRef);
-        this._contentRef.viewRef.destroy();
-        this._contentRef = null;
-      }
+      const element = this._windowRef.location.nativeElement;
+      observable =
+          NgbRunTransition(element, NgbPopupFadingTransition, {animation: animation, data: {showElement: false}});
+      observable.subscribe(() => {
+        if (this._windowRef) {
+          this._viewContainerRef.remove(this._viewContainerRef.indexOf(this._windowRef.hostView));
+          this._windowRef = null;
+        }
+        if (this._contentRef?.viewRef) {
+          this._applicationRef.detachView(this._contentRef.viewRef);
+          this._contentRef.viewRef.destroy();
+          this._contentRef = null;
+        }
+      });
+    } else {
+      observable = of();
     }
+    return observable;
   }
 
   private _getContentRef(content?: string | TemplateRef<any>, context?: any): ContentRef {

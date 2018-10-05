@@ -1,8 +1,10 @@
 import {NgbTooltipConfig} from './tooltip-config';
 
+import {NgbConfig} from '../ngb-config';
+
 describe('ngb-tooltip-config', () => {
   it('should have sensible default values', () => {
-    const config = new NgbTooltipConfig();
+    const config = new NgbTooltipConfig(new NgbConfig());
 
     expect(config.autoClose).toBe(true);
     expect(config.placement).toBe('auto');

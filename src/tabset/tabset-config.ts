@@ -1,5 +1,6 @@
 // tslint:disable:deprecation
 import {Injectable} from '@angular/core';
+import {NgbConfig} from '../ngb-config';
 
 /**
  * A configuration service for the [`NgbTabset`](#/components/tabset/api#NgbTabset) component.
@@ -14,4 +15,7 @@ export class NgbTabsetConfig {
   justify: 'start' | 'center' | 'end' | 'fill' | 'justified' = 'start';
   orientation: 'horizontal' | 'vertical' = 'horizontal';
   type: 'tabs' | 'pills' = 'tabs';
+  animation: boolean;
+
+  constructor(ngbConfig: NgbConfig) { this.animation = ngbConfig.animation; }
 }

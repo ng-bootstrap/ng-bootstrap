@@ -1,8 +1,9 @@
 import {NgbPopoverConfig} from './popover-config';
+import {NgbConfig} from '../ngb-config';
 
 describe('ngb-popover-config', () => {
   it('should have sensible default values', () => {
-    const config = new NgbPopoverConfig();
+    const config = new NgbPopoverConfig(new NgbConfig());
 
     expect(config.autoClose).toBe(true);
     expect(config.placement).toBe('auto');

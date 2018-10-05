@@ -1,21 +1,27 @@
 import {
   AfterContentChecked,
+  ChangeDetectorRef,
   Component,
   ContentChildren,
   Directive,
+  ElementRef,
   EventEmitter,
   Host,
   Input,
   Optional,
   Output,
+  NgZone,
   QueryList,
   TemplateRef,
-  ViewEncapsulation
+  ViewEncapsulation,
 } from '@angular/core';
 
 import {isString} from '../util/util';
 
 import {NgbAccordionConfig} from './accordion-config';
+import {NgbRunTransition} from '../util/transition/ngbTransition';
+import {NgbCollapsingTransition} from '../util/transition/ngbCollapseTransition';
+import {take} from 'rxjs/operators';
 
 let nextId = 0;
 
@@ -88,6 +94,9 @@ export class NgbPanel implements AfterContentChecked {
    *  You can alternatively use [`NgbPanelTitle`](#/components/accordion/api#NgbPanelTitle) to set panel title.
    */
   @Input() title: string;
+
+  /* A flag telling if the panel is currently being animated */
+  transitionRunning = false;
 
   /**
    * Type of the current panel.
@@ -169,7 +178,7 @@ export interface NgbPanelChangeEvent {
                        [ngTemplateOutletContext]="{$implicit: panel, opened: panel.isOpen}"></ng-template>
         </div>
         <div id="{{panel.id}}" role="tabpanel" [attr.aria-labelledby]="panel.id + '-header'"
-             class="collapse" [class.show]="panel.isOpen" *ngIf="!destroyOnHide || panel.isOpen">
+             class="collapse" [class.show]="panel.isOpen" *ngIf="!destroyOnHide || panel.isOpen || panel.transitionRunning">
           <div class="card-body">
                <ng-template [ngTemplateOutlet]="panel.contentTpl?.templateRef || null"></ng-template>
           </div>
@@ -216,9 +225,17 @@ export class NgbAccordion implements AfterContentChecked {
    */
   @Output() panelChange = new EventEmitter<NgbPanelChangeEvent>();
 
-  constructor(config: NgbAccordionConfig) {
+  /**
+   * A flag to enable/disable the animation when closing.
+   */
+  @Input() animation: boolean;
+
+  constructor(
+      config: NgbAccordionConfig, private _ngZone: NgZone, private _element: ElementRef,
+      private _changeDetector: ChangeDetectorRef) {
     this.type = config.type;
     this.closeOtherPanels = config.closeOthers;
+    this.animation = config.animation;
   }
 
   /**
@@ -281,12 +298,12 @@ export class NgbAccordion implements AfterContentChecked {
     }
 
     // update panels open states
-    this.panels.forEach(panel => panel.isOpen = !panel.disabled && this.activeIds.indexOf(panel.id) > -1);
+    this.panels.forEach((panel) => { panel.isOpen = !panel.disabled && this.activeIds.indexOf(panel.id) > -1; });
 
     // closeOthers updates
     if (this.activeIds.length > 1 && this.closeOtherPanels) {
       this._closeOthers(this.activeIds[0]);
-      this._updateActiveIds();
+      this._runTransitions();
     }
   }
 
@@ -298,20 +315,23 @@ export class NgbAccordion implements AfterContentChecked {
           {panelId: panel.id, nextState: nextState, preventDefault: () => { defaultPrevented = true; }});
 
       if (!defaultPrevented) {
+        panel.transitionRunning = true;
         panel.isOpen = nextState;
 
         if (nextState && this.closeOtherPanels) {
           this._closeOthers(panel.id);
         }
         this._updateActiveIds();
+        this._runTransitions();
       }
     }
   }
 
   private _closeOthers(panelId: string) {
     this.panels.forEach(panel => {
-      if (panel.id !== panelId) {
+      if (panel.id !== panelId && panel.isOpen === true) {
         panel.isOpen = false;
+        panel.transitionRunning = true;
       }
     });
   }
@@ -320,6 +340,28 @@ export class NgbAccordion implements AfterContentChecked {
 
   private _updateActiveIds() {
     this.activeIds = this.panels.filter(panel => panel.isOpen && !panel.disabled).map(panel => panel.id);
+  }
+
+  private _runTransitions() {
+    this._ngZone.onStable.pipe(take(1)).subscribe(() => {
+      if (this.panels) {
+        this.panels.forEach((panel) => {
+          const panelElement = this._getPanelElement(panel.id);
+          if (panel.transitionRunning && panelElement) {
+            NgbRunTransition(panelElement, NgbCollapsingTransition, {
+              animation: this.animation,
+              data: {direction: panel.isOpen ? 'show' : 'hide'}
+            }).subscribe(() => { panel.transitionRunning = false; });
+          }
+        });
+        this._updateActiveIds();
+      }
+      this._changeDetector.detectChanges();
+    });
+  }
+
+  private _getPanelElement(panelId: string): HTMLElement | null {
+    return this._element.nativeElement.querySelector('#' + panelId);
   }
 }
 

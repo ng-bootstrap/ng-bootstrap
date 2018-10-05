@@ -8,6 +8,8 @@ import {NgbTabChangeEvent, NgbTabsetModule} from './tabset.module';
 import {NgbTabsetConfig} from './tabset-config';
 import {NgbTabset} from './tabset';
 
+import {NgbConfig} from '../ngb-config';
+
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
@@ -60,8 +62,8 @@ describe('ngb-tabset', () => {
   beforeEach(() => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbTabsetModule]}); });
 
   it('should initialize inputs with default values', () => {
-    const defaultConfig = new NgbTabsetConfig();
-    const tabset = new NgbTabset(new NgbTabsetConfig());
+    const defaultConfig = new NgbTabsetConfig(new NgbConfig());
+    const tabset = TestBed.createComponent(NgbTabset).componentInstance;
     expect(tabset.type).toBe(defaultConfig.type);
   });
 
@@ -569,7 +571,7 @@ describe('ngb-tabset', () => {
   });
 
   describe('Custom config as provider', () => {
-    let config = new NgbTabsetConfig();
+    let config = new NgbTabsetConfig(new NgbConfig());
     config.type = 'pills';
 
     beforeEach(() => {

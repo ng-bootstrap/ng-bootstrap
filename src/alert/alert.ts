@@ -13,6 +13,8 @@ import {
 } from '@angular/core';
 
 import {NgbAlertConfig} from './alert-config';
+import {NgbRunTransition} from '../util/transition/ngbTransition';
+import {NgbAlertFadingTransition} from '../util/transition/ngbFadingTransition';
 
 /**
  * Alert is a component to provide contextual feedback messages for user.
@@ -23,11 +25,12 @@ import {NgbAlertConfig} from './alert-config';
   selector: 'ngb-alert',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  host: {'role': 'alert', 'class': 'alert', '[class.alert-dismissible]': 'dismissible'},
+  host:
+      {'role': 'alert', 'class': 'alert show', '[class.alert-dismissible]': 'dismissible', '[class.fade]': 'animation'},
   template: `
     <ng-content></ng-content>
     <button *ngIf="dismissible" type="button" class="close" aria-label="Close" i18n-aria-label="@@ngb.alert.close"
-      (click)="closeHandler()">
+      (click)="close()">
       <span aria-hidden="true">&times;</span>
     </button>
     `,
@@ -49,17 +52,37 @@ export class NgbAlert implements OnInit,
    * `'secondary'`, `'light'` and `'dark'`.
    */
   @Input() type: string;
+
   /**
    * An event emitted when the close button is clicked. It has no payload and only relevant for dismissible alerts.
    */
-  @Output() close = new EventEmitter<void>();
+  @Output('close') closeEvent = new EventEmitter<void>();
+
+  /**
+   * A flag to enable/disable the animation when closing.
+   */
+  @Input() animation: boolean;
+
+
+  private _transitionRunning = false;
 
   constructor(config: NgbAlertConfig, private _renderer: Renderer2, private _element: ElementRef) {
     this.dismissible = config.dismissible;
     this.type = config.type;
+    this.animation = config.animation;
   }
 
-  closeHandler() { this.close.emit(); }
+  close() {
+    if (!this._transitionRunning) {
+      this._transitionRunning = true;
+      NgbRunTransition(this._element.nativeElement, NgbAlertFadingTransition, {
+        animation: this.animation
+      }).subscribe(() => {
+        this._transitionRunning = false;
+        this.closeEvent.emit();
+      });
+    }
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     const typeChange = changes['type'];

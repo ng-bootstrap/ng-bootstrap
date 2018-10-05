@@ -15,6 +15,7 @@ import {
 import {NgbTooltipModule} from './tooltip.module';
 import {NgbTooltipWindow, NgbTooltip} from './tooltip';
 import {NgbTooltipConfig} from './tooltip-config';
+import {NgbConfig} from '../ngb-config';
 
 const createTestComponent =
     (html: string) => <ComponentFixture<TestComponent>>createGenericTestComponent(html, TestComponent);
@@ -604,7 +605,7 @@ describe('ngb-tooltip', () => {
   });
 
   describe('Custom config as provider', () => {
-    let config = new NgbTooltipConfig();
+    let config = new NgbTooltipConfig(new NgbConfig());
     config.placement = 'bottom';
     config.triggers = 'click';
     config.container = 'body';

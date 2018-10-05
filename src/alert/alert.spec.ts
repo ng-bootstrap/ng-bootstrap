@@ -7,6 +7,8 @@ import {NgbAlertModule} from './alert.module';
 import {NgbAlert} from './alert';
 import {NgbAlertConfig} from './alert-config';
 
+import {NgbConfig} from '../ngb-config';
+
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
@@ -27,7 +29,7 @@ describe('ngb-alert', () => {
   beforeEach(() => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbAlertModule]}); });
 
   it('should initialize inputs with default values', () => {
-    const defaultConfig = new NgbAlertConfig();
+    const defaultConfig = new NgbAlertConfig(new NgbConfig());
     const alertCmp = TestBed.createComponent(NgbAlert).componentInstance;
     expect(alertCmp.dismissible).toBe(defaultConfig.dismissible);
     expect(alertCmp.type).toBe(defaultConfig.type);
@@ -142,7 +144,7 @@ describe('ngb-alert', () => {
   });
 
   describe('Custom config as provider', () => {
-    let config = new NgbAlertConfig();
+    let config = new NgbAlertConfig(new NgbConfig());
     config.dismissible = false;
     config.type = 'success';
 

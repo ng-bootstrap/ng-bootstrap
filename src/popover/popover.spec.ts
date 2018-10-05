@@ -17,6 +17,7 @@ import {NgbPopoverModule} from './popover.module';
 import {NgbPopoverWindow, NgbPopover} from './popover';
 import {NgbPopoverConfig} from './popover-config';
 import {NgbTooltip, NgbTooltipModule} from '..';
+import {NgbConfig} from '../ngb-config';
 
 @Injectable()
 class SpyService {
@@ -346,8 +347,8 @@ describe('ngb-popover', () => {
 
     it('should properly cleanup popovers with manual triggers', () => {
       const fixture = createTestComponent(`<ng-template [ngIf]="show">
-                                            <div ngbPopover="Great tip!" triggers="manual" #p="ngbPopover" (mouseenter)="p.open()"></div>
-                                        </ng-template>`);
+          <div ngbPopover="Great tip!" triggers="manual" #p="ngbPopover" (mouseenter)="p.open()"></div>
+        </ng-template>`);
       const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
       triggerEvent(directive, 'mouseenter');
@@ -694,7 +695,7 @@ describe('ngb-popover', () => {
   });
 
   describe('Custom config as provider', () => {
-    let config = new NgbPopoverConfig();
+    let config = new NgbPopoverConfig(new NgbConfig());
     config.placement = 'bottom';
     config.triggers = 'hover';
     config.popoverClass = 'my-custom-class';

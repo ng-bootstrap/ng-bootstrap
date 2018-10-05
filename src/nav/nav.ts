@@ -13,12 +13,14 @@ import {
   OnInit,
   Output,
   QueryList,
-  TemplateRef
+  TemplateRef,
+  SimpleChanges
 } from '@angular/core';
 import {DOCUMENT} from '@angular/common';
 import {isDefined} from '../util/util';
 import {NgbNavConfig} from './nav-config';
 import {Key} from '../util/key';
+import {Subject, merge} from 'rxjs';
 
 const isValidNavId = (id: any) => isDefined(id) && id !== '';
 
@@ -91,6 +93,11 @@ export class NgbNavItem implements AfterContentChecked, OnInit {
 
   contentTpl: NgbNavContent | null;
 
+  /**
+   * A flag telling if the panel is currently animated
+   */
+  transitionPending = false;
+
   @ContentChildren(NgbNavContent, {descendants: false}) contentTpls: QueryList<NgbNavContent>;
 
   constructor(@Inject(forwardRef(() => NgbNav)) nav, public elementRef: ElementRef<any>) {
@@ -110,6 +117,9 @@ export class NgbNavItem implements AfterContentChecked, OnInit {
     if (!isDefined(this.domId)) {
       this.domId = `ngb-nav-${navCounter++}`;
     }
+    if (this._nav.activeId === this.id) {
+      this.transitionPending = true;
+    }
   }
 
   get active() { return this._nav.activeId === this.id; }
@@ -119,7 +129,8 @@ export class NgbNavItem implements AfterContentChecked, OnInit {
   get panelDomId() { return `${this.domId}-panel`; }
 
   isPanelInDom() {
-    return (isDefined(this.destroyOnHide) ? !this.destroyOnHide : !this._nav.destroyOnHide) || this.active;
+    return this.transitionPending || (isDefined(this.destroyOnHide) ? !this.destroyOnHide : !this._nav.destroyOnHide) ||
+        this.active;
   }
 }
 
@@ -199,6 +210,9 @@ export class NgbNav implements AfterContentInit {
 
   @ContentChildren(NgbNavItem) items: QueryList<NgbNavItem>;
   @ContentChildren(forwardRef(() => NgbNavLink), {descendants: true}) links: QueryList<NgbNavLink>;
+
+  idChange = new Subject<any>();
+  panelChange = merge(this.idChange, this.activeIdChange);
 
   constructor(
       @Attribute('role') public role: string, config: NgbNavConfig, private _cd: ChangeDetectorRef,
@@ -296,6 +310,12 @@ export class NgbNav implements AfterContentInit {
         this._updateActiveId(nextId, false);
         this._cd.detectChanges();
       }
+    }
+  }
+
+  ngOnChanges({activeId}: SimpleChanges): void {
+    if (activeId) {
+      this.idChange.next(activeId.currentValue);
     }
   }
 

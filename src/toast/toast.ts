@@ -11,9 +11,12 @@ import {
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation,
+  ElementRef,
 } from '@angular/core';
 
 import {NgbToastConfig} from './toast-config';
+import {NgbRunTransition} from '../util/transition/ngbTransition';
+import {NgbAlertFadingTransition} from '../util/transition/ngbFadingTransition';
 
 /**
  * This directive allows the usage of HTML markup or other directives
@@ -41,6 +44,7 @@ export class NgbToastHeader {
     'aria-atomic': 'true',
     '[class.toast]': 'true',
     '[class.show]': 'true',
+    '[class.fade]': 'animation',
   },
   template: `
     <ng-template #headerTpl>
@@ -83,6 +87,11 @@ export class NgbToast implements AfterContentInit,
   @Input() header: string;
 
   /**
+   * A flag to enable/disable the animation when closing.
+   */
+  @Input() animation: boolean;
+
+  /**
    * A template like `<ng-template ngbToastHeader></ng-template>` can be
    * used in the projected content to allow markup usage.
    */
@@ -99,12 +108,15 @@ export class NgbToast implements AfterContentInit,
    */
   @Output('hide') hideOutput = new EventEmitter<void>();
 
-  constructor(@Attribute('aria-live') public ariaLive: string, config: NgbToastConfig) {
+  private _transitionRunning = false;
+
+  constructor(@Attribute('aria-live') public ariaLive: string, config: NgbToastConfig, private _element: ElementRef) {
     if (this.ariaLive == null) {
       this.ariaLive = config.ariaLive;
     }
     this.delay = config.delay;
     this.autohide = config.autohide;
+    this.animation = config.animation;
   }
 
   ngAfterContentInit() { this._init(); }
@@ -118,7 +130,21 @@ export class NgbToast implements AfterContentInit,
 
   hide() {
     this._clearTimeout();
-    this.hideOutput.emit();
+    if (this.animation) {
+      if (!this._transitionRunning) {
+        this._transitionRunning = true;
+        // Element is hidden only if animation is enabled
+        NgbRunTransition(this._element.nativeElement, NgbAlertFadingTransition, {
+          animation: this.animation
+        }).subscribe(() => {
+          this._transitionRunning = false;
+          this.hideOutput.emit();
+        });
+      }
+    } else {
+      // Up to the application to hide the toast
+      this.hideOutput.emit();
+    }
   }
 
   private _init() {

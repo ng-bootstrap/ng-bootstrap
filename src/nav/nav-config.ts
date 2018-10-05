@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {NgbConfig} from '../ngb-config';
 
 /**
  * A configuration service for the [`NgbNav`](#/components/nav/api#NgbNav) component.
@@ -14,4 +15,6 @@ export class NgbNavConfig {
   orientation: 'horizontal' | 'vertical' = 'horizontal';
   roles: 'tablist' | false = 'tablist';
   keyboard: boolean | 'changeWithArrows' = false;
+  animation: boolean;
+  constructor(ngbConfig: NgbConfig) { this.animation = ngbConfig.animation; }
 }

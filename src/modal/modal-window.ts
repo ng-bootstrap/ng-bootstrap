@@ -19,11 +19,16 @@ import {filter, switchMap, take, takeUntil, tap} from 'rxjs/operators';
 import {getFocusableBoundaryElements} from '../util/focus-trap';
 import {Key} from '../util/key';
 import {ModalDismissReasons} from './modal-dismiss-reasons';
+import {NgbRunTransition} from '../util/transition/ngbTransition';
+import {NgbModalFadingTransition} from '../util/transition/ngbFadingTransition';
+
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'ngb-modal-window',
   host: {
-    '[class]': '"modal fade show d-block" + (windowClass ? " " + windowClass : "")',
+    '[class]': '"modal d-block" + (windowClass ? " " + windowClass : "")',
+    '[class.fade]': 'animation',
     'role': 'dialog',
     'tabindex': '-1',
     '[attr.aria-modal]': 'true',
@@ -43,9 +48,11 @@ export class NgbModalWindow implements OnInit,
     AfterViewInit, OnDestroy {
   private _closed$ = new Subject<void>();
   private _elWithFocus: Element | null = null;  // element that is focused prior to modal opening
+  private _transitionRunning = false;
 
   @ViewChild('dialog', {static: true}) private _dialogEl: ElementRef<HTMLElement>;
 
+  @Input() animation = false;
   @Input() ariaLabelledBy: string;
   @Input() ariaDescribedBy: string;
   @Input() backdrop: boolean | string = true;
@@ -57,15 +64,15 @@ export class NgbModalWindow implements OnInit,
 
   @Output('dismiss') dismissEvent = new EventEmitter();
 
+
   constructor(
       @Inject(DOCUMENT) private _document: any, private _elRef: ElementRef<HTMLElement>, private _zone: NgZone) {}
-
-  dismiss(reason): void { this.dismissEvent.emit(reason); }
 
   ngOnInit() { this._elWithFocus = this._document.activeElement; }
 
   ngAfterViewInit() {
     const {nativeElement} = this._elRef;
+
     this._zone.runOutsideAngular(() => {
 
       fromEvent<KeyboardEvent>(nativeElement, 'keydown')
@@ -101,13 +108,30 @@ export class NgbModalWindow implements OnInit,
       });
     });
 
-    if (!nativeElement.contains(document.activeElement)) {
-      const autoFocusable = nativeElement.querySelector(`[ngbAutofocus]`) as HTMLElement;
-      const firstFocusable = getFocusableBoundaryElements(nativeElement)[0];
+    NgbRunTransition(nativeElement, NgbModalFadingTransition, {animation: this.animation}).subscribe(() => {
+      if (!nativeElement.contains(document.activeElement)) {
+        const autoFocusable = nativeElement.querySelector(`[ngbAutofocus]`) as HTMLElement;
+        const firstFocusable = getFocusableBoundaryElements(nativeElement)[0];
 
-      const elementToFocus = autoFocusable || firstFocusable || nativeElement;
-      elementToFocus.focus();
+        const elementToFocus = autoFocusable || firstFocusable || nativeElement;
+        elementToFocus.focus();
+      }
+    });
+  }
+
+  dismiss(reason): void {
+    if (!this._transitionRunning) {
+      this.dismissEvent.emit(reason);
     }
+  }
+
+  hide(): Observable<any> {
+    this._transitionRunning = true;
+    const transitionend$ =
+        NgbRunTransition(this._elRef.nativeElement, NgbModalFadingTransition, {animation: this.animation});
+
+    transitionend$.subscribe(() => { this._transitionRunning = false; });
+    return transitionend$;
   }
 
   ngOnDestroy() {
@@ -124,7 +148,6 @@ export class NgbModalWindow implements OnInit,
       setTimeout(() => elementToFocus.focus());
       this._elWithFocus = null;
     });
-
     this._closed$.next();
   }
 }
