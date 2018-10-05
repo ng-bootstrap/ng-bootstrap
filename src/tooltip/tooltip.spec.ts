@@ -1,5 +1,5 @@
 import {TestBed, ComponentFixture, inject, fakeAsync, tick} from '@angular/core/testing';
-import {createGenericTestComponent, createKeyEvent} from '../test/common';
+import {createGenericTestComponent, createKeyEvent, createMouseEvent} from '../test/common';
 
 import {By} from '@angular/platform-browser';
 import {Component, ViewChild, ChangeDetectionStrategy, TemplateRef, ViewContainerRef} from '@angular/core';
@@ -12,6 +12,10 @@ import {NgbTooltipConfig} from './tooltip-config';
 
 function dispatchEscapeKeyUpEvent() {
   document.dispatchEvent(createKeyEvent(Key.Escape));
+}
+
+function dispatchContextmenuEvent(x = 0, y = 0) {
+  document.dispatchEvent(createMouseEvent(x, y, {type: 'contextmenu'}));
 }
 
 const createTestComponent =
@@ -556,6 +560,10 @@ describe('ngb-tooltip', () => {
          fixture.detectChanges();
          expectToBeOpen();
 
+         dispatchContextmenuEvent();
+         fixture.detectChanges();
+         expectToBeOpen();
+
          outside.click();
          fixture.detectChanges();
          expectToBeOpen();
@@ -569,7 +577,8 @@ describe('ngb-tooltip', () => {
          expectToBeOpen();
        }));
 
-    it('should close on clicks inside the tooltip and on Escape when autoClose is "inside"', fakeAsync(() => {
+    it('should close on clicks inside the tooltip, on Escape and on right click when autoClose is "inside"',
+       fakeAsync(() => {
          const fixture = createTestComponent(`
         <ng-template #tooltipContent><div id="tooltip">Tooltip content</div></ng-template>
         <div
@@ -606,6 +615,11 @@ describe('ngb-tooltip', () => {
          expectToBeClosed();
          open();
 
+         dispatchContextmenuEvent();
+         fixture.detectChanges();
+         expectToBeClosed();
+         open();
+
          tooltip.click();
          fixture.detectChanges();
          expectToBeClosed();
@@ -620,7 +634,8 @@ describe('ngb-tooltip', () => {
          expectToBeOpen();
        }));
 
-    it('should close on clicks outside the tooltip and on Escape when autoClose is "outside"', fakeAsync(() => {
+    it('should close on clicks outside the tooltip, on Escape and on right click when autoClose is "outside"',
+       fakeAsync(() => {
          const fixture = createTestComponent(`
         <ng-template #tooltipContent><div id="tooltip">Tooltip content</div></ng-template>
         <div
@@ -657,6 +672,11 @@ describe('ngb-tooltip', () => {
          expectToBeClosed();
          open();
 
+         dispatchContextmenuEvent();
+         fixture.detectChanges();
+         expectToBeClosed();
+         open();
+
          outside.click();
          fixture.detectChanges();
          expectToBeClosed();
@@ -671,7 +691,7 @@ describe('ngb-tooltip', () => {
          expectToBeClosed();
        }));
 
-    it('should close on clicks anywhere and on Escape when autoClose is true', fakeAsync(() => {
+    it('should close on clicks anywhere, on Escape and on right click when autoClose is true', fakeAsync(() => {
          const fixture = createTestComponent(`
         <ng-template #tooltipContent><div id="tooltip">Tooltip content</div></ng-template>
         <div
@@ -704,6 +724,11 @@ describe('ngb-tooltip', () => {
          open();
 
          dispatchEscapeKeyUpEvent();
+         fixture.detectChanges();
+         expectToBeClosed();
+         open();
+
+         dispatchContextmenuEvent();
          fixture.detectChanges();
          expectToBeClosed();
          open();
