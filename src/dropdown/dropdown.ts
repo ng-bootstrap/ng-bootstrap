@@ -185,10 +185,14 @@ export class NgbDropdown implements OnInit, OnDestroy {
         const clicks$ = fromEvent<MouseEvent>(this._document, 'click')
                             .pipe(takeUntil(this._closed$), filter(event => this._shouldCloseFromClick(event)));
 
-        race<Event>([escapes$, clicks$]).pipe(takeUntil(this._closed$)).subscribe(() => this._ngZone.run(() => {
-          this.close();
-          this._changeDetector.markForCheck();
-        }));
+        const rightClicks$ = fromEvent<MouseEvent>(this._document, 'contextmenu').pipe(takeUntil(this._closed$));
+
+        race<Event>([escapes$, clicks$, rightClicks$])
+            .pipe(takeUntil(this._closed$))
+            .subscribe(() => this._ngZone.run(() => {
+              this.close();
+              this._changeDetector.markForCheck();
+            }));
       });
     }
   }

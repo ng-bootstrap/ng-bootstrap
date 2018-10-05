@@ -1,5 +1,5 @@
 import {ComponentFixture, inject, TestBed} from '@angular/core/testing';
-import {createGenericTestComponent, createKeyEvent} from '../test/common';
+import {createGenericTestComponent, createKeyEvent, createMouseEvent} from '../test/common';
 import {Key} from '../util/key';
 
 import {ChangeDetectionStrategy, Component} from '@angular/core';
@@ -20,6 +20,10 @@ function getMenuEl(tc) {
 
 function createFakeEscapeKeyUpEvent(): Event {
   return createKeyEvent(Key.Escape);
+}
+
+function createFakeContextmenuEvent(x = 0, y = 0): Event {
+  return createMouseEvent(x, y, {type: 'contextmenu'});
 }
 
 const jasmineMatchers = {
@@ -321,7 +325,7 @@ describe('ngb-dropdown-toggle', () => {
     expect(compiled).not.toBeShown();
   });
 
-  it('should close on inside click, outside click and escape when inside the OnPush component', () => {
+  it('should close on inside click, outside click, escape and right click when inside the OnPush component', () => {
     const fixture = createTestComponent(`<test-click-close-on-push></test-click-close-on-push>`);
     const compiled = fixture.nativeElement;
     const toggleEl = compiled.querySelector('button');
@@ -350,6 +354,11 @@ describe('ngb-dropdown-toggle', () => {
     // escape
     reopen();
     document.dispatchEvent(createFakeEscapeKeyUpEvent());
+    fixture.detectChanges();
+    expect(compiled).not.toBeShown();
+
+    // right click
+    document.dispatchEvent(createFakeContextmenuEvent());
     fixture.detectChanges();
     expect(compiled).not.toBeShown();
   });
@@ -459,6 +468,80 @@ describe('ngb-dropdown-toggle', () => {
       expect(compiled).toBeShown();
 
       document.dispatchEvent(createFakeEscapeKeyUpEvent());
+      fixture.detectChanges();
+      expect(compiled).toBeShown();
+
+      buttonElement.click();
+      fixture.detectChanges();
+      expect(compiled).not.toBeShown();
+    });
+  });
+
+  describe('right click closing', () => {
+
+    it('should close on right click from anywhere', () => {
+      const fixture = createTestComponent(`
+          <div ngbDropdown [open]="true" [autoClose]="true">
+              <button ngbDropdownToggle>Toggle dropdown</button>
+              <div ngbDropdownMenu></div>
+          </div>`);
+
+      const compiled = fixture.nativeElement;
+      expect(compiled).toBeShown();
+
+      document.dispatchEvent(createFakeContextmenuEvent());
+      fixture.detectChanges();
+      expect(compiled).not.toBeShown();
+    });
+
+    it('should close on right click from the toggling button', () => {
+      const fixture = createTestComponent(`
+        <div ngbDropdown [open]="true" [autoClose]="true">
+            <button ngbDropdownToggle>Toggle dropdown</button>
+            <div ngbDropdownMenu></div>
+        </div>`);
+      const compiled = fixture.nativeElement;
+      const buttonElement = compiled.querySelector('button');
+
+      expect(compiled).toBeShown();
+
+      buttonElement.dispatchEvent(createFakeContextmenuEvent());
+      fixture.detectChanges();
+      expect(compiled).not.toBeShown();
+    });
+
+    it('should not close on right click from the toggling button if autoClose is set to false', () => {
+      const fixture = createTestComponent(`
+        <div ngbDropdown [open]="true" [autoClose]="false">
+            <button ngbDropdownToggle>Toggle dropdown</button>
+            <div ngbDropdownMenu></div>
+        </div>`);
+      const compiled = fixture.nativeElement;
+      const buttonElement = compiled.querySelector('button');
+
+      expect(compiled).toBeShown();
+
+      buttonElement.dispatchEvent(createFakeContextmenuEvent());
+      fixture.detectChanges();
+      expect(compiled).toBeShown();
+
+      buttonElement.click();
+      fixture.detectChanges();
+      expect(compiled).not.toBeShown();
+    });
+
+    it('should not close on right click from anywhere if autoClose is set to false', () => {
+      const fixture = createTestComponent(`
+          <div ngbDropdown [open]="true" [autoClose]="false">
+              <button ngbDropdownToggle>Toggle dropdown</button>
+              <div ngbDropdownMenu></div>
+          </div>`);
+      const compiled = fixture.nativeElement;
+      const buttonElement = compiled.querySelector('button');
+
+      expect(compiled).toBeShown();
+
+      document.dispatchEvent(createFakeContextmenuEvent());
       fixture.detectChanges();
       expect(compiled).toBeShown();
 
