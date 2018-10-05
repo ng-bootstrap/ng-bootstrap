@@ -13,6 +13,8 @@ import {
 } from '@angular/core';
 
 import {NgbAlertConfig} from './alert-config';
+import {ngbRunTransition} from '../util/transition/ngbTransition';
+import {ngbAlertFadingTransition} from '../util/transition/ngbFadingTransition';
 
 /**
  * Alert is a component to provide contextual feedback messages for user.
@@ -23,11 +25,11 @@ import {NgbAlertConfig} from './alert-config';
   selector: 'ngb-alert',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  host: {'role': 'alert', 'class': 'alert', '[class.alert-dismissible]': 'dismissible'},
+  host: {'role': 'alert', 'class': 'alert show fade', '[class.alert-dismissible]': 'dismissible'},
   template: `
     <ng-content></ng-content>
     <button *ngIf="dismissible" type="button" class="close" aria-label="Close" i18n-aria-label="@@ngb.alert.close"
-      (click)="closeHandler()">
+      (click)="close()">
       <span aria-hidden="true">&times;</span>
     </button>
     `,
@@ -36,12 +38,21 @@ import {NgbAlertConfig} from './alert-config';
 export class NgbAlert implements OnInit,
     OnChanges {
   /**
+   * If `true`, alert closing will be animated.
+   *
+   * Animation is triggered only when clicked on the close button (×)
+   * or via the `.close()` function
+   */
+  @Input() animation: boolean;
+
+  /**
    * If `true`, alert can be dismissed by the user.
    *
    * The close button (×) will be displayed and you can be notified
    * of the event with the `(close)` output.
    */
   @Input() dismissible: boolean;
+
   /**
    * Type of the alert.
    *
@@ -49,17 +60,25 @@ export class NgbAlert implements OnInit,
    * `'secondary'`, `'light'` and `'dark'`.
    */
   @Input() type: string;
+
   /**
    * An event emitted when the close button is clicked. It has no payload and only relevant for dismissible alerts.
    */
-  @Output() close = new EventEmitter<void>();
+  @Output('close') closeEvent = new EventEmitter<void>();
+
 
   constructor(config: NgbAlertConfig, private _renderer: Renderer2, private _element: ElementRef) {
     this.dismissible = config.dismissible;
     this.type = config.type;
+    this.animation = config.animation;
   }
 
-  closeHandler() { this.close.emit(); }
+  close() {
+    ngbRunTransition(this._element.nativeElement, ngbAlertFadingTransition, {
+      animation: this.animation,
+      runningTransition: 'continue'
+    }).subscribe(() => this.closeEvent.emit());
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     const typeChange = changes['type'];
