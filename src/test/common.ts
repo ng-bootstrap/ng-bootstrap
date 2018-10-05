@@ -73,3 +73,13 @@ export function createKeyEvent(key: Key, options: {type: 'keyup' | 'keydown'} = 
 
   return event;
 }
+
+export function createMouseEvent(x = 0, y = 0, options: {type: 'click' | 'contextmenu'} = {
+  type: 'click'
+}) {
+  const event = document.createEvent('MouseEvent') as any;
+  let initEvent = (event.initMouseEvent).bind(event);
+  initEvent(options.type, true, true, window, 0, 0, 0, x, y, false, false, false, false, 0, null);
+
+  return event;
+}

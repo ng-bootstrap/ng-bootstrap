@@ -1,5 +1,5 @@
 import {TestBed, ComponentFixture, inject, fakeAsync, tick} from '@angular/core/testing';
-import {createGenericTestComponent, createKeyEvent} from '../test/common';
+import {createGenericTestComponent, createKeyEvent, createMouseEvent} from '../test/common';
 
 import {By} from '@angular/platform-browser';
 import {
@@ -20,6 +20,10 @@ import {NgbPopoverConfig} from './popover-config';
 
 function dispatchEscapeKeyUpEvent() {
   document.dispatchEvent(createKeyEvent(Key.Escape));
+}
+
+function dispatchContextmenuEvent(x = 0, y = 0) {
+  document.dispatchEvent(createMouseEvent(x, y, {type: 'contextmenu'}));
 }
 
 @Injectable()
@@ -670,6 +674,10 @@ describe('ngb-popover', () => {
          fixture.detectChanges();
          expectToBeOpen();
 
+         dispatchContextmenuEvent();
+         fixture.detectChanges();
+         expectToBeOpen();
+
          popover.click();
          fixture.detectChanges();
          expectToBeOpen();
@@ -679,7 +687,8 @@ describe('ngb-popover', () => {
          expectToBeOpen();
        }));
 
-    it('should close on clicks inside the popover and on Escape when autoClose is "inside"', fakeAsync(() => {
+    it('should close on clicks inside the popover, on Escape and on right clicks when autoClose is "inside"',
+       fakeAsync(() => {
          const fixture = createTestComponent(`
         <ng-template #popoverContent><div id="popover">Popover content</div></ng-template>
         <div
@@ -716,6 +725,11 @@ describe('ngb-popover', () => {
          expectToBeClosed();
          open();
 
+         dispatchContextmenuEvent();
+         fixture.detectChanges();
+         expectToBeClosed();
+         open();
+
          popover.click();
          fixture.detectChanges();
          expectToBeClosed();
@@ -730,7 +744,8 @@ describe('ngb-popover', () => {
          expectToBeOpen();
        }));
 
-    it('should close on clicks outside the popover and on Escape when autoClose is "outside"', fakeAsync(() => {
+    it('should close on clicks outside the popover, on Escape and on right clicks when autoClose is "outside"',
+       fakeAsync(() => {
          const fixture = createTestComponent(`
         <ng-template #popoverContent><div id="popover">Popover content</div></ng-template>
         <div
@@ -767,6 +782,11 @@ describe('ngb-popover', () => {
          expectToBeClosed();
          open();
 
+         dispatchContextmenuEvent();
+         fixture.detectChanges();
+         expectToBeClosed();
+         open();
+
          outside.click();
          fixture.detectChanges();
          expectToBeClosed();
@@ -781,7 +801,7 @@ describe('ngb-popover', () => {
          expectToBeClosed();
        }));
 
-    it('should close on clicks anywhere and on Escape when autoClose is true', fakeAsync(() => {
+    it('should close on clicks anywhere, on Escape and on right clicks when autoClose is true', fakeAsync(() => {
          const fixture = createTestComponent(`
         <ng-template #popoverContent><div id="popover">Popover content</div></ng-template>
         <div
@@ -814,6 +834,11 @@ describe('ngb-popover', () => {
          open();
 
          dispatchEscapeKeyUpEvent();
+         fixture.detectChanges();
+         expectToBeClosed();
+         open();
+
+         dispatchContextmenuEvent();
          fixture.detectChanges();
          expectToBeClosed();
          open();

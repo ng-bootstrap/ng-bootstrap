@@ -229,7 +229,10 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
                                   takeUntil(this.hidden), filter(() => !justOpened),
                                   filter(event => this._shouldCloseFromClick(event)));
 
-          race<Event>([escapes$, clicks$]).subscribe(() => this._ngZone.run(() => this.close()));
+          const rightClicks$ = fromEvent<MouseEvent>(this._document, 'contextmenu')
+                                   .pipe(takeUntil(this.hidden), filter(() => !justOpened));
+
+          race<Event>([escapes$, clicks$, rightClicks$]).subscribe(() => this._ngZone.run(() => this.close()));
         });
       }
 
