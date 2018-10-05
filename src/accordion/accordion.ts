@@ -116,7 +116,8 @@ export interface NgbPanelChangeEvent {
       <div class="card">
         <div role="tab" id="{{panel.id}}-header" [class]="'card-header ' + (panel.type ? 'bg-'+panel.type: type ? 'bg-'+type : '')">
           <h5 class="mb-0">
-            <button class="btn btn-link" (click)="!!toggle(panel.id)" [disabled]="panel.disabled" [class.collapsed]="!panel.isOpen"
+            <button type="button" class="btn btn-link"
+              (click)="toggle(panel.id)" [disabled]="panel.disabled" [class.collapsed]="!panel.isOpen"
               [attr.aria-expanded]="panel.isOpen" [attr.aria-controls]="panel.id">
               {{panel.title}}<ng-template [ngTemplateOutlet]="panel.titleTpl?.templateRef"></ng-template>
             </button>
