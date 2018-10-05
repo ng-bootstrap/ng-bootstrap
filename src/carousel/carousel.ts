@@ -145,7 +145,7 @@ export class NgbCarousel implements AfterContentChecked,
       this._ngZone.runOutsideAngular(() => {
         this._start$
             .pipe(
-                map(() => this.interval), filter(interval => interval > 0),
+                map(() => this.interval), filter(interval => interval > 0 && this.slides.length > 0),
                 switchMap(interval => timer(interval).pipe(takeUntil(this._stop$))))
             .subscribe(() => this._ngZone.run(() => {
               this.next();
