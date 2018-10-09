@@ -86,8 +86,8 @@ providers: [{provide: NgbDateParserFormatter, useClass: YourOwnParserFormatter}]
 const isDisabled = (date: NgbDateStruct, current: {month: number}) => day.date === 13;
 `,
   disablingHTML: `
-<ngb-datepicker [minDate]="{year: 2010, month: 1, day, 1}"
-                [maxDate]="{year: 2048, month 12, day, 31}"
+<ngb-datepicker [minDate]="{year: 2010, month: 1, day: 1}"
+                [maxDate]="{year: 2048, month: 12, day: 31}"
                 [markDisabled]="isDisabled">
 </ngb-datepicker>
 `,
