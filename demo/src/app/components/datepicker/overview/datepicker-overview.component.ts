@@ -46,6 +46,9 @@ const date: NgbDateStruct = { day: 14, month: 7, year: 1789 }; // July, 14 1789
     nativeAdapter: `
 // native adapter is bundled with library
 providers: [{provide: NgbDateAdapter, useClass: NgbDateNativeAdapter}]
+
+// or another native adapter that works with UTC dates
+providers: [{provide: NgbDateAdapter, useClass: NgbDateNativeUTCAdapter}]
 `,
     adapter: `
 @Injectable()
