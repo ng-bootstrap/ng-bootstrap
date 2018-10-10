@@ -107,18 +107,30 @@
 <!-- DATE MODEL-->
 <ngbd-overview-section [section]="sections['date-model']">
   <p>
-    Datepicker uses <code>NgbDateStruct</code> as a model and not the native
-    <code>Date</code> object. It's a simple data structure with 3 fields.
-    Also note that months start with 1 (as in ISO 8601).
+    Datepicker uses <a routerLink="../api" fragment="NgbDateStruct"><code>NgbDateStruct</code></a>
+    interface as a model and not the native <code>Date</code> object.
+    It's a simple data structure with 3 fields, but note that months start with 1 (as in ISO 8601).
   </p>
 
   <ngbd-code lang="typescript" [code]="snippets.dateStruct"></ngbd-code>
 
   <p>
-    You can tell datepicker to use the native javascript date adapter (bundled with ng-bootstrap) as in the
+    All datepicker APIs will consume <code>NgbDateStruct</code>, but will produce it's implementation
+    class <a routerLink="../api" fragment="NgbDate"><code>NgbDate</code></a> when returning dates to you.
+    It offers additional methods for easy date comparison, and using it together with
+    <a routerLink="../api" fragment="NgbCalendar"><code>NgbCalendar</code></a> will cover most
+    of the date-related calculations.
+  </p>
+
+  <ngbd-code lang="typescript" [code]="snippets.date"></ngbd-code>
+
+  <h4>Adapters</h4>
+
+  <p>
+    You can also tell datepicker to use the native javascript date adapter (bundled with ng-bootstrap) as in the
     <a routerLink="../examples" fragment="adapter">custom date adapter example</a>. For now
     the adapter works only for the form integration, so for instance <code>(ngModelChange)</code>
-    will return a native date object. All other APIs continue to use <code>NgbDateStruct</code>
+    will return a native date object. All other APIs continue to use <code>NgbDateStruct</code>.
   </p>
 
   <ngbd-code lang="typescript" [code]="snippets.nativeAdapter"></ngbd-code>

@@ -41,7 +41,13 @@ export class NgbdDatepickerOverviewComponent {
 <button (click)="d.navigateTo({year: 2048, month: 1})">Goto JAN 2048</button>
 `,
     dateStruct: `
-const date: NgbDateStruct = { day: 14, month: 7, year: 1789 }; // July, 14 1789
+const date: NgbDateStruct = { year: 1789, month: 7, day: 14 }; // July, 14 1789
+`,
+date: `
+const date: NgbDate = new NgbDate(1789, 7, 14);                // July, 14 1789
+
+date.before({ year: 1789, month: 7, day: 14 });                // compare to a structure
+date.equals(NgbDate.from({ year: 1789, month: 7, day: 14 }));  // or to another date object
 `,
     nativeAdapter: `
 // native adapter is bundled with library
@@ -86,7 +92,7 @@ providers: [{provide: NgbDateParserFormatter, useClass: YourOwnParserFormatter}]
 `,
   disablingTS: `
 // disable the 13th of each month
-const isDisabled = (date: NgbDateStruct, current: {month: number}) => day.date === 13;
+const isDisabled = (date: NgbDate, current: {month: number}) => day.date === 13;
 `,
   disablingHTML: `
 <ngb-datepicker [minDate]="{year: 2010, month: 1, day: 1}"
