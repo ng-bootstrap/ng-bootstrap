@@ -7,10 +7,12 @@ export function NGB_DATEPICKER_DATE_ADAPTER_FACTORY() {
 }
 
 /**
- * Abstract type serving as a DI token for the service converting from your application Date model to internal
- * NgbDateStruct model.
- * A default implementation converting from and to NgbDateStruct is provided for retro-compatibility,
- * but you can provide another implementation to use an alternative format, ie for using with native Date Object.
+ * An abstract class used as the DI token that does conversion between the internal
+ * datepicker NgbDateStruct model and any provided user date model, ex. string, native date, etc.
+ *
+ * Adapter is used for conversion when binding datepicker to a model with forms, ex. [(ngModel)]="userDateModel"
+ *
+ * Default implementation assumes NgbDateStruct for user model as well.
  */
 @Injectable({providedIn: 'root', useFactory: NGB_DATEPICKER_DATE_ADAPTER_FACTORY})
 export abstract class NgbDateAdapter<D> {
