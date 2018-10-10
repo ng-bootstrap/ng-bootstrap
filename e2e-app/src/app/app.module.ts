@@ -11,6 +11,7 @@ import {DatepickerAutoCloseComponent} from './datepicker/autoclose/datepicker-au
 import {DatepickerFocusComponent} from './datepicker/focus/datepicker-focus.component';
 import {ModalFocustrapComponent} from './modal/focustrap/modal-focustrap.component';
 import {DropdownAutoCloseComponent} from './dropdown/autoclose/dropdown-autoclose.component';
+import {TypeaheadFocusComponent} from './typeahead/focus/typeahead-focus.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import {DropdownAutoCloseComponent} from './dropdown/autoclose/dropdown-autoclos
     DatepickerAutoCloseComponent,
     DatepickerFocusComponent,
     DropdownAutoCloseComponent,
-    ModalFocustrapComponent
+    ModalFocustrapComponent,
+    TypeaheadFocusComponent
   ],
   imports: [
     BrowserModule,
