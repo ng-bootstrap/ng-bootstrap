@@ -128,14 +128,98 @@ describe('ngb-carousel', () => {
        discardPeriodicTasks();
      }));
 
+  it('should change slide on prev/next API calls', fakeAsync(() => {
+       const html = `
+      <ngb-carousel #c [interval]="0">
+        <ng-template ngbSlide>foo</ng-template>
+        <ng-template ngbSlide>bar</ng-template>
+        <ng-template ngbSlide id="s3">baz</ng-template>
+      </ngb-carousel>
+      <button id="next" (click)="c.next()">Next</button>
+      <button id="prev" (click)="c.prev()">Prev</button>
+      <button id="select" (click)="c.select('s3')">Select 3</button>
+    `;
+
+       const fixture = createTestComponent(html);
+       const next = fixture.nativeElement.querySelector('#next');
+       const prev = fixture.nativeElement.querySelector('#prev');
+       const select = fixture.nativeElement.querySelector('#select');
+
+       expectActiveSlides(fixture.nativeElement, [true, false, false]);
+
+       next.click();
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [false, true, false]);
+
+       prev.click();
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [true, false, false]);
+
+       select.click();
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [false, false, true]);
+     }));
+
+  it('should pause/resume slide change on API calls', fakeAsync(() => {
+       const html = `
+     <ngb-carousel #c [interval]="1000">
+       <ng-template ngbSlide>foo</ng-template>
+       <ng-template ngbSlide>bar</ng-template>
+     </ngb-carousel>
+     <button id="pause" (click)="c.pause()">Next</button>
+     <button id="cycle" (click)="c.cycle()">Prev</button>
+   `;
+
+       const fixture = createTestComponent(html);
+       const pause = fixture.nativeElement.querySelector('#pause');
+       const cycle = fixture.nativeElement.querySelector('#cycle');
+
+       expectActiveSlides(fixture.nativeElement, [true, false]);
+
+       tick(1000);
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [false, true]);
+
+       pause.click();
+       tick(1000);
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [false, true]);
+
+       cycle.click();
+       tick(1000);
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [true, false]);
+
+       discardPeriodicTasks();
+     }));
+
+  it('should mark component for check for API calls', fakeAsync(() => {
+       const html = `
+      <ngb-carousel #c [interval]="0">
+        <ng-template ngbSlide>foo</ng-template>
+        <ng-template ngbSlide>bar</ng-template>
+        <ng-template ngbSlide *ngIf="addNewSlide">baz</ng-template>
+      </ngb-carousel>
+      <button id="next" (click)="c.next(); addNewSlide = true">Next</button>
+    `;
+
+       const fixture = createTestComponent(html);
+       const next = fixture.nativeElement.querySelector('#next');
+
+       expectActiveSlides(fixture.nativeElement, [true, false]);
+
+       next.click();
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [false, true, false]);
+     }));
 
   it('should change slide on indicator click', fakeAsync(() => {
        const html = `
-      <ngb-carousel>
-        <ng-template ngbSlide>foo</ng-template>
-        <ng-template ngbSlide>bar</ng-template>
-      </ngb-carousel>
-    `;
+     <ngb-carousel>
+       <ng-template ngbSlide>foo</ng-template>
+       <ng-template ngbSlide>bar</ng-template>
+     </ngb-carousel>
+   `;
 
        const fixture = createTestComponent(html);
        const indicatorElms = fixture.nativeElement.querySelectorAll('ol.carousel-indicators > li');
@@ -646,6 +730,7 @@ describe('ngb-carousel', () => {
 
 @Component({selector: 'test-cmp', template: ''})
 class TestComponent {
+  addNewSlide = false;
   interval;
   activeSlideId;
   keyboard = true;
