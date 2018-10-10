@@ -24,6 +24,8 @@ describe('ngb-date', () => {
 
     it('should return true for the same dates', () => { expect(date.equals(new NgbDate(2016, 8, 18))).toBeTruthy(); });
 
+    it('should work with structures', () => { expect(date.equals({day: 18, month: 8, year: 2016})).toBeTruthy(); });
+
     it('should return false different dates', () => {
       expect(date.equals(new NgbDate(0, 8, 18))).toBeFalsy();
       expect(date.equals(new NgbDate(2016, 0, 18))).toBeFalsy();
@@ -43,6 +45,8 @@ describe('ngb-date', () => {
       expect(date.before(null)).toBeFalsy();
       expect(date.before(undefined)).toBeFalsy();
     });
+
+    it('should work with structures', () => { expect(date.before({day: 18, month: 9, year: 2016})).toBeTruthy(); });
 
     it('should return true if current date is before the other one', () => {
       expect(date.before(new NgbDate(2016, 8, 19))).toBeTruthy();
@@ -64,6 +68,8 @@ describe('ngb-date', () => {
       expect(date.after(null)).toBeFalsy();
       expect(date.after(undefined)).toBeFalsy();
     });
+
+    it('should work with structures', () => { expect(date.after({day: 17, month: 8, year: 2016})).toBeTruthy(); });
 
     it('should return true if current date is after the other one', () => {
       expect(date.after(new NgbDate(2016, 8, 17))).toBeTruthy();

@@ -42,14 +42,14 @@ export class NgbDate implements NgbDateStruct {
   /**
    * Checks if current date is equal to another date
    */
-  equals(other: NgbDate): boolean {
+  equals(other: NgbDateStruct): boolean {
     return other && this.year === other.year && this.month === other.month && this.day === other.day;
   }
 
   /**
    * Checks if current date is before another date
    */
-  before(other: NgbDate): boolean {
+  before(other: NgbDateStruct): boolean {
     if (!other) {
       return false;
     }
@@ -68,7 +68,7 @@ export class NgbDate implements NgbDateStruct {
   /**
    * Checks if current date is after another date
    */
-  after(other: NgbDate): boolean {
+  after(other: NgbDateStruct): boolean {
     if (!other) {
       return false;
     }
