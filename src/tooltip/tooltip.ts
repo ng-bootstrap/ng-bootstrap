@@ -15,7 +15,8 @@ import {
   TemplateRef,
   ViewContainerRef,
   ComponentFactoryResolver,
-  NgZone
+  NgZone,
+  ViewEncapsulation
 } from '@angular/core';
 import {DOCUMENT} from '@angular/common';
 
@@ -34,6 +35,7 @@ let nextId = 0;
 @Component({
   selector: 'ngb-tooltip-window',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
   host: {
     '[class]':
         '"tooltip show bs-tooltip-" + placement.split("-")[0]+" bs-tooltip-" + placement + (tooltipClass ? " " + tooltipClass : "")',

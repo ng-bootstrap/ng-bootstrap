@@ -17,7 +17,8 @@ import {
   ViewContainerRef,
   ComponentFactoryResolver,
   NgZone,
-  SimpleChanges
+  SimpleChanges,
+  ViewEncapsulation
 } from '@angular/core';
 import {DOCUMENT} from '@angular/common';
 import {fromEvent, race} from 'rxjs';
@@ -35,6 +36,7 @@ let nextId = 0;
 @Component({
   selector: 'ngb-popover-window',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
   host: {
     '[class]':
         '"popover bs-popover-" + placement.split("-")[0]+" bs-popover-" + placement + (popoverClass ? " " + popoverClass : "")',

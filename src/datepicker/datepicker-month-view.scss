@@ -1,35 +1,38 @@
-:host {
+ngb-datepicker-month-view {
   display: block;
 }
-.ngb-dp-weekday,
-.ngb-dp-week-number {
-  line-height: 2rem;
-  text-align: center;
-  font-style: italic;
-}
-.ngb-dp-weekday {
-  color: #5bc0de;
-  color: var(--info);
-}
-.ngb-dp-week {
-  border-radius: 0.25rem;
-  display: flex;
-}
-.ngb-dp-weekdays {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
-  border-radius: 0;
-}
-.ngb-dp-day,
-.ngb-dp-weekday,
-.ngb-dp-week-number {
-  width: 2rem;
-  height: 2rem;
-}
-.ngb-dp-day {
-  cursor: pointer;
 
-  &.disabled,
-  &.hidden {
-    cursor: default;
+.ngb-dp {
+  &-weekday,
+  &-week-number {
+    line-height: 2rem;
+    text-align: center;
+    font-style: italic;
+  }
+  &-weekday {
+    color: #5bc0de;
+    color: var(--info);
+  }
+  &-week {
+    border-radius: 0.25rem;
+    display: flex;
+  }
+  &-weekdays {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0;
+  }
+  &-day,
+  &-weekday,
+  &-week-number {
+    width: 2rem;
+    height: 2rem;
+  }
+  &-day {
+    cursor: pointer;
+
+    &.disabled,
+    &.hidden {
+      cursor: default;
+    }
   }
 }

@@ -8,7 +8,8 @@ import {
   ElementRef,
   OnChanges,
   OnInit,
-  SimpleChanges
+  SimpleChanges,
+  ViewEncapsulation
 } from '@angular/core';
 
 import {NgbAlertConfig} from './alert-config';
@@ -19,6 +20,7 @@ import {NgbAlertConfig} from './alert-config';
 @Component({
   selector: 'ngb-alert',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
   host: {'role': 'alert', 'class': 'alert', '[class.alert-dismissible]': 'dismissible'},
   template: `
     <button *ngIf="dismissible" type="button" class="close" aria-label="Close" i18n-aria-label="@@ngb.alert.close"
