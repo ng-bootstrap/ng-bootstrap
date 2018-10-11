@@ -1,24 +1,33 @@
 import {
+  ChangeDetectorRef,
+  ContentChild,
+  ContentChildren,
+  Directive,
+  ElementRef,
+  EventEmitter,
   forwardRef,
   Inject,
-  Directive,
   Input,
-  Output,
-  EventEmitter,
-  ElementRef,
-  ContentChild,
   NgZone,
-  Renderer2,
-  OnInit,
   OnDestroy,
-  ChangeDetectorRef
+  OnInit,
+  Output,
+  QueryList,
+  Renderer2
 } from '@angular/core';
 import {DOCUMENT} from '@angular/common';
 import {fromEvent, race, Subject, Subscription} from 'rxjs';
 import {filter, takeUntil} from 'rxjs/operators';
 import {NgbDropdownConfig} from './dropdown-config';
-import {positionElements, PlacementArray, Placement} from '../util/positioning';
+import {Placement, PlacementArray, positionElements} from '../util/positioning';
 import {Key} from '../util/key';
+
+@Directive({selector: '[ngbDropdownItem]', host: {'class': 'dropdown-item', '[class.disabled]': 'disabled'}})
+export class NgbDropdownItem {
+  constructor(public elementRef: ElementRef<HTMLElement>) {}
+
+  @Input() disabled;
+}
 
 /**
  */
@@ -29,6 +38,8 @@ import {Key} from '../util/key';
 export class NgbDropdownMenu {
   placement: Placement = 'bottom';
   isOpen = false;
+
+  @ContentChildren(NgbDropdownItem) items: QueryList<NgbDropdownItem>;
 
   constructor(
       @Inject(forwardRef(() => NgbDropdown)) public dropdown, private _elementRef: ElementRef<HTMLElement>,
@@ -104,8 +115,19 @@ export class NgbDropdownToggle extends NgbDropdownAnchor {
 /**
  * Transforms a node into a dropdown.
  */
-@Directive({selector: '[ngbDropdown]', exportAs: 'ngbDropdown', host: {'[class.show]': 'isOpen()'}})
-export class NgbDropdown implements OnInit, OnDestroy {
+@Directive({
+  selector: '[ngbDropdown]',
+  exportAs: 'ngbDropdown',
+  host: {
+    '[class.show]': 'isOpen()',
+    '(keydown.ArrowUp)': 'onKeyDown($event)',
+    '(keydown.ArrowDown)': 'onKeyDown($event)',
+    '(keydown.Home)': 'onKeyDown($event)',
+    '(keydown.End)': 'onKeyDown($event)'
+  }
+})
+export class NgbDropdown implements OnInit,
+    OnDestroy {
   private _closed$ = new Subject<void>();
   private _zoneSubscription: Subscription;
 
@@ -241,5 +263,50 @@ export class NgbDropdown implements OnInit, OnDestroy {
     if (this.isOpen() && this._menu) {
       this._menu.position(this._anchor.anchorEl, this.placement);
     }
+  }
+
+  onKeyDown(event: KeyboardEvent): boolean {
+    // only non-disabled item elements
+    const itemElements = this._menu.items.filter(item => !item.disabled).map(item => item.elementRef.nativeElement);
+
+    let position = -1;
+    let isEventFromItems = false;
+    const isEventFromToggle = this._isEventFromToggle(event);
+
+    if (!isEventFromToggle) {
+      itemElements.forEach((itemElement, index) => {
+        if (itemElement.contains(event.target as HTMLElement)) {
+          isEventFromItems = true;
+        }
+        if (itemElement === this._document.activeElement) {
+          position = index;
+        }
+      });
+    }
+
+    if (isEventFromToggle || isEventFromItems) {
+      if (!this.isOpen()) {
+        this.open();
+      }
+
+      switch (event.which) {
+        case Key.ArrowDown:
+          position = Math.min(position + 1, itemElements.length - 1);
+          break;
+        case Key.ArrowUp:
+          position = Math.max(position - 1, 0);
+          break;
+        case Key.Home:
+          position = 0;
+          break;
+        case Key.End:
+          position = itemElements.length - 1;
+          break;
+      }
+
+      itemElements[position].focus();
+    }
+
+    return false;
   }
 }
