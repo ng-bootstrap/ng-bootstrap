@@ -12,13 +12,15 @@
       {{apiDocs.className}}<span class="text-muted font-weight-light" *ngIf="apiDocs.typeParameter">&lt;{{apiDocs.typeParameter}}&gt;</span>
     </span>
     <a
-      class="github-link"
+      role="button"
+      target="_blank"
+      class="github btn btn-light"
       (click)="trackSourceClick()"
       href="https://github.com/ng-bootstrap/ng-bootstrap/tree/master/{{apiDocs.fileName}}"
-      target="_blank"
-      title="Link to Github: {{apiDocs.className}}"
+      title="Open '{{apiDocs.className}}' on Github"
     >
-      <img src="img/github.svg" alt="Link to Github {{apiDocs.className}}"/>
+      <img src="img/github.svg" class="github-icon" alt="Open '{{apiDocs.className}}' on Github"/>
+      Github
     </a>
   </h3>
   <ngbd-api-docs-badge [type]="apiDocs.type" [deprecated]="apiDocs.deprecated" [since]="apiDocs.since"></ngbd-api-docs-badge>
