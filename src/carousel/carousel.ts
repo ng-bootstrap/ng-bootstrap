@@ -147,10 +147,7 @@ export class NgbCarousel implements AfterContentChecked,
             .pipe(
                 map(() => this.interval), filter(interval => interval > 0 && this.slides.length > 0),
                 switchMap(interval => timer(interval).pipe(takeUntil(this._stop$))))
-            .subscribe(() => this._ngZone.run(() => {
-              this.next();
-              this._cd.detectChanges();
-            }));
+            .subscribe(() => this._ngZone.run(() => this.next()));
 
         this._start$.next();
       });
@@ -202,6 +199,9 @@ export class NgbCarousel implements AfterContentChecked,
       this._start$.next();
       this.activeId = selectedSlide.id;
     }
+
+    // we get here after the interval fires or any external API call like next(), prev() or select()
+    this._cd.markForCheck();
   }
 
   private _getSlideEventDirection(currentActiveSlideId: string, nextActiveSlideId: string): NgbSlideEventDirection {
