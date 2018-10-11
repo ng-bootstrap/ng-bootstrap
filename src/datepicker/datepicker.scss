@@ -1,8 +1,9 @@
-:host {
+ngb-datepicker {
   border: 1px solid #dfdfdf;
   border-radius: 0.25rem;
   display: inline-block;
 }
+
 .ngb-dp-month {
   pointer-events: none;
 }
@@ -21,7 +22,7 @@ ngb-datepicker-month-view {
   text-align: center;
 }
 
-/deep/ .ngb-dp-month {
+.ngb-dp-month {
   & + .ngb-dp-month > ngb-datepicker-month-view > .ngb-dp-week {
     padding-left: 1rem;
   }

@@ -14,7 +14,8 @@ import {
   Output,
   OnDestroy,
   ElementRef,
-  NgZone
+  NgZone,
+  ViewEncapsulation
 } from '@angular/core';
 import {NG_VALUE_ACCESSOR, ControlValueAccessor} from '@angular/forms';
 import {NgbCalendar} from './ngb-calendar';
@@ -57,6 +58,7 @@ export interface NgbDatepickerNavigateEvent {
   exportAs: 'ngbDatepicker',
   selector: 'ngb-datepicker',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
   styleUrls: ['./datepicker.scss'],
   template: `
     <ng-template #dt let-date="date" let-currentMonth="currentMonth" let-selected="selected" let-disabled="disabled" let-focused="focused">

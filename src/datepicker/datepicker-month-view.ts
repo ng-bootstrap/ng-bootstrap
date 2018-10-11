@@ -1,4 +1,4 @@
-import {Component, Input, TemplateRef, Output, EventEmitter} from '@angular/core';
+import {Component, Input, TemplateRef, Output, EventEmitter, ViewEncapsulation} from '@angular/core';
 import {MonthViewModel, DayViewModel} from './datepicker-view-model';
 import {NgbDate} from './ngb-date';
 import {NgbDatepickerI18n} from './datepicker-i18n';
@@ -7,6 +7,7 @@ import {DayTemplateContext} from './datepicker-day-template-context';
 @Component({
   selector: 'ngb-datepicker-month-view',
   host: {'role': 'grid'},
+  encapsulation: ViewEncapsulation.None,
   styleUrls: ['./datepicker-month-view.scss'],
   template: `
     <div *ngIf="showWeekdays" class="ngb-dp-week ngb-dp-weekdays bg-light">

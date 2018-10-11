@@ -1,53 +1,56 @@
-:host {
+ngb-datepicker-navigation {
   display: flex;
   align-items: center;
 }
-.ngb-dp-navigation-chevron {
-  border-style: solid;
-  border-width: 0.2em 0.2em 0 0;
-  display: inline-block;
-  width: 0.75em;
-  height: 0.75em;
-  margin-left: 0.25em;
-  margin-right: 0.15em;
-  transform: rotate(-135deg);
-}
-.right .ngb-dp-navigation-chevron {
-  transform: rotate(45deg);
-  margin-left: 0.15em;
-  margin-right: 0.25em;
-}
-.ngb-dp-arrow {
-  display: flex;
-  flex: 1 1 auto;
-  padding-right: 0;
-  padding-left: 0;
-  margin: 0;
-  width: 2rem;
-  height: 2rem;
 
-  &.right {
-    justify-content: flex-end;
+.ngb-dp {
+  &-navigation-chevron {
+    border-style: solid;
+    border-width: 0.2em 0.2em 0 0;
+    display: inline-block;
+    width: 0.75em;
+    height: 0.75em;
+    margin-left: 0.25em;
+    margin-right: 0.15em;
+    transform: rotate(-135deg);
   }
-}
-.ngb-dp-arrow-btn {
-  padding: 0 0.25rem;
-  margin: 0 0.5rem;
-  border: none;
-  background-color: transparent;
-  z-index: 1;
+  .right &-navigation-chevron {
+    transform: rotate(45deg);
+    margin-left: 0.15em;
+    margin-right: 0.25em;
+  }
+  &-arrow {
+    display: flex;
+    flex: 1 1 auto;
+    padding-right: 0;
+    padding-left: 0;
+    margin: 0;
+    width: 2rem;
+    height: 2rem;
 
-  &:focus {
-    outline: auto 1px;
+    &.right {
+      justify-content: flex-end;
+    }
   }
-}
-.ngb-dp-month-name {
-  font-size: larger;
-  height: 2rem;
-  line-height: 2rem;
-  text-align: center;
-}
-.ngb-dp-navigation-select {
-  display: flex;
-  flex: 1 1 9rem;
+  &-arrow-btn {
+    padding: 0 0.25rem;
+    margin: 0 0.5rem;
+    border: none;
+    background-color: transparent;
+    z-index: 1;
+
+    &:focus {
+      outline: auto 1px;
+    }
+  }
+  &-month-name {
+    font-size: larger;
+    height: 2rem;
+    line-height: 2rem;
+    text-align: center;
+  }
+  &-navigation-select {
+    display: flex;
+    flex: 1 1 9rem;
+  }
 }
