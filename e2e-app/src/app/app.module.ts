@@ -11,6 +11,7 @@ import {DatepickerAutoCloseComponent} from './datepicker/autoclose/datepicker-au
 import {DatepickerFocusComponent} from './datepicker/focus/datepicker-focus.component';
 import {DropdownAutoCloseComponent} from './dropdown/autoclose/dropdown-autoclose.component';
 import {ModalFocustrapComponent} from './modal/focustrap/modal-focustrap.component';
+import {PopoverAutocloseComponent} from './popover/autoclose/popover-autoclose.component';
 import {TooltipAutocloseComponent} from './tooltip/autoclose/tooltip-autoclose.component';
 import {TypeaheadFocusComponent} from './typeahead/focus/typeahead-focus.component';
 
@@ -21,6 +22,7 @@ import {TypeaheadFocusComponent} from './typeahead/focus/typeahead-focus.compone
     DatepickerFocusComponent,
     DropdownAutoCloseComponent,
     ModalFocustrapComponent,
+    PopoverAutocloseComponent,
     TooltipAutocloseComponent,
     TypeaheadFocusComponent
   ],

@@ -1,11 +1,11 @@
-<h3>Tooltip autoclose tests</h3>
+<h3>Popover autoclose tests</h3>
 
 <form id="default">
   <div class="form-group form-inline">
 
-    <button ngbTooltip="Tooltip here" #t="ngbTooltip" [autoClose]="autoClose" triggers="click"
+    <button ngbPopover="Popover here" #t="ngbPopover" [autoClose]="autoClose" triggers="click"
             type="button" class="btn btn-outline-secondary ml-2">
-      Tooltip
+      Popover
     </button>
 
     <button class="btn btn-outline-secondary ml-5" id="close" (click)="t.close()">Close</button>
