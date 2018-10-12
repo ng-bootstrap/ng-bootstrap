@@ -5,14 +5,14 @@ import {DropdownAutoClosePage} from './dropdown-autoclose.po';
 describe('Dropdown Autoclose', () => {
   let page: DropdownAutoClosePage;
 
-  beforeAll(async () => {
+  beforeAll(async() => {
     page = new DropdownAutoClosePage();
     await browser.get('#/dropdown/autoclose');
   });
 
-  beforeEach(async () => await page.reset());
+  beforeEach(async() => await page.reset());
 
-  it(`should work when autoClose === true`, async () => {
+  it(`should work when autoClose === true`, async() => {
     await page.selectAutoClose('true');
     const dropdown = page.getDropdown('#dropdown');
 
@@ -32,7 +32,7 @@ describe('Dropdown Autoclose', () => {
     expect(await page.isOpened(dropdown)).toBeFalsy(`Dropdown should be closed on date selection`);
   });
 
-  it(`should work when autoClose === false`, async () => {
+  it(`should work when autoClose === false`, async() => {
     await page.selectAutoClose('false');
     const dropdown = page.getDropdown('#dropdown');
 
@@ -50,7 +50,7 @@ describe('Dropdown Autoclose', () => {
     expect(await page.isOpened(dropdown)).toBeTruthy(`Dropdown should NOT be closed on date selection`);
   });
 
-  it(`should work when autoClose === 'outside'`, async () => {
+  it(`should work when autoClose === 'outside'`, async() => {
     await page.selectAutoClose('outside');
     const dropdown = page.getDropdown('#dropdown');
 
@@ -70,7 +70,7 @@ describe('Dropdown Autoclose', () => {
     expect(await page.isOpened(dropdown)).toBeTruthy(`Dropdown should NOT be closed on date selection`);
   });
 
-  it(`should work when autoClose === 'inside'`, async () => {
+  it(`should work when autoClose === 'inside'`, async() => {
     await page.selectAutoClose('inside');
     const dropdown = page.getDropdown('#dropdown');
 

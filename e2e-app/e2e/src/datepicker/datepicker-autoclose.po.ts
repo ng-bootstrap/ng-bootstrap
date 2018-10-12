@@ -3,17 +3,11 @@ import {expectFocused} from '../tools';
 import {DatepickerPage} from './datepicker.po';
 
 export class DatepickerAutoClosePage extends DatepickerPage {
-  async clearDate() {
-    await $('#clearDate').click();
-  }
+  async clearDate() { await $('#clearDate').click(); }
 
-  async close() {
-    await $('#close').click();
-  }
+  async close() { await $('#close').click(); }
 
-  async clickOutside() {
-    await $('#outside-button').click();
-  }
+  async clickOutside() { await $('#outside-button').click(); }
 
   async selectAutoClose(type: string) {
     await $('#autoclose-dropdown').click();
@@ -28,6 +22,7 @@ export class DatepickerAutoClosePage extends DatepickerPage {
 
     await expectFocused(body, `Nothing should be focused initially`);
     expect(await this.getDatepicker().isPresent()).toBeFalsy(`Datepicker should be closed initially`);
-    expect(await this.getDatepickerInput().getAttribute('value')).toBe('', `Datepicker input should be cleared initially`);
+    expect(await this.getDatepickerInput().getAttribute('value'))
+        .toBe('', `Datepicker input should be cleared initially`);
   }
 }

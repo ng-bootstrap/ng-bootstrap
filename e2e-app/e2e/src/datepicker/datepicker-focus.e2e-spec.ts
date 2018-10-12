@@ -18,29 +18,28 @@ const getLastOfMonth = (date: Date) => {
 describe('Datepicker', () => {
   let page: DatepickerFocusPage;
 
-  beforeAll(async () => {
+  beforeAll(async() => {
     page = new DatepickerFocusPage();
     await browser.get('#/datepicker/focus');
   });
 
-  beforeEach(async () => await page.reset());
+  beforeEach(async() => await page.reset());
 
-  it(`should not be present on the page initially`, async () => {
-    expect(await page.getDatepicker().isPresent()).toBeFalsy(`Datepicker should be closed initially`);
-  });
+  it(`should not be present on the page initially`,
+     async() => { expect(await page.getDatepicker().isPresent()).toBeFalsy(`Datepicker should be closed initially`); });
 
-  it(`should focus today when opened`, async () => {
+  it(`should focus today when opened`, async() => {
     await page.openDatepicker();
     await expectFocused(page.getToday(), `Today's date should be focused`);
   });
 
-  it(`should focus 1st day of month when opened with pre-selected date`, async () => {
-    await page.preSelectDate(); // 10 AUG 2018
+  it(`should focus 1st day of month when opened with pre-selected date`, async() => {
+    await page.preSelectDate();  // 10 AUG 2018
     await page.openDatepicker();
     await expectFocused(page.getDayElement(new Date(2018, 7, 1)), `First date of month should be focused`);
   });
 
-  it(`should be closed on toggle element click and focus it`, async () => {
+  it(`should be closed on toggle element click and focus it`, async() => {
     await page.openDatepicker();
 
     // close
@@ -51,7 +50,7 @@ describe('Datepicker', () => {
     await expectFocused(page.getToggle(), `Toggle element should stay focused after datepicker is closed`);
   });
 
-  it(`should be closed on Escape and focus nothing`, async () => {
+  it(`should be closed on Escape and focus nothing`, async() => {
     await page.openDatepicker();
 
     // close
@@ -66,7 +65,7 @@ describe('Datepicker', () => {
     await expectFocused(page.getToggle(), `Toggle element should become focused on Tab press`);
   });
 
-  it(`should be closed on date selection and focus nothing`, async () => {
+  it(`should be closed on date selection and focus nothing`, async() => {
     await page.openDatepicker();
 
     // close
@@ -81,7 +80,7 @@ describe('Datepicker', () => {
     await expectFocused(page.getToggle(), `Toggle element should become focused on Tab press`);
   });
 
-  it(`should trap focus inside opened popup (Tab)`, async () => {
+  it(`should trap focus inside opened popup (Tab)`, async() => {
     await page.openDatepicker();
 
     // today -> prev. month -> month -> year -> next month -> today -> ...
@@ -103,7 +102,7 @@ describe('Datepicker', () => {
     await expectFocused(page.getToday(), `Today's date should be focused`);
   });
 
-  it(`should trap focus inside opened popup with (Shift+Tab)`, async () => {
+  it(`should trap focus inside opened popup with (Shift+Tab)`, async() => {
     await page.openDatepicker();
 
     // today -> next month -> year -> month -> prev. month -> today -> ...
@@ -125,23 +124,25 @@ describe('Datepicker', () => {
     await expectFocused(page.getToday(), `Today's date should be focused`);
   });
 
-  it(`should change month on click and keep 'next' arrow focused`, async () => {
+  it(`should change month on click and keep 'next' arrow focused`, async() => {
     await page.openDatepicker();
     const nextMonth = page.getNextMonthArrow();
 
     // first date of current month
     const firstDate = getFirstOfMonth(new Date());
-    expect(await page.getDayElement(firstDate).isPresent()).toBeTruthy(`First date of current month should be displayed`);
+    expect(await page.getDayElement(firstDate).isPresent())
+        .toBeTruthy(`First date of current month should be displayed`);
 
     // skipping one months
     await nextMonth.click();
     await expectFocused(nextMonth, `Next month arrow should be focused`);
 
     // make sure we changed month
-    expect(await page.getDayElement(firstDate).isPresent()).toBeFalsy(`First date of current month should NOT be displayed`);
+    expect(await page.getDayElement(firstDate).isPresent())
+        .toBeFalsy(`First date of current month should NOT be displayed`);
   });
 
-  it(`should change month on click and keep 'prev' arrow focused`, async () => {
+  it(`should change month on click and keep 'prev' arrow focused`, async() => {
     await page.openDatepicker();
     const prevMonth = page.getPrevMonthArrow();
 
@@ -153,10 +154,11 @@ describe('Datepicker', () => {
     await prevMonth.click();
     await expectFocused(prevMonth, `Previous month arrow should be focused`);
 
-    expect(await page.getDayElement(lastDate).isPresent()).toBeFalsy(`Last date of current month should NOT be displayed`);
+    expect(await page.getDayElement(lastDate).isPresent())
+        .toBeFalsy(`Last date of current month should NOT be displayed`);
   });
 
-  it(`should allow focusing datepicker input`, async () => {
+  it(`should allow focusing datepicker input`, async() => {
     await page.openDatepicker();
     const datepickerInput = page.getDatepickerInput();
 
@@ -171,8 +173,8 @@ describe('Datepicker', () => {
 
   describe('Keyboard', () => {
 
-    it(`should handle focus correctly when months are changed with keyboard`, async () => {
-      await page.preSelectDate(); // 10 AUG 2018
+    it(`should handle focus correctly when months are changed with keyboard`, async() => {
+      await page.preSelectDate();  // 10 AUG 2018
       await page.openDatepicker();
 
       await expectFocused(page.getDayElement(new Date(2018, 7, 1)), `01 AUG should be focused`);
@@ -184,7 +186,7 @@ describe('Datepicker', () => {
       await expectFocused(page.getDayElement(new Date(2018, 7, 1)), `01 AUG should be focused`);
     });
 
-    it(`should focus previous day with 'ArrowLeft'`, async () => {
+    it(`should focus previous day with 'ArrowLeft'`, async() => {
       await page.openDatepicker();
 
       const yesterday = new Date();
@@ -194,7 +196,7 @@ describe('Datepicker', () => {
       await expectFocused(page.getDayElement(yesterday), `Yesterday should be focused`);
     });
 
-    it(`should focus next day with 'ArrowRight'`, async () => {
+    it(`should focus next day with 'ArrowRight'`, async() => {
       await page.openDatepicker();
 
       const tomorrow = new Date();
@@ -204,7 +206,7 @@ describe('Datepicker', () => {
       await expectFocused(page.getDayElement(tomorrow), `Tomorrow should be focused`);
     });
 
-    it(`should focus previous week with 'ArrowUp'`, async () => {
+    it(`should focus previous week with 'ArrowUp'`, async() => {
       await page.openDatepicker();
 
       const previousWeek = new Date();
@@ -214,7 +216,7 @@ describe('Datepicker', () => {
       await expectFocused(page.getDayElement(previousWeek), `Today-7 days should be focused`);
     });
 
-    it(`should focus next week with 'ArrowDown'`, async () => {
+    it(`should focus next week with 'ArrowDown'`, async() => {
       await page.openDatepicker();
 
       const nextWeek = new Date();
@@ -224,64 +226,64 @@ describe('Datepicker', () => {
       await expectFocused(page.getDayElement(nextWeek), `Today+7 days should be focused`);
     });
 
-    it(`should focus first day of month with 'Home'`, async () => {
-      await page.preSelectDate(); // 10 AUG 2018
+    it(`should focus first day of month with 'Home'`, async() => {
+      await page.preSelectDate();  // 10 AUG 2018
       await page.openDatepicker();
 
       await sendKey(Key.HOME);
       await expectFocused(page.getDayElement(new Date(2018, 7, 1)), `First day of month should be focused`);
     });
 
-    it(`should focus last day of month with 'End'`, async () => {
-      await page.preSelectDate(); // 10 AUG 2018
+    it(`should focus last day of month with 'End'`, async() => {
+      await page.preSelectDate();  // 10 AUG 2018
       await page.openDatepicker();
 
       await sendKey(Key.END);
       await expectFocused(page.getDayElement(new Date(2018, 7, 31)), `Last day of month should be focused`);
     });
 
-    it(`should focus first day of previous month with 'PageUp'`, async () => {
-      await page.preSelectDate(); // 10 AUG 2018
+    it(`should focus first day of previous month with 'PageUp'`, async() => {
+      await page.preSelectDate();  // 10 AUG 2018
       await page.openDatepicker();
 
       await sendKey(Key.PAGE_UP);
       await expectFocused(page.getDayElement(new Date(2018, 6, 1)), `First day of previous month should be focused`);
     });
 
-    it(`should focus first day of next month with 'PageDown'`, async () => {
-      await page.preSelectDate(); // 10 AUG 2018
+    it(`should focus first day of next month with 'PageDown'`, async() => {
+      await page.preSelectDate();  // 10 AUG 2018
       await page.openDatepicker();
 
       await sendKey(Key.PAGE_DOWN);
       await expectFocused(page.getDayElement(new Date(2018, 8, 1)), `First day of next month should be focused`);
     });
 
-    it(`should focus first day of previous year with 'Shift+PageUp'`, async () => {
-      await page.preSelectDate(); // 10 AUG 2018
+    it(`should focus first day of previous year with 'Shift+PageUp'`, async() => {
+      await page.preSelectDate();  // 10 AUG 2018
       await page.openDatepicker();
 
       await sendKey(Key.SHIFT, Key.PAGE_UP);
       await expectFocused(page.getDayElement(new Date(2017, 0, 1)), `First day of previous year should be focused`);
     });
 
-    it(`should focus first day of next year with 'Shift+PageDown'`, async () => {
-      await page.preSelectDate(); // 10 AUG 2018
+    it(`should focus first day of next year with 'Shift+PageDown'`, async() => {
+      await page.preSelectDate();  // 10 AUG 2018
       await page.openDatepicker();
 
       await sendKey(Key.SHIFT, Key.PAGE_DOWN);
       await expectFocused(page.getDayElement(new Date(2019, 0, 1)), `First day of next year should be focused`);
     });
 
-    it(`should focus min available day with 'Shift+Home'`, async () => {
-      await page.preSelectDate(); // 10 AUG 2018
+    it(`should focus min available day with 'Shift+Home'`, async() => {
+      await page.preSelectDate();  // 10 AUG 2018
       await page.openDatepicker();
 
       await sendKey(Key.SHIFT, Key.HOME);
       await expectFocused(page.getDayElement(new Date(2000, 0, 1)), `Min available day should be focused`);
     });
 
-    it(`should focus max available day with 'Shift+End'`, async () => {
-      await page.preSelectDate(); // 10 AUG 2018
+    it(`should focus max available day with 'Shift+End'`, async() => {
+      await page.preSelectDate();  // 10 AUG 2018
       await page.openDatepicker();
 
       await sendKey(Key.SHIFT, Key.END);

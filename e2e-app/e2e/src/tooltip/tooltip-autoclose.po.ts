@@ -2,22 +2,13 @@ import {$} from 'protractor';
 import {expectFocused} from '../tools';
 
 export class TooltipAutoClosePage {
+  async close() { await $('#close').click(); }
 
-  async close() {
-    await $('#close').click();
-  }
+  async clickOutside() { await $('#outside-button').click(); }
 
-  async clickOutside() {
-    await $('#outside-button').click();
-  }
+  getTooltip() { return $('ngb-tooltip-window'); }
 
-  getTooltip() {
-    return $('ngb-tooltip-window');
-  }
-
-  getTooltipContent() {
-    return this.getTooltip().$('div.tooltip-inner');
-  }
+  getTooltipContent() { return this.getTooltip().$('div.tooltip-inner'); }
 
   async openTooltip() {
     await $('button[ngbTooltip]').click();

@@ -3,22 +3,13 @@ import {sendKey} from '../tools';
 import {expectFocused} from '../tools';
 
 export class TypeaheadPage {
+  getInputBefore() { return $('#first'); }
 
-  getInputBefore() {
-    return $('#first');
-  }
+  getTypeaheadInput() { return $('#typeahead'); }
 
-  getTypeaheadInput() {
-    return $('#typeahead');
-  }
+  getDropdown() { return $('ngb-typeahead-window'); }
 
-  getDropdown() {
-    return $('ngb-typeahead-window');
-  }
-
-  getDropdownItems() {
-    return this.getDropdown().$$('button');
-  }
+  getDropdownItems() { return this.getDropdown().$$('button'); }
 
   async clearText() {
     const typeahead = this.getTypeaheadInput();
@@ -27,9 +18,7 @@ export class TypeaheadPage {
     await typeahead.clear();
   }
 
-  async getTypeaheadValue() {
-    return this.getTypeaheadInput().getAttribute('value');
-  }
+  async getTypeaheadValue() { return this.getTypeaheadInput().getAttribute('value'); }
 
   async reset() {
     await this.clearText();
@@ -39,7 +28,8 @@ export class TypeaheadPage {
 
     await expectFocused(body, `Nothing should be focused initially`);
     expect(await this.getDropdown().isPresent()).toBeFalsy(`Typeahead should be closed initially`);
-    expect(await this.getInputBefore().getAttribute('value')).toBe('', `Input before typeahead should be cleared initially`);
+    expect(await this.getInputBefore().getAttribute('value'))
+        .toBe('', `Input before typeahead should be cleared initially`);
     expect(await this.getTypeaheadValue()).toBe('', `Typeahead input should be cleared initially`);
   }
 }

@@ -5,14 +5,14 @@ import {TooltipAutoClosePage} from './tooltip-autoclose.po';
 describe('Tooltip Autoclose', () => {
   let page: TooltipAutoClosePage;
 
-  beforeAll(async () => {
+  beforeAll(async() => {
     page = new TooltipAutoClosePage();
     await browser.get('#/tooltip/autoclose');
   });
 
-  beforeEach(async () => await page.reset());
+  beforeEach(async() => await page.reset());
 
-  it(`should work when autoClose === true`, async () => {
+  it(`should work when autoClose === true`, async() => {
     await page.selectAutoClose('true');
 
     // escape
@@ -31,7 +31,7 @@ describe('Tooltip Autoclose', () => {
     expect(await page.getTooltip().isPresent()).toBeFalsy(`Tooltip should be closed on date selection`);
   });
 
-  it(`should work when autoClose === false`, async () => {
+  it(`should work when autoClose === false`, async() => {
     await page.selectAutoClose('false');
 
     // escape
@@ -48,7 +48,7 @@ describe('Tooltip Autoclose', () => {
     expect(await page.getTooltip().isPresent()).toBeTruthy(`Tooltip should NOT be closed on date selection`);
   });
 
-  it(`should work when autoClose === 'outside'`, async () => {
+  it(`should work when autoClose === 'outside'`, async() => {
     await page.selectAutoClose('outside');
 
     // escape
@@ -67,7 +67,7 @@ describe('Tooltip Autoclose', () => {
     expect(await page.getTooltip().isPresent()).toBeTruthy(`Tooltip should NOT be closed on date selection`);
   });
 
-  it(`should work when autoClose === 'inside'`, async () => {
+  it(`should work when autoClose === 'inside'`, async() => {
     await page.selectAutoClose('inside');
 
     // escape
