@@ -1,6 +1,6 @@
-import {DatepickerPage} from './datepicker.po';
 import {$, browser, Key} from 'protractor';
 import {expectFocused, sendKey} from '../tools';
+import {DatepickerFocusPage} from './datepicker-focus.po';
 
 const getFirstOfMonth = (date: Date) => {
   const first = new Date(date);
@@ -16,10 +16,10 @@ const getLastOfMonth = (date: Date) => {
 };
 
 describe('Datepicker', () => {
-  let page: DatepickerPage;
+  let page: DatepickerFocusPage;
 
   beforeAll(async () => {
-    page = new DatepickerPage();
+    page = new DatepickerFocusPage();
     await browser.get('#/datepicker/focus');
   });
 

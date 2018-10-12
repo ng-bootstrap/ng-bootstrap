@@ -7,12 +7,14 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {routing} from './app.routing';
 import {AppComponent} from './app.component';
 
+import {DatepickerAutoCloseComponent} from './datepicker/autoclose/datepicker-autoclose.component';
 import {DatepickerFocusComponent} from './datepicker/focus/datepicker-focus.component';
 import {ModalFocustrapComponent} from './modal/focustrap/modal-focustrap.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    DatepickerAutoCloseComponent,
     DatepickerFocusComponent,
     ModalFocustrapComponent
   ],
