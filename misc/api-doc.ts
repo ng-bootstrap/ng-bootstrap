@@ -18,12 +18,12 @@ const ANGULAR_LIFECYCLE_METHODS = [
   'ngAfterViewInit', 'ngAfterViewChecked', 'writeValue', 'registerOnChange', 'registerOnTouched', 'setDisabledState'
 ];
 
-function hasNoJSDoc(member) {
+function hasNoJSDoc(member, typeChecker) {
   if (!member.symbol) {
     return true;
   }
 
-  const jsDoc = displayPartsToString(member.symbol.getDocumentationComment());
+  const jsDoc = displayPartsToString(member.symbol.getDocumentationComment(typeChecker));
   return jsDoc.trim().length === 0;
 }
 
@@ -51,8 +51,8 @@ function isPrivate(member) {
   return (getCombinedModifierFlags(member) & ModifierFlags.Private) !== 0;
 }
 
-function isPrivateOrInternal(member) {
-  return isPrivate(member) || hasNoJSDoc(member) || isInternalMember(member);
+function isPrivateOrInternal(member, typeChecker) {
+  return isPrivate(member) || hasNoJSDoc(member, typeChecker) || isInternalMember(member);
 }
 
 function getJsDocTags(symbol) {
@@ -83,8 +83,8 @@ function getTypeParameter(program, declaration) {
     // checking if there is a default type value (ex. '= number')
     const defaultType = program.getTypeChecker().getTypeAtLocation(parameter.getDeclarations()[0].default);
 
-    // default type can be a 'unknown', base type (ex. 'number') or another symbol
-    if (defaultType && defaultType.intrinsicName !== 'unknown') {
+    // default type can be 'unknown', 'error', base type (ex. 'number') or another symbol
+    if (defaultType && !['error', 'unknown'].includes(defaultType.intrinsicName)) {
       parameterString +=
           defaultType.intrinsicName ? ` = ${defaultType.intrinsicName}` : ` = ${defaultType.symbol.getName()}`;
     }
@@ -254,7 +254,7 @@ class APIDocVisitor {
 
       } else if (
           (members[i].kind === SyntaxKind.MethodDeclaration || members[i].kind === SyntaxKind.MethodSignature) &&
-          !isAngularLifecycleHook(members[i].name.text) && !isPrivateOrInternal(members[i])) {
+          !isAngularLifecycleHook(members[i].name.text) && !isPrivateOrInternal(members[i], this.typeChecker)) {
         methods.push(Object.assign(this.visitMethodDeclaration(members[i]), releaseInfo));
       } else if (
           (members[i].kind === SyntaxKind.PropertyDeclaration || members[i].kind === SyntaxKind.PropertySignature ||
@@ -274,7 +274,7 @@ class APIDocVisitor {
   visitMethodDeclaration(method) {
     return {
       name: method.name.text,
-      description: displayPartsToString(method.symbol.getDocumentationComment()),
+      description: displayPartsToString(method.symbol.getDocumentationComment(this.typeChecker)),
       args: method.parameters ? method.parameters.map((prop) => this.visitArgument(prop)) : [],
       returnType: this.visitType(method.type)
     };
@@ -288,7 +288,7 @@ class APIDocVisitor {
       name: inArgs.length ? inArgs[0].text : property.name.text,
       defaultValue: property.initializer ? this.stringifyDefaultValue(property.initializer) : undefined,
       type: this.visitType(property),
-      description: displayPartsToString(property.symbol.getDocumentationComment())
+      description: displayPartsToString(property.symbol.getDocumentationComment(this.typeChecker))
     };
   }
 
@@ -306,7 +306,7 @@ class APIDocVisitor {
     const outArgs = outDecorator.expression.arguments;
     return {
       name: outArgs.length ? outArgs[0].text : property.name.text,
-      description: displayPartsToString(property.symbol.getDocumentationComment())
+      description: displayPartsToString(property.symbol.getDocumentationComment(this.typeChecker))
     };
   }
 
@@ -315,7 +315,7 @@ class APIDocVisitor {
       name: property.name.text,
       defaultValue: property.initializer ? this.stringifyDefaultValue(property.initializer) : undefined,
       type: this.visitType(property),
-      description: displayPartsToString(property.symbol.getDocumentationComment())
+      description: displayPartsToString(property.symbol.getDocumentationComment(this.typeChecker))
     };
   }
 
