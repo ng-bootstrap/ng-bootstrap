@@ -1,10 +1,15 @@
-'use strict';
+// tslint:disable:no-bitwise
+import {
+  createProgram,
+  Program,
+  TypeChecker,
+  SyntaxKind,
+  displayPartsToString,
+  getCombinedModifierFlags,
+  ModifierFlags
+} from 'typescript';
 
-var ts = require('typescript');
-var fs = require('fs');
-
-function getNamesCompareFn(name) {
-  name = name || 'name';
+function getNamesCompareFn(name = 'name') {
   return (a, b) => a[name].localeCompare(b[name]);
 }
 
@@ -18,15 +23,15 @@ function hasNoJSDoc(member) {
     return true;
   }
 
-  const jsDoc = ts.displayPartsToString(member.symbol.getDocumentationComment());
+  const jsDoc = displayPartsToString(member.symbol.getDocumentationComment());
   return jsDoc.trim().length === 0;
 }
 
 function isInternalMember(member) {
   if (member.jsDoc && member.jsDoc.length > 0) {
-    for (var i = 0; i < member.jsDoc.length; i++) {
+    for (let i = 0; i < member.jsDoc.length; i++) {
       if (member.jsDoc[i].tags && member.jsDoc[i].tags.length > 0) {
-        for (var j = 0; j < member.jsDoc[i].tags.length; j++) {
+        for (let j = 0; j < member.jsDoc[i].tags.length; j++) {
           if (member.jsDoc[i].tags[j].tagName.text === 'internal') {
             return true;
           }
@@ -39,11 +44,11 @@ function isInternalMember(member) {
 }
 
 function isAngularLifecycleHook(methodName) {
-  return ANGULAR_LIFECYCLE_METHODS.indexOf(methodName) >= 0;
+  return ANGULAR_LIFECYCLE_METHODS.includes(methodName);
 }
 
 function isPrivate(member) {
-  return (ts.getCombinedModifierFlags(member) & ts.ModifierFlags.Private) !== 0;
+  return (getCombinedModifierFlags(member) & ModifierFlags.Private) !== 0;
 }
 
 function isPrivateOrInternal(member) {
@@ -54,29 +59,29 @@ function getJsDocTags(symbol) {
   // clang-format off
   return !symbol ? {}
     : symbol.getJsDocTags()
-        .filter(el => ['deprecated', 'since'].includes(el.name))
-        .reduce(
-          (obj, el) => {
-            const[version, ...rest] = el.text.split(' ');
-            obj[el.name] = {version, description: rest.join(' ').trim()};
-            return obj;
-          }, {}
-        );
+      .filter(el => ['deprecated', 'since'].includes(el.name))
+      .reduce(
+        (obj, el) => {
+          const[version, ...rest] = el.text.split(' ');
+          obj[el.name] = {version, description: rest.join(' ').trim()};
+          return obj;
+        }, {}
+      );
   // clang-format on
 }
 
 function getTypeParameter(program, declaration) {
   // getting type of 'Class <T = number>'
-  var type = program.getTypeChecker().getTypeAtLocation(declaration);
+  const type = program.getTypeChecker().getTypeAtLocation(declaration);
 
   // checking if '<...>' part is present
   if (type.typeParameters) {
     // getting 'T' parameter from declaration
-    var parameter = type.typeParameters[0].symbol;
-    var parameterString = parameter.getName();
+    const parameter = type.typeParameters[0].symbol;
+    let parameterString = parameter.getName();
 
     // checking if there is a default type value (ex. '= number')
-    var defaultType = program.getTypeChecker().getTypeAtLocation(parameter.getDeclarations()[0].default);
+    const defaultType = program.getTypeChecker().getTypeAtLocation(parameter.getDeclarations()[0].default);
 
     // default type can be a 'unknown', base type (ex. 'number') or another symbol
     if (defaultType && defaultType.intrinsicName !== 'unknown') {
@@ -90,22 +95,25 @@ function getTypeParameter(program, declaration) {
 }
 
 class APIDocVisitor {
-  constructor(fileNames) {
-    this.program = ts.createProgram(fileNames, {lib: ["lib.es6.d.ts"]});
-    this.typeChecker = this.program.getTypeChecker(true);
+  private readonly program: Program;
+  private readonly typeChecker: TypeChecker;
+
+  constructor(fileNames: string[]) {
+    this.program = createProgram(fileNames, {lib: ['lib.es6.d.ts']});
+    this.typeChecker = this.program.getTypeChecker();
   }
 
-  visitSourceFile(fileName) {
-    var sourceFile = this.program.getSourceFile(fileName);
+  visitSourceFile(fileName: string) {
+    const sourceFile = this.program.getSourceFile(fileName);
 
     if (!sourceFile) {
-      throw new Error(`File doesn't exist: ${fileName}.`)
+      throw new Error(`File doesn't exist: ${fileName}.`);
     }
 
     return sourceFile.statements.reduce((directivesSoFar, statement) => {
-      if (statement.kind === ts.SyntaxKind.ClassDeclaration) {
+      if (statement.kind === SyntaxKind.ClassDeclaration) {
         return directivesSoFar.concat(this.visitClassDeclaration(fileName, statement));
-      } else if (statement.kind === ts.SyntaxKind.InterfaceDeclaration) {
+      } else if (statement.kind === SyntaxKind.InterfaceDeclaration) {
         return directivesSoFar.concat(this.visitInterfaceDeclaration(fileName, statement));
       }
 
@@ -114,12 +122,12 @@ class APIDocVisitor {
   }
 
   visitInterfaceDeclaration(fileName, interfaceDeclaration) {
-    var symbol = this.program.getTypeChecker().getSymbolAtLocation(interfaceDeclaration.name);
-    var description = ts.displayPartsToString(symbol.getDocumentationComment());
-    var {deprecated, since} = getJsDocTags(symbol);
-    var className = interfaceDeclaration.name.text;
-    var typeParameter = getTypeParameter(this.program, interfaceDeclaration.name);
-    var members = this.visitMembers(interfaceDeclaration.members);
+    const symbol = this.typeChecker.getSymbolAtLocation(interfaceDeclaration.name);
+    const description = displayPartsToString(symbol.getDocumentationComment(this.typeChecker));
+    const {deprecated, since} = getJsDocTags(symbol);
+    const className = interfaceDeclaration.name.text;
+    const typeParameter = getTypeParameter(this.program, interfaceDeclaration.name);
+    const members = this.visitMembers(interfaceDeclaration.members);
 
     return [{
       fileName,
@@ -135,14 +143,14 @@ class APIDocVisitor {
   }
 
   visitClassDeclaration(fileName, classDeclaration) {
-    var symbol = this.program.getTypeChecker().getSymbolAtLocation(classDeclaration.name);
-    var description = ts.displayPartsToString(symbol.getDocumentationComment());
-    var {deprecated, since} = getJsDocTags(symbol);
-    var className = classDeclaration.name.text;
-    var typeParameter = getTypeParameter(this.program, classDeclaration.name);
-    var decorators = classDeclaration.decorators;
-    var directiveInfo;
-    var members;
+    const symbol = this.typeChecker.getSymbolAtLocation(classDeclaration.name);
+    const description = displayPartsToString(symbol.getDocumentationComment(this.typeChecker));
+    const {deprecated, since} = getJsDocTags(symbol);
+    const className = classDeclaration.name.text;
+    const typeParameter = getTypeParameter(this.program, classDeclaration.name);
+    const decorators = classDeclaration.decorators;
+    let directiveInfo;
+    let members;
 
     // If there is no top documentation comment, consider it private, we skip it.
     if (!description) {
@@ -150,7 +158,7 @@ class APIDocVisitor {
     }
 
     if (decorators) {
-      for (var i = 0; i < decorators.length; i++) {
+      for (let i = 0; i < decorators.length; i++) {
         if (this.isDirectiveDecorator(decorators[i])) {
           directiveInfo = this.visitDirectiveDecorator(decorators[i]);
           members = this.visitMembers(classDeclaration.members);
@@ -206,12 +214,12 @@ class APIDocVisitor {
   }
 
   visitDirectiveDecorator(decorator) {
-    var selector;
-    var exportAs;
-    var properties = decorator.expression.arguments[0].properties;
-    var type = decorator.expression.expression.text;
+    let selector;
+    let exportAs;
+    const properties = decorator.expression.arguments[0].properties;
+    const type = decorator.expression.expression.text;
 
-    for (var i = 0; i < properties.length; i++) {
+    for (let i = 0; i < properties.length; i++) {
       if (properties[i].name.text === 'selector') {
         // TODO: this will only work if selector is initialized as a string literal
         selector = properties[i].initializer.text;
@@ -226,17 +234,17 @@ class APIDocVisitor {
   }
 
   visitMembers(members) {
-    var inputs = [];
-    var outputs = [];
-    var methods = [];
-    var properties = [];
-    var inputDecorator, outDecorator;
+    const inputs = [];
+    const outputs = [];
+    const methods = [];
+    const properties = [];
+    let inputDecorator, outDecorator;
 
-    for (var i = 0; i < members.length; i++) {
+    for (let i = 0; i < members.length; i++) {
       inputDecorator = this.getDecoratorOfType(members[i], 'Input');
       outDecorator = this.getDecoratorOfType(members[i], 'Output');
-      var {deprecated, since} = getJsDocTags(members[i].symbol);
-      var releaseInfo = {deprecated, since};
+      const {deprecated, since} = getJsDocTags(members[i].symbol);
+      const releaseInfo = {deprecated, since};
 
       if (inputDecorator) {
         inputs.push(Object.assign(this.visitInput(members[i], inputDecorator), releaseInfo));
@@ -245,12 +253,12 @@ class APIDocVisitor {
         outputs.push(Object.assign(this.visitOutput(members[i], outDecorator), releaseInfo));
 
       } else if (
-          (members[i].kind === ts.SyntaxKind.MethodDeclaration || members[i].kind === ts.SyntaxKind.MethodSignature) &&
+          (members[i].kind === SyntaxKind.MethodDeclaration || members[i].kind === SyntaxKind.MethodSignature) &&
           !isAngularLifecycleHook(members[i].name.text) && !isPrivateOrInternal(members[i])) {
         methods.push(Object.assign(this.visitMethodDeclaration(members[i]), releaseInfo));
       } else if (
-          (members[i].kind === ts.SyntaxKind.PropertyDeclaration ||
-           members[i].kind === ts.SyntaxKind.PropertySignature || members[i].kind === ts.SyntaxKind.GetAccessor) &&
+          (members[i].kind === SyntaxKind.PropertyDeclaration || members[i].kind === SyntaxKind.PropertySignature ||
+           members[i].kind === SyntaxKind.GetAccessor) &&
           !isPrivate(members[i]) && !isInternalMember(members[i])) {
         properties.push(Object.assign(this.visitProperty(members[i]), releaseInfo));
       }
@@ -265,41 +273,40 @@ class APIDocVisitor {
 
   visitMethodDeclaration(method) {
     return {
-      name: method.name.text, description: ts.displayPartsToString(method.symbol.getDocumentationComment()),
-          args: method.parameters ? method.parameters.map((prop) => this.visitArgument(prop)) : [],
-          returnType: this.visitType(method.type)
-    }
+      name: method.name.text,
+      description: displayPartsToString(method.symbol.getDocumentationComment()),
+      args: method.parameters ? method.parameters.map((prop) => this.visitArgument(prop)) : [],
+      returnType: this.visitType(method.type)
+    };
   }
 
-  visitArgument(arg) {
-    return { name: arg.name.text, type: this.visitType(arg) }
-  }
+  visitArgument(arg) { return {name: arg.name.text, type: this.visitType(arg)}; }
 
   visitInput(property, inDecorator) {
-    var inArgs = inDecorator.expression.arguments;
+    const inArgs = inDecorator.expression.arguments;
     return {
       name: inArgs.length ? inArgs[0].text : property.name.text,
       defaultValue: property.initializer ? this.stringifyDefaultValue(property.initializer) : undefined,
       type: this.visitType(property),
-      description: ts.displayPartsToString(property.symbol.getDocumentationComment())
+      description: displayPartsToString(property.symbol.getDocumentationComment())
     };
   }
 
   stringifyDefaultValue(node) {
     if (node.text) {
       return node.text;
-    } else if (node.kind === ts.SyntaxKind.FalseKeyword) {
+    } else if (node.kind === SyntaxKind.FalseKeyword) {
       return 'false';
-    } else if (node.kind === ts.SyntaxKind.TrueKeyword) {
+    } else if (node.kind === SyntaxKind.TrueKeyword) {
       return 'true';
     }
   }
 
   visitOutput(property, outDecorator) {
-    var outArgs = outDecorator.expression.arguments;
+    const outArgs = outDecorator.expression.arguments;
     return {
       name: outArgs.length ? outArgs[0].text : property.name.text,
-      description: ts.displayPartsToString(property.symbol.getDocumentationComment())
+      description: displayPartsToString(property.symbol.getDocumentationComment())
     };
   }
 
@@ -308,23 +315,23 @@ class APIDocVisitor {
       name: property.name.text,
       defaultValue: property.initializer ? this.stringifyDefaultValue(property.initializer) : undefined,
       type: this.visitType(property),
-      description: ts.displayPartsToString(property.symbol.getDocumentationComment())
+      description: displayPartsToString(property.symbol.getDocumentationComment())
     };
   }
 
   visitType(node) { return node ? this.typeChecker.typeToString(this.typeChecker.getTypeAtLocation(node)) : 'void'; }
 
   isDirectiveDecorator(decorator) {
-    var decoratorIdentifierText = decorator.expression.expression.text;
+    const decoratorIdentifierText = decorator.expression.expression.text;
     return decoratorIdentifierText === 'Directive' || decoratorIdentifierText === 'Component';
   }
 
   isServiceDecorator(decorator) { return decorator.expression.expression.text === 'Injectable'; }
 
   getDecoratorOfType(node, decoratorType) {
-    var decorators = node.decorators || [];
+    const decorators = node.decorators || [];
 
-    for (var i = 0; i < decorators.length; i++) {
+    for (let i = 0; i < decorators.length; i++) {
       if (decorators[i].expression.expression.text === decoratorType) {
         return decorators[i];
       }
@@ -334,12 +341,12 @@ class APIDocVisitor {
   }
 }
 
-function parseOutApiDocs(programFiles) {
-  var apiDocVisitor = new APIDocVisitor(programFiles);
+export function parseOutApiDocs(programFiles: string[]): any {
+  const apiDocVisitor = new APIDocVisitor(programFiles);
 
   return programFiles.reduce(
       (soFar, file) => {
-        var directivesInFile = apiDocVisitor.visitSourceFile(file);
+        const directivesInFile = apiDocVisitor.visitSourceFile(file);
 
         directivesInFile.forEach((directive) => { soFar[directive.className] = directive; });
 
@@ -347,5 +354,3 @@ function parseOutApiDocs(programFiles) {
       },
       {});
 }
-
-module.exports = parseOutApiDocs;

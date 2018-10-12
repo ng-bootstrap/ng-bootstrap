@@ -1,12 +1,17 @@
-const fs = require('fs');
-const he = require('he');
-const capitalize = require('./demo-gen-utils').capitalize;
+// tslint:disable:max-line-length
+import * as glob from 'glob';
+import * as fs from 'fs-extra';
+import * as he from 'he';
 
 const stackblitzUrl = 'https://run.stackblitz.com/api/angular/v1/';
 
 const packageJson = JSON.parse(fs.readFileSync('package.json').toString());
 const ngBootstrap = JSON.parse(fs.readFileSync('src/package.json').toString()).version;
 const versions = getVersions();
+
+function capitalize(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
 const ENTRY_CMPTS = {
   'modal-component': ['NgbdModalContent'],
@@ -37,7 +42,7 @@ ${generateTags(['Angular', 'Bootstrap', 'ng-bootstrap', capitalize(componentName
     <input type="hidden" name="files[main.ts]" value="${he.encode(getStackblitzTemplate('main.ts'))}">
     <input type="hidden" name="files[polyfills.ts]" value="${he.encode(getStackblitzTemplate('polyfills.ts'))}">
     <input type="hidden" name="files[styles.css]" value="${he.encode(generateDemosCSS())}">
-    <input type="hidden" name="files[app/app.module.ts]" value="${he.encode(generateAppModuleTsContent(componentName, demoName, `${basePath}.ts`))}">
+    <input type="hidden" name="files[app/app.module.ts]" value="${he.encode(generateAppModuleTsContent(componentName, demoName, basePath + '.ts'))}">
     <input type="hidden" name="files[app/app.component.ts]" value="${he.encode(getStackblitzTemplate('app/app.component.ts'))}">
     <input type="hidden" name="files[app/app.component.html]" value="${he.encode(generateAppComponentHtmlContent(componentName, demoName))}">
     <input type="hidden" name="files[app/${fileName}.ts]" value="${he.encode(codeContent)}">
@@ -96,7 +101,6 @@ function generateAppModuleTsContent(componentName, demoName, filePath) {
   const demoImport = `./${componentName}-${demoName}`;
   const entryCmptClasses = (ENTRY_CMPTS[`${componentName}-${demoName}`] || []).join(', ');
   const demoImports = entryCmptClasses ? `${demoClassName}, ${entryCmptClasses}` : demoClassName;
-
   const file = fs.readFileSync(filePath).toString();
   if (!file.includes(demoClassName)) {
     throw new Error(`Expecting demo class name in ${filePath} to be '${demoClassName}' (note the case)`);
@@ -121,9 +125,7 @@ export class AppModule {}
 }
 
 function generateTags(tags) {
-  return tags.map((tag, idx) => {
-    return `    <input type="hidden" name="tags[${idx}]" value="${tag}">`;
-}).join('\n');
+  return tags.map((tag, idx) => `    <input type="hidden" name="tags[${idx}]" value="${tag}">`).join('\n');
 }
 
 function generateDependencies() {
@@ -139,28 +141,28 @@ function generateDependencies() {
     'core-js': versions.coreJs,
     'rxjs': versions.rxjs,
     'zone.js': versions.zoneJs,
-  }
+  };
 }
 
 function getVersions() {
   return {
     angular: getVersion('@angular/core'),
     typescript: getVersion('typescript'),
-    rxjs: getVersion('rxjs'),
-    ngBootstrap,
+    rxjs: getVersion('rxjs'), ngBootstrap,
     zoneJs: getVersion('zone.js'),
     coreJs: getVersion('core-js'),
-    reflectMetadata: getVersion('reflect-metadata', JSON.parse(fs.readFileSync('node_modules/@angular/compiler-cli/package.json').toString())),
+    reflectMetadata: getVersion(
+        'reflect-metadata', JSON.parse(fs.readFileSync('node_modules/@angular/compiler-cli/package.json').toString())),
     bootstrap: getVersion('bootstrap')
   };
 }
 
-function getVersion(name, givenPackageJson) {
-  if (givenPackageJson == null) {
+function getVersion(name, givenPackageJson?: {dependencies, devDependencies}) {
+  if (!givenPackageJson) {
     givenPackageJson = packageJson;
   }
 
-  var value = givenPackageJson.dependencies[name] || givenPackageJson.devDependencies[name];
+  const value = givenPackageJson.dependencies[name] || givenPackageJson.devDependencies[name];
 
   if (!value) {
     throw `couldn't find version for ${name} in package.json`;
@@ -169,4 +171,40 @@ function getVersion(name, givenPackageJson) {
   return value;
 }
 
-module.exports = generateStackblitzContent;
+function getDemoComponentNames(): string[] {
+  const path = 'demo/src/app/components/*/';
+
+  return glob.sync(path, {})
+      .map(dir => dir.substr(0, dir.length - 1))
+      .map(dirNoEndingSlash => dirNoEndingSlash.substr(dirNoEndingSlash.lastIndexOf('/') + 1))
+      .sort();
+}
+
+function getDemoNames(componentName: string): string[] {
+  const path = `demo/src/app/components/${componentName}/demos/*/`;
+
+  return glob.sync(path, {})
+      .map(dir => dir.substr(0, dir.length - 1))
+      .map(dirNoEndingSlash => dirNoEndingSlash.substr(dirNoEndingSlash.lastIndexOf('/') + 1))
+      .sort();
+}
+
+/**
+ * Generates StackBlitzes for all demos of all components and puts
+ * resulting html files to the public folder of the demo application
+ */
+
+const base = `demo/src/public/app/components`;
+
+// removing folder
+fs.ensureDirSync(base);
+fs.emptyDirSync(base);
+
+// re-creating all stackblitzes
+getDemoComponentNames().forEach(componentName => {
+  getDemoNames(componentName).forEach(demoName => {
+    const file = `${base}/${componentName}/demos/${demoName}/stackblitz.html`;
+    fs.ensureFileSync(file);
+    fs.writeFileSync(file, generateStackblitzContent(componentName, demoName));
+  });
+});
