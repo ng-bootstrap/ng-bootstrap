@@ -2,22 +2,13 @@ import {$} from 'protractor';
 import {expectFocused} from '../tools';
 
 export class PopoverAutoClosePage {
+  async close() { await $('#close').click(); }
 
-  async close() {
-    await $('#close').click();
-  }
+  async clickOutside() { await $('#outside-button').click(); }
 
-  async clickOutside() {
-    await $('#outside-button').click();
-  }
+  getPopover() { return $('ngb-popover-window'); }
 
-  getPopover() {
-    return $('ngb-popover-window');
-  }
-
-  getPopoverContent() {
-    return this.getPopover().$('div.popover-body');
-  }
+  getPopoverContent() { return this.getPopover().$('div.popover-body'); }
 
   async openPopover() {
     await $('button[ngbPopover]').click();

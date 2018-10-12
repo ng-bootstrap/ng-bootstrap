@@ -5,14 +5,14 @@ import {PopoverAutoClosePage} from './popover-autoclose.po';
 describe('Popover Autoclose', () => {
   let page: PopoverAutoClosePage;
 
-  beforeAll(async () => {
+  beforeAll(async() => {
     page = new PopoverAutoClosePage();
     await browser.get('#/popover/autoclose');
   });
 
-  beforeEach(async () => await page.reset());
+  beforeEach(async() => await page.reset());
 
-  it(`should work when autoClose === true`, async () => {
+  it(`should work when autoClose === true`, async() => {
     await page.selectAutoClose('true');
 
     // escape
@@ -31,7 +31,7 @@ describe('Popover Autoclose', () => {
     expect(await page.getPopover().isPresent()).toBeFalsy(`Popover should be closed on date selection`);
   });
 
-  it(`should work when autoClose === false`, async () => {
+  it(`should work when autoClose === false`, async() => {
     await page.selectAutoClose('false');
 
     // escape
@@ -48,7 +48,7 @@ describe('Popover Autoclose', () => {
     expect(await page.getPopover().isPresent()).toBeTruthy(`Popover should NOT be closed on date selection`);
   });
 
-  it(`should work when autoClose === 'outside'`, async () => {
+  it(`should work when autoClose === 'outside'`, async() => {
     await page.selectAutoClose('outside');
 
     // escape
@@ -67,7 +67,7 @@ describe('Popover Autoclose', () => {
     expect(await page.getPopover().isPresent()).toBeTruthy(`Popover should NOT be closed on date selection`);
   });
 
-  it(`should work when autoClose === 'inside'`, async () => {
+  it(`should work when autoClose === 'inside'`, async() => {
     await page.selectAutoClose('inside');
 
     // escape

@@ -16,36 +16,11 @@ const routes: Routes = [
       {path: 'autoclose', component: DatepickerAutoCloseComponent}
     ]
   },
-  {
-    path: 'modal',
-    children: [
-      {path: 'focustrap', component: ModalFocustrapComponent}
-    ]
-  },
-  {
-    path: 'dropdown',
-    children: [
-      {path: 'autoclose', component: DropdownAutoCloseComponent}
-    ]
-  },
-  {
-    path: 'popover',
-    children: [
-      {path: 'autoclose', component: PopoverAutocloseComponent}
-    ]
-  },
-  {
-    path: 'tooltip',
-    children: [
-      {path: 'autoclose', component: TooltipAutocloseComponent}
-    ]
-  },
-  {
-    path: 'typeahead',
-    children: [
-      {path: 'focus', component: TypeaheadFocusComponent}
-    ]
-  }
+  {path: 'modal', children: [{path: 'focustrap', component: ModalFocustrapComponent}]},
+  {path: 'dropdown', children: [{path: 'autoclose', component: DropdownAutoCloseComponent}]},
+  {path: 'popover', children: [{path: 'autoclose', component: PopoverAutocloseComponent}]},
+  {path: 'tooltip', children: [{path: 'autoclose', component: TooltipAutocloseComponent}]},
+  {path: 'typeahead', children: [{path: 'focus', component: TypeaheadFocusComponent}]}
 ];
 
 export const routing: ModuleWithProviders = RouterModule.forRoot(routes, {useHash: true});

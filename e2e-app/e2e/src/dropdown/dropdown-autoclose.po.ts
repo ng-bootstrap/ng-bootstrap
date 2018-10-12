@@ -2,22 +2,13 @@ import {$, ElementFinder} from 'protractor';
 import {expectFocused} from '../tools';
 
 export class DropdownAutoClosePage {
+  async close() { await $('#close').click(); }
 
-  async close() {
-    await $('#close').click();
-  }
+  async clickOutside() { await $('#outside-button').click(); }
 
-  async clickOutside() {
-    await $('#outside-button').click();
-  }
+  getDropdown(dropDownSelector = '') { return $(`${dropDownSelector}[ngbDropdown]`); }
 
-  getDropdown(dropDownSelector = '') {
-    return $(`${dropDownSelector}[ngbDropdown]`);
-  }
-
-  getFirstItem(dropdown: ElementFinder) {
-    return dropdown.$$(`.dropdown-item`).first();
-  }
+  getFirstItem(dropdown: ElementFinder) { return dropdown.$$(`.dropdown-item`).first(); }
 
   async open(dropdown: ElementFinder) {
     await dropdown.$(`button[ngbDropdownToggle]`).click();

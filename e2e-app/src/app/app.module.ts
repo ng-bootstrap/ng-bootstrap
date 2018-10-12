@@ -17,21 +17,10 @@ import {TypeaheadFocusComponent} from './typeahead/focus/typeahead-focus.compone
 
 @NgModule({
   declarations: [
-    AppComponent,
-    DatepickerAutoCloseComponent,
-    DatepickerFocusComponent,
-    DropdownAutoCloseComponent,
-    ModalFocustrapComponent,
-    PopoverAutocloseComponent,
-    TooltipAutocloseComponent,
-    TypeaheadFocusComponent
+    AppComponent, DatepickerAutoCloseComponent, DatepickerFocusComponent, DropdownAutoCloseComponent,
+    ModalFocustrapComponent, PopoverAutocloseComponent, TooltipAutocloseComponent, TypeaheadFocusComponent
   ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    routing,
-    NgbModule
-  ],
+  imports: [BrowserModule, FormsModule, routing, NgbModule],
   bootstrap: [AppComponent]
 })
 export class AppModule {
