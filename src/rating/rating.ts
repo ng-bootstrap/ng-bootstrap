@@ -210,7 +210,7 @@ export class NgbRating implements ControlValueAccessor,
       return 100;
     }
     if (diff < 1 && diff > 0) {
-      return Number.parseInt((diff * 100).toFixed(2));
+      return parseInt((diff * 100).toFixed(2), 10);
     }
 
     return 0;
