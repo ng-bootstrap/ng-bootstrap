@@ -186,7 +186,7 @@ export class NgbDatepicker implements OnDestroy,
    * If nothing or invalid date provided, calendar will open with current month.
    * Use 'navigateTo(date)' as an alternative
    */
-  @Input() startDate: {year: number, month: number};
+  @Input() startDate: {year: number, month: number, day?: number};
 
   /**
    * An event fired when navigation happens and currently displayed month changes.
@@ -265,8 +265,8 @@ export class NgbDatepicker implements OnDestroy,
    * If nothing or invalid date provided calendar will open current month.
    * Use 'startDate' input as an alternative
    */
-  navigateTo(date?: {year: number, month: number}) {
-    this._service.open(NgbDate.from(date ? {...date, day: 1} : null));
+  navigateTo(date?: {year: number, month: number, day?: number}) {
+    this._service.open(NgbDate.from(date ? date.day ? date as NgbDateStruct : {...date, day: 1} : null));
   }
 
   ngOnDestroy() {

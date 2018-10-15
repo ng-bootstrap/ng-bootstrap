@@ -162,7 +162,7 @@ export class NgbInputDatepicker implements OnChanges,
    * If nothing or invalid date provided, calendar will open with current month.
    * Use 'navigateTo(date)' as an alternative
    */
-  @Input() startDate: {year: number, month: number};
+  @Input() startDate: {year: number, month: number, day?: number};
 
   /**
    * A selector specifying the element the datepicker popup should be appended to.
@@ -354,7 +354,7 @@ export class NgbInputDatepicker implements OnChanges,
    * If nothing or invalid date provided calendar will open current month.
    * Use 'startDate' input as an alternative
    */
-  navigateTo(date?: {year: number, month: number}) {
+  navigateTo(date?: {year: number, month: number, day?: number}) {
     if (this.isOpen()) {
       this._cRef.instance.navigateTo(date);
     }
