@@ -30,10 +30,22 @@ describe('Datepicker', () => {
     await expectFocused(page.getToday(), `Today's date should be focused`);
   });
 
-  it(`should focus 1st day of month when opened with pre-selected date`, async() => {
+  it(`should focus selected day when opened`, async() => {
     await page.preSelectDate();  // 10 AUG 2018
     await page.openDatepicker();
-    await expectFocused(page.getDayElement(new Date(2018, 7, 1)), `First date of month should be focused`);
+    await expectFocused(page.getDayElement(new Date(2018, 7, 10)), `Selected date should be focused`);
+  });
+
+  it(`should focus 1st day of {year, month} startDate day when opened`, async() => {
+    await page.selectStartDate('month-only');  // startDate = AUG 2018
+    await page.openDatepicker();
+    await expectFocused(page.getDayElement(new Date(2018, 7, 1)), `First day of startDate should be focused`);
+  });
+
+  it(`should focus {year, month, day} startDate day when opened`, async() => {
+    await page.selectStartDate('month-and-day');  // startDate = 10 AUG 2018
+    await page.openDatepicker();
+    await expectFocused(page.getDayElement(new Date(2018, 7, 10)), `First day of startDate should be focused`);
   });
 
   it(`should be closed on toggle element click and focus it`, async() => {
@@ -182,13 +194,16 @@ describe('Datepicker', () => {
       await page.preSelectDate();  // 10 AUG 2018
       await page.openDatepicker();
 
-      await expectFocused(page.getDayElement(new Date(2018, 7, 1)), `01 AUG should be focused`);
+      await expectFocused(page.getDayElement(new Date(2018, 7, 10)), `10 AUG should be focused`);
 
       await sendKey(Key.ARROW_UP);
-      await expectFocused(page.getDayElement(new Date(2018, 6, 25)), `25 JUL should be focused`);
+      await expectFocused(page.getDayElement(new Date(2018, 7, 3)), `03 AUG should be focused`);
+
+      await sendKey(Key.ARROW_UP);
+      await expectFocused(page.getDayElement(new Date(2018, 6, 27)), `27 JUL should be focused`);
 
       await sendKey(Key.ARROW_DOWN);
-      await expectFocused(page.getDayElement(new Date(2018, 7, 1)), `01 AUG should be focused`);
+      await expectFocused(page.getDayElement(new Date(2018, 7, 3)), `03 AUG should be focused`);
     });
 
     it(`should focus previous day with 'ArrowLeft'`, async() => {
