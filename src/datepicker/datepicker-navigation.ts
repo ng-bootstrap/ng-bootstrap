@@ -69,7 +69,7 @@ import {NgbDatepickerI18n} from './datepicker-i18n';
   template: `
   <div class="ngb-dp-arrow">
     <button type="button" class="btn btn-link ngb-dp-arrow-btn"
-            (click)="!!navigate.emit(navigation.PREV)" [disabled]="prevDisabled" tabindex="-1">
+            (click)="navigate.emit(navigation.PREV)" [disabled]="prevDisabled" tabindex="-1">
       <span class="ngb-dp-navigation-chevron"></span>
     </button>
   </div>
@@ -90,7 +90,7 @@ import {NgbDatepickerI18n} from './datepicker-i18n';
     </ng-template>
     <div class="ngb-dp-arrow right">
     <button type="button" class="btn btn-link ngb-dp-arrow-btn"
-            (click)="!!navigate.emit(navigation.NEXT)" [disabled]="nextDisabled" tabindex="-1">
+            (click)="navigate.emit(navigation.NEXT)" [disabled]="nextDisabled" tabindex="-1">
       <span class="ngb-dp-navigation-chevron"></span>
     </button>
     </div>
