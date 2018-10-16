@@ -1,16 +1,13 @@
-import {browser, Key} from 'protractor';
-import {sendKey} from '../tools';
+import {Key} from 'protractor';
+import {sendKey, openUrl} from '../tools';
 import {DropdownAutoClosePage} from './dropdown-autoclose.po';
 
 describe('Dropdown Autoclose', () => {
   let page: DropdownAutoClosePage;
 
-  beforeAll(async() => {
-    page = new DropdownAutoClosePage();
-    await browser.get('#/dropdown/autoclose');
-  });
+  beforeAll(() => page = new DropdownAutoClosePage());
 
-  beforeEach(async() => await page.reset());
+  beforeEach(async() => await openUrl('dropdown/autoclose'));
 
   it(`should work when autoClose === true`, async() => {
     await page.selectAutoClose('true');

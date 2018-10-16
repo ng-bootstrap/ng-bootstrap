@@ -3,14 +3,12 @@
 <form id="default">
   <div class="form-group form-inline">
 
-    <div id="dropdown"ngbDropdown #d="ngbDropdown" class="d-inline-block" [autoClose]="autoClose">
+    <div id="dropdown"ngbDropdown class="d-inline-block" [autoClose]="autoClose">
       <button class="btn btn-outline-secondary" ngbDropdownToggle>Dropdown</button>
       <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
         <button class="dropdown-item">Item</button>
       </div>
     </div>
-
-    <button class="btn btn-outline-secondary ml-5" id="close" (click)="d.close()">Close</button>
 
     <div ngbDropdown class="d-inline-block ml-3">
       <button class="btn btn-outline-secondary" id="autoclose-dropdown" ngbDropdownToggle>Choose Autoclose</button>

@@ -8,7 +8,7 @@ import {PopoverAutocloseComponent} from './popover/autoclose/popover-autoclose.c
 import {TooltipAutocloseComponent} from './tooltip/autoclose/tooltip-autoclose.component';
 import {TypeaheadFocusComponent} from './typeahead/focus/typeahead-focus.component';
 
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: 'datepicker',
     children: [

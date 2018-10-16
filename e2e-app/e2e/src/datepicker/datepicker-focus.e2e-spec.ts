@@ -1,5 +1,5 @@
-import {$, browser, Key} from 'protractor';
-import {expectFocused, sendKey} from '../tools';
+import {$, Key} from 'protractor';
+import {expectFocused, sendKey, openUrl} from '../tools';
 import {DatepickerFocusPage} from './datepicker-focus.po';
 
 const getFirstOfMonth = (date: Date) => {
@@ -18,12 +18,9 @@ const getLastOfMonth = (date: Date) => {
 describe('Datepicker', () => {
   let page: DatepickerFocusPage;
 
-  beforeAll(async() => {
-    page = new DatepickerFocusPage();
-    await browser.get('#/datepicker/focus');
-  });
+  beforeAll(() => page = new DatepickerFocusPage());
 
-  beforeEach(async() => await page.reset());
+  beforeEach(async() => await openUrl('datepicker/focus'));
 
   it(`should not be present on the page initially`,
      async() => { expect(await page.getDatepicker().isPresent()).toBeFalsy(`Datepicker should be closed initially`); });
