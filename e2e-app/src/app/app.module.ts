@@ -6,6 +6,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {routing} from './app.routing';
 import {AppComponent} from './app.component';
+import {NavigationComponent} from './navigation.component';
 
 import {DatepickerAutoCloseComponent} from './datepicker/autoclose/datepicker-autoclose.component';
 import {DatepickerFocusComponent} from './datepicker/focus/datepicker-focus.component';
@@ -17,8 +18,9 @@ import {TypeaheadFocusComponent} from './typeahead/focus/typeahead-focus.compone
 
 @NgModule({
   declarations: [
-    AppComponent, DatepickerAutoCloseComponent, DatepickerFocusComponent, DropdownAutoCloseComponent,
-    ModalFocustrapComponent, PopoverAutocloseComponent, TooltipAutocloseComponent, TypeaheadFocusComponent
+    AppComponent, NavigationComponent, DatepickerAutoCloseComponent, DatepickerFocusComponent,
+    DropdownAutoCloseComponent, ModalFocustrapComponent, PopoverAutocloseComponent, TooltipAutocloseComponent,
+    TypeaheadFocusComponent
   ],
   imports: [BrowserModule, FormsModule, routing, NgbModule],
   bootstrap: [AppComponent]

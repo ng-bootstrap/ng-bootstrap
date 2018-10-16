@@ -1,16 +1,13 @@
-import {browser, Key} from 'protractor';
-import {sendKey} from '../tools';
+import {Key} from 'protractor';
+import {sendKey, openUrl} from '../tools';
 import {PopoverAutoClosePage} from './popover-autoclose.po';
 
 describe('Popover Autoclose', () => {
   let page: PopoverAutoClosePage;
 
-  beforeAll(async() => {
-    page = new PopoverAutoClosePage();
-    await browser.get('#/popover/autoclose');
-  });
+  beforeAll(() => page = new PopoverAutoClosePage());
 
-  beforeEach(async() => await page.reset());
+  beforeEach(async() => await openUrl('popover/autoclose'));
 
   it(`should work when autoClose === true`, async() => {
     await page.selectAutoClose('true');

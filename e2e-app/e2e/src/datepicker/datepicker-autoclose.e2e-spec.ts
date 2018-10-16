@@ -1,16 +1,13 @@
-import {browser, Key} from 'protractor';
+import {Key} from 'protractor';
 import {DatepickerAutoClosePage} from './datepicker-autoclose.po';
-import {sendKey} from '../tools';
+import {openUrl, sendKey} from '../tools';
 
 describe('Datepicker Autoclose', () => {
   let page: DatepickerAutoClosePage;
 
-  beforeAll(async() => {
-    page = new DatepickerAutoClosePage();
-    await browser.get('#/datepicker/autoclose');
-  });
+  beforeAll(() => page = new DatepickerAutoClosePage());
 
-  beforeEach(async() => await page.reset());
+  beforeEach(async() => await openUrl('datepicker/autoclose'));
 
   it(`should work when autoClose === true`, async() => {
     await page.selectAutoClose('true');

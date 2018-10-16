@@ -1,16 +1,13 @@
-import {browser, Key} from 'protractor';
-import {sendKey} from '../tools';
+import {Key} from 'protractor';
+import {sendKey, openUrl} from '../tools';
 import {TooltipAutoClosePage} from './tooltip-autoclose.po';
 
 describe('Tooltip Autoclose', () => {
   let page: TooltipAutoClosePage;
 
-  beforeAll(async() => {
-    page = new TooltipAutoClosePage();
-    await browser.get('#/tooltip/autoclose');
-  });
+  beforeAll(() => page = new TooltipAutoClosePage());
 
-  beforeEach(async() => await page.reset());
+  beforeEach(async() => await openUrl('tooltip/autoclose'));
 
   it(`should work when autoClose === true`, async() => {
     await page.selectAutoClose('true');

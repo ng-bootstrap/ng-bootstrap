@@ -1,6 +1,6 @@
 import {TypeaheadPage} from './typeahead.po';
-import {$, browser, Key} from 'protractor';
-import {expectFocused, sendKey} from '../tools';
+import {Key} from 'protractor';
+import {expectFocused, openUrl, sendKey} from '../tools';
 
 describe('Typeahead', () => {
   let page: TypeaheadPage;
@@ -20,12 +20,9 @@ describe('Typeahead', () => {
   const expectTypeaheadValue =
       async expectedValue => { expect(await page.getTypeaheadValue()).toBe(expectedValue, 'Wrong input value'); };
 
-  beforeAll(async() => {
-    page = new TypeaheadPage();
-    await browser.get('#/typeahead/focus');
-  });
+  beforeAll(() => page = new TypeaheadPage());
 
-  beforeEach(async() => await page.reset());
+  beforeEach(async() => await openUrl('typeahead/focus'));
 
   it(`should be focused on item click`, async() => {
     await page.getTypeaheadInput().click();

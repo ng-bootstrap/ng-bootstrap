@@ -1,4 +1,4 @@
-import {browser, ElementFinder, Key, WebElement} from 'protractor';
+import {browser, ElementFinder, Key, WebElement, $} from 'protractor';
 
 /**
  * Sends keys to a currently focused element
@@ -19,4 +19,13 @@ export const sendKey = async(...keys: string[]) => {
 export const expectFocused = async(el: ElementFinder, message: string) => {
   const focused = await browser.driver.switchTo().activeElement();
   expect(await WebElement.equals(el.getWebElement(), focused)).toBeTruthy(message);
+};
+
+/**
+ * Reopens internal URL by navigating to home url and then to desired one
+ */
+export const openUrl = async(url: string) => {
+  await $(`#navigate-home`).click();
+  await $(`#navigation-dropdown`).click();
+  await $(`#navigate-${url.replace('/', '-')}`).click();
 };

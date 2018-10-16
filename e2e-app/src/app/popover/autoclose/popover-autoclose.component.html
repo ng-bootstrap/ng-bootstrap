@@ -3,12 +3,9 @@
 <form id="default">
   <div class="form-group form-inline">
 
-    <button ngbPopover="Popover here" #t="ngbPopover" [autoClose]="autoClose" triggers="click"
-            type="button" class="btn btn-outline-secondary ml-2">
+    <button ngbPopover="Popover here" [autoClose]="autoClose" triggers="click" type="button" class="btn btn-outline-secondary ml-2">
       Popover
     </button>
-
-    <button class="btn btn-outline-secondary ml-5" id="close" (click)="t.close()">Close</button>
 
     <div ngbDropdown class="d-inline-block ml-3">
       <button class="btn btn-outline-secondary" id="autoclose-dropdown" ngbDropdownToggle>Choose Autoclose</button>
