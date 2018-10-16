@@ -3,7 +3,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {DatepickerFocusComponent} from './datepicker/focus/datepicker-focus.component';
 import {DatepickerAutoCloseComponent} from './datepicker/autoclose/datepicker-autoclose.component';
 import {DropdownAutoCloseComponent} from './dropdown/autoclose/dropdown-autoclose.component';
-import {ModalFocustrapComponent} from './modal/focustrap/modal-focustrap.component';
+import {ModalFocusComponent} from './modal/focus/modal-focus.component';
 import {PopoverAutocloseComponent} from './popover/autoclose/popover-autoclose.component';
 import {TooltipAutocloseComponent} from './tooltip/autoclose/tooltip-autoclose.component';
 import {TypeaheadFocusComponent} from './typeahead/focus/typeahead-focus.component';
@@ -16,7 +16,7 @@ export const routes: Routes = [
       {path: 'autoclose', component: DatepickerAutoCloseComponent}
     ]
   },
-  {path: 'modal', children: [{path: 'focustrap', component: ModalFocustrapComponent}]},
+  {path: 'modal', children: [{path: 'focus', component: ModalFocusComponent}]},
   {path: 'dropdown', children: [{path: 'autoclose', component: DropdownAutoCloseComponent}]},
   {path: 'popover', children: [{path: 'autoclose', component: PopoverAutocloseComponent}]},
   {path: 'tooltip', children: [{path: 'autoclose', component: TooltipAutocloseComponent}]},

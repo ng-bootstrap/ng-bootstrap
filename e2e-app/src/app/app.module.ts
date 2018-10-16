@@ -11,7 +11,7 @@ import {NavigationComponent} from './navigation.component';
 import {DatepickerAutoCloseComponent} from './datepicker/autoclose/datepicker-autoclose.component';
 import {DatepickerFocusComponent} from './datepicker/focus/datepicker-focus.component';
 import {DropdownAutoCloseComponent} from './dropdown/autoclose/dropdown-autoclose.component';
-import {ModalFocustrapComponent} from './modal/focustrap/modal-focustrap.component';
+import {ModalFocusComponent} from './modal/focus/modal-focus.component';
 import {PopoverAutocloseComponent} from './popover/autoclose/popover-autoclose.component';
 import {TooltipAutocloseComponent} from './tooltip/autoclose/tooltip-autoclose.component';
 import {TypeaheadFocusComponent} from './typeahead/focus/typeahead-focus.component';
@@ -19,7 +19,7 @@ import {TypeaheadFocusComponent} from './typeahead/focus/typeahead-focus.compone
 @NgModule({
   declarations: [
     AppComponent, NavigationComponent, DatepickerAutoCloseComponent, DatepickerFocusComponent,
-    DropdownAutoCloseComponent, ModalFocustrapComponent, PopoverAutocloseComponent, TooltipAutocloseComponent,
+    DropdownAutoCloseComponent, ModalFocusComponent, PopoverAutocloseComponent, TooltipAutocloseComponent,
     TypeaheadFocusComponent
   ],
   imports: [BrowserModule, FormsModule, routing, NgbModule],
