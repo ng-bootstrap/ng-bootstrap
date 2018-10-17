@@ -1,4 +1,4 @@
-import {browser, ElementFinder, Key, WebElement, $} from 'protractor';
+import {browser, ElementFinder, Key, WebElement, $, $$} from 'protractor';
 
 /**
  * Sends keys to a currently focused element
@@ -19,6 +19,13 @@ export const sendKey = async(...keys: string[]) => {
 export const expectFocused = async(el: ElementFinder, message: string) => {
   const focused = await browser.driver.switchTo().activeElement();
   expect(await WebElement.equals(el.getWebElement(), focused)).toBeTruthy(message);
+};
+
+/**
+ * Checks that there are no open modal windows in the document
+ */
+export const expectNoOpenModals = async() => {
+  expect(await $$('ngb-modal-window').count()).toBe(0, `There should be no open modal windows left after a modal test`);
 };
 
 /**
