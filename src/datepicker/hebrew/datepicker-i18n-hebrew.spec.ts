@@ -51,8 +51,8 @@ describe('datepicker-i18n-hebrew', () => {
 
   it('should return weekday name', () => {
     expect(i18n.getWeekdayShortName(0)).toBe(undefined);
-    expect(i18n.getWeekdayShortName(1)).toBe('ב׳');
-    expect(i18n.getWeekdayShortName(7)).toBe('א׳');
+    expect(i18n.getWeekdayShortName(1)).toBe('שני');
+    expect(i18n.getWeekdayShortName(7)).toBe('ראשון');
     expect(i18n.getWeekdayShortName(8)).toBe(undefined);
   });
 
