@@ -334,6 +334,19 @@ ngb-datepicker.rtl .ngb-dp-navigation-chevron {
   margin: 0 0.25rem 0 0;
 }
 
+ngb-datepicker.hebrew {
+
+  .ngb-dp-day {
+    width: 2.75rem;
+    height: 2.75rem;
+    line-height: 1rem;
+  }
+
+  .ngb-dp-weekday {
+    width: 2.75rem;
+  }
+}
+
 ngb-carousel {
   .carousel-item img {
     width: 100%;
