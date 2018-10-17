@@ -31,23 +31,23 @@ const BROWSERS = {
     platform: 'Windows 10',
     version: '16.16299'
   },
-  'SL_EDGE15': {
+  'SL_EDGE17': {
     base: 'SauceLabs',
     browserName: 'MicrosoftEdge',
     platform: 'Windows 10',
-    version: '15.15063'
-  },
-  'SL_SAFARI10': {
-    base: 'SauceLabs',
-    browserName: 'safari',
-    platform: 'macOS 10.12',
-    version: '10'
+    version: '17.17134'
   },
   'SL_SAFARI11': {
     base: 'SauceLabs',
     browserName: 'safari',
     platform: 'macOS 10.13',
     version: '11'
+  },
+  'SL_SAFARI12': {
+    base: 'SauceLabs',
+    browserName: 'safari',
+    platform: 'macOS 10.13',
+    version: '12'
   },
 };
 
