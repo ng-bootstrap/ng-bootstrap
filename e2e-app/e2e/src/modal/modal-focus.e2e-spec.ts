@@ -100,17 +100,15 @@ describe('Modal', () => {
     await expectFocused(page.getModalDismissButton(), 'Modal dismiss button should be focused');
   });
 
-  // TODO: this is broken, must be fixed
-  // it('should keep focus trap inside the modal when clicking on content and navigating away (Shift + Tab)', async() =>
-  // {
-  //   const modal = await page.openModal('template');
-  //
-  //   // click on the header
-  //   await page.getModalHeader().click();
-  //   await expectFocused(modal, 'Modal window should be focused');
-  //
-  //   // re-focus
-  //   await sendKey(Key.SHIFT, Key.TAB);
-  //   await expectFocused(page.getModalCloseButton(), 'Modal close button should be focused');
-  // });
+  it('should keep focus trap inside the modal when clicking on content and navigating away (Shift + Tab)', async() => {
+    const modal = await page.openModal('template');
+
+    // click on the header
+    await page.getModalHeader().click();
+    await expectFocused(modal, 'Modal window should be focused');
+
+    // re-focus
+    await sendKey(Key.SHIFT, Key.TAB);
+    await expectFocused(page.getModalCloseButton(), 'Modal close button should be focused');
+  });
 });
