@@ -155,6 +155,14 @@ describe('Datepicker', () => {
         .toBeFalsy(`Last date of current month should NOT be displayed`);
   });
 
+  it(`should re-focus current element after inside click`, async() => {
+    await page.openDatepicker();
+
+    // click on weekday header
+    await page.getWeekdayElements().first().click();
+    await expectFocused(page.getToday(), `Today's date should stay focused`);
+  });
+
   it(`should allow focusing datepicker input`, async() => {
     await page.openDatepicker();
     const datepickerInput = page.getDatepickerInput();

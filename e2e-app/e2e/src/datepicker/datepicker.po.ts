@@ -12,6 +12,8 @@ export abstract class DatepickerPage {
     return this.getDatepicker().$(`div.ngb-dp-day[aria-label="${ariaLabel}"]`);
   }
 
+  getWeekdayElements() { return this.getDatepicker().$$('div.ngb-dp-weekday'); }
+
   getToday() { return this.getDayElement(new Date()); }
 
   getPrevMonthArrow() { return this.getDatepicker().$(`button[aria-label="Previous month"]`); }
