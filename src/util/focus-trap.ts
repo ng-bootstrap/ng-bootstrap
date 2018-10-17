@@ -24,8 +24,10 @@ export function getFocusableBoundaryElements(element: HTMLElement): HTMLElement[
  * @param element The element around which focus will be trapped inside
  * @param stopFocusTrap$ The observable stream. When completed the focus trap will clean up listeners
  * and free internal resources
+ * @param refocusOnClick Put the focus back to the last focused element whenever a click occurs on element (default to
+ * false)
  */
-export const ngbFocusTrap = (element: HTMLElement, stopFocusTrap$: Observable<any>) => {
+export const ngbFocusTrap = (element: HTMLElement, stopFocusTrap$: Observable<any>, refocusOnClick = false) => {
   // last focused element
   const lastFocusedElement$ =
       fromEvent<FocusEvent>(element, 'focusin').pipe(takeUntil(stopFocusTrap$), map(e => e.target));
@@ -48,7 +50,9 @@ export const ngbFocusTrap = (element: HTMLElement, stopFocusTrap$: Observable<an
       });
 
   // inside click
-  fromEvent(element, 'click')
-      .pipe(takeUntil(stopFocusTrap$), withLatestFrom(lastFocusedElement$), map(arr => arr[1] as HTMLElement))
-      .subscribe(lastFocusedElement => lastFocusedElement.focus());
+  if (refocusOnClick) {
+    fromEvent(element, 'click')
+        .pipe(takeUntil(stopFocusTrap$), withLatestFrom(lastFocusedElement$), map(arr => arr[1] as HTMLElement))
+        .subscribe(lastFocusedElement => lastFocusedElement.focus());
+  }
 };

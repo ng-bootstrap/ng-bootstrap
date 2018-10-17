@@ -1,39 +1,37 @@
+import {DOCUMENT} from '@angular/common';
 import {
-  Directive,
-  Input,
-  ComponentRef,
-  ElementRef,
-  ViewContainerRef,
-  Renderer2,
   ComponentFactoryResolver,
-  NgZone,
-  TemplateRef,
-  forwardRef,
+  ComponentRef,
+  Directive,
+  ElementRef,
   EventEmitter,
-  Output,
+  forwardRef,
+  Inject,
+  Input,
+  NgZone,
   OnChanges,
   OnDestroy,
+  Output,
+  Renderer2,
   SimpleChanges,
-  Inject
+  TemplateRef,
+  ViewContainerRef,
 } from '@angular/core';
-import {AbstractControl, ControlValueAccessor, Validator, NG_VALUE_ACCESSOR, NG_VALIDATORS} from '@angular/forms';
-import {DOCUMENT} from '@angular/common';
+import {AbstractControl, ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR, Validator} from '@angular/forms';
+import {fromEvent, NEVER, race, Subject} from 'rxjs';
+import {filter, takeUntil} from 'rxjs/operators';
 
-import {NgbDate} from './ngb-date';
-import {NgbDatepicker, NgbDatepickerNavigateEvent} from './datepicker';
-import {DayTemplateContext} from './datepicker-day-template-context';
-import {NgbDateParserFormatter} from './ngb-date-parser-formatter';
-
-import {positionElements, PlacementArray} from '../util/positioning';
 import {ngbFocusTrap} from '../util/focus-trap';
 import {Key} from '../util/key';
-import {NgbDateStruct} from './ngb-date-struct';
+import {PlacementArray, positionElements} from '../util/positioning';
 import {NgbDateAdapter} from './adapters/ngb-date-adapter';
-import {NgbCalendar} from './ngb-calendar';
+import {NgbDatepicker, NgbDatepickerNavigateEvent} from './datepicker';
+import {DayTemplateContext} from './datepicker-day-template-context';
 import {NgbDatepickerService} from './datepicker-service';
-
-import {Subject, fromEvent, race, NEVER} from 'rxjs';
-import {filter, takeUntil} from 'rxjs/operators';
+import {NgbCalendar} from './ngb-calendar';
+import {NgbDate} from './ngb-date';
+import {NgbDateParserFormatter} from './ngb-date-parser-formatter';
+import {NgbDateStruct} from './ngb-date-struct';
 
 const NGB_DATEPICKER_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -296,7 +294,7 @@ export class NgbInputDatepicker implements OnChanges,
       }
 
       // focus handling
-      ngbFocusTrap(this._cRef.location.nativeElement, this._closed$);
+      ngbFocusTrap(this._cRef.location.nativeElement, this._closed$, true);
 
       this._cRef.instance.focus();
 
