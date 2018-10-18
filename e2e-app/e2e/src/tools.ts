@@ -33,6 +33,5 @@ export const expectNoOpenModals = async() => {
  */
 export const openUrl = async(url: string) => {
   await $(`#navigate-home`).click();
-  await $(`#navigation-dropdown`).click();
   await $(`#navigate-${url.replace('/', '-')}`).click();
 };
