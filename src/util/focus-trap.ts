@@ -38,7 +38,7 @@ export const ngbFocusTrap = (element: HTMLElement, stopFocusTrap$: Observable<an
       .subscribe(([tabEvent, focusedElement]) => {
         const[first, last] = getFocusableBoundaryElements(element);
 
-        if (focusedElement === first && tabEvent.shiftKey) {
+        if ((focusedElement === first || focusedElement === element) && tabEvent.shiftKey) {
           last.focus();
           tabEvent.preventDefault();
         }
