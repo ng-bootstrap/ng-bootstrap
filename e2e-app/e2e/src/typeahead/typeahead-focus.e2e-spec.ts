@@ -30,7 +30,7 @@ describe('Typeahead', () => {
 
     await page.getDropdownItems().get(0).click();
     expectTypeaheadValue('Alabama');
-    // expectTypeaheadFocused();
+    expectTypeaheadFocused();
   });
 
   it(`should be open after a second click`, async() => {
