@@ -140,6 +140,14 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
   /**
    * Emits an event when the popover is shown
    */
+  @Input()
+  set isOpen(value: boolean) {
+    if (value) {
+      this.open();
+    } else {
+      this.close();
+    }
+  }
   @Output() shown = new EventEmitter();
   /**
    * Emits an event when the popover is hidden
@@ -263,7 +271,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
   /**
    * Returns whether or not the popover is currently being shown
    */
-  isOpen(): boolean { return this._windowRef != null; }
+  get isOpen(): boolean { return this._windowRef != null; }
 
   ngOnInit() {
     this._unregisterListenersFn = listenToTriggers(
