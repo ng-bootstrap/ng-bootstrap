@@ -899,6 +899,26 @@ describe('ngb-popover', () => {
       buttonEl.triggerEventHandler('click', {});
     });
   });
+
+  describe('openIf', () => {
+    beforeEach(() => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbPopoverModule]}); });
+
+    it('should support openIf is true', () => {
+      const fixture = createTestComponent(`<div ngbPopover="Great tip!"></div>`);
+
+      fixture.componentInstance.popover.openIf = true;
+      fixture.detectChanges();
+      expect(getWindow(fixture.nativeElement)).not.toBeNull();
+    });
+
+    it('should support openIf is false', () => {
+      const fixture = createTestComponent(`<div ngbPopover="Great tip!"></div>`);
+
+      fixture.componentInstance.popover.openIf = false;
+      fixture.detectChanges();
+      expect(getWindow(fixture.nativeElement)).toBeNull();
+    });
+  });
 });
 
 @Component({selector: 'test-cmpt', template: ``})
