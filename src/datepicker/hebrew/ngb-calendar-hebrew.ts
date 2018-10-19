@@ -1,5 +1,5 @@
 import {NgbDate} from '../ngb-date';
-import {NgbCalendar, NgbPeriod} from '../ngb-calendar';
+import {fromJSDate, NgbCalendar, NgbPeriod, toJSDate} from '../ngb-calendar';
 import {Injectable} from '@angular/core';
 import {isNumber} from '../../util/util';
 import {
@@ -70,4 +70,14 @@ export class NgbCalendarHebrew extends NgbCalendar {
   }
 
   getToday(): NgbDate { return fromGregorian(new Date()); }
+
+  /**
+   * @since 3.4.0
+   */
+  toGregorian(date: NgbDate): NgbDate { return fromJSDate(toGregorian(date)); }
+
+  /**
+   * @since 3.4.0
+   */
+  fromGregorian(date: NgbDate): NgbDate { return fromGregorian(toJSDate(date)); }
 }

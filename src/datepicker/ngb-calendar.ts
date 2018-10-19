@@ -2,10 +2,10 @@ import {NgbDate} from './ngb-date';
 import {Injectable} from '@angular/core';
 import {isInteger} from '../util/util';
 
-function fromJSDate(jsDate: Date) {
+export function fromJSDate(jsDate: Date) {
   return new NgbDate(jsDate.getFullYear(), jsDate.getMonth() + 1, jsDate.getDate());
 }
-function toJSDate(date: NgbDate) {
+export function toJSDate(date: NgbDate) {
   const jsDate = new Date(date.year, date.month - 1, date.day, 12);
   // this is done avoid 30 -> 1930 conversion
   if (!isNaN(jsDate.getTime())) {

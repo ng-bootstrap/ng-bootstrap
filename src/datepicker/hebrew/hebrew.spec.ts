@@ -55,7 +55,9 @@ describe('hebrew', () => {
   describe('hebrewNumerals', () => {
     it('should return Hebrew numerals', () => {
       expect(hebrewNumerals(3)).toEqual('ג׳');
+      expect(hebrewNumerals(11)).toEqual('י״א');
       expect(hebrewNumerals(15)).toEqual('ט״ו');
+      expect(hebrewNumerals(19)).toEqual('י״ט');
       expect(hebrewNumerals(5777)).toEqual('תשע״ז');
     });
   });
