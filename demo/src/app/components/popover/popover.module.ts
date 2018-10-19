@@ -6,6 +6,7 @@ import { NgbdComponentsSharedModule, NgbdDemoList } from '../shared';
 import { NgbdApiPage } from '../shared/api-page/api.component';
 import { NgbdExamplesPage } from '../shared/examples-page/examples.component';
 import { NgbdPopoverAutoclose } from './demos/autoclose/popover-autoclose';
+import { NgbdPopoverOpenif } from './demos/openif/popover-openif';
 import { NgbdPopoverBasic } from './demos/basic/popover-basic';
 import { NgbdPopoverConfig } from './demos/config/popover-config';
 import { NgbdPopoverContainer } from './demos/container/popover-container';
@@ -21,6 +22,7 @@ const DEMO_DIRECTIVES = [
   NgbdPopoverTplwithcontext,
   NgbdPopoverTriggers,
   NgbdPopoverAutoclose,
+  NgbdPopoverOpenif,
   NgbdPopoverVisibility,
   NgbdPopoverContainer,
   NgbdPopoverCustomclass,
@@ -51,6 +53,12 @@ const DEMOS = {
     type: NgbdPopoverAutoclose,
     code: require('!!raw-loader!./demos/autoclose/popover-autoclose'),
     markup: require('!!raw-loader!./demos/autoclose/popover-autoclose.html')
+  },
+  openIf: {
+    title: 'Open or close based on boolean value',
+    type: NgbdPopoverOpenif,
+    code: require('!!raw-loader!./demos/openif/popover-openif'),
+    markup: require('!!raw-loader!./demos/openif/popover-openif.html')
   },
   tplwithcontext: {
     title: 'Context and manual triggers',

@@ -1,0 +1,22 @@
+<p>You can set the popover to open or close based on a boolean value.</p>
+
+<form>
+  <div class="form-group">
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="openIf" id="openTrue" [value]="true" [(ngModel)]="openIf">
+      <label class="form-check-label" for="openTrue">
+        open
+      </label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="openIf" id="openFalse" [value]="false" [(ngModel)]="openIf">
+      <label class="form-check-label" for="openFalse">
+        close
+      </label>
+    </div>
+  </div>
+  <div class="form-group">
+    <input type="text" class="form-control" ngbPopover="What a great tip!" popoverTitle="Pop title" [autoClose]="false"
+      triggers="manual" [openIf]="openIf">
+  </div>
+</form>
