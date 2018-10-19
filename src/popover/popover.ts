@@ -138,7 +138,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
    */
   @Input() popoverClass: string;
   /**
-   * Emits an event when the popover is shown
+   * Shows or hides the popover based on a boolean value
    */
   @Input()
   set openIf(value: boolean) {
@@ -148,6 +148,9 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
       this.close();
     }
   }
+  /**
+   * Emits an event when the popover is shown
+   */
   @Output() shown = new EventEmitter();
   /**
    * Emits an event when the popover is hidden
