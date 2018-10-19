@@ -1,3 +1,16 @@
+<a name="3.3.1"></a>
+## [3.3.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/3.0.0...3.3.1) (2018-10-19)
+
+
+### Bug Fixes
+
+* **carousel:** change slides on prev/next/select API calls with OnPush ([99049e7](https://github.com/ng-bootstrap/ng-bootstrap/commit/99049e7)), closes [#2776](https://github.com/ng-bootstrap/ng-bootstrap/issues/2776) [#2766](https://github.com/ng-bootstrap/ng-bootstrap/issues/2766)
+* **modal:** modal won't refocus last focused element ([ce7e626](https://github.com/ng-bootstrap/ng-bootstrap/commit/ce7e626)), closes [#2779](https://github.com/ng-bootstrap/ng-bootstrap/issues/2779) [#2798](https://github.com/ng-bootstrap/ng-bootstrap/issues/2798)
+* **modal:** focus stays trapped with Shift+Tab ([67651be](https://github.com/ng-bootstrap/ng-bootstrap/commit/67651be)), closes [#2807](https://github.com/ng-bootstrap/ng-bootstrap/issues/2807) [#2718](https://github.com/ng-bootstrap/ng-bootstrap/issues/2718)
+* **typeahead:** bring focus back to input on item click ([2b3c898](https://github.com/ng-bootstrap/ng-bootstrap/commit/2b3c898)), closes [#2805](https://github.com/ng-bootstrap/ng-bootstrap/issues/2805) [#2792](https://github.com/ng-bootstrap/ng-bootstrap/issues/2792)
+
+
+
 <a name="3.3.0"></a>
 # [3.3.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/3.2.2...3.3.0) (2018-10-05)
 
