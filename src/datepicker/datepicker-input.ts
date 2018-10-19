@@ -303,7 +303,10 @@ export class NgbInputDatepicker implements OnChanges,
         this._ngZone.runOutsideAngular(() => {
 
           const escapes$ = fromEvent<KeyboardEvent>(this._document, 'keyup')
-                               .pipe(takeUntil(this._closed$), filter(e => e.which === Key.Escape));
+                               .pipe(
+                                   takeUntil(this._closed$),
+                                   // tslint:disable-next-line:deprecation
+                                   filter(e => e.which === Key.Escape));
 
           let outsideClicks$;
           if (this.autoClose === true || this.autoClose === 'outside') {

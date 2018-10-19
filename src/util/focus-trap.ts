@@ -34,7 +34,12 @@ export const ngbFocusTrap = (element: HTMLElement, stopFocusTrap$: Observable<an
 
   // 'tab' / 'shift+tab' stream
   fromEvent<KeyboardEvent>(element, 'keydown')
-      .pipe(takeUntil(stopFocusTrap$), filter(e => e.which === Key.Tab), withLatestFrom(lastFocusedElement$))
+      .pipe(
+          takeUntil(stopFocusTrap$),
+          // tslint:disable:deprecation
+          filter(e => e.which === Key.Tab),
+          // tslint:enable:deprecation
+          withLatestFrom(lastFocusedElement$))
       .subscribe(([tabEvent, focusedElement]) => {
         const[first, last] = getFocusableBoundaryElements(element);
 

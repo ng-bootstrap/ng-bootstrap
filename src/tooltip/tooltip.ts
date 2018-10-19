@@ -207,7 +207,10 @@ export class NgbTooltip implements OnInit, OnDestroy {
           requestAnimationFrame(() => justOpened = false);
 
           const escapes$ = fromEvent<KeyboardEvent>(this._document, 'keyup')
-                               .pipe(takeUntil(this.hidden), filter(event => event.which === Key.Escape));
+                               .pipe(
+                                   takeUntil(this.hidden),
+                                   // tslint:disable-next-line:deprecation
+                                   filter(event => event.which === Key.Escape));
 
           const clicks$ = fromEvent<MouseEvent>(this._document, 'click')
                               .pipe(

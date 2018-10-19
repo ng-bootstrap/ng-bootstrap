@@ -180,7 +180,10 @@ export class NgbDropdown implements OnInit, OnDestroy {
     if (this.autoClose) {
       this._ngZone.runOutsideAngular(() => {
         const escapes$ = fromEvent<KeyboardEvent>(this._document, 'keyup')
-                             .pipe(takeUntil(this._closed$), filter(event => event.which === Key.Escape));
+                             .pipe(
+                                 takeUntil(this._closed$),
+                                 // tslint:disable-next-line:deprecation
+                                 filter(event => event.which === Key.Escape));
 
         const clicks$ = fromEvent<MouseEvent>(this._document, 'click')
                             .pipe(takeUntil(this._closed$), filter(event => this._shouldCloseFromClick(event)));
