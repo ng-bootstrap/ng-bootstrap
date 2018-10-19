@@ -141,10 +141,12 @@ export class NgbRating implements ControlValueAccessor,
   handleClick(value: number) { this.update(this.resettable && this.rate === value ? 0 : value); }
 
   handleKeyDown(event: KeyboardEvent) {
-    if (Key[toString(event.which)]) {
+    // tslint:disable-next-line:deprecation
+    const {which} = event;
+    if (Key[toString(which)]) {
       event.preventDefault();
 
-      switch (event.which) {
+      switch (which) {
         case Key.ArrowDown:
         case Key.ArrowLeft:
           this.update(this.rate - 1);

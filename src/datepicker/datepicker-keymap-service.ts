@@ -22,8 +22,10 @@ export class NgbDatepickerKeyMapService {
   }
 
   processKey(event: KeyboardEvent) {
-    if (Key[toString(event.which)]) {
-      switch (event.which) {
+    // tslint:disable-next-line:deprecation
+    const {which} = event;
+    if (Key[toString(which)]) {
+      switch (which) {
         case Key.PageUp:
           this._service.focusMove(event.shiftKey ? 'y' : 'm', -1);
           break;

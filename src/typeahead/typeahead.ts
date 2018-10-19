@@ -243,8 +243,10 @@ export class NgbTypeahead implements ControlValueAccessor,
       return;
     }
 
-    if (Key[toString(event.which)]) {
-      switch (event.which) {
+    // tslint:disable-next-line:deprecation
+    const {which} = event;
+    if (Key[toString(which)]) {
+      switch (which) {
         case Key.ArrowDown:
           event.preventDefault();
           this._windowRef.instance.next();
