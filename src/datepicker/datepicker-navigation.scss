@@ -14,11 +14,13 @@ ngb-datepicker-navigation {
     margin-right: 0.15em;
     transform: rotate(-135deg);
   }
+
   .right &-navigation-chevron {
     transform: rotate(45deg);
     margin-left: 0.15em;
     margin-right: 0.25em;
   }
+
   &-arrow {
     display: flex;
     flex: 1 1 auto;
@@ -31,7 +33,9 @@ ngb-datepicker-navigation {
     &.right {
       justify-content: flex-end;
     }
+
   }
+
   &-arrow-btn {
     padding: 0 0.25rem;
     margin: 0 0.5rem;
@@ -40,15 +44,25 @@ ngb-datepicker-navigation {
     z-index: 1;
 
     &:focus {
-      outline: auto 1px;
+      outline-width: 1px;
+      outline-style: auto;
+    }
+
+    // IE workaround, as outline-style: auto doesn't work
+    @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+      &:focus {
+        outline-style: solid;
+      }
     }
   }
+
   &-month-name {
     font-size: larger;
     height: 2rem;
     line-height: 2rem;
     text-align: center;
   }
+
   &-navigation-select {
     display: flex;
     flex: 1 1 9rem;
