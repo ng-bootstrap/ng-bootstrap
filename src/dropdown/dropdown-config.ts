@@ -10,4 +10,5 @@ import {PlacementArray} from '../util/positioning';
 export class NgbDropdownConfig {
   autoClose: boolean | 'outside' | 'inside' = true;
   placement: PlacementArray = ['bottom-left', 'bottom-right', 'top-left', 'top-right'];
+  container: null | 'body';
 }

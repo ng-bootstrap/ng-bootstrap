@@ -12,6 +12,7 @@ import {TooltipPositionComponent} from './tooltip/position/tooltip-position.comp
 import {TypeaheadAutoCloseComponent} from './typeahead/autoclose/typeahead-autoclose.component';
 import {TypeaheadFocusComponent} from './typeahead/focus/typeahead-focus.component';
 import {TypeaheadValidationComponent} from './typeahead/validation/typeahead-validation.component';
+import {DropdownPositionComponent} from './dropdown/position/dropdown-position.component';
 
 
 export const routes: Routes = [
@@ -22,8 +23,13 @@ export const routes: Routes = [
       {path: 'autoclose', component: DatepickerAutoCloseComponent}
     ]
   },
-  {path: 'modal', children: [{path: 'focus', component: ModalFocusComponent}]},
-  {path: 'dropdown', children: [{path: 'autoclose', component: DropdownAutoCloseComponent}]},
+  {path: 'modal', children: [{path: 'focus', component: ModalFocusComponent}]}, {
+    path: 'dropdown',
+    children: [
+      {path: 'autoclose', component: DropdownAutoCloseComponent},
+      {path: 'position', component: DropdownPositionComponent}
+    ]
+  },
   {path: 'popover', children: [{path: 'autoclose', component: PopoverAutocloseComponent}]}, {
     path: 'tooltip',
     children: [

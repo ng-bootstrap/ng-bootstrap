@@ -5,10 +5,9 @@
 
 <form id="default" (contextmenu)="$event.preventDefault()">
   <div class="form-group form-inline">
-
-    <div id="dropdown" #d="ngbDropdown" ngbDropdown class="d-inline-block" [autoClose]="autoClose">
+    <div id="dropdown" #d="ngbDropdown" ngbDropdown class="d-inline-block" [autoClose]="autoClose" [container]="container">
       <button class="btn btn-outline-secondary" ngbDropdownToggle>Dropdown</button>
-      <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+      <div id="dropdownMenuId" ngbDropdownMenu aria-labelledby="dropdownBasic1">
         <button class="dropdown-item">Item</button>
       </div>
     </div>
@@ -21,8 +20,10 @@
         <button class="dropdown-item" id="autoclose-outside" (click)="autoClose = 'outside'">'Outside'</button>
         <button class="dropdown-item" id="autoclose-inside" (click)="autoClose = 'inside'">'Inside'</button>
       </div>
+      <button class="btn btn-outline-secondary ml-1" id="container-null" (click)="container = null">Append dropdown to widget</button>
+      <button class="btn btn-outline-secondary ml-1" id="container-body" (click)="container = 'body'">Append dropdown to body</button>
     </div>
 
-    <button class="btn btn-outline-secondary ml-1" id="outside-button">Outside button</button>
+    <button class="btn btn-outline-secondary ml-3" id="outside-button">Outside button</button>
   </div>
 </form>
