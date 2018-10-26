@@ -268,7 +268,7 @@ describe('ngb-rating', () => {
     expect(fixture.componentInstance.rate).toBe(3);
   });
 
-  fit('handles correctly `selection` mode', () => {
+  it('handles correctly `selection` mode', () => {
     const html = `<ngb-rating [(rate)]="rate" [mode]="'selection'" max="5" [readonly]="true"></ngb-rating>`;
     const fixture = createTestComponent(html);
     const el = fixture.debugElement;
