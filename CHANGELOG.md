@@ -1,3 +1,23 @@
+<a name="4.0.0"></a>
+# [4.0.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/3.3.1...4.0.0) (2018-10-26)
+
+This release is fully compatible with Angular ^7.0.0.
+All widgets have view encapsulation set to NONE now and this should help with custom themes / CSS overrides.
+
+### Bug Fixes
+
+* **datepicker:** display correct Hebrew numerals for numbers 11-19 ([5a5c6da](https://github.com/ng-bootstrap/ng-bootstrap/commit/5a5c6da))
+* **datepicker:** focus correct day when opening popup ([838693a](https://github.com/ng-bootstrap/ng-bootstrap/commit/838693a)), closes [#2136](https://github.com/ng-bootstrap/ng-bootstrap/issues/2136) [#2796](https://github.com/ng-bootstrap/ng-bootstrap/issues/2796)
+* **datepicker:** use longer weekday format in Hebrew ([107ea44](https://github.com/ng-bootstrap/ng-bootstrap/commit/107ea44))
+
+
+### Features
+
+* **datepicker:** add Gregorian conversion methods to Hebrew calendar ([565cfda](https://github.com/ng-bootstrap/ng-bootstrap/commit/565cfda))
+* switch viewEncapsulation to NONE for all widgets ([a25d5d2](https://github.com/ng-bootstrap/ng-bootstrap/commit/a25d5d2)), closes [#1875](https://github.com/ng-bootstrap/ng-bootstrap/issues/1875) [#2564](https://github.com/ng-bootstrap/ng-bootstrap/issues/2564) [#2784](https://github.com/ng-bootstrap/ng-bootstrap/issues/2784)
+
+
+
 <a name="3.3.1"></a>
 ## [3.3.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/3.0.0...3.3.1) (2018-10-19)
 
