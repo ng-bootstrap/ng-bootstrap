@@ -268,6 +268,21 @@ describe('ngb-rating', () => {
     expect(fixture.componentInstance.rate).toBe(3);
   });
 
+  fit('handles correctly `selection` mode', () => {
+    const html = `<ngb-rating [(rate)]="rate" [mode]="'selection'" max="5" [readonly]="true"></ngb-rating>`;
+    const fixture = createTestComponent(html);
+    const el = fixture.debugElement;
+    const rating = el.query(By.directive(NgbRating)).children[0];
+
+    // 3/5
+    expect(getState(el)).toEqual([true, true, true, false, false]);
+
+    rating.triggerEventHandler('mouseenter', {});
+    fixture.detectChanges();
+    expect(getState(el)).toEqual([true, true, true, false, false]);
+    expect(fixture.componentInstance.rate).toBe(3);
+  });
+
   it('should set pointer cursor on stars when not readonly', () => {
     const fixture = TestBed.createComponent(NgbRating);
     fixture.detectChanges();
