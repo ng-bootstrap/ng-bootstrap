@@ -1,9 +1,18 @@
 // tslint:disable:max-line-length
-import * as glob from 'glob';
 import * as fs from 'fs-extra';
+import * as glob from 'glob';
 import * as he from 'he';
+import {basename, dirname, join, normalize} from 'path';
+
+/**
+ * Generates StackBlitzes for all demos of all components and puts
+ * resulting html files to the public folder of the demo application
+ */
 
 const stackblitzUrl = 'https://run.stackblitz.com/api/angular/v1/';
+const sourceBase = 'demo/src/app/components';
+const componentGlob = `${sourceBase}/*`;
+const generationBase = `demo/src/public/app/components`;
 
 const packageJson = JSON.parse(fs.readFileSync('package.json').toString());
 const ngBootstrap = JSON.parse(fs.readFileSync('src/package.json').toString()).version;
@@ -13,42 +22,47 @@ function capitalize(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-const ENTRY_CMPTS = {
-  'modal-component': ['NgbdModalContent'],
-  'modal-stacked': ['NgbdModal1Content', 'NgbdModal2Content'],
-  'modal-focus': ['NgbdModalConfirm', 'NgbdModalConfirmAutofocus']
-};
-
-function generateDemosCSS() {
-  return fs.readFileSync('demo/src/style/demos.css').toString();
+function getContent(path) {
+  return fs.readFileSync(path).toString();
 }
 
-function generateStackblitzContent(componentName, demoName) {
-  const fileName = `${componentName}-${demoName}`;
-  const basePath = `demo/src/app/components/${componentName}/demos/${demoName}/${fileName}`;
+function generateDemosCSS() {
+  return getContent('demo/src/style/demos.css');
+}
 
-  const codeContent = fs.readFileSync(`${basePath}.ts`).toString();
-  const markupContent = fs.readFileSync(`${basePath}.html`).toString();
+function generateInput(filename, content) {
+  return `<input type="hidden" name="${filename}" value="${he.encode(content)}">`;
+}
+
+function generateStackblitzContent(demo) {
+  const {widget, demoName, demoSelector, demoClass, component, template, entryComponents} = demo;
+
+  const basePath = join('demo/src/app/components', widget, component);
+  const componentPath = `files[app/${basename(component)}]`;
+  const templatePath = `files[app/${basename(template)}]`;
+
+  const componentName = capitalize(widget);
+  const codeContent = getContent(basePath);
+  const markupContent = getContent(join('demo/src/app/components', widget, template));
 
   return `<!DOCTYPE html>
 <html lang="en">
 <body>
   <form id="mainForm" method="post" action="${stackblitzUrl}">
     <input type="hidden" name="description" value="Example usage of the ${componentName} widget from https://ng-bootstrap.github.io">
-${generateTags(['Angular', 'Bootstrap', 'ng-bootstrap', capitalize(componentName)])}
+    ${generateTags(['Angular', 'Bootstrap', 'ng-bootstrap', componentName])}
 
-    <input type="hidden" name="files[.angular-cli.json]" value="${he.encode(getStackblitzTemplate('.angular-cli.json'))}">
-    <input type="hidden" name="files[index.html]" value="${he.encode(generateIndexHtml())}">
-    <input type="hidden" name="files[main.ts]" value="${he.encode(getStackblitzTemplate('main.ts'))}">
-    <input type="hidden" name="files[polyfills.ts]" value="${he.encode(getStackblitzTemplate('polyfills.ts'))}">
-    <input type="hidden" name="files[styles.css]" value="${he.encode(generateDemosCSS())}">
-    <input type="hidden" name="files[app/app.module.ts]" value="${he.encode(generateAppModuleTsContent(componentName, demoName, basePath + '.ts'))}">
-    <input type="hidden" name="files[app/app.component.ts]" value="${he.encode(getStackblitzTemplate('app/app.component.ts'))}">
-    <input type="hidden" name="files[app/app.component.html]" value="${he.encode(generateAppComponentHtmlContent(componentName, demoName))}">
-    <input type="hidden" name="files[app/${fileName}.ts]" value="${he.encode(codeContent)}">
-    <input type="hidden" name="files[app/${fileName}.html]" value="${he.encode(markupContent)}">
-
-    <input type="hidden" name="dependencies" value="${he.encode(JSON.stringify(generateDependencies()))}">
+    ${generateInput('files[.angular-cli.json]', getStackblitzTemplate('.angular-cli.json'))}
+    ${generateInput('files[index.html]', generateIndexHtml())}
+    ${generateInput('files[main.ts]', getStackblitzTemplate('main.ts'))}
+    ${generateInput('files[polyfills.ts]', getStackblitzTemplate('polyfills.ts'))}
+    ${generateInput('files[styles.css]', generateDemosCSS())}
+    ${generateInput('files[app/app.module.ts]', generateAppModuleTsContent(widget, demoName, demoClass, basename(component, '.ts'), entryComponents))}
+    ${generateInput('files[app/app.component.ts]', getStackblitzTemplate('app/app.component.ts'))}
+    ${generateInput('files[app/app.component.html]', generateAppComponentHtmlContent(demoSelector))}
+    ${generateInput(componentPath, codeContent)}
+    ${generateInput(templatePath, markupContent)}
+    ${generateInput('dependencies', JSON.stringify(generateDependencies()))}
   </form>
   <script>document.getElementById("mainForm").submit();</script>
 </body>
@@ -56,7 +70,7 @@ ${generateTags(['Angular', 'Bootstrap', 'ng-bootstrap', capitalize(componentName
 }
 
 function getStackblitzTemplate(path) {
-  return fs.readFileSync(`misc/stackblitz-builder-templates/${path}`).toString();
+  return getContent(`misc/stackblitz-builder-templates/${path}`);
 }
 
 function generateIndexHtml() {
@@ -66,7 +80,7 @@ function generateIndexHtml() {
   <head>
     <title>ng-bootstrap demo</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/${versions.bootstrap}/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/themes/prism.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/${versions.prismjs}/themes/prism.css" />
   </head>
 
   <body>
@@ -76,19 +90,14 @@ function generateIndexHtml() {
 </html>`;
 }
 
-function generateAppComponentHtmlContent(componentName, demoName) {
-  const demoSelector = `ngbd-${componentName}-${demoName}`;
-
+function generateAppComponentHtmlContent(demoSelector) {
   return `
 <div class="container-fluid">
-
   <hr>
-
   <p>
     This is a demo example forked from the <strong>ng-bootstrap</strong> project: Angular powered Bootstrap.
     Visit <a href="https://ng-bootstrap.github.io/" target="_blank">https://ng-bootstrap.github.io</a> for more widgets and demos.
   </p>
-
   <hr>
 
   <${demoSelector}></${demoSelector}>
@@ -96,15 +105,9 @@ function generateAppComponentHtmlContent(componentName, demoName) {
 `;
 }
 
-function generateAppModuleTsContent(componentName, demoName, filePath) {
-  const demoClassName = `Ngbd${capitalize(componentName)}${capitalize(demoName)}`;
-  const demoImport = `./${componentName}-${demoName}`;
-  const entryCmptClasses = (ENTRY_CMPTS[`${componentName}-${demoName}`] || []).join(', ');
-  const demoImports = entryCmptClasses ? `${demoClassName}, ${entryCmptClasses}` : demoClassName;
-  const file = fs.readFileSync(filePath).toString();
-  if (!file.includes(demoClassName)) {
-    throw new Error(`Expecting demo class name in ${filePath} to be '${demoClassName}' (note the case)`);
-  }
+function generateAppModuleTsContent(widget, demoName, demoClass, componentPath, entryComponents) {
+  const entryCmptClasses = entryComponents.join(', ');
+  const demoImports = entryCmptClasses ? `${demoClass}, ${entryCmptClasses}` : demoClass;
 
   return `
 import { NgModule } from '@angular/core';
@@ -113,7 +116,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
-import { ${demoImports} } from '${demoImport}';
+import { ${demoImports} } from './${componentPath}';
 
 @NgModule({
   imports: [BrowserModule, FormsModule, ReactiveFormsModule, HttpClientModule, NgbModule],
@@ -151,9 +154,10 @@ function getVersions() {
     rxjs: getVersion('rxjs'), ngBootstrap,
     zoneJs: getVersion('zone.js'),
     coreJs: getVersion('core-js'),
-    reflectMetadata: getVersion(
-        'reflect-metadata', JSON.parse(fs.readFileSync('node_modules/@angular/compiler-cli/package.json').toString())),
-    bootstrap: getVersion('bootstrap')
+    reflectMetadata:
+        getVersion('reflect-metadata', JSON.parse(getContent('node_modules/@angular/compiler-cli/package.json'))),
+    bootstrap: getVersion('bootstrap'),
+    prismjs: getVersion('prismjs').replace(/[~\^]/, '')
   };
 }
 
@@ -165,46 +169,108 @@ function getVersion(name, givenPackageJson?: {dependencies, devDependencies}) {
   const value = givenPackageJson.dependencies[name] || givenPackageJson.devDependencies[name];
 
   if (!value) {
-    throw `couldn't find version for ${name} in package.json`;
+    console.error(`[Stackblitz generation error] couldn't find version for ${name} in package.json`);
+    process.exit(1);
   }
 
   return value;
 }
 
-function getDemoComponentNames(): string[] {
-  const path = 'demo/src/app/components/*/';
-
-  return glob.sync(path, {})
-      .map(dir => dir.substr(0, dir.length - 1))
-      .map(dirNoEndingSlash => dirNoEndingSlash.substr(dirNoEndingSlash.lastIndexOf('/') + 1))
-      .sort();
+function getWidgetList(files): any[] {
+  return glob.sync(files, {ignore: ['demo/src/app/components/shared']})
+      .map(dir => basename(dir))
+      .sort()
+      .map(widget => ({widget, moduleName: `${widget}.module.ts`}));
 }
 
-function getDemoNames(componentName: string): string[] {
-  const path = `demo/src/app/components/${componentName}/demos/*/`;
-
-  return glob.sync(path, {})
-      .map(dir => dir.substr(0, dir.length - 1))
-      .map(dirNoEndingSlash => dirNoEndingSlash.substr(dirNoEndingSlash.lastIndexOf('/') + 1))
-      .sort();
-}
-
-/**
- * Generates StackBlitzes for all demos of all components and puts
- * resulting html files to the public folder of the demo application
+/*
+ * TODO: maybe use a regexp library in here (XRegExp ?)
+ * Bunch of regular expressions to dynamically:
+ * - extract the list of demos (looking up for DEMO_DIRECTIVES)
+ * - get the actual filesystem path from the EcmaScript import of each demo directive
+ * - get a demo selector from the demo component class
+ * - get the template filesystem path for a component from the @Component decorator
+ * - read entryComponent classes from the @NgModule decorator
  */
+const DEMOS_LIST_DIRECTIVES = /^const DEMO_DIRECTIVES\s*=\s*\[([^\]]*)[\s\S]*\];/im;
+const DEMOS_DIRECTIVES_IMPORT = demo =>
+    new RegExp(`^import \\{[\\s,\\w]*${demo}[\\s,\\w]*\\}[\\s]*from[\\s]*['"]([^'"]*)['"];`, 'im');
+const DEMO_METADATA = demo => new RegExp(
+    `^@Component\\(\\{[\\s\\S\\w\\:]*selector\\:[\\s]*['"]([^'"]*)['"][\\s\\S\\w\\:]*templateUrl\\:[\\s]*['"]([^'"]*)['"][\\s\\S\\w\\:]*export class ${demo}`,
+    'mi');
+const ENTRY_COMPONENTS = /^[\s\S]*entryComponents\s*\:[\s\S]*\[([\s\S]*)\]/im;
 
-const base = `demo/src/public/app/components`;
 
 // removing folder
-fs.ensureDirSync(base);
-fs.emptyDirSync(base);
+fs.ensureDirSync(generationBase);
+fs.emptyDirSync(generationBase);
 
 // re-creating all stackblitzes
-getDemoComponentNames().forEach(componentName => {
-  getDemoNames(componentName).forEach(demoName => {
-    const file = `${base}/${componentName}/demos/${demoName}/stackblitz.html`;
+for (const { widget, moduleName } of getWidgetList(componentGlob)) {
+  // Let's get a list of Demo Directive
+  // const DEMO_DIRECTIVES = [ ... ]
+  const moduleContent = getContent(`${sourceBase}/${widget}/${moduleName}`);
+  const match = DEMOS_LIST_DIRECTIVES.exec(moduleContent);
+  let demoComponents;
+  if (match && match[1]) {
+    demoComponents = match[1].split(',').map(demo => demo.trim());
+  } else {
+    console.error(
+        `[Stackblitz generation error] No demo directive has been found in '${moduleName}' for widget ${widget}
+module should have a declared variable 'const DEMO_DIRECTIVES = [...]'`);
+    process.exit(1);
+  }
+
+  // Is there any entryComponents defined in the module which are not ...DEMO[_\w*]?_DIRECTIVES
+  let entryComponentsDef: string[] = [];
+  let list;
+  try {
+    [, list, ] = ENTRY_COMPONENTS.exec(moduleContent);
+    if (list) {
+      entryComponentsDef = list.split(',').map(cpt => cpt.trim()).filter(cpt => !!cpt.length && !cpt.startsWith('...'));
+    }
+  } catch (error) {
+  }
+
+  for (const demo of demoComponents) {
+    let componentPath;
+    let demoSelector;
+    let template;
+    let componentContent;
+    let entryComponents = [];
+    try {
+      // Reading actual filepath/filename foreach demo from ECMA import
+      [, componentPath, ] = DEMOS_DIRECTIVES_IMPORT(demo).exec(moduleContent);
+
+      // Reading demo selector, and template filepath/filename from @Component decorator
+      componentContent = getContent(`demo/src/app/components/${widget}/${componentPath}.ts`);
+      [, demoSelector, template, ] = DEMO_METADATA(demo).exec(componentContent);
+    } catch (error) {
+      console.error(`[Stackblitz generation error] ${error}`);
+      process.exit(1);
+    }
+
+    const demoName = basename(dirname(componentPath));
+
+    // Checking for entryComponent definition that need to be included in final demo module
+    entryComponentsDef.forEach(eCpt => {
+      if (componentContent.includes(eCpt)) {
+        entryComponents.push(eCpt);
+      }
+    });
+
+    // Actual generation
+    const file = `${generationBase}/${widget}/demos/${demoName}/stackblitz.html`;
     fs.ensureFileSync(file);
-    fs.writeFileSync(file, generateStackblitzContent(componentName, demoName));
-  });
-});
+    const content = generateStackblitzContent({
+      widget,
+      entryComponents,
+      demoName,
+      demoSelector,
+      demoClass: demo,
+      component: `${componentPath}.ts`,
+      template: normalize(`./demos/${demoName}/${template}`),
+    });
+    fs.writeFileSync(file, content);
+  }
+}
