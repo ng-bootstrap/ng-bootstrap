@@ -306,6 +306,32 @@ describe('ngb-accordion', () => {
     });
   });
 
+  it('should not toggle panel when panel control is clicked', () => {
+    const textHtml = `
+      <ngb-accordion activeIds="open_me" (panelChange)='changeCallback'>
+        <ngb-panel id="open_me">
+        <ng-template ngbPanelControl>
+          <div id='panelControl'>
+            <button class='btn btn-primary' (click)='genericControl()'>Do Something</button>
+          </div>
+        </ng-template>
+        </ngb-panel>
+      </ngb-accordion>
+    `;
+    const fixture = createTestComponent(textHtml);
+    const controlButton: HTMLButtonElement =
+        <HTMLButtonElement>fixture.nativeElement.querySelector('#panelControl > button');
+
+    spyOn(fixture.componentInstance, 'genericControl');
+    spyOn(fixture.componentInstance, 'changeCallback');
+
+
+    controlButton.click();
+
+    expect(fixture.componentInstance.genericControl).toHaveBeenCalled();
+    expect(fixture.componentInstance.changeCallback).not.toHaveBeenCalled();
+  });
+
   it('should have the appropriate CSS visibility classes', () => {
     const fixture = TestBed.createComponent(TestComponent);
     fixture.detectChanges();
@@ -771,4 +797,5 @@ class TestComponent {
   ];
   changeCallback = (event: NgbPanelChangeEvent) => {};
   preventDefaultCallback = (event: NgbPanelChangeEvent) => { event.preventDefault(); };
+  genericControl = () => {};
 }

@@ -25,6 +25,15 @@ export class NgbPanelTitle {
 }
 
 /**
+ * This directive should be used to wrap accordion panel title controls that need to contain HTML markup or other
+ * directives.
+ */
+@Directive({selector: 'ng-template[ngbPanelControl]'})
+export class NgbPanelControl {
+  constructor(public templateRef: TemplateRef<any>) {}
+}
+
+/**
  * This directive must be used to wrap accordion panel content.
  */
 @Directive({selector: 'ng-template[ngbPanelContent]'})
@@ -68,9 +77,11 @@ export class NgbPanel implements AfterContentChecked {
   @Input() type: string;
 
   titleTpl: NgbPanelTitle | null;
+  titleControlTpl: NgbPanelControl | null;
   contentTpl: NgbPanelContent | null;
 
   @ContentChildren(NgbPanelTitle, {descendants: false}) titleTpls: QueryList<NgbPanelTitle>;
+  @ContentChildren(NgbPanelControl, {descendants: false}) titleControlTpls: QueryList<NgbPanelControl>;
   @ContentChildren(NgbPanelContent, {descendants: false}) contentTpls: QueryList<NgbPanelContent>;
 
   ngAfterContentChecked() {
@@ -79,6 +90,7 @@ export class NgbPanel implements AfterContentChecked {
     // Without {descendants: false} we are hitting bugs described in:
     // https://github.com/ng-bootstrap/ng-bootstrap/issues/2240
     this.titleTpl = this.titleTpls.first;
+    this.titleControlTpl = this.titleControlTpls.first;
     this.contentTpl = this.contentTpls.first;
   }
 }
@@ -121,6 +133,7 @@ export interface NgbPanelChangeEvent {
               [attr.aria-expanded]="panel.isOpen" [attr.aria-controls]="panel.id">
               {{panel.title}}<ng-template [ngTemplateOutlet]="panel.titleTpl?.templateRef"></ng-template>
             </button>
+            <ng-template [ngTemplateOutlet]='panel.titleControlTpl?.templateRef'></ng-template>
           </h5>
         </div>
         <div id="{{panel.id}}" role="tabpanel" [attr.aria-labelledby]="panel.id + '-header'"

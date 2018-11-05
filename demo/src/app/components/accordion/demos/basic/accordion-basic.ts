@@ -5,4 +5,8 @@ import { Component } from '@angular/core';
   templateUrl: './accordion-basic.html'
 })
 export class NgbdAccordionBasic {
+
+  doSomething() {
+    console.log('did it!');
+  }
 }
