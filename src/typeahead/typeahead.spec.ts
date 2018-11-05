@@ -462,6 +462,31 @@ describe('ngb-typeahead', () => {
          tick(250);
          expectWindowResults(compiled, ['+one', 'one more']);
        }));
+    it('should stick model on click outside', async(() => {
+         const fixture = createTestComponent('<input [(ngModel)]="model" [ngbTypeahead]="find" />');
+         const compiled = fixture.nativeElement;
+         const el = fixture.nativeElement;
+
+         const comp = fixture.componentInstance;
+         expectInputValue(el, '');
+
+         fixture.whenStable()
+             .then(() => {
+               changeInput(compiled, 'o');
+               fixture.detectChanges();
+
+               expectInputValue(el, 'o');
+               comp.model = 'a';
+               fixture.detectChanges();
+               return fixture.whenStable();
+             })
+             .then(() => {
+               fixture.nativeElement.click();
+               fixture.detectChanges();
+               return fixture.whenStable();
+             })
+             .then(() => { expectInputValue(el, 'a'); });
+       }));
   });
 
   describe('with async typeahead function', () => {

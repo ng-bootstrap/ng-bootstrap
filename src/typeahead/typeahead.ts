@@ -224,7 +224,6 @@ export class NgbTypeahead implements ControlValueAccessor,
   dismissPopup() {
     if (this.isPopupOpen()) {
       this._closePopup();
-      this._writeInputValue(this._inputValueBackup);
     }
   }
 
@@ -271,6 +270,7 @@ export class NgbTypeahead implements ControlValueAccessor,
           event.preventDefault();
           this._resubscribeTypeahead.next(null);
           this.dismissPopup();
+          this._writeInputValue(this._inputValueBackup);
           break;
       }
     }
