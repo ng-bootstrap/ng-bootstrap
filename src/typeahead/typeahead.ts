@@ -224,7 +224,9 @@ export class NgbTypeahead implements ControlValueAccessor,
   dismissPopup() {
     if (this.isPopupOpen()) {
       this._closePopup();
-      this._writeInputValue(this._inputValueBackup);
+      if (this._elementRef.nativeElement.value !== '') {
+        this._writeInputValue(this._inputValueBackup);
+      }
     }
   }
 
