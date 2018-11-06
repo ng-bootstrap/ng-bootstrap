@@ -15,7 +15,7 @@ import {
   TemplateRef,
   ViewContainerRef
 } from '@angular/core';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl, FormControl} from '@angular/forms';
 import {Observable, BehaviorSubject, Subscription, fromEvent} from 'rxjs';
 import {positionElements, PlacementArray} from '../util/positioning';
 import {NgbTypeaheadWindow, ResultTemplateContext} from './typeahead-window';
@@ -313,6 +313,12 @@ export class NgbTypeahead implements ControlValueAccessor,
     this._selectResult(result);
     this._closePopup();
     this._elementRef.nativeElement.focus();
+
+    const model = this._injector.get(NgControl);
+    const formControl = model.control as FormControl;
+    if (formControl.updateOn === 'blur') {
+      formControl.patchValue(this._elementRef.nativeElement.value);
+    }
   }
 
   private _showHint() {
