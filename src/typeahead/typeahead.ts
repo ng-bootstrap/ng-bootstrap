@@ -314,11 +314,13 @@ export class NgbTypeahead implements ControlValueAccessor,
     this._closePopup();
     this._elementRef.nativeElement.focus();
 
-    const model = this._injector.get(NgControl);
-    const formControl = model.control as FormControl;
-    if (formControl.updateOn === 'blur') {
-      formControl.patchValue(this._elementRef.nativeElement.value);
-    }
+    try {
+      const model = this._injector.get(NgControl);
+      const formControl = model.control as FormControl;
+      if (formControl.updateOn === 'blur') {
+        formControl.patchValue(this._elementRef.nativeElement.value);
+      }
+    } catch { }
   }
 
   private _showHint() {
