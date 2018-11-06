@@ -240,9 +240,11 @@ export class NgbTypeahead implements ControlValueAccessor,
     this._resubscribeTypeahead.next(null);
     if (event) {
       const relatedTarget = event.relatedTarget as HTMLElement;
-      if (relatedTarget && relatedTarget.tagName.toLowerCase() === 'button'
-        && relatedTarget.classList.contains('dropdown-item')) {
-        return;
+      if (relatedTarget) {
+        const isButton = relatedTarget.tagName.toLowerCase() === 'button';
+        if (isButton && relatedTarget.classList.contains('dropdown-item')) {
+          return;
+        }
       }
     }
     this._onTouched();
