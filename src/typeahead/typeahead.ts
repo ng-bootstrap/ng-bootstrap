@@ -13,7 +13,8 @@ import {
   Output,
   Renderer2,
   TemplateRef,
-  ViewContainerRef
+  ViewContainerRef,
+  Type
 } from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl, FormControl} from '@angular/forms';
 import {Observable, BehaviorSubject, Subscription, fromEvent} from 'rxjs';
@@ -315,7 +316,7 @@ export class NgbTypeahead implements ControlValueAccessor,
     this._elementRef.nativeElement.focus();
 
     try {
-      const ngModel = this._injector.get(NgControl);
+      const ngModel = this._injector.get<NgControl>(NgControl as Type<NgControl>);
       const formControl = ngModel.control as FormControl;
       if (formControl.updateOn === 'blur') {
         formControl.patchValue(this._elementRef.nativeElement.value);
