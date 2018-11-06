@@ -320,7 +320,9 @@ export class NgbTypeahead implements ControlValueAccessor,
       if (formControl.updateOn === 'blur') {
         formControl.patchValue(this._elementRef.nativeElement.value);
       }
-    } catch { }
+    } catch {
+      // do nothing
+    }
   }
 
   private _showHint() {
