@@ -1,0 +1,21 @@
+<p>
+  It is also possible to customize the display of the option inside the input field, using the function:
+</p>
+
+<ngbd-code [snippet]="snippets.inputFormatter.api"></ngbd-code>
+
+<p>
+  There are some caveats though:
+</p>
+<ul>
+  <li>technically, since this is an input element, you can use only a string representation, no custom template</li>
+  <li>by design, since the input field is used both to display the formatted option and to edit the search term, some formatting might disturb the initial value you will use for your next search, by adding inappropriate content. For instance, if your search function can accept only plain color names (like <code>red</code>), but your input formatting function adds the corresponding hex code (like <code>red (#FF0000)</code>), you will have troubles when you start searching again, since you will have to remove the <code>(#FF0000)</code> part. Therefore this kind of formatting is more suitable either for a necessary conversion from complex object to a string, or for simple transformations (like changing the case for instance)</li>
+</ul>
+
+<p>Pass it this way in the template: </p>
+
+<ngbd-code [snippet]="snippets.inputFormatter.template"></ngbd-code>
+
+<p>And define it in the component: </p>
+
+<ngbd-code [snippet]="snippets.inputFormatter.component"></ngbd-code>

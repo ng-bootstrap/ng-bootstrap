@@ -1,0 +1,34 @@
+<ng-template
+  #displayResult
+  let-color="result"
+  let-term="term"
+>
+  <div class="middle">
+    <div class="color-chip" [ngStyle]="{'background-color': '#' + color.hexCode}"></div>
+    <ngb-highlight [result]="color.name" [term]="term"></ngb-highlight><span> ({{color.hexCode}})</span>
+  </div>
+</ng-template>
+
+<div id="demo">
+  <label for="typeahead">Pick color: </label>
+  <input
+    id="typeahead"
+    type="text"
+    class="form-control"
+    [(ngModel)]="model"
+    [ngbTypeahead]="initializeTypeahead"
+
+    [resultTemplate]="displayResult"
+    [inputFormatter]="inputFormatter"
+  />
+  <div class="spacer"></div>
+</div>
+
+<p>Our typeahead is a component that:</p>
+<ul>
+  <li>takes a user input as a string: try typing <code>bl</code></li>
+  <li>pipes this input to an <code>Observable</code> chain to get a list of options</li>
+  <li>handles the display of the popup containing the options: you should see the colors <code>black</code> and <code>blue</code></li>
+  <li>handles the navigation through the options: try using the keyboard arrows up and down</li>
+  <li>handles the selection of one option: press <kbd>Enter</kbd> to select the highlighted option, or click directly on it, and see it appear in the input field</li>
+</ul>

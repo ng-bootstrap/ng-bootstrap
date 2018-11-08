@@ -1,0 +1,43 @@
+<p>
+  You don't have to feed our typeahead with string items to make it work. It's actually better if you use your actual data model, since that is what gets committed when selecting an option.
+</p>
+
+<p>
+  However the requirement is to be able to <em>display</em> those options, be it in the list of the popup or inside the input field.
+</p>
+
+
+
+<h5>Providing a string</h5>
+
+<p>
+  The option item can be displayed from a string. In this case, use the function:
+</p>
+
+<ngbd-code [snippet]="snippets.resultFormatter.api"></ngbd-code>
+
+<p>Pass it this way in the template: </p>
+
+<ngbd-code [snippet]="snippets.resultFormatter.template"></ngbd-code>
+
+<p>And define it in the component: </p>
+
+<ngbd-code [snippet]="snippets.resultFormatter.component"></ngbd-code>
+
+
+
+<h5>Providing a template</h5>
+
+<p>
+  Sometimes displaying a simple string is not enough. In that case, you can use a template by using the property <code>resultTemplate</code>, which expects a template reference.
+</p>
+
+<p>
+  The template receives in its context:
+</p>
+<ul>
+  <li>the option item, as <code>result</code></li>
+  <li>the input field content (the search term), as <code>term</code></li>
+</ul>
+
+<ngbd-code [snippet]="snippets.resultTemplate.html"></ngbd-code>

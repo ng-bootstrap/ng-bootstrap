@@ -1,0 +1,27 @@
+<p>
+  Our typeahead is designed around a single <code>Observable</code>, to which it subscribes in order to get an updated list of options and update its popup accordingly.
+</p>
+
+<p>
+  The choice of an observable is due to the nature of the data processing: often updated and potentially asynchronous. Observables are designed mainly for this use case, and bring a common API to handle data flow no matter if the processing is asynchronous or synchronous.
+</p>
+
+
+
+<h5>What is the <code>Observable</code> contract?</h5>
+
+<p>
+  Our typeahead expects to receive an <code>Observable</code> which spawns lists of items of any type.
+</p>
+
+<p>
+  The elements of the list are formatted to be displayed in the popup, as well as in the input when an option is selected.
+</p>
+
+<p>
+  Selecting an option commits the original item to the data model of the typeahead. If your option items can be converted to proper strings out of the box, you don't <em>need</em> to customize the formatting (but you still can). Otherwise, you will have to (more on that in below sections).
+</p>
+
+<p>
+  The typeahead updates the display of its popup according to the length of the options list it receives: if it's empty it won't display the popup, and if it's not empty it will display the popup with that list of options.
+</p>

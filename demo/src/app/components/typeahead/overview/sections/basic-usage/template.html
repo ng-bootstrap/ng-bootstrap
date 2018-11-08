@@ -1,0 +1,43 @@
+<p>
+  To set up a typeahead instance, you need to pass an initialization function to it. This function must return an <code>Observable</code> spawning lists of options: this is how you control the list of displayed options.
+</p>
+
+<p>
+  Pass it this way on the template side:
+</p>
+
+<ngbd-code [snippet]="snippets.observableSetup.template"></ngbd-code>
+
+<p>
+  And define it this way on the component side:
+</p>
+
+<ngbd-code [snippet]="snippets.observableSetup.component"></ngbd-code>
+
+
+
+<h5>The basic <code>Observable</code> chain</h5>
+
+<p>
+  In this basic example we will simply use a statically defined and synchronously available set of data — color names:
+</p>
+
+<ngbd-code [snippet]="snippets.data"></ngbd-code>
+
+<p>
+  The function used to provide the <code>Observable</code> to the typeahead receives a single argument: another <code>Observable</code>. It spawns strings corresponding to the current content of the <code>input</code>&nbsp;<em>element</em>, every time there is an <code>input</code>&nbsp;<em>event</em> on it.
+</p>
+
+<p>
+  You can therefore use this input as a search term and apply filtering for example:
+</p>
+
+<ngbd-code [snippet]="snippets.observable.mapping"></ngbd-code>
+
+<p>
+  Here we return all the colors when the search term is empty, otherwise we return all the colors starting with it.
+</p>
+
+<p>
+  A basic typeahead instance will still require some processing like debouncing, search term length threshold, etc., while more advanced use cases will require even further usage of the <code>Observable</code> API.
+</p>

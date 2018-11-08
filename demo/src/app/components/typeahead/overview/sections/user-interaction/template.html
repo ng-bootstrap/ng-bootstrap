@@ -1,0 +1,66 @@
+<h5>Navigate through options in the popup</h5>
+
+<table class="table mt-4">
+  <tbody>
+    <tr>
+      <td><kbd>ArrowUp</kbd></td>
+      <td>Highlight above option</td>
+    </tr>
+    <tr>
+      <td><kbd>ArrowDown</kbd></td>
+      <td>Highlight below option</td>
+    </tr>
+    <tr>
+      <td><code>mouseenter</code></td>
+      <td>Highlight option under the mouse pointer</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>
+  Note that starting keyboard navigation will always start from the currently highlighted option, no matter if highlighted from the keyboard or the mouse.
+</p>
+
+
+
+<h5>Select an option</h5>
+
+<p>Selecting means committing to the data model. It will display the currently selected option in the input. It will also make the popup close.</p>
+
+<table class="table mt-4">
+  <tbody>
+    <tr>
+      <td><kbd>Enter</kbd> or <kbd>Tab</kbd></td>
+      <td>Select highlighted option</td>
+    </tr>
+    <tr>
+      <td><code>click</code> on option in the popup</td>
+      <td>Select option under mouse pointer</td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+<h5>Dismiss the popup</h5>
+
+<table class="table mt-4">
+  <tbody>
+    <tr>
+      <td><kbd>Escape</kbd></td>
+      <td>Dismiss the popup, unless <code>[autoClose]</code> is <code>false</code></td>
+    </tr>
+    <tr>
+      <td><code>click</code> outside the widget</td>
+      <td>Dismiss the popup, if <code>[autoClose]</code> is <code>true</code> or <code>'outside'</code></td>
+    </tr>
+    <tr>
+      <td><code>click</code> inside the widget</td>
+      <td>Dismiss the popup, if <code>[autoClose]</code> is <code>true</code> or <code>'inside'</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>
+  If <code>[autoClose]</code> is <code>false</code>, you will have to use the API to dismiss the popup (either calling <code>dismissPopup()</code> on the instance or spawning an empty options list from the <code>Observable</code>).
+</p>
