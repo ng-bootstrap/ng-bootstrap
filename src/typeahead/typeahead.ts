@@ -56,7 +56,7 @@ let nextWindowId = 0;
   selector: 'input[ngbTypeahead]',
   exportAs: 'ngbTypeahead',
   host: {
-    '(blur)': 'handleBlur()',
+    '(blur)': 'handleBlur($event)',
     '[class.open]': 'isPopupOpen()',
     '(document:click)': 'onDocumentClick($event)',
     '(keydown)': 'handleKeyDown($event)',
@@ -233,8 +233,18 @@ export class NgbTypeahead implements ControlValueAccessor,
    */
   isPopupOpen() { return this._windowRef != null; }
 
-  handleBlur() {
+  handleBlur(event: FocusEvent) {
     this._resubscribeTypeahead.next(null);
+    if (event) {
+      const relatedTarget = event.relatedTarget as HTMLElement;
+      if (relatedTarget) {
+        const isButton = relatedTarget.tagName.toLowerCase() === 'button';
+        const hasDropdownItemClass = relatedTarget.classList.contains('dropdown-item');
+        if (isButton && hasDropdownItemClass) {
+          return;
+        }
+      }
+    }
     this._onTouched();
   }
 
