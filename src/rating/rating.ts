@@ -96,9 +96,9 @@ export class NgbRating implements ControlValueAccessor,
   @Input() resettable: boolean;
 
   /**
-   * A flag to know if rating should show when mouse enters or only on selection
+   * A flag to know when the component should update
    */
-  @Input() mode: 'hover' | 'selection';
+  @Input() updateOn: string;
 
   /**
    * A template to override star display.
@@ -130,16 +130,13 @@ export class NgbRating implements ControlValueAccessor,
   constructor(config: NgbRatingConfig, private _changeDetectorRef: ChangeDetectorRef) {
     this.max = config.max;
     this.readonly = config.readonly;
+    this.updateOn = config.updateOn;
   }
 
   ariaValueText() { return `${this.nextRate} out of ${this.max}`; }
 
   enter(value: number): void {
-    if (this.mode === 'selection') {
-      return;
-    }
-
-    if (!this.readonly && !this.disabled) {
+    if (!this.readonly && !this.disabled && this.updateOn !== 'selection') {
       this._updateState(value);
     }
 

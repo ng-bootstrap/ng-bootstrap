@@ -10,5 +10,5 @@ export class NgbRatingConfig {
   max = 10;
   readonly = false;
   resettable = false;
-  mode = 'hover';
+  updateOn = 'hover';
 }

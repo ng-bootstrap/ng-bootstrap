@@ -268,8 +268,8 @@ describe('ngb-rating', () => {
     expect(fixture.componentInstance.rate).toBe(3);
   });
 
-  it('handles correctly `selection` mode', () => {
-    const html = `<ngb-rating [(rate)]="rate" [mode]="'selection'" max="5" [readonly]="true"></ngb-rating>`;
+  it('handles correctly updateOn input', () => {
+    const html = `<ngb-rating [(rate)]="rate" [updateOn]="'selection'" max="5" [readonly]="true"></ngb-rating>`;
     const fixture = createTestComponent(html);
     const el = fixture.debugElement;
     const rating = el.query(By.directive(NgbRating)).children[0];
