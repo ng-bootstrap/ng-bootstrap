@@ -280,7 +280,7 @@ export function positionElements(
       appliedPlacement = <Placement>item;
       const pos = positionService.positionElements(hostElement, targetElement, item, appendToBody);
       topVal = pos.top;
-      leftVal = pos.left;
+      leftVal = pos.left >= 0 ? pos.left : 0;
       break;
     }
   }
