@@ -77,6 +77,7 @@ export class NgbTypeahead implements ControlValueAccessor,
   private _popupService: PopupService<NgbTypeaheadWindow>;
   private _subscription: Subscription;
   private _inputValueBackup: string;
+  private _inputValueBeforeOpen: string;
   private _valueChanges: Observable<string>;
   private _resubscribeTypeahead: BehaviorSubject<any>;
   private _windowRef: ComponentRef<NgbTypeaheadWindow>;
@@ -224,7 +225,11 @@ export class NgbTypeahead implements ControlValueAccessor,
   dismissPopup() {
     if (this.isPopupOpen()) {
       this._closePopup();
-      this._writeInputValue(this._inputValueBackup);
+      if (editable) {
+        this._writeInputValue(this._inputValueBackup);
+      } else {
+        this._writeInputValue(this._inputValueBeforeOpen);
+      }
     }
   }
 
@@ -279,6 +284,7 @@ export class NgbTypeahead implements ControlValueAccessor,
   private _openPopup() {
     if (!this.isPopupOpen()) {
       this._inputValueBackup = this._elementRef.nativeElement.value;
+      this._inputValueBeforeOpen = this._elementRef.nativeElement.value;
       this._windowRef = this._popupService.open();
       this._windowRef.instance.id = this.popupId;
       this._windowRef.instance.selectEvent.subscribe((result: any) => this._selectResultClosePopup(result));
