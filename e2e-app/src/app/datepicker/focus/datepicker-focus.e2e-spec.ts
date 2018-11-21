@@ -1,5 +1,5 @@
 import {$, Key} from 'protractor';
-import {expectFocused, sendKey, openUrl} from '../tools';
+import {expectFocused, sendKey, openUrl} from '../../tools.po';
 import {DatepickerFocusPage} from './datepicker-focus.po';
 
 const getFirstOfMonth = (date: Date) => {

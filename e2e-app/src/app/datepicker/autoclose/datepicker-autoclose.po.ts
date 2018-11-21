@@ -1,5 +1,5 @@
 import {$} from 'protractor';
-import {DatepickerPage} from './datepicker.po';
+import {DatepickerPage} from './../datepicker.po';
 
 export class DatepickerAutoClosePage extends DatepickerPage {
   async close() { await $('#close').click(); }

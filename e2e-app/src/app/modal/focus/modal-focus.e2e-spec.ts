@@ -1,5 +1,5 @@
 import {ModalFocusPage} from './modal-focus.po';
-import {expectFocused, expectNoOpenModals, openUrl, sendKey} from '../tools';
+import {expectFocused, expectNoOpenModals, openUrl, sendKey} from '../../tools.po';
 import {$, Key} from 'protractor';
 
 describe('Modal', () => {

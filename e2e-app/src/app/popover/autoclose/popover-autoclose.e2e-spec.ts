@@ -1,5 +1,5 @@
 import {Key} from 'protractor';
-import {sendKey, openUrl} from '../tools';
+import {sendKey, openUrl} from '../../tools.po';
 import {PopoverAutoClosePage} from './popover-autoclose.po';
 
 describe('Popover Autoclose', () => {
