@@ -1,7 +1,7 @@
 import {Component, ViewChild} from '@angular/core';
 import {NgbTypeahead} from '@ng-bootstrap/ng-bootstrap';
 import {Observable, Subject, merge} from 'rxjs';
-import {distinctUntilChanged, filter, map} from 'rxjs/operators';
+import {distinctUntilChanged, filter, map, delay} from 'rxjs/operators';
 
 const states = [
   'Alabama',
@@ -81,6 +81,7 @@ export class TypeaheadFocusComponent {
     return merge(debouncedText$, inputFocus$, clicksWithClosedPopup$)
         .pipe(
             map(term => (term === '' ? states : states.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1))
-                            .slice(0, 10)));
+                            .slice(0, 10)),
+            delay(0));
   }
 }

@@ -310,7 +310,6 @@ export class NgbTypeahead implements ControlValueAccessor,
   private _selectResultClosePopup(result: any) {
     this._selectResult(result);
     this._closePopup();
-    this._elementRef.nativeElement.focus();
   }
 
   private _showHint() {
