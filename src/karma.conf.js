@@ -1,7 +1,7 @@
 // Configuration used for local testing and Travis CI
 
 const reporters = process.env.TRAVIS ? ['dots'] : ['progress'];
-const browsers = process.env.TRAVIS ? ['ChromeHeadlessNoSandbox'] : ['ChromeNoExtension'];
+const browsers = process.env.TRAVIS ? ['ChromeHeadlessNoSandbox'] : ['ChromeNoExtensions'];
 
 module.exports = function (config) {
   config.set({
@@ -24,7 +24,7 @@ module.exports = function (config) {
         base: 'ChromeHeadless',
         flags: ['--no-sandbox']
       },
-      ChromeNoExtension: {
+      ChromeNoExtensions: {
         base: 'Chrome',
         flags: ['--disable-extensions']
       }
