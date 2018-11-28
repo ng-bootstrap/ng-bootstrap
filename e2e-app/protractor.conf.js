@@ -35,7 +35,7 @@ exports.config = {
   jasmineNodeOpts,
   onPrepare() {
     require('ts-node').register({
-      project: require('path').join(__dirname, './tsconfig.json')
+      project: require('path').join(__dirname, './tsconfig.spec.json')
     });
 
     if (!process.env.TRAVIS) {

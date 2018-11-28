@@ -1,6 +1,6 @@
-import {TypeaheadPage} from './typeahead.po';
+import {TypeaheadPage} from '../typeahead.po';
 import {Key} from 'protractor';
-import {expectFocused, openUrl, sendKey} from '../tools';
+import {expectFocused, openUrl, sendKey} from '../../tools.po';
 
 describe('Typeahead', () => {
   let page: TypeaheadPage;

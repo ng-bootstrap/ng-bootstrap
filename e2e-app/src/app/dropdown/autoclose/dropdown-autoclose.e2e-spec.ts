@@ -1,5 +1,5 @@
 import {Key} from 'protractor';
-import {sendKey, openUrl} from '../tools';
+import {sendKey, openUrl} from '../../tools.po';
 import {DropdownAutoClosePage} from './dropdown-autoclose.po';
 
 describe('Dropdown Autoclose', () => {
