@@ -16,7 +16,7 @@ export class NgbActiveModal {
   close(result?: any): void {}
 
   /**
-   * Can be used to dismiss a modal, passing an optional reason.
+   * Can be used to dismiss a modal, passing an optional reason (result is discarded).
    */
   dismiss(reason?: any): void {}
 }
