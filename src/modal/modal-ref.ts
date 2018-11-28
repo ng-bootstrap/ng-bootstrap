@@ -11,12 +11,12 @@ import {ContentRef} from '../util/popup';
  */
 export class NgbActiveModal {
   /**
-   * Closes the modal with an optional 'result' object. The 'NgbMobalRef.result' promise will be resolved with the 'result' object.
+   * Closes the modal with an optional 'result' value. The 'NgbMobalRef.result' promise will be resolved with provided value.
    */
   close(result?: any): void {}
 
   /**
-   * Dismisses the modal with an optional 'reason' object. The 'NgbModalRef.result' promise will be rejected with the 'reason' object.
+   * Dismisses the modal with an optional 'reason' value. The 'NgbModalRef.result' promise will be rejected with provided value.
    */
   dismiss(reason?: any): void {}
 }
@@ -56,7 +56,7 @@ export class NgbModalRef {
   }
 
   /**
-   * Closes the modal with an optional 'result' object. The 'NgbMobalRef.result' promise will be resolved with the 'result' object.
+   * Closes the modal with an optional 'result' value. The 'NgbMobalRef.result' promise will be resolved with provided value.
    */
   close(result?: any): void {
     if (this._windowCmptRef) {
@@ -71,7 +71,7 @@ export class NgbModalRef {
   }
 
   /**
-   * Dismisses the modal with an optional 'reason' object. The 'NgbModalRef.result' promise will be rejected with the 'reason' object.
+   * Dismisses the modal with an optional 'reason' value. The 'NgbModalRef.result' promise will be rejected with provided value.
    */
   dismiss(reason?: any): void {
     if (this._windowCmptRef) {
