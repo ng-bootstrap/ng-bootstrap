@@ -14,6 +14,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {NgbModalConfig} from './modal-config';
 import {NgbActiveModal, NgbModal, NgbModalModule, NgbModalRef} from './modal.module';
 
+
 const NOOP = () => {};
 
 @Injectable()
@@ -747,6 +748,16 @@ describe('ngb-modal', () => {
           fixture.detectChanges();
         });
 
+        it('should skip element with tabindex=-1 when finding the first focusable element', () => {
+          fixture.detectChanges();
+          const modal = fixture.componentInstance.openCmpt(WithSkipTabindexFirstFocusableModalCmpt);
+          fixture.detectChanges();
+
+          expect(document.activeElement).toBe(document.querySelector('button.other'));
+          modal.close();
+          fixture.detectChanges();
+        });
+
         it('should focus modal window as a default fallback option', () => {
           fixture.detectChanges();
           const modal = fixture.componentInstance.open('content');
@@ -883,6 +894,16 @@ export class WithFirstFocusableModalCmpt {
 }
 
 @Component({
+  selector: 'modal-skip-tabindex-firstfocusable-cmpt',
+  template: `
+  <button tabindex="-1" class="firstFocusable close">Close</button>
+  <button class="other">Other button</button>
+`
+})
+export class WithSkipTabindexFirstFocusableModalCmpt {
+}
+
+@Component({
   selector: 'test-cmpt',
   template: `
     <div id="testContainer"></div>
@@ -949,12 +970,14 @@ class TestComponent {
 @NgModule({
   declarations: [
     TestComponent, CustomInjectorCmpt, DestroyableCmpt, WithActiveModalCmpt, WithAutofocusModalCmpt,
-    WithFirstFocusableModalCmpt
+    WithFirstFocusableModalCmpt, WithSkipTabindexFirstFocusableModalCmpt
   ],
   exports: [TestComponent, DestroyableCmpt],
   imports: [CommonModule, NgbModalModule],
-  entryComponents:
-      [CustomInjectorCmpt, DestroyableCmpt, WithActiveModalCmpt, WithAutofocusModalCmpt, WithFirstFocusableModalCmpt],
+  entryComponents: [
+    CustomInjectorCmpt, DestroyableCmpt, WithActiveModalCmpt, WithAutofocusModalCmpt, WithFirstFocusableModalCmpt,
+    WithSkipTabindexFirstFocusableModalCmpt
+  ],
   providers: [SpyService]
 })
 class NgbModalTestModule {
