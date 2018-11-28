@@ -701,6 +701,25 @@ describe('ngb-typeahead', () => {
            expect(fixture.componentInstance.model).toBeUndefined();
          });
        }));
+
+    it('should validate value after selecting an item from drop down list', async(() => {
+         const html = `
+          <form>
+            <input type="text" [(ngModel)]="model" name="control" required [ngbTypeahead]="find" />
+          </form>`;
+         const fixture = createTestComponent(html);
+         fixture.whenStable().then(() => {
+           fixture.detectChanges();
+           const compiled = fixture.nativeElement;
+
+           changeInput(compiled, 'o');
+           fixture.detectChanges();
+           getWindowLinks(fixture.debugElement)[0].triggerEventHandler('mousedown', {button: 0});
+           fixture.detectChanges();
+           expect(getNativeInput(compiled)).toHaveCssClass('ng-valid');
+           expect(getNativeInput(compiled)).not.toHaveCssClass('ng-invalid');
+         });
+       }));
   });
 
   describe('select event', () => {
