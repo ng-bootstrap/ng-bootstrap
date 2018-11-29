@@ -58,7 +58,7 @@ describe('Typeahead', () => {
 
        await page.getDropdownItems().get(0).click();
        expectTypeaheadValue('Colorado');
-       // expectTypeaheadFocused();
+       expectTypeaheadFocused();
 
        await page.getInputBefore().click();
        await sendKey(Key.TAB);
