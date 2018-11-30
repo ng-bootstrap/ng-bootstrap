@@ -25,6 +25,10 @@
           "options": {
             "main": "src/test.ts",
             "tsConfig": "src/tsconfig.spec.json",
+            "codeCoverageExclude": [
+              "src/test.ts",
+              "src/test/**"
+            ],
             "karmaConfig": "src/karma.conf.js"
           }
         },
