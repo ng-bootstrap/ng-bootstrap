@@ -1357,12 +1357,12 @@ describe('ngb-timepicker', () => {
           expectToDisplayTime(fixture.nativeElement, '10:30:00');
           expect(fixture.componentInstance.model).toEqual({hour: 10, minute: 30, second: 0});
 
-          (<HTMLButtonElement>buttons[4]).click();  // M+
+          (<HTMLButtonElement>buttons[4]).click();  // S+
           fixture.detectChanges();
           expectToDisplayTime(fixture.nativeElement, '10:30:08');
           expect(fixture.componentInstance.model).toEqual({hour: 10, minute: 30, second: 8});
 
-          (<HTMLButtonElement>buttons[5]).click();  // M-
+          (<HTMLButtonElement>buttons[5]).click();  // S-
           fixture.detectChanges();
           expectToDisplayTime(fixture.nativeElement, '10:30:00');
           expect(fixture.componentInstance.model).toEqual({hour: 10, minute: 30, second: 0});
