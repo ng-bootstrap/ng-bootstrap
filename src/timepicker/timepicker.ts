@@ -96,6 +96,10 @@ export class NgbTimepicker implements ControlValueAccessor,
   disabled: boolean;
   model: NgbTime;
 
+  private _hourStep;
+  private _minuteStep;
+  private _secondStep;
+
   /**
    * Whether to display 12H or 24H mode.
    */
@@ -114,17 +118,36 @@ export class NgbTimepicker implements ControlValueAccessor,
   /**
    * Number of hours to increase or decrease when using a button.
    */
-  @Input() hourStep: number;
+  @Input() set hourStep(step: number) {
+    this._hourStep = isNumber(step) ? step : this.config.hourStep;
+  }
+
+  get hourStep(): number {
+    return this._hourStep;
+  }
+
 
   /**
    * Number of minutes to increase or decrease when using a button.
    */
-  @Input() minuteStep: number;
+  @Input() set minuteStep(step: number) {
+    this._minuteStep = isNumber(step) ? step : this.config.minuteStep;
+  }
+
+  get minuteStep(): number {
+    return this._minuteStep;
+  }
 
   /**
    * Number of seconds to increase or decrease when using a button.
    */
-  @Input() secondStep: number;
+  @Input() set secondStep(step: number) {
+    this._secondStep = isNumber(step) ? step : this.config.secondStep;
+  }
+
+  get secondStep(): number {
+    return this._secondStep;
+  }
 
   /**
    * To make timepicker readonly
@@ -136,7 +159,7 @@ export class NgbTimepicker implements ControlValueAccessor,
    */
   @Input() size: 'small' | 'medium' | 'large';
 
-  constructor(config: NgbTimepickerConfig, private _ngbTimeAdapter: NgbTimeAdapter<any>) {
+  constructor(private readonly config: NgbTimepickerConfig, private _ngbTimeAdapter: NgbTimeAdapter<any>) {
     this.meridian = config.meridian;
     this.spinners = config.spinners;
     this.seconds = config.seconds;
