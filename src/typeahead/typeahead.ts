@@ -244,35 +244,32 @@ export class NgbTypeahead implements ControlValueAccessor,
     }
 
     // tslint:disable-next-line:deprecation
-    const {which} = event;
-    if (Key[toString(which)]) {
-      switch (which) {
-        case Key.ArrowDown:
+    switch (event.which) {
+      case Key.ArrowDown:
+        event.preventDefault();
+        this._windowRef.instance.next();
+        this._showHint();
+        break;
+      case Key.ArrowUp:
+        event.preventDefault();
+        this._windowRef.instance.prev();
+        this._showHint();
+        break;
+      case Key.Enter:
+      case Key.Tab:
+        const result = this._windowRef.instance.getActive();
+        if (isDefined(result)) {
           event.preventDefault();
-          this._windowRef.instance.next();
-          this._showHint();
-          break;
-        case Key.ArrowUp:
-          event.preventDefault();
-          this._windowRef.instance.prev();
-          this._showHint();
-          break;
-        case Key.Enter:
-        case Key.Tab:
-          const result = this._windowRef.instance.getActive();
-          if (isDefined(result)) {
-            event.preventDefault();
-            event.stopPropagation();
-            this._selectResult(result);
-          }
-          this._closePopup();
-          break;
-        case Key.Escape:
-          event.preventDefault();
-          this._resubscribeTypeahead.next(null);
-          this.dismissPopup();
-          break;
-      }
+          event.stopPropagation();
+          this._selectResult(result);
+        }
+        this._closePopup();
+        break;
+      case Key.Escape:
+        event.preventDefault();
+        this._resubscribeTypeahead.next(null);
+        this.dismissPopup();
+        break;
     }
   }
 
