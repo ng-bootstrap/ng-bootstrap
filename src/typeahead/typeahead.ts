@@ -13,18 +13,21 @@ import {
   Output,
   Renderer2,
   TemplateRef,
-  ViewContainerRef
+  ViewContainerRef,
 } from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {Observable, BehaviorSubject, Subscription, fromEvent} from 'rxjs';
-import {positionElements, PlacementArray} from '../util/positioning';
-import {NgbTypeaheadWindow, ResultTemplateContext} from './typeahead-window';
-import {PopupService} from '../util/popup';
-import {toString, isDefined} from '../util/util';
-import {Key} from '../util/key';
-import {Live} from '../util/accessibility/live';
-import {NgbTypeaheadConfig} from './typeahead-config';
+import {BehaviorSubject, fromEvent, Observable, Subscription} from 'rxjs';
 import {map, switchMap, tap} from 'rxjs/operators';
+
+import {Live} from '../util/accessibility/live';
+import {Key} from '../util/key';
+import {PopupService} from '../util/popup';
+import {PlacementArray, positionElements} from '../util/positioning';
+import {isDefined, toString} from '../util/util';
+import {NgbTypeaheadConfig} from './typeahead-config';
+import {NgbTypeaheadWindow, ResultTemplateContext} from './typeahead-window';
+
+
 
 const NGB_TYPEAHEAD_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -181,7 +184,7 @@ export class NgbTypeahead implements ControlValueAccessor,
 
   ngOnInit(): void {
     const inputValues$ = this._valueChanges.pipe(tap(value => {
-      this._inputValueBackup = value;
+      this._inputValueBackup = this.showHint ? value : null;
       if (this.editable) {
         this._onChange(value);
       }
@@ -206,7 +209,12 @@ export class NgbTypeahead implements ControlValueAccessor,
 
   registerOnTouched(fn: () => any): void { this._onTouched = fn; }
 
-  writeValue(value) { this._writeInputValue(this._formatItemForInput(value)); }
+  writeValue(value) {
+    this._writeInputValue(this._formatItemForInput(value));
+    if (this.showHint) {
+      this._inputValueBackup = value;
+    }
+  }
 
   setDisabledState(isDisabled: boolean): void {
     this._renderer.setProperty(this._elementRef.nativeElement, 'disabled', isDisabled);
@@ -224,7 +232,9 @@ export class NgbTypeahead implements ControlValueAccessor,
   dismissPopup() {
     if (this.isPopupOpen()) {
       this._closePopup();
-      this._writeInputValue(this._inputValueBackup);
+      if (this.showHint && this._inputValueBackup !== null) {
+        this._writeInputValue(this._inputValueBackup);
+      }
     }
   }
 
@@ -319,7 +329,7 @@ export class NgbTypeahead implements ControlValueAccessor,
         this._elementRef.nativeElement['setSelectionRange'].apply(
             this._elementRef.nativeElement, [this._inputValueBackup.length, formattedVal.length]);
       } else {
-        this.writeValue(this._windowRef.instance.getActive());
+        this._writeInputValue(formattedVal);
       }
     }
   }
