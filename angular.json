@@ -213,15 +213,6 @@
               "devServerTarget": ""
             }
           }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": "e2e-app/tsconfig.spec.json",
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
         }
       }
     }
