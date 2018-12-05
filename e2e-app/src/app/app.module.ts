@@ -1,6 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
@@ -15,14 +15,15 @@ import {ModalFocusComponent} from './modal/focus/modal-focus.component';
 import {PopoverAutocloseComponent} from './popover/autoclose/popover-autoclose.component';
 import {TooltipAutocloseComponent} from './tooltip/autoclose/tooltip-autoclose.component';
 import {TypeaheadFocusComponent} from './typeahead/focus/typeahead-focus.component';
+import {TypeaheadValidationComponent} from './typeahead/validation/typeahead-validation.component';
 
 @NgModule({
   declarations: [
     AppComponent, NavigationComponent, DatepickerAutoCloseComponent, DatepickerFocusComponent,
     DropdownAutoCloseComponent, ModalFocusComponent, PopoverAutocloseComponent, TooltipAutocloseComponent,
-    TypeaheadFocusComponent
+    TypeaheadFocusComponent, TypeaheadValidationComponent
   ],
-  imports: [BrowserModule, FormsModule, routing, NgbModule],
+  imports: [BrowserModule, FormsModule, ReactiveFormsModule, routing, NgbModule],
   bootstrap: [AppComponent]
 })
 export class AppModule {
