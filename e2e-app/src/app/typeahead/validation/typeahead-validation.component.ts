@@ -69,7 +69,7 @@ const states = [
 @Component({templateUrl: './typeahead-validation.component.html'})
 export class TypeaheadValidationComponent {
   model: any;
-  public field = new FormControl();
+  public field = new FormControl(null, {updateOn: 'blur'});
 
   @ViewChild('instance') instance: NgbTypeahead;
   focus$ = new Subject<string>();
