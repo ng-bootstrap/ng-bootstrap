@@ -47,6 +47,13 @@ export interface NgbModalOptions {
   keyboard?: boolean;
 
   /**
+   * Scrollable modal content (false by default).
+   *
+   * @since 4.1.0
+   */
+  scrollable?: boolean;
+
+  /**
    * Size of a new modal window.
    */
   size?: 'sm' | 'lg';
