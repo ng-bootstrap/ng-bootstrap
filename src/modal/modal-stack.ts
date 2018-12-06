@@ -21,7 +21,8 @@ import {NgbModalWindow} from './modal-window';
 
 @Injectable({providedIn: 'root'})
 export class NgbModalStack {
-  private _windowAttributes = ['ariaLabelledBy', 'backdrop', 'centered', 'keyboard', 'scrollable', 'size', 'windowClass'];
+  private _windowAttributes =
+      ['ariaLabelledBy', 'backdrop', 'centered', 'keyboard', 'scrollable', 'size', 'windowClass'];
   private _backdropAttributes = ['backdropClass'];
   private _modalRefs: NgbModalRef[] = [];
   private _windowCmpts: ComponentRef<NgbModalWindow>[] = [];
