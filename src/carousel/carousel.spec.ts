@@ -193,8 +193,8 @@ describe('ngb-carousel', () => {
        discardPeriodicTasks();
      }));
 
-  it('should mark component for check for API calls', fakeAsync(() => {
-       const html = `
+  it('should mark component for check for API calls', () => {
+    const html = `
       <ngb-carousel #c [interval]="0">
         <ng-template ngbSlide>foo</ng-template>
         <ng-template ngbSlide>bar</ng-template>
@@ -203,15 +203,36 @@ describe('ngb-carousel', () => {
       <button id="next" (click)="c.next(); addNewSlide = true">Next</button>
     `;
 
-       const fixture = createTestComponent(html);
-       const next = fixture.nativeElement.querySelector('#next');
+    const fixture = createTestComponent(html);
+    const next = fixture.nativeElement.querySelector('#next');
 
-       expectActiveSlides(fixture.nativeElement, [true, false]);
+    expectActiveSlides(fixture.nativeElement, [true, false]);
 
-       next.click();
-       fixture.detectChanges();
-       expectActiveSlides(fixture.nativeElement, [false, true, false]);
-     }));
+    next.click();
+    fixture.detectChanges();
+    expectActiveSlides(fixture.nativeElement, [false, true, false]);
+  });
+
+  it('should mark component for check when slides change', () => {
+    const html = `
+      <ngb-carousel #c [interval]="0">
+        <ng-template ngbSlide *ngFor="let s of slides">
+          <div class="slide">{{ s }}</div>
+        </ng-template>
+      </ngb-carousel>
+    `;
+
+    function getSlidesText(element: HTMLElement): string[] {
+      return Array.from(element.querySelectorAll('.carousel-item .slide')).map((el: HTMLElement) => el.innerHTML);
+    }
+
+    const fixture = createTestComponent(html);
+    expect(getSlidesText(fixture.nativeElement)).toEqual(['a', 'b']);
+
+    fixture.componentInstance.slides = ['c', 'd'];
+    fixture.detectChanges();
+    expect(getSlidesText(fixture.nativeElement)).toEqual(['c', 'd']);
+  });
 
   it('should change slide on indicator click', fakeAsync(() => {
        const html = `
@@ -737,6 +758,7 @@ class TestComponent {
   pauseOnHover = true;
   showNavigationArrows = true;
   showNavigationIndicators = true;
+  slides = ['a', 'b'];
   carouselSlideCallBack = (event: NgbSlideEvent) => {};
 }
 
