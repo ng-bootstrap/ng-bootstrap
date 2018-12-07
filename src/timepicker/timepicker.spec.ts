@@ -1,7 +1,7 @@
 import {async, ComponentFixture, inject, TestBed} from '@angular/core/testing';
 import {createGenericTestComponent} from '../test/common';
 
-import {ChangeDetectionStrategy, Component, Injectable} from '@angular/core';
+import {ChangeDetectionStrategy, Component, DebugElement, Injectable} from '@angular/core';
 import {By} from '@angular/platform-browser';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 
@@ -385,6 +385,100 @@ describe('ngb-timepicker', () => {
                fixture.detectChanges();
                expectToDisplayTime(fixture.nativeElement, '10:30:59');
                expect(fixture.componentInstance.model).toEqual({hour: 10, minute: 30, second: 59});
+             });
+       }));
+  });
+
+  describe('increment/decrement keyboard bindings', () => {
+
+    function getDebugInputs(fixture: ComponentFixture<TestComponent>): Array<DebugElement> {
+      return fixture.debugElement.queryAll(By.css('input'));
+    }
+
+    it('should increment / decrement hours', async(() => {
+         const html = `<ngb-timepicker [(ngModel)]="model"></ngb-timepicker>`;
+
+         const fixture = createTestComponent(html);
+         fixture.componentInstance.model = {hour: 10, minute: 30, second: 0};
+         fixture.detectChanges();
+         fixture.whenStable()
+             .then(() => {
+               fixture.detectChanges();
+               return fixture.whenStable();
+             })
+             .then(() => {
+               expectToDisplayTime(fixture.nativeElement, '10:30');
+               expect(fixture.componentInstance.model).toEqual({hour: 10, minute: 30, second: 0});
+
+               const hourInput = getDebugInputs(fixture)[0];
+
+               hourInput.triggerEventHandler('keydown.ArrowUp', {});  // H+
+               fixture.detectChanges();
+               expectToDisplayTime(fixture.nativeElement, '11:30');
+               expect(fixture.componentInstance.model).toEqual({hour: 11, minute: 30, second: 0});
+
+               hourInput.triggerEventHandler('keydown.ArrowDown', {});  // H+
+               fixture.detectChanges();
+               expectToDisplayTime(fixture.nativeElement, '10:30');
+               expect(fixture.componentInstance.model).toEqual({hour: 10, minute: 30, second: 0});
+             });
+       }));
+
+    it('should increment / decrement minutes', async(() => {
+         const html = `<ngb-timepicker [(ngModel)]="model"></ngb-timepicker>`;
+
+         const fixture = createTestComponent(html);
+         fixture.componentInstance.model = {hour: 10, minute: 30, second: 0};
+         fixture.detectChanges();
+         fixture.whenStable()
+             .then(() => {
+               fixture.detectChanges();
+               return fixture.whenStable();
+             })
+             .then(() => {
+               expectToDisplayTime(fixture.nativeElement, '10:30');
+               expect(fixture.componentInstance.model).toEqual({hour: 10, minute: 30, second: 0});
+
+               const minuteInput = getDebugInputs(fixture)[1];
+
+               minuteInput.triggerEventHandler('keydown.ArrowUp', {});  // M+
+               fixture.detectChanges();
+               expectToDisplayTime(fixture.nativeElement, '10:31');
+               expect(fixture.componentInstance.model).toEqual({hour: 10, minute: 31, second: 0});
+
+               minuteInput.triggerEventHandler('keydown.ArrowDown', {});  // M-
+               fixture.detectChanges();
+               expectToDisplayTime(fixture.nativeElement, '10:30');
+               expect(fixture.componentInstance.model).toEqual({hour: 10, minute: 30, second: 0});
+             });
+       }));
+
+    it('should increment / decrement seconds', async(() => {
+         const html = `<ngb-timepicker [(ngModel)]="model" [seconds]="true"></ngb-timepicker>`;
+
+         const fixture = createTestComponent(html);
+         fixture.componentInstance.model = {hour: 10, minute: 30, second: 0};
+         fixture.detectChanges();
+         fixture.whenStable()
+             .then(() => {
+               fixture.detectChanges();
+               return fixture.whenStable();
+             })
+             .then(() => {
+               expectToDisplayTime(fixture.nativeElement, '10:30:00');
+               expect(fixture.componentInstance.model).toEqual({hour: 10, minute: 30, second: 0});
+
+               const secondInput = getDebugInputs(fixture)[2];
+
+               secondInput.triggerEventHandler('keydown.ArrowUp', {});  // S+
+               fixture.detectChanges();
+               expectToDisplayTime(fixture.nativeElement, '10:30:01');
+               expect(fixture.componentInstance.model).toEqual({hour: 10, minute: 30, second: 1});
+
+               secondInput.triggerEventHandler('keydown.ArrowDown', {});  // S-
+               fixture.detectChanges();
+               expectToDisplayTime(fixture.nativeElement, '10:30:00');
+               expect(fixture.componentInstance.model).toEqual({hour: 10, minute: 30, second: 0});
              });
        }));
   });
