@@ -16,6 +16,7 @@ import { NgbdPaginationModule } from './components/pagination/pagination.module'
 import { NgbdPopoverModule } from './components/popover/popover.module';
 import { NgbdProgressbarModule } from './components/progressbar/progressbar.module';
 import { NgbdRatingModule } from './components/rating/rating.module';
+import { NgbdTableModule } from './components/table/table.module';
 import { NgbdTabsetModule } from './components/tabset/tabset.module';
 import { NgbdTimepickerModule } from './components/timepicker/timepicker.module';
 import { NgbdTooltipModule } from './components/tooltip/tooltip.module';
@@ -37,6 +38,7 @@ const DEMOS = [
   NgbdPopoverModule,
   NgbdProgressbarModule,
   NgbdRatingModule,
+  NgbdTableModule,
   NgbdTabsetModule,
   NgbdTimepickerModule,
   NgbdTooltipModule,
