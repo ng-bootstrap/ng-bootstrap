@@ -1133,7 +1133,7 @@ describe('ngb-datepicker', () => {
     });
 
     it('should initialize inputs with provided config as provider', () => {
-      const fixture = createGenericTestComponent('', NgbDatepicker);
+      const fixture = TestBed.createComponent(NgbDatepicker);
 
       const datepicker = fixture.componentInstance;
       expectSameValues(datepicker, config);
