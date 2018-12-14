@@ -1,7 +1,7 @@
 import {Component, forwardRef, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
-import {isNumber, padNumber, toInteger} from '../util/util';
+import {isInteger, isNumber, padNumber, toInteger} from '../util/util';
 import {NgbTime} from './ngb-time';
 import {NgbTimepickerConfig} from './timepicker-config';
 import {NgbTimeAdapter} from './ngb-time-adapter';
@@ -96,9 +96,9 @@ export class NgbTimepicker implements ControlValueAccessor,
   disabled: boolean;
   model: NgbTime;
 
-  private _hourStep;
-  private _minuteStep;
-  private _secondStep;
+  private _hourStep: number;
+  private _minuteStep: number;
+  private _secondStep: number;
 
   /**
    * Whether to display 12H or 24H mode.
@@ -118,36 +118,32 @@ export class NgbTimepicker implements ControlValueAccessor,
   /**
    * Number of hours to increase or decrease when using a button.
    */
-  @Input() set hourStep(step: number) {
-    this._hourStep = isNumber(step) ? step : this.config.hourStep;
+  @Input()
+  set hourStep(step: number) {
+    this._hourStep = isInteger(step) ? step : this._config.hourStep;
   }
 
-  get hourStep(): number {
-    return this._hourStep;
-  }
-
+  get hourStep(): number { return this._hourStep; }
 
   /**
    * Number of minutes to increase or decrease when using a button.
    */
-  @Input() set minuteStep(step: number) {
-    this._minuteStep = isNumber(step) ? step : this.config.minuteStep;
+  @Input()
+  set minuteStep(step: number) {
+    this._minuteStep = isInteger(step) ? step : this._config.minuteStep;
   }
 
-  get minuteStep(): number {
-    return this._minuteStep;
-  }
+  get minuteStep(): number { return this._minuteStep; }
 
   /**
    * Number of seconds to increase or decrease when using a button.
    */
-  @Input() set secondStep(step: number) {
-    this._secondStep = isNumber(step) ? step : this.config.secondStep;
+  @Input()
+  set secondStep(step: number) {
+    this._secondStep = isInteger(step) ? step : this._config.secondStep;
   }
 
-  get secondStep(): number {
-    return this._secondStep;
-  }
+  get secondStep(): number { return this._secondStep; }
 
   /**
    * To make timepicker readonly
@@ -159,16 +155,16 @@ export class NgbTimepicker implements ControlValueAccessor,
    */
   @Input() size: 'small' | 'medium' | 'large';
 
-  constructor(private readonly config: NgbTimepickerConfig, private _ngbTimeAdapter: NgbTimeAdapter<any>) {
-    this.meridian = config.meridian;
-    this.spinners = config.spinners;
-    this.seconds = config.seconds;
-    this.hourStep = config.hourStep;
-    this.minuteStep = config.minuteStep;
-    this.secondStep = config.secondStep;
-    this.disabled = config.disabled;
-    this.readonlyInputs = config.readonlyInputs;
-    this.size = config.size;
+  constructor(private readonly _config: NgbTimepickerConfig, private _ngbTimeAdapter: NgbTimeAdapter<any>) {
+    this.meridian = _config.meridian;
+    this.spinners = _config.spinners;
+    this.seconds = _config.seconds;
+    this.hourStep = _config.hourStep;
+    this.minuteStep = _config.minuteStep;
+    this.secondStep = _config.secondStep;
+    this.disabled = _config.disabled;
+    this.readonlyInputs = _config.readonlyInputs;
+    this.size = _config.size;
   }
 
   onChange = (_: any) => {};
