@@ -63,6 +63,7 @@ export class NgbModalStack {
     let windowCmptRef: ComponentRef<NgbModalWindow> = this._attachWindowComponent(moduleCFR, containerEl, contentRef);
     let ngbModalRef: NgbModalRef = new NgbModalRef(windowCmptRef, contentRef, backdropCmptRef, options.beforeDismiss);
 
+    activeModal.windowComponentInstance = windowCmptRef.instance;
     this._registerModalRef(ngbModalRef);
     this._registerWindowCmpt(windowCmptRef);
     ngbModalRef.result.then(revertPaddingForScrollBar, revertPaddingForScrollBar);

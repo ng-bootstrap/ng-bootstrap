@@ -317,6 +317,28 @@ describe('ngb-modal', () => {
            fixture.whenStable().then(
                () => { expect(fixture.componentInstance.modalService.hasOpenModals()).toBeFalsy(); });
          }));
+
+      it('should expose the newly created window component', function () {
+        const instance = fixture.componentInstance.open('foo', {backdrop: 'static'});
+        fixture.detectChanges();
+
+        expect(fixture.nativeElement).toHaveModal('foo');
+        expect(fixture.nativeElement).toHaveBackdrop();
+        expect(instance.windowComponentInstance.backdrop).toBe('static');
+
+        (<HTMLElement>document.querySelector('ngb-modal-window')).click();
+        fixture.detectChanges();
+
+        expect(fixture.nativeElement).toHaveModal();
+        expect(fixture.nativeElement).toHaveBackdrop();
+
+        instance.windowComponentInstance.backdrop = true;
+        fixture.detectChanges();
+
+        (<HTMLElement>document.querySelector('ngb-modal-window')).click();
+        fixture.detectChanges();
+        expect(fixture.nativeElement).not.toHaveModal();
+      });
     });
 
     describe('stacked  modals', () => {

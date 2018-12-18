@@ -10,6 +10,8 @@ import {ContentRef} from '../util/popup';
  * can be injected into components passed as modal content.
  */
 export class NgbActiveModal {
+  private _ngbModalWindow: NgbModalWindow;
+
   /**
    * Closes the modal with an optional 'result' value.
    * The 'NgbMobalRef.result' promise will be resolved with provided value.
@@ -21,6 +23,16 @@ export class NgbActiveModal {
    * The 'NgbModalRef.result' promise will be rejected with provided value.
    */
   dismiss(reason?: any): void {}
+
+  get windowComponentInstance(): NgbModalWindow {
+    return this._ngbModalWindow;
+  }
+
+  set windowComponentInstance(value: NgbModalWindow) {
+    if (typeof this._ngbModalWindow === 'undefined') {
+      this._ngbModalWindow = value;
+    }
+  }
 }
 
 /**
@@ -38,6 +50,14 @@ export class NgbModalRef {
     if (this._contentRef.componentRef) {
       return this._contentRef.componentRef.instance;
     }
+  }
+
+  /**
+   * The instance of the created window component.
+   * Useful when you need to change some options after the modal is opened.
+   */
+  get windowComponentInstance(): NgbModalWindow {
+    return this._windowCmptRef.instance;
   }
 
   /**
