@@ -24,9 +24,7 @@ export class NgbActiveModal {
    */
   dismiss(reason?: any): void {}
 
-  get windowComponentInstance(): NgbModalWindow {
-    return this._ngbModalWindow;
-  }
+  get windowComponentInstance(): NgbModalWindow { return this._ngbModalWindow; }
 
   set windowComponentInstance(value: NgbModalWindow) {
     if (typeof this._ngbModalWindow === 'undefined') {
@@ -56,9 +54,7 @@ export class NgbModalRef {
    * The instance of the created window component.
    * Useful when you need to change some options after the modal is opened.
    */
-  get windowComponentInstance(): NgbModalWindow {
-    return this._windowCmptRef.instance;
-  }
+  get windowComponentInstance(): NgbModalWindow { return this._windowCmptRef.instance; }
 
   /**
    * A promise that is resolved when the modal is closed and rejected when the modal is dismissed.

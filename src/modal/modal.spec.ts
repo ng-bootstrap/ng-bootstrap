@@ -318,7 +318,7 @@ describe('ngb-modal', () => {
                () => { expect(fixture.componentInstance.modalService.hasOpenModals()).toBeFalsy(); });
          }));
 
-      it('should expose the newly created window component', function () {
+      it('should expose the newly created window component', () => {
         const instance = fixture.componentInstance.open('foo', {backdrop: 'static'});
         fixture.detectChanges();
 
