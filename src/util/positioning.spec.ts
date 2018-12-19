@@ -2,10 +2,6 @@ import {Positioning} from './positioning';
 
 describe('Positioning', () => {
   const positioning = new Positioning();
-  const documentMargin = document.documentElement.style.margin;
-  const bodyMargin = document.body.style.margin;
-  const bodyHeight = document.body.style.height;
-  const bodyWidth = document.body.style.width;
 
   function createElement(
       height: number, width: number, marginTop: number, marginLeft: number, isAbsolute = false): HTMLElement {
@@ -20,6 +16,7 @@ describe('Positioning', () => {
     el.style.width = width + 'px';
     el.style.marginTop = marginTop + 'px';
     el.style.marginLeft = marginLeft + 'px';
+    el.style.backgroundColor = 'lightblue';
 
     return el;
   }
@@ -29,15 +26,24 @@ describe('Positioning', () => {
     expect(transform).toBe(`translate(${left}px, ${top}px)`);
   }
 
-  let element = createElement(200, 300, 100, 150);
-  document.body.appendChild(element);
-  let targetElement = createElement(50, 100, 10, 20, true);
-  document.body.appendChild(targetElement);
+  let element, targetElement;
+  beforeAll(() => {
+    document.body.innerHTML = '';
+    element = createElement(200, 300, 100, 150);
+    document.body.appendChild(element);
+    targetElement = createElement(50, 100, 10, 20, true);
+    document.body.appendChild(targetElement);
 
-  document.documentElement.style.margin = '0';
-  document.body.style.margin = '0';
-  document.body.style.height = '2000px';
-  document.body.style.width = '2000px';
+    document.documentElement.style.margin = '0';
+    document.body.style.margin = '0';
+    document.body.style.height = '2000px';
+    document.body.style.width = '2000px';
+  });
+
+  afterAll(() => {
+    document.body.removeChild(element);
+    document.body.removeChild(targetElement);
+  });
 
   it('should calculate the element offset', () => {
     let position = positioning.offset(element);
@@ -193,12 +199,4 @@ describe('Positioning', () => {
     checkPosition(targetElement, 250, 450);
   });
 
-  it('cleanUp', () => {
-    document.body.removeChild(element);
-    document.body.removeChild(targetElement);
-    document.documentElement.style.margin = documentMargin;
-    document.body.style.margin = bodyMargin;
-    document.body.style.height = bodyHeight;
-    document.body.style.width = bodyWidth;
-  });
 });

@@ -70,6 +70,11 @@ describe('ngb-popover', () => {
     });
   });
 
+  afterAll(() => {
+    // Clean html as the 'test body' popover remains in the dom
+    document.body.innerHTML = '';
+  });
+
   function getWindow(element) { return element.querySelector('ngb-popover-window'); }
 
   describe('basic functionality', () => {

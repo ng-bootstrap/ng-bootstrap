@@ -1,4 +1,6 @@
 // styles in src/style directory are applied to the whole page
+@import "~bootstrap/scss/bootstrap";
+@import "../../../src/ng-bootstrap.scss";
 
 header.navbar {
   background: linear-gradient(135deg, #0143a3, #0273d4);

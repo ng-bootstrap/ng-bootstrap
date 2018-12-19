@@ -7,7 +7,6 @@ import {NgbDatepickerI18n} from './datepicker-i18n';
   selector: 'ngb-datepicker-navigation',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  styleUrls: ['./datepicker-navigation.scss'],
   template: `
     <div class="ngb-dp-arrow">
       <button type="button" class="btn btn-link ngb-dp-arrow-btn" (click)="navigate.emit(navigation.PREV)" [disabled]="prevDisabled"

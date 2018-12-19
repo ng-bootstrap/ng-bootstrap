@@ -61,7 +61,6 @@ export interface NgbDatepickerNavigateEvent {
   selector: 'ngb-datepicker',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  styleUrls: ['./datepicker.scss'],
   template: `
     <ng-template #dt let-date="date" let-currentMonth="currentMonth" let-selected="selected" let-disabled="disabled" let-focused="focused">
       <div ngbDatepickerDayView

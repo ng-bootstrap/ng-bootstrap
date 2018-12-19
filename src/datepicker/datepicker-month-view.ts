@@ -8,7 +8,6 @@ import {DayTemplateContext} from './datepicker-day-template-context';
   selector: 'ngb-datepicker-month-view',
   host: {'role': 'grid'},
   encapsulation: ViewEncapsulation.None,
-  styleUrls: ['./datepicker-month-view.scss'],
   template: `
     <div *ngIf="showWeekdays" class="ngb-dp-week ngb-dp-weekdays bg-light">
       <div *ngIf="showWeekNumbers" class="ngb-dp-weekday ngb-dp-showweek"></div>

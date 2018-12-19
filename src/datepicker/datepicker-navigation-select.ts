@@ -7,7 +7,6 @@ import {NgbDatepickerI18n} from './datepicker-i18n';
   selector: 'ngb-datepicker-navigation-select',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  styleUrls: ['./datepicker-navigation-select.scss'],
   template: `
     <select
       [disabled]="disabled"

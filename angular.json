@@ -73,7 +73,6 @@
               }
             ],
             "styles": [
-              "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/prismjs/themes/prism.css",
               "demo/src/style/app.scss",
               "demo/src/style/demos.css"
@@ -144,7 +143,6 @@
               "e2e-app/src/favicon.ico"
             ],
             "styles": [
-              "node_modules/bootstrap/dist/css/bootstrap.css",
               "e2e-app/src/style/app.scss"
             ],
             "scripts": []

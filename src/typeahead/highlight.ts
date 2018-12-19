@@ -11,8 +11,7 @@ import {regExpEscape, toString} from '../util/util';
   encapsulation: ViewEncapsulation.None,
   template: `<ng-template ngFor [ngForOf]="parts" let-part let-isOdd="odd">` +
       `<span *ngIf="isOdd; else even" [class]="highlightClass">{{part}}</span><ng-template #even>{{part}}</ng-template>` +
-      `</ng-template>`,  // template needs to be formatted in a certain way so we don't add empty text nodes
-  styleUrls: ['./highlight.scss']
+      `</ng-template>`  // template needs to be formatted in a certain way so we don't add empty text nodes
 })
 export class NgbHighlight implements OnChanges {
   parts: string[];

@@ -1,3 +1,148 @@
+/*
+  datepicker-day-view.ts
+*/
+[ngbDatepickerDayView] {
+  text-align: center;
+  width: 2rem;
+  height: 2rem;
+  line-height: 2rem;
+  border-radius: 0.25rem;
+  background: transparent;
+
+  &.outside {
+    opacity: 0.5;
+  }
+}
+
+/*
+  datepicker-month-view.ts
+*/
+ngb-datepicker-month-view {
+  display: block;
+}
+
+.ngb-dp {
+  &-weekday,
+  &-week-number {
+    line-height: 2rem;
+    text-align: center;
+    font-style: italic;
+  }
+  &-weekday {
+    color: #5bc0de;
+    color: var(--info);
+  }
+  &-week {
+    border-radius: 0.25rem;
+    display: flex;
+  }
+  &-weekdays {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0;
+  }
+  &-day,
+  &-weekday,
+  &-week-number {
+    width: 2rem;
+    height: 2rem;
+  }
+  &-day {
+    cursor: pointer;
+
+    &.disabled,
+    &.hidden {
+      cursor: default;
+    }
+  }
+}
+
+/*
+  datepicker-navigation-select.ts
+*/
+ngb-datepicker-navigation-select > .custom-select {
+  flex: 1 1 auto;
+  padding: 0 0.5rem;
+  font-size: 0.875rem;
+  height: 1.85rem;
+}
+
+/*
+  datepicker-navigation.ts
+*/
+ngb-datepicker-navigation {
+  display: flex;
+  align-items: center;
+}
+
+.ngb-dp {
+  &-navigation-chevron {
+    border-style: solid;
+    border-width: 0.2em 0.2em 0 0;
+    display: inline-block;
+    width: 0.75em;
+    height: 0.75em;
+    margin-left: 0.25em;
+    margin-right: 0.15em;
+    transform: rotate(-135deg);
+  }
+
+  .right &-navigation-chevron {
+    transform: rotate(45deg);
+    margin-left: 0.15em;
+    margin-right: 0.25em;
+  }
+
+  &-arrow {
+    display: flex;
+    flex: 1 1 auto;
+    padding-right: 0;
+    padding-left: 0;
+    margin: 0;
+    width: 2rem;
+    height: 2rem;
+
+    &.right {
+      justify-content: flex-end;
+    }
+
+  }
+
+  &-arrow-btn {
+    padding: 0 0.25rem;
+    margin: 0 0.5rem;
+    border: none;
+    background-color: transparent;
+    z-index: 1;
+
+    &:focus {
+      outline-width: 1px;
+      outline-style: auto;
+    }
+
+    // IE workaround, as outline-style: auto doesn't work
+    @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+      &:focus {
+        outline-style: solid;
+      }
+    }
+  }
+
+  &-month-name {
+    font-size: larger;
+    height: 2rem;
+    line-height: 2rem;
+    text-align: center;
+  }
+
+  &-navigation-select {
+    display: flex;
+    flex: 1 1 9rem;
+  }
+}
+
+/*
+  datepicker.ts
+*/
 ngb-datepicker {
   border: 1px solid #dfdfdf;
   border-radius: 0.25rem;

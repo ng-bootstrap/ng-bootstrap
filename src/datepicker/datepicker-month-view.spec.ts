@@ -113,7 +113,7 @@ describe('ngb-datepicker-month-view', () => {
     expect(fixture.componentInstance.onClick).not.toHaveBeenCalled();
   });
 
-  it('should set cursor to pointer or default', () => {
+  it('should set the css classes', () => {
     const fixture = createTestComponent(`
       <ng-template #tpl let-date="date">{{ date.day }}</ng-template>
       <ngb-datepicker-month-view [month]="month" [dayTemplate]="tpl" (change)="onClick($event)"></ngb-datepicker-month-view>
@@ -121,11 +121,13 @@ describe('ngb-datepicker-month-view', () => {
 
     const dates = getDates(fixture.nativeElement);
     // hidden
-    expect(window.getComputedStyle(dates[0]).getPropertyValue('cursor')).toBe('default');
+    expect(dates[0].getAttribute('class')).toContain('hidden');
     // normal
-    expect(window.getComputedStyle(dates[1]).getPropertyValue('cursor')).toBe('pointer');
+    const classname = dates[1].getAttribute('class');
+    expect(classname).not.toContain('hidden');
+    expect(classname).not.toContain('disabled');
     // disabled
-    expect(window.getComputedStyle(dates[2]).getPropertyValue('cursor')).toBe('default');
+    expect(dates[2].getAttribute('class')).toContain('disabled');
   });
 
   it('should apply correct CSS classes to days', () => {

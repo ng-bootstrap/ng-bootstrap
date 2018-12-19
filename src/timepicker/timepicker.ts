@@ -26,7 +26,6 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
 @Component({
   selector: 'ngb-timepicker',
   encapsulation: ViewEncapsulation.None,
-  styleUrls: ['./timepicker.scss'],
   template: `
     <fieldset [disabled]="disabled" [class.disabled]="disabled">
       <div class="ngb-tp">

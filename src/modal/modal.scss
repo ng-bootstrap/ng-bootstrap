@@ -1,0 +1,14 @@
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/_variables";
+
+
+/*
+    modal-backdrop
+*/
+$ngb-backdrop-zindex: $zindex-modal-backdrop + 10 !default;
+
+ngb-modal-backdrop {
+  &.modal-backdrop {
+    z-index: $ngb-backdrop-zindex;
+  }
+}
