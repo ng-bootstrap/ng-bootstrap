@@ -1381,6 +1381,15 @@ describe('ngb-datepicker-service', () => {
       expect(getDayCtx(0).disabled).toBeFalsy();
       expect(getDayCtx(1).disabled).toBeTruthy();
     });
+
+    it(`should update 'today' flag for day template`, () => {
+      calendar.getToday = () => new NgbDate(2018, 12, 20);
+      const today = calendar.getToday();
+      service.open(today);
+
+      expect(getDay(2, 2, 0).context.today).toBeFalsy();
+      expect(getDay(3, 3, 0).context.today).toBeTruthy();
+    });
   });
 
   describe('toValidDate()', () => {

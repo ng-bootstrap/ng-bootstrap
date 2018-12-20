@@ -232,6 +232,32 @@
 
 
 
+<!-- TODAY'S DATE -->
+<ngbd-overview-section [section]="sections['today']">
+  <p>
+    It is often useful to highlight a today's date in the calendar view or add a certain logic to it. Today's date
+    is the date returned by the <a routerLink="../api" fragment="NgbCalendar">NgbCalendar</a>'s <code>getToday()</code>
+    method.
+  </p>
+
+  <p>
+    We add a custom CSS class <code>.ngb-dp-today</code> on a cell that corresponds to the today's date.
+    We do not add any rules to it at the moment, but you can add your own if necessary.
+    You would see something like this in the resulting markup
+  </p>
+
+  <ngbd-code lang="html" [code]="snippets.todayHTML"></ngbd-code>
+
+  <p>
+    You can also access this information from the <a routerLink="../api" fragment="DayTemplateContext">DayTemplateContext API</a>
+    if you're using a custom day template. It contains a <code>today: boolean</code> flag since v4.1.0
+  </p>
+
+  <ngbd-code lang="html" [code]="snippets.todayTemplate"></ngbd-code>
+
+</ngbd-overview-section>
+
+
 <!-- FOOTER TEMPLATE -->
 <ngbd-overview-section [section]="sections['footer-template']">
   <p>

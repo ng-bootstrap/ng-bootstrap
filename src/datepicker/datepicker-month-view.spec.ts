@@ -138,12 +138,15 @@ describe('ngb-datepicker-month-view', () => {
     // hidden
     expect(dates[0]).toHaveCssClass('hidden');
     expect(dates[0]).not.toHaveCssClass('disabled');
+    expect(dates[0]).not.toHaveCssClass('ngb-dp-today');
     // normal
     expect(dates[1]).not.toHaveCssClass('hidden');
     expect(dates[1]).not.toHaveCssClass('disabled');
+    expect(dates[1]).not.toHaveCssClass('ngb-dp-today');
     // disabled
     expect(dates[2]).not.toHaveCssClass('hidden');
     expect(dates[2]).toHaveCssClass('disabled');
+    expect(dates[2]).toHaveCssClass('ngb-dp-today');
   });
 
   it('should not display collapsed weeks', () => {
@@ -188,7 +191,8 @@ class TestComponent {
               date: new NgbDate(2016, 7, 4),
               disabled: false,
               focused: false,
-              selected: false
+              selected: false,
+              today: false
             },
             tabindex: -1,
             ariaLabel: 'Monday',
@@ -202,7 +206,8 @@ class TestComponent {
               date: new NgbDate(2016, 8, 1),
               disabled: false,
               focused: false,
-              selected: false
+              selected: false,
+              today: false
             },
             tabindex: -1,
             ariaLabel: 'Monday',
@@ -223,7 +228,8 @@ class TestComponent {
               date: new NgbDate(2016, 8, 2),
               disabled: true,
               focused: false,
-              selected: false
+              selected: false,
+              today: true
             },
             tabindex: -1,
             ariaLabel: 'Friday',
@@ -237,7 +243,8 @@ class TestComponent {
               date: new NgbDate(2016, 8, 3),
               disabled: false,
               focused: false,
-              selected: false
+              selected: false,
+              today: false
             },
             tabindex: -1,
             ariaLabel: 'Saturday',
@@ -258,7 +265,8 @@ class TestComponent {
               date: new NgbDate(2016, 8, 4),
               disabled: false,
               focused: false,
-              selected: false
+              selected: false,
+              today: false
             },
             tabindex: -1,
             ariaLabel: 'Sunday',
@@ -272,7 +280,8 @@ class TestComponent {
               date: new NgbDate(2016, 9, 1),
               disabled: false,
               focused: false,
-              selected: false
+              selected: false,
+              today: false
             },
             tabindex: -1,
             ariaLabel: 'Saturday',
@@ -293,7 +302,8 @@ class TestComponent {
               date: new NgbDate(2016, 9, 2),
               disabled: false,
               focused: false,
-              selected: false
+              selected: false,
+              today: false
             },
             tabindex: -1,
             ariaLabel: 'Sunday',
@@ -307,7 +317,8 @@ class TestComponent {
               date: new NgbDate(2016, 9, 3),
               disabled: false,
               focused: false,
-              selected: false
+              selected: false,
+              today: false
             },
             tabindex: -1,
             ariaLabel: 'Monday',
