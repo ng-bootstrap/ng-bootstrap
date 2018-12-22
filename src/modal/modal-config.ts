@@ -48,8 +48,9 @@ export interface NgbModalOptions {
 
   /**
    * Size of a new modal window.
+   * The xl size is only available from Bootstrap 4.2.
    */
-  size?: 'sm' | 'lg';
+  size?: 'sm' | 'lg' | 'xl';
 
   /**
    * Custom class to append to the modal window
