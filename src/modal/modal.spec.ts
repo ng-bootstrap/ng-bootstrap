@@ -1,5 +1,5 @@
 import {CommonModule} from '@angular/common';
-import {Component, Injectable, Injector, NgModule, OnDestroy, ViewChild} from '@angular/core';
+import {Component, ComponentFactoryResolver, Injectable, Injector, NgModule, OnDestroy, ViewChild} from '@angular/core';
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {NgbModalConfig} from './modal-config';
 import {NgbActiveModal, NgbModal, NgbModalModule, NgbModalRef} from './modal.module';
@@ -93,7 +93,7 @@ describe('ngb-modal', () => {
   describe('default configuration', () => {
 
     beforeEach(() => {
-      TestBed.configureTestingModule({imports: [NgbModalTestModule]});
+      TestBed.configureTestingModule({imports: [NgbModalTestModule, NgbModalChildTestModule]});
       fixture = TestBed.createComponent(TestComponent);
     });
 
@@ -550,6 +550,26 @@ describe('ngb-modal', () => {
         expect(fixture.nativeElement).not.toHaveModal();
       });
 
+      it('should use ComponentFactoryResolver of custom injector', () => {
+        const moduleCFR = TestBed.get(ComponentFactoryResolver);
+        spyOn(moduleCFR, 'resolveComponentFactory').and.callThrough();
+        const customInjector = Injector.create({
+          providers: [
+            {provide: CustomSpyService, useClass: CustomSpyService, deps: []},
+            {provide: ComponentFactoryResolver, useValue: moduleCFR}
+          ]
+        });
+
+        const modalInstance = fixture.componentInstance.openCmpt(CustomInjectorCmpt, {injector: customInjector});
+        fixture.detectChanges();
+        expect(fixture.nativeElement).toHaveModal('Some content');
+        expect(moduleCFR.resolveComponentFactory).toHaveBeenCalledWith(CustomInjectorCmpt);
+
+        modalInstance.close();
+        fixture.detectChanges();
+        expect(fixture.nativeElement).not.toHaveModal();
+      });
+
     });
 
     describe('focus management', () => {
@@ -970,16 +990,21 @@ class TestA11yComponent {
 
 @NgModule({
   declarations: [
-    TestComponent, CustomInjectorCmpt, DestroyableCmpt, WithActiveModalCmpt, WithAutofocusModalCmpt,
-    WithFirstFocusableModalCmpt, WithSkipTabindexFirstFocusableModalCmpt, TestA11yComponent
+    TestComponent, DestroyableCmpt, WithActiveModalCmpt, WithAutofocusModalCmpt, WithFirstFocusableModalCmpt,
+    WithSkipTabindexFirstFocusableModalCmpt, TestA11yComponent
   ],
   exports: [TestComponent, DestroyableCmpt],
   imports: [CommonModule, NgbModalModule],
   entryComponents: [
-    CustomInjectorCmpt, DestroyableCmpt, WithActiveModalCmpt, WithAutofocusModalCmpt, WithFirstFocusableModalCmpt,
+    DestroyableCmpt, WithActiveModalCmpt, WithAutofocusModalCmpt, WithFirstFocusableModalCmpt,
     WithSkipTabindexFirstFocusableModalCmpt
   ],
   providers: [SpyService]
 })
 class NgbModalTestModule {
+}
+
+
+@NgModule({declarations: [CustomInjectorCmpt], imports: [CommonModule], entryComponents: [CustomInjectorCmpt]})
+class NgbModalChildTestModule {
 }
