@@ -26,6 +26,7 @@ import {DOCUMENT} from '@angular/common';
 
 import {listenToTriggers} from '../util/triggers';
 import {ngbAutoClose} from '../util/autoclose';
+import {ngbScroll} from '../util/scroll';
 import {positionElements, PlacementArray} from '../util/positioning';
 import {PopupService} from '../util/popup';
 
@@ -156,13 +157,7 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
     this._popupService = new PopupService<NgbTooltipWindow>(
         NgbTooltipWindow, injector, viewContainerRef, _renderer, componentFactoryResolver, applicationRef);
 
-    this._zoneSubscription = _ngZone.onStable.subscribe(() => {
-      if (this._windowRef) {
-        positionElements(
-            this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
-            this.container === 'body', 'bs-tooltip');
-      }
-    });
+    this._zoneSubscription = _ngZone.onStable.subscribe(() => { this._positionElements(); });
   }
 
   /**
@@ -196,6 +191,7 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 
       if (this.container === 'body') {
         this._document.querySelector(this.container).appendChild(this._windowRef.location.nativeElement);
+        ngbScroll(this._ngZone, this._elementRef.nativeElement, () => this._positionElements(), this.hidden);
       }
 
       // We need to detect changes, because we don't know where .open() might be called from.
@@ -271,5 +267,13 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
       this._unregisterListenersFn();
     }
     this._zoneSubscription.unsubscribe();
+  }
+
+  private _positionElements() {
+    if (this._windowRef) {
+      positionElements(
+          this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
+          this.container === 'body', 'bs-tooltip');
+    }
   }
 }
