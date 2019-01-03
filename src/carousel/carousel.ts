@@ -62,7 +62,7 @@ export class NgbSlide {
     </ol>
     <div class="carousel-inner">
       <div *ngFor="let slide of slides" class="carousel-item" [class.active]="slide.id === activeId">
-        <ng-template [ngTemplateOutlet]="slide.tplRef"></ng-template>
+        <ng-template [ngTemplateOutlet]="slide.tplRef" *ngIf="loadSlide(slide.id)"></ng-template>
       </div>
     </div>
     <a class="carousel-control-prev" role="button" (click)="prev()" *ngIf="showNavigationArrows">
@@ -194,6 +194,11 @@ export class NgbCarousel implements AfterContentChecked,
    * Restarts cycling through the carousel slides from left to right.
    */
   cycle() { this._start$.next(); }
+
+  loadSlide(currentSlideId: string): boolean {
+    return this.activeId === currentSlideId || this.activeId === this._getNextSlide(currentSlideId) ||
+        this.activeId === this._getPrevSlide(currentSlideId);
+  }
 
   private _cycleToSelected(slideIdx: string, direction: NgbSlideEventDirection) {
     let selectedSlide = this._getSlideById(slideIdx);
