@@ -43,7 +43,8 @@ export class NgbDatepickerMonthView {
   constructor(public i18n: NgbDatepickerI18n) {}
 
   doSelect(day: DayViewModel) {
-    if (!day.context.disabled && !day.hidden) {
+    const context = day.context;
+    if (day.date.month === context.currentMonth && !context.disabled && !day.hidden) {
       this.select.emit(day.date);
     }
   }

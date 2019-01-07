@@ -689,7 +689,7 @@ describe('ngb-datepicker', () => {
              });
        }));
 
-    it('should switch month when clicked on the date outside of current month', async(() => {
+    it('should\'t switch month when clicked on the date outside of current month', async(() => {
          const fixture = createTestComponent(
              `<ngb-datepicker [startDate]="date" [minDate]="minDate" [maxDate]="maxDate" [(ngModel)]="model"></ngb-datepicker>`);
          fixture.detectChanges();
@@ -698,12 +698,12 @@ describe('ngb-datepicker', () => {
            let dates = getDates(fixture.nativeElement);
 
            dates[31].click();  // 1 SEP 2016
-           expect(fixture.componentInstance.model).toEqual({year: 2016, month: 9, day: 1});
+           expect(fixture.componentInstance.model).toBeUndefined();
 
            // month changes to SEP
            fixture.detectChanges();
-           expect(getDay(fixture.nativeElement, 0).innerText).toBe('29');          // 29 AUG 2016
-           expect(getDay(fixture.nativeElement, 3)).toHaveCssClass('bg-primary');  // 1 SEP still selected
+           expect(getDay(fixture.nativeElement, 0).innerText).toBe('1');               // 1 AUG 2016
+           expect(getDay(fixture.nativeElement, 3)).not.toHaveCssClass('bg-primary');  // 1 SEP not selected
          });
        }));
 
