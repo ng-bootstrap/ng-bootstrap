@@ -1,52 +1,52 @@
-:host {
+ngb-timepicker {
   font-size: 1rem;
 }
 
 .ngb-tp {
   display: flex;
   align-items: center;
-}
 
-.ngb-tp-input-container {
-  width: 4em;
-}
-
-.ngb-tp-hour,
-.ngb-tp-minute,
-.ngb-tp-second,
-.ngb-tp-meridian {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-}
-
-.ngb-tp-spacer {
-  width: 1em;
-  text-align: center;
-}
-
-.chevron {
-  &::before {
-    border-style: solid;
-    border-width: 0.29em 0.29em 0 0;
-    content: '';
-    display: inline-block;
-    height: 0.69em;
-    left: 0.05em;
-    position: relative;
-    top: 0.15em;
-    transform: rotate(-45deg);
-    vertical-align: middle;
-    width: 0.69em;
+  &-input-container {
+    width: 4em;
   }
 
-  &.bottom:before {
-    top: -.3em;
-    transform: rotate(135deg);
-  }
-}
+  &-chevron {
+    &::before {
+      border-style: solid;
+      border-width: 0.29em 0.29em 0 0;
+      content: '';
+      display: inline-block;
+      height: 0.69em;
+      left: 0.05em;
+      position: relative;
+      top: 0.15em;
+      transform: rotate(-45deg);
+      vertical-align: middle;
+      width: 0.69em;
+    }
 
-input {
-  text-align: center;
+    &.bottom:before {
+      top: -.3em;
+      transform: rotate(135deg);
+    }
+  }
+
+  &-input {
+    text-align: center;
+  }
+
+  &-hour,
+  &-minute,
+  &-second,
+  &-meridian {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+  }
+
+  &-spacer {
+    width: 1em;
+    text-align: center;
+  }
 }

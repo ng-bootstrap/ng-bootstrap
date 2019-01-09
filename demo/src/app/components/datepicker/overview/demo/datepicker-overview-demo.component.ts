@@ -15,10 +15,10 @@ import {NgbCalendar, NgbDate, NgbDateNativeAdapter} from '@ng-bootstrap/ng-boots
       </p>
     </div>
 
-    <ng-template #dayTemplate let-date>
+    <ng-template #dayTemplate let-date let-disabled="disabled">
       <span class="custom-day" [ngbTooltip]="getTooltip(date)" container="body"
             [class.holiday]="!!isHoliday(date)"
-            [class.weekend]="isWeekend(date)"
+            [class.disabled]="disabled || isWeekend(date)"
             [class.range]="isRange(date)"
             [class.faded]="isHovered(date) || isInside(date)"
             (mouseenter)="hoveredDate = date"
@@ -32,6 +32,7 @@ import {NgbCalendar, NgbDate, NgbDateNativeAdapter} from '@ng-bootstrap/ng-boots
       [dayTemplate]="dayTemplate"
       [markDisabled]="markDisabled"
       [showWeekNumbers]="true"
+      [minDate]="today"
       outsideDays="hidden"
       [displayMonths]="2">
     </ngb-datepicker>
@@ -47,21 +48,21 @@ import {NgbCalendar, NgbDate, NgbDateNativeAdapter} from '@ng-bootstrap/ng-boots
     .custom-day:hover {
       background-color: #e6e6e6;
     }
-    .weekend {
+    .disabled {
       color: #bbbbbb;
     }
-    .weekend:hover {
+    .disabled:hover {
       background-color: transparent;
     }
-    .holiday, .holiday.weekend, .holiday:hover {
+    .holiday, .holiday.disabled, .holiday:hover {
       color: white;
       background-color: coral;
     }
-    .range:not(.holiday):not(.weekend), .custom-day:not(.weekend):not(.holiday):hover {
+    .range:not(.holiday):not(.disabled), .custom-day:not(.disabled):not(.holiday):hover {
       background-color: rgb(2, 117, 216);
       color: white;
     }
-    .faded:not(.holiday):not(.weekend) {
+    .faded:not(.holiday):not(.disabled) {
       background-color: rgba(2, 117, 216, 0.5);
     }
   `],
@@ -69,6 +70,8 @@ import {NgbCalendar, NgbDate, NgbDateNativeAdapter} from '@ng-bootstrap/ng-boots
 })
 
 export class NgbdDatepickerOverviewDemoComponent {
+
+  today: NgbDate;
 
   hoveredDate: NgbDate;
 
@@ -89,8 +92,9 @@ export class NgbdDatepickerOverviewDemoComponent {
 
   constructor(private calendar: NgbCalendar, public adapter: NgbDateNativeAdapter) {
     this.markDisabled = this.markDisabled.bind(this);
-    this.fromDate = this.getFirstAvailableDate(calendar.getToday());
-    this.toDate = this.getFirstAvailableDate(calendar.getNext(calendar.getToday(), 'd', 15));
+    this.today = calendar.getToday();
+    this.fromDate = this.getFirstAvailableDate(this.today);
+    this.toDate = this.getFirstAvailableDate(calendar.getNext(this.today, 'd', 15));
   }
 
   isHoliday(date: NgbDate): string {

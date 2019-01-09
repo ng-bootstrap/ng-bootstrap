@@ -1,19 +1,19 @@
-import {TestBed, ComponentFixture, async, fakeAsync, inject, tick} from '@angular/core/testing';
-import {createGenericTestComponent, isBrowser} from '../test/common';
-import {expectResults, getWindowLinks} from '../test/typeahead/common';
-
-import {Component, DebugElement, ViewChild, ChangeDetectionStrategy} from '@angular/core';
-import {Validators, FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {ChangeDetectionStrategy, Component, DebugElement, ViewChild} from '@angular/core';
+import {async, ComponentFixture, fakeAsync, inject, TestBed, tick} from '@angular/core/testing';
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {By} from '@angular/platform-browser';
-import {Observable, Subject, merge} from 'rxjs';
-
-import {NgbTypeahead} from './typeahead';
-import {NgbTypeaheadModule} from './typeahead.module';
-import {NgbTypeaheadConfig} from './typeahead-config';
+import {merge, Observable, Subject} from 'rxjs';
 import {debounceTime, filter, map} from 'rxjs/operators';
 
+import {createGenericTestComponent, isBrowser} from '../test/common';
+import {expectResults, getWindowLinks} from '../test/typeahead/common';
 import {ARIA_LIVE_DELAY} from '../util/accessibility/live';
 import {Key} from '../util/key';
+import {NgbTypeahead} from './typeahead';
+import {NgbTypeaheadConfig} from './typeahead-config';
+import {NgbTypeaheadModule} from './typeahead.module';
+
+
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -629,6 +629,7 @@ describe('ngb-typeahead', () => {
       expect(getNativeInput(compiled)).not.toHaveCssClass('ng-invalid');
     });
 
+
     it('should support disabled state', async(() => {
          const html = `
             <form>
@@ -910,7 +911,7 @@ describe('ngb-typeahead', () => {
            });
          }));
 
-      it('should restore hint when results window is dismissed', async(() => {
+      it('should restore hint when results window is dismissed with Esc', async(() => {
            const fixture = createTestComponent(
                `<input type="text" [(ngModel)]="model" [ngbTypeahead]="findAnywhere" [showHint]="true"/>`);
            fixture.detectChanges();
@@ -948,6 +949,56 @@ describe('ngb-typeahead', () => {
              expect(inputEl.value).toBe('on');
            });
          }));
+
+      it('should restore hint when results window is dismissed with click outside', async(async() => {
+           const fixture = createTestComponent(
+               `<input type="text" [(ngModel)]="model" [ngbTypeahead]="findAnywhere" [showHint]="true"/>`);
+           fixture.detectChanges();
+           const compiled = fixture.nativeElement;
+           const inputEl = getNativeInput(compiled);
+
+           await fixture.whenStable();
+           changeInput(compiled, 'on');
+           fixture.detectChanges();
+
+           expect(getWindow(compiled)).not.toBeNull();
+           expectInputValue(compiled, 'one');
+           expect(inputEl.selectionStart).toBe(2);
+           expect(inputEl.selectionEnd).toBe(3);
+
+           document.body.click();
+           fixture.detectChanges();
+           expectInputValue(compiled, 'on');
+         }));
+
+      describe('should clear input properly when model get reset to empty string', () => {
+        [`<input type="text" [(ngModel)]="model" [ngbTypeahead]="find" />`,
+         `<input type="text" [(ngModel)]="model" [showHint]="true" [ngbTypeahead]="find" />`]
+            .forEach((html, index) => {
+              const showHint = index === 1;
+              it(`${index === 0 ? 'without' : 'with'} showHint activated`, async(async() => {
+                   const fixture = createTestComponent(html);
+                   fixture.detectChanges();
+                   await fixture.whenStable();
+
+                   const compiled = fixture.nativeElement;
+                   changeInput(compiled, 'on');
+                   fixture.detectChanges();
+
+                   expectInputValue(compiled, showHint ? 'one' : 'on');
+
+                   fixture.componentInstance.model = '';
+                   fixture.detectChanges();
+                   await fixture.whenStable();
+
+                   document.body.click();
+                   fixture.detectChanges();
+
+                   expectInputValue(compiled, '');
+                 }));
+            });
+      });
+
     });
 
     describe('Custom config', () => {

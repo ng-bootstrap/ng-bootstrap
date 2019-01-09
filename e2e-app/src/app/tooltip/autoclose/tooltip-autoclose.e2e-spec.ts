@@ -1,5 +1,5 @@
 import {Key} from 'protractor';
-import {sendKey, openUrl} from '../tools';
+import {sendKey, openUrl} from '../../tools.po';
 import {TooltipAutoClosePage} from './tooltip-autoclose.po';
 
 describe('Tooltip Autoclose', () => {

@@ -1,6 +1,6 @@
 import {Key} from 'protractor';
 import {DatepickerAutoClosePage} from './datepicker-autoclose.po';
-import {openUrl, sendKey} from '../tools';
+import {openUrl, sendKey} from '../../tools.po';
 
 describe('Datepicker Autoclose', () => {
   let page: DatepickerAutoClosePage;

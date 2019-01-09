@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 
 export const componentsList = [
   'Accordion', 'Alert', 'Buttons', 'Carousel', 'Collapse', 'Datepicker', 'Dropdown', 'Modal', 'Pagination', 'Popover',
-  'Progressbar', 'Rating', 'Tabset', 'Timepicker', 'Tooltip', 'Typeahead'
+  'Progressbar', 'Rating', 'Table', 'Tabset', 'Timepicker', 'Tooltip', 'Typeahead'
 ];
 
 @Component({

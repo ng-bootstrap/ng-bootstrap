@@ -1,6 +1,6 @@
-import {TypeaheadPage} from './typeahead.po';
+import {TypeaheadPage} from '../typeahead.po';
 import {Key} from 'protractor';
-import {expectFocused, openUrl, sendKey} from '../tools';
+import {expectFocused, openUrl, sendKey} from '../../tools.po';
 
 describe('Typeahead', () => {
   let page: TypeaheadPage;
@@ -58,7 +58,7 @@ describe('Typeahead', () => {
 
        await page.getDropdownItems().get(0).click();
        expectTypeaheadValue('Colorado');
-       // expectTypeaheadFocused();
+       expectTypeaheadFocused();
 
        await page.getInputBefore().click();
        await sendKey(Key.TAB);

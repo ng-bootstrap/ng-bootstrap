@@ -11,18 +11,20 @@ import {ContentRef} from '../util/popup';
  */
 export class NgbActiveModal {
   /**
-   * Can be used to close a modal, passing an optional result.
+   * Closes the modal with an optional 'result' value.
+   * The 'NgbMobalRef.result' promise will be resolved with provided value.
    */
   close(result?: any): void {}
 
   /**
-   * Can be used to dismiss a modal, passing an optional reason.
+   * Dismisses the modal with an optional 'reason' value.
+   * The 'NgbModalRef.result' promise will be rejected with provided value.
    */
   dismiss(reason?: any): void {}
 }
 
 /**
- * A reference to a newly opened modal.
+ * A reference to a newly opened modal returned by the 'NgbModal.open()' method.
  */
 export class NgbModalRef {
   private _resolve: (result?: any) => void;
@@ -39,7 +41,7 @@ export class NgbModalRef {
   }
 
   /**
-   * A promise that is resolved when a modal is closed and rejected when a modal is dismissed.
+   * A promise that is resolved when the modal is closed and rejected when the modal is dismissed.
    */
   result: Promise<any>;
 
@@ -56,7 +58,8 @@ export class NgbModalRef {
   }
 
   /**
-   * Can be used to close a modal, passing an optional result.
+   * Closes the modal with an optional 'result' value.
+   * The 'NgbMobalRef.result' promise will be resolved with provided value.
    */
   close(result?: any): void {
     if (this._windowCmptRef) {
@@ -71,7 +74,8 @@ export class NgbModalRef {
   }
 
   /**
-   * Can be used to dismiss a modal, passing an optional reason.
+   * Dismisses the modal with an optional 'reason' value.
+   * The 'NgbModalRef.result' promise will be rejected with provided value.
    */
   dismiss(reason?: any): void {
     if (this._windowCmptRef) {

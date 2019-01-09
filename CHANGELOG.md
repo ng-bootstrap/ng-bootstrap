@@ -1,3 +1,19 @@
+<a name="4.0.1"></a>
+## [4.0.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/4.0.0...4.0.1) (2018-12-17)
+
+
+### Bug Fixes
+
+* **carousel:** do change detection when slides change ([a944d5d](https://github.com/ng-bootstrap/ng-bootstrap/commit/a944d5d)), closes [#2908](https://github.com/ng-bootstrap/ng-bootstrap/issues/2908) [#2900](https://github.com/ng-bootstrap/ng-bootstrap/issues/2900)
+* **datepicker:** focus handling performance regression ([1d9a84e](https://github.com/ng-bootstrap/ng-bootstrap/commit/1d9a84e))
+* **datepicker:** visual focus on arrows for ie ([#2818](https://github.com/ng-bootstrap/ng-bootstrap/issues/2818)) ([b20355e](https://github.com/ng-bootstrap/ng-bootstrap/commit/b20355e))
+* **focustrap:** discarding tabindex='-1' when finding element ([#2888](https://github.com/ng-bootstrap/ng-bootstrap/issues/2888)) ([db7347b](https://github.com/ng-bootstrap/ng-bootstrap/commit/db7347b)), closes [#2884](https://github.com/ng-bootstrap/ng-bootstrap/issues/2884)
+* **rating:** don't hijack Tab key navigation ([4b05da1](https://github.com/ng-bootstrap/ng-bootstrap/commit/4b05da1)), closes [#2473](https://github.com/ng-bootstrap/ng-bootstrap/issues/2473) [#2895](https://github.com/ng-bootstrap/ng-bootstrap/issues/2895)
+* **typeahead:** input value properly reset when hint/ngModel are used together ([8d5397c](https://github.com/ng-bootstrap/ng-bootstrap/commit/8d5397c)), closes [#2816](https://github.com/ng-bootstrap/ng-bootstrap/issues/2816) [#2850](https://github.com/ng-bootstrap/ng-bootstrap/issues/2850)
+* **typeahead:** prevent dropdown to be reopened after an item selection ([e0fe9f5](https://github.com/ng-bootstrap/ng-bootstrap/commit/e0fe9f5)), closes [#2854](https://github.com/ng-bootstrap/ng-bootstrap/issues/2854) [#2869](https://github.com/ng-bootstrap/ng-bootstrap/issues/2869)
+
+
+
 <a name="4.0.0"></a>
 # [4.0.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/3.3.1...4.0.0) (2018-10-26)
 

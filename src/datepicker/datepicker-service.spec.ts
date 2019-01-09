@@ -449,6 +449,19 @@ describe('ngb-datepicker-service', () => {
       expect(mock.onNext).toHaveBeenCalledTimes(1);
     });
 
+    it(`should not rebuild months when focus visibility changes`, () => {
+      service.focus(new NgbDate(2017, 5, 1));
+      expect(model.focusVisible).toEqual(false);
+      expect(model.months.length).toBe(1);
+      const month = model.months[0];
+      const date = month.weeks[0].days[0].date;
+
+      service.focusVisible = true;
+      expect(model.focusVisible).toEqual(true);
+      expect(model.months[0]).toBe(month);
+      expect(getDay(0).date).toBe(date);
+    });
+
   });
 
   describe(`navigation`, () => {

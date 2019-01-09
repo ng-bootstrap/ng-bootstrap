@@ -1,23 +1,24 @@
-import {Subscription} from 'rxjs';
-import {take} from 'rxjs/operators';
+import {fromEvent, merge, Subject} from 'rxjs';
+import {filter, take, takeUntil} from 'rxjs/operators';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  Input,
-  OnChanges,
-  TemplateRef,
-  forwardRef,
-  OnInit,
-  SimpleChanges,
-  EventEmitter,
-  Output,
-  OnDestroy,
   ElementRef,
+  EventEmitter,
+  forwardRef,
+  Input,
   NgZone,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+  TemplateRef,
+  ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import {NG_VALUE_ACCESSOR, ControlValueAccessor} from '@angular/forms';
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {NgbCalendar} from './ngb-calendar';
 import {NgbDate} from './ngb-date';
 import {NgbDatepickerService} from './datepicker-service';
@@ -29,6 +30,7 @@ import {NgbDateAdapter} from './adapters/ngb-date-adapter';
 import {NgbDateStruct} from './ngb-date-struct';
 import {NgbDatepickerI18n} from './datepicker-i18n';
 import {isChangedDate} from './datepicker-tools';
+import {hasClassName} from '../util/util';
 
 const NGB_DATEPICKER_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -85,7 +87,7 @@ export interface NgbDatepickerNavigateEvent {
       </ngb-datepicker-navigation>
     </div>
 
-    <div class="ngb-dp-months" (keydown)="onKeyDown($event)" (focusin)="showFocus(true)" (focusout)="showFocus(false)">
+    <div #months class="ngb-dp-months" (keydown)="onKeyDown($event)">
       <ng-template ngFor let-month [ngForOf]="model.months" let-i="index">
         <div class="ngb-dp-month">
           <div *ngIf="navigation === 'none' || (displayMonths > 1 && navigation === 'select')"
@@ -111,9 +113,10 @@ export class NgbDatepicker implements OnDestroy,
     OnChanges, OnInit, ControlValueAccessor {
   model: DatepickerViewModel;
 
+  @ViewChild('months') private _monthsEl: ElementRef<HTMLElement>;
   private _controlValue: NgbDate;
-  private _subscription: Subscription;
-  private _selectSubscription: Subscription;
+  private _destroyed$ = new Subject<void>();
+
   /**
    * Reference for the custom template for the day display
    */
@@ -214,9 +217,9 @@ export class NgbDatepicker implements OnDestroy,
      'maxDate', 'navigation', 'outsideDays', 'showWeekdays', 'showWeekNumbers', 'startDate']
         .forEach(input => this[input] = config[input]);
 
-    this._selectSubscription = _service.select$.subscribe(date => { this.select.emit(date); });
+    _service.select$.pipe(takeUntil(this._destroyed$)).subscribe(date => { this.select.emit(date); });
 
-    this._subscription = _service.model$.subscribe(model => {
+    _service.model$.pipe(takeUntil(this._destroyed$)).subscribe(model => {
       const newDate = model.firstDate;
       const oldDate = this.model ? this.model.firstDate : null;
       const newSelectedDate = model.selectedDate;
@@ -271,10 +274,24 @@ export class NgbDatepicker implements OnDestroy,
     this._service.open(NgbDate.from(date ? date.day ? date as NgbDateStruct : {...date, day: 1} : null));
   }
 
-  ngOnDestroy() {
-    this._subscription.unsubscribe();
-    this._selectSubscription.unsubscribe();
+  ngAfterContentInit() {
+    this._ngZone.runOutsideAngular(() => {
+      const focusIns$ = fromEvent<FocusEvent>(this._monthsEl.nativeElement, 'focusin');
+      const focusOuts$ = fromEvent<FocusEvent>(this._monthsEl.nativeElement, 'focusout');
+
+      // we're changing 'focusVisible' only when entering or leaving months view
+      // and ignoring all focus events where both 'target' and 'related' target are day cells
+      merge(focusIns$, focusOuts$)
+          .pipe(
+              filter(
+                  ({target, relatedTarget}) =>
+                      !(hasClassName(target, 'ngb-dp-day') && hasClassName(relatedTarget, 'ngb-dp-day'))),
+              takeUntil(this._destroyed$))
+          .subscribe(({type}) => this._ngZone.run(() => this._service.focusVisible = type === 'focusin'));
+    });
   }
+
+  ngOnDestroy() { this._destroyed$.next(); }
 
   ngOnInit() {
     if (this.model === undefined) {
@@ -321,8 +338,6 @@ export class NgbDatepicker implements OnDestroy,
   registerOnTouched(fn: () => any): void { this.onTouched = fn; }
 
   setDisabledState(isDisabled: boolean) { this._service.disabled = isDisabled; }
-
-  showFocus(focusVisible: boolean) { this._service.focusVisible = focusVisible; }
 
   writeValue(value) {
     this._controlValue = NgbDate.from(this._ngbDateAdapter.fromModel(value));

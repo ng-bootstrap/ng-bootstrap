@@ -25,6 +25,10 @@
           "options": {
             "main": "src/test.ts",
             "tsConfig": "src/tsconfig.spec.json",
+            "codeCoverageExclude": [
+              "src/test.ts",
+              "src/test/**"
+            ],
             "karmaConfig": "src/karma.conf.js"
           }
         },
@@ -166,10 +170,11 @@
           }
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "ngx-build-plus:dev-server",
           "options": {
             "browserTarget": "e2e-app:build",
-            "progress": false
+            "progress": false,
+            "extraWebpackConfig": "./coverage.webpack.js"
           },
           "configurations": {
             "production": {
@@ -192,13 +197,13 @@
       }
     },
     "e2e": {
-      "root": "e2e-app/e2e",
+      "root": "e2e-app/src",
       "projectType": "application",
       "architect": {
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
-            "protractorConfig": "e2e-app/e2e/protractor.conf.js",
+            "protractorConfig": "e2e-app/protractor.conf.js",
             "devServerTarget": "e2e-app:serve"
           },
           "configurations": {
@@ -208,15 +213,6 @@
             "noserve": {
               "devServerTarget": ""
             }
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": "e2e-app/e2e/tsconfig.json",
-            "exclude": [
-              "**/node_modules/**"
-            ]
           }
         }
       }
