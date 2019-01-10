@@ -19,7 +19,7 @@ import {
 } from '@angular/core';
 import {AbstractControl, ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR, Validator} from '@angular/forms';
 import {fromEvent, NEVER, race, Subject} from 'rxjs';
-import {filter, takeUntil} from 'rxjs/operators';
+import {filter, map, takeUntil, withLatestFrom} from 'rxjs/operators';
 
 import {ngbFocusTrap} from '../util/focus-trap';
 import {Key} from '../util/key';
@@ -315,10 +315,16 @@ export class NgbInputDatepicker implements OnChanges,
             let isOpening = true;
             requestAnimationFrame(() => isOpening = false);
 
+            // we have to pre-calculate '_shouldCloseOnOutsideClick' on 'mousedown',
+            // because on 'click' DOM nodes might be detached
+            const mouseDowns$ =
+                fromEvent<MouseEvent>(this._document, 'mousedown')
+                    .pipe(map(event => this._shouldCloseOnOutsideClick(event)), takeUntil(this._closed$));
+
             outsideClicks$ = fromEvent<MouseEvent>(this._document, 'click')
                                  .pipe(
-                                     takeUntil(this._closed$),
-                                     filter(event => !isOpening && this._shouldCloseOnOutsideClick(event)));
+                                     withLatestFrom(mouseDowns$),
+                                     filter(([_, shouldClose]) => !isOpening && shouldClose), takeUntil(this._closed$));
           } else {
             outsideClicks$ = NEVER;
           }
