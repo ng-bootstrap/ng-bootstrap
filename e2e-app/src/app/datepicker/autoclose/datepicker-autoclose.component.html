@@ -4,10 +4,13 @@
   <div class="form-group form-inline">
 
     <div class="input-group">
-      <input class="form-control" name="dp" placeholder="yyyy-mm-dd" #d="ngbDatepicker" ngbDatepicker [autoClose]="autoClose" >
+      <input class="form-control" name="dp" placeholder="yyyy-mm-dd" #d="ngbDatepicker" ngbDatepicker
+             [autoClose]="autoClose" [(ngModel)]="model" [displayMonths]="displayMonths">
       <div class="input-group-append">
         <button class="btn btn-outline-secondary" type="button" id="toggle" (click)="d.toggle()">Toggle</button>
         <button class="btn btn-outline-secondary" type="button" id="close" (click)="d.close()">Close</button>
+        <button class="btn btn-outline-secondary" type="button" id="selectDate" (click)="model = {year: 2018, month: 8, day: 10}">10
+          AUG 2018</button>
       </div>
     </div>
 
@@ -18,6 +21,14 @@
         <button class="dropdown-item" id="autoclose-false" (click)="autoClose = false">False</button>
         <button class="dropdown-item" id="autoclose-outside" (click)="autoClose = 'outside'">'Outside'</button>
         <button class="dropdown-item" id="autoclose-inside" (click)="autoClose = 'inside'">'Inside'</button>
+      </div>
+    </div>
+
+    <div ngbDropdown class="d-inline-block ml-1">
+      <button class="btn btn-outline-secondary" id="displayMonths-dropdown" ngbDropdownToggle>Choose Months</button>
+      <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+        <button class="dropdown-item" id="displayMonths-1" (click)="displayMonths = 1">One</button>
+        <button class="dropdown-item" id="displayMonths-2" (click)="displayMonths = 2">Two</button>
       </div>
     </div>
 
