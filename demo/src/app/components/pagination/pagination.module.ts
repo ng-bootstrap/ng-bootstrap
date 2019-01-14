@@ -11,12 +11,14 @@ import {NgbdPaginationConfig} from './demos/config/pagination-config';
 import {NgbdPaginationDisabled} from './demos/disabled/pagination-disabled';
 import {NgbdPaginationJustify} from './demos/justify/pagination-justify';
 import {NgbdPaginationSize} from './demos/size/pagination-size';
+import {NgbdChevronSpan} from './demos/chevron/chevron-span';
 import {NgbdPaginationOverviewComponent} from './overview/pagination-overview.component';
 
 const DEMO_DIRECTIVES = [
   NgbdPaginationAdvanced,
   NgbdPaginationBasic,
   NgbdPaginationSize,
+  NgbdChevronSpan,
   NgbdPaginationConfig,
   NgbdPaginationDisabled,
   NgbdPaginationJustify,
@@ -56,6 +58,12 @@ const DEMOS = {
     type: NgbdPaginationDisabled,
     code: require('!!raw-loader!./demos/disabled/pagination-disabled'),
     markup: require('!!raw-loader!./demos/disabled/pagination-disabled.html')
+  },
+  chevron: {
+    title: 'Disabled chevron',
+    type: NgbdChevronSpan,
+    code: require('!!raw-loader!./demos/chevron/chevron-span'),
+    markup: require('!!raw-loader!./demos/chevron/chevron-span.html')
   },
   config: {
     title: 'Global configuration',

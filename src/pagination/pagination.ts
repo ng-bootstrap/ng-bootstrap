@@ -15,7 +15,8 @@ import {NgbPaginationConfig} from './pagination-config';
         [class.disabled]="!hasPrevious() || disabled">
         <a aria-label="First" i18n-aria-label="@@ngb.pagination.first-aria" class="page-link" href
           (click)="selectPage(1); $event.preventDefault()" [attr.tabindex]="(hasPrevious() ? null : '-1')">
-          <span aria-hidden="true" i18n="@@ngb.pagination.first">&laquo;&laquo;</span>
+          <span *ngIf="spanChevron" aria-hidden="true" i18n="@@ngb.pagination.first">&laquo;&laquo;</span>
+          <span *ngIf="!spanChevron" aria-hidden="true" i18n="@@ngb.pagination.first">&nbsp;&nbsp;</span>
         </a>
       </li>
 
@@ -23,7 +24,8 @@ import {NgbPaginationConfig} from './pagination-config';
         [class.disabled]="!hasPrevious() || disabled">
         <a aria-label="Previous" i18n-aria-label="@@ngb.pagination.previous-aria" class="page-link" href
           (click)="selectPage(page-1); $event.preventDefault()" [attr.tabindex]="(hasPrevious() ? null : '-1')">
-          <span aria-hidden="true" i18n="@@ngb.pagination.previous">&laquo;</span>
+          <span *ngIf="spanChevron" aria-hidden="true" i18n="@@ngb.pagination.previous">&laquo;</span>
+          <span *ngIf="!spanChevron" aria-hidden="true" i18n="@@ngb.pagination.first">&nbsp;</span>
         </a>
       </li>
       <li *ngFor="let pageNumber of pages" class="page-item" [class.active]="pageNumber === page"
@@ -37,14 +39,16 @@ import {NgbPaginationConfig} from './pagination-config';
       <li *ngIf="directionLinks" class="page-item" [class.disabled]="!hasNext() || disabled">
         <a aria-label="Next" i18n-aria-label="@@ngb.pagination.next-aria" class="page-link" href
           (click)="selectPage(page+1); $event.preventDefault()" [attr.tabindex]="(hasNext() ? null : '-1')">
-          <span aria-hidden="true" i18n="@@ngb.pagination.next">&raquo;</span>
+          <span *ngIf="spanChevron" aria-hidden="true" i18n="@@ngb.pagination.next">&raquo;</span>
+          <span *ngIf="!spanChevron" aria-hidden="true" i18n="@@ngb.pagination.first">&nbsp;</span>
         </a>
       </li>
 
       <li *ngIf="boundaryLinks" class="page-item" [class.disabled]="!hasNext() || disabled">
         <a aria-label="Last" i18n-aria-label="@@ngb.pagination.last-aria" class="page-link" href
           (click)="selectPage(pageCount); $event.preventDefault()" [attr.tabindex]="(hasNext() ? null : '-1')">
-          <span aria-hidden="true" i18n="@@ngb.pagination.last">&raquo;&raquo;</span>
+          <span *ngIf="spanChevron" aria-hidden="true" i18n="@@ngb.pagination.last">&raquo;&raquo;</span>
+          <span *ngIf="!spanChevron" aria-hidden="true" i18n="@@ngb.pagination.first">&nbsp;&nbsp;</span>
         </a>
       </li>
     </ul>
@@ -113,6 +117,12 @@ export class NgbPagination implements OnChanges {
    */
   @Input() size: 'sm' | 'lg';
 
+  /**
+   * Wether to have the chevron displayed or not
+   * the aim is to let other fork project to modify it easily
+   */
+  @Input() spanChevron: boolean;
+
   constructor(config: NgbPaginationConfig) {
     this.disabled = config.disabled;
     this.boundaryLinks = config.boundaryLinks;
@@ -122,6 +132,7 @@ export class NgbPagination implements OnChanges {
     this.pageSize = config.pageSize;
     this.rotate = config.rotate;
     this.size = config.size;
+    this.spanChevron = config.spanChevron;
   }
 
   hasPrevious(): boolean { return this.page > 1; }
