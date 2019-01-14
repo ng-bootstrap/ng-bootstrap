@@ -66,6 +66,7 @@ function expectSameValues(pagination: NgbPagination, config: NgbPaginationConfig
   expect(pagination.pageSize).toBe(config.pageSize);
   expect(pagination.rotate).toBe(config.rotate);
   expect(pagination.size).toBe(config.size);
+  expect(pagination.spanChevron).toBe(config.spanChevron);
 }
 
 describe('ngb-pagination', () => {
