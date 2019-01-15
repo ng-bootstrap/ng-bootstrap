@@ -42,16 +42,9 @@ describe('ngb-popover-window', () => {
     fixture.detectChanges();
 
     expect(fixture.nativeElement).toHaveCssClass('popover');
-    expect(fixture.nativeElement).toHaveCssClass('bs-popover-top');
+    expect(fixture.nativeElement).not.toHaveCssClass('bs-popover-top');
     expect(fixture.nativeElement.getAttribute('role')).toBe('tooltip');
     expect(fixture.nativeElement.querySelector('.popover-header').textContent).toBe('Test title');
-  });
-
-  it('should position popovers as requested', () => {
-    const fixture = TestBed.createComponent(NgbPopoverWindow);
-    fixture.componentInstance.placement = 'left';
-    fixture.detectChanges();
-    expect(fixture.nativeElement).toHaveCssClass('bs-popover-left');
   });
 
   it('should optionally have a custom class', () => {

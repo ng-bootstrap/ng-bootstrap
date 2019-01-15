@@ -34,34 +34,13 @@ let nextId = 0;
   selector: 'ngb-tooltip-window',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  host: {
-    '[class]':
-        '"tooltip show bs-tooltip-" + placement.split("-")[0]+" bs-tooltip-" + placement + (tooltipClass ? " " + tooltipClass : "")',
-    'role': 'tooltip',
-    '[id]': 'id'
-  },
+  host: {'[class]': '"tooltip show" + (tooltipClass ? " " + tooltipClass : "")', 'role': 'tooltip', '[id]': 'id'},
   template: `<div class="arrow"></div><div class="tooltip-inner"><ng-content></ng-content></div>`,
   styleUrls: ['./tooltip.scss']
 })
 export class NgbTooltipWindow {
-  @Input() placement: Placement = 'top';
   @Input() id: string;
   @Input() tooltipClass: string;
-
-  constructor(private _element: ElementRef<HTMLElement>, private _renderer: Renderer2) {}
-
-  applyPlacement(_placement: Placement) {
-    // remove the current placement classes
-    this._renderer.removeClass(this._element.nativeElement, 'bs-tooltip-' + this.placement.toString().split('-')[0]);
-    this._renderer.removeClass(this._element.nativeElement, 'bs-tooltip-' + this.placement.toString());
-
-    // set the new placement classes
-    this.placement = _placement;
-
-    // apply the new placement
-    this._renderer.addClass(this._element.nativeElement, 'bs-tooltip-' + this.placement.toString().split('-')[0]);
-    this._renderer.addClass(this._element.nativeElement, 'bs-tooltip-' + this.placement.toString());
-  }
 }
 
 /**
@@ -141,10 +120,9 @@ export class NgbTooltip implements OnInit, OnDestroy {
 
     this._zoneSubscription = _ngZone.onStable.subscribe(() => {
       if (this._windowRef) {
-        this._windowRef.instance.applyPlacement(
-            positionElements(
-                this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
-                this.container === 'body'));
+        positionElements(
+            this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
+            this.container === 'body', 'bs-tooltip');
       }
     });
   }
@@ -178,17 +156,8 @@ export class NgbTooltip implements OnInit, OnDestroy {
         this._document.querySelector(this.container).appendChild(this._windowRef.location.nativeElement);
       }
 
-      this._windowRef.instance.placement = Array.isArray(this.placement) ? this.placement[0] : this.placement;
-
       // apply styling to set basic css-classes on target element, before going for positioning
-      this._windowRef.changeDetectorRef.detectChanges();
       this._windowRef.changeDetectorRef.markForCheck();
-
-      // position tooltip along the element
-      this._windowRef.instance.applyPlacement(
-          positionElements(
-              this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
-              this.container === 'body'));
 
       this._autoClose.install(
           this.autoClose, () => this.close(), this.hidden, [this._windowRef.location.nativeElement]);

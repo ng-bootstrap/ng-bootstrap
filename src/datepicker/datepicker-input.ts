@@ -142,7 +142,7 @@ export class NgbInputDatepicker implements OnChanges,
    *    "left", "left-top", "left-bottom", "right", "right-top", "right-bottom"
    * and array of above values.
    */
-  @Input() placement: PlacementArray = 'bottom-left';
+  @Input() placement: PlacementArray = ['bottom-left', 'bottom-right', 'top-left', 'top-right'];
 
   /**
    * Whether to display days of the week
