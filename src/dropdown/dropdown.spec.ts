@@ -248,7 +248,7 @@ describe('ngb-dropdown', () => {
 describe('ngb-dropdown-toggle', () => {
   beforeEach(() => {
     jasmine.addMatchers(jasmineMatchers);
-    TestBed.configureTestingModule({declarations: [TestComponent, TestClickCloseOnPush], imports: [NgbDropdownModule]});
+    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbDropdownModule]});
   });
 
   it('should toggle dropdown on click', () => {
@@ -300,115 +300,6 @@ describe('ngb-dropdown-toggle', () => {
     toggleEl.click();
     fixture.detectChanges();
     expect(compiled).not.toBeShown();
-  });
-
-  it('should close on outside click', () => {
-    const html = `
-      <button>Outside</button>
-      <div ngbDropdown [open]="true">
-        <button ngbDropdownAnchor></button>
-        <div ngbDropdownMenu></div>
-      </div>`;
-
-    const fixture = createTestComponent(html);
-    const compiled = fixture.nativeElement;
-    const buttonEl = compiled.querySelector('button');
-
-    expect(compiled).toBeShown();
-
-    buttonEl.click();
-    fixture.detectChanges();
-    expect(compiled).not.toBeShown();
-  });
-
-  it('should close on inside click, outside click and escape when inside the OnPush component', () => {
-    const fixture = createTestComponent(`<test-click-close-on-push></test-click-close-on-push>`);
-    const compiled = fixture.nativeElement;
-    const toggleEl = compiled.querySelector('button');
-    const outsideEl = compiled.querySelector('.outside');
-    const insideEl = compiled.querySelector('.inside');
-
-    const reopen = () => {
-      toggleEl.click();
-      fixture.detectChanges();
-      expect(compiled).toBeShown();
-    };
-
-    // inside click
-    insideEl.click();
-    fixture.detectChanges();
-    expect(compiled).not.toBeShown();
-
-
-    // outside click
-    reopen();
-    outsideEl.click();
-    fixture.detectChanges();
-    expect(compiled).not.toBeShown();
-
-
-    // escape
-    reopen();
-    document.dispatchEvent(createFakeEscapeKeyUpEvent());
-    fixture.detectChanges();
-    expect(compiled).not.toBeShown();
-  });
-
-  it('should not close on outside click if right button click', () => {
-    const html = `
-      <button>Outside</button>
-      <div ngbDropdown [open]="true">
-        <button ngbDropdownAnchor></button>
-        <div ngbDropdownMenu></div>
-      </div>`;
-
-    const fixture = createTestComponent(html);
-    const compiled = fixture.nativeElement;
-    const buttonEl = compiled.querySelector('button');
-
-    expect(compiled).toBeShown();
-
-    const evt = document.createEvent('MouseEvent');
-    evt.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 2, null);
-    buttonEl.dispatchEvent(evt);
-    fixture.detectChanges();
-    expect(compiled).toBeShown();
-  });
-
-  it('should close on other dropdown click', () => {
-    const html = `
-      <div ngbDropdown>
-          <button ngbDropdownToggle>Toggle dropdown 1</button>
-          <div ngbDropdownMenu>
-            <a class="dropdown-item">Action 1</a>
-          </div>
-      </div>
-      <div ngbDropdown>
-          <button ngbDropdownToggle>Toggle dropdown 2</button>
-          <div ngbDropdownMenu>
-            <a class="dropdown-item">Action 2</a>
-          </div>
-      </div>`;
-
-    const fixture = createTestComponent(html);
-    const compiled = fixture.nativeElement;
-
-    const buttonEls = compiled.querySelectorAll('button');
-    const dropdownEls = compiled.querySelectorAll('div[ngbDropdown]');
-
-    fixture.detectChanges();
-    expect(dropdownEls[0]).not.toHaveCssClass('show');
-    expect(dropdownEls[1]).not.toHaveCssClass('show');
-
-    buttonEls[0].click();
-    fixture.detectChanges();
-    expect(dropdownEls[0]).toHaveCssClass('show');
-    expect(dropdownEls[1]).not.toHaveCssClass('show');
-
-    buttonEls[1].click();
-    fixture.detectChanges();
-    expect(dropdownEls[0]).not.toHaveCssClass('show');
-    expect(dropdownEls[1]).toHaveCssClass('show');
   });
 
   describe('Custom config', () => {
@@ -479,20 +370,4 @@ class TestComponent {
     this.stateChanges.push($event);
     this.isOpen = $event;
   }
-}
-
-@Component({
-  selector: 'test-click-close-on-push',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-    <div ngbDropdown [open]="true">
-      <button ngbDropdownToggle>Toggle dropdown</button>
-      <div ngbDropdownMenu>
-        <a class="dropdown-item inside">Action</a>
-      </div>
-    </div>
-    <button class="outside">Outside</button>
-  `
-})
-class TestClickCloseOnPush {
 }
