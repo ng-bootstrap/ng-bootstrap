@@ -203,45 +203,6 @@ describe('ngb-typeahead', () => {
          });
        }));
 
-    it('should be closed on document click', () => {
-      const fixture = createTestComponent(`<input type="text" [ngbTypeahead]="find"/>`);
-      const compiled = fixture.nativeElement;
-
-      changeInput(compiled, 'one');
-      fixture.detectChanges();
-      expect(getWindow(compiled)).not.toBeNull();
-
-      fixture.nativeElement.click();
-      expect(getWindow(compiled)).toBeNull();
-    });
-
-    it('should not be closed on input click', () => {
-      const fixture = createTestComponent(`<input type="text" [ngbTypeahead]="find"/>`);
-      const compiled = fixture.nativeElement;
-
-      changeInput(compiled, 'one');
-      fixture.detectChanges();
-      expect(getWindow(compiled)).not.toBeNull();
-
-      getNativeInput(compiled).click();
-      expect(getWindow(compiled)).not.toBeNull();
-    });
-
-    it('should be closed when ESC is pressed', () => {
-      const fixture = createTestComponent(`<input type="text" [ngbTypeahead]="find"/>`);
-      const compiled = fixture.nativeElement;
-
-      changeInput(compiled, 'one');
-      fixture.detectChanges();
-      expect(getWindow(compiled)).not.toBeNull();
-
-      const event = createKeyDownEvent(Key.Escape);
-      getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
-      fixture.detectChanges();
-      expect(getWindow(compiled)).toBeNull();
-      expect(event.preventDefault).toHaveBeenCalled();
-    });
-
     it('should select the result on click, close window and fill the input', async(() => {
          const fixture = createTestComponent(`<input type="text" [(ngModel)]="model" [ngbTypeahead]="find"/>`);
          const compiled = fixture.nativeElement;
@@ -482,39 +443,6 @@ describe('ngb-typeahead', () => {
 
          // Make sure that it is resubscribed again
          changeInput(compiled, 'two');
-         fixture.detectChanges();
-         tick(250);
-         expect(getWindow(compiled)).not.toBeNull();
-       }));
-
-    it('should not display results when "Escape" is pressed', fakeAsync(() => {
-         const fixture = createAsyncTestComponent(`<input type="text" [ngbTypeahead]="find"/>`);
-         const compiled = fixture.nativeElement;
-
-         // Change input first time
-         changeInput(compiled, 'one');
-         fixture.detectChanges();
-
-         // Results for first input are loaded
-         tick(250);
-         expect(getWindow(compiled)).not.toBeNull();
-
-         // Change input second time
-         changeInput(compiled, 'two');
-         fixture.detectChanges();
-         tick(50);
-
-         // Press Escape while second is still in progress
-         const event = createKeyDownEvent(Key.Escape);
-         getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
-         fixture.detectChanges();
-
-         // Results for second input are loaded (window shouldn't be opened in this case)
-         tick(250);
-         expect(getWindow(compiled)).toBeNull();
-
-         // Make sure that it is resubscribed again
-         changeInput(compiled, 'three');
          fixture.detectChanges();
          tick(250);
          expect(getWindow(compiled)).not.toBeNull();
@@ -911,30 +839,6 @@ describe('ngb-typeahead', () => {
            });
          }));
 
-      it('should restore hint when results window is dismissed with Esc', async(() => {
-           const fixture = createTestComponent(
-               `<input type="text" [(ngModel)]="model" [ngbTypeahead]="findAnywhere" [showHint]="true"/>`);
-           fixture.detectChanges();
-           const compiled = fixture.nativeElement;
-           const inputEl = getNativeInput(compiled);
-
-           fixture.whenStable().then(() => {
-             changeInput(compiled, 'on');
-             fixture.detectChanges();
-             expectWindowResults(compiled, ['+one', 'one more']);
-             expect(inputEl.value).toBe('one');
-             expect(inputEl.selectionStart).toBe(2);
-             expect(inputEl.selectionEnd).toBe(3);
-
-             const event = createKeyDownEvent(Key.Escape);
-             getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
-             fixture.detectChanges();
-             expect(inputEl.value).toBe('on');
-             expect(inputEl.selectionStart).toBe(2);
-             expect(inputEl.selectionEnd).toBe(2);
-           });
-         }));
-
       it('should not show hint when there is no result selected', async(() => {
            const fixture = createTestComponent(
                `<input type="text" [(ngModel)]="model" [ngbTypeahead]="find" [showHint]="true" [focusFirst]="false"/>`);
@@ -948,27 +852,6 @@ describe('ngb-typeahead', () => {
              expectWindowResults(compiled, ['one', 'one more']);
              expect(inputEl.value).toBe('on');
            });
-         }));
-
-      it('should restore hint when results window is dismissed with click outside', async(async() => {
-           const fixture = createTestComponent(
-               `<input type="text" [(ngModel)]="model" [ngbTypeahead]="findAnywhere" [showHint]="true"/>`);
-           fixture.detectChanges();
-           const compiled = fixture.nativeElement;
-           const inputEl = getNativeInput(compiled);
-
-           await fixture.whenStable();
-           changeInput(compiled, 'on');
-           fixture.detectChanges();
-
-           expect(getWindow(compiled)).not.toBeNull();
-           expectInputValue(compiled, 'one');
-           expect(inputEl.selectionStart).toBe(2);
-           expect(inputEl.selectionEnd).toBe(3);
-
-           document.body.click();
-           fixture.detectChanges();
-           expectInputValue(compiled, 'on');
          }));
 
       describe('should clear input properly when model get reset to empty string', () => {
