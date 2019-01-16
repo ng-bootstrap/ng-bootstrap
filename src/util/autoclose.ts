@@ -1,7 +1,7 @@
 import {Injectable, NgZone, Inject} from '@angular/core';
 import {fromEvent, Observable, race} from 'rxjs';
 import {DOCUMENT} from '@angular/common';
-import {takeUntil, filter, withLatestFrom, map} from 'rxjs/operators';
+import {takeUntil, filter, delay, withLatestFrom, map} from 'rxjs/operators';
 import {Key} from './key';
 
 const isHTMLElementContainedIn = (element: HTMLElement, array?: HTMLElement[]) =>
@@ -40,13 +40,14 @@ export class AutoClose {
 
 
         // we have to pre-calculate 'shouldCloseOnClick' on 'mousedown',
-        // because on 'click' DOM nodes might be detached
+        // because on 'mouseup' DOM nodes might be detached
         const mouseDowns$ =
             fromEvent<MouseEvent>(this._document, 'mousedown').pipe(map(shouldCloseOnClick), takeUntil(closed$));
 
-        const outsideClicks$ =
-            fromEvent<MouseEvent>(this._document, 'click')
-                .pipe(withLatestFrom(mouseDowns$), filter(([_, shouldClose]) => shouldClose), takeUntil(closed$));
+        const outsideClicks$ = fromEvent<MouseEvent>(this._document, 'mouseup')
+                                   .pipe(
+                                       withLatestFrom(mouseDowns$), filter(([_, shouldClose]) => shouldClose), delay(0),
+                                       takeUntil(closed$));
 
 
         race<Event>([escapes$, outsideClicks$]).subscribe(() => this._ngZone.run(close));
