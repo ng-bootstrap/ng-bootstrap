@@ -24,27 +24,12 @@ describe('Typeahead', () => {
 
   beforeEach(async() => await openUrl('typeahead/focus'));
 
-  it(`should be focused on item click`, async() => {
-    await page.getTypeaheadInput().click();
-    expectDropdownOpen();
-
-    await page.getDropdownItems().get(0).click();
-    expectTypeaheadValue('Alabama');
-    expectTypeaheadFocused();
-  });
-
   it(`should be open after a second click`, async() => {
     await page.getTypeaheadInput().click();
     expectTypeaheadFocused();
     await page.getTypeaheadInput().click();
     expectDropdownOpen();
     expectTypeaheadFocused();
-  });
-
-  it(`should be close on click outside`, async() => {
-    await page.getTypeaheadInput().click();
-    await page.getInputBefore().click();
-    expectDropDownClosed();
   });
 
   it(`should preserve value previously selected with mouse when reopening with focus then closing without selection`,
