@@ -1,5 +1,5 @@
 import {Key} from 'protractor';
-import {sendKey, openUrl} from '../../tools.po';
+import {sendKey, openUrl, rightClick} from '../../tools.po';
 import {PopoverAutoClosePage} from './popover-autoclose.po';
 
 describe('Popover Autoclose', () => {
@@ -23,6 +23,16 @@ describe('Popover Autoclose', () => {
   beforeAll(() => page = new PopoverAutoClosePage());
 
   beforeEach(async() => await openUrl('popover/autoclose'));
+
+  it(`should not close popover on right clicks`, async() => {
+    await openPopover(`Opening popover for right clicks`);
+
+    await rightClick(page.getPopoverContent());
+    await expectPopoverToBeOpen(`Popover should stay visible when right-clicking inside`);
+
+    await page.rightClickOutside();
+    await expectPopoverToBeOpen(`Popover should stay visible when right-clicking outside`);
+  });
 
   it(`should work when autoClose === true`, async() => {
     await page.selectAutoClose('true');

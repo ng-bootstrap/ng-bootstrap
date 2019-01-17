@@ -3,7 +3,7 @@
   <span class="ml-1 badge {{d.isOpen() ? 'badge-success' : 'badge-danger'}}" id="open-status">{{d.isOpen() ? 'open' : 'closed'}}</span>
 </h3>
 
-<form id="default">
+<form id="default" (contextmenu)="$event.preventDefault()">
   <div class="form-group form-inline">
 
     <button #d="ngbPopover" ngbPopover="Popover here" [autoClose]="autoClose" triggers="click" type="button" class="btn btn-outline-secondary ml-2">

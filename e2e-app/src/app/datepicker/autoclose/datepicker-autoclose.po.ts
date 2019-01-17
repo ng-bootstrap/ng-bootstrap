@@ -1,5 +1,6 @@
 import {$} from 'protractor';
 import {DatepickerPage} from '../datepicker.po';
+import {rightClick} from '../../tools.po';
 
 export class DatepickerAutoClosePage extends DatepickerPage {
   getOpenStatus() { return $('#open-status'); }
@@ -7,6 +8,8 @@ export class DatepickerAutoClosePage extends DatepickerPage {
   async closeDatepicker() { await $('#close').click(); }
 
   async clickOutside() { await $('#outside-button').click(); }
+
+  async rightClickOutside() { await rightClick($('#outside-button')); }
 
   async selectAutoClose(type: string) {
     await $('#autoclose-dropdown').click();

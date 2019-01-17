@@ -3,7 +3,7 @@
   <span class="ml-1 badge {{d.isPopupOpen() ? 'badge-success' : 'badge-danger'}}" id="open-status">{{d.isPopupOpen() ? 'open' : 'closed'}}</span>
 </h3>
 
-<form>
+<form (contextmenu)="$event.preventDefault()">
   <div class="form-group form-inline">
 
     <div class="input-group mr-2">
