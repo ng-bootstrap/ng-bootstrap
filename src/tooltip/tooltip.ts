@@ -16,7 +16,8 @@ import {
   ViewContainerRef,
   ComponentFactoryResolver,
   NgZone,
-  ViewEncapsulation
+  ViewEncapsulation,
+  ChangeDetectorRef
 } from '@angular/core';
 import {DOCUMENT} from '@angular/common';
 
@@ -127,7 +128,8 @@ export class NgbTooltip implements OnInit, OnDestroy {
   constructor(
       private _elementRef: ElementRef<HTMLElement>, private _renderer: Renderer2, injector: Injector,
       componentFactoryResolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef, config: NgbTooltipConfig,
-      private _ngZone: NgZone, @Inject(DOCUMENT) private _document: any, private _autoClose: AutoClose) {
+      private _ngZone: NgZone, @Inject(DOCUMENT) private _document: any, private _autoClose: AutoClose,
+      private _changeDetector: ChangeDetectorRef) {
     this.autoClose = config.autoClose;
     this.placement = config.placement;
     this.triggers = config.triggers;
@@ -204,6 +206,7 @@ export class NgbTooltip implements OnInit, OnDestroy {
       this._popupService.close();
       this._windowRef = null;
       this.hidden.emit();
+      this._changeDetector.markForCheck();
     }
   }
 

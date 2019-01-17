@@ -18,7 +18,8 @@ import {
   ComponentFactoryResolver,
   NgZone,
   SimpleChanges,
-  ViewEncapsulation
+  ViewEncapsulation,
+  ChangeDetectorRef
 } from '@angular/core';
 import {DOCUMENT} from '@angular/common';
 
@@ -155,7 +156,8 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
   constructor(
       private _elementRef: ElementRef<HTMLElement>, private _renderer: Renderer2, injector: Injector,
       componentFactoryResolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef, config: NgbPopoverConfig,
-      private _ngZone: NgZone, @Inject(DOCUMENT) private _document: any, private _autoClose: AutoClose) {
+      private _ngZone: NgZone, @Inject(DOCUMENT) private _document: any, private _autoClose: AutoClose,
+      private _changeDetector: ChangeDetectorRef) {
     this.autoClose = config.autoClose;
     this.placement = config.placement;
     this.triggers = config.triggers;
@@ -218,6 +220,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
       this._popupService.close();
       this._windowRef = null;
       this.hidden.emit();
+      this._changeDetector.markForCheck();
     }
   }
 

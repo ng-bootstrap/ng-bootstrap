@@ -14,6 +14,7 @@ import {
   Renderer2,
   TemplateRef,
   ViewContainerRef,
+  ChangeDetectorRef,
 } from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {BehaviorSubject, fromEvent, Observable, Subscription, Subject} from 'rxjs';
@@ -159,7 +160,8 @@ export class NgbTypeahead implements ControlValueAccessor,
   constructor(
       private _elementRef: ElementRef<HTMLInputElement>, private _viewContainerRef: ViewContainerRef,
       private _renderer: Renderer2, private _injector: Injector, componentFactoryResolver: ComponentFactoryResolver,
-      config: NgbTypeaheadConfig, ngZone: NgZone, private _live: Live, private _autoClose: AutoClose) {
+      config: NgbTypeaheadConfig, ngZone: NgZone, private _live: Live, private _autoClose: AutoClose,
+      private _changeDetector: ChangeDetectorRef) {
     this.container = config.container;
     this.editable = config.editable;
     this.focusFirst = config.focusFirst;
@@ -231,6 +233,7 @@ export class NgbTypeahead implements ControlValueAccessor,
       if (this.showHint && this._inputValueBackup !== null) {
         this._writeInputValue(this._inputValueBackup);
       }
+      this._changeDetector.markForCheck();
     }
   }
 
@@ -288,6 +291,7 @@ export class NgbTypeahead implements ControlValueAccessor,
       this._autoClose.install(
           'outside', () => this.dismissPopup(), this._closed$,
           [this._elementRef.nativeElement, this._windowRef.location.nativeElement]);
+      this._changeDetector.markForCheck();
     }
   }
 

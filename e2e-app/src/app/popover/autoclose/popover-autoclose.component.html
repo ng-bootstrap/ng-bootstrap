@@ -1,9 +1,12 @@
-<h3>Popover autoclose tests</h3>
+<h3>
+  Popover autoclose tests
+  <span class="ml-1 badge {{d.isOpen() ? 'badge-success' : 'badge-danger'}}" id="open-status">{{d.isOpen() ? 'open' : 'closed'}}</span>
+</h3>
 
 <form id="default">
   <div class="form-group form-inline">
 
-    <button ngbPopover="Popover here" [autoClose]="autoClose" triggers="click" type="button" class="btn btn-outline-secondary ml-2">
+    <button #d="ngbPopover" ngbPopover="Popover here" [autoClose]="autoClose" triggers="click" type="button" class="btn btn-outline-secondary ml-2">
       Popover
     </button>
 

@@ -3,6 +3,8 @@ import {$} from 'protractor';
 export class PopoverAutoClosePage {
   async clickOutside() { await $('#outside-button').click(); }
 
+  getOpenStatus() { return $('#open-status'); }
+
   getPopover() { return $('ngb-popover-window'); }
 
   getPopoverContent() { return this.getPopover().$('div.popover-body'); }

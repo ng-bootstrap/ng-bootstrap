@@ -177,12 +177,7 @@ export class NgbDropdown implements OnInit, OnDestroy {
 
   private _setCloseHandlers() {
     this._autoClose.install(
-        this.autoClose,
-        () => {
-          this.close();
-          this._changeDetector.markForCheck();
-        },
-        this._closed$, this._menu ? [this._menu.getNativeElement()] : [],
+        this.autoClose, () => this.close(), this._closed$, this._menu ? [this._menu.getNativeElement()] : [],
         this._anchor ? [this._anchor.getNativeElement()] : []);
   }
 
@@ -194,6 +189,7 @@ export class NgbDropdown implements OnInit, OnDestroy {
       this._open = false;
       this._closed$.next();
       this.openChange.emit(false);
+      this._changeDetector.markForCheck();
     }
   }
 

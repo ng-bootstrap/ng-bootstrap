@@ -1,8 +1,10 @@
-<h3>Datepicker autoclose tests</h3>
+<h3>
+  Datepicker autoclose tests
+  <span class="ml-1 badge {{d.isOpen() ? 'badge-success' : 'badge-danger'}}" id="open-status">{{d.isOpen() ? 'open' : 'closed'}}</span>
+</h3>
 
 <form id="default">
   <div class="form-group form-inline">
-
     <div class="input-group">
       <input class="form-control" name="dp" placeholder="yyyy-mm-dd" #d="ngbDatepicker" ngbDatepicker
              [autoClose]="autoClose" [(ngModel)]="model" [displayMonths]="displayMonths">

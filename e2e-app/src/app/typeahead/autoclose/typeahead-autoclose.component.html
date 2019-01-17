@@ -1,11 +1,14 @@
-<h3>Typeahead autoclose tests</h3>
+<h3>
+  Typeahead autoclose tests
+  <span class="ml-1 badge {{d.isPopupOpen() ? 'badge-success' : 'badge-danger'}}" id="open-status">{{d.isPopupOpen() ? 'open' : 'closed'}}</span>
+</h3>
 
 <form>
   <div class="form-group form-inline">
 
     <div class="input-group mr-2">
       <label for="typeahead" class="mr-2">Typeahead</label>
-      <input id="typeahead" type="text" class="form-control" [ngbTypeahead]="search" [showHint]="showHint" />
+      <input #d="ngbTypeahead" id="typeahead" type="text" class="form-control" [ngbTypeahead]="search" [showHint]="showHint" />
     </div>
 
     <div ngbDropdown class="
