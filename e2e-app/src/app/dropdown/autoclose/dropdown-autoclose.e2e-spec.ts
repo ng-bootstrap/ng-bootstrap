@@ -1,5 +1,5 @@
 import {Key, ElementFinder} from 'protractor';
-import {sendKey, openUrl} from '../../tools.po';
+import {sendKey, openUrl, rightClick} from '../../tools.po';
 import {DropdownAutoClosePage} from './dropdown-autoclose.po';
 
 describe('Dropdown Autoclose', () => {
@@ -23,6 +23,18 @@ describe('Dropdown Autoclose', () => {
   beforeAll(() => page = new DropdownAutoClosePage());
 
   beforeEach(async() => await openUrl('dropdown/autoclose'));
+
+  it(`should not close when right clicking`, async() => {
+    await page.selectAutoClose('true');
+    const dropdown = page.getDropdown('#dropdown');
+
+    await openDropdown(dropdown, `Opening dropdown for right clicks`);
+    await rightClick(page.getFirstItem(dropdown));
+    await expectDropdownToBeVisible(dropdown, `Dropdown should NOT be closed on right click inside`);
+
+    await page.rightClickOutside();
+    await expectDropdownToBeVisible(dropdown, `Dropdown should NOT be closed on right click outside`);
+  });
 
   it(`should work when autoClose === true`, async() => {
     await page.selectAutoClose('true');

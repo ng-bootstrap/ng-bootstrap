@@ -1,6 +1,6 @@
 import {Key} from 'protractor';
 import {DatepickerAutoClosePage} from './datepicker-autoclose.po';
-import {openUrl, sendKey} from '../../tools.po';
+import {openUrl, sendKey, rightClick} from '../../tools.po';
 
 describe('Datepicker Autoclose', () => {
   let page: DatepickerAutoClosePage;
@@ -37,6 +37,18 @@ describe('Datepicker Autoclose', () => {
       beforeEach(async() => {
         await openUrl('datepicker/autoclose');
         await page.selectDisplayMonths(displayMonths);
+      });
+
+      it(`should not close when right clicking`, async() => {
+        await page.selectAutoClose('true');
+
+        await openDatepicker(`Opening datepicker for right clicks`);
+
+        await rightClick(page.getDayElement(DATE_SELECT));
+        await expectDatepickerToBeOpen(`Datepicker should NOT be closed on right click inside`);
+
+        await page.rightClickOutside();
+        await expectDatepickerToBeOpen(`Datepicker should NOT be closed on right click outside`);
       });
 
       it(`should work when autoClose === true`, async() => {
