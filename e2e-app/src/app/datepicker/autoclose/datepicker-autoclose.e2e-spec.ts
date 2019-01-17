@@ -7,6 +7,26 @@ describe('Datepicker Autoclose', () => {
 
   beforeAll(() => page = new DatepickerAutoClosePage());
 
+  const expectDatepickerToBeOpen = async(message: string) => {
+    expect(await page.getDatepicker().isPresent()).toBeTruthy(message);
+    expect(await page.getOpenStatus().getText()).toBe('open', message);
+  };
+
+  const expectDatepickerToBeClosed = async(message: string) => {
+    expect(await page.getDatepicker().isPresent()).toBeFalsy(message);
+    expect(await page.getOpenStatus().getText()).toBe('closed', message);
+  };
+
+  const openDatepicker = async(message: string) => {
+    await page.openDatepicker();
+    await expectDatepickerToBeOpen(message);
+  };
+
+  const closeDatepicker = async(message: string) => {
+    await page.closeDatepicker();
+    await expectDatepickerToBeClosed(message);
+  };
+
   for (let displayMonths of[1, 2]) {
     describe(`displayMonths = ${displayMonths}`, () => {
 
@@ -23,117 +43,113 @@ describe('Datepicker Autoclose', () => {
         await page.selectAutoClose('true');
 
         // escape
-        await page.openDatepicker();
+        await openDatepicker(`Opening datepicker for escape`);
         await sendKey(Key.ESCAPE);
-        expect(await page.getDatepicker().isPresent()).toBeFalsy(`Datepicker should be closed on ESC`);
+        await expectDatepickerToBeClosed(`Datepicker should be closed on ESC`);
 
         // outside click
-        await page.openDatepicker();
+        await openDatepicker(`Opening datepicker for outside click`);
         await page.clickOutside();
-        expect(await page.getDatepicker().isPresent()).toBeFalsy(`Datepicker should be closed on outside click`);
+        await expectDatepickerToBeClosed(`Datepicker should be closed on outside click`);
 
         // date selection
-        await page.openDatepicker();
+        await openDatepicker(`Opening datepicker for date selection`);
         await page.getDayElement(DATE_SELECT).click();
-        expect(await page.getDatepicker().isPresent()).toBeFalsy(`Datepicker should be closed on date selection`);
+        await expectDatepickerToBeClosed(`Datepicker should be closed on date selection`);
 
         // outside days click -> month before
-        await page.openDatepicker();
+        await openDatepicker(`Opening datepicker for outside days click -> month before`);
         await page.getDayElement(DATE_OUTSIDE_BEFORE).click();
-        expect(await page.getDatepicker().isPresent()).toBeFalsy(`Datepicker should be closed on outside day click`);
+        await expectDatepickerToBeClosed(`Datepicker should be closed on outside day click`);
 
         // outside days click -> month after
-        await page.openDatepicker();
+        await openDatepicker(`Opening datepicker for outside days click -> month after`);
         await page.getDayElement(DATE_OUTSIDE_AFTER).click();
-        expect(await page.getDatepicker().isPresent()).toBeFalsy(`Datepicker should be closed on outside day click`);
+        await expectDatepickerToBeClosed(`Datepicker should be closed on outside day click`);
       });
 
       it(`should work when autoClose === false`, async() => {
         await page.selectAutoClose('false');
 
         // escape
-        await page.openDatepicker();
+        await openDatepicker(`Opening datepicker`);
         await sendKey(Key.ESCAPE);
-        expect(await page.getDatepicker().isPresent()).toBeTruthy(`Datepicker should NOT be closed on ESC`);
+        await expectDatepickerToBeOpen(`Datepicker should NOT be closed on ESC`);
 
         // outside click
         await page.clickOutside();
-        expect(await page.getDatepicker().isPresent()).toBeTruthy(`Datepicker should NOT be closed on outside click`);
+        await expectDatepickerToBeOpen(`Datepicker should NOT be closed on outside click`);
 
         // date selection
         await page.getDayElement(DATE_SELECT).click();
-        expect(await page.getDatepicker().isPresent()).toBeTruthy(`Datepicker should NOT be closed on date selection`);
+        await expectDatepickerToBeOpen(`Datepicker should NOT be closed on date selection`);
 
         // outside days click -> month before
         await page.getDayElement(DATE_OUTSIDE_BEFORE).click();
-        expect(await page.getDatepicker().isPresent())
-            .toBeTruthy(`Datepicker should NOT be closed on outside day click`);
+        await expectDatepickerToBeOpen(`Datepicker should NOT be closed on outside day click`);
 
         // outside days click -> month after
-        await page.closeDatepicker();
-        await page.openDatepicker();  // to reset visible month
+        await closeDatepicker(`Closing datepicker`);
+        await openDatepicker(`Reopening datepicker`);  // to reset visible month
         await page.getDayElement(DATE_OUTSIDE_AFTER).click();
-        expect(await page.getDatepicker().isPresent())
-            .toBeTruthy(`Datepicker should NOT be closed on outside day click`);
+        await expectDatepickerToBeOpen(`Datepicker should NOT be closed on outside day click`);
       });
 
       it(`should work when autoClose === 'outside'`, async() => {
         await page.selectAutoClose('outside');
 
         // escape
-        await page.openDatepicker();
+        await openDatepicker(`Opening datepicker for escape`);
         await sendKey(Key.ESCAPE);
-        expect(await page.getDatepicker().isPresent()).toBeFalsy(`Datepicker should be closed on ESC`);
+        await expectDatepickerToBeClosed(`Datepicker should be closed on ESC`);
 
         // outside click
-        await page.openDatepicker();
+        await openDatepicker(`Opening datepicker for outside click`);
         await page.clickOutside();
-        expect(await page.getDatepicker().isPresent()).toBeFalsy(`Datepicker should be closed on outside click`);
+        await expectDatepickerToBeClosed(`Datepicker should be closed on outside click`);
 
         // date selection
-        await page.openDatepicker();
+        await openDatepicker(`Opening datepicker for date selection`);
         await page.getDayElement(DATE_SELECT).click();
-        expect(await page.getDatepicker().isPresent()).toBeTruthy(`Datepicker should NOT be closed on date selection`);
+        await expectDatepickerToBeOpen(`Datepicker should NOT be closed on date selection`);
 
         // outside days click -> month before
         await page.getDayElement(DATE_OUTSIDE_BEFORE).click();
-        expect(await page.getDatepicker().isPresent())
-            .toBeTruthy(`Datepicker should NOT be closed on outside day click`);
+        await expectDatepickerToBeOpen(`Datepicker should NOT be closed on outside day click`);
 
         // outside days click -> month after
-        await page.closeDatepicker();
-        await page.openDatepicker();  // to reset visible month
+        await closeDatepicker(`Closing datepicker`);
+        await openDatepicker(`Reopening datepicker`);  // to reset visible month
         await page.getDayElement(DATE_OUTSIDE_AFTER).click();
-        expect(await page.getDatepicker().isPresent())
-            .toBeTruthy(`Datepicker should NOT be closed on outside day click`);
+        await expectDatepickerToBeOpen(`Datepicker should NOT be closed on outside day click`);
       });
 
       it(`should work when autoClose === 'inside'`, async() => {
         await page.selectAutoClose('inside');
 
         // escape
-        await page.openDatepicker();
+        await openDatepicker(`Opening datepicker for escape`);
         await sendKey(Key.ESCAPE);
-        expect(await page.getDatepicker().isPresent()).toBeFalsy(`Datepicker should be closed on ESC`);
+        await expectDatepickerToBeClosed(`Datepicker should be closed on ESC`);
 
         // outside click
-        await page.openDatepicker();
+        await openDatepicker(`Opening datepicker for outside click`);
         await page.clickOutside();
-        expect(await page.getDatepicker().isPresent()).toBeTruthy(`Datepicker should NOT be closed on outside click`);
+        await expectDatepickerToBeOpen(`Datepicker should NOT be closed on outside click`);
 
         // date selection
         await page.getDayElement(DATE_SELECT).click();
-        expect(await page.getDatepicker().isPresent()).toBeFalsy(`Datepicker should be closed on date selection`);
+        await expectDatepickerToBeClosed(`Datepicker should be closed on date selection`);
 
         // outside days click -> month before
-        await page.openDatepicker();
+        await openDatepicker(`Opening datepicker for outside days click -> month before`);
         await page.getDayElement(DATE_OUTSIDE_BEFORE).click();
-        expect(await page.getDatepicker().isPresent()).toBeFalsy(`Datepicker should be closed on outside day click`);
+        await expectDatepickerToBeClosed(`Datepicker should be closed on outside day click`);
 
         // outside days click -> month after
-        await page.openDatepicker();
+        await openDatepicker(`Opening datepicker for outside days click -> month after`);
         await page.getDayElement(DATE_OUTSIDE_AFTER).click();
-        expect(await page.getDatepicker().isPresent()).toBeFalsy(`Datepicker should be closed on outside day click`);
+        await expectDatepickerToBeClosed(`Datepicker should be closed on outside day click`);
       });
     });
   }

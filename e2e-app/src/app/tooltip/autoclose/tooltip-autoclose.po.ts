@@ -3,6 +3,8 @@ import {$} from 'protractor';
 export class TooltipAutoClosePage {
   async clickOutside() { await $('#outside-button').click(); }
 
+  getOpenStatus() { return $('#open-status'); }
+
   getTooltip() { return $('ngb-tooltip-window'); }
 
   getTooltipContent() { return this.getTooltip().$('div.tooltip-inner'); }

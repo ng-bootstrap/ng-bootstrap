@@ -7,6 +7,8 @@ export class DropdownAutoClosePage {
 
   getFirstItem(dropdown: ElementFinder) { return dropdown.$$(`.dropdown-item`).first(); }
 
+  getOpenStatus() { return $('#open-status'); }
+
   async open(dropdown: ElementFinder) {
     await dropdown.$(`button[ngbDropdownToggle]`).click();
     expect(await this.isOpened(dropdown)).toBeTruthy(`Dropdown should have been opened`);

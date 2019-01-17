@@ -1,9 +1,24 @@
-import {Key} from 'protractor';
+import {Key, ElementFinder} from 'protractor';
 import {sendKey, openUrl} from '../../tools.po';
 import {DropdownAutoClosePage} from './dropdown-autoclose.po';
 
 describe('Dropdown Autoclose', () => {
   let page: DropdownAutoClosePage;
+
+  const expectDropdownToBeVisible = async(dropdown: ElementFinder, message: string) => {
+    expect(await page.isOpened(dropdown)).toBeTruthy(message);
+    expect(await page.getOpenStatus().getText()).toBe('open', message);
+  };
+
+  const expectDropdownToBeHidden = async(dropdown: ElementFinder, message: string) => {
+    expect(await page.isOpened(dropdown)).toBeFalsy(message);
+    expect(await page.getOpenStatus().getText()).toBe('closed', message);
+  };
+
+  const openDropdown = async(dropdown: ElementFinder, message: string) => {
+    await page.open(dropdown);
+    await expectDropdownToBeVisible(dropdown, message);
+  };
 
   beforeAll(() => page = new DropdownAutoClosePage());
 
@@ -14,19 +29,19 @@ describe('Dropdown Autoclose', () => {
     const dropdown = page.getDropdown('#dropdown');
 
     // escape
-    await page.open(dropdown);
+    await openDropdown(dropdown, `Opening dropdown for escape`);
     await sendKey(Key.ESCAPE);
-    expect(await page.isOpened(dropdown)).toBeFalsy(`Dropdown should be closed on ESC`);
+    await expectDropdownToBeHidden(dropdown, `Dropdown should be closed on ESC`);
 
     // outside click
-    await page.open(dropdown);
+    await openDropdown(dropdown, `Opening dropdown for outside click`);
     await page.clickOutside();
-    expect(await page.isOpened(dropdown)).toBeFalsy(`Dropdown should be closed on outside click`);
+    await expectDropdownToBeHidden(dropdown, `Dropdown should be closed on outside click`);
 
     // inside click
-    await page.open(dropdown);
+    await openDropdown(dropdown, `Opening dropdown for inside click`);
     await page.getFirstItem(dropdown).click();
-    expect(await page.isOpened(dropdown)).toBeFalsy(`Dropdown should be closed on date selection`);
+    await expectDropdownToBeHidden(dropdown, `Dropdown should be closed on inside click`);
   });
 
   it(`should work when autoClose === false`, async() => {
@@ -34,17 +49,17 @@ describe('Dropdown Autoclose', () => {
     const dropdown = page.getDropdown('#dropdown');
 
     // escape
-    await page.open(dropdown);
+    await openDropdown(dropdown, `Opening dropdown for escape`);
     await sendKey(Key.ESCAPE);
-    expect(await page.isOpened(dropdown)).toBeTruthy(`Dropdown should NOT be closed on ESC`);
+    await expectDropdownToBeVisible(dropdown, `Dropdown should NOT be closed on ESC`);
 
     // outside click
     await page.clickOutside();
-    expect(await page.isOpened(dropdown)).toBeTruthy(`Dropdown should NOT be closed on outside click`);
+    await expectDropdownToBeVisible(dropdown, `Dropdown should NOT be closed on outside click`);
 
     // inside click
     await page.getFirstItem(dropdown).click();
-    expect(await page.isOpened(dropdown)).toBeTruthy(`Dropdown should NOT be closed on date selection`);
+    await expectDropdownToBeVisible(dropdown, `Dropdown should NOT be closed on inside click`);
   });
 
   it(`should work when autoClose === 'outside'`, async() => {
@@ -52,19 +67,19 @@ describe('Dropdown Autoclose', () => {
     const dropdown = page.getDropdown('#dropdown');
 
     // escape
-    await page.open(dropdown);
+    await openDropdown(dropdown, `Opening dropdown for escape`);
     await sendKey(Key.ESCAPE);
-    expect(await page.isOpened(dropdown)).toBeFalsy(`Dropdown should be closed on ESC`);
+    await expectDropdownToBeHidden(dropdown, `Dropdown should be closed on ESC`);
 
     // outside click
-    await page.open(dropdown);
+    await openDropdown(dropdown, `Opening dropdown for outside click`);
     await page.clickOutside();
-    expect(await page.isOpened(dropdown)).toBeFalsy(`Dropdown should be closed on outside click`);
+    await expectDropdownToBeHidden(dropdown, `Dropdown should be closed on outside click`);
 
-    // date selection
-    await page.open(dropdown);
+    // inside click
+    await openDropdown(dropdown, `Opening dropdown for inside click`);
     await page.getFirstItem(dropdown).click();
-    expect(await page.isOpened(dropdown)).toBeTruthy(`Dropdown should NOT be closed on date selection`);
+    await expectDropdownToBeVisible(dropdown, `Dropdown should NOT be closed on inside click`);
   });
 
   it(`should work when autoClose === 'inside'`, async() => {
@@ -72,17 +87,17 @@ describe('Dropdown Autoclose', () => {
     const dropdown = page.getDropdown('#dropdown');
 
     // escape
-    await page.open(dropdown);
+    await openDropdown(dropdown, `Opening dropdown for escape`);
     await sendKey(Key.ESCAPE);
-    expect(await page.isOpened(dropdown)).toBeFalsy(`Dropdown should be closed on ESC`);
+    await expectDropdownToBeHidden(dropdown, `Dropdown should be closed on ESC`);
 
     // outside click
-    await page.open(dropdown);
+    await openDropdown(dropdown, `Opening dropdown for outside click`);
     await page.clickOutside();
-    expect(await page.isOpened(dropdown)).toBeTruthy(`Dropdown should NOT be closed on outside click`);
+    await expectDropdownToBeVisible(dropdown, `Dropdown should NOT be closed on outside click`);
 
-    // date selection
+    // inside click
     await page.getFirstItem(dropdown).click();
-    expect(await page.isOpened(dropdown)).toBeFalsy(`Dropdown should be closed on date selection`);
+    await expectDropdownToBeHidden(dropdown, `Dropdown should be closed on inside click`);
   });
 });

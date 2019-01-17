@@ -14,6 +14,7 @@ import {
   SimpleChanges,
   TemplateRef,
   ViewContainerRef,
+  ChangeDetectorRef,
 } from '@angular/core';
 import {AbstractControl, ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR, Validator} from '@angular/forms';
 import {Subject} from 'rxjs';
@@ -202,7 +203,8 @@ export class NgbInputDatepicker implements OnChanges,
       private _parserFormatter: NgbDateParserFormatter, private _elRef: ElementRef<HTMLInputElement>,
       private _vcRef: ViewContainerRef, private _renderer: Renderer2, private _cfr: ComponentFactoryResolver,
       private _ngZone: NgZone, private _service: NgbDatepickerService, private _calendar: NgbCalendar,
-      private _dateAdapter: NgbDateAdapter<any>, private _autoClose: AutoClose) {
+      private _dateAdapter: NgbDateAdapter<any>, private _changeDetector: ChangeDetectorRef,
+      private _autoClose: AutoClose) {
     this._zoneSubscription = _ngZone.onStable.subscribe(() => {
       if (this._cRef) {
         positionElements(
@@ -308,6 +310,7 @@ export class NgbInputDatepicker implements OnChanges,
       this._vcRef.remove(this._vcRef.indexOf(this._cRef.hostView));
       this._cRef = null;
       this._closed$.next();
+      this._changeDetector.markForCheck();
     }
   }
 

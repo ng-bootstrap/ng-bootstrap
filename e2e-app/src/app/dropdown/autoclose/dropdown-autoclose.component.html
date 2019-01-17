@@ -1,9 +1,12 @@
-<h3>Dropdown autoclose tests</h3>
+<h3>
+  Dropdown autoclose tests
+  <span class="ml-1 badge {{d.isOpen() ? 'badge-success' : 'badge-danger'}}" id="open-status">{{d.isOpen() ? 'open' : 'closed'}}</span>
+</h3>
 
 <form id="default">
   <div class="form-group form-inline">
 
-    <div id="dropdown"ngbDropdown class="d-inline-block" [autoClose]="autoClose">
+    <div id="dropdown" #d="ngbDropdown" ngbDropdown class="d-inline-block" [autoClose]="autoClose">
       <button class="btn btn-outline-secondary" ngbDropdownToggle>Dropdown</button>
       <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
         <button class="dropdown-item">Item</button>

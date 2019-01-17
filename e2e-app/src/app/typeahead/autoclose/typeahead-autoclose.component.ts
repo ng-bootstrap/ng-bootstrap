@@ -1,10 +1,10 @@
-import {Component} from '@angular/core';
+import {Component, ChangeDetectionStrategy} from '@angular/core';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
 const items = ['one', 'two', 'three'];
 
-@Component({templateUrl: './typeahead-autoclose.component.html'})
+@Component({templateUrl: './typeahead-autoclose.component.html', changeDetection: ChangeDetectionStrategy.OnPush})
 export class TypeaheadAutoCloseComponent {
   showHint = false;
 
