@@ -658,6 +658,34 @@ describe('ngb-modal', () => {
 
     });
 
+    describe('backdrop custom z-index option', () => {
+
+      it('should render modal with the correct default backdrop z-index', () => {
+        const modalInstance = fixture.componentInstance.open('foo');
+        const ngbModalBackdrop: HTMLElement = document.querySelector('ngb-modal-backdrop');
+        fixture.detectChanges();
+        expect(fixture.nativeElement).toHaveModal('foo');
+        expect(ngbModalBackdrop.style.zIndex.toString()).toEqual('1050');
+
+        modalInstance.close();
+        fixture.detectChanges();
+        expect(fixture.nativeElement).not.toHaveModal();
+      });
+
+      it('should render modal with the correct custom backdrop z-index', () => {
+        const modalInstance = fixture.componentInstance.open('foo', {backdropZIndex: 500});
+        const ngbModalBackdrop: HTMLElement = document.querySelector('ngb-modal-backdrop');
+        fixture.detectChanges();
+        expect(fixture.nativeElement).toHaveModal('foo');
+        expect(ngbModalBackdrop.style.zIndex.toString()).toEqual('500');
+
+        modalInstance.close();
+        fixture.detectChanges();
+        expect(fixture.nativeElement).not.toHaveModal();
+      });
+
+    });
+
     describe('custom injector option', () => {
 
       it('should render modal with a custom injector', () => {

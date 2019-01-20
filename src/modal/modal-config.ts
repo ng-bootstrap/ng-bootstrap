@@ -62,6 +62,13 @@ export interface NgbModalOptions {
    * @since 1.1.0
    */
   backdropClass?: string;
+
+  /**
+   * Custom z-index value for the modal backdrop
+   *
+   * @since 3.3.0
+   */
+  backdropZIndex?: number;
 }
 
 /**
