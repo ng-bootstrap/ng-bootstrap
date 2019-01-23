@@ -282,6 +282,7 @@ export class NgbInputDatepicker implements OnChanges,
       this._cRef.instance.registerOnChange((selectedDate) => {
         this.writeValue(selectedDate);
         this._onChange(selectedDate);
+        this._onTouched();
       });
 
       this._cRef.changeDetectorRef.detectChanges();

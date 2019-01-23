@@ -309,6 +309,28 @@ describe('NgbInputDatepicker', () => {
 
          expect(inputDebugEl.classes['ng-touched']).toBeTruthy();
        }));
+
+    it('should update model with updateOnBlur when selecting a date', fakeAsync(() => {
+         const fixture = createTestCmpt(`
+      <input ngbDatepicker [startDate]="{year: 2018, month: 3}" [(ngModel)]="date" #d="ngbDatepicker"
+             [ngModelOptions]="{updateOn: 'blur'}">`);
+
+         const inputDebugEl = fixture.debugElement.query(By.css('input'));
+         const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
+
+         // open
+         dpInput.open();
+         fixture.detectChanges();
+         expect(inputDebugEl.classes['ng-touched']).toBeFalsy();
+         expect(fixture.componentInstance.date).toBeUndefined();
+
+         // select date
+         fixture.nativeElement.querySelectorAll('.ngb-dp-day')[3].click();  // 1 MAR 2018
+         fixture.detectChanges();
+         expect(fixture.componentInstance.date).toEqual({year: 2018, month: 3, day: 1});
+         expect(inputDebugEl.nativeElement.value).toBe('2018-03-01');
+         expect(inputDebugEl.classes['ng-touched']).toBeTruthy();
+       }));
   });
 
   describe('manual data entry', () => {
