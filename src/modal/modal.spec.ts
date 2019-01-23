@@ -804,6 +804,7 @@ describe('ngb-modal', () => {
     });
 
     describe('accessibility', () => {
+
       it('should support aria-labelledby', () => {
         const id = 'aria-labelledby-id';
 
@@ -817,6 +818,128 @@ describe('ngb-modal', () => {
         fixture.detectChanges();
         expect(fixture.nativeElement).not.toHaveModal();
       });
+
+      it('should have aria-modal attribute', () => {
+        const a11yFixture = TestBed.createComponent(TestA11yComponent);
+        const modalInstance = a11yFixture.componentInstance.open();
+        a11yFixture.detectChanges();
+
+        const modalElement = <HTMLElement>document.querySelector('ngb-modal-window');
+        expect(modalElement.getAttribute('aria-modal')).toBe('true');
+
+        modalInstance.close();
+        fixture.detectChanges();
+        expect(fixture.nativeElement).not.toHaveModal();
+      });
+
+      it('should add aria-hidden attributes to siblings when attached to body', async(async() => {
+           const a11yFixture = TestBed.createComponent(TestA11yComponent);
+           const modalInstance = a11yFixture.componentInstance.open();
+           a11yFixture.detectChanges();
+
+           const modal = document.querySelector('ngb-modal-window');
+           const backdrop = document.querySelector('ngb-modal-backdrop');
+           const application = document.querySelector('div[ng-version]');
+           let ariaHidden = document.querySelectorAll('[aria-hidden]');
+
+           expect(ariaHidden.length).toBeGreaterThan(2);  // 2 exist in the DOM initially
+           expect(document.body.hasAttribute('aria-hidden')).toBe(false);
+           expect(application.getAttribute('aria-hidden')).toBe('true');
+           expect(backdrop.getAttribute('aria-hidden')).toBe('true');
+           expect(modal.hasAttribute('aria-hidden')).toBe(false);
+
+           modalInstance.close();
+           fixture.detectChanges();
+           await a11yFixture.whenStable();
+
+           ariaHidden = document.querySelectorAll('[aria-hidden]');
+
+           expect(ariaHidden.length).toBe(2);  // 2 exist in the DOM initially
+           expect(a11yFixture.nativeElement).not.toHaveModal();
+         }));
+
+      it('should add aria-hidden attributes to siblings when attached to a container', async(async() => {
+           const a11yFixture = TestBed.createComponent(TestA11yComponent);
+           const modalInstance = a11yFixture.componentInstance.open({container: '#container'});
+           a11yFixture.detectChanges();
+
+           const modal = document.querySelector('ngb-modal-window');
+           const backdrop = document.querySelector('ngb-modal-backdrop');
+           const application = document.querySelector('div[ng-version]');
+           const ariaRestoreTrue = document.querySelector('.to-restore-true');
+           const ariaRestoreFalse = document.querySelector('.to-restore-false');
+
+           expect(document.body.hasAttribute('aria-hidden')).toBe(false);
+           expect(application.hasAttribute('aria-hidden')).toBe(false);
+           expect(modal.hasAttribute('aria-hidden')).toBe(false);
+           expect(backdrop.getAttribute('aria-hidden')).toBe('true');
+           expect(ariaRestoreTrue.getAttribute('aria-hidden')).toBe('true');
+           expect(ariaRestoreFalse.getAttribute('aria-hidden')).toBe('true');
+
+           Array.from(document.querySelectorAll('.to-hide')).forEach(element => {
+             expect(element.getAttribute('aria-hidden')).toBe('true');
+           });
+
+           Array.from(document.querySelectorAll('.not-to-hide')).forEach(element => {
+             expect(element.hasAttribute('aria-hidden')).toBe(false);
+           });
+
+           modalInstance.close();
+           fixture.detectChanges();
+           await a11yFixture.whenStable();
+
+           const ariaHidden = document.querySelectorAll('[aria-hidden]');
+
+           expect(ariaHidden.length).toBe(2);  // 2 exist in the DOM initially
+           expect(ariaRestoreTrue.getAttribute('aria-hidden')).toBe('true');
+           expect(ariaRestoreFalse.getAttribute('aria-hidden')).toBe('false');
+           expect(a11yFixture.nativeElement).not.toHaveModal();
+         }));
+
+      it('should add aria-hidden attributes with modal stacks', async(async() => {
+           const a11yFixture = TestBed.createComponent(TestA11yComponent);
+           const firstModalInstance = a11yFixture.componentInstance.open();
+           const secondModalInstance = a11yFixture.componentInstance.open();
+           a11yFixture.detectChanges();
+
+           let modals = document.querySelectorAll('ngb-modal-window');
+           let backdrops = document.querySelectorAll('ngb-modal-backdrop');
+           let ariaHidden = document.querySelectorAll('[aria-hidden]');
+
+           const hiddenElements = ariaHidden.length;
+           expect(hiddenElements).toBeGreaterThan(2);  // 2 exist in the DOM initially
+
+           expect(modals.length).toBe(2);
+           expect(backdrops.length).toBe(2);
+
+           expect(modals[0].hasAttribute('aria-hidden')).toBe(true);
+           expect(backdrops[0].hasAttribute('aria-hidden')).toBe(true);
+
+           expect(modals[1].hasAttribute('aria-hidden')).toBe(false);
+           expect(backdrops[1].hasAttribute('aria-hidden')).toBe(true);
+
+           secondModalInstance.close();
+           fixture.detectChanges();
+           await a11yFixture.whenStable();
+
+           ariaHidden = document.querySelectorAll('[aria-hidden]');
+           expect(document.querySelectorAll('ngb-modal-window').length).toBe(1);
+           expect(document.querySelectorAll('ngb-modal-backdrop').length).toBe(1);
+
+           expect(ariaHidden.length).toBe(hiddenElements - 2);
+
+           expect(modals[0].hasAttribute('aria-hidden')).toBe(false);
+           expect(backdrops[0].hasAttribute('aria-hidden')).toBe(true);
+
+           firstModalInstance.close();
+           fixture.detectChanges();
+           await a11yFixture.whenStable();
+
+           ariaHidden = document.querySelectorAll('[aria-hidden]');
+
+           expect(ariaHidden.length).toBe(2);  // 2 exist in the DOM initially
+           expect(a11yFixture.nativeElement).not.toHaveModal();
+         }));
     });
 
   });
@@ -967,10 +1090,38 @@ class TestComponent {
   openTplIf(options?: Object) { return this.modalService.open(this.tplContentWithIf, options); }
 }
 
+@Component({
+  selector: 'test-a11y-cmpt',
+  template: `
+    <div class="to-hide to-restore-true" aria-hidden="true">
+      <div class="not-to-hide"></div>
+    </div>
+    <div class="not-to-hide">
+      <div class="to-hide">
+        <div class="not-to-hide"></div>
+      </div>
+
+      <div class="not-to-hide" id="container"></div>
+
+      <div class="to-hide">
+        <div class="not-to-hide"></div>
+      </div>
+    </div>
+    <div class="to-hide to-restore-false" aria-hidden="false">
+      <div class="not-to-hide"></div>
+    </div>
+  `
+})
+class TestA11yComponent {
+  constructor(private modalService: NgbModal) {}
+
+  open(options?: any) { return this.modalService.open('foo', options); }
+}
+
 @NgModule({
   declarations: [
     TestComponent, CustomInjectorCmpt, DestroyableCmpt, WithActiveModalCmpt, WithAutofocusModalCmpt,
-    WithFirstFocusableModalCmpt, WithSkipTabindexFirstFocusableModalCmpt
+    WithFirstFocusableModalCmpt, WithSkipTabindexFirstFocusableModalCmpt, TestA11yComponent
   ],
   exports: [TestComponent, DestroyableCmpt],
   imports: [CommonModule, NgbModalModule],

@@ -21,11 +21,12 @@ import {NgbModalWindow} from './modal-window';
 
 @Injectable({providedIn: 'root'})
 export class NgbModalStack {
-  private _windowAttributes = ['ariaLabelledBy', 'backdrop', 'centered', 'keyboard', 'size', 'windowClass'];
+  private _activeWindowCmptHasChanged = new Subject();
+  private _ariaHiddenValues: Map<Element, string> = new Map();
   private _backdropAttributes = ['backdropClass'];
   private _modalRefs: NgbModalRef[] = [];
+  private _windowAttributes = ['ariaLabelledBy', 'backdrop', 'centered', 'keyboard', 'size', 'windowClass'];
   private _windowCmpts: ComponentRef<NgbModalWindow>[] = [];
-  private _activeWindowCmptHasChanged = new Subject();
 
   constructor(
       private _applicationRef: ApplicationRef, private _injector: Injector, @Inject(DOCUMENT) private _document: any,
@@ -35,6 +36,8 @@ export class NgbModalStack {
       if (this._windowCmpts.length) {
         const activeWindowCmpt = this._windowCmpts[this._windowCmpts.length - 1];
         ngbFocusTrap(activeWindowCmpt.location.nativeElement, this._activeWindowCmptHasChanged);
+        this._revertAriaHidden();
+        this._setAriaHidden(activeWindowCmpt.location.nativeElement);
       }
     });
   }
@@ -48,6 +51,7 @@ export class NgbModalStack {
     const removeBodyClass = () => {
       if (!this._modalRefs.length) {
         renderer.removeClass(this._document.body, 'modal-open');
+        this._revertAriaHidden();
       }
     };
 
@@ -157,6 +161,31 @@ export class NgbModalStack {
     const componentRef = contentCmptFactory.create(modalContentInjector);
     this._applicationRef.attachView(componentRef.hostView);
     return new ContentRef([[componentRef.location.nativeElement]], componentRef.hostView, componentRef);
+  }
+
+  private _setAriaHidden(element: Element) {
+    const parent = element.parentElement;
+    if (parent && element !== this._document.body) {
+      Array.from(parent.children).forEach(sibling => {
+        if (sibling !== element && sibling.nodeName !== 'SCRIPT') {
+          this._ariaHiddenValues.set(sibling, sibling.getAttribute('aria-hidden'));
+          sibling.setAttribute('aria-hidden', 'true');
+        }
+      });
+
+      this._setAriaHidden(parent);
+    }
+  }
+
+  private _revertAriaHidden() {
+    this._ariaHiddenValues.forEach((value, element) => {
+      if (value) {
+        element.setAttribute('aria-hidden', value);
+      } else {
+        element.removeAttribute('aria-hidden');
+      }
+    });
+    this._ariaHiddenValues.clear();
   }
 
   private _registerModalRef(ngbModalRef: NgbModalRef) {
