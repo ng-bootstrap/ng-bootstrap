@@ -1,3 +1,20 @@
+<a name="4.0.2"></a>
+## [4.0.2](https://github.com/ng-bootstrap/ng-bootstrap/compare/4.0.1...4.0.2) (2019-01-28)
+
+
+### Bug Fixes
+
+* **accordion:** remove 'h5' from the card header ([88af5c8](https://github.com/ng-bootstrap/ng-bootstrap/commit/88af5c8)), closes [#2915](https://github.com/ng-bootstrap/ng-bootstrap/issues/2915)
+* **autoclose:** use mouseup asynchronously instead of click ([0c91b05](https://github.com/ng-bootstrap/ng-bootstrap/commit/0c91b05)), closes [#2711](https://github.com/ng-bootstrap/ng-bootstrap/issues/2711)
+* **autoclose:** using each dropdown component inside OnPush component ([1b7614c](https://github.com/ng-bootstrap/ng-bootstrap/commit/1b7614c))
+* **datepicker:** fix 'outsideDays' clicks for multiple months ([c37a803](https://github.com/ng-bootstrap/ng-bootstrap/commit/c37a803)), closes [#2879](https://github.com/ng-bootstrap/ng-bootstrap/issues/2879)
+* **datepicker:** update model correctly with updateOn: 'blur' ([#2982](https://github.com/ng-bootstrap/ng-bootstrap/issues/2982)) ([eddf188](https://github.com/ng-bootstrap/ng-bootstrap/commit/eddf188)), closes [#2976](https://github.com/ng-bootstrap/ng-bootstrap/issues/2976)
+* **modal:** add missing 'aria-modal' and 'aria-hidden' attributes ([eee0afb](https://github.com/ng-bootstrap/ng-bootstrap/commit/eee0afb)), closes [#2575](https://github.com/ng-bootstrap/ng-bootstrap/issues/2575) [#2965](https://github.com/ng-bootstrap/ng-bootstrap/issues/2965)
+* **timepicker:** handle setting hour/minute/second step to 'undefined' ([34baece](https://github.com/ng-bootstrap/ng-bootstrap/commit/34baece)), closes [#2851](https://github.com/ng-bootstrap/ng-bootstrap/issues/2851) [#2903](https://github.com/ng-bootstrap/ng-bootstrap/issues/2903)
+* **timepicker:** use ViewEncapsulation.None forgotten in 4.0.0 ([1d01940](https://github.com/ng-bootstrap/ng-bootstrap/commit/1d01940)), closes [#2932](https://github.com/ng-bootstrap/ng-bootstrap/issues/2932)
+
+
+
 <a name="4.0.1"></a>
 ## [4.0.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/4.0.0...4.0.1) (2018-12-17)
 
