@@ -1,4 +1,4 @@
-import {Directive, forwardRef, Input} from '@angular/core';
+import {ChangeDetectorRef, Directive, forwardRef, Input} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 import {NgbButtonLabel} from './label';
@@ -54,7 +54,7 @@ export class NgbCheckBox implements ControlValueAccessor {
     }
   }
 
-  constructor(private _label: NgbButtonLabel) {}
+  constructor(private _label: NgbButtonLabel, private _cd: ChangeDetectorRef) {}
 
   onInputChange($event) {
     const modelToPropagate = $event.target.checked ? this.valueChecked : this.valueUnChecked;
@@ -75,5 +75,8 @@ export class NgbCheckBox implements ControlValueAccessor {
   writeValue(value) {
     this.checked = value === this.valueChecked;
     this._label.active = this.checked;
+
+    // label won't be updated, if it is inside the OnPush component when [ngModel] changes
+    this._cd.markForCheck();
   }
 }
