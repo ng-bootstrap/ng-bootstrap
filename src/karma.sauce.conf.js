@@ -49,6 +49,14 @@ const BROWSERS = {
     platform: 'macOS 10.13',
     version: '12'
   },
+  'SL_IOS_SAFARI12': {
+    browserName: 'safari',
+    appiumVersion: '1.9.1',
+    deviceName: 'iPhone X Simulator',
+    deviceOrientation: 'portrait',
+    platformVersion: '12.0',
+    platformName: 'iOS'
+  },
 };
 
 module.exports = function (config) {
