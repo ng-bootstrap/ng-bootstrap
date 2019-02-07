@@ -6,6 +6,7 @@ import {DropdownAutoCloseComponent} from './dropdown/autoclose/dropdown-autoclos
 import {ModalFocusComponent} from './modal/focus/modal-focus.component';
 import {PopoverAutocloseComponent} from './popover/autoclose/popover-autoclose.component';
 import {TooltipAutocloseComponent} from './tooltip/autoclose/tooltip-autoclose.component';
+import {TooltipPositionComponent} from './tooltip/position/tooltip-position.component';
 import {TypeaheadAutoCloseComponent} from './typeahead/autoclose/typeahead-autoclose.component';
 import {TypeaheadFocusComponent} from './typeahead/focus/typeahead-focus.component';
 import {TypeaheadValidationComponent} from './typeahead/validation/typeahead-validation.component';
@@ -20,8 +21,14 @@ export const routes: Routes = [
   },
   {path: 'modal', children: [{path: 'focus', component: ModalFocusComponent}]},
   {path: 'dropdown', children: [{path: 'autoclose', component: DropdownAutoCloseComponent}]},
-  {path: 'popover', children: [{path: 'autoclose', component: PopoverAutocloseComponent}]},
-  {path: 'tooltip', children: [{path: 'autoclose', component: TooltipAutocloseComponent}]}, {
+  {path: 'popover', children: [{path: 'autoclose', component: PopoverAutocloseComponent}]}, {
+    path: 'tooltip',
+    children: [
+      {path: 'autoclose', component: TooltipAutocloseComponent},
+      {path: 'position', component: TooltipPositionComponent}
+    ]
+  },
+  {
     path: 'typeahead',
     children: [
       {path: 'focus', component: TypeaheadFocusComponent}, {path: 'autoclose', component: TypeaheadAutoCloseComponent},

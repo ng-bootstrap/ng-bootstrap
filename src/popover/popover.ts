@@ -36,12 +36,7 @@ let nextId = 0;
   selector: 'ngb-popover-window',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  host: {
-    '[class]':
-        '"popover bs-popover-" + placement.split("-")[0]+" bs-popover-" + placement + (popoverClass ? " " + popoverClass : "")',
-    'role': 'tooltip',
-    '[id]': 'id'
-  },
+  host: {'[class]': '"popover" + (popoverClass ? " " + popoverClass : "")', 'role': 'tooltip', '[id]': 'id'},
   template: `
     <div class="arrow"></div>
     <h3 class="popover-header" *ngIf="title != null">
@@ -52,28 +47,12 @@ let nextId = 0;
   styleUrls: ['./popover.scss']
 })
 export class NgbPopoverWindow {
-  @Input() placement: Placement = 'top';
   @Input() title: undefined | string | TemplateRef<any>;
   @Input() id: string;
   @Input() popoverClass: string;
   @Input() context: any;
 
-  constructor(private _element: ElementRef<HTMLElement>, private _renderer: Renderer2) {}
-
   isTitleTemplate() { return this.title instanceof TemplateRef; }
-
-  applyPlacement(_placement: Placement) {
-    // remove the current placement classes
-    this._renderer.removeClass(this._element.nativeElement, 'bs-popover-' + this.placement.toString().split('-')[0]);
-    this._renderer.removeClass(this._element.nativeElement, 'bs-popover-' + this.placement.toString());
-
-    // set the new placement classes
-    this.placement = _placement;
-
-    // apply the new placement
-    this._renderer.addClass(this._element.nativeElement, 'bs-popover-' + this.placement.toString().split('-')[0]);
-    this._renderer.addClass(this._element.nativeElement, 'bs-popover-' + this.placement.toString());
-  }
 }
 
 /**
@@ -103,10 +82,10 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
   @Input() popoverTitle: string | TemplateRef<any>;
   /**
    * Placement of a popover accepts:
-   *    "top", "top-left", "top-right", "bottom", "bottom-left", "bottom-right",
+    *    "top", "top-left", "top-right", "bottom", "bottom-left", "bottom-right",
    *    "left", "left-top", "left-bottom", "right", "right-top", "right-bottom"
    * and array of above values.
-   */
+    */
   @Input() placement: PlacementArray;
   /**
    * Specifies events that should trigger. Supports a space separated list of event names.
@@ -169,10 +148,9 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 
     this._zoneSubscription = _ngZone.onStable.subscribe(() => {
       if (this._windowRef) {
-        this._windowRef.instance.applyPlacement(
-            positionElements(
-                this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
-                this.container === 'body'));
+        positionElements(
+            this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
+            this.container === 'body', 'bs-popover');
       }
     });
   }
@@ -196,14 +174,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
       }
 
       // apply styling to set basic css-classes on target element, before going for positioning
-      this._windowRef.changeDetectorRef.detectChanges();
       this._windowRef.changeDetectorRef.markForCheck();
-
-      // position popover along the element
-      this._windowRef.instance.applyPlacement(
-          positionElements(
-              this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
-              this.container === 'body'));
 
       this._autoClose.install(
           this.autoClose, () => this.close(), this.hidden, [this._windowRef.location.nativeElement]);

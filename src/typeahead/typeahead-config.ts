@@ -12,5 +12,5 @@ export class NgbTypeaheadConfig {
   editable = true;
   focusFirst = true;
   showHint = false;
-  placement: PlacementArray = 'bottom-left';
+  placement: PlacementArray = ['bottom-left', 'bottom-right', 'top-left', 'top-right'];
 }

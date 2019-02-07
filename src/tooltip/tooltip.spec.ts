@@ -28,15 +28,8 @@ describe('ngb-tooltip-window', () => {
     fixture.detectChanges();
 
     expect(fixture.nativeElement).toHaveCssClass('tooltip');
-    expect(fixture.nativeElement).toHaveCssClass('bs-tooltip-top');
+    expect(fixture.nativeElement).not.toHaveCssClass('bs-tooltip-top');
     expect(fixture.nativeElement.getAttribute('role')).toBe('tooltip');
-  });
-
-  it('should position tooltips as requested', () => {
-    const fixture = TestBed.createComponent(NgbTooltipWindow);
-    fixture.componentInstance.placement = 'left';
-    fixture.detectChanges();
-    expect(fixture.nativeElement).toHaveCssClass('bs-tooltip-left');
   });
 
   it('should optionally have a custom class', () => {
