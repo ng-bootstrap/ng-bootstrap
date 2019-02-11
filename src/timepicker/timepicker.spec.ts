@@ -1,9 +1,9 @@
-import {TestBed, ComponentFixture, async, inject} from '@angular/core/testing';
+import {async, ComponentFixture, inject, TestBed} from '@angular/core/testing';
 import {createGenericTestComponent} from '../test/common';
 
-import {Component, Injectable} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Injectable} from '@angular/core';
 import {By} from '@angular/platform-browser';
-import {Validators, FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 
 import {NgbTimepickerModule} from './timepicker.module';
 import {NgbTimepickerConfig} from './timepicker-config';
@@ -13,6 +13,9 @@ import {NgbTimeStruct} from './ngb-time-struct';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
+
+const createOnPushTestComponent = (html: string) =>
+    createGenericTestComponent(html, TestComponentOnPush) as ComponentFixture<TestComponentOnPush>;
 
 function getTimepicker(el: HTMLElement) {
   return el.querySelector('ngb-timepicker');
@@ -78,14 +81,16 @@ function customizeConfig(config: NgbTimepickerConfig) {
 describe('ngb-timepicker', () => {
 
   beforeEach(() => {
-    TestBed.configureTestingModule(
-        {declarations: [TestComponent], imports: [NgbTimepickerModule, FormsModule, ReactiveFormsModule]});
+    TestBed.configureTestingModule({
+      declarations: [TestComponent, TestComponentOnPush],
+      imports: [NgbTimepickerModule, FormsModule, ReactiveFormsModule]
+    });
   });
 
   describe('initialization', () => {
     it('should initialize inputs with provided config', () => {
       const defaultConfig = new NgbTimepickerConfig();
-      const timepicker = new NgbTimepicker(new NgbTimepickerConfig(), new NgbTimeStructAdapter());
+      const timepicker = new NgbTimepicker(new NgbTimepickerConfig(), new NgbTimeStructAdapter(), null);
       expectSameValues(timepicker, defaultConfig);
     });
   });
@@ -1532,6 +1537,18 @@ describe('ngb-timepicker', () => {
           });
     });
   });
+
+  describe('on push', () => {
+
+    it('should render initial model value', async(async() => {
+         const fixture =
+             createOnPushTestComponent(`<ngb-timepicker [ngModel]="{hour: 13, minute: 30}"></ngb-timepicker>`);
+         fixture.detectChanges();
+         await fixture.whenStable();
+         fixture.detectChanges();
+         expectToDisplayTime(fixture.nativeElement, '13:30');
+       }));
+  });
 });
 
 
@@ -1547,6 +1564,10 @@ class TestComponent {
   showSeconds = true;
 
   onSubmit() { this.submitted = true; }
+}
+
+@Component({selector: 'test-cmp-on-push', template: '', changeDetection: ChangeDetectionStrategy.OnPush})
+class TestComponentOnPush {
 }
 
 @Injectable()

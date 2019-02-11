@@ -1,4 +1,12 @@
-import {Component, forwardRef, Input, OnChanges, SimpleChanges, ViewEncapsulation} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  forwardRef,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  ViewEncapsulation
+} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 import {isInteger, isNumber, padNumber, toInteger} from '../util/util';
@@ -156,7 +164,9 @@ export class NgbTimepicker implements ControlValueAccessor,
    */
   @Input() size: 'small' | 'medium' | 'large';
 
-  constructor(private readonly _config: NgbTimepickerConfig, private _ngbTimeAdapter: NgbTimeAdapter<any>) {
+  constructor(
+      private readonly _config: NgbTimepickerConfig, private _ngbTimeAdapter: NgbTimeAdapter<any>,
+      private _cd: ChangeDetectorRef) {
     this.meridian = _config.meridian;
     this.spinners = _config.spinners;
     this.seconds = _config.seconds;
@@ -177,6 +187,7 @@ export class NgbTimepicker implements ControlValueAccessor,
     if (!this.seconds && (!structValue || !isNumber(structValue.second))) {
       this.model.second = 0;
     }
+    this._cd.markForCheck();
   }
 
   registerOnChange(fn: (value: any) => any): void { this.onChange = fn; }
