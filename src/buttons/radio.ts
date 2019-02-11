@@ -1,4 +1,4 @@
-import {Directive, ElementRef, forwardRef, Input, OnDestroy, Renderer2} from '@angular/core';
+import {ChangeDetectorRef, Directive, ElementRef, forwardRef, Input, OnDestroy, Renderer2} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 import {NgbButtonLabel} from './label';
@@ -127,7 +127,7 @@ export class NgbRadio implements OnDestroy {
 
   constructor(
       private _group: NgbRadioGroup, private _label: NgbButtonLabel, private _renderer: Renderer2,
-      private _element: ElementRef<HTMLInputElement>) {
+      private _element: ElementRef<HTMLInputElement>, private _cd: ChangeDetectorRef) {
     this._group.register(this);
     this.updateDisabled();
   }
@@ -137,6 +137,11 @@ export class NgbRadio implements OnDestroy {
   onChange() { this._group.onRadioChange(this); }
 
   updateValue(value) {
+    // label won't be updated, if it is inside the OnPush component when [ngModel] changes
+    if (this.value !== value) {
+      this._cd.markForCheck();
+    }
+
     this._checked = this.value === value;
     this._label.active = this._checked;
   }
