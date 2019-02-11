@@ -1,6 +1,5 @@
-import {Inject, Injectable, NgZone} from '@angular/core';
+import {NgZone} from '@angular/core';
 import {fromEvent, Observable, race} from 'rxjs';
-import {DOCUMENT} from '@angular/common';
 import {delay, filter, map, takeUntil, withLatestFrom} from 'rxjs/operators';
 import {Key} from './key';
 
@@ -11,53 +10,48 @@ const isHTMLElementContainedIn = (element: HTMLElement, array?: HTMLElement[]) =
 // to avoid re-opening when handling (click) on a toggling element
 const iOS = !!navigator.userAgent && /iPad|iPhone|iPod/.test(navigator.userAgent);
 
-@Injectable({providedIn: 'root'})
-export class AutoClose {
-  constructor(private _ngZone: NgZone, @Inject(DOCUMENT) private _document: any) {}
+export function ngbAutoClose(
+    zone: NgZone, document: any, type: boolean | 'inside' | 'outside', close: () => void, closed$: Observable<any>,
+    insideElements: HTMLElement[], ignoreElements?: HTMLElement[]) {
+  // closing on ESC and outside clicks
+  if (type) {
+    zone.runOutsideAngular(() => {
 
-  install(
-      autoClose: boolean | 'inside' | 'outside', close: () => void, closed$: Observable<any>,
-      insideElements: HTMLElement[], ignoreElements?: HTMLElement[]) {
-    // closing on ESC and outside clicks
-    if (autoClose) {
-      this._ngZone.runOutsideAngular(() => {
-
-        const shouldCloseOnClick = (event: MouseEvent | TouchEvent) => {
-          const element = event.target as HTMLElement;
-          if (event instanceof MouseEvent) {
-            if (event.button === 2 || isHTMLElementContainedIn(element, ignoreElements)) {
-              return false;
-            }
+      const shouldCloseOnClick = (event: MouseEvent | TouchEvent) => {
+        const element = event.target as HTMLElement;
+        if (event instanceof MouseEvent) {
+          if (event.button === 2 || isHTMLElementContainedIn(element, ignoreElements)) {
+            return false;
           }
-          if (autoClose === 'inside') {
-            return isHTMLElementContainedIn(element, insideElements);
-          } else if (autoClose === 'outside') {
-            return !isHTMLElementContainedIn(element, insideElements);
-          } else /* if (autoClose === true) */ {
-            return true;
-          }
-        };
+        }
+        if (type === 'inside') {
+          return isHTMLElementContainedIn(element, insideElements);
+        } else if (type === 'outside') {
+          return !isHTMLElementContainedIn(element, insideElements);
+        } else /* if (type === true) */ {
+          return true;
+        }
+      };
 
-        const escapes$ = fromEvent<KeyboardEvent>(this._document, 'keydown')
-                             .pipe(
-                                 takeUntil(closed$),
-                                 // tslint:disable-next-line:deprecation
-                                 filter(e => e.which === Key.Escape));
-
-
-        // we have to pre-calculate 'shouldCloseOnClick' on 'mousedown/touchstart',
-        // because on 'mouseup/touchend' DOM nodes might be detached
-        const mouseDowns$ = fromEvent<MouseEvent>(this._document, iOS ? 'touchstart' : 'mousedown')
-                                .pipe(map(shouldCloseOnClick), takeUntil(closed$));
-
-        const closeableClicks$ = fromEvent<MouseEvent>(this._document, iOS ? 'touchend' : 'mouseup')
-                                     .pipe(
-                                         withLatestFrom(mouseDowns$), filter(([_, shouldClose]) => shouldClose),
-                                         delay(iOS ? 16 : 0), takeUntil(closed$));
+      const escapes$ = fromEvent<KeyboardEvent>(document, 'keydown')
+                           .pipe(
+                               takeUntil(closed$),
+                               // tslint:disable-next-line:deprecation
+                               filter(e => e.which === Key.Escape));
 
 
-        race<Event>([escapes$, closeableClicks$]).subscribe(() => this._ngZone.run(close));
-      });
-    }
+      // we have to pre-calculate 'shouldCloseOnClick' on 'mousedown/touchstart',
+      // because on 'mouseup/touchend' DOM nodes might be detached
+      const mouseDowns$ = fromEvent<MouseEvent>(document, iOS ? 'touchstart' : 'mousedown')
+                              .pipe(map(shouldCloseOnClick), takeUntil(closed$));
+
+      const closeableClicks$ = fromEvent<MouseEvent>(document, iOS ? 'touchend' : 'mouseup')
+                                   .pipe(
+                                       withLatestFrom(mouseDowns$), filter(([_, shouldClose]) => shouldClose),
+                                       delay(iOS ? 16 : 0), takeUntil(closed$));
+
+
+      race<Event>([escapes$, closeableClicks$]).subscribe(() => zone.run(close));
+    });
   }
 }

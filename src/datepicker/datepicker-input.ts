@@ -1,10 +1,12 @@
 import {
+  ChangeDetectorRef,
   ComponentFactoryResolver,
   ComponentRef,
   Directive,
   ElementRef,
   EventEmitter,
   forwardRef,
+  Inject,
   Input,
   NgZone,
   OnChanges,
@@ -13,14 +15,16 @@ import {
   Renderer2,
   SimpleChanges,
   TemplateRef,
-  ViewContainerRef,
-  ChangeDetectorRef,
+  ViewContainerRef
 } from '@angular/core';
+import {DOCUMENT} from '@angular/common';
 import {AbstractControl, ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR, Validator} from '@angular/forms';
 import {Subject} from 'rxjs';
 
+import {ngbAutoClose} from '../util/autoclose';
 import {ngbFocusTrap} from '../util/focus-trap';
 import {PlacementArray, positionElements} from '../util/positioning';
+
 import {NgbDateAdapter} from './adapters/ngb-date-adapter';
 import {NgbDatepicker, NgbDatepickerNavigateEvent} from './datepicker';
 import {DayTemplateContext} from './datepicker-day-template-context';
@@ -29,7 +33,6 @@ import {NgbCalendar} from './ngb-calendar';
 import {NgbDate} from './ngb-date';
 import {NgbDateParserFormatter} from './ngb-date-parser-formatter';
 import {NgbDateStruct} from './ngb-date-struct';
-import {AutoClose} from '../util/autoclose';
 
 const NGB_DATEPICKER_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -203,8 +206,8 @@ export class NgbInputDatepicker implements OnChanges,
       private _parserFormatter: NgbDateParserFormatter, private _elRef: ElementRef<HTMLInputElement>,
       private _vcRef: ViewContainerRef, private _renderer: Renderer2, private _cfr: ComponentFactoryResolver,
       private _ngZone: NgZone, private _service: NgbDatepickerService, private _calendar: NgbCalendar,
-      private _dateAdapter: NgbDateAdapter<any>, private _changeDetector: ChangeDetectorRef,
-      private _autoClose: AutoClose) {
+      private _dateAdapter: NgbDateAdapter<any>, @Inject(DOCUMENT) private _document: any,
+      private _changeDetector: ChangeDetectorRef) {
     this._zoneSubscription = _ngZone.onStable.subscribe(() => {
       if (this._cRef) {
         positionElements(
@@ -295,10 +298,10 @@ export class NgbInputDatepicker implements OnChanges,
 
       // focus handling
       ngbFocusTrap(this._cRef.location.nativeElement, this._closed$, true);
-
       this._cRef.instance.focus();
-      this._autoClose.install(
-          this.autoClose, () => this.close(), this._closed$, [],
+
+      ngbAutoClose(
+          this._ngZone, this._document, this.autoClose, () => this.close(), this._closed$, [],
           [this._elRef.nativeElement, this._cRef.location.nativeElement]);
     }
   }

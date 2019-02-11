@@ -15,9 +15,11 @@ import {
 } from '@angular/core';
 import {DOCUMENT} from '@angular/common';
 import {Subject, Subscription} from 'rxjs';
-import {NgbDropdownConfig} from './dropdown-config';
+
 import {positionElements, PlacementArray, Placement} from '../util/positioning';
-import {AutoClose} from '../util/autoclose';
+import {ngbAutoClose} from '../util/autoclose';
+
+import {NgbDropdownConfig} from './dropdown-config';
 
 /**
  */
@@ -142,7 +144,7 @@ export class NgbDropdown implements OnInit, OnDestroy {
 
   constructor(
       private _changeDetector: ChangeDetectorRef, config: NgbDropdownConfig, @Inject(DOCUMENT) private _document: any,
-      private _ngZone: NgZone, private _autoClose: AutoClose) {
+      private _ngZone: NgZone) {
     this.placement = config.placement;
     this.autoClose = config.autoClose;
     this._zoneSubscription = _ngZone.onStable.subscribe(() => { this._positionMenu(); });
@@ -176,9 +178,9 @@ export class NgbDropdown implements OnInit, OnDestroy {
   }
 
   private _setCloseHandlers() {
-    this._autoClose.install(
-        this.autoClose, () => this.close(), this._closed$, this._menu ? [this._menu.getNativeElement()] : [],
-        this._anchor ? [this._anchor.getNativeElement()] : []);
+    ngbAutoClose(
+        this._ngZone, this._document, this.autoClose, () => this.close(), this._closed$,
+        this._menu ? [this._menu.getNativeElement()] : [], this._anchor ? [this._anchor.getNativeElement()] : []);
   }
 
   /**
