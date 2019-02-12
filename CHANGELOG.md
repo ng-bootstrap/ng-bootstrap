@@ -1,3 +1,18 @@
+<a name="4.0.3"></a>
+## [4.0.3](https://github.com/ng-bootstrap/ng-bootstrap/compare/4.0.2...4.0.3) (2019-02-12)
+
+
+### Bug Fixes
+
+* add missing exports ([932d7f6](https://github.com/ng-bootstrap/ng-bootstrap/commit/932d7f6)), closes [#2997](https://github.com/ng-bootstrap/ng-bootstrap/issues/2997)
+* **autoclose:** fix popup automatic closing on touch on iOS ([#3004](https://github.com/ng-bootstrap/ng-bootstrap/issues/3004)) ([bc489ec](https://github.com/ng-bootstrap/ng-bootstrap/commit/bc489ec)), closes [#2995](https://github.com/ng-bootstrap/ng-bootstrap/issues/2995)
+* **buttons:** display correct NgModel value inside OnPush component ([#3000](https://github.com/ng-bootstrap/ng-bootstrap/issues/3000)) ([083fb0f](https://github.com/ng-bootstrap/ng-bootstrap/commit/083fb0f)), closes [#2980](https://github.com/ng-bootstrap/ng-bootstrap/issues/2980)
+* **popover:** arrow is correctly centered ([a613fa9](https://github.com/ng-bootstrap/ng-bootstrap/commit/a613fa9)), closes [#3006](https://github.com/ng-bootstrap/ng-bootstrap/issues/3006) [#2089](https://github.com/ng-bootstrap/ng-bootstrap/issues/2089) [#2234](https://github.com/ng-bootstrap/ng-bootstrap/issues/2234)
+* **positioning:** use CSS translate for positioning ([64d5716](https://github.com/ng-bootstrap/ng-bootstrap/commit/64d5716)), closes [#2972](https://github.com/ng-bootstrap/ng-bootstrap/issues/2972) [#2470](https://github.com/ng-bootstrap/ng-bootstrap/issues/2470) [#2924](https://github.com/ng-bootstrap/ng-bootstrap/issues/2924) [#2069](https://github.com/ng-bootstrap/ng-bootstrap/issues/2069) [#2914](https://github.com/ng-bootstrap/ng-bootstrap/issues/2914) [#2775](https://github.com/ng-bootstrap/ng-bootstrap/issues/2775) [#2346](https://github.com/ng-bootstrap/ng-bootstrap/issues/2346)
+* **timepicker:** display correct NgModel value inside OnPush component ([#3001](https://github.com/ng-bootstrap/ng-bootstrap/issues/3001)) ([0e9b291](https://github.com/ng-bootstrap/ng-bootstrap/commit/0e9b291)), closes [#2992](https://github.com/ng-bootstrap/ng-bootstrap/issues/2992)
+
+
+
 <a name="4.0.2"></a>
 ## [4.0.2](https://github.com/ng-bootstrap/ng-bootstrap/compare/4.0.1...4.0.2) (2019-01-28)
 
