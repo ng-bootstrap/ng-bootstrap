@@ -120,6 +120,7 @@ export function buildMonth(
     calendar: NgbCalendar, date: NgbDate, state: DatepickerViewModel, i18n: NgbDatepickerI18n,
     month: MonthViewModel = {} as MonthViewModel): MonthViewModel {
   const {dayTemplateData, minDate, maxDate, firstDayOfWeek, markDisabled, outsideDays} = state;
+  const calendarToday = calendar.getToday();
 
   month.firstDate = null;
   month.lastDate = null;
@@ -155,6 +156,9 @@ export function buildMonth(
         disabled = markDisabled(newDate, {month: month.number, year: month.year});
       }
 
+      // today
+      let today = newDate.equals(calendarToday);
+
       // adding user-provided data to the context
       let contextUserData =
           dayTemplateData ? dayTemplateData(newDate, {month: month.number, year: month.year}) : undefined;
@@ -180,7 +184,7 @@ export function buildMonth(
         data: contextUserData,
         currentMonth: month.number, disabled,
         focused: false,
-        selected: false
+        selected: false, today
       });
       dayObject.tabindex = -1;
       dayObject.ariaLabel = ariaLabel;

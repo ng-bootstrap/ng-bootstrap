@@ -39,6 +39,7 @@ const OVERVIEW = {
   navigation: 'Moving around',
   'limiting-dates': 'Disabling and limiting dates',
   'day-template': 'Day display customization',
+  today: 'Today\'s date',
   'footer-template': 'Custom footer',
   range: 'Range selection',
   i18n: 'Internationalization',

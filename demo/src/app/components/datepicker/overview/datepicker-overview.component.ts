@@ -83,6 +83,18 @@ providers: [{provide: NgbDateParserFormatter, useClass: YourOwnParserFormatter}]
 
 <ngbDatepicker [dayTemplate]=“t”/>
 `,
+    todayHTML: `
+<div class="ngb-dp-day ngb-dp-today">
+  <!-- day cell content omitted -->
+</div>
+`,
+    todayTemplate: `
+<ng-template #t let-today="today">
+  <span *ngIf="today">...</span>
+</ng-template>
+
+<ngbDatepicker [dayTemplate]=“t”/>
+`,
     footerTemplate: `
 <ng-template #t>
   <button (click)="model = today">Today</button>

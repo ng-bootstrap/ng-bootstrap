@@ -23,6 +23,7 @@ import {DayTemplateContext} from './datepicker-day-template-context';
           [class.disabled]="day.context.disabled"
           [tabindex]="day.tabindex"
           [class.hidden]="day.hidden"
+          [class.ngb-dp-today]="day.context.today"
           [attr.aria-label]="day.ariaLabel">
           <ng-template [ngIf]="!day.hidden">
             <ng-template [ngTemplateOutlet]="dayTemplate" [ngTemplateOutletContext]="day.context"></ng-template>

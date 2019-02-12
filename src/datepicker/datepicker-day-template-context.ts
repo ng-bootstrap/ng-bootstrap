@@ -42,4 +42,11 @@ export interface DayTemplateContext {
    * True if current date is selected
    */
   selected: boolean;
+
+  /**
+   * True if current date is equal to 'NgbCalendar.getToday()'
+   *
+   * @since 4.1.0
+   */
+  today: boolean;
 }
