@@ -12,12 +12,14 @@ import {NgbdPaginationDisabled} from './demos/disabled/pagination-disabled';
 import {NgbdPaginationJustify} from './demos/justify/pagination-justify';
 import {NgbdPaginationSize} from './demos/size/pagination-size';
 import {NgbdPaginationOverviewComponent} from './overview/pagination-overview.component';
+import {NgbdPaginationCustomization} from './demos/customization/pagination-customization';
 
 const DEMO_DIRECTIVES = [
   NgbdPaginationAdvanced,
   NgbdPaginationBasic,
   NgbdPaginationSize,
   NgbdPaginationConfig,
+  NgbdPaginationCustomization,
   NgbdPaginationDisabled,
   NgbdPaginationJustify,
 ];
@@ -38,6 +40,12 @@ const DEMOS = {
     type: NgbdPaginationAdvanced,
     code: require('!!raw-loader!./demos/advanced/pagination-advanced'),
     markup: require('!!raw-loader!./demos/advanced/pagination-advanced.html')
+  },
+  customization: {
+    title: 'Custom links',
+    type: NgbdPaginationCustomization,
+    code: require('!!raw-loader!./demos/customization/pagination-customization'),
+    markup: require('!!raw-loader!./demos/customization/pagination-customization.html')
   },
   size: {
     title: 'Pagination size',
