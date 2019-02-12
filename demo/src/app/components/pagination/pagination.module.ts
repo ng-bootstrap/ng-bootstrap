@@ -26,6 +26,7 @@ const DEMO_DIRECTIVES = [
 
 const OVERVIEW = {
   'basic-usage': 'Basic Usage',
+  'customization': 'Customization',
 };
 
 const DEMOS = {
