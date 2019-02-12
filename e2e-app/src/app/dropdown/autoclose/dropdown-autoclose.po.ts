@@ -1,4 +1,5 @@
 import {$, ElementFinder} from 'protractor';
+import {rightClick} from '../../tools.po';
 
 export class DropdownAutoClosePage {
   async clickOutside() { await $('#outside-button').click(); }
@@ -6,6 +7,10 @@ export class DropdownAutoClosePage {
   getDropdown(dropDownSelector = '') { return $(`${dropDownSelector}[ngbDropdown]`); }
 
   getFirstItem(dropdown: ElementFinder) { return dropdown.$$(`.dropdown-item`).first(); }
+
+  getOpenStatus() { return $('#open-status'); }
+
+  async rightClickOutside() { await rightClick($('#outside-button')); }
 
   async open(dropdown: ElementFinder) {
     await dropdown.$(`button[ngbDropdownToggle]`).click();

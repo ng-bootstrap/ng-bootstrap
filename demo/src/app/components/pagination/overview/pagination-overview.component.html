@@ -1,0 +1,43 @@
+<p>
+  Pagination is a component that only displays page numbers. It will not manipulate your data collection. You will have
+  to split your data collection into pages yourself.
+</p>
+
+
+<ngbd-overview-section [section]="sections['basic-usage']">
+  <p>
+    In order to properly operate a pagination behaviour, there are 3 important notions you have to be familiar with,
+    which are actually available as <code>@Input()</code> on the widget:
+  </p>
+  <ol>
+    <li><code>collectionSize</code> - Number of elements/items in the collection.
+      i.e. the total number of items the
+      pagination should handle.</li>
+    <li><code>pageSize</code> - Number of elements/items per page.</li>
+    <li><code>page</code> - The current page.</li>
+  </ol>
+
+  <p>To split the data collection yourself, use <code>*ngFor</code> associated with the <a href="https://angular.io/api/common/SlicePipe"
+      rel="no-opener no-referer"><code>slice</code></a> pipe to extract (or <em>slice</em>) a sub-part of it.</p>
+
+  <p>Corresponding code could be something like:</p>
+  <ngbd-code lang="html" [code]="NGFOR"></ngbd-code>
+  <p>and the associated <code>&lt;ngb-pagination&gt;</code> would be like:</p>
+  <ngbd-code lang="html" [code]="NGB_PAGINATION"></ngbd-code>
+
+  <br />
+  <ngb-alert type="warning" [dismissible]="false">
+    Be aware that both <code>page</code> and <code>pageSize</code> have default values,
+    which are respectively <code>1</code> and <code>10</code>.
+  </ngb-alert>
+
+  <h4>Filtering and sorting</h4>
+  <p>
+    To add filtering or sorting on top of your pagination, you will have to update the way you split your
+    data collection. As mentionned in <a href="https://angular.io/guide/pipes#appendix-no-filterpipe-or-orderbypipe"
+      rel="no-opener no-referer">Angular documentation</a>, you don't need to reimplement dedicated pipes for
+    that purpose.
+    Recommendation is to move filtering and sorting logic into the component itself where some property getters could
+    be exposed.
+  </p>
+</ngbd-overview-section>

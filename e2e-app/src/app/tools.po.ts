@@ -1,4 +1,4 @@
-import {browser, ElementFinder, Key, WebElement, $, $$} from 'protractor';
+import {browser, ElementFinder, Key, WebElement, $, $$, Button} from 'protractor';
 
 /**
  * Sends keys to a currently focused element
@@ -8,6 +8,14 @@ import {browser, ElementFinder, Key, WebElement, $, $$} from 'protractor';
 export const sendKey = async(...keys: string[]) => {
   const focused = await browser.driver.switchTo().activeElement();
   await focused.sendKeys(Key.chord(...keys));
+};
+
+/**
+ * Clicks on the given element with the right button of the mouse.
+ * @param el element to right click on
+ */
+export const rightClick = async(el: ElementFinder) => {
+  await browser.actions().click(el, Button.RIGHT).perform();
 };
 
 /**

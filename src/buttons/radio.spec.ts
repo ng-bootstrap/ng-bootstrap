@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {async, ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
 import {FormControl, FormGroup, FormsModule, NgModel, ReactiveFormsModule, Validators} from '@angular/forms';
 import {By} from '@angular/platform-browser';
 
@@ -54,9 +54,12 @@ describe('ngbRadioGroup', () => {
     </div>`;
 
   beforeEach(() => {
-    TestBed.configureTestingModule(
-        {declarations: [TestComponent], imports: [NgbButtonsModule, FormsModule, ReactiveFormsModule]});
+    TestBed.configureTestingModule({
+      declarations: [TestComponent, TestComponentOnPush],
+      imports: [NgbButtonsModule, FormsModule, ReactiveFormsModule]
+    });
     TestBed.overrideComponent(TestComponent, {set: {template: defaultHtml}});
+    TestBed.overrideComponent(TestComponentOnPush, {set: {template: defaultHtml}});
   });
 
   it('toggles radio inputs based on model changes', async(() => {
@@ -577,6 +580,20 @@ describe('ngbRadioGroup', () => {
       expect(getGroupElement(fixture.nativeElement).getAttribute('role')).toBe('group');
     });
   });
+
+  describe('on push', () => {
+    it('should set initial model value', fakeAsync(() => {
+         const fixture = TestBed.createComponent(TestComponentOnPush);
+         const {values} = fixture.componentInstance;
+
+         fixture.detectChanges();
+         tick();
+         fixture.detectChanges();
+         expect(getInput(fixture.nativeElement, 0).value).toEqual(values[0]);
+         expect(getInput(fixture.nativeElement, 1).value).toEqual(values[1]);
+         expectRadios(fixture.nativeElement, [1, 0]);
+       }));
+  });
 });
 
 @Component({selector: 'test-cmp', template: ''})
@@ -591,4 +608,10 @@ class TestComponent {
   disabled = true;
   groupDisabled = true;
   checked: any;
+}
+
+@Component({selector: 'test-cmp-on-push', template: '', changeDetection: ChangeDetectionStrategy.OnPush})
+class TestComponentOnPush {
+  model = 'one';
+  values = ['one', 'two', 'three'];
 }

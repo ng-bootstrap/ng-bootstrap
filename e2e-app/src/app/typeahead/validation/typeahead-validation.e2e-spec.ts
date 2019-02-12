@@ -1,5 +1,6 @@
 import {TypeaheadPage} from '../typeahead.po';
 import {openUrl} from '../../tools.po';
+import {browser} from 'protractor';
 
 describe('Typeahead', () => {
   let page: TypeaheadPage;
@@ -7,6 +8,11 @@ describe('Typeahead', () => {
   const expectUntouched = async() => {
     const typeaheadInput = page.getTypeaheadInput();
     expect(typeaheadInput.getAttribute('class')).toContain('ng-untouched', `The input shouldn't be touched`);
+  };
+
+  const expectTouched = async() => {
+    const typeaheadInput = page.getTypeaheadInput();
+    expect(typeaheadInput.getAttribute('class')).toContain('ng-touched', `The input shouldn't be touched`);
   };
 
   beforeAll(() => page = new TypeaheadPage());
@@ -20,6 +26,9 @@ describe('Typeahead', () => {
     const itemElement = page.getDropdownItems().get(0);
     await itemElement.click();
     expectUntouched();
+
+    await page.getInputBefore().click();
+    expectTouched();
 
   });
 });

@@ -18,16 +18,15 @@ import {
   ComponentFactoryResolver,
   NgZone,
   SimpleChanges,
-  ViewEncapsulation
+  ViewEncapsulation,
+  ChangeDetectorRef
 } from '@angular/core';
 import {DOCUMENT} from '@angular/common';
-import {fromEvent, race} from 'rxjs';
-import {filter, takeUntil} from 'rxjs/operators';
 
 import {listenToTriggers} from '../util/triggers';
-import {positionElements, Placement, PlacementArray} from '../util/positioning';
+import {ngbAutoClose} from '../util/autoclose';
+import {positionElements, PlacementArray} from '../util/positioning';
 import {PopupService} from '../util/popup';
-import {Key} from '../util/key';
 
 import {NgbPopoverConfig} from './popover-config';
 
@@ -37,12 +36,7 @@ let nextId = 0;
   selector: 'ngb-popover-window',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  host: {
-    '[class]':
-        '"popover bs-popover-" + placement.split("-")[0]+" bs-popover-" + placement + (popoverClass ? " " + popoverClass : "")',
-    'role': 'tooltip',
-    '[id]': 'id'
-  },
+  host: {'[class]': '"popover" + (popoverClass ? " " + popoverClass : "")', 'role': 'tooltip', '[id]': 'id'},
   template: `
     <div class="arrow"></div>
     <h3 class="popover-header" *ngIf="title != null">
@@ -53,37 +47,12 @@ let nextId = 0;
   styleUrls: ['./popover.scss']
 })
 export class NgbPopoverWindow {
-  @Input() placement: Placement = 'top';
   @Input() title: undefined | string | TemplateRef<any>;
   @Input() id: string;
   @Input() popoverClass: string;
   @Input() context: any;
 
-  constructor(private _element: ElementRef<HTMLElement>, private _renderer: Renderer2) {}
-
   isTitleTemplate() { return this.title instanceof TemplateRef; }
-
-  applyPlacement(_placement: Placement) {
-    // remove the current placement classes
-    this._renderer.removeClass(this._element.nativeElement, 'bs-popover-' + this.placement.toString().split('-')[0]);
-    this._renderer.removeClass(this._element.nativeElement, 'bs-popover-' + this.placement.toString());
-
-    // set the new placement classes
-    this.placement = _placement;
-
-    // apply the new placement
-    this._renderer.addClass(this._element.nativeElement, 'bs-popover-' + this.placement.toString().split('-')[0]);
-    this._renderer.addClass(this._element.nativeElement, 'bs-popover-' + this.placement.toString());
-  }
-
-  /**
-   * Tells whether the event has been triggered from this component's subtree or not.
-   *
-   * @param event the event to check
-   *
-   * @return whether the event has been triggered from this component's subtree or not.
-   */
-  isEventFrom(event: Event): boolean { return this._element.nativeElement.contains(event.target as HTMLElement); }
 }
 
 /**
@@ -113,10 +82,10 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
   @Input() popoverTitle: string | TemplateRef<any>;
   /**
    * Placement of a popover accepts:
-   *    "top", "top-left", "top-right", "bottom", "bottom-left", "bottom-right",
+    *    "top", "top-left", "top-right", "bottom", "bottom-left", "bottom-right",
    *    "left", "left-top", "left-bottom", "right", "right-top", "right-bottom"
    * and array of above values.
-   */
+    */
   @Input() placement: PlacementArray;
   /**
    * Specifies events that should trigger. Supports a space separated list of event names.
@@ -166,7 +135,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
   constructor(
       private _elementRef: ElementRef<HTMLElement>, private _renderer: Renderer2, injector: Injector,
       componentFactoryResolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef, config: NgbPopoverConfig,
-      private _ngZone: NgZone, @Inject(DOCUMENT) private _document: any) {
+      private _ngZone: NgZone, @Inject(DOCUMENT) private _document: any, private _changeDetector: ChangeDetectorRef) {
     this.autoClose = config.autoClose;
     this.placement = config.placement;
     this.triggers = config.triggers;
@@ -178,10 +147,9 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 
     this._zoneSubscription = _ngZone.onStable.subscribe(() => {
       if (this._windowRef) {
-        this._windowRef.instance.applyPlacement(
-            positionElements(
-                this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
-                this.container === 'body'));
+        positionElements(
+            this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
+            this.container === 'body', 'bs-popover');
       }
     });
   }
@@ -205,39 +173,11 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
       }
 
       // apply styling to set basic css-classes on target element, before going for positioning
-      this._windowRef.changeDetectorRef.detectChanges();
       this._windowRef.changeDetectorRef.markForCheck();
 
-      // position popover along the element
-      this._windowRef.instance.applyPlacement(
-          positionElements(
-              this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
-              this.container === 'body'));
-
-      if (this.autoClose) {
-        this._ngZone.runOutsideAngular(() => {
-          // prevents automatic closing right after an opening by putting a guard for the time of one event handling
-          // pass
-          // use case: click event would reach an element opening the popover first, then reach the autoClose handler
-          // which would close it
-          let justOpened = true;
-          requestAnimationFrame(() => justOpened = false);
-
-          const escapes$ = fromEvent<KeyboardEvent>(this._document, 'keyup')
-                               .pipe(
-                                   takeUntil(this.hidden),
-                                   // tslint:disable-next-line:deprecation
-                                   filter(event => event.which === Key.Escape));
-
-          const clicks$ = fromEvent<MouseEvent>(this._document, 'click')
-                              .pipe(
-                                  takeUntil(this.hidden), filter(() => !justOpened),
-                                  filter(event => this._shouldCloseFromClick(event)));
-
-          race<Event>([escapes$, clicks$]).subscribe(() => this._ngZone.run(() => this.close()));
-        });
-      }
-
+      ngbAutoClose(
+          this._ngZone, this._document, this.autoClose, () => this.close(), this.hidden,
+          [this._windowRef.location.nativeElement]);
       this.shown.emit();
     }
   }
@@ -251,6 +191,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
       this._popupService.close();
       this._windowRef = null;
       this.hidden.emit();
+      this._changeDetector.markForCheck();
     }
   }
 
@@ -291,23 +232,5 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
       this._unregisterListenersFn();
     }
     this._zoneSubscription.unsubscribe();
-  }
-
-  private _shouldCloseFromClick(event: MouseEvent) {
-    if (event.button !== 2) {
-      if (this.autoClose === true) {
-        return true;
-      } else if (this.autoClose === 'inside' && this._isEventFromPopover(event)) {
-        return true;
-      } else if (this.autoClose === 'outside' && !this._isEventFromPopover(event)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  private _isEventFromPopover(event: MouseEvent) {
-    const popup = this._windowRef.instance;
-    return popup ? popup.isEventFrom(event) : false;
   }
 }

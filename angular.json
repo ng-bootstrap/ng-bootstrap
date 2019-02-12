@@ -170,10 +170,11 @@
           }
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "ngx-build-plus:dev-server",
           "options": {
             "browserTarget": "e2e-app:build",
-            "progress": false
+            "progress": false,
+            "extraWebpackConfig": "./coverage.webpack.js"
           },
           "configurations": {
             "production": {

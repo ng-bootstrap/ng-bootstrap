@@ -1,3 +1,51 @@
+<a name="4.0.3"></a>
+## [4.0.3](https://github.com/ng-bootstrap/ng-bootstrap/compare/4.0.2...4.0.3) (2019-02-12)
+
+
+### Bug Fixes
+
+* add missing exports ([932d7f6](https://github.com/ng-bootstrap/ng-bootstrap/commit/932d7f6)), closes [#2997](https://github.com/ng-bootstrap/ng-bootstrap/issues/2997)
+* **autoclose:** fix popup automatic closing on touch on iOS ([#3004](https://github.com/ng-bootstrap/ng-bootstrap/issues/3004)) ([bc489ec](https://github.com/ng-bootstrap/ng-bootstrap/commit/bc489ec)), closes [#2995](https://github.com/ng-bootstrap/ng-bootstrap/issues/2995)
+* **buttons:** display correct NgModel value inside OnPush component ([#3000](https://github.com/ng-bootstrap/ng-bootstrap/issues/3000)) ([083fb0f](https://github.com/ng-bootstrap/ng-bootstrap/commit/083fb0f)), closes [#2980](https://github.com/ng-bootstrap/ng-bootstrap/issues/2980)
+* **popover:** arrow is correctly centered ([a613fa9](https://github.com/ng-bootstrap/ng-bootstrap/commit/a613fa9)), closes [#3006](https://github.com/ng-bootstrap/ng-bootstrap/issues/3006) [#2089](https://github.com/ng-bootstrap/ng-bootstrap/issues/2089) [#2234](https://github.com/ng-bootstrap/ng-bootstrap/issues/2234)
+* **positioning:** use CSS translate for positioning ([64d5716](https://github.com/ng-bootstrap/ng-bootstrap/commit/64d5716)), closes [#2972](https://github.com/ng-bootstrap/ng-bootstrap/issues/2972) [#2470](https://github.com/ng-bootstrap/ng-bootstrap/issues/2470) [#2924](https://github.com/ng-bootstrap/ng-bootstrap/issues/2924) [#2069](https://github.com/ng-bootstrap/ng-bootstrap/issues/2069) [#2914](https://github.com/ng-bootstrap/ng-bootstrap/issues/2914) [#2775](https://github.com/ng-bootstrap/ng-bootstrap/issues/2775) [#2346](https://github.com/ng-bootstrap/ng-bootstrap/issues/2346)
+* **timepicker:** display correct NgModel value inside OnPush component ([#3001](https://github.com/ng-bootstrap/ng-bootstrap/issues/3001)) ([0e9b291](https://github.com/ng-bootstrap/ng-bootstrap/commit/0e9b291)), closes [#2992](https://github.com/ng-bootstrap/ng-bootstrap/issues/2992)
+
+
+
+<a name="4.0.2"></a>
+## [4.0.2](https://github.com/ng-bootstrap/ng-bootstrap/compare/4.0.1...4.0.2) (2019-01-28)
+
+
+### Bug Fixes
+
+* **accordion:** remove 'h5' from the card header ([88af5c8](https://github.com/ng-bootstrap/ng-bootstrap/commit/88af5c8)), closes [#2915](https://github.com/ng-bootstrap/ng-bootstrap/issues/2915)
+* **autoclose:** use mouseup asynchronously instead of click ([0c91b05](https://github.com/ng-bootstrap/ng-bootstrap/commit/0c91b05)), closes [#2711](https://github.com/ng-bootstrap/ng-bootstrap/issues/2711)
+* **autoclose:** using each dropdown component inside OnPush component ([1b7614c](https://github.com/ng-bootstrap/ng-bootstrap/commit/1b7614c))
+* **datepicker:** fix 'outsideDays' clicks for multiple months ([c37a803](https://github.com/ng-bootstrap/ng-bootstrap/commit/c37a803)), closes [#2879](https://github.com/ng-bootstrap/ng-bootstrap/issues/2879)
+* **datepicker:** update model correctly with updateOn: 'blur' ([#2982](https://github.com/ng-bootstrap/ng-bootstrap/issues/2982)) ([eddf188](https://github.com/ng-bootstrap/ng-bootstrap/commit/eddf188)), closes [#2976](https://github.com/ng-bootstrap/ng-bootstrap/issues/2976)
+* **modal:** add missing 'aria-modal' and 'aria-hidden' attributes ([eee0afb](https://github.com/ng-bootstrap/ng-bootstrap/commit/eee0afb)), closes [#2575](https://github.com/ng-bootstrap/ng-bootstrap/issues/2575) [#2965](https://github.com/ng-bootstrap/ng-bootstrap/issues/2965)
+* **timepicker:** handle setting hour/minute/second step to 'undefined' ([34baece](https://github.com/ng-bootstrap/ng-bootstrap/commit/34baece)), closes [#2851](https://github.com/ng-bootstrap/ng-bootstrap/issues/2851) [#2903](https://github.com/ng-bootstrap/ng-bootstrap/issues/2903)
+* **timepicker:** use ViewEncapsulation.None forgotten in 4.0.0 ([1d01940](https://github.com/ng-bootstrap/ng-bootstrap/commit/1d01940)), closes [#2932](https://github.com/ng-bootstrap/ng-bootstrap/issues/2932)
+
+
+
+<a name="4.0.1"></a>
+## [4.0.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/4.0.0...4.0.1) (2018-12-17)
+
+
+### Bug Fixes
+
+* **carousel:** do change detection when slides change ([a944d5d](https://github.com/ng-bootstrap/ng-bootstrap/commit/a944d5d)), closes [#2908](https://github.com/ng-bootstrap/ng-bootstrap/issues/2908) [#2900](https://github.com/ng-bootstrap/ng-bootstrap/issues/2900)
+* **datepicker:** focus handling performance regression ([1d9a84e](https://github.com/ng-bootstrap/ng-bootstrap/commit/1d9a84e))
+* **datepicker:** visual focus on arrows for ie ([#2818](https://github.com/ng-bootstrap/ng-bootstrap/issues/2818)) ([b20355e](https://github.com/ng-bootstrap/ng-bootstrap/commit/b20355e))
+* **focustrap:** discarding tabindex='-1' when finding element ([#2888](https://github.com/ng-bootstrap/ng-bootstrap/issues/2888)) ([db7347b](https://github.com/ng-bootstrap/ng-bootstrap/commit/db7347b)), closes [#2884](https://github.com/ng-bootstrap/ng-bootstrap/issues/2884)
+* **rating:** don't hijack Tab key navigation ([4b05da1](https://github.com/ng-bootstrap/ng-bootstrap/commit/4b05da1)), closes [#2473](https://github.com/ng-bootstrap/ng-bootstrap/issues/2473) [#2895](https://github.com/ng-bootstrap/ng-bootstrap/issues/2895)
+* **typeahead:** input value properly reset when hint/ngModel are used together ([8d5397c](https://github.com/ng-bootstrap/ng-bootstrap/commit/8d5397c)), closes [#2816](https://github.com/ng-bootstrap/ng-bootstrap/issues/2816) [#2850](https://github.com/ng-bootstrap/ng-bootstrap/issues/2850)
+* **typeahead:** prevent dropdown to be reopened after an item selection ([e0fe9f5](https://github.com/ng-bootstrap/ng-bootstrap/commit/e0fe9f5)), closes [#2854](https://github.com/ng-bootstrap/ng-bootstrap/issues/2854) [#2869](https://github.com/ng-bootstrap/ng-bootstrap/issues/2869)
+
+
+
 <a name="4.0.0"></a>
 # [4.0.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/3.3.1...4.0.0) (2018-10-26)
 

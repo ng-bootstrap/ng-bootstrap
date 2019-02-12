@@ -220,6 +220,11 @@ export class NgbDatepickerService {
       startDate = state.selectedDate;
     }
 
+    // terminate early if only focus visibility was changed
+    if ('focusVisible' in patch) {
+      return state;
+    }
+
     // focus date changed
     if ('focusDate' in patch) {
       state.focusDate = checkDateInRange(state.focusDate, state.minDate, state.maxDate);

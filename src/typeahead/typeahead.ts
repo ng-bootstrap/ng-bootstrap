@@ -1,10 +1,12 @@
 import {
+  ChangeDetectorRef,
   ComponentFactoryResolver,
   ComponentRef,
   Directive,
   ElementRef,
   EventEmitter,
   forwardRef,
+  Inject,
   Injector,
   Input,
   NgZone,
@@ -13,20 +15,22 @@ import {
   Output,
   Renderer2,
   TemplateRef,
-  ViewContainerRef,
+  ViewContainerRef
 } from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {BehaviorSubject, fromEvent, Observable, Subscription} from 'rxjs';
+import {DOCUMENT} from '@angular/common';
+import {BehaviorSubject, fromEvent, Observable, Subject, Subscription} from 'rxjs';
 import {map, switchMap, tap} from 'rxjs/operators';
 
 import {Live} from '../util/accessibility/live';
+import {ngbAutoClose} from '../util/autoclose';
 import {Key} from '../util/key';
 import {PopupService} from '../util/popup';
 import {PlacementArray, positionElements} from '../util/positioning';
 import {isDefined, toString} from '../util/util';
+
 import {NgbTypeaheadConfig} from './typeahead-config';
 import {NgbTypeaheadWindow, ResultTemplateContext} from './typeahead-window';
-
 
 
 const NGB_TYPEAHEAD_VALUE_ACCESSOR = {
@@ -61,7 +65,6 @@ let nextWindowId = 0;
   host: {
     '(blur)': 'handleBlur()',
     '[class.open]': 'isPopupOpen()',
-    '(document:click)': 'onDocumentClick($event)',
     '(keydown)': 'handleKeyDown($event)',
     '[autocomplete]': 'autocomplete',
     'autocapitalize': 'off',
@@ -79,6 +82,7 @@ export class NgbTypeahead implements ControlValueAccessor,
     OnInit, OnDestroy {
   private _popupService: PopupService<NgbTypeaheadWindow>;
   private _subscription: Subscription;
+  private _closed$ = new Subject();
   private _inputValueBackup: string;
   private _valueChanges: Observable<string>;
   private _resubscribeTypeahead: BehaviorSubject<any>;
@@ -158,7 +162,8 @@ export class NgbTypeahead implements ControlValueAccessor,
   constructor(
       private _elementRef: ElementRef<HTMLInputElement>, private _viewContainerRef: ViewContainerRef,
       private _renderer: Renderer2, private _injector: Injector, componentFactoryResolver: ComponentFactoryResolver,
-      config: NgbTypeaheadConfig, ngZone: NgZone, private _live: Live) {
+      config: NgbTypeaheadConfig, ngZone: NgZone, private _live: Live, @Inject(DOCUMENT) private _document: any,
+      private _ngZone: NgZone, private _changeDetector: ChangeDetectorRef) {
     this.container = config.container;
     this.editable = config.editable;
     this.focusFirst = config.focusFirst;
@@ -220,21 +225,17 @@ export class NgbTypeahead implements ControlValueAccessor,
     this._renderer.setProperty(this._elementRef.nativeElement, 'disabled', isDisabled);
   }
 
-  onDocumentClick(event) {
-    if (event.target !== this._elementRef.nativeElement) {
-      this.dismissPopup();
-    }
-  }
-
   /**
    * Dismisses typeahead popup window
    */
   dismissPopup() {
     if (this.isPopupOpen()) {
+      this._resubscribeTypeahead.next(null);
       this._closePopup();
       if (this.showHint && this._inputValueBackup !== null) {
         this._writeInputValue(this._inputValueBackup);
       }
+      this._changeDetector.markForCheck();
     }
   }
 
@@ -275,11 +276,6 @@ export class NgbTypeahead implements ControlValueAccessor,
         }
         this._closePopup();
         break;
-      case Key.Escape:
-        event.preventDefault();
-        this._resubscribeTypeahead.next(null);
-        this.dismissPopup();
-        break;
     }
   }
 
@@ -294,10 +290,17 @@ export class NgbTypeahead implements ControlValueAccessor,
       if (this.container === 'body') {
         window.document.querySelector(this.container).appendChild(this._windowRef.location.nativeElement);
       }
+
+      this._changeDetector.markForCheck();
+
+      ngbAutoClose(
+          this._ngZone, this._document, 'outside', () => this.dismissPopup(), this._closed$,
+          [this._elementRef.nativeElement, this._windowRef.location.nativeElement]);
     }
   }
 
   private _closePopup() {
+    this._closed$.next();
     this._popupService.close();
     this._windowRef = null;
     this.activeDescendant = undefined;

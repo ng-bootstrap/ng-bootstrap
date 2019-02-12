@@ -21,7 +21,7 @@ import {isPlatformBrowser} from '@angular/common';
 
 import {NgbCarouselConfig} from './carousel-config';
 
-import {Subject, timer} from 'rxjs';
+import {merge, Subject, timer} from 'rxjs';
 import {filter, map, switchMap, takeUntil} from 'rxjs/operators';
 
 let nextId = 0;
@@ -79,6 +79,7 @@ export class NgbCarousel implements AfterContentChecked,
     AfterContentInit, OnChanges, OnDestroy {
   @ContentChildren(NgbSlide) slides: QueryList<NgbSlide>;
 
+  private _destroy$ = new Subject<void>();
   private _start$ = new Subject<void>();
   private _stop$ = new Subject<void>();
 
@@ -146,12 +147,14 @@ export class NgbCarousel implements AfterContentChecked,
         this._start$
             .pipe(
                 map(() => this.interval), filter(interval => interval > 0 && this.slides.length > 0),
-                switchMap(interval => timer(interval).pipe(takeUntil(this._stop$))))
+                switchMap(interval => timer(interval).pipe(takeUntil(merge(this._stop$, this._destroy$)))))
             .subscribe(() => this._ngZone.run(() => this.next()));
 
         this._start$.next();
       });
     }
+
+    this.slides.changes.pipe(takeUntil(this._destroy$)).subscribe(() => this._cd.markForCheck());
   }
 
   ngAfterContentChecked() {
@@ -159,7 +162,7 @@ export class NgbCarousel implements AfterContentChecked,
     this.activeId = activeSlide ? activeSlide.id : (this.slides.length ? this.slides.first.id : null);
   }
 
-  ngOnDestroy() { this._stop$.next(); }
+  ngOnDestroy() { this._destroy$.next(); }
 
   ngOnChanges(changes) {
     if ('interval' in changes && !changes['interval'].isFirstChange()) {

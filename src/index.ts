@@ -34,7 +34,7 @@ export {
   NgbPanelContent
 } from './accordion/accordion.module';
 export {NgbAlertModule, NgbAlertConfig, NgbAlert} from './alert/alert.module';
-export {NgbButtonsModule, NgbCheckBox, NgbRadioGroup} from './buttons/buttons.module';
+export {NgbButtonsModule, NgbButtonLabel, NgbCheckBox, NgbRadio, NgbRadioGroup} from './buttons/buttons.module';
 export {NgbCarouselModule, NgbCarouselConfig, NgbCarousel, NgbSlide} from './carousel/carousel.module';
 export {NgbCollapseModule, NgbCollapse} from './collapse/collapse.module';
 export {
@@ -57,7 +57,14 @@ export {
   NgbDatepicker,
   NgbInputDatepicker
 } from './datepicker/datepicker.module';
-export {NgbDropdownModule, NgbDropdownConfig, NgbDropdown} from './dropdown/dropdown.module';
+export {
+  NgbDropdownModule,
+  NgbDropdownAnchor,
+  NgbDropdownConfig,
+  NgbDropdownMenu,
+  NgbDropdownToggle,
+  NgbDropdown
+} from './dropdown/dropdown.module';
 export {
   NgbModalModule,
   NgbModal,

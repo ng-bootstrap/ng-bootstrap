@@ -22,6 +22,7 @@ import {ModalDismissReasons} from './modal-dismiss-reasons';
     'tabindex': '-1',
     '(keyup.esc)': 'escKey($event)',
     '(click)': 'backdropClick($event)',
+    '[attr.aria-modal]': 'true',
     '[attr.aria-labelledby]': 'ariaLabelledBy',
   },
   template: `
