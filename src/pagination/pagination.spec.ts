@@ -10,7 +10,7 @@ import {NgbPaginationConfig} from './pagination-config';
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
-function expectPages(nativeEl: HTMLElement, pagesDef: string[]): void {
+function expectPages(nativeEl: HTMLElement, pagesDef: string[], ellipsis = '...'): void {
   const pages = nativeEl.querySelectorAll('li');
 
   expect(pages.length).toEqual(pagesDef.length);
@@ -27,14 +27,14 @@ function expectPages(nativeEl: HTMLElement, pagesDef: string[]): void {
       expect(pages[i]).not.toHaveCssClass('active');
       expect(pages[i]).toHaveCssClass('disabled');
       expect(normalizeText(pages[i].textContent)).toEqual(pageDef.substr(1));
-      if (normalizeText(pages[i].textContent) !== '...') {
+      if (normalizeText(pages[i].textContent) !== ellipsis) {
         expect(pages[i].querySelector('a').getAttribute('tabindex')).toEqual('-1');
       }
     } else {
       expect(pages[i]).not.toHaveCssClass('active');
       expect(pages[i]).not.toHaveCssClass('disabled');
       expect(normalizeText(pages[i].textContent)).toEqual(pageDef);
-      if (normalizeText(pages[i].textContent) !== '...') {
+      if (normalizeText(pages[i].textContent) !== ellipsis) {
         expect(pages[i].querySelector('a').hasAttribute('tabindex')).toBeFalsy();
       }
     }
@@ -589,6 +589,57 @@ describe('ngb-pagination', () => {
        }));
   });
 
+  describe('Customization', () => {
+
+    beforeEach(
+        () => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbPaginationModule]}); });
+
+    it('should allow overriding link templates', () => {
+      const fixture = createTestComponent(`
+        <ngb-pagination [collectionSize]="50" [page]="1" [boundaryLinks]="true" [ellipses]="true" [maxSize]="2">
+          <ng-template ngbPaginationFirst>F</ng-template>
+          <ng-template ngbPaginationLast>L</ng-template>
+          <ng-template ngbPaginationPrevious>P</ng-template>
+          <ng-template ngbPaginationNext>N</ng-template>
+          <ng-template ngbPaginationEllipsis>E</ng-template>
+          <ng-template ngbPaginationNumber let-page let-currentPage="currentPage">
+            {{ page }}!
+            <span *ngIf="page === currentPage" class="sr-only">(current)</span>
+          </ng-template>
+        </ngb-pagination>
+      `);
+
+      expectPages(fixture.nativeElement, ['-F', '-P', '+1!', '2!', '-E', '5!', 'N', 'L'], 'E');
+    });
+
+    it('should pass disabled value to custom link templates', () => {
+      const fixture = createTestComponent(`
+        <ngb-pagination [collectionSize]="30" [(page)]="page" [boundaryLinks]="true" [disabled]="disabled">
+          <ng-template ngbPaginationFirst let-disabled="disabled">{{ disabled ? 'dF' : 'F' }}</ng-template>
+          <ng-template ngbPaginationLast let-disabled="disabled">{{ disabled ? 'dL' : 'L' }}</ng-template>
+          <ng-template ngbPaginationPrevious let-disabled="disabled">{{ disabled ? 'dP' : 'P' }}</ng-template>
+          <ng-template ngbPaginationNext let-disabled="disabled">{{ disabled ? 'dN' : 'N' }}</ng-template>
+          <ng-template ngbPaginationNumber let-page let-currentPage="currentPage" let-disabled="disabled">
+            {{ disabled ? 'd'+page : page }}
+            <span *ngIf="page === currentPage" class="sr-only">(current)</span>
+          </ng-template>
+        </ngb-pagination>
+      `);
+
+      expectPages(fixture.nativeElement, ['-dF', '-dP', '+1', '2', '3', 'N', 'L']);
+
+      fixture.componentInstance.page = 3;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['F', 'P', '1', '2', '+3', '-dN', '-dL']);
+
+      fixture.componentInstance.disabled = true;
+      fixture.detectChanges();
+      const firstPage = getLink(fixture.nativeElement, 2);
+      expect(firstPage.parentElement).toHaveCssClass('disabled');
+      expect(firstPage.textContent.trim()).toBe('d1');
+    });
+  });
+
   describe('Custom config', () => {
     let config: NgbPaginationConfig;
 
@@ -642,6 +693,7 @@ describe('ngb-pagination', () => {
 
 @Component({selector: 'test-cmp', template: ''})
 class TestComponent {
+  disabled = false;
   pageSize = 10;
   collectionSize = 100;
   page = 1;
