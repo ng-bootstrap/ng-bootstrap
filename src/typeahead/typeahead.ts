@@ -1,10 +1,12 @@
 import {
+  ChangeDetectorRef,
   ComponentFactoryResolver,
   ComponentRef,
   Directive,
   ElementRef,
   EventEmitter,
   forwardRef,
+  Inject,
   Injector,
   Input,
   NgZone,
@@ -13,22 +15,22 @@ import {
   Output,
   Renderer2,
   TemplateRef,
-  ViewContainerRef,
-  ChangeDetectorRef,
+  ViewContainerRef
 } from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {BehaviorSubject, fromEvent, Observable, Subscription, Subject} from 'rxjs';
+import {DOCUMENT} from '@angular/common';
+import {BehaviorSubject, fromEvent, Observable, Subject, Subscription} from 'rxjs';
 import {map, switchMap, tap} from 'rxjs/operators';
 
 import {Live} from '../util/accessibility/live';
+import {ngbAutoClose} from '../util/autoclose';
 import {Key} from '../util/key';
 import {PopupService} from '../util/popup';
 import {PlacementArray, positionElements} from '../util/positioning';
 import {isDefined, toString} from '../util/util';
+
 import {NgbTypeaheadConfig} from './typeahead-config';
 import {NgbTypeaheadWindow, ResultTemplateContext} from './typeahead-window';
-import {AutoClose} from '../util/autoclose';
-
 
 
 const NGB_TYPEAHEAD_VALUE_ACCESSOR = {
@@ -160,8 +162,8 @@ export class NgbTypeahead implements ControlValueAccessor,
   constructor(
       private _elementRef: ElementRef<HTMLInputElement>, private _viewContainerRef: ViewContainerRef,
       private _renderer: Renderer2, private _injector: Injector, componentFactoryResolver: ComponentFactoryResolver,
-      config: NgbTypeaheadConfig, ngZone: NgZone, private _live: Live, private _autoClose: AutoClose,
-      private _changeDetector: ChangeDetectorRef) {
+      config: NgbTypeaheadConfig, ngZone: NgZone, private _live: Live, @Inject(DOCUMENT) private _document: any,
+      private _ngZone: NgZone, private _changeDetector: ChangeDetectorRef) {
     this.container = config.container;
     this.editable = config.editable;
     this.focusFirst = config.focusFirst;
@@ -288,10 +290,12 @@ export class NgbTypeahead implements ControlValueAccessor,
       if (this.container === 'body') {
         window.document.querySelector(this.container).appendChild(this._windowRef.location.nativeElement);
       }
-      this._autoClose.install(
-          'outside', () => this.dismissPopup(), this._closed$,
-          [this._elementRef.nativeElement, this._windowRef.location.nativeElement]);
+
       this._changeDetector.markForCheck();
+
+      ngbAutoClose(
+          this._ngZone, this._document, 'outside', () => this.dismissPopup(), this._closed$,
+          [this._elementRef.nativeElement, this._windowRef.location.nativeElement]);
     }
   }
 

@@ -24,11 +24,11 @@ import {
 import {DOCUMENT} from '@angular/common';
 
 import {listenToTriggers} from '../util/triggers';
-import {positionElements, Placement, PlacementArray} from '../util/positioning';
+import {ngbAutoClose} from '../util/autoclose';
+import {positionElements, PlacementArray} from '../util/positioning';
 import {PopupService} from '../util/popup';
 
 import {NgbPopoverConfig} from './popover-config';
-import {AutoClose} from '../util/autoclose';
 
 let nextId = 0;
 
@@ -135,8 +135,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
   constructor(
       private _elementRef: ElementRef<HTMLElement>, private _renderer: Renderer2, injector: Injector,
       componentFactoryResolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef, config: NgbPopoverConfig,
-      private _ngZone: NgZone, @Inject(DOCUMENT) private _document: any, private _autoClose: AutoClose,
-      private _changeDetector: ChangeDetectorRef) {
+      private _ngZone: NgZone, @Inject(DOCUMENT) private _document: any, private _changeDetector: ChangeDetectorRef) {
     this.autoClose = config.autoClose;
     this.placement = config.placement;
     this.triggers = config.triggers;
@@ -176,8 +175,9 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
       // apply styling to set basic css-classes on target element, before going for positioning
       this._windowRef.changeDetectorRef.markForCheck();
 
-      this._autoClose.install(
-          this.autoClose, () => this.close(), this.hidden, [this._windowRef.location.nativeElement]);
+      ngbAutoClose(
+          this._ngZone, this._document, this.autoClose, () => this.close(), this.hidden,
+          [this._windowRef.location.nativeElement]);
       this.shown.emit();
     }
   }
