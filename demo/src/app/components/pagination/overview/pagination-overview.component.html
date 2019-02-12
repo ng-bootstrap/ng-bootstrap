@@ -41,3 +41,46 @@
     be exposed.
   </p>
 </ngbd-overview-section>
+
+<ngbd-overview-section [section]="sections['customization']">
+  <p>
+    It is possible to customize what exactly is displayed in each pagination link and there are several ways of doing it.
+  </p>
+
+  <p>
+    You could use the Angular i18n API as all labels are translated. For instance you could replace the default
+    <code>'&laquo;'</code> (previous arrow) with the <code>'Prev'</code> text by providing a different translation for the
+    <code>ngb.pagination.previous</code> key in your i18n file and <code>ngb.pagination.previous-aria</code> for the
+    corresponding <code>aria-label</code> attribute.
+  </p>
+
+  <p>
+    You could also override the CSS to hide the default <code>span</code> and provide an alternative content.
+    For example for the previous arrow:
+  </p>
+  <ngbd-code lang="css" [code]="CUSTOM_CSS"></ngbd-code>
+
+  <h4>
+    Using templates
+  </h4>
+  <ngbd-api-docs-badge [since]="{version: '4.1.0'}"></ngbd-api-docs-badge>
+
+  <p>
+    Sometimes you would want to display an icon, an image or any arbitrary markup instead of the page number.
+    In this case since you could use the template-based API to override any pagination link:
+  </p>
+  <ngbd-code lang="html" [code]="CUSTOM_TPL"></ngbd-code>
+
+  <p>
+    In this case we customize all pagination links, but you can pick only the ones you need of course.
+    The template <a routerLink="../api" fragment="NgbPaginationLinkContext"><code>NgbPaginationLinkContext</code></a>
+    is available for all templates and for page numbers there is a
+    <a routerLink="../api" fragment="NgbPaginationNumberContext"><code>NgbPaginationNumberContext</code></a>
+    that adds displayed number on top.
+  </p>
+
+  <p>
+    Also see the <a routerLink="../examples" fragment="customization">Customization example</a> for a
+    live version.
+  </p>
+</ngbd-overview-section>

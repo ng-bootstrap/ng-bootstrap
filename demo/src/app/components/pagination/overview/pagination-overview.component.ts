@@ -21,6 +21,30 @@ export class NgbdPaginationOverviewComponent {
   [pageSize]="pageSize"
   [collectionSize]="items.length"></ngb-pagination>`;
 
+  CUSTOM_CSS = `
+ngb-pagination li {
+  &:first-child a {
+    span {
+      display: none;
+    }
+    &:before {
+      /* provide your content here */
+    }
+  }
+}
+`;
+
+  CUSTOM_TPL = `
+<ngb-pagination>
+  <ng-template ngbPaginationFirst>First</ng-template>
+  <ng-template ngbPaginationLast>Last</ng-template>
+  <ng-template ngbPaginationPrevious>Prev</ng-template>
+  <ng-template ngbPaginationNext>Next</ng-template>
+  <ng-template ngbPaginationEllipsis>...</ng-template>
+  <ng-template ngbPaginationNumber let-page>{{ page }}</ng-template>
+</ngb-pagination>
+`;
+
   sections: NgbdOverview = {};
 
   constructor(demoList: NgbdDemoList) {
