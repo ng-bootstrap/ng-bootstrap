@@ -74,7 +74,17 @@ export {
   NgbModalRef,
   ModalDismissReasons
 } from './modal/modal.module';
-export {NgbPaginationModule, NgbPaginationConfig, NgbPagination} from './pagination/pagination.module';
+export {
+  NgbPaginationModule,
+  NgbPaginationConfig,
+  NgbPagination,
+  NgbPaginationEllipsis,
+  NgbPaginationFirst,
+  NgbPaginationLast,
+  NgbPaginationNext,
+  NgbPaginationNumber,
+  NgbPaginationPrevious
+} from './pagination/pagination.module';
 export {NgbPopoverModule, NgbPopoverConfig, NgbPopover} from './popover/popover.module';
 export {NgbProgressbarModule, NgbProgressbarConfig, NgbProgressbar} from './progressbar/progressbar.module';
 export {NgbRatingModule, NgbRatingConfig, NgbRating} from './rating/rating.module';
