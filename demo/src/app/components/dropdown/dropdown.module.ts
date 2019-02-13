@@ -9,12 +9,14 @@ import { NgbdDropdownBasic } from './demos/basic/dropdown-basic';
 import { NgbdDropdownConfig } from './demos/config/dropdown-config';
 import { NgbdDropdownManual } from './demos/manual/dropdown-manual';
 import { NgbdDropdownSplit } from './demos/split/dropdown-split';
+import { NgbdDropdownForm } from './demos/form/dropdown-form';
 
 const DEMO_DIRECTIVES = [
   NgbdDropdownBasic,
   NgbdDropdownConfig,
   NgbdDropdownManual,
-  NgbdDropdownSplit
+  NgbdDropdownSplit,
+  NgbdDropdownForm
 ];
 
 const DEMOS = {
@@ -35,6 +37,12 @@ const DEMOS = {
     type: NgbdDropdownSplit,
     code: require('!!raw-loader!./demos/split/dropdown-split'),
     markup: require('!!raw-loader!./demos/split/dropdown-split.html')
+  },
+  form: {
+    title: 'Mixed menu items and form',
+    type: NgbdDropdownForm,
+    code: require('!!raw-loader!./demos/form/dropdown-form'),
+    markup: require('!!raw-loader!./demos/form/dropdown-form.html')
   },
   config: {
     title: 'Global configuration of dropdowns',

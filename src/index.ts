@@ -61,6 +61,7 @@ export {
   NgbDropdownModule,
   NgbDropdownAnchor,
   NgbDropdownConfig,
+  NgbDropdownItem,
   NgbDropdownMenu,
   NgbDropdownToggle,
   NgbDropdown
