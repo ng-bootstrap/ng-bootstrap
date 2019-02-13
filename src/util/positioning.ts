@@ -180,7 +180,21 @@ export function positionElements(
     'top', 'bottom', 'left', 'right', 'top-left', 'top-right', 'bottom-left', 'bottom-right', 'left-top', 'left-bottom',
     'right-top', 'right-bottom'
   ];
+
   const classList = targetElement.classList;
+  const addClassesToTarget = (targetPlacement: Placement): Array<string> => {
+    const[primary, secondary] = targetPlacement.split('-');
+    const classes = [];
+    if (baseClass) {
+      classes.push(`${baseClass}-${primary}`);
+      if (secondary) {
+        classes.push(`${baseClass}-${primary}-${secondary}`);
+      }
+
+      classes.forEach((classname) => { classList.add(classname); });
+    }
+    return classes;
+  };
 
   // Remove old placement classes to avoid issues
   if (baseClass) {
@@ -208,29 +222,27 @@ export function positionElements(
   // style['will-change'] = 'transform';
 
   const lastPlacement = placementVals[placementVals.length - 1];
-  let classesToAdd;
   let testPlacement: Placement;
+  let isInViewport = false;
   for (testPlacement of placementVals) {
-    classesToAdd = [];
-    let [primary, secondary] = testPlacement.split('-');
-
-    if (baseClass) {
-      classesToAdd.push(`${baseClass}-${primary}`);
-      if (secondary) {
-        classesToAdd.push(`${baseClass}-${primary}-${secondary}`);
-      }
-
-      classesToAdd.forEach((classname) => { classList.add(classname); });
-    }
+    let addedClasses = addClassesToTarget(testPlacement);
 
     if (positionService.positionElements(hostElement, targetElement, testPlacement, appendToBody)) {
+      isInViewport = true;
       break;
     }
 
     // Remove the baseClasses for further calculation, except for the last one
     if (baseClass && testPlacement !== lastPlacement) {
-      classesToAdd.forEach((classname) => { classList.remove(classname); });
+      addedClasses.forEach((classname) => { classList.remove(classname); });
     }
+  }
+
+  if (!isInViewport) {
+    // If nothing match, the first placement is the default one
+    testPlacement = placementVals[0];
+    addClassesToTarget(testPlacement);
+    positionService.positionElements(hostElement, targetElement, testPlacement, appendToBody);
   }
 
   return testPlacement;
