@@ -9,7 +9,7 @@ import {PlacementArray} from '../util/positioning';
 @Injectable({providedIn: 'root'})
 export class NgbPopoverConfig {
   autoClose: boolean | 'inside' | 'outside' = true;
-  placement: PlacementArray = 'top';
+  placement: PlacementArray = 'auto';
   triggers = 'click';
   container: string;
   disablePopover = false;

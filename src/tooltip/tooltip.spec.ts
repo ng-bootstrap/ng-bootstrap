@@ -66,7 +66,7 @@ describe('ngb-tooltip', () => {
       const windowEl = getWindow(fixture.nativeElement);
 
       expect(windowEl).toHaveCssClass('tooltip');
-      expect(windowEl).toHaveCssClass(`bs-tooltip-${defaultConfig.placement}`);
+      expect(windowEl).toHaveCssClass('bs-tooltip-top');
       expect(windowEl.textContent.trim()).toBe('Great tip!');
       expect(windowEl.getAttribute('role')).toBe('tooltip');
       expect(windowEl.getAttribute('id')).toBe('ngb-tooltip-0');
