@@ -9,7 +9,7 @@ import {PlacementArray} from '../util/positioning';
 @Injectable({providedIn: 'root'})
 export class NgbTooltipConfig {
   autoClose: boolean | 'inside' | 'outside' = true;
-  placement: PlacementArray = 'top';
+  placement: PlacementArray = 'auto';
   triggers = 'hover';
   container: string;
   disableTooltip = false;
