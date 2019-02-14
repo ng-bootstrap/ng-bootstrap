@@ -49,7 +49,7 @@ export interface NgbModalOptions {
   /**
    * Scrollable modal content (false by default).
    *
-   * @since 4.1.0
+   * @since 5.0.0
    */
   scrollable?: boolean;
 
