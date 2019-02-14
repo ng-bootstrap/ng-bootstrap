@@ -10,8 +10,11 @@ import { NgbdAccordionConfig } from './demos/config/accordion-config';
 import { NgbdAccordionPreventchange } from './demos/preventchange/accordion-preventchange';
 import { NgbdAccordionStatic } from './demos/static/accordion-static';
 import { NgbdAccordionToggle } from './demos/toggle/accordion-toggle';
+import { NgbdAccordionHeader } from './demos/header/accordion-header';
 
-const DEMO_DIRECTIVES = [NgbdAccordionBasic, NgbdAccordionPreventchange, NgbdAccordionStatic, NgbdAccordionToggle, NgbdAccordionConfig];
+const DEMO_DIRECTIVES = [
+  NgbdAccordionBasic, NgbdAccordionPreventchange, NgbdAccordionStatic, NgbdAccordionToggle, NgbdAccordionConfig, NgbdAccordionHeader
+];
 
 const DEMOS = {
   basic: {
@@ -31,6 +34,12 @@ const DEMOS = {
     code: require('!!raw-loader!./demos/toggle/accordion-toggle'),
     markup: require('!!raw-loader!./demos/toggle/accordion-toggle.html'),
     type: NgbdAccordionToggle
+  },
+  header: {
+    title: 'Custom header',
+    code: require('!!raw-loader!./demos/header/accordion-header'),
+    markup: require('!!raw-loader!./demos/header/accordion-header.html'),
+    type: NgbdAccordionHeader
   },
   preventchange: {
     title: 'Prevent panel toggle',
