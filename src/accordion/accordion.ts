@@ -4,7 +4,11 @@ import {
   ContentChildren,
   Directive,
   EventEmitter,
+  forwardRef,
+  Host,
+  Inject,
   Input,
+  Optional,
   Output,
   QueryList,
   TemplateRef
@@ -15,6 +19,58 @@ import {isString} from '../util/util';
 import {NgbAccordionConfig} from './accordion-config';
 
 let nextId = 0;
+
+/**
+ * A context for the `NgbPanelHeader` template
+ *
+ * @since 4.1.0
+ */
+export interface NgbPanelHeaderContext {
+  /**
+   * True if current panel is opened
+   */
+  opened: boolean;
+}
+
+/**
+ * A directive to put on a button that toggles panel opening and closing.
+ * To be used inside the `NgbPanelHeader`
+ *
+ * @since 4.1.0
+ */
+@Directive({
+  selector: 'button[ngbPanelToggle]',
+  host: {
+    'type': 'button',
+    '[disabled]': 'panel.disabled',
+    '[class.collapsed]': '!panel.isOpen',
+    '[attr.aria-expanded]': 'panel.isOpen',
+    '[attr.aria-controls]': 'panel.id',
+    '(click)': 'accordion.toggle(panel.id)'
+  }
+})
+export class NgbPanelToggle {
+  @Input()
+  set ngbPanelToggle(panel: NgbPanel) {
+    if (panel) {
+      this.panel = panel;
+    }
+  }
+
+  constructor(
+      @Inject(forwardRef(() => NgbAccordion)) public accordion: NgbAccordion,
+      @Optional() @Host() @Inject(forwardRef(() => NgbPanel)) public panel: NgbPanel) {}
+}
+
+/**
+ * A directive to wrap an accordion panel header to contain any HTML markup and a toggling button with `NgbPanelToggle`
+ *
+ * @since 4.1.0
+ */
+@Directive({selector: 'ng-template[ngbPanelHeader]'})
+export class NgbPanelHeader {
+  constructor(public templateRef: TemplateRef<any>) {}
+}
 
 /**
  * This directive should be used to wrap accordion panel titles that need to contain HTML markup or other directives.
@@ -68,9 +124,11 @@ export class NgbPanel implements AfterContentChecked {
   @Input() type: string;
 
   titleTpl: NgbPanelTitle | null;
+  headerTpl: NgbPanelHeader | null;
   contentTpl: NgbPanelContent | null;
 
   @ContentChildren(NgbPanelTitle, {descendants: false}) titleTpls: QueryList<NgbPanelTitle>;
+  @ContentChildren(NgbPanelHeader, {descendants: false}) headerTpls: QueryList<NgbPanelHeader>;
   @ContentChildren(NgbPanelContent, {descendants: false}) contentTpls: QueryList<NgbPanelContent>;
 
   ngAfterContentChecked() {
@@ -79,6 +137,7 @@ export class NgbPanel implements AfterContentChecked {
     // Without {descendants: false} we are hitting bugs described in:
     // https://github.com/ng-bootstrap/ng-bootstrap/issues/2240
     this.titleTpl = this.titleTpls.first;
+    this.headerTpl = this.headerTpls.first;
     this.contentTpl = this.contentTpls.first;
   }
 }
@@ -112,14 +171,16 @@ export interface NgbPanelChangeEvent {
   exportAs: 'ngbAccordion',
   host: {'class': 'accordion', 'role': 'tablist', '[attr.aria-multiselectable]': '!closeOtherPanels'},
   template: `
+    <ng-template #t ngbPanelHeader let-panel>
+      <button [ngbPanelToggle]="panel">
+        {{panel.title}}<ng-template [ngTemplateOutlet]="panel.titleTpl?.templateRef"></ng-template>
+      </button>
+    </ng-template>
     <ng-template ngFor let-panel [ngForOf]="panels">
       <div class="card">
         <div role="tab" id="{{panel.id}}-header" [class]="'card-header ' + (panel.type ? 'bg-'+panel.type: type ? 'bg-'+type : '')">
-          <button type="button" class="btn btn-link"
-            (click)="toggle(panel.id)" [disabled]="panel.disabled" [class.collapsed]="!panel.isOpen"
-            [attr.aria-expanded]="panel.isOpen" [attr.aria-controls]="panel.id">
-            {{panel.title}}<ng-template [ngTemplateOutlet]="panel.titleTpl?.templateRef"></ng-template>
-          </button>
+          <ng-template [ngTemplateOutlet]="panel.headerTpl?.templateRef || t"
+                       [ngTemplateOutletContext]="{$implicit: panel, opened: panel.isOpen}"></ng-template>
         </div>
         <div id="{{panel.id}}" role="tabpanel" [attr.aria-labelledby]="panel.id + '-header'"
              class="collapse" [class.show]="panel.isOpen" *ngIf="!destroyOnHide || panel.isOpen">

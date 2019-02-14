@@ -244,6 +244,76 @@ describe('ngb-accordion', () => {
     titles.forEach((title: HTMLElement, idx: number) => { expect(title.textContent.trim()).toBe(`Panel ${idx + 1}`); });
   });
 
+  it('can use header as a template', () => {
+    const testHtml = `
+    <ngb-accordion>
+     <ngb-panel>
+       <ng-template ngbPanelHeader>
+         <button ngbPanelToggle>Title 1</button>
+       </ng-template>
+       <ng-template ngbPanelContent>Content 1</ng-template>
+     </ngb-panel>
+     <ngb-panel>
+       <ng-template ngbPanelHeader>
+         <button ngbPanelToggle>Title 2</button>
+       </ng-template>
+       <ng-template ngbPanelContent>Content 2</ng-template>
+     </ngb-panel>
+    </ngb-accordion>
+    `;
+    const fixture = createTestComponent(testHtml);
+    const titles = getPanelsTitle(fixture.nativeElement);
+    titles.forEach((title: HTMLElement, idx: number) => { expect(title.textContent.trim()).toBe(`Title ${idx + 1}`); });
+  });
+
+  it('can should pass context to a header template', () => {
+    const testHtml = `
+    <ngb-accordion [activeIds]="activeIds">
+     <ngb-panel id="one">
+       <ng-template ngbPanelHeader let-opened="opened">
+         <button ngbPanelToggle>{{ opened ? 'opened' : 'closed' }}</button>
+       </ng-template>
+       <ng-template ngbPanelContent>Content 1</ng-template>
+     </ngb-panel>
+    </ngb-accordion>
+    `;
+    const fixture = createTestComponent(testHtml);
+    const titleButton = getPanelsTitle(fixture.nativeElement)[0];
+
+    expectOpenPanels(fixture.nativeElement, [false]);
+    expect(titleButton.textContent.trim()).toBe(`closed`);
+
+    fixture.componentInstance.activeIds = 'one';
+    fixture.detectChanges();
+
+    expectOpenPanels(fixture.nativeElement, [true]);
+    expect(titleButton.textContent.trim()).toBe(`opened`);
+  });
+
+  it('can should prefer header as a template to other ways of providing a title', () => {
+    const testHtml = `
+    <ngb-accordion>
+     <ngb-panel title="Panel Title 1">
+       <ng-template ngbPanelHeader>
+         <button ngbPanelToggle>Header Title 1</button>
+       </ng-template>
+       <ng-template ngbPanelContent>Content 1</ng-template>
+     </ngb-panel>
+     <ngb-panel>
+       <ng-template ngbPanelTitle>Panel Title 2</ng-template>
+       <ng-template ngbPanelHeader>
+         <button ngbPanelToggle>Header Title 2</button>
+       </ng-template>
+       <ng-template ngbPanelContent>Content 2</ng-template>
+     </ngb-panel>
+    </ngb-accordion>
+    `;
+    const fixture = createTestComponent(testHtml);
+    const titles = getPanelsTitle(fixture.nativeElement);
+    titles.forEach(
+        (title: HTMLElement, idx: number) => { expect(title.textContent.trim()).toBe(`Header Title ${idx + 1}`); });
+  });
+
   it('should not pick up titles from nested accordions', () => {
     const testHtml = `
     <ngb-accordion activeIds="open_me">

@@ -31,7 +31,10 @@ export {
   NgbAccordion,
   NgbPanel,
   NgbPanelTitle,
-  NgbPanelContent
+  NgbPanelContent,
+  NgbPanelHeader,
+  NgbPanelHeaderContext,
+  NgbPanelToggle
 } from './accordion/accordion.module';
 export {NgbAlertModule, NgbAlertConfig, NgbAlert} from './alert/alert.module';
 export {NgbButtonsModule, NgbButtonLabel, NgbCheckBox, NgbRadio, NgbRadioGroup} from './buttons/buttons.module';
