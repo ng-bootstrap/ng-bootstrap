@@ -6,7 +6,7 @@ describe('ngb-tooltip-config', () => {
 
     expect(config.autoClose).toBe(true);
     expect(config.placement).toBe('auto');
-    expect(config.triggers).toBe('hover');
+    expect(config.triggers).toBe('hover focus');
     expect(config.container).toBeUndefined();
     expect(config.disableTooltip).toBe(false);
     expect(config.tooltipClass).toBeUndefined();
