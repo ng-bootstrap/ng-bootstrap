@@ -1,15 +1,18 @@
 import {ModuleWithProviders} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {DatepickerFocusComponent} from './datepicker/focus/datepicker-focus.component';
+
 import {DatepickerAutoCloseComponent} from './datepicker/autoclose/datepicker-autoclose.component';
+import {DatepickerFocusComponent} from './datepicker/focus/datepicker-focus.component';
 import {DropdownAutoCloseComponent} from './dropdown/autoclose/dropdown-autoclose.component';
 import {ModalFocusComponent} from './modal/focus/modal-focus.component';
 import {PopoverAutocloseComponent} from './popover/autoclose/popover-autoclose.component';
 import {TooltipAutocloseComponent} from './tooltip/autoclose/tooltip-autoclose.component';
+import {TooltipFocusComponent} from './tooltip/focus/tooltip-focus.component';
 import {TooltipPositionComponent} from './tooltip/position/tooltip-position.component';
 import {TypeaheadAutoCloseComponent} from './typeahead/autoclose/typeahead-autoclose.component';
 import {TypeaheadFocusComponent} from './typeahead/focus/typeahead-focus.component';
 import {TypeaheadValidationComponent} from './typeahead/validation/typeahead-validation.component';
+
 
 export const routes: Routes = [
   {
@@ -24,7 +27,7 @@ export const routes: Routes = [
   {path: 'popover', children: [{path: 'autoclose', component: PopoverAutocloseComponent}]}, {
     path: 'tooltip',
     children: [
-      {path: 'autoclose', component: TooltipAutocloseComponent},
+      {path: 'autoclose', component: TooltipAutocloseComponent}, {path: 'focus', component: TooltipFocusComponent},
       {path: 'position', component: TooltipPositionComponent}
     ]
   },

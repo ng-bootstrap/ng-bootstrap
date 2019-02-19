@@ -303,6 +303,19 @@ describe('ngb-tooltip', () => {
 
     describe('triggers', () => {
 
+      it('should support focus triggers', () => {
+        const fixture = createTestComponent(`<div ngbTooltip="Great tip!"></div>`);
+        const directive = fixture.debugElement.query(By.directive(NgbTooltip));
+
+        directive.triggerEventHandler('focusin', {});
+        fixture.detectChanges();
+        expect(getWindow(fixture.nativeElement)).not.toBeNull();
+
+        directive.triggerEventHandler('focusout', {});
+        fixture.detectChanges();
+        expect(getWindow(fixture.nativeElement)).toBeNull();
+      });
+
       it('should support toggle triggers', () => {
         const fixture = createTestComponent(`<div ngbTooltip="Great tip!" triggers="click"></div>`);
         const directive = fixture.debugElement.query(By.directive(NgbTooltip));

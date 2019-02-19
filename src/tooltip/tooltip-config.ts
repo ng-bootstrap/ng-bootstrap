@@ -10,7 +10,7 @@ import {PlacementArray} from '../util/positioning';
 export class NgbTooltipConfig {
   autoClose: boolean | 'inside' | 'outside' = true;
   placement: PlacementArray = 'auto';
-  triggers = 'hover';
+  triggers = 'hover focus';
   container: string;
   disableTooltip = false;
   tooltipClass: string;
