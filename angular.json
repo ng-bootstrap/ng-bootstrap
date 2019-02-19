@@ -183,6 +183,21 @@
             }
           }
         },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "e2e-app/protractor.conf.js",
+            "devServerTarget": "e2e-app:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "e2e-app:serve:production"
+            },
+            "noserve": {
+              "devServerTarget": ""
+            }
+          }
+        },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
@@ -196,22 +211,100 @@
         }
       }
     },
-    "e2e": {
-      "root": "e2e-app/src",
+    "ssr-app": {
+      "root": "ssr-app",
+      "sourceRoot": "ssr-app/src",
       "projectType": "application",
+      "prefix": "app",
+      "schematics": {},
       "architect": {
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "protractorConfig": "e2e-app/protractor.conf.js",
-            "devServerTarget": "e2e-app:serve"
+            "outputPath": "ssr-app/dist/browser",
+            "index": "ssr-app/src/index.html",
+            "main": "ssr-app/src/main.ts",
+            "polyfills": "ssr-app/src/polyfills.ts",
+            "tsConfig": "ssr-app/tsconfig.json",
+            "assets": [
+              "ssr-app/src/favicon.ico",
+              {
+                "glob": "**/*",
+                "input": "ssr-app/src/public",
+                "output": "/"
+              }
+            ],
+            "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.css"
+            ],
+            "scripts": []
           },
           "configurations": {
             "production": {
-              "devServerTarget": "e2e-app:serve:production"
-            },
-            "noserve": {
-              "devServerTarget": ""
+              "fileReplacements": [
+                {
+                  "replace": "ssr-app/src/environments/environment.ts",
+                  "with": "ssr-app/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "progress": false
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "ssr-app:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "ssr-app:build:production"
+            }
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "ssr-app/protractor.conf.js",
+            "devServerTarget": ""
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "ssr-app/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "server": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "ssr-app/dist/server",
+            "main": "ssr-app/src/main.server.ts",
+            "tsConfig": "ssr-app/tsconfig.server.json",
+            "progress": false
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "ssr-app/src/environments/environment.ts",
+                  "with": "ssr-app/src/environments/environment.prod.ts"
+                }
+              ]
             }
           }
         }
