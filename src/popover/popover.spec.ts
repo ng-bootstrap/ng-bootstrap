@@ -384,8 +384,22 @@ describe('ngb-popover', () => {
       expect(windowEl.textContent.trim()).toBe('Great tip!');
     });
 
-    it('should accept placement in array(second value of the array should be applied)', () => {
+    it('should accept placement in array (second value of the array should be applied)', () => {
       const fixture = createTestComponent(`<div ngbPopover="Great tip!" [placement]="['left-top','top-right']"></div>`);
+      const directive = fixture.debugElement.query(By.directive(NgbPopover));
+
+      directive.triggerEventHandler('click', {});
+      fixture.detectChanges();
+      const windowEl = getWindow(fixture.nativeElement);
+
+      expect(windowEl).toHaveCssClass('popover');
+      expect(windowEl).toHaveCssClass('bs-popover-top');
+      expect(windowEl).toHaveCssClass('bs-popover-top-right');
+      expect(windowEl.textContent.trim()).toBe('Great tip!');
+    });
+
+    it('should accept placement with space separated values (second value should be applied)', () => {
+      const fixture = createTestComponent(`<div ngbPopover="Great tip!" placement="left-top top-right"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
       directive.triggerEventHandler('click', {});
