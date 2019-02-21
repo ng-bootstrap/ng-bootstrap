@@ -1,3 +1,14 @@
+<a name="4.0.4"></a>
+## [4.0.4](https://github.com/ng-bootstrap/ng-bootstrap/compare/4.0.3...4.0.4) (2019-02-21)
+
+
+### Bug Fixes
+
+* **autoclose:** fix browser detection for SSR ([#3027](https://github.com/ng-bootstrap/ng-bootstrap/issues/3027)) ([5536368](https://github.com/ng-bootstrap/ng-bootstrap/commit/5536368)), closes [#3025](https://github.com/ng-bootstrap/ng-bootstrap/issues/3025)
+* **positioning:** use first placement as the fallback ([#3017](https://github.com/ng-bootstrap/ng-bootstrap/issues/3017)) ([967e949](https://github.com/ng-bootstrap/ng-bootstrap/commit/967e949))
+
+
+
 <a name="4.0.3"></a>
 ## [4.0.3](https://github.com/ng-bootstrap/ng-bootstrap/compare/4.0.2...4.0.3) (2019-02-12)
 
