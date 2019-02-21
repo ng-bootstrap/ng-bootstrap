@@ -144,7 +144,7 @@ export class NgbTypeahead implements ControlValueAccessor,
   /** Placement of a typeahead accepts:
    *    "top", "top-left", "top-right", "bottom", "bottom-left", "bottom-right",
    *    "left", "left-top", "left-bottom", "right", "right-top", "right-bottom"
-   * and array of above values.
+   *  array or a space separated string of above values
   */
   @Input() placement: PlacementArray = 'bottom-left';
 

@@ -159,6 +159,7 @@ export class Positioning {
   }
 }
 
+const placementSeparator = /\s+/;
 const positionService = new Positioning();
 
 /*
@@ -174,7 +175,8 @@ const positionService = new Positioning();
 export function positionElements(
     hostElement: HTMLElement, targetElement: HTMLElement, placement: string | Placement | PlacementArray,
     appendToBody?: boolean, baseClass?: string): Placement {
-  let placementVals: Array<Placement> = Array.isArray(placement) ? placement : [placement as Placement];
+  let placementVals: Array<Placement> =
+      Array.isArray(placement) ? placement : placement.split(placementSeparator) as Array<Placement>;
 
   const allowedPlacements = [
     'top', 'bottom', 'left', 'right', 'top-left', 'top-right', 'bottom-left', 'bottom-right', 'left-top', 'left-bottom',
@@ -251,4 +253,4 @@ export function positionElements(
 export type Placement = 'auto' | 'top' | 'bottom' | 'left' | 'right' | 'top-left' | 'top-right' | 'bottom-left' |
     'bottom-right' | 'left-top' | 'left-bottom' | 'right-top' | 'right-bottom';
 
-export type PlacementArray = Placement | Array<Placement>;
+export type PlacementArray = Placement | Array<Placement>| string;

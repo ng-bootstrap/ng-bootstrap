@@ -63,8 +63,8 @@ export class NgbTooltip implements OnInit, OnDestroy {
   /**
     * Placement of a tooltip accepts:
     *    "top", "top-left", "top-right", "bottom", "bottom-left", "bottom-right",
-    *    "left", "left-top", "left-bottom", "right", "right-top", "right-bottom"
-    * and array of above values.
+    *    "left", "left-top", "left-bottom", "right", "right-top", "right-bottom",
+    *  array or a space separated string of above values
     */
   @Input() placement: PlacementArray;
   /**

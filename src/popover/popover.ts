@@ -81,10 +81,10 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
    */
   @Input() popoverTitle: string | TemplateRef<any>;
   /**
-   * Placement of a popover accepts:
+    * Placement of a popover accepts:
     *    "top", "top-left", "top-right", "bottom", "bottom-left", "bottom-right",
-   *    "left", "left-top", "left-bottom", "right", "right-top", "right-bottom"
-   * and array of above values.
+    *    "left", "left-top", "left-bottom", "right", "right-top", "right-bottom",
+    *  array or a space separated string of above values
     */
   @Input() placement: PlacementArray;
   /**
