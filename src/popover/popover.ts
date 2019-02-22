@@ -109,6 +109,14 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
    */
   @Input() popoverClass: string;
   /**
+   * Delay (in ms) before opening the popover after a non-manual opening trigger.
+   */
+  @Input() openDelay: number;
+  /**
+   * Delay (in ms) before closing the popover after a non-manual closing trigger.
+   */
+  @Input() closeDelay: number;
+  /**
    * Emits an event when the popover is shown
    */
   @Output() shown = new EventEmitter();
@@ -142,6 +150,8 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
     this.container = config.container;
     this.disablePopover = config.disablePopover;
     this.popoverClass = config.popoverClass;
+    this.openDelay = config.openDelay;
+    this.closeDelay = config.closeDelay;
     this._popupService = new PopupService<NgbPopoverWindow>(
         NgbPopoverWindow, injector, viewContainerRef, _renderer, componentFactoryResolver);
 
@@ -213,8 +223,8 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 
   ngOnInit() {
     this._unregisterListenersFn = listenToTriggers(
-        this._renderer, this._elementRef.nativeElement, this.triggers, this.open.bind(this), this.close.bind(this),
-        this.toggle.bind(this));
+        this._renderer, this._elementRef.nativeElement, this.triggers, this.isOpen.bind(this), this.open.bind(this),
+        this.close.bind(this), +this.openDelay, +this.closeDelay);
   }
 
   ngOnChanges(changes: SimpleChanges) {
