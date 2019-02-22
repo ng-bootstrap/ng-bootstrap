@@ -10,5 +10,7 @@ describe('ngb-popover-config', () => {
     expect(config.container).toBeUndefined();
     expect(config.disablePopover).toBe(false);
     expect(config.popoverClass).toBeUndefined();
+    expect(config.openDelay).toBe(0);
+    expect(config.closeDelay).toBe(0);
   });
 });

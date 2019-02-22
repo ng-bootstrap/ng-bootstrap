@@ -14,4 +14,6 @@ export class NgbPopoverConfig {
   container: string;
   disablePopover = false;
   popoverClass: string;
+  openDelay = 0;
+  closeDelay = 0;
 }

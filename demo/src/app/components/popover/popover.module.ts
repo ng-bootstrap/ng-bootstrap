@@ -10,6 +10,7 @@ import { NgbdPopoverBasic } from './demos/basic/popover-basic';
 import { NgbdPopoverConfig } from './demos/config/popover-config';
 import { NgbdPopoverContainer } from './demos/container/popover-container';
 import { NgbdPopoverCustomclass } from './demos/customclass/popover-customclass';
+import { NgbdPopoverDelay } from './demos/delay/popover-delay';
 import { NgbdPopoverTplcontent } from './demos/tplcontent/popover-tplcontent';
 import { NgbdPopoverTplwithcontext } from './demos/tplwithcontext/popover-tplwithcontext';
 import { NgbdPopoverTriggers } from './demos/triggers/popover-triggers';
@@ -24,6 +25,7 @@ const DEMO_DIRECTIVES = [
   NgbdPopoverVisibility,
   NgbdPopoverContainer,
   NgbdPopoverCustomclass,
+  NgbdPopoverDelay,
   NgbdPopoverConfig
 ];
 
@@ -57,6 +59,12 @@ const DEMOS = {
     type: NgbdPopoverTplwithcontext,
     code: require('!!raw-loader!./demos/tplwithcontext/popover-tplwithcontext'),
     markup: require('!!raw-loader!./demos/tplwithcontext/popover-tplwithcontext.html')
+  },
+  delay: {
+    title: 'Open and close delays',
+    type: NgbdPopoverDelay,
+    code: require('!!raw-loader!./demos/delay/popover-delay'),
+    markup: require('!!raw-loader!./demos/delay/popover-delay.html')
   },
   visibility: {
     title: 'Popover visibility events',
