@@ -172,7 +172,7 @@ export interface NgbPanelChangeEvent {
   host: {'class': 'accordion', 'role': 'tablist', '[attr.aria-multiselectable]': '!closeOtherPanels'},
   template: `
     <ng-template #t ngbPanelHeader let-panel>
-      <button [ngbPanelToggle]="panel">
+      <button class="btn btn-link" [ngbPanelToggle]="panel">
         {{panel.title}}<ng-template [ngTemplateOutlet]="panel.titleTpl?.templateRef"></ng-template>
       </button>
     </ng-template>
