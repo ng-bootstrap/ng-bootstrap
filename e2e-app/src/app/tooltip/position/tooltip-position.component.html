@@ -19,6 +19,9 @@
       <button id="btn-body-off" type="button" container="body" triggers="click" class="btn btn-outline-secondary" placement="auto" [ngbTooltip]="content">
         body off
       </button>
+      <button id="btn-default" type="button" container="body" triggers="click" class="btn btn-outline-secondary" placement="left left-top left-bottom" [ngbTooltip]="content">
+        Default placement
+      </button>
 
     </div>
     <ng-template #tooltipHtml><div [innerHtml]="content"></div></ng-template>

@@ -223,7 +223,6 @@ export function positionElements(
   // The translate3d/gpu acceleration render a blurry text on chrome, the next line is commented until a browser fix
   // style['will-change'] = 'transform';
 
-  const lastPlacement = placementVals[placementVals.length - 1];
   let testPlacement: Placement;
   let isInViewport = false;
   for (testPlacement of placementVals) {
@@ -234,8 +233,8 @@ export function positionElements(
       break;
     }
 
-    // Remove the baseClasses for further calculation, except for the last one
-    if (baseClass && testPlacement !== lastPlacement) {
+    // Remove the baseClasses for further calculation
+    if (baseClass) {
       addedClasses.forEach((classname) => { classList.remove(classname); });
     }
   }
