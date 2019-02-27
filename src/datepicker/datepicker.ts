@@ -51,6 +51,13 @@ export interface NgbDatepickerNavigateEvent {
    * Month we're navigating to
    */
   next: {year: number, month: number};
+
+  /**
+   * Function that will prevent navigation if called
+   *
+   * @since 4.1.0
+   */
+  preventDefault: () => void;
 }
 
 /**
@@ -194,7 +201,7 @@ export class NgbDatepicker implements OnDestroy,
   @Input() startDate: {year: number, month: number, day?: number};
 
   /**
-   * An event fired when navigation happens and currently displayed month changes.
+   * An event fired right before the navigation happens and currently displayed month changes.
    * See NgbDatepickerNavigateEvent for the payload info.
    */
   @Output() navigate = new EventEmitter<NgbDatepickerNavigateEvent>();
@@ -222,6 +229,23 @@ export class NgbDatepicker implements OnDestroy,
     _service.model$.pipe(takeUntil(this._destroyed$)).subscribe(model => {
       const newDate = model.firstDate;
       const oldDate = this.model ? this.model.firstDate : null;
+
+      let navigationPrevented = false;
+      // emitting navigation event if the first month changes
+      if (!newDate.equals(oldDate)) {
+        this.navigate.emit({
+          current: oldDate ? {year: oldDate.year, month: oldDate.month} : null,
+          next: {year: newDate.year, month: newDate.month},
+          preventDefault: () => navigationPrevented = true
+        });
+
+        // can't prevent the very first navigation
+        if (navigationPrevented && oldDate !== null) {
+          this._service.reset(this.model);
+          return;
+        }
+      }
+
       const newSelectedDate = model.selectedDate;
       const newFocusedDate = model.focusDate;
       const oldFocusedDate = this.model ? this.model.focusDate : null;
@@ -240,13 +264,6 @@ export class NgbDatepicker implements OnDestroy,
         this.focus();
       }
 
-      // emitting navigation event if the first month changes
-      if (!newDate.equals(oldDate)) {
-        this.navigate.emit({
-          current: oldDate ? {year: oldDate.year, month: oldDate.month} : null,
-          next: {year: newDate.year, month: newDate.month}
-        });
-      }
       _cd.markForCheck();
     });
   }

@@ -6,7 +6,7 @@ import {Component, TemplateRef, DebugElement} from '@angular/core';
 import {By} from '@angular/platform-browser';
 import {FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators} from '@angular/forms';
 
-import {NgbDatepickerModule} from './datepicker.module';
+import {NgbDatepickerModule, NgbDatepickerNavigateEvent} from './datepicker.module';
 import {NgbDate} from './ngb-date';
 import {NgbDatepickerConfig} from './datepicker-config';
 import {NgbDatepicker} from './datepicker';
@@ -483,7 +483,8 @@ describe('ngb-datepicker', () => {
     spyOn(fixture.componentInstance, 'onNavigate');
     fixture.detectChanges();
 
-    expect(fixture.componentInstance.onNavigate).toHaveBeenCalledWith({current: null, next: {year: 2016, month: 8}});
+    expect(fixture.componentInstance.onNavigate)
+        .toHaveBeenCalledWith({current: null, next: {year: 2016, month: 8}, preventDefault: jasmine.any(Function)});
   });
 
   it('should emit navigate event without startDate defined', () => {
@@ -495,8 +496,11 @@ describe('ngb-datepicker', () => {
     spyOn(fixture.componentInstance, 'onNavigate');
     fixture.detectChanges();
 
-    expect(fixture.componentInstance.onNavigate)
-        .toHaveBeenCalledWith({current: null, next: {year: now.getFullYear(), month: now.getMonth() + 1}});
+    expect(fixture.componentInstance.onNavigate).toHaveBeenCalledWith({
+      current: null,
+      next: {year: now.getFullYear(), month: now.getMonth() + 1},
+      preventDefault: jasmine.any(Function)
+    });
   });
 
   it('should emit navigate event using built-in navigation arrows', () => {
@@ -509,8 +513,11 @@ describe('ngb-datepicker', () => {
     // JUL 2016
     navigation[0].click();
     fixture.detectChanges();
-    expect(fixture.componentInstance.onNavigate)
-        .toHaveBeenCalledWith({current: {year: 2016, month: 8}, next: {year: 2016, month: 7}});
+    expect(fixture.componentInstance.onNavigate).toHaveBeenCalledWith({
+      current: {year: 2016, month: 8},
+      next: {year: 2016, month: 7},
+      preventDefault: jasmine.any(Function)
+    });
   });
 
   it('should emit navigate event using navigateTo({date})', () => {
@@ -523,8 +530,27 @@ describe('ngb-datepicker', () => {
     button.click();
 
     fixture.detectChanges();
-    expect(fixture.componentInstance.onNavigate)
-        .toHaveBeenCalledWith({current: {year: 2016, month: 8}, next: {year: 2015, month: 6}});
+    expect(fixture.componentInstance.onNavigate).toHaveBeenCalledWith({
+      current: {year: 2016, month: 8},
+      next: {year: 2015, month: 6},
+      preventDefault: jasmine.any(Function)
+    });
+  });
+
+  it('should prevent navigation when calling preventDefault()', () => {
+    const fixture = createTestComponent(
+        `<ngb-datepicker #dp [startDate]="date" (navigate)="onPreventableNavigate($event)"></ngb-datepicker>
+       <button id="btn"(click)="dp.navigateTo({year: 2015, month: 7})"></button>`);
+
+    expect(getMonthSelect(fixture.nativeElement).value).toBe('8');
+    expect(getYearSelect(fixture.nativeElement).value).toBe('2016');
+
+    const button = fixture.nativeElement.querySelector('button#btn');
+    button.click();
+    fixture.detectChanges();
+
+    expect(getMonthSelect(fixture.nativeElement).value).toBe('8');
+    expect(getYearSelect(fixture.nativeElement).value).toBe('2016');
   });
 
   it('should not focus day initially', () => {
@@ -1156,4 +1182,5 @@ class TestComponent {
   markDisabled = (date: NgbDateStruct) => { return NgbDate.from(date).equals(new NgbDate(2016, 8, 22)); };
   onNavigate = () => {};
   onSelect = () => {};
+  onPreventableNavigate = (event: NgbDatepickerNavigateEvent) => event.preventDefault();
 }

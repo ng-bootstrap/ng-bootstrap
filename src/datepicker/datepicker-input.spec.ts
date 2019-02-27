@@ -1,10 +1,9 @@
 import {TestBed, ComponentFixture, fakeAsync, tick} from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
-import {createGenericTestComponent, createKeyEvent} from '../test/common';
+import {createGenericTestComponent} from '../test/common';
 
 import {Component, Injectable} from '@angular/core';
 import {FormsModule, NgForm} from '@angular/forms';
-import {Key} from '../util/key';
 
 import {NgbDateAdapter, NgbDatepickerModule} from './datepicker.module';
 import {NgbInputDatepicker} from './datepicker-input';
@@ -17,10 +16,6 @@ const createTestCmpt = (html: string) =>
 
 const createTestNativeCmpt = (html: string) =>
     createGenericTestComponent(html, TestNativeComponent) as ComponentFixture<TestNativeComponent>;
-
-function dispatchKeyUpEvent(key: Key) {
-  document.dispatchEvent(createKeyEvent(key));
-}
 
 describe('NgbInputDatepicker', () => {
 
@@ -667,12 +662,16 @@ describe('NgbInputDatepicker', () => {
 
       dpInput.open();
       fixture.detectChanges();
-      expect(fixture.componentInstance.onNavigate).toHaveBeenCalledWith({current: null, next: {year: 2016, month: 9}});
+      expect(fixture.componentInstance.onNavigate)
+          .toHaveBeenCalledWith({current: null, next: {year: 2016, month: 9}, preventDefault: jasmine.any(Function)});
 
       const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
       dp.navigateTo({year: 2018, month: 4});
-      expect(fixture.componentInstance.onNavigate)
-          .toHaveBeenCalledWith({current: {year: 2016, month: 9}, next: {year: 2018, month: 4}});
+      expect(fixture.componentInstance.onNavigate).toHaveBeenCalledWith({
+        current: {year: 2016, month: 9},
+        next: {year: 2018, month: 4},
+        preventDefault: jasmine.any(Function)
+      });
     });
 
     it('should emit both "dateSelect" and "onModelChange" events', () => {
