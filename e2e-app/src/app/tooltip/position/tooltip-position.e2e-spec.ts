@@ -11,7 +11,7 @@ const roundLocation = function(location) {
 describe('Tooltip Position', () => {
   let page: TooltipPositionPage;
 
-  const expectTooltipsPosition = async(type: string, expectedPlacement: string) => {
+  const expectTooltipsPosition = async(type: string, expectedPlacement: string, excludedPlacements = []) => {
 
 
     const btn = page.getTooltipButton(type);
@@ -28,6 +28,9 @@ describe('Tooltip Position', () => {
     if (secondary) {
       expect(classname).toContain(`bs-tooltip-${primary}-${secondary}`, 'Missing secondary class');
     }
+
+    excludedPlacements.forEach(
+        (placement) => { expect(classname).not.toContain(`bs-tooltip-${placement}`, 'Unexpected class'); });
 
     let yDiff: number, xDiff: number;
 
@@ -67,7 +70,7 @@ describe('Tooltip Position', () => {
   beforeEach(async() => await openUrl('tooltip/position'));
 
   it(`should be well positionned on the left edge`, async() => {
-    page.selectPosition('left');
+    await page.selectPosition('left');
     await expectTooltipsPosition('normal', 'right');
     await expectTooltipsPosition('innerHtml', 'top-left');
     await expectTooltipsPosition('body-off', 'right');
@@ -75,7 +78,7 @@ describe('Tooltip Position', () => {
   });
 
   it(`should be well positionned on the center`, async() => {
-    page.selectPosition('center');
+    await page.selectPosition('center');
     await expectTooltipsPosition('normal', 'top');
     await expectTooltipsPosition('innerHtml', 'top');
     await expectTooltipsPosition('body-off', 'top');
@@ -83,11 +86,16 @@ describe('Tooltip Position', () => {
   });
 
   it(`should be well positionned on the right edge`, async() => {
-    page.selectPosition('right');
+    await page.selectPosition('right');
     await expectTooltipsPosition('normal', 'left');
     await expectTooltipsPosition('innerHtml', 'top-right');
     await expectTooltipsPosition('body-off', 'left');
     await expectTooltipsPosition('fixed', 'top-right');
+  });
+
+  it(`should be positionned at the first placement by default`, async() => {
+    await page.selectPosition('left');
+    await expectTooltipsPosition('default', 'left', ['left-bottom']);
   });
 
 });
