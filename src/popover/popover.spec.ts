@@ -108,7 +108,7 @@ describe('ngb-popover', () => {
       const windowEl = getWindow(fixture.nativeElement);
 
       expect(windowEl).toHaveCssClass('popover');
-      expect(windowEl).toHaveCssClass(`bs-popover-${defaultConfig.placement}`);
+      expect(windowEl).toHaveCssClass('bs-popover-top');
       expect(windowEl.textContent.trim()).toBe('TitleHello, World!');
       expect(windowEl.getAttribute('role')).toBe('tooltip');
       expect(windowEl.getAttribute('id')).toBe('ngb-popover-1');
@@ -133,7 +133,7 @@ describe('ngb-popover', () => {
       const windowEl = getWindow(fixture.nativeElement);
 
       expect(windowEl).toHaveCssClass('popover');
-      expect(windowEl).toHaveCssClass(`bs-popover-${defaultConfig.placement}`);
+      expect(windowEl).toHaveCssClass('bs-popover-top');
       expect(windowEl.textContent.trim()).toBe('TitleHello, John!');
       expect(windowEl.getAttribute('role')).toBe('tooltip');
       expect(windowEl.getAttribute('id')).toBe('ngb-popover-2');
@@ -384,8 +384,8 @@ describe('ngb-popover', () => {
       expect(windowEl.textContent.trim()).toBe('Great tip!');
     });
 
-    it('should accept placement in array(second value of the array should be applied)', () => {
-      const fixture = createTestComponent(`<div ngbPopover="Great tip!" [placement]="['left-top','top-right']"></div>`);
+    it('should accept placement in array (second value of the array should be applied)', () => {
+      const fixture = createTestComponent(`<div ngbPopover="Great tip!" [placement]="['left-top','top-left']"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
       directive.triggerEventHandler('click', {});
@@ -394,7 +394,7 @@ describe('ngb-popover', () => {
 
       expect(windowEl).toHaveCssClass('popover');
       expect(windowEl).toHaveCssClass('bs-popover-top');
-      expect(windowEl).toHaveCssClass('bs-popover-top-right');
+      expect(windowEl).toHaveCssClass('bs-popover-top-left');
       expect(windowEl.textContent.trim()).toBe('Great tip!');
     });
 

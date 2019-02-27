@@ -66,7 +66,7 @@ describe('ngb-tooltip', () => {
       const windowEl = getWindow(fixture.nativeElement);
 
       expect(windowEl).toHaveCssClass('tooltip');
-      expect(windowEl).toHaveCssClass(`bs-tooltip-${defaultConfig.placement}`);
+      expect(windowEl).toHaveCssClass('bs-tooltip-top');
       expect(windowEl.textContent.trim()).toBe('Great tip!');
       expect(windowEl.getAttribute('role')).toBe('tooltip');
       expect(windowEl.getAttribute('id')).toBe('ngb-tooltip-0');
@@ -270,9 +270,9 @@ describe('ngb-tooltip', () => {
         expect(windowEl.textContent.trim()).toBe('Great tip!');
       });
 
-      it('should accept placement in array(second value of the array should be applied)', () => {
+      it('should accept placement in array (second value of the array should be applied)', () => {
         const fixture =
-            createTestComponent(`<div ngbTooltip="Great tip!" [placement]="['left-top','top-right']"></div>`);
+            createTestComponent(`<div ngbTooltip="Great tip!" [placement]="['left-top','top-left']"></div>`);
         const directive = fixture.debugElement.query(By.directive(NgbTooltip));
 
         directive.triggerEventHandler('mouseenter', {});
@@ -281,7 +281,7 @@ describe('ngb-tooltip', () => {
 
         expect(windowEl).toHaveCssClass('tooltip');
         expect(windowEl).toHaveCssClass('bs-tooltip-top');
-        expect(windowEl).toHaveCssClass('bs-tooltip-top-right');
+        expect(windowEl).toHaveCssClass('bs-tooltip-top-left');
         expect(windowEl.textContent.trim()).toBe('Great tip!');
       });
 
