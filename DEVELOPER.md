@@ -62,9 +62,11 @@ yarn
 
 ## Project Structure
 
-We use [`@angular/cli`](https://cli.angular.io) to build both ng-bootstrap library and demo site. There are two main projects:
-* `ng-bootstrap` - the ng-bootstrap library itself; sources are located in `src` folder
-* `demo` - the demo site deployed at [https://ng-bootstrap.github.io](https://ng-bootstrap.github.io); sources are located in `demo/src` folder
+We use [`@angular/cli`](https://cli.angular.io) to build both ng-bootstrap library and demo site. There are several Angular CLI projects inside the checked out code:
+* `ng-bootstrap` - the ng-bootstrap library itself, sources are located in directly in the `src` folder
+* `demo` - the demo site deployed at [https://ng-bootstrap.github.io](https://ng-bootstrap.github.io), sources are in `demo/src`
+* `e2e test app` - an application used to run e2e tests for the library, sources are in `e2e-app/src`
+* `ssr test app` - a simple one-paged application for Server Side Rendering tests, sources are in `ssr-app/src` 
 
 ## Useful Commands
 
@@ -95,6 +97,10 @@ Checks formatting, linting and runs all unit tests for the library with coverage
 
 Runs all protractor tests for the library in production mode. We use them to check focus handling, browser styles, layout, etc.
 (For debugging/development it is also possible to separately serve the e2e test application with `yarn e2e-app:serve` and run protractor with `yarn ngb:e2e-noserve`)
+
+#### `yarn ssr`
+
+Builds, runs and e2e tests a simple server-side rendered application with all ng-bootstrap components
 
 #### `yarn ci`
 
