@@ -549,6 +549,26 @@ describe('ngb-dropdown-toggle', () => {
     expect(compiled).not.toBeShown();
   });
 
+  it('should be appended to body', () => {
+    const html = `
+      <div ngbDropdown container="body">
+          <button ngbDropdownToggle>
+            <span class="toggle">Toggle dropdown</span>
+          </button>
+          <div ngbDropdownMenu></div>
+      </div>`;
+
+    const fixture = createTestComponent(html);
+    const compiled = fixture.nativeElement;
+    const dropdown = fixture.debugElement.query(By.directive(NgbDropdown)).injector.get(NgbDropdown);
+    dropdown.open();
+    const dropdownElement = document.querySelector('div[ngbDropdownMenu]');
+    const parentContainer = dropdownElement.parentNode;
+    expect(parentContainer).toHaveCssClass('dropdown');
+    expect(parentContainer.parentNode).toBe(document.body, 'The dropdown should be attached to the body');
+
+  });
+
   describe('Custom config', () => {
     let config: NgbDropdownConfig;
 

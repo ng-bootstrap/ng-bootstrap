@@ -11,6 +11,7 @@ import {NavigationComponent} from './navigation.component';
 import {DatepickerAutoCloseComponent} from './datepicker/autoclose/datepicker-autoclose.component';
 import {DatepickerFocusComponent} from './datepicker/focus/datepicker-focus.component';
 import {DropdownAutoCloseComponent} from './dropdown/autoclose/dropdown-autoclose.component';
+import {DropdownPositionComponent} from './dropdown/position/dropdown-position.component';
 import {ModalFocusComponent} from './modal/focus/modal-focus.component';
 import {PopoverAutocloseComponent} from './popover/autoclose/popover-autoclose.component';
 import {TooltipAutocloseComponent} from './tooltip/autoclose/tooltip-autoclose.component';
@@ -24,9 +25,9 @@ import {TypeaheadValidationComponent} from './typeahead/validation/typeahead-val
 @NgModule({
   declarations: [
     AppComponent, NavigationComponent, DatepickerAutoCloseComponent, DatepickerFocusComponent,
-    DropdownAutoCloseComponent, ModalFocusComponent, PopoverAutocloseComponent, TooltipAutocloseComponent,
-    TooltipFocusComponent, TooltipPositionComponent, TypeaheadFocusComponent, TypeaheadValidationComponent,
-    TypeaheadAutoCloseComponent
+    DropdownAutoCloseComponent, DropdownPositionComponent, ModalFocusComponent, PopoverAutocloseComponent,
+    TooltipAutocloseComponent, TooltipFocusComponent, TooltipPositionComponent, TypeaheadFocusComponent,
+    TypeaheadValidationComponent, TypeaheadAutoCloseComponent
   ],
   imports: [BrowserModule, FormsModule, ReactiveFormsModule, routing, NgbModule],
   bootstrap: [AppComponent]

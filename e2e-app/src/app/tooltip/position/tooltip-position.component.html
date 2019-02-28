@@ -1,13 +1,13 @@
 <h3>Tooltip positioning tests</h3>
 
 <form id="default">
-  <div class="m-3">
+  <div class="my-3">
     <button class="btn btn-outline-secondary mx-1" id="flex-left" (click)="setPosition('start')">Left</button>
     <button class="btn btn-outline-secondary mx-1" id="flex-center" (click)="setPosition('center')">Center</button>
     <button class="btn btn-outline-secondary mx-1" id="flex-right" (click)="setPosition('end')">Right</button>
   </div>
   <div class="d-flex {{flexPosition}}">
-    <div class="d-flex flex-column mx-3">
+    <div class="d-flex flex-column">
       <button id="btn-normal" type="button" container="body" triggers="click" class="btn btn-outline-secondary" placement="auto" [ngbTooltip]="content">
         Normal tooltip
       </button>
