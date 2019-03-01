@@ -1,11 +1,9 @@
 import {Positioning} from './positioning';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {createGenericTestComponent} from 'src/test/common';
+import {Component} from '@angular/core';
 
 describe('Positioning', () => {
-  const positioning = new Positioning();
-  const documentMargin = document.documentElement.style.margin;
-  const bodyMargin = document.body.style.margin;
-  const bodyHeight = document.body.style.height;
-  const bodyWidth = document.body.style.width;
 
   function createElement(
       height: number, width: number, marginTop: number, marginLeft: number, isAbsolute = false): HTMLElement {
@@ -29,15 +27,30 @@ describe('Positioning', () => {
     expect(transform).toBe(`translate(${left}px, ${top}px)`);
   }
 
-  let element = createElement(200, 300, 100, 150);
-  document.body.appendChild(element);
-  let targetElement = createElement(50, 100, 10, 20, true);
-  document.body.appendChild(targetElement);
+  let element, targetElement, positioning, documentMargin, bodyMargin, bodyHeight, bodyWidth;
+  beforeAll(() => {
+    positioning = new Positioning();
+    documentMargin = document.documentElement.style.margin;
+    bodyMargin = document.body.style.margin;
+    bodyHeight = document.body.style.height;
+    bodyWidth = document.body.style.width;
 
-  document.documentElement.style.margin = '0';
-  document.body.style.margin = '0';
-  document.body.style.height = '2000px';
-  document.body.style.width = '2000px';
+    document.documentElement.style.margin = '0';
+    document.body.style.margin = '0';
+  });
+
+  afterAll(() => {
+    document.documentElement.style.margin = documentMargin;
+    document.body.style.margin = bodyMargin;
+  });
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({declarations: [TestComponent]});
+    const fixture = TestBed.createComponent(TestComponent);
+
+    element = fixture.nativeElement.querySelector('#element');
+    targetElement = fixture.nativeElement.querySelector('#targetElement');
+  });
 
   it('should calculate the element offset', () => {
     let position = positioning.offset(element);
@@ -193,12 +206,19 @@ describe('Positioning', () => {
     checkPosition(targetElement, 250, 450);
   });
 
-  it('cleanUp', () => {
-    document.body.removeChild(element);
-    document.body.removeChild(targetElement);
-    document.documentElement.style.margin = documentMargin;
-    document.body.style.margin = bodyMargin;
-    document.body.style.height = bodyHeight;
-    document.body.style.width = bodyWidth;
-  });
 });
+
+@Component({
+  template: `
+    <div
+      id="element"
+      style="display: inline-block; height: 200px; width: 300px; margin-top: 100px; margin-left: 150px"
+    ></div>
+    <div
+      id="targetElement"
+      style="position:absolute;top:0;left:0; display: inline-block; height: 50px; width: 100px; margin-top: 10px; margin-left: 20px"
+    ></div>
+`
+})
+export class TestComponent {
+}
