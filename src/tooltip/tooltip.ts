@@ -108,14 +108,7 @@ export class NgbTooltip implements OnInit, OnDestroy {
       private _elementRef: ElementRef<HTMLElement>, private _renderer: Renderer2, injector: Injector,
       componentFactoryResolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef, config: NgbTooltipConfig,
       private _ngZone: NgZone, @Inject(DOCUMENT) private _document: any, private _changeDetector: ChangeDetectorRef) {
-    // this.autoClose = config.autoClose;
-    // this.placement = config.placement;
-    // this.triggers = config.triggers;
-    // this.container = config.container;
-    // this.disableTooltip = config.disableTooltip;
-    // this.tooltipClass = config.tooltipClass;
-    Object.keys(config).forEach(key=>this[key]=config[key]);
-
+      Object.keys(config).forEach(key=>this[key]=config[key]);
     this._popupService = new PopupService<NgbTooltipWindow>(
         NgbTooltipWindow, injector, viewContainerRef, _renderer, componentFactoryResolver);
 
