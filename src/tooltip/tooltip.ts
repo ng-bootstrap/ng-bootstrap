@@ -89,11 +89,15 @@ export class NgbTooltip implements OnInit, OnDestroy {
    */
   @Input() tooltipClass: string;
   /**
-   * Delay (in ms) before opening the tooltip after a non-manual opening trigger.
+   * Opening delay in ms. Works only for non-manual opening triggers.
+   *
+   * @since 4.1.0
    */
   @Input() openDelay: number;
   /**
-   * Delay (in ms) before closing the tooltip after a non-manual closing trigger.
+   * Closing delay in ms. Works only for non-manual closing triggers.
+   *
+   * @since 4.1.0
    */
   @Input() closeDelay: number;
   /**
