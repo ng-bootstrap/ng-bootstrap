@@ -109,11 +109,15 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
    */
   @Input() popoverClass: string;
   /**
-   * Delay (in ms) before opening the popover after a non-manual opening trigger.
+   * Opening delay in ms. Works only for non-manual opening triggers.
+   *
+   * @since 4.1.0
    */
   @Input() openDelay: number;
   /**
-   * Delay (in ms) before closing the popover after a non-manual closing trigger.
+   * Closing delay in ms. Works only for non-manual closing triggers.
+   *
+   * @since 4.1.0
    */
   @Input() closeDelay: number;
   /**

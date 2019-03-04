@@ -178,6 +178,8 @@ export class NgbDropdown implements OnInit,
   /**
    * A selector specifying the element the dropdown should be appended to.
    * Currently only supports "body".
+   *
+   * @since 4.1.0
    */
   @Input() container: null | 'body';
 
