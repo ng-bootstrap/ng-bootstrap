@@ -1,3 +1,23 @@
+# [4.1.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/4.0.5...4.1.0) (2019-03-05)
+
+
+### Features
+
+* **accordion:** allow any content in the accordion card header ([8ea4d81](https://github.com/ng-bootstrap/ng-bootstrap/commit/8ea4d81)), closes [#717](https://github.com/ng-bootstrap/ng-bootstrap/issues/717)
+* **datepicker:** make 'navigate' event cancellable ([#3044](https://github.com/ng-bootstrap/ng-bootstrap/issues/3044)) ([dce63ef](https://github.com/ng-bootstrap/ng-bootstrap/commit/dce63ef)), closes [#2913](https://github.com/ng-bootstrap/ng-bootstrap/issues/2913)
+* **datepicker:** mark today's date with a custom class ([#2940](https://github.com/ng-bootstrap/ng-bootstrap/issues/2940)) ([6029304](https://github.com/ng-bootstrap/ng-bootstrap/commit/6029304)), closes [#1470](https://github.com/ng-bootstrap/ng-bootstrap/issues/1470)
+* **dropdown:** add keyboard navigation support ([#2683](https://github.com/ng-bootstrap/ng-bootstrap/issues/2683)) ([6608487](https://github.com/ng-bootstrap/ng-bootstrap/commit/6608487))
+* **dropdown:** allow attaching to body ([#2823](https://github.com/ng-bootstrap/ng-bootstrap/issues/2823)) ([3f65ac8](https://github.com/ng-bootstrap/ng-bootstrap/commit/3f65ac8)), closes [#1012](https://github.com/ng-bootstrap/ng-bootstrap/issues/1012)
+* **pagination:** allow customizing pagination links ([a889d09](https://github.com/ng-bootstrap/ng-bootstrap/commit/a889d09)), closes [#899](https://github.com/ng-bootstrap/ng-bootstrap/issues/899)
+* **popover:** add openDelay and closeDelay ([4975529](https://github.com/ng-bootstrap/ng-bootstrap/commit/4975529))
+* **positioning:** accept placement values with a space separated string ([#3034](https://github.com/ng-bootstrap/ng-bootstrap/issues/3034)) ([28ce374](https://github.com/ng-bootstrap/ng-bootstrap/commit/28ce374))
+* **positioning:** position tooltip and popover automatically ([#3019](https://github.com/ng-bootstrap/ng-bootstrap/issues/3019)) ([aeb39aa](https://github.com/ng-bootstrap/ng-bootstrap/commit/aeb39aa))
+* **timepicker:** use arrow keys to increment/decrement values ([#2912](https://github.com/ng-bootstrap/ng-bootstrap/issues/2912)) ([6ca79a5](https://github.com/ng-bootstrap/ng-bootstrap/commit/6ca79a5)), closes [#459](https://github.com/ng-bootstrap/ng-bootstrap/issues/459)
+* **tooltip:** add openDelay and closeDelay ([1b8abae](https://github.com/ng-bootstrap/ng-bootstrap/commit/1b8abae)), closes [#1052](https://github.com/ng-bootstrap/ng-bootstrap/issues/1052)
+* **tooltip:** trigger with "focus" by default to enhance a11y ([#3028](https://github.com/ng-bootstrap/ng-bootstrap/issues/3028)) ([be84733](https://github.com/ng-bootstrap/ng-bootstrap/commit/be84733)), closes [#3022](https://github.com/ng-bootstrap/ng-bootstrap/issues/3022)
+
+
+
 <a name="4.0.5"></a>
 ## [4.0.5](https://github.com/ng-bootstrap/ng-bootstrap/compare/4.0.4...4.0.5) (2019-03-05)
 
