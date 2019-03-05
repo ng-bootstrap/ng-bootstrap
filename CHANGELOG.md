@@ -1,3 +1,13 @@
+<a name="4.0.5"></a>
+## [4.0.5](https://github.com/ng-bootstrap/ng-bootstrap/compare/4.0.4...4.0.5) (2019-03-05)
+
+
+### Bug Fixes
+
+* **positioning:** wrong placement class applies in some cases ([#3042](https://github.com/ng-bootstrap/ng-bootstrap/issues/3042)) ([5fdc3fa](https://github.com/ng-bootstrap/ng-bootstrap/commit/5fdc3fa)), closes [#3040](https://github.com/ng-bootstrap/ng-bootstrap/issues/3040)
+
+
+
 <a name="4.0.4"></a>
 ## [4.0.4](https://github.com/ng-bootstrap/ng-bootstrap/compare/4.0.3...4.0.4) (2019-02-21)
 
