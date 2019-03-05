@@ -133,6 +133,8 @@ export class NgbDatepickerService {
     }
   }
 
+  reset(state: DatepickerViewModel) { this._state = state; }
+
   select(date: NgbDate, options: {emitEvent?: boolean} = {}) {
     const selectedDate = this.toValidDate(date, null);
     if (!this._state.disabled) {
