@@ -185,6 +185,13 @@ export class NgbInputDatepicker implements OnChanges,
    */
   @Output() navigate = new EventEmitter<NgbDatepickerNavigateEvent>();
 
+  /**
+   * An event fired after datepicker closing the datepicker.
+   *
+   * @memberof NgbInputDatepicker
+   */
+  @Output() closed = new EventEmitter();
+
   @Input()
   get disabled() {
     return this._disabled;
@@ -314,6 +321,7 @@ export class NgbInputDatepicker implements OnChanges,
       this._vcRef.remove(this._vcRef.indexOf(this._cRef.hostView));
       this._cRef = null;
       this._closed$.next();
+      this.closed.emit();
       this._changeDetector.markForCheck();
     }
   }
