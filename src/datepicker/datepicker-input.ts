@@ -186,9 +186,7 @@ export class NgbInputDatepicker implements OnChanges,
   @Output() navigate = new EventEmitter<NgbDatepickerNavigateEvent>();
 
   /**
-   * An event fired after datepicker closing the datepicker.
-   *
-   * @memberof NgbInputDatepicker
+   * An event fired after closing datepicker window.
    */
   @Output() closed = new EventEmitter();
 

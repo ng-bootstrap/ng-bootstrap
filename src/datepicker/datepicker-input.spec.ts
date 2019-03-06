@@ -827,6 +827,8 @@ class TestComponent {
 
   onModelChange() {}
 
+  onClose() {}
+
   open(d: NgbInputDatepicker) { d.open(); }
 
   close(d: NgbInputDatepicker) { d.close(); }
