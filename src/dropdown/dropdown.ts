@@ -57,31 +57,7 @@ export class NgbDropdownMenu {
 
   @ContentChildren(NgbDropdownItem) menuItems: QueryList<NgbDropdownItem>;
 
-  constructor(
-      @Inject(forwardRef(() => NgbDropdown)) public dropdown, private _elementRef: ElementRef<HTMLElement>,
-      private _renderer: Renderer2) {}
-
-  getNativeElement() { return this._elementRef.nativeElement; }
-
-  position(triggerEl, placement) {
-    this.applyPlacement(positionElements(triggerEl, this._elementRef.nativeElement, placement));
-  }
-
-  applyPlacement(_placement: Placement) {
-    // remove the current placement classes
-    this._renderer.removeClass(this._elementRef.nativeElement.parentNode, 'dropup');
-    this._renderer.removeClass(this._elementRef.nativeElement.parentNode, 'dropdown');
-    this.placement = _placement;
-    /**
-     * apply the new placement
-     * in case of top use up-arrow or down-arrow otherwise
-     */
-    if (_placement.search('^top') !== -1) {
-      this._renderer.addClass(this._elementRef.nativeElement.parentNode, 'dropup');
-    } else {
-      this._renderer.addClass(this._elementRef.nativeElement.parentNode, 'dropdown');
-    }
-  }
+  constructor(@Inject(forwardRef(() => NgbDropdown)) public dropdown) {}
 }
 
 /**
@@ -227,7 +203,6 @@ export class NgbDropdown implements OnInit,
     if (!this._open) {
       this._open = true;
       this._applyContainer(this.container);
-      this._positionMenu();
       this.openChange.emit(true);
       this._setCloseHandlers();
     }
@@ -236,7 +211,7 @@ export class NgbDropdown implements OnInit,
   private _setCloseHandlers() {
     ngbAutoClose(
         this._ngZone, this._document, this.autoClose, () => this.close(), this._closed$,
-        this._menu ? [this._menu.getNativeElement()] : [], this._anchor ? [this._anchor.getNativeElement()] : []);
+        this._menu ? [this._menuElement.nativeElement] : [], this._anchor ? [this._anchor.getNativeElement()] : []);
   }
 
   /**
@@ -373,7 +348,7 @@ export class NgbDropdown implements OnInit,
   private _applyPlacementClasses(placement?: Placement) {
     if (this._menu) {
       if (!placement) {
-        placement = Array.isArray(this.placement) ? this.placement[0] : this.placement as Placement;
+        placement = Array.isArray(this.placement) ? this.placement[0] : this.placement.split(' ')[0] as Placement;
       }
 
       const renderer = this._renderer;
@@ -382,7 +357,6 @@ export class NgbDropdown implements OnInit,
       // remove the current placement classes
       renderer.removeClass(dropdownElement, 'dropup');
       renderer.removeClass(dropdownElement, 'dropdown');
-      this.placement = placement;
       this._menu.placement = placement;
 
       /*
