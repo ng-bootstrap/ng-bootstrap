@@ -10,7 +10,7 @@ import {NgbDatepickerNavigationSelect} from './datepicker-navigation-select';
 
 export {NgbDatepicker, NgbDatepickerNavigateEvent} from './datepicker';
 export {NgbInputDatepicker} from './datepicker-input';
-export {NgbCalendar, NgbPeriod} from './ngb-calendar';
+export {NgbCalendar, NgbPeriod, NgbCalendarGregorian} from './ngb-calendar';
 export {NgbCalendarIslamicCivil} from './hijri/ngb-calendar-islamic-civil';
 export {NgbCalendarIslamicUmalqura} from './hijri/ngb-calendar-islamic-umalqura';
 export {NgbCalendarPersian} from './jalali/ngb-calendar-persian';
