@@ -11,6 +11,7 @@ import { NgbdRatingDecimal } from './demos/decimal/rating-decimal';
 import { NgbdRatingEvents } from './demos/events/rating-events';
 import { NgbdRatingForm } from './demos/form/rating-form';
 import { NgbdRatingTemplate } from './demos/template/rating-template';
+import { NgbdRatingUpdateon } from './demos/updateon/rating-updateon';
 
 const DEMO_DIRECTIVES = [
   NgbdRatingBasic,
@@ -18,7 +19,8 @@ const DEMO_DIRECTIVES = [
   NgbdRatingTemplate,
   NgbdRatingEvents,
   NgbdRatingDecimal,
-  NgbdRatingForm
+  NgbdRatingForm,
+  NgbdRatingUpdateon,
 ];
 
 const DEMOS = {
@@ -57,6 +59,12 @@ const DEMOS = {
     type: NgbdRatingConfig,
     code: require('!!raw-loader!./demos/config/rating-config'),
     markup: require('!!raw-loader!./demos/config/rating-config.html')
+  },
+  updateon: {
+    title: 'UpdateOn for ratings',
+    type: NgbdRatingUpdateon,
+    code: require('!!raw-loader!./demos/updateon/rating-updateon'),
+    markup: require('!!raw-loader!./demos/updateon/rating-updateon.html')
   }
 };
 

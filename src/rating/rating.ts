@@ -97,6 +97,11 @@ export class NgbRating implements ControlValueAccessor,
   @Input() resettable: boolean;
 
   /**
+   * A flag to know when the component should update
+   */
+  @Input() updateOn: string;
+
+  /**
    * A template to override star display.
    * Alternatively put a <ng-template> as the only child of <ngb-rating> element
    */
@@ -127,17 +132,18 @@ export class NgbRating implements ControlValueAccessor,
   constructor(config: NgbRatingConfig, private _changeDetectorRef: ChangeDetectorRef) {
     this.max = config.max;
     this.readonly = config.readonly;
+    this.updateOn = config.updateOn;
   }
 
   ariaValueText() { return `${this.nextRate} out of ${this.max}`; }
 
   enter(value: number): void {
-    if (!this.readonly && !this.disabled) {
+    if (!this.readonly && !this.disabled && this.updateOn !== 'selection') {
       this._updateState(value);
     }
+
     this.hover.emit(value);
   }
-
   handleBlur() { this.onTouched(); }
 
   handleClick(value: number) { this.update(this.resettable && this.rate === value ? 0 : value); }
