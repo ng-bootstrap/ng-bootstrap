@@ -104,7 +104,7 @@ providers: [{provide: NgbDateParserFormatter, useClass: YourOwnParserFormatter}]
 `,
   disablingTS: `
 // disable the 13th of each month
-const isDisabled = (date: NgbDate, current: {month: number}) => day.date === 13;
+const isDisabled = (date: NgbDate, current: {month: number}) => date.day === 13;
 `,
   disablingHTML: `
 <ngb-datepicker [minDate]="{year: 2010, month: 1, day: 1}"
