@@ -10,16 +10,13 @@ export interface DemoMetadata {
 }
 
 /**
- * For a given demo folder extracts:
- *
+ * For a given glob path extracts a map with module filenames as keys and as values:
  *  - class name of the demo module
  *  - the component selector of the `MyComponent` in `bootstrap: [MyComponent]`
  */
-export function parseDemo(demoPath: string): DemoMetadata {
+export function parseDemo(globPath: string): Map<string, DemoMetadata> {
   const componentSelectors = new Map<string, string>();
-  let bootstrapComponent: string = null;
-  let bootstrapComponentSelector: string;
-  let moduleClassName: string = null;
+  const modules = new Map<string, DemoMetadata>();
 
   function processFile(sourceFile: ts.SourceFile) {
     parseNode(sourceFile);
@@ -34,11 +31,11 @@ export function parseDemo(demoPath: string): DemoMetadata {
             const textDecorator = decorator.getText(sourceFile);
 
             if (textDecorator.startsWith('@NgModule')) {
-              moduleClassName = className;
-
               const matches = BOOTSTRAP_REGEX.exec(textDecorator);
               if (matches) {
-                bootstrapComponent = matches[1];
+                modules.set(sourceFile.fileName, {moduleClassName: className, bootstrapComponentSelector: matches[1]});
+              } else {
+                throw new Error(`Couldn't find any bootstrap components in ${className} in ${sourceFile.fileName}`);
               }
             }
 
@@ -56,26 +53,25 @@ export function parseDemo(demoPath: string): DemoMetadata {
   }
 
   // start
-  glob.sync(`${demoPath}/**/*.ts`).forEach(sourceFile => {
-    const program = ts.createProgram([sourceFile], {});
-    program.getTypeChecker();
-    processFile(program.getSourceFile(sourceFile));
-  });
+  const files = glob.sync(globPath);
+  const program = ts.createProgram(files, {});
+  program.getTypeChecker();
+  files.forEach(file => processFile(program.getSourceFile(file)));
 
   // checks
-  if (!moduleClassName) {
-    throw new Error(`Couldn't find any NgModules in ${demoPath}`);
+  if (modules.size === 0) {
+    throw new Error(`Couldn't find any NgModules in ${globPath}`);
   }
 
-  if (!bootstrapComponent) {
-    throw new Error(`Couldn't find any bootstrap components in ${moduleClassName} in ${demoPath}`);
-  }
+  // replacing temporary component types with their selectors
+  modules.forEach(metadata => {
+    const bootstrapComponent = metadata.bootstrapComponentSelector;
+    const bootstrapComponentSelector = componentSelectors.get(bootstrapComponent);
+    if (!bootstrapComponentSelector) {
+      throw new Error(`Couldn't get bootstrap component selector for component ${bootstrapComponent}`);
+    }
+    metadata.bootstrapComponentSelector = bootstrapComponentSelector;
+  });
 
-  bootstrapComponentSelector = componentSelectors.get(bootstrapComponent);
-  if (!bootstrapComponentSelector) {
-    throw new Error(
-        `Couldn't get bootstrap component selector for component ${bootstrapComponent} in ${moduleClassName} in ${demoPath}`);
-  }
-
-  return {bootstrapComponentSelector, moduleClassName};
+  return modules;
 }
