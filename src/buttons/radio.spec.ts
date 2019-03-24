@@ -577,7 +577,7 @@ describe('ngbRadioGroup', () => {
       const fixture = TestBed.createComponent(TestComponent);
       fixture.detectChanges();
 
-      expect(getGroupElement(fixture.nativeElement).getAttribute('role')).toBe('group');
+      expect(getGroupElement(fixture.nativeElement).getAttribute('role')).toBe('radiogroup');
     });
   });
 
