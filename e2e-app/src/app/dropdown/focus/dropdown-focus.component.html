@@ -1,0 +1,31 @@
+<h3>Dropdown focus tests</h3>
+
+<form>
+  <div class="form-group form-inline">
+
+    <input type="text" class="form-control mr-1" style="width: 100px" placeholder="before" id="before" />
+
+    <div class="input-group">
+      <div ngbDropdown class="d-inline-block mr-1" [container]="container">
+        <button class="btn btn-outline-secondary" id="dropdown" ngbDropdownToggle>Choose and option</button>
+        <div ngbDropdownMenu aria-labelledby="dropdown">
+          <button ngbDropdownItem id="item-1">One</button>
+          <hr>
+          <button ngbDropdownItem disabled>Disabled</button>
+          <button class="dropdown-item">Not arrow-focusable</button>
+          <hr>
+          <button ngbDropdownItem id="item-2">Two</button>
+        </div>
+      </div>
+    </div>
+
+    <input type="text" class="form-control mr-3" style="width: 100px" placeholder="after" id="after" />
+
+    <button type="button" class="btn btn-outline-secondary mr-1" id="container-inline" (click)="container = undefined">Append inline</button>
+    <button type="button" class="btn btn-outline-secondary mr-1" id="container-body" (click)="container = 'body'">Append to body</button>
+
+    <span class="ml-3">container is {{ container ? container : 'inline' }}</span>
+
+  </div>
+
+</form>
