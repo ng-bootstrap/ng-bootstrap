@@ -5,6 +5,8 @@ export class DropdownPage {
 
   getDropdownMenu(dropDownMenuSelector = 'div') { return $(`${dropDownMenuSelector}[ngbdropdownmenu]`); }
 
+  getDropdownToggle(toggleSelector = 'button') { return $(`${toggleSelector}[ngbDropdownToggle]`); }
+
   getDropdownMenuParent(dropdownMenu: ElementFinder) { return dropdownMenu.element(by.xpath('..')); }
 
   getBodyContainers() { return $$('body > div.dropdown,body > div.dropup'); }
