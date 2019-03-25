@@ -49,7 +49,15 @@ export class NgbDropdownItem {
  */
 @Directive({
   selector: '[ngbDropdownMenu]',
-  host: {'[class.dropdown-menu]': 'true', '[class.show]': 'dropdown.isOpen()', '[attr.x-placement]': 'placement'}
+  host: {
+    '[class.dropdown-menu]': 'true',
+    '[class.show]': 'dropdown.isOpen()',
+    '[attr.x-placement]': 'placement',
+    '(keydown.ArrowUp)': 'dropdown.onKeyDown($event)',
+    '(keydown.ArrowDown)': 'dropdown.onKeyDown($event)',
+    '(keydown.Home)': 'dropdown.onKeyDown($event)',
+    '(keydown.End)': 'dropdown.onKeyDown($event)'
+  }
 })
 export class NgbDropdownMenu {
   placement: Placement = 'bottom';
@@ -92,7 +100,11 @@ export class NgbDropdownAnchor {
     'class': 'dropdown-toggle',
     'aria-haspopup': 'true',
     '[attr.aria-expanded]': 'dropdown.isOpen()',
-    '(click)': 'toggleOpen()'
+    '(click)': 'toggleOpen()',
+    '(keydown.ArrowUp)': 'dropdown.onKeyDown($event)',
+    '(keydown.ArrowDown)': 'dropdown.onKeyDown($event)',
+    '(keydown.Home)': 'dropdown.onKeyDown($event)',
+    '(keydown.End)': 'dropdown.onKeyDown($event)'
   },
   providers: [{provide: NgbDropdownAnchor, useExisting: forwardRef(() => NgbDropdownToggle)}]
 })
@@ -107,19 +119,8 @@ export class NgbDropdownToggle extends NgbDropdownAnchor {
 /**
  * Transforms a node into a dropdown.
  */
-@Directive({
-  selector: '[ngbDropdown]',
-  exportAs: 'ngbDropdown',
-  host: {
-    '[class.show]': 'isOpen()',
-    '(keydown.ArrowUp)': 'onKeyDown($event)',
-    '(keydown.ArrowDown)': 'onKeyDown($event)',
-    '(keydown.Home)': 'onKeyDown($event)',
-    '(keydown.End)': 'onKeyDown($event)'
-  }
-})
-export class NgbDropdown implements OnInit,
-    OnDestroy {
+@Directive({selector: '[ngbDropdown]', exportAs: 'ngbDropdown', host: {'[class.show]': 'isOpen()'}})
+export class NgbDropdown implements OnInit, OnDestroy {
   private _closed$ = new Subject<void>();
   private _zoneSubscription: Subscription;
   private _bodyContainer: HTMLElement;
