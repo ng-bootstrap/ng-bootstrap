@@ -36,6 +36,15 @@ const createOnPushTestComponent =
 describe('ngb-popover-window', () => {
   beforeEach(() => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbPopoverModule]}); });
 
+  afterEach(() => {
+    // Cleaning elements, because of a TestBed issue with the id attribute
+    Array.from(document.body.children).map((element: HTMLElement) => {
+      if (element.tagName.toLocaleLowerCase() === 'div') {
+        element.parentNode.removeChild(element);
+      }
+    });
+  });
+
   it('should render popover on top by default', () => {
     const fixture = TestBed.createComponent(NgbPopoverWindow);
     fixture.componentInstance.title = 'Test title';
@@ -75,7 +84,8 @@ describe('ngb-popover', () => {
   describe('basic functionality', () => {
 
     it('should open and close a popover - default settings and content as string', () => {
-      const fixture = createTestComponent(`<div ngbPopover="Great tip!" popoverTitle="Title"></div>`);
+      const fixture =
+          createTestComponent(`<div ngbPopover="Great tip!" popoverTitle="Title" style="margin-top: 100px;"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
       directive.triggerEventHandler('click', {});
@@ -99,7 +109,7 @@ describe('ngb-popover', () => {
     it('should open and close a popover - default settings and content from a template', () => {
       const fixture = createTestComponent(`
           <ng-template #t>Hello, {{name}}!</ng-template>
-          <div [ngbPopover]="t" popoverTitle="Title"></div>`);
+          <div [ngbPopover]="t" popoverTitle="Title" style="margin-top: 100px;"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbPopover));
       const defaultConfig = new NgbPopoverConfig();
 
@@ -124,7 +134,7 @@ describe('ngb-popover', () => {
     it('should open and close a popover - default settings, content from a template and context supplied', () => {
       const fixture = createTestComponent(`
           <ng-template #t let-name="name">Hello, {{name}}!</ng-template>
-          <div [ngbPopover]="t" popoverTitle="Title"></div>`);
+          <div [ngbPopover]="t" popoverTitle="Title" style="margin-top: 100px;"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbPopover));
       const defaultConfig = new NgbPopoverConfig();
 
@@ -148,7 +158,7 @@ describe('ngb-popover', () => {
 
     it('should open and close a popover - default settings and custom class', () => {
       const fixture = createTestComponent(`
-        <div ngbPopover="Great tip!" popoverTitle="Title" popoverClass="my-custom-class"></div>`);
+        <div ngbPopover="Great tip!" popoverTitle="Title" popoverClass="my-custom-class" style="margin-top: 100px;"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
       directive.triggerEventHandler('click', {});
@@ -385,7 +395,8 @@ describe('ngb-popover', () => {
     });
 
     it('should accept placement in array (second value of the array should be applied)', () => {
-      const fixture = createTestComponent(`<div ngbPopover="Great tip!" [placement]="['left-top','top-left']"></div>`);
+      const fixture = createTestComponent(
+          `<div ngbPopover="Great tip!" [placement]="['left-top','top-left']" style="margin-top: 100px;"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
       directive.triggerEventHandler('click', {});
@@ -399,7 +410,8 @@ describe('ngb-popover', () => {
     });
 
     it('should accept placement with space separated values (second value should be applied)', () => {
-      const fixture = createTestComponent(`<div ngbPopover="Great tip!" placement="left-top top-left"></div>`);
+      const fixture = createTestComponent(
+          `<div ngbPopover="Great tip!" placement="left-top top-left" style="margin-top: 100px;"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
       directive.triggerEventHandler('click', {});

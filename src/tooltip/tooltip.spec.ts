@@ -23,6 +23,15 @@ const createOnPushTestComponent =
 describe('ngb-tooltip-window', () => {
   beforeEach(() => { TestBed.configureTestingModule({imports: [NgbTooltipModule]}); });
 
+  afterEach(() => {
+    // Cleaning elements, because of a TestBed issue with the id attribute
+    Array.from(document.body.children).map((element: HTMLElement) => {
+      if (element.tagName.toLocaleLowerCase() === 'div') {
+        element.parentNode.removeChild(element);
+      }
+    });
+  });
+
   it('should render tooltip on top by default', () => {
     const fixture = TestBed.createComponent(NgbTooltipWindow);
     fixture.detectChanges();
@@ -57,7 +66,7 @@ describe('ngb-tooltip', () => {
   describe('basic functionality', () => {
 
     it('should open and close a tooltip - default settings and content as string', () => {
-      const fixture = createTestComponent(`<div ngbTooltip="Great tip!"></div>`);
+      const fixture = createTestComponent(`<div ngbTooltip="Great tip!" style="margin-top: 100px;"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbTooltip));
       const defaultConfig = new NgbTooltipConfig();
 
@@ -80,7 +89,8 @@ describe('ngb-tooltip', () => {
     });
 
     it('should open and close a tooltip - default settings and content from a template', () => {
-      const fixture = createTestComponent(`<ng-template #t>Hello, {{name}}!</ng-template><div [ngbTooltip]="t"></div>`);
+      const fixture = createTestComponent(`
+        <ng-template #t>Hello, {{name}}!</ng-template><div [ngbTooltip]="t" style="margin-top: 100px;"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbTooltip));
 
       directive.triggerEventHandler('mouseenter', {});
@@ -102,7 +112,8 @@ describe('ngb-tooltip', () => {
     });
 
     it('should open and close a tooltip - default settings, content from a template and context supplied', () => {
-      const fixture = createTestComponent(`<ng-template #t let-name="name">Hello, {{name}}!</ng-template><div [ngbTooltip]="t"></div>`);
+      const fixture = createTestComponent(`
+        <ng-template #t let-name="name">Hello, {{name}}!</ng-template><div [ngbTooltip]="t" style="margin-top: 100px;"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbTooltip));
 
       directive.context.tooltip.open({name: 'John'});
@@ -125,7 +136,7 @@ describe('ngb-tooltip', () => {
 
     it('should open and close a tooltip - default settings and custom class', () => {
       const fixture = createTestComponent(`
-        <div ngbTooltip="Great tip!" tooltipClass="my-custom-class"></div>`);
+        <div ngbTooltip="Great tip!" tooltipClass="my-custom-class" style="margin-top: 100px;"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbTooltip));
 
       directive.triggerEventHandler('mouseenter', {});
@@ -271,8 +282,8 @@ describe('ngb-tooltip', () => {
       });
 
       it('should accept placement in array (second value of the array should be applied)', () => {
-        const fixture =
-            createTestComponent(`<div ngbTooltip="Great tip!" [placement]="['left-top','top-left']"></div>`);
+        const fixture = createTestComponent(
+            `<div ngbTooltip="Great tip!" [placement]="['left-top','top-left']" style="margin-top: 100px;"></div>`);
         const directive = fixture.debugElement.query(By.directive(NgbTooltip));
 
         directive.triggerEventHandler('mouseenter', {});
@@ -286,7 +297,8 @@ describe('ngb-tooltip', () => {
       });
 
       it('should accept placement with space separated values (second value should be applied)', () => {
-        const fixture = createTestComponent(`<div ngbTooltip="Great tip!" placement="left-top top-left"></div>`);
+        const fixture = createTestComponent(
+            `<div ngbTooltip="Great tip!" placement="left-top top-left" style="margin-top: 100px;"></div>`);
         const directive = fixture.debugElement.query(By.directive(NgbTooltip));
 
         directive.triggerEventHandler('mouseenter', {});
