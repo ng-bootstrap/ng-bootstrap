@@ -6,20 +6,17 @@ import { NgbdComponentsSharedModule, NgbdDemoList } from '../shared';
 import { NgbdApiPage } from '../shared/api-page/api.component';
 import { NgbdExamplesPage } from '../shared/examples-page/examples.component';
 import { NgbdTypeaheadBasic } from './demos/basic/typeahead-basic';
+import { NgbdTypeaheadBasicModule } from './demos/basic/typeahead-basic.module';
 import { NgbdTypeaheadConfig } from './demos/config/typeahead-config';
+import { NgbdTypeaheadConfigModule } from './demos/config/typeahead-config.module';
 import { NgbdTypeaheadFocus } from './demos/focus/typeahead-focus';
+import { NgbdTypeaheadFocusModule } from './demos/focus/typeahead-focus.module';
 import { NgbdTypeaheadFormat } from './demos/format/typeahead-format';
+import { NgbdTypeaheadFormatModule } from './demos/format/typeahead-format.module';
 import { NgbdTypeaheadHttp } from './demos/http/typeahead-http';
+import { NgbdTypeaheadHttpModule } from './demos/http/typeahead-http.module';
 import { NgbdTypeaheadTemplate } from './demos/template/typeahead-template';
-
-const DEMO_DIRECTIVES = [
-  NgbdTypeaheadFormat,
-  NgbdTypeaheadHttp,
-  NgbdTypeaheadBasic,
-  NgbdTypeaheadFocus,
-  NgbdTypeaheadTemplate,
-  NgbdTypeaheadConfig
-];
+import { NgbdTypeaheadTemplateModule } from './demos/template/typeahead-template.module';
 
 const DEMOS = {
   basic: {
@@ -75,10 +72,14 @@ export const ROUTES = [
 @NgModule({
   imports: [
     NgbdSharedModule,
-    NgbdComponentsSharedModule
-  ],
-  declarations: DEMO_DIRECTIVES,
-  entryComponents: DEMO_DIRECTIVES
+    NgbdComponentsSharedModule,
+    NgbdTypeaheadFormatModule,
+    NgbdTypeaheadHttpModule,
+    NgbdTypeaheadBasicModule,
+    NgbdTypeaheadFocusModule,
+    NgbdTypeaheadTemplateModule,
+    NgbdTypeaheadConfigModule
+  ]
 })
 export class NgbdTypeaheadModule {
   constructor(demoList: NgbdDemoList) {

@@ -1,32 +1,29 @@
-import {NgModule} from '@angular/core';
+import { NgModule } from '@angular/core';
 
-import {NgbdSharedModule} from '../../shared';
-import {ComponentWrapper} from '../../shared/component-wrapper/component-wrapper.component';
-import {NgbdComponentsSharedModule, NgbdDemoList} from '../shared';
-import {NgbdApiPage} from '../shared/api-page/api.component';
-import {NgbdExamplesPage} from '../shared/examples-page/examples.component';
-import {NgbdPaginationAdvanced} from './demos/advanced/pagination-advanced';
-import {NgbdPaginationBasic} from './demos/basic/pagination-basic';
-import {NgbdPaginationConfig} from './demos/config/pagination-config';
-import {NgbdPaginationDisabled} from './demos/disabled/pagination-disabled';
-import {NgbdPaginationJustify} from './demos/justify/pagination-justify';
-import {NgbdPaginationSize} from './demos/size/pagination-size';
-import {NgbdPaginationOverviewComponent} from './overview/pagination-overview.component';
-import {NgbdPaginationCustomization} from './demos/customization/pagination-customization';
-
-const DEMO_DIRECTIVES = [
-  NgbdPaginationAdvanced,
-  NgbdPaginationBasic,
-  NgbdPaginationSize,
-  NgbdPaginationConfig,
-  NgbdPaginationCustomization,
-  NgbdPaginationDisabled,
-  NgbdPaginationJustify,
-];
+import { NgbdSharedModule } from '../../shared';
+import { ComponentWrapper } from '../../shared/component-wrapper/component-wrapper.component';
+import { NgbdComponentsSharedModule, NgbdDemoList } from '../shared';
+import { NgbdApiPage } from '../shared/api-page/api.component';
+import { NgbdExamplesPage } from '../shared/examples-page/examples.component';
+import { NgbdPaginationAdvanced } from './demos/advanced/pagination-advanced';
+import { NgbdPaginationAdvancedModule } from './demos/advanced/pagination-advanced.module';
+import { NgbdPaginationBasic } from './demos/basic/pagination-basic';
+import { NgbdPaginationBasicModule } from './demos/basic/pagination-basic.module';
+import { NgbdPaginationConfig } from './demos/config/pagination-config';
+import { NgbdPaginationConfigModule } from './demos/config/pagination-config.module';
+import { NgbdPaginationCustomization } from './demos/customization/pagination-customization';
+import { NgbdPaginationCustomizationModule } from './demos/customization/pagination-customization.module';
+import { NgbdPaginationDisabled } from './demos/disabled/pagination-disabled';
+import { NgbdPaginationDisabledModule } from './demos/disabled/pagination-disabled.module';
+import { NgbdPaginationJustify } from './demos/justify/pagination-justify';
+import { NgbdPaginationJustifyModule } from './demos/justify/pagination-justify.module';
+import { NgbdPaginationSize } from './demos/size/pagination-size';
+import { NgbdPaginationSizeModule } from './demos/size/pagination-size.module';
+import { NgbdPaginationOverviewComponent } from './overview/pagination-overview.component';
 
 const OVERVIEW = {
   'basic-usage': 'Basic Usage',
-  'customization': 'Customization',
+  customization: 'Customization'
 };
 
 const DEMOS = {
@@ -89,9 +86,18 @@ export const ROUTES = [
 ];
 
 @NgModule({
-  imports: [NgbdSharedModule, NgbdComponentsSharedModule],
-  declarations: [...DEMO_DIRECTIVES, NgbdPaginationOverviewComponent],
-  entryComponents: DEMO_DIRECTIVES
+  imports: [
+    NgbdSharedModule,
+    NgbdComponentsSharedModule,
+    NgbdPaginationAdvancedModule,
+    NgbdPaginationBasicModule,
+    NgbdPaginationSizeModule,
+    NgbdPaginationConfigModule,
+    NgbdPaginationCustomizationModule,
+    NgbdPaginationDisabledModule,
+    NgbdPaginationJustifyModule
+  ],
+  declarations: [NgbdPaginationOverviewComponent]
 })
 export class NgbdPaginationModule {
   constructor(demoList: NgbdDemoList) {

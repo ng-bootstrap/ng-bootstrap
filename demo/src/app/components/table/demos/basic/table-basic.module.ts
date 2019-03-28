@@ -1,9 +1,9 @@
-import {CommonModule} from '@angular/common';
-import {NgModule} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import {NgbdTableBasic} from './table-basic';
+import { NgbdTableBasic } from './table-basic';
 
 @NgModule({
   imports: [BrowserModule, CommonModule, NgbModule],
@@ -11,5 +11,4 @@ import {NgbdTableBasic} from './table-basic';
   exports: [NgbdTableBasic],
   bootstrap: [NgbdTableBasic]
 })
-export class NgbdTableBasicModule {
-}
+export class NgbdTableBasicModule {}

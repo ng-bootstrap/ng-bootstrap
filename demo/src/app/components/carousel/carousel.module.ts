@@ -6,10 +6,11 @@ import { NgbdComponentsSharedModule, NgbdDemoList } from '../shared';
 import { NgbdApiPage } from '../shared/api-page/api.component';
 import { NgbdExamplesPage } from '../shared/examples-page/examples.component';
 import { NgbdCarouselBasic } from './demos/basic/carousel-basic';
+import { NgbdCarouselBasicModule } from './demos/basic/carousel-basic.module';
 import { NgbdCarouselConfig } from './demos/config/carousel-config';
+import { NgbdCarouselConfigModule } from './demos/config/carousel-config.module';
 import { NgbdCarouselNavigation } from './demos/navigation/carousel-navigation';
-
-const DEMO_DIRECTIVES = [NgbdCarouselBasic, NgbdCarouselConfig, NgbdCarouselNavigation];
+import { NgbdCarouselNavigationModule } from './demos/navigation/carousel-navigation.module';
 
 const DEMOS = {
   basic: {
@@ -34,7 +35,8 @@ const DEMOS = {
 
 export const ROUTES = [
   { path: '', pathMatch: 'full', redirectTo: 'examples' },
-  { path: '',
+  {
+    path: '',
     component: ComponentWrapper,
     children: [
       { path: 'examples', component: NgbdExamplesPage },
@@ -44,9 +46,13 @@ export const ROUTES = [
 ];
 
 @NgModule({
-  imports: [NgbdSharedModule, NgbdComponentsSharedModule ],
-  declarations: DEMO_DIRECTIVES,
-  entryComponents: DEMO_DIRECTIVES
+  imports: [
+    NgbdSharedModule,
+    NgbdComponentsSharedModule,
+    NgbdCarouselBasicModule,
+    NgbdCarouselConfigModule,
+    NgbdCarouselNavigationModule
+  ]
 })
 export class NgbdCarouselModule {
   constructor(demoList: NgbdDemoList) {

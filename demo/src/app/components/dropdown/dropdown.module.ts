@@ -6,18 +6,15 @@ import { NgbdComponentsSharedModule, NgbdDemoList } from '../shared';
 import { NgbdApiPage } from '../shared/api-page/api.component';
 import { NgbdExamplesPage } from '../shared/examples-page/examples.component';
 import { NgbdDropdownBasic } from './demos/basic/dropdown-basic';
+import { NgbdDropdownBasicModule } from './demos/basic/dropdown-basic.module';
 import { NgbdDropdownConfig } from './demos/config/dropdown-config';
-import { NgbdDropdownManual } from './demos/manual/dropdown-manual';
-import { NgbdDropdownSplit } from './demos/split/dropdown-split';
+import { NgbdDropdownConfigModule } from './demos/config/dropdown-config.module';
 import { NgbdDropdownForm } from './demos/form/dropdown-form';
-
-const DEMO_DIRECTIVES = [
-  NgbdDropdownBasic,
-  NgbdDropdownConfig,
-  NgbdDropdownManual,
-  NgbdDropdownSplit,
-  NgbdDropdownForm
-];
+import { NgbdDropdownFormModule } from './demos/form/dropdown-form.module';
+import { NgbdDropdownManual } from './demos/manual/dropdown-manual';
+import { NgbdDropdownManualModule } from './demos/manual/dropdown-manual.module';
+import { NgbdDropdownSplit } from './demos/split/dropdown-split';
+import { NgbdDropdownSplitModule } from './demos/split/dropdown-split.module';
 
 const DEMOS = {
   basic: {
@@ -67,10 +64,13 @@ export const ROUTES = [
 @NgModule({
   imports: [
     NgbdSharedModule,
-    NgbdComponentsSharedModule
-  ],
-  declarations: DEMO_DIRECTIVES,
-  entryComponents: DEMO_DIRECTIVES
+    NgbdComponentsSharedModule,
+    NgbdDropdownBasicModule,
+    NgbdDropdownConfigModule,
+    NgbdDropdownManualModule,
+    NgbdDropdownSplitModule,
+    NgbdDropdownFormModule
+  ]
 })
 export class NgbdDropdownModule {
   constructor(demoList: NgbdDemoList) {

@@ -6,20 +6,17 @@ import { NgbdComponentsSharedModule, NgbdDemoList } from '../shared';
 import { NgbdApiPage } from '../shared/api-page/api.component';
 import { NgbdExamplesPage } from '../shared/examples-page/examples.component';
 import { NgbdProgressbarBasic } from './demos/basic/progressbar-basic';
+import { NgbdProgressbarBasicModule } from './demos/basic/progressbar-basic.module';
 import { NgbdProgressbarConfig } from './demos/config/progressbar-config';
+import { NgbdProgressbarConfigModule } from './demos/config/progressbar-config.module';
 import { NgbdProgressbarHeight } from './demos/height/progressbar-height';
+import { NgbdProgressbarHeightModule } from './demos/height/progressbar-height.module';
 import { NgbdProgressbarLabels } from './demos/labels/progressbar-labels';
+import { NgbdProgressbarLabelsModule } from './demos/labels/progressbar-labels.module';
+import { NgbdProgressbarShowValueModule } from './demos/showvalue/progressbar-show-value.module';
 import { NgbdProgressbarShowvalue } from './demos/showvalue/progressbar-showvalue';
 import { NgbdProgressbarStriped } from './demos/striped/progressbar-striped';
-
-const DEMO_DIRECTIVES = [
-  NgbdProgressbarBasic,
-  NgbdProgressbarShowvalue,
-  NgbdProgressbarStriped,
-  NgbdProgressbarConfig,
-  NgbdProgressbarLabels,
-  NgbdProgressbarHeight
-];
+import { NgbdProgressbarStripedModule } from './demos/striped/progressbar-striped.module';
 
 const DEMOS = {
   basic: {
@@ -75,10 +72,14 @@ export const ROUTES = [
 @NgModule({
   imports: [
     NgbdSharedModule,
-    NgbdComponentsSharedModule
-  ],
-  declarations: DEMO_DIRECTIVES,
-  entryComponents: DEMO_DIRECTIVES
+    NgbdComponentsSharedModule,
+    NgbdProgressbarBasicModule,
+    NgbdProgressbarShowValueModule,
+    NgbdProgressbarStripedModule,
+    NgbdProgressbarConfigModule,
+    NgbdProgressbarLabelsModule,
+    NgbdProgressbarHeightModule
+  ]
 })
 export class NgbdProgressbarModule {
   constructor(demoList: NgbdDemoList) {

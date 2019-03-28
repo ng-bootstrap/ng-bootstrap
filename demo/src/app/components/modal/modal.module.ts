@@ -6,20 +6,17 @@ import { NgbdComponentsSharedModule, NgbdDemoList } from '../shared';
 import { NgbdApiPage } from '../shared/api-page/api.component';
 import { NgbdExamplesPage } from '../shared/examples-page/examples.component';
 import { NgbdModalBasic } from './demos/basic/modal-basic';
-import { NgbdModalComponent, NgbdModalContent } from './demos/component/modal-component';
+import { NgbdModalBasicModule } from './demos/basic/modal-basic.module';
+import { NgbdModalComponent } from './demos/component/modal-component';
+import { NgbdModalComponentModule } from './demos/component/modal-component.module';
 import { NgbdModalConfig } from './demos/config/modal-config';
-import { NgbdModalConfirm, NgbdModalConfirmAutofocus, NgbdModalFocus } from './demos/focus/modal-focus';
+import { NgbdModalConfigModule } from './demos/config/modal-config.module';
+import { NgbdModalFocus } from './demos/focus/modal-focus';
+import { NgbdModalFocusModule } from './demos/focus/modal-focus.module';
 import { NgbdModalOptions } from './demos/options/modal-options';
-import { NgbdModal1Content, NgbdModal2Content, NgbdModalStacked } from './demos/stacked/modal-stacked';
-
-const DEMO_DIRECTIVES = [
-  NgbdModalBasic,
-  NgbdModalComponent,
-  NgbdModalOptions,
-  NgbdModalStacked,
-  NgbdModalConfig,
-  NgbdModalFocus
-];
+import { NgbdModalOptionsModule } from './demos/options/modal-options.module';
+import { NgbdModalStacked } from './demos/stacked/modal-stacked';
+import { NgbdModalStackedModule } from './demos/stacked/modal-stacked.module';
 
 const DEMOS = {
   basic: {
@@ -73,22 +70,15 @@ export const ROUTES = [
 ];
 
 @NgModule({
-  imports: [NgbdSharedModule, NgbdComponentsSharedModule],
-  declarations: [
-    NgbdModalContent,
-    NgbdModal1Content,
-    NgbdModal2Content,
-    NgbdModalConfirm,
-    NgbdModalConfirmAutofocus,
-    ...DEMO_DIRECTIVES
-  ],
-  entryComponents: [
-    NgbdModalContent,
-    NgbdModal1Content,
-    NgbdModal2Content,
-    NgbdModalConfirm,
-    NgbdModalConfirmAutofocus,
-    ...DEMO_DIRECTIVES
+  imports: [
+    NgbdSharedModule,
+    NgbdComponentsSharedModule,
+    NgbdModalBasicModule,
+    NgbdModalComponentModule,
+    NgbdModalOptionsModule,
+    NgbdModalStackedModule,
+    NgbdModalConfigModule,
+    NgbdModalFocusModule
   ]
 })
 export class NgbdModalModule {

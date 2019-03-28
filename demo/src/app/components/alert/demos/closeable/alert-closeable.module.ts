@@ -1,8 +1,8 @@
-import {NgModule} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import {NgbdAlertCloseable} from './alert-closeable';
+import { NgbdAlertCloseable } from './alert-closeable';
 
 @NgModule({
   imports: [BrowserModule, NgbModule],
@@ -10,5 +10,4 @@ import {NgbdAlertCloseable} from './alert-closeable';
   exports: [NgbdAlertCloseable],
   bootstrap: [NgbdAlertCloseable]
 })
-export class NgbdAlertCloseableModule {
-}
+export class NgbdAlertCloseableModule {}

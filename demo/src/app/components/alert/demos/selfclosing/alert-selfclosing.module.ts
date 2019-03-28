@@ -1,8 +1,8 @@
-import {NgModule} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import {NgbdAlertSelfclosing} from './alert-selfclosing';
+import { NgbdAlertSelfclosing } from './alert-selfclosing';
 
 @NgModule({
   imports: [BrowserModule, NgbModule],
@@ -10,5 +10,4 @@ import {NgbdAlertSelfclosing} from './alert-selfclosing';
   exports: [NgbdAlertSelfclosing],
   bootstrap: [NgbdAlertSelfclosing]
 })
-export class NgbdAlertSelfclosingModule {
-}
+export class NgbdAlertSelfclosingModule {}

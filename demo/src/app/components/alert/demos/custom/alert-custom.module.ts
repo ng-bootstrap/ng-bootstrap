@@ -1,8 +1,8 @@
-import {NgModule} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import {NgbdAlertCustom} from './alert-custom';
+import { NgbdAlertCustom } from './alert-custom';
 
 @NgModule({
   imports: [BrowserModule, NgbModule],
@@ -10,5 +10,4 @@ import {NgbdAlertCustom} from './alert-custom';
   exports: [NgbdAlertCustom],
   bootstrap: [NgbdAlertCustom]
 })
-export class NgbdAlertCustomModule {
-}
+export class NgbdAlertCustomModule {}

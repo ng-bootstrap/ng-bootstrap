@@ -268,15 +268,15 @@ div.component-demo {
 
   .tabset-code {
     display: flex;
-    max-height: 350px;
-    overflow: hidden;
+    flex-direction: column;
+    max-height: 500px;
 
     ngb-tabset {
       display: flex;
       flex-direction: column;
-      flex: 1;
 
       .nav {
+        flex-shrink: 0;
         margin: 0;
         padding: 0.5rem 1.25rem 0;
         font-size: 80%;
@@ -310,13 +310,19 @@ div.component-demo {
         }
 
         &.nav-pills + .tab-content {
-          flex: 1;
+          overflow: hidden;
         }
       }
 
       .tab-content {
         flex: 1;
-        overflow: auto;
+        display: flex;
+        flex-direction: column;
+
+        .tab-pane {
+          flex: 1;
+          overflow: auto;
+        }
       }
 
       pre {

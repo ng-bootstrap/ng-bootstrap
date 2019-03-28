@@ -6,24 +6,21 @@ import { NgbdComponentsSharedModule, NgbdDemoList } from '../shared';
 import { NgbdApiPage } from '../shared/api-page/api.component';
 import { NgbdExamplesPage } from '../shared/examples-page/examples.component';
 import { NgbdTimepickerAdapter } from './demos/adapter/timepicker-adapter';
+import { NgbdTimepickerAdapterModule } from './demos/adapter/timepicker-adapter.module';
 import { NgbdTimepickerBasic } from './demos/basic/timepicker-basic';
+import { NgbdTimepickerBasicModule } from './demos/basic/timepicker-basic.module';
 import { NgbdTimepickerConfig } from './demos/config/timepicker-config';
+import { NgbdTimepickerConfigModule } from './demos/config/timepicker-config.module';
 import { NgbdTimepickerMeridian } from './demos/meridian/timepicker-meridian';
+import { NgbdTimepickerMeridianModule } from './demos/meridian/timepicker-meridian.module';
 import { NgbdTimepickerSeconds } from './demos/seconds/timepicker-seconds';
+import { NgbdTimepickerSecondsModule } from './demos/seconds/timepicker-seconds.module';
 import { NgbdTimepickerSpinners } from './demos/spinners/timepicker-spinners';
+import { NgbdTimepickerSpinnersModule } from './demos/spinners/timepicker-spinners.module';
 import { NgbdTimepickerSteps } from './demos/steps/timepicker-steps';
+import { NgbdTimepickerStepsModule } from './demos/steps/timepicker-steps.module';
 import { NgbdTimepickerValidation } from './demos/validation/timepicker-validation';
-
-const DEMO_DIRECTIVES = [
-  NgbdTimepickerBasic,
-  NgbdTimepickerMeridian,
-  NgbdTimepickerSeconds,
-  NgbdTimepickerSpinners,
-  NgbdTimepickerSteps,
-  NgbdTimepickerValidation,
-  NgbdTimepickerAdapter,
-  NgbdTimepickerConfig
-];
+import { NgbdTimepickerValidationModule } from './demos/validation/timepicker-validation.module';
 
 const DEMOS = {
   basic: {
@@ -91,10 +88,16 @@ export const ROUTES = [
 @NgModule({
   imports: [
     NgbdSharedModule,
-    NgbdComponentsSharedModule
-  ],
-  declarations: DEMO_DIRECTIVES,
-  entryComponents: DEMO_DIRECTIVES
+    NgbdComponentsSharedModule,
+    NgbdTimepickerBasicModule,
+    NgbdTimepickerMeridianModule,
+    NgbdTimepickerSecondsModule,
+    NgbdTimepickerSpinnersModule,
+    NgbdTimepickerStepsModule,
+    NgbdTimepickerValidationModule,
+    NgbdTimepickerAdapterModule,
+    NgbdTimepickerConfigModule
+  ]
 })
 export class NgbdTimepickerModule {
   constructor(demoList: NgbdDemoList) {
