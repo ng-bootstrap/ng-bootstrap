@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {Component} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 
-import { NgbdDemoList } from '../demo-list';
+import {NgbdDemoList} from '../demo-list';
+
+
 
 @Component({
   template: `
@@ -12,6 +14,8 @@ import { NgbdDemoList } from '../demo-list';
       [code]="demo.code"
       [markup]="demo.markup"
       [component]="component"
+      [files]="demo.files"
+      [showCode]="demo.showCode"
     >
       <ng-template [ngComponentOutlet]="demo.type"></ng-template>
     </ngbd-widget-demo>
@@ -28,12 +32,7 @@ export class NgbdExamplesPage {
     if (componentName) {
       const demos = demoList.getDemos(componentName);
       if (demos) {
-        this.demos = Object.keys(demos).map(id => {
-          return {
-            id,
-            ...demos[id]
-          };
-        });
+        this.demos = Object.keys(demos).map(id => { return {id, ...demos[id]}; });
       }
     }
   }

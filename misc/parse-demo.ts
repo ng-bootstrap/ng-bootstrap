@@ -1,11 +1,18 @@
-import * as ts from 'typescript';
 import * as glob from 'glob';
+import * as path from 'path';
+import * as ts from 'typescript';
 
 const BOOTSTRAP_REGEX = new RegExp(/bootstrap:[\s]*\[[\s]*(.*?)[\s,]*]/m);
 const SELECTOR_REGEX = new RegExp(/selector:[\s]*['"`]([^'"`]*)['"`]/m);
 
+export interface ComponentMetadata {
+  className?: string;
+  fileName: string;
+  selector: string;
+}
+
 export interface DemoMetadata {
-  bootstrapComponentSelector: string;
+  bootstrap: ComponentMetadata;
   moduleClassName: string;
 }
 
@@ -15,7 +22,7 @@ export interface DemoMetadata {
  *  - the component selector of the `MyComponent` in `bootstrap: [MyComponent]`
  */
 export function parseDemo(globPath: string): Map<string, DemoMetadata> {
-  const componentSelectors = new Map<string, string>();
+  const components = new Map<string, ComponentMetadata>();
   const modules = new Map<string, DemoMetadata>();
 
   function processFile(sourceFile: ts.SourceFile) {
@@ -33,7 +40,9 @@ export function parseDemo(globPath: string): Map<string, DemoMetadata> {
             if (textDecorator.startsWith('@NgModule')) {
               const matches = BOOTSTRAP_REGEX.exec(textDecorator);
               if (matches) {
-                modules.set(sourceFile.fileName, {moduleClassName: className, bootstrapComponentSelector: matches[1]});
+                modules.set(
+                    sourceFile.fileName,
+                    {moduleClassName: className, bootstrap: {selector: '', fileName: '', className: matches[1]}});
               } else {
                 throw new Error(`Couldn't find any bootstrap components in ${className} in ${sourceFile.fileName}`);
               }
@@ -42,7 +51,7 @@ export function parseDemo(globPath: string): Map<string, DemoMetadata> {
             if (textDecorator.startsWith('@Component')) {
               const matches = SELECTOR_REGEX.exec(textDecorator);
               if (matches) {
-                componentSelectors.set(className, matches[1]);
+                components.set(className, {selector: matches[1], fileName: path.basename(sourceFile.fileName)});
               }
             }
           }
@@ -65,12 +74,12 @@ export function parseDemo(globPath: string): Map<string, DemoMetadata> {
 
   // replacing temporary component types with their selectors
   modules.forEach(metadata => {
-    const bootstrapComponent = metadata.bootstrapComponentSelector;
-    const bootstrapComponentSelector = componentSelectors.get(bootstrapComponent);
-    if (!bootstrapComponentSelector) {
-      throw new Error(`Couldn't get bootstrap component selector for component ${bootstrapComponent}`);
+    const bootstrapComponent = metadata.bootstrap.className;
+    const bootstrapMetadata = components.get(bootstrapComponent);
+    if (!bootstrapMetadata) {
+      throw new Error(`Couldn't get bootstrap component metadata for component ${bootstrapComponent}`);
     }
-    metadata.bootstrapComponentSelector = bootstrapComponentSelector;
+    metadata.bootstrap = bootstrapMetadata;
   });
 
   return modules;

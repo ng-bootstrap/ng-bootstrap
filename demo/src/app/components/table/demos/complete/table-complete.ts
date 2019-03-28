@@ -1,16 +1,14 @@
-import {Component, QueryList, ViewChildren} from '@angular/core';
 import {DecimalPipe} from '@angular/common';
-
+import {Component, QueryList, ViewChildren} from '@angular/core';
 import {Observable} from 'rxjs';
-import {CountryService} from './country.service';
+
 import {Country} from './country';
+import {CountryService} from './country.service';
 import {NgbdSortableHeader, SortEvent} from './sortable.directive';
 
-@Component({
-  selector: 'ngbd-table-complete',
-  templateUrl: './table-complete.html',
-  providers: [CountryService, DecimalPipe]
-})
+
+@Component(
+    {selector: 'ngbd-table-complete', templateUrl: './table-complete.html', providers: [CountryService, DecimalPipe]})
 export class NgbdTableComplete {
   countries$: Observable<Country[]>;
   total$: Observable<number>;
@@ -23,7 +21,6 @@ export class NgbdTableComplete {
   }
 
   onSort({column, direction}: SortEvent) {
-
     // resetting other headers
     this.headers.forEach(header => {
       if (header.sortable !== column) {

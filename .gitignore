@@ -14,6 +14,7 @@ coverage-e2e
 demo/src/api-docs.ts
 demo/src/public/**/plnkr.html
 demo/src/public/**/stackblitz.html
+demo/src/public/stackblitzes
 local.docs.json
 yarn-error.log
 .ng_pkg_build
