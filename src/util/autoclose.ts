@@ -23,10 +23,8 @@ export function ngbAutoClose(
 
       const shouldCloseOnClick = (event: MouseEvent | TouchEvent) => {
         const element = event.target as HTMLElement;
-        if (event instanceof MouseEvent) {
-          if (event.button === 2 || isHTMLElementContainedIn(element, ignoreElements)) {
-            return false;
-          }
+        if ((event instanceof MouseEvent && event.button === 2) || isHTMLElementContainedIn(element, ignoreElements)) {
+          return false;
         }
         if (type === 'inside') {
           return isHTMLElementContainedIn(element, insideElements);
