@@ -562,10 +562,35 @@ describe('ngb-dropdown-toggle', () => {
     const compiled = fixture.nativeElement;
     const dropdown = fixture.debugElement.query(By.directive(NgbDropdown)).injector.get(NgbDropdown);
     dropdown.open();
+    fixture.detectChanges();
     const dropdownElement = document.querySelector('div[ngbDropdownMenu]');
     const parentContainer = dropdownElement.parentNode;
     expect(parentContainer).toHaveCssClass('dropdown');
     expect(parentContainer.parentNode).toBe(document.body, 'The dropdown should be attached to the body');
+
+  });
+
+  it(`should second placement if the first one doesn't fit`, () => {
+    const html = `
+      <div ngbDropdown placement="left right">
+          <button ngbDropdownToggle>
+            <span class="toggle">Toggle dropdown</span>
+          </button>
+          <div ngbDropdownMenu>
+            <a ngbDropdownItem>dropDown item</a>
+            <a ngbDropdownItem>dropDown item</a>
+        </div>
+      </div>`;
+
+    const fixture = createTestComponent(html);
+    const compiled = fixture.nativeElement;
+    const dropdown = fixture.debugElement.query(By.directive(NgbDropdown)).injector.get(NgbDropdown);
+    dropdown.open();
+    fixture.detectChanges();
+    const dropdownEl = compiled.querySelector('[ngbdropdownmenu]');
+    const targetElement = compiled.querySelector('button');
+    expect(Math.round(dropdownEl.getBoundingClientRect().left))
+        .toBe(Math.round(targetElement.getBoundingClientRect().right), 'Wrong dropdown placement');
 
   });
 
