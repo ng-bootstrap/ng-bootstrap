@@ -6,20 +6,17 @@ import { NgbdComponentsSharedModule, NgbdDemoList } from '../shared';
 import { NgbdApiPage } from '../shared/api-page/api.component';
 import { NgbdExamplesPage } from '../shared/examples-page/examples.component';
 import { NgbdRatingBasic } from './demos/basic/rating-basic';
+import { NgbdRatingBasicModule } from './demos/basic/rating-basic.module';
 import { NgbdRatingConfig } from './demos/config/rating-config';
+import { NgbdRatingConfigModule } from './demos/config/rating-config.module';
 import { NgbdRatingDecimal } from './demos/decimal/rating-decimal';
+import { NgbdRatingDecimalModule } from './demos/decimal/rating-decimal.module';
 import { NgbdRatingEvents } from './demos/events/rating-events';
+import { NgbdRatingEventsModule } from './demos/events/rating-events.module';
 import { NgbdRatingForm } from './demos/form/rating-form';
+import { NgbdRatingFormModule } from './demos/form/rating-form.module';
 import { NgbdRatingTemplate } from './demos/template/rating-template';
-
-const DEMO_DIRECTIVES = [
-  NgbdRatingBasic,
-  NgbdRatingConfig,
-  NgbdRatingTemplate,
-  NgbdRatingEvents,
-  NgbdRatingDecimal,
-  NgbdRatingForm
-];
+import { NgbdRatingTemplateModule } from './demos/template/rating-template.module';
 
 const DEMOS = {
   basic: {
@@ -75,10 +72,14 @@ export const ROUTES = [
 @NgModule({
   imports: [
     NgbdSharedModule,
-    NgbdComponentsSharedModule
-  ],
-  declarations: DEMO_DIRECTIVES,
-  entryComponents: DEMO_DIRECTIVES
+    NgbdComponentsSharedModule,
+    NgbdRatingBasicModule,
+    NgbdRatingConfigModule,
+    NgbdRatingTemplateModule,
+    NgbdRatingEventsModule,
+    NgbdRatingDecimalModule,
+    NgbdRatingFormModule
+  ]
 })
 export class NgbdRatingModule {
   constructor(demoList: NgbdDemoList) {

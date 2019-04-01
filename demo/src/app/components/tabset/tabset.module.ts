@@ -6,22 +6,19 @@ import { NgbdComponentsSharedModule, NgbdDemoList } from '../shared';
 import { NgbdApiPage } from '../shared/api-page/api.component';
 import { NgbdExamplesPage } from '../shared/examples-page/examples.component';
 import { NgbdTabsetBasic } from './demos/basic/tabset-basic';
+import { NgbdTabsetBasicModule } from './demos/basic/tabset-basic.module';
 import { NgbdTabsetConfig } from './demos/config/tabset-config';
+import { NgbdTabsetConfigModule } from './demos/config/tabset-config.module';
 import { NgbdTabsetJustify } from './demos/justify/tabset-justify';
+import { NgbdTabsetJustifyModule } from './demos/justify/tabset-justify.module';
 import { NgbdTabsetOrientation } from './demos/orientation/tabset-orientation';
+import { NgbdTabsetOrientationModule } from './demos/orientation/tabset-orientation.module';
 import { NgbdTabsetPills } from './demos/pills/tabset-pills';
+import { NgbdTabsetPillsModule } from './demos/pills/tabset-pills.module';
+import { NgbdTabsetPreventChangeModule } from './demos/preventchange/tabset-prevent-change.module';
 import { NgbdTabsetPreventchange } from './demos/preventchange/tabset-preventchange';
 import { NgbdTabsetSelectbyid } from './demos/selectbyid/tabset-selectbyid';
-
-const DEMO_DIRECTIVES = [
-  NgbdTabsetBasic,
-  NgbdTabsetPills,
-  NgbdTabsetPreventchange,
-  NgbdTabsetSelectbyid,
-  NgbdTabsetConfig,
-  NgbdTabsetJustify,
-  NgbdTabsetOrientation
-];
+import { NgbdTabsetSelectbyidModule } from './demos/selectbyid/tabset-selectbyid.module';
 
 const DEMOS = {
   basic: {
@@ -83,10 +80,15 @@ export const ROUTES = [
 @NgModule({
   imports: [
     NgbdSharedModule,
-    NgbdComponentsSharedModule
-  ],
-  declarations: DEMO_DIRECTIVES,
-  entryComponents: DEMO_DIRECTIVES
+    NgbdComponentsSharedModule,
+    NgbdTabsetBasicModule,
+    NgbdTabsetPillsModule,
+    NgbdTabsetPreventChangeModule,
+    NgbdTabsetSelectbyidModule,
+    NgbdTabsetConfigModule,
+    NgbdTabsetJustifyModule,
+    NgbdTabsetOrientationModule
+  ]
 })
 export class NgbdTabsetModule {
   constructor(demoList: NgbdDemoList) {

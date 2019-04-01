@@ -6,8 +6,7 @@ import { NgbdComponentsSharedModule, NgbdDemoList } from '../shared';
 import { NgbdApiPage } from '../shared/api-page/api.component';
 import { NgbdExamplesPage } from '../shared/examples-page/examples.component';
 import { NgbdCollapseBasic } from './demos/basic/collapse-basic';
-
-const DEMO_DIRECTIVES = [NgbdCollapseBasic];
+import { NgbdCollapseBasicModule } from './demos/basic/collapse-basic.module';
 
 const DEMOS = {
   basic: {
@@ -20,7 +19,8 @@ const DEMOS = {
 
 export const ROUTES = [
   { path: '', pathMatch: 'full', redirectTo: 'examples' },
-  { path: '',
+  {
+    path: '',
     component: ComponentWrapper,
     children: [
       { path: 'examples', component: NgbdExamplesPage },
@@ -30,9 +30,11 @@ export const ROUTES = [
 ];
 
 @NgModule({
-  imports: [NgbdSharedModule, NgbdComponentsSharedModule ],
-  declarations: DEMO_DIRECTIVES,
-  entryComponents: DEMO_DIRECTIVES
+  imports: [
+    NgbdSharedModule,
+    NgbdComponentsSharedModule,
+    NgbdCollapseBasicModule
+  ]
 })
 export class NgbdCollapseModule {
   constructor(demoList: NgbdDemoList) {

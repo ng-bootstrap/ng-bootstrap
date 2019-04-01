@@ -6,11 +6,13 @@ import { NgbdComponentsSharedModule, NgbdDemoList } from '../shared';
 import { NgbdApiPage } from '../shared/api-page/api.component';
 import { NgbdExamplesPage } from '../shared/examples-page/examples.component';
 import { NgbdButtonsCheckbox } from './demos/checkbox/buttons-checkbox';
+import { NgbdButtonsCheckboxModule } from './demos/checkbox/buttons-checkbox.module';
+import { NgbdButtonsCheckboxReactiveModule } from './demos/checkboxreactive/buttons-checkbox-reactive.module';
 import { NgbdButtonsCheckboxreactive } from './demos/checkboxreactive/buttons-checkboxreactive';
 import { NgbdButtonsRadio } from './demos/radio/buttons-radio';
+import { NgbdButtonsRadioModule } from './demos/radio/buttons-radio.module';
+import { NgbdButtonsRadioReactiveModule } from './demos/radioreactive/buttons-radio-reactive.module';
 import { NgbdButtonsRadioreactive } from './demos/radioreactive/buttons-radioreactive';
-
-const DEMO_DIRECTIVES = [NgbdButtonsCheckbox, NgbdButtonsCheckboxreactive, NgbdButtonsRadio, NgbdButtonsRadioreactive];
 
 const DEMOS = {
   checkbox: {
@@ -36,11 +38,13 @@ const DEMOS = {
     type: NgbdButtonsRadioreactive,
     code: require('!!raw-loader!./demos/radioreactive/buttons-radioreactive'),
     markup: require('!!raw-loader!./demos/radioreactive/buttons-radioreactive.html')
-  }};
+  }
+};
 
 export const ROUTES = [
   { path: '', pathMatch: 'full', redirectTo: 'examples' },
-  { path: '',
+  {
+    path: '',
     component: ComponentWrapper,
     children: [
       { path: 'examples', component: NgbdExamplesPage },
@@ -50,9 +54,14 @@ export const ROUTES = [
 ];
 
 @NgModule({
-  imports: [NgbdSharedModule, NgbdComponentsSharedModule ],
-  declarations: DEMO_DIRECTIVES,
-  entryComponents: DEMO_DIRECTIVES
+  imports: [
+    NgbdSharedModule,
+    NgbdComponentsSharedModule,
+    NgbdButtonsCheckboxModule,
+    NgbdButtonsCheckboxReactiveModule,
+    NgbdButtonsRadioModule,
+    NgbdButtonsRadioReactiveModule
+  ]
 })
 export class NgbdButtonsModule {
   constructor(demoList: NgbdDemoList) {

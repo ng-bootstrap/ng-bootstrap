@@ -6,26 +6,23 @@ import { NgbdComponentsSharedModule, NgbdDemoList } from '../shared';
 import { NgbdApiPage } from '../shared/api-page/api.component';
 import { NgbdExamplesPage } from '../shared/examples-page/examples.component';
 import { NgbdTooltipAutoclose } from './demos/autoclose/tooltip-autoclose';
+import { NgbdTooltipAutocloseModule } from './demos/autoclose/tooltip-autoclose.module';
 import { NgbdTooltipBasic } from './demos/basic/tooltip-basic';
+import { NgbdTooltipBasicModule } from './demos/basic/tooltip-basic.module';
 import { NgbdTooltipConfig } from './demos/config/tooltip-config';
+import { NgbdTooltipConfigModule } from './demos/config/tooltip-config.module';
 import { NgbdTooltipContainer } from './demos/container/tooltip-container';
+import { NgbdTooltipContainerModule } from './demos/container/tooltip-container.module';
+import { NgbdTooltipCustomClassModule } from './demos/customclass/tooltip-custom-class.module';
 import { NgbdTooltipCustomclass } from './demos/customclass/tooltip-customclass';
 import { NgbdTooltipDelay } from './demos/delay/tooltip-delay';
+import { NgbdTooltipDelayModule } from './demos/delay/tooltip-delay.module';
+import { NgbdTooltipTplContentModule } from './demos/tplcontent/tooltip-tpl-content.module';
 import { NgbdTooltipTplcontent } from './demos/tplcontent/tooltip-tplcontent';
+import { NgbdTooltipTplWithContextModule } from './demos/tplwithcontext/tooltip-tpl-with-context.module';
 import { NgbdTooltipTplwithcontext } from './demos/tplwithcontext/tooltip-tplwithcontext';
 import { NgbdTooltipTriggers } from './demos/triggers/tooltip-triggers';
-
-const DEMO_DIRECTIVES = [
-  NgbdTooltipBasic,
-  NgbdTooltipContainer,
-  NgbdTooltipCustomclass,
-  NgbdTooltipDelay,
-  NgbdTooltipTplcontent,
-  NgbdTooltipTriggers,
-  NgbdTooltipAutoclose,
-  NgbdTooltipConfig,
-  NgbdTooltipTplwithcontext
-];
+import { NgbdTooltipTriggersModule } from './demos/triggers/tooltip-triggers.module';
 
 const DEMOS = {
   basic: {
@@ -70,7 +67,7 @@ const DEMOS = {
     code: require('!!raw-loader!./demos/container/tooltip-container'),
     markup: require('!!raw-loader!./demos/container/tooltip-container.html')
   },
-  'customclass': {
+  customclass: {
     title: 'Tooltip with custom class',
     type: NgbdTooltipCustomclass,
     code: require('!!raw-loader!./demos/customclass/tooltip-customclass'),
@@ -99,10 +96,17 @@ export const ROUTES = [
 @NgModule({
   imports: [
     NgbdSharedModule,
-    NgbdComponentsSharedModule
-  ],
-  declarations: DEMO_DIRECTIVES,
-  entryComponents: DEMO_DIRECTIVES
+    NgbdComponentsSharedModule,
+    NgbdTooltipBasicModule,
+    NgbdTooltipContainerModule,
+    NgbdTooltipCustomClassModule,
+    NgbdTooltipDelayModule,
+    NgbdTooltipTplContentModule,
+    NgbdTooltipTriggersModule,
+    NgbdTooltipAutocloseModule,
+    NgbdTooltipConfigModule,
+    NgbdTooltipTplWithContextModule
+  ]
 })
 export class NgbdTooltipModule {
   constructor(demoList: NgbdDemoList) {

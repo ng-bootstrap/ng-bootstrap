@@ -6,28 +6,25 @@ import { NgbdComponentsSharedModule, NgbdDemoList } from '../shared';
 import { NgbdApiPage } from '../shared/api-page/api.component';
 import { NgbdExamplesPage } from '../shared/examples-page/examples.component';
 import { NgbdPopoverAutoclose } from './demos/autoclose/popover-autoclose';
+import { NgbdPopoverAutocloseModule } from './demos/autoclose/popover-autoclose.module';
 import { NgbdPopoverBasic } from './demos/basic/popover-basic';
+import { NgbdPopoverBasicModule } from './demos/basic/popover-basic.module';
 import { NgbdPopoverConfig } from './demos/config/popover-config';
+import { NgbdPopoverConfigModule } from './demos/config/popover-config.module';
 import { NgbdPopoverContainer } from './demos/container/popover-container';
+import { NgbdPopoverContainerModule } from './demos/container/popover-container.module';
+import { NgbdPopoverCustomClassModule } from './demos/customclass/popover-custom-class.module';
 import { NgbdPopoverCustomclass } from './demos/customclass/popover-customclass';
 import { NgbdPopoverDelay } from './demos/delay/popover-delay';
+import { NgbdPopoverDelayModule } from './demos/delay/popover-delay.module';
+import { NgbdPopoverTplContentModule } from './demos/tplcontent/popover-tpl-content.module';
 import { NgbdPopoverTplcontent } from './demos/tplcontent/popover-tplcontent';
+import { NgbdPopoverTplWithContextModule } from './demos/tplwithcontext/popover-tpl-with-context.module';
 import { NgbdPopoverTplwithcontext } from './demos/tplwithcontext/popover-tplwithcontext';
 import { NgbdPopoverTriggers } from './demos/triggers/popover-triggers';
+import { NgbdPopoverTriggersModule } from './demos/triggers/popover-triggers.module';
 import { NgbdPopoverVisibility } from './demos/visibility/popover-visibility';
-
-const DEMO_DIRECTIVES = [
-  NgbdPopoverBasic,
-  NgbdPopoverTplcontent,
-  NgbdPopoverTplwithcontext,
-  NgbdPopoverTriggers,
-  NgbdPopoverAutoclose,
-  NgbdPopoverVisibility,
-  NgbdPopoverContainer,
-  NgbdPopoverCustomclass,
-  NgbdPopoverDelay,
-  NgbdPopoverConfig
-];
+import { NgbdPopoverVisibilityModule } from './demos/visibility/popover-visibility.module';
 
 const DEMOS = {
   basic: {
@@ -78,7 +75,7 @@ const DEMOS = {
     code: require('!!raw-loader!./demos/container/popover-container'),
     markup: require('!!raw-loader!./demos/container/popover-container.html')
   },
-  'customclass': {
+  customclass: {
     title: 'Popover with custom class',
     type: NgbdPopoverCustomclass,
     code: require('!!raw-loader!./demos/customclass/popover-customclass'),
@@ -107,10 +104,18 @@ export const ROUTES = [
 @NgModule({
   imports: [
     NgbdSharedModule,
-    NgbdComponentsSharedModule
-  ],
-  declarations: DEMO_DIRECTIVES,
-  entryComponents: DEMO_DIRECTIVES
+    NgbdComponentsSharedModule,
+    NgbdPopoverBasicModule,
+    NgbdPopoverTplContentModule,
+    NgbdPopoverTplWithContextModule,
+    NgbdPopoverTriggersModule,
+    NgbdPopoverAutocloseModule,
+    NgbdPopoverVisibilityModule,
+    NgbdPopoverContainerModule,
+    NgbdPopoverCustomClassModule,
+    NgbdPopoverDelayModule,
+    NgbdPopoverConfigModule
+  ]
 })
 export class NgbdPopoverModule {
   constructor(demoList: NgbdDemoList) {

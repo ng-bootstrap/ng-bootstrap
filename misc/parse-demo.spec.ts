@@ -5,7 +5,7 @@ describe(`Parse demo for StackBlitz`, () => {
   it('should extract a module name and a component selector', () => {
     expect(parseDemo('./misc/parse-demo-test-cases/simple/**/*.ts')).toEqual(new Map([[
       'misc/parse-demo-test-cases/simple/test.module.ts',
-      {bootstrapComponentSelector: 'test-component', moduleClassName: 'TestModule'}
+      {bootstrap: {selector: 'test-component', fileName: 'test.component.ts'}, moduleClassName: 'TestModule'}
     ]]));
   });
 
@@ -13,11 +13,11 @@ describe(`Parse demo for StackBlitz`, () => {
     expect(parseDemo('./misc/parse-demo-test-cases/multiple/**/*.ts')).toEqual(new Map([
       [
         'misc/parse-demo-test-cases/multiple/one/test.module.ts',
-        {bootstrapComponentSelector: 'test-component1', moduleClassName: 'TestModule1'}
+        {bootstrap: {selector: 'test-component1', fileName: 'test.component.ts'}, moduleClassName: 'TestModule1'}
       ],
       [
         'misc/parse-demo-test-cases/multiple/two/test.module.ts',
-        {bootstrapComponentSelector: 'test-component2', moduleClassName: 'TestModule2'}
+        {bootstrap: {selector: 'test-component2', fileName: 'test.component.ts'}, moduleClassName: 'TestModule2'}
       ]
     ]));
   });
@@ -25,7 +25,14 @@ describe(`Parse demo for StackBlitz`, () => {
   it('should extract module name and component selector (strange formatting)', () => {
     expect(parseDemo('./misc/parse-demo-test-cases/syntax/**/*.ts')).toEqual(new Map([[
       'misc/parse-demo-test-cases/syntax/test.module.ts',
-      {bootstrapComponentSelector: 'test-component', moduleClassName: 'TestModule'}
+      {bootstrap: {selector: 'test-component', fileName: 'test.component.ts'}, moduleClassName: 'TestModule'}
+    ]]));
+  });
+
+  it('should extract module name and component selector (oneliner definition)', () => {
+    expect(parseDemo('./misc/parse-demo-test-cases/oneliner/**/*.ts')).toEqual(new Map([[
+      'misc/parse-demo-test-cases/oneliner/test.module.ts',
+      {bootstrap: {selector: 'test-component', fileName: 'test.component.ts'}, moduleClassName: 'TestModule'}
     ]]));
   });
 
@@ -44,6 +51,6 @@ describe(`Parse demo for StackBlitz`, () => {
   it('should fail if there is no bootstrap component selector', () => {
     expect(() => {
       parseDemo('./misc/parse-demo-test-cases/no-component-selector/**/*.ts');
-    }).toThrowError(`Couldn't get bootstrap component selector for component TestComponent`);
+    }).toThrowError(`Couldn't get bootstrap component metadata for component TestComponent`);
   });
 });

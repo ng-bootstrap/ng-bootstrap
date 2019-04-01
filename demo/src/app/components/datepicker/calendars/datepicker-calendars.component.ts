@@ -1,15 +1,20 @@
-import { Component } from '@angular/core';
-import { NgbdDatepickerHebrew } from '../demos/hebrew/datepicker-hebrew';
-import { NgbdDatepickerIslamiccivil } from '../demos/islamiccivil/datepicker-islamiccivil';
-import { NgbdDatepickerIslamicumalqura } from '../demos/islamicumalqura/datepicker-islamicumalqura';
-import { NgbdDatepickerJalali } from '../demos/jalali/datepicker-jalali';
-import { NgbdExamplesPage } from '../../shared/examples-page/examples.component';
+import {Component} from '@angular/core';
 
-export const DEMO_CALENDAR_DIRECTIVES = [
-  NgbdDatepickerHebrew,
-  NgbdDatepickerJalali,
-  NgbdDatepickerIslamiccivil,
-  NgbdDatepickerIslamicumalqura,
+import {NgbdExamplesPage} from '../../shared/examples-page/examples.component';
+import {NgbdDatepickerHebrew} from '../demos/hebrew/datepicker-hebrew';
+import {NgbdDatepickerHebrewModule} from '../demos/hebrew/datepicker-hebrew.module';
+import {NgbdDatepickerIslamicCivilModule} from '../demos/islamiccivil/datepicker-islamic-civil.module';
+import {NgbdDatepickerIslamiccivil} from '../demos/islamiccivil/datepicker-islamiccivil';
+import {NgbdDatepickerIslamicUmalquraModule} from '../demos/islamicumalqura/datepicker-islamic-umalqura.module';
+import {NgbdDatepickerIslamicumalqura} from '../demos/islamicumalqura/datepicker-islamicumalqura';
+import {NgbdDatepickerJalali} from '../demos/jalali/datepicker-jalali';
+import {NgbdDatepickerJalaliModule} from '../demos/jalali/datepicker-jalali.module';
+
+export const DEMO_CALENDAR_MODULES = [
+  NgbdDatepickerHebrewModule,
+  NgbdDatepickerJalaliModule,
+  NgbdDatepickerIslamicCivilModule,
+  NgbdDatepickerIslamicUmalquraModule,
 ];
 
 const DEMOS = [
@@ -91,7 +96,6 @@ const DEMOS = [
   `
 })
 export class NgbdDatepickerCalendarsComponent extends NgbdExamplesPage {
-
   demos = DEMOS;
 
   snippets = {

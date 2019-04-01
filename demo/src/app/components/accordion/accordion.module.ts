@@ -6,15 +6,17 @@ import { NgbdComponentsSharedModule, NgbdDemoList } from '../shared';
 import { NgbdApiPage } from '../shared/api-page/api.component';
 import { NgbdExamplesPage } from '../shared/examples-page/examples.component';
 import { NgbdAccordionBasic } from './demos/basic/accordion-basic';
+import { NgbdAccordionBasicModule } from './demos/basic/accordion-basic.module';
 import { NgbdAccordionConfig } from './demos/config/accordion-config';
-import { NgbdAccordionPreventchange } from './demos/preventchange/accordion-preventchange';
-import { NgbdAccordionStatic } from './demos/static/accordion-static';
-import { NgbdAccordionToggle } from './demos/toggle/accordion-toggle';
+import { NgbdAccordionConfigModule } from './demos/config/accordion-config.module';
 import { NgbdAccordionHeader } from './demos/header/accordion-header';
-
-const DEMO_DIRECTIVES = [
-  NgbdAccordionBasic, NgbdAccordionPreventchange, NgbdAccordionStatic, NgbdAccordionToggle, NgbdAccordionConfig, NgbdAccordionHeader
-];
+import { NgbdAccordionHeaderModule } from './demos/header/accordion-header.module';
+import { NgbdAccordionPreventchange } from './demos/preventchange/accordion-preventchange';
+import { NgbdAccordionPreventchangeModule } from './demos/preventchange/accordion-preventchange.module';
+import { NgbdAccordionStatic } from './demos/static/accordion-static';
+import { NgbdAccordionStaticModule } from './demos/static/accordion-static.module';
+import { NgbdAccordionToggle } from './demos/toggle/accordion-toggle';
+import { NgbdAccordionToggleModule } from './demos/toggle/accordion-toggle.module';
 
 const DEMOS = {
   basic: {
@@ -57,7 +59,8 @@ const DEMOS = {
 
 export const ROUTES = [
   { path: '', pathMatch: 'full', redirectTo: 'examples' },
-  { path: '',
+  {
+    path: '',
     component: ComponentWrapper,
     children: [
       { path: 'examples', component: NgbdExamplesPage },
@@ -67,9 +70,16 @@ export const ROUTES = [
 ];
 
 @NgModule({
-  imports: [NgbdSharedModule, NgbdComponentsSharedModule],
-  declarations: DEMO_DIRECTIVES,
-  entryComponents: DEMO_DIRECTIVES
+  imports: [
+    NgbdSharedModule,
+    NgbdComponentsSharedModule,
+    NgbdAccordionBasicModule,
+    NgbdAccordionConfigModule,
+    NgbdAccordionHeaderModule,
+    NgbdAccordionToggleModule,
+    NgbdAccordionStaticModule,
+    NgbdAccordionPreventchangeModule
+  ]
 })
 export class NgbdAccordionModule {
   constructor(demoList: NgbdDemoList) {
