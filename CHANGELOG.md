@@ -1,3 +1,17 @@
+## [4.1.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/4.1.0...4.1.1) (2019-04-01)
+
+
+### Bug Fixes
+
+* **autoclose:** take into account inside 'touch' events on iOS ([#3089](https://github.com/ng-bootstrap/ng-bootstrap/issues/3089)) ([9e13e7f](https://github.com/ng-bootstrap/ng-bootstrap/commit/9e13e7f)), closes [#3079](https://github.com/ng-bootstrap/ng-bootstrap/issues/3079)
+* **buttons:** set radio buttons role to 'radiogroup' ([#3085](https://github.com/ng-bootstrap/ng-bootstrap/issues/3085)) ([21df9a6](https://github.com/ng-bootstrap/ng-bootstrap/commit/21df9a6)), closes [#3084](https://github.com/ng-bootstrap/ng-bootstrap/issues/3084)
+* **datepicker:** export Gregorian calendar ([#3064](https://github.com/ng-bootstrap/ng-bootstrap/issues/3064)) ([ee1d723](https://github.com/ng-bootstrap/ng-bootstrap/commit/ee1d723)), closes [#3054](https://github.com/ng-bootstrap/ng-bootstrap/issues/3054)
+* **dropdown:** apply multiple positions correctly ([#3058](https://github.com/ng-bootstrap/ng-bootstrap/issues/3058)) ([e9f7b9e](https://github.com/ng-bootstrap/ng-bootstrap/commit/e9f7b9e)), closes [#3056](https://github.com/ng-bootstrap/ng-bootstrap/issues/3056)
+* **dropdown:** fix keyboard navigation with 'body' container ([fee06f1](https://github.com/ng-bootstrap/ng-bootstrap/commit/fee06f1)), closes [#3066](https://github.com/ng-bootstrap/ng-bootstrap/issues/3066)
+* **positioning:** round translated positions ([#3074](https://github.com/ng-bootstrap/ng-bootstrap/issues/3074)) ([5444d13](https://github.com/ng-bootstrap/ng-bootstrap/commit/5444d13))
+
+
+
 # [4.1.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/4.0.5...4.1.0) (2019-03-05)
 
 
