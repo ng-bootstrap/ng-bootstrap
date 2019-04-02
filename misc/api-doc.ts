@@ -1,13 +1,19 @@
 // tslint:disable:no-bitwise
 import {
   createProgram,
-  Program,
-  TypeChecker,
-  SyntaxKind,
   displayPartsToString,
   getCombinedModifierFlags,
-  ModifierFlags
+  ModifierFlags,
+  Program,
+  SyntaxKind,
+  TypeChecker
 } from 'typescript';
+
+import * as marked from 'marked';
+
+function displayPartsToHtml(displayParts: any): string {
+  return marked(displayPartsToString(displayParts), {gfm: true}).trim();
+}
 
 function getNamesCompareFn(name = 'name') {
   return (a, b) => a[name].localeCompare(b[name]);
@@ -23,7 +29,7 @@ function hasNoJSDoc(member, typeChecker) {
     return true;
   }
 
-  const jsDoc = displayPartsToString(member.symbol.getDocumentationComment(typeChecker));
+  const jsDoc = displayPartsToHtml(member.symbol.getDocumentationComment(typeChecker));
   return jsDoc.trim().length === 0;
 }
 
@@ -123,7 +129,7 @@ class APIDocVisitor {
 
   visitInterfaceDeclaration(fileName, interfaceDeclaration) {
     const symbol = this.typeChecker.getSymbolAtLocation(interfaceDeclaration.name);
-    const description = displayPartsToString(symbol.getDocumentationComment(this.typeChecker));
+    const description = displayPartsToHtml(symbol.getDocumentationComment(this.typeChecker));
     const {deprecated, since} = getJsDocTags(symbol);
     const className = interfaceDeclaration.name.text;
     const typeParameter = getTypeParameter(this.program, interfaceDeclaration.name);
@@ -144,7 +150,7 @@ class APIDocVisitor {
 
   visitClassDeclaration(fileName, classDeclaration) {
     const symbol = this.typeChecker.getSymbolAtLocation(classDeclaration.name);
-    const description = displayPartsToString(symbol.getDocumentationComment(this.typeChecker));
+    const description = displayPartsToHtml(symbol.getDocumentationComment(this.typeChecker));
     const {deprecated, since} = getJsDocTags(symbol);
     const className = classDeclaration.name.text;
     const typeParameter = getTypeParameter(this.program, classDeclaration.name);
@@ -274,7 +280,7 @@ class APIDocVisitor {
   visitMethodDeclaration(method) {
     return {
       name: method.name.text,
-      description: displayPartsToString(method.symbol.getDocumentationComment(this.typeChecker)),
+      description: displayPartsToHtml(method.symbol.getDocumentationComment(this.typeChecker)),
       args: method.parameters ? method.parameters.map((prop) => this.visitArgument(prop)) : [],
       returnType: this.visitType(method.type)
     };
@@ -288,7 +294,7 @@ class APIDocVisitor {
       name: inArgs.length ? inArgs[0].text : property.name.text,
       defaultValue: property.initializer ? this.stringifyDefaultValue(property.initializer) : undefined,
       type: this.visitType(property),
-      description: displayPartsToString(property.symbol.getDocumentationComment(this.typeChecker))
+      description: displayPartsToHtml(property.symbol.getDocumentationComment(this.typeChecker))
     };
   }
 
@@ -306,7 +312,7 @@ class APIDocVisitor {
     const outArgs = outDecorator.expression.arguments;
     return {
       name: outArgs.length ? outArgs[0].text : property.name.text,
-      description: displayPartsToString(property.symbol.getDocumentationComment(this.typeChecker))
+      description: displayPartsToHtml(property.symbol.getDocumentationComment(this.typeChecker))
     };
   }
 
@@ -315,7 +321,7 @@ class APIDocVisitor {
       name: property.name.text,
       defaultValue: property.initializer ? this.stringifyDefaultValue(property.initializer) : undefined,
       type: this.visitType(property),
-      description: displayPartsToString(property.symbol.getDocumentationComment(this.typeChecker))
+      description: displayPartsToHtml(property.symbol.getDocumentationComment(this.typeChecker))
     };
   }
 

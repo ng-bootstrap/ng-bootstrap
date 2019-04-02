@@ -13,14 +13,14 @@ describe('APIDocVisitor', () => {
     expect(docs.Foo.fileName).toBe('misc/api-doc-test-cases/directives-no-in-out.ts');
     expect(docs.Foo.className).toBe('Foo');
     expect(docs.Foo.selector).toBe('[foo]');
-    expect(docs.Foo.description).toBe('Foo doc');
+    expect(docs.Foo.description).toBe('<p>Foo doc</p>');
     expect(docs.Foo.exportAs).toBe('foo');
 
     expect(docs.Bar.fileName).toBe('misc/api-doc-test-cases/directives-no-in-out.ts');
     expect(docs.Bar.className).toBe('Bar');
     expect(docs.Bar.selector).toBe('bar');
     expect(docs.Bar.exportAs).toBeUndefined();
-    expect(docs.Bar.description).toBe('Bar doc');
+    expect(docs.Bar.description).toBe('<p>Bar doc</p>');
   });
 
   it('should extract basic type info from classes', () => {
@@ -43,7 +43,7 @@ describe('APIDocVisitor', () => {
     expect(inputDocs[0].name).toBe('bar');
     expect(inputDocs[0].defaultValue).toBeUndefined();
     expect(inputDocs[0].type).toBe('string');
-    expect(inputDocs[0].description).toBe('Bar doc');
+    expect(inputDocs[0].description).toBe('<p>Bar doc</p>');
 
     expect(inputDocs[1].name).toBe('baz');
     expect(inputDocs[1].defaultValue).toBeUndefined();
@@ -53,7 +53,7 @@ describe('APIDocVisitor', () => {
     expect(inputDocs[2].name).toBe('foo');
     expect(inputDocs[2].defaultValue).toBe('5');
     expect(inputDocs[2].type).toBe('number');
-    expect(inputDocs[2].description).toBe('Has default value');
+    expect(inputDocs[2].description).toBe('<p>Has default value</p>');
   });
 
   it('should extract input default value', () => {
@@ -95,7 +95,7 @@ describe('APIDocVisitor', () => {
     expect(outDocs.length).toBe(2);
 
     expect(outDocs[0].name).toBe('myEvent');
-    expect(outDocs[0].description).toBe('Desc');
+    expect(outDocs[0].description).toBe('<p>Desc</p>');
 
     expect(outDocs[1].name).toBe('myMappedEvent');
   });
@@ -105,7 +105,7 @@ describe('APIDocVisitor', () => {
 
     expect(methodDocs.length).toBe(1);
     expect(methodDocs[0].name).toBe('fooMethod');
-    expect(methodDocs[0].description).toBe('Use this one to produce foo!');
+    expect(methodDocs[0].description).toBe('<p>Use this one to produce foo!</p>');
     expect(methodDocs[0].args.length).toBe(3);
     expect(methodDocs[0].args[0].name).toBe('arg1');
     expect(methodDocs[0].args[0].type).toBe('string');
@@ -126,16 +126,16 @@ describe('APIDocVisitor', () => {
 
     expect(serviceDocs.fileName).toBe('./misc/api-doc-test-cases/services-with-methods.ts');
     expect(serviceDocs.className).toBe('ModalService');
-    expect(serviceDocs.description).toBe('A service to open modals');
+    expect(serviceDocs.description).toBe('<p>A service to open modals</p>');
     expect(serviceDocs.methods.length).toBe(2);
 
     expect(serviceDocs.methods[0].name).toBe('open');
-    expect(serviceDocs.methods[0].description).toBe('A method to open a modal');
+    expect(serviceDocs.methods[0].description).toBe('<p>A method to open a modal</p>');
     expect(serviceDocs.methods[0].args.length).toBe(2);
     expect(serviceDocs.methods[0].returnType).toBe('Promise<any>');
 
     expect(serviceDocs.methods[1].name).toBe('isOpen');
-    expect(serviceDocs.methods[1].description).toBe('Checks if a modal is open');
+    expect(serviceDocs.methods[1].description).toBe('<p>Checks if a modal is open</p>');
     expect(serviceDocs.methods[1].args.length).toBe(0);
     expect(serviceDocs.methods[1].returnType).toBe('boolean');
   });
@@ -146,12 +146,12 @@ describe('APIDocVisitor', () => {
     expect(serviceDocs.properties.length).toBe(3);
 
     expect(serviceDocs.properties[0].name).toBe('foo');
-    expect(serviceDocs.properties[0].description).toBe('Voluntarily left without a default value.');
+    expect(serviceDocs.properties[0].description).toBe('<p>Voluntarily left without a default value.</p>');
     expect(serviceDocs.properties[0].type).toBe('string');
     expect(serviceDocs.properties[0].defaultValue).toBeUndefined();
 
     expect(serviceDocs.properties[1].name).toBe('max');
-    expect(serviceDocs.properties[1].description).toBe('Maximal value to be displayed in the progressbar.');
+    expect(serviceDocs.properties[1].description).toBe('<p>Maximal value to be displayed in the progressbar.</p>');
     expect(serviceDocs.properties[1].type).toBe('number');
     expect(serviceDocs.properties[1].defaultValue).toBe('100');
 
@@ -165,25 +165,23 @@ describe('APIDocVisitor', () => {
     const interfaceDocs = apiDoc(['./misc/api-doc-test-cases/interface-with-properties.ts']).NgbModalOptions;
 
     expect(interfaceDocs.className).toBe('NgbModalOptions');
-    expect(interfaceDocs.description).toBe('Represent options available when opening new modal windows.');
+    expect(interfaceDocs.description).toBe('<p>Represent options available when opening new modal windows.</p>');
     expect(interfaceDocs.properties.length).toBe(3);
 
     expect(interfaceDocs.properties[0].name).toBe('backdrop');
     expect(interfaceDocs.properties[0].description)
-        .toContain('Weather a backdrop element should be created for a given modal (true by default)');
-    expect(interfaceDocs.properties[0].description)
-        .toContain(`Alternatively, specify 'static' for a backdrop which doesn't close the modal on click.`);
+        .toContain('Weather a backdrop element should be created for a given modal (true by default).');
     expect(interfaceDocs.properties[0].type).toBe('boolean | "static"');
     expect(interfaceDocs.properties[0].defaultValue).toBeUndefined();
 
     expect(interfaceDocs.properties[1].name).toBe('keyboard');
     expect(interfaceDocs.properties[1].description)
-        .toBe('Weather to close the modal when escape key is pressed (true by default).');
+        .toBe('<p>Weather to close the modal when escape key is pressed (true by default).</p>');
     expect(interfaceDocs.properties[1].type).toBe('boolean');
     expect(interfaceDocs.properties[1].defaultValue).toBeUndefined();
 
     expect(interfaceDocs.properties[2].name).toBe('size');
-    expect(interfaceDocs.properties[2].description).toBe('Size of a new modal window.');
+    expect(interfaceDocs.properties[2].description).toBe('<p>Size of a new modal window.</p>');
     expect(interfaceDocs.properties[2].type).toBe('"sm" | "lg"');
     expect(interfaceDocs.properties[2].defaultValue).toBeUndefined();
   });
@@ -192,7 +190,7 @@ describe('APIDocVisitor', () => {
     const interfaceDocs = apiDoc(['./misc/api-doc-test-cases/interface-with-methods.ts']).SomeInterface;
 
     expect(interfaceDocs.className).toBe('SomeInterface');
-    expect(interfaceDocs.description).toBe('Some interface');
+    expect(interfaceDocs.description).toBe('<p>Some interface</p>');
     expect(interfaceDocs.methods.length).toBe(1);
 
     expect(interfaceDocs.methods[0].name).toBe('foo');
@@ -204,22 +202,22 @@ describe('APIDocVisitor', () => {
     const classDocs = apiDoc(['./misc/api-doc-test-cases/class-with-doc.ts']).DocumentedFoo;
 
     expect(classDocs.className).toBe('DocumentedFoo');
-    expect(classDocs.description).toBe('This is a documented foo');
+    expect(classDocs.description).toBe('<p>This is a documented foo</p>');
 
     expect(classDocs.properties.length).toBe(2);
 
     expect(classDocs.properties[0].name).toBe('bar');
-    expect(classDocs.properties[0].description).toContain('the bar');
+    expect(classDocs.properties[0].description).toBe('<p>the bar</p>');
     expect(classDocs.properties[0].type).toBe('string');
 
     expect(classDocs.properties[1].name).toBe('componentInstance');
-    expect(classDocs.properties[1].description).toContain('A getter');
+    expect(classDocs.properties[1].description).toBe('<p>A getter</p>');
     expect(classDocs.properties[1].type).toBe('any');
 
     expect(classDocs.methods.length).toBe(1);
 
     expect(classDocs.methods[0].name).toBe('someMethod');
-    expect(classDocs.methods[0].description).toContain('some method');
+    expect(classDocs.methods[0].description).toBe('<p>some method</p>');
     expect(classDocs.methods[0].returnType).toBe('void');
   });
 

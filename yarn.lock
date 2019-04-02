@@ -454,6 +454,11 @@
   dependencies:
     "@types/jasmine" "*"
 
+"@types/marked@^0.6.1":
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@types/marked/-/marked-0.6.1.tgz#4281d0fbdb7bbefb69905cf44558297bc3c446aa"
+  integrity sha512-yE2cXQELHabu4t+RJIrFu0dVZEG7+zr0cHDSlb8SOJbXiAss/bY9PvSubgaoG7dyn9Bb+GT2Xl4HVhChuU5mEQ==
+
 "@types/mime@*":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@types/mime/-/mime-2.0.1.tgz#dc488842312a7f075149312905b5e3c0b054c79d"
@@ -6475,6 +6480,11 @@ marked@^0.5.0:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/marked/-/marked-0.5.1.tgz#062f43b88b02ee80901e8e8d8e6a620ddb3aa752"
   integrity sha512-iUkBZegCZou4AdwbKTwSW/lNDcz5OuRSl3qdcl31Ia0B2QPG0Jn+tKblh/9/eP9/6+4h27vpoh8wel/vQOV0vw==
+
+marked@^0.6.1:
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/marked/-/marked-0.6.1.tgz#a63addde477bca9613028de4b2bc3629e53a0562"
+  integrity sha512-+H0L3ibcWhAZE02SKMqmvYsErLo4EAVJxu5h3bHBBDvvjeWXtl92rGUSBYHL2++5Y+RSNgl8dYOAXcYe7lp1fA==
 
 math-random@^1.0.1:
   version "1.0.1"

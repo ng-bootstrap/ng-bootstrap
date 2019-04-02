@@ -23,7 +23,7 @@
   </h3>
   <ngbd-api-docs-badge type="Configuration" [deprecated]="apiDocs.deprecated" [since]="apiDocs.since"></ngbd-api-docs-badge>
   <p *ngIf="apiDocs.deprecated">{{ apiDocs.deprecated.description }}</p>
-  <p class="lead">{{apiDocs.description}}</p>
+  <p class="lead" [innerHTML]="apiDocs.description"></p>
 
   <ng-template [ngIf]="apiDocs.properties && apiDocs.properties.length">
     <section>
