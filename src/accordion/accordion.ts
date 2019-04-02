@@ -21,20 +21,21 @@ import {NgbAccordionConfig} from './accordion-config';
 let nextId = 0;
 
 /**
- * A context for the `NgbPanelHeader` template
+ * The context for the [NgbPanelHeader](#/components/accordion/api#NgbPanelHeader) template
  *
  * @since 4.1.0
  */
 export interface NgbPanelHeaderContext {
   /**
-   * True if current panel is opened
+   * `True` if current panel is opened
    */
   opened: boolean;
 }
 
 /**
  * A directive to put on a button that toggles panel opening and closing.
- * To be used inside the `NgbPanelHeader`
+ *
+ * To be used inside the [`NgbPanelHeader`](#/components/accordion/api#NgbPanelHeader)
  *
  * @since 4.1.0
  */
@@ -63,7 +64,11 @@ export class NgbPanelToggle {
 }
 
 /**
- * A directive to wrap an accordion panel header to contain any HTML markup and a toggling button with `NgbPanelToggle`
+ * A directive that wraps an accordion panel header with any HTML markup and a toggling button
+ * marked with [`NgbPanelToggle`](#/components/accordion/api#NgbPanelToggle).
+ * See the [header customization demo](#/components/accordion/examples#header) for more details.
+ *
+ * You can also use [`NgbPanelTitle`](#/components/accordion/api#NgbPanelTitle) to customize only the panel title.
  *
  * @since 4.1.0
  */
@@ -73,7 +78,9 @@ export class NgbPanelHeader {
 }
 
 /**
- * This directive should be used to wrap accordion panel titles that need to contain HTML markup or other directives.
+ * A directive that wraps only the panel title with HTML markup inside.
+ *
+ * You can also use [`NgbPanelHeader`](#/components/accordion/api#NgbPanelHeader) to customize the full panel header.
  */
 @Directive({selector: 'ng-template[ngbPanelTitle]'})
 export class NgbPanelTitle {
@@ -81,7 +88,7 @@ export class NgbPanelTitle {
 }
 
 /**
- * This directive must be used to wrap accordion panel content.
+ * A directive that wraps the accordion panel content.
  */
 @Directive({selector: 'ng-template[ngbPanelContent]'})
 export class NgbPanelContent {
@@ -89,37 +96,36 @@ export class NgbPanelContent {
 }
 
 /**
- * The NgbPanel directive represents an individual panel with the title and collapsible
- * content
+ * A directive that wraps an individual accordion panel with title and collapsible content.
  */
 @Directive({selector: 'ngb-panel'})
 export class NgbPanel implements AfterContentChecked {
   /**
-   *  A flag determining whether the panel is disabled or not.
-   *  When disabled, the panel cannot be toggled.
+   *  If `true`, the panel is disabled an can't be toggled.
    */
   @Input() disabled = false;
 
   /**
-   *  An optional id for the panel. The id should be unique.
-   *  If not provided, it will be auto-generated.
+   *  An optional id for the panel that must be unique on the page.
+   *
+   *  If not provided, it will be auto-generated in the `ngb-panel-xxx` format.
    */
   @Input() id = `ngb-panel-${nextId++}`;
 
-  /**
-   * A flag telling if the panel is currently open
-   */
   isOpen = false;
 
   /**
-   *  The title for the panel.
+   *  The panel title.
+   *
+   *  You can alternatively use [`NgbPanelTitle`](#/components/accordion/api#NgbPanelTitle) to set panel title.
    */
   @Input() title: string;
 
   /**
-   *  Accordion's types of panels to be applied per panel basis.
-   *  Bootstrap recognizes the following types: "primary", "secondary", "success", "danger", "warning", "info", "light"
-   * and "dark"
+   * Type of the current panel.
+   *
+   * Bootstrap provides styles for the following types: `'success'`, `'info'`, `'warning'`, `'danger'`, `'primary'`,
+   * `'secondary'`, `'light'` and `'dark'`.
    */
   @Input() type: string;
 
@@ -143,28 +149,32 @@ export class NgbPanel implements AfterContentChecked {
 }
 
 /**
- * The payload of the change event fired right before toggling an accordion panel
+ * An event emitted right before toggling an accordion panel.
  */
 export interface NgbPanelChangeEvent {
   /**
-   * Id of the accordion panel that is toggled
+   * The id of the accordion panel that is being toggled.
    */
   panelId: string;
 
   /**
-   * Whether the panel will be opened (true) or closed (false)
+   * The next state of the panel.
+   *
+   * `true` if it will be opened, `false` if closed.
    */
   nextState: boolean;
 
   /**
-   * Function that will prevent panel toggling if called
+   * Calling this function will prevent panel toggling.
    */
   preventDefault: () => void;
 }
 
 /**
- * The NgbAccordion directive is a collection of panels.
- * It can assure that only one panel can be opened at a time.
+ * Accordion is a collection of collapsible panels (bootstrap cards).
+ *
+ * It can ensure only one panel is opened at a time and allows to customize panel
+ * headers.
  */
 @Component({
   selector: 'ngb-accordion',
@@ -196,29 +206,37 @@ export class NgbAccordion implements AfterContentChecked {
   @ContentChildren(NgbPanel) panels: QueryList<NgbPanel>;
 
   /**
-   * An array or comma separated strings of panel identifiers that should be opened
+   * An array or comma separated strings of panel ids that should be opened **initially**.
+   *
+   * For subsequent changes use methods like `expand()`, `collapse()`, etc. and
+   * the `(panelChange)` event.
    */
   @Input() activeIds: string | string[] = [];
 
   /**
-   *  Whether the other panels should be closed when a panel is opened
+   *  If `true`, only one panel could be opened at a time.
+   *
+   *  Opening a new panel will close others.
    */
   @Input('closeOthers') closeOtherPanels: boolean;
 
   /**
-   * Whether the closed panels should be hidden without destroying them
+   * If `true`, panel content will be detached from DOM and not simply hidden when the panel is collapsed.
    */
   @Input() destroyOnHide = true;
 
   /**
-   *  Accordion's types of panels to be applied globally.
-   *  Bootstrap recognizes the following types: "primary", "secondary", "success", "danger", "warning", "info", "light"
-   * and "dark
+   * Type of panels.
+   *
+   * Bootstrap provides styles for the following types: `'success'`, `'info'`, `'warning'`, `'danger'`, `'primary'`,
+   * `'secondary'`, `'light'` and `'dark'`.
    */
   @Input() type: string;
 
   /**
-   * A panel change event fired right before the panel toggle happens. See NgbPanelChangeEvent for payload details
+   * Event emitted right before the panel toggle happens.
+   *
+   * See [NgbPanelChangeEvent](#/components/accordion/api#NgbPanelChangeEvent) for payload details.
    */
   @Output() panelChange = new EventEmitter<NgbPanelChangeEvent>();
 
@@ -228,18 +246,21 @@ export class NgbAccordion implements AfterContentChecked {
   }
 
   /**
-   * Checks if a panel with a given id is expanded or not.
+   * Checks if a panel with a given id is expanded.
    */
   isExpanded(panelId: string): boolean { return this.activeIds.indexOf(panelId) > -1; }
 
   /**
-   * Expands a panel with a given id. Has no effect if the panel is already expanded or disabled.
+   * Expands a panel with a given id.
+   *
+   * Has no effect if the panel is already expanded or disabled.
    */
   expand(panelId: string): void { this._changeOpenState(this._findPanelById(panelId), true); }
 
   /**
-   * Expands all panels if [closeOthers]="false". For the [closeOthers]="true" case will have no effect if there is an
-   * open panel, otherwise the first panel will be expanded.
+   * Expands all panels, if `[closeOthers]` is `false`.
+   *
+   * If `[closeOthers]` is `true`, it will expand the first panel, unless there is already a panel opened.
    */
   expandAll(): void {
     if (this.closeOtherPanels) {
@@ -252,19 +273,23 @@ export class NgbAccordion implements AfterContentChecked {
   }
 
   /**
-   * Collapses a panel with a given id. Has no effect if the panel is already collapsed or disabled.
+   * Collapses a panel with the given id.
+   *
+   * Has no effect if the panel is already collapsed or disabled.
    */
   collapse(panelId: string) { this._changeOpenState(this._findPanelById(panelId), false); }
 
   /**
-   * Collapses all open panels.
+   * Collapses all opened panels.
    */
   collapseAll() {
     this.panels.forEach((panel) => { this._changeOpenState(panel, false); });
   }
 
   /**
-   * Programmatically toggle a panel with a given id. Has no effect if the panel is disabled.
+   * Toggles a panel with the given id.
+   *
+   * Has no effect if the panel is disabled.
    */
   toggle(panelId: string) {
     const panel = this._findPanelById(panelId);

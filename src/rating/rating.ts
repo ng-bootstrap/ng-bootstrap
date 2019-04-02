@@ -18,16 +18,16 @@ import {Key} from '../util/key';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 /**
- * Context for the custom star display template
+ * The context for the custom star display template defined in the `starTemplate`.
  */
 export interface StarTemplateContext {
   /**
-   * Star fill percentage. An integer value between 0 and 100
+   * The star fill percentage, an integer in the `[0, 100]` range.
    */
   fill: number;
 
   /**
-   * Index of the star.
+   * Index of the star, starts with `0`.
    */
   index: number;
 }
@@ -39,7 +39,7 @@ const NGB_RATING_VALUE_ACCESSOR = {
 };
 
 /**
- * Rating directive that will take care of visualising a star rating bar.
+ * A directive that helps visualising and interacting with a star rating bar.
  */
 @Component({
   selector: 'ngb-rating',
@@ -77,47 +77,51 @@ export class NgbRating implements ControlValueAccessor,
 
 
   /**
-   * Maximal rating that can be given using this widget.
+   * The maximal rating that can be given.
    */
   @Input() max: number;
 
   /**
-   * Current rating. Can be a decimal value like 3.75
+   * The current rating. Could be a decimal value like `3.75`.
    */
   @Input() rate: number;
 
   /**
-   * A flag indicating if rating can be updated.
+   * If `true`, the rating can't be changed.
    */
   @Input() readonly: boolean;
 
   /**
-   * A flag indicating if rating can be reset to 0 on mouse click
+   * If `true`, the rating can be reset to `0` by mouse clicking currently set rating.
    */
   @Input() resettable: boolean;
 
   /**
-   * A template to override star display.
-   * Alternatively put a <ng-template> as the only child of <ngb-rating> element
+   * The template to override the way each star is displayed.
+   *
+   * Alternatively put an `<ng-template>` as the only child of your `<ngb-rating>` element
    */
   @Input() starTemplate: TemplateRef<StarTemplateContext>;
   @ContentChild(TemplateRef) starTemplateFromContent: TemplateRef<StarTemplateContext>;
 
   /**
-   * An event fired when a user is hovering over a given rating.
-   * Event's payload equals to the rating being hovered over.
+   * An event emitted when the user is hovering over a given rating.
+   *
+   * Event payload equals to the rating being hovered over.
    */
   @Output() hover = new EventEmitter<number>();
 
   /**
-   * An event fired when a user stops hovering over a given rating.
-   * Event's payload equals to the rating of the last item being hovered over.
+   * An event emitted when the user stops hovering over a given rating.
+   *
+   * Event payload equals to the rating of the last item being hovered over.
    */
   @Output() leave = new EventEmitter<number>();
 
   /**
-   * An event fired when a user selects a new rating.
-   * Event's payload equals to the newly selected rating.
+   * An event emitted when the user selects a new rating.
+   *
+   * Event payload equals to the newly selected rating.
    */
   @Output() rateChange = new EventEmitter<number>(true);
 

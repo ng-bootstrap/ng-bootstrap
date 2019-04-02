@@ -27,20 +27,23 @@ import {filter, map, switchMap, takeUntil} from 'rxjs/operators';
 let nextId = 0;
 
 /**
- * Represents an individual slide to be used within a carousel.
+ * A directive that wraps the individual carousel slide.
  */
 @Directive({selector: 'ng-template[ngbSlide]'})
 export class NgbSlide {
   /**
-   * Unique slide identifier. Must be unique for the entire document for proper accessibility support.
-   * Will be auto-generated if not provided.
+   * Slide id that must be unique for the entire document.
+   *
+   * If not provided, will be generated in the `ngb-slide-xx` format.
    */
   @Input() id = `ngb-slide-${nextId++}`;
   constructor(public tplRef: TemplateRef<any>) {}
 }
 
 /**
- * Directive to easily create carousels based on Bootstrap's markup.
+ * Carousel is a component to easily create and control slideshows.
+ *
+ * Allows to set intervals, change the way user interacts with the slides and provides a programmatic API.
  */
 @Component({
   selector: 'ngb-carousel',
@@ -84,47 +87,52 @@ export class NgbCarousel implements AfterContentChecked,
   private _stop$ = new Subject<void>();
 
   /**
-   * The active slide id.
+   * The slide id that should be displayed **initially**.
+   *
+   * For subsequent interactions use methods `select()`, `next()`, etc. and the `(slide)` output.
    */
   @Input() activeId: string;
 
-
   /**
-   * Amount of time in milliseconds before next slide is shown.
+   * Time in milliseconds before the next slide is shown.
    */
   @Input() interval: number;
 
   /**
-   * Whether can wrap from the last to the first slide.
+   * If `true`, will 'wrap' the carousel by switching from the last slide back to the first.
    */
   @Input() wrap: boolean;
 
   /**
-   * A flag for allowing navigation via keyboard
+   * If `true`, allows to interact with carousel using keyboard 'arrow left' and 'arrow right'.
    */
   @Input() keyboard: boolean;
 
   /**
-   * A flag to enable slide cycling pause/resume on mouseover.
+   * If `true`, will pause slide switching when mouse cursor hovers the slide.
+   *
    * @since 2.2.0
    */
   @Input() pauseOnHover: boolean;
 
   /**
-   * A flag to show / hide navigation arrows.
+   * If `true`, 'previous' and 'next' navigation arrows will be visible on the slide.
+   *
    * @since 2.2.0
    */
   @Input() showNavigationArrows: boolean;
 
   /**
-   * A flag to show / hide navigation indicators.
+   * If `true`, navigation indicators at the bottom of the slide will be visible.
+   *
    * @since 2.2.0
    */
   @Input() showNavigationIndicators: boolean;
 
   /**
-   * A carousel slide event fired when the slide transition is completed.
-   * See NgbSlideEvent for payload details
+   * An event emitted right after the slide transition is completed.
+   *
+   * See [`NgbSlideEvent`](#/components/carousel/api#NgbSlideEvent) for payload details.
    */
   @Output() slide = new EventEmitter<NgbSlideEvent>();
 
@@ -171,27 +179,27 @@ export class NgbCarousel implements AfterContentChecked,
   }
 
   /**
-   * Navigate to a slide with the specified identifier.
+   * Navigates to a slide with the specified identifier.
    */
   select(slideId: string) { this._cycleToSelected(slideId, this._getSlideEventDirection(this.activeId, slideId)); }
 
   /**
-   * Navigate to the next slide.
+   * Navigates to the previous slide.
    */
   prev() { this._cycleToSelected(this._getPrevSlide(this.activeId), NgbSlideEventDirection.RIGHT); }
 
   /**
-   * Navigate to the next slide.
+   * Navigates to the next slide.
    */
   next() { this._cycleToSelected(this._getNextSlide(this.activeId), NgbSlideEventDirection.LEFT); }
 
   /**
-   * Stops the carousel from cycling through items.
+   * Pauses cycling through the slides.
    */
   pause() { this._stop$.next(); }
 
   /**
-   * Restarts cycling through the carousel slides from left to right.
+   * Restarts cycling through the slides from left to right.
    */
   cycle() { this._start$.next(); }
 
@@ -240,27 +248,29 @@ export class NgbCarousel implements AfterContentChecked,
 }
 
 /**
- * The payload of the slide event fired when the slide transition is completed
+ * A slide change event emitted right after the slide transition is completed.
  */
 export interface NgbSlideEvent {
   /**
-   * Previous slide id
+   * The previous slide id.
    */
   prev: string;
 
   /**
-   * New slide ids
+   * The current slide id.
    */
   current: string;
 
   /**
-   * Slide event direction
+   * The slide event direction.
+   *
+   * Possible values are `'left' | 'right'`.
    */
   direction: NgbSlideEventDirection;
 }
 
 /**
- * Enum to define the carousel slide event direction
+ * Defines the carousel slide transition direction.
  */
 export enum NgbSlideEventDirection {
   LEFT = <any>'left',

@@ -21,7 +21,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
 };
 
 /**
- * A lightweight & configurable timepicker directive.
+ * A directive that helps with wth picking hours, minutes and seconds.
  */
 @Component({
   selector: 'ngb-timepicker',
@@ -118,17 +118,17 @@ export class NgbTimepicker implements ControlValueAccessor,
   @Input() meridian: boolean;
 
   /**
-   * Whether to display the spinners above and below the inputs.
+   * If `true`, the spinners above and below inputs are visible.
    */
   @Input() spinners: boolean;
 
   /**
-   * Whether to display seconds input.
+   * If `true`, it is possible to select seconds.
    */
   @Input() seconds: boolean;
 
   /**
-   * Number of hours to increase or decrease when using a button.
+   * The number of hours to add/subtract when clicking hour spinners.
    */
   @Input()
   set hourStep(step: number) {
@@ -138,7 +138,7 @@ export class NgbTimepicker implements ControlValueAccessor,
   get hourStep(): number { return this._hourStep; }
 
   /**
-   * Number of minutes to increase or decrease when using a button.
+   * The number of minutes to add/subtract when clicking minute spinners.
    */
   @Input()
   set minuteStep(step: number) {
@@ -148,7 +148,7 @@ export class NgbTimepicker implements ControlValueAccessor,
   get minuteStep(): number { return this._minuteStep; }
 
   /**
-   * Number of seconds to increase or decrease when using a button.
+   * The number of seconds to add/subtract when clicking second spinners.
    */
   @Input()
   set secondStep(step: number) {
@@ -158,12 +158,12 @@ export class NgbTimepicker implements ControlValueAccessor,
   get secondStep(): number { return this._secondStep; }
 
   /**
-   * To make timepicker readonly
+   * If `true`, the timepicker is readonly and can't be changed.
    */
   @Input() readonlyInputs: boolean;
 
   /**
-   * To set the size of the inputs and button
+   * The size of inputs and buttons.
    */
   @Input() size: 'small' | 'medium' | 'large';
 

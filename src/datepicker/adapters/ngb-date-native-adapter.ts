@@ -4,19 +4,20 @@ import {NgbDateStruct} from '../ngb-date-struct';
 import {isInteger} from '../../util/util';
 
 /**
-* NgbDateAdapter implementation that allows using native javascript date as a user date model.
+ * [`NgbDateAdapter`](#/components/datepicker/api#NgbDateAdapter) implementation that uses
+ * native javascript dates as a user date model.
  */
 @Injectable()
 export class NgbDateNativeAdapter extends NgbDateAdapter<Date> {
   /**
-   * Converts native date to a NgbDateStruct
+   * Converts a native `Date` to a `NgbDateStruct`.
    */
   fromModel(date: Date): NgbDateStruct {
     return (date instanceof Date && !isNaN(date.getTime())) ? this._fromNativeDate(date) : null;
   }
 
   /**
-   * Converts a NgbDateStruct to a native date
+   * Converts a `NgbDateStruct` to a native `Date`.
    */
   toModel(date: NgbDateStruct): Date {
     return date && isInteger(date.year) && isInteger(date.month) && isInteger(date.day) ? this._toNativeDate(date) :

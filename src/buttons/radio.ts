@@ -12,8 +12,10 @@ const NGB_RADIO_VALUE_ACCESSOR = {
 let nextId = 0;
 
 /**
- * Easily create Bootstrap-style radio buttons. A value of a selected button is bound to a variable
- * specified via ngModel.
+ * Allows to easily create Bootstrap-style radio buttons.
+ *
+ * Integrates with forms, so the value of a checked button is bound to the underlying form control
+ * either in a reactive or template-driven way.
  */
 @Directive({selector: '[ngbRadioGroup]', host: {'role': 'radiogroup'}, providers: [NGB_RADIO_VALUE_ACCESSOR]})
 export class NgbRadioGroup implements ControlValueAccessor {
@@ -25,8 +27,12 @@ export class NgbRadioGroup implements ControlValueAccessor {
   set disabled(isDisabled: boolean) { this.setDisabledState(isDisabled); }
 
   /**
-   * The name of the group. Unless enclosed inputs specify a name, this name is used as the name of the
-   * enclosed inputs. If not specified, a name is generated automatically.
+   * Name of the radio group applied to radio input elements.
+   *
+   * Will be applied to all radio input elements inside the group,
+   * unless [`NgbRadio`](#/components/buttons/api#NgbRadio)'s specify names themselves.
+   *
+   * If not provided, will be generated in the `ngb-radio-xx` format.
    */
   @Input() name = `ngb-radio-${nextId++}`;
 
@@ -64,7 +70,8 @@ export class NgbRadioGroup implements ControlValueAccessor {
 
 
 /**
- * Marks an input of type "radio" as part of the NgbRadioGroup.
+ * A directive that marks an input of type "radio" as a part of the
+ * [`NgbRadioGroup`](#/components/buttons/api#NgbRadioGroup).
  */
 @Directive({
   selector: '[ngbButton][type=radio]',
@@ -83,13 +90,15 @@ export class NgbRadio implements OnDestroy {
   private _value: any = null;
 
   /**
-   * The name of the input. All inputs of a group should have the same name. If not specified,
+   * The value for the 'name' property of the input element.
+   *
+   * All inputs of the radio group should have the same name. If not specified,
    * the name of the enclosing group is used.
    */
   @Input() name: string;
 
   /**
-   * You can specify model value of a given radio by binding to the value property.
+   * The form control value when current radio button is checked.
    */
   @Input('value')
   set value(value: any) {
@@ -100,7 +109,7 @@ export class NgbRadio implements OnDestroy {
   }
 
   /**
-   * A flag indicating if a given radio button is disabled.
+   * If `true`, current radio button will be disabled.
    */
   @Input('disabled')
   set disabled(isDisabled: boolean) {

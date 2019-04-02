@@ -47,8 +47,9 @@ const NGB_DATEPICKER_VALIDATOR = {
 };
 
 /**
- * A directive that makes it possible to have datepickers on input fields.
- * Manages integration with the input field itself (data entry) and ngModel (validation etc.).
+ * A directive that allows to stick a datepicker popup to an input field.
+ *
+ * Manages interaction with the input field itself, does value formatting and provides forms integration.
  */
 @Directive({
   selector: 'input[ngbDatepicker]',
@@ -73,115 +74,149 @@ export class NgbInputDatepicker implements OnChanges,
   /**
    * Indicates whether the datepicker popup should be closed automatically after date selection / outside click or not.
    *
-   * By default the popup will close on both date selection and outside click. If the value is 'false' the popup has to
-   * be closed manually via '.close()' or '.toggle()' methods. If the value is set to 'inside' the popup will close on
-   * date selection only. For the 'outside' the popup will close only on the outside click.
+   * * `true` - the popup will close on both date selection and outside click.
+   * * `false` - the popup can only be closed manually via `close()` or `toggle()` methods.
+   * * `"inside"` - the popup will close on date selection, but not outside clicks.
+   * * `"outside"` - the popup will close only on the outside click and not on date selection/inside clicks.
    *
    * @since 3.0.0
    */
   @Input() autoClose: boolean | 'inside' | 'outside' = true;
 
   /**
-   * Reference for the custom template for the day display
+   * The reference to a custom template for the day.
+   *
+   * Allows to completely override the way a day 'cell' in the calendar is displayed.
+   *
+   * See [`DayTemplateContext`](#/components/datepicker/api#DayTemplateContext) for the data you get inside.
    */
   @Input() dayTemplate: TemplateRef<DayTemplateContext>;
 
   /**
-   * Callback to pass any arbitrary data to the custom day template context
-   * 'Current' contains the month that will be displayed in the view
+   * The callback to pass any arbitrary data to the template cell via the
+   * [`DayTemplateContext`](#/components/datepicker/api#DayTemplateContext)'s `data` parameter.
+   *
+   * `current` is the month that is currently displayed by the datepicker.
    *
    * @since 3.3.0
    */
   @Input() dayTemplateData: (date: NgbDate, current: {year: number, month: number}) => any;
 
   /**
-   * Number of months to display
+   * The number of months to display.
    */
   @Input() displayMonths: number;
 
   /**
-   * First day of the week. With default calendar we use ISO 8601: 1=Mon ... 7=Sun
+   * The first day of the week.
+   *
+   * With default calendar we use ISO 8601: 'weekday' is 1=Mon ... 7=Sun.
    */
   @Input() firstDayOfWeek: number;
 
   /**
-   * Reference for the custom template for the footer inside datepicker
+   * The reference to the custom template for the datepicker footer.
    *
    * @since 3.3.0
    */
   @Input() footerTemplate: TemplateRef<any>;
 
   /**
-   * Callback to mark a given date as disabled.
-   * 'Current' contains the month that will be displayed in the view
+   * The callback to mark some dates as disabled.
+   *
+   * It is called for each new date when navigating to a different month.
+   *
+   * `current` is the month that is currently displayed by the datepicker.
    */
   @Input() markDisabled: (date: NgbDate, current: {year: number, month: number}) => boolean;
 
   /**
-   * Min date for the navigation. If not provided will be 10 years before today or `startDate`
+   * The earliest date that can be displayed or selected. Also used for form validation.
+   *
+   * If not provided, 'year' select box will display 10 years before the current month.
    */
   @Input() minDate: NgbDateStruct;
 
   /**
-   * Max date for the navigation. If not provided will be 10 years from today or `startDate`
+   * The latest date that can be displayed or selected. Also used for form validation.
+   *
+   * If not provided, 'year' select box will display 10 years after the current month.
    */
   @Input() maxDate: NgbDateStruct;
 
   /**
-   * Navigation type: `select` (default with select boxes for month and year), `arrows`
-   * (without select boxes, only navigation arrows) or `none` (no navigation at all)
+   * Navigation type.
+   *
+   * * `"select"` - select boxes for month and navigation arrows
+   * * `"arrows"` - only navigation arrows
+   * * `"none"` - no navigation visible at all
    */
   @Input() navigation: 'select' | 'arrows' | 'none';
 
   /**
-   * The way to display days that don't belong to current month: `visible` (default),
-   * `hidden` (not displayed) or `collapsed` (not displayed with empty space collapsed)
+   * The way of displaying days that don't belong to the current month.
+   *
+   * * `"visible"` - days are visible
+   * * `"hidden"` - days are hidden, white space preserved
+   * * `"collapsed"` - days are collapsed, so the datepicker height might change between months
+   *
+   * For the 2+ months view, days in between months are never shown.
    */
   @Input() outsideDays: 'visible' | 'collapsed' | 'hidden';
 
   /**
-   * Placement of a datepicker popup accepts:
-   *    "top", "top-left", "top-right", "bottom", "bottom-left", "bottom-right",
-   *    "left", "left-top", "left-bottom", "right", "right-top", "right-bottom"
-   *  array or a space separated string of above values
+   * The preferred placement of the datepicker popup.
+   *
+   * Possible values are `"top"`, `"top-left"`, `"top-right"`, `"bottom"`, `"bottom-left"`,
+   * `"bottom-right"`, `"left"`, `"left-top"`, `"left-bottom"`, `"right"`, `"right-top"`,
+   * `"right-bottom"`
+   *
+   * Accepts an array of strings or a string with space separated possible values.
+   *
+   * The default order of preference is `"bottom-left bottom-right top-left top-right"`
    */
   @Input() placement: PlacementArray = ['bottom-left', 'bottom-right', 'top-left', 'top-right'];
 
   /**
-   * Whether to display days of the week
+   * If `true`, weekdays will be displayed.
    */
   @Input() showWeekdays: boolean;
 
   /**
-   * Whether to display week numbers
+   * If `true`, week numbers will be displayed.
    */
   @Input() showWeekNumbers: boolean;
 
   /**
-   * Date to open calendar with.
-   * With default calendar we use ISO 8601: 'month' is 1=Jan ... 12=Dec.
-   * If nothing or invalid date provided, calendar will open with current month.
-   * Use 'navigateTo(date)' as an alternative
+   * The date to open calendar with.
+   *
+   * With the default calendar we use ISO 8601: 'month' is 1=Jan ... 12=Dec.
+   * If nothing or invalid date is provided, calendar will open with current month.
+   *
+   * You could use `navigateTo(date)` method as an alternative.
    */
   @Input() startDate: {year: number, month: number, day?: number};
 
   /**
    * A selector specifying the element the datepicker popup should be appended to.
-   * Currently only supports "body".
+   *
+   * Currently only supports `"body"`.
    */
   @Input() container: string;
 
   /**
-   * An event fired when user selects a date using keyboard or mouse.
-   * The payload of the event is currently selected NgbDate.
+   * An event emitted when user selects a date using keyboard or mouse.
+   *
+   * The payload of the event is currently selected `NgbDate`.
    *
    * @since 1.1.1
    */
   @Output() dateSelect = new EventEmitter<NgbDate>();
 
   /**
-   * An event fired when navigation happens and currently displayed month changes.
-   * See NgbDatepickerNavigateEvent for the payload info.
+   * Event emitted right after the navigation happens and displayed month changes.
+   *
+   * See [`NgbDatepickerNavigateEvent`](#/components/datepicker/api#NgbDatepickerNavigateEvent) for the payload info.
    */
   @Output() navigate = new EventEmitter<NgbDatepickerNavigateEvent>();
 
@@ -268,7 +303,9 @@ export class NgbInputDatepicker implements OnChanges,
   isOpen() { return !!this._cRef; }
 
   /**
-   * Opens the datepicker with the selected date indicated by the ngModel value.
+   * Opens the datepicker popup.
+   *
+   * If the related form control contains a valid date, the corresponding month will be opened.
    */
   open() {
     if (!this.isOpen()) {
@@ -319,7 +356,7 @@ export class NgbInputDatepicker implements OnChanges,
   }
 
   /**
-   * Toggles the datepicker popup (opens when closed and closes when opened).
+   * Toggles the datepicker popup.
    */
   toggle() {
     if (this.isOpen()) {
@@ -330,10 +367,12 @@ export class NgbInputDatepicker implements OnChanges,
   }
 
   /**
-   * Navigates current view to provided date.
-   * With default calendar we use ISO 8601: 'month' is 1=Jan ... 12=Dec.
+   * Navigates to the provided date.
+   *
+   * With the default calendar we use ISO 8601: 'month' is 1=Jan ... 12=Dec.
    * If nothing or invalid date provided calendar will open current month.
-   * Use 'startDate' input as an alternative
+   *
+   * Use the `[startDate]` input as an alternative.
    */
   navigateTo(date?: {year: number, month: number, day?: number}) {
     if (this.isOpen()) {

@@ -2,7 +2,8 @@ import {Injectable} from '@angular/core';
 import {PlacementArray} from '../util/positioning';
 
 /**
- * Configuration service for the NgbDropdown directive.
+ * A configuration service for the [`NgbDropdown`](#/components/dropdown/api#NgbDropdown) component.
+ *
  * You can inject this service, typically in your root component, and customize the values of its properties in
  * order to provide default values for all the dropdowns used in the application.
  */

@@ -39,21 +39,21 @@ const NGB_DATEPICKER_VALUE_ACCESSOR = {
 };
 
 /**
- * The payload of the datepicker navigation event
+ * An event emitted right before the navigation happens and the month displayed by the datepicker changes.
  */
 export interface NgbDatepickerNavigateEvent {
   /**
-   * Currently displayed month
+   * The currently displayed month.
    */
   current: {year: number, month: number};
 
   /**
-   * Month we're navigating to
+   * The month we're navigating to.
    */
   next: {year: number, month: number};
 
   /**
-   * Function that will prevent navigation if called
+   * Calling this function will prevent navigation from happening.
    *
    * @since 4.1.0
    */
@@ -61,7 +61,9 @@ export interface NgbDatepickerNavigateEvent {
 }
 
 /**
- * A lightweight and highly configurable datepicker directive
+ * A highly configurable component that helps you with selecting calendar dates.
+ *
+ * `NgbDatepicker` is meant to be displayed inline on a page or put inside a popup.
  */
 @Component({
   exportAs: 'ngbDatepicker',
@@ -125,90 +127,117 @@ export class NgbDatepicker implements OnDestroy,
   private _destroyed$ = new Subject<void>();
 
   /**
-   * Reference for the custom template for the day display
+   * The reference to a custom template for the day.
+   *
+   * Allows to completely override the way a day 'cell' in the calendar is displayed.
+   *
+   * See [`DayTemplateContext`](#/components/datepicker/api#DayTemplateContext) for the data you get inside.
    */
   @Input() dayTemplate: TemplateRef<DayTemplateContext>;
 
   /**
-   * Callback to pass any arbitrary data to the custom day template context
-   * 'Current' contains the month that will be displayed in the view
+   * The callback to pass any arbitrary data to the template cell via the
+   * [`DayTemplateContext`](#/components/datepicker/api#DayTemplateContext)'s `data` parameter.
+   *
+   * `current` is the month that is currently displayed by the datepicker.
    *
    * @since 3.3.0
    */
   @Input() dayTemplateData: (date: NgbDate, current: {year: number, month: number}) => any;
 
   /**
-   * Number of months to display
+   * The number of months to display.
    */
   @Input() displayMonths: number;
 
   /**
-   * First day of the week. With default calendar we use ISO 8601: 'weekday' is 1=Mon ... 7=Sun
+   * The first day of the week.
+   *
+   * With default calendar we use ISO 8601: 'weekday' is 1=Mon ... 7=Sun.
    */
   @Input() firstDayOfWeek: number;
 
   /**
-   * Reference for the custom template for the footer
+   * The reference to the custom template for the datepicker footer.
    *
    * @since 3.3.0
    */
   @Input() footerTemplate: TemplateRef<any>;
 
   /**
-   * Callback to mark a given date as disabled.
-   * 'Current' contains the month that will be displayed in the view
+   * The callback to mark some dates as disabled.
+   *
+   * It is called for each new date when navigating to a different month.
+   *
+   * `current` is the month that is currently displayed by the datepicker.
    */
   @Input() markDisabled: (date: NgbDate, current: {year: number, month: number}) => boolean;
 
   /**
-   * Max date for the navigation. If not provided, 'year' select box will display 10 years after current month
+   * The latest date that can be displayed or selected.
+   *
+   * If not provided, 'year' select box will display 10 years after the current month.
    */
   @Input() maxDate: NgbDateStruct;
 
   /**
-   * Min date for the navigation. If not provided, 'year' select box will display 10 years before current month
+   * The earliest date that can be displayed or selected.
+   *
+   * If not provided, 'year' select box will display 10 years before the current month.
    */
   @Input() minDate: NgbDateStruct;
 
   /**
-   * Navigation type: `select` (default with select boxes for month and year), `arrows`
-   * (without select boxes, only navigation arrows) or `none` (no navigation at all)
+   * Navigation type.
+   *
+   * * `"select"` - select boxes for month and navigation arrows
+   * * `"arrows"` - only navigation arrows
+   * * `"none"` - no navigation visible at all
    */
   @Input() navigation: 'select' | 'arrows' | 'none';
 
   /**
-   * The way to display days that don't belong to current month: `visible` (default),
-   * `hidden` (not displayed) or `collapsed` (not displayed with empty space collapsed)
+   * The way of displaying days that don't belong to the current month.
+   *
+   * * `"visible"` - days are visible
+   * * `"hidden"` - days are hidden, white space preserved
+   * * `"collapsed"` - days are collapsed, so the datepicker height might change between months
+   *
+   * For the 2+ months view, days in between months are never shown.
    */
   @Input() outsideDays: 'visible' | 'collapsed' | 'hidden';
 
   /**
-   * Whether to display days of the week
+   * If `true`, weekdays will be displayed.
    */
   @Input() showWeekdays: boolean;
 
   /**
-   * Whether to display week numbers
+   * If `true`, week numbers will be displayed.
    */
   @Input() showWeekNumbers: boolean;
 
   /**
-   * Date to open calendar with.
-   * With default calendar we use ISO 8601: 'month' is 1=Jan ... 12=Dec.
-   * If nothing or invalid date provided, calendar will open with current month.
-   * Use 'navigateTo(date)' as an alternative
+   * The date to open calendar with.
+   *
+   * With the default calendar we use ISO 8601: 'month' is 1=Jan ... 12=Dec.
+   * If nothing or invalid date is provided, calendar will open with current month.
+   *
+   * You could use `navigateTo(date)` method as an alternative.
    */
   @Input() startDate: {year: number, month: number, day?: number};
 
   /**
-   * An event fired right before the navigation happens and currently displayed month changes.
-   * See NgbDatepickerNavigateEvent for the payload info.
+   * An event emitted right before the navigation happens and displayed month changes.
+   *
+   * See [`NgbDatepickerNavigateEvent`](#/components/datepicker/api#NgbDatepickerNavigateEvent) for the payload info.
    */
   @Output() navigate = new EventEmitter<NgbDatepickerNavigateEvent>();
 
   /**
-   * An event fired when user selects a date using keyboard or mouse.
-   * The payload of the event is currently selected NgbDate.
+   * An event emitted when user selects a date using keyboard or mouse.
+   *
+   * The payload of the event is currently selected `NgbDate`.
    */
   @Output() select = new EventEmitter<NgbDate>();
 
@@ -268,9 +297,6 @@ export class NgbDatepicker implements OnDestroy,
     });
   }
 
-  /**
-   * Manually focus the focusable day in the datepicker
-   */
   focus() {
     this._ngZone.onStable.asObservable().pipe(take(1)).subscribe(() => {
       const elementToFocus =
@@ -282,10 +308,12 @@ export class NgbDatepicker implements OnDestroy,
   }
 
   /**
-   * Navigates current view to provided date.
-   * With default calendar we use ISO 8601: 'month' is 1=Jan ... 12=Dec.
+   * Navigates to the provided date.
+   *
+   * With the default calendar we use ISO 8601: 'month' is 1=Jan ... 12=Dec.
    * If nothing or invalid date provided calendar will open current month.
-   * Use 'startDate' input as an alternative
+   *
+   * Use the `[startDate]` input as an alternative.
    */
   navigateTo(date?: {year: number, month: number, day?: number}) {
     this._service.open(NgbDate.from(date ? date.day ? date as NgbDateStruct : {...date, day: 1} : null));

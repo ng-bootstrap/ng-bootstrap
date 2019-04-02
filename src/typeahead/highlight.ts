@@ -2,8 +2,12 @@ import {Component, Input, OnChanges, ChangeDetectionStrategy, SimpleChanges, Vie
 import {regExpEscape, toString} from '../util/util';
 
 /**
- * A component that can be used inside a custom result template in order to highlight the term inside the text of the
- * result
+ * A component that helps with text highlighting.
+ *
+ * If splits the `result` text into parts that contain the searched `term` and generates the HTML markup to simplify
+ * highlighting:
+ *
+ * Ex. `result="Alaska"` and `term="as"` will produce `Al<span class="ngb-highlight">as</span>ka`.
  */
 @Component({
   selector: 'ngb-highlight',
@@ -18,17 +22,19 @@ export class NgbHighlight implements OnChanges {
   parts: string[];
 
   /**
-   * The CSS class of the span elements wrapping the term inside the result
+   * The CSS class for `<span>` elements wrapping the `term` inside the `result`.
    */
   @Input() highlightClass = 'ngb-highlight';
 
   /**
-   * The result text to display. If the term is found inside this text, it's highlighted
+   * The text highlighting is added to.
+   *
+   * If the `term` is found inside this text, it will be highlighted.
    */
   @Input() result: string;
 
   /**
-   * The searched term
+   * The term to be highlighted.
    */
   @Input() term: string;
 

@@ -1,48 +1,62 @@
 import {Injectable, Injector} from '@angular/core';
 
 /**
- * Represent options available when opening new modal windows.
+ * Options available when opening new modal windows with `NgbModal.open()` method.
  */
 export interface NgbModalOptions {
   /**
-   * Sets the aria attribute aria-labelledby to a modal window.
+   * `aria-labelledby` attribute value to set on the modal window.
    *
    * @since 2.2.0
    */
   ariaLabelledBy?: string;
 
   /**
-   * Whether a backdrop element should be created for a given modal (true by default).
-   * Alternatively, specify 'static' for a backdrop which doesn't close the modal on click.
+   * If `true`, the backdrop element will be created for a given modal.
+   *
+   * Alternatively, specify `'static'` for a backdrop which doesn't close the modal on click.
+   *
+   * Default value is `true`.
    */
   backdrop?: boolean | 'static';
 
   /**
-   * Function called when a modal will be dismissed.
-   * If this function returns false, the promise is resolved with false or the promise is rejected, the modal is not
-   * dismissed.
+   * Callback right before the modal will be dismissed.
+   *
+   * If this function returns:
+   * * `false`
+   * * a promise resolved with `false`
+   * * a promise that is rejected
+   *
+   * then the modal won't be dismissed.
    */
   beforeDismiss?: () => boolean | Promise<boolean>;
 
   /**
-   * To center the modal vertically (false by default).
+   * If `true`, the modal will be centered vertically.
+   *
+   * Default value is `false`.
    *
    * @since 1.1.0
    */
   centered?: boolean;
 
   /**
-   * An element to which to attach newly opened modal windows.
+   * A selector specifying the element all new modal windows should be appended to.
+   *
+   * If not specified, will be `body`.
    */
   container?: string;
 
   /**
-   * Injector to use for modal content.
+   * The `Injector` to use for modal content.
    */
   injector?: Injector;
 
   /**
-   * Whether to close the modal when escape key is pressed (true by default).
+   * If `true`, the modal will be closed when `Escape` key is pressed
+   *
+   * Default value is `true`.
    */
   keyboard?: boolean;
 
@@ -52,12 +66,12 @@ export interface NgbModalOptions {
   size?: 'sm' | 'lg';
 
   /**
-   * Custom class to append to the modal window
+   * A custom class to append to the modal window.
    */
   windowClass?: string;
 
   /**
-   * Custom class to append to the modal backdrop
+   * A custom class to append to the modal backdrop.
    *
    * @since 1.1.0
    */
@@ -65,9 +79,10 @@ export interface NgbModalOptions {
 }
 
 /**
-* Configuration object token for the NgbModal service.
-* You can provide this configuration, typically in your root module in order to provide default option values for every
-* modal.
+ * A configuration service for the [`NgbModal`](#/components/modal/api#NgbModal) service.
+ *
+ * You can inject this service, typically in your root component, and customize the values of its properties in
+ * order to provide default values for all modals used in the application.
 *
 * @since 3.1.0
 */

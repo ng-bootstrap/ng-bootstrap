@@ -44,68 +44,85 @@ export class NgbTooltipWindow {
 }
 
 /**
- * A lightweight, extensible directive for fancy tooltip creation.
+ * A lightweight and extensible directive for fancy tooltip creation.
  */
 @Directive({selector: '[ngbTooltip]', exportAs: 'ngbTooltip'})
 export class NgbTooltip implements OnInit, OnDestroy {
   /**
-   * Indicates whether the tooltip should be closed on Escape key and inside/outside clicks.
+   * Indicates whether the tooltip should be closed on `Escape` key and inside/outside clicks:
    *
-   * - true (default): closes on both outside and inside clicks as well as Escape presses
-   * - false: disables the autoClose feature (NB: triggers still apply)
-   * - 'inside': closes on inside clicks as well as Escape presses
-   * - 'outside': closes on outside clicks (sometimes also achievable through triggers)
-   * as well as Escape presses
+   * * `true` - closes on both outside and inside clicks as well as `Escape` presses
+   * * `false` - disables the autoClose feature (NB: triggers still apply)
+   * * `"inside"` - closes on inside clicks as well as Escape presses
+   * * `"outside"` - closes on outside clicks (sometimes also achievable through triggers)
+   * as well as `Escape` presses
    *
    * @since 3.0.0
    */
   @Input() autoClose: boolean | 'inside' | 'outside';
+
   /**
-    * Placement of a tooltip accepts:
-    *    "top", "top-left", "top-right", "bottom", "bottom-left", "bottom-right",
-    *    "left", "left-top", "left-bottom", "right", "right-top", "right-bottom",
-    *  array or a space separated string of above values
-    */
+   * The preferred placement of the tooltip.
+   *
+   * Possible values are `"top"`, `"top-left"`, `"top-right"`, `"bottom"`, `"bottom-left"`,
+   * `"bottom-right"`, `"left"`, `"left-top"`, `"left-bottom"`, `"right"`, `"right-top"`,
+   * `"right-bottom"`
+   *
+   * Accepts an array of strings or a string with space separated possible values.
+   *
+   * The default order of preference is `"auto"` (same as the sequence above).
+   */
   @Input() placement: PlacementArray;
+
   /**
-   * Specifies events that should trigger. Supports a space separated list of event names.
+   * Specifies events that should trigger the tooltip.
+   *
+   * Supports a space separated list of event names.
+   * For more details see the [triggers demo](#/components/tooltip/examples#triggers).
    */
   @Input() triggers: string;
+
   /**
    * A selector specifying the element the tooltip should be appended to.
-   * Currently only supports "body".
+   *
+   * Currently only supports `"body"`.
    */
   @Input() container: string;
+
   /**
-   * A flag indicating if a given tooltip is disabled and should not be displayed.
+   * If `true`, tooltip is disabled and won't be displayed.
    *
    * @since 1.1.0
    */
   @Input() disableTooltip: boolean;
+
   /**
-   * An optional class applied to ngb-tooltip-window
+   * An optional class applied to the tooltip window element.
    *
    * @since 3.2.0
    */
   @Input() tooltipClass: string;
+
   /**
-   * Opening delay in ms. Works only for non-manual opening triggers.
+   * The opening delay in ms. Works only for "non-manual" opening triggers defined by the `triggers` input.
    *
    * @since 4.1.0
    */
   @Input() openDelay: number;
+
   /**
-   * Closing delay in ms. Works only for non-manual closing triggers.
+   * The closing delay in ms. Works only for "non-manual" opening triggers defined by the `triggers` input.
    *
    * @since 4.1.0
    */
   @Input() closeDelay: number;
+
   /**
-   * Emits an event when the tooltip is shown
+   * An event emitted when the tooltip is shown. Contains no payload.
    */
   @Output() shown = new EventEmitter();
   /**
-   * Emits an event when the tooltip is hidden
+   * An event emitted when the popover is hidden. Contains no payload.
    */
   @Output() hidden = new EventEmitter();
 
@@ -141,7 +158,9 @@ export class NgbTooltip implements OnInit, OnDestroy {
   }
 
   /**
-   * Content to be displayed as tooltip. If falsy, the tooltip won't open.
+   * The string content or a `TemplateRef` for the content to be displayed in the tooltip.
+   *
+   * If the content if falsy, the tooltip won't open.
    */
   @Input()
   set ngbTooltip(value: string | TemplateRef<any>) {
@@ -154,8 +173,10 @@ export class NgbTooltip implements OnInit, OnDestroy {
   get ngbTooltip() { return this._ngbTooltip; }
 
   /**
-   * Opens an element’s tooltip. This is considered a “manual” triggering of the tooltip.
-   * The context is an optional value to be injected into the tooltip template when it is created.
+   * Opens the tooltip.
+   *
+   * This is considered to be a "manual" triggering.
+   * The `context` is an optional value to be injected into the tooltip template when it is created.
    */
   open(context?: any) {
     if (!this._windowRef && this._ngbTooltip && !this.disableTooltip) {
@@ -181,7 +202,9 @@ export class NgbTooltip implements OnInit, OnDestroy {
   }
 
   /**
-   * Closes an element’s tooltip. This is considered a “manual” triggering of the tooltip.
+   * Closes the tooltip.
+   *
+   * This is considered to be a "manual" triggering of the tooltip.
    */
   close(): void {
     if (this._windowRef != null) {
@@ -194,7 +217,9 @@ export class NgbTooltip implements OnInit, OnDestroy {
   }
 
   /**
-   * Toggles an element’s tooltip. This is considered a “manual” triggering of the tooltip.
+   * Toggles the tooltip.
+   *
+   * This is considered to be a "manual" triggering of the tooltip.
    */
   toggle(): void {
     if (this._windowRef) {
@@ -205,7 +230,7 @@ export class NgbTooltip implements OnInit, OnDestroy {
   }
 
   /**
-   * Returns whether or not the tooltip is currently being shown
+   * Returns `true`, if the popover is currently shown.
    */
   isOpen(): boolean { return this._windowRef != null; }
 

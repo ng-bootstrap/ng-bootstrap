@@ -3,7 +3,7 @@ import {getValueInRange} from '../util/util';
 import {NgbProgressbarConfig} from './progressbar-config';
 
 /**
- * Directive that can be used to provide feedback on the progress of a workflow or an action.
+ * A directive that provides feedback on the progress of a workflow or an action.
  */
 @Component({
   selector: 'ngb-progressbar',
@@ -20,38 +20,45 @@ import {NgbProgressbarConfig} from './progressbar-config';
 })
 export class NgbProgressbar {
   /**
-   * Maximal value to be displayed in the progressbar.
+   * The maximal value to be displayed in the progressbar.
    */
   @Input() max: number;
 
   /**
-   * A flag indicating if the stripes of the progress bar should be animated. Takes effect only for browsers
-   * supporting CSS3 animations, and if striped is true.
+   * If `true`, the stripes on the progressbar are animated.
+   *
+   * Takes effect only for browsers supporting CSS3 animations, and if `striped` is `true`.
    */
   @Input() animated: boolean;
 
   /**
-   * A flag indicating if a progress bar should be displayed as striped.
+   * If `true`, the progress bars will be displayed as striped.
    */
   @Input() striped: boolean;
 
   /**
-   * A flag indicating if the current percentage value should be shown.
+   * If `true`, the current percentage will be shown in the `xx%` format.
    */
   @Input() showValue: boolean;
 
   /**
-   * Type of progress bar, can be one of "success", "info", "warning" or "danger".
+   * The type of the progress bar.
+   *
+   * Currently Bootstrap supports `"success"`, `"info"`, `"warning"` or `"danger"`.
    */
   @Input() type: string;
 
   /**
-   * Current value to be displayed in the progressbar. Should be smaller or equal to "max" value.
+   * The current value for the progress bar.
+   *
+   * Should be in the `[0, max]` range.
    */
   @Input() value = 0;
 
   /**
-   * Height of the progress bar. Accepts any valid CSS height values, ex. '2rem'
+   * THe height of the progress bar.
+   *
+   * Accepts any valid CSS height values, ex. `"2rem"`
    */
   @Input() height: string;
 
