@@ -14,38 +14,45 @@ import {getValueInRange, isNumber} from '../util/util';
 import {NgbPaginationConfig} from './pagination-config';
 
 /**
- * Context for the pagination 'first', 'previous', 'next', 'last' or 'ellipsis' cell
- * in case you want to override one
+ * A context for the
+ * * `NgbPaginationFirst`
+ * * `NgbPaginationPrevious`
+ * * `NgbPaginationNext`
+ * * `NgbPaginationLast`
+ * * `NgbPaginationEllipsis`
+ *
+ * link templates in case you want to override one.
  *
  * @since 4.1.0
  */
 export interface NgbPaginationLinkContext {
   /**
-   * Page number currently selected
+   * The currently selected page number
    */
   currentPage: number;
 
   /**
-   * If true the link in question is disabled
+   * If `true`, the current link is disabled
    */
   disabled: boolean;
 }
 
 /**
- * Context for the pagination 'number' cell in case you want to override one.
- * Extends 'NgbPaginationLinkContext'
+ * A context for the `NgbPaginationNumber` link template in case you want to override one.
+ *
+ * Extends `NgbPaginationLinkContext`.
  *
  * @since 4.1.0
  */
 export interface NgbPaginationNumberContext extends NgbPaginationLinkContext {
   /**
-   * Page number displayed by the current cell
+   * The page number, displayed by the current page link.
    */
   $implicit: number;
 }
 
 /**
- * The directive to match the 'ellipsis' cell template
+ * A directive to match the 'ellipsis' link template
  *
  * @since 4.1.0
  */
@@ -55,7 +62,7 @@ export class NgbPaginationEllipsis {
 }
 
 /**
- * The directive to match the 'first' cell template
+ * A directive to match the 'first' link template
  *
  * @since 4.1.0
  */
@@ -65,7 +72,7 @@ export class NgbPaginationFirst {
 }
 
 /**
- * The directive to match the 'last' cell template
+ * A directive to match the 'last' link template
  *
  * @since 4.1.0
  */
@@ -75,7 +82,7 @@ export class NgbPaginationLast {
 }
 
 /**
- * The directive to match the 'next' cell template
+ * A directive to match the 'next' link template
  *
  * @since 4.1.0
  */
@@ -85,7 +92,7 @@ export class NgbPaginationNext {
 }
 
 /**
- * The directive to match the page 'number' cell template
+ * A directive to match the page 'number' link template
  *
  * @since 4.1.0
  */
@@ -95,7 +102,7 @@ export class NgbPaginationNumber {
 }
 
 /**
- * The directive to match the 'previous' cell template
+ * A directive to match the 'previous' link template
  *
  * @since 4.1.0
  */
@@ -105,7 +112,7 @@ export class NgbPaginationPrevious {
 }
 
 /**
- * A component that displays page numbers and allows to customize them in several ways
+ * A component that displays page numbers and allows to customize them in several ways.
  */
 @Component({
   selector: 'ngb-pagination',
@@ -180,61 +187,71 @@ export class NgbPagination implements OnChanges {
   @ContentChild(NgbPaginationPrevious) tplPrevious: NgbPaginationPrevious;
 
   /**
-   * Whether to disable buttons from user input
+   * If `true`, pagination links will be disabled.
    */
   @Input() disabled: boolean;
 
   /**
-   *  Whether to show the "First" and "Last" page links
+   * If `true`, the "First" and "Last" page links are shown.
    */
   @Input() boundaryLinks: boolean;
 
   /**
-   *  Whether to show the "Next" and "Previous" page links
+   * If `true`, the "Next" and "Previous" page links are shown.
    */
   @Input() directionLinks: boolean;
 
   /**
-   *  Whether to show ellipsis symbols and first/last page numbers when maxSize > number of pages
+   * If `true`, the ellipsis symbols and first/last page numbers will be shown when `maxSize` > number of pages.
    */
   @Input() ellipses: boolean;
 
   /**
-   *  Whether to rotate pages when maxSize > number of pages.
-   *  Current page will be in the middle
+   * Whether to rotate pages when `maxSize` > number of pages.
+   *
+   * The current page always stays in the middle if `true`.
    */
   @Input() rotate: boolean;
 
   /**
-   *  Number of items in collection.
+   *  The number of items in your paginated collection.
+   *
+   *  Note, that this is not the number of pages. Page numbers are calculated dynamically based on
+   *  `collectionSize` and `pageSize`. Ex. if you have 100 items in your collection and displaying 20 items per page,
+   *  you'll end up with 5 pages.
    */
   @Input() collectionSize: number;
 
   /**
-   *  Maximum number of pages to display.
+   *  The maximum number of pages to display.
    */
   @Input() maxSize: number;
 
   /**
-   *  Current page. Page numbers start with 1
+   *  The current page.
+   *
+   *  Page numbers start with `1`.
    */
   @Input() page = 1;
 
   /**
-   *  Number of items per page.
+   *  The number of items per page.
    */
   @Input() pageSize: number;
 
   /**
-   *  An event fired when the page is changed.
-   *  Event's payload equals to the newly selected page.
-   *  Will fire only if collection size is set and all values are valid.
-   *  Page numbers start with 1
+   *  An event fired when the page is changed. Will fire only if collection size is set and all values are valid.
+   *
+   *  Event payload is the number of the newly selected page.
+   *
+   *  Page numbers start with `1`.
    */
   @Output() pageChange = new EventEmitter<number>(true);
 
   /**
-   * Pagination display size: small or large
+   * The pagination display size.
+   *
+   * Bootstrap currently supports small and large sizes.
    */
   @Input() size: 'sm' | 'lg';
 
@@ -313,7 +330,7 @@ export class NgbPagination implements OnChanges {
   }
 
   /**
-   * Paginates page numbers based on maxSize items per page
+   * Paginates page numbers based on maxSize items per page.
    */
   private _applyPagination(): [number, number] {
     let page = Math.ceil(this.page / this.maxSize) - 1;

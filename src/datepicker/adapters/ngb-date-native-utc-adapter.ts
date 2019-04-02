@@ -3,8 +3,7 @@ import {NgbDateStruct} from '../ngb-date-struct';
 import {NgbDateNativeAdapter} from './ngb-date-native-adapter';
 
 /**
- * NgbDateAdapter implementation that allows using native javascript UTC date as a user date model.
- * Same as NgbDateNativeAdapter, but uses UTC dates.
+ * Same as [`NgbDateNativeAdapter`](#/components/datepicker/api#NgbDateNativeAdapter), but with UTC dates.
  *
  * @since 3.2.0
  */

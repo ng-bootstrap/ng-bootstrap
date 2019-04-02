@@ -40,16 +40,16 @@ const NGB_TYPEAHEAD_VALUE_ACCESSOR = {
 };
 
 /**
- * Payload of the selectItem event.
+ * An event emitted right before an item is selected from the result list.
  */
 export interface NgbTypeaheadSelectItemEvent {
   /**
-   * An item about to be selected
+   * The item from the result list about to be selected.
    */
   item: any;
 
   /**
-   * Function that will prevent item selection if called
+   * Calling this function will prevent item selection from happening.
    */
   preventDefault: () => void;
 }
@@ -57,7 +57,7 @@ export interface NgbTypeaheadSelectItemEvent {
 let nextWindowId = 0;
 
 /**
- * NgbTypeahead directive provides a simple way of creating powerful typeaheads from any text input
+ * A directive providing a simple way of creating powerful typeaheads from any text input.
  */
 @Directive({
   selector: 'input[ngbTypeahead]',
@@ -90,66 +90,93 @@ export class NgbTypeahead implements ControlValueAccessor,
   private _zoneSubscription: any;
 
   /**
-   * Value for the configurable autocomplete attribute.
-   * Defaults to 'off' to disable the native browser autocomplete, but this standard value does not seem
-   * to be always correctly taken into account.
+   * The value for the `autocomplete` attribute for the `<input>` element.
+   *
+   * Defaults to `"off"` to disable the native browser autocomplete, but you can override it if necessary.
    *
    * @since 2.1.0
    */
   @Input() autocomplete = 'off';
 
   /**
-   * A selector specifying the element the tooltip should be appended to.
-   * Currently only supports "body".
+   * A selector specifying the element the typeahead popup will be appended to.
+   *
+   * Currently only supports `"body"`.
    */
   @Input() container: string;
 
   /**
-   * A flag indicating if model values should be restricted to the ones selected from the popup only.
+   * If `true`, model values will not be restricted only to items selected from the popup.
    */
   @Input() editable: boolean;
 
   /**
-   * A flag indicating if the first match should automatically be focused as you type.
+   * If `true`, the first item in the result list will always stay focused while typing.
    */
   @Input() focusFirst: boolean;
 
   /**
-   * A function to convert a given value into string to display in the input field
+   * The function that converts an item from the result list to a `string` to display in the `<input>` field.
+   *
+   * It is called when the user selects something in the popup or the model value changes, so the input needs to
+   * be updated.
    */
-  @Input() inputFormatter: (value: any) => string;
+  @Input() inputFormatter: (item: any) => string;
 
   /**
-   * A function to transform the provided observable text into the array of results.  Note that the "this" argument
-   * is undefined so you need to explicitly bind it to a desired "this" target.
+   * The function that converts a stream of text values from the `<input>` element to the stream of the array of items
+   * to display in the typeahead popup.
+   *
+   * If the resulting observable emits a non-empty array - the popup will be shown. If it emits an empty array - the
+   * popup will be closed.
+   *
+   * See the [basic example](#/components/typeahead/examples#basic) for more details.
+   *
+   * Note that the `this` argument is `undefined` so you need to explicitly bind it to a desired "this" target.
    */
   @Input() ngbTypeahead: (text: Observable<string>) => Observable<any[]>;
 
   /**
-   * A function to format a given result before display. This function should return a formatted string without any
-   * HTML markup
+   * The function that converts an item from the result list to a `string` to display in the popup.
+   *
+   * Must be provided, if your `ngbTypeahead` returns something other than `Observable<string[]>`.
+   *
+   * Alternatively for more complex markup in the popup you should use `resultTemplate`.
    */
-  @Input() resultFormatter: (value: any) => string;
+  @Input() resultFormatter: (item: any) => string;
 
   /**
-   * A template to override a matching result default display
+   * The template to override the way resulting items are displayed in the popup.
+   *
+   * See the [ResultTemplateContext](#/components/typeahead/api#ResultTemplateContext) for the template context.
+   *
+   * Also see the [template for results demo](#/components/typeahead/examples#template) for more details.
    */
   @Input() resultTemplate: TemplateRef<ResultTemplateContext>;
 
   /**
-   * Show hint when an option in the result list matches.
+   * If `true`, will show the hint in the `<input>` when an item in the result list matches.
    */
   @Input() showHint: boolean;
 
-  /** Placement of a typeahead accepts:
-   *    "top", "top-left", "top-right", "bottom", "bottom-left", "bottom-right",
-   *    "left", "left-top", "left-bottom", "right", "right-top", "right-bottom"
-   *  array or a space separated string of above values
+  /**
+   * The preferred placement of the typeahead.
+   *
+   * Possible values are `"top"`, `"top-left"`, `"top-right"`, `"bottom"`, `"bottom-left"`,
+   * `"bottom-right"`, `"left"`, `"left-top"`, `"left-bottom"`, `"right"`, `"right-top"`,
+   * `"right-bottom"`
+   *
+   * Accepts an array of strings or a string with space separated possible values.
+   *
+   * The default order of preference is `"bottom-left bottom-right top-left top-right"`
+
   */
   @Input() placement: PlacementArray = 'bottom-left';
 
   /**
-   * An event emitted when a match is selected. Event payload is of type NgbTypeaheadSelectItemEvent.
+   * An event emitted right before an item is selected from the result list.
+   *
+   * Event payload is of type [`NgbTypeaheadSelectItemEvent`](#/components/typeahead/api#NgbTypeaheadSelectItemEvent).
    */
   @Output() selectItem = new EventEmitter<NgbTypeaheadSelectItemEvent>();
 

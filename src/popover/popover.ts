@@ -56,78 +56,102 @@ export class NgbPopoverWindow {
 }
 
 /**
- * A lightweight, extensible directive for fancy popover creation.
+ * A lightweight and extensible directive for fancy popover creation.
  */
 @Directive({selector: '[ngbPopover]', exportAs: 'ngbPopover'})
 export class NgbPopover implements OnInit, OnDestroy, OnChanges {
   /**
-   * Indicates whether the popover should be closed on Escape key and inside/outside clicks.
+   * Indicates whether the popover should be closed on `Escape` key and inside/outside clicks:
    *
-   * - true (default): closes on both outside and inside clicks as well as Escape presses
-   * - false: disables the autoClose feature (NB: triggers still apply)
-   * - 'inside': closes on inside clicks as well as Escape presses
-   * - 'outside': closes on outside clicks (sometimes also achievable through triggers)
-   * as well as Escape presses
+   * * `true` - closes on both outside and inside clicks as well as `Escape` presses
+   * * `false` - disables the autoClose feature (NB: triggers still apply)
+   * * `"inside"` - closes on inside clicks as well as Escape presses
+   * * `"outside"` - closes on outside clicks (sometimes also achievable through triggers)
+   * as well as `Escape` presses
    *
    * @since 3.0.0
    */
   @Input() autoClose: boolean | 'inside' | 'outside';
+
   /**
-   * Content to be displayed as popover. If title and content are empty, the popover won't open.
+   * The string content or a `TemplateRef` for the content to be displayed in the popover.
+   *
+   * If the title and the content are empty, the popover won't open.
    */
   @Input() ngbPopover: string | TemplateRef<any>;
+
   /**
-   * Title of a popover. If title and content are empty, the popover won't open.
+   * The title of the popover.
+   *
+   * If the title and the content are empty, the popover won't open.
    */
   @Input() popoverTitle: string | TemplateRef<any>;
+
   /**
-    * Placement of a popover accepts:
-    *    "top", "top-left", "top-right", "bottom", "bottom-left", "bottom-right",
-    *    "left", "left-top", "left-bottom", "right", "right-top", "right-bottom",
-    *  array or a space separated string of above values
-    */
+   * The preferred placement of the popover.
+   *
+   * Possible values are `"top"`, `"top-left"`, `"top-right"`, `"bottom"`, `"bottom-left"`,
+   * `"bottom-right"`, `"left"`, `"left-top"`, `"left-bottom"`, `"right"`, `"right-top"`,
+   * `"right-bottom"`
+   *
+   * Accepts an array of strings or a string with space separated possible values.
+   *
+   * The default order of preference is `"auto"` (same as the sequence above).
+   */
   @Input() placement: PlacementArray;
+
   /**
-   * Specifies events that should trigger. Supports a space separated list of event names.
+   * Specifies events that should trigger the tooltip.
+   *
+   * Supports a space separated list of event names.
+   * For more details see the [triggers demo](#/components/popover/examples#triggers).
    */
   @Input() triggers: string;
+
   /**
    * A selector specifying the element the popover should be appended to.
-   * Currently only supports "body".
+   *
+   * Currently only supports `body`.
    */
   @Input() container: string;
+
   /**
-   * A flag indicating if a given popover is disabled and should not be displayed.
+   * If `true`, popover is disabled and won't be displayed.
    *
    * @since 1.1.0
    */
   @Input() disablePopover: boolean;
+
   /**
-   * An optional class applied to ngb-popover-window
+   * An optional class applied to the popover window element.
    *
    * @since 2.2.0
    */
   @Input() popoverClass: string;
+
   /**
-   * Opening delay in ms. Works only for non-manual opening triggers.
+   * The opening delay in ms. Works only for "non-manual" opening triggers defined by the `triggers` input.
    *
    * @since 4.1.0
    */
   @Input() openDelay: number;
+
   /**
-   * Closing delay in ms. Works only for non-manual closing triggers.
+   * The closing delay in ms. Works only for "non-manual" opening triggers defined by the `triggers` input.
    *
    * @since 4.1.0
    */
   @Input() closeDelay: number;
+
   /**
-   * Emits an event when the popover is shown
+   * An event emitted when the popover is shown. Contains no payload.
    */
-  @Output() shown = new EventEmitter();
+  @Output() shown = new EventEmitter<void>();
+
   /**
-   * Emits an event when the popover is hidden
+   * An event emitted when the popover is hidden. Contains no payload.
    */
-  @Output() hidden = new EventEmitter();
+  @Output() hidden = new EventEmitter<void>();
 
   private _ngbPopoverWindowId = `ngb-popover-${nextId++}`;
   private _popupService: PopupService<NgbPopoverWindow>;
@@ -169,8 +193,10 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
   }
 
   /**
-   * Opens an element’s popover. This is considered a “manual” triggering of the popover.
-   * The context is an optional value to be injected into the popover template when it is created.
+   * Opens the popover.
+   *
+   * This is considered to be a "manual" triggering.
+   * The `context` is an optional value to be injected into the popover template when it is created.
    */
   open(context?: any) {
     if (!this._windowRef && !this._isDisabled()) {
@@ -197,7 +223,9 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
   }
 
   /**
-   * Closes an element’s popover. This is considered a “manual” triggering of the popover.
+   * Closes the popover.
+   *
+   * This is considered to be a "manual" triggering of the popover.
    */
   close(): void {
     if (this._windowRef) {
@@ -210,7 +238,9 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
   }
 
   /**
-   * Toggles an element’s popover. This is considered a “manual” triggering of the popover.
+   * Toggles the popover.
+   *
+   * This is considered to be a "manual" triggering of the popover.
    */
   toggle(): void {
     if (this._windowRef) {
@@ -221,7 +251,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
   }
 
   /**
-   * Returns whether or not the popover is currently being shown
+   * Returns `true`, if the popover is currently shown.
    */
   isOpen(): boolean { return this._windowRef != null; }
 

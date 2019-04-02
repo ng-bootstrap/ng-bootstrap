@@ -21,59 +21,69 @@ export function NGB_DATEPICKER_CALENDAR_FACTORY() {
 }
 
 /**
- * Calendar used by the datepicker.
- * Default implementation uses Gregorian calendar.
+ * A service that represents the calendar used by the datepicker.
+ *
+ * The default implementation uses the Gregorian calendar. You can inject it in your own
+ * implementations if necessary to simplify `NgbDate` calculations.
  */
 @Injectable({providedIn: 'root', useFactory: NGB_DATEPICKER_CALENDAR_FACTORY})
 export abstract class NgbCalendar {
   /**
-   * Returns number of days per week.
+   * Returns the number of days per week.
    */
   abstract getDaysPerWeek(): number;
 
   /**
    * Returns an array of months per year.
+   *
    * With default calendar we use ISO 8601 and return [1, 2, ..., 12];
    */
   abstract getMonths(year?: number): number[];
 
   /**
-   * Returns number of weeks per month.
+   * Returns the number of weeks per month.
    */
   abstract getWeeksPerMonth(): number;
 
   /**
-   * Returns weekday number for a given day.
-   * With default calendar we use ISO 8601: 'weekday' is 1=Mon ... 7=Sun
+   * Returns the weekday number for a given day.
+   *
+   * With the default calendar we use ISO 8601: 'weekday' is 1=Mon ... 7=Sun
    */
   abstract getWeekday(date: NgbDate): number;
 
   /**
    * Adds a number of years, months or days to a given date.
-   * Period can be 'y', 'm' or 'd' and defaults to day.
-   * Number defaults to 1.
+   *
+   * * `period` can be `y`, `m` or `d` and defaults to day.
+   * * `number` defaults to 1.
+   *
+   * Always returns a new date.
    */
   abstract getNext(date: NgbDate, period?: NgbPeriod, number?: number): NgbDate;
 
   /**
    * Subtracts a number of years, months or days from a given date.
-   * Period can be 'y', 'm' or 'd' and defaults to day.
-   * Number defaults to 1.
+   *
+   * * `period` can be `y`, `m` or `d` and defaults to day.
+   * * `number` defaults to 1.
+   *
+   * Always returns a new date.
    */
   abstract getPrev(date: NgbDate, period?: NgbPeriod, number?: number): NgbDate;
 
   /**
-   * Returns week number for a given week.
+   * Returns the week number for a given week.
    */
   abstract getWeekNumber(week: NgbDate[], firstDayOfWeek: number): number;
 
   /**
-   * Returns today's date.
+   * Returns the today's date.
    */
   abstract getToday(): NgbDate;
 
   /**
-   * Checks if a date is valid for a current calendar.
+   * Checks if a date is valid in the current calendar.
    */
   abstract isValid(date: NgbDate): boolean;
 }

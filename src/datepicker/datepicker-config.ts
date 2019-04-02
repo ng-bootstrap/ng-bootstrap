@@ -3,7 +3,8 @@ import {DayTemplateContext} from './datepicker-day-template-context';
 import {NgbDateStruct} from './ngb-date-struct';
 
 /**
- * Configuration service for the NgbDatepicker component.
+ * A configuration service for the [`NgbDatepicker`](#/components/datepicker/api#NgbDatepicker) component.
+ *
  * You can inject this service, typically in your root component, and customize the values of its properties in
  * order to provide default values for all the datepickers used in the application.
  */

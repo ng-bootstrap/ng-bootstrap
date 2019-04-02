@@ -27,7 +27,7 @@ import {NgbDropdownConfig} from './dropdown-config';
 
 /**
  * A directive you should put put on a dropdown item to enable keyboard navigation.
- * Keyboard navigation using arrow keys will move focus between items marked with this directive.
+ * Arrow keys will move focus between items marked with this directive.
  *
  * @since 4.1.0
  */
@@ -46,6 +46,7 @@ export class NgbDropdownItem {
 }
 
 /**
+ * A directive that wraps dropdown menu content and dropdown items.
  */
 @Directive({
   selector: '[ngbDropdownMenu]',
@@ -69,10 +70,11 @@ export class NgbDropdownMenu {
 }
 
 /**
- * Marks an element to which dropdown menu will be anchored. This is a simple version
- * of the NgbDropdownToggle directive. It plays the same role as NgbDropdownToggle but
- * doesn't listen to click events to toggle dropdown menu thus enabling support for
- * events other than click.
+ * A directive to mark an element to which dropdown menu will be anchored.
+ *
+ * This is a simple version of the `NgbDropdownToggle` directive.
+ * It plays the same role, but doesn't listen to click events to toggle dropdown menu thus enabling support
+ * for events other than click.
  *
  * @since 1.1.0
  */
@@ -91,8 +93,9 @@ export class NgbDropdownAnchor {
 }
 
 /**
- * Allows the dropdown to be toggled via click. This directive is optional: you can use NgbDropdownAnchor as an
- * alternative.
+ * A directive to mark an element that will toggle dropdown via the `click` event.
+ *
+ * You can also use `NgbDropdownAnchor` as an alternative.
  */
 @Directive({
   selector: '[ngbDropdownToggle]',
@@ -117,7 +120,7 @@ export class NgbDropdownToggle extends NgbDropdownAnchor {
 }
 
 /**
- * Transforms a node into a dropdown.
+ * A directive that provides contextual overlays for displaying lists of links and more.
  */
 @Directive({selector: '[ngbDropdown]', exportAs: 'ngbDropdown', host: {'[class.show]': 'isOpen()'}})
 export class NgbDropdown implements OnInit, OnDestroy {
@@ -131,24 +134,30 @@ export class NgbDropdown implements OnInit, OnDestroy {
   @ContentChild(NgbDropdownAnchor) private _anchor: NgbDropdownAnchor;
 
   /**
-   * Indicates that dropdown should be closed when selecting one of dropdown items (click) or pressing ESC.
-   * When it is true (default) dropdowns are automatically closed on both outside and inside (menu) clicks.
-   * When it is false dropdowns are never automatically closed.
-   * When it is 'outside' dropdowns are automatically closed on outside clicks but not on menu clicks.
-   * When it is 'inside' dropdowns are automatically on menu clicks but not on outside clicks.
+   * Indicates whether the dropdown should be closed when clicking one of dropdown items or pressing ESC.
+   *
+   * * `true` - the dropdown will close on both outside and inside (menu) clicks.
+   * * `false` - the dropdown can only be closed manually via `close()` or `toggle()` methods.
+   * * `"inside"` - the dropdown will close on inside menu clicks, but not outside clicks.
+   * * `"outside"` - the dropdown will close only on the outside clicks and not on menu clicks.
    */
   @Input() autoClose: boolean | 'outside' | 'inside';
 
   /**
-   *  Defines whether or not the dropdown-menu is open initially.
+   * Defines whether or not the dropdown menu is opened initially.
    */
   @Input('open') _open = false;
 
   /**
-   * Placement of a popover accepts:
-   *    "top", "top-left", "top-right", "bottom", "bottom-left", "bottom-right",
-   *    "left", "left-top", "left-bottom", "right", "right-top", "right-bottom"
-   *  array or a space separated string of above values
+   * The preferred placement of the dropdown.
+   *
+   * Possible values are `"top"`, `"top-left"`, `"top-right"`, `"bottom"`, `"bottom-left"`,
+   * `"bottom-right"`, `"left"`, `"left-top"`, `"left-bottom"`, `"right"`, `"right-top"`,
+   * `"right-bottom"`
+   *
+   * Accepts an array of strings or a string with space separated possible values.
+   *
+   * The default order of preference is `"bottom-left bottom-right top-left top-right"`
    */
   @Input() placement: PlacementArray;
 
@@ -161,10 +170,13 @@ export class NgbDropdown implements OnInit, OnDestroy {
   @Input() container: null | 'body';
 
   /**
-   *  An event fired when the dropdown is opened or closed.
-   *  Event's payload equals whether dropdown is open.
+   * An event fired when the dropdown is opened or closed.
+   *
+   * The event payload is a `boolean`:
+   * * `true` - the dropdown was opened
+   * * `false` - the dropdown was closed
    */
-  @Output() openChange = new EventEmitter();
+  @Output() openChange = new EventEmitter<boolean>();
 
   constructor(
       private _changeDetector: ChangeDetectorRef, config: NgbDropdownConfig, @Inject(DOCUMENT) private _document: any,
@@ -193,12 +205,12 @@ export class NgbDropdown implements OnInit, OnDestroy {
   }
 
   /**
-   * Checks if the dropdown menu is open or not.
+   * Checks if the dropdown menu is open.
    */
   isOpen(): boolean { return this._open; }
 
   /**
-   * Opens the dropdown menu of a given navbar or tabbed navigation.
+   * Opens the dropdown menu.
    */
   open(): void {
     if (!this._open) {
@@ -216,7 +228,7 @@ export class NgbDropdown implements OnInit, OnDestroy {
   }
 
   /**
-   * Closes the dropdown menu of a given navbar or tabbed navigation.
+   * Closes the dropdown menu.
    */
   close(): void {
     if (this._open) {
@@ -229,7 +241,7 @@ export class NgbDropdown implements OnInit, OnDestroy {
   }
 
   /**
-   * Toggles the dropdown menu of a given navbar or tabbed navigation.
+   * Toggles the dropdown menu.
    */
   toggle(): void {
     if (this.isOpen()) {
