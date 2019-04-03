@@ -77,7 +77,7 @@ const modulesInfo = parseDemo(path.join(root, '**', 'demos', '*', '*.ts'));
 
 // re-creating all stackblitzes
 for (const demoModule of modulesInfo.keys()) {
-  const demoFolder = path.dirname(demoModule);
+  const demoFolder = path.normalize(path.dirname(demoModule));
   const demoFiles = glob.sync(path.join(demoFolder, '*'), {});
   const[, componentName, , demoName] = demoFolder.replace(root, '').split(path.sep);
   const modulePath = path.basename(demoModule, '.ts');
