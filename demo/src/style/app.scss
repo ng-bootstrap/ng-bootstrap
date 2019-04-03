@@ -108,6 +108,7 @@ header.title {
 .toc {
   margin-left: -15px;
   margin-right: -15px;
+  font-size: 1.1rem;
 
   .toc-item {
     .toc-link {
@@ -117,7 +118,7 @@ header.title {
     }
 
     .nav > li > a {
-      font-size: 90%;
+      font-size: 0.85em;
 
       &:hover, &:focus {
         text-decoration: none;
@@ -130,13 +131,9 @@ header.title {
       color: rgba(0, 0, 0, 0.85);
     }
 
-    &.active {
-      margin-top: 2rem;
-
-      > .toc-link {
-        font-weight: 500;
-        color: rgba(0, 0, 0, 0.85);
-      }
+    &.active > .toc-link {
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.85);
     }
   }
 }
@@ -213,6 +210,18 @@ div.api-doc-component, .overview {
       margin-bottom: 1rem;
       > div {
         margin-bottom: 0.5rem;
+      }
+    }
+  }
+}
+
+ngbd-page-header {
+  margin-top: 3rem;
+
+  h2 {
+    &:hover {
+      & > .title-fragment {
+        opacity: 1;
       }
     }
   }

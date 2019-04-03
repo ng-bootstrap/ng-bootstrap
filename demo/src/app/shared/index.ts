@@ -10,7 +10,9 @@ import { CodeHighlightService } from './code/code-highlight.service';
 import { NgbdCodeComponent } from './code/code.component';
 import { ComponentWrapper } from './component-wrapper/component-wrapper.component';
 import { PageWrapper } from './page-wrapper/page-wrapper.component';
+import { NgbdPageHeaderComponent } from './page-wrapper/page-header.component';
 import { SideNavComponent } from './side-nav/side-nav.component';
+import { NgbdFragment } from './fragment/fragment.directive';
 
 export {componentsList} from './side-nav/side-nav.component';
 
@@ -21,6 +23,8 @@ export {componentsList} from './side-nav/side-nav.component';
     RouterModule,
     ComponentWrapper,
     PageWrapper,
+    NgbdPageHeaderComponent,
+    NgbdFragment,
     SideNavComponent,
     NgbdCodeComponent,
     NgbModule,
@@ -31,6 +35,8 @@ export {componentsList} from './side-nav/side-nav.component';
   declarations: [
     ComponentWrapper,
     PageWrapper,
+    NgbdPageHeaderComponent,
+    NgbdFragment,
     SideNavComponent,
     NgbdCodeComponent,
   ],
