@@ -7,7 +7,10 @@
   <div class="form-group form-inline">
     <div id="dropdown" #d="ngbDropdown" ngbDropdown class="d-inline-block" [autoClose]="autoClose" [container]="container">
       <button class="btn btn-outline-secondary" ngbDropdownToggle>Dropdown</button>
-      <div id="dropdownMenuId" ngbDropdownMenu aria-labelledby="dropdownBasic1">
+      <div id="dropdownMenuId" ngbDropdownMenu aria-labelledby="dropdownBasic1" style="overflow-y: scroll;">
+        <div class="form-group">
+          <input type="email" class="form-control" id="emailInput" placeholder="email@example.com">
+        </div>
         <button class="dropdown-item">Item</button>
       </div>
     </div>

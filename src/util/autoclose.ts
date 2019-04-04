@@ -2,6 +2,7 @@ import {NgZone} from '@angular/core';
 import {fromEvent, Observable, race} from 'rxjs';
 import {delay, filter, map, takeUntil, withLatestFrom} from 'rxjs/operators';
 import {Key} from './key';
+import {closest} from './util';
 
 const isHTMLElementContainedIn = (element: HTMLElement, array?: HTMLElement[]) =>
     array ? array.some(item => item.contains(element)) : false;
@@ -16,7 +17,7 @@ if (typeof navigator !== 'undefined') {
 
 export function ngbAutoClose(
     zone: NgZone, document: any, type: boolean | 'inside' | 'outside', close: () => void, closed$: Observable<any>,
-    insideElements: HTMLElement[], ignoreElements?: HTMLElement[]) {
+    insideElements: HTMLElement[], ignoreElements?: HTMLElement[], insideSelector?: string) {
   // closing on ESC and outside clicks
   if (type) {
     zone.runOutsideAngular(() => {
@@ -27,11 +28,13 @@ export function ngbAutoClose(
           return false;
         }
         if (type === 'inside') {
-          return isHTMLElementContainedIn(element, insideElements);
+          return isHTMLElementContainedIn(element, insideElements) &&
+              (!insideSelector || closest(element, insideSelector) != null);
         } else if (type === 'outside') {
           return !isHTMLElementContainedIn(element, insideElements);
         } else /* if (type === true) */ {
-          return true;
+          return !insideSelector || !isHTMLElementContainedIn(element, insideElements) ||
+              closest(element, insideSelector) != null;
         }
       };
 

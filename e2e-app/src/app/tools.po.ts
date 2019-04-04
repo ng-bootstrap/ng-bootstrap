@@ -19,6 +19,15 @@ export const rightClick = async(el: ElementFinder) => {
 };
 
 /**
+ * Clicks on the given element with a given offset.
+ * @param el element to right click on
+ * @param offset {x, y} position, relative to the element
+ */
+export const offsetClick = async(el: ElementFinder, offset) => {
+  await browser.actions().mouseMove(el, offset).click().perform();
+};
+
+/**
  * Expects provided element to be focused
  *
  * @param el element to check
