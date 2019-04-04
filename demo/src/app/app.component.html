@@ -1,6 +1,6 @@
 <header class="navbar navbar-expand navbar-dark px-4 flex-column flex-md-row">
 
-  <a class="navbar-brand mr-2 mr-md-0" routerLink="/" aria-label="NG Bootstrap" (click)="navbarCollapsed = true">
+  <a class="navbar-brand mr-md-2 mr-0" routerLink="/" aria-label="NG Bootstrap" (click)="navbarCollapsed = true">
     <svg class="align-middle" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="36" height="36" viewBox="0 0 512 512">
       <defs>
         <linearGradient id="a">
@@ -21,6 +21,9 @@
 
   <div class="navbar-nav-scroll">
     <ul class="navbar-nav flex-row">
+      <li class="nav-item" [routerLinkActive]="['active']">
+        <a class="nav-link" [routerLink]="['/home']" (click)="navbarCollapsed = true">Home</a>
+      </li>
       <li class="nav-item" [routerLinkActive]="['active']">
         <a class="nav-link" [routerLink]="['/getting-started']" (click)="navbarCollapsed = true">Getting Started</a>
       </li>
