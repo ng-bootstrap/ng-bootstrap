@@ -6,6 +6,8 @@ export class DropdownAutoClosePage {
 
   getDropdown(dropDownSelector = '') { return $(`${dropDownSelector}[ngbDropdown]`); }
 
+  getFormInput(dropdown: ElementFinder) { return dropdown.$(`input`); }
+
   getFirstItem(dropdown: ElementFinder) { return dropdown.$$(`.dropdown-item`).first(); }
 
   getOpenStatus() { return $('#open-status'); }

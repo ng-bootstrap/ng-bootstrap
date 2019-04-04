@@ -224,7 +224,8 @@ export class NgbDropdown implements OnInit, OnDestroy {
   private _setCloseHandlers() {
     ngbAutoClose(
         this._ngZone, this._document, this.autoClose, () => this.close(), this._closed$,
-        this._menu ? [this._menuElement.nativeElement] : [], this._anchor ? [this._anchor.getNativeElement()] : []);
+        this._menu ? [this._menuElement.nativeElement] : [], this._anchor ? [this._anchor.getNativeElement()] : [],
+        '.dropdown-item,.dropdown-divider');
   }
 
   /**
