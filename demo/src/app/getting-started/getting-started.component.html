@@ -1,7 +1,7 @@
 <ngbd-page-wrapper pageTitle="Introduction">
-  <h3>
-    Dependencies
-  </h3>
+
+  <ngbd-page-header title="Dependencies" fragment="dependencies" class="mt-0"></ngbd-page-header>
+
   <p>
     This repository contains a set of native Angular directives based on Bootstrap's markup and CSS.
     As a result no dependency on jQuery or Bootstrap's JavaScript is required.
@@ -50,18 +50,16 @@
     No, the goal of ng-bootstrap is to <i>completely replace</i> JavaScript implementation for components. Nor should you include other dependencies like jQuery or popper.js. It is not necessary and might interfere with ng-bootstrap code.
   </ngb-alert>
 
-  <h3>
-    Supported browsers
-  </h3>
+  <ngbd-page-header title="Supported Browsers" fragment="browsers"></ngbd-page-header>
+
   <p>We strive to support the same browsers and versions as supported by both Bootstrap 4 and Angular, whichever is more restrictive. Check browser support notes for
     <a href="https://angular.io/guide/browser-support" target="_blank">Angular</a> and
     <a href="https://getbootstrap.com/docs/4.0/getting-started/browsers-devices/" target="_blank">Bootstrap</a>.
   </p>
   <p>Our code is automatically tested on all the supported browsers.</p>
 
-  <h3>
-    Installation
-  </h3>
+  <ngbd-page-header title="Installation" fragment="installation"></ngbd-page-header>
+
   <p>After installing the above dependencies, install <code>ng-bootstrap</code> via:</p>
 
   <ngbd-code [code]="codeInstall" lang="bash"></ngbd-code>
@@ -89,9 +87,8 @@
   <ngbd-code [code]="codeSystem" lang="typescript"></ngbd-code>
   <br>
 
-  <h3>
-    Internationalization
-  </h3>
+  <ngbd-page-header title="Internationalization" fragment="i18n"></ngbd-page-header>
+
   <p>
     Some components contain static English text or symbols that you might want to internationalize. Some of them appear
     on the screen, like for example the placeholders used in the timepicker input fields. Others appear in aria attributes
@@ -108,9 +105,8 @@
     generated messages file. All our messages are identified by an ID of the form <code>ngb.[widget].[message]</code>
   </p>
 
-  <h3>
-    Getting Help
-  </h3>
+  <ngbd-page-header title="Getting help" fragment="getting-help"></ngbd-page-header>
+
   <p>
     Please, do not open issues for the general support questions as we want to keep GitHub issues for bug reports
     and feature requests. You've got much better chances of getting your question answered on
@@ -128,18 +124,18 @@
   <p>
     To save your and our time we will be systematically closing all the issues that are requests for general support and redirecting people to StackOverflow.
   </p>
-  <h3>
-    Contributing
-  </h3>
+
+  <ngbd-page-header title="Contributing" fragment="contributing"></ngbd-page-header>
+
   <p>
     We are always looking for the quality contributions! Please check the
     <a href="https://github.com/ng-bootstrap/ng-bootstrap/blob/master/CONTRIBUTING.md" target="_blank">Contributing</a> doc
     for contribution guidelines. Additionally, for local building and testing information, please see our
     <a href="https://github.com/ng-bootstrap/ng-bootstrap/blob/master/DEVELOPER.md" target="_blank">Developer's Guide</a>.
   </p>
-  <h3>
-    Code of Conduct
-  </h3>
+
+  <ngbd-page-header title="Code of conduct" fragment="code-of-conduct"></ngbd-page-header>
+
   <p>
     Please take a moment to read our
     <a href="https://github.com/ng-bootstrap/ng-bootstrap/blob/master/CODE_OF_CONDUCT.md" target="_blank">Code of Conduct</a>.

@@ -1,11 +1,14 @@
 <nav class="toc py-3">
+
   <div class="toc-item" [class.active]="isActive(['/'], true)">
     <a class="toc-link" routerLink="/">Home</a>
   </div>
-  <div class="toc-item" [class.active]="isActive(['/getting-started'])">
+
+  <div class="toc-item mb-4" [class.active]="isActive(['/getting-started'], false)">
     <a class="toc-link" routerLink="/getting-started">Getting Started</a>
   </div>
-  <div class="toc-item" [class.active]="isActive(['/components'], false)">
+
+  <div class="toc-item mb-4" [class.active]="isActive(['/components'], false)">
     <a class="toc-link" [routerLink]="['/components']">Components</a>
     <ul class="nav flex-column">
       <li
