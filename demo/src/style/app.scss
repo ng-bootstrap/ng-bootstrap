@@ -250,23 +250,22 @@ div.component-demo {
       flex-grow: 1;
     }
 
-    .toggle-code {
-      svg {
-        vertical-align: middle;
-        fill: #28a745;
-      }
-    }
-
-    .stackblitz {
+    .stackblitz, .toggle-code {
       display: flex;
       align-items: center;
       align-self: center;
-
-      .stackblitz-icon {
-        height: 1.2rem;
-        margin-left: -0.5rem;
-      }
     }
+
+    .toggle-code svg {
+      vertical-align: middle;
+      fill: #28a745;
+    }
+
+    .stackblitz .stackblitz-icon {
+      height: 1.2rem;
+      margin-left: -0.5rem;
+    }
+
     &:hover {
       & > .title-fragment {
         opacity: 1;
