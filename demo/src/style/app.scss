@@ -13,9 +13,7 @@ header.navbar {
 
 .footer {
   padding: 3rem 0;
-  // margin-top: 3rem;
-  font-size: 85%;
-  // background-color: #f7f7f7;
+  font-size: 0.85rem;
   text-align: left;
 
   p {
@@ -24,7 +22,8 @@ header.navbar {
 
   a {
     font-weight: 500;
-    color: #55595c;
+    color: #000;
+    text-decoration: underline;
   }
 }
 
