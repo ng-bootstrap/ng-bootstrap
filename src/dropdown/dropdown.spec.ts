@@ -1,8 +1,7 @@
 import {ComponentFixture, inject, TestBed} from '@angular/core/testing';
-import {createGenericTestComponent, createKeyEvent} from '../test/common';
-import {Key} from '../util/key';
+import {createGenericTestComponent} from '../test/common';
 
-import {ChangeDetectionStrategy, Component, DebugElement} from '@angular/core';
+import {Component} from '@angular/core';
 
 import {NgbDropdown, NgbDropdownModule} from './dropdown.module';
 import {NgbDropdownConfig} from './dropdown-config';
@@ -17,43 +16,6 @@ function getDropdownEl(tc) {
 
 function getMenuEl(tc) {
   return tc.querySelector(`[ngbDropdownMenu]`);
-}
-
-function createFakeEscapeKeyUpEvent(): Event {
-  return createKeyEvent(Key.Escape);
-}
-
-function createKeyDownEvent(key: number, target?: HTMLElement) {
-  const event = {which: key, preventDefault: () => {}, stopPropagation: () => {}, target};
-  spyOn(event, 'preventDefault');
-  spyOn(event, 'stopPropagation');
-  return event;
-}
-
-function triggerKeyDownEvent(element: DebugElement, key: number, target?: HTMLElement) {
-  const event = createKeyDownEvent(key, target);
-  switch (key) {
-    case Key.ArrowDown:
-      element.triggerEventHandler('keydown.ArrowDown', event);
-      break;
-    case Key.ArrowUp:
-      element.triggerEventHandler('keydown.ArrowDown', event);
-      break;
-    case Key.Home:
-      element.triggerEventHandler('keydown.Home', event);
-      break;
-    case Key.End:
-      element.triggerEventHandler('keydown.End', event);
-      break;
-  }
-}
-
-function getDebugInput(element: DebugElement): DebugElement {
-  return element.query(By.directive(NgbDropdown));
-}
-
-function getDebugInputs(element: DebugElement): DebugElement[] {
-  return element.queryAll(By.directive(NgbDropdown));
 }
 
 const jasmineMatchers = {
