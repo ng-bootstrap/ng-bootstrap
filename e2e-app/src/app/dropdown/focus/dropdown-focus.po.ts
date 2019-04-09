@@ -12,4 +12,6 @@ export class DropdownFocusPage extends DropdownPage {
   getDropdownItem(item: number) { return $(`#item-${item}`); }
 
   async selectContainer(container: string) { await $(`#container-${container}`).click(); }
+
+  async selectWithItems(withItems: boolean) { await $(`#items-${withItems}`).click(); }
 }

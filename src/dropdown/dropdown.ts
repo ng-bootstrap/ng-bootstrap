@@ -265,7 +265,7 @@ export class NgbDropdown implements OnInit, OnDestroy {
     let isEventFromItems = false;
     const isEventFromToggle = this._isEventFromToggle(event);
 
-    if (!isEventFromToggle) {
+    if (!isEventFromToggle && itemElements.length) {
       itemElements.forEach((itemElement, index) => {
         if (itemElement.contains(event.target as HTMLElement)) {
           isEventFromItems = true;
@@ -277,29 +277,30 @@ export class NgbDropdown implements OnInit, OnDestroy {
     }
 
     if (isEventFromToggle || isEventFromItems) {
-      if (!this.isOpen()) {
-        this.open();
-      }
-      // tslint:disable-next-line:deprecation
-      switch (event.which) {
-        case Key.ArrowDown:
-          position = Math.min(position + 1, itemElements.length - 1);
-          break;
-        case Key.ArrowUp:
-          if (this._isDropup() && position === -1) {
+      this.open();
+
+      if (itemElements.length) {
+        // tslint:disable-next-line:deprecation
+        switch (event.which) {
+          case Key.ArrowDown:
+            position = Math.min(position + 1, itemElements.length - 1);
+            break;
+          case Key.ArrowUp:
+            if (this._isDropup() && position === -1) {
+              position = itemElements.length - 1;
+              break;
+            }
+            position = Math.max(position - 1, 0);
+            break;
+          case Key.Home:
+            position = 0;
+            break;
+          case Key.End:
             position = itemElements.length - 1;
             break;
-          }
-          position = Math.max(position - 1, 0);
-          break;
-        case Key.Home:
-          position = 0;
-          break;
-        case Key.End:
-          position = itemElements.length - 1;
-          break;
+        }
+        itemElements[position].focus();
       }
-      itemElements[position].focus();
       event.preventDefault();
     }
   }
