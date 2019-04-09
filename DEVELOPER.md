@@ -74,7 +74,7 @@ The most useful commands are:
 
 #### `yarn demo`
 
-Serves the demo site locally in dev mode at [http://localhost:9090/](http://localhost:9090/). You can optionally add `--prod` argument to serve demo in production mode or `--aot` to serve demo in dev mode, but with AOT
+Serves the demo site locally in dev mode at [http://localhost:4200/](http://localhost:4200/). You can optionally add `--prod` argument to serve demo in production mode or `--aot` to serve demo in dev mode, but with AOT
 
 #### `yarn build`
 
