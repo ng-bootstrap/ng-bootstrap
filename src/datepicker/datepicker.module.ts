@@ -7,6 +7,7 @@ import {NgbDatepickerNavigation} from './datepicker-navigation';
 import {NgbInputDatepicker} from './datepicker-input';
 import {NgbDatepickerDayView} from './datepicker-day-view';
 import {NgbDatepickerNavigationSelect} from './datepicker-navigation-select';
+import {NgbInvalidDateValidator, NgbMaxDateValidator, NgbMinDateValidator} from './datepicker-validators';
 
 export {NgbDatepicker, NgbDatepickerNavigateEvent} from './datepicker';
 export {NgbInputDatepicker} from './datepicker-input';
@@ -28,13 +29,19 @@ export {NgbDateAdapter} from './adapters/ngb-date-adapter';
 export {NgbDateNativeAdapter} from './adapters/ngb-date-native-adapter';
 export {NgbDateNativeUTCAdapter} from './adapters/ngb-date-native-utc-adapter';
 export {NgbDateParserFormatter} from './ngb-date-parser-formatter';
+export {
+  NgbInvalidDateValidator,
+  NgbMaxDateValidator,
+  NgbMinDateValidator,
+  NgbDateValidators
+} from './datepicker-validators';
 
 @NgModule({
   declarations: [
     NgbDatepicker, NgbDatepickerMonthView, NgbDatepickerNavigation, NgbDatepickerNavigationSelect, NgbDatepickerDayView,
-    NgbInputDatepicker
+    NgbInputDatepicker, NgbMinDateValidator, NgbMaxDateValidator, NgbInvalidDateValidator
   ],
-  exports: [NgbDatepicker, NgbInputDatepicker],
+  exports: [NgbDatepicker, NgbInputDatepicker, NgbMinDateValidator, NgbMaxDateValidator, NgbInvalidDateValidator],
   imports: [CommonModule, FormsModule],
   entryComponents: [NgbDatepicker]
 })

@@ -16,6 +16,7 @@ import {NgbTabsetModule} from './tabset/tabset.module';
 import {NgbTimepickerModule} from './timepicker/timepicker.module';
 import {NgbTooltipModule} from './tooltip/tooltip.module';
 import {NgbTypeaheadModule} from './typeahead/typeahead.module';
+import {NgbInvalidDateValidator, NgbMaxDateValidator, NgbMinDateValidator} from './datepicker/datepicker-validators';
 
 export {
   NgbAccordionModule,
@@ -53,7 +54,11 @@ export {
   NgbDateNativeAdapter,
   NgbDateNativeUTCAdapter,
   NgbDatepicker,
-  NgbInputDatepicker
+  NgbDateValidators,
+  NgbInputDatepicker,
+  NgbMinDateValidator,
+  NgbMaxDateValidator,
+  NgbInvalidDateValidator
 } from './datepicker/datepicker.module';
 export {
   NgbDropdownModule,
