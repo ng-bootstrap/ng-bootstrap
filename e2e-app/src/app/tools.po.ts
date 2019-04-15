@@ -52,3 +52,17 @@ export const openUrl = async(url: string) => {
   await $(`#navigate-home`).click();
   await $(`#navigate-${url.replace('/', '-')}`).click();
 };
+
+/**
+ * Returns the caret position ({start, end}) of the given element (must be an input).
+ */
+export async function getCaretPosition(element: ElementFinder) {
+  const[start, end] = await browser.executeScript<[number, number]>(
+      `
+    var element = arguments[0];
+    return [element.selectionStart, element.selectionEnd];
+  `,
+      element.getWebElement());
+
+  return {start, end};
+}
