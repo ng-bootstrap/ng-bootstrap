@@ -274,15 +274,8 @@ div.component-demo {
   }
 
   .tabset-code {
-
     ngb-tabset {
-      display: flex;
-      flex-direction: column;
-      max-height: 500px;
-
       .nav {
-        flex-shrink: 0;
-        margin: 0;
         padding: 0.5rem 1.25rem 0;
         font-size: 80%;
 
@@ -297,42 +290,33 @@ div.component-demo {
             color: #666;
           }
         }
-
-        &.nav-pills {
-          border-right: 1px solid  #dee2e6;
-          padding-left: .75rem;
-          padding-right: 0;
-
-          .nav-link.active {
-            color: #666;
-            background-color: #f5f5f5;
-            border: 1px solid  #dee2e6;
-            border-right: none;
-            border-top-right-radius: 0;
-            border-bottom-right-radius: 0;
-            margin-right: -1px;
-          }
-        }
-
-        &.nav-pills + .tab-content {
-          overflow: hidden;
-          display: flex;
-          flex-direction: column;
-
-          .tab-pane {
-            flex: 1;
-            overflow: auto;
-          }
-        }
       }
 
-      .tab-content {
-        flex: 1;
-        overflow: auto;
+      .nav.nav-pills {
+        border-right: 1px solid  #dee2e6;
+        padding-left: .75rem;
+        padding-right: 0;
+
+        .nav-link.active {
+          color: #666;
+          background-color: #f5f5f5;
+          border: 1px solid  #dee2e6;
+          border-right-color: #f5f5f5;
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+          margin-right: -1px;
+        }
+
+        & + .tab-content {
+          flex: 1;
+          overflow: hidden;
+        }
       }
 
       pre {
         margin: 0;
+        max-height: 500px;
+        overflow: auto;
       }
     }
   }
