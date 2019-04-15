@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 
+import {Snippet} from '../../../shared/code/snippet';
 import {NgbdDemoList} from '../../shared';
 import {NgbdOverview} from '../../shared/overview';
 
@@ -10,40 +11,56 @@ import {NgbdOverview} from '../../shared/overview';
   host: {'[class.overview]': 'true'}
 })
 export class NgbdPaginationOverviewComponent {
-  NGFOR = `<table>
-  <tr *ngFor="let item of items | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
-    <!-- content here -->
-  </tr>
-</table>`;
+  NGFOR = Snippet({
+    lang: 'html',
+    code: `
+      <table>
+        <tr *ngFor="let item of items | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
+          <!-- content here -->
+        </tr>
+      </table>
+    `,
+  });
 
-  NGB_PAGINATION = `<ngb-pagination
-  [(page)]="page"
-  [pageSize]="pageSize"
-  [collectionSize]="items.length"></ngb-pagination>`;
+  NGB_PAGINATION = Snippet({
+    lang: 'html',
+    code: `
+      <ngb-pagination
+        [(page)]="page"
+        [pageSize]="pageSize"
+        [collectionSize]="items.length"></ngb-pagination>
+    `,
+  });
 
-  CUSTOM_CSS = `
-ngb-pagination li {
-  &:first-child a {
-    span {
-      display: none;
-    }
-    &:before {
-      /* provide your content here */
-    }
-  }
-}
-`;
+  CUSTOM_CSS = Snippet({
+    lang: 'css',
+    code: `
+      ngb-pagination li {
+        &:first-child a {
+          span {
+            display: none;
+          }
+          &:before {
+            /* provide your content here */
+          }
+        }
+      }
+    `,
+  });
 
-  CUSTOM_TPL = `
-<ngb-pagination>
-  <ng-template ngbPaginationFirst>First</ng-template>
-  <ng-template ngbPaginationLast>Last</ng-template>
-  <ng-template ngbPaginationPrevious>Prev</ng-template>
-  <ng-template ngbPaginationNext>Next</ng-template>
-  <ng-template ngbPaginationEllipsis>...</ng-template>
-  <ng-template ngbPaginationNumber let-page>{{ page }}</ng-template>
-</ngb-pagination>
-`;
+  CUSTOM_TPL = Snippet({
+    lang: 'html',
+    code: `
+      <ngb-pagination>
+        <ng-template ngbPaginationFirst>First</ng-template>
+        <ng-template ngbPaginationLast>Last</ng-template>
+        <ng-template ngbPaginationPrevious>Prev</ng-template>
+        <ng-template ngbPaginationNext>Next</ng-template>
+        <ng-template ngbPaginationEllipsis>...</ng-template>
+        <ng-template ngbPaginationNumber let-page>{{ page }}</ng-template>
+      </ngb-pagination>
+    `,
+  });
 
   sections: NgbdOverview = {};
 
