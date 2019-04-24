@@ -190,7 +190,16 @@ export class NgbTooltip implements OnInit, OnDestroy {
         this._document.querySelector(this.container).appendChild(this._windowRef.location.nativeElement);
       }
 
-      // apply styling to set basic css-classes on target element, before going for positioning
+      // We need to detect changes, because we don't know where .open() might be called from.
+      // Ex. opening tooltip from one of lifecycle hooks that run after the CD
+      // (say from ngAfterViewInit) will result in 'ExpressionHasChanged' exception
+      this._windowRef.changeDetectorRef.detectChanges();
+
+      // We need to mark for check, because tooltip won't work inside the OnPush component.
+      // Ex. when we use expression like `{{ tooltip.isOpen() : 'opened' : 'closed' }}`
+      // inside the template of an OnPush component and we change the tooltip from
+      // open -> closed, the expression in question won't be updated unless we explicitly
+      // mark the parent component to be checked.
       this._windowRef.changeDetectorRef.markForCheck();
 
       ngbAutoClose(
