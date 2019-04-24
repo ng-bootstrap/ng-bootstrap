@@ -9,7 +9,8 @@ import {
   Injectable,
   OnDestroy,
   TemplateRef,
-  ViewContainerRef
+  ViewContainerRef,
+  AfterViewInit
 } from '@angular/core';
 
 import {Key} from '../util/key';
@@ -73,7 +74,7 @@ describe('ngb-popover', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [TestComponent, TestOnPushComponent, DestroyableCmpt],
+      declarations: [TestComponent, TestOnPushComponent, DestroyableCmpt, TestHooksComponent],
       imports: [NgbPopoverModule],
       providers: [SpyService]
     });
@@ -348,6 +349,14 @@ describe('ngb-popover', () => {
       fixture.componentInstance.show = false;
       fixture.detectChanges();
       expect(getWindow(fixture.nativeElement)).toBeNull();
+    });
+
+    it('should open popover from hooks', () => {
+      const fixture = TestBed.createComponent(TestHooksComponent);
+      fixture.detectChanges();
+
+      const popoverWindow = fixture.debugElement.query(By.directive(NgbPopoverWindow));
+      expect(popoverWindow.nativeElement).toHaveCssClass('popover');
     });
   });
 
@@ -743,4 +752,11 @@ export class DestroyableCmpt implements OnDestroy {
   constructor(private _spyService: SpyService) {}
 
   ngOnDestroy(): void { this._spyService.called = true; }
+}
+
+@Component({selector: 'test-hooks', template: `<div ngbPopover="popover"></div>`})
+export class TestHooksComponent implements AfterViewInit {
+  @ViewChild(NgbPopover) popover;
+
+  ngAfterViewInit() { this.popover.open(); }
 }
