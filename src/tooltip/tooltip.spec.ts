@@ -2,7 +2,14 @@ import {TestBed, ComponentFixture, inject, fakeAsync, tick} from '@angular/core/
 import {createGenericTestComponent, createKeyEvent} from '../test/common';
 
 import {By} from '@angular/platform-browser';
-import {Component, ViewChild, ChangeDetectionStrategy, TemplateRef, ViewContainerRef} from '@angular/core';
+import {
+  Component,
+  ViewChild,
+  ChangeDetectionStrategy,
+  TemplateRef,
+  ViewContainerRef,
+  AfterViewInit
+} from '@angular/core';
 
 import {Key} from '../util/key';
 
@@ -58,7 +65,8 @@ describe('ngb-tooltip-window', () => {
 describe('ngb-tooltip', () => {
 
   beforeEach(() => {
-    TestBed.configureTestingModule({declarations: [TestComponent, TestOnPushComponent], imports: [NgbTooltipModule]});
+    TestBed.configureTestingModule(
+        {declarations: [TestComponent, TestOnPushComponent, TestHooksComponent], imports: [NgbTooltipModule]});
   });
 
   function getWindow(element) { return element.querySelector('ngb-tooltip-window'); }
@@ -237,6 +245,15 @@ describe('ngb-tooltip', () => {
       fixture.componentInstance.show = false;
       fixture.detectChanges();
       expect(getWindow(fixture.nativeElement)).toBeNull();
+    });
+
+    it('should open tooltip from hooks', () => {
+      const fixture = TestBed.createComponent(TestHooksComponent);
+      fixture.detectChanges();
+
+      const tooltipWindow = fixture.debugElement.query(By.directive(NgbTooltipWindow));
+      expect(tooltipWindow.nativeElement).toHaveCssClass('tooltip');
+      expect(tooltipWindow.nativeElement).toHaveCssClass('show');
     });
 
     describe('positioning', () => {
@@ -638,4 +655,11 @@ export class TestComponent {
 
 @Component({selector: 'test-onpush-cmpt', changeDetection: ChangeDetectionStrategy.OnPush, template: ``})
 export class TestOnPushComponent {
+}
+
+@Component({selector: 'test-hooks', template: `<div ngbTooltip="tooltip"></div>`})
+export class TestHooksComponent implements AfterViewInit {
+  @ViewChild(NgbTooltip) tooltip;
+
+  ngAfterViewInit() { this.tooltip.open(); }
 }
