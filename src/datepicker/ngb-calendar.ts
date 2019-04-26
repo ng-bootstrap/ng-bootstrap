@@ -101,7 +101,7 @@ export class NgbCalendarGregorian extends NgbCalendar {
 
     switch (period) {
       case 'y':
-        return new NgbDate(date.year + number, 1, 1);
+        return new NgbDate(date.year + number, date.month, date.year);
       case 'm':
         jsDate = new Date(date.year, date.month + number - 1, 1, 12);
         break;

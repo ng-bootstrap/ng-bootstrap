@@ -55,13 +55,13 @@ describe('ngb-calendar-gregorian', () => {
   });
 
   it('should add years to date', () => {
-    expect(calendar.getNext(new NgbDate(2016, 1, 22), 'y')).toEqual(new NgbDate(2017, 1, 1));
-    expect(calendar.getNext(new NgbDate(2017, 12, 22), 'y')).toEqual(new NgbDate(2018, 1, 1));
+    expect(calendar.getNext(new NgbDate(2016, 1, 22), 'y')).toEqual(new NgbDate(2017, 1, 22));
+    expect(calendar.getNext(new NgbDate(2017, 12, 22), 'y')).toEqual(new NgbDate(2018, 12, 22));
   });
 
   it('should subtract years from date', () => {
-    expect(calendar.getPrev(new NgbDate(2016, 12, 22), 'y')).toEqual(new NgbDate(2015, 1, 1));
-    expect(calendar.getPrev(new NgbDate(2017, 1, 22), 'y')).toEqual(new NgbDate(2016, 1, 1));
+    expect(calendar.getPrev(new NgbDate(2016, 12, 22), 'y')).toEqual(new NgbDate(2015, 12, 22));
+    expect(calendar.getPrev(new NgbDate(2017, 1, 22), 'y')).toEqual(new NgbDate(2016, 1, 22));
   });
 
   it('should properly recognize invalid javascript date', () => {
