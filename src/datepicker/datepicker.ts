@@ -1,6 +1,7 @@
 import {fromEvent, merge, Subject} from 'rxjs';
 import {filter, take, takeUntil} from 'rxjs/operators';
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -119,7 +120,7 @@ export interface NgbDatepickerNavigateEvent {
   providers: [NGB_DATEPICKER_VALUE_ACCESSOR, NgbDatepickerService, NgbDatepickerKeyMapService]
 })
 export class NgbDatepicker implements OnDestroy,
-    OnChanges, OnInit, ControlValueAccessor {
+    OnChanges, OnInit, AfterViewInit, ControlValueAccessor {
   model: DatepickerViewModel;
 
   @ViewChild('months') private _monthsEl: ElementRef<HTMLElement>;
@@ -319,7 +320,7 @@ export class NgbDatepicker implements OnDestroy,
     this._service.open(NgbDate.from(date ? date.day ? date as NgbDateStruct : {...date, day: 1} : null));
   }
 
-  ngAfterContentInit() {
+  ngAfterViewInit() {
     this._ngZone.runOutsideAngular(() => {
       const focusIns$ = fromEvent<FocusEvent>(this._monthsEl.nativeElement, 'focusin');
       const focusOuts$ = fromEvent<FocusEvent>(this._monthsEl.nativeElement, 'focusout');
