@@ -1060,12 +1060,12 @@ class TestComponent {
   name = 'World';
   openedModal: NgbModalRef;
   show = true;
-  @ViewChild('content') tplContent;
-  @ViewChild('destroyableContent') tplDestroyableContent;
-  @ViewChild('contentWithClose') tplContentWithClose;
-  @ViewChild('contentWithDismiss') tplContentWithDismiss;
-  @ViewChild('contentWithImplicitContext') tplContentWithImplicitContext;
-  @ViewChild('contentWithIf') tplContentWithIf;
+  @ViewChild('content', {static: true}) tplContent;
+  @ViewChild('destroyableContent', {static: true}) tplDestroyableContent;
+  @ViewChild('contentWithClose', {static: true}) tplContentWithClose;
+  @ViewChild('contentWithDismiss', {static: true}) tplContentWithDismiss;
+  @ViewChild('contentWithImplicitContext', {static: true}) tplContentWithImplicitContext;
+  @ViewChild('contentWithIf', {static: true}) tplContentWithIf;
 
   constructor(public modalService: NgbModal) {}
 
