@@ -1,5 +1,5 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {Component} from '@angular/core';
+import {Component, Injectable} from '@angular/core';
 import {NgbDatepickerModule, NgbDateStruct} from './datepicker.module';
 import {NgbCalendar, NgbCalendarGregorian} from './ngb-calendar';
 import {NgbDate} from './ngb-date';
@@ -34,6 +34,7 @@ describe('ngb-datepicker integration', () => {
 
     const ALPHABET = 'ABCDEFGHIJKLMNOPRSTQUVWXYZ';
 
+    @Injectable()
     class CustomI18n extends NgbDatepickerI18nDefault {
       // alphabetic months: Jan -> A, Feb -> B, etc
       getMonthShortName(month: number) { return ALPHABET[month - 1]; }
