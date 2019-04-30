@@ -128,8 +128,8 @@ export class NgbDropdown implements OnInit, OnDestroy {
   private _zoneSubscription: Subscription;
   private _bodyContainer: HTMLElement;
 
-  @ContentChild(NgbDropdownMenu) private _menu: NgbDropdownMenu;
-  @ContentChild(NgbDropdownMenu, {read: ElementRef}) private _menuElement: ElementRef;
+  @ContentChild(NgbDropdownMenu, {static: true}) private _menu: NgbDropdownMenu;
+  @ContentChild(NgbDropdownMenu, {read: ElementRef, static: true}) private _menuElement: ElementRef;
 
   @ContentChild(NgbDropdownAnchor) private _anchor: NgbDropdownAnchor;
 
