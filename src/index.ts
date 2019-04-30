@@ -45,6 +45,7 @@ export {
   NgbDatepickerI18n,
   NgbDatepickerI18nHebrew,
   NgbDatepickerConfig,
+  NgbDatepickerNavigateEvent,
   NgbDateStruct,
   NgbDate,
   NgbDateParserFormatter,
