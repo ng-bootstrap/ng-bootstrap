@@ -353,6 +353,7 @@ export class NgbDropdown implements OnInit, OnDestroy {
       // Override some styles to have the positionning working
       renderer.setStyle(bodyContainer, 'position', 'absolute');
       renderer.setStyle(dropdownMenuElement, 'position', 'static');
+      renderer.setStyle(bodyContainer, 'z-index', '1050');
 
       renderer.appendChild(bodyContainer, dropdownMenuElement);
       renderer.appendChild(this._document.body, bodyContainer);
