@@ -40,7 +40,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
           <input type="text" class="ngb-tp-input form-control" [class.form-control-sm]="isSmallSize" [class.form-control-lg]="isLargeSize"
             maxlength="2" placeholder="HH" i18n-placeholder="@@ngb.timepicker.HH"
             [value]="formatHour(model?.hour)" (change)="updateHour($event.target.value)"
-            [readonly]="readonlyInputs" [disabled]="disabled" aria-label="Hours" i18n-aria-label="@@ngb.timepicker.hours"
+            [readOnly]="readonlyInputs" [disabled]="disabled" aria-label="Hours" i18n-aria-label="@@ngb.timepicker.hours"
             (keydown.ArrowUp)="changeHour(hourStep); $event.preventDefault()"
             (keydown.ArrowDown)="changeHour(-hourStep); $event.preventDefault()">
           <button *ngIf="spinners" tabindex="-1" type="button" (click)="changeHour(-hourStep)"
@@ -61,7 +61,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
           <input type="text" class="ngb-tp-input form-control" [class.form-control-sm]="isSmallSize" [class.form-control-lg]="isLargeSize"
             maxlength="2" placeholder="MM" i18n-placeholder="@@ngb.timepicker.MM"
             [value]="formatMinSec(model?.minute)" (change)="updateMinute($event.target.value)"
-            [readonly]="readonlyInputs" [disabled]="disabled" aria-label="Minutes" i18n-aria-label="@@ngb.timepicker.minutes"
+            [readOnly]="readonlyInputs" [disabled]="disabled" aria-label="Minutes" i18n-aria-label="@@ngb.timepicker.minutes"
             (keydown.ArrowUp)="changeMinute(minuteStep); $event.preventDefault()"
             (keydown.ArrowDown)="changeMinute(-minuteStep); $event.preventDefault()">
           <button *ngIf="spinners" tabindex="-1" type="button" (click)="changeMinute(-minuteStep)"
@@ -82,7 +82,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
           <input type="text" class="ngb-tp-input form-control" [class.form-control-sm]="isSmallSize" [class.form-control-lg]="isLargeSize"
             maxlength="2" placeholder="SS" i18n-placeholder="@@ngb.timepicker.SS"
             [value]="formatMinSec(model?.second)" (change)="updateSecond($event.target.value)"
-            [readonly]="readonlyInputs" [disabled]="disabled" aria-label="Seconds" i18n-aria-label="@@ngb.timepicker.seconds"
+            [readOnly]="readonlyInputs" [disabled]="disabled" aria-label="Seconds" i18n-aria-label="@@ngb.timepicker.seconds"
             (keydown.ArrowUp)="changeSecond(secondStep); $event.preventDefault()"
             (keydown.ArrowDown)="changeSecond(-secondStep); $event.preventDefault()">
           <button *ngIf="spinners" tabindex="-1" type="button" (click)="changeSecond(-secondStep)"
