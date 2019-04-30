@@ -13,6 +13,10 @@ ngb-datepicker {
 }
 
 .ngb-dp {
+  &-body {
+    z-index: 1050;
+  }
+
   &-header {
     border-bottom: 0;
     border-radius: .25rem .25rem 0 0;
