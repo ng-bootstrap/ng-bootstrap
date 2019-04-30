@@ -1,3 +1,18 @@
+## [4.1.2](https://github.com/ng-bootstrap/ng-bootstrap/compare/4.1.1...4.1.2) (2019-04-30)
+
+
+### Bug Fixes
+
+* **datepicker:** access view child from ngAfterViewInit ([#3152](https://github.com/ng-bootstrap/ng-bootstrap/issues/3152)) ([0e54eef](https://github.com/ng-bootstrap/ng-bootstrap/commit/0e54eef)), closes [#3150](https://github.com/ng-bootstrap/ng-bootstrap/issues/3150)
+* **datepicker:** export NgbDatepickerNavigateEvent correctly ([#3161](https://github.com/ng-bootstrap/ng-bootstrap/issues/3161)) ([e287a74](https://github.com/ng-bootstrap/ng-bootstrap/commit/e287a74)), closes [#3160](https://github.com/ng-bootstrap/ng-bootstrap/issues/3160)
+* **datepicker:** z-index set when appended to body ([00ee594](https://github.com/ng-bootstrap/ng-bootstrap/commit/00ee594)), closes [#3133](https://github.com/ng-bootstrap/ng-bootstrap/issues/3133)
+* **dropdown:** don't fail on keypress if there are no ngbDropdownItems ([b4b0222](https://github.com/ng-bootstrap/ng-bootstrap/commit/b4b0222)), closes [#3117](https://github.com/ng-bootstrap/ng-bootstrap/issues/3117)
+* **dropdown:** z-index set when appended to body ([#3157](https://github.com/ng-bootstrap/ng-bootstrap/issues/3157)) ([ec73fc2](https://github.com/ng-bootstrap/ng-bootstrap/commit/ec73fc2))
+* **popover:** open popover correctly from lifecycle hooks ([b3f8010](https://github.com/ng-bootstrap/ng-bootstrap/commit/b3f8010))
+* **tooltip:** open tooltip correctly from lifecycle hooks ([80beb3a](https://github.com/ng-bootstrap/ng-bootstrap/commit/80beb3a)), closes [#3130](https://github.com/ng-bootstrap/ng-bootstrap/issues/3130)
+
+
+
 ## [4.1.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/4.1.0...4.1.1) (2019-04-01)
 
 
