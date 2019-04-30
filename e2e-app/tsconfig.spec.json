@@ -9,5 +9,8 @@
       "jasminewd2",
       "node"
     ]
-  }
+  },
+  "include": [
+    "**/*.e2e-spec.ts"
+  ]
 }
