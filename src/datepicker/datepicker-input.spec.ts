@@ -749,6 +749,28 @@ describe('NgbInputDatepicker', () => {
       expect(fixture.nativeElement.querySelector('ngb-datepicker')).toBeNull();
       expect(document.querySelector(selector).querySelector('ngb-datepicker')).toBeNull();
     });
+
+    it('should add .ngb-dp-body class when attached to body', () => {
+      const fixture = createTestCmpt(`<input ngbDatepicker #d="ngbDatepicker" [container]="container">`);
+      const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
+
+      // No container specified
+      dpInput.open();
+
+      let element = document.querySelector('ngb-datepicker') as HTMLElement;
+      expect(element).not.toBeNull();
+      expect(element).not.toHaveCssClass('ngb-dp-body');
+
+      // Body
+      dpInput.close();
+      fixture.componentInstance.container = 'body';
+      fixture.detectChanges();
+      dpInput.open();
+
+      element = document.querySelector('ngb-datepicker') as HTMLElement;
+      expect(element).not.toBeNull();
+      expect(element).toHaveCssClass('ngb-dp-body');
+    });
   });
 
   describe('Native adapter', () => {
@@ -803,6 +825,7 @@ class TestNativeComponent {
 
 @Component({selector: 'test-cmp', template: ''})
 class TestComponent {
+  container;
   date: NgbDateStruct;
   isDisabled;
 
