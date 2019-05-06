@@ -271,7 +271,7 @@ export class NgbDatepicker implements OnDestroy,
 
         // can't prevent the very first navigation
         if (navigationPrevented && oldDate !== null) {
-          this._service.reset(this.model);
+          this._service.open(oldDate);
           return;
         }
       }

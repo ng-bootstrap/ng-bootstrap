@@ -1416,24 +1416,4 @@ describe('ngb-datepicker-service', () => {
       expect(service.toValidDate(null, null)).toEqual(null);
     });
   });
-
-  describe('reset()', () => {
-
-    it('should reset the service state', () => {
-      // open 2017
-      service.focus(new NgbDate(2017, 5, 1));
-      const oldDate = getDay(0).date;
-      const oldModel = model;
-      expect(oldDate).toEqual(new NgbDate(2017, 5, 1));
-
-      // open 2018
-      service.focus(new NgbDate(2018, 1, 1));
-      expect(getDay(0).date).toEqual(new NgbDate(2018, 1, 1));
-
-      // reset and update something that doesn't trigger navigation and month change
-      service.reset(oldModel);
-      service.navigation = 'none';
-      expect(getDay(0).date).toEqual(oldDate);
-    });
-  });
 });
