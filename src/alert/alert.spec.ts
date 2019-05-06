@@ -112,6 +112,14 @@ describe('ngb-alert', () => {
     expect(alertEl.textContent).toContain('Cool!');
   });
 
+  it('should project content before the closing button for a11y/screen readers', () => {
+    const fixture = createTestComponent('<ngb-alert [dismissible]="true"><span>Cool!</span></ngb-alert>');
+    const alertEl = getAlertElement(fixture.nativeElement);
+
+    const childElements = Array.from(alertEl.children).map(node => node.tagName.toLowerCase());
+    expect(childElements).toEqual(['span', 'button']);
+  });
+
   describe('Custom config', () => {
     let config: NgbAlertConfig;
 
