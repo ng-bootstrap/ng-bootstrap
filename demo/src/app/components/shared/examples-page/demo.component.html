@@ -29,7 +29,7 @@
               <span class="text-truncate" [title]="tabType(file.name)">{{file.name}}</span>
             </ng-template>
             <ng-template ngbTabContent>
-              <ngbd-code [code]="file.source" [lang]="file.name.split('.').pop()"></ngbd-code>
+              <ngbd-code [snippet]="getFileSnippet(file)"></ngbd-code>
             </ng-template>
           </ngb-tab>
         </ng-template>
@@ -40,7 +40,7 @@
               <span class="ml-2">{{component}}-{{id}}.html</span>
             </ng-template>
             <ng-template ngbTabContent>
-              <ngbd-code [code]="markup" lang="html"></ngbd-code>
+              <ngbd-code [snippet]="markupSnippet"></ngbd-code>
             </ng-template>
           </ngb-tab>
           <ngb-tab id="{{component}}-{{id}}-typescript">
@@ -48,7 +48,7 @@
               <span class="ml-2">{{component}}-{{id}}.ts</span>
             </ng-template>
             <ng-template ngbTabContent>
-              <ngbd-code [code]="code" lang="typescript"></ngbd-code>
+              <ngbd-code [snippet]="codeSnippet"></ngbd-code>
             </ng-template>
           </ngb-tab>
         </ng-template>

@@ -23,7 +23,7 @@
     Datepicker can be used either inline or inside of the popup.
   </p>
 
-  <ngbd-code lang="html" [code]="snippets.basic"></ngbd-code>
+  <ngbd-code [snippet]="snippets.basic"></ngbd-code>
 
   <p>
     In the example above the template variable <code>#d</code> will point
@@ -60,7 +60,7 @@
     <code>[container]</code> input to <code>'body'</code>
   </p>
 
-  <ngbd-code lang="html" [code]="snippets.popup"></ngbd-code>
+  <ngbd-code [snippet]="snippets.popup"></ngbd-code>
 
   <p>
     The popup will be closed with <code>Escape</code> key and when
@@ -91,7 +91,7 @@
     <a routerLink="./" [fragment]="sections['date-model'].fragment">Date Model</a> section for more info.
   </p>
 
-  <ngbd-code lang="html" [code]="snippets.form"></ngbd-code>
+  <ngbd-code [snippet]="snippets.form"></ngbd-code>
 
   <p>
     Alternatively you could use the <code>(dateSelect)</code> or <code>(select)</code> outputs.
@@ -99,7 +99,7 @@
     if user clicks on the same date. <code>NgModel</code> will do it only once.
   </p>
 
-  <ngbd-code lang="html" [code]="snippets.selection"></ngbd-code>
+  <ngbd-code [snippet]="snippets.selection"></ngbd-code>
 </ngbd-overview-section>
 
 
@@ -112,7 +112,7 @@
     It's a simple data structure with 3 fields, but note that months start with 1 (as in ISO 8601).
   </p>
 
-  <ngbd-code lang="typescript" [code]="snippets.dateStruct"></ngbd-code>
+  <ngbd-code [snippet]="snippets.dateStruct"></ngbd-code>
 
   <p>
     All datepicker APIs will consume <code>NgbDateStruct</code>, but will produce it's implementation
@@ -122,7 +122,7 @@
     of the date-related calculations.
   </p>
 
-  <ngbd-code lang="typescript" [code]="snippets.date"></ngbd-code>
+  <ngbd-code [snippet]="snippets.date"></ngbd-code>
 
   <h4>Adapters</h4>
 
@@ -133,14 +133,14 @@
     will return a native date object. All other APIs continue to use <code>NgbDateStruct</code>.
   </p>
 
-  <ngbd-code lang="typescript" [code]="snippets.nativeAdapter"></ngbd-code>
+  <ngbd-code [snippet]="snippets.nativeAdapter"></ngbd-code>
 
   <p>
     You can also create your own adapters if necessary by extending and implementing the
     <code>NgbDateAdapter</code> methods.
   </p>
 
-  <ngbd-code lang="typescript" [code]="snippets.adapter"></ngbd-code>
+  <ngbd-code [snippet]="snippets.adapter"></ngbd-code>
 
   <h4>Input date parsing and formatting</h4>
 
@@ -151,7 +151,7 @@
     For now internally there is a service that does default formatting using ISO 8601 format.
   </p>
 
-  <ngbd-code lang="typescript" [code]="snippets.formatter"></ngbd-code>
+  <ngbd-code [snippet]="snippets.formatter"></ngbd-code>
 
   <p>
     If the entered input value is invalid, the form model will contain the entered text.
@@ -180,7 +180,7 @@
     via the <code>[startDate]</code> input or go to any month via the <code>.navigateTo()</code> method
   </p>
 
-  <ngbd-code lang="html" [code]="snippets.navigation"></ngbd-code>
+  <ngbd-code [snippet]="snippets.navigation"></ngbd-code>
 </ngbd-overview-section>
 
 
@@ -201,8 +201,8 @@
     between months.
   </p>
 
-  <ngbd-code style="position: relative; top: 0.25rem" lang="typescript" [code]="snippets.disablingTS"></ngbd-code>
-  <ngbd-code style="position: relative; bottom: 0.25rem" lang="html" [code]="snippets.disablingHTML"></ngbd-code>
+  <ngbd-code style="position: relative; top: 0.25rem" [snippet]="snippets.disablingTS"></ngbd-code>
+  <ngbd-code style="position: relative; bottom: 0.25rem" [snippet]="snippets.disablingHTML"></ngbd-code>
 </ngbd-overview-section>
 
 
@@ -220,7 +220,7 @@
     see the <a routerLink="../api" fragment="DayTemplateContext">DayTemplateContext API</a>
   </p>
 
-  <ngbd-code lang="html" [code]="snippets.dayTemplate"></ngbd-code>
+  <ngbd-code [snippet]="snippets.dayTemplate"></ngbd-code>
 
   <ngb-alert class="mt-3" [dismissible]="false">
     Note that before v3.3.0 there is no <code>$implicit</code> template property and you have to specify
@@ -246,14 +246,14 @@
     You would see something like this in the resulting markup
   </p>
 
-  <ngbd-code lang="html" [code]="snippets.todayHTML"></ngbd-code>
+  <ngbd-code [snippet]="snippets.todayHTML"></ngbd-code>
 
   <p>
     You can also access this information from the <a routerLink="../api" fragment="DayTemplateContext">DayTemplateContext API</a>
     if you're using a custom day template. It contains a <code>today: boolean</code> flag since v4.1.0
   </p>
 
-  <ngbd-code lang="html" [code]="snippets.todayTemplate"></ngbd-code>
+  <ngbd-code [snippet]="snippets.todayTemplate"></ngbd-code>
 
 </ngbd-overview-section>
 
@@ -264,7 +264,7 @@
     You can insert anything you want in a datepicker footer by providing a template.
   </p>
 
-  <ngbd-code lang="html" [code]="snippets.footerTemplate"></ngbd-code>
+  <ngbd-code [snippet]="snippets.footerTemplate"></ngbd-code>
 </ngbd-overview-section>
 
 
@@ -302,7 +302,7 @@
     if necessary.
   </p>
 
-  <ngbd-code lang="typescript" [code]="snippets.i18n"></ngbd-code>
+  <ngbd-code [snippet]="snippets.i18n"></ngbd-code>
 
   <p>
     The next/previous button labels can be translated using the standard Angular i18n

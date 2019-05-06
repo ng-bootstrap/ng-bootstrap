@@ -21,9 +21,9 @@
       rel="no-opener no-referer"><code>slice</code></a> pipe to extract (or <em>slice</em>) a sub-part of it.</p>
 
   <p>Corresponding code could be something like:</p>
-  <ngbd-code lang="html" [code]="NGFOR"></ngbd-code>
+  <ngbd-code [snippet]="NGFOR"></ngbd-code>
   <p>and the associated <code>&lt;ngb-pagination&gt;</code> would be like:</p>
-  <ngbd-code lang="html" [code]="NGB_PAGINATION"></ngbd-code>
+  <ngbd-code [snippet]="NGB_PAGINATION"></ngbd-code>
 
   <br />
   <ngb-alert type="warning" [dismissible]="false">
@@ -58,7 +58,7 @@
     You could also override the CSS to hide the default <code>span</code> and provide an alternative content.
     For example for the previous arrow:
   </p>
-  <ngbd-code lang="css" [code]="CUSTOM_CSS"></ngbd-code>
+  <ngbd-code [snippet]="CUSTOM_CSS"></ngbd-code>
 
   <h4>
     Using templates
@@ -69,7 +69,7 @@
     Sometimes you would want to display an icon, an image or any arbitrary markup instead of the page number.
     In this case since you could use the template-based API to override any pagination link:
   </p>
-  <ngbd-code lang="html" [code]="CUSTOM_TPL"></ngbd-code>
+  <ngbd-code [snippet]="CUSTOM_TPL"></ngbd-code>
 
   <p>
     In this case we customize all pagination links, but you can pick only the ones you need of course.

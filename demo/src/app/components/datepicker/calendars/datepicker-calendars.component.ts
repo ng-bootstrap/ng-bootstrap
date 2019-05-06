@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 
+import {Snippet} from '../../../shared/code/snippet';
 import {NgbdExamplesPage} from '../../shared/examples-page/examples.component';
 import {NgbdDatepickerHebrew} from '../demos/hebrew/datepicker-hebrew';
 import {NgbdDatepickerHebrewModule} from '../demos/hebrew/datepicker-hebrew.module';
@@ -76,7 +77,7 @@ const DEMOS = [
       to override the way day/week/year numerals and weekday/month names are displayed.
     </p>
 
-    <ngbd-code lang="typescript" [code]="snippets.calendars"></ngbd-code>
+    <ngbd-code [snippet]="snippets.calendars"></ngbd-code>
 
     <br>
 
@@ -99,11 +100,14 @@ export class NgbdDatepickerCalendarsComponent extends NgbdExamplesPage {
   demos = DEMOS;
 
   snippets = {
-    calendars: `
-providers: [
-  {provide: NgbCalendar, useClass: NgbCalendarHebrew},
-  {provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nHebrew}
-]
-`
+    calendars: Snippet({
+      lang: 'typescript',
+      code: `
+        providers: [
+          {provide: NgbCalendar, useClass: NgbCalendarHebrew},
+          {provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nHebrew}
+      ]
+      `,
+    }),
   };
 }
