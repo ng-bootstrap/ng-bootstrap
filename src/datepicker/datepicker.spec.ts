@@ -540,10 +540,11 @@ describe('ngb-datepicker', () => {
   it('should prevent navigation when calling preventDefault()', () => {
     const fixture = createTestComponent(
         `<ngb-datepicker #dp [startDate]="date" (navigate)="onPreventableNavigate($event)"></ngb-datepicker>
-       <button id="btn"(click)="dp.navigateTo({year: 2015, month: 7})"></button>`);
+       <button id="btn" (click)="dp.navigateTo({year: 2015, month: 7})"></button>`);
 
     expect(getMonthSelect(fixture.nativeElement).value).toBe('8');
     expect(getYearSelect(fixture.nativeElement).value).toBe('2016');
+    expect(getDay(fixture.nativeElement, 0).innerText).toBe('1');
 
     const button = fixture.nativeElement.querySelector('button#btn');
     button.click();
@@ -551,6 +552,7 @@ describe('ngb-datepicker', () => {
 
     expect(getMonthSelect(fixture.nativeElement).value).toBe('8');
     expect(getYearSelect(fixture.nativeElement).value).toBe('2016');
+    expect(getDay(fixture.nativeElement, 0).innerText).toBe('1');
   });
 
   it('should not focus day initially', () => {
