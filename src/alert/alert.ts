@@ -25,11 +25,11 @@ import {NgbAlertConfig} from './alert-config';
   encapsulation: ViewEncapsulation.None,
   host: {'role': 'alert', 'class': 'alert', '[class.alert-dismissible]': 'dismissible'},
   template: `
+    <ng-content></ng-content>
     <button *ngIf="dismissible" type="button" class="close" aria-label="Close" i18n-aria-label="@@ngb.alert.close"
       (click)="closeHandler()">
       <span aria-hidden="true">&times;</span>
     </button>
-    <ng-content></ng-content>
     `,
   styleUrls: ['./alert.scss']
 })
