@@ -5,6 +5,7 @@ import {
   dateComparator,
   generateSelectBoxMonths,
   getFirstViewDate,
+  isChangedMonth,
   isDateSelectable,
   generateSelectBoxYears
 } from './datepicker-tools';
@@ -624,4 +625,24 @@ describe(`datepicker-tools`, () => {
     });
   });
 
+  describe(`isChangedMonth()`, () => {
+
+    it(`should compare valid dates`, () => {
+      expect(isChangedMonth(new NgbDate(2017, 1, 1), new NgbDate(2017, 1, 1))).toBe(false);
+      expect(isChangedMonth(new NgbDate(2017, 1, 1), new NgbDate(2017, 1, 10))).toBe(false);
+      expect(isChangedMonth(new NgbDate(2017, 1, 1), new NgbDate(2017, 2, 1))).toBe(true);
+      expect(isChangedMonth(new NgbDate(2017, 1, 1), new NgbDate(2018, 1, 1))).toBe(true);
+      expect(isChangedMonth(new NgbDate(2017, 1, 1), new NgbDate(2018, 2, 1))).toBe(true);
+    });
+
+    it(`should compare invalid dates`, () => {
+      expect(isChangedMonth(undefined, undefined)).toBe(false);
+      expect(isChangedMonth(null, null)).toBe(false);
+
+      expect(isChangedMonth(new NgbDate(2017, 5, 2), null)).toBe(true);
+      expect(isChangedMonth(new NgbDate(2017, 5, 2), undefined)).toBe(true);
+      expect(isChangedMonth(null, new NgbDate(2017, 5, 2))).toBe(true);
+      expect(isChangedMonth(undefined, new NgbDate(2017, 5, 2))).toBe(true);
+    });
+  });
 });

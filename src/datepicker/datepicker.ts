@@ -30,7 +30,7 @@ import {NgbDatepickerConfig} from './datepicker-config';
 import {NgbDateAdapter} from './adapters/ngb-date-adapter';
 import {NgbDateStruct} from './ngb-date-struct';
 import {NgbDatepickerI18n} from './datepicker-i18n';
-import {isChangedDate} from './datepicker-tools';
+import {isChangedDate, isChangedMonth} from './datepicker-tools';
 import {hasClassName} from '../util/util';
 
 const NGB_DATEPICKER_VALUE_ACCESSOR = {
@@ -355,7 +355,10 @@ export class NgbDatepicker implements OnDestroy,
         .forEach(input => this._service[input] = this[input]);
 
     if ('startDate' in changes) {
-      this.navigateTo(this.startDate);
+      const {currentValue, previousValue} = changes.startDate;
+      if (isChangedMonth(previousValue, currentValue)) {
+        this.navigateTo(this.startDate);
+      }
     }
   }
 

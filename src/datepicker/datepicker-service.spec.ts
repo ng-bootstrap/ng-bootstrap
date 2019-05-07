@@ -1163,6 +1163,17 @@ describe('ngb-datepicker-service', () => {
       expect(model.months[0]).toBe(month);
       expect(getDay(0).date).toBe(date);
     });
+
+    it(`should not rebuild anything when opening dates from the same month`, () => {
+      service.open(new NgbDate(2017, 5, 5));
+      expect(model.months.length).toBe(1);
+      expect(model.firstDate).toEqual(new NgbDate(2017, 5, 1));
+      expect(mock.onNext).toHaveBeenCalledTimes(1);
+
+      service.open(new NgbDate(2017, 5, 5));  // new object, same date
+      service.open(new NgbDate(2017, 5, 1));  // another date
+      expect(mock.onNext).toHaveBeenCalledTimes(1);
+    });
   });
 
   describe(`selection handling`, () => {
