@@ -412,12 +412,12 @@ describe('ngb-timepicker', () => {
 
                const hourInput = getDebugInputs(fixture)[0];
 
-               hourInput.triggerEventHandler('keydown.ArrowUp', {});  // H+
+               hourInput.triggerEventHandler('keydown.ArrowUp', {preventDefault: () => {}});  // H+
                fixture.detectChanges();
                expectToDisplayTime(fixture.nativeElement, '11:30');
                expect(fixture.componentInstance.model).toEqual({hour: 11, minute: 30, second: 0});
 
-               hourInput.triggerEventHandler('keydown.ArrowDown', {});  // H+
+               hourInput.triggerEventHandler('keydown.ArrowDown', {preventDefault: () => {}});  // H-
                fixture.detectChanges();
                expectToDisplayTime(fixture.nativeElement, '10:30');
                expect(fixture.componentInstance.model).toEqual({hour: 10, minute: 30, second: 0});
@@ -441,12 +441,12 @@ describe('ngb-timepicker', () => {
 
                const minuteInput = getDebugInputs(fixture)[1];
 
-               minuteInput.triggerEventHandler('keydown.ArrowUp', {});  // M+
+               minuteInput.triggerEventHandler('keydown.ArrowUp', {preventDefault: () => {}});  // M+
                fixture.detectChanges();
                expectToDisplayTime(fixture.nativeElement, '10:31');
                expect(fixture.componentInstance.model).toEqual({hour: 10, minute: 31, second: 0});
 
-               minuteInput.triggerEventHandler('keydown.ArrowDown', {});  // M-
+               minuteInput.triggerEventHandler('keydown.ArrowDown', {preventDefault: () => {}});  // M-
                fixture.detectChanges();
                expectToDisplayTime(fixture.nativeElement, '10:30');
                expect(fixture.componentInstance.model).toEqual({hour: 10, minute: 30, second: 0});
@@ -470,12 +470,12 @@ describe('ngb-timepicker', () => {
 
                const secondInput = getDebugInputs(fixture)[2];
 
-               secondInput.triggerEventHandler('keydown.ArrowUp', {});  // S+
+               secondInput.triggerEventHandler('keydown.ArrowUp', {preventDefault: () => {}});  // S+
                fixture.detectChanges();
                expectToDisplayTime(fixture.nativeElement, '10:30:01');
                expect(fixture.componentInstance.model).toEqual({hour: 10, minute: 30, second: 1});
 
-               secondInput.triggerEventHandler('keydown.ArrowDown', {});  // S-
+               secondInput.triggerEventHandler('keydown.ArrowDown', {preventDefault: () => {}});  // S-
                fixture.detectChanges();
                expectToDisplayTime(fixture.nativeElement, '10:30:00');
                expect(fixture.componentInstance.model).toEqual({hour: 10, minute: 30, second: 0});

@@ -11,20 +11,20 @@ describe('NgbTime', () => {
     const t = new NgbTime(10, 30);
     expect(t.toString()).toBe('10:30:0');
 
-    t.changeHour(1);
+    t.shiftHour(1);
     expect(t.toString()).toBe('11:30:0');
 
-    t.changeHour(5);
+    t.shiftHour(5);
     expect(t.toString()).toBe('16:30:0');
 
-    t.changeHour(-2);
+    t.shiftHour(-2);
     expect(t.toString()).toBe('14:30:0');
   });
 
   it('should properly change undefined hours', () => {
     const t = new NgbTime(undefined, 30);
 
-    t.changeHour(1);
+    t.shiftHour(1);
     expect(t.toString()).toBe('1:30:0');
   });
 
@@ -32,16 +32,16 @@ describe('NgbTime', () => {
     const t = new NgbTime(23, 30);
     expect(t.toString()).toBe('23:30:0');
 
-    t.changeHour(1);
+    t.shiftHour(1);
     expect(t.toString()).toBe('0:30:0');
 
-    t.changeHour(-5);
+    t.shiftHour(-5);
     expect(t.toString()).toBe('19:30:0');
 
-    t.changeHour(6);
+    t.shiftHour(6);
     expect(t.toString()).toBe('1:30:0');
 
-    t.changeHour(26);
+    t.shiftHour(26);
     expect(t.toString()).toBe('3:30:0');
   });
 
@@ -49,7 +49,7 @@ describe('NgbTime', () => {
     const t = new NgbTime(0, 30);
     expect(t.toString()).toBe('0:30:0');
 
-    t.changeHour(-48);
+    t.shiftHour(-48);
     expect(t.toString()).toBe('0:30:0');
   });
 
@@ -57,20 +57,20 @@ describe('NgbTime', () => {
     const t = new NgbTime(10, 30);
     expect(t.toString()).toBe('10:30:0');
 
-    t.changeMinute(1);
+    t.shiftMinute(1);
     expect(t.toString()).toBe('10:31:0');
 
-    t.changeMinute(5);
+    t.shiftMinute(5);
     expect(t.toString()).toBe('10:36:0');
 
-    t.changeMinute(-2);
+    t.shiftMinute(-2);
     expect(t.toString()).toBe('10:34:0');
   });
 
   it('should properly change undefined minutes', () => {
     const t = new NgbTime(1, undefined);
 
-    t.changeMinute(0);
+    t.shiftMinute(0);
     expect(t.toString()).toBe('1:0:0');
   });
 
@@ -78,13 +78,13 @@ describe('NgbTime', () => {
     const t = new NgbTime(10, 30);
     expect(t.toString()).toBe('10:30:0');
 
-    t.changeMinute(41);
+    t.shiftMinute(41);
     expect(t.toString()).toBe('11:11:0');
 
-    t.changeMinute(121);
+    t.shiftMinute(121);
     expect(t.toString()).toBe('13:12:0');
 
-    t.changeMinute(-122);
+    t.shiftMinute(-122);
     expect(t.toString()).toBe('11:10:0');
   });
 
@@ -92,16 +92,16 @@ describe('NgbTime', () => {
     const t = new NgbTime(0, 30);
     expect(t.toString()).toBe('0:30:0');
 
-    t.changeMinute(-40);
+    t.shiftMinute(-40);
     expect(t.toString()).toBe('23:50:0');
 
-    t.changeMinute(50);
+    t.shiftMinute(50);
     expect(t.toString()).toBe('0:40:0');
 
-    t.changeMinute(24 * 60);
+    t.shiftMinute(24 * 60);
     expect(t.toString()).toBe('0:40:0');
 
-    t.changeMinute(-48 * 60);
+    t.shiftMinute(-48 * 60);
     expect(t.toString()).toBe('0:40:0');
   });
 
@@ -109,20 +109,20 @@ describe('NgbTime', () => {
     const t = new NgbTime(10, 30, 30);
     expect(t.toString()).toBe('10:30:30');
 
-    t.changeSecond(1);
+    t.shiftSecond(1);
     expect(t.toString()).toBe('10:30:31');
 
-    t.changeSecond(5);
+    t.shiftSecond(5);
     expect(t.toString()).toBe('10:30:36');
 
-    t.changeSecond(-6);
+    t.shiftSecond(-6);
     expect(t.toString()).toBe('10:30:30');
   });
 
   it('should properly change undefined minutes', () => {
     const t = new NgbTime(1, 20, undefined);
 
-    t.changeSecond(30);
+    t.shiftSecond(30);
     expect(t.toString()).toBe('1:20:30');
   });
 
@@ -130,13 +130,13 @@ describe('NgbTime', () => {
     const t = new NgbTime(10, 30, 30);
     expect(t.toString()).toBe('10:30:30');
 
-    t.changeSecond(60);
+    t.shiftSecond(60);
     expect(t.toString()).toBe('10:31:30');
 
-    t.changeSecond(60 * 60);
+    t.shiftSecond(60 * 60);
     expect(t.toString()).toBe('11:31:30');
 
-    t.changeSecond(-60 * 60);
+    t.shiftSecond(-60 * 60);
     expect(t.toString()).toBe('10:31:30');
   });
 
@@ -144,16 +144,16 @@ describe('NgbTime', () => {
     const t = new NgbTime(0, 0, 30);
     expect(t.toString()).toBe('0:0:30');
 
-    t.changeSecond(-40);
+    t.shiftSecond(-40);
     expect(t.toString()).toBe('23:59:50');
 
-    t.changeSecond(110);
+    t.shiftSecond(110);
     expect(t.toString()).toBe('0:1:40');
 
-    t.changeMinute(24 * 3600);
+    t.shiftMinute(24 * 3600);
     expect(t.toString()).toBe('0:1:40');
 
-    t.changeMinute(-24 * 3600);
+    t.shiftMinute(-24 * 3600);
     expect(t.toString()).toBe('0:1:40');
   });
 
@@ -161,7 +161,7 @@ describe('NgbTime', () => {
     const t = new NgbTime(0, 0, 30);
     expect(t.toString()).toBe('0:0:30');
 
-    t.updateHour(11);
+    t.setHour(11);
     expect(t.toString()).toBe('11:0:30');
   });
 
@@ -169,7 +169,7 @@ describe('NgbTime', () => {
     const t = new NgbTime(0, 0, 30);
     expect(t.toString()).toBe('0:0:30');
 
-    t.updateHour(25);
+    t.setHour(25);
     expect(t.toString()).toBe('1:0:30');
   });
 
@@ -177,7 +177,7 @@ describe('NgbTime', () => {
     const t = new NgbTime(11, 0, 30);
     expect(t.toString()).toBe('11:0:30');
 
-    t.updateMinute(40);
+    t.setMinute(40);
     expect(t.toString()).toBe('11:40:30');
   });
 
@@ -185,10 +185,10 @@ describe('NgbTime', () => {
     const t = new NgbTime(11, 30, 30);
     expect(t.toString()).toBe('11:30:30');
 
-    t.updateMinute(90);
+    t.setMinute(90);
     expect(t.toString()).toBe('12:30:30');
 
-    t.updateMinute(-120);
+    t.setMinute(-120);
     expect(t.toString()).toBe('10:0:30');
   });
 
@@ -196,7 +196,7 @@ describe('NgbTime', () => {
     const t = new NgbTime(11, 0, 30);
     expect(t.toString()).toBe('11:0:30');
 
-    t.updateSecond(40);
+    t.setSecond(40);
     expect(t.toString()).toBe('11:0:40');
   });
 
@@ -204,7 +204,7 @@ describe('NgbTime', () => {
     const t = new NgbTime(11, 0, 30);
     expect(t.toString()).toBe('11:0:30');
 
-    t.updateSecond(70);
+    t.setSecond(70);
     expect(t.toString()).toBe('11:1:10');
   });
 
