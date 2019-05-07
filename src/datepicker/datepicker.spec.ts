@@ -202,6 +202,22 @@ describe('ngb-datepicker', () => {
     expect(getYearSelect(fixture.nativeElement).value).toBe(currentYear);
   });
 
+  it(`should allow navigation work when startDate value changes`, () => {
+    const fixture = createTestComponent(`<ngb-datepicker [startDate]="getDate()"></ngb-datepicker>`);
+
+    expect(getMonthSelect(fixture.nativeElement).value).toBe('8');
+    expect(getYearSelect(fixture.nativeElement).value).toBe('2016');
+
+    const navigation = getNavigationLinks(fixture.nativeElement);
+
+    // JUL 2016
+    navigation[0].click();
+    fixture.detectChanges();
+
+    expect(getMonthSelect(fixture.nativeElement).value).toBe('7');
+    expect(getYearSelect(fixture.nativeElement).value).toBe('2016');
+  });
+
   it('should allow infinite navigation when min/max dates are not set', () => {
     const fixture = createTestComponent(`<ngb-datepicker [startDate]="date"></ngb-datepicker>`);
 
@@ -260,9 +276,10 @@ describe('ngb-datepicker', () => {
 
   it('should handle minDate edge case values', () => {
     const fixture = createTestComponent(`<ngb-datepicker [minDate]="minDate" [startDate]="date"></ngb-datepicker>`);
+    const datepicker = fixture.debugElement.query(By.directive(NgbDatepicker)).injector.get(NgbDatepicker);
 
     function expectMinDate(year: number, month: number) {
-      fixture.componentInstance.date = {year: 1000, month: 1};
+      datepicker.navigateTo({year: 1000, month: 1});
       fixture.detectChanges();
       expect(getMonthSelect(fixture.nativeElement).value).toBe(`${month}`);
       expect(getYearSelect(fixture.nativeElement).value).toBe(`${year}`);
@@ -272,30 +289,36 @@ describe('ngb-datepicker', () => {
 
     // resetting
     fixture.componentInstance.minDate = <any>{};
+    fixture.detectChanges();
     expectMinDate(1000, 1);
 
     // resetting
     fixture.componentInstance.minDate = <any>new Date();
+    fixture.detectChanges();
     expectMinDate(1000, 1);
 
     // resetting
     fixture.componentInstance.minDate = new NgbDate(3000000, 1, 1);
+    fixture.detectChanges();
     expectMinDate(1000, 1);
 
     // resetting
     fixture.componentInstance.minDate = null;
+    fixture.detectChanges();
     expectMinDate(1000, 1);
 
     // resetting
     fixture.componentInstance.minDate = undefined;
+    fixture.detectChanges();
     expectMinDate(1000, 1);
   });
 
   it('should handle maxDate edge case values', () => {
     const fixture = createTestComponent(`<ngb-datepicker [maxDate]="maxDate" [startDate]="date"></ngb-datepicker>`);
+    const datepicker = fixture.debugElement.query(By.directive(NgbDatepicker)).injector.get(NgbDatepicker);
 
     function expectMaxDate(year: number, month: number) {
-      fixture.componentInstance.date = {year: 10000, month: 1};
+      datepicker.navigateTo({year: 10000, month: 1});
       fixture.detectChanges();
       expect(getMonthSelect(fixture.nativeElement).value).toBe(`${month}`);
       expect(getYearSelect(fixture.nativeElement).value).toBe(`${year}`);
@@ -305,22 +328,27 @@ describe('ngb-datepicker', () => {
 
     // resetting
     fixture.componentInstance.maxDate = <any>{};
+    fixture.detectChanges();
     expectMaxDate(10000, 1);
 
     // resetting
     fixture.componentInstance.maxDate = <any>new Date();
+    fixture.detectChanges();
     expectMaxDate(10000, 1);
 
     // resetting
     fixture.componentInstance.maxDate = new NgbDate(3000000, 1, 1);
+    fixture.detectChanges();
     expectMaxDate(10000, 1);
 
     // resetting
     fixture.componentInstance.maxDate = null;
+    fixture.detectChanges();
     expectMaxDate(10000, 1);
 
     // resetting
     fixture.componentInstance.maxDate = undefined;
+    fixture.detectChanges();
     expectMaxDate(10000, 1);
   });
 
@@ -1184,5 +1212,6 @@ class TestComponent {
   markDisabled = (date: NgbDateStruct) => { return NgbDate.from(date).equals(new NgbDate(2016, 8, 22)); };
   onNavigate = () => {};
   onSelect = () => {};
+  getDate = () => ({year: 2016, month: 8});
   onPreventableNavigate = (event: NgbDatepickerNavigateEvent) => event.preventDefault();
 }

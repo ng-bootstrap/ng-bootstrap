@@ -8,6 +8,10 @@ export function isChangedDate(prev: NgbDate, next: NgbDate) {
   return !dateComparator(prev, next);
 }
 
+export function isChangedMonth(prev: NgbDate, next: NgbDate) {
+  return !prev && !next ? false : !prev || !next ? true : prev.year !== next.year || prev.month !== next.month;
+}
+
 export function dateComparator(prev: NgbDate, next: NgbDate) {
   return (!prev && !next) || (!!prev && !!next && prev.equals(next));
 }
