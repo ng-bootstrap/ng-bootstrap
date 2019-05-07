@@ -51,17 +51,6 @@ describe('ngb-modal-dialog', () => {
 
   describe('dismiss', () => {
 
-    it('should dismiss on backdrop click by default', (done) => {
-      fixture.detectChanges();
-
-      fixture.componentInstance.dismissEvent.subscribe(($event) => {
-        expect($event).toBe(ModalDismissReasons.BACKDROP_CLICK);
-        done();
-      });
-
-      fixture.nativeElement.click();
-    });
-
     it('should not dismiss on modal content click when there is active backdrop', (done) => {
       fixture.detectChanges();
       fixture.componentInstance.dismissEvent.subscribe(
@@ -106,6 +95,28 @@ describe('ngb-modal-dialog', () => {
       });
 
       fixture.debugElement.triggerEventHandler('keyup.esc', {});
+    });
+
+    it('should dismiss the modal on backdrop click on mousedown', (done) => {
+      fixture.detectChanges();
+
+      fixture.componentInstance.dismissEvent.subscribe(($event) => {
+        expect($event).toBe(ModalDismissReasons.BACKDROP_CLICK);
+        done();
+      });
+
+      fixture.nativeElement.dispatchEvent(new Event('mousedown'));
+    });
+
+    it('should dismiss the modal on backdrop click on touchstart', (done) => {
+      fixture.detectChanges();
+
+      fixture.componentInstance.dismissEvent.subscribe(($event) => {
+        expect($event).toBe(ModalDismissReasons.BACKDROP_CLICK);
+        done();
+      });
+
+      fixture.nativeElement.dispatchEvent(new Event('touchstart'));
     });
   });
 

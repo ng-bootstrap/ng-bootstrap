@@ -14,7 +14,6 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {NgbModalConfig} from './modal-config';
 import {NgbActiveModal, NgbModal, NgbModalModule, NgbModalRef} from './modal.module';
 
-
 const NOOP = () => {};
 
 @Injectable()
@@ -415,7 +414,7 @@ describe('ngb-modal', () => {
         expect(fixture.nativeElement).toHaveModal('foo');
         expect(fixture.nativeElement).toHaveBackdrop();
 
-        (<HTMLElement>document.querySelector('ngb-modal-window')).click();
+        (<HTMLElement>document.querySelector('ngb-modal-window')).dispatchEvent(new Event('mousedown'));
         fixture.detectChanges();
 
         expect(fixture.nativeElement).not.toHaveModal();
@@ -429,7 +428,7 @@ describe('ngb-modal', () => {
         expect(fixture.nativeElement).toHaveModal('foo');
         expect(fixture.nativeElement).toHaveBackdrop();
 
-        (<HTMLElement>document.querySelector('ngb-modal-window')).click();
+        (<HTMLElement>document.querySelector('ngb-modal-window')).dispatchEvent(new Event('mousedown'));
         fixture.detectChanges();
 
         expect(fixture.nativeElement).toHaveModal();
@@ -445,7 +444,7 @@ describe('ngb-modal', () => {
         fixture.detectChanges();
         expect(fixture.nativeElement).toHaveModal('foo');
 
-        (<HTMLElement>document.querySelector('ngb-modal-window')).click();
+        (<HTMLElement>document.querySelector('ngb-modal-window')).dispatchEvent(new Event('mousedown'));
         fixture.detectChanges();
         expect(fixture.nativeElement).toHaveModal();
 
@@ -688,7 +687,6 @@ describe('ngb-modal', () => {
         expect(fixture.nativeElement).not.toHaveModal();
         expect(document.activeElement).toBe(openButtonEl);
       });
-
 
       it('should return focus to body if no element focused prior to modal opening', () => {
         const modalInstance = fixture.componentInstance.open('foo');
@@ -976,8 +974,6 @@ describe('ngb-modal', () => {
     });
   });
 });
-
-
 
 @Component({selector: 'custom-injector-cmpt', template: 'Some content'})
 export class CustomInjectorCmpt implements OnDestroy {
