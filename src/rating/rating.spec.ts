@@ -441,7 +441,7 @@ describe('ngb-rating', () => {
       const fixture = createTestComponent('<ngb-rating></ngb-rating>');
       let ratingEl = fixture.debugElement.query(By.directive(NgbRating));
       fixture.detectChanges();
-      expect(ratingEl.attributes['aria-disabled']).toBeNull();
+      expect(ratingEl.attributes['aria-disabled'] == null).toBeTruthy();
 
       let ratingComp = <NgbRating>ratingEl.componentInstance;
       ratingComp.readonly = true;
