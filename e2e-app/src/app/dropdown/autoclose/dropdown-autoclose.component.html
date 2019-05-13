@@ -8,20 +8,22 @@
     <div id="dropdown" #d="ngbDropdown" ngbDropdown class="d-inline-block" [autoClose]="autoClose" [container]="container">
       <button class="btn btn-outline-secondary" ngbDropdownToggle>Dropdown</button>
       <div id="dropdownMenuId" ngbDropdownMenu aria-labelledby="dropdownBasic1" style="overflow-y: scroll;">
-        <div class="form-group">
-          <input type="email" class="form-control" id="emailInput" placeholder="email@example.com">
-        </div>
-        <button class="dropdown-item">Item</button>
+        <form>
+          <div class="form-group">
+            <input type="email" class="form-control" id="emailInput" placeholder="email@example.com" />
+          </div>
+        </form>
+        <button type="button" id="item-1" ngbDropdownItem>Item</button>
       </div>
     </div>
 
     <div ngbDropdown class="d-inline-block ml-3">
       <button class="btn btn-outline-secondary" id="autoclose-dropdown" ngbDropdownToggle>Choose Autoclose</button>
       <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-        <button class="dropdown-item" id="autoclose-true" (click)="autoClose = true">True</button>
-        <button class="dropdown-item" id="autoclose-false" (click)="autoClose = false">False</button>
-        <button class="dropdown-item" id="autoclose-outside" (click)="autoClose = 'outside'">'Outside'</button>
-        <button class="dropdown-item" id="autoclose-inside" (click)="autoClose = 'inside'">'Inside'</button>
+        <button type="button" ngbDropdownItem id="autoclose-true" (click)="autoClose = true">True</button>
+        <button type="button" ngbDropdownItem id="autoclose-false" (click)="autoClose = false">False</button>
+        <button type="button" ngbDropdownItem id="autoclose-outside" (click)="autoClose = 'outside'">'Outside'</button>
+        <button type="button" ngbDropdownItem id="autoclose-inside" (click)="autoClose = 'inside'">'Inside'</button>
       </div>
       <button class="btn btn-outline-secondary ml-1" id="container-null" (click)="container = null">Append dropdown to widget</button>
       <button class="btn btn-outline-secondary ml-1" id="container-body" (click)="container = 'body'">Append dropdown to body</button>
