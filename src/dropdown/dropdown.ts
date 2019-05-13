@@ -57,7 +57,9 @@ export class NgbDropdownItem {
     '(keydown.ArrowUp)': 'dropdown.onKeyDown($event)',
     '(keydown.ArrowDown)': 'dropdown.onKeyDown($event)',
     '(keydown.Home)': 'dropdown.onKeyDown($event)',
-    '(keydown.End)': 'dropdown.onKeyDown($event)'
+    '(keydown.End)': 'dropdown.onKeyDown($event)',
+    '(keydown.Enter)': 'dropdown.onKeyDown($event)',
+    '(keydown.Space)': 'dropdown.onKeyDown($event)'
   }
 })
 export class NgbDropdownMenu {
@@ -260,6 +262,8 @@ export class NgbDropdown implements OnInit, OnDestroy {
   }
 
   onKeyDown(event: KeyboardEvent) {
+    // tslint:disable-next-line:deprecation
+    const key = event.which;
     const itemElements = this._getMenuElements();
 
     let position = -1;
@@ -277,12 +281,20 @@ export class NgbDropdown implements OnInit, OnDestroy {
       });
     }
 
+    // closing on Enter / Space
+    if (key === Key.Space || key === Key.Enter) {
+      if (isEventFromItems && (this.autoClose === true || this.autoClose === 'inside')) {
+        this.close();
+      }
+      return;
+    }
+
+    // opening / navigating
     if (isEventFromToggle || isEventFromItems) {
       this.open();
 
       if (itemElements.length) {
-        // tslint:disable-next-line:deprecation
-        switch (event.which) {
+        switch (key) {
           case Key.ArrowDown:
             position = Math.min(position + 1, itemElements.length - 1);
             break;

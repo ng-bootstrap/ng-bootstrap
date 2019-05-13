@@ -1,5 +1,5 @@
-import {Key, ElementFinder, browser} from 'protractor';
-import {sendKey, openUrl, rightClick, offsetClick} from '../../tools.po';
+import {Key, ElementFinder} from 'protractor';
+import {sendKey, openUrl, rightClick, offsetClick, expectFocused} from '../../tools.po';
 import {DropdownAutoClosePage} from './dropdown-autoclose.po';
 import {DropdownPage} from '../dropdown.po';
 
@@ -61,16 +61,36 @@ containers.forEach((container) => {
       await openDropdown(dropdown, `Opening dropdown for inside click`);
       await page.getFirstItem(dropdown).click();
       await expectDropdownToBeHidden(dropdown, `Dropdown should be closed on inside click`);
+
+      // enter
+      await openDropdown(dropdown, `Opening dropdown for enter`);
+      await sendKey(Key.ARROW_DOWN);
+      await expectFocused(page.getDropdownItem(1), `first dropdown item should be focused`);
+      await sendKey(Key.ENTER);
+      await expectDropdownToBeHidden(dropdown, `Dropdown should be closed on Enter`);
+
+      // space
+      await openDropdown(dropdown, `Opening dropdown for space`);
+      await sendKey(Key.ARROW_DOWN);
+      await expectFocused(page.getDropdownItem(1), `first dropdown item should be focused`);
+      await sendKey(Key.SPACE);
+      await expectDropdownToBeHidden(dropdown, `Dropdown should be closed on Space`);
     });
 
-    it(`should't close when clicking on the form input`, async() => {
+    it(`should't close when interacting with the form inside the dropdown menu`, async() => {
       await page.selectAutoClose('true');
       const dropdown = page.getDropdown('#dropdown');
 
+      // form input click
       await openDropdown(dropdown, `Opening dropdown`);
       await page.getFormInput(dropdown).click();
-      await expectDropdownToBeVisible(dropdown, `Dropdown should be open`);
+      await expectDropdownToBeVisible(dropdown, `Dropdown should stay open on click in the form`);
 
+      // form enter / space
+      await page.getFormInput(dropdown).sendKeys(Key.ENTER);
+      await expectDropdownToBeVisible(dropdown, `Dropdown should stay open on Enter in the form`);
+      await page.getFormInput(dropdown).sendKeys(Key.SPACE);
+      await expectDropdownToBeVisible(dropdown, `Dropdown should stay open on Space in the form`);
     });
 
     it(`should't close when clicking on the scrollbar`, async() => {
@@ -103,6 +123,14 @@ containers.forEach((container) => {
       // inside click
       await page.getFirstItem(dropdown).click();
       await expectDropdownToBeVisible(dropdown, `Dropdown should NOT be closed on inside click`);
+
+      // enter / space
+      await sendKey(Key.ARROW_DOWN);
+      await expectFocused(page.getDropdownItem(1), `first dropdown item should be focused`);
+      await sendKey(Key.ENTER);
+      await expectDropdownToBeVisible(dropdown, `Dropdown should NOT be closed on Enter`);
+      await sendKey(Key.SPACE);
+      await expectDropdownToBeVisible(dropdown, `Dropdown should NOT be closed on Space`);
     });
 
     it(`should work when autoClose === 'outside'`, async() => {
@@ -123,6 +151,14 @@ containers.forEach((container) => {
       await openDropdown(dropdown, `Opening dropdown for inside click`);
       await page.getFirstItem(dropdown).click();
       await expectDropdownToBeVisible(dropdown, `Dropdown should NOT be closed on inside click`);
+
+      // enter / space
+      await sendKey(Key.ARROW_DOWN);
+      await expectFocused(page.getDropdownItem(1), `first dropdown item should be focused`);
+      await sendKey(Key.ENTER);
+      await expectDropdownToBeVisible(dropdown, `Dropdown should NOT be closed on Enter`);
+      await sendKey(Key.SPACE);
+      await expectDropdownToBeVisible(dropdown, `Dropdown should NOT be closed on Space`);
     });
 
     it(`should work when autoClose === 'inside'`, async() => {
@@ -142,6 +178,20 @@ containers.forEach((container) => {
       // inside click
       await page.getFirstItem(dropdown).click();
       await expectDropdownToBeHidden(dropdown, `Dropdown should be closed on inside click`);
+
+      // enter
+      await openDropdown(dropdown, `Opening dropdown for enter`);
+      await sendKey(Key.ARROW_DOWN);
+      await expectFocused(page.getDropdownItem(1), `first dropdown item should be focused`);
+      await sendKey(Key.ENTER);
+      await expectDropdownToBeHidden(dropdown, `Dropdown should be closed on Enter`);
+
+      // space
+      await openDropdown(dropdown, `Opening dropdown for space`);
+      await sendKey(Key.ARROW_DOWN);
+      await expectFocused(page.getDropdownItem(1), `first dropdown item should be focused`);
+      await sendKey(Key.SPACE);
+      await expectDropdownToBeHidden(dropdown, `Dropdown should be closed on Space`);
     });
   });
 });
