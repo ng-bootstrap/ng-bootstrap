@@ -4,7 +4,7 @@
   "description": "Angular powered Bootstrap",
   "author": "https://github.com/ng-bootstrap/ng-bootstrap/graphs/contributors",
   "engines": {
-    "node": ">=8.9.0",
+    "node": ">=10.9",
     "yarn": ">=1.3.0 <2.0.0"
   },
   "scripts": {
