@@ -343,6 +343,63 @@ describe('ngb-dropdown-toggle', () => {
 
   });
 
+  describe('ngb-dropdown-navbar', () => {
+    it(`shouldn't position the menu`, () => {
+      const html = `
+      <nav class="navbar">
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item" ngbDropdown placement="bottom-right">
+              <a class="nav-link" ngbDropdownToggle role="button">Open</a>
+              <div ngbDropdownMenu>
+                <div class="dropdown-item">Item</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    `;
+
+      const fixture = createTestComponent(html);
+      const compiled = fixture.nativeElement;
+      const dropdown = fixture.debugElement.query(By.directive(NgbDropdown)).injector.get(NgbDropdown);
+      dropdown.open();
+      fixture.detectChanges();
+      const dropdownEl: HTMLElement = compiled.querySelector('[ngbdropdownmenu]');
+
+      expect(dropdownEl.getAttribute('style')).toBeNull(`The dropdown element shouldn't have calculated styles`);
+
+    });
+
+    it(`can override the defaut display value`, () => {
+      const html = `
+      <nav class="navbar">
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item" ngbDropdown placement="bottom-right" display="dynamic">
+              <a class="nav-link" ngbDropdownToggle role="button">Open</a>
+              <div ngbDropdownMenu>
+                <div class="dropdown-item">Item</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    `;
+
+      const fixture = createTestComponent(html);
+      const compiled = fixture.nativeElement;
+      const dropdown = fixture.debugElement.query(By.directive(NgbDropdown)).injector.get(NgbDropdown);
+      dropdown.open();
+      fixture.detectChanges();
+      const dropdownEl: HTMLElement = compiled.querySelector('[ngbdropdownmenu]');
+
+      expect(dropdownEl.getAttribute('style')).not.toBeNull(`The dropdown element should have calculated styles`);
+
+    });
+
+  });
+
   describe('Custom config', () => {
     let config: NgbDropdownConfig;
 
