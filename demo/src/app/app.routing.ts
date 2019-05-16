@@ -19,12 +19,14 @@ import {ROUTES as TIMEPICKER_ROUTES} from './components/timepicker/timepicker.mo
 import {ROUTES as TOOLTIP_ROUTES} from './components/tooltip/tooltip.module';
 import {ROUTES as TYPEAHEAD_ROUTES} from './components/typeahead/typeahead.module';
 import {DefaultComponent} from './default';
-import {GettingStarted} from './getting-started';
+import {GettingStartedPage} from './pages/getting-started/getting-started.component';
+import {PositioningPage} from './pages/positioning/positioning.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
   { path: 'home', component: DefaultComponent },
-  { path: 'getting-started', component: GettingStarted },
+  { path: 'getting-started', component: GettingStartedPage },
+  { path: 'positioning', component: PositioningPage },
   { path: 'components', pathMatch: 'full', redirectTo: 'components/alert' },
   { path: 'components/accordion', children: ACCORDION_ROUTES },
   { path: 'components/alert', children: ALERT_ROUTES },

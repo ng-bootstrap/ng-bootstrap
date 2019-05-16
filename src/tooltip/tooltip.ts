@@ -72,6 +72,8 @@ export class NgbTooltip implements OnInit, OnDestroy {
    * Accepts an array of strings or a string with space separated possible values.
    *
    * The default order of preference is `"auto"` (same as the sequence above).
+   *
+   * Please see the [positioning overview](#/positioning) for more details.
    */
   @Input() placement: PlacementArray;
 
