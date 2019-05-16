@@ -15,7 +15,8 @@ import {
   Output,
   Renderer2,
   TemplateRef,
-  ViewContainerRef
+  ViewContainerRef,
+  ApplicationRef
 } from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {DOCUMENT} from '@angular/common';
@@ -190,7 +191,7 @@ export class NgbTypeahead implements ControlValueAccessor,
       private _elementRef: ElementRef<HTMLInputElement>, private _viewContainerRef: ViewContainerRef,
       private _renderer: Renderer2, private _injector: Injector, componentFactoryResolver: ComponentFactoryResolver,
       config: NgbTypeaheadConfig, ngZone: NgZone, private _live: Live, @Inject(DOCUMENT) private _document: any,
-      private _ngZone: NgZone, private _changeDetector: ChangeDetectorRef) {
+      private _ngZone: NgZone, private _changeDetector: ChangeDetectorRef, private _applicationRef: ApplicationRef) {
     this.container = config.container;
     this.editable = config.editable;
     this.focusFirst = config.focusFirst;
@@ -203,7 +204,7 @@ export class NgbTypeahead implements ControlValueAccessor,
     this._resubscribeTypeahead = new BehaviorSubject(null);
 
     this._popupService = new PopupService<NgbTypeaheadWindow>(
-        NgbTypeaheadWindow, _injector, _viewContainerRef, _renderer, componentFactoryResolver);
+        NgbTypeaheadWindow, _injector, _viewContainerRef, _renderer, componentFactoryResolver, _applicationRef);
 
     this._zoneSubscription = ngZone.onStable.subscribe(() => {
       if (this.isPopupOpen()) {

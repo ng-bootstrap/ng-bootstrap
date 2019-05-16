@@ -5,7 +5,8 @@ import {
   ViewContainerRef,
   Renderer2,
   ComponentRef,
-  ComponentFactoryResolver
+  ComponentFactoryResolver,
+  ApplicationRef
 } from '@angular/core';
 
 export class ContentRef {
@@ -18,7 +19,8 @@ export class PopupService<T> {
 
   constructor(
       private _type: any, private _injector: Injector, private _viewContainerRef: ViewContainerRef,
-      private _renderer: Renderer2, private _componentFactoryResolver: ComponentFactoryResolver) {}
+      private _renderer: Renderer2, private _componentFactoryResolver: ComponentFactoryResolver,
+      private _applicationRef: ApplicationRef) {}
 
   open(content?: string | TemplateRef<any>, context?: any): ComponentRef<T> {
     if (!this._windowRef) {
@@ -37,7 +39,8 @@ export class PopupService<T> {
       this._windowRef = null;
 
       if (this._contentRef.viewRef) {
-        this._viewContainerRef.remove(this._viewContainerRef.indexOf(this._contentRef.viewRef));
+        this._applicationRef.detachView(this._contentRef.viewRef);
+        this._contentRef.viewRef.destroy();
         this._contentRef = null;
       }
     }
@@ -47,7 +50,8 @@ export class PopupService<T> {
     if (!content) {
       return new ContentRef([]);
     } else if (content instanceof TemplateRef) {
-      const viewRef = this._viewContainerRef.createEmbeddedView(<TemplateRef<T>>content, context);
+      const viewRef = content.createEmbeddedView(context);
+      this._applicationRef.attachView(viewRef);
       return new ContentRef([viewRef.rootNodes], viewRef);
     } else {
       return new ContentRef([[this._renderer.createText(`${content}`)]]);
