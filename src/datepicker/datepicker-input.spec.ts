@@ -674,6 +674,21 @@ describe('NgbInputDatepicker', () => {
       });
     });
 
+    it('should relay the "closed" event', () => {
+      const fixture = createTestCmpt(`<input ngbDatepicker (closed)="onClose()">`);
+      const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
+
+      spyOn(fixture.componentInstance, 'onClose');
+
+      // open
+      dpInput.open();
+      fixture.detectChanges();
+
+      // close
+      dpInput.close();
+      expect(fixture.componentInstance.onClose).toHaveBeenCalledTimes(1);
+    });
+
     it('should emit both "dateSelect" and "onModelChange" events', () => {
       const fixture = createTestCmpt(`
           <input ngbDatepicker ngModel [startDate]="{year: 2018, month: 3}"
@@ -834,6 +849,8 @@ class TestComponent {
   onDateSelect() {}
 
   onModelChange() {}
+
+  onClose() {}
 
   open(d: NgbInputDatepicker) { d.open(); }
 

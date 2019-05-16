@@ -64,7 +64,6 @@ const NGB_DATEPICKER_VALIDATOR = {
 })
 export class NgbInputDatepicker implements OnChanges,
     OnDestroy, ControlValueAccessor, Validator {
-  private _closed$ = new Subject();
   private _cRef: ComponentRef<NgbDatepicker> = null;
   private _disabled = false;
   private _model: NgbDate;
@@ -220,6 +219,11 @@ export class NgbInputDatepicker implements OnChanges,
    */
   @Output() navigate = new EventEmitter<NgbDatepickerNavigateEvent>();
 
+  /**
+   * An event fired after closing datepicker window.
+   */
+  @Output() closed = new EventEmitter<void>();
+
   @Input()
   get disabled() {
     return this._disabled;
@@ -334,11 +338,11 @@ export class NgbInputDatepicker implements OnChanges,
       }
 
       // focus handling
-      ngbFocusTrap(this._cRef.location.nativeElement, this._closed$, true);
+      ngbFocusTrap(this._cRef.location.nativeElement, this.closed, true);
       this._cRef.instance.focus();
 
       ngbAutoClose(
-          this._ngZone, this._document, this.autoClose, () => this.close(), this._closed$, [],
+          this._ngZone, this._document, this.autoClose, () => this.close(), this.closed, [],
           [this._elRef.nativeElement, this._cRef.location.nativeElement]);
     }
   }
@@ -350,7 +354,7 @@ export class NgbInputDatepicker implements OnChanges,
     if (this.isOpen()) {
       this._vcRef.remove(this._vcRef.indexOf(this._cRef.hostView));
       this._cRef = null;
-      this._closed$.next();
+      this.closed.emit();
       this._changeDetector.markForCheck();
     }
   }
