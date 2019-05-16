@@ -204,6 +204,13 @@ export class NgbInputDatepicker implements OnChanges,
   @Input() container: string;
 
   /**
+   * A css selector or html element specifying the element the datepicker popup should be positioned against.
+   *
+   * By default the input is used as a target.
+   */
+  @Input() positionTarget: string | HTMLElement;
+
+  /**
    * An event emitted when user selects a date using keyboard or mouse.
    *
    * The payload of the event is currently selected `NgbDate`.
@@ -247,12 +254,7 @@ export class NgbInputDatepicker implements OnChanges,
       private _ngZone: NgZone, private _service: NgbDatepickerService, private _calendar: NgbCalendar,
       private _dateAdapter: NgbDateAdapter<any>, @Inject(DOCUMENT) private _document: any,
       private _changeDetector: ChangeDetectorRef) {
-    this._zoneSubscription = _ngZone.onStable.subscribe(() => {
-      if (this._cRef) {
-        positionElements(
-            this._elRef.nativeElement, this._cRef.location.nativeElement, this.placement, this.container === 'body');
-      }
-    });
+    this._zoneSubscription = _ngZone.onStable.subscribe(() => this._updatePopupPosition());
   }
 
   registerOnChange(fn: (value: any) => any): void { this._onChange = fn; }
@@ -440,5 +442,26 @@ export class NgbInputDatepicker implements OnChanges,
   private _fromDateStruct(date: NgbDateStruct): NgbDate {
     const ngbDate = date ? new NgbDate(date.year, date.month, date.day) : null;
     return this._calendar.isValid(ngbDate) ? ngbDate : null;
+  }
+
+  private _updatePopupPosition() {
+    if (!this._cRef) {
+      return;
+    }
+
+    let hostElement: HTMLElement;
+    if (typeof this.positionTarget === 'string') {
+      hostElement = window.document.querySelector(this.positionTarget);
+    } else if (this.positionTarget instanceof HTMLElement) {
+      hostElement = this.positionTarget;
+    } else {
+      hostElement = this._elRef.nativeElement;
+    }
+
+    if (this.positionTarget && !hostElement) {
+      throw new Error('ngbDatepicker could not find element declared in [positionTarget] to position against.');
+    }
+
+    positionElements(hostElement, this._cRef.location.nativeElement, this.placement, this.container === 'body');
   }
 }

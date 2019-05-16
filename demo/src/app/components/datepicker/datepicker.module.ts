@@ -31,6 +31,8 @@ import { NgbdDatepickerRange } from './demos/range/datepicker-range';
 import { NgbdDatepickerRangeModule } from './demos/range/datepicker-range.module';
 import { NgbdDatepickerOverviewComponent } from './overview/datepicker-overview.component';
 import { NgbdDatepickerOverviewDemoComponent } from './overview/demo/datepicker-overview-demo.component';
+import { NgbdDatepickerPositiontargetModule } from './demos/positiontarget/datepicker-position-target.module';
+import { NgbdDatepickerPositiontarget } from './demos/positiontarget/datepicker-positiontarget';
 
 const OVERVIEW = {
   'basic-usage': 'Basic Usage',
@@ -101,6 +103,12 @@ const DEMOS = {
     code: require('!!raw-loader!./demos/footertemplate/datepicker-footertemplate'),
     markup: require('!!raw-loader!./demos/footertemplate/datepicker-footertemplate.html')
   },
+  positiontarget: {
+    title: 'Position target',
+    type: NgbdDatepickerPositiontarget,
+    code: require('!!raw-loader!./demos/positiontarget/datepicker-positiontarget'),
+    markup: require('!!raw-loader!./demos/positiontarget/datepicker-positiontarget.html')
+  },
   config: {
     title: 'Global configuration of datepickers',
     type: NgbdDatepickerConfig,
@@ -135,6 +143,7 @@ export const ROUTES = [
     NgbdDatepickerCustomdayModule,
     NgbdDatepickerFooterTemplateModule,
     NgbdDatepickerConfigModule,
+    NgbdDatepickerPositiontargetModule,
     NgbdDatepickerMultipleModule,
     NgbdDatepickerRangeModule,
     NgbdDatepickerAdapterModule,
