@@ -22,7 +22,8 @@ import {NgbdTimepickerModule} from './components/timepicker/timepicker.module';
 import {NgbdTooltipModule} from './components/tooltip/tooltip.module';
 import {NgbdTypeaheadModule} from './components/typeahead/typeahead.module';
 import {DefaultComponent} from './default';
-import {GettingStarted} from './getting-started';
+import {GettingStartedPage} from './pages/getting-started/getting-started.component';
+import {PositioningPage} from './pages/positioning/positioning.component';
 import {NgbdSharedModule} from './shared';
 
 const DEMOS = [
@@ -45,8 +46,13 @@ const DEMOS = [
   NgbdTypeaheadModule
 ];
 
+const PAGES = [
+  GettingStartedPage,
+  PositioningPage
+];
+
 @NgModule({
-  declarations: [AppComponent, DefaultComponent, GettingStarted],
+  declarations: [AppComponent, DefaultComponent, ...PAGES],
   imports: [BrowserModule, routing, NgbModule, NgbdSharedModule, ...DEMOS],
   bootstrap: [AppComponent]
 })

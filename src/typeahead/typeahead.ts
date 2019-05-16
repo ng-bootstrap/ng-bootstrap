@@ -170,8 +170,9 @@ export class NgbTypeahead implements ControlValueAccessor,
    * Accepts an array of strings or a string with space separated possible values.
    *
    * The default order of preference is `"bottom-left bottom-right top-left top-right"`
-
-  */
+   *
+   * Please see the [positioning overview](#/positioning) for more details.
+   */
   @Input() placement: PlacementArray = 'bottom-left';
 
   /**

@@ -1,11 +1,10 @@
 import {Component} from '@angular/core';
-import {Snippet} from '../shared/code/snippet';
+import {Snippet} from '../../shared/code/snippet';
 
 @Component({
-  selector: 'ngbd-getting-started',
   templateUrl: './getting-started.component.html'
 })
-export class GettingStarted {
+export class GettingStartedPage {
   codeInstall = Snippet({
     lang: 'bash',
     code: `npm install --save @ng-bootstrap/ng-bootstrap`,
