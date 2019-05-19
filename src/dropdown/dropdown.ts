@@ -19,6 +19,7 @@ import {
 } from '@angular/core';
 import {DOCUMENT} from '@angular/common';
 import {Subject, Subscription} from 'rxjs';
+import {first} from 'rxjs/operators';
 
 import {Placement, PlacementArray, positionElements} from '../util/positioning';
 import {ngbAutoClose} from '../util/autoclose';
@@ -202,7 +203,7 @@ export class NgbDropdown implements OnInit, OnDestroy {
 
     this.display = ngbNavbar ? 'static' : 'dynamic';
 
-    this._zoneSubscription = _ngZone.onStable.subscribe(() => { this._positionMenu(); });
+    this._zoneSubscription = _ngZone.onStable.pipe(first()).subscribe(() => { this._positionMenu(); });
   }
 
   ngOnInit() {
