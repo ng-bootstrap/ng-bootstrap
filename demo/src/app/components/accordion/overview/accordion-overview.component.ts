@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbdOverview } from '../../shared/overview';
 import { NgbdDemoList } from '../../shared';
+import { Snippet } from '../../../shared/code/snippet';
 
 @Component({
   selector: 'ngbd-accordion-overview',
@@ -10,7 +11,10 @@ import { NgbdDemoList } from '../../shared';
 })
 export class NgbdAccordionOverviewComponent {
 
-  BASIC_NO_OPTS = `
+  snippets = {
+    basicNoOpts: Snippet({
+      lang: 'html',
+      code: `
   <ngb-accordion>
   <ngb-panel title="Simple">
     <ngb-template ngbPanelContent>
@@ -23,9 +27,11 @@ export class NgbdAccordionOverviewComponent {
     </ngb-template>
   </ngb-panel>
 </ngb-accordion>
-  `;
-
-  CUSTOM_OPT_1 = `
+  `,
+    }),
+    customOption1: Snippet({
+      lang: 'html',
+      code: `
   <ngb-accordion>
   <ngb-panel>
     <ng-template ngbPanelHeader>
@@ -34,8 +40,11 @@ export class NgbdAccordionOverviewComponent {
     <ng-template ngbPanelContent>...</ng-template>
   </ngb-panel>
 </ngb-accordion>
-  `;
-  CUSTOM_OPT_2 = `
+  `,
+    }),
+    customOption2: Snippet({
+      lang: 'html',
+      code: `
   <ngb-accordion>
   <ngb-panel>
     <ng-template ngbPanelHeader>
@@ -44,8 +53,11 @@ export class NgbdAccordionOverviewComponent {
     <ng-template ngbPanelContent>...</ng-template>
   </ngb-panel>
 </ngb-accordion>
-  `;
-  CUSTOM_OPT_3 = `
+  `,
+    }),
+    customOption3: Snippet({
+      lang: 'html',
+      code: `
   <ngb-accordion #acc="ngbAccordion">
   <ngb-panel id="myPanel">
     <ng-template ngbPanelHeader>
@@ -54,7 +66,9 @@ export class NgbdAccordionOverviewComponent {
     <ng-template ngbPanelContent>...</ng-template>
   </ngb-panel>
 </ngb-accordion>
-  `;
+  `,
+    })
+  };
 
   sections: NgbdOverview = {};
 
