@@ -220,8 +220,7 @@ export function positionElements(
   style.position = 'absolute';
   style.top = '0';
   style.left = '0';
-  // The translate3d/gpu acceleration render a blurry text on chrome, the next line is commented until a browser fix
-  // style['will-change'] = 'transform';
+  style['will-change'] = 'transform';
 
   let testPlacement: Placement;
   let isInViewport = false;
