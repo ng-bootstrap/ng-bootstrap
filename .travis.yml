@@ -2,6 +2,9 @@ language: node_js
 node_js:
   - "10"
 
+services:
+  - xvfb
+
 env:
   global:
     - SAUCE_USERNAME=pkozlowski
@@ -11,11 +14,7 @@ env:
 
 addons:
   chrome: stable
-
-before_install:
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
-
+  
 install:
   - yarn
 
