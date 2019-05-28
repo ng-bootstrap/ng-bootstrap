@@ -338,10 +338,20 @@ ngbd-api-docs-config {
   }
 }
 
+.overview {
+  .alert {
+    border-left-width: 5px;
+    border-radius: 0;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+}
+
 // override prism theme background color to inline it with bootstrap colors
 code[class*='language-'],
-pre[class*='language-'] {
+pre[class*='language-'], ngb-alert {
   background-color: #f5f5f5; // same as bootstrap card header
+  border-radius: 3px;
 }
 
 span.token.tag {
