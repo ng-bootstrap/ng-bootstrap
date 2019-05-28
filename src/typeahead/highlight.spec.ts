@@ -123,6 +123,40 @@ describe('ngb-highlight', () => {
 
     expect(highlightHtml(fixture)).toBe('1<span class="my">2</span>3');
   });
+
+  it('should highlight when term contains array with 1 item', () => {
+    const fixture = createTestComponent(`<ngb-highlight result="foo bar baz" [term]="['bar']"></ngb-highlight>`);
+
+    expect(highlightHtml(fixture)).toBe('foo <span class="ngb-highlight">bar</span> baz');
+  });
+
+  it('should highlight when term contains array with several items', () => {
+    const fixture = createTestComponent(`<ngb-highlight result="foo bar baz" [term]="['foo', 'baz']"></ngb-highlight>`);
+
+    expect(highlightHtml(fixture))
+        .toBe('<span class="ngb-highlight">foo</span> bar <span class="ngb-highlight">baz</span>');
+  });
+
+  it('should highlight when term contains array with several items and the terms in text stand together', () => {
+    const fixture = createTestComponent(`<ngb-highlight result="foobar baz" [term]="['foo', 'bar']"></ngb-highlight>`);
+
+    expect(highlightHtml(fixture))
+        .toBe('<span class="ngb-highlight">foo</span><span class="ngb-highlight">bar</span> baz');
+  });
+
+  it('should not fail when term contains null element', () => {
+    const fixture = createTestComponent(`<ngb-highlight result="foo bar baz" [term]="[null, 'bar']"></ngb-highlight>`);
+
+    expect(highlightHtml(fixture)).toBe('foo <span class="ngb-highlight">bar</span> baz');
+  });
+
+  it('should highlight when term contains mix of strings and numbers', () => {
+    const fixture =
+        createTestComponent(`<ngb-highlight [result]="1123456789" [term]="[123, 345, '678']"></ngb-highlight>`);
+
+    expect(highlightHtml(fixture))
+        .toBe('1<span class="ngb-highlight">123</span>45<span class="ngb-highlight">678</span>9');
+  });
 });
 
 
