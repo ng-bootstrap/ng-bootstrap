@@ -200,6 +200,8 @@ export class NgbInputDatepicker implements OnDestroy,
    * A css selector or html element specifying the element the datepicker popup should be positioned against.
    *
    * By default the input is used as a target.
+   *
+   * @since 4.2.0
    */
   @Input() positionTarget: string | HTMLElement;
 
@@ -221,6 +223,8 @@ export class NgbInputDatepicker implements OnDestroy,
 
   /**
    * An event fired after closing datepicker window.
+   *
+   * @since 4.2.0
    */
   @Output() closed = new EventEmitter<void>();
 

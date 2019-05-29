@@ -13,6 +13,8 @@ function isNgbDateStruct(value: any): boolean {
  * * `NgbDateValidators.minDate(minDate: NgbDateStruct)` - checks that the date is after the min date
  * * `NgbDateValidators.maxDate(maxDate: NgbDateStruct)` - checks that the date is before the max date
  * * `NgbDateValidators.invalidDate(calendar: NgbCalendar)` - checks that the date is valid
+ *
+ * @since 4.2.0
  */
 // @dynamic
 export class NgbDateValidators {
@@ -52,6 +54,8 @@ const NGB_INVALID_DATE_VALIDATOR: StaticProvider = {
 /**
  * A directive that adds date validation to all NgbInputDatepicker controls. The directive is provided with the
  * `NG_VALIDATORS` multi-provider list.
+ *
+ * @since 4.2.0
  */
 @Directive({
   selector: 'input[ngbDatepicker][formControlName],input[ngbDatepicker][formControl],input[ngbDatepicker][ngModel]',
@@ -81,6 +85,8 @@ const NGB_MIN_DATE_VALIDATOR: StaticProvider = {
 /**
  * A directive that adds min date validation to all NgbInputDatepicker controls with the `minDate` attribute. The
  * directive is provided with the `NG_VALIDATORS` multi-provider list.
+ *
+ * @since 4.2.0
  */
 @Directive({
   selector:
@@ -122,6 +128,8 @@ const NGB_MAX_DATE_VALIDATOR: StaticProvider = {
 /**
  * A directive that adds max date validation to all NgbInputDatepicker controls with the `maxDate` attribute. The
  * directive is provided with the `NG_VALIDATORS` multi-provider list.
+ *
+ * @since 4.2.0
  */
 @Directive({
   selector:

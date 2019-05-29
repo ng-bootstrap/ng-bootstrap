@@ -180,6 +180,8 @@ export class NgbDropdown implements OnInit, OnDestroy {
 
   /**
    * Enable or disable the dynamic positioning
+   *
+   * @since 4.2.0
    */
   @Input() display: 'dynamic' | 'static';
 
