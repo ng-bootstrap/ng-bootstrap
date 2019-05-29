@@ -9,17 +9,14 @@ import {
   Inject,
   Input,
   NgZone,
-  OnChanges,
   OnDestroy,
   Output,
   Renderer2,
-  SimpleChanges,
   TemplateRef,
   ViewContainerRef
 } from '@angular/core';
 import {DOCUMENT} from '@angular/common';
-import {AbstractControl, ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR, Validator} from '@angular/forms';
-import {Subject} from 'rxjs';
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 import {ngbAutoClose} from '../util/autoclose';
 import {ngbFocusTrap} from '../util/focus-trap';
@@ -40,12 +37,6 @@ const NGB_DATEPICKER_VALUE_ACCESSOR = {
   multi: true
 };
 
-const NGB_DATEPICKER_VALIDATOR = {
-  provide: NG_VALIDATORS,
-  useExisting: forwardRef(() => NgbInputDatepicker),
-  multi: true
-};
-
 /**
  * A directive that allows to stick a datepicker popup to an input field.
  *
@@ -60,10 +51,10 @@ const NGB_DATEPICKER_VALIDATOR = {
     '(blur)': 'onBlur()',
     '[disabled]': 'disabled'
   },
-  providers: [NGB_DATEPICKER_VALUE_ACCESSOR, NGB_DATEPICKER_VALIDATOR, NgbDatepickerService]
+  providers: [NGB_DATEPICKER_VALUE_ACCESSOR, NgbDatepickerService]
 })
-export class NgbInputDatepicker implements OnChanges,
-    OnDestroy, ControlValueAccessor, Validator {
+export class NgbInputDatepicker implements OnDestroy,
+    ControlValueAccessor {
   private _cRef: ComponentRef<NgbDatepicker> = null;
   private _disabled = false;
   private _model: NgbDate;
@@ -247,8 +238,6 @@ export class NgbInputDatepicker implements OnChanges,
 
   private _onChange = (_: any) => {};
   private _onTouched = () => {};
-  private _validatorChange = () => {};
-
 
   constructor(
       private _parserFormatter: NgbDateParserFormatter, private _elRef: ElementRef<HTMLInputElement>,
@@ -263,31 +252,7 @@ export class NgbInputDatepicker implements OnChanges,
 
   registerOnTouched(fn: () => any): void { this._onTouched = fn; }
 
-  registerOnValidatorChange(fn: () => void): void { this._validatorChange = fn; }
-
   setDisabledState(isDisabled: boolean): void { this.disabled = isDisabled; }
-
-  validate(c: AbstractControl): {[key: string]: any} {
-    const value = c.value;
-
-    if (value === null || value === undefined) {
-      return null;
-    }
-
-    const ngbDate = this._fromDateStruct(this._dateAdapter.fromModel(value));
-
-    if (!this._calendar.isValid(ngbDate)) {
-      return {'ngbDate': {invalid: c.value}};
-    }
-
-    if (this.minDate && ngbDate.before(NgbDate.from(this.minDate))) {
-      return {'ngbDate': {requiredBefore: this.minDate}};
-    }
-
-    if (this.maxDate && ngbDate.after(NgbDate.from(this.maxDate))) {
-      return {'ngbDate': {requiredAfter: this.maxDate}};
-    }
-  }
 
   writeValue(value) {
     this._model = this._fromDateStruct(this._dateAdapter.fromModel(value));
@@ -389,12 +354,6 @@ export class NgbInputDatepicker implements OnChanges,
   }
 
   onBlur() { this._onTouched(); }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['minDate'] || changes['maxDate']) {
-      this._validatorChange();
-    }
-  }
 
   ngOnDestroy() {
     this.close();
