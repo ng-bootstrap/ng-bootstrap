@@ -369,7 +369,7 @@ export class NgbDropdown implements AfterContentInit, OnDestroy {
           this.display === 'dynamic' ?
               positionElements(
                   this._anchor.anchorEl, this._bodyContainer || this._menuElement.nativeElement, this.placement,
-                  this.container === 'body') :
+                  this.container === 'body', undefined, this._closed$) :
               this._getFirstPlacement(this.placement));
     }
   }
