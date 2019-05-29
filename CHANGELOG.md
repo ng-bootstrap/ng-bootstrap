@@ -1,3 +1,21 @@
+# [4.2.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/4.1.3...4.2.0) (2019-05-29)
+
+
+### Bug Fixes
+
+* **positioning:** put the popup in a separate layer ([#3206](https://github.com/ng-bootstrap/ng-bootstrap/issues/3206)) ([2bbaaee](https://github.com/ng-bootstrap/ng-bootstrap/commit/2bbaaee))
+
+
+### Features
+
+* **datepicker:** add 'closed' event fired after datepicker window was closed ([#3055](https://github.com/ng-bootstrap/ng-bootstrap/issues/3055)) ([e31895e](https://github.com/ng-bootstrap/ng-bootstrap/commit/e31895e))
+* **datepicker:** add new 'positionTarget' input ([#3119](https://github.com/ng-bootstrap/ng-bootstrap/issues/3119)) ([42cef4f](https://github.com/ng-bootstrap/ng-bootstrap/commit/42cef4f))
+* **datepicker:** expose validators minDate, maxDate, invalidDate ([#3126](https://github.com/ng-bootstrap/ng-bootstrap/issues/3126)) ([509bba3](https://github.com/ng-bootstrap/ng-bootstrap/commit/509bba3))
+* **dropdown:** new 'display' input and navbar management ([#3098](https://github.com/ng-bootstrap/ng-bootstrap/issues/3098)) ([a07dbff](https://github.com/ng-bootstrap/ng-bootstrap/commit/a07dbff)), closes [#3030](https://github.com/ng-bootstrap/ng-bootstrap/issues/3030)
+* **highlight:** highlight array of terms instead of just one term ([#3154](https://github.com/ng-bootstrap/ng-bootstrap/issues/3154)) ([ec8a129](https://github.com/ng-bootstrap/ng-bootstrap/commit/ec8a129)), closes [#2698](https://github.com/ng-bootstrap/ng-bootstrap/issues/2698)
+
+
+
 ## [4.1.3](https://github.com/ng-bootstrap/ng-bootstrap/compare/4.1.2...4.1.3) (2019-05-13)
 
 
