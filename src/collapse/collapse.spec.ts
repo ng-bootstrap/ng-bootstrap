@@ -1,4 +1,4 @@
-import {TestBed, ComponentFixture} from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {createGenericTestComponent} from '../test/common';
 
 import {Component} from '@angular/core';
@@ -13,16 +13,10 @@ function getCollapsibleContent(element: HTMLElement): HTMLDivElement {
 }
 
 describe('ngb-collapse', () => {
-  let html = `<div [ngbCollapse]="collapsed">Some content</div>`;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbCollapseModule]});
-    TestBed.overrideComponent(TestComponent, {set: {template: html}});
-  });
+  beforeEach(() => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbCollapseModule]}); });
 
   it('should have content open', () => {
-    const fixture = TestBed.createComponent(TestComponent);
-    fixture.detectChanges();
+    const fixture = createTestComponent(`<div [ngbCollapse]="collapsed">Some content</div>`);
 
     const collapseEl = getCollapsibleContent(fixture.nativeElement);
 
@@ -30,7 +24,7 @@ describe('ngb-collapse', () => {
   });
 
   it('should have content closed', () => {
-    const fixture = TestBed.createComponent(TestComponent);
+    const fixture = createTestComponent(`<div [ngbCollapse]="collapsed">Some content</div>`);
     const tc = fixture.componentInstance;
     tc.collapsed = true;
     fixture.detectChanges();
@@ -41,8 +35,7 @@ describe('ngb-collapse', () => {
   });
 
   it('should toggle collapsed content based on bound model change', () => {
-    const fixture = TestBed.createComponent(TestComponent);
-    fixture.detectChanges();
+    const fixture = createTestComponent(`<div [ngbCollapse]="collapsed">Some content</div>`);
 
     const tc = fixture.componentInstance;
     const collapseEl = getCollapsibleContent(fixture.nativeElement);
@@ -58,11 +51,9 @@ describe('ngb-collapse', () => {
   });
 
   it('should allow toggling collapse from outside', () => {
-    html = `
+    const fixture = createTestComponent(`
       <button (click)="collapse.collapsed = !collapse.collapsed">Collapse</button>
-      <div [ngbCollapse] #collapse="ngbCollapse"></div>`;
-
-    const fixture = createTestComponent(html);
+      <div [ngbCollapse] #collapse="ngbCollapse"></div>`);
 
     const compiled = fixture.nativeElement;
     const collapseEl = getCollapsibleContent(compiled);
