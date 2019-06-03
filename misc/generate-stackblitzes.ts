@@ -14,7 +14,6 @@ const versions = {
   typescript: getVersion('typescript'),
   rxjs: getVersion('rxjs'),
   zoneJs: getVersion('zone.js'),
-  coreJs: getVersion('core-js'),
   bootstrap: getVersion('bootstrap'),
   prismjs: getVersion('prismjs')
 };
@@ -59,7 +58,6 @@ const initialData = {
     '@angular/router': versions.angular,
     '@angular/forms': versions.angular,
     '@ng-bootstrap/ng-bootstrap': versions.ngBootstrap,
-    'core-js': versions.coreJs,
     'rxjs': versions.rxjs,
     'zone.js': versions.zoneJs,
   }),
