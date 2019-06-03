@@ -5,6 +5,7 @@ import {TestBed} from '@angular/core/testing';
 import {Subject} from 'rxjs';
 import {NgbDate} from './ngb-date';
 import {Key} from '../util/key';
+import {Type} from '@angular/core';
 
 const event = (keyCode: number, shift = false) =>
     <any>({which: keyCode, shiftKey: shift, preventDefault: () => {}, stopPropagation: () => {}});
@@ -25,7 +26,7 @@ describe('ngb-datepicker-keymap-service', () => {
       ]
     });
 
-    calendar = TestBed.get(NgbCalendar);
+    calendar = TestBed.get(NgbCalendar as Type<NgbCalendar>);
     service = TestBed.get(NgbDatepickerKeyMapService);
     mock = TestBed.get(NgbDatepickerService);
 

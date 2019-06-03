@@ -54,7 +54,7 @@ export function ngbAutoClose(
       const closeableClicks$ = fromEvent<MouseEvent>(document, iOS ? 'touchend' : 'mouseup')
                                    .pipe(
                                        withLatestFrom(mouseDowns$), filter(([_, shouldClose]) => shouldClose),
-                                       delay(iOS ? 16 : 0), takeUntil(closed$));
+                                       delay(iOS ? 16 : 0), takeUntil(closed$)) as Observable<MouseEvent>;
 
 
       race<Event>([escapes$, closeableClicks$]).subscribe(() => zone.run(close));
