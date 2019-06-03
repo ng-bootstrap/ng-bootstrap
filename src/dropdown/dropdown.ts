@@ -73,7 +73,7 @@ export class NgbDropdownMenu {
 
   @ContentChildren(NgbDropdownItem) menuItems: QueryList<NgbDropdownItem>;
 
-  constructor(@Inject(forwardRef(() => NgbDropdown)) public dropdown: NgbDropdown) {}
+  constructor(@Inject(forwardRef(() => NgbDropdown)) public dropdown) {}
 }
 
 /**
@@ -92,9 +92,7 @@ export class NgbDropdownMenu {
 export class NgbDropdownAnchor {
   anchorEl;
 
-  constructor(
-      @Inject(forwardRef(() => NgbDropdown)) public dropdown: NgbDropdown,
-      private _elementRef: ElementRef<HTMLElement>) {
+  constructor(@Inject(forwardRef(() => NgbDropdown)) public dropdown, private _elementRef: ElementRef<HTMLElement>) {
     this.anchorEl = _elementRef.nativeElement;
   }
 
@@ -121,7 +119,7 @@ export class NgbDropdownAnchor {
   providers: [{provide: NgbDropdownAnchor, useExisting: forwardRef(() => NgbDropdownToggle)}]
 })
 export class NgbDropdownToggle extends NgbDropdownAnchor {
-  constructor(@Inject(forwardRef(() => NgbDropdown)) dropdown: NgbDropdown, elementRef: ElementRef<HTMLElement>) {
+  constructor(@Inject(forwardRef(() => NgbDropdown)) dropdown, elementRef: ElementRef<HTMLElement>) {
     super(dropdown, elementRef);
   }
 }

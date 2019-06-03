@@ -4,9 +4,7 @@ import {
   ContentChildren,
   Directive,
   EventEmitter,
-  forwardRef,
   Host,
-  Inject,
   Input,
   Optional,
   Output,
@@ -30,37 +28,6 @@ export interface NgbPanelHeaderContext {
    * `True` if current panel is opened
    */
   opened: boolean;
-}
-
-/**
- * A directive to put on a button that toggles panel opening and closing.
- *
- * To be used inside the [`NgbPanelHeader`](#/components/accordion/api#NgbPanelHeader)
- *
- * @since 4.1.0
- */
-@Directive({
-  selector: 'button[ngbPanelToggle]',
-  host: {
-    'type': 'button',
-    '[disabled]': 'panel.disabled',
-    '[class.collapsed]': '!panel.isOpen',
-    '[attr.aria-expanded]': 'panel.isOpen',
-    '[attr.aria-controls]': 'panel.id',
-    '(click)': 'accordion.toggle(panel.id)'
-  }
-})
-export class NgbPanelToggle {
-  @Input()
-  set ngbPanelToggle(panel: NgbPanel) {
-    if (panel) {
-      this.panel = panel;
-    }
-  }
-
-  constructor(
-      @Inject(forwardRef(() => NgbAccordion)) public accordion: NgbAccordion,
-      @Optional() @Host() @Inject(forwardRef(() => NgbPanel)) public panel: NgbPanel) {}
 }
 
 /**
@@ -345,4 +312,33 @@ export class NgbAccordion implements AfterContentChecked {
   private _updateActiveIds() {
     this.activeIds = this.panels.filter(panel => panel.isOpen && !panel.disabled).map(panel => panel.id);
   }
+}
+
+/**
+ * A directive to put on a button that toggles panel opening and closing.
+ *
+ * To be used inside the [`NgbPanelHeader`](#/components/accordion/api#NgbPanelHeader)
+ *
+ * @since 4.1.0
+ */
+@Directive({
+  selector: 'button[ngbPanelToggle]',
+  host: {
+    'type': 'button',
+    '[disabled]': 'panel.disabled',
+    '[class.collapsed]': '!panel.isOpen',
+    '[attr.aria-expanded]': 'panel.isOpen',
+    '[attr.aria-controls]': 'panel.id',
+    '(click)': 'accordion.toggle(panel.id)'
+  }
+})
+export class NgbPanelToggle {
+  @Input()
+  set ngbPanelToggle(panel: NgbPanel) {
+    if (panel) {
+      this.panel = panel;
+    }
+  }
+
+  constructor(public accordion: NgbAccordion, @Optional() @Host() public panel: NgbPanel) {}
 }
