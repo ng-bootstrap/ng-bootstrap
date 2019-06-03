@@ -1,3 +1,12 @@
+## [4.2.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/4.2.0...4.2.1) (2019-06-03)
+
+
+### Reverts
+
+* **datepicker:** expose validators minDate, maxDate, invalidDate ([#3126](https://github.com/ng-bootstrap/ng-bootstrap/issues/3126)) ([509bba3](https://github.com/ng-bootstrap/ng-bootstrap/commit/509bba3)), closes [#3215](https://github.com/ng-bootstrap/ng-bootstrap/issues/3215)
+
+
+
 # [4.2.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/4.1.3...4.2.0) (2019-05-29)
 
 
