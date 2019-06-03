@@ -640,7 +640,7 @@ export class TestComponent {
   name = 'World';
   show = true;
 
-  @ViewChild(NgbTooltip) tooltip: NgbTooltip;
+  @ViewChild(NgbTooltip, {static: true}) tooltip: NgbTooltip;
 
   shown() {}
   hidden() {}
@@ -659,7 +659,7 @@ export class TestOnPushComponent {
 
 @Component({selector: 'test-hooks', template: `<div ngbTooltip="tooltip"></div>`})
 export class TestHooksComponent implements AfterViewInit {
-  @ViewChild(NgbTooltip) tooltip;
+  @ViewChild(NgbTooltip, {static: true}) tooltip;
 
   ngAfterViewInit() { this.tooltip.open(); }
 }

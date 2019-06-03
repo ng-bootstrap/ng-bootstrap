@@ -71,7 +71,7 @@ export class TypeaheadValidationComponent {
   model: any;
   public field = new FormControl(null, {updateOn: 'blur'});
 
-  @ViewChild('instance') instance: NgbTypeahead;
+  @ViewChild('instance', {static: true}) instance: NgbTypeahead;
   focus$ = new Subject<string>();
   click$ = new Subject<string>();
 

@@ -935,7 +935,7 @@ class TestComponent {
 
   findOutput$: Observable<any[]>;
 
-  @ViewChild(NgbTypeahead) typeahead: NgbTypeahead;
+  @ViewChild(NgbTypeahead, {static: true}) typeahead: NgbTypeahead;
   focus$ = new Subject<string>();
   click$ = new Subject<string>();
 

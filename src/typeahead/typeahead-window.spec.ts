@@ -210,7 +210,7 @@ class TestComponent {
   term = 'ba';
   selected: string;
 
-  @ViewChild(NgbTypeaheadWindow) popup: NgbTypeaheadWindow;
+  @ViewChild(NgbTypeaheadWindow, {static: true}) popup: NgbTypeaheadWindow;
 
   formatterFn = (result) => { return result.toUpperCase(); };
 }

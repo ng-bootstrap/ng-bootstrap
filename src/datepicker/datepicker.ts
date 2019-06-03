@@ -123,7 +123,7 @@ export class NgbDatepicker implements OnDestroy,
     OnChanges, OnInit, AfterViewInit, ControlValueAccessor {
   model: DatepickerViewModel;
 
-  @ViewChild('months') private _monthsEl: ElementRef<HTMLElement>;
+  @ViewChild('months', {static: true}) private _monthsEl: ElementRef<HTMLElement>;
   private _controlValue: NgbDate;
   private _destroyed$ = new Subject<void>();
 

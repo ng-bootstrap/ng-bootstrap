@@ -179,12 +179,12 @@ export class NgbPagination implements OnChanges {
   pageCount = 0;
   pages: number[] = [];
 
-  @ContentChild(NgbPaginationEllipsis) tplEllipsis: NgbPaginationEllipsis;
-  @ContentChild(NgbPaginationFirst) tplFirst: NgbPaginationFirst;
-  @ContentChild(NgbPaginationLast) tplLast: NgbPaginationLast;
-  @ContentChild(NgbPaginationNext) tplNext: NgbPaginationNext;
-  @ContentChild(NgbPaginationNumber) tplNumber: NgbPaginationNumber;
-  @ContentChild(NgbPaginationPrevious) tplPrevious: NgbPaginationPrevious;
+  @ContentChild(NgbPaginationEllipsis, {static: false}) tplEllipsis: NgbPaginationEllipsis;
+  @ContentChild(NgbPaginationFirst, {static: false}) tplFirst: NgbPaginationFirst;
+  @ContentChild(NgbPaginationLast, {static: false}) tplLast: NgbPaginationLast;
+  @ContentChild(NgbPaginationNext, {static: false}) tplNext: NgbPaginationNext;
+  @ContentChild(NgbPaginationNumber, {static: false}) tplNumber: NgbPaginationNumber;
+  @ContentChild(NgbPaginationPrevious, {static: false}) tplPrevious: NgbPaginationPrevious;
 
   /**
    * If `true`, pagination links will be disabled.
