@@ -35,9 +35,9 @@
   },
   "homepage": "https://github.com/ng-bootstrap/ng-bootstrap#readme",
   "peerDependencies": {
-    "@angular/common": "^7.0.0",
-    "@angular/core": "^7.0.0",
-    "@angular/forms": "^7.0.0",
-    "rxjs": "^6.3.0"
+    "@angular/common": "^8.0.0",
+    "@angular/core": "^8.0.0",
+    "@angular/forms": "^8.0.0",
+    "rxjs": "^6.4.0"
   }
 }
