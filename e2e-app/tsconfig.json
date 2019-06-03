@@ -3,6 +3,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "temp",
+    "lib": ["es2017", "dom"],
     "paths": {
       "@ng-bootstrap/ng-bootstrap": ["../src/index"]
     }

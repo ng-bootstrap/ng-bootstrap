@@ -174,7 +174,7 @@
           "options": {
             "browserTarget": "e2e-app:build",
             "progress": false,
-            "extraWebpackConfig": "./coverage.webpack.js"
+            "extraWebpackConfig": "e2e-app/coverage.webpack.js"
           },
           "configurations": {
             "production": {
