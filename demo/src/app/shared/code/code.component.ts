@@ -12,7 +12,7 @@ import {CodeHighlightService} from './code-highlight.service';
 })
 export class NgbdCodeComponent implements AfterViewInit {
 
-  @ViewChild('code') codeEl: ElementRef<HTMLElement>;
+  @ViewChild('code', {static: true}) codeEl: ElementRef<HTMLElement>;
 
   @Input() snippet: ISnippet;
 

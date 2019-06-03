@@ -20,7 +20,7 @@ const states = ['Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Arkansas', 'C
 export class NgbdTypeaheadFocus {
   model: any;
 
-  @ViewChild('instance') instance: NgbTypeahead;
+  @ViewChild('instance', {static: true}) instance: NgbTypeahead;
   focus$ = new Subject<string>();
   click$ = new Subject<string>();
 

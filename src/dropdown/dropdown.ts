@@ -133,10 +133,10 @@ export class NgbDropdown implements OnInit, OnDestroy {
   private _zoneSubscription: Subscription;
   private _bodyContainer: HTMLElement;
 
-  @ContentChild(NgbDropdownMenu) private _menu: NgbDropdownMenu;
-  @ContentChild(NgbDropdownMenu, {read: ElementRef}) private _menuElement: ElementRef;
+  @ContentChild(NgbDropdownMenu, {static: true}) private _menu: NgbDropdownMenu;
+  @ContentChild(NgbDropdownMenu, {read: ElementRef, static: true}) private _menuElement: ElementRef;
 
-  @ContentChild(NgbDropdownAnchor) private _anchor: NgbDropdownAnchor;
+  @ContentChild(NgbDropdownAnchor, {static: true}) private _anchor: NgbDropdownAnchor;
 
   /**
    * Indicates whether the dropdown should be closed when clicking one of dropdown items or pressing ESC.

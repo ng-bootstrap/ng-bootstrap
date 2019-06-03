@@ -730,7 +730,7 @@ export class TestComponent {
   title: string;
   placement: string;
 
-  @ViewChild(NgbPopover) popover: NgbPopover;
+  @ViewChild(NgbPopover, {static: true}) popover: NgbPopover;
 
   constructor(private _vcRef: ViewContainerRef) {}
 
@@ -756,7 +756,7 @@ export class DestroyableCmpt implements OnDestroy {
 
 @Component({selector: 'test-hooks', template: `<div ngbPopover="popover"></div>`})
 export class TestHooksComponent implements AfterViewInit {
-  @ViewChild(NgbPopover) popover;
+  @ViewChild(NgbPopover, {static: true}) popover;
 
   ngAfterViewInit() { this.popover.open(); }
 }

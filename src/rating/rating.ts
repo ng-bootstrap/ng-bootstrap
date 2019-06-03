@@ -102,7 +102,7 @@ export class NgbRating implements ControlValueAccessor,
    * Alternatively put an `<ng-template>` as the only child of your `<ngb-rating>` element
    */
   @Input() starTemplate: TemplateRef<StarTemplateContext>;
-  @ContentChild(TemplateRef) starTemplateFromContent: TemplateRef<StarTemplateContext>;
+  @ContentChild(TemplateRef, {static: false}) starTemplateFromContent: TemplateRef<StarTemplateContext>;
 
   /**
    * An event emitted when the user is hovering over a given rating.
