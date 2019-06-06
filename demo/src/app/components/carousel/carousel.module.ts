@@ -11,6 +11,8 @@ import { NgbdCarouselConfig } from './demos/config/carousel-config';
 import { NgbdCarouselConfigModule } from './demos/config/carousel-config.module';
 import { NgbdCarouselNavigation } from './demos/navigation/carousel-navigation';
 import { NgbdCarouselNavigationModule } from './demos/navigation/carousel-navigation.module';
+import { NgbdCarouselPause } from './demos/pause/carousel-pause';
+import { NgbdCarouselPauseModule } from './demos/pause/carousel-pause.module';
 
 const DEMOS = {
   basic: {
@@ -24,6 +26,12 @@ const DEMOS = {
     type: NgbdCarouselNavigation,
     code: require('!!raw-loader!./demos/navigation/carousel-navigation'),
     markup: require('!!raw-loader!./demos/navigation/carousel-navigation.html')
+  },
+  pause: {
+    title: 'Pause/cycle',
+    type: NgbdCarouselPause,
+    code: require('!!raw-loader!./demos/pause/carousel-pause'),
+    markup: require('!!raw-loader!./demos/pause/carousel-pause.html')
   },
   config: {
     title: 'Global configuration of carousels',
@@ -51,7 +59,8 @@ export const ROUTES = [
     NgbdComponentsSharedModule,
     NgbdCarouselBasicModule,
     NgbdCarouselConfigModule,
-    NgbdCarouselNavigationModule
+    NgbdCarouselNavigationModule,
+    NgbdCarouselPauseModule
   ]
 })
 export class NgbdCarouselModule {

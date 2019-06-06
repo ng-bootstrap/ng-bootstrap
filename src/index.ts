@@ -34,7 +34,15 @@ export {
 } from './accordion/accordion.module';
 export {NgbAlert, NgbAlertConfig, NgbAlertModule} from './alert/alert.module';
 export {NgbButtonLabel, NgbButtonsModule, NgbCheckBox, NgbRadio, NgbRadioGroup} from './buttons/buttons.module';
-export {NgbCarousel, NgbCarouselConfig, NgbCarouselModule, NgbSlide} from './carousel/carousel.module';
+export {
+  NgbCarousel,
+  NgbCarouselConfig,
+  NgbCarouselModule,
+  NgbSlide,
+  NgbSlideEvent,
+  NgbSlideEventDirection,
+  NgbSlideEventSource
+} from './carousel/carousel.module';
 export {NgbCollapse, NgbCollapseModule} from './collapse/collapse.module';
 export {
   NgbCalendar,
