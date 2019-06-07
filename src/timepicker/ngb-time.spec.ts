@@ -119,7 +119,7 @@ describe('NgbTime', () => {
     expect(t.toString()).toBe('10:30:30');
   });
 
-  it('should properly change undefined minutes', () => {
+  it('should properly change undefined seconds', () => {
     const t = new NgbTime(1, 20, undefined);
 
     t.changeSecond(30);
