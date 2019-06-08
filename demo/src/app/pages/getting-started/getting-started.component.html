@@ -60,6 +60,14 @@
 
   <ngbd-page-header title="Installation" fragment="installation"></ngbd-page-header>
 
+  <p>You need to have an Angular project with the supported Angular version. We strongly recommend using <a href="https://cli.angular.io" rel="nofollow" target="_blank">Angular CLI</a> for this.</p>
+
+  <p>You also need to add Bootstrap 4 CSS to your application by using your preferred way (it really depends on the setup you're using). Ex. for Angular CLI you can <a href="https://www.npmjs.com/package/bootstrap" rel="nofollow" target="_blank">get Bootstrap from npm</a> and update your <code>angular.json</code> with something like:</p>
+
+  <ngbd-code [snippet]="bootstrapInstall"></ngbd-code>
+
+  <p>Please note that you need only CSS and <strong>should not</strong> add other JavaScript dependencies like <code>bootstrap.js</code>, <code>jQuery</code> or <code>popper.js</code> as ng-bootstrap's goal is to completely replace them.</p>
+
   <p>After installing the above dependencies, install <code>ng-bootstrap</code> via:</p>
 
   <ngbd-code [snippet]="codeInstall"></ngbd-code>

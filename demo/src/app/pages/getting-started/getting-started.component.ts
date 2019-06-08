@@ -5,6 +5,15 @@ import {Snippet} from '../../shared/code/snippet';
   templateUrl: './getting-started.component.html'
 })
 export class GettingStartedPage {
+  bootstrapInstall = Snippet({
+    lang: 'json',
+    code: `
+      "styles": [
+        "node_modules/bootstrap/dist/css/bootstrap.min.css"
+      ]
+    `,
+  });
+
   codeInstall = Snippet({
     lang: 'bash',
     code: `npm install --save @ng-bootstrap/ng-bootstrap`,
