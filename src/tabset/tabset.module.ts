@@ -10,11 +10,4 @@ const NGB_TABSET_DIRECTIVES = [NgbTabset, NgbTab, NgbTabContent, NgbTabTitle];
 
 @NgModule({declarations: NGB_TABSET_DIRECTIVES, exports: NGB_TABSET_DIRECTIVES, imports: [CommonModule]})
 export class NgbTabsetModule {
-  /**
-   * Importing with '.forRoot()' is no longer necessary, you can simply import the module.
-   * Will be removed in 4.0.0.
-   *
-   * @deprecated 3.0.0
-   */
-  static forRoot(): ModuleWithProviders { return {ngModule: NgbTabsetModule}; }
 }

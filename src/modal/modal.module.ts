@@ -15,11 +15,4 @@ export {ModalDismissReasons} from './modal-dismiss-reasons';
   providers: [NgbModal]
 })
 export class NgbModalModule {
-  /**
-   * Importing with '.forRoot()' is no longer necessary, you can simply import the module.
-   * Will be removed in 4.0.0.
-   *
-   * @deprecated 3.0.0
-   */
-  static forRoot(): ModuleWithProviders { return {ngModule: NgbModalModule}; }
 }

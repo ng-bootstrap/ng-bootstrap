@@ -20,11 +20,4 @@ const NGB_ACCORDION_DIRECTIVES =
 
 @NgModule({declarations: NGB_ACCORDION_DIRECTIVES, exports: NGB_ACCORDION_DIRECTIVES, imports: [CommonModule]})
 export class NgbAccordionModule {
-  /**
-   * Importing with '.forRoot()' is no longer necessary, you can simply import the module.
-   * Will be removed in 4.0.0.
-   *
-   * @deprecated 3.0.0
-   */
-  static forRoot(): ModuleWithProviders { return {ngModule: NgbAccordionModule}; }
 }
