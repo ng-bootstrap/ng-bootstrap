@@ -30,6 +30,11 @@
               "src/test/**"
             ],
             "karmaConfig": "src/karma.conf.js"
+          },
+          "configurations": {
+            "ie": {
+              "tsConfig": "src/tsconfig-ie.spec.json"
+            }
           }
         },
         "lint": {
