@@ -3,39 +3,17 @@
 process.env.SAUCE_ACCESS_KEY = process.env.SAUCE_ACCESS_KEY.split('').reverse().join('');
 
 const BROWSERS = {
-  'SL_CHROME': {
+  'SL_IE10': {
     base: 'SauceLabs',
-    browserName: 'chrome',
-    version: 'latest'
+    browserName: 'internet explorer',
+    platform: 'Windows 8',
+    version: '10'
   },
-  'SL_FIREFOX': {
+  'SL_IE11': {
     base: 'SauceLabs',
-    browserName: 'firefox',
-    version: 'latest'
-  },
-  'SL_EDGE16': {
-    base: 'SauceLabs',
-    browserName: 'MicrosoftEdge',
+    browserName: 'internet explorer',
     platform: 'Windows 10',
-    version: '16.16299'
-  },
-  'SL_EDGE17': {
-    base: 'SauceLabs',
-    browserName: 'MicrosoftEdge',
-    platform: 'Windows 10',
-    version: '17.17134'
-  },
-  'SL_SAFARI11': {
-    base: 'SauceLabs',
-    browserName: 'safari',
-    platform: 'macOS 10.13',
     version: '11'
-  },
-  'SL_SAFARI12': {
-    base: 'SauceLabs',
-    browserName: 'safari',
-    platform: 'macOS 10.13',
-    version: '12'
   },
 };
 
@@ -55,7 +33,7 @@ module.exports = function (config) {
     sauceLabs: {
       build: `TRAVIS #${process.env.TRAVIS_BUILD_NUMBER} (${process.env.TRAVIS_BUILD_ID})`,
       tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER,
-      testName: 'ng-bootstrap',
+      testName: 'ng-bootstrap/ie',
       retryLimit: 3,
       startConnect: false,
       recordVideo: false,
