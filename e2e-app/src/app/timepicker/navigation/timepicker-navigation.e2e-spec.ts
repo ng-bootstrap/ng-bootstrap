@@ -1,4 +1,4 @@
-import {Key, ElementFinder} from 'protractor';
+import {Key, ElementFinder, browser} from 'protractor';
 
 import {openUrl, expectFocused, sendKey, getCaretPosition} from '../../tools.po';
 
@@ -45,6 +45,16 @@ describe('Timepicker', () => {
   describe('arrow keys', () => {
     it(`should keep caret at the end of the input`, async() => {
       const testField = async(fieldElement: ElementFinder) => {
+
+        const type = await browser.executeScript(
+            `
+          var element = arguments[0];
+          var type = element.getAttribute('type');
+          element.setAttribute('type', 'text');
+          return type;
+        `,
+            fieldElement.getWebElement());
+
         await fieldElement.click();
 
         const endPosition = 2;
@@ -67,6 +77,9 @@ describe('Timepicker', () => {
 
         await sendKey(Key.ARROW_DOWN);
         await expectCaretAtEnd();
+
+        await browser.executeScript(
+            `arguments[0].setAttribute('type', arguments[1]);`, fieldElement.getWebElement(), type);
       };
 
       for (const fieldElement of page.getFields()) {
