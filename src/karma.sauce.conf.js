@@ -42,6 +42,7 @@ const BROWSERS = {
 module.exports = function (config) {
   config.set({
     basePath: '',
+    files: ['../node_modules/bootstrap/dist/css/bootstrap.min.css'],
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
     plugins: [
       require('karma-jasmine'),
