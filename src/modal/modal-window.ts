@@ -83,9 +83,7 @@ export class NgbModalWindow implements OnInit,
     } else {
       elementToFocus = body;
     }
-    setTimeout(() => {
-      elementToFocus.focus();
-    }, 1);
+    elementToFocus.focus();
     this._elWithFocus = null;
   }
 }
