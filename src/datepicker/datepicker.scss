@@ -21,6 +21,7 @@ ngb-datepicker {
     border-bottom: 0;
     border-radius: .25rem .25rem 0 0;
     padding-top: .25rem;
+    background-color: #f8f9fa;
   }
 
   &-months {
@@ -35,6 +36,7 @@ ngb-datepicker {
       height: 2rem;
       line-height: 2rem;
       text-align: center;
+      background-color: #f8f9fa;
     }
 
     & + & {
