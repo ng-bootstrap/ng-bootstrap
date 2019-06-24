@@ -17,7 +17,7 @@
 /***************************************************************************************************
  * BROWSER POLYFILLS
  */
-
+import 'core-js/fn/object/values';
 
 /**
  * Required to support Web Animations `@angular/platform-browser/animations`.
