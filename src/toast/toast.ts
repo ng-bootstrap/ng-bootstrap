@@ -15,6 +15,7 @@ import {
 
 import {NgbToastConfig} from './toast-config';
 
+
 /**
  * This directive allows the usage of HTML markup or other directives
  * inside of the toast's header.
@@ -83,7 +84,7 @@ export class NgbToast implements AfterContentInit,
    * A template like `<ng-template ngbToastHeader></ng-template>` can be
    * used in the projected content to allow markup usage.
    */
-  @ContentChild(NgbToastHeader, {read: TemplateRef}) contentHeaderTpl: TemplateRef<any>| null = null;
+  @ContentChild(NgbToastHeader, {read: TemplateRef, static: true}) contentHeaderTpl: TemplateRef<any>| null = null;
 
   /**
    * An event fired immediately when toast's `hide()` method has been called.
