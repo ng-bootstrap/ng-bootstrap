@@ -182,7 +182,7 @@ describe('APIDocVisitor', () => {
 
     expect(interfaceDocs.properties[2].name).toBe('size');
     expect(interfaceDocs.properties[2].description).toBe('<p>Size of a new modal window.</p>');
-    expect(interfaceDocs.properties[2].type).toBe('"sm" | "lg"');
+    expect(interfaceDocs.properties[2].type).toBe('"sm" | "lg" | "xl"');
     expect(interfaceDocs.properties[2].defaultValue).toBeUndefined();
   });
 
