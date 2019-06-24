@@ -803,6 +803,20 @@ describe('ngb-modal', () => {
       });
     });
 
+    describe('scrollable content', () => {
+
+      it('should render scrollable content modals', () => {
+        const modalInstance = fixture.componentInstance.open('foo', {scrollable: true});
+        fixture.detectChanges();
+        expect(fixture.nativeElement).toHaveModal('foo');
+        expect(document.querySelector('.modal-dialog')).toHaveCssClass('modal-dialog-scrollable');
+
+        modalInstance.close();
+        fixture.detectChanges();
+        expect(fixture.nativeElement).not.toHaveModal();
+      });
+    });
+
     describe('accessibility', () => {
 
       it('should support aria-labelledby', () => {

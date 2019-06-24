@@ -42,4 +42,8 @@ export class NgbdModalOptions {
   openVerticallyCentered(content) {
     this.modalService.open(content, { centered: true });
   }
+
+  openScrollableContent(longContent) {
+    this.modalService.open(longContent, { scrollable: true });
+  }
 }

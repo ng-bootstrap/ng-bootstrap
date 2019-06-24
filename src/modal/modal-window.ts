@@ -26,7 +26,8 @@ import {ModalDismissReasons} from './modal-dismiss-reasons';
     '[attr.aria-labelledby]': 'ariaLabelledBy',
   },
   template: `
-    <div [class]="'modal-dialog' + (size ? ' modal-' + size : '') + (centered ? ' modal-dialog-centered' : '')" role="document">
+    <div [class]="'modal-dialog' + (size ? ' modal-' + size : '') + (centered ? ' modal-dialog-centered' : '') +
+     (scrollable ? ' modal-dialog-scrollable' : '')" role="document">
         <div class="modal-content"><ng-content></ng-content></div>
     </div>
     `
@@ -39,6 +40,7 @@ export class NgbModalWindow implements OnInit,
   @Input() backdrop: boolean | string = true;
   @Input() centered: string;
   @Input() keyboard = true;
+  @Input() scrollable: string;
   @Input() size: string;
   @Input() windowClass: string;
 
