@@ -16,6 +16,7 @@ import {ROUTES as RATING_ROUTES} from './components/rating/rating.module';
 import {ROUTES as TABLE_ROUTES} from './components/table/table.module';
 import {ROUTES as TABSET_ROUTES} from './components/tabset/tabset.module';
 import {ROUTES as TIMEPICKER_ROUTES} from './components/timepicker/timepicker.module';
+import {ROUTES as TOAST_ROUTES} from './components/toast/toast.module';
 import {ROUTES as TOOLTIP_ROUTES} from './components/tooltip/tooltip.module';
 import {ROUTES as TYPEAHEAD_ROUTES} from './components/typeahead/typeahead.module';
 import {DefaultComponent} from './default';
@@ -42,6 +43,7 @@ const routes: Routes = [
   { path: 'components/rating', children: RATING_ROUTES },
   { path: 'components/table', children: TABLE_ROUTES },
   { path: 'components/tabset', children: TABSET_ROUTES },
+  { path: 'components/toast', children: TOAST_ROUTES },
   { path: 'components/timepicker', children: TIMEPICKER_ROUTES },
   { path: 'components/tooltip', children: TOOLTIP_ROUTES },
   { path: 'components/typeahead', children: TYPEAHEAD_ROUTES },

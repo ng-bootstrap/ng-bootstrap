@@ -19,12 +19,14 @@ import {NgbdRatingModule} from './components/rating/rating.module';
 import {NgbdTableModule} from './components/table/table.module';
 import {NgbdTabsetModule} from './components/tabset/tabset.module';
 import {NgbdTimepickerModule} from './components/timepicker/timepicker.module';
+import {NgbdToastModule} from './components/toast/toast.module';
 import {NgbdTooltipModule} from './components/tooltip/tooltip.module';
 import {NgbdTypeaheadModule} from './components/typeahead/typeahead.module';
 import {DefaultComponent} from './default';
 import {GettingStartedPage} from './pages/getting-started/getting-started.component';
 import {PositioningPage} from './pages/positioning/positioning.component';
 import {NgbdSharedModule} from './shared';
+
 
 const DEMOS = [
   NgbdAccordionModule,
@@ -42,6 +44,7 @@ const DEMOS = [
   NgbdTableModule,
   NgbdTabsetModule,
   NgbdTimepickerModule,
+  NgbdToastModule,
   NgbdTooltipModule,
   NgbdTypeaheadModule
 ];
