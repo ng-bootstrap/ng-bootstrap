@@ -11,7 +11,7 @@ No dependencies on 3rd party JavaScript.
 
 Please check our [demo site](https://ng-bootstrap.github.io) and the list of
 [issues](https://github.com/ng-bootstrap/ng-bootstrap/issues) to see all the things we are working on. Feel free to make comments there.
- 
+
 
 ## Table of Contents
 
@@ -30,7 +30,7 @@ Please check all components we have in action at https://ng-bootstrap.github.io
 
 ## Dependencies
 
-The only two dependencies are [Angular](https://angular.io) and [Bootstrap 4](https://getbootstrap.com) CSS. 
+The only two dependencies are [Angular](https://angular.io) and [Bootstrap 4](https://getbootstrap.com) CSS.
 Here is the list of minimal required versions:
 
 | ng-bootstrap | Angular | Bootstrap CSS |
@@ -39,7 +39,7 @@ Here is the list of minimal required versions:
 | 2.x.x        | 6.0.0   | 4.0.0         |
 | 3.x.x        | 6.1.0   | 4.0.0         |
 | 4.x.x        | 7.0.0   | 4.0.0         |
-
+| 5.x.x        | 8.0.0   | 4.3.1         |
 
 ## Installation
 
@@ -72,7 +72,7 @@ export class YourAppModule {
 }
 ```
 
-Alternatively you could only import modules with components you need, ex. pagination and alert. 
+Alternatively you could only import modules with components you need, ex. pagination and alert.
 The resulting bundle will be smaller in this case.
 
 ```js
@@ -90,11 +90,11 @@ export class YourAppModule {
 
 ## Supported browsers
 
-We support the same browsers and versions supported by both Bootstrap 4 and Angular, whichever is _more_ restrictive. See [Angular browser support](https://angular.io/guide/browser-support) and [Bootstrap browser support](https://getbootstrap.com/docs/4.0/getting-started/browsers-devices/#supported-browsers) for more details, but on the high-level it should be something like:  
+We support the same browsers and versions supported by both Bootstrap 4 and Angular, whichever is _more_ restrictive. See [Angular browser support](https://angular.io/guide/browser-support) and [Bootstrap browser support](https://getbootstrap.com/docs/4.0/getting-started/browsers-devices/#supported-browsers) for more details, but on the high-level it should be something like:
 
 * Chrome (45+)
 * Firefox (40+)
-* IE (10+) 
+* IE (10+)
 * Edge (20+)
 * Safari (7+)
 
@@ -121,7 +121,7 @@ We ask you to respect two things:
 
 A minimal reproduction scenario allows us to quickly confirm a bug (or point out a coding problem) as well as confirm that we are fixing the right problem.
 
-Please not that **we will be insisting on a minimal reproduce scenario** in order to save maintainers time and ultimately be able to fix more bugs. We'll mark the issue as non-actionable without it and close if not heard from the reporter. 
+Please not that **we will be insisting on a minimal reproduce scenario** in order to save maintainers time and ultimately be able to fix more bugs. We'll mark the issue as non-actionable without it and close if not heard from the reporter.
 
 Interestingly, from our experience users often find coding problems themselves while preparing a minimal StackBlitz. We understand that sometimes it might be hard to extract essentials bits of code from a larger code-base but we really need to isolate the problem before we can fix it.
 

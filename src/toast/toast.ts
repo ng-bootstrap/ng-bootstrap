@@ -16,6 +16,7 @@ import {
 import {NgbToastConfig} from './toast-config';
 
 
+
 /**
  * This directive allows the usage of HTML markup or other directives
  * inside of the toast's header.
@@ -27,6 +28,8 @@ export class NgbToastHeader {
 /**
  * Toasts provide feedback messages as notifications to the user.
  * Goal is to mimic the push notifications available both on mobile and desktop operating systems.
+ *
+ * @since 5.0.0
  */
 @Component({
   selector: 'ngb-toast',
