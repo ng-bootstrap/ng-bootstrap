@@ -85,6 +85,7 @@
     "clang-format": "1.0.35",
     "concurrently": "^4.1.0",
     "conventional-changelog-cli": "^2.0.12",
+    "core-js": "^2",
     "ejs": "2.6.1",
     "express": "^4.16.4",
     "fs-extra": "^8.0.0",
