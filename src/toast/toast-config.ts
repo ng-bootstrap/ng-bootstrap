@@ -2,6 +2,8 @@ import {Injectable} from '@angular/core';
 
 /**
  * Interface used to type all toast config options. See `NgbToastConfig`.
+ *
+ * @since 5.0.0
  */
 export interface NgbToastOptions {
   /**

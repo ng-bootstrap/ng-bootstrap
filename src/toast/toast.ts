@@ -15,11 +15,11 @@ import {
 
 import {NgbToastConfig} from './toast-config';
 
-
-
 /**
  * This directive allows the usage of HTML markup or other directives
  * inside of the toast's header.
+ *
+ * @since 5.0.0
  */
 @Directive({selector: '[ngbToastHeader]'})
 export class NgbToastHeader {
