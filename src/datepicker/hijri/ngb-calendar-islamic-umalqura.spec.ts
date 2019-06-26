@@ -868,6 +868,16 @@ describe('ngb-calendar-islamic-umalqura', () => {
             .toBeTruthy(`Gregorian ${gDate} should be Hijri ${iDate.year}-${iDate.month}-${iDate.day}`);
       });
     });
+
+    it('should convert correctly from Gregorian to Hijri with time 23:59:59.999', () => {
+      DATE_TABLE.forEach(element => {
+        const iDate = new NgbDate(element[3], element[4], element[5]);
+        const gDate = new Date(element[0], element[1], element[2], 23, 59, 59, 999);
+        const iDate2 = calendar.fromGregorian(gDate);
+        expect(iDate2.equals(iDate))
+            .toBeTruthy(`Gregorian ${gDate} should be Hijri ${iDate.year}-${iDate.month}-${iDate.day}`);
+      });
+    });
   });
 
   it('should return number of days per week', () => { expect(calendar.getDaysPerWeek()).toBe(7); });
