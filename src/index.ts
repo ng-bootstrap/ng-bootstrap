@@ -1,4 +1,4 @@
-import {ModuleWithProviders, NgModule} from '@angular/core';
+import {NgModule} from '@angular/core';
 
 import {NgbAccordionModule} from './accordion/accordion.module';
 import {NgbAlertModule} from './alert/alert.module';

@@ -1,4 +1,4 @@
-import {NgModule, ModuleWithProviders} from '@angular/core';
+import {NgModule} from '@angular/core';
 import {NgbButtonLabel} from './label';
 import {NgbCheckBox} from './checkbox';
 import {NgbRadio, NgbRadioGroup} from './radio';
