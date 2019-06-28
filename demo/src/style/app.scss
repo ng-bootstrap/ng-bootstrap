@@ -27,8 +27,11 @@ header.navbar {
   }
 }
 
-.social-buttons > iframe {
-  margin-left: 0.75rem;
+.social-buttons {
+  svg {
+    margin-left: 1rem;
+    fill: #fff;
+  }
 }
 
 .sidebar-collapsed {
