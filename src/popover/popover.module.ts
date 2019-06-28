@@ -1,4 +1,4 @@
-import {NgModule, ModuleWithProviders} from '@angular/core';
+import {NgModule} from '@angular/core';
 
 import {NgbPopover, NgbPopoverWindow} from './popover';
 import {CommonModule} from '@angular/common';

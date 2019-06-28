@@ -1,4 +1,4 @@
-import {ModuleWithProviders, NgModule} from '@angular/core';
+import {NgModule} from '@angular/core';
 
 import {NgbModal} from './modal';
 import {NgbModalBackdrop} from './modal-backdrop';
