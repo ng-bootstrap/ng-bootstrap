@@ -21,6 +21,8 @@ import { NgbdTimepickerSteps } from './demos/steps/timepicker-steps';
 import { NgbdTimepickerStepsModule } from './demos/steps/timepicker-steps.module';
 import { NgbdTimepickerValidation } from './demos/validation/timepicker-validation';
 import { NgbdTimepickerValidationModule } from './demos/validation/timepicker-validation.module';
+import { NgbdTimepickerI18n } from './demos/i18n/timepicker-i18n';
+import { NgbdTimepickerI18nModule } from './demos/i18n/timepicker-i18n.module';
 
 const DEMOS = {
   basic: {
@@ -65,6 +67,12 @@ const DEMOS = {
     code: require('!!raw-loader!./demos/adapter/timepicker-adapter'),
     markup: require('!!raw-loader!./demos/adapter/timepicker-adapter.html')
   },
+  i18n: {
+    title: 'Internationalization of timepickers',
+    type: NgbdTimepickerI18n,
+    code: require('!!raw-loader!./demos/i18n/timepicker-i18n'),
+    markup: require('!!raw-loader!./demos/i18n/timepicker-i18n.html')
+  },
   config: {
     title: 'Global configuration of timepickers',
     type: NgbdTimepickerConfig,
@@ -90,6 +98,7 @@ export const ROUTES = [
     NgbdSharedModule,
     NgbdComponentsSharedModule,
     NgbdTimepickerBasicModule,
+    NgbdTimepickerI18nModule,
     NgbdTimepickerMeridianModule,
     NgbdTimepickerSecondsModule,
     NgbdTimepickerSpinnersModule,

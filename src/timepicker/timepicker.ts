@@ -13,6 +13,7 @@ import {isInteger, isNumber, padNumber, toInteger} from '../util/util';
 import {NgbTime} from './ngb-time';
 import {NgbTimepickerConfig} from './timepicker-config';
 import {NgbTimeAdapter} from './ngb-time-adapter';
+import {NgbTimepickerI18n} from './timepicker-i18n';
 
 const NGB_TIMEPICKER_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -97,8 +98,8 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
           <button type="button" class="btn btn-outline-primary" [class.btn-sm]="isSmallSize" [class.btn-lg]="isLargeSize"
             [disabled]="disabled" [class.disabled]="disabled"
                   (click)="toggleMeridian()">
-            <ng-container *ngIf="model?.hour >= 12; else am" i18n="@@ngb.timepicker.PM">PM</ng-container>
-            <ng-template #am i18n="@@ngb.timepicker.AM">AM</ng-template>
+            <ng-container *ngIf="model?.hour >= 12; else am" i18n="@@ngb.timepicker.PM">{{ i18n.getAfternoonPeriod() }}</ng-container>
+            <ng-template #am i18n="@@ngb.timepicker.AM">{{ i18n.getMorningPeriod() }}</ng-template>
           </button>
         </div>
       </div>
@@ -172,7 +173,7 @@ export class NgbTimepicker implements ControlValueAccessor,
 
   constructor(
       private readonly _config: NgbTimepickerConfig, private _ngbTimeAdapter: NgbTimeAdapter<any>,
-      private _cd: ChangeDetectorRef) {
+      private _cd: ChangeDetectorRef, public i18n: NgbTimepickerI18n) {
     this.meridian = _config.meridian;
     this.spinners = _config.spinners;
     this.seconds = _config.seconds;

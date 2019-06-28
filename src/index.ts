@@ -101,6 +101,7 @@ export {
 } from './tabset/tabset.module';
 export {
   NgbTimeAdapter,
+  NgbTimepickerI18n,
   NgbTimepicker,
   NgbTimepickerConfig,
   NgbTimepickerModule,
