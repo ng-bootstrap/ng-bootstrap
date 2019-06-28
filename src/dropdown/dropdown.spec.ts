@@ -113,6 +113,25 @@ describe('ngb-dropdown', () => {
     const fixture = createTestComponent(html);
     const compiled = fixture.nativeElement;
 
+    fixture.detectChanges();
+    expect(getMenuEl(compiled).getAttribute('x-placement')).toBe('bottom-right');
+  });
+
+  it('should have x-placement attribute reflecting placement with a template', () => {
+
+    const html = `
+    <div ngbDropdown placement="bottom-right">
+      <button ngbDropdownAnchor></button>
+      <div *ngIf="true" ngbDropdownMenu>
+        <a class="dropdown-item">dropDown item</a>
+        <a class="dropdown-item">dropDown item</a>
+      </div>
+    </div>`;
+
+    const fixture = createTestComponent(html);
+    const compiled = fixture.nativeElement;
+
+    fixture.detectChanges();
     expect(getMenuEl(compiled).getAttribute('x-placement')).toBe('bottom-right');
   });
 
