@@ -106,7 +106,7 @@ export {
   NgbTimepickerModule,
   NgbTimeStruct
 } from './timepicker/timepicker.module';
-export {NgbToast, NgbToastConfig, NgbToastHeader} from './toast/toast.module';
+export {NgbToast, NgbToastConfig, NgbToastHeader, NgbToastModule} from './toast/toast.module';
 export {NgbTooltip, NgbTooltipConfig, NgbTooltipModule} from './tooltip/tooltip.module';
 export {
   NgbHighlight,
