@@ -1,3 +1,18 @@
+# [5.0.0-rc.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/5.0.0-rc.0...5.0.0-rc.1) (2019-06-28)
+
+This release requires Angular version ^8.0.0, Bootstrap ^4.3.1 and is **not yet** Ivy compatible.
+
+### Bug Fixes
+
+* **toast:** export NgbToastModule publicly ([#3259](https://github.com/ng-bootstrap/ng-bootstrap/issues/3259)) ([0d69682](https://github.com/ng-bootstrap/ng-bootstrap/commit/0d69682)), closes [#3258](https://github.com/ng-bootstrap/ng-bootstrap/issues/3258)
+
+
+### Features
+
+* **timepicker:** use Angular locale data for AM and PM ([#2830](https://github.com/ng-bootstrap/ng-bootstrap/issues/2830)) ([3ce8a4c](https://github.com/ng-bootstrap/ng-bootstrap/commit/3ce8a4c))
+
+
+
 # [5.0.0-rc.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/4.2.1...5.0.0-rc.0) (2019-06-24)
 
 This release requires Angular version `^8.0.0`, Bootstrap `^4.3.1` and is **not yet** Ivy compatible.
