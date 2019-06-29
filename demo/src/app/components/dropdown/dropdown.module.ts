@@ -13,6 +13,8 @@ import { NgbdDropdownForm } from './demos/form/dropdown-form';
 import { NgbdDropdownFormModule } from './demos/form/dropdown-form.module';
 import { NgbdDropdownManual } from './demos/manual/dropdown-manual';
 import { NgbdDropdownManualModule } from './demos/manual/dropdown-manual.module';
+import { NgbdDropdownNavbar } from './demos/navbar/dropdown-navbar';
+import { NgbdDropdownNavbarModule } from './demos/navbar/dropdown-navbar.module';
 import { NgbdDropdownSplit } from './demos/split/dropdown-split';
 import { NgbdDropdownSplitModule } from './demos/split/dropdown-split.module';
 
@@ -40,6 +42,12 @@ const DEMOS = {
     type: NgbdDropdownForm,
     code: require('!!raw-loader!./demos/form/dropdown-form'),
     markup: require('!!raw-loader!./demos/form/dropdown-form.html')
+  },
+  navbar: {
+    title: 'Dynamic positioning in a navbar',
+    type: NgbdDropdownNavbar,
+    code: require('!!raw-loader!./demos/navbar/dropdown-navbar'),
+    markup: require('!!raw-loader!./demos/navbar/dropdown-navbar.html')
   },
   config: {
     title: 'Global configuration of dropdowns',
@@ -69,7 +77,8 @@ export const ROUTES = [
     NgbdDropdownConfigModule,
     NgbdDropdownManualModule,
     NgbdDropdownSplitModule,
-    NgbdDropdownFormModule
+    NgbdDropdownFormModule,
+    NgbdDropdownNavbarModule
   ]
 })
 export class NgbdDropdownModule {
