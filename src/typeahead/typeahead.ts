@@ -219,17 +219,10 @@ export class NgbTypeahead implements ControlValueAccessor,
   ngOnInit(): void {
     const inputValues$ = this._valueChanges.pipe(tap(value => {
       this._inputValueBackup = this.showHint ? value : null;
-      if (this.editable) {
-        this._onChange(value);
-      }
+      this._onChange(this.editable ? value : undefined);
     }));
     const results$ = inputValues$.pipe(this.ngbTypeahead);
-    const processedResults$ = results$.pipe(tap(() => {
-      if (!this.editable) {
-        this._onChange(undefined);
-      }
-    }));
-    const userInput$ = this._resubscribeTypeahead.pipe(switchMap(() => processedResults$));
+    const userInput$ = this._resubscribeTypeahead.pipe(switchMap(() => results$));
     this._subscription = this._subscribeToUserInput(userInput$);
   }
 
