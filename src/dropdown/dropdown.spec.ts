@@ -368,6 +368,7 @@ describe('ngb-dropdown-toggle', () => {
       const dropdownEl: HTMLElement = compiled.querySelector('[ngbdropdownmenu]');
 
       expect(dropdownEl.getAttribute('style')).toBeNull(`The dropdown element shouldn't have calculated styles`);
+      expect(dropdownEl.getAttribute('x-placement')).toBeNull(`The dropdown element shouldn't have x-placement set`);
 
     });
 
