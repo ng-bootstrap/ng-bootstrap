@@ -41,3 +41,17 @@ ngbd-table-filtering span.ngb-highlight {
 ngbd-table-complete span.ngb-highlight {
   background-color: yellow;
 }
+
+ngb-carousel .picsum-img-wrapper {
+  position: relative;
+  height: 0;
+  padding-top: 55%; /* Keep ratio for 900x500 images */
+}
+
+ngb-carousel .picsum-img-wrapper>img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
