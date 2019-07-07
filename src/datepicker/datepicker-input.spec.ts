@@ -11,6 +11,7 @@ import {NgbDatepicker} from './datepicker';
 import {NgbDateStruct} from './ngb-date-struct';
 import {NgbDate} from './ngb-date';
 import * as positioning from 'src/util/positioning';
+import {NgbInputDatepickerConfig} from './datepicker-input-config';
 
 const createTestCmpt = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -18,10 +19,62 @@ const createTestCmpt = (html: string) =>
 const createTestNativeCmpt = (html: string) =>
     createGenericTestComponent(html, TestNativeComponent) as ComponentFixture<TestNativeComponent>;
 
+function expectSameValues(inputDatepicker: NgbInputDatepicker, config: NgbInputDatepickerConfig) {
+  ['autoClose', 'container', 'positionTarget', 'placement'].forEach(
+      field => expect(inputDatepicker[field]).toEqual(config[field], field));
+}
+
+function customizeConfig(config: NgbInputDatepickerConfig) {
+  config.autoClose = 'outside';
+  config.container = 'body';
+  config.positionTarget = 'positionTarget';
+  config.placement = ['bottom-left', 'top-right'];
+}
+
 describe('NgbInputDatepicker', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbDatepickerModule, FormsModule]});
+  });
+
+  it('should initialize inputs with provided datepicker config', () => {
+    const defaultConfig = new NgbInputDatepickerConfig();
+    const fixture = createTestCmpt(`<input ngbDatepicker>`);
+
+    const inputDatepicker =
+        fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
+    expectSameValues(inputDatepicker, defaultConfig);
+  });
+
+  it('should initialize inputs with provided config', () => {
+    // overrideComponent should happen before any injections, so createTestCmpt will fail here
+    TestBed.overrideComponent(TestComponent, {set: {template: '<input ngbDatepicker>'}});
+    const config = TestBed.get(NgbInputDatepickerConfig);
+    customizeConfig(config);
+    const fixture = TestBed.createComponent(TestComponent);
+    fixture.detectChanges();
+
+    const inputDatepicker =
+        fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
+    expectSameValues(inputDatepicker, config);
+  });
+
+  describe('Custom config as provider', () => {
+    const config = new NgbInputDatepickerConfig();
+    customizeConfig(config);
+
+    beforeEach(() => {
+      TestBed.configureTestingModule(
+          {imports: [NgbDatepickerModule], providers: [{provide: NgbInputDatepickerConfig, useValue: config}]});
+    });
+
+    it('should initialize inputs with provided config as provider', () => {
+      const fixture = createTestCmpt(`<input ngbDatepicker>`);
+
+      const inputDatepicker =
+          fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
+      expectSameValues(inputDatepicker, config);
+    });
   });
 
   describe('open, close and toggle', () => {

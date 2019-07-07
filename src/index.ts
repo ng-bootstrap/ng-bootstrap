@@ -58,6 +58,7 @@ export {
   NgbDateParserFormatter,
   NgbDatepicker,
   NgbDatepickerConfig,
+  NgbInputDatepickerConfig,
   NgbDatepickerI18n,
   NgbDatepickerI18nHebrew,
   NgbDatepickerKeyboardService,

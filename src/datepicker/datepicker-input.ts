@@ -32,6 +32,7 @@ import {NgbCalendar} from './ngb-calendar';
 import {NgbDate} from './ngb-date';
 import {NgbDateParserFormatter} from './ngb-date-parser-formatter';
 import {NgbDateStruct} from './ngb-date-struct';
+import {NgbInputDatepickerConfig} from './datepicker-input-config';
 
 const NGB_DATEPICKER_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -81,7 +82,7 @@ export class NgbInputDatepicker implements OnChanges,
    *
    * @since 3.0.0
    */
-  @Input() autoClose: boolean | 'inside' | 'outside' = true;
+  @Input() autoClose: boolean | 'inside' | 'outside';
 
   /**
    * The reference to a custom template for the day.
@@ -177,7 +178,7 @@ export class NgbInputDatepicker implements OnChanges,
    *
    * Please see the [positioning overview](#/positioning) for more details.
    */
-  @Input() placement: PlacementArray = ['bottom-left', 'bottom-right', 'top-left', 'top-right'];
+  @Input() placement: PlacementArray;
 
   /**
    * If `true`, weekdays will be displayed.
@@ -260,7 +261,8 @@ export class NgbInputDatepicker implements OnChanges,
       private _vcRef: ViewContainerRef, private _renderer: Renderer2, private _cfr: ComponentFactoryResolver,
       private _ngZone: NgZone, private _service: NgbDatepickerService, private _calendar: NgbCalendar,
       private _dateAdapter: NgbDateAdapter<any>, @Inject(DOCUMENT) private _document: any,
-      private _changeDetector: ChangeDetectorRef) {
+      private _changeDetector: ChangeDetectorRef, config: NgbInputDatepickerConfig) {
+    ['autoClose', 'container', 'positionTarget', 'placement'].forEach(input => this[input] = config[input]);
     this._zoneSubscription = _ngZone.onStable.subscribe(() => this._updatePopupPosition());
   }
 
