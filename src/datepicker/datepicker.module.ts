@@ -21,6 +21,7 @@ export {NgbDatepickerDayView} from './datepicker-day-view';
 export {NgbDatepickerNavigation} from './datepicker-navigation';
 export {NgbDatepickerNavigationSelect} from './datepicker-navigation-select';
 export {NgbDatepickerConfig} from './datepicker-config';
+export {NgbInputDatepickerConfig} from './datepicker-input-config';
 export {NgbDatepickerI18n} from './datepicker-i18n';
 export {NgbDateStruct} from './ngb-date-struct';
 export {NgbDate} from './ngb-date';
