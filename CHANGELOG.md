@@ -1,3 +1,12 @@
+# [5.0.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/5.0.0-rc.1...5.0.0) (2019-07-09)
+
+This major release is compatible with Angular ^8.0.0. We would like to emphasis that **it is not yet** fully compatible with Ivy renderer.
+
+### BREAKING CHANGES
+
+* for ng-bootstrap `5.0.0` minimal required version
+of Angular is `8.0.0`, and minimal required version of Bootstrap is `4.3.1`.
+
 # [5.0.0-rc.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/5.0.0-rc.0...5.0.0-rc.1) (2019-06-28)
 
 This release requires Angular version ^8.0.0, Bootstrap ^4.3.1 and is **not yet** Ivy compatible.
