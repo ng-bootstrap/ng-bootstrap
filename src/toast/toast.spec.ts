@@ -4,7 +4,6 @@ import {ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing'
 import {createGenericTestComponent} from '../test/common';
 import {NgbToastModule} from './toast.module';
 
-
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
@@ -92,6 +91,22 @@ describe('ngb-toast', () => {
          fixture.detectChanges();
          expect(fixture.componentInstance.hide).toHaveBeenCalledTimes(1);
        }));
+
+    it('should emit hide only one time regardless of autohide toggling', fakeAsync(() => {
+         const fixture =
+             createTestComponent(`<ngb-toast header="header" [autohide]="autohide" (hide)="hide()">body</ngb-toast>`);
+         tick(250);
+         fixture.componentInstance.autohide = false;
+         fixture.detectChanges();
+         tick(250);
+         fixture.detectChanges();
+         expect(fixture.componentInstance.hide).not.toHaveBeenCalled();
+         fixture.componentInstance.autohide = true;
+         fixture.detectChanges();
+         tick(500);
+         fixture.detectChanges();
+         expect(fixture.componentInstance.hide).toHaveBeenCalledTimes(1);
+       }));
   });
 });
 
@@ -99,5 +114,6 @@ describe('ngb-toast', () => {
 @Component({selector: 'test-cmp', template: ''})
 export class TestComponent {
   visible = true;
+  autohide = true;
   hide = jasmine.createSpy('hideSpy');
 }
