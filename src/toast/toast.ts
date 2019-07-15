@@ -108,22 +108,24 @@ export class NgbToast implements AfterContentInit,
     this.autohide = config.autohide;
   }
 
-  ngAfterContentInit() {
-    if (this.autohide) {
-      this._timeoutID = setTimeout(() => this.hide(), this.delay);
-    }
-  }
+  ngAfterContentInit() { this._init(); }
 
   ngOnChanges(changes: SimpleChanges) {
     if ('autohide' in changes) {
       this._clearTimeout();
-      this.ngAfterContentInit();
+      this._init();
     }
   }
 
   hide() {
     this._clearTimeout();
     this.hideOutput.emit();
+  }
+
+  private _init() {
+    if (this.autohide && !this._timeoutID) {
+      this._timeoutID = setTimeout(() => this.hide(), this.delay);
+    }
   }
 
   private _clearTimeout() {

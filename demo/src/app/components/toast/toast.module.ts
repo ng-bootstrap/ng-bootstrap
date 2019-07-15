@@ -13,9 +13,9 @@ import {NgbdToastGlobal} from './demos/howto-global/toast-global.component';
 import {NgbdToastGlobalModule} from './demos/howto-global/toast-global.module';
 import {NgbdToastInline} from './demos/inline/toast-inline';
 import {NgbdToastInlineModule} from './demos/inline/toast-inline.module';
+import {NgbdToastPreventAutohide} from './demos/prevent-autohide/toast-prevent-autohide';
+import {NgbdToastPreventAutohideModule} from './demos/prevent-autohide/toast-prevent-autohide.module';
 import {NgbdToastOverviewComponent} from './overview/toast-overview.component';
-
-
 
 const OVERVIEW = {
   'inline-usage': 'Declarative usage',
@@ -46,6 +46,20 @@ const DEMOS = {
     files: [
       {name: 'toast-closeable.html', source: require('!!raw-loader!./demos/closeable/toast-closeable.html')},
       {name: 'toast-closeable.ts', source: require('!!raw-loader!./demos/closeable/toast-closeable.ts')}
+    ]
+  },
+  'prevent-autohide': {
+    title: 'Prevent autohide on mouseover',
+    type: NgbdToastPreventAutohide,
+    files: [
+      {
+        name: 'toast-prevent-autohide.html',
+        source: require('!!raw-loader!./demos/prevent-autohide/toast-prevent-autohide.html')
+      },
+      {
+        name: 'toast-prevent-autohide.ts',
+        source: require('!!raw-loader!./demos/prevent-autohide/toast-prevent-autohide.ts')
+      }
     ]
   },
   global: {
@@ -80,7 +94,7 @@ export const ROUTES = [
 @NgModule({
   imports: [
     NgbdSharedModule, NgbdComponentsSharedModule, NgbdToastInlineModule, NgbdToastCloseableModule,
-    NgbdToastCustomHeaderModule, NgbdToastGlobalModule
+    NgbdToastCustomHeaderModule, NgbdToastPreventAutohideModule, NgbdToastGlobalModule
   ],
   declarations: [NgbdToastOverviewComponent]
 })
