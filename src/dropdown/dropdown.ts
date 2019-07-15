@@ -407,7 +407,7 @@ export class NgbDropdown implements OnInit, OnDestroy {
       // remove the current placement classes
       renderer.removeClass(dropdownElement, 'dropup');
       renderer.removeClass(dropdownElement, 'dropdown');
-      this._menu.placement = placement;
+      this._menu.placement = this.display === 'static' ? null : placement;
 
       /*
       * apply the new placement
