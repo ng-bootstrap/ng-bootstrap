@@ -177,7 +177,10 @@ export class NgbDropdown implements AfterContentInit, OnDestroy {
   @Input() container: null | 'body';
 
   /**
-   * Enable or disable the dynamic positioning
+   * Enable or disable the dynamic positioning. The default value is dynamic unless the dropdown is used
+   * inside a Bootstrap navbar. If you need custom placement for a dropdown in a navbar, set it to
+   * dynamic explicitly. See the [positioning of dropdown](#/positioning#dropdown)
+   * and the [navbar demo](/#/components/dropdown/examples#navbar) for more details.
    *
    * @since 4.2.0
    */
