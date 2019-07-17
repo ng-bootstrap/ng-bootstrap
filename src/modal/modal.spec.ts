@@ -10,10 +10,8 @@ import {
   ViewChild
 } from '@angular/core';
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-
 import {NgbModalConfig} from './modal-config';
 import {NgbActiveModal, NgbModal, NgbModalModule, NgbModalRef} from './modal.module';
-
 
 const NOOP = () => {};
 
@@ -810,6 +808,16 @@ describe('ngb-modal', () => {
         fixture.detectChanges();
         expect(fixture.nativeElement).toHaveModal('foo');
         expect(document.querySelector('.modal-dialog')).toHaveCssClass('modal-dialog-scrollable');
+
+        modalInstance.close();
+        fixture.detectChanges();
+        expect(fixture.nativeElement).not.toHaveModal();
+      });
+
+      it('should add specific styling to content component host', () => {
+        const modalInstance = fixture.componentInstance.openCmpt(DestroyableCmpt, {scrollable: true});
+        fixture.detectChanges();
+        expect(document.querySelector('destroyable-cmpt')).toHaveCssClass('component-host-scrollable');
 
         modalInstance.close();
         fixture.detectChanges();
