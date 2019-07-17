@@ -16,6 +16,7 @@ import {ContentRef} from '../util/popup';
 import {ScrollBar} from '../util/scrollbar';
 import {isDefined, isString} from '../util/util';
 import {NgbModalBackdrop} from './modal-backdrop';
+import {NgbModalOptions} from './modal-config';
 import {NgbActiveModal, NgbModalRef} from './modal-ref';
 import {NgbModalWindow} from './modal-window';
 
@@ -61,7 +62,8 @@ export class NgbModalStack {
     }
 
     const activeModal = new NgbActiveModal();
-    const contentRef = this._getContentRef(moduleCFR, options.injector || contentInjector, content, activeModal);
+    const contentRef =
+        this._getContentRef(moduleCFR, options.injector || contentInjector, content, activeModal, options);
 
     let backdropCmptRef: ComponentRef<NgbModalBackdrop> =
         options.backdrop !== false ? this._attachBackdrop(moduleCFR, containerEl) : null;
@@ -124,8 +126,8 @@ export class NgbModalStack {
   }
 
   private _getContentRef(
-      moduleCFR: ComponentFactoryResolver, contentInjector: Injector, content: any,
-      activeModal: NgbActiveModal): ContentRef {
+      moduleCFR: ComponentFactoryResolver, contentInjector: Injector, content: any, activeModal: NgbActiveModal,
+      options: NgbModalOptions): ContentRef {
     if (!content) {
       return new ContentRef([]);
     } else if (content instanceof TemplateRef) {
@@ -133,7 +135,7 @@ export class NgbModalStack {
     } else if (isString(content)) {
       return this._createFromString(content);
     } else {
-      return this._createFromComponent(moduleCFR, contentInjector, content, activeModal);
+      return this._createFromComponent(moduleCFR, contentInjector, content, activeModal, options);
     }
   }
 
@@ -154,14 +156,20 @@ export class NgbModalStack {
   }
 
   private _createFromComponent(
-      moduleCFR: ComponentFactoryResolver, contentInjector: Injector, content: any,
-      context: NgbActiveModal): ContentRef {
+      moduleCFR: ComponentFactoryResolver, contentInjector: Injector, content: any, context: NgbActiveModal,
+      options: NgbModalOptions): ContentRef {
     const contentCmptFactory = moduleCFR.resolveComponentFactory(content);
     const modalContentInjector =
         Injector.create({providers: [{provide: NgbActiveModal, useValue: context}], parent: contentInjector});
     const componentRef = contentCmptFactory.create(modalContentInjector);
+    const componentNativeEl = componentRef.location.nativeElement;
+    if (options.scrollable) {
+      (componentNativeEl as HTMLElement).classList.add('component-host-scrollable');
+    }
     this._applicationRef.attachView(componentRef.hostView);
-    return new ContentRef([[componentRef.location.nativeElement]], componentRef.hostView, componentRef);
+    // FIXME: we should here get rid of the component nativeElement
+    // and use `[Array.from(componentNativeEl.childNodes)]` instead and remove the above CSS class.
+    return new ContentRef([[componentNativeEl]], componentRef.hostView, componentRef);
   }
 
   private _setAriaHidden(element: Element) {

@@ -8,7 +8,8 @@ import {
   Input,
   OnDestroy,
   OnInit,
-  Output
+  Output,
+  ViewEncapsulation,
 } from '@angular/core';
 
 import {getFocusableBoundaryElements} from '../util/focus-trap';
@@ -30,7 +31,9 @@ import {ModalDismissReasons} from './modal-dismiss-reasons';
      (scrollable ? ' modal-dialog-scrollable' : '')" role="document">
         <div class="modal-content"><ng-content></ng-content></div>
     </div>
-    `
+    `,
+  encapsulation: ViewEncapsulation.None,
+  styleUrls: ['./modal.scss']
 })
 export class NgbModalWindow implements OnInit,
     AfterViewInit, OnDestroy {
