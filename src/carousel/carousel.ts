@@ -309,6 +309,8 @@ export interface NgbSlideEvent {
 
   /**
    * Whether the pause() method was called (and no cycle() call was done afterwards).
+   *
+   * @since 5.1.0
    */
   paused: boolean;
 
@@ -316,6 +318,8 @@ export interface NgbSlideEvent {
    * Source triggering the slide change event.
    *
    * Possible values are `'timer' | 'arrowLeft' | 'arrowRight' | 'indicator'`
+   *
+   * @since 5.1.0
    */
   source?: NgbSlideEventSource;
 }
