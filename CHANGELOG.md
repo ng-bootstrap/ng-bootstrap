@@ -1,3 +1,28 @@
+# [5.1.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/5.0.0...5.1.0) (2019-07-17)
+
+
+### Features
+
+* **carousel:** stay paused after calling pause() until cycle() is called ([#3225](https://github.com/ng-bootstrap/ng-bootstrap/issues/3225)) ([2602154](https://github.com/ng-bootstrap/ng-bootstrap/commit/2602154)), closes [#3188](https://github.com/ng-bootstrap/ng-bootstrap/issues/3188)
+
+  In order for the user to also have more control, we also introduce 2 new properties on [NgbSlideEvent](https://ng-bootstrap.github.io/#/components/carousel/api#NgbSlideEvent):
+
+  + The "_source_" property allowing to know what triggered the event: "_timer_", "_arrowLeft_", "_arrowRight_" or "_indicator_".
+  + The "_paused_" boolean status.
+
+### Bug Fixes
+
+* **datepicker:** ease the styling of datepicker ([#3248](https://github.com/ng-bootstrap/ng-bootstrap/issues/3248)) ([dd86266](https://github.com/ng-bootstrap/ng-bootstrap/commit/dd86266)), closes [#3244](https://github.com/ng-bootstrap/ng-bootstrap/issues/3244)
+* **datepicker:** NgbCalendarIslamicUmalqura.fromGregorian with date in the afternoon ([#3256](https://github.com/ng-bootstrap/ng-bootstrap/issues/3256)) ([cc29290](https://github.com/ng-bootstrap/ng-bootstrap/commit/cc29290)), closes [#3237](https://github.com/ng-bootstrap/ng-bootstrap/issues/3237)
+* **demo:** direct link to specific carousel sample not working ([#3272](https://github.com/ng-bootstrap/ng-bootstrap/issues/3272)) ([a6d73d6](https://github.com/ng-bootstrap/ng-bootstrap/commit/a6d73d6))
+* **dropdown:** allow template directive on the menu ([#3263](https://github.com/ng-bootstrap/ng-bootstrap/issues/3263)) ([8f73899](https://github.com/ng-bootstrap/ng-bootstrap/commit/8f73899))
+* **dropdown:** remove x-placement when display is static ([#3270](https://github.com/ng-bootstrap/ng-bootstrap/issues/3270)) ([c6ad5b7](https://github.com/ng-bootstrap/ng-bootstrap/commit/c6ad5b7))
+* **modal:** cmpt based content was not scrollable ([#3286](https://github.com/ng-bootstrap/ng-bootstrap/issues/3286)) ([ffbb4fd](https://github.com/ng-bootstrap/ng-bootstrap/commit/ffbb4fd)), closes [#3281](https://github.com/ng-bootstrap/ng-bootstrap/issues/3281)
+* **popover:** apply arrow styles to direct descendant ([#3288](https://github.com/ng-bootstrap/ng-bootstrap/issues/3288)) ([0b3ad65](https://github.com/ng-bootstrap/ng-bootstrap/commit/0b3ad65))
+* **stackblitz:** fixed version for prismjs ([#3282](https://github.com/ng-bootstrap/ng-bootstrap/issues/3282)) ([db72c7a](https://github.com/ng-bootstrap/ng-bootstrap/commit/db72c7a))
+* **tabset:** remove aria-expanded and use aria-selected instead ([#3292](https://github.com/ng-bootstrap/ng-bootstrap/issues/3292)) ([5b6cc69](https://github.com/ng-bootstrap/ng-bootstrap/commit/5b6cc69))
+* **toast:** proper handling of `autohide` toggling ([#3283](https://github.com/ng-bootstrap/ng-bootstrap/issues/3283)) ([ffcdad4](https://github.com/ng-bootstrap/ng-bootstrap/commit/ffcdad4)), closes [#3280](https://github.com/ng-bootstrap/ng-bootstrap/issues/3280)
+
 # [5.0.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/5.0.0-rc.1...5.0.0) (2019-07-09)
 
 This major release is compatible with Angular ^8.0.0. We would like to emphasis that **it is not yet** fully compatible with Ivy renderer.
