@@ -5,7 +5,7 @@ import {By} from '@angular/platform-browser';
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 
 import {NgbCarouselModule} from './carousel.module';
-import {NgbCarousel, NgbSlideEvent, NgbSlideEventDirection} from './carousel';
+import {NgbCarousel, NgbSlideEvent, NgbSlideEventDirection, NgbSlideEventSource} from './carousel';
 import {NgbCarouselConfig} from './carousel-config';
 
 const createTestComponent = (html: string) =>
@@ -193,6 +193,106 @@ describe('ngb-carousel', () => {
        discardPeriodicTasks();
      }));
 
+  it('should not resume without call to cycle()', fakeAsync(() => {
+       const html = `
+    <ngb-carousel #c [interval]="1000" (slide)="carouselSlideCallBack($event)">
+      <ng-template ngbSlide>foo</ng-template>
+      <ng-template ngbSlide>bar</ng-template>
+      <ng-template ngbSlide>third</ng-template>
+    </ngb-carousel>
+    <button id="next" (click)="c.next()">Next</button>
+    <button id="pause" (click)="c.pause()">Pause</button>
+    <button id="cycle" (click)="c.cycle()">Cycle</button>
+  `;
+
+       const fixture = createTestComponent(html);
+       const spyCallBack = spyOn(fixture.componentInstance, 'carouselSlideCallBack');
+       const carouselDebugEl = fixture.debugElement.query(By.directive(NgbCarousel));
+       const indicatorElms = fixture.nativeElement.querySelectorAll('ol.carousel-indicators > li');
+       const prevControlElm = fixture.nativeElement.querySelector('.carousel-control-prev');
+       const nextControlElm = fixture.nativeElement.querySelector('.carousel-control-next');
+       const next = fixture.nativeElement.querySelector('#next');
+       const pause = fixture.nativeElement.querySelector('#pause');
+       const cycle = fixture.nativeElement.querySelector('#cycle');
+
+       expectActiveSlides(fixture.nativeElement, [true, false, false]);
+
+       tick(1000);
+       fixture.detectChanges();
+       expect(spyCallBack)
+           .toHaveBeenCalledWith(jasmine.objectContaining({paused: false, source: NgbSlideEventSource.TIMER}));
+       spyCallBack.calls.reset();
+       expectActiveSlides(fixture.nativeElement, [false, true, false]);
+
+       pause.click();
+       tick(1000);
+       fixture.detectChanges();
+       expect(spyCallBack).not.toHaveBeenCalled();
+       expectActiveSlides(fixture.nativeElement, [false, true, false]);
+
+       indicatorElms[0].click();
+       fixture.detectChanges();
+       expect(spyCallBack)
+           .toHaveBeenCalledWith(jasmine.objectContaining({paused: true, source: NgbSlideEventSource.INDICATOR}));
+       spyCallBack.calls.reset();
+       expectActiveSlides(fixture.nativeElement, [true, false, false]);
+       tick(1000);
+       fixture.detectChanges();
+       expect(spyCallBack).not.toHaveBeenCalled();
+       expectActiveSlides(fixture.nativeElement, [true, false, false]);
+
+       nextControlElm.click();
+       fixture.detectChanges();
+       expect(spyCallBack)
+           .toHaveBeenCalledWith(jasmine.objectContaining({paused: true, source: NgbSlideEventSource.ARROW_RIGHT}));
+       spyCallBack.calls.reset();
+       expectActiveSlides(fixture.nativeElement, [false, true, false]);
+       tick(1000);
+       fixture.detectChanges();
+       expect(spyCallBack).not.toHaveBeenCalled();
+       expectActiveSlides(fixture.nativeElement, [false, true, false]);
+
+       prevControlElm.click();
+       fixture.detectChanges();
+       expect(spyCallBack)
+           .toHaveBeenCalledWith(jasmine.objectContaining({paused: true, source: NgbSlideEventSource.ARROW_LEFT}));
+       spyCallBack.calls.reset();
+       expectActiveSlides(fixture.nativeElement, [true, false, false]);
+       tick(1000);
+       fixture.detectChanges();
+       expect(spyCallBack).not.toHaveBeenCalled();
+       expectActiveSlides(fixture.nativeElement, [true, false, false]);
+
+       next.click();
+       fixture.detectChanges();
+       expect(spyCallBack).toHaveBeenCalledWith(jasmine.objectContaining({paused: true}));
+       spyCallBack.calls.reset();
+       expectActiveSlides(fixture.nativeElement, [false, true, false]);
+       tick(1000);
+       fixture.detectChanges();
+       expect(spyCallBack).not.toHaveBeenCalled();
+       expectActiveSlides(fixture.nativeElement, [false, true, false]);
+
+       carouselDebugEl.triggerEventHandler('mouseenter', {});
+       fixture.detectChanges();
+       carouselDebugEl.triggerEventHandler('mouseleave', {});
+       fixture.detectChanges();
+       tick(1000);
+       fixture.detectChanges();
+       expect(spyCallBack).not.toHaveBeenCalled();
+       expectActiveSlides(fixture.nativeElement, [false, true, false]);
+
+       cycle.click();
+       tick(1000);
+       fixture.detectChanges();
+       expect(spyCallBack)
+           .toHaveBeenCalledWith(jasmine.objectContaining({paused: false, source: NgbSlideEventSource.TIMER}));
+       expectActiveSlides(fixture.nativeElement, [false, false, true]);
+
+       discardPeriodicTasks();
+     }));
+
+
   it('should mark component for check for API calls', () => {
     const html = `
       <ngb-carousel #c [interval]="0">
@@ -254,7 +354,7 @@ describe('ngb-carousel', () => {
        discardPeriodicTasks();
      }));
 
-  it('should fire a slide event with correct direction on indicator click', fakeAsync(() => {
+  it('should fire a slide event with correct direction and source on indicator click', fakeAsync(() => {
        const html = `
       <ngb-carousel (slide)="carouselSlideCallBack($event)">
         <ng-template ngbSlide>foo</ng-template>
@@ -270,21 +370,24 @@ describe('ngb-carousel', () => {
        indicatorElms[1].click();
        fixture.detectChanges();
        expect(fixture.componentInstance.carouselSlideCallBack).toHaveBeenCalledWith(jasmine.objectContaining({
-         direction: NgbSlideEventDirection.LEFT
+         direction: NgbSlideEventDirection.LEFT,
+         source: NgbSlideEventSource.INDICATOR
        }));
 
        spyCallBack.calls.reset();
        indicatorElms[0].click();
        fixture.detectChanges();
        expect(fixture.componentInstance.carouselSlideCallBack).toHaveBeenCalledWith(jasmine.objectContaining({
-         direction: NgbSlideEventDirection.RIGHT
+         direction: NgbSlideEventDirection.RIGHT,
+         source: NgbSlideEventSource.INDICATOR
        }));
 
        spyCallBack.calls.reset();
        indicatorElms[2].click();
        fixture.detectChanges();
        expect(fixture.componentInstance.carouselSlideCallBack).toHaveBeenCalledWith(jasmine.objectContaining({
-         direction: NgbSlideEventDirection.LEFT
+         direction: NgbSlideEventDirection.LEFT,
+         source: NgbSlideEventSource.INDICATOR
        }));
 
        discardPeriodicTasks();
@@ -316,7 +419,7 @@ describe('ngb-carousel', () => {
        discardPeriodicTasks();
      }));
 
-  it('should fire a slide event with correct direction on carousel control click', fakeAsync(() => {
+  it('should fire a slide event with correct direction and source on carousel control click', fakeAsync(() => {
        const html = `
       <ngb-carousel (slide)="carouselSlideCallBack($event)">
         <ng-template ngbSlide>foo</ng-template>
@@ -332,20 +435,23 @@ describe('ngb-carousel', () => {
        prevControlElm.click();
        fixture.detectChanges();
        expect(fixture.componentInstance.carouselSlideCallBack).toHaveBeenCalledWith(jasmine.objectContaining({
-         direction: NgbSlideEventDirection.RIGHT
+         direction: NgbSlideEventDirection.RIGHT,
+         source: NgbSlideEventSource.ARROW_LEFT
        }));
        spyCallBack.calls.reset();
        nextControlElm.click();
        fixture.detectChanges();
        expect(fixture.componentInstance.carouselSlideCallBack).toHaveBeenCalledWith(jasmine.objectContaining({
-         direction: NgbSlideEventDirection.LEFT
+         direction: NgbSlideEventDirection.LEFT,
+         source: NgbSlideEventSource.ARROW_RIGHT
        }));
 
        spyCallBack.calls.reset();
        prevControlElm.click();
        fixture.detectChanges();
        expect(fixture.componentInstance.carouselSlideCallBack).toHaveBeenCalledWith(jasmine.objectContaining({
-         direction: NgbSlideEventDirection.RIGHT
+         direction: NgbSlideEventDirection.RIGHT,
+         source: NgbSlideEventSource.ARROW_LEFT
        }));
 
        discardPeriodicTasks();
@@ -366,6 +472,33 @@ describe('ngb-carousel', () => {
        tick(6000);
        fixture.detectChanges();
        expectActiveSlides(fixture.nativeElement, [false, true]);
+
+       discardPeriodicTasks();
+     }));
+
+  it('should fire a slide event with correct direction and source on time passage', fakeAsync(() => {
+       const html = `
+     <ngb-carousel [interval]="2000" (slide)="carouselSlideCallBack($event)">
+       <ng-template ngbSlide>foo</ng-template>
+       <ng-template ngbSlide>bar</ng-template>
+     </ngb-carousel>
+   `;
+
+       const fixture = createTestComponent(html);
+       const spyCallBack = spyOn(fixture.componentInstance, 'carouselSlideCallBack');
+
+       tick(1999);
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [true, false]);
+       expect(spyCallBack).not.toHaveBeenCalled();
+
+       tick(1);
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [false, true]);
+       expect(spyCallBack).toHaveBeenCalledWith(jasmine.objectContaining({
+         direction: NgbSlideEventDirection.LEFT,
+         source: NgbSlideEventSource.TIMER
+       }));
 
        discardPeriodicTasks();
      }));

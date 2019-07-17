@@ -10,19 +10,19 @@ import {
   Inject,
   Input,
   NgZone,
-  OnChanges,
   OnDestroy,
   Output,
   PLATFORM_ID,
   QueryList,
-  TemplateRef
+  TemplateRef,
+  HostListener
 } from '@angular/core';
 import {isPlatformBrowser} from '@angular/common';
 
 import {NgbCarouselConfig} from './carousel-config';
 
-import {merge, Subject, timer} from 'rxjs';
-import {filter, map, switchMap, takeUntil} from 'rxjs/operators';
+import {Subject, timer, BehaviorSubject, combineLatest, NEVER} from 'rxjs';
+import {startWith, map, switchMap, takeUntil, distinctUntilChanged} from 'rxjs/operators';
 
 let nextId = 0;
 
@@ -53,38 +53,41 @@ export class NgbSlide {
     'class': 'carousel slide',
     '[style.display]': '"block"',
     'tabIndex': '0',
-    '(mouseenter)': 'pauseOnHover && pause()',
-    '(mouseleave)': 'pauseOnHover && cycle()',
-    '(keydown.arrowLeft)': 'keyboard && prev()',
-    '(keydown.arrowRight)': 'keyboard && next()'
+    '(keydown.arrowLeft)': 'keyboard && prev(NgbSlideEventSource.ARROW_LEFT)',
+    '(keydown.arrowRight)': 'keyboard && next(NgbSlideEventSource.ARROW_RIGHT)'
   },
   template: `
     <ol class="carousel-indicators" *ngIf="showNavigationIndicators">
       <li *ngFor="let slide of slides" [id]="slide.id" [class.active]="slide.id === activeId"
-          (click)="select(slide.id); pauseOnHover && pause()"></li>
+          (click)="select(slide.id, NgbSlideEventSource.INDICATOR)"></li>
     </ol>
     <div class="carousel-inner">
       <div *ngFor="let slide of slides" class="carousel-item" [class.active]="slide.id === activeId">
         <ng-template [ngTemplateOutlet]="slide.tplRef"></ng-template>
       </div>
     </div>
-    <a class="carousel-control-prev" role="button" (click)="prev()" *ngIf="showNavigationArrows">
+    <a class="carousel-control-prev" role="button" (click)="prev(NgbSlideEventSource.ARROW_LEFT)" *ngIf="showNavigationArrows">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
       <span class="sr-only" i18n="@@ngb.carousel.previous">Previous</span>
     </a>
-    <a class="carousel-control-next" role="button" (click)="next()" *ngIf="showNavigationArrows">
+    <a class="carousel-control-next" role="button" (click)="next(NgbSlideEventSource.ARROW_RIGHT)" *ngIf="showNavigationArrows">
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
       <span class="sr-only" i18n="@@ngb.carousel.next">Next</span>
     </a>
   `
 })
 export class NgbCarousel implements AfterContentChecked,
-    AfterContentInit, OnChanges, OnDestroy {
+    AfterContentInit, OnDestroy {
   @ContentChildren(NgbSlide) slides: QueryList<NgbSlide>;
 
+  public NgbSlideEventSource = NgbSlideEventSource;
+
   private _destroy$ = new Subject<void>();
-  private _start$ = new Subject<void>();
-  private _stop$ = new Subject<void>();
+  private _interval$ = new BehaviorSubject(0);
+  private _mouseHover$ = new BehaviorSubject(false);
+  private _pauseOnHover$ = new BehaviorSubject(false);
+  private _pause$ = new BehaviorSubject(false);
+  private _wrap$ = new BehaviorSubject(false);
 
   /**
    * The slide id that should be displayed **initially**.
@@ -96,12 +99,22 @@ export class NgbCarousel implements AfterContentChecked,
   /**
    * Time in milliseconds before the next slide is shown.
    */
-  @Input() interval: number;
+  @Input()
+  set interval(value: number) {
+    this._interval$.next(value);
+  }
+
+  get interval() { return this._interval$.value; }
 
   /**
    * If `true`, will 'wrap' the carousel by switching from the last slide back to the first.
    */
-  @Input() wrap: boolean;
+  @Input()
+  set wrap(value: boolean) {
+    this._wrap$.next(value);
+  }
+
+  get wrap() { return this._wrap$.value; }
 
   /**
    * If `true`, allows to interact with carousel using keyboard 'arrow left' and 'arrow right'.
@@ -113,7 +126,12 @@ export class NgbCarousel implements AfterContentChecked,
    *
    * @since 2.2.0
    */
-  @Input() pauseOnHover: boolean;
+  @Input()
+  set pauseOnHover(value: boolean) {
+    this._pauseOnHover$.next(value);
+  }
+
+  get pauseOnHover() { return this._pauseOnHover$.value; }
 
   /**
    * If `true`, 'previous' and 'next' navigation arrows will be visible on the slide.
@@ -147,18 +165,39 @@ export class NgbCarousel implements AfterContentChecked,
     this.showNavigationIndicators = config.showNavigationIndicators;
   }
 
+  @HostListener('mouseenter')
+  mouseEnter() {
+    this._mouseHover$.next(true);
+  }
+
+  @HostListener('mouseleave')
+  mouseLeave() {
+    this._mouseHover$.next(false);
+  }
+
   ngAfterContentInit() {
     // setInterval() doesn't play well with SSR and protractor,
     // so we should run it in the browser and outside Angular
     if (isPlatformBrowser(this._platformId)) {
       this._ngZone.runOutsideAngular(() => {
-        this._start$
+        const hasNextSlide$ = combineLatest(
+                                  this.slide.pipe(map(slideEvent => slideEvent.current), startWith(this.activeId)),
+                                  this._wrap$, this.slides.changes.pipe(startWith(null)))
+                                  .pipe(
+                                      map(([currentSlideId, wrap]) => {
+                                        const slideArr = this.slides.toArray();
+                                        const currentSlideIdx = this._getSlideIdxById(currentSlideId);
+                                        return wrap ? slideArr.length > 1 : currentSlideIdx < slideArr.length - 1;
+                                      }),
+                                      distinctUntilChanged());
+        combineLatest(this._pause$, this._pauseOnHover$, this._mouseHover$, this._interval$, hasNextSlide$)
             .pipe(
-                map(() => this.interval), filter(interval => interval > 0 && this.slides.length > 0),
-                switchMap(interval => timer(interval).pipe(takeUntil(merge(this._stop$, this._destroy$)))))
-            .subscribe(() => this._ngZone.run(() => this.next()));
+                map(([pause, pauseOnHover, mouseHover, interval, hasNextSlide]) =>
+                        ((pause || (pauseOnHover && mouseHover) || !hasNextSlide) ? 0 : interval)),
 
-        this._start$.next();
+                distinctUntilChanged(), switchMap(interval => interval > 0 ? timer(interval, interval) : NEVER),
+                takeUntil(this._destroy$))
+            .subscribe(() => this._ngZone.run(() => this.next(NgbSlideEventSource.TIMER)));
       });
     }
 
@@ -172,42 +211,42 @@ export class NgbCarousel implements AfterContentChecked,
 
   ngOnDestroy() { this._destroy$.next(); }
 
-  ngOnChanges(changes) {
-    if ('interval' in changes && !changes['interval'].isFirstChange()) {
-      this._start$.next();
-    }
-  }
-
   /**
    * Navigates to a slide with the specified identifier.
    */
-  select(slideId: string) { this._cycleToSelected(slideId, this._getSlideEventDirection(this.activeId, slideId)); }
+  select(slideId: string, source?: NgbSlideEventSource) {
+    this._cycleToSelected(slideId, this._getSlideEventDirection(this.activeId, slideId), source);
+  }
 
   /**
    * Navigates to the previous slide.
    */
-  prev() { this._cycleToSelected(this._getPrevSlide(this.activeId), NgbSlideEventDirection.RIGHT); }
+  prev(source?: NgbSlideEventSource) {
+    this._cycleToSelected(this._getPrevSlide(this.activeId), NgbSlideEventDirection.RIGHT, source);
+  }
 
   /**
    * Navigates to the next slide.
    */
-  next() { this._cycleToSelected(this._getNextSlide(this.activeId), NgbSlideEventDirection.LEFT); }
+  next(source?: NgbSlideEventSource) {
+    this._cycleToSelected(this._getNextSlide(this.activeId), NgbSlideEventDirection.LEFT, source);
+  }
 
   /**
    * Pauses cycling through the slides.
    */
-  pause() { this._stop$.next(); }
+  pause() { this._pause$.next(true); }
 
   /**
    * Restarts cycling through the slides from left to right.
    */
-  cycle() { this._start$.next(); }
+  cycle() { this._pause$.next(false); }
 
-  private _cycleToSelected(slideIdx: string, direction: NgbSlideEventDirection) {
+  private _cycleToSelected(slideIdx: string, direction: NgbSlideEventDirection, source?: NgbSlideEventSource) {
     let selectedSlide = this._getSlideById(slideIdx);
     if (selectedSlide && selectedSlide.id !== this.activeId) {
-      this.slide.emit({prev: this.activeId, current: selectedSlide.id, direction: direction});
-      this._start$.next();
+      this.slide.emit(
+          {prev: this.activeId, current: selectedSlide.id, direction: direction, paused: this._pause$.value, source});
       this.activeId = selectedSlide.id;
     }
 
@@ -267,6 +306,18 @@ export interface NgbSlideEvent {
    * Possible values are `'left' | 'right'`.
    */
   direction: NgbSlideEventDirection;
+
+  /**
+   * Whether the pause() method was called (and no cycle() call was done afterwards).
+   */
+  paused: boolean;
+
+  /**
+   * Source triggering the slide change event.
+   *
+   * Possible values are `'timer' | 'arrowLeft' | 'arrowRight' | 'indicator'`
+   */
+  source?: NgbSlideEventSource;
 }
 
 /**
@@ -275,6 +326,13 @@ export interface NgbSlideEvent {
 export enum NgbSlideEventDirection {
   LEFT = <any>'left',
   RIGHT = <any>'right'
+}
+
+export enum NgbSlideEventSource {
+  TIMER = 'timer',
+  ARROW_LEFT = 'arrowLeft',
+  ARROW_RIGHT = 'arrowRight',
+  INDICATOR = 'indicator'
 }
 
 export const NGB_CAROUSEL_DIRECTIVES = [NgbCarousel, NgbSlide];
