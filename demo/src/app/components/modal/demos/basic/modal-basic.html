@@ -12,7 +12,11 @@
         <div class="input-group">
           <input id="dateOfBirth" class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker #dp="ngbDatepicker">
           <div class="input-group-append">
-            <button class="btn btn-outline-secondary calendar" (click)="dp.toggle()" type="button"></button>
+            <button class="btn btn-outline-secondary calendar" (click)="dp.toggle()" type="button">
+                <svg>
+                    <use xlink:href="#dp-calendar"></use>
+                </svg>
+            </button>
           </div>
         </div>
       </div>

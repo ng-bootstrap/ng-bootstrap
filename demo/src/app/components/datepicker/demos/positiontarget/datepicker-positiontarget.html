@@ -7,7 +7,11 @@
              name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker"
              [placement]="placement" [positionTarget]="buttonEl">
       <div class="input-group-append">
-        <button #buttonEl class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"></button>
+        <button #buttonEl class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button">
+            <svg>
+                <use xlink:href="#dp-calendar"></use>
+            </svg>
+        </button>
       </div>
     </div>
   </div>
