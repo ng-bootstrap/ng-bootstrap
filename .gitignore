@@ -8,6 +8,7 @@ npm-debug.log
 .publish
 .sw*
 .idea
+*.iml
 .vscode
 coverage
 coverage-e2e
