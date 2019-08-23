@@ -279,7 +279,6 @@ describe('ngb-dropdown-toggle', () => {
     let buttonEl = compiled.querySelector('button');
 
     expect(dropdownEl).not.toHaveCssClass('show');
-    expect(buttonEl.getAttribute('aria-haspopup')).toBe('true');
     expect(buttonEl.getAttribute('aria-expanded')).toBe('false');
 
     buttonEl.click();

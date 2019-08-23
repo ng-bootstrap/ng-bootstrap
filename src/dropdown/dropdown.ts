@@ -86,10 +86,8 @@ export class NgbDropdownMenu {
  *
  * @since 1.1.0
  */
-@Directive({
-  selector: '[ngbDropdownAnchor]',
-  host: {'class': 'dropdown-toggle', 'aria-haspopup': 'true', '[attr.aria-expanded]': 'dropdown.isOpen()'}
-})
+@Directive(
+    {selector: '[ngbDropdownAnchor]', host: {'class': 'dropdown-toggle', '[attr.aria-expanded]': 'dropdown.isOpen()'}})
 export class NgbDropdownAnchor {
   anchorEl;
 
@@ -109,7 +107,6 @@ export class NgbDropdownAnchor {
   selector: '[ngbDropdownToggle]',
   host: {
     'class': 'dropdown-toggle',
-    'aria-haspopup': 'true',
     '[attr.aria-expanded]': 'dropdown.isOpen()',
     '(click)': 'dropdown.toggle()',
     '(keydown.ArrowUp)': 'dropdown.onKeyDown($event)',
