@@ -30,44 +30,44 @@ const DEMOS = {
   basic: {
     title: 'Basic pagination',
     type: NgbdPaginationBasic,
-    code: require('!!raw-loader!./demos/basic/pagination-basic'),
-    markup: require('!!raw-loader!./demos/basic/pagination-basic.html')
+    code: require('!!raw-loader!./demos/basic/pagination-basic').default,
+    markup: require('!!raw-loader!./demos/basic/pagination-basic.html').default
   },
   advanced: {
     title: 'Advanced pagination',
     type: NgbdPaginationAdvanced,
-    code: require('!!raw-loader!./demos/advanced/pagination-advanced'),
-    markup: require('!!raw-loader!./demos/advanced/pagination-advanced.html')
+    code: require('!!raw-loader!./demos/advanced/pagination-advanced').default,
+    markup: require('!!raw-loader!./demos/advanced/pagination-advanced.html').default
   },
   customization: {
     title: 'Custom links',
     type: NgbdPaginationCustomization,
-    code: require('!!raw-loader!./demos/customization/pagination-customization'),
-    markup: require('!!raw-loader!./demos/customization/pagination-customization.html')
+    code: require('!!raw-loader!./demos/customization/pagination-customization').default,
+    markup: require('!!raw-loader!./demos/customization/pagination-customization.html').default
   },
   size: {
     title: 'Pagination size',
     type: NgbdPaginationSize,
-    code: require('!!raw-loader!./demos/size/pagination-size'),
-    markup: require('!!raw-loader!./demos/size/pagination-size.html')
+    code: require('!!raw-loader!./demos/size/pagination-size').default,
+    markup: require('!!raw-loader!./demos/size/pagination-size.html').default
   },
   justify: {
     title: 'Pagination alignment',
     type: NgbdPaginationJustify,
-    code: require('!!raw-loader!./demos/justify/pagination-justify'),
-    markup: require('!!raw-loader!./demos/justify/pagination-justify.html')
+    code: require('!!raw-loader!./demos/justify/pagination-justify').default,
+    markup: require('!!raw-loader!./demos/justify/pagination-justify.html').default
   },
   disabled: {
     title: 'Disabled pagination',
     type: NgbdPaginationDisabled,
-    code: require('!!raw-loader!./demos/disabled/pagination-disabled'),
-    markup: require('!!raw-loader!./demos/disabled/pagination-disabled.html')
+    code: require('!!raw-loader!./demos/disabled/pagination-disabled').default,
+    markup: require('!!raw-loader!./demos/disabled/pagination-disabled.html').default
   },
   config: {
     title: 'Global configuration',
     type: NgbdPaginationConfig,
-    code: require('!!raw-loader!./demos/config/pagination-config'),
-    markup: require('!!raw-loader!./demos/config/pagination-config.html')
+    code: require('!!raw-loader!./demos/config/pagination-config').default,
+    markup: require('!!raw-loader!./demos/config/pagination-config.html').default
   }
 };
 

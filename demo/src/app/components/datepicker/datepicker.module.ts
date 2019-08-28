@@ -52,68 +52,68 @@ const DEMOS = {
   basic: {
     title: 'Basic datepicker',
     type: NgbdDatepickerBasic,
-    code: require('!!raw-loader!./demos/basic/datepicker-basic'),
-    markup: require('!!raw-loader!./demos/basic/datepicker-basic.html')
+    code: require('!!raw-loader!./demos/basic/datepicker-basic').default,
+    markup: require('!!raw-loader!./demos/basic/datepicker-basic.html').default
   },
   popup: {
     title: 'Datepicker in a popup',
     type: NgbdDatepickerPopup,
-    code: require('!!raw-loader!./demos/popup/datepicker-popup'),
-    markup: require('!!raw-loader!./demos/popup/datepicker-popup.html')
+    code: require('!!raw-loader!./demos/popup/datepicker-popup').default,
+    markup: require('!!raw-loader!./demos/popup/datepicker-popup.html').default
   },
   multiple: {
     title: 'Multiple months',
     type: NgbdDatepickerMultiple,
-    code: require('!!raw-loader!./demos/multiple/datepicker-multiple'),
-    markup: require('!!raw-loader!./demos/multiple/datepicker-multiple.html')
+    code: require('!!raw-loader!./demos/multiple/datepicker-multiple').default,
+    markup: require('!!raw-loader!./demos/multiple/datepicker-multiple.html').default
   },
   range: {
     title: 'Range selection',
     type: NgbdDatepickerRange,
-    code: require('!!raw-loader!./demos/range/datepicker-range'),
-    markup: require('!!raw-loader!./demos/range/datepicker-range.html')
+    code: require('!!raw-loader!./demos/range/datepicker-range').default,
+    markup: require('!!raw-loader!./demos/range/datepicker-range.html').default
   },
   disabled: {
     title: 'Disabled datepicker',
     type: NgbdDatepickerDisabled,
-    code: require('!!raw-loader!./demos/disabled/datepicker-disabled'),
-    markup: require('!!raw-loader!./demos/disabled/datepicker-disabled.html')
+    code: require('!!raw-loader!./demos/disabled/datepicker-disabled').default,
+    markup: require('!!raw-loader!./demos/disabled/datepicker-disabled.html').default
   },
   adapter: {
     title: 'Custom date adapter',
     type: NgbdDatepickerAdapter,
-    code: require('!!raw-loader!./demos/adapter/datepicker-adapter'),
-    markup: require('!!raw-loader!./demos/adapter/datepicker-adapter.html')
+    code: require('!!raw-loader!./demos/adapter/datepicker-adapter').default,
+    markup: require('!!raw-loader!./demos/adapter/datepicker-adapter.html').default
   },
   i18n: {
     title: 'Internationalization of datepickers',
     type: NgbdDatepickerI18n,
-    code: require('!!raw-loader!./demos/i18n/datepicker-i18n'),
-    markup: require('!!raw-loader!./demos/i18n/datepicker-i18n.html')
+    code: require('!!raw-loader!./demos/i18n/datepicker-i18n').default,
+    markup: require('!!raw-loader!./demos/i18n/datepicker-i18n.html').default
   },
   customday: {
     title: 'Custom day view',
     type: NgbdDatepickerCustomday,
-    code: require('!!raw-loader!./demos/customday/datepicker-customday'),
-    markup: require('!!raw-loader!./demos/customday/datepicker-customday.html')
+    code: require('!!raw-loader!./demos/customday/datepicker-customday').default,
+    markup: require('!!raw-loader!./demos/customday/datepicker-customday.html').default
   },
   footertemplate: {
     title: 'Footer template',
     type: NgbdDatepickerFootertemplate,
-    code: require('!!raw-loader!./demos/footertemplate/datepicker-footertemplate'),
-    markup: require('!!raw-loader!./demos/footertemplate/datepicker-footertemplate.html')
+    code: require('!!raw-loader!./demos/footertemplate/datepicker-footertemplate').default,
+    markup: require('!!raw-loader!./demos/footertemplate/datepicker-footertemplate.html').default
   },
   positiontarget: {
     title: 'Position target',
     type: NgbdDatepickerPositiontarget,
-    code: require('!!raw-loader!./demos/positiontarget/datepicker-positiontarget'),
-    markup: require('!!raw-loader!./demos/positiontarget/datepicker-positiontarget.html')
+    code: require('!!raw-loader!./demos/positiontarget/datepicker-positiontarget').default,
+    markup: require('!!raw-loader!./demos/positiontarget/datepicker-positiontarget.html').default
   },
   config: {
     title: 'Global configuration of datepickers',
     type: NgbdDatepickerConfig,
-    code: require('!!raw-loader!./demos/config/datepicker-config'),
-    markup: require('!!raw-loader!./demos/config/datepicker-config.html')
+    code: require('!!raw-loader!./demos/config/datepicker-config').default,
+    markup: require('!!raw-loader!./demos/config/datepicker-config.html').default
   }
 };
 

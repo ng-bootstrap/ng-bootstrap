@@ -12,8 +12,8 @@ const DEMOS = {
   basic: {
     title: 'Collapse',
     type: NgbdCollapseBasic,
-    code: require('!!raw-loader!./demos/basic/collapse-basic'),
-    markup: require('!!raw-loader!./demos/basic/collapse-basic.html')
+    code: require('!!raw-loader!./demos/basic/collapse-basic').default,
+    markup: require('!!raw-loader!./demos/basic/collapse-basic.html').default
   }
 };
 

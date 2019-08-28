@@ -26,8 +26,8 @@ const DEMOS = {
   inline: {
     title: 'Declarative inline usage',
     type: NgbdToastInline,
-    code: require('!!raw-loader!./demos/inline/toast-inline'),
-    markup: require('!!raw-loader!./demos/inline/toast-inline.html')
+    code: require('!!raw-loader!./demos/inline/toast-inline').default,
+    markup: require('!!raw-loader!./demos/inline/toast-inline.html').default
   },
   'custom-header': {
     title: 'Using a Template as header',
@@ -35,17 +35,23 @@ const DEMOS = {
     files: [
       {
         name: 'toast-custom-header.html',
-        source: require('!!raw-loader!./demos/custom-header/toast-custom-header.html')
+        source: require('!!raw-loader!./demos/custom-header/toast-custom-header.html').default
       },
-      {name: 'toast-custom-header.ts', source: require('!!raw-loader!./demos/custom-header/toast-custom-header')}
+      {
+        name: 'toast-custom-header.ts',
+        source: require('!!raw-loader!./demos/custom-header/toast-custom-header').default}
     ]
   },
   closeable: {
     title: 'Closeable toast',
     type: NgbdToastCloseable,
     files: [
-      {name: 'toast-closeable.html', source: require('!!raw-loader!./demos/closeable/toast-closeable.html')},
-      {name: 'toast-closeable.ts', source: require('!!raw-loader!./demos/closeable/toast-closeable.ts')}
+      {
+        name: 'toast-closeable.html',
+        source: require('!!raw-loader!./demos/closeable/toast-closeable.html').default},
+      {
+        name: 'toast-closeable.ts',
+        source: require('!!raw-loader!./demos/closeable/toast-closeable.ts').default}
     ]
   },
   'prevent-autohide': {
@@ -54,11 +60,11 @@ const DEMOS = {
     files: [
       {
         name: 'toast-prevent-autohide.html',
-        source: require('!!raw-loader!./demos/prevent-autohide/toast-prevent-autohide.html')
+        source: require('!!raw-loader!./demos/prevent-autohide/toast-prevent-autohide.html').default
       },
       {
         name: 'toast-prevent-autohide.ts',
-        source: require('!!raw-loader!./demos/prevent-autohide/toast-prevent-autohide.ts')
+        source: require('!!raw-loader!./demos/prevent-autohide/toast-prevent-autohide.ts').default
       }
     ]
   },
@@ -66,14 +72,21 @@ const DEMOS = {
     title: 'Toast management service',
     type: NgbdToastGlobal,
     files: [
-      {name: 'toast-service.ts', source: require('!!raw-loader!./demos/howto-global/toast-service.ts')}, {
-        name: 'toast-global.component.html',
-        source: require('!!raw-loader!./demos/howto-global/toast-global.component.html')
+      {
+        name: 'toast-service.ts',
+        source: require('!!raw-loader!./demos/howto-global/toast-service.ts').default
       },
-      {name: 'toast-global.component.ts', source: require('!!raw-loader!./demos/howto-global/toast-global.component')},
+      {
+        name: 'toast-global.component.html',
+        source: require('!!raw-loader!./demos/howto-global/toast-global.component.html').default
+      },
+      {
+        name: 'toast-global.component.ts',
+        source: require('!!raw-loader!./demos/howto-global/toast-global.component').default
+      },
       {
         name: 'toasts-container.component.ts',
-        source: require('!!raw-loader!./demos/howto-global/toasts-container.component')
+        source: require('!!raw-loader!./demos/howto-global/toasts-container.component').default
       }
     ]
   }

@@ -22,38 +22,38 @@ const DEMOS = {
   basic: {
     title: 'Dropdown',
     type: NgbdDropdownBasic,
-    code: require('!!raw-loader!./demos/basic/dropdown-basic'),
-    markup: require('!!raw-loader!./demos/basic/dropdown-basic.html')
+    code: require('!!raw-loader!./demos/basic/dropdown-basic').default,
+    markup: require('!!raw-loader!./demos/basic/dropdown-basic.html').default
   },
   manual: {
     title: 'Manual and custom triggers',
     type: NgbdDropdownManual,
-    code: require('!!raw-loader!./demos/manual/dropdown-manual'),
-    markup: require('!!raw-loader!./demos/manual/dropdown-manual.html')
+    code: require('!!raw-loader!./demos/manual/dropdown-manual').default,
+    markup: require('!!raw-loader!./demos/manual/dropdown-manual.html').default
   },
   split: {
     title: 'Button groups and split buttons',
     type: NgbdDropdownSplit,
-    code: require('!!raw-loader!./demos/split/dropdown-split'),
-    markup: require('!!raw-loader!./demos/split/dropdown-split.html')
+    code: require('!!raw-loader!./demos/split/dropdown-split').default,
+    markup: require('!!raw-loader!./demos/split/dropdown-split.html').default
   },
   form: {
     title: 'Mixed menu items and form',
     type: NgbdDropdownForm,
-    code: require('!!raw-loader!./demos/form/dropdown-form'),
-    markup: require('!!raw-loader!./demos/form/dropdown-form.html')
+    code: require('!!raw-loader!./demos/form/dropdown-form').default,
+    markup: require('!!raw-loader!./demos/form/dropdown-form.html').default
   },
   navbar: {
     title: 'Dynamic positioning in a navbar',
     type: NgbdDropdownNavbar,
-    code: require('!!raw-loader!./demos/navbar/dropdown-navbar'),
-    markup: require('!!raw-loader!./demos/navbar/dropdown-navbar.html')
+    code: require('!!raw-loader!./demos/navbar/dropdown-navbar').default,
+    markup: require('!!raw-loader!./demos/navbar/dropdown-navbar.html').default
   },
   config: {
     title: 'Global configuration of dropdowns',
     type: NgbdDropdownConfig,
-    code: require('!!raw-loader!./demos/config/dropdown-config'),
-    markup: require('!!raw-loader!./demos/config/dropdown-config.html')
+    code: require('!!raw-loader!./demos/config/dropdown-config').default,
+    markup: require('!!raw-loader!./demos/config/dropdown-config.html').default
   }
 };
 
