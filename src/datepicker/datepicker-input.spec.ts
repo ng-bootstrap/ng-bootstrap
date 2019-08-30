@@ -663,14 +663,17 @@ describe('NgbInputDatepicker', () => {
 
       dpInput.open();
       fixture.detectChanges();
-      expect(fixture.componentInstance.onNavigate)
-          .toHaveBeenCalledWith({current: null, next: {year: 2016, month: 9}, preventDefault: jasmine.any(Function)});
+      expect(fixture.componentInstance.onNavigate).toHaveBeenCalledWith({
+        current: null,
+        next: {year: 2016, month: 9, day: 1},
+        preventDefault: jasmine.any(Function)
+      });
 
       const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
       dp.navigateTo({year: 2018, month: 4});
       expect(fixture.componentInstance.onNavigate).toHaveBeenCalledWith({
-        current: {year: 2016, month: 9},
-        next: {year: 2018, month: 4},
+        current: {year: 2016, month: 9, day: 1},
+        next: {year: 2018, month: 4, day: 1},
         preventDefault: jasmine.any(Function)
       });
     });

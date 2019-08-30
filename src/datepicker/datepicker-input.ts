@@ -214,6 +214,12 @@ export class NgbInputDatepicker implements OnChanges,
   @Input() positionTarget: string | HTMLElement;
 
   /**
+   * The callback upon keydown event.
+   * Used with navigateTo and getFocused to customize keyboard navigation.
+   */
+  @Input() keydown: (event: KeyboardEvent) => void;
+
+  /**
    * An event emitted when user selects a date using keyboard or mouse.
    *
    * The payload of the event is currently selected `NgbDate`.
@@ -391,6 +397,11 @@ export class NgbInputDatepicker implements OnChanges,
     }
   }
 
+  /**
+   * Get focused date.
+   */
+  getFocused() { return this.isOpen() ? this._cRef.instance.getFocused() : null; }
+
   onBlur() { this._onTouched(); }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -406,7 +417,7 @@ export class NgbInputDatepicker implements OnChanges,
 
   private _applyDatepickerInputs(datepickerInstance: NgbDatepicker): void {
     ['dayTemplate', 'dayTemplateData', 'displayMonths', 'firstDayOfWeek', 'footerTemplate', 'markDisabled', 'minDate',
-     'maxDate', 'navigation', 'outsideDays', 'showNavigation', 'showWeekdays', 'showWeekNumbers']
+     'maxDate', 'navigation', 'outsideDays', 'showNavigation', 'showWeekdays', 'showWeekNumbers', 'keydown']
         .forEach((optionName: string) => {
           if (this[optionName] !== undefined) {
             datepickerInstance[optionName] = this[optionName];

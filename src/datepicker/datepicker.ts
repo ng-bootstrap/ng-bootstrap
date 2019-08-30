@@ -44,14 +44,14 @@ const NGB_DATEPICKER_VALUE_ACCESSOR = {
  */
 export interface NgbDatepickerNavigateEvent {
   /**
-   * The currently displayed month.
+   * The currently displayed date.
    */
-  current: {year: number, month: number};
+  current: {year: number, month: number, day: number};
 
   /**
-   * The month we're navigating to.
+   * The date we're navigating to.
    */
-  next: {year: number, month: number};
+  next: {year: number, month: number, day: number};
 
   /**
    * Calling this function will prevent navigation from happening.
@@ -229,6 +229,12 @@ export class NgbDatepicker implements OnDestroy,
   @Input() startDate: {year: number, month: number, day?: number};
 
   /**
+   * The callback upon keydown event.
+   * Used with navigateTo and getFocused to customize keyboard navigation.
+   */
+  @Input() keydown: (event: KeyboardEvent) => void;
+
+  /**
    * An event emitted right before the navigation happens and displayed month changes.
    *
    * See [`NgbDatepickerNavigateEvent`](#/components/datepicker/api#NgbDatepickerNavigateEvent) for the payload info.
@@ -257,15 +263,15 @@ export class NgbDatepicker implements OnDestroy,
     _service.select$.pipe(takeUntil(this._destroyed$)).subscribe(date => { this.select.emit(date); });
 
     _service.model$.pipe(takeUntil(this._destroyed$)).subscribe(model => {
-      const newDate = model.firstDate;
-      const oldDate = this.model ? this.model.firstDate : null;
+      const newDate = model.focusDate;
+      const oldDate = this.model ? this.model.focusDate : null;
 
       let navigationPrevented = false;
       // emitting navigation event if the first month changes
       if (!newDate.equals(oldDate)) {
         this.navigate.emit({
-          current: oldDate ? {year: oldDate.year, month: oldDate.month} : null,
-          next: {year: newDate.year, month: newDate.month},
+          current: oldDate ? {year: oldDate.year, month: oldDate.month, day: oldDate.day} : null,
+          next: {year: newDate.year, month: newDate.month, day: newDate.day},
           preventDefault: () => navigationPrevented = true
         });
 
@@ -320,6 +326,8 @@ export class NgbDatepicker implements OnDestroy,
     this._service.open(NgbDate.from(date ? date.day ? date as NgbDateStruct : {...date, day: 1} : null));
   }
 
+  getFocused() { return new NgbDate(this.model.focusDate.year, this.model.focusDate.month, this.model.focusDate.day); }
+
   ngAfterViewInit() {
     this._ngZone.runOutsideAngular(() => {
       const focusIns$ = fromEvent<FocusEvent>(this._monthsEl.nativeElement, 'focusin');
@@ -367,7 +375,14 @@ export class NgbDatepicker implements OnDestroy,
     this._service.select(date, {emitEvent: true});
   }
 
-  onKeyDown(event: KeyboardEvent) { this._keyMapService.processKey(event); }
+  onKeyDown(event: KeyboardEvent) {
+    if (this.keydown) {
+      this.keydown(event);
+    }
+    if (!event.defaultPrevented) {
+      this._keyMapService.processKey(event);
+    }
+  }
 
   onNavigateDateSelect(date: NgbDate) { this._service.open(date); }
 

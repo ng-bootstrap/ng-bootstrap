@@ -511,8 +511,11 @@ describe('ngb-datepicker', () => {
     spyOn(fixture.componentInstance, 'onNavigate');
     fixture.detectChanges();
 
-    expect(fixture.componentInstance.onNavigate)
-        .toHaveBeenCalledWith({current: null, next: {year: 2016, month: 8}, preventDefault: jasmine.any(Function)});
+    expect(fixture.componentInstance.onNavigate).toHaveBeenCalledWith({
+      current: null,
+      next: {year: 2016, month: 8, day: 1},
+      preventDefault: jasmine.any(Function)
+    });
   });
 
   it('should emit navigate event without startDate defined', () => {
@@ -526,7 +529,7 @@ describe('ngb-datepicker', () => {
 
     expect(fixture.componentInstance.onNavigate).toHaveBeenCalledWith({
       current: null,
-      next: {year: now.getFullYear(), month: now.getMonth() + 1},
+      next: {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()},
       preventDefault: jasmine.any(Function)
     });
   });
@@ -542,8 +545,8 @@ describe('ngb-datepicker', () => {
     navigation[0].click();
     fixture.detectChanges();
     expect(fixture.componentInstance.onNavigate).toHaveBeenCalledWith({
-      current: {year: 2016, month: 8},
-      next: {year: 2016, month: 7},
+      current: {year: 2016, month: 8, day: 1},
+      next: {year: 2016, month: 7, day: 1},
       preventDefault: jasmine.any(Function)
     });
   });
@@ -559,8 +562,8 @@ describe('ngb-datepicker', () => {
 
     fixture.detectChanges();
     expect(fixture.componentInstance.onNavigate).toHaveBeenCalledWith({
-      current: {year: 2016, month: 8},
-      next: {year: 2015, month: 6},
+      current: {year: 2016, month: 8, day: 1},
+      next: {year: 2015, month: 6, day: 1},
       preventDefault: jasmine.any(Function)
     });
   });
