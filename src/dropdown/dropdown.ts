@@ -32,7 +32,7 @@ export class NgbNavbar {
 }
 
 /**
- * A directive you should put put on a dropdown item to enable keyboard navigation.
+ * A directive you should put on a dropdown item to enable keyboard navigation.
  * Arrow keys will move focus between items marked with this directive.
  *
  * @since 4.1.0
