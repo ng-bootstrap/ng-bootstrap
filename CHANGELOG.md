@@ -1,3 +1,7 @@
+## [5.1.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/5.1.0...5.1.1) (2019-09-03)
+
+This is an _internal_ release with no user-facing udpates/fixes.
+
 # [5.1.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/5.0.0...5.1.0) (2019-07-17)
 
 
