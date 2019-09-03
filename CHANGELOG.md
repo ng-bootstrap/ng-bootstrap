@@ -1,3 +1,12 @@
+## [4.2.2](https://github.com/ng-bootstrap/ng-bootstrap/compare/4.2.1...4.2.2) (2019-09-03)
+
+
+### Bug Fixes
+
+* **tabset:** remove aria-expanded and use aria-selected instead ([d67bea2](https://github.com/ng-bootstrap/ng-bootstrap/commit/d67bea2)), closes [#3292](https://github.com/ng-bootstrap/ng-bootstrap/issues/3292)
+
+
+
 ## [4.2.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/4.2.0...4.2.1) (2019-06-03)
 
 
