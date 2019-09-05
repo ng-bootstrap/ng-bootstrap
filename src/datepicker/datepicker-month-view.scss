@@ -20,6 +20,8 @@ ngb-datepicker-month-view {
   &-weekdays {
     border-bottom: 1px solid rgba(0, 0, 0, 0.125);
     border-radius: 0;
+    background-color: #f8f9fa;
+    background-color: var(--light);
   }
   &-day,
   &-weekday,
