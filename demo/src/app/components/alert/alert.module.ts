@@ -23,11 +23,11 @@ const DEMOS = {
     files: [
       {
         name: 'alert-basic.html',
-        source: require('!!raw-loader!./demos/basic/alert-basic.html')
+        source: require('!!raw-loader!./demos/basic/alert-basic.html').default
       },
       {
         name: 'alert-basic.ts',
-        source: require('!!raw-loader!./demos/basic/alert-basic')
+        source: require('!!raw-loader!./demos/basic/alert-basic').default
       }
     ]
   },
@@ -37,11 +37,11 @@ const DEMOS = {
     files: [
       {
         name: 'alert-closeable.html',
-        source: require('!!raw-loader!./demos/closeable/alert-closeable.html')
+        source: require('!!raw-loader!./demos/closeable/alert-closeable.html').default
       },
       {
         name: 'alert-closeable.ts',
-        source: require('!!raw-loader!./demos/closeable/alert-closeable')
+        source: require('!!raw-loader!./demos/closeable/alert-closeable').default
       }
     ]
   },
@@ -51,11 +51,11 @@ const DEMOS = {
     files: [
       {
         name: 'alert-selfclosing.html',
-        source: require('!!raw-loader!./demos/selfclosing/alert-selfclosing.html')
+        source: require('!!raw-loader!./demos/selfclosing/alert-selfclosing.html').default
       },
       {
         name: 'alert-selfclosing.ts',
-        source: require('!!raw-loader!./demos/selfclosing/alert-selfclosing')
+        source: require('!!raw-loader!./demos/selfclosing/alert-selfclosing').default
       }
     ]
   },
@@ -65,11 +65,11 @@ const DEMOS = {
     files: [
       {
         name: 'alert-custom.html',
-        source: require('!!raw-loader!./demos/custom/alert-custom.html')
+        source: require('!!raw-loader!./demos/custom/alert-custom.html').default
       },
       {
         name: 'alert-custom.ts',
-        source: require('!!raw-loader!./demos/custom/alert-custom')
+        source: require('!!raw-loader!./demos/custom/alert-custom').default
       }
     ]
   },
@@ -79,11 +79,11 @@ const DEMOS = {
     files: [
       {
         name: 'alert-config.html',
-        source: require('!!raw-loader!./demos/config/alert-config.html')
+        source: require('!!raw-loader!./demos/config/alert-config.html').default
       },
       {
         name: 'alert-config.ts',
-        source: require('!!raw-loader!./demos/config/alert-config')
+        source: require('!!raw-loader!./demos/config/alert-config').default
       }
     ]
   }

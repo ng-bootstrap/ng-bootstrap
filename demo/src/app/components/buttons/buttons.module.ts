@@ -18,26 +18,26 @@ const DEMOS = {
   checkbox: {
     title: 'Checkbox buttons',
     type: NgbdButtonsCheckbox,
-    code: require('!!raw-loader!./demos/checkbox/buttons-checkbox'),
-    markup: require('!!raw-loader!./demos/checkbox/buttons-checkbox.html')
+    code: require('!!raw-loader!./demos/checkbox/buttons-checkbox').default,
+    markup: require('!!raw-loader!./demos/checkbox/buttons-checkbox.html').default
   },
   checkboxreactive: {
     title: 'Checkbox buttons (Reactive Forms)',
     type: NgbdButtonsCheckboxreactive,
-    code: require('!!raw-loader!./demos/checkboxreactive/buttons-checkboxreactive'),
-    markup: require('!!raw-loader!./demos/checkboxreactive/buttons-checkboxreactive.html')
+    code: require('!!raw-loader!./demos/checkboxreactive/buttons-checkboxreactive').default,
+    markup: require('!!raw-loader!./demos/checkboxreactive/buttons-checkboxreactive.html').default
   },
   radio: {
     title: 'Radio buttons',
     type: NgbdButtonsRadio,
-    code: require('!!raw-loader!./demos/radio/buttons-radio'),
-    markup: require('!!raw-loader!./demos/radio/buttons-radio.html')
+    code: require('!!raw-loader!./demos/radio/buttons-radio').default,
+    markup: require('!!raw-loader!./demos/radio/buttons-radio.html').default
   },
   radioreactive: {
     title: 'Radio buttons (Reactive Forms)',
     type: NgbdButtonsRadioreactive,
-    code: require('!!raw-loader!./demos/radioreactive/buttons-radioreactive'),
-    markup: require('!!raw-loader!./demos/radioreactive/buttons-radioreactive.html')
+    code: require('!!raw-loader!./demos/radioreactive/buttons-radioreactive').default,
+    markup: require('!!raw-loader!./demos/radioreactive/buttons-radioreactive.html').default
   }
 };
 

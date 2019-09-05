@@ -22,38 +22,38 @@ const DEMOS = {
   basic: {
     title: 'Simple Typeahead',
     type: NgbdTypeaheadBasic,
-    code: require('!!raw-loader!./demos/basic/typeahead-basic'),
-    markup: require('!!raw-loader!./demos/basic/typeahead-basic.html')
+    code: require('!!raw-loader!./demos/basic/typeahead-basic').default,
+    markup: require('!!raw-loader!./demos/basic/typeahead-basic.html').default
   },
   focus: {
     title: 'Open on focus',
     type: NgbdTypeaheadFocus,
-    code: require('!!raw-loader!./demos/focus/typeahead-focus'),
-    markup: require('!!raw-loader!./demos/focus/typeahead-focus.html')
+    code: require('!!raw-loader!./demos/focus/typeahead-focus').default,
+    markup: require('!!raw-loader!./demos/focus/typeahead-focus.html').default
   },
   format: {
     title: 'Formatted results',
     type: NgbdTypeaheadFormat,
-    code: require('!!raw-loader!./demos/format/typeahead-format'),
-    markup: require('!!raw-loader!./demos/format/typeahead-format.html')
+    code: require('!!raw-loader!./demos/format/typeahead-format').default,
+    markup: require('!!raw-loader!./demos/format/typeahead-format.html').default
   },
   http: {
     title: 'Wikipedia search',
     type: NgbdTypeaheadHttp,
-    code: require('!!raw-loader!./demos/http/typeahead-http'),
-    markup: require('!!raw-loader!./demos/http/typeahead-http.html')
+    code: require('!!raw-loader!./demos/http/typeahead-http').default,
+    markup: require('!!raw-loader!./demos/http/typeahead-http.html').default
   },
   template: {
     title: 'Template for results',
     type: NgbdTypeaheadTemplate,
-    code: require('!!raw-loader!./demos/template/typeahead-template'),
-    markup: require('!!raw-loader!./demos/template/typeahead-template.html')
+    code: require('!!raw-loader!./demos/template/typeahead-template').default,
+    markup: require('!!raw-loader!./demos/template/typeahead-template.html').default
   },
   config: {
     title: 'Global configuration of typeaheads',
     type: NgbdTypeaheadConfig,
-    code: require('!!raw-loader!./demos/config/typeahead-config'),
-    markup: require('!!raw-loader!./demos/config/typeahead-config.html')
+    code: require('!!raw-loader!./demos/config/typeahead-config').default,
+    markup: require('!!raw-loader!./demos/config/typeahead-config.html').default
   }
 };
 

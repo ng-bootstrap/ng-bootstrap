@@ -23,29 +23,29 @@ const DEMOS = [
     id: 'hebrew',
     title: 'Hebrew',
     type: NgbdDatepickerHebrew,
-    code: require('!!raw-loader!./../demos/hebrew/datepicker-hebrew'),
-    markup: require('!!raw-loader!./../demos/hebrew/datepicker-hebrew.html')
+    code: require('!!raw-loader!./../demos/hebrew/datepicker-hebrew').default,
+    markup: require('!!raw-loader!./../demos/hebrew/datepicker-hebrew.html').default
   },
   {
     id: 'jalali',
     title: 'Jalali',
     type: NgbdDatepickerJalali,
-    code: require('!!raw-loader!./../demos/jalali/datepicker-jalali'),
-    markup: require('!!raw-loader!./../demos/jalali/datepicker-jalali.html')
+    code: require('!!raw-loader!./../demos/jalali/datepicker-jalali').default,
+    markup: require('!!raw-loader!./../demos/jalali/datepicker-jalali.html').default
   },
   {
     id: 'islamiccivil',
     title: 'Islamic Civil',
     type: NgbdDatepickerIslamiccivil,
-    code: require('!!raw-loader!./../demos/islamiccivil/datepicker-islamiccivil'),
-    markup: require('!!raw-loader!./../demos/islamiccivil/datepicker-islamiccivil.html')
+    code: require('!!raw-loader!./../demos/islamiccivil/datepicker-islamiccivil').default,
+    markup: require('!!raw-loader!./../demos/islamiccivil/datepicker-islamiccivil.html').default
   },
   {
     id: 'islamicumalqura',
     title: 'Islamic Umm al-Qura',
     type: NgbdDatepickerIslamicumalqura,
-    code: require('!!raw-loader!./../demos/islamicumalqura/datepicker-islamicumalqura'),
-    markup: require('!!raw-loader!./../demos/islamicumalqura/datepicker-islamicumalqura.html')
+    code: require('!!raw-loader!./../demos/islamicumalqura/datepicker-islamicumalqura').default,
+    markup: require('!!raw-loader!./../demos/islamicumalqura/datepicker-islamicumalqura.html').default
   }
 ];
 
