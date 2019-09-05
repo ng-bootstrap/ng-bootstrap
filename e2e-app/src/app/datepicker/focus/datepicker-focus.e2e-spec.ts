@@ -278,35 +278,35 @@ describe('Datepicker', () => {
       await expectFocused(page.getDayElement(new Date(2018, 8, 1)), `First day of next month should be focused`);
     });
 
-    it(`should focus first day of previous year with 'Shift+PageUp'`, async() => {
+    it(`should focus first day of previous year with 'Alt+PageUp'`, async() => {
       await page.preSelectDate();  // 10 AUG 2018
       await page.openDatepicker();
 
-      await sendKey(Key.SHIFT, Key.PAGE_UP);
+      await sendKey(Key.ALT, Key.PAGE_UP);
       await expectFocused(page.getDayElement(new Date(2017, 0, 1)), `First day of previous year should be focused`);
     });
 
-    it(`should focus first day of next year with 'Shift+PageDown'`, async() => {
+    it(`should focus first day of next year with 'Alt+PageDown'`, async() => {
       await page.preSelectDate();  // 10 AUG 2018
       await page.openDatepicker();
 
-      await sendKey(Key.SHIFT, Key.PAGE_DOWN);
+      await sendKey(Key.ALT, Key.PAGE_DOWN);
       await expectFocused(page.getDayElement(new Date(2019, 0, 1)), `First day of next year should be focused`);
     });
 
-    it(`should focus min available day with 'Shift+Home'`, async() => {
+    it(`should focus min available day with 'Alt+Home'`, async() => {
       await page.preSelectDate();  // 10 AUG 2018
       await page.openDatepicker();
 
-      await sendKey(Key.SHIFT, Key.HOME);
+      await sendKey(Key.ALT, Key.HOME);
       await expectFocused(page.getDayElement(new Date(2000, 0, 1)), `Min available day should be focused`);
     });
 
-    it(`should focus max available day with 'Shift+End'`, async() => {
+    it(`should focus max available day with 'Alt+End'`, async() => {
       await page.preSelectDate();  // 10 AUG 2018
       await page.openDatepicker();
 
-      await sendKey(Key.SHIFT, Key.END);
+      await sendKey(Key.ALT, Key.END);
       await expectFocused(page.getDayElement(new Date(2100, 0, 1)), `Max available day should be focused`);
     });
   });
