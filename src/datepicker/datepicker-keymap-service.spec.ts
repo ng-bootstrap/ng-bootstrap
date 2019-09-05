@@ -7,8 +7,8 @@ import {NgbDate} from './ngb-date';
 import {Key} from '../util/key';
 import {Type} from '@angular/core';
 
-const event = (keyCode: number, shift = false) =>
-    <any>({which: keyCode, shiftKey: shift, preventDefault: () => {}, stopPropagation: () => {}});
+const event = (keyCode: number, alt = false) =>
+    <any>({which: keyCode, altKey: alt, preventDefault: () => {}, stopPropagation: () => {}});
 
 describe('ngb-datepicker-keymap-service', () => {
 

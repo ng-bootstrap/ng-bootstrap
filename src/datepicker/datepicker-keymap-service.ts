@@ -24,16 +24,16 @@ export class NgbDatepickerKeyMapService {
     // tslint:disable-next-line:deprecation
     switch (event.which) {
       case Key.PageUp:
-        this._service.focusMove(event.shiftKey ? 'y' : 'm', -1);
+        this._service.focusMove(event.altKey ? 'y' : 'm', -1);
         break;
       case Key.PageDown:
-        this._service.focusMove(event.shiftKey ? 'y' : 'm', 1);
+        this._service.focusMove(event.altKey ? 'y' : 'm', 1);
         break;
       case Key.End:
-        this._service.focus(event.shiftKey ? this._maxDate : this._lastViewDate);
+        this._service.focus(event.altKey ? this._maxDate : this._lastViewDate);
         break;
       case Key.Home:
-        this._service.focus(event.shiftKey ? this._minDate : this._firstViewDate);
+        this._service.focus(event.altKey ? this._minDate : this._firstViewDate);
         break;
       case Key.ArrowLeft:
         this._service.focusMove('d', -1);
