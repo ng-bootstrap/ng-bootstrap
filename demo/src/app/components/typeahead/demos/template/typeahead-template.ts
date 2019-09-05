@@ -75,4 +75,6 @@ export class NgbdTypeaheadTemplate {
 
   formatter = (x: {name: string}) => x.name;
 
+  selectItem = (event) => console.log(event.item);
+
 }
