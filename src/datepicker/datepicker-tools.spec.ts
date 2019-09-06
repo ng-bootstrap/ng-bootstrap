@@ -566,17 +566,17 @@ describe(`datepicker-tools`, () => {
     it(`should generate years correctly`, () => {
       // both 'min' and 'max' are set
       test(new NgbDate(2017, 1, 1), new NgbDate(2018, 1, 1), new NgbDate(2019, 1, 1), range(2017, 2019));
-      test(new NgbDate(2000, 1, 1), new NgbDate(2018, 1, 1), new NgbDate(3000, 1, 1), range(2000, 3000));
+      test(new NgbDate(1000, 1, 1), new NgbDate(2018, 1, 1), new NgbDate(3000, 1, 1), range(1518, 2518));
       test(new NgbDate(2018, 1, 1), new NgbDate(2018, 1, 1), new NgbDate(2018, 1, 1), [2018]);
 
       // 'min' is not set
       test(null, new NgbDate(2018, 1, 1), new NgbDate(2019, 1, 1), range(2008, 2019));
-      test(null, new NgbDate(2018, 1, 1), new NgbDate(3000, 1, 1), range(2008, 3000));
+      test(null, new NgbDate(2018, 1, 1), new NgbDate(3000, 1, 1), range(2008, 2518));
       test(null, new NgbDate(2018, 1, 1), new NgbDate(2018, 1, 1), range(2008, 2018));
 
       // 'max' is not set
       test(new NgbDate(2017, 1, 1), new NgbDate(2018, 1, 1), null, range(2017, 2028));
-      test(new NgbDate(2000, 1, 1), new NgbDate(2018, 1, 1), null, range(2000, 2028));
+      test(new NgbDate(1000, 1, 1), new NgbDate(2018, 1, 1), null, range(1518, 2028));
       test(new NgbDate(2018, 1, 1), new NgbDate(2018, 1, 1), null, range(2018, 2028));
 
       // both are not set

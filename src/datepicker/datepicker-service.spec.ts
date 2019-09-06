@@ -552,7 +552,7 @@ describe('ngb-datepicker-service', () => {
         expect(model.selectBoxes.years).toEqual(range(2010, 2030));
       });
 
-      it(`should generate [min, +10] 'years' when max date is missing`, () => {
+      it(`should generate [min/-500, +10] 'years' when max date is missing`, () => {
         service.minDate = new NgbDate(2010, 1, 1);
         service.open(new NgbDate(2011, 1, 1));
         expect(model.selectBoxes.years).toEqual(range(2010, 2021));
@@ -560,11 +560,12 @@ describe('ngb-datepicker-service', () => {
         service.minDate = new NgbDate(2015, 1, 1);
         expect(model.selectBoxes.years).toEqual(range(2015, 2025));
 
+        // -500
         service.minDate = new NgbDate(1000, 1, 1);
-        expect(model.selectBoxes.years).toEqual(range(1000, 2025));
+        expect(model.selectBoxes.years).toEqual(range(1515, 2025));
       });
 
-      it(`should generate [min, +10] 'years' when min date is missing`, () => {
+      it(`should generate [-10, +500/max] 'years' when min date is missing`, () => {
         service.maxDate = new NgbDate(2010, 1, 1);
         service.open(new NgbDate(2009, 1, 1));
         expect(model.selectBoxes.years).toEqual(range(1999, 2010));
@@ -572,8 +573,9 @@ describe('ngb-datepicker-service', () => {
         service.maxDate = new NgbDate(2005, 1, 1);
         expect(model.selectBoxes.years).toEqual(range(1995, 2005));
 
+        // +500
         service.maxDate = new NgbDate(3000, 1, 1);
-        expect(model.selectBoxes.years).toEqual(range(1995, 3000));
+        expect(model.selectBoxes.years).toEqual(range(1995, 2505));
       });
 
       it(`should generate 'months' when min/max dates are missing`, () => {
