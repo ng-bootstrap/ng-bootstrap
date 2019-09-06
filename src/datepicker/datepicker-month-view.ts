@@ -10,7 +10,7 @@ import {DayTemplateContext} from './datepicker-day-template-context';
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['./datepicker-month-view.scss'],
   template: `
-    <div *ngIf="showWeekdays" class="ngb-dp-week ngb-dp-weekdays bg-light">
+    <div *ngIf="showWeekdays" class="ngb-dp-week ngb-dp-weekdays">
       <div *ngIf="showWeekNumbers" class="ngb-dp-weekday ngb-dp-showweek"></div>
       <div *ngFor="let w of month.weekdays" class="ngb-dp-weekday small" role="columnheader">
         {{ i18n.getWeekdayShortName(w) }}
