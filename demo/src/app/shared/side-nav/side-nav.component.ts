@@ -1,8 +1,8 @@
-import {Component} from '@angular/core';
-import {Router} from '@angular/router';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 export const componentsList = [
-  'Accordion', 'Alert', 'Buttons', 'Carousel', 'Collapse', 'Datepicker', 'Dropdown', 'Modal', 'Pagination', 'Popover',
+  'Accordion', 'Alert', 'Buttons', 'Carousel', 'Checkbox', 'Collapse', 'Datepicker', 'Dropdown', 'Modal', 'Pagination', 'Popover',
   'Progressbar', 'Rating', 'Table', 'Tabset', 'Timepicker', 'Toast', 'Tooltip', 'Typeahead'
 ];
 

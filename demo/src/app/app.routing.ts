@@ -5,6 +5,7 @@ import {ROUTES as ACCORDION_ROUTES} from './components/accordion/accordion.modul
 import {ROUTES as ALERT_ROUTES} from './components/alert/alert.module';
 import {ROUTES as BUTTONS_ROUTES} from './components/buttons/buttons.module';
 import {ROUTES as CAROUSEL_ROUTES} from './components/carousel/carousel.module';
+import {ROUTES as CHECKBOX_ROUTES} from './components/checkbox/checkbox.module';
 import {ROUTES as COLLAPSE_ROUTES} from './components/collapse/collapse.module';
 import {ROUTES as DATEPICKER_ROUTES} from './components/datepicker/datepicker.module';
 import {ROUTES as DROPDOWN_ROUTES} from './components/dropdown/dropdown.module';
@@ -33,6 +34,7 @@ const routes: Routes = [
   { path: 'components/alert', children: ALERT_ROUTES },
   { path: 'components/buttons', children: BUTTONS_ROUTES },
   { path: 'components/carousel', children: CAROUSEL_ROUTES },
+  { path: 'components/checkbox', children: CHECKBOX_ROUTES },
   { path: 'components/collapse', children: COLLAPSE_ROUTES },
   { path: 'components/datepicker', children: DATEPICKER_ROUTES },
   { path: 'components/dropdown', children: DROPDOWN_ROUTES },

@@ -8,6 +8,7 @@ import {NgbdAccordionModule} from './components/accordion/accordion.module';
 import {NgbdAlertModule} from './components/alert/alert.module';
 import {NgbdButtonsModule} from './components/buttons/buttons.module';
 import {NgbdCarouselModule} from './components/carousel/carousel.module';
+import {NgbdCheckboxModule} from './components/checkbox/checkbox.module';
 import {NgbdCollapseModule} from './components/collapse/collapse.module';
 import {NgbdDatepickerModule} from './components/datepicker/datepicker.module';
 import {NgbdDropdownModule} from './components/dropdown/dropdown.module';
@@ -33,6 +34,7 @@ const DEMOS = [
   NgbdAlertModule,
   NgbdButtonsModule,
   NgbdCarouselModule,
+  NgbdCheckboxModule,
   NgbdCollapseModule,
   NgbdDatepickerModule,
   NgbdDropdownModule,
