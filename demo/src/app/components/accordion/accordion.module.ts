@@ -21,38 +21,38 @@ import { NgbdAccordionToggleModule } from './demos/toggle/accordion-toggle.modul
 const DEMOS = {
   basic: {
     title: 'Accordion',
-    code: require('!raw-loader!./demos/basic/accordion-basic'),
-    markup: require('!raw-loader!./demos/basic/accordion-basic.html'),
+    code: require('!raw-loader!./demos/basic/accordion-basic').default,
+    markup: require('!raw-loader!./demos/basic/accordion-basic.html').default,
     type: NgbdAccordionBasic
   },
   static: {
     title: 'One open panel at a time',
-    code: require('!!raw-loader!./demos/static/accordion-static'),
-    markup: require('!!raw-loader!./demos/static/accordion-static.html'),
+    code: require('!!raw-loader!./demos/static/accordion-static').default,
+    markup: require('!!raw-loader!./demos/static/accordion-static.html').default,
     type: NgbdAccordionStatic
   },
   toggle: {
     title: 'Toggle panels',
-    code: require('!!raw-loader!./demos/toggle/accordion-toggle'),
-    markup: require('!!raw-loader!./demos/toggle/accordion-toggle.html'),
+    code: require('!!raw-loader!./demos/toggle/accordion-toggle').default,
+    markup: require('!!raw-loader!./demos/toggle/accordion-toggle.html').default,
     type: NgbdAccordionToggle
   },
   header: {
     title: 'Custom header',
-    code: require('!!raw-loader!./demos/header/accordion-header'),
-    markup: require('!!raw-loader!./demos/header/accordion-header.html'),
+    code: require('!!raw-loader!./demos/header/accordion-header').default,
+    markup: require('!!raw-loader!./demos/header/accordion-header.html').default,
     type: NgbdAccordionHeader
   },
   preventchange: {
     title: 'Prevent panel toggle',
-    code: require('!!raw-loader!./demos/preventchange/accordion-preventchange'),
-    markup: require('!!raw-loader!./demos/preventchange/accordion-preventchange.html'),
+    code: require('!!raw-loader!./demos/preventchange/accordion-preventchange').default,
+    markup: require('!!raw-loader!./demos/preventchange/accordion-preventchange.html').default,
     type: NgbdAccordionPreventchange
   },
   config: {
     title: 'Global configuration of accordions',
-    code: require('!!raw-loader!./demos/config/accordion-config'),
-    markup: require('!!raw-loader!./demos/config/accordion-config.html'),
+    code: require('!!raw-loader!./demos/config/accordion-config').default,
+    markup: require('!!raw-loader!./demos/config/accordion-config.html').default,
     type: NgbdAccordionConfig
   }
 };

@@ -18,26 +18,26 @@ const DEMOS = {
   basic: {
     title: 'Carousel',
     type: NgbdCarouselBasic,
-    code: require('!!raw-loader!./demos/basic/carousel-basic'),
-    markup: require('!!raw-loader!./demos/basic/carousel-basic.html')
+    code: require('!!raw-loader!./demos/basic/carousel-basic').default,
+    markup: require('!!raw-loader!./demos/basic/carousel-basic.html').default
   },
   navigation: {
     title: 'Navigation arrows and indicators',
     type: NgbdCarouselNavigation,
-    code: require('!!raw-loader!./demos/navigation/carousel-navigation'),
-    markup: require('!!raw-loader!./demos/navigation/carousel-navigation.html')
+    code: require('!!raw-loader!./demos/navigation/carousel-navigation').default,
+    markup: require('!!raw-loader!./demos/navigation/carousel-navigation.html').default
   },
   pause: {
     title: 'Pause/cycle',
     type: NgbdCarouselPause,
-    code: require('!!raw-loader!./demos/pause/carousel-pause'),
-    markup: require('!!raw-loader!./demos/pause/carousel-pause.html')
+    code: require('!!raw-loader!./demos/pause/carousel-pause').default,
+    markup: require('!!raw-loader!./demos/pause/carousel-pause.html').default
   },
   config: {
     title: 'Global configuration of carousels',
     type: NgbdCarouselConfig,
-    code: require('!!raw-loader!./demos/config/carousel-config'),
-    markup: require('!!raw-loader!./demos/config/carousel-config.html')
+    code: require('!!raw-loader!./demos/config/carousel-config').default,
+    markup: require('!!raw-loader!./demos/config/carousel-config.html').default
   }
 };
 

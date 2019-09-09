@@ -24,44 +24,44 @@ const DEMOS = {
   basic: {
     title: 'Tabset',
     type: NgbdTabsetBasic,
-    code: require('!!raw-loader!./demos/basic/tabset-basic'),
-    markup: require('!!raw-loader!./demos/basic/tabset-basic.html')
+    code: require('!!raw-loader!./demos/basic/tabset-basic').default,
+    markup: require('!!raw-loader!./demos/basic/tabset-basic.html').default
   },
   pills: {
     title: 'Pills',
     type: NgbdTabsetPills,
-    code: require('!!raw-loader!./demos/pills/tabset-pills'),
-    markup: require('!!raw-loader!./demos/pills/tabset-pills.html')
+    code: require('!!raw-loader!./demos/pills/tabset-pills').default,
+    markup: require('!!raw-loader!./demos/pills/tabset-pills.html').default
   },
   selectbyid: {
     title: 'Select an active tab by id',
     type: NgbdTabsetSelectbyid,
-    code: require('!!raw-loader!./demos/selectbyid/tabset-selectbyid'),
-    markup: require('!!raw-loader!./demos/selectbyid/tabset-selectbyid.html')
+    code: require('!!raw-loader!./demos/selectbyid/tabset-selectbyid').default,
+    markup: require('!!raw-loader!./demos/selectbyid/tabset-selectbyid.html').default
   },
   preventchange: {
     title: 'Prevent tab change',
     type: NgbdTabsetPreventchange,
-    code: require('!!raw-loader!./demos/preventchange/tabset-preventchange'),
-    markup: require('!!raw-loader!./demos/preventchange/tabset-preventchange.html')
+    code: require('!!raw-loader!./demos/preventchange/tabset-preventchange').default,
+    markup: require('!!raw-loader!./demos/preventchange/tabset-preventchange.html').default
   },
   justify: {
     title: 'Nav justification',
     type: NgbdTabsetJustify,
-    code: require('!!raw-loader!./demos/justify/tabset-justify'),
-    markup: require('!!raw-loader!./demos/justify/tabset-justify.html')
+    code: require('!!raw-loader!./demos/justify/tabset-justify').default,
+    markup: require('!!raw-loader!./demos/justify/tabset-justify.html').default
   },
   orientation: {
     title: 'Nav orientation',
     type: NgbdTabsetOrientation,
-    code: require('!!raw-loader!./demos/orientation/tabset-orientation'),
-    markup: require('!!raw-loader!./demos/orientation/tabset-orientation.html')
+    code: require('!!raw-loader!./demos/orientation/tabset-orientation').default,
+    markup: require('!!raw-loader!./demos/orientation/tabset-orientation.html').default
   },
   config: {
     title: 'Global configuration of tabs',
     type: NgbdTabsetConfig,
-    code: require('!!raw-loader!./demos/config/tabset-config'),
-    markup: require('!!raw-loader!./demos/config/tabset-config.html')
+    code: require('!!raw-loader!./demos/config/tabset-config').default,
+    markup: require('!!raw-loader!./demos/config/tabset-config.html').default
   }
 };
 

@@ -28,56 +28,56 @@ const DEMOS = {
   basic: {
     title: 'Timepicker',
     type: NgbdTimepickerBasic,
-    code: require('!!raw-loader!./demos/basic/timepicker-basic'),
-    markup: require('!!raw-loader!./demos/basic/timepicker-basic.html')
+    code: require('!!raw-loader!./demos/basic/timepicker-basic').default,
+    markup: require('!!raw-loader!./demos/basic/timepicker-basic.html').default
   },
   meridian: {
     title: 'Meridian',
     type: NgbdTimepickerMeridian,
-    code: require('!!raw-loader!./demos/meridian/timepicker-meridian'),
-    markup: require('!!raw-loader!./demos/meridian/timepicker-meridian.html')
+    code: require('!!raw-loader!./demos/meridian/timepicker-meridian').default,
+    markup: require('!!raw-loader!./demos/meridian/timepicker-meridian.html').default
   },
   seconds: {
     title: 'Seconds',
     type: NgbdTimepickerSeconds,
-    code: require('!!raw-loader!./demos/seconds/timepicker-seconds'),
-    markup: require('!!raw-loader!./demos/seconds/timepicker-seconds.html')
+    code: require('!!raw-loader!./demos/seconds/timepicker-seconds').default,
+    markup: require('!!raw-loader!./demos/seconds/timepicker-seconds.html').default
   },
   spinners: {
     title: 'Spinners',
     type: NgbdTimepickerSpinners,
-    code: require('!!raw-loader!./demos/spinners/timepicker-spinners'),
-    markup: require('!!raw-loader!./demos/spinners/timepicker-spinners.html')
+    code: require('!!raw-loader!./demos/spinners/timepicker-spinners').default,
+    markup: require('!!raw-loader!./demos/spinners/timepicker-spinners.html').default
   },
   steps: {
     title: 'Custom steps',
     type: NgbdTimepickerSteps,
-    code: require('!!raw-loader!./demos/steps/timepicker-steps'),
-    markup: require('!!raw-loader!./demos/steps/timepicker-steps.html')
+    code: require('!!raw-loader!./demos/steps/timepicker-steps').default,
+    markup: require('!!raw-loader!./demos/steps/timepicker-steps.html').default
   },
   validation: {
     title: 'Custom validation',
     type: NgbdTimepickerValidation,
-    code: require('!!raw-loader!./demos/validation/timepicker-validation'),
-    markup: require('!!raw-loader!./demos/validation/timepicker-validation.html')
+    code: require('!!raw-loader!./demos/validation/timepicker-validation').default,
+    markup: require('!!raw-loader!./demos/validation/timepicker-validation.html').default
   },
   adapter: {
     title: 'Custom time adapter',
     type: NgbdTimepickerAdapter,
-    code: require('!!raw-loader!./demos/adapter/timepicker-adapter'),
-    markup: require('!!raw-loader!./demos/adapter/timepicker-adapter.html')
+    code: require('!!raw-loader!./demos/adapter/timepicker-adapter').default,
+    markup: require('!!raw-loader!./demos/adapter/timepicker-adapter.html').default
   },
   i18n: {
     title: 'Internationalization of timepickers',
     type: NgbdTimepickerI18n,
-    code: require('!!raw-loader!./demos/i18n/timepicker-i18n'),
-    markup: require('!!raw-loader!./demos/i18n/timepicker-i18n.html')
+    code: require('!!raw-loader!./demos/i18n/timepicker-i18n').default,
+    markup: require('!!raw-loader!./demos/i18n/timepicker-i18n.html').default
   },
   config: {
     title: 'Global configuration of timepickers',
     type: NgbdTimepickerConfig,
-    code: require('!!raw-loader!./demos/config/timepicker-config'),
-    markup: require('!!raw-loader!./demos/config/timepicker-config.html')
+    code: require('!!raw-loader!./demos/config/timepicker-config').default,
+    markup: require('!!raw-loader!./demos/config/timepicker-config.html').default
   }
 };
 
