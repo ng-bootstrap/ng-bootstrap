@@ -193,41 +193,24 @@ describe('ngb-checkbox', () => {
          expect(checkbox.value).toEqual(false);
        }));
 
-    it('should mark control as touched when blurred', async() => {
-      const html = `
+    it('should mark control as touched when blurred', fakeAsync(() => {
+         const html = `
      <form [formGroup]="form">
        <ngb-checkbox formControlName="checkbox"></ngb-checkbox>
      </form>
      `;
 
-      const fixture = createTestComponent(html);
-      const checkbox = getCheckboxElement(fixture);
-      const input = getCheckboxInput(fixture).nativeElement as HTMLInputElement;
+         const fixture = createTestComponent(html);
+         const checkbox = getCheckboxElement(fixture);
+         const input = getCheckboxInput(fixture);
 
-      input.dispatchEvent(new Event('blur'));
-      fixture.detectChanges();
-      await fixture.whenStable();
-      fixture.detectChanges();
+         input.triggerEventHandler('blur', {});
+         fixture.detectChanges();
+         tick();
+         fixture.detectChanges();
 
-      expect(checkbox.nativeElement).toHaveCssClass('ng-touched');
-    });
-
-    it('should not mark control as touched when blurred', async() => {
-      const html = `
-       <ngb-checkbox [value]="value"></ngb-checkbox>
-     `;
-
-      const fixture = createTestComponent(html);
-      const checkbox = getCheckboxElement(fixture);
-      const input = getCheckboxInput(fixture).nativeElement as HTMLInputElement;
-
-      input.dispatchEvent(new Event('blur'));
-      fixture.detectChanges();
-      await fixture.whenStable();
-      fixture.detectChanges();
-
-      expect(checkbox.nativeElement).not.toHaveCssClass('ng-touched');
-    });
+         expect(checkbox.nativeElement).toHaveCssClass('ng-touched');
+       }));
   });
 });
 
