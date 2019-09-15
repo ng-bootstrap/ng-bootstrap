@@ -7,14 +7,14 @@ const NGB_CHECKBOX_VALUE_ACCESSOR = {
   multi: true
 };
 
-let checkbox_id_generator = 1;
+let nextId = 1;
 
 /**
  * A component that allows the user to edit boolean values.
  */
 @Component({
   selector: 'ngb-checkbox',
-  host: {'[class.custom-control]': 'true', '[class.custom-checkbox]': 'true'},
+  host: {'class': 'custom-control custom-checkbox'},
   template: `
     <input
       type="checkbox"
@@ -23,7 +23,7 @@ let checkbox_id_generator = 1;
       [checked]="value"
       (change)="_valueChange($event)"
       (blur)="_blur()"
-      [attr.id]="id"
+      [id]="id"
     />
     <label [attr.tabindex]="-1" class="custom-control-label" [attr.for]="id">
       <ng-content></ng-content>
@@ -32,8 +32,6 @@ let checkbox_id_generator = 1;
   providers: [NGB_CHECKBOX_VALUE_ACCESSOR]
 })
 export class NgbCheckbox implements ControlValueAccessor {
-  private _onChange: (v: any) => void;
-  private _onTouched: () => void;
   private _value = false;
 
   /**
@@ -44,7 +42,7 @@ export class NgbCheckbox implements ControlValueAccessor {
    * The identifier of the input control.
    * The default value is an auto-generated ID.
    */
-  @Input() id: string = '_checkbox_' + checkbox_id_generator++;
+  @Input() id = `ngb-checkbox-${nextId++}`;
   /**
    * If `true`, the value can't be changed.
    */
@@ -70,10 +68,10 @@ export class NgbCheckbox implements ControlValueAccessor {
    */
   @Output() valueChange = new EventEmitter<boolean>();
 
-  constructor(private _elementRef: ElementRef) {
-    this._onChange = () => {};
-    this._onTouched = () => {};
-  }
+  private _onChange = (_: any) => {};
+  private _onTouched = () => {};
+
+  constructor(private _elementRef: ElementRef) {}
 
   writeValue(obj: any): void { this._value = !!obj; }
 
@@ -94,7 +92,7 @@ export class NgbCheckbox implements ControlValueAccessor {
      * Need to use `setTimeout` to put the execution on top of the call stack.
      */
     setTimeout(() => {
-      if (!this._elementRef.nativeElement.querySelector(':focus')) {
+      if (!this._elementRef.nativeElement.contains(document.activeElement)) {
         this._onTouched();
       }
     });
