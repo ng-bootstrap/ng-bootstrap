@@ -37,10 +37,10 @@ export class NgbModalRef {
   /**
    * The instance of a component used for the modal content.
    *
-   * When a `TemplateRef` is used as the content, will return `undefined`.
+   * When a `TemplateRef` is used as the content or when the modal is closed, will return `undefined`.
    */
   get componentInstance(): any {
-    if (this._contentRef.componentRef) {
+    if (this._contentRef && this._contentRef.componentRef) {
       return this._contentRef.componentRef.instance;
     }
   }
