@@ -117,7 +117,7 @@ We want to fix it ASAP! But before fixing a bug we need to reproduce and confirm
 
 We ask you to respect two things:
 * fill the GitHub issue template by providing the bug description and appropriate versions of Angular, ng-bootstrap and TypeScript
-* provide a use-case that fails with a **minimal reproduction scenario** using [StackBlitz](https://stackblitz) (you can start by forking one from our [demo page](https://ng-bootstrap.github.io/#/components))
+* provide a use-case that fails with a **minimal reproduction scenario** using [StackBlitz](https://stackblitz.com) (you can start by forking one from our [demo page](https://ng-bootstrap.github.io/#/components))
 
 A minimal reproduction scenario allows us to quickly confirm a bug (or point out a coding problem) as well as confirm that we are fixing the right problem.
 
