@@ -9,10 +9,6 @@ import {NgbCheckboxModule} from './checkbox.module';
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
-function createKeyEvent(key: number) {
-  return {which: key, preventDefault: () => {}};
-}
-
 function getCheckboxLabel(fixture: ComponentFixture<TestComponent>): DebugElement {
   return fixture.debugElement.query(By.directive(NgbCheckbox)).query(By.css('label'));
 }

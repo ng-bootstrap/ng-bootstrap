@@ -25,7 +25,7 @@ let nextId = 1;
       (blur)="_blur()"
       [id]="id"
     />
-    <label [attr.tabindex]="-1" class="custom-control-label" [attr.for]="id">
+    <label tabindex="-1" class="custom-control-label" [attr.for]="id">
       <ng-content></ng-content>
     </label>
   `,
