@@ -59,34 +59,26 @@ describe('Datepicker', () => {
     await expectFocused(page.getToggle(), `Toggle element should stay focused after datepicker is closed`);
   });
 
-  it(`should be closed on Escape and focus nothing`, async() => {
+  it(`should be closed on Escape and re-focus toggle element`, async() => {
     await page.openDatepicker();
 
     // close
     await sendKey(Key.ESCAPE);
     expect(await page.getDatepicker().isPresent()).toBeFalsy(`Datepicker should not be present on the page`);
 
-    // check nothing is focused
-    await expectFocused($('body'), `Nothing should be focused after datepicker is closed`);
-
-    // tab should focus toggling element
-    await sendKey(Key.TAB);
-    await expectFocused(page.getToggle(), `Toggle element should become focused on Tab press`);
+    // check toggle is focused
+    await expectFocused(page.getToggle(), `Toggle element become re-focused after datepicker is closed`);
   });
 
-  it(`should be closed on date selection and focus nothing`, async() => {
+  it(`should be closed on date selection and re-focus toggle element`, async() => {
     await page.openDatepicker();
 
     // close
     await page.getToday().click();
     expect(await page.getDatepicker().isPresent()).toBeFalsy(`Datepicker should not be present on the page`);
 
-    // check nothing is focused
-    await expectFocused($('body'), `Nothing should be focused after datepicker is closed`);
-
-    // tab should focus toggling element
-    await sendKey(Key.TAB);
-    await expectFocused(page.getToggle(), `Toggle element should become focused on Tab press`);
+    // check toggle is focused
+    await expectFocused(page.getToggle(), `Toggle element become re-focused after datepicker is closed`);
   });
 
   it(`should trap focus inside opened popup (Tab)`, async() => {
@@ -186,6 +178,22 @@ describe('Datepicker', () => {
     // tab should go back to datepicker
     await sendKey(Key.TAB);
     await expectFocused(page.getPrevMonthArrow(), `Previous Month arrow should be focused`);
+  });
+
+  it(`should be closed on Escape from input and keep focus`, async() => {
+    await page.openDatepicker();
+    const datepickerInput = page.getDatepickerInput();
+
+    // focus input
+    await datepickerInput.click();
+    await expectFocused(datepickerInput, `Datepicker input should be focused`);
+
+    // close
+    await sendKey(Key.ESCAPE);
+    expect(await page.getDatepicker().isPresent()).toBeFalsy(`Datepicker should not be present on the page`);
+
+    // check input is still focused
+    await expectFocused(page.getDatepickerInput(), `Input element should stay focused after datepicker is closed`);
   });
 
   describe('Keyboard', () => {

@@ -56,6 +56,7 @@ const NGB_DATEPICKER_VALIDATOR = {
   host: {
     '(input)': 'manualDateChange($event.target.value)',
     '(change)': 'manualDateChange($event.target.value, true)',
+    '(focus)': 'onFocus()',
     '(blur)': 'onBlur()',
     '[disabled]': 'disabled'
   },
@@ -65,6 +66,7 @@ export class NgbInputDatepicker implements OnChanges,
     OnDestroy, ControlValueAccessor, Validator {
   private _cRef: ComponentRef<NgbDatepicker> = null;
   private _disabled = false;
+  private _elWithFocus = null;
   private _model: NgbDate;
   private _inputValue: string;
   private _zoneSubscription: any;
@@ -345,6 +347,7 @@ export class NgbInputDatepicker implements OnChanges,
       }
 
       // focus handling
+      this._elWithFocus = this._document.activeElement;
       ngbFocusTrap(this._cRef.location.nativeElement, this.closed, true);
       this._cRef.instance.focus();
 
@@ -363,6 +366,10 @@ export class NgbInputDatepicker implements OnChanges,
       this._cRef = null;
       this.closed.emit();
       this._changeDetector.markForCheck();
+
+      // restore focus
+      const elementToFocus = this._elWithFocus && this._elWithFocus['focus'] ? this._elWithFocus : this._document.body;
+      elementToFocus.focus();
     }
   }
 
@@ -392,6 +399,8 @@ export class NgbInputDatepicker implements OnChanges,
   }
 
   onBlur() { this._onTouched(); }
+
+  onFocus() { this._elWithFocus = this._elRef.nativeElement; }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['minDate'] || changes['maxDate']) {
