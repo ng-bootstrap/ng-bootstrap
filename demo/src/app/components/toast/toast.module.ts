@@ -68,7 +68,7 @@ const DEMOS = {
       }
     ]
   },
-  global: {
+  'howto-global': {
     title: 'Toast management service',
     type: NgbdToastGlobal,
     files: [
