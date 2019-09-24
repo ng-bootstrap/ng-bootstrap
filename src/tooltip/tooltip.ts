@@ -18,7 +18,9 @@ import {
   NgZone,
   ViewEncapsulation,
   ChangeDetectorRef,
-  ApplicationRef
+  ApplicationRef,
+  OnChanges,
+  SimpleChanges
 } from '@angular/core';
 import {DOCUMENT} from '@angular/common';
 
@@ -48,7 +50,7 @@ export class NgbTooltipWindow {
  * A lightweight and extensible directive for fancy tooltip creation.
  */
 @Directive({selector: '[ngbTooltip]', exportAs: 'ngbTooltip'})
-export class NgbTooltip implements OnInit, OnDestroy {
+export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
   /**
    * Indicates whether the tooltip should be closed on `Escape` key and inside/outside clicks:
    *
@@ -251,6 +253,12 @@ export class NgbTooltip implements OnInit, OnDestroy {
     this._unregisterListenersFn = listenToTriggers(
         this._renderer, this._elementRef.nativeElement, this.triggers, this.isOpen.bind(this), this.open.bind(this),
         this.close.bind(this), +this.openDelay, +this.closeDelay);
+  }
+
+  ngOnChanges({tooltipClass}: SimpleChanges) {
+    if (tooltipClass && this.isOpen()) {
+      this._windowRef.instance.tooltipClass = tooltipClass.currentValue;
+    }
   }
 
   ngOnDestroy() {
