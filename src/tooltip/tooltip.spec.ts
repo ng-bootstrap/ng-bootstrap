@@ -3,12 +3,13 @@ import {createGenericTestComponent, createKeyEvent, triggerEvent} from '../test/
 
 import {By} from '@angular/platform-browser';
 import {
-  Component,
-  ViewChild,
+  AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
   TemplateRef,
-  ViewContainerRef,
-  AfterViewInit
+  ViewChild,
+  ViewContainerRef
 } from '@angular/core';
 
 import {Key} from '../util/key';
@@ -59,7 +60,6 @@ describe('ngb-tooltip-window', () => {
 
     expect(fixture.nativeElement).toHaveCssClass('my-custom-class');
   });
-
 });
 
 describe('ngb-tooltip', () => {
