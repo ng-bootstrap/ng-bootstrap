@@ -1,6 +1,6 @@
 import {NgZone} from '@angular/core';
 import {fromEvent, Observable, race} from 'rxjs';
-import {delay, filter, map, takeUntil, withLatestFrom} from 'rxjs/operators';
+import {delay, filter, map, takeUntil, tap, withLatestFrom} from 'rxjs/operators';
 import {Key} from './key';
 import {closest} from './util';
 
@@ -39,11 +39,11 @@ export function ngbAutoClose(
         }
       };
 
-      const escapes$ = fromEvent<KeyboardEvent>(document, 'keydown')
+      const escapes$ = fromEvent<KeyboardEvent>(document, 'keyup')
                            .pipe(
                                takeUntil(closed$),
                                // tslint:disable-next-line:deprecation
-                               filter(e => e.which === Key.Escape));
+                               filter(e => e.which === Key.Escape), tap(e => e.preventDefault()));
 
 
       // we have to pre-calculate 'shouldCloseOnClick' on 'mousedown/touchstart',

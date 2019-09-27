@@ -6,13 +6,17 @@ import {
   EventEmitter,
   Inject,
   Input,
+  NgZone,
   OnDestroy,
   OnInit,
   Output,
-  ViewEncapsulation,
+  ViewEncapsulation
 } from '@angular/core';
+import {fromEvent} from 'rxjs';
+import {filter, takeUntil} from 'rxjs/operators';
 
 import {getFocusableBoundaryElements} from '../util/focus-trap';
+import {Key} from '../util/key';
 import {ModalDismissReasons} from './modal-dismiss-reasons';
 
 @Component({
@@ -21,7 +25,6 @@ import {ModalDismissReasons} from './modal-dismiss-reasons';
     '[class]': '"modal fade show d-block" + (windowClass ? " " + windowClass : "")',
     'role': 'dialog',
     'tabindex': '-1',
-    '(keyup.esc)': 'escKey($event)',
     '(click)': 'backdropClick($event)',
     '[attr.aria-modal]': 'true',
     '[attr.aria-labelledby]': 'ariaLabelledBy',
@@ -49,17 +52,24 @@ export class NgbModalWindow implements OnInit,
 
   @Output('dismiss') dismissEvent = new EventEmitter();
 
-  constructor(@Inject(DOCUMENT) private _document: any, private _elRef: ElementRef<HTMLElement>) {}
-
-  backdropClick($event): void {
-    if (this.backdrop === true && this._elRef.nativeElement === $event.target) {
-      this.dismiss(ModalDismissReasons.BACKDROP_CLICK);
-    }
+  constructor(@Inject(DOCUMENT) private _document: any, private _elRef: ElementRef<HTMLElement>, zone: NgZone) {
+    zone.runOutsideAngular(() => {
+      fromEvent<KeyboardEvent>(this._elRef.nativeElement, 'keyup')
+          .pipe(
+              takeUntil(this.dismissEvent),
+              // tslint:disable-next-line:deprecation
+              filter(e => e.which === Key.Escape && this.keyboard))
+          .subscribe(event => requestAnimationFrame(() => {
+                       if (!event.defaultPrevented) {
+                         zone.run(() => this.dismiss(ModalDismissReasons.ESC));
+                       }
+                     }));
+    });
   }
 
-  escKey($event): void {
-    if (this.keyboard && !$event.defaultPrevented) {
-      this.dismiss(ModalDismissReasons.ESC);
+  backdropClick(event: MouseEvent): void {
+    if (this.backdrop === true && this._elRef.nativeElement === event.target) {
+      this.dismiss(ModalDismissReasons.BACKDROP_CLICK);
     }
   }
 

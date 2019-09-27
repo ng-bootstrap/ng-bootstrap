@@ -9,9 +9,11 @@ import {
   OnDestroy,
   ViewChild
 } from '@angular/core';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {async, ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
 import {NgbModalConfig} from './modal-config';
 import {NgbActiveModal, NgbModal, NgbModalModule, NgbModalRef} from './modal.module';
+import {createKeyEvent} from '../test/common';
+import {Key} from '../util/key';
 
 const NOOP = () => {};
 
@@ -341,25 +343,27 @@ describe('ngb-modal', () => {
            });
          }));
 
-      it('should dismiss modals on ESC in correct order', () => {
-        fixture.componentInstance.open('foo').result.catch(NOOP);
-        fixture.componentInstance.open('bar').result.catch(NOOP);
-        const ngbModalWindow1 = document.querySelectorAll('ngb-modal-window')[0];
-        const ngbModalWindow2 = document.querySelectorAll('ngb-modal-window')[1];
-        fixture.detectChanges();
-        expect(fixture.nativeElement).toHaveModal(['foo', 'bar']);
-        expect(document.activeElement).toBe(ngbModalWindow2);
+      it('should dismiss modals on ESC in correct order', fakeAsync(() => {
+           fixture.componentInstance.open('foo').result.catch(NOOP);
+           fixture.componentInstance.open('bar').result.catch(NOOP);
+           const ngbModalWindow1 = document.querySelectorAll('ngb-modal-window')[0];
+           const ngbModalWindow2 = document.querySelectorAll('ngb-modal-window')[1];
+           fixture.detectChanges();
+           expect(fixture.nativeElement).toHaveModal(['foo', 'bar']);
+           expect(document.activeElement).toBe(ngbModalWindow2);
 
-        (<DebugElement>getDebugNode(document.activeElement)).triggerEventHandler('keyup.esc', {});
-        fixture.detectChanges();
-        expect(fixture.nativeElement).toHaveModal(['foo']);
-        expect(document.activeElement).toBe(ngbModalWindow1);
+           ngbModalWindow2.dispatchEvent(createKeyEvent(Key.Escape));
+           tick(16);  // RAF in escape handling
+           fixture.detectChanges();
+           expect(fixture.nativeElement).toHaveModal(['foo']);
+           expect(document.activeElement).toBe(ngbModalWindow1);
 
-        (<DebugElement>getDebugNode(document.activeElement)).triggerEventHandler('keyup.esc', {});
-        fixture.detectChanges();
-        expect(fixture.nativeElement).not.toHaveModal();
-        expect(document.activeElement).toBe(document.body);
-      });
+           ngbModalWindow1.dispatchEvent(createKeyEvent(Key.Escape));
+           tick(16);  // RAF in escape handling
+           fixture.detectChanges();
+           expect(fixture.nativeElement).not.toHaveModal();
+           expect(document.activeElement).toBe(document.body);
+         }));
     });
 
     describe('backdrop options', () => {
@@ -570,29 +574,31 @@ describe('ngb-modal', () => {
 
     describe('keyboard options', () => {
 
-      it('should dismiss modals on ESC by default', () => {
-        fixture.componentInstance.open('foo').result.catch(NOOP);
-        fixture.detectChanges();
-        expect(fixture.nativeElement).toHaveModal('foo');
+      it('should dismiss modals on ESC by default', fakeAsync(() => {
+           fixture.componentInstance.open('foo').result.catch(NOOP);
+           fixture.detectChanges();
+           expect(fixture.nativeElement).toHaveModal('foo');
 
-        (<DebugElement>getDebugNode(document.querySelector('ngb-modal-window'))).triggerEventHandler('keyup.esc', {});
-        fixture.detectChanges();
-        expect(fixture.nativeElement).not.toHaveModal();
-      });
+           document.querySelector('ngb-modal-window').dispatchEvent(createKeyEvent(Key.Escape));
+           tick(16);  // RAF in escape handling
+           fixture.detectChanges();
+           expect(fixture.nativeElement).not.toHaveModal();
+         }));
 
-      it('should not dismiss modals on ESC when keyboard option is false', () => {
-        const modalInstance = fixture.componentInstance.open('foo', {keyboard: false});
-        fixture.detectChanges();
-        expect(fixture.nativeElement).toHaveModal('foo');
+      it('should not dismiss modals on ESC when keyboard option is false', fakeAsync(() => {
+           const modalInstance = fixture.componentInstance.open('foo', {keyboard: false});
+           fixture.detectChanges();
+           expect(fixture.nativeElement).toHaveModal('foo');
 
-        (<DebugElement>getDebugNode(document.querySelector('ngb-modal-window'))).triggerEventHandler('keyup.esc', {});
-        fixture.detectChanges();
-        expect(fixture.nativeElement).toHaveModal();
+           document.querySelector('ngb-modal-window').dispatchEvent(createKeyEvent(Key.Escape));
+           tick(16);  // RAF in escape handling
+           fixture.detectChanges();
+           expect(fixture.nativeElement).toHaveModal();
 
-        modalInstance.close();
-        fixture.detectChanges();
-        expect(fixture.nativeElement).not.toHaveModal();
-      });
+           modalInstance.close();
+           fixture.detectChanges();
+           expect(fixture.nativeElement).not.toHaveModal();
+         }));
 
       it('should not dismiss modals on ESC when default is prevented', () => {
         const modalInstance = fixture.componentInstance.open('foo', {keyboard: true});

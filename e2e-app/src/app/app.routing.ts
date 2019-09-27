@@ -15,6 +15,7 @@ import {TypeaheadFocusComponent} from './typeahead/focus/typeahead-focus.compone
 import {TimepickerNavigationComponent} from './timepicker/navigation/timepicker-navigation.component';
 import {TypeaheadValidationComponent} from './typeahead/validation/typeahead-validation.component';
 import {DropdownPositionComponent} from './dropdown/position/dropdown-position.component';
+import {ModalNestingComponent} from './modal/nesting/modal-nesting.component';
 
 
 export const routes: Routes = [
@@ -25,7 +26,10 @@ export const routes: Routes = [
       {path: 'autoclose', component: DatepickerAutoCloseComponent}
     ]
   },
-  {path: 'modal', children: [{path: 'focus', component: ModalFocusComponent}]},
+  {
+    path: 'modal',
+    children: [{path: 'focus', component: ModalFocusComponent}, {path: 'nesting', component: ModalNestingComponent}]
+  },
   {
     path: 'dropdown',
     children: [

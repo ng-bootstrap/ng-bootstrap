@@ -2,6 +2,8 @@ import {TestBed, ComponentFixture} from '@angular/core/testing';
 
 import {NgbModalWindow} from './modal-window';
 import {ModalDismissReasons} from './modal-dismiss-reasons';
+import {createKeyEvent} from '../test/common';
+import {Key} from '../util/key';
 
 describe('ngb-modal-dialog', () => {
 
@@ -105,7 +107,7 @@ describe('ngb-modal-dialog', () => {
         done();
       });
 
-      fixture.debugElement.triggerEventHandler('keyup.esc', {});
+      fixture.nativeElement.dispatchEvent(createKeyEvent(Key.Escape));
     });
   });
 
