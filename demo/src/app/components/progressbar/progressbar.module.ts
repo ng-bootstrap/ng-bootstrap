@@ -17,6 +17,8 @@ import { NgbdProgressbarShowValueModule } from './demos/showvalue/progressbar-sh
 import { NgbdProgressbarShowvalue } from './demos/showvalue/progressbar-showvalue';
 import { NgbdProgressbarStriped } from './demos/striped/progressbar-striped';
 import { NgbdProgressbarStripedModule } from './demos/striped/progressbar-striped.module';
+import { NgbdProgressbarTextTypes } from './demos/texttypes/progressbar-texttypes';
+import { NgbdProgressbarTextTypesModule } from './demos/texttypes/progressbar-texttypes.module';
 
 const DEMOS = {
   basic: {
@@ -24,6 +26,12 @@ const DEMOS = {
     type: NgbdProgressbarBasic,
     code: require('!!raw-loader!./demos/basic/progressbar-basic').default,
     markup: require('!!raw-loader!./demos/basic/progressbar-basic.html').default
+  },
+  texttypes: {
+    title: 'Contextual text progress bars',
+    type: NgbdProgressbarTextTypes,
+    code: require('!!raw-loader!./demos/texttypes/progressbar-texttypes').default,
+    markup: require('!!raw-loader!./demos/texttypes/progressbar-texttypes.html').default
   },
   showvalue: {
     title: 'Progress bars with current value labels',
@@ -78,7 +86,8 @@ export const ROUTES = [
     NgbdProgressbarStripedModule,
     NgbdProgressbarConfigModule,
     NgbdProgressbarLabelsModule,
-    NgbdProgressbarHeightModule
+    NgbdProgressbarHeightModule,
+    NgbdProgressbarTextTypesModule,
   ]
 })
 export class NgbdProgressbarModule {
