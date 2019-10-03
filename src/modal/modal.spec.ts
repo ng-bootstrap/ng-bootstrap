@@ -175,6 +175,7 @@ describe('ngb-modal', () => {
         modalInstance.close();
         fixture.detectChanges();
         expect(fixture.nativeElement).not.toHaveModal();
+        expect(modalInstance.componentInstance).toBe(undefined);
       });
 
       it('should open and close modal from inside', () => {
