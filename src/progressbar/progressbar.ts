@@ -44,7 +44,8 @@ export class NgbProgressbar {
   /**
    * The type of the progress bar.
    *
-   * Currently Bootstrap supports `"success"`, `"info"`, `"warning"` or `"danger"`.
+   * Supports types based on Bootstrap background color variants, like:
+   *  `"success"`, `"info"`, `"warning"`, `"danger"`, `"primary"`, `"secondary"`, `"dark"` and so on.
    */
   @Input() type: string;
 

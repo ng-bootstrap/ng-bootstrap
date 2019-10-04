@@ -9,5 +9,6 @@ describe('ngb-progressbar-config', () => {
     expect(config.animated).toBe(false);
     expect(config.type).toBeUndefined();
     expect(config.showValue).toBe(false);
+    expect(config.height).toBeUndefined();
   });
 });

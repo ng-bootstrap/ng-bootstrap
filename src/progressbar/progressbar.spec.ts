@@ -138,6 +138,10 @@ describe('ngb-progressbar', () => {
       fixture.componentInstance.type = 'info';
       fixture.detectChanges();
       expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('bg-info');
+
+      fixture.componentInstance.type = 'dark';
+      fixture.detectChanges();
+      expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('bg-dark');
     });
 
     it('accepts animated as normal attr', () => {
