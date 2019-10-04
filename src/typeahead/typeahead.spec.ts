@@ -630,6 +630,39 @@ describe('ngb-typeahead', () => {
            expect(fixture.componentInstance.model).toBeUndefined();
          });
        }));
+
+    it('should clear model on user input when the editable option is on and no search was triggered', async(() => {
+         const html = `
+            <form>
+              <input type="text" [(ngModel)]="model" name="control" required [ngbTypeahead]="findFilter" [editable]="false"/>
+            </form>`;
+         const fixture = createTestComponent(html);
+         fixture.whenStable().then(() => {
+           fixture.detectChanges();
+           const compiled = fixture.nativeElement;
+           expect(getNativeInput(compiled)).toHaveCssClass('ng-invalid');
+           expect(getNativeInput(compiled)).not.toHaveCssClass('ng-valid');
+
+           changeInput(compiled, 'one');
+           fixture.detectChanges();
+           expect(getNativeInput(compiled)).toHaveCssClass('ng-invalid');
+           expect(getNativeInput(compiled)).not.toHaveCssClass('ng-valid');
+           expect(fixture.componentInstance.model).toBeUndefined();
+
+           const event = createKeyDownEvent(Key.Enter);
+           getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
+           fixture.detectChanges();
+           expect(getNativeInput(compiled)).not.toHaveCssClass('ng-invalid');
+           expect(getNativeInput(compiled)).toHaveCssClass('ng-valid');
+           expect(fixture.componentInstance.model).toBe('one');
+
+           changeInput(compiled, '');
+           fixture.detectChanges();
+           expect(getNativeInput(compiled)).toHaveCssClass('ng-invalid');
+           expect(getNativeInput(compiled)).not.toHaveCssClass('ng-valid');
+           expect(fixture.componentInstance.model).toBeUndefined();
+         });
+       }));
   });
 
   describe('select event', () => {
@@ -945,6 +978,12 @@ class TestComponent {
         this.findOutput$ =
             merge(text$, this.focus$, clicks$).pipe(map(text => this._strings.filter(v => v.startsWith(text))));
         return this.findOutput$;
+      }
+
+  findFilter =
+      (text$: Observable<string>) => {
+        return text$.pipe(
+            filter(term => term.length > 1), map(text => this._strings.filter(v => v.indexOf(text) > -1)));
       }
 
   findAnywhere =
