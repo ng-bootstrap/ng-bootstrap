@@ -102,6 +102,9 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true
+            },
+            "ie": {
+              "tsConfig": "demo/tsconfig.ie.json"
             }
           }
         },
@@ -113,6 +116,9 @@
           "configurations": {
             "production": {
               "browserTarget": "demo:build:production"
+            },
+            "ie": {
+              "browserTarget": "demo:build:ie"
             }
           }
         },

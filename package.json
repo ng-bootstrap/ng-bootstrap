@@ -15,6 +15,7 @@
     "tdd": "yarn ngb:tdd",
     "e2e": "yarn e2e-app:lint && yarn ngb:e2e && yarn demo:e2e",
     "demo": "yarn demo:docs && yarn demo:stackblitzes && yarn demo:serve",
+    "demo:ie": "yarn demo -c ie",
     "ssr": "yarn ssr-app:lint && yarn ssr-app:build && yarn ssr-app:e2e",
     "changelog": "conventional-changelog --preset angular --infile CHANGELOG.md --same-file --release-count 1",
     "check-format": "ts-node --project misc/tsconfig.json misc/check-format.ts",
