@@ -71,10 +71,16 @@ export function generateSelectBoxYears(date: NgbDate, minDate: NgbDate, maxDate:
     return [];
   }
 
-  const start = minDate && minDate.year || date.year - 10;
-  const end = maxDate && maxDate.year || date.year + 10;
+  const start = minDate ? Math.max(minDate.year, date.year - 500) : date.year - 10;
+  const end = maxDate ? Math.min(maxDate.year, date.year + 500) : date.year + 10;
 
-  return Array.from({length: end - start + 1}, (e, i) => start + i);
+  const length = end - start + 1;
+  const numbers = Array(length);
+  for (let i = 0; i < length; i++) {
+    numbers[i] = start + i;
+  }
+
+  return numbers;
 }
 
 export function nextMonthDisabled(calendar: NgbCalendar, date: NgbDate, maxDate: NgbDate) {
