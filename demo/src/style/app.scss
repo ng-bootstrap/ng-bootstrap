@@ -44,6 +44,9 @@ header.navbar {
 .sidebar {
   position: sticky;
   top: 1rem;
+  max-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 header.title {
