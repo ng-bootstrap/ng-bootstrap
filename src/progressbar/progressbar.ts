@@ -20,12 +20,12 @@ import {NgbProgressbarConfig} from './progressbar-config';
 })
 export class NgbProgressbar {
   /**
-   * The maximal value to be displayed in the progressbar.
+   * The maximal value to be displayed in the progress bar.
    */
   @Input() max: number;
 
   /**
-   * If `true`, the stripes on the progressbar are animated.
+   * If `true`, the stripes on the progress bar are animated.
    *
    * Takes effect only for browsers supporting CSS3 animations, and if `striped` is `true`.
    */
@@ -57,7 +57,7 @@ export class NgbProgressbar {
   @Input() value = 0;
 
   /**
-   * THe height of the progress bar.
+   * The height of the progress bar.
    *
    * Accepts any valid CSS height values, ex. `"2rem"`
    */
