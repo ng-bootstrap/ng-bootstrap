@@ -41,7 +41,6 @@ export class NgbToastHeader {
     'aria-atomic': 'true',
     '[class.toast]': 'true',
     '[class.show]': 'true',
-    '[class.autohide]': 'autohide',
   },
   template: `
     <ng-template #headerTpl>
