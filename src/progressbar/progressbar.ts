@@ -23,6 +23,8 @@ export class NgbProgressbar {
 
   /**
    * The maximal value to be displayed in the progress bar.
+   *
+   * Should be a positive number. Will default to 100 otherwise.
    */
   @Input()
   set max(max: number) {
