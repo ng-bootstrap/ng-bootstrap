@@ -8,7 +8,7 @@ import {NgbInputDatepicker} from './datepicker-input';
 import {NgbDatepickerDayView} from './datepicker-day-view';
 import {NgbDatepickerNavigationSelect} from './datepicker-navigation-select';
 
-export {NgbDatepicker, NgbDatepickerNavigateEvent} from './datepicker';
+export {NgbDatepicker, NgbDatepickerNavigateEvent, NgbDatepickerState} from './datepicker';
 export {NgbInputDatepicker} from './datepicker-input';
 export {NgbCalendar, NgbPeriod, NgbCalendarGregorian} from './ngb-calendar';
 export {NgbCalendarIslamicCivil} from './hijri/ngb-calendar-islamic-civil';
@@ -28,6 +28,7 @@ export {NgbDateAdapter} from './adapters/ngb-date-adapter';
 export {NgbDateNativeAdapter} from './adapters/ngb-date-native-adapter';
 export {NgbDateNativeUTCAdapter} from './adapters/ngb-date-native-utc-adapter';
 export {NgbDateParserFormatter} from './ngb-date-parser-formatter';
+export {NgbDatepickerKeyboardService} from './datepicker-keyboard-service';
 
 @NgModule({
   declarations: [

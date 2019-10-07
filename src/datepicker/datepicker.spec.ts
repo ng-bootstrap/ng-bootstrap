@@ -6,14 +6,16 @@ import {Component, TemplateRef, DebugElement} from '@angular/core';
 import {By} from '@angular/platform-browser';
 import {FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators} from '@angular/forms';
 
+import {NgbCalendar} from './ngb-calendar';
 import {NgbDatepickerModule, NgbDatepickerNavigateEvent} from './datepicker.module';
 import {NgbDate} from './ngb-date';
 import {NgbDatepickerConfig} from './datepicker-config';
-import {NgbDatepicker} from './datepicker';
+import {NgbDatepicker, NgbDatepickerState} from './datepicker';
 import {DayTemplateContext} from './datepicker-day-template-context';
 import {NgbDateStruct} from './ngb-date-struct';
 import {NgbDatepickerMonthView} from './datepicker-month-view';
 import {NgbDatepickerDayView} from './datepicker-day-view';
+import {NgbDatepickerKeyboardService} from './datepicker-keyboard-service';
 import {NgbDatepickerNavigationSelect} from './datepicker-navigation-select';
 import {NgbDatepickerNavigation} from './datepicker-navigation';
 
@@ -1193,6 +1195,82 @@ describe('ngb-datepicker', () => {
 
       const datepicker = fixture.componentInstance;
       expectSameValues(datepicker, config);
+    });
+  });
+
+  describe('NgbDatepicker', () => {
+
+    let mockState: NgbDatepickerState;
+    let dp: NgbDatepicker;
+    let keyboardService: NgbDatepickerKeyboardService;
+    const mockKeyboardService: NgbDatepickerKeyboardService = {
+      processKey(event: KeyboardEvent, datepicker: NgbDatepicker, calendar: NgbCalendar) {
+        mockState = datepicker.state;
+      }
+    };
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [NgbDatepickerModule],
+        providers: [{provide: NgbDatepickerKeyboardService, useValue: mockKeyboardService}]
+      });
+      const fixture = createTestComponent(
+          `<ngb-datepicker [startDate]="date" [minDate]="minDate" [maxDate]="maxDate"></ngb-datepicker>`);
+      fixture.detectChanges();
+      keyboardService = TestBed.get(NgbDatepickerKeyboardService);
+      dp = <NgbDatepicker>fixture.debugElement.query(By.directive(NgbDatepicker)).componentInstance;
+    });
+
+    it('should provide an defensive copy of minDate', () => {
+      dp.onKeyDown(<KeyboardEvent>{});
+      expect(mockState.firstDate).toEqual(NgbDate.from({year: 2016, month: 8, day: 1}));
+      expect(mockState.lastDate).toEqual(NgbDate.from({year: 2016, month: 8, day: 31}));
+      expect(mockState.minDate).toEqual(NgbDate.from({year: 2010, month: 1, day: 1}));
+      expect(mockState.maxDate).toEqual(NgbDate.from({year: 2020, month: 12, day: 31}));
+      Object.assign(mockState, {minDate: undefined});
+      dp.onKeyDown(<KeyboardEvent>{});
+      expect(dp.model.minDate).toEqual(NgbDate.from({year: 2010, month: 1, day: 1}));
+    });
+
+    it('should provide an defensive copy of maxDate', () => {
+      dp.onKeyDown(<KeyboardEvent>{});
+      expect(mockState.firstDate).toEqual(NgbDate.from({year: 2016, month: 8, day: 1}));
+      expect(mockState.lastDate).toEqual(NgbDate.from({year: 2016, month: 8, day: 31}));
+      expect(mockState.minDate).toEqual(NgbDate.from({year: 2010, month: 1, day: 1}));
+      expect(mockState.maxDate).toEqual(NgbDate.from({year: 2020, month: 12, day: 31}));
+      Object.assign(mockState, {maxDate: undefined});
+      dp.onKeyDown(<KeyboardEvent>{});
+      expect(dp.model.maxDate).toEqual(NgbDate.from({year: 2020, month: 12, day: 31}));
+    });
+
+    it('should provide an defensive copy of firstDate', () => {
+      dp.onKeyDown(<KeyboardEvent>{});
+      expect(mockState.firstDate).toEqual(NgbDate.from({year: 2016, month: 8, day: 1}));
+      expect(mockState.lastDate).toEqual(NgbDate.from({year: 2016, month: 8, day: 31}));
+      expect(mockState.minDate).toEqual(NgbDate.from({year: 2010, month: 1, day: 1}));
+      expect(mockState.maxDate).toEqual(NgbDate.from({year: 2020, month: 12, day: 31}));
+      Object.assign(mockState, {firstDate: undefined});
+      dp.onKeyDown(<KeyboardEvent>{});
+      expect(dp.model.firstDate).toEqual(NgbDate.from({year: 2016, month: 8, day: 1}));
+    });
+
+    it('should provide an defensive copy of lastDate', () => {
+      dp.onKeyDown(<KeyboardEvent>{});
+      expect(mockState.firstDate).toEqual(NgbDate.from({year: 2016, month: 8, day: 1}));
+      expect(mockState.lastDate).toEqual(NgbDate.from({year: 2016, month: 8, day: 31}));
+      expect(mockState.minDate).toEqual(NgbDate.from({year: 2010, month: 1, day: 1}));
+      expect(mockState.maxDate).toEqual(NgbDate.from({year: 2020, month: 12, day: 31}));
+      Object.assign(mockState, {lastDate: undefined});
+      dp.onKeyDown(<KeyboardEvent>{});
+      expect(dp.model.lastDate).toEqual(NgbDate.from({year: 2016, month: 8, day: 31}));
+    });
+
+    it('should provide an defensive copy of focusDate', () => {
+      dp.onKeyDown(<KeyboardEvent>{});
+      expect(mockState.focusDate).toEqual(NgbDate.from({year: 2016, month: 8, day: 1}));
+      Object.assign(mockState, {focusDate: undefined});
+      dp.onKeyDown(<KeyboardEvent>{});
+      expect(mockState.focusDate).toEqual(NgbDate.from({year: 2016, month: 8, day: 1}));
     });
   });
 });

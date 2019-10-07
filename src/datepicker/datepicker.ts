@@ -23,7 +23,7 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {NgbCalendar} from './ngb-calendar';
 import {NgbDate} from './ngb-date';
 import {NgbDatepickerService} from './datepicker-service';
-import {NgbDatepickerKeyMapService} from './datepicker-keymap-service';
+import {NgbDatepickerKeyboardService} from './datepicker-keyboard-service';
 import {DatepickerViewModel, NavigationEvent} from './datepicker-view-model';
 import {DayTemplateContext} from './datepicker-day-template-context';
 import {NgbDatepickerConfig} from './datepicker-config';
@@ -59,6 +59,37 @@ export interface NgbDatepickerNavigateEvent {
    * @since 4.1.0
    */
   preventDefault: () => void;
+}
+
+/**
+ * An object that represents a part of the state of the datepicker.
+ * Required to override datepicker services i.e. the datepicker-keyboard-service.
+ */
+export interface NgbDatepickerState {
+  /**
+   * The minDate provided as input.
+   */
+  readonly minDate: NgbDate;
+
+  /**
+   * The maxDate provided as input.
+   */
+  readonly maxDate: NgbDate;
+
+  /**
+   * The first date of current month.
+   */
+  readonly firstDate: NgbDate;
+
+  /**
+   * The last date of current month.
+   */
+  readonly lastDate: NgbDate;
+
+  /**
+   * The focused date.
+   */
+  readonly focusDate?: NgbDate;
 }
 
 /**
@@ -117,11 +148,12 @@ export interface NgbDatepickerNavigateEvent {
 
     <ng-template [ngTemplateOutlet]="footerTemplate"></ng-template>
   `,
-  providers: [NGB_DATEPICKER_VALUE_ACCESSOR, NgbDatepickerService, NgbDatepickerKeyMapService]
+  providers: [NGB_DATEPICKER_VALUE_ACCESSOR, NgbDatepickerService]
 })
 export class NgbDatepicker implements OnDestroy,
     OnChanges, OnInit, AfterViewInit, ControlValueAccessor {
   model: DatepickerViewModel;
+  publicState: NgbDatepickerState = Object.create({});
 
   @ViewChild('months', {static: true}) private _monthsEl: ElementRef<HTMLElement>;
   private _controlValue: NgbDate;
@@ -246,8 +278,8 @@ export class NgbDatepicker implements OnDestroy,
   onTouched = () => {};
 
   constructor(
-      private _keyMapService: NgbDatepickerKeyMapService, public _service: NgbDatepickerService,
-      private _calendar: NgbCalendar, public i18n: NgbDatepickerI18n, config: NgbDatepickerConfig,
+      public _service: NgbDatepickerService, private _calendar: NgbCalendar, public i18n: NgbDatepickerI18n,
+      config: NgbDatepickerConfig, private _keyboardService: NgbDatepickerKeyboardService,
       private _cd: ChangeDetectorRef, private _elementRef: ElementRef<HTMLElement>,
       private _ngbDateAdapter: NgbDateAdapter<any>, private _ngZone: NgZone) {
     ['dayTemplate', 'dayTemplateData', 'displayMonths', 'firstDayOfWeek', 'footerTemplate', 'markDisabled', 'minDate',
@@ -297,6 +329,30 @@ export class NgbDatepicker implements OnDestroy,
       _cd.markForCheck();
     });
   }
+
+  /**
+   *  Returns a copy of the state of the datepicker.
+   */
+  get state(): NgbDatepickerState {
+    Object.assign(this.publicState, {
+      maxDate: this.model.maxDate,
+      minDate: this.model.minDate,
+      firstDate: this.model.firstDate,
+      lastDate: this.model.lastDate,
+      focusDate: this.model.focusDate,
+    });
+    return this.publicState;
+  }
+
+  /**
+   *  Focuses on given date.
+   */
+  focusDate(date: NgbDateStruct): void { this._service.focus(NgbDate.from(date)); }
+
+  /**
+   *  Selects focused date.
+   */
+  focusSelect(): void { this._service.focusSelect(); }
 
   focus() {
     this._ngZone.onStable.asObservable().pipe(take(1)).subscribe(() => {
@@ -367,7 +423,7 @@ export class NgbDatepicker implements OnDestroy,
     this._service.select(date, {emitEvent: true});
   }
 
-  onKeyDown(event: KeyboardEvent) { this._keyMapService.processKey(event); }
+  onKeyDown(event: KeyboardEvent) { this._keyboardService.processKey(event, this, this._calendar); }
 
   onNavigateDateSelect(date: NgbDate) { this._service.open(date); }
 

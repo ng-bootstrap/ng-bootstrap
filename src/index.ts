@@ -60,8 +60,10 @@ export {
   NgbDatepickerConfig,
   NgbDatepickerI18n,
   NgbDatepickerI18nHebrew,
+  NgbDatepickerKeyboardService,
   NgbDatepickerModule,
   NgbDatepickerNavigateEvent,
+  NgbDatepickerState,
   NgbDateStruct,
   NgbInputDatepicker,
   NgbPeriod
