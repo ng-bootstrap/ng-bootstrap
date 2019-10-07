@@ -117,10 +117,6 @@ export class NgbDatepickerService {
     }
   }
 
-  focusMove(period?: NgbPeriod, number?: number) {
-    this.focus(this._calendar.getNext(this._state.focusDate, period, number));
-  }
-
   focusSelect() {
     if (isDateSelectable(this._state.focusDate, this._state)) {
       this.select(this._state.focusDate, {emitEvent: true});

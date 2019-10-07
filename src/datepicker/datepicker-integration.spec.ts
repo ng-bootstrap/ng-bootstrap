@@ -1,10 +1,14 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {Component, Injectable} from '@angular/core';
+import {Component, Injectable, Type} from '@angular/core';
+import {By} from '@angular/platform-browser';
 import {NgbDatepickerModule, NgbDateStruct} from './datepicker.module';
 import {NgbCalendar, NgbCalendarGregorian} from './ngb-calendar';
 import {NgbDate} from './ngb-date';
 import {getMonthSelect, getYearSelect} from '../test/datepicker/common';
 import {NgbDatepickerI18n, NgbDatepickerI18nDefault} from './datepicker-i18n';
+import {NgbDatepicker} from './datepicker';
+import {NgbDatepickerKeyboardService} from './datepicker-keyboard-service';
+import {Key} from '../util/key';
 
 describe('ngb-datepicker integration', () => {
 
@@ -105,6 +109,65 @@ describe('ngb-datepicker integration', () => {
       const monthNameElements = fixture.nativeElement.querySelectorAll('.ngb-dp-month-name');
       const monthNames = Array.from(monthNameElements).map((o: HTMLElement) => o.innerText.trim());
       expect(monthNames).toEqual(['A 8102', 'B 8102']);
+    });
+  });
+
+  describe('keyboard service', () => {
+
+    @Injectable()
+    class CustomKeyboardService extends NgbDatepickerKeyboardService {
+      processKey(event: KeyboardEvent, service: NgbDatepicker, calendar: NgbCalendar) {
+        const state = service.state;
+        // tslint:disable-next-line:deprecation
+        switch (event.which) {
+          case Key.PageUp:
+            service.focusDate(calendar.getNext(state.focusDate, event.altKey ? 'y' : 'm', -1));
+            break;
+          case Key.PageDown:
+            service.focusDate(calendar.getNext(state.focusDate, event.altKey ? 'y' : 'm', 1));
+            break;
+          default:
+            super.processKey(event, service, calendar);
+            return;
+        }
+        event.preventDefault();
+        event.stopPropagation();
+      }
+    }
+
+    let fixture: ComponentFixture<TestComponent>;
+    let dp: NgbDatepicker;
+    let ngbCalendar: NgbCalendar;
+    let startDate: NgbDateStruct = new NgbDate(2018, 1, 1);
+
+    beforeEach(() => {
+      TestBed.overrideComponent(TestComponent, {
+        set: {
+          template: `
+            <ngb-datepicker [startDate]="{year: 2018, month: 1}" [displayMonths]="1"></ngb-datepicker>`,
+          providers: [{provide: NgbDatepickerKeyboardService, useClass: CustomKeyboardService}]
+        }
+      });
+
+      fixture = TestBed.createComponent(TestComponent);
+      fixture.detectChanges();
+
+      dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
+      ngbCalendar = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbCalendar as Type<NgbCalendar>);
+
+      spyOn(ngbCalendar, 'getNext');
+    });
+
+    it('should allow customize keyboard navigation', () => {
+      dp.onKeyDown(<any>{which: Key.PageUp, altKey: true, preventDefault: () => {}, stopPropagation: () => {}});
+      expect(ngbCalendar.getNext).toHaveBeenCalledWith(startDate, 'y', -1);
+      dp.onKeyDown(<any>{which: Key.PageUp, shiftKey: true, preventDefault: () => {}, stopPropagation: () => {}});
+      expect(ngbCalendar.getNext).toHaveBeenCalledWith(startDate, 'm', -1);
+    });
+
+    it('should allow access to default keyboard navigation', () => {
+      dp.onKeyDown(<any>{which: Key.ArrowUp, altKey: true, preventDefault: () => {}, stopPropagation: () => {}});
+      expect(ngbCalendar.getNext).toHaveBeenCalledWith(startDate, 'd', -7);
     });
   });
 });

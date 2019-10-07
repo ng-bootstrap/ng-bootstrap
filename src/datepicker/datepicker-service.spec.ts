@@ -1,6 +1,6 @@
 import {TestBed} from '@angular/core/testing';
 import {NgbDatepickerService} from './datepicker-service';
-import {NgbCalendar, NgbCalendarGregorian} from './ngb-calendar';
+import {NgbCalendar, NgbCalendarGregorian, NgbPeriod} from './ngb-calendar';
 import {NgbDate} from './ngb-date';
 import {Subscription} from 'rxjs';
 import {DatepickerViewModel} from './datepicker-view-model';
@@ -15,6 +15,7 @@ describe('ngb-datepicker-service', () => {
   let mock: {onNext};
   let selectDate: NgbDate;
   let mockSelect: {onNext};
+  let focusMove: (NgbDate, NgbPeriod?, number?) => void;
 
   let subscriptions: Subscription[];
 
@@ -35,6 +36,8 @@ describe('ngb-datepicker-service', () => {
     subscriptions = [];
     model = undefined;
     selectDate = null;
+    focusMove = (focusDate: NgbDate, period?: NgbPeriod, number?: number) =>
+        service.focus(calendar.getNext(focusDate, period, number));
 
     mock = {onNext: () => {}};
     spyOn(mock, 'onNext');
@@ -306,12 +309,13 @@ describe('ngb-datepicker-service', () => {
 
     it(`should change the tabindex when changing the current month`, () => {
       service.displayMonths = 2;
-      service.focus(new NgbDate(2018, 3, 31));
+      const date = new NgbDate(2018, 3, 31);
+      service.focus(date);
 
       expect(getDay(5, 4, 0).tabindex).toEqual(0);   // 31 march in the first month block
       expect(getDay(5, 0, 1).tabindex).toEqual(-1);  // 31 march in the second month block
 
-      service.focusMove('d', 1);
+      focusMove(date, 'd', 1);
       expect(getDay(5, 4, 0).tabindex).toEqual(-1);  // 31 march in the first month block
       expect(getDay(5, 0, 1).tabindex).toEqual(-1);  // 31 march in the second month block
       expect(getDay(6, 4, 0).tabindex).toEqual(-1);  // 1st april in the first month block
@@ -321,12 +325,13 @@ describe('ngb-datepicker-service', () => {
 
     it(`should set the aria-label when changing the current month`, () => {
       service.displayMonths = 2;
-      service.focus(new NgbDate(2018, 3, 31));
+      const date = new NgbDate(2018, 3, 31);
+      service.focus(date);
 
       expect(getDay(5, 4, 0).ariaLabel).toEqual('Saturday, March 31, 2018');  // 31 march in the first month block
       expect(getDay(5, 0, 1).ariaLabel).toEqual('Saturday, March 31, 2018');  // 31 march in the second month block
 
-      service.focusMove('d', 1);
+      focusMove(date, 'd', 1);
       expect(getDay(5, 4, 0).ariaLabel).toEqual('Saturday, March 31, 2018');  // 31 march in the first month block
       expect(getDay(5, 0, 1).ariaLabel).toEqual('Saturday, March 31, 2018');  // 31 march in the second month block
       expect(getDay(6, 4, 0).ariaLabel).toEqual('Sunday, April 1, 2018');     // 1st april in the first month block
@@ -364,7 +369,7 @@ describe('ngb-datepicker-service', () => {
       expect(model.focusDate).toEqual(today);
 
       // focusMove
-      service.focusMove('d', 1);  // nope
+      focusMove(today, 'd', 1);  // nope
       expect(model.focusDate).toEqual(today);
 
       expect(mock.onNext).toHaveBeenCalledTimes(2);
@@ -1009,37 +1014,6 @@ describe('ngb-datepicker-service', () => {
       expect(mock.onNext).toHaveBeenCalledTimes(3);
     });
 
-    it(`should move focus with 'focusMove()'`, () => {
-      const date = new NgbDate(2017, 5, 5);
-
-      // days
-      service.focus(date);
-      service.focusMove('d', 1);
-      expect(model.focusDate).toEqual(new NgbDate(2017, 5, 6));
-
-      service.focus(date);
-      service.focusMove('d', -1);
-      expect(model.focusDate).toEqual(new NgbDate(2017, 5, 4));
-
-      // months
-      service.focus(date);
-      service.focusMove('m', 1);
-      expect(model.focusDate).toEqual(new NgbDate(2017, 6, 5));
-
-      service.focus(date);
-      service.focusMove('m', -1);
-      expect(model.focusDate).toEqual(new NgbDate(2017, 4, 5));
-
-      // years
-      service.focus(date);
-      service.focusMove('y', 1);
-      expect(model.focusDate).toEqual(new NgbDate(2018, 5, 5));
-
-      service.focus(date);
-      service.focusMove('y', -1);
-      expect(model.focusDate).toEqual(new NgbDate(2016, 5, 5));
-    });
-
     it(`should move focus when 'minDate' changes`, () => {
       service.focus(new NgbDate(2017, 5, 5));
       service.maxDate = new NgbDate(2017, 5, 1);
@@ -1324,7 +1298,8 @@ describe('ngb-datepicker-service', () => {
 
     it(`should update 'focused' flag and tabindex for day template`, () => {
       // off
-      service.focus(new NgbDate(2017, 5, 1));
+      const date = new NgbDate(2017, 5, 1);
+      service.focus(date);
       expect(getDayCtx(0).focused).toBeFalsy();
       expect(getDayCtx(1).focused).toBeFalsy();
       expect(getDay(0).tabindex).toEqual(0);
@@ -1338,7 +1313,7 @@ describe('ngb-datepicker-service', () => {
       expect(getDay(1).tabindex).toEqual(-1);
 
       // move
-      service.focusMove('d', 1);
+      focusMove(date, 'd', 1);
       expect(getDayCtx(0).focused).toBeFalsy();
       expect(getDayCtx(1).focused).toBeTruthy();
       expect(getDay(0).tabindex).toEqual(-1);

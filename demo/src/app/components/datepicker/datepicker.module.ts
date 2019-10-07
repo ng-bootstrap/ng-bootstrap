@@ -35,6 +35,8 @@ import { NgbdDatepickerOverviewComponent } from './overview/datepicker-overview.
 import { NgbdDatepickerOverviewDemoComponent } from './overview/demo/datepicker-overview-demo.component';
 import { NgbdDatepickerPositiontargetModule } from './demos/positiontarget/datepicker-position-target.module';
 import { NgbdDatepickerPositiontarget } from './demos/positiontarget/datepicker-positiontarget';
+import { NgbdDatepickerKeyboard } from './demos/keyboard/datepicker-keyboard';
+import { NgbdDatepickerKeyboardModule } from './demos/keyboard/datepicker-keyboard.module';
 
 const OVERVIEW = {
   'basic-usage': 'Basic Usage',
@@ -117,6 +119,12 @@ const DEMOS = {
     code: require('!!raw-loader!./demos/positiontarget/datepicker-positiontarget').default,
     markup: require('!!raw-loader!./demos/positiontarget/datepicker-positiontarget.html').default
   },
+  keyboard: {
+    title: 'Custom keyboard navigation',
+    type: NgbdDatepickerKeyboard,
+    code: require('!!raw-loader!./demos/keyboard/datepicker-keyboard').default,
+    markup: require('!!raw-loader!./demos/keyboard/datepicker-keyboard.html').default
+  },
   config: {
     title: 'Global configuration of datepickers',
     type: NgbdDatepickerConfig,
@@ -156,6 +164,7 @@ export const ROUTES = [
     NgbdDatepickerRangeModule,
     NgbdDatepickerRangePopupModule,
     NgbdDatepickerAdapterModule,
+    NgbdDatepickerKeyboardModule,
     ...DEMO_CALENDAR_MODULES
   ],
   declarations: [
