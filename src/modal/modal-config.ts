@@ -95,6 +95,15 @@ export interface NgbModalOptions {
 */
 @Injectable({providedIn: 'root'})
 export class NgbModalConfig implements NgbModalOptions {
+  ariaLabelledBy?: string;
   backdrop: boolean | 'static' = true;
+  beforeDismiss?: () => boolean | Promise<boolean>;
+  centered?: boolean;
+  container?: string;
+  injector?: Injector;
   keyboard = true;
+  scrollable?: boolean;
+  size?: 'sm' | 'lg' | 'xl';
+  windowClass?: string;
+  backdropClass?: string;
 }
