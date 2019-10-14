@@ -1,0 +1,9 @@
+.pagination{
+    display: block;
+    .page-item{
+        display: inline-block;
+        a{
+            display: table;
+        }
+    }
+}

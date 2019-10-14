@@ -166,7 +166,8 @@ export class NgbPaginationPrevious {
         </a>
       </li>
     </ul>
-  `
+  `,
+  styleUrls: ['./pagination.scss']
 })
 export class NgbPagination implements OnChanges {
   pageCount = 0;
