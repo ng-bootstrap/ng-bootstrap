@@ -35,6 +35,8 @@ describe('ngb-toast', () => {
       const body = getToastBodyElement(fixture);
 
       expect(toast).toBeDefined();
+      expect(toast).toHaveCssClass('toast');
+      expect(toast).toHaveCssClass('show');
       expect(header).toBeDefined();
       expect(body).toBeDefined();
     });
