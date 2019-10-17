@@ -94,16 +94,16 @@ export interface NgbModalOptions {
 * @since 3.1.0
 */
 @Injectable({providedIn: 'root'})
-export class NgbModalConfig implements NgbModalOptions {
-  ariaLabelledBy?: string;
+export class NgbModalConfig implements Required<NgbModalOptions> {
+  ariaLabelledBy: string;
   backdrop: boolean | 'static' = true;
-  beforeDismiss?: () => boolean | Promise<boolean>;
-  centered?: boolean;
-  container?: string;
-  injector?: Injector;
+  beforeDismiss: () => boolean | Promise<boolean>;
+  centered: boolean;
+  container: string;
+  injector: Injector;
   keyboard = true;
-  scrollable?: boolean;
-  size?: 'sm' | 'lg' | 'xl';
-  windowClass?: string;
-  backdropClass?: string;
+  scrollable: boolean;
+  size: 'sm' | 'lg' | 'xl';
+  windowClass: string;
+  backdropClass: string;
 }
