@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
+import { environment } from '../../../../environments/environment';
+
 import {Snippet} from '../../../shared/code/snippet';
 import { NgbdDemoList } from '../../shared';
 import { NgbdOverview } from '../../shared/overview';
@@ -177,6 +179,8 @@ export class NgbdDatepickerOverviewComponent {
       `,
     }),
   };
+
+  bootstrapVersion = environment.bootstrap;
 
   sections: NgbdOverview = {};
 
