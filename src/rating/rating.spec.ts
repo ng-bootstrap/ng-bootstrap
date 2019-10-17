@@ -484,6 +484,14 @@ describe('ngb-rating', () => {
       fixture.detectChanges();
       expect(getState(element.nativeElement)).toEqual([true, true, true, false, false]);
       expect(event.preventDefault).toHaveBeenCalled();
+
+      // any other -> 0
+      event = createKeyDownEvent(Key.Space);
+      const expectedState = getState(element.nativeElement);
+      element.triggerEventHandler('keydown', event);
+      fixture.detectChanges();
+      expect(getState(element.nativeElement)).toEqual(expectedState);
+      expect(event.preventDefault).not.toHaveBeenCalled();
     });
 
     it('should handle home/end keys', () => {
