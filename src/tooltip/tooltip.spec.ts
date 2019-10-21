@@ -5,7 +5,6 @@ import {By} from '@angular/platform-browser';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   TemplateRef,
   ViewChild,
@@ -163,6 +162,21 @@ describe('ngb-tooltip', () => {
       fixture.detectChanges();
       expect(getWindow(fixture.nativeElement)).toBeNull();
       expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
+    });
+
+    it('should propagate tooltipClass changes to the window', () => {
+      const fixture = createTestComponent(`<div ngbTooltip="Great tip!" [tooltipClass]="tooltipClass"></div>`);
+      const directive = fixture.debugElement.query(By.directive(NgbTooltip));
+
+      triggerEvent(directive, 'mouseenter');
+      fixture.detectChanges();
+      const windowEl = getWindow(fixture.nativeElement);
+      expect(windowEl).toHaveCssClass('my-tooltip-class');
+
+      fixture.componentInstance.tooltipClass = 'my-tooltip-class-2';
+      fixture.detectChanges();
+      expect(windowEl).not.toHaveCssClass('my-tooltip-class');
+      expect(windowEl).toHaveCssClass('my-tooltip-class-2');
     });
 
     it('should not open a tooltip if content is falsy', () => {
@@ -638,6 +652,7 @@ describe('ngb-tooltip', () => {
 export class TestComponent {
   name = 'World';
   show = true;
+  tooltipClass = 'my-tooltip-class';
 
   @ViewChild(NgbTooltip, {static: true}) tooltip: NgbTooltip;
 
