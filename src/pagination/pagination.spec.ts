@@ -440,7 +440,7 @@ describe('ngb-pagination', () => {
 
       fixture.componentInstance.page = 4;
       fixture.detectChanges();
-      expectPages(fixture.nativeElement, ['«', '1', '-...', '3', '+4', '5', '-...', '7', '»']);
+      expectPages(fixture.nativeElement, ['«', '1', '2', '3', '+4', '5', '6', '7', '»']);
 
       fixture.componentInstance.page = 5;
       fixture.detectChanges();
@@ -459,6 +459,60 @@ describe('ngb-pagination', () => {
       fixture.componentInstance.page = 5;
       fixture.detectChanges();
       expectPages(fixture.nativeElement, ['«', '1', '2', '3', '4', '+5', '6', '7', '»']);
+    });
+
+    it('should use page number instead of ellipsis when ellipsis hides a single page', () => {
+      const html = `<ngb-pagination [collectionSize]="120" [page]="page"
+        [maxSize]="5" [rotate]="true" [ellipses]="true"></ngb-pagination>`;
+      const fixture = createTestComponent(html);
+
+      fixture.componentInstance.page = 1;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['-«', '+1', '2', '3', '4', '5', '-...', '12', '»']);
+
+      fixture.componentInstance.page = 2;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['«', '1', '+2', '3', '4', '5', '-...', '12', '»']);
+
+      fixture.componentInstance.page = 3;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['«', '1', '2', '+3', '4', '5', '-...', '12', '»']);
+
+      fixture.componentInstance.page = 4;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['«', '1', '2', '3', '+4', '5', '6', '-...', '12', '»']);
+
+      fixture.componentInstance.page = 5;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['«', '1', '2', '3', '4', '+5', '6', '7', '-...', '12', '»']);
+
+      fixture.componentInstance.page = 6;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['«', '1', '-...', '4', '5', '+6', '7', '8', '-...', '12', '»']);
+
+      fixture.componentInstance.page = 7;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['«', '1', '-...', '5', '6', '+7', '8', '9', '-...', '12', '»']);
+
+      fixture.componentInstance.page = 8;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['«', '1', '-...', '6', '7', '+8', '9', '10', '11', '12', '»']);
+
+      fixture.componentInstance.page = 9;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['«', '1', '-...', '7', '8', '+9', '10', '11', '12', '»']);
+
+      fixture.componentInstance.page = 10;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['«', '1', '-...', '8', '9', '+10', '11', '12', '»']);
+
+      fixture.componentInstance.page = 11;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['«', '1', '-...', '8', '9', '10', '+11', '12', '»']);
+
+      fixture.componentInstance.page = 12;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['«', '1', '-...', '8', '9', '10', '11', '+12', '-»']);
     });
 
     it('should handle edge "maxSize" values', () => {

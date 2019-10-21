@@ -286,14 +286,26 @@ export class NgbPagination implements OnChanges {
   private _applyEllipses(start: number, end: number) {
     if (this.ellipses) {
       if (start > 0) {
-        if (start > 1) {
+        // The first page will always be included. If the displayed range
+        // starts after the third page, then add ellipsis. But if the range
+        // starts on the third page, then add the second page instead of
+        // an ellipsis, because the ellipsis would only hide a single page.
+        if (start > 2) {
           this.pages.unshift(-1);
+        } else if (start === 2) {
+          this.pages.unshift(2);
         }
         this.pages.unshift(1);
       }
       if (end < this.pageCount) {
-        if (end < (this.pageCount - 1)) {
+        // The last page will always be included. If the displayed range
+        // ends before the third-last page, then add ellipsis. But if the range
+        // ends on third-last page, then add the second-last page instead of
+        // an ellipsis, because the ellipsis would only hide a single page.
+        if (end < (this.pageCount - 2)) {
           this.pages.push(-1);
+        } else if (end === (this.pageCount - 2)) {
+          this.pages.push(this.pageCount - 1);
         }
         this.pages.push(this.pageCount);
       }
