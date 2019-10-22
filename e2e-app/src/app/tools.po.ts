@@ -34,8 +34,8 @@ export const offsetClick = async(el: ElementFinder, offset) => {
  * @param message to display in case of error
  */
 export const expectFocused = async(el: ElementFinder, message: string) => {
-  const focused = await browser.driver.switchTo().activeElement();
-  expect(await WebElement.equals(el.getWebElement(), focused)).toBeTruthy(message);
+  await browser.wait(
+      () => { return WebElement.equals(el.getWebElement(), browser.driver.switchTo().activeElement()); }, 0, message);
 };
 
 /**

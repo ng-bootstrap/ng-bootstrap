@@ -597,6 +597,8 @@ describe('ngb-modal', () => {
            expect(fixture.nativeElement).toHaveModal();
 
            modalInstance.close();
+           tick();
+
            fixture.detectChanges();
            expect(fixture.nativeElement).not.toHaveModal();
          }));
@@ -681,57 +683,63 @@ describe('ngb-modal', () => {
 
     describe('focus management', () => {
 
-      it('should return focus to previously focused element', () => {
-        fixture.detectChanges();
-        const openButtonEl = fixture.nativeElement.querySelector('button#open');
-        openButtonEl.focus();
-        openButtonEl.click();
-        fixture.detectChanges();
-        expect(fixture.nativeElement).toHaveModal('from button');
+      it('should return focus to previously focused element', fakeAsync(() => {
+           fixture.detectChanges();
+           const openButtonEl = fixture.nativeElement.querySelector('button#open');
+           openButtonEl.focus();
+           openButtonEl.click();
+           fixture.detectChanges();
+           expect(fixture.nativeElement).toHaveModal('from button');
 
-        fixture.componentInstance.close();
-        expect(fixture.nativeElement).not.toHaveModal();
-        expect(document.activeElement).toBe(openButtonEl);
-      });
+           fixture.componentInstance.close();
+           expect(fixture.nativeElement).not.toHaveModal();
+
+           tick();
+           expect(document.activeElement).toBe(openButtonEl);
+         }));
 
 
-      it('should return focus to body if no element focused prior to modal opening', () => {
-        const modalInstance = fixture.componentInstance.open('foo');
-        fixture.detectChanges();
-        expect(fixture.nativeElement).toHaveModal('foo');
-        expect(document.activeElement).toBe(document.querySelector('ngb-modal-window'));
+      it('should return focus to body if no element focused prior to modal opening', fakeAsync(() => {
+           const modalInstance = fixture.componentInstance.open('foo');
+           fixture.detectChanges();
+           expect(fixture.nativeElement).toHaveModal('foo');
+           expect(document.activeElement).toBe(document.querySelector('ngb-modal-window'));
 
-        modalInstance.close('ok!');
-        expect(document.activeElement).toBe(document.body);
-      });
+           modalInstance.close('ok!');
+           tick();
+           expect(document.activeElement).toBe(document.body);
+         }));
 
-      it('should return focus to body if the opening element is not stored as previously focused element', () => {
-        fixture.detectChanges();
-        const openElement = fixture.nativeElement.querySelector('#open-no-focus');
+      it('should return focus to body if the opening element is not stored as previously focused element',
+         fakeAsync(() => {
+           fixture.detectChanges();
+           const openElement = fixture.nativeElement.querySelector('#open-no-focus');
 
-        openElement.click();
-        fixture.detectChanges();
-        expect(fixture.nativeElement).toHaveModal('from non focusable element');
-        expect(document.activeElement).toBe(document.querySelector('ngb-modal-window'));
+           openElement.click();
+           fixture.detectChanges();
+           expect(fixture.nativeElement).toHaveModal('from non focusable element');
+           expect(document.activeElement).toBe(document.querySelector('ngb-modal-window'));
 
-        fixture.componentInstance.close();
-        expect(fixture.nativeElement).not.toHaveModal();
-        expect(document.activeElement).toBe(document.body);
-      });
+           fixture.componentInstance.close();
+           tick();
+           expect(fixture.nativeElement).not.toHaveModal();
+           expect(document.activeElement).toBe(document.body);
+         }));
 
-      it('should return focus to body if the opening element is stored but cannot be focused', () => {
-        fixture.detectChanges();
-        const openElement = fixture.nativeElement.querySelector('#open-no-focus-ie');
+      it('should return focus to body if the opening element is stored but cannot be focused', fakeAsync(() => {
+           fixture.detectChanges();
+           const openElement = fixture.nativeElement.querySelector('#open-no-focus-ie');
 
-        openElement.click();
-        fixture.detectChanges();
-        expect(fixture.nativeElement).toHaveModal('from non focusable element but stored as activeElement on IE');
-        expect(document.activeElement).toBe(document.querySelector('ngb-modal-window'));
+           openElement.click();
+           fixture.detectChanges();
+           expect(fixture.nativeElement).toHaveModal('from non focusable element but stored as activeElement on IE');
+           expect(document.activeElement).toBe(document.querySelector('ngb-modal-window'));
 
-        fixture.componentInstance.close();
-        expect(fixture.nativeElement).not.toHaveModal();
-        expect(document.activeElement).toBe(document.body);
-      });
+           fixture.componentInstance.close();
+           tick();
+           expect(fixture.nativeElement).not.toHaveModal();
+           expect(document.activeElement).toBe(document.body);
+         }));
 
       describe('initial focus', () => {
         it('should focus the proper specified element when [ngbAutofocus] is used', () => {
