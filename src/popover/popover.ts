@@ -274,9 +274,12 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
         this.close.bind(this), +this.openDelay, +this.closeDelay);
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges({ngbPopover, popoverTitle, disablePopover, popoverClass}: SimpleChanges) {
+    if (popoverClass && this.isOpen()) {
+      this._windowRef.instance.popoverClass = popoverClass.currentValue;
+    }
     // close popover if title and content become empty, or disablePopover set to true
-    if ((changes['ngbPopover'] || changes['popoverTitle'] || changes['disablePopover']) && this._isDisabled()) {
+    if ((ngbPopover || popoverTitle || disablePopover) && this._isDisabled()) {
       this.close();
     }
   }

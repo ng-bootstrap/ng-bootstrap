@@ -179,6 +179,21 @@ describe('ngb-popover', () => {
       expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
     });
 
+    it('should propagate popoverClass changes to the window', () => {
+      const fixture =
+          createTestComponent(`<div ngbPopover="Great tip!" popoverTitle="Title" [popoverClass]="popoverClass"></div>`);
+      const directive = fixture.debugElement.query(By.directive(NgbPopover));
+
+      triggerEvent(directive, 'click');
+      fixture.detectChanges();
+      const windowEl = getWindow(fixture.nativeElement);
+      expect(windowEl).not.toHaveCssClass('my-popover-class');
+
+      fixture.componentInstance.popoverClass = 'my-popover-class';
+      fixture.detectChanges();
+      expect(windowEl).toHaveCssClass('my-popover-class');
+    });
+
     it('should accept a template for the title and properly destroy it when closing', () => {
       const fixture = createTestComponent(`
           <ng-template #t>Hello, {{name}}! <destroyable-cmpt></destroyable-cmpt></ng-template>
@@ -727,6 +742,7 @@ export class TestComponent {
   show = true;
   title: string;
   placement: string;
+  popoverClass: string;
 
   @ViewChild(NgbPopover, {static: true}) popover: NgbPopover;
 
