@@ -64,7 +64,7 @@ export class NgbCalendarHebrew extends NgbCalendar {
     return day === 0 ? 7 : day;
   }
 
-  getWeekNumber(week: NgbDate[], firstDayOfWeek: number) {
+  getWeekNumber(week: readonly NgbDate[], firstDayOfWeek: number) {
     const date = week[week.length - 1];
     return Math.ceil(getDayNumberInHebrewYear(date) / 7);
   }

@@ -75,7 +75,7 @@ export abstract class NgbCalendar {
   /**
    * Returns the week number for a given week.
    */
-  abstract getWeekNumber(week: NgbDate[], firstDayOfWeek: number): number;
+  abstract getWeekNumber(week: readonly NgbDate[], firstDayOfWeek: number): number;
 
   /**
    * Returns the today's date.
@@ -139,7 +139,7 @@ export class NgbCalendarGregorian extends NgbCalendar {
     return day === 0 ? 7 : day;
   }
 
-  getWeekNumber(week: NgbDate[], firstDayOfWeek: number) {
+  getWeekNumber(week: readonly NgbDate[], firstDayOfWeek: number) {
     // in JS Date Sun=0, in ISO 8601 Sun=7
     if (firstDayOfWeek === 7) {
       firstDayOfWeek = 0;
