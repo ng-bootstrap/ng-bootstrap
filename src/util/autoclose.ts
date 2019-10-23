@@ -4,7 +4,7 @@ import {delay, filter, map, takeUntil, tap, withLatestFrom} from 'rxjs/operators
 import {Key} from './key';
 import {closest} from './util';
 
-const isContainedIn = (element: HTMLElement, array?: HTMLElement[]) =>
+const isContainedIn = (element: HTMLElement, array?: ReadonlyArray<HTMLElement>) =>
     array ? array.some(item => item.contains(element)) : false;
 
 const matchesSelectorIfAny = (element: HTMLElement, selector?: string) =>
@@ -20,7 +20,7 @@ if (typeof navigator !== 'undefined') {
 
 export function ngbAutoClose(
     zone: NgZone, document: any, type: boolean | 'inside' | 'outside', close: () => void, closed$: Observable<any>,
-    insideElements: HTMLElement[], ignoreElements?: HTMLElement[], insideSelector?: string) {
+    insideElements: ReadonlyArray<HTMLElement>, ignoreElements?: ReadonlyArray<HTMLElement>, insideSelector?: string) {
   // closing on ESC and outside clicks
   if (type) {
     zone.runOutsideAngular(() => {
