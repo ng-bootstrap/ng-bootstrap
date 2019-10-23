@@ -178,7 +178,7 @@ export class NgbAccordion implements AfterContentChecked {
    * For subsequent changes use methods like `expand()`, `collapse()`, etc. and
    * the `(panelChange)` event.
    */
-  @Input() activeIds: string | string[] = [];
+  @Input() activeIds: string | readonly string[] = [];
 
   /**
    *  If `true`, only one panel could be opened at a time.
