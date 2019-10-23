@@ -41,7 +41,8 @@ export function parseTriggers(triggers: string, aliases = DEFAULT_ALIASES): Trig
   return parsedTriggers;
 }
 
-export function observeTriggers(renderer: any, nativeElement: any, triggers: Trigger[], isOpenedFn: () => boolean) {
+export function observeTriggers(
+    renderer: any, nativeElement: any, triggers: ReadonlyArray<Trigger>, isOpenedFn: () => boolean) {
   return new Observable<boolean>(subscriber => {
     const listeners = [];
     const openFn = () => subscriber.next(true);
