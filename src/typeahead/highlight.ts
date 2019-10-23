@@ -38,7 +38,7 @@ export class NgbHighlight implements OnChanges {
    * The term or array of terms to be highlighted.
    * Since version `v4.2.0` term could be a `string[]`
    */
-  @Input() term: string | string[];
+  @Input() term: string | readonly string[];
 
   ngOnChanges(changes: SimpleChanges) {
     const result = toString(this.result);
