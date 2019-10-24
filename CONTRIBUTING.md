@@ -10,3 +10,4 @@ We are always looking for quality contributions and will be happy to accept your
   * your PR doesn't break the build; check the Travis-CI build status after opening a PR and push corrective commits if anything goes wrong
   * your commits conform to the conventions established [here](https://github.com/stevemao/conventional-changelog-angular/blob/master/convention.md)
   * your component follows all the conventions stated [here](https://github.com/ng-bootstrap/ng-bootstrap/wiki/Contributions%3A-Code-conventions)
+* Make sure to use proper commit messages while pushing your changes to the repo.
