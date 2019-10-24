@@ -73,7 +73,8 @@ export {
   NgbDropdownItem,
   NgbDropdownMenu,
   NgbDropdownModule,
-  NgbDropdownToggle
+  NgbDropdownToggle,
+  NgbNavbar
 } from './dropdown/dropdown.module';
 export {
   ModalDismissReasons,
