@@ -36,6 +36,16 @@ describe('Modal', () => {
     await expectFocused($('#open-modal-simple'), 'Should focus trigger button after closing');
   });
 
+  it('should focus body if opener is not focusable', async() => {
+    await page.openModal('disable');
+
+    // close
+    await sendKey(Key.ESCAPE);
+
+    // body should be focused
+    await expectFocused($('body'), 'Should focus body after closing');
+  });
+
   it('should focus modal window if there is no focusable content after opening', async() => {
     const modal = await page.openModal('simple');
 

@@ -52,8 +52,9 @@ export class NgbModalWindow implements OnInit,
 
   @Output('dismiss') dismissEvent = new EventEmitter();
 
-  constructor(@Inject(DOCUMENT) private _document: any, private _elRef: ElementRef<HTMLElement>, zone: NgZone) {
-    zone.runOutsideAngular(() => {
+  constructor(
+      @Inject(DOCUMENT) private _document: any, private _elRef: ElementRef<HTMLElement>, private _zone: NgZone) {
+    _zone.runOutsideAngular(() => {
       fromEvent<KeyboardEvent>(this._elRef.nativeElement, 'keyup')
           .pipe(
               takeUntil(this.dismissEvent),
@@ -61,7 +62,7 @@ export class NgbModalWindow implements OnInit,
               filter(e => e.which === Key.Escape && this.keyboard))
           .subscribe(event => requestAnimationFrame(() => {
                        if (!event.defaultPrevented) {
-                         zone.run(() => this.dismiss(ModalDismissReasons.ESC));
+                         _zone.run(() => this.dismiss(ModalDismissReasons.ESC));
                        }
                      }));
     });
@@ -97,7 +98,9 @@ export class NgbModalWindow implements OnInit,
     } else {
       elementToFocus = body;
     }
-    elementToFocus.focus();
-    this._elWithFocus = null;
+    this._zone.runOutsideAngular(() => {
+      setTimeout(() => elementToFocus.focus());
+      this._elWithFocus = null;
+    });
   }
 }
