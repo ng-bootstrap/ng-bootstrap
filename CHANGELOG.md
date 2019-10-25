@@ -1,3 +1,29 @@
+## [5.1.2](https://github.com/ng-bootstrap/ng-bootstrap/compare/5.1.1...5.1.2) (2019-10-25)
+
+
+### Bug Fixes
+
+* **checkbox:** remove autocomplete attribute ([#3377](https://github.com/ng-bootstrap/ng-bootstrap/issues/3377)) ([39fea1f](https://github.com/ng-bootstrap/ng-bootstrap/commit/39fea1f))
+* **datepicker:** add role="row" in weekday header for a11y ([#3361](https://github.com/ng-bootstrap/ng-bootstrap/issues/3361)) ([b16a0ca](https://github.com/ng-bootstrap/ng-bootstrap/commit/b16a0ca))
+* **datepicker:** add role="columnheader" in weekday header for a11y ([#3343](https://github.com/ng-bootstrap/ng-bootstrap/issues/3343)) ([8260198](https://github.com/ng-bootstrap/ng-bootstrap/commit/8260198))
+* **datepicker:** keep day/month when adding/removing month/year in ngb-calendar ([#3355](https://github.com/ng-bootstrap/ng-bootstrap/issues/3355)) ([22a1cb6](https://github.com/ng-bootstrap/ng-bootstrap/commit/22a1cb6)), closes [#3398](https://github.com/ng-bootstrap/ng-bootstrap/issues/3398)
+* **datepicker:** performance issues when huge min/max dates ([#3357](https://github.com/ng-bootstrap/ng-bootstrap/issues/3357)) ([22b4ca8](https://github.com/ng-bootstrap/ng-bootstrap/commit/22b4ca8)), closes [#3338](https://github.com/ng-bootstrap/ng-bootstrap/issues/3338)
+* **datepicker:** place active day above its siblings ([#3314](https://github.com/ng-bootstrap/ng-bootstrap/issues/3314)) ([eb26beb](https://github.com/ng-bootstrap/ng-bootstrap/commit/eb26beb))
+* **datepicker:** remove hardcoded bg-light ([#3351](https://github.com/ng-bootstrap/ng-bootstrap/issues/3351)) ([c7bc4d7](https://github.com/ng-bootstrap/ng-bootstrap/commit/c7bc4d7))
+* **datepicker:** restore focus correctly after closing popup ([#3371](https://github.com/ng-bootstrap/ng-bootstrap/issues/3371)) ([d8812b9](https://github.com/ng-bootstrap/ng-bootstrap/commit/d8812b9)), closes [#3317](https://github.com/ng-bootstrap/ng-bootstrap/issues/3317)
+* **datepicker:** retain focus on prev/next month navigation links ([#3381](https://github.com/ng-bootstrap/ng-bootstrap/issues/3381)) ([7a584ad](https://github.com/ng-bootstrap/ng-bootstrap/commit/7a584ad)), closes [#2780](https://github.com/ng-bootstrap/ng-bootstrap/issues/2780)
+* **dropdown:** export `NgbNavbar` correctly ([#3432](https://github.com/ng-bootstrap/ng-bootstrap/issues/3432)) ([693bcb6](https://github.com/ng-bootstrap/ng-bootstrap/commit/693bcb6))
+* **modal:** add missing fields to `NgbModalConfig` ([#3406](https://github.com/ng-bootstrap/ng-bootstrap/issues/3406)) ([7324083](https://github.com/ng-bootstrap/ng-bootstrap/commit/7324083))
+* **modal:** add typing for `modalRef.componentInstance` ([#2815](https://github.com/ng-bootstrap/ng-bootstrap/issues/2815)) ([f450a7c](https://github.com/ng-bootstrap/ng-bootstrap/commit/f450a7c)), closes [#2479](https://github.com/ng-bootstrap/ng-bootstrap/issues/2479)
+* **modal:** do no crash when accessing `componentInstance` ([#3367](https://github.com/ng-bootstrap/ng-bootstrap/issues/3367)) ([c60a012](https://github.com/ng-bootstrap/ng-bootstrap/commit/c60a012)), closes [#3366](https://github.com/ng-bootstrap/ng-bootstrap/issues/3366)
+* **modal:** don't close popup on ESC when closing nested components ([#3384](https://github.com/ng-bootstrap/ng-bootstrap/issues/3384)) ([75f0966](https://github.com/ng-bootstrap/ng-bootstrap/commit/75f0966)), closes [#3358](https://github.com/ng-bootstrap/ng-bootstrap/issues/3358)
+* **pagination:** don't hide single page number with ellipsis ([#3419](https://github.com/ng-bootstrap/ng-bootstrap/issues/3419)) ([410f6ea](https://github.com/ng-bootstrap/ng-bootstrap/commit/410f6ea)), closes [#1235](https://github.com/ng-bootstrap/ng-bootstrap/issues/1235)
+* **popover:** propagate 'popoverClass' change correctly ([#3420](https://github.com/ng-bootstrap/ng-bootstrap/issues/3420)) ([51bfc72](https://github.com/ng-bootstrap/ng-bootstrap/commit/51bfc72))
+* **tooltip:** propagate 'tooltipClass' change correctly ([48bdf62](https://github.com/ng-bootstrap/ng-bootstrap/commit/48bdf62)), closes [#3335](https://github.com/ng-bootstrap/ng-bootstrap/issues/3335)
+* **typeahead:** clear the model on input change when editable=false ([#3267](https://github.com/ng-bootstrap/ng-bootstrap/issues/3267)) ([176be06](https://github.com/ng-bootstrap/ng-bootstrap/commit/176be06)), closes [#3262](https://github.com/ng-bootstrap/ng-bootstrap/issues/3262)
+
+
+
 ## [4.2.2](https://github.com/ng-bootstrap/ng-bootstrap/compare/4.2.1...4.2.2) (2019-09-03)
 
 
