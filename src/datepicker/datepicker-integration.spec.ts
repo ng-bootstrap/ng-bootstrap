@@ -13,6 +13,7 @@ describe('ngb-datepicker integration', () => {
 
   it('should allow overriding datepicker calendar', () => {
 
+    @Injectable()
     class FixedTodayCalendar extends NgbCalendarGregorian {
       getToday() { return new NgbDate(2000, 7, 1); }
     }
