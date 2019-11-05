@@ -29,6 +29,8 @@ import { NgbdDatepickerPopup } from './demos/popup/datepicker-popup';
 import { NgbdDatepickerPopupModule } from './demos/popup/datepicker-popup.module';
 import { NgbdDatepickerRange } from './demos/range/datepicker-range';
 import { NgbdDatepickerRangeModule } from './demos/range/datepicker-range.module';
+import { NgbdDatepickerRangePopup } from './demos/range-popup/datepicker-range-popup';
+import { NgbdDatepickerRangePopupModule } from './demos/range-popup/datepicker-range-popup.module';
 import { NgbdDatepickerOverviewComponent } from './overview/datepicker-overview.component';
 import { NgbdDatepickerOverviewDemoComponent } from './overview/demo/datepicker-overview-demo.component';
 import { NgbdDatepickerPositiontargetModule } from './demos/positiontarget/datepicker-position-target.module';
@@ -72,6 +74,12 @@ const DEMOS = {
     type: NgbdDatepickerRange,
     code: require('!!raw-loader!./demos/range/datepicker-range').default,
     markup: require('!!raw-loader!./demos/range/datepicker-range.html').default
+  },
+  rangePopup: {
+    title: 'Range selection in a popup',
+    type: NgbdDatepickerRangePopup,
+    code: require('!!raw-loader!./demos/range-popup/datepicker-range-popup').default,
+    markup: require('!!raw-loader!./demos/range-popup/datepicker-range-popup.html').default
   },
   disabled: {
     title: 'Disabled datepicker',
@@ -146,6 +154,7 @@ export const ROUTES = [
     NgbdDatepickerPositiontargetModule,
     NgbdDatepickerMultipleModule,
     NgbdDatepickerRangeModule,
+    NgbdDatepickerRangePopupModule,
     NgbdDatepickerAdapterModule,
     ...DEMO_CALENDAR_MODULES
   ],
