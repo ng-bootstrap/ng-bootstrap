@@ -134,9 +134,8 @@
   <h4>Adapters</h4>
 
   <p>
-    You can also tell datepicker to use the native javascript date adapter (bundled with ng-bootstrap) as in the
-    <a routerLink="../examples" fragment="adapter">custom date adapter example</a>. For now
-    the adapter works only for the form integration, so for instance <code>(ngModelChange)</code>
+    You can also tell datepicker to use the native JavaScript date adapter (bundled with ng-bootstrap).
+    For now the adapter works only for the form integration, so for instance <code>(ngModelChange)</code>
     will return a native date object. All other APIs continue to use <code>NgbDateStruct</code>.
   </p>
 
@@ -144,7 +143,8 @@
 
   <p>
     You can also create your own adapters if necessary by extending and implementing the
-    <code>NgbDateAdapter</code> methods.
+    <code>NgbDateAdapter</code> methods, as in
+    <a routerLink="../examples" fragment="adapter">custom date adapter example</a>.
   </p>
 
   <ngbd-code [snippet]="snippets.adapter"></ngbd-code>
@@ -162,6 +162,12 @@
 
   <p>
     If the entered input value is invalid, the form model will contain the entered text.
+  </p>
+
+  <p>
+    You can also create your own parser or formatter if necessary by extending and implementing the
+    <code>NgbDateParserFormatter</code> methods, as in
+    <a routerLink="../examples" fragment="adapter">custom date parser formatter example</a>.
   </p>
 
 </ngbd-overview-section>
