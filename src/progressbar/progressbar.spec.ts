@@ -58,6 +58,48 @@ describe('ngb-progressbar', () => {
       expect(progressCmp.getPercentValue()).toBe(20);
     });
 
+    it('should calculate the percentage (custom max size of null)', () => {
+      progressCmp.max = null;
+
+      progressCmp.value = 25;
+      expect(progressCmp.getPercentValue()).toBe(25);
+    });
+
+    it('should calculate the percentage (custom max size of undefined)', () => {
+      progressCmp.max = undefined;
+
+      progressCmp.value = 25;
+      expect(progressCmp.getPercentValue()).toBe(25);
+    });
+
+    it('should calculate the percentage (custom max size of zero)', () => {
+      progressCmp.max = 0;
+
+      progressCmp.value = 25;
+      expect(progressCmp.getPercentValue()).toBe(25);
+    });
+
+    it('should calculate the percentage (custom negative max size)', () => {
+      progressCmp.max = -10;
+
+      progressCmp.value = 25;
+      expect(progressCmp.getPercentValue()).toBe(25);
+    });
+
+    it('should calculate the percentage (custom max size of positive infinity)', () => {
+      progressCmp.max = Number.POSITIVE_INFINITY;
+
+      progressCmp.value = 25;
+      expect(progressCmp.getPercentValue()).toBe(25);
+    });
+
+    it('should calculate the percentage (custom max size of negative infinity)', () => {
+      progressCmp.max = Number.NEGATIVE_INFINITY;
+
+      progressCmp.value = 25;
+      expect(progressCmp.getPercentValue()).toBe(25);
+    });
+
     it('should set the value to 0 for negative numbers', () => {
       progressCmp.value = -20;
       expect(progressCmp.getValue()).toBe(0);

@@ -1,5 +1,5 @@
 import {Component, Input, ChangeDetectionStrategy} from '@angular/core';
-import {getValueInRange} from '../util/util';
+import {getValueInRange, isNumber} from '../util/util';
 import {NgbProgressbarConfig} from './progressbar-config';
 
 /**
@@ -19,10 +19,19 @@ import {NgbProgressbarConfig} from './progressbar-config';
   `
 })
 export class NgbProgressbar {
+  private _max: number;
+
   /**
    * The maximal value to be displayed in the progress bar.
+   *
+   * Should be a positive number. Will default to 100 otherwise.
    */
-  @Input() max: number;
+  @Input()
+  set max(max: number) {
+    this._max = !isNumber(max) || max <= 0 ? 100 : max;
+  }
+
+  get max(): number { return this._max; }
 
   /**
    * If `true`, the stripes on the progress bar are animated.
