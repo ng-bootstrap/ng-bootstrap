@@ -353,13 +353,13 @@ describe('ngb-modal', () => {
            expect(fixture.nativeElement).toHaveModal(['foo', 'bar']);
            expect(document.activeElement).toBe(ngbModalWindow2);
 
-           ngbModalWindow2.dispatchEvent(createKeyEvent(Key.Escape));
+           ngbModalWindow2.dispatchEvent(createKeyEvent(Key.Escape, {type: 'keydown'}));
            tick(16);  // RAF in escape handling
            fixture.detectChanges();
            expect(fixture.nativeElement).toHaveModal(['foo']);
            expect(document.activeElement).toBe(ngbModalWindow1);
 
-           ngbModalWindow1.dispatchEvent(createKeyEvent(Key.Escape));
+           ngbModalWindow1.dispatchEvent(createKeyEvent(Key.Escape, {type: 'keydown'}));
            tick(16);  // RAF in escape handling
            fixture.detectChanges();
            expect(fixture.nativeElement).not.toHaveModal();
@@ -580,7 +580,7 @@ describe('ngb-modal', () => {
            fixture.detectChanges();
            expect(fixture.nativeElement).toHaveModal('foo');
 
-           document.querySelector('ngb-modal-window').dispatchEvent(createKeyEvent(Key.Escape));
+           document.querySelector('ngb-modal-window').dispatchEvent(createKeyEvent(Key.Escape, {type: 'keydown'}));
            tick(16);  // RAF in escape handling
            fixture.detectChanges();
            expect(fixture.nativeElement).not.toHaveModal();
@@ -591,7 +591,7 @@ describe('ngb-modal', () => {
            fixture.detectChanges();
            expect(fixture.nativeElement).toHaveModal('foo');
 
-           document.querySelector('ngb-modal-window').dispatchEvent(createKeyEvent(Key.Escape));
+           document.querySelector('ngb-modal-window').dispatchEvent(createKeyEvent(Key.Escape, {type: 'keydown'}));
            tick(16);  // RAF in escape handling
            fixture.detectChanges();
            expect(fixture.nativeElement).toHaveModal();

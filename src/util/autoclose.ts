@@ -43,7 +43,7 @@ export function ngbAutoClose(
         }
       };
 
-      const escapes$ = fromEvent<KeyboardEvent>(document, 'keyup')
+      const escapes$ = fromEvent<KeyboardEvent>(document, 'keydown')
                            .pipe(
                                takeUntil(closed$),
                                // tslint:disable-next-line:deprecation

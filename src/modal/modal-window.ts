@@ -55,7 +55,7 @@ export class NgbModalWindow implements OnInit,
   constructor(
       @Inject(DOCUMENT) private _document: any, private _elRef: ElementRef<HTMLElement>, private _zone: NgZone) {
     _zone.runOutsideAngular(() => {
-      fromEvent<KeyboardEvent>(this._elRef.nativeElement, 'keyup')
+      fromEvent<KeyboardEvent>(this._elRef.nativeElement, 'keydown')
           .pipe(
               takeUntil(this.dismissEvent),
               // tslint:disable-next-line:deprecation

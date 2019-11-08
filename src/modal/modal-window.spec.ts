@@ -107,7 +107,7 @@ describe('ngb-modal-dialog', () => {
         done();
       });
 
-      fixture.nativeElement.dispatchEvent(createKeyEvent(Key.Escape));
+      fixture.nativeElement.dispatchEvent(createKeyEvent(Key.Escape, {type: 'keydown'}));
     });
   });
 
