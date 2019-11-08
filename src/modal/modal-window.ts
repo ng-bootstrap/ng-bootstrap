@@ -13,7 +13,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import {fromEvent} from 'rxjs';
-import {filter, takeUntil} from 'rxjs/operators';
+import {filter, map, takeUntil, withLatestFrom} from 'rxjs/operators';
 
 import {getFocusableBoundaryElements} from '../util/focus-trap';
 import {Key} from '../util/key';
@@ -25,7 +25,6 @@ import {ModalDismissReasons} from './modal-dismiss-reasons';
     '[class]': '"modal fade show d-block" + (windowClass ? " " + windowClass : "")',
     'role': 'dialog',
     'tabindex': '-1',
-    '(click)': 'backdropClick($event)',
     '[attr.aria-modal]': 'true',
     '[attr.aria-labelledby]': 'ariaLabelledBy',
   },
@@ -65,13 +64,16 @@ export class NgbModalWindow implements OnInit,
                          _zone.run(() => this.dismiss(ModalDismissReasons.ESC));
                        }
                      }));
-    });
-  }
 
-  backdropClick(event: MouseEvent): void {
-    if (this.backdrop === true && this._elRef.nativeElement === event.target) {
-      this.dismiss(ModalDismissReasons.BACKDROP_CLICK);
-    }
+      const mouseDowns$ = fromEvent<MouseEvent>(this._elRef.nativeElement, 'mousedown')
+                              .pipe(
+                                  takeUntil(this.dismissEvent),
+                                  map(e => this.backdrop === true && this._elRef.nativeElement === e.target));
+
+      fromEvent<MouseEvent>(this._elRef.nativeElement, 'mouseup')
+          .pipe(takeUntil(this.dismissEvent), withLatestFrom(mouseDowns$), filter(([_, shouldClose]) => shouldClose))
+          .subscribe(() => this._zone.run(() => this.dismiss(ModalDismissReasons.BACKDROP_CLICK)));
+    });
   }
 
   dismiss(reason): void { this.dismissEvent.emit(reason); }

@@ -13,6 +13,7 @@ import {DatepickerFocusComponent} from './datepicker/focus/datepicker-focus.comp
 import {DropdownAutoCloseComponent} from './dropdown/autoclose/dropdown-autoclose.component';
 import {DropdownFocusComponent} from './dropdown/focus/dropdown-focus.component';
 import {DropdownPositionComponent} from './dropdown/position/dropdown-position.component';
+import {ModalAutoCloseComponent} from './modal/autoclose/modal-autoclose.component';
 import {ModalFocusComponent} from './modal/focus/modal-focus.component';
 import {ModalNestingComponent} from './modal/nesting/modal-nesting.component';
 import {ModalStackComponent} from './modal/stack/modal-stack.component';
@@ -35,6 +36,7 @@ import {TypeaheadValidationComponent} from './typeahead/validation/typeahead-val
     DropdownAutoCloseComponent,
     DropdownFocusComponent,
     DropdownPositionComponent,
+    ModalAutoCloseComponent,
     ModalFocusComponent,
     ModalNestingComponent,
     ModalStackComponent,
