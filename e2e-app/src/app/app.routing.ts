@@ -5,7 +5,10 @@ import {DatepickerAutoCloseComponent} from './datepicker/autoclose/datepicker-au
 import {DatepickerFocusComponent} from './datepicker/focus/datepicker-focus.component';
 import {DropdownAutoCloseComponent} from './dropdown/autoclose/dropdown-autoclose.component';
 import {DropdownFocusComponent} from './dropdown/focus/dropdown-focus.component';
+import {ModalAutoCloseComponent} from './modal/autoclose/modal-autoclose.component';
 import {ModalFocusComponent} from './modal/focus/modal-focus.component';
+import {ModalNestingComponent} from './modal/nesting/modal-nesting.component';
+import {ModalStackComponent} from './modal/stack/modal-stack.component';
 import {PopoverAutocloseComponent} from './popover/autoclose/popover-autoclose.component';
 import {TooltipAutocloseComponent} from './tooltip/autoclose/tooltip-autoclose.component';
 import {TooltipFocusComponent} from './tooltip/focus/tooltip-focus.component';
@@ -15,8 +18,6 @@ import {TypeaheadFocusComponent} from './typeahead/focus/typeahead-focus.compone
 import {TimepickerNavigationComponent} from './timepicker/navigation/timepicker-navigation.component';
 import {TypeaheadValidationComponent} from './typeahead/validation/typeahead-validation.component';
 import {DropdownPositionComponent} from './dropdown/position/dropdown-position.component';
-import {ModalNestingComponent} from './modal/nesting/modal-nesting.component';
-import {ModalStackComponent} from './modal/stack/modal-stack.component';
 
 
 export const routes: Routes = [
@@ -30,6 +31,7 @@ export const routes: Routes = [
   {
     path: 'modal',
     children: [
+      {path: 'autoclose', component: ModalAutoCloseComponent},
       {path: 'focus', component: ModalFocusComponent},
       {path: 'nesting', component: ModalNestingComponent},
       {path: 'stack', component: ModalStackComponent},

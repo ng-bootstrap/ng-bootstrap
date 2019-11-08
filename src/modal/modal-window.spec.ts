@@ -1,9 +1,6 @@
-import {TestBed, ComponentFixture} from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {NgbModalWindow} from './modal-window';
-import {ModalDismissReasons} from './modal-dismiss-reasons';
-import {createKeyEvent} from '../test/common';
-import {Key} from '../util/key';
 
 describe('ngb-modal-dialog', () => {
 
@@ -50,65 +47,4 @@ describe('ngb-modal-dialog', () => {
       expect(dialogEl.getAttribute('role')).toBe('document');
     });
   });
-
-  describe('dismiss', () => {
-
-    it('should dismiss on backdrop click by default', (done) => {
-      fixture.detectChanges();
-
-      fixture.componentInstance.dismissEvent.subscribe(($event) => {
-        expect($event).toBe(ModalDismissReasons.BACKDROP_CLICK);
-        done();
-      });
-
-      fixture.nativeElement.click();
-    });
-
-    it('should not dismiss on modal content click when there is active backdrop', (done) => {
-      fixture.detectChanges();
-      fixture.componentInstance.dismissEvent.subscribe(
-          () => { done.fail(new Error('Should not trigger dismiss event')); });
-
-      fixture.nativeElement.querySelector('.modal-content').click();
-      setTimeout(done, 200);
-    });
-
-    it('should ignore backdrop clicks when there is no backdrop', (done) => {
-      fixture.componentInstance.backdrop = false;
-      fixture.detectChanges();
-
-      fixture.componentInstance.dismissEvent.subscribe(($event) => {
-        expect($event).toBe(ModalDismissReasons.BACKDROP_CLICK);
-        done.fail(new Error('Should not trigger dismiss event'));
-      });
-
-      fixture.nativeElement.querySelector('.modal-dialog').click();
-      setTimeout(done, 200);
-    });
-
-    it('should ignore backdrop clicks when backdrop is "static"', (done) => {
-      fixture.componentInstance.backdrop = 'static';
-      fixture.detectChanges();
-
-      fixture.componentInstance.dismissEvent.subscribe(($event) => {
-        expect($event).toBe(ModalDismissReasons.BACKDROP_CLICK);
-        done.fail(new Error('Should not trigger dismiss event'));
-      });
-
-      fixture.nativeElement.querySelector('.modal-dialog').click();
-      setTimeout(done, 200);
-    });
-
-    it('should dismiss on esc press by default', (done) => {
-      fixture.detectChanges();
-
-      fixture.componentInstance.dismissEvent.subscribe(($event) => {
-        expect($event).toBe(ModalDismissReasons.ESC);
-        done();
-      });
-
-      fixture.nativeElement.dispatchEvent(createKeyEvent(Key.Escape, {type: 'keydown'}));
-    });
-  });
-
 });
