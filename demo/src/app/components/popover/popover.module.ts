@@ -26,6 +26,8 @@ import { NgbdPopoverTriggers } from './demos/triggers/popover-triggers';
 import { NgbdPopoverTriggersModule } from './demos/triggers/popover-triggers.module';
 import { NgbdPopoverVisibility } from './demos/visibility/popover-visibility';
 import { NgbdPopoverVisibilityModule } from './demos/visibility/popover-visibility.module';
+import { NgbdPopoverTarget} from './demos/custom-target/popover-target';
+import { NgbdPopoverTargetModule } from './demos/custom-target/popover-target.module';
 import { Routes } from '@angular/router';
 
 const DEMOS = {
@@ -58,6 +60,12 @@ const DEMOS = {
     type: NgbdPopoverTplwithcontext,
     code: require('!!raw-loader!./demos/tplwithcontext/popover-tplwithcontext').default,
     markup: require('!!raw-loader!./demos/tplwithcontext/popover-tplwithcontext.html').default
+  },
+  target: {
+    title: 'Custom target',
+    type: NgbdPopoverTarget,
+    code: require('!!raw-loader!./demos/custom-target/popover-target').default,
+    markup: require('!!raw-loader!./demos/custom-target/popover-target.html').default
   },
   delay: {
     title: 'Open and close delays',
@@ -116,6 +124,7 @@ export const ROUTES: Routes = [
     NgbdPopoverTriggersModule,
     NgbdPopoverAutocloseModule,
     NgbdPopoverVisibilityModule,
+    NgbdPopoverTargetModule,
     NgbdPopoverContainerModule,
     NgbdPopoverCustomClassModule,
     NgbdPopoverDelayModule,
