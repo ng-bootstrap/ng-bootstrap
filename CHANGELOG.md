@@ -1,3 +1,17 @@
+## [5.1.3](https://github.com/ng-bootstrap/ng-bootstrap/compare/5.1.2...5.1.3) (2019-11-08)
+
+
+### Bug Fixes
+
+* **autoclose:** fix popup components auto closing in Safari 13 ([#3454](https://github.com/ng-bootstrap/ng-bootstrap/issues/3454)) ([c08e3b4](https://github.com/ng-bootstrap/ng-bootstrap/commit/c08e3b4)), closes [#3446](https://github.com/ng-bootstrap/ng-bootstrap/issues/3446) [#3437](https://github.com/ng-bootstrap/ng-bootstrap/issues/3437) [#3412](https://github.com/ng-bootstrap/ng-bootstrap/issues/3412) [#3192](https://github.com/ng-bootstrap/ng-bootstrap/issues/3192) [#3145](https://github.com/ng-bootstrap/ng-bootstrap/issues/3145) [#3024](https://github.com/ng-bootstrap/ng-bootstrap/issues/3024)
+* **focustrap:** run focus trap event handlers outside Angular ([#3435](https://github.com/ng-bootstrap/ng-bootstrap/issues/3435)) ([d1752ac](https://github.com/ng-bootstrap/ng-bootstrap/commit/d1752ac))
+* **modal:** don't close modal on ESC if file dialog is open ([#3455](https://github.com/ng-bootstrap/ng-bootstrap/issues/3455)) ([5977dcb](https://github.com/ng-bootstrap/ng-bootstrap/commit/5977dcb)), closes [#3439](https://github.com/ng-bootstrap/ng-bootstrap/issues/3439)
+* **modal:** ignore accidental backdrop clicks ([cbf2b3c](https://github.com/ng-bootstrap/ng-bootstrap/commit/cbf2b3c)), closes [#3384](https://github.com/ng-bootstrap/ng-bootstrap/issues/3384) [#1950](https://github.com/ng-bootstrap/ng-bootstrap/issues/1950)
+* **modal:** trap focus correctly with stacked modals ([#3422](https://github.com/ng-bootstrap/ng-bootstrap/issues/3422)) ([5610abe](https://github.com/ng-bootstrap/ng-bootstrap/commit/5610abe)), closes [#3392](https://github.com/ng-bootstrap/ng-bootstrap/issues/3392)
+* **progressbar:** display progressbar correctly for invalid 'max' values ([#3400](https://github.com/ng-bootstrap/ng-bootstrap/issues/3400)) ([9a92667](https://github.com/ng-bootstrap/ng-bootstrap/commit/9a92667)), closes [#3386](https://github.com/ng-bootstrap/ng-bootstrap/issues/3386) [#3390](https://github.com/ng-bootstrap/ng-bootstrap/issues/3390)
+
+
+
 ## [5.1.2](https://github.com/ng-bootstrap/ng-bootstrap/compare/5.1.1...5.1.2) (2019-10-25)
 
 

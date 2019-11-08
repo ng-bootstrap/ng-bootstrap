@@ -1,6 +1,6 @@
 {
   "name": "@ng-bootstrap/ng-bootstrap",
-  "version": "5.1.2",
+  "version": "5.1.3",
   "description": "Angular powered Bootstrap",
   "keywords": [
     "angular",
@@ -21,6 +21,7 @@
     "table",
     "tabset",
     "timepicker",
+    "toast",
     "tooltip",
     "typeahead"
   ],
