@@ -4,7 +4,7 @@ import { NgbCarousel, NgbSlideEvent, NgbSlideEventSource } from '@ng-bootstrap/n
 
 @Component({selector: 'ngbd-carousel-pause', templateUrl: './carousel-pause.html'})
 export class NgbdCarouselPause {
-  images = [1, 2, 3, 4, 5, 6, 7].map(() => `https://picsum.photos/900/500?random&t=${Math.random()}`);
+  images = [62, 83, 466, 965, 982, 1043, 738].map((n) => `https://picsum.photos/id/${n}/900/500`);
 
   paused = false;
   unpauseOnArrow = false;
