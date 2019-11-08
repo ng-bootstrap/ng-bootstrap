@@ -132,6 +132,12 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
   @Input() triggers: string;
 
   /**
+   * Specifies the target element for the popover. If empty, uses host element.
+   * Only works with manual trigger.
+   */
+  @Input() target: HTMLElement;
+
+  /**
    * A selector specifying the element the popover should be appended to.
    *
    * Currently only supports `body`.
@@ -232,7 +238,8 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
       this._windowRef.setInput('popoverClass', this.popoverClass);
       this._windowRef.setInput('id', this._ngbPopoverWindowId);
 
-      this._renderer.setAttribute(this._elementRef.nativeElement, 'aria-describedby', this._ngbPopoverWindowId);
+      this._renderer.setAttribute(
+          this.target || this._elementRef.nativeElement, 'aria-describedby', this._ngbPopoverWindowId);
 
       if (this.container === 'body') {
         this._document.querySelector(this.container).appendChild(this._windowRef.location.nativeElement);
@@ -253,7 +260,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
       // Setting up popper and scheduling updates when zone is stable
       this._ngZone.runOutsideAngular(() => {
         this._positioning.createPopper({
-          hostElement: this._elementRef.nativeElement,
+          hostElement: this.target || this._elementRef.nativeElement,
           targetElement: this._windowRef !.location.nativeElement,
           placement: this.placement,
           appendToBody: this.container === 'body',
@@ -283,7 +290,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
    */
   close(animation = this.animation) {
     if (this._windowRef) {
-      this._renderer.removeAttribute(this._elementRef.nativeElement, 'aria-describedby');
+      this._renderer.removeAttribute(this.target || this._elementRef.nativeElement, 'aria-describedby');
       this._popupService.close(animation).subscribe(() => {
         this._windowRef = null;
         this._positioning.destroy();
