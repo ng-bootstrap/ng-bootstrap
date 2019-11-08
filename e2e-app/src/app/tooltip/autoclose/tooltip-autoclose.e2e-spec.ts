@@ -1,5 +1,5 @@
 import {Key} from 'protractor';
-import {sendKey, openUrl, rightClick} from '../../tools.po';
+import {sendKey, openUrl, rightClick, isBrowserActionSupported} from '../../tools.po';
 import {TooltipAutoClosePage} from './tooltip-autoclose.po';
 
 describe('Tooltip Autoclose', () => {
@@ -25,13 +25,15 @@ describe('Tooltip Autoclose', () => {
   beforeEach(async() => await openUrl('tooltip/autoclose'));
 
   it(`should not close tooltip on right clicks`, async() => {
-    await openTooltip(`Opening tooltip for right clicks`);
+    if (await isBrowserActionSupported()) {
+      await openTooltip(`Opening tooltip for right clicks`);
 
-    await rightClick(page.getTooltipContent());
-    await expectTooltipToBeOpen(`Tooltip should stay visible when right-clicking inside`);
+      await rightClick(page.getTooltipContent());
+      await expectTooltipToBeOpen(`Tooltip should stay visible when right-clicking inside`);
 
-    await page.rightClickOutside();
-    await expectTooltipToBeOpen(`Tooltip should stay visible when right-clicking outside`);
+      await page.rightClickOutside();
+      await expectTooltipToBeOpen(`Tooltip should stay visible when right-clicking outside`);
+    }
   });
 
   it(`should work when autoClose === true`, async() => {

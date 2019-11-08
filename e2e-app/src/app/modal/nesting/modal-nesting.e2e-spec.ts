@@ -64,7 +64,7 @@ describe('Modal nested components', () => {
 
     // open typeahead
     await page.getTypeaheadInput().click();
-    await sendKey(Key.SPACE);
+    await sendKey(' ');
     expect(await typeaheadPage.getDropdown().isPresent()).toBeTruthy(`Typeahead should be opened`);
     await expectFocused(page.getTypeaheadInput(), `Typeahead input should be focused`);
 

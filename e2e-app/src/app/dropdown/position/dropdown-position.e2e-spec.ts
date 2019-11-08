@@ -3,11 +3,14 @@ import {openUrl} from '../../tools.po';
 import {DropdownPage} from '../dropdown.po';
 import {DropdownPositionPage} from './dropdown-position.po';
 
-const roundLocation = function(location) {
-  location.x = Math.round(location.x);
-  location.y = Math.round(location.y);
+const compareLocation = function(location1, location2, msg) {
+  expect(Math.abs(location1.x - location2.x)).toBeLessThan(1, msg + '(x)');
+  expect(Math.abs(location1.y - location2.y)).toBeLessThan(1, msg + '(y)');
+  if (location1.width) {
+    expect(Math.abs(location1.width - location2.width)).toBeLessThan(1, msg + '(width)');
+    expect(Math.abs(location1.height - location2.height)).toBeLessThan(1, msg + '(height)');
+  }
 
-  return location;
 };
 
 ['#dropdown', '#dropdownWithTemplate'].forEach((selector) => {
@@ -27,16 +30,19 @@ const roundLocation = function(location) {
           .toBe('', 'The dropdown menu should be appended to the widget');
 
       // Get position in widget
-      const widgetLocation = roundLocation(await dropdownMenu.getLocation());
+      const widgetLocation = await dropdownMenu.getLocation();
 
       // Compare position to body
       await dropdownPositionPage.toggleContainer('body');
       expect(await dropdownPage.getDropdownMenuParent(dropdownMenu).element(by.xpath('..')).getTagName())
           .toBe('body', 'The dropdown menu should be appended to the body');
 
-      const bodyLocation = roundLocation(await dropdownMenu.getLocation());
-      expect(bodyLocation)
-          .toEqual(widgetLocation, `Positions should give the same results when placed on ${placement}`);
+      const bodyLocation = await dropdownMenu.getLocation();
+
+      compareLocation(
+          bodyLocation, widgetLocation, `Positions should give the same results when placed on ${placement}`);
+      // expect(bodyLocation)
+      //     .toEqual(widgetLocation, `Positions should give the same results when placed on ${placement}`);
 
       // Reset
       await dropdownPositionPage.toggleContainer(null);

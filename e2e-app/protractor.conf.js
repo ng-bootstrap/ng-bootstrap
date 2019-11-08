@@ -3,11 +3,90 @@
 
 const { SpecReporter } = require('jasmine-spec-reporter');
 
-const chromeArgs = process.env.TRAVIS ? [
-  '--headless',
-  '--no-sandbox',
-  '--window-size=1280x800'
-] : [];
+
+const chromeConfig = {
+  capability : {
+    browserName: 'chrome',
+    chromeOptions: {
+      args: process.env.TRAVIS ? [
+        '--headless',
+        '--no-sandbox',
+        '--window-size=1280x800'
+      ] : []
+    }
+  },
+  directConnect: true,
+  seleniumAddress: null
+};
+
+
+const firefoxConfig = {
+  capability : {
+    'browserName': 'firefox',
+    'moz:firefoxOptions': {
+      'args': ['--safe-mode']
+    }
+  },
+  directConnect: true,
+  seleniumAddress: null
+};
+
+const edgeConfig = {
+  capability : {
+    'browserName': "MicrosoftEdge",
+  },
+  directConnect: false,
+  seleniumAddress: 'http://localhost:4444/wd/hub'
+};
+
+const ieConfig = {
+  capability :  {
+      browserName: 'internet explorer',
+      ignoreProtectedModeSettings: true,
+      platform: 'ANY',
+      version: '11',
+      args: ['--silent', '--test-type=browser', '--lang=US', '--start-maximized'],
+      nativeEvents: false,
+      unexpectedAlertBehaviour: 'accept',
+      enablePersistentHover: false,
+      // requireWindowFocus: true,
+      'disable-popup-blocking': true,
+      w3c: true
+    },
+  directConnect: false,
+  seleniumAddress: 'http://localhost:4444/wd/hub'
+};
+
+// const capabilities = {
+//   browserName: 'chrome',
+//   chromeOptions: {
+//     args: chromeArgs
+//   }
+// };
+// let directConnect = true;
+// const seleniumAddress = 'http://localhost:4444/wd/hub';
+
+let multiCapabilities = [
+  // chrome.capability,
+  firefoxConfig.capability,
+  // edgeConfig.capability
+  // },
+  // {
+  //   browserName: 'internet explorer',
+  //   ignoreProtectedModeSettings: true,
+  //   platform: 'ANY',
+  //   version: '11',
+  //   args: ['--silent', '--test-type=browser', '--lang=US', '--start-maximized'],
+  //   nativeEvents: false,
+  //   unexpectedAlertBehaviour: 'accept',
+  //   enablePersistentHover: false,
+  //   // requireWindowFocus: true,
+  //   'disable-popup-blocking': true,
+  //   w3c: true
+  // }
+];
+
+
 
 const jasmineNodeOpts = {
   showColors: true,
@@ -23,13 +102,9 @@ exports.config = {
   specs: [
     './src/**/*.e2e-spec.ts'
   ],
-  capabilities: {
-    browserName: 'chrome',
-    chromeOptions: {
-      args: chromeArgs
-    }
-  },
-  directConnect: true,
+  multiCapabilities,
+  directConnect: firefoxConfig.directConnect,
+  seleniumAddress: firefoxConfig.seleniumAddress,
   baseUrl: 'http://localhost:4200/',
   framework: 'jasmine',
   jasmineNodeOpts,

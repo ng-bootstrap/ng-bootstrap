@@ -1,5 +1,5 @@
 import {Key, ElementFinder} from 'protractor';
-import {sendKey, openUrl, rightClick, offsetClick, expectFocused} from '../../tools.po';
+import {sendKey, openUrl, rightClick, offsetClick, expectFocused, isBrowserActionSupported} from '../../tools.po';
 import {DropdownAutoClosePage} from './dropdown-autoclose.po';
 import {DropdownPage} from '../dropdown.po';
 
@@ -32,15 +32,17 @@ containers.forEach((container) => {
     beforeEach(async() => await openUrl('dropdown/autoclose'));
 
     it(`should not close when right clicking`, async() => {
-      await page.selectAutoClose('true');
-      const dropdown = page.getDropdown('#dropdown');
+      if (await isBrowserActionSupported()) {
+        await page.selectAutoClose('true');
+        const dropdown = page.getDropdown('#dropdown');
 
-      await openDropdown(dropdown, `Opening dropdown for right clicks`);
-      await rightClick(page.getFirstItem(dropdown));
-      await expectDropdownToBeVisible(dropdown, `Dropdown should NOT be closed on right click inside`);
+        await openDropdown(dropdown, `Opening dropdown for right clicks`);
+        await rightClick(page.getFirstItem(dropdown));
+        await expectDropdownToBeVisible(dropdown, `Dropdown should NOT be closed on right click inside`);
 
-      await page.rightClickOutside();
-      await expectDropdownToBeVisible(dropdown, `Dropdown should NOT be closed on right click outside`);
+        await page.rightClickOutside();
+        await expectDropdownToBeVisible(dropdown, `Dropdown should NOT be closed on right click outside`);
+      }
     });
 
     it(`should work when autoClose === true`, async() => {
@@ -70,11 +72,13 @@ containers.forEach((container) => {
       await expectDropdownToBeHidden(dropdown, `Dropdown should be closed on Enter`);
 
       // space
-      await openDropdown(dropdown, `Opening dropdown for space`);
-      await sendKey(Key.ARROW_DOWN);
-      await expectFocused(page.getDropdownItem(1), `first dropdown item should be focused`);
-      await sendKey(Key.SPACE);
-      await expectDropdownToBeHidden(dropdown, `Dropdown should be closed on Space`);
+      if (await isBrowserActionSupported()) {
+        await openDropdown(dropdown, `Opening dropdown for space`);
+        await sendKey(Key.ARROW_DOWN);
+        await expectFocused(page.getDropdownItem(1), `first dropdown item should be focused`);
+        await sendKey(' ');
+        await expectDropdownToBeHidden(dropdown, `Dropdown should be closed on Space`);
+      }
     });
 
     it(`should't close when interacting with the form inside the dropdown menu`, async() => {
@@ -94,17 +98,18 @@ containers.forEach((container) => {
     });
 
     it(`should't close when clicking on the scrollbar`, async() => {
-      await page.selectAutoClose('true');
-      const dropdown = page.getDropdown('#dropdown');
+      if (await isBrowserActionSupported()) {
+        await page.selectAutoClose('true');
+        const dropdown = page.getDropdown('#dropdown');
 
-      await openDropdown(dropdown, `Opening dropdown`);
+        await openDropdown(dropdown, `Opening dropdown`);
 
-      const dropdownMenu = dropdownPage.getDropdownMenu('#dropdownMenuId');
-      const dropdownSize = await dropdownMenu.getSize();
+        const dropdownMenu = dropdownPage.getDropdownMenu('#dropdownMenuId');
+        const dropdownSize = await dropdownMenu.getSize();
 
-      offsetClick(dropdownMenu, {x: dropdownSize.width - 5, y: dropdownSize.height / 2});
-      await expectDropdownToBeVisible(dropdown, `Dropdown should be open`);
-
+        offsetClick(dropdownMenu, {x: dropdownSize.width - 5, y: dropdownSize.height / 2});
+        await expectDropdownToBeVisible(dropdown, `Dropdown should be open`);
+      }
     });
 
     it(`should work when autoClose === false`, async() => {
@@ -187,11 +192,13 @@ containers.forEach((container) => {
       await expectDropdownToBeHidden(dropdown, `Dropdown should be closed on Enter`);
 
       // space
-      await openDropdown(dropdown, `Opening dropdown for space`);
-      await sendKey(Key.ARROW_DOWN);
-      await expectFocused(page.getDropdownItem(1), `first dropdown item should be focused`);
-      await sendKey(Key.SPACE);
-      await expectDropdownToBeHidden(dropdown, `Dropdown should be closed on Space`);
+      if (await isBrowserActionSupported()) {
+        await openDropdown(dropdown, `Opening dropdown for space`);
+        await sendKey(Key.ARROW_DOWN);
+        await expectFocused(page.getDropdownItem(1), `first dropdown item should be focused`);
+        await sendKey(' ');
+        await expectDropdownToBeHidden(dropdown, `Dropdown should be closed on Space`);
+      }
     });
   });
 });

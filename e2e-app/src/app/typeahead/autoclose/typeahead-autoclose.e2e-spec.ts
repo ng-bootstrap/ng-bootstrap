@@ -1,4 +1,4 @@
-import {openUrl, expectFocused, sendKey, rightClick} from '../../tools.po';
+import {openUrl, expectFocused, sendKey, rightClick, isBrowserActionSupported} from '../../tools.po';
 import {TypeaheadAutoClosePage} from './typeahead-autoclose.po';
 import {Key} from 'protractor';
 
@@ -26,16 +26,18 @@ describe('Typeahead Autoclose', () => {
   beforeEach(async() => await openUrl('typeahead/autoclose'));
 
   it(`should not close typeahead on right clicks`, async() => {
-    await openTypeahead();
+    if (await isBrowserActionSupported()) {
+      await openTypeahead();
 
-    await rightClick(page.getTypeaheadInput());
-    await expectTypeaheadToBeOpen(`Dropdown should stay visible when right-clicking on the input`);
+      await rightClick(page.getTypeaheadInput());
+      await expectTypeaheadToBeOpen(`Dropdown should stay visible when right-clicking on the input`);
 
-    await rightClick(page.getDropdownItems().get(0));
-    await expectTypeaheadToBeOpen(`Dropdown should stay visible when right-clicking inside`);
+      await rightClick(page.getDropdownItems().get(0));
+      await expectTypeaheadToBeOpen(`Dropdown should stay visible when right-clicking inside`);
 
-    await page.rightClickOutside();
-    await expectTypeaheadToBeOpen(`Dropdown should stay visible when right-clicking outside`);
+      await page.rightClickOutside();
+      await expectTypeaheadToBeOpen(`Dropdown should stay visible when right-clicking outside`);
+    }
   });
 
   it(`should close typeahead on outside click and lose focus`, async() => {

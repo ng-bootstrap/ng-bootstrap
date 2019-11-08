@@ -203,6 +203,9 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true
+            },
+            "ie": {
+              "tsConfig": "e2e-app/tsconfig.ie.json"
             }
           }
         },
@@ -217,6 +220,9 @@
             "production": {
               "browserTarget": "e2e-app:build:production",
               "progress": false
+            },
+            "ie": {
+              "browserTarget": "e2e-app:build:ie"
             }
           }
         },

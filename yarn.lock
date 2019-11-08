@@ -7212,6 +7212,11 @@ protoduck@^5.0.1:
   dependencies:
     genfun "^5.0.0"
 
+protractor-firefox-support@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/protractor-firefox-support/-/protractor-firefox-support-1.5.0.tgz#2997aee1532f9f822171c62be70562f67ff8b4d5"
+  integrity sha512-cSZa7+Wy7km7G71fe9XFT/rpNsNi7w+eh/8v3i+Pa9GQcMJDEgIgM+Ce0iaMG+ArZ3dxC0wFURtK9PESOY7+PA==
+
 protractor@~5.4.0:
   version "5.4.2"
   resolved "https://registry.yarnpkg.com/protractor/-/protractor-5.4.2.tgz#329efe37f48b2141ab9467799be2d4d12eb48c13"

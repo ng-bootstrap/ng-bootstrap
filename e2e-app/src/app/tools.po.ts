@@ -1,4 +1,4 @@
-import {$, browser, Button, ElementFinder, Key, protractor, WebElement} from 'protractor';
+import {$, browser, Button, ElementFinder, protractor, WebElement} from 'protractor';
 
 /**
  * Sends keys to a currently focused element
@@ -7,7 +7,29 @@ import {$, browser, Button, ElementFinder, Key, protractor, WebElement} from 'pr
  */
 export const sendKey = async(...keys: string[]) => {
   const focused = await browser.driver.switchTo().activeElement();
-  await focused.sendKeys(Key.chord(...keys));
+  // console.log('focused', await focused.getAttribute('outerHTML'));
+  // await focused.sendKeys(Key.chord(...keys));
+  await focused.sendKeys(...keys);
+};
+
+export const isBrowserActionSupported = async() => {
+  let actualCapabilities = await browser.getCapabilities();
+  const browserName = actualCapabilities.get('browserName');
+  const hasSupport = browserName !== 'firefox';
+  if (!hasSupport) {
+    console.log('No browser.action support for browser', browserName);
+  }
+  return hasSupport;
+};
+
+export const isLogActionSupported = async() => {
+  let actualCapabilities = await browser.getCapabilities();
+  const browserName = actualCapabilities.get('browserName');
+  const hasSupport = browserName === 'chrome';
+  if (!hasSupport) {
+    console.log('No log action support for browser', browserName);
+  }
+  return hasSupport;
 };
 
 /**
