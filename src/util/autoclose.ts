@@ -18,16 +18,20 @@ if (typeof navigator !== 'undefined') {
   iOS = !!navigator.userAgent && /iPad|iPhone|iPod/.test(navigator.userAgent);
 }
 
+// setting 'ngbAutoClose' synchronously on iOS results in immediate popup closing
+// when tapping on the triggering element
+const wrapAsyncForiOS = fn => iOS ? () => setTimeout(() => fn(), 100) : fn;
+
 export function ngbAutoClose(
     zone: NgZone, document: any, type: boolean | 'inside' | 'outside', close: () => void, closed$: Observable<any>,
     insideElements: HTMLElement[], ignoreElements?: HTMLElement[], insideSelector?: string) {
   // closing on ESC and outside clicks
   if (type) {
-    zone.runOutsideAngular(() => {
+    zone.runOutsideAngular(wrapAsyncForiOS(() => {
 
-      const shouldCloseOnClick = (event: MouseEvent | TouchEvent) => {
+      const shouldCloseOnClick = (event: MouseEvent) => {
         const element = event.target as HTMLElement;
-        if ((event instanceof MouseEvent && event.button === 2) || isContainedIn(element, ignoreElements)) {
+        if (event.button === 2 || isContainedIn(element, ignoreElements)) {
           return false;
         }
         if (type === 'inside') {
@@ -48,16 +52,16 @@ export function ngbAutoClose(
 
       // we have to pre-calculate 'shouldCloseOnClick' on 'mousedown/touchstart',
       // because on 'mouseup/touchend' DOM nodes might be detached
-      const mouseDowns$ = fromEvent<MouseEvent>(document, iOS ? 'touchstart' : 'mousedown')
-                              .pipe(map(shouldCloseOnClick), takeUntil(closed$));
+      const mouseDowns$ =
+          fromEvent<MouseEvent>(document, 'mousedown').pipe(map(shouldCloseOnClick), takeUntil(closed$));
 
-      const closeableClicks$ = fromEvent<MouseEvent>(document, iOS ? 'touchend' : 'mouseup')
+      const closeableClicks$ = fromEvent<MouseEvent>(document, 'mouseup')
                                    .pipe(
-                                       withLatestFrom(mouseDowns$), filter(([_, shouldClose]) => shouldClose),
-                                       delay(iOS ? 16 : 0), takeUntil(closed$)) as Observable<MouseEvent>;
+                                       withLatestFrom(mouseDowns$), filter(([_, shouldClose]) => shouldClose), delay(0),
+                                       takeUntil(closed$)) as Observable<MouseEvent>;
 
 
       race<Event>([escapes$, closeableClicks$]).subscribe(() => zone.run(close));
-    });
+    }));
   }
 }
