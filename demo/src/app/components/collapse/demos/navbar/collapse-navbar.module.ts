@@ -6,7 +6,7 @@ import {NgbdCollapseNavbar} from './collapse-navbar';
 import {RouterModule} from '@angular/router';
 
 @NgModule({
-  imports: [BrowserModule, NgbModule, RouterModule],
+  imports: [BrowserModule, NgbModule, RouterModule.forRoot([])],
   declarations: [NgbdCollapseNavbar],
   exports: [NgbdCollapseNavbar],
   bootstrap: [NgbdCollapseNavbar]
