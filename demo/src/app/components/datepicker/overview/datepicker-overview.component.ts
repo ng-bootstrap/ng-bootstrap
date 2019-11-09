@@ -45,7 +45,7 @@ export class NgbdDatepickerOverviewComponent {
       lang: 'html',
       code: `
         <!-- inline -->
-        <ngb-datepicker (select)="onDateSelect($event)"></ngb-datepicker>
+        <ngb-datepicker (dateSelect)="onDateSelect($event)"></ngb-datepicker>
 
         <!-- in the popup -->
         <input type="text" ngbDatepicker (dateSelect)="onDateSelect($event)"/>

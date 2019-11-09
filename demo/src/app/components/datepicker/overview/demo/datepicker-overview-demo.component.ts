@@ -28,7 +28,7 @@ import {NgbCalendar, NgbDate, NgbDateNativeAdapter} from '@ng-bootstrap/ng-boots
     </ng-template>
 
     <ngb-datepicker
-      (select)="onDateSelection($event)"
+      (dateSelect)="onDateSelection($event)"
       [dayTemplate]="dayTemplate"
       [markDisabled]="markDisabled"
       [showWeekNumbers]="true"

@@ -273,7 +273,16 @@ export class NgbDatepicker implements OnDestroy,
    *
    * The payload of the event is currently selected `NgbDate`.
    */
-  @Output() select = new EventEmitter<NgbDate>();
+  @Output() dateSelect = new EventEmitter<NgbDate>();
+
+  /**
+   * An event emitted when user selects a date using keyboard or mouse.
+   *
+   * The payload of the event is currently selected `NgbDate`.
+   *
+   * @deprecated please use 'dateSelect' event
+   */
+  @Output() select = this.dateSelect;
 
   onChange = (_: any) => {};
   onTouched = () => {};
@@ -287,7 +296,7 @@ export class NgbDatepicker implements OnDestroy,
      'maxDate', 'navigation', 'outsideDays', 'showWeekdays', 'showWeekNumbers', 'startDate']
         .forEach(input => this[input] = config[input]);
 
-    _service.select$.pipe(takeUntil(this._destroyed$)).subscribe(date => { this.select.emit(date); });
+    _service.dateSelect$.pipe(takeUntil(this._destroyed$)).subscribe(date => { this.dateSelect.emit(date); });
 
     _service.model$.pipe(takeUntil(this._destroyed$)).subscribe(model => {
       const newDate = model.firstDate;

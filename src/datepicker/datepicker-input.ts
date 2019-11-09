@@ -440,7 +440,7 @@ export class NgbInputDatepicker implements OnChanges,
 
   private _subscribeForDatepickerOutputs(datepickerInstance: NgbDatepicker) {
     datepickerInstance.navigate.subscribe(navigateEvent => this.navigate.emit(navigateEvent));
-    datepickerInstance.select.subscribe(date => {
+    datepickerInstance.dateSelect.subscribe(date => {
       this.dateSelect.emit(date);
       if (this.autoClose === true || this.autoClose === 'inside') {
         this.close();

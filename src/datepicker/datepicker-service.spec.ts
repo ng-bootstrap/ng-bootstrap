@@ -48,7 +48,7 @@ describe('ngb-datepicker-service', () => {
     // subscribing
     subscriptions.push(
         service.model$.subscribe(mock.onNext), service.model$.subscribe(m => model = m),
-        service.select$.subscribe(mockSelect.onNext), service.select$.subscribe(d => selectDate = d));
+        service.dateSelect$.subscribe(mockSelect.onNext), service.dateSelect$.subscribe(d => selectDate = d));
   });
 
   afterEach(() => { subscriptions.forEach(s => s.unsubscribe()); });
