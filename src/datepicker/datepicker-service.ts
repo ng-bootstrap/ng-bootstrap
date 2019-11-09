@@ -25,7 +25,7 @@ import {NgbDatepickerI18n} from './datepicker-i18n';
 export class NgbDatepickerService {
   private _model$ = new Subject<DatepickerViewModel>();
 
-  private _select$ = new Subject<NgbDate>();
+  private _dateSelect$ = new Subject<NgbDate>();
 
   private _state: DatepickerViewModel = {
     disabled: false,
@@ -43,7 +43,10 @@ export class NgbDatepickerService {
 
   get model$(): Observable<DatepickerViewModel> { return this._model$.pipe(filter(model => model.months.length > 0)); }
 
-  get select$(): Observable<NgbDate> { return this._select$.pipe(filter(date => date !== null)); }
+  get dateSelect$(): Observable<NgbDate> { return this._dateSelect$.pipe(filter(date => date !== null)); }
+
+  /** @deprecated please use `dateSelect$` */
+  get select$(): Observable<NgbDate> { return this.dateSelect$; }
 
   set dayTemplateData(dayTemplateData: NgbDayTemplateData) {
     if (this._state.dayTemplateData !== dayTemplateData) {
@@ -138,7 +141,7 @@ export class NgbDatepickerService {
       }
 
       if (options.emitEvent && isDateSelectable(selectedDate, this._state)) {
-        this._select$.next(selectedDate);
+        this._dateSelect$.next(selectedDate);
       }
     }
   }

@@ -611,22 +611,22 @@ describe('ngb-datepicker', () => {
   });
 
   it('should emit select event when select date', () => {
-    const fixture =
-        createTestComponent(`<ngb-datepicker #dp [startDate]="date" (select)="onSelect($event)"></ngb-datepicker>`);
+    const fixture = createTestComponent(
+        `<ngb-datepicker #dp [startDate]="date" (dateSelect)="onDateSelect($event)"></ngb-datepicker>`);
 
-    spyOn(fixture.componentInstance, 'onSelect');
+    spyOn(fixture.componentInstance, 'onDateSelect');
     let dates = getDates(fixture.nativeElement);
     dates[11].click();
 
     fixture.detectChanges();
-    expect(fixture.componentInstance.onSelect).toHaveBeenCalledTimes(1);
+    expect(fixture.componentInstance.onDateSelect).toHaveBeenCalledTimes(1);
   });
 
   it('should emit select event twice when select same date twice', () => {
-    const fixture =
-        createTestComponent(`<ngb-datepicker #dp [startDate]="date" (select)="onSelect($event)"></ngb-datepicker>`);
+    const fixture = createTestComponent(
+        `<ngb-datepicker #dp [startDate]="date" (dateSelect)="onDateSelect($event)"></ngb-datepicker>`);
 
-    spyOn(fixture.componentInstance, 'onSelect');
+    spyOn(fixture.componentInstance, 'onDateSelect');
     let dates = getDates(fixture.nativeElement);
 
     dates[11].click();
@@ -635,15 +635,15 @@ describe('ngb-datepicker', () => {
     dates[11].click();
     fixture.detectChanges();
 
-    expect(fixture.componentInstance.onSelect).toHaveBeenCalledTimes(2);
+    expect(fixture.componentInstance.onDateSelect).toHaveBeenCalledTimes(2);
   });
 
   it('should emit select event twice when press enter key twice', () => {
-    const fixture =
-        createTestComponent(`<ngb-datepicker #dp [startDate]="date" (select)="onSelect($event)"></ngb-datepicker>`);
+    const fixture = createTestComponent(
+        `<ngb-datepicker #dp [startDate]="date" (dateSelect)="onDateSelect($event)"></ngb-datepicker>`);
     const datepicker = fixture.debugElement.query(By.directive(NgbDatepicker));
 
-    spyOn(fixture.componentInstance, 'onSelect');
+    spyOn(fixture.componentInstance, 'onDateSelect');
 
     focusDay();
     fixture.detectChanges();
@@ -653,15 +653,15 @@ describe('ngb-datepicker', () => {
 
     triggerKeyDown(getMonthContainer(datepicker), 13 /* enter */);
     fixture.detectChanges();
-    expect(fixture.componentInstance.onSelect).toHaveBeenCalledTimes(2);
+    expect(fixture.componentInstance.onDateSelect).toHaveBeenCalledTimes(2);
   });
 
   it('should emit select event twice when press space key twice', () => {
-    const fixture =
-        createTestComponent(`<ngb-datepicker #dp [startDate]="date" (select)="onSelect($event)"></ngb-datepicker>`);
+    const fixture = createTestComponent(
+        `<ngb-datepicker #dp [startDate]="date" (dateSelect)="onDateSelect($event)"></ngb-datepicker>`);
     const datepicker = fixture.debugElement.query(By.directive(NgbDatepicker));
 
-    spyOn(fixture.componentInstance, 'onSelect');
+    spyOn(fixture.componentInstance, 'onDateSelect');
 
     focusDay();
     fixture.detectChanges();
@@ -671,7 +671,7 @@ describe('ngb-datepicker', () => {
 
     triggerKeyDown(getMonthContainer(datepicker), 32 /* space */);
     fixture.detectChanges();
-    expect(fixture.componentInstance.onSelect).toHaveBeenCalledTimes(2);
+    expect(fixture.componentInstance.onDateSelect).toHaveBeenCalledTimes(2);
   });
 
   it('should insert an embedded view for footer when `footerTemplate` provided', () => {
@@ -1286,7 +1286,7 @@ class TestComponent {
   dayTemplateData = () => '!';
   markDisabled = (date: NgbDateStruct) => { return NgbDate.from(date).equals(new NgbDate(2016, 8, 22)); };
   onNavigate = () => {};
-  onSelect = () => {};
+  onDateSelect = () => {};
   getDate = () => ({year: 2016, month: 8});
   onPreventableNavigate = (event: NgbDatepickerNavigateEvent) => event.preventDefault();
 }
