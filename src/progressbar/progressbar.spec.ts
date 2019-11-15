@@ -37,6 +37,7 @@ describe('ngb-progressbar', () => {
       expect(progressCmp.max).toBe(defaultConfig.max);
       expect(progressCmp.animated).toBe(defaultConfig.animated);
       expect(progressCmp.striped).toBe(defaultConfig.striped);
+      expect(progressCmp.textType).toBe(defaultConfig.textType);
       expect(progressCmp.type).toBe(defaultConfig.type);
     });
 
@@ -186,6 +187,17 @@ describe('ngb-progressbar', () => {
       expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('bg-dark');
     });
 
+    it('accepts a custom text type', () => {
+      const html = '<ngb-progressbar [value]="value" [textType]="textType"></ngb-progressbar>';
+      const fixture = createTestComponent(html);
+
+      expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('text-light');
+
+      fixture.componentInstance.textType = 'info';
+      fixture.detectChanges();
+      expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('text-info');
+    });
+
     it('accepts animated as normal attr', () => {
       const html = '<ngb-progressbar [value]="value" [animated]="animated"></ngb-progressbar>';
       const fixture = createTestComponent(html);
@@ -271,6 +283,7 @@ describe('ngb-progressbar', () => {
       config.max = 1000;
       config.striped = true;
       config.animated = true;
+      config.textType = 'white';
       config.type = 'success';
     }));
 
@@ -282,6 +295,7 @@ describe('ngb-progressbar', () => {
       expect(progressbar.max).toBe(config.max);
       expect(progressbar.striped).toBe(config.striped);
       expect(progressbar.animated).toBe(config.animated);
+      expect(progressbar.textType).toBe(config.textType);
       expect(progressbar.type).toBe(config.type);
     });
   });
@@ -291,6 +305,7 @@ describe('ngb-progressbar', () => {
     config.max = 1000;
     config.striped = true;
     config.animated = true;
+    config.textType = 'light';
     config.type = 'success';
 
     beforeEach(() => {
@@ -306,6 +321,7 @@ describe('ngb-progressbar', () => {
       expect(progressbar.max).toBe(config.max);
       expect(progressbar.striped).toBe(config.striped);
       expect(progressbar.animated).toBe(config.animated);
+      expect(progressbar.textType).toBe(config.textType);
       expect(progressbar.type).toBe(config.type);
     });
   });
@@ -317,5 +333,7 @@ class TestComponent {
   max = 50;
   animated = true;
   striped = true;
+
+  textType = 'light';
   type = 'warning';
 }
