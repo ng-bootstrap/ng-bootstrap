@@ -147,7 +147,7 @@ export class NgbPaginationPrevious {
         </a>
       </li>
       <li *ngFor="let pageNumber of pages" class="page-item" [class.active]="pageNumber === page"
-        [class.disabled]="isEllipsis(pageNumber) || disabled">
+        [class.disabled]="isEllipsis(pageNumber) || disabled" [attr.aria-current]="(pageNumber === page ? 'page' : null)">
         <a *ngIf="isEllipsis(pageNumber)" class="page-link" [attr.tabindex]="(disabled ? '-1' : null)">
           <ng-template [ngTemplateOutlet]="tplEllipsis?.templateRef || ellipsis"
                        [ngTemplateOutletContext]="{disabled: true, currentPage: page}"></ng-template>
