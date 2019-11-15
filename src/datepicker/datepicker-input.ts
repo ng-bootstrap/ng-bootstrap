@@ -33,6 +33,7 @@ import {NgbDate} from './ngb-date';
 import {NgbDateParserFormatter} from './ngb-date-parser-formatter';
 import {NgbDateStruct} from './ngb-date-struct';
 import {NgbInputDatepickerConfig} from './datepicker-input-config';
+import {NgbDatepickerConfig} from './datepicker-config';
 
 const NGB_DATEPICKER_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -61,7 +62,10 @@ const NGB_DATEPICKER_VALIDATOR = {
     '(blur)': 'onBlur()',
     '[disabled]': 'disabled'
   },
-  providers: [NGB_DATEPICKER_VALUE_ACCESSOR, NGB_DATEPICKER_VALIDATOR, NgbDatepickerService]
+  providers: [
+    NGB_DATEPICKER_VALUE_ACCESSOR, NGB_DATEPICKER_VALIDATOR, NgbDatepickerService,
+    {provide: NgbDatepickerConfig, useExisting: NgbInputDatepickerConfig}
+  ],
 })
 export class NgbInputDatepicker implements OnChanges,
     OnDestroy, ControlValueAccessor, Validator {
