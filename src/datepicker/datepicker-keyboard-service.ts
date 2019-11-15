@@ -6,7 +6,7 @@ import {Key} from '../util/key';
 /**
  * A service that represents the keyboard navigation.
  *
- * The default navigation is documented in the overview.
+ * Default keyboard shortcuts [are documented in the overview](#/components/datepicker/overview#keyboard-shortcuts)
  */
 @Injectable({providedIn: 'root'})
 export class NgbDatepickerKeyboardService {
@@ -18,10 +18,10 @@ export class NgbDatepickerKeyboardService {
     // tslint:disable-next-line:deprecation
     switch (event.which) {
       case Key.PageUp:
-        datepicker.focusDate(calendar.getNext(state.focusDate, event.shiftKey ? 'y' : 'm', -1));
+        datepicker.focusDate(calendar.getPrev(state.focusedDate, event.shiftKey ? 'y' : 'm', 1));
         break;
       case Key.PageDown:
-        datepicker.focusDate(calendar.getNext(state.focusDate, event.shiftKey ? 'y' : 'm', 1));
+        datepicker.focusDate(calendar.getNext(state.focusedDate, event.shiftKey ? 'y' : 'm', 1));
         break;
       case Key.End:
         datepicker.focusDate(event.shiftKey ? state.maxDate : state.lastDate);
@@ -30,16 +30,16 @@ export class NgbDatepickerKeyboardService {
         datepicker.focusDate(event.shiftKey ? state.minDate : state.firstDate);
         break;
       case Key.ArrowLeft:
-        datepicker.focusDate(calendar.getNext(state.focusDate, 'd', -1));
+        datepicker.focusDate(calendar.getPrev(state.focusedDate, 'd', 1));
         break;
       case Key.ArrowUp:
-        datepicker.focusDate(calendar.getNext(state.focusDate, 'd', -calendar.getDaysPerWeek()));
+        datepicker.focusDate(calendar.getPrev(state.focusedDate, 'd', calendar.getDaysPerWeek()));
         break;
       case Key.ArrowRight:
-        datepicker.focusDate(calendar.getNext(state.focusDate, 'd', 1));
+        datepicker.focusDate(calendar.getNext(state.focusedDate, 'd', 1));
         break;
       case Key.ArrowDown:
-        datepicker.focusDate(calendar.getNext(state.focusDate, 'd', calendar.getDaysPerWeek()));
+        datepicker.focusDate(calendar.getNext(state.focusedDate, 'd', calendar.getDaysPerWeek()));
         break;
       case Key.Enter:
       case Key.Space:

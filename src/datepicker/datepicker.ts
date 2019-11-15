@@ -62,34 +62,35 @@ export interface NgbDatepickerNavigateEvent {
 }
 
 /**
- * An object that represents a part of the state of the datepicker.
- * Required to override datepicker services i.e. the datepicker-keyboard-service.
+ * An interface that represents the readonly public state of the datepicker.
+ *
+ * Accessible via the `datepicker.state` getter
  */
 export interface NgbDatepickerState {
   /**
-   * The minDate provided as input.
+   * The earliest date that can be displayed or selected
    */
   readonly minDate: NgbDate;
 
   /**
-   * The maxDate provided as input.
+   * The latest date that can be displayed or selected
    */
   readonly maxDate: NgbDate;
 
   /**
-   * The first date of current month.
+   * The first visible date of currently displayed months
    */
   readonly firstDate: NgbDate;
 
   /**
-   * The last date of current month.
+   * The last visible date of currently displayed months
    */
   readonly lastDate: NgbDate;
 
   /**
-   * The focused date.
+   * The date currently focused by the datepicker
    */
-  readonly focusDate?: NgbDate;
+  readonly focusedDate: NgbDate;
 }
 
 /**
@@ -340,7 +341,7 @@ export class NgbDatepicker implements OnDestroy,
   }
 
   /**
-   *  Returns a copy of the state of the datepicker.
+   *  Returns the readonly public state of the datepicker
    */
   get state(): NgbDatepickerState { return this._publicState; }
 

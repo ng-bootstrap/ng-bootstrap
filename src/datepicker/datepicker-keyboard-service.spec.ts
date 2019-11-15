@@ -15,7 +15,7 @@ describe('ngb-datepicker-keyboard-service', () => {
   let calendar: NgbCalendar;
   let mock: Partial<NgbDatepicker>;
   let processKey = function(e: KeyboardEvent) { service.processKey(e, mock as NgbDatepicker, calendar); };
-  let state: NgbDatepickerState = Object.assign({focusDate: {day: 1, month: 1, year: 2018}});
+  let state: NgbDatepickerState = Object.assign({focusedDate: {day: 1, month: 1, year: 2018}});
 
   beforeEach(() => {
     TestBed.configureTestingModule(
@@ -28,40 +28,43 @@ describe('ngb-datepicker-keyboard-service', () => {
     spyOn(mock, 'focusDate');
     spyOn(mock, 'focusSelect');
     spyOn(calendar, 'getNext');
+    spyOn(calendar, 'getPrev');
   });
 
   it('should be instantiated', () => { expect(service).toBeTruthy(); });
 
   it('should move focus by 1 day or 1 week with "Arrow" keys', () => {
     processKey(event(Key.ArrowUp));
-    expect(calendar.getNext).toHaveBeenCalledWith(state.focusDate, 'd', -7);
+    expect(calendar.getPrev).toHaveBeenCalledWith(state.focusedDate, 'd', 7);
 
     processKey(event(Key.ArrowDown));
-    expect(calendar.getNext).toHaveBeenCalledWith(state.focusDate, 'd', 7);
+    expect(calendar.getNext).toHaveBeenCalledWith(state.focusedDate, 'd', 7);
 
     processKey(event(Key.ArrowLeft));
-    expect(calendar.getNext).toHaveBeenCalledWith(state.focusDate, 'd', -1);
+    expect(calendar.getPrev).toHaveBeenCalledWith(state.focusedDate, 'd', 1);
 
     processKey(event(Key.ArrowRight));
-    expect(calendar.getNext).toHaveBeenCalledWith(state.focusDate, 'd', 1);
+    expect(calendar.getNext).toHaveBeenCalledWith(state.focusedDate, 'd', 1);
 
-    expect(calendar.getNext).toHaveBeenCalledTimes(4);
+    expect(calendar.getPrev).toHaveBeenCalledTimes(2);
+    expect(calendar.getNext).toHaveBeenCalledTimes(2);
   });
 
   it('should move focus by 1 month or year "PgUp" and "PageDown"', () => {
     processKey(event(Key.PageUp));
-    expect(calendar.getNext).toHaveBeenCalledWith(state.focusDate, 'm', -1);
+    expect(calendar.getPrev).toHaveBeenCalledWith(state.focusedDate, 'm', 1);
 
     processKey(event(Key.PageDown));
-    expect(calendar.getNext).toHaveBeenCalledWith(state.focusDate, 'm', 1);
+    expect(calendar.getNext).toHaveBeenCalledWith(state.focusedDate, 'm', 1);
 
     processKey(event(Key.PageUp, true));
-    expect(calendar.getNext).toHaveBeenCalledWith(state.focusDate, 'y', -1);
+    expect(calendar.getPrev).toHaveBeenCalledWith(state.focusedDate, 'y', 1);
 
     processKey(event(Key.PageDown, true));
-    expect(calendar.getNext).toHaveBeenCalledWith(state.focusDate, 'y', 1);
+    expect(calendar.getNext).toHaveBeenCalledWith(state.focusedDate, 'y', 1);
 
-    expect(calendar.getNext).toHaveBeenCalledTimes(4);
+    expect(calendar.getPrev).toHaveBeenCalledTimes(2);
+    expect(calendar.getNext).toHaveBeenCalledTimes(2);
   });
 
   it('should select focused date with "Space" and "Enter"', () => {

@@ -1265,12 +1265,12 @@ describe('ngb-datepicker', () => {
       expect(dp.model.lastDate).toEqual(NgbDate.from({year: 2016, month: 8, day: 31}));
     });
 
-    it('should provide an defensive copy of focusDate', () => {
+    it('should provide an defensive copy of focusedDate', () => {
       dp.onKeyDown(<KeyboardEvent>{});
-      expect(mockState.focusDate).toEqual(NgbDate.from({year: 2016, month: 8, day: 1}));
-      Object.assign(mockState, {focusDate: undefined});
+      expect(mockState.focusedDate).toEqual(NgbDate.from({year: 2016, month: 8, day: 1}));
+      Object.assign(mockState, {focusedDate: undefined});
       dp.onKeyDown(<KeyboardEvent>{});
-      expect(mockState.focusDate).toEqual(NgbDate.from({year: 2016, month: 8, day: 1}));
+      expect(dp.model.focusDate).toEqual(NgbDate.from({year: 2016, month: 8, day: 1}));
     });
   });
 });
