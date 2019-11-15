@@ -1,10 +1,5 @@
 import {Component, Injectable} from '@angular/core';
-import {
-  NgbCalendar,
-  NgbDatepicker,
-  NgbDatepickerKeyboardService,
-  NgbDateStruct
-} from '@ng-bootstrap/ng-bootstrap';
+import {NgbCalendar, NgbDatepicker, NgbDatepickerKeyboardService, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 
 const Key = {
   PageUp: 'PageUp',
@@ -19,10 +14,10 @@ export class CustomKeyboardService extends NgbDatepickerKeyboardService {
     const state = dp.state;
     switch (event.code) {
       case Key.PageUp:
-        dp.focusDate(calendar.getNext(state.focusDate, event.altKey ? 'y' : 'm', -1));
+        dp.focusDate(calendar.getPrev(state.focusedDate, event.altKey ? 'y' : 'm'));
         break;
       case Key.PageDown:
-        dp.focusDate(calendar.getNext(state.focusDate, event.altKey ? 'y' : 'm', 1));
+        dp.focusDate(calendar.getNext(state.focusedDate, event.altKey ? 'y' : 'm'));
         break;
       case Key.End:
         dp.focusDate(event.altKey ? state.maxDate : state.lastDate);

@@ -121,10 +121,10 @@ describe('ngb-datepicker integration', () => {
         // tslint:disable-next-line:deprecation
         switch (event.which) {
           case Key.PageUp:
-            service.focusDate(calendar.getNext(state.focusDate, event.altKey ? 'y' : 'm', -1));
+            service.focusDate(calendar.getPrev(state.focusedDate, event.altKey ? 'y' : 'm', 1));
             break;
           case Key.PageDown:
-            service.focusDate(calendar.getNext(state.focusDate, event.altKey ? 'y' : 'm', 1));
+            service.focusDate(calendar.getNext(state.focusedDate, event.altKey ? 'y' : 'm', 1));
             break;
           default:
             super.processKey(event, service, calendar);
@@ -155,19 +155,19 @@ describe('ngb-datepicker integration', () => {
       dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
       ngbCalendar = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbCalendar as Type<NgbCalendar>);
 
-      spyOn(ngbCalendar, 'getNext');
+      spyOn(ngbCalendar, 'getPrev');
     });
 
     it('should allow customize keyboard navigation', () => {
       dp.onKeyDown(<any>{which: Key.PageUp, altKey: true, preventDefault: () => {}, stopPropagation: () => {}});
-      expect(ngbCalendar.getNext).toHaveBeenCalledWith(startDate, 'y', -1);
+      expect(ngbCalendar.getPrev).toHaveBeenCalledWith(startDate, 'y', 1);
       dp.onKeyDown(<any>{which: Key.PageUp, shiftKey: true, preventDefault: () => {}, stopPropagation: () => {}});
-      expect(ngbCalendar.getNext).toHaveBeenCalledWith(startDate, 'm', -1);
+      expect(ngbCalendar.getPrev).toHaveBeenCalledWith(startDate, 'm', 1);
     });
 
     it('should allow access to default keyboard navigation', () => {
       dp.onKeyDown(<any>{which: Key.ArrowUp, altKey: true, preventDefault: () => {}, stopPropagation: () => {}});
-      expect(ngbCalendar.getNext).toHaveBeenCalledWith(startDate, 'd', -7);
+      expect(ngbCalendar.getPrev).toHaveBeenCalledWith(startDate, 'd', 7);
     });
   });
 });
