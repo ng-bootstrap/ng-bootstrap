@@ -630,17 +630,27 @@ describe('ngb-pagination', () => {
          expect(fixture.componentInstance.onPageChange).not.toHaveBeenCalled();
        }));
 
-    it('should set classes correctly for disabled state', fakeAsync(() => {
-         const html = `<ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize" [maxSize]="maxSize"
+    it('should set classes correctly for disabled state', () => {
+      const html = `<ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize" [maxSize]="maxSize"
          [disabled]=true></ngb-pagination>`;
-         const fixture = createTestComponent(html);
-         tick();
+      const fixture = createTestComponent(html);
 
-         const buttons = fixture.nativeElement.querySelectorAll('li');
-         for (let i = 0; i < buttons.length; i++) {
-           expect(buttons[i]).toHaveCssClass('disabled');
-         }
-       }));
+      const buttons = fixture.nativeElement.querySelectorAll('li');
+      for (let i = 0; i < buttons.length; i++) {
+        expect(buttons[i]).toHaveCssClass('disabled');
+      }
+    });
+
+    it('should set tabindex for links correctly for disabled state', () => {
+      const html = `<ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize" [maxSize]="maxSize"
+      [disabled]=true></ngb-pagination>`;
+      const fixture = createTestComponent(html);
+
+      const buttonLinks = fixture.nativeElement.querySelectorAll('li a');
+      for (let i = 0; i < buttonLinks.length; i++) {
+        expect(buttonLinks[i].getAttribute('tabindex')).toEqual('-1');
+      }
+    });
   });
 
   describe('Customization', () => {
