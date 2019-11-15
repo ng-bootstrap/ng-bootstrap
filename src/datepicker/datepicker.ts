@@ -153,11 +153,11 @@ export interface NgbDatepickerState {
 export class NgbDatepicker implements OnDestroy,
     OnChanges, OnInit, AfterViewInit, ControlValueAccessor {
   model: DatepickerViewModel;
-  publicState: NgbDatepickerState = Object.create({});
 
   @ViewChild('months', {static: true}) private _monthsEl: ElementRef<HTMLElement>;
   private _controlValue: NgbDate;
   private _destroyed$ = new Subject<void>();
+  private _publicState: NgbDatepickerState = <any>{};
 
   /**
    * The reference to a custom template for the day.
@@ -292,6 +292,15 @@ export class NgbDatepicker implements OnDestroy,
       const newDate = model.firstDate;
       const oldDate = this.model ? this.model.firstDate : null;
 
+      // update public state
+      this._publicState = {
+        maxDate: model.maxDate,
+        minDate: model.minDate,
+        firstDate: model.firstDate,
+        lastDate: model.lastDate,
+        focusedDate: model.focusDate
+      };
+
       let navigationPrevented = false;
       // emitting navigation event if the first month changes
       if (!newDate.equals(oldDate)) {
@@ -333,16 +342,7 @@ export class NgbDatepicker implements OnDestroy,
   /**
    *  Returns a copy of the state of the datepicker.
    */
-  get state(): NgbDatepickerState {
-    Object.assign(this.publicState, {
-      maxDate: this.model.maxDate,
-      minDate: this.model.minDate,
-      firstDate: this.model.firstDate,
-      lastDate: this.model.lastDate,
-      focusDate: this.model.focusDate,
-    });
-    return this.publicState;
-  }
+  get state(): NgbDatepickerState { return this._publicState; }
 
   /**
    *  Focuses on given date.
