@@ -15,7 +15,7 @@ import {NgbTimepickerConfig} from './timepicker-config';
 import {NgbTimeAdapter} from './ngb-time-adapter';
 import {NgbTimepickerI18n} from './timepicker-i18n';
 
-const timepickerFilterRegExp = /[^0-9]/g;
+const FILTER_REGEX = /[^0-9]/g;
 
 const NGB_TIMEPICKER_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -45,7 +45,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
             maxlength="2" inputmode="numeric" placeholder="HH" i18n-placeholder="@@ngb.timepicker.HH"
             [value]="formatHour(model?.hour)" (change)="updateHour($event.target.value)"
             [readOnly]="readonlyInputs" [disabled]="disabled" aria-label="Hours" i18n-aria-label="@@ngb.timepicker.hours"
-            (input)="_filter($event)"
+            (input)="formatInput($event.target)"
             (keydown.ArrowUp)="changeHour(hourStep); $event.preventDefault()"
             (keydown.ArrowDown)="changeHour(-hourStep); $event.preventDefault()">
           <button *ngIf="spinners" tabindex="-1" type="button" (click)="changeHour(-hourStep)"
@@ -67,7 +67,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
             maxlength="2" inputmode="numeric" placeholder="MM" i18n-placeholder="@@ngb.timepicker.MM"
             [value]="formatMinSec(model?.minute)" (change)="updateMinute($event.target.value)"
             [readOnly]="readonlyInputs" [disabled]="disabled" aria-label="Minutes" i18n-aria-label="@@ngb.timepicker.minutes"
-            (input)="_filter($event)"
+            (input)="formatInput($event.target)"
             (keydown.ArrowUp)="changeMinute(minuteStep); $event.preventDefault()"
             (keydown.ArrowDown)="changeMinute(-minuteStep); $event.preventDefault()">
           <button *ngIf="spinners" tabindex="-1" type="button" (click)="changeMinute(-minuteStep)"
@@ -89,7 +89,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
             maxlength="2" inputmode="numeric" placeholder="SS" i18n-placeholder="@@ngb.timepicker.SS"
             [value]="formatMinSec(model?.second)" (change)="updateSecond($event.target.value)"
             [readOnly]="readonlyInputs" [disabled]="disabled" aria-label="Seconds" i18n-aria-label="@@ngb.timepicker.seconds"
-            (input)="_filter($event)"
+            (input)="formatInput($event.target)"
             (keydown.ArrowUp)="changeSecond(secondStep); $event.preventDefault()"
             (keydown.ArrowDown)="changeSecond(-secondStep); $event.preventDefault()">
           <button *ngIf="spinners" tabindex="-1" type="button" (click)="changeSecond(-secondStep)"
@@ -251,6 +251,8 @@ export class NgbTimepicker implements ControlValueAccessor,
     }
   }
 
+  formatInput(input: HTMLInputElement) { input.value = input.value.replace(FILTER_REGEX, ''); }
+
   formatHour(value: number) {
     if (isNumber(value)) {
       if (this.meridian) {
@@ -274,11 +276,6 @@ export class NgbTimepicker implements ControlValueAccessor,
       this.model.second = 0;
       this.propagateModelChange(false);
     }
-  }
-
-  _filter(e) {
-    const target = e.target;
-    target.value = target.value.replace(timepickerFilterRegExp, '');
   }
 
   private propagateModelChange(touched = true) {
