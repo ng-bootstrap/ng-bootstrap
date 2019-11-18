@@ -29,19 +29,20 @@ function expectPages(nativeEl: HTMLElement, pagesDef: string[], ellipsis = '...'
       expect(pages[i]).toHaveCssClass('disabled');
       expect(pages[i].getAttribute('aria-current')).toBeNull();
       expect(normalizeText(pages[i].textContent)).toEqual(pageDef.substr(1));
-      if (normalizeText(pages[i].textContent) !== ellipsis) {
-        expect(pages[i].querySelector('a').getAttribute('tabindex')).toEqual('-1');
-        expect(pages[i].querySelector('a').hasAttribute('aria-disabled')).toBeTruthy();
-      }
     } else {
       expect(pages[i]).not.toHaveCssClass('active');
       expect(pages[i]).not.toHaveCssClass('disabled');
       expect(pages[i].getAttribute('aria-current')).toBeNull();
       expect(normalizeText(pages[i].textContent)).toEqual(pageDef);
-      if (normalizeText(pages[i].textContent) !== ellipsis) {
-        expect(pages[i].querySelector('a').hasAttribute('tabindex')).toBeFalsy();
-        expect(pages[i].querySelector('a').hasAttribute('aria-disabled')).toBeFalsy();
-      }
+    }
+
+    // ellipsis is always disabled
+    if (normalizeText(pages[i].textContent) === ellipsis) {
+      expect(pages[i]).not.toHaveCssClass('active');
+      expect(pages[i]).toHaveCssClass('disabled');
+      expect(pages[i].getAttribute('aria-current')).toBeNull();
+      expect(pages[i].querySelector('a').getAttribute('tabindex')).toEqual('-1');
+      expect(pages[i].querySelector('a').hasAttribute('aria-disabled')).toBeTruthy();
     }
   }
 }
@@ -52,10 +53,6 @@ function getLink(nativeEl: HTMLElement, idx: number): HTMLAnchorElement {
 
 function getList(nativeEl: HTMLElement) {
   return <HTMLUListElement>nativeEl.querySelector('ul');
-}
-
-function getSpan(nativeEl: HTMLElement): HTMLSpanElement {
-  return <HTMLSpanElement>nativeEl.querySelector('span');
 }
 
 function normalizeText(txt: string): string {
