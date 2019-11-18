@@ -31,6 +31,7 @@ function expectPages(nativeEl: HTMLElement, pagesDef: string[], ellipsis = '...'
       expect(normalizeText(pages[i].textContent)).toEqual(pageDef.substr(1));
       if (normalizeText(pages[i].textContent) !== ellipsis) {
         expect(pages[i].querySelector('a').getAttribute('tabindex')).toEqual('-1');
+        expect(pages[i].querySelector('a').hasAttribute('aria-disabled')).toBeTruthy();
       }
     } else {
       expect(pages[i]).not.toHaveCssClass('active');
@@ -39,6 +40,7 @@ function expectPages(nativeEl: HTMLElement, pagesDef: string[], ellipsis = '...'
       expect(normalizeText(pages[i].textContent)).toEqual(pageDef);
       if (normalizeText(pages[i].textContent) !== ellipsis) {
         expect(pages[i].querySelector('a').hasAttribute('tabindex')).toBeFalsy();
+        expect(pages[i].querySelector('a').hasAttribute('aria-disabled')).toBeFalsy();
       }
     }
   }
@@ -654,6 +656,18 @@ describe('ngb-pagination', () => {
         expect(buttonLinks[i].getAttribute('tabindex')).toEqual('-1');
       }
     });
+
+    it('should set aria-disabled for links correctly for disabled state', () => {
+      const html = `<ngb-pagination [collectionSize]="collectionSize" [pageSize]="pageSize" [maxSize]="maxSize"
+      [disabled]=true></ngb-pagination>`;
+      const fixture = createTestComponent(html);
+
+      const buttonLinks = fixture.nativeElement.querySelectorAll('li a');
+      for (let i = 0; i < buttonLinks.length; i++) {
+        expect(buttonLinks[i].getAttribute('aria-disabled')).toEqual('true');
+      }
+    });
+
   });
 
   describe('Customization', () => {
