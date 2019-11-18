@@ -3,4 +3,8 @@ ngb-datepicker-navigation-select > .custom-select {
   padding: 0 0.5rem;
   font-size: 0.875rem;
   height: 1.85rem;
+
+  &:focus {
+    z-index: 1;
+  }
 }
