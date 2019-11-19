@@ -1,6 +1,6 @@
-import { DOCUMENT } from '@angular/common';
-import { Component, Inject, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { ViewportScroller } from '@angular/common';
+import { Component, NgZone, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
 import { componentsList } from './shared';
@@ -17,24 +17,13 @@ export class AppComponent implements OnInit {
 
   constructor(
     private _analytics: Analytics,
-    router: Router,
-    @Inject(DOCUMENT) document: any
+    route: ActivatedRoute,
+    vps: ViewportScroller,
+    zone: NgZone
   ) {
-    router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe(event => {
-        const { fragment } = router.parseUrl(router.url);
-        if (fragment) {
-          setTimeout(() => {
-            const element = document.querySelector(`#${fragment}`);
-            if (element) {
-              element.scrollIntoView();
-            }
-          }, 0);
-        } else {
-          window.scrollTo({ top: 0 });
-        }
-      });
+    route.fragment
+      .pipe(filter(fragment => !!fragment))
+      .subscribe(fragment => zone.runOutsideAngular(() => requestAnimationFrame(() => vps.scrollToAnchor(fragment))));
   }
 
   ngOnInit(): void {
