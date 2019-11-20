@@ -128,7 +128,7 @@ export class NgbPaginationPrevious {
       {{ page }}
       <span *ngIf="page === currentPage" class="sr-only">(current)</span>
     </ng-template>
-    <ul [class]="'pagination' + (size ? ' pagination-' + size : '')">
+    <ul [class]="'pagination' + (size ? ' pagination-' + size : '') + (align ? ' ' + align : '')">
       <li *ngIf="boundaryLinks" class="page-item"
         [class.disabled]="previousDisabled()">
         <a aria-label="First" i18n-aria-label="@@ngb.pagination.first-aria" class="page-link" href
@@ -190,6 +190,13 @@ export class NgbPagination implements OnChanges {
   @ContentChild(NgbPaginationNext, {static: false}) tplNext: NgbPaginationNext;
   @ContentChild(NgbPaginationNumber, {static: false}) tplNumber: NgbPaginationNumber;
   @ContentChild(NgbPaginationPrevious, {static: false}) tplPrevious: NgbPaginationPrevious;
+
+  /**
+   * The pagination alignment.
+   *
+   * Any of the Bootstrap flex utilties (i.e. "justify-content-center").
+   */
+  @Input() align: string;
 
   /**
    * If `true`, pagination links will be disabled.
@@ -261,6 +268,7 @@ export class NgbPagination implements OnChanges {
   @Input() size: 'sm' | 'lg';
 
   constructor(config: NgbPaginationConfig) {
+    this.align = config.align;
     this.disabled = config.disabled;
     this.boundaryLinks = config.boundaryLinks;
     this.directionLinks = config.directionLinks;

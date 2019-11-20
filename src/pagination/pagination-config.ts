@@ -8,9 +8,10 @@ import {Injectable} from '@angular/core';
  */
 @Injectable({providedIn: 'root'})
 export class NgbPaginationConfig {
-  disabled = false;
+  align = '';
   boundaryLinks = false;
   directionLinks = true;
+  disabled = false;
   ellipses = true;
   maxSize = 0;
   pageSize = 10;

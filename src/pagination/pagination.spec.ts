@@ -60,9 +60,10 @@ function normalizeText(txt: string): string {
 }
 
 function expectSameValues(pagination: NgbPagination, config: NgbPaginationConfig) {
-  expect(pagination.disabled).toBe(config.disabled);
+  expect(pagination.align).toBe(config.align);
   expect(pagination.boundaryLinks).toBe(config.boundaryLinks);
   expect(pagination.directionLinks).toBe(config.directionLinks);
+  expect(pagination.disabled).toBe(config.disabled);
   expect(pagination.ellipses).toBe(config.ellipses);
   expect(pagination.maxSize).toBe(config.maxSize);
   expect(pagination.pageSize).toBe(config.pageSize);
@@ -301,6 +302,32 @@ describe('ngb-pagination', () => {
          expectPages(fixture.nativeElement, ['«', '1', '+2', '-»']);
          expect(fixture.componentInstance.page).toBe(2);
        }));
+
+    it('should render and respond to align change', () => {
+      const html = '<ngb-pagination [collectionSize]="20" [page]="1" [align]="align"></ngb-pagination>';
+
+      const fixture = createTestComponent(html);
+      const listEl = getList(fixture.nativeElement);
+
+      // justify-content-center
+      fixture.componentInstance.align = 'justify-content-center';
+      fixture.detectChanges();
+      expect(listEl).toHaveCssClass('pagination');
+      expect(listEl).toHaveCssClass('justify-content-center');
+
+      // removing justify-content-center
+      fixture.componentInstance.align = '';
+      fixture.detectChanges();
+      expect(listEl).toHaveCssClass('pagination');
+      expect(listEl).not.toHaveCssClass('justify-content-center');
+
+      // complex alignment
+      fixture.componentInstance.align = 'align-content-start flex-wrap';
+      fixture.detectChanges();
+      expect(listEl).toHaveCssClass('pagination');
+      expect(listEl).toHaveCssClass('align-content-start');
+      expect(listEl).toHaveCssClass('flex-wrap');
+    });
 
     it('should render and respond to size change', () => {
       const html = '<ngb-pagination [collectionSize]="20" [page]="1" [size]="size"></ngb-pagination>';
@@ -725,6 +752,7 @@ describe('ngb-pagination', () => {
 
     beforeEach(inject([NgbPaginationConfig], (c: NgbPaginationConfig) => {
       config = c;
+      config.align = 'justify-content-center';
       config.boundaryLinks = true;
       config.directionLinks = false;
       config.ellipses = false;
@@ -745,9 +773,10 @@ describe('ngb-pagination', () => {
 
   describe('Custom config as provider', () => {
     let config = new NgbPaginationConfig();
-    config.disabled = true;
+    config.align = 'justify-content-center';
     config.boundaryLinks = true;
     config.directionLinks = false;
+    config.disabled = true;
     config.ellipses = false;
     config.maxSize = 42;
     config.pageSize = 7;
@@ -771,16 +800,17 @@ describe('ngb-pagination', () => {
 
 @Component({selector: 'test-cmp', template: ''})
 class TestComponent {
-  disabled = false;
-  pageSize = 10;
-  collectionSize = 100;
-  page = 1;
+  align = '';
   boundaryLinks = false;
+  collectionSize = 100;
   directionLinks = false;
-  size = '';
-  maxSize = 0;
+  disabled = false;
   ellipses = true;
+  maxSize = 0;
+  page = 1;
+  pageSize = 10;
   rotate = false;
+  size = '';
 
   onPageChange = () => {};
 }

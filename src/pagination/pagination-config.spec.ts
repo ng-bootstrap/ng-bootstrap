@@ -4,9 +4,10 @@ describe('ngb-pagination-config', () => {
   it('should have sensible default values', () => {
     const config = new NgbPaginationConfig();
 
-    expect(config.disabled).toBe(false);
+    expect(config.align).toBe('');
     expect(config.boundaryLinks).toBe(false);
     expect(config.directionLinks).toBe(true);
+    expect(config.disabled).toBe(false);
     expect(config.ellipses).toBe(true);
     expect(config.maxSize).toBe(0);
     expect(config.pageSize).toBe(10);
