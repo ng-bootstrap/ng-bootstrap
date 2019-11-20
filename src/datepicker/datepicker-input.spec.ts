@@ -289,7 +289,7 @@ describe('NgbInputDatepicker', () => {
          expect(input.disabled).toBeTruthy();
          expect(buttonInDatePicker.disabled).toBeTruthy();
 
-         const dayElements = fixture.nativeElement.querySelectorAll('ngb-datepicker-month-view .ngb-dp-day');
+         const dayElements = fixture.nativeElement.querySelectorAll('ngb-datepicker-month .ngb-dp-day');
          expect(dayElements[1]).toHaveCssClass('disabled');
          expect(dayElements[11]).toHaveCssClass('disabled');
          expect(dayElements[21]).toHaveCssClass('disabled');
@@ -303,7 +303,7 @@ describe('NgbInputDatepicker', () => {
          expect(input.disabled).toBeFalsy();
          expect(buttonInDatePicker.disabled).toBeFalsy();
 
-         const dayElements2 = fixture.nativeElement.querySelectorAll('ngb-datepicker-month-view .ngb-dp-day');
+         const dayElements2 = fixture.nativeElement.querySelectorAll('ngb-datepicker-month .ngb-dp-day');
          expect(dayElements2[1]).not.toHaveCssClass('disabled');
          expect(dayElements2[11]).not.toHaveCssClass('disabled');
          expect(dayElements2[21]).not.toHaveCssClass('disabled');
@@ -329,7 +329,7 @@ describe('NgbInputDatepicker', () => {
       expect(input.disabled).toBeTruthy();
       expect(buttonInDatePicker.disabled).toBeTruthy();
 
-      const dayElements = fixture.nativeElement.querySelectorAll('ngb-datepicker-month-view .ngb-dp-day');
+      const dayElements = fixture.nativeElement.querySelectorAll('ngb-datepicker-month .ngb-dp-day');
       expect(dayElements[1]).toHaveCssClass('disabled');
       expect(dayElements[11]).toHaveCssClass('disabled');
       expect(dayElements[21]).toHaveCssClass('disabled');
@@ -341,7 +341,7 @@ describe('NgbInputDatepicker', () => {
       expect(input.disabled).toBeFalsy();
       expect(buttonInDatePicker.disabled).toBeFalsy();
 
-      const dayElements2 = fixture.nativeElement.querySelectorAll('ngb-datepicker-month-view .ngb-dp-day');
+      const dayElements2 = fixture.nativeElement.querySelectorAll('ngb-datepicker-month .ngb-dp-day');
       expect(dayElements2[1]).not.toHaveCssClass('disabled');
       expect(dayElements2[11]).not.toHaveCssClass('disabled');
       expect(dayElements2[21]).not.toHaveCssClass('disabled');

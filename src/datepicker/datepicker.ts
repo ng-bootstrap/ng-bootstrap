@@ -1,10 +1,11 @@
 import {fromEvent, merge, Subject} from 'rxjs';
 import {filter, take, takeUntil} from 'rxjs/operators';
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ContentChild,
+  Directive,
   ElementRef,
   EventEmitter,
   forwardRef,
@@ -23,7 +24,6 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {NgbCalendar} from './ngb-calendar';
 import {NgbDate} from './ngb-date';
 import {DatepickerServiceInputs, NgbDatepickerService} from './datepicker-service';
-import {NgbDatepickerKeyboardService} from './datepicker-keyboard-service';
 import {DatepickerViewModel, NavigationEvent} from './datepicker-view-model';
 import {DayTemplateContext} from './datepicker-day-template-context';
 import {NgbDatepickerConfig} from './datepicker-config';
@@ -33,7 +33,7 @@ import {NgbDatepickerI18n} from './datepicker-i18n';
 import {isChangedDate, isChangedMonth} from './datepicker-tools';
 import {hasClassName} from '../util/util';
 
-const NGB_DATEPICKER_VALUE_ACCESSOR = {
+export const NGB_DATEPICKER_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => NgbDatepicker),
   multi: true
@@ -93,6 +93,19 @@ export interface NgbDatepickerState {
    * The date currently focused by the datepicker
    */
   readonly focusedDate: NgbDate;
+
+  /**
+   * The first dates of months in range of current datepicker instance
+   */
+  readonly months: NgbDate[];
+}
+
+/*
+ * A directive that marks the content template that customizes the way datepicker months are displayed
+ */
+@Directive({selector: 'ng-template[ngbDatepickerMonths]'})
+export class NgbDatepickerMonths {
+  constructor(public templateRef: TemplateRef<any>) {}
 }
 
 /**
@@ -107,13 +120,22 @@ export interface NgbDatepickerState {
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['./datepicker.scss'],
   template: `
-    <ng-template #dt let-date="date" let-currentMonth="currentMonth" let-selected="selected" let-disabled="disabled" let-focused="focused">
+    <ng-template #defaultDayTemplate let-date="date" let-currentMonth="currentMonth" let-selected="selected" let-disabled="disabled" let-focused="focused">
       <div ngbDatepickerDayView
         [date]="date"
         [currentMonth]="currentMonth"
         [selected]="selected"
         [disabled]="disabled"
         [focused]="focused">
+      </div>
+    </ng-template>
+
+    <ng-template #defaultMonthsTemplate>
+      <div *ngFor="let month of model.months; let i = index;" class="ngb-dp-month">
+        <div *ngIf="navigation === 'none' || (displayMonths > 1 && navigation === 'select')" class="ngb-dp-month-name">
+          {{ i18n.getMonthFullName(month.number, month.year) }} {{ i18n.getYearNumerals(month.year) }}
+        </div>
+        <ngb-datepicker-month [month]="month.firstDate"></ngb-datepicker-month>
       </div>
     </ng-template>
 
@@ -131,22 +153,8 @@ export interface NgbDatepickerState {
       </ngb-datepicker-navigation>
     </div>
 
-    <div #months class="ngb-dp-months" (keydown)="onKeyDown($event)">
-      <ng-template ngFor let-month [ngForOf]="model.months" let-i="index">
-        <div class="ngb-dp-month">
-          <div *ngIf="navigation === 'none' || (displayMonths > 1 && navigation === 'select')"
-                class="ngb-dp-month-name">
-            {{ i18n.getMonthFullName(month.number, month.year) }} {{ i18n.getYearNumerals(month.year) }}
-          </div>
-          <ngb-datepicker-month-view
-            [month]="month"
-            [dayTemplate]="dayTemplate || dt"
-            [showWeekdays]="showWeekdays"
-            [showWeekNumbers]="showWeekNumbers"
-            (select)="onDateSelect($event)">
-          </ngb-datepicker-month-view>
-        </div>
-      </ng-template>
+    <div class="ngb-dp-months" #months>
+      <ng-template [ngTemplateOutlet]="monthsTemplate?.templateRef || defaultMonthsTemplate"></ng-template>
     </div>
 
     <ng-template [ngTemplateOutlet]="footerTemplate"></ng-template>
@@ -154,10 +162,13 @@ export interface NgbDatepickerState {
   providers: [NGB_DATEPICKER_VALUE_ACCESSOR, NgbDatepickerService]
 })
 export class NgbDatepicker implements OnDestroy,
-    OnChanges, OnInit, AfterViewInit, ControlValueAccessor {
+    OnChanges, OnInit, ControlValueAccessor {
   model: DatepickerViewModel;
 
+  @ViewChild('defaultDayTemplate', {static: true}) private _defaultDayTemplate: TemplateRef<DayTemplateContext>;
   @ViewChild('months', {static: true}) private _monthsEl: ElementRef<HTMLElement>;
+  @ContentChild(NgbDatepickerMonths, {static: true}) monthsTemplate: NgbDatepickerMonths;
+
   private _controlValue: NgbDate;
   private _destroyed$ = new Subject<void>();
   private _publicState: NgbDatepickerState = <any>{};
@@ -294,9 +305,8 @@ export class NgbDatepicker implements OnDestroy,
 
   constructor(
       private _service: NgbDatepickerService, private _calendar: NgbCalendar, public i18n: NgbDatepickerI18n,
-      config: NgbDatepickerConfig, private _keyboardService: NgbDatepickerKeyboardService, cd: ChangeDetectorRef,
-      private _elementRef: ElementRef<HTMLElement>, private _ngbDateAdapter: NgbDateAdapter<any>,
-      private _ngZone: NgZone) {
+      config: NgbDatepickerConfig, cd: ChangeDetectorRef, private _elementRef: ElementRef<HTMLElement>,
+      private _ngbDateAdapter: NgbDateAdapter<any>, private _ngZone: NgZone) {
     ['dayTemplate', 'dayTemplateData', 'displayMonths', 'firstDayOfWeek', 'footerTemplate', 'markDisabled', 'minDate',
      'maxDate', 'navigation', 'outsideDays', 'showWeekdays', 'showWeekNumbers', 'startDate']
         .forEach(input => this[input] = config[input]);
@@ -313,7 +323,8 @@ export class NgbDatepicker implements OnDestroy,
         minDate: model.minDate,
         firstDate: model.firstDate,
         lastDate: model.lastDate,
-        focusedDate: model.focusDate
+        focusedDate: model.focusDate,
+        months: model.months.map(viewModel => viewModel.firstDate)
       };
 
       let navigationPrevented = false;
@@ -360,6 +371,11 @@ export class NgbDatepicker implements OnDestroy,
    * @since 5.2.0
    */
   get state(): NgbDatepickerState { return this._publicState; }
+
+  /**
+   *  Returns the calendar service used in the specific datepicker instance.
+   */
+  get calendar(): NgbCalendar { return this._calendar; }
 
   /**
    *  Focuses on given date.
@@ -424,6 +440,9 @@ export class NgbDatepicker implements OnDestroy,
 
       this.navigateTo(this.startDate);
     }
+    if (!this.dayTemplate) {
+      this.dayTemplate = this._defaultDayTemplate;
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -446,8 +465,6 @@ export class NgbDatepicker implements OnDestroy,
     this._service.focus(date);
     this._service.select(date, {emitEvent: true});
   }
-
-  onKeyDown(event: KeyboardEvent) { this._keyboardService.processKey(event, this, this._calendar); }
 
   onNavigateDateSelect(date: NgbDate) { this._service.open(date); }
 

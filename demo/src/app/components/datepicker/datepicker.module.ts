@@ -23,6 +23,8 @@ import { NgbdDatepickerFooterTemplateModule } from './demos/footertemplate/datep
 import { NgbdDatepickerFootertemplate } from './demos/footertemplate/datepicker-footertemplate';
 import { NgbdDatepickerI18n } from './demos/i18n/datepicker-i18n';
 import { NgbdDatepickerI18nModule } from './demos/i18n/datepicker-i18n.module';
+import { NgbdDatepickerCustommonth } from './demos/custommonth/datepicker-custommonth';
+import { NgbdDatepickerCustommonthModule } from './demos/custommonth/datepicker-custommonth.module';
 import { NgbdDatepickerMultiple } from './demos/multiple/datepicker-multiple';
 import { NgbdDatepickerMultipleModule } from './demos/multiple/datepicker-multiple.module';
 import { NgbdDatepickerPopup } from './demos/popup/datepicker-popup';
@@ -46,6 +48,7 @@ const OVERVIEW = {
   'limiting-dates': 'Disabling and limiting dates',
   'day-template': 'Day display customization',
   today: 'Today\'s date',
+  'content-template': 'Content Template',
   'footer-template': 'Custom footer',
   range: 'Range selection',
   i18n: 'Internationalization',
@@ -107,6 +110,12 @@ const DEMOS = {
     code: require('!!raw-loader!./demos/customday/datepicker-customday').default,
     markup: require('!!raw-loader!./demos/customday/datepicker-customday.html').default
   },
+  custommonth: {
+    title: 'Custom month layout',
+    type: NgbdDatepickerCustommonth,
+    code: require('!!raw-loader!./demos/custommonth/datepicker-custommonth').default,
+    markup: require('!!raw-loader!./demos/custommonth/datepicker-custommonth.html').default
+  },
   footertemplate: {
     title: 'Footer template',
     type: NgbdDatepickerFootertemplate,
@@ -165,6 +174,7 @@ export const ROUTES = [
     NgbdDatepickerRangePopupModule,
     NgbdDatepickerAdapterModule,
     NgbdDatepickerKeyboardModule,
+    NgbdDatepickerCustommonthModule,
     ...DEMO_CALENDAR_MODULES
   ],
   declarations: [
