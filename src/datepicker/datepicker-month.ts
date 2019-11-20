@@ -1,0 +1,57 @@
+import {Component, Input, ViewEncapsulation} from '@angular/core';
+import {NgbDatepicker} from './datepicker';
+import {NgbDatepickerI18n} from './datepicker-i18n';
+import {NgbDatepickerKeyboardService} from './datepicker-keyboard-service';
+import {NgbDatepickerService} from './datepicker-service';
+import {MonthViewModel, DayViewModel} from './datepicker-view-model';
+import {NgbDateStruct} from './ngb-date-struct';
+
+@Component({
+  selector: 'ngb-datepicker-month',
+  host: {'role': 'grid', '(keydown)': 'onKeyDown($event)'},
+  encapsulation: ViewEncapsulation.None,
+  styleUrls: ['./datepicker-month.scss'],
+  template: `
+    <div *ngIf="datepicker.showWeekdays" class="ngb-dp-week ngb-dp-weekdays" role="row">
+      <div *ngIf="datepicker.showWeekNumbers" class="ngb-dp-weekday ngb-dp-showweek"></div>
+      <div *ngFor="let w of viewModel.weekdays" class="ngb-dp-weekday small" role="columnheader">
+        {{ i18n.getWeekdayShortName(w) }}
+      </div>
+    </div>
+    <ng-template ngFor let-week [ngForOf]="viewModel.weeks">
+      <div *ngIf="!week.collapsed" class="ngb-dp-week" role="row">
+        <div *ngIf="datepicker.showWeekNumbers" class="ngb-dp-week-number small text-muted">{{ i18n.getWeekNumerals(week.number) }}</div>
+        <div *ngFor="let day of week.days" (click)="doSelect(day); $event.preventDefault()" class="ngb-dp-day" role="gridcell"
+          [class.disabled]="day.context.disabled"
+          [tabindex]="day.tabindex"
+          [class.hidden]="day.hidden"
+          [class.ngb-dp-today]="day.context.today"
+          [attr.aria-label]="day.ariaLabel">
+          <ng-template [ngIf]="!day.hidden">
+            <ng-template [ngTemplateOutlet]="datepicker.dayTemplate" [ngTemplateOutletContext]="day.context"></ng-template>
+          </ng-template>
+        </div>
+      </div>
+    </ng-template>
+  `
+})
+export class NgbDatepickerMonth {
+  @Input()
+  set month(month: NgbDateStruct) {
+    this.viewModel = this._service.getMonth(month);
+  }
+
+  viewModel: MonthViewModel;
+
+  constructor(
+      public i18n: NgbDatepickerI18n, public datepicker: NgbDatepicker,
+      private _keyboardService: NgbDatepickerKeyboardService, private _service: NgbDatepickerService) {}
+
+  onKeyDown(event: KeyboardEvent) { this._keyboardService.processKey(event, this.datepicker); }
+
+  doSelect(day: DayViewModel) {
+    if (!day.context.disabled && !day.hidden) {
+      this.datepicker.onDateSelect(day.date);
+    }
+  }
+}

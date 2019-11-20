@@ -1,0 +1,14 @@
+<p>This datepicker uses a custom month layout.</p>
+
+<ngb-datepicker #dp
+                [startDate]="{month: 8, year: 2016}"
+                [displayMonths]="2"
+                [outsideDays]="'collapsed'"
+                [navigation]="'none'">
+  <ng-template ngbDatepickerMonths>
+    <div class="custom-month-view" *ngFor="let monthStruct of dp.state.months">
+      <span>{{i18n.getMonthFullName(monthStruct.month)}} {{monthStruct.year}}</span>
+      <ngb-datepicker-month [month]="monthStruct"></ngb-datepicker-month>
+    </div>
+  </ng-template>
+</ngb-datepicker>

@@ -159,6 +159,15 @@ export class NgbDatepickerService {
     return this._calendar.isValid(ngbDate) ? ngbDate : defaultValue;
   }
 
+  getMonth(struct: NgbDateStruct) {
+    for (let month of this._state.months) {
+      if (struct.month === month.number && struct.year === month.year) {
+        return month;
+      }
+    }
+    throw new Error(`month ${struct.month} of year ${struct.year} not found`);
+  }
+
   private _nextState(patch: Partial<DatepickerViewModel>) {
     const newState = this._updateState(patch);
     this._patchContexts(newState);

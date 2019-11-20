@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {NgbCalendar} from './ngb-calendar';
 import {NgbDatepicker} from './datepicker';
 import {Key} from '../util/key';
 
@@ -15,8 +14,8 @@ export class NgbDatepickerKeyboardService {
   /**
    * Processes a keyboard event.
    */
-  processKey(event: KeyboardEvent, datepicker: NgbDatepicker, calendar: NgbCalendar) {
-    const state = datepicker.state;
+  processKey(event: KeyboardEvent, datepicker: NgbDatepicker) {
+    const {state, calendar} = datepicker;
     // tslint:disable-next-line:deprecation
     switch (event.which) {
       case Key.PageUp:

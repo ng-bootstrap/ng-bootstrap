@@ -119,6 +119,21 @@ export class NgbdDatepickerOverviewComponent {
         <ngbDatepicker [dayTemplate]=“t”/>
       `,
     }),
+    contentTemplate: Snippet({
+      lang: 'html',
+      code: `
+        <ngb-datepicker #datepicker
+                        [startDate]="{month: 8, year: 2016}"
+                        [displayMonths]="2">
+          <ng-template ngbDatepickerContent>
+            <div *ngFor="let monthStruct of datepicker.state.months">
+              <span>{{i18n.getMonthFullName(monthStruct.month)}} {{monthStruct.year}}</span>
+              <ngb-datepicker-month-view [month]="monthStruct"></ngb-datepicker-month-view>
+            </div>
+          </ng-template>
+        </ngb-datepicker>
+      `,
+    }),
     todayHTML: Snippet({
       lang: 'html',
       code: `

@@ -14,7 +14,7 @@ describe('ngb-datepicker-keyboard-service', () => {
   let service: NgbDatepickerKeyboardService;
   let calendar: NgbCalendar;
   let mock: Partial<NgbDatepicker>;
-  let processKey = function(e: KeyboardEvent) { service.processKey(e, mock as NgbDatepicker, calendar); };
+  let processKey = function(e: KeyboardEvent) { service.processKey(e, mock as NgbDatepicker); };
   let state: NgbDatepickerState = Object.assign({focusedDate: {day: 1, month: 1, year: 2018}});
 
   beforeEach(() => {
@@ -23,7 +23,7 @@ describe('ngb-datepicker-keyboard-service', () => {
 
     calendar = TestBed.get(NgbCalendar as Type<NgbCalendar>);
     service = TestBed.get(NgbDatepickerKeyboardService);
-    mock = {state, focusDate: () => {}, focusSelect: () => {}};
+    mock = {state, focusDate: () => {}, focusSelect: () => {}, calendar};
 
     spyOn(mock, 'focusDate');
     spyOn(mock, 'focusSelect');

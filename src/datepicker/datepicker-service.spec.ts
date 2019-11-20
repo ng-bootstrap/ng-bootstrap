@@ -649,6 +649,13 @@ describe('ngb-datepicker-service', () => {
         expect(model.selectBoxes.months).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
       });
 
+      it(`should throw if registers a month outside range`, () => {
+        expect(() => {
+          service.set({minDate: new NgbDate(2017, 5, 1)});
+          service.getMonth(new NgbDate(2015, 5, 1));
+        }).toThrowError();
+      });
+
       it(`should rebuild 'months' and 'years' only when year change`, () => {
         service.focus(new NgbDate(2010, 5, 1));
         let months = model.selectBoxes.months;
