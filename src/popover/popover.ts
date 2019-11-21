@@ -28,6 +28,7 @@ import {listenToTriggers} from '../util/triggers';
 import {ngbAutoClose} from '../util/autoclose';
 import {positionElements, PlacementArray} from '../util/positioning';
 import {PopupService} from '../util/popup';
+import {ngbFocusTrap} from '../util/focus-trap';
 
 import {NgbPopoverConfig} from './popover-config';
 
@@ -147,6 +148,13 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
   @Input() closeDelay: number;
 
   /**
+   * Traps focus inside popover. Recommended only if there are interactive and focusable elements inside.
+   *
+   * @since 5.15
+   */
+  @Input() focusTrap: boolean;
+
+  /**
    * An event emitted when the popover is shown. Contains no payload.
    */
   @Output() shown = new EventEmitter<void>();
@@ -161,6 +169,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
   private _windowRef: ComponentRef<NgbPopoverWindow>;
   private _unregisterListenersFn;
   private _zoneSubscription: any;
+  private _elementToFocus: any;
   private _isDisabled(): boolean {
     if (this.disablePopover) {
       return true;
@@ -231,6 +240,12 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
       ngbAutoClose(
           this._ngZone, this._document, this.autoClose, () => this.close(), this.hidden,
           [this._windowRef.location.nativeElement]);
+
+      if (this.focusTrap && typeof this.ngbPopover !== 'string') {
+        this._elementToFocus = this._document.activeElement;
+        ngbFocusTrap(this._ngZone, this._windowRef.location.nativeElement, this.hidden, true);
+      }
+
       this.shown.emit();
     }
   }
@@ -247,6 +262,10 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
       this._windowRef = null;
       this.hidden.emit();
       this._changeDetector.markForCheck();
+    }
+    if (this._elementToFocus) {
+      this._elementToFocus.focus();
+      this._elementToFocus = null;
     }
   }
 

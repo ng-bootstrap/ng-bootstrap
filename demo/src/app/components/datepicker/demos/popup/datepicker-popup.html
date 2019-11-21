@@ -1,14 +1,28 @@
 <form class="form-inline">
   <div class="form-group">
     <div class="input-group">
-      <input class="form-control" placeholder="yyyy-mm-dd"
-             name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker">
+      <input class="form-control"
+             name="dp"
+             placeholder="yyyy-mm-dd"
+             [value]="value"
+             (input)="updateModel($event)"
+             #d="ngbPopover"
+             [ngbPopover]="popover"
+             [placement]="['bottom-left', 'auto']"
+             [popoverClass]="'datepicker'"
+             [focusTrap]="true">
       <div class="input-group-append">
-        <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"></button>
+        <button class="btn btn-outline-secondary calendar" (click)="toggle(d)" type="button"></button>
       </div>
     </div>
   </div>
 </form>
+<ng-template #popover>
+  <ngb-datepicker [ngModel]="model"
+                  (ngModelChange)="updateValue($event)"
+                  [startDate]="model"
+                  [displayMonths]="1"></ngb-datepicker>
+</ng-template>
 
 <hr/>
 <pre>Model: {{ model | json }}</pre>
