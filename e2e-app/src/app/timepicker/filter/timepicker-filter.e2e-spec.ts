@@ -1,5 +1,3 @@
-import {protractor} from 'protractor';
-
 import {openUrl} from '../../tools.po';
 
 import {TimepickerFilterPage} from './timepicker-filter.po';
@@ -44,26 +42,5 @@ describe('Timepicker', () => {
       await inputs[0].click();
       await expectValue('::');
     });
-
-    it(`shouldn accept special commands`, async() => {
-
-      const inputs = page.getFields();
-
-      await inputs[0].sendKeys('1');
-      await inputs[0].sendKeys(protractor.Key.chord(protractor.Key.CONTROL, 'a'));
-      await inputs[0].sendKeys(protractor.Key.chord(protractor.Key.CONTROL, 'c'));
-
-      await inputs[1].click();
-      await inputs[1].sendKeys(protractor.Key.chord(protractor.Key.CONTROL, 'v'));
-
-      await inputs[2].click();
-      await inputs[2].sendKeys(protractor.Key.chord(protractor.Key.CONTROL, 'v'));
-
-      await inputs[0].click();
-      await expectValue('01:01:01');
-
-    });
-
   });
-
 });
