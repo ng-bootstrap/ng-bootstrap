@@ -37,7 +37,7 @@ export class NgbTabContent {
 @Directive({selector: 'ngb-tab'})
 export class NgbTab implements AfterContentChecked {
   /**
-   * If `true`, the current tab is not visible to the user.
+   * If `true`, enables the tab to be displayed or not.
    */
   @Input() visible = true;
   /**
