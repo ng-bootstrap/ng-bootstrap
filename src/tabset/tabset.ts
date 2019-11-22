@@ -37,6 +37,10 @@ export class NgbTabContent {
 @Directive({selector: 'ngb-tab'})
 export class NgbTab implements AfterContentChecked {
   /**
+   * If `true`, the current tab is not visible to the user.
+   */
+  @Input() visible = true;
+  /**
    * The tab identifier.
    *
    * Must be unique for the entire document for proper accessibility support.
@@ -97,10 +101,11 @@ export interface NgbTabChangeEvent {
 @Component({
   selector: 'ngb-tabset',
   exportAs: 'ngbTabset',
+  styles: ['.invisible { display: none; }'],
   template: `
     <ul [class]="'nav nav-' + type + (orientation == 'horizontal'?  ' ' + justifyClass : ' flex-column')" role="tablist">
       <li class="nav-item" *ngFor="let tab of tabs">
-        <a [id]="tab.id" class="nav-link" [class.active]="tab.id === activeId" [class.disabled]="tab.disabled"
+        <a [id]="tab.id" class="nav-link" [class.active]="tab.id === activeId" [class.disabled]="tab.disabled" [class.invisible]="!tab.visible"
           href (click)="select(tab.id); $event.preventDefault()" role="tab" [attr.tabindex]="(tab.disabled ? '-1': undefined)"
           [attr.aria-controls]="(!destroyOnHide || tab.id === activeId ? tab.id + '-panel' : null)"
           [attr.aria-selected]="tab.id === activeId" [attr.aria-disabled]="tab.disabled">

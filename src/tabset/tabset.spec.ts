@@ -83,6 +83,22 @@ describe('ngb-tabset', () => {
     expectTabs(fixture.nativeElement, [true, false]);
   });
 
+  it('it should put the middle tab as not visible.', () => {
+    const fixture = createTestComponent(`
+      <ngb-tabset>
+        <ngb-tab title="foo"><ng-template ngbTabContent>Foo</ng-template></ngb-tab>
+        <ngb-tab title="wi" [visible]="false"><ng-template ngbTabContent>Wi</ng-template></ngb-tab>
+        <ngb-tab title="bar"><ng-template ngbTabContent>Bar</ng-template></ngb-tab>
+      </ngb-tabset>
+    `);
+
+    const tabTitles = getTabTitles(fixture.nativeElement);
+
+    expect(tabTitles).toBeTruthy();
+    expect(tabTitles[1].textContent).toMatch(/wi/);
+    expect(tabTitles[1]).toHaveCssClass('invisible');
+  });
+
   it('should have aria attributes', () => {
     const fixture = createTestComponent(`
       <ngb-tabset>
