@@ -1,10 +1,6 @@
 import {Injectable, Inject} from '@angular/core';
 import {DOCUMENT} from '@angular/common';
-
-
-const noop = () => {};
-
-
+import {noop} from 'rxjs';
 
 /** Type for the callback used to revert the scrollbar compensation. */
 export type CompensationReverter = () => void;
