@@ -85,6 +85,7 @@
     "@types/prismjs": "1.16.0",
     "bootstrap": "4.3.1",
     "clang-format": "1.0.35",
+    "codelyzer": "^5.2.0",
     "concurrently": "^4.1.0",
     "conventional-changelog-cli": "^2.0.12",
     "core-js": "^2",

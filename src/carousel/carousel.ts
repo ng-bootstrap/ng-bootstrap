@@ -45,6 +45,7 @@ export class NgbSlide {
  *
  * Allows to set intervals, change the way user interacts with the slides and provides a programmatic API.
  */
+/* tslint:disable:template-click-events-have-key-events */
 @Component({
   selector: 'ngb-carousel',
   exportAs: 'ngbCarousel',

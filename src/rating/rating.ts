@@ -41,6 +41,7 @@ const NGB_RATING_VALUE_ACCESSOR = {
 /**
  * A directive that helps visualising and interacting with a star rating bar.
  */
+/* tslint:disable:template-click-events-have-key-events */
 @Component({
   selector: 'ngb-rating',
   changeDetection: ChangeDetectionStrategy.OnPush,

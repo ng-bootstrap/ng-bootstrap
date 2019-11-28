@@ -876,12 +876,6 @@ export class WithSkipTabindexFirstFocusableModalCmpt {
       </ng-template>
     </ng-template>
     <button id="open" (click)="open('from button')">Open</button>
-    <div id="open-no-focus" (click)="open('from non focusable element')">Open</div>
-    <div
-      id="open-no-focus-ie"
-      (click)="open('from non focusable element but stored as activeElement on IE')"
-      style="display: inline-block;"
-    >Open</div>
   `
 })
 class TestComponent {

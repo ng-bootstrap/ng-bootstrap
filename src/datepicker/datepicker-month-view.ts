@@ -4,6 +4,7 @@ import {NgbDate} from './ngb-date';
 import {NgbDatepickerI18n} from './datepicker-i18n';
 import {DayTemplateContext} from './datepicker-day-template-context';
 
+/* tslint:disable:template-click-events-have-key-events */
 @Component({
   selector: 'ngb-datepicker-month-view',
   host: {'role': 'grid'},
