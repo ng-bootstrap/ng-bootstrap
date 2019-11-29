@@ -1,4 +1,4 @@
-import { browser, $ } from 'protractor';
+import { browser } from 'protractor';
 import { getLinkElement, getComponentTabsLinks, getCodeToggleElement, getCodeElements } from '../tools.po';
 
 

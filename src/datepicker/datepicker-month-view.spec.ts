@@ -1,5 +1,5 @@
 import {TestBed, ComponentFixture} from '@angular/core/testing';
-import {createGenericTestComponent, isBrowser} from '../test/common';
+import {createGenericTestComponent} from '../test/common';
 
 import {Component} from '@angular/core';
 

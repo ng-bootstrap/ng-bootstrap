@@ -1,4 +1,4 @@
-import {browser, by} from 'protractor';
+import {by} from 'protractor';
 import {openUrl} from '../../tools.po';
 import {DropdownPage} from '../dropdown.po';
 import {DropdownPositionPage} from './dropdown-position.po';

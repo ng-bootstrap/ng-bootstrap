@@ -27,7 +27,6 @@ import {PlacementArray, positionElements} from '../util/positioning';
 import {NgbDateAdapter} from './adapters/ngb-date-adapter';
 import {NgbDatepicker, NgbDatepickerNavigateEvent} from './datepicker';
 import {DayTemplateContext} from './datepicker-day-template-context';
-import {NgbDatepickerService} from './datepicker-service';
 import {NgbCalendar} from './ngb-calendar';
 import {NgbDate} from './ngb-date';
 import {NgbDateParserFormatter} from './ngb-date-parser-formatter';
@@ -63,7 +62,7 @@ const NGB_DATEPICKER_VALIDATOR = {
     '[disabled]': 'disabled'
   },
   providers: [
-    NGB_DATEPICKER_VALUE_ACCESSOR, NGB_DATEPICKER_VALIDATOR, NgbDatepickerService,
+    NGB_DATEPICKER_VALUE_ACCESSOR, NGB_DATEPICKER_VALIDATOR,
     {provide: NgbDatepickerConfig, useExisting: NgbInputDatepickerConfig}
   ],
 })
@@ -263,9 +262,9 @@ export class NgbInputDatepicker implements OnChanges,
   constructor(
       private _parserFormatter: NgbDateParserFormatter, private _elRef: ElementRef<HTMLInputElement>,
       private _vcRef: ViewContainerRef, private _renderer: Renderer2, private _cfr: ComponentFactoryResolver,
-      private _ngZone: NgZone, private _service: NgbDatepickerService, private _calendar: NgbCalendar,
-      private _dateAdapter: NgbDateAdapter<any>, @Inject(DOCUMENT) private _document: any,
-      private _changeDetector: ChangeDetectorRef, config: NgbInputDatepickerConfig) {
+      private _ngZone: NgZone, private _calendar: NgbCalendar, private _dateAdapter: NgbDateAdapter<any>,
+      @Inject(DOCUMENT) private _document: any, private _changeDetector: ChangeDetectorRef,
+      config: NgbInputDatepickerConfig) {
     ['autoClose', 'container', 'positionTarget', 'placement'].forEach(input => this[input] = config[input]);
     this._zoneSubscription = _ngZone.onStable.subscribe(() => this._updatePopupPosition());
   }

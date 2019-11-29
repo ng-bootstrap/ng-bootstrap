@@ -279,10 +279,10 @@ export class NgbDatepicker implements OnDestroy,
   onTouched = () => {};
 
   constructor(
-      public _service: NgbDatepickerService, private _calendar: NgbCalendar, public i18n: NgbDatepickerI18n,
-      config: NgbDatepickerConfig, private _keyboardService: NgbDatepickerKeyboardService,
-      private _cd: ChangeDetectorRef, private _elementRef: ElementRef<HTMLElement>,
-      private _ngbDateAdapter: NgbDateAdapter<any>, private _ngZone: NgZone) {
+      private _service: NgbDatepickerService, private _calendar: NgbCalendar, public i18n: NgbDatepickerI18n,
+      config: NgbDatepickerConfig, private _keyboardService: NgbDatepickerKeyboardService, cd: ChangeDetectorRef,
+      private _elementRef: ElementRef<HTMLElement>, private _ngbDateAdapter: NgbDateAdapter<any>,
+      private _ngZone: NgZone) {
     ['dayTemplate', 'dayTemplateData', 'displayMonths', 'firstDayOfWeek', 'footerTemplate', 'markDisabled', 'minDate',
      'maxDate', 'navigation', 'outsideDays', 'showWeekdays', 'showWeekNumbers', 'startDate']
         .forEach(input => this[input] = config[input]);
@@ -336,7 +336,7 @@ export class NgbDatepicker implements OnDestroy,
         this.focus();
       }
 
-      _cd.markForCheck();
+      cd.markForCheck();
     });
   }
 

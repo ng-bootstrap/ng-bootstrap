@@ -19,6 +19,7 @@
     "ssr": "yarn ssr-app:lint && yarn ssr-app:build && yarn ssr-app:e2e",
     "changelog": "conventional-changelog --preset angular --infile CHANGELOG.md --same-file --release-count 1",
     "check-format": "ts-node --project misc/tsconfig.json misc/check-format.ts",
+    "check-ts": "yarn demo:docs && ts-node --project misc/tsconfig.json misc/check-ts.ts",
     "saucelabs": "ng test ng-bootstrap -c saucelabs",
     "saucelabs:ie": "ng test ng-bootstrap -c saucelabs-ie",
     "scripts:tdd": "ts-node-dev --respawn --project misc/tsconfig.json node_modules/jasmine/bin/jasmine misc/*.spec.ts",
@@ -46,7 +47,7 @@
     "ssr-app:e2e": "concurrently --success first --kill-others --names \"express,protractor\" \"yarn ssr-app:serve-express\" \"ng e2e ssr-app\"",
     "ssr-app:build": "ng build ssr-app --prod && ng run ssr-app:server:production && yarn ssr-app:build-server",
     "ssr-app:build-server": "webpack --config ssr-app/webpack.server.config.js --colors",
-    "ci": "yarn test && yarn e2e && yarn build --progress false && yarn ssr"
+    "ci": "yarn check-ts && yarn test && yarn e2e && yarn build --progress false && yarn ssr"
   },
   "repository": {
     "type": "git",
@@ -88,6 +89,7 @@
     "concurrently": "^4.1.0",
     "conventional-changelog-cli": "^2.0.12",
     "core-js": "^2",
+    "cross-spawn": "^7.0.1",
     "ejs": "2.6.1",
     "express": "^4.16.4",
     "fs-extra": "^8.0.0",
