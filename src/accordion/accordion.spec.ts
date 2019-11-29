@@ -839,6 +839,6 @@ class TestComponent {
     {id: 'two', disabled: false, title: 'Panel 2', content: 'bar', type: ''},
     {id: 'three', disabled: false, title: 'Panel 3', content: 'baz', type: ''}
   ];
-  changeCallback = (event: NgbPanelChangeEvent) => {};
+  changeCallback = (_event: NgbPanelChangeEvent) => {};
   preventDefaultCallback = (event: NgbPanelChangeEvent) => { event.preventDefault(); };
 }

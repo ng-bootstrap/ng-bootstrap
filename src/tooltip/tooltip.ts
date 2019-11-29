@@ -31,6 +31,9 @@ import {PopupService} from '../util/popup';
 
 import {NgbTooltipConfig} from './tooltip-config';
 
+const createTestComponent = (html: string) =>
+    createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
+
 let nextId = 0;
 
 @Component({

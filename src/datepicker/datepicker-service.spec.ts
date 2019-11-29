@@ -1200,9 +1200,7 @@ describe('ngb-datepicker-service', () => {
     });
 
     it(`should not emit selection event for null values`, () => {
-      const date = new NgbDate(2017, 5, 5);
       service.select(null, {emitEvent: true});
-
       expect(mockSelect.onNext).not.toHaveBeenCalled();
     });
 

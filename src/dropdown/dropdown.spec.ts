@@ -327,7 +327,6 @@ describe('ngb-dropdown-toggle', () => {
       </div>`;
 
     const fixture = createTestComponent(html);
-    const compiled = fixture.nativeElement;
     const dropdown = fixture.debugElement.query(By.directive(NgbDropdown)).injector.get(NgbDropdown);
     dropdown.open();
     fixture.detectChanges();

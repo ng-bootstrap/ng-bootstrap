@@ -892,7 +892,7 @@ class TestComponent {
   showNavigationArrows = true;
   showNavigationIndicators = true;
   slides = ['a', 'b'];
-  carouselSlideCallBack = (event: NgbSlideEvent) => {};
+  carouselSlideCallBack = (_event: NgbSlideEvent) => {};
 }
 
 @Component({

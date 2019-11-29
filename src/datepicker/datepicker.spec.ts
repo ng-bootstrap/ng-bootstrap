@@ -852,7 +852,6 @@ describe('ngb-datepicker', () => {
     it('should contains aria-label on the days', () => {
       const fixture = createTestComponent(template);
 
-      const datepicker = fixture.debugElement.query(By.directive(NgbDatepicker));
       const dates = getDates(fixture.nativeElement);
 
       dates.forEach(function(date) {

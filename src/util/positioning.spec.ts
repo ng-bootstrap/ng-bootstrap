@@ -1,6 +1,5 @@
 import {Positioning} from './positioning';
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {createGenericTestComponent} from 'src/test/common';
+import {TestBed} from '@angular/core/testing';
 import {Component} from '@angular/core';
 
 describe('Positioning', () => {
