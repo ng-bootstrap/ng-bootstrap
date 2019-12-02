@@ -90,7 +90,7 @@ const DEMOS = {
     markup: require('!!raw-loader!./demos/disabled/datepicker-disabled.html').default
   },
   adapter: {
-    title: 'Custom date adapter',
+    title: 'Custom date adapter and formatter',
     type: NgbdDatepickerAdapter,
     code: require('!!raw-loader!./demos/adapter/datepicker-adapter').default,
     markup: require('!!raw-loader!./demos/adapter/datepicker-adapter.html').default
