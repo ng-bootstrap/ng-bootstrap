@@ -669,7 +669,6 @@ describe('ngb-typeahead', () => {
 
     it('should raise select event when a result is selected', () => {
       const fixture = createTestComponent('<input [ngbTypeahead]="find" (selectItem)="onSelect($event.item)"/>');
-      const input = getNativeInput(fixture.nativeElement);
 
       // clicking selected
       changeInput(fixture.nativeElement, 'o');
@@ -683,7 +682,6 @@ describe('ngb-typeahead', () => {
     it('should not propagate model when preventDefault() is called on selectEvent', async(() => {
          const fixture = createTestComponent(
              '<input [(ngModel)]="model" [ngbTypeahead]="find" (selectItem)="$event.preventDefault()"/>');
-         const input = getNativeInput(fixture.nativeElement);
 
          // clicking selected
          changeInput(fixture.nativeElement, 'o');

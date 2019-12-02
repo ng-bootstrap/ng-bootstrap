@@ -852,7 +852,6 @@ describe('ngb-datepicker', () => {
     it('should contains aria-label on the days', () => {
       const fixture = createTestComponent(template);
 
-      const datepicker = fixture.debugElement.query(By.directive(NgbDatepicker));
       const dates = getDates(fixture.nativeElement);
 
       dates.forEach(function(date) {
@@ -1202,7 +1201,6 @@ describe('ngb-datepicker', () => {
 
     let mockState: NgbDatepickerState;
     let dp: NgbDatepicker;
-    let keyboardService: NgbDatepickerKeyboardService;
     const mockKeyboardService: NgbDatepickerKeyboardService = {
       processKey(event: KeyboardEvent, datepicker: NgbDatepicker, calendar: NgbCalendar) {
         mockState = datepicker.state;
@@ -1217,7 +1215,6 @@ describe('ngb-datepicker', () => {
       const fixture = createTestComponent(
           `<ngb-datepicker [startDate]="date" [minDate]="minDate" [maxDate]="maxDate"></ngb-datepicker>`);
       fixture.detectChanges();
-      keyboardService = TestBed.get(NgbDatepickerKeyboardService);
       dp = <NgbDatepicker>fixture.debugElement.query(By.directive(NgbDatepicker)).componentInstance;
     });
 

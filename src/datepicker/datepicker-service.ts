@@ -1,4 +1,4 @@
-import {NgbCalendar, NgbPeriod} from './ngb-calendar';
+import {NgbCalendar} from './ngb-calendar';
 import {NgbDate} from './ngb-date';
 import {NgbDateStruct} from './ngb-date-struct';
 import {DatepickerViewModel, NgbDayTemplateData, NgbMarkDisabled} from './datepicker-view-model';

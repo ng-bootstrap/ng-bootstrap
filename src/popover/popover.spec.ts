@@ -1,5 +1,5 @@
-import {TestBed, ComponentFixture, inject, fakeAsync, tick} from '@angular/core/testing';
-import {createGenericTestComponent, createKeyEvent, triggerEvent} from '../test/common';
+import {TestBed, ComponentFixture, inject} from '@angular/core/testing';
+import {createGenericTestComponent, triggerEvent} from '../test/common';
 
 import {By} from '@angular/platform-browser';
 import {
@@ -13,15 +13,9 @@ import {
   AfterViewInit
 } from '@angular/core';
 
-import {Key} from '../util/key';
-
 import {NgbPopoverModule} from './popover.module';
 import {NgbPopoverWindow, NgbPopover} from './popover';
 import {NgbPopoverConfig} from './popover-config';
-
-function dispatchEscapeKeyUpEvent() {
-  document.dispatchEvent(createKeyEvent(Key.Escape));
-}
 
 @Injectable()
 class SpyService {

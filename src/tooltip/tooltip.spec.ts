@@ -1,5 +1,5 @@
-import {TestBed, ComponentFixture, inject, fakeAsync, tick} from '@angular/core/testing';
-import {createGenericTestComponent, createKeyEvent, triggerEvent} from '../test/common';
+import {TestBed, ComponentFixture, inject} from '@angular/core/testing';
+import {createGenericTestComponent, triggerEvent} from '../test/common';
 
 import {By} from '@angular/platform-browser';
 import {
@@ -11,15 +11,10 @@ import {
   ViewContainerRef
 } from '@angular/core';
 
-import {Key} from '../util/key';
 
 import {NgbTooltipModule} from './tooltip.module';
 import {NgbTooltipWindow, NgbTooltip} from './tooltip';
 import {NgbTooltipConfig} from './tooltip-config';
-
-function dispatchEscapeKeyUpEvent() {
-  document.dispatchEvent(createKeyEvent(Key.Escape));
-}
 
 const createTestComponent =
     (html: string) => <ComponentFixture<TestComponent>>createGenericTestComponent(html, TestComponent);

@@ -1,4 +1,4 @@
-import {$, Key} from 'protractor';
+import {Key} from 'protractor';
 import {expectFocused, sendKey, openUrl} from '../../tools.po';
 import {DatepickerFocusPage} from './datepicker-focus.po';
 
