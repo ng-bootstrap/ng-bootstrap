@@ -56,7 +56,9 @@ export class ScrollBar {
    */
   private _isPresent(scrollbarWidth: number): boolean {
     const rect = this._document.body.getBoundingClientRect();
-    return window.innerWidth - (rect.left + rect.right) >= scrollbarWidth;
+    const bodyToViewportGap = window.innerWidth - (rect.left + rect.right);
+    const uncertainty = 0.1 * scrollbarWidth;
+    return bodyToViewportGap >= scrollbarWidth - uncertainty;
   }
 
   /**
