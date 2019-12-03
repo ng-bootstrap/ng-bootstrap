@@ -15,7 +15,7 @@ import {
 import {isString} from '../util/util';
 
 import {NgbAccordionConfig} from './accordion-config';
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 
 let nextId = 0;
 
@@ -148,20 +148,14 @@ export interface NgbPanelChangeEvent {
   selector: 'ngb-accordion',
   exportAs: 'ngbAccordion',
   host: {'class': 'accordion', 'role': 'tablist', '[attr.aria-multiselectable]': '!closeOtherPanels'},
-  animations: [
-    trigger('openClose', [
-      state('closed, void', style({height: '0px', visibility: 'hidden'})),
-      state('open', style({height: '*', visibility: 'visible'})),
-      transition(
-        'open => closed, void => closed, :leave',
-        animate('225ms ease-in')
-      ),
-      transition(
-        'closed => open, :enter',
-        animate('225ms ease-out')
-      )
-    ])
-  ],
+  animations: [trigger(
+      'openClose',
+      [
+        state('closed, void', style({height: '0px', visibility: 'hidden'})),
+        state('open', style({height: '*', visibility: 'visible'})),
+        transition('open => closed, void => closed, :leave', animate('225ms ease-in')),
+        transition('closed => open, :enter', animate('225ms ease-out'))
+      ])],
   template: `
     <ng-template #t ngbPanelHeader let-panel>
       <button class="btn btn-link" [ngbPanelToggle]="panel">
