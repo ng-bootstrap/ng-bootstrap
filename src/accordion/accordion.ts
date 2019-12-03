@@ -15,7 +15,7 @@ import {
 import {isString} from '../util/util';
 
 import {NgbAccordionConfig} from './accordion-config';
-import { animate, animateChild, group, keyframes, query, state, style, transition, trigger } from '@angular/animations';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 let nextId = 0;
 
