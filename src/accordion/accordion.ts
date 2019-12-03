@@ -15,6 +15,7 @@ import {
 import {isString} from '../util/util';
 
 import {NgbAccordionConfig} from './accordion-config';
+import { animate, animateChild, group, keyframes, query, state, style, transition, trigger } from '@angular/animations';
 
 let nextId = 0;
 
@@ -147,6 +148,20 @@ export interface NgbPanelChangeEvent {
   selector: 'ngb-accordion',
   exportAs: 'ngbAccordion',
   host: {'class': 'accordion', 'role': 'tablist', '[attr.aria-multiselectable]': '!closeOtherPanels'},
+  animations: [
+    trigger('openClose', [
+      state('closed, void', style({height: '0px', visibility: 'hidden'})),
+      state('open', style({height: '*', visibility: 'visible'})),
+      transition(
+        'open => closed, void => closed, :leave',
+        animate('225ms ease-in')
+      ),
+      transition(
+        'closed => open, :enter',
+        animate('225ms ease-out')
+      )
+    ])
+  ],
   template: `
     <ng-template #t ngbPanelHeader let-panel>
       <button class="btn btn-link" [ngbPanelToggle]="panel">
@@ -160,7 +175,9 @@ export interface NgbPanelChangeEvent {
                        [ngTemplateOutletContext]="{$implicit: panel, opened: panel.isOpen}"></ng-template>
         </div>
         <div id="{{panel.id}}" role="tabpanel" [attr.aria-labelledby]="panel.id + '-header'"
-             class="collapse" [class.show]="panel.isOpen" *ngIf="!destroyOnHide || panel.isOpen">
+             class="collapse d-block" [class.show]="panel.isOpen"
+             [@openClose]="panel.isOpen ? 'open' : 'closed'"
+             *ngIf="!destroyOnHide || panel.isOpen">
           <div class="card-body">
                <ng-template [ngTemplateOutlet]="panel.contentTpl?.templateRef"></ng-template>
           </div>

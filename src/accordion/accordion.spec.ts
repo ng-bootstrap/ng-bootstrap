@@ -1,10 +1,11 @@
-import {TestBed, ComponentFixture, inject} from '@angular/core/testing';
+import { TestBed, ComponentFixture, inject, tick, fakeAsync } from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
 import {createGenericTestComponent} from '../test/common';
 
 import {Component} from '@angular/core';
 
 import {NgbAccordionModule, NgbPanelChangeEvent, NgbAccordionConfig, NgbAccordion} from './accordion.module';
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -58,7 +59,10 @@ describe('ngb-accordion', () => {
   `;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbAccordionModule]});
+    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbAccordionModule, NoopAnimationsModule]});
+    TestBed.overrideModule(BrowserAnimationsModule, {
+      set: new NoopAnimationsModule()
+    });
     TestBed.overrideComponent(TestComponent, {set: {template: html}});
   });
 
@@ -85,47 +89,55 @@ describe('ngb-accordion', () => {
     expect(accordion.nativeElement).toHaveCssClass('accordion');
   });
 
-  it('should toggle panels based on "activeIds" values', () => {
+  it('should toggle panels based on "activeIds" values', fakeAsync(() => {
     const fixture = TestBed.createComponent(TestComponent);
     const tc = fixture.componentInstance;
     const el = fixture.nativeElement;
     // as array
     tc.activeIds = ['one', 'two'];
     fixture.detectChanges();
+    tick(250);
     expectOpenPanels(el, [true, true, false]);
 
     tc.activeIds = ['two', 'three'];
     fixture.detectChanges();
+    tick(250);
     expectOpenPanels(el, [false, true, true]);
 
     tc.activeIds = [];
     fixture.detectChanges();
+    tick(250);
     expectOpenPanels(el, [false, false, false]);
 
     tc.activeIds = ['wrong id', 'one'];
     fixture.detectChanges();
+    tick(250);
     expectOpenPanels(el, [true, false, false]);
 
     // as string
     tc.activeIds = 'one';
     fixture.detectChanges();
+    tick(250);
     expectOpenPanels(el, [true, false, false]);
 
     tc.activeIds = 'two, three';
     fixture.detectChanges();
+    tick(250);
     expectOpenPanels(el, [false, true, true]);
 
     tc.activeIds = '';
     fixture.detectChanges();
+    tick(250);
     expectOpenPanels(el, [false, false, false]);
 
     tc.activeIds = 'wrong id,one';
     fixture.detectChanges();
+    tick(250);
     expectOpenPanels(el, [true, false, false]);
-  });
+  }));
 
 
-  it('should toggle panels independently', () => {
+  it('should toggle panels independently', fakeAsync(() => {
     const fixture = TestBed.createComponent(TestComponent);
     fixture.detectChanges();
 
@@ -133,67 +145,84 @@ describe('ngb-accordion', () => {
 
     getButton(el, 1).click();
     fixture.detectChanges();
+    tick(250);
     expectOpenPanels(el, [false, true, false]);
 
     getButton(el, 0).click();
     fixture.detectChanges();
+    tick(250);
     expectOpenPanels(el, [true, true, false]);
 
     getButton(el, 1).click();
     fixture.detectChanges();
+    tick(250);
     expectOpenPanels(el, [true, false, false]);
 
     getButton(el, 2).click();
     fixture.detectChanges();
+    tick(250);
 
     expectOpenPanels(el, [true, false, true]);
 
     getButton(el, 0).click();
     fixture.detectChanges();
+    tick(250);
+
     expectOpenPanels(el, [false, false, true]);
 
     getButton(el, 2).click();
     fixture.detectChanges();
-    expectOpenPanels(el, [false, false, false]);
-  });
+    tick(250);
 
-  it('should allow only one panel to be active with "closeOthers" flag', () => {
+    expectOpenPanels(el, [false, false, false]);
+  }));
+
+  it('should allow only one panel to be active with "closeOthers" flag', fakeAsync(() => {
     const fixture = TestBed.createComponent(TestComponent);
     fixture.detectChanges();
+    tick(250);
 
     const tc = fixture.componentInstance;
     const el = fixture.nativeElement;
 
     tc.closeOthers = true;
     fixture.detectChanges();
+    tick(250);
+
     expect(el.children[0].getAttribute('aria-multiselectable')).toBe('false');
 
     getButton(el, 0).click();
     fixture.detectChanges();
+    tick(250);
     expectOpenPanels(el, [true, false, false]);
 
     getButton(el, 1).click();
     fixture.detectChanges();
-    expectOpenPanels(el, [false, true, false]);
-  });
+    tick(250);
 
-  it('should update the activeIds after closeOthers is set to true', () => {
+    expectOpenPanels(el, [false, true, false]);
+  }));
+
+  it('should update the activeIds after closeOthers is set to true', fakeAsync(() => {
     const fixture = TestBed.createComponent(TestComponent);
     const tc = fixture.componentInstance;
     const el = fixture.nativeElement;
 
     tc.activeIds = 'one,two,three';
     fixture.detectChanges();
+    tick(250);
     expectOpenPanels(el, [true, true, true]);
 
     tc.closeOthers = true;
     fixture.detectChanges();
+    tick(250);
     expectOpenPanels(el, [true, false, false]);
 
     tc.closeOthers = false;
     fixture.detectChanges();
+    tick(250);
     expectOpenPanels(el, [true, false, false]);
-  });
+  }));
 
   it('should have the appropriate heading', () => {
     const fixture = TestBed.createComponent(TestComponent);
@@ -394,26 +423,33 @@ describe('ngb-accordion', () => {
     });
   });
 
-  it('should only open one at a time', () => {
+  it('should only open one at a time', fakeAsync(() => {
     const fixture = TestBed.createComponent(TestComponent);
     const tc = fixture.componentInstance;
     tc.closeOthers = true;
     fixture.detectChanges();
+    tick(250);
 
     const headingLinks = getPanelsTitle(fixture.nativeElement);
 
     headingLinks[0].click();
     fixture.detectChanges();
+    tick(250);
+
     expectOpenPanels(fixture.nativeElement, [true, false, false]);
 
     headingLinks[2].click();
     fixture.detectChanges();
+    tick(250);
+
     expectOpenPanels(fixture.nativeElement, [false, false, true]);
 
     headingLinks[2].click();
     fixture.detectChanges();
+    tick(250);
+
     expectOpenPanels(fixture.nativeElement, [false, false, false]);
-  });
+  }));
 
   it('should have only one open panel even if binding says otherwise', () => {
     const fixture = TestBed.createComponent(TestComponent);
@@ -460,38 +496,46 @@ describe('ngb-accordion', () => {
     expectOpenPanels(el, [false, false, false]);
   });
 
-  it('should open/collapse disabled panels', () => {
+  it('should open/collapse disabled panels', fakeAsync(() => {
     const fixture = TestBed.createComponent(TestComponent);
     const tc = fixture.componentInstance;
 
     tc.activeIds = ['one'];
     fixture.detectChanges();
+    tick(250);
+
     expectOpenPanels(fixture.nativeElement, [true, false, false]);
 
     tc.panels[0].disabled = true;
     fixture.detectChanges();
+    tick(250);
+
     expectOpenPanels(fixture.nativeElement, [false, false, false]);
 
     tc.panels[0].disabled = false;
     fixture.detectChanges();
-    expectOpenPanels(fixture.nativeElement, [true, false, false]);
-  });
+    tick(250);
 
-  it('should have correct disabled state', () => {
+    expectOpenPanels(fixture.nativeElement, [true, false, false]);
+  }));
+
+  it('should have correct disabled state', fakeAsync(() => {
     const fixture = TestBed.createComponent(TestComponent);
     const tc = fixture.componentInstance;
 
     tc.activeIds = ['one'];
     fixture.detectChanges();
+    tick(250);
     const headingLinks = getPanelsTitle(fixture.nativeElement);
     expectOpenPanels(fixture.nativeElement, [true, false, false]);
     expect(headingLinks[0].disabled).toBeFalsy();
 
     tc.panels[0].disabled = true;
     fixture.detectChanges();
+    tick(250);
     expectOpenPanels(fixture.nativeElement, [false, false, false]);
     expect(headingLinks[0].disabled).toBeTruthy();
-  });
+  }));
 
   it('should remove collapsed panels content from DOM', () => {
     const fixture = TestBed.createComponent(TestComponent);
@@ -676,7 +720,7 @@ describe('ngb-accordion', () => {
       expect(accordion.isExpanded('second')).toBe(false);
     });
 
-    it('should expanded and collapse individual panels', () => {
+    it('should expanded and collapse individual panels', fakeAsync(() => {
       const testHtml = `
       <ngb-accordion>
         <ngb-panel id="first"></ngb-panel>
@@ -689,16 +733,19 @@ describe('ngb-accordion', () => {
 
       accordion.expand('first');
       fixture.detectChanges();
+      tick(250);
       expectOpenPanels(nativeElement, [true, false]);
 
       accordion.expand('second');
       fixture.detectChanges();
+      tick(250);
       expectOpenPanels(nativeElement, [true, true]);
 
       accordion.collapse('second');
       fixture.detectChanges();
+      tick(250);
       expectOpenPanels(nativeElement, [true, false]);
-    });
+    }));
 
     it('should not expand / collapse if already expanded / collapsed', () => {
       const testHtml = `
@@ -811,7 +858,7 @@ describe('ngb-accordion', () => {
       expectOpenPanels(nativeElement, [false, true]);
     });
 
-    it('should collapse all panels', () => {
+    it('should collapse all panels', fakeAsync(() => {
       const testHtml = `
       <ngb-accordion activeIds="second">
         <ngb-panel id="first"></ngb-panel>
@@ -824,8 +871,10 @@ describe('ngb-accordion', () => {
 
       accordion.collapseAll();
       fixture.detectChanges();
+      tick(250);
+
       expectOpenPanels(nativeElement, [false, false]);
-    });
+    }));
   });
 });
 
