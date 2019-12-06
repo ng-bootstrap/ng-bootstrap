@@ -11,7 +11,7 @@ import {
   ViewChild
 } from '@angular/core';
 import {NgbTabsetConfig} from './tabset-config';
-import {NgbTabContent, NgbTabChangeEvent, NgbSelfControlledTabset} from './tabset-directives';
+import {NgbNavDirective} from '../nav/nav';
 
 /**
  * A directive to wrap tab titles that need to contain HTML markup or other directives.
@@ -20,6 +20,14 @@ import {NgbTabContent, NgbTabChangeEvent, NgbSelfControlledTabset} from './tabse
  */
 @Directive({selector: 'ng-template[ngbTabTitle]'})
 export class NgbTabTitle {
+  constructor(public templateRef: TemplateRef<any>) {}
+}
+
+/**
+ * A directive to wrap content to be displayed in a tab.
+ */
+@Directive({selector: 'ng-template[ngbTabContent]'})
+export class NgbTabContent {
   constructor(public templateRef: TemplateRef<any>) {}
 }
 
@@ -63,32 +71,57 @@ export class NgbTab implements AfterContentChecked {
 }
 
 /**
+ * The payload of the change event fired right before the tab change.
+ */
+export interface NgbTabChangeEvent {
+  /**
+   * The id of the currently active tab.
+   */
+  activeId: string;
+
+  /**
+   * The id of the newly selected tab.
+   */
+  nextId: string;
+
+  /**
+   * Calling this function will prevent tab switching.
+   */
+  preventDefault: () => void;
+}
+
+
+/**
  * A component that makes it easy to create tabbed interface.
  */
 @Component({
   selector: 'ngb-tabset',
   exportAs: 'ngbTabset',
   template: `
-    <ul ngbTabset selfControlled
-      (tabChange)="tabChange.next($event)"
-      [type]="type"
-      [justify]="justify"
-      [orientation]="orientation"
-      [destroyOnHide]="destroyOnHide"
-      [activeId]="activeId"
-      #tabset="ngbTabset"
+    <ul ngbNav
+        (navChange)="tabChange.next($event)"
+        [destroyOnHide]="destroyOnHide"
+        [activeId]="activeId"
+        class="nav nav-{{type}} {{orientation == 'horizontal' ?  '' + justifyClass : 'flex-column'}}"
+        #nav="ngbNav"
     >
-      <li ngbTab [domId]="tab.id" [disabled]="tab.disabled" *ngFor="let tab of tabs">
-        <a ngbTabLink>{{tab.title}}<ng-template [ngTemplateOutlet]="tab.titleTpl?.templateRef"></ng-template></a>
-        <ng-template ngbTabContent><ng-template [ngTemplateOutlet]="tab.contentTpl?.templateRef"></ng-template></ng-template>
+      <li ngbNavItem [domId]="tab.id" [disabled]="tab.disabled" *ngFor="let tab of tabs">
+        <a ngbNavLink>{{tab.title}}
+          <ng-template [ngTemplateOutlet]="tab.titleTpl?.templateRef"></ng-template>
+        </a>
+        <ng-template ngbNavContent>
+          <ng-template [ngTemplateOutlet]="tab.contentTpl?.templateRef"></ng-template>
+        </ng-template>
       </li>
     </ul>
-    <div [ngbTabsetOutlet]="tabset"></div>
+    <div [ngbNavOutlet]="nav" class="tab-content"></div>
   `
 })
 export class NgbTabset {
+  justifyClass;
+
   @ContentChildren(NgbTab) tabs: QueryList<NgbTab>;
-  @ViewChild(NgbSelfControlledTabset, {static: true}) control: NgbSelfControlledTabset;
+  @ViewChild(NgbNavDirective, {static: true}) control: NgbNavDirective;
 
   /**
    * The identifier of the tab that should be opened **initially**.
@@ -105,7 +138,14 @@ export class NgbTabset {
   /**
    * The horizontal alignment of the tabs with flexbox utilities.
    */
-  @Input() justify: 'start' | 'center' | 'end' | 'fill' | 'justified';
+  @Input()
+  set justify(className: 'start' | 'center' | 'end' | 'fill' | 'justified') {
+    if (className === 'fill' || className === 'justified') {
+      this.justifyClass = `nav-${className}`;
+    } else {
+      this.justifyClass = `justify-content-${className}`;
+    }
+  }
 
   /**
    * The orientation of the tabset.

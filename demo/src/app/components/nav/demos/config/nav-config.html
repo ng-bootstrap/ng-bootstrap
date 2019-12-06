@@ -1,0 +1,16 @@
+<ul ngbNav #nav="ngbNav">
+  <li ngbNavItem>
+    <a ngbNavLink>One</a>
+    <ng-template ngbNavContent>
+      <p>These tabs are displayed as pills...</p>
+    </ng-template>
+  </li>
+  <li ngbNavItem>
+    <a ngbNavLink>Two</a>
+    <ng-template ngbNavContent>
+      <p>Because default values have been customized.</p>
+    </ng-template>
+  </li>
+</ul>
+
+<div [ngbNavOutlet]="nav" class="mt-2"></div>

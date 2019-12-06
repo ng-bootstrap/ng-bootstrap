@@ -9,6 +9,7 @@ import {ROUTES as COLLAPSE_ROUTES} from './components/collapse/collapse.module';
 import {ROUTES as DATEPICKER_ROUTES} from './components/datepicker/datepicker.module';
 import {ROUTES as DROPDOWN_ROUTES} from './components/dropdown/dropdown.module';
 import {ROUTES as MODAL_ROUTES} from './components/modal/modal.module';
+import {ROUTES as NAV_ROUTES} from './components/nav/nav.module';
 import {ROUTES as PAGINATION_ROUTES} from './components/pagination/pagination.module';
 import {ROUTES as POPOVER_ROUTES} from './components/popover/popover.module';
 import {ROUTES as PROGRESSBAR_ROUTES} from './components/progressbar/progressbar.module';
@@ -37,6 +38,7 @@ const routes: Routes = [
   { path: 'components/datepicker', children: DATEPICKER_ROUTES },
   { path: 'components/dropdown', children: DROPDOWN_ROUTES },
   { path: 'components/modal', children: MODAL_ROUTES },
+  { path: 'components/nav', children: NAV_ROUTES },
   { path: 'components/pagination', children: PAGINATION_ROUTES },
   { path: 'components/popover', children: POPOVER_ROUTES },
   { path: 'components/progressbar', children: PROGRESSBAR_ROUTES },
