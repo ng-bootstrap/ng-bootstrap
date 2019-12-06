@@ -689,7 +689,7 @@ describe('NgbInputDatepicker', () => {
       fixture.componentRef.instance.minDate = {year: 2019, month: 10, day: 14};
       fixture.componentRef.instance.maxDate = {year: 2019, month: 12, day: 14};
       fixture.detectChanges();
-      
+
       expect(dp.minDate).toEqual({year: 2019, month: 10, day: 14});
       expect(dp.maxDate).toEqual({year: 2019, month: 12, day: 14});
 
