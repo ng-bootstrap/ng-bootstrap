@@ -135,7 +135,7 @@ export class NgbTypeahead implements ControlValueAccessor,
    *
    * Note that the `this` argument is `undefined` so you need to explicitly bind it to a desired "this" target.
    */
-  @Input() ngbTypeahead: (text: Observable<string>) => Observable<any[]>;
+  @Input() ngbTypeahead: (text: Observable<string>) => Observable<readonly any[]>;
 
   /**
    * The function that converts an item from the result list to a `string` to display in the popup.
@@ -367,7 +367,7 @@ export class NgbTypeahead implements ControlValueAccessor,
     this._renderer.setProperty(this._elementRef.nativeElement, 'value', toString(value));
   }
 
-  private _subscribeToUserInput(userInput$: Observable<any[]>): Subscription {
+  private _subscribeToUserInput(userInput$: Observable<readonly any[]>): Subscription {
     return userInput$.subscribe((results) => {
       if (!results || results.length === 0) {
         this._closePopup();
