@@ -4,10 +4,13 @@ import {Key} from '../util/key';
 
 
 
-export function createGenericTestComponent<T>(html: string, type: {new (...args: any[]): T}): ComponentFixture<T> {
+export function createGenericTestComponent<T>(
+    html: string, type: {new (...args: any[]): T}, detectChanges = true): ComponentFixture<T> {
   TestBed.overrideComponent(type, {set: {template: html}});
   const fixture = TestBed.createComponent(type);
-  fixture.detectChanges();
+  if (detectChanges) {
+    fixture.detectChanges();
+  }
   return fixture as ComponentFixture<T>;
 }
 
