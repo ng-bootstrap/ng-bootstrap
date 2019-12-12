@@ -12,6 +12,7 @@ import {NgbdCollapseModule} from './components/collapse/collapse.module';
 import {NgbdDatepickerModule} from './components/datepicker/datepicker.module';
 import {NgbdDropdownModule} from './components/dropdown/dropdown.module';
 import {NgbdModalModule} from './components/modal/modal.module';
+import {NgbdNavModule} from './components/nav/nav.module';
 import {NgbdPaginationModule} from './components/pagination/pagination.module';
 import {NgbdPopoverModule} from './components/popover/popover.module';
 import {NgbdProgressbarModule} from './components/progressbar/progressbar.module';
@@ -37,6 +38,7 @@ const DEMOS = [
   NgbdDatepickerModule,
   NgbdDropdownModule,
   NgbdModalModule,
+  NgbdNavModule,
   NgbdPaginationModule,
   NgbdPopoverModule,
   NgbdProgressbarModule,

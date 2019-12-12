@@ -28,17 +28,17 @@
       <header class="bg-light pt-4 pb-md-5 px-4 px-lg-5 d-flex d-md-block align-items-center title">
         <h1 class="mb-4 mr-auto mr-md-none">{{ component | titlecase }}</h1>
 
-        <ul class="nav nav-tabs px-4 px-lg-5 content-tabset justify-content-md-start justify-content-end">
+        <ul ngbNav [activeId]="this.activeTab" class="nav-tabs px-4 px-lg-5 content-tabset justify-content-md-start justify-content-end">
 
-          <li class="nav-item" *ngFor="let childRoute of route.routeConfig.children">
-            <a class="nav-link" routerLink="./{{childRoute.path}}" [class.active]="activeTab === childRoute.path">
+          <li [ngbNavItem]="childRoute.path" *ngFor="let childRoute of route.routeConfig.children">
+            <a ngbNavLink [routerLink]="['.', childRoute.path]">
               {{ childRoute.path | titlecase }}
             </a>
           </li>
 
-          <li
+          <li ngbNavItem
             ngbDropdown placement="bottom-right"
-            class="nav-item align-self-center ml-0 ml-md-auto navigation-dropdown"
+            class="align-self-center ml-0 ml-md-auto navigation-dropdown"
             *ngIf="tableOfContent.length && isLargeScreenOrLess"
           >
             <span ngbDropdownToggle class="nav-link" title="Table of content">
