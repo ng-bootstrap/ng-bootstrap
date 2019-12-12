@@ -9,8 +9,6 @@ import { NgbdTabsetBasic } from './demos/basic/tabset-basic';
 import { NgbdTabsetBasicModule } from './demos/basic/tabset-basic.module';
 import { NgbdTabsetConfig } from './demos/config/tabset-config';
 import { NgbdTabsetConfigModule } from './demos/config/tabset-config.module';
-import { NgbdTabsetDirectives } from './demos/directives/tabset-directives';
-import { NgbdTabsetDirectivesModule } from './demos/directives/tabset-directives.module';
 import { NgbdTabsetJustify } from './demos/justify/tabset-justify';
 import { NgbdTabsetJustifyModule } from './demos/justify/tabset-justify.module';
 import { NgbdTabsetOrientation } from './demos/orientation/tabset-orientation';
@@ -28,12 +26,6 @@ const DEMOS = {
     type: NgbdTabsetBasic,
     code: require('!!raw-loader!./demos/basic/tabset-basic').default,
     markup: require('!!raw-loader!./demos/basic/tabset-basic.html').default
-  },
-  directives: {
-    title: 'Directives',
-    type: NgbdTabsetDirectives,
-    code: require('!!raw-loader!./demos/directives/tabset-directives'),
-    markup: require('!!raw-loader!./demos/directives/tabset-directives.html')
   },
   pills: {
     title: 'Pills',
@@ -90,7 +82,6 @@ export const ROUTES = [
     NgbdSharedModule,
     NgbdComponentsSharedModule,
     NgbdTabsetBasicModule,
-    NgbdTabsetDirectivesModule,
     NgbdTabsetPillsModule,
     NgbdTabsetPreventChangeModule,
     NgbdTabsetSelectbyidModule,
