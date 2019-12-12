@@ -19,6 +19,13 @@ import { NgbdNavDynamic } from './demos/dynamic/nav-dynamic';
 import { NgbdNavDynamicModule } from './demos/dynamic/nav-dynamic.module';
 import { NgbdNavKeep } from './demos/keep-content/nav-keep-content';
 import { NgbdNavKeepModule } from './demos/keep-content/nav-keep-content.module';
+import { NgbdNavOverviewComponent } from './overview/nav-overview.component';
+
+const OVERVIEW = {
+  'basic-usage': 'Basic Usage',
+  customization: 'Customization',
+  routing: 'Router integration'
+};
 
 const DEMOS = {
   basic: {
@@ -66,11 +73,12 @@ const DEMOS = {
 };
 
 export const ROUTES = [
-  { path: '', pathMatch: 'full', redirectTo: 'examples' },
+  { path: '', pathMatch: 'full', redirectTo: 'overview' },
   {
     path: '',
     component: ComponentWrapper,
     children: [
+      { path: 'overview', component: NgbdNavOverviewComponent },
       { path: 'examples', component: NgbdExamplesPage },
       { path: 'api', component: NgbdApiPage }
     ]
@@ -87,11 +95,12 @@ export const ROUTES = [
     NgbdNavKeepModule,
     NgbdNavDynamicModule,
     NgbdNavCustomStyleModule,
-    NgbdNavConfigModule,
-  ]
+    NgbdNavConfigModule
+  ],
+  declarations: [NgbdNavOverviewComponent]
 })
 export class NgbdNavModule {
   constructor(demoList: NgbdDemoList) {
-    demoList.register('nav', DEMOS);
+    demoList.register('nav', DEMOS, OVERVIEW);
   }
 }
