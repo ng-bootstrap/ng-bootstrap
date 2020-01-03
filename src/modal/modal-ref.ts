@@ -30,7 +30,7 @@ export class NgbActiveModal {
 /**
  * A reference to the newly opened modal returned by the `NgbModal.open()` method.
  */
-export class NgbModalRef<T = any> {
+export class NgbModalRef {
   private _resolve: (result?: any) => void;
   private _reject: (reason?: any) => void;
 
@@ -39,7 +39,7 @@ export class NgbModalRef<T = any> {
    *
    * When a `TemplateRef` is used as the content or when the modal is closed, will return `undefined`.
    */
-  get componentInstance(): T extends new (...args: any[]) => any? InstanceType<T>: undefined {
+  get componentInstance(): any {
     if (this._contentRef && this._contentRef.componentRef) {
       return this._contentRef.componentRef.instance;
     }
