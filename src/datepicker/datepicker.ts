@@ -388,7 +388,9 @@ export class NgbDatepicker implements OnDestroy,
           .pipe(
               filter(
                   ({target, relatedTarget}) =>
-                      !(hasClassName(target, 'ngb-dp-day') && hasClassName(relatedTarget, 'ngb-dp-day'))),
+                      !(hasClassName(target, 'ngb-dp-day') && hasClassName(relatedTarget, 'ngb-dp-day') &&
+                        this._elementRef.nativeElement.contains(target as Node) &&
+                        this._elementRef.nativeElement.contains(relatedTarget as Node))),
               takeUntil(this._destroyed$))
           .subscribe(({type}) => this._ngZone.run(() => this._service.focusVisible = type === 'focusin'));
     });
