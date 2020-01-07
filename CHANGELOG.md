@@ -1,3 +1,22 @@
+## [5.1.5](https://github.com/ng-bootstrap/ng-bootstrap/compare/5.1.4...5.1.5) (2020-01-07)
+
+
+### Bug Fixes
+
+* **datepicker:** correct z-index of month/year selects ([#3473](https://github.com/ng-bootstrap/ng-bootstrap/issues/3473)) ([2de1be3](https://github.com/ng-bootstrap/ng-bootstrap/commit/2de1be3))
+* **datepicker:** fix disappearing month/year select arrow icon in IE and Edge ([3b9307a](https://github.com/ng-bootstrap/ng-bootstrap/commit/3b9307a)), closes [#3526](https://github.com/ng-bootstrap/ng-bootstrap/issues/3526)
+* **modal:** fix scrollbar compensation in some scaling situations ([#3498](https://github.com/ng-bootstrap/ng-bootstrap/issues/3498)) ([b235dbb](https://github.com/ng-bootstrap/ng-bootstrap/commit/b235dbb)), closes [#3448](https://github.com/ng-bootstrap/ng-bootstrap/issues/3448)
+* **modal:** prevent modal from closing when using scrollbar ([#3531](https://github.com/ng-bootstrap/ng-bootstrap/issues/3531)) ([fb8bb11](https://github.com/ng-bootstrap/ng-bootstrap/commit/fb8bb11)), closes [#3518](https://github.com/ng-bootstrap/ng-bootstrap/issues/3518)
+* **modal:** remove key/mouse handlers only when modal is destroyed ([#3532](https://github.com/ng-bootstrap/ng-bootstrap/issues/3532)) ([01d508a](https://github.com/ng-bootstrap/ng-bootstrap/commit/01d508a)), closes [#3515](https://github.com/ng-bootstrap/ng-bootstrap/issues/3515)
+* **pagination:** don't focus links of disabled pagination ([#3468](https://github.com/ng-bootstrap/ng-bootstrap/issues/3468)) ([38da258](https://github.com/ng-bootstrap/ng-bootstrap/commit/38da258))
+
+
+### Reverts
+
+* fix(modal): add typing for `modalRef.componentInstance` ([#2815](https://github.com/ng-bootstrap/ng-bootstrap/issues/2815), [#3529](https://github.com/ng-bootstrap/ng-bootstrap/issues/3529)) ([3ba317c](https://github.com/ng-bootstrap/ng-bootstrap/commit/3ba317c)), closes [#3464](https://github.com/ng-bootstrap/ng-bootstrap/issues/3464)
+
+
+
 ## [5.1.4](https://github.com/ng-bootstrap/ng-bootstrap/compare/5.1.2...5.1.4) (2019-11-08)
 
 
