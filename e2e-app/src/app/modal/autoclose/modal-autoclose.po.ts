@@ -3,6 +3,8 @@ import {$} from 'protractor';
 export class ModalAutoClosePage {
   getModal(selector = 'ngb-modal-window') { return $(selector); }
 
+  getModalDialog() { return $('.modal-dialog'); }
+
   getModalCloseButton() { return $('#modal-close-button'); }
 
   getDismissReason() { return $('#dismiss-reason').getText(); }
