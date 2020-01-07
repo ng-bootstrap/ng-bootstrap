@@ -7,7 +7,7 @@ export class ModalStackConfirmationPage {
 
   getModalButton() { return $('#open-modal'); }
 
-  getModalClose() { return $('#close'); }
+  getModalCloseButton() { return $('#close'); }
 
   getConfirmationButton() { return $('#confirm'); }
 

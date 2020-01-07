@@ -1,6 +1,6 @@
 import {expectNoOpenModals, openUrl, sendKey} from '../../tools.po';
 import {ModalStackConfirmationPage} from './modal-stack-confirmation.po';
-import {Key} from 'protractor';
+import {browser, Key, protractor} from 'protractor';
 
 describe('Modal stacked with confirmation', () => {
   let page: ModalStackConfirmationPage;
@@ -15,7 +15,7 @@ describe('Modal stacked with confirmation', () => {
     await page.openModal();
 
     // close with button
-    await page.getModalClose().click();
+    await page.getModalCloseButton().click();
     expect(await page.getOpenModals().count()).toBe(2, 'Confirmation modal should be opened');
 
     // cancel closure with button
@@ -23,7 +23,7 @@ describe('Modal stacked with confirmation', () => {
     expect(await page.getOpenModals().count()).toBe(1, 'Confirmation modal should be dismissed');
 
     // close again
-    await page.getModalClose().click();
+    await page.getModalCloseButton().click();
     expect(await page.getOpenModals().count()).toBe(2, 'Confirmation modal should be re-opened');
 
     // close all modals
@@ -35,14 +35,17 @@ describe('Modal stacked with confirmation', () => {
 
     // close with Escape
     await sendKey(Key.ESCAPE);
+    browser.wait(protractor.ExpectedConditions.presenceOf(page.getDismissalButton()));
     expect(await page.getOpenModals().count()).toBe(2, 'Confirmation modal should be opened');
 
     // cancel closure with Escape
     await sendKey(Key.ESCAPE);
+    browser.wait(protractor.ExpectedConditions.invisibilityOf(page.getDismissalButton()));
     expect(await page.getOpenModals().count()).toBe(1, 'Confirmation modal should be dismissed');
 
     // close again
     await sendKey(Key.ESCAPE);
+    browser.wait(protractor.ExpectedConditions.presenceOf(page.getDismissalButton()));
     expect(await page.getOpenModals().count()).toBe(2, 'Confirmation modal should be re-opened');
 
     // close all modals
