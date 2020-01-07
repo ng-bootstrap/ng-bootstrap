@@ -13,7 +13,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import {fromEvent} from 'rxjs';
+import {fromEvent, Subject} from 'rxjs';
 import {filter, switchMap, take, takeUntil, tap} from 'rxjs/operators';
 
 import {getFocusableBoundaryElements} from '../util/focus-trap';
@@ -40,6 +40,7 @@ import {ModalDismissReasons} from './modal-dismiss-reasons';
 })
 export class NgbModalWindow implements OnInit,
     AfterViewInit, OnDestroy {
+  private _closed$ = new Subject<void>();
   private _elWithFocus: Element;  // element that is focused prior to modal opening
 
   @ViewChild('dialog', {static: true}) private _dialogEl: ElementRef<HTMLElement>;
@@ -67,7 +68,7 @@ export class NgbModalWindow implements OnInit,
 
       fromEvent<KeyboardEvent>(nativeElement, 'keydown')
           .pipe(
-              takeUntil(this.dismissEvent),
+              takeUntil(this._closed$),
               // tslint:disable-next-line:deprecation
               filter(e => e.which === Key.Escape && this.keyboard))
           .subscribe(event => requestAnimationFrame(() => {
@@ -81,9 +82,8 @@ export class NgbModalWindow implements OnInit,
       let preventClose = false;
       fromEvent<MouseEvent>(this._dialogEl.nativeElement, 'mousedown')
           .pipe(
-              takeUntil(this.dismissEvent), tap(() => preventClose = false),
-              switchMap(
-                  () => fromEvent<MouseEvent>(nativeElement, 'mouseup').pipe(takeUntil(this.dismissEvent), take(1))),
+              takeUntil(this._closed$), tap(() => preventClose = false),
+              switchMap(() => fromEvent<MouseEvent>(nativeElement, 'mouseup').pipe(takeUntil(this._closed$), take(1))),
               filter(({target}) => nativeElement === target))
           .subscribe(() => { preventClose = true; });
 
@@ -91,7 +91,7 @@ export class NgbModalWindow implements OnInit,
       // 1. clicking on modal dialog itself
       // 2. closing was prevented by mousedown/up handlers
       // 3. clicking on scrollbar when the viewport is too small and modal doesn't fit (click is not triggered at all)
-      fromEvent<MouseEvent>(nativeElement, 'click').pipe(takeUntil(this.dismissEvent)).subscribe(({target}) => {
+      fromEvent<MouseEvent>(nativeElement, 'click').pipe(takeUntil(this._closed$)).subscribe(({target}) => {
         if (this.backdrop === true && nativeElement === target && !preventClose) {
           this._zone.run(() => this.dismiss(ModalDismissReasons.BACKDROP_CLICK));
         }
@@ -122,5 +122,7 @@ export class NgbModalWindow implements OnInit,
       setTimeout(() => elementToFocus.focus());
       this._elWithFocus = null;
     });
+
+    this._closed$.next();
   }
 }

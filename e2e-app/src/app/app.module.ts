@@ -17,6 +17,7 @@ import {ModalAutoCloseComponent} from './modal/autoclose/modal-autoclose.compone
 import {ModalFocusComponent} from './modal/focus/modal-focus.component';
 import {ModalNestingComponent} from './modal/nesting/modal-nesting.component';
 import {ModalStackComponent} from './modal/stack/modal-stack.component';
+import {ModalStackConfirmationComponent} from './modal/stack-confirmation/modal-stack-confirmation.component';
 import {PopoverAutocloseComponent} from './popover/autoclose/popover-autoclose.component';
 import {TooltipAutocloseComponent} from './tooltip/autoclose/tooltip-autoclose.component';
 import {TooltipFocusComponent} from './tooltip/focus/tooltip-focus.component';
@@ -41,6 +42,7 @@ import {TypeaheadValidationComponent} from './typeahead/validation/typeahead-val
     ModalFocusComponent,
     ModalNestingComponent,
     ModalStackComponent,
+    ModalStackConfirmationComponent,
     PopoverAutocloseComponent,
     TooltipAutocloseComponent,
     TooltipFocusComponent,
