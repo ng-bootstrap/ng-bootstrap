@@ -8,6 +8,7 @@ import {$, browser, Button, ElementFinder, Key, protractor, WebElement} from 'pr
 export const sendKey = async(...keys: string[]) => {
   const focused = await browser.driver.switchTo().activeElement();
   await focused.sendKeys(Key.chord(...keys));
+  await browser.sleep(0);
 };
 
 /**
