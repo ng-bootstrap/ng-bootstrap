@@ -1,4 +1,4 @@
-import {Component, Input, ChangeDetectionStrategy} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, ViewEncapsulation} from '@angular/core';
 import {getValueInRange, isNumber} from '../util/util';
 import {NgbProgressbarConfig} from './progressbar-config';
 
@@ -8,6 +8,7 @@ import {NgbProgressbarConfig} from './progressbar-config';
 @Component({
   selector: 'ngb-progressbar',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
   template: `
     <div class="progress" [style.height]="height">
       <div class="progress-bar{{type ? ' bg-' + type : ''}}{{textType ? ' text-' + textType : ''}}

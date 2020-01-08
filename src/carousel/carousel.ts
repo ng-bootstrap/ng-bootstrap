@@ -7,6 +7,7 @@ import {
   ContentChildren,
   Directive,
   EventEmitter,
+  HostListener,
   Inject,
   Input,
   NgZone,
@@ -15,14 +16,14 @@ import {
   PLATFORM_ID,
   QueryList,
   TemplateRef,
-  HostListener
+  ViewEncapsulation
 } from '@angular/core';
 import {isPlatformBrowser} from '@angular/common';
 
 import {NgbCarouselConfig} from './carousel-config';
 
-import {Subject, timer, BehaviorSubject, combineLatest, NEVER} from 'rxjs';
-import {startWith, map, switchMap, takeUntil, distinctUntilChanged} from 'rxjs/operators';
+import {BehaviorSubject, combineLatest, NEVER, Subject, timer} from 'rxjs';
+import {distinctUntilChanged, map, startWith, switchMap, takeUntil} from 'rxjs/operators';
 
 let nextId = 0;
 
@@ -49,6 +50,7 @@ export class NgbSlide {
   selector: 'ngb-carousel',
   exportAs: 'ngbCarousel',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
   host: {
     'class': 'carousel slide',
     '[style.display]': '"block"',
