@@ -45,9 +45,6 @@ export class NgbDatepickerService {
 
   get dateSelect$(): Observable<NgbDate> { return this._dateSelect$.pipe(filter(date => date !== null)); }
 
-  /** @deprecated please use `dateSelect$` */
-  get select$(): Observable<NgbDate> { return this.dateSelect$; }
-
   set dayTemplateData(dayTemplateData: NgbDayTemplateData) {
     if (this._state.dayTemplateData !== dayTemplateData) {
       this._nextState({dayTemplateData});
