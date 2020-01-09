@@ -1,13 +1,14 @@
 import {
-  Component,
-  Input,
-  ContentChildren,
-  QueryList,
-  Directive,
-  TemplateRef,
   AfterContentChecked,
+  Component,
+  ContentChildren,
+  Directive,
+  EventEmitter,
+  Input,
   Output,
-  EventEmitter
+  QueryList,
+  TemplateRef,
+  ViewEncapsulation
 } from '@angular/core';
 import {NgbTabsetConfig} from './tabset-config';
 
@@ -97,6 +98,7 @@ export interface NgbTabChangeEvent {
 @Component({
   selector: 'ngb-tabset',
   exportAs: 'ngbTabset',
+  encapsulation: ViewEncapsulation.None,
   template: `
     <ul [class]="'nav nav-' + type + (orientation == 'horizontal'?  ' ' + justifyClass : ' flex-column')" role="tablist">
       <li class="nav-item" *ngFor="let tab of tabs">

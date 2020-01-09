@@ -1,16 +1,17 @@
 import {
-  Component,
   ChangeDetectionStrategy,
-  Input,
-  Output,
-  EventEmitter,
-  OnInit,
-  TemplateRef,
-  OnChanges,
-  SimpleChanges,
+  ChangeDetectorRef,
+  Component,
   ContentChild,
+  EventEmitter,
   forwardRef,
-  ChangeDetectorRef
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  TemplateRef,
+  ViewEncapsulation
 } from '@angular/core';
 import {NgbRatingConfig} from './rating-config';
 import {getValueInRange} from '../util/util';
@@ -44,6 +45,7 @@ const NGB_RATING_VALUE_ACCESSOR = {
 @Component({
   selector: 'ngb-rating',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
   host: {
     'class': 'd-inline-flex',
     'tabindex': '0',
