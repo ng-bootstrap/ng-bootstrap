@@ -1,7 +1,7 @@
 <h3>Modal nesting tests</h3>
 
 <ng-template #t let-modal>
-  <div class="modal-header">
+  <div id="modal" class="modal-header">
     <h4 class="modal-title">Modal with nested popups</h4>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
       <span aria-hidden="true">&times;</span>
@@ -14,7 +14,7 @@
 </ng-template>
 
 <ng-template #t2 let-modal>
-  <div class="modal-header">
+  <div id="stack-modal" class="modal-header">
     <h4 class="modal-title">Stacked modal</h4>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
       <span aria-hidden="true">&times;</span>

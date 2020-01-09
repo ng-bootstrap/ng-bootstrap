@@ -5,6 +5,8 @@ export class ModalStackConfirmationPage {
 
   getModal(index) { return this.getOpenModals().get(index); }
 
+  getStackModal() { return $('#stack-modal'); }
+
   getModalButton() { return $('#open-modal'); }
 
   getModalCloseButton() { return $('#close'); }
@@ -15,8 +17,6 @@ export class ModalStackConfirmationPage {
 
   async openModal() {
     await this.getModalButton().click();
-    const modal = this.getModal(0);
-    expect(await modal.isPresent()).toBeTruthy(`A modal should have been opened`);
-    return modal;
+    expect(await this.getModal(0).isPresent()).toBeTruthy(`A modal should have been opened`);
   }
 }
