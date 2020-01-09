@@ -19,7 +19,7 @@ describe('Modal', () => {
 
     // close
     await sendKey(Key.ESCAPE);
-    expect(await page.getModal().isPresent()).toBeFalsy('The modal should be closed on ESC');
+    await expectNoOpenModals('The modal should be closed on ESC');
 
     // button should be focused
     await expectFocused($('#open-modal-simple'), 'Should focus trigger button after closing');
@@ -30,7 +30,7 @@ describe('Modal', () => {
 
     // close
     await modal.click();
-    expect(await modal.isPresent()).toBeFalsy('The modal should be closed on ESC');
+    expect(await modal.isPresent()).toBeFalsy('The modal should be closed on click');
 
     // button should be focused
     await expectFocused($('#open-modal-simple'), 'Should focus trigger button after closing');
@@ -41,6 +41,7 @@ describe('Modal', () => {
 
     // close
     await sendKey(Key.ESCAPE);
+    await expectNoOpenModals('The modal should be closed on ESC');
 
     // body should be focused
     await expectFocused($('body'), 'Should focus body after closing');

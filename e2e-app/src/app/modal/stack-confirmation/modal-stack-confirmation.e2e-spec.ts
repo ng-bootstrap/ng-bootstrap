@@ -2,7 +2,7 @@ import {expectNoOpenModals, openUrl, sendKey} from '../../tools.po';
 import {ModalStackConfirmationPage} from './modal-stack-confirmation.po';
 import {browser, Key, protractor} from 'protractor';
 
-describe('Modal stacked with confirmation', () => {
+describe('Modal stack with confirmation', () => {
   let page: ModalStackConfirmationPage;
 
   beforeAll(() => { page = new ModalStackConfirmationPage(); });
@@ -35,17 +35,17 @@ describe('Modal stacked with confirmation', () => {
 
     // close with Escape
     await sendKey(Key.ESCAPE);
-    browser.wait(protractor.ExpectedConditions.presenceOf(page.getDismissalButton()));
+    browser.wait(protractor.ExpectedConditions.presenceOf(page.getStackModal()));
     expect(await page.getOpenModals().count()).toBe(2, 'Confirmation modal should be opened');
 
     // cancel closure with Escape
     await sendKey(Key.ESCAPE);
-    browser.wait(protractor.ExpectedConditions.invisibilityOf(page.getDismissalButton()));
+    browser.wait(protractor.ExpectedConditions.invisibilityOf(page.getStackModal()));
     expect(await page.getOpenModals().count()).toBe(1, 'Confirmation modal should be dismissed');
 
     // close again
     await sendKey(Key.ESCAPE);
-    browser.wait(protractor.ExpectedConditions.presenceOf(page.getDismissalButton()));
+    browser.wait(protractor.ExpectedConditions.presenceOf(page.getStackModal()));
     expect(await page.getOpenModals().count()).toBe(2, 'Confirmation modal should be re-opened');
 
     // close all modals

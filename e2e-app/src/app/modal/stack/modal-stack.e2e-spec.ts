@@ -1,10 +1,10 @@
-import {$, Key} from 'protractor';
+import {$, browser, Key, protractor} from 'protractor';
 import {expectFocused, expectNoOpenModals, openUrl, sendKey} from '../../tools.po';
 import {ModalStackPage} from './modal-stack.po';
 
 const bodyClass = () => $('body').getAttribute('class');
 
-describe('Modal stacked', () => {
+describe('Modal stack', () => {
   let page: ModalStackPage;
 
   beforeAll(() => { page = new ModalStackPage(); });
@@ -20,16 +20,18 @@ describe('Modal stacked', () => {
 
     // close the stack modal
     await sendKey(Key.ESCAPE);
+    browser.wait(protractor.ExpectedConditions.invisibilityOf(page.getStackModal()));
     expect(await bodyClass()).toContain('modal-open', `body should have 'modal-open' class`);
 
     // Check that the button is focused again
     await expectFocused(page.getStackModalButton(), 'Button element not focused');
     await sendKey(Key.TAB);
 
-    await expectFocused(page.getCoseIcon(), 'Close icon not focused');
+    await expectFocused(page.getCloseIcon(), 'Close icon not focused');
 
     // close the main modal
     await sendKey(Key.ESCAPE);
+    browser.wait(protractor.ExpectedConditions.invisibilityOf(page.getModal()));
     expect(await bodyClass()).not.toContain('modal-open', `body should have 'modal-open' class`);
   });
 

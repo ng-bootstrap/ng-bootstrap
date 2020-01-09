@@ -28,7 +28,7 @@ describe('Modal', () => {
 
     // close
     await sendKey(Key.ESCAPE);
-    expect(await page.getModal().isPresent()).toBeFalsy('The modal should be closed on ESC');
+    await expectNoOpenModals('The modal should be closed on ESC');
     expect(await page.getDismissReason()).toBe('Escape', `Modal should have been dismissed with 'Escape' reason`);
   });
 
