@@ -1295,6 +1295,14 @@ describe('ngb-datepicker-service', () => {
       expect(getDayCtx(0).currentMonth).toBe(10);
     });
 
+    it(`should generate 'currentYear' for day template`, () => {
+      service.focus(new NgbDate(2017, 1, 1));
+      expect(getDayCtx(0).currentYear).toBe(2017);
+
+      service.focus(new NgbDate(2018, 1, 1));
+      expect(getDayCtx(0).currentYear).toBe(2018);
+    });
+
     it(`should update 'focused' flag and tabindex for day template`, () => {
       // off
       const date = new NgbDate(2017, 5, 1);
