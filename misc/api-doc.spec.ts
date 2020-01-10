@@ -171,7 +171,7 @@ describe('APIDocVisitor', () => {
     expect(interfaceDocs.properties[0].name).toBe('backdrop');
     expect(interfaceDocs.properties[0].description)
         .toContain('Weather a backdrop element should be created for a given modal (true by default).');
-    expect(interfaceDocs.properties[0].type).toBe('boolean | "static"');
+    expect(interfaceDocs.properties[0].type).toBe(`boolean | 'static'`);
     expect(interfaceDocs.properties[0].defaultValue).toBeUndefined();
 
     expect(interfaceDocs.properties[1].name).toBe('keyboard');
@@ -182,7 +182,7 @@ describe('APIDocVisitor', () => {
 
     expect(interfaceDocs.properties[2].name).toBe('size');
     expect(interfaceDocs.properties[2].description).toBe('<p>Size of a new modal window.</p>');
-    expect(interfaceDocs.properties[2].type).toBe('"sm" | "lg" | "xl"');
+    expect(interfaceDocs.properties[2].type).toBe(`'sm' | 'lg' | 'xl' | string`);
     expect(interfaceDocs.properties[2].defaultValue).toBeUndefined();
   });
 
