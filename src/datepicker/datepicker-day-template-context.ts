@@ -20,6 +20,11 @@ export interface DayTemplateContext {
   currentMonth: number;
 
   /**
+   * The year currently displayed by the datepicker.
+   */
+  currentYear: number;
+
+  /**
    * Any data you pass using the `[dayTemplateData]` input in the datepicker.
    *
    * @since 3.3.0

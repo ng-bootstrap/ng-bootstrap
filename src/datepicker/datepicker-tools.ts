@@ -193,7 +193,8 @@ export function buildMonth(
         $implicit: newDate,
         date: newDate,
         data: contextUserData,
-        currentMonth: month.number, disabled,
+        currentMonth: month.number,
+        currentYear: month.year, disabled,
         focused: false,
         selected: false, today
       });

@@ -187,6 +187,7 @@ class TestComponent {
             date: new NgbDate(2016, 7, 4),
             context: {
               currentMonth: 8,
+              currentYear: 2016,
               $implicit: new NgbDate(2016, 7, 4),
               date: new NgbDate(2016, 7, 4),
               disabled: false,
@@ -202,6 +203,7 @@ class TestComponent {
             date: new NgbDate(2016, 8, 1),
             context: {
               currentMonth: 8,
+              currentYear: 2016,
               $implicit: new NgbDate(2016, 8, 1),
               date: new NgbDate(2016, 8, 1),
               disabled: false,
@@ -224,6 +226,7 @@ class TestComponent {
             date: new NgbDate(2016, 8, 2),
             context: {
               currentMonth: 8,
+              currentYear: 2016,
               $implicit: new NgbDate(2016, 8, 2),
               date: new NgbDate(2016, 8, 2),
               disabled: true,
@@ -239,6 +242,7 @@ class TestComponent {
             date: new NgbDate(2016, 8, 3),
             context: {
               currentMonth: 8,
+              currentYear: 2016,
               $implicit: new NgbDate(2016, 8, 3),
               date: new NgbDate(2016, 8, 3),
               disabled: false,
@@ -261,6 +265,7 @@ class TestComponent {
             date: new NgbDate(2016, 8, 4),
             context: {
               currentMonth: 8,
+              currentYear: 2016,
               $implicit: new NgbDate(2016, 8, 4),
               date: new NgbDate(2016, 8, 4),
               disabled: false,
@@ -276,6 +281,7 @@ class TestComponent {
             date: new NgbDate(2016, 9, 1),
             context: {
               currentMonth: 8,
+              currentYear: 2016,
               $implicit: new NgbDate(2016, 9, 1),
               date: new NgbDate(2016, 9, 1),
               disabled: false,
@@ -298,6 +304,7 @@ class TestComponent {
             date: new NgbDate(2016, 9, 2),
             context: {
               currentMonth: 8,
+              currentYear: 2016,
               $implicit: new NgbDate(2016, 9, 2),
               date: new NgbDate(2016, 9, 2),
               disabled: false,
@@ -313,6 +320,7 @@ class TestComponent {
             date: new NgbDate(2016, 9, 3),
             context: {
               currentMonth: 8,
+              currentYear: 2016,
               $implicit: new NgbDate(2016, 9, 3),
               date: new NgbDate(2016, 9, 3),
               disabled: false,
