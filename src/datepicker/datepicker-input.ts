@@ -33,6 +33,7 @@ import {NgbDateParserFormatter} from './ngb-date-parser-formatter';
 import {NgbDateStruct} from './ngb-date-struct';
 import {NgbInputDatepickerConfig} from './datepicker-input-config';
 import {NgbDatepickerConfig} from './datepicker-config';
+import {isString} from '../util/util';
 
 const NGB_DATEPICKER_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -182,6 +183,14 @@ export class NgbInputDatepicker implements OnChanges,
    * Please see the [positioning overview](#/positioning) for more details.
    */
   @Input() placement: PlacementArray;
+
+  /**
+   * If `true`, when closing datepicker will focus element that was focused before datepicker was opened.
+   *
+   * Alternatively you could provide a selector or an `HTMLElement` to focus. If the element doesn't exist or invalid,
+   * we'll fallback to focus document body.
+   */
+  @Input() restoreFocus: true | string | HTMLElement;
 
   /**
    * If `true`, weekdays will be displayed.
@@ -373,8 +382,18 @@ export class NgbInputDatepicker implements OnChanges,
       this._changeDetector.markForCheck();
 
       // restore focus
-      const elementToFocus = this._elWithFocus && this._elWithFocus['focus'] ? this._elWithFocus : this._document.body;
-      elementToFocus.focus();
+      let elementToFocus = this._elWithFocus;
+      if (isString(this.restoreFocus)) {
+        elementToFocus = this._document.querySelector(this.restoreFocus);
+      } else if (this.restoreFocus !== undefined) {
+        elementToFocus = this.restoreFocus;
+      }
+
+      if (elementToFocus) {
+        elementToFocus.focus();
+      } else {
+        this._document.body.focus();
+      }
     }
   }
 
@@ -469,8 +488,8 @@ export class NgbInputDatepicker implements OnChanges,
     }
 
     let hostElement: HTMLElement;
-    if (typeof this.positionTarget === 'string') {
-      hostElement = window.document.querySelector(this.positionTarget);
+    if (isString(this.positionTarget)) {
+      hostElement = this._document.querySelector(this.positionTarget);
     } else if (this.positionTarget instanceof HTMLElement) {
       hostElement = this.positionTarget;
     } else {

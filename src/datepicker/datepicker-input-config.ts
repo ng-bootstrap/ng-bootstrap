@@ -15,4 +15,5 @@ export class NgbInputDatepickerConfig extends NgbDatepickerConfig {
   container: null | 'body';
   positionTarget: string | HTMLElement;
   placement: PlacementArray = ['bottom-left', 'bottom-right', 'top-left', 'top-right'];
+  restoreFocus: true | HTMLElement | string = true;
 }
