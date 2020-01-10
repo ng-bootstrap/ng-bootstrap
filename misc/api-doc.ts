@@ -325,7 +325,13 @@ class APIDocVisitor {
     };
   }
 
-  visitType(node) { return node ? this.typeChecker.typeToString(this.typeChecker.getTypeAtLocation(node)) : 'void'; }
+  visitType(node) {
+    if (node && node.type) {
+      return node.type.getText();
+    }
+
+    return node ? this.typeChecker.typeToString(this.typeChecker.getTypeAtLocation(node)) : 'void';
+  }
 
   isDirectiveDecorator(decorator) {
     const decoratorIdentifierText = decorator.expression.expression.text;
