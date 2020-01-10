@@ -70,7 +70,7 @@ export interface NgbModalOptions {
   /**
    * Size of a new modal window.
    */
-  size?: 'sm' | 'lg' | 'xl';
+  size?: 'sm' | 'lg' | 'xl' | string;
 
   /**
    * A custom class to append to the modal window.
@@ -103,7 +103,7 @@ export class NgbModalConfig implements Required<NgbModalOptions> {
   injector: Injector;
   keyboard = true;
   scrollable: boolean;
-  size: 'sm' | 'lg' | 'xl';
+  size: 'sm' | 'lg' | 'xl' | string;
   windowClass: string;
   backdropClass: string;
 }
