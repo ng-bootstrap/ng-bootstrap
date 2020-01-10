@@ -482,6 +482,17 @@ describe('ngb-modal', () => {
         expect(fixture.nativeElement).not.toHaveModal();
       });
 
+      it('should accept any strings as modal size', () => {
+        const modalInstance = fixture.componentInstance.open('foo', {size: 'ginormous'});
+        fixture.detectChanges();
+        expect(fixture.nativeElement).toHaveModal('foo');
+        expect(document.querySelector('.modal-dialog')).toHaveCssClass('modal-ginormous');
+
+        modalInstance.close();
+        fixture.detectChanges();
+        expect(fixture.nativeElement).not.toHaveModal();
+      });
+
     });
 
     describe('window custom class options', () => {
