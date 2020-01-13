@@ -21,6 +21,8 @@ export interface DayTemplateContext {
 
   /**
    * The year currently displayed by the datepicker.
+   *
+   * @since 5.2.0
    */
   currentYear: number;
 

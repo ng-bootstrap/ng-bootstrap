@@ -8,6 +8,8 @@ import {PlacementArray} from '../util/positioning';
  *
  * You can inject this service, typically in your root component, and customize the values of its properties in
  * order to provide default values for all the datepicker inputs used in the application.
+ *
+ * @since 5.2.0
  */
 @Injectable({providedIn: 'root'})
 export class NgbInputDatepickerConfig extends NgbDatepickerConfig {
