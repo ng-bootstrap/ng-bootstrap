@@ -925,9 +925,9 @@ describe('NgbInputDatepicker', () => {
 
     it('should focus previously focused element', () => {
       const fixture = createTestCmpt(`
-          <div tabindex="0" id="focusable"></div>
-          <input ngbDatepicker [startDate]="{year: 2018, month: 3}"/>
-        `);
+        <div tabindex="0" id="focusable"></div>
+        <input ngbDatepicker [startDate]="{year: 2018, month: 3}"/>
+      `);
 
       // initial focus
       const focusableEl = fixture.nativeElement.querySelector('#focusable');
@@ -943,9 +943,9 @@ describe('NgbInputDatepicker', () => {
 
     it('should focus using selector provided via [restoreFocus]', () => {
       const fixture = createTestCmpt(`
-          <div tabindex="0" id="focusable"></div>
-          <input ngbDatepicker restoreFocus="#focusable" [startDate]="{year: 2018, month: 3}"/>
-        `);
+        <div tabindex="0" id="focusable"></div>
+        <input ngbDatepicker restoreFocus="#focusable" [startDate]="{year: 2018, month: 3}"/>
+      `);
 
       const focusableEl = fixture.nativeElement.querySelector('#focusable');
       expect(document.activeElement).not.toBe(focusableEl);
@@ -959,9 +959,9 @@ describe('NgbInputDatepicker', () => {
 
     it('should focus using element provided via [restoreFocus]', () => {
       const fixture = createTestCmpt(`
-          <div #el tabindex="0" id="focusable"></div>
-          <input ngbDatepicker [restoreFocus]="el" [startDate]="{year: 2018, month: 3}"/>
-        `);
+        <div #el tabindex="0" id="focusable"></div>
+        <input ngbDatepicker [restoreFocus]="el" [startDate]="{year: 2018, month: 3}"/>
+      `);
 
       const focusableEl = fixture.nativeElement.querySelector('#focusable');
       expect(document.activeElement).not.toBe(focusableEl);
@@ -975,9 +975,9 @@ describe('NgbInputDatepicker', () => {
 
     it('should fallback to body if [restoreFocus] selector is invalid', () => {
       const fixture = createTestCmpt(`
-          <div tabindex="0" id="focusable"></div>
-          <input ngbDatepicker restoreFocus=".invalid-element" [startDate]="{year: 2018, month: 3}"/>
-        `);
+        <div tabindex="0" id="focusable"></div>
+        <input ngbDatepicker restoreFocus=".invalid-element" [startDate]="{year: 2018, month: 3}"/>
+      `);
 
       const focusableEl = fixture.nativeElement.querySelector('#focusable');
       focusableEl.focus();
@@ -990,11 +990,28 @@ describe('NgbInputDatepicker', () => {
       expect(document.activeElement).toBe(document.body);
     });
 
-    it('should fallback to body if [restoreFocus] value is invalid', () => {
+    it('should fallback to body if [restoreFocus] value is falsy', () => {
       const fixture = createTestCmpt(`
-          <div tabindex="0" id="focusable"></div>
-          <input ngbDatepicker [restoreFocus]="null" [startDate]="{year: 2018, month: 3}"/>
-        `);
+        <div tabindex="0" id="focusable"></div>
+        <input ngbDatepicker [restoreFocus]="null" [startDate]="{year: 2018, month: 3}"/>
+      `);
+
+      const focusableEl = fixture.nativeElement.querySelector('#focusable');
+      focusableEl.focus();
+      expect(document.activeElement).toBe(focusableEl);
+
+      open(fixture);
+      expect(document.activeElement).not.toBe(focusableEl);
+
+      selectDateAndClose(fixture);
+      expect(document.activeElement).toBe(document.body);
+    });
+
+    it('should fallback to body if [restoreFocus] value is truthy', () => {
+      const fixture = createTestCmpt(`
+        <div tabindex="0" id="focusable"></div>
+        <input ngbDatepicker [restoreFocus]="true" [startDate]="{year: 2018, month: 3}"/>
+      `);
 
       const focusableEl = fixture.nativeElement.querySelector('#focusable');
       focusableEl.focus();

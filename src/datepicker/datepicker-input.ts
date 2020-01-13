@@ -389,7 +389,8 @@ export class NgbInputDatepicker implements OnChanges,
         elementToFocus = this.restoreFocus;
       }
 
-      if (elementToFocus) {
+      // in IE document.activeElement can contain an object without 'focus()' sometimes
+      if (elementToFocus && elementToFocus['focus']) {
         elementToFocus.focus();
       } else {
         this._document.body.focus();
