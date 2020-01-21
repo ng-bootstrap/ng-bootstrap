@@ -28,9 +28,14 @@ header.navbar {
 }
 
 .social-buttons {
+  font-size: x-small;
+  a {
+    color: #fff;
+    text-decoration: none;
+  }
+
   svg {
-    margin-left: 1rem;
-    fill: #fff;
+    fill: currentColor;
   }
 }
 
@@ -125,9 +130,10 @@ header.title {
     .nav > li > a {
       font-size: 0.85em;
 
-      &:hover, &:focus {
+      &:hover,
+      &:focus {
         text-decoration: none;
-        color:#0275d8;
+        color: #0275d8;
       }
     }
 
@@ -150,7 +156,7 @@ header.title {
   a {
     color: inherit;
     font-size: 90%;
-    padding: .25rem 1rem;
+    padding: 0.25rem 1rem;
   }
 
   a:hover {
@@ -181,8 +187,8 @@ header.title {
   }
 }
 
-
-div.api-doc-component, .overview {
+div.api-doc-component,
+.overview {
   margin-bottom: 3rem;
 
   h2,
@@ -190,7 +196,7 @@ div.api-doc-component, .overview {
     .github-link {
       transition: opacity 0.5s;
       opacity: 0.3;
-      margin-left: .5rem;
+      margin-left: 0.5rem;
     }
 
     &:hover {
@@ -203,7 +209,8 @@ div.api-doc-component, .overview {
     }
   }
 
-  section, ngbd-overview-section {
+  section,
+  ngbd-overview-section {
     margin-top: 3rem;
     h4 {
       margin-top: 2rem;
@@ -256,7 +263,8 @@ div.component-demo {
       flex-grow: 1;
     }
 
-    .stackblitz, .toggle-code {
+    .stackblitz,
+    .toggle-code {
       display: flex;
       align-items: center;
       align-self: center;
@@ -299,14 +307,14 @@ div.component-demo {
       }
 
       .nav.nav-pills {
-        border-right: 1px solid  #dee2e6;
-        padding-left: .75rem;
+        border-right: 1px solid #dee2e6;
+        padding-left: 0.75rem;
         padding-right: 0;
 
         .nav-link.active {
           color: #666;
           background-color: #f5f5f5;
-          border: 1px solid  #dee2e6;
+          border: 1px solid #dee2e6;
           border-right-color: #f5f5f5;
           border-top-right-radius: 0;
           border-bottom-right-radius: 0;
@@ -354,8 +362,9 @@ ngbd-api-docs-config {
 }
 
 // override prism theme background color to inline it with bootstrap colors
-code[class*='language-'],
-pre[class*='language-'], ngb-alert {
+code[class*="language-"],
+pre[class*="language-"],
+ngb-alert {
   background-color: #f5f5f5; // same as bootstrap card header
   border-radius: 3px;
 }
@@ -385,7 +394,6 @@ ngb-datepicker.rtl .ngb-dp-navigation-chevron {
 }
 
 ngb-datepicker.hebrew {
-
   .ngb-dp-day {
     width: 2.75rem;
     height: 2.75rem;
