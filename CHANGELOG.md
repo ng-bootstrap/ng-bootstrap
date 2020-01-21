@@ -1,3 +1,32 @@
+# [5.2.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/5.1.5...5.2.0) (2020-01-21)
+
+This release introduces a set of [`NgbNav` directives](https://ng-bootstrap.github.io/#/components/nav) to replace the `NgbTabset` component
+
+### Bug Fixes
+
+* **datepicker:** don't update public state on each CD ([e284110](https://github.com/ng-bootstrap/ng-bootstrap/commit/e284110))
+
+
+### Features
+
+* add `ViewEncapsulation.None` to the rest of components ([#3535](https://github.com/ng-bootstrap/ng-bootstrap/issues/3535)) ([5a5a8a7](https://github.com/ng-bootstrap/ng-bootstrap/commit/5a5a8a7)), closes [#3479](https://github.com/ng-bootstrap/ng-bootstrap/issues/3479)
+* **accordion:** use readonly arrays for inputs ([#3426](https://github.com/ng-bootstrap/ng-bootstrap/issues/3426)) ([16249f4](https://github.com/ng-bootstrap/ng-bootstrap/commit/16249f4))
+* **datepicker:** add 'currentYear' to the day template ([#3540](https://github.com/ng-bootstrap/ng-bootstrap/issues/3540)) ([bbd8b51](https://github.com/ng-bootstrap/ng-bootstrap/commit/bbd8b51)), closes [#2944](https://github.com/ng-bootstrap/ng-bootstrap/issues/2944)
+* **datepicker:** add 'restoreFocus' input ([#3539](https://github.com/ng-bootstrap/ng-bootstrap/issues/3539)) ([31402a3](https://github.com/ng-bootstrap/ng-bootstrap/commit/31402a3)), closes [#3483](https://github.com/ng-bootstrap/ng-bootstrap/issues/3483)
+* **datepicker:** export NgbDatepickerKeyboardService ([e5b3222](https://github.com/ng-bootstrap/ng-bootstrap/commit/e5b3222))
+* **datepicker:** input datepicker global config ([a9ce83e](https://github.com/ng-bootstrap/ng-bootstrap/commit/a9ce83e)), closes [#3273](https://github.com/ng-bootstrap/ng-bootstrap/issues/3273)
+* **datepicker:** introduce 'dateSelect' event to replace 'select' ([943295a](https://github.com/ng-bootstrap/ng-bootstrap/commit/943295a)), closes [#3444](https://github.com/ng-bootstrap/ng-bootstrap/issues/3444)
+* **datepicker:** use readonly arrays for inputs ([#3424](https://github.com/ng-bootstrap/ng-bootstrap/issues/3424)) ([2c3f96a](https://github.com/ng-bootstrap/ng-bootstrap/commit/2c3f96a))
+* **modal:** allow any string as modal size option ([24ea370](https://github.com/ng-bootstrap/ng-bootstrap/commit/24ea370)), closes [#3013](https://github.com/ng-bootstrap/ng-bootstrap/issues/3013)
+* **nav:** initial nav implementation ([783d983](https://github.com/ng-bootstrap/ng-bootstrap/commit/783d983))
+* **pagination:** add 'aria-current' attribute ([#3470](https://github.com/ng-bootstrap/ng-bootstrap/issues/3470)) ([c502341](https://github.com/ng-bootstrap/ng-bootstrap/commit/c502341))
+* **pagination:** add 'aria-disabled' attribute ([#3471](https://github.com/ng-bootstrap/ng-bootstrap/issues/3471)) ([c0a2bda](https://github.com/ng-bootstrap/ng-bootstrap/commit/c0a2bda)), closes [#3470](https://github.com/ng-bootstrap/ng-bootstrap/issues/3470)
+* **progressbar:** allow to specify progressbar text type ([#3394](https://github.com/ng-bootstrap/ng-bootstrap/issues/3394)) ([1057dbd](https://github.com/ng-bootstrap/ng-bootstrap/commit/1057dbd))
+* **timepicker:** input filter to accept only numbers ([#3247](https://github.com/ng-bootstrap/ng-bootstrap/issues/3247)) ([25df51a](https://github.com/ng-bootstrap/ng-bootstrap/commit/25df51a)), closes [#2334](https://github.com/ng-bootstrap/ng-bootstrap/issues/2334)
+* **typeahead:** use readonly arrays for inputs ([#3423](https://github.com/ng-bootstrap/ng-bootstrap/issues/3423)) ([36ce6fb](https://github.com/ng-bootstrap/ng-bootstrap/commit/36ce6fb))
+
+
+
 ## [5.1.5](https://github.com/ng-bootstrap/ng-bootstrap/compare/5.1.4...5.1.5) (2020-01-07)
 
 
