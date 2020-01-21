@@ -9,7 +9,7 @@ import {Component} from '@angular/core';
       </div>
       <div>
         Since version <span class="badge badge-info" >5.2.0</span> please consider using
-        <a routerLink="../../nav">Nav directives</a> as a more flexible alternative.
+        <a routerLink="/components/nav">Nav directives</a> as a more flexible alternative.
         Tabset will not be supported anymore and will be deprecated.
       </div>
     </ngb-alert>
