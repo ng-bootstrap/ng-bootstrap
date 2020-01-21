@@ -65,6 +65,8 @@ export interface NgbDatepickerNavigateEvent {
  * An interface that represents the readonly public state of the datepicker.
  *
  * Accessible via the `datepicker.state` getter
+ *
+ * @since 5.2.0
  */
 export interface NgbDatepickerState {
   /**
@@ -272,6 +274,8 @@ export class NgbDatepicker implements OnDestroy,
    * An event emitted when user selects a date using keyboard or mouse.
    *
    * The payload of the event is currently selected `NgbDate`.
+   *
+   * @since 5.2.0
    */
   @Output() dateSelect = new EventEmitter<NgbDate>();
 
@@ -352,6 +356,8 @@ export class NgbDatepicker implements OnDestroy,
 
   /**
    *  Returns the readonly public state of the datepicker
+   *
+   * @since 5.2.0
    */
   get state(): NgbDatepickerState { return this._publicState; }
 

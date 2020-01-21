@@ -24,6 +24,8 @@ let navCounter = 0;
  * Context passed to the nav content template.
  *
  * See [this demo](#/components/nav/examples#keep-content) as the example.
+ *
+ * @since 5.2.0
  */
 export interface NgbNavContentContext {
   /**
@@ -35,6 +37,8 @@ export interface NgbNavContentContext {
 
 /**
  * This directive must be used to wrap content to be displayed in the nav.
+ *
+ * @since 5.2.0
  */
 @Directive({selector: 'ng-template[ngbNavContent]'})
 export class NgbNavContent {
@@ -44,6 +48,8 @@ export class NgbNavContent {
 
 /**
  * The directive used to group nav link and related nav content. As well as set nav identifier and some options.
+ *
+ * @since 5.2.0
  */
 @Directive({selector: '[ngbNavItem]', exportAs: 'ngbNavItem', host: {'[class.nav-item]': 'true'}})
 export class NgbNavItem implements AfterContentChecked, OnInit {
@@ -113,6 +119,8 @@ export class NgbNavItem implements AfterContentChecked, OnInit {
 
 /**
  * A nav directive that helps with implementing tabbed navigation components.
+ *
+ * @since 5.2.0
  */
 @Directive({
   selector: '[ngbNav]',
@@ -218,6 +226,8 @@ export class NgbNav implements AfterContentInit {
 
 /**
  * A directive to put on the nav link.
+ *
+ * @since 5.2.0
  */
 @Directive({
   selector: 'a[ngbNavLink]',
@@ -250,6 +260,8 @@ export class NgbNavLink {
  * The payload of the change event emitted right before the nav change happens on user click.
  *
  * This event won't be emitted if nav is changed programmatically via `[activeId]` or `.select()`.
+ *
+ * @since 5.2.0
  */
 export interface NgbNavChangeEvent {
   /**

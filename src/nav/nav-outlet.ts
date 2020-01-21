@@ -3,6 +3,8 @@ import {NgbNav} from './nav';
 
 /**
  * The outlet where currently active nav content will be displayed.
+ *
+ * @since 5.2.0
  */
 @Component({
   selector: '[ngbNavOutlet]',

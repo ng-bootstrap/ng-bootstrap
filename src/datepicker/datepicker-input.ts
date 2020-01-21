@@ -189,6 +189,8 @@ export class NgbInputDatepicker implements OnChanges,
    *
    * Alternatively you could provide a selector or an `HTMLElement` to focus. If the element doesn't exist or invalid,
    * we'll fallback to focus document body.
+   *
+   * @since 5.2.0
    */
   @Input() restoreFocus: true | string | HTMLElement;
 
