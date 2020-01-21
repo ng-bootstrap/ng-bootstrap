@@ -19,6 +19,7 @@ import { NgbdTabsetPreventChangeModule } from './demos/preventchange/tabset-prev
 import { NgbdTabsetPreventchange } from './demos/preventchange/tabset-preventchange';
 import { NgbdTabsetSelectbyid } from './demos/selectbyid/tabset-selectbyid';
 import { NgbdTabsetSelectbyidModule } from './demos/selectbyid/tabset-selectbyid.module';
+import { NgbdTabsetWarningComponent } from './tabset-warning.component';
 
 const DEMOS = {
   basic: {
@@ -70,6 +71,9 @@ export const ROUTES = [
   {
     path: '',
     component: ComponentWrapper,
+    data: {
+      header: NgbdTabsetWarningComponent
+    },
     children: [
       { path: 'examples', component: NgbdExamplesPage },
       { path: 'api', component: NgbdApiPage }
@@ -88,7 +92,8 @@ export const ROUTES = [
     NgbdTabsetConfigModule,
     NgbdTabsetJustifyModule,
     NgbdTabsetOrientationModule
-  ]
+  ],
+  declarations: [NgbdTabsetWarningComponent]
 })
 export class NgbdTabsetModule {
   constructor(demoList: NgbdDemoList) {

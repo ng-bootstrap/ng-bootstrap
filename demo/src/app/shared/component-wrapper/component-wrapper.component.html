@@ -1,4 +1,4 @@
-<div class="container-fluid">
+  <div class="container-fluid">
   <div class="row flex-xl-nowrap">
     <div class="col-12 col-lg-2"
       style="border-right: 1px solid rgba(0, 0, 0, 0.1)">
@@ -61,6 +61,7 @@
 
       <section class="row py-5 px-2 px-md-4 px-lg-5">
         <div class="col-12 col-xl-9 px-md-0 pr-xl-4">
+          <ng-template [ngComponentOutlet]="headerComponentType$ | async"></ng-template>
           <router-outlet (activate)="updateNavigation($event)"></router-outlet>
         </div>
 
