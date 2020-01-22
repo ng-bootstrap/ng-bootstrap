@@ -1,3 +1,12 @@
+## [5.2.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/5.2.0...5.2.1) (2020-01-22)
+
+
+### Bug Fixes
+
+* **nav:** allow importing 'NgbNavModule' independently ([#3554](https://github.com/ng-bootstrap/ng-bootstrap/issues/3554)) ([f808af3](https://github.com/ng-bootstrap/ng-bootstrap/commit/f808af3)), closes [#3553](https://github.com/ng-bootstrap/ng-bootstrap/issues/3553)
+
+
+
 # [5.2.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/5.1.5...5.2.0) (2020-01-21)
 
 This release introduces a set of [`NgbNav` directives](https://ng-bootstrap.github.io/#/components/nav) to replace the `NgbTabset` component
