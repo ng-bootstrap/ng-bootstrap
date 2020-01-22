@@ -97,6 +97,7 @@ export {
   NgbNavContentContext,
   NgbNavItem,
   NgbNavLink,
+  NgbNavModule,
   NgbNavOutlet
 } from './nav/nav.module';
 export {
