@@ -59,6 +59,25 @@ describe('NgbInputDatepicker', () => {
     expectSameValues(inputDatepicker, config);
   });
 
+  it('should work when wrapped in the <label> and toggled with (click)', () => {
+    const fixture = createTestCmpt(`
+      <label>
+        <input ngbDatepicker #d="ngbDatepicker" [startDate]="{year: 2018, month: 3}" (click)="d.toggle()">
+      </label>`);
+
+    const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
+
+    // open
+    dpInput.open();
+    fixture.detectChanges();
+
+    // click on a date
+    fixture.nativeElement.querySelectorAll('.ngb-dp-day')[3].click();  // 1 MAR 2018
+    fixture.detectChanges();
+
+    expect(dpInput.isOpen()).toBe(false);
+  });
+
   describe('Custom config as provider', () => {
     const config = new NgbInputDatepickerConfig();
     customizeConfig(config);
