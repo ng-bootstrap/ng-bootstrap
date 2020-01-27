@@ -169,6 +169,20 @@ describe('ngb-datepicker', () => {
     }).toThrowError();
   });
 
+  it('should allow changing min/max dates at the same time', () => {
+    const fixture = createTestComponent('<ngb-datepicker [minDate]="minDate" [maxDate]="maxDate"></ngb-datepicker>');
+
+    expect(() => {
+      fixture.componentInstance.minDate = {year: 2110, month: 1, day: 1};
+      fixture.componentInstance.maxDate = {year: 2120, month: 12, day: 31};
+      fixture.detectChanges();
+
+      fixture.componentInstance.minDate = {year: 2010, month: 1, day: 1};
+      fixture.componentInstance.maxDate = {year: 2020, month: 12, day: 31};
+      fixture.detectChanges();
+    }).not.toThrowError();
+  });
+
   it('should handle incorrect startDate values', () => {
     const fixture = createTestComponent(`<ngb-datepicker [startDate]="date"></ngb-datepicker>`);
     const today = new Date();
