@@ -639,6 +639,62 @@ describe('NgbInputDatepicker', () => {
       expect(dp.maxDate).toEqual({year: 2016, month: 9, day: 13});
     });
 
+    it('should dynamically propagate the "minDate" option', () => {
+      const fixture = createTestCmpt(`<input ngbDatepicker [minDate]="minDate">`);
+      const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
+      fixture.componentRef.instance.minDate = {year: 2018, month: 12, day: 31};
+
+      dpInput.open();
+      fixture.detectChanges();
+
+      const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
+      expect(dp.minDate).toEqual({year: 2018, month: 12, day: 31});
+
+      fixture.componentRef.instance.minDate = {year: 2019, month: 11, day: 14};
+      fixture.detectChanges();
+      expect(dp.minDate).toEqual({year: 2019, month: 11, day: 14});
+
+    });
+
+    it('should dynamically propagate the "maxDate" option', () => {
+      const fixture = createTestCmpt(`<input ngbDatepicker [maxDate]="maxDate">`);
+      const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
+      fixture.componentRef.instance.maxDate = {year: 2019, month: 12, day: 31};
+
+      dpInput.open();
+      fixture.detectChanges();
+
+      const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
+      expect(dp.maxDate).toEqual({year: 2019, month: 12, day: 31});
+
+      fixture.componentRef.instance.maxDate = {year: 2019, month: 12, day: 14};
+      fixture.detectChanges();
+      expect(dp.maxDate).toEqual({year: 2019, month: 12, day: 14});
+
+    });
+
+    it('should dynamically propagate the "maxDate" and "minDate" option', () => {
+      const fixture = createTestCmpt(`<input ngbDatepicker [minDate]="minDate" [maxDate]="maxDate">`);
+      const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
+      fixture.componentRef.instance.minDate = {year: 2019, month: 11, day: 14};
+      fixture.componentRef.instance.maxDate = {year: 2019, month: 12, day: 31};
+
+      dpInput.open();
+      fixture.detectChanges();
+
+      const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
+      expect(dp.minDate).toEqual({year: 2019, month: 11, day: 14});
+      expect(dp.maxDate).toEqual({year: 2019, month: 12, day: 31});
+
+      fixture.componentRef.instance.minDate = {year: 2019, month: 10, day: 14};
+      fixture.componentRef.instance.maxDate = {year: 2019, month: 12, day: 14};
+      fixture.detectChanges();
+
+      expect(dp.minDate).toEqual({year: 2019, month: 10, day: 14});
+      expect(dp.maxDate).toEqual({year: 2019, month: 12, day: 14});
+
+    });
+
     it('should propagate the "outsideDays" option', () => {
       const fixture = createTestCmpt(`<input ngbDatepicker outsideDays="collapsed">`);
       const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
@@ -1079,6 +1135,8 @@ class TestNativeComponent {
 class TestComponent {
   container;
   date: NgbDateStruct;
+  minDate: NgbDateStruct;
+  maxDate: NgbDateStruct;
   isDisabled;
 
   onNavigate() {}
