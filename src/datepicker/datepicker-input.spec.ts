@@ -364,6 +364,7 @@ describe('NgbInputDatepicker', () => {
       <input ngbDatepicker [startDate]="{year: 2018, month: 3}" [(ngModel)]="date" #d="ngbDatepicker"
              [ngModelOptions]="{updateOn: 'blur'}">`);
 
+         fixture.detectChanges();
          const inputDebugEl = fixture.debugElement.query(By.css('input'));
          const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
 
@@ -877,6 +878,7 @@ describe('NgbInputDatepicker', () => {
 
     it('should add .ngb-dp-body class when attached to body', () => {
       const fixture = createTestCmpt(`<input ngbDatepicker #d="ngbDatepicker" [container]="container">`);
+      fixture.detectChanges();
       const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
 
       // No container specified

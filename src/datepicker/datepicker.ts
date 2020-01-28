@@ -397,6 +397,7 @@ export class NgbDatepicker implements OnDestroy,
     this._ngZone.runOutsideAngular(() => {
       const focusIns$ = fromEvent<FocusEvent>(this._monthsEl.nativeElement, 'focusin');
       const focusOuts$ = fromEvent<FocusEvent>(this._monthsEl.nativeElement, 'focusout');
+      const {nativeElement} = this._elementRef;
 
       // we're changing 'focusVisible' only when entering or leaving months view
       // and ignoring all focus events where both 'target' and 'related' target are day cells
@@ -404,7 +405,8 @@ export class NgbDatepicker implements OnDestroy,
           .pipe(
               filter(
                   ({target, relatedTarget}) =>
-                      !(hasClassName(target, 'ngb-dp-day') && hasClassName(relatedTarget, 'ngb-dp-day'))),
+                      !(hasClassName(target, 'ngb-dp-day') && hasClassName(relatedTarget, 'ngb-dp-day') &&
+                        nativeElement.contains(target as Node) && nativeElement.contains(relatedTarget as Node))),
               takeUntil(this._destroyed$))
           .subscribe(({type}) => this._ngZone.run(() => this._service.focusVisible = type === 'focusin'));
     });
