@@ -333,6 +333,53 @@ describe('nav', () => {
     expectContents(fixture, ['content 2']);
   });
 
+  it(`should work navs with boundary [ngbNavItem] values`, () => {
+    const fixture = createTestComponent(`
+      <ul ngbNav #n="ngbNav" [activeId]="activeId" class="nav-tabs">
+        <li [ngbNavItem]="0">
+            <a ngbNavLink>link 1</a>
+            <ng-template ngbNavContent>content 1</ng-template>
+        </li>
+        <li [ngbNavItem]="true">
+            <a ngbNavLink>link 2</a>
+            <ng-template ngbNavContent>content 2</ng-template>
+        </li>
+        <li [ngbNavItem]="false">
+            <a ngbNavLink>link 3</a>
+            <ng-template ngbNavContent>content 3</ng-template>
+        </li>
+        <li [ngbNavItem]="''">
+            <a ngbNavLink>link 4</a>
+            <ng-template ngbNavContent>content 4</ng-template>
+        </li>
+      </ul>
+      <div [ngbNavOutlet]="n"></div>
+    `);
+
+    expectLinks(fixture, [true, false, false, false]);
+    expectContents(fixture, ['content 1']);
+
+    fixture.componentInstance.activeId = true;
+    fixture.detectChanges();
+    expectLinks(fixture, [false, true, false, false]);
+    expectContents(fixture, ['content 2']);
+
+    fixture.componentInstance.activeId = false;
+    fixture.detectChanges();
+    expectLinks(fixture, [false, false, true, false]);
+    expectContents(fixture, ['content 3']);
+
+    fixture.componentInstance.activeId = 0;
+    fixture.detectChanges();
+    expectLinks(fixture, [true, false, false, false]);
+    expectContents(fixture, ['content 1']);
+
+    fixture.componentInstance.activeId = '';
+    fixture.detectChanges();
+    expectLinks(fixture, [false, false, false, false]);
+    expectContents(fixture, []);
+  });
+
   it(`should allow overriding ids used in DOM with [domId]`, () => {
     const fixture = createTestComponent(`
       <ul ngbNav #n="ngbNav" class="nav-tabs">

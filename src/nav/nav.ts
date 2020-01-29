@@ -18,6 +18,8 @@ import {
 import {isDefined} from '../util/util';
 import {NgbNavConfig} from './nav-config';
 
+const isValidNavId = (id: any) => isDefined(id) && id !== '';
+
 let navCounter = 0;
 
 /**
@@ -79,6 +81,9 @@ export class NgbNavItem implements AfterContentChecked, OnInit {
   /**
    * The id used as a model for active nav.
    * It can be anything, but must be unique inside one `ngbNav`.
+   *
+   * The only limitation is that it is not possible to have the `''` (empty string) as id,
+   * because ` ngbNavItem `, `ngbNavItem=''` and `[ngbNavItem]="''"` are indistinguishable
    */
   @Input('ngbNavItem') _id: any;
 
@@ -107,7 +112,7 @@ export class NgbNavItem implements AfterContentChecked, OnInit {
 
   get active() { return this._nav.activeId === this.id; }
 
-  get id() { return this._id || this.domId; }
+  get id() { return isValidNavId(this._id) ? this._id : this.domId; }
 
   get panelDomId() { return `${this.domId}-panel`; }
 
@@ -200,7 +205,7 @@ export class NgbNav implements AfterContentInit {
   ngAfterContentInit() {
     if (!isDefined(this.activeId)) {
       const nextId = this.items.first ? this.items.first.id : null;
-      if (nextId) {
+      if (isValidNavId(nextId)) {
         this._updateActiveId(nextId, false);
         this._cd.detectChanges();
       }
