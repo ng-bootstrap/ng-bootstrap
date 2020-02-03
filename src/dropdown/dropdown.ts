@@ -18,7 +18,7 @@ import {
   Optional
 } from '@angular/core';
 import {DOCUMENT} from '@angular/common';
-import {Subject, Subscription} from 'rxjs';
+import {fromEvent, Subject, Subscription} from 'rxjs';
 import {take} from 'rxjs/operators';
 
 import {Placement, PlacementArray, positionElements} from '../util/positioning';
@@ -290,14 +290,16 @@ export class NgbDropdown implements AfterContentInit, OnDestroy {
 
     let position = -1;
     let isEventFromItems = false;
+    let itemElement: HTMLElement = null;
     const isEventFromToggle = this._isEventFromToggle(event);
 
     if (!isEventFromToggle && itemElements.length) {
-      itemElements.forEach((itemElement, index) => {
-        if (itemElement.contains(event.target as HTMLElement)) {
+      itemElements.forEach((item, index) => {
+        if (item.contains(event.target as HTMLElement)) {
           isEventFromItems = true;
+          itemElement = item;
         }
-        if (itemElement === this._document.activeElement) {
+        if (item === this._document.activeElement) {
           position = index;
         }
       });
@@ -306,7 +308,10 @@ export class NgbDropdown implements AfterContentInit, OnDestroy {
     // closing on Enter / Space
     if (key === Key.Space || key === Key.Enter) {
       if (isEventFromItems && (this.autoClose === true || this.autoClose === 'inside')) {
-        this.close();
+        // Item is either a button or a link, so click will be triggered by the browser on Enter or Space.
+        // So we have to register a one-time click handler that will fire after any user defined click handlers
+        // to close the dropdown
+        fromEvent(itemElement, 'click').pipe(take(1)).subscribe(() => this.close());
       }
       return;
     }
