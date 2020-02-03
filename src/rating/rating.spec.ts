@@ -450,6 +450,19 @@ describe('ngb-rating', () => {
     });
   });
 
+  it('should set tabindex to -1 when disabled', () => {
+    const fixture = createTestComponent('<ngb-rating></ngb-rating>');
+    let ratingEl = fixture.debugElement.query(By.directive(NgbRating));
+    let ratingComp = <NgbRating>ratingEl.componentInstance;
+
+    fixture.detectChanges();
+    expect(ratingEl.nativeElement.getAttribute('tabindex')).toEqual('0');
+
+    ratingComp.disabled = true;
+    fixture.detectChanges();
+    expect(ratingEl.nativeElement.getAttribute('tabindex')).toEqual('-1');
+  });
+
   describe('keyboard support', () => {
 
     it('should handle arrow keys', () => {
@@ -581,6 +594,40 @@ describe('ngb-rating', () => {
       expect(element.nativeElement).toHaveCssClass('ng-valid');
       expect(element.nativeElement).toHaveCssClass('ng-untouched');
     });
+
+    it('should not update template driven form by clicking disabled control', async(() => {
+         const html = `
+          <ngb-rating [(ngModel)]="model" class="control" max="5"></ngb-rating>
+          <ngb-rating [(ngModel)]="model" class="control-disabled" max="5" disabled></ngb-rating>`;
+
+         const fixture = createTestComponent(html);
+         const element = fixture.debugElement.query(By.css('.control'));
+         const disabledElement = fixture.debugElement.query(By.css('.control-disabled'));
+
+         fixture.detectChanges();
+         fixture.whenStable()
+             .then(() => {
+               getStar(element.nativeElement, 3).click();
+
+               fixture.detectChanges();
+               return fixture.whenStable();
+             })
+             .then(() => {
+               expect(getState(element.nativeElement)).toEqual([true, true, true, false, false]);
+               expect(getState(disabledElement.nativeElement)).toEqual([false, false, false, false, false]);
+               expect(fixture.componentInstance.model).toEqual(3);
+
+               getStar(disabledElement.nativeElement, 4).click();
+               fixture.detectChanges();
+               return fixture.whenStable();
+             })
+             .then(() => {
+               fixture.detectChanges();
+               expect(getState(element.nativeElement)).toEqual([true, true, true, false, false]);
+               expect(getState(disabledElement.nativeElement)).toEqual([false, false, false, false, false]);
+               expect(fixture.componentInstance.model).toEqual(3);
+             });
+       }));
 
     it('should handle clicks and update form control', () => {
       const html = `
