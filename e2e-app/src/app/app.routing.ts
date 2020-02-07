@@ -5,6 +5,7 @@ import {DatepickerAutoCloseComponent} from './datepicker/autoclose/datepicker-au
 import {DatepickerFocusComponent} from './datepicker/focus/datepicker-focus.component';
 import {DatepickerMultipleComponent} from './datepicker/multiple/datepicker-multiple.component';
 import {DropdownAutoCloseComponent} from './dropdown/autoclose/dropdown-autoclose.component';
+import {DropdownClickComponent} from './dropdown/click/dropdown-click.component';
 import {DropdownFocusComponent} from './dropdown/focus/dropdown-focus.component';
 import {DropdownPositionComponent} from './dropdown/position/dropdown-position.component';
 import {ModalAutoCloseComponent} from './modal/autoclose/modal-autoclose.component';
@@ -45,8 +46,8 @@ export const routes: Routes = [
   {
     path: 'dropdown',
     children: [
-      {path: 'autoclose', component: DropdownAutoCloseComponent}, {path: 'focus', component: DropdownFocusComponent},
-      {path: 'position', component: DropdownPositionComponent}
+      {path: 'autoclose', component: DropdownAutoCloseComponent}, {path: 'click', component: DropdownClickComponent},
+      {path: 'focus', component: DropdownFocusComponent}, {path: 'position', component: DropdownPositionComponent}
     ]
   },
   {path: 'popover', children: [{path: 'autoclose', component: PopoverAutocloseComponent}]},
