@@ -67,7 +67,9 @@
   <p>
     To select your navs programmatically, you have to give your nav items unique ids, so you could know and set
     which one is currently active either using the <code>[(activeId)]="..."</code> binding or the imperative API
-    with<code>.select(id)</code>. If you don't provide any ids, they will be generated automatically.
+    with<code>.select(id)</code>. If you don't provide any ids, they will be generated automatically. The only
+    limitation is that you can't have the <code>''</code> (empty string) as id, because <code>ngbNavItem</code>,
+    <code>ngbNavItem=""</code> and <code>[ngbNavItem]="''"</code> are indistinguishable.
   </p>
 
   <ngbd-code [snippet]="SELECTION"></ngbd-code>
