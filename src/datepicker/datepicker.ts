@@ -22,7 +22,7 @@ import {
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {NgbCalendar} from './ngb-calendar';
 import {NgbDate} from './ngb-date';
-import {NgbDatepickerService} from './datepicker-service';
+import {DatepickerServiceInputs, NgbDatepickerService} from './datepicker-service';
 import {NgbDatepickerKeyboardService} from './datepicker-keyboard-service';
 import {DatepickerViewModel, NavigationEvent} from './datepicker-view-model';
 import {DayTemplateContext} from './datepicker-day-template-context';
@@ -408,7 +408,7 @@ export class NgbDatepicker implements OnDestroy,
                       !(hasClassName(target, 'ngb-dp-day') && hasClassName(relatedTarget, 'ngb-dp-day') &&
                         nativeElement.contains(target as Node) && nativeElement.contains(relatedTarget as Node))),
               takeUntil(this._destroyed$))
-          .subscribe(({type}) => this._ngZone.run(() => this._service.focusVisible = type === 'focusin'));
+          .subscribe(({type}) => this._ngZone.run(() => this._service.set({focusVisible: type === 'focusin'})));
     });
   }
 
@@ -416,18 +416,23 @@ export class NgbDatepicker implements OnDestroy,
 
   ngOnInit() {
     if (this.model === undefined) {
+      const inputs: DatepickerServiceInputs = {};
       ['dayTemplateData', 'displayMonths', 'markDisabled', 'firstDayOfWeek', 'navigation', 'minDate', 'maxDate',
        'outsideDays']
-          .forEach(input => this._service[input] = this[input]);
+          .forEach(name => inputs[name] = this[name]);
+      this._service.set(inputs);
+
       this.navigateTo(this.startDate);
     }
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    const inputs: DatepickerServiceInputs = {};
     ['dayTemplateData', 'displayMonths', 'markDisabled', 'firstDayOfWeek', 'navigation', 'minDate', 'maxDate',
      'outsideDays']
-        .filter(input => input in changes)
-        .forEach(input => this._service[input] = this[input]);
+        .filter(name => name in changes)
+        .forEach(name => inputs[name] = this[name]);
+    this._service.set(inputs);
 
     if ('startDate' in changes) {
       const {currentValue, previousValue} = changes.startDate;
@@ -461,7 +466,7 @@ export class NgbDatepicker implements OnDestroy,
 
   registerOnTouched(fn: () => any): void { this.onTouched = fn; }
 
-  setDisabledState(isDisabled: boolean) { this._service.disabled = isDisabled; }
+  setDisabledState(disabled: boolean) { this._service.set({disabled}); }
 
   writeValue(value) {
     this._controlValue = NgbDate.from(this._ngbDateAdapter.fromModel(value));
