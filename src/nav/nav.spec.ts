@@ -200,7 +200,7 @@ describe('nav', () => {
     expectLinks(fixture, [true, false]);
     expectContents(fixture, ['content 1']);
     expect(activeIdChangeSpy).toHaveBeenCalledWith(1);
-    expect(navChangeSpy).toHaveBeenCalledWith({activeId: undefined, nextId: 1, preventDefault: jasmine.any(Function)});
+    expect(navChangeSpy).toHaveBeenCalledTimes(0);
   });
 
   it(`should initially select nothing, if [activeId] provided is incorrect`, () => {

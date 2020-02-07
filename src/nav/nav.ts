@@ -201,7 +201,7 @@ export class NgbNav implements AfterContentInit {
     if (!isDefined(this.activeId)) {
       const nextId = this.items.first ? this.items.first.id : null;
       if (nextId) {
-        this._updateActiveId(nextId);
+        this._updateActiveId(nextId, false);
         this._cd.detectChanges();
       }
     }
