@@ -160,7 +160,7 @@ export class NgbModalRef<T = any> {
 		private _windowCmptRef: ComponentRef<NgbModalWindow>,
 		private _contentRef: ContentRef,
 		private _backdropCmptRef?: ComponentRef<NgbModalBackdrop>,
-		private _beforeDismiss?: () => boolean | Promise<boolean>,
+		private _beforeDismiss?: (modalRef: NgbModalRef<any>) => boolean | Promise<boolean>,
 	) {
 		_windowCmptRef.instance.dismissEvent.subscribe((reason: any) => {
 			this.dismiss(reason);
@@ -202,7 +202,7 @@ export class NgbModalRef<T = any> {
 			if (!this._beforeDismiss) {
 				this._dismiss(reason);
 			} else {
-				const dismiss = this._beforeDismiss();
+				const dismiss = this._beforeDismiss(this);
 				if (isPromise(dismiss)) {
 					dismiss.then(
 						(result) => {
