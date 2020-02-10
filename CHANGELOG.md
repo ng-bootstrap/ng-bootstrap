@@ -1,3 +1,18 @@
+## [5.2.2](https://github.com/ng-bootstrap/ng-bootstrap/compare/5.2.1...5.2.2) (2020-02-10)
+
+
+### Bug Fixes
+
+* **datepicker:** handle clicks correctly inside the <label> ([#3562](https://github.com/ng-bootstrap/ng-bootstrap/issues/3562)) ([0f626e1](https://github.com/ng-bootstrap/ng-bootstrap/commit/0f626e1)), closes [#3557](https://github.com/ng-bootstrap/ng-bootstrap/issues/3557)
+* **datepicker:** handle multiple input changes once ([#3565](https://github.com/ng-bootstrap/ng-bootstrap/issues/3565)) ([4ac0352](https://github.com/ng-bootstrap/ng-bootstrap/commit/4ac0352)), closes [#3545](https://github.com/ng-bootstrap/ng-bootstrap/issues/3545)
+* **datepicker:** refine focus state checks ([#3549](https://github.com/ng-bootstrap/ng-bootstrap/issues/3549)) ([035d399](https://github.com/ng-bootstrap/ng-bootstrap/commit/035d399)), closes [#3494](https://github.com/ng-bootstrap/ng-bootstrap/issues/3494)
+* **datepicker:** update minDate and maxDate dynamically ([#3507](https://github.com/ng-bootstrap/ng-bootstrap/issues/3507)) ([4f61496](https://github.com/ng-bootstrap/ng-bootstrap/commit/4f61496)), closes [#3506](https://github.com/ng-bootstrap/ng-bootstrap/issues/3506)
+* **dropdown:** execute user (click) handlers on Enter and Space ([#3573](https://github.com/ng-bootstrap/ng-bootstrap/issues/3573)) ([f845951](https://github.com/ng-bootstrap/ng-bootstrap/commit/f845951)), closes [#3570](https://github.com/ng-bootstrap/ng-bootstrap/issues/3570)
+* **nav:** allow having falsy values like 0 and 'false' for nav ids ([#3571](https://github.com/ng-bootstrap/ng-bootstrap/issues/3571)) ([686fbd5](https://github.com/ng-bootstrap/ng-bootstrap/commit/686fbd5)), closes [#3569](https://github.com/ng-bootstrap/ng-bootstrap/issues/3569)
+* **nav:** don't emit (navChange) when activeId is not set initially ([#3567](https://github.com/ng-bootstrap/ng-bootstrap/issues/3567)) ([dd1c35d](https://github.com/ng-bootstrap/ng-bootstrap/commit/dd1c35d)), closes [#3564](https://github.com/ng-bootstrap/ng-bootstrap/issues/3564)
+
+
+
 ## [5.2.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/5.2.0...5.2.1) (2020-01-22)
 
 
