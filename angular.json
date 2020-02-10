@@ -16,6 +16,7 @@
           },
           "configurations": {
             "production": {
+              "tsConfig": "src/tsconfig.prod.json"
             }
           }
         },
@@ -24,11 +25,11 @@
           "options": {
             "main": "src/test.ts",
             "tsConfig": "src/tsconfig.spec.json",
+            "karmaConfig": "src/karma.conf.js",
             "codeCoverageExclude": [
               "src/test.ts",
               "src/test/**"
-            ],
-            "karmaConfig": "src/karma.conf.js"
+            ]
           },
           "configurations": {
             "ie": {
@@ -52,7 +53,8 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "src/tsconfig.json"
+              "src/tsconfig.json",
+              "src/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -112,7 +114,19 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
             },
             "ie": {
               "tsConfig": "demo/tsconfig.ie.json"
@@ -152,7 +166,8 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "demo/tsconfig.json"
+              "demo/tsconfig.json",
+              "demo/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**",
@@ -320,7 +335,9 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "ssr-app/tsconfig.json"
+              "ssr-app/tsconfig.json",
+              "ssr-app/tsconfig.server.json",
+              "ssr-app/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -331,7 +348,7 @@
           "builder": "@angular-devkit/build-angular:server",
           "options": {
             "outputPath": "ssr-app/dist/server",
-            "main": "ssr-app/src/main.server.ts",
+            "main": "ssr-app/server.ts",
             "tsConfig": "ssr-app/tsconfig.server.json",
             "progress": false
           },
@@ -350,6 +367,7 @@
     }
   },
   "cli": {
-    "packageManager": "yarn"
+    "packageManager": "yarn",
+    "analytics": false
   }
 }

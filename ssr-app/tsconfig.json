@@ -2,13 +2,21 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "baseUrl": "./",
-    "outDir": "temp",
+    "outDir": "../out-tsc/ssr-app",
     "types": [],
     "paths": {
       "@ng-bootstrap/ng-bootstrap": ["../dist/ng-bootstrap"]
     }
   },
+  "files": [
+    "src/main.ts",
+    "src/polyfills.ts"
+  ],
+  "include": [
+    "src/**/*.d.ts"
+  ],
   "exclude": [
-    "**/*.e2e-spec.ts"
+    "src/**/*.po.ts",
+    "src/**/*.e2e-spec.ts"
   ]
 }

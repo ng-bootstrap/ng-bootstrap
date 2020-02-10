@@ -1,7 +1,7 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "outDir": "../out-tsc/app",
+    "outDir": "../out-tsc/demo-e2e",
     "module": "commonjs",
     "types": [
       "jasmine",
@@ -10,6 +10,7 @@
     ]
   },
   "include": [
-    "**/*.e2e-spec.ts"
+    "src/**/*.po.ts",
+    "src/**/*.e2e-spec.ts"
   ]
 }

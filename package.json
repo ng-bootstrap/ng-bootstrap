@@ -9,6 +9,7 @@
   },
   "scripts": {
     "preinstall": "node misc/preinstall.js",
+    "postinstall": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points",
     "build": "yarn ngb:build && yarn demo:build",
     "test": "yarn check-format && yarn ngb:lint && yarn ngb:test",
     "tdd": "yarn ngb:tdd",

@@ -2,13 +2,20 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "baseUrl": "./",
-    "outDir": "temp",
-    "lib": ["es2017", "dom"],
+    "outDir": "../out-tsc/demo",
     "paths": {
       "@ng-bootstrap/ng-bootstrap": ["../src/index"]
     }
   },
+  "files": [
+    "src/main.ts",
+    "src/polyfills.ts"
+  ],
   "include": [
-    "./src/**/*.ts"
+    "src/**/*.d.ts"
+  ],
+  "exclude": [
+    "src/**/*.po.ts",
+    "src/**/*.e2e-spec.ts"
   ]
 }
