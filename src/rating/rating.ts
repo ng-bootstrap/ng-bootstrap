@@ -48,7 +48,7 @@ const NGB_RATING_VALUE_ACCESSOR = {
   encapsulation: ViewEncapsulation.None,
   host: {
     'class': 'd-inline-flex',
-    'tabindex': '0',
+    '[tabindex]': 'disabled ? -1 : 0',
     'role': 'slider',
     'aria-valuemin': '0',
     '[attr.aria-valuemax]': 'max',
@@ -146,7 +146,11 @@ export class NgbRating implements ControlValueAccessor,
 
   handleBlur() { this.onTouched(); }
 
-  handleClick(value: number) { this.update(this.resettable && this.rate === value ? 0 : value); }
+  handleClick(value: number) {
+    if (!this.readonly && !this.disabled) {
+      this.update(this.resettable && this.rate === value ? 0 : value);
+    }
+  }
 
   handleKeyDown(event: KeyboardEvent) {
     // tslint:disable-next-line:deprecation
