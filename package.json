@@ -43,10 +43,9 @@
     "demo:e2e": "yarn demo:docs && ng e2e demo",
     "ssr-app:lint": "ng lint ssr-app",
     "ssr-app:serve": "ng serve ssr-app --host 0.0.0.0",
-    "ssr-app:serve-express": "node ssr-app/dist/server",
+    "ssr-app:serve-express": "node ssr-app/dist/server/main.js",
     "ssr-app:e2e": "concurrently --success first --kill-others --names \"express,protractor\" \"yarn ssr-app:serve-express\" \"ng e2e ssr-app\"",
-    "ssr-app:build": "ng build ssr-app --prod && ng run ssr-app:server:production && yarn ssr-app:build-server",
-    "ssr-app:build-server": "webpack --config ssr-app/webpack.server.config.js --colors",
+    "ssr-app:build": "ng build ssr-app --prod && ng run ssr-app:server:production",
     "ci": "yarn check-ts && yarn test && yarn e2e && yarn build --progress false && yarn ssr"
   },
   "repository": {
