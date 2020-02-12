@@ -124,7 +124,8 @@ export class NgbDatepickerContent {
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['./datepicker.scss'],
   template: `
-    <ng-template #defaultDayTemplate let-date="date" let-currentMonth="currentMonth" let-selected="selected" let-disabled="disabled" let-focused="focused">
+    <ng-template #defaultDayTemplate let-date="date" let-currentMonth="currentMonth" let-selected="selected"
+                 let-disabled="disabled" let-focused="focused">
       <div ngbDatepickerDayView
         [date]="date"
         [currentMonth]="currentMonth"
