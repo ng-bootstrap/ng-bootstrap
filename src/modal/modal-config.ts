@@ -44,9 +44,11 @@ export interface NgbModalOptions {
   /**
    * A selector specifying the element all new modal windows should be appended to.
    *
+   * If passed a `HTMLElement`, all new modal windows should be appended to it.
+   *
    * If not specified, will be `body`.
    */
-  container?: string;
+  container?: string | HTMLElement;
 
   /**
    * The `Injector` to use for modal content.

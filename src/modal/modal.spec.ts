@@ -461,6 +461,17 @@ describe('ngb-modal', () => {
         expect(fixture.nativeElement).not.toHaveModal();
       });
 
+      it('should attach window and backdrop elements to the specified container DOM element', () => {
+        const containerDomEl = document.querySelector('div#testContainer');
+        const modalInstance = fixture.componentInstance.open('foo', {container: containerDomEl});
+        fixture.detectChanges();
+        expect(fixture.nativeElement).toHaveModal('foo', '#testContainer');
+
+        modalInstance.close();
+        fixture.detectChanges();
+        expect(fixture.nativeElement).not.toHaveModal();
+      });
+
       it('should throw when the specified container element doesn\'t exist', () => {
         const brokenSelector = '#notInTheDOM';
         expect(() => {
