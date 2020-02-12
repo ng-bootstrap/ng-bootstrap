@@ -10,7 +10,7 @@ import {NgbInputDatepicker} from './datepicker-input';
 import {NgbDatepicker} from './datepicker';
 import {NgbDateStruct} from './ngb-date-struct';
 import {NgbDate} from './ngb-date';
-import * as positioning from 'src/util/positioning';
+import {positionService} from 'src/util/positioning';
 import {NgbInputDatepickerConfig} from './datepicker-input-config';
 
 const createTestCmpt = (html: string) =>
@@ -923,10 +923,7 @@ describe('NgbInputDatepicker', () => {
 
     let positionElementsSpy: jasmine.Spy;
 
-    beforeEach(() => {
-      positionElementsSpy = jasmine.createSpy('positionElementsSpy');
-      spyOnProperty(positioning, 'positionElements').and.returnValue(positionElementsSpy);
-    });
+    beforeEach(() => { positionElementsSpy = spyOn(positionService, 'position').and.callThrough(); });
 
     it('should position popup by input if no target provided (default)', () => {
       const fixture = createTestCmpt(`

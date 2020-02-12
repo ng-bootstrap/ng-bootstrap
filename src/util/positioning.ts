@@ -160,7 +160,7 @@ export class Positioning {
 }
 
 const placementSeparator = /\s+/;
-const positionService = new Positioning();
+export const positionService = new Positioning();
 
 /*
  * Accept the placement array and applies the appropriate placement dependent on the viewport.
