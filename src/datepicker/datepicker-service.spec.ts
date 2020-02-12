@@ -5,7 +5,6 @@ import {NgbDate} from './ngb-date';
 import {Subscription} from 'rxjs';
 import {DatepickerViewModel} from './datepicker-view-model';
 import {NgbDatepickerI18n, NgbDatepickerI18nDefault} from './datepicker-i18n';
-import {Type} from '@angular/core';
 
 describe('ngb-datepicker-service', () => {
 
@@ -31,8 +30,8 @@ describe('ngb-datepicker-service', () => {
       ]
     });
 
-    calendar = TestBed.get(NgbCalendar as Type<NgbCalendar>);
-    service = TestBed.get(NgbDatepickerService);
+    calendar = TestBed.inject(NgbCalendar);
+    service = TestBed.inject(NgbDatepickerService);
     subscriptions = [];
     model = undefined;
     selectDate = null;

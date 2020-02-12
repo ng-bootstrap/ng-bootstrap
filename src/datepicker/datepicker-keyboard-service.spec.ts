@@ -4,7 +4,6 @@ import {NgbCalendar, NgbCalendarGregorian} from './ngb-calendar';
 import {TestBed} from '@angular/core/testing';
 import {NgbDate} from './ngb-date';
 import {Key} from '../util/key';
-import {Type} from '@angular/core';
 
 const event = (keyCode: number, shift = false) =>
     <any>({which: keyCode, shiftKey: shift, preventDefault: () => {}, stopPropagation: () => {}});
@@ -21,8 +20,8 @@ describe('ngb-datepicker-keyboard-service', () => {
     TestBed.configureTestingModule(
         {providers: [{provide: NgbCalendar, useClass: NgbCalendarGregorian}, NgbDatepickerKeyboardService]});
 
-    calendar = TestBed.get(NgbCalendar as Type<NgbCalendar>);
-    service = TestBed.get(NgbDatepickerKeyboardService);
+    calendar = TestBed.inject(NgbCalendar);
+    service = TestBed.inject(NgbDatepickerKeyboardService);
     mock = {state, focusDate: () => {}, focusSelect: () => {}, calendar};
 
     spyOn(mock, 'focusDate');

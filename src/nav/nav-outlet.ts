@@ -18,7 +18,8 @@ import {NgbNav} from './nav';
                [class.active]="item.active"
                [attr.role]="paneRole ? paneRole : nav.roles ? 'tabpanel' : undefined"
                [attr.aria-labelledby]="item.domId">
-              <ng-template [ngTemplateOutlet]="item.contentTpl?.templateRef" [ngTemplateOutletContext]="{$implicit: item.active}"></ng-template>
+              <ng-template [ngTemplateOutlet]="item.contentTpl?.templateRef"
+                           [ngTemplateOutletContext]="{$implicit: item.active}"></ng-template>
           </div>
       </ng-template>
   `

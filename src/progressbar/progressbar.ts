@@ -12,7 +12,8 @@ import {NgbProgressbarConfig} from './progressbar-config';
   template: `
     <div class="progress" [style.height]="height">
       <div class="progress-bar{{type ? ' bg-' + type : ''}}{{textType ? ' text-' + textType : ''}}
-      {{animated ? ' progress-bar-animated' : ''}}{{striped ? ' progress-bar-striped' : ''}}" role="progressbar" [style.width.%]="getPercentValue()"
+      {{animated ? ' progress-bar-animated' : ''}}{{striped ? ' progress-bar-striped' : ''}}"
+      role="progressbar" [style.width.%]="getPercentValue()"
       [attr.aria-valuenow]="getValue()" aria-valuemin="0" [attr.aria-valuemax]="max">
         <span *ngIf="showValue" i18n="@@ngb.progressbar.value">{{getPercentValue()}}%</span><ng-content></ng-content>
       </div>

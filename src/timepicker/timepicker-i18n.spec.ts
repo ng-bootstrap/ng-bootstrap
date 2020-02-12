@@ -7,7 +7,7 @@ describe('ngb-timepicker-i18n-default', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({providers: [NgbTimepickerI18nDefault]});
-    i18n = TestBed.get(NgbTimepickerI18nDefault);
+    i18n = TestBed.inject(NgbTimepickerI18nDefault);
   });
 
   it('should return morning period', () => { expect(i18n.getMorningPeriod()).toBe('AM'); });

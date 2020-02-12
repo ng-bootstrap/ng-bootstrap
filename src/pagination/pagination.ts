@@ -154,8 +154,8 @@ export class NgbPaginationPrevious {
           <ng-template [ngTemplateOutlet]="tplEllipsis?.templateRef || ellipsis"
                        [ngTemplateOutletContext]="{disabled: true, currentPage: page}"></ng-template>
         </a>
-        <a *ngIf="!isEllipsis(pageNumber)" class="page-link" href (click)="selectPage(pageNumber); $event.preventDefault()" [attr.tabindex]="disabled ? '-1' : null"
-          [attr.aria-disabled]="disabled ? 'true' : null">
+        <a *ngIf="!isEllipsis(pageNumber)" class="page-link" href (click)="selectPage(pageNumber); $event.preventDefault()"
+          [attr.tabindex]="disabled ? '-1' : null" [attr.aria-disabled]="disabled ? 'true' : null">
           <ng-template [ngTemplateOutlet]="tplNumber?.templateRef || defaultNumber"
                        [ngTemplateOutletContext]="{disabled: disabled, $implicit: pageNumber, currentPage: page}"></ng-template>
         </a>

@@ -49,7 +49,7 @@ describe('NgbInputDatepicker', () => {
   it('should initialize inputs with provided config', () => {
     // overrideComponent should happen before any injections, so createTestCmpt will fail here
     TestBed.overrideComponent(TestComponent, {set: {template: '<input ngbDatepicker>'}});
-    const config = TestBed.get(NgbInputDatepickerConfig);
+    const config = TestBed.inject(NgbInputDatepickerConfig);
     customizeConfig(config);
     const fixture = TestBed.createComponent(TestComponent);
     fixture.detectChanges();

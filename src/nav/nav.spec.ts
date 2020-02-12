@@ -438,7 +438,8 @@ describe('nav', () => {
 
     beforeEach(() => {
       fixture = createTestComponent(`
-        <ul ngbNav #n="ngbNav" class="nav-tabs" [(activeId)]="activeId" (activeIdChange)="onActiveIdChange($event)" (navChange)="onNavChange($event)">
+        <ul ngbNav #n="ngbNav" class="nav-tabs" [(activeId)]="activeId" (activeIdChange)="onActiveIdChange($event)"
+        (navChange)="onNavChange($event)">
           <li [ngbNavItem]="1">
               <a ngbNavLink>link 1</a>
               <ng-template ngbNavContent>content 1</ng-template>
@@ -595,7 +596,8 @@ describe('nav', () => {
 
     beforeEach(() => {
       fixture = createTestComponent(`
-        <ul ngbNav #n="ngbNav" class="nav-tabs" [(activeId)]="activeId" (activeIdChange)="onActiveIdChange($event)" (navChange)="onNavChangePrevent($event)">
+        <ul ngbNav #n="ngbNav" class="nav-tabs" [(activeId)]="activeId" (activeIdChange)="onActiveIdChange($event)"
+        (navChange)="onNavChangePrevent($event)">
           <li [ngbNavItem]="1">
               <a ngbNavLink>link 1</a>
               <ng-template ngbNavContent>content 1</ng-template>

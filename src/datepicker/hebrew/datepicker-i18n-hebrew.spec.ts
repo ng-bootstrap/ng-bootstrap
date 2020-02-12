@@ -8,7 +8,7 @@ describe('datepicker-i18n-hebrew', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({providers: [NgbDatepickerI18nHebrew]});
-    i18n = TestBed.get(NgbDatepickerI18nHebrew);
+    i18n = TestBed.inject(NgbDatepickerI18nHebrew);
   });
 
   it('should return abbreviated month name', () => {
