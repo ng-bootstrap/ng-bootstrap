@@ -10,24 +10,22 @@ const isContainedIn = (element: HTMLElement, array?: HTMLElement[]) =>
 const matchesSelectorIfAny = (element: HTMLElement, selector?: string) =>
     !selector || closest(element, selector) != null;
 
-// we'll have to use 'touch' events instead of 'mouse' events on iOS and add a more significant delay
-// to avoid re-opening when handling (click) on a toggling element
+// we have to add a more significant delay to avoid re-opening when handling (click) on a toggling element
 // TODO: use proper Angular platform detection when NgbAutoClose becomes a service and we can inject PLATFORM_ID
-let iOS = false;
-if (typeof navigator !== 'undefined') {
-  iOS = !!navigator.userAgent && /iPad|iPhone|iPod/.test(navigator.userAgent);
-}
+const isMobile = () => typeof navigator !== 'undefined' ?
+    !!navigator.userAgent && /iPad|iPhone|iPod|Android/.test(navigator.userAgent) :
+    false;
 
-// setting 'ngbAutoClose' synchronously on iOS results in immediate popup closing
+// setting 'ngbAutoClose' synchronously on mobile results in immediate popup closing
 // when tapping on the triggering element
-const wrapAsyncForiOS = fn => iOS ? () => setTimeout(() => fn(), 100) : fn;
+const wrapAsyncForMobile = fn => isMobile() ? () => setTimeout(() => fn(), 100) : fn;
 
 export function ngbAutoClose(
     zone: NgZone, document: any, type: boolean | 'inside' | 'outside', close: () => void, closed$: Observable<any>,
     insideElements: HTMLElement[], ignoreElements?: HTMLElement[], insideSelector?: string) {
   // closing on ESC and outside clicks
   if (type) {
-    zone.runOutsideAngular(wrapAsyncForiOS(() => {
+    zone.runOutsideAngular(wrapAsyncForMobile(() => {
 
       const shouldCloseOnClick = (event: MouseEvent) => {
         const element = event.target as HTMLElement;
@@ -50,8 +48,8 @@ export function ngbAutoClose(
                                filter(e => e.which === Key.Escape), tap(e => e.preventDefault()));
 
 
-      // we have to pre-calculate 'shouldCloseOnClick' on 'mousedown/touchstart',
-      // because on 'mouseup/touchend' DOM nodes might be detached
+      // we have to pre-calculate 'shouldCloseOnClick' on 'mousedown',
+      // because on 'mouseup' DOM nodes might be detached
       const mouseDowns$ =
           fromEvent<MouseEvent>(document, 'mousedown').pipe(map(shouldCloseOnClick), takeUntil(closed$));
 
