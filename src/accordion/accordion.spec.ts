@@ -493,6 +493,21 @@ describe('ngb-accordion', () => {
     expect(headingLinks[0].disabled).toBeTruthy();
   });
 
+  it('should have the custom class', () => {
+    const testHtml = `
+      <ngb-accordion #acc="ngbAccordion">
+        <ngb-panel *ngFor="let panel of panels" [id]="panel.id" [cardClass]="'custom-class' + panel.id"></ngb-panel>
+      </ngb-accordion>
+    `;
+    const fixture = createTestComponent(testHtml);
+    const cards = <HTMLDivElement[]>Array.from(fixture.nativeElement.querySelectorAll('.card'));
+
+    fixture.detectChanges();
+    expect(cards[0]).toHaveCssClass('custom-classone');
+    expect(cards[1]).toHaveCssClass('custom-classtwo');
+    expect(cards[2]).toHaveCssClass('custom-classthree');
+  });
+
   it('should remove collapsed panels content from DOM', () => {
     const fixture = TestBed.createComponent(TestComponent);
     fixture.detectChanges();

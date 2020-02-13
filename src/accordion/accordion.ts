@@ -97,6 +97,11 @@ export class NgbPanel implements AfterContentChecked {
    */
   @Input() type: string;
 
+  /**
+   * An optional class applied to the card that wraps the panel.
+   */
+  @Input() cardClass: string;
+
   titleTpl: NgbPanelTitle | null;
   headerTpl: NgbPanelHeader | null;
   contentTpl: NgbPanelContent | null;
@@ -156,7 +161,7 @@ export interface NgbPanelChangeEvent {
       </button>
     </ng-template>
     <ng-template ngFor let-panel [ngForOf]="panels">
-      <div class="card">
+      <div [class]="'card ' + panel.cardClass || ''">
         <div role="tab" id="{{panel.id}}-header" [class]="'card-header ' + (panel.type ? 'bg-'+panel.type: type ? 'bg-'+type : '')">
           <ng-template [ngTemplateOutlet]="panel.headerTpl?.templateRef || t"
                        [ngTemplateOutletContext]="{$implicit: panel, opened: panel.isOpen}"></ng-template>
