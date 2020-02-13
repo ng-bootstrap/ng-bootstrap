@@ -1,3 +1,13 @@
+## [5.2.3](https://github.com/ng-bootstrap/ng-bootstrap/compare/5.2.2...5.2.3) (2020-02-13)
+
+
+### Bug Fixes
+
+* **rating:** ignore clicks on disabled rating ([#3574](https://github.com/ng-bootstrap/ng-bootstrap/issues/3574)) ([900a8db](https://github.com/ng-bootstrap/ng-bootstrap/commit/900a8db)), closes [#3465](https://github.com/ng-bootstrap/ng-bootstrap/issues/3465)
+* **tooltip:** prevent autoclose with default triggers on Android ([#3587](https://github.com/ng-bootstrap/ng-bootstrap/issues/3587)) ([04d8552](https://github.com/ng-bootstrap/ng-bootstrap/commit/04d8552)), closes [#3582](https://github.com/ng-bootstrap/ng-bootstrap/issues/3582)
+
+
+
 ## [5.2.2](https://github.com/ng-bootstrap/ng-bootstrap/compare/5.2.1...5.2.2) (2020-02-10)
 
 
