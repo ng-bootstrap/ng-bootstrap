@@ -493,19 +493,33 @@ describe('ngb-accordion', () => {
     expect(headingLinks[0].disabled).toBeTruthy();
   });
 
-  it('should have the custom class', () => {
+  it('should add custom class to the card element', () => {
     const testHtml = `
-      <ngb-accordion #acc="ngbAccordion">
-        <ngb-panel *ngFor="let panel of panels" [id]="panel.id" [cardClass]="'custom-class' + panel.id"></ngb-panel>
+      <ngb-accordion>
+        <ngb-panel></ngb-panel>
+        <ngb-panel cardClass="custom-class"></ngb-panel>
+        <ngb-panel cardClass="custom-class custom-class-2"></ngb-panel>
+        <ngb-panel [cardClass]="null"></ngb-panel>
       </ngb-accordion>
     `;
     const fixture = createTestComponent(testHtml);
     const cards = <HTMLDivElement[]>Array.from(fixture.nativeElement.querySelectorAll('.card'));
 
     fixture.detectChanges();
-    expect(cards[0]).toHaveCssClass('custom-classone');
-    expect(cards[1]).toHaveCssClass('custom-classtwo');
-    expect(cards[2]).toHaveCssClass('custom-classthree');
+    expect(cards[0].classList.length).toBe(1);
+    expect(cards[0]).toHaveCssClass('card');
+
+    expect(cards[1].classList.length).toBe(2);
+    expect(cards[1]).toHaveCssClass('card');
+    expect(cards[1]).toHaveCssClass('custom-class');
+
+    expect(cards[2].classList.length).toBe(3);
+    expect(cards[2]).toHaveCssClass('card');
+    expect(cards[2]).toHaveCssClass('custom-class');
+    expect(cards[2]).toHaveCssClass('custom-class-2');
+
+    expect(cards[3].classList.length).toBe(1);
+    expect(cards[3]).toHaveCssClass('card');
   });
 
   it('should remove collapsed panels content from DOM', () => {
