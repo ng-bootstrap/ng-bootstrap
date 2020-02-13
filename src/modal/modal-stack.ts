@@ -46,8 +46,9 @@ export class NgbModalStack {
   }
 
   open(moduleCFR: ComponentFactoryResolver, contentInjector: Injector, content: any, options): NgbModalRef {
-    const containerEl =
-        isDefined(options.container) ? this._document.querySelector(options.container) : this._document.body;
+    const containerEl = options.container instanceof HTMLElement ? options.container : isDefined(options.container) ?
+                                                                   this._document.querySelector(options.container) :
+                                                                   this._document.body;
     const renderer = this._rendererFactory.createRenderer(null, null);
 
     const revertPaddingForScrollBar = this._scrollBar.compensate();
