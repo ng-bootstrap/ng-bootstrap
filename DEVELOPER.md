@@ -184,8 +184,20 @@ For Conventional Commit Messages to be working with [CommitLint](https://commitl
 
 In both cases you can validate your local installation by trying to commit something. (guides available [here](https://commitlint.js.org/#/guides-local-setup))
 
-#### Scopes
+#### Commit types and scopes 
 
-We maintain dynamic custom scopes on the project. Valid scopes correspond to the name of our widgets or the 2 generic terms _"demo"_ & _"demos"_.
+We maintain dynamic custom scopes for the project. Valid scopes correspond to the name of our widgets: `alert`, `accordion`, etc.
+
+Examples:
+- `feat(datepicker): ...` &rarr; a new feature for the datepicker 
+- `fix(datepicker): ...` &rarr; a bug fix for the datepicker
+- `test(datepicker): ... ` &rarr; an update to one of the datepicker unit or e2e tests
+- `docs(datepicker): ...` &rarr; a datepicker documentation update
+- `refactor(datepicker): ... ` &rarr; an internal datepicker refactoring without public functionality changes
+- `demo(datepicker): ... ` &rarr; an update to one of the datepicker demos
+- `demo: ...` &rarr; any change for the demo site
+- `build: ...` &rarr; any change for the utility scripts, configurations, dependencies, etc.
+- `ci: ...` &rarr; any change for CI related configuration
+- `revert: ...` &rarr; revert an older commit
 
 Anything else won't pass commitlint validation.
