@@ -1,3 +1,19 @@
+# [5.3.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/5.2.3...5.3.0) (2020-02-14)
+
+
+### Bug Fixes
+
+* **tooltip:** prevent autoclose with default triggers on iPadOS 13 ([#3593](https://github.com/ng-bootstrap/ng-bootstrap/issues/3593)) ([b8874ad](https://github.com/ng-bootstrap/ng-bootstrap/commit/b8874ad)), closes [#3591](https://github.com/ng-bootstrap/ng-bootstrap/issues/3591)
+
+
+### Features
+
+* **accordion:** add custom css class at the card level ([#3563](https://github.com/ng-bootstrap/ng-bootstrap/issues/3563)) ([8ea21bf](https://github.com/ng-bootstrap/ng-bootstrap/commit/8ea21bf)), closes [#2262](https://github.com/ng-bootstrap/ng-bootstrap/issues/2262)
+* **datepicker:** allow customizing month layout ([3b82948](https://github.com/ng-bootstrap/ng-bootstrap/commit/3b82948))
+* **modal:** pass an `HTMLElement` to modal container option ([#3585](https://github.com/ng-bootstrap/ng-bootstrap/issues/3585)) ([3c65b21](https://github.com/ng-bootstrap/ng-bootstrap/commit/3c65b21)), closes [#3584](https://github.com/ng-bootstrap/ng-bootstrap/issues/3584)
+
+
+
 ## [5.2.3](https://github.com/ng-bootstrap/ng-bootstrap/compare/5.2.2...5.2.3) (2020-02-13)
 
 
