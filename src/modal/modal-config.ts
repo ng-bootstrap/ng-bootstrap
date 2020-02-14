@@ -43,8 +43,7 @@ export interface NgbModalOptions {
 
   /**
    * A selector specifying the element all new modal windows should be appended to.
-   *
-   * If passed a `HTMLElement`, all new modal windows should be appended to it.
+   * Since v5.3.0 it is also possible to pass the reference to an `HTMLElement`.
    *
    * If not specified, will be `body`.
    */

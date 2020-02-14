@@ -95,13 +95,17 @@ export interface NgbDatepickerState {
   readonly focusedDate: NgbDate;
 
   /**
-   * The first dates of months in range of current datepicker instance
+   * First dates of months currently displayed by the datepicker
+   *
+   * @since 5.3.0
    */
   readonly months: NgbDate[];
 }
 
-/*
+/**
  * A directive that marks the content template that customizes the way datepicker months are displayed
+ *
+ * @since 5.3.0
  */
 @Directive({selector: 'ng-template[ngbDatepickerContent]'})
 export class NgbDatepickerContent {
@@ -374,6 +378,8 @@ export class NgbDatepicker implements OnDestroy,
 
   /**
    *  Returns the calendar service used in the specific datepicker instance.
+   *
+   *  @since 5.3.0
    */
   get calendar(): NgbCalendar { return this._calendar; }
 
