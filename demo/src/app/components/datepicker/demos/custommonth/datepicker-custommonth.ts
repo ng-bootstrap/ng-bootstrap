@@ -1,27 +1,35 @@
-import {Component} from '@angular/core';
-import {NgbDatepickerI18n} from '@ng-bootstrap/ng-bootstrap';
+import {Component, ViewChild, ViewEncapsulation} from '@angular/core';
+import {NgbDatepicker, NgbDatepickerI18n} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'ngbd-datepicker-custommonth',
   templateUrl: './datepicker-custommonth.html',
+  encapsulation: ViewEncapsulation.None,
   styles: [`
-    ngb-datepicker {
-      display: flex;
-      border: none;
+    .custom-datepicker .ngb-dp-header {
+      padding: 0;
     }
-    .custom-month-view {
-      margin: 1rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      border: 1px solid gray;
-      border-radius: 1rem 1rem 0 0;
-    }
-    .custom-month-view span{
-      font-weight: bold;
+    .custom-datepicker .ngb-dp-months {
+      display: grid;
+      grid-template-columns: auto auto;
+      grid-column-gap: 1rem;
+      grid-row-gap: 0.5rem;
     }
   `]
 })
 export class NgbdDatepickerCustommonth {
+
+  @ViewChild(NgbDatepicker, {static: true}) datepicker: NgbDatepicker;
+
   constructor(public i18n: NgbDatepickerI18n) {}
+
+  navigate(number: number) {
+    const {state, calendar} = this.datepicker;
+    this.datepicker.navigateTo(calendar.getNext(state.firstDate, 'm', number));
+  }
+
+  today() {
+    const {calendar} = this.datepicker;
+    this.datepicker.navigateTo(calendar.getToday());
+  }
 }
