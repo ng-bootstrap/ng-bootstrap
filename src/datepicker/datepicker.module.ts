@@ -1,14 +1,14 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
-import {NgbDatepicker, NgbDatepickerMonths} from './datepicker';
+import {NgbDatepicker, NgbDatepickerContent} from './datepicker';
 import {NgbDatepickerMonth} from './datepicker-month';
 import {NgbDatepickerNavigation} from './datepicker-navigation';
 import {NgbInputDatepicker} from './datepicker-input';
 import {NgbDatepickerDayView} from './datepicker-day-view';
 import {NgbDatepickerNavigationSelect} from './datepicker-navigation-select';
 
-export {NgbDatepicker, NgbDatepickerMonths, NgbDatepickerNavigateEvent, NgbDatepickerState} from './datepicker';
+export {NgbDatepicker, NgbDatepickerContent, NgbDatepickerNavigateEvent, NgbDatepickerState} from './datepicker';
 export {NgbInputDatepicker} from './datepicker-input';
 export {NgbCalendar, NgbPeriod, NgbCalendarGregorian} from './ngb-calendar';
 export {NgbCalendarIslamicCivil} from './hijri/ngb-calendar-islamic-civil';
@@ -33,10 +33,10 @@ export {NgbDatepickerKeyboardService} from './datepicker-keyboard-service';
 
 @NgModule({
   declarations: [
-    NgbDatepicker, NgbDatepickerMonths, NgbDatepickerMonth, NgbDatepickerNavigation, NgbDatepickerNavigationSelect,
+    NgbDatepicker, NgbDatepickerContent, NgbDatepickerMonth, NgbDatepickerNavigation, NgbDatepickerNavigationSelect,
     NgbDatepickerDayView, NgbInputDatepicker
   ],
-  exports: [NgbDatepicker, NgbDatepickerMonths, NgbInputDatepicker, NgbDatepickerMonth],
+  exports: [NgbDatepicker, NgbDatepickerContent, NgbInputDatepicker, NgbDatepickerMonth],
   imports: [CommonModule, FormsModule],
   entryComponents: [NgbDatepicker]
 })

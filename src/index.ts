@@ -60,7 +60,7 @@ export {
   NgbDatepicker,
   NgbDatepickerConfig,
   NgbInputDatepickerConfig,
-  NgbDatepickerMonths,
+  NgbDatepickerContent,
   NgbDatepickerI18n,
   NgbDatepickerI18nHebrew,
   NgbDatepickerKeyboardService,

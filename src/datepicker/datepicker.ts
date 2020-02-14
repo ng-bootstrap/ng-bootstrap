@@ -103,8 +103,8 @@ export interface NgbDatepickerState {
 /*
  * A directive that marks the content template that customizes the way datepicker months are displayed
  */
-@Directive({selector: 'ng-template[ngbDatepickerMonths]'})
-export class NgbDatepickerMonths {
+@Directive({selector: 'ng-template[ngbDatepickerContent]'})
+export class NgbDatepickerContent {
   constructor(public templateRef: TemplateRef<any>) {}
 }
 
@@ -130,7 +130,7 @@ export class NgbDatepickerMonths {
       </div>
     </ng-template>
 
-    <ng-template #defaultMonthsTemplate>
+    <ng-template #defaultContentTemplate>
       <div *ngFor="let month of model.months; let i = index;" class="ngb-dp-month">
         <div *ngIf="navigation === 'none' || (displayMonths > 1 && navigation === 'select')" class="ngb-dp-month-name">
           {{ i18n.getMonthFullName(month.number, month.year) }} {{ i18n.getYearNumerals(month.year) }}
@@ -153,8 +153,8 @@ export class NgbDatepickerMonths {
       </ngb-datepicker-navigation>
     </div>
 
-    <div class="ngb-dp-months" #months>
-      <ng-template [ngTemplateOutlet]="monthsTemplate?.templateRef || defaultMonthsTemplate"></ng-template>
+    <div class="ngb-dp-content" [class.ngb-dp-months]="!contentTemplate" #content>
+      <ng-template [ngTemplateOutlet]="contentTemplate?.templateRef || defaultContentTemplate"></ng-template>
     </div>
 
     <ng-template [ngTemplateOutlet]="footerTemplate"></ng-template>
@@ -166,8 +166,8 @@ export class NgbDatepicker implements OnDestroy,
   model: DatepickerViewModel;
 
   @ViewChild('defaultDayTemplate', {static: true}) private _defaultDayTemplate: TemplateRef<DayTemplateContext>;
-  @ViewChild('months', {static: true}) private _monthsEl: ElementRef<HTMLElement>;
-  @ContentChild(NgbDatepickerMonths, {static: true}) monthsTemplate: NgbDatepickerMonths;
+  @ViewChild('content', {static: true}) private _contentEl: ElementRef<HTMLElement>;
+  @ContentChild(NgbDatepickerContent, {static: true}) contentTemplate: NgbDatepickerContent;
 
   private _controlValue: NgbDate;
   private _destroyed$ = new Subject<void>();
@@ -411,8 +411,8 @@ export class NgbDatepicker implements OnDestroy,
 
   ngAfterViewInit() {
     this._ngZone.runOutsideAngular(() => {
-      const focusIns$ = fromEvent<FocusEvent>(this._monthsEl.nativeElement, 'focusin');
-      const focusOuts$ = fromEvent<FocusEvent>(this._monthsEl.nativeElement, 'focusout');
+      const focusIns$ = fromEvent<FocusEvent>(this._contentEl.nativeElement, 'focusin');
+      const focusOuts$ = fromEvent<FocusEvent>(this._contentEl.nativeElement, 'focusout');
       const {nativeElement} = this._elementRef;
 
       // we're changing 'focusVisible' only when entering or leaving months view

@@ -9,7 +9,7 @@ import {NgbDatepicker, NgbDatepickerI18n} from '@ng-bootstrap/ng-bootstrap';
     .custom-datepicker .ngb-dp-header {
       padding: 0;
     }
-    .custom-datepicker .ngb-dp-months {
+    .custom-datepicker .ngb-dp-content {
       display: grid;
       grid-template-columns: auto auto;
       grid-column-gap: 1rem;

@@ -4,7 +4,7 @@ import {createGenericTestComponent} from '../test/common';
 import {Component, Injectable} from '@angular/core';
 
 import {NgbDatepickerModule} from './datepicker.module';
-import {NgbDatepicker, NgbDatepickerMonths, NGB_DATEPICKER_VALUE_ACCESSOR} from './datepicker';
+import {NgbDatepicker, NgbDatepickerContent, NGB_DATEPICKER_VALUE_ACCESSOR} from './datepicker';
 import {NgbDatepickerKeyboardService} from './datepicker-keyboard-service';
 import {NgbDatepickerService} from './datepicker-service';
 import {NgbDatepickerMonth} from './datepicker-month';
@@ -228,7 +228,7 @@ describe('ngb-datepicker-month', () => {
   beforeEach(() => {
     TestBed.overrideModule(
         NgbDatepickerModule,
-        {set: {exports: [NgbDatepicker, NgbDatepickerMonths, NgbDatepickerMonth, NgbDatepickerDayView]}});
+        {set: {exports: [NgbDatepicker, NgbDatepickerContent, NgbDatepickerMonth, NgbDatepickerDayView]}});
     TestBed.overrideComponent(NgbDatepicker, {
       set: {
         providers: [
@@ -350,7 +350,7 @@ describe('ngb-datepicker-month', () => {
                       [showWeekNumbers]="showWeekNumbers"
                       [outsideDays]="outsideDays"
                       (select)="onClick($event)">
-        <ng-template ngbDatepickerMonths>
+        <ng-template ngbDatepickerContent>
           <ngb-datepicker-month [month]="{month: 8, year: 2016}"></ngb-datepicker-month>
         </ng-template>
       </ngb-datepicker>`,
@@ -366,7 +366,7 @@ describe('ngb-datepicker-month', () => {
                       [showWeekNumbers]="showWeekNumbers"
                       [outsideDays]="outsideDays"
                       (select)="onClick($event)">
-        <ng-template ngbDatepickerMonths><div class="customClass">Custom Content</div></ng-template>
+        <ng-template ngbDatepickerContent><div class="customClass">Custom Content</div></ng-template>
       </ngb-datepicker>
     `,
         TestComponent) as ComponentFixture<TestComponent>;
@@ -383,7 +383,7 @@ describe('ngb-datepicker-month', () => {
                       [showWeekNumbers]="showWeekNumbers"
                       [outsideDays]="outsideDays"
                       (select)="onClick($event)">
-        <ng-template ngbDatepickerMonths><div class="customClass">Custom Content</div></ng-template>
+        <ng-template ngbDatepickerContent><div class="customClass">Custom Content</div></ng-template>
       </ngb-datepicker>
     `,
         TestComponent) as ComponentFixture<TestComponent>;
