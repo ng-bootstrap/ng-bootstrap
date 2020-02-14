@@ -1,3 +1,9 @@
+# [6.0.0-rc.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/5.3.0...6.0.0-rc.0) (2020-02-14)
+
+This is a technical release aligning all dependencies, configurations and deliveries to Angular 9.
+There are no changes in the library code.
+
+
 # [5.3.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/5.2.3...5.3.0) (2020-02-14)
 
 
