@@ -14,7 +14,7 @@
                   outsideDays="hidden"
                   [showWeekdays]="false"
                   navigation="none">
-    <ng-template ngbDatepickerMonths>
+    <ng-template ngbDatepickerContent>
       <div *ngFor="let month of dp.state.months">
         <div class="text-primary p-1 font-weight-bold">{{ i18n.getMonthShortName(month.month) }} {{ month.year }}</div>
         <ngb-datepicker-month class="border rounded" [month]="month"></ngb-datepicker-month>
