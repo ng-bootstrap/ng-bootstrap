@@ -85,7 +85,7 @@
     "@types/marked": "^0.6.5",
     "@types/node": "^12.11.1",
     "@types/prismjs": "1.16.0",
-    "bootstrap": "4.3.1",
+    "bootstrap": "4.4.1",
     "clang-format": "1.0.35",
     "concurrently": "^4.1.0",
     "conventional-changelog-cli": "^2.0.12",
