@@ -98,7 +98,9 @@ export class NgbPanel implements AfterContentChecked {
   @Input() type: string;
 
   /**
-   * An optional class applied to the card that wraps the panel.
+   * An optional class applied to the accordion card element that wraps both panel title and content.
+   *
+   * @since 5.3.0
    */
   @Input() cardClass: string;
 

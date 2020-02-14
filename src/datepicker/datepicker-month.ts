@@ -6,6 +6,14 @@ import {NgbDatepickerService} from './datepicker-service';
 import {MonthViewModel, DayViewModel} from './datepicker-view-model';
 import {NgbDateStruct} from './ngb-date-struct';
 
+/**
+ * A component that renders one month including all the days, weekdays and week numbers. Can be used inside
+ * the `<ng-template ngbDatepickerMonths></ng-template>` when you want to customize months layout.
+ *
+ * For a usage example, see [custom month layout demo](#/components/datepicker/examples#custommonth)
+ *
+ * @since 5.3.0
+ */
 @Component({
   selector: 'ngb-datepicker-month',
   host: {'role': 'grid', '(keydown)': 'onKeyDown($event)'},
@@ -36,6 +44,12 @@ import {NgbDateStruct} from './ngb-date-struct';
   `
 })
 export class NgbDatepickerMonth {
+  /**
+   * The first date of month to be rendered.
+   *
+   * This month must one of the months present in the
+   * [datepicker state](#/components/datepicker/api#NgbDatepickerState).
+   */
   @Input()
   set month(month: NgbDateStruct) {
     this.viewModel = this._service.getMonth(month);
