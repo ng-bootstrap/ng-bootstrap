@@ -40,6 +40,7 @@ Here is the list of minimal required versions:
 | 3.x.x        | 6.1.0   | 4.0.0         |
 | 4.x.x        | 7.0.0   | 4.0.0         |
 | 5.x.x        | 8.0.0   | 4.3.1         |
+| 6.x.x        | 6.0.0   | 4.4.1         |
 
 ## Installation
 
@@ -90,7 +91,7 @@ export class YourAppModule {
 
 ## Supported browsers
 
-We support the same browsers and versions supported by both Bootstrap 4 and Angular, whichever is _more_ restrictive. See [Angular browser support](https://angular.io/guide/browser-support) and [Bootstrap browser support](https://getbootstrap.com/docs/4.0/getting-started/browsers-devices/#supported-browsers) for more details, but on the high-level it should be something like:
+We support the same browsers and versions supported by both Bootstrap 4 and Angular, whichever is _more_ restrictive. See [Angular browser support](https://angular.io/guide/browser-support) and [Bootstrap browser support](https://getbootstrap.com/docs/4.4/getting-started/browsers-devices/#supported-browsers) for more details, but on the high-level it should be something like:
 
 * Chrome (45+)
 * Firefox (40+)
