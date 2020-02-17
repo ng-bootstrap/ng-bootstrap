@@ -40,7 +40,7 @@ Here is the list of minimal required versions:
 | 3.x.x        | 6.1.0   | 4.0.0         |
 | 4.x.x        | 7.0.0   | 4.0.0         |
 | 5.x.x        | 8.0.0   | 4.3.1         |
-| 6.x.x        | 6.0.0   | 4.4.1         |
+| 6.x.x        | 9.0.0   | 4.4.1         |
 
 ## Installation
 
