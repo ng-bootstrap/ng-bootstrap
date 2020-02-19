@@ -26,8 +26,8 @@ export class PopupService<T> {
     if (!this._windowRef) {
       this._contentRef = this._getContentRef(content, context);
       this._windowRef = this._viewContainerRef.createComponent(
-          this._componentFactoryResolver.resolveComponentFactory<T>(this._type), 0, this._injector,
-          this._contentRef.nodes);
+          this._componentFactoryResolver.resolveComponentFactory<T>(this._type), this._viewContainerRef.length,
+          this._injector, this._contentRef.nodes);
     }
 
     return this._windowRef;
