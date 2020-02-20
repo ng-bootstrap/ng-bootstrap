@@ -1,3 +1,4 @@
+// tslint:disable:deprecation
 import {
   AfterContentChecked,
   Component,
@@ -18,6 +19,8 @@ let nextId = 0;
  * A directive to wrap tab titles that need to contain HTML markup or other directives.
  *
  * Alternatively you could use the `NgbTab.title` input for string titles.
+ *
+ * @deprecated 6.0.0 Please use NgbNav instead
  */
 @Directive({selector: 'ng-template[ngbTabTitle]'})
 export class NgbTabTitle {
@@ -26,6 +29,8 @@ export class NgbTabTitle {
 
 /**
  * A directive to wrap content to be displayed in a tab.
+ *
+ * @deprecated 6.0.0 Please use NgbNav instead
  */
 @Directive({selector: 'ng-template[ngbTabContent]'})
 export class NgbTabContent {
@@ -34,6 +39,8 @@ export class NgbTabContent {
 
 /**
  * A directive representing an individual tab.
+ *
+ * @deprecated 6.0.0 Please use NgbNav instead
  */
 @Directive({selector: 'ngb-tab'})
 export class NgbTab implements AfterContentChecked {
@@ -74,6 +81,8 @@ export class NgbTab implements AfterContentChecked {
 
 /**
  * The payload of the change event fired right before the tab change.
+ *
+ * @deprecated 6.0.0 Please use NgbNav instead
  */
 export interface NgbTabChangeEvent {
   /**
@@ -94,6 +103,8 @@ export interface NgbTabChangeEvent {
 
 /**
  * A component that makes it easy to create tabbed interface.
+ *
+ * @deprecated 6.0.0 Please use NgbNav instead
  */
 @Component({
   selector: 'ngb-tabset',

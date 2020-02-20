@@ -1,16 +1,17 @@
-import {Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 
 @Component({
   selector: 'ngbd-tabset-warning',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <ngb-alert type="warning" [dismissible]="false" class="mb-5 d-flex flex-row">
+    <ngb-alert type="danger" [dismissible]="false" class="mb-5 d-flex flex-row">
       <div class="mr-2">
         <svg:svg ngbdIcon="lightbulb" fill="currentColor" />
       </div>
       <div>
-        Since version <span class="badge badge-info" >5.2.0</span> please consider using
-        <a routerLink="/components/nav">Nav directives</a> as a more flexible alternative.
-        Tabset will not be supported anymore and will be deprecated.
+        Tabset is deprecated since version <span class="badge badge-info">6.0.0</span>
+        and is not supported anymore. Please use <a routerLink="/components/nav">Nav directives</a>
+        as a more flexible alternative.
       </div>
     </ngb-alert>
   `

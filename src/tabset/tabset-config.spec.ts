@@ -1,3 +1,4 @@
+// tslint:disable:deprecation
 import {NgbTabsetConfig} from './tabset-config';
 
 describe('ngb-tabset-config', () => {
