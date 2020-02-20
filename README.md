@@ -88,6 +88,14 @@ export class YourAppModule {
 }
 ```
 
+If you're using Angular >= 9.0.0 and ng-bootstrap >= 6.0.0, you might also need to install the `@angular/localize`polyfill via
+ 
+```shell
+ng add @angular/localize
+```
+ See more details in
+[the official documentation](https://angular.io/guide/i18n#setting-up-localization-with-the-angular-cli).
+
 
 ## Supported browsers
 

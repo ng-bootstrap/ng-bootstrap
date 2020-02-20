@@ -54,6 +54,12 @@
     </tbody>
   </table>
 
+  <p>
+    If you're using Angular &ge; 9.0.0 and ng-bootstrap &ge; 6.0.0, you might also need to install the <code>@angular/localize</code>
+    polyfill with <code>ng add @angular/localize</code>. See more details in
+    <a href="https://angular.io/guide/i18n#setting-up-localization-with-the-angular-cli" target="_blank">the official documentation</a>.
+  </p>
+
   <ngb-alert type="warning" [dismissible]="false">
     <p>Should I add <b>bootstrap.js</b> or <b>bootstrap.min.js</b> to my project?</p>
 
@@ -84,6 +90,12 @@
   <ngbd-code [snippet]="codeOther"></ngbd-code>
 
   <ngbd-page-header title="Internationalization" fragment="i18n"></ngbd-page-header>
+
+  <ngb-alert type="warning" [dismissible]="false">
+    We're using standard Angular i18n in ng-bootstrap templates. Since Angular 9 (and ng-bootstrap 6) you might have to
+    add the additional <code>@angular/localize</code> polyfill to your CLI project. See more details in
+    <a href="https://angular.io/guide/i18n#setting-up-localization-with-the-angular-cli" target="_blank">the official documentation</a>.
+  </ngb-alert>
 
   <p>
     Some components contain static English text or symbols that you might want to internationalize. Some of them appear
