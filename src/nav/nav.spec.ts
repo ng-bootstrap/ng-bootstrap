@@ -4,6 +4,7 @@ import {By} from '@angular/platform-browser';
 import {NgbNav, NgbNavConfig, NgbNavItem, NgbNavLink, NgbNavModule, NgbNavOutlet} from './nav.module';
 import {createGenericTestComponent} from '../test/common';
 import {isDefined} from '../util/util';
+import {Key} from 'src/util/key';
 
 function createTestComponent(html: string, detectChanges = true) {
   return createGenericTestComponent(html, TestComponent, detectChanges) as ComponentFixture<TestComponent>;
@@ -37,6 +38,13 @@ function getLinks(fixture: ComponentFixture<any>): HTMLElement[] {
   return fixture.debugElement.queryAll(By.directive(NgbNavLink)).map(debugElement => debugElement.nativeElement);
 }
 
+function createKeyDownEvent(key: number) {
+  const event = {which: key, preventDefault: () => {}, stopPropagation: () => {}};
+  spyOn(event, 'preventDefault');
+  spyOn(event, 'stopPropagation');
+  return event;
+}
+
 function expectLinks(fixture: ComponentFixture<any>, expected: boolean[], shouldHaveNavItemClass = false) {
   const links = getLinks(fixture);
   expect(links.length).toBe(expected.length, `expected to find ${expected.length} links, but found ${links.length}`);
@@ -65,10 +73,15 @@ function expectContents(fixture: ComponentFixture<any>, expected: string[], acti
 
 describe('nav', () => {
 
-  beforeEach(() => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbNavModule]}); });
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [TestComponent],
+      imports: [NgbNavModule],
+    });
+  });
 
   it('should initialize inputs with default values', inject([NgbNavConfig], config => {
-       const nav = new NgbNav('tablist', config, <any>null);
+       const nav = new NgbNav('tablist', config, <any>null, null);
        expect(nav.destroyOnHide).toBe(config.destroyOnHide);
        expect(nav.roles).toBe(config.roles);
      }));
@@ -861,6 +874,224 @@ describe('nav', () => {
     fixture.detectChanges();
     expectContents(fixture, ['1-false', '2-true'], 1);
   });
+
+  describe(`nav keyboard navigation`, () => {
+    it(`should not work for nav with role different from 'tablist`, () => {
+      const fixture = createTestComponent(`
+        <ul ngbNav #n="ngbNav" [roles]="false" class="nav-tabs" keyboard="true">
+          <li ngbNavItem>
+              <a ngbNavLink></a>
+              <ng-template ngbTabContent></ng-template>
+          </li>
+          <li ngbNavItem>
+              <a ngbNavLink></a>
+              <ng-template ngbTabContent></ng-template>
+          </li>
+        </ul>
+        <div [ngbNavOutlet]="n"></div>
+      `);
+
+      const links = getLinks(fixture);
+      const eventArrowRight = createKeyDownEvent(Key.ArrowRight);
+
+      links[0].focus();
+      expect(document.activeElement).toBe(links[0]);
+
+      fixture.debugElement.query(By.directive(NgbNav)).triggerEventHandler('keydown.arrowRight', eventArrowRight);
+      fixture.detectChanges();
+      expect(document.activeElement).toBe(links[0]);
+    });
+
+    it(`should ignore disabled tabs`, () => {
+      const fixture = createTestComponent(`
+      <ul ngbNav #n="ngbNav" class="nav-tabs" keyboard="true">
+        <li [ngbNavItem]="1">
+            <a ngbNavLink>link 1</a>
+            <ng-template ngbNavContent>content 1</ng-template>
+        </li>
+        <li [ngbNavItem]="2" [disabled]="true">
+            <a ngbNavLink>disabled</a>
+            <ng-template ngbNavContent>content 2</ng-template>
+        </li>
+        <li [ngbNavItem]="3">
+            <a ngbNavLink>link 3</a>
+            <ng-template ngbNavContent>content 3</ng-template>
+        </li>
+      </ul>
+      <div [ngbNavOutlet]="n"></div>
+    `);
+
+      const links = getLinks(fixture);
+      const eventArrowRight = createKeyDownEvent(Key.ArrowRight);
+
+      links[0].focus();
+      expect(document.activeElement).toBe(links[0]);
+      expectLinks(fixture, [true, false, false]);
+
+      fixture.debugElement.query(By.directive(NgbNav)).triggerEventHandler('keydown.arrowRight', eventArrowRight);
+      fixture.detectChanges();
+      expect(document.activeElement).toBe(links[2]);
+      expectLinks(fixture, [true, false, false]);
+    });
+
+    it(`should move focus correctly between tablinks on 'arrow right', 'arrow left',
+         'home', 'end' keydown when keyboard is true`,
+       () => {
+         const fixture = createTestComponent(`
+        <ul ngbNav #n="ngbNav" class="nav-tabs" keyboard="true">
+          <li ngbNavItem>
+              <a ngbNavLink></a>
+              <ng-template ngbTabContent></ng-template>
+          </li>
+          <li ngbNavItem>
+              <a ngbNavLink></a>
+              <ng-template ngbTabContent></ng-template>
+          </li>
+          <li ngbNavItem>
+              <a ngbNavLink></a>
+              <ng-template ngbTabContent></ng-template>
+          </li>
+        </ul>
+        <div [ngbNavOutlet]="n"></div>
+      `);
+
+         const links = getLinks(fixture);
+         const eventArrowRight = createKeyDownEvent(Key.ArrowRight);
+         const eventArrowLeft = createKeyDownEvent(Key.ArrowLeft);
+         const eventHomeKey = createKeyDownEvent(Key.Home);
+         const eventEndKey = createKeyDownEvent(Key.End);
+
+         links[0].focus();
+         expect(document.activeElement).toBe(links[0]);
+         expectLinks(fixture, [true, false, false]);
+
+         fixture.debugElement.query(By.directive(NgbNav)).triggerEventHandler('keydown.arrowRight', eventArrowRight);
+         fixture.detectChanges();
+         expect(document.activeElement).toBe(links[1]);
+         expectLinks(fixture, [true, false, false]);
+
+         fixture.debugElement.query(By.directive(NgbNav)).triggerEventHandler('keydown.arrowLeft', eventArrowLeft);
+         fixture.detectChanges();
+         expect(document.activeElement).toBe(links[0]);
+         expectLinks(fixture, [true, false, false]);
+
+         fixture.debugElement.query(By.directive(NgbNav)).triggerEventHandler('keydown.End', eventEndKey);
+         fixture.detectChanges();
+         expect(document.activeElement).toBe(links[2]);
+         expectLinks(fixture, [true, false, false]);
+
+         fixture.debugElement.query(By.directive(NgbNav)).triggerEventHandler('keydown.Home', eventHomeKey);
+         fixture.detectChanges();
+         expect(document.activeElement).toBe(links[0]);
+         expectLinks(fixture, [true, false, false]);
+       });
+
+    it(`should move focus correctly for vertical nav on 'arrow down', 'arrow up',
+       'home', 'end' keydown when keyboard is true`,
+       () => {
+         const fixture = createTestComponent(`
+      <ul ngbNav #n="ngbNav" class="nav-tabs" keyboard="true" orientation="vertical">
+        <li ngbNavItem>
+            <a ngbNavLink></a>
+            <ng-template ngbTabContent></ng-template>
+        </li>
+        <li ngbNavItem>
+            <a ngbNavLink></a>
+            <ng-template ngbTabContent></ng-template>
+        </li>
+        <li ngbNavItem>
+            <a ngbNavLink></a>
+            <ng-template ngbTabContent></ng-template>
+        </li>
+      </ul>
+      <div [ngbNavOutlet]="n"></div>
+    `);
+
+         const links = getLinks(fixture);
+         const eventArrowUp = createKeyDownEvent(Key.ArrowUp);
+         const eventArrowDown = createKeyDownEvent(Key.ArrowDown);
+         const eventHomeKey = createKeyDownEvent(Key.Home);
+         const eventEndKey = createKeyDownEvent(Key.End);
+
+         links[0].focus();
+         expect(document.activeElement).toBe(links[0]);
+         expectLinks(fixture, [true, false, false]);
+
+         fixture.debugElement.query(By.directive(NgbNav)).triggerEventHandler('keydown.arrowDown', eventArrowDown);
+         fixture.detectChanges();
+         expect(document.activeElement).toBe(links[1]);
+         expectLinks(fixture, [true, false, false]);
+
+         fixture.debugElement.query(By.directive(NgbNav)).triggerEventHandler('keydown.arrowUp', eventArrowUp);
+         fixture.detectChanges();
+         expect(document.activeElement).toBe(links[0]);
+         expectLinks(fixture, [true, false, false]);
+
+         fixture.debugElement.query(By.directive(NgbNav)).triggerEventHandler('keydown.End', eventEndKey);
+         fixture.detectChanges();
+         expect(document.activeElement).toBe(links[2]);
+         expectLinks(fixture, [true, false, false]);
+
+         fixture.debugElement.query(By.directive(NgbNav)).triggerEventHandler('keydown.Home', eventHomeKey);
+         fixture.detectChanges();
+         expect(document.activeElement).toBe(links[0]);
+         expectLinks(fixture, [true, false, false]);
+       });
+
+    it(`should change tab and focus  on 'arrow right', 'arrow left',
+         'home', 'end' keydown keydown when keyboard is 'changeWithArrows'`,
+       () => {
+         const fixture = createTestComponent(`
+          <ul ngbNav #n="ngbNav" class="nav-tabs" keyboard="changeWithArrows">
+            <li ngbNavItem>
+                <a ngbNavLink></a>
+                <ng-template ngbTabContent></ng-template>
+            </li>
+            <li ngbNavItem>
+                <a ngbNavLink></a>
+                <ng-template ngbTabContent></ng-template>
+            </li>
+            <li ngbNavItem>
+                <a ngbNavLink></a>
+                <ng-template ngbTabContent></ng-template>
+            </li>
+          </ul>
+          <div [ngbNavOutlet]="n"></div>
+        `);
+
+         const links = getLinks(fixture);
+         const eventArrowRight = createKeyDownEvent(Key.ArrowRight);
+         const eventArrowLeft = createKeyDownEvent(Key.ArrowLeft);
+         const eventHomeKey = createKeyDownEvent(Key.Home);
+         const eventEndKey = createKeyDownEvent(Key.End);
+
+         links[0].focus();
+         expect(document.activeElement).toBe(links[0]);
+         expectLinks(fixture, [true, false, false]);
+
+         fixture.debugElement.query(By.directive(NgbNav)).triggerEventHandler('keydown.arrowRight', eventArrowRight);
+         fixture.detectChanges();
+         expect(document.activeElement).toBe(links[1]);
+         expectLinks(fixture, [false, true, false]);
+
+         fixture.debugElement.query(By.directive(NgbNav)).triggerEventHandler('keydown.arrowLeft', eventArrowLeft);
+         fixture.detectChanges();
+         expect(document.activeElement).toBe(links[0]);
+         expectLinks(fixture, [true, false, false]);
+
+         fixture.debugElement.query(By.directive(NgbNav)).triggerEventHandler('keydown.End', eventEndKey);
+         fixture.detectChanges();
+         expect(document.activeElement).toBe(links[2]);
+         expectLinks(fixture, [false, false, true]);
+
+         fixture.debugElement.query(By.directive(NgbNav)).triggerEventHandler('keydown.Home', eventHomeKey);
+         fixture.detectChanges();
+         expect(document.activeElement).toBe(links[0]);
+         expectLinks(fixture, [true, false, false]);
+       });
+
+  });
+
 });
 
 @Component({selector: 'test-cmp', template: ''})

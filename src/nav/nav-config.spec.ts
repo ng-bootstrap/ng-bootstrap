@@ -7,5 +7,6 @@ describe('ngb-nav-config', () => {
     expect(config.destroyOnHide).toBe(true);
     expect(config.orientation).toBe('horizontal');
     expect(config.roles).toBe('tablist');
+    expect(config.keyboard).toBe(false);
   });
 });

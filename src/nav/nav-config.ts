@@ -13,4 +13,5 @@ export class NgbNavConfig {
   destroyOnHide = true;
   orientation: 'horizontal' | 'vertical' = 'horizontal';
   roles: 'tablist' | false = 'tablist';
+  keyboard: boolean | 'changeWithArrows' = false;
 }
