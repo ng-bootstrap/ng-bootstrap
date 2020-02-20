@@ -300,7 +300,7 @@ export class NgbDatepicker implements OnDestroy,
    *
    * The payload of the event is currently selected `NgbDate`.
    *
-   * Please use 'dateSelect' output instead, this will be deprecated in version 6.0 due to collision with native
+   * @deprecated 6.0.0 Please use 'dateSelect' output instead due to collision with native
    * 'select' event.
    */
   @Output() select = this.dateSelect;
