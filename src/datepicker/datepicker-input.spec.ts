@@ -463,7 +463,7 @@ describe('NgbInputDatepicker', () => {
            expect(form.control.getError('ngbDate', ['dp']).invalid).toBe(5);
          }));
 
-      it('should return "requiredBefore" errors for dates before minimal date', fakeAsync(() => {
+      it('should return "minDate" errors for dates before minimal date', fakeAsync(() => {
            const fixture = createTestCmpt(`<form>
           <input ngbDatepicker [ngModel]="{year: 2017, month: 04, day: 04}" [minDate]="{year: 2017, month: 6, day: 4}" name="dp">
         </form>`);
@@ -472,10 +472,11 @@ describe('NgbInputDatepicker', () => {
            fixture.detectChanges();
            tick();
            expect(form.control.invalid).toBeTruthy();
-           expect(form.control.getError('ngbDate', ['dp']).requiredBefore).toEqual({year: 2017, month: 6, day: 4});
+           expect(form.control.getError('ngbDate', ['dp']).minDate)
+               .toEqual({minDate: {year: 2017, month: 6, day: 4}, actual: {year: 2017, month: 4, day: 4}});
          }));
 
-      it('should return "requiredAfter" errors for dates after maximal date', fakeAsync(() => {
+      it('should return "maxDate" errors for dates after maximal date', fakeAsync(() => {
            const fixture = createTestCmpt(`<form>
           <input ngbDatepicker [ngModel]="{year: 2017, month: 04, day: 04}" [maxDate]="{year: 2017, month: 2, day: 4}" name="dp">
         </form>`);
@@ -484,7 +485,8 @@ describe('NgbInputDatepicker', () => {
            fixture.detectChanges();
            tick();
            expect(form.control.invalid).toBeTruthy();
-           expect(form.control.getError('ngbDate', ['dp']).requiredAfter).toEqual({year: 2017, month: 2, day: 4});
+           expect(form.control.getError('ngbDate', ['dp']).maxDate)
+               .toEqual({maxDate: {year: 2017, month: 2, day: 4}, actual: {year: 2017, month: 4, day: 4}});
          }));
 
       it('should update validity status when model changes', fakeAsync(() => {

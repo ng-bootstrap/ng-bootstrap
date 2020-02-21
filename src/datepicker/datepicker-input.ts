@@ -289,7 +289,7 @@ export class NgbInputDatepicker implements OnChanges,
   setDisabledState(isDisabled: boolean): void { this.disabled = isDisabled; }
 
   validate(c: AbstractControl): {[key: string]: any} {
-    const value = c.value;
+    const {value} = c;
 
     if (value === null || value === undefined) {
       return null;
@@ -298,15 +298,15 @@ export class NgbInputDatepicker implements OnChanges,
     const ngbDate = this._fromDateStruct(this._dateAdapter.fromModel(value));
 
     if (!this._calendar.isValid(ngbDate)) {
-      return {'ngbDate': {invalid: c.value}};
+      return {'ngbDate': {invalid: value}};
     }
 
     if (this.minDate && ngbDate.before(NgbDate.from(this.minDate))) {
-      return {'ngbDate': {requiredBefore: this.minDate}};
+      return {'ngbDate': {minDate: {minDate: this.minDate, actual: value}}};
     }
 
     if (this.maxDate && ngbDate.after(NgbDate.from(this.maxDate))) {
-      return {'ngbDate': {requiredAfter: this.maxDate}};
+      return {'ngbDate': {maxDate: {maxDate: this.maxDate, actual: value}}};
     }
   }
 
