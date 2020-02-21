@@ -1,3 +1,53 @@
+# [6.0.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/6.0.0-rc.0...6.0.0) (2020-02-21)
+
+This major release officially adds Angular 9 and ivy support. 
+
+Due to changes in the framework, you might need to add the `@angular/localize` dependency. Check the [i18n documentation](https://angular.io/guide/i18n#setting-up-localization-with-the-angular-cli) and [this issue](https://github.com/ng-bootstrap/ng-bootstrap/issues/3537#issuecomment-586472803) for more info.
+
+We're also deprecating `NgbTabset`, so it is not supported anymore. Please use [`NgbNav`](https://ng-bootstrap.github.io/#/components/nav/overview) instead as a more flexible alternative.
+
+
+### Bug Fixes
+
+* **datepicker:** change min/max date error message ([#3607](https://github.com/ng-bootstrap/ng-bootstrap/issues/3607)) ([501a1a0](https://github.com/ng-bootstrap/ng-bootstrap/commit/501a1a0106df28cbb185480b0522e597e0faf1b2)), closes [#2922](https://github.com/ng-bootstrap/ng-bootstrap/issues/2922)
+* **popover:** make tooltip and popover work on the same element ([#3606](https://github.com/ng-bootstrap/ng-bootstrap/issues/3606)) ([0841abe](https://github.com/ng-bootstrap/ng-bootstrap/commit/0841abe24bd179bc53e0f6f48370f2dc02229e64)), closes [#3602](https://github.com/ng-bootstrap/ng-bootstrap/issues/3602)
+
+
+### BREAKING CHANGES
+
+* ng-bootstrap now has the dependency on `@angular/localize`
+* **datepicker:** 'ngbDate' validator error messages were changed to be more explicit and aligned with Angular validators.
+
+For example, for the following use-case 
+```html
+<ngb-datepicker [ngModel]="{year: 2019, month: 12, day: 31}" 
+                [minDate]="{year: 2020, month: 1, day: 1}">                
+</ngb-datepicker>
+```
+form control errors are:
+
+Before
+
+```
+ngbDate: {
+  requiredBefore: { year: 2020, month: 1, day: 1 }
+}
+```
+
+After
+
+```
+ngbDate: {
+  minDate: {
+    minDate: { year: 2020, month: 1, day: 1 },
+    actual: { year: 2019, month: 12, day: 31 }
+}
+```
+
+Same change is applied for `requiredAfter` and `maxDate`.
+
+
+
 # [6.0.0-rc.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/5.3.0...6.0.0-rc.0) (2020-02-14)
 
 This is a technical release aligning all dependencies, configurations and deliveries to Angular 9.
