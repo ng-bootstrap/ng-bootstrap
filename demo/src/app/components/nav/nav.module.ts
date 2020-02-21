@@ -20,6 +20,8 @@ import { NgbdNavDynamicModule } from './demos/dynamic/nav-dynamic.module';
 import { NgbdNavKeep } from './demos/keep-content/nav-keep-content';
 import { NgbdNavKeepModule } from './demos/keep-content/nav-keep-content.module';
 import { NgbdNavOverviewComponent } from './overview/nav-overview.component';
+import { NgbdNavVertical } from './demos/vertical/nav-vertical';
+import { NgbdNavVerticalModule } from './demos/vertical/nav-vertical.module';
 
 const OVERVIEW = {
   'basic-usage': 'Basic Usage',
@@ -39,6 +41,12 @@ const DEMOS = {
     type: NgbdNavMarkup,
     code: require('!!raw-loader!./demos/markup/nav-markup').default,
     markup: require('!!raw-loader!./demos/markup/nav-markup.html').default
+  },
+  vertical: {
+    title: 'Vertical pills',
+    type: NgbdNavVertical,
+    code: require('!!raw-loader!./demos/vertical/nav-vertical').default,
+    markup: require('!!raw-loader!./demos/vertical/nav-vertical.html').default
   },
   selection: {
     title: 'Selecting navs',
@@ -95,7 +103,8 @@ export const ROUTES = [
     NgbdNavKeepModule,
     NgbdNavDynamicModule,
     NgbdNavCustomStyleModule,
-    NgbdNavConfigModule
+    NgbdNavConfigModule,
+    NgbdNavVerticalModule,
   ],
   declarations: [NgbdNavOverviewComponent]
 })
