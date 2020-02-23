@@ -32,7 +32,7 @@ export class WikipediaService {
   selector: 'ngbd-typeahead-http',
   templateUrl: './typeahead-http.html',
   providers: [WikipediaService],
-  styles: [`.form-control { width: 300px; display: inline; }`]
+  styles: [`.form-control { width: 300px; }`]
 })
 export class NgbdTypeaheadHttp {
   model: any;

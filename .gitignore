@@ -1,7 +1,9 @@
+.DS_Store
 /node_modules/
 /dist/
 /temp/
 /demo/dist/
+/out-tsc
 /e2e-app/dist/
 /ssr-app/dist/
 npm-debug.log

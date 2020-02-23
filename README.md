@@ -40,6 +40,7 @@ Here is the list of minimal required versions:
 | 3.x.x        | 6.1.0   | 4.0.0         |
 | 4.x.x        | 7.0.0   | 4.0.0         |
 | 5.x.x        | 8.0.0   | 4.3.1         |
+| 6.x.x        | 9.0.0   | 4.4.1         |
 
 ## Installation
 
@@ -87,10 +88,18 @@ export class YourAppModule {
 }
 ```
 
+If you're using Angular >= 9.0.0 and ng-bootstrap >= 6.0.0, you might also need to install the `@angular/localize`polyfill via
+ 
+```shell
+ng add @angular/localize
+```
+ See more details in
+[the official documentation](https://angular.io/guide/i18n#setting-up-localization-with-the-angular-cli).
+
 
 ## Supported browsers
 
-We support the same browsers and versions supported by both Bootstrap 4 and Angular, whichever is _more_ restrictive. See [Angular browser support](https://angular.io/guide/browser-support) and [Bootstrap browser support](https://getbootstrap.com/docs/4.0/getting-started/browsers-devices/#supported-browsers) for more details, but on the high-level it should be something like:
+We support the same browsers and versions supported by both Bootstrap 4 and Angular, whichever is _more_ restrictive. See [Angular browser support](https://angular.io/guide/browser-support) and [Bootstrap browser support](https://getbootstrap.com/docs/4.4/getting-started/browsers-devices/#supported-browsers) for more details, but on the high-level it should be something like:
 
 * Chrome (45+)
 * Firefox (40+)
@@ -117,7 +126,7 @@ We want to fix it ASAP! But before fixing a bug we need to reproduce and confirm
 
 We ask you to respect two things:
 * fill the GitHub issue template by providing the bug description and appropriate versions of Angular, ng-bootstrap and TypeScript
-* provide a use-case that fails with a **minimal reproduction scenario** using [StackBlitz](https://stackblitz) (you can start by forking one from our [demo page](https://ng-bootstrap.github.io/#/components))
+* provide a use-case that fails with a **minimal reproduction scenario** using [StackBlitz](https://stackblitz.com) (you can start by forking one from our [demo page](https://ng-bootstrap.github.io/#/components))
 
 A minimal reproduction scenario allows us to quickly confirm a bug (or point out a coding problem) as well as confirm that we are fixing the right problem.
 

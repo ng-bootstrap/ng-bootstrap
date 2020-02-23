@@ -18,7 +18,9 @@ import {
   NgZone,
   ViewEncapsulation,
   ChangeDetectorRef,
-  ApplicationRef
+  ApplicationRef,
+  OnChanges,
+  SimpleChanges
 } from '@angular/core';
 import {DOCUMENT} from '@angular/common';
 
@@ -48,7 +50,7 @@ export class NgbTooltipWindow {
  * A lightweight and extensible directive for fancy tooltip creation.
  */
 @Directive({selector: '[ngbTooltip]', exportAs: 'ngbTooltip'})
-export class NgbTooltip implements OnInit, OnDestroy {
+export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
   /**
    * Indicates whether the tooltip should be closed on `Escape` key and inside/outside clicks:
    *
@@ -140,7 +142,7 @@ export class NgbTooltip implements OnInit, OnDestroy {
       private _elementRef: ElementRef<HTMLElement>, private _renderer: Renderer2, injector: Injector,
       componentFactoryResolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef, config: NgbTooltipConfig,
       private _ngZone: NgZone, @Inject(DOCUMENT) private _document: any, private _changeDetector: ChangeDetectorRef,
-      private _applicationRef: ApplicationRef) {
+      applicationRef: ApplicationRef) {
     this.autoClose = config.autoClose;
     this.placement = config.placement;
     this.triggers = config.triggers;
@@ -150,7 +152,7 @@ export class NgbTooltip implements OnInit, OnDestroy {
     this.openDelay = config.openDelay;
     this.closeDelay = config.closeDelay;
     this._popupService = new PopupService<NgbTooltipWindow>(
-        NgbTooltipWindow, injector, viewContainerRef, _renderer, componentFactoryResolver, _applicationRef);
+        NgbTooltipWindow, injector, viewContainerRef, _renderer, componentFactoryResolver, applicationRef);
 
     this._zoneSubscription = _ngZone.onStable.subscribe(() => {
       if (this._windowRef) {
@@ -251,6 +253,12 @@ export class NgbTooltip implements OnInit, OnDestroy {
     this._unregisterListenersFn = listenToTriggers(
         this._renderer, this._elementRef.nativeElement, this.triggers, this.isOpen.bind(this), this.open.bind(this),
         this.close.bind(this), +this.openDelay, +this.closeDelay);
+  }
+
+  ngOnChanges({tooltipClass}: SimpleChanges) {
+    if (tooltipClass && this.isOpen()) {
+      this._windowRef.instance.tooltipClass = tooltipClass.currentValue;
+    }
   }
 
   ngOnDestroy() {

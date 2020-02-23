@@ -10,19 +10,19 @@
         <button class="btn btn-outline-secondary" id="dropdown" ngbDropdownToggle>Choose and option</button>
         <div ngbDropdownMenu aria-labelledby="dropdown">
 
-          <ng-container *ngIf="withItems">
+          <ng-template [ngIf]="withItems">
             <button ngbDropdownItem id="item-1">One</button>
             <hr>
             <button ngbDropdownItem disabled>Disabled</button>
             <button class="dropdown-item">Not arrow-focusable</button>
             <hr>
             <button ngbDropdownItem id="item-2">Two</button>
-          </ng-container>
+          </ng-template>
 
-          <ng-container *ngIf="!withItems">
+          <ng-template [ngIf]="!withItems">
             <button class="dropdown-item">One</button>
             <button class="dropdown-item">Two</button>
-          </ng-container>
+          </ng-template>
 
         </div>
       </div>

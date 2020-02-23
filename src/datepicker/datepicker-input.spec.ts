@@ -10,7 +10,8 @@ import {NgbInputDatepicker} from './datepicker-input';
 import {NgbDatepicker} from './datepicker';
 import {NgbDateStruct} from './ngb-date-struct';
 import {NgbDate} from './ngb-date';
-import * as positioning from 'src/util/positioning';
+import {positionService} from 'src/util/positioning';
+import {NgbInputDatepickerConfig} from './datepicker-input-config';
 
 const createTestCmpt = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -18,10 +19,81 @@ const createTestCmpt = (html: string) =>
 const createTestNativeCmpt = (html: string) =>
     createGenericTestComponent(html, TestNativeComponent) as ComponentFixture<TestNativeComponent>;
 
+function expectSameValues(inputDatepicker: NgbInputDatepicker, config: NgbInputDatepickerConfig) {
+  ['autoClose', 'container', 'positionTarget', 'placement'].forEach(
+      field => expect(inputDatepicker[field]).toEqual(config[field], field));
+}
+
+function customizeConfig(config: NgbInputDatepickerConfig) {
+  config.autoClose = 'outside';
+  config.container = 'body';
+  config.positionTarget = 'positionTarget';
+  config.placement = ['bottom-left', 'top-right'];
+}
+
 describe('NgbInputDatepicker', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbDatepickerModule, FormsModule]});
+  });
+
+  it('should initialize inputs with provided datepicker config', () => {
+    const defaultConfig = new NgbInputDatepickerConfig();
+    const fixture = createTestCmpt(`<input ngbDatepicker>`);
+
+    const inputDatepicker =
+        fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
+    expectSameValues(inputDatepicker, defaultConfig);
+  });
+
+  it('should initialize inputs with provided config', () => {
+    // overrideComponent should happen before any injections, so createTestCmpt will fail here
+    TestBed.overrideComponent(TestComponent, {set: {template: '<input ngbDatepicker>'}});
+    const config = TestBed.inject(NgbInputDatepickerConfig);
+    customizeConfig(config);
+    const fixture = TestBed.createComponent(TestComponent);
+    fixture.detectChanges();
+
+    const inputDatepicker =
+        fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
+    expectSameValues(inputDatepicker, config);
+  });
+
+  it('should work when wrapped in the <label> and toggled with (click)', () => {
+    const fixture = createTestCmpt(`
+      <label>
+        <input ngbDatepicker #d="ngbDatepicker" [startDate]="{year: 2018, month: 3}" (click)="d.toggle()">
+      </label>`);
+
+    const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
+
+    // open
+    dpInput.open();
+    fixture.detectChanges();
+
+    // click on a date
+    fixture.nativeElement.querySelectorAll('.ngb-dp-day')[3].click();  // 1 MAR 2018
+    fixture.detectChanges();
+
+    expect(dpInput.isOpen()).toBe(false);
+  });
+
+  describe('Custom config as provider', () => {
+    const config = new NgbInputDatepickerConfig();
+    customizeConfig(config);
+
+    beforeEach(() => {
+      TestBed.configureTestingModule(
+          {imports: [NgbDatepickerModule], providers: [{provide: NgbInputDatepickerConfig, useValue: config}]});
+    });
+
+    it('should initialize inputs with provided config as provider', () => {
+      const fixture = createTestCmpt(`<input ngbDatepicker>`);
+
+      const inputDatepicker =
+          fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
+      expectSameValues(inputDatepicker, config);
+    });
   });
 
   describe('open, close and toggle', () => {
@@ -217,7 +289,7 @@ describe('NgbInputDatepicker', () => {
          expect(input.disabled).toBeTruthy();
          expect(buttonInDatePicker.disabled).toBeTruthy();
 
-         const dayElements = fixture.nativeElement.querySelectorAll('ngb-datepicker-month-view .ngb-dp-day');
+         const dayElements = fixture.nativeElement.querySelectorAll('ngb-datepicker-month .ngb-dp-day');
          expect(dayElements[1]).toHaveCssClass('disabled');
          expect(dayElements[11]).toHaveCssClass('disabled');
          expect(dayElements[21]).toHaveCssClass('disabled');
@@ -231,7 +303,7 @@ describe('NgbInputDatepicker', () => {
          expect(input.disabled).toBeFalsy();
          expect(buttonInDatePicker.disabled).toBeFalsy();
 
-         const dayElements2 = fixture.nativeElement.querySelectorAll('ngb-datepicker-month-view .ngb-dp-day');
+         const dayElements2 = fixture.nativeElement.querySelectorAll('ngb-datepicker-month .ngb-dp-day');
          expect(dayElements2[1]).not.toHaveCssClass('disabled');
          expect(dayElements2[11]).not.toHaveCssClass('disabled');
          expect(dayElements2[21]).not.toHaveCssClass('disabled');
@@ -257,7 +329,7 @@ describe('NgbInputDatepicker', () => {
       expect(input.disabled).toBeTruthy();
       expect(buttonInDatePicker.disabled).toBeTruthy();
 
-      const dayElements = fixture.nativeElement.querySelectorAll('ngb-datepicker-month-view .ngb-dp-day');
+      const dayElements = fixture.nativeElement.querySelectorAll('ngb-datepicker-month .ngb-dp-day');
       expect(dayElements[1]).toHaveCssClass('disabled');
       expect(dayElements[11]).toHaveCssClass('disabled');
       expect(dayElements[21]).toHaveCssClass('disabled');
@@ -269,7 +341,7 @@ describe('NgbInputDatepicker', () => {
       expect(input.disabled).toBeFalsy();
       expect(buttonInDatePicker.disabled).toBeFalsy();
 
-      const dayElements2 = fixture.nativeElement.querySelectorAll('ngb-datepicker-month-view .ngb-dp-day');
+      const dayElements2 = fixture.nativeElement.querySelectorAll('ngb-datepicker-month .ngb-dp-day');
       expect(dayElements2[1]).not.toHaveCssClass('disabled');
       expect(dayElements2[11]).not.toHaveCssClass('disabled');
       expect(dayElements2[21]).not.toHaveCssClass('disabled');
@@ -311,6 +383,7 @@ describe('NgbInputDatepicker', () => {
       <input ngbDatepicker [startDate]="{year: 2018, month: 3}" [(ngModel)]="date" #d="ngbDatepicker"
              [ngModelOptions]="{updateOn: 'blur'}">`);
 
+         fixture.detectChanges();
          const inputDebugEl = fixture.debugElement.query(By.css('input'));
          const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
 
@@ -390,7 +463,7 @@ describe('NgbInputDatepicker', () => {
            expect(form.control.getError('ngbDate', ['dp']).invalid).toBe(5);
          }));
 
-      it('should return "requiredBefore" errors for dates before minimal date', fakeAsync(() => {
+      it('should return "minDate" errors for dates before minimal date', fakeAsync(() => {
            const fixture = createTestCmpt(`<form>
           <input ngbDatepicker [ngModel]="{year: 2017, month: 04, day: 04}" [minDate]="{year: 2017, month: 6, day: 4}" name="dp">
         </form>`);
@@ -399,10 +472,11 @@ describe('NgbInputDatepicker', () => {
            fixture.detectChanges();
            tick();
            expect(form.control.invalid).toBeTruthy();
-           expect(form.control.getError('ngbDate', ['dp']).requiredBefore).toEqual({year: 2017, month: 6, day: 4});
+           expect(form.control.getError('ngbDate', ['dp']).minDate)
+               .toEqual({minDate: {year: 2017, month: 6, day: 4}, actual: {year: 2017, month: 4, day: 4}});
          }));
 
-      it('should return "requiredAfter" errors for dates after maximal date', fakeAsync(() => {
+      it('should return "maxDate" errors for dates after maximal date', fakeAsync(() => {
            const fixture = createTestCmpt(`<form>
           <input ngbDatepicker [ngModel]="{year: 2017, month: 04, day: 04}" [maxDate]="{year: 2017, month: 2, day: 4}" name="dp">
         </form>`);
@@ -411,7 +485,8 @@ describe('NgbInputDatepicker', () => {
            fixture.detectChanges();
            tick();
            expect(form.control.invalid).toBeTruthy();
-           expect(form.control.getError('ngbDate', ['dp']).requiredAfter).toEqual({year: 2017, month: 2, day: 4});
+           expect(form.control.getError('ngbDate', ['dp']).maxDate)
+               .toEqual({maxDate: {year: 2017, month: 2, day: 4}, actual: {year: 2017, month: 4, day: 4}});
          }));
 
       it('should update validity status when model changes', fakeAsync(() => {
@@ -584,6 +659,62 @@ describe('NgbInputDatepicker', () => {
 
       const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
       expect(dp.maxDate).toEqual({year: 2016, month: 9, day: 13});
+    });
+
+    it('should dynamically propagate the "minDate" option', () => {
+      const fixture = createTestCmpt(`<input ngbDatepicker [minDate]="minDate">`);
+      const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
+      fixture.componentRef.instance.minDate = {year: 2018, month: 12, day: 31};
+
+      dpInput.open();
+      fixture.detectChanges();
+
+      const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
+      expect(dp.minDate).toEqual({year: 2018, month: 12, day: 31});
+
+      fixture.componentRef.instance.minDate = {year: 2019, month: 11, day: 14};
+      fixture.detectChanges();
+      expect(dp.minDate).toEqual({year: 2019, month: 11, day: 14});
+
+    });
+
+    it('should dynamically propagate the "maxDate" option', () => {
+      const fixture = createTestCmpt(`<input ngbDatepicker [maxDate]="maxDate">`);
+      const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
+      fixture.componentRef.instance.maxDate = {year: 2019, month: 12, day: 31};
+
+      dpInput.open();
+      fixture.detectChanges();
+
+      const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
+      expect(dp.maxDate).toEqual({year: 2019, month: 12, day: 31});
+
+      fixture.componentRef.instance.maxDate = {year: 2019, month: 12, day: 14};
+      fixture.detectChanges();
+      expect(dp.maxDate).toEqual({year: 2019, month: 12, day: 14});
+
+    });
+
+    it('should dynamically propagate the "maxDate" and "minDate" option', () => {
+      const fixture = createTestCmpt(`<input ngbDatepicker [minDate]="minDate" [maxDate]="maxDate">`);
+      const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
+      fixture.componentRef.instance.minDate = {year: 2019, month: 11, day: 14};
+      fixture.componentRef.instance.maxDate = {year: 2019, month: 12, day: 31};
+
+      dpInput.open();
+      fixture.detectChanges();
+
+      const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
+      expect(dp.minDate).toEqual({year: 2019, month: 11, day: 14});
+      expect(dp.maxDate).toEqual({year: 2019, month: 12, day: 31});
+
+      fixture.componentRef.instance.minDate = {year: 2019, month: 10, day: 14};
+      fixture.componentRef.instance.maxDate = {year: 2019, month: 12, day: 14};
+      fixture.detectChanges();
+
+      expect(dp.minDate).toEqual({year: 2019, month: 10, day: 14});
+      expect(dp.maxDate).toEqual({year: 2019, month: 12, day: 14});
+
     });
 
     it('should propagate the "outsideDays" option', () => {
@@ -768,6 +899,7 @@ describe('NgbInputDatepicker', () => {
 
     it('should add .ngb-dp-body class when attached to body', () => {
       const fixture = createTestCmpt(`<input ngbDatepicker #d="ngbDatepicker" [container]="container">`);
+      fixture.detectChanges();
       const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
 
       // No container specified
@@ -793,10 +925,7 @@ describe('NgbInputDatepicker', () => {
 
     let positionElementsSpy: jasmine.Spy;
 
-    beforeEach(() => {
-      positionElementsSpy = jasmine.createSpy('positionElementsSpy');
-      spyOnProperty(positioning, 'positionElements').and.returnValue(positionElementsSpy);
-    });
+    beforeEach(() => { positionElementsSpy = spyOn(positionService, 'position').and.callThrough(); });
 
     it('should position popup by input if no target provided (default)', () => {
       const fixture = createTestCmpt(`
@@ -857,6 +986,121 @@ describe('NgbInputDatepicker', () => {
        }));
   });
 
+  describe('focus restore', () => {
+
+    function open(fixture: ComponentFixture<TestComponent>) {
+      const dp = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
+      dp.open();
+      fixture.detectChanges();
+    }
+
+    function selectDateAndClose(fixture: ComponentFixture<TestComponent>) {
+      fixture.nativeElement.querySelectorAll('.ngb-dp-day')[3].click();  // 1 MAR 2018
+      fixture.detectChanges();
+    }
+
+    it('should focus previously focused element', () => {
+      const fixture = createTestCmpt(`
+        <div tabindex="0" id="focusable"></div>
+        <input ngbDatepicker [startDate]="{year: 2018, month: 3}"/>
+      `);
+
+      // initial focus
+      const focusableEl = fixture.nativeElement.querySelector('#focusable');
+      focusableEl.focus();
+      expect(document.activeElement).toBe(focusableEl);
+
+      open(fixture);
+      expect(document.activeElement).not.toBe(focusableEl);
+
+      selectDateAndClose(fixture);
+      expect(document.activeElement).toBe(focusableEl);
+    });
+
+    it('should focus using selector provided via [restoreFocus]', () => {
+      const fixture = createTestCmpt(`
+        <div tabindex="0" id="focusable"></div>
+        <input ngbDatepicker restoreFocus="#focusable" [startDate]="{year: 2018, month: 3}"/>
+      `);
+
+      const focusableEl = fixture.nativeElement.querySelector('#focusable');
+      expect(document.activeElement).not.toBe(focusableEl);
+
+      open(fixture);
+      expect(document.activeElement).not.toBe(focusableEl);
+
+      selectDateAndClose(fixture);
+      expect(document.activeElement).toBe(focusableEl);
+    });
+
+    it('should focus using element provided via [restoreFocus]', () => {
+      const fixture = createTestCmpt(`
+        <div #el tabindex="0" id="focusable"></div>
+        <input ngbDatepicker [restoreFocus]="el" [startDate]="{year: 2018, month: 3}"/>
+      `);
+
+      const focusableEl = fixture.nativeElement.querySelector('#focusable');
+      expect(document.activeElement).not.toBe(focusableEl);
+
+      open(fixture);
+      expect(document.activeElement).not.toBe(focusableEl);
+
+      selectDateAndClose(fixture);
+      expect(document.activeElement).toBe(focusableEl);
+    });
+
+    it('should fallback to body if [restoreFocus] selector is invalid', () => {
+      const fixture = createTestCmpt(`
+        <div tabindex="0" id="focusable"></div>
+        <input ngbDatepicker restoreFocus=".invalid-element" [startDate]="{year: 2018, month: 3}"/>
+      `);
+
+      const focusableEl = fixture.nativeElement.querySelector('#focusable');
+      focusableEl.focus();
+      expect(document.activeElement).toBe(focusableEl);
+
+      open(fixture);
+      expect(document.activeElement).not.toBe(focusableEl);
+
+      selectDateAndClose(fixture);
+      expect(document.activeElement).toBe(document.body);
+    });
+
+    it('should fallback to body if [restoreFocus] value is falsy', () => {
+      const fixture = createTestCmpt(`
+        <div tabindex="0" id="focusable"></div>
+        <input ngbDatepicker [restoreFocus]="null" [startDate]="{year: 2018, month: 3}"/>
+      `);
+
+      const focusableEl = fixture.nativeElement.querySelector('#focusable');
+      focusableEl.focus();
+      expect(document.activeElement).toBe(focusableEl);
+
+      open(fixture);
+      expect(document.activeElement).not.toBe(focusableEl);
+
+      selectDateAndClose(fixture);
+      expect(document.activeElement).toBe(document.body);
+    });
+
+    it('should fallback to body if [restoreFocus] value is truthy', () => {
+      const fixture = createTestCmpt(`
+        <div tabindex="0" id="focusable"></div>
+        <input ngbDatepicker [restoreFocus]="true" [startDate]="{year: 2018, month: 3}"/>
+      `);
+
+      const focusableEl = fixture.nativeElement.querySelector('#focusable');
+      focusableEl.focus();
+      expect(document.activeElement).toBe(focusableEl);
+
+      open(fixture);
+      expect(document.activeElement).not.toBe(focusableEl);
+
+      selectDateAndClose(fixture);
+      expect(document.activeElement).toBe(document.body);
+    });
+  });
+
   describe('Native adapter', () => {
 
     beforeEach(() => {
@@ -911,6 +1155,8 @@ class TestNativeComponent {
 class TestComponent {
   container;
   date: NgbDateStruct;
+  minDate: NgbDateStruct;
+  maxDate: NgbDateStruct;
   isDisabled;
 
   onNavigate() {}

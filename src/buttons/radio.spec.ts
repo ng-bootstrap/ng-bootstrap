@@ -551,7 +551,6 @@ describe('ngbRadioGroup', () => {
     `);
     fixture.detectChanges();
 
-    const inputs = fixture.nativeElement.querySelectorAll('input');
     expectNameOnAllInputs(fixture.nativeElement, 'foo');
   });
 
@@ -568,7 +567,6 @@ describe('ngbRadioGroup', () => {
     `);
     fixture.detectChanges();
 
-    const inputs = fixture.nativeElement.querySelectorAll('input');
     expectNameOnAllInputs(fixture.nativeElement, 'bar');
   });
 

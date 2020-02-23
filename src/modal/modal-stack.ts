@@ -6,8 +6,9 @@ import {
   Inject,
   Injectable,
   Injector,
+  NgZone,
   RendererFactory2,
-  TemplateRef,
+  TemplateRef
 } from '@angular/core';
 import {Subject} from 'rxjs';
 
@@ -32,12 +33,12 @@ export class NgbModalStack {
 
   constructor(
       private _applicationRef: ApplicationRef, private _injector: Injector, @Inject(DOCUMENT) private _document: any,
-      private _scrollBar: ScrollBar, private _rendererFactory: RendererFactory2) {
+      private _scrollBar: ScrollBar, private _rendererFactory: RendererFactory2, private _ngZone: NgZone) {
     // Trap focus on active WindowCmpt
     this._activeWindowCmptHasChanged.subscribe(() => {
       if (this._windowCmpts.length) {
         const activeWindowCmpt = this._windowCmpts[this._windowCmpts.length - 1];
-        ngbFocusTrap(activeWindowCmpt.location.nativeElement, this._activeWindowCmptHasChanged);
+        ngbFocusTrap(this._ngZone, activeWindowCmpt.location.nativeElement, this._activeWindowCmptHasChanged);
         this._revertAriaHidden();
         this._setAriaHidden(activeWindowCmpt.location.nativeElement);
       }
@@ -45,8 +46,9 @@ export class NgbModalStack {
   }
 
   open(moduleCFR: ComponentFactoryResolver, contentInjector: Injector, content: any, options): NgbModalRef {
-    const containerEl =
-        isDefined(options.container) ? this._document.querySelector(options.container) : this._document.body;
+    const containerEl = options.container instanceof HTMLElement ? options.container : isDefined(options.container) ?
+                                                                   this._document.querySelector(options.container) :
+                                                                   this._document.body;
     const renderer = this._rendererFactory.createRenderer(null, null);
 
     const revertPaddingForScrollBar = this._scrollBar.compensate();

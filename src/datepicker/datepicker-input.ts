@@ -27,11 +27,13 @@ import {PlacementArray, positionElements} from '../util/positioning';
 import {NgbDateAdapter} from './adapters/ngb-date-adapter';
 import {NgbDatepicker, NgbDatepickerNavigateEvent} from './datepicker';
 import {DayTemplateContext} from './datepicker-day-template-context';
-import {NgbDatepickerService} from './datepicker-service';
 import {NgbCalendar} from './ngb-calendar';
 import {NgbDate} from './ngb-date';
 import {NgbDateParserFormatter} from './ngb-date-parser-formatter';
 import {NgbDateStruct} from './ngb-date-struct';
+import {NgbInputDatepickerConfig} from './datepicker-input-config';
+import {NgbDatepickerConfig} from './datepicker-config';
+import {isString} from '../util/util';
 
 const NGB_DATEPICKER_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -56,15 +58,20 @@ const NGB_DATEPICKER_VALIDATOR = {
   host: {
     '(input)': 'manualDateChange($event.target.value)',
     '(change)': 'manualDateChange($event.target.value, true)',
+    '(focus)': 'onFocus()',
     '(blur)': 'onBlur()',
     '[disabled]': 'disabled'
   },
-  providers: [NGB_DATEPICKER_VALUE_ACCESSOR, NGB_DATEPICKER_VALIDATOR, NgbDatepickerService]
+  providers: [
+    NGB_DATEPICKER_VALUE_ACCESSOR, NGB_DATEPICKER_VALIDATOR,
+    {provide: NgbDatepickerConfig, useExisting: NgbInputDatepickerConfig}
+  ],
 })
 export class NgbInputDatepicker implements OnChanges,
     OnDestroy, ControlValueAccessor, Validator {
   private _cRef: ComponentRef<NgbDatepicker> = null;
   private _disabled = false;
+  private _elWithFocus = null;
   private _model: NgbDate;
   private _inputValue: string;
   private _zoneSubscription: any;
@@ -79,7 +86,7 @@ export class NgbInputDatepicker implements OnChanges,
    *
    * @since 3.0.0
    */
-  @Input() autoClose: boolean | 'inside' | 'outside' = true;
+  @Input() autoClose: boolean | 'inside' | 'outside';
 
   /**
    * The reference to a custom template for the day.
@@ -175,7 +182,17 @@ export class NgbInputDatepicker implements OnChanges,
    *
    * Please see the [positioning overview](#/positioning) for more details.
    */
-  @Input() placement: PlacementArray = ['bottom-left', 'bottom-right', 'top-left', 'top-right'];
+  @Input() placement: PlacementArray;
+
+  /**
+   * If `true`, when closing datepicker will focus element that was focused before datepicker was opened.
+   *
+   * Alternatively you could provide a selector or an `HTMLElement` to focus. If the element doesn't exist or invalid,
+   * we'll fallback to focus document body.
+   *
+   * @since 5.2.0
+   */
+  @Input() restoreFocus: true | string | HTMLElement;
 
   /**
    * If `true`, weekdays will be displayed.
@@ -256,9 +273,10 @@ export class NgbInputDatepicker implements OnChanges,
   constructor(
       private _parserFormatter: NgbDateParserFormatter, private _elRef: ElementRef<HTMLInputElement>,
       private _vcRef: ViewContainerRef, private _renderer: Renderer2, private _cfr: ComponentFactoryResolver,
-      private _ngZone: NgZone, private _service: NgbDatepickerService, private _calendar: NgbCalendar,
-      private _dateAdapter: NgbDateAdapter<any>, @Inject(DOCUMENT) private _document: any,
-      private _changeDetector: ChangeDetectorRef) {
+      private _ngZone: NgZone, private _calendar: NgbCalendar, private _dateAdapter: NgbDateAdapter<any>,
+      @Inject(DOCUMENT) private _document: any, private _changeDetector: ChangeDetectorRef,
+      config: NgbInputDatepickerConfig) {
+    ['autoClose', 'container', 'positionTarget', 'placement'].forEach(input => this[input] = config[input]);
     this._zoneSubscription = _ngZone.onStable.subscribe(() => this._updatePopupPosition());
   }
 
@@ -271,7 +289,7 @@ export class NgbInputDatepicker implements OnChanges,
   setDisabledState(isDisabled: boolean): void { this.disabled = isDisabled; }
 
   validate(c: AbstractControl): {[key: string]: any} {
-    const value = c.value;
+    const {value} = c;
 
     if (value === null || value === undefined) {
       return null;
@@ -280,15 +298,15 @@ export class NgbInputDatepicker implements OnChanges,
     const ngbDate = this._fromDateStruct(this._dateAdapter.fromModel(value));
 
     if (!this._calendar.isValid(ngbDate)) {
-      return {'ngbDate': {invalid: c.value}};
+      return {'ngbDate': {invalid: value}};
     }
 
     if (this.minDate && ngbDate.before(NgbDate.from(this.minDate))) {
-      return {'ngbDate': {requiredBefore: this.minDate}};
+      return {'ngbDate': {minDate: {minDate: this.minDate, actual: value}}};
     }
 
     if (this.maxDate && ngbDate.after(NgbDate.from(this.maxDate))) {
-      return {'ngbDate': {requiredAfter: this.maxDate}};
+      return {'ngbDate': {maxDate: {maxDate: this.maxDate, actual: value}}};
     }
   }
 
@@ -345,7 +363,8 @@ export class NgbInputDatepicker implements OnChanges,
       }
 
       // focus handling
-      ngbFocusTrap(this._cRef.location.nativeElement, this.closed, true);
+      this._elWithFocus = this._document.activeElement;
+      ngbFocusTrap(this._ngZone, this._cRef.location.nativeElement, this.closed, true);
       this._cRef.instance.focus();
 
       ngbAutoClose(
@@ -363,6 +382,21 @@ export class NgbInputDatepicker implements OnChanges,
       this._cRef = null;
       this.closed.emit();
       this._changeDetector.markForCheck();
+
+      // restore focus
+      let elementToFocus = this._elWithFocus;
+      if (isString(this.restoreFocus)) {
+        elementToFocus = this._document.querySelector(this.restoreFocus);
+      } else if (this.restoreFocus !== undefined) {
+        elementToFocus = this.restoreFocus;
+      }
+
+      // in IE document.activeElement can contain an object without 'focus()' sometimes
+      if (elementToFocus && elementToFocus['focus']) {
+        elementToFocus.focus();
+      } else {
+        this._document.body.focus();
+      }
     }
   }
 
@@ -393,9 +427,21 @@ export class NgbInputDatepicker implements OnChanges,
 
   onBlur() { this._onTouched(); }
 
+  onFocus() { this._elWithFocus = this._elRef.nativeElement; }
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes['minDate'] || changes['maxDate']) {
       this._validatorChange();
+
+      if (this.isOpen()) {
+        if (changes['minDate']) {
+          this._cRef.instance.minDate = this._dateAdapter.toModel(changes.minDate.currentValue);
+        }
+        if (changes['maxDate']) {
+          this._cRef.instance.maxDate = this._dateAdapter.toModel(changes.maxDate.currentValue);
+        }
+        this._cRef.instance.ngOnChanges(changes);
+      }
     }
   }
 
@@ -426,7 +472,7 @@ export class NgbInputDatepicker implements OnChanges,
 
   private _subscribeForDatepickerOutputs(datepickerInstance: NgbDatepicker) {
     datepickerInstance.navigate.subscribe(navigateEvent => this.navigate.emit(navigateEvent));
-    datepickerInstance.select.subscribe(date => {
+    datepickerInstance.dateSelect.subscribe(date => {
       this.dateSelect.emit(date);
       if (this.autoClose === true || this.autoClose === 'inside') {
         this.close();
@@ -455,8 +501,8 @@ export class NgbInputDatepicker implements OnChanges,
     }
 
     let hostElement: HTMLElement;
-    if (typeof this.positionTarget === 'string') {
-      hostElement = window.document.querySelector(this.positionTarget);
+    if (isString(this.positionTarget)) {
+      hostElement = this._document.querySelector(this.positionTarget);
     } else if (this.positionTarget instanceof HTMLElement) {
       hostElement = this.positionTarget;
     } else {

@@ -71,18 +71,25 @@ export function generateSelectBoxYears(date: NgbDate, minDate: NgbDate, maxDate:
     return [];
   }
 
-  const start = minDate && minDate.year || date.year - 10;
-  const end = maxDate && maxDate.year || date.year + 10;
+  const start = minDate ? Math.max(minDate.year, date.year - 500) : date.year - 10;
+  const end = maxDate ? Math.min(maxDate.year, date.year + 500) : date.year + 10;
 
-  return Array.from({length: end - start + 1}, (e, i) => start + i);
+  const length = end - start + 1;
+  const numbers = Array(length);
+  for (let i = 0; i < length; i++) {
+    numbers[i] = start + i;
+  }
+
+  return numbers;
 }
 
 export function nextMonthDisabled(calendar: NgbCalendar, date: NgbDate, maxDate: NgbDate) {
-  return maxDate && calendar.getNext(date, 'm').after(maxDate);
+  const nextDate = Object.assign(calendar.getNext(date, 'm'), {day: 1});
+  return maxDate && nextDate.after(maxDate);
 }
 
 export function prevMonthDisabled(calendar: NgbCalendar, date: NgbDate, minDate: NgbDate) {
-  const prevDate = calendar.getPrev(date, 'm');
+  const prevDate = Object.assign(calendar.getPrev(date, 'm'), {day: 1});
   return minDate && (prevDate.year === minDate.year && prevDate.month < minDate.month ||
                      prevDate.year < minDate.year && minDate.month === 1);
 }
@@ -96,7 +103,7 @@ export function buildMonths(
 
   // generate new first dates, nullify or reuse months
   const firstDates = Array.from({length: displayMonths}, (_, i) => {
-    const firstDate = calendar.getNext(date, 'm', i);
+    const firstDate = Object.assign(calendar.getNext(date, 'm', i), {day: 1});
     months[i] = null;
 
     if (!force) {
@@ -186,7 +193,8 @@ export function buildMonth(
         $implicit: newDate,
         date: newDate,
         data: contextUserData,
-        currentMonth: month.number, disabled,
+        currentMonth: month.number,
+        currentYear: month.year, disabled,
         focused: false,
         selected: false, today
       });

@@ -1,6 +1,6 @@
 {
   "name": "@ng-bootstrap/ng-bootstrap",
-  "version": "5.1.1",
+  "version": "6.0.0",
   "description": "Angular powered Bootstrap",
   "keywords": [
     "angular",
@@ -21,6 +21,7 @@
     "table",
     "tabset",
     "timepicker",
+    "toast",
     "tooltip",
     "typeahead"
   ],
@@ -35,9 +36,11 @@
   },
   "homepage": "https://github.com/ng-bootstrap/ng-bootstrap#readme",
   "peerDependencies": {
-    "@angular/common": "^8.0.0",
-    "@angular/core": "^8.0.0",
-    "@angular/forms": "^8.0.0",
-    "rxjs": "^6.4.0"
+    "@angular/common": "^9.0.0",
+    "@angular/core": "^9.0.0",
+    "@angular/forms": "^9.0.0",
+    "@angular/localize": "^9.0.0",
+    "rxjs": "^6.5.3",
+    "tslib": "^1.10.0"
   }
 }

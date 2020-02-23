@@ -42,6 +42,14 @@
   </p>
 
   <p>
+    Since v5.2.0 datepicker also has the
+    <a routerLink="../api" fragment="NgbDatepickerState">State interface</a>
+    accessible via <code>datepicker.state</code> getter. It represents the readonly
+    part of the publicly accessible state. ex. what is currently focused, what is the first
+    and last visible dates, etc.
+  </p>
+
+  <p>
     If you have a very specific use case for the datepicker popup,
     you could always create you own one and use the inline datepicker inside.
   </p>
@@ -66,6 +74,13 @@
     The popup will be closed with <code>Escape</code> key and when
     a date is selected via keyboard or mouse.
     It can stay open after date selection if you set <code>[autoClose]</code> input to <code>false</code>
+  </p>
+
+  <p>
+    When using a button (or any other element) to open the popup, the styling and content of the button
+    is left up to you. In the example above, the button is simply given the text "Toggle", but you
+    could also use an icon, or even group the <code>input</code> and <code>button</code> with an
+    <a href="https://getbootstrap.com/docs/{{ bootstrapVersion }}/components/input-group/#button-addons">input group</a>.
   </p>
 </ngbd-overview-section>
 
@@ -94,7 +109,7 @@
   <ngbd-code [snippet]="snippets.form"></ngbd-code>
 
   <p>
-    Alternatively you could use the <code>(dateSelect)</code> or <code>(select)</code> outputs.
+    Alternatively you could use the <code>(dateSelect)</code> output.
     The difference from <code>ngModel</code> is that outputs will continue emitting the same value,
     if user clicks on the same date. <code>NgModel</code> will do it only once.
   </p>
@@ -127,9 +142,8 @@
   <h4>Adapters</h4>
 
   <p>
-    You can also tell datepicker to use the native javascript date adapter (bundled with ng-bootstrap) as in the
-    <a routerLink="../examples" fragment="adapter">custom date adapter example</a>. For now
-    the adapter works only for the form integration, so for instance <code>(ngModelChange)</code>
+    You can also tell datepicker to use the native JavaScript date adapter (bundled with ng-bootstrap).
+    For now the adapter works only for the form integration, so for instance <code>(ngModelChange)</code>
     will return a native date object. All other APIs continue to use <code>NgbDateStruct</code>.
   </p>
 
@@ -137,7 +151,8 @@
 
   <p>
     You can also create your own adapters if necessary by extending and implementing the
-    <code>NgbDateAdapter</code> methods.
+    <code>NgbDateAdapter</code> methods, as in
+    <a routerLink="../examples" fragment="adapter">custom date adapter example</a>.
   </p>
 
   <ngbd-code [snippet]="snippets.adapter"></ngbd-code>
@@ -155,6 +170,12 @@
 
   <p>
     If the entered input value is invalid, the form model will contain the entered text.
+  </p>
+
+  <p>
+    You can also create your own parser or formatter if necessary by extending and implementing the
+    <code>NgbDateParserFormatter</code> methods, as in
+    <a routerLink="../examples" fragment="adapter">custom date parser formatter example</a>.
   </p>
 
 </ngbd-overview-section>
@@ -258,6 +279,19 @@
 </ngbd-overview-section>
 
 
+<!-- MONTH LAYOUT CUSTOMIZATION-->
+<ngbd-overview-section [section]="sections['content-template']">
+  <p>
+    You can replace the content of the datepicker.
+    Combined with the NgbDatepickerMonthView you can customize the layout of months as in the
+    <a routerLink="../examples" fragment="custommonth">custom month layout example</a>.
+  </p>
+
+  <ngbd-code [snippet]="snippets.contentTemplate"></ngbd-code>
+
+</ngbd-overview-section>
+
+
 <!-- FOOTER TEMPLATE -->
 <ngbd-overview-section [section]="sections['footer-template']">
   <p>
@@ -315,6 +349,12 @@
 
 <!-- Keyboard -->
 <ngbd-overview-section [section]="sections['keyboard-shortcuts']">
+
+  <p>
+    You can customize keyboard navigation as in the <a routerLink="../examples" fragment="keyboard">custom keyboard
+    navigation example</a>. The default keys are as follows:
+  </p>
+
   <table class="table mt-4">
     <tbody>
       <tr>

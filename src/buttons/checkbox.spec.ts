@@ -172,6 +172,22 @@ describe('NgbCheckBox', () => {
        }));
   });
 
+  describe('auto attributes', () => {
+
+    it('should not have autocomplete attribute set to off', () => {
+      const fixture = createTestComponent(`
+        <label ngbButtonLabel>
+          <input type="checkbox" ngbButton>
+        </label>
+      `);
+
+      fixture.detectChanges();
+      const input = fixture.debugElement.nativeElement.querySelector('input');
+      expect(input.getAttribute('autocomplete')).toBeNull();
+    });
+
+  });
+
 });
 
 @Component({selector: 'test-cmp', template: ''})

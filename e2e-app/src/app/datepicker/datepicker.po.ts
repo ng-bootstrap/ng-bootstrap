@@ -1,15 +1,15 @@
 import {$} from 'protractor';
 
-export abstract class DatepickerPage {
+export class DatepickerPage {
   getDatepicker(selector = 'ngb-datepicker') { return $(selector); }
 
   getDatepickerInput(selector = 'input[ngbDatepicker]') { return $(selector); }
 
   getToggle() { return $('#toggle'); }
 
-  getDayElement(date: Date) {
+  getDayElement(date: Date, datepicker = this.getDatepicker()) {
     const ariaLabel = date.toLocaleString('en', {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'});
-    return this.getDatepicker().$(`div.ngb-dp-day[aria-label="${ariaLabel}"]`);
+    return datepicker.$(`div.ngb-dp-day[aria-label="${ariaLabel}"]`);
   }
 
   getWeekdayElements() { return this.getDatepicker().$$('div.ngb-dp-weekday'); }

@@ -1,5 +1,5 @@
-import {TestBed, ComponentFixture, inject, fakeAsync, tick} from '@angular/core/testing';
-import {createGenericTestComponent, createKeyEvent, triggerEvent} from '../test/common';
+import {TestBed, ComponentFixture, inject} from '@angular/core/testing';
+import {createGenericTestComponent, triggerEvent} from '../test/common';
 
 import {By} from '@angular/platform-browser';
 import {
@@ -13,15 +13,10 @@ import {
   AfterViewInit
 } from '@angular/core';
 
-import {Key} from '../util/key';
-
 import {NgbPopoverModule} from './popover.module';
 import {NgbPopoverWindow, NgbPopover} from './popover';
 import {NgbPopoverConfig} from './popover-config';
-
-function dispatchEscapeKeyUpEvent() {
-  document.dispatchEvent(createKeyEvent(Key.Escape));
-}
+import {NgbTooltip, NgbTooltipModule} from '..';
 
 @Injectable()
 class SpyService {
@@ -177,6 +172,21 @@ describe('ngb-popover', () => {
       fixture.detectChanges();
       expect(getWindow(fixture.nativeElement)).toBeNull();
       expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
+    });
+
+    it('should propagate popoverClass changes to the window', () => {
+      const fixture =
+          createTestComponent(`<div ngbPopover="Great tip!" popoverTitle="Title" [popoverClass]="popoverClass"></div>`);
+      const directive = fixture.debugElement.query(By.directive(NgbPopover));
+
+      triggerEvent(directive, 'click');
+      fixture.detectChanges();
+      const windowEl = getWindow(fixture.nativeElement);
+      expect(windowEl).not.toHaveCssClass('my-popover-class');
+
+      fixture.componentInstance.popoverClass = 'my-popover-class';
+      fixture.detectChanges();
+      expect(windowEl).toHaveCssClass('my-popover-class');
     });
 
     it('should accept a template for the title and properly destroy it when closing', () => {
@@ -721,12 +731,35 @@ describe('ngb-popover', () => {
   });
 });
 
+describe('popover-tooltip', () => {
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbPopoverModule, NgbTooltipModule]});
+  });
+
+  it(`should work when attached on the same element and container='body'`, () => {
+    const fixture = createTestComponent(`<button ngbPopover="Popover" ngbTooltip="Tooltip" container="body"></button>`);
+    const button = fixture.nativeElement.querySelector('button');
+    const tooltip = fixture.debugElement.query(By.directive(NgbTooltip)).injector.get(NgbTooltip);
+    const popover = fixture.debugElement.query(By.directive(NgbPopover)).injector.get(NgbPopover);
+
+    tooltip.open();
+    expect(tooltip.isOpen()).toBe(true);
+    expect(popover.isOpen()).toBe(false);
+
+    // this should open the popover and have produced the "Error: Failed to execute 'insertBefore' on 'Node':
+    // The node before which the new node is to be inserted is not a child of this node." exception with ivy
+    button.click();
+  });
+});
+
 @Component({selector: 'test-cmpt', template: ``})
 export class TestComponent {
   name = 'World';
   show = true;
   title: string;
   placement: string;
+  popoverClass: string;
 
   @ViewChild(NgbPopover, {static: true}) popover: NgbPopover;
 

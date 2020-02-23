@@ -37,7 +37,7 @@
       labore sustainable VHS.
     </ng-template>
   </ngb-panel>
-  <ngb-panel [disabled]="disabled">
+  <ngb-panel [disabled]="disabled" [cardClass]="disabled ? 'disabled' : ''">
     <ng-template ngbPanelHeader>
       <div class="d-flex align-items-center justify-content-between">
         <button ngbPanelToggle class="btn btn-link container-fluid text-left pl-0">Third panel</button>

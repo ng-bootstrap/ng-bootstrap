@@ -23,16 +23,22 @@ import { NgbdDatepickerFooterTemplateModule } from './demos/footertemplate/datep
 import { NgbdDatepickerFootertemplate } from './demos/footertemplate/datepicker-footertemplate';
 import { NgbdDatepickerI18n } from './demos/i18n/datepicker-i18n';
 import { NgbdDatepickerI18nModule } from './demos/i18n/datepicker-i18n.module';
+import { NgbdDatepickerCustommonth } from './demos/custommonth/datepicker-custommonth';
+import { NgbdDatepickerCustommonthModule } from './demos/custommonth/datepicker-custommonth.module';
 import { NgbdDatepickerMultiple } from './demos/multiple/datepicker-multiple';
 import { NgbdDatepickerMultipleModule } from './demos/multiple/datepicker-multiple.module';
 import { NgbdDatepickerPopup } from './demos/popup/datepicker-popup';
 import { NgbdDatepickerPopupModule } from './demos/popup/datepicker-popup.module';
 import { NgbdDatepickerRange } from './demos/range/datepicker-range';
 import { NgbdDatepickerRangeModule } from './demos/range/datepicker-range.module';
+import { NgbdDatepickerRangePopup } from './demos/range-popup/datepicker-range-popup';
+import { NgbdDatepickerRangePopupModule } from './demos/range-popup/datepicker-range-popup.module';
 import { NgbdDatepickerOverviewComponent } from './overview/datepicker-overview.component';
 import { NgbdDatepickerOverviewDemoComponent } from './overview/demo/datepicker-overview-demo.component';
 import { NgbdDatepickerPositiontargetModule } from './demos/positiontarget/datepicker-position-target.module';
 import { NgbdDatepickerPositiontarget } from './demos/positiontarget/datepicker-positiontarget';
+import { NgbdDatepickerKeyboard } from './demos/keyboard/datepicker-keyboard';
+import { NgbdDatepickerKeyboardModule } from './demos/keyboard/datepicker-keyboard.module';
 
 const OVERVIEW = {
   'basic-usage': 'Basic Usage',
@@ -42,6 +48,7 @@ const OVERVIEW = {
   'limiting-dates': 'Disabling and limiting dates',
   'day-template': 'Day display customization',
   today: 'Today\'s date',
+  'content-template': 'Content Template',
   'footer-template': 'Custom footer',
   range: 'Range selection',
   i18n: 'Internationalization',
@@ -73,6 +80,12 @@ const DEMOS = {
     code: require('!!raw-loader!./demos/range/datepicker-range').default,
     markup: require('!!raw-loader!./demos/range/datepicker-range.html').default
   },
+  rangePopup: {
+    title: 'Range selection in a popup',
+    type: NgbdDatepickerRangePopup,
+    code: require('!!raw-loader!./demos/range-popup/datepicker-range-popup').default,
+    markup: require('!!raw-loader!./demos/range-popup/datepicker-range-popup.html').default
+  },
   disabled: {
     title: 'Disabled datepicker',
     type: NgbdDatepickerDisabled,
@@ -80,7 +93,7 @@ const DEMOS = {
     markup: require('!!raw-loader!./demos/disabled/datepicker-disabled.html').default
   },
   adapter: {
-    title: 'Custom date adapter',
+    title: 'Custom date adapter and formatter',
     type: NgbdDatepickerAdapter,
     code: require('!!raw-loader!./demos/adapter/datepicker-adapter').default,
     markup: require('!!raw-loader!./demos/adapter/datepicker-adapter.html').default
@@ -97,6 +110,12 @@ const DEMOS = {
     code: require('!!raw-loader!./demos/customday/datepicker-customday').default,
     markup: require('!!raw-loader!./demos/customday/datepicker-customday.html').default
   },
+  custommonth: {
+    title: 'Custom month layout',
+    type: NgbdDatepickerCustommonth,
+    code: require('!!raw-loader!./demos/custommonth/datepicker-custommonth').default,
+    markup: require('!!raw-loader!./demos/custommonth/datepicker-custommonth.html').default
+  },
   footertemplate: {
     title: 'Footer template',
     type: NgbdDatepickerFootertemplate,
@@ -108,6 +127,12 @@ const DEMOS = {
     type: NgbdDatepickerPositiontarget,
     code: require('!!raw-loader!./demos/positiontarget/datepicker-positiontarget').default,
     markup: require('!!raw-loader!./demos/positiontarget/datepicker-positiontarget.html').default
+  },
+  keyboard: {
+    title: 'Custom keyboard navigation',
+    type: NgbdDatepickerKeyboard,
+    code: require('!!raw-loader!./demos/keyboard/datepicker-keyboard').default,
+    markup: require('!!raw-loader!./demos/keyboard/datepicker-keyboard.html').default
   },
   config: {
     title: 'Global configuration of datepickers',
@@ -146,7 +171,10 @@ export const ROUTES = [
     NgbdDatepickerPositiontargetModule,
     NgbdDatepickerMultipleModule,
     NgbdDatepickerRangeModule,
+    NgbdDatepickerRangePopupModule,
     NgbdDatepickerAdapterModule,
+    NgbdDatepickerKeyboardModule,
+    NgbdDatepickerCustommonthModule,
     ...DEMO_CALENDAR_MODULES
   ],
   declarations: [

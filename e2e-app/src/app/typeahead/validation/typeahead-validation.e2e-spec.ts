@@ -1,6 +1,5 @@
 import {TypeaheadPage} from '../typeahead.po';
 import {openUrl} from '../../tools.po';
-import {browser} from 'protractor';
 
 describe('Typeahead', () => {
   let page: TypeaheadPage;

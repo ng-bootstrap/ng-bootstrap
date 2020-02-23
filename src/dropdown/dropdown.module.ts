@@ -8,7 +8,14 @@ import {
   NgbNavbar
 } from './dropdown';
 
-export {NgbDropdown, NgbDropdownAnchor, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownItem} from './dropdown';
+export {
+  NgbDropdown,
+  NgbDropdownAnchor,
+  NgbDropdownToggle,
+  NgbDropdownMenu,
+  NgbDropdownItem,
+  NgbNavbar
+} from './dropdown';
 export {NgbDropdownConfig} from './dropdown-config';
 
 const NGB_DROPDOWN_DIRECTIVES =

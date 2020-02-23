@@ -1,6 +1,5 @@
 import {Positioning} from './positioning';
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {createGenericTestComponent} from 'src/test/common';
+import {TestBed} from '@angular/core/testing';
 import {Component} from '@angular/core';
 
 describe('Positioning', () => {
@@ -27,13 +26,11 @@ describe('Positioning', () => {
     expect(transform).toBe(`translate(${left}px, ${top}px)`);
   }
 
-  let element, targetElement, positioning, documentMargin, bodyMargin, bodyHeight, bodyWidth;
+  let element, targetElement, positioning, documentMargin, bodyMargin;
   beforeAll(() => {
     positioning = new Positioning();
     documentMargin = document.documentElement.style.margin;
     bodyMargin = document.body.style.margin;
-    bodyHeight = document.body.style.height;
-    bodyWidth = document.body.style.width;
 
     document.documentElement.style.margin = '0';
     document.body.style.margin = '0';

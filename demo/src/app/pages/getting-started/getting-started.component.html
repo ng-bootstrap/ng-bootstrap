@@ -46,8 +46,19 @@
         <td>8.0.0</td>
         <td>4.3.1</td>
       </tr>
+      <tr>
+        <th scope="row">6.x.x</th>
+        <td>9.0.0</td>
+        <td>4.4.1</td>
+      </tr>
     </tbody>
   </table>
+
+  <p>
+    If you're using Angular &ge; 9.0.0 and ng-bootstrap &ge; 6.0.0, you might also need to install the <code>@angular/localize</code>
+    polyfill with <code>ng add @angular/localize</code>. See more details in
+    <a href="https://angular.io/guide/i18n#setting-up-localization-with-the-angular-cli" target="_blank">the official documentation</a>.
+  </p>
 
   <ngb-alert type="warning" [dismissible]="false">
     <p>Should I add <b>bootstrap.js</b> or <b>bootstrap.min.js</b> to my project?</p>
@@ -59,7 +70,7 @@
 
   <p>We strive to support the same browsers and versions as supported by both Bootstrap 4 and Angular, whichever is more restrictive. Check browser support notes for
     <a href="https://angular.io/guide/browser-support" target="_blank">Angular</a> and
-    <a href="https://getbootstrap.com/docs/4.0/getting-started/browsers-devices/" target="_blank">Bootstrap</a>.
+    <a href="https://getbootstrap.com/docs/4.4/getting-started/browsers-devices/" target="_blank">Bootstrap</a>.
   </p>
   <p>Our code is automatically tested on all the supported browsers.</p>
 
@@ -77,22 +88,14 @@
     The resulting bundle will be smaller in this case.</p>
 
   <ngbd-code [snippet]="codeOther"></ngbd-code>
-  <br>
-
-  <h4>
-    SystemJS
-  </h4>
-  <p>
-    If you are using SystemJS, you should also adjust your configuration to point to the UMD bundle.
-  </p>
-  <p>
-    In your SystemJS config file, <code>map</code> needs to tell the System loader where to look for <code>ng-bootstrap</code>:
-  </p>
-
-  <ngbd-code [snippet]="codeSystem"></ngbd-code>
-  <br>
 
   <ngbd-page-header title="Internationalization" fragment="i18n"></ngbd-page-header>
+
+  <ngb-alert type="warning" [dismissible]="false">
+    We're using standard Angular i18n in ng-bootstrap templates. Since Angular 9 (and ng-bootstrap 6) you might have to
+    add the additional <code>@angular/localize</code> polyfill to your CLI project. See more details in
+    <a href="https://angular.io/guide/i18n#setting-up-localization-with-the-angular-cli" target="_blank">the official documentation</a>.
+  </ngb-alert>
 
   <p>
     Some components contain static English text or symbols that you might want to internationalize. Some of them appear

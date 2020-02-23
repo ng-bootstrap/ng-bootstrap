@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
+import { environment } from '../../../../environments/environment';
+
 import {Snippet} from '../../../shared/code/snippet';
 import { NgbdDemoList } from '../../shared';
 import { NgbdOverview } from '../../shared/overview';
@@ -43,7 +45,7 @@ export class NgbdDatepickerOverviewComponent {
       lang: 'html',
       code: `
         <!-- inline -->
-        <ngb-datepicker (select)="onDateSelect($event)"></ngb-datepicker>
+        <ngb-datepicker (dateSelect)="onDateSelect($event)"></ngb-datepicker>
 
         <!-- in the popup -->
         <input type="text" ngbDatepicker (dateSelect)="onDateSelect($event)"/>
@@ -117,6 +119,21 @@ export class NgbdDatepickerOverviewComponent {
         <ngbDatepicker [dayTemplate]=“t”/>
       `,
     }),
+    contentTemplate: Snippet({
+      lang: 'html',
+      code: `
+        <ngb-datepicker #datepicker
+                        [startDate]="{month: 8, year: 2016}"
+                        [displayMonths]="2">
+          <ng-template ngbDatepickerContent>
+            <div *ngFor="let monthStruct of datepicker.state.months">
+              <span>{{i18n.getMonthFullName(monthStruct.month)}} {{monthStruct.year}}</span>
+              <ngb-datepicker-month-view [month]="monthStruct"></ngb-datepicker-month-view>
+            </div>
+          </ng-template>
+        </ngb-datepicker>
+      `,
+    }),
     todayHTML: Snippet({
       lang: 'html',
       code: `
@@ -177,6 +194,8 @@ export class NgbdDatepickerOverviewComponent {
       `,
     }),
   };
+
+  bootstrapVersion = environment.bootstrap;
 
   sections: NgbdOverview = {};
 

@@ -15,6 +15,8 @@ import {NgbTimepickerConfig} from './timepicker-config';
 import {NgbTimeAdapter} from './ngb-time-adapter';
 import {NgbTimepickerI18n} from './timepicker-i18n';
 
+const FILTER_REGEX = /[^0-9]/g;
+
 const NGB_TIMEPICKER_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => NgbTimepicker),
@@ -38,10 +40,12 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
             <span class="chevron ngb-tp-chevron"></span>
             <span class="sr-only" i18n="@@ngb.timepicker.increment-hours">Increment hours</span>
           </button>
-          <input type="text" class="ngb-tp-input form-control" [class.form-control-sm]="isSmallSize" [class.form-control-lg]="isLargeSize"
-            maxlength="2" placeholder="HH" i18n-placeholder="@@ngb.timepicker.HH"
+          <input type="text" class="ngb-tp-input form-control" [class.form-control-sm]="isSmallSize"
+            [class.form-control-lg]="isLargeSize"
+            maxlength="2" inputmode="numeric" placeholder="HH" i18n-placeholder="@@ngb.timepicker.HH"
             [value]="formatHour(model?.hour)" (change)="updateHour($event.target.value)"
             [readOnly]="readonlyInputs" [disabled]="disabled" aria-label="Hours" i18n-aria-label="@@ngb.timepicker.hours"
+            (input)="formatInput($event.target)"
             (keydown.ArrowUp)="changeHour(hourStep); $event.preventDefault()"
             (keydown.ArrowDown)="changeHour(-hourStep); $event.preventDefault()">
           <button *ngIf="spinners" tabindex="-1" type="button" (click)="changeHour(-hourStep)"
@@ -60,9 +64,10 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
             <span class="sr-only" i18n="@@ngb.timepicker.increment-minutes">Increment minutes</span>
           </button>
           <input type="text" class="ngb-tp-input form-control" [class.form-control-sm]="isSmallSize" [class.form-control-lg]="isLargeSize"
-            maxlength="2" placeholder="MM" i18n-placeholder="@@ngb.timepicker.MM"
+            maxlength="2" inputmode="numeric" placeholder="MM" i18n-placeholder="@@ngb.timepicker.MM"
             [value]="formatMinSec(model?.minute)" (change)="updateMinute($event.target.value)"
             [readOnly]="readonlyInputs" [disabled]="disabled" aria-label="Minutes" i18n-aria-label="@@ngb.timepicker.minutes"
+            (input)="formatInput($event.target)"
             (keydown.ArrowUp)="changeMinute(minuteStep); $event.preventDefault()"
             (keydown.ArrowDown)="changeMinute(-minuteStep); $event.preventDefault()">
           <button *ngIf="spinners" tabindex="-1" type="button" (click)="changeMinute(-minuteStep)"
@@ -81,9 +86,10 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
             <span class="sr-only" i18n="@@ngb.timepicker.increment-seconds">Increment seconds</span>
           </button>
           <input type="text" class="ngb-tp-input form-control" [class.form-control-sm]="isSmallSize" [class.form-control-lg]="isLargeSize"
-            maxlength="2" placeholder="SS" i18n-placeholder="@@ngb.timepicker.SS"
+            maxlength="2" inputmode="numeric" placeholder="SS" i18n-placeholder="@@ngb.timepicker.SS"
             [value]="formatMinSec(model?.second)" (change)="updateSecond($event.target.value)"
             [readOnly]="readonlyInputs" [disabled]="disabled" aria-label="Seconds" i18n-aria-label="@@ngb.timepicker.seconds"
+            (input)="formatInput($event.target)"
             (keydown.ArrowUp)="changeSecond(secondStep); $event.preventDefault()"
             (keydown.ArrowDown)="changeSecond(-secondStep); $event.preventDefault()">
           <button *ngIf="spinners" tabindex="-1" type="button" (click)="changeSecond(-secondStep)"
@@ -244,6 +250,8 @@ export class NgbTimepicker implements ControlValueAccessor,
       this.changeHour(12);
     }
   }
+
+  formatInput(input: HTMLInputElement) { input.value = input.value.replace(FILTER_REGEX, ''); }
 
   formatHour(value: number) {
     if (isNumber(value)) {

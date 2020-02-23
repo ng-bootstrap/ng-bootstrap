@@ -135,7 +135,7 @@ export class NgbTypeahead implements ControlValueAccessor,
    *
    * Note that the `this` argument is `undefined` so you need to explicitly bind it to a desired "this" target.
    */
-  @Input() ngbTypeahead: (text: Observable<string>) => Observable<any[]>;
+  @Input() ngbTypeahead: (text: Observable<string>) => Observable<readonly any[]>;
 
   /**
    * The function that converts an item from the result list to a `string` to display in the popup.
@@ -189,10 +189,10 @@ export class NgbTypeahead implements ControlValueAccessor,
   private _onChange = (_: any) => {};
 
   constructor(
-      private _elementRef: ElementRef<HTMLInputElement>, private _viewContainerRef: ViewContainerRef,
-      private _renderer: Renderer2, private _injector: Injector, componentFactoryResolver: ComponentFactoryResolver,
+      private _elementRef: ElementRef<HTMLInputElement>, viewContainerRef: ViewContainerRef,
+      private _renderer: Renderer2, injector: Injector, componentFactoryResolver: ComponentFactoryResolver,
       config: NgbTypeaheadConfig, ngZone: NgZone, private _live: Live, @Inject(DOCUMENT) private _document: any,
-      private _ngZone: NgZone, private _changeDetector: ChangeDetectorRef, private _applicationRef: ApplicationRef) {
+      private _ngZone: NgZone, private _changeDetector: ChangeDetectorRef, applicationRef: ApplicationRef) {
     this.container = config.container;
     this.editable = config.editable;
     this.focusFirst = config.focusFirst;
@@ -205,7 +205,7 @@ export class NgbTypeahead implements ControlValueAccessor,
     this._resubscribeTypeahead = new BehaviorSubject(null);
 
     this._popupService = new PopupService<NgbTypeaheadWindow>(
-        NgbTypeaheadWindow, _injector, _viewContainerRef, _renderer, componentFactoryResolver, _applicationRef);
+        NgbTypeaheadWindow, injector, viewContainerRef, _renderer, componentFactoryResolver, applicationRef);
 
     this._zoneSubscription = ngZone.onStable.subscribe(() => {
       if (this.isPopupOpen()) {
@@ -219,17 +219,10 @@ export class NgbTypeahead implements ControlValueAccessor,
   ngOnInit(): void {
     const inputValues$ = this._valueChanges.pipe(tap(value => {
       this._inputValueBackup = this.showHint ? value : null;
-      if (this.editable) {
-        this._onChange(value);
-      }
+      this._onChange(this.editable ? value : undefined);
     }));
     const results$ = inputValues$.pipe(this.ngbTypeahead);
-    const processedResults$ = results$.pipe(tap(() => {
-      if (!this.editable) {
-        this._onChange(undefined);
-      }
-    }));
-    const userInput$ = this._resubscribeTypeahead.pipe(switchMap(() => processedResults$));
+    const userInput$ = this._resubscribeTypeahead.pipe(switchMap(() => results$));
     this._subscription = this._subscribeToUserInput(userInput$);
   }
 
@@ -374,7 +367,7 @@ export class NgbTypeahead implements ControlValueAccessor,
     this._renderer.setProperty(this._elementRef.nativeElement, 'value', toString(value));
   }
 
-  private _subscribeToUserInput(userInput$: Observable<any[]>): Subscription {
+  private _subscribeToUserInput(userInput$: Observable<readonly any[]>): Subscription {
     return userInput$.subscribe((results) => {
       if (!results || results.length === 0) {
         this._closePopup();

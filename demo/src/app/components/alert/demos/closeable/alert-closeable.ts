@@ -1,4 +1,4 @@
-import { Input, Component } from '@angular/core';
+import { Component } from '@angular/core';
 
 interface Alert {
   type: string;

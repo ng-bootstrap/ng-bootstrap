@@ -175,7 +175,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
       private _elementRef: ElementRef<HTMLElement>, private _renderer: Renderer2, injector: Injector,
       componentFactoryResolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef, config: NgbPopoverConfig,
       private _ngZone: NgZone, @Inject(DOCUMENT) private _document: any, private _changeDetector: ChangeDetectorRef,
-      private _applicationRef: ApplicationRef) {
+      applicationRef: ApplicationRef) {
     this.autoClose = config.autoClose;
     this.placement = config.placement;
     this.triggers = config.triggers;
@@ -185,7 +185,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
     this.openDelay = config.openDelay;
     this.closeDelay = config.closeDelay;
     this._popupService = new PopupService<NgbPopoverWindow>(
-        NgbPopoverWindow, injector, viewContainerRef, _renderer, componentFactoryResolver, _applicationRef);
+        NgbPopoverWindow, injector, viewContainerRef, _renderer, componentFactoryResolver, applicationRef);
 
     this._zoneSubscription = _ngZone.onStable.subscribe(() => {
       if (this._windowRef) {
@@ -274,9 +274,12 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
         this.close.bind(this), +this.openDelay, +this.closeDelay);
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges({ngbPopover, popoverTitle, disablePopover, popoverClass}: SimpleChanges) {
+    if (popoverClass && this.isOpen()) {
+      this._windowRef.instance.popoverClass = popoverClass.currentValue;
+    }
     // close popover if title and content become empty, or disablePopover set to true
-    if ((changes['ngbPopover'] || changes['popoverTitle'] || changes['disablePopover']) && this._isDisabled()) {
+    if ((ngbPopover || popoverTitle || disablePopover) && this._isDisabled()) {
       this.close();
     }
   }

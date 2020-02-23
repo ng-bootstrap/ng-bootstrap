@@ -9,7 +9,8 @@ import {
   Optional,
   Output,
   QueryList,
-  TemplateRef
+  TemplateRef,
+  ViewEncapsulation
 } from '@angular/core';
 
 import {isString} from '../util/util';
@@ -96,6 +97,13 @@ export class NgbPanel implements AfterContentChecked {
    */
   @Input() type: string;
 
+  /**
+   * An optional class applied to the accordion card element that wraps both panel title and content.
+   *
+   * @since 5.3.0
+   */
+  @Input() cardClass: string;
+
   titleTpl: NgbPanelTitle | null;
   headerTpl: NgbPanelHeader | null;
   contentTpl: NgbPanelContent | null;
@@ -146,6 +154,7 @@ export interface NgbPanelChangeEvent {
 @Component({
   selector: 'ngb-accordion',
   exportAs: 'ngbAccordion',
+  encapsulation: ViewEncapsulation.None,
   host: {'class': 'accordion', 'role': 'tablist', '[attr.aria-multiselectable]': '!closeOtherPanels'},
   template: `
     <ng-template #t ngbPanelHeader let-panel>
@@ -154,7 +163,7 @@ export interface NgbPanelChangeEvent {
       </button>
     </ng-template>
     <ng-template ngFor let-panel [ngForOf]="panels">
-      <div class="card">
+      <div [class]="'card ' + (panel.cardClass || '')">
         <div role="tab" id="{{panel.id}}-header" [class]="'card-header ' + (panel.type ? 'bg-'+panel.type: type ? 'bg-'+type : '')">
           <ng-template [ngTemplateOutlet]="panel.headerTpl?.templateRef || t"
                        [ngTemplateOutletContext]="{$implicit: panel, opened: panel.isOpen}"></ng-template>
@@ -178,7 +187,7 @@ export class NgbAccordion implements AfterContentChecked {
    * For subsequent changes use methods like `expand()`, `collapse()`, etc. and
    * the `(panelChange)` event.
    */
-  @Input() activeIds: string | string[] = [];
+  @Input() activeIds: string | readonly string[] = [];
 
   /**
    *  If `true`, only one panel could be opened at a time.

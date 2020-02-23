@@ -1,25 +1,20 @@
-import {TestBed, ComponentFixture, inject, fakeAsync, tick} from '@angular/core/testing';
-import {createGenericTestComponent, createKeyEvent, triggerEvent} from '../test/common';
+import {TestBed, ComponentFixture, inject} from '@angular/core/testing';
+import {createGenericTestComponent, triggerEvent} from '../test/common';
 
 import {By} from '@angular/platform-browser';
 import {
-  Component,
-  ViewChild,
+  AfterViewInit,
   ChangeDetectionStrategy,
+  Component,
   TemplateRef,
-  ViewContainerRef,
-  AfterViewInit
+  ViewChild,
+  ViewContainerRef
 } from '@angular/core';
 
-import {Key} from '../util/key';
 
 import {NgbTooltipModule} from './tooltip.module';
 import {NgbTooltipWindow, NgbTooltip} from './tooltip';
 import {NgbTooltipConfig} from './tooltip-config';
-
-function dispatchEscapeKeyUpEvent() {
-  document.dispatchEvent(createKeyEvent(Key.Escape));
-}
 
 const createTestComponent =
     (html: string) => <ComponentFixture<TestComponent>>createGenericTestComponent(html, TestComponent);
@@ -59,7 +54,6 @@ describe('ngb-tooltip-window', () => {
 
     expect(fixture.nativeElement).toHaveCssClass('my-custom-class');
   });
-
 });
 
 describe('ngb-tooltip', () => {
@@ -163,6 +157,21 @@ describe('ngb-tooltip', () => {
       fixture.detectChanges();
       expect(getWindow(fixture.nativeElement)).toBeNull();
       expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
+    });
+
+    it('should propagate tooltipClass changes to the window', () => {
+      const fixture = createTestComponent(`<div ngbTooltip="Great tip!" [tooltipClass]="tooltipClass"></div>`);
+      const directive = fixture.debugElement.query(By.directive(NgbTooltip));
+
+      triggerEvent(directive, 'mouseenter');
+      fixture.detectChanges();
+      const windowEl = getWindow(fixture.nativeElement);
+      expect(windowEl).toHaveCssClass('my-tooltip-class');
+
+      fixture.componentInstance.tooltipClass = 'my-tooltip-class-2';
+      fixture.detectChanges();
+      expect(windowEl).not.toHaveCssClass('my-tooltip-class');
+      expect(windowEl).toHaveCssClass('my-tooltip-class-2');
     });
 
     it('should not open a tooltip if content is falsy', () => {
@@ -638,6 +647,7 @@ describe('ngb-tooltip', () => {
 export class TestComponent {
   name = 'World';
   show = true;
+  tooltipClass = 'my-tooltip-class';
 
   @ViewChild(NgbTooltip, {static: true}) tooltip: NgbTooltip;
 

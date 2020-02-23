@@ -11,6 +11,7 @@ export class NgbProgressbarConfig {
   max = 100;
   animated = false;
   striped = false;
+  textType: string;
   type: string;
   showValue = false;
   height: string;

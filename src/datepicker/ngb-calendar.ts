@@ -75,7 +75,7 @@ export abstract class NgbCalendar {
   /**
    * Returns the week number for a given week.
    */
-  abstract getWeekNumber(week: NgbDate[], firstDayOfWeek: number): number;
+  abstract getWeekNumber(week: readonly NgbDate[], firstDayOfWeek: number): number;
 
   /**
    * Returns the today's date.
@@ -98,18 +98,33 @@ export class NgbCalendarGregorian extends NgbCalendar {
 
   getNext(date: NgbDate, period: NgbPeriod = 'd', number = 1) {
     let jsDate = toJSDate(date);
+    let checkMonth = true;
+    let expectedMonth = jsDate.getMonth();
 
     switch (period) {
       case 'y':
-        return new NgbDate(date.year + number, 1, 1);
+        jsDate.setFullYear(jsDate.getFullYear() + number);
+        break;
       case 'm':
-        jsDate = new Date(date.year, date.month + number - 1, 1, 12);
+        expectedMonth += number;
+        jsDate.setMonth(expectedMonth);
+        expectedMonth = expectedMonth % 12;
+        if (expectedMonth < 0) {
+          expectedMonth = expectedMonth + 12;
+        }
         break;
       case 'd':
         jsDate.setDate(jsDate.getDate() + number);
+        checkMonth = false;
         break;
       default:
         return date;
+    }
+
+    if (checkMonth && jsDate.getMonth() !== expectedMonth) {
+      // this means the destination month has less days than the initial month
+      // let's go back to the end of the previous month:
+      jsDate.setDate(0);
     }
 
     return fromJSDate(jsDate);
@@ -124,7 +139,7 @@ export class NgbCalendarGregorian extends NgbCalendar {
     return day === 0 ? 7 : day;
   }
 
-  getWeekNumber(week: NgbDate[], firstDayOfWeek: number) {
+  getWeekNumber(week: readonly NgbDate[], firstDayOfWeek: number) {
     // in JS Date Sun=0, in ISO 8601 Sun=7
     if (firstDayOfWeek === 7) {
       firstDayOfWeek = 0;
