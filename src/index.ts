@@ -147,9 +147,9 @@ export {Placement} from './util/positioning';
 
 
 const NGB_MODULES = [
-  NgbAccordionModule, NgbAlertModule, NgbButtonsModule, NgbCarouselModule, NgbCheckboxModule, NgbCollapseModule, NgbDatepickerModule,
-  NgbDropdownModule, NgbModalModule, NgbNavModule, NgbPaginationModule, NgbPopoverModule, NgbProgressbarModule,
-  NgbRatingModule, NgbTimepickerModule, NgbToastModule, NgbTooltipModule, NgbTypeaheadModule,
+  NgbAccordionModule, NgbAlertModule, NgbButtonsModule, NgbCarouselModule, NgbCheckboxModule, NgbCollapseModule,
+  NgbDatepickerModule, NgbDropdownModule, NgbModalModule, NgbNavModule, NgbPaginationModule, NgbPopoverModule,
+  NgbProgressbarModule, NgbRatingModule, NgbTimepickerModule, NgbToastModule, NgbTooltipModule, NgbTypeaheadModule,
   // tslint:disable-next-line:deprecation
   NgbTabsetModule
 ];
