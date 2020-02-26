@@ -42,7 +42,7 @@ let nextId = 0;
     <div class="arrow"></div>
     <h3 class="popover-header" *ngIf="title != null">
       <ng-template #simpleTitle>{{title}}</ng-template>
-      <ng-template [ngTemplateOutlet]="isTitleTemplate() ? title : simpleTitle" [ngTemplateOutletContext]="context"></ng-template>
+      <ng-template [ngTemplateOutlet]="isTitleTemplate() ? $any(title) : simpleTitle" [ngTemplateOutletContext]="context"></ng-template>
     </h3>
     <div class="popover-body"><ng-content></ng-content></div>`,
   styleUrls: ['./popover.scss']
@@ -61,6 +61,8 @@ export class NgbPopoverWindow {
  */
 @Directive({selector: '[ngbPopover]', exportAs: 'ngbPopover'})
 export class NgbPopover implements OnInit, OnDestroy, OnChanges {
+  static ngAcceptInputType_autoClose: boolean | string;
+
   /**
    * Indicates whether the popover should be closed on `Escape` key and inside/outside clicks:
    *

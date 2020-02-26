@@ -135,6 +135,9 @@ export interface NgbTabChangeEvent {
   `
 })
 export class NgbTabset implements AfterContentChecked {
+  static ngAcceptInputType_justify: string;
+  static ngAcceptInputType_orientation: string;
+
   justifyClass: string;
 
   @ContentChildren(NgbTab) tabs: QueryList<NgbTab>;

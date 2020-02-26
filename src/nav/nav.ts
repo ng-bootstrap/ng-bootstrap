@@ -138,6 +138,9 @@ export class NgbNavItem implements AfterContentChecked, OnInit {
   }
 })
 export class NgbNav implements AfterContentInit {
+  static ngAcceptInputType_orientation: string;
+  static ngAcceptInputType_roles: boolean | string;
+
   /**
    * The id of the nav that should be active
    *

@@ -28,6 +28,8 @@ const NGB_CHECKBOX_VALUE_ACCESSOR = {
   providers: [NGB_CHECKBOX_VALUE_ACCESSOR]
 })
 export class NgbCheckBox implements ControlValueAccessor {
+  static ngAcceptInputType_disabled: boolean | '';
+
   checked;
 
   /**

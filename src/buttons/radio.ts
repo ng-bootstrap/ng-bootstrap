@@ -85,6 +85,8 @@ export class NgbRadioGroup implements ControlValueAccessor {
   }
 })
 export class NgbRadio implements OnDestroy {
+  static ngAcceptInputType_disabled: boolean | '';
+
   private _checked: boolean;
   private _disabled: boolean;
   private _value: any = null;
