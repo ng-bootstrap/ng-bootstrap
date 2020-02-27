@@ -102,8 +102,8 @@ export class NgbdDatepickerOverviewDemoComponent {
     return holiday ? holiday.text : '';
   }
 
-  markDisabled(date: NgbDate, current: {month: number}) {
-    return this.isHoliday(date) || (this.isWeekend(date) && date.month === current.month);
+  markDisabled(date: NgbDate, current: {year: number, month: number}): boolean {
+    return this.isHoliday(date) !== '' || (this.isWeekend(date) && date.month === current.month);
   }
 
   onDateSelection(date: NgbDate) {

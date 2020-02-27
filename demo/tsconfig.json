@@ -17,5 +17,8 @@
   "exclude": [
     "src/**/*.po.ts",
     "src/**/*.e2e-spec.ts"
-  ]
+  ],
+  "angularCompilerOptions": {
+    "strictTemplates": true
+  }
 }
