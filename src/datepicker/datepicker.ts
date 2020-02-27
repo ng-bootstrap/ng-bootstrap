@@ -168,6 +168,10 @@ export class NgbDatepickerContent {
 })
 export class NgbDatepicker implements OnDestroy,
     OnChanges, OnInit, ControlValueAccessor {
+  static ngAcceptInputType_autoClose: boolean | string;
+  static ngAcceptInputType_navigation: string;
+  static ngAcceptInputType_outsideDays: string;
+
   model: DatepickerViewModel;
 
   @ViewChild('defaultDayTemplate', {static: true}) private _defaultDayTemplate: TemplateRef<DayTemplateContext>;

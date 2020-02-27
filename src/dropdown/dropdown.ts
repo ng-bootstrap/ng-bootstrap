@@ -39,6 +39,8 @@ export class NgbNavbar {
  */
 @Directive({selector: '[ngbDropdownItem]', host: {'class': 'dropdown-item', '[class.disabled]': 'disabled'}})
 export class NgbDropdownItem {
+  static ngAcceptInputType_disabled: boolean | '';
+
   private _disabled = false;
 
   @Input()
@@ -130,6 +132,9 @@ export class NgbDropdownToggle extends NgbDropdownAnchor {
  */
 @Directive({selector: '[ngbDropdown]', exportAs: 'ngbDropdown', host: {'[class.show]': 'isOpen()'}})
 export class NgbDropdown implements AfterContentInit, OnDestroy {
+  static ngAcceptInputType_autoClose: boolean | string;
+  static ngAcceptInputType_display: string;
+
   private _closed$ = new Subject<void>();
   private _zoneSubscription: Subscription;
   private _bodyContainer: HTMLElement;

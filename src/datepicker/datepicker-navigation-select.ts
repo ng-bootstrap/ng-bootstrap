@@ -25,7 +25,7 @@ import {NgbDatepickerI18n} from './datepicker-i18n';
       class="custom-select"
       i18n-aria-label="@@ngb.datepicker.select-month" aria-label="Select month"
       i18n-title="@@ngb.datepicker.select-month" title="Select month"
-      (change)="changeMonth($event.target.value)">
+      (change)="changeMonth($any($event).target.value)">
         <option *ngFor="let m of months" [attr.aria-label]="i18n.getMonthFullName(m, date?.year)"
                 [value]="m">{{ i18n.getMonthShortName(m, date?.year) }}</option>
     </select><select #year
@@ -33,7 +33,7 @@ import {NgbDatepickerI18n} from './datepicker-i18n';
       class="custom-select"
       i18n-aria-label="@@ngb.datepicker.select-year" aria-label="Select year"
       i18n-title="@@ngb.datepicker.select-year" title="Select year"
-      (change)="changeYear($event.target.value)">
+      (change)="changeYear($any($event).target.value)">
         <option *ngFor="let y of years" [value]="y">{{ i18n.getYearNumerals(y) }}</option>
     </select>
   `

@@ -69,6 +69,11 @@ const NGB_DATEPICKER_VALIDATOR = {
 })
 export class NgbInputDatepicker implements OnChanges,
     OnDestroy, ControlValueAccessor, Validator {
+  static ngAcceptInputType_autoClose: boolean | string;
+  static ngAcceptInputType_disabled: boolean | '';
+  static ngAcceptInputType_navigation: string;
+  static ngAcceptInputType_outsideDays: string;
+
   private _cRef: ComponentRef<NgbDatepicker> = null;
   private _disabled = false;
   private _elWithFocus = null;

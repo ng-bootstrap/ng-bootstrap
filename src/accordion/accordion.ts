@@ -342,6 +342,8 @@ export class NgbAccordion implements AfterContentChecked {
   }
 })
 export class NgbPanelToggle {
+  static ngAcceptInputType_ngbPanelToggle: NgbPanel | '';
+
   @Input()
   set ngbPanelToggle(panel: NgbPanel) {
     if (panel) {

@@ -51,6 +51,8 @@ export class NgbTooltipWindow {
  */
 @Directive({selector: '[ngbTooltip]', exportAs: 'ngbTooltip'})
 export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
+  static ngAcceptInputType_autoClose: boolean | string;
+
   /**
    * Indicates whether the tooltip should be closed on `Escape` key and inside/outside clicks:
    *

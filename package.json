@@ -10,7 +10,7 @@
   "scripts": {
     "preinstall": "node misc/preinstall.js",
     "postinstall": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points",
-    "build": "yarn ngb:build && yarn demo:build",
+    "build": "yarn ngb:build-ivy && yarn ngb:build && yarn demo:build",
     "test": "yarn check-format && yarn ngb:lint && yarn ngb:test",
     "tdd": "yarn ngb:tdd",
     "e2e": "yarn e2e-app:lint && yarn ngb:e2e && yarn demo:e2e",
@@ -32,6 +32,7 @@
     "ngb:tdd": "ng test ng-bootstrap --source-map false",
     "ngb:e2e": "ng e2e e2e-app",
     "ngb:e2e-noserve": "ng e2e e2e-app -c noserve",
+    "ngb:build-ivy": "ng build ng-bootstrap",
     "ngb:build": "ng build ng-bootstrap --prod && yarn ngb:static",
     "demo:serve": "ng serve demo --host 0.0.0.0",
     "demo:docs": "ts-node --project misc/tsconfig.json misc/generate-docs.ts",
