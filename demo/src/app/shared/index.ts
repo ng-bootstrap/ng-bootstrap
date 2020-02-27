@@ -10,7 +10,7 @@ import {CodeHighlightService} from './code/code-highlight.service';
 import {NgbdCodeComponent} from './code/code.component';
 import {ComponentWrapper} from './component-wrapper/component-wrapper.component';
 import {NgbdFragment} from './fragment/fragment.directive';
-import {NgbdIcons} from './icons/icons.component';
+import {NgbdIcons, NgbdIcon} from './icons/icons.component';
 import {NgbdPageHeaderComponent} from './page-wrapper/page-header.component';
 import {PageWrapper} from './page-wrapper/page-wrapper.component';
 import {SideNavComponent} from './side-nav/side-nav.component';
@@ -21,10 +21,10 @@ export {componentsList} from './side-nav/side-nav.component';
   imports: [CommonModule, RouterModule, NgbModule],
   exports: [
     CommonModule, RouterModule, ComponentWrapper, PageWrapper, NgbdPageHeaderComponent, NgbdFragment, SideNavComponent,
-    NgbdCodeComponent, NgbModule, FormsModule, ReactiveFormsModule, HttpClientModule, NgbdIcons
+    NgbdCodeComponent, NgbModule, FormsModule, ReactiveFormsModule, HttpClientModule, NgbdIcons, NgbdIcon
   ],
   declarations: [
-    ComponentWrapper, PageWrapper, NgbdPageHeaderComponent, NgbdFragment, SideNavComponent, NgbdCodeComponent, NgbdIcons
+    ComponentWrapper, PageWrapper, NgbdPageHeaderComponent, NgbdFragment, SideNavComponent, NgbdCodeComponent, NgbdIcons, NgbdIcon
   ],
   providers: [Analytics, CodeHighlightService]
 })

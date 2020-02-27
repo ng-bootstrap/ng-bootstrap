@@ -6,7 +6,7 @@
       fragment="{{apiDocs.className}}" ngbdFragment
       title="Anchor link to: {{apiDocs.className}}"
     >
-      <img src="img/link-symbol.svg" alt="Anchor link to: {{apiDocs.className}}"/>
+      <svg:svg ngbdIcon="link" aria-hidden="true" />
     </a>
     <span>
       {{apiDocs.className}}<span class="text-muted font-weight-light" *ngIf="apiDocs.typeParameter">&lt;{{apiDocs.typeParameter}}&gt;</span>
@@ -18,7 +18,7 @@
       target="_blank"
       title="Link to Github: {{apiDocs.className}}"
     >
-      <img src="img/github.svg" alt="Link to Github {{apiDocs.className}}"/>
+      <svg:svg ngbdIcon="github" aria-hidden="true" />
     </a>
   </h3>
   <ngbd-api-docs-badge [type]="apiDocs.type" [deprecated]="apiDocs.deprecated" [since]="apiDocs.since"></ngbd-api-docs-badge>

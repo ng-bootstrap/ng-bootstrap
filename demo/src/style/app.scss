@@ -275,9 +275,8 @@ div.component-demo {
       fill: #28a745;
     }
 
-    .stackblitz .stackblitz-icon {
-      height: 1.2rem;
-      margin-left: -0.5rem;
+    .stackblitz-icon {
+      vertical-align: middle;
     }
 
     &:hover {
