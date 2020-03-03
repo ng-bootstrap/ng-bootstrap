@@ -157,6 +157,44 @@ describe('ngb-highlight', () => {
     expect(highlightHtml(fixture))
         .toBe('1<span class="ngb-highlight">123</span>45<span class="ngb-highlight">678</span>9');
   });
+
+  if (typeof String.prototype.normalize !== 'undefined') {
+    it('should highlight without sensitivity to accents in terms or result when accentSensitive is false ' +
+           'and String.prototype.normalize is defined',
+       () => {
+         const fixture = createTestComponent(
+             `<ngb-highlight [result]="'Il fait beau en été. Moins à Noël.'" ` +
+             `[term]="['eté', 'a', 'noel']" [accentSensitive]="false"></ngb-highlight>`);
+
+         expect(highlightHtml(fixture))
+             .toBe(
+                 'Il f<span class="ngb-highlight">a</span>it be<span class="ngb-highlight">a</span>u en ' +
+                 '<span class="ngb-highlight">été</span>. Moins <span class="ngb-highlight">à</span> ' +
+                 '<span class="ngb-highlight">Noël</span>.');
+       });
+  } else {
+    it('should highlight with sensitivity to accents in terms or result when accentSensitive is false ' +
+           'and String.prototype.normalize is undefined',
+       () => {
+         const fixture = createTestComponent(
+             `<ngb-highlight [result]="'Il fait beau en été. Moins à Noël.'" ` +
+             `[term]="['eté', 'a', 'noel']" [accentSensitive]="false"></ngb-highlight>`);
+
+         expect(highlightHtml(fixture))
+             .toBe(
+                 'Il f<span class="ngb-highlight">a</span>it be<span class="ngb-highlight">a</span>u en été. Moins à Noël.');
+       });
+  }
+
+  it('should highlight with sensitivity to accents in terms or result when accentSensitive is true', () => {
+    const fixture = createTestComponent(
+        `<ngb-highlight [result]="'Il fait beau en été. Moins à Noël.'" ` +
+        `[term]="['eté', 'a', 'noel']"></ngb-highlight>`);
+
+    expect(highlightHtml(fixture))
+        .toBe(
+            'Il f<span class="ngb-highlight">a</span>it be<span class="ngb-highlight">a</span>u en été. Moins à Noël.');
+  });
 });
 
 

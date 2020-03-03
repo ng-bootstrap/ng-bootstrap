@@ -1,4 +1,4 @@
-import {toInteger, toString, getValueInRange, isInteger, isString, hasClassName, closest} from './util';
+import {toInteger, toString, getValueInRange, isInteger, isString, hasClassName, removeAccents, closest} from './util';
 
 describe('util', () => {
 
@@ -141,4 +141,17 @@ describe('util', () => {
     });
   });
 
+  if (typeof String.prototype.normalize !== 'undefined') {
+    describe('removeAccents', () => {
+      it('should remove accents from string correctly when String.prototype.normalize is defined', () => {
+        expect(removeAccents('àâäéèêëîïôöûüùçÂÊÎÔÛÄËÏÖÜÀ "^" "¨" no accent'))
+            .toBe('aaaeeeeiioouuucAEIOUAEIOUA "^" "¨" no accent');
+      });
+    });
+  } else {
+    describe('removeAccents', () => {
+      it('should throw an error when String.prototype.normalize is undefined',
+         () => { expect(function() { removeAccents('àâäéèêëîïôöûüùçÂÊÎÔÛÄËÏÖÜÀ "^" "¨" no accent'); }).toThrow(); });
+    });
+  }
 });
