@@ -6,10 +6,10 @@ import {
   forwardRef,
   Input,
   OnChanges,
-  QueryList,
+  OnInit,
   SimpleChanges,
   ViewEncapsulation,
-  ViewChildren
+  ViewChild
 } from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
@@ -27,12 +27,94 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
   multi: true
 };
 
-/**
- * A directive that selects the inputs of timepicker.
- */
 @Directive({selector: 'input.ngb-tp-input'})
 export class NgbTpInput {
   constructor(public elementRef: ElementRef<HTMLInputElement>) {}
+}
+
+@Component({
+  selector: 'ngb-timepicker-unit',
+  encapsulation: ViewEncapsulation.None,
+  styleUrls: ['./timepicker.scss'],
+  template: `
+    <div [class]="'ngb-tp-input-container ngb-tp-' + unit">
+      <button *ngIf="timepicker.spinners"
+              type="button"
+              tabindex="-1"
+              class="btn btn-link"
+              [class.btn-sm]="timepicker.isSmallSize"
+              [class.btn-lg]="timepicker.isLargeSize"
+              [class.disabled]="timepicker.disabled"
+              [disabled]="timepicker.disabled"
+              (click)="onChange()">
+        <span class="chevron ngb-tp-chevron"></span>
+        <span class="sr-only"
+              i18n="@@ngb.timepicker.increment">{{i18nIncrement}}</span>
+      </button>
+      <input type="text"
+             class="ngb-tp-input form-control"
+             maxlength="2"
+             inputmode="numeric"
+             placeholder="HH"
+             [attr.aria-label]="ariaLabel"
+             i18n-placeholder="@@ngb.timepicker.HH"
+             i18n-aria-label="{{i18nAriaLabel}}"
+             [readOnly]="timepicker.readonlyInputs"
+             [disabled]="timepicker.disabled"
+             [class.form-control-sm]="timepicker.isSmallSize"
+             [class.form-control-lg]="timepicker.isLargeSize"
+             (change)="onUpdate($any($event).target.value)"
+             (input)="formatInput($any($event).target)"
+             (keydown.ArrowUp)="onChange(); $event.preventDefault()"
+             (keydown.ArrowDown)="onChange(false); $event.preventDefault()">
+      <button *ngIf="timepicker.spinners"
+              tabindex="-1"
+              type="button"
+              class="btn btn-link"
+              [class.btn-sm]="timepicker.isSmallSize"
+              [class.btn-lg]="timepicker.isLargeSize"
+              [class.disabled]="timepicker.disabled"
+              [disabled]="timepicker.disabled"
+              (click)="onChange(false)">
+        <span class="chevron ngb-tp-chevron bottom"></span>
+        <span class="sr-only"
+              i18n="@@ngb.timepicker.decrement">{{i18nDecrement}}</span>
+      </button>
+    </div>
+  `,
+  providers: [NGB_TIMEPICKER_VALUE_ACCESSOR]
+})
+export class NgbTimepickerUnit implements OnInit {
+  @ViewChild(NgbTpInput, {static: true}) input: NgbTpInput;
+  timepicker: NgbTimepicker;
+
+  @Input() unit: string;
+  @Input() step: number;
+  @Input() ariaLabel: string;
+  @Input() i18nAriaLabel: string;
+  @Input() format: () => string;
+  @Input() change: (newVal: number) => void;
+  @Input() update: (newVal: number) => void;
+  @Input() i18nIncrement: string;
+  @Input() i18nDecrement: string;
+
+  constructor(timepicker: NgbTimepicker) { this.timepicker = timepicker; }
+
+  ngOnInit() { this.timepicker.setValueCallbacks.push(this.setValue.bind(this)); }
+
+  onChange(increment = true) {
+    this.change(increment ? this.step : -this.step);
+    this.timepicker.propagateModelChange();
+  }
+
+  onUpdate(newVal: string) {
+    this.update(toInteger(newVal));
+    this.timepicker.propagateModelChange();
+  }
+
+  formatInput(input: HTMLInputElement) { input.value = input.value.replace(FILTER_REGEX, ''); }
+
+  private setValue(): void { this.input.elementRef.nativeElement.value = this.format(); }
 }
 
 /**
@@ -45,72 +127,36 @@ export class NgbTpInput {
   template: `
     <fieldset [disabled]="disabled" [class.disabled]="disabled">
       <div class="ngb-tp">
-        <div class="ngb-tp-input-container ngb-tp-hour">
-          <button *ngIf="spinners" tabindex="-1" type="button" (click)="changeHour(hourStep)"
-            class="btn btn-link" [class.btn-sm]="isSmallSize" [class.btn-lg]="isLargeSize" [class.disabled]="disabled"
-            [disabled]="disabled">
-            <span class="chevron ngb-tp-chevron"></span>
-            <span class="sr-only" i18n="@@ngb.timepicker.increment-hours">Increment hours</span>
-          </button>
-          <input type="text" class="ngb-tp-input form-control" [class.form-control-sm]="isSmallSize"
-            [class.form-control-lg]="isLargeSize"
-            maxlength="2" inputmode="numeric" placeholder="HH" i18n-placeholder="@@ngb.timepicker.HH"
-            (change)="updateHour($any($event).target.value)"
-            [readOnly]="readonlyInputs" [disabled]="disabled" aria-label="Hours" i18n-aria-label="@@ngb.timepicker.hours"
-            (input)="formatInput($any($event).target)"
-            (keydown.ArrowUp)="changeHour(hourStep); $event.preventDefault()"
-            (keydown.ArrowDown)="changeHour(-hourStep); $event.preventDefault()">
-          <button *ngIf="spinners" tabindex="-1" type="button" (click)="changeHour(-hourStep)"
-            class="btn btn-link" [class.btn-sm]="isSmallSize" [class.btn-lg]="isLargeSize" [class.disabled]="disabled"
-            [disabled]="disabled">
-            <span class="chevron ngb-tp-chevron bottom"></span>
-            <span class="sr-only" i18n="@@ngb.timepicker.decrement-hours">Decrement hours</span>
-          </button>
-        </div>
+        <ngb-timepicker-unit [unit]="'hour'"
+                             [step]="hourStep"
+                             [ariaLabel]="'Hours'"
+                             [i18nAriaLabel]="'@@ngb.timepicker.hours'"
+                             [format]="formatHour.bind(this)"
+                             [change]="model.changeHour.bind(model)"
+                             [update]="updateHour.bind(this)"
+                             [i18nIncrement]="'Increment hours'"
+                             [i18nDecrement]="'Decrement hours'"></ngb-timepicker-unit>
         <div class="ngb-tp-spacer">:</div>
-        <div class="ngb-tp-input-container ngb-tp-minute">
-          <button *ngIf="spinners" tabindex="-1" type="button" (click)="changeMinute(minuteStep)"
-            class="btn btn-link" [class.btn-sm]="isSmallSize" [class.btn-lg]="isLargeSize" [class.disabled]="disabled"
-            [disabled]="disabled">
-            <span class="chevron ngb-tp-chevron"></span>
-            <span class="sr-only" i18n="@@ngb.timepicker.increment-minutes">Increment minutes</span>
-          </button>
-          <input type="text" class="ngb-tp-input form-control" [class.form-control-sm]="isSmallSize" [class.form-control-lg]="isLargeSize"
-            maxlength="2" inputmode="numeric" placeholder="MM" i18n-placeholder="@@ngb.timepicker.MM"
-            (change)="updateMinute($any($event).target.value)"
-            [readOnly]="readonlyInputs" [disabled]="disabled" aria-label="Minutes" i18n-aria-label="@@ngb.timepicker.minutes"
-            (input)="formatInput($any($event).target)"
-            (keydown.ArrowUp)="changeMinute(minuteStep); $event.preventDefault()"
-            (keydown.ArrowDown)="changeMinute(-minuteStep); $event.preventDefault()">
-          <button *ngIf="spinners" tabindex="-1" type="button" (click)="changeMinute(-minuteStep)"
-            class="btn btn-link" [class.btn-sm]="isSmallSize" [class.btn-lg]="isLargeSize"  [class.disabled]="disabled"
-            [disabled]="disabled">
-            <span class="chevron ngb-tp-chevron bottom"></span>
-            <span class="sr-only"  i18n="@@ngb.timepicker.decrement-minutes">Decrement minutes</span>
-          </button>
-        </div>
+        <ngb-timepicker-unit [unit]="'minute'"
+                             [step]="minuteStep"
+                             [ariaLabel]="'Minutes'"
+                             [i18nAriaLabel]="'@@ngb.timepicker.minutes'"
+                             [format]="formatMinute.bind(this)"
+                             [change]="model.changeMinute.bind(model)"
+                             [update]="model.updateMinute.bind(model)"
+                             [i18nIncrement]="'Increment minutes'"
+                             [i18nDecrement]="'Decrement minutes'"></ngb-timepicker-unit>
         <div *ngIf="seconds" class="ngb-tp-spacer">:</div>
-        <div *ngIf="seconds" class="ngb-tp-input-container ngb-tp-second">
-          <button *ngIf="spinners" tabindex="-1" type="button" (click)="changeSecond(secondStep)"
-            class="btn btn-link" [class.btn-sm]="isSmallSize" [class.btn-lg]="isLargeSize" [class.disabled]="disabled"
-            [disabled]="disabled">
-            <span class="chevron ngb-tp-chevron"></span>
-            <span class="sr-only" i18n="@@ngb.timepicker.increment-seconds">Increment seconds</span>
-          </button>
-          <input type="text" class="ngb-tp-input form-control" [class.form-control-sm]="isSmallSize" [class.form-control-lg]="isLargeSize"
-            maxlength="2" inputmode="numeric" placeholder="SS" i18n-placeholder="@@ngb.timepicker.SS"
-            (change)="updateSecond($any($event).target.value)"
-            [readOnly]="readonlyInputs" [disabled]="disabled" aria-label="Seconds" i18n-aria-label="@@ngb.timepicker.seconds"
-            (input)="formatInput($any($event).target)"
-            (keydown.ArrowUp)="changeSecond(secondStep); $event.preventDefault()"
-            (keydown.ArrowDown)="changeSecond(-secondStep); $event.preventDefault()">
-          <button *ngIf="spinners" tabindex="-1" type="button" (click)="changeSecond(-secondStep)"
-            class="btn btn-link" [class.btn-sm]="isSmallSize" [class.btn-lg]="isLargeSize"  [class.disabled]="disabled"
-            [disabled]="disabled">
-            <span class="chevron ngb-tp-chevron bottom"></span>
-            <span class="sr-only" i18n="@@ngb.timepicker.decrement-seconds">Decrement seconds</span>
-          </button>
-        </div>
+        <ngb-timepicker-unit *ngIf="seconds"
+                             [unit]="'second'"
+                             [step]="secondStep"
+                             [ariaLabel]="'Seconds'"
+                             [i18nAriaLabel]="'@@ngb.timepicker.seconds'"
+                             [format]="formatSecond.bind(this)"
+                             [change]="model.changeSecond.bind(model)"
+                             [update]="model.updateSecond.bind(model)"
+                             [i18nIncrement]="'Increment seconds'"
+                             [i18nDecrement]="'Decrement seconds'"></ngb-timepicker-unit>
         <div *ngIf="meridian" class="ngb-tp-spacer"></div>
         <div *ngIf="meridian" class="ngb-tp-meridian">
           <button type="button" class="btn btn-outline-primary" [class.btn-sm]="isSmallSize" [class.btn-lg]="isLargeSize"
@@ -131,13 +177,12 @@ export class NgbTimepicker implements ControlValueAccessor,
   static ngAcceptInputType_size: string;
 
   disabled: boolean;
-  model: NgbTime;
+  model: NgbTime = new NgbTime();
 
   private _hourStep: number;
   private _minuteStep: number;
   private _secondStep: number;
-
-  @ViewChildren(NgbTpInput) inputs: QueryList<NgbTpInput>;
+  setValueCallbacks: Function[] = [];
 
   /**
    * Whether to display 12H or 24H mode.
@@ -213,7 +258,9 @@ export class NgbTimepicker implements ControlValueAccessor,
 
   writeValue(value) {
     const structValue = this._ngbTimeAdapter.fromModel(value);
-    this.model = structValue ? new NgbTime(structValue.hour, structValue.minute, structValue.second) : new NgbTime();
+    if (structValue) {
+      this.model = new NgbTime(structValue.hour, structValue.minute, structValue.second);
+    }
     if (!this.seconds && (!structValue || !isNumber(structValue.second))) {
       this.model.second = 0;
     }
@@ -227,51 +274,24 @@ export class NgbTimepicker implements ControlValueAccessor,
 
   setDisabledState(isDisabled: boolean) { this.disabled = isDisabled; }
 
-  changeHour(step: number) {
-    this.model.changeHour(step);
-    this.propagateModelChange();
-  }
-
-  changeMinute(step: number) {
-    this.model.changeMinute(step);
-    this.propagateModelChange();
-  }
-
-  changeSecond(step: number) {
-    this.model.changeSecond(step);
-    this.propagateModelChange();
-  }
-
-  updateHour(newVal: string) {
+  updateHour(newVal: number) {
     const isPM = this.model.hour >= 12;
-    const enteredHour = toInteger(newVal);
-    if (this.meridian && (isPM && enteredHour < 12 || !isPM && enteredHour === 12)) {
-      this.model.updateHour(enteredHour + 12);
+    if (this.meridian && (isPM && newVal < 12 || !isPM && newVal === 12)) {
+      this.model.updateHour(newVal + 12);
     } else {
-      this.model.updateHour(enteredHour);
+      this.model.updateHour(newVal);
     }
-    this.propagateModelChange();
-  }
-
-  updateMinute(newVal: string) {
-    this.model.updateMinute(toInteger(newVal));
-    this.propagateModelChange();
-  }
-
-  updateSecond(newVal: string) {
-    this.model.updateSecond(toInteger(newVal));
-    this.propagateModelChange();
   }
 
   toggleMeridian() {
     if (this.meridian) {
-      this.changeHour(12);
+      this.model.changeHour(12);
+      this.propagateModelChange();
     }
   }
 
-  formatInput(input: HTMLInputElement) { input.value = input.value.replace(FILTER_REGEX, ''); }
-
-  formatHour(value?: number) {
+  formatHour() {
+    const value = this.model.hour;
     if (isNumber(value)) {
       if (this.meridian) {
         return padNumber(value % 12 === 0 ? 12 : value % 12);
@@ -283,7 +303,11 @@ export class NgbTimepicker implements ControlValueAccessor,
     }
   }
 
-  formatMinSec(value?: number) { return padNumber(isNumber(value) ? value : NaN); }
+  formatMinute() { return this.formatMinSec(this.model.minute); }
+
+  formatSecond() { return this.formatMinSec(this.model.second); }
+
+  private formatMinSec(value?: number) { return padNumber(isNumber(value) ? value : NaN); }
 
   get isSmallSize(): boolean { return this.size === 'small'; }
 
@@ -296,7 +320,7 @@ export class NgbTimepicker implements ControlValueAccessor,
     }
   }
 
-  private propagateModelChange(touched = true) {
+  propagateModelChange(touched = true) {
     if (touched) {
       this.onTouched();
     }
@@ -309,14 +333,5 @@ export class NgbTimepicker implements ControlValueAccessor,
     this.setValues();
   }
 
-  private setValues() {
-    if (this.inputs) {
-      const inputs = this.inputs.toArray();
-      inputs[0].elementRef.nativeElement.value = this.formatHour(this.model.hour);
-      inputs[1].elementRef.nativeElement.value = this.formatMinSec(this.model.minute);
-      if (inputs.length > 2) {
-        inputs[2].elementRef.nativeElement.value = this.formatMinSec(this.model.second);
-      }
-    }
-  }
+  private setValues() { this.setValueCallbacks.forEach(callback => callback()); }
 }

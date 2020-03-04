@@ -7,7 +7,7 @@ import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} fr
 
 import {NgbTimepickerModule} from './timepicker.module';
 import {NgbTimepickerConfig} from './timepicker-config';
-import {NgbTimepicker} from './timepicker';
+import {NgbTimepicker, NgbTimepickerUnit} from './timepicker';
 import {NgbTimepickerI18n} from './timepicker-i18n';
 import {NgbTimeAdapter, NgbTimeStructAdapter} from './ngb-time-adapter';
 import {NgbTimeStruct} from './ngb-time-struct';
@@ -366,7 +366,8 @@ describe('ngb-timepicker', () => {
          const fixture = createTestComponent(html);
          fixture.componentInstance.model = {hour: 10, minute: 30, second: 30};
          fixture.detectChanges();
-         const tp = fixture.debugElement.query(By.directive(NgbTimepicker)).componentInstance;
+         const debugElements = (fixture.debugElement.queryAll(By.directive(NgbTimepickerUnit)));
+         const secondsElement = debugElements[2].componentInstance;
          const secondsInput = getInputs(fixture.nativeElement)[2];
          const bigValue = '60';
          const smallValue = '30';
@@ -378,21 +379,21 @@ describe('ngb-timepicker', () => {
              .then(() => {
                // First time
                secondsInput.value = bigValue;
-               tp.updateSecond(bigValue);
+               secondsElement.onUpdate(bigValue);
                fixture.detectChanges();
                expect(secondsInput.value).toEqual('00');
              })
              .then(() => {
                // Second time. Bound value is not changed, but input value should be updated
                secondsInput.value = bigValue;
-               tp.updateSecond(bigValue);
+               secondsElement.onUpdate(bigValue);
                fixture.detectChanges();
                expect(secondsInput.value).toEqual('00');
              })
              .then(() => {
                // Third time
                secondsInput.value = smallValue;
-               tp.updateSecond(smallValue);
+               secondsElement.onUpdate(smallValue);
                fixture.detectChanges();
                expect(secondsInput.value).toEqual(smallValue);
              });
@@ -404,7 +405,8 @@ describe('ngb-timepicker', () => {
          const fixture = createTestComponent(html);
          fixture.componentInstance.model = {hour: 10, minute: 30, second: 30};
          fixture.detectChanges();
-         const tp = fixture.debugElement.query(By.directive(NgbTimepicker)).componentInstance;
+         const debugElements = (fixture.debugElement.queryAll(By.directive(NgbTimepickerUnit)));
+         const minutesElement = debugElements[1].componentInstance;
          const minutesInput = getInputs(fixture.nativeElement)[1];
          const bigValue = '60';
          const smallValue = '30';
@@ -416,21 +418,21 @@ describe('ngb-timepicker', () => {
              .then(() => {
                // First time
                minutesInput.value = bigValue;
-               tp.updateMinute(bigValue);
+               minutesElement.onUpdate(bigValue);
                fixture.detectChanges();
                expect(minutesInput.value).toEqual('00');
              })
              .then(() => {
                // Second time. Bound value is not changed, but input value should be updated
                minutesInput.value = bigValue;
-               tp.updateMinute(bigValue);
+               minutesElement.onUpdate(bigValue);
                fixture.detectChanges();
                expect(minutesInput.value).toEqual('00');
              })
              .then(() => {
                // Third time
                minutesInput.value = smallValue;
-               tp.updateMinute(smallValue);
+               minutesElement.onUpdate(smallValue);
                fixture.detectChanges();
                expect(minutesInput.value).toEqual(smallValue);
              });
@@ -442,7 +444,8 @@ describe('ngb-timepicker', () => {
          const fixture = createTestComponent(html);
          fixture.componentInstance.model = {hour: 10, minute: 30, second: 30};
          fixture.detectChanges();
-         const tp = fixture.debugElement.query(By.directive(NgbTimepicker)).componentInstance;
+         const debugElements = (fixture.debugElement.queryAll(By.directive(NgbTimepickerUnit)));
+         const minutesElement = debugElements[1].componentInstance;
          const minutesInput = getInputs(fixture.nativeElement)[1];
          const bigValue = '60';
          const smallValue = '30';
@@ -454,21 +457,21 @@ describe('ngb-timepicker', () => {
              .then(() => {
                // First time
                minutesInput.value = bigValue;
-               tp.updateMinute(bigValue);
+               minutesElement.onUpdate(bigValue);
                fixture.detectChanges();
                expect(minutesInput.value).toEqual('00');
              })
              .then(() => {
                // Second time. Bound value is not changed, but input value should be updated
                minutesInput.value = bigValue;
-               tp.updateMinute(bigValue);
+               minutesElement.onUpdate(bigValue);
                fixture.detectChanges();
                expect(minutesInput.value).toEqual('00');
              })
              .then(() => {
                // Third time
                minutesInput.value = smallValue;
-               tp.updateMinute(smallValue);
+               minutesElement.onUpdate(smallValue);
                fixture.detectChanges();
                expect(minutesInput.value).toEqual(smallValue);
              });
