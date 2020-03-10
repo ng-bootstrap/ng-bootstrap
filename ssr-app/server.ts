@@ -14,7 +14,7 @@ export function app() {
   const distFolder = join(process.cwd(), 'ssr-app/dist/browser');
 
   // Our Universal express-engine (found @ https://github.com/angular/universal/tree/master/modules/express-engine)
-  server.engine('html', ngExpressEngine({
+  server.engine('html', <any>ngExpressEngine({
     bootstrap: AppServerModule,
   }));
 
