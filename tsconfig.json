@@ -11,6 +11,7 @@
     "module": "esnext",
     "moduleResolution": "node",
     "importHelpers": true,
+    "strictNullChecks": true,
     "target": "es2015",
     "typeRoots": [
       "node_modules/@types"
@@ -19,5 +20,10 @@
       "es2018",
       "dom"
     ]
+  },
+  "angularCompilerOptions": {
+    "strictTemplates": true,
+    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true
   }
 }
