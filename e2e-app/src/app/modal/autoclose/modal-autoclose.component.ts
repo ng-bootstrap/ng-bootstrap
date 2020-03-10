@@ -3,7 +3,7 @@ import {ModalDismissReasons, NgbModal, NgbModalRef} from '@ng-bootstrap/ng-boots
 
 @Component({templateUrl: './modal-autoclose.component.html', changeDetection: ChangeDetectionStrategy.OnPush})
 export class ModalAutoCloseComponent {
-  private modalRef: NgbModalRef = null;
+  private modalRef: NgbModalRef | null = null;
   reason = '';
   options = {};
 
