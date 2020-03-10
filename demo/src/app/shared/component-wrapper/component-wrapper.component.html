@@ -30,16 +30,16 @@
 
         <ul ngbNav [activeId]="this.activeTab" class="nav-tabs px-4 px-lg-5 content-tabset justify-content-md-start justify-content-end">
 
-          <li [ngbNavItem]="childRoute.path" *ngFor="let childRoute of route.routeConfig.children">
+          <li [ngbNavItem]="childRoute.path" *ngFor="let childRoute of route.routeConfig!.children">
             <a ngbNavLink [routerLink]="['.', childRoute.path]">
-              {{ childRoute.path | titlecase }}
+              {{ childRoute.path || '' | titlecase }}
             </a>
           </li>
 
           <li ngbNavItem
             ngbDropdown placement="bottom-right"
             class="align-self-center ml-0 ml-md-auto navigation-dropdown"
-            *ngIf="tableOfContent.length && isLargeScreenOrLess"
+            *ngIf="tableOfContents.length && isLargeScreenOrLess"
           >
             <span ngbDropdownToggle class="nav-link" title="Table of content">
               <span class="sr-only">Table of content</span>
@@ -47,7 +47,7 @@
             </span>
 
             <div class="dropdown-menu-right" ngbDropdownMenu>
-              <ng-template ngFor [ngForOf]="tableOfContent" let-topic>
+              <ng-template ngFor [ngForOf]="tableOfContents" let-topic>
                 <a
                   *ngIf="topic.title else divider"
                   class="dropdown-item"
@@ -61,13 +61,13 @@
 
       <section class="row py-5 px-2 px-md-4 px-lg-5">
         <div class="col-12 col-xl-9 px-md-0 pr-xl-4">
-          <ng-template [ngComponentOutlet]="headerComponentType$ | async"></ng-template>
+          <ng-template [ngComponentOutlet]="(headerComponentType$ | async)!"></ng-template>
           <router-outlet (activate)="updateNavigation($event)"></router-outlet>
         </div>
 
         <div class="col-12 col-xl-3 d-none d-xl-block contextual-nav" *ngIf="!isLargeScreenOrLess">
           <ul class="nav flex-column text-muted pt-4">
-            <li *ngFor="let topic of tableOfContent" class="nav-item">
+            <li *ngFor="let topic of tableOfContents" class="nav-item">
               <a *ngIf="topic.title else divider" class="nav-link" [routerLink]="['.', this.activeTab]" [fragment]="topic.fragment">{{topic.title}}</a>
             </li>
             <ng-template #divider>&nbsp;</ng-template>

@@ -9,7 +9,7 @@ import {NgbdOverviewSection} from '../../components/shared/overview';
   },
   template: `
     <h2>
-      <a [routerLink]="" [fragment]="fragment" ngbdFragment>
+      <a routerLink [fragment]="fragment" ngbdFragment>
         <img src="img/link-symbol.svg" />
       </a>
       {{ title }}

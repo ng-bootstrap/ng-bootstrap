@@ -55,7 +55,7 @@ export class NgbdApiDocs {
    */
   defaultInputValue(input: InputDesc): string {
     const configProperty = this._configProperties[input.name];
-    return configProperty ? configProperty.defaultValue : input.defaultValue;
+    return (configProperty ? configProperty.defaultValue : input.defaultValue) || '';
   }
 
   /**

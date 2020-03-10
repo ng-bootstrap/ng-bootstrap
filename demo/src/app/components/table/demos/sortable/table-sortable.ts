@@ -39,12 +39,13 @@ const COUNTRIES: Country[] = [
   }
 ];
 
+export type SortColumn = keyof Country | '';
 export type SortDirection = 'asc' | 'desc' | '';
 const rotate: {[key: string]: SortDirection} = { 'asc': 'desc', 'desc': '', '': 'asc' };
-export const compare = (v1, v2) => v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
+const compare = (v1: string, v2: string) => v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
 
 export interface SortEvent {
-  column: string;
+  column: SortColumn;
   direction: SortDirection;
 }
 
@@ -58,7 +59,7 @@ export interface SortEvent {
 })
 export class NgbdSortableHeader {
 
-  @Input() sortable: string;
+  @Input() sortable: SortColumn = '';
   @Input() direction: SortDirection = '';
   @Output() sort = new EventEmitter<SortEvent>();
 
@@ -88,11 +89,11 @@ export class NgbdTableSortable {
     });
 
     // sorting countries
-    if (direction === '') {
+    if (direction === '' || column === '') {
       this.countries = COUNTRIES;
     } else {
       this.countries = [...COUNTRIES].sort((a, b) => {
-        const res = compare(a[column], b[column]);
+        const res = compare(`${a[column]}`, `${b[column]}`);
         return direction === 'asc' ? res : -res;
       });
     }
