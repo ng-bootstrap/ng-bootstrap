@@ -1,7 +1,14 @@
 import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 
 import {Analytics} from '../../../shared/analytics/analytics';
-import {Snippet} from '../../../shared/code/snippet';
+import {ISnippet, Snippet} from '../../../shared/code/snippet';
+
+const TYPES: {[name: string]: string} = {
+  html: 'HTML',
+  scss: 'Style (SCSS)',
+  css: 'Style (CSS)',
+  ts: 'Typescript'
+};
 
 @Component({
   selector: 'ngbd-widget-demo',
@@ -20,8 +27,8 @@ export class NgbdWidgetDemoComponent {
   get markupSnippet() { return Snippet({lang: 'html', code: this.markup}); }
   get codeSnippet() { return Snippet({lang: 'typescript', code: this.code}); }
 
-  getFileSnippet({name, source}) {
-    return Snippet({code: source, lang: name.split('.').pop()});
+  getFileSnippet({name, source}): ISnippet {
+    return Snippet({code: source, lang: name.split('.').pop() || ''});
   }
 
   get hasManyFiles() {
@@ -31,15 +38,7 @@ export class NgbdWidgetDemoComponent {
   constructor(private _analytics: Analytics) {}
 
   tabType(name: string) {
-    const ext = name.split('.').pop();
-    return (
-      {
-        html: 'HTML',
-        scss: 'Style (SCSS)',
-        css: 'Style (CSS)',
-        ts: 'Typescript'
-      }[ext] || 'Code'
-    );
+    return TYPES[(name.split('.').pop() || '')] || 'Code';
   }
 
   trackStackBlitzClick() {

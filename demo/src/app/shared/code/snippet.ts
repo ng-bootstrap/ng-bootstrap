@@ -1,5 +1,5 @@
 export interface ISnippet {
-  lang: 'html' | 'typescript' | 'css' | 'bash';
+  lang: 'html' | 'typescript' | 'css' | 'bash' | string;
   code: string;
 }
 
@@ -9,13 +9,13 @@ function removeEmptyLineAtIndex(lines: string[], index: number) {
   }
 }
 
-function findIndentLevel(lines): number {
+function findIndentLevel(lines: string[]): number {
   return Math.min(...lines
     .map(line => {
       const result = /( *)[^ ]+/g.exec(line);
       return result == null ? null : result[1].length;
     })
-    .filter(value => value != null)
+    .filter(value => value != null) as number[]
   );
 }
 

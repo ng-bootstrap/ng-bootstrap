@@ -37,7 +37,7 @@
 
   <div class="d-flex justify-content-between p-2">
     <ngb-pagination
-      [collectionSize]="total$ | async" [(page)]="service.page" [pageSize]="service.pageSize">
+      [collectionSize]="(total$ | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
     </ngb-pagination>
 
     <select class="custom-select" style="width: auto" name="pageSize" [(ngModel)]="service.pageSize">

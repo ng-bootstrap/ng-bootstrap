@@ -1,5 +1,6 @@
 import {Component, ContentChildren, Input, NgZone, QueryList} from '@angular/core';
 import {NgbdPageHeaderComponent} from './page-header.component';
+import {TableOfContents} from '../component-wrapper/component-wrapper.component';
 
 @Component({
   selector: 'ngbd-page-wrapper',
@@ -20,7 +21,7 @@ export class PageWrapper {
     largeScreenQL.addListener((event) => ngZone.run(() => this.isLargeScreenOrLess = event.matches));
   }
 
-  get tableOfContents() {
+  get tableOfContents(): TableOfContents {
     return this._tableOfContents ? this._tableOfContents.toArray() : [];
   }
 }

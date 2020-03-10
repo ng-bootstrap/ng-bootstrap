@@ -1,11 +1,12 @@
-import { Component, NgZone, OnDestroy } from '@angular/core';
+import {Component, NgZone, OnDestroy, Type} from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import { filter, pluck } from 'rxjs/operators';
 
 import { NgbdApiPage } from '../../components/shared/api-page/api.component';
 import { NgbdExamplesPage } from '../../components/shared/examples-page/examples.component';
 
+export type TableOfContents = {fragment: string, title: string}[];
 
 @Component({
   selector: 'component-wrapper',
@@ -19,14 +20,14 @@ export class ComponentWrapper implements OnDestroy {
 
   component: string;
 
-  headerComponentType$: any;
+  headerComponentType$: Observable<Type<any>>;
 
   isLargeScreenOrLess: boolean;
   isSmallScreenOrLess: boolean;
 
   sidebarCollapsed = true;
 
-  tableOfContent: any[] = [];
+  tableOfContents: TableOfContents = [];
 
   constructor(public route: ActivatedRoute, private _router: Router, ngZone: NgZone) {
     // This component is used in route definition 'components'
@@ -38,8 +39,8 @@ export class ComponentWrapper implements OnDestroy {
       const parentRoute = this.route.snapshot.parent;
       const tabRoute = this.route.snapshot.firstChild;
 
-      this.component = parentRoute.url[1].path;
-      this.activeTab = tabRoute.url[0].path;
+      this.component = parentRoute!.url[1].path;
+      this.activeTab = tabRoute!.url[0].path;
     });
 
     this.headerComponentType$ = this.route.data.pipe(pluck('header'));
@@ -61,41 +62,39 @@ export class ComponentWrapper implements OnDestroy {
     this._routerSubscription.unsubscribe();
   }
 
-  updateNavigation(component) {
-    const getLinks = (typeCollection) => {
+  updateNavigation(component: NgbdExamplesPage | NgbdApiPage | any) {
+    const getLinks = (typeCollection: string[]) => {
       return typeCollection.map(item => ({
         fragment: item,
         title: item
       }));
     };
-    this.tableOfContent = [];
+    this.tableOfContents = [];
     if (component instanceof NgbdExamplesPage) {
-      this.tableOfContent = component.demos.map(demo => {
+      this.tableOfContents = component.demos.map(demo => {
         return {
           fragment: demo.id,
           title: demo.title
         };
       });
     } else if (component instanceof NgbdApiPage) {
-      let toc = [
-        ...getLinks(component.components)
-      ];
+      let toc = getLinks(component.components);
 
       if (component.classes.length > 0) {
         const klasses = getLinks(component.classes);
-        toc = toc.concat(toc.length > 0  ? [{}, ...klasses] : klasses);
+        toc = toc.concat(toc.length > 0  ? [<any>{}, ...klasses] : klasses);
       }
 
       if (component.configs.length > 0) {
         const configs = getLinks(component.configs);
-        toc = toc.concat(toc.length > 0  ? [{}, ...configs] : configs);
+        toc = toc.concat(toc.length > 0  ? [<any>{}, ...configs] : configs);
       }
 
-      this.tableOfContent = toc;
+      this.tableOfContents = toc;
 
     } else /* Overview */ {
       // TODO: maybe we should also have an abstract class to test instanceof
-      this.tableOfContent = Object.values(component.sections).map(section => section);
+      this.tableOfContents = Object.values(component.sections).map(section => section) as TableOfContents;
     }
   }
 }

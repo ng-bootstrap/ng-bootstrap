@@ -2,7 +2,7 @@
   <h3>
     <a
       class="title-fragment"
-      [routerLink]=""
+      routerLink
       fragment="{{apiDocs.className}}"
       ngbdFragment
       title="Anchor link to: {{apiDocs.className}}"
@@ -33,7 +33,7 @@
           <code class="pr-2">{{ property.name }}</code>&ngsp;
         </ng-template>
       </p>
-      <p class="mt-3">Documentation available in <a [routerLink]="" fragment="{{directiveName}}">{{ directiveName }}</a></p>
+      <p class="mt-3">Documentation available in <a routerLink fragment="{{directiveName}}">{{ directiveName }}</a></p>
     </section>
   </ng-template>
 </div>

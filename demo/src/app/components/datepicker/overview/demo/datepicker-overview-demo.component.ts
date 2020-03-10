@@ -73,12 +73,12 @@ export class NgbdDatepickerOverviewDemoComponent {
 
   today: NgbDate;
 
-  hoveredDate: NgbDate;
+  hoveredDate: NgbDate | null = null;
 
   fromDate: NgbDate;
-  toDate: NgbDate;
+  toDate: NgbDate | null = null;
 
-  holidays: {month, day, text}[] = [
+  holidays: {month: number, day: number, text: string}[] = [
     {month: 1, day: 1, text: 'New Years Day'},
     {month: 3, day: 30, text: 'Good Friday (hi, Alsace!)'},
     {month: 5, day: 1, text: 'Labour Day'},
@@ -117,7 +117,7 @@ export class NgbdDatepickerOverviewDemoComponent {
     }
   }
 
-  getTooltip(date: NgbDate) {
+  getTooltip(date: NgbDate): string {
     const holidayTooltip = this.isHoliday(date);
 
     if (holidayTooltip) {
@@ -129,7 +129,7 @@ export class NgbdDatepickerOverviewDemoComponent {
     }
   }
 
-  getFirstAvailableDate(date): NgbDate {
+  getFirstAvailableDate(date: NgbDate): NgbDate {
     while (this.isWeekend(date) || this.isHoliday(date)) {
       date = this.calendar.getNext(date, 'd', 1);
     }
@@ -141,7 +141,7 @@ export class NgbdDatepickerOverviewDemoComponent {
   }
 
   isRange(date: NgbDate) {
-    return date.equals(this.fromDate) || date.equals(this.toDate) || this.isInside(date) || this.isHovered(date);
+    return date.equals(this.fromDate) || (this.toDate && date.equals(this.toDate)) || this.isInside(date) || this.isHovered(date);
   }
 
   isHovered(date: NgbDate) {
@@ -149,6 +149,6 @@ export class NgbdDatepickerOverviewDemoComponent {
   }
 
   isInside(date: NgbDate) {
-    return date.after(this.fromDate) && date.before(this.toDate);
+    return this.toDate && date.after(this.fromDate) && date.before(this.toDate);
   }
 }

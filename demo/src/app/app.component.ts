@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
         .subscribe(fragment => zone.runOutsideAngular(() => requestAnimationFrame(() => vps.scrollToAnchor(fragment))));
 
     if (environment.production) {
-      httpClient.get('https://api.npmjs.org/downloads/point/last-month/@ng-bootstrap/ng-bootstrap')
+      httpClient.get<{downloads: string}>('https://api.npmjs.org/downloads/point/last-month/@ng-bootstrap/ng-bootstrap')
           .pipe(pluck('downloads'))
           .subscribe(count => this.downloadCount = count.toLocaleString(), () => of(''));
     }

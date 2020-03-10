@@ -26,10 +26,10 @@ import {NgbDate, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
 })
 export class NgbdDatepickerRange {
 
-  hoveredDate: NgbDate;
+  hoveredDate: NgbDate | null = null;
 
   fromDate: NgbDate;
-  toDate: NgbDate;
+  toDate: NgbDate | null = null;
 
   constructor(calendar: NgbCalendar) {
     this.fromDate = calendar.getToday();
@@ -52,10 +52,10 @@ export class NgbdDatepickerRange {
   }
 
   isInside(date: NgbDate) {
-    return date.after(this.fromDate) && date.before(this.toDate);
+    return this.toDate && date.after(this.fromDate) && date.before(this.toDate);
   }
 
   isRange(date: NgbDate) {
-    return date.equals(this.fromDate) || date.equals(this.toDate) || this.isInside(date) || this.isHovered(date);
+    return date.equals(this.fromDate) || (this.toDate && date.equals(this.toDate)) || this.isInside(date) || this.isHovered(date);
   }
 }

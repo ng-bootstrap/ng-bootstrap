@@ -1,10 +1,5 @@
 import {Component, Injectable} from '@angular/core';
-import {
-  NgbCalendar,
-  NgbDateAdapter,
-  NgbDateStruct,
-  NgbDateParserFormatter
-} from '@ng-bootstrap/ng-bootstrap';
+import {NgbCalendar, NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -14,25 +9,20 @@ export class CustomAdapter extends NgbDateAdapter<string> {
 
   readonly DELIMITER = '-';
 
-  fromModel(value: string): NgbDateStruct {
-    let result: NgbDateStruct = null;
+  fromModel(value: string | null): NgbDateStruct | null {
     if (value) {
       let date = value.split(this.DELIMITER);
-      result = {
+      return {
         day : parseInt(date[0], 10),
         month : parseInt(date[1], 10),
         year : parseInt(date[2], 10)
       };
     }
-    return result;
+    return null;
   }
 
-  toModel(date: NgbDateStruct): string {
-    let result: string = null;
-    if (date) {
-      result = date.day + this.DELIMITER + date.month + this.DELIMITER + date.year;
-    }
-    return result;
+  toModel(date: NgbDateStruct | null): string | null {
+    return date ? date.day + this.DELIMITER + date.month + this.DELIMITER + date.year : null;
   }
 }
 
@@ -44,25 +34,20 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 
   readonly DELIMITER = '/';
 
-  parse(value: string): NgbDateStruct {
-    let result: NgbDateStruct = null;
+  parse(value: string): NgbDateStruct | null {
     if (value) {
       let date = value.split(this.DELIMITER);
-      result = {
+      return {
         day : parseInt(date[0], 10),
         month : parseInt(date[1], 10),
         year : parseInt(date[2], 10)
       };
     }
-    return result;
+    return null;
   }
 
-  format(date: NgbDateStruct): string {
-    let result: string = null;
-    if (date) {
-      result = date.day + this.DELIMITER + date.month + this.DELIMITER + date.year;
-    }
-    return result;
+  format(date: NgbDateStruct | null): string {
+    return date ? date.day + this.DELIMITER + date.month + this.DELIMITER + date.year : '';
   }
 }
 
@@ -85,6 +70,6 @@ export class NgbdDatepickerAdapter {
   constructor(private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) {}
 
   get today() {
-    return this.dateAdapter.toModel(this.ngbCalendar.getToday());
+    return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
 }

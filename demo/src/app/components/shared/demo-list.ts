@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 
 export interface NgbdDemoConfig {
+  id?: string;
   title: string;
   code?: string;
   markup?: string;

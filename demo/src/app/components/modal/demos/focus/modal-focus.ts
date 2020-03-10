@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Type} from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -51,7 +51,7 @@ export class NgbdModalConfirmAutofocus {
   constructor(public modal: NgbActiveModal) {}
 }
 
-const MODALS = {
+const MODALS: {[name: string]: Type<any>} = {
   focusFirst: NgbdModalConfirm,
   autofocus: NgbdModalConfirmAutofocus
 };
