@@ -11,7 +11,7 @@ describe('Timepicker', () => {
   async function expectValue(expectedValue) {
     const inputs = page.getFields();
 
-    const values = [];
+    const values: string[] = [];
     for (let i = 0; i < inputs.length; i++) {
       values[i] = await inputs[i].getAttribute('value');
     }
