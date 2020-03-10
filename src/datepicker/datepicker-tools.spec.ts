@@ -64,7 +64,7 @@ describe(`datepicker-tools`, () => {
     });
 
     it(`should bypass invalid date values`, () => {
-      expect(checkDateInRange(undefined, undefined, undefined)).toBeUndefined();
+      expect(checkDateInRange(undefined, undefined, undefined)).toBeNull();
       expect(checkDateInRange(null, undefined, undefined)).toBeNull();
       expect(checkDateInRange(new NgbDate(-2, 0, 0), undefined, undefined)).toEqual(new NgbDate(-2, 0, 0));
     });
@@ -213,7 +213,7 @@ describe(`datepicker-tools`, () => {
   describe(`buildMonths()`, () => {
 
     it(`should generate 'displayMonths' number of months`, () => {
-      let state = { displayMonths: 1, firstDayOfWeek: 1, months: [] } as DatepickerViewModel;
+      let state = { displayMonths: 1, firstDayOfWeek: 1, months: [] as MonthViewModel[] } as DatepickerViewModel;
       let months = buildMonths(calendar, new NgbDate(2017, 5, 5), state, i18n, false);
       expect(months.length).toBe(1);
 
@@ -283,11 +283,11 @@ describe(`datepicker-tools`, () => {
     beforeEach(function() { jasmine.addMatchers(customMatchers); });
 
     it(`should reuse the same data structure (force = false)`, () => {
-      let state = { displayMonths: 1, firstDayOfWeek: 1, months: [] } as DatepickerViewModel;
+      let state = { displayMonths: 1, firstDayOfWeek: 1, months: [] as MonthViewModel[] } as DatepickerViewModel;
       let months = buildMonths(calendar, new NgbDate(2017, 5, 5), state, i18n, false);
       expect(months).toBe(state.months);
       expect(months.length).toBe(1);
-      let monthsStructure = storeMonthsDataStructure(months);
+      let monthsStructure = storeMonthsDataStructure(months) !;
 
       months = buildMonths(calendar, new NgbDate(2018, 5, 5), state, i18n, false);
       expect(months).toBe(state.months);
@@ -306,7 +306,7 @@ describe(`datepicker-tools`, () => {
       expect(months).toBe(state.months);
       expect(months.length).toBe(2);
       // the structures should be swapped:
-      monthsStructure.push(monthsStructure.shift());
+      monthsStructure.push(monthsStructure.shift() !);
       expect(storeMonthsDataStructure(months))['toHaveTheSameMonthDataStructureAs'](monthsStructure);
 
       // previous month
@@ -314,7 +314,7 @@ describe(`datepicker-tools`, () => {
       expect(months).toBe(state.months);
       expect(months.length).toBe(2);
       // the structures should be swapped (again):
-      monthsStructure.push(monthsStructure.shift());
+      monthsStructure.push(monthsStructure.shift() !);
       expect(storeMonthsDataStructure(months))['toHaveTheSameMonthDataStructureAs'](monthsStructure);
 
       state.displayMonths = 5;
@@ -354,7 +354,7 @@ describe(`datepicker-tools`, () => {
     });
 
     it(`should reuse the same data structure (force = true)`, () => {
-      let state = { displayMonths: 1, firstDayOfWeek: 1, months: [] } as DatepickerViewModel;
+      let state = { displayMonths: 1, firstDayOfWeek: 1, months: [] as MonthViewModel[] } as DatepickerViewModel;
       let months = buildMonths(calendar, new NgbDate(2017, 5, 5), state, i18n, true);
       expect(months).toBe(state.months);
       expect(months.length).toBe(1);

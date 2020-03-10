@@ -59,7 +59,7 @@ export class NgbAlert implements OnInit,
     this.type = config.type;
   }
 
-  closeHandler() { this.close.emit(null); }
+  closeHandler() { this.close.emit(); }
 
   ngOnChanges(changes: SimpleChanges) {
     const typeChange = changes['type'];

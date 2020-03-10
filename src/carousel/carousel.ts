@@ -184,7 +184,7 @@ export class NgbCarousel implements AfterContentChecked,
       this._ngZone.runOutsideAngular(() => {
         const hasNextSlide$ = combineLatest([
                                 this.slide.pipe(map(slideEvent => slideEvent.current), startWith(this.activeId)),
-                                this._wrap$, this.slides.changes.pipe(startWith(<{}>null))
+                                this._wrap$, this.slides.changes.pipe(startWith(null))
                               ])
                                   .pipe(
                                       map(([currentSlideId, wrap]) => {
@@ -209,7 +209,7 @@ export class NgbCarousel implements AfterContentChecked,
 
   ngAfterContentChecked() {
     let activeSlide = this._getSlideById(this.activeId);
-    this.activeId = activeSlide ? activeSlide.id : (this.slides.length ? this.slides.first.id : null);
+    this.activeId = activeSlide ? activeSlide.id : (this.slides.length ? this.slides.first.id : '');
   }
 
   ngOnDestroy() { this._destroy$.next(); }
@@ -264,10 +264,13 @@ export class NgbCarousel implements AfterContentChecked,
     return currentActiveSlideIdx > nextActiveSlideIdx ? NgbSlideEventDirection.RIGHT : NgbSlideEventDirection.LEFT;
   }
 
-  private _getSlideById(slideId: string): NgbSlide { return this.slides.find(slide => slide.id === slideId); }
+  private _getSlideById(slideId: string): NgbSlide | null {
+    return this.slides.find(slide => slide.id === slideId) || null;
+  }
 
   private _getSlideIdxById(slideId: string): number {
-    return this.slides.toArray().indexOf(this._getSlideById(slideId));
+    const slide = this._getSlideById(slideId);
+    return slide != null ? this.slides.toArray().indexOf(slide) : -1;
   }
 
   private _getNextSlide(currentSlideId: string): string {

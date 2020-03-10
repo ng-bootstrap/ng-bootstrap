@@ -46,7 +46,7 @@ export interface NgbDatepickerNavigateEvent {
   /**
    * The currently displayed month.
    */
-  current: {year: number, month: number};
+  current: {year: number, month: number} | null;
 
   /**
    * The month we're navigating to.
@@ -72,12 +72,12 @@ export interface NgbDatepickerState {
   /**
    * The earliest date that can be displayed or selected
    */
-  readonly minDate: NgbDate;
+  readonly minDate: NgbDate | null;
 
   /**
    * The latest date that can be displayed or selected
    */
-  readonly maxDate: NgbDate;
+  readonly maxDate: NgbDate | null;
 
   /**
    * The first visible date of currently displayed months
@@ -146,7 +146,7 @@ export class NgbDatepickerContent {
 
     <div class="ngb-dp-header">
       <ngb-datepicker-navigation *ngIf="navigation !== 'none'"
-        [date]="model.firstDate"
+        [date]="model.firstDate!"
         [months]="model.months"
         [disabled]="model.disabled"
         [showSelect]="model.navigation === 'select'"
@@ -178,7 +178,7 @@ export class NgbDatepicker implements OnDestroy,
   @ViewChild('content', {static: true}) private _contentEl: ElementRef<HTMLElement>;
   @ContentChild(NgbDatepickerContent, {static: true}) contentTemplate: NgbDatepickerContent;
 
-  private _controlValue: NgbDate;
+  private _controlValue: NgbDate | null = null;
   private _destroyed$ = new Subject<void>();
   private _publicState: NgbDatepickerState = <any>{};
 
@@ -199,7 +199,7 @@ export class NgbDatepicker implements OnDestroy,
    *
    * @since 3.3.0
    */
-  @Input() dayTemplateData: (date: NgbDate, current: {year: number, month: number}) => any;
+  @Input() dayTemplateData: (date: NgbDate, current?: {year: number, month: number}) => any;
 
   /**
    * The number of months to display.
@@ -227,7 +227,7 @@ export class NgbDatepicker implements OnDestroy,
    *
    * `current` is the month that is currently displayed by the datepicker.
    */
-  @Input() markDisabled: (date: NgbDate, current: {year: number, month: number}) => boolean;
+  @Input() markDisabled: (date: NgbDate, current?: {year: number, month: number}) => boolean;
 
   /**
    * The latest date that can be displayed or selected.
@@ -323,16 +323,16 @@ export class NgbDatepicker implements OnDestroy,
     _service.dateSelect$.pipe(takeUntil(this._destroyed$)).subscribe(date => { this.dateSelect.emit(date); });
 
     _service.model$.pipe(takeUntil(this._destroyed$)).subscribe(model => {
-      const newDate = model.firstDate;
+      const newDate = model.firstDate !;
       const oldDate = this.model ? this.model.firstDate : null;
 
       // update public state
       this._publicState = {
         maxDate: model.maxDate,
         minDate: model.minDate,
-        firstDate: model.firstDate,
-        lastDate: model.lastDate,
-        focusedDate: model.focusDate,
+        firstDate: model.firstDate !,
+        lastDate: model.lastDate !,
+        focusedDate: model.focusDate !,
         months: model.months.map(viewModel => viewModel.firstDate)
       };
 
@@ -391,7 +391,7 @@ export class NgbDatepicker implements OnDestroy,
   /**
    *  Focuses on given date.
    */
-  focusDate(date: NgbDateStruct): void { this._service.focus(NgbDate.from(date)); }
+  focusDate(date?: NgbDateStruct | null): void { this._service.focus(NgbDate.from(date)); }
 
   /**
    *  Selects focused date.
@@ -482,10 +482,10 @@ export class NgbDatepicker implements OnDestroy,
   onNavigateEvent(event: NavigationEvent) {
     switch (event) {
       case NavigationEvent.PREV:
-        this._service.open(this._calendar.getPrev(this.model.firstDate, 'm', 1));
+        this._service.open(this._calendar.getPrev(this.model.firstDate !, 'm', 1));
         break;
       case NavigationEvent.NEXT:
-        this._service.open(this._calendar.getNext(this.model.firstDate, 'm', 1));
+        this._service.open(this._calendar.getNext(this.model.firstDate !, 'm', 1));
         break;
     }
   }

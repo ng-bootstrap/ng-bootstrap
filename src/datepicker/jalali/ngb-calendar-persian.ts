@@ -59,8 +59,8 @@ export class NgbCalendarPersian extends NgbCalendar {
 
   getToday(): NgbDate { return fromGregorian(new Date()); }
 
-  isValid(date: NgbDate): boolean {
-    return date && isInteger(date.year) && isInteger(date.month) && isInteger(date.day) &&
+  isValid(date?: NgbDate | null): boolean {
+    return date != null && isInteger(date.year) && isInteger(date.month) && isInteger(date.day) &&
         !isNaN(toGregorian(date).getTime());
   }
 }

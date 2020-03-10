@@ -66,7 +66,7 @@ if (typeof Element !== 'undefined' && !Element.prototype.closest) {
   };
 }
 
-export function closest(element: HTMLElement, selector): HTMLElement {
+export function closest(element: HTMLElement, selector): HTMLElement | null {
   if (!selector) {
     return null;
   }

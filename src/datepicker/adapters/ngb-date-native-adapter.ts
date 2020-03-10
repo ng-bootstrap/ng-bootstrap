@@ -12,14 +12,14 @@ export class NgbDateNativeAdapter extends NgbDateAdapter<Date> {
   /**
    * Converts a native `Date` to a `NgbDateStruct`.
    */
-  fromModel(date: Date): NgbDateStruct {
+  fromModel(date: Date | null): NgbDateStruct | null {
     return (date instanceof Date && !isNaN(date.getTime())) ? this._fromNativeDate(date) : null;
   }
 
   /**
    * Converts a `NgbDateStruct` to a native `Date`.
    */
-  toModel(date: NgbDateStruct): Date {
+  toModel(date: NgbDateStruct | null): Date | null {
     return date && isInteger(date.year) && isInteger(date.month) && isInteger(date.day) ? this._toNativeDate(date) :
                                                                                           null;
   }

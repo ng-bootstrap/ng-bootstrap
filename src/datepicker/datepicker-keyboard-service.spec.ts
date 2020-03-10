@@ -24,8 +24,8 @@ describe('ngb-datepicker-keyboard-service', () => {
     service = TestBed.inject(NgbDatepickerKeyboardService);
     mock = {state, focusDate: () => {}, focusSelect: () => {}, calendar};
 
-    spyOn(mock, 'focusDate');
-    spyOn(mock, 'focusSelect');
+    spyOn(mock, <any>'focusDate');
+    spyOn(mock, <any>'focusSelect');
     spyOn(calendar, 'getNext');
     spyOn(calendar, 'getPrev');
   });

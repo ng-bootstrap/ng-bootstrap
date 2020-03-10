@@ -71,7 +71,7 @@ export class NgbDropdownItem {
   }
 })
 export class NgbDropdownMenu {
-  placement: Placement = 'bottom';
+  placement: Placement | null = 'bottom';
   isOpen = false;
 
   @ContentChildren(NgbDropdownItem) menuItems: QueryList<NgbDropdownItem>;
@@ -137,7 +137,7 @@ export class NgbDropdown implements AfterContentInit, OnDestroy {
 
   private _closed$ = new Subject<void>();
   private _zoneSubscription: Subscription;
-  private _bodyContainer: HTMLElement;
+  private _bodyContainer: HTMLElement | null = null;
 
   @ContentChild(NgbDropdownMenu, {static: false}) private _menu: NgbDropdownMenu;
   @ContentChild(NgbDropdownMenu, {read: ElementRef, static: false}) private _menuElement: ElementRef;
@@ -294,14 +294,12 @@ export class NgbDropdown implements AfterContentInit, OnDestroy {
     const itemElements = this._getMenuElements();
 
     let position = -1;
-    let isEventFromItems = false;
-    let itemElement: HTMLElement = null;
+    let itemElement: HTMLElement | null = null;
     const isEventFromToggle = this._isEventFromToggle(event);
 
     if (!isEventFromToggle && itemElements.length) {
       itemElements.forEach((item, index) => {
         if (item.contains(event.target as HTMLElement)) {
-          isEventFromItems = true;
           itemElement = item;
         }
         if (item === this._document.activeElement) {
@@ -312,7 +310,7 @@ export class NgbDropdown implements AfterContentInit, OnDestroy {
 
     // closing on Enter / Space
     if (key === Key.Space || key === Key.Enter) {
-      if (isEventFromItems && (this.autoClose === true || this.autoClose === 'inside')) {
+      if (itemElement && (this.autoClose === true || this.autoClose === 'inside')) {
         // Item is either a button or a link, so click will be triggered by the browser on Enter or Space.
         // So we have to register a one-time click handler that will fire after any user defined click handlers
         // to close the dropdown
@@ -322,7 +320,7 @@ export class NgbDropdown implements AfterContentInit, OnDestroy {
     }
 
     // opening / navigating
-    if (isEventFromToggle || isEventFromItems) {
+    if (isEventFromToggle || itemElement) {
       this.open();
 
       if (itemElements.length) {
@@ -415,7 +413,7 @@ export class NgbDropdown implements AfterContentInit, OnDestroy {
     }
   }
 
-  private _applyPlacementClasses(placement?: Placement) {
+  private _applyPlacementClasses(placement?: Placement | null) {
     const menu = this._menu;
     if (menu) {
       if (!placement) {

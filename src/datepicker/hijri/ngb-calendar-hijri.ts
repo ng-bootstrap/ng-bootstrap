@@ -76,8 +76,8 @@ export abstract class NgbCalendarHijri extends NgbCalendar {
   getToday(): NgbDate { return this.fromGregorian(new Date()); }
 
 
-  isValid(date: NgbDate): boolean {
-    return date && isNumber(date.year) && isNumber(date.month) && isNumber(date.day) &&
+  isValid(date?: NgbDate | null): boolean {
+    return date != null && isNumber(date.year) && isNumber(date.month) && isNumber(date.day) &&
         !isNaN(this.toGregorian(date).getTime());
   }
 

@@ -36,7 +36,7 @@ describe('ngb-carousel', () => {
 
   it('should initialize inputs with default values', () => {
     const defaultConfig = new NgbCarouselConfig();
-    const carousel = new NgbCarousel(new NgbCarouselConfig(), null, null, null);
+    const carousel = new NgbCarousel(new NgbCarouselConfig(), null, <any>null, <any>null);
 
     expect(carousel.interval).toBe(defaultConfig.interval);
     expect(carousel.wrap).toBe(defaultConfig.wrap);

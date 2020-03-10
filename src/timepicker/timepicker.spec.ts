@@ -35,7 +35,7 @@ function getFieldsetElement(element: HTMLElement): HTMLFieldSetElement {
 }
 
 function getMeridianButton(nativeEl: HTMLElement) {
-  return nativeEl.querySelector('button.btn-outline-primary');
+  return nativeEl.querySelector('button.btn-outline-primary') !;
 }
 
 function createChangeEvent(value: string) {
@@ -45,7 +45,7 @@ function createChangeEvent(value: string) {
 function expectToDisplayTime(el: HTMLElement, time: string) {
   const inputs = getInputs(el);
   const timeParts = time.split(':');
-  let timeInInputs = [];
+  let timeInInputs: string[] = [];
 
   expect(inputs.length).toBe(timeParts.length);
 
@@ -91,7 +91,8 @@ describe('ngb-timepicker', () => {
   describe('initialization', () => {
     it('should initialize inputs with provided config', () => {
       const defaultConfig = new NgbTimepickerConfig();
-      const timepicker = new NgbTimepicker(new NgbTimepickerConfig(), new NgbTimeStructAdapter(), null, new TestI18n());
+      const timepicker =
+          new NgbTimepicker(new NgbTimepickerConfig(), new NgbTimeStructAdapter(), <any>null, new TestI18n());
       expectSameValues(timepicker, defaultConfig);
     });
   });
@@ -1280,12 +1281,16 @@ describe('ngb-timepicker', () => {
              .then(() => {
                const buttons = getButtons(fixture.nativeElement);
 
-               expect((<HTMLButtonElement>buttons[0]).querySelector('.sr-only').textContent).toBe('Increment hours');
-               expect((<HTMLButtonElement>buttons[1]).querySelector('.sr-only').textContent).toBe('Decrement hours');
-               expect((<HTMLButtonElement>buttons[2]).querySelector('.sr-only').textContent).toBe('Increment minutes');
-               expect((<HTMLButtonElement>buttons[3]).querySelector('.sr-only').textContent).toBe('Decrement minutes');
-               expect((<HTMLButtonElement>buttons[4]).querySelector('.sr-only').textContent).toBe('Increment seconds');
-               expect((<HTMLButtonElement>buttons[5]).querySelector('.sr-only').textContent).toBe('Decrement seconds');
+               expect((<HTMLButtonElement>buttons[0]).querySelector('.sr-only') !.textContent).toBe('Increment hours');
+               expect((<HTMLButtonElement>buttons[1]).querySelector('.sr-only') !.textContent).toBe('Decrement hours');
+               expect((<HTMLButtonElement>buttons[2]).querySelector('.sr-only') !.textContent)
+                   .toBe('Increment minutes');
+               expect((<HTMLButtonElement>buttons[3]).querySelector('.sr-only') !.textContent)
+                   .toBe('Decrement minutes');
+               expect((<HTMLButtonElement>buttons[4]).querySelector('.sr-only') !.textContent)
+                   .toBe('Increment seconds');
+               expect((<HTMLButtonElement>buttons[5]).querySelector('.sr-only') !.textContent)
+                   .toBe('Decrement seconds');
              });
        }));
 
@@ -1670,7 +1675,7 @@ class TestComponentOnPush {
 
 @Injectable()
 class StringTimeAdapter extends NgbTimeAdapter<string> {
-  fromModel(value: string): NgbTimeStruct {
+  fromModel(value: string): NgbTimeStruct | null {
     if (!value) {
       return null;
     }
@@ -1678,7 +1683,7 @@ class StringTimeAdapter extends NgbTimeAdapter<string> {
     return {hour: parseInt(split[0], 10), minute: parseInt(split[1], 10), second: parseInt(split[2], 10)};
   }
 
-  toModel(time: NgbTimeStruct): string {
+  toModel(time: NgbTimeStruct): string | null {
     if (!time) {
       return null;
     }

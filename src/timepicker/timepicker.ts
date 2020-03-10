@@ -104,7 +104,8 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
           <button type="button" class="btn btn-outline-primary" [class.btn-sm]="isSmallSize" [class.btn-lg]="isLargeSize"
             [disabled]="disabled" [class.disabled]="disabled"
                   (click)="toggleMeridian()">
-            <ng-container *ngIf="model?.hour >= 12; else am" i18n="@@ngb.timepicker.PM">{{ i18n.getAfternoonPeriod() }}</ng-container>
+            <ng-container *ngIf="model && model.hour >= 12; else am"
+                          i18n="@@ngb.timepicker.PM">{{ i18n.getAfternoonPeriod() }}</ng-container>
             <ng-template #am i18n="@@ngb.timepicker.AM">{{ i18n.getMorningPeriod() }}</ng-template>
           </button>
         </div>
@@ -255,7 +256,7 @@ export class NgbTimepicker implements ControlValueAccessor,
 
   formatInput(input: HTMLInputElement) { input.value = input.value.replace(FILTER_REGEX, ''); }
 
-  formatHour(value: number) {
+  formatHour(value?: number) {
     if (isNumber(value)) {
       if (this.meridian) {
         return padNumber(value % 12 === 0 ? 12 : value % 12);
@@ -267,7 +268,7 @@ export class NgbTimepicker implements ControlValueAccessor,
     }
   }
 
-  formatMinSec(value: number) { return padNumber(value); }
+  formatMinSec(value?: number) { return padNumber(isNumber(value) ? value : NaN); }
 
   get isSmallSize(): boolean { return this.size === 'small'; }
 

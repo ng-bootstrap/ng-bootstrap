@@ -179,6 +179,7 @@ export class NgbCalendarIslamicUmalqura extends NgbCalendarIslamicCivil {
           daysDiff = daysDiff - numOfDays;
         }
       }
+      return null as any;
     } else {
       return super.fromGregorian(gDate);
     }

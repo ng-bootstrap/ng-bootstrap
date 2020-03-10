@@ -104,9 +104,9 @@ export class NgbPanel implements AfterContentChecked {
    */
   @Input() cardClass: string;
 
-  titleTpl: NgbPanelTitle | null;
-  headerTpl: NgbPanelHeader | null;
-  contentTpl: NgbPanelContent | null;
+  titleTpl: NgbPanelTitle;
+  headerTpl: NgbPanelHeader;
+  contentTpl: NgbPanelContent;
 
   @ContentChildren(NgbPanelTitle, {descendants: false}) titleTpls: QueryList<NgbPanelTitle>;
   @ContentChildren(NgbPanelHeader, {descendants: false}) headerTpls: QueryList<NgbPanelHeader>;
@@ -171,7 +171,7 @@ export interface NgbPanelChangeEvent {
         <div id="{{panel.id}}" role="tabpanel" [attr.aria-labelledby]="panel.id + '-header'"
              class="collapse" [class.show]="panel.isOpen" *ngIf="!destroyOnHide || panel.isOpen">
           <div class="card-body">
-               <ng-template [ngTemplateOutlet]="panel.contentTpl?.templateRef"></ng-template>
+               <ng-template [ngTemplateOutlet]="panel.contentTpl?.templateRef || null"></ng-template>
           </div>
         </div>
       </div>
@@ -290,8 +290,8 @@ export class NgbAccordion implements AfterContentChecked {
     }
   }
 
-  private _changeOpenState(panel: NgbPanel, nextState: boolean) {
-    if (panel && !panel.disabled && panel.isOpen !== nextState) {
+  private _changeOpenState(panel: NgbPanel | null, nextState: boolean) {
+    if (panel != null && !panel.disabled && panel.isOpen !== nextState) {
       let defaultPrevented = false;
 
       this.panelChange.emit(
@@ -316,7 +316,7 @@ export class NgbAccordion implements AfterContentChecked {
     });
   }
 
-  private _findPanelById(panelId: string): NgbPanel | null { return this.panels.find(p => p.id === panelId); }
+  private _findPanelById(panelId: string): NgbPanel | null { return this.panels.find(p => p.id === panelId) || null; }
 
   private _updateActiveIds() {
     this.activeIds = this.panels.filter(panel => panel.isOpen && !panel.disabled).map(panel => panel.id);

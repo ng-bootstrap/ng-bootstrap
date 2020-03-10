@@ -175,7 +175,8 @@ export const positionService = new Positioning();
  * */
 export function positionElements(
     hostElement: HTMLElement, targetElement: HTMLElement, placement: string | Placement | PlacementArray,
-    appendToBody?: boolean, baseClass?: string): Placement {
+    appendToBody?: boolean, baseClass?: string): Placement |
+    null {
   let placementVals: Array<Placement> =
       Array.isArray(placement) ? placement : placement.split(placementSeparator) as Array<Placement>;
 
@@ -187,7 +188,7 @@ export function positionElements(
   const classList = targetElement.classList;
   const addClassesToTarget = (targetPlacement: Placement): Array<string> => {
     const[primary, secondary] = targetPlacement.split('-');
-    const classes = [];
+    const classes: string[] = [];
     if (baseClass) {
       classes.push(`${baseClass}-${primary}`);
       if (secondary) {
@@ -223,7 +224,7 @@ export function positionElements(
   style.left = '0';
   style['will-change'] = 'transform';
 
-  let testPlacement: Placement;
+  let testPlacement: Placement | null = null;
   let isInViewport = false;
   for (testPlacement of placementVals) {
     let addedClasses = addClassesToTarget(testPlacement);

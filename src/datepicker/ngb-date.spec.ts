@@ -8,9 +8,12 @@ describe('ngb-date', () => {
        () => { expect(NgbDate.from({year: 2010, month: 10, day: 2})).toEqual(new NgbDate(2010, 10, 2)); });
 
     it('should work with non-numeric values', () => {
-      expect(NgbDate.from({year: null, month: null, day: null})).toEqual(new NgbDate(null, null, null));
-      expect(NgbDate.from({year: undefined, month: undefined, day: undefined})).toEqual(new NgbDate(null, null, null));
-      expect(NgbDate.from({year: <any>'2010', month: <any>'10', day: <any>'2'})).toEqual(new NgbDate(null, null, null));
+      expect(NgbDate.from(<any>{year: null, month: null, day: null}))
+          .toEqual(new NgbDate(<any>null, <any>null, <any>null));
+      expect(NgbDate.from(<any>{year: undefined, month: undefined, day: undefined}))
+          .toEqual(new NgbDate(<any>null, <any>null, <any>null));
+      expect(NgbDate.from({year: <any>'2010', month: <any>'10', day: <any>'2'}))
+          .toEqual(new NgbDate(<any>null, <any>null, <any>null));
     });
 
     it('should return the same NgbDate object', () => {

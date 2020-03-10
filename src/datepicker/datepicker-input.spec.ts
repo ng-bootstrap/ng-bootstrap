@@ -229,7 +229,7 @@ describe('NgbInputDatepicker', () => {
          tick();
          expect(input.value).toBe('');
 
-         fixture.componentInstance.date = null;
+         fixture.componentInstance.date = <any>null;
          fixture.detectChanges();
          tick();
          expect(input.value).toBe('');
@@ -239,7 +239,7 @@ describe('NgbInputDatepicker', () => {
          tick();
          expect(input.value).toBe('');
 
-         fixture.componentInstance.date = undefined;
+         fixture.componentInstance.date = <any>undefined;
          fixture.detectChanges();
          tick();
          expect(input.value).toBe('');
@@ -249,17 +249,17 @@ describe('NgbInputDatepicker', () => {
          tick();
          expect(input.value).toBe('');
 
-         fixture.componentInstance.date = new NgbDate(2017, 2, null);
+         fixture.componentInstance.date = new NgbDate(2017, 2, <any>null);
          fixture.detectChanges();
          tick();
          expect(input.value).toBe('');
 
-         fixture.componentInstance.date = new NgbDate(2017, null, 5);
+         fixture.componentInstance.date = new NgbDate(2017, <any>null, 5);
          fixture.detectChanges();
          tick();
          expect(input.value).toBe('');
 
-         fixture.componentInstance.date = new NgbDate(null, 2, 5);
+         fixture.componentInstance.date = new NgbDate(<any>null, 2, 5);
          fixture.detectChanges();
          tick();
          expect(input.value).toBe('');
@@ -870,7 +870,7 @@ describe('NgbInputDatepicker', () => {
       fixture.detectChanges();
 
       expect(fixture.nativeElement.querySelector('ngb-datepicker')).toBeNull();
-      expect(document.querySelector(selector).querySelector('ngb-datepicker')).not.toBeNull();
+      expect(document.querySelector(selector) !.querySelector('ngb-datepicker')).not.toBeNull();
     });
 
     it('should properly destroy datepicker window when the "container" option is used', () => {
@@ -887,14 +887,14 @@ describe('NgbInputDatepicker', () => {
       fixture.detectChanges();
 
       expect(fixture.nativeElement.querySelector('ngb-datepicker')).toBeNull();
-      expect(document.querySelector(selector).querySelector('ngb-datepicker')).not.toBeNull();
+      expect(document.querySelector(selector) !.querySelector('ngb-datepicker')).not.toBeNull();
 
       // close date-picker
       buttons[1].click();  // close button
       fixture.detectChanges();
 
       expect(fixture.nativeElement.querySelector('ngb-datepicker')).toBeNull();
-      expect(document.querySelector(selector).querySelector('ngb-datepicker')).toBeNull();
+      expect(document.querySelector(selector) !.querySelector('ngb-datepicker')).toBeNull();
     });
 
     it('should add .ngb-dp-body class when attached to body', () => {
@@ -1138,12 +1138,12 @@ describe('NgbInputDatepicker', () => {
 
 @Injectable()
 class NgbDateNativeAdapter extends NgbDateAdapter<Date> {
-  fromModel(date: Date): NgbDateStruct {
+  fromModel(date: Date): NgbDateStruct | null {
     return (date && date.getFullYear) ? {year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate()} :
                                         null;
   }
 
-  toModel(date: NgbDateStruct): Date { return date ? new Date(date.year, date.month - 1, date.day) : null; }
+  toModel(date: NgbDateStruct): Date | null { return date ? new Date(date.year, date.month - 1, date.day) : null; }
 }
 
 @Component({selector: 'test-native-cmp', template: ''})

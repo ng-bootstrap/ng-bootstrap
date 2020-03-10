@@ -41,8 +41,8 @@ function expectPages(nativeEl: HTMLElement, pagesDef: string[], ellipsis = '...'
       expect(pages[i]).not.toHaveCssClass('active');
       expect(pages[i]).toHaveCssClass('disabled');
       expect(pages[i].getAttribute('aria-current')).toBeNull();
-      expect(pages[i].querySelector('a').getAttribute('tabindex')).toEqual('-1');
-      expect(pages[i].querySelector('a').hasAttribute('aria-disabled')).toBeTruthy();
+      expect(pages[i].querySelector('a') !.getAttribute('tabindex')).toEqual('-1');
+      expect(pages[i].querySelector('a') !.hasAttribute('aria-disabled')).toBeTruthy();
     }
   }
 }
@@ -55,8 +55,8 @@ function getList(nativeEl: HTMLElement) {
   return <HTMLUListElement>nativeEl.querySelector('ul');
 }
 
-function normalizeText(txt: string): string {
-  return txt.trim().replace(/\s+/g, ' ');
+function normalizeText(txt: string | null): string {
+  return txt != null ? txt.trim().replace(/\s+/g, ' ') : '';
 }
 
 function expectSameValues(pagination: NgbPagination, config: NgbPaginationConfig) {
@@ -84,49 +84,49 @@ describe('ngb-pagination', () => {
 
     it('should calculate and update no of pages (default page size)', () => {
       pagination.collectionSize = 100;
-      pagination.ngOnChanges(null);
+      pagination.ngOnChanges(<any>null);
       expect(pagination.pages.length).toEqual(10);
 
       pagination.collectionSize = 200;
-      pagination.ngOnChanges(null);
+      pagination.ngOnChanges(<any>null);
       expect(pagination.pages.length).toEqual(20);
     });
 
     it('should calculate and update no of pages (custom page size)', () => {
       pagination.collectionSize = 100;
       pagination.pageSize = 20;
-      pagination.ngOnChanges(null);
+      pagination.ngOnChanges(<any>null);
       expect(pagination.pages.length).toEqual(5);
 
       pagination.collectionSize = 200;
-      pagination.ngOnChanges(null);
+      pagination.ngOnChanges(<any>null);
       expect(pagination.pages.length).toEqual(10);
 
       pagination.pageSize = 10;
-      pagination.ngOnChanges(null);
+      pagination.ngOnChanges(<any>null);
       expect(pagination.pages.length).toEqual(20);
     });
 
     it('should allow setting a page within a valid range (default page size)', () => {
       pagination.collectionSize = 100;
       pagination.page = 2;
-      pagination.ngOnChanges(null);
+      pagination.ngOnChanges(<any>null);
       expect(pagination.page).toEqual(2);
     });
 
     it('should auto-correct page no if outside of valid range (default page size)', () => {
       pagination.collectionSize = 100;
       pagination.page = 100;
-      pagination.ngOnChanges(null);
+      pagination.ngOnChanges(<any>null);
       expect(pagination.page).toEqual(10);
 
       pagination.page = -100;
-      pagination.ngOnChanges(null);
+      pagination.ngOnChanges(<any>null);
       expect(pagination.page).toEqual(1);
 
       pagination.page = 5;
       pagination.collectionSize = 10;
-      pagination.ngOnChanges(null);
+      pagination.ngOnChanges(<any>null);
       expect(pagination.page).toEqual(1);
     });
 
@@ -134,7 +134,7 @@ describe('ngb-pagination', () => {
       pagination.collectionSize = 100;
       pagination.pageSize = 20;
       pagination.page = 2;
-      pagination.ngOnChanges(null);
+      pagination.ngOnChanges(<any>null);
       expect(pagination.page).toEqual(2);
     });
 
@@ -537,7 +537,7 @@ describe('ngb-pagination', () => {
       fixture.detectChanges();
       expectPages(fixture.nativeElement, ['-«', '+1', '2', '3', '4', '5', '»']);
 
-      fixture.componentInstance.maxSize = null;
+      fixture.componentInstance.maxSize = <any>null;
       fixture.detectChanges();
       expectPages(fixture.nativeElement, ['-«', '+1', '2', '3', '4', '5', '»']);
     });
@@ -554,7 +554,7 @@ describe('ngb-pagination', () => {
       fixture.detectChanges();
       expectPages(fixture.nativeElement, ['-«', '-»']);
 
-      fixture.componentInstance.collectionSize = null;
+      fixture.componentInstance.collectionSize = <any>null;
       fixture.detectChanges();
       expectPages(fixture.nativeElement, ['-«', '-»']);
     });
@@ -571,7 +571,7 @@ describe('ngb-pagination', () => {
       fixture.detectChanges();
       expectPages(fixture.nativeElement, ['-«', '-»']);
 
-      fixture.componentInstance.pageSize = null;
+      fixture.componentInstance.pageSize = <any>null;
       fixture.detectChanges();
       expectPages(fixture.nativeElement, ['-«', '-»']);
     });
@@ -591,7 +591,7 @@ describe('ngb-pagination', () => {
       fixture.componentInstance.page = NaN;
       expectPages(fixture.nativeElement, ['«', '1', '+2', '-»']);
 
-      fixture.componentInstance.page = null;
+      fixture.componentInstance.page = <any>null;
       expectPages(fixture.nativeElement, ['«', '1', '+2', '-»']);
     });
 
@@ -714,7 +714,7 @@ describe('ngb-pagination', () => {
       fixture.detectChanges();
       const firstPage = getLink(fixture.nativeElement, 2);
       expect(firstPage.parentElement).toHaveCssClass('disabled');
-      expect(firstPage.textContent.trim()).toBe('d1');
+      expect(firstPage.textContent !.trim()).toBe('d1');
     });
   });
 
