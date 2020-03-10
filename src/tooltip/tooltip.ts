@@ -136,7 +136,7 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
   private _ngbTooltip: string | TemplateRef<any>;
   private _ngbTooltipWindowId = `ngb-tooltip-${nextId++}`;
   private _popupService: PopupService<NgbTooltipWindow>;
-  private _windowRef: ComponentRef<NgbTooltipWindow>;
+  private _windowRef: ComponentRef<NgbTooltipWindow>| null = null;
   private _unregisterListenersFn;
   private _zoneSubscription: any;
 
@@ -259,7 +259,7 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 
   ngOnChanges({tooltipClass}: SimpleChanges) {
     if (tooltipClass && this.isOpen()) {
-      this._windowRef.instance.tooltipClass = tooltipClass.currentValue;
+      this._windowRef !.instance.tooltipClass = tooltipClass.currentValue;
     }
   }
 

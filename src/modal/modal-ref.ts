@@ -120,8 +120,8 @@ export class NgbModalRef {
       this._contentRef.viewRef.destroy();
     }
 
-    this._windowCmptRef = null;
-    this._backdropCmptRef = null;
-    this._contentRef = null;
+    this._windowCmptRef = <any>null;
+    this._backdropCmptRef = <any>null;
+    this._contentRef = <any>null;
   }
 }

@@ -68,7 +68,7 @@ describe('nav', () => {
   beforeEach(() => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbNavModule]}); });
 
   it('should initialize inputs with default values', inject([NgbNavConfig], config => {
-       const nav = new NgbNav('tablist', config, null);
+       const nav = new NgbNav('tablist', config, <any>null);
        expect(nav.destroyOnHide).toBe(config.destroyOnHide);
        expect(nav.roles).toBe(config.roles);
      }));

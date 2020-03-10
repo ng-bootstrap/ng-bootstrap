@@ -9,7 +9,7 @@ describe('ngb-date-native model adapter', () => {
 
     it('should convert invalid and incomplete values to null', () => {
       expect(adapter.fromModel(null)).toBeNull();
-      expect(adapter.fromModel(undefined)).toBeNull();
+      expect(adapter.fromModel(<any>undefined)).toBeNull();
       expect(adapter.fromModel(<any>'')).toBeNull();
       expect(adapter.fromModel(<any>'s')).toBeNull();
       expect(adapter.fromModel(<any>2)).toBeNull();
@@ -26,7 +26,7 @@ describe('ngb-date-native model adapter', () => {
 
     it('should convert invalid and incomplete values to null', () => {
       expect(adapter.toModel(null)).toBeNull();
-      expect(adapter.toModel(undefined)).toBeNull();
+      expect(adapter.toModel(<any>undefined)).toBeNull();
       expect(adapter.toModel(<any>'')).toBeNull();
       expect(adapter.toModel(<any>'s')).toBeNull();
       expect(adapter.toModel(<any>2)).toBeNull();

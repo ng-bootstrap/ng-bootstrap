@@ -82,11 +82,11 @@ describe('ngb-calendar-gregorian', () => {
 
   it('should properly recognize invalid javascript date', () => {
     expect(calendar.isValid(null)).toBeFalsy();
-    expect(calendar.isValid(undefined)).toBeFalsy();
+    expect(calendar.isValid(<any>undefined)).toBeFalsy();
     expect(calendar.isValid(<any>NaN)).toBeFalsy();
     expect(calendar.isValid(<any>new Date())).toBeFalsy();
-    expect(calendar.isValid(new NgbDate(null, null, null))).toBeFalsy();
-    expect(calendar.isValid(new NgbDate(undefined, undefined, undefined))).toBeFalsy();
+    expect(calendar.isValid(new NgbDate(<any>null, <any>null, <any>null))).toBeFalsy();
+    expect(calendar.isValid(new NgbDate(<any>undefined, <any>undefined, <any>undefined))).toBeFalsy();
     expect(calendar.isValid(new NgbDate(NaN, NaN, NaN))).toBeFalsy();
     expect(calendar.isValid(new NgbDate(<any>'2017', <any>'03', <any>'10'))).toBeFalsy();
   });

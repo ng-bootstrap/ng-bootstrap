@@ -58,7 +58,7 @@ function triggerKeyDown(element: DebugElement, keyCode: number, shiftKey = false
     stopPropagation: function() { this.propagationStopped = true; },
     preventDefault: function() { this.defaultPrevented = true; }
   };
-  expect(document.activeElement.classList.contains('ngb-dp-day'))
+  expect(document.activeElement !.classList.contains('ngb-dp-day'))
       .toBeTruthy('You must focus day before triggering key events');
   element.triggerEventHandler('keydown', event);
   return event;
@@ -68,7 +68,7 @@ function getMonthContainer(datepicker: DebugElement) {
   return datepicker.query(By.css('ngb-datepicker-month'));
 }
 
-function expectSelectedDate(element: DebugElement, selectedDate: NgbDate) {
+function expectSelectedDate(element: DebugElement, selectedDate: NgbDate | null) {
   // checking we have 1 day with .selected class
   const days = getSelectedDays(element);
 
@@ -77,7 +77,7 @@ function expectSelectedDate(element: DebugElement, selectedDate: NgbDate) {
 
     // checking it corresponds to our date
     const day = days[0];
-    const dayView = day.parent.query(By.directive(NgbDatepickerDayView)).componentInstance as NgbDatepickerDayView;
+    const dayView = day.parent !.query(By.directive(NgbDatepickerDayView)).componentInstance as NgbDatepickerDayView;
     expect(NgbDate.from(dayView.date)).toEqual(selectedDate);
   } else {
     expect(days.length).toBe(0);
@@ -191,12 +191,12 @@ describe('ngb-datepicker', () => {
     expect(getMonthSelect(fixture.nativeElement).value).toBe('8');
     expect(getYearSelect(fixture.nativeElement).value).toBe('2016');
 
-    fixture.componentInstance.date = null;
+    fixture.componentInstance.date = <any>null;
     fixture.detectChanges();
     expect(getMonthSelect(fixture.nativeElement).value).toBe(currentMonth);
     expect(getYearSelect(fixture.nativeElement).value).toBe(currentYear);
 
-    fixture.componentInstance.date = undefined;
+    fixture.componentInstance.date = <any>undefined;
     fixture.detectChanges();
     expect(getMonthSelect(fixture.nativeElement).value).toBe(currentMonth);
     expect(getYearSelect(fixture.nativeElement).value).toBe(currentYear);
@@ -318,12 +318,12 @@ describe('ngb-datepicker', () => {
     expectMinDate(1000, 1);
 
     // resetting
-    fixture.componentInstance.minDate = null;
+    fixture.componentInstance.minDate = <any>null;
     fixture.detectChanges();
     expectMinDate(1000, 1);
 
     // resetting
-    fixture.componentInstance.minDate = undefined;
+    fixture.componentInstance.minDate = <any>undefined;
     fixture.detectChanges();
     expectMinDate(1000, 1);
   });
@@ -357,12 +357,12 @@ describe('ngb-datepicker', () => {
     expectMaxDate(10000, 1);
 
     // resetting
-    fixture.componentInstance.maxDate = null;
+    fixture.componentInstance.maxDate = <any>null;
     fixture.detectChanges();
     expectMaxDate(10000, 1);
 
     // resetting
-    fixture.componentInstance.maxDate = undefined;
+    fixture.componentInstance.maxDate = <any>undefined;
     fixture.detectChanges();
     expectMaxDate(10000, 1);
   });
@@ -1234,8 +1234,8 @@ describe('ngb-datepicker', () => {
 
     it('should provide an defensive copy of minDate', () => {
       mv.onKeyDown(<KeyboardEvent>{});
-      expect(mockState.firstDate).toEqual(NgbDate.from({year: 2016, month: 8, day: 1}));
-      expect(mockState.lastDate).toEqual(NgbDate.from({year: 2016, month: 8, day: 31}));
+      expect(mockState.firstDate).toEqual(NgbDate.from({year: 2016, month: 8, day: 1}) !);
+      expect(mockState.lastDate).toEqual(NgbDate.from({year: 2016, month: 8, day: 31}) !);
       expect(mockState.minDate).toEqual(NgbDate.from({year: 2010, month: 1, day: 1}));
       expect(mockState.maxDate).toEqual(NgbDate.from({year: 2020, month: 12, day: 31}));
       Object.assign(mockState, {minDate: undefined});
@@ -1245,8 +1245,8 @@ describe('ngb-datepicker', () => {
 
     it('should provide an defensive copy of maxDate', () => {
       mv.onKeyDown(<KeyboardEvent>{});
-      expect(mockState.firstDate).toEqual(NgbDate.from({year: 2016, month: 8, day: 1}));
-      expect(mockState.lastDate).toEqual(NgbDate.from({year: 2016, month: 8, day: 31}));
+      expect(mockState.firstDate).toEqual(NgbDate.from({year: 2016, month: 8, day: 1}) !);
+      expect(mockState.lastDate).toEqual(NgbDate.from({year: 2016, month: 8, day: 31}) !);
       expect(mockState.minDate).toEqual(NgbDate.from({year: 2010, month: 1, day: 1}));
       expect(mockState.maxDate).toEqual(NgbDate.from({year: 2020, month: 12, day: 31}));
       Object.assign(mockState, {maxDate: undefined});
@@ -1256,8 +1256,8 @@ describe('ngb-datepicker', () => {
 
     it('should provide an defensive copy of firstDate', () => {
       mv.onKeyDown(<KeyboardEvent>{});
-      expect(mockState.firstDate).toEqual(NgbDate.from({year: 2016, month: 8, day: 1}));
-      expect(mockState.lastDate).toEqual(NgbDate.from({year: 2016, month: 8, day: 31}));
+      expect(mockState.firstDate).toEqual(NgbDate.from({year: 2016, month: 8, day: 1}) !);
+      expect(mockState.lastDate).toEqual(NgbDate.from({year: 2016, month: 8, day: 31}) !);
       expect(mockState.minDate).toEqual(NgbDate.from({year: 2010, month: 1, day: 1}));
       expect(mockState.maxDate).toEqual(NgbDate.from({year: 2020, month: 12, day: 31}));
       Object.assign(mockState, {firstDate: undefined});
@@ -1267,8 +1267,8 @@ describe('ngb-datepicker', () => {
 
     it('should provide an defensive copy of lastDate', () => {
       mv.onKeyDown(<KeyboardEvent>{});
-      expect(mockState.firstDate).toEqual(NgbDate.from({year: 2016, month: 8, day: 1}));
-      expect(mockState.lastDate).toEqual(NgbDate.from({year: 2016, month: 8, day: 31}));
+      expect(mockState.firstDate).toEqual(NgbDate.from({year: 2016, month: 8, day: 1}) !);
+      expect(mockState.lastDate).toEqual(NgbDate.from({year: 2016, month: 8, day: 31}) !);
       expect(mockState.minDate).toEqual(NgbDate.from({year: 2010, month: 1, day: 1}));
       expect(mockState.maxDate).toEqual(NgbDate.from({year: 2020, month: 12, day: 31}));
       Object.assign(mockState, {lastDate: undefined});
@@ -1278,7 +1278,7 @@ describe('ngb-datepicker', () => {
 
     it('should provide an defensive copy of focusedDate', () => {
       mv.onKeyDown(<KeyboardEvent>{});
-      expect(mockState.focusedDate).toEqual(NgbDate.from({year: 2016, month: 8, day: 1}));
+      expect(mockState.focusedDate).toEqual(NgbDate.from({year: 2016, month: 8, day: 1}) !);
       Object.assign(mockState, {focusedDate: undefined});
       mv.onKeyDown(<KeyboardEvent>{});
       expect(dp.model.focusDate).toEqual(NgbDate.from({year: 2016, month: 8, day: 1}));
@@ -1306,7 +1306,7 @@ class TestComponent {
   model;
   showWeekdays = true;
   dayTemplateData = () => '!';
-  markDisabled = (date: NgbDateStruct) => { return NgbDate.from(date).equals(new NgbDate(2016, 8, 22)); };
+  markDisabled = (date: NgbDateStruct) => { return NgbDate.from(date) !.equals(new NgbDate(2016, 8, 22)); };
   onNavigate = () => {};
   onDateSelect = () => {};
   getDate = () => ({year: 2016, month: 8});

@@ -69,8 +69,8 @@ describe('triggers', () => {
     });
 
     it('should ignore empty inputs', () => {
-      expect(parseTriggers(null).length).toBe(0);
-      expect(parseTriggers(undefined).length).toBe(0);
+      expect(parseTriggers(<any>null).length).toBe(0);
+      expect(parseTriggers(<any>undefined).length).toBe(0);
       expect(parseTriggers('').length).toBe(0);
     });
 
@@ -92,7 +92,7 @@ describe('triggers', () => {
     let subject$: Subject<boolean>;
     let delayed$: Observable<boolean>;
     let open: boolean;
-    let subscription: Subscription;
+    let subscription: Subscription | null = null;
     let spy: jasmine.Spy;
 
     beforeEach(() => {

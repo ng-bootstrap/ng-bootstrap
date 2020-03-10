@@ -41,7 +41,7 @@ import {ModalDismissReasons} from './modal-dismiss-reasons';
 export class NgbModalWindow implements OnInit,
     AfterViewInit, OnDestroy {
   private _closed$ = new Subject<void>();
-  private _elWithFocus: Element;  // element that is focused prior to modal opening
+  private _elWithFocus: Element | null = null;  // element that is focused prior to modal opening
 
   @ViewChild('dialog', {static: true}) private _dialogEl: ElementRef<HTMLElement>;
 

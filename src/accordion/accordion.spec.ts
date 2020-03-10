@@ -17,8 +17,12 @@ function getPanelsContent(element: HTMLElement): HTMLDivElement[] {
   return <HTMLDivElement[]>Array.from(element.querySelectorAll('.card > .collapse'));
 }
 
-function getPanelsTitle(element: HTMLElement): HTMLButtonElement[] {
+function getPanelsButton(element: HTMLElement): HTMLButtonElement[] {
   return <HTMLButtonElement[]>Array.from(element.querySelectorAll('.card > .card-header button'));
+}
+
+function getPanelsTitle(element: HTMLElement): string[] {
+  return getPanelsButton(element).map(button => button.textContent !.trim());
 }
 
 function getButton(element: HTMLElement, index: number): HTMLButtonElement {
@@ -30,16 +34,15 @@ function expectOpenPanels(nativeEl: HTMLElement, openPanelsDef: boolean[]) {
   const panels = getPanels(nativeEl);
   expect(panels.length).toBe(openPanelsDef.length);
 
-  const panelsTitles = getPanelsTitle(nativeEl);
-  const result = panelsTitles.map((titleEl: HTMLButtonElement) => {
+  const panelsButton = getPanelsButton(nativeEl);
+  const result = panelsButton.map(titleEl => {
     const isAriaExpanded = titleEl.getAttribute('aria-expanded') === 'true';
     const isCSSCollapsed = titleEl.classList.contains('collapsed');
     return isAriaExpanded === !isCSSCollapsed ? isAriaExpanded : fail('inconsistent state');
   });
 
   const panelContents = getPanelsContent(nativeEl);
-  panelContents.forEach(
-      (panelContent: HTMLDivElement) => { expect(panelContent.classList.contains('show')).toBeTruthy(); });
+  panelContents.forEach(panelContent => { expect(panelContent.classList.contains('show')).toBeTruthy(); });
 
   expect(panelContents.length).toBe(noOfOpenPanels);
   expect(result).toEqual(openPanelsDef);
@@ -203,8 +206,7 @@ describe('ngb-accordion', () => {
 
     const titles = getPanelsTitle(compiled);
     expect(titles.length).not.toBe(0);
-
-    titles.forEach((title: HTMLElement, idx: number) => { expect(title.textContent.trim()).toBe(`Panel ${idx + 1}`); });
+    titles.forEach((title, idx) => { expect(title).toBe(`Panel ${idx + 1}`); });
   });
 
   it('can use a title without template', () => {
@@ -219,8 +221,8 @@ describe('ngb-accordion', () => {
 
     fixture.detectChanges();
 
-    const title: HTMLElement = getPanelsTitle(fixture.nativeElement)[0];
-    expect(title.textContent.trim()).toBe('Panel 1');
+    const title = getPanelsTitle(fixture.nativeElement)[0];
+    expect(title).toBe('Panel 1');
   });
 
   it('can mix title and template', () => {
@@ -240,8 +242,7 @@ describe('ngb-accordion', () => {
     fixture.detectChanges();
 
     const titles = getPanelsTitle(fixture.nativeElement);
-
-    titles.forEach((title: HTMLElement, idx: number) => { expect(title.textContent.trim()).toBe(`Panel ${idx + 1}`); });
+    titles.forEach((title, idx) => { expect(title).toBe(`Panel ${idx + 1}`); });
   });
 
   it('can use header as a template', () => {
@@ -263,10 +264,10 @@ describe('ngb-accordion', () => {
     `;
     const fixture = createTestComponent(testHtml);
     const titles = getPanelsTitle(fixture.nativeElement);
-    titles.forEach((title: HTMLElement, idx: number) => { expect(title.textContent.trim()).toBe(`Title ${idx + 1}`); });
+    titles.forEach((title, idx) => { expect(title).toBe(`Title ${idx + 1}`); });
   });
 
-  it('can should pass context to a header template', () => {
+  it('should pass context to a header template', () => {
     const testHtml = `
     <ngb-accordion [activeIds]="activeIds">
      <ngb-panel id="one">
@@ -278,16 +279,17 @@ describe('ngb-accordion', () => {
     </ngb-accordion>
     `;
     const fixture = createTestComponent(testHtml);
-    const titleButton = getPanelsTitle(fixture.nativeElement)[0];
+    let title = getPanelsTitle(fixture.nativeElement)[0];
 
     expectOpenPanels(fixture.nativeElement, [false]);
-    expect(titleButton.textContent.trim()).toBe(`closed`);
+    expect(title).toBe(`closed`);
 
     fixture.componentInstance.activeIds = 'one';
     fixture.detectChanges();
 
+    title = getPanelsTitle(fixture.nativeElement)[0];
     expectOpenPanels(fixture.nativeElement, [true]);
-    expect(titleButton.textContent.trim()).toBe(`opened`);
+    expect(title).toBe(`opened`);
   });
 
   it('can should prefer header as a template to other ways of providing a title', () => {
@@ -310,8 +312,7 @@ describe('ngb-accordion', () => {
     `;
     const fixture = createTestComponent(testHtml);
     const titles = getPanelsTitle(fixture.nativeElement);
-    titles.forEach(
-        (title: HTMLElement, idx: number) => { expect(title.textContent.trim()).toBe(`Header Title ${idx + 1}`); });
+    titles.forEach((title, idx) => { expect(title).toBe(`Header Title ${idx + 1}`); });
   });
 
   it('should not pick up titles from nested accordions', () => {
@@ -333,9 +334,7 @@ describe('ngb-accordion', () => {
     // additional change detection is required to reproduce the problem in the test environment
     fixture.detectChanges();
 
-    const titles = getPanelsTitle(fixture.nativeElement);
-    const parentTitle = titles[0].textContent.trim();
-    const childTitle = titles[1].textContent.trim();
+    const[parentTitle, childTitle] = getPanelsTitle(fixture.nativeElement);
 
     expect(parentTitle).toContain('parent title');
     expect(parentTitle).not.toContain('child title');
@@ -354,7 +353,7 @@ describe('ngb-accordion', () => {
     const panelsContent = getPanelsContent(fixture.nativeElement);
 
     expect(panelsContent.length).toBe(1);
-    expect(panelsContent[0].textContent.trim()).toBe('');
+    expect(panelsContent[0].textContent !.trim()).toBe('');
   });
 
   it('should have the appropriate content', () => {
@@ -370,9 +369,9 @@ describe('ngb-accordion', () => {
     const contents = getPanelsContent(compiled);
     expect(contents.length).not.toBe(0);
 
-    contents.forEach((content: HTMLElement, idx: number) => {
+    contents.forEach((content, idx) => {
       expect(content.getAttribute('aria-labelledby')).toBe(`${content.id}-header`);
-      expect(content.textContent.trim()).toBe(originalContent[idx].content);
+      expect(content.textContent !.trim()).toBe(originalContent[idx].content);
     });
   });
 
@@ -388,7 +387,7 @@ describe('ngb-accordion', () => {
     const contents = getPanelsContent(compiled);
     expect(contents.length).not.toBe(0);
 
-    contents.forEach((content: HTMLElement) => {
+    contents.forEach(content => {
       expect(content).toHaveCssClass('collapse');
       expect(content).toHaveCssClass('show');
     });
@@ -400,7 +399,7 @@ describe('ngb-accordion', () => {
     tc.closeOthers = true;
     fixture.detectChanges();
 
-    const headingLinks = getPanelsTitle(fixture.nativeElement);
+    const headingLinks = getPanelsButton(fixture.nativeElement);
 
     headingLinks[0].click();
     fixture.detectChanges();
@@ -432,7 +431,7 @@ describe('ngb-accordion', () => {
     tc.panels[0].disabled = true;
     fixture.detectChanges();
 
-    const headingLinks = getPanelsTitle(fixture.nativeElement);
+    const headingLinks = getPanelsButton(fixture.nativeElement);
 
     headingLinks[0].click();
     fixture.detectChanges();
@@ -449,7 +448,7 @@ describe('ngb-accordion', () => {
     fixture.detectChanges();
     expectOpenPanels(el, [false, false, false]);
 
-    const headingLinks = getPanelsTitle(fixture.nativeElement);
+    const headingLinks = getPanelsButton(fixture.nativeElement);
 
     headingLinks[0].click();
     fixture.detectChanges();
@@ -483,7 +482,7 @@ describe('ngb-accordion', () => {
 
     tc.activeIds = ['one'];
     fixture.detectChanges();
-    const headingLinks = getPanelsTitle(fixture.nativeElement);
+    const headingLinks = getPanelsButton(fixture.nativeElement);
     expectOpenPanels(fixture.nativeElement, [true, false, false]);
     expect(headingLinks[0].disabled).toBeFalsy();
 
@@ -578,7 +577,7 @@ describe('ngb-accordion', () => {
     const fixture = TestBed.createComponent(TestComponent);
     fixture.detectChanges();
 
-    let changeEvent = null;
+    let changeEvent: NgbPanelChangeEvent | null = null;
     fixture.componentInstance.changeCallback = event => {
       changeEvent = event;
       event.preventDefault();
@@ -587,7 +586,7 @@ describe('ngb-accordion', () => {
     // Select the first tab -> toggle will be canceled
     getButton(fixture.nativeElement, 0).click();
     fixture.detectChanges();
-    expect(changeEvent).toEqual(jasmine.objectContaining({panelId: 'one', nextState: true}));
+    expect(changeEvent !).toEqual(jasmine.objectContaining({panelId: 'one', nextState: true}));
     expectOpenPanels(fixture.nativeElement, [false, false, false]);
   });
 
@@ -635,10 +634,10 @@ describe('ngb-accordion', () => {
     fixture.detectChanges();
 
     const headers = getPanels(fixture.nativeElement);
-    headers.forEach((header: HTMLElement) => expect(header.getAttribute('role')).toBe('tab'));
+    headers.forEach(header => expect(header.getAttribute('role')).toBe('tab'));
 
     const contents = getPanelsContent(fixture.nativeElement);
-    contents.forEach((content: HTMLElement) => expect(content.getAttribute('role')).toBe('tabpanel'));
+    contents.forEach(content => expect(content.getAttribute('role')).toBe('tabpanel'));
   });
 
   describe('Custom config', () => {

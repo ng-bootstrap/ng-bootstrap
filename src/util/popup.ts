@@ -14,8 +14,8 @@ export class ContentRef {
 }
 
 export class PopupService<T> {
-  private _windowRef: ComponentRef<T>;
-  private _contentRef: ContentRef;
+  private _windowRef: ComponentRef<T>| null = null;
+  private _contentRef: ContentRef | null = null;
 
   constructor(
       private _type: any, private _injector: Injector, private _viewContainerRef: ViewContainerRef,
@@ -38,7 +38,7 @@ export class PopupService<T> {
       this._viewContainerRef.remove(this._viewContainerRef.indexOf(this._windowRef.hostView));
       this._windowRef = null;
 
-      if (this._contentRef.viewRef) {
+      if (this._contentRef?.viewRef) {
         this._applicationRef.detachView(this._contentRef.viewRef);
         this._contentRef.viewRef.destroy();
         this._contentRef = null;
@@ -46,7 +46,7 @@ export class PopupService<T> {
     }
   }
 
-  private _getContentRef(content: string | TemplateRef<any>, context?: any): ContentRef {
+  private _getContentRef(content?: string | TemplateRef<any>, context?: any): ContentRef {
     if (!content) {
       return new ContentRef([]);
     } else if (content instanceof TemplateRef) {

@@ -1,5 +1,6 @@
 import {Observable, merge} from 'rxjs';
 import {share, filter, delay, map} from 'rxjs/operators';
+import {Renderer2} from '@angular/core';
 
 export class Trigger {
   constructor(public open: string, public close?: string) {
@@ -41,9 +42,10 @@ export function parseTriggers(triggers: string, aliases = DEFAULT_ALIASES): Trig
   return parsedTriggers;
 }
 
-export function observeTriggers(renderer: any, nativeElement: any, triggers: Trigger[], isOpenedFn: () => boolean) {
+export function observeTriggers(
+    renderer: Renderer2, nativeElement: HTMLElement, triggers: Trigger[], isOpenedFn: () => boolean) {
   return new Observable<boolean>(subscriber => {
-    const listeners = [];
+    const listeners: Function[] = [];
     const openFn = () => subscriber.next(true);
     const closeFn = () => subscriber.next(false);
     const toggleFn = () => subscriber.next(!isOpenedFn());
@@ -54,7 +56,7 @@ export function observeTriggers(renderer: any, nativeElement: any, triggers: Tri
       } else {
         listeners.push(
             renderer.listen(nativeElement, trigger.open, openFn),
-            renderer.listen(nativeElement, trigger.close, closeFn));
+            renderer.listen(nativeElement, trigger.close !, closeFn));
       }
     });
 
@@ -66,7 +68,7 @@ const delayOrNoop = <T>(time: number) => time > 0 ? delay<T>(time) : (a: Observa
 
 export function triggerDelay(openDelay: number, closeDelay: number, isOpenedFn: () => boolean) {
   return (input$: Observable<boolean>) => {
-    let pending = null;
+    let pending: {open: boolean} | null = null;
     const filteredInput$ = input$.pipe(
         map(open => ({open})), filter(event => {
           const currentlyOpen = isOpenedFn();
@@ -96,8 +98,8 @@ export function triggerDelay(openDelay: number, closeDelay: number, isOpenedFn: 
 }
 
 export function listenToTriggers(
-    renderer: any, nativeElement: any, triggers: string, isOpenedFn: () => boolean, openFn, closeFn, openDelay = 0,
-    closeDelay = 0) {
+    renderer: Renderer2, nativeElement: HTMLElement, triggers: string, isOpenedFn: () => boolean, openFn: Function,
+    closeFn: Function, openDelay = 0, closeDelay = 0) {
   const parsedTriggers = parseTriggers(triggers);
 
   if (parsedTriggers.length === 1 && parsedTriggers[0].isManual()) {

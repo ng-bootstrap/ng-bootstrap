@@ -19,7 +19,7 @@ function getBarHeight(nativeEl): string {
 }
 
 function getBarValue(nativeEl): number {
-  return parseInt(getProgressbar(nativeEl).getAttribute('aria-valuenow'), 10);
+  return parseInt(getProgressbar(nativeEl).getAttribute('aria-valuenow') !, 10);
 }
 
 function getProgressbar(nativeEl: Element): HTMLElement {
@@ -60,14 +60,14 @@ describe('ngb-progressbar', () => {
     });
 
     it('should calculate the percentage (custom max size of null)', () => {
-      progressCmp.max = null;
+      progressCmp.max = <any>null;
 
       progressCmp.value = 25;
       expect(progressCmp.getPercentValue()).toBe(25);
     });
 
     it('should calculate the percentage (custom max size of undefined)', () => {
-      progressCmp.max = undefined;
+      progressCmp.max = <any>undefined;
 
       progressCmp.value = 25;
       expect(progressCmp.getPercentValue()).toBe(25);

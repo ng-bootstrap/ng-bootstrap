@@ -29,7 +29,7 @@ describe('ngb-tooltip-window', () => {
     // Cleaning elements, because of a TestBed issue with the id attribute
     Array.from(document.body.children).map((element: HTMLElement) => {
       if (element.tagName.toLocaleLowerCase() === 'div') {
-        element.parentNode.removeChild(element);
+        element.parentNode !.removeChild(element);
       }
     });
   });
@@ -645,7 +645,7 @@ describe('ngb-tooltip', () => {
 
 @Component({selector: 'test-cmpt', template: ``})
 export class TestComponent {
-  name = 'World';
+  name: string | null = 'World';
   show = true;
   tooltipClass = 'my-tooltip-class';
 

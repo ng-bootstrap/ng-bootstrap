@@ -24,12 +24,12 @@ export abstract class NgbTimeAdapter<T> {
   /**
    * Converts a user-model time of type `T` to an `NgbTimeStruct` for internal use.
    */
-  abstract fromModel(value: T): NgbTimeStruct;
+  abstract fromModel(value: T | null): NgbTimeStruct | null;
 
   /**
    * Converts an internal `NgbTimeStruct` time to a user-model time of type `T`.
    */
-  abstract toModel(time: NgbTimeStruct): T;
+  abstract toModel(time: NgbTimeStruct | null): T | null;
 }
 
 @Injectable()
@@ -37,18 +37,18 @@ export class NgbTimeStructAdapter extends NgbTimeAdapter<NgbTimeStruct> {
   /**
    * Converts a NgbTimeStruct value into NgbTimeStruct value
    */
-  fromModel(time: NgbTimeStruct): NgbTimeStruct {
+  fromModel(time: NgbTimeStruct | null): NgbTimeStruct | null {
     return (time && isInteger(time.hour) && isInteger(time.minute)) ?
-        {hour: time.hour, minute: time.minute, second: isInteger(time.second) ? time.second : null} :
+        {hour: time.hour, minute: time.minute, second: isInteger(time.second) ? time.second : <any>null} :
         null;
   }
 
   /**
    * Converts a NgbTimeStruct value into NgbTimeStruct value
    */
-  toModel(time: NgbTimeStruct): NgbTimeStruct {
+  toModel(time: NgbTimeStruct | null): NgbTimeStruct | null {
     return (time && isInteger(time.hour) && isInteger(time.minute)) ?
-        {hour: time.hour, minute: time.minute, second: isInteger(time.second) ? time.second : null} :
+        {hour: time.hour, minute: time.minute, second: isInteger(time.second) ? time.second : <any>null} :
         null;
   }
 }

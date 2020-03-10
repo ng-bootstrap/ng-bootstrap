@@ -36,7 +36,7 @@ describe('ngb-popover-window', () => {
     // Cleaning elements, because of a TestBed issue with the id attribute
     Array.from(document.body.children).map((element: HTMLElement) => {
       if (element.tagName.toLocaleLowerCase() === 'div') {
-        element.parentNode.removeChild(element);
+        element.parentNode !.removeChild(element);
       }
     });
   });

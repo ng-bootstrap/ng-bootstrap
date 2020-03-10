@@ -85,7 +85,7 @@ export abstract class NgbCalendar {
   /**
    * Checks if a date is valid in the current calendar.
    */
-  abstract isValid(date: NgbDate): boolean;
+  abstract isValid(date?: NgbDate | null): boolean;
 }
 
 @Injectable()
@@ -158,7 +158,7 @@ export class NgbCalendarGregorian extends NgbCalendar {
 
   getToday(): NgbDate { return fromJSDate(new Date()); }
 
-  isValid(date: NgbDate): boolean {
+  isValid(date?: NgbDate | null): boolean {
     if (!date || !isInteger(date.year) || !isInteger(date.month) || !isInteger(date.day)) {
       return false;
     }

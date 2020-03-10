@@ -39,7 +39,7 @@ export class NgbDate implements NgbDateStruct {
    *
    * If the `date` is already of `NgbDate` type, the method will return the same object.
    */
-  static from(date: NgbDateStruct): NgbDate {
+  static from(date?: NgbDateStruct | null): NgbDate | null {
     if (date instanceof NgbDate) {
       return date;
     }
@@ -47,22 +47,22 @@ export class NgbDate implements NgbDateStruct {
   }
 
   constructor(year: number, month: number, day: number) {
-    this.year = isInteger(year) ? year : null;
-    this.month = isInteger(month) ? month : null;
-    this.day = isInteger(day) ? day : null;
+    this.year = isInteger(year) ? year : <any>null;
+    this.month = isInteger(month) ? month : <any>null;
+    this.day = isInteger(day) ? day : <any>null;
   }
 
   /**
    * Checks if the current date is equal to another date.
    */
-  equals(other: NgbDateStruct): boolean {
-    return other && this.year === other.year && this.month === other.month && this.day === other.day;
+  equals(other?: NgbDateStruct | null): boolean {
+    return other != null && this.year === other.year && this.month === other.month && this.day === other.day;
   }
 
   /**
    * Checks if the current date is before another date.
    */
-  before(other: NgbDateStruct): boolean {
+  before(other?: NgbDateStruct | null): boolean {
     if (!other) {
       return false;
     }
@@ -81,7 +81,7 @@ export class NgbDate implements NgbDateStruct {
   /**
    * Checks if the current date is after another date.
    */
-  after(other: NgbDateStruct): boolean {
+  after(other?: NgbDateStruct | null): boolean {
     if (!other) {
       return false;
     }

@@ -687,9 +687,9 @@ describe('ngb-modal', () => {
            const modalInstance = a11yFixture.componentInstance.open();
            a11yFixture.detectChanges();
 
-           const modal = document.querySelector('ngb-modal-window');
-           const backdrop = document.querySelector('ngb-modal-backdrop');
-           const application = document.querySelector('div[ng-version]');
+           const modal = document.querySelector('ngb-modal-window') !;
+           const backdrop = document.querySelector('ngb-modal-backdrop') !;
+           const application = document.querySelector('div[ng-version]') !;
            let ariaHidden = document.querySelectorAll('[aria-hidden]');
 
            expect(ariaHidden.length).toBeGreaterThan(2);  // 2 exist in the DOM initially
@@ -713,11 +713,11 @@ describe('ngb-modal', () => {
            const modalInstance = a11yFixture.componentInstance.open({container: '#container'});
            a11yFixture.detectChanges();
 
-           const modal = document.querySelector('ngb-modal-window');
-           const backdrop = document.querySelector('ngb-modal-backdrop');
-           const application = document.querySelector('div[ng-version]');
-           const ariaRestoreTrue = document.querySelector('.to-restore-true');
-           const ariaRestoreFalse = document.querySelector('.to-restore-false');
+           const modal = document.querySelector('ngb-modal-window') !;
+           const backdrop = document.querySelector('ngb-modal-backdrop') !;
+           const application = document.querySelector('div[ng-version]') !;
+           const ariaRestoreTrue = document.querySelector('.to-restore-true') !;
+           const ariaRestoreFalse = document.querySelector('.to-restore-false') !;
 
            expect(document.body.hasAttribute('aria-hidden')).toBe(false);
            expect(application.hasAttribute('aria-hidden')).toBe(false);

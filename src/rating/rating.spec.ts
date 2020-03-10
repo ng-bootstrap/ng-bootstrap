@@ -38,12 +38,12 @@ function getDbgStar(element, num: number) {
 
 function getState(element: DebugElement | HTMLElement) {
   const stars = getStars(element instanceof DebugElement ? element.nativeElement : element);
-  return stars.map(star => star.textContent.trim() === String.fromCharCode(9733));
+  return stars.map(star => star.textContent !.trim() === String.fromCharCode(9733));
 }
 
 function getStateText(compiled) {
   const stars = getStars(compiled);
-  return stars.map(star => star.textContent.trim());
+  return stars.map(star => star.textContent !.trim());
 }
 
 describe('ngb-rating', () => {
@@ -54,7 +54,7 @@ describe('ngb-rating', () => {
 
   it('should initialize inputs with default values', () => {
     const defaultConfig = new NgbRatingConfig();
-    const rating = new NgbRating(new NgbRatingConfig(), null);
+    const rating = new NgbRating(new NgbRatingConfig(), <any>null);
     expect(rating.max).toBe(defaultConfig.max);
     expect(rating.readonly).toBe(defaultConfig.readonly);
   });
@@ -672,7 +672,7 @@ describe('ngb-rating', () => {
          fixture.detectChanges();
          tick();
          expect(getState(element.nativeElement)).toEqual([true, true, true, true, false]);
-         expect(fixture.componentInstance.form.get('rating').value).toBe(4);
+         expect(fixture.componentInstance.form.get('rating') !.value).toBe(4);
          expect(element.nativeElement).toHaveCssClass('ng-valid');
        }));
 
@@ -686,11 +686,11 @@ describe('ngb-rating', () => {
          const element = fixture.debugElement.query(By.directive(NgbRating));
 
          expect(getState(element.nativeElement)).toEqual([false, false, false, false, false]);
-         expect(fixture.componentInstance.form.get('rating').disabled).toBeFalsy();
+         expect(fixture.componentInstance.form.get('rating') !.disabled).toBeFalsy();
 
-         fixture.componentInstance.form.get('rating').disable();
+         fixture.componentInstance.form.get('rating') !.disable();
          fixture.detectChanges();
-         expect(fixture.componentInstance.form.get('rating').disabled).toBeTruthy();
+         expect(fixture.componentInstance.form.get('rating') !.disabled).toBeTruthy();
 
          getStar(element.nativeElement, 3).click();
          fixture.detectChanges();

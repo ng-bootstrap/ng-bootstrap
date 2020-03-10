@@ -24,7 +24,7 @@ import {NgbModalWindow} from './modal-window';
 @Injectable({providedIn: 'root'})
 export class NgbModalStack {
   private _activeWindowCmptHasChanged = new Subject();
-  private _ariaHiddenValues: Map<Element, string> = new Map();
+  private _ariaHiddenValues: Map<Element, string | null> = new Map();
   private _backdropAttributes = ['backdropClass'];
   private _modalRefs: NgbModalRef[] = [];
   private _windowAttributes =
@@ -67,8 +67,8 @@ export class NgbModalStack {
     const contentRef =
         this._getContentRef(moduleCFR, options.injector || contentInjector, content, activeModal, options);
 
-    let backdropCmptRef: ComponentRef<NgbModalBackdrop> =
-        options.backdrop !== false ? this._attachBackdrop(moduleCFR, containerEl) : null;
+    let backdropCmptRef: ComponentRef<NgbModalBackdrop>| undefined =
+        options.backdrop !== false ? this._attachBackdrop(moduleCFR, containerEl) : undefined;
     let windowCmptRef: ComponentRef<NgbModalWindow> = this._attachWindowComponent(moduleCFR, containerEl, contentRef);
     let ngbModalRef: NgbModalRef = new NgbModalRef(windowCmptRef, contentRef, backdropCmptRef, options.beforeDismiss);
 

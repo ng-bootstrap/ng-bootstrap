@@ -32,7 +32,7 @@ export class NgbHighlight implements OnChanges {
    * If the `term` is found inside this text, it will be highlighted.
    * If the `term` contains array then all the items from it will be highlighted inside the text.
    */
-  @Input() result: string;
+  @Input() result?: string | null;
 
   /**
    * The term or array of terms to be highlighted.

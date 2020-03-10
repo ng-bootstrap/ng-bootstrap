@@ -53,9 +53,12 @@ function getDaysInHebrewYear(year: number): number {
   return numberOfFirstDayInYear(year + 1) - numberOfFirstDayInYear(year);
 }
 
-export function isHebrewLeapYear(year: number): boolean {
-  let b = (year * 12 + 17) % 19;
-  return b >= ((b < 0) ? -7 : 12);
+export function isHebrewLeapYear(year?: number): boolean {
+  if (year != null) {
+    let b = (year * 12 + 17) % 19;
+    return b >= ((b < 0) ? -7 : 12);
+  }
+  return false;
 }
 
 /**
@@ -259,7 +262,7 @@ export function hebrewNumerals(numerals: number): string {
   ];
   const geresh = '\u05f3', gershaim = '\u05f4';
   let mem = 0;
-  let result = [];
+  let result: string[] = [];
   let step = 0;
   while (numerals > 0) {
     let m = numerals % 10;

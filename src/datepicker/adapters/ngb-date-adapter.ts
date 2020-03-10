@@ -23,12 +23,12 @@ export abstract class NgbDateAdapter<D> {
   /**
    * Converts a user-model date of type `D` to an `NgbDateStruct` for internal use.
    */
-  abstract fromModel(value: D): NgbDateStruct;
+  abstract fromModel(value: D | null): NgbDateStruct | null;
 
   /**
    * Converts an internal `NgbDateStruct` date to a user-model date of type `D`.
    */
-  abstract toModel(date: NgbDateStruct): D;
+  abstract toModel(date: NgbDateStruct | null): D | null;
 }
 
 @Injectable()
@@ -36,7 +36,7 @@ export class NgbDateStructAdapter extends NgbDateAdapter<NgbDateStruct> {
   /**
    * Converts a NgbDateStruct value into NgbDateStruct value
    */
-  fromModel(date: NgbDateStruct): NgbDateStruct {
+  fromModel(date: NgbDateStruct | null): NgbDateStruct | null {
     return (date && isInteger(date.year) && isInteger(date.month) && isInteger(date.day)) ?
         {year: date.year, month: date.month, day: date.day} :
         null;
@@ -45,7 +45,7 @@ export class NgbDateStructAdapter extends NgbDateAdapter<NgbDateStruct> {
   /**
    * Converts a NgbDateStruct value into NgbDateStruct value
    */
-  toModel(date: NgbDateStruct): NgbDateStruct {
+  toModel(date: NgbDateStruct | null): NgbDateStruct | null {
     return (date && isInteger(date.year) && isInteger(date.month) && isInteger(date.day)) ?
         {year: date.year, month: date.month, day: date.day} :
         null;

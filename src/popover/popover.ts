@@ -160,7 +160,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 
   private _ngbPopoverWindowId = `ngb-popover-${nextId++}`;
   private _popupService: PopupService<NgbPopoverWindow>;
-  private _windowRef: ComponentRef<NgbPopoverWindow>;
+  private _windowRef: ComponentRef<NgbPopoverWindow>| null = null;
   private _unregisterListenersFn;
   private _zoneSubscription: any;
   private _isDisabled(): boolean {
@@ -278,7 +278,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 
   ngOnChanges({ngbPopover, popoverTitle, disablePopover, popoverClass}: SimpleChanges) {
     if (popoverClass && this.isOpen()) {
-      this._windowRef.instance.popoverClass = popoverClass.currentValue;
+      this._windowRef !.instance.popoverClass = popoverClass.currentValue;
     }
     // close popover if title and content become empty, or disablePopover set to true
     if ((ngbPopover || popoverTitle || disablePopover) && this._isDisabled()) {
