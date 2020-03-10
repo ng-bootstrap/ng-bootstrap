@@ -26,7 +26,7 @@ import { Component } from '@angular/core';
       </span>
     </ng-template>
 
-    <ngb-rating [(rate)]="currentRate" [starTemplate]="t" [readonly]="true" max="5"></ngb-rating>
+    <ngb-rating [(rate)]="currentRate" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating>
   `
 })
 export class RatingComponent {
