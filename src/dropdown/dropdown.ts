@@ -390,6 +390,7 @@ export class NgbDropdown implements AfterContentInit, OnDestroy {
       renderer.appendChild(dropdownElement, dropdownMenuElement);
       renderer.removeStyle(dropdownMenuElement, 'position');
       renderer.removeStyle(dropdownMenuElement, 'transform');
+      renderer.removeStyle(dropdownMenuElement, 'overflow');
     }
     if (this._bodyContainer) {
       renderer.removeChild(this._document.body, this._bodyContainer);
