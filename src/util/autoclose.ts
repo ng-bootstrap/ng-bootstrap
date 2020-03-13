@@ -10,26 +10,12 @@ const isContainedIn = (element: HTMLElement, array?: HTMLElement[]) =>
 const matchesSelectorIfAny = (element: HTMLElement, selector?: string) =>
     !selector || closest(element, selector) != null;
 
-// we have to add a more significant delay to avoid re-opening when handling (click) on a toggling element
-// TODO: use proper Angular platform detection when NgbAutoClose becomes a service and we can inject PLATFORM_ID
-const isMobile = (() => {
-  const isIOS = () => /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-      (/Macintosh/.test(navigator.userAgent) && navigator.maxTouchPoints && navigator.maxTouchPoints > 2);
-  const isAndroid = () => /Android/.test(navigator.userAgent);
-
-  return typeof navigator !== 'undefined' ? !!navigator.userAgent && (isIOS() || isAndroid()) : false;
-})();
-
-// setting 'ngbAutoClose' synchronously on mobile results in immediate popup closing
-// when tapping on the triggering element
-const wrapAsyncForMobile = fn => isMobile ? () => setTimeout(() => fn(), 100) : fn;
-
 export function ngbAutoClose(
     zone: NgZone, document: any, type: boolean | 'inside' | 'outside', close: () => void, closed$: Observable<any>,
     insideElements: HTMLElement[], ignoreElements?: HTMLElement[], insideSelector?: string) {
   // closing on ESC and outside clicks
   if (type) {
-    zone.runOutsideAngular(wrapAsyncForMobile(() => {
+    zone.runOutsideAngular(() => {
 
       const shouldCloseOnClick = (event: MouseEvent) => {
         const element = event.target as HTMLElement;
@@ -64,6 +50,6 @@ export function ngbAutoClose(
 
 
       race<Event>([escapes$, closeableClicks$]).subscribe(() => zone.run(close));
-    }));
+    });
   }
 }
