@@ -23,7 +23,9 @@ describe('Positioning', () => {
 
   function checkPosition(el: HTMLElement, top: number, left: number) {
     const transform = el.style.transform;
+    const overflow = el.style.overflow;
     expect(transform).toBe(`translate(${left}px, ${top}px)`);
+    expect(overflow).toBe(`hidden`);
   }
 
   let element, targetElement, positioning, documentMargin, bodyMargin;

@@ -147,6 +147,7 @@ export class Positioning {
     /// The translate3d/gpu acceleration render a blurry text on chrome, the next line is commented until a browser fix
     // targetElement.style.transform = `translate3d(${Math.round(leftPosition)}px, ${Math.floor(topPosition)}px, 0px)`;
     targetElement.style.transform = `translate(${Math.round(leftPosition)}px, ${Math.round(topPosition)}px)`;
+    targetElement.style.overflow = `hidden`;
 
     // Check if the targetElement is inside the viewport
     const targetElBCR = targetElement.getBoundingClientRect();
