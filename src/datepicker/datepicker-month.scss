@@ -35,6 +35,7 @@ ngb-datepicker-month {
     &.disabled,
     &.hidden {
       cursor: default;
+      pointer-events: none;
     }
 
     &[tabindex="0"] {
