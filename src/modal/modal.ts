@@ -31,6 +31,11 @@ export class NgbModal {
   }
 
   /**
+   * Returns an observable that holds the active modal instances.
+   */
+  get activeInstances() { return this._modalStack.activeInstances; }
+
+  /**
    * Dismisses all currently displayed modal windows with the supplied reason.
    *
    * @since 3.1.0

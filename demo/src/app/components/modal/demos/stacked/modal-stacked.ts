@@ -53,7 +53,13 @@ export class NgbdModal2Content {
   templateUrl: './modal-stacked.html'
 })
 export class NgbdModalStacked {
-  constructor(private modalService: NgbModal) {}
+  modalsNumber = 0;
+
+  constructor(private modalService: NgbModal) {
+    this.modalService.activeInstances.subscribe((list) => {
+      this.modalsNumber = list.length;
+    });
+  }
 
   open() {
     this.modalService.open(NgbdModal1Content);
