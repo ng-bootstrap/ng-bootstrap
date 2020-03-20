@@ -1,3 +1,16 @@
+## [6.0.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/6.0.0...6.0.1) (2020-03-20)
+
+Mostly technical release that improves compatibility with 'strictTemplates' and 'strictNullChecks'
+
+### Bug Fixes
+
+* support 'strictTemplates' flag for public API ([#3623](https://github.com/ng-bootstrap/ng-bootstrap/issues/3623)) ([eef5422](https://github.com/ng-bootstrap/ng-bootstrap/commit/eef5422b7c3e616233e68ee90bc60f73b72c2331)), closes [#3619](https://github.com/ng-bootstrap/ng-bootstrap/issues/3619)
+* improve compatibility with 'strictNullChecks' ([0b16754](https://github.com/ng-bootstrap/ng-bootstrap/commit/0b1675450b3b07b8f1eeb621872442743fdec5ba)), closes [#1544](https://github.com/ng-bootstrap/ng-bootstrap/issues/1544)
+* **datepicker:** disabled datepicker should not be clickable/focusable ([51c940b](https://github.com/ng-bootstrap/ng-bootstrap/commit/51c940b1cffc2af35b6ddb43152ee04cf019620a)), closes [#3648](https://github.com/ng-bootstrap/ng-bootstrap/issues/3648)
+* **dropdown:** avoid adding vertical scrollbars ([#3644](https://github.com/ng-bootstrap/ng-bootstrap/issues/3644)) ([05efeb7](https://github.com/ng-bootstrap/ng-bootstrap/commit/05efeb77077bb7faf6983fb03563272a5ce94b9d))
+
+
+
 # [6.0.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/6.0.0-rc.0...6.0.0) (2020-02-21)
 
 This major release officially adds Angular 9 and ivy support. 
