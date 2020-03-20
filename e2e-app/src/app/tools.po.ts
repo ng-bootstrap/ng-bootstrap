@@ -35,7 +35,7 @@ export const offsetClick = async(el: ElementFinder, offset) => {
  */
 export const expectFocused = async(el: ElementFinder, message: string) => {
   await browser.wait(
-      () => { return WebElement.equals(el.getWebElement(), browser.driver.switchTo().activeElement()); }, 0, message);
+      () => { return WebElement.equals(el.getWebElement(), browser.driver.switchTo().activeElement()); }, 100, message);
 };
 
 /**

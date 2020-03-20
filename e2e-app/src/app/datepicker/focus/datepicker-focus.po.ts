@@ -8,4 +8,6 @@ export class DatepickerFocusPage extends DatepickerPage {
     await $('#start-date-dropdown').click();
     await $(`#start-date-${type}`).click();
   }
+
+  async disableDatepicker() { await $('#disable').click(); }
 }

@@ -4,4 +4,5 @@ import {Component} from '@angular/core';
 export class DatepickerFocusComponent {
   model = null;
   startDate = null;
+  disabled = false;
 }

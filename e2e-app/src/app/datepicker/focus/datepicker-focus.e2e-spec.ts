@@ -1,5 +1,5 @@
 import {Key} from 'protractor';
-import {expectFocused, sendKey, openUrl} from '../../tools.po';
+import {expectFocused, openUrl, sendKey} from '../../tools.po';
 import {DatepickerFocusPage} from './datepicker-focus.po';
 
 const getFirstOfMonth = (date: Date) => {
@@ -194,6 +194,24 @@ describe('Datepicker', () => {
 
     // check input is still focused
     await expectFocused(page.getDatepickerInput(), `Input element should stay focused after datepicker is closed`);
+  });
+
+  it(`should not allow any interactions when disabled`, async() => {
+    await page.disableDatepicker();
+    await page.preSelectDate();  // 10 AUG 2018
+    await page.openDatepicker();
+
+    await expectFocused(page.getToggle(), `Toggling element should stay focused`);
+
+    const dayElement = page.getDayElement(new Date(2018, 7, 10));
+    expect(await dayElement.isPresent()).toBeTruthy(`Date should be visible`);
+    let message = '';
+    try {
+      await dayElement.click();
+    } catch (e) {
+      message = e.message;
+    }
+    expect(message).toContain('not clickable', `Date should not be clickable`);
   });
 
   describe('Keyboard', () => {
