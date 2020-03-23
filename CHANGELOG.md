@@ -3,7 +3,7 @@
 
 ### Reverts
 
-* fix(dropdown): ngbDropdown adds scrollbars ([#3644](https://github.com/ng-bootstrap/ng-bootstrap/issues/3644), [#3655](https://github.com/ng-bootstrap/ng-bootstrap/issues/3655)) ([822a5c1](https://github.com/ng-bootstrap/ng-bootstrap/commit/822a5c1ab951f81104d87253c031b049588f880f)), closes [#3653](https://github.com/ng-bootstrap/ng-bootstrap/issues/3653)
+* **dropdown:** avoid adding vertical scrollbars ([#3644](https://github.com/ng-bootstrap/ng-bootstrap/issues/3644), [#3655](https://github.com/ng-bootstrap/ng-bootstrap/issues/3655)) ([822a5c1](https://github.com/ng-bootstrap/ng-bootstrap/commit/822a5c1ab951f81104d87253c031b049588f880f)), closes [#3653](https://github.com/ng-bootstrap/ng-bootstrap/issues/3653)
 
 
 
