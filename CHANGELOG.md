@@ -1,3 +1,12 @@
+## [6.0.2](https://github.com/ng-bootstrap/ng-bootstrap/compare/6.0.1...6.0.2) (2020-03-23)
+
+
+### Reverts
+
+* fix(dropdown): ngbDropdown adds scrollbars ([#3644](https://github.com/ng-bootstrap/ng-bootstrap/issues/3644), [#3655](https://github.com/ng-bootstrap/ng-bootstrap/issues/3655)) ([822a5c1](https://github.com/ng-bootstrap/ng-bootstrap/commit/822a5c1ab951f81104d87253c031b049588f880f)), closes [#3653](https://github.com/ng-bootstrap/ng-bootstrap/issues/3653)
+
+
+
 ## [6.0.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/6.0.0...6.0.1) (2020-03-20)
 
 Mostly technical release that improves compatibility with 'strictTemplates' and 'strictNullChecks'
