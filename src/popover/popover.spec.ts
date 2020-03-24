@@ -455,6 +455,21 @@ describe('ngb-popover', () => {
       expect(windowEl.textContent.trim()).toBe('Great tip!');
     });
 
+    it('should update on mousemove', () => {
+      const fixture = createTestComponent(`<div ngbPopover="Great tip!" placement="auto"></div>`);
+      const directive = fixture.debugElement.query(By.directive(NgbPopover));
+      fixture.componentInstance.popover.open();
+      fixture.detectChanges();
+
+      const popoverWindow = fixture.debugElement.query(By.directive(NgbPopoverWindow));
+      const before = popoverWindow.nativeElement.style.transform;
+
+      fixture.nativeElement.style.width = '200vw';
+      triggerEvent(directive, 'mousemove');
+      fixture.detectChanges();
+      const after = popoverWindow.nativeElement.style.transform;
+      expect(before).not.toBe(after);
+    });
   });
 
   describe('container', () => {

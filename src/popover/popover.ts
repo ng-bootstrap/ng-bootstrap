@@ -20,7 +20,8 @@ import {
   SimpleChanges,
   ViewEncapsulation,
   ChangeDetectorRef,
-  ApplicationRef
+  ApplicationRef,
+  HostListener
 } from '@angular/core';
 import {DOCUMENT} from '@angular/common';
 
@@ -189,13 +190,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
     this._popupService = new PopupService<NgbPopoverWindow>(
         NgbPopoverWindow, injector, viewContainerRef, _renderer, componentFactoryResolver, applicationRef);
 
-    this._zoneSubscription = _ngZone.onStable.subscribe(() => {
-      if (this._windowRef) {
-        positionElements(
-            this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
-            this.container === 'body', 'bs-popover');
-      }
-    });
+    this._zoneSubscription = _ngZone.onStable.subscribe(() => { this.position(); });
   }
 
   /**
@@ -294,5 +289,15 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
       this._unregisterListenersFn();
     }
     this._zoneSubscription.unsubscribe();
+  }
+
+  @HostListener('mousemove')
+  @HostListener('mouseup')
+  position() {
+    if (this._windowRef) {
+      positionElements(
+          this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
+          this.container === 'body', 'bs-popover');
+    }
   }
 }
