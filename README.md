@@ -46,7 +46,19 @@ Here is the list of minimal required versions:
 
 You need to have an Angular project with the supported Angular version. We strongly recommend using [Angular CLI](https://cli.angular.io) for this.
 
-You also need to add Bootstrap 4 CSS to your application by using your preferred way (it really depends on the setup you're using). Ex. for Angular CLI you can [get Bootstrap from npm](https://www.npmjs.com/package/bootstrap) and update your `angular.json` with something like:
+## Quick Installation using Schematics
+
+Issue the following command to install ng-bootstrap to your project:
+
+``` bash
+$ ng add @ng-bootstrap/schematics
+```
+
+This will automate the steps specified in the manual installation below.
+
+## Manual Installation
+
+You need to add Bootstrap 4 CSS to your application by using your preferred way (it really depends on the setup you're using). Ex. for Angular CLI you can [get Bootstrap from npm](https://www.npmjs.com/package/bootstrap) and update your `angular.json` with something like:
 
 ```json
 "styles": [
