@@ -5,9 +5,31 @@ import {Snippet} from '../../shared/code/snippet';
   templateUrl: './getting-started.component.html'
 })
 export class GettingStartedPage {
+
+  bootstrapCss = Snippet({
+    lang: 'css',
+    code: `
+      /* update your 'styles.css' with */
+      @import '~bootstrap/dist/css/bootstrap.css';
+
+      /* or your 'styles.scss' with */
+      @import "~bootstrap/scss/bootstrap";
+    `,
+  });
+
+  bootstrapInstall = Snippet({
+    lang: 'bash',
+    code: `npm install bootstrap`,
+  });
+
   codeInstall = Snippet({
     lang: 'bash',
-    code: `npm install --save @ng-bootstrap/ng-bootstrap`,
+    code: `npm install @ng-bootstrap/ng-bootstrap`,
+  });
+
+  polyfillInstall = Snippet({
+    lang: 'bash',
+    code: `ng add @angular/localize`,
   });
 
   codeRoot = Snippet({
