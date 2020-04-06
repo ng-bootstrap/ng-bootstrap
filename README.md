@@ -31,7 +31,7 @@ Please check all components we have in action at https://ng-bootstrap.github.io
 ## Dependencies
 
 The only two dependencies are [Angular](https://angular.io) and [Bootstrap 4](https://getbootstrap.com) CSS.
-Here is the list of minimal required versions:
+The supported versions are:
 
 | ng-bootstrap | Angular | Bootstrap CSS |
 | ------------ | ------- | ------------- |
@@ -44,21 +44,46 @@ Here is the list of minimal required versions:
 
 ## Installation
 
-You need to have an Angular project with the supported Angular version. We strongly recommend using [Angular CLI](https://cli.angular.io) for this.
+### Angular
 
-You also need to add Bootstrap 4 CSS to your application by using your preferred way (it really depends on the setup you're using). Ex. for Angular CLI you can [get Bootstrap from npm](https://www.npmjs.com/package/bootstrap) and update your `angular.json` with something like:
+ We strongly recommend using [Angular CLI](https://cli.angular.io) for setting up a new project.
 
-```json
-"styles": [
-  "node_modules/bootstrap/dist/css/bootstrap.min.css"
-]
+If you're using Angular &ge; 9.0.0 and ng-bootstrap &ge; 6.0.0, you have to install the `@angular/localize` polyfill
+
+```shell
+ng add @angular/localize
+```
+
+See more details in
+[the official documentation](https://angular.io/guide/i18n#setting-up-localization-with-the-angular-cli).
+
+### Bootstrap (CSS only)
+
+You also need to add Bootstrap CSS to your application using your preferred way (see [Bootstrap instructions](https://getbootstrap.com/docs/4.4/getting-started/download/))
+
+For example you could install Bootstrap from npm
+
+```shell
+npm install bootstrap
+```
+
+and add Bootstrap CSS or SCSS to your project
+
+```css
+/* update your 'styles.css' with */
+@import '~bootstrap/dist/css/bootstrap.css';
+
+/* or your 'styles.scss' with */
+@import "~bootstrap/scss/bootstrap";
 ```
 
 Please note that you need only CSS and **should not** add other JavaScript dependencies like `bootstrap.js`, `jQuery` or `popper.js` as ng-bootstrap's goal is to completely replace them.
 
-After installing the above dependencies, install `ng-bootstrap` via:
+### ng-bootstrap
+
+Installing from npm is simply doing
 ```shell
-npm install --save @ng-bootstrap/ng-bootstrap
+npm install @ng-bootstrap/ng-bootstrap
 ```
 Once installed you need to import our main module:
 ```js
@@ -88,24 +113,11 @@ export class YourAppModule {
 }
 ```
 
-If you're using Angular >= 9.0.0 and ng-bootstrap >= 6.0.0, you might also need to install the `@angular/localize`polyfill via
- 
-```shell
-ng add @angular/localize
-```
- See more details in
-[the official documentation](https://angular.io/guide/i18n#setting-up-localization-with-the-angular-cli).
-
-
 ## Supported browsers
 
-We support the same browsers and versions supported by both Bootstrap 4 and Angular, whichever is _more_ restrictive. See [Angular browser support](https://angular.io/guide/browser-support) and [Bootstrap browser support](https://getbootstrap.com/docs/4.4/getting-started/browsers-devices/#supported-browsers) for more details, but on the high-level it should be something like:
+We support the same browsers and versions supported by both Bootstrap 4 and Angular, whichever is _more_ restrictive. See [Angular browser support](https://angular.io/guide/browser-support) and [Bootstrap browser support](https://getbootstrap.com/docs/4.4/getting-started/browsers-devices/#supported-browsers) for more details.
 
-* Chrome (45+)
-* Firefox (40+)
-* IE (10+)
-* Edge (20+)
-* Safari (7+)
+Out code is automatically tested on all supported browsers.
 
 
 ## Getting help
