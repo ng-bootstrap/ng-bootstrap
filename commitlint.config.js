@@ -11,7 +11,7 @@ const scopes = [
     .map(d => d.name)
 ];
 
-const types = ['demo', ...angularTypes];
+const types = ['demo', 'schematics', ...angularTypes];
 
 module.exports = {
   extends: ['@commitlint/config-angular'],
