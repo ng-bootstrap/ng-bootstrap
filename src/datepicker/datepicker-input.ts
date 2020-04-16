@@ -198,13 +198,14 @@ export class NgbInputDatepicker implements OnChanges,
 
   /**
    * If `true`, when closing datepicker will focus element that was focused before datepicker was opened.
+   * If `false`, when closing datepicker will not change the focus.
    *
    * Alternatively you could provide a selector or an `HTMLElement` to focus. If the element doesn't exist or invalid,
    * we'll fallback to focus document body.
    *
    * @since 5.2.0
    */
-  @Input() restoreFocus: true | string | HTMLElement;
+  @Input() restoreFocus: boolean | string | HTMLElement;
 
   /**
    * If `true`, weekdays will be displayed.
@@ -394,6 +395,11 @@ export class NgbInputDatepicker implements OnChanges,
       this._cRef = null;
       this.closed.emit();
       this._changeDetector.markForCheck();
+
+      // dont restore focus
+      if (this.restoreFocus === false) {
+        return;
+      }
 
       // restore focus
       let elementToFocus: HTMLElement | null = this._elWithFocus;
