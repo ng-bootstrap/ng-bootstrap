@@ -8,7 +8,7 @@ const options: SpawnOptions = {
 
 const tsConfigs = [
   'src/tsconfig.json', 'src/tsconfig.spec.json', 'demo/tsconfig.json', 'e2e-app/tsconfig.json',
-  'e2e-app/tsconfig.spec.json'
+  'e2e-app/tsconfig.spec.json', 'schematics/tsconfig.json'
 ];
 
 const args = ['--pretty', '--noEmit', '--noUnusedLocals'];
