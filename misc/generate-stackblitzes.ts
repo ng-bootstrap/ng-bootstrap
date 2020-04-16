@@ -59,6 +59,7 @@ const initialData = {
     '@angular/platform-browser-dynamic': versions.angular,
     '@angular/router': versions.angular,
     '@angular/forms': versions.angular,
+    '@angular/localize': versions.angular,
     '@ng-bootstrap/ng-bootstrap': versions.ngBootstrap,
     'core-js': versions.coreJs,
     'rxjs': versions.rxjs,
@@ -66,7 +67,11 @@ const initialData = {
   }),
   tags: ['angular', 'bootstrap', 'ng-bootstrap'],
   styles: fileContent('demo', 'src', 'style', 'demos.css'),
-  files: [{name: 'polyfills.ts', source: fileContent('misc', 'stackblitzes-templates', 'polyfills.ts')}]
+  files: [
+    {name: 'src/polyfills.ts', source: fileContent('misc', 'stackblitzes-templates', 'polyfills.ts')},
+    {name: 'tsconfig.json', source: fileContent('misc', 'stackblitzes-templates', 'tsconfig.json')},
+    {name: 'angular.json', source: fileContent('misc', 'stackblitzes-templates', 'angular.json')}
+  ]
 };
 
 // removing folder
@@ -100,11 +105,11 @@ for (const demoModule of modulesInfo.keys()) {
 
   stackblitzData.tags.push(componentName);
 
-  stackblitzData.files.push({name: 'index.html', source: indexFile(stackblitzData)});
-  stackblitzData.files.push({name: 'main.ts', source: mainFile(stackblitzData)});
+  stackblitzData.files.push({name: 'src/index.html', source: indexFile(stackblitzData)});
+  stackblitzData.files.push({name: 'src/main.ts', source: mainFile(stackblitzData)});
   for (const file of demoFiles) {
     const destFile = path.basename(file);
-    stackblitzData.files.push({name: `app/${destFile}`, source: fs.readFileSync(file).toString()});
+    stackblitzData.files.push({name: `src/app/${destFile}`, source: fs.readFileSync(file).toString()});
   }
 
   fs.ensureDirSync(destinationFolder);
