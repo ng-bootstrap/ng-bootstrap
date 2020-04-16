@@ -8,7 +8,7 @@ const options = {
 };
 
 const checkFormat = function() {
-  const paths = ['misc/*.ts', 'src/**/*.ts', 'e2e-app/**/*.ts'];
+  const paths = ['misc/*.ts', 'src/**/*.ts', 'e2e-app/**/*.ts', 'schematics/**/*.ts'];
   const hints = [];
 
   paths.forEach((path) => {

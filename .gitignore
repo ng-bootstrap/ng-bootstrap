@@ -3,6 +3,7 @@
 /dist/
 /temp/
 /demo/dist/
+/schematics/dist/
 /out-tsc
 /e2e-app/dist/
 /ssr-app/dist/
