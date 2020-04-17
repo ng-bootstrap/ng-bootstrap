@@ -673,7 +673,6 @@ describe('NgbInputDatepicker', () => {
       fixture.componentRef.instance.minDate = {year: 2019, month: 11, day: 14};
       fixture.detectChanges();
       expect(dp.minDate).toEqual({year: 2019, month: 11, day: 14});
-
     });
 
     it('should dynamically propagate the "maxDate" option', () => {
@@ -690,7 +689,6 @@ describe('NgbInputDatepicker', () => {
       fixture.componentRef.instance.maxDate = {year: 2019, month: 12, day: 14};
       fixture.detectChanges();
       expect(dp.maxDate).toEqual({year: 2019, month: 12, day: 14});
-
     });
 
     it('should dynamically propagate the "maxDate" and "minDate" option', () => {
@@ -712,7 +710,6 @@ describe('NgbInputDatepicker', () => {
 
       expect(dp.minDate).toEqual({year: 2019, month: 10, day: 14});
       expect(dp.maxDate).toEqual({year: 2019, month: 12, day: 14});
-
     });
 
     it('should propagate the "outsideDays" option', () => {
@@ -1133,6 +1130,27 @@ describe('NgbInputDatepicker', () => {
 
       inputDebugEl.triggerEventHandler('input', {target: {value: '2018-01-03'}});
       expect(fixture.componentInstance.date).toEqual(new Date(2018, 0, 3));
+    });
+
+    it('should dynamically propagate the "maxDate" and "minDate" option', () => {
+      const fixture = createTestCmpt(`<input ngbDatepicker [minDate]="minDate" [maxDate]="maxDate">`);
+      const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
+      fixture.componentRef.instance.minDate = {year: 2019, month: 11, day: 14};
+      fixture.componentRef.instance.maxDate = {year: 2019, month: 12, day: 31};
+
+      dpInput.open();
+      fixture.detectChanges();
+
+      const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
+      expect(dp.minDate).toEqual({year: 2019, month: 11, day: 14});
+      expect(dp.maxDate).toEqual({year: 2019, month: 12, day: 31});
+
+      fixture.componentRef.instance.minDate = {year: 2019, month: 10, day: 14};
+      fixture.componentRef.instance.maxDate = {year: 2019, month: 12, day: 14};
+      fixture.detectChanges();
+
+      expect(dp.minDate).toEqual({year: 2019, month: 10, day: 14});
+      expect(dp.maxDate).toEqual({year: 2019, month: 12, day: 14});
     });
   });
 });
