@@ -15,8 +15,10 @@ import {
   QueryList,
   TemplateRef
 } from '@angular/core';
+import {DOCUMENT} from '@angular/common';
 import {isDefined} from '../util/util';
 import {NgbNavConfig} from './nav-config';
+import {Key} from '../util/key';
 
 const isValidNavId = (id: any) => isDefined(id) && id !== '';
 
@@ -135,6 +137,12 @@ export class NgbNavItem implements AfterContentChecked, OnInit {
     '[class.flex-column]': `orientation === 'vertical'`,
     '[attr.aria-orientation]': `orientation === 'vertical' && roles === 'tablist' ? 'vertical' : undefined`,
     '[attr.role]': `role ? role : roles ? 'tablist' : undefined`,
+    '(keydown.arrowLeft)': 'onKeyDown($event)',
+    '(keydown.arrowRight)': 'onKeyDown($event)',
+    '(keydown.arrowDown)': 'onKeyDown($event)',
+    '(keydown.arrowUp)': 'onKeyDown($event)',
+    '(keydown.Home)': 'onKeyDown($event)',
+    '(keydown.End)': 'onKeyDown($event)'
   }
 })
 export class NgbNav implements AfterContentInit {
@@ -176,12 +184,25 @@ export class NgbNav implements AfterContentInit {
    */
   @Input() roles: 'tablist' | false;
 
-  @ContentChildren(NgbNavItem) items: QueryList<NgbNavItem>;
+  /**
+   * Determine if the tabs can be selected or changed by arrow left, arrow right, home, end
+   *
+   * * `false` - no keyboard support.
+   * * `true` - the tabs will focused using keyboard
+   * * `'changeWithArrows'` -  the tabs will be selected using keyboard
+ */
+  @Input() keyboard: boolean | 'changeWithArrows';
 
-  constructor(@Attribute('role') public role: string, config: NgbNavConfig, private _cd: ChangeDetectorRef) {
+  @ContentChildren(NgbNavItem) items: QueryList<NgbNavItem>;
+  @ContentChildren(forwardRef(() => NgbNavLink), {descendants: true}) links: QueryList<NgbNavLink>;
+
+  constructor(
+      @Attribute('role') public role: string, config: NgbNavConfig, private _cd: ChangeDetectorRef,
+      @Inject(DOCUMENT) private _document: any) {
     this.destroyOnHide = config.destroyOnHide;
     this.orientation = config.orientation;
     this.roles = config.roles;
+    this.keyboard = config.keyboard;
   }
 
   /**
@@ -196,6 +217,65 @@ export class NgbNav implements AfterContentInit {
   click(item: NgbNavItem) {
     if (!item.disabled) {
       this._updateActiveId(item.id);
+    }
+  }
+
+  onKeyDown(event: KeyboardEvent) {
+    if (this.roles !== 'tablist' || !this.keyboard) {
+      return;
+    }
+    // tslint:disable-next-line: deprecation
+    const key = event.which;
+    const enabledLinks = this.links.filter(link => !link.navItem.disabled);
+    const {length} = enabledLinks;
+
+    let position = -1;
+
+    enabledLinks.forEach((link, index) => {
+      if (link.elRef.nativeElement === this._document.activeElement) {
+        position = index;
+      }
+    });
+
+    if (length) {
+      switch (key) {
+        case Key.ArrowLeft:
+          if (this.orientation === 'vertical') {
+            return;
+          }
+          position = (position - 1 + length) % length;
+          break;
+        case Key.ArrowRight:
+          if (this.orientation === 'vertical') {
+            return;
+          }
+          position = (position + 1) % length;
+          break;
+        case Key.ArrowDown:
+          if (this.orientation === 'horizontal') {
+            return;
+          }
+          position = (position + 1) % length;
+          break;
+        case Key.ArrowUp:
+          if (this.orientation === 'horizontal') {
+            return;
+          }
+          position = (position - 1 + length) % length;
+          break;
+        case Key.Home:
+          position = 0;
+          break;
+        case Key.End:
+          position = length - 1;
+          break;
+      }
+      if (this.keyboard === 'changeWithArrows') {
+        this.select(enabledLinks[position].navItem.id);
+      }
+      enabledLinks[position].elRef.nativeElement.focus();
+
+      event.preventDefault();
     }
   }
 
@@ -255,7 +335,9 @@ export class NgbNav implements AfterContentInit {
   }
 })
 export class NgbNavLink {
-  constructor(@Attribute('role') public role: string, public navItem: NgbNavItem, public nav: NgbNav) {}
+  constructor(
+      @Attribute('role') public role: string, public navItem: NgbNavItem, public nav: NgbNav,
+      public elRef: ElementRef) {}
 
   hasNavItemClass() {
     // with alternative markup we have to add `.nav-item` class, because `ngbNavItem` is on the ng-container
