@@ -1,3 +1,12 @@
+## [5.3.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/5.3.0...5.3.1) (2020-04-17)
+
+
+### Bug Fixes
+
+* **datepicker:** set min/max dates correctly with custom adapters ([586672b](https://github.com/ng-bootstrap/ng-bootstrap/commit/586672b)), closes [#3598](https://github.com/ng-bootstrap/ng-bootstrap/issues/3598)
+
+
+
 # [5.3.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/5.2.3...5.3.0) (2020-02-14)
 
 
