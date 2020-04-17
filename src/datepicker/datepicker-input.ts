@@ -447,10 +447,10 @@ export class NgbInputDatepicker implements OnChanges,
 
       if (this.isOpen()) {
         if (changes['minDate']) {
-          this._cRef !.instance.minDate = this._dateAdapter.toModel(changes.minDate.currentValue);
+          this._cRef !.instance.minDate = this.minDate;
         }
         if (changes['maxDate']) {
-          this._cRef !.instance.maxDate = this._dateAdapter.toModel(changes.maxDate.currentValue);
+          this._cRef !.instance.maxDate = this.maxDate;
         }
         this._cRef !.instance.ngOnChanges(changes);
       }
