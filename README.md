@@ -44,74 +44,23 @@ The supported versions are:
 
 ## Installation
 
-### Angular
+We strongly recommend using [Angular CLI](https://cli.angular.io) for setting up a new project. If you have an Angular &ge; 9 CLI project, you could simply use our schematics to add ng-bootstrap library to it. 
 
- We strongly recommend using [Angular CLI](https://cli.angular.io) for setting up a new project.
-
-If you're using Angular &ge; 9.0.0 and ng-bootstrap &ge; 6.0.0, you have to install the `@angular/localize` polyfill
+Just run the following:
 
 ```shell
-ng add @angular/localize
+ng add @ng-bootstrap/ng-bootstrap
 ```
 
-See more details in
-[the official documentation](https://angular.io/guide/i18n#setting-up-localization-with-the-angular-cli).
-
-### Bootstrap (CSS only)
-
-You also need to add Bootstrap CSS to your application using your preferred way (see [Bootstrap instructions](https://getbootstrap.com/docs/4.4/getting-started/download/))
-
-For example you could install Bootstrap from npm
+It will install ng-bootstrap for the default application specified in your `angular.json`.
+If you have multiple projects and you want to target a specific application, you could specify the `--project` option:
 
 ```shell
-npm install bootstrap
+ng add @ng-bootstrap/ng-bootstrap --project myProject
 ```
 
-and add Bootstrap CSS or SCSS to your project
-
-```css
-/* update your 'styles.css' with */
-@import '~bootstrap/dist/css/bootstrap.css';
-
-/* or your 'styles.scss' with */
-@import "~bootstrap/scss/bootstrap";
-```
-
-Please note that you need only CSS and **should not** add other JavaScript dependencies like `bootstrap.js`, `jQuery` or `popper.js` as ng-bootstrap's goal is to completely replace them.
-
-### ng-bootstrap
-
-Installing from npm is simply doing
-```shell
-npm install @ng-bootstrap/ng-bootstrap
-```
-Once installed you need to import our main module:
-```js
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-
-@NgModule({
-  ...
-  imports: [NgbModule, ...],
-  ...
-})
-export class YourAppModule {
-}
-```
-
-Alternatively you could only import modules with components you need, ex. pagination and alert.
-The resulting bundle will be smaller in this case.
-
-```js
-import {NgbPaginationModule, NgbAlertModule} from '@ng-bootstrap/ng-bootstrap';
-
-@NgModule({
-  ...
-  imports: [NgbPaginationModule, NgbAlertModule, ...],
-  ...
-})
-export class YourAppModule {
-}
-```
+If you prefer not to use schematics and install everything manually, please refer to the 
+[manual installation instructions](https://ng-bootstrap.github.io/#/getting-started#installation) on our website. 
 
 ## Supported browsers
 
