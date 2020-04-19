@@ -353,7 +353,7 @@ export class NgbNavLink {
  *
  * @since 5.2.0
  */
-export interface NgbNavChangeEvent<T> {
+export interface NgbNavChangeEvent<T = any> {
   /**
    * Id of the currently active nav.
    */
