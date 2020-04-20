@@ -1,10 +1,10 @@
-import * as ts from 'typescript';
 import {Rule, SchematicsException, Tree} from '@angular-devkit/schematics';
 import {getWorkspace} from '@schematics/angular/utility/config';
 import {getProject} from '@schematics/angular/utility/project';
 import {getAppModulePath} from '@schematics/angular/utility/ng-ast-utils';
 import {addImportToModule} from '@schematics/angular/utility/ast-utils';
 import {InsertChange} from '@schematics/angular/utility/change';
+import * as ts from '@schematics/angular/third_party/github.com/Microsoft/TypeScript/lib/typescript';
 
 import {Schema} from '../schema';
 import {getProjectTargetOptions} from '../../utils/project';
