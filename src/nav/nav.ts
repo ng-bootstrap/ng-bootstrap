@@ -353,16 +353,16 @@ export class NgbNavLink {
  *
  * @since 5.2.0
  */
-export interface NgbNavChangeEvent {
+export interface NgbNavChangeEvent<T = any> {
   /**
    * Id of the currently active nav.
    */
-  activeId: any;
+  activeId: T;
 
   /**
    * Id of the newly selected nav.
    */
-  nextId: any;
+  nextId: T;
 
   /**
    * Function that will prevent nav change if called.
