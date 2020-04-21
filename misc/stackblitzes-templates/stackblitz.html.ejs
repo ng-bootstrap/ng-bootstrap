@@ -43,6 +43,7 @@
     <% for (const tag of tags) { %>
     <input type="hidden" name="project[tags][]" value="<%=tag%>">
     <% } %>
+    <input type="hidden" name="project[devDependencies]" value="<%= dependencies %>">
     <% for (const file of files) { %>
     <input type="hidden" name="project[files][<%= file.name%>]" value="<%= file.source %>">
     <% } %>
