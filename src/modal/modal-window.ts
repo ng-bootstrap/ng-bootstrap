@@ -28,6 +28,7 @@ import {ModalDismissReasons} from './modal-dismiss-reasons';
     'tabindex': '-1',
     '[attr.aria-modal]': 'true',
     '[attr.aria-labelledby]': 'ariaLabelledBy',
+    '[attr.aria-describedby]': 'ariaDescribedBy',
   },
   template: `
     <div #dialog [class]="'modal-dialog' + (size ? ' modal-' + size : '') + (centered ? ' modal-dialog-centered' : '') +
@@ -46,6 +47,7 @@ export class NgbModalWindow implements OnInit,
   @ViewChild('dialog', {static: true}) private _dialogEl: ElementRef<HTMLElement>;
 
   @Input() ariaLabelledBy: string;
+  @Input() ariaDescribedBy: string;
   @Input() backdrop: boolean | string = true;
   @Input() centered: string;
   @Input() keyboard = true;

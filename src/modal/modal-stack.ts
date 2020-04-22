@@ -28,7 +28,7 @@ export class NgbModalStack {
   private _backdropAttributes = ['backdropClass'];
   private _modalRefs: NgbModalRef[] = [];
   private _windowAttributes =
-      ['ariaLabelledBy', 'backdrop', 'centered', 'keyboard', 'scrollable', 'size', 'windowClass'];
+      ['ariaLabelledBy', 'ariaDescribedBy', 'backdrop', 'centered', 'keyboard', 'scrollable', 'size', 'windowClass'];
   private _windowCmpts: ComponentRef<NgbModalWindow>[] = [];
 
   constructor(

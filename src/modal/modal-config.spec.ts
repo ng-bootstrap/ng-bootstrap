@@ -7,6 +7,7 @@ describe('NgbModalConfig', () => {
   it('should have sensible default values', inject([NgbModalConfig], (config: NgbModalConfig) => {
 
        expect(config.ariaLabelledBy).toBeUndefined();
+       expect(config.ariaDescribedBy).toBeUndefined();
        expect(config.backdrop).toBe(true);
        expect(config.backdropClass).toBeUndefined();
        expect(config.beforeDismiss).toBeUndefined();

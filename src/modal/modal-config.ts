@@ -12,6 +12,12 @@ export interface NgbModalOptions {
   ariaLabelledBy?: string;
 
   /**
+   * `aria-describedby` attribute value to set on the modal window.
+   */
+  ariaDescribedBy?: string;
+
+
+  /**
    * If `true`, the backdrop element will be created for a given modal.
    *
    * Alternatively, specify `'static'` for a backdrop which doesn't close the modal on click.
@@ -97,6 +103,7 @@ export interface NgbModalOptions {
 @Injectable({providedIn: 'root'})
 export class NgbModalConfig implements Required<NgbModalOptions> {
   ariaLabelledBy: string;
+  ariaDescribedBy: string;
   backdrop: boolean | 'static' = true;
   beforeDismiss: () => boolean | Promise<boolean>;
   centered: boolean;
