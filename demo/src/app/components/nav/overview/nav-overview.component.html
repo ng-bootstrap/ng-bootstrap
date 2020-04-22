@@ -141,3 +141,47 @@
   <ngbd-code [snippet]="ROUTER"></ngbd-code>
 
 </ngbd-overview-section>
+
+
+
+<ngbd-overview-section [section]="sections['keyboard-shortcuts']">
+
+  <ngbd-api-docs-badge [since]="{version: '6.1.0'}"></ngbd-api-docs-badge>
+
+  <p>
+    Keyboard support is not activated by default and can be turned on via the <code>[keyboard]</code> input.
+    Depending on the input value, we'll either focus or switch to a specific nav.
+  </p>
+
+  <p>
+    Please refer to the <a routerLink="../api" fragment="NgbNav">NgbNav API</a>
+  </p>
+
+  <table class="table mt-4">
+    <tbody>
+    <tr>
+      <td><code>Arrow(Left|Up)</code></td>
+      <td>
+        Moves focus or switches to the previous non-disabled nav.
+        Loops through navs and depends on nav orientation.
+      </td>
+    </tr>
+    <tr>
+      <td><code>Arrow(Right|Down)</code></td>
+      <td>
+        Moves focus or switches to the next non-disabled nav.
+        Loops through navs and depends on nav orientation.
+      </td>
+    </tr>
+    <tr>
+      <td><code>Home</code></td>
+      <td>Moves focus or switches to the first non-disabled nav</td>
+    </tr>
+    <tr>
+      <td><code>End</code></td>
+      <td>Moves focus or switches to the last non-disabled nav</td>
+    </tr>
+    </tbody>
+  </table>
+
+</ngbd-overview-section>

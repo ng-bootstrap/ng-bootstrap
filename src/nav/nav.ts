@@ -185,11 +185,13 @@ export class NgbNav implements AfterContentInit {
   @Input() roles: 'tablist' | false;
 
   /**
-   * Keyboard support for nav focus/selection using left and right arrow keys.
+   * Keyboard support for nav focus/selection using arrow keys.
    *
    * * `false` - no keyboard support.
    * * `true` - navs will be focused using keyboard arrow keys
    * * `'changeWithArrows'` -  nav will be selected using keyboard arrow keys
+   *
+   * See the [list of available keyboard shortcuts](#/components/nav/overview#keyboard-shortcuts).
    *
    * @since 6.1.0
  */
