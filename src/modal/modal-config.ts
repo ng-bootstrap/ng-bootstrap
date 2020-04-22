@@ -13,6 +13,8 @@ export interface NgbModalOptions {
 
   /**
    * `aria-describedby` attribute value to set on the modal window.
+   *
+   * @since 6.1.0
    */
   ariaDescribedBy?: string;
 
