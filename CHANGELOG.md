@@ -1,3 +1,15 @@
+# [6.1.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/6.0.3...6.1.0) (2020-04-22)
+
+This release brings schematics to the `@ng-bootstrap/ng-bootstrap` package, so the library can be installed now with `ng add @ng-bootstrap/ng-bootstrap`. See [installation docs for more details](https://ng-bootstrap.github.io/#/getting-started#installation). 
+
+### Features
+
+* **modal:** add 'aria-describedby' for modal window ([#3695](https://github.com/ng-bootstrap/ng-bootstrap/issues/3695)) ([9a8e70d](https://github.com/ng-bootstrap/ng-bootstrap/commit/9a8e70de6ea2eab953d9a9f7012ff6a9815fd795)), closes [#3678](https://github.com/ng-bootstrap/ng-bootstrap/issues/3678)
+* **nav:** keyboard support for switching between navs ([#3612](https://github.com/ng-bootstrap/ng-bootstrap/issues/3612)) ([8c91ba5](https://github.com/ng-bootstrap/ng-bootstrap/commit/8c91ba5a634dd1356b7126888de0acf2d5589483))
+* **schematics:** add schematics to `@ng-bootstrap/ng-bootstrap` ([#3669](https://github.com/ng-bootstrap/ng-bootstrap/issues/3669)) ([464080b](https://github.com/ng-bootstrap/ng-bootstrap/commit/464080b3d48c2aad4c3f4a59ffd632cf3d6e731c))
+
+
+
 ## [6.0.3](https://github.com/ng-bootstrap/ng-bootstrap/compare/6.0.2...6.0.3) (2020-04-17)
 
 
