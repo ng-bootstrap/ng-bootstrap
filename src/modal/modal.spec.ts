@@ -669,6 +669,20 @@ describe('ngb-modal', () => {
         expect(fixture.nativeElement).not.toHaveModal();
       });
 
+      it('should support aria-describedby', () => {
+        const id = 'aria-describedby-id';
+
+        const modalInstance = fixture.componentInstance.open('foo', {ariaDescribedBy: id});
+        fixture.detectChanges();
+
+        const modalElement = <HTMLElement>document.querySelector('ngb-modal-window');
+        expect(modalElement.getAttribute('aria-describedby')).toBe(id);
+
+        modalInstance.close('some result');
+        fixture.detectChanges();
+        expect(fixture.nativeElement).not.toHaveModal();
+      });
+
       it('should have aria-modal attribute', () => {
         const a11yFixture = TestBed.createComponent(TestA11yComponent);
         const modalInstance = a11yFixture.componentInstance.open();
