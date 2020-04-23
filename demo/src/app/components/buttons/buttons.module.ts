@@ -1,3 +1,4 @@
+import { NgbdButtonsRadioUncheckableModule } from './demos/radiouncheckable/buttons-radiouncheckable.module';
 import { NgModule } from '@angular/core';
 
 import { NgbdSharedModule } from '../../shared';
@@ -39,12 +40,12 @@ const DEMOS = {
     type: NgbdButtonsRadioreactive,
     code: require('!!raw-loader!./demos/radioreactive/buttons-radioreactive').default,
     markup: require('!!raw-loader!./demos/radioreactive/buttons-radioreactive.html').default
-  }
+  },
   radiouncheckable: {
     title: 'Radio buttons (Uncheckable)',
     type: NgbdButtonsRadiouncheckable,
-    code: require('!!raw-loader!./demos/radiouncheckable/buttons-radiouncheckable'),
-    markup: require('!!raw-loader!./demos/radiouncheckable/buttons-radiouncheckable.html')
+    code: require('!!raw-loader!./demos/radiouncheckable/buttons-radiouncheckable').default,
+    markup: require('!!raw-loader!./demos/radiouncheckable/buttons-radiouncheckable.html').default
   }
 };
 
@@ -67,7 +68,8 @@ export const ROUTES = [
     NgbdButtonsCheckboxModule,
     NgbdButtonsCheckboxReactiveModule,
     NgbdButtonsRadioModule,
-    NgbdButtonsRadioReactiveModule
+    NgbdButtonsRadioReactiveModule,
+    NgbdButtonsRadioUncheckableModule
   ]
 })
 export class NgbdButtonsModule {

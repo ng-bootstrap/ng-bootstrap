@@ -582,8 +582,6 @@ describe('ngbRadioGroup', () => {
       </div>
     `);
 
-    let values = fixture.componentInstance.values;
-
     fixture.detectChanges();
 
     fixture.componentInstance.model = null;
