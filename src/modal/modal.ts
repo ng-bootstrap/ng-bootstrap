@@ -23,6 +23,10 @@ export class NgbModal {
    * then instances of those components can be injected with an instance of the `NgbActiveModal` class. You can then
    * use `NgbActiveModal` methods to close / dismiss modals from "inside" of your component.
    *
+   * The modal implementation adds `aria-hidden="true"` to parent DOM elements while keeping focus trapped inside
+   * the modal. This leads to false positive warnings from A11y tools, e.g. "aria-hidden elements do not contain
+   * focusable elements" from [axe](https://dequeuniversity.com/rules/axe/3.2/aria-hidden-focus).
+   *
    * Also see the [`NgbModalOptions`](#/components/modal/api#NgbModalOptions) for the list of supported options.
    */
   open(content: any, options: NgbModalOptions = {}): NgbModalRef {
