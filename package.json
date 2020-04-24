@@ -8,6 +8,8 @@
     "yarn": ">=1.15.2 <2.0.0"
   },
   "scripts": {
+    "version": "yarn changelog && git add CHANGELOG.md",
+    "postversion": "yarn ngb:build && yarn demo:build",
     "preinstall": "node misc/preinstall.js",
     "postinstall": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points",
     "build": "yarn ngb:build-ivy && yarn ngb:build && yarn demo:build",
@@ -18,6 +20,7 @@
     "demo:ie": "yarn demo -c ie",
     "ssr": "yarn ssr-app:lint && yarn ssr-app:build && yarn ssr-app:e2e",
     "changelog": "conventional-changelog --preset angular --infile CHANGELOG.md --same-file --release-count 1",
+    "changelog:patch": "git add CHANGELOG.md && git commit --amend --no-edit && git tag -f $npm_package_version",
     "check-format": "ts-node --project misc/tsconfig.json misc/check-format.ts",
     "check-ts": "yarn demo:docs && ts-node --project misc/tsconfig.json misc/check-ts.ts",
     "saucelabs": "ng test ng-bootstrap -c saucelabs",
