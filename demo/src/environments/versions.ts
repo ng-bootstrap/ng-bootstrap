@@ -3,6 +3,6 @@
 let bootstrap: string = require('../../../package.json').devDependencies['bootstrap'];
 bootstrap = bootstrap.substr(0, bootstrap.lastIndexOf('.'));
 
-const ngBootstrap = require('../../../src/package.json').version;
+const ngBootstrap = require('../../../package.json').version;
 
 export const versions: {[key: string]: string} = { bootstrap, ngBootstrap };

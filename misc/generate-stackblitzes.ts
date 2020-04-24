@@ -10,7 +10,7 @@ const stackblitzUrl = 'https://stackblitz.com/run';
 const packageJson = fs.readJsonSync('package.json');
 
 const versions = {
-  ngBootstrap: fs.readJsonSync('src/package.json').version,
+  ngBootstrap: packageJson.version,
   angular: getVersion('@angular/core'),
   typescript: getVersion('typescript'),
   rxjs: getVersion('rxjs'),
