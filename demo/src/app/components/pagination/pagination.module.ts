@@ -76,7 +76,9 @@ export const ROUTES = [
   {
     path: '',
     component: ComponentWrapper,
-    data: { OVERVIEW },
+    data: {
+      bootstrap: 'https://getbootstrap.com/docs/%version%/components/pagination/'
+    },
     children: [
       { path: 'overview', component: NgbdPaginationOverviewComponent },
       { path: 'examples', component: NgbdExamplesPage },

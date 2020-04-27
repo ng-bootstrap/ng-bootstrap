@@ -46,6 +46,9 @@ export const ROUTES = [
   {
     path: '',
     component: ComponentWrapper,
+    data: {
+      bootstrap: 'https://getbootstrap.com/docs/%version%/components/buttons/#checkbox-and-radio-buttons'
+    },
     children: [
       { path: 'examples', component: NgbdExamplesPage },
       { path: 'api', component: NgbdApiPage }

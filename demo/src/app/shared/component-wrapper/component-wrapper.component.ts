@@ -1,10 +1,12 @@
 import {Component, NgZone, OnDestroy, Type} from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import {Observable, Subscription} from 'rxjs';
-import { filter, pluck } from 'rxjs/operators';
+import { filter, pluck, map } from 'rxjs/operators';
 
 import { NgbdApiPage } from '../../components/shared/api-page/api.component';
 import { NgbdExamplesPage } from '../../components/shared/examples-page/examples.component';
+
+import { environment } from '../../../environments/environment';
 
 export type TableOfContents = {fragment: string, title: string}[];
 
@@ -21,6 +23,7 @@ export class ComponentWrapper implements OnDestroy {
   component: string;
 
   headerComponentType$: Observable<Type<any>>;
+  bootstrapUrl$: Observable<String>;
 
   isLargeScreenOrLess: boolean;
   isSmallScreenOrLess: boolean;
@@ -44,6 +47,7 @@ export class ComponentWrapper implements OnDestroy {
     });
 
     this.headerComponentType$ = this.route.data.pipe(pluck('header'));
+    this.bootstrapUrl$ = this.route.data.pipe(pluck('bootstrap'), map(url => (url && url.replace('%version%', environment.bootstrap))));
 
     // information extracted from https://getbootstrap.com/docs/4.1/layout/overview/
     // TODO: we should implements our own mediamatcher, according to bootstrap layout.

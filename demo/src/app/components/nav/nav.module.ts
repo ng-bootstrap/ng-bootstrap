@@ -86,6 +86,9 @@ export const ROUTES = [
   {
     path: '',
     component: ComponentWrapper,
+    data: {
+      bootstrap: 'https://getbootstrap.com/docs/%version%/components/navs/'
+    },
     children: [
       { path: 'overview', component: NgbdNavOverviewComponent },
       { path: 'examples', component: NgbdExamplesPage },

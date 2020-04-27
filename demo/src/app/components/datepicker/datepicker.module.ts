@@ -147,7 +147,6 @@ export const ROUTES = [
   {
     path: '',
     component: ComponentWrapper,
-    data: { OVERVIEW },
     children: [
       { path: 'overview', component: NgbdDatepickerOverviewComponent },
       { path: 'examples', component: NgbdExamplesPage },

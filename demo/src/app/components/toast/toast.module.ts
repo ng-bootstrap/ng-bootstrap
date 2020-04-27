@@ -96,7 +96,9 @@ export const ROUTES = [
   {path: '', pathMatch: 'full', redirectTo: 'overview'}, {
     path: '',
     component: ComponentWrapper,
-    data: {OVERVIEW},
+    data: {
+      bootstrap: 'https://getbootstrap.com/docs/4.4/components/toasts/'
+    },
     children: [
       {path: 'overview', component: NgbdToastOverviewComponent}, {path: 'examples', component: NgbdExamplesPage},
       {path: 'api', component: NgbdApiPage}
