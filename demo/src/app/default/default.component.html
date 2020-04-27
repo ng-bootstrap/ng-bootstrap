@@ -4,20 +4,21 @@
       <div class="col-6 mx-auto col-md-6">
         <img width="512" height="512" class="img-fluid mb-3 mb-md-0" src="img/logo-stack.png" alt="ng-bootstrap logo"/>
       </div>
-      <div class="col-md-6 text-center text-md-left">
+      <div class="col-lg-6 text-center text-lg-left">
         <h1>Bootstrap widgets</h1>
         <h3 class="text-secondary">The angular way</h3>
         <p class="lead">
           Angular widgets built from the ground up using only Bootstrap&nbsp;4 CSS with APIs designed for the Angular ecosystem.
         </p>
         <p class="lead">No dependencies on 3rd party JavaScript.</p>
-        <div class="d-flex flex-column flex-md-row mb-3">
+        <ngbd-code class="mb-3" [snippet]="installation"></ngbd-code>
+        <div class="d-flex flex-column align-items-lg-center flex-lg-row my-4">
           <a
-          class="btn btn-lg btn-outline-primary mb-3 mb-md-0 mr-md-3"
+          class="btn btn-lg btn-outline-primary mb-3 mb-lg-0 mr-lg-3"
           routerLink="/components">Demo</a>
           <a
           class="btn btn-lg btn-outline-secondary"
-          routerLink="/getting-started">Installation</a>
+          routerLink="/getting-started">Get started now</a>
         </div>
         <p class="text-muted mb-4">Currently at v{{version}}</p>
       </div>
@@ -40,7 +41,6 @@
       <p>
         As simple as Angular &amp; Bootstrap CSS. Nothing else. If you know Angular, you also know ng-bootstrap.
       </p>
-      <a class="btn btn-outline-primary" routerLink='/getting-started'>Get started now</a>
     </div>
 
     <div class="col-12 col-md-4 p-3 p-md-5 bg-light border border-white d-flex flex-column align-items-center align-items-md-start">
