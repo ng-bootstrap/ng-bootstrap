@@ -43,11 +43,11 @@ const NGB_TYPEAHEAD_VALUE_ACCESSOR = {
 /**
  * An event emitted right before an item is selected from the result list.
  */
-export interface NgbTypeaheadSelectItemEvent {
+export interface NgbTypeaheadSelectItemEvent<T = any> {
   /**
    * The item from the result list about to be selected.
    */
-  item: any;
+  item: T;
 
   /**
    * Calling this function will prevent item selection from happening.
