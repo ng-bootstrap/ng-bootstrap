@@ -2,7 +2,7 @@
   and the highlight directive to highlight the term inside the custom template.
 </p>
 
-<ng-template #rt let-r="result" let-t="term">
+<ng-template #rt let-r="item" let-t="term">
   <img [src]="'https://upload.wikimedia.org/wikipedia/commons/thumb/' + r['flag']" class="mr-1" style="width: 16px">
   <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
 </ng-template>

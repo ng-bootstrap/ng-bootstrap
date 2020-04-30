@@ -1,20 +1,35 @@
 import {TestBed, ComponentFixture} from '@angular/core/testing';
+import {By} from '@angular/platform-browser';
 import {createGenericTestComponent} from '../test/common';
 
-import {Component, ViewChild} from '@angular/core';
+import {Component} from '@angular/core';
 
+import {NgbTypeahead} from './typeahead';
 import {NgbTypeaheadWindow} from './typeahead-window';
 import {expectResults, getWindowLinks} from '../test/typeahead/common';
 import {NgbTypeaheadModule} from './typeahead.module';
 
-const createTestComponent = (html: string) =>
-    createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
+const mockNgbTypeahead = {
+  windowInstance: undefined
+};
+
+const createTestComponent = (html: string) => {
+  const fixture = createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
+  const windowFixture = fixture.debugElement.query(By.css('ngb-typeahead-window'));
+  mockNgbTypeahead.windowInstance = windowFixture.componentInstance;
+  fixture.detectChanges();
+  return fixture;
+};
 
 describe('ngb-typeahead-window', () => {
 
   beforeEach(() => {
     TestBed.overrideModule(NgbTypeaheadModule, {set: {exports: [NgbTypeaheadWindow]}});
-    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbTypeaheadModule]});
+    TestBed.configureTestingModule({
+      declarations: [TestComponent],
+      imports: [NgbTypeaheadModule],
+      providers: [{provide: NgbTypeahead, useValue: mockNgbTypeahead}]
+    });
   });
 
   describe('display', () => {
@@ -35,7 +50,7 @@ describe('ngb-typeahead-window', () => {
 
     it('should use a custom template if provided', () => {
       const fixture = createTestComponent(`
-           <ng-template #rt let-r="result" let-t="term">{{r.toUpperCase()}}-{{t}}</ng-template>
+           <ng-template #rt let-r="item" let-t="term">{{r.toUpperCase()}}-{{t}}</ng-template>
            <ngb-typeahead-window [results]="results" [term]="term" [resultTemplate]="rt"></ngb-typeahead-window>`);
 
       expectResults(fixture.nativeElement, ['+BAR-ba', 'BAZ-ba']);
@@ -205,8 +220,6 @@ class TestComponent {
   results = ['bar', 'baz'];
   term = 'ba';
   selected: string;
-
-  @ViewChild(NgbTypeaheadWindow, {static: true}) popup: NgbTypeaheadWindow;
 
   formatterFn = (result) => { return result.toUpperCase(); };
 }

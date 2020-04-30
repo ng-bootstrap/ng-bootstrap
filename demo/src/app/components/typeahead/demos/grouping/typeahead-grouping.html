@@ -1,0 +1,17 @@
+<div [ngbTypeahead]="search" [contentTemplate]="ct" [(ngModel)]="model">
+  <label for="typeahead-grouping">Search for a state:</label>
+  <input id="typeahead-grouping" type="text" class="form-control" [(ngModel)]="model">
+  <ng-template #ct>
+    <div *ngFor="let category of categories">
+      <h3>{{category.label}}</h3>
+      <div *ngFor="let item of category.items">
+        <ngb-typeahead-item
+          [item]="item.label"
+          [index]="item.idx">
+        </ngb-typeahead-item>
+      </div>
+    </div>
+  </ng-template>
+</div>
+<hr>
+<pre>Model: {{ model | json }}</pre>

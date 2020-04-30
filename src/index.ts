@@ -140,7 +140,8 @@ export {
   NgbTypeahead,
   NgbTypeaheadConfig,
   NgbTypeaheadModule,
-  NgbTypeaheadSelectItemEvent
+  NgbTypeaheadSelectItemEvent,
+  NgbTypeaheadItem
 } from './typeahead/typeahead.module';
 export {Placement} from './util/positioning';
 

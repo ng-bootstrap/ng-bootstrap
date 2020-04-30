@@ -423,6 +423,32 @@ describe('ngb-typeahead', () => {
          tick(250);
          expectWindowResults(compiled, ['+one', 'one more']);
        }));
+
+    it('should work properly as a directive', async(() => {
+         const html = `
+            <div [ngbTypeahead]="find">
+              <input type="text">
+            </div>`;
+         const fixture = createTestComponent(html);
+         fixture.whenStable().then(() => {
+           fixture.detectChanges();
+           const compiled = fixture.nativeElement;
+           expect(getNativeInput(compiled)).toBeTruthy();
+         });
+       }));
+
+    it('should fail gracefully if directive is misused', async(() => {
+         const html = `
+            <div [ngbTypeahead]="find">
+            </div>`;
+         const fixture = createTestComponent(html);
+         fixture.whenStable().then(() => {
+           fixture.detectChanges();
+           const compiled = fixture.nativeElement;
+           expect(getNativeInput(compiled)).toBeFalsy();
+         });
+       }));
+
   });
 
   describe('with async typeahead function', () => {

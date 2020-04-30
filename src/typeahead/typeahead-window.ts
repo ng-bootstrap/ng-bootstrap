@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewEncapsulation} from '@angular/core';
-
 import {toString} from '../util/util';
 
 /**
@@ -17,25 +16,32 @@ export interface ResultTemplateContext {
   term: string;
 }
 
+/**
+ * The context for the typeahead content template in case you want to override the default one.
+ */
+export interface ContentTemplateContext<T> {
+  /**
+   * Your typeahead result items.
+   */
+  results: T[];
+}
+
 @Component({
   selector: 'ngb-typeahead-window',
   exportAs: 'ngbTypeaheadWindow',
   encapsulation: ViewEncapsulation.None,
   host: {'(mousedown)': '$event.preventDefault()', 'class': 'dropdown-menu show', 'role': 'listbox', '[id]': 'id'},
   template: `
-    <ng-template #rt let-result="result" let-term="term" let-formatter="formatter">
-      <ngb-highlight [result]="formatter(result)" [term]="term"></ngb-highlight>
+    <ng-template #defaultContentTemplate let-results="results">
+      <ng-template ngFor [ngForOf]="results" let-item let-index="index">
+        <ngb-typeahead-item
+          [item]="item"
+          [index]="index">
+        </ngb-typeahead-item>
+      </ng-template>
     </ng-template>
-    <ng-template ngFor [ngForOf]="results" let-result let-idx="index">
-      <button type="button" class="dropdown-item" role="option"
-        [id]="id + '-' + idx"
-        [class.active]="idx === activeIdx"
-        (mouseenter)="markActive(idx)"
-        (click)="select(result)">
-          <ng-template [ngTemplateOutlet]="resultTemplate || rt"
-          [ngTemplateOutletContext]="{result: result, term: term, formatter: formatter}"></ng-template>
-      </button>
-    </ng-template>
+    <ng-template [ngTemplateOutlet]="contentTemplate || defaultContentTemplate"
+                 [ngTemplateOutletContext]="{$implicit: results, results: results}"></ng-template>
   `
 })
 export class NgbTypeaheadWindow implements OnInit {
@@ -72,6 +78,11 @@ export class NgbTypeaheadWindow implements OnInit {
    * A template to override a matching result default display
    */
   @Input() resultTemplate: TemplateRef<ResultTemplateContext>;
+
+  /**
+   * A template to override a matching result default display
+   */
+  @Input() contentTemplate: TemplateRef<ContentTemplateContext<any>>;
 
   /**
    * Event raised when user selects a particular result row

@@ -71,7 +71,8 @@ export class NgbSlide {
           (click)="focus();select(slide.id, NgbSlideEventSource.INDICATOR);"></li>
     </ol>
     <div class="carousel-inner">
-      <div *ngFor="let slide of slides; index as i; count as c" class="carousel-item" [class.active]="slide.id === activeId" [id]="slide.id + '-slide'" role="tabpanel">
+      <div *ngFor="let slide of slides; index as i; count as c" class="carousel-item"
+      [class.active]="slide.id === activeId" [id]="slide.id + '-slide'" role="tabpanel">
         <span class="sr-only" i18n="Currently selected slide number read by screen reader@@ngb.carousel.slide-number">
           Slide {{i + 1}} of {{c}}
         </span>
