@@ -92,7 +92,8 @@
         [title]="downloadCount + ' downloads over the last 30 days on Npm'"
         class="d-flex flex-column align-items-center"
       >
-        {{ downloadCount }}
+        <!-- hide the text from a screen reader so that it uses title attribute for the announcement and navigation  -->
+        <span aria-hidden="true">{{ downloadCount }}</span>
         <svg viewBox="0 0 780 250" width="40" height="13">
           <path
             d="M240,250h100v-50h100V0H240V250z M340,50h50v100h-50V50z M480,0v200h100V50h50v150h50V50h50v150h50V0H480z M0,200h100V50h50v150h50V0H0V200z"
