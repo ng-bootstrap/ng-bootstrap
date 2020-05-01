@@ -1,4 +1,4 @@
-import {Directive, EventEmitter, Input, Output} from '@angular/core';
+import {Directive, EventEmitter, Input, Output, HostBinding, HostListener} from '@angular/core';
 import {Country} from './country';
 
 export type SortColumn = keyof Country | '';
@@ -12,20 +12,22 @@ export interface SortEvent {
 
 @Directive({
   selector: 'th[sortable]',
-  host: {
-    '[class.asc]': 'direction === "asc"',
-    '[class.desc]': 'direction === "desc"',
-    '(click)': 'rotate()'
-  }
 })
 export class NgbdSortableHeader {
 
   @Input() sortable: SortColumn = '';
   @Input() direction: SortDirection = '';
   @Output() sort = new EventEmitter<SortEvent>();
-
-  rotate() {
-    this.direction = rotate[this.direction];
-    this.sort.emit({column: this.sortable, direction: this.direction});
+  @HostBinding('class.asc') get asc() {
+    return this.direction === 'asc';
+  }
+  @HostBinding('class.desc') get desc() {
+    return this.direction === 'desc';
+  }
+  @HostListener('click') rotate() {
+    {
+      this.direction = rotate[this.direction];
+      this.sort.emit({column: this.sortable, direction: this.direction});
+    }
   }
 }
