@@ -64,7 +64,6 @@ export class NgbdSortableHeader {
     return this.direction === 'desc';
   }
   @HostListener('click') rotate() {
-  {
     this.direction = rotate[this.direction];
     this.sort.emit({column: this.sortable, direction: this.direction});
   }
