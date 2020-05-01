@@ -51,7 +51,7 @@ function expectOpenPanels(nativeEl: HTMLElement, openPanelsDef: boolean[]) {
 describe('ngb-accordion', () => {
   let html = `
     <ngb-accordion #acc="ngbAccordion" [closeOthers]="closeOthers" [activeIds]="activeIds"
-      (panelChange)="changeCallback($event)" [type]="classType">
+      (panelChange)="changeCallback($event)" [type]="classType" [ariaPanelRole]="ariaPanelRole">
       <ngb-panel *ngFor="let panel of panels" [id]="panel.id" [disabled]="panel.disabled" [type]="panel.type">
         <ng-template ngbPanelTitle>{{panel.title}}</ng-template>
         <ng-template ngbPanelContent>{{panel.content}}</ng-template>
@@ -74,12 +74,9 @@ describe('ngb-accordion', () => {
 
   it('should have no open panels', () => {
     const fixture = TestBed.createComponent(TestComponent);
-    const accordionEl = fixture.nativeElement.children[0];
     const el = fixture.nativeElement;
     fixture.detectChanges();
     expectOpenPanels(el, [false, false, false]);
-    expect(accordionEl.getAttribute('role')).toBe('tablist');
-    expect(accordionEl.getAttribute('aria-multiselectable')).toBe('true');
   });
 
   it('should have proper css classes', () => {
@@ -169,7 +166,6 @@ describe('ngb-accordion', () => {
 
     tc.closeOthers = true;
     fixture.detectChanges();
-    expect(el.children[0].getAttribute('aria-multiselectable')).toBe('false');
 
     getButton(el, 0).click();
     fixture.detectChanges();
@@ -628,16 +624,23 @@ describe('ngb-accordion', () => {
     expect(el[2]).toHaveCssClass('bg-warning');
   });
 
-  it('should have the proper roles', () => {
+  it('should not have the role attribute on panel element when `ariaPanelRole` is not set', () => {
     const fixture = TestBed.createComponent(TestComponent);
     fixture.componentInstance.activeIds = 'one,two,three';
     fixture.detectChanges();
 
-    const headers = getPanels(fixture.nativeElement);
-    headers.forEach(header => expect(header.getAttribute('role')).toBe('tab'));
+    const contents = getPanelsContent(fixture.nativeElement);
+    contents.forEach(content => expect(content.getAttribute('role')).toBeNull());
+  });
+
+  it('should have the role "region" on panel content element when "ariaPanelRole" is set to "region"', () => {
+    const fixture = TestBed.createComponent(TestComponent);
+    fixture.componentInstance.activeIds = 'one,two,three';
+    fixture.componentInstance.ariaPanelRole = 'region';
+    fixture.detectChanges();
 
     const contents = getPanelsContent(fixture.nativeElement);
-    contents.forEach(content => expect(content.getAttribute('role')).toBe('tabpanel'));
+    contents.forEach(content => expect(content.getAttribute('role')).toBe('region'));
   });
 
   describe('Custom config', () => {
@@ -860,6 +863,7 @@ describe('ngb-accordion', () => {
 @Component({selector: 'test-cmp', template: ''})
 class TestComponent {
   activeIds: string | string[] = [];
+  ariaPanelRole: 'region' | null;
   classType;
   closeOthers = false;
   panels = [

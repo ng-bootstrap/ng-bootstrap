@@ -155,20 +155,20 @@ export interface NgbPanelChangeEvent {
   selector: 'ngb-accordion',
   exportAs: 'ngbAccordion',
   encapsulation: ViewEncapsulation.None,
-  host: {'class': 'accordion', 'role': 'tablist', '[attr.aria-multiselectable]': '!closeOtherPanels'},
+  host: {'class': 'accordion'},
   template: `
-    <ng-template #t ngbPanelHeader let-panel>
+    <ng-template #defaultHeaderTemplate ngbPanelHeader let-panel>
       <button class="btn btn-link" [ngbPanelToggle]="panel">
         {{panel.title}}<ng-template [ngTemplateOutlet]="panel.titleTpl?.templateRef"></ng-template>
       </button>
     </ng-template>
     <ng-template ngFor let-panel [ngForOf]="panels">
       <div [class]="'card ' + (panel.cardClass || '')">
-        <div role="tab" id="{{panel.id}}-header" [class]="'card-header ' + (panel.type ? 'bg-'+panel.type: type ? 'bg-'+type : '')">
-          <ng-template [ngTemplateOutlet]="panel.headerTpl?.templateRef || t"
+        <div id="{{panel.id}}-header" [class]="'card-header ' + (panel.type ? 'bg-'+panel.type: type ? 'bg-'+type : '')">
+          <ng-template [ngTemplateOutlet]="panel.headerTpl?.templateRef || defaultHeaderTemplate"
                        [ngTemplateOutletContext]="{$implicit: panel, opened: panel.isOpen}"></ng-template>
         </div>
-        <div id="{{panel.id}}" role="tabpanel" [attr.aria-labelledby]="panel.id + '-header'"
+        <div id="{{panel.id}}" [attr.role]="ariaPanelRole" [attr.aria-labelledby]="panel.id + '-header'"
              class="collapse" [class.show]="panel.isOpen" *ngIf="!destroyOnHide || panel.isOpen">
           <div class="card-body">
                <ng-template [ngTemplateOutlet]="panel.contentTpl?.templateRef || null"></ng-template>
@@ -208,6 +208,13 @@ export class NgbAccordion implements AfterContentChecked {
    * `'secondary'`, `'light'` and `'dark'`.
    */
   @Input() type: string;
+
+  /**
+   * The panel's role attribute value. According to
+   * [WAI-ARIA practices](https://www.w3.org/TR/wai-aria-practices-1.1/#wai-aria-roles-states-and-properties)
+   * could be a '[region](https://www.w3.org/TR/wai-aria-1.1/#region)'
+   */
+  @Input() ariaPanelRole: 'region' | null;
 
   /**
    * Event emitted right before the panel toggle happens.
