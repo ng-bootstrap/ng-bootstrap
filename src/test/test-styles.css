@@ -1,0 +1,17 @@
+.ngb-test-transition {
+  height: 100px;
+  width: 100px;
+  background-color: red;
+}
+
+.ngb-test-none {
+  transition: none 0.01s linear;
+}
+
+.ngb-test-fade {
+  transition: opacity 0.01s linear;
+}
+
+.ngb-test-fade:not(.ngb-test-show) {
+  opacity: 0;
+}
