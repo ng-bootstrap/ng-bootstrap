@@ -1,5 +1,5 @@
-import {TestBed, ComponentFixture, inject} from '@angular/core/testing';
-import {createGenericTestComponent} from '../test/common';
+import {async, ComponentFixture, inject, TestBed} from '@angular/core/testing';
+import {isBrowserVisible, createGenericTestComponent} from '../test/common';
 
 import {Component} from '@angular/core';
 
@@ -8,6 +8,7 @@ import {NgbAlert} from './alert';
 import {NgbAlertConfig} from './alert-config';
 
 import {NgbConfig} from '../ngb-config';
+import {NgbConfigAnimation} from '../test/ngb-config-animation';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -42,6 +43,8 @@ describe('ngb-alert', () => {
     expect(alertEl.getAttribute('role')).toEqual('alert');
     expect(alertEl).toHaveCssClass('alert-warning');
     expect(alertEl).toHaveCssClass('alert-dismissible');
+    expect(alertEl).toHaveCssClass('show');
+    expect(alertEl).toHaveCssClass('fade');
   });
 
   it('should allow specifying alert type', () => {
@@ -104,6 +107,8 @@ describe('ngb-alert', () => {
 
     expect(fixture.componentInstance.closed).toBe(false);
     buttonEl.click();
+    expect(alertEl).toHaveCssClass('show');
+    expect(alertEl).toHaveCssClass('fade');
     expect(fixture.componentInstance.closed).toBe(true);
   });
 
@@ -163,6 +168,52 @@ describe('ngb-alert', () => {
     });
   });
 });
+
+if (isBrowserVisible('ngb-alert animations')) {
+  describe('ngb-alert animations', () => {
+
+    @Component({
+      template: `
+        <ngb-alert type="success" (close)="onClose()">Cool!</ngb-alert>`,
+      host: {'[class.ngb-reduce-motion]': 'reduceMotion'}
+    })
+    class TestAnimationComponent {
+      reduceMotion = true;
+      onClose = () => {};
+    }
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        declarations: [TestAnimationComponent],
+        imports: [NgbAlertModule],
+        providers: [{provide: NgbConfig, useClass: NgbConfigAnimation}]
+      });
+    });
+
+    [true, false].forEach(reduceMotion => {
+
+      it(`should run fade transition when closing alert (force-reduced-motion = ${reduceMotion})`, async(() => {
+           const fixture = TestBed.createComponent(TestAnimationComponent);
+           fixture.componentInstance.reduceMotion = reduceMotion;
+           fixture.detectChanges();
+
+           const alertEl = getAlertElement(fixture.nativeElement);
+           const buttonEl = fixture.nativeElement.querySelector('button');
+
+           spyOn(fixture.componentInstance, 'onClose').and.callFake(() => {
+             expect(window.getComputedStyle(alertEl).opacity).toBe('0');
+             expect(alertEl).not.toHaveCssClass('show');
+             expect(alertEl).toHaveCssClass('fade');
+           });
+
+           expect(window.getComputedStyle(alertEl).opacity).toBe('1');
+           expect(alertEl).toHaveCssClass('show');
+           expect(alertEl).toHaveCssClass('fade');
+           buttonEl.click();
+         }));
+    });
+  });
+}
 
 @Component({selector: 'test-cmp', template: '', entryComponents: [NgbAlert]})
 class TestComponent {

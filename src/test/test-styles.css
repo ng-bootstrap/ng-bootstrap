@@ -1,3 +1,22 @@
+/*
+  Overriding some of the Bootstrap transition styles for testing purposes.
+
+  Adding `!important` will disable bootstrap's prefer-reduced-motion support and always run transitions regardless
+  of the host OS setting. We can simulate reduced motion support with the `.ngb-reduce-motion` class.
+ */
+
+.fade {
+  transition: opacity 0.01s linear !important;
+}
+
+.ngb-reduce-motion .fade {
+  transition: none !important;
+}
+
+/*
+  Styles used for internal testing
+ */
+
 .ngb-test-transition {
   height: 100px;
   width: 100px;
