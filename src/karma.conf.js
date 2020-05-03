@@ -6,7 +6,7 @@ const browsers = process.env.TRAVIS ? ['ChromeHeadlessNoSandbox'] : ['ChromeNoEx
 module.exports = function (config) {
   config.set({
     basePath: '',
-    files: ['../node_modules/bootstrap/dist/css/bootstrap.min.css'],
+    files: ['../node_modules/bootstrap/dist/css/bootstrap.min.css', '../src/test/test-styles.css'],
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
     plugins: [
       require('karma-jasmine'),
