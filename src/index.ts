@@ -144,6 +144,8 @@ export {
 } from './typeahead/typeahead.module';
 export {Placement} from './util/positioning';
 
+export {NgbConfig} from './ngb-config';
+
 
 const NGB_MODULES = [
   NgbAccordionModule, NgbAlertModule, NgbButtonsModule, NgbCarouselModule, NgbCollapseModule, NgbDatepickerModule,

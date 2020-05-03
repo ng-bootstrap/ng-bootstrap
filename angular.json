@@ -23,6 +23,12 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
+            "fileReplacements": [
+              {
+                "src": "src/environment.ts",
+                "replaceWith": "src/environment.test.ts"
+              }
+            ],
             "main": "src/test.ts",
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
