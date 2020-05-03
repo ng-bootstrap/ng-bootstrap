@@ -1,3 +1,5 @@
-export const ngbAlertFadingTransition = ({classList}: HTMLElement): void => {
+import {NgbTransitionStartFn} from './ngbTransition';
+
+export const ngbAlertFadingTransition: NgbTransitionStartFn = ({classList}: HTMLElement) => {
   classList.remove('show');
 };
