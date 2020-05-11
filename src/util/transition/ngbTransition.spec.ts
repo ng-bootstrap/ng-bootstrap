@@ -146,6 +146,27 @@ if (isBrowserVisible('ngbRunTransition')) {
       expect(window.getComputedStyle(element).opacity).toBe('1');
       element.parentElement !.removeChild(element);
     });
+
+    it(`should read duration after the start function was executed`, (done) => {
+      const startFn = ({classList}: HTMLElement) => classList.add('ngb-test-long-duration');
+
+      const nextSpy = createSpy();
+      const errorSpy = createSpy();
+
+      ngbRunTransition(element, startFn, {animation: true, runningTransition: 'continue'})
+          .subscribe(nextSpy, errorSpy, async() => {
+            // if duration is read before the 'startFn' is executed, it will be read as 0
+            expect(component.componentInstance.onTransitionEnd).toHaveBeenCalledTimes(1);
+            expect(nextSpy).toHaveBeenCalledWith(undefined);
+            expect(element.classList.contains('ngb-test-long-duration')).toBe(true);
+            expect(await getComputedStyleAsync(element, 'opacity')).toBe('0');
+            expect(errorSpy).not.toHaveBeenCalled();
+            done();
+          });
+
+      expect(window.getComputedStyle(element).opacity).toBe('1');
+      expect(element.classList.contains('ngb-test-long-duration')).toBe(true);
+    });
   });
 }
 

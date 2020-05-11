@@ -34,3 +34,8 @@
 .ngb-test-fade:not(.ngb-test-show) {
   opacity: 0;
 }
+
+.ngb-test-long-duration {
+  opacity: 0;
+  transition: opacity 1s linear;
+}
