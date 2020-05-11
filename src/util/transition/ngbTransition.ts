@@ -3,12 +3,15 @@ import {takeUntil} from 'rxjs/operators';
 import {getTransitionDurationMs} from './util';
 import {environment} from '../../environment';
 
-export type NgbTransitionStartFn = (element: HTMLElement) => void;
+export type NgbTransitionStartFn = (element: HTMLElement) => NgbTransitionEndFn | void;
+export type NgbTransitionEndFn = () => void;
 
 export interface NgbTransitionOptions {
   animation: boolean;
   runningTransition: 'continue' | 'stop';
 }
+
+const noopFn: NgbTransitionEndFn = () => {};
 
 const {transitionTimerDelayMs} = environment;
 const runningTransitions = new Map<HTMLElement, Subject<any>>();
@@ -32,11 +35,11 @@ export const ngbRunTransition =
       }
 
       // If 'prefer-reduced-motion' is enabled, the 'transition' will be set to 'none'.
-      // In this case we have to call the start function, but can finish immediately by emitting a value
-      // and completing the observable.
+      // In this case we have to call the start function, but can finish immediately by emitting a value,
+      // completing the observable and executing both start and end functions synchronously.
       const {transitionProperty} = window.getComputedStyle(element);
       if (transitionProperty === 'none') {
-        startFn(element);
+        (startFn(element) || noopFn)();
         return of(undefined);
       }
 
@@ -44,7 +47,7 @@ export const ngbRunTransition =
       const transition$ = new Subject<any>();
       runningTransitions.set(element, transition$);
 
-      startFn(element);
+      const endFn = startFn(element) || noopFn;
 
       const transitionDurationMs = getTransitionDurationMs(element);
 
@@ -57,6 +60,7 @@ export const ngbRunTransition =
 
       race(timer$, transitionEnd$).subscribe(() => {
         runningTransitions.delete(element);
+        endFn();
         transition$.next();
         transition$.complete();
       });

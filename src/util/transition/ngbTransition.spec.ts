@@ -2,14 +2,16 @@ import {ngbRunTransition} from './ngbTransition';
 import createSpy = jasmine.createSpy;
 import {Component, ElementRef, ViewChild} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {isBrowserVisible} from '../../test/common';
+import {isBrowser, isBrowserVisible} from '../../test/common';
 
 /**
  * This is sometimes necessary only for IE when it fails to recalculate styles synchronously
  * after the 'transitionend' event was fired. To remove when not supporting IE anymore.
  */
-function getComputedStyleAsync(element: HTMLElement, style: keyof CSSStyleDeclaration) {
-  return new Promise<string>(resolve => setTimeout(() => resolve(window.getComputedStyle(element)[style])));
+function getComputedStyleAsync(element: HTMLElement, style: keyof CSSStyleDeclaration): Promise<string> {
+  const getStyle = () => window.getComputedStyle(element)[style];
+  return isBrowser('ie') ? new Promise<string>(resolve => setTimeout(() => resolve(getStyle()), 16)) :
+                           Promise.resolve(getStyle());
 }
 
 function fadeFn({classList}: HTMLElement) {
@@ -166,6 +168,39 @@ if (isBrowserVisible('ngbRunTransition')) {
 
       expect(window.getComputedStyle(element).opacity).toBe('1');
       expect(element.classList.contains('ngb-test-long-duration')).toBe(true);
+    });
+
+    it(`should execute the end function if provided`, (done) => {
+      const startFn = ({classList}: HTMLElement) => {
+        classList.add('ngb-test-during');
+        return () => {
+          classList.remove('ngb-test-before');
+          classList.remove('ngb-test-during');
+          classList.add('ngb-test-after');
+        };
+      };
+
+      element.classList.add('ngb-test-before');
+
+      const nextSpy = createSpy();
+      const errorSpy = createSpy();
+
+      ngbRunTransition(element, startFn, {animation: true, runningTransition: 'continue'})
+          .subscribe(nextSpy, errorSpy, async() => {
+            expect(component.componentInstance.onTransitionEnd).toHaveBeenCalledTimes(1);
+            expect(nextSpy).toHaveBeenCalledWith(undefined);
+            expect(element.classList.contains('ngb-test-before')).toBe(false);
+            expect(element.classList.contains('ngb-test-during')).toBe(false);
+            expect(element.classList.contains('ngb-test-after')).toBe(true);
+            expect(await getComputedStyleAsync(element, 'opacity')).toBe('0');
+            expect(errorSpy).not.toHaveBeenCalled();
+            done();
+          });
+
+      expect(window.getComputedStyle(element).opacity).toBe('1');
+      expect(element.classList.contains('ngb-test-before')).toBe(true);
+      expect(element.classList.contains('ngb-test-during')).toBe(true);
+      expect(element.classList.contains('ngb-test-after')).toBe(false);
     });
   });
 }
