@@ -90,41 +90,117 @@ if (isBrowserVisible('ngbRunTransition')) {
       expect(completeSpy).toHaveBeenCalled();
     });
 
-    it(`should complete new transition if one is already running with 'runningTransition: continue'`, (done) => {
-      element.classList.add('ngb-test-fade');
+    it(`should complete new transition and continue one already running with 'runningTransition: continue'`, (done) => {
+      let startCalls = 0;
+      let endCalls = 0;
+      const startFn = ({classList}: HTMLElement) => {
+        startCalls++;
+        classList.add('ngb-test-during');
+        return () => {
+          endCalls++;
+          classList.remove('ngb-test-during');
+          classList.add('ngb-test-after');
+        };
+      };
 
-      // first
+      // starting first
       const nextSpy1 = createSpy();
       const errorSpy1 = createSpy();
 
-      ngbRunTransition(element, fadeFn, {animation: true, runningTransition: 'continue'})
+      ngbRunTransition(element, startFn, {animation: true, runningTransition: 'continue'})
           .subscribe(nextSpy1, errorSpy1, async() => {
+            expect(startCalls).toBe(1);
+            expect(endCalls).toBe(1);
             expect(component.componentInstance.onTransitionEnd).toHaveBeenCalledTimes(1);
             expect(nextSpy1).toHaveBeenCalledWith(undefined);
-            expect(element.classList.contains('ngb-test-show')).toBe(false);
             expect(errorSpy1).not.toHaveBeenCalled();
+            expect(element.classList.contains('ngb-test-during')).toBe(false);
+            expect(element.classList.contains('ngb-test-after')).toBe(true);
             expect(await getComputedStyleAsync(element, 'opacity')).toBe('0');
             done();
           });
 
+      // first transition is on-going, start function was called
+      expect(nextSpy1).not.toHaveBeenCalled();
+      expect(element.classList.contains('ngb-test-during')).toBe(true);
+      expect(element.classList.contains('ngb-test-after')).toBe(false);
       expect(window.getComputedStyle(element).opacity).toBe('1');
 
-      // second
+      // starting second
       const nextSpy2 = createSpy();
       const errorSpy2 = createSpy();
       const completeSpy2 = createSpy();
 
-      ngbRunTransition(element, fadeFn, {animation: true, runningTransition: 'continue'})
+      ngbRunTransition(element, startFn, {animation: true, runningTransition: 'continue'})
           .subscribe(nextSpy2, errorSpy2, completeSpy2);
 
-      // first transition is on-going
+      // first transition is still on-going
       expect(nextSpy1).not.toHaveBeenCalled();
+      expect(element.classList.contains('ngb-test-during')).toBe(true);
+      expect(element.classList.contains('ngb-test-after')).toBe(false);
       expect(window.getComputedStyle(element).opacity).toBe('1');
 
       // second transition was completed and no value was emitted
       expect(nextSpy2).not.toHaveBeenCalled();
       expect(errorSpy2).not.toHaveBeenCalled();
       expect(completeSpy2).toHaveBeenCalled();
+    });
+
+    it(`should run new transition and stop one already running with 'runningTransition: stop'`, (done) => {
+      let startCalls = 0;
+      let endCalls = 0;
+      const startFn = ({classList}: HTMLElement) => {
+        startCalls++;
+        classList.add('ngb-test-during');
+        return () => {
+          endCalls++;
+          classList.remove('ngb-test-during');
+          classList.add('ngb-test-after');
+        };
+      };
+
+      // starting first
+      const nextSpy1 = createSpy();
+      const errorSpy1 = createSpy();
+      const completeSpy1 = createSpy();
+
+      ngbRunTransition(element, startFn, {animation: true, runningTransition: 'stop'})
+          .subscribe(nextSpy1, errorSpy1, completeSpy1);
+
+      // first transition is on-going, start function was called
+      expect(nextSpy1).not.toHaveBeenCalled();
+      expect(completeSpy1).not.toHaveBeenCalled();
+      expect(element.classList.contains('ngb-test-during')).toBe(true);
+      expect(element.classList.contains('ngb-test-after')).toBe(false);
+      expect(window.getComputedStyle(element).opacity).toBe('1');
+
+      // starting second
+      const nextSpy2 = createSpy();
+      const errorSpy2 = createSpy();
+
+      ngbRunTransition(element, startFn, {animation: true, runningTransition: 'stop'})
+          .subscribe(nextSpy2, errorSpy2, async() => {
+            expect(startCalls).toBe(2);
+            expect(endCalls).toBe(1);
+            expect(component.componentInstance.onTransitionEnd).toHaveBeenCalledTimes(1);
+            expect(nextSpy2).toHaveBeenCalledWith(undefined);
+            expect(errorSpy2).not.toHaveBeenCalled();
+            expect(element.classList.contains('ngb-test-during')).toBe(false);
+            expect(element.classList.contains('ngb-test-after')).toBe(true);
+            expect(await getComputedStyleAsync(element, 'opacity')).toBe('0');
+            done();
+          });
+
+      // second transition should have started
+      expect(nextSpy2).not.toHaveBeenCalled();
+      expect(element.classList.contains('ngb-test-during')).toBe(true);
+      expect(element.classList.contains('ngb-test-after')).toBe(false);
+      expect(window.getComputedStyle(element).opacity).toBe('1');
+
+      // first transition was completed and no value was emitted
+      expect(nextSpy1).not.toHaveBeenCalled();
+      expect(errorSpy1).not.toHaveBeenCalled();
+      expect(completeSpy1).toHaveBeenCalled();
     });
 
     it(`should complete and release the DOM element even if transition end is not fired`, (done) => {

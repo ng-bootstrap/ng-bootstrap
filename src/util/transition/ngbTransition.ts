@@ -1,5 +1,5 @@
 import {EMPTY, fromEvent, Observable, of, race, Subject, timer} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {endWith, takeUntil} from 'rxjs/operators';
 import {getTransitionDurationMs} from './util';
 import {environment} from '../../environment';
 
@@ -27,10 +27,16 @@ export const ngbRunTransition =
       // Checking if there are already running transitions on the given element.
       const runningTransition$ = runningTransitions.get(element);
       if (runningTransition$) {
-        // If there is one running and we want for it to continue to run, we have to cancel the current one.
-        // We're not emitting any values, but simply completing the observable (EMPTY).
-        if (options.runningTransition === 'continue') {
-          return EMPTY;
+        switch (options.runningTransition) {
+          // If there is one running and we want for it to 'continue' to run, we have to cancel the new one.
+          // We're not emitting any values, but simply completing the observable (EMPTY).
+          case 'continue':
+            return EMPTY;
+          // If there is one running and we want for it to 'stop', we have to complete the running one.
+          // We're simply completing the running one and not emitting any values.
+          case 'stop':
+            runningTransition$.complete();
+            runningTransitions.delete(element);
         }
       }
 
@@ -45,6 +51,7 @@ export const ngbRunTransition =
 
       // Starting a new transition
       const transition$ = new Subject<any>();
+      const stop$ = transition$.pipe(endWith(true));
       runningTransitions.set(element, transition$);
 
       const endFn = startFn(element) || noopFn;
@@ -55,10 +62,10 @@ export const ngbRunTransition =
       // because 'transitionend' event might not be fired in some browsers, if the transitioning
       // element becomes invisible (ex. when scrolling, making browser tab inactive, etc.). The timer
       // guarantees, that we'll release the DOM element and complete 'ngbRunTransition'.
-      const transitionEnd$ = fromEvent(element, 'transitionend').pipe(takeUntil(transition$));
-      const timer$ = timer(transitionDurationMs + transitionTimerDelayMs).pipe(takeUntil(transition$));
+      const transitionEnd$ = fromEvent(element, 'transitionend').pipe(takeUntil(stop$));
+      const timer$ = timer(transitionDurationMs + transitionTimerDelayMs).pipe(takeUntil(stop$));
 
-      race(timer$, transitionEnd$).subscribe(() => {
+      race(timer$, transitionEnd$).pipe(takeUntil(stop$)).subscribe(() => {
         runningTransitions.delete(element);
         endFn();
         transition$.next();
