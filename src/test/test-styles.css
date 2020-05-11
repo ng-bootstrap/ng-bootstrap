@@ -39,3 +39,16 @@
   opacity: 0;
   transition: opacity 1s linear;
 }
+
+.ngb-test-before {
+  opacity: 1;
+}
+
+.ngb-test-during {
+  opacity: 0;
+  transition: opacity 0.01s linear;
+}
+
+.ngb-test-after {
+  opacity: 0;
+}
