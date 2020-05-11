@@ -44,9 +44,9 @@ export const ngbRunTransition =
       const transition$ = new Subject<any>();
       runningTransitions.set(element, transition$);
 
-      const transitionDurationMs = getTransitionDurationMs(element);
-
       startFn(element);
+
+      const transitionDurationMs = getTransitionDurationMs(element);
 
       // We have to both listen for the 'transitionend' event and have a 'just-in-case' timer,
       // because 'transitionend' event might not be fired in some browsers, if the transitioning
