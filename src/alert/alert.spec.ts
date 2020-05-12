@@ -1,5 +1,7 @@
+import createSpy = jasmine.createSpy;
 import {async, ComponentFixture, inject, TestBed} from '@angular/core/testing';
 import {isBrowserVisible, createGenericTestComponent} from '../test/common';
+import {By} from '@angular/platform-browser';
 
 import {Component} from '@angular/core';
 
@@ -101,7 +103,7 @@ describe('ngb-alert', () => {
 
   it('should fire an event after closing a dismissible alert', () => {
     const fixture =
-        createTestComponent('<ngb-alert [dismissible]="true" (close)="closed = true">Watch out!</ngb-alert>');
+        createTestComponent('<ngb-alert [dismissible]="true" (closed)="closed = true">Watch out!</ngb-alert>');
     const alertEl = getAlertElement(fixture.nativeElement);
     const buttonEl = getCloseButton(alertEl);
 
@@ -110,6 +112,23 @@ describe('ngb-alert', () => {
     expect(alertEl).toHaveCssClass('show');
     expect(alertEl).toHaveCssClass('fade');
     expect(fixture.componentInstance.closed).toBe(true);
+  });
+
+  it('should fire an event after closing a dismissible alert imperatively', () => {
+    const fixture =
+        createTestComponent('<ngb-alert [dismissible]="true" (closed)="closed = true">Watch out!</ngb-alert>');
+    const alertEl = getAlertElement(fixture.nativeElement);
+    const alert = fixture.debugElement.query(By.directive(NgbAlert)).injector.get(NgbAlert);
+
+    const closedSpy = createSpy();
+    expect(fixture.componentInstance.closed).toBe(false);
+    alert.close().subscribe(closedSpy);
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.closed).toBe(true);
+    expect(closedSpy).toHaveBeenCalledTimes(1);
+    expect(alertEl).toHaveCssClass('show');
+    expect(alertEl).toHaveCssClass('fade');
   });
 
   it('should project the content given into the component', () => {
