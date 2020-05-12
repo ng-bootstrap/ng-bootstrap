@@ -12,6 +12,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
+import {Observable} from 'rxjs';
+
 import {NgbAlertConfig} from './alert-config';
 import {ngbRunTransition} from '../util/transition/ngbTransition';
 import {ngbAlertFadingTransition} from '../util/transition/ngbFadingTransition';
@@ -23,6 +25,7 @@ import {ngbAlertFadingTransition} from '../util/transition/ngbFadingTransition';
  */
 @Component({
   selector: 'ngb-alert',
+  exportAs: 'ngbAlert',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: {'role': 'alert', 'class': 'alert show fade', '[class.alert-dismissible]': 'dismissible'},
@@ -64,7 +67,7 @@ export class NgbAlert implements OnInit,
   /**
    * An event emitted when the close button is clicked. It has no payload and only relevant for dismissible alerts.
    */
-  @Output('close') closeEvent = new EventEmitter<void>();
+  @Output() closed = new EventEmitter<void>();
 
 
   constructor(config: NgbAlertConfig, private _renderer: Renderer2, private _element: ElementRef) {
@@ -73,11 +76,20 @@ export class NgbAlert implements OnInit,
     this.animation = config.animation;
   }
 
-  close() {
-    ngbRunTransition(this._element.nativeElement, ngbAlertFadingTransition, {
-      animation: this.animation,
-      runningTransition: 'continue'
-    }).subscribe(() => this.closeEvent.emit());
+  /**
+   * Triggers alert closing programmatically (same as clicking on the close button (×)).
+   *
+   * The returned observable will emit and be completed once the closing transition has finished.
+   * If the animations are turned off this happens synchronously.
+   *
+   * Alternatively you could listen or subscribe to the `(closed)` output
+   */
+  close(): Observable<void> {
+    const transition = ngbRunTransition(
+        this._element.nativeElement, ngbAlertFadingTransition,
+        {animation: this.animation, runningTransition: 'continue'});
+    transition.subscribe(() => this.closed.emit());
+    return transition;
   }
 
   ngOnChanges(changes: SimpleChanges) {
