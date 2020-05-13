@@ -203,6 +203,65 @@ if (isBrowserVisible('ngbRunTransition')) {
       expect(completeSpy1).toHaveBeenCalled();
     });
 
+    it(`should create and allow modifying context when running a new transition`, (done) => {
+      const startFn = ({classList}: HTMLElement, context: any) => {
+        classList.remove('ngb-test-show');
+        expect(context.number).toBe(123);
+        context.number = 456;
+      };
+
+      element.classList.add('ngb-test-fade');
+
+      const ctx = {number: 123};
+
+      ngbRunTransition(element, startFn, {animation: true, runningTransition: 'continue', context: ctx})
+          .subscribe(async() => {
+            expect(await getComputedStyleAsync(element, 'opacity')).toBe('0');
+            expect(ctx.number).toBe(456);
+            done();
+          });
+
+      expect(window.getComputedStyle(element).opacity).toBe('1');
+    });
+
+    it(`should create and allow modifying context when running multiple transitions`, (done) => {
+      const contextSpy = createSpy();
+      const startFn = ({classList}: HTMLElement, context: any) => {
+        classList.add('ngb-test-during');
+        if (!context.counter) {
+          context.counter = 0;
+        }
+        context.counter++;
+        contextSpy({...context});
+
+        return () => {
+          classList.remove('ngb-test-during');
+          classList.add('ngb-test-after');
+          context.counter = 999;
+          contextSpy({...context});
+        };
+      };
+
+      element.classList.add('ngb-test-before');
+
+      // first transition
+      ngbRunTransition(element, startFn, {animation: true, runningTransition: 'stop', context: {text: 'one'}})
+          .subscribe(() => {}, () => {}, () => {});
+      expect(contextSpy).toHaveBeenCalledWith({text: 'one', counter: 1});
+
+      // second transiiton
+      ngbRunTransition(element, startFn, {animation: true, runningTransition: 'stop', context: {text: 'two'}})
+          .subscribe(async() => {
+            expect(await getComputedStyleAsync(element, 'opacity')).toBe('0');
+            expect(contextSpy).toHaveBeenCalledTimes(3);
+            expect(contextSpy).toHaveBeenCalledWith({text: 'two', counter: 999});
+            done();
+          });
+      expect(contextSpy).toHaveBeenCalledWith({text: 'two', counter: 2});
+
+      expect(window.getComputedStyle(element).opacity).toBe('1');
+    });
+
     it(`should complete and release the DOM element even if transition end is not fired`, (done) => {
       element.classList.add('ngb-test-fade');
 
