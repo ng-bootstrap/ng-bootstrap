@@ -9,7 +9,11 @@
   transition: opacity 0.01s linear !important;
 }
 
-.ngb-reduce-motion .fade {
+.collapsing {
+  transition: height 0.01s ease !important;
+}
+
+.ngb-reduce-motion .fade, .ngb-reduce-motion .collapsing {
   transition: none !important;
 }
 
