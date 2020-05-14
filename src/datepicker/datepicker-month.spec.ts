@@ -33,6 +33,10 @@ function getDates(element: HTMLElement): HTMLElement[] {
   return <HTMLElement[]>Array.from(element.querySelectorAll('.ngb-dp-day'));
 }
 
+function getWeekLabel(element: HTMLElement): HTMLElement | null {
+  return element.querySelector('.ngb-dp-showweek');
+}
+
 function expectWeekNumbers(element: HTMLElement, weeknumbers: string[]) {
   const result = getWeekNumbers(element).map(td => td.innerText.trim());
   expect(result).toEqual(weeknumbers);
@@ -41,6 +45,12 @@ function expectWeekNumbers(element: HTMLElement, weeknumbers: string[]) {
 function expectDates(element: HTMLElement, dates: string[]) {
   const result = getDates(element).map(td => td.innerText.trim());
   expect(result).toEqual(dates);
+}
+
+function expectWeekLabel(element: HTMLElement, weekLabel: string) {
+  const weekLabelElement = getWeekLabel(element);
+  const result = weekLabelElement ? weekLabelElement.innerText.trim() : '';
+  expect(result).toEqual(weekLabel);
 }
 
 @Injectable()
@@ -236,10 +246,13 @@ describe('ngb-datepicker-month', () => {
     const fixture = createTestComponent();
 
     expectWeekNumbers(fixture.nativeElement, ['1', '2', '3']);
+    expectWeekLabel(fixture.nativeElement, '');
 
     fixture.componentInstance.showWeekNumbers = false;
     fixture.detectChanges();
+
     expectWeekNumbers(fixture.nativeElement, []);
+    expectWeekLabel(fixture.nativeElement, '');
   });
 
   it('should use custom template to display dates', () => {
