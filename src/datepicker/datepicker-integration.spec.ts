@@ -56,6 +56,9 @@ describe('ngb-datepicker integration', () => {
 
       // reversed years: 1998 -> 9881
       getYearNumerals(year: number) { return `${year}`.split('').reverse().join(''); }
+
+      // alphabetic week short name
+      get weekShortLabel() { return ALPHABET.substring(0, 2); }
     }
 
     let fixture: ComponentFixture<TestComponent>;
@@ -110,6 +113,12 @@ describe('ngb-datepicker integration', () => {
       const monthNameElements = fixture.nativeElement.querySelectorAll('.ngb-dp-month-name');
       const monthNames = Array.from(monthNameElements).map((o: HTMLElement) => o.innerText.trim());
       expect(monthNames).toEqual(['A 8102', 'B 8102']);
+    });
+
+    it('should allow overriding week label', () => {
+      const weekLabelElement = (fixture.nativeElement as HTMLElement).querySelector('.ngb-dp-showweek') as HTMLElement;
+      const weekLabel = weekLabelElement.innerText.trim();
+      expect(weekLabel).toEqual(ALPHABET.substring(0, 2));
     });
   });
 

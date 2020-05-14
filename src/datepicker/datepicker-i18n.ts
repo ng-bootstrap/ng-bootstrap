@@ -87,6 +87,13 @@ export abstract class NgbDatepickerI18n {
    * @since 3.0.0
    */
   getYearNumerals(year: number): string { return `${year}`; }
+
+  /**
+   * Returns the week label to display in the heading of the month view.
+   *
+   * @since 6.1.0
+   */
+  get weekShortLabel(): string { return ''; }
 }
 
 /**
