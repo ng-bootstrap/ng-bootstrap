@@ -23,6 +23,9 @@ import {NgbCalendar, NgbDate, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
     .hidden {
       display: none;
     }
+    .input-group > .form-control {
+      flex-basis: auto;
+     }
   `]
 })
 export class NgbdDatepickerCustomday {

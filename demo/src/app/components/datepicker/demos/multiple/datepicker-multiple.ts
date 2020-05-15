@@ -8,6 +8,9 @@ import {Component} from '@angular/core';
       margin: 0.5rem 0.5rem 0 0;
       width: auto;
     }
+    .input-group > .form-control {
+      flex-basis: auto;
+    }
   `]
 })
 export class NgbdDatepickerMultiple {

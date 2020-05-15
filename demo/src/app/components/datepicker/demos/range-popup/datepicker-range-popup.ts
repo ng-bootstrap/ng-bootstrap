@@ -28,6 +28,9 @@ import {NgbDate, NgbCalendar, NgbDateParserFormatter} from '@ng-bootstrap/ng-boo
     .custom-day.faded {
       background-color: rgba(2, 117, 216, 0.5);
     }
+    .input-group > .form-control {
+      flex-basis: auto;
+    }
   `]
 })
 export class NgbdDatepickerRangePopup {

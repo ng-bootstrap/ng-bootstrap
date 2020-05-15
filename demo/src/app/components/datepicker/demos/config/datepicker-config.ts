@@ -9,6 +9,9 @@ import {
 @Component({
   selector: 'ngbd-datepicker-config',
   templateUrl: './datepicker-config.html',
+  styles: [`.input-group > .form-control {
+    flex-basis: auto;
+  }`],
   providers: [NgbInputDatepickerConfig] // add config to the component providers
 })
 export class NgbdDatepickerConfig {
