@@ -8,7 +8,11 @@ import {isBrowser, isBrowserVisible} from '../../test/common';
  * This is sometimes necessary only for IE when it fails to recalculate styles synchronously
  * after the 'transitionend' event was fired. To remove when not supporting IE anymore.
  */
-const waitForIE = () => isBrowser('ie') ? new Promise<void>(resolve => setTimeout(resolve, 100)) : Promise.resolve();
+function expectOpacity(element: HTMLElement, opacity = '0') {
+  if (!isBrowser('ie')) {
+    expect(window.getComputedStyle(element).opacity).toBe(opacity);
+  }
+}
 
 function fadeFn({classList}: HTMLElement) {
   classList.remove('ngb-test-show');
@@ -36,13 +40,12 @@ if (isBrowserVisible('ngbRunTransition')) {
       const errorSpy = createSpy();
 
       ngbRunTransition(element, fadeFn, {animation: true, runningTransition: 'continue'})
-          .subscribe(nextSpy, errorSpy, async() => {
+          .subscribe(nextSpy, errorSpy, () => {
             expect(component.componentInstance.onTransitionEnd).toHaveBeenCalledTimes(1);
             expect(nextSpy).toHaveBeenCalledWith(undefined);
             expect(element.classList.contains('ngb-test-show')).toBe(false);
             expect(errorSpy).not.toHaveBeenCalled();
-            await waitForIE();
-            expect(getComputedStyle(element).opacity).toBe('0');
+            expectOpacity(element, '0');
             done();
           });
 
@@ -105,7 +108,7 @@ if (isBrowserVisible('ngbRunTransition')) {
       const errorSpy1 = createSpy();
 
       ngbRunTransition(element, startFn, {animation: true, runningTransition: 'continue'})
-          .subscribe(nextSpy1, errorSpy1, async() => {
+          .subscribe(nextSpy1, errorSpy1, () => {
             expect(startCalls).toBe(1);
             expect(endCalls).toBe(1);
             expect(component.componentInstance.onTransitionEnd).toHaveBeenCalledTimes(1);
@@ -113,8 +116,7 @@ if (isBrowserVisible('ngbRunTransition')) {
             expect(errorSpy1).not.toHaveBeenCalled();
             expect(element.classList.contains('ngb-test-during')).toBe(false);
             expect(element.classList.contains('ngb-test-after')).toBe(true);
-            await waitForIE();
-            expect(getComputedStyle(element).opacity).toBe('0');
+            expectOpacity(element, '0');
             done();
           });
 
@@ -177,7 +179,7 @@ if (isBrowserVisible('ngbRunTransition')) {
       const errorSpy2 = createSpy();
 
       ngbRunTransition(element, startFn, {animation: true, runningTransition: 'stop'})
-          .subscribe(nextSpy2, errorSpy2, async() => {
+          .subscribe(nextSpy2, errorSpy2, () => {
             expect(startCalls).toBe(2);
             expect(endCalls).toBe(1);
             expect(component.componentInstance.onTransitionEnd).toHaveBeenCalledTimes(1);
@@ -185,8 +187,7 @@ if (isBrowserVisible('ngbRunTransition')) {
             expect(errorSpy2).not.toHaveBeenCalled();
             expect(element.classList.contains('ngb-test-during')).toBe(false);
             expect(element.classList.contains('ngb-test-after')).toBe(true);
-            await waitForIE();
-            expect(getComputedStyle(element).opacity).toBe('0');
+            expectOpacity(element, '0');
             done();
           });
 
@@ -214,9 +215,8 @@ if (isBrowserVisible('ngbRunTransition')) {
       const ctx = {number: 123};
 
       ngbRunTransition(element, startFn, {animation: true, runningTransition: 'continue', context: ctx})
-          .subscribe(async() => {
-            await waitForIE();
-            expect(getComputedStyle(element).opacity).toBe('0');
+          .subscribe(() => {
+            expectOpacity(element, '0');
             expect(ctx.number).toBe(456);
             done();
           });
@@ -251,9 +251,8 @@ if (isBrowserVisible('ngbRunTransition')) {
 
       // second transiiton
       ngbRunTransition(element, startFn, {animation: true, runningTransition: 'stop', context: {text: 'two'}})
-          .subscribe(async() => {
-            await waitForIE();
-            expect(getComputedStyle(element).opacity).toBe('0');
+          .subscribe(() => {
+            expectOpacity(element, '0');
             expect(contextSpy).toHaveBeenCalledTimes(3);
             expect(contextSpy).toHaveBeenCalledWith({text: 'two', counter: 999});
             done();
@@ -270,14 +269,12 @@ if (isBrowserVisible('ngbRunTransition')) {
       const errorSpy = createSpy();
 
       ngbRunTransition(element, fadeFn, {animation: true, runningTransition: 'continue'})
-          .subscribe(nextSpy, errorSpy, async() => {
+          .subscribe(nextSpy, errorSpy, () => {
             expect(component.componentInstance.onTransitionEnd).not.toHaveBeenCalled();  // <-- finished with timer
             expect(nextSpy).toHaveBeenCalledWith(undefined);
             expect(errorSpy).not.toHaveBeenCalled();
             expect(element.classList.contains('ngb-test-show')).toBe(false);
-            await waitForIE();
-            const {opacity} = getComputedStyle(element);
-            expect(['1', '']).toContain(opacity !);  // <-- detached from DOM, different values in different browsers
+            expectOpacity(element, '');  // <-- detached from DOM
             done();
           });
 
@@ -293,14 +290,13 @@ if (isBrowserVisible('ngbRunTransition')) {
       const errorSpy = createSpy();
 
       ngbRunTransition(element, startFn, {animation: true, runningTransition: 'continue'})
-          .subscribe(nextSpy, errorSpy, async() => {
+          .subscribe(nextSpy, errorSpy, () => {
             // if duration is read before the 'startFn' is executed, it will be read as 0
             expect(component.componentInstance.onTransitionEnd).toHaveBeenCalledTimes(1);
             expect(nextSpy).toHaveBeenCalledWith(undefined);
             expect(element.classList.contains('ngb-test-long-duration')).toBe(true);
-            await waitForIE();
-            expect(getComputedStyle(element).opacity).toBe('0');
             expect(errorSpy).not.toHaveBeenCalled();
+            expectOpacity(element, '0');
             done();
           });
 
@@ -324,15 +320,14 @@ if (isBrowserVisible('ngbRunTransition')) {
       const errorSpy = createSpy();
 
       ngbRunTransition(element, startFn, {animation: true, runningTransition: 'continue'})
-          .subscribe(nextSpy, errorSpy, async() => {
+          .subscribe(nextSpy, errorSpy, () => {
             expect(component.componentInstance.onTransitionEnd).toHaveBeenCalledTimes(1);
             expect(nextSpy).toHaveBeenCalledWith(undefined);
             expect(element.classList.contains('ngb-test-before')).toBe(false);
             expect(element.classList.contains('ngb-test-during')).toBe(false);
             expect(element.classList.contains('ngb-test-after')).toBe(true);
-            await waitForIE();
-            expect(getComputedStyle(element).opacity).toBe('0');
             expect(errorSpy).not.toHaveBeenCalled();
+            expectOpacity(element, '0');
             done();
           });
 
