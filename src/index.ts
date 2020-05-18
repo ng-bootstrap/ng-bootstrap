@@ -44,7 +44,7 @@ export {
   NgbSlideEventDirection,
   NgbSlideEventSource
 } from './carousel/carousel.module';
-export {NgbCollapse, NgbCollapseModule} from './collapse/collapse.module';
+export {NgbCollapse, NgbCollapseConfig, NgbCollapseModule} from './collapse/collapse.module';
 export {
   NgbCalendar,
   NgbCalendarGregorian,
