@@ -8,11 +8,7 @@ import {isBrowser, isBrowserVisible} from '../../test/common';
  * This is sometimes necessary only for IE when it fails to recalculate styles synchronously
  * after the 'transitionend' event was fired. To remove when not supporting IE anymore.
  */
-function getComputedStyleAsync(element: HTMLElement, style: keyof CSSStyleDeclaration): Promise<string> {
-  const getStyle = () => window.getComputedStyle(element)[style];
-  return isBrowser('ie') ? new Promise<string>(resolve => setTimeout(() => resolve(getStyle()), 16)) :
-                           Promise.resolve(getStyle());
-}
+const waitForIE = () => isBrowser('ie') ? new Promise<void>(resolve => setTimeout(resolve, 100)) : Promise.resolve();
 
 function fadeFn({classList}: HTMLElement) {
   classList.remove('ngb-test-show');
@@ -45,7 +41,8 @@ if (isBrowserVisible('ngbRunTransition')) {
             expect(nextSpy).toHaveBeenCalledWith(undefined);
             expect(element.classList.contains('ngb-test-show')).toBe(false);
             expect(errorSpy).not.toHaveBeenCalled();
-            expect(await getComputedStyleAsync(element, 'opacity')).toBe('0');
+            await waitForIE();
+            expect(getComputedStyle(element).opacity).toBe('0');
             done();
           });
 
@@ -116,7 +113,8 @@ if (isBrowserVisible('ngbRunTransition')) {
             expect(errorSpy1).not.toHaveBeenCalled();
             expect(element.classList.contains('ngb-test-during')).toBe(false);
             expect(element.classList.contains('ngb-test-after')).toBe(true);
-            expect(await getComputedStyleAsync(element, 'opacity')).toBe('0');
+            await waitForIE();
+            expect(getComputedStyle(element).opacity).toBe('0');
             done();
           });
 
@@ -187,7 +185,8 @@ if (isBrowserVisible('ngbRunTransition')) {
             expect(errorSpy2).not.toHaveBeenCalled();
             expect(element.classList.contains('ngb-test-during')).toBe(false);
             expect(element.classList.contains('ngb-test-after')).toBe(true);
-            expect(await getComputedStyleAsync(element, 'opacity')).toBe('0');
+            await waitForIE();
+            expect(getComputedStyle(element).opacity).toBe('0');
             done();
           });
 
@@ -216,7 +215,8 @@ if (isBrowserVisible('ngbRunTransition')) {
 
       ngbRunTransition(element, startFn, {animation: true, runningTransition: 'continue', context: ctx})
           .subscribe(async() => {
-            expect(await getComputedStyleAsync(element, 'opacity')).toBe('0');
+            await waitForIE();
+            expect(getComputedStyle(element).opacity).toBe('0');
             expect(ctx.number).toBe(456);
             done();
           });
@@ -252,7 +252,8 @@ if (isBrowserVisible('ngbRunTransition')) {
       // second transiiton
       ngbRunTransition(element, startFn, {animation: true, runningTransition: 'stop', context: {text: 'two'}})
           .subscribe(async() => {
-            expect(await getComputedStyleAsync(element, 'opacity')).toBe('0');
+            await waitForIE();
+            expect(getComputedStyle(element).opacity).toBe('0');
             expect(contextSpy).toHaveBeenCalledTimes(3);
             expect(contextSpy).toHaveBeenCalledWith({text: 'two', counter: 999});
             done();
@@ -274,7 +275,8 @@ if (isBrowserVisible('ngbRunTransition')) {
             expect(nextSpy).toHaveBeenCalledWith(undefined);
             expect(errorSpy).not.toHaveBeenCalled();
             expect(element.classList.contains('ngb-test-show')).toBe(false);
-            const opacity = await getComputedStyleAsync(element, 'opacity');
+            await waitForIE();
+            const {opacity} = getComputedStyle(element);
             expect(['1', '']).toContain(opacity !);  // <-- detached from DOM, different values in different browsers
             done();
           });
@@ -296,7 +298,8 @@ if (isBrowserVisible('ngbRunTransition')) {
             expect(component.componentInstance.onTransitionEnd).toHaveBeenCalledTimes(1);
             expect(nextSpy).toHaveBeenCalledWith(undefined);
             expect(element.classList.contains('ngb-test-long-duration')).toBe(true);
-            expect(await getComputedStyleAsync(element, 'opacity')).toBe('0');
+            await waitForIE();
+            expect(getComputedStyle(element).opacity).toBe('0');
             expect(errorSpy).not.toHaveBeenCalled();
             done();
           });
@@ -327,7 +330,8 @@ if (isBrowserVisible('ngbRunTransition')) {
             expect(element.classList.contains('ngb-test-before')).toBe(false);
             expect(element.classList.contains('ngb-test-during')).toBe(false);
             expect(element.classList.contains('ngb-test-after')).toBe(true);
-            expect(await getComputedStyleAsync(element, 'opacity')).toBe('0');
+            await waitForIE();
+            expect(getComputedStyle(element).opacity).toBe('0');
             expect(errorSpy).not.toHaveBeenCalled();
             done();
           });
