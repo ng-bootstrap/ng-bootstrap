@@ -1,7 +1,7 @@
 import {Directive, Input, ElementRef, Output, EventEmitter} from '@angular/core';
 import {ngbRunTransition} from '../util/transition/ngbTransition';
 import {ngbCollapsingTransition} from '../util/transition/ngbCollapseTransition';
-import {NgbConfig} from '../ngb-config';
+import {NgbCollapseConfig} from './collapse-config';
 
 /**
  * A directive to provide a simple way of hiding and showing elements on the page.
@@ -27,7 +27,7 @@ export class NgbCollapse {
 
   @Output() ngbCollapseChange = new EventEmitter<boolean>();
 
-  constructor(private _element: ElementRef, ngbConfig: NgbConfig) { this.animation = ngbConfig.animation; }
+  constructor(private _element: ElementRef, config: NgbCollapseConfig) { this.animation = config.animation; }
 
   /**
    * Triggers collapsing programmatically.
