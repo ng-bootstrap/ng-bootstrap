@@ -25,10 +25,12 @@ import {NgbModalWindow} from './modal-window';
 export class NgbModalStack {
   private _activeWindowCmptHasChanged = new Subject();
   private _ariaHiddenValues: Map<Element, string | null> = new Map();
-  private _backdropAttributes = ['backdropClass'];
+  private _backdropAttributes = ['animation', 'backdropClass'];
   private _modalRefs: NgbModalRef[] = [];
-  private _windowAttributes =
-      ['ariaLabelledBy', 'ariaDescribedBy', 'backdrop', 'centered', 'keyboard', 'scrollable', 'size', 'windowClass'];
+  private _windowAttributes = [
+    'animation', 'ariaLabelledBy', 'ariaDescribedBy', 'backdrop', 'centered', 'keyboard', 'scrollable', 'size',
+    'windowClass'
+  ];
   private _windowCmpts: ComponentRef<NgbModalWindow>[] = [];
 
   constructor(

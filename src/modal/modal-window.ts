@@ -13,17 +13,20 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import {fromEvent, Subject} from 'rxjs';
+
+import {fromEvent, Observable, Subject, zip} from 'rxjs';
 import {filter, switchMap, take, takeUntil, tap} from 'rxjs/operators';
 
 import {getFocusableBoundaryElements} from '../util/focus-trap';
 import {Key} from '../util/key';
 import {ModalDismissReasons} from './modal-dismiss-reasons';
+import {ngbRunTransition, NgbTransitionOptions} from '../util/transition/ngbTransition';
 
 @Component({
   selector: 'ngb-modal-window',
   host: {
-    '[class]': '"modal fade show d-block" + (windowClass ? " " + windowClass : "")',
+    '[class]': '"modal d-block" + (windowClass ? " " + windowClass : "")',
+    '[class.fade]': 'animation',
     'role': 'dialog',
     'tabindex': '-1',
     '[attr.aria-modal]': 'true',
@@ -46,6 +49,7 @@ export class NgbModalWindow implements OnInit,
 
   @ViewChild('dialog', {static: true}) private _dialogEl: ElementRef<HTMLElement>;
 
+  @Input() animation: boolean;
   @Input() ariaLabelledBy: string;
   @Input() ariaDescribedBy: string;
   @Input() backdrop: boolean | string = true;
@@ -57,6 +61,9 @@ export class NgbModalWindow implements OnInit,
 
   @Output('dismiss') dismissEvent = new EventEmitter();
 
+  shown = new Subject<void>();
+  hidden = new Subject<void>();
+
   constructor(
       @Inject(DOCUMENT) private _document: any, private _elRef: ElementRef<HTMLElement>, private _zone: NgZone) {}
 
@@ -64,10 +71,48 @@ export class NgbModalWindow implements OnInit,
 
   ngOnInit() { this._elWithFocus = this._document.activeElement; }
 
-  ngAfterViewInit() {
+  ngAfterViewInit() { this._show(); }
+
+  ngOnDestroy() { this._disableEventHandling(); }
+
+  hide(): Observable<any> {
+    const {nativeElement} = this._elRef;
+    const context: NgbTransitionOptions<any> = {animation: this.animation, runningTransition: 'stop'};
+
+    const windowTransition$ = ngbRunTransition(nativeElement, () => nativeElement.classList.remove('show'), context);
+    const dialogTransition$ = ngbRunTransition(this._dialogEl.nativeElement, () => {}, context);
+
+    const transitions$ = zip(windowTransition$, dialogTransition$);
+    transitions$.subscribe(() => {
+      this.hidden.next();
+      this.hidden.complete();
+    });
+
+    this._disableEventHandling();
+    this._restoreFocus();
+
+    return transitions$;
+  }
+
+  private _show() {
+    const {nativeElement} = this._elRef;
+    const context: NgbTransitionOptions<any> = {animation: this.animation, runningTransition: 'continue'};
+
+    const windowTransition$ = ngbRunTransition(nativeElement, () => nativeElement.classList.add('show'), context);
+    const dialogTransition$ = ngbRunTransition(this._dialogEl.nativeElement, () => {}, context);
+
+    zip(windowTransition$, dialogTransition$).subscribe(() => {
+      this.shown.next();
+      this.shown.complete();
+    });
+
+    this._enableEventHandling();
+    this._setFocus();
+  }
+
+  private _enableEventHandling() {
     const {nativeElement} = this._elRef;
     this._zone.runOutsideAngular(() => {
-
       fromEvent<KeyboardEvent>(nativeElement, 'keydown')
           .pipe(
               takeUntil(this._closed$),
@@ -100,7 +145,12 @@ export class NgbModalWindow implements OnInit,
         preventClose = false;
       });
     });
+  }
 
+  private _disableEventHandling() { this._closed$.next(); }
+
+  private _setFocus() {
+    const {nativeElement} = this._elRef;
     if (!nativeElement.contains(document.activeElement)) {
       const autoFocusable = nativeElement.querySelector(`[ngbAutofocus]`) as HTMLElement;
       const firstFocusable = getFocusableBoundaryElements(nativeElement)[0];
@@ -110,7 +160,7 @@ export class NgbModalWindow implements OnInit,
     }
   }
 
-  ngOnDestroy() {
+  private _restoreFocus() {
     const body = this._document.body;
     const elWithFocus = this._elWithFocus;
 
@@ -124,7 +174,5 @@ export class NgbModalWindow implements OnInit,
       setTimeout(() => elementToFocus.focus());
       this._elWithFocus = null;
     });
-
-    this._closed$.next();
   }
 }
