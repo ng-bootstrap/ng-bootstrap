@@ -337,6 +337,67 @@ if (isBrowserVisible('ngbRunTransition')) {
       expect(element.classList.contains('ngb-test-after')).toBe(false);
     });
   });
+
+  describe('ngbRunTransition nesting', () => {
+
+    @Component({
+      template: `
+      <div #outer class="ngb-test-outer" (transitionend)="onTransitionOuterEnd()">
+        <div #inner class="ngb-test-inner" (transitionend)="onTransitionInnerEnd()"></div>
+      </div>`,
+      styles: [`
+    .ngb-test-outer {
+      width: 100px;
+      height: 100px;
+      padding: 10px;
+      background-color: red;
+      opacity: 1;
+    }
+    .ngb-test-inner {
+      width: 100%;
+      height: 100%;
+      background-color: blue;
+      opacity: 1;
+    }
+  `]
+    })
+    class TestComponentNested {
+      @ViewChild('outer') outer: ElementRef<HTMLDivElement>;
+      @ViewChild('inner') inner: ElementRef<HTMLDivElement>;
+
+      onTransitionOuterEnd = () => {};
+      onTransitionInnerEnd = () => {};
+    }
+
+    beforeEach(() => TestBed.configureTestingModule({declarations: [TestComponentNested]}));
+
+    it(`should ignore all inner element transitions`, (done) => {
+      const fixture = TestBed.createComponent(TestComponentNested);
+      fixture.detectChanges();
+
+      const outerEl = fixture.componentInstance.outer.nativeElement;
+      const innerEl = fixture.componentInstance.inner.nativeElement;
+
+      const nextSpy = createSpy();
+      const errorSpy = createSpy();
+
+      spyOn(fixture.componentInstance, 'onTransitionInnerEnd');
+      spyOn(fixture.componentInstance, 'onTransitionOuterEnd');
+
+      ngbRunTransition(outerEl, () => {
+        outerEl.classList.add('ngb-test-hide-outer');
+        innerEl.classList.add('ngb-test-hide-inner');
+      }, {animation: true, runningTransition: 'continue'}).subscribe(nextSpy, errorSpy, () => {
+        expect(fixture.componentInstance.onTransitionOuterEnd).toHaveBeenCalledTimes(2);
+        expect(fixture.componentInstance.onTransitionInnerEnd).toHaveBeenCalledTimes(1);
+        expectOpacity(outerEl, '0');
+        expectOpacity(innerEl, '0');
+        expect(nextSpy).toHaveBeenCalledWith(undefined);
+        expect(errorSpy).not.toHaveBeenCalled();
+        done();
+      });
+    });
+  });
 }
 
 @Component({
@@ -344,7 +405,7 @@ if (isBrowserVisible('ngbRunTransition')) {
       <div #element class="ngb-test-transition ngb-test-show" (transitionend)="onTransitionEnd()"></div>`
 })
 class TestComponent {
-  @ViewChild('element') element: ElementRef;
+  @ViewChild('element') element: ElementRef<HTMLDivElement>;
 
   onTransitionEnd = () => {};
 }

@@ -56,3 +56,13 @@
 .ngb-test-after {
   opacity: 0;
 }
+
+.ngb-test-hide-outer {
+  opacity: 0 !important;
+  transition: opacity 0.1s linear;
+}
+
+.ngb-test-hide-inner {
+  opacity: 0 !important;
+  transition: opacity 0.01s linear;
+}
