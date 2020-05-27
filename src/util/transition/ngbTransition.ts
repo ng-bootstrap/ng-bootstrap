@@ -1,5 +1,5 @@
 import {EMPTY, fromEvent, Observable, of, race, Subject, timer} from 'rxjs';
-import {endWith, takeUntil} from 'rxjs/operators';
+import {endWith, filter, takeUntil} from 'rxjs/operators';
 import {getTransitionDurationMs} from './util';
 import {environment} from '../../environment';
 
@@ -71,11 +71,14 @@ export const ngbRunTransition =
 
           const transitionDurationMs = getTransitionDurationMs(element);
 
-          // We have to both listen for the 'transitionend' event and have a 'just-in-case' timer,
+          // 1. We have to both listen for the 'transitionend' event and have a 'just-in-case' timer,
           // because 'transitionend' event might not be fired in some browsers, if the transitioning
           // element becomes invisible (ex. when scrolling, making browser tab inactive, etc.). The timer
           // guarantees, that we'll release the DOM element and complete 'ngbRunTransition'.
-          const transitionEnd$ = fromEvent(element, 'transitionend').pipe(takeUntil(stop$));
+          // 2. We need to filter transition end events, because they might bubble from shorter transitions
+          // on inner DOM elements. We're only interested in the transition on the 'element' itself.
+          const transitionEnd$ =
+              fromEvent(element, 'transitionend').pipe(takeUntil(stop$), filter(({target}) => target === element));
           const timer$ = timer(transitionDurationMs + transitionTimerDelayMs).pipe(takeUntil(stop$));
 
           race(timer$, transitionEnd$).pipe(takeUntil(stop$)).subscribe(() => {
