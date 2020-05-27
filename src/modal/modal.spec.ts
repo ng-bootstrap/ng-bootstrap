@@ -3,6 +3,10 @@ import {Component, Injectable, Injector, NgModule, OnDestroy, ViewChild} from '@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {NgbModalConfig} from './modal-config';
 import {NgbActiveModal, NgbModal, NgbModalModule, NgbModalRef} from './modal.module';
+import {isBrowser, isBrowserVisible} from '../test/common';
+import {NgbConfig} from '..';
+import {NgbConfigAnimation} from '../test/ngb-config-animation';
+import createSpy = jasmine.createSpy;
 
 const NOOP = () => {};
 
@@ -103,6 +107,10 @@ describe('ngb-modal', () => {
         const modalInstance = fixture.componentInstance.open('foo');
         fixture.detectChanges();
         expect(fixture.nativeElement).toHaveModal('foo');
+
+        const modalEl = document.querySelector('ngb-modal-window') as HTMLElement;
+        expect(modalEl).not.toHaveClass('fade');
+        expect(modalEl).toHaveClass('show');
 
         modalInstance.close('some result');
         fixture.detectChanges();
@@ -207,6 +215,32 @@ describe('ngb-modal', () => {
         expect(fixture.nativeElement).not.toHaveModal();
       });
 
+      it(`should emit 'closed' on close`, () => {
+        const closedSpy = createSpy();
+        fixture.componentInstance.openTplClose().closed.subscribe(closedSpy);
+        fixture.detectChanges();
+        expect(fixture.nativeElement).toHaveModal();
+
+        (<HTMLElement>document.querySelector('button#close')).click();
+        fixture.detectChanges();
+        expect(fixture.nativeElement).not.toHaveModal();
+
+        expect(closedSpy).toHaveBeenCalledWith('myResult');
+      });
+
+      it(`should emit 'dismissed' on dismissal`, () => {
+        const dismissSpy = createSpy();
+        fixture.componentInstance.openTplDismiss().dismissed.subscribe(dismissSpy);
+        fixture.detectChanges();
+        expect(fixture.nativeElement).toHaveModal();
+
+        (<HTMLElement>document.querySelector('button#dismiss')).click();
+        fixture.detectChanges();
+        expect(fixture.nativeElement).not.toHaveModal();
+
+        expect(dismissSpy).toHaveBeenCalledWith('myReason');
+      });
+
       it('should resolve result promise on close', () => {
         let resolvedResult;
         fixture.componentInstance.openTplClose().result.then((result) => resolvedResult = result);
@@ -231,6 +265,22 @@ describe('ngb-modal', () => {
         expect(fixture.nativeElement).not.toHaveModal();
 
         fixture.whenStable().then(() => { expect(rejectReason).toBe('myReason'); });
+      });
+
+      it(`should emit 'shown' and 'hidden' events`, () => {
+        const shownSpy = createSpy();
+        const hiddenSpy = createSpy();
+        const modalRef = fixture.componentInstance.openTplClose();
+        modalRef.shown.subscribe(shownSpy);
+        modalRef.hidden.subscribe(hiddenSpy);
+        fixture.detectChanges();
+        expect(fixture.nativeElement).toHaveModal();
+        expect(shownSpy).toHaveBeenCalledWith(undefined);
+
+        (<HTMLElement>document.querySelector('button#close')).click();
+        fixture.detectChanges();
+        expect(fixture.nativeElement).not.toHaveModal();
+        expect(hiddenSpy).toHaveBeenCalledWith(undefined);
       });
 
       it('should add / remove "modal-open" class to body when modal is open', async(() => {
@@ -839,6 +889,73 @@ describe('ngb-modal', () => {
       fixture.detectChanges();
     });
   });
+
+  if (isBrowserVisible('ngb-modal animations')) {
+    describe('ngb-modal animations', () => {
+
+      @Component({
+        template: `
+          <ng-template #content let-close="close" let-dismiss="dismiss">
+            <button class="btn btn-primary" id="close" (click)="close('myResult')">Close me</button>
+          </ng-template>
+        `
+      })
+      class TestAnimationComponent {
+        @ViewChild('content', {static: true}) content;
+
+        constructor(private modalService: NgbModal) {}
+
+        open() { return this.modalService.open(this.content); }
+      }
+
+      beforeEach(() => {
+        TestBed.configureTestingModule({
+          declarations: [TestAnimationComponent],
+          imports: [NgbModalModule],
+          providers: [{provide: NgbConfig, useClass: NgbConfigAnimation}]
+        });
+      });
+
+      afterEach(() => document.body.classList.remove('ngb-reduce-motion'));
+
+      [true, false].forEach(reduceMotion => {
+
+        it(`should run fade transition when opening/closing modal (force-reduced-motion = ${reduceMotion})`, (done) => {
+          if (reduceMotion) {
+            document.body.classList.add('ngb-reduce-motion');
+          }
+          const component = TestBed.createComponent(TestAnimationComponent);
+          component.detectChanges();
+
+          const modalRef = component.componentInstance.open();
+          let modalEl: HTMLElement | null = null;
+
+          modalRef.shown.subscribe(() => {
+            modalEl = document.querySelector('ngb-modal-window') as HTMLElement;
+            const closeButton = document.querySelector('button#close') as HTMLButtonElement;
+
+            expect(window.getComputedStyle(modalEl).opacity).toBe('1');
+            expect(modalEl).toHaveClass('fade');
+            expect(modalEl).toHaveClass('show');
+            closeButton.click();
+          });
+
+          modalRef.hidden.subscribe(() => {
+            modalEl = document.querySelector('ngb-modal-window');
+            expect(modalEl).toBeNull();
+            done();
+          });
+
+          component.detectChanges();
+          modalEl = document.querySelector('ngb-modal-window');
+          // if reducedMotion is true, modal would be opened and closed already at this point
+          if (modalEl && !isBrowser('ie')) {
+            expect(window.getComputedStyle(modalEl).opacity).toBe('0');
+          }
+        });
+      });
+    });
+  }
 });
 
 
