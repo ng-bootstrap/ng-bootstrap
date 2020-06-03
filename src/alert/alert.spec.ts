@@ -109,7 +109,7 @@ describe('ngb-alert', () => {
 
     expect(fixture.componentInstance.closed).toBe(false);
     buttonEl.click();
-    expect(alertEl).toHaveCssClass('show');
+    expect(alertEl).not.toHaveCssClass('show');
     expect(alertEl).toHaveCssClass('fade');
     expect(fixture.componentInstance.closed).toBe(true);
   });
@@ -127,7 +127,7 @@ describe('ngb-alert', () => {
 
     expect(fixture.componentInstance.closed).toBe(true);
     expect(closedSpy).toHaveBeenCalledTimes(1);
-    expect(alertEl).toHaveCssClass('show');
+    expect(alertEl).not.toHaveCssClass('show');
     expect(alertEl).toHaveCssClass('fade');
   });
 
