@@ -63,7 +63,7 @@ if (isBrowserVisible('ngbRunTransition')) {
       ngbRunTransition(element, fadeFn, {animation: false, runningTransition: 'continue'})
           .subscribe(nextSpy, errorSpy, completeSpy);
 
-      expect(element.classList.contains('ngb-test-show')).toBe(true);
+      expect(element.classList.contains('ngb-test-show')).toBe(false);
       expect(window.getComputedStyle(element).opacity).toBe('1');
       expect(component.componentInstance.onTransitionEnd).not.toHaveBeenCalled();
       expect(nextSpy).toHaveBeenCalledWith(undefined);

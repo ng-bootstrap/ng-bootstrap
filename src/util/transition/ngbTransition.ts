@@ -28,6 +28,7 @@ export const ngbRunTransition =
 
           // If animations are disabled, we have to emit a value and complete the observable
           if (!options.animation) {
+            (startFn(element, null !) || noopFn)();
             return of(undefined);
           }
 
