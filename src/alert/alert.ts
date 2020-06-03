@@ -28,7 +28,8 @@ import {ngbAlertFadingTransition} from '../util/transition/ngbFadingTransition';
   exportAs: 'ngbAlert',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  host: {'role': 'alert', 'class': 'alert show fade', '[class.alert-dismissible]': 'dismissible'},
+  host:
+      {'role': 'alert', 'class': 'alert show', '[class.fade]': 'animation', '[class.alert-dismissible]': 'dismissible'},
   template: `
     <ng-content></ng-content>
     <button *ngIf="dismissible" type="button" class="close" aria-label="Close" i18n-aria-label="@@ngb.alert.close"
