@@ -15,10 +15,12 @@ import {
   NgZone,
 } from '@angular/core';
 
+import {Observable} from 'rxjs';
+import {take} from 'rxjs/operators';
+
 import {NgbToastConfig} from './toast-config';
 import {ngbRunTransition} from '../util/transition/ngbTransition';
 import {ngbToastFadeInTransition, ngbToastFadeOutTransition} from '../util/transition/ngbFadingTransition';
-import {take} from 'rxjs/operators';
 
 
 /**
@@ -102,18 +104,19 @@ export class NgbToast implements AfterContentInit,
   @ContentChild(NgbToastHeader, {read: TemplateRef, static: true}) contentHeaderTpl: TemplateRef<any>| null = null;
 
   /**
-   * An event fired when the toast fade in animation
+   * An event fired after the animation triggered by calling `.show()` method has finished.
    */
   @Output() shown = new EventEmitter<void>();
 
   /**
-   * An event fired immediately when toast's `hide()` method has been called.
+   * An event fired after the animation triggered by calling `.hide()` method has finished.
+   *
    * It can only occur in 2 different scenarios:
    * - `autohide` timeout fires
    * - user clicks on a closing cross (&times)
    *
-   * Additionally this output is purely informative. The toast won't disappear. It's up to the user to take care of
-   * that.
+   * Additionally this output is purely informative. The toast won't be removed from DOM automatically, it's up
+   * to the user to take care of that.
    */
   @Output() hidden = new EventEmitter<void>();
 
@@ -150,7 +153,7 @@ export class NgbToast implements AfterContentInit,
    *
    * Alternatively you could listen or subscribe to the `(hidden)` output
    */
-  hide() {
+  hide(): Observable<void> {
     this._clearTimeout();
     const transition = ngbRunTransition(
         this._element.nativeElement, ngbToastFadeOutTransition, {animation: this.animation, runningTransition: 'stop'});
@@ -166,7 +169,7 @@ export class NgbToast implements AfterContentInit,
    *
    * Alternatively you could listen or subscribe to the `(shown)` output
    */
-  show() {
+  show(): Observable<void> {
     const transition = ngbRunTransition(this._element.nativeElement, ngbToastFadeInTransition, {
       animation: this.animation,
       runningTransition: 'continue',
