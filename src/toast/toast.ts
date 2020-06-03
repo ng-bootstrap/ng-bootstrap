@@ -11,9 +11,15 @@ import {
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation,
+  ElementRef,
+  NgZone,
 } from '@angular/core';
 
 import {NgbToastConfig} from './toast-config';
+import {ngbRunTransition} from '../util/transition/ngbTransition';
+import {ngbToastFadeInTransition, ngbToastFadeOutTransition} from '../util/transition/ngbFadingTransition';
+import {take} from 'rxjs/operators';
+
 
 /**
  * This directive allows the usage of HTML markup or other directives
@@ -39,8 +45,8 @@ export class NgbToastHeader {
     'role': 'alert',
     '[attr.aria-live]': 'ariaLive',
     'aria-atomic': 'true',
-    '[class.toast]': 'true',
-    '[class.show]': 'true',
+    'class': 'toast',
+    '[class.fade]': 'animation',
   },
   template: `
     <ng-template #headerTpl>
@@ -62,6 +68,13 @@ export class NgbToastHeader {
 })
 export class NgbToast implements AfterContentInit,
     OnChanges {
+  /**
+   * If `true`, toast opening and closing will be animated.
+   *
+   * Animation is triggered only when the `.hide()` or  `.hide()` functions are called
+   */
+  @Input() animation: boolean;
+
   private _timeoutID;
 
   /**
@@ -89,6 +102,11 @@ export class NgbToast implements AfterContentInit,
   @ContentChild(NgbToastHeader, {read: TemplateRef, static: true}) contentHeaderTpl: TemplateRef<any>| null = null;
 
   /**
+   * An event fired when the toast fade in animation
+   */
+  @Output() shown = new EventEmitter<void>();
+
+  /**
    * An event fired immediately when toast's `hide()` method has been called.
    * It can only occur in 2 different scenarios:
    * - `autohide` timeout fires
@@ -97,17 +115,25 @@ export class NgbToast implements AfterContentInit,
    * Additionally this output is purely informative. The toast won't disappear. It's up to the user to take care of
    * that.
    */
-  @Output('hide') hideOutput = new EventEmitter<void>();
+  @Output() hidden = new EventEmitter<void>();
 
-  constructor(@Attribute('aria-live') public ariaLive: string, config: NgbToastConfig) {
+  constructor(
+      @Attribute('aria-live') public ariaLive: string, config: NgbToastConfig, private _zone: NgZone,
+      private _element: ElementRef) {
     if (this.ariaLive == null) {
       this.ariaLive = config.ariaLive;
     }
     this.delay = config.delay;
     this.autohide = config.autohide;
+    this.animation = config.animation;
   }
 
-  ngAfterContentInit() { this._init(); }
+  ngAfterContentInit() {
+    this._zone.onStable.asObservable().pipe(take(1)).subscribe(() => {
+      this._init();
+      this.show();
+    });
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if ('autohide' in changes) {
@@ -116,9 +142,37 @@ export class NgbToast implements AfterContentInit,
     }
   }
 
+  /**
+   * Triggers toast closing programmatically.
+   *
+   * The returned observable will emit and be completed once the closing transition has finished.
+   * If the animations are turned off this happens synchronously.
+   *
+   * Alternatively you could listen or subscribe to the `(hidden)` output
+   */
   hide() {
     this._clearTimeout();
-    this.hideOutput.emit();
+    const transition = ngbRunTransition(
+        this._element.nativeElement, ngbToastFadeOutTransition, {animation: this.animation, runningTransition: 'stop'});
+    transition.subscribe(() => { this.hidden.emit(); });
+    return transition;
+  }
+
+  /**
+   * Triggers toast opening programmatically.
+   *
+   * The returned observable will emit and be completed once the opening transition has finished.
+   * If the animations are turned off this happens synchronously.
+   *
+   * Alternatively you could listen or subscribe to the `(shown)` output
+   */
+  show() {
+    const transition = ngbRunTransition(this._element.nativeElement, ngbToastFadeInTransition, {
+      animation: this.animation,
+      runningTransition: 'continue',
+    });
+    transition.subscribe(() => { this.shown.emit(); });
+    return transition;
   }
 
   private _init() {
