@@ -368,9 +368,8 @@ export class NgbDropdown implements AfterContentInit, OnDestroy {
     }
   }
 
-  _onFocusOut(event: FocusEvent) {
+  private _onFocusOut(event: FocusEvent) {
     let prevFocusedElement = event.relatedTarget as HTMLElement;
-    console.log(event);
     if (this.container === 'body') {
       if (!this._menuElement.nativeElement.contains(prevFocusedElement)) {
         this.close();
