@@ -26,12 +26,6 @@ export const ngbRunTransition =
     <T>(element: HTMLElement, startFn: NgbTransitionStartFn<T>, options: NgbTransitionOptions<T>):
         Observable<undefined> => {
 
-          // If animations are disabled, we have to emit a value and complete the observable
-          if (!options.animation) {
-            (startFn(element, null !) || noopFn)();
-            return of(undefined);
-          }
-
           // Getting initial context from options
           let context = options.context || <T>{};
 
@@ -51,6 +45,12 @@ export const ngbRunTransition =
                 context = Object.assign(running.context, context);
                 runningTransitions.delete(element);
             }
+          }
+
+          // If animations are disabled, we have to emit a value and complete the observable
+          if (!options.animation) {
+            (startFn(element, context) || noopFn)();
+            return of(undefined);
           }
 
           // If 'prefer-reduced-motion' is enabled, the 'transition' will be set to 'none'.
