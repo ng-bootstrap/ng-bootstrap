@@ -46,7 +46,7 @@ describe('ngb-alert', () => {
     expect(alertEl).toHaveCssClass('alert-warning');
     expect(alertEl).toHaveCssClass('alert-dismissible');
     expect(alertEl).toHaveCssClass('show');
-    expect(alertEl).toHaveCssClass('fade');
+    expect(alertEl).not.toHaveCssClass('fade');
   });
 
   it('should allow specifying alert type', () => {
@@ -110,7 +110,7 @@ describe('ngb-alert', () => {
     expect(fixture.componentInstance.closed).toBe(false);
     buttonEl.click();
     expect(alertEl).not.toHaveCssClass('show');
-    expect(alertEl).toHaveCssClass('fade');
+    expect(alertEl).not.toHaveCssClass('fade');
     expect(fixture.componentInstance.closed).toBe(true);
   });
 
@@ -128,7 +128,7 @@ describe('ngb-alert', () => {
     expect(fixture.componentInstance.closed).toBe(true);
     expect(closedSpy).toHaveBeenCalledTimes(1);
     expect(alertEl).not.toHaveCssClass('show');
-    expect(alertEl).toHaveCssClass('fade');
+    expect(alertEl).not.toHaveCssClass('fade');
   });
 
   it('should project the content given into the component', () => {
