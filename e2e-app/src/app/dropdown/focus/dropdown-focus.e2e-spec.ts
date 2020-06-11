@@ -117,6 +117,32 @@ describe(`Dropdown focus`, () => {
         expect(await page.isOpened(dropdown)).toBeFalsy(`Dropdown should be closed on 'Escape' press`);
         await expectFocused($('body'), `Nothing should be focused after dropdown is closed`);
       });
+
+      it(`should focus dropdown first item with Tab when dropdown is opened (toggle was focused)`, async() => {
+        await page.open(dropdown);
+        await expectFocused(toggle, `Toggling element should be focused`);
+
+        // Tab -> first
+        await sendKey(Key.TAB);
+        await expectFocused(page.getDropdownItem(1), `first dropdown item should be focused`);
+      });
+
+      it(`should close dropdown with 'Tab' when focus is moved to another element`, async() => {
+        await page.open(dropdown);
+        await expectFocused(toggle, `Toggling element should be focused`);
+
+        // Down -> first
+        await sendKey(Key.ARROW_DOWN);
+        await expectFocused(page.getDropdownItem(1), `first dropdown item should be focused`);
+
+        // Home -> last
+        await sendKey(Key.END);
+        await expectFocused(page.getDropdownItem(2), `second dropdown item should be focused`);
+
+        // Tab -> another element
+        await sendKey(Key.TAB);
+        expect(await page.isOpened(dropdown)).toBeFalsy(`Dropdown should be closed`);
+      });
     });
   });
 

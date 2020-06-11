@@ -67,7 +67,9 @@ export class NgbDropdownItem {
     '(keydown.Home)': 'dropdown.onKeyDown($event)',
     '(keydown.End)': 'dropdown.onKeyDown($event)',
     '(keydown.Enter)': 'dropdown.onKeyDown($event)',
-    '(keydown.Space)': 'dropdown.onKeyDown($event)'
+    '(keydown.Space)': 'dropdown.onKeyDown($event)',
+    '(keydown.Tab)': 'dropdown.onKeyDown($event)',
+    '(keydown.Shift.Tab)': 'dropdown.onKeyDown($event)'
   }
 })
 export class NgbDropdownMenu {
@@ -117,7 +119,9 @@ export class NgbDropdownAnchor {
     '(keydown.ArrowUp)': 'dropdown.onKeyDown($event)',
     '(keydown.ArrowDown)': 'dropdown.onKeyDown($event)',
     '(keydown.Home)': 'dropdown.onKeyDown($event)',
-    '(keydown.End)': 'dropdown.onKeyDown($event)'
+    '(keydown.End)': 'dropdown.onKeyDown($event)',
+    '(keydown.Tab)': 'dropdown.onKeyDown($event)',
+    '(keydown.Shift.Tab)': 'dropdown.onKeyDown($event)'
   },
   providers: [{provide: NgbDropdownAnchor, useExisting: forwardRef(() => NgbDropdownToggle)}]
 })
@@ -134,7 +138,6 @@ export class NgbDropdownToggle extends NgbDropdownAnchor {
 export class NgbDropdown implements AfterContentInit, OnDestroy {
   static ngAcceptInputType_autoClose: boolean | string;
   static ngAcceptInputType_display: string;
-
   private _closed$ = new Subject<void>();
   private _zoneSubscription: Subscription;
   private _bodyContainer: HTMLElement | null = null;
@@ -319,6 +322,23 @@ export class NgbDropdown implements AfterContentInit, OnDestroy {
       return;
     }
 
+    if (key === Key.Tab) {
+      if (event.target && this.isOpen() && this.autoClose) {
+        if (this.container === 'body' && this._anchor.anchorEl === event.target && !event.shiftKey) {
+          itemElements[0].focus();
+          event.preventDefault();
+        } else if (this.container === 'body' && event.shiftKey && position === 0) {
+          this._anchor.anchorEl.focus();
+          event.preventDefault();
+        } else {
+          fromEvent(event.target as HTMLElement, 'focusout')
+              .pipe(take(1))
+              .subscribe((e) => this._onFocusOut(e as FocusEvent));
+        }
+      }
+      return;
+    }
+
     // opening / navigating
     if (isEventFromToggle || itemElement) {
       this.open();
@@ -345,6 +365,19 @@ export class NgbDropdown implements AfterContentInit, OnDestroy {
         itemElements[position].focus();
       }
       event.preventDefault();
+    }
+  }
+
+  private _onFocusOut(event: FocusEvent) {
+    let prevFocusedElement = event.relatedTarget as HTMLElement;
+    if (this.container === 'body') {
+      if (!this._menuElement.nativeElement.contains(prevFocusedElement)) {
+        this.close();
+      }
+    } else {
+      if (!this._elementRef.nativeElement.contains(prevFocusedElement)) {
+        this.close();
+      }
     }
   }
 
