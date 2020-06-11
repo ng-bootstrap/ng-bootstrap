@@ -9,6 +9,8 @@ import { NgbdDropdownBasic } from './demos/basic/dropdown-basic';
 import { NgbdDropdownBasicModule } from './demos/basic/dropdown-basic.module';
 import { NgbdDropdownConfig } from './demos/config/dropdown-config';
 import { NgbdDropdownConfigModule } from './demos/config/dropdown-config.module';
+import { NgbdDropdownContainer } from './demos/container/dropdown-container';
+import { NgbdDropdownContainerModule } from './demos/container/dropdown-container.module';
 import { NgbdDropdownForm } from './demos/form/dropdown-form';
 import { NgbdDropdownFormModule } from './demos/form/dropdown-form.module';
 import { NgbdDropdownManual } from './demos/manual/dropdown-manual';
@@ -42,6 +44,12 @@ const DEMOS = {
     type: NgbdDropdownForm,
     code: require('!!raw-loader!./demos/form/dropdown-form').default,
     markup: require('!!raw-loader!./demos/form/dropdown-form.html').default
+  },
+  container: {
+    title: 'Container “body”',
+    type: NgbdDropdownContainer,
+    code: require('!!raw-loader!./demos/container/dropdown-container').default,
+    markup: require('!!raw-loader!./demos/container/dropdown-container.html').default
   },
   navbar: {
     title: 'Dynamic positioning in a navbar',
@@ -78,6 +86,7 @@ export const ROUTES = [
     NgbdComponentsSharedModule,
     NgbdDropdownBasicModule,
     NgbdDropdownConfigModule,
+    NgbdDropdownContainerModule,
     NgbdDropdownManualModule,
     NgbdDropdownSplitModule,
     NgbdDropdownFormModule,
