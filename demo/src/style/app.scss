@@ -254,6 +254,10 @@ a.title-fragment {
   }
 }
 
+a.title-fragment:focus {
+  opacity: 1;
+}
+
 div.component-demo {
   margin-bottom: 3rem;
   h2 {
