@@ -32,6 +32,7 @@ import {ngbRunTransition, NgbTransitionOptions} from '../util/transition/ngbTran
     '[attr.aria-modal]': 'true',
     '[attr.aria-labelledby]': 'ariaLabelledBy',
     '[attr.aria-describedby]': 'ariaDescribedBy',
+    '(click)': 'bump($event)'
   },
   template: `
     <div #dialog [class]="'modal-dialog' + (size ? ' modal-' + size : '') + (centered ? ' modal-dialog-centered' : '') +
@@ -92,6 +93,19 @@ export class NgbModalWindow implements OnInit,
     this._restoreFocus();
 
     return transitions$;
+  }
+
+  bump(event: Event) {
+    const nativeElement = this._elRef.nativeElement;
+    // the animation must only happen if the backdrop is static
+    // and if the click is not inside the modal
+    if (event.target === nativeElement && this.backdrop === 'static') {
+      ngbRunTransition(nativeElement, ({classList}) => {
+        classList.add('modal-static');
+        return () => classList.remove('modal-static');
+      }, {animation: this.animation, runningTransition: 'continue'});
+      event.stopPropagation();
+    }
   }
 
   private _show() {
