@@ -3,10 +3,11 @@ import {Component, Injectable, Injector, NgModule, OnDestroy, ViewChild} from '@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {NgbModalConfig} from './modal-config';
 import {NgbActiveModal, NgbModal, NgbModalModule, NgbModalRef} from './modal.module';
-import {isBrowser, isBrowserVisible} from '../test/common';
+import {createKeyEvent, isBrowser, isBrowserVisible} from '../test/common';
 import {NgbConfig} from '..';
 import {NgbConfigAnimation} from '../test/ngb-config-animation';
 import createSpy = jasmine.createSpy;
+import {Key} from 'src/util/key';
 
 const NOOP = () => {};
 
@@ -971,13 +972,10 @@ describe('ngb-modal', () => {
             modalEl.click();
             component.detectChanges();
             if (reduceMotion) {
-              // TODO check if this is normal or not
               expect(modalEl).not.toHaveClass('modal-static');
             } else {
               expect(modalEl).toHaveClass('modal-static');
             }
-
-            // TODO I have no idea how to test that the modal-static class has disappeared at the end of the transition
 
             const closeButton = document.querySelector('button#close') as HTMLButtonElement;
             closeButton.click();
@@ -988,7 +986,7 @@ describe('ngb-modal', () => {
         });
       });
 
-      it(`should not bump modal window if backdrop is not static`, (done) => {
+      it(`should not bump modal window on click if backdrop is not static`, (done) => {
         const component = TestBed.createComponent(TestAnimationComponent);
         component.detectChanges();
 
@@ -1022,6 +1020,54 @@ describe('ngb-modal', () => {
           const insideDiv = document.querySelector('#inside-div') as HTMLElement;
 
           insideDiv.click();
+          component.detectChanges();
+          expect(modalEl).not.toHaveClass('modal-static');
+
+          const closeButton = document.querySelector('button#close') as HTMLButtonElement;
+          closeButton.click();
+        });
+
+        modalRef.hidden.subscribe(() => { done(); });
+        component.detectChanges();
+      });
+
+      it(`should bump modal window on Escape if backdrop is static`, (done) => {
+        const component = TestBed.createComponent(TestAnimationComponent);
+        component.detectChanges();
+
+        const modalRef = component.componentInstance.open('static');
+        let modalEl: HTMLElement | null = null;
+
+        modalRef.shown.subscribe(() => {
+          modalEl = document.querySelector('ngb-modal-window') as HTMLElement;
+
+          const event = createKeyEvent(Key.Escape, {type: 'keydown'});
+          modalEl.dispatchEvent(event);
+
+          component.detectChanges();
+          expect(modalEl).toHaveClass('modal-static');
+
+          const closeButton = document.querySelector('button#close') as HTMLButtonElement;
+          closeButton.click();
+        });
+
+        modalRef.hidden.subscribe(() => { done(); });
+        component.detectChanges();
+      });
+
+      it(`should not bump modal window on Escape if backdrop is not static`, (done) => {
+        const component = TestBed.createComponent(TestAnimationComponent);
+        component.detectChanges();
+
+        const modalRef = component.componentInstance.open();
+        let modalEl: HTMLElement | null = null;
+
+        modalRef.shown.subscribe(() => {
+          modalEl = document.querySelector('ngb-modal-window') as HTMLElement;
+
+          const event = createKeyEvent(Key.Escape, {type: 'keydown'});
+          modalEl.dispatchEvent(event);
+
           component.detectChanges();
           expect(modalEl).not.toHaveClass('modal-static');
 

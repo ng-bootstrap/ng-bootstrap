@@ -31,8 +31,7 @@ import {ngbRunTransition, NgbTransitionOptions} from '../util/transition/ngbTran
     'tabindex': '-1',
     '[attr.aria-modal]': 'true',
     '[attr.aria-labelledby]': 'ariaLabelledBy',
-    '[attr.aria-describedby]': 'ariaDescribedBy',
-    '(click)': 'bump($event)'
+    '[attr.aria-describedby]': 'ariaDescribedBy'
   },
   template: `
     <div #dialog [class]="'modal-dialog' + (size ? ' modal-' + size : '') + (centered ? ' modal-dialog-centered' : '') +
@@ -95,19 +94,6 @@ export class NgbModalWindow implements OnInit,
     return transitions$;
   }
 
-  bump(event: Event) {
-    const nativeElement = this._elRef.nativeElement;
-    // the animation must only happen if the backdrop is static
-    // and if the click is not inside the modal
-    if (event.target === nativeElement && this.backdrop === 'static') {
-      ngbRunTransition(nativeElement, ({classList}) => {
-        classList.add('modal-static');
-        return () => classList.remove('modal-static');
-      }, {animation: this.animation, runningTransition: 'continue'});
-      event.stopPropagation();
-    }
-  }
-
   private _show() {
     const {nativeElement} = this._elRef;
     const context: NgbTransitionOptions<any> = {animation: this.animation, runningTransition: 'continue'};
@@ -131,12 +117,17 @@ export class NgbModalWindow implements OnInit,
           .pipe(
               takeUntil(this._closed$),
               // tslint:disable-next-line:deprecation
-              filter(e => e.which === Key.Escape && this.keyboard))
-          .subscribe(event => requestAnimationFrame(() => {
-                       if (!event.defaultPrevented) {
-                         this._zone.run(() => this.dismiss(ModalDismissReasons.ESC));
-                       }
-                     }));
+              filter(e => e.which === Key.Escape))
+          .subscribe(event => {
+            if (this.keyboard) {
+              requestAnimationFrame(() => {
+                if (!event.defaultPrevented) {
+                  this._zone.run(() => this.dismiss(ModalDismissReasons.ESC));
+                }
+              });
+            }
+            this._bumpIfStaticBackdrop();
+          });
 
       // We're listening to 'mousedown' and 'mouseup' to prevent modal from closing when pressing the mouse
       // inside the modal dialog and releasing it outside
@@ -156,6 +147,11 @@ export class NgbModalWindow implements OnInit,
         if (this.backdrop === true && nativeElement === target && !preventClose) {
           this._zone.run(() => this.dismiss(ModalDismissReasons.BACKDROP_CLICK));
         }
+
+        if (nativeElement === target) {
+          this._bumpIfStaticBackdrop();
+        }
+
         preventClose = false;
       });
     });
@@ -188,5 +184,14 @@ export class NgbModalWindow implements OnInit,
       setTimeout(() => elementToFocus.focus());
       this._elWithFocus = null;
     });
+  }
+
+  private _bumpIfStaticBackdrop() {
+    if (this.backdrop === 'static') {
+      ngbRunTransition(this._elRef.nativeElement, ({classList}) => {
+        classList.add('modal-static');
+        return () => classList.remove('modal-static');
+      }, {animation: this.animation, runningTransition: 'continue'});
+    }
   }
 }
