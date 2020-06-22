@@ -1,4 +1,4 @@
-import {ngbRunTransition} from './ngbTransition';
+import {ngbRunTransition, NgbTransitionStartFn} from './ngbTransition';
 import createSpy = jasmine.createSpy;
 import {Component, ElementRef, ViewChild} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
@@ -260,6 +260,23 @@ if (isBrowserVisible('ngbRunTransition')) {
       expect(contextSpy).toHaveBeenCalledWith({text: 'two', counter: 2});
 
       expect(window.getComputedStyle(element).opacity).toBe('1');
+    });
+
+    it(`should pass context with 'animation: false'`, () => {
+      const startFn: NgbTransitionStartFn<{flag: number}> = (_, context) => { expect(context.flag).toBe(42); };
+
+      const nextSpy = createSpy();
+      const errorSpy = createSpy();
+      const completeSpy = createSpy();
+      const startFnSpy = createSpy('startFn', startFn).and.callThrough();
+
+      ngbRunTransition(element, startFnSpy, {animation: false, runningTransition: 'continue', context: {flag: 42}})
+          .subscribe(nextSpy, errorSpy, completeSpy);
+
+      expect(nextSpy).toHaveBeenCalledWith(undefined);
+      expect(errorSpy).not.toHaveBeenCalled();
+      expect(completeSpy).toHaveBeenCalled();
+      expect(startFnSpy).toHaveBeenCalled();
     });
 
     it(`should complete and release the DOM element even if transition end is not fired`, (done) => {
