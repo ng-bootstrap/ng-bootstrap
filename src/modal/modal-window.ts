@@ -125,8 +125,9 @@ export class NgbModalWindow implements OnInit,
                   this._zone.run(() => this.dismiss(ModalDismissReasons.ESC));
                 }
               });
+            } else if (this.backdrop === 'static') {
+              this._bumpBackdrop();
             }
-            this._bumpIfStaticBackdrop();
           });
 
       // We're listening to 'mousedown' and 'mouseup' to prevent modal from closing when pressing the mouse
@@ -144,12 +145,12 @@ export class NgbModalWindow implements OnInit,
       // 2. closing was prevented by mousedown/up handlers
       // 3. clicking on scrollbar when the viewport is too small and modal doesn't fit (click is not triggered at all)
       fromEvent<MouseEvent>(nativeElement, 'click').pipe(takeUntil(this._closed$)).subscribe(({target}) => {
-        if (this.backdrop === true && nativeElement === target && !preventClose) {
-          this._zone.run(() => this.dismiss(ModalDismissReasons.BACKDROP_CLICK));
-        }
-
         if (nativeElement === target) {
-          this._bumpIfStaticBackdrop();
+          if (this.backdrop === 'static') {
+            this._bumpBackdrop();
+          } else if (this.backdrop === true && !preventClose) {
+            this._zone.run(() => this.dismiss(ModalDismissReasons.BACKDROP_CLICK));
+          }
         }
 
         preventClose = false;
@@ -186,7 +187,7 @@ export class NgbModalWindow implements OnInit,
     });
   }
 
-  private _bumpIfStaticBackdrop() {
+  private _bumpBackdrop() {
     if (this.backdrop === 'static') {
       ngbRunTransition(this._elRef.nativeElement, ({classList}) => {
         classList.add('modal-static');

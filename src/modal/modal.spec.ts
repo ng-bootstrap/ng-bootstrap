@@ -907,7 +907,9 @@ describe('ngb-modal', () => {
 
         constructor(private modalService: NgbModal) {}
 
-        open(backdrop: boolean | 'static' = true) { return this.modalService.open(this.content, {backdrop}); }
+        open(backdrop: boolean | 'static' = true, keyboard = true) {
+          return this.modalService.open(this.content, {backdrop, keyboard});
+        }
       }
 
       beforeEach(() => {
@@ -1035,7 +1037,9 @@ describe('ngb-modal', () => {
         const component = TestBed.createComponent(TestAnimationComponent);
         component.detectChanges();
 
-        const modalRef = component.componentInstance.open('static');
+        // currently, to keep backward compatibility, the modal is closed on escape if keyboard is true,
+        // even if backdrop is static. This will be fixed in the future.
+        const modalRef = component.componentInstance.open('static', false);
         let modalEl: HTMLElement | null = null;
 
         modalRef.shown.subscribe(() => {
