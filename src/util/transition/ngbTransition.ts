@@ -2,6 +2,7 @@ import {EMPTY, fromEvent, Observable, of, race, Subject, timer} from 'rxjs';
 import {endWith, filter, takeUntil} from 'rxjs/operators';
 import {getTransitionDurationMs} from './util';
 import {environment} from '../../environment';
+import {reflow} from '../util';
 
 export type NgbTransitionStartFn<T = any> = (element: HTMLElement, context: T) => NgbTransitionEndFn | void;
 export type NgbTransitionEndFn = () => void;
@@ -47,18 +48,18 @@ export const ngbRunTransition =
             }
           }
 
-          // If animations are disabled, we have to emit a value and complete the observable
-          if (!options.animation) {
-            (startFn(element, context) || noopFn)();
-            return of(undefined);
-          }
+          // A reflow is required here, to be sure that everything is ready,
+          // Without reflow, the transition will not be started for some widgets, at initialization time
+          reflow(element);
+
+          const endFn = startFn(element, context) || noopFn;
 
           // If 'prefer-reduced-motion' is enabled, the 'transition' will be set to 'none'.
-          // In this case we have to call the start function, but can finish immediately by emitting a value,
-          // completing the observable and executing both start and end functions synchronously.
-          const {transitionProperty} = window.getComputedStyle(element);
-          if (transitionProperty === 'none') {
-            (startFn(element, context) || noopFn)();
+          // If animations are disabled, we have to emit a value and complete the observable
+          // In this case we have to call the end function, but can finish immediately by emitting a value,
+          // completing the observable and executing end functions synchronously.
+          if (!options.animation || window.getComputedStyle(element).transitionProperty === 'none') {
+            endFn();
             return of(undefined);
           }
 
@@ -66,8 +67,6 @@ export const ngbRunTransition =
           const transition$ = new Subject<any>();
           const stop$ = transition$.pipe(endWith(true));
           runningTransitions.set(element, {transition$, context});
-
-          const endFn = startFn(element, context) || noopFn;
 
           const transitionDurationMs = getTransitionDurationMs(element);
 
