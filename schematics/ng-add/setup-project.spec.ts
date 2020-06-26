@@ -16,7 +16,7 @@ import {createTestApp} from '../utils/testing';
 
     async function createAppWithOptions(appOptions = {}): Promise<{ tree: UnitTestTree, project: WorkspaceProject }> {
       // 'app' is the default application, so we're not passing '--project' option
-      const options: Schema = projectName === 'app' ? {} : {project: projectName};
+      const options: Schema = {project: projectName};
       let tree = await createTestApp(runner, appOptions);
       tree = await runner.runSchematicAsync('ng-add-setup-project', options, tree).toPromise();
 
