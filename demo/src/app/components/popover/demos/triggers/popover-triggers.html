@@ -16,6 +16,20 @@
 
 <hr>
 <p>
+  Note that <code>mouseleave</code> close trigger will not close the popover when mouse cursor is over it.  Similarly, the <code>focusout</code> trigger will not close the popover when it is focused.  Use the buttons below to see it in action.
+</p>
+
+<button type="button" class="btn btn-outline-secondary mr-2" ngbPopover="Try to select and copy this text.  The popover is still open." triggers="mouseenter:mouseleave" popoverTitle="Pop title">
+  Hover over me!
+</button>
+
+<ng-template #popLink>Click the link to <a href="https://ng-bootstrap.github.io/" target="_blank">ng-bootstrap homepage</a>.  The popover is still open.</ng-template>
+<button type="button" class="btn btn-outline-secondary mr-2" [ngbPopover]="popLink" triggers="focusin:focusout" popoverTitle="Pop title">
+  Focus me!
+</button>
+
+<hr>
+<p>
   Alternatively you can take full manual control over popover opening / closing events.
 </p>
 
