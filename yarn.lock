@@ -3897,6 +3897,13 @@ cosmiconfig@^6.0.0:
     path-type "^4.0.0"
     yaml "^1.7.2"
 
+coverage-istanbul-loader@^3.0.3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/coverage-istanbul-loader/-/coverage-istanbul-loader-3.0.3.tgz#0feda5575c20e8524b21fe29a76412e292f0bae6"
+  integrity sha512-mKi0ONGzLOXV9lZ+0ckPPR9Y6BIYYfDpxtgyjw40Pyh/T2aBWsp6cRdxL5WH03n6PeiZstOe+mKB84AR0Ah+yQ==
+  dependencies:
+    "@jsdevtools/coverage-istanbul-loader" "3.0.3"
+
 cp-file@^6.2.0:
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/cp-file/-/cp-file-6.2.0.tgz#40d5ea4a1def2a9acdd07ba5c0b0246ef73dc10d"

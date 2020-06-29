@@ -3,7 +3,7 @@ import {$} from 'protractor';
 export class ModalAutoClosePage {
   getModal(selector = 'ngb-modal-window') { return $(selector); }
 
-  getModalDialog() { return $('.modal-dialog'); }
+  getModalDialog() { return $('.modal-dialog') as any; }
 
   getModalCloseButton() { return $('#modal-close-button'); }
 
@@ -20,6 +20,6 @@ export class ModalAutoClosePage {
 
     const modal = this.getModal();
     expect(await modal.isPresent()).toBeTruthy(`A modal should have been opened`);
-    return modal;
+    return modal as any;
   }
 }

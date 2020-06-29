@@ -67,7 +67,7 @@
   "homepage": "https://github.com/ng-bootstrap/ng-bootstrap#readme",
   "dependencies": {
     "tslib": "^2.0.0"
-},
+  },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.1000.0",
     "@angular-devkit/build-ng-packagr": "~0.1000.0",
@@ -104,6 +104,7 @@
     "conventional-changelog-cli": "^2.0.12",
     "core-js": "^2",
     "cross-spawn": "^7.0.1",
+    "coverage-istanbul-loader": "^3.0.3",
     "ejs": "2.6.1",
     "express": "^4.16.4",
     "fs-extra": "^8.0.0",

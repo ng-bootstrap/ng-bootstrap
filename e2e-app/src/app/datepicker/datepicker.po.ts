@@ -1,7 +1,7 @@
 import {$} from 'protractor';
 
 export class DatepickerPage {
-  getDatepicker(selector = 'ngb-datepicker') { return $(selector); }
+  getDatepicker(selector = 'ngb-datepicker') { return $(selector) as any; }
 
   getDatepickerInput(selector = 'input[ngbDatepicker]') { return $(selector); }
 

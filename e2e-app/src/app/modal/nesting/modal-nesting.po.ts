@@ -3,9 +3,9 @@ import {$} from 'protractor';
 export class ModalNestingPage {
   getModal(selector = 'ngb-modal-window') { return $(selector); }
 
-  getDatepickerButton() { return $('#datepicker-button'); }
+  getDatepickerButton() { return $('#datepicker-button') as any; }
 
-  getDropdownButton() { return $('#dropdown'); }
+  getDropdownButton() { return $('#dropdown') as any; }
 
   getTypeaheadInput() { return $('#typeahead'); }
 
@@ -13,6 +13,6 @@ export class ModalNestingPage {
     await $(`#open-modal`).click();
     const modal = this.getModal();
     expect(await modal.isPresent()).toBeTruthy(`A modal should have been opened`);
-    return modal;
+    return modal as any;
   }
 }
