@@ -33,10 +33,6 @@ function getLiveElement(document: any, lazyCreate = false): HTMLElement | null {
 
 
 
-// TODO: Add Angular decorator.
-// TODO: Add Angular decorator.
-// TODO: Add Angular decorator.
-// TODO: Add Angular decorator.
 @Injectable({providedIn: 'root'})
 export class Live implements OnDestroy {
   constructor(@Inject(DOCUMENT) private _document: any, @Inject(ARIA_LIVE_DELAY) private _delay: any) {}
