@@ -1,4 +1,13 @@
-import {Directive, Input, ElementRef, Output, EventEmitter} from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import {ngbRunTransition} from '../util/transition/ngbTransition';
 import {ngbCollapsingTransition} from '../util/transition/ngbCollapseTransition';
 import {NgbCollapseConfig} from './collapse-config';
@@ -6,12 +15,8 @@ import {NgbCollapseConfig} from './collapse-config';
 /**
  * A directive to provide a simple way of hiding and showing elements on the page.
  */
-@Directive({
-  selector: '[ngbCollapse]',
-  exportAs: 'ngbCollapse',
-  host: {'[class.collapse]': 'true', '[class.show]': '!collapsed'}
-})
-export class NgbCollapse {
+@Directive({selector: '[ngbCollapse]', exportAs: 'ngbCollapse'})
+export class NgbCollapse implements OnInit, OnChanges {
   /**
    * If `true`, collapse will be animated.
    *
@@ -27,7 +32,29 @@ export class NgbCollapse {
 
   @Output() ngbCollapseChange = new EventEmitter<boolean>();
 
+  /**
+   * An event emitted when the collapse element is shown, after the transition. It has no payload.
+   */
+  @Output() shown = new EventEmitter<void>();
+
+  /**
+   * An event emitted when the collapse element is hidden, after the transition. It has no payload.
+   */
+  @Output() hidden = new EventEmitter<void>();
+
+
   constructor(private _element: ElementRef, config: NgbCollapseConfig) { this.animation = config.animation; }
+
+  ngOnInit() {
+    this._element.nativeElement.classList.add('collapse');
+    this._runTransition(this.collapsed, false, false);
+  }
+
+  ngOnChanges({collapsed}: SimpleChanges) {
+    if (!collapsed.firstChange) {
+      this._runTransition(this.collapsed, this.animation);
+    }
+  }
 
   /**
    * Triggers collapsing programmatically.
@@ -37,10 +64,23 @@ export class NgbCollapse {
    */
   toggle(open: boolean = this.collapsed) {
     this.collapsed = !open;
+    this.ngbCollapseChange.next(this.collapsed);
+    this._runTransition(this.collapsed, this.animation);
+  }
+
+  private _runTransition(collapsed: boolean, animation: boolean, emitEvent = true) {
     ngbRunTransition(this._element.nativeElement, ngbCollapsingTransition, {
-      animation: this.animation,
+      animation,
       runningTransition: 'stop',
-      context: {direction: open ? 'show' : 'hide'}
-    }).subscribe(() => this.ngbCollapseChange.next(this.collapsed));
+      context: {direction: collapsed ? 'hide' : 'show'}
+    }).subscribe(() => {
+      if (emitEvent) {
+        if (collapsed) {
+          this.hidden.emit();
+        } else {
+          this.shown.emit();
+        }
+      }
+    });
   }
 }

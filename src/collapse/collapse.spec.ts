@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {createGenericTestComponent, isBrowserVisible} from '../test/common';
 
 import {Component} from '@angular/core';
@@ -38,6 +38,7 @@ describe('ngb-collapse', () => {
 
   it('should toggle collapsed content based on bound model change', () => {
     const fixture = createTestComponent(`<div [ngbCollapse]="collapsed">Some content</div>`);
+    fixture.detectChanges();
 
     const tc = fixture.componentInstance;
     const collapseEl = getCollapsibleContent(fixture.nativeElement);
@@ -54,8 +55,26 @@ describe('ngb-collapse', () => {
 
   it('should allow toggling collapse from outside', () => {
     const fixture = createTestComponent(`
-      <button (click)="collapse.collapsed = !collapse.collapsed">Collapse</button>
-      <div [ngbCollapse] #collapse="ngbCollapse"></div>`);
+      <button (click)="collapse.toggle()">Collapse</button>
+      <div [ngbCollapse]="collapsed" #collapse="ngbCollapse"></div>`);
+
+    const compiled = fixture.nativeElement;
+    const collapseEl = getCollapsibleContent(compiled);
+    const buttonEl = compiled.querySelector('button');
+
+    buttonEl.click();
+    fixture.detectChanges();
+    expect(collapseEl).not.toHaveCssClass('show');
+
+    buttonEl.click();
+    fixture.detectChanges();
+    expect(collapseEl).toHaveCssClass('show');
+  });
+
+  it('should work with no binding', () => {
+    const fixture = createTestComponent(`
+      <button (click)="collapse.toggle()">Collapse</button>
+      <div ngbCollapse #collapse="ngbCollapse"></div>`);
 
     const compiled = fixture.nativeElement;
     const collapseEl = getCollapsibleContent(compiled);
@@ -77,7 +96,8 @@ if (isBrowserVisible('ngb-collapse animations')) {
     @Component({
       template: `
         <button (click)="c.toggle()">Collapse!</button>
-        <div [(ngbCollapse)]="collapsed" #c="ngbCollapse" (ngbCollapseChange)="onCollapse()"></div>
+        <div [(ngbCollapse)]="collapsed" #c="ngbCollapse" (ngbCollapseChange)="onCollapse()"
+          (shown)="onShown()" (hidden)="onHidden()"></div>
       `,
       host: {'[class.ngb-reduce-motion]': 'reduceMotion'}
     })
@@ -85,6 +105,8 @@ if (isBrowserVisible('ngb-collapse animations')) {
       collapsed = false;
       reduceMotion = true;
       onCollapse = () => {};
+      onShown = () => {};
+      onHidden = () => {};
     }
 
     beforeEach(() => {
@@ -95,87 +117,136 @@ if (isBrowserVisible('ngb-collapse animations')) {
       });
     });
 
-    [true, false].forEach(reduceMotion => {
+    it(`should run collapsing transition (force-reduced-motion = false)`, (done) => {
+      const fixture = TestBed.createComponent(TestAnimationComponent);
+      fixture.componentInstance.reduceMotion = false;
+      fixture.detectChanges();
 
-      it(`should run collapsing transition (force-reduced-motion = ${reduceMotion})`, async(() => {
-           const fixture = TestBed.createComponent(TestAnimationComponent);
-           fixture.componentInstance.reduceMotion = reduceMotion;
-           fixture.detectChanges();
+      const buttonEl = fixture.nativeElement.querySelector('button');
+      const content = getCollapsibleContent(fixture.nativeElement);
 
-           const buttonEl = fixture.nativeElement.querySelector('button');
-           const content = getCollapsibleContent(fixture.nativeElement);
+      const onCollapseSpy = spyOn(fixture.componentInstance, 'onCollapse');
+      const onShownSpy = spyOn(fixture.componentInstance, 'onShown');
+      const onHiddenSpy = spyOn(fixture.componentInstance, 'onHidden');
 
-           const onCollapseSpy = spyOn(fixture.componentInstance, 'onCollapse');
+      // First we're going to collapse, then expand
+      onHiddenSpy.and.callFake(() => {
+        expect(content).toHaveClass('collapse');
+        expect(content).not.toHaveClass('show');
+        expect(content).not.toHaveClass('collapsing');
 
-           // First we're going to collapse, then expand
-           onCollapseSpy.and.callFake(() => {
-             if (fixture.componentInstance.collapsed) {
-               expect(content).toHaveClass('collapse');
-               expect(content).not.toHaveClass('show');
-               expect(content).not.toHaveClass('collapsing');
+        // Expanding
+        buttonEl.click();
+        fixture.detectChanges();
+        expect(onShownSpy).not.toHaveBeenCalled();
+        expect(content).not.toHaveClass('collapse');
+        expect(content).not.toHaveClass('show');
+        expect(content).toHaveClass('collapsing');
+      });
 
-               // Expanding
-               buttonEl.click();
-             } else {
-               expect(content).toHaveClass('collapse');
-               expect(content).toHaveClass('show');
-               expect(content).not.toHaveClass('collapsing');
-             }
-           });
+      onShownSpy.and.callFake(() => {
+        expect(onCollapseSpy).toHaveBeenCalledTimes(2);
+        expect(content).toHaveClass('collapse');
+        expect(content).toHaveClass('show');
+        expect(content).not.toHaveClass('collapsing');
 
-           expect(content).toHaveClass('collapse');
-           expect(content).toHaveClass('show');
-           expect(content).not.toHaveClass('collapsing');
-           expect(fixture.componentInstance.collapsed).toBe(false);
+        done();
+      });
 
-           // Collapsing
-           buttonEl.click();
-           expect(content).not.toHaveClass('collapse');
-           expect(content).not.toHaveClass('show');
-           expect(content).toHaveClass('collapsing');
-         }));
+      expect(content).toHaveClass('collapse');
+      expect(content).toHaveClass('show');
+      expect(content).not.toHaveClass('collapsing');
+      expect(fixture.componentInstance.collapsed).toBe(false);
 
-      it(`should run revert collapsing transition (force-reduced-motion = ${reduceMotion})`, async(() => {
-           const fixture = TestBed.createComponent(TestAnimationComponent);
-           fixture.componentInstance.reduceMotion = reduceMotion;
-           fixture.detectChanges();
-
-           const buttonEl = fixture.nativeElement.querySelector('button');
-           const content = getCollapsibleContent(fixture.nativeElement);
-
-           const onCollapseSpy = spyOn(fixture.componentInstance, 'onCollapse');
-
-           onCollapseSpy.and.callFake(() => {
-             expect(fixture.componentInstance.collapsed).toBe(false);
-             expect(content).toHaveClass('collapse');
-             expect(content).toHaveClass('show');
-             expect(content).not.toHaveClass('collapsing');
-           });
-
-           expect(content).toHaveClass('collapse');
-           expect(content).toHaveClass('show');
-           expect(content).not.toHaveClass('collapsing');
-           expect(fixture.componentInstance.collapsed).toBe(false);
-
-           // Collapsing
-           buttonEl.click();
-           expect(content).not.toHaveClass('collapse');
-           expect(content).not.toHaveClass('show');
-           expect(content).toHaveClass('collapsing');
-
-           // Expanding
-           buttonEl.click();
-           if (reduceMotion) {
-             expect(content).toHaveClass('collapse');
-             expect(content).toHaveClass('show');
-             expect(content).not.toHaveClass('collapsing');
-           } else {
-             expect(content).not.toHaveClass('collapse');
-             expect(content).not.toHaveClass('show');
-             expect(content).toHaveClass('collapsing');
-           }
-         }));
+      // Collapsing
+      buttonEl.click();
+      fixture.detectChanges();
+      expect(onHiddenSpy).not.toHaveBeenCalled();
+      expect(onCollapseSpy).toHaveBeenCalledTimes(1);
+      expect(content).not.toHaveClass('collapse');
+      expect(content).not.toHaveClass('show');
+      expect(content).toHaveClass('collapsing');
     });
+
+    it(`should run collapsing transition (force-reduced-motion = true)`, () => {
+      const fixture = TestBed.createComponent(TestAnimationComponent);
+      fixture.componentInstance.reduceMotion = true;
+      fixture.detectChanges();
+
+      const buttonEl = fixture.nativeElement.querySelector('button');
+      const content = getCollapsibleContent(fixture.nativeElement);
+
+      const onCollapseSpy = spyOn(fixture.componentInstance, 'onCollapse');
+      const onShownSpy = spyOn(fixture.componentInstance, 'onShown');
+      const onHiddenSpy = spyOn(fixture.componentInstance, 'onHidden');
+
+      expect(content).toHaveClass('collapse');
+      expect(content).toHaveClass('show');
+      expect(content).not.toHaveClass('collapsing');
+      expect(fixture.componentInstance.collapsed).toBe(false);
+
+      // Collapsing
+      buttonEl.click();
+      fixture.detectChanges();
+      expect(onHiddenSpy).toHaveBeenCalled();
+      expect(onCollapseSpy).toHaveBeenCalledTimes(1);
+      expect(content).toHaveClass('collapse');
+      expect(content).not.toHaveClass('show');
+      expect(content).not.toHaveClass('collapsing');
+
+      // Expanding
+      buttonEl.click();
+      fixture.detectChanges();
+      expect(onShownSpy).toHaveBeenCalled();
+      expect(onCollapseSpy).toHaveBeenCalledTimes(2);
+      expect(content).toHaveClass('collapse');
+      expect(content).toHaveClass('show');
+      expect(content).not.toHaveClass('collapsing');
+    });
+
+    it(`should run revert collapsing transition (force-reduced-motion = false)`, (done) => {
+      const fixture = TestBed.createComponent(TestAnimationComponent);
+      fixture.componentInstance.reduceMotion = false;
+      fixture.detectChanges();
+
+      const buttonEl = fixture.nativeElement.querySelector('button');
+      const content = getCollapsibleContent(fixture.nativeElement);
+
+      const onCollapseSpy = spyOn(fixture.componentInstance, 'onCollapse');
+      const onShownSpy = spyOn(fixture.componentInstance, 'onShown');
+      const onHiddenSpy = spyOn(fixture.componentInstance, 'onHidden');
+
+      onShownSpy.and.callFake(() => {
+        expect(onHiddenSpy).not.toHaveBeenCalled();
+        expect(fixture.componentInstance.collapsed).toBe(false);
+        expect(content).toHaveClass('collapse');
+        expect(content).toHaveClass('show');
+        expect(content).not.toHaveClass('collapsing');
+        done();
+      });
+
+      expect(content).toHaveClass('collapse');
+      expect(content).toHaveClass('show');
+      expect(content).not.toHaveClass('collapsing');
+      expect(fixture.componentInstance.collapsed).toBe(false);
+
+      // Collapsing
+      buttonEl.click();
+      fixture.detectChanges();
+      expect(onCollapseSpy).toHaveBeenCalledTimes(1);
+      expect(content).not.toHaveClass('collapse');
+      expect(content).not.toHaveClass('show');
+      expect(content).toHaveClass('collapsing');
+
+      // Expanding before hidden
+      buttonEl.click();
+      fixture.detectChanges();
+      expect(onCollapseSpy).toHaveBeenCalledTimes(2);
+      expect(content).not.toHaveClass('collapse');
+      expect(content).not.toHaveClass('show');
+      expect(content).toHaveClass('collapsing');
+    });
+
   });
 }
 
