@@ -3,10 +3,11 @@ import {Component, Injectable, Injector, NgModule, OnDestroy, ViewChild} from '@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {NgbModalConfig} from './modal-config';
 import {NgbActiveModal, NgbModal, NgbModalModule, NgbModalRef} from './modal.module';
-import {isBrowser, isBrowserVisible} from '../test/common';
+import {createKeyEvent, isBrowser, isBrowserVisible} from '../test/common';
 import {NgbConfig} from '..';
 import {NgbConfigAnimation} from '../test/ngb-config-animation';
 import createSpy = jasmine.createSpy;
+import {Key} from 'src/util/key';
 
 const NOOP = () => {};
 
@@ -896,6 +897,7 @@ describe('ngb-modal', () => {
       @Component({
         template: `
           <ng-template #content let-close="close" let-dismiss="dismiss">
+            <div id="inside-div">Bla bla</div>
             <button class="btn btn-primary" id="close" (click)="close('myResult')">Close me</button>
           </ng-template>
         `
@@ -905,7 +907,9 @@ describe('ngb-modal', () => {
 
         constructor(private modalService: NgbModal) {}
 
-        open() { return this.modalService.open(this.content); }
+        open(backdrop: boolean | 'static' = true, keyboard = true) {
+          return this.modalService.open(this.content, {backdrop, keyboard});
+        }
       }
 
       beforeEach(() => {
@@ -953,6 +957,130 @@ describe('ngb-modal', () => {
             expect(window.getComputedStyle(modalEl).opacity).toBe('0');
           }
         });
+
+        it(`should bump modal window if backdrop is static (force-reduced-motion = ${reduceMotion})`, (done) => {
+          if (reduceMotion) {
+            document.body.classList.add('ngb-reduce-motion');
+          }
+          const component = TestBed.createComponent(TestAnimationComponent);
+          component.detectChanges();
+
+          const modalRef = component.componentInstance.open('static');
+          let modalEl: HTMLElement | null = null;
+
+          modalRef.shown.subscribe(() => {
+            modalEl = document.querySelector('ngb-modal-window') as HTMLElement;
+
+            modalEl.click();
+            component.detectChanges();
+            if (reduceMotion) {
+              expect(modalEl).not.toHaveClass('modal-static');
+            } else {
+              expect(modalEl).toHaveClass('modal-static');
+            }
+
+            const closeButton = document.querySelector('button#close') as HTMLButtonElement;
+            closeButton.click();
+          });
+
+          modalRef.hidden.subscribe(() => { done(); });
+          component.detectChanges();
+        });
+      });
+
+      it(`should not bump modal window on click if backdrop is not static`, (done) => {
+        const component = TestBed.createComponent(TestAnimationComponent);
+        component.detectChanges();
+
+        const modalRef = component.componentInstance.open();
+        let modalEl: HTMLElement | null = null;
+
+        modalRef.shown.subscribe(() => {
+          modalEl = document.querySelector('ngb-modal-window') as HTMLElement;
+
+          modalEl.click();
+          component.detectChanges();
+          expect(modalEl).not.toHaveClass('modal-static');
+
+          const closeButton = document.querySelector('button#close') as HTMLButtonElement;
+          closeButton.click();
+        });
+
+        modalRef.hidden.subscribe(() => { done(); });
+        component.detectChanges();
+      });
+
+      it(`should not bump modal window if backdrop is static and modal itself is clicked)`, (done) => {
+        const component = TestBed.createComponent(TestAnimationComponent);
+        component.detectChanges();
+
+        const modalRef = component.componentInstance.open('static');
+        let modalEl: HTMLElement | null = null;
+
+        modalRef.shown.subscribe(() => {
+          modalEl = document.querySelector('ngb-modal-window') as HTMLElement;
+          const insideDiv = document.querySelector('#inside-div') as HTMLElement;
+
+          insideDiv.click();
+          component.detectChanges();
+          expect(modalEl).not.toHaveClass('modal-static');
+
+          const closeButton = document.querySelector('button#close') as HTMLButtonElement;
+          closeButton.click();
+        });
+
+        modalRef.hidden.subscribe(() => { done(); });
+        component.detectChanges();
+      });
+
+      it(`should bump modal window on Escape if backdrop is static`, (done) => {
+        const component = TestBed.createComponent(TestAnimationComponent);
+        component.detectChanges();
+
+        // currently, to keep backward compatibility, the modal is closed on escape if keyboard is true,
+        // even if backdrop is static. This will be fixed in the future.
+        const modalRef = component.componentInstance.open('static', false);
+        let modalEl: HTMLElement | null = null;
+
+        modalRef.shown.subscribe(() => {
+          modalEl = document.querySelector('ngb-modal-window') as HTMLElement;
+
+          const event = createKeyEvent(Key.Escape, {type: 'keydown'});
+          modalEl.dispatchEvent(event);
+
+          component.detectChanges();
+          expect(modalEl).toHaveClass('modal-static');
+
+          const closeButton = document.querySelector('button#close') as HTMLButtonElement;
+          closeButton.click();
+        });
+
+        modalRef.hidden.subscribe(() => { done(); });
+        component.detectChanges();
+      });
+
+      it(`should not bump modal window on Escape if backdrop is not static`, (done) => {
+        const component = TestBed.createComponent(TestAnimationComponent);
+        component.detectChanges();
+
+        const modalRef = component.componentInstance.open();
+        let modalEl: HTMLElement | null = null;
+
+        modalRef.shown.subscribe(() => {
+          modalEl = document.querySelector('ngb-modal-window') as HTMLElement;
+
+          const event = createKeyEvent(Key.Escape, {type: 'keydown'});
+          modalEl.dispatchEvent(event);
+
+          component.detectChanges();
+          expect(modalEl).not.toHaveClass('modal-static');
+
+          const closeButton = document.querySelector('button#close') as HTMLButtonElement;
+          closeButton.click();
+        });
+
+        modalRef.hidden.subscribe(() => { done(); });
+        component.detectChanges();
       });
     });
   }

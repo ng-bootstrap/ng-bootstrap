@@ -31,7 +31,7 @@ import {ngbRunTransition, NgbTransitionOptions} from '../util/transition/ngbTran
     'tabindex': '-1',
     '[attr.aria-modal]': 'true',
     '[attr.aria-labelledby]': 'ariaLabelledBy',
-    '[attr.aria-describedby]': 'ariaDescribedBy',
+    '[attr.aria-describedby]': 'ariaDescribedBy'
   },
   template: `
     <div #dialog [class]="'modal-dialog' + (size ? ' modal-' + size : '') + (centered ? ' modal-dialog-centered' : '') +
@@ -117,12 +117,18 @@ export class NgbModalWindow implements OnInit,
           .pipe(
               takeUntil(this._closed$),
               // tslint:disable-next-line:deprecation
-              filter(e => e.which === Key.Escape && this.keyboard))
-          .subscribe(event => requestAnimationFrame(() => {
-                       if (!event.defaultPrevented) {
-                         this._zone.run(() => this.dismiss(ModalDismissReasons.ESC));
-                       }
-                     }));
+              filter(e => e.which === Key.Escape))
+          .subscribe(event => {
+            if (this.keyboard) {
+              requestAnimationFrame(() => {
+                if (!event.defaultPrevented) {
+                  this._zone.run(() => this.dismiss(ModalDismissReasons.ESC));
+                }
+              });
+            } else if (this.backdrop === 'static') {
+              this._bumpBackdrop();
+            }
+          });
 
       // We're listening to 'mousedown' and 'mouseup' to prevent modal from closing when pressing the mouse
       // inside the modal dialog and releasing it outside
@@ -139,9 +145,14 @@ export class NgbModalWindow implements OnInit,
       // 2. closing was prevented by mousedown/up handlers
       // 3. clicking on scrollbar when the viewport is too small and modal doesn't fit (click is not triggered at all)
       fromEvent<MouseEvent>(nativeElement, 'click').pipe(takeUntil(this._closed$)).subscribe(({target}) => {
-        if (this.backdrop === true && nativeElement === target && !preventClose) {
-          this._zone.run(() => this.dismiss(ModalDismissReasons.BACKDROP_CLICK));
+        if (nativeElement === target) {
+          if (this.backdrop === 'static') {
+            this._bumpBackdrop();
+          } else if (this.backdrop === true && !preventClose) {
+            this._zone.run(() => this.dismiss(ModalDismissReasons.BACKDROP_CLICK));
+          }
         }
+
         preventClose = false;
       });
     });
@@ -174,5 +185,14 @@ export class NgbModalWindow implements OnInit,
       setTimeout(() => elementToFocus.focus());
       this._elWithFocus = null;
     });
+  }
+
+  private _bumpBackdrop() {
+    if (this.backdrop === 'static') {
+      ngbRunTransition(this._elRef.nativeElement, ({classList}) => {
+        classList.add('modal-static');
+        return () => classList.remove('modal-static');
+      }, {animation: this.animation, runningTransition: 'continue'});
+    }
   }
 }
