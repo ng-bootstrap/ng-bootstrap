@@ -154,7 +154,8 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
     this.openDelay = config.openDelay;
     this.closeDelay = config.closeDelay;
     this._popupService = new PopupService<NgbTooltipWindow>(
-        NgbTooltipWindow, injector, viewContainerRef, _renderer, componentFactoryResolver, applicationRef);
+        NgbTooltipWindow, injector, viewContainerRef, _renderer, this._ngZone, componentFactoryResolver,
+        applicationRef);
 
     this._zoneSubscription = _ngZone.onStable.subscribe(() => {
       if (this._windowRef) {
@@ -188,7 +189,8 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
    */
   open(context?: any) {
     if (!this._windowRef && this._ngbTooltip && !this.disableTooltip) {
-      this._windowRef = this._popupService.open(this._ngbTooltip, context);
+      const {windowRef, transition$} = this._popupService.open(this._ngbTooltip, context);
+      this._windowRef = windowRef;
       this._windowRef.instance.tooltipClass = this.tooltipClass;
       this._windowRef.instance.id = this._ngbTooltipWindowId;
 
@@ -214,7 +216,7 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
           this._ngZone, this._document, this.autoClose, () => this.close(), this.hidden,
           [this._windowRef.location.nativeElement]);
 
-      this.shown.emit();
+      transition$.subscribe(() => this.shown.emit());
     }
   }
 
@@ -226,10 +228,11 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
   close(): void {
     if (this._windowRef != null) {
       this._renderer.removeAttribute(this._elementRef.nativeElement, 'aria-describedby');
-      this._popupService.close();
-      this._windowRef = null;
-      this.hidden.emit();
-      this._changeDetector.markForCheck();
+      this._popupService.close().subscribe(() => {
+        this._windowRef = null;
+        this.hidden.emit();
+        this._changeDetector.markForCheck();
+      });
     }
   }
 
