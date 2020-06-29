@@ -39,7 +39,7 @@ exports.config = {
     });
 
     if (!process.env.TRAVIS) {
-      jasmine.getEnv().addReporter(new SpecReporter({spec: {displayStacktrace: true}}));
+      jasmine.getEnv().addReporter(new SpecReporter({spec: {displayStacktrace: 'pretty'}}));
     }
   },
   async onComplete() {
