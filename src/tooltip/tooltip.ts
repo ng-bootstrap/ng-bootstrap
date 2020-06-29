@@ -25,7 +25,7 @@ import {
 } from '@angular/core';
 import {DOCUMENT} from '@angular/common';
 import {Subject, Subscription} from 'rxjs';
-import {switchMap} from 'rxjs/operators';
+import {switchMap, filter} from 'rxjs/operators';
 
 import {parseTriggers, observeTriggers, triggerDelay} from '../util/triggers';
 import {ngbAutoClose} from '../util/autoclose';
@@ -230,7 +230,7 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 
       // Subscribe to trigger events on the popover
       this._subscriptions.add(
-          this._windowRef.instance.inited.pipe(switchMap(nativeElement => this.observeEvents(nativeElement)))
+          this._windowRef.instance.inited.pipe(switchMap(nativeElement => this.observeEvents(nativeElement, true)))
               .subscribe(this._triggerEvents$$));
 
       this._renderer.setAttribute(this._elementRef.nativeElement, 'aria-describedby', this._ngbTooltipWindowId);
@@ -294,7 +294,7 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 
   ngOnInit() {
     // Subscribe to trigger events
-    this._subscriptions.add(this.observeEvents(this._elementRef.nativeElement).subscribe(this._triggerEvents$$));
+    this._subscriptions.add(this.observeEvents(this._elementRef.nativeElement, false).subscribe(this._triggerEvents$$));
 
     // React to trigger events by opening and closing the popover
     this._subscriptions.add(
@@ -318,8 +318,11 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
     this._subscriptions.unsubscribe();
   }
 
-  private observeEvents(nativeElement: HTMLElement) {
+  private observeEvents(nativeElement: HTMLElement, isPopover: boolean) {
     const parsedTriggers = parseTriggers(this.triggers);
-    return observeTriggers(this._renderer, nativeElement, parsedTriggers, this.isOpen.bind(this));
+    return observeTriggers(this._renderer, nativeElement, parsedTriggers, this.isOpen.bind(this))
+        .pipe(
+            // Do not handle popover clicks here because it is the realm of [autoClose]
+            isPopover ? filter(event => event.type !== 'click') : observable => observable);
   }
 }
