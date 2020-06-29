@@ -1,5 +1,5 @@
 import {TestBed, ComponentFixture, inject} from '@angular/core/testing';
-import {createGenericTestComponent, triggerEvent} from '../test/common';
+import {createGenericTestComponent, isBrowser, isBrowserVisible, triggerEvent} from '../test/common';
 
 import {By} from '@angular/platform-browser';
 import {
@@ -17,6 +17,8 @@ import {NgbPopoverModule} from './popover.module';
 import {NgbPopoverWindow, NgbPopover} from './popover';
 import {NgbPopoverConfig} from './popover-config';
 import {NgbTooltip, NgbTooltipModule} from '..';
+import {NgbConfig} from '../ngb-config';
+import {NgbConfigAnimation} from '../test/ngb-config-animation';
 
 @Injectable()
 class SpyService {
@@ -28,6 +30,10 @@ const createTestComponent = (html: string) =>
 
 const createOnPushTestComponent =
     (html: string) => <ComponentFixture<TestOnPushComponent>>createGenericTestComponent(html, TestOnPushComponent);
+
+function getWindow(element) {
+  return element.querySelector('ngb-popover-window');
+}
 
 describe('ngb-popover-window', () => {
   beforeEach(() => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbPopoverModule]}); });
@@ -47,6 +53,8 @@ describe('ngb-popover-window', () => {
     fixture.detectChanges();
 
     expect(fixture.nativeElement).toHaveCssClass('popover');
+    expect(fixture.nativeElement).not.toHaveCssClass('show');
+    expect(fixture.nativeElement).not.toHaveCssClass('fade');
     expect(fixture.nativeElement).not.toHaveCssClass('bs-popover-top');
     expect(fixture.nativeElement.getAttribute('role')).toBe('tooltip');
     expect(fixture.nativeElement.querySelector('.popover-header').textContent).toBe('Test title');
@@ -75,8 +83,6 @@ describe('ngb-popover', () => {
     });
   });
 
-  function getWindow(element) { return element.querySelector('ngb-popover-window'); }
-
   describe('basic functionality', () => {
 
     it('should open and close a popover - default settings and content as string', () => {
@@ -91,6 +97,8 @@ describe('ngb-popover', () => {
 
       expect(windowEl).toHaveCssClass('popover');
       expect(windowEl).toHaveCssClass('bs-popover-top');
+      expect(windowEl).toHaveCssClass('show');
+      expect(windowEl).not.toHaveCssClass('fade');
       expect(windowEl.textContent.trim()).toBe('TitleGreat tip!');
       expect(windowEl.getAttribute('role')).toBe('tooltip');
       expect(windowEl.parentNode).toBe(fixture.nativeElement);
@@ -694,7 +702,7 @@ describe('ngb-popover', () => {
   });
 
   describe('Custom config as provider', () => {
-    let config = new NgbPopoverConfig();
+    let config = new NgbPopoverConfig(new NgbConfig());
     config.placement = 'bottom';
     config.triggers = 'hover';
     config.popoverClass = 'my-custom-class';
@@ -752,6 +760,125 @@ describe('popover-tooltip', () => {
     button.click();
   });
 });
+
+if (isBrowserVisible('ngb-popover animations')) {
+  describe('ngb-popover animations', () => {
+
+    @Component({
+      template: `<button ngbPopover="Great tip!" triggers="click" (shown)="shown()" (hidden)="hidden()"></button>`,
+      host: {'[class.ngb-reduce-motion]': 'reduceMotion'}
+    })
+    class TestAnimationComponent {
+      reduceMotion = true;
+      shown = () => {};
+      hidden = () => {};
+    }
+
+    function expectPopover(el: HTMLElement, classes: string[], noClasses: string[], opacity: string) {
+      classes.forEach(c => expect(el).toHaveCssClass(c));
+      noClasses.forEach(c => expect(el).not.toHaveCssClass(c));
+      if (!isBrowser('ie')) {
+        expect(window.getComputedStyle(el).opacity).toBe(opacity);
+      }
+    }
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        declarations: [TestAnimationComponent],
+        imports: [NgbPopoverModule],
+        providers: [{provide: NgbConfig, useClass: NgbConfigAnimation}]
+      });
+    });
+
+    it(`should run transition when toggling popover (force-reduced-motion = true)`, () => {
+      const fixture = TestBed.createComponent(TestAnimationComponent);
+      fixture.componentInstance.reduceMotion = true;
+      fixture.detectChanges();
+
+      const buttonEl = fixture.nativeElement.querySelector('button');
+      expect(getWindow(fixture.nativeElement)).toBeNull();
+
+      const shownSpy = spyOn(fixture.componentInstance, 'shown');
+      const hiddenSpy = spyOn(fixture.componentInstance, 'hidden');
+
+      // 1. Opening popover
+      buttonEl.click();
+      fixture.detectChanges();
+
+      expect(shownSpy).toHaveBeenCalledTimes(1);
+      expect(hiddenSpy).not.toHaveBeenCalled();
+      expectPopover(getWindow(fixture.nativeElement), ['show', 'fade'], [], '1');
+
+      // 2. Closing popover
+      buttonEl.click();
+      fixture.detectChanges();
+
+      expect(shownSpy).toHaveBeenCalledTimes(1);
+      expect(hiddenSpy).toHaveBeenCalledTimes(1);
+      expect(getWindow(fixture.nativeElement)).toBeNull();
+    });
+
+    it(`should run transition when toggling popover (force-reduced-motion = false)`, (done) => {
+      const fixture = TestBed.createComponent(TestAnimationComponent);
+      fixture.componentInstance.reduceMotion = false;
+      fixture.detectChanges();
+
+      const buttonEl = fixture.nativeElement.querySelector('button');
+      expect(getWindow(fixture.nativeElement)).toBeNull();
+
+      spyOn(fixture.componentInstance, 'shown').and.callFake(() => {
+        expectPopover(getWindow(fixture.nativeElement), ['show', 'fade'], [], '1');
+
+        // 2. Closing popover
+        buttonEl.click();
+        fixture.detectChanges();
+
+        expectPopover(getWindow(fixture.nativeElement), ['fade'], ['show'], '1');
+      });
+
+      spyOn(fixture.componentInstance, 'hidden').and.callFake(() => {
+        expect(getWindow(fixture.nativeElement)).toBeNull();
+        done();
+      });
+
+      // 1. Opening popover
+      buttonEl.click();
+      fixture.detectChanges();
+
+      expectPopover(getWindow(fixture.nativeElement), ['show', 'fade'], [], '0');
+    });
+
+    it(`should revert popover opening`, (done) => {
+      const fixture = TestBed.createComponent(TestAnimationComponent);
+      fixture.componentInstance.reduceMotion = false;
+      fixture.detectChanges();
+
+      const buttonEl = fixture.nativeElement.querySelector('button');
+      expect(getWindow(fixture.nativeElement)).toBeNull();
+
+      const shownSpy = spyOn(fixture.componentInstance, 'shown');
+
+      // 3. Popover is closed
+      spyOn(fixture.componentInstance, 'hidden').and.callFake(() => {
+        expect(getWindow(fixture.nativeElement)).toBeNull();
+        expect(shownSpy).not.toHaveBeenCalled();
+        done();
+      });
+
+      // 1. Opening popover
+      buttonEl.click();
+      fixture.detectChanges();
+
+      expectPopover(getWindow(fixture.nativeElement), ['show', 'fade'], [], '0');
+
+      // 2. Reverting popover opening
+      buttonEl.click();
+      fixture.detectChanges();
+
+      expectPopover(getWindow(fixture.nativeElement), ['fade'], ['show'], '0');
+    });
+  });
+}
 
 @Component({selector: 'test-cmpt', template: ``})
 export class TestComponent {
