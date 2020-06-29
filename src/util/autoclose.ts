@@ -24,9 +24,11 @@ const isMobile = (() => {
 // when tapping on the triggering element
 const wrapAsyncForMobile = fn => isMobile ? () => setTimeout(() => fn(), 100) : fn;
 
+export const enum SOURCE {ESCAPE, CLICK}
+
 export function ngbAutoClose(
-    zone: NgZone, document: any, type: boolean | 'inside' | 'outside', close: () => void, closed$: Observable<any>,
-    insideElements: HTMLElement[], ignoreElements?: HTMLElement[], insideSelector?: string) {
+    zone: NgZone, document: any, type: boolean | 'inside' | 'outside', close: (source: SOURCE) => void,
+    closed$: Observable<any>, insideElements: HTMLElement[], ignoreElements?: HTMLElement[], insideSelector?: string) {
   // closing on ESC and outside clicks
   if (type) {
     zone.runOutsideAngular(wrapAsyncForMobile(() => {
@@ -63,7 +65,9 @@ export function ngbAutoClose(
                                        takeUntil(closed$)) as Observable<MouseEvent>;
 
 
-      race<Event>([escapes$, closeableClicks$]).subscribe(() => zone.run(close));
+      race<SOURCE>([
+        escapes$.pipe(map(_ => SOURCE.ESCAPE)), closeableClicks$.pipe(map(_ => SOURCE.CLICK))
+      ]).subscribe((source: SOURCE) => zone.run(() => close(source)));
     }));
   }
 }

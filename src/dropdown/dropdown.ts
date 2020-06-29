@@ -22,10 +22,11 @@ import {fromEvent, Subject, Subscription} from 'rxjs';
 import {take} from 'rxjs/operators';
 
 import {Placement, PlacementArray, positionElements} from '../util/positioning';
-import {ngbAutoClose} from '../util/autoclose';
+import {ngbAutoClose, SOURCE} from '../util/autoclose';
 import {Key} from '../util/key';
 
 import {NgbDropdownConfig} from './dropdown-config';
+import {FOCUSABLE_ELEMENTS_SELECTOR} from '../util/focus-trap';
 
 @Directive({selector: '.navbar'})
 export class NgbNavbar {
@@ -249,14 +250,23 @@ export class NgbDropdown implements AfterContentInit, OnDestroy {
       this._applyContainer(this.container);
       this.openChange.emit(true);
       this._setCloseHandlers();
+      if (this._anchor) {
+        this._anchor.getNativeElement().focus();
+      }
     }
   }
 
   private _setCloseHandlers() {
     const anchor = this._anchor;
     ngbAutoClose(
-        this._ngZone, this._document, this.autoClose, () => this.close(), this._closed$,
-        this._menu ? [this._menuElement.nativeElement] : [], anchor ? [anchor.getNativeElement()] : [],
+        this._ngZone, this._document, this.autoClose,
+        (source: SOURCE) => {
+          this.close();
+          if (source === SOURCE.ESCAPE) {
+            this._anchor.getNativeElement().focus();
+          }
+        },
+        this._closed$, this._menu ? [this._menuElement.nativeElement] : [], anchor ? [anchor.getNativeElement()] : [],
         '.dropdown-item,.dropdown-divider');
   }
 
@@ -324,16 +334,30 @@ export class NgbDropdown implements AfterContentInit, OnDestroy {
 
     if (key === Key.Tab) {
       if (event.target && this.isOpen() && this.autoClose) {
-        if (this.container === 'body' && this._anchor.anchorEl === event.target && !event.shiftKey) {
-          itemElements[0].focus();
-          event.preventDefault();
-        } else if (this.container === 'body' && event.shiftKey && position === 0) {
-          this._anchor.anchorEl.focus();
-          event.preventDefault();
+        if (this._anchor.anchorEl === event.target) {
+          if (this.container === 'body' && !event.shiftKey) {
+            this._renderer.setAttribute(this._menuElement.nativeElement, 'tabindex', '0');
+            this._menuElement.nativeElement.focus();
+            this._renderer.removeAttribute(this._menuElement.nativeElement, 'tabindex');
+          } else if (event.shiftKey) {
+            this.close();
+          }
+          return;
+        } else if (this.container === 'body') {
+          const focusableElements = [...this._menuElement.nativeElement.querySelectorAll(FOCUSABLE_ELEMENTS_SELECTOR)];
+          if (event.shiftKey && event.target === focusableElements[0]) {
+            this._anchor.anchorEl.focus();
+            event.preventDefault();
+          } else if (!event.shiftKey && event.target === focusableElements[focusableElements.length - 1]) {
+            this._anchor.getNativeElement().focus();
+            this.close();
+          }
         } else {
-          fromEvent(event.target as HTMLElement, 'focusout')
-              .pipe(take(1))
-              .subscribe((e) => this._onFocusOut(e as FocusEvent));
+          fromEvent<FocusEvent>(event.target as HTMLElement, 'focusout').pipe(take(1)).subscribe(({relatedTarget}) => {
+            if (!this._elementRef.nativeElement.contains(relatedTarget as HTMLElement)) {
+              this.close();
+            }
+          });
         }
       }
       return;
@@ -365,19 +389,6 @@ export class NgbDropdown implements AfterContentInit, OnDestroy {
         itemElements[position].focus();
       }
       event.preventDefault();
-    }
-  }
-
-  private _onFocusOut(event: FocusEvent) {
-    let prevFocusedElement = event.relatedTarget as HTMLElement;
-    if (this.container === 'body') {
-      if (!this._menuElement.nativeElement.contains(prevFocusedElement)) {
-        this.close();
-      }
-    } else {
-      if (!this._elementRef.nativeElement.contains(prevFocusedElement)) {
-        this.close();
-      }
     }
   }
 
