@@ -100,7 +100,8 @@ export {
   NgbNavItem,
   NgbNavLink,
   NgbNavModule,
-  NgbNavOutlet
+  NgbNavOutlet,
+  NgbNavPane
 } from './nav/nav.module';
 export {
   NgbPagination,

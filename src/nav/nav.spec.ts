@@ -2,9 +2,12 @@ import {Component} from '@angular/core';
 import {ComponentFixture, inject, TestBed} from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
 import {NgbNav, NgbNavConfig, NgbNavItem, NgbNavLink, NgbNavModule, NgbNavOutlet} from './nav.module';
-import {createGenericTestComponent} from '../test/common';
+import {createGenericTestComponent, isBrowser, isBrowserVisible} from '../test/common';
 import {isDefined} from '../util/util';
 import {Key} from 'src/util/key';
+import {NgbConfig} from '../ngb-config';
+import {NgbConfigAnimation} from '../test/ngb-config-animation';
+import createSpy = jasmine.createSpy;
 
 function createTestComponent(html: string, detectChanges = true) {
   return createGenericTestComponent(html, TestComponent, detectChanges) as ComponentFixture<TestComponent>;
@@ -448,20 +451,24 @@ describe('nav', () => {
     let nav: NgbNav;
     let navChangeSpy: jasmine.Spy;
     let activeIdChangeSpy: jasmine.Spy;
+    let hiddenNavSpy: jasmine.Spy;
+    let shownNavSpy: jasmine.Spy;
+    let hiddenItemSpy: jasmine.Spy;
+    let shownItemSpy: jasmine.Spy;
 
     beforeEach(() => {
       fixture = createTestComponent(`
         <ul ngbNav #n="ngbNav" class="nav-tabs" [(activeId)]="activeId" (activeIdChange)="onActiveIdChange($event)"
-        (navChange)="onNavChange($event)">
-          <li [ngbNavItem]="1">
+        (shown)="onNavShown($event)" (hidden)="onNavHidden($event)" (navChange)="onNavChange($event)">
+          <li [ngbNavItem]="1" (hidden)="onItemHidden(1)" (shown)="onItemShown(1)">
               <a ngbNavLink>link 1</a>
               <ng-template ngbNavContent>content 1</ng-template>
           </li>
-          <li [ngbNavItem]="2">
+          <li [ngbNavItem]="2" (hidden)="onItemHidden(2)" (shown)="onItemShown(2)">
               <a ngbNavLink>link 2</a>
               <ng-template ngbNavContent>content 2</ng-template>
           </li>
-          <li [ngbNavItem]="3" [disabled]="true">
+          <li [ngbNavItem]="3" [disabled]="true" (hidden)="onItemHidden(3)" (shown)="onItemShown(3)">
               <a ngbNavLink>disabled</a>
               <ng-template ngbNavContent>content 3</ng-template>
           </li>
@@ -471,6 +478,10 @@ describe('nav', () => {
 
       navChangeSpy = spyOn(fixture.componentInstance, 'onNavChange');
       activeIdChangeSpy = spyOn(fixture.componentInstance, 'onActiveIdChange');
+      hiddenItemSpy = spyOn(fixture.componentInstance, 'onItemHidden');
+      shownItemSpy = spyOn(fixture.componentInstance, 'onItemShown');
+      hiddenNavSpy = spyOn(fixture.componentInstance, 'onNavHidden');
+      shownNavSpy = spyOn(fixture.componentInstance, 'onNavShown');
       links = getLinks(fixture);
       nav = getNavDirective(fixture);
 
@@ -487,6 +498,10 @@ describe('nav', () => {
       expect(fixture.componentInstance.activeId).toBe(2);
       expect(activeIdChangeSpy).toHaveBeenCalledWith(2);
       expect(navChangeSpy).toHaveBeenCalledWith({activeId: 1, nextId: 2, preventDefault: jasmine.any(Function)});
+      expect(hiddenItemSpy).toHaveBeenCalledWith(1);
+      expect(shownItemSpy).toHaveBeenCalledWith(2);
+      expect(hiddenNavSpy).toHaveBeenCalledWith(1);
+      expect(shownNavSpy).toHaveBeenCalledWith(2);
     });
 
     it(`(click) on the same nav should do nothing`, () => {
@@ -498,6 +513,10 @@ describe('nav', () => {
       expect(fixture.componentInstance.activeId).toBe(1);
       expect(activeIdChangeSpy).toHaveBeenCalledTimes(0);
       expect(navChangeSpy).toHaveBeenCalledTimes(0);
+      expect(hiddenItemSpy).not.toHaveBeenCalled();
+      expect(shownItemSpy).not.toHaveBeenCalled();
+      expect(hiddenNavSpy).not.toHaveBeenCalled();
+      expect(shownNavSpy).not.toHaveBeenCalled();
     });
 
     it(`(click) should not change to a disabled nav`, () => {
@@ -509,6 +528,10 @@ describe('nav', () => {
       expect(fixture.componentInstance.activeId).toBe(1);
       expect(activeIdChangeSpy).toHaveBeenCalledTimes(0);
       expect(navChangeSpy).toHaveBeenCalledTimes(0);
+      expect(hiddenItemSpy).not.toHaveBeenCalled();
+      expect(shownItemSpy).not.toHaveBeenCalled();
+      expect(hiddenNavSpy).not.toHaveBeenCalled();
+      expect(shownNavSpy).not.toHaveBeenCalled();
     });
 
     it(`[activeId] should change navs`, () => {
@@ -520,6 +543,10 @@ describe('nav', () => {
       expect(fixture.componentInstance.activeId).toBe(2);
       expect(activeIdChangeSpy).toHaveBeenCalledTimes(0);
       expect(navChangeSpy).toHaveBeenCalledTimes(0);
+      expect(hiddenItemSpy).toHaveBeenCalledWith(1);
+      expect(shownItemSpy).toHaveBeenCalledWith(2);
+      expect(hiddenNavSpy).toHaveBeenCalledWith(1);
+      expect(shownNavSpy).toHaveBeenCalledWith(2);
     });
 
     it(`[activeId] on the same nav should do nothing`, () => {
@@ -531,6 +558,10 @@ describe('nav', () => {
       expect(fixture.componentInstance.activeId).toBe(1);
       expect(activeIdChangeSpy).toHaveBeenCalledTimes(0);
       expect(navChangeSpy).toHaveBeenCalledTimes(0);
+      expect(hiddenItemSpy).not.toHaveBeenCalled();
+      expect(shownItemSpy).not.toHaveBeenCalled();
+      expect(hiddenNavSpy).not.toHaveBeenCalled();
+      expect(shownNavSpy).not.toHaveBeenCalled();
     });
 
     it(`[activeId] should change to a disabled nav`, () => {
@@ -542,6 +573,10 @@ describe('nav', () => {
       expect(fixture.componentInstance.activeId).toBe(3);
       expect(activeIdChangeSpy).toHaveBeenCalledTimes(0);
       expect(navChangeSpy).toHaveBeenCalledTimes(0);
+      expect(hiddenItemSpy).toHaveBeenCalledWith(1);
+      expect(shownItemSpy).toHaveBeenCalledWith(3);
+      expect(hiddenNavSpy).toHaveBeenCalledWith(1);
+      expect(shownNavSpy).toHaveBeenCalledWith(3);
     });
 
     it(`[activeId] should change to an invalid nav`, () => {
@@ -553,6 +588,10 @@ describe('nav', () => {
       expect(fixture.componentInstance.activeId).toBe(1000);
       expect(activeIdChangeSpy).toHaveBeenCalledTimes(0);
       expect(navChangeSpy).toHaveBeenCalledTimes(0);
+      expect(hiddenItemSpy).toHaveBeenCalledWith(1);
+      expect(shownItemSpy).not.toHaveBeenCalled();
+      expect(hiddenNavSpy).toHaveBeenCalledWith(1);
+      expect(shownNavSpy).not.toHaveBeenCalled();
     });
 
     it(`'.select()' should change navs`, () => {
@@ -564,6 +603,10 @@ describe('nav', () => {
       expect(fixture.componentInstance.activeId).toBe(2);
       expect(activeIdChangeSpy).toHaveBeenCalledWith(2);
       expect(navChangeSpy).toHaveBeenCalledTimes(0);
+      expect(hiddenItemSpy).toHaveBeenCalledWith(1);
+      expect(shownItemSpy).toHaveBeenCalledWith(2);
+      expect(hiddenNavSpy).toHaveBeenCalledWith(1);
+      expect(shownNavSpy).toHaveBeenCalledWith(2);
     });
 
     it(`'.select()' on the same nav should do nothing`, () => {
@@ -575,6 +618,10 @@ describe('nav', () => {
       expect(fixture.componentInstance.activeId).toBe(1);
       expect(activeIdChangeSpy).toHaveBeenCalledTimes(0);
       expect(navChangeSpy).toHaveBeenCalledTimes(0);
+      expect(hiddenItemSpy).not.toHaveBeenCalled();
+      expect(shownItemSpy).not.toHaveBeenCalled();
+      expect(hiddenNavSpy).not.toHaveBeenCalled();
+      expect(shownNavSpy).not.toHaveBeenCalled();
     });
 
     it(`'.select()' should change to a disabled nav`, () => {
@@ -586,6 +633,11 @@ describe('nav', () => {
       expect(fixture.componentInstance.activeId).toBe(3);
       expect(activeIdChangeSpy).toHaveBeenCalledWith(3);
       expect(navChangeSpy).toHaveBeenCalledTimes(0);
+      expect(navChangeSpy).toHaveBeenCalledTimes(0);
+      expect(hiddenItemSpy).toHaveBeenCalledWith(1);
+      expect(shownItemSpy).toHaveBeenCalledWith(3);
+      expect(hiddenNavSpy).toHaveBeenCalledWith(1);
+      expect(shownNavSpy).toHaveBeenCalledWith(3);
     });
 
     it(`'.select()' should change to an invalid nav`, () => {
@@ -597,6 +649,10 @@ describe('nav', () => {
       expect(fixture.componentInstance.activeId).toBe(1000);
       expect(activeIdChangeSpy).toHaveBeenCalledWith(1000);
       expect(navChangeSpy).toHaveBeenCalledTimes(0);
+      expect(hiddenItemSpy).toHaveBeenCalledWith(1);
+      expect(shownItemSpy).not.toHaveBeenCalled();
+      expect(hiddenNavSpy).toHaveBeenCalledWith(1);
+      expect(shownNavSpy).not.toHaveBeenCalled();
     });
   });
 
@@ -1094,6 +1150,247 @@ describe('nav', () => {
 
 });
 
+if (isBrowserVisible('ngb-nav animations')) {
+  describe('ngb-nav animations', () => {
+
+    @Component({
+      template: `
+        <ul ngbNav #n="ngbNav" class="nav-tabs" (shown)="onNavShownSpy($event)" (hidden)="onNavHiddenSpy($event)">
+          <li [ngbNavItem]="1" (shown)="onItemShownSpy(1)" (hidden)="onItemHiddenSpy(1)">
+            <a ngbNavLink>link 1</a>
+            <ng-template ngbNavContent>content 1</ng-template>
+          </li>
+          <li [ngbNavItem]="2" (shown)="onItemShownSpy(2)" (hidden)="onItemHiddenSpy(2)">
+            <a ngbNavLink>link 2</a>
+            <ng-template ngbNavContent>content 2</ng-template>
+          </li>
+          <li [ngbNavItem]="3" (shown)="onItemShownSpy(3)" (hidden)="onItemHiddenSpy(3)">
+            <a ngbNavLink>link 2</a>
+            <ng-template ngbNavContent>content 3</ng-template>
+          </li>
+        </ul>
+        <div [ngbNavOutlet]="n"></div>
+      `,
+      host: {'[class.ngb-reduce-motion]': 'reduceMotion'}
+    })
+    class TestAnimationComponent {
+      reduceMotion = false;
+      onItemHiddenSpy = createSpy();
+      onItemShownSpy = createSpy();
+      onNavHiddenSpy = createSpy();
+      onNavShownSpy = createSpy();
+    }
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        declarations: [TestAnimationComponent],
+        imports: [NgbNavModule],
+        providers: [{provide: NgbConfig, useClass: NgbConfigAnimation}]
+      });
+    });
+
+    function expectContentState(pane: HTMLElement, classes: string[], noClasses: string[], opacity: string) {
+      classes.forEach(c => expect(pane).toHaveCssClass(c));
+      noClasses.forEach(c => expect(pane).not.toHaveCssClass(c));
+      if (!isBrowser('ie')) {
+        expect(window.getComputedStyle(pane).opacity).toBe(opacity);
+      }
+    }
+
+    it(`should run simple fade in/out transition when switching navs (force-reduced-motion = true)`, () => {
+      const fixture = TestBed.createComponent(TestAnimationComponent);
+      const {onItemHiddenSpy, onItemShownSpy, onNavHiddenSpy, onNavShownSpy} = fixture.componentInstance;
+      fixture.componentInstance.reduceMotion = true;
+      fixture.detectChanges();
+
+      // 1. checking links have good initial values (1 is active)
+      const links = getLinks(fixture);
+      expectLinks(fixture, [true, false, false]);
+      expectContents(fixture, ['content 1']);
+      expectContentState(getContent(fixture), ['fade', 'show'], [], '1');
+
+      // 2. switching from 1 -> 2
+      links[1].click();
+      fixture.detectChanges();
+
+      // 3. everything is updated synchronously
+      expectLinks(fixture, [false, true, false]);
+      expectContents(fixture, ['content 2']);
+      expectContentState(getContent(fixture), ['fade', 'show'], [], '1');
+      expect(onItemHiddenSpy.calls.allArgs()).toEqual([[1]]);
+      expect(onNavHiddenSpy.calls.allArgs()).toEqual([[1]]);
+      expect(onItemShownSpy.calls.allArgs()).toEqual([[2]]);
+      expect(onNavShownSpy.calls.allArgs()).toEqual([[2]]);
+    });
+
+    it(`should run simple fade in/out transition when switching navs (force-reduced-motion = false)`, (done) => {
+      const fixture = TestBed.createComponent(TestAnimationComponent);
+      const {onItemHiddenSpy, onItemShownSpy, onNavHiddenSpy, onNavShownSpy} = fixture.componentInstance;
+      fixture.componentInstance.reduceMotion = false;
+      fixture.detectChanges();
+
+      // TEST: 1 is active, switching 1 -> 2, catching nav (hidden), catching nav (shown)
+
+      // 1. checking links have good initial values (1 is active)
+      const links = getLinks(fixture);
+      expectLinks(fixture, [true, false, false]);
+      expectContents(fixture, ['content 1']);
+      expectContentState(getContent(fixture), ['fade', 'show'], [], '1');
+
+      onNavHiddenSpy.and.callFake(hiddenId => {
+        // 5. (hidden) was fired on the nav
+        fixture.detectChanges();
+        expect(hiddenId).toBe(1);
+        expectContents(fixture, ['content 2']);
+        expectContentState(getContent(fixture), ['fade', 'show'], [], '0');
+
+        onNavShownSpy.and.callFake(shownId => {
+          // 6. (shown) was fired on the nav
+          fixture.detectChanges();
+          expect(shownId).toBe(2);
+          expect(onItemHiddenSpy.calls.allArgs()).toEqual([[1]]);
+          expect(onItemShownSpy.calls.allArgs()).toEqual([[2]]);
+          expectContents(fixture, ['content 2']);
+          expectContentState(getContent(fixture), ['fade', 'show'], [], '1');
+          done();
+        });
+      });
+
+      // 2. switching from 1 -> 2
+      links[1].click();
+      fixture.detectChanges();
+
+      // 3. links are updated synchronously
+      expectLinks(fixture, [false, true, false]);
+
+      // 4. adding 2nd content, 1st still active
+      expectContents(fixture, ['content 1', 'content 2'], 0);
+      const[first, second] = getContents(fixture);
+      expectContentState(first, ['fade'], ['show'], '1');
+      expectContentState(second, ['fade'], ['show'], '0');
+    });
+
+    it(`should fade in to the new pane if switched after fading out has started already`, (done) => {
+      const fixture = TestBed.createComponent(TestAnimationComponent);
+      const {onItemHiddenSpy, onItemShownSpy, onNavHiddenSpy, onNavShownSpy} = fixture.componentInstance;
+      fixture.componentInstance.reduceMotion = false;
+      fixture.detectChanges();
+
+      // TEST: 1 is active, switching 1 -> 2, switching 2 -> 3 while fading out 1, catching nav (shown)
+
+      // 1. checking links have good initial values (1 is active)
+      const links = getLinks(fixture);
+      expectLinks(fixture, [true, false, false]);
+      expectContents(fixture, ['content 1']);
+      expectContentState(getContent(fixture), ['fade', 'show'], [], '1');
+
+      onNavShownSpy.and.callFake(shownId => {
+        // 8. (shown) should be fired only when switching 2 -> 3
+        fixture.detectChanges();
+        expect(shownId).toBe(3);
+        expect(onNavHiddenSpy).toHaveBeenCalledWith(1);
+        expect(onItemHiddenSpy).toHaveBeenCalledWith(1);
+        expect(onItemShownSpy).toHaveBeenCalledWith(3);
+        expectContents(fixture, ['content 3']);
+        expectContentState(getContent(fixture), ['fade', 'show'], [], '1');
+        done();
+      });
+
+      // 2. switching from 1 -> 2
+      links[1].click();
+      fixture.detectChanges();
+
+      // 3. links are updated synchronously
+      expectLinks(fixture, [false, true, false]);
+
+      // 4. adding 2nd content, 1st still active
+      expectContents(fixture, ['content 1', 'content 2'], 0);
+      let [first, second] = getContents(fixture);
+      expectContentState(first, ['fade'], ['show'], '1');
+      expectContentState(second, ['fade'], ['show'], '0');
+
+      // 5. switching from 2 -> 3 immediately
+      links[2].click();
+      fixture.detectChanges();
+
+      // 6. links are updated synchronously
+      expectLinks(fixture, [false, false, true]);
+
+      // 7. removing 2nd, adding 3rd content, 1st still active
+      expectContents(fixture, ['content 1', 'content 3'], 0);
+      [first, second] = getContents(fixture);
+      expectContentState(first, ['fade'], ['show'], '1');
+      expectContentState(second, ['fade'], ['show'], '0');
+    });
+
+    it(`should reverse fade in if switched to a new pane after fading in has started already`, (done) => {
+      const fixture = TestBed.createComponent(TestAnimationComponent);
+      const {onItemHiddenSpy, onItemShownSpy, onNavHiddenSpy, onNavShownSpy} = fixture.componentInstance;
+      fixture.componentInstance.reduceMotion = false;
+      fixture.detectChanges();
+
+      // TEST: 1 is active, switching 1 -> 2, switching 2 -> 3 while fading in 2, catching nav (shown)
+      let first: HTMLElement;
+      let second: HTMLElement;
+
+      // 1. checking links have good initial values (1 is active)
+      const links = getLinks(fixture);
+      expectLinks(fixture, [true, false, false]);
+      expectContents(fixture, ['content 1']);
+      expectContentState(getContent(fixture), ['fade', 'show'], [], '1');
+
+      onNavHiddenSpy.and.callFake(hiddenId => {
+        // 5. (hidden) is fired 2 times, for 1 -> 2 them for 2 -> 3
+        // we care only about the 1 -> 2
+        if (hiddenId === 1) {
+          fixture.detectChanges();
+          expectContents(fixture, ['content 2']);
+          expectContentState(getContent(fixture), ['fade', 'show'], [], '0');
+
+          // 6. switching 2 -> 3
+          links[2].click();
+          fixture.detectChanges();
+
+          // 7. links are updated synchronously
+          expectLinks(fixture, [false, false, true]);
+
+          // 8. adding 3rd content, 2nd still active (only starting fading in)
+          expectContents(fixture, ['content 2', 'content 3'], 0);
+          [first, second] = getContents(fixture);
+          expectContentState(first, ['fade'], ['show'], '0');
+          expectContentState(second, ['fade'], ['show'], '0');
+        }
+      });
+
+      onNavShownSpy.and.callFake(shownId => {
+        // 9. (shown) is fired only for 2 -> 3
+        fixture.detectChanges();
+        expect(shownId).toBe(3);
+        expect(onNavHiddenSpy.calls.allArgs()).toEqual([[1], [2]]);
+        expect(onItemHiddenSpy.calls.allArgs()).toEqual([[1], [2]]);
+        expect(onItemShownSpy.calls.allArgs()).toEqual([[3]]);
+        expectContents(fixture, ['content 3']);
+        expectContentState(getContent(fixture), ['fade', 'show'], [], '1');
+        done();
+      });
+
+      // 2. switching from 1 -> 2
+      links[1].click();
+      fixture.detectChanges();
+
+      // 3. links are updated synchronously
+      expectLinks(fixture, [false, true, false]);
+
+      // 4. adding 2nd content, 1st still active
+      expectContents(fixture, ['content 1', 'content 2'], 0);
+      [first, second] = getContents(fixture);
+      expectContentState(first, ['fade'], ['show'], '1');
+      expectContentState(second, ['fade'], ['show'], '0');
+    });
+  });
+}
+
+
 @Component({selector: 'test-cmp', template: ''})
 class TestComponent {
   activeId;
@@ -1103,6 +1400,10 @@ class TestComponent {
   roles: 'tablist' | false = 'tablist';
   onActiveIdChange = () => {};
   onNavChange = () => {};
+  onItemHidden = () => {};
+  onItemShown = () => {};
+  onNavHidden = () => {};
+  onNavShown = () => {};
   onNavChangePrevent = event => {
     if (isDefined(event.activeId)) {
       event.preventDefault();

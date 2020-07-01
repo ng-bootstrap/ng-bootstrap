@@ -13,9 +13,13 @@ import {
   OnInit,
   Output,
   QueryList,
+  SimpleChanges,
   TemplateRef
 } from '@angular/core';
 import {DOCUMENT} from '@angular/common';
+
+import {Subject} from 'rxjs';
+
 import {isDefined} from '../util/util';
 import {NgbNavConfig} from './nav-config';
 import {Key} from '../util/key';
@@ -88,6 +92,16 @@ export class NgbNavItem implements AfterContentChecked, OnInit {
    * because ` ngbNavItem `, `ngbNavItem=''` and `[ngbNavItem]="''"` are indistinguishable
    */
   @Input('ngbNavItem') _id: any;
+
+  /**
+   * An event emitted when the fade in transition is finished on the related nav content
+   */
+  @Output() shown = new EventEmitter<void>();
+
+  /**
+   * An event emitted when the fade out transition is finished on the related nav content
+   */
+  @Output() hidden = new EventEmitter<void>();
 
   contentTpl: NgbNavContent | null;
 
@@ -165,6 +179,11 @@ export class NgbNav implements AfterContentInit {
   @Output() activeIdChange = new EventEmitter<any>();
 
   /**
+   * If `true`, nav change will be animated.
+   */
+  @Input() animation: boolean;
+
+  /**
    * If `true`, non-active nav content will be removed from DOM
    * Otherwise it will just be hidden
    */
@@ -197,12 +216,29 @@ export class NgbNav implements AfterContentInit {
  */
   @Input() keyboard: boolean | 'changeWithArrows';
 
+  /**
+   * An event emitted when the fade in transition is finished for one of the items.
+   *
+   * Payload of the event is the nav id that was just shown.
+   */
+  @Output() shown = new EventEmitter<any>();
+
+  /**
+   * An event emitted when the fade out transition is finished for one of the items.
+   *
+   * Payload of the event is the nav id that was just hidden.
+   */
+  @Output() hidden = new EventEmitter<any>();
+
   @ContentChildren(NgbNavItem) items: QueryList<NgbNavItem>;
   @ContentChildren(forwardRef(() => NgbNavLink), {descendants: true}) links: QueryList<NgbNavLink>;
+
+  navItemChange$ = new Subject<NgbNavItem | null>();
 
   constructor(
       @Attribute('role') public role: string, config: NgbNavConfig, private _cd: ChangeDetectorRef,
       @Inject(DOCUMENT) private _document: any) {
+    this.animation = config.animation;
     this.destroyOnHide = config.destroyOnHide;
     this.orientation = config.orientation;
     this.roles = config.roles;
@@ -299,6 +335,12 @@ export class NgbNav implements AfterContentInit {
     }
   }
 
+  ngOnChanges({activeId}: SimpleChanges): void {
+    if (activeId && !activeId.firstChange) {
+      this._notifyItemChanged(activeId.currentValue);
+    }
+  }
+
   private _updateActiveId(nextId: any, emitNavChange = true) {
     if (this.activeId !== nextId) {
       let defaultPrevented = false;
@@ -310,8 +352,15 @@ export class NgbNav implements AfterContentInit {
       if (!defaultPrevented) {
         this.activeId = nextId;
         this.activeIdChange.emit(nextId);
+        this._notifyItemChanged(nextId);
       }
     }
+  }
+
+  private _notifyItemChanged(nextItemId: any) { this.navItemChange$.next(this._getItemById(nextItemId)); }
+
+  private _getItemById(itemId: any): NgbNavItem | null {
+    return this.items && this.items.find(item => item.id === itemId) || null;
   }
 }
 
