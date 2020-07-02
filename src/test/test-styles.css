@@ -23,7 +23,16 @@
   transition: transform 0.01s ease-out,-webkit-transform 0.01s ease-out !important;
 }
 
-.ngb-reduce-motion .fade, .ngb-reduce-motion .collapsing, .ngb-reduce-motion .modal.fade .modal-dialog {
+.carousel-item {
+  transition: -webkit-transform 0.01s ease-out !important;
+  transition: transform 0.01s ease-out !important;
+  transition: transform 0.01s ease-out,-webkit-transform 0.01s ease-out !important;
+}
+
+.ngb-reduce-motion .fade,
+.ngb-reduce-motion .collapsing,
+.ngb-reduce-motion .modal.fade .modal-dialog,
+.ngb-reduce-motion .carousel-item {
   transition: none !important;
 }
 
