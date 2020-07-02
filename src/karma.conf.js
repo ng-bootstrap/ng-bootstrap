@@ -9,12 +9,12 @@ module.exports = function (config) {
     files: ['../node_modules/bootstrap/dist/css/bootstrap.min.css'],
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
     plugins: [
-      require('karma-jasmine'),
-      require('karma-chrome-launcher'),
-      require('karma-firefox-launcher'),
-      require('karma-ie-launcher'),
-      require('karma-coverage-istanbul-reporter'),
-      require('@angular-devkit/build-angular/plugins/karma')
+      'karma-jasmine',
+      'karma-chrome-launcher',
+      'karma-firefox-launcher',
+      'karma-ie-launcher',
+      'karma-coverage-istanbul-reporter',
+      '@angular-devkit/build-angular/plugins/karma'
     ],
     client: {
       clearContext: false // leave Jasmine Spec Runner output visible in browser

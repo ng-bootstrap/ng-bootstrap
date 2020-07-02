@@ -52,7 +52,7 @@ const routes: Routes = [
   { path: '**', redirectTo: 'home' }
 ];
 
-export const routing: ModuleWithProviders = RouterModule.forRoot(routes, {
+export const routing: ModuleWithProviders<RouterModule> = RouterModule.forRoot(routes, {
   enableTracing: false,
   useHash: true,
   scrollPositionRestoration: 'enabled'
