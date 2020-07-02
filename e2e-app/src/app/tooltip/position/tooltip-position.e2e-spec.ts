@@ -18,7 +18,7 @@ describe('Tooltip Position', () => {
     await btn.click();
     const btnLocation = roundLocation(await btn.getLocation());
     const btnSize = await btn.getSize();
-    const tooltip = await page.getTooltip();
+    const tooltip = page.getTooltip();
     const tooltipLocation = roundLocation(await tooltip.getLocation());
     const tooltipSize = await tooltip.getSize();
 

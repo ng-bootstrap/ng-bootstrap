@@ -6,7 +6,7 @@ describe('Typeahead', () => {
   let page: TypeaheadPage;
 
   const expectTypeaheadFocused =
-      async() => { await expectFocused(await page.getTypeaheadInput(), `Typeahead should be focused`); };
+      async() => { await expectFocused(page.getTypeaheadInput(), `Typeahead should be focused`); };
 
   const expectDropdownOpen = async(expectedDropdownItems = 10) => {
     expect(page.getDropdown().isPresent()).toBeTruthy(`The dropdown should be open`);

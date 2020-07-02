@@ -10,8 +10,8 @@ describe('Datepicker multiple instances', () => {
   beforeEach(async() => await openUrl('datepicker/multiple'));
 
   it('the instance tapped should gain focus', async() => {
-    const dp1 = await page.getDatepicker('#dp1');
-    const dp2 = await page.getDatepicker('#dp2');
+    const dp1 = page.getDatepicker('#dp1');
+    const dp2 = page.getDatepicker('#dp2');
     await page.getDayElement(new Date(2016, 7, 1), dp1).click();
     await sendKey(Key.ARROW_DOWN);
     await page.expectActive(new Date(2016, 7, 8), dp1);

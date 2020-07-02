@@ -28,12 +28,12 @@ describe('Modal nested components', () => {
     // open datepicker
     await page.getDatepickerButton().click();
     expect(await datepickerPage.getDatepicker().isPresent()).toBeTruthy(`Datepicker should be opened`);
-    await expectFocused(await datepickerPage.getDayElement(new Date(2018, 0, 1)), `01 JAN 2018 should be focused`);
+    await expectFocused(datepickerPage.getDayElement(new Date(2018, 0, 1)), `01 JAN 2018 should be focused`);
 
     // close datepicker
     await sendKey(Key.ESCAPE);
     expect(await datepickerPage.getDatepicker().isPresent()).toBeFalsy(`Datepicker should be closed`);
-    await expectFocused(await page.getDatepickerButton(), `Datepicker open button should be focused`);
+    await expectFocused(page.getDatepickerButton(), `Datepicker open button should be focused`);
     expect(await page.getModal().isPresent()).toBeTruthy(`Modal should stay opened`);
 
     // close modal
@@ -52,7 +52,7 @@ describe('Modal nested components', () => {
     // close dropdown
     await sendKey(Key.ESCAPE);
     expect(await dropdownPage.isOpened(dropdown)).toBeFalsy(`Dropdown should be closed`);
-    await expectFocused(await page.getDropdownButton(), `Dropdown open button should be focused`);
+    await expectFocused(page.getDropdownButton(), `Dropdown open button should be focused`);
     expect(await page.getModal().isPresent()).toBeTruthy(`Modal should stay opened`);
 
     // close modal

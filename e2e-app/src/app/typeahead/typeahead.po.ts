@@ -3,7 +3,7 @@ import {$} from 'protractor';
 export class TypeaheadPage {
   getInputBefore() { return $('#first'); }
 
-  getTypeaheadInput() { return $('#typeahead') as any; }
+  getTypeaheadInput() { return $('#typeahead'); }
 
   getDropdown() { return $('ngb-typeahead-window'); }
 
