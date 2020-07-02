@@ -1,5 +1,5 @@
 import {TestBed, ComponentFixture, inject} from '@angular/core/testing';
-import {createGenericTestComponent, triggerEvent} from '../test/common';
+import {createGenericTestComponent, isBrowser, isBrowserVisible, triggerEvent} from '../test/common';
 
 import {By} from '@angular/platform-browser';
 import {
@@ -16,12 +16,17 @@ import {NgbTooltipModule} from './tooltip.module';
 import {NgbTooltipWindow, NgbTooltip} from './tooltip';
 import {NgbTooltipConfig} from './tooltip-config';
 import {NgbConfig} from '../ngb-config';
+import {NgbConfigAnimation} from '../test/ngb-config-animation';
 
 const createTestComponent =
     (html: string) => <ComponentFixture<TestComponent>>createGenericTestComponent(html, TestComponent);
 
 const createOnPushTestComponent =
     (html: string) => <ComponentFixture<TestOnPushComponent>>createGenericTestComponent(html, TestOnPushComponent);
+
+function getWindow(element) {
+  return element.querySelector('ngb-tooltip-window');
+}
 
 describe('ngb-tooltip-window', () => {
   beforeEach(() => { TestBed.configureTestingModule({imports: [NgbTooltipModule]}); });
@@ -40,6 +45,8 @@ describe('ngb-tooltip-window', () => {
     fixture.detectChanges();
 
     expect(fixture.nativeElement).toHaveCssClass('tooltip');
+    expect(fixture.nativeElement).not.toHaveCssClass('show');
+    expect(fixture.nativeElement).not.toHaveCssClass('fade');
     expect(fixture.nativeElement).not.toHaveCssClass('bs-tooltip-top');
     expect(fixture.nativeElement.getAttribute('role')).toBe('tooltip');
   });
@@ -64,8 +71,6 @@ describe('ngb-tooltip', () => {
         {declarations: [TestComponent, TestOnPushComponent, TestHooksComponent], imports: [NgbTooltipModule]});
   });
 
-  function getWindow(element) { return element.querySelector('ngb-tooltip-window'); }
-
   describe('basic functionality', () => {
 
     it('should open and close a tooltip - default settings and content as string', () => {
@@ -78,6 +83,8 @@ describe('ngb-tooltip', () => {
       const id = windowEl.getAttribute('id');
 
       expect(windowEl).toHaveCssClass('tooltip');
+      expect(windowEl).toHaveCssClass('show');
+      expect(windowEl).not.toHaveCssClass('fade');
       expect(windowEl).toHaveCssClass('bs-tooltip-top');
       expect(windowEl.textContent.trim()).toBe('Great tip!');
       expect(windowEl.getAttribute('role')).toBe('tooltip');
@@ -643,6 +650,125 @@ describe('ngb-tooltip', () => {
     });
   });
 });
+
+if (isBrowserVisible('ngb-tooltip animations')) {
+  describe('ngb-tooltip animations', () => {
+
+    @Component({
+      template: `<button ngbTooltip="Great tip!" triggers="click" (shown)="shown()" (hidden)="hidden()"></button>`,
+      host: {'[class.ngb-reduce-motion]': 'reduceMotion'}
+    })
+    class TestAnimationComponent {
+      reduceMotion = true;
+      shown = () => {};
+      hidden = () => {};
+    }
+
+    function expectTooltip(el: HTMLElement, classes: string[], noClasses: string[], opacity: string) {
+      classes.forEach(c => expect(el).toHaveCssClass(c));
+      noClasses.forEach(c => expect(el).not.toHaveCssClass(c));
+      if (!isBrowser('ie')) {
+        expect(window.getComputedStyle(el).opacity !).toBe(opacity);
+      }
+    }
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        declarations: [TestAnimationComponent],
+        imports: [NgbTooltipModule],
+        providers: [{provide: NgbConfig, useClass: NgbConfigAnimation}]
+      });
+    });
+
+    it(`should run transition when toggling tooltip (force-reduced-motion = true)`, () => {
+      const fixture = TestBed.createComponent(TestAnimationComponent);
+      fixture.componentInstance.reduceMotion = true;
+      fixture.detectChanges();
+
+      const buttonEl = fixture.nativeElement.querySelector('button');
+      expect(getWindow(fixture.nativeElement)).toBeNull();
+
+      const shownSpy = spyOn(fixture.componentInstance, 'shown');
+      const hiddenSpy = spyOn(fixture.componentInstance, 'hidden');
+
+      // 1. Opening tooltip
+      buttonEl.click();
+      fixture.detectChanges();
+
+      expect(shownSpy).toHaveBeenCalledTimes(1);
+      expect(hiddenSpy).not.toHaveBeenCalled();
+      expectTooltip(getWindow(fixture.nativeElement), ['show', 'fade'], [], '1');
+
+      // 2. Closing tooltip
+      buttonEl.click();
+      fixture.detectChanges();
+
+      expect(shownSpy).toHaveBeenCalledTimes(1);
+      expect(hiddenSpy).toHaveBeenCalledTimes(1);
+      expect(getWindow(fixture.nativeElement)).toBeNull();
+    });
+
+    it(`should run transition when toggling tooltip (force-reduced-motion = false)`, (done) => {
+      const fixture = TestBed.createComponent(TestAnimationComponent);
+      fixture.componentInstance.reduceMotion = false;
+      fixture.detectChanges();
+
+      const buttonEl = fixture.nativeElement.querySelector('button');
+      expect(getWindow(fixture.nativeElement)).toBeNull();
+
+      spyOn(fixture.componentInstance, 'shown').and.callFake(() => {
+        expectTooltip(getWindow(fixture.nativeElement), ['show', 'fade'], [], '1');
+
+        // 2. Closing tooltip
+        buttonEl.click();
+        fixture.detectChanges();
+
+        expectTooltip(getWindow(fixture.nativeElement), ['fade'], ['show'], '1');
+      });
+
+      spyOn(fixture.componentInstance, 'hidden').and.callFake(() => {
+        expect(getWindow(fixture.nativeElement)).toBeNull();
+        done();
+      });
+
+      // 1. Opening tooltip
+      buttonEl.click();
+      fixture.detectChanges();
+
+      expectTooltip(getWindow(fixture.nativeElement), ['show', 'fade'], [], '0');
+    });
+
+    it(`should revert tooltip opening`, (done) => {
+      const fixture = TestBed.createComponent(TestAnimationComponent);
+      fixture.componentInstance.reduceMotion = false;
+      fixture.detectChanges();
+
+      const buttonEl = fixture.nativeElement.querySelector('button');
+      expect(getWindow(fixture.nativeElement)).toBeNull();
+
+      const shownSpy = spyOn(fixture.componentInstance, 'shown');
+
+      // 3. Tooltip is closed
+      spyOn(fixture.componentInstance, 'hidden').and.callFake(() => {
+        expect(getWindow(fixture.nativeElement)).toBeNull();
+        expect(shownSpy).not.toHaveBeenCalled();
+        done();
+      });
+
+      // 1. Opening tooltip
+      buttonEl.click();
+      fixture.detectChanges();
+
+      expectTooltip(getWindow(fixture.nativeElement), ['show', 'fade'], [], '0');
+
+      // 2. Reverting tooltip opening
+      buttonEl.click();
+      fixture.detectChanges();
+
+      expectTooltip(getWindow(fixture.nativeElement), ['fade'], ['show'], '0');
+    });
+  });
+}
 
 @Component({selector: 'test-cmpt', template: ``})
 export class TestComponent {

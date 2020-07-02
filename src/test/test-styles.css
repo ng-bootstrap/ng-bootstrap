@@ -9,6 +9,10 @@
   transition: opacity 0.01s linear !important;
 }
 
+.tooltip.show {
+  opacity: 1 !important;
+}
+
 .collapsing {
   transition: height 0.01s ease !important;
 }
