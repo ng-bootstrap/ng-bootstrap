@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {PlacementArray} from '../util/positioning';
+import {NgbConfig} from '../ngb-config';
 
 /**
  * A configuration service for the [`NgbTooltip`](#/components/tooltip/api#NgbTooltip) component.
@@ -9,6 +10,7 @@ import {PlacementArray} from '../util/positioning';
  */
 @Injectable({providedIn: 'root'})
 export class NgbTooltipConfig {
+  animation: boolean;
   autoClose: boolean | 'inside' | 'outside' = true;
   placement: PlacementArray = 'auto';
   triggers = 'hover focus';
@@ -17,4 +19,6 @@ export class NgbTooltipConfig {
   tooltipClass: string;
   openDelay = 0;
   closeDelay = 0;
+
+  constructor(ngbConfig: NgbConfig) { this.animation = ngbConfig.animation; }
 }
