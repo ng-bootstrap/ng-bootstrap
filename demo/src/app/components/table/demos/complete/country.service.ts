@@ -21,14 +21,14 @@ interface State {
   sortDirection: SortDirection;
 }
 
-const compare = (v1: string, v2: string) => v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
+const compare = (v1: string | number, v2: string | number) => v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
 
 function sort(countries: Country[], column: SortColumn, direction: string): Country[] {
   if (direction === '' || column === '') {
     return countries;
   } else {
     return [...countries].sort((a, b) => {
-      const res = compare(`${a[column]}`, `${b[column]}`);
+      const res = compare(a[column], b[column]);
       return direction === 'asc' ? res : -res;
     });
   }
