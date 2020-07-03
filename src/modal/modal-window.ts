@@ -25,7 +25,7 @@ import {ModalDismissReasons} from './modal-dismiss-reasons';
   host: {
     '[class]': '"modal fade show d-block" + (windowClass ? " " + windowClass : "")',
     'role': 'dialog',
-    'tabindex': '-1',
+    // 'tabindex': '-1',
     '[attr.aria-modal]': 'true',
     '[attr.aria-labelledby]': 'ariaLabelledBy',
     '[attr.aria-describedby]': 'ariaDescribedBy',
