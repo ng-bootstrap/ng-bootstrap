@@ -40,9 +40,7 @@ export {NGB_DATEPICKER_WEEKDAY_FORMAT} from './datepicker-weekday-format';
   ],
   exports: [NgbDatepicker, NgbDatepickerContent, NgbInputDatepicker, NgbDatepickerMonth],
   imports: [CommonModule, FormsModule],
-  providers: [
-    { provide: NGB_DATEPICKER_WEEKDAY_FORMAT, useValue: TranslationWidth.Short }
-  ],
+  providers: [{provide: NGB_DATEPICKER_WEEKDAY_FORMAT, useValue: TranslationWidth.Short}],
   entryComponents: [NgbDatepicker]
 })
 export class NgbDatepickerModule {

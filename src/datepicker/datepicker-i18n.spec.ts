@@ -1,13 +1,18 @@
 import {NgbDatepickerI18nDefault} from './datepicker-i18n';
 import {TestBed} from '@angular/core/testing';
 import {NgbDate} from './ngb-date';
+import {NGB_DATEPICKER_WEEKDAY_FORMAT} from './datepicker-weekday-format';
+import {TranslationWidth} from '@angular/common';
 
 describe('ngb-datepicker-i18n-default', () => {
 
   let i18n: NgbDatepickerI18nDefault;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({providers: [NgbDatepickerI18nDefault]});
+    TestBed.configureTestingModule({
+      providers:
+          [NgbDatepickerI18nDefault, {provide: NGB_DATEPICKER_WEEKDAY_FORMAT, useValue: TranslationWidth.Short}]
+    });
     i18n = TestBed.inject(NgbDatepickerI18nDefault);
   });
 

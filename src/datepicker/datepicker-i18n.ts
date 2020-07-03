@@ -20,7 +20,8 @@ export function NGB_DATEPICKER_18N_FACTORY(locale, weekDayFormat) {
  * [Hebrew calendar demo](#/components/datepicker/calendars#hebrew) on how to extend this class and define
  * a custom provider for i18n.
  */
-@Injectable({providedIn: 'root', useFactory: NGB_DATEPICKER_18N_FACTORY, deps: [LOCALE_ID, NGB_DATEPICKER_WEEKDAY_FORMAT]})
+@Injectable(
+    {providedIn: 'root', useFactory: NGB_DATEPICKER_18N_FACTORY, deps: [LOCALE_ID, NGB_DATEPICKER_WEEKDAY_FORMAT]})
 export abstract class NgbDatepickerI18n {
   /**
    * Returns the short weekday name to display in the heading of the month view.
@@ -78,9 +79,11 @@ export class NgbDatepickerI18nDefault extends NgbDatepickerI18n {
   private _monthsShort: Array<string>;
   private _monthsFull: Array<string>;
 
-  constructor(@Inject(LOCALE_ID) private _locale: string, @Inject(NGB_DATEPICKER_WEEKDAY_FORMAT) _weekDayFormat: TranslationWidth) {
+  constructor(
+      @Inject(LOCALE_ID) private _locale: string,
+      @Inject(NGB_DATEPICKER_WEEKDAY_FORMAT) weekDayFormat: TranslationWidth) {
     super();
-    const weekdaysStartingOnSunday = getLocaleDayNames(_locale, FormStyle.Standalone, _weekDayFormat);
+    const weekdaysStartingOnSunday = getLocaleDayNames(_locale, FormStyle.Standalone, weekDayFormat);
     this._weekdays = weekdaysStartingOnSunday.map((day, index) => weekdaysStartingOnSunday[(index + 1) % 7]);
 
     this._monthsShort = getLocaleMonthNames(_locale, FormStyle.Standalone, TranslationWidth.Abbreviated);

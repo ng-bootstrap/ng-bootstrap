@@ -4,6 +4,8 @@ import {Component} from '@angular/core';
 import {NgbDatepickerDayView} from './datepicker-day-view';
 import {NgbDate} from './ngb-date';
 import {NgbDatepickerI18n, NgbDatepickerI18nDefault} from './datepicker-i18n';
+import {NGB_DATEPICKER_WEEKDAY_FORMAT} from './datepicker-weekday-format';
+import {TranslationWidth} from '@angular/common';
 
 function getElement(element: HTMLElement): HTMLElement {
   return <HTMLElement>element.querySelector('[ngbDatepickerDayView]');
@@ -14,7 +16,10 @@ describe('ngbDatepickerDayView', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [TestComponent, NgbDatepickerDayView],
-      providers: [{provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nDefault}]
+      providers: [
+        {provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nDefault},
+        {provide: NGB_DATEPICKER_WEEKDAY_FORMAT, useValue: TranslationWidth.Short}
+      ]
     });
   });
 
