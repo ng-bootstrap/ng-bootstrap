@@ -6,6 +6,7 @@ import {
   Component,
   ContentChildren,
   Directive,
+  ElementRef,
   EventEmitter,
   HostListener,
   Inject,
@@ -23,7 +24,14 @@ import {isPlatformBrowser} from '@angular/common';
 import {NgbCarouselConfig} from './carousel-config';
 
 import {BehaviorSubject, combineLatest, NEVER, Subject, timer} from 'rxjs';
-import {distinctUntilChanged, map, startWith, switchMap, takeUntil} from 'rxjs/operators';
+import {distinctUntilChanged, map, startWith, switchMap, take, takeUntil} from 'rxjs/operators';
+import {ngbRunTransition, NgbTransitionOptions} from '../util/transition/ngbTransition';
+import {
+  ngbCarouselTransitionIn,
+  ngbCarouselTransitionOut,
+  NgbSlideEventDirection,
+  NgbCarouselCtx
+} from '../util/transition/ngbCarouselTransition';
 
 let nextId = 0;
 
@@ -60,11 +68,11 @@ export class NgbSlide {
   },
   template: `
     <ol class="carousel-indicators" *ngIf="showNavigationIndicators">
-      <li *ngFor="let slide of slides" [id]="slide.id" [class.active]="slide.id === activeId"
+      <li *ngFor="let slide of slides" [id]="'ngb-slide-indicator-' + slide.id" [class.active]="slide.id === activeId"
           (click)="select(slide.id, NgbSlideEventSource.INDICATOR)"></li>
     </ol>
     <div class="carousel-inner">
-      <div *ngFor="let slide of slides" class="carousel-item" [class.active]="slide.id === activeId">
+      <div *ngFor="let slide of slides" class="carousel-item" [id]="'ngb-slide-' + slide.id">
         <ng-template [ngTemplateOutlet]="slide.tplRef"></ng-template>
       </div>
     </div>
@@ -90,6 +98,11 @@ export class NgbCarousel implements AfterContentChecked,
   private _pauseOnHover$ = new BehaviorSubject(false);
   private _pause$ = new BehaviorSubject(false);
   private _wrap$ = new BehaviorSubject(false);
+
+  /**
+   * A flag to enable/disable the animation when closing.
+   */
+  @Input() animation: boolean;
 
   /**
    * The slide id that should be displayed **initially**.
@@ -150,15 +163,29 @@ export class NgbCarousel implements AfterContentChecked,
   @Input() showNavigationIndicators: boolean;
 
   /**
-   * An event emitted right after the slide transition is completed.
+   * An event emitted just before the slide transition starts.
    *
    * See [`NgbSlideEvent`](#/components/carousel/api#NgbSlideEvent) for payload details.
    */
   @Output() slide = new EventEmitter<NgbSlideEvent>();
 
+  /**
+   * An event emitted right after the slide transition is completed.
+   *
+   * See [`NgbSlideEvent`](#/components/carousel/api#NgbSlideEvent) for payload details.
+   */
+  @Output() slid = new EventEmitter<NgbSlideEvent>();
+
+  /*
+   * Keep the ids of the panels currently transitionning
+   * in order to allow only the transition revertion
+   */
+  private _transitionIds: [string, string] | null = null;
+
   constructor(
       config: NgbCarouselConfig, @Inject(PLATFORM_ID) private _platformId, private _ngZone: NgZone,
-      private _cd: ChangeDetectorRef) {
+      private _cd: ChangeDetectorRef, private _element: ElementRef) {
+    this.animation = config.animation;
     this.interval = config.interval;
     this.wrap = config.wrap;
     this.keyboard = config.keyboard;
@@ -180,6 +207,15 @@ export class NgbCarousel implements AfterContentChecked,
   ngAfterContentInit() {
     // setInterval() doesn't play well with SSR and protractor,
     // so we should run it in the browser and outside Angular
+
+    // Initialize the 'active' class (not managed by the template)
+    this._ngZone.onStable.pipe(take(1)).subscribe(() => {
+      const element = this._getSlideElement(this.activeId);
+      if (element) {
+        element.classList.add('active');
+      }
+    });
+
     if (isPlatformBrowser(this._platformId)) {
       this._ngZone.runOutsideAngular(() => {
         const hasNextSlide$ = combineLatest([
@@ -246,11 +282,36 @@ export class NgbCarousel implements AfterContentChecked,
   cycle() { this._pause$.next(false); }
 
   private _cycleToSelected(slideIdx: string, direction: NgbSlideEventDirection, source?: NgbSlideEventSource) {
+    const transitionIds = this._transitionIds;
+    if (transitionIds && (transitionIds[0] !== slideIdx || transitionIds[1] !== this.activeId)) {
+      // Revert prevented
+      return;
+    }
+
     let selectedSlide = this._getSlideById(slideIdx);
     if (selectedSlide && selectedSlide.id !== this.activeId) {
+      this._transitionIds = [this.activeId, slideIdx];
       this.slide.emit(
           {prev: this.activeId, current: selectedSlide.id, direction: direction, paused: this._pause$.value, source});
+
+      const option: NgbTransitionOptions<NgbCarouselCtx> = {
+        animation: this.animation,
+        runningTransition: 'stop',
+        context: {direction},
+      };
+
+      const activeSlide = this._getSlideById(this.activeId);
+      if (activeSlide) {
+        ngbRunTransition(this._getSlideElement(activeSlide.id), ngbCarouselTransitionOut, option);
+      }
+
+      const previousId = this.activeId;
       this.activeId = selectedSlide.id;
+      ngbRunTransition(this._getSlideElement(selectedSlide.id), ngbCarouselTransitionIn, option).subscribe(() => {
+        this._transitionIds = null;
+        this.slid.emit(
+            {prev: previousId, current: selectedSlide !.id, direction: direction, paused: this._pause$.value, source});
+      });
     }
 
     // we get here after the interval fires or any external API call like next(), prev() or select()
@@ -290,6 +351,10 @@ export class NgbCarousel implements AfterContentChecked,
     return isFirstSlide ? (this.wrap ? slideArr[slideArr.length - 1].id : slideArr[0].id) :
                           slideArr[currentSlideIdx - 1].id;
   }
+
+  private _getSlideElement(tabId: string): HTMLElement {
+    return this._element.nativeElement.querySelector(`#ngb-slide-${tabId}`);
+  }
 }
 
 /**
@@ -328,14 +393,6 @@ export interface NgbSlideEvent {
    * @since 5.1.0
    */
   source?: NgbSlideEventSource;
-}
-
-/**
- * Defines the carousel slide transition direction.
- */
-export enum NgbSlideEventDirection {
-  LEFT = <any>'left',
-  RIGHT = <any>'right'
 }
 
 export enum NgbSlideEventSource {
