@@ -24,10 +24,7 @@ export function addNgbModuleToAppModule(options: Schema): Rule {
     if (!project) {
       throw new SchematicsException(messages.noProject(projectName));
     }
-    const buildOptions = getProjectTargetOptions(
-        // @ts-ignore TODO: types is not compatible because of ngx-build-plus have old dependency on
-        // @angular/schematics version 8
-        project, 'build');
+    const buildOptions = getProjectTargetOptions(project, 'build');
 
     const modulePath = getAppModulePath(host, (buildOptions.main as string));
 
