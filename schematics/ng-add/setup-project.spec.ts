@@ -19,10 +19,7 @@ import {createTestApp} from '../utils/testing';
       tree = await runner.runSchematicAsync('ng-add-setup-project', options, tree).toPromise();
       const workspace = await getWorkspace(tree);
       const project = workspace.projects.get(projectName);
-      return {tree,
-              // @ts-ignore TODO: types is not compatible because of ngx-build-plus have old dependency on
-              // @angular/schematics version 8
-              project};
+      return {tree, project};
     }
 
     beforeEach(() => {

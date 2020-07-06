@@ -34,11 +34,7 @@ export function addBootstrapStyles(options: Schema): Rule {
       throw new SchematicsException(messages.noProject(projectName));
     }
 
-    const styleFilePath = getProjectStyleFile(
-                              // @ts-ignore TODO: types is not compatible because of ngx-build-plus have old dependency
-                              // on @angular/schematics version 8
-                              project) ||
-        '';
+    const styleFilePath = getProjectStyleFile(project) || '';
     const styleFileExtension = path.extname(styleFilePath);
     const styleFilePatch = SUPPORTED_BOOTSTRAP_STYLE_IMPORTS[styleFileExtension];
 
@@ -52,10 +48,7 @@ export function addBootstrapStyles(options: Schema): Rule {
       }
 
       // just patching 'angular.json'
-      return addBootstrapToAngularJson(
-          // @ts-ignore TODO: types is not compatible because of ngx-build-plus have old dependency on
-          // @angular/schematics version 8
-          workspace, project, host);
+      return addBootstrapToAngularJson(workspace, project, host);
     }
   };
 }
@@ -94,7 +87,6 @@ function addBootstrapToAngularJson(
     }
     styles.unshift(BOOTSTRAP_CSS_FILEPATH);
   }
-  // @ts-ignore TODO: types is not compatible because of ngx-build-plus have old dependency
-  // on @angular/schematics version 8
+
   return updateWorkspace(workspace);
 }
