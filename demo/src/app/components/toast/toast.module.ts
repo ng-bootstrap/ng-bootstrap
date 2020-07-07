@@ -16,6 +16,7 @@ import {NgbdToastInlineModule} from './demos/inline/toast-inline.module';
 import {NgbdToastPreventAutohide} from './demos/prevent-autohide/toast-prevent-autohide';
 import {NgbdToastPreventAutohideModule} from './demos/prevent-autohide/toast-prevent-autohide.module';
 import {NgbdToastOverviewComponent} from './overview/toast-overview.component';
+import {versions} from '../../../environments/versions';
 
 const OVERVIEW = {
   'inline-usage': 'Declarative usage',
@@ -92,12 +93,14 @@ const DEMOS = {
   }
 };
 
+const bsVersion = versions.bootstrap;
+
 export const ROUTES = [
   {path: '', pathMatch: 'full', redirectTo: 'overview'}, {
     path: '',
     component: ComponentWrapper,
     data: {
-      bootstrap: 'https://getbootstrap.com/docs/4.4/components/toasts/'
+      bootstrap: `https://getbootstrap.com/docs/${bsVersion}/components/toasts/`
     },
     children: [
       {path: 'overview', component: NgbdToastOverviewComponent}, {path: 'examples', component: NgbdExamplesPage},
