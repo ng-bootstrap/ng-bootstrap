@@ -14,6 +14,10 @@ export class IslamicI18n extends NgbDatepickerI18n {
     return WEEKDAYS[weekday - 1];
   }
 
+  getWeekdayName(weekday: number) {
+    return WEEKDAYS[weekday - 1];
+  }
+
   getMonthShortName(month: number) {
     return MONTHS[month - 1];
   }

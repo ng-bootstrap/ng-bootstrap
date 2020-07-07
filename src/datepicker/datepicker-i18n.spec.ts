@@ -31,10 +31,10 @@ describe('ngb-datepicker-i18n-default', () => {
   });
 
   it('should return weekday name', () => {
-    expect(i18n.getWeekdayShortName(0)).toBe('');
-    expect(i18n.getWeekdayShortName(1)).toBe('Mo');
-    expect(i18n.getWeekdayShortName(7)).toBe('Su');
-    expect(i18n.getWeekdayShortName(8)).toBe('');
+    expect(i18n.getWeekdayName(0)).toBe('');
+    expect(i18n.getWeekdayName(1)).toBe('Mo');
+    expect(i18n.getWeekdayName(7)).toBe('Su');
+    expect(i18n.getWeekdayName(8)).toBe('');
   });
 
   it('should generate aria label for a date',

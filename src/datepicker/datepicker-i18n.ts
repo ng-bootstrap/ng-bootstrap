@@ -31,6 +31,14 @@ export abstract class NgbDatepickerI18n {
   abstract getWeekdayShortName(weekday: number): string;
 
   /**
+ * Returns the weekday name to display in the heading of the month view.
+ * By default the format is short, but it can be changed with the NGB_DATEPICKER_WEEKDAY_FORMAT token.
+ *
+ * With default calendar we use ISO 8601: 'weekday' is 1=Mon ... 7=Sun.
+ */
+  abstract getWeekdayName(weekday: number): string;
+
+  /**
    * Returns the short month name to display in the date picker navigation.
    *
    * With default calendar we use ISO 8601: 'month' is 1=Jan ... 12=Dec.
@@ -91,6 +99,8 @@ export class NgbDatepickerI18nDefault extends NgbDatepickerI18n {
   }
 
   getWeekdayShortName(weekday: number): string { return this._weekdays[weekday - 1] || ''; }
+
+  getWeekdayName(weekday: number): string { return this._weekdays[weekday - 1] || ''; }
 
   getMonthShortName(month: number): string { return this._monthsShort[month - 1] || ''; }
 
