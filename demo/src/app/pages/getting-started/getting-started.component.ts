@@ -1,5 +1,6 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {Snippet} from '../../shared/code/snippet';
+import {versions} from '../../../environments/versions';
 
 @Component({
   templateUrl: './getting-started.component.html',
@@ -8,6 +9,7 @@ import {Snippet} from '../../shared/code/snippet';
 export class GettingStartedPage {
 
   instructionsCollapsed = true;
+  bsVersion = versions.bootstrap;
 
   schematics = Snippet({
     lang: 'bash',

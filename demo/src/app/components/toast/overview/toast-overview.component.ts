@@ -3,6 +3,7 @@ import {Component} from '@angular/core';
 import {Snippet} from '../../../shared/code/snippet';
 import {NgbdDemoList} from '../../shared';
 import {NgbdOverview} from '../../shared/overview';
+import {versions} from '../../../../environments/versions';
 
 
 
@@ -12,6 +13,9 @@ import {NgbdOverview} from '../../shared/overview';
   host: {'[class.overview]': 'true'}
 })
 export class NgbdToastOverviewComponent {
+
+  bsVersion = versions.bootstrap;
+
   TOAST_INLINE_BASIC = Snippet({
     lang: 'html',
     code: `
