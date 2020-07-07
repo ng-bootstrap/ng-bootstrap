@@ -41,6 +41,7 @@ The supported versions are:
 | 4.x.x        | 7.0.0   | 4.0.0         |
 | 5.x.x        | 8.0.0   | 4.3.1         |
 | 6.x.x        | 9.0.0   | 4.4.1         |
+| 7.x.x        | 10.0.0  | 4.5.0         |
 
 ## Installation
 
@@ -64,7 +65,7 @@ If you prefer not to use schematics and install everything manually, please refe
 
 ## Supported browsers
 
-We support the same browsers and versions supported by both Bootstrap 4 and Angular, whichever is _more_ restrictive. See [Angular browser support](https://angular.io/guide/browser-support) and [Bootstrap browser support](https://getbootstrap.com/docs/4.4/getting-started/browsers-devices/#supported-browsers) for more details.
+We support the same browsers and versions supported by both Bootstrap 4 and Angular, whichever is _more_ restrictive. See [Angular browser support](https://angular.io/guide/browser-support) and [Bootstrap browser support](https://getbootstrap.com/docs/4.5/getting-started/browsers-devices/#supported-browsers) for more details.
 
 Out code is automatically tested on all supported browsers.
 
