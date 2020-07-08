@@ -1,3 +1,20 @@
+# [6.2.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/6.1.0...6.2.0) (2020-07-08)
+
+
+### Bug Fixes
+
+* **dropdown:** close dropdown when focus leaves menu ([#3625](https://github.com/ng-bootstrap/ng-bootstrap/issues/3625)) ([dc7990f](https://github.com/ng-bootstrap/ng-bootstrap/commit/dc7990f3087d59272289f5673592af2d902b198e)), closes [#3140](https://github.com/ng-bootstrap/ng-bootstrap/issues/3140)
+* **dropdown:** container body keyboard navigation ([#3791](https://github.com/ng-bootstrap/ng-bootstrap/issues/3791)) ([6e1610d](https://github.com/ng-bootstrap/ng-bootstrap/commit/6e1610d627fb1312e631d26145789632d345779f))
+* **dropdown:** support closest for HTMLDocument in EdgeHTML ([#3786](https://github.com/ng-bootstrap/ng-bootstrap/issues/3786)) ([d11530a](https://github.com/ng-bootstrap/ng-bootstrap/commit/d11530a822590153a698d932a337519bd1f3b264)), closes [#3783](https://github.com/ng-bootstrap/ng-bootstrap/issues/3783)
+* **progressbar:** use PercentPipe by default ([#3777](https://github.com/ng-bootstrap/ng-bootstrap/issues/3777)) ([ceb1985](https://github.com/ng-bootstrap/ng-bootstrap/commit/ceb1985fa13e4a3a3854d572c7910eb7cf325f5d)), closes [#3700](https://github.com/ng-bootstrap/ng-bootstrap/issues/3700)
+
+
+### Features
+
+* **modal:** get all the open modal instances using the NgbModal service ([#3650](https://github.com/ng-bootstrap/ng-bootstrap/issues/3650)) ([b45b39a](https://github.com/ng-bootstrap/ng-bootstrap/commit/b45b39a0b859652d399fdd1c650410b404108d77)), closes [#3627](https://github.com/ng-bootstrap/ng-bootstrap/issues/3627)
+
+
+
 # [6.1.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/6.0.3...6.1.0) (2020-04-22)
 
 This release brings schematics to the `@ng-bootstrap/ng-bootstrap` package, so the library can be installed now with `ng add @ng-bootstrap/ng-bootstrap`. See [installation docs for more details](https://ng-bootstrap.github.io/#/getting-started#installation). 
