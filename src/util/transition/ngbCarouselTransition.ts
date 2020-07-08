@@ -16,11 +16,13 @@ const isAnimated = (classList) => {
 };
 
 const removeDirectionClasses = (classList) => {
+  console.log('removeDirectionClasses');
   classList.remove('carousel-item-left');
   classList.remove('carousel-item-right');
 };
 
 const removeClasses = (classList) => {
+  console.log('removeClasses');
   removeDirectionClasses(classList);
   classList.remove('carousel-item-prev');
   classList.remove('carousel-item-next');
@@ -34,29 +36,36 @@ export const ngbCarouselTransitionIn: NgbTransitionStartFn<NgbCarouselCtx> =
         removeDirectionClasses(classList);
       } else {
         // For the 'in' transition, a 'pre-class' is applied to the element to ensure its visibility
+        console.log(
+            'ngbCarouselTransitionIn, add previous/next class', element.id,
+            'carousel-item-' + (direction === NgbSlideEventDirection.LEFT ? 'next' : 'prev'));
         classList.add('carousel-item-' + (direction === NgbSlideEventDirection.LEFT ? 'next' : 'prev'));
         reflow(element);
+        console.log('ngbCarouselTransitionIn, add direction class', 'carousel-item-' + direction);
         classList.add('carousel-item-' + direction);
       }
 
       return () => {
         removeClasses(classList);
+        console.log('ngbCarouselTransitionIn, add active class', element.id);
         classList.add('active');
       };
     };
 
 export const ngbCarouselTransitionOut: NgbTransitionStartFn<NgbCarouselCtx> =
-    ({classList}: HTMLElement, {direction}: NgbCarouselCtx) => {
+    (element: HTMLElement, {direction}: NgbCarouselCtx) => {
       //  direction is left or right, depending on the way the slide goes out.
-      if (isAnimated(classList)) {
+      if (isAnimated(element.classList)) {
         // Revert the transition
-        removeDirectionClasses(classList);
+        removeDirectionClasses(element.classList);
       } else {
-        classList.add('carousel-item-' + direction);
+        console.log('ngbCarouselTransitionOut, add direction class', element.id, 'carousel-item-' + direction);
+        element.classList.add('carousel-item-' + direction);
       }
 
       return () => {
-        removeClasses(classList);
-        classList.remove('active');
+        removeClasses(element.classList);
+        console.log('ngbCarouselTransitionOut, remove active class', element.id);
+        element.classList.remove('active');
       };
     };

@@ -23,7 +23,7 @@ import {isPlatformBrowser} from '@angular/common';
 
 import {NgbCarouselConfig} from './carousel-config';
 
-import {BehaviorSubject, combineLatest, NEVER, Subject, timer} from 'rxjs';
+import {BehaviorSubject, combineLatest, NEVER, Subject, timer, Observable, zip} from 'rxjs';
 import {distinctUntilChanged, map, startWith, switchMap, take, takeUntil} from 'rxjs/operators';
 import {ngbRunTransition, NgbTransitionOptions} from '../util/transition/ngbTransition';
 import {
@@ -283,14 +283,17 @@ export class NgbCarousel implements AfterContentChecked,
 
   private _cycleToSelected(slideIdx: string, direction: NgbSlideEventDirection, source?: NgbSlideEventSource) {
     const transitionIds = this._transitionIds;
+    console.log('!!!! Test if slides can be reverted', slideIdx, this.activeId, transitionIds);
     if (transitionIds && (transitionIds[0] !== slideIdx || transitionIds[1] !== this.activeId)) {
       // Revert prevented
+      console.log('!!!! Revert prevented');
       return;
     }
 
     let selectedSlide = this._getSlideById(slideIdx);
     if (selectedSlide && selectedSlide.id !== this.activeId) {
       this._transitionIds = [this.activeId, slideIdx];
+      console.log('!!!! Set this._transitionIds', this._transitionIds);
       this.slide.emit(
           {prev: this.activeId, current: selectedSlide.id, direction: direction, paused: this._pause$.value, source});
 
@@ -300,15 +303,22 @@ export class NgbCarousel implements AfterContentChecked,
         context: {direction},
       };
 
+      const observers: Array<Observable<any>> = [];
       const activeSlide = this._getSlideById(this.activeId);
       if (activeSlide) {
-        ngbRunTransition(this._getSlideElement(activeSlide.id), ngbCarouselTransitionOut, option);
+        console.log('Start ngbCarouselTransitionOut', selectedSlide.id);
+        observers.push(ngbRunTransition(this._getSlideElement(activeSlide.id), ngbCarouselTransitionOut, option));
       }
 
       const previousId = this.activeId;
       this.activeId = selectedSlide.id;
-      ngbRunTransition(this._getSlideElement(selectedSlide.id), ngbCarouselTransitionIn, option).subscribe(() => {
+      console.log('Start ngbCarouselTransitionIn', selectedSlide.id);
+      observers.push(ngbRunTransition(this._getSlideElement(selectedSlide.id), ngbCarouselTransitionIn, option));
+
+      zip(...observers).subscribe(() => {
+        console.log('!!!! this._transitionIds = null');
         this._transitionIds = null;
+        console.log('Slid emit', selectedSlide !.id);
         this.slid.emit(
             {prev: previousId, current: selectedSlide !.id, direction: direction, paused: this._pause$.value, source});
       });

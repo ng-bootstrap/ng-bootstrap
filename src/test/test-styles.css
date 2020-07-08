@@ -23,7 +23,7 @@
   transition: transform 0.01s ease-out,-webkit-transform 0.01s ease-out !important;
 }
 
-.modal.fade .carousel-item {
+.carousel-item {
   transition: -webkit-transform 0.01s ease-out !important;
   transition: transform 0.01s ease-out !important;
   transition: transform 0.01s ease-out,-webkit-transform 0.01s ease-out !important;

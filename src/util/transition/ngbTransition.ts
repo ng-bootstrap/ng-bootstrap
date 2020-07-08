@@ -32,7 +32,9 @@ export const ngbRunTransition =
 
           // Checking if there are already running transitions on the given element.
           const running = runningTransitions.get(element);
+          console.log('Running transition test', element.id);
           if (running) {
+            console.log('Transition already running on this element', element.id);
             switch (options.runningTransition) {
               // If there is one running and we want for it to 'continue' to run, we have to cancel the new one.
               // We're not emitting any values, but simply completing the observable (EMPTY).
@@ -42,6 +44,7 @@ export const ngbRunTransition =
               // We're simply completing the running one and not emitting any values and merging newly provided context
               // with the one coming from currently running transition.
               case 'stop':
+                console.log('Stopping the previous one');
                 running.transition$.complete();
                 context = Object.assign(running.context, context);
                 runningTransitions.delete(element);
@@ -58,7 +61,11 @@ export const ngbRunTransition =
           // If animations are disabled, we have to emit a value and complete the observable
           // In this case we have to call the end function, but can finish immediately by emitting a value,
           // completing the observable and executing end functions synchronously.
+          console.log(
+              'Test if animation is enable', options.animation, window.getComputedStyle(element).transitionProperty,
+              element.className, element.parentElement ?.parentElement ?.parentElement ?.className);
           if (!options.animation || window.getComputedStyle(element).transitionProperty === 'none') {
+            console.log('No animation detected');
             endFn();
             return of(undefined);
           }

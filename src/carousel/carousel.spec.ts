@@ -968,17 +968,19 @@ if (isBrowserVisible('ngb-carousel animations')) {
       expect(onSlidSpy).toHaveBeenCalledTimes(1);
     });
 
-    it(`should revert slide transition (force-reduced-motion = false)`, (done) => {
+    fit(`should revert slide transition (force-reduced-motion = false)`, (done) => {
       const fixture = TestBed.createComponent(TestAnimationComponent);
       fixture.componentInstance.reduceMotion = false;
       fixture.detectChanges();
 
       const nativeEl = fixture.nativeElement;
-      const[slideOne, slideTwo, slideThree] = nativeEl.querySelectorAll('.carousel-item');
+      let [slideOne, slideTwo, slideThree] = nativeEl.querySelectorAll('.carousel-item');
       const indicators = nativeEl.querySelectorAll('ol.carousel-indicators > li');
 
       const onSlidSpy = spyOn(fixture.componentInstance, 'onSlid');
       onSlidSpy.and.callFake((payload) => {
+        [slideOne, slideTwo, slideThree] = nativeEl.querySelectorAll('.carousel-item');
+        console.log('onSlidSpy', slideOne.className, slideTwo.className, slideThree.className);
         expect(slideOne.className).toBe('carousel-item active');
         expect(slideTwo.className).toBe('carousel-item');
         expect(slideThree.className).toBe('carousel-item');
@@ -986,30 +988,37 @@ if (isBrowserVisible('ngb-carousel animations')) {
         expect(payload).toEqual({prev: 'two', current: 'one', direction: 'right', paused: false, source: 'indicator'});
         expect(onSlidSpy).toHaveBeenCalledTimes(1);
 
+        console.log('Test end');
         done();
       });
 
       expect(slideOne.className).toBe('carousel-item active');
       expect(slideTwo.className).toBe('carousel-item');
 
+      console.log('-----> Before first click');
       indicators[1].click();
       fixture.detectChanges();
+      console.log('-----> After first click');
 
       expect(slideOne.className).toBe('carousel-item active carousel-item-left');
       expect(slideTwo.className).toBe('carousel-item carousel-item-next carousel-item-left');
       expect(slideThree.className).toBe('carousel-item');
 
       // Reverse only possible when clicking on previous one
+      console.log('-----> Before second click');
       indicators[2].click();
       fixture.detectChanges();
+      console.log('-----> After second click');
 
       expect(slideOne.className).toBe('carousel-item active carousel-item-left');
       expect(slideTwo.className).toBe('carousel-item carousel-item-next carousel-item-left');
       expect(slideThree.className).toBe('carousel-item');
 
       // Reverse
+      console.log('-----> Before third click');
       indicators[0].click();
       fixture.detectChanges();
+      console.log('-----> After third click');
 
       expect(slideOne.className).toBe('carousel-item active');
       expect(slideTwo.className).toBe('carousel-item carousel-item-next');
