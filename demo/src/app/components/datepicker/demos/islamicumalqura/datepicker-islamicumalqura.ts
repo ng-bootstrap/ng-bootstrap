@@ -11,7 +11,7 @@ const MONTHS = ['محرم', 'صفر', 'ربيع الأول', 'ربيع الآخ�
 export class IslamicI18n extends NgbDatepickerI18n {
 
   getWeekdayShortName(weekday: number) {
-    return WEEKDAYS[weekday - 1];
+    return this.getWeekdayName(weekday);
   }
 
   getWeekdayName(weekday: number) {

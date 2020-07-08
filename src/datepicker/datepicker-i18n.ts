@@ -98,7 +98,7 @@ export class NgbDatepickerI18nDefault extends NgbDatepickerI18n {
     this._monthsFull = getLocaleMonthNames(_locale, FormStyle.Standalone, TranslationWidth.Wide);
   }
 
-  getWeekdayShortName(weekday: number): string { return this._weekdays[weekday - 1] || ''; }
+  getWeekdayShortName(weekday: number): string { return this.getWeekdayName(weekday); }
 
   getWeekdayName(weekday: number): string { return this._weekdays[weekday - 1] || ''; }
 
