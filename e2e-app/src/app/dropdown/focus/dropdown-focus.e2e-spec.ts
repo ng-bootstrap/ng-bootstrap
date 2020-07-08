@@ -1,4 +1,4 @@
-import {$, ElementFinder, Key} from 'protractor';
+import {ElementFinder, Key} from 'protractor';
 import {expectFocused, sendKey, openUrl} from '../../tools.po';
 import {DropdownFocusPage} from './dropdown-focus.po';
 
@@ -106,7 +106,7 @@ describe(`Dropdown focus`, () => {
         await expectFocused(toggle, `Toggling element should be focused`);
       });
 
-      it(`should close dropdown with 'Escape' and focus nothing (item was focused)`, async() => {
+      it(`should close dropdown with 'Escape' and focus toggling element (item was focused)`, async() => {
         await page.open(dropdown);
         await expectFocused(toggle, `Toggling element should be focused`);
 
@@ -115,7 +115,7 @@ describe(`Dropdown focus`, () => {
 
         await sendKey(Key.ESCAPE);
         expect(await page.isOpened(dropdown)).toBeFalsy(`Dropdown should be closed on 'Escape' press`);
-        await expectFocused($('body'), `Nothing should be focused after dropdown is closed`);
+        await expectFocused(toggle, `Toggling element should be focused`);
       });
 
       it(`should focus dropdown first item with Tab when dropdown is opened (toggle was focused)`, async() => {

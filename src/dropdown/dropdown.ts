@@ -22,10 +22,11 @@ import {fromEvent, Subject, Subscription} from 'rxjs';
 import {take} from 'rxjs/operators';
 
 import {Placement, PlacementArray, positionElements} from '../util/positioning';
-import {ngbAutoClose} from '../util/autoclose';
+import {ngbAutoClose, SOURCE} from '../util/autoclose';
 import {Key} from '../util/key';
 
 import {NgbDropdownConfig} from './dropdown-config';
+import {FOCUSABLE_ELEMENTS_SELECTOR} from '../util/focus-trap';
 
 @Directive({selector: '.navbar'})
 export class NgbNavbar {
@@ -73,12 +74,15 @@ export class NgbDropdownItem {
   }
 })
 export class NgbDropdownMenu {
+  nativeElement: HTMLElement;
   placement: Placement | null = 'bottom';
   isOpen = false;
 
   @ContentChildren(NgbDropdownItem) menuItems: QueryList<NgbDropdownItem>;
 
-  constructor(@Inject(forwardRef(() => NgbDropdown)) public dropdown) {}
+  constructor(@Inject(forwardRef(() => NgbDropdown)) public dropdown, _elementRef: ElementRef<HTMLElement>) {
+    this.nativeElement = _elementRef.nativeElement;
+  }
 }
 
 /**
@@ -95,13 +99,10 @@ export class NgbDropdownMenu {
   host: {'class': 'dropdown-toggle', 'aria-haspopup': 'true', '[attr.aria-expanded]': 'dropdown.isOpen()'}
 })
 export class NgbDropdownAnchor {
-  anchorEl;
-
-  constructor(@Inject(forwardRef(() => NgbDropdown)) public dropdown, private _elementRef: ElementRef<HTMLElement>) {
-    this.anchorEl = _elementRef.nativeElement;
+  nativeElement: HTMLElement;
+  constructor(@Inject(forwardRef(() => NgbDropdown)) public dropdown, _elementRef: ElementRef<HTMLElement>) {
+    this.nativeElement = _elementRef.nativeElement;
   }
-
-  getNativeElement() { return this._elementRef.nativeElement; }
 }
 
 /**
@@ -143,7 +144,6 @@ export class NgbDropdown implements AfterContentInit, OnDestroy {
   private _bodyContainer: HTMLElement | null = null;
 
   @ContentChild(NgbDropdownMenu, {static: false}) private _menu: NgbDropdownMenu;
-  @ContentChild(NgbDropdownMenu, {read: ElementRef, static: false}) private _menuElement: ElementRef;
   @ContentChild(NgbDropdownAnchor, {static: false}) private _anchor: NgbDropdownAnchor;
 
   /**
@@ -249,14 +249,22 @@ export class NgbDropdown implements AfterContentInit, OnDestroy {
       this._applyContainer(this.container);
       this.openChange.emit(true);
       this._setCloseHandlers();
+      if (this._anchor) {
+        this._anchor.nativeElement.focus();
+      }
     }
   }
 
   private _setCloseHandlers() {
-    const anchor = this._anchor;
     ngbAutoClose(
-        this._ngZone, this._document, this.autoClose, () => this.close(), this._closed$,
-        this._menu ? [this._menuElement.nativeElement] : [], anchor ? [anchor.getNativeElement()] : [],
+        this._ngZone, this._document, this.autoClose,
+        (source: SOURCE) => {
+          this.close();
+          if (source === SOURCE.ESCAPE) {
+            this._anchor.nativeElement.focus();
+          }
+        },
+        this._closed$, this._menu ? [this._menu.nativeElement] : [], this._anchor ? [this._anchor.nativeElement] : [],
         '.dropdown-item,.dropdown-divider');
   }
 
@@ -324,16 +332,35 @@ export class NgbDropdown implements AfterContentInit, OnDestroy {
 
     if (key === Key.Tab) {
       if (event.target && this.isOpen() && this.autoClose) {
-        if (this.container === 'body' && this._anchor.anchorEl === event.target && !event.shiftKey) {
-          itemElements[0].focus();
-          event.preventDefault();
-        } else if (this.container === 'body' && event.shiftKey && position === 0) {
-          this._anchor.anchorEl.focus();
-          event.preventDefault();
+        if (this._anchor.nativeElement === event.target) {
+          if (this.container === 'body' && !event.shiftKey) {
+            /* This case is special: user is using [Tab] from the anchor/toggle.
+               User expects the next focusable element in the dropdown menu to get focus.
+               But the menu is not a sibling to anchor/toggle, it is at the end of the body.
+               Trick is to synchronously focus the menu element, and let the [keydown.Tab] go
+               so that browser will focus the proper element (first one focusable in the menu) */
+            this._renderer.setAttribute(this._menu.nativeElement, 'tabindex', '0');
+            this._menu.nativeElement.focus();
+            this._renderer.removeAttribute(this._menu.nativeElement, 'tabindex');
+          } else if (event.shiftKey) {
+            this.close();
+          }
+          return;
+        } else if (this.container === 'body') {
+          const focusableElements = this._menu.nativeElement.querySelectorAll(FOCUSABLE_ELEMENTS_SELECTOR);
+          if (event.shiftKey && event.target === focusableElements[0]) {
+            this._anchor.nativeElement.focus();
+            event.preventDefault();
+          } else if (!event.shiftKey && event.target === focusableElements[focusableElements.length - 1]) {
+            this._anchor.nativeElement.focus();
+            this.close();
+          }
         } else {
-          fromEvent(event.target as HTMLElement, 'focusout')
-              .pipe(take(1))
-              .subscribe((e) => this._onFocusOut(e as FocusEvent));
+          fromEvent<FocusEvent>(event.target as HTMLElement, 'focusout').pipe(take(1)).subscribe(({relatedTarget}) => {
+            if (!this._elementRef.nativeElement.contains(relatedTarget as HTMLElement)) {
+              this.close();
+            }
+          });
         }
       }
       return;
@@ -368,23 +395,10 @@ export class NgbDropdown implements AfterContentInit, OnDestroy {
     }
   }
 
-  private _onFocusOut(event: FocusEvent) {
-    let prevFocusedElement = event.relatedTarget as HTMLElement;
-    if (this.container === 'body') {
-      if (!this._menuElement.nativeElement.contains(prevFocusedElement)) {
-        this.close();
-      }
-    } else {
-      if (!this._elementRef.nativeElement.contains(prevFocusedElement)) {
-        this.close();
-      }
-    }
-  }
-
   private _isDropup(): boolean { return this._elementRef.nativeElement.classList.contains('dropup'); }
 
   private _isEventFromToggle(event: KeyboardEvent) {
-    return this._anchor.getNativeElement().contains(event.target as HTMLElement);
+    return this._anchor.nativeElement.contains(event.target as HTMLElement);
   }
 
   private _getMenuElements(): HTMLElement[] {
@@ -399,11 +413,10 @@ export class NgbDropdown implements AfterContentInit, OnDestroy {
     const menu = this._menu;
     if (this.isOpen() && menu) {
       this._applyPlacementClasses(
-          this.display === 'dynamic' ?
-              positionElements(
-                  this._anchor.anchorEl, this._bodyContainer || this._menuElement.nativeElement, this.placement,
-                  this.container === 'body') :
-              this._getFirstPlacement(this.placement));
+          this.display === 'dynamic' ? positionElements(
+                                           this._anchor.nativeElement, this._bodyContainer || this._menu.nativeElement,
+                                           this.placement, this.container === 'body') :
+                                       this._getFirstPlacement(this.placement));
     }
   }
 
@@ -413,10 +426,9 @@ export class NgbDropdown implements AfterContentInit, OnDestroy {
 
   private _resetContainer() {
     const renderer = this._renderer;
-    const menuElement = this._menuElement;
-    if (menuElement) {
+    if (this._menu) {
       const dropdownElement = this._elementRef.nativeElement;
-      const dropdownMenuElement = menuElement.nativeElement;
+      const dropdownMenuElement = this._menu.nativeElement;
 
       renderer.appendChild(dropdownElement, dropdownMenuElement);
       renderer.removeStyle(dropdownMenuElement, 'position');
@@ -432,7 +444,7 @@ export class NgbDropdown implements AfterContentInit, OnDestroy {
     this._resetContainer();
     if (container === 'body') {
       const renderer = this._renderer;
-      const dropdownMenuElement = this._menuElement.nativeElement;
+      const dropdownMenuElement = this._menu.nativeElement;
       const bodyContainer = this._bodyContainer = this._bodyContainer || renderer.createElement('div');
 
       // Override some styles to have the positionning working
