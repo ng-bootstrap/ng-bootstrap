@@ -1,6 +1,38 @@
-import {toInteger, toString, getValueInRange, isInteger, isString, hasClassName} from './util';
+import {toInteger, toString, getValueInRange, isInteger, isString, hasClassName, closest} from './util';
 
 describe('util', () => {
+
+  describe('closest', () => {
+    describe('when no selector is provided', () => {
+
+      it('should return null', () => {
+        const element = document.createElement('div');
+
+        expect(closest(element)).toBeNull();
+      });
+
+    });
+
+    describe('when selector is provided', () => {
+
+      it('should return the closest element', () => {
+        const element = document.body;
+
+        expect(closest(element, 'html')).toEqual(document.documentElement);
+      });
+
+    });
+
+    describe('when HTMLDocument is provided', () => {
+
+      it('should return null if selector is not matching document', () => {
+        const element = document.documentElement;
+
+        expect(closest(element, 'body')).toBeNull();
+      });
+
+    });
+  });
 
   describe('toInteger', () => {
 
