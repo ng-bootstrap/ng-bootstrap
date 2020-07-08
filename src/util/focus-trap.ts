@@ -6,7 +6,7 @@ import {filter, map, takeUntil, withLatestFrom} from 'rxjs/operators';
 import {Key} from './key';
 
 
-const FOCUSABLE_ELEMENTS_SELECTOR = [
+export const FOCUSABLE_ELEMENTS_SELECTOR = [
   'a[href]', 'button:not([disabled])', 'input:not([disabled]):not([type="hidden"])', 'select:not([disabled])',
   'textarea:not([disabled])', '[contenteditable]', '[tabindex]:not([tabindex="-1"])'
 ].join(', ');
