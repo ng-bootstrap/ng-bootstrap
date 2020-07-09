@@ -1,3 +1,17 @@
+# [7.0.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/6.2.0...7.0.0) (2020-07-09)
+
+This major release officially adds Angular 10 support.
+
+### Bug Fixes
+* **schematics:** update schematics to use new workspace API ([#3802](https://github.com/ng-bootstrap/ng-bootstrap/pull/3802)) ([7c81d8d](https://github.com/ng-bootstrap/ng-bootstrap/commit/7c81d8d5aadbccc6878fc6055f632fcf9723e668)), closes [#3714](https://github.com/ng-bootstrap/ng-bootstrap/issues/3714)
+* **dropdown:** remove aria-haspopup for accessibility ([#3339](https://github.com/ng-bootstrap/ng-bootstrap/issues/3339)) ([0c92e39](https://github.com/ng-bootstrap/ng-bootstrap/commit/0c92e3922019c9b278ac1ea411ed15129ce399e1)), closes [#3331](https://github.com/ng-bootstrap/ng-bootstrap/issues/3331)
+
+### BREAKING CHANGES
+
+* for ng-bootstrap `7.0.0` minimal required version
+of Angular is `10.0.0`, and minimal required version of Bootstrap is `4.5.0`.
+
+
 # [6.2.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/6.1.0...6.2.0) (2020-07-08)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@ng-bootstrap/ng-bootstrap",
-  "version": "6.2.0",
+  "version": "7.0.0",
   "description": "Angular powered Bootstrap",
   "author": "https://github.com/ng-bootstrap/ng-bootstrap/graphs/contributors",
   "engines": {
@@ -42,7 +42,6 @@
     "demo:stackblitzes": "ts-node --project misc/tsconfig.json misc/generate-stackblitzes.ts",
     "demo:lint": "ng lint demo",
     "demo:build": "yarn demo:lint && yarn demo:docs && yarn demo:stackblitzes && ng build demo --prod",
-    "demo:deploy": "yarn demo:build && yarn demo:push",
     "demo:publish": "gh-pages --dist demo/dist --branch master --repo https://github.com/ng-bootstrap/ng-bootstrap.github.io.git",
     "demo:e2e": "yarn demo:docs && ng e2e demo",
     "ssr-app:lint": "ng lint ssr-app",
