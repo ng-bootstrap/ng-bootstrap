@@ -20,7 +20,7 @@ import {
 } from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {DOCUMENT} from '@angular/common';
-import {BehaviorSubject, fromEvent, Observable, Subject, Subscription} from 'rxjs';
+import {BehaviorSubject, fromEvent, Observable, Subject, Subscription, merge} from 'rxjs';
 import {map, switchMap, tap} from 'rxjs/operators';
 
 import {Live} from '../util/accessibility/live';
@@ -185,6 +185,8 @@ export class NgbTypeahead implements ControlValueAccessor,
   activeDescendant: string | null = null;
   popupId = `ngb-typeahead-${nextWindowId++}`;
 
+  manualTrigger$ = new EventEmitter<any[]>();
+
   private _onTouched = () => {};
   private _onChange = (_: any) => {};
 
@@ -222,7 +224,10 @@ export class NgbTypeahead implements ControlValueAccessor,
       this._onChange(this.editable ? value : undefined);
     }));
     const results$ = inputValues$.pipe(this.ngbTypeahead);
-    const userInput$ = this._resubscribeTypeahead.pipe(switchMap(() => results$));
+    const userInput$ = this._resubscribeTypeahead.pipe(switchMap(() => merge(
+      results$,
+      this.manualTrigger$.asObservable()
+    )));
     this._subscription = this._subscribeToUserInput(userInput$);
   }
 
