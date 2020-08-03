@@ -45,7 +45,7 @@ describe('Modal', () => {
     const modal = await page.openModal();
 
     // dialog click
-    await page.getModalDialog().click();
+    page.getModalDialog().click();
     expect(await modal.isPresent()).toBeTruthy('The modal should stay opened on dialog click');
 
     // close
@@ -58,7 +58,7 @@ describe('Modal', () => {
     const modal = await page.openModal();
 
     // close
-    const dialog = await page.getModalDialog();
+    const dialog = page.getModalDialog();
     await browser.actions().dragAndDrop(modal, dialog).mouseUp().perform();
     expect(await modal.isPresent()).toBeFalsy('The modal should be closed on drag from backdrop -> dialog');
     expect(await page.getDismissReason()).toBe('Click', `Modal should have been dismissed with 'Click' reason`);
@@ -68,7 +68,7 @@ describe('Modal', () => {
     const modal = await page.openModal();
 
     // close
-    const dialog = await page.getModalDialog();
+    const dialog = page.getModalDialog();
     await browser.actions().dragAndDrop(dialog, modal).mouseUp().perform();
     expect(await modal.isPresent()).toBeTruthy('The modal should stay opened on drag from dialog -> backdrop');
     await page.getModalCloseButton().click();

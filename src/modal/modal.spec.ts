@@ -664,6 +664,32 @@ describe('ngb-modal', () => {
         modalInstance1.close();
         fixture.detectChanges();
       });
+
+      it('should iterate over multiple modal instances', async() => {
+        let n;
+        const observable = fixture.componentInstance.activeInstances;
+        observable.subscribe(list => { n = list.length; });
+        expect(n).toBeUndefined();
+        fixture.componentInstance.open('foo', {windowClass: 'window-1'});
+        fixture.detectChanges();
+        expect(n).toBe(1);
+
+        fixture.componentInstance.open('bar', {windowClass: 'window-2'});
+        fixture.detectChanges();
+        expect(n).toBe(2);
+
+        let windows = document.querySelectorAll('ngb-modal-window');
+        expect(windows.length).toBe(2);
+        expect(windows[0]).toHaveCssClass('window-1');
+        expect(windows[1]).toHaveCssClass('window-2');
+
+        fixture.componentInstance.dismissAll();
+        fixture.detectChanges();
+        await fixture.whenStable();
+
+        expect(fixture.nativeElement).not.toHaveModal();
+        expect(n).toBe(0);
+      });
     });
 
     describe('vertically centered', () => {
@@ -1197,6 +1223,7 @@ class TestComponent {
     return this.modalService.open(this.tplContentWithImplicitContext, options);
   }
   openTplIf(options?: Object) { return this.modalService.open(this.tplContentWithIf, options); }
+  get activeInstances() { return this.modalService.activeInstances; }
 }
 
 @Component({

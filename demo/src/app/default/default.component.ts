@@ -12,6 +12,6 @@ export class DefaultComponent {
   installation = Snippet({
     lang: 'ts',
     code: `// Installation for Angular CLI
-ng add @ng-bootstrap/ng-booststrap`
+ng add @ng-bootstrap/ng-bootstrap`
   });
 }

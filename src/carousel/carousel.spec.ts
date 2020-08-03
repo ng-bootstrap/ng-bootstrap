@@ -36,12 +36,13 @@ describe('ngb-carousel', () => {
 
   it('should initialize inputs with default values', () => {
     const defaultConfig = new NgbCarouselConfig();
-    const carousel = new NgbCarousel(new NgbCarouselConfig(), null, <any>null, <any>null);
+    const carousel = new NgbCarousel(new NgbCarouselConfig(), null, <any>null, <any>null, <any>null);
 
     expect(carousel.interval).toBe(defaultConfig.interval);
     expect(carousel.wrap).toBe(defaultConfig.wrap);
     expect(carousel.keyboard).toBe(defaultConfig.keyboard);
     expect(carousel.pauseOnHover).toBe(defaultConfig.pauseOnHover);
+    expect(carousel.pauseOnFocus).toBe(defaultConfig.pauseOnFocus);
     expect(carousel.showNavigationIndicators).toBe(defaultConfig.showNavigationIndicators);
     expect(carousel.showNavigationArrows).toBe(defaultConfig.showNavigationArrows);
   });
@@ -195,7 +196,7 @@ describe('ngb-carousel', () => {
 
   it('should not resume without call to cycle()', fakeAsync(() => {
        const html = `
-    <ngb-carousel #c [interval]="1000" (slide)="carouselSlideCallBack($event)">
+    <ngb-carousel #c [interval]="1000" [pauseOnFocus]="false" (slide)="carouselSlideCallBack($event)">
       <ng-template ngbSlide>foo</ng-template>
       <ng-template ngbSlide>bar</ng-template>
       <ng-template ngbSlide>third</ng-template>
@@ -667,6 +668,40 @@ describe('ngb-carousel', () => {
        discardPeriodicTasks();
      }));
 
+  it('should pause / resume slide change with time passage on focusin / focusout', fakeAsync(() => {
+       const html = `
+      <ngb-carousel>
+        <ng-template ngbSlide>foo</ng-template>
+        <ng-template ngbSlide>bar</ng-template>
+      </ngb-carousel>
+    `;
+
+       const fixture = createTestComponent(html);
+
+       const carouselDebugEl = fixture.debugElement.query(By.directive(NgbCarousel));
+
+       expectActiveSlides(fixture.nativeElement, [true, false]);
+
+       carouselDebugEl.triggerEventHandler('focusin', {});
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [true, false]);
+
+       tick(6000);
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [true, false]);
+
+       carouselDebugEl.triggerEventHandler('focusout', {});
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [true, false]);
+
+       tick(6000);
+       fixture.detectChanges();
+       expectActiveSlides(fixture.nativeElement, [false, true]);
+
+       discardPeriodicTasks();
+     }));
+
+
   it('should wrap slide changes by default', fakeAsync(() => {
        const html = `
       <ngb-carousel>
@@ -795,11 +830,13 @@ describe('ngb-carousel', () => {
        const slideElms = fixture.nativeElement.querySelectorAll('.carousel-item');
        expect(slideElms.length).toBe(1);
        expect(slideElms[0].textContent).toMatch(/foo/);
+       expect(fixture.nativeElement.querySelectorAll('ol.carousel-indicators.sr-only > li').length).toBe(0);
        expect(fixture.nativeElement.querySelectorAll('ol.carousel-indicators > li').length).toBe(1);
 
        fixture.componentInstance.showNavigationIndicators = false;
        fixture.detectChanges();
-       expect(fixture.nativeElement.querySelectorAll('ol.carousel-indicators > li').length).toBe(0);
+       expect(fixture.nativeElement.querySelectorAll('ol.carousel-indicators.sr-only > li').length).toBe(1);
+       expect(fixture.nativeElement.querySelectorAll('ol.carousel-indicators > li').length).toBe(1);
 
        discardPeriodicTasks();
      }));
@@ -834,6 +871,7 @@ describe('ngb-carousel', () => {
       config.wrap = false;
       config.keyboard = false;
       config.pauseOnHover = false;
+      config.pauseOnFocus = false;
       config.showNavigationIndicators = true;
       config.showNavigationArrows = true;
     }));
@@ -847,6 +885,7 @@ describe('ngb-carousel', () => {
       expect(carousel.wrap).toBe(config.wrap);
       expect(carousel.keyboard).toBe(config.keyboard);
       expect(carousel.pauseOnHover).toBe(config.pauseOnHover);
+      expect(carousel.pauseOnFocus).toBe(config.pauseOnFocus);
       expect(carousel.showNavigationIndicators).toBe(config.showNavigationIndicators);
       expect(carousel.showNavigationArrows).toBe(config.showNavigationArrows);
     });
@@ -858,6 +897,7 @@ describe('ngb-carousel', () => {
     config.wrap = false;
     config.keyboard = false;
     config.pauseOnHover = false;
+    config.pauseOnFocus = false;
     config.showNavigationIndicators = true;
     config.showNavigationArrows = true;
 
@@ -875,6 +915,7 @@ describe('ngb-carousel', () => {
       expect(carousel.wrap).toBe(config.wrap);
       expect(carousel.keyboard).toBe(config.keyboard);
       expect(carousel.pauseOnHover).toBe(config.pauseOnHover);
+      expect(carousel.pauseOnFocus).toBe(config.pauseOnFocus);
       expect(carousel.showNavigationIndicators).toBe(config.showNavigationIndicators);
       expect(carousel.showNavigationArrows).toBe(config.showNavigationArrows);
     });

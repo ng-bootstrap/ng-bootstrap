@@ -20,6 +20,6 @@ export class ModalAutoClosePage {
 
     const modal = this.getModal();
     expect(await modal.isPresent()).toBeTruthy(`A modal should have been opened`);
-    return modal;
+    return Promise.resolve(modal);
   }
 }

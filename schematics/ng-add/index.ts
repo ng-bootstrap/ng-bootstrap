@@ -4,29 +4,28 @@ import {
   RunSchematicTask,
 } from '@angular-devkit/schematics/tasks';
 
-import {getWorkspace} from '@schematics/angular/utility/config';
-import {getProject} from '@schematics/angular/utility/project';
+import {getWorkspace} from '@schematics/angular/utility/workspace';
 
 import {Schema} from './schema';
 import * as messages from './messages';
 import {addPackageToPackageJson, getPackageVersionFromPackageJson} from '../utils/package-config';
 
 
-const NG_BOOTSTRAP_VERSION = '6.0.0';
-const BOOTSTRAP_VERSION = '4.4.0';
+const NG_BOOTSTRAP_VERSION = '7.0.0';
+const BOOTSTRAP_VERSION = '4.5.0';
 
 /**
  * This is executed when `ng add @ng-bootstrap/ng-bootstrap` is run.
  * It installs all dependencies in the 'package.json' and runs 'ng-add-setup-project' schematic.
  */
 export default function ngAdd(options: Schema): Rule {
-  return (tree: Tree, context: SchematicContext) => {
+  return async(tree: Tree, context: SchematicContext) => {
 
     // Checking that project exists
     const {project} = options;
     if (project) {
-      const workspace = getWorkspace(tree);
-      const projectWorkspace = getProject(workspace, project);
+      const workspace = await getWorkspace(tree);
+      const projectWorkspace = workspace.projects.get(project);
 
       if (!projectWorkspace) {
         throw new SchematicsException(messages.noProject(project));
@@ -47,7 +46,5 @@ export default function ngAdd(options: Schema): Rule {
     context.addTask(new RunSchematicTask('ng-add-setup-project', options), [
       context.addTask(new NodePackageInstallTask()),
     ]);
-
-    return tree;
   };
 }

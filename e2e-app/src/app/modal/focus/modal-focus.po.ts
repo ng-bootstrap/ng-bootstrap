@@ -17,6 +17,6 @@ export class ModalFocusPage {
     await $(`#open-modal-${type}`).click();
     const modal = this.getModal();
     expect(await modal.isPresent()).toBeTruthy(`A modal of type '${type}' should have been opened`);
-    return modal;
+    return Promise.resolve(modal);
   }
 }

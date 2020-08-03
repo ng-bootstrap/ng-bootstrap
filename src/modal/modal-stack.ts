@@ -3,6 +3,7 @@ import {
   ApplicationRef,
   ComponentFactoryResolver,
   ComponentRef,
+  EventEmitter,
   Inject,
   Injectable,
   Injector,
@@ -32,6 +33,7 @@ export class NgbModalStack {
     'windowClass'
   ];
   private _windowCmpts: ComponentRef<NgbModalWindow>[] = [];
+  private _activeInstances: EventEmitter<NgbModalRef[]> = new EventEmitter();
 
   constructor(
       private _applicationRef: ApplicationRef, private _injector: Injector, @Inject(DOCUMENT) private _document: any,
@@ -91,6 +93,8 @@ export class NgbModalStack {
     }
     return ngbModalRef;
   }
+
+  get activeInstances() { return this._activeInstances; }
 
   dismissAll(reason?: any) { this._modalRefs.forEach(ngbModalRef => ngbModalRef.dismiss(reason)); }
 
@@ -206,9 +210,11 @@ export class NgbModalStack {
       const index = this._modalRefs.indexOf(ngbModalRef);
       if (index > -1) {
         this._modalRefs.splice(index, 1);
+        this._activeInstances.emit(this._modalRefs);
       }
     };
     this._modalRefs.push(ngbModalRef);
+    this._activeInstances.emit(this._modalRefs);
     ngbModalRef.result.then(unregisterModalRef, unregisterModalRef);
   }
 

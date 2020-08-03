@@ -98,9 +98,14 @@ export class NgbdTablePagination {
   page = 1;
   pageSize = 4;
   collectionSize = COUNTRIES.length;
+  countries: Country[];
 
-  get countries(): Country[] {
-    return COUNTRIES
+  constructor() {
+    this.refreshCountries();
+  }
+
+  refreshCountries() {
+    this.countries = COUNTRIES
       .map((country, i) => ({id: i + 1, ...country}))
       .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
   }

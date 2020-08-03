@@ -12,7 +12,7 @@ export class ModalNestingPage {
   async openModal() {
     await $(`#open-modal`).click();
     const modal = this.getModal();
-    expect(await modal.isPresent()).toBeTruthy(`A modal should have been opened`);
-    return modal;
+    expect(modal.isPresent()).toBeTruthy(`A modal should have been opened`);
+    return Promise.resolve(modal);
   }
 }

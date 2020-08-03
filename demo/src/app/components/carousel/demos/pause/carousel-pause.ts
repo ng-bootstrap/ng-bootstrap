@@ -10,6 +10,7 @@ export class NgbdCarouselPause {
   unpauseOnArrow = false;
   pauseOnIndicator = false;
   pauseOnHover = true;
+  pauseOnFocus = true;
 
   @ViewChild('carousel', {static : true}) carousel: NgbCarousel;
 

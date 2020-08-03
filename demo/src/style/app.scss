@@ -43,7 +43,6 @@ header.navbar {
   margin-left: -15px;
   margin-right: -15px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  cursor: pointer;
 }
 
 .sidebar {
@@ -252,6 +251,10 @@ a.title-fragment {
     width: 1em;
     height: 1em;
   }
+}
+
+a.title-fragment:focus {
+  opacity: 1;
 }
 
 div.component-demo {
