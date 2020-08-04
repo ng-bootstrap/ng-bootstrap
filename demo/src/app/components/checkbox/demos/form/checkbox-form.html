@@ -1,0 +1,20 @@
+<p>NgModel and reactive forms can be used without the 'value' binding</p>
+
+<div class="form-group">
+  <ngb-checkbox [formControl]="ctrl">I accept the terms and conditions</ngb-checkbox>
+  <div class="form-text small">
+    <div *ngIf="ctrl.valid" class="text-success">Thanks!</div>
+    <div *ngIf="ctrl.invalid" class="text-danger">Please accept the terms and conditions</div>
+  </div>
+</div>
+
+<hr>
+<pre>
+Model: <b>{{ ctrl.value }}</b>
+Dirty: <b>{{ ctrl.dirty }}</b>
+Touched: <b>{{ ctrl.touched }}</b>
+</pre>
+<button class="btn btn-sm btn-outline-{{ ctrl.disabled ? 'danger' : 'success'}} mr-2" (click)="toggle()">
+  {{ ctrl.disabled ? "Control disabled" : " Control enabled" }}
+</button>
+<button class="btn btn-sm btn-outline-primary mr-2" (click)="ctrl.reset(false)">Reset</button>
