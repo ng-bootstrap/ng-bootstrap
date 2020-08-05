@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {NgbConfig} from '../ngb-config';
 
 /**
  * A configuration service for the [NgbAccordion](#/components/accordion/api#NgbAccordion) component.
@@ -8,6 +9,9 @@ import {Injectable} from '@angular/core';
  */
 @Injectable({providedIn: 'root'})
 export class NgbAccordionConfig {
+  animation: boolean;
   closeOthers = false;
   type: string;
+
+  constructor(ngbConfig: NgbConfig) { this.animation = ngbConfig.animation; }
 }
