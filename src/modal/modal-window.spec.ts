@@ -46,5 +46,12 @@ describe('ngb-modal-dialog', () => {
       expect(fixture.nativeElement.getAttribute('role')).toBe('dialog');
       expect(dialogEl.getAttribute('role')).toBe('document');
     });
+
+    it('should render modal dialog with a specified class', () => {
+      fixture.componentInstance.modalDialogClass = 'custom-dialog-class';
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement).toHaveCssClass('custom-dialog-class');
+    });
   });
 });

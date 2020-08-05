@@ -32,7 +32,7 @@ import {ModalDismissReasons} from './modal-dismiss-reasons';
   },
   template: `
     <div #dialog [class]="'modal-dialog' + (size ? ' modal-' + size : '') + (centered ? ' modal-dialog-centered' : '') +
-     (scrollable ? ' modal-dialog-scrollable' : '')" role="document">
+     (scrollable ? ' modal-dialog-scrollable' : '') + (modalDialogClass ? ' ' + modalDialogClass : '')" role="document">
         <div class="modal-content"><ng-content></ng-content></div>
     </div>
     `,
@@ -54,6 +54,7 @@ export class NgbModalWindow implements OnInit,
   @Input() scrollable: string;
   @Input() size: string;
   @Input() windowClass: string;
+  @Input() modalDialogClass: string;
 
   @Output('dismiss') dismissEvent = new EventEmitter();
 
