@@ -25,40 +25,24 @@ import {NgbdTooltipModule} from './components/tooltip/tooltip.module';
 import {NgbdTypeaheadModule} from './components/typeahead/typeahead.module';
 import {DefaultComponent} from './default';
 import {GettingStartedPage} from './pages/getting-started/getting-started.component';
+import {AnimationsPage} from './pages/animations/animations.component';
 import {PositioningPage} from './pages/positioning/positioning.component';
 import {NgbdSharedModule} from './shared';
 
 
 const DEMOS = [
-  NgbdAccordionModule,
-  NgbdAlertModule,
-  NgbdButtonsModule,
-  NgbdCarouselModule,
-  NgbdCollapseModule,
-  NgbdDatepickerModule,
-  NgbdDropdownModule,
-  NgbdModalModule,
-  NgbdNavModule,
-  NgbdPaginationModule,
-  NgbdPopoverModule,
-  NgbdProgressbarModule,
-  NgbdRatingModule,
-  NgbdTableModule,
-  NgbdTabsetModule,
-  NgbdTimepickerModule,
-  NgbdToastModule,
-  NgbdTooltipModule,
+  NgbdAccordionModule, NgbdAlertModule, NgbdButtonsModule, NgbdCarouselModule, NgbdCollapseModule, NgbdDatepickerModule,
+  NgbdDropdownModule, NgbdModalModule, NgbdNavModule, NgbdPaginationModule, NgbdPopoverModule, NgbdProgressbarModule,
+  NgbdRatingModule, NgbdTableModule, NgbdTabsetModule, NgbdTimepickerModule, NgbdToastModule, NgbdTooltipModule,
   NgbdTypeaheadModule
 ];
 
-const PAGES = [
-  GettingStartedPage,
-  PositioningPage
-];
+const PAGES = [GettingStartedPage, AnimationsPage, PositioningPage];
 
 @NgModule({
   declarations: [AppComponent, DefaultComponent, ...PAGES],
   imports: [BrowserModule, routing, NgbModule, NgbdSharedModule, ...DEMOS],
   bootstrap: [AppComponent]
 })
-export class NgbdModule {}
+export class NgbdModule {
+}

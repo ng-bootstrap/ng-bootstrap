@@ -1,0 +1,101 @@
+<ngbd-page-wrapper pageTitle="Animations">
+
+  <ngb-alert type="info" [dismissible]="false">
+    <h4 class="d-flex align-items-center">
+      Available since <span class="ml-1 badge badge-info align-middle font-weight-normal">8.0.0-beta.1</span>
+    </h4>
+    <p>Animations will be officially available and turned on by default in ng-bootstrap 8.0</p>
+
+    <p>They are available for testing in the beta version, so feel free to use it and report issues.</p>
+    <ngbd-code [snippet]="install"></ngbd-code>
+  </ngb-alert>
+
+  <p>
+    Animations are implemented with CSS Transitions that use classes defined in Bootstrap specifications.
+    You could use your own theme or simply override default styles to customize them (ex. you
+    could change the transition duration). Same as with Bootstrap, all animations respect the
+    <a target="_blank" rel="noopener"
+       href="https://getbootstrap.com/docs/{{bsVersion}}/getting-started/accessibility/#reduced-motion">Reduced
+      Motion</a>
+    setting.
+  </p>
+
+  <p>
+    At the moment only standard Bootstrap widgets are animated.
+  </p>
+
+  <ngbd-page-header title="How to setup" fragment="setup"></ngbd-page-header>
+
+  <p>
+    Animations are enabled by default. You can opt-out and disable them with a simple flag and everything will run
+    synchronously as before (ex. for unit test). You can disable animations at different levels:
+  </p>
+
+  <p>
+    To turn off animations globally, inject <code>NgbConfig</code> at your application root and change the
+    <code>animation</code>
+    flag:
+  </p>
+
+  <ngbd-code [snippet]="config"></ngbd-code>
+
+  <p>
+    You can also choose to disable them by widget type, by changing the widget configuration:
+  </p>
+
+  <ngbd-code [snippet]="widgetConfig"></ngbd-code>
+
+  <p>
+    The last option is to activate/deactivate them widget by widget:
+  </p>
+
+  <ngbd-code lang="html" [snippet]="widget"></ngbd-code>
+
+  <ngbd-page-header title="Limitations" fragment="limitations"></ngbd-page-header>
+
+  <ol>
+    <li>
+      <p>
+        Animations don't work with structural directives like <code>ngIf</code> or <code>ngFor</code>.
+        Unfortunately Angular doesn't provide any APIs to delay DOM removal.
+      </p>
+      <p>
+        The most impacted widgets are Alert and Toast. For example, to animate alert closing, you
+        will need to use the imperative API, then toggle some flag at the animation end actually remove
+        the element from the DOM.
+      </p>
+
+      <ngbd-code [snippet]="alert"></ngbd-code>
+    </li>
+    <li>
+      <p>
+        The second limitation concerns
+        <a [routerLink]="['../components/nav/overview']"
+           fragment="routing" title="Router integration">the router integration with the Nav component</a>.
+        As the <code>router-outlet</code> is not directly connected to the Nav, no animation will run either.
+        Two workarounds are available:
+      </p>
+      <ul>
+        <li>Do it yourself <a href="https://angular.io/guide/route-animations">the Angular way</a></li>
+        <li>
+          Set the nav panels the usual way, and use the
+          <a href="https://angular.io/guide/router#accessing-query-parameters-and-fragments"><code>ActivatedRoute</code></a>
+          to initialise the active nav with the url information.
+        </li>
+      </ul>
+    </li>
+  </ol>
+
+  <ngbd-page-header title="Found an issue?" fragment="issues"></ngbd-page-header>
+
+  <p>
+    Playing with animations has been a lot of work, as we had to introduce asynchronous transitions,
+    while keeping synchronous code without the animations. This is an important point, as it
+    allows to keep existing tests (unit and e2e tests) unchanged.
+  </p>
+  <p>
+    So, don't hesitate to report animations issues
+    <a href="https://github.com/ng-bootstrap/ng-bootstrap/issues/new">here</a>.
+  </p>
+
+</ngbd-page-wrapper>
