@@ -24,7 +24,9 @@
           <input class="form-control" placeholder="dd/mm/yyyy"
                  name="d2" #c2="ngModel" [(ngModel)]="model2" ngbDatepicker #d2="ngbDatepicker">
           <div class="input-group-append">
-            <button class="btn btn-outline-secondary calendar" (click)="d2.toggle()" type="button"></button>
+            <button class="btn btn-outline-secondary calendar" (click)="d2.toggle()" type="button">
+              <span class="sr-only">Choose date</span>
+            </button>
           </div>
         </div>
       </div>

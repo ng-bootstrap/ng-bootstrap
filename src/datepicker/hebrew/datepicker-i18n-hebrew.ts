@@ -22,6 +22,8 @@ export class NgbDatepickerI18nHebrew extends NgbDatepickerI18n {
 
   getWeekdayShortName(weekday: number): string { return WEEKDAYS[weekday - 1] || ''; }
 
+  getWeekdayName(weekday: number): string { return this.getWeekdayShortName(weekday); }
+
   getDayAriaLabel(date: NgbDateStruct): string {
     return `${hebrewNumerals(date.day)} ${this.getMonthFullName(date.month, date.year)} ${hebrewNumerals(date.year)}`;
   }
@@ -31,4 +33,8 @@ export class NgbDatepickerI18nHebrew extends NgbDatepickerI18n {
   getWeekNumerals(weekNumber: number): string { return hebrewNumerals(weekNumber); }
 
   getYearNumerals(year: number): string { return hebrewNumerals(year); }
+
+  getMonthAriaLabel(month: number, year: number) {
+    return this.getMonthFullName(month, year) + ' ' + this.getYearNumerals(year);
+  }
 }

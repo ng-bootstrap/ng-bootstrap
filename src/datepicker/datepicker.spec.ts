@@ -17,6 +17,7 @@ import {NgbDatepickerDayView} from './datepicker-day-view';
 import {NgbDatepickerKeyboardService} from './datepicker-keyboard-service';
 import {NgbDatepickerNavigationSelect} from './datepicker-navigation-select';
 import {NgbDatepickerNavigation} from './datepicker-navigation';
+import {Live} from '../util/accessibility/live';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -142,10 +143,14 @@ function customizeConfig(config: NgbDatepickerConfig) {
 }
 
 describe('ngb-datepicker', () => {
+  const mockLive = {say: (s: string) => {}};
 
   beforeEach(() => {
-    TestBed.configureTestingModule(
-        {declarations: [TestComponent], imports: [NgbDatepickerModule, FormsModule, ReactiveFormsModule]});
+    TestBed.configureTestingModule({
+      declarations: [TestComponent],
+      imports: [NgbDatepickerModule, FormsModule, ReactiveFormsModule],
+      providers: [{provide: Live, useValue: mockLive}]
+    });
   });
 
   it('should initialize inputs with provided config', () => {
@@ -626,11 +631,12 @@ describe('ngb-datepicker', () => {
   it('should emit select event when select date', () => {
     const fixture = createTestComponent(
         `<ngb-datepicker #dp [startDate]="date" (dateSelect)="onDateSelect($event)"></ngb-datepicker>`);
-
     spyOn(fixture.componentInstance, 'onDateSelect');
+    spyOn(mockLive, 'say');
     let dates = getDates(fixture.nativeElement);
     dates[11].click();
 
+    expect(mockLive.say).toHaveBeenCalledWith('Friday, August 12, 2016');
     fixture.detectChanges();
     expect(fixture.componentInstance.onDateSelect).toHaveBeenCalledTimes(1);
   });

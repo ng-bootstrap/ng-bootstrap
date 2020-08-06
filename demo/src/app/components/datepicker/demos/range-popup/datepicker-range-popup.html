@@ -31,7 +31,9 @@
              [value]="formatter.format(fromDate)"
              (input)="fromDate = validateInput(fromDate, dpFromDate.value)">
       <div class="input-group-append">
-        <button class="btn btn-outline-secondary calendar" (click)="datepicker.toggle()" type="button"></button>
+        <button class="btn btn-outline-secondary calendar" (click)="datepicker.toggle()" type="button">
+          <span class="sr-only">Choose date</span>
+        </button>
       </div>
     </div>
   </div>
@@ -43,7 +45,9 @@
              [value]="formatter.format(toDate)"
              (input)="toDate = validateInput(toDate, dpToDate.value)">
       <div class="input-group-append">
-        <button class="btn btn-outline-secondary calendar" (click)="datepicker.toggle()" type="button"></button>
+        <button class="btn btn-outline-secondary calendar" (click)="datepicker.toggle()" type="button">
+          <span class="sr-only">Choose date</span>
+        </button>
       </div>
     </div>
   </div>

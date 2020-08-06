@@ -22,7 +22,8 @@ import {NgbDateStruct} from './ngb-date-struct';
   template: `
     <div *ngIf="datepicker.showWeekdays" class="ngb-dp-week ngb-dp-weekdays" role="row">
       <div *ngIf="datepicker.showWeekNumbers" class="ngb-dp-weekday ngb-dp-showweek"></div>
-      <div *ngFor="let w of viewModel.weekdays" class="ngb-dp-weekday small" role="columnheader">
+      <div *ngFor="let w of viewModel.weekdays" class="ngb-dp-weekday small" role="columnheader"
+           [attr.aria-label]="i18n.getWeekdayName(w)">
         {{ i18n.getWeekdayShortName(w) }}
       </div>
     </div>

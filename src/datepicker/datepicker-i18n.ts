@@ -29,6 +29,13 @@ export abstract class NgbDatepickerI18n {
   abstract getWeekdayShortName(weekday: number): string;
 
   /**
+   * Returns the weekday name to listen from screen reader in the heading of the month view.
+   *
+   * With default calendar we use ISO 8601: 'weekday' is 1=Monday ... 7=Sunday.
+   */
+  abstract getWeekdayName(weekday: number): string;
+
+  /**
    * Returns the short month name to display in the date picker navigation.
    *
    * With default calendar we use ISO 8601: 'month' is 1=Jan ... 12=Dec.
@@ -48,6 +55,11 @@ export abstract class NgbDatepickerI18n {
    * @since 2.0.0
    */
   abstract getDayAriaLabel(date: NgbDateStruct): string;
+
+  /**
+   * Returns the value of the `aria-label` attribute for a specific month.
+   */
+  abstract getMonthAriaLabel(month: number, year: number): string;
 
   /**
    * Returns the textual representation of a day that is rendered in a day cell.
@@ -74,20 +86,26 @@ export abstract class NgbDatepickerI18n {
 @Injectable()
 export class NgbDatepickerI18nDefault extends NgbDatepickerI18n {
   private _weekdaysShort: Array<string>;
+  private _weekdays: Array<string>;
   private _monthsShort: Array<string>;
   private _monthsFull: Array<string>;
 
   constructor(@Inject(LOCALE_ID) private _locale: string) {
     super();
 
-    const weekdaysStartingOnSunday = getLocaleDayNames(_locale, FormStyle.Standalone, TranslationWidth.Short);
-    this._weekdaysShort = weekdaysStartingOnSunday.map((day, index) => weekdaysStartingOnSunday[(index + 1) % 7]);
+    const weekdaysShortStartingOnSunday = getLocaleDayNames(_locale, FormStyle.Standalone, TranslationWidth.Short);
+    this._weekdaysShort =
+        weekdaysShortStartingOnSunday.map((day, index) => weekdaysShortStartingOnSunday[(index + 1) % 7]);
+    const weekdaysStartingOnSunday = getLocaleDayNames(_locale, FormStyle.Standalone, TranslationWidth.Wide);
+    this._weekdays = weekdaysStartingOnSunday.map((day, index) => weekdaysStartingOnSunday[(index + 1) % 7]);
 
     this._monthsShort = getLocaleMonthNames(_locale, FormStyle.Standalone, TranslationWidth.Abbreviated);
     this._monthsFull = getLocaleMonthNames(_locale, FormStyle.Standalone, TranslationWidth.Wide);
   }
 
   getWeekdayShortName(weekday: number): string { return this._weekdaysShort[weekday - 1] || ''; }
+
+  getWeekdayName(weekday: number): string { return this._weekdays[weekday - 1] || ''; }
 
   getMonthShortName(month: number): string { return this._monthsShort[month - 1] || ''; }
 
@@ -96,5 +114,10 @@ export class NgbDatepickerI18nDefault extends NgbDatepickerI18n {
   getDayAriaLabel(date: NgbDateStruct): string {
     const jsDate = new Date(date.year, date.month - 1, date.day);
     return formatDate(jsDate, 'fullDate', this._locale);
+  }
+
+  getMonthAriaLabel(month: number, year: number) {
+    const jsDate = new Date(year, month - 1, 1);
+    return formatDate(jsDate, 'MMMM y', this._locale);
   }
 }
