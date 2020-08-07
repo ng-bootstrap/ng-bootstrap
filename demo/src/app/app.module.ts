@@ -26,6 +26,7 @@ import {NgbdTypeaheadModule} from './components/typeahead/typeahead.module';
 import {DefaultComponent} from './default';
 import {GettingStartedPage} from './pages/getting-started/getting-started.component';
 import {AnimationsPage} from './pages/animations/animations.component';
+import {I18nPage} from './pages/i18n/i18n.component';
 import {PositioningPage} from './pages/positioning/positioning.component';
 import {NgbdSharedModule} from './shared';
 
@@ -37,7 +38,7 @@ const DEMOS = [
   NgbdTypeaheadModule
 ];
 
-const PAGES = [GettingStartedPage, AnimationsPage, PositioningPage];
+const PAGES = [GettingStartedPage, AnimationsPage, I18nPage, PositioningPage];
 
 @NgModule({
   declarations: [AppComponent, DefaultComponent, ...PAGES],

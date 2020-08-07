@@ -23,15 +23,24 @@ import {ROUTES as TYPEAHEAD_ROUTES} from './components/typeahead/typeahead.modul
 import {DefaultComponent} from './default';
 import {GettingStartedPage} from './pages/getting-started/getting-started.component';
 import {AnimationsPage} from './pages/animations/animations.component';
+import {I18nPage} from './pages/i18n/i18n.component';
 import {PositioningPage} from './pages/positioning/positioning.component';
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', redirectTo: 'home'},
   {path: 'home', component: DefaultComponent},
   {path: 'getting-started', component: GettingStartedPage},
-  {path: 'animations', component: AnimationsPage},
-  {path: 'positioning', component: PositioningPage},
-  {path: 'components', pathMatch: 'full', redirectTo: 'components/alert'},
+  {path: 'animations', redirectTo: 'guides/animations'},
+  {path: 'positioning', redirectTo: 'guides/positioning'},
+  {path: 'guides',
+    children: [
+      {path: '', pathMatch: 'full', redirectTo: 'animations'},
+      {path: 'animations', component: AnimationsPage },
+      {path: 'i18n', component: I18nPage },
+      {path: 'positioning', component: PositioningPage},
+    ]
+  },
+  {path: 'components', pathMatch: 'full', redirectTo: 'components/accordion'},
   {path: 'components/accordion', children: ACCORDION_ROUTES},
   {path: 'components/alert', children: ALERT_ROUTES},
   {path: 'components/buttons', children: BUTTONS_ROUTES},

@@ -116,24 +116,28 @@ header.title {
 }
 
 .toc {
-  margin-left: -15px;
-  margin-right: -15px;
+  margin-left: 15px;
+//   margin-right: -15px;
   font-size: 1.1rem;
 
   .toc-item {
     .toc-link {
-      display: block;
-      padding: 0.25rem 1.5rem;
+//       display: block;
+//       padding: 0.25rem 1.5rem;
       color: rgba(0, 0, 0, 0.65);
     }
 
     .nav > li > a {
       font-size: 0.85em;
+      display: inline-block;
 
       &:hover,
       &:focus {
         text-decoration: none;
-        color: #0275d8;
+        margin-left: -0.5rem;
+        padding: 0 0.5rem;
+        background-color: #f8f9fa;
+        border-radius: 3px;
       }
     }
 
