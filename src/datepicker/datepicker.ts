@@ -32,6 +32,7 @@ import {NgbDateStruct} from './ngb-date-struct';
 import {NgbDatepickerI18n} from './datepicker-i18n';
 import {isChangedDate, isChangedMonth} from './datepicker-tools';
 import {hasClassName} from '../util/util';
+import {Live} from '../util/accessibility/live';
 
 export const NGB_DATEPICKER_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -100,6 +101,13 @@ export interface NgbDatepickerState {
    * @since 5.3.0
    */
   readonly months: NgbDate[];
+
+  /**
+   * The date currently selected
+   *
+   * @since 6.1.0
+   */
+  readonly selectedDate: NgbDate;
 }
 
 /**
@@ -158,7 +166,8 @@ export class NgbDatepickerContent {
       </ngb-datepicker-navigation>
     </div>
 
-    <div class="ngb-dp-content" [class.ngb-dp-months]="!contentTemplate" #content>
+    <div class="ngb-dp-content" [class.ngb-dp-months]="!contentTemplate" #content
+         role="grid" aria-labelledby="selected-date">
       <ng-template [ngTemplateOutlet]="contentTemplate?.templateRef || defaultContentTemplate"></ng-template>
     </div>
 
@@ -315,7 +324,7 @@ export class NgbDatepicker implements OnDestroy,
   constructor(
       private _service: NgbDatepickerService, private _calendar: NgbCalendar, public i18n: NgbDatepickerI18n,
       config: NgbDatepickerConfig, cd: ChangeDetectorRef, private _elementRef: ElementRef<HTMLElement>,
-      private _ngbDateAdapter: NgbDateAdapter<any>, private _ngZone: NgZone) {
+      private _ngbDateAdapter: NgbDateAdapter<any>, private _ngZone: NgZone, private live: Live) {
     ['dayTemplate', 'dayTemplateData', 'displayMonths', 'firstDayOfWeek', 'footerTemplate', 'markDisabled', 'minDate',
      'maxDate', 'navigation', 'outsideDays', 'showWeekdays', 'showWeekNumbers', 'startDate']
         .forEach(input => this[input] = config[input]);
@@ -333,6 +342,7 @@ export class NgbDatepicker implements OnDestroy,
         firstDate: model.firstDate !,
         lastDate: model.lastDate !,
         focusedDate: model.focusDate !,
+        selectedDate: model.selectedDate !,
         months: model.months.map(viewModel => viewModel.firstDate)
       };
 
@@ -475,6 +485,7 @@ export class NgbDatepicker implements OnDestroy,
   onDateSelect(date: NgbDate) {
     this._service.focus(date);
     this._service.select(date, {emitEvent: true});
+    this.live.say(this.i18n.getDayAriaLabel(this.state.selectedDate));
   }
 
   onNavigateDateSelect(date: NgbDate) { this._service.open(date); }

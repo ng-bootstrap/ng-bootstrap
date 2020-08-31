@@ -10,6 +10,8 @@ export class NgbDatepickerI18nPersian extends NgbDatepickerI18n {
   getMonthShortName(month: number) { return MONTHS[month - 1]; }
   getMonthFullName(month: number) { return MONTHS[month - 1]; }
   getDayAriaLabel(date: NgbDateStruct): string { return `${date.year}-${this.getMonthFullName(date.month)}-${date.day}`; }
+  getWeekdayName(weekday: number): string { return this.getWeekdayShortName(weekday); }
+  getMonthAriaLabel(month: number, year: number) { return `${month}-${year}`; }
 }
 
 @Component({

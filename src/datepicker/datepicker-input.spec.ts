@@ -12,6 +12,7 @@ import {NgbDateStruct} from './ngb-date-struct';
 import {NgbDate} from './ngb-date';
 import {positionService} from 'src/util/positioning';
 import {NgbInputDatepickerConfig} from './datepicker-input-config';
+import {Live} from '../util/accessibility/live';
 
 const createTestCmpt = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -33,8 +34,14 @@ function customizeConfig(config: NgbInputDatepickerConfig) {
 
 describe('NgbInputDatepicker', () => {
 
+  const mockLive = {say: (s: string) => {}};
+
   beforeEach(() => {
-    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbDatepickerModule, FormsModule]});
+    TestBed.configureTestingModule({
+      declarations: [TestComponent],
+      imports: [NgbDatepickerModule, FormsModule],
+      providers: [{provide: Live, useValue: mockLive}]
+    });
   });
 
   it('should initialize inputs with provided datepicker config', () => {

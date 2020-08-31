@@ -2,6 +2,7 @@ import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy, ViewEnc
 import {NavigationEvent, MonthViewModel} from './datepicker-view-model';
 import {NgbDate} from './ngb-date';
 import {NgbDatepickerI18n} from './datepicker-i18n';
+import {Live} from '../util/accessibility/live';
 
 @Component({
   selector: 'ngb-datepicker-navigation',
@@ -54,15 +55,44 @@ export class NgbDatepickerNavigation {
   @Output() navigate = new EventEmitter<NavigationEvent>();
   @Output() select = new EventEmitter<NgbDate>();
 
-  constructor(public i18n: NgbDatepickerI18n) {}
+  constructor(public i18n: NgbDatepickerI18n, private live: Live) {}
 
   onClickPrev(event: MouseEvent) {
     (event.currentTarget as HTMLElement).focus();
     this.navigate.emit(this.navigation.PREV);
+    this.say();
   }
 
   onClickNext(event: MouseEvent) {
     (event.currentTarget as HTMLElement).focus();
     this.navigate.emit(this.navigation.NEXT);
+    this.say();
+  }
+
+  private say() {
+    if (this.months.length > 1) {
+      this.live.say(`${this.getFromMonth()} ${this.getToMonth()}`);
+    } else {
+      this.live.say(`${this.getCurrentMonth()}`);
+    }
+  }
+
+  private getFromMonth() {
+    const f = this.months[0].firstDate;
+    return this.i18n.getMonthAriaLabel(f.month, f.year);
+  }
+
+  private getToMonth() {
+    const t = this.months[this.months.length - 1].lastDate;
+    return this.i18n.getMonthAriaLabel(t.month, t.year);
+  }
+
+  private getCurrentMonth() {
+    let result: string | undefined = undefined;
+    if (this.months && this.months[0] && this.months[0].firstDate) {
+      const d = this.months[0].firstDate;
+      result = this.i18n.getMonthAriaLabel(d.month, d.year);
+    }
+    return result;
   }
 }

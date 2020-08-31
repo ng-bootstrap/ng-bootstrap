@@ -10,6 +10,7 @@ import {NavigationEvent} from './datepicker-view-model';
 import {NgbDatepickerNavigation} from './datepicker-navigation';
 import {NgbDate} from './ngb-date';
 import {NgbDatepickerNavigationSelect} from './datepicker-navigation-select';
+import {Live} from '../util/accessibility/live';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -23,10 +24,16 @@ function changeSelect(element: HTMLSelectElement, value: string) {
 
 describe('ngb-datepicker-navigation', () => {
 
+  const mockLive = {say: (s: string) => {}};
+
   beforeEach(() => {
     TestBed.overrideModule(
         NgbDatepickerModule, {set: {exports: [NgbDatepickerNavigation, NgbDatepickerNavigationSelect]}});
-    TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbDatepickerModule]});
+    TestBed.configureTestingModule({
+      declarations: [TestComponent],
+      imports: [NgbDatepickerModule],
+      providers: [{provide: Live, useValue: mockLive}]
+    });
   });
 
   it('should toggle navigation select component', () => {
@@ -140,6 +147,25 @@ describe('ngb-datepicker-navigation', () => {
     expect(links[1].getAttribute('title')).toBe('Next month');
   });
 
+  it('when displaying one month should have correct screen reader text ', () => {
+    const fixture = createTestComponent(`
+      <ngb-datepicker-navigation [months]="monthsOne"></ngb-datepicker-navigation>`);
+    spyOn(mockLive, 'say');
+    const[previousButton, nextButton] = getNavigationLinks(fixture.nativeElement);
+    previousButton.click();
+    nextButton.click();
+    expect(mockLive.say).toHaveBeenCalledWith('August 2016');
+  });
+
+  it('when displaying month range should have correct screen reader text ', () => {
+    const fixture = createTestComponent(`
+      <ngb-datepicker-navigation [months]="monthsRange"></ngb-datepicker-navigation>`);
+    const[previousButton, nextButton] = getNavigationLinks(fixture.nativeElement);
+    spyOn(mockLive, 'say');
+    previousButton.click();
+    nextButton.click();
+    expect(mockLive.say).toHaveBeenCalledWith('August 2016 September 2016');
+  });
 });
 
 @Component({selector: 'test-cmp', template: ''})
@@ -149,6 +175,11 @@ class TestComponent {
   nextDisabled = false;
   showSelect = true;
   selectBoxes = {months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], years: [2015, 2016, 2017, 2018, 2019, 2020]};
+  monthsOne = [{firstDate: new NgbDate(2016, 8, 1), lastDate: new NgbDate(2016, 8, 31)}];
+  monthsRange = [
+    {firstDate: new NgbDate(2016, 8, 1), lastDate: new NgbDate(2016, 8, 31)},
+    {firstDate: new NgbDate(2016, 9, 1), lastDate: new NgbDate(2016, 9, 30)}
+  ];
 
   onNavigate = () => {};
   onSelect = () => {};

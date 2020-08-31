@@ -25,6 +25,14 @@ export class IslamicI18n extends NgbDatepickerI18n {
   getDayAriaLabel(date: NgbDateStruct): string {
     return `${date.day}-${date.month}-${date.year}`;
   }
+
+  getWeekdayName(weekday: number): string {
+    return this.getWeekdayShortName(weekday);
+  }
+
+  getMonthAriaLabel(month: number, year: number) {
+    return `${month}-${year}`;
+  }
 }
 
 @Component({
