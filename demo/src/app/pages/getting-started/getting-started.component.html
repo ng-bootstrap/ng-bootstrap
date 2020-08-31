@@ -82,19 +82,21 @@
   <h4>Manual installation</h4>
 
   <p>
-    If you prefer not to use schematics or want to add ng-bootstrap to an older project, you'll need to do the following:
+    If you prefer not to use schematics or want to add ng-bootstrap to an older project, you'll need to do the
+    following:
   </p>
 
   <ul>
     <li>Add <code>bootstrap</code> and <code>@ng-bootstrap/ng-bootstrap</code> dependencies from npm</li>
     <li>Install the <code>@angular/localize</code> polyfill</li>
     <li>Add bootstrap CSS/SCSS to your project (no javascript is required)</li>
-    <li>Import <code>NgbModule</code> or any other component module like <code>NgbPaginationModule</code> in your application</li>
+    <li>Import <code>NgbModule</code> or any other component module like <code>NgbPaginationModule</code> in your
+      application</li>
   </ul>
 
   <p>
     <a href (click)="instructionsCollapsed = !instructionsCollapsed; $event.preventDefault()"
-       [attr.aria-expanded]="!instructionsCollapsed" aria-controls="detailed-instructions">
+      [attr.aria-expanded]="!instructionsCollapsed" aria-controls="detailed-instructions">
       Click here to {{ instructionsCollapsed ? 'show' : 'hide' }} detailed instructions
     </a>
   </p>
@@ -106,7 +108,8 @@
 
         <p>
           You need to add Bootstrap CSS to your application using your preferred way (see
-          <a href="https://getbootstrap.com/docs/{{ bsVersion }}/getting-started/download/" target="_blank">Bootstrap instructions</a>).
+          <a href="https://getbootstrap.com/docs/{{ bsVersion }}/getting-started/download/" target="_blank">Bootstrap
+            instructions</a>).
         </p>
 
         <p>
@@ -120,7 +123,8 @@
         </p>
 
         <p>
-          In case you're using CSS, you just need to add Bootstrap styles to your <code>angular.json</code> configuration:
+          In case you're using CSS, you just need to add Bootstrap styles to your <code>angular.json</code>
+          configuration:
         </p>
 
         <ngbd-code [snippet]="bootstrapCssAngularJson"></ngbd-code>
@@ -154,7 +158,8 @@
 
         <p>
           See more details in
-          <a href="https://angular.io/guide/i18n#setting-up-localization-with-the-angular-cli" target="_blank">the official documentation</a>.
+          <a href="https://angular.io/guide/i18n#setting-up-localization-with-the-angular-cli" target="_blank">the
+            official documentation</a>.
         </p>
 
         <h5>ng-bootstrap</h5>
@@ -185,43 +190,22 @@
 
   <ngbd-page-header title="Supported Browsers" fragment="browsers"></ngbd-page-header>
 
-  <p>We strive to support the same browsers and versions as supported by both Bootstrap and Angular, whichever is more restrictive. Check browser support notes for
+  <p>We strive to support the same browsers and versions as supported by both Bootstrap and Angular, whichever is more
+    restrictive. Check browser support notes for
     <a href="https://angular.io/guide/browser-support" target="_blank">Angular</a> and
-    <a href="https://getbootstrap.com/docs/{{ bsVersion }}/getting-started/browsers-devices/" target="_blank">Bootstrap</a>.
+    <a href="https://getbootstrap.com/docs/{{ bsVersion }}/getting-started/browsers-devices/"
+      target="_blank">Bootstrap</a>.
   </p>
 
   <p>Our code is automatically tested on all supported browsers.</p>
-
-  <ngbd-page-header title="Internationalization" fragment="i18n"></ngbd-page-header>
-
-  <ngb-alert type="warning" [dismissible]="false">
-    We're using standard Angular i18n in ng-bootstrap templates. Since Angular 9 (and ng-bootstrap 6) you have to
-    add the additional <code>@angular/localize</code> polyfill to your CLI project. See more details in
-    <a href="https://angular.io/guide/i18n#setting-up-localization-with-the-angular-cli" target="_blank">the official documentation</a>.
-  </ngb-alert>
-
-  <p>
-    Some components contain static English text or symbols that you might want to internationalize. Some of them appear
-    on the screen, like for example the placeholders used in the timepicker input fields. Others appear in aria attributes
-    used for accessibility.
-  </p>
-  <p>
-    Internationalizing the ng-bootstrap components is done the same way as for any of your components, using the
-    <a href="https://angular.io/guide/i18n#template-translations">process described in the Angular documentation</a>.
-    The only difference is that we already did the first phase of this process: marking static text messages in the
-    ng-bootstrap component templates for translation.
-  </p>
-  <p>
-    So, if you execute `ng xi18n` on your project, you will also find the ng-bootstrap messages to translate in the
-    generated messages file. All our messages are identified by an ID of the form <code>ngb.[widget].[message]</code>
-  </p>
 
   <ngbd-page-header title="Getting help" fragment="getting-help"></ngbd-page-header>
 
   <p>
     Please, do not open issues for the general support questions as we want to keep GitHub issues for bug reports
     and feature requests. You've got much better chances of getting your question answered on
-    <a href="https://stackoverflow.com/questions/tagged/ng-bootstrap" target="_blank">StackOverflow</a> where the community at large are looking
+    <a href="https://stackoverflow.com/questions/tagged/ng-bootstrap" target="_blank">StackOverflow</a> where the
+    community at large are looking
     at questions tagged with <code>ng-bootstrap</code>.
   </p>
   <p>
@@ -229,26 +213,31 @@
   </p>
   <ul>
     <li>there are hundreds of people willing to help on StackOverflow,</li>
-    <li>questions and answers stay available for public viewing so your question / answer might help someone else, and</li>
+    <li>questions and answers stay available for public viewing so your question / answer might help someone else, and
+    </li>
     <li>the SO voting system assures that the best answers are prominently visible.</li>
   </ul>
   <p>
-    To save your and our time we will be systematically closing all the issues that are requests for general support and redirecting people to StackOverflow.
+    To save your and our time we will be systematically closing all the issues that are requests for general support and
+    redirecting people to StackOverflow.
   </p>
 
   <ngbd-page-header title="Contributing" fragment="contributing"></ngbd-page-header>
 
   <p>
     We are always looking for the quality contributions! Please check the
-    <a href="https://github.com/ng-bootstrap/ng-bootstrap/blob/master/CONTRIBUTING.md" target="_blank">Contributing</a> doc
+    <a href="https://github.com/ng-bootstrap/ng-bootstrap/blob/master/CONTRIBUTING.md" target="_blank">Contributing</a>
+    doc
     for contribution guidelines. Additionally, for local building and testing information, please see our
-    <a href="https://github.com/ng-bootstrap/ng-bootstrap/blob/master/DEVELOPER.md" target="_blank">Developer's Guide</a>.
+    <a href="https://github.com/ng-bootstrap/ng-bootstrap/blob/master/DEVELOPER.md" target="_blank">Developer's
+      Guide</a>.
   </p>
 
   <ngbd-page-header title="Code of conduct" fragment="code-of-conduct"></ngbd-page-header>
 
   <p>
     Please take a moment to read our
-    <a href="https://github.com/ng-bootstrap/ng-bootstrap/blob/master/CODE_OF_CONDUCT.md" target="_blank">Code of Conduct</a>.
+    <a href="https://github.com/ng-bootstrap/ng-bootstrap/blob/master/CODE_OF_CONDUCT.md" target="_blank">Code of
+      Conduct</a>.
   </p>
 </ngbd-page-wrapper>
