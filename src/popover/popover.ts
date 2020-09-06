@@ -45,7 +45,7 @@ let nextId = 0;
   },
   template: `
     <div class="arrow"></div>
-    <h3 class="popover-header" *ngIf="title != null">
+    <h3 class="popover-header" *ngIf="title">
       <ng-template #simpleTitle>{{title}}</ng-template>
       <ng-template [ngTemplateOutlet]="isTitleTemplate() ? $any(title) : simpleTitle" [ngTemplateOutletContext]="context"></ng-template>
     </h3>
@@ -54,7 +54,7 @@ let nextId = 0;
 })
 export class NgbPopoverWindow {
   @Input() animation: boolean;
-  @Input() title: undefined | string | TemplateRef<any>;
+  @Input() title: string | TemplateRef<any>| null | undefined;
   @Input() id: string;
   @Input() popoverClass: string;
   @Input() context: any;
@@ -92,16 +92,16 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
   /**
    * The string content or a `TemplateRef` for the content to be displayed in the popover.
    *
-   * If the title and the content are empty, the popover won't open.
+   * If the title and the content are falsy, the popover won't open.
    */
-  @Input() ngbPopover: string | TemplateRef<any>;
+  @Input() ngbPopover: string | TemplateRef<any>| null | undefined;
 
   /**
    * The title of the popover.
    *
-   * If the title and the content are empty, the popover won't open.
+   * If the title and the content are falsy, the popover won't open.
    */
-  @Input() popoverTitle: string | TemplateRef<any>;
+  @Input() popoverTitle: string | TemplateRef<any>| null | undefined;
 
   /**
    * The preferred placement of the popover.
@@ -223,7 +223,9 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
    */
   open(context?: any) {
     if (!this._windowRef && !this._isDisabled()) {
-      const {windowRef, transition$} = this._popupService.open(this.ngbPopover, context, this.animation);
+      // this type assertion is safe because otherwise _isDisabled would return true
+      const {windowRef, transition$} =
+          this._popupService.open(this.ngbPopover as(string | TemplateRef<any>), context, this.animation);
       this._windowRef = windowRef;
       this._windowRef.instance.animation = this.animation;
       this._windowRef.instance.title = this.popoverTitle;
