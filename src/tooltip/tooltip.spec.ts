@@ -193,6 +193,17 @@ describe('ngb-tooltip', () => {
       expect(windowEl).toBeNull();
     });
 
+    it('should not open a tooltip if content is empty', () => {
+      const fixture = createTestComponent(`<div ngbTooltip=""></div>`);
+      const directive = fixture.debugElement.query(By.directive(NgbTooltip));
+
+      triggerEvent(directive, 'mouseenter');
+      fixture.detectChanges();
+      const windowEl = getWindow(fixture.nativeElement);
+
+      expect(windowEl).toBeNull();
+    });
+
     it('should close the tooltip tooltip if content becomes falsy', () => {
       const fixture = createTestComponent(`<div [ngbTooltip]="name"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbTooltip));
