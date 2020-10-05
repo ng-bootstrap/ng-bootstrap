@@ -10,7 +10,7 @@ export function getWindowLinks(element: DebugElement): DebugElement[] {
 }
 
 export function expectResults(nativeEl: HTMLElement, resultsDef: string[]): void {
-  const pages = nativeEl.querySelectorAll('button.dropdown-item');
+  const pages = nativeEl.querySelectorAll('ngb-typeahead-item');
 
   expect(pages.length).toEqual(resultsDef.length);
 
@@ -18,12 +18,15 @@ export function expectResults(nativeEl: HTMLElement, resultsDef: string[]): void
     let resultDef = resultsDef[i];
     let classIndicator = resultDef.charAt(0);
 
+    const page = pages[i].querySelector('button') as HTMLElement;
+    expect(page).toBeDefined();
+
     if (classIndicator === '+') {
-      expect(pages[i]).toHaveCssClass('active');
-      expect(normalizeText(pages[i].textContent)).toEqual(resultDef.substr(1));
+      expect(page).toHaveCssClass('active');
+      expect(normalizeText(page.textContent)).toEqual(resultDef.substr(1));
     } else {
-      expect(pages[i]).not.toHaveCssClass('active');
-      expect(normalizeText(pages[i].textContent)).toEqual(resultDef);
+      expect(page).not.toHaveCssClass('active');
+      expect(normalizeText(page.textContent)).toEqual(resultDef);
     }
   }
 }

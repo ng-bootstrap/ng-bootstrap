@@ -19,6 +19,8 @@ import {NgbdTypeaheadTemplate} from './demos/template/typeahead-template';
 import {NgbdTypeaheadTemplateModule} from './demos/template/typeahead-template.module';
 import {NgbdTypeaheadPreventManualEntry} from './demos/prevent-manual-entry/typeahead-prevent-manual-entry';
 import {NgbdTypeaheadPreventManualEntryModule} from './demos/prevent-manual-entry/typeahead-prevent-manual-entry.module';
+import {NgbdTypeaheadGrouping} from './demos/grouping/typeahead-grouping';
+import {NgbdTypeaheadGroupingModule} from './demos/grouping/typeahead-grouping.module';
 
 const DEMOS = {
   basic: {
@@ -57,6 +59,12 @@ const DEMOS = {
     code: require('!!raw-loader!./demos/prevent-manual-entry/typeahead-prevent-manual-entry').default,
     markup: require('!!raw-loader!./demos/prevent-manual-entry/typeahead-prevent-manual-entry.html').default
   },
+  grouping: {
+    title: 'Result Grouping',
+    type: NgbdTypeaheadGrouping,
+    code: require('!!raw-loader!./demos/grouping/typeahead-grouping').default,
+    markup: require('!!raw-loader!./demos/grouping/typeahead-grouping.html').default
+  },
   config: {
     title: 'Global configuration of typeaheads',
     type: NgbdTypeaheadConfig,
@@ -77,7 +85,7 @@ export const ROUTES = [
   imports: [
     NgbdSharedModule, NgbdComponentsSharedModule, NgbdTypeaheadFormatModule, NgbdTypeaheadHttpModule,
     NgbdTypeaheadBasicModule, NgbdTypeaheadFocusModule, NgbdTypeaheadTemplateModule, NgbdTypeaheadConfigModule,
-    NgbdTypeaheadPreventManualEntryModule
+    NgbdTypeaheadPreventManualEntryModule, NgbdTypeaheadGroupingModule
   ]
 })
 export class NgbdTypeaheadModule {
