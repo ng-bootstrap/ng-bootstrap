@@ -20,7 +20,7 @@ import {take} from 'rxjs/operators';
 
 import {NgbToastConfig} from './toast-config';
 import {ngbRunTransition} from '../util/transition/ngbTransition';
-import {ngbToastFadeInTransition, ngbToastFadeOutTransition} from '../util/transition/ngbFadingTransition';
+import {ngbToastFadeInTransition, ngbToastFadeOutTransition} from './toast-transition';
 
 
 /**

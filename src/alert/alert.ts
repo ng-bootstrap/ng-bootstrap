@@ -16,7 +16,7 @@ import {Observable} from 'rxjs';
 
 import {NgbAlertConfig} from './alert-config';
 import {ngbRunTransition} from '../util/transition/ngbTransition';
-import {ngbAlertFadingTransition} from '../util/transition/ngbFadingTransition';
+import {ngbAlertFadingTransition} from './alert-transition';
 
 /**
  * Alert is a component to provide contextual feedback messages for user.

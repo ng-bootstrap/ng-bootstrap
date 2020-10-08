@@ -12,11 +12,7 @@ import {
 
 import {distinctUntilChanged, skip, startWith} from 'rxjs/operators';
 
-import {
-  ngbNavFadeInNoReflowTransition,
-  ngbNavFadeInTransition,
-  ngbNavFadeOutTransition
-} from '../util/transition/ngbFadingTransition';
+import {ngbNavFadeInNoReflowTransition, ngbNavFadeInTransition, ngbNavFadeOutTransition} from './nav-transition';
 import {ngbRunTransition, NgbTransitionOptions} from '../util/transition/ngbTransition';
 import {NgbNav, NgbNavItem} from './nav';
 
