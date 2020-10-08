@@ -35,7 +35,6 @@ This is the first beta release adding animations support to ng-bootstrap
 
 
 ### BREAKING CHANGES
-* animations are active by default on standard Bootstrap components, to opt-out, please check the [documentation](https://ng-bootstrap.github.io/#/animations)
 
 * **toast:** Toast events API has changed to stick with specs provided by Bootstrap
 

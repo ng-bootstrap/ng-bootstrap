@@ -44,7 +44,7 @@ export {
   NgbSlideEventDirection,
   NgbSlideEventSource
 } from './carousel/carousel.module';
-export {NgbCollapse, NgbCollapseModule} from './collapse/collapse.module';
+export {NgbCollapse, NgbCollapseConfig, NgbCollapseModule} from './collapse/collapse.module';
 export {
   NgbCalendar,
   NgbCalendarGregorian,
@@ -100,7 +100,8 @@ export {
   NgbNavItem,
   NgbNavLink,
   NgbNavModule,
-  NgbNavOutlet
+  NgbNavOutlet,
+  NgbNavPane
 } from './nav/nav.module';
 export {
   NgbPagination,
@@ -143,6 +144,8 @@ export {
   NgbTypeaheadSelectItemEvent
 } from './typeahead/typeahead.module';
 export {Placement} from './util/positioning';
+
+export {NgbConfig} from './ngb-config';
 
 
 const NGB_MODULES = [

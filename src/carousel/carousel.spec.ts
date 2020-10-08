@@ -1,12 +1,15 @@
 import {fakeAsync, discardPeriodicTasks, tick, TestBed, ComponentFixture, inject} from '@angular/core/testing';
-import {createGenericTestComponent} from '../test/common';
+import {createGenericTestComponent, isBrowserVisible} from '../test/common';
 
 import {By} from '@angular/platform-browser';
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 
 import {NgbCarouselModule} from './carousel.module';
-import {NgbCarousel, NgbSlideEvent, NgbSlideEventDirection, NgbSlideEventSource} from './carousel';
+import {NgbCarousel, NgbSlideEvent, NgbSlideEventSource, NgbSingleSlideEvent} from './carousel';
 import {NgbCarouselConfig} from './carousel-config';
+import {NgbConfig} from '../ngb-config';
+import {NgbConfigAnimation} from '../test/ngb-config-animation';
+import {NgbSlideEventDirection} from './carousel-transition';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -35,8 +38,8 @@ describe('ngb-carousel', () => {
   });
 
   it('should initialize inputs with default values', () => {
-    const defaultConfig = new NgbCarouselConfig();
-    const carousel = new NgbCarousel(new NgbCarouselConfig(), null, <any>null, <any>null, <any>null);
+    const defaultConfig = new NgbCarouselConfig(new NgbConfig());
+    const carousel = new NgbCarousel(new NgbCarouselConfig(new NgbConfig()), null, <any>null, <any>null, <any>null);
 
     expect(carousel.interval).toBe(defaultConfig.interval);
     expect(carousel.wrap).toBe(defaultConfig.wrap);
@@ -108,7 +111,7 @@ describe('ngb-carousel', () => {
 
        const fixture = createTestComponent(html);
 
-       fixture.componentInstance.activeSlideId = 1;
+       fixture.componentInstance.activeSlideId = '1';
        fixture.detectChanges();
        expectActiveSlides(fixture.nativeElement, [true, false]);
 
@@ -380,7 +383,7 @@ describe('ngb-carousel', () => {
        fixture.detectChanges();
        expect(fixture.componentInstance.carouselSlideCallBack).toHaveBeenCalledWith(jasmine.objectContaining({
          direction: NgbSlideEventDirection.RIGHT,
-         source: NgbSlideEventSource.INDICATOR
+         source: NgbSlideEventSource.INDICATOR,
        }));
 
        spyCallBack.calls.reset();
@@ -423,8 +426,8 @@ describe('ngb-carousel', () => {
   it('should fire a slide event with correct direction and source on carousel control click', fakeAsync(() => {
        const html = `
       <ngb-carousel (slide)="carouselSlideCallBack($event)">
-        <ng-template ngbSlide>foo</ng-template>
-        <ng-template ngbSlide>bar</ng-template>
+        <ng-template ngbSlide (slid)="carouselSingleSlideCallBack($event, 'foo')">foo</ng-template>
+        <ng-template ngbSlide (slid)="carouselSingleSlideCallBack($event, 'bar')">bar</ng-template>
       </ngb-carousel>
     `;
 
@@ -432,6 +435,7 @@ describe('ngb-carousel', () => {
        const prevControlElm = fixture.nativeElement.querySelector('.carousel-control-prev');
        const nextControlElm = fixture.nativeElement.querySelector('.carousel-control-next');
        const spyCallBack = spyOn(fixture.componentInstance, 'carouselSlideCallBack');
+       const spySingleCallBack = spyOn(fixture.componentInstance, 'carouselSingleSlideCallBack');
 
        prevControlElm.click();
        fixture.detectChanges();
@@ -439,21 +443,36 @@ describe('ngb-carousel', () => {
          direction: NgbSlideEventDirection.RIGHT,
          source: NgbSlideEventSource.ARROW_LEFT
        }));
+       expect(spySingleCallBack.calls.allArgs()).toEqual([
+         [{isShown: false, direction: NgbSlideEventDirection.RIGHT, source: NgbSlideEventSource.ARROW_LEFT}, 'foo'],
+         [{isShown: true, direction: NgbSlideEventDirection.RIGHT, source: NgbSlideEventSource.ARROW_LEFT}, 'bar'],
+       ]);
+
        spyCallBack.calls.reset();
+       spySingleCallBack.calls.reset();
        nextControlElm.click();
        fixture.detectChanges();
        expect(fixture.componentInstance.carouselSlideCallBack).toHaveBeenCalledWith(jasmine.objectContaining({
          direction: NgbSlideEventDirection.LEFT,
          source: NgbSlideEventSource.ARROW_RIGHT
        }));
+       expect(spySingleCallBack.calls.allArgs()).toEqual([
+         [{isShown: false, direction: NgbSlideEventDirection.LEFT, source: NgbSlideEventSource.ARROW_RIGHT}, 'bar'],
+         [{isShown: true, direction: NgbSlideEventDirection.LEFT, source: NgbSlideEventSource.ARROW_RIGHT}, 'foo'],
+       ]);
 
        spyCallBack.calls.reset();
+       spySingleCallBack.calls.reset();
        prevControlElm.click();
        fixture.detectChanges();
        expect(fixture.componentInstance.carouselSlideCallBack).toHaveBeenCalledWith(jasmine.objectContaining({
          direction: NgbSlideEventDirection.RIGHT,
          source: NgbSlideEventSource.ARROW_LEFT
        }));
+       expect(spySingleCallBack.calls.allArgs()).toEqual([
+         [{isShown: false, direction: NgbSlideEventDirection.RIGHT, source: NgbSlideEventSource.ARROW_LEFT}, 'foo'],
+         [{isShown: true, direction: NgbSlideEventDirection.RIGHT, source: NgbSlideEventSource.ARROW_LEFT}, 'bar'],
+       ]);
 
        discardPeriodicTasks();
      }));
@@ -892,7 +911,7 @@ describe('ngb-carousel', () => {
   });
 
   describe('Custom config as provider', () => {
-    const config = new NgbCarouselConfig();
+    const config = new NgbCarouselConfig(new NgbConfig());
     config.interval = 1000;
     config.wrap = false;
     config.keyboard = false;
@@ -923,6 +942,186 @@ describe('ngb-carousel', () => {
 
 });
 
+if (isBrowserVisible('ngb-carousel animations')) {
+  describe('ngb-carousel animations', () => {
+
+    @Component({
+      template: `
+      <ngb-carousel (slid)="onSlid($event)" [interval]="-1">
+        <ng-template ngbSlide id="one">One</ng-template>
+        <ng-template ngbSlide id="two">Two</ng-template>
+        <ng-template ngbSlide id="three">Three</ng-template>
+      </ngb-carousel>
+      `,
+      host: {'[class.ngb-reduce-motion]': 'reduceMotion'}
+    })
+    class TestAnimationComponent {
+      reduceMotion = true;
+      onSlid = (payload) => payload;
+    }
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        declarations: [TestAnimationComponent],
+        imports: [NgbCarouselModule],
+        providers: [{provide: NgbConfig, useClass: NgbConfigAnimation}]
+      });
+    });
+
+    it(`should run slide transition (force-reduced-motion = false)`, (done) => {
+      const fixture = TestBed.createComponent(TestAnimationComponent);
+      fixture.componentInstance.reduceMotion = false;
+      fixture.detectChanges();
+
+      const nativeEl = fixture.nativeElement;
+
+      const onSlidSpy = spyOn(fixture.componentInstance, 'onSlid');
+
+      const[slideOne, slideTwo] = nativeEl.querySelectorAll('.carousel-item');
+      const indicators = nativeEl.querySelectorAll('ol.carousel-indicators > li');
+
+      onSlidSpy.and.callFake((payload) => {
+        expect(slideOne.className).toBe('carousel-item');
+        expect(slideTwo.className).toBe('carousel-item active');
+
+        expect(payload).toEqual({prev: 'one', current: 'two', direction: 'left', paused: false, source: 'indicator'});
+        expect(onSlidSpy).toHaveBeenCalledTimes(1);
+        done();
+      });
+
+      expect(slideOne.className).toBe('carousel-item active');
+      expect(slideTwo.className).toBe('carousel-item');
+
+      indicators[1].click();
+      fixture.detectChanges();
+
+      expect(slideOne.className).toBe('carousel-item active carousel-item-left');
+      expect(slideTwo.className).toBe('carousel-item carousel-item-next carousel-item-left');
+    });
+
+    it(`should run slide transition (force-reduced-motion = true)`, () => {
+      const fixture = TestBed.createComponent(TestAnimationComponent);
+      fixture.componentInstance.reduceMotion = true;
+      fixture.detectChanges();
+
+      const nativeEl = fixture.nativeElement;
+
+      const onSlidSpy = spyOn(fixture.componentInstance, 'onSlid');
+
+      const[slideOne, slideTwo] = nativeEl.querySelectorAll('.carousel-item');
+      const indicators = nativeEl.querySelectorAll('ol.carousel-indicators > li');
+
+      expect(slideOne.className).toBe('carousel-item active');
+      expect(slideTwo.className).toBe('carousel-item');
+
+      indicators[1].click();
+      fixture.detectChanges();
+
+      expect(slideOne.className).toBe('carousel-item');
+      expect(slideTwo.className).toBe('carousel-item active');
+
+      expect(onSlidSpy).toHaveBeenCalledWith(
+          {prev: 'one', current: 'two', direction: 'left', paused: false, source: 'indicator'});
+      expect(onSlidSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it(`should revert slide transition (force-reduced-motion = false)`, (done) => {
+      const fixture = TestBed.createComponent(TestAnimationComponent);
+      fixture.componentInstance.reduceMotion = false;
+      fixture.detectChanges();
+
+      const nativeEl = fixture.nativeElement;
+      const[slideOne, slideTwo, slideThree] = nativeEl.querySelectorAll('.carousel-item');
+      const indicators = nativeEl.querySelectorAll('ol.carousel-indicators > li');
+
+      const onSlidSpy = spyOn(fixture.componentInstance, 'onSlid');
+      onSlidSpy.and.callFake((payload) => {
+        expect(slideOne.className).toBe('carousel-item active');
+        expect(slideTwo.className).toBe('carousel-item');
+        expect(slideThree.className).toBe('carousel-item');
+
+        expect(payload).toEqual({prev: 'two', current: 'one', direction: 'right', paused: false, source: 'indicator'});
+        expect(onSlidSpy).toHaveBeenCalledTimes(1);
+
+        done();
+      });
+
+      expect(slideOne.className).toBe('carousel-item active');
+      expect(slideTwo.className).toBe('carousel-item');
+
+      indicators[1].click();
+      fixture.detectChanges();
+
+      expect(slideOne.className).toBe('carousel-item active carousel-item-left');
+      expect(slideTwo.className).toBe('carousel-item carousel-item-next carousel-item-left');
+      expect(slideThree.className).toBe('carousel-item');
+
+      // Reverse only possible when clicking on previous one
+      indicators[2].click();
+      fixture.detectChanges();
+
+      expect(slideOne.className).toBe('carousel-item active carousel-item-left');
+      expect(slideTwo.className).toBe('carousel-item carousel-item-next carousel-item-left');
+      expect(slideThree.className).toBe('carousel-item');
+
+      // Reverse
+      indicators[0].click();
+      fixture.detectChanges();
+
+      expect(slideOne.className).toBe('carousel-item active');
+      expect(slideTwo.className).toBe('carousel-item carousel-item-next');
+      expect(slideThree.className).toBe('carousel-item');
+    });
+
+    it(`should revert slide transition (force-reduced-motion = true)`, () => {
+      const fixture = TestBed.createComponent(TestAnimationComponent);
+      fixture.componentInstance.reduceMotion = true;
+      fixture.detectChanges();
+
+      const nativeEl = fixture.nativeElement;
+
+      const onSlidSpy = spyOn(fixture.componentInstance, 'onSlid');
+
+      const[slideOne, slideTwo, slideThree] = nativeEl.querySelectorAll('.carousel-item');
+      const indicators = nativeEl.querySelectorAll('ol.carousel-indicators > li');
+
+      expect(slideOne.className).toBe('carousel-item active');
+      expect(slideTwo.className).toBe('carousel-item');
+      expect(slideThree.className).toBe('carousel-item');
+
+      indicators[1].click();
+      fixture.detectChanges();
+
+      expect(slideOne.className).toBe('carousel-item');
+      expect(slideTwo.className).toBe('carousel-item active');
+      expect(slideThree.className).toBe('carousel-item');
+
+      indicators[2].click();
+      fixture.detectChanges();
+
+      expect(slideOne.className).toBe('carousel-item');
+      expect(slideTwo.className).toBe('carousel-item');
+      expect(slideThree.className).toBe('carousel-item active');
+
+      indicators[0].click();
+      fixture.detectChanges();
+
+      expect(slideOne.className).toBe('carousel-item active');
+      expect(slideTwo.className).toBe('carousel-item');
+      expect(slideThree.className).toBe('carousel-item');
+
+      expect(onSlidSpy.calls.allArgs()).toEqual([
+        [{prev: 'one', current: 'two', direction: 'left', paused: false, source: 'indicator'}],
+        [{prev: 'two', current: 'three', direction: 'left', paused: false, source: 'indicator'}],
+        [{prev: 'three', current: 'one', direction: 'right', paused: false, source: 'indicator'}],
+      ]);
+
+      expect(onSlidSpy).toHaveBeenCalledTimes(3);
+    });
+
+  });
+}
+
 @Component({selector: 'test-cmp', template: ''})
 class TestComponent {
   addNewSlide = false;
@@ -934,6 +1133,7 @@ class TestComponent {
   showNavigationIndicators = true;
   slides = ['a', 'b'];
   carouselSlideCallBack = (event: NgbSlideEvent) => {};
+  carouselSingleSlideCallBack = (event: NgbSingleSlideEvent, id: string) => {};
 }
 
 @Component({

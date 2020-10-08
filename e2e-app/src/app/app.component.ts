@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import {NgbConfig} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-root',
@@ -13,4 +14,5 @@ import {Component} from '@angular/core';
   `
 })
 export class AppComponent {
+  constructor(ngbConfig: NgbConfig) { ngbConfig.animation = false; }
 }

@@ -1,10 +1,12 @@
 import {TestBed, ComponentFixture, inject} from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
-import {createGenericTestComponent} from '../test/common';
+import {createGenericTestComponent, isBrowserVisible} from '../test/common';
 
 import {Component} from '@angular/core';
 
 import {NgbAccordionModule, NgbPanelChangeEvent, NgbAccordionConfig, NgbAccordion} from './accordion.module';
+import {NgbConfig} from '../ngb-config';
+import {NgbConfigAnimation} from '../test/ngb-config-animation';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -14,7 +16,7 @@ function getPanels(element: HTMLElement): HTMLDivElement[] {
 }
 
 function getPanelsContent(element: HTMLElement): HTMLDivElement[] {
-  return <HTMLDivElement[]>Array.from(element.querySelectorAll('.card > .collapse'));
+  return <HTMLDivElement[]>Array.from(element.querySelectorAll('.card > .collapse, .card > .collapsing'));
 }
 
 function getPanelsButton(element: HTMLElement): HTMLButtonElement[] {
@@ -51,8 +53,9 @@ function expectOpenPanels(nativeEl: HTMLElement, openPanelsDef: boolean[]) {
 describe('ngb-accordion', () => {
   let html = `
     <ngb-accordion #acc="ngbAccordion" [closeOthers]="closeOthers" [activeIds]="activeIds"
-      (panelChange)="changeCallback($event)" [type]="classType">
-      <ngb-panel *ngFor="let panel of panels" [id]="panel.id" [disabled]="panel.disabled" [type]="panel.type">
+      (panelChange)="changeCallback($event)" (shown)="shownCallback($event)" (hidden)="hiddenCallback($event)" [type]="classType">
+      <ngb-panel *ngFor="let panel of panels" [id]="panel.id" [disabled]="panel.disabled" [type]="panel.type"
+        (shown)="panelShownCallback($event)" (hidden)="panelHiddenCallback($event)">
         <ng-template ngbPanelTitle>{{panel.title}}</ng-template>
         <ng-template ngbPanelContent>{{panel.content}}</ng-template>
       </ngb-panel>
@@ -66,8 +69,8 @@ describe('ngb-accordion', () => {
   });
 
   it('should initialize inputs with default values', () => {
-    const defaultConfig = new NgbAccordionConfig();
-    const accordionCmp = new NgbAccordion(defaultConfig);
+    const defaultConfig = new NgbAccordionConfig(new NgbConfig());
+    const accordionCmp = TestBed.createComponent(NgbAccordion).componentInstance;
     expect(accordionCmp.type).toBe(defaultConfig.type);
     expect(accordionCmp.closeOtherPanels).toBe(defaultConfig.closeOthers);
   });
@@ -552,25 +555,31 @@ describe('ngb-accordion', () => {
     expect(panelContents.length).toBe(3);
   });
 
-  it('should emit panel change event when toggling panels', () => {
+  it('should emit panel events when toggling panels', () => {
     const fixture = TestBed.createComponent(TestComponent);
     fixture.detectChanges();
 
-    fixture.componentInstance.changeCallback = () => {};
-
     spyOn(fixture.componentInstance, 'changeCallback');
+    spyOn(fixture.componentInstance, 'shownCallback');
+    spyOn(fixture.componentInstance, 'hiddenCallback');
+    spyOn(fixture.componentInstance, 'panelShownCallback');
+    spyOn(fixture.componentInstance, 'panelHiddenCallback');
 
     // Select the first tab -> change event
     getButton(fixture.nativeElement, 0).click();
     fixture.detectChanges();
     expect(fixture.componentInstance.changeCallback)
         .toHaveBeenCalledWith(jasmine.objectContaining({panelId: 'one', nextState: true}));
+    expect(fixture.componentInstance.shownCallback).toHaveBeenCalledWith('one');
+    expect(fixture.componentInstance.panelShownCallback).toHaveBeenCalledWith(undefined);
 
     // Select the first tab again -> change event
     getButton(fixture.nativeElement, 0).click();
     fixture.detectChanges();
     expect(fixture.componentInstance.changeCallback)
         .toHaveBeenCalledWith(jasmine.objectContaining({panelId: 'one', nextState: false}));
+    expect(fixture.componentInstance.hiddenCallback).toHaveBeenCalledWith('one');
+    expect(fixture.componentInstance.panelHiddenCallback).toHaveBeenCalledWith(undefined);
   });
 
   it('should cancel panel toggle when preventDefault() is called', () => {
@@ -662,7 +671,7 @@ describe('ngb-accordion', () => {
   });
 
   describe('Custom config as provider', () => {
-    let config = new NgbAccordionConfig();
+    let config = new NgbAccordionConfig(new NgbConfig());
     config.closeOthers = true;
     config.type = 'success';
 
@@ -857,6 +866,186 @@ describe('ngb-accordion', () => {
   });
 });
 
+if (isBrowserVisible('ngb-accordion animations')) {
+  describe('ngb-accordion animations', () => {
+
+    @Component({
+      template: `
+      <ngb-accordion activeIds="first" (panelChange)="onPanelChange($event)" (shown)="onShown($event)" (hidden)="onHidden($event)">
+        <ngb-panel id="first" (shown)="onPanelShown()" (hidden)="onPanelHidden()"></ngb-panel>
+        <ngb-panel id="second"></ngb-panel>
+      </ngb-accordion>
+    `,
+      host: {'[class.ngb-reduce-motion]': 'reduceMotion'}
+    })
+    class TestAnimationComponent {
+      reduceMotion = true;
+      onShown = (panelId) => panelId;
+      onHidden = (panelId) => panelId;
+      onPanelChange = () => {};
+      onPanelShown = () => {};
+      onPanelHidden = () => {};
+    }
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        declarations: [TestAnimationComponent],
+        imports: [NgbAccordionModule],
+        providers: [{provide: NgbConfig, useClass: NgbConfigAnimation}]
+      });
+    });
+
+    it(`should run collapsing transition (force-reduced-motion = false)`, (done) => {
+      const fixture = TestBed.createComponent(TestAnimationComponent);
+      fixture.componentInstance.reduceMotion = false;
+      fixture.detectChanges();
+
+      const buttonEl = getPanelsButton(fixture.nativeElement)[0];
+      let panelEl = getPanelsContent(fixture.nativeElement)[0];
+      const onShownSpy = spyOn(fixture.componentInstance, 'onShown');
+      const onHiddenSpy = spyOn(fixture.componentInstance, 'onHidden');
+      const onPanelChangeSpy = spyOn(fixture.componentInstance, 'onPanelChange');
+      const onPanelShownSpy = spyOn(fixture.componentInstance, 'onPanelShown');
+      const onPanelHiddenSpy = spyOn(fixture.componentInstance, 'onPanelHidden');
+
+      onHiddenSpy.and.callFake((panelId) => {
+        expect(onPanelHiddenSpy).toHaveBeenCalled();
+        expect(panelId).toBe('first');
+        expect(panelEl).toHaveClass('collapse');
+        expect(panelEl).not.toHaveClass('collapsing');
+        expect(panelEl).not.toHaveClass('show');
+
+        // Expanding
+        buttonEl.click();
+        fixture.detectChanges();
+        expect(onPanelChangeSpy).toHaveBeenCalledTimes(2);
+
+      });
+
+      onShownSpy.and.callFake((panelId) => {
+        expect(onPanelShownSpy).toHaveBeenCalled();
+        expect(panelId).toBe('first');
+
+        // The previous one has been destroyed, need to get the new element
+        panelEl = getPanelsContent(fixture.nativeElement)[0];
+        expect(panelEl).toHaveClass('collapse');
+        expect(panelEl).not.toHaveClass('collapsing');
+        expect(panelEl).toHaveClass('show');
+        done();
+      });
+
+      expect(panelEl).toHaveClass('collapse');
+      expect(panelEl).toHaveClass('show');
+      expect(panelEl).not.toHaveClass('collapsing');
+
+      // Collapsing
+      buttonEl.click();
+      fixture.detectChanges();
+
+      expect(onPanelChangeSpy).toHaveBeenCalledTimes(1);
+      expect(panelEl).not.toHaveClass('collapse');
+      expect(panelEl).not.toHaveClass('show');
+      expect(panelEl).toHaveClass('collapsing');
+
+    });
+
+    it(`should run collapsing transition (force-reduced-motion = true)`, () => {
+      const fixture = TestBed.createComponent(TestAnimationComponent);
+      fixture.componentInstance.reduceMotion = true;
+      fixture.detectChanges();
+
+      const buttonEl = getPanelsButton(fixture.nativeElement)[0];
+      let panelEl = getPanelsContent(fixture.nativeElement)[0];
+      const onShownSpy = spyOn(fixture.componentInstance, 'onShown');
+      const onHiddenSpy = spyOn(fixture.componentInstance, 'onHidden');
+      const onPanelChangeSpy = spyOn(fixture.componentInstance, 'onPanelChange');
+      const onPanelShownSpy = spyOn(fixture.componentInstance, 'onPanelShown');
+      const onPanelHiddenSpy = spyOn(fixture.componentInstance, 'onPanelHidden');
+
+      expect(panelEl).toHaveClass('collapse');
+      expect(panelEl).toHaveClass('show');
+      expect(panelEl).not.toHaveClass('collapsing');
+
+      // Collapsing
+      buttonEl.click();
+      fixture.detectChanges();
+
+      expect(onPanelChangeSpy).toHaveBeenCalledTimes(1);
+      expect(onHiddenSpy).toHaveBeenCalledWith('first');
+      expect(onPanelHiddenSpy).toHaveBeenCalled();
+      expect(panelEl).toHaveClass('collapse');
+      expect(panelEl).not.toHaveClass('show');
+      expect(panelEl).not.toHaveClass('collapsing');
+
+      // Expanding
+      buttonEl.click();
+      fixture.detectChanges();
+
+      expect(onPanelChangeSpy).toHaveBeenCalledTimes(2);
+      expect(onShownSpy).toHaveBeenCalledWith('first');
+      expect(onPanelShownSpy).toHaveBeenCalled();
+
+      // The previous one has been destroyed, need to get the new element
+      panelEl = getPanelsContent(fixture.nativeElement)[0];
+      expect(panelEl).toHaveClass('collapse');
+      expect(panelEl).toHaveClass('show');
+      expect(panelEl).not.toHaveClass('collapsing');
+
+    });
+
+    it(`should run revert collapsing transition (force-reduced-motion = false)`, (done) => {
+      const fixture = TestBed.createComponent(TestAnimationComponent);
+      fixture.componentInstance.reduceMotion = false;
+      fixture.detectChanges();
+
+      const buttonEl = getPanelsButton(fixture.nativeElement)[0];
+      let panelEl = getPanelsContent(fixture.nativeElement)[0];
+
+      const onPanelChangeSpy = spyOn(fixture.componentInstance, 'onPanelChange');
+      const onHiddenSpy = spyOn(fixture.componentInstance, 'onHidden');
+      const onShownSpy = spyOn(fixture.componentInstance, 'onShown');
+      const onPanelShownSpy = spyOn(fixture.componentInstance, 'onPanelShown');
+      const onPanelHiddenSpy = spyOn(fixture.componentInstance, 'onPanelHidden');
+
+      onShownSpy.and.callFake((panelId) => {
+        expect(onHiddenSpy).not.toHaveBeenCalled();
+        expect(onPanelHiddenSpy).not.toHaveBeenCalled();
+        expect(onPanelShownSpy).toHaveBeenCalled();
+        expect(panelId).toBe('first');
+
+        // The previous one has been destroyed, need to get the new element
+        panelEl = getPanelsContent(fixture.nativeElement)[0];
+        expect(panelEl).toHaveClass('collapse');
+        expect(panelEl).toHaveClass('show');
+        expect(panelEl).not.toHaveClass('collapsing');
+        done();
+      });
+
+      expect(panelEl).toHaveClass('collapse');
+      expect(panelEl).toHaveClass('show');
+      expect(panelEl).not.toHaveClass('collapsing');
+
+      // Collapsing
+      buttonEl.click();
+      fixture.detectChanges();
+      expect(onPanelChangeSpy).toHaveBeenCalledTimes(1);
+      expect(panelEl).not.toHaveClass('collapse');
+      expect(panelEl).not.toHaveClass('show');
+      expect(panelEl).toHaveClass('collapsing');
+
+      // Expanding
+      buttonEl.click();
+      fixture.detectChanges();
+      expect(onPanelChangeSpy).toHaveBeenCalledTimes(2);
+      panelEl = getPanelsContent(fixture.nativeElement)[0];
+      expect(panelEl).not.toHaveClass('collapse');
+      expect(panelEl).not.toHaveClass('show');
+      expect(panelEl).toHaveClass('collapsing');
+    });
+
+  });
+}
+
 @Component({selector: 'test-cmp', template: ''})
 class TestComponent {
   activeIds: string | string[] = [];
@@ -868,5 +1057,9 @@ class TestComponent {
     {id: 'three', disabled: false, title: 'Panel 3', content: 'baz', type: ''}
   ];
   changeCallback = (event: NgbPanelChangeEvent) => {};
+  shownCallback = (panelId: string) => {};
+  hiddenCallback = (panelId: string) => {};
+  panelShownCallback = (panelId: string) => {};
+  panelHiddenCallback = (panelId: string) => {};
   preventDefaultCallback = (event: NgbPanelChangeEvent) => { event.preventDefault(); };
 }

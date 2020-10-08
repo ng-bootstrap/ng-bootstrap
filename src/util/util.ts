@@ -86,3 +86,11 @@ export function closest(element: HTMLElement, selector?: string): HTMLElement | 
 
   return element.closest(selector);
 }
+
+/**
+ * Force a browser reflow
+ * @param element element where to apply the reflow
+ */
+export function reflow(element: HTMLElement) {
+  return (element || document.body).offsetHeight;
+}

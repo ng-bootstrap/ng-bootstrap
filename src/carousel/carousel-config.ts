@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {NgbConfig} from '../ngb-config';
 
 /**
  * A configuration service for the [NgbCarousel](#/components/carousel/api#NgbCarousel) component.
@@ -8,6 +9,7 @@ import {Injectable} from '@angular/core';
  */
 @Injectable({providedIn: 'root'})
 export class NgbCarouselConfig {
+  animation: boolean;
   interval = 5000;
   wrap = true;
   keyboard = true;
@@ -15,4 +17,6 @@ export class NgbCarouselConfig {
   pauseOnFocus = true;
   showNavigationArrows = true;
   showNavigationIndicators = true;
+
+  constructor(ngbConfig: NgbConfig) { this.animation = ngbConfig.animation; }
 }

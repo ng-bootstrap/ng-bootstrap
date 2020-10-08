@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {PlacementArray} from '../util/positioning';
+import {NgbConfig} from '../ngb-config';
 
 /**
  * A configuration service for the [`NgbPopover`](#/components/popover/api#NgbPopover) component.
@@ -9,6 +10,7 @@ import {PlacementArray} from '../util/positioning';
  */
 @Injectable({providedIn: 'root'})
 export class NgbPopoverConfig {
+  animation: boolean;
   autoClose: boolean | 'inside' | 'outside' = true;
   placement: PlacementArray = 'auto';
   triggers = 'click';
@@ -17,4 +19,6 @@ export class NgbPopoverConfig {
   popoverClass: string;
   openDelay = 0;
   closeDelay = 0;
+
+  constructor(ngbConfig: NgbConfig) { this.animation = ngbConfig.animation; }
 }

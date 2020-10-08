@@ -12,7 +12,11 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
+import {Observable} from 'rxjs';
+
 import {NgbAlertConfig} from './alert-config';
+import {ngbRunTransition} from '../util/transition/ngbTransition';
+import {ngbAlertFadingTransition} from '../util/transition/ngbFadingTransition';
 
 /**
  * Alert is a component to provide contextual feedback messages for user.
@@ -21,13 +25,15 @@ import {NgbAlertConfig} from './alert-config';
  */
 @Component({
   selector: 'ngb-alert',
+  exportAs: 'ngbAlert',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  host: {'role': 'alert', 'class': 'alert', '[class.alert-dismissible]': 'dismissible'},
+  host:
+      {'role': 'alert', 'class': 'alert show', '[class.fade]': 'animation', '[class.alert-dismissible]': 'dismissible'},
   template: `
     <ng-content></ng-content>
     <button *ngIf="dismissible" type="button" class="close" aria-label="Close" i18n-aria-label="@@ngb.alert.close"
-      (click)="closeHandler()">
+      (click)="close()">
       <span aria-hidden="true">&times;</span>
     </button>
     `,
@@ -36,12 +42,21 @@ import {NgbAlertConfig} from './alert-config';
 export class NgbAlert implements OnInit,
     OnChanges {
   /**
+   * If `true`, alert closing will be animated.
+   *
+   * Animation is triggered only when clicked on the close button (×)
+   * or via the `.close()` function
+   */
+  @Input() animation: boolean;
+
+  /**
    * If `true`, alert can be dismissed by the user.
    *
    * The close button (×) will be displayed and you can be notified
    * of the event with the `(close)` output.
    */
   @Input() dismissible: boolean;
+
   /**
    * Type of the alert.
    *
@@ -49,17 +64,34 @@ export class NgbAlert implements OnInit,
    * `'secondary'`, `'light'` and `'dark'`.
    */
   @Input() type: string;
+
   /**
    * An event emitted when the close button is clicked. It has no payload and only relevant for dismissible alerts.
    */
-  @Output() close = new EventEmitter<void>();
+  @Output() closed = new EventEmitter<void>();
+
 
   constructor(config: NgbAlertConfig, private _renderer: Renderer2, private _element: ElementRef) {
     this.dismissible = config.dismissible;
     this.type = config.type;
+    this.animation = config.animation;
   }
 
-  closeHandler() { this.close.emit(); }
+  /**
+   * Triggers alert closing programmatically (same as clicking on the close button (×)).
+   *
+   * The returned observable will emit and be completed once the closing transition has finished.
+   * If the animations are turned off this happens synchronously.
+   *
+   * Alternatively you could listen or subscribe to the `(closed)` output
+   */
+  close(): Observable<void> {
+    const transition = ngbRunTransition(
+        this._element.nativeElement, ngbAlertFadingTransition,
+        {animation: this.animation, runningTransition: 'continue'});
+    transition.subscribe(() => this.closed.emit());
+    return transition;
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     const typeChange = changes['type'];
