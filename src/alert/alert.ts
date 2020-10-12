@@ -46,6 +46,8 @@ export class NgbAlert implements OnInit,
    *
    * Animation is triggered only when clicked on the close button (×)
    * or via the `.close()` function
+   *
+   * @since 8.0.0
    */
   @Input() animation: boolean;
 
@@ -67,6 +69,8 @@ export class NgbAlert implements OnInit,
 
   /**
    * An event emitted when the close button is clicked. It has no payload and only relevant for dismissible alerts.
+   *
+   * @since 8.0.0
    */
   @Output() closed = new EventEmitter<void>();
 
@@ -84,6 +88,8 @@ export class NgbAlert implements OnInit,
    * If the animations are turned off this happens synchronously.
    *
    * Alternatively you could listen or subscribe to the `(closed)` output
+   *
+   * @since 8.0.0
    */
   close(): Observable<void> {
     const transition = ngbRunTransition(

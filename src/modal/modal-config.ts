@@ -7,6 +7,8 @@ import {NgbConfig} from '../ngb-config';
 export interface NgbModalOptions {
   /**
    * If `true`, modal opening and closing will be animated.
+   *
+   * @since 8.0.0
    */
   animation?: boolean;
 

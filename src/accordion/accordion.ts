@@ -118,11 +118,15 @@ export class NgbPanel implements AfterContentChecked {
 
   /**
    * An event emitted when the panel is shown, after the transition. It has no payload.
+   *
+   * @since 8.0.0
    */
   @Output() shown = new EventEmitter<void>();
 
   /**
    * An event emitted when the panel is hidden, after the transition. It has no payload.
+   *
+   * @since 8.0.0
    */
   @Output() hidden = new EventEmitter<void>();
 
@@ -206,6 +210,8 @@ export class NgbAccordion implements AfterContentChecked {
 
   /**
    * If `true`, accordion will be animated.
+   *
+   * @since 8.0.0
    */
   @Input() animation;
 
@@ -246,12 +252,16 @@ export class NgbAccordion implements AfterContentChecked {
 
   /**
    * An event emitted when the expanding animation is finished on the panel. The payload is the panel id.
+   *
+   * @since 8.0.0
    */
   @Output() shown = new EventEmitter<string>();
 
   /**
    * An event emitted when the collapsing animation is finished on the panel, and before the panel element is removed.
    * The payload is the panel id.
+   *
+   * @since 8.0.0
    */
   @Output() hidden = new EventEmitter<string>();
 

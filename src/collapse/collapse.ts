@@ -22,6 +22,8 @@ export class NgbCollapse implements OnInit, OnChanges {
    *
    * Animation is triggered only when clicked on triggering element
    * or via the `.toggle()` function
+   *
+   * @since 8.0.0
    */
   @Input() animation = false;
 
@@ -34,11 +36,15 @@ export class NgbCollapse implements OnInit, OnChanges {
 
   /**
    * An event emitted when the collapse element is shown, after the transition. It has no payload.
+   *
+   * @since 8.0.0
    */
   @Output() shown = new EventEmitter<void>();
 
   /**
    * An event emitted when the collapse element is hidden, after the transition. It has no payload.
+   *
+   * @since 8.0.0
    */
   @Output() hidden = new EventEmitter<void>();
 
