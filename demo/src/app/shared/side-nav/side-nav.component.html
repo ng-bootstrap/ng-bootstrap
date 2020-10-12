@@ -28,6 +28,10 @@
         [class.active]="isActive(['/components', component.toLowerCase()], false)">
         <a class="toc-link" [routerLink]="['/components', component.toLowerCase()]">{{ component }}</a>
       </li>
+      <li *ngFor="let component of deprecatedComponents"
+          [class.active]="isActive(['/components', component.toLowerCase()], false)">
+        <a class="toc-link deprecated" [routerLink]="['/components', component.toLowerCase()]">{{ component }}</a>
+      </li>
     </ul>
   </div>
 

@@ -13,7 +13,7 @@
       </svg>
       <span class="ml-1">Code</span>
     </button>
-    <a role="button" (click)="trackStackBlitzClick()" class="stackblitz btn btn-light" target="_blank"
+    <a *ngIf="showStackblitz" role="button" (click)="trackStackBlitzClick()" class="stackblitz btn btn-light" target="_blank"
       href="/stackblitzes/{{component}}/{{id}}/stackblitz.html" title="Edit in StackBlitz">
       <img class="stackblitz-icon" src="img/stackblitz-icon.svg" alt="StackBlitz icon" />
       StackBlitz

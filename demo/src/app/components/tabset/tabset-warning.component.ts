@@ -10,8 +10,8 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
       </div>
       <div>
         Tabset is deprecated since version <span class="badge badge-info">6.0.0</span>
-        and is not supported anymore. Please use <a routerLink="/components/nav">Nav directives</a>
-        as a more flexible alternative.
+        and is removed in <span class="badge badge-info">8.0.0</span>.
+        Please use <a routerLink="/components/nav">Nav directives</a> as a more flexible alternative.
       </div>
     </ngb-alert>
   `

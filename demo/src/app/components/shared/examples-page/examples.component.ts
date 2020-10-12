@@ -14,6 +14,7 @@ import {NgbdDemoList} from '../demo-list';
       [component]="component"
       [files]="demo.files"
       [showCode]="demo.showCode"
+      [showStackblitz]="demo.showStackblitz == null ? true : demo.showStackblitz"
     >
       <ng-template [ngComponentOutlet]="demo.type"></ng-template>
     </ngbd-widget-demo>
