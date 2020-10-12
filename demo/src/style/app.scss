@@ -125,6 +125,14 @@ header.title {
 //       display: block;
 //       padding: 0.25rem 1.5rem;
       color: rgba(0, 0, 0, 0.65);
+
+      &.deprecated {
+        text-decoration: line-through !important;
+
+        &:first-child {
+          margin-top: 0.5rem;
+        }
+      }
     }
 
     .nav > li > a {
