@@ -7,6 +7,11 @@ export interface NgbCollapseCtx {
 }
 
 function measureCollapsingElementHeightPx(element: HTMLElement): string {
+  // SSR fix for without injecting the PlatformId
+  if (typeof navigator === 'undefined') {
+    return '0px';
+  }
+
   const {classList} = element;
   const hasShownClass = classList.contains('show');
   if (!hasShownClass) {
