@@ -13,11 +13,11 @@ import { CollapseComponent } from './components/collapse.component';
 import { DatepickerComponent } from './components/datepicker.component';
 import { DropdownComponent } from './components/dropdown.component';
 import { ModalComponent } from './components/modal.component';
+import { NavComponent } from './components/nav.component';
 import { PaginationComponent } from './components/pagination.component';
 import { PopoverComponent } from './components/popover.component';
 import { ProgressComponent } from './components/progress.component';
 import { RatingComponent } from './components/rating.component';
-import { TabsetComponent } from './components/tabset.component';
 import { TimepickerComponent } from './components/timepicker.component';
 import { TooltipComponent } from './components/tooltip.component';
 import { TypeaheadComponent } from './components/typeahead.component';
@@ -33,11 +33,11 @@ import { TypeaheadComponent } from './components/typeahead.component';
     DatepickerComponent,
     DropdownComponent,
     ModalComponent,
+    NavComponent,
     PaginationComponent,
     PopoverComponent,
     ProgressComponent,
     RatingComponent,
-    TabsetComponent,
     TimepickerComponent,
     TooltipComponent,
     TypeaheadComponent
