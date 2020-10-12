@@ -21,38 +21,33 @@
   </h2>
   <div class="card">
     <div *ngIf="showCode" class="bg-light border-bottom tabset-code">
-      <ngb-tabset [type]="hasManyFiles ? 'pills' : 'tabs'" [class.d-flex]="hasManyFiles" [class.flex-row]="hasManyFiles"
+      <ul ngbNav #nav="ngbNav" class="nav-{{hasManyFiles ? 'pills' : 'tabs'}}" [class.d-flex]="hasManyFiles" [class.flex-row]="hasManyFiles"
         [orientation]="hasManyFiles ? 'vertical' : 'horizontal'">
         <ng-template [ngIf]="files" [ngIfElse]="old">
-          <ngb-tab *ngFor="let file of files; index as index" id="{{component}}-{{file.name}}-{{index}}">
-            <ng-template ngbTabTitle>
+          <li ngbNavItem="{{component}}-{{file.name}}-{{index}}" *ngFor="let file of files; index as index">
+            <a ngbNavLink>
               <span class="text-truncate" [title]="tabType(file.name)">{{file.name}}</span>
-            </ng-template>
-            <ng-template ngbTabContent>
-              <ngbd-code [snippet]="getFileSnippet(file)"></ngbd-code>
-            </ng-template>
-          </ngb-tab>
+            </a>
+            <ngbd-code *ngbNavContent [snippet]="getFileSnippet(file)"></ngbd-code>
+          </li>
         </ng-template>
 
         <ng-template #old>
-          <ngb-tab id="{{component}}-{{id}}-html">
-            <ng-template ngbTabTitle>
+          <li ngbNavItem="{{component}}-{{id}}-html">
+            <a ngbNavLink>
               <span class="ml-2">{{component}}-{{id}}.html</span>
-            </ng-template>
-            <ng-template ngbTabContent>
-              <ngbd-code [snippet]="markupSnippet"></ngbd-code>
-            </ng-template>
-          </ngb-tab>
-          <ngb-tab id="{{component}}-{{id}}-typescript">
-            <ng-template ngbTabTitle>
+            </a>
+            <ngbd-code *ngbNavContent [snippet]="markupSnippet"></ngbd-code>
+          </li>
+          <li ngbNavItem="{{component}}-{{id}}-typescript">
+            <a ngbNavLink>
               <span class="ml-2">{{component}}-{{id}}.ts</span>
-            </ng-template>
-            <ng-template ngbTabContent>
-              <ngbd-code [snippet]="codeSnippet"></ngbd-code>
-            </ng-template>
-          </ngb-tab>
+            </a>
+            <ngbd-code *ngbNavContent [snippet]="codeSnippet"></ngbd-code>
+          </li>
         </ng-template>
-      </ngb-tabset>
+      </ul>
+      <div [ngbNavOutlet]="nav"></div>
     </div>
     <div class="card-body">
       <ng-content></ng-content>

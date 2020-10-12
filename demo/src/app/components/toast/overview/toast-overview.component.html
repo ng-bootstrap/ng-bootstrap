@@ -61,20 +61,24 @@
     To achieve that, you could create a dedicated container component/element to render all toasts in a convenient way.
     For example, this container could be positionned using CSS property <code>position: static</code>.
   </p>
-  <ngb-tabset>
-    <ngb-tab title="Template">
-      <ngbd-code *ngbTabContent [snippet]="APP_TOASTS_CONTAINER_TPL"></ngbd-code>
-    </ngb-tab>
-    <ngb-tab title="Styles">
-      <div *ngbTabContent>
+  <ul ngbNav #nav="ngbNav" class="nav-tabs">
+    <li ngbNavItem>
+      <a ngbNavLink>Template</a>
+      <ngbd-code *ngbNavContent [snippet]="APP_TOASTS_CONTAINER_TPL"></ngbd-code>
+    </li>
+    <li ngbNavItem>
+      <a ngbNavLink>Styles</a>
+      <div *ngbNavContent>
         <ngbd-code [snippet]="APP_TOASTS_CONTAINER_STYLES"></ngbd-code>
         <p>We provide a dedicated <code>ngb-toasts</code> CSS class you could use, or write your own styles in case some specificities would be needed.</p>
       </div>
-    </ngb-tab>
-    <ngb-tab title="Component">
-      <ngbd-code *ngbTabContent [snippet]="APP_TOASTS_CONTAINER"></ngbd-code>
-    </ngb-tab>
-  </ngb-tabset>
+    </li>
+    <li ngbNavItem>
+      <a ngbNavLink>Component</a>
+      <ngbd-code *ngbNavContent [snippet]="APP_TOASTS_CONTAINER"></ngbd-code>
+    </li>
+  </ul>
+  <div [ngbNavOutlet]="nav"></div>
   <hr />
   <p>
     Lastly, let's use this container. Common sense would suggest to put it somewhere quite high in your hierarchy of components.
