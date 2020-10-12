@@ -60,8 +60,10 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
   static ngAcceptInputType_autoClose: boolean | string;
 
   /**
-  * If `true`, tooltip opening and closing will be animated.
-  */
+   * If `true`, tooltip opening and closing will be animated.
+   *
+   * @since 8.0.0
+   */
   @Input() animation: boolean;
 
   /**
@@ -136,11 +138,12 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
   @Input() closeDelay: number;
 
   /**
-   * An event emitted when the tooltip is shown. Contains no payload.
+   * An event emitted when the tooltip opening animation has finished. Contains no payload.
    */
   @Output() shown = new EventEmitter();
+
   /**
-   * An event emitted when the popover is hidden. Contains no payload.
+   * An event emitted when the tooltip closing animation has finished. Contains no payload.
    */
   @Output() hidden = new EventEmitter();
 

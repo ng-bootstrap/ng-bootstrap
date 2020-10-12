@@ -49,6 +49,8 @@ export class NgbSlide {
 
   /**
    * An event emitted when the slide transition is finished
+   *
+   * @since 8.0.0
    */
   @Output() slid = new EventEmitter<NgbSingleSlideEvent>();
 
@@ -119,6 +121,8 @@ export class NgbCarousel implements AfterContentChecked,
 
   /**
    * A flag to enable/disable the animations.
+   *
+   * @since 8.0.0
    */
   @Input() animation: boolean;
 
@@ -201,6 +205,8 @@ export class NgbCarousel implements AfterContentChecked,
    * An event emitted right after the slide transition is completed.
    *
    * See [`NgbSlideEvent`](#/components/carousel/api#NgbSlideEvent) for payload details.
+   *
+   * @since 8.0.0
    */
   @Output() slid = new EventEmitter<NgbSlideEvent>();
 
@@ -455,6 +461,8 @@ export interface NgbSlideEvent {
 
 /**
  * A slide change event emitted right after the slide transition is completed.
+ *
+ * @since 8.0.0
  */
 export interface NgbSingleSlideEvent {
   /**
@@ -477,6 +485,7 @@ export interface NgbSingleSlideEvent {
    */
   source?: NgbSlideEventSource;
 }
+
 export enum NgbSlideEventSource {
   TIMER = 'timer',
   ARROW_LEFT = 'arrowLeft',

@@ -95,11 +95,15 @@ export class NgbNavItem implements AfterContentChecked, OnInit {
 
   /**
    * An event emitted when the fade in transition is finished on the related nav content
+   *
+   * @since 8.0.0
    */
   @Output() shown = new EventEmitter<void>();
 
   /**
    * An event emitted when the fade out transition is finished on the related nav content
+   *
+   * @since 8.0.0
    */
   @Output() hidden = new EventEmitter<void>();
 
@@ -180,6 +184,8 @@ export class NgbNav implements AfterContentInit {
 
   /**
    * If `true`, nav change will be animated.
+   *
+   * @since 8.0.0
    */
   @Input() animation: boolean;
 
@@ -220,6 +226,8 @@ export class NgbNav implements AfterContentInit {
    * An event emitted when the fade in transition is finished for one of the items.
    *
    * Payload of the event is the nav id that was just shown.
+   *
+   * @since 8.0.0
    */
   @Output() shown = new EventEmitter<any>();
 
@@ -227,6 +235,8 @@ export class NgbNav implements AfterContentInit {
    * An event emitted when the fade out transition is finished for one of the items.
    *
    * Payload of the event is the nav id that was just hidden.
+   *
+   * @since 8.0.0
    */
   @Output() hidden = new EventEmitter<any>();
 

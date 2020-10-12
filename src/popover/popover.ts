@@ -70,8 +70,10 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
   static ngAcceptInputType_autoClose: boolean | string;
 
   /**
-  * If `true`, popover opening and closing will be animated.
-  */
+   * If `true`, popover opening and closing will be animated.
+   *
+   * @since 8.0.0
+   */
   @Input() animation: boolean;
 
   /**

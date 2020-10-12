@@ -60,6 +60,8 @@ export class NgbModalRef {
    * The observable that emits when the modal is closed via the `.close()` method.
    *
    * It will emit the result passed to the `.close()` method.
+   *
+   * @since 8.0.0
    */
   get closed(): Observable<any> { return this._closed.asObservable().pipe(takeUntil(this._hidden)); }
 
@@ -68,6 +70,8 @@ export class NgbModalRef {
    *
    * It will emit the reason passed to the `.dismissed()` method by the user, or one of the internal
    * reasons like backdrop click or ESC key press.
+   *
+   * @since 8.0.0
    */
   get dismissed(): Observable<any> { return this._dismissed.asObservable().pipe(takeUntil(this._hidden)); }
 
@@ -76,6 +80,8 @@ export class NgbModalRef {
    * At this point modal and backdrop elements will be removed from the DOM tree.
    *
    * This observable will be completed after emitting.
+   *
+   * @since 8.0.0
    */
   get hidden(): Observable<void> { return this._hidden.asObservable(); }
 
@@ -85,8 +91,10 @@ export class NgbModalRef {
    *
    * This observable will be completed after emitting.
    * It will not emit, if modal is closed before open animation is finished.
+   *
+   * @since 8.0.0
    */
-  get shown() { return this._windowCmptRef.instance.shown.asObservable(); }
+  get shown(): Observable<void> { return this._windowCmptRef.instance.shown.asObservable(); }
 
   constructor(
       private _windowCmptRef: ComponentRef<NgbModalWindow>, private _contentRef: ContentRef,

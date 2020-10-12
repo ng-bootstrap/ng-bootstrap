@@ -73,7 +73,9 @@ export class NgbToast implements AfterContentInit,
   /**
    * If `true`, toast opening and closing will be animated.
    *
-   * Animation is triggered only when the `.hide()` or  `.hide()` functions are called
+   * Animation is triggered only when the `.hide()` or `.show()` functions are called
+   *
+   * @since 8.0.0
    */
   @Input() animation: boolean;
 
@@ -105,6 +107,8 @@ export class NgbToast implements AfterContentInit,
 
   /**
    * An event fired after the animation triggered by calling `.show()` method has finished.
+   *
+   * @since 8.0.0
    */
   @Output() shown = new EventEmitter<void>();
 
@@ -113,10 +117,12 @@ export class NgbToast implements AfterContentInit,
    *
    * It can only occur in 2 different scenarios:
    * - `autohide` timeout fires
-   * - user clicks on a closing cross (&times)
+   * - user clicks on a closing cross
    *
    * Additionally this output is purely informative. The toast won't be removed from DOM automatically, it's up
    * to the user to take care of that.
+   *
+   * @since 8.0.0
    */
   @Output() hidden = new EventEmitter<void>();
 
@@ -152,6 +158,8 @@ export class NgbToast implements AfterContentInit,
    * If the animations are turned off this happens synchronously.
    *
    * Alternatively you could listen or subscribe to the `(hidden)` output
+   *
+   * @since 8.0.0
    */
   hide(): Observable<void> {
     this._clearTimeout();
@@ -168,6 +176,8 @@ export class NgbToast implements AfterContentInit,
    * If the animations are turned off this happens synchronously.
    *
    * Alternatively you could listen or subscribe to the `(shown)` output
+   *
+   * @since 8.0.0
    */
   show(): Observable<void> {
     const transition = ngbRunTransition(this._element.nativeElement, ngbToastFadeInTransition, {
