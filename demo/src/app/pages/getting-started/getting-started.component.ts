@@ -9,6 +9,7 @@ import {versions} from '../../../environments/versions';
 export class GettingStartedPage {
 
   instructionsCollapsed = true;
+  olderVersionsCollapsed = true;
   bsVersion = versions.bootstrap;
 
   schematics = Snippet({
