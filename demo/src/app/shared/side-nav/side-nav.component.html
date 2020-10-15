@@ -7,10 +7,7 @@
     <a class="toc-link" [routerLink]="['/animations']">Guides</a>
     <ul [ngbCollapse]="!isActive(['/guides'], false)" class="nav flex-column">
       <li [class.active]="isActive(['/guides', 'animations'], false)">
-        <a class="toc-link d-inline-flex align-items-center" routerLink="/guides/animations">
-          Animations
-          <span class="badge badge-info ml-1">beta</span>
-        </a>
+        <a class="toc-link d-inline-flex align-items-center" routerLink="/guides/animations">Animations</a>
       </li>
       <li [class.active]="isActive(['/guides', 'i18n'], false)">
         <a class="toc-link" routerLink="/guides/i18n">Internationalization</a>
