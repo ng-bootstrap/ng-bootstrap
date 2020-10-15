@@ -17,26 +17,35 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <th scope="row">1.x.x</th>
-        <td>5.0.2</td>
-        <td>4.0.0</td>
-      </tr>
-      <tr>
-        <th scope="row">2.x.x</th>
-        <td>6.0.0</td>
-        <td>4.0.0</td>
-      </tr>
-      <tr>
-        <th scope="row">3.x.x</th>
-        <td>6.1.0</td>
-        <td>4.0.0</td>
-      </tr>
-      <tr>
-        <th scope="row">4.x.x</th>
-        <td>7.0.0</td>
-        <td>4.0.0</td>
-      </tr>
+      <ng-template #showOlderVersions>
+        <tr>
+          <td colspan="3" class="text-center p-1">
+            <button class="btn btn-link m-0" (click)="olderVersionsCollapsed = false">Show older versions</button>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template [ngIf]="!olderVersionsCollapsed" [ngIfElse]="showOlderVersions">
+        <tr>
+          <th scope="row">1.x.x</th>
+          <td>5.0.2</td>
+          <td>4.0.0</td>
+        </tr>
+        <tr>
+          <th scope="row">2.x.x</th>
+          <td>6.0.0</td>
+          <td>4.0.0</td>
+        </tr>
+        <tr>
+          <th scope="row">3.x.x</th>
+          <td>6.1.0</td>
+          <td>4.0.0</td>
+        </tr>
+        <tr>
+          <th scope="row">4.x.x</th>
+          <td>7.0.0</td>
+          <td>4.0.0</td>
+        </tr>
+      </ng-template>
       <tr>
         <th scope="row">5.x.x</th>
         <td>8.0.0</td>
@@ -48,12 +57,18 @@
         <td>4.4.1</td>
       </tr>
       <tr>
-        <th scope="row">7.x.x</th>
+        <th scope="row">7.x.x, 8.x.x</th>
         <td>10.0.0</td>
         <td>4.5.0</td>
       </tr>
     </tbody>
   </table>
+
+  <p>
+    When bumping ng-bootstrap major version, make sure to check all the breaking changes listed in the
+    <a href="https://github.com/ng-bootstrap/ng-bootstrap/blob/master/CHANGELOG.md" target="_blank">changelog</a>.
+    We try to minimize them as much as possible.
+  </p>
 
   <ngbd-page-header title="Installation" fragment="installation" class="mb-3"></ngbd-page-header>
 
