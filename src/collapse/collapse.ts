@@ -67,6 +67,8 @@ export class NgbCollapse implements OnInit, OnChanges {
    *
    * If there is a collapsing transition running already, it will be reversed.
    * If the animations are turned off this happens synchronously.
+   *
+   * @since 8.0.0
    */
   toggle(open: boolean = this.collapsed) {
     this.collapsed = !open;
