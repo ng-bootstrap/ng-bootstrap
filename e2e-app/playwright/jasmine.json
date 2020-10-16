@@ -1,0 +1,13 @@
+{
+  "spec_dir": "e2e-app",
+  "spec_files": [
+    "**/*pw-spec.ts"
+  ],
+  "helpers": [
+    "./playwright/helpers/*.js"
+  ],
+  "stopSpecOnExpectationFailure": true,
+  "defaultTimeoutInterval": 60000,
+  "showColors": true,
+  "random": false
+}
