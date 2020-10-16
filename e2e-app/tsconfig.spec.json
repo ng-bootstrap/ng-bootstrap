@@ -1,16 +1,23 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
+    "baseUrl": "./",
     "outDir": "../out-tsc/e2e-app-e2e",
     "module": "commonjs",
     "types": [
       "jasmine",
       "jasminewd2",
       "node"
-    ]
+    ],
+    "paths": {
+      "@test": [
+        "./playwright/index"
+      ]
+    }
   },
   "include": [
-    "src/**/*.po.ts",
-    "src/**/*.e2e-spec.ts"
+    "./src/**/*po.ts",
+    "./src/**/*spec.ts",
+    "./playwright/**/*.ts"
   ]
 }

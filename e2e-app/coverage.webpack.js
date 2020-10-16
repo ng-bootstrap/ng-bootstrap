@@ -8,7 +8,7 @@ module.exports = {
         enforce: 'post',
         include: require('path').join(__dirname, '..', 'src'),
         exclude: [
-          /\.(e2e|spec)\.ts$/,
+          /\.(e2e|spec|po)\.ts$/,
           /node_modules/,
           /(ngfactory|ngstyle)\.js/
         ]
