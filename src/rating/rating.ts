@@ -218,16 +218,8 @@ export class NgbRating implements ControlValueAccessor,
   }
 
   private _getFillValue(index: number): number {
-    const diff = this.nextRate - index;
-
-    if (diff >= 1) {
-      return 100;
-    }
-    if (diff < 1 && diff > 0) {
-      return parseInt((diff * 100).toFixed(2), 10);
-    }
-
-    return 0;
+    const diff = getValueInRange(this.nextRate - index, 1, 0);
+    return Math.round(diff * 100);
   }
 
   private _updateState(nextValue: number) {
