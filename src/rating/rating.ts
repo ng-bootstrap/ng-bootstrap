@@ -17,6 +17,8 @@ import {NgbRatingConfig} from './rating-config';
 import {getValueInRange} from '../util/util';
 import {Key} from '../util/key';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {derived, SubscribableStore} from './stores';
+import { RatingState, RatingStore } from "./rating.store";
 
 /**
  * The context for the custom star display template defined in the `starTemplate`.
@@ -51,8 +53,8 @@ const NGB_RATING_VALUE_ACCESSOR = {
     '[tabindex]': 'disabled ? -1 : 0',
     'role': 'slider',
     'aria-valuemin': '0',
-    '[attr.aria-valuemax]': 'max',
-    '[attr.aria-valuenow]': 'nextRate',
+    '[attr.aria-valuemax]': 'state.maxRate',
+    '[attr.aria-valuenow]': 'state.nextRate',
     '[attr.aria-valuetext]': 'ariaValueText()',
     '[attr.aria-disabled]': 'readonly ? true : null',
     '(blur)': 'handleBlur()',
@@ -61,22 +63,23 @@ const NGB_RATING_VALUE_ACCESSOR = {
   },
   template: `
     <ng-template #t let-fill="fill">{{ fill === 100 ? '&#9733;' : '&#9734;' }}</ng-template>
-    <ng-template ngFor [ngForOf]="contexts" let-index="index">
-      <span class="sr-only">({{ index < nextRate ? '*' : ' ' }})</span>
+    <ng-template ngFor [ngForOf]="contexts$ | async" let-context let-index="index">
+      <span class="sr-only">({{ index < state.nextRate ? '*' : ' ' }})</span>
       <span (mouseenter)="enter(index + 1)" (click)="handleClick(index + 1)" [style.cursor]="readonly || disabled ? 'default' : 'pointer'">
-        <ng-template [ngTemplateOutlet]="starTemplate || starTemplateFromContent || t" [ngTemplateOutletContext]="contexts[index]">
+        <ng-template [ngTemplateOutlet]="starTemplate || starTemplateFromContent || t" [ngTemplateOutletContext]="context">
         </ng-template>
       </span>
     </ng-template>
   `,
-  providers: [NGB_RATING_VALUE_ACCESSOR]
+  providers: [NGB_RATING_VALUE_ACCESSOR, RatingStore]
 })
 export class NgbRating implements ControlValueAccessor,
     OnInit, OnChanges {
-  contexts: StarTemplateContext[] = [];
   disabled = false;
   nextRate: number;
 
+  state: RatingState;
+  contexts$: SubscribableStore<StarTemplateContext[]>;
 
   /**
    * The maximal rating that can be given.
@@ -130,16 +133,27 @@ export class NgbRating implements ControlValueAccessor,
   onChange = (_: any) => {};
   onTouched = () => {};
 
-  constructor(config: NgbRatingConfig, private _changeDetectorRef: ChangeDetectorRef) {
-    this.max = config.max;
+  constructor(config: NgbRatingConfig, private _changeDetectorRef: ChangeDetectorRef, private _ratingStore: RatingStore) {
+    this.contexts$ = derived(_ratingStore, (ratingState) => {
+      const result: StarTemplateContext[] = [];
+
+      console.log('Deriving from', ratingState);
+
+      for (let i = 0; i < ratingState.maxRate; i++) {
+        const fillValue = Math.round(getValueInRange(ratingState.nextRate - i, 1, 0) * 100);
+        result.push({index: i, fill: fillValue});
+      }
+
+      return result;
+    });
     this.readonly = config.readonly;
   }
 
-  ariaValueText() { return `${this.nextRate} out of ${this.max}`; }
+  ariaValueText() { return `${this.state.nextRate} out of ${this.state.maxRate}`; }
 
   enter(value: number): void {
     if (!this.readonly && !this.disabled) {
-      this._updateState(value);
+      this._ratingStore.setNextRate(value);
     }
     this.hover.emit(value);
   }
@@ -148,7 +162,7 @@ export class NgbRating implements ControlValueAccessor,
 
   handleClick(value: number) {
     if (!this.readonly && !this.disabled) {
-      this.update(this.resettable && this.rate === value ? 0 : value);
+      this._ratingStore.setRate(this.resettable && this.state.rate === value ? 0 : value);
     }
   }
 
@@ -157,17 +171,17 @@ export class NgbRating implements ControlValueAccessor,
     switch (event.which) {
       case Key.ArrowDown:
       case Key.ArrowLeft:
-        this.update(this.rate - 1);
+        this._ratingStore.decreaseRate();
         break;
       case Key.ArrowUp:
       case Key.ArrowRight:
-        this.update(this.rate + 1);
+        this._ratingStore.increaseRate();
         break;
       case Key.Home:
-        this.update(0);
+        this._ratingStore.zeroRate();
         break;
       case Key.End:
-        this.update(this.max);
+        this._ratingStore.maxRate();
         break;
       default:
         return;
@@ -178,14 +192,29 @@ export class NgbRating implements ControlValueAccessor,
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['rate']) {
-      this.update(this.rate);
+    if (changes.rate) {
+      this._ratingStore.setRate(changes.rate.currentValue);
+    }
+
+    if (changes.max) {
+      this._ratingStore.setMaxRate(changes.max.currentValue);
     }
   }
 
   ngOnInit(): void {
-    this.contexts = Array.from({length: this.max}, (v, k) => ({fill: 0, index: k}));
-    this._updateState(this.rate);
+    // TODO: handle state un-subscription
+    this._ratingStore.subscribe(state => {
+      console.log('Got new state', state, this.state);
+
+      // Is this a right way of handling "events"?
+      if (this.state != null && state.rate !== this.state.rate) {
+        console.log('propagatting change', state.rate);
+        this.onChange(state.rate);
+        this.onTouched();
+      }
+      this.state = state;
+      this._changeDetectorRef.markForCheck();
+    });
   }
 
   registerOnChange(fn: (value: any) => any): void { this.onChange = fn; }
@@ -193,12 +222,13 @@ export class NgbRating implements ControlValueAccessor,
   registerOnTouched(fn: () => any): void { this.onTouched = fn; }
 
   reset(): void {
-    this.leave.emit(this.nextRate);
-    this._updateState(this.rate);
+    this.leave.emit(this.state.nextRate);
+    this._ratingStore.resetNextRate();
   }
 
   setDisabledState(isDisabled: boolean) { this.disabled = isDisabled; }
 
+  /*
   update(value: number, internalChange = true): void {
     const newRate = getValueInRange(value, this.max, 0);
     if (!this.readonly && !this.disabled && this.rate !== newRate) {
@@ -211,12 +241,14 @@ export class NgbRating implements ControlValueAccessor,
     }
     this._updateState(this.rate);
   }
+  */
 
   writeValue(value) {
-    this.update(value, false);
+    this._ratingStore.setRate(value);
     this._changeDetectorRef.markForCheck();
   }
 
+  /*
   private _getFillValue(index: number): number {
     const diff = getValueInRange(this.nextRate - index, 1, 0);
     return Math.round(diff * 100);
@@ -226,4 +258,5 @@ export class NgbRating implements ControlValueAccessor,
     this.nextRate = nextValue;
     this.contexts.forEach((context, index) => context.fill = this._getFillValue(index));
   }
+  */
 }
