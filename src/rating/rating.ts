@@ -219,13 +219,9 @@ export class NgbRating implements ControlValueAccessor,
     this._changeDetectorRef.markForCheck();
   }
 
-  private _getFillValue(index: number): number {
-    const diff = getValueInRange(this.nextRate - index, 1, 0);
-    return Math.round(diff * 100);
-  }
-
   private _updateState(nextValue: number) {
     this.nextRate = nextValue;
-    this.contexts.forEach((context, index) => context.fill = this._getFillValue(index));
+    this.contexts.forEach(
+        (context, index) => context.fill = Math.round(getValueInRange(nextValue - index, 1, 0) * 100));
   }
 }
