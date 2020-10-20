@@ -63,7 +63,7 @@ const NGB_RATING_VALUE_ACCESSOR = {
     <ng-template #t let-fill="fill">{{ fill === 100 ? '&#9733;' : '&#9734;' }}</ng-template>
     <ng-template ngFor [ngForOf]="contexts" let-index="index">
       <span class="sr-only">({{ index < nextRate ? '*' : ' ' }})</span>
-      <span (mouseenter)="enter(index + 1)" (click)="handleClick(index + 1)" [style.cursor]="readonly || disabled ? 'default' : 'pointer'">
+      <span (mouseenter)="enter(index + 1)" (click)="handleClick(index + 1)" [style.cursor]="isInteractive() ? 'pointer' : 'default'">
         <ng-template [ngTemplateOutlet]="starTemplate || starTemplateFromContent || t" [ngTemplateOutletContext]="contexts[index]">
         </ng-template>
       </span>
@@ -137,8 +137,10 @@ export class NgbRating implements ControlValueAccessor,
 
   ariaValueText() { return `${this.nextRate} out of ${this.max}`; }
 
+  isInteractive(): boolean { return !this.readonly && !this.disabled; }
+
   enter(value: number): void {
-    if (!this.readonly && !this.disabled) {
+    if (this.isInteractive()) {
       this._updateState(value);
     }
     this.hover.emit(value);
@@ -147,7 +149,7 @@ export class NgbRating implements ControlValueAccessor,
   handleBlur() { this.onTouched(); }
 
   handleClick(value: number) {
-    if (!this.readonly && !this.disabled) {
+    if (this.isInteractive()) {
       this.update(this.resettable && this.rate === value ? 0 : value);
     }
   }
@@ -201,7 +203,7 @@ export class NgbRating implements ControlValueAccessor,
 
   update(value: number, internalChange = true): void {
     const newRate = getValueInRange(value, this.max, 0);
-    if (!this.readonly && !this.disabled && this.rate !== newRate) {
+    if (this.isInteractive() && this.rate !== newRate) {
       this.rate = newRate;
       this.rateChange.emit(this.rate);
     }
