@@ -43,6 +43,10 @@ function getNativeInput(element: HTMLElement): HTMLInputElement {
   return <HTMLInputElement>element.querySelector('input');
 }
 
+function getNativePopup(element: HTMLElement): HTMLDivElement {
+  return <HTMLInputElement>element.querySelector('.dropdown-menu');
+}
+
 function changeInput(element: any, value: string) {
   const input = getNativeInput(element);
   input.value = value;
@@ -313,6 +317,17 @@ describe('ngb-typeahead', () => {
       changeInput(compiled, 'o');
       fixture.detectChanges();
       expectWindowResults(compiled, ['+ONE', 'ONE MORE']);
+    });
+
+    it('should set max-height to component', () => {
+      const fixture = createTestComponent(`<input type="text" [ngbTypeahead]="find" [dropdownMaxHeight]=100/>`);
+      const compiled = fixture.nativeElement;
+      changeInput(compiled, 'o');
+      fixture.detectChanges();
+      fixture.whenStable().then(() => {
+        expect(getNativePopup(compiled).style.maxHeight).toEqual('100px');
+        expect(getNativePopup(compiled).style.overflowY).toEqual('auto');
+      });
     });
 
     it('should not mark first result as active when focusFirst is false', () => {

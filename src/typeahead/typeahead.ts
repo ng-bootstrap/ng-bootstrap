@@ -176,6 +176,11 @@ export class NgbTypeahead implements ControlValueAccessor,
   @Input() placement: PlacementArray = 'bottom-left';
 
   /**
+   * The maximum height of the dropdown in pixels, when set overflow-y will be set to auto
+   */
+  @Input() dropdownMaxHeight: number;
+
+  /**
    * An event emitted right before an item is selected from the result list.
    *
    * Event payload is of type [`NgbTypeaheadSelectItemEvent`](#/components/typeahead/api#NgbTypeaheadSelectItemEvent).
@@ -307,6 +312,10 @@ export class NgbTypeahead implements ControlValueAccessor,
       this._inputValueBackup = this._elementRef.nativeElement.value;
       const {windowRef} = this._popupService.open();
       this._windowRef = windowRef;
+      if (this.dropdownMaxHeight > 0) {
+        this._windowRef.location.nativeElement.style['max-height'] = `${this.dropdownMaxHeight}px`;
+        this._windowRef.location.nativeElement.style['overflow-y'] = 'auto';
+      }
       this._windowRef.instance.id = this.popupId;
       this._windowRef.instance.selectEvent.subscribe((result: any) => this._selectResultClosePopup(result));
       this._windowRef.instance.activeChangeEvent.subscribe((activeId: string) => this.activeDescendant = activeId);
