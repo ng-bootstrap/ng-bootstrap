@@ -10,12 +10,15 @@ import {NgbdDatepickerIslamicUmalquraModule} from '../demos/islamicumalqura/date
 import {NgbdDatepickerIslamicumalqura} from '../demos/islamicumalqura/datepicker-islamicumalqura';
 import {NgbdDatepickerJalali} from '../demos/jalali/datepicker-jalali';
 import {NgbdDatepickerJalaliModule} from '../demos/jalali/datepicker-jalali.module';
+import { NgbdDatepickerBuddhistModule } from '../demos/buddhist/datepicker-buddhist.module';
+import { NgbdDatepickerBuddhist } from '../demos/buddhist/datepicker-buddhist';
 
 export const DEMO_CALENDAR_MODULES = [
   NgbdDatepickerHebrewModule,
   NgbdDatepickerJalaliModule,
   NgbdDatepickerIslamicCivilModule,
   NgbdDatepickerIslamicUmalquraModule,
+  NgbdDatepickerBuddhistModule
 ];
 
 const DEMOS = [
@@ -46,7 +49,16 @@ const DEMOS = [
     type: NgbdDatepickerIslamicumalqura,
     code: require('!!raw-loader!./../demos/islamicumalqura/datepicker-islamicumalqura').default,
     markup: require('!!raw-loader!./../demos/islamicumalqura/datepicker-islamicumalqura.html').default
-  }
+  },
+  {
+    id: 'buddhist',
+    title: 'Buddhist',
+    type: NgbdDatepickerBuddhist,
+    code: require('!!raw-loader!./../demos/buddhist/datepicker-buddhist')
+      .default,
+    markup: require('!!raw-loader!./../demos/buddhist/datepicker-buddhist.html')
+      .default,
+  },
 ];
 
 @Component({
