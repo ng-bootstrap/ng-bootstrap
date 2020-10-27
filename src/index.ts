@@ -51,6 +51,7 @@ export {
   NgbCalendarIslamicCivil,
   NgbCalendarIslamicUmalqura,
   NgbCalendarPersian,
+  NgbCalendarBuddhist,
   NgbDate,
   NgbDateAdapter,
   NgbDateNativeAdapter,

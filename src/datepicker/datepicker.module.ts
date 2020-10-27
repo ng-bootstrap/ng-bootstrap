@@ -16,6 +16,7 @@ export {NgbCalendarIslamicUmalqura} from './hijri/ngb-calendar-islamic-umalqura'
 export {NgbCalendarPersian} from './jalali/ngb-calendar-persian';
 export {NgbCalendarHebrew} from './hebrew/ngb-calendar-hebrew';
 export {NgbDatepickerI18nHebrew} from './hebrew/datepicker-i18n-hebrew';
+export {NgbCalendarBuddhist} from './buddhist/ngb-calendar-buddhist';
 export {NgbDatepickerMonth} from './datepicker-month';
 export {NgbDatepickerDayView} from './datepicker-day-view';
 export {NgbDatepickerNavigation} from './datepicker-navigation';
