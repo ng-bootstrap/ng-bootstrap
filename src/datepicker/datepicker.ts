@@ -299,16 +299,6 @@ export class NgbDatepicker implements OnDestroy,
    */
   @Output() dateSelect = new EventEmitter<NgbDate>();
 
-  /**
-   * An event emitted when user selects a date using keyboard or mouse.
-   *
-   * The payload of the event is currently selected `NgbDate`.
-   *
-   * @deprecated 6.0.0 Please use 'dateSelect' output instead due to collision with native
-   * 'select' event.
-   */
-  @Output() select = this.dateSelect;
-
   onChange = (_: any) => {};
   onTouched = () => {};
 

@@ -19,7 +19,7 @@ const createTestComponent = () => createGenericTestComponent(
                   [showWeekdays]="showWeekdays"
                   [showWeekNumbers]="showWeekNumbers"
                   [outsideDays]="outsideDays"
-                  (select)="onClick($event)">
+                  (dateSelect)="onClick($event)">
     <ng-template #dt let-date="date">{{ date.day }}</ng-template>
   </ngb-datepicker>
 `,
