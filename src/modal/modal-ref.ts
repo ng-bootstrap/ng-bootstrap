@@ -18,7 +18,7 @@ export class NgbActiveModal {
   /**
    * Closes the modal with an optional `result` value.
    *
-   * The `NgbMobalRef.result` promise will be resolved with the provided value.
+   * The `NgbModalRef.result` promise will be resolved with the provided value.
    */
   close(result?: any): void {}
 
