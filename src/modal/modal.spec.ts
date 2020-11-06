@@ -950,39 +950,43 @@ describe('ngb-modal', () => {
 
       [true, false].forEach(reduceMotion => {
 
-        it(`should run fade transition when opening/closing modal (force-reduced-motion = ${reduceMotion})`, (done) => {
-          if (reduceMotion) {
-            document.body.classList.add('ngb-reduce-motion');
-          }
-          const component = TestBed.createComponent(TestAnimationComponent);
-          component.detectChanges();
+        // this test is flaky in IE in CI
+        if (!isBrowser('ie')) {
+          it(`should run fade transition when opening/closing modal (force-reduced-motion = ${reduceMotion})`,
+             (done) => {
+               if (reduceMotion) {
+                 document.body.classList.add('ngb-reduce-motion');
+               }
+               const component = TestBed.createComponent(TestAnimationComponent);
+               component.detectChanges();
 
-          const modalRef = component.componentInstance.open();
-          let modalEl: HTMLElement | null = null;
+               const modalRef = component.componentInstance.open();
+               let modalEl: HTMLElement | null = null;
 
-          modalRef.shown.subscribe(() => {
-            modalEl = document.querySelector('ngb-modal-window') as HTMLElement;
-            const closeButton = document.querySelector('button#close') as HTMLButtonElement;
+               modalRef.shown.subscribe(() => {
+                 modalEl = document.querySelector('ngb-modal-window') as HTMLElement;
+                 const closeButton = document.querySelector('button#close') as HTMLButtonElement;
 
-            expect(window.getComputedStyle(modalEl).opacity).toBe('1');
-            expect(modalEl).toHaveClass('fade');
-            expect(modalEl).toHaveClass('show');
-            closeButton.click();
-          });
+                 expect(window.getComputedStyle(modalEl).opacity).toBe('1');
+                 expect(modalEl).toHaveClass('fade');
+                 expect(modalEl).toHaveClass('show');
+                 closeButton.click();
+               });
 
-          modalRef.hidden.subscribe(() => {
-            modalEl = document.querySelector('ngb-modal-window');
-            expect(modalEl).toBeNull();
-            done();
-          });
+               modalRef.hidden.subscribe(() => {
+                 modalEl = document.querySelector('ngb-modal-window');
+                 expect(modalEl).toBeNull();
+                 done();
+               });
 
-          component.detectChanges();
-          modalEl = document.querySelector('ngb-modal-window');
-          // if reducedMotion is true, modal would be opened and closed already at this point
-          if (modalEl && !isBrowser('ie')) {
-            expect(window.getComputedStyle(modalEl).opacity).toBe('0');
-          }
-        });
+               component.detectChanges();
+               modalEl = document.querySelector('ngb-modal-window');
+               // if reducedMotion is true, modal would be opened and closed already at this point
+               if (modalEl) {
+                 expect(window.getComputedStyle(modalEl).opacity).toBe('0');
+               }
+             });
+        }
 
         it(`should bump modal window if backdrop is static (force-reduced-motion = ${reduceMotion})`, (done) => {
           if (reduceMotion) {
