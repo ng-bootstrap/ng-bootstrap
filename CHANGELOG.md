@@ -1,6 +1,7 @@
-# [8.0.0-beta.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/7.0.0...8.0.0-beta.1) (2020-08-06)
+# [8.0.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/8.0.0-beta.1...8.0.0) (2020-11-06)
 
-This is the first beta release adding animations support to ng-bootstrap
+This is a major release introducing animations to all standard Bootstrap components inside ng-bootstrap. Please read the [animations documentation](https://ng-bootstrap.github.io/#/animations), you'll find some examples and how to opt-out if necessary.
+
 
 ### Bug Fixes
 
@@ -8,7 +9,10 @@ This is the first beta release adding animations support to ng-bootstrap
 * **animations:** duration should be computed after 'startFn' execution ([4efea05](https://github.com/ng-bootstrap/ng-bootstrap/commit/4efea05d1ebf4ab12829d9424908c2d2c00dfdc1))
 * **animations:** ignore all inner transitions in 'ngbRunTransition' ([b50f4d9](https://github.com/ng-bootstrap/ng-bootstrap/commit/b50f4d92402838a0628b1970692a69c2525a8936))
 * **animations:** pass transition context with animations disabled ([#3781](https://github.com/ng-bootstrap/ng-bootstrap/issues/3781)) ([0e2120e](https://github.com/ng-bootstrap/ng-bootstrap/commit/0e2120e4e42d0b1a5a111fdf0768f3c967970957))
-* startFn called when no animation ([a14c76d](https://github.com/ng-bootstrap/ng-bootstrap/commit/a14c76d2f13777d31c3df1e29d3b8d9e40065db5))
+* **animations:** startFn called when no animation ([a14c76d](https://github.com/ng-bootstrap/ng-bootstrap/commit/a14c76d2f13777d31c3df1e29d3b8d9e40065db5))
+* **animations:** make collapsing transition work with SSR ([#3864](https://github.com/ng-bootstrap/ng-bootstrap/issues/3864)) ([e6c70c0](https://github.com/ng-bootstrap/ng-bootstrap/commit/e6c70c0234f979ebac2b6e881ff7b3b276a15f5f))
+* **popover:** allow null and undefined as values for popover and title ([681c1e3](https://github.com/ng-bootstrap/ng-bootstrap/commit/681c1e32be93f3a87f9804aacfb03d7741337f4d)), closes [#3845](https://github.com/ng-bootstrap/ng-bootstrap/issues/3845)
+* **tooltip:** allow null and undefined as values for tooltip ([b713e38](https://github.com/ng-bootstrap/ng-bootstrap/commit/b713e38f51a31d1b4b860f6812331f5b59117974)), closes [#3845](https://github.com/ng-bootstrap/ng-bootstrap/issues/3845)
 
 
 ### Features
@@ -22,38 +26,25 @@ This is the first beta release adding animations support to ng-bootstrap
 * **animations:** support 'runningTransaction: stop' ([2373de3](https://github.com/ng-bootstrap/ng-bootstrap/commit/2373de3a74e080cd551867c2421ea30990ec485d))
 * **carousel:** accessibility ([#3773](https://github.com/ng-bootstrap/ng-bootstrap/issues/3773)) ([6830d55](https://github.com/ng-bootstrap/ng-bootstrap/commit/6830d555243ba7814dcacda266c3ebb044f82d37))
 * **carousel:** add animations ([#3804](https://github.com/ng-bootstrap/ng-bootstrap/issues/3804)) ([61691d0](https://github.com/ng-bootstrap/ng-bootstrap/commit/61691d00bae0eae8c804daadeb26408a700c475f))
-* **collapse:** add 'NgbCollapseConfig' ([#3736](https://github.com/ng-bootstrap/ng-bootstrap/issues/3736)) ([8d5417a](https://github.com/ng-bootstrap/ng-bootstrap/commit/8d5417a65bfbe8e451e559e33978f06ab5e1c242))
+* **collapse:** add missing `NgbCollapseConfig` ([#3736](https://github.com/ng-bootstrap/ng-bootstrap/issues/3736)) ([8d5417a](https://github.com/ng-bootstrap/ng-bootstrap/commit/8d5417a65bfbe8e451e559e33978f06ab5e1c242))
 * **collapse:** add animations ([9bffcab](https://github.com/ng-bootstrap/ng-bootstrap/commit/9bffcab9bd1fc83933f4f7b776c3ebef3f16ca12))
+* **datepicker:** remove deprecated `(select)` output ([#3887](https://github.com/ng-bootstrap/ng-bootstrap/issues/3887)) ([0662d4d](https://github.com/ng-bootstrap/ng-bootstrap/commit/0662d4d57114fbd7665b9911f616a18c3e3b7bf7))
 * **modal:** add animations ([86cbf06](https://github.com/ng-bootstrap/ng-bootstrap/commit/86cbf0695738ed55b6ce2771cf6943f1592eaf58))
 * **modal:** add scale animation when static backdrop is clicked ([#3771](https://github.com/ng-bootstrap/ng-bootstrap/issues/3771)) ([2b1cc56](https://github.com/ng-bootstrap/ng-bootstrap/commit/2b1cc565dcfae0bfdc1a37e31423f207b6f602bf))
 * **nav:** add animations ([d82a302](https://github.com/ng-bootstrap/ng-bootstrap/commit/d82a302da2912ca5739137728d292362491e65f5))
 * **nav:** nav config animations ([262ac7d](https://github.com/ng-bootstrap/ng-bootstrap/commit/262ac7d2401b09b68e93067d6c0127f61b0ce101))
 * **popover:** add animations ([b7f12e6](https://github.com/ng-bootstrap/ng-bootstrap/commit/b7f12e6479c6f7ae6d6d5f0289b4be3a59955ed9))
+* **progressbar:** remove intermediate `div` element ([#3841](https://github.com/ng-bootstrap/ng-bootstrap/issues/3841)) ([89ec4fe](https://github.com/ng-bootstrap/ng-bootstrap/commit/89ec4fe59734b15f6a195e157fd6b10f46bf4890))
 * **toast:** add animations ([f8df46c](https://github.com/ng-bootstrap/ng-bootstrap/commit/f8df46cf8de4ee6d5ccf188aaedab70a11a98ab7))
 * **tooltip:** add animations ([cc55e6b](https://github.com/ng-bootstrap/ng-bootstrap/commit/cc55e6b2340033bb1ea43daa34140049dec2a046))
-* add global 'NgbConfig' ([#3715](https://github.com/ng-bootstrap/ng-bootstrap/issues/3715)) ([bf9b98d](https://github.com/ng-bootstrap/ng-bootstrap/commit/bf9b98d228fe10ed424a5d75b36c6043f4095143))
+* add global `NgbConfig` ([#3715](https://github.com/ng-bootstrap/ng-bootstrap/issues/3715)) ([bf9b98d](https://github.com/ng-bootstrap/ng-bootstrap/commit/bf9b98d228fe10ed424a5d75b36c6043f4095143))
 
 
 ### BREAKING CHANGES
 
-* **toast:** Toast events API has changed to stick with specs provided by Bootstrap
-
-Before:
-
-```
-<ngb-toast (hide)="..."></ngb-toast>
-```
-
-After:
-
-```
-// template
-ngb-toast (hidden)="..."></ngb-toast>
-```
-
-The `hidden` event is emitted after the 'fade out' animation is finished.
-
-* **alert:** Alert closing API has changed due to the introduction of the imperative `.close()` method to trigger the 'fade out' animation
+* Animations are enabled by default an all standard Bootstrap components. See [the documentation](https://ng-bootstrap.github.io/#/animations) for more details.
+* [`NgbTabset`](https://ng-bootstrap.github.io/#/components/tabset) deprecated in `6.0.0` is now removed completely
+* **alert:** closing API has changed due to the introduction of the imperative `.close()` method to trigger the 'fade out' animation
 
 Before:
 
@@ -64,16 +55,62 @@ Before:
 After:
 
 ```
-// template
+// template -> output was renamed
 <ngb-alert (closed)="..."></ngb-alert>
 
-// component
+// component -> new method introduced for animations
 alert.close();
 ```
 
 The `closed` event is emitted after the 'fade out' animation is finished.
 The 'fade out' animation can be triggered either by clicking on the alert's 'cross button' or calling `.close()` method.
 
+* **datepicker:** `(select)` output  deprecated in `6.0.0` is now removed completely
+
+Before:
+
+```
+<ngb-datepicker (select)="inDateSelect($event)"></ngb-datepicker>
+```
+
+After:
+
+```
+<ngb-datepicker (dateSelect)="onDateSelect($event)"></ngb-datepicker>
+```
+* **progressbar:** markup generated by `<ngb-progressbar>` was simplified, there is no more intermediate `<div>` element  
+
+Before: 
+```
+<ngb-progressbar type="success">
+  <div class="progress">
+    <div role="progressbar"></div>
+  </div>
+</ngb-progressbar>
+```
+
+After:
+```
+<ngb-progressbar type="success" class="progress">
+  <div role="progressbar"></div>
+</ngb-progressbar>
+```
+* **toast:** events API has changed to stick with specs provided by Bootstrap
+
+Before:
+
+```
+<ngb-toast (hide)="..."></ngb-toast>
+```
+
+After:
+
+```
+// template -> output was renamed
+<ngb-toast (hidden)="..."></ngb-toast>
+```
+
+The `hidden` event is emitted after the 'fade out' animation is finished.
 
 
 # [7.0.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/6.2.0...7.0.0) (2020-07-09)
