@@ -1,4 +1,4 @@
-import {TestBed, ComponentFixture, inject, async, fakeAsync, tick} from '@angular/core/testing';
+import {TestBed, ComponentFixture, inject, fakeAsync, tick} from '@angular/core/testing';
 import {createGenericTestComponent} from '../test/common';
 import {Key} from '../util/key';
 
@@ -530,7 +530,7 @@ describe('ngb-rating', () => {
 
   describe('forms', () => {
 
-    it('should work with template-driven form validation', async(() => {
+    it('should work with template-driven form validation', fakeAsync(() => {
          const html = `
         <form>
           <ngb-rating [(ngModel)]="model" name="control" max="5" required></ngb-rating>
@@ -540,33 +540,27 @@ describe('ngb-rating', () => {
          const element = fixture.debugElement.query(By.directive(NgbRating));
 
          fixture.detectChanges();
-         fixture.whenStable()
-             .then(() => {
-               fixture.detectChanges();
-               expect(getState(element.nativeElement)).toEqual([false, false, false, false, false]);
-               expect(element.nativeElement).toHaveCssClass('ng-invalid');
-               expect(element.nativeElement).toHaveCssClass('ng-untouched');
+         tick();
+         fixture.detectChanges();
+         expect(getState(element.nativeElement)).toEqual([false, false, false, false, false]);
+         expect(element.nativeElement).toHaveCssClass('ng-invalid');
+         expect(element.nativeElement).toHaveCssClass('ng-untouched');
 
-               fixture.componentInstance.model = 1;
-               fixture.detectChanges();
-               return fixture.whenStable();
-             })
-             .then(() => {
-               fixture.detectChanges();
-               expect(getState(element.nativeElement)).toEqual([true, false, false, false, false]);
-               expect(element.nativeElement).toHaveCssClass('ng-valid');
-               expect(element.nativeElement).toHaveCssClass('ng-untouched');
+         fixture.componentInstance.model = 1;
+         fixture.detectChanges();
+         tick();
+         fixture.detectChanges();
+         expect(getState(element.nativeElement)).toEqual([true, false, false, false, false]);
+         expect(element.nativeElement).toHaveCssClass('ng-valid');
+         expect(element.nativeElement).toHaveCssClass('ng-untouched');
 
-               fixture.componentInstance.model = 0;
-               fixture.detectChanges();
-               return fixture.whenStable();
-             })
-             .then(() => {
-               fixture.detectChanges();
-               expect(getState(element.nativeElement)).toEqual([false, false, false, false, false]);
-               expect(element.nativeElement).toHaveCssClass('ng-valid');
-               expect(element.nativeElement).toHaveCssClass('ng-untouched');
-             });
+         fixture.componentInstance.model = 0;
+         fixture.detectChanges();
+         tick();
+         fixture.detectChanges();
+         expect(getState(element.nativeElement)).toEqual([false, false, false, false, false]);
+         expect(element.nativeElement).toHaveCssClass('ng-valid');
+         expect(element.nativeElement).toHaveCssClass('ng-untouched');
        }));
 
     it('should work with reactive form validation', () => {
@@ -595,7 +589,7 @@ describe('ngb-rating', () => {
       expect(element.nativeElement).toHaveCssClass('ng-untouched');
     });
 
-    it('should not update template driven form by clicking disabled control', async(() => {
+    it('should not update template driven form by clicking disabled control', fakeAsync(() => {
          const html = `
           <ngb-rating [(ngModel)]="model" class="control" max="5"></ngb-rating>
           <ngb-rating [(ngModel)]="model" class="control-disabled" max="5" disabled></ngb-rating>`;
@@ -604,29 +598,22 @@ describe('ngb-rating', () => {
          const element = fixture.debugElement.query(By.css('.control'));
          const disabledElement = fixture.debugElement.query(By.css('.control-disabled'));
 
+
          fixture.detectChanges();
-         fixture.whenStable()
-             .then(() => {
-               getStar(element.nativeElement, 3).click();
+         tick();
+         getStar(element.nativeElement, 3).click();
+         fixture.detectChanges();
+         expect(getState(element.nativeElement)).toEqual([true, true, true, false, false]);
+         expect(getState(disabledElement.nativeElement)).toEqual([false, false, false, false, false]);
+         expect(fixture.componentInstance.model).toEqual(3);
 
-               fixture.detectChanges();
-               return fixture.whenStable();
-             })
-             .then(() => {
-               expect(getState(element.nativeElement)).toEqual([true, true, true, false, false]);
-               expect(getState(disabledElement.nativeElement)).toEqual([false, false, false, false, false]);
-               expect(fixture.componentInstance.model).toEqual(3);
-
-               getStar(disabledElement.nativeElement, 4).click();
-               fixture.detectChanges();
-               return fixture.whenStable();
-             })
-             .then(() => {
-               fixture.detectChanges();
-               expect(getState(element.nativeElement)).toEqual([true, true, true, false, false]);
-               expect(getState(disabledElement.nativeElement)).toEqual([false, false, false, false, false]);
-               expect(fixture.componentInstance.model).toEqual(3);
-             });
+         getStar(disabledElement.nativeElement, 4).click();
+         fixture.detectChanges();
+         tick();
+         fixture.detectChanges();
+         expect(getState(element.nativeElement)).toEqual([true, true, true, false, false]);
+         expect(getState(disabledElement.nativeElement)).toEqual([false, false, false, false, false]);
+         expect(fixture.componentInstance.model).toEqual(3);
        }));
 
     it('should handle clicks and update form control', () => {

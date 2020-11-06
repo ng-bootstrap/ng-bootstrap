@@ -1,5 +1,5 @@
 import createSpy = jasmine.createSpy;
-import {async, ComponentFixture, inject, TestBed} from '@angular/core/testing';
+import {ComponentFixture, inject, TestBed} from '@angular/core/testing';
 import {isBrowserVisible, createGenericTestComponent} from '../test/common';
 import {By} from '@angular/platform-browser';
 
@@ -211,25 +211,25 @@ if (isBrowserVisible('ngb-alert animations')) {
 
     [true, false].forEach(reduceMotion => {
 
-      it(`should run fade transition when closing alert (force-reduced-motion = ${reduceMotion})`, async(() => {
-           const fixture = TestBed.createComponent(TestAnimationComponent);
-           fixture.componentInstance.reduceMotion = reduceMotion;
-           fixture.detectChanges();
+      it(`should run fade transition when closing alert (force-reduced-motion = ${reduceMotion})`, () => {
+        const fixture = TestBed.createComponent(TestAnimationComponent);
+        fixture.componentInstance.reduceMotion = reduceMotion;
+        fixture.detectChanges();
 
-           const alertEl = getAlertElement(fixture.nativeElement);
-           const buttonEl = fixture.nativeElement.querySelector('button');
+        const alertEl = getAlertElement(fixture.nativeElement);
+        const buttonEl = fixture.nativeElement.querySelector('button');
 
-           spyOn(fixture.componentInstance, 'onClose').and.callFake(() => {
-             expect(window.getComputedStyle(alertEl).opacity).toBe('0');
-             expect(alertEl).not.toHaveCssClass('show');
-             expect(alertEl).toHaveCssClass('fade');
-           });
+        spyOn(fixture.componentInstance, 'onClose').and.callFake(() => {
+          expect(window.getComputedStyle(alertEl).opacity).toBe('0');
+          expect(alertEl).not.toHaveCssClass('show');
+          expect(alertEl).toHaveCssClass('fade');
+        });
 
-           expect(window.getComputedStyle(alertEl).opacity).toBe('1');
-           expect(alertEl).toHaveCssClass('show');
-           expect(alertEl).toHaveCssClass('fade');
-           buttonEl.click();
-         }));
+        expect(window.getComputedStyle(alertEl).opacity).toBe('1');
+        expect(alertEl).toHaveCssClass('show');
+        expect(alertEl).toHaveCssClass('fade');
+        buttonEl.click();
+      });
     });
   });
 }

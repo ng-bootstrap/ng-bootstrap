@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {async, ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
+import {ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
 
 import {createGenericTestComponent, isBrowserVisible} from '../test/common';
 import {NgbToastModule} from './toast.module';
@@ -137,54 +137,54 @@ if (isBrowserVisible('ngb-toast animations')) {
 
     [true, false].forEach(reduceMotion => {
 
-      it(`should run the transition when creating a toast (force-reduced-motion = ${reduceMotion})`, async(() => {
-           const fixture = TestBed.createComponent(TestAnimationComponent);
-           fixture.componentInstance.reduceMotion = reduceMotion;
-           fixture.detectChanges();
+      it(`should run the transition when creating a toast (force-reduced-motion = ${reduceMotion})`, () => {
+        const fixture = TestBed.createComponent(TestAnimationComponent);
+        fixture.componentInstance.reduceMotion = reduceMotion;
+        fixture.detectChanges();
 
-           const toastEl = getToastElement(fixture.nativeElement);
+        const toastEl = getToastElement(fixture.nativeElement);
 
-           spyOn(fixture.componentInstance, 'onShown').and.callFake(() => {
-             expect(window.getComputedStyle(toastEl).opacity).toBe('1');
-             expect(toastEl).not.toHaveCssClass('showing');
-             expect(toastEl).toHaveCssClass('show');
-             expect(toastEl).toHaveCssClass('fade');
-           });
+        spyOn(fixture.componentInstance, 'onShown').and.callFake(() => {
+          expect(window.getComputedStyle(toastEl).opacity).toBe('1');
+          expect(toastEl).not.toHaveCssClass('showing');
+          expect(toastEl).toHaveCssClass('show');
+          expect(toastEl).toHaveCssClass('fade');
+        });
 
-           expect(toastEl).toHaveCssClass('fade');
-           if (reduceMotion) {
-             expect(window.getComputedStyle(toastEl).opacity).toBe('1');
-             expect(toastEl).toHaveCssClass('show');
-           } else {
-             expect(window.getComputedStyle(toastEl).opacity).toBe('0');
-             expect(toastEl).not.toHaveCssClass('show');
-             expect(toastEl).toHaveCssClass('showing');
-           }
-         }));
+        expect(toastEl).toHaveCssClass('fade');
+        if (reduceMotion) {
+          expect(window.getComputedStyle(toastEl).opacity).toBe('1');
+          expect(toastEl).toHaveCssClass('show');
+        } else {
+          expect(window.getComputedStyle(toastEl).opacity).toBe('0');
+          expect(toastEl).not.toHaveCssClass('show');
+          expect(toastEl).toHaveCssClass('showing');
+        }
+      });
 
-      it(`should run the transition when closing a toast (force-reduced-motion = ${reduceMotion})`, async(() => {
-           const fixture = TestBed.createComponent(TestAnimationComponent);
-           fixture.componentInstance.reduceMotion = reduceMotion;
-           fixture.detectChanges();
+      it(`should run the transition when closing a toast (force-reduced-motion = ${reduceMotion})`, () => {
+        const fixture = TestBed.createComponent(TestAnimationComponent);
+        fixture.componentInstance.reduceMotion = reduceMotion;
+        fixture.detectChanges();
 
-           const toastEl = getToastElement(fixture.nativeElement);
-           const buttonEl = fixture.nativeElement.querySelector('button');
+        const toastEl = getToastElement(fixture.nativeElement);
+        const buttonEl = fixture.nativeElement.querySelector('button');
 
-           spyOn(fixture.componentInstance, 'onShown').and.callFake(() => {
-             expect(window.getComputedStyle(toastEl).opacity).toBe('1');
-             expect(toastEl).toHaveCssClass('show');
-             expect(toastEl).toHaveCssClass('fade');
+        spyOn(fixture.componentInstance, 'onShown').and.callFake(() => {
+          expect(window.getComputedStyle(toastEl).opacity).toBe('1');
+          expect(toastEl).toHaveCssClass('show');
+          expect(toastEl).toHaveCssClass('fade');
 
-             buttonEl.click();
-           });
+          buttonEl.click();
+        });
 
-           spyOn(fixture.componentInstance, 'onHidden').and.callFake(() => {
-             expect(window.getComputedStyle(toastEl).opacity).toBe('0');
-             expect(toastEl).not.toHaveCssClass('show');
-             expect(toastEl).toHaveCssClass('fade');
-             expect(toastEl).toHaveCssClass('hide');
-           });
-         }));
+        spyOn(fixture.componentInstance, 'onHidden').and.callFake(() => {
+          expect(window.getComputedStyle(toastEl).opacity).toBe('0');
+          expect(toastEl).not.toHaveCssClass('show');
+          expect(toastEl).toHaveCssClass('fade');
+          expect(toastEl).toHaveCssClass('hide');
+        });
+      });
     });
   });
 }

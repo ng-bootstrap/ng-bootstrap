@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, DebugElement, ViewChild} from '@angular/core';
-import {async, ComponentFixture, fakeAsync, inject, TestBed, tick} from '@angular/core/testing';
+import {ComponentFixture, fakeAsync, inject, TestBed, tick} from '@angular/core/testing';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {By} from '@angular/platform-browser';
 import {merge, Observable, Subject} from 'rxjs';
@@ -80,7 +80,7 @@ describe('ngb-typeahead', () => {
 
   describe('valueaccessor', () => {
 
-    it('should format values when no formatter provided', async(() => {
+    it('should format values when no formatter provided', fakeAsync(() => {
          const fixture = createTestComponent('<input [(ngModel)]="model" [ngbTypeahead]="findNothing" />');
 
          const el = fixture.nativeElement;
@@ -89,25 +89,21 @@ describe('ngb-typeahead', () => {
 
          comp.model = 'text';
          fixture.detectChanges();
-         fixture.whenStable()
-             .then(() => {
-               expectInputValue(el, 'text');
+         tick();
+         expectInputValue(el, 'text');
 
-               comp.model = null;
-               fixture.detectChanges();
-               return fixture.whenStable();
-             })
-             .then(() => {
-               expectInputValue(el, '');
+         comp.model = null;
+         fixture.detectChanges();
+         tick();
+         expectInputValue(el, '');
 
-               comp.model = {};
-               fixture.detectChanges();
-               return fixture.whenStable();
-             })
-             .then(() => { expectInputValue(el, '[object Object]'); });
+         comp.model = {};
+         fixture.detectChanges();
+         tick();
+         expectInputValue(el, '[object Object]');
        }));
 
-    it('should format values with custom formatter provided', async(() => {
+    it('should format values with custom formatter provided', fakeAsync(() => {
          const html =
              '<input [(ngModel)]="model" [ngbTypeahead]="findNothing" [inputFormatter]="uppercaseObjFormatter"/>';
          const fixture = createTestComponent(html);
@@ -117,18 +113,16 @@ describe('ngb-typeahead', () => {
 
          comp.model = null;
          fixture.detectChanges();
-         fixture.whenStable()
-             .then(() => {
-               expectInputValue(el, '');
+         tick();
+         expectInputValue(el, '');
 
-               comp.model = {value: 'text'};
-               fixture.detectChanges();
-               return fixture.whenStable();
-             })
-             .then(() => { expectInputValue(el, 'TEXT'); });
+         comp.model = {value: 'text'};
+         fixture.detectChanges();
+         tick();
+         expectInputValue(el, 'TEXT');
        }));
 
-    it('should use custom input formatter with falsy values', async(() => {
+    it('should use custom input formatter with falsy values', fakeAsync(() => {
          const html = '<input [(ngModel)]="model" [ngbTypeahead]="findNothing" [inputFormatter]="uppercaseFormatter"/>';
          const fixture = createTestComponent(html);
          const el = fixture.nativeElement;
@@ -137,22 +131,18 @@ describe('ngb-typeahead', () => {
 
          comp.model = null;
          fixture.detectChanges();
-         fixture.whenStable()
-             .then(() => {
-               expectInputValue(el, '');
+         tick();
+         expectInputValue(el, '');
 
-               comp.model = 0;
-               fixture.detectChanges();
-               return fixture.whenStable();
-             })
-             .then(() => {
-               expectInputValue(el, '0');
+         comp.model = 0;
+         fixture.detectChanges();
+         tick();
+         expectInputValue(el, '0');
 
-               comp.model = false;
-               fixture.detectChanges();
-               return fixture.whenStable();
-             })
-             .then(() => { expectInputValue(el, 'FALSE'); });
+         comp.model = false;
+         fixture.detectChanges();
+         tick();
+         expectInputValue(el, 'FALSE');
        }));
   });
 
@@ -164,26 +154,25 @@ describe('ngb-typeahead', () => {
       expect(getWindow(compiled)).toBeNull();
     });
 
-    it('should not be opened when the model changes', async(() => {
+    it('should not be opened when the model changes', fakeAsync(() => {
          const fixture = createTestComponent(`<input type="text" [(ngModel)]="model" [ngbTypeahead]="find"/>`);
          const compiled = fixture.nativeElement;
 
          fixture.componentInstance.model = 'one';
          fixture.detectChanges();
-         fixture.whenStable().then(() => { expect(getWindow(compiled)).toBeNull(); });
+         tick();
+         expect(getWindow(compiled)).toBeNull();
        }));
 
-    it('should be opened when there are results', async(() => {
-         const fixture = createTestComponent(`<input type="text" [(ngModel)]="model" [ngbTypeahead]="find"/>`);
-         const compiled = fixture.nativeElement;
+    it('should be opened when there are results', () => {
+      const fixture = createTestComponent(`<input type="text" [(ngModel)]="model" [ngbTypeahead]="find"/>`);
+      const compiled = fixture.nativeElement;
 
-         fixture.whenStable().then(() => {
-           changeInput(compiled, 'one');
-           fixture.detectChanges();
-           expectWindowResults(compiled, ['+one', 'one more']);
-           expect(fixture.componentInstance.model).toBe('one');
-         });
-       }));
+      changeInput(compiled, 'one');
+      fixture.detectChanges();
+      expectWindowResults(compiled, ['+one', 'one more']);
+      expect(fixture.componentInstance.model).toBe('one');
+    });
 
     it('should be closed when there no results', () => {
       const fixture = createTestComponent(`<input type="text" [ngbTypeahead]="findNothing"/>`);
@@ -192,65 +181,59 @@ describe('ngb-typeahead', () => {
       expect(getWindow(compiled)).toBeNull();
     });
 
-    it('should work when returning null as results', async(() => {
-         const fixture = createTestComponent(`<input type="text" [ngbTypeahead]="findNull"/>`);
-         const compiled = fixture.nativeElement;
+    it('should work when returning null as results', () => {
+      const fixture = createTestComponent(`<input type="text" [ngbTypeahead]="findNull"/>`);
+      const compiled = fixture.nativeElement;
 
-         fixture.whenStable().then(() => {
-           changeInput(compiled, 'one');
-           fixture.detectChanges();
-           expect(getWindow(compiled)).toBeNull();
-         });
-       }));
+      changeInput(compiled, 'one');
+      fixture.detectChanges();
+      expect(getWindow(compiled)).toBeNull();
+    });
 
-    it('should select the result on click, close window and fill the input', async(() => {
-         const fixture = createTestComponent(`<input type="text" [(ngModel)]="model" [ngbTypeahead]="find"/>`);
-         const compiled = fixture.nativeElement;
+    it('should select the result on click, close window and fill the input', () => {
+      const fixture = createTestComponent(`<input type="text" [(ngModel)]="model" [ngbTypeahead]="find"/>`);
+      const compiled = fixture.nativeElement;
 
-         fixture.whenStable().then(() => {
-           // clicking selected
-           changeInput(compiled, 'o');
-           fixture.detectChanges();
-           expectWindowResults(compiled, ['+one', 'one more']);
+      // clicking selected
+      changeInput(compiled, 'o');
+      fixture.detectChanges();
+      expectWindowResults(compiled, ['+one', 'one more']);
 
-           getWindowLinks(fixture.debugElement)[0].triggerEventHandler('click', {});
-           fixture.detectChanges();
-           expect(getWindow(compiled)).toBeNull();
-           expectInputValue(compiled, 'one');
-           expect(fixture.componentInstance.model).toBe('one');
+      getWindowLinks(fixture.debugElement)[0].triggerEventHandler('click', {});
+      fixture.detectChanges();
+      expect(getWindow(compiled)).toBeNull();
+      expectInputValue(compiled, 'one');
+      expect(fixture.componentInstance.model).toBe('one');
 
-           // clicking not selected
-           changeInput(compiled, 'o');
-           fixture.detectChanges();
-           expectWindowResults(compiled, ['+one', 'one more']);
-           expectInputValue(compiled, 'o');
+      // clicking not selected
+      changeInput(compiled, 'o');
+      fixture.detectChanges();
+      expectWindowResults(compiled, ['+one', 'one more']);
+      expectInputValue(compiled, 'o');
 
-           getWindowLinks(fixture.debugElement)[0].triggerEventHandler('click', {});
-           fixture.detectChanges();
-           expect(getWindow(compiled)).toBeNull();
-           expectInputValue(compiled, 'one');
-         });
-       }));
+      getWindowLinks(fixture.debugElement)[0].triggerEventHandler('click', {});
+      fixture.detectChanges();
+      expect(getWindow(compiled)).toBeNull();
+      expectInputValue(compiled, 'one');
+    });
 
-    it('should select the result on ENTER, close window and fill the input', async(() => {
-         const fixture = createTestComponent(`<input type="text" [(ngModel)]="model" [ngbTypeahead]="find"/>`);
-         const compiled = fixture.nativeElement;
+    it('should select the result on ENTER, close window and fill the input', () => {
+      const fixture = createTestComponent(`<input type="text" [(ngModel)]="model" [ngbTypeahead]="find"/>`);
+      const compiled = fixture.nativeElement;
 
-         fixture.whenStable().then(() => {
-           changeInput(compiled, 'o');
-           fixture.detectChanges();
-           expectWindowResults(compiled, ['+one', 'one more']);
+      changeInput(compiled, 'o');
+      fixture.detectChanges();
+      expectWindowResults(compiled, ['+one', 'one more']);
 
-           const event = createKeyDownEvent(Key.Enter);
-           getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
-           fixture.detectChanges();
-           expect(getWindow(compiled)).toBeNull();
-           expectInputValue(compiled, 'one');
-           expect(fixture.componentInstance.model).toBe('one');
-           expect(event.preventDefault).toHaveBeenCalled();
-           expect(event.stopPropagation).toHaveBeenCalled();
-         });
-       }));
+      const event = createKeyDownEvent(Key.Enter);
+      getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
+      fixture.detectChanges();
+      expect(getWindow(compiled)).toBeNull();
+      expectInputValue(compiled, 'one');
+      expect(fixture.componentInstance.model).toBe('one');
+      expect(event.preventDefault).toHaveBeenCalled();
+      expect(event.stopPropagation).toHaveBeenCalled();
+    });
 
     it('should select the result on TAB, close window and fill the input', () => {
       const fixture = createTestComponent(`<input type="text" [(ngModel)]="model" [ngbTypeahead]="find"/>`);
@@ -484,27 +467,25 @@ describe('ngb-typeahead', () => {
 
   describe('objects', () => {
 
-    it('should work with custom objects as values', async(() => {
-         const fixture = createTestComponent(`
+    it('should work with custom objects as values', () => {
+      const fixture = createTestComponent(`
              <input type="text" [(ngModel)]="model" [ngbTypeahead]="findObjects"
                     [inputFormatter]="formatter" [resultFormatter]="uppercaseObjFormatter"/>`);
-         const compiled = fixture.nativeElement;
+      const compiled = fixture.nativeElement;
 
-         fixture.whenStable().then(() => {
-           changeInput(compiled, 'o');
-           fixture.detectChanges();
-           expectWindowResults(compiled, ['+ONE', 'ONE MORE']);
+      changeInput(compiled, 'o');
+      fixture.detectChanges();
+      expectWindowResults(compiled, ['+ONE', 'ONE MORE']);
 
-           const event = createKeyDownEvent(Key.Enter);
-           getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
-           fixture.detectChanges();
-           expect(getWindow(compiled)).toBeNull();
-           expect(getNativeInput(compiled).value).toBe('1 one');
-           expect(fixture.componentInstance.model).toEqual({id: 1, value: 'one'});
-         });
-       }));
+      const event = createKeyDownEvent(Key.Enter);
+      getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
+      fixture.detectChanges();
+      expect(getWindow(compiled)).toBeNull();
+      expect(getNativeInput(compiled).value).toBe('1 one');
+      expect(fixture.componentInstance.model).toEqual({id: 1, value: 'one'});
+    });
 
-    it('should allow to assign ngModel custom objects', async(() => {
+    it('should allow to assign ngModel custom objects', fakeAsync(() => {
          const fixture = createTestComponent(`
              <input type="text" [(ngModel)]="model" [ngbTypeahead]="findObjects"
                     [inputFormatter]="formatter" [resultFormatter]="uppercaseObjFormatter"/>`);
@@ -512,32 +493,30 @@ describe('ngb-typeahead', () => {
 
          fixture.componentInstance.model = {id: 1, value: 'one'};
          fixture.detectChanges();
-         fixture.whenStable().then(() => {
-           expect(getWindow(compiled)).toBeNull();
-           expect(getNativeInput(compiled).value).toBe('1 one');
-         });
+         tick();
+         expect(getWindow(compiled)).toBeNull();
+         expect(getNativeInput(compiled).value).toBe('1 one');
        }));
   });
 
   describe('forms', () => {
 
-    it('should work with template-driven form validation', async(() => {
+    it('should work with template-driven form validation', fakeAsync(() => {
          const html = `
             <form>
               <input type="text" [(ngModel)]="model" name="control" required [ngbTypeahead]="findObjects" />
             </form>`;
          const fixture = createTestComponent(html);
-         fixture.whenStable().then(() => {
-           fixture.detectChanges();
-           const compiled = fixture.nativeElement;
-           expect(getNativeInput(compiled)).toHaveCssClass('ng-invalid');
-           expect(getNativeInput(compiled)).not.toHaveCssClass('ng-valid');
+         tick();
+         fixture.detectChanges();
+         const compiled = fixture.nativeElement;
+         expect(getNativeInput(compiled)).toHaveCssClass('ng-invalid');
+         expect(getNativeInput(compiled)).not.toHaveCssClass('ng-valid');
 
-           changeInput(compiled, 'o');
-           fixture.detectChanges();
-           expect(getNativeInput(compiled)).toHaveCssClass('ng-valid');
-           expect(getNativeInput(compiled)).not.toHaveCssClass('ng-invalid');
-         });
+         changeInput(compiled, 'o');
+         fixture.detectChanges();
+         expect(getNativeInput(compiled)).toHaveCssClass('ng-valid');
+         expect(getNativeInput(compiled)).not.toHaveCssClass('ng-invalid');
        }));
 
     it('should work with model-driven form validation', () => {
@@ -558,110 +537,106 @@ describe('ngb-typeahead', () => {
     });
 
 
-    it('should support disabled state', async(() => {
+    it('should support disabled state', fakeAsync(() => {
          const html = `
             <form>
               <input type="text" [(ngModel)]="model" name="control" [disabled]="true" [ngbTypeahead]="findObjects" />
             </form>`;
          const fixture = createTestComponent(html);
-         fixture.whenStable().then(() => {
-           fixture.detectChanges();
-           const compiled = fixture.nativeElement;
-           expect(getNativeInput(compiled).disabled).toBeTruthy();
-         });
+         tick();
+         fixture.detectChanges();
+         const compiled = fixture.nativeElement;
+         expect(getNativeInput(compiled).disabled).toBeTruthy();
        }));
 
-    it('should only propagate model changes on select when the editable option is on', async(() => {
+    it('should only propagate model changes on select when the editable option is on', fakeAsync(() => {
          const html = `
             <form>
               <input type="text" [(ngModel)]="model" name="control" required [ngbTypeahead]="find" [editable]="false"/>
             </form>`;
          const fixture = createTestComponent(html);
-         fixture.whenStable().then(() => {
-           fixture.detectChanges();
-           const compiled = fixture.nativeElement;
-           expect(getNativeInput(compiled)).toHaveCssClass('ng-invalid');
-           expect(getNativeInput(compiled)).not.toHaveCssClass('ng-valid');
+         tick();
+         fixture.detectChanges();
+         const compiled = fixture.nativeElement;
+         expect(getNativeInput(compiled)).toHaveCssClass('ng-invalid');
+         expect(getNativeInput(compiled)).not.toHaveCssClass('ng-valid');
 
-           changeInput(compiled, 'o');
-           fixture.detectChanges();
-           expect(getNativeInput(compiled)).toHaveCssClass('ng-invalid');
-           expect(getNativeInput(compiled)).not.toHaveCssClass('ng-valid');
-           expect(fixture.componentInstance.model).toBeUndefined();
+         changeInput(compiled, 'o');
+         fixture.detectChanges();
+         expect(getNativeInput(compiled)).toHaveCssClass('ng-invalid');
+         expect(getNativeInput(compiled)).not.toHaveCssClass('ng-valid');
+         expect(fixture.componentInstance.model).toBeUndefined();
 
-           const event = createKeyDownEvent(Key.Enter);
-           getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
-           fixture.detectChanges();
-           expect(getNativeInput(compiled)).not.toHaveCssClass('ng-invalid');
-           expect(getNativeInput(compiled)).toHaveCssClass('ng-valid');
-           expect(fixture.componentInstance.model).toBe('one');
-         });
+         const event = createKeyDownEvent(Key.Enter);
+         getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
+         fixture.detectChanges();
+         expect(getNativeInput(compiled)).not.toHaveCssClass('ng-invalid');
+         expect(getNativeInput(compiled)).toHaveCssClass('ng-valid');
+         expect(fixture.componentInstance.model).toBe('one');
        }));
 
-    it('should clear model on user input when the editable option is on', async(() => {
+    it('should clear model on user input when the editable option is on', fakeAsync(() => {
          const html = `
             <form>
               <input type="text" [(ngModel)]="model" name="control" required [ngbTypeahead]="find" [editable]="false"/>
             </form>`;
          const fixture = createTestComponent(html);
-         fixture.whenStable().then(() => {
-           fixture.detectChanges();
-           const compiled = fixture.nativeElement;
-           expect(getNativeInput(compiled)).toHaveCssClass('ng-invalid');
-           expect(getNativeInput(compiled)).not.toHaveCssClass('ng-valid');
+         tick();
+         fixture.detectChanges();
+         const compiled = fixture.nativeElement;
+         expect(getNativeInput(compiled)).toHaveCssClass('ng-invalid');
+         expect(getNativeInput(compiled)).not.toHaveCssClass('ng-valid');
 
-           changeInput(compiled, 'o');
-           fixture.detectChanges();
-           expect(getNativeInput(compiled)).toHaveCssClass('ng-invalid');
-           expect(getNativeInput(compiled)).not.toHaveCssClass('ng-valid');
-           expect(fixture.componentInstance.model).toBeUndefined();
+         changeInput(compiled, 'o');
+         fixture.detectChanges();
+         expect(getNativeInput(compiled)).toHaveCssClass('ng-invalid');
+         expect(getNativeInput(compiled)).not.toHaveCssClass('ng-valid');
+         expect(fixture.componentInstance.model).toBeUndefined();
 
-           const event = createKeyDownEvent(Key.Enter);
-           getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
-           fixture.detectChanges();
-           expect(getNativeInput(compiled)).not.toHaveCssClass('ng-invalid');
-           expect(getNativeInput(compiled)).toHaveCssClass('ng-valid');
-           expect(fixture.componentInstance.model).toBe('one');
+         const event = createKeyDownEvent(Key.Enter);
+         getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
+         fixture.detectChanges();
+         expect(getNativeInput(compiled)).not.toHaveCssClass('ng-invalid');
+         expect(getNativeInput(compiled)).toHaveCssClass('ng-valid');
+         expect(fixture.componentInstance.model).toBe('one');
 
-           changeInput(compiled, 'tw');
-           fixture.detectChanges();
-           expect(getNativeInput(compiled)).toHaveCssClass('ng-invalid');
-           expect(getNativeInput(compiled)).not.toHaveCssClass('ng-valid');
-           expect(fixture.componentInstance.model).toBeUndefined();
-         });
+         changeInput(compiled, 'tw');
+         fixture.detectChanges();
+         expect(getNativeInput(compiled)).toHaveCssClass('ng-invalid');
+         expect(getNativeInput(compiled)).not.toHaveCssClass('ng-valid');
+         expect(fixture.componentInstance.model).toBeUndefined();
        }));
 
-    it('should clear model on user input when the editable option is on and no search was triggered', async(() => {
+    it('should clear model on user input when the editable option is on and no search was triggered', fakeAsync(() => {
          const html = `
             <form>
               <input type="text" [(ngModel)]="model" name="control" required [ngbTypeahead]="findFilter" [editable]="false"/>
             </form>`;
          const fixture = createTestComponent(html);
-         fixture.whenStable().then(() => {
-           fixture.detectChanges();
-           const compiled = fixture.nativeElement;
-           expect(getNativeInput(compiled)).toHaveCssClass('ng-invalid');
-           expect(getNativeInput(compiled)).not.toHaveCssClass('ng-valid');
+         tick();
+         fixture.detectChanges();
+         const compiled = fixture.nativeElement;
+         expect(getNativeInput(compiled)).toHaveCssClass('ng-invalid');
+         expect(getNativeInput(compiled)).not.toHaveCssClass('ng-valid');
 
-           changeInput(compiled, 'one');
-           fixture.detectChanges();
-           expect(getNativeInput(compiled)).toHaveCssClass('ng-invalid');
-           expect(getNativeInput(compiled)).not.toHaveCssClass('ng-valid');
-           expect(fixture.componentInstance.model).toBeUndefined();
+         changeInput(compiled, 'one');
+         fixture.detectChanges();
+         expect(getNativeInput(compiled)).toHaveCssClass('ng-invalid');
+         expect(getNativeInput(compiled)).not.toHaveCssClass('ng-valid');
+         expect(fixture.componentInstance.model).toBeUndefined();
 
-           const event = createKeyDownEvent(Key.Enter);
-           getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
-           fixture.detectChanges();
-           expect(getNativeInput(compiled)).not.toHaveCssClass('ng-invalid');
-           expect(getNativeInput(compiled)).toHaveCssClass('ng-valid');
-           expect(fixture.componentInstance.model).toBe('one');
+         const event = createKeyDownEvent(Key.Enter);
+         getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
+         fixture.detectChanges();
+         expect(getNativeInput(compiled)).not.toHaveCssClass('ng-invalid');
+         expect(getNativeInput(compiled)).toHaveCssClass('ng-valid');
+         expect(fixture.componentInstance.model).toBe('one');
 
-           changeInput(compiled, '');
-           fixture.detectChanges();
-           expect(getNativeInput(compiled)).toHaveCssClass('ng-invalid');
-           expect(getNativeInput(compiled)).not.toHaveCssClass('ng-valid');
-           expect(fixture.componentInstance.model).toBeUndefined();
-         });
+         changeInput(compiled, '');
+         fixture.detectChanges();
+         expect(getNativeInput(compiled)).toHaveCssClass('ng-invalid');
+         expect(getNativeInput(compiled)).not.toHaveCssClass('ng-valid');
+         expect(fixture.componentInstance.model).toBeUndefined();
        }));
   });
 
@@ -679,17 +654,17 @@ describe('ngb-typeahead', () => {
       expect(fixture.componentInstance.selectEventValue).toBe('one');
     });
 
-    it('should not propagate model when preventDefault() is called on selectEvent', async(() => {
-         const fixture = createTestComponent(
-             '<input [(ngModel)]="model" [ngbTypeahead]="find" (selectItem)="$event.preventDefault()"/>');
+    it('should not propagate model when preventDefault() is called on selectEvent', () => {
+      const fixture = createTestComponent(
+          '<input [(ngModel)]="model" [ngbTypeahead]="find" (selectItem)="$event.preventDefault()"/>');
 
-         // clicking selected
-         changeInput(fixture.nativeElement, 'o');
-         fixture.detectChanges();
-         getWindowLinks(fixture.debugElement)[0].triggerEventHandler('click', {});
-         fixture.detectChanges();
-         fixture.whenStable().then(() => { expect(fixture.componentInstance.model).toBe('o'); });
-       }));
+      // clicking selected
+      changeInput(fixture.nativeElement, 'o');
+      fixture.detectChanges();
+      getWindowLinks(fixture.debugElement)[0].triggerEventHandler('click', {});
+      fixture.detectChanges();
+      expect(fixture.componentInstance.model).toBe('o');
+    });
   });
 
   describe('container', () => {
@@ -769,120 +744,115 @@ describe('ngb-typeahead', () => {
       expect(input.getAttribute('aria-autocomplete')).toBe('both');
     });
 
-    it('should have the correct ARIA attributes when interacting with input', async(() => {
+    it('should have the correct ARIA attributes when interacting with input', fakeAsync(() => {
          const fixture = createTestComponent(`<input type="text" [(ngModel)]="model" [ngbTypeahead]="find"/>`);
          const compiled = fixture.nativeElement;
          const input = getNativeInput(compiled);
+         tick();
+
+         changeInput(compiled, 'o');
          fixture.detectChanges();
+         expectWindowResults(compiled, ['+one', 'one more']);
+         expect(input.getAttribute('aria-expanded')).toBe('true');
+         expect(input.getAttribute('aria-owns')).toMatch(/ngb-typeahead-[0-9]+/);
+         expect(input.getAttribute('aria-activedescendant')).toMatch(/ngb-typeahead-[0-9]+-0/);
 
-         fixture.whenStable().then(() => {
-           changeInput(compiled, 'o');
-           fixture.detectChanges();
-           expectWindowResults(compiled, ['+one', 'one more']);
-           expect(input.getAttribute('aria-expanded')).toBe('true');
-           expect(input.getAttribute('aria-owns')).toMatch(/ngb-typeahead-[0-9]+/);
-           expect(input.getAttribute('aria-activedescendant')).toMatch(/ngb-typeahead-[0-9]+-0/);
+         let event = createKeyDownEvent(Key.ArrowDown);
+         getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
+         fixture.detectChanges();
+         expect(input.getAttribute('aria-activedescendant')).toMatch(/ngb-typeahead-[0-9]+-1/);
 
-           let event = createKeyDownEvent(Key.ArrowDown);
-           getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
-           fixture.detectChanges();
-           expect(input.getAttribute('aria-activedescendant')).toMatch(/ngb-typeahead-[0-9]+-1/);
-
-           event = createKeyDownEvent(Key.Enter);
-           getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
-           fixture.detectChanges();
-           expect(input.getAttribute('aria-expanded')).toBe('false');
-           expect(input.getAttribute('aria-owns')).toBeNull();
-           expect(input.getAttribute('aria-activedescendant')).toBeNull();
-         });
+         event = createKeyDownEvent(Key.Enter);
+         getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
+         fixture.detectChanges();
+         expect(input.getAttribute('aria-expanded')).toBe('false');
+         expect(input.getAttribute('aria-owns')).toBeNull();
+         expect(input.getAttribute('aria-activedescendant')).toBeNull();
        }));
   });
 
   if (!isBrowser(['ie', 'edge'])) {
     describe('hint', () => {
 
-      it('should show hint when an item starts with user input', async(() => {
+      it('should show hint when an item starts with user input', fakeAsync(() => {
            const fixture = createTestComponent(
                `<input type="text" [(ngModel)]="model" [ngbTypeahead]="findAnywhere" [showHint]="true"/>`);
            const compiled = fixture.nativeElement;
            const inputEl = getNativeInput(compiled);
 
-           fixture.whenStable().then(() => {
-             changeInput(compiled, 'on');
-             fixture.detectChanges();
-             expectWindowResults(compiled, ['+one', 'one more']);
-             expect(inputEl.value).toBe('one');
-             expect(inputEl.selectionStart).toBe(2);
-             expect(inputEl.selectionEnd).toBe(3);
+           tick();
 
-             const event = createKeyDownEvent(Key.ArrowDown);
-             getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
-             fixture.detectChanges();
-             expect(inputEl.value).toBe('one more');
-             expect(inputEl.selectionStart).toBe(2);
-             expect(inputEl.selectionEnd).toBe(8);
-           });
+           changeInput(compiled, 'on');
+           fixture.detectChanges();
+           expectWindowResults(compiled, ['+one', 'one more']);
+           expect(inputEl.value).toBe('one');
+           expect(inputEl.selectionStart).toBe(2);
+           expect(inputEl.selectionEnd).toBe(3);
+
+           const event = createKeyDownEvent(Key.ArrowDown);
+           getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
+           fixture.detectChanges();
+           expect(inputEl.value).toBe('one more');
+           expect(inputEl.selectionStart).toBe(2);
+           expect(inputEl.selectionEnd).toBe(8);
          }));
 
-      it('should show hint with no selection when an item does not starts with user input', async(() => {
+      it('should show hint with no selection when an item does not starts with user input', fakeAsync(() => {
            const fixture = createTestComponent(
                `<input type="text" [(ngModel)]="model" [ngbTypeahead]="findAnywhere" [showHint]="true"/>`);
            const compiled = fixture.nativeElement;
            const inputEl = getNativeInput(compiled);
+           tick();
 
-           fixture.whenStable().then(() => {
-             changeInput(compiled, 'ne');
-             fixture.detectChanges();
-             expectWindowResults(compiled, ['+one', 'one more']);
-             expect(inputEl.value).toBe('one');
-             expect(inputEl.selectionStart).toBe(inputEl.selectionEnd);
+           changeInput(compiled, 'ne');
+           fixture.detectChanges();
+           expectWindowResults(compiled, ['+one', 'one more']);
+           expect(inputEl.value).toBe('one');
+           expect(inputEl.selectionStart).toBe(inputEl.selectionEnd);
 
-             const event = createKeyDownEvent(Key.ArrowDown);
-             getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
-             fixture.detectChanges();
-             expect(inputEl.value).toBe('one more');
-             expect(inputEl.selectionStart).toBe(inputEl.selectionEnd);
-           });
+           const event = createKeyDownEvent(Key.ArrowDown);
+           getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
+           fixture.detectChanges();
+           expect(inputEl.value).toBe('one more');
+           expect(inputEl.selectionStart).toBe(inputEl.selectionEnd);
          }));
 
-      it('should take input formatter into account when displaying hints', async(() => {
+      it('should take input formatter into account when displaying hints', fakeAsync(() => {
            const fixture = createTestComponent(`<input type="text" [(ngModel)]="model"
                 [ngbTypeahead]="findAnywhere"
                 [inputFormatter]="uppercaseFormatter"
                 [showHint]="true"/>`);
            const compiled = fixture.nativeElement;
            const inputEl = getNativeInput(compiled);
+           tick();
 
-           fixture.whenStable().then(() => {
-             changeInput(compiled, 'on');
-             fixture.detectChanges();
-             expectWindowResults(compiled, ['+one', 'one more']);
-             expect(inputEl.value).toBe('onE');
-             expect(inputEl.selectionStart).toBe(2);
-             expect(inputEl.selectionEnd).toBe(3);
+           changeInput(compiled, 'on');
+           fixture.detectChanges();
+           expectWindowResults(compiled, ['+one', 'one more']);
+           expect(inputEl.value).toBe('onE');
+           expect(inputEl.selectionStart).toBe(2);
+           expect(inputEl.selectionEnd).toBe(3);
 
-             const event = createKeyDownEvent(Key.ArrowDown);
-             getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
-             fixture.detectChanges();
-             expect(inputEl.value).toBe('onE MORE');
-             expect(inputEl.selectionStart).toBe(2);
-             expect(inputEl.selectionEnd).toBe(8);
-           });
+           const event = createKeyDownEvent(Key.ArrowDown);
+           getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
+           fixture.detectChanges();
+           expect(inputEl.value).toBe('onE MORE');
+           expect(inputEl.selectionStart).toBe(2);
+           expect(inputEl.selectionEnd).toBe(8);
          }));
 
-      it('should not show hint when there is no result selected', async(() => {
+      it('should not show hint when there is no result selected', fakeAsync(() => {
            const fixture = createTestComponent(
                `<input type="text" [(ngModel)]="model" [ngbTypeahead]="find" [showHint]="true" [focusFirst]="false"/>`);
            fixture.detectChanges();
            const compiled = fixture.nativeElement;
            const inputEl = getNativeInput(compiled);
+           tick();
 
-           fixture.whenStable().then(() => {
-             changeInput(compiled, 'on');
-             fixture.detectChanges();
-             expectWindowResults(compiled, ['one', 'one more']);
-             expect(inputEl.value).toBe('on');
-           });
+           changeInput(compiled, 'on');
+           fixture.detectChanges();
+           expectWindowResults(compiled, ['one', 'one more']);
+           expect(inputEl.value).toBe('on');
          }));
 
       describe('should clear input properly when model get reset to empty string', () => {
@@ -890,10 +860,9 @@ describe('ngb-typeahead', () => {
          `<input type="text" [(ngModel)]="model" [showHint]="true" [ngbTypeahead]="find" />`]
             .forEach((html, index) => {
               const showHint = index === 1;
-              it(`${index === 0 ? 'without' : 'with'} showHint activated`, async(async() => {
+              it(`${index === 0 ? 'without' : 'with'} showHint activated`, fakeAsync(() => {
                    const fixture = createTestComponent(html);
-                   fixture.detectChanges();
-                   await fixture.whenStable();
+                   tick();
 
                    const compiled = fixture.nativeElement;
                    changeInput(compiled, 'on');
@@ -903,7 +872,7 @@ describe('ngb-typeahead', () => {
 
                    fixture.componentInstance.model = '';
                    fixture.detectChanges();
-                   await fixture.whenStable();
+                   tick();
 
                    document.body.click();
                    fixture.detectChanges();
