@@ -1,11 +1,15 @@
 import {
   ChangeDetectorRef,
   Component,
+  Directive,
+  ElementRef,
   forwardRef,
   Input,
   OnChanges,
+  QueryList,
   SimpleChanges,
-  ViewEncapsulation
+  ViewEncapsulation,
+  ViewChildren
 } from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
@@ -22,6 +26,14 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
   useExisting: forwardRef(() => NgbTimepicker),
   multi: true
 };
+
+/**
+ * A directive that selects the inputs of timepicker.
+ */
+@Directive({selector: 'input.ngb-tp-input'})
+export class NgbTpInput {
+  constructor(public elementRef: ElementRef<HTMLInputElement>) {}
+}
 
 /**
  * A directive that helps with wth picking hours, minutes and seconds.
@@ -43,7 +55,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
           <input type="text" class="ngb-tp-input form-control" [class.form-control-sm]="isSmallSize"
             [class.form-control-lg]="isLargeSize"
             maxlength="2" inputmode="numeric" placeholder="HH" i18n-placeholder="@@ngb.timepicker.HH"
-            [value]="formatHour(model?.hour)" (change)="updateHour($any($event).target.value)"
+            (change)="updateHour($any($event).target.value)"
             [readOnly]="readonlyInputs" [disabled]="disabled" aria-label="Hours" i18n-aria-label="@@ngb.timepicker.hours"
             (input)="formatInput($any($event).target)"
             (keydown.ArrowUp)="changeHour(hourStep); $event.preventDefault()"
@@ -65,7 +77,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
           </button>
           <input type="text" class="ngb-tp-input form-control" [class.form-control-sm]="isSmallSize" [class.form-control-lg]="isLargeSize"
             maxlength="2" inputmode="numeric" placeholder="MM" i18n-placeholder="@@ngb.timepicker.MM"
-            [value]="formatMinSec(model?.minute)" (change)="updateMinute($any($event).target.value)"
+            (change)="updateMinute($any($event).target.value)"
             [readOnly]="readonlyInputs" [disabled]="disabled" aria-label="Minutes" i18n-aria-label="@@ngb.timepicker.minutes"
             (input)="formatInput($any($event).target)"
             (keydown.ArrowUp)="changeMinute(minuteStep); $event.preventDefault()"
@@ -87,7 +99,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
           </button>
           <input type="text" class="ngb-tp-input form-control" [class.form-control-sm]="isSmallSize" [class.form-control-lg]="isLargeSize"
             maxlength="2" inputmode="numeric" placeholder="SS" i18n-placeholder="@@ngb.timepicker.SS"
-            [value]="formatMinSec(model?.second)" (change)="updateSecond($any($event).target.value)"
+            (change)="updateSecond($any($event).target.value)"
             [readOnly]="readonlyInputs" [disabled]="disabled" aria-label="Seconds" i18n-aria-label="@@ngb.timepicker.seconds"
             (input)="formatInput($any($event).target)"
             (keydown.ArrowUp)="changeSecond(secondStep); $event.preventDefault()"
@@ -124,6 +136,8 @@ export class NgbTimepicker implements ControlValueAccessor,
   private _hourStep: number;
   private _minuteStep: number;
   private _secondStep: number;
+
+  @ViewChildren(NgbTpInput) inputs: QueryList<NgbTpInput>;
 
   /**
    * Whether to display 12H or 24H mode.
@@ -203,6 +217,7 @@ export class NgbTimepicker implements ControlValueAccessor,
     if (!this.seconds && (!structValue || !isNumber(structValue.second))) {
       this.model.second = 0;
     }
+    this.setValues();
     this._cd.markForCheck();
   }
 
@@ -290,6 +305,18 @@ export class NgbTimepicker implements ControlValueAccessor,
           this._ngbTimeAdapter.toModel({hour: this.model.hour, minute: this.model.minute, second: this.model.second}));
     } else {
       this.onChange(this._ngbTimeAdapter.toModel(null));
+    }
+    this.setValues();
+  }
+
+  private setValues() {
+    if (this.inputs) {
+      const inputs = this.inputs.toArray();
+      inputs[0].elementRef.nativeElement.value = this.formatHour(this.model.hour);
+      inputs[1].elementRef.nativeElement.value = this.formatMinSec(this.model.minute);
+      if (inputs.length > 2) {
+        inputs[2].elementRef.nativeElement.value = this.formatMinSec(this.model.second);
+      }
     }
   }
 }
