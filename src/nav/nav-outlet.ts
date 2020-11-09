@@ -9,8 +9,7 @@ import {
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
-
-import {distinctUntilChanged, skip, startWith} from 'rxjs/operators';
+import {distinctUntilChanged, skip, startWith, takeUntil} from 'rxjs/operators';
 
 import {ngbNavFadeInNoReflowTransition, ngbNavFadeInTransition, ngbNavFadeOutTransition} from './nav-transition';
 import {ngbRunTransition, NgbTransitionOptions} from '../util/transition/ngbTransition';
@@ -73,24 +72,22 @@ export class NgbNavOutlet implements AfterViewInit {
 
   ngAfterViewInit() {
     // initial display
-    this._activePane = this._getActivePane();
-    this._activePane ?.elRef.nativeElement.classList.add('show');
-    this._activePane ?.elRef.nativeElement.classList.add('active');
+    this._updateActivePane();
 
     // this will be emitted for all 3 types of nav changes: .select(), [activeId] or (click)
     this.nav.navItemChange$
-      .pipe(startWith(this._activePane ?.item || null), distinctUntilChanged(), skip(1))
+      .pipe(takeUntil(this.nav.destroy$), startWith(this._activePane ?.item || null), distinctUntilChanged(), skip(1))
       .subscribe(nextItem => {
       const options: NgbTransitionOptions<undefined> = {animation: this.nav.animation, runningTransition: 'stop'};
+
+      // next panel we're switching to will only appear in DOM after the change detection is done
+      // and `this._panes` will be updated
+      this._cd.detectChanges();
 
       // fading out
       if (this._activePane) {
         ngbRunTransition(this._activePane.elRef.nativeElement, ngbNavFadeOutTransition, options).subscribe(() => {
           const activeItem = this._activePane ?.item;
-
-          // next panel we're switching to will only appear in DOM after the change detection is done
-          // and `this._panes` will be updated
-          this._cd.detectChanges();
 
           this._activePane = this._getPaneForItem(nextItem);
 
@@ -110,8 +107,16 @@ export class NgbNavOutlet implements AfterViewInit {
             this.nav.hidden.emit(activeItem.id);
           }
         });
+      } else {
+        this._updateActivePane();
       }
       });
+  }
+
+  private _updateActivePane() {
+    this._activePane = this._getActivePane();
+    this._activePane ?.elRef.nativeElement.classList.add('show');
+    this._activePane ?.elRef.nativeElement.classList.add('active');
   }
 
   private _getPaneForItem(item: NgbNavItem | null) {
