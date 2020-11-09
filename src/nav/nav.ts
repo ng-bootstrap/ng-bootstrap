@@ -10,6 +10,7 @@ import {
   forwardRef,
   Inject,
   Input,
+  OnDestroy,
   OnInit,
   Output,
   QueryList,
@@ -19,6 +20,7 @@ import {
 import {DOCUMENT} from '@angular/common';
 
 import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
 import {isDefined} from '../util/util';
 import {NgbNavConfig} from './nav-config';
@@ -163,7 +165,8 @@ export class NgbNavItem implements AfterContentChecked, OnInit {
     '(keydown.End)': 'onKeyDown($event)'
   }
 })
-export class NgbNav implements AfterContentInit {
+export class NgbNav implements AfterContentInit,
+    OnDestroy {
   static ngAcceptInputType_orientation: string;
   static ngAcceptInputType_roles: boolean | string;
 
@@ -243,6 +246,7 @@ export class NgbNav implements AfterContentInit {
   @ContentChildren(NgbNavItem) items: QueryList<NgbNavItem>;
   @ContentChildren(forwardRef(() => NgbNavLink), {descendants: true}) links: QueryList<NgbNavLink>;
 
+  destroy$ = new Subject<void>();
   navItemChange$ = new Subject<NgbNavItem | null>();
 
   constructor(
@@ -343,6 +347,8 @@ export class NgbNav implements AfterContentInit {
         this._cd.detectChanges();
       }
     }
+
+    this.items.changes.pipe(takeUntil(this.destroy$)).subscribe(() => this._notifyItemChanged(this.activeId));
   }
 
   ngOnChanges({activeId}: SimpleChanges): void {
@@ -350,6 +356,8 @@ export class NgbNav implements AfterContentInit {
       this._notifyItemChanged(activeId.currentValue);
     }
   }
+
+  ngOnDestroy() { this.destroy$.next(); }
 
   private _updateActiveId(nextId: any, emitNavChange = true) {
     if (this.activeId !== nextId) {

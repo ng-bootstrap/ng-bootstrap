@@ -325,6 +325,35 @@ describe('nav', () => {
     expect(getContent(fixture)).toBeUndefined();
   });
 
+  it(`should work with conditional nav items`, () => {
+    const fixture = createTestComponent(`
+      <ul ngbNav #n="ngbNav" [(activeId)]="activeId" class="nav-tabs">
+        <li [ngbNavItem]="1" *ngIf="visible">
+            <a ngbNavLink>link 1</a>
+            <ng-template ngbNavContent>content 1</ng-template>
+        </li>
+        <li [ngbNavItem]="2" *ngIf="visible">
+            <a ngbNavLink>link 2</a>
+            <ng-template ngbNavContent>content 2</ng-template>
+        </li>
+      </ul>
+      <div [ngbNavOutlet]="n"></div>
+    `);
+
+    fixture.componentInstance.activeId = 2;
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.visible).toBe(false);
+    expectLinks(fixture, []);
+    expectContents(fixture, []);
+
+    fixture.componentInstance.visible = true;
+    fixture.detectChanges();
+
+    expectLinks(fixture, [false, true]);
+    expectContents(fixture, ['content 2']);
+  });
+
   it(`should change navs with [activeId] binding`, () => {
     const fixture = createTestComponent(`
       <ul ngbNav #n="ngbNav" [activeId]="activeId" class="nav-tabs">
@@ -1398,6 +1427,7 @@ class TestComponent {
   items = [1, 2];
   orientation = 'horizontal';
   roles: 'tablist' | false = 'tablist';
+  visible = false;
   onActiveIdChange = () => {};
   onNavChange = () => {};
   onItemHidden = () => {};
