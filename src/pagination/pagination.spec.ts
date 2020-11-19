@@ -18,26 +18,31 @@ function expectPages(nativeEl: HTMLElement, pagesDef: string[], ellipsis = '...'
   for (let i = 0; i < pagesDef.length; i++) {
     let pageDef = pagesDef[i];
     let classIndicator = pageDef.charAt(0);
+    let textContent = normalizeText(pages[i].textContent);
 
     if (classIndicator === '+') {
       expect(pages[i]).toHaveCssClass('active');
       expect(pages[i]).not.toHaveCssClass('disabled');
       expect(pages[i].getAttribute('aria-current')).toBe('page');
-      expect(normalizeText(pages[i].textContent)).toEqual(pageDef.substr(1) + ' (current)');
+      expect(textContent).toEqual(pageDef.substr(1) + ' (current)');
     } else if (classIndicator === '-') {
       expect(pages[i]).not.toHaveCssClass('active');
       expect(pages[i]).toHaveCssClass('disabled');
       expect(pages[i].getAttribute('aria-current')).toBeNull();
-      expect(normalizeText(pages[i].textContent)).toEqual(pageDef.substr(1));
+      expect(textContent).toEqual(pageDef.substr(1));
+    } else if (classIndicator === 'c') {  // Custom Pages
+      const inputPagination = pages[i].querySelector('input');
+      textContent += ',' + inputPagination ?.value;
+      expect(textContent).toEqual(pageDef.substr(1));
     } else {
       expect(pages[i]).not.toHaveCssClass('active');
       expect(pages[i]).not.toHaveCssClass('disabled');
       expect(pages[i].getAttribute('aria-current')).toBeNull();
-      expect(normalizeText(pages[i].textContent)).toEqual(pageDef);
+      expect(textContent).toEqual(pageDef);
     }
 
     // ellipsis is always disabled
-    if (normalizeText(pages[i].textContent) === ellipsis) {
+    if (textContent === ellipsis) {
       expect(pages[i]).not.toHaveCssClass('active');
       expect(pages[i]).toHaveCssClass('disabled');
       expect(pages[i].getAttribute('aria-current')).toBeNull();
@@ -187,7 +192,7 @@ describe('ngb-pagination', () => {
       expectPages(fixture.nativeElement, ['«', '1', '2', '+3', '-»']);
     });
 
-    it('should update selected page model on page no click', () => {
+    it('should update selected page model on page on click', () => {
       const html = '<ngb-pagination [collectionSize]="collectionSize" [page]="page"></ngb-pagination>';
       const fixture = createTestComponent(html);
 
@@ -196,7 +201,7 @@ describe('ngb-pagination', () => {
       fixture.detectChanges();
       expectPages(fixture.nativeElement, ['«', '1', '+2', '3', '»']);
 
-      getLink(fixture.nativeElement, 0).click();
+      getLink(fixture.nativeElement, 1).click();
       fixture.detectChanges();
       expectPages(fixture.nativeElement, ['-«', '+1', '2', '3', '»']);
 
@@ -718,6 +723,67 @@ describe('ngb-pagination', () => {
     });
   });
 
+  describe('Custom Pages', () => {
+
+    beforeEach(
+        () => { TestBed.configureTestingModule({declarations: [TestPageComponent], imports: [NgbPaginationModule]}); });
+
+    it('should render and respond to collectionSize change with customPages', () => {
+      const fixture = TestBed.createComponent(TestPageComponent);
+
+      fixture.componentInstance.collectionSize = 30;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['-«', 'cPagesof 3,1', '»']);
+
+      fixture.componentInstance.collectionSize = 40;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['-«', 'cPagesof 4,1', '»']);
+    });
+
+    it('should render and respond to pageSize change with custom Pages', () => {
+      const fixture = TestBed.createComponent(TestPageComponent);
+
+      fixture.componentInstance.collectionSize = 30;
+      fixture.componentInstance.pageSize = 5;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['-«', 'cPagesof 6,1', '»']);
+
+      fixture.componentInstance.pageSize = 10;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['-«', 'cPagesof 3,1', '»']);
+    });
+
+    it('should render and respond to active page change with custom Pages', () => {
+      const fixture = TestBed.createComponent(TestPageComponent);
+
+      fixture.componentInstance.collectionSize = 30;
+      fixture.componentInstance.page = 2;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['«', 'cPagesof 3,2', '»']);
+
+      fixture.componentInstance.page = 3;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['«', 'cPagesof 3,3', '-»']);
+    });
+
+    it('should update selected page model on page on click with custom Pages', () => {
+      const fixture = TestBed.createComponent(TestPageComponent);
+
+      fixture.componentInstance.collectionSize = 30;
+      fixture.componentInstance.page = 2;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['«', 'cPagesof 3,2', '»']);
+
+      getLink(fixture.nativeElement, 0).click();
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['-«', 'cPagesof 3,1', '»']);
+
+      getLink(fixture.nativeElement, 2).click();
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['«', 'cPagesof 3,2', '»']);
+    });
+  });
+
   describe('Custom config', () => {
     let config: NgbPaginationConfig;
 
@@ -783,4 +849,28 @@ class TestComponent {
   rotate = false;
 
   onPageChange = () => {};
+}
+
+@Component({
+  selector: 'test-page-cmp',
+  template: `<ngb-pagination [collectionSize]="collectionSize" [page]="page" [pageSize]="pageSize">
+                <ng-template ngbPaginationPages let-page="page" let-pages="pages">
+                <li *ngIf="pages.length > 0">
+                    <label>Pages</label>
+                    <input
+                        type="text"
+                        inputmode="numeric"
+                        pattern="[0-9]*"
+                        #myInputPage
+                        [value]="page"
+                    />
+                    <span>of {{pages.length}}</span>
+                </li>
+              </ng-template>
+            </ngb-pagination>`
+})
+class TestPageComponent {
+  pageSize = 10;
+  collectionSize = 100;
+  page = 1;
 }

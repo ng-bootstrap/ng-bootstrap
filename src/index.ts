@@ -112,7 +112,8 @@ export {
   NgbPaginationModule,
   NgbPaginationNext,
   NgbPaginationNumber,
-  NgbPaginationPrevious
+  NgbPaginationPrevious,
+  NgbPaginationPages
 } from './pagination/pagination.module';
 export {NgbPopover, NgbPopoverConfig, NgbPopoverModule} from './popover/popover.module';
 export {NgbProgressbar, NgbProgressbarConfig, NgbProgressbarModule} from './progressbar/progressbar.module';
