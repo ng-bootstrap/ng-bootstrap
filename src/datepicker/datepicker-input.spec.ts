@@ -1177,11 +1177,11 @@ class TestComponent {
   maxDate: NgbDateStruct;
   isDisabled;
 
-  onNavigate() {}
+  onNavigate(params) {}
 
-  onDateSelect() {}
+  onDateSelect(date) {}
 
-  onModelChange() {}
+  onModelChange(value) {}
 
   onClose() {}
 

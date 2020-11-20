@@ -1264,7 +1264,7 @@ class TestComponent {
   showWeekdays = true;
   dayTemplateData = () => '!';
   markDisabled = (date: NgbDateStruct) => { return NgbDate.from(date) !.equals(new NgbDate(2016, 8, 22)); };
-  onNavigate = () => {};
+  onNavigate = (event) => {};
   onDateSelect = () => {};
   getDate = () => ({year: 2016, month: 8});
   onPreventableNavigate = (event: NgbDatepickerNavigateEvent) => event.preventDefault();

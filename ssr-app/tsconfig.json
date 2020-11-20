@@ -1,9 +1,10 @@
 {
-  "extends": "../tsconfig.base.json",
+  "extends": "../tsconfig.json",
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "../out-tsc/ssr-app",
     "types": [],
+    "target": "es2018",
     "paths": {
       "@ng-bootstrap/ng-bootstrap": ["../dist/ng-bootstrap"]
     }

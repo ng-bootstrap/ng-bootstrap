@@ -150,6 +150,6 @@ class TestComponent {
   showSelect = true;
   selectBoxes = {months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], years: [2015, 2016, 2017, 2018, 2019, 2020]};
 
-  onNavigate = () => {};
-  onSelect = () => {};
+  onNavigate = (event) => {};
+  onSelect = (date) => {};
 }

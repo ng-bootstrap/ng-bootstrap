@@ -396,5 +396,5 @@ class TestComponent {
   showWeekNumbers = true;
   outsideDays = 'visible';
 
-  onClick = () => {};
+  onClick = (event) => {};
 }
