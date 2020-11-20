@@ -1428,7 +1428,7 @@ class TestComponent {
   orientation = 'horizontal';
   roles: 'tablist' | false = 'tablist';
   visible = false;
-  onActiveIdChange = () => {};
+  onActiveIdChange = (id) => {};
   onNavChange = () => {};
   onItemHidden = () => {};
   onItemShown = () => {};

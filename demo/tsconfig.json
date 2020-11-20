@@ -1,11 +1,12 @@
 {
-  "extends": "../tsconfig.base.json",
+  "extends": "../tsconfig.json",
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "../out-tsc/demo",
     "paths": {
       "@ng-bootstrap/ng-bootstrap": ["src/app/ng-bootstrap"]
-    }
+    },
+    "target": "es2018"
   },
   "files": [
     "src/main.ts",

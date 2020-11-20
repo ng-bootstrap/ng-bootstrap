@@ -25,7 +25,7 @@ export abstract class NgbTimepickerI18n {
 
 @Injectable()
 export class NgbTimepickerI18nDefault extends NgbTimepickerI18n {
-  private _periods: [string, string];
+  private _periods: Readonly<[string, string]>;
 
   constructor(@Inject(LOCALE_ID) locale: string) {
     super();
