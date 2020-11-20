@@ -1059,7 +1059,7 @@ class TestComponent {
   changeCallback = (event: NgbPanelChangeEvent) => {};
   shownCallback = (panelId: string) => {};
   hiddenCallback = (panelId: string) => {};
-  panelShownCallback = (panelId: string) => {};
-  panelHiddenCallback = (panelId: string) => {};
+  panelShownCallback = (panelId?: string) => {};
+  panelHiddenCallback = (panelId?: string) => {};
   preventDefaultCallback = (event: NgbPanelChangeEvent) => { event.preventDefault(); };
 }

@@ -74,8 +74,8 @@ export abstract class NgbDatepickerI18n {
 @Injectable()
 export class NgbDatepickerI18nDefault extends NgbDatepickerI18n {
   private _weekdaysShort: Array<string>;
-  private _monthsShort: Array<string>;
-  private _monthsFull: Array<string>;
+  private _monthsShort: ReadonlyArray<string>;
+  private _monthsFull: ReadonlyArray<string>;
 
   constructor(@Inject(LOCALE_ID) private _locale: string) {
     super();

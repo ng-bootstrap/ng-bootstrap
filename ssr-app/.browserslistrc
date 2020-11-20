@@ -4,4 +4,4 @@
 # For IE 9-11 support, please uncomment the last line of the file and adjust as needed
 last 2 versions
 Firefox ESR
-IE 10-11
+not IE <11
