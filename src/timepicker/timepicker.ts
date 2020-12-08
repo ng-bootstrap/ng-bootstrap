@@ -17,12 +17,6 @@ import {NgbTimepickerI18n} from './timepicker-i18n';
 
 const FILTER_REGEX = /[^0-9]/g;
 
-const NGB_TIMEPICKER_VALUE_ACCESSOR = {
-  provide: NG_VALUE_ACCESSOR,
-  useExisting: forwardRef(() => NgbTimepicker),
-  multi: true
-};
-
 /**
  * A directive that helps with wth picking hours, minutes and seconds.
  */
@@ -112,7 +106,7 @@ const NGB_TIMEPICKER_VALUE_ACCESSOR = {
       </div>
     </fieldset>
   `,
-  providers: [NGB_TIMEPICKER_VALUE_ACCESSOR]
+  providers: [{provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NgbTimepicker), multi: true}]
 })
 export class NgbTimepicker implements ControlValueAccessor,
     OnChanges {
