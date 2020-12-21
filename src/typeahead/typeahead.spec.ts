@@ -705,7 +705,7 @@ describe('ngb-typeahead', () => {
       const input = getNativeInput(fixture.nativeElement);
 
       expect(input.getAttribute('autocomplete')).toBe('off');
-      expect(input.getAttribute('autocapitalize')).toBe('off');
+      expect(['off', 'none']).toContain(input.getAttribute('autocapitalize') !);
       expect(input.getAttribute('autocorrect')).toBe('off');
     });
 
