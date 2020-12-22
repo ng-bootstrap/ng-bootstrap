@@ -3,12 +3,6 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 import {NgbButtonLabel} from './label';
 
-const NGB_RADIO_VALUE_ACCESSOR = {
-  provide: NG_VALUE_ACCESSOR,
-  useExisting: forwardRef(() => NgbRadioGroup),
-  multi: true
-};
-
 let nextId = 0;
 
 /**
@@ -17,7 +11,11 @@ let nextId = 0;
  * Integrates with forms, so the value of a checked button is bound to the underlying form control
  * either in a reactive or template-driven way.
  */
-@Directive({selector: '[ngbRadioGroup]', host: {'role': 'radiogroup'}, providers: [NGB_RADIO_VALUE_ACCESSOR]})
+@Directive({
+  selector: '[ngbRadioGroup]',
+  host: {'role': 'radiogroup'},
+  providers: [{provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NgbRadioGroup), multi: true}]
+})
 export class NgbRadioGroup implements ControlValueAccessor {
   private _radios: Set<NgbRadio> = new Set<NgbRadio>();
   private _value = null;

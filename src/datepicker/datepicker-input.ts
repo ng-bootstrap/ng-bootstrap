@@ -42,18 +42,6 @@ import {NgbInputDatepickerConfig} from './datepicker-input-config';
 import {NgbDatepickerConfig} from './datepicker-config';
 import {isString} from '../util/util';
 
-const NGB_DATEPICKER_VALUE_ACCESSOR = {
-  provide: NG_VALUE_ACCESSOR,
-  useExisting: forwardRef(() => NgbInputDatepicker),
-  multi: true
-};
-
-const NGB_DATEPICKER_VALIDATOR = {
-  provide: NG_VALIDATORS,
-  useExisting: forwardRef(() => NgbInputDatepicker),
-  multi: true
-};
-
 /**
  * A directive that allows to stick a datepicker popup to an input field.
  *
@@ -70,7 +58,8 @@ const NGB_DATEPICKER_VALIDATOR = {
     '[disabled]': 'disabled'
   },
   providers: [
-    NGB_DATEPICKER_VALUE_ACCESSOR, NGB_DATEPICKER_VALIDATOR,
+    {provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NgbInputDatepicker), multi: true},
+    {provide: NG_VALIDATORS, useExisting: forwardRef(() => NgbInputDatepicker), multi: true},
     {provide: NgbDatepickerConfig, useExisting: NgbInputDatepickerConfig}
   ],
 })

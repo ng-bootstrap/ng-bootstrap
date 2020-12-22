@@ -33,12 +33,6 @@ export interface StarTemplateContext {
   index: number;
 }
 
-const NGB_RATING_VALUE_ACCESSOR = {
-  provide: NG_VALUE_ACCESSOR,
-  useExisting: forwardRef(() => NgbRating),
-  multi: true
-};
-
 /**
  * A directive that helps visualising and interacting with a star rating bar.
  */
@@ -69,7 +63,7 @@ const NGB_RATING_VALUE_ACCESSOR = {
       </span>
     </ng-template>
   `,
-  providers: [NGB_RATING_VALUE_ACCESSOR]
+  providers: [{provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NgbRating), multi: true}]
 })
 export class NgbRating implements ControlValueAccessor,
     OnInit, OnChanges {

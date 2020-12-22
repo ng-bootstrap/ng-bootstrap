@@ -33,13 +33,6 @@ import {isDefined, toString} from '../util/util';
 import {NgbTypeaheadConfig} from './typeahead-config';
 import {NgbTypeaheadWindow, ResultTemplateContext} from './typeahead-window';
 
-
-const NGB_TYPEAHEAD_VALUE_ACCESSOR = {
-  provide: NG_VALUE_ACCESSOR,
-  useExisting: forwardRef(() => NgbTypeahead),
-  multi: true
-};
-
 /**
  * An event emitted right before an item is selected from the result list.
  */
@@ -77,7 +70,7 @@ let nextWindowId = 0;
     '[attr.aria-owns]': 'isPopupOpen() ? popupId : null',
     '[attr.aria-expanded]': 'isPopupOpen()'
   },
-  providers: [NGB_TYPEAHEAD_VALUE_ACCESSOR]
+  providers: [{provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NgbTypeahead), multi: true}]
 })
 export class NgbTypeahead implements ControlValueAccessor,
     OnInit, OnDestroy {
