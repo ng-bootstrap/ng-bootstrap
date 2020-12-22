@@ -3,13 +3,6 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 import {NgbButtonLabel} from './label';
 
-const NGB_CHECKBOX_VALUE_ACCESSOR = {
-  provide: NG_VALUE_ACCESSOR,
-  useExisting: forwardRef(() => NgbCheckBox),
-  multi: true
-};
-
-
 /**
  * Allows to easily create Bootstrap-style checkbox buttons.
  *
@@ -25,7 +18,7 @@ const NGB_CHECKBOX_VALUE_ACCESSOR = {
     '(focus)': 'focused = true',
     '(blur)': 'focused = false'
   },
-  providers: [NGB_CHECKBOX_VALUE_ACCESSOR]
+  providers: [{provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NgbCheckBox), multi: true}]
 })
 export class NgbCheckBox implements ControlValueAccessor {
   static ngAcceptInputType_disabled: boolean | '';

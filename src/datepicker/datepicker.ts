@@ -33,12 +33,6 @@ import {NgbDatepickerI18n} from './datepicker-i18n';
 import {isChangedDate, isChangedMonth} from './datepicker-tools';
 import {hasClassName} from '../util/util';
 
-export const NGB_DATEPICKER_VALUE_ACCESSOR = {
-  provide: NG_VALUE_ACCESSOR,
-  useExisting: forwardRef(() => NgbDatepicker),
-  multi: true
-};
-
 /**
  * An event emitted right before the navigation happens and the month displayed by the datepicker changes.
  */
@@ -164,7 +158,8 @@ export class NgbDatepickerContent {
 
     <ng-template [ngTemplateOutlet]="footerTemplate"></ng-template>
   `,
-  providers: [NGB_DATEPICKER_VALUE_ACCESSOR, NgbDatepickerService]
+  providers:
+      [{provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NgbDatepicker), multi: true}, NgbDatepickerService]
 })
 export class NgbDatepicker implements OnDestroy,
     OnChanges, OnInit, ControlValueAccessor {
