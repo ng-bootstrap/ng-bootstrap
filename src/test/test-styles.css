@@ -74,6 +74,7 @@
 
 .ngb-test-after {
   opacity: 0;
+  transition: none;
 }
 
 .ngb-test-hide-outer {

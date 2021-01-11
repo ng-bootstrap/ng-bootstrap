@@ -233,7 +233,7 @@ if (isBrowserVisible('ngbRunTransition')) {
       expect(completeSpy1).toHaveBeenCalled();
       expect(element.classList.contains('ngb-test-during')).toBe(false);
       expect(element.classList.contains('ngb-test-after')).toBe(true);
-      expect(window.getComputedStyle(element).opacity).toBe('0');
+      expectOpacity(element, '0');
     });
 
     it(`should create and allow modifying context when running a new transition`, (done) => {
