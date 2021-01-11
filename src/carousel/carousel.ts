@@ -25,7 +25,7 @@ import {NgbCarouselConfig} from './carousel-config';
 
 import {BehaviorSubject, combineLatest, NEVER, Observable, Subject, timer, zip} from 'rxjs';
 import {distinctUntilChanged, map, startWith, switchMap, take, takeUntil} from 'rxjs/operators';
-import {ngbRunTransition, NgbTransitionOptions} from '../util/transition/ngbTransition';
+import {ngbCompleteTransition, ngbRunTransition, NgbTransitionOptions} from '../util/transition/ngbTransition';
 import {
   ngbCarouselTransitionIn,
   ngbCarouselTransitionOut,
@@ -280,7 +280,25 @@ export class NgbCarousel implements AfterContentChecked,
       });
     }
 
-    this.slides.changes.pipe(takeUntil(this._destroy$)).subscribe(() => this._cd.markForCheck());
+    this.slides.changes.pipe(takeUntil(this._destroy$)).subscribe(() => {
+      this._transitionIds ?.forEach(id => ngbCompleteTransition(this._getSlideElement(id)));
+      this._transitionIds = null;
+
+      this._cd.markForCheck();
+
+      // The following code need to be done asynchronously, after the dom becomes stable,
+      // otherwise all changes will be undone.
+      this._ngZone.onStable.pipe(take(1)).subscribe(() => {
+        for (const { id } of this.slides) {
+          const element = this._getSlideElement(id);
+          if (id === this.activeId) {
+            element.classList.add('active');
+          } else {
+            element.classList.remove('active');
+          }
+        }
+      });
+    });
   }
 
   ngAfterContentChecked() {

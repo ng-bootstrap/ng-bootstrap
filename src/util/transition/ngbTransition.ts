@@ -15,7 +15,7 @@ export interface NgbTransitionOptions<T> {
 
 export interface NgbTransitionCtx<T> {
   transition$: Subject<any>;
-  stop: () => void;
+  complete: () => void;
   context: T;
 }
 
@@ -70,7 +70,7 @@ export const ngbRunTransition =
           const stop$ = transition$.pipe(endWith(true));
           runningTransitions.set(element, {
             transition$,
-            stop: () => {
+            complete: () => {
               finishTransition$.next();
               finishTransition$.complete();
             },
@@ -100,5 +100,5 @@ export const ngbRunTransition =
         };
 
 export const ngbCompleteTransition = (element: HTMLElement) => {
-  runningTransitions.get(element) ?.stop();
+  runningTransitions.get(element) ?.complete();
 };
