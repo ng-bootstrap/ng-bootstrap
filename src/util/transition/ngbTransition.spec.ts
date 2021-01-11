@@ -1,4 +1,4 @@
-import {ngbRunTransition, NgbTransitionStartFn} from './ngbTransition';
+import {ngbCompleteTransition, ngbRunTransition, NgbTransitionStartFn} from './ngbTransition';
 import createSpy = jasmine.createSpy;
 import {Component, ElementRef, ViewChild} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
@@ -201,6 +201,39 @@ if (isBrowserVisible('ngbRunTransition')) {
       expect(nextSpy1).not.toHaveBeenCalled();
       expect(errorSpy1).not.toHaveBeenCalled();
       expect(completeSpy1).toHaveBeenCalled();
+    });
+
+    it(`should complete a transition with ngbCompleteTransition'`, () => {
+      const startFn = ({classList}: HTMLElement) => {
+        classList.add('ngb-test-during');
+        return () => {
+          classList.remove('ngb-test-during');
+          classList.add('ngb-test-after');
+        };
+      };
+
+      // starting first
+      const nextSpy1 = createSpy();
+      const errorSpy1 = createSpy();
+      const completeSpy1 = createSpy();
+
+      ngbRunTransition(element, startFn, {animation: true, runningTransition: 'stop'})
+          .subscribe(nextSpy1, errorSpy1, completeSpy1);
+
+      // first transition is on-going, start function was called
+      expect(nextSpy1).not.toHaveBeenCalled();
+      expect(completeSpy1).not.toHaveBeenCalled();
+      expect(element.classList.contains('ngb-test-during')).toBe(true);
+      expect(element.classList.contains('ngb-test-after')).toBe(false);
+      expect(window.getComputedStyle(element).opacity).toBe('1');
+
+      ngbCompleteTransition(element);
+
+      expect(nextSpy1).toHaveBeenCalled();
+      expect(completeSpy1).toHaveBeenCalled();
+      expect(element.classList.contains('ngb-test-during')).toBe(false);
+      expect(element.classList.contains('ngb-test-after')).toBe(true);
+      expect(window.getComputedStyle(element).opacity).toBe('0');
     });
 
     it(`should create and allow modifying context when running a new transition`, (done) => {

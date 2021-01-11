@@ -15,6 +15,7 @@ export interface NgbTransitionOptions<T> {
 
 export interface NgbTransitionCtx<T> {
   transition$: Subject<any>;
+  stop: () => void;
   context: T;
 }
 
@@ -65,8 +66,16 @@ export const ngbRunTransition =
 
           // Starting a new transition
           const transition$ = new Subject<any>();
+          const finishTransition$ = new Subject<any>();
           const stop$ = transition$.pipe(endWith(true));
-          runningTransitions.set(element, {transition$, context});
+          runningTransitions.set(element, {
+            transition$,
+            stop: () => {
+              finishTransition$.next();
+              finishTransition$.complete();
+            },
+            context
+          });
 
           const transitionDurationMs = getTransitionDurationMs(element);
 
@@ -80,7 +89,7 @@ export const ngbRunTransition =
               fromEvent(element, 'transitionend').pipe(takeUntil(stop$), filter(({target}) => target === element));
           const timer$ = timer(transitionDurationMs + transitionTimerDelayMs).pipe(takeUntil(stop$));
 
-          race(timer$, transitionEnd$).pipe(takeUntil(stop$)).subscribe(() => {
+          race(timer$, transitionEnd$, finishTransition$).pipe(takeUntil(stop$)).subscribe(() => {
             runningTransitions.delete(element);
             endFn();
             transition$.next();
@@ -89,3 +98,7 @@ export const ngbRunTransition =
 
           return transition$.asObservable();
         };
+
+export const ngbCompleteTransition = (element: HTMLElement) => {
+  runningTransitions.get(element) ?.stop();
+};
