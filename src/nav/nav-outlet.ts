@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import {distinctUntilChanged, skip, startWith, takeUntil} from 'rxjs/operators';
 
-import {ngbNavFadeInNoReflowTransition, ngbNavFadeInTransition, ngbNavFadeOutTransition} from './nav-transition';
+import {ngbNavFadeInTransition, ngbNavFadeOutTransition} from './nav-transition';
 import {ngbRunTransition, NgbTransitionOptions} from '../util/transition/ngbTransition';
 import {NgbNav, NgbNavItem} from './nav';
 
@@ -98,8 +98,10 @@ export class NgbNavOutlet implements AfterViewInit {
 
           // fading in
           if (this._activePane) {
-            const fadeInTransition = this.nav.animation ? ngbNavFadeInTransition : ngbNavFadeInNoReflowTransition;
-            ngbRunTransition(this._activePane.elRef.nativeElement, fadeInTransition, options).subscribe(() => {
+            // we have to add the '.active' class before running the transition,
+            // because it should be in place before `ngbRunTransition` does `reflow()`
+            this._activePane.elRef.nativeElement.classList.add('active');
+            ngbRunTransition(this._activePane.elRef.nativeElement, ngbNavFadeInTransition, options).subscribe(() => {
               if (nextItem) {
                 nextItem.shown.emit();
                 this.nav.shown.emit(nextItem.id);

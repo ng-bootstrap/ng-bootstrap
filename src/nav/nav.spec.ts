@@ -685,6 +685,37 @@ describe('nav', () => {
     });
   });
 
+  it(`should not change container scroll position after switching navs`, () => {
+    const fixture = createTestComponent(`
+        <div class="container" style="overflow: scroll; height: 5rem; border: 1px solid gray; padding-top: 2rem;">
+          <ul ngbNav #n="ngbNav" class="nav-tabs">
+            <li ngbNavItem>
+                <a ngbNavLink>link 1</a>
+                <ng-template ngbNavContent>content 1</ng-template>
+            </li>
+            <li ngbNavItem>
+                <a ngbNavLink>link 2</a>
+                <ng-template ngbNavContent>content 2</ng-template>
+            </li>
+          </ul>
+          <div [ngbNavOutlet]="n"></div>
+        </div>
+      `);
+
+    const links = getLinks(fixture);
+    const container = fixture.nativeElement.querySelector('.container');
+
+    // scroll to bottom
+    container.scrollTop = container.scrollHeight;
+    const {scrollTop} = container;
+    expect(container.scrollTop).toBe(scrollTop);
+
+    // staying at the same position after changing the nav
+    links[1].click();
+    fixture.detectChanges();
+    expect(container.scrollTop).toBe(scrollTop);
+  });
+
   describe(`(navChange) preventDefault()`, () => {
 
     let fixture: ComponentFixture<TestComponent>;
