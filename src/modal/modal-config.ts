@@ -111,7 +111,6 @@ export interface NgbModalOptions {
 */
 @Injectable({providedIn: 'root'})
 export class NgbModalConfig implements Required<NgbModalOptions> {
-  animation: boolean;
   ariaLabelledBy: string;
   ariaDescribedBy: string;
   backdrop: boolean | 'static' = true;
@@ -125,5 +124,10 @@ export class NgbModalConfig implements Required<NgbModalOptions> {
   windowClass: string;
   backdropClass: string;
 
-  constructor(ngbConfig: NgbConfig) { this.animation = ngbConfig.animation; }
+  private _animation: boolean;
+
+  constructor(private _ngbConfig: NgbConfig) {}
+
+  get animation(): boolean { return (this._animation === undefined) ? this._ngbConfig.animation : this._animation; }
+  set animation(animation: boolean) { this._animation = animation; }
 }
