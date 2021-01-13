@@ -10,11 +10,6 @@
 * **nav:** work corretly inside components with OnPush ([#3934](https://github.com/ng-bootstrap/ng-bootstrap/issues/3934)) ([038e89a](https://github.com/ng-bootstrap/ng-bootstrap/commit/038e89ac8e0e8218971b6d924f54e9fdd81a86e1)), closes [#3930](https://github.com/ng-bootstrap/ng-bootstrap/issues/3930)
 
 
-### Features
-
-* **animation:** add ngbCompleteTransition ([acae6c2](https://github.com/ng-bootstrap/ng-bootstrap/commit/acae6c26a42a116216d05b88879db07e2a70b8b3))
-
-
 
 ## [8.0.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/8.0.0...8.0.1) (2021-01-05)
 
