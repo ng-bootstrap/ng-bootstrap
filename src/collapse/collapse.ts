@@ -25,7 +25,7 @@ export class NgbCollapse implements OnInit, OnChanges {
    *
    * @since 8.0.0
    */
-  @Input() animation = false;
+  @Input() animation;
 
   /**
    * If `true`, will collapse the element or show it otherwise.
