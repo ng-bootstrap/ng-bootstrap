@@ -4,4 +4,6 @@
 # For IE 9-11 support, please uncomment the last line of the file and adjust as needed
 last 2 versions
 Firefox ESR
-not IE <11
+not dead
+Edge 18
+IE 11
