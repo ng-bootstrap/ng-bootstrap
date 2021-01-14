@@ -14,8 +14,8 @@ describe(`Components`, () => {
   beforeAll(async() => { await getLinkElement(`components`).click(); });
 
   const components = [
-    'accordion', 'alert', 'buttons', 'carousel', 'collapse', 'datepicker', 'dropdown', 'modal', 'pagination', 'popover',
-    'progressbar', 'rating', 'table', 'tabset', 'timepicker', 'toast', 'tooltip', 'typeahead'
+    'accordion', 'alert', 'buttons', 'carousel', 'collapse', 'datepicker', 'dropdown', 'modal', 'nav', 'pagination',
+    'popover', 'progressbar', 'rating', 'table', 'tabset', 'timepicker', 'toast', 'tooltip', 'typeahead'
   ];
   components.forEach((component) => {
     describe(`${component} page`, () => {
