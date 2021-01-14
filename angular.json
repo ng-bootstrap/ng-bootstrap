@@ -206,7 +206,8 @@
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "e2e-app/src/style/app.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "progress": false
           },
           "configurations": {
             "production": {
@@ -231,13 +232,11 @@
           "builder": "ngx-build-plus:dev-server",
           "options": {
             "browserTarget": "e2e-app:build",
-            "progress": false,
             "extraWebpackConfig": "e2e-app/coverage.webpack.js"
           },
           "configurations": {
             "production": {
-              "browserTarget": "e2e-app:build:production",
-              "progress": false
+              "browserTarget": "e2e-app:build:production"
             }
           }
         },
