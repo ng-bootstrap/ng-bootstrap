@@ -25,12 +25,6 @@ const BROWSERS = {
     platform: 'Windows 10',
     version: '18.17763'
   },
-  'IE10': {
-    base: 'SauceLabs',
-    browserName: 'internet explorer',
-    platform: 'Windows 8',
-    version: '10'
-  },
   'IE11': {
     base: 'SauceLabs',
     browserName: 'internet explorer',

@@ -51,7 +51,7 @@
               "progress": false,
               "tsConfig": "src/tsconfig-ie.spec.json",
               "karmaConfig": "src/karma.sauce.conf.js",
-              "browsers": "IE10,IE11"
+              "browsers": "IE11"
             }
           }
         },
