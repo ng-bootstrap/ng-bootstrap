@@ -4,7 +4,6 @@
     "baseUrl": "./",
     "outDir": "../out-tsc/ssr-app",
     "types": [],
-    "target": "es2018",
     "paths": {
       "@ng-bootstrap/ng-bootstrap": ["../dist/ng-bootstrap"]
     }

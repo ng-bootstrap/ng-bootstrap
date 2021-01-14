@@ -5,8 +5,7 @@
     "outDir": "../out-tsc/demo",
     "paths": {
       "@ng-bootstrap/ng-bootstrap": ["src/app/ng-bootstrap"]
-    },
-    "target": "es2018"
+    }
   },
   "files": [
     "src/main.ts",
