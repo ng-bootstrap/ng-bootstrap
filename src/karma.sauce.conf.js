@@ -81,6 +81,7 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     browsers: ['CHROME', 'FIREFOX', 'EDGE', 'EDGE18', 'SAFARI12', 'SAFARI13'],
+    autoWatch: false,
     singleRun: true,
     captureTimeout: 180000,
     browserDisconnectTimeout: 180000,
