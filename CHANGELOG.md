@@ -1,3 +1,14 @@
+# [9.0.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/8.0.2...9.0.0) (2021-01-14)
+
+This major release officially adds Angular 11 support.
+
+### BREAKING CHANGES
+
+* for ng-bootstrap `9.0.0` minimal required version
+  of Angular is `11.0.0`. Please note that this version drops IE 10 support.
+
+
+
 ## [8.0.2](https://github.com/ng-bootstrap/ng-bootstrap/compare/8.0.1...8.0.2) (2021-01-13)
 
 
