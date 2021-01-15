@@ -21,7 +21,12 @@ export interface ResultTemplateContext {
   selector: 'ngb-typeahead-window',
   exportAs: 'ngbTypeaheadWindow',
   encapsulation: ViewEncapsulation.None,
-  host: {'(mousedown)': '$event.preventDefault()', 'class': 'dropdown-menu show', 'role': 'listbox', '[id]': 'id'},
+  host: {
+    '(mousedown)': '$event.preventDefault()',
+    '[class]': '"dropdown-menu show" + (windowClass ? " " + windowClass : "")',
+    'role': 'listbox',
+    '[id]': 'id'
+  },
   template: `
     <ng-template #rt let-result="result" let-term="term" let-formatter="formatter">
       <ngb-highlight [result]="formatter(result)" [term]="term"></ngb-highlight>
@@ -72,6 +77,11 @@ export class NgbTypeaheadWindow implements OnInit {
    * A template to override a matching result default display
    */
   @Input() resultTemplate: TemplateRef<ResultTemplateContext>;
+
+  /**
+  * A custom class to append to the typeahead window
+  */
+  @Input() windowClass: string;
 
   /**
    * Event raised when user selects a particular result row
