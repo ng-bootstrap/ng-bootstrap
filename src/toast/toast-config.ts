@@ -37,10 +37,14 @@ export interface NgbToastOptions {
  */
 @Injectable({providedIn: 'root'})
 export class NgbToastConfig implements NgbToastOptions {
-  animation: boolean;
   autohide = true;
   delay = 500;
   ariaLive: 'polite' | 'alert' = 'polite';
 
-  constructor(ngbConfig: NgbConfig) { this.animation = ngbConfig.animation; }
+  private _animation: boolean;
+
+  constructor(private _ngbConfig: NgbConfig) {}
+
+  get animation(): boolean { return (this._animation === undefined) ? this._ngbConfig.animation : this._animation; }
+  set animation(animation: boolean) { this._animation = animation; }
 }

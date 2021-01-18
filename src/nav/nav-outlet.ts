@@ -1,5 +1,6 @@
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   Directive,
@@ -11,7 +12,7 @@ import {
 } from '@angular/core';
 import {distinctUntilChanged, skip, startWith, takeUntil} from 'rxjs/operators';
 
-import {ngbNavFadeInNoReflowTransition, ngbNavFadeInTransition, ngbNavFadeOutTransition} from './nav-transition';
+import {ngbNavFadeInTransition, ngbNavFadeOutTransition} from './nav-transition';
 import {ngbRunTransition, NgbTransitionOptions} from '../util/transition/ngbTransition';
 import {NgbNav, NgbNavItem} from './nav';
 
@@ -42,6 +43,7 @@ export class NgbNavPane {
   selector: '[ngbNavOutlet]',
   host: {'[class.tab-content]': 'true'},
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ng-template ngFor let-item [ngForOf]="nav.items">
       <div ngbNavPane *ngIf="item.isPanelInDom() || isPanelTransitioning(item)" [item]="item" [nav]="nav" [role]="paneRole">
@@ -88,13 +90,18 @@ export class NgbNavOutlet implements AfterViewInit {
       if (this._activePane) {
         ngbRunTransition(this._activePane.elRef.nativeElement, ngbNavFadeOutTransition, options).subscribe(() => {
           const activeItem = this._activePane ?.item;
-
           this._activePane = this._getPaneForItem(nextItem);
+
+          // mark for check when transition finishes as outlet or parent containers might be OnPush
+          // without this the panes that have "faded out" will stay in DOM
+          this._cd.markForCheck();
 
           // fading in
           if (this._activePane) {
-            const fadeInTransition = this.nav.animation ? ngbNavFadeInTransition : ngbNavFadeInNoReflowTransition;
-            ngbRunTransition(this._activePane.elRef.nativeElement, fadeInTransition, options).subscribe(() => {
+            // we have to add the '.active' class before running the transition,
+            // because it should be in place before `ngbRunTransition` does `reflow()`
+            this._activePane.elRef.nativeElement.classList.add('active');
+            ngbRunTransition(this._activePane.elRef.nativeElement, ngbNavFadeInTransition, options).subscribe(() => {
               if (nextItem) {
                 nextItem.shown.emit();
                 this.nav.shown.emit(nextItem.id);

@@ -26,7 +26,7 @@ export class NgbModal {
    * Also see the [`NgbModalOptions`](#/components/modal/api#NgbModalOptions) for the list of supported options.
    */
   open(content: any, options: NgbModalOptions = {}): NgbModalRef {
-    const combinedOptions = Object.assign({}, this._config, options);
+    const combinedOptions = {...this._config, animation: this._config.animation, ...options};
     return this._modalStack.open(this._moduleCFR, this._injector, content, combinedOptions);
   }
 

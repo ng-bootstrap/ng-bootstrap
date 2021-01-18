@@ -42,6 +42,7 @@ The supported versions are:
 | 5.x.x        | 8.0.0   | 4.3.1         |
 | 6.x.x        | 9.0.0   | 4.4.1         |
 | 7.x.x, 8.x.x | 10.0.0  | 4.5.0         |
+| 9.0.0        | 11.0.0  | 4.5.0         |
 
 ## Installation
 

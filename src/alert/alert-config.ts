@@ -9,9 +9,13 @@ import {NgbConfig} from '../ngb-config';
  */
 @Injectable({providedIn: 'root'})
 export class NgbAlertConfig {
-  animation: boolean;
   dismissible = true;
   type = 'warning';
 
-  constructor(ngbConfig: NgbConfig) { this.animation = ngbConfig.animation; }
+  private _animation: boolean;
+
+  constructor(private _ngbConfig: NgbConfig) {}
+
+  get animation(): boolean { return (this._animation === undefined) ? this._ngbConfig.animation : this._animation; }
+  set animation(animation: boolean) { this._animation = animation; }
 }

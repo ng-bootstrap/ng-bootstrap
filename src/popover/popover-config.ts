@@ -10,7 +10,6 @@ import {NgbConfig} from '../ngb-config';
  */
 @Injectable({providedIn: 'root'})
 export class NgbPopoverConfig {
-  animation: boolean;
   autoClose: boolean | 'inside' | 'outside' = true;
   placement: PlacementArray = 'auto';
   triggers = 'click';
@@ -20,5 +19,10 @@ export class NgbPopoverConfig {
   openDelay = 0;
   closeDelay = 0;
 
-  constructor(ngbConfig: NgbConfig) { this.animation = ngbConfig.animation; }
+  private _animation: boolean;
+
+  constructor(private _ngbConfig: NgbConfig) {}
+
+  get animation(): boolean { return (this._animation === undefined) ? this._ngbConfig.animation : this._animation; }
+  set animation(animation: boolean) { this._animation = animation; }
 }

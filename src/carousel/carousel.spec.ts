@@ -336,6 +336,7 @@ describe('ngb-carousel', () => {
     fixture.componentInstance.slides = ['c', 'd'];
     fixture.detectChanges();
     expect(getSlidesText(fixture.nativeElement)).toEqual(['c', 'd']);
+    expectActiveSlides(fixture.nativeElement, [true, false]);
   });
 
   it('should change slide on indicator click', fakeAsync(() => {
