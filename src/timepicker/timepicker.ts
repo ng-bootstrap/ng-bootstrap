@@ -85,7 +85,6 @@ const FILTER_REGEX = /[^0-9]/g;
             maxlength="2" inputmode="numeric" placeholder="SS" i18n-placeholder="@@ngb.timepicker.SS"
             [value]="formatMinSec(model?.second)" (change)="updateSecond($any($event).target.value)"
             [readOnly]="readonlyInputs" [disabled]="disabled" aria-label="Seconds" i18n-aria-label="@@ngb.timepicker.seconds"
-            (focus)="handleFocus()"
             (input)="formatInput($any($event).target)"
             (keydown.ArrowUp)="changeSecond(secondStep); $event.preventDefault()"
             (keydown.ArrowDown)="changeSecond(-secondStep); $event.preventDefault()">
