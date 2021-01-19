@@ -1,8 +1,9 @@
+import {NgZone} from '@angular/core';
 import {EMPTY, fromEvent, Observable, of, race, Subject, timer} from 'rxjs';
 import {endWith, filter, takeUntil} from 'rxjs/operators';
 import {getTransitionDurationMs} from './util';
 import {environment} from '../../environment';
-import {reflow} from '../util';
+import {reflow, runInZone} from '../util';
 
 export type NgbTransitionStartFn<T = any> = (element: HTMLElement, context: T) => NgbTransitionEndFn | void;
 export type NgbTransitionEndFn = () => void;
@@ -25,7 +26,7 @@ const {transitionTimerDelayMs} = environment;
 const runningTransitions = new Map<HTMLElement, NgbTransitionCtx<any>>();
 
 export const ngbRunTransition =
-    <T>(element: HTMLElement, startFn: NgbTransitionStartFn<T>, options: NgbTransitionOptions<T>):
+    <T>(zone: NgZone, element: HTMLElement, startFn: NgbTransitionStartFn<T>, options: NgbTransitionOptions<T>):
         Observable<undefined> => {
 
           // Getting initial context from options
@@ -43,7 +44,7 @@ export const ngbRunTransition =
               // We're simply completing the running one and not emitting any values and merging newly provided context
               // with the one coming from currently running transition.
               case 'stop':
-                running.transition$.complete();
+                zone.run(() => running.transition$.complete());
                 context = Object.assign(running.context, context);
                 runningTransitions.delete(element);
             }
@@ -60,8 +61,8 @@ export const ngbRunTransition =
           // In this case we have to call the end function, but can finish immediately by emitting a value,
           // completing the observable and executing end functions synchronously.
           if (!options.animation || window.getComputedStyle(element).transitionProperty === 'none') {
-            endFn();
-            return of(undefined);
+            zone.run(() => endFn());
+            return of(undefined).pipe(runInZone(zone));
           }
 
           // Starting a new transition
@@ -85,15 +86,19 @@ export const ngbRunTransition =
           // guarantees, that we'll release the DOM element and complete 'ngbRunTransition'.
           // 2. We need to filter transition end events, because they might bubble from shorter transitions
           // on inner DOM elements. We're only interested in the transition on the 'element' itself.
-          const transitionEnd$ =
-              fromEvent(element, 'transitionend').pipe(takeUntil(stop$), filter(({target}) => target === element));
-          const timer$ = timer(transitionDurationMs + transitionTimerDelayMs).pipe(takeUntil(stop$));
+          zone.runOutsideAngular(() => {
+            const transitionEnd$ =
+                fromEvent(element, 'transitionend').pipe(takeUntil(stop$), filter(({target}) => target === element));
+            const timer$ = timer(transitionDurationMs + transitionTimerDelayMs).pipe(takeUntil(stop$));
 
-          race(timer$, transitionEnd$, finishTransition$).pipe(takeUntil(stop$)).subscribe(() => {
-            runningTransitions.delete(element);
-            endFn();
-            transition$.next();
-            transition$.complete();
+            race(timer$, transitionEnd$, finishTransition$).pipe(takeUntil(stop$)).subscribe(() => {
+              runningTransitions.delete(element);
+              zone.run(() => {
+                endFn();
+                transition$.next();
+                transition$.complete();
+              });
+            });
           });
 
           return transition$.asObservable();

@@ -25,14 +25,14 @@ export class NgbModalBackdrop implements OnInit {
   ngOnInit() {
     this._zone.onStable.asObservable().pipe(take(1)).subscribe(() => {
       ngbRunTransition(
-          this._el.nativeElement, ({classList}) => classList.add('show'),
+          this._zone, this._el.nativeElement, ({classList}) => classList.add('show'),
           {animation: this.animation, runningTransition: 'continue'});
     });
   }
 
   hide(): Observable<void> {
     return ngbRunTransition(
-        this._el.nativeElement, ({classList}) => classList.remove('show'),
+        this._zone, this._el.nativeElement, ({classList}) => classList.remove('show'),
         {animation: this.animation, runningTransition: 'stop'});
   }
 }

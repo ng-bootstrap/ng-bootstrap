@@ -38,11 +38,11 @@ export class PopupService<T> {
     }
 
     const {nativeElement} = this._windowRef.location;
-    const onStable$ = this._ngZone.onStable.asObservable().pipe(take(1));
-    const transition$ = onStable$.pipe(mergeMap(() => this._ngZone.run(() => {
-      return ngbRunTransition(
-          nativeElement, ({classList}) => classList.add('show'), {animation, runningTransition: 'continue'});
-    })));
+    const transition$ = this._ngZone.onStable.pipe(
+        take(1), mergeMap(
+                     () => ngbRunTransition(
+                         this._ngZone, nativeElement, ({classList}) => classList.add('show'),
+                         {animation, runningTransition: 'continue'})));
 
     return {windowRef: this._windowRef, transition$};
   }
@@ -53,7 +53,7 @@ export class PopupService<T> {
     }
 
     return ngbRunTransition(
-               this._windowRef.location.nativeElement, ({classList}) => classList.remove('show'),
+               this._ngZone, this._windowRef.location.nativeElement, ({classList}) => classList.remove('show'),
                {animation, runningTransition: 'stop'})
         .pipe(tap(() => {
           if (this._windowRef) {

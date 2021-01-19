@@ -3,6 +3,7 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  NgZone,
   OnChanges,
   OnInit,
   Output,
@@ -49,7 +50,9 @@ export class NgbCollapse implements OnInit, OnChanges {
   @Output() hidden = new EventEmitter<void>();
 
 
-  constructor(private _element: ElementRef, config: NgbCollapseConfig) { this.animation = config.animation; }
+  constructor(private _element: ElementRef, config: NgbCollapseConfig, private _zone: NgZone) {
+    this.animation = config.animation;
+  }
 
   ngOnInit() {
     this._element.nativeElement.classList.add('collapse');
@@ -77,7 +80,7 @@ export class NgbCollapse implements OnInit, OnChanges {
   }
 
   private _runTransition(collapsed: boolean, animation: boolean, emitEvent = true) {
-    ngbRunTransition(this._element.nativeElement, ngbCollapsingTransition, {
+    ngbRunTransition(this._zone, this._element.nativeElement, ngbCollapsingTransition, {
       animation,
       runningTransition: 'stop',
       context: {direction: collapsed ? 'hide' : 'show'}
