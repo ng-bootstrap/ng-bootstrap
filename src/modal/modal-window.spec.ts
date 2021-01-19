@@ -51,7 +51,9 @@ describe('ngb-modal-dialog', () => {
       fixture.componentInstance.modalDialogClass = 'custom-dialog-class';
       fixture.detectChanges();
 
-      expect(fixture.nativeElement).toHaveCssClass('custom-dialog-class');
+      const dialogEl: Element = fixture.nativeElement.querySelector('.modal-dialog');
+      expect(dialogEl).toHaveCssClass('modal-dialog');
+      expect(dialogEl).toHaveCssClass('custom-dialog-class');
     });
   });
 });
