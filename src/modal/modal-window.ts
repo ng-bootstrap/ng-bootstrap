@@ -71,7 +71,9 @@ export class NgbModalWindow implements OnInit,
 
   ngOnInit() { this._elWithFocus = this._document.activeElement; }
 
-  ngAfterViewInit() { this._show(); }
+  ngAfterViewInit() {
+    this._zone.onStable.pipe(take(1)).subscribe(() => { this._show(); });
+  }
 
   ngOnDestroy() { this._disableEventHandling(); }
 
@@ -98,6 +100,7 @@ export class NgbModalWindow implements OnInit,
   private _show() {
     const {nativeElement} = this._elRef;
     const context: NgbTransitionOptions<any> = {animation: this.animation, runningTransition: 'continue'};
+
 
     const windowTransition$ =
         ngbRunTransition(this._zone, nativeElement, () => nativeElement.classList.add('show'), context);
