@@ -27,7 +27,7 @@ const removeClasses = ({classList}) => {
 };
 
 export const ngbCarouselTransitionIn: NgbTransitionStartFn<NgbCarouselCtx> =
-    (element: HTMLElement, {direction}: NgbCarouselCtx) => {
+    (element: HTMLElement, animation: boolean, {direction}: NgbCarouselCtx) => {
       const {classList} = element;
       if (isAnimated(element)) {
         // Revert the transition
@@ -46,7 +46,7 @@ export const ngbCarouselTransitionIn: NgbTransitionStartFn<NgbCarouselCtx> =
     };
 
 export const ngbCarouselTransitionOut: NgbTransitionStartFn<NgbCarouselCtx> =
-    (element: HTMLElement, {direction}: NgbCarouselCtx) => {
+    (element: HTMLElement, animation: boolean, {direction}: NgbCarouselCtx) => {
       const {classList} = element;
       //  direction is left or right, depending on the way the slide goes out.
       if (isAnimated(element)) {

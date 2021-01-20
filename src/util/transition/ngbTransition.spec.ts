@@ -3,6 +3,7 @@ import createSpy = jasmine.createSpy;
 import {Component, ElementRef, NgZone, ViewChild} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {isBrowser, isBrowserVisible} from '../../test/common';
+import {reflow} from '../util';
 
 /**
  * This is sometimes necessary only for IE when it fails to recalculate styles synchronously
@@ -31,6 +32,7 @@ if (isBrowserVisible('ngbRunTransition')) {
       component = TestBed.createComponent(TestComponent);
       component.detectChanges();
       element = component.componentInstance.element.nativeElement;
+      reflow(element);
       spyOn(component.componentInstance, 'onTransitionEnd');
 
       zone = TestBed.inject(NgZone);
@@ -299,11 +301,12 @@ if (isBrowserVisible('ngbRunTransition')) {
     });
 
     it(`should create and allow modifying context when running a new transition`, (done) => {
-      const startFn = ({classList}: HTMLElement, context: any) => {
-        classList.remove('ngb-test-show');
-        expect(context.number).toBe(123);
-        context.number = 456;
-      };
+      const startFn: NgbTransitionStartFn<{number}> =
+          ({classList}: HTMLElement, animation: boolean, context: {number}) => {
+            classList.remove('ngb-test-show');
+            expect(context.number).toBe(123);
+            context.number = 456;
+          };
 
       element.classList.add('ngb-test-fade');
 
@@ -321,21 +324,22 @@ if (isBrowserVisible('ngbRunTransition')) {
 
     it(`should create and allow modifying context when running multiple transitions`, (done) => {
       const contextSpy = createSpy();
-      const startFn = ({classList}: HTMLElement, context: any) => {
-        classList.add('ngb-test-during');
-        if (!context.counter) {
-          context.counter = 0;
-        }
-        context.counter++;
-        contextSpy({...context});
+      const startFn: NgbTransitionStartFn<{counter?, text?}> =
+          ({classList}: HTMLElement, animation: boolean, context: {counter?, text?}) => {
+            classList.add('ngb-test-during');
+            if (!context.counter) {
+              context.counter = 0;
+            }
+            context.counter++;
+            contextSpy({...context});
 
-        return () => {
-          classList.remove('ngb-test-during');
-          classList.add('ngb-test-after');
-          context.counter = 999;
-          contextSpy({...context});
-        };
-      };
+            return () => {
+              classList.remove('ngb-test-during');
+              classList.add('ngb-test-after');
+              context.counter = 999;
+              contextSpy({...context});
+            };
+          };
 
       element.classList.add('ngb-test-before');
 
@@ -358,7 +362,7 @@ if (isBrowserVisible('ngbRunTransition')) {
     });
 
     it(`should pass context with 'animation: false'`, () => {
-      const startFn: NgbTransitionStartFn<{flag: number}> = (_, context) => { expect(context.flag).toBe(42); };
+      const startFn: NgbTransitionStartFn<{flag: number}> = (_, __, context) => { expect(context.flag).toBe(42); };
 
       const nextSpy = createSpy();
       const errorSpy = createSpy();
@@ -489,6 +493,8 @@ if (isBrowserVisible('ngbRunTransition')) {
 
       const fixture = TestBed.createComponent(TestComponentNested);
       fixture.detectChanges();
+
+      reflow(fixture.nativeElement);
 
       const outerEl = fixture.componentInstance.outer.nativeElement;
       const innerEl = fixture.componentInstance.inner.nativeElement;
