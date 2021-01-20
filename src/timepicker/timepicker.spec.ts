@@ -771,6 +771,30 @@ describe('ngb-timepicker', () => {
          expect(getTimepicker(compiled)).not.toHaveCssClass('ng-untouched');
        }));
 
+    it('should work with template-driven form validation - visited status - seconds', fakeAsync(() => {
+         const html = `
+           <form>
+             <ngb-timepicker [(ngModel)]="model" name="control" seconds="true" required></ngb-timepicker>
+           </form>`;
+
+         const fixture = createTestComponent(html);
+         const compiled = fixture.nativeElement;
+         const secondInput = fixture.debugElement.query(By.css('.ngb-tp-second input'));
+
+         fixture.detectChanges();
+         tick();
+         fixture.detectChanges();
+         expect(getTimepicker(compiled)).toHaveCssClass('ng-untouched');
+         expect(getTimepicker(compiled)).not.toHaveCssClass('ng-touched');
+
+         secondInput.triggerEventHandler('focus', {});
+         fixture.detectChanges();
+         tick();
+         fixture.detectChanges();
+         expect(getTimepicker(compiled)).toHaveCssClass('ng-touched');
+         expect(getTimepicker(compiled)).not.toHaveCssClass('ng-untouched');
+       }));
+
     it('should work with template-driven form validation when meridian is true - valid status', fakeAsync(() => {
          const html = `
           <form>
@@ -843,6 +867,31 @@ describe('ngb-timepicker', () => {
          expect(getTimepicker(compiled)).not.toHaveCssClass('ng-untouched');
        }));
 
+    it('should work with template-driven form validation when meridian is true - visited status - seconds',
+       fakeAsync(() => {
+         const html = `
+          <form>
+            <ngb-timepicker [(ngModel)]="model" name="control" seconds="true"></ngb-timepicker>
+          </form>`;
+
+         const fixture = createTestComponent(html);
+         const compiled = fixture.nativeElement;
+         const secondInput = fixture.debugElement.query(By.css('.ngb-tp-second input'));
+
+         fixture.detectChanges();
+         tick();
+         fixture.detectChanges();
+         expect(getTimepicker(compiled)).toHaveCssClass('ng-untouched');
+         expect(getTimepicker(compiled)).not.toHaveCssClass('ng-touched');
+
+         secondInput.triggerEventHandler('focus', {});
+         fixture.detectChanges();
+         tick();
+         fixture.detectChanges();
+         expect(getTimepicker(compiled)).toHaveCssClass('ng-touched');
+         expect(getTimepicker(compiled)).not.toHaveCssClass('ng-untouched');
+       }));
+
     it('should work with model-driven form validation - valid status', () => {
       const html = `
           <form [formGroup]="form">
@@ -899,6 +948,26 @@ describe('ngb-timepicker', () => {
       expect(getTimepicker(compiled)).not.toHaveCssClass('ng-touched');
 
       minuteInput.triggerEventHandler('focus', {});
+      fixture.detectChanges();
+      expect(getTimepicker(compiled)).toHaveCssClass('ng-touched');
+      expect(getTimepicker(compiled)).not.toHaveCssClass('ng-untouched');
+    });
+
+    it('should work with model-driven form validation - visited status - seconds', () => {
+      const html = `
+          <form [formGroup]="form">
+            <ngb-timepicker formControlName="control" seconds="true" required></ngb-timepicker>
+          </form>`;
+
+      const fixture = createTestComponent(html);
+      const compiled = fixture.nativeElement;
+      fixture.detectChanges();
+      const secondInput = fixture.debugElement.query(By.css('.ngb-tp-second input'));
+
+      expect(getTimepicker(compiled)).toHaveCssClass('ng-untouched');
+      expect(getTimepicker(compiled)).not.toHaveCssClass('ng-touched');
+
+      secondInput.triggerEventHandler('focus', {});
       fixture.detectChanges();
       expect(getTimepicker(compiled)).toHaveCssClass('ng-touched');
       expect(getTimepicker(compiled)).not.toHaveCssClass('ng-untouched');
