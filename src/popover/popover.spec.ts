@@ -398,7 +398,7 @@ describe('ngb-popover', () => {
       const windowEl = getWindow(fixture.nativeElement);
 
       expect(windowEl).toHaveCssClass('popover');
-      expect(windowEl).toHaveCssClass('bs-popover-left');
+      expect(windowEl).toHaveCssClass('bs-popover-start');
       expect(windowEl.textContent.trim()).toBe('Great tip!');
     });
 
@@ -411,7 +411,7 @@ describe('ngb-popover', () => {
       const windowEl = getWindow(fixture.nativeElement);
 
       expect(windowEl).toHaveCssClass('popover');
-      expect(windowEl).toHaveCssClass('bs-popover-left');
+      expect(windowEl).toHaveCssClass('bs-popover-start');
       expect(windowEl.textContent.trim()).toBe('Great tip!');
     });
 
@@ -424,8 +424,8 @@ describe('ngb-popover', () => {
       const windowEl = getWindow(fixture.nativeElement);
 
       expect(windowEl).toHaveCssClass('popover');
-      expect(windowEl).toHaveCssClass('bs-popover-right');
-      expect(windowEl).toHaveCssClass('bs-popover-right-top');
+      expect(windowEl).toHaveCssClass('bs-popover-end');
+      expect(windowEl).toHaveCssClass('bs-popover-end-top');
       expect(windowEl.textContent.trim()).toBe('Great tip!');
     });
 
