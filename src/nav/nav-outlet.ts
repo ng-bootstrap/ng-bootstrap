@@ -6,6 +6,7 @@ import {
   Directive,
   ElementRef,
   Input,
+  NgZone,
   QueryList,
   ViewChildren,
   ViewEncapsulation
@@ -68,7 +69,7 @@ export class NgbNavOutlet implements AfterViewInit {
    */
   @Input('ngbNavOutlet') nav: NgbNav;
 
-  constructor(private _cd: ChangeDetectorRef) {}
+  constructor(private _cd: ChangeDetectorRef, private _ngZone: NgZone) {}
 
   isPanelTransitioning(item: NgbNavItem) { return this._activePane ?.item === item; }
 
@@ -88,32 +89,34 @@ export class NgbNavOutlet implements AfterViewInit {
 
       // fading out
       if (this._activePane) {
-        ngbRunTransition(this._activePane.elRef.nativeElement, ngbNavFadeOutTransition, options).subscribe(() => {
-          const activeItem = this._activePane ?.item;
-          this._activePane = this._getPaneForItem(nextItem);
+        ngbRunTransition(this._ngZone, this._activePane.elRef.nativeElement, ngbNavFadeOutTransition, options)
+            .subscribe(() => {
+              const activeItem = this._activePane ?.item;
+              this._activePane = this._getPaneForItem(nextItem);
 
-          // mark for check when transition finishes as outlet or parent containers might be OnPush
-          // without this the panes that have "faded out" will stay in DOM
-          this._cd.markForCheck();
+              // mark for check when transition finishes as outlet or parent containers might be OnPush
+              // without this the panes that have "faded out" will stay in DOM
+              this._cd.markForCheck();
 
-          // fading in
-          if (this._activePane) {
-            // we have to add the '.active' class before running the transition,
-            // because it should be in place before `ngbRunTransition` does `reflow()`
-            this._activePane.elRef.nativeElement.classList.add('active');
-            ngbRunTransition(this._activePane.elRef.nativeElement, ngbNavFadeInTransition, options).subscribe(() => {
-              if (nextItem) {
-                nextItem.shown.emit();
-                this.nav.shown.emit(nextItem.id);
+              // fading in
+              if (this._activePane) {
+                // we have to add the '.active' class before running the transition,
+                // because it should be in place before `ngbRunTransition` does `reflow()`
+                this._activePane.elRef.nativeElement.classList.add('active');
+                ngbRunTransition(this._ngZone, this._activePane.elRef.nativeElement, ngbNavFadeInTransition, options)
+                    .subscribe(() => {
+                      if (nextItem) {
+                        nextItem.shown.emit();
+                        this.nav.shown.emit(nextItem.id);
+                      }
+                    });
+              }
+
+              if (activeItem) {
+                activeItem.hidden.emit();
+                this.nav.hidden.emit(activeItem.id);
               }
             });
-          }
-
-          if (activeItem) {
-            activeItem.hidden.emit();
-            this.nav.hidden.emit(activeItem.id);
-          }
-        });
       } else {
         this._updateActivePane();
       }

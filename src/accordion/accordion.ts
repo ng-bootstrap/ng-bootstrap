@@ -407,7 +407,7 @@ export class NgbAccordion implements AfterContentChecked {
       // The direction (show or hide) is choosen by each panel.isOpen state
       if (panel.transitionRunning) {
         const panelElement = this._getPanelElement(panel.id);
-        ngbRunTransition(panelElement !, ngbCollapsingTransition, {
+        ngbRunTransition(this._ngZone, panelElement !, ngbCollapsingTransition, {
           animation,
           runningTransition: 'stop',
           context: {direction: panel.isOpen ? 'show' : 'hide'}

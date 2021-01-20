@@ -9,7 +9,8 @@ import {
   OnChanges,
   OnInit,
   SimpleChanges,
-  ViewEncapsulation
+  ViewEncapsulation,
+  NgZone
 } from '@angular/core';
 
 import {Observable} from 'rxjs';
@@ -75,7 +76,8 @@ export class NgbAlert implements OnInit,
   @Output() closed = new EventEmitter<void>();
 
 
-  constructor(config: NgbAlertConfig, private _renderer: Renderer2, private _element: ElementRef) {
+  constructor(
+      config: NgbAlertConfig, private _renderer: Renderer2, private _element: ElementRef, private _zone: NgZone) {
     this.dismissible = config.dismissible;
     this.type = config.type;
     this.animation = config.animation;
@@ -93,7 +95,7 @@ export class NgbAlert implements OnInit,
    */
   close(): Observable<void> {
     const transition = ngbRunTransition(
-        this._element.nativeElement, ngbAlertFadingTransition,
+        this._zone, this._element.nativeElement, ngbAlertFadingTransition,
         {animation: this.animation, runningTransition: 'continue'});
     transition.subscribe(() => this.closed.emit());
     return transition;

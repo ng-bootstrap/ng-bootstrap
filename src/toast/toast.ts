@@ -164,7 +164,8 @@ export class NgbToast implements AfterContentInit,
   hide(): Observable<void> {
     this._clearTimeout();
     const transition = ngbRunTransition(
-        this._element.nativeElement, ngbToastFadeOutTransition, {animation: this.animation, runningTransition: 'stop'});
+        this._zone, this._element.nativeElement, ngbToastFadeOutTransition,
+        {animation: this.animation, runningTransition: 'stop'});
     transition.subscribe(() => { this.hidden.emit(); });
     return transition;
   }
@@ -180,7 +181,7 @@ export class NgbToast implements AfterContentInit,
    * @since 8.0.0
    */
   show(): Observable<void> {
-    const transition = ngbRunTransition(this._element.nativeElement, ngbToastFadeInTransition, {
+    const transition = ngbRunTransition(this._zone, this._element.nativeElement, ngbToastFadeInTransition, {
       animation: this.animation,
       runningTransition: 'continue',
     });

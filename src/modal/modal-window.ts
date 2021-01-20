@@ -79,8 +79,9 @@ export class NgbModalWindow implements OnInit,
     const {nativeElement} = this._elRef;
     const context: NgbTransitionOptions<any> = {animation: this.animation, runningTransition: 'stop'};
 
-    const windowTransition$ = ngbRunTransition(nativeElement, () => nativeElement.classList.remove('show'), context);
-    const dialogTransition$ = ngbRunTransition(this._dialogEl.nativeElement, () => {}, context);
+    const windowTransition$ =
+        ngbRunTransition(this._zone, nativeElement, () => nativeElement.classList.remove('show'), context);
+    const dialogTransition$ = ngbRunTransition(this._zone, this._dialogEl.nativeElement, () => {}, context);
 
     const transitions$ = zip(windowTransition$, dialogTransition$);
     transitions$.subscribe(() => {
@@ -98,8 +99,9 @@ export class NgbModalWindow implements OnInit,
     const {nativeElement} = this._elRef;
     const context: NgbTransitionOptions<any> = {animation: this.animation, runningTransition: 'continue'};
 
-    const windowTransition$ = ngbRunTransition(nativeElement, () => nativeElement.classList.add('show'), context);
-    const dialogTransition$ = ngbRunTransition(this._dialogEl.nativeElement, () => {}, context);
+    const windowTransition$ =
+        ngbRunTransition(this._zone, nativeElement, () => nativeElement.classList.add('show'), context);
+    const dialogTransition$ = ngbRunTransition(this._zone, this._dialogEl.nativeElement, () => {}, context);
 
     zip(windowTransition$, dialogTransition$).subscribe(() => {
       this.shown.next();
@@ -189,7 +191,7 @@ export class NgbModalWindow implements OnInit,
 
   private _bumpBackdrop() {
     if (this.backdrop === 'static') {
-      ngbRunTransition(this._elRef.nativeElement, ({classList}) => {
+      ngbRunTransition(this._zone, this._elRef.nativeElement, ({classList}) => {
         classList.add('modal-static');
         return () => classList.remove('modal-static');
       }, {animation: this.animation, runningTransition: 'continue'});
