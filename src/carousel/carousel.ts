@@ -377,7 +377,7 @@ export class NgbCarousel implements AfterContentChecked,
       const activeSlide = this._getSlideById(this.activeId);
       if (activeSlide) {
         const activeSlideTransition =
-            ngbRunTransition(this._getSlideElement(activeSlide.id), ngbCarouselTransitionOut, options);
+            ngbRunTransition(this._ngZone, this._getSlideElement(activeSlide.id), ngbCarouselTransitionOut, options);
         activeSlideTransition.subscribe(() => { activeSlide.slid.emit({isShown: false, direction, source}); });
         transitions.push(activeSlideTransition);
       }
@@ -385,7 +385,8 @@ export class NgbCarousel implements AfterContentChecked,
       const previousId = this.activeId;
       this.activeId = selectedSlide.id;
       const nextSlide = this._getSlideById(this.activeId);
-      const transition = ngbRunTransition(this._getSlideElement(selectedSlide.id), ngbCarouselTransitionIn, options);
+      const transition =
+          ngbRunTransition(this._ngZone, this._getSlideElement(selectedSlide.id), ngbCarouselTransitionIn, options);
       transition.subscribe(() => { nextSlide ?.slid.emit({isShown: true, direction, source}); });
       transitions.push(transition);
 
