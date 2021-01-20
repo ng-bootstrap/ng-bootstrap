@@ -106,9 +106,9 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
   /**
    * The preferred placement of the popover.
    *
-   * Possible values are `"top"`, `"top-left"`, `"top-right"`, `"bottom"`, `"bottom-left"`,
-   * `"bottom-right"`, `"left"`, `"left-top"`, `"left-bottom"`, `"right"`, `"right-top"`,
-   * `"right-bottom"`
+   * Possible values are `"top"`, `"top-start"`, `"top-end"`, `"bottom"`, `"bottom-start"`,
+   * `"bottom-end"`, `"start"`, `"start-top"`, `"start-bottom"`, `"end"`, `"end-top"`,
+   * `"end-bottom"`
    *
    * Accepts an array of strings or a string with space separated possible values.
    *
