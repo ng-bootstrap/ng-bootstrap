@@ -21,6 +21,7 @@ import {getFocusableBoundaryElements} from '../util/focus-trap';
 import {Key} from '../util/key';
 import {ModalDismissReasons} from './modal-dismiss-reasons';
 import {ngbRunTransition, NgbTransitionOptions} from '../util/transition/ngbTransition';
+import {reflow} from '../util/util';
 
 @Component({
   selector: 'ngb-modal-window',
@@ -96,11 +97,15 @@ export class NgbModalWindow implements OnInit,
   }
 
   private _show() {
-    const {nativeElement} = this._elRef;
     const context: NgbTransitionOptions<any> = {animation: this.animation, runningTransition: 'continue'};
 
     const windowTransition$ =
-        ngbRunTransition(this._zone, nativeElement, () => nativeElement.classList.add('show'), context);
+        ngbRunTransition(this._zone, this._elRef.nativeElement, (element: HTMLElement, animation: boolean) => {
+          if (animation) {
+            reflow(element);
+          }
+          element.classList.add('show');
+        }, context);
     const dialogTransition$ = ngbRunTransition(this._zone, this._dialogEl.nativeElement, () => {}, context);
 
     zip(windowTransition$, dialogTransition$).subscribe(() => {

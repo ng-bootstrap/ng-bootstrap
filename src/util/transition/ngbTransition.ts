@@ -3,9 +3,10 @@ import {EMPTY, fromEvent, Observable, of, race, Subject, timer} from 'rxjs';
 import {endWith, filter, takeUntil} from 'rxjs/operators';
 import {getTransitionDurationMs} from './util';
 import {environment} from '../../environment';
-import {reflow, runInZone} from '../util';
+import {runInZone} from '../util';
 
-export type NgbTransitionStartFn<T = any> = (element: HTMLElement, context: T) => NgbTransitionEndFn | void;
+export type NgbTransitionStartFn<T = any> = (element: HTMLElement, animation: boolean, context: T) =>
+    NgbTransitionEndFn | void;
 export type NgbTransitionEndFn = () => void;
 
 export interface NgbTransitionOptions<T> {
@@ -50,11 +51,8 @@ export const ngbRunTransition =
             }
           }
 
-          // A reflow is required here, to be sure that everything is ready,
-          // Without reflow, the transition will not be started for some widgets, at initialization time
-          reflow(element);
-
-          const endFn = startFn(element, context) || noopFn;
+          // Running the start function
+          const endFn = startFn(element, options.animation, context) || noopFn;
 
           // If 'prefer-reduced-motion' is enabled, the 'transition' will be set to 'none'.
           // If animations are disabled, we have to emit a value and complete the observable
