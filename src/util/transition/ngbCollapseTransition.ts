@@ -29,9 +29,24 @@ function measureCollapsingElementHeightPx(element: HTMLElement): string {
 }
 
 export const ngbCollapsingTransition: NgbTransitionStartFn<NgbCollapseCtx> =
-    (element: HTMLElement, context: NgbCollapseCtx) => {
+    (element: HTMLElement, animation: boolean, context: NgbCollapseCtx) => {
       let {direction, maxHeight} = context;
       const {classList} = element;
+
+      function setInitialClasses() {
+        classList.add('collapse');
+        if (direction === 'show') {
+          classList.add('show');
+        } else {
+          classList.remove('show');
+        }
+      }
+
+      // without animations we just need to set initial classes
+      if (!animation) {
+        setInitialClasses();
+        return;
+      }
 
       // No maxHeight -> running the transition for the first time
       if (!maxHeight) {
@@ -55,14 +70,8 @@ export const ngbCollapsingTransition: NgbTransitionStartFn<NgbCollapseCtx> =
       element.style.height = direction === 'show' ? maxHeight : '0px';
 
       return () => {
+        setInitialClasses();
         classList.remove('collapsing');
-        classList.add('collapse');
-        if (direction === 'show') {
-          classList.add('show');
-        } else {
-          classList.remove('show');
-        }
-
         element.style.height = '';
       };
     };

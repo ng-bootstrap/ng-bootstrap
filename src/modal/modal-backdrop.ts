@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {take} from 'rxjs/operators';
 
 import {ngbRunTransition} from '../util/transition/ngbTransition';
+import {reflow} from '../util/util';
 
 @Component({
   selector: 'ngb-modal-backdrop',
@@ -24,9 +25,12 @@ export class NgbModalBackdrop implements OnInit {
 
   ngOnInit() {
     this._zone.onStable.asObservable().pipe(take(1)).subscribe(() => {
-      ngbRunTransition(
-          this._zone, this._el.nativeElement, ({classList}) => classList.add('show'),
-          {animation: this.animation, runningTransition: 'continue'});
+      ngbRunTransition(this._zone, this._el.nativeElement, (element: HTMLElement, animation: boolean) => {
+        if (animation) {
+          reflow(element);
+        }
+        element.classList.add('show');
+      }, {animation: this.animation, runningTransition: 'continue'});
     });
   }
 
