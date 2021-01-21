@@ -1,5 +1,4 @@
-import {page} from '../../playwright/controller';
-import {baseUrl} from '../../playwright.conf';
+import {baseUrl, page} from '../../playwright.conf';
 import {ElementHandle} from 'playwright';
 
 type BoundingBox = {

@@ -12,9 +12,7 @@ import {
   BrowserContextOptions
 } from 'playwright';
 
-import {browserName, launchOptions, contextOptions} from '../playwright.conf';
-
-const browsers = {chromium, firefox, webkit};
+export const Browsers = {chromium, firefox, webkit};
 export type BrowserInstance = ChromiumBrowser | FirefoxBrowser | WebKitBrowser;
 export type BrowserTypes = BrowserType<BrowserInstance>;
 export type PlaywrightParams = {
@@ -23,7 +21,7 @@ export type PlaywrightParams = {
   contextOptions: BrowserContextOptions
 };
 
-class Playwright {
+export class Playwright {
   private browser: BrowserTypes;
   private launchOptions: LaunchOptions;
   private contextOptions: BrowserContextOptions;
@@ -37,10 +35,8 @@ class Playwright {
     this.contextOptions = _contextOptions;
   }
 
-  async launchBrowser() {
+  private async launchBrowser() {
     if (!this.context) {
-      console.log(`Launch browser ${browserName} with`, this.launchOptions);
-
       const browserInstance: BrowserInstance = await this.browser.launch(this.launchOptions);
       this.context = await browserInstance.newContext(this.contextOptions);
 
@@ -69,13 +65,4 @@ class Playwright {
     console.log(`Warning : pause done for ${timeoutInSeconds}s` + (msg ? ` (${msg})` : ''));
     await this.page.waitForTimeout(timeoutInSeconds * 1000);
   }
-}
-
-export const test = new Playwright({browser: browsers[browserName], launchOptions, contextOptions});
-export function page(): Page {
-  return test.page;
-}
-
-export function debug() {
-  test.pause();
 }

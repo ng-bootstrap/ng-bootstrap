@@ -4,7 +4,7 @@
     "**/*pw-spec.ts"
   ],
   "helpers": [
-    "./playwright/helpers/*.js"
+    "../playwright/helpers/spec-reporter.js"
   ],
   "stopSpecOnExpectationFailure": true,
   "defaultTimeoutInterval": 60000,

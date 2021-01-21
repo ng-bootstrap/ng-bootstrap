@@ -1,4 +1,4 @@
-import {page} from '../../../../playwright/controller';
+import {page} from '../../../../playwright.conf';
 import {joinSelectors, rightClick, openUrl} from '../../tools.pw-po';
 
 export class DropdownAutoClosePage {

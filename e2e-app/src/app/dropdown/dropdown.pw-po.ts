@@ -1,4 +1,4 @@
-import {page} from '../../../playwright/controller';
+import {page} from '../../../playwright.conf';
 import {joinSelectors} from '../tools.pw-po';
 
 export class DropdownPage {

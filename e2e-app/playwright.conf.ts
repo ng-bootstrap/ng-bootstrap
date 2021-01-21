@@ -1,4 +1,5 @@
-import {LaunchOptions, BrowserContextOptions} from 'playwright';
+import {LaunchOptions, BrowserContextOptions, Page} from 'playwright';
+import {Browsers, Playwright} from '../playwright/controller';
 
 type BrowserName = 'chromium' | 'firefox' | 'webkit';
 
@@ -14,3 +15,12 @@ export const launchOptions: LaunchOptions = process.env.TRAVIS ? {headless: true
 export const contextOptions: BrowserContextOptions = {
   viewport: {width: 1280, height: 720}
 };
+
+export const test = new Playwright({browser: Browsers[browserName], launchOptions, contextOptions});
+export function page(): Page {
+  return test.page;
+}
+
+export function debug() {
+  test.pause();
+}

@@ -1,4 +1,4 @@
-import {page} from '../../../../playwright/controller';
+import {page} from '../../../../playwright.conf';
 import {sendKey, Key, rightClick, offsetClick, expectFocused, getBoundindClientRect} from '../../tools.pw-po';
 import {DropdownAutoClosePage} from './dropdown-autoclose.pw-po';
 import {DropdownPage} from '../dropdown.pw-po';

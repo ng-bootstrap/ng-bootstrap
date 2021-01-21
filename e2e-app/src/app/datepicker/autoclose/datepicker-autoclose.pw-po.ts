@@ -1,4 +1,4 @@
-import {page} from '../../../../playwright/controller';
+import {page} from '../../../../playwright.conf';
 // import {page} from '@test';
 import {openUrl, rightClick} from '../../tools.pw-po';
 

@@ -1,4 +1,4 @@
-import {page} from '.././../../../playwright/controller';
+import {page} from '../../../../playwright.conf';
 import {DatepickerAutoClosePage} from './datepicker-autoclose.pw-po';
 
 describe('Datepicker Autoclose', () => {
