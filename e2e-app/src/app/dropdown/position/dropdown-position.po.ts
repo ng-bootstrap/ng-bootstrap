@@ -5,7 +5,7 @@ export class DropdownPositionPage {
 
   async toggleContainer(container: null | 'body') { await $(`#container-${container || 'null'}`).click(); }
 
-  async togglePlacement(placement: 'top-left' | 'bottom-left' | 'top-right' | 'bottom-right') {
+  async togglePlacement(placement: 'top-start' | 'bottom-start' | 'top-end' | 'bottom-end') {
     await $(`#placement-${placement}`).click();
   }
 }
