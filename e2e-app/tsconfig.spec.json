@@ -18,6 +18,6 @@
   "include": [
     "./src/**/*po.ts",
     "./src/**/*spec.ts",
-    "./playwright/**/*.ts"
+    "../playwright/**/*.ts"
   ]
 }

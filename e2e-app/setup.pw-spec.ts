@@ -1,7 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import {test, page} from './controller';
-import {browserName} from '../playwright.conf';
+import {browserName, test, page, launchOptions} from './playwright.conf';
 
 // const timerMsg = '\nTest suite finished in';
 
@@ -9,6 +8,7 @@ beforeAll(async() => {
   jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000000;
   // console.time(timerMsg);
   try {
+    console.log(`Launch browser ${browserName} with`, launchOptions);
     await test.newPage();
   } catch (e) {
     console.error('Unable to setup a new page with playwright', e);
@@ -23,11 +23,11 @@ afterAll(async() => {
     const coverage: string = await page().evaluate('JSON.stringify(window.__coverage__);');
     if (coverage) {
       console.log(`Coverage retrieved (${coverage.length} bytes)`);
-      fs.mkdirSync(path.join(__dirname, '../..', '.nyc_output'));
-      fs.writeFileSync(path.join(__dirname, '../..', '.nyc_output', 'out.json'), coverage);
+      fs.mkdirSync(path.join(__dirname, '..', '.nyc_output'));
+      fs.writeFileSync(path.join(__dirname, '..', '.nyc_output', 'out.json'), coverage);
       const NYC = require('nyc');
       const nycInstance = new NYC({
-        cwd: path.join(__dirname, '../..'),
+        cwd: path.join(__dirname, '..'),
         reportDir: `coverage-e2e-${browserName}`,
         reporter: ['lcov', 'json', 'text-summary']
       });
