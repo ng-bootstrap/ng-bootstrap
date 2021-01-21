@@ -1,3 +1,25 @@
+## [9.0.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/9.0.0...9.0.1) (2021-01-21)
+
+
+### Bug Fixes
+
+* **animations:** don't reflow in 'ngbRunTransition' ([#3962](https://github.com/ng-bootstrap/ng-bootstrap/issues/3962)) ([ad3c9c3](https://github.com/ng-bootstrap/ng-bootstrap/commit/ad3c9c38717c6b204f84fd4c10f10fa8e099ea68)), closes [#3954](https://github.com/ng-bootstrap/ng-bootstrap/issues/3954) [#3952](https://github.com/ng-bootstrap/ng-bootstrap/issues/3952)
+* **animations:** make sure 'ngbRunTransition' runs inside the zone ([#3957](https://github.com/ng-bootstrap/ng-bootstrap/issues/3957)) ([a29f570](https://github.com/ng-bootstrap/ng-bootstrap/commit/a29f57077f30e18fc2da6ccc98b2d28e876264ab)), closes [#3950](https://github.com/ng-bootstrap/ng-bootstrap/issues/3950)
+* **carousel:** respect `[animation]="false"` ([#3964](https://github.com/ng-bootstrap/ng-bootstrap/issues/3964)) ([175c7ab](https://github.com/ng-bootstrap/ng-bootstrap/commit/175c7ab5164eeda3868186dce5c9065ae6ee07b5)), closes [#3961](https://github.com/ng-bootstrap/ng-bootstrap/issues/3961)
+
+
+
+## [8.0.3](https://github.com/ng-bootstrap/ng-bootstrap/compare/8.0.2...8.0.3) (2021-01-21)
+
+
+### Bug Fixes
+
+* **animations:** don't reflow in 'ngbRunTransition' ([#3962](https://github.com/ng-bootstrap/ng-bootstrap/issues/3962)) ([f699999](https://github.com/ng-bootstrap/ng-bootstrap/commit/f699999160a4eab5d91ceca713838cea620d34d3)), closes [#3954](https://github.com/ng-bootstrap/ng-bootstrap/issues/3954) [#3952](https://github.com/ng-bootstrap/ng-bootstrap/issues/3952)
+* **animations:** make sure 'ngbRunTransition' runs inside the zone ([#3957](https://github.com/ng-bootstrap/ng-bootstrap/issues/3957)) ([a006a62](https://github.com/ng-bootstrap/ng-bootstrap/commit/a006a620cefdb9bd474f1b2267325e747516c4d7)), closes [#3950](https://github.com/ng-bootstrap/ng-bootstrap/issues/3950)
+* **carousel:** respect `[animation]="false"` ([#3964](https://github.com/ng-bootstrap/ng-bootstrap/issues/3964)) ([9afae34](https://github.com/ng-bootstrap/ng-bootstrap/commit/9afae342570cbbb760b60d0a6a75cf850866bc49)), closes [#3961](https://github.com/ng-bootstrap/ng-bootstrap/issues/3961)
+
+
+
 # [9.0.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/8.0.2...9.0.0) (2021-01-14)
 
 This major release officially adds Angular 11 support.
