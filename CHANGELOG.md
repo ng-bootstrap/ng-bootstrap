@@ -1,3 +1,14 @@
+## [8.0.3](https://github.com/ng-bootstrap/ng-bootstrap/compare/8.0.2...8.0.3) (2021-01-21)
+
+
+### Bug Fixes
+
+* **animations:** don't reflow in 'ngbRunTransition' ([#3962](https://github.com/ng-bootstrap/ng-bootstrap/issues/3962)) ([f699999](https://github.com/ng-bootstrap/ng-bootstrap/commit/f699999160a4eab5d91ceca713838cea620d34d3)), closes [#3954](https://github.com/ng-bootstrap/ng-bootstrap/issues/3954) [#3952](https://github.com/ng-bootstrap/ng-bootstrap/issues/3952)
+* **animations:** make sure 'ngbRunTransition' runs inside the zone ([#3957](https://github.com/ng-bootstrap/ng-bootstrap/issues/3957)) ([a006a62](https://github.com/ng-bootstrap/ng-bootstrap/commit/a006a620cefdb9bd474f1b2267325e747516c4d7)), closes [#3950](https://github.com/ng-bootstrap/ng-bootstrap/issues/3950)
+* **carousel:** respect `[animation]="false"` ([#3964](https://github.com/ng-bootstrap/ng-bootstrap/issues/3964)) ([9afae34](https://github.com/ng-bootstrap/ng-bootstrap/commit/9afae342570cbbb760b60d0a6a75cf850866bc49)), closes [#3961](https://github.com/ng-bootstrap/ng-bootstrap/issues/3961)
+
+
+
 ## [8.0.2](https://github.com/ng-bootstrap/ng-bootstrap/compare/8.0.1...8.0.2) (2021-01-13)
 
 
