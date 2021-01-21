@@ -114,10 +114,10 @@ export class Positioning {
       case 'bottom':
         topPosition = (hostElPosition.top + hostElPosition.height);
         break;
-      case 'left':
+      case 'start':
         leftPosition = (hostElPosition.left - (targetElement.offsetWidth + marginLeft + marginRight));
         break;
-      case 'right':
+      case 'end':
         leftPosition = (hostElPosition.left + hostElPosition.width);
         break;
     }
@@ -129,10 +129,10 @@ export class Positioning {
       case 'bottom':
         topPosition = hostElPosition.top + hostElPosition.height - targetElement.offsetHeight;
         break;
-      case 'left':
+      case 'start':
         leftPosition = hostElPosition.left;
         break;
-      case 'right':
+      case 'end':
         leftPosition = hostElPosition.left + hostElPosition.width - targetElement.offsetWidth;
         break;
       case 'center':
@@ -166,11 +166,11 @@ export const positionService = new Positioning();
  * Accept the placement array and applies the appropriate placement dependent on the viewport.
  * Returns the applied placement.
  * In case of auto placement, placements are selected in order
- *   'top', 'bottom', 'left', 'right',
- *   'top-left', 'top-right',
- *   'bottom-left', 'bottom-right',
- *   'left-top', 'left-bottom',
- *   'right-top', 'right-bottom'.
+ *   'top', 'bottom', 'start', 'end',
+ *   'top-start', 'top-end',
+ *   'bottom-start', 'bottom-end',
+ *   'start-top', 'start-bottom',
+ *   'end-top', 'end-bottom'.
  * */
 export function positionElements(
     hostElement: HTMLElement, targetElement: HTMLElement, placement: string | Placement | PlacementArray,
@@ -180,8 +180,8 @@ export function positionElements(
       Array.isArray(placement) ? placement : placement.split(placementSeparator) as Array<Placement>;
 
   const allowedPlacements = [
-    'top', 'bottom', 'left', 'right', 'top-left', 'top-right', 'bottom-left', 'bottom-right', 'left-top', 'left-bottom',
-    'right-top', 'right-bottom'
+    'top', 'bottom', 'start', 'end', 'top-start', 'top-end', 'bottom-start', 'bottom-end', 'start-top', 'start-bottom',
+    'end-top', 'end-bottom'
   ];
 
   const classList = targetElement.classList;
@@ -249,7 +249,7 @@ export function positionElements(
   return testPlacement;
 }
 
-export type Placement = 'auto' | 'top' | 'bottom' | 'left' | 'right' | 'top-left' | 'top-right' | 'bottom-left' |
-    'bottom-right' | 'left-top' | 'left-bottom' | 'right-top' | 'right-bottom';
+export type Placement = 'auto' | 'top' | 'bottom' | 'start' | 'end' | 'top-start' | 'top-end' | 'bottom-start' |
+    'bottom-end' | 'start-top' | 'start-bottom' | 'end-top' | 'end-bottom';
 
 export type PlacementArray = Placement | Array<Placement>| string;
