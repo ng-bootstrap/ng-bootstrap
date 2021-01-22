@@ -348,9 +348,11 @@ export class NgbAccordion implements AfterContentChecked {
         if (panelElement) {
           if (!panel.initClassDone) {
             panel.initClassDone = true;
-            ngbRunTransition(
-                this._ngZone, panelElement, ngbCollapsingTransition,
-                {animation: false, runningTransition: 'stop', context: {direction: panel.isOpen ? 'show' : 'hide'}});
+            ngbRunTransition(this._ngZone, panelElement, ngbCollapsingTransition, {
+              animation: false,
+              runningTransition: 'continue',
+              context: {direction: panel.isOpen ? 'show' : 'hide'}
+            });
           }
         } else {
           // Classes must be initialized next time it will be in the dom
