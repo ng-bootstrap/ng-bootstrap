@@ -317,13 +317,6 @@
             }
           }
         },
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "ssr-app/protractor.conf.js",
-            "devServerTarget": ""
-          }
-        },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
