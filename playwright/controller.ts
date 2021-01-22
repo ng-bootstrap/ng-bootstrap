@@ -13,6 +13,7 @@ import {
 } from 'playwright';
 
 export const Browsers = {chromium, firefox, webkit};
+
 export type BrowserInstance = ChromiumBrowser | FirefoxBrowser | WebKitBrowser;
 export type BrowserTypes = BrowserType<BrowserInstance>;
 export type PlaywrightParams = {
@@ -27,12 +28,16 @@ export class Playwright {
   private contextOptions: BrowserContextOptions;
   private context: BrowserContext;
 
-  public page: Page;
+  private _page: Page;
 
   constructor({browser, launchOptions: _launchOptions, contextOptions: _contextOptions}: PlaywrightParams) {
     this.browser = browser;
     this.launchOptions = _launchOptions;
     this.contextOptions = _contextOptions;
+  }
+
+  get page(): Page {
+    return this._page;
   }
 
   private async launchBrowser() {
@@ -46,15 +51,15 @@ export class Playwright {
   }
 
   async newPage(): Promise<Page> {
-    if (this.page && !this.page.isClosed()) {
-      await this.page.close();
+    if (this._page && !this._page.isClosed()) {
+      await this._page.close();
     }
 
     if (!this.context) {
       await this.launchBrowser();
     }
-    this.page = await this.context.newPage();
-    return this.page;
+    this._page = await this.context.newPage();
+    return this._page;
   }
 
   /**
@@ -63,6 +68,6 @@ export class Playwright {
    */
   async pause(timeoutInSeconds = 1000, msg?: string) {
     console.log(`Warning : pause done for ${timeoutInSeconds}s` + (msg ? ` (${msg})` : ''));
-    await this.page.waitForTimeout(timeoutInSeconds * 1000);
+    await this._page.waitForTimeout(timeoutInSeconds * 1000);
   }
 }

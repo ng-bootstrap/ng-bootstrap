@@ -151,21 +151,10 @@
             },
             "ie": {
               "browserTarget": "demo:build:ie"
-            }
-          }
-        },
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "demo/protractor.conf.js",
-            "devServerTarget": "demo:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "demo:serve:production"
             },
-            "noserve": {
-              "devServerTarget": ""
+            "playwright": {
+              "liveReload": false,
+              "watch": false
             }
           }
         },
