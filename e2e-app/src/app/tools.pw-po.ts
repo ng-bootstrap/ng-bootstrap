@@ -94,12 +94,16 @@ export const expectFocused = async(selector, message) => {
  */
 let hasBeenLoaded = false;
 export const openUrl = async(url: string) => {
+  const currentPage = page();
   if (hasBeenLoaded) {
-    await page().click(`#navigate-home`);
-    await page().click(`#navigate-${url.replace('/', '-')}`);
+    await currentPage.click(`#navigate-home`);
+    await currentPage.waitForSelector('ng-component', {state: 'detached'});
+    await currentPage.click(`#navigate-${url.replace('/', '-')}`);
+    await currentPage.waitForSelector('ng-component');
   } else {
     console.log('Go to page', `${baseUrl}/${url}`);
-    await page().goto(`${baseUrl}/${url}`);
+    await currentPage.goto(`${baseUrl}/${url}`);
+    await currentPage.waitForSelector('app-root');
     hasBeenLoaded = true;
   }
 };
