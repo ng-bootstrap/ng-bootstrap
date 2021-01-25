@@ -7,6 +7,15 @@
 
 
 
+## [8.0.4](https://github.com/ng-bootstrap/ng-bootstrap/compare/8.0.3...8.0.4) (2021-01-25)
+
+
+### Bug Fixes
+
+* **accordion:** fixes animation glitch when opening several panels ([06dcf09](https://github.com/ng-bootstrap/ng-bootstrap/commit/06dcf0973b67e9a75a87f89129e028084aa849d0))
+
+
+
 ## [9.0.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/9.0.0...9.0.1) (2021-01-21)
 
 
