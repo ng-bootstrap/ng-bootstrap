@@ -44,7 +44,7 @@ let nextId = 0;
     '[id]': 'id'
   },
   template: `
-    <div class="arrow"></div>
+    <div class="popover-arrow"></div>
     <h3 class="popover-header" *ngIf="title">
       <ng-template #simpleTitle>{{title}}</ng-template>
       <ng-template [ngTemplateOutlet]="isTitleTemplate() ? $any(title) : simpleTitle" [ngTemplateOutletContext]="context"></ng-template>
@@ -106,9 +106,9 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
   /**
    * The preferred placement of the popover.
    *
-   * Possible values are `"top"`, `"top-left"`, `"top-right"`, `"bottom"`, `"bottom-left"`,
-   * `"bottom-right"`, `"left"`, `"left-top"`, `"left-bottom"`, `"right"`, `"right-top"`,
-   * `"right-bottom"`
+   * Possible values are `"top"`, `"top-start"`, `"top-end"`, `"bottom"`, `"bottom-start"`,
+   * `"bottom-end"`, `"start"`, `"start-top"`, `"start-bottom"`, `"end"`, `"end-top"`,
+   * `"end-bottom"`
    *
    * Accepts an array of strings or a string with space separated possible values.
    *

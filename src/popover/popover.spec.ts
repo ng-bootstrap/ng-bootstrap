@@ -391,7 +391,7 @@ describe('ngb-popover', () => {
   describe('positioning', () => {
 
     it('should use requested position', () => {
-      const fixture = createTestComponent(`<div ngbPopover="Great tip!" placement="left"></div>`);
+      const fixture = createTestComponent(`<div ngbPopover="Great tip!" placement="start"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
       triggerEvent(directive, 'click');
@@ -399,12 +399,12 @@ describe('ngb-popover', () => {
       const windowEl = getWindow(fixture.nativeElement);
 
       expect(windowEl).toHaveCssClass('popover');
-      expect(windowEl).toHaveCssClass('bs-popover-left');
+      expect(windowEl).toHaveCssClass('bs-popover-start');
       expect(windowEl.textContent.trim()).toBe('Great tip!');
     });
 
     it('should properly position popovers when a component is using the OnPush strategy', () => {
-      const fixture = createOnPushTestComponent(`<div ngbPopover="Great tip!" placement="left"></div>`);
+      const fixture = createOnPushTestComponent(`<div ngbPopover="Great tip!" placement="start"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
       triggerEvent(directive, 'click');
@@ -412,12 +412,12 @@ describe('ngb-popover', () => {
       const windowEl = getWindow(fixture.nativeElement);
 
       expect(windowEl).toHaveCssClass('popover');
-      expect(windowEl).toHaveCssClass('bs-popover-left');
+      expect(windowEl).toHaveCssClass('bs-popover-start');
       expect(windowEl.textContent.trim()).toBe('Great tip!');
     });
 
     it('should have proper arrow placement', () => {
-      const fixture = createTestComponent(`<div ngbPopover="Great tip!" placement="right-top"></div>`);
+      const fixture = createTestComponent(`<div ngbPopover="Great tip!" placement="end-top"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
       triggerEvent(directive, 'click');
@@ -425,14 +425,14 @@ describe('ngb-popover', () => {
       const windowEl = getWindow(fixture.nativeElement);
 
       expect(windowEl).toHaveCssClass('popover');
-      expect(windowEl).toHaveCssClass('bs-popover-right');
-      expect(windowEl).toHaveCssClass('bs-popover-right-top');
+      expect(windowEl).toHaveCssClass('bs-popover-end');
+      expect(windowEl).toHaveCssClass('bs-popover-end-top');
       expect(windowEl.textContent.trim()).toBe('Great tip!');
     });
 
     it('should accept placement in array (second value of the array should be applied)', () => {
       const fixture = createTestComponent(
-          `<div ngbPopover="Great tip!" [placement]="['left-top','top-left']" style="margin-top: 100px;"></div>`);
+          `<div ngbPopover="Great tip!" [placement]="['start-top','top-start']" style="margin-top: 100px;"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
       triggerEvent(directive, 'click');
@@ -441,13 +441,13 @@ describe('ngb-popover', () => {
 
       expect(windowEl).toHaveCssClass('popover');
       expect(windowEl).toHaveCssClass('bs-popover-top');
-      expect(windowEl).toHaveCssClass('bs-popover-top-left');
+      expect(windowEl).toHaveCssClass('bs-popover-top-start');
       expect(windowEl.textContent.trim()).toBe('Great tip!');
     });
 
     it('should accept placement with space separated values (second value should be applied)', () => {
       const fixture = createTestComponent(
-          `<div ngbPopover="Great tip!" placement="left-top top-left" style="margin-top: 100px;"></div>`);
+          `<div ngbPopover="Great tip!" placement="start-top top-start" style="margin-top: 100px;"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
       triggerEvent(directive, 'click');
@@ -456,7 +456,7 @@ describe('ngb-popover', () => {
 
       expect(windowEl).toHaveCssClass('popover');
       expect(windowEl).toHaveCssClass('bs-popover-top');
-      expect(windowEl).toHaveCssClass('bs-popover-top-left');
+      expect(windowEl).toHaveCssClass('bs-popover-top-start');
       expect(windowEl.textContent.trim()).toBe('Great tip!');
     });
 
