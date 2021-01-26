@@ -1,5 +1,5 @@
-import {BASE_URL, playwright} from '../../../playwright.conf';
-import {ConsoleMessage} from 'playwright';
+import {BASE_URL, test} from '../../../playwright.conf';
+import {ConsoleMessage, Page} from 'playwright';
 
 const SELECTOR_TAB_LINKS = 'header.title a.nav-link';
 const SELECTOR_SIDE_NAV_COMPONENT_LINKS = 'ngbd-side-nav >> a[href^="#/components/"]';
@@ -13,18 +13,17 @@ const COMPONENTS = [
 describe(`Components`, () => {
 
   let messages: ConsoleMessage[] = [];
+  let page: Page;
 
   beforeAll(async () => {
-    // just opening the 'Components' page to dump initial console messages
-    await playwright.newPage();
-    playwright.page.on('console', msg => messages.push(msg));
+    page = await test.newPage(`${BASE_URL}/components`);
+    page.on('console', msg => messages.push(msg));
 
-    await playwright.page.goto(`${BASE_URL}/components`);
-    await playwright.page.waitForSelector(SELECTOR_SIDE_NAV_COMPONENT_LINKS);
+    await page.waitForSelector(SELECTOR_SIDE_NAV_COMPONENT_LINKS);
   });
 
   it('should cover all components we have', async() => {
-    for (const link of await playwright.page.$$(SELECTOR_SIDE_NAV_COMPONENT_LINKS)) {
+    for (const link of await page.$$(SELECTOR_SIDE_NAV_COMPONENT_LINKS)) {
       const componentName = await link.innerText();
       expect(COMPONENTS).toContain(componentName.toLowerCase(), `'${componentName}' is not covered by demo e2e tests`);
     }
@@ -38,8 +37,8 @@ describe(`Components`, () => {
 
       beforeAll(async() => {
         messages = [];
-        await playwright.page.click(SELECTOR_SIDE_NAV_COMPONENT_LINK);
-        await playwright.page.waitForSelector(SELECTOR_TAB_LINKS);
+        await page.click(SELECTOR_SIDE_NAV_COMPONENT_LINK);
+        await page.waitForSelector(SELECTOR_TAB_LINKS);
       });
 
       afterAll(async() => {
@@ -50,14 +49,14 @@ describe(`Components`, () => {
       });
 
       it(`should display the tabs`, async() => {
-        for (const link of await playwright.page.$$(SELECTOR_TAB_LINKS)) {
+        for (const link of await page.$$(SELECTOR_TAB_LINKS)) {
           await link.click();
         }
       });
 
       it(`should display code samples`, async() => {
-        await playwright.page.click(SELECTOR_EXAMPLE_LINK);
-        for (const link of await playwright.page.$$(SELECTOR_CODE_BUTTONS)) {
+        await page.click(SELECTOR_EXAMPLE_LINK);
+        for (const link of await page.$$(SELECTOR_CODE_BUTTONS)) {
           await link.click();
         }
       });

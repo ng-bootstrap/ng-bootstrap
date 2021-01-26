@@ -2,11 +2,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import {browserName, test, page, launchOptions} from './playwright.conf';
 
-// const timerMsg = '\nTest suite finished in';
-
 beforeAll(async() => {
   jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000000;
-  // console.time(timerMsg);
   try {
     console.log(`Launch browser ${browserName} with`, launchOptions);
     await test.newPage();
@@ -16,8 +13,6 @@ beforeAll(async() => {
 });
 
 afterAll(async() => {
-  // console.timeEnd(timerMsg);
-
   try {
     console.log('Retrieving coverage...');
     const coverage: string = await page().evaluate('JSON.stringify(window.__coverage__);');

@@ -1,18 +1,18 @@
-import {BASE_URL, playwright} from '../../playwright.conf';
-import {ConsoleMessage} from 'playwright';
+import {BASE_URL, test} from '../../playwright.conf';
+import {ConsoleMessage, Page} from 'playwright';
 
 const SELECTOR_HEADER = 'h1';
 
 describe('SSR application', () => {
 
   const messages: ConsoleMessage[] = [];
+  let page: Page;
 
   beforeAll(async () => {
-    await playwright.newPage();
-    playwright.page.on('console', msg => messages.push(msg));
+    page = await test.newPage(BASE_URL);
+    page.on('console', msg => messages.push(msg));
 
-    await playwright.page.goto(BASE_URL);
-    await playwright.page.waitForSelector(SELECTOR_HEADER);
+    await page.waitForSelector(SELECTOR_HEADER);
   });
 
   afterAll(async() => {
@@ -23,6 +23,6 @@ describe('SSR application', () => {
   });
 
   it('should open server side rendered page without failures', async () => {
-    expect(await playwright.page.innerText(SELECTOR_HEADER)).toBe('ng-bootstrap SSR test application');
+    expect(await page.innerText(SELECTOR_HEADER)).toBe('ng-bootstrap SSR test application');
   });
 });
