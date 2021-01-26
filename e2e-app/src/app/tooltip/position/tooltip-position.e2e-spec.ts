@@ -30,7 +30,7 @@ describe('Tooltip Position', () => {
       yDiff = (tooltipBox.y + tooltipBox.height) - btnBox.y;
       if (secondary === 'left') {
         xDiff = tooltipBox.x - btnBox.x;
-      } else if (secondary === 'right') {
+      } else if (secondary === 'end') {
         xDiff = (tooltipBox.x + tooltipBox.width) - (btnBox.x + btnBox.width);
       } else {
         xDiff = (tooltipBox.x + tooltipBox.width / 2) - (btnBox.x + (btnBox.width / 2));
@@ -42,7 +42,7 @@ describe('Tooltip Position', () => {
       xDiff = (tooltipBox.x + tooltipBox.width) - btnBox.x;
     }
 
-    if (primary === 'right') {
+    if (primary === 'end') {
       yDiff = (tooltipBox.y + tooltipBox.height / 2) - (btnBox.y + btnBox.height / 2);
       xDiff = tooltipBox.x - (btnBox.x + btnBox.width);
     }
@@ -60,11 +60,11 @@ describe('Tooltip Position', () => {
   beforeEach(async() => await openUrl('tooltip/position', 'h3:text("Tooltip positioning")'));
 
   it(`should be well positioned on the left edge`, async() => {
-    await selectPosition('left');
-    await expectTooltipsPosition('normal', 'right');
-    await expectTooltipsPosition('innerHtml', 'top-left');
-    await expectTooltipsPosition('body-off', 'right');
-    await expectTooltipsPosition('fixed', 'top-left');
+    await selectPosition('start');
+    await expectTooltipsPosition('normal', 'end');
+    await expectTooltipsPosition('innerHtml', 'top-start');
+    await expectTooltipsPosition('body-off', 'end');
+    await expectTooltipsPosition('fixed', 'top-start');
   });
 
   it(`should be well positioned on the center`, async() => {
@@ -76,16 +76,16 @@ describe('Tooltip Position', () => {
   });
 
   it(`should be well positioned on the right edge`, async() => {
-    await selectPosition('right');
-    await expectTooltipsPosition('normal', 'left');
+    await selectPosition('end');
+    await expectTooltipsPosition('normal', 'start');
     await expectTooltipsPosition('innerHtml', 'top-right');
-    await expectTooltipsPosition('body-off', 'left');
+    await expectTooltipsPosition('body-off', 'start');
     await expectTooltipsPosition('fixed', 'top-right');
   });
 
   it(`should be positioned at the first placement by default`, async() => {
-    await selectPosition('left');
-    await expectTooltipsPosition('default', 'left', ['left-bottom']);
+    await selectPosition('start');
+    await expectTooltipsPosition('default', 'start', ['start-bottom']);
   });
 
 });
