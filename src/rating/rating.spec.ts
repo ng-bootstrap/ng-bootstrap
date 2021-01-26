@@ -450,17 +450,36 @@ describe('ngb-rating', () => {
     });
   });
 
-  it('should set tabindex to -1 when disabled', () => {
+  it('should set tabindex to -1 when readonly', () => {
+    const fixture = createTestComponent('<ngb-rating [readonly]="true"></ngb-rating>');
+    let ratingEl = fixture.debugElement.query(By.directive(NgbRating));
+
+    fixture.detectChanges();
+    expect(ratingEl.nativeElement.getAttribute('tabindex')).toEqual('-1');
+  });
+
+  it('should set tabindex to 0 when not readonly', () => {
     const fixture = createTestComponent('<ngb-rating></ngb-rating>');
     let ratingEl = fixture.debugElement.query(By.directive(NgbRating));
-    let ratingComp = <NgbRating>ratingEl.componentInstance;
 
     fixture.detectChanges();
     expect(ratingEl.nativeElement.getAttribute('tabindex')).toEqual('0');
+  });
 
-    ratingComp.disabled = true;
+  it('should set disabled attribute when readonly', () => {
+    const fixture = createTestComponent('<ngb-rating [readonly]="true"></ngb-rating>');
+    let ratingEl = fixture.debugElement.query(By.directive(NgbRating));
+
     fixture.detectChanges();
-    expect(ratingEl.nativeElement.getAttribute('tabindex')).toEqual('-1');
+    expect(ratingEl.nativeElement.getAttribute('disabled')).toBe('true');
+  });
+
+  it('should not set disabled attribute when not readonly', () => {
+    const fixture = createTestComponent('<ngb-rating></ngb-rating>');
+    let ratingEl = fixture.debugElement.query(By.directive(NgbRating));
+
+    fixture.detectChanges();
+    expect(ratingEl.nativeElement.getAttribute('disabled')).toBeNull();
   });
 
   describe('keyboard support', () => {
