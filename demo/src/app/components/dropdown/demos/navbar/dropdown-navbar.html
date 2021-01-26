@@ -6,7 +6,7 @@
 </p>
 <p>
   In order to align a dropdown in a navbar to the right while still keeping correct behavior when the navbar is
-  collapsed, the CSS class <code>dropdown-menu-right</code> must be added to the dropdown menu.
+  collapsed, the CSS class <code>dropdown-menu-end</code> must be added to the dropdown menu.
   The second dropdown in this example illustrates it.
 </p>
 <p>
@@ -47,14 +47,14 @@
         <a class="nav-link" tabindex="0" ngbDropdownToggle id="navbarDropdown2" role="button">
           Static right
         </a>
-        <div ngbDropdownMenu aria-labelledby="navbarDropdown2" class="dropdown-menu dropdown-menu-right">
+        <div ngbDropdownMenu aria-labelledby="navbarDropdown2" class="dropdown-menu dropdown-menu-end">
           <a ngbDropdownItem href="#" (click)="$event.preventDefault()">Action</a>
           <a ngbDropdownItem href="#" (click)="$event.preventDefault()">Another action</a>
           <a ngbDropdownItem href="#" (click)="$event.preventDefault()">Something else here</a>
         </div>
       </li>
 
-      <li class="nav-item" ngbDropdown display="dynamic" placement="bottom-right">
+      <li class="nav-item" ngbDropdown display="dynamic" placement="bottom-end">
         <a class="nav-link" tabindex="0" ngbDropdownToggle id="navbarDropdown3" role="button">
           Dynamic
         </a>

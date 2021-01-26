@@ -413,7 +413,7 @@ describe('ngb-dropdown-toggle', () => {
 
   it(`should second placement if the first one doesn't fit`, () => {
     const html = `
-      <div ngbDropdown placement="left-top right-top">
+      <div ngbDropdown placement="start-top end-top">
           <button ngbDropdownToggle>
             <span class="toggle">Toggle dropdown</span>
           </button>
