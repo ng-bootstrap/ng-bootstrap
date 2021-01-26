@@ -83,14 +83,11 @@ describe('ngb-alert', () => {
     const fixture = createTestComponent('<ngb-alert [dismissible]="true">Watch out!</ngb-alert>');
     const alertEl = getAlertElement(fixture.nativeElement);
     const buttonEl = getCloseButton(alertEl);
-    const buttonIconEl = getCloseButtonIcon(alertEl);
 
     expect(alertEl).toHaveCssClass('alert-dismissible');
     expect(buttonEl).toBeTruthy();
-    expect(buttonEl.getAttribute('class')).toContain('close');
+    expect(buttonEl.getAttribute('class')).toContain('btn-close');
     expect(buttonEl.getAttribute('aria-label')).toBe('Close');
-    expect(buttonIconEl.getAttribute('aria-hidden')).toBe('true');
-    expect(buttonIconEl.textContent).toBe('×');
   });
 
   it('should not render the close button if it is not dismissible', () => {
