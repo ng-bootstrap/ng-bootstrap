@@ -4,7 +4,7 @@ describe('ngb-dropdown-config', () => {
   it('should have sensible default values', () => {
     const config = new NgbDropdownConfig();
 
-    expect(config.placement).toEqual(['bottom-left', 'bottom-right', 'top-left', 'top-right']);
+    expect(config.placement).toEqual(['bottom-start', 'bottom-end', 'top-start', 'top-end']);
     expect(config.autoClose).toBe(true);
   });
 
