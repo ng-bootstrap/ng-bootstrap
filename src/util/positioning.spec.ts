@@ -118,9 +118,9 @@ describe('Positioning', () => {
     element.removeChild(childElement);
   });
 
-  it('should position the element top-left', () => {
+  it('should position the element top-start', () => {
 
-    let isInViewport = positioning.positionElements(element, targetElement, 'top-left');
+    let isInViewport = positioning.positionElements(element, targetElement, 'top-start');
 
     expect(isInViewport).toBe(true);
     checkPosition(targetElement, 40, 150);
@@ -133,15 +133,15 @@ describe('Positioning', () => {
     checkPosition(targetElement, 40, 250);
   });
 
-  it('should position the element top-right', () => {
-    let isInViewport = positioning.positionElements(element, targetElement, 'top-right');
+  it('should position the element top-end', () => {
+    let isInViewport = positioning.positionElements(element, targetElement, 'top-end');
 
     expect(isInViewport).toBe(true);
     checkPosition(targetElement, 40, 350);
   });
 
-  it('should position the element bottom-left', () => {
-    let isInViewport = positioning.positionElements(element, targetElement, 'bottom-left');
+  it('should position the element bottom-start', () => {
+    let isInViewport = positioning.positionElements(element, targetElement, 'bottom-start');
 
     expect(isInViewport).toBe(true);
     checkPosition(targetElement, 300, 150);
@@ -154,50 +154,50 @@ describe('Positioning', () => {
     checkPosition(targetElement, 300, 250);
   });
 
-  it('should position the element bottom-right', () => {
-    let isInViewport = positioning.positionElements(element, targetElement, 'bottom-right');
+  it('should position the element bottom-end', () => {
+    let isInViewport = positioning.positionElements(element, targetElement, 'bottom-end');
 
     expect(isInViewport).toBe(true);
     checkPosition(targetElement, 300, 350);
   });
 
-  it('should position the element left-top', () => {
-    let isInViewport = positioning.positionElements(element, targetElement, 'left-top');
+  it('should position the element start-top', () => {
+    let isInViewport = positioning.positionElements(element, targetElement, 'start-top');
 
     expect(isInViewport).toBe(true);
     checkPosition(targetElement, 100, 30);
   });
 
-  it('should position the element left-center', () => {
-    let isInViewport = positioning.positionElements(element, targetElement, 'left');
+  it('should position the element start-center', () => {
+    let isInViewport = positioning.positionElements(element, targetElement, 'start');
 
     expect(isInViewport).toBe(true);
     checkPosition(targetElement, 175, 30);
   });
 
-  it('should position the element left-bottom', () => {
-    let isInViewport = positioning.positionElements(element, targetElement, 'left-bottom');
+  it('should position the element start-bottom', () => {
+    let isInViewport = positioning.positionElements(element, targetElement, 'start-bottom');
 
     expect(isInViewport).toBe(true);
     checkPosition(targetElement, 250, 30);
   });
 
-  it('should position the element right-top', () => {
-    let isInViewport = positioning.positionElements(element, targetElement, 'right-top');
+  it('should position the element end-top', () => {
+    let isInViewport = positioning.positionElements(element, targetElement, 'end-top');
 
     expect(isInViewport).toBe(true);
     checkPosition(targetElement, 100, 450);
   });
 
-  it('should position the element right-center', () => {
-    let isInViewport = positioning.positionElements(element, targetElement, 'right');
+  it('should position the element end-center', () => {
+    let isInViewport = positioning.positionElements(element, targetElement, 'end');
 
     expect(isInViewport).toBe(true);
     checkPosition(targetElement, 175, 450);
   });
 
-  it('should position the element right-bottom', () => {
-    let isInViewport = positioning.positionElements(element, targetElement, 'right-bottom');
+  it('should position the element end-bottom', () => {
+    let isInViewport = positioning.positionElements(element, targetElement, 'end-bottom');
 
     expect(isInViewport).toBe(true);
     checkPosition(targetElement, 250, 450);
