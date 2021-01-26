@@ -1,5 +1,17 @@
 // styles in src/style directory are applied to the whole page
 
+// Temporary fix, as this classes are required for the positioning
+// They existed in bs4, and we must remove them after popper implementation
+.dropdown-menu {
+  &[x-placement^="top"],
+  &[x-placement^="end"],
+  &[x-placement^="bottom"],
+  &[x-placement^="start"] {
+    right: auto;
+    bottom: auto;
+  }
+}
+
 header.navbar {
   background: linear-gradient(135deg, #0143a3, #0273d4);
 }
