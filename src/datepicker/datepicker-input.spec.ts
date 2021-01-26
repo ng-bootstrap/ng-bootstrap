@@ -28,7 +28,7 @@ function customizeConfig(config: NgbInputDatepickerConfig) {
   config.autoClose = 'outside';
   config.container = 'body';
   config.positionTarget = 'positionTarget';
-  config.placement = ['bottom-left', 'top-right'];
+  config.placement = ['bottom-start', 'top-end'];
 }
 
 describe('NgbInputDatepicker', () => {

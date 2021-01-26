@@ -1,18 +1,12 @@
 import {Component} from '@angular/core';
-import {
-  NgbCalendar,
-  NgbDate,
-  NgbDateStruct,
-  NgbInputDatepickerConfig
-} from '@ng-bootstrap/ng-bootstrap';
+import {NgbCalendar, NgbDate, NgbDateStruct, NgbInputDatepickerConfig} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'ngbd-datepicker-config',
   templateUrl: './datepicker-config.html',
-  providers: [NgbInputDatepickerConfig] // add config to the component providers
+  providers: [NgbInputDatepickerConfig]  // add config to the component providers
 })
 export class NgbdDatepickerConfig {
-
   model: NgbDateStruct;
 
   constructor(config: NgbInputDatepickerConfig, calendar: NgbCalendar) {
@@ -30,6 +24,6 @@ export class NgbdDatepickerConfig {
     config.autoClose = 'outside';
 
     // setting datepicker popup to open above the input
-    config.placement = ['top-left', 'top-right'];
+    config.placement = ['top-start', 'top-end'];
   }
 }
