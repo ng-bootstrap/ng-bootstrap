@@ -7,7 +7,7 @@ const removeFromDom = async() => await test.page.click('#isInDom-false');
 
 const toggleContainer = async(container: null | 'body') => await test.page.click(`#container-${container || 'null'}`);
 
-const togglePlacement = async(placement: 'top-left' | 'bottom-left' | 'top-right' | 'bottom-right') => {
+const togglePlacement = async(placement: 'top-start' | 'bottom-start' | 'top-end' | 'bottom-end') => {
   await test.page.click(`#placement-${placement}`);
 };
 
@@ -48,10 +48,10 @@ const togglePlacement = async(placement: 'top-left' | 'bottom-left' | 'top-right
     it(`should keep the same position when appended to widget or body`, async() => {
       await openDropdown('should open dropdown', selector);
 
-      await expectSamePositions('bottom-left');
-      await expectSamePositions('top-left');
-      await expectSamePositions('bottom-right');
-      await expectSamePositions('top-right');
+      await expectSamePositions('bottom-start');
+      await expectSamePositions('top-start');
+      await expectSamePositions('bottom-end');
+      await expectSamePositions('top-end');
     });
 
     it(`should be removed on destroy`, async() => {
@@ -65,10 +65,10 @@ const togglePlacement = async(placement: 'top-left' | 'bottom-left' | 'top-right
       await toggleContainer('body');
       await openDropdown('should open dropdown', selector, true);
 
-      await togglePlacement('bottom-left');
+      await togglePlacement('bottom-start');
       await test.page.waitForSelector(`body > div > ${selector}Menu`);
 
-      await togglePlacement('top-left');
+      await togglePlacement('top-start');
       await test.page.waitForSelector(`body > div > ${selector}Menu`);
 
       await toggleContainer(null);
