@@ -99,7 +99,7 @@
     "@types/marked": "^1.1.0",
     "@types/node": "^12.11.1",
     "@types/prismjs": "1.16.2",
-    "bootstrap": "4.5.3",
+    "bootstrap": "5.0.0-beta1",
     "clang-format": "1.0.35",
     "concurrently": "^5.3.0",
     "conventional-changelog-cli": "^2.0.12",
