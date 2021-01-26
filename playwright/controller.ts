@@ -1,73 +1,61 @@
 import {
+  Browser,
+  BrowserContext,
+  BrowserContextOptions,
+  BrowserType,
   chromium,
   firefox,
-  webkit,
-  BrowserType,
-  BrowserContext,
-  Page,
-  ChromiumBrowser,
-  FirefoxBrowser,
-  WebKitBrowser,
   LaunchOptions,
-  BrowserContextOptions
+  Page,
+  webkit
 } from 'playwright';
+
 
 export const Browsers = {chromium, firefox, webkit};
 
-export type BrowserInstance = ChromiumBrowser | FirefoxBrowser | WebKitBrowser;
-export type BrowserTypes = BrowserType<BrowserInstance>;
-export type PlaywrightParams = {
-  browser: BrowserTypes,
-  launchOptions: LaunchOptions,
-  contextOptions: BrowserContextOptions
-};
-
 export class Playwright {
-  private browser: BrowserTypes;
-  private launchOptions: LaunchOptions;
-  private contextOptions: BrowserContextOptions;
-  private context: BrowserContext;
-
   private _page: Page;
+  private _context: BrowserContext;
 
-  constructor({browser, launchOptions: _launchOptions, contextOptions: _contextOptions}: PlaywrightParams) {
-    this.browser = browser;
-    this.launchOptions = _launchOptions;
-    this.contextOptions = _contextOptions;
-  }
+  constructor(
+      private _browser: BrowserType<Browser>, private _launchOptions: LaunchOptions,
+      private _contextOptions: BrowserContextOptions) {}
 
-  get page(): Page {
-    return this._page;
-  }
+  get page(): Page { return this._page; }
 
-  private async launchBrowser() {
-    if (!this.context) {
-      const browserInstance: BrowserInstance = await this.browser.launch(this.launchOptions);
-      this.context = await browserInstance.newContext(this.contextOptions);
+  private async _launchBrowser() {
+    if (!this._context) {
+      const browserInstance = await this._browser.launch(this._launchOptions);
+      this._context = await browserInstance.newContext(this._contextOptions);
 
-      // Default timeout used to wait for selector/actions reuiring timeout
-      this.context.setDefaultTimeout(2000);
+      // Default timeout used to wait for selector/actions requiring timeout
+      this._context.setDefaultTimeout(2000);
     }
   }
 
-  async newPage(): Promise<Page> {
+  async newPage(url?: string): Promise<Page> {
     if (this._page && !this._page.isClosed()) {
       await this._page.close();
     }
 
-    if (!this.context) {
-      await this.launchBrowser();
+    if (!this._context) {
+      await this._launchBrowser();
     }
-    this._page = await this.context.newPage();
+    this._page = await this._context.newPage();
+
+    if (url) {
+      await this._page.goto(url);
+    }
+
     return this._page;
   }
 
   /**
    *
-   * @param timeoutInSeconds number of seconds to wait (default: 1000s)
+   * @param seconds number of seconds to wait (default: 1000s)
    */
-  async pause(timeoutInSeconds = 1000, msg?: string) {
-    console.log(`Warning : pause done for ${timeoutInSeconds}s` + (msg ? ` (${msg})` : ''));
-    await this._page.waitForTimeout(timeoutInSeconds * 1000);
+  async pause(seconds = 1000, msg?: string) {
+    console.log(`Warning : paused for ${seconds}s` + (msg ? ` (${msg})` : ''));
+    await this._page.waitForTimeout(seconds * 1000);
   }
 }
