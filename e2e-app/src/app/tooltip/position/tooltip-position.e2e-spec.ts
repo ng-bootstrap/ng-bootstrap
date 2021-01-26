@@ -78,9 +78,9 @@ describe('Tooltip Position', () => {
   it(`should be well positioned on the right edge`, async() => {
     await selectPosition('end');
     await expectTooltipsPosition('normal', 'start');
-    await expectTooltipsPosition('innerHtml', 'top-right');
+    await expectTooltipsPosition('innerHtml', 'top-end');
     await expectTooltipsPosition('body-off', 'start');
-    await expectTooltipsPosition('fixed', 'top-right');
+    await expectTooltipsPosition('fixed', 'top-end');
   });
 
   it(`should be positioned at the first placement by default`, async() => {
