@@ -46,7 +46,7 @@
               </svg>
             </span>
 
-            <div class="dropdown-menu-right" ngbDropdownMenu>
+            <div class="dropdown-menu-end" ngbDropdownMenu>
               <ng-template ngFor [ngForOf]="tableOfContents" let-topic>
                 <a *ngIf="topic.title else divider" class="dropdown-item" [routerLink]="['.', this.activeTab]"
                   [fragment]="topic.fragment">{{topic.title}}</a>
