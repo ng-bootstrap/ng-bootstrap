@@ -375,7 +375,7 @@ describe('ngb-carousel', () => {
        indicatorElms[1].click();
        fixture.detectChanges();
        expect(fixture.componentInstance.carouselSlideCallBack).toHaveBeenCalledWith(jasmine.objectContaining({
-         direction: NgbSlideEventDirection.LEFT,
+         direction: NgbSlideEventDirection.START,
          source: NgbSlideEventSource.INDICATOR
        }));
 
@@ -383,7 +383,7 @@ describe('ngb-carousel', () => {
        indicatorElms[0].click();
        fixture.detectChanges();
        expect(fixture.componentInstance.carouselSlideCallBack).toHaveBeenCalledWith(jasmine.objectContaining({
-         direction: NgbSlideEventDirection.RIGHT,
+         direction: NgbSlideEventDirection.END,
          source: NgbSlideEventSource.INDICATOR,
        }));
 
@@ -391,7 +391,7 @@ describe('ngb-carousel', () => {
        indicatorElms[2].click();
        fixture.detectChanges();
        expect(fixture.componentInstance.carouselSlideCallBack).toHaveBeenCalledWith(jasmine.objectContaining({
-         direction: NgbSlideEventDirection.LEFT,
+         direction: NgbSlideEventDirection.START,
          source: NgbSlideEventSource.INDICATOR
        }));
 
@@ -441,12 +441,12 @@ describe('ngb-carousel', () => {
        prevControlElm.click();
        fixture.detectChanges();
        expect(fixture.componentInstance.carouselSlideCallBack).toHaveBeenCalledWith(jasmine.objectContaining({
-         direction: NgbSlideEventDirection.RIGHT,
+         direction: NgbSlideEventDirection.END,
          source: NgbSlideEventSource.ARROW_LEFT
        }));
        expect(spySingleCallBack.calls.allArgs()).toEqual([
-         [{isShown: false, direction: NgbSlideEventDirection.RIGHT, source: NgbSlideEventSource.ARROW_LEFT}, 'foo'],
-         [{isShown: true, direction: NgbSlideEventDirection.RIGHT, source: NgbSlideEventSource.ARROW_LEFT}, 'bar'],
+         [{isShown: false, direction: NgbSlideEventDirection.END, source: NgbSlideEventSource.ARROW_LEFT}, 'foo'],
+         [{isShown: true, direction: NgbSlideEventDirection.END, source: NgbSlideEventSource.ARROW_LEFT}, 'bar'],
        ]);
 
        spyCallBack.calls.reset();
@@ -454,12 +454,12 @@ describe('ngb-carousel', () => {
        nextControlElm.click();
        fixture.detectChanges();
        expect(fixture.componentInstance.carouselSlideCallBack).toHaveBeenCalledWith(jasmine.objectContaining({
-         direction: NgbSlideEventDirection.LEFT,
+         direction: NgbSlideEventDirection.START,
          source: NgbSlideEventSource.ARROW_RIGHT
        }));
        expect(spySingleCallBack.calls.allArgs()).toEqual([
-         [{isShown: false, direction: NgbSlideEventDirection.LEFT, source: NgbSlideEventSource.ARROW_RIGHT}, 'bar'],
-         [{isShown: true, direction: NgbSlideEventDirection.LEFT, source: NgbSlideEventSource.ARROW_RIGHT}, 'foo'],
+         [{isShown: false, direction: NgbSlideEventDirection.START, source: NgbSlideEventSource.ARROW_RIGHT}, 'bar'],
+         [{isShown: true, direction: NgbSlideEventDirection.START, source: NgbSlideEventSource.ARROW_RIGHT}, 'foo'],
        ]);
 
        spyCallBack.calls.reset();
@@ -467,12 +467,12 @@ describe('ngb-carousel', () => {
        prevControlElm.click();
        fixture.detectChanges();
        expect(fixture.componentInstance.carouselSlideCallBack).toHaveBeenCalledWith(jasmine.objectContaining({
-         direction: NgbSlideEventDirection.RIGHT,
+         direction: NgbSlideEventDirection.END,
          source: NgbSlideEventSource.ARROW_LEFT
        }));
        expect(spySingleCallBack.calls.allArgs()).toEqual([
-         [{isShown: false, direction: NgbSlideEventDirection.RIGHT, source: NgbSlideEventSource.ARROW_LEFT}, 'foo'],
-         [{isShown: true, direction: NgbSlideEventDirection.RIGHT, source: NgbSlideEventSource.ARROW_LEFT}, 'bar'],
+         [{isShown: false, direction: NgbSlideEventDirection.END, source: NgbSlideEventSource.ARROW_LEFT}, 'foo'],
+         [{isShown: true, direction: NgbSlideEventDirection.END, source: NgbSlideEventSource.ARROW_LEFT}, 'bar'],
        ]);
 
        discardPeriodicTasks();
@@ -517,7 +517,7 @@ describe('ngb-carousel', () => {
        fixture.detectChanges();
        expectActiveSlides(fixture.nativeElement, [false, true]);
        expect(spyCallBack).toHaveBeenCalledWith(jasmine.objectContaining({
-         direction: NgbSlideEventDirection.LEFT,
+         direction: NgbSlideEventDirection.START,
          source: NgbSlideEventSource.TIMER
        }));
 
@@ -782,7 +782,7 @@ describe('ngb-carousel', () => {
        discardPeriodicTasks();
      }));
 
-  it('should change on key arrowRight and arrowLeft', fakeAsync(() => {
+  it('should change on key arrowRight and arrowstart', fakeAsync(() => {
        const html = `
             <ngb-carousel [keyboard]="keyboard" [wrap]="false">
               <ng-template ngbSlide>foo</ng-template>
@@ -985,7 +985,7 @@ if (isBrowserVisible('ngb-carousel animations')) {
         expect(slideOne.className).toBe('carousel-item');
         expect(slideTwo.className).toBe('carousel-item active');
 
-        expect(payload).toEqual({prev: 'one', current: 'two', direction: 'left', paused: false, source: 'indicator'});
+        expect(payload).toEqual({prev: 'one', current: 'two', direction: 'start', paused: false, source: 'indicator'});
         expect(onSlidSpy).toHaveBeenCalledTimes(1);
         done();
       });
@@ -996,8 +996,8 @@ if (isBrowserVisible('ngb-carousel animations')) {
       indicators[1].click();
       fixture.detectChanges();
 
-      expect(slideOne.className).toBe('carousel-item active carousel-item-left');
-      expect(slideTwo.className).toBe('carousel-item carousel-item-next carousel-item-left');
+      expect(slideOne.className).toBe('carousel-item active carousel-item-start');
+      expect(slideTwo.className).toBe('carousel-item carousel-item-next carousel-item-start');
     });
 
     it(`should run slide transition (force-reduced-motion = true)`, () => {
@@ -1022,7 +1022,7 @@ if (isBrowserVisible('ngb-carousel animations')) {
       expect(slideTwo.className).toBe('carousel-item active');
 
       expect(onSlidSpy).toHaveBeenCalledWith(
-          {prev: 'one', current: 'two', direction: 'left', paused: false, source: 'indicator'});
+          {prev: 'one', current: 'two', direction: 'start', paused: false, source: 'indicator'});
       expect(onSlidSpy).toHaveBeenCalledTimes(1);
     });
 
@@ -1041,7 +1041,7 @@ if (isBrowserVisible('ngb-carousel animations')) {
         expect(slideTwo.className).toBe('carousel-item');
         expect(slideThree.className).toBe('carousel-item');
 
-        expect(payload).toEqual({prev: 'two', current: 'one', direction: 'right', paused: false, source: 'indicator'});
+        expect(payload).toEqual({prev: 'two', current: 'one', direction: 'end', paused: false, source: 'indicator'});
         expect(onSlidSpy).toHaveBeenCalledTimes(1);
 
         done();
@@ -1053,16 +1053,16 @@ if (isBrowserVisible('ngb-carousel animations')) {
       indicators[1].click();
       fixture.detectChanges();
 
-      expect(slideOne.className).toBe('carousel-item active carousel-item-left');
-      expect(slideTwo.className).toBe('carousel-item carousel-item-next carousel-item-left');
+      expect(slideOne.className).toBe('carousel-item active carousel-item-start');
+      expect(slideTwo.className).toBe('carousel-item carousel-item-next carousel-item-start');
       expect(slideThree.className).toBe('carousel-item');
 
       // Reverse only possible when clicking on previous one
       indicators[2].click();
       fixture.detectChanges();
 
-      expect(slideOne.className).toBe('carousel-item active carousel-item-left');
-      expect(slideTwo.className).toBe('carousel-item carousel-item-next carousel-item-left');
+      expect(slideOne.className).toBe('carousel-item active carousel-item-start');
+      expect(slideTwo.className).toBe('carousel-item carousel-item-next carousel-item-start');
       expect(slideThree.className).toBe('carousel-item');
 
       // Reverse
@@ -1112,9 +1112,9 @@ if (isBrowserVisible('ngb-carousel animations')) {
       expect(slideThree.className).toBe('carousel-item');
 
       expect(onSlidSpy.calls.allArgs()).toEqual([
-        [{prev: 'one', current: 'two', direction: 'left', paused: false, source: 'indicator'}],
-        [{prev: 'two', current: 'three', direction: 'left', paused: false, source: 'indicator'}],
-        [{prev: 'three', current: 'one', direction: 'right', paused: false, source: 'indicator'}],
+        [{prev: 'one', current: 'two', direction: 'start', paused: false, source: 'indicator'}],
+        [{prev: 'two', current: 'three', direction: 'start', paused: false, source: 'indicator'}],
+        [{prev: 'three', current: 'one', direction: 'end', paused: false, source: 'indicator'}],
       ]);
 
       expect(onSlidSpy).toHaveBeenCalledTimes(3);
