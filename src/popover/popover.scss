@@ -9,36 +9,36 @@ ngb-popover-window {
     pointer-events: auto;
   }
 
-  &.bs-popover-top > .arrow,
-  &.bs-popover-bottom > .arrow {
+  &.bs-popover-top > .popover-arrow,
+  &.bs-popover-bottom > .popover-arrow {
     left: 50%;
     margin-left: -$arrow-size / 2;
   }
 
-  &.bs-popover-top-left > .arrow,
-  &.bs-popover-bottom-left > .arrow {
+  &.bs-popover-top-start > .popover-arrow,
+  &.bs-popover-bottom-start > .popover-arrow {
     left: 2em;
   }
 
-  &.bs-popover-top-right > .arrow,
-  &.bs-popover-bottom-right > .arrow {
+  &.bs-popover-top-end > .popover-arrow,
+  &.bs-popover-bottom-end > .popover-arrow {
     left: auto;
     right: 2em;
   }
 
-  &.bs-popover-left > .arrow,
-  &.bs-popover-right > .arrow {
+  &.bs-popover-start > .popover-arrow,
+  &.bs-popover-end > .popover-arrow {
     top: 50%;
     margin-top: -$arrow-size / 2;
   }
 
-  &.bs-popover-left-top > .arrow,
-  &.bs-popover-right-top > .arrow {
+  &.bs-popover-start-top > .popover-arrow,
+  &.bs-popover-end-top > .popover-arrow {
     top: 0.7em;
   }
 
-  &.bs-popover-left-bottom > .arrow,
-  &.bs-popover-right-bottom > .arrow {
+  &.bs-popover-start-bottom > .popover-arrow,
+  &.bs-popover-end-bottom > .popover-arrow {
     top: auto;
     bottom: 0.7em;
   }
