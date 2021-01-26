@@ -3,7 +3,7 @@ import {Component} from '@angular/core';
 @Component({templateUrl: './dropdown-position.component.html'})
 export class DropdownPositionComponent {
   isInDom = true;
-  placement = 'top-left';
+  placement = 'top-start';
   container: null | 'body' = null;
 
   togglePlacement(placement) { this.placement = placement; }
