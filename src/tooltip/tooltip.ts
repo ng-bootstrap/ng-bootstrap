@@ -43,7 +43,7 @@ let nextId = 0;
     'role': 'tooltip',
     '[id]': 'id'
   },
-  template: `<div class="arrow"></div><div class="tooltip-inner"><ng-content></ng-content></div>`,
+  template: `<div class="tooltip-arrow"></div><div class="tooltip-inner"><ng-content></ng-content></div>`,
   styleUrls: ['./tooltip.scss']
 })
 export class NgbTooltipWindow {
@@ -82,9 +82,9 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
   /**
    * The preferred placement of the tooltip.
    *
-   * Possible values are `"top"`, `"top-left"`, `"top-right"`, `"bottom"`, `"bottom-left"`,
-   * `"bottom-right"`, `"left"`, `"left-top"`, `"left-bottom"`, `"right"`, `"right-top"`,
-   * `"right-bottom"`
+   * Possible values are `"top"`, `"top-start"`, `"top-end"`, `"bottom"`, `"bottom-start"`,
+   * `"bottom-end"`, `"start"`, `"start-top"`, `"start-bottom"`, `"end"`, `"end-top"`,
+   * `"end-bottom"`
    *
    * Accepts an array of strings or a string with space separated possible values.
    *
