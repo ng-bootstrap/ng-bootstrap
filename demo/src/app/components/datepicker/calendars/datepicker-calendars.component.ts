@@ -71,7 +71,7 @@ const DEMOS = [
     </p>
 
     <p>For instance, other calendar implementations available are:</p>
-    <ul class="list-unstyled ml-4">
+    <ul class="list-unstyled ms-4">
       <li><code>NgbCalendarHebrew</code> + <code>NgbDatepickerI18nHebrew</code></li>
       <li><code>NgbCalendarPersian</code></li>
       <li><code>NgbCalendarIslamicCivil</code></li>
