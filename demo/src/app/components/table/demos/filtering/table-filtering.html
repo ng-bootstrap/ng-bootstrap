@@ -2,7 +2,7 @@
 
 <form>
   <div class="form-group form-inline">
-      Full text search: <input class="form-control ml-2" type="text" [formControl]="filter"/>
+      Full text search: <input class="form-control ms-2" type="text" [formControl]="filter"/>
   </div>
 </form>
 
@@ -19,7 +19,7 @@
   <tr *ngFor="let country of countries$ | async; index as i">
     <th scope="row">{{ i + 1 }}</th>
     <td>
-      <img [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" class="mr-2" style="width: 20px">
+      <img [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" class="me-2" style="width: 20px">
       <ngb-highlight [result]="country.name" [term]="filter.value"></ngb-highlight>
     </td>
     <td><ngb-highlight [result]="country.area | number" [term]="filter.value"></ngb-highlight></td>

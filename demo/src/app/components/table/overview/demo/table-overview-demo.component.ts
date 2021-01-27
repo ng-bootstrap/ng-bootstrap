@@ -23,7 +23,7 @@ interface Country {
       <tr *ngFor="let country of countries; index as i">
         <th scope="row">{{ i + 1 }}</th>
         <td>
-          <img [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" class="mr-2" style="width: 20px">
+          <img [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" class="me-2" style="width: 20px">
           {{ country.name }}
         </td>
         <td>{{ country.area | number }}</td>
