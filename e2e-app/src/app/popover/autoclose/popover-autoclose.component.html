@@ -1,16 +1,16 @@
 <h3>
   Popover autoclose tests
-  <span class="ml-1 badge {{d.isOpen() ? 'badge-success' : 'badge-danger'}}" id="open-status">{{d.isOpen() ? 'open' : 'closed'}}</span>
+  <span class="ms-1 badge {{d.isOpen() ? 'badge-success' : 'badge-danger'}}" id="open-status">{{d.isOpen() ? 'open' : 'closed'}}</span>
 </h3>
 
 <form id="default" (contextmenu)="$event.preventDefault()">
   <div class="form-group form-inline">
 
-    <button #d="ngbPopover" ngbPopover="Popover here" [autoClose]="autoClose" triggers="click" type="button" class="btn btn-outline-secondary ml-2">
+    <button #d="ngbPopover" ngbPopover="Popover here" [autoClose]="autoClose" triggers="click" type="button" class="btn btn-outline-secondary ms-2">
       Popover
     </button>
 
-    <div ngbDropdown class="d-inline-block ml-3">
+    <div ngbDropdown class="d-inline-block ms-3">
       <button class="btn btn-outline-secondary" id="autoclose-dropdown" ngbDropdownToggle>Choose Autoclose</button>
       <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
         <button class="dropdown-item" id="autoclose-true" (click)="autoClose = true">True</button>
@@ -20,6 +20,6 @@
       </div>
     </div>
 
-    <button class="btn btn-outline-secondary ml-1" id="outside-button">Outside button</button>
+    <button class="btn btn-outline-secondary ms-1" id="outside-button">Outside button</button>
   </div>
 </form>

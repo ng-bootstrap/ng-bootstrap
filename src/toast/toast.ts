@@ -52,7 +52,7 @@ export class NgbToastHeader {
   },
   template: `
     <ng-template #headerTpl>
-      <strong class="mr-auto">{{header}}</strong>
+      <strong class="me-auto">{{header}}</strong>
     </ng-template>
     <ng-template [ngIf]="contentHeaderTpl || header">
       <div class="toast-header">

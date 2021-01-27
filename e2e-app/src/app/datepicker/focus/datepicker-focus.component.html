@@ -13,7 +13,7 @@
       </div>
     </div>
 
-    <div ngbDropdown class="d-inline-block ml-3">
+    <div ngbDropdown class="d-inline-block ms-3">
       <button class="btn btn-outline-secondary" id="start-date-dropdown" ngbDropdownToggle>Choose Start date</button>
       <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
         <button class="dropdown-item" id="start-date-null" (click)="startDate = null">Null</button>
@@ -23,9 +23,9 @@
       </div>
     </div>
 
-    <button id="disable" class="btn btn-outline-secondary ml-1" (click)="disabled = true">Disable</button>
+    <button id="disable" class="btn btn-outline-secondary ms-1" (click)="disabled = true">Disable</button>
 
-    <span class="ml-3">startDate is
+    <span class="ms-3">startDate is
       <span id="start-date">{{ startDate | json }}</span>
     </span>
 

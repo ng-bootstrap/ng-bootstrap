@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'datepicker-component',
   template: `
     <form class="form-inline">
-      <div class="form-group mr-5">
+      <div class="form-group me-5">
         <ngb-datepicker [(ngModel)]="model1" name="inline" [startDate]="model1"></ngb-datepicker>
       </div>
 
