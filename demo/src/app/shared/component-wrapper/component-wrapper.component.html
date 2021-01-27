@@ -3,7 +3,7 @@
     <div class="col-12 col-lg-2" style="border-right: 1px solid rgba(0, 0, 0, 0.1)">
       <div class="d-lg-none d-flex py-2 px-4 align-items-center text-body sidebar-collapsed"
         (click)="sidebarCollapsed = !sidebarCollapsed" role="button">
-        <span class="mr-auto">Menu</span>
+        <span class="me-auto">Menu</span>
         <button class="btn btn-link p-0" aria-controls="doc-nav" [attr.aria-expanded]="!sidebarCollapsed"
           aria-label="Toggle documentation navigation">
           <svg class="align-middle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" width="30" height="30"
@@ -23,7 +23,7 @@
 
     <div class="col-12 col-lg-10">
       <header class="bg-light pt-4 pb-md-5 px-4 px-lg-5 d-flex d-md-block align-items-center title">
-        <h1 class="mb-4 mr-auto mr-md-none">{{ component | titlecase }}</h1>
+        <h1 class="mb-4 me-auto me-md-none">{{ component | titlecase }}</h1>
 
         <ul ngbNav [activeId]="this.activeTab"
           class="nav-tabs px-4 px-lg-5 content-tabset justify-content-md-start justify-content-end">
@@ -35,7 +35,7 @@
           </li>
 
           <li ngbNavItem ngbDropdown placement="bottom-right"
-            class="align-self-center ml-0 ml-md-auto navigation-dropdown"
+            class="align-self-center ms-0 ms-md-auto navigation-dropdown"
             *ngIf="tableOfContents.length && isLargeScreenOrLess">
             <span ngbDropdownToggle class="nav-link" title="Table of content">
               <span class="sr-only">Table of content</span>
@@ -57,7 +57,7 @@
               <ng-container *ngIf="(bootstrapUrl$ | async) as boostrapUrl">
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item d-flex align-items-center" [href]="boostrapUrl" target="_blank" rel="nofollow noopener noreferrer">
-                  <svg:svg class="mr-2" width="16" height="16" fill="currentColor" ngbdIcon="bootstrap" />
+                  <svg:svg class="me-2" width="16" height="16" fill="currentColor" ngbdIcon="bootstrap" />
                   {{ component | titlecase }} in Bootstrap
                 </a>
               </ng-container>
@@ -85,7 +85,7 @@
                   target="_blank" rel="nofollow noopener noreferrer"
                   [attr.title]="'See ' + component + ' component on getbootstrap.com'"
                 >
-                  <svg:svg class="mr-2" width="16" height="16" fill="currentColor" ngbdIcon="bootstrap" />
+                  <svg:svg class="me-2" width="16" height="16" fill="currentColor" ngbdIcon="bootstrap" />
                   {{ component | titlecase }} in Bootstrap
                 </a>
               </li>

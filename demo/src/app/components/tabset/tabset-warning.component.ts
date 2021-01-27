@@ -5,7 +5,7 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ngb-alert type="danger" [dismissible]="false" class="mb-5 d-flex flex-row">
-      <div class="mr-2">
+      <div class="me-2">
         <svg:svg ngbdIcon="lightbulb" fill="currentColor" />
       </div>
       <div>
