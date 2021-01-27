@@ -16,6 +16,6 @@ export class NgbInputDatepickerConfig extends NgbDatepickerConfig {
   autoClose: boolean | 'inside' | 'outside' = true;
   container: null | 'body';
   positionTarget: string | HTMLElement;
-  placement: PlacementArray = ['bottom-left', 'bottom-right', 'top-left', 'top-right'];
+  placement: PlacementArray = ['bottom-start', 'bottom-end', 'top-start', 'top-end'];
   restoreFocus: true | HTMLElement | string = true;
 }

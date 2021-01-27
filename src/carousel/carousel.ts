@@ -329,14 +329,14 @@ export class NgbCarousel implements AfterContentChecked,
    * Navigates to the previous slide.
    */
   prev(source?: NgbSlideEventSource) {
-    this._cycleToSelected(this._getPrevSlide(this.activeId), NgbSlideEventDirection.RIGHT, source);
+    this._cycleToSelected(this._getPrevSlide(this.activeId), NgbSlideEventDirection.END, source);
   }
 
   /**
    * Navigates to the next slide.
    */
   next(source?: NgbSlideEventSource) {
-    this._cycleToSelected(this._getNextSlide(this.activeId), NgbSlideEventDirection.LEFT, source);
+    this._cycleToSelected(this._getNextSlide(this.activeId), NgbSlideEventDirection.START, source);
   }
 
   /**
@@ -345,7 +345,7 @@ export class NgbCarousel implements AfterContentChecked,
   pause() { this._pause$.next(true); }
 
   /**
-   * Restarts cycling through the slides from left to right.
+   * Restarts cycling through the slides from start to end.
    */
   cycle() { this._pause$.next(false); }
 
@@ -405,7 +405,7 @@ export class NgbCarousel implements AfterContentChecked,
     const currentActiveSlideIdx = this._getSlideIdxById(currentActiveSlideId);
     const nextActiveSlideIdx = this._getSlideIdxById(nextActiveSlideId);
 
-    return currentActiveSlideIdx > nextActiveSlideIdx ? NgbSlideEventDirection.RIGHT : NgbSlideEventDirection.LEFT;
+    return currentActiveSlideIdx > nextActiveSlideIdx ? NgbSlideEventDirection.END : NgbSlideEventDirection.START;
   }
 
   private _getSlideById(slideId: string): NgbSlide | null {
@@ -457,7 +457,7 @@ export interface NgbSlideEvent {
   /**
    * The slide event direction.
    *
-   * Possible values are `'left' | 'right'`.
+   * Possible values are `'start' | 'end'`.
    */
   direction: NgbSlideEventDirection;
 
@@ -492,7 +492,7 @@ export interface NgbSingleSlideEvent {
   /**
    * The slide event direction.
    *
-   * Possible values are `'left' | 'right'`.
+   * Possible values are `'start' | 'end'`.
    */
   direction: NgbSlideEventDirection;
 

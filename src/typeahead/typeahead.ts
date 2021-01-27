@@ -156,17 +156,17 @@ export class NgbTypeahead implements ControlValueAccessor,
   /**
    * The preferred placement of the typeahead.
    *
-   * Possible values are `"top"`, `"top-left"`, `"top-right"`, `"bottom"`, `"bottom-left"`,
-   * `"bottom-right"`, `"left"`, `"left-top"`, `"left-bottom"`, `"right"`, `"right-top"`,
-   * `"right-bottom"`
+   * Possible values are `"top"`, `"top-start"`, `"top-end"`, `"bottom"`, `"bottom-start"`,
+   * `"bottom-end"`, `"start"`, `"start-top"`, `"start-bottom"`, `"end"`, `"end-top"`,
+   * `"end-bottom"`
    *
    * Accepts an array of strings or a string with space separated possible values.
    *
-   * The default order of preference is `"bottom-left bottom-right top-left top-right"`
+   * The default order of preference is `"bottom-start bottom-end top-start top-end"`
    *
    * Please see the [positioning overview](#/positioning) for more details.
    */
-  @Input() placement: PlacementArray = 'bottom-left';
+  @Input() placement: PlacementArray = 'bottom-start';
 
   /**
    * An event emitted right before an item is selected from the result list.

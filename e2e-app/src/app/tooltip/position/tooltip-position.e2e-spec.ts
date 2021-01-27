@@ -38,7 +38,7 @@ describe('Tooltip Position', () => {
       yDiff = (tooltipLocation.y + tooltipSize.height) - btnLocation.y;
       if (secondary === 'left') {
         xDiff = tooltipLocation.x - btnLocation.x;
-      } else if (secondary === 'right') {
+      } else if (secondary === 'end') {
         xDiff = (tooltipLocation.x + tooltipSize.width) - (btnLocation.x + btnSize.width);
       } else {
         xDiff = (tooltipLocation.x + tooltipSize.width / 2) - (btnLocation.x + (btnSize.width / 2));
@@ -50,7 +50,7 @@ describe('Tooltip Position', () => {
       xDiff = (tooltipLocation.x + tooltipSize.width) - btnLocation.x;
     }
 
-    if (primary === 'right') {
+    if (primary === 'end') {
       yDiff = (tooltipLocation.y + tooltipSize.height / 2) - (btnLocation.y + btnSize.height / 2);
       xDiff = tooltipLocation.x - (btnLocation.x + btnSize.width);
     }
@@ -70,11 +70,11 @@ describe('Tooltip Position', () => {
   beforeEach(async() => await openUrl('tooltip/position'));
 
   it(`should be well positionned on the left edge`, async() => {
-    await page.selectPosition('left');
-    await expectTooltipsPosition('normal', 'right');
-    await expectTooltipsPosition('innerHtml', 'top-left');
-    await expectTooltipsPosition('body-off', 'right');
-    await expectTooltipsPosition('fixed', 'top-left');
+    await page.selectPosition('start');
+    await expectTooltipsPosition('normal', 'end');
+    await expectTooltipsPosition('innerHtml', 'top-start');
+    await expectTooltipsPosition('body-off', 'end');
+    await expectTooltipsPosition('fixed', 'top-start');
   });
 
   it(`should be well positionned on the center`, async() => {
@@ -86,16 +86,16 @@ describe('Tooltip Position', () => {
   });
 
   it(`should be well positionned on the right edge`, async() => {
-    await page.selectPosition('right');
-    await expectTooltipsPosition('normal', 'left');
-    await expectTooltipsPosition('innerHtml', 'top-right');
-    await expectTooltipsPosition('body-off', 'left');
-    await expectTooltipsPosition('fixed', 'top-right');
+    await page.selectPosition('end');
+    await expectTooltipsPosition('normal', 'start');
+    await expectTooltipsPosition('innerHtml', 'top-end');
+    await expectTooltipsPosition('body-off', 'start');
+    await expectTooltipsPosition('fixed', 'top-end');
   });
 
   it(`should be positionned at the first placement by default`, async() => {
-    await page.selectPosition('left');
-    await expectTooltipsPosition('default', 'left', ['left-bottom']);
+    await page.selectPosition('start');
+    await expectTooltipsPosition('default', 'start', ['start-bottom']);
   });
 
 });

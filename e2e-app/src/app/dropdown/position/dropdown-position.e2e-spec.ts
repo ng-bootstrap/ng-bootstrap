@@ -55,10 +55,10 @@ const roundLocation = function(location) {
       const dropdown = dropdownPage.getDropdown(selector);
       await dropdownPage.open(dropdown);
 
-      await expectSamePositions('bottom-left');
-      await expectSamePositions('top-left');
-      await expectSamePositions('bottom-right');
-      await expectSamePositions('top-right');
+      await expectSamePositions('bottom-start');
+      await expectSamePositions('top-start');
+      await expectSamePositions('bottom-end');
+      await expectSamePositions('top-end');
 
     });
 
@@ -75,11 +75,11 @@ const roundLocation = function(location) {
       await dropdownPositionPage.toggleContainer('body');
       await dropdownPage.open(dropdown);
 
-      await dropdownPositionPage.togglePlacement('bottom-left');
+      await dropdownPositionPage.togglePlacement('bottom-start');
       expect(await dropdownPage.getBodyContainers().count())
           .toBe(1, `Dropdown menu container should be found on the body`);
 
-      await dropdownPositionPage.togglePlacement('top-left');
+      await dropdownPositionPage.togglePlacement('top-start');
       expect(await dropdownPage.getBodyContainers().count())
           .toBe(1, `Dropdown menu container should be found on the body`);
 
