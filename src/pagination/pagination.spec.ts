@@ -682,7 +682,7 @@ describe('ngb-pagination', () => {
           <ng-template ngbPaginationEllipsis>E</ng-template>
           <ng-template ngbPaginationNumber let-page let-currentPage="currentPage">
             {{ page }}!
-            <span *ngIf="page === currentPage" class="sr-only">(current)</span>
+            <span *ngIf="page === currentPage" class="visually-hidden">(current)</span>
           </ng-template>
         </ngb-pagination>
       `);
@@ -699,7 +699,7 @@ describe('ngb-pagination', () => {
           <ng-template ngbPaginationNext let-disabled="disabled">{{ disabled ? 'dN' : 'N' }}</ng-template>
           <ng-template ngbPaginationNumber let-page let-currentPage="currentPage" let-disabled="disabled">
             {{ disabled ? 'd'+page : page }}
-            <span *ngIf="page === currentPage" class="sr-only">(current)</span>
+            <span *ngIf="page === currentPage" class="visually-hidden">(current)</span>
           </ng-template>
         </ngb-pagination>
       `);

@@ -23,7 +23,7 @@ function getLiveElement(document: any, lazyCreate = false): HTMLElement | null {
     element.setAttribute('aria-live', 'polite');
     element.setAttribute('aria-atomic', 'true');
 
-    element.classList.add('sr-only');
+    element.classList.add('visually-hidden');
 
     document.body.appendChild(element);
   }
