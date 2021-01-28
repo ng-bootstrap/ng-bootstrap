@@ -855,12 +855,12 @@ describe('ngb-carousel', () => {
        const slideElms = fixture.nativeElement.querySelectorAll('.carousel-item');
        expect(slideElms.length).toBe(1);
        expect(slideElms[0].textContent).toMatch(/foo/);
-       expect(fixture.nativeElement.querySelectorAll('ol.carousel-indicators.sr-only > li').length).toBe(0);
+       expect(fixture.nativeElement.querySelectorAll('ol.carousel-indicators.visually-hidden > li').length).toBe(0);
        expect(fixture.nativeElement.querySelectorAll('ol.carousel-indicators > li').length).toBe(1);
 
        fixture.componentInstance.showNavigationIndicators = false;
        fixture.detectChanges();
-       expect(fixture.nativeElement.querySelectorAll('ol.carousel-indicators.sr-only > li').length).toBe(1);
+       expect(fixture.nativeElement.querySelectorAll('ol.carousel-indicators.visually-hidden > li').length).toBe(1);
        expect(fixture.nativeElement.querySelectorAll('ol.carousel-indicators > li').length).toBe(1);
 
        discardPeriodicTasks();
