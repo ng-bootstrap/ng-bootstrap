@@ -32,7 +32,7 @@ const FILTER_REGEX = /[^0-9]/g;
             class="btn btn-link" [class.btn-sm]="isSmallSize" [class.btn-lg]="isLargeSize" [class.disabled]="disabled"
             [disabled]="disabled">
             <span class="chevron ngb-tp-chevron"></span>
-            <span class="sr-only" i18n="@@ngb.timepicker.increment-hours">Increment hours</span>
+            <span class="visually-hidden" i18n="@@ngb.timepicker.increment-hours">Increment hours</span>
           </button>
           <input type="text" class="ngb-tp-input form-control" [class.form-control-sm]="isSmallSize"
             [class.form-control-lg]="isLargeSize"
@@ -47,7 +47,7 @@ const FILTER_REGEX = /[^0-9]/g;
             class="btn btn-link" [class.btn-sm]="isSmallSize" [class.btn-lg]="isLargeSize" [class.disabled]="disabled"
             [disabled]="disabled">
             <span class="chevron ngb-tp-chevron bottom"></span>
-            <span class="sr-only" i18n="@@ngb.timepicker.decrement-hours">Decrement hours</span>
+            <span class="visually-hidden" i18n="@@ngb.timepicker.decrement-hours">Decrement hours</span>
           </button>
         </div>
         <div class="ngb-tp-spacer">:</div>
@@ -56,7 +56,7 @@ const FILTER_REGEX = /[^0-9]/g;
             class="btn btn-link" [class.btn-sm]="isSmallSize" [class.btn-lg]="isLargeSize" [class.disabled]="disabled"
             [disabled]="disabled">
             <span class="chevron ngb-tp-chevron"></span>
-            <span class="sr-only" i18n="@@ngb.timepicker.increment-minutes">Increment minutes</span>
+            <span class="visually-hidden" i18n="@@ngb.timepicker.increment-minutes">Increment minutes</span>
           </button>
           <input type="text" class="ngb-tp-input form-control" [class.form-control-sm]="isSmallSize" [class.form-control-lg]="isLargeSize"
             maxlength="2" inputmode="numeric" placeholder="MM" i18n-placeholder="@@ngb.timepicker.MM"
@@ -70,7 +70,7 @@ const FILTER_REGEX = /[^0-9]/g;
             class="btn btn-link" [class.btn-sm]="isSmallSize" [class.btn-lg]="isLargeSize"  [class.disabled]="disabled"
             [disabled]="disabled">
             <span class="chevron ngb-tp-chevron bottom"></span>
-            <span class="sr-only"  i18n="@@ngb.timepicker.decrement-minutes">Decrement minutes</span>
+            <span class="visually-hidden"  i18n="@@ngb.timepicker.decrement-minutes">Decrement minutes</span>
           </button>
         </div>
         <div *ngIf="seconds" class="ngb-tp-spacer">:</div>
@@ -79,7 +79,7 @@ const FILTER_REGEX = /[^0-9]/g;
             class="btn btn-link" [class.btn-sm]="isSmallSize" [class.btn-lg]="isLargeSize" [class.disabled]="disabled"
             [disabled]="disabled">
             <span class="chevron ngb-tp-chevron"></span>
-            <span class="sr-only" i18n="@@ngb.timepicker.increment-seconds">Increment seconds</span>
+            <span class="visually-hidden" i18n="@@ngb.timepicker.increment-seconds">Increment seconds</span>
           </button>
           <input type="text" class="ngb-tp-input form-control" [class.form-control-sm]="isSmallSize" [class.form-control-lg]="isLargeSize"
             maxlength="2" inputmode="numeric" placeholder="SS" i18n-placeholder="@@ngb.timepicker.SS"
@@ -93,7 +93,7 @@ const FILTER_REGEX = /[^0-9]/g;
             class="btn btn-link" [class.btn-sm]="isSmallSize" [class.btn-lg]="isLargeSize"  [class.disabled]="disabled"
             [disabled]="disabled">
             <span class="chevron ngb-tp-chevron bottom"></span>
-            <span class="sr-only" i18n="@@ngb.timepicker.decrement-seconds">Decrement seconds</span>
+            <span class="visually-hidden" i18n="@@ngb.timepicker.decrement-seconds">Decrement seconds</span>
           </button>
         </div>
         <div *ngIf="meridian" class="ngb-tp-spacer"></div>
