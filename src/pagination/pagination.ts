@@ -126,7 +126,7 @@ export class NgbPaginationPrevious {
     <ng-template #ellipsis>...</ng-template>
     <ng-template #defaultNumber let-page let-currentPage="currentPage">
       {{ page }}
-      <span *ngIf="page === currentPage" class="sr-only">(current)</span>
+      <span *ngIf="page === currentPage" class="visually-hidden">(current)</span>
     </ng-template>
     <ul [class]="'pagination' + (size ? ' pagination-' + size : '')">
       <li *ngIf="boundaryLinks" class="page-item"
