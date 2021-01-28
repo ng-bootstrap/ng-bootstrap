@@ -1300,12 +1300,18 @@ describe('ngb-timepicker', () => {
          fixture.detectChanges();
          const buttons = getButtons(fixture.nativeElement);
 
-         expect((<HTMLButtonElement>buttons[0]).querySelector('.visually-hidden') !.textContent).toBe('Increment hours');
-         expect((<HTMLButtonElement>buttons[1]).querySelector('.visually-hidden') !.textContent).toBe('Decrement hours');
-         expect((<HTMLButtonElement>buttons[2]).querySelector('.visually-hidden') !.textContent).toBe('Increment minutes');
-         expect((<HTMLButtonElement>buttons[3]).querySelector('.visually-hidden') !.textContent).toBe('Decrement minutes');
-         expect((<HTMLButtonElement>buttons[4]).querySelector('.visually-hidden') !.textContent).toBe('Increment seconds');
-         expect((<HTMLButtonElement>buttons[5]).querySelector('.visually-hidden') !.textContent).toBe('Decrement seconds');
+         expect((<HTMLButtonElement>buttons[0]).querySelector('.visually-hidden') !.textContent)
+             .toBe('Increment hours');
+         expect((<HTMLButtonElement>buttons[1]).querySelector('.visually-hidden') !.textContent)
+             .toBe('Decrement hours');
+         expect((<HTMLButtonElement>buttons[2]).querySelector('.visually-hidden') !.textContent)
+             .toBe('Increment minutes');
+         expect((<HTMLButtonElement>buttons[3]).querySelector('.visually-hidden') !.textContent)
+             .toBe('Decrement minutes');
+         expect((<HTMLButtonElement>buttons[4]).querySelector('.visually-hidden') !.textContent)
+             .toBe('Increment seconds');
+         expect((<HTMLButtonElement>buttons[5]).querySelector('.visually-hidden') !.textContent)
+             .toBe('Decrement seconds');
        }));
 
     it('should have aria-label for inputs', fakeAsync(() => {
