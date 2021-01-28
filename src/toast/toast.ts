@@ -52,13 +52,12 @@ export class NgbToastHeader {
   },
   template: `
     <ng-template #headerTpl>
-      <strong class="mr-auto">{{header}}</strong>
+      <strong class="me-auto">{{header}}</strong>
     </ng-template>
     <ng-template [ngIf]="contentHeaderTpl || header">
       <div class="toast-header">
         <ng-template [ngTemplateOutlet]="contentHeaderTpl || headerTpl"></ng-template>
-        <button type="button" class="close" aria-label="Close" i18n-aria-label="@@ngb.toast.close-aria" (click)="hide()">
-          <span aria-hidden="true">&times;</span>
+        <button type="button" class="btn-close" aria-label="Close" i18n-aria-label="@@ngb.toast.close-aria" (click)="hide()">
         </button>
       </div>
     </ng-template>
