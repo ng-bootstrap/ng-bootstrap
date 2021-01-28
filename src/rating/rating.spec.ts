@@ -466,22 +466,6 @@ describe('ngb-rating', () => {
     expect(ratingEl.nativeElement.getAttribute('tabindex')).toEqual('0');
   });
 
-  it('should set disabled attribute when readonly', () => {
-    const fixture = createTestComponent('<ngb-rating [readonly]="true"></ngb-rating>');
-    let ratingEl = fixture.debugElement.query(By.directive(NgbRating));
-
-    fixture.detectChanges();
-    expect(ratingEl.nativeElement.getAttribute('disabled')).toBe('true');
-  });
-
-  it('should not set disabled attribute when not readonly', () => {
-    const fixture = createTestComponent('<ngb-rating></ngb-rating>');
-    let ratingEl = fixture.debugElement.query(By.directive(NgbRating));
-
-    fixture.detectChanges();
-    expect(ratingEl.nativeElement.getAttribute('disabled')).toBeNull();
-  });
-
   describe('keyboard support', () => {
 
     it('should handle arrow keys', () => {

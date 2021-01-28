@@ -45,7 +45,6 @@ export interface StarTemplateContext {
     '[tabindex]': 'readonly ? -1 : 0',
     'role': 'slider',
     'aria-valuemin': '0',
-    '[attr.disabled]': 'readonly || null',
     '[attr.aria-valuemax]': 'max',
     '[attr.aria-valuenow]': 'nextRate',
     '[attr.aria-valuetext]': 'ariaValueText()',
