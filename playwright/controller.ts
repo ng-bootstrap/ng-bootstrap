@@ -14,14 +14,12 @@ import {
 export const Browsers = {chromium, firefox, webkit};
 
 export class Playwright {
-  private _page: Page;
+  page: Page;
   private _context: BrowserContext;
 
   constructor(
       private _browser: BrowserType<Browser>, private _launchOptions: LaunchOptions,
       private _contextOptions: BrowserContextOptions) {}
-
-  get page(): Page { return this._page; }
 
   private async _launchBrowser() {
     if (!this._context) {
@@ -34,20 +32,20 @@ export class Playwright {
   }
 
   async newPage(url?: string): Promise<Page> {
-    if (this._page && !this._page.isClosed()) {
-      await this._page.close();
+    if (this.page && !this.page.isClosed()) {
+      await this.page.close();
     }
 
     if (!this._context) {
       await this._launchBrowser();
     }
-    this._page = await this._context.newPage();
+    this.page = await this._context.newPage();
 
     if (url) {
-      await this._page.goto(url);
+      await this.page.goto(url);
     }
 
-    return this._page;
+    return this.page;
   }
 
   /**
@@ -56,6 +54,6 @@ export class Playwright {
    */
   async pause(seconds = 1000, msg?: string) {
     console.log(`Warning : paused for ${seconds}s` + (msg ? ` (${msg})` : ''));
-    await this._page.waitForTimeout(seconds * 1000);
+    await this.page.waitForTimeout(seconds * 1000);
   }
 }
