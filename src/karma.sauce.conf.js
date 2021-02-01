@@ -25,12 +25,6 @@ const BROWSERS = {
     platform: 'Windows 10',
     version: '18.17763'
   },
-  'IE10': {
-    base: 'SauceLabs',
-    browserName: 'internet explorer',
-    platform: 'Windows 8',
-    version: '10'
-  },
   'IE11': {
     base: 'SauceLabs',
     browserName: 'internet explorer',
@@ -54,7 +48,7 @@ const BROWSERS = {
 module.exports = function (config) {
   config.set({
     basePath: '',
-    files: ['../node_modules/bootstrap/dist/css/bootstrap.min.css'],
+    files: ['../node_modules/bootstrap/dist/css/bootstrap.min.css', '../src/test/test-styles.css'],
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
     plugins: [
       require('karma-jasmine'),
@@ -87,6 +81,7 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     browsers: ['CHROME', 'FIREFOX', 'EDGE', 'EDGE18', 'SAFARI12', 'SAFARI13'],
+    autoWatch: false,
     singleRun: true,
     captureTimeout: 180000,
     browserDisconnectTimeout: 180000,

@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {NgbConfig} from '../ngb-config';
 
 /**
  * Interface used to type all toast config options. See `NgbToastConfig`.
@@ -39,4 +40,11 @@ export class NgbToastConfig implements NgbToastOptions {
   autohide = true;
   delay = 500;
   ariaLive: 'polite' | 'alert' = 'polite';
+
+  private _animation: boolean;
+
+  constructor(private _ngbConfig: NgbConfig) {}
+
+  get animation(): boolean { return (this._animation === undefined) ? this._ngbConfig.animation : this._animation; }
+  set animation(animation: boolean) { this._animation = animation; }
 }

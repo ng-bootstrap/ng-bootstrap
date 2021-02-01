@@ -7,7 +7,7 @@ function createWorkspace(runner: SchematicTestRunner): Promise<UnitTestTree> {
   return runner
       .runExternalSchematicAsync('@schematics/angular', 'workspace', {
         name: 'workspace',
-        version: '9.0.0',
+        version: '10.0.0',
         newProjectRoot: 'projects',
       })
       .toPromise();

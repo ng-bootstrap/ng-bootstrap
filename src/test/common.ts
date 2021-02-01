@@ -63,6 +63,14 @@ export function isBrowser(browsers: Browser | Browser[], ua = window.navigator.u
   }
 }
 
+export function isBrowserVisible(suiteName: string) {
+  if (document.hidden) {
+    console.warn(`${suiteName} tests were skipped because browser tab running these tests is hidden or inactive`);
+    return false;
+  }
+  return true;
+}
+
 export function createKeyEvent(key: Key, options: {type: 'keyup' | 'keydown'} = {
   type: 'keyup'
 }) {

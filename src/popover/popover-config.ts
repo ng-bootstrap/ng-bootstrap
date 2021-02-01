@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {PlacementArray} from '../util/positioning';
+import {NgbConfig} from '../ngb-config';
 
 /**
  * A configuration service for the [`NgbPopover`](#/components/popover/api#NgbPopover) component.
@@ -17,4 +18,11 @@ export class NgbPopoverConfig {
   popoverClass: string;
   openDelay = 0;
   closeDelay = 0;
+
+  private _animation: boolean;
+
+  constructor(private _ngbConfig: NgbConfig) {}
+
+  get animation(): boolean { return (this._animation === undefined) ? this._ngbConfig.animation : this._animation; }
+  set animation(animation: boolean) { this._animation = animation; }
 }

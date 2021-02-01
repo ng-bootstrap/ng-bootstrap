@@ -73,6 +73,14 @@
       <li class="nav-item" [routerLinkActive]="['active']">
         <a
           class="nav-link"
+          [routerLink]="['/guides']"
+          (click)="navbarCollapsed = true"
+          >Guides</a
+        >
+      </li>
+      <li class="nav-item" [routerLinkActive]="['active']">
+        <a
+          class="nav-link"
           [routerLink]="['/components']"
           (click)="navbarCollapsed = true"
           >Components</a

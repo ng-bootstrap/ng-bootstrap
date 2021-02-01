@@ -30,6 +30,9 @@ import { Component } from '@angular/core';
       <h2 class="mt-5">Modal</h2>
       <modal-component></modal-component>
 
+      <h2 class="mt-5">Nav</h2>
+      <nav-component></nav-component>
+
       <h2 class="mt-5">Pagination</h2>
       <pagination-component></pagination-component>
 
@@ -41,9 +44,6 @@ import { Component } from '@angular/core';
 
       <h2 class="mt-5">Rating</h2>
       <rating-component></rating-component>
-
-      <h2 class="mt-5">Tabset</h2>
-      <tabset-component></tabset-component>
 
       <h2 class="mt-5">Timepicker</h2>
       <timepicker-component></timepicker-component>

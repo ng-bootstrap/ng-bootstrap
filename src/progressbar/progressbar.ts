@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Input, ViewEncapsulation} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, ViewEncapsulation, HostBinding} from '@angular/core';
 import {getValueInRange, isNumber} from '../util/util';
 import {NgbProgressbarConfig} from './progressbar-config';
 
@@ -9,14 +9,13 @@ import {NgbProgressbarConfig} from './progressbar-config';
   selector: 'ngb-progressbar',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
+  host: {class: 'progress'},
   template: `
-    <div class="progress" [style.height]="height">
-      <div class="progress-bar{{type ? ' bg-' + type : ''}}{{textType ? ' text-' + textType : ''}}
-      {{animated ? ' progress-bar-animated' : ''}}{{striped ? ' progress-bar-striped' : ''}}"
-      role="progressbar" [style.width.%]="getPercentValue()"
-      [attr.aria-valuenow]="getValue()" aria-valuemin="0" [attr.aria-valuemax]="max">
-        <span *ngIf="showValue" i18n="@@ngb.progressbar.value">{{getValue() / max | percent}}</span><ng-content></ng-content>
-      </div>
+    <div class="progress-bar{{type ? ' bg-' + type : ''}}{{textType ? ' text-' + textType : ''}}
+    {{animated ? ' progress-bar-animated' : ''}}{{striped ? ' progress-bar-striped' : ''}}"
+    role="progressbar" [style.width.%]="getPercentValue()"
+    [attr.aria-valuenow]="getValue()" aria-valuemin="0" [attr.aria-valuemax]="max">
+      <span *ngIf="showValue" i18n="@@ngb.progressbar.value">{{getValue() / max | percent}}</span><ng-content></ng-content>
     </div>
   `
 })
@@ -82,7 +81,7 @@ export class NgbProgressbar {
    *
    * Accepts any valid CSS height values, ex. `"2rem"`
    */
-  @Input() height: string;
+  @Input() @HostBinding('style.height') height: string;
 
   constructor(config: NgbProgressbarConfig) {
     this.max = config.max;

@@ -15,12 +15,6 @@ ngb-datepicker-navigation {
     transform: rotate(-135deg);
   }
 
-  .right &-navigation-chevron {
-    transform: rotate(45deg);
-    margin-left: 0.15em;
-    margin-right: 0.25em;
-  }
-
   &-arrow {
     display: flex;
     flex: 1 1 auto;
@@ -32,6 +26,12 @@ ngb-datepicker-navigation {
 
     &.right {
       justify-content: flex-end;
+
+      .ngb-dp-navigation-chevron {
+        transform: rotate(45deg);
+        margin-left: 0.15em;
+        margin-right: 0.25em;
+      }
     }
 
   }

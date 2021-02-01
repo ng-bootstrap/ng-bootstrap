@@ -139,7 +139,7 @@ describe('ngb-datepicker integration', () => {
     let fixture: ComponentFixture<TestComponent>;
     let calendar: NgbCalendar;
     let mv: NgbDatepickerMonth;
-    let startDate: NgbDateStruct = new NgbDate(2018, 1, 1);
+    let startDate: NgbDate = new NgbDate(2018, 1, 1);
 
     beforeEach(() => {
       TestBed.overrideComponent(TestComponent, {
@@ -175,7 +175,7 @@ describe('ngb-datepicker integration', () => {
   describe('ngb-datepicker-month', () => {
     let fixture: ComponentFixture<TestComponent>;
     let mv: NgbDatepickerMonth;
-    let startDate: NgbDateStruct = new NgbDate(2018, 1, 1);
+    let startDate: NgbDate = new NgbDate(2018, 1, 1);
     let ngbCalendar: NgbCalendar;
 
     beforeEach(() => {

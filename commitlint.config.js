@@ -6,6 +6,7 @@ const angularTypes = require('@commitlint/config-angular-type-enum').value();
 */
 const scopes = [
   'schematics',
+  'animations',
   ...fs.readdirSync("./src", {withFileTypes: true})
     .filter(d => d.isDirectory())
     .filter(d => !["test", "util"].includes(d.name))

@@ -14,7 +14,8 @@ npm-debug.log
 *.iml
 .vscode
 coverage
-coverage-e2e
+coverage-e2e/
+coverage-e2e-*/
 demo/src/api-docs.ts
 demo/src/public/**/plnkr.html
 demo/src/public/**/stackblitz.html

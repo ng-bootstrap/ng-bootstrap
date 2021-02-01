@@ -4,7 +4,7 @@ import {createGenericTestComponent} from '../test/common';
 import {Component, Injectable} from '@angular/core';
 
 import {NgbDatepickerModule} from './datepicker.module';
-import {NgbDatepicker, NgbDatepickerContent, NGB_DATEPICKER_VALUE_ACCESSOR} from './datepicker';
+import {NgbDatepicker, NgbDatepickerContent} from './datepicker';
 import {NgbDatepickerKeyboardService} from './datepicker-keyboard-service';
 import {NgbDatepickerService} from './datepicker-service';
 import {NgbDatepickerMonth} from './datepicker-month';
@@ -19,7 +19,7 @@ const createTestComponent = () => createGenericTestComponent(
                   [showWeekdays]="showWeekdays"
                   [showWeekNumbers]="showWeekNumbers"
                   [outsideDays]="outsideDays"
-                  (select)="onClick($event)">
+                  (dateSelect)="onClick($event)">
     <ng-template #dt let-date="date">{{ date.day }}</ng-template>
   </ngb-datepicker>
 `,
@@ -230,11 +230,8 @@ describe('ngb-datepicker-month', () => {
         NgbDatepickerModule,
         {set: {exports: [NgbDatepicker, NgbDatepickerContent, NgbDatepickerMonth, NgbDatepickerDayView]}});
     TestBed.overrideComponent(NgbDatepicker, {
-      set: {
-        providers: [
-          NGB_DATEPICKER_VALUE_ACCESSOR, {provide: NgbDatepickerService, useClass: MockDatepickerService},
-          NgbDatepickerKeyboardService
-        ]
+      add: {
+        providers: [{provide: NgbDatepickerService, useClass: MockDatepickerService}, NgbDatepickerKeyboardService]
       }
     });
     TestBed.configureTestingModule({
@@ -399,5 +396,5 @@ class TestComponent {
   showWeekNumbers = true;
   outsideDays = 'visible';
 
-  onClick = () => {};
+  onClick = (event) => {};
 }

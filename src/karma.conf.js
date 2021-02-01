@@ -6,22 +6,27 @@ const browsers = process.env.TRAVIS ? ['ChromeHeadlessNoSandbox'] : ['ChromeNoEx
 module.exports = function (config) {
   config.set({
     basePath: '',
-    files: ['../node_modules/bootstrap/dist/css/bootstrap.min.css'],
+    files: ['../node_modules/bootstrap/dist/css/bootstrap.min.css', '../src/test/test-styles.css'],
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
     plugins: [
-      'karma-jasmine',
-      'karma-chrome-launcher',
-      'karma-firefox-launcher',
-      'karma-ie-launcher',
-      'karma-coverage-istanbul-reporter',
-      '@angular-devkit/build-angular/plugins/karma'
+      require('karma-jasmine'),
+      require('karma-chrome-launcher'),
+      require('karma-firefox-launcher'),
+      require('karma-ie-launcher'),
+      require('karma-coverage'),
+      require('@angular-devkit/build-angular/plugins/karma')
     ],
     client: {
       clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
-    coverageIstanbulReporter: {
+    coverageReporter: {
       dir: require('path').join(__dirname, '..', 'coverage'),
-      reports: ['html', 'json', 'lcovonly'],
+      subdir: '.',
+      reporters: [
+        { type: 'html' },
+        { type: 'json' },
+        { type: 'lcovonly' }
+      ],
       fixWebpackSourcePaths: true
     },
     customLaunchers: {

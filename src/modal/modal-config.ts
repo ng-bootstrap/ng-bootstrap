@@ -1,9 +1,17 @@
 import {Injectable, Injector} from '@angular/core';
+import {NgbConfig} from '../ngb-config';
 
 /**
  * Options available when opening new modal windows with `NgbModal.open()` method.
  */
 export interface NgbModalOptions {
+  /**
+   * If `true`, modal opening and closing will be animated.
+   *
+   * @since 8.0.0
+   */
+  animation?: boolean;
+
   /**
    * `aria-labelledby` attribute value to set on the modal window.
    *
@@ -17,7 +25,6 @@ export interface NgbModalOptions {
    * @since 6.1.0
    */
   ariaDescribedBy?: string;
-
 
   /**
    * If `true`, the backdrop element will be created for a given modal.
@@ -116,4 +123,11 @@ export class NgbModalConfig implements Required<NgbModalOptions> {
   size: 'sm' | 'lg' | 'xl' | string;
   windowClass: string;
   backdropClass: string;
+
+  private _animation: boolean;
+
+  constructor(private _ngbConfig: NgbConfig) {}
+
+  get animation(): boolean { return (this._animation === undefined) ? this._ngbConfig.animation : this._animation; }
+  set animation(animation: boolean) { this._animation = animation; }
 }

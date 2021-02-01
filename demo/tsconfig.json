@@ -1,10 +1,10 @@
 {
-  "extends": "../tsconfig.base.json",
+  "extends": "../tsconfig.json",
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "../out-tsc/demo",
     "paths": {
-      "@ng-bootstrap/ng-bootstrap": ["../src/index"]
+      "@ng-bootstrap/ng-bootstrap": ["src/app/ng-bootstrap"]
     }
   },
   "files": [
