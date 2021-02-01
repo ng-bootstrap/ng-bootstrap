@@ -51,7 +51,7 @@ describe('ngb-toast', () => {
     it('should contain a close button when header is specified', () => {
       const fixture = createTestComponent(`<ngb-toast header="header">body</ngb-toast>`);
       const toastHeader = getToastHeaderElement(fixture.nativeElement);
-      expect(toastHeader.querySelector('button.close')).toBeDefined();
+      expect(toastHeader.querySelector('button.btn-close')).toBeDefined();
     });
 
     it('should contain a close button when ngbToastHeader is used', () => {
@@ -60,7 +60,7 @@ describe('ngb-toast', () => {
         body
       </ngb-toast>`);
       const toastHeader = getToastHeaderElement(fixture.nativeElement);
-      expect(toastHeader.querySelector('button.close')).toBeDefined();
+      expect(toastHeader.querySelector('button.btn-close')).toBeDefined();
     });
 
     it('should emit hide output when close is clicked', () => {
@@ -68,7 +68,7 @@ describe('ngb-toast', () => {
           createTestComponent(`<ngb-toast header="header" [autohide]="false" (hidden)="hide()">body</ngb-toast>`);
 
       const toast = getToastElement(fixture.nativeElement);
-      const closeButton = toast.querySelector('button.close') as HTMLElement;
+      const closeButton = toast.querySelector('button.btn-close') as HTMLElement;
       closeButton.click();
       fixture.detectChanges();
       expect(fixture.componentInstance.hide).toHaveBeenCalled();
