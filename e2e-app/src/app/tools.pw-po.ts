@@ -1,32 +1,9 @@
 import {baseUrl, page} from '../../playwright.conf';
 import {ElementHandle} from 'playwright';
 
-type BoundingBox = {
-  /**
-   * the x coordinate of the element in pixels.
-   */
-  x: number;
-
-  /**
-   * the y coordinate of the element in pixels.
-   */
-  y: number;
-
-  /**
-   * the width of the element in pixels.
-   */
-  width: number;
-
-  /**
-   * the height of the element in pixels.
-   */
-  height: number;
-};
-
 export const joinSelectors = (...selectors: Array<string>): string => {
   return selectors.join(' >> ');
 };
-
 
 export const Key = {
   ESC: 'Escape',
@@ -37,14 +14,15 @@ export const Key = {
   ArrowDown: 'ArrowDown',
   ArrowLeft: 'ArrowLeft',
   ArrowUp: 'ArrowUp',
+  Home: 'Home',
+  End: 'End'
 };
 
 /**
  * Sends keys to a currently focused element
  *
  * @param keys list of keys to send
- * https://playwright.dev/#path=docs%2Fapi.md&q=keyboardpresskey-options
- * See
+ * https://playwright.dev/docs/api/class-keyboard?_highlight=keyboard#keyboardpresskey-options
  */
 export const sendKey = async(key: string, selector?: string) => {
   const keyboard = page().keyboard;
@@ -108,11 +86,20 @@ export const openUrl = async(url: string) => {
   }
 };
 
+const roundBoundingBox = (rect: {x: number, y: number, width: number, height: number}) => {
+  rect.x = Math.round(rect.x);
+  rect.y = Math.round(rect.y);
+  rect.width = Math.round(rect.width);
+  rect.height = Math.round(rect.height);
+
+  return rect;
+};
+
 /**
- * Reopens internal URL by navigating to home url and then to desired one
+ * Returns the element bounding box
  */
-export const getBoundindClientRect = async(selector: string): Promise<BoundingBox> => {
+export const getBoundingBox = async(selector: string) => {
   const element = await page().$(selector);
   const boundingBox = element ? await element.boundingBox() : {x: 0, y: 0, width: 0, height: 0};
-  return boundingBox !;
+  return roundBoundingBox(boundingBox !);
 };
