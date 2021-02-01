@@ -103,3 +103,9 @@ export const getBoundingBox = async(selector: string) => {
   const boundingBox = element ? await element.boundingBox() : {x: 0, y: 0, width: 0, height: 0};
   return roundBoundingBox(boundingBox !);
 };
+
+/**
+ * Returns the caret position ({start, end}) of the given element (must be an input).
+ */
+export const getCaretPosition = async(selector: string) =>
+    await page().$eval(selector, (el: HTMLInputElement) => ({start: el.selectionStart, end: el.selectionEnd}));
