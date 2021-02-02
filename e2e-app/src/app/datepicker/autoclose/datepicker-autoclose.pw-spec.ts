@@ -1,19 +1,26 @@
-import {page} from '../../../../playwright.conf';
-import {DatepickerAutoClosePage} from './datepicker-autoclose.pw-po';
+import {test} from '../../../../playwright.conf';
+import {Key, openUrl, sendKey} from '../../tools.pw-po';
+import {
+  clickOutside,
+  closeDatepicker,
+  expectDatepickerToBeClosed,
+  expectDatepickerToBeOpen,
+  openDatepicker,
+  rightClickOutside,
+  selectAutoClose,
+  selectDisplayMonths
+} from './datepicker-autoclose';
+import {clickOnDay, rightClickOnDay} from '../datepicker';
 
 describe('Datepicker Autoclose', () => {
-  const po = new DatepickerAutoClosePage();
-  const expectDatepickerToBeClosed = async(message: string) => {
-    await page().waitForSelector(po.getDatepicker(), {state: 'detached'});
-    expect(await page().innerText(po.getOpenStatus())).toEqual('closed');
-  };
 
   for (let displayMonths of[1, 2]) {
     describe(`displayMonths = ${displayMonths}`, () => {
 
       beforeEach(async() => {
-        await po.loadThePage();
-        await po.selectDisplayMonths(displayMonths);
+        await openUrl('datepicker/autoclose');
+        expect(await test.page.innerText('h3')).toContain('Datepicker autoclose tests closed');
+        await selectDisplayMonths(displayMonths);
       });
 
       const DATE_SELECT = new Date(2018, 7, 1);
@@ -21,40 +28,124 @@ describe('Datepicker Autoclose', () => {
       const DATE_OUTSIDE_AFTER = displayMonths === 1 ? new Date(2018, 6, 31) : new Date(2018, 9, 1);
 
       it(`should not close when right clicking`, async() => {
-        await po.selectAutoClose('true');
-        await po.openDatepicker();
-        await po.rightClickOnDay(DATE_SELECT);
-        await po.expectDatepickerToBeOpen(`Datepicker should NOT be closed on right click inside`);
-        await po.rightClickOutside();
-        await po.expectDatepickerToBeOpen(`Datepicker should NOT be closed on right click outside`);
+        await selectAutoClose('true');
+        await openDatepicker(`Opening datepicker for right click test`);
+        await rightClickOnDay(DATE_SELECT);
+        await expectDatepickerToBeOpen(`Datepicker should NOT be closed on right click inside`);
+        await rightClickOutside();
+        await expectDatepickerToBeOpen(`Datepicker should NOT be closed on right click outside`);
       });
 
       it(`should work when autoClose === true`, async() => {
-        await po.selectAutoClose('true');
+        await selectAutoClose('true');
 
         // escape
-        await po.openDatepicker();
-        await page().keyboard.press('Escape');
+        await openDatepicker(`Opening datepicker for escape`);
+        await test.page.keyboard.press('Escape');
         await expectDatepickerToBeClosed(`Datepicker should be closed on ESC`);
 
         // outside click
-        await po.openDatepicker();
-        await po.clickOutside();
+        await openDatepicker(`Opening datepicker for outside click`);
+        await clickOutside();
         await expectDatepickerToBeClosed(`Datepicker should be closed on outside click`);
 
         // date selection
-        await po.openDatepicker();
-        await po.clickOnDay(DATE_SELECT);
+        await openDatepicker(`Opening datepicker for date selection`);
+        await clickOnDay(DATE_SELECT);
         await expectDatepickerToBeClosed(`Datepicker should be closed on date selection`);
 
         // outside days click -> month before
-        await po.openDatepicker();
-        await po.clickOnDay(DATE_OUTSIDE_BEFORE);
+        await openDatepicker(`Opening datepicker for outside days click -> month before`);
+        await clickOnDay(DATE_OUTSIDE_BEFORE);
         await expectDatepickerToBeClosed(`Datepicker should be closed on outside day click`);
 
         // outside days click -> month after
-        await po.openDatepicker();
-        await po.clickOnDay(DATE_OUTSIDE_AFTER);
+        await openDatepicker(`Opening datepicker for outside days click -> month after`);
+        await clickOnDay(DATE_OUTSIDE_AFTER);
+        await expectDatepickerToBeClosed(`Datepicker should be closed on outside day click`);
+      });
+
+      it(`should work when autoClose === false`, async() => {
+        await selectAutoClose('false');
+
+        // escape
+        await openDatepicker(`Opening datepicker`);
+        await sendKey(Key.ESC);
+        await expectDatepickerToBeOpen(`Datepicker should NOT be closed on ESC`);
+
+        // outside click
+        await clickOutside();
+        await expectDatepickerToBeOpen(`Datepicker should NOT be closed on outside click`);
+
+        // date selection
+        await clickOnDay(DATE_SELECT);
+        await expectDatepickerToBeOpen(`Datepicker should NOT be closed on date selection`);
+
+        // outside days click -> month before
+        await clickOnDay(DATE_OUTSIDE_BEFORE);
+        await expectDatepickerToBeOpen(`Datepicker should NOT be closed on outside day click`);
+
+        // outside days click -> month after
+        await closeDatepicker(`Closing datepicker`);
+        await openDatepicker(`Reopening datepicker`);  // to reset visible month
+        await clickOnDay(DATE_OUTSIDE_AFTER);
+        await expectDatepickerToBeOpen(`Datepicker should NOT be closed on outside day click`);
+      });
+
+      it(`should work when autoClose === 'outside'`, async() => {
+        await selectAutoClose('outside');
+
+        // escape
+        await openDatepicker(`Opening datepicker for escape`);
+        await sendKey(Key.ESC);
+        await expectDatepickerToBeClosed(`Datepicker should be closed on ESC`);
+
+        // outside click
+        await openDatepicker(`Opening datepicker for outside click`);
+        await clickOutside();
+        await expectDatepickerToBeClosed(`Datepicker should be closed on outside click`);
+
+        // date selection
+        await openDatepicker(`Opening datepicker for date selection`);
+        await clickOnDay(DATE_SELECT);
+        await expectDatepickerToBeOpen(`Datepicker should NOT be closed on date selection`);
+
+        // outside days click -> month before
+        await clickOnDay(DATE_OUTSIDE_BEFORE);
+        await expectDatepickerToBeOpen(`Datepicker should NOT be closed on outside day click`);
+
+        // outside days click -> month after
+        await closeDatepicker(`Closing datepicker`);
+        await openDatepicker(`Reopening datepicker`);  // to reset visible month
+        await clickOnDay(DATE_OUTSIDE_AFTER);
+        await expectDatepickerToBeOpen(`Datepicker should NOT be closed on outside day click`);
+      });
+
+      it(`should work when autoClose === 'inside'`, async() => {
+        await selectAutoClose('inside');
+
+        // escape
+        await openDatepicker(`Opening datepicker for escape`);
+        await sendKey(Key.ESC);
+        await expectDatepickerToBeClosed(`Datepicker should be closed on ESC`);
+
+        // outside click
+        await openDatepicker(`Opening datepicker for outside click`);
+        await clickOutside();
+        await expectDatepickerToBeOpen(`Datepicker should NOT be closed on outside click`);
+
+        // date selection
+        await clickOnDay(DATE_SELECT);
+        await expectDatepickerToBeClosed(`Datepicker should be closed on date selection`);
+
+        // outside days click -> month before
+        await openDatepicker(`Opening datepicker for outside days click -> month before`);
+        await clickOnDay(DATE_OUTSIDE_BEFORE);
+        await expectDatepickerToBeClosed(`Datepicker should be closed on outside day click`);
+
+        // outside days click -> month after
+        await openDatepicker(`Opening datepicker for outside days click -> month after`);
+        await clickOnDay(DATE_OUTSIDE_AFTER);
         await expectDatepickerToBeClosed(`Datepicker should be closed on outside day click`);
       });
     });
