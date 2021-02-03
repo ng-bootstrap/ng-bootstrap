@@ -15,7 +15,9 @@ export const Key = {
   ArrowLeft: 'ArrowLeft',
   ArrowUp: 'ArrowUp',
   Home: 'Home',
-  End: 'End'
+  End: 'End',
+  PageUp: 'PageUp',
+  PageDown: 'PageDown'
 };
 
 /**
