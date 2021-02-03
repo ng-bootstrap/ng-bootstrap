@@ -56,7 +56,7 @@ before_script:
 
 script:
   - yarn ci && yarn scripts:test
-  - yarn global add codecov && codecov --disable=gcov -f coverage/lcov.info -F unit && codecov --disable=gcov -f coverage-e2e-chromium/lcov.info -F e2e-chromium && codecov --disable=gcov -f coverage-e2e-firefox/lcov.info -F e2e-firefox && codecov --disable=gcov -f coverage-e2e-webkit/lcov.info -F e2e-webkit
+  - yarn global add codecov && codecov --disable=gcov -f coverage/lcov.info -F unit && codecov --disable=gcov -f coverage-e2e/lcov.info -F e2e
   - ./scripts/sauce_connect_block.sh
   - yarn saucelabs
   - yarn saucelabs:ie
