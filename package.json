@@ -18,7 +18,7 @@
     "playwright:firefox": "wait-on http://localhost:4200 && ts-node --project e2e-app/tsconfig.spec.json node_modules/jasmine/bin/jasmine --config=e2e-app/jasmine.json BROWSER=firefox",
     "playwright:webkit": "wait-on http://localhost:4200 && ts-node --project e2e-app/tsconfig.spec.json node_modules/jasmine/bin/jasmine --config=e2e-app/jasmine.json BROWSER=webkit",
     "e2e": "yarn e2e-app:lint && yarn e2e:playwright && yarn demo:e2e",
-    "e2e:playwright": "concurrently --success first --kill-others \"yarn e2e-app:serve\" \"yarn playwright && yarn playwright:firefox && yarn playwright:webkit\"",
+    "e2e:playwright": "concurrently --success first --kill-others \"yarn e2e-app:serve --prod\" \"yarn playwright && yarn playwright:firefox && yarn playwright:webkit\"",
     "demo": "yarn demo:docs && yarn demo:stackblitzes && yarn demo:serve",
     "demo:ie": "yarn demo -c ie",
     "ssr": "yarn ssr-app:lint && yarn ssr-app:build && yarn ssr-app:e2e",
