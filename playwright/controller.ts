@@ -27,7 +27,7 @@ export class Playwright {
       this._context = await browserInstance.newContext(this._contextOptions);
 
       // Default timeout used to wait for selector/actions requiring timeout
-      this._context.setDefaultTimeout(2000);
+      this._context.setDefaultTimeout(60000);
     }
   }
 
