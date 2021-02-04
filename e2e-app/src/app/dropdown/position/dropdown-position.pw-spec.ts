@@ -1,6 +1,7 @@
 import {getBoundingBox, openUrl} from '../../tools.pw-po';
 import {test} from '../../../../playwright.conf';
 import {openDropdown} from '../dropdown';
+import {waitForModalCount} from '../../modal/modal';
 
 const removeFromDom = async() => await test.page.click('#isInDom-false');
 
@@ -27,13 +28,22 @@ const togglePlacement = async(placement: 'top-left' | 'bottom-left' | 'top-right
       await test.page.waitForSelector(`body > div > ${selector}Menu`);
       const bodyBox = await getBoundingBox(`body > div > ${selector}Menu`);
 
-      expect(bodyBox).toEqual(inlineBox, `Positions should give the same results when placed on ${placement}`);
+      for (const[key, value] of Object.entries(inlineBox)) {
+        expect(bodyBox[key])
+            .toBeGreaterThanOrEqual(
+                value - 1, `Position ${key} should give the same results when placed on ${placement}`);
+        expect(bodyBox[key])
+            .toBeLessThanOrEqual(
+                value + 1, `Position '${key}' should give the same results when placed on ${placement}`);
+      }
 
       // Reset
       await toggleContainer(null);
     };
 
     beforeEach(async() => await openUrl('dropdown/position', 'h3:text("Dropdown positioning")'));
+
+    afterEach(async() => { await waitForModalCount(0); });
 
     it(`should keep the same position when appended to widget or body`, async() => {
       await openDropdown('should open dropdown', selector);

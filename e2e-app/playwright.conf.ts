@@ -4,7 +4,8 @@ import {Browsers, Playwright} from '../playwright/controller';
 type BrowserName = 'chromium' | 'firefox' | 'webkit';
 
 export const baseUrl = 'http://localhost:4200/#';
-export const browserName: BrowserName = (process.env.BROWSER || 'chromium').trim() as BrowserName;
+process.env.BROWSER = (process.env.BROWSER || 'chromium').trim();
+export const browserName: BrowserName = process.env.BROWSER as BrowserName;
 
 console.log('Test suite is configured for browser:', browserName);
 

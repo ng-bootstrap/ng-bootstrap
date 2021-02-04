@@ -70,21 +70,43 @@ export const waitForFocus = async(selector, message = `Unable to focus '${select
 };
 
 /**
+ * Focus the provided element, and wait for this element to be focused, to avoid asynchronous side effet.
+ *
+ * @param selector element selector to focus
+ */
+export const focusElement = async(selector) => {
+  await page().focus(selector);
+  await waitForFocus(selector);
+};
+
+
+/**
  * Reopens internal URL by navigating to home url and then to desired one
  */
 let hasBeenLoaded = false;
 export const openUrl = async(url: string, selector: string) => {
   const currentPage = page();
-  if (hasBeenLoaded && process.env.BROWSER !== 'webkit') {
+  const targetUrl = `#navigate-${url.replace('/', '-')}`;
+  const browser = process.env.BROWSER;
+  if (hasBeenLoaded && browser === 'chromium') {
     await currentPage.click(`#navigate-home`);
-    await currentPage.waitForSelector('ng-component', {state: 'detached'});
-    await currentPage.click(`#navigate-${url.replace('/', '-')}`);
+    await currentPage.waitForSelector(targetUrl);
+    await currentPage.click(targetUrl);
     await currentPage.waitForSelector(selector);
   } else {
+    if (browser === 'webkit') {
+      // To perform a full reload on webkit and increase the test suite stability
+      await currentPage.goto('about:blank');
+      await currentPage.waitForSelector('ng-component', {state: 'detached'});
+    } else {
+      await currentPage.goto(`${baseUrl}/`);
+      await currentPage.waitForSelector(targetUrl);
+      await currentPage.waitForSelector('ng-component', {state: 'detached'});
+    }
     await currentPage.goto(`${baseUrl}/${url}`);
     await currentPage.waitForSelector(selector);
-    hasBeenLoaded = true;
   }
+  hasBeenLoaded = true;
 };
 
 const roundBoundingBox = (rect: {x: number, y: number, width: number, height: number}) => {
@@ -143,4 +165,15 @@ export const js = (code: TemplateStringsArray, ...variables: any[]) => {
   }
   result += code[l];
   return result;
+};
+
+/**
+ * Move the mouse hover the provided element
+ * @param selector Element selector
+ */
+export const mouseMove = async(selector) => {
+  const rect = await getBoundingBox(selector);
+  const x = rect.x + rect.width / 2;
+  const y = rect.y + rect.height / 2;
+  await page().mouse.move(x, y);
 };
