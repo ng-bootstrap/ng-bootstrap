@@ -1,5 +1,4 @@
-import {openUrl} from '../../tools.pw-po';
-import {test} from '../../../../playwright.conf';
+import {focusElement, openUrl} from '../../tools.pw-po';
 import {expectTooltipToBeClosed, expectTooltipToBeOpen} from '../tooltip';
 
 describe('Tooltip Focus', () => {
@@ -8,11 +7,11 @@ describe('Tooltip Focus', () => {
 
   it(`should work when triggers === 'focus'`, async() => {
     // focusin to show
-    await test.page.focus('#btn-tooltip');
+    await focusElement('#btn-tooltip');
     await expectTooltipToBeOpen(`Tooltip should be visible when tooltip button gains focus`);
 
     // focusout to hide
-    await test.page.focus('#btn-after');
+    await focusElement('#btn-after');
     await expectTooltipToBeClosed(`Tooltip should not be visible when tooltip button looses focus`);
   });
 });

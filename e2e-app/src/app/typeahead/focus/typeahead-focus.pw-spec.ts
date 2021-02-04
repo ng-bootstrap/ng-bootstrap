@@ -1,4 +1,4 @@
-import {waitForFocus, Key, openUrl, sendKey, timeoutMessage, js} from '../../tools.pw-po';
+import {focusElement, waitForFocus, Key, openUrl, sendKey, timeoutMessage, js} from '../../tools.pw-po';
 import {test} from '../../../../playwright.conf';
 import {SELECTOR_TYPEAHEAD, SELECTOR_TYPEAHEAD_ITEMS, SELECTOR_TYPEAHEAD_WINDOW} from '../typeahead';
 
@@ -78,8 +78,7 @@ describe('Typeahead', () => {
 
     if (process.env.BROWSER !== 'webkit') {
       it(`should select element on tab`, async() => {
-        await test.page.focus(SELECTOR_TYPEAHEAD);
-        await waitForFocus(SELECTOR_TYPEAHEAD);
+        await focusElement(SELECTOR_TYPEAHEAD);
         await sendKey(Key.Tab);
         await waitForTypeaheadFocused();
         await waitForDropDownClosed();
