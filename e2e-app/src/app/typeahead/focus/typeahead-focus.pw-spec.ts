@@ -19,7 +19,7 @@ describe('Typeahead', () => {
 
   const clickBefore = async() => await test.page.click('#first');
 
-  beforeEach(async() => await openUrl('typeahead/focus'));
+  beforeEach(async() => await openUrl('typeahead/focus', 'h3:text("Typeahead focus")'));
 
   it(`should be open after a second click`, async() => {
     await test.page.click(SELECTOR_TYPEAHEAD);

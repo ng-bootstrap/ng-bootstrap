@@ -20,10 +20,7 @@ const containers = [null, 'body'];
 containers.forEach((container) => {
   describe(`Dropdown Autoclose with container = ${container}`, () => {
 
-    beforeEach(async() => {
-      await openUrl('dropdown/autoclose');
-      expect(await test.page.innerText('h3')).toContain('Dropdown autoclose tests');
-    });
+    beforeEach(async() => await openUrl('dropdown/autoclose', 'h3:text("Dropdown autoclose")'));
 
     it(`should not close when right clicking`, async() => {
       await selectAutoClose('true');

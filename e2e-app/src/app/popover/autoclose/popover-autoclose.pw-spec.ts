@@ -32,7 +32,7 @@ const openPopover = async(message: string) => {
 
 describe('Popover Autoclose', () => {
 
-  beforeEach(async() => await openUrl('popover/autoclose'));
+  beforeEach(async() => await openUrl('popover/autoclose', 'h3:text("Popover autoclose")'));
 
   it(`should not close popover on right clicks`, async() => {
     await openPopover(`Opening popover for right clicks`);

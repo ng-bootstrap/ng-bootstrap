@@ -73,16 +73,16 @@ export const expectFocused = async(selector, message) => {
  * Reopens internal URL by navigating to home url and then to desired one
  */
 let hasBeenLoaded = false;
-export const openUrl = async(url: string) => {
+export const openUrl = async(url: string, selector: string) => {
   const currentPage = page();
   if (hasBeenLoaded && process.env.BROWSER !== 'webkit') {
     await currentPage.click(`#navigate-home`);
     await currentPage.waitForSelector('ng-component', {state: 'detached'});
     await currentPage.click(`#navigate-${url.replace('/', '-')}`);
-    await currentPage.waitForSelector('ng-component');
+    await currentPage.waitForSelector(selector);
   } else {
     await currentPage.goto(`${baseUrl}/${url}`);
-    await currentPage.waitForSelector('ng-component');
+    await currentPage.waitForSelector(selector);
     hasBeenLoaded = true;
   }
 };

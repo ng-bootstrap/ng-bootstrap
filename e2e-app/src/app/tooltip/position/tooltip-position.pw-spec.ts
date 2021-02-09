@@ -57,7 +57,7 @@ describe('Tooltip Position', () => {
     await test.page.click(SELECTOR_BUTTON);
   };
 
-  beforeEach(async() => await openUrl('tooltip/position'));
+  beforeEach(async() => await openUrl('tooltip/position', 'h3:text("Tooltip positioning")'));
 
   it(`should be well positioned on the left edge`, async() => {
     await selectPosition('left');

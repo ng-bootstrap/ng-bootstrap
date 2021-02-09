@@ -1,6 +1,6 @@
-import {sendKey, openUrl, Key} from '../../tools.pw-po';
+import {Key, openUrl, sendKey} from '../../tools.pw-po';
 import {test} from '../../../../playwright.conf';
-import {expectTooltipToBeClosed, expectTooltipToBeOpen, SELECTOR_TOOLTIP} from '../tooltip';
+import {expectTooltipToBeClosed, expectTooltipToBeOpen} from '../tooltip';
 
 const clickOutside = async() => await test.page.click('#outside-button');
 const rightClickOutside = async() => await test.page.click('#outside-button', {button: 'right'});
@@ -20,7 +20,7 @@ const openTooltip = async(message: string) => {
 
 describe('Tooltip Autoclose', () => {
 
-  beforeEach(async() => await openUrl('tooltip/autoclose'));
+  beforeEach(async() => await openUrl('tooltip/autoclose', 'h3:text("Tooltip autoclose")'));
 
   it(`should not close tooltip on right clicks`, async() => {
     await openTooltip(`Opening tooltip for right clicks`);

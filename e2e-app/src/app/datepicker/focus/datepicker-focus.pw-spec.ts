@@ -37,10 +37,7 @@ const disableDatepicker = async() => await test.page.click('#disable');
 
 describe('Datepicker', () => {
 
-  beforeEach(async() => {
-    await openUrl('datepicker/focus');
-    expect(await test.page.textContent('h3')).toBe('Datepicker focus tests');
-  });
+  beforeEach(async() => await openUrl('datepicker/focus', 'h3:text("Datepicker focus")'));
 
   it(`should not be present on the page initially`,
      async() => await test.page.waitForSelector(SELECTOR_DATEPICKER, {state: 'detached'}));

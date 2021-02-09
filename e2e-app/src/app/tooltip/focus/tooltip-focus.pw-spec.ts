@@ -4,7 +4,7 @@ import {expectTooltipToBeClosed, expectTooltipToBeOpen} from '../tooltip';
 
 describe('Tooltip Focus', () => {
 
-  beforeEach(async() => await openUrl('tooltip/focus'));
+  beforeEach(async() => await openUrl('tooltip/focus', 'h3:text("Tooltip focus")'));
 
   it(`should work when triggers === 'focus'`, async() => {
     // focusin to show

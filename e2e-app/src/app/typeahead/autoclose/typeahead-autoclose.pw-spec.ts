@@ -36,7 +36,7 @@ const openTypeahead = async() => {
 
 describe('Typeahead Autoclose', () => {
 
-  beforeEach(async() => await openUrl('typeahead/autoclose'));
+  beforeEach(async() => await openUrl('typeahead/autoclose', 'h3:text("Typeahead autoclose")'));
 
   it(`should not close typeahead on right clicks`, async() => {
     await openTypeahead();
