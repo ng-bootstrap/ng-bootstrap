@@ -9,7 +9,7 @@ const focusInputBefore = async() => await test.page.click('#before');
 
 describe('Timepicker', () => {
 
-  beforeEach(async() => await openUrl('timepicker/navigation'));
+  beforeEach(async() => await openUrl('timepicker/navigation', 'h3:text("Timepicker navigation")'));
 
   async function expectCaretPosition(selector: string, position: number) {
     const {start, end} = await getCaretPosition(selector);

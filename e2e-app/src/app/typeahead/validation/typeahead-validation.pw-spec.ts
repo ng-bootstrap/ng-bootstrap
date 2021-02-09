@@ -4,7 +4,7 @@ import {test} from '../../../../playwright.conf';
 
 describe('Typeahead', () => {
 
-  beforeEach(async() => await openUrl('typeahead/validation'));
+  beforeEach(async() => await openUrl('typeahead/validation', 'h3:text("Typeahead validation")'));
 
   it(`should stay valid on item click`, async() => {
     await test.page.click(SELECTOR_TYPEAHEAD);

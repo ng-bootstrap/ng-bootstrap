@@ -4,7 +4,7 @@ import {SELECTOR_HOUR, SELECTOR_MIN, SELECTOR_SEC} from '../timepicker';
 
 describe('Timepicker Filter', () => {
 
-  beforeEach(async() => await openUrl('timepicker/filter'));
+  beforeEach(async() => await openUrl('timepicker/filter', 'h3:text("Timepicker filtering")'));
 
   async function expectValue(expectedValue) {
     const hh = await test.page.$eval(SELECTOR_HOUR, (el: HTMLInputElement) => el.value);

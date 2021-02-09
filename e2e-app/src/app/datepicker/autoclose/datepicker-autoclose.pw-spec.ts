@@ -18,8 +18,7 @@ describe('Datepicker Autoclose', () => {
     describe(`displayMonths = ${displayMonths}`, () => {
 
       beforeEach(async() => {
-        await openUrl('datepicker/autoclose');
-        expect(await test.page.innerText('h3')).toContain('Datepicker autoclose tests closed');
+        await openUrl('datepicker/autoclose', 'h3:text("Datepicker autoclose")');
         await selectDisplayMonths(displayMonths);
       });
 

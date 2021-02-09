@@ -16,7 +16,7 @@ const selectWithItems = async(withItems: boolean) => await test.page.click(`#ite
 
 describe(`Dropdown focus`, () => {
 
-  beforeEach(async() => await openUrl('dropdown/focus'));
+  beforeEach(async() => await openUrl('dropdown/focus', 'h3:text("Dropdown focus")'));
 
   const containers = ['inline', 'body'];
   containers.forEach((container) => {

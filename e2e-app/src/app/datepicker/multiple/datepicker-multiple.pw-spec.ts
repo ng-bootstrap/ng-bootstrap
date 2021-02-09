@@ -9,7 +9,7 @@ const expectActive = async(selector: string) => {
 
 describe('Datepicker multiple instances', () => {
 
-  beforeEach(async() => await openUrl('datepicker/multiple'));
+  beforeEach(async() => await openUrl('datepicker/multiple', 'h3:text("Datepicker multiple")'));
 
   it('the instance tapped should gain focus', async() => {
 

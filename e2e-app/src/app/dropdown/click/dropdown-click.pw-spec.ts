@@ -16,7 +16,7 @@ const focusDropdownItem = async(index: number) => {
 
 describe(`Dropdown user (click) handler`, () => {
 
-  beforeEach(async() => await openUrl('dropdown/click'));
+  beforeEach(async() => await openUrl('dropdown/click', 'h3:text("Dropdown click")'));
 
   it(`should call user (click) handler on 'Enter'`, async() => {
     await focusDropdownItem(0);

@@ -33,7 +33,7 @@ const togglePlacement = async(placement: 'top-left' | 'bottom-left' | 'top-right
       await toggleContainer(null);
     };
 
-    beforeEach(async() => await openUrl('dropdown/position'));
+    beforeEach(async() => await openUrl('dropdown/position', 'h3:text("Dropdown positioning")'));
 
     it(`should keep the same position when appended to widget or body`, async() => {
       await openDropdown('should open dropdown', selector);
