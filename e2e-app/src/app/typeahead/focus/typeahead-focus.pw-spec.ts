@@ -7,7 +7,6 @@ describe('Typeahead', () => {
   const expectTypeaheadFocused = async() => await expectFocused(SELECTOR_TYPEAHEAD, `Typeahead should be focused`);
 
   const expectDropdownOpen = async(suggestions = 10) => {
-    await test.page.waitForSelector(SELECTOR_TYPEAHEAD_WINDOW);
     const items = await test.page.$$(SELECTOR_TYPEAHEAD_ITEMS);
     expect(items.length).toBe(suggestions, `Wrong numbre of suggestions`);
   };

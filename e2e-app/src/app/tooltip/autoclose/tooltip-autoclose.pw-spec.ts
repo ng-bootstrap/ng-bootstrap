@@ -15,7 +15,6 @@ const selectAutoClose = async(type: string) => {
 
 const openTooltip = async(message: string) => {
   await test.page.click('button[ngbTooltip]');
-  await test.page.waitForSelector(SELECTOR_TOOLTIP);
   await expectTooltipToBeOpen(message);
 };
 
