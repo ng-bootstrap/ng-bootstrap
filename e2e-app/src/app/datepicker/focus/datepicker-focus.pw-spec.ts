@@ -159,7 +159,7 @@ describe('Datepicker', () => {
     await expectFocused(SELECTOR_NEXT_MONTH, `Next month arrow should be focused`);
 
     // make sure we changed month
-    expect(await test.page.waitForSelector(SELECTOR_DAY(firstDate), {state: 'detached'}));
+    await test.page.waitForSelector(SELECTOR_DAY(firstDate), {state: 'detached'});
   });
 
   it(`should change month on click and keep 'prev' arrow focused`, async() => {

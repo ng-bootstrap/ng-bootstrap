@@ -17,19 +17,16 @@ const selectAutoClose = async(type: string) => {
 
 const expectPopoverToBeOpen = async(message: string) => {
   await test.page.waitForSelector(SELECTOR_POPOVER);
-  expect(await test.page.$(SELECTOR_POPOVER)).toBeTruthy(message);
   expect(await test.page.textContent(SELECTOR_OPEN_STATUS)).toBe('open', message);
 };
 
 const expectPopoverToBeClosed = async(message: string) => {
   await test.page.waitForSelector(SELECTOR_POPOVER, {state: 'detached'});
-  expect(await test.page.$(SELECTOR_POPOVER)).toBeFalsy(message);
   expect(await test.page.textContent(SELECTOR_OPEN_STATUS)).toBe('closed', message);
 };
 
 const openPopover = async(message: string) => {
   await test.page.click('button[ngbPopover]');
-  await test.page.waitForSelector(SELECTOR_POPOVER);
   await expectPopoverToBeOpen(message);
 };
 
