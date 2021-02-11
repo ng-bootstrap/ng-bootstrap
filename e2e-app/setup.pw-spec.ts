@@ -13,8 +13,8 @@ beforeAll(async() => {
   }
 });
 
-if (browserName === 'chromium') {
-  afterAll(async() => {
+afterAll(async() => {
+  if (browserName === 'chromium') {
     try {
       console.log('Retrieving coverage...');
       const coverage: string = await page().evaluate('JSON.stringify(window.__coverage__);');
@@ -35,5 +35,6 @@ if (browserName === 'chromium') {
       console.log('Error in onComplete:', error);
       process.exit(1);
     }
-  });
-}
+  }
+  await test.destroy();
+}, 120000);

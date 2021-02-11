@@ -22,6 +22,10 @@ describe('SSR application', () => {
     }
   });
 
+  afterAll(async() => {
+    await test.destroy();
+  }, 120000);
+
   it('should open server side rendered page without failures', async () => {
     expect(await page.innerText(SELECTOR_HEADER)).toBe('ng-bootstrap SSR test application');
   });

@@ -22,6 +22,10 @@ describe(`Components`, () => {
     await page.waitForSelector(SELECTOR_SIDE_NAV_COMPONENT_LINKS);
   });
 
+  afterAll(async() => {
+    await test.destroy();
+  }, 120000);
+
   it('should cover all components we have', async() => {
     for (const link of await page.$$(SELECTOR_SIDE_NAV_COMPONENT_LINKS)) {
       const componentName = await link.innerText();

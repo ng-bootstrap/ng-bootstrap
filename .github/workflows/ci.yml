@@ -34,6 +34,11 @@ jobs:
         with:
           file: coverage-e2e/lcov.info
           flags: e2e
+      - uses: actions/upload-artifact@v2
+        with:
+          name: test-videos
+          path: test-videos
+        if: ${{ always() }}
       - run: ./scripts/sauce_connect_block.sh
       - run: yarn saucelabs
       - run: yarn saucelabs:ie
