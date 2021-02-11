@@ -41,6 +41,14 @@ export class Playwright {
     }
     this.page = await this._context.newPage();
 
+    const videoPath = await this.page.video() ?.path();
+
+    if (videoPath) {
+      console.log(`A video of the test is recorded in ${videoPath}`);
+    } else {
+      console.log('No video of the test is recorded.');
+    }
+
     if (url) {
       await this.page.goto(url);
     }
@@ -55,5 +63,12 @@ export class Playwright {
   async pause(seconds = 1000, msg?: string) {
     console.log(`Warning : paused for ${seconds}s` + (msg ? ` (${msg})` : ''));
     await this.page.waitForTimeout(seconds * 1000);
+  }
+
+  async destroy() {
+    const context = this._context;
+    if (context) {
+      await context.close();
+    }
   }
 }

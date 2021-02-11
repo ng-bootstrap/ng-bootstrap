@@ -24,3 +24,4 @@ local.docs.json
 yarn-error.log
 .ng_pkg_build
 src/ng-bootstrap.metadata.json
+test-videos/
