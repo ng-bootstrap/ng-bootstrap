@@ -1,5 +1,5 @@
 import {test} from '../../../../playwright.conf';
-import {expectFocused, getBoundingBox, Key, offsetClick, openUrl, sendKey} from '../../tools.pw-po';
+import {waitForFocus, getBoundingBox, Key, offsetClick, openUrl, sendKey} from '../../tools.pw-po';
 import {
   clickDropdownItem,
   clickOutside,
@@ -54,14 +54,14 @@ containers.forEach((container) => {
       // enter
       await openDropdown(`Opening dropdown for enter`);
       await sendKey(Key.ArrowDown);
-      await expectFocused(SELECTOR_DROPDOWN_ITEM, `first dropdown item should be focused`);
+      await waitForFocus(SELECTOR_DROPDOWN_ITEM, `first dropdown item should be focused`);
       await sendKey(Key.Enter);
       await expectDropdownToBeHidden(`Dropdown should be closed on Enter`);
 
       // space
       await openDropdown(`Opening dropdown for space`);
       await sendKey(Key.ArrowDown);
-      await expectFocused(SELECTOR_DROPDOWN_ITEM, `first dropdown item should be focused`);
+      await waitForFocus(SELECTOR_DROPDOWN_ITEM, `first dropdown item should be focused`);
       await sendKey(Key.Space);
       await expectDropdownToBeHidden(`Dropdown should be closed on Space`);
     });
@@ -112,7 +112,7 @@ containers.forEach((container) => {
       await closeDropdown('Close dropdown');
       await openDropdown('Reopen dropdown');
       await sendKey(Key.ArrowDown);
-      await expectFocused(SELECTOR_DROPDOWN_ITEM, `first dropdown item should be focused`);
+      await waitForFocus(SELECTOR_DROPDOWN_ITEM, `first dropdown item should be focused`);
       await sendKey(Key.Enter);
       await expectDropdownToBeVisible(`Dropdown should NOT be closed on Enter`);
       await sendKey(Key.Space);
@@ -141,7 +141,7 @@ containers.forEach((container) => {
       await closeDropdown('Close dropdown');
       await openDropdown('Reopen dropdown');
       await sendKey(Key.ArrowDown);
-      await expectFocused(SELECTOR_DROPDOWN_ITEM, `first dropdown item should be focused`);
+      await waitForFocus(SELECTOR_DROPDOWN_ITEM, `first dropdown item should be focused`);
       await sendKey(Key.Enter);
       await expectDropdownToBeVisible(`Dropdown should NOT be closed on Enter`);
       await sendKey(Key.Space);
@@ -168,14 +168,14 @@ containers.forEach((container) => {
       // enter
       await openDropdown(`Opening dropdown for enter`);
       await sendKey(Key.ArrowDown);
-      await expectFocused(SELECTOR_DROPDOWN_ITEM, `first dropdown item should be focused`);
+      await waitForFocus(SELECTOR_DROPDOWN_ITEM, `first dropdown item should be focused`);
       await sendKey(Key.Enter);
       await expectDropdownToBeHidden(`Dropdown should be closed on Enter`);
 
       // space
       await openDropdown(`Opening dropdown for space`);
       await sendKey(Key.ArrowDown);
-      await expectFocused(SELECTOR_DROPDOWN_ITEM, `first dropdown item should be focused`);
+      await waitForFocus(SELECTOR_DROPDOWN_ITEM, `first dropdown item should be focused`);
       await sendKey(Key.Space);
       await expectDropdownToBeHidden(`Dropdown should be closed on Space`);
     });

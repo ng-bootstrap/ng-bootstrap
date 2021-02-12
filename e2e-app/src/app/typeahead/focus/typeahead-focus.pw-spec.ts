@@ -1,14 +1,14 @@
-import {expectFocused, Key, openUrl, sendKey} from '../../tools.pw-po';
+import {waitForFocus, Key, openUrl, sendKey} from '../../tools.pw-po';
 import {test} from '../../../../playwright.conf';
 import {getTypeaheadValue, SELECTOR_TYPEAHEAD, SELECTOR_TYPEAHEAD_ITEMS, SELECTOR_TYPEAHEAD_WINDOW} from '../typeahead';
 
 describe('Typeahead', () => {
 
-  const expectTypeaheadFocused = async() => await expectFocused(SELECTOR_TYPEAHEAD, `Typeahead should be focused`);
+  const expectTypeaheadFocused = async() => await waitForFocus(SELECTOR_TYPEAHEAD, `Typeahead should be focused`);
 
   const expectDropdownOpen = async(suggestions = 10) => {
     const items = await test.page.$$(SELECTOR_TYPEAHEAD_ITEMS);
-    expect(items.length).toBe(suggestions, `Wrong numbre of suggestions`);
+    expect(items.length).toBe(suggestions, `Wrong number of suggestions`);
   };
 
   const expectDropDownClosed = async() =>
@@ -55,8 +55,13 @@ describe('Typeahead', () => {
      });
 
   describe('Keyboard', () => {
-    it(`should be focused on item selection`, async() => {
+
+    beforeEach(async() => {
+      // Be sure that the mouse does not interfere with the highlighted items in dropdown
       await clickBefore();
+    });
+
+    it(`should be focused on item selection`, async() => {
       await sendKey(Key.Tab);
       await expectTypeaheadFocused();
       await expectDropdownOpen();
@@ -69,6 +74,7 @@ describe('Typeahead', () => {
     if (process.env.BROWSER !== 'webkit') {
       it(`should select element on tab`, async() => {
         await test.page.focus(SELECTOR_TYPEAHEAD);
+        await waitForFocus(SELECTOR_TYPEAHEAD);
         await sendKey(Key.Tab);
         await expectTypeaheadFocused();
         await expectDropDownClosed();

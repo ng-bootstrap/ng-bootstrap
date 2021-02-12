@@ -59,14 +59,14 @@ export const offsetClick = async(selector, position) => {
 
 
 /**
- * Expects provided element to be focused
+ * Wait for the provided element to be focused
  *
- * @param el element to check
+ * @param selector element selector to check
  * @param message to display in case of error
  */
-export const expectFocused = async(selector, message) => {
-  const foo1Isfocused = await page().$eval(selector, (el) => el === document.activeElement);
-  expect(foo1Isfocused).toBeTruthy(message);
+export const waitForFocus = async(selector, message = `Unable to focus '${selector}'`) => {
+  const el = await page().$(selector);
+  await timeoutMessage(page().waitForFunction(function(_el) { return _el === document.activeElement; }, el), message);
 };
 
 /**
@@ -110,3 +110,21 @@ export const getBoundingBox = async(selector: string) => {
  */
 export const getCaretPosition = async(selector: string) =>
     await page().$eval(selector, (el: HTMLInputElement) => ({start: el.selectionStart, end: el.selectionEnd}));
+
+/**
+* Add a custom message on a playwright timeout failure
+* This is a workaround, waiting for the followinf PR to be merged:
+* {@link https://github.com/microsoft/playwright/pull/4778}
+* @template T
+* @param {Promise<T>} promise
+* @param {string} message
+* @return {Promise<T>}
+*/
+export const timeoutMessage = (promise, message) => {
+  return promise.catch(e => {
+    if (e instanceof require('playwright').errors.TimeoutError) {
+      e.message += '\n' + message;
+    }
+    throw e;
+  });
+};

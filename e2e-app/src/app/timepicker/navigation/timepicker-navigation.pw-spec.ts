@@ -1,4 +1,4 @@
-import {expectFocused, getCaretPosition, openUrl, sendKey} from '../../tools.pw-po';
+import {waitForFocus, getCaretPosition, openUrl, sendKey} from '../../tools.pw-po';
 import {test} from '../../../../playwright.conf';
 import {SELECTOR_HOUR, SELECTOR_MIN, SELECTOR_SEC} from '../timepicker';
 
@@ -22,22 +22,22 @@ describe('Timepicker', () => {
       await focusInputBefore();
 
       await sendKey('Tab');
-      await expectFocused(SELECTOR_HOUR, 'Hour field should be focused');
+      await waitForFocus(SELECTOR_HOUR, 'Hour field should be focused');
       await sendKey('Tab');
-      await expectFocused(SELECTOR_MIN, 'Minute field should be focused');
+      await waitForFocus(SELECTOR_MIN, 'Minute field should be focused');
       await sendKey('Tab');
-      await expectFocused(SELECTOR_SEC, 'Second field should be focused');
+      await waitForFocus(SELECTOR_SEC, 'Second field should be focused');
       await sendKey('Tab');
-      await expectFocused(SELECTOR_AFTER, 'Input after should be focused');
+      await waitForFocus(SELECTOR_AFTER, 'Input after should be focused');
 
       await sendKey('Shift+Tab');
-      await expectFocused(SELECTOR_SEC, 'Second field should be focused');
+      await waitForFocus(SELECTOR_SEC, 'Second field should be focused');
       await sendKey('Shift+Tab');
-      await expectFocused(SELECTOR_MIN, 'Minute field should be focused');
+      await waitForFocus(SELECTOR_MIN, 'Minute field should be focused');
       await sendKey('Shift+Tab');
-      await expectFocused(SELECTOR_HOUR, 'Hour field should be focused');
+      await waitForFocus(SELECTOR_HOUR, 'Hour field should be focused');
       await sendKey('Shift+Tab');
-      await expectFocused(SELECTOR_BEFORE, 'Input before should be focused');
+      await waitForFocus(SELECTOR_BEFORE, 'Input before should be focused');
     });
   });
 
