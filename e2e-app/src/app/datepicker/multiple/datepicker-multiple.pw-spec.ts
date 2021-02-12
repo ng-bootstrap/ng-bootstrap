@@ -1,10 +1,10 @@
-import {sendKey, openUrl, Key, expectFocused} from '../../tools.pw-po';
+import {sendKey, openUrl, Key, waitForFocus} from '../../tools.pw-po';
 import {clickOnDay, SELECTOR_DAY} from '../datepicker';
 import {test} from '../../../../playwright.conf';
 
 const expectActive = async(selector: string) => {
   await test.page.waitForSelector(selector + ' >> .active');
-  await expectFocused(selector, `active date should be focused`);
+  await waitForFocus(selector, `active date should be focused`);
 };
 
 describe('Datepicker multiple instances', () => {

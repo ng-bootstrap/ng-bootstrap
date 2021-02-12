@@ -3,6 +3,7 @@ import * as path from 'path';
 import {browserName, test, page, launchOptions} from './playwright.conf';
 
 beforeAll(async() => {
+  Error.stackTraceLimit = Infinity;
   jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000000;
   try {
     console.log(`Launch browser ${browserName} with`, launchOptions);

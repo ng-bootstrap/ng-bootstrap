@@ -1,4 +1,4 @@
-import {openUrl, sendKey, Key, expectFocused} from '../../tools.pw-po';
+import {openUrl, sendKey, Key, waitForFocus} from '../../tools.pw-po';
 import {test} from '../../../../playwright.conf';
 import {isDropdownOpened} from '../dropdown';
 
@@ -7,11 +7,11 @@ const SELECTOR_DROPDOWN_ITEM = '[ngbDropdownItem]';
 
 const focusDropdownItem = async(index: number) => {
   await test.page.press(SELECTOR_DROPDOWN_TOGGLE, Key.ArrowDown);
-  await expectFocused(SELECTOR_DROPDOWN_TOGGLE, `dropdown should be focused`);
+  await waitForFocus(SELECTOR_DROPDOWN_TOGGLE, `dropdown should be focused`);
   for (let i = 0; i <= index; ++i) {
     await sendKey(Key.ArrowDown);
   }
-  await expectFocused(`${SELECTOR_DROPDOWN_ITEM}:nth-child(${index + 1})`, `Item should be focused`);
+  await waitForFocus(`${SELECTOR_DROPDOWN_ITEM}:nth-child(${index + 1})`, `Item should be focused`);
 };
 
 describe(`Dropdown user (click) handler`, () => {
