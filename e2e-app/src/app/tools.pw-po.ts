@@ -128,3 +128,19 @@ export const timeoutMessage = (promise, message) => {
     throw e;
   });
 };
+
+/**
+ * @example
+ * js `some code with ${json} variables to be stringified`
+ * @param code
+ * @param variables
+ */
+export const js = (code: TemplateStringsArray, ...variables: any[]) => {
+  let result = '';
+  const l = code.length - 1;
+  for (let i = 0; i < l; i++) {
+    result += code[i] + JSON.stringify(variables[i]);
+  }
+  result += code[l];
+  return result;
+};
