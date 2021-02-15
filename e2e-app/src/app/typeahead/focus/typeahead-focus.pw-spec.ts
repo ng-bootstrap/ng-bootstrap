@@ -1,21 +1,26 @@
-import {waitForFocus, Key, openUrl, sendKey} from '../../tools.pw-po';
+import {waitForFocus, Key, openUrl, sendKey, timeoutMessage, js} from '../../tools.pw-po';
 import {test} from '../../../../playwright.conf';
-import {getTypeaheadValue, SELECTOR_TYPEAHEAD, SELECTOR_TYPEAHEAD_ITEMS, SELECTOR_TYPEAHEAD_WINDOW} from '../typeahead';
+import {SELECTOR_TYPEAHEAD, SELECTOR_TYPEAHEAD_ITEMS, SELECTOR_TYPEAHEAD_WINDOW} from '../typeahead';
 
 describe('Typeahead', () => {
 
-  const expectTypeaheadFocused = async() => await waitForFocus(SELECTOR_TYPEAHEAD, `Typeahead should be focused`);
+  const waitForTypeaheadFocused = async() => await waitForFocus(SELECTOR_TYPEAHEAD, `Typeahead should be focused`);
 
-  const expectDropdownOpen = async(suggestions = 10) => {
-    const items = await test.page.$$(SELECTOR_TYPEAHEAD_ITEMS);
-    expect(items.length).toBe(suggestions, `Wrong number of suggestions`);
+  const waitForDropdownOpen = async(suggestions = 10) => {
+    await timeoutMessage(
+        test.page.waitForFunction(
+            js `document.querySelectorAll(${SELECTOR_TYPEAHEAD_ITEMS}).length === ${suggestions}`),
+        `Wrong number of suggestions (expected ${suggestions})`);
   };
 
-  const expectDropDownClosed = async() =>
+  const waitForDropDownClosed = async() =>
       await test.page.waitForSelector(SELECTOR_TYPEAHEAD_WINDOW, {state: 'detached'});
 
-  const expectTypeaheadValue =
-      async expectedValue => { expect(await getTypeaheadValue()).toBe(expectedValue, 'Wrong input value'); };
+  const waitForTypeaheadValue = async expectedValue => {
+    await timeoutMessage(
+        test.page.waitForFunction(js `document.querySelector(${SELECTOR_TYPEAHEAD}).value === ${expectedValue}`),
+        `Wrong input value (expected ${expectedValue})`);
+  };
 
   const clickBefore = async() => await test.page.click('#first');
 
@@ -23,10 +28,10 @@ describe('Typeahead', () => {
 
   it(`should be open after a second click`, async() => {
     await test.page.click(SELECTOR_TYPEAHEAD);
-    await expectTypeaheadFocused();
+    await waitForTypeaheadFocused();
     await test.page.click(SELECTOR_TYPEAHEAD);
-    await expectDropdownOpen();
-    await expectTypeaheadFocused();
+    await waitForDropdownOpen();
+    await waitForTypeaheadFocused();
   });
 
   it(`should preserve value previously selected with mouse when reopening with focus then closing without selection`,
@@ -34,24 +39,24 @@ describe('Typeahead', () => {
        await test.page.click(SELECTOR_TYPEAHEAD);
        await test.page.type(SELECTOR_TYPEAHEAD, 'col');
 
-       await expectDropdownOpen(2);
-       await expectTypeaheadFocused();
+       await waitForDropdownOpen(2);
+       await waitForTypeaheadFocused();
 
        await test.page.click(`${SELECTOR_TYPEAHEAD_ITEMS}:first-child`);
-       await expectTypeaheadValue('Colorado');
-       await expectTypeaheadFocused();
+       await waitForTypeaheadValue('Colorado');
+       await waitForTypeaheadFocused();
 
        await clickBefore();
        await sendKey(Key.Tab);
 
-       await expectTypeaheadFocused();
-       await expectDropdownOpen(1);
-       await expectTypeaheadValue('Colorado');
+       await waitForTypeaheadFocused();
+       await waitForDropdownOpen(1);
+       await waitForTypeaheadValue('Colorado');
 
        await sendKey(Key.ESC);
-       await expectTypeaheadFocused();
-       await expectDropDownClosed();
-       await expectTypeaheadValue('Colorado');
+       await waitForTypeaheadFocused();
+       await waitForDropDownClosed();
+       await waitForTypeaheadValue('Colorado');
      });
 
   describe('Keyboard', () => {
@@ -63,12 +68,12 @@ describe('Typeahead', () => {
 
     it(`should be focused on item selection`, async() => {
       await sendKey(Key.Tab);
-      await expectTypeaheadFocused();
-      await expectDropdownOpen();
+      await waitForTypeaheadFocused();
+      await waitForDropdownOpen();
 
       await sendKey(Key.Enter);
-      await expectTypeaheadValue('Alabama');
-      await expectTypeaheadFocused();
+      await waitForTypeaheadValue('Alabama');
+      await waitForTypeaheadFocused();
     });
 
     if (process.env.BROWSER !== 'webkit') {
@@ -76,9 +81,9 @@ describe('Typeahead', () => {
         await test.page.focus(SELECTOR_TYPEAHEAD);
         await waitForFocus(SELECTOR_TYPEAHEAD);
         await sendKey(Key.Tab);
-        await expectTypeaheadFocused();
-        await expectDropDownClosed();
-        await expectTypeaheadValue('Alabama');
+        await waitForTypeaheadFocused();
+        await waitForDropDownClosed();
+        await waitForTypeaheadValue('Alabama');
       });
     }
   });
