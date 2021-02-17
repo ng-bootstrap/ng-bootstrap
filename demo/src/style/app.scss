@@ -64,6 +64,11 @@ header.navbar {
   margin-right: -1rem;
   overflow-x: hidden;
   overflow-y: auto;
+  z-index: 1;
+
+  a {
+    text-decoration: none;
+  }
 }
 
 header.title {
