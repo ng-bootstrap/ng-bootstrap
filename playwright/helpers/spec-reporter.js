@@ -1,6 +1,6 @@
 const SpecReporter = require('jasmine-spec-reporter').SpecReporter;
 
-if (!process.env.TRAVIS) {
+if (!process.env.CI) {
   // See reporter config documentation on https://github.com/bcaudan/jasmine-spec-reporter/blob/HEAD/src/configuration.ts
   const config = {
     spec: {

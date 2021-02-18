@@ -1,7 +1,7 @@
 // Configuration used for local testing and Travis CI
 
-const reporters = process.env.TRAVIS ? ['dots'] : ['progress'];
-const browsers = process.env.TRAVIS ? ['ChromeHeadlessNoSandbox'] : ['ChromeNoExtensions'];
+const reporters = process.env.CI ? ['dots'] : ['progress'];
+const browsers = process.env.CI ? ['ChromeHeadlessNoSandbox'] : ['ChromeNoExtensions'];
 
 module.exports = function (config) {
   config.set({
