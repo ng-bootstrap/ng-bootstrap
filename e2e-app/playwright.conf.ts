@@ -1,4 +1,4 @@
-import {BrowserContextOptions, LaunchOptions, Page} from 'playwright';
+import {BrowserContextOptions, LaunchOptions} from 'playwright';
 import {Browsers, Playwright} from '../playwright/controller';
 
 type BrowserName = 'chromium' | 'firefox' | 'webkit';
@@ -19,6 +19,3 @@ export const contextOptions: BrowserContextOptions = {
 };
 
 export const test = new Playwright(Browsers[browserName], launchOptions, contextOptions);
-export function page(): Page {
-  return test.page;
-}

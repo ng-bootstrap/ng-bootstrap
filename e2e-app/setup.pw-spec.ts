@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import {browserName, test, page, launchOptions} from './playwright.conf';
+import {browserName, test, launchOptions} from './playwright.conf';
 
 beforeAll(async() => {
   Error.stackTraceLimit = Infinity;
@@ -17,7 +17,7 @@ afterAll(async() => {
   if (browserName === 'chromium') {
     try {
       console.log('Retrieving coverage...');
-      const coverage: string = await page().evaluate('JSON.stringify(window.__coverage__);');
+      const coverage: string = await test.page.evaluate('JSON.stringify(window.__coverage__);');
       if (coverage) {
         console.log(`Coverage retrieved (${coverage.length} bytes)`);
         fs.mkdirSync(path.join(__dirname, '..', '.nyc_output'));
