@@ -3,7 +3,7 @@
 
 const { SpecReporter } = require('jasmine-spec-reporter');
 
-const chromeArgs = process.env.TRAVIS ? [
+const chromeArgs = process.env.CI ? [
   '--headless',
   '--no-sandbox',
   '--window-size=1280x800'
@@ -14,7 +14,7 @@ const jasmineNodeOpts = {
   defaultTimeoutInterval: 30000
 };
 
-if (!process.env.TRAVIS) {
+if (!process.env.CI) {
   jasmineNodeOpts.print = function() {};
 }
 
@@ -38,7 +38,7 @@ exports.config = {
       project: require('path').join(__dirname, './tsconfig.spec.json')
     });
 
-    if (!process.env.TRAVIS) {
+    if (!process.env.CI) {
       jasmine.getEnv().addReporter(new SpecReporter({spec: {displayStacktrace: 'pretty'}}));
     }
   },
