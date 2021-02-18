@@ -130,7 +130,7 @@ yarn check-format
 ```
 
 Your life will be easier if you include the formatter in your standard workflow. Otherwise, you'll
-likely forget to check the formatting, and waste time waiting for a build on Travis that fails due
+likely forget to check the formatting, and waste time waiting for a build on GitHub that fails due
 to some whitespace difference.
 
 - Install clang-format with `npm install -g clang-format`.

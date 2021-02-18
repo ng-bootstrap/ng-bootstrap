@@ -1,4 +1,4 @@
-// Configuration used testing via Sauce Labs on Travis CI
+// Configuration used testing via Sauce Labs on GitHub CI
 
 process.env.SAUCE_ACCESS_KEY = process.env.SAUCE_ACCESS_KEY.split('').reverse().join('');
 
