@@ -1,4 +1,4 @@
-// Configuration used for local testing and Travis CI
+// Configuration used for local testing and GitHub CI
 
 const reporters = process.env.CI ? ['dots'] : ['progress'];
 const browsers = process.env.CI ? ['ChromeHeadlessNoSandbox'] : ['ChromeNoExtensions'];
