@@ -35,9 +35,9 @@ SAUCE_ACCESS_KEY=`echo $SAUCE_ACCESS_KEY | rev`
 
 ARGS=""
 
-# Set tunnel-id only on Travis, to make local testing easier.
-if [ ! -z "$TRAVIS_JOB_NUMBER" ]; then
-  ARGS="$ARGS --tunnel-identifier $TRAVIS_JOB_NUMBER"
+# Set tunnel-id only on GitHub CI, to make local testing easier.
+if [ ! -z "$GITHUB_RUN_ID" ]; then
+  ARGS="$ARGS --tunnel-identifier $GITHUB_RUN_ID"
 fi
 if [ ! -z "$BROWSER_PROVIDER_READY_FILE" ]; then
   ARGS="$ARGS --readyfile $BROWSER_PROVIDER_READY_FILE"
