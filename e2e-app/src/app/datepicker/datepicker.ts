@@ -1,4 +1,4 @@
-import {page, test} from '../../../playwright.conf';
+import {test} from '../../../playwright.conf';
 
 export const SELECTOR_DATEPICKER = 'ngb-datepicker';
 export const SELECTOR_DATEPICKER_INPUT = 'input[ngbDatepicker]';
@@ -15,8 +15,8 @@ export const SELECTOR_PREV_MONTH = `${SELECTOR_DATEPICKER} >> button[aria-label=
 
 
 export const openDatepicker = async() => {
-  await page().click(SELECTOR_TOGGLE);
-  expect(await page().waitForSelector(SELECTOR_DATEPICKER)).not.toBe(null);
+  await test.page.click(SELECTOR_TOGGLE);
+  expect(await test.page.waitForSelector(SELECTOR_DATEPICKER)).not.toBe(null);
 };
 
 export const clickOnDay = async(date: Date, datepicker = SELECTOR_DATEPICKER) => {

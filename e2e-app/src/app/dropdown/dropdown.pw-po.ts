@@ -1,4 +1,4 @@
-import {page} from '../../../playwright.conf';
+import {test} from '../../../playwright.conf';
 import {joinSelectors} from '../tools.pw-po';
 
 export class DropdownPage {
@@ -16,20 +16,20 @@ export class DropdownPage {
     return joinSelectors(dropdownSelector, '.dropdown-item');
   }
 
-  getBodyContainers() { return page().$$('body > div.dropdown,body > div.dropup'); }
+  getBodyContainers() { return test.page.$$('body > div.dropdown,body > div.dropup'); }
 
   async open(dropdownSelector: string) {
-    await page().click(joinSelectors(dropdownSelector, `button[ngbDropdownToggle]`));
+    await test.page.click(joinSelectors(dropdownSelector, `button[ngbDropdownToggle]`));
     expect(await this.isOpened(dropdownSelector)).toBeTruthy(`Dropdown should have been opened`);
   }
 
   async close(dropdownSelector: string) {
-    await page().click(joinSelectors(dropdownSelector, `button[ngbDropdownToggle]`));
+    await test.page.click(joinSelectors(dropdownSelector, `button[ngbDropdownToggle]`));
     expect(await this.isOpened(dropdownSelector)).toBeFalsy(`Dropdown should have been closed`);
   }
 
   async isOpened(dropdownSelector: string) {
-    const classNames = await page().getAttribute(dropdownSelector, 'class');
+    const classNames = await test.page.getAttribute(dropdownSelector, 'class');
     return classNames !.includes('show');
   }
 }

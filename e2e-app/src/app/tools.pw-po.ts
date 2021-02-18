@@ -1,4 +1,4 @@
-import {baseUrl, page} from '../../playwright.conf';
+import {baseUrl, test} from '../../playwright.conf';
 import {ElementHandle} from 'playwright';
 
 export const joinSelectors = (...selectors: Array<string>): string => {
@@ -27,9 +27,10 @@ export const Key = {
  * https://playwright.dev/docs/api/class-keyboard?_highlight=keyboard#keyboardpresskey-options
  */
 export const sendKey = async(key: string, selector?: string) => {
-  const keyboard = page().keyboard;
+  const {page} = test;
+  const keyboard = page.keyboard;
   if (selector) {
-    await page().press(selector, key);
+    await page.press(selector, key);
   } else {
     await keyboard.press(key);
   }
@@ -42,7 +43,7 @@ export const sendKey = async(key: string, selector?: string) => {
 export const rightClick = async(selectorOrElement: string | ElementHandle) => {
   const rightClickOption: {button} = {button: 'right'};
   if (typeof(selectorOrElement) === 'string') {
-    await page().click(selectorOrElement, rightClickOption);
+    await test.page.click(selectorOrElement, rightClickOption);
   } else {
     await selectorOrElement.click(rightClickOption);
   }
@@ -54,7 +55,7 @@ export const rightClick = async(selectorOrElement: string | ElementHandle) => {
  * @param offset {x, y} position, relative to the element
  */
 export const offsetClick = async(selector, position) => {
-  await page().click(selector, {position});
+  await test.page.click(selector, {position});
 };
 
 
@@ -65,8 +66,9 @@ export const offsetClick = async(selector, position) => {
  * @param message to display in case of error
  */
 export const waitForFocus = async(selector, message = `Unable to focus '${selector}'`) => {
-  const el = await page().$(selector);
-  await timeoutMessage(page().waitForFunction(function(_el) { return _el === document.activeElement; }, el), message);
+  const {page} = test;
+  const el = await page.$(selector);
+  await timeoutMessage(page.waitForFunction(function(_el) { return _el === document.activeElement; }, el), message);
 };
 
 /**
@@ -75,7 +77,7 @@ export const waitForFocus = async(selector, message = `Unable to focus '${select
  * @param selector element selector to focus
  */
 export const focusElement = async(selector) => {
-  await page().focus(selector);
+  await test.page.focus(selector);
   await waitForFocus(selector);
 };
 
@@ -85,26 +87,26 @@ export const focusElement = async(selector) => {
  */
 let hasBeenLoaded = false;
 export const openUrl = async(url: string, selector: string) => {
-  const currentPage = page();
+  const page = test.page;
   const targetUrl = `#navigate-${url.replace('/', '-')}`;
   const browser = process.env.BROWSER;
   if (hasBeenLoaded && browser === 'chromium') {
-    await currentPage.click(`#navigate-home`);
-    await currentPage.waitForSelector(targetUrl);
-    await currentPage.click(targetUrl);
-    await currentPage.waitForSelector(selector);
+    await page.click(`#navigate-home`);
+    await page.waitForSelector(targetUrl);
+    await page.click(targetUrl);
+    await page.waitForSelector(selector);
   } else {
     if (browser === 'webkit') {
       // To perform a full reload on webkit and increase the test suite stability
-      await currentPage.goto('about:blank');
-      await currentPage.waitForSelector('ng-component', {state: 'detached'});
+      await page.goto('about:blank');
+      await page.waitForSelector('ng-component', {state: 'detached'});
     } else {
-      await currentPage.goto(`${baseUrl}/`);
-      await currentPage.waitForSelector(targetUrl);
-      await currentPage.waitForSelector('ng-component', {state: 'detached'});
+      await page.goto(`${baseUrl}/`);
+      await page.waitForSelector(targetUrl);
+      await page.waitForSelector('ng-component', {state: 'detached'});
     }
-    await currentPage.goto(`${baseUrl}/${url}`);
-    await currentPage.waitForSelector(selector);
+    await page.goto(`${baseUrl}/${url}`);
+    await page.waitForSelector(selector);
   }
   hasBeenLoaded = true;
 };
@@ -122,7 +124,7 @@ const roundBoundingBox = (rect: {x: number, y: number, width: number, height: nu
  * Returns the element bounding box
  */
 export const getBoundingBox = async(selector: string) => {
-  const element = await page().$(selector);
+  const element = await test.page.$(selector);
   const boundingBox = element ? await element.boundingBox() : {x: 0, y: 0, width: 0, height: 0};
   return roundBoundingBox(boundingBox !);
 };
@@ -131,7 +133,7 @@ export const getBoundingBox = async(selector: string) => {
  * Returns the caret position ({start, end}) of the given element (must be an input).
  */
 export const getCaretPosition = async(selector: string) =>
-    await page().$eval(selector, (el: HTMLInputElement) => ({start: el.selectionStart, end: el.selectionEnd}));
+    await test.page.$eval(selector, (el: HTMLInputElement) => ({start: el.selectionStart, end: el.selectionEnd}));
 
 /**
 * Add a custom message on a playwright timeout failure
@@ -175,5 +177,5 @@ export const mouseMove = async(selector) => {
   const rect = await getBoundingBox(selector);
   const x = rect.x + rect.width / 2;
   const y = rect.y + rect.height / 2;
-  await page().mouse.move(x, y);
+  await test.page.mouse.move(x, y);
 };
