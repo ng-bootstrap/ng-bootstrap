@@ -77,7 +77,7 @@ export class NgbSlide {
     '(mouseleave)': 'mouseHover = false',
     '(focusin)': 'focused = true',
     '(focusout)': 'focused = false',
-    '[attr.aria-activedescendant]': 'activeId'
+    '[attr.aria-activedescendant]': `'slide-' + activeId`
   },
   template: `
     <ol class="carousel-indicators" [class.sr-only]="!showNavigationIndicators" role="tablist">
