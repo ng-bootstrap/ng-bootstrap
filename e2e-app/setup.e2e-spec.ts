@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import {ConsoleMessage} from 'playwright';
 import {browserName, test, launchOptions} from './playwright.conf';
 
 beforeAll(async() => {
@@ -11,6 +12,22 @@ beforeAll(async() => {
   } catch (e) {
     console.error('Unable to setup a new page with playwright', e);
   }
+
+  // Listen for all console events and handle errors
+  test.page.on('console', async msg => {
+    const type = msg.type();
+    if (type === 'error' || type === 'warning') {
+      const output = ['Unexpected console error:'];
+      for (let m of msg.args()) {
+        output.push(await m.jsonValue());
+      }
+      fail(output.join('\n'));
+    }
+  });
+
+  // Log all uncaught errors to the terminal
+  test.page.on('pageerror', exception => { console.log(`Uncaught exception:\n${exception}`); });
+
 });
 
 afterAll(async() => {

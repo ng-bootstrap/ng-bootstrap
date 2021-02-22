@@ -225,6 +225,11 @@
           "configurations": {
             "production": {
               "browserTarget": "e2e-app:build:production"
+            },
+            "playwright": {
+              "browserTarget": "e2e-app:build:production",
+              "liveReload": false,
+              "watch": false
             }
           }
         },
