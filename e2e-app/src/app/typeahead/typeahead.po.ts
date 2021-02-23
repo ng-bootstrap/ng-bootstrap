@@ -1,18 +1,8 @@
-import {$} from 'protractor';
+import {test} from '../../../playwright.conf';
 
-export class TypeaheadPage {
-  getInputBefore() { return $('#first'); }
+export const SELECTOR_TYPEAHEAD = 'input#typeahead';
+export const SELECTOR_TYPEAHEAD_WINDOW = 'ngb-typeahead-window';
+export const SELECTOR_TYPEAHEAD_ITEMS = 'ngb-typeahead-window > button';
 
-  getTypeaheadInput() { return $('#typeahead'); }
-
-  getDropdown() { return $('ngb-typeahead-window'); }
-
-  getDropdownItems() { return this.getDropdown().$$('button'); }
-
-  async getTypeaheadValue() { return this.getTypeaheadInput().getAttribute('value'); }
-
-  async setTypeaheadValue(text: string) {
-    await this.getTypeaheadInput().sendKeys(text);
-    expect(await this.getDropdown().isPresent()).toBeTruthy(`Dropdown should be visible`);
-  }
-}
+export const getTypeaheadValue = async() =>
+    await test.page.$eval(SELECTOR_TYPEAHEAD, (el: HTMLInputElement) => el.value);

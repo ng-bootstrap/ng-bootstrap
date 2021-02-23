@@ -1,25 +1,26 @@
-import {$} from 'protractor';
+import {test} from '../../../../playwright.conf';
+import {timeoutMessage} from '../../tools.po';
+import {waitForModalCount} from '../modal';
 
-export class ModalAutoClosePage {
-  getModal(selector = 'ngb-modal-window') { return $(selector); }
+export const clickOnReset = async() => {
+  await test.page.click('#reset-button');
+};
 
-  getModalDialog() { return $('.modal-dialog'); }
+export const clickOnClose = async() => {
+  await test.page.click('#modal-close-button');
+  await waitForModalCount(0);
+};
 
-  getModalCloseButton() { return $('#modal-close-button'); }
-
-  getDismissReason() { return $('#dismiss-reason').getText(); }
-
-  getResetButton() { return $('#reset-button'); }
-
-  async openModal(option = '') {
-    if (option !== '') {
-      await $(`#option-${option}`).click();
-    }
-
-    await $('#open-modal').click();
-
-    const modal = this.getModal();
-    expect(await modal.isPresent()).toBeTruthy(`A modal should have been opened`);
-    return Promise.resolve(modal);
+export const openModal = async(option = '') => {
+  if (option !== '') {
+    await test.page.click(`#option-${option}`);
   }
-}
+
+  await test.page.click('#open-modal');
+  await waitForModalCount(1);
+};
+
+export const waitDismissReason = async(expected, error) => {
+  await timeoutMessage(
+      test.page.waitForFunction(`document.querySelector('#dismiss-reason').textContent === '${expected}'`), error);
+};

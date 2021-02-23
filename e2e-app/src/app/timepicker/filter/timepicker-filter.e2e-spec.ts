@@ -1,45 +1,39 @@
 import {openUrl} from '../../tools.po';
+import {test} from '../../../../playwright.conf';
+import {SELECTOR_HOUR, SELECTOR_MIN, SELECTOR_SEC} from '../timepicker.po';
 
-import {TimepickerFilterPage} from './timepicker-filter.po';
+describe('Timepicker Filter', () => {
 
-describe('Timepicker', () => {
-  let page: TimepickerFilterPage;
-
-  beforeAll(() => page = new TimepickerFilterPage());
-  beforeEach(async() => await openUrl('timepicker/filter'));
+  beforeEach(async() => await openUrl('timepicker/filter', 'h3:text("Timepicker filtering")'));
 
   async function expectValue(expectedValue) {
-    const inputs = page.getFields();
+    const hh = await test.page.$eval(SELECTOR_HOUR, (el: HTMLInputElement) => el.value);
+    const mm = await test.page.$eval(SELECTOR_MIN, (el: HTMLInputElement) => el.value);
+    const ss = await test.page.$eval(SELECTOR_SEC, (el: HTMLInputElement) => el.value);
 
-    const values: string[] = [];
-    for (let i = 0; i < inputs.length; i++) {
-      values[i] = await inputs[i].getAttribute('value');
-    }
-    expect(values.join(':')).toBe(expectedValue);
+    expect(`${hh}:${mm}:${ss}`).toBe(expectedValue);
   }
 
   describe('filter', async() => {
     it(`should accept numbers`, async() => {
       await expectValue('::');  // No starting values
 
-      const inputs = page.getFields();
-      await inputs[0].sendKeys('1');
-      await inputs[1].sendKeys('2');
-      await inputs[2].sendKeys('3');
+      await test.page.type(SELECTOR_HOUR, '1');
+      await test.page.type(SELECTOR_MIN, '2');
+      await test.page.type(SELECTOR_SEC, '3');
 
-      await inputs[0].click();
+      await test.page.click(SELECTOR_HOUR);
       await expectValue('01:02:03');
     });
 
     it(`shouldn't accept alpha`, async() => {
       await expectValue('::');  // No starting values
 
-      const inputs = page.getFields();
-      await inputs[0].sendKeys('A');
-      await inputs[1].sendKeys('A');
-      await inputs[2].sendKeys('A');
+      await test.page.type(SELECTOR_HOUR, 'A');
+      await test.page.type(SELECTOR_MIN, 'A');
+      await test.page.type(SELECTOR_SEC, 'A');
 
-      await inputs[0].click();
+      await test.page.click(SELECTOR_HOUR);
       await expectValue('::');
     });
   });

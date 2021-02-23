@@ -1,22 +1,18 @@
-import {$, $$} from 'protractor';
+import {test} from '../../../../playwright.conf';
+import {SELECTOR_MODAL_WINDOW, waitForModalCount} from '../modal';
 
-export class ModalStackConfirmationPage {
-  getOpenModals() { return $$('ngb-modal-window'); }
+export const SELECTOR_MODAL_BUTTON = '#open-modal';
+export const SELECTOR_STACK_MODAL = '#stack-modal';
+export const SELECTOR_CLOSE_BUTTON = '#close';
+export const SELECTOR_CONFIRM_BUTTON = '#confirm';
+export const SELECTOR_DISMISS_BUTTON = '#dismiss';
 
-  getModal(index) { return this.getOpenModals().get(index); }
+export const openModal = async() => {
+  await test.page.click(SELECTOR_MODAL_BUTTON);
+  await waitForModalCount(1);
+};
 
-  getStackModal() { return $('#stack-modal'); }
-
-  getModalButton() { return $('#open-modal'); }
-
-  getModalCloseButton() { return $('#close'); }
-
-  getConfirmationButton() { return $('#confirm'); }
-
-  getDismissalButton() { return $('#dismiss'); }
-
-  async openModal() {
-    await this.getModalButton().click();
-    expect(await this.getModal(0).isPresent()).toBeTruthy(`A modal should have been opened`);
-  }
-}
+export const clickOnModal = async(index) => {
+  const modals = await test.page.$$(SELECTOR_MODAL_WINDOW);
+  await modals[index].click();
+};

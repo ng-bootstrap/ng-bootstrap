@@ -1,7 +1,7 @@
 {
   "spec_dir": "e2e-app",
   "spec_files": [
-    "**/*pw-spec.ts"
+    "**/*e2e-spec.ts"
   ],
   "helpers": [
     "../playwright/helpers/spec-reporter.js"

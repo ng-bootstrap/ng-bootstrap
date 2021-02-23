@@ -1,38 +1,39 @@
-import {$, browser, Key, protractor} from 'protractor';
-import {expectFocused, expectNoOpenModals, openUrl, sendKey} from '../../tools.po';
-import {ModalStackPage} from './modal-stack.po';
+import {test} from '../../../../playwright.conf';
+import {Key, openUrl, sendKey, waitForFocus} from '../../tools.po';
+import {waitForModalCount} from '../modal';
 
-const bodyClass = () => $('body').getAttribute('class');
+import {
+  openModal,
+  openStackModal,
+  SELECTOR_STACK_MODAL,
+  SELECTOR_STACK_MODAL_BUTTON,
+  SELECTOR_CLOSE_ICON
+} from './modal-stack.po';
 
 describe('Modal stack', () => {
-  let page: ModalStackPage;
 
-  beforeAll(() => { page = new ModalStackPage(); });
+  beforeEach(async() => await openUrl('modal/stack', 'h3:text("Modal stack tests")'));
 
-  beforeEach(async() => await openUrl('modal/stack'));
-
-  afterEach(async() => { await expectNoOpenModals(); });
+  afterEach(async() => { await waitForModalCount(0); });
 
   it('should keep tab on the first modal after the second modal has closed', async() => {
-    await page.openModal();
-    await page.openStackModal();
-    expect(await bodyClass()).toContain('modal-open', `body should have 'modal-open' class`);
+    await openModal();
+    await openStackModal();
+    await waitForModalCount(2);
 
     // close the stack modal
-    await sendKey(Key.ESCAPE);
-    browser.wait(protractor.ExpectedConditions.invisibilityOf(page.getStackModal()));
-    expect(await bodyClass()).toContain('modal-open', `body should have 'modal-open' class`);
+    await sendKey(Key.ESC);
+    await test.page.waitForSelector(SELECTOR_STACK_MODAL, {state: 'detached'});
+    await waitForModalCount(1);
 
     // Check that the button is focused again
-    await expectFocused(page.getStackModalButton(), 'Button element not focused');
-    await sendKey(Key.TAB);
+    await waitForFocus(SELECTOR_STACK_MODAL_BUTTON, 'Button element not focused');
+    await sendKey(Key.Tab);
 
-    await expectFocused(page.getCloseIcon(), 'Close icon not focused');
+    await waitForFocus(SELECTOR_CLOSE_ICON, 'Close icon not focused');
 
     // close the main modal
-    await sendKey(Key.ESCAPE);
-    browser.wait(protractor.ExpectedConditions.invisibilityOf(page.getModal()));
-    expect(await bodyClass()).not.toContain('modal-open', `body should have 'modal-open' class`);
+    await sendKey(Key.ESC);
   });
 
 });

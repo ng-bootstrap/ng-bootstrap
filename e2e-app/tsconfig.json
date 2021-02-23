@@ -6,22 +6,12 @@
     "paths": {
       "@ng-bootstrap/ng-bootstrap": [
         "../src/index"
-      ],
-      "@test": [
-        "./playwright/index"
       ]
     }
   },
   "files": [
     "src/main.ts",
     "src/polyfills.ts"
-  ],
-  "include": [
-    "src/**/*.d.ts"
-  ],
-  "exclude": [
-    "src/**/*.po.ts",
-    "src/**/*.e2e-spec.ts"
   ],
   "angularCompilerOptions": {
     "strictTemplates": false,
