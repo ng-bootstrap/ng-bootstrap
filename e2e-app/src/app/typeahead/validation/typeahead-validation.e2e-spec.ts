@@ -1,33 +1,22 @@
-import {TypeaheadPage} from '../typeahead.po';
 import {openUrl} from '../../tools.po';
+import {SELECTOR_TYPEAHEAD, SELECTOR_TYPEAHEAD_ITEMS} from '../typeahead.po';
+import {test} from '../../../../playwright.conf';
 
 describe('Typeahead', () => {
-  let page: TypeaheadPage;
 
-  const expectUntouched = async() => {
-    const typeaheadInput = page.getTypeaheadInput();
-    expect(typeaheadInput.getAttribute('class')).toContain('ng-untouched', `The input shouldn't be touched`);
-  };
-
-  const expectTouched = async() => {
-    const typeaheadInput = page.getTypeaheadInput();
-    expect(typeaheadInput.getAttribute('class')).toContain('ng-touched', `The input shouldn't be touched`);
-  };
-
-  beforeAll(() => page = new TypeaheadPage());
-
-  beforeEach(async() => await openUrl('typeahead/validation'));
+  beforeEach(async() => await openUrl('typeahead/validation', 'h3:text("Typeahead validation")'));
 
   it(`should stay valid on item click`, async() => {
-    await page.getTypeaheadInput().click();
-    expectUntouched();
+    await test.page.click(SELECTOR_TYPEAHEAD);
+    expect(await test.page.getAttribute(SELECTOR_TYPEAHEAD, 'class'))
+        .toContain('ng-untouched', `The input shouldn't be touched`);
 
-    const itemElement = page.getDropdownItems().get(0);
-    await itemElement.click();
-    expectUntouched();
+    await test.page.click(`${SELECTOR_TYPEAHEAD_ITEMS}:first-child`);
+    expect(await test.page.getAttribute(SELECTOR_TYPEAHEAD, 'class'))
+        .toContain('ng-untouched', `The input shouldn't be touched`);
 
-    await page.getInputBefore().click();
-    expectTouched();
-
+    await test.page.click('#first');
+    expect(await test.page.getAttribute(SELECTOR_TYPEAHEAD, 'class'))
+        .toContain('ng-touched', `The input shouldn't be touched`);
   });
 });

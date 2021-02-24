@@ -1,23 +1,20 @@
-import {$} from 'protractor';
+import {test} from '../../../../playwright.conf';
+import {focusElement, Key, sendKey} from '../../tools.po';
+import {waitForModalCount} from '../modal';
 
-export class ModalStackPage {
-  getModal() { return $('#modal'); }
+export const SELECTOR_MODAL_BUTTON = '#open-modal';
+export const SELECTOR_MODAL = '#modal';
+export const SELECTOR_STACK_MODAL_BUTTON = '#open-inner-modal';
+export const SELECTOR_STACK_MODAL = '#stack-modal';
+export const SELECTOR_CLOSE_ICON = 'button.close';
 
-  getStackModal() { return $('#stack-modal'); }
+export const openModal = async() => {
+  await test.page.click(SELECTOR_MODAL_BUTTON);
+  await waitForModalCount(1);
+};
 
-  getModalButton() { return $('#open-modal'); }
-
-  getStackModalButton() { return $('#open-inner-modal'); }
-
-  getCloseIcon() { return $('button.close'); }
-
-  async openModal() {
-    await this.getModalButton().click();
-    expect(await this.getModal().isPresent()).toBeTruthy(`A modal should have been opened`);
-  }
-
-  async openStackModal() {
-    await this.getStackModalButton().click();
-    expect(await this.getStackModal().isPresent()).toBeTruthy(`A second modal should have been opened`);
-  }
-}
+export const openStackModal = async() => {
+  await focusElement(SELECTOR_STACK_MODAL_BUTTON);
+  await sendKey(Key.Enter);
+  await test.page.waitForSelector(SELECTOR_STACK_MODAL);
+};

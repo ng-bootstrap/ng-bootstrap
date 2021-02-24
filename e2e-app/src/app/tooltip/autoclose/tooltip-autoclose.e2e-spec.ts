@@ -1,109 +1,107 @@
-import {Key} from 'protractor';
-import {sendKey, openUrl, rightClick} from '../../tools.po';
-import {TooltipAutoClosePage} from './tooltip-autoclose.po';
+import {Key, openUrl, sendKey} from '../../tools.po';
+import {test} from '../../../../playwright.conf';
+import {expectTooltipToBeClosed, expectTooltipToBeOpen} from '../tooltip.po';
+
+const clickOutside = async() => await test.page.click('#outside-button');
+const rightClickOutside = async() => await test.page.click('#outside-button', {button: 'right'});
+
+const clickInside = async() => await test.page.click('div.tooltip-inner');
+const rightClickInside = async() => await test.page.click('div.tooltip-inner', {button: 'right'});
+
+const selectAutoClose = async(type: string) => {
+  await test.page.click('#autoclose-dropdown');
+  await test.page.click(`#autoclose-${type}`);
+};
+
+const openTooltip = async(message: string) => {
+  await test.page.click('button[ngbTooltip]');
+  await expectTooltipToBeOpen(message);
+};
 
 describe('Tooltip Autoclose', () => {
-  let page: TooltipAutoClosePage;
 
-  const expectTooltipToBeOpen = async(message: string) => {
-    expect(await page.getTooltip().isPresent()).toBeTruthy(message);
-    expect(await page.getOpenStatus().getText()).toBe('open', message);
-  };
-
-  const expectTooltipToBeClosed = async(message: string) => {
-    expect(await page.getTooltip().isPresent()).toBeFalsy(message);
-    expect(await page.getOpenStatus().getText()).toBe('closed', message);
-  };
-
-  const openTooltip = async(message: string) => {
-    await page.openTooltip();
-    await expectTooltipToBeOpen(message);
-  };
-
-  beforeAll(() => page = new TooltipAutoClosePage());
-
-  beforeEach(async() => await openUrl('tooltip/autoclose'));
+  beforeEach(async() => await openUrl('tooltip/autoclose', 'h3:text("Tooltip autoclose")'));
 
   it(`should not close tooltip on right clicks`, async() => {
     await openTooltip(`Opening tooltip for right clicks`);
 
-    await rightClick(page.getTooltipContent());
+    await rightClickInside();
     await expectTooltipToBeOpen(`Tooltip should stay visible when right-clicking inside`);
 
-    await page.rightClickOutside();
+    await rightClickOutside();
     await expectTooltipToBeOpen(`Tooltip should stay visible when right-clicking outside`);
   });
 
   it(`should work when autoClose === true`, async() => {
-    await page.selectAutoClose('true');
+    await selectAutoClose('true');
 
     // escape
     await openTooltip(`Opening tooltip for escape`);
-    await sendKey(Key.ESCAPE);
+    await sendKey(Key.ESC);
     await expectTooltipToBeClosed(`Tooltip should be closed on ESC`);
 
     // outside click
     await openTooltip(`Opening tooltip for outside click`);
-    await page.clickOutside();
+    await clickOutside();
     await expectTooltipToBeClosed(`Tooltip should be closed on outside click`);
 
     // inside click
     await openTooltip(`Opening tooltip for inside click`);
-    await page.getTooltipContent().click();
+    await clickInside();
     await expectTooltipToBeClosed(`Tooltip should be closed on date selection`);
   });
 
   it(`should work when autoClose === false`, async() => {
-    await page.selectAutoClose('false');
+    await selectAutoClose('false');
 
     // escape
     await openTooltip(`Opening tooltip for escape`);
-    await sendKey(Key.ESCAPE);
+    await sendKey(Key.ESC);
     await expectTooltipToBeOpen(`Tooltip should NOT be closed on ESC`);
 
     // outside click
-    await page.clickOutside();
+    await clickOutside();
     await expectTooltipToBeOpen(`Tooltip should NOT be closed on outside click`);
 
     // inside click
-    await page.getTooltipContent().click();
+    await clickInside();
     await expectTooltipToBeOpen(`Tooltip should NOT be closed on date selection`);
   });
 
   it(`should work when autoClose === 'outside'`, async() => {
-    await page.selectAutoClose('outside');
+    await selectAutoClose('outside');
 
     // escape
     await openTooltip(`Opening tooltip for escape`);
-    await sendKey(Key.ESCAPE);
+    await sendKey(Key.ESC);
     await expectTooltipToBeClosed(`Tooltip should be closed on ESC`);
 
     // outside click
     await openTooltip(`Opening tooltip for outside click`);
-    await page.clickOutside();
+    await clickOutside();
     await expectTooltipToBeClosed(`Tooltip should be closed on outside click`);
 
     // date selection
     await openTooltip(`Opening tooltip for date selection`);
-    await page.getTooltipContent().click();
+    await clickInside();
     await expectTooltipToBeOpen(`Tooltip should NOT be closed on date selection`);
   });
 
   it(`should work when autoClose === 'inside'`, async() => {
-    await page.selectAutoClose('inside');
+    await selectAutoClose('inside');
 
     // escape
     await openTooltip(`Opening tooltip for escape`);
-    await sendKey(Key.ESCAPE);
+    await sendKey(Key.ESC);
     await expectTooltipToBeClosed(`Tooltip should be closed on ESC`);
 
     // outside click
     await openTooltip(`Opening tooltip for outside click`);
-    await page.clickOutside();
+    await clickOutside();
     await expectTooltipToBeOpen(`Tooltip should NOT be closed on outside click`);
 
     // date selection
-    await page.getTooltipContent().click();
+    await clickInside();
     await expectTooltipToBeClosed(`Tooltip should be closed on date selection`);
   });
 });

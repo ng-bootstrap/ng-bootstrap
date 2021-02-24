@@ -1,28 +1,38 @@
-import {$} from 'protractor';
-import {DatepickerPage} from '../datepicker.po';
-import {rightClick} from '../../tools.po';
+import {test} from '../../../../playwright.conf';
+import {SELECTOR_DATEPICKER} from '../datepicker.po';
 
-export class DatepickerAutoClosePage extends DatepickerPage {
-  getOpenStatus() { return $('#open-status'); }
+export const SELECTOR_OPEN_STATUS = '#open-status';
 
-  async closeDatepicker() { await $('#close').click(); }
+export const clickOutside = async() => await test.page.click('#outside-button');
+export const rightClickOutside = async() => await test.page.click('#outside-button', {button: 'right'});
 
-  async clickOutside() { await $('#outside-button').click(); }
+export const selectAutoClose = async(type: string) => {
+  await test.page.click('#autoclose-dropdown');
+  await test.page.click(`#autoclose-${type}`);
+};
 
-  async rightClickOutside() { await rightClick($('#outside-button')); }
+export const selectDisplayMonths = async(displayMonths: number) => {
+  await test.page.click('#displayMonths-dropdown');
+  await test.page.click(`#displayMonths-${displayMonths}`);
+};
 
-  async selectAutoClose(type: string) {
-    await $('#autoclose-dropdown').click();
-    await $(`#autoclose-${type}`).click();
-  }
+export const openDatepicker = async(message: string) => {
+  await test.page.click('#selectDate');
+  await test.page.click('#toggle');
+  await expectDatepickerToBeOpen(message);
+};
 
-  async selectDisplayMonths(displayMonths: number) {
-    await $('#displayMonths-dropdown').click();
-    await $(`#displayMonths-${displayMonths}`).click();
-  }
+export const closeDatepicker = async(message: string) => {
+  await test.page.click('#close');
+  await expectDatepickerToBeClosed(message);
+};
 
-  async openDatepicker() {
-    await $('#selectDate').click();
-    await super.openDatepicker();
-  }
-}
+export const expectDatepickerToBeOpen = async function(message) {
+  await test.page.waitForSelector(SELECTOR_DATEPICKER);
+  expect(await test.page.innerText(SELECTOR_OPEN_STATUS)).toEqual('open', message);
+};
+
+export const expectDatepickerToBeClosed = async(message: string) => {
+  await test.page.waitForSelector(SELECTOR_DATEPICKER, {state: 'detached'});
+  expect(await test.page.innerText(SELECTOR_OPEN_STATUS)).toEqual('closed', message);
+};

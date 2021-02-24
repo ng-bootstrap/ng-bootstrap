@@ -1,43 +1,39 @@
-import {browser, ElementFinder, Key, protractor} from 'protractor';
-import {openUrl, sendKey} from '../../tools.po';
-import {DropdownClickPage} from './dropdown-click.po';
+import {openUrl, sendKey, Key, waitForFocus} from '../../tools.po';
+import {test} from '../../../../playwright.conf';
+import {isDropdownOpened} from '../dropdown.po';
+
+const SELECTOR_DROPDOWN_TOGGLE = '[ngbDropdownToggle]';
+const SELECTOR_DROPDOWN_ITEM = '[ngbDropdownItem]';
+
+const focusDropdownItem = async(index: number) => {
+  await test.page.press(SELECTOR_DROPDOWN_TOGGLE, Key.ArrowDown);
+  await waitForFocus(SELECTOR_DROPDOWN_TOGGLE, `dropdown should be focused`);
+  for (let i = 0; i <= index; ++i) {
+    await sendKey(Key.ArrowDown);
+  }
+  await waitForFocus(`${SELECTOR_DROPDOWN_ITEM}:nth-child(${index + 1})`, `Item should be focused`);
+};
 
 describe(`Dropdown user (click) handler`, () => {
 
-  let page: DropdownClickPage;
-  let dropdown: ElementFinder;
-
-  beforeAll(() => page = new DropdownClickPage());
-
-  beforeEach(async() => {
-    await openUrl('dropdown/click');
-    dropdown = page.getDropdown();
-  });
+  beforeEach(async() => await openUrl('dropdown/click', 'h3:text("Dropdown click")'));
 
   it(`should call user (click) handler on 'Enter'`, async() => {
-    await page.toggleItem(0);
+    await focusDropdownItem(0);
 
-    await sendKey(Key.ENTER);
-    expect(await page.isOpened(dropdown)).toBeFalsy(`Dropdown should be hidden on Enter`);
-    browser.wait(
-        protractor.ExpectedConditions.presenceOf(page.getEnterClickLabel()), 0,
-        `User click handler should have been called`);
-    browser.wait(
-        protractor.ExpectedConditions.presenceOf(page.getEnterKeyLabel()), 0,
-        `User keydown.enter handler should have been called`);
+    await sendKey(Key.Enter);
+    expect(await isDropdownOpened()).toBeFalsy(`Dropdown should be hidden on Enter`);
+    await test.page.waitForSelector('#enter-click');
+    await test.page.waitForSelector('#enter-key');
   });
 
   it(`should call user (click) handler on 'Space'`, async() => {
-    await page.toggleItem(1);
+    await focusDropdownItem(1);
 
-    await sendKey(Key.SPACE);
-    expect(await page.isOpened(dropdown)).toBeFalsy(`Dropdown should be hidden on Space`);
-    browser.wait(
-        protractor.ExpectedConditions.presenceOf(page.getSpaceClickLabel()), 0,
-        `User click handler should have been called`);
-    browser.wait(
-        protractor.ExpectedConditions.presenceOf(page.getSpaceKeyLabel()), 0,
-        `User keyup.space handler should have been called`);
+    await sendKey(Key.Space);
+    expect(await isDropdownOpened()).toBeFalsy(`Dropdown should be hidden on Space`);
+    await test.page.waitForSelector('#space-click');
+    await test.page.waitForSelector('#space-key');
   });
 
 });

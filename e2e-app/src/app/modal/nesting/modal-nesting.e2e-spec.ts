@@ -1,80 +1,78 @@
-import {Key} from 'protractor';
-import {expectFocused, expectNoOpenModals, openUrl, sendKey} from '../../tools.po';
-import {ModalNestingPage} from './modal-nesting.po';
-import {DatepickerPage} from '../../datepicker/datepicker.po';
-import {DropdownPage} from '../../dropdown/dropdown.po';
-import {TypeaheadPage} from '../../typeahead/typeahead.po';
+import {test} from '../../../../playwright.conf';
+import {Key, openUrl, sendKey, waitForFocus, timeoutMessage} from '../../tools.po';
+import {waitForModalCount} from '../modal';
+
+import {
+  openModal,
+  pressButton,
+  SELECTOR_DATEPICKER,
+  SELECTOR_DATEPICKER_BUTTON,
+  SELECTOR_DROPDOWN_BUTTON,
+  SELECTOR_DROPDOWN,
+  SELECTOR_TYPEAHEAD_INPUT,
+  SELECTOR_TYPEAHEAD_DROPDOWN,
+} from './modal-nesting.po';
+
+import {SELECTOR_DAY} from '../../datepicker/datepicker.po';
 
 describe('Modal nested components', () => {
-  let page: ModalNestingPage;
-  let datepickerPage: DatepickerPage;
-  let dropdownPage: DropdownPage;
-  let typeaheadPage: TypeaheadPage;
+  beforeEach(async() => await openUrl('modal/nesting', 'h3:text("Modal nesting tests")'));
 
-  beforeAll(() => {
-    page = new ModalNestingPage();
-    datepickerPage = new DatepickerPage();
-    dropdownPage = new DropdownPage();
-    typeaheadPage = new TypeaheadPage();
-  });
-
-  beforeEach(async() => await openUrl('modal/nesting'));
-
-  afterEach(async() => { await expectNoOpenModals(); });
+  afterEach(async() => { await waitForModalCount(0); });
 
   it('should close only datepicker, then modal on ESC', async() => {
-    await page.openModal();
+    await openModal();
 
     // open datepicker
-    await page.getDatepickerButton().click();
-    expect(await datepickerPage.getDatepicker().isPresent()).toBeTruthy(`Datepicker should be opened`);
-    await expectFocused(datepickerPage.getDayElement(new Date(2018, 0, 1)), `01 JAN 2018 should be focused`);
+    await pressButton(SELECTOR_DATEPICKER_BUTTON);
+    await timeoutMessage(test.page.waitForSelector(SELECTOR_DATEPICKER), `Datepicker should be opened`);
+    await waitForFocus(SELECTOR_DAY(new Date(2018, 0, 1)), `01 JAN 2018 should be focused`);
 
     // close datepicker
-    await sendKey(Key.ESCAPE);
-    expect(await datepickerPage.getDatepicker().isPresent()).toBeFalsy(`Datepicker should be closed`);
-    await expectFocused(page.getDatepickerButton(), `Datepicker open button should be focused`);
-    expect(await page.getModal().isPresent()).toBeTruthy(`Modal should stay opened`);
+    await sendKey(Key.ESC);
+    await timeoutMessage(
+        test.page.waitForSelector(SELECTOR_DATEPICKER, {state: 'detached'}), `Datepicker should be closed`);
+    await waitForFocus(SELECTOR_DATEPICKER_BUTTON, `Datepicker open button should be focused`);
+    await waitForModalCount(1, `Modal should stay opened`);
 
-    // close modal
-    await sendKey(Key.ESCAPE);
+    await sendKey(Key.ESC);
   });
 
   it('should close only dropdown, then modal on ESC', async() => {
-    await page.openModal();
+    await openModal();
 
     // open dropdown
-    await page.getDropdownButton().click();
-    const dropdown = dropdownPage.getDropdown();
-    expect(await dropdownPage.isOpened(dropdown)).toBeTruthy(`Dropdown should be opened`);
-    await expectFocused(page.getDropdownButton(), `Dropdown button should be focused`);
+    await pressButton(SELECTOR_DROPDOWN_BUTTON);
+    await timeoutMessage(test.page.waitForSelector(SELECTOR_DROPDOWN), `Dropdown should be opened`);
+    await waitForFocus(SELECTOR_DROPDOWN_BUTTON, `Dropdown button should be focused`);
 
     // close dropdown
-    await sendKey(Key.ESCAPE);
-    expect(await dropdownPage.isOpened(dropdown)).toBeFalsy(`Dropdown should be closed`);
-    await expectFocused(page.getDropdownButton(), `Dropdown open button should be focused`);
-    expect(await page.getModal().isPresent()).toBeTruthy(`Modal should stay opened`);
+    await sendKey(Key.ESC);
+    await timeoutMessage(
+        test.page.waitForSelector(SELECTOR_DROPDOWN, {state: 'detached'}), `Dropdown should be closed`);
+    await waitForFocus(SELECTOR_DROPDOWN_BUTTON, `Dropdown open button should be focused`);
+    await waitForModalCount(1, `Modal should stay opened`);
 
-    // close modal
-    await sendKey(Key.ESCAPE);
+    await sendKey(Key.ESC);
   });
 
   it('should close only typeahead, then modal on ESC', async() => {
-    await page.openModal();
+    await openModal();
 
     // open typeahead
-    await page.getTypeaheadInput().click();
-    await sendKey(Key.SPACE);
-    expect(await typeaheadPage.getDropdown().isPresent()).toBeTruthy(`Typeahead should be opened`);
-    await expectFocused(page.getTypeaheadInput(), `Typeahead input should be focused`);
+    await test.page.click(SELECTOR_TYPEAHEAD_INPUT);
+    await sendKey(Key.Space);
+    await timeoutMessage(test.page.waitForSelector(SELECTOR_TYPEAHEAD_DROPDOWN), `Typeahead should be opened`);
+    await waitForFocus(SELECTOR_TYPEAHEAD_INPUT, `Typeahead input should be focused`);
 
-    // close dropdown
-    await sendKey(Key.ESCAPE);
-    expect(await typeaheadPage.getDropdown().isPresent()).toBeFalsy(`Typeahead should be closed`);
-    await expectFocused(page.getTypeaheadInput(), `Typeahead input should be focused`);
-    expect(await page.getModal().isPresent()).toBeTruthy(`Modal should stay opened`);
+    // close typeahead
+    await sendKey(Key.ESC);
+    await timeoutMessage(
+        test.page.waitForSelector(SELECTOR_TYPEAHEAD_DROPDOWN, {state: 'detached'}), `Typeahead should be
+                closed`);
+    await waitForFocus(SELECTOR_TYPEAHEAD_INPUT, `Typeahead input should be focused`);
+    await waitForModalCount(1, `Modal should stay opened`);
 
-    // close modal
-    await sendKey(Key.ESCAPE);
+    await sendKey(Key.ESC);
   });
 });

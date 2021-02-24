@@ -1,5 +1,5 @@
 import {test} from '../../../playwright.conf';
-import {timeoutMessage} from '../tools.pw-po';
+import {timeoutMessage} from '../tools.po';
 export const SELECTOR_MODAL_DIALOG = '.modal-dialog';
 export const SELECTOR_MODAL_WINDOW = 'ngb-modal-window';
 

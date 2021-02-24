@@ -1,28 +1,46 @@
-import {$, $$, ElementFinder, by} from 'protractor';
+import {test} from '../../../playwright.conf';
 
-export class DropdownPage {
-  getDropdown(dropDownSelector = '') { return $(`${dropDownSelector}[ngbDropdown]`); }
+const SELECTOR_DROPDOWN = '[ngbDropdown]';
 
-  getDropdownMenu(dropDownMenuSelector = 'div') { return $(`${dropDownMenuSelector}[ngbdropdownmenu]`); }
-
-  getDropdownToggle(toggleSelector = 'button') { return $(`${toggleSelector}[ngbDropdownToggle]`); }
-
-  getDropdownMenuParent(dropdownMenu: ElementFinder) { return dropdownMenu.element(by.xpath('..')); }
-
-  getBodyContainers() { return $$('body > div.dropdown,body > div.dropup'); }
-
-  async open(dropdown: ElementFinder) {
-    await dropdown.$(`button[ngbDropdownToggle]`).click();
-    expect(await this.isOpened(dropdown)).toBeTruthy(`Dropdown should have been opened`);
+const expectDropdownToBeVisible = async(message: string, selector: string, toBody: boolean) => {
+  if (toBody) {
+    await test.page.waitForSelector(`body > div > [ngbDropdownMenu]`);
+  } else {
+    await test.page.waitForSelector(`${selector} >> [ngbDropdownItem]`);
   }
+  expect(await isDropdownOpened(selector)).toBeTruthy(message);
+};
 
-  async close(dropdown: ElementFinder) {
-    await dropdown.$(`button[ngbDropdownToggle]`).click();
-    expect(await this.isOpened(dropdown)).toBeFalsy(`Dropdown should have been closed`);
+const expectDropdownToBeHidden = async(message: string, selector: string, toBody: boolean) => {
+  if (toBody) {
+    await test.page.waitForSelector(`body > div > [ngbDropdownMenu]`, {state: 'hidden'});
+  } else {
+    await test.page.waitForSelector(`${selector} >> [ngbDropdownItem]`, {state: 'hidden'});
   }
+  expect(await isDropdownOpened(selector)).toBeFalsy(message);
+};
 
-  async isOpened(dropdown: ElementFinder) {
-    const classNames = await dropdown.getAttribute('class');
-    return classNames.includes('show');
+export const isDropdownOpened = async(selector = SELECTOR_DROPDOWN) => {
+  const classNames = await test.page.getAttribute(selector, 'class');
+  return classNames !.includes('show');
+};
+
+export const toggleDropdown = async(selector: string) => {
+  const expectedState = !(await isDropdownOpened(selector));
+  await test.page.click(`${selector} >> [ngbDropdownToggle]`);
+  if (expectedState) {
+    expect(await isDropdownOpened(selector)).toBeTruthy(`Dropdown should have been opened`);
+  } else {
+    expect(await isDropdownOpened(selector)).toBeFalsy(`Dropdown should have been closed`);
   }
-}
+};
+
+export const openDropdown = async(errorMessage = '', selector = SELECTOR_DROPDOWN, toBody = false) => {
+  await toggleDropdown(selector);
+  await expectDropdownToBeVisible(errorMessage, selector, toBody);
+};
+
+export const closeDropdown = async(errorMessage = '', selector = SELECTOR_DROPDOWN, toBody = false) => {
+  await toggleDropdown(selector);
+  await expectDropdownToBeHidden(errorMessage, selector, toBody);
+};

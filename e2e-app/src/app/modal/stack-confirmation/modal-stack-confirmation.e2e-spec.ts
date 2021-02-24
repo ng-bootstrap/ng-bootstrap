@@ -1,74 +1,78 @@
-import {expectNoOpenModals, openUrl, sendKey} from '../../tools.po';
-import {ModalStackConfirmationPage} from './modal-stack-confirmation.po';
-import {browser, Key, protractor} from 'protractor';
+import {test} from '../../../../playwright.conf';
+import {Key, openUrl, sendKey} from '../../tools.po';
+import {waitForModalCount} from '../modal';
+
+import {
+  openModal,
+  clickOnModal,
+  SELECTOR_CLOSE_BUTTON,
+  SELECTOR_DISMISS_BUTTON,
+  SELECTOR_CONFIRM_BUTTON,
+} from './modal-stack-confirmation.po';
 
 describe('Modal stack with confirmation', () => {
-  let page: ModalStackConfirmationPage;
 
-  beforeAll(() => { page = new ModalStackConfirmationPage(); });
+  beforeEach(async() => await openUrl('modal/stack-confirmation', 'h3:text("Modal stack confirmation test")'));
 
-  beforeEach(async() => await openUrl('modal/stack-confirmation'));
-
-  afterEach(async() => { await expectNoOpenModals(); });
+  afterEach(async() => { await waitForModalCount(0); });
 
   it('should close modals correctly using close button', async() => {
-    await page.openModal();
+    await openModal();
 
     // close with button
-    await page.getModalCloseButton().click();
-    expect(await page.getOpenModals().count()).toBe(2, 'Confirmation modal should be opened');
+    await test.page.click(SELECTOR_CLOSE_BUTTON);
+    await waitForModalCount(2, 'Confirmation modal should be opened');
 
     // cancel closure with button
-    await page.getDismissalButton().click();
-    expect(await page.getOpenModals().count()).toBe(1, 'Confirmation modal should be dismissed');
+    await test.page.click(SELECTOR_DISMISS_BUTTON);
+    await waitForModalCount(1, 'Confirmation modal should be dismissed');
 
     // close again
-    await page.getModalCloseButton().click();
-    expect(await page.getOpenModals().count()).toBe(2, 'Confirmation modal should be re-opened');
+    await test.page.click(SELECTOR_CLOSE_BUTTON);
+    await waitForModalCount(2, 'Confirmation modal should be re-opened');
 
     // close all modals
-    await page.getConfirmationButton().click();
+    await test.page.click(SELECTOR_CONFIRM_BUTTON);
+
   });
 
   it('should close modals correctly using ESC', async() => {
-    await page.openModal();
+    await openModal();
 
     // close with Escape
-    await sendKey(Key.ESCAPE);
-    browser.wait(protractor.ExpectedConditions.presenceOf(page.getStackModal()));
-    expect(await page.getOpenModals().count()).toBe(2, 'Confirmation modal should be opened');
+    await sendKey(Key.ESC);
+    await waitForModalCount(2, 'Confirmation modal should be opened');
 
     // cancel closure with Escape
-    await sendKey(Key.ESCAPE);
-    browser.wait(protractor.ExpectedConditions.invisibilityOf(page.getStackModal()));
-    expect(await page.getOpenModals().count()).toBe(1, 'Confirmation modal should be dismissed');
+    await sendKey(Key.ESC);
+    await waitForModalCount(1, 'Confirmation modal should be dismissed');
 
     // close again
-    await sendKey(Key.ESCAPE);
-    browser.wait(protractor.ExpectedConditions.presenceOf(page.getStackModal()));
-    expect(await page.getOpenModals().count()).toBe(2, 'Confirmation modal should be re-opened');
+    await sendKey(Key.ESC);
+    await waitForModalCount(2, 'Confirmation modal should be re-opened');
 
     // close all modals
-    await page.getConfirmationButton().click();
+    await test.page.click(SELECTOR_CONFIRM_BUTTON);
   });
 
   it('should close modals correctly using backdrop click', async() => {
-    await page.openModal();
+    await openModal();
 
     // close with click
-    await page.getModal(0).click();
-    expect(await page.getOpenModals().count()).toBe(2, 'Confirmation modal should be opened');
+    await clickOnModal(0);
+    await waitForModalCount(2, 'Confirmation modal should be opened');
 
     // cancel closure with click
-    await page.getModal(1).click();
-    expect(await page.getOpenModals().count()).toBe(1, 'Confirmation modal should be dismissed');
+    await clickOnModal(1);
+    await waitForModalCount(1, 'Confirmation modal should be dismissed');
 
     // close again
-    await page.getModal(0).click();
-    expect(await page.getOpenModals().count()).toBe(2, 'Confirmation modal should be re-opened');
+    await clickOnModal(0);
+    await waitForModalCount(2, 'Confirmation modal should be re-opened');
 
     // close all modals
-    await page.getConfirmationButton().click();
+    await test.page.click(SELECTOR_CONFIRM_BUTTON);
+
   });
 
 });

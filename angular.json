@@ -228,21 +228,6 @@
             }
           }
         },
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "e2e-app/protractor.conf.js",
-            "devServerTarget": "e2e-app:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "e2e-app:serve:production"
-            },
-            "noserve": {
-              "devServerTarget": ""
-            }
-          }
-        },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {

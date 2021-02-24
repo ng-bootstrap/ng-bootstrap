@@ -1,18 +1,21 @@
-import {$} from 'protractor';
+import {test} from '../../../../playwright.conf';
+import {focusElement, Key, sendKey} from '../../tools.po';
+import {waitForModalCount} from '../modal';
 
-export class ModalNestingPage {
-  getModal(selector = 'ngb-modal-window') { return $(selector); }
+export const SELECTOR_DATEPICKER = 'ngb-datepicker';
+export const SELECTOR_DATEPICKER_BUTTON = '#datepicker-button';
+export const SELECTOR_DROPDOWN_BUTTON = '#dropdown';
+export const SELECTOR_DROPDOWN = '[ngbDropdown].show';
+export const SELECTOR_TYPEAHEAD_INPUT = '#typeahead';
+export const SELECTOR_TYPEAHEAD_DROPDOWN = 'ngb-typeahead-window.show';
 
-  getDatepickerButton() { return $('#datepicker-button'); }
 
-  getDropdownButton() { return $('#dropdown'); }
+export const openModal = async() => {
+  await test.page.click(`#open-modal`);
+  await waitForModalCount(1);
+};
 
-  getTypeaheadInput() { return $('#typeahead'); }
-
-  async openModal() {
-    await $(`#open-modal`).click();
-    const modal = this.getModal();
-    expect(modal.isPresent()).toBeTruthy(`A modal should have been opened`);
-    return Promise.resolve(modal);
-  }
-}
+export const pressButton = async(buttonSelector) => {
+  await focusElement(buttonSelector);
+  await sendKey(Key.Enter);
+};
