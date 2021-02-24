@@ -1,4 +1,4 @@
-import {focusElement, waitForFocus, Key, openUrl, sendKey, timeoutMessage, js} from '../../tools.po';
+import {focusElement, waitForFocus, openUrl, sendKey, timeoutMessage, js} from '../../tools.po';
 import {test} from '../../../../playwright.conf';
 import {SELECTOR_TYPEAHEAD, SELECTOR_TYPEAHEAD_ITEMS, SELECTOR_TYPEAHEAD_WINDOW} from '../typeahead.po';
 
@@ -47,13 +47,13 @@ describe('Typeahead', () => {
        await waitForTypeaheadFocused();
 
        await clickBefore();
-       await sendKey(Key.Tab);
+       await sendKey('Tab');
 
        await waitForTypeaheadFocused();
        await waitForDropdownOpen(1);
        await waitForTypeaheadValue('Colorado');
 
-       await sendKey(Key.ESC);
+       await sendKey('Escape');
        await waitForTypeaheadFocused();
        await waitForDropDownClosed();
        await waitForTypeaheadValue('Colorado');
@@ -67,11 +67,11 @@ describe('Typeahead', () => {
     });
 
     it(`should be focused on item selection`, async() => {
-      await sendKey(Key.Tab);
+      await sendKey('Tab');
       await waitForTypeaheadFocused();
       await waitForDropdownOpen();
 
-      await sendKey(Key.Enter);
+      await sendKey('Enter');
       await waitForTypeaheadValue('Alabama');
       await waitForTypeaheadFocused();
     });
@@ -79,7 +79,7 @@ describe('Typeahead', () => {
     if (process.env.BROWSER !== 'webkit') {
       it(`should select element on tab`, async() => {
         await focusElement(SELECTOR_TYPEAHEAD);
-        await sendKey(Key.Tab);
+        await sendKey('Tab');
         await waitForTypeaheadFocused();
         await waitForDropDownClosed();
         await waitForTypeaheadValue('Alabama');

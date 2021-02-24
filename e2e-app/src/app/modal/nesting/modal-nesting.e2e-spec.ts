@@ -1,5 +1,5 @@
 import {test} from '../../../../playwright.conf';
-import {Key, openUrl, sendKey, waitForFocus, timeoutMessage} from '../../tools.po';
+import {openUrl, sendKey, waitForFocus, timeoutMessage} from '../../tools.po';
 import {waitForModalCount} from '../modal';
 
 import {
@@ -29,13 +29,13 @@ describe('Modal nested components', () => {
     await waitForFocus(SELECTOR_DAY(new Date(2018, 0, 1)), `01 JAN 2018 should be focused`);
 
     // close datepicker
-    await sendKey(Key.ESC);
+    await sendKey('Escape');
     await timeoutMessage(
         test.page.waitForSelector(SELECTOR_DATEPICKER, {state: 'detached'}), `Datepicker should be closed`);
     await waitForFocus(SELECTOR_DATEPICKER_BUTTON, `Datepicker open button should be focused`);
     await waitForModalCount(1, `Modal should stay opened`);
 
-    await sendKey(Key.ESC);
+    await sendKey('Escape');
   });
 
   it('should close only dropdown, then modal on ESC', async() => {
@@ -47,13 +47,13 @@ describe('Modal nested components', () => {
     await waitForFocus(SELECTOR_DROPDOWN_BUTTON, `Dropdown button should be focused`);
 
     // close dropdown
-    await sendKey(Key.ESC);
+    await sendKey('Escape');
     await timeoutMessage(
         test.page.waitForSelector(SELECTOR_DROPDOWN, {state: 'detached'}), `Dropdown should be closed`);
     await waitForFocus(SELECTOR_DROPDOWN_BUTTON, `Dropdown open button should be focused`);
     await waitForModalCount(1, `Modal should stay opened`);
 
-    await sendKey(Key.ESC);
+    await sendKey('Escape');
   });
 
   it('should close only typeahead, then modal on ESC', async() => {
@@ -61,18 +61,18 @@ describe('Modal nested components', () => {
 
     // open typeahead
     await test.page.click(SELECTOR_TYPEAHEAD_INPUT);
-    await sendKey(Key.Space);
+    await sendKey(' ');
     await timeoutMessage(test.page.waitForSelector(SELECTOR_TYPEAHEAD_DROPDOWN), `Typeahead should be opened`);
     await waitForFocus(SELECTOR_TYPEAHEAD_INPUT, `Typeahead input should be focused`);
 
     // close typeahead
-    await sendKey(Key.ESC);
+    await sendKey('Escape');
     await timeoutMessage(
         test.page.waitForSelector(SELECTOR_TYPEAHEAD_DROPDOWN, {state: 'detached'}), `Typeahead should be
                 closed`);
     await waitForFocus(SELECTOR_TYPEAHEAD_INPUT, `Typeahead input should be focused`);
     await waitForModalCount(1, `Modal should stay opened`);
 
-    await sendKey(Key.ESC);
+    await sendKey('Escape');
   });
 });

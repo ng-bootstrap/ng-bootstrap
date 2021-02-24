@@ -1,4 +1,4 @@
-import {focusElement, Key, sendKey} from '../../tools.po';
+import {focusElement, sendKey} from '../../tools.po';
 import {waitForModalCount} from '../modal';
 
 export const SELECTOR_MODAL_CONTENT = 'div.modal-content';
@@ -9,6 +9,6 @@ export const SELECTOR_MODAL_HEADER = 'div.modal-header';
 
 export const openModal = async(type: string) => {
   await focusElement(`#open-modal-${type}`);
-  await sendKey(Key.Enter);
+  await sendKey('Enter');
   await waitForModalCount(1);
 };

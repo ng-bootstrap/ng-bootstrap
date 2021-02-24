@@ -1,4 +1,4 @@
-import {Key, openUrl, sendKey} from '../../tools.po';
+import {openUrl, sendKey} from '../../tools.po';
 import {test} from '../../../../playwright.conf';
 import {expectTooltipToBeClosed, expectTooltipToBeOpen} from '../tooltip.po';
 
@@ -37,7 +37,7 @@ describe('Tooltip Autoclose', () => {
 
     // escape
     await openTooltip(`Opening tooltip for escape`);
-    await sendKey(Key.ESC);
+    await sendKey('Escape');
     await expectTooltipToBeClosed(`Tooltip should be closed on ESC`);
 
     // outside click
@@ -56,7 +56,7 @@ describe('Tooltip Autoclose', () => {
 
     // escape
     await openTooltip(`Opening tooltip for escape`);
-    await sendKey(Key.ESC);
+    await sendKey('Escape');
     await expectTooltipToBeOpen(`Tooltip should NOT be closed on ESC`);
 
     // outside click
@@ -73,7 +73,7 @@ describe('Tooltip Autoclose', () => {
 
     // escape
     await openTooltip(`Opening tooltip for escape`);
-    await sendKey(Key.ESC);
+    await sendKey('Escape');
     await expectTooltipToBeClosed(`Tooltip should be closed on ESC`);
 
     // outside click
@@ -92,7 +92,7 @@ describe('Tooltip Autoclose', () => {
 
     // escape
     await openTooltip(`Opening tooltip for escape`);
-    await sendKey(Key.ESC);
+    await sendKey('Escape');
     await expectTooltipToBeClosed(`Tooltip should be closed on ESC`);
 
     // outside click

@@ -1,4 +1,4 @@
-import {sendKey, openUrl, Key, waitForFocus} from '../../tools.po';
+import {sendKey, openUrl, waitForFocus} from '../../tools.po';
 import {clickOnDay, SELECTOR_DAY} from '../datepicker.po';
 import {test} from '../../../../playwright.conf';
 
@@ -14,11 +14,11 @@ describe('Datepicker multiple instances', () => {
   it('the instance tapped should gain focus', async() => {
 
     await clickOnDay(new Date(2016, 7, 1), '#dp1');
-    await sendKey(Key.ArrowDown);
+    await sendKey('ArrowDown');
     await expectActive(SELECTOR_DAY(new Date(2016, 7, 8), '#dp1'));
 
     await clickOnDay(new Date(2016, 7, 1), '#dp2');
-    await sendKey(Key.ArrowDown);
+    await sendKey('ArrowDown');
     await expectActive(SELECTOR_DAY(new Date(2016, 7, 8), '#dp2'));
   });
 });

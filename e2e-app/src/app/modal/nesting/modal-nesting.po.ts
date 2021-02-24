@@ -1,5 +1,5 @@
 import {test} from '../../../../playwright.conf';
-import {focusElement, Key, sendKey} from '../../tools.po';
+import {focusElement, sendKey} from '../../tools.po';
 import {waitForModalCount} from '../modal';
 
 export const SELECTOR_DATEPICKER = 'ngb-datepicker';
@@ -17,5 +17,5 @@ export const openModal = async() => {
 
 export const pressButton = async(buttonSelector) => {
   await focusElement(buttonSelector);
-  await sendKey(Key.Enter);
+  await sendKey('Enter');
 };

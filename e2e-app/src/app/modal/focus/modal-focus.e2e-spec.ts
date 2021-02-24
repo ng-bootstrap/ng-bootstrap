@@ -1,5 +1,5 @@
 import {test} from '../../../../playwright.conf';
-import {Key, openUrl, sendKey, waitForFocus} from '../../tools.po';
+import {openUrl, sendKey, waitForFocus} from '../../tools.po';
 import {waitForModalCount, SELECTOR_MODAL_WINDOW} from '../modal';
 
 import {
@@ -16,7 +16,7 @@ describe('Modal', () => {
   beforeEach(async() => await openUrl('modal/focus', 'h3:text("Modal focus tests")'));
 
   afterEach(async() => {
-    await sendKey(Key.ESC);
+    await sendKey('Escape');
     await waitForModalCount(0);
   });
 
@@ -24,7 +24,7 @@ describe('Modal', () => {
     await openModal('simple');
 
     // close
-    await sendKey(Key.ESC);
+    await sendKey('Escape');
     await waitForModalCount(0, 'The modal should be closed on ESC');
 
     await waitForFocus('#open-modal-simple', 'Should focus trigger button after closing');
@@ -45,7 +45,7 @@ describe('Modal', () => {
     await openModal('disable');
 
     // close
-    await sendKey(Key.ESC);
+    await sendKey('Escape');
     await waitForModalCount(0, 'The modal should be closed on ESC');
 
     // body should be focused
@@ -78,13 +78,13 @@ describe('Modal', () => {
     // dismiss -> input -> close -> dismiss
     await waitForFocus(SELECTOR_DISMISS_BUTTON, 'Modal dismiss button should be focused');
 
-    await sendKey(Key.Tab);
+    await sendKey('Tab');
     await waitForFocus(SELECTOR_MODAL_INPUT, 'Modal input should be focused');
 
-    await sendKey(Key.Tab);
+    await sendKey('Tab');
     await waitForFocus(SELECTOR_CLOSE_BUTTON, 'Modal close button should be focused');
 
-    await sendKey(Key.Tab);
+    await sendKey('Tab');
     await waitForFocus(SELECTOR_DISMISS_BUTTON, 'Modal dismiss button should be focused');
 
   });
@@ -95,13 +95,13 @@ describe('Modal', () => {
     // dismiss -> close -> input -> dismiss
     await waitForFocus(SELECTOR_DISMISS_BUTTON, 'Modal dismiss button should be focused');
 
-    await sendKey('Shift+' + Key.Tab);
+    await sendKey('Shift+Tab');
     await waitForFocus(SELECTOR_CLOSE_BUTTON, 'Modal close button should be focused');
 
-    await sendKey('Shift+' + Key.Tab);
+    await sendKey('Shift+Tab');
     await waitForFocus(SELECTOR_MODAL_INPUT, 'Modal input should be focused');
 
-    await sendKey('Shift+' + Key.Tab);
+    await sendKey('Shift+Tab');
     await waitForFocus(SELECTOR_DISMISS_BUTTON, 'Modal dismiss button should be focused');
 
   });
@@ -114,7 +114,7 @@ describe('Modal', () => {
     await waitForFocus(SELECTOR_MODAL_WINDOW, 'Modal window should be focused');
 
     // re-focus
-    await sendKey(Key.Tab);
+    await sendKey('Tab');
     await waitForFocus(SELECTOR_DISMISS_BUTTON, 'Modal dismiss button should be focused');
 
   });
@@ -127,7 +127,7 @@ describe('Modal', () => {
     await waitForFocus(SELECTOR_MODAL_WINDOW, 'Modal window should be focused');
 
     // re-focus
-    await sendKey('Shift+' + Key.Tab);
+    await sendKey('Shift+Tab');
     await waitForFocus(SELECTOR_CLOSE_BUTTON, 'Modal close button should be focused');
 
   });

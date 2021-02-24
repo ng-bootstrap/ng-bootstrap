@@ -1,4 +1,4 @@
-import {sendKey, openUrl, Key} from '../../tools.po';
+import {sendKey, openUrl} from '../../tools.po';
 import {test} from '../../../../playwright.conf';
 
 const SELECTOR_OPEN_STATUS = '#open-status';
@@ -49,7 +49,7 @@ describe('Popover Autoclose', () => {
 
     // escape
     await openPopover(`Opening popover for escape`);
-    await sendKey(Key.ESC);
+    await sendKey('Escape');
     await expectPopoverToBeClosed(`Popover should be closed on ESC`);
 
     // outside click
@@ -68,7 +68,7 @@ describe('Popover Autoclose', () => {
 
     // escape
     await openPopover(`Opening popover for escape`);
-    await sendKey(Key.ESC);
+    await sendKey('Escape');
     await expectPopoverToBeOpen(`Popover should NOT be closed on ESC`);
 
     // outside click
@@ -85,7 +85,7 @@ describe('Popover Autoclose', () => {
 
     // escape
     await openPopover(`Opening popover for escape`);
-    await sendKey(Key.ESC);
+    await sendKey('Escape');
     await expectPopoverToBeClosed(`Popover should be closed on ESC`);
 
     // outside click
@@ -104,7 +104,7 @@ describe('Popover Autoclose', () => {
 
     // escape
     await openPopover(`Opening popover for escape`);
-    await sendKey(Key.ESC);
+    await sendKey('Escape');
     await expectPopoverToBeClosed(`Popover should be closed on ESC`);
 
     // outside click

@@ -1,5 +1,5 @@
 import {test} from '../../../../playwright.conf';
-import {Key, openUrl, sendKey, waitForFocus} from '../../tools.po';
+import {openUrl, sendKey, waitForFocus} from '../../tools.po';
 import {waitForModalCount} from '../modal';
 
 import {
@@ -22,18 +22,18 @@ describe('Modal stack', () => {
     await waitForModalCount(2);
 
     // close the stack modal
-    await sendKey(Key.ESC);
+    await sendKey('Escape');
     await test.page.waitForSelector(SELECTOR_STACK_MODAL, {state: 'detached'});
     await waitForModalCount(1);
 
     // Check that the button is focused again
     await waitForFocus(SELECTOR_STACK_MODAL_BUTTON, 'Button element not focused');
-    await sendKey(Key.Tab);
+    await sendKey('Tab');
 
     await waitForFocus(SELECTOR_CLOSE_ICON, 'Close icon not focused');
 
     // close the main modal
-    await sendKey(Key.ESC);
+    await sendKey('Escape');
   });
 
 });
