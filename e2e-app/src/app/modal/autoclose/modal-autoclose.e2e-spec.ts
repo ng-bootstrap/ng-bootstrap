@@ -1,5 +1,5 @@
 import {test} from '../../../../playwright.conf';
-import {Key, openUrl, sendKey, mouseMove} from '../../tools.po';
+import {openUrl, sendKey, mouseMove} from '../../tools.po';
 import {waitForModalCount, waitForNoChange, SELECTOR_MODAL_DIALOG, SELECTOR_MODAL_WINDOW} from '../modal';
 
 import {
@@ -29,14 +29,14 @@ describe('Modal', () => {
     await openModal();
 
     // close
-    await sendKey(Key.ESC);
+    await sendKey('Escape');
     await waitForModalCount(0);
     await waitDismissReason('Escape', `Modal should have been dismissed with 'Escape' reason`);
   });
 
   it(`should NOT close modal on ESC when keyboard === 'false'`, async() => {
     await openModal('no-keyboard');
-    await sendKey(Key.ESC);
+    await sendKey('Escape');
     await waitForNoChange();
     await waitForModalCount(1, 'The modal should stay opened on ESC');
     await clickOnClose();

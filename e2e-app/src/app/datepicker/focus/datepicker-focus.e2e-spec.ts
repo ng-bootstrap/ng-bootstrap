@@ -1,5 +1,5 @@
 import {test} from '../../../../playwright.conf';
-import {waitForFocus, Key, openUrl, sendKey} from '../../tools.po';
+import {waitForFocus, openUrl, sendKey} from '../../tools.po';
 import {
   openDatepicker,
   SELECTOR_DATEPICKER,
@@ -80,7 +80,7 @@ describe('Datepicker', () => {
     await openDatepicker();
 
     // close
-    await sendKey(Key.ESC);
+    await sendKey('Escape');
     await test.page.waitForSelector(SELECTOR_DATEPICKER, {state: 'detached'});
 
     // check toggle is focused
@@ -105,19 +105,19 @@ describe('Datepicker', () => {
       // today -> prev. month -> month -> year -> next month -> today -> ...
       await waitForFocus(SELECTOR_DAY(new Date()), `Today's date should be focused`);
 
-      await sendKey(Key.Tab);
+      await sendKey('Tab');
       await waitForFocus(SELECTOR_PREV_MONTH, `Previous Month arrow should be focused`);
 
-      await sendKey(Key.Tab);
+      await sendKey('Tab');
       await waitForFocus(SELECTOR_MONTH_SELECT, `Month select box should be focused`);
 
-      await sendKey(Key.Tab);
+      await sendKey('Tab');
       await waitForFocus(SELECTOR_YEAR_SELECT, `Year select box should be focused`);
 
-      await sendKey(Key.Tab);
+      await sendKey('Tab');
       await waitForFocus(SELECTOR_NEXT_MONTH, `Next Month arrow should be focused`);
 
-      await sendKey(Key.Tab);
+      await sendKey('Tab');
       await waitForFocus(SELECTOR_DAY(new Date()), `Today's date should be focused`);
     });
 
@@ -190,7 +190,7 @@ describe('Datepicker', () => {
       await waitForFocus(SELECTOR_DATEPICKER_INPUT, `Datepicker input should be focused`);
 
       // tab should go back to datepicker
-      await sendKey(Key.Tab);
+      await sendKey('Tab');
       await waitForFocus(SELECTOR_PREV_MONTH, `Previous Month arrow should be focused`);
     });
   }
@@ -203,7 +203,7 @@ describe('Datepicker', () => {
     await waitForFocus(SELECTOR_DATEPICKER_INPUT, `Datepicker input should be focused`);
 
     // close
-    await sendKey(Key.ESC);
+    await sendKey('Escape');
     await test.page.waitForSelector(SELECTOR_DATEPICKER, {state: 'detached'});
 
     // check input is still focused
@@ -236,13 +236,13 @@ describe('Datepicker', () => {
 
       await waitForFocus(SELECTOR_DAY(new Date(2018, 7, 10)), `10 AUG should be focused`);
 
-      await sendKey(Key.ArrowUp);
+      await sendKey('ArrowUp');
       await waitForFocus(SELECTOR_DAY(new Date(2018, 7, 3)), `03 AUG should be focused`);
 
-      await sendKey(Key.ArrowUp);
+      await sendKey('ArrowUp');
       await waitForFocus(SELECTOR_DAY(new Date(2018, 6, 27)), `27 JUL should be focused`);
 
-      await sendKey(Key.ArrowDown);
+      await sendKey('ArrowDown');
       await waitForFocus(SELECTOR_DAY(new Date(2018, 7, 3)), `03 AUG should be focused`);
     });
 
@@ -252,7 +252,7 @@ describe('Datepicker', () => {
       const yesterday = new Date();
       yesterday.setDate(new Date().getDate() - 1);
 
-      await sendKey(Key.ArrowLeft);
+      await sendKey('ArrowLeft');
       await waitForFocus(SELECTOR_DAY(yesterday), `Yesterday should be focused`);
     });
 
@@ -262,7 +262,7 @@ describe('Datepicker', () => {
       const tomorrow = new Date();
       tomorrow.setDate(new Date().getDate() + 1);
 
-      await sendKey(Key.ArrowRight);
+      await sendKey('ArrowRight');
       await waitForFocus(SELECTOR_DAY(tomorrow), `Tomorrow should be focused`);
     });
 
@@ -272,7 +272,7 @@ describe('Datepicker', () => {
       const previousWeek = new Date();
       previousWeek.setDate(new Date().getDate() - 7);
 
-      await sendKey(Key.ArrowUp);
+      await sendKey('ArrowUp');
       await waitForFocus(SELECTOR_DAY(previousWeek), `Today-7 days should be focused`);
     });
 
@@ -282,7 +282,7 @@ describe('Datepicker', () => {
       const nextWeek = new Date();
       nextWeek.setDate(new Date().getDate() + 7);
 
-      await sendKey(Key.ArrowDown);
+      await sendKey('ArrowDown');
       await waitForFocus(SELECTOR_DAY(nextWeek), `Today+7 days should be focused`);
     });
 
@@ -290,7 +290,7 @@ describe('Datepicker', () => {
       await preSelectDate();  // 10 AUG 2018
       await openDatepicker();
 
-      await sendKey(Key.Home);
+      await sendKey('Home');
       await waitForFocus(SELECTOR_DAY(new Date(2018, 7, 1)), `First day of month should be focused`);
     });
 
@@ -298,7 +298,7 @@ describe('Datepicker', () => {
       await preSelectDate();  // 10 AUG 2018
       await openDatepicker();
 
-      await sendKey(Key.End);
+      await sendKey('End');
       await waitForFocus(SELECTOR_DAY(new Date(2018, 7, 31)), `Last day of month should be focused`);
     });
 
@@ -306,7 +306,7 @@ describe('Datepicker', () => {
       await preSelectDate();  // 10 AUG 2018
       await openDatepicker();
 
-      await sendKey(Key.PageUp);
+      await sendKey('PageUp');
       await waitForFocus(SELECTOR_DAY(new Date(2018, 6, 10)), `Same day of previous month should be focused`);
     });
 
@@ -314,7 +314,7 @@ describe('Datepicker', () => {
       await preSelectDate();  // 10 AUG 2018
       await openDatepicker();
 
-      await sendKey(Key.PageDown);
+      await sendKey('PageDown');
       await waitForFocus(SELECTOR_DAY(new Date(2018, 8, 10)), `Same day of next month should be focused`);
     });
 

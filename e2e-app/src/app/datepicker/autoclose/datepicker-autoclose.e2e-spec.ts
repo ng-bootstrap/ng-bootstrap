@@ -1,5 +1,5 @@
 import {test} from '../../../../playwright.conf';
-import {Key, openUrl, sendKey} from '../../tools.po';
+import {openUrl, sendKey} from '../../tools.po';
 import {
   clickOutside,
   closeDatepicker,
@@ -69,7 +69,7 @@ describe('Datepicker Autoclose', () => {
 
         // escape
         await openDatepicker(`Opening datepicker`);
-        await sendKey(Key.ESC);
+        await sendKey('Escape');
         await expectDatepickerToBeOpen(`Datepicker should NOT be closed on ESC`);
 
         // outside click
@@ -96,7 +96,7 @@ describe('Datepicker Autoclose', () => {
 
         // escape
         await openDatepicker(`Opening datepicker for escape`);
-        await sendKey(Key.ESC);
+        await sendKey('Escape');
         await expectDatepickerToBeClosed(`Datepicker should be closed on ESC`);
 
         // outside click
@@ -125,7 +125,7 @@ describe('Datepicker Autoclose', () => {
 
         // escape
         await openDatepicker(`Opening datepicker for escape`);
-        await sendKey(Key.ESC);
+        await sendKey('Escape');
         await expectDatepickerToBeClosed(`Datepicker should be closed on ESC`);
 
         // outside click

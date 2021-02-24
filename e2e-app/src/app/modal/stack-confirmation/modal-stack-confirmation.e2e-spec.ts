@@ -1,5 +1,5 @@
 import {test} from '../../../../playwright.conf';
-import {Key, openUrl, sendKey} from '../../tools.po';
+import {openUrl, sendKey} from '../../tools.po';
 import {waitForModalCount} from '../modal';
 
 import {
@@ -40,15 +40,15 @@ describe('Modal stack with confirmation', () => {
     await openModal();
 
     // close with Escape
-    await sendKey(Key.ESC);
+    await sendKey('Escape');
     await waitForModalCount(2, 'Confirmation modal should be opened');
 
     // cancel closure with Escape
-    await sendKey(Key.ESC);
+    await sendKey('Escape');
     await waitForModalCount(1, 'Confirmation modal should be dismissed');
 
     // close again
-    await sendKey(Key.ESC);
+    await sendKey('Escape');
     await waitForModalCount(2, 'Confirmation modal should be re-opened');
 
     // close all modals

@@ -1,5 +1,5 @@
 import {test} from '../../../../playwright.conf';
-import {waitForFocus, getBoundingBox, Key, offsetClick, openUrl, sendKey} from '../../tools.po';
+import {waitForFocus, getBoundingBox, openUrl, sendKey} from '../../tools.po';
 import {
   clickDropdownItem,
   clickOutside,
@@ -38,7 +38,7 @@ containers.forEach((container) => {
 
       // escape
       await openDropdown(`Opening dropdown for escape`);
-      await sendKey(Key.ESC);
+      await sendKey('Escape');
       await expectDropdownToBeHidden(`Dropdown should be closed on ESC`);
 
       // outside click
@@ -53,16 +53,16 @@ containers.forEach((container) => {
 
       // enter
       await openDropdown(`Opening dropdown for enter`);
-      await sendKey(Key.ArrowDown);
+      await sendKey('ArrowDown');
       await waitForFocus(SELECTOR_DROPDOWN_ITEM, `first dropdown item should be focused`);
-      await sendKey(Key.Enter);
+      await sendKey('Enter');
       await expectDropdownToBeHidden(`Dropdown should be closed on Enter`);
 
       // space
       await openDropdown(`Opening dropdown for space`);
-      await sendKey(Key.ArrowDown);
+      await sendKey('ArrowDown');
       await waitForFocus(SELECTOR_DROPDOWN_ITEM, `first dropdown item should be focused`);
-      await sendKey(Key.Space);
+      await sendKey(' ');
       await expectDropdownToBeHidden(`Dropdown should be closed on Space`);
     });
 
@@ -75,9 +75,10 @@ containers.forEach((container) => {
       await expectDropdownToBeVisible(`Dropdown should stay open on click in the form`);
 
       // form enter / space
-      await sendKey(Key.Enter, SELECTOR_FORM_INPUT);
+      await waitForFocus(SELECTOR_FORM_INPUT);
+      await sendKey('Enter');
       await expectDropdownToBeVisible(`Dropdown should stay open on Enter in the form`);
-      await sendKey(Key.Space, SELECTOR_FORM_INPUT);
+      await sendKey(' ');
       await expectDropdownToBeVisible(`Dropdown should stay open on Space in the form`);
     });
 
@@ -87,7 +88,7 @@ containers.forEach((container) => {
       await openDropdown(`Opening dropdown`);
 
       const {width, height} = await getBoundingBox(SELECTOR_DROPDOWN_MENU);
-      await offsetClick(SELECTOR_DROPDOWN_MENU, {x: width - 5, y: height / 2});
+      await test.page.click(SELECTOR_DROPDOWN_MENU, {position: {x: width - 5, y: height / 2}});
       await expectDropdownToBeVisible(`Dropdown should be open`);
 
     });
@@ -97,7 +98,7 @@ containers.forEach((container) => {
 
       // escape
       await openDropdown(`Opening dropdown for escape`);
-      await sendKey(Key.ESC);
+      await sendKey('Escape');
       await expectDropdownToBeVisible(`Dropdown should NOT be closed on ESC`);
 
       // outside click
@@ -111,11 +112,11 @@ containers.forEach((container) => {
       // enter / space
       await closeDropdown('Close dropdown');
       await openDropdown('Reopen dropdown');
-      await sendKey(Key.ArrowDown);
+      await sendKey('ArrowDown');
       await waitForFocus(SELECTOR_DROPDOWN_ITEM, `first dropdown item should be focused`);
-      await sendKey(Key.Enter);
+      await sendKey('Enter');
       await expectDropdownToBeVisible(`Dropdown should NOT be closed on Enter`);
-      await sendKey(Key.Space);
+      await sendKey(' ');
       await expectDropdownToBeVisible(`Dropdown should NOT be closed on Space`);
     });
 
@@ -124,7 +125,7 @@ containers.forEach((container) => {
 
       // escape
       await openDropdown(`Opening dropdown for escape`);
-      await sendKey(Key.ESC);
+      await sendKey('Escape');
       await expectDropdownToBeHidden(`Dropdown should be closed on ESC`);
 
       // outside click
@@ -140,11 +141,11 @@ containers.forEach((container) => {
       // enter / space
       await closeDropdown('Close dropdown');
       await openDropdown('Reopen dropdown');
-      await sendKey(Key.ArrowDown);
+      await sendKey('ArrowDown');
       await waitForFocus(SELECTOR_DROPDOWN_ITEM, `first dropdown item should be focused`);
-      await sendKey(Key.Enter);
+      await sendKey('Enter');
       await expectDropdownToBeVisible(`Dropdown should NOT be closed on Enter`);
-      await sendKey(Key.Space);
+      await sendKey(' ');
       await expectDropdownToBeVisible(`Dropdown should NOT be closed on Space`);
     });
 
@@ -153,7 +154,7 @@ containers.forEach((container) => {
 
       // escape
       await openDropdown(`Opening dropdown for escape`);
-      await sendKey(Key.ESC);
+      await sendKey('Escape');
       await expectDropdownToBeHidden(`Dropdown should be closed on ESC`);
 
       // outside click
@@ -167,16 +168,16 @@ containers.forEach((container) => {
 
       // enter
       await openDropdown(`Opening dropdown for enter`);
-      await sendKey(Key.ArrowDown);
+      await sendKey('ArrowDown');
       await waitForFocus(SELECTOR_DROPDOWN_ITEM, `first dropdown item should be focused`);
-      await sendKey(Key.Enter);
+      await sendKey('Enter');
       await expectDropdownToBeHidden(`Dropdown should be closed on Enter`);
 
       // space
       await openDropdown(`Opening dropdown for space`);
-      await sendKey(Key.ArrowDown);
+      await sendKey('ArrowDown');
       await waitForFocus(SELECTOR_DROPDOWN_ITEM, `first dropdown item should be focused`);
-      await sendKey(Key.Space);
+      await sendKey(' ');
       await expectDropdownToBeHidden(`Dropdown should be closed on Space`);
     });
   });

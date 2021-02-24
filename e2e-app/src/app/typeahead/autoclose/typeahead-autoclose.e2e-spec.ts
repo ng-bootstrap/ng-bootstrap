@@ -1,4 +1,4 @@
-import {openUrl, waitForFocus, sendKey, Key} from '../../tools.po';
+import {openUrl, waitForFocus, sendKey} from '../../tools.po';
 import {test} from '../../../../playwright.conf';
 import {
   getTypeaheadValue,
@@ -94,7 +94,7 @@ describe('Typeahead Autoclose', () => {
   it(`should close typeahead on Escape and stay focused`, async() => {
     await openTypeahead();
 
-    await sendKey(Key.ESC);
+    await sendKey('Escape');
     await expectTypeaheadToBeClosed(`Dropdown should become hidden`);
     await waitForFocus(SELECTOR_TYPEAHEAD, `Typeahead input should stay focused`);
   });
@@ -104,7 +104,7 @@ describe('Typeahead Autoclose', () => {
     await openTypeahead();
     expect(await getTypeaheadValue()).toBe('one', `Hint should be shown`);
 
-    await sendKey(Key.ESC);
+    await sendKey('Escape');
     await expectTypeaheadToBeClosed(`Dropdown should become hidden`);
     await waitForFocus(SELECTOR_TYPEAHEAD, `Typeahead input should stay focused`);
     expect(await getTypeaheadValue()).toBe('o', `Hint should have been removed`);

@@ -1,24 +1,4 @@
 import {baseUrl, test} from '../../playwright.conf';
-import {ElementHandle} from 'playwright';
-
-export const joinSelectors = (...selectors: Array<string>): string => {
-  return selectors.join(' >> ');
-};
-
-export const Key = {
-  ESC: 'Escape',
-  Tab: 'Tab',
-  Space: ' ',
-  Enter: 'Enter',
-  ArrowRight: 'ArrowRight',
-  ArrowDown: 'ArrowDown',
-  ArrowLeft: 'ArrowLeft',
-  ArrowUp: 'ArrowUp',
-  Home: 'Home',
-  End: 'End',
-  PageUp: 'PageUp',
-  PageDown: 'PageDown'
-};
 
 /**
  * Sends keys to a currently focused element
@@ -26,38 +6,9 @@ export const Key = {
  * @param keys list of keys to send
  * https://playwright.dev/docs/api/class-keyboard?_highlight=keyboard#keyboardpresskey-options
  */
-export const sendKey = async(key: string, selector?: string) => {
-  const {page} = test;
-  const keyboard = page.keyboard;
-  if (selector) {
-    await page.press(selector, key);
-  } else {
-    await keyboard.press(key);
-  }
+export const sendKey = async(key: string) => {
+  await test.page.keyboard.press(key);
 };
-
-/**
- * Clicks on the given element with the right button of the mouse.
- * @param el element to right click on
- */
-export const rightClick = async(selectorOrElement: string | ElementHandle) => {
-  const rightClickOption: {button} = {button: 'right'};
-  if (typeof(selectorOrElement) === 'string') {
-    await test.page.click(selectorOrElement, rightClickOption);
-  } else {
-    await selectorOrElement.click(rightClickOption);
-  }
-};
-
-/**
- * Clicks on the given element with a given offset.
- * @param el element to right click on
- * @param offset {x, y} position, relative to the element
- */
-export const offsetClick = async(selector, position) => {
-  await test.page.click(selector, {position});
-};
-
 
 /**
  * Wait for the provided element to be focused
@@ -65,7 +16,7 @@ export const offsetClick = async(selector, position) => {
  * @param selector element selector to check
  * @param message to display in case of error
  */
-export const waitForFocus = async(selector, message = `Unable to focus '${selector}'`) => {
+export const waitForFocus = async(selector: string, message = `Unable to focus '${selector}'`) => {
   const {page} = test;
   const el = await page.$(selector);
   await timeoutMessage(page.waitForFunction(function(_el) { return _el === document.activeElement; }, el), message);
@@ -76,7 +27,7 @@ export const waitForFocus = async(selector, message = `Unable to focus '${select
  *
  * @param selector element selector to focus
  */
-export const focusElement = async(selector) => {
+export const focusElement = async(selector: string) => {
   await test.page.focus(selector);
   await waitForFocus(selector);
 };
@@ -144,7 +95,7 @@ export const getCaretPosition = async(selector: string) =>
 * @param {string} message
 * @return {Promise<T>}
 */
-export const timeoutMessage = (promise, message) => {
+export const timeoutMessage = (promise: Promise<any>, message: string) => {
   return promise.catch(e => {
     if (e instanceof require('playwright').errors.TimeoutError) {
       e.message += '\n' + message;
@@ -173,7 +124,7 @@ export const js = (code: TemplateStringsArray, ...variables: any[]) => {
  * Move the mouse hover the provided element
  * @param selector Element selector
  */
-export const mouseMove = async(selector) => {
+export const mouseMove = async(selector: string) => {
   const rect = await getBoundingBox(selector);
   const x = rect.x + rect.width / 2;
   const y = rect.y + rect.height / 2;

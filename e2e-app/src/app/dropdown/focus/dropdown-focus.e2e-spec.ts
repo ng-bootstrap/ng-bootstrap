@@ -1,6 +1,6 @@
 import {isDropdownOpened, openDropdown} from '../dropdown.po';
 import {test} from '../../../../playwright.conf';
-import {sendKey, Key, waitForFocus, openUrl} from '../../tools.po';
+import {sendKey, waitForFocus, openUrl} from '../../tools.po';
 
 const SELECTOR_DROPDOWN = '[ngbDropdown]';
 const SELECTOR_DROPDOWN_TOGGLE = '[ngbDropdownToggle]';
@@ -33,28 +33,28 @@ describe(`Dropdown focus`, () => {
 
       it(`should open dropdown with 'Space' and focus toggling element`, async() => {
         await focusToggle();
-        await sendKey(Key.Space);
+        await sendKey(' ');
         await waitForFocus(SELECTOR_DROPDOWN_TOGGLE, `Toggling element should be focused`);
         expect(await isDropdownOpened()).toBeTruthy(`Dropdown should be opened on 'Space' press`);
       });
 
       it(`should open dropdown with 'Enter' and focus toggling element`, async() => {
         await focusToggle();
-        await sendKey(Key.Enter);
+        await sendKey('Enter');
         await waitForFocus(SELECTOR_DROPDOWN_TOGGLE, `Toggling element should be focused`);
         expect(await isDropdownOpened()).toBeTruthy(`Dropdown should be opened on 'Enter' press`);
       });
 
       it(`should open dropdown with 'ArrowDown' and focus toggling element`, async() => {
         await focusToggle();
-        await sendKey(Key.ArrowDown);
+        await sendKey('ArrowDown');
         await waitForFocus(SELECTOR_DROPDOWN_TOGGLE, `Toggling element should be focused`);
         expect(await isDropdownOpened()).toBeTruthy(`Dropdown should be opened on 'ArrowDown' press`);
       });
 
       it(`should open dropdown with 'ArrowUp' and focus toggling element`, async() => {
         await focusToggle();
-        await sendKey(Key.ArrowUp);
+        await sendKey('ArrowUp');
         await waitForFocus(SELECTOR_DROPDOWN_TOGGLE, `Toggling element should be focused`);
         expect(await isDropdownOpened()).toBeTruthy(`Dropdown should be opened on 'ArrowUp' press`);
       });
@@ -65,23 +65,23 @@ describe(`Dropdown focus`, () => {
         await waitForFocus(SELECTOR_DROPDOWN_TOGGLE, `Toggling element should be focused`);
 
         // Down -> first
-        await sendKey(Key.ArrowDown);
+        await sendKey('ArrowDown');
         await waitForFocus(SELECTOR_DROPDOWN_ITEM(1), `first dropdown item should be focused`);
 
         // Down -> second
-        await sendKey(Key.ArrowDown);
+        await sendKey('ArrowDown');
         await waitForFocus(SELECTOR_DROPDOWN_ITEM(2), `second dropdown item should be focused`);
 
         // Down -> second
-        await sendKey(Key.ArrowDown);
+        await sendKey('ArrowDown');
         await waitForFocus(SELECTOR_DROPDOWN_ITEM(2), `second dropdown item should stay focused`);
 
         // Up -> first
-        await sendKey(Key.ArrowUp);
+        await sendKey('ArrowUp');
         await waitForFocus(SELECTOR_DROPDOWN_ITEM(1), `first dropdown item should be focused`);
 
         // Up -> first
-        await sendKey(Key.ArrowUp);
+        await sendKey('ArrowUp');
         await waitForFocus(SELECTOR_DROPDOWN_ITEM(1), `first dropdown item should stay focused`);
       });
 
@@ -91,11 +91,11 @@ describe(`Dropdown focus`, () => {
         await waitForFocus(SELECTOR_DROPDOWN_TOGGLE, `Toggling element should be focused`);
 
         // End -> last
-        await sendKey(Key.End);
+        await sendKey('End');
         await waitForFocus(SELECTOR_DROPDOWN_ITEM(2), `last dropdown item should be focused`);
 
         // Home -> first
-        await sendKey(Key.Home);
+        await sendKey('Home');
         await waitForFocus(SELECTOR_DROPDOWN_ITEM(1), `first dropdown item should be focused`);
       });
 
@@ -103,7 +103,7 @@ describe(`Dropdown focus`, () => {
         await openDropdown('Dropdown should be opened', SELECTOR_DROPDOWN, container === 'body');
         await waitForFocus(SELECTOR_DROPDOWN_TOGGLE, `Toggling element should be focused`);
 
-        await sendKey(Key.ESC);
+        await sendKey('Escape');
         expect(await isDropdownOpened()).toBeFalsy(`Dropdown should be closed on 'Escape' press`);
         await waitForFocus(SELECTOR_DROPDOWN_TOGGLE, `Toggling element should be focused`);
       });
@@ -112,10 +112,10 @@ describe(`Dropdown focus`, () => {
         await openDropdown('Dropdown should be opened', SELECTOR_DROPDOWN, container === 'body');
         await waitForFocus(SELECTOR_DROPDOWN_TOGGLE, `Toggling element should be focused`);
 
-        await sendKey(Key.ArrowDown);
+        await sendKey('ArrowDown');
         await waitForFocus(SELECTOR_DROPDOWN_ITEM(1), `first dropdown item should be focused`);
 
-        await sendKey(Key.ESC);
+        await sendKey('Escape');
         expect(await isDropdownOpened()).toBeFalsy(`Dropdown should be closed on 'Escape' press`);
         await waitForFocus(SELECTOR_DROPDOWN_TOGGLE, `Toggling element should be focused`);
       });
@@ -126,7 +126,7 @@ describe(`Dropdown focus`, () => {
           await waitForFocus(SELECTOR_DROPDOWN_TOGGLE, `Toggling element should be focused`);
 
           // Tab -> first
-          await sendKey(Key.Tab);
+          await sendKey('Tab');
           await waitForFocus(SELECTOR_DROPDOWN_ITEM(1), `first dropdown item should be focused`);
         });
       }
@@ -136,15 +136,15 @@ describe(`Dropdown focus`, () => {
         await waitForFocus(SELECTOR_DROPDOWN_TOGGLE, `Toggling element should be focused`);
 
         // Down -> first
-        await sendKey(Key.ArrowDown);
+        await sendKey('ArrowDown');
         await waitForFocus(SELECTOR_DROPDOWN_ITEM(1), `first dropdown item should be focused`);
 
         // Home -> last
-        await sendKey(Key.End);
+        await sendKey('End');
         await waitForFocus(SELECTOR_DROPDOWN_ITEM(2), `second dropdown item should be focused`);
 
         // Tab -> another element
-        await sendKey(Key.Tab);
+        await sendKey('Tab');
         expect(await isDropdownOpened()).toBeFalsy(`Dropdown should be closed`);
       });
     });
@@ -159,14 +159,14 @@ describe(`Dropdown focus`, () => {
 
     it(`should open dropdown with 'ArrowDown' and focus toggling element`, async() => {
       await focusToggle();
-      await sendKey(Key.ArrowDown);
+      await sendKey('ArrowDown');
       await waitForFocus(SELECTOR_DROPDOWN_TOGGLE, `Toggling element should be focused`);
       expect(await isDropdownOpened()).toBeTruthy(`Dropdown should be opened on 'ArrowDown' press`);
     });
 
     it(`should open dropdown with 'ArrowUp' and focus toggling element`, async() => {
       await focusToggle();
-      await sendKey(Key.ArrowUp);
+      await sendKey('ArrowUp');
       await waitForFocus(SELECTOR_DROPDOWN_TOGGLE, `Toggling element should be focused`);
       expect(await isDropdownOpened()).toBeTruthy(`Dropdown should be opened on 'ArrowUp' press`);
     });
