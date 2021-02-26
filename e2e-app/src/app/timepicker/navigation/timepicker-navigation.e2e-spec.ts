@@ -41,7 +41,7 @@ describe('Timepicker', () => {
     });
   });
 
-  if (process.env.BROWSER !== 'firefox' && process.env.BROWSER !== 'webkit') {
+  if (process.env.NGB_BROWSER !== 'firefox' && process.env.NGB_BROWSER !== 'webkit') {
     describe('arrow keys', () => {
       it(`should keep caret at the end of the input`, async() => {
         for (const selector of[SELECTOR_HOUR, SELECTOR_MIN, SELECTOR_SEC]) {

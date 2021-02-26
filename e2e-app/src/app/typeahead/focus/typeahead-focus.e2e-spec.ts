@@ -76,7 +76,7 @@ describe('Typeahead', () => {
       await waitForTypeaheadFocused();
     });
 
-    if (process.env.BROWSER !== 'webkit') {
+    if (process.env.NGB_BROWSER !== 'webkit') {
       it(`should select element on tab`, async() => {
         await focusElement(SELECTOR_TYPEAHEAD);
         await sendKey('Tab');
