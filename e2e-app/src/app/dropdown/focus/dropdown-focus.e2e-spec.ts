@@ -120,7 +120,7 @@ describe(`Dropdown focus`, () => {
         await waitForFocus(SELECTOR_DROPDOWN_TOGGLE, `Toggling element should be focused`);
       });
 
-      if (process.env.BROWSER !== 'webkit') {
+      if (process.env.NGB_BROWSER !== 'webkit') {
         it(`should focus dropdown first item with Tab when dropdown is opened (toggle was focused)`, async() => {
           await openDropdown('Dropdown should be opened', SELECTOR_DROPDOWN, container === 'body');
           await waitForFocus(SELECTOR_DROPDOWN_TOGGLE, `Toggling element should be focused`);

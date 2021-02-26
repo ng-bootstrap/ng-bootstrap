@@ -98,7 +98,7 @@ describe('Datepicker', () => {
     await waitForFocus(SELECTOR_TOGGLE, `Toggle element become re-focused after datepicker is closed`);
   });
 
-  if (process.env.BROWSER !== 'webkit') {
+  if (process.env.NGB_BROWSER !== 'webkit') {
     it(`should trap focus inside opened popup (Tab)`, async() => {
       await openDatepicker();
 
@@ -181,7 +181,7 @@ describe('Datepicker', () => {
     await waitForFocus(SELECTOR_DAY(new Date()), `Today's date should stay focused`);
   });
 
-  if (process.env.BROWSER !== 'webkit') {
+  if (process.env.NGB_BROWSER !== 'webkit') {
     it(`should allow focusing datepicker input`, async() => {
       await openDatepicker();
 

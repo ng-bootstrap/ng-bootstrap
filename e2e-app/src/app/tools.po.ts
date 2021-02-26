@@ -40,7 +40,7 @@ let hasBeenLoaded = false;
 export const openUrl = async(url: string, selector: string) => {
   const page = test.page;
   const targetUrl = `#navigate-${url.replace('/', '-')}`;
-  const browser = process.env.BROWSER;
+  const browser = process.env.NGB_BROWSER;
   if (hasBeenLoaded && browser === 'chromium') {
     await page.click(`#navigate-home`);
     await page.waitForSelector(targetUrl);

@@ -27,7 +27,13 @@ export class Playwright {
       this._context = await browserInstance.newContext(this._contextOptions);
 
       // Default timeout used to wait for selector/actions requiring timeout
-      this._context.setDefaultTimeout(process.env.CI ? 60000 : 2000);
+      if (process.env.PWDEBUG) {
+        this._context.setDefaultTimeout(0);
+      } else {
+        this._context.setDefaultTimeout((process.env.CI || process.env.NGB_SLOW_MOTION) ? 60000 : 2000);
+      }
+      // Let the default for the navigation, as it can take longer than 2s.
+      this._context.setDefaultNavigationTimeout(30000);
     }
   }
 
