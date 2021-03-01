@@ -32,7 +32,7 @@
     "ngb:lint": "ng lint ng-bootstrap && yarn schematics:lint",
     "ngb:test": "ng test ng-bootstrap --code-coverage --source-map true --progress false --watch false",
     "ngb:tdd": "ng test ng-bootstrap --source-map false",
-    "ngb:e2e": "concurrently --success first --kill-others \"yarn e2e-app:serve --prod --no-watch\" \"yarn ngb:e2e-playwright BROWSER=chromium && yarn ngb:e2e-playwright BROWSER=firefox && yarn ngb:e2e-playwright BROWSER=webkit\"",
+    "ngb:e2e": "concurrently --success first --kill-others \"yarn e2e-app:serve -c playwright\" \"yarn ngb:e2e-playwright BROWSER=chromium && yarn ngb:e2e-playwright BROWSER=firefox && yarn ngb:e2e-playwright BROWSER=webkit\"",
     "ngb:e2e-playwright": "wait-on http://localhost:4200 && ts-node --project e2e-app/tsconfig.spec.json node_modules/jasmine/bin/jasmine --config=e2e-app/jasmine.json",
     "ngb:build-ivy": "ng build ng-bootstrap",
     "ngb:build": "ng build ng-bootstrap --prod && yarn schematics:build && yarn ngb:static",
