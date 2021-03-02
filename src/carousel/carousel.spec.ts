@@ -11,12 +11,13 @@ import {NgbConfig} from '../ngb-config';
 import {NgbConfigAnimation} from '../test/ngb-config-animation';
 import {NgbSlideEventDirection} from './carousel-transition';
 
-const createTestComponent = (html: string) =>
-    createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
+const createTestComponent = (html: string, detectChanges = true) =>
+    createGenericTestComponent(html, TestComponent, detectChanges) as ComponentFixture<TestComponent>;
 
 function expectActiveSlides(nativeEl: HTMLDivElement, active: boolean[]) {
   const slideElms = nativeEl.querySelectorAll('.carousel-item');
   const indicatorElms = nativeEl.querySelectorAll('ol.carousel-indicators > li');
+  const carouselElm = nativeEl.querySelector('ngb-carousel');
 
   expect(slideElms.length).toBe(active.length);
   expect(indicatorElms.length).toBe(active.length);
@@ -25,9 +26,12 @@ function expectActiveSlides(nativeEl: HTMLDivElement, active: boolean[]) {
     if (active[i]) {
       expect(slideElms[i]).toHaveCssClass('active');
       expect(indicatorElms[i]).toHaveCssClass('active');
+      expect(indicatorElms[i].getAttribute('aria-selected')).toBe('true');
+      expect(carouselElm !.getAttribute('aria-activedescendant')).toBe(slideElms[i].id);
     } else {
       expect(slideElms[i]).not.toHaveCssClass('active');
       expect(indicatorElms[i]).not.toHaveCssClass('active');
+      expect(indicatorElms[i].getAttribute('aria-selected')).toBe('false');
     }
   }
 }
@@ -109,11 +113,12 @@ describe('ngb-carousel', () => {
        </ngb-carousel>
      `;
 
-       const fixture = createTestComponent(html);
+       // set the second slide active (instead of the first one by default), before the first change detection
+       const fixture = createTestComponent(html, false);
 
-       fixture.componentInstance.activeSlideId = '1';
+       fixture.componentInstance.activeSlideId = '2';
        fixture.detectChanges();
-       expectActiveSlides(fixture.nativeElement, [true, false]);
+       expectActiveSlides(fixture.nativeElement, [false, true]);
 
        discardPeriodicTasks();
      }));
