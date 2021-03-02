@@ -53,6 +53,15 @@ export abstract class NgbDatepickerI18n {
   abstract getMonthFullName(month: number, year?: number): string;
 
   /**
+   * Returns the text label to display above the day view.
+   *
+   * @since 9.1.0
+   */
+  getMonthLabel(date: NgbDateStruct): string {
+    return `${this.getMonthFullName(date.month, date.year)} ${this.getYearNumerals(date.year)}`;
+  }
+
+  /**
    * Returns the value of the `aria-label` attribute for a specific date.
    *
    * @since 2.0.0
@@ -81,11 +90,17 @@ export abstract class NgbDatepickerI18n {
   getYearNumerals(year: number): string { return `${year}`; }
 }
 
+/**
+ * A service providing default implementation for the datepicker i18n.
+ * It can be used as a base implementation if necessary.
+ *
+ * @since 9.1.0
+ */
 @Injectable()
 export class NgbDatepickerI18nDefault extends NgbDatepickerI18n {
-  private _weekdays: Array<string>;
-  private _monthsShort: ReadonlyArray<string>;
-  private _monthsFull: ReadonlyArray<string>;
+  private _weekdays: readonly string[];
+  private _monthsShort: readonly string[];
+  private _monthsFull: readonly string[];
 
   constructor(
       @Inject(LOCALE_ID) private _locale: string,
