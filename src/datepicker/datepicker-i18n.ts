@@ -1,10 +1,9 @@
 import {Inject, Injectable, LOCALE_ID} from '@angular/core';
 import {FormStyle, getLocaleDayNames, getLocaleMonthNames, TranslationWidth, formatDate} from '@angular/common';
 import {NgbDateStruct} from './ngb-date-struct';
-import {NGB_DATEPICKER_WEEKDAY_FORMAT} from './datepicker-weekday-format';
 
-export function NGB_DATEPICKER_18N_FACTORY(locale, weekDayFormat) {
-  return new NgbDatepickerI18nDefault(locale, weekDayFormat);
+export function NGB_DATEPICKER_18N_FACTORY(locale) {
+  return new NgbDatepickerI18nDefault(locale);
 }
 
 /**
@@ -20,8 +19,7 @@ export function NGB_DATEPICKER_18N_FACTORY(locale, weekDayFormat) {
  * [Hebrew calendar demo](#/components/datepicker/calendars#hebrew) on how to extend this class and define
  * a custom provider for i18n.
  */
-@Injectable(
-    {providedIn: 'root', useFactory: NGB_DATEPICKER_18N_FACTORY, deps: [LOCALE_ID, NGB_DATEPICKER_WEEKDAY_FORMAT]})
+@Injectable({providedIn: 'root', useFactory: NGB_DATEPICKER_18N_FACTORY, deps: [LOCALE_ID]})
 export abstract class NgbDatepickerI18n {
   /**
    * Returns the short weekday name to display in the heading of the month view.
@@ -29,14 +27,6 @@ export abstract class NgbDatepickerI18n {
    * With default calendar we use ISO 8601: 'weekday' is 1=Mon ... 7=Sun.
    */
   abstract getWeekdayShortName(weekday: number): string;
-
-  /**
- * Returns the weekday name to display in the heading of the month view.
- * By default the format is short, but it can be changed with the NGB_DATEPICKER_WEEKDAY_FORMAT token.
- *
- * With default calendar we use ISO 8601: 'weekday' is 1=Mon ... 7=Sun.
- */
-  abstract getWeekdayName(weekday: number): string;
 
   /**
    * Returns the short month name to display in the date picker navigation.
@@ -98,24 +88,21 @@ export abstract class NgbDatepickerI18n {
  */
 @Injectable()
 export class NgbDatepickerI18nDefault extends NgbDatepickerI18n {
-  private _weekdays: readonly string[];
+  private _weekdaysShort: readonly string[];
   private _monthsShort: readonly string[];
   private _monthsFull: readonly string[];
 
-  constructor(
-      @Inject(LOCALE_ID) private _locale: string,
-      @Inject(NGB_DATEPICKER_WEEKDAY_FORMAT) weekDayFormat: TranslationWidth) {
+  constructor(@Inject(LOCALE_ID) private _locale: string) {
     super();
-    const weekdaysStartingOnSunday = getLocaleDayNames(_locale, FormStyle.Standalone, weekDayFormat);
-    this._weekdays = weekdaysStartingOnSunday.map((day, index) => weekdaysStartingOnSunday[(index + 1) % 7]);
+
+    const weekdaysStartingOnSunday = getLocaleDayNames(_locale, FormStyle.Standalone, TranslationWidth.Short);
+    this._weekdaysShort = weekdaysStartingOnSunday.map((day, index) => weekdaysStartingOnSunday[(index + 1) % 7]);
 
     this._monthsShort = getLocaleMonthNames(_locale, FormStyle.Standalone, TranslationWidth.Abbreviated);
     this._monthsFull = getLocaleMonthNames(_locale, FormStyle.Standalone, TranslationWidth.Wide);
   }
 
-  getWeekdayShortName(weekday: number): string { return this.getWeekdayName(weekday); }
-
-  getWeekdayName(weekday: number): string { return this._weekdays[weekday - 1] || ''; }
+  getWeekdayShortName(weekday: number): string { return this._weekdaysShort[weekday - 1] || ''; }
 
   getMonthShortName(month: number): string { return this._monthsShort[month - 1] || ''; }
 

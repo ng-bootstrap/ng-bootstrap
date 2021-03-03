@@ -184,7 +184,6 @@ export class NgbdDatepickerOverviewComponent {
         @Injectable()
         export abstract class NgbDatepickerI18n {
           abstract getWeekdayShortName(weekday: number): string;
-          abstract getWeekdayName(weekday: number): string;
           abstract getMonthShortName(month: number): string;
           abstract getMonthFullName(month: number): string;
           abstract getDayAriaLabel(date: NgbDateStruct): string;

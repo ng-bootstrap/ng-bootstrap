@@ -70,8 +70,7 @@ export {
   NgbDatepickerState,
   NgbDateStruct,
   NgbInputDatepicker,
-  NgbPeriod,
-  NGB_DATEPICKER_WEEKDAY_FORMAT
+  NgbPeriod
 } from './datepicker/datepicker.module';
 export {
   NgbDropdown,
