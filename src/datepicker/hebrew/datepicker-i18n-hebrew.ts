@@ -20,7 +20,9 @@ export class NgbDatepickerI18nHebrew extends NgbDatepickerI18n {
     return isHebrewLeapYear(year) ? MONTHS_LEAP[month - 1] || '' : MONTHS[month - 1] || '';
   }
 
-  getWeekdayShortName(weekday: number): string { return WEEKDAYS[weekday - 1] || ''; }
+  getWeekdayShortName(weekday: number): string { return this.getWeekdayName(weekday); }
+
+  getWeekdayName(weekday: number): string { return WEEKDAYS[weekday - 1] || ''; }
 
   getDayAriaLabel(date: NgbDateStruct): string {
     return `${hebrewNumerals(date.day)} ${this.getMonthFullName(date.month, date.year)} ${hebrewNumerals(date.year)}`;

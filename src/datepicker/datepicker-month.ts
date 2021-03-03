@@ -23,7 +23,7 @@ import {NgbDateStruct} from './ngb-date-struct';
     <div *ngIf="datepicker.showWeekdays" class="ngb-dp-week ngb-dp-weekdays" role="row">
       <div *ngIf="datepicker.showWeekNumbers" class="ngb-dp-weekday ngb-dp-showweek"></div>
       <div *ngFor="let w of viewModel.weekdays" class="ngb-dp-weekday small" role="columnheader">
-        {{ i18n.getWeekdayShortName(w) }}
+        {{ i18n.getWeekdayName(w) }}
       </div>
     </div>
     <ng-template ngFor let-week [ngForOf]="viewModel.weeks">
