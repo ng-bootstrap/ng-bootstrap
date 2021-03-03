@@ -132,7 +132,7 @@ export class NgbDatepickerContent {
     <ng-template #defaultContentTemplate>
       <div *ngFor="let month of model.months; let i = index;" class="ngb-dp-month">
         <div *ngIf="navigation === 'none' || (displayMonths > 1 && navigation === 'select')" class="ngb-dp-month-name">
-          {{ i18n.getMonthFullName(month.number, month.year) }} {{ i18n.getYearNumerals(month.year) }}
+          {{ i18n.getMonthLabel(month.firstDate) }}
         </div>
         <ngb-datepicker-month [month]="month.firstDate"></ngb-datepicker-month>
       </div>

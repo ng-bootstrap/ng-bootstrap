@@ -113,6 +113,40 @@ describe('ngb-datepicker integration', () => {
     });
   });
 
+  describe('i18n-month-label', () => {
+
+    @Injectable()
+    class CustomI18n extends NgbDatepickerI18nDefault {
+      getMonthLabel(date: NgbDateStruct): string { return `${date.month}-${date.year}`; }
+    }
+
+    let fixture: ComponentFixture<TestComponent>;
+
+    beforeEach(() => {
+      TestBed.overrideComponent(TestComponent, {
+        set: {
+          template: `
+            <ngb-datepicker [startDate]="{year: 2018, month: 1}"
+                            [minDate]="{year: 2017, month: 1, day: 1}"
+                            [maxDate]="{year: 2019, month: 12, day: 31}"
+                            [showWeekNumbers]="true"
+                            [displayMonths]="2"
+            ></ngb-datepicker>`,
+          providers: [{provide: NgbDatepickerI18n, useClass: CustomI18n}]
+        }
+      });
+
+      fixture = TestBed.createComponent(TestComponent);
+      fixture.detectChanges();
+    });
+
+    it('should allow overriding month labels', () => {
+      const monthNameElements = fixture.nativeElement.querySelectorAll('.ngb-dp-month-name');
+      const monthNames = Array.from(monthNameElements).map((o: HTMLElement) => o.innerText.trim());
+      expect(monthNames).toEqual(['1-2018', '2-2018']);
+    });
+  });
+
   describe('keyboard service', () => {
 
     @Injectable()
