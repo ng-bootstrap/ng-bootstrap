@@ -13,12 +13,11 @@ import {NgbDate} from './ngb-date';
 import {NgbCalendarGregorian} from './ngb-calendar';
 import {DatepickerViewModel, NgbMarkDisabled, MonthViewModel} from './datepicker-view-model';
 import {NgbDatepickerI18nDefault} from './datepicker-i18n';
-import {TranslationWidth} from '@angular/common';
 
 describe(`datepicker-tools`, () => {
 
   const calendar = new NgbCalendarGregorian();
-  const i18n = new NgbDatepickerI18nDefault('en', TranslationWidth.Short);
+  const i18n = new NgbDatepickerI18nDefault('en');
 
   describe(`dateComparator()`, () => {
 
