@@ -5,6 +5,7 @@ import {NgbDate} from './ngb-date';
 import {Subscription} from 'rxjs';
 import {DatepickerViewModel} from './datepicker-view-model';
 import {NgbDatepickerI18n, NgbDatepickerI18nDefault} from './datepicker-i18n';
+import {TranslationWidth} from '@angular/common';
 
 describe('ngb-datepicker-service', () => {
 
@@ -232,18 +233,18 @@ describe('ngb-datepicker-service', () => {
     it(`should generate a month with firstDayOfWeek=1 by default`, () => {
       service.focus(new NgbDate(2017, 5, 5));
       expect(model.months.length).toBe(1);
-      expect(model.months[0].weekdays[0]).toBe(1);
+      expect(model.months[0].weekdays[0]).toBe('Mo');
     });
 
     it(`should generate weeks starting with 'firstDayOfWeek'`, () => {
       service.set({firstDayOfWeek: 2});
       service.focus(new NgbDate(2017, 5, 5));
       expect(model.months.length).toBe(1);
-      expect(model.months[0].weekdays[0]).toBe(2);
+      expect(model.months[0].weekdays[0]).toBe('Tu');
 
       service.set({firstDayOfWeek: 4});
       expect(model.months.length).toBe(1);
-      expect(model.months[0].weekdays[0]).toBe(4);
+      expect(model.months[0].weekdays[0]).toBe('Th');
     });
 
     it(`should update months when 'firstDayOfWeek' changes`, () => {
@@ -259,6 +260,29 @@ describe('ngb-datepicker-service', () => {
       expect(model.firstDayOfWeek).toBe(3);
       const newFirstDate = getDay(0).date;
       expect(newFirstDate).toEqual(new NgbDate(2017, 4, 26));
+    });
+  });
+
+  describe(`weekday`, () => {
+
+    it(`should update visibility and width correctly`, () => {
+      // default values
+      service.focus(new NgbDate(2017, 5, 1));
+      expect(model.weekdayWidth).toBe(TranslationWidth.Short);
+      expect(model.weekdaysVisible).toBeTrue();
+      expect(model.months[0].weekdays).toEqual(['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']);
+
+      // Specific width
+      service.set({weekdays: TranslationWidth.Narrow});
+      expect(model.weekdayWidth).toBe(TranslationWidth.Narrow);
+      expect(model.weekdaysVisible).toBeTrue();
+      expect(model.months[0].weekdays).toEqual(['M', 'T', 'W', 'T', 'F', 'S', 'S']);
+
+      // false
+      service.set({weekdays: false});
+      expect(model.weekdayWidth).toBe(TranslationWidth.Short);
+      expect(model.weekdaysVisible).toBeFalse();
+      expect(model.months[0].weekdays).toEqual([]);
     });
   });
 

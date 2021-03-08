@@ -132,7 +132,8 @@ export function buildMonths(
 export function buildMonth(
     calendar: NgbCalendar, date: NgbDate, state: DatepickerViewModel, i18n: NgbDatepickerI18n,
     month: MonthViewModel = {} as MonthViewModel): MonthViewModel {
-  const {dayTemplateData, minDate, maxDate, firstDayOfWeek, markDisabled, outsideDays} = state;
+  const {dayTemplateData, minDate, maxDate, firstDayOfWeek, markDisabled, outsideDays, weekdayWidth, weekdaysVisible} =
+      state;
   const calendarToday = calendar.getToday();
 
   month.firstDate = <any>null;
@@ -144,6 +145,11 @@ export function buildMonth(
 
   date = getFirstViewDate(calendar, date, firstDayOfWeek);
 
+  // clearing weekdays, if not visible
+  if (!weekdaysVisible) {
+    month.weekdays.length = 0;
+  }
+
   // month has weeks
   for (let week = 0; week < calendar.getWeeksPerMonth(); week++) {
     let weekObject = month.weeks[week];
@@ -154,8 +160,8 @@ export function buildMonth(
 
     // week has days
     for (let day = 0; day < calendar.getDaysPerWeek(); day++) {
-      if (week === 0) {
-        month.weekdays[day] = calendar.getWeekday(date);
+      if (week === 0 && weekdaysVisible) {
+        month.weekdays[day] = i18n.getWeekdayLabel(calendar.getWeekday(date), weekdayWidth);
       }
 
       const newDate = new NgbDate(date.year, date.month, date.day);

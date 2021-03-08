@@ -17,6 +17,7 @@ import {NgbDatepickerDayView} from './datepicker-day-view';
 import {NgbDatepickerKeyboardService} from './datepicker-keyboard-service';
 import {NgbDatepickerNavigationSelect} from './datepicker-navigation-select';
 import {NgbDatepickerNavigation} from './datepicker-navigation';
+import {TranslationWidth} from '@angular/common';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -39,6 +40,11 @@ function getFocusableDays(element: DebugElement): DebugElement[] {
 
 function getSelectedDays(element: DebugElement): DebugElement[] {
   return <DebugElement[]>Array.from(element.queryAll(By.css('div.ngb-dp-day > div.bg-primary')));
+}
+
+function getWeekdays(element: HTMLElement): string[] {
+  return (<HTMLElement[]>Array.from(element.querySelectorAll('.ngb-dp-weekday')) || [])
+      .map(el => el.textContent !.trim());
 }
 
 function focusDay() {
@@ -124,6 +130,7 @@ function expectSameValues(datepicker: NgbDatepicker, config: NgbDatepickerConfig
   expect(datepicker.showWeekdays).toBe(config.showWeekdays);
   expect(datepicker.showWeekNumbers).toBe(config.showWeekNumbers);
   expect(datepicker.startDate).toEqual(config.startDate);
+  expect(datepicker.weekdays).toBe(config.weekdays);
 }
 
 function customizeConfig(config: NgbDatepickerConfig) {
@@ -139,6 +146,7 @@ function customizeConfig(config: NgbDatepickerConfig) {
   config.showWeekdays = false;
   config.showWeekNumbers = true;
   config.startDate = {year: 2015, month: 1};
+  config.weekdays = TranslationWidth.Abbreviated;
 }
 
 describe('ngb-datepicker', () => {
@@ -215,6 +223,34 @@ describe('ngb-datepicker', () => {
     fixture.detectChanges();
     expect(getMonthSelect(fixture.nativeElement).value).toBe(currentMonth);
     expect(getYearSelect(fixture.nativeElement).value).toBe(currentYear);
+  });
+
+  it(`should display weekdays by default`, () => {
+    const fixture = createTestComponent(`<ngb-datepicker [startDate]="date"></ngb-datepicker>`);
+    expect(getWeekdays(fixture.nativeElement)).toEqual(['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']);
+  });
+
+  it(`should allow customizing the way weekdays are displayed (showWeekdays)`, () => {
+    const fixture =
+        createTestComponent(`<ngb-datepicker [startDate]="date" [showWeekdays]="showWeekdays"></ngb-datepicker>`);
+    expect(getWeekdays(fixture.nativeElement)).toEqual(['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']);
+
+    fixture.componentInstance.showWeekdays = false;
+    fixture.detectChanges();
+    expect(getWeekdays(fixture.nativeElement)).toEqual([]);
+  });
+
+  it(`should allow cusotmizing the way weekdays are displayed (weekdays)`, () => {
+    const fixture = createTestComponent(`<ngb-datepicker [startDate]="date" [weekdays]="weekdays"></ngb-datepicker>`);
+    expect(getWeekdays(fixture.nativeElement)).toEqual(['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']);
+
+    fixture.componentInstance.weekdays = false;
+    fixture.detectChanges();
+    expect(getWeekdays(fixture.nativeElement)).toEqual([]);
+
+    fixture.componentInstance.weekdays = TranslationWidth.Narrow;
+    fixture.detectChanges();
+    expect(getWeekdays(fixture.nativeElement)).toEqual(['M', 'T', 'W', 'T', 'F', 'S', 'S']);
   });
 
   it(`should allow navigation work when startDate value changes`, () => {
@@ -1260,6 +1296,7 @@ class TestComponent {
   disabledForm = new FormGroup({control: new FormControl({value: null, disabled: true})});
   model;
   showWeekdays = true;
+  weekdays: boolean | TranslationWidth = true;
   dayTemplateData = () => '!';
   markDisabled = (date: NgbDateStruct) => { return NgbDate.from(date) !.equals(new NgbDate(2016, 8, 22)); };
   onNavigate = (event) => {};

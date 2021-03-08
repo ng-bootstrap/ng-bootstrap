@@ -1,6 +1,7 @@
 import {NgbDate} from './ngb-date';
 import {NgbDateStruct} from './ngb-date-struct';
 import {DayTemplateContext} from './datepicker-day-template-context';
+import {TranslationWidth} from '@angular/common';
 
 export type NgbMarkDisabled = (date: NgbDateStruct, current?: {year: number, month: number}) => boolean;
 export type NgbDayTemplateData = (date: NgbDateStruct, current?: {year: number, month: number}) => any;
@@ -25,7 +26,7 @@ export type MonthViewModel = {
   number: number,
   year: number,
   weeks: WeekViewModel[],
-  weekdays: number[]
+  weekdays: string[]
 };
 
 // clang-format off
@@ -50,7 +51,9 @@ export type DatepickerViewModel = {
     years: number[],
     months: number[]
   },
-  selectedDate: NgbDate | null
+  selectedDate: NgbDate | null,
+  weekdayWidth: TranslationWidth,
+  weekdaysVisible: boolean
 };
 // clang-format on
 

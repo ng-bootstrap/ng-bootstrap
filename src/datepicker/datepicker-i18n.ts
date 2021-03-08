@@ -1,5 +1,5 @@
 import {Inject, Injectable, LOCALE_ID} from '@angular/core';
-import {FormStyle, getLocaleDayNames, getLocaleMonthNames, TranslationWidth, formatDate} from '@angular/common';
+import {formatDate, FormStyle, getLocaleDayNames, getLocaleMonthNames, TranslationWidth} from '@angular/common';
 import {NgbDateStruct} from './ngb-date-struct';
 
 export function NGB_DATEPICKER_18N_FACTORY(locale) {
@@ -25,8 +25,17 @@ export abstract class NgbDatepickerI18n {
    * Returns the short weekday name to display in the heading of the month view.
    *
    * With default calendar we use ISO 8601: 'weekday' is 1=Mon ... 7=Sun.
+   *
+   * @deprecated 9.1.0, use 'getWeekdayLabel' instead
    */
   abstract getWeekdayShortName(weekday: number): string;
+
+  /**
+   * Returns the weekday label using specified width
+   *
+   * @since 9.1.0
+   */
+  getWeekdayLabel(weekday: number, width?: TranslationWidth): string { return this.getWeekdayShortName(weekday); }
 
   /**
    * Returns the short month name to display in the date picker navigation.
@@ -88,21 +97,24 @@ export abstract class NgbDatepickerI18n {
  */
 @Injectable()
 export class NgbDatepickerI18nDefault extends NgbDatepickerI18n {
-  private _weekdaysShort: readonly string[];
   private _monthsShort: readonly string[];
   private _monthsFull: readonly string[];
 
   constructor(@Inject(LOCALE_ID) private _locale: string) {
     super();
 
-    const weekdaysStartingOnSunday = getLocaleDayNames(_locale, FormStyle.Standalone, TranslationWidth.Short);
-    this._weekdaysShort = weekdaysStartingOnSunday.map((day, index) => weekdaysStartingOnSunday[(index + 1) % 7]);
-
     this._monthsShort = getLocaleMonthNames(_locale, FormStyle.Standalone, TranslationWidth.Abbreviated);
     this._monthsFull = getLocaleMonthNames(_locale, FormStyle.Standalone, TranslationWidth.Wide);
   }
 
-  getWeekdayShortName(weekday: number): string { return this._weekdaysShort[weekday - 1] || ''; }
+  getWeekdayShortName(weekday: number): string { return this.getWeekdayLabel(weekday, TranslationWidth.Short); }
+
+  getWeekdayLabel(weekday: number, width?: TranslationWidth): string {
+    const weekdaysStartingOnSunday =
+        getLocaleDayNames(this._locale, FormStyle.Standalone, width === undefined ? TranslationWidth.Short : width);
+    const weekdays = weekdaysStartingOnSunday.map((day, index) => weekdaysStartingOnSunday[(index + 1) % 7]);
+    return weekdays[weekday - 1] || '';
+  }
 
   getMonthShortName(month: number): string { return this._monthsShort[month - 1] || ''; }
 
