@@ -25,21 +25,12 @@ const createTestComponent = () => createGenericTestComponent(
 `,
     TestComponent) as ComponentFixture<TestComponent>;
 
-function getWeekdays(element: HTMLElement): HTMLElement[] {
-  return <HTMLElement[]>Array.from(element.querySelectorAll('.ngb-dp-weekday'));
-}
-
 function getWeekNumbers(element: HTMLElement): HTMLElement[] {
   return <HTMLElement[]>Array.from(element.querySelectorAll('.ngb-dp-week-number'));
 }
 
 function getDates(element: HTMLElement): HTMLElement[] {
   return <HTMLElement[]>Array.from(element.querySelectorAll('.ngb-dp-day'));
-}
-
-function expectWeekdays(element: HTMLElement, weekdays: string[]) {
-  const result = getWeekdays(element).map(td => td.innerText.trim());
-  expect(result).toEqual(weekdays);
 }
 
 function expectWeekNumbers(element: HTMLElement, weeknumbers: string[]) {
@@ -60,7 +51,7 @@ class MockDatepickerService extends NgbDatepickerService {
       lastDate: new NgbDate(2016, 8, 31),
       year: 2016,
       number: 8,
-      weekdays: [1, 2],
+      weekdays: ['Mo', 'Tu'],
       weeks: [
         // month: 7, 8
         {
@@ -239,18 +230,6 @@ describe('ngb-datepicker-month', () => {
       imports: [NgbDatepickerModule],
       providers: [{provide: NgbDatepickerService, useClass: MockDatepickerService}]
     });
-  });
-
-  it('should show/hide weekdays', () => {
-    const fixture = createTestComponent();
-    fixture.componentInstance.showWeekNumbers = false;
-    fixture.detectChanges();
-
-    expectWeekdays(fixture.nativeElement, ['Mo', 'Tu']);
-
-    fixture.componentInstance.showWeekdays = false;
-    fixture.detectChanges();
-    expectWeekdays(fixture.nativeElement, []);
   });
 
   it('should show/hide week numbers', () => {

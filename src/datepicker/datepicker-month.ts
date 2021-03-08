@@ -20,11 +20,9 @@ import {NgbDateStruct} from './ngb-date-struct';
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['./datepicker-month.scss'],
   template: `
-    <div *ngIf="datepicker.showWeekdays" class="ngb-dp-week ngb-dp-weekdays" role="row">
+    <div *ngIf="viewModel.weekdays.length > 0" class="ngb-dp-week ngb-dp-weekdays" role="row">
       <div *ngIf="datepicker.showWeekNumbers" class="ngb-dp-weekday ngb-dp-showweek"></div>
-      <div *ngFor="let w of viewModel.weekdays" class="ngb-dp-weekday small" role="columnheader">
-        {{ i18n.getWeekdayShortName(w) }}
-      </div>
+      <div *ngFor="let weekday of viewModel.weekdays" class="ngb-dp-weekday small" role="columnheader">{{ weekday }}</div>
     </div>
     <ng-template ngFor let-week [ngForOf]="viewModel.weeks">
       <div *ngIf="!week.collapsed" class="ngb-dp-week" role="row">

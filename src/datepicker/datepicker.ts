@@ -21,6 +21,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {TranslationWidth} from '@angular/common';
+
 import {NgbCalendar} from './ngb-calendar';
 import {NgbDate} from './ngb-date';
 import {DatepickerServiceInputs, NgbDatepickerService} from './datepicker-service';
@@ -166,6 +168,7 @@ export class NgbDatepicker implements OnDestroy,
   static ngAcceptInputType_autoClose: boolean | string;
   static ngAcceptInputType_navigation: string;
   static ngAcceptInputType_outsideDays: string;
+  static ngAcceptInputType_weekdays: boolean | number;
 
   model: DatepickerViewModel;
 
@@ -176,6 +179,7 @@ export class NgbDatepicker implements OnDestroy,
   private _controlValue: NgbDate | null = null;
   private _destroyed$ = new Subject<void>();
   private _publicState: NgbDatepickerState = <any>{};
+  private _showWeekdays: boolean;
 
   /**
    * The reference to a custom template for the day.
@@ -260,8 +264,16 @@ export class NgbDatepicker implements OnDestroy,
 
   /**
    * If `true`, weekdays will be displayed.
+   *
+   * @deprecated 9.1.0, please use 'weekdays' instead
    */
-  @Input() showWeekdays: boolean;
+  @Input()
+  set showWeekdays(weekdays: boolean) {
+    this.weekdays = weekdays;
+    this._showWeekdays = weekdays;
+  }
+
+  get showWeekdays(): boolean { return this._showWeekdays; }
 
   /**
    * If `true`, week numbers will be displayed.
@@ -277,6 +289,17 @@ export class NgbDatepicker implements OnDestroy,
    * You could use `navigateTo(date)` method as an alternative.
    */
   @Input() startDate: {year: number, month: number, day?: number};
+
+  /**
+   * The way weekdays should be displayed.
+   *
+   * * `true` - weekdays are displayed using default width
+   * * `false` - weekdays are not displayed
+   * * `TranslationWidth` - weekdays are displayed using specified width
+   *
+   * @since 9.1.0
+   */
+  @Input() weekdays: TranslationWidth | boolean;
 
   /**
    * An event emitted right before the navigation happens and displayed month changes.
@@ -302,7 +325,7 @@ export class NgbDatepicker implements OnDestroy,
       config: NgbDatepickerConfig, cd: ChangeDetectorRef, private _elementRef: ElementRef<HTMLElement>,
       private _ngbDateAdapter: NgbDateAdapter<any>, private _ngZone: NgZone) {
     ['dayTemplate', 'dayTemplateData', 'displayMonths', 'firstDayOfWeek', 'footerTemplate', 'markDisabled', 'minDate',
-     'maxDate', 'navigation', 'outsideDays', 'showWeekdays', 'showWeekNumbers', 'startDate']
+     'maxDate', 'navigation', 'outsideDays', 'showWeekdays', 'showWeekNumbers', 'startDate', 'weekdays']
         .forEach(input => this[input] = config[input]);
 
     _service.dateSelect$.pipe(takeUntil(this._destroyed$)).subscribe(date => { this.dateSelect.emit(date); });
@@ -430,7 +453,7 @@ export class NgbDatepicker implements OnDestroy,
     if (this.model === undefined) {
       const inputs: DatepickerServiceInputs = {};
       ['dayTemplateData', 'displayMonths', 'markDisabled', 'firstDayOfWeek', 'navigation', 'minDate', 'maxDate',
-       'outsideDays']
+       'outsideDays', 'weekdays']
           .forEach(name => inputs[name] = this[name]);
       this._service.set(inputs);
 
@@ -443,8 +466,13 @@ export class NgbDatepicker implements OnDestroy,
 
   ngOnChanges(changes: SimpleChanges) {
     const inputs: DatepickerServiceInputs = {};
+
+    if (changes.showWeekdays) {
+      inputs['weekdays'] = this.weekdays;
+    }
+
     ['dayTemplateData', 'displayMonths', 'markDisabled', 'firstDayOfWeek', 'navigation', 'minDate', 'maxDate',
-     'outsideDays']
+     'outsideDays', 'weekdays']
         .filter(name => name in changes)
         .forEach(name => inputs[name] = this[name]);
     this._service.set(inputs);

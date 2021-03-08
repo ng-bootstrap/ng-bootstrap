@@ -9,21 +9,33 @@ import {
   buildMonths,
   checkDateInRange,
   checkMinBeforeMax,
+  generateSelectBoxMonths,
+  generateSelectBoxYears,
   isChangedDate,
   isChangedMonth,
   isDateSelectable,
-  generateSelectBoxYears,
-  generateSelectBoxMonths,
-  prevMonthDisabled,
-  nextMonthDisabled
+  nextMonthDisabled,
+  prevMonthDisabled
 } from './datepicker-tools';
 
 import {filter} from 'rxjs/operators';
 import {NgbDatepickerI18n} from './datepicker-i18n';
+import {TranslationWidth} from '@angular/common';
 
-export interface DatepickerServiceInputs extends Partial<
-    Required<Pick<DatepickerViewModel, 'dayTemplateData' | 'displayMonths' | 'disabled' | 'firstDayOfWeek' |
-                      'focusVisible' | 'markDisabled' | 'maxDate' | 'minDate' | 'navigation' | 'outsideDays'>>> {}
+
+export type DatepickerServiceInputs = Partial<{
+  dayTemplateData: NgbDayTemplateData,
+  displayMonths: number,
+  disabled: boolean,
+  firstDayOfWeek: number,
+  focusVisible: boolean,
+  markDisabled: NgbMarkDisabled,
+  maxDate: NgbDate | null,
+  minDate: NgbDate | null,
+  navigation: 'select' | 'arrows' | 'none',
+  outsideDays: 'visible' | 'collapsed' | 'hidden',
+  weekdays: TranslationWidth | boolean
+}>;
 
 @Injectable()
 export class NgbDatepickerService {
@@ -61,13 +73,13 @@ export class NgbDatepickerService {
             return {markDisabled};
           }
         },
-        maxDate: (date: NgbDate) => {
+        maxDate: (date: NgbDate | null) => {
           const maxDate = this.toValidDate(date, null);
           if (isChangedDate(this._state.maxDate, maxDate)) {
             return {maxDate};
           }
         },
-        minDate: (date: NgbDate) => {
+        minDate: (date: NgbDate | null) => {
           const minDate = this.toValidDate(date, null);
           if (isChangedDate(this._state.minDate, minDate)) {
             return {minDate};
@@ -81,6 +93,13 @@ export class NgbDatepickerService {
         outsideDays: (outsideDays: 'visible' | 'collapsed' | 'hidden') => {
           if (this._state.outsideDays !== outsideDays) {
             return {outsideDays};
+          }
+        },
+        weekdays: (weekdays: boolean | TranslationWidth) => {
+          const weekdayWidth = weekdays === true || weekdays === false ? TranslationWidth.Short : weekdays;
+          const weekdaysVisible = weekdays === true || weekdays === false ? weekdays : true;
+          if (this._state.weekdayWidth !== weekdayWidth || this._state.weekdaysVisible !== weekdaysVisible) {
+            return {weekdayWidth, weekdaysVisible};
           }
         }
       };
@@ -107,7 +126,9 @@ export class NgbDatepickerService {
     prevDisabled: false,
     nextDisabled: false,
     selectedDate: null,
-    selectBoxes: {years: [], months: []}
+    selectBoxes: {years: [], months: []},
+    weekdayWidth: TranslationWidth.Short,
+    weekdaysVisible: true
   };
 
   get model$(): Observable<DatepickerViewModel> { return this._model$.pipe(filter(model => model.months.length > 0)); }
@@ -270,7 +291,8 @@ export class NgbDatepickerService {
     // rebuilding months
     if (startDate) {
       const forceRebuild = 'dayTemplateData' in patch || 'firstDayOfWeek' in patch || 'markDisabled' in patch ||
-          'minDate' in patch || 'maxDate' in patch || 'disabled' in patch || 'outsideDays' in patch;
+          'minDate' in patch || 'maxDate' in patch || 'disabled' in patch || 'outsideDays' in patch ||
+          'weekdaysVisible' in patch;
 
       const months = buildMonths(this._calendar, startDate, state, this._i18n, forceRebuild);
 

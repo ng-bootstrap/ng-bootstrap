@@ -17,7 +17,7 @@ import {
   TemplateRef,
   ViewContainerRef
 } from '@angular/core';
-import {DOCUMENT} from '@angular/common';
+import {DOCUMENT, TranslationWidth} from '@angular/common';
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -69,12 +69,14 @@ export class NgbInputDatepicker implements OnChanges,
   static ngAcceptInputType_disabled: boolean | '';
   static ngAcceptInputType_navigation: string;
   static ngAcceptInputType_outsideDays: string;
+  static ngAcceptInputType_weekdays: boolean | number;
 
   private _cRef: ComponentRef<NgbDatepicker>| null = null;
   private _disabled = false;
   private _elWithFocus: HTMLElement | null = null;
   private _model: NgbDate | null = null;
   private _inputValue: string;
+  private _showWeekdays: boolean;
   private _zoneSubscription: any;
 
   /**
@@ -197,8 +199,16 @@ export class NgbInputDatepicker implements OnChanges,
 
   /**
    * If `true`, weekdays will be displayed.
+   *
+   * @deprecated 9.1.0, please use 'weekdays' instead
    */
-  @Input() showWeekdays: boolean;
+  @Input()
+  set showWeekdays(weekdays: boolean) {
+    this.weekdays = weekdays;
+    this._showWeekdays = weekdays;
+  }
+
+  get showWeekdays(): boolean { return this._showWeekdays; }
 
   /**
    * If `true`, week numbers will be displayed.
@@ -230,6 +240,17 @@ export class NgbInputDatepicker implements OnChanges,
    * @since 4.2.0
    */
   @Input() positionTarget: string | HTMLElement;
+
+  /**
+   * The way weekdays should be displayed.
+   *
+   * * `true` - weekdays are displayed using default width
+   * * `false` - weekdays are not displayed
+   * * `TranslationWidth` - weekdays are displayed using specified width
+   *
+   * @since 9.1.0
+   */
+  @Input() weekdays: TranslationWidth | boolean;
 
   /**
    * An event emitted when user selects a date using keyboard or mouse.
@@ -453,7 +474,7 @@ export class NgbInputDatepicker implements OnChanges,
 
   private _applyDatepickerInputs(datepickerInstance: NgbDatepicker): void {
     ['dayTemplate', 'dayTemplateData', 'displayMonths', 'firstDayOfWeek', 'footerTemplate', 'markDisabled', 'minDate',
-     'maxDate', 'navigation', 'outsideDays', 'showNavigation', 'showWeekdays', 'showWeekNumbers']
+     'maxDate', 'navigation', 'outsideDays', 'showNavigation', 'showWeekNumbers', 'weekdays']
         .forEach((optionName: string) => {
           if (this[optionName] !== undefined) {
             datepickerInstance[optionName] = this[optionName];
