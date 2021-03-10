@@ -1,5 +1,5 @@
 import {test} from '../../../../playwright.conf';
-import {SELECTOR_MODAL_WINDOW, waitForModalCount} from '../modal';
+import {SELECTOR_MODAL_WINDOW, waitForModalCount} from '../modal.po';
 
 export const SELECTOR_MODAL_BUTTON = '#open-modal';
 export const SELECTOR_STACK_MODAL = '#stack-modal';

@@ -1,6 +1,6 @@
 import {test} from '../../../../playwright.conf';
 import {timeoutMessage} from '../../tools.po';
-import {waitForModalCount} from '../modal';
+import {waitForModalCount} from '../modal.po';
 
 export const clickOnReset = async() => {
   await test.page.click('#reset-button');

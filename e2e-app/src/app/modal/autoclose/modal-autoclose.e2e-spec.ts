@@ -1,6 +1,6 @@
 import {test} from '../../../../playwright.conf';
 import {openUrl, sendKey, mouseMove} from '../../tools.po';
-import {waitForModalCount, waitForNoChange, SELECTOR_MODAL_DIALOG, SELECTOR_MODAL_WINDOW} from '../modal';
+import {waitForModalCount, waitForNoChange, SELECTOR_MODAL_DIALOG, SELECTOR_MODAL_WINDOW} from '../modal.po';
 
 import {
   clickOnClose,

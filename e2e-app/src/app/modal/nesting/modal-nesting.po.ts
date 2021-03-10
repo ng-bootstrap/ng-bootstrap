@@ -1,6 +1,6 @@
 import {test} from '../../../../playwright.conf';
 import {focusElement, sendKey} from '../../tools.po';
-import {waitForModalCount} from '../modal';
+import {waitForModalCount} from '../modal.po';
 
 export const SELECTOR_DATEPICKER = 'ngb-datepicker';
 export const SELECTOR_DATEPICKER_BUTTON = '#datepicker-button';

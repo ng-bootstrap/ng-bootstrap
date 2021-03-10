@@ -1,6 +1,6 @@
 import {test} from '../../../../playwright.conf';
 import {focusElement, sendKey} from '../../tools.po';
-import {waitForModalCount} from '../modal';
+import {waitForModalCount} from '../modal.po';
 
 export const SELECTOR_MODAL_BUTTON = '#open-modal';
 export const SELECTOR_STACK_MODAL_BUTTON = '#open-inner-modal';

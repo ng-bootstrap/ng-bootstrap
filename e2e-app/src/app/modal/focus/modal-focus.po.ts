@@ -1,5 +1,5 @@
 import {focusElement, sendKey} from '../../tools.po';
-import {waitForModalCount} from '../modal';
+import {waitForModalCount} from '../modal.po';
 
 export const SELECTOR_MODAL_CONTENT = 'div.modal-content';
 export const SELECTOR_DISMISS_BUTTON = 'div.modal-header >> button';
