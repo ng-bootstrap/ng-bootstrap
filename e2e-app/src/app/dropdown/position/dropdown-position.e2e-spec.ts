@@ -1,7 +1,7 @@
 import {getBoundingBox, openUrl} from '../../tools.po';
 import {test} from '../../../../playwright.conf';
 import {openDropdown} from '../dropdown.po';
-import {waitForModalCount} from '../../modal/modal';
+import {waitForModalCount} from '../../modal/modal.po';
 
 const removeFromDom = async() => await test.page.click('#isInDom-false');
 

@@ -1,6 +1,6 @@
 import {test} from '../../../../playwright.conf';
 import {openUrl, sendKey} from '../../tools.po';
-import {waitForModalCount} from '../modal';
+import {waitForModalCount} from '../modal.po';
 
 import {
   openModal,

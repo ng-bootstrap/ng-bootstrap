@@ -26,7 +26,7 @@ export const waitForModalCount = async(modalNumber, errorMessage = defaultErrorM
       test.page.waitForFunction(`document.querySelectorAll('${SELECTOR_MODAL_DIALOG}').length === ${modalNumber}`),
       errorMessage);
 
-  if (process.env.BROWSER === 'webkit') {
+  if (process.env.NGB_BROWSER === 'webkit') {
     // Need some extra time for webkit, otherwise the modal tests are not stable.
     await test.page.waitForTimeout(50);
   }
