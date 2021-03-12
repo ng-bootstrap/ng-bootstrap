@@ -5,7 +5,7 @@ describe('NgbToastConfig', () => {
   it('should have sensible default values', () => {
     const config = new NgbToastConfig(new NgbConfig());
 
-    expect(config.delay).toBe(500);
+    expect(config.delay).toBe(5000);
     expect(config.autohide).toBe(true);
     expect(config.ariaLive).toBe('polite');
   });

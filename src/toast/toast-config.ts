@@ -38,7 +38,7 @@ export interface NgbToastOptions {
 @Injectable({providedIn: 'root'})
 export class NgbToastConfig implements NgbToastOptions {
   autohide = true;
-  delay = 500;
+  delay = 5000;
   ariaLive: 'polite' | 'alert' = 'polite';
 
   private _animation: boolean;
