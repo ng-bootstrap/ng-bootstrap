@@ -28,7 +28,7 @@ describe('Tooltip Position', () => {
 
     if (primary === 'top') {
       yDiff = (tooltipBox.y + tooltipBox.height) - btnBox.y;
-      if (secondary === 'left') {
+      if (secondary === 'start') {
         xDiff = tooltipBox.x - btnBox.x;
       } else if (secondary === 'end') {
         xDiff = (tooltipBox.x + tooltipBox.width) - (btnBox.x + btnBox.width);
@@ -37,7 +37,7 @@ describe('Tooltip Position', () => {
       }
     }
 
-    if (primary === 'left') {
+    if (primary === 'start') {
       yDiff = (tooltipBox.y + tooltipBox.height / 2) - (btnBox.y + btnBox.height / 2);
       xDiff = (tooltipBox.x + tooltipBox.width) - btnBox.x;
     }

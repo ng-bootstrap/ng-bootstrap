@@ -4,22 +4,24 @@
 </h3>
 
 <form (contextmenu)="$event.preventDefault()">
-  <div class="form-group form-inline">
-
-    <div class="input-group me-2">
-      <label for="typeahead" class="me-2">Typeahead</label>
-      <input #d="ngbTypeahead" id="typeahead" type="text" class="form-control" [ngbTypeahead]="search" [showHint]="showHint" />
-    </div>
-
-    <div ngbDropdown class="
-        d-inline-block ms-3">
-      <button class="btn btn-outline-secondary" id="hint-dropdown" ngbDropdownToggle>Show hint</button>
-      <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-        <button class="dropdown-item" id="hint-true" (click)="showHint = true">True</button>
-        <button class="dropdown-item" id="hint-false" (click)="showHint = false">False</button>
+  <div class="row row-cols-auto">
+    <div class="col">
+      <div class="input-group">
+        <label for="typeahead" class="me-2">Typeahead</label>
+        <input #d="ngbTypeahead" id="typeahead" type="text" class="form-control" [ngbTypeahead]="search" [showHint]="showHint" />
       </div>
     </div>
-
-    <div tabindex="0" class="btn btn-outline-secondary ms-1" id="outside-button">Outside button</div>
+    <div class="col">
+      <div ngbDropdown class="d-inline-block">
+        <button class="btn btn-outline-secondary" id="hint-dropdown" ngbDropdownToggle>Show hint</button>
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <button class="dropdown-item" id="hint-true" (click)="showHint = true">True</button>
+          <button class="dropdown-item" id="hint-false" (click)="showHint = false">False</button>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div tabindex="0" class="btn btn-outline-secondary" id="outside-button">Outside button</div>
+    </div>
   </div>
 </form>
