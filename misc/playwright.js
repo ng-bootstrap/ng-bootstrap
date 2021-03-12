@@ -2,7 +2,7 @@ const waitOn = require('wait-on');
 
 var yargs = require('yargs');
 
-yargs.usage('Build for production')
+yargs.usage('Run the e2e test suite')
     .alias('h', 'help')
     .option('baseDir', {alias: 'd', description: 'Base directory for the tests', type: 'string', default: 'e2e-app'})
     .option('browser', {alias: 'b', description: 'Browser. Support chromium, firefox and webkit', type: 'string', default: 'chromium'})
