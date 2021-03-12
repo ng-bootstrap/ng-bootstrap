@@ -74,12 +74,12 @@ describe('ngb-toast', () => {
       expect(fixture.componentInstance.hide).toHaveBeenCalled();
     });
 
-    it('should emit hide output after default delay (500ms)', fakeAsync(() => {
+    it('should emit hide output after default delay (5000ms)', fakeAsync(() => {
          const fixture = createTestComponent(`<ngb-toast header="header" (hidden)="hide()">body</ngb-toast>`);
-         tick(499);
+         tick(4999);
          fixture.detectChanges();
          expect(fixture.componentInstance.hide).not.toHaveBeenCalled();
-         tick(500);
+         tick(5000);
          fixture.detectChanges();
          expect(fixture.componentInstance.hide).toHaveBeenCalledTimes(1);
        }));
@@ -106,7 +106,7 @@ describe('ngb-toast', () => {
          expect(fixture.componentInstance.hide).not.toHaveBeenCalled();
          fixture.componentInstance.autohide = true;
          fixture.detectChanges();
-         tick(500);
+         tick(5000);
          fixture.detectChanges();
          expect(fixture.componentInstance.hide).toHaveBeenCalledTimes(1);
        }));
