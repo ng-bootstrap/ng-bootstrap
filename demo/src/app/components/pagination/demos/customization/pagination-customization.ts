@@ -13,14 +13,10 @@ export class NgbdPaginationCustomization {
     return ['A', 'B', 'C', 'D', 'E', 'F', 'G'][current - 1];
   }
 
-  // User can apply the logic they want.
-  applyPage(myInputPageValue: string) {
-    const value = parseInt(myInputPageValue, 10) || 1;
-    // You need to apply the value back to the pagination feature
-    this.page = value;
+  selectPage(page: string) {
+    this.page = parseInt(page, 10) || 1;
   }
 
-  // To allow only number in the input.
   formatInput(input: HTMLInputElement) {
     input.value = input.value.replace(FILTER_PAG_REGEX, '');
   }

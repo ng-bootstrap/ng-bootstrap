@@ -28,12 +28,12 @@ import {NgbPaginationConfig} from './pagination-config';
  */
 export interface NgbPaginationLinkContext {
   /**
-   * The currently selected page number
+   * Page number displayed by the current link.
    */
   currentPage: number;
 
   /**
-   * If `true`, the current link is disabled
+   * If `true`, the current link is disabled.
    */
   disabled: boolean;
 }
@@ -53,17 +53,26 @@ export interface NgbPaginationNumberContext extends NgbPaginationLinkContext {
 }
 
 /**
- * A context for the `NgbPaginationPages` pages template in case you want to override them.
+ * A context for the `NgbPaginationPages` pages template in case you want to override
+ * the way all pages are displayed.
  *
- * Extends `NgbPaginationLinkContext`.
- *
- * @since 4.1.0
+ * @since 9.1.0
  */
- export interface NgbPaginationPagesContext extends NgbPaginationLinkContext {
+export interface NgbPaginationPagesContext {
   /**
-   * The page number, displayed by the current page link.
+   * The currently selected page number.
    */
   $implicit: number;
+
+  /**
+   * If `true`, pagination is disabled.
+   */
+  disabled: boolean;
+
+  /**
+   * Pages numbers that should be rendered starting with 1.
+   */
+  pages: number[];
 }
 
 /**
@@ -129,7 +138,7 @@ export class NgbPaginationPrevious {
 /**
  * A directive to match the 'pages' whole content
  *
- * @since 8.1.0
+ * @since 9.1.0
  */
 @Directive({selector: 'ng-template[ngbPaginationPages]'})
 export class NgbPaginationPages {
@@ -153,7 +162,7 @@ export class NgbPaginationPages {
       {{ page }}
       <span *ngIf="page === currentPage" class="sr-only">(current)</span>
     </ng-template>
-    <ng-template #defaultPages let-page="page" let-pages="pages">
+    <ng-template #defaultPages let-page let-pages="pages" let-disabled="disabled">
       <li *ngFor="let pageNumber of pages" class="page-item" [class.active]="pageNumber === page"
         [class.disabled]="isEllipsis(pageNumber) || disabled" [attr.aria-current]="(pageNumber === page ? 'page' : null)">
         <a *ngIf="isEllipsis(pageNumber)" class="page-link" tabindex="-1" aria-disabled="true">
@@ -189,7 +198,7 @@ export class NgbPaginationPages {
       </li>
       <ng-template
         [ngTemplateOutlet]="tplPages?.templateRef || defaultPages"
-        [ngTemplateOutletContext]="{ disabled: false, page: page, pages: pages }"
+        [ngTemplateOutletContext]="{ $implicit: page, pages: pages, disabled: disabled }"
       >
       </ng-template>
       <li *ngIf="directionLinks" class="page-item" [class.disabled]="nextDisabled()">
