@@ -782,6 +782,19 @@ describe('ngb-pagination', () => {
       fixture.detectChanges();
       expectPages(fixture.nativeElement, ['«', 'cPagesof 3,2', '»']);
     });
+
+    it('should pass disabled flag with custom Pages', () => {
+      const fixture = TestBed.createComponent(TestPageComponent);
+
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['-«', 'cPagesof 10,1', '»']);
+      expect(fixture.nativeElement.querySelector('input').hasAttribute('disabled')).toBeFalsy();
+
+      fixture.componentInstance.disabled = true;
+      fixture.detectChanges();
+      expectPages(fixture.nativeElement, ['-«', 'cPagesof 10,1', '-»']);
+      expect(fixture.nativeElement.querySelector('input').hasAttribute('disabled')).toBeTruthy();
+    });
   });
 
   describe('Custom config', () => {
@@ -853,15 +866,16 @@ class TestComponent {
 
 @Component({
   selector: 'test-page-cmp',
-  template: `<ngb-pagination [collectionSize]="collectionSize" [page]="page" [pageSize]="pageSize">
-                <ng-template ngbPaginationPages let-page="page" let-pages="pages">
+  template:
+      `<ngb-pagination [collectionSize]="collectionSize" [page]="page" [pageSize]="pageSize" [disabled]="disabled">
+                <ng-template ngbPaginationPages let-page let-pages="pages" let-disabled="disabled">
                 <li *ngIf="pages.length > 0">
                     <label>Pages</label>
                     <input
                         type="text"
                         inputmode="numeric"
                         pattern="[0-9]*"
-                        #myInputPage
+                        [disabled]="disabled"
                         [value]="page"
                     />
                     <span>of {{pages.length}}</span>
@@ -873,4 +887,5 @@ class TestPageComponent {
   pageSize = 10;
   collectionSize = 100;
   page = 1;
+  disabled = false;
 }
