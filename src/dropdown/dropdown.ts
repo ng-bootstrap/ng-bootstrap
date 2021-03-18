@@ -154,6 +154,18 @@ export class NgbDropdown implements AfterContentInit, OnDestroy {
   @Input() autoClose: boolean | 'outside' | 'inside';
 
   /**
+   * A custom class that is applied only to the `ngbDropdownMenu` parent element.
+   * * In case of the inline dropdown it will be the `<div ngbDropdown>`
+   * * In case of the dropdown with  `container="body"` it will be the `<div class="dropdown">` attached to the `<body>`
+   *
+   * Useful mainly when dropdown is attached to the body.
+   * If the dropdown is inline just use `<div ngbDropdown class="custom-class">` instead.
+   *
+   * @since 9.1.0
+   */
+  @Input() dropdownClass: string;
+
+  /**
    * Defines whether or not the dropdown menu is opened initially.
    */
   @Input('open') _open = false;
@@ -229,6 +241,11 @@ export class NgbDropdown implements AfterContentInit, OnDestroy {
 
     if (changes.placement && !changes.placement.isFirstChange) {
       this._applyPlacementClasses();
+    }
+
+    if (changes.dropdownClass) {
+      const {currentValue, previousValue} = changes.dropdownClass;
+      this._applyCustomDropdownClass(currentValue, previousValue);
     }
   }
 
@@ -444,13 +461,27 @@ export class NgbDropdown implements AfterContentInit, OnDestroy {
       const dropdownMenuElement = this._menu.nativeElement;
       const bodyContainer = this._bodyContainer = this._bodyContainer || renderer.createElement('div');
 
-      // Override some styles to have the positionning working
+      // Override some styles to have the positioning working
       renderer.setStyle(bodyContainer, 'position', 'absolute');
       renderer.setStyle(dropdownMenuElement, 'position', 'static');
       renderer.setStyle(bodyContainer, 'z-index', '1050');
 
       renderer.appendChild(bodyContainer, dropdownMenuElement);
       renderer.appendChild(this._document.body, bodyContainer);
+    }
+
+    this._applyCustomDropdownClass(this.dropdownClass);
+  }
+
+  private _applyCustomDropdownClass(newClass: string, oldClass?: string) {
+    const targetElement = this.container === 'body' ? this._bodyContainer : this._elementRef.nativeElement;
+    if (targetElement) {
+      if (oldClass) {
+        this._renderer.removeClass(targetElement, oldClass);
+      }
+      if (newClass) {
+        this._renderer.addClass(targetElement, newClass);
+      }
     }
   }
 
