@@ -12,9 +12,9 @@ import { getLocaleDayNames, FormStyle, TranslationWidth, getLocaleMonthNames, fo
 export class NgbDatepickerI18nBuddhist extends NgbDatepickerI18n {
 
   private _locale = 'th';
-  private _weekdaysShort: Array<string>;
-  private _monthsShort: Array<string>;
-  private _monthsFull: Array<string>;
+  private _weekdaysShort: readonly string[];
+  private _monthsShort: readonly string[];
+  private _monthsFull: readonly string[];
 
   constructor() {
     super();
