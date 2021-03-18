@@ -92,6 +92,13 @@ export class NgbInputDatepicker implements OnChanges,
   @Input() autoClose: boolean | 'inside' | 'outside';
 
   /**
+   * An optional class applied to the datepicker popup element.
+   *
+   * @since 9.1.0
+   */
+  @Input() datepickerClass: string;
+
+  /**
    * The reference to a custom template for the day.
    *
    * Allows to completely override the way a day 'cell' in the calendar is displayed.
@@ -465,6 +472,11 @@ export class NgbInputDatepicker implements OnChanges,
         this._cRef !.instance.ngOnChanges(changes);
       }
     }
+
+    if (changes['datepickerClass']) {
+      const {currentValue, previousValue} = changes['datepickerClass'];
+      this._applyPopupClass(currentValue, previousValue);
+    }
   }
 
   ngOnDestroy() {
@@ -483,6 +495,18 @@ export class NgbInputDatepicker implements OnChanges,
     datepickerInstance.startDate = this.startDate || this._model;
   }
 
+  private _applyPopupClass(newClass: string, oldClass?: string) {
+    const popupEl = this._cRef ?.location.nativeElement;
+    if (popupEl) {
+      if (newClass) {
+        this._renderer.addClass(popupEl, newClass);
+      }
+      if (oldClass) {
+        this._renderer.removeClass(popupEl, oldClass);
+      }
+    }
+  }
+
   private _applyPopupStyling(nativeElement: any) {
     this._renderer.addClass(nativeElement, 'dropdown-menu');
     this._renderer.addClass(nativeElement, 'show');
@@ -490,6 +514,8 @@ export class NgbInputDatepicker implements OnChanges,
     if (this.container === 'body') {
       this._renderer.addClass(nativeElement, 'ngb-dp-body');
     }
+
+    this._applyPopupClass(this.datepickerClass);
   }
 
   private _subscribeForDatepickerOutputs(datepickerInstance: NgbDatepicker) {
