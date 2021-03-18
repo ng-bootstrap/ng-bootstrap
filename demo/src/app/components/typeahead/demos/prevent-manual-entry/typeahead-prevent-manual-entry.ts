@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, OperatorFunction} from 'rxjs';
 import {debounceTime, distinctUntilChanged, map, filter} from 'rxjs/operators';
 
 type State = {id: number, name: string};
@@ -76,7 +76,7 @@ export class NgbdTypeaheadPreventManualEntry {
 
   formatter = (state: State) => state.name;
 
-  search = (text$: Observable<string>) => text$.pipe(
+  search: OperatorFunction<string, readonly {id, name}[]> = (text$: Observable<string>) => text$.pipe(
     debounceTime(200),
     distinctUntilChanged(),
     filter(term => term.length >= 2),
