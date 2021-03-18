@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, OperatorFunction} from 'rxjs';
 import {debounceTime, map} from 'rxjs/operators';
 
 const statesWithFlags: {name: string, flag: string}[] = [
@@ -66,7 +66,7 @@ const statesWithFlags: {name: string, flag: string}[] = [
 export class NgbdTypeaheadTemplate {
   public model: any;
 
-  search = (text$: Observable<string>) =>
+  search: OperatorFunction<string, readonly {name, flag}[]> = (text$: Observable<string>) =>
     text$.pipe(
       debounceTime(200),
       map(term => term === '' ? []

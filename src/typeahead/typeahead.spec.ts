@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, DebugElement, ViewChild} from '@angu
 import {ComponentFixture, fakeAsync, inject, TestBed, tick} from '@angular/core/testing';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {By} from '@angular/platform-browser';
-import {merge, Observable, Subject} from 'rxjs';
+import {merge, Observable, of, OperatorFunction, Subject} from 'rxjs';
 import {debounceTime, filter, map} from 'rxjs/operators';
 
 import {createGenericTestComponent, isBrowser} from '../test/common';
@@ -181,6 +181,40 @@ describe('ngb-typeahead', () => {
       expect(getWindow(compiled)).toBeNull();
     });
 
+    it('should accept "null" as ngbTypeahead value', () => {
+      const fixture = createTestComponent(`<input type="text" [ngbTypeahead]="null"/>`);
+      const compiled = fixture.nativeElement;
+      expect(getWindow(compiled)).toBeNull();
+    });
+
+    it('should accept "undefined" as ngbTypeahead value', () => {
+      const fixture = createTestComponent(`<input type="text" [ngbTypeahead]="undefined"/>`);
+      const compiled = fixture.nativeElement;
+      expect(getWindow(compiled)).toBeNull();
+    });
+
+    it('should allow changing ngbTypeahead value', () => {
+      const fixture = createTestComponent(`<input type="text" [ngbTypeahead]="findRef"/>`);
+      const compiled = fixture.nativeElement;
+
+      // null initially
+      expect(getWindow(compiled)).toBeNull();
+
+      // real value
+      fixture.componentInstance.findRef = (_: Observable<string>) => of(['one', 'one more']);
+      fixture.detectChanges();
+
+      changeInput(compiled, 'one');
+      fixture.detectChanges();
+      expectWindowResults(compiled, ['+one', 'one more']);
+
+      // back to null
+      fixture.componentInstance.findRef = undefined;
+      fixture.detectChanges();
+
+      expect(getWindow(compiled)).toBeNull();
+    });
+
     it('should work when returning null as results', () => {
       const fixture = createTestComponent(`<input type="text" [ngbTypeahead]="findNull"/>`);
       const compiled = fixture.nativeElement;
@@ -327,7 +361,6 @@ describe('ngb-typeahead', () => {
       fixture.detectChanges();
       expectWindowResults(compiled, ['+two', 'three']);
     });
-
 
     it('should properly make previous/next results active with down arrow keys when focusFirst is false', () => {
       const fixture = createTestComponent(`<input type="text" [ngbTypeahead]="find" [focusFirst]="false"/>`);
@@ -939,6 +972,8 @@ class TestComponent {
   focus$ = new Subject<string>();
   click$ = new Subject<string>();
 
+  findRef: OperatorFunction<string, readonly any[]>| null | undefined = null;
+
   find =
       (text$: Observable<string>) => {
         const clicks$ = this.click$.pipe(filter(() => !this.typeahead.isPopupOpen()));
@@ -972,7 +1007,6 @@ class TestComponent {
   uppercaseFormatter = s => `${s}`.toUpperCase();
 
   uppercaseObjFormatter = (obj: {value: string}) => { return `${obj.value}`.toUpperCase(); };
-
 
   onSelect($event) { this.selectEventValue = $event; }
 }

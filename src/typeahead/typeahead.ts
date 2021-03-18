@@ -16,11 +16,13 @@ import {
   Renderer2,
   TemplateRef,
   ViewContainerRef,
-  ApplicationRef
+  ApplicationRef,
+  OnChanges,
+  SimpleChanges
 } from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {DOCUMENT} from '@angular/common';
-import {BehaviorSubject, fromEvent, Observable, Subject, Subscription} from 'rxjs';
+import {BehaviorSubject, fromEvent, Observable, of, OperatorFunction, Subject, Subscription} from 'rxjs';
 import {map, switchMap, tap} from 'rxjs/operators';
 
 import {Live} from '../util/accessibility/live';
@@ -73,7 +75,7 @@ let nextWindowId = 0;
   providers: [{provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NgbTypeahead), multi: true}]
 })
 export class NgbTypeahead implements ControlValueAccessor,
-    OnInit, OnDestroy {
+    OnInit, OnChanges, OnDestroy {
   private _popupService: PopupService<NgbTypeaheadWindow>;
   private _subscription: Subscription | null = null;
   private _closed$ = new Subject();
@@ -128,7 +130,7 @@ export class NgbTypeahead implements ControlValueAccessor,
    *
    * Note that the `this` argument is `undefined` so you need to explicitly bind it to a desired "this" target.
    */
-  @Input() ngbTypeahead: (text: Observable<string>) => Observable<readonly any[]>;
+  @Input() ngbTypeahead: OperatorFunction<string, readonly any[]>| null | undefined;
 
   /**
    * The function that converts an item from the result list to a `string` to display in the popup.
@@ -210,14 +212,13 @@ export class NgbTypeahead implements ControlValueAccessor,
     });
   }
 
-  ngOnInit(): void {
-    const inputValues$ = this._valueChanges.pipe(tap(value => {
-      this._inputValueBackup = this.showHint ? value : null;
-      this._onChange(this.editable ? value : undefined);
-    }));
-    const results$ = inputValues$.pipe(this.ngbTypeahead);
-    const userInput$ = this._resubscribeTypeahead.pipe(switchMap(() => results$));
-    this._subscription = this._subscribeToUserInput(userInput$);
+  ngOnInit(): void { this._subscribeToUserInput(); }
+
+  ngOnChanges({ngbTypeahead}: SimpleChanges): void {
+    if (ngbTypeahead && !ngbTypeahead.firstChange) {
+      this._unsubscribeFromUserInput();
+      this._subscribeToUserInput();
+    }
   }
 
   ngOnDestroy(): void {
@@ -363,12 +364,20 @@ export class NgbTypeahead implements ControlValueAccessor,
     this._renderer.setProperty(this._elementRef.nativeElement, 'value', toString(value));
   }
 
-  private _subscribeToUserInput(userInput$: Observable<readonly any[]>): Subscription {
-    return userInput$.subscribe((results) => {
+  private _subscribeToUserInput(): void {
+    const results$ = this._valueChanges.pipe(
+        tap(value => {
+          this._inputValueBackup = this.showHint ? value : null;
+          this._onChange(this.editable ? value : undefined);
+        }),
+        this.ngbTypeahead ? this.ngbTypeahead : () => of([]));
+
+    this._subscription = this._resubscribeTypeahead.pipe(switchMap(() => results$)).subscribe(results => {
       if (!results || results.length === 0) {
         this._closePopup();
       } else {
         this._openPopup();
+
         this._windowRef !.instance.focusFirst = this.focusFirst;
         this._windowRef !.instance.results = results;
         this._windowRef !.instance.term = this._elementRef.nativeElement.value;
