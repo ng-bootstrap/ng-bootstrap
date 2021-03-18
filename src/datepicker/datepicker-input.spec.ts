@@ -861,6 +861,31 @@ describe('NgbInputDatepicker', () => {
       expect(fixture.componentInstance.onDateSelect).toHaveBeenCalledWith(new NgbDate(2018, 3, 1));
       expect(fixture.componentInstance.onModelChange).toHaveBeenCalledWith({year: 2018, month: 3, day: 1});
     });
+
+    it('should add custom popup class via "popupClass" input', () => {
+      const fixture = createTestCmpt(`<input ngbDatepicker #d="ngbDatepicker" [datepickerClass]="popupClass">`);
+      fixture.detectChanges();
+      const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
+      dpInput.open();
+
+      // initial value
+      let element = document.querySelector('ngb-datepicker') as HTMLElement;
+      expect(element).not.toBeNull();
+      expect(element).toHaveCssClass('my-datepicker-popup');
+      expect(element).not.toHaveCssClass('my-another-datepicker-popup');
+
+      // empty value
+      fixture.componentInstance.popupClass = '';
+      fixture.detectChanges();
+      expect(element).not.toHaveCssClass('my-datepicker-popup');
+      expect(element).not.toHaveCssClass('my-another-datepicker-popup');
+
+      // another value
+      fixture.componentInstance.popupClass = 'my-another-datepicker-popup';
+      fixture.detectChanges();
+      expect(element).not.toHaveCssClass('my-datepicker-popup');
+      expect(element).toHaveCssClass('my-another-datepicker-popup');
+    });
   });
 
   describe('container', () => {
@@ -1187,6 +1212,7 @@ class TestComponent {
   minDate: NgbDateStruct;
   maxDate: NgbDateStruct;
   isDisabled;
+  popupClass = 'my-datepicker-popup';
 
   onNavigate(params) {}
 
