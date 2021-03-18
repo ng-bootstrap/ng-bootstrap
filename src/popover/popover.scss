@@ -9,6 +9,16 @@ ngb-popover-window {
     pointer-events: auto;
   }
 
+  &.bs-popover-top, &.bs-popover-bottom {
+    margin-top: $arrow-size / 2;
+    margin-bottom: $arrow-size / 2;
+  }
+
+  &.bs-popover-start, &.bs-popover-end {
+    margin-left: $arrow-size / 2;
+    margin-right: $arrow-size / 2;
+  }
+
   &.bs-popover-top > .popover-arrow,
   &.bs-popover-bottom > .popover-arrow {
     left: 50%;
