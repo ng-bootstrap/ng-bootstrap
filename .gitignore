@@ -7,6 +7,7 @@
 /out-tsc
 /e2e-app/dist/
 /ssr-app/dist/
+/test-app/dist/
 npm-debug.log
 .publish
 .sw*
