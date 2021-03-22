@@ -51,6 +51,8 @@
     "ssr-app:e2e": "concurrently --success first --kill-others --names \"express,playwright\" \"yarn ssr-app:serve-express\" \"yarn ssr-app:e2e-playwright\"",
     "ssr-app:e2e-playwright": "yarn playwright -d ssr-app",
     "ssr-app:build": "ng build ssr-app --prod && ng run ssr-app:server:production",
+    "test-app:serve": "ng serve test-app",
+    "test-app:build": "NG_BUILD_MANGLE=false ng build test-app --prod --source-map true",
     "schematics:lint": "tslint --project schematics/tsconfig.json",
     "schematics:build": "rimraf schematics/dist && tsc --project schematics/tsconfig.json",
     "schematics:tdd": "ts-node-dev --respawn --project misc/tsconfig.json node_modules/jasmine/bin/jasmine schematics/**/*.spec.ts",
