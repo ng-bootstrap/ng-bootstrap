@@ -95,7 +95,7 @@ export function closest(element: HTMLElement, selector?: string): HTMLElement | 
  * @param element element where to apply the reflow
  */
 export function reflow(element: HTMLElement) {
-  return (element || document.body).offsetHeight;
+  return (element || document.body).getBoundingClientRect();
 }
 
 /**
