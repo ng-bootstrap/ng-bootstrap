@@ -91,9 +91,9 @@ export abstract class NgbDatepickerI18n {
   /**
    * Returns the week label to display in the heading of the month view.
    *
-   * @since 6.1.0
+   * @since 9.1.0
    */
-  get weekShortLabel(): string { return ''; }
+  getWeekLabel(): string { return ''; }
 }
 
 /**

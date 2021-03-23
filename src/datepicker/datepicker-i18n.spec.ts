@@ -57,5 +57,5 @@ describe('ngb-datepicker-i18n-default', () => {
     expect(i18n.getYearNumerals(2000)).toBe('2000');
   });
 
-  it('should generate week short label', () => { expect(i18n.weekShortLabel).toBe(''); });
+  it('should generate week label', () => { expect(i18n.getWeekLabel()).toBe(''); });
 });

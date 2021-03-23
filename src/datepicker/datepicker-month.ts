@@ -21,18 +21,18 @@ import {NgbDateStruct} from './ngb-date-struct';
   styleUrls: ['./datepicker-month.scss'],
   template: `
     <div *ngIf="viewModel.weekdays.length > 0" class="ngb-dp-week ngb-dp-weekdays" role="row">
-      <div *ngIf="datepicker.showWeekNumbers" class="ngb-dp-weekday ngb-dp-showweek small">{{ i18n.weekShortLabel }}</div>
+      <div *ngIf="datepicker.showWeekNumbers" class="ngb-dp-weekday ngb-dp-showweek small">{{ i18n.getWeekLabel() }}</div>
       <div *ngFor="let weekday of viewModel.weekdays" class="ngb-dp-weekday small" role="columnheader">{{ weekday }}</div>
     </div>
     <ng-template ngFor let-week [ngForOf]="viewModel.weeks">
       <div *ngIf="!week.collapsed" class="ngb-dp-week" role="row">
         <div *ngIf="datepicker.showWeekNumbers" class="ngb-dp-week-number small text-muted">{{ i18n.getWeekNumerals(week.number) }}</div>
         <div *ngFor="let day of week.days" (click)="doSelect(day); $event.preventDefault()" class="ngb-dp-day" role="gridcell"
-          [class.disabled]="day.context.disabled"
-          [tabindex]="day.tabindex"
-          [class.hidden]="day.hidden"
-          [class.ngb-dp-today]="day.context.today"
-          [attr.aria-label]="day.ariaLabel">
+             [class.disabled]="day.context.disabled"
+             [tabindex]="day.tabindex"
+             [class.hidden]="day.hidden"
+             [class.ngb-dp-today]="day.context.today"
+             [attr.aria-label]="day.ariaLabel">
           <ng-template [ngIf]="!day.hidden">
             <ng-template [ngTemplateOutlet]="datepicker.dayTemplate" [ngTemplateOutletContext]="day.context"></ng-template>
           </ng-template>
