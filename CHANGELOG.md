@@ -1,3 +1,30 @@
+# [9.1.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/9.0.1...9.1.0) (2021-03-23)
+
+
+### Bug Fixes
+
+* **carousel:** fix value of aria-activedescendant attribute ([#4015](https://github.com/ng-bootstrap/ng-bootstrap/issues/4015)) ([35bb72a](https://github.com/ng-bootstrap/ng-bootstrap/commit/35bb72a360ecbfd83fe1c9a9c1fc470c582f0ef4)), closes [#4014](https://github.com/ng-bootstrap/ng-bootstrap/issues/4014)
+* **collapse:** no animations in production mode ([#4044](https://github.com/ng-bootstrap/ng-bootstrap/issues/4044)) ([5e25272](https://github.com/ng-bootstrap/ng-bootstrap/commit/5e25272fdce2e03d08c61d3197140ac43c9a7a37)), closes [#3972](https://github.com/ng-bootstrap/ng-bootstrap/issues/3972)
+* **datepicker:** use readonly arrays in Buddhist calendar ([67be4ab](https://github.com/ng-bootstrap/ng-bootstrap/commit/67be4ab636d8f5071ed371cdad625bfd42362905))
+* **typeahead:** improve 'ngbTypeahead' typings ([#4038](https://github.com/ng-bootstrap/ng-bootstrap/issues/4038)) ([81f2c59](https://github.com/ng-bootstrap/ng-bootstrap/commit/81f2c59a188a91d4ecb618af1056f6a4a6f5e960)), closes [#3907](https://github.com/ng-bootstrap/ng-bootstrap/issues/3907)
+
+
+### Features
+
+* **datepicker:** add Buddhist calendar ([4880bdf](https://github.com/ng-bootstrap/ng-bootstrap/commit/4880bdf6a120fef9423287b7c813d2097262f975))
+* **datepicker:** add week number i18n label ([8955a1b](https://github.com/ng-bootstrap/ng-bootstrap/commit/8955a1b9296756c173801f0df7a6fdcd3895302d))
+* **datepicker:** allow configuring weekday width ([02cb126](https://github.com/ng-bootstrap/ng-bootstrap/commit/02cb1261b419a97d2f34a921b4cdbfe04197911b)), closes [#2516](https://github.com/ng-bootstrap/ng-bootstrap/issues/2516)
+* **datepicker:** allow overriding month label correctly ([#4023](https://github.com/ng-bootstrap/ng-bootstrap/issues/4023)) ([921662a](https://github.com/ng-bootstrap/ng-bootstrap/commit/921662a5450a0fda3c540f05d118343cf5ecbf09)), closes [#3863](https://github.com/ng-bootstrap/ng-bootstrap/issues/3863)
+* **datepicker:** allow setting custom popup class ([#4039](https://github.com/ng-bootstrap/ng-bootstrap/issues/4039)) ([4741ffb](https://github.com/ng-bootstrap/ng-bootstrap/commit/4741ffb83b40e78ee463de842df0a2db7f487403)), closes [#2984](https://github.com/ng-bootstrap/ng-bootstrap/issues/2984)
+* **dropdown:** allow setting custom popup class ([#4041](https://github.com/ng-bootstrap/ng-bootstrap/issues/4041)) ([71ca123](https://github.com/ng-bootstrap/ng-bootstrap/commit/71ca1232ec5dfdddc8228a733ad5d9ca76038678)), closes [#3626](https://github.com/ng-bootstrap/ng-bootstrap/issues/3626)
+* **modal:** allow setting custom modal dialog class ([#3826](https://github.com/ng-bootstrap/ng-bootstrap/issues/3826)) ([37c0331](https://github.com/ng-bootstrap/ng-bootstrap/commit/37c0331deaf1496d17572e711925e443ff5c7445))
+* **pagination:** add new pages templating options ([c605ab7](https://github.com/ng-bootstrap/ng-bootstrap/commit/c605ab767d15570d6cbe1d835ad4f4e264bce83e))
+* **typeahead:** allow setting custom popup window class ([#3947](https://github.com/ng-bootstrap/ng-bootstrap/issues/3947)) ([e7457f4](https://github.com/ng-bootstrap/ng-bootstrap/commit/e7457f4ae15326636b7d1ea1065fad5cbf4c8884))
+* **typeahead:** add an option to configure accent sensitivity in highlight ([1cf0c39](https://github.com/ng-bootstrap/ng-bootstrap/commit/1cf0c39b64f5948cfac5e61e6263ba07f60a2207))
+
+
+
+
 ## [9.0.2](https://github.com/ng-bootstrap/ng-bootstrap/compare/9.0.1...9.0.2) (2021-01-25)
 
 
