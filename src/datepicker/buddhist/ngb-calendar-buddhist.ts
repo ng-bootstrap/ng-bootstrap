@@ -4,6 +4,9 @@ import {NgbCalendarGregorian, NgbPeriod} from '../ngb-calendar';
 import {NgbDate} from '../ngb-date';
 import {fromGregorian, toGregorian} from './buddhist';
 
+/**
+ * @since 9.1.0
+ */
 @Injectable()
 export class NgbCalendarBuddhist extends NgbCalendarGregorian {
   getToday(): NgbDate { return fromGregorian(new Date()); }

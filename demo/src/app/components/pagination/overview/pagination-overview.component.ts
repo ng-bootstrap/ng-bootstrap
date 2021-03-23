@@ -62,6 +62,17 @@ export class NgbdPaginationOverviewComponent {
     `,
   });
 
+  CUSTOM_TPL_PAGES = Snippet({
+    lang: 'html',
+    code: `
+      <ngb-pagination>
+        <ng-template ngbPaginationPages let-page let-pages="pages">
+            <!-- render the "pages" collection here -->
+        </ng-template>
+      </ngb-pagination>
+    `,
+  });
+
   sections: NgbdOverview = {};
 
   constructor(demoList: NgbdDemoList) {

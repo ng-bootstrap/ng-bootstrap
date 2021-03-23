@@ -95,6 +95,8 @@ export interface NgbModalOptions {
 
   /**
    * A custom class to append to the modal dialog.
+   *
+   * @since 9.1.0
    */
   modalDialogClass?: string;
 

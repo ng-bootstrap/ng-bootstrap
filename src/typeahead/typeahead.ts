@@ -171,14 +171,13 @@ export class NgbTypeahead implements ControlValueAccessor,
   @Input() placement: PlacementArray = 'bottom-left';
 
   /**
-  * A custom class to append to the typeahead window
+  * A custom class to append to the typeahead popup window
   *
-  * Accepts a string containing one or more CSS classes to be applied on the `ngb-typeahead-window`.
+  * Accepts a string containing CSS class to be applied on the `ngb-typeahead-window`.
   *
-  * This can be used to provide instance-specific styling. It was originally impelemented to allow overriding
-  * the `z-index` of the `ngb-typeahead-window` when using it inside a modal window.
+  * This can be used to provide instance-specific styling, ex. you can override popup window `z-index`
   *
-  * @since 8.1.0
+  * @since 9.1.0
   */
   @Input() windowClass: string;
 

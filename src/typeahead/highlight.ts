@@ -41,12 +41,14 @@ export class NgbHighlight implements OnChanges {
   @Input() term: string | readonly string[];
 
   /**
-   * Boolean option to determine if the highlighting should be sensitive to accents or not. Default to true.
+   * Boolean option to determine if the highlighting should be sensitive to accents or not.
    *
-   * Note that this feature is only available for browsers that implement the `String.normalize` function
+   * This feature is only available for browsers that implement the `String.normalize` function
    * (typically not Internet Explorer).
    * If you want to use this feature in a browser that does not implement `String.normalize`,
    * you will have to include a polyfill in your application (`unorm` for example).
+   *
+   * @since 9.1.0
    */
   @Input() accentSensitive = true;
 
