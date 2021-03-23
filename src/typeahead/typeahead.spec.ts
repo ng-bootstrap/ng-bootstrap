@@ -442,7 +442,7 @@ describe('ngb-typeahead', () => {
 
     it('should apply additional class when specified', () => {
       const fixture =
-          createTestComponent(`<input type="text" [(ngModel)]="model" [ngbTypeahead]="find" windowClass="test"/>`);
+          createTestComponent(`<input type="text" [(ngModel)]="model" [ngbTypeahead]="find" popupClass="test"/>`);
       const compiled = fixture.nativeElement;
 
       // the results of the code below are already tested above
@@ -454,8 +454,8 @@ describe('ngb-typeahead', () => {
     });
 
     it('should apply additional classes when specified', () => {
-      const fixture = createTestComponent(
-          `<input type="text" [(ngModel)]="model" [ngbTypeahead]="find" windowClass="test other"/>`);
+      const fixture =
+          createTestComponent(`<input type="text" [(ngModel)]="model" [ngbTypeahead]="find" popupClass="test other"/>`);
       const compiled = fixture.nativeElement;
 
       // the results of the code below are already tested above

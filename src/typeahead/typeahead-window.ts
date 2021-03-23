@@ -23,7 +23,7 @@ export interface ResultTemplateContext {
   encapsulation: ViewEncapsulation.None,
   host: {
     '(mousedown)': '$event.preventDefault()',
-    '[class]': '"dropdown-menu show" + (windowClass ? " " + windowClass : "")',
+    '[class]': '"dropdown-menu show" + (popupClass ? " " + popupClass : "")',
     'role': 'listbox',
     '[id]': 'id'
   },
@@ -80,8 +80,10 @@ export class NgbTypeaheadWindow implements OnInit {
 
   /**
   * A custom class to append to the typeahead window
+   *
+   * @since 9.1.0
   */
-  @Input() windowClass: string;
+  @Input() popupClass: string;
 
   /**
    * Event raised when user selects a particular result row

@@ -179,7 +179,7 @@ export class NgbTypeahead implements ControlValueAccessor,
   *
   * @since 9.1.0
   */
-  @Input() windowClass: string;
+  @Input() popupClass: string;
 
   /**
    * An event emitted right before an item is selected from the result list.
@@ -315,7 +315,7 @@ export class NgbTypeahead implements ControlValueAccessor,
       this._windowRef.instance.id = this.popupId;
       this._windowRef.instance.selectEvent.subscribe((result: any) => this._selectResultClosePopup(result));
       this._windowRef.instance.activeChangeEvent.subscribe((activeId: string) => this.activeDescendant = activeId);
-      this._windowRef.instance.windowClass = this.windowClass;
+      this._windowRef.instance.popupClass = this.popupClass;
 
       if (this.container === 'body') {
         this._document.querySelector(this.container).appendChild(this._windowRef.location.nativeElement);
