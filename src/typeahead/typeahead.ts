@@ -171,6 +171,18 @@ export class NgbTypeahead implements ControlValueAccessor,
   @Input() placement: PlacementArray = 'bottom-left';
 
   /**
+  * A custom class to append to the typeahead window
+  *
+  * Accepts a string containing one or more CSS classes to be applied on the `ngb-typeahead-window`.
+  *
+  * This can be used to provide instance-specific styling. It was originally impelemented to allow overriding
+  * the `z-index` of the `ngb-typeahead-window` when using it inside a modal window.
+  *
+  * @since 8.1.0
+  */
+  @Input() windowClass: string;
+
+  /**
    * An event emitted right before an item is selected from the result list.
    *
    * Event payload is of type [`NgbTypeaheadSelectItemEvent`](#/components/typeahead/api#NgbTypeaheadSelectItemEvent).
@@ -304,6 +316,7 @@ export class NgbTypeahead implements ControlValueAccessor,
       this._windowRef.instance.id = this.popupId;
       this._windowRef.instance.selectEvent.subscribe((result: any) => this._selectResultClosePopup(result));
       this._windowRef.instance.activeChangeEvent.subscribe((activeId: string) => this.activeDescendant = activeId);
+      this._windowRef.instance.windowClass = this.windowClass;
 
       if (this.container === 'body') {
         this._document.querySelector(this.container).appendChild(this._windowRef.location.nativeElement);

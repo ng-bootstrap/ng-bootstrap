@@ -439,6 +439,33 @@ describe('ngb-typeahead', () => {
          tick(250);
          expectWindowResults(compiled, ['+one', 'one more']);
        }));
+
+    it('should apply additional class when specified', () => {
+      const fixture =
+          createTestComponent(`<input type="text" [(ngModel)]="model" [ngbTypeahead]="find" windowClass="test"/>`);
+      const compiled = fixture.nativeElement;
+
+      // the results of the code below are already tested above
+      changeInput(compiled, 'one');
+      fixture.detectChanges();
+
+      const win = getWindow(compiled);
+      expect(win.classList).toContain('test');
+    });
+
+    it('should apply additional classes when specified', () => {
+      const fixture = createTestComponent(
+          `<input type="text" [(ngModel)]="model" [ngbTypeahead]="find" windowClass="test other"/>`);
+      const compiled = fixture.nativeElement;
+
+      // the results of the code below are already tested above
+      changeInput(compiled, 'one');
+      fixture.detectChanges();
+
+      const win = getWindow(compiled);
+      expect(win.classList).toContain('test');
+      expect(win.classList).toContain('other');
+    });
   });
 
   describe('with async typeahead function', () => {
