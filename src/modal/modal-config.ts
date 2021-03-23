@@ -94,6 +94,11 @@ export interface NgbModalOptions {
   windowClass?: string;
 
   /**
+   * A custom class to append to the modal dialog.
+   */
+  modalDialogClass?: string;
+
+  /**
    * A custom class to append to the modal backdrop.
    *
    * @since 1.1.0
@@ -122,6 +127,7 @@ export class NgbModalConfig implements Required<NgbModalOptions> {
   scrollable: boolean;
   size: 'sm' | 'lg' | 'xl' | string;
   windowClass: string;
+  modalDialogClass: string;
   backdropClass: string;
 
   private _animation: boolean;
