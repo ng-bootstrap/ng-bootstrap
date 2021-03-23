@@ -58,7 +58,7 @@ describe('ngb-datepicker integration', () => {
       getYearNumerals(year: number) { return `${year}`.split('').reverse().join(''); }
 
       // alphabetic week short name
-      get weekShortLabel() { return ALPHABET.substring(0, 2); }
+      getWeekLabel() { return ALPHABET.substring(0, 2); }
     }
 
     let fixture: ComponentFixture<TestComponent>;
