@@ -13,6 +13,7 @@ export class NgbTypeaheadConfig {
   container;
   editable = true;
   focusFirst = true;
+  selectByEnter = true;
   showHint = false;
   placement: PlacementArray = ['bottom-start', 'bottom-end', 'top-start', 'top-end'];
   popperOptions = (options: Partial<Options>) => options;
