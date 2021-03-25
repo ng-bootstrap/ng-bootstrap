@@ -741,6 +741,8 @@ describe('ngb-timepicker', () => {
 
          hourInput.triggerEventHandler('focus', {});
          fixture.detectChanges();
+         hourInput.triggerEventHandler('blur', {});
+         fixture.detectChanges();
          tick();
          fixture.detectChanges();
          expect(getTimepicker(compiled)).toHaveCssClass('ng-touched');
@@ -765,6 +767,8 @@ describe('ngb-timepicker', () => {
 
          minuteInput.triggerEventHandler('focus', {});
          fixture.detectChanges();
+         minuteInput.triggerEventHandler('blur', {});
+         fixture.detectChanges();
          tick();
          fixture.detectChanges();
          expect(getTimepicker(compiled)).toHaveCssClass('ng-touched');
@@ -788,6 +792,8 @@ describe('ngb-timepicker', () => {
          expect(getTimepicker(compiled)).not.toHaveCssClass('ng-touched');
 
          secondInput.triggerEventHandler('focus', {});
+         fixture.detectChanges();
+         secondInput.triggerEventHandler('blur', {});
          fixture.detectChanges();
          tick();
          fixture.detectChanges();
@@ -836,6 +842,8 @@ describe('ngb-timepicker', () => {
 
          hourInput.triggerEventHandler('focus', {});
          fixture.detectChanges();
+         hourInput.triggerEventHandler('blur', {});
+         fixture.detectChanges();
          tick();
          fixture.detectChanges();
          expect(getTimepicker(compiled)).toHaveCssClass('ng-touched');
@@ -861,6 +869,8 @@ describe('ngb-timepicker', () => {
 
          minuteInput.triggerEventHandler('focus', {});
          fixture.detectChanges();
+         minuteInput.triggerEventHandler('blur', {});
+         fixture.detectChanges();
          tick();
          fixture.detectChanges();
          expect(getTimepicker(compiled)).toHaveCssClass('ng-touched');
@@ -885,6 +895,8 @@ describe('ngb-timepicker', () => {
          expect(getTimepicker(compiled)).not.toHaveCssClass('ng-touched');
 
          secondInput.triggerEventHandler('focus', {});
+         fixture.detectChanges();
+         secondInput.triggerEventHandler('blur', {});
          fixture.detectChanges();
          tick();
          fixture.detectChanges();
@@ -929,6 +941,8 @@ describe('ngb-timepicker', () => {
 
       hourInput.triggerEventHandler('focus', {});
       fixture.detectChanges();
+      hourInput.triggerEventHandler('blur', {});
+      fixture.detectChanges();
       expect(getTimepicker(compiled)).toHaveCssClass('ng-touched');
       expect(getTimepicker(compiled)).not.toHaveCssClass('ng-untouched');
     });
@@ -949,6 +963,8 @@ describe('ngb-timepicker', () => {
 
       minuteInput.triggerEventHandler('focus', {});
       fixture.detectChanges();
+      minuteInput.triggerEventHandler('blur', {});
+      fixture.detectChanges();
       expect(getTimepicker(compiled)).toHaveCssClass('ng-touched');
       expect(getTimepicker(compiled)).not.toHaveCssClass('ng-untouched');
     });
@@ -968,6 +984,8 @@ describe('ngb-timepicker', () => {
       expect(getTimepicker(compiled)).not.toHaveCssClass('ng-touched');
 
       secondInput.triggerEventHandler('focus', {});
+      fixture.detectChanges();
+      secondInput.triggerEventHandler('blur', {});
       fixture.detectChanges();
       expect(getTimepicker(compiled)).toHaveCssClass('ng-touched');
       expect(getTimepicker(compiled)).not.toHaveCssClass('ng-untouched');
