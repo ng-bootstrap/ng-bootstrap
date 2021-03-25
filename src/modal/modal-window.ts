@@ -21,6 +21,7 @@ import {getFocusableBoundaryElements} from '../util/focus-trap';
 import {Key} from '../util/key';
 import {ModalDismissReasons} from './modal-dismiss-reasons';
 import {ngbRunTransition, NgbTransitionOptions} from '../util/transition/ngbTransition';
+import {reflow} from '../util/util';
 
 @Component({
   selector: 'ngb-modal-window',
@@ -35,7 +36,7 @@ import {ngbRunTransition, NgbTransitionOptions} from '../util/transition/ngbTran
   },
   template: `
     <div #dialog [class]="'modal-dialog' + (size ? ' modal-' + size : '') + (centered ? ' modal-dialog-centered' : '') +
-     (scrollable ? ' modal-dialog-scrollable' : '')" role="document">
+     (scrollable ? ' modal-dialog-scrollable' : '') + (modalDialogClass ? ' ' + modalDialogClass : '')" role="document">
         <div class="modal-content"><ng-content></ng-content></div>
     </div>
     `,
@@ -58,6 +59,7 @@ export class NgbModalWindow implements OnInit,
   @Input() scrollable: string;
   @Input() size: string;
   @Input() windowClass: string;
+  @Input() modalDialogClass: string;
 
   @Output('dismiss') dismissEvent = new EventEmitter();
 
@@ -79,8 +81,9 @@ export class NgbModalWindow implements OnInit,
     const {nativeElement} = this._elRef;
     const context: NgbTransitionOptions<any> = {animation: this.animation, runningTransition: 'stop'};
 
-    const windowTransition$ = ngbRunTransition(nativeElement, () => nativeElement.classList.remove('show'), context);
-    const dialogTransition$ = ngbRunTransition(this._dialogEl.nativeElement, () => {}, context);
+    const windowTransition$ =
+        ngbRunTransition(this._zone, nativeElement, () => nativeElement.classList.remove('show'), context);
+    const dialogTransition$ = ngbRunTransition(this._zone, this._dialogEl.nativeElement, () => {}, context);
 
     const transitions$ = zip(windowTransition$, dialogTransition$);
     transitions$.subscribe(() => {
@@ -95,11 +98,16 @@ export class NgbModalWindow implements OnInit,
   }
 
   private _show() {
-    const {nativeElement} = this._elRef;
     const context: NgbTransitionOptions<any> = {animation: this.animation, runningTransition: 'continue'};
 
-    const windowTransition$ = ngbRunTransition(nativeElement, () => nativeElement.classList.add('show'), context);
-    const dialogTransition$ = ngbRunTransition(this._dialogEl.nativeElement, () => {}, context);
+    const windowTransition$ =
+        ngbRunTransition(this._zone, this._elRef.nativeElement, (element: HTMLElement, animation: boolean) => {
+          if (animation) {
+            reflow(element);
+          }
+          element.classList.add('show');
+        }, context);
+    const dialogTransition$ = ngbRunTransition(this._zone, this._dialogEl.nativeElement, () => {}, context);
 
     zip(windowTransition$, dialogTransition$).subscribe(() => {
       this.shown.next();
@@ -189,7 +197,7 @@ export class NgbModalWindow implements OnInit,
 
   private _bumpBackdrop() {
     if (this.backdrop === 'static') {
-      ngbRunTransition(this._elRef.nativeElement, ({classList}) => {
+      ngbRunTransition(this._zone, this._elRef.nativeElement, ({classList}) => {
         classList.add('modal-static');
         return () => classList.remove('modal-static');
       }, {animation: this.animation, runningTransition: 'continue'});

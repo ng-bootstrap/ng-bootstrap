@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 
 @Component({
   template: `
+    <h3>Dropdown click tests</h3>
     <form>
       <div class="form-group form-inline">
         <input type="text" class="form-control mr-1" style="width: 100px" placeholder="before" id="before"/>

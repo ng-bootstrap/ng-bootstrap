@@ -100,6 +100,81 @@ describe('ngb-dropdown', () => {
     expect(getDropdownEl(compiled)).toHaveCssClass('dropdown');
   });
 
+  it('should allow setting a custom dropdown class', () => {
+    const html = `
+      <div ngbDropdown placement="bottom" class="my-class" [dropdownClass]="dropdownClass">
+          <button ngbDropdownAnchor></button>
+          <div ngbDropdownMenu>
+            <a class="dropdown-item">dropDown item</a>
+          </div>
+      </div>`;
+
+    const fixture = createTestComponent(html);
+    const dropdownEl = getDropdownEl(fixture.nativeElement);
+
+    expect(dropdownEl).toHaveCssClass('custom-class');
+    expect(dropdownEl).toHaveCssClass('my-class');
+    expect(dropdownEl).toHaveCssClass('dropdown');
+
+    fixture.componentInstance.dropdownClass = '';
+    fixture.detectChanges();
+
+    expect(dropdownEl).not.toHaveCssClass('custom-class');
+    expect(dropdownEl).toHaveCssClass('my-class');
+    expect(dropdownEl).toHaveCssClass('dropdown');
+
+    fixture.componentInstance.dropdownClass = 'another-class';
+    fixture.detectChanges();
+
+    expect(dropdownEl).toHaveCssClass('another-class');
+    expect(dropdownEl).toHaveCssClass('my-class');
+    expect(dropdownEl).toHaveCssClass('dropdown');
+  });
+
+  it('should allow setting a custom dropdown class (container="body")', () => {
+    const html = `
+      <div ngbDropdown placement="bottom" container="body" class="my-class" [dropdownClass]="dropdownClass">
+          <button ngbDropdownAnchor></button>
+          <div ngbDropdownMenu>
+            <a class="dropdown-item">dropDown item</a>
+          </div>
+      </div>`;
+
+    // closed
+    const fixture = createTestComponent(html);
+    const dropdown = fixture.debugElement.query(By.directive(NgbDropdown)).injector.get(NgbDropdown);
+
+    function dropdownEl() { return document.querySelector('div[ngbDropdownMenu]') !.parentNode !; }
+
+    expect(dropdownEl()).not.toHaveCssClass('custom-class');
+    expect(dropdownEl()).toHaveCssClass('my-class');
+    expect(dropdownEl()).toHaveCssClass('dropdown');
+
+    // open
+    dropdown.open();
+    fixture.detectChanges();
+
+    expect(dropdownEl()).toHaveCssClass('custom-class');
+    expect(dropdownEl()).not.toHaveCssClass('my-class');
+    expect(dropdownEl()).toHaveCssClass('dropdown');
+
+    fixture.componentInstance.dropdownClass = '';
+    fixture.detectChanges();
+
+    expect(dropdownEl()).not.toHaveCssClass('custom-class');
+    expect(dropdownEl()).not.toHaveCssClass('my-class');
+    expect(dropdownEl()).toHaveCssClass('dropdown');
+
+    fixture.componentInstance.dropdownClass = 'another-class';
+    fixture.detectChanges();
+
+    expect(dropdownEl()).toHaveCssClass('another-class');
+    expect(dropdownEl()).not.toHaveCssClass('my-class');
+    expect(dropdownEl()).toHaveCssClass('dropdown');
+
+    dropdown.close();
+  });
+
   it('should have x-placement attribute reflecting placement', () => {
     const html = `
       <div ngbDropdown placement="bottom-right">
@@ -481,6 +556,7 @@ describe('ngb-dropdown-toggle', () => {
 class TestComponent {
   isOpen = false;
   stateChanges: boolean[] = [];
+  dropdownClass = 'custom-class';
 
   recordStateChange($event) {
     this.stateChanges.push($event);

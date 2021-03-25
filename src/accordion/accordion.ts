@@ -348,11 +348,11 @@ export class NgbAccordion implements AfterContentChecked {
         if (panelElement) {
           if (!panel.initClassDone) {
             panel.initClassDone = true;
-            const {classList} = panelElement;
-            classList.add('collapse');
-            if (panel.isOpen) {
-              classList.add('show');
-            }
+            ngbRunTransition(this._ngZone, panelElement, ngbCollapsingTransition, {
+              animation: false,
+              runningTransition: 'continue',
+              context: {direction: panel.isOpen ? 'show' : 'hide'}
+            });
           }
         } else {
           // Classes must be initialized next time it will be in the dom
@@ -397,7 +397,7 @@ export class NgbAccordion implements AfterContentChecked {
     this.activeIds = this.panels.filter(panel => panel.isOpen && !panel.disabled).map(panel => panel.id);
   }
 
-  private _runTransitions(animation: boolean, emitEvent = true) {
+  private _runTransitions(animation: boolean) {
     // detectChanges is performed to ensure that all panels are in the dom (via transitionRunning = true)
     // before starting the animation
     this._changeDetector.detectChanges();
@@ -407,21 +407,19 @@ export class NgbAccordion implements AfterContentChecked {
       // The direction (show or hide) is choosen by each panel.isOpen state
       if (panel.transitionRunning) {
         const panelElement = this._getPanelElement(panel.id);
-        ngbRunTransition(panelElement !, ngbCollapsingTransition, {
+        ngbRunTransition(this._ngZone, panelElement !, ngbCollapsingTransition, {
           animation,
           runningTransition: 'stop',
           context: {direction: panel.isOpen ? 'show' : 'hide'}
         }).subscribe(() => {
           panel.transitionRunning = false;
-          if (emitEvent) {
-            const {id} = panel;
-            if (panel.isOpen) {
-              panel.shown.emit();
-              this.shown.emit(id);
-            } else {
-              panel.hidden.emit();
-              this.hidden.emit(id);
-            }
+          const {id} = panel;
+          if (panel.isOpen) {
+            panel.shown.emit();
+            this.shown.emit(id);
+          } else {
+            panel.hidden.emit();
+            this.hidden.emit(id);
           }
         });
       }

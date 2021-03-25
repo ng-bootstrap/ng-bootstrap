@@ -67,10 +67,11 @@ yarn
 
 We use [`@angular/cli`](https://cli.angular.io) to build both ng-bootstrap library and demo site. There are several Angular CLI projects inside the checked out code:
 
-- `ng-bootstrap` - the ng-bootstrap library itself, sources are located in directly in the `src` folder
-- `demo` - the demo site deployed at [https://ng-bootstrap.github.io](https://ng-bootstrap.github.io), sources are in `demo/src`
-- `e2e test app` - an application used to run e2e tests for the library, sources are in `e2e-app/src`
-- `ssr test app` - a simple one-paged application for Server Side Rendering tests, sources are in `ssr-app/src`
+- `/src` - the `ng-bootstrap` library itself
+- `/demo` - the demo site application deployed at [https://ng-bootstrap.github.io](https://ng-bootstrap.github.io)
+- `/e2e-app` - an application used to run e2e tests for the library
+- `/ssr-app/src` - a simple one-paged application for Server Side Rendering tests
+- `/test-app` - a minimal CLI application that references `ng-bootstrap` sources for issue reproduction/debugging purposes
 
 ## Useful Commands
 
@@ -130,7 +131,7 @@ yarn check-format
 ```
 
 Your life will be easier if you include the formatter in your standard workflow. Otherwise, you'll
-likely forget to check the formatting, and waste time waiting for a build on Travis that fails due
+likely forget to check the formatting, and waste time waiting for a build on GitHub that fails due
 to some whitespace difference.
 
 - Install clang-format with `npm install -g clang-format`.

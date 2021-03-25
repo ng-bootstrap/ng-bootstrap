@@ -8,7 +8,8 @@ import {
   NgbPaginationLast,
   NgbPaginationNext,
   NgbPaginationNumber,
-  NgbPaginationPrevious
+  NgbPaginationPrevious,
+  NgbPaginationPages
 } from './pagination';
 
 export {
@@ -18,13 +19,14 @@ export {
   NgbPaginationLast,
   NgbPaginationNext,
   NgbPaginationNumber,
-  NgbPaginationPrevious
+  NgbPaginationPrevious,
+  NgbPaginationPages
 } from './pagination';
 export {NgbPaginationConfig} from './pagination-config';
 
 const DIRECTIVES = [
   NgbPagination, NgbPaginationEllipsis, NgbPaginationFirst, NgbPaginationLast, NgbPaginationNext, NgbPaginationNumber,
-  NgbPaginationPrevious
+  NgbPaginationPrevious, NgbPaginationPages
 ];
 
 @NgModule({declarations: DIRECTIVES, exports: DIRECTIVES, imports: [CommonModule]})

@@ -1,33 +1,42 @@
-import {$, ElementFinder} from 'protractor';
-import {rightClick} from '../../tools.po';
+import {test} from '../../../../playwright.conf';
+import {isDropdownOpened, toggleDropdown} from '../dropdown.po';
 
-export class DropdownAutoClosePage {
-  async clickOutside() { await $('#outside-button').click(); }
+export const SELECTOR_OPEN_STATUS = '#open-status';
+export const SELECTOR_DROPDOWN = '#dropdown';
+export const SELECTOR_DROPDOWN_MENU = '#dropdownMenuId';
+export const SELECTOR_DROPDOWN_TOGGLE = '#dropdown >> button[ngbDropdownToggle]';
+export const SELECTOR_DROPDOWN_ITEM = '#item-1';
+export const SELECTOR_FORM_INPUT = '#dropdownMenuId >> input';
 
-  getDropdown(dropDownSelector = '') { return $(`${dropDownSelector}[ngbDropdown]`); }
+export const expectDropdownToBeVisible = async(message: string) => {
+  await test.page.waitForSelector(SELECTOR_DROPDOWN_ITEM);
+  expect(await isDropdownOpened(SELECTOR_DROPDOWN)).toBeTruthy(message);
+  expect(await test.page.textContent(SELECTOR_OPEN_STATUS)).toBe('open', message);
+};
 
-  getDropdownItem(item: number) { return $(`#item-${item}`); }
+export const expectDropdownToBeHidden = async(message: string) => {
+  await test.page.waitForSelector(SELECTOR_DROPDOWN_ITEM, {state: 'hidden'});
+  expect(await isDropdownOpened(SELECTOR_DROPDOWN)).toBeFalsy(message);
+  expect(await test.page.textContent(SELECTOR_OPEN_STATUS)).toBe('closed', message);
+};
 
-  getFormInput(dropdown: ElementFinder) { return dropdown.$(`input`); }
+export const openDropdown = async(message: string) => {
+  await toggleDropdown(SELECTOR_DROPDOWN);
+  await expectDropdownToBeVisible(message);
+};
 
-  getFirstItem(dropdown: ElementFinder) { return dropdown.$$(`.dropdown-item`).first(); }
+export const closeDropdown = async(message: string) => {
+  await toggleDropdown(SELECTOR_DROPDOWN);
+  await expectDropdownToBeHidden(message);
+};
 
-  getOpenStatus() { return $('#open-status'); }
+export const clickDropdownItem = async() => await test.page.click(SELECTOR_DROPDOWN_ITEM);
+export const rightClickDropdownItem = async() => await test.page.click(SELECTOR_DROPDOWN_ITEM, {button: 'right'});
 
-  async rightClickOutside() { await rightClick($('#outside-button')); }
+export const clickOutside = async() => await test.page.click('#outside-button');
+export const rightClickOutside = async() => await test.page.click('#outside-button', {button: 'right'});
 
-  async open(dropdown: ElementFinder) {
-    await dropdown.$(`button[ngbDropdownToggle]`).click();
-    expect(await this.isOpened(dropdown)).toBeTruthy(`Dropdown should have been opened`);
-  }
-
-  async selectAutoClose(type: string) {
-    await $('#autoclose-dropdown').click();
-    await $(`#autoclose-${type}`).click();
-  }
-
-  async isOpened(dropdown: ElementFinder) {
-    const classNames = await dropdown.getAttribute('class');
-    return classNames.includes('show');
-  }
-}
+export const selectAutoClose = async(type: string) => {
+  await test.page.click('#autoclose-dropdown');
+  await test.page.click(`#autoclose-${type}`);
+};

@@ -10,7 +10,8 @@ import {
   OnDestroy,
   TemplateRef,
   ViewContainerRef,
-  AfterViewInit
+  AfterViewInit,
+  NgZone
 } from '@angular/core';
 
 import {NgbPopoverModule} from './popover.module';
@@ -511,8 +512,8 @@ describe('ngb-popover', () => {
           `<div ngbPopover="Great tip!" triggers="click" (shown)="shown()" (hidden)="hidden()"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
-      let shownSpy = spyOn(fixture.componentInstance, 'shown');
-      let hiddenSpy = spyOn(fixture.componentInstance, 'hidden');
+      let shownSpy = spyOn(fixture.componentInstance, 'shown').and.callThrough();
+      let hiddenSpy = spyOn(fixture.componentInstance, 'hidden').and.callThrough();
 
       triggerEvent(directive, 'click');
       fixture.detectChanges();
@@ -907,8 +908,8 @@ export class TestComponent {
     this._vcRef.remove(0);
   }
 
-  shown() {}
-  hidden() {}
+  shown() { expect(NgZone.isInAngularZone()).toBe(true, `'shown' should run inside the Angular zone`); }
+  hidden() { expect(NgZone.isInAngularZone()).toBe(true, `'hidden' should run inside the Angular zone`); }
 }
 
 @Component({selector: 'test-onpush-cmpt', changeDetection: ChangeDetectionStrategy.OnPush, template: ``})

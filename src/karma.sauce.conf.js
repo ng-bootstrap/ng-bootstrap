@@ -1,4 +1,4 @@
-// Configuration used testing via Sauce Labs on Travis CI
+// Configuration used testing via Sauce Labs on GitHub CI
 
 process.env.SAUCE_ACCESS_KEY = process.env.SAUCE_ACCESS_KEY.split('').reverse().join('');
 
@@ -59,8 +59,8 @@ module.exports = function (config) {
       clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
     sauceLabs: {
-      build: `TRAVIS #${process.env.TRAVIS_BUILD_NUMBER} (${process.env.TRAVIS_BUILD_ID})`,
-      tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER,
+      build: `GitHub run #${process.env.GITHUB_RUN_ID}`,
+      tunnelIdentifier: process.env.GITHUB_RUN_ID,
       testName: 'ng-bootstrap',
       retryLimit: 3,
       startConnect: false,

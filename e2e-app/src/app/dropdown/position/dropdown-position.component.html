@@ -5,13 +5,13 @@
     <div id="dropdown" ngbDropdown class="d-inline-block mr-1 mb-1" [autoClose]="false" [container]="container" [placement]="placement">
       <button class="btn btn-outline-secondary" ngbDropdownToggle>Toggle dropdown</button>
       <div ngbDropdownMenu id="dropdownMenu">
-        <button class="dropdown-item">Item</button>
+        <button ngbDropdownItem>Item</button>
       </div>
     </div>
     <br />
     <div id="dropdownWithTemplate" ngbDropdown class="d-inline-block" [autoClose]="false" [container]="container" [placement]="placement">
       <button class="btn btn-outline-secondary" ngbDropdownToggle>Dropdown with template</button>
-      <div ngbDropdownMenu id="dropdownWithTemplateMenu" *ngIf="true">
+      <div ngbDropdownMenu id="dropdownWithTemplateMenu">
         <button ngbDropdownItem>Action - 1</button>
         <button ngbDropdownItem>Another Action</button>
         <button ngbDropdownItem>Something else is here</button>

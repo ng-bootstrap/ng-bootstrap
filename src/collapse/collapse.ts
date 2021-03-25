@@ -3,6 +3,7 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  NgZone,
   OnChanges,
   OnInit,
   Output,
@@ -49,16 +50,15 @@ export class NgbCollapse implements OnInit, OnChanges {
   @Output() hidden = new EventEmitter<void>();
 
 
-  constructor(private _element: ElementRef, config: NgbCollapseConfig) { this.animation = config.animation; }
-
-  ngOnInit() {
-    this._element.nativeElement.classList.add('collapse');
-    this._runTransition(this.collapsed, false, false);
+  constructor(private _element: ElementRef, config: NgbCollapseConfig, private _zone: NgZone) {
+    this.animation = config.animation;
   }
+
+  ngOnInit() { this._runTransition(this.collapsed, false); }
 
   ngOnChanges({collapsed}: SimpleChanges) {
     if (!collapsed.firstChange) {
-      this._runTransition(this.collapsed, this.animation);
+      this._runTransitionWithEvents(this.collapsed, this.animation);
     }
   }
 
@@ -73,21 +73,21 @@ export class NgbCollapse implements OnInit, OnChanges {
   toggle(open: boolean = this.collapsed) {
     this.collapsed = !open;
     this.ngbCollapseChange.next(this.collapsed);
-    this._runTransition(this.collapsed, this.animation);
+    this._runTransitionWithEvents(this.collapsed, this.animation);
   }
 
-  private _runTransition(collapsed: boolean, animation: boolean, emitEvent = true) {
-    ngbRunTransition(this._element.nativeElement, ngbCollapsingTransition, {
-      animation,
-      runningTransition: 'stop',
-      context: {direction: collapsed ? 'hide' : 'show'}
-    }).subscribe(() => {
-      if (emitEvent) {
-        if (collapsed) {
-          this.hidden.emit();
-        } else {
-          this.shown.emit();
-        }
+  private _runTransition(collapsed: boolean, animation: boolean) {
+    return ngbRunTransition(
+        this._zone, this._element.nativeElement, ngbCollapsingTransition,
+        {animation, runningTransition: 'stop', context: {direction: collapsed ? 'hide' : 'show'}});
+  }
+
+  private _runTransitionWithEvents(collapsed: boolean, animation: boolean) {
+    this._runTransition(collapsed, animation).subscribe(() => {
+      if (collapsed) {
+        this.hidden.emit();
+      } else {
+        this.shown.emit();
       }
     });
   }

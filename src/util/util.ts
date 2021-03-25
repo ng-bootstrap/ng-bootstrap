@@ -1,3 +1,6 @@
+import {NgZone} from '@angular/core';
+import {Observable, OperatorFunction} from 'rxjs';
+
 export function toInteger(value: any): number {
   return parseInt(`${value}`, 10);
 }
@@ -92,5 +95,25 @@ export function closest(element: HTMLElement, selector?: string): HTMLElement | 
  * @param element element where to apply the reflow
  */
 export function reflow(element: HTMLElement) {
-  return (element || document.body).offsetHeight;
+  return (element || document.body).getBoundingClientRect();
+}
+
+/**
+ * Creates an observable where all callbacks are executed inside a given zone
+ *
+ * @param zone
+ */
+export function runInZone<T>(zone: NgZone): OperatorFunction<T, T> {
+  return (source) => {
+    return new Observable(observer => {
+      const onNext = (value: T) => zone.run(() => observer.next(value));
+      const onError = (e: any) => zone.run(() => observer.error(e));
+      const onComplete = () => zone.run(() => observer.complete());
+      return source.subscribe(onNext, onError, onComplete);
+    });
+  };
+}
+
+export function removeAccents(str: string): string {
+  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }

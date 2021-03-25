@@ -6,6 +6,7 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  NgZone,
   TemplateRef,
   ViewChild,
   ViewContainerRef
@@ -531,8 +532,8 @@ describe('ngb-tooltip', () => {
           `<div ngbTooltip="Great tip!" triggers="click" (shown)="shown()" (hidden)="hidden()"></div>`);
       const directive = fixture.debugElement.query(By.directive(NgbTooltip));
 
-      let shownSpy = spyOn(fixture.componentInstance, 'shown');
-      let hiddenSpy = spyOn(fixture.componentInstance, 'hidden');
+      const shownSpy = spyOn(fixture.componentInstance, 'shown').and.callThrough();
+      const hiddenSpy = spyOn(fixture.componentInstance, 'hidden').and.callThrough();
 
       triggerEvent(directive, 'click');
       fixture.detectChanges();
@@ -789,8 +790,8 @@ export class TestComponent {
 
   @ViewChild(NgbTooltip, {static: true}) tooltip: NgbTooltip;
 
-  shown() {}
-  hidden() {}
+  shown() { expect(NgZone.isInAngularZone()).toBe(true, `'shown' should run inside the Angular zone`); }
+  hidden() { expect(NgZone.isInAngularZone()).toBe(true, `'hidden' should run inside the Angular zone`); }
 
   constructor(private _vcRef: ViewContainerRef) {}
 

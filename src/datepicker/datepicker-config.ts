@@ -1,4 +1,5 @@
 import {Injectable, TemplateRef} from '@angular/core';
+import {TranslationWidth} from '@angular/common';
 import {DayTemplateContext} from './datepicker-day-template-context';
 import {NgbDateStruct} from './ngb-date-struct';
 
@@ -23,4 +24,5 @@ export class NgbDatepickerConfig {
   showWeekdays = true;
   showWeekNumbers = false;
   startDate: {year: number, month: number};
+  weekdays: TranslationWidth | boolean = TranslationWidth.Short;
 }
