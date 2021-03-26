@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'datepicker-component',
@@ -12,9 +12,7 @@ import { Component } from '@angular/core';
         <div class="input-group">
           <input class="form-control" placeholder="yyyy-mm-dd"
                  name="popup" [(ngModel)]="model2" ngbDatepicker #d="ngbDatepicker">
-          <div class="input-group-append">
-            <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">Open</button>
-          </div>
+          <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">Open</button>
         </div>
       </div>
     </form>

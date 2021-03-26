@@ -15,9 +15,7 @@
         <div class="input-group">
           <input id="datepicker" class="form-control" placeholder="yyyy-mm-dd" name="dp"
                  ngbDatepicker #dp="ngbDatepicker" [startDate]="{year: 2018, month: 1}">
-          <div class="input-group-append">
-            <button class="btn btn-outline-secondary" id="datepicker-button" (click)="dp.toggle()" type="button">Open</button>
-          </div>
+          <button class="btn btn-outline-secondary" id="datepicker-button" (click)="dp.toggle()" type="button">Open</button>
         </div>
       </div>
 
