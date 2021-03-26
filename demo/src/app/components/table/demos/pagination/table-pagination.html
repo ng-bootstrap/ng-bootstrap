@@ -26,7 +26,7 @@
   <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize" (pageChange)="refreshCountries()">
   </ngb-pagination>
 
-  <select class="custom-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="refreshCountries()">
+  <select class="form-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="refreshCountries()">
     <option [ngValue]="2">2 items per page</option>
     <option [ngValue]="4">4 items per page</option>
     <option [ngValue]="6">6 items per page</option>

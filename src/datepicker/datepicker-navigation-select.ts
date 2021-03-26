@@ -22,7 +22,7 @@ import {NgbDatepickerI18n} from './datepicker-i18n';
   template: `
     <select #month
       [disabled]="disabled"
-      class="custom-select"
+      class="form-select"
       i18n-aria-label="@@ngb.datepicker.select-month" aria-label="Select month"
       i18n-title="@@ngb.datepicker.select-month" title="Select month"
       (change)="changeMonth($any($event).target.value)">
@@ -30,7 +30,7 @@ import {NgbDatepickerI18n} from './datepicker-i18n';
                 [value]="m">{{ i18n.getMonthShortName(m, date?.year) }}</option>
     </select><select #year
       [disabled]="disabled"
-      class="custom-select"
+      class="form-select"
       i18n-aria-label="@@ngb.datepicker.select-year" aria-label="Select year"
       i18n-title="@@ngb.datepicker.select-year" title="Select year"
       (change)="changeYear($any($event).target.value)">
