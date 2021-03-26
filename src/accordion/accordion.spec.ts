@@ -12,7 +12,7 @@ const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
 function getPanels(element: HTMLElement): HTMLDivElement[] {
-  return <HTMLDivElement[]>Array.from(element.querySelectorAll('.card > .card-header'));
+  return <HTMLDivElement[]>Array.from(element.querySelectorAll('.card > .accordion-header'));
 }
 
 function getPanelsContent(element: HTMLElement): HTMLDivElement[] {
@@ -20,7 +20,7 @@ function getPanelsContent(element: HTMLElement): HTMLDivElement[] {
 }
 
 function getPanelsButton(element: HTMLElement): HTMLButtonElement[] {
-  return <HTMLButtonElement[]>Array.from(element.querySelectorAll('.card > .card-header button'));
+  return <HTMLButtonElement[]>Array.from(element.querySelectorAll('.card > .accordion-header button'));
 }
 
 function getPanelsTitle(element: HTMLElement): string[] {
@@ -615,7 +615,7 @@ describe('ngb-accordion', () => {
     fixture.componentInstance.classType = 'warning';
     fixture.detectChanges();
 
-    let el = fixture.nativeElement.querySelectorAll('.card-header');
+    let el = fixture.nativeElement.querySelectorAll('.accordion-header');
     expect(el[0]).toHaveCssClass('bg-warning');
     expect(el[1]).toHaveCssClass('bg-warning');
     expect(el[2]).toHaveCssClass('bg-warning');
@@ -631,7 +631,7 @@ describe('ngb-accordion', () => {
     tc.panels[1].type = 'danger';
     fixture.detectChanges();
 
-    let el = fixture.nativeElement.querySelectorAll('.card-header');
+    let el = fixture.nativeElement.querySelectorAll('.accordion-header');
     expect(el[0]).toHaveCssClass('bg-success');
     expect(el[1]).toHaveCssClass('bg-danger');
     expect(el[2]).toHaveCssClass('bg-warning');

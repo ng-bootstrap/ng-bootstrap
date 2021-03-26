@@ -1,7 +1,7 @@
 <ngb-accordion #a="ngbAccordion" activeIds="custom-panel-1">
   <ngb-panel id="custom-panel-1">
     <ng-template ngbPanelHeader let-opened="opened">
-      <div class="d-flex align-items-center justify-content-between">
+      <div class="p-2 d-flex align-items-center justify-content-between">
         <h5 class="m-0">First panel - {{ opened ? 'opened' : 'collapsed' }}</h5>
         <button ngbPanelToggle class="btn btn-link p-0">Toggle first</button>
       </div>
@@ -17,7 +17,7 @@
   </ngb-panel>
   <ngb-panel>
     <ng-template ngbPanelHeader>
-      <div class="d-flex align-items-center justify-content-between">
+      <div class="p-2 d-flex align-items-center justify-content-between">
         <h5 class="m-0">Second panel</h5>
         <div>
           <button ngbPanelToggle class="btn btn-sm btn-outline-primary ms-2">Toggle second</button>
@@ -39,7 +39,7 @@
   </ngb-panel>
   <ngb-panel [disabled]="disabled" [cardClass]="disabled ? 'disabled' : ''">
     <ng-template ngbPanelHeader>
-      <div class="d-flex align-items-center justify-content-between">
+      <div class="p-2 d-flex align-items-center justify-content-between">
         <button ngbPanelToggle class="btn btn-link container-fluid text-start ps-0">Third panel</button>
         <p *ngIf="disabled" class="text-muted m-0 small">[I'm&nbsp;disabled]</p>
       </div>
