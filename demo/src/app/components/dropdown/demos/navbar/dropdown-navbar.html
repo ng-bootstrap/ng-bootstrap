@@ -25,45 +25,47 @@
 </p>
 
 <nav class="navbar navbar-expand-md navbar-light bg-light">
-  <span class="navbar-brand">Dropdowns in navbar</span>
-  <button class="navbar-toggler" type="button" aria-controls="navbarContent" [attr.aria-expanded]="!collapsed" aria-label="Toggle navigation" (click)="collapsed = !collapsed">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+  <div class="container-fluid">
+    <span class="navbar-brand">Dropdowns in navbar</span>
+    <button class="navbar-toggler" type="button" aria-controls="navbarContent" [attr.aria-expanded]="!collapsed" aria-label="Toggle navigation" (click)="collapsed = !collapsed">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-  <div class="navbar-collapse" [class.collapse]="collapsed" id="navbarContent">
-    <ul class="navbar-nav ms-auto">
-      <li class="nav-item" ngbDropdown>
-        <a class="nav-link" tabindex="0" ngbDropdownToggle id="navbarDropdown1" role="button">
-          Static
-        </a>
-        <div ngbDropdownMenu aria-labelledby="navbarDropdown1" class="dropdown-menu">
-          <a ngbDropdownItem href="#" (click)="$event.preventDefault()">Action</a>
-          <a ngbDropdownItem href="#" (click)="$event.preventDefault()">Another action</a>
-          <a ngbDropdownItem href="#" (click)="$event.preventDefault()">Something else here</a>
-        </div>
-      </li>
+    <div class="navbar-collapse" [class.collapse]="collapsed" id="navbarContent">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item" ngbDropdown>
+          <a class="nav-link" tabindex="0" ngbDropdownToggle id="navbarDropdown1" role="button">
+            Static
+          </a>
+          <div ngbDropdownMenu aria-labelledby="navbarDropdown1" class="dropdown-menu">
+            <a ngbDropdownItem href="#" (click)="$event.preventDefault()">Action</a>
+            <a ngbDropdownItem href="#" (click)="$event.preventDefault()">Another action</a>
+            <a ngbDropdownItem href="#" (click)="$event.preventDefault()">Something else here</a>
+          </div>
+        </li>
 
-      <li class="nav-item" ngbDropdown>
-        <a class="nav-link" tabindex="0" ngbDropdownToggle id="navbarDropdown2" role="button">
-          Static right
-        </a>
-        <div ngbDropdownMenu aria-labelledby="navbarDropdown2" class="dropdown-menu dropdown-menu-end">
-          <a ngbDropdownItem href="#" (click)="$event.preventDefault()">Action</a>
-          <a ngbDropdownItem href="#" (click)="$event.preventDefault()">Another action</a>
-          <a ngbDropdownItem href="#" (click)="$event.preventDefault()">Something else here</a>
-        </div>
-      </li>
+        <li class="nav-item" ngbDropdown>
+          <a class="nav-link" tabindex="0" ngbDropdownToggle id="navbarDropdown2" role="button">
+            Static right
+          </a>
+          <div ngbDropdownMenu aria-labelledby="navbarDropdown2" class="dropdown-menu dropdown-menu-end">
+            <a ngbDropdownItem href="#" (click)="$event.preventDefault()">Action</a>
+            <a ngbDropdownItem href="#" (click)="$event.preventDefault()">Another action</a>
+            <a ngbDropdownItem href="#" (click)="$event.preventDefault()">Something else here</a>
+          </div>
+        </li>
 
-      <li class="nav-item" ngbDropdown display="dynamic" placement="bottom-end">
-        <a class="nav-link" tabindex="0" ngbDropdownToggle id="navbarDropdown3" role="button">
-          Dynamic
-        </a>
-        <div ngbDropdownMenu aria-labelledby="navbarDropdown3" class="dropdown-menu">
-          <a ngbDropdownItem href="#" (click)="$event.preventDefault()">Action</a>
-          <a ngbDropdownItem href="#" (click)="$event.preventDefault()">Another action</a>
-          <a ngbDropdownItem href="#" (click)="$event.preventDefault()">Something else here</a>
-        </div>
-      </li>
-    </ul>
+        <li class="nav-item" ngbDropdown display="dynamic" placement="bottom-end">
+          <a class="nav-link" tabindex="0" ngbDropdownToggle id="navbarDropdown3" role="button">
+            Dynamic
+          </a>
+          <div ngbDropdownMenu aria-labelledby="navbarDropdown3" class="dropdown-menu">
+            <a ngbDropdownItem href="#" (click)="$event.preventDefault()">Action</a>
+            <a ngbDropdownItem href="#" (click)="$event.preventDefault()">Another action</a>
+            <a ngbDropdownItem href="#" (click)="$event.preventDefault()">Something else here</a>
+          </div>
+        </li>
+      </ul>
+    </div>
   </div>
 </nav>
