@@ -8,12 +8,14 @@ A typeahead example that gets values from the <code>WikipediaService</code>
   <li><code>catch</code> operator to display an error message in case of connectivity issue</li>
 </ul>
 
-<fieldset class="form-inline">
-  <div class="form-group">
-    <label for="typeahead-http">Search for a wiki page:</label>
-    <input id="typeahead-http" type="text" class="form-control mx-sm-3" [class.is-invalid]="searchFailed" [(ngModel)]="model" [ngbTypeahead]="search" placeholder="Wikipedia search" />
-    <small *ngIf="searching" class="form-text text-muted">searching...</small>
-    <div class="invalid-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
+<fieldset>
+  <div class="mb-3">
+    <label for="typeahead-http" class="col-xs-3 col-sm-auto col-form-label">Search for a wiki page:</label>
+    <div class="col">
+        <input id="typeahead-http" type="text" class="form-control mx-sm-3" [class.is-invalid]="searchFailed" [(ngModel)]="model" [ngbTypeahead]="search" placeholder="Wikipedia search" />
+      <small *ngIf="searching" class="form-text text-muted">searching...</small>
+      <div class="invalid-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
+    </div>
   </div>
 </fieldset>
 <hr>
