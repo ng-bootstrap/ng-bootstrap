@@ -1,14 +1,12 @@
 import {Component, Type} from '@angular/core';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'ngbd-modal-confirm',
   template: `
   <div class="modal-header">
     <h4 class="modal-title" id="modal-title">Profile deletion</h4>
-    <button type="button" class="close" aria-describedby="modal-title" (click)="modal.dismiss('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <button type="button" class="btn-close" aria-describedby="modal-title" (click)="modal.dismiss('Cross click')"></button>
   </div>
   <div class="modal-body">
     <p><strong>Are you sure you want to delete <span class="text-primary">"John Doe"</span> profile?</strong></p>
@@ -31,9 +29,7 @@ export class NgbdModalConfirm {
   template: `
   <div class="modal-header">
     <h4 class="modal-title" id="modal-title">Profile deletion</h4>
-    <button type="button" class="close" aria-label="Close button" aria-describedby="modal-title" (click)="modal.dismiss('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <button type="button" class="btn-close" aria-label="Close button" aria-describedby="modal-title" (click)="modal.dismiss('Cross click')"></button>
   </div>
   <div class="modal-body">
     <p><strong>Are you sure you want to delete <span class="text-primary">"John Doe"</span> profile?</strong></p>
@@ -56,17 +52,12 @@ const MODALS: {[name: string]: Type<any>} = {
   autofocus: NgbdModalConfirmAutofocus
 };
 
-@Component({
-  selector: 'ngbd-modal-focus',
-  templateUrl: './modal-focus.html'
-})
+@Component({selector: 'ngbd-modal-focus', templateUrl: './modal-focus.html'})
 export class NgbdModalFocus {
   withAutofocus = `<button type="button" ngbAutofocus class="btn btn-danger"
       (click)="modal.close('Ok click')">Ok</button>`;
 
   constructor(private _modalService: NgbModal) {}
 
-  open(name: string) {
-    this._modalService.open(MODALS[name]);
-  }
+  open(name: string) { this._modalService.open(MODALS[name]); }
 }

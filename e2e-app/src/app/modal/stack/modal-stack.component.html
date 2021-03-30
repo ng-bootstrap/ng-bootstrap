@@ -3,9 +3,7 @@
 <ng-template #t let-modal>
   <div id="modal" class="modal-header">
     <h4 class="modal-title">Modal with nested popups</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
   </div>
   <div class="modal-body">
     <!-- modal -->
@@ -16,9 +14,7 @@
 <ng-template #t2 let-modal>
   <div id="stack-modal" class="modal-header">
     <h4 class="modal-title">Stacked modal</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
   </div>
 </ng-template>
 

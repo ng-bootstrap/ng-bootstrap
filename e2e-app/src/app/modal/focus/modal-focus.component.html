@@ -8,9 +8,7 @@
 <ng-template #closeable let-modal>
   <div class="modal-header">
     <h4 class="modal-title">Closeable modal</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
   </div>
   <div class="modal-body">
     <form>
@@ -32,9 +30,7 @@
 <ng-template #autofocus let-modal>
   <div class="modal-header">
     <h4 class="modal-title">Autofocus modal</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
   </div>
   <div class="modal-body">
     <p>Close button should be focused</p>
