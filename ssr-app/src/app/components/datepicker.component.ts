@@ -3,12 +3,12 @@ import {Component} from '@angular/core';
 @Component({
   selector: 'datepicker-component',
   template: `
-    <form class="form-inline">
-      <div class="form-group me-5">
+    <form class="row row-cols-lg-auto">
+      <div class="col-12 mb-3 me-5">
         <ngb-datepicker [(ngModel)]="model1" name="inline" [startDate]="model1"></ngb-datepicker>
       </div>
 
-      <div class="form-group">
+      <div class="col-12 mb-3">
         <div class="input-group">
           <input class="form-control" placeholder="yyyy-mm-dd"
                  name="popup" [(ngModel)]="model2" ngbDatepicker #d="ngbDatepicker">

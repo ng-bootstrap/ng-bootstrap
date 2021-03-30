@@ -1,8 +1,11 @@
 <p>You can do filter table data, in this case with observables and our <code>NgbHighlight</code> component used in Typeahead</p>
 
 <form>
-  <div class="form-group form-inline">
-      Full text search: <input class="form-control ms-2" type="text" [formControl]="filter"/>
+  <div class="mb-3 row">
+    <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Full text search:</label>
+    <div class="col">
+      <input id="table-filtering-search" class="form-control" type="text" [formControl]="filter">
+    </div>
   </div>
 </form>
 

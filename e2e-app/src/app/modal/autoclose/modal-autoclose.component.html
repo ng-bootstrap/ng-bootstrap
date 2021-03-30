@@ -13,15 +13,19 @@
 
 <!-- Controls -->
 <form id="default" (contextmenu)="$event.preventDefault()">
-  <div class="form-group form-inline">
-    <div class="input-group">
-      <button class="btn btn-outline-secondary" type="button" id="open-modal" (click)="openModal(content)">Open modal</button>
+  <div class="mb-3 row row-cols-lg-auto">
+    <div class="col-12">
+      <div class="input-group">
+        <button class="btn btn-outline-secondary" type="button" id="open-modal" (click)="openModal(content)">Open modal</button>
+      </div>
     </div>
 
-    <button class="btn btn-outline-secondary ms-3" id="reset-button" (click)="reset()">Reset</button>
-    <button class="btn btn-outline-secondary ms-1" id="option-backdrop-static" (click)="options['backdrop'] = 'static'">backdrop = 'static'</button>
-    <button class="btn btn-outline-secondary ms-1" id="option-backdrop-false" (click)="options['backdrop'] = false">backdrop = false</button>
-    <button class="btn btn-outline-secondary ms-1" id="option-no-keyboard" (click)="options['keyboard'] = false">keyboard = 'false'</button>
+    <div class="col-12">
+      <button class="btn btn-outline-secondary ms-3" id="reset-button" (click)="reset()">Reset</button>
+      <button class="btn btn-outline-secondary ms-1" id="option-backdrop-static" (click)="options['backdrop'] = 'static'">backdrop = 'static'</button>
+      <button class="btn btn-outline-secondary ms-1" id="option-backdrop-false" (click)="options['backdrop'] = false">backdrop = false</button>
+      <button class="btn btn-outline-secondary ms-1" id="option-no-keyboard" (click)="options['keyboard'] = false">keyboard = 'false'</button>
+    </div>
   </div>
 </form>
 
