@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {Component} from '@angular/core';
+import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 function getDismissReason(reason: any): string {
   switch (reason) {
@@ -18,9 +18,7 @@ function getDismissReason(reason: any): string {
     <ng-template #content let-modal>
       <div class="modal-header">
         <h4 class="modal-title" id="modal-basic-title">Modal</h4>
-        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
       </div>
       <div class="modal-body">
         Hello from modal
@@ -41,10 +39,9 @@ export class ModalComponent {
   constructor(private modalService: NgbModal) {}
 
   open(content) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${getDismissReason(reason)}`;
-    });
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'})
+        .result.then(
+            (result) => { this.closeResult = `Closed with: ${result}`; },
+            (reason) => { this.closeResult = `Dismissed ${getDismissReason(reason)}`; });
   }
 }
