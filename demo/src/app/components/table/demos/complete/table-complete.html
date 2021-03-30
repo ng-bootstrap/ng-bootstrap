@@ -8,9 +8,12 @@
 </ul>
 
 <form>
-  <div class="form-group form-inline">
-      Full text search: <input class="form-control ms-2" type="text" name="searchTerm" [(ngModel)]="service.searchTerm"/>
+  <div class="mb-3 row">
+    <label for="table-complete-search" class="col-xs-3 col-sm-auto col-form-label">Full text search:</label>
+    <div class="col">
+      <input id="table-complete-search" type="text" class="form-control" name="searchTerm" [(ngModel)]="service.searchTerm">
       <span class="ms-3" *ngIf="service.loading$ | async">Loading...</span>
+    </div>
   </div>
 
   <table class="table table-striped">

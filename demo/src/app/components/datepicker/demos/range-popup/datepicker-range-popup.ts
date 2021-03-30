@@ -5,7 +5,7 @@ import {NgbDate, NgbCalendar, NgbDateParserFormatter} from '@ng-bootstrap/ng-boo
   selector: 'ngbd-datepicker-range-popup',
   templateUrl: './datepicker-range-popup.html',
   styles: [`
-    .form-group.hidden {
+    .dp-hidden {
       width: 0;
       margin: 0;
       border: none;
@@ -31,7 +31,6 @@ import {NgbDate, NgbCalendar, NgbDateParserFormatter} from '@ng-bootstrap/ng-boo
   `]
 })
 export class NgbdDatepickerRangePopup {
-
   hoveredDate: NgbDate | null = null;
 
   fromDate: NgbDate | null;
@@ -54,15 +53,15 @@ export class NgbdDatepickerRangePopup {
   }
 
   isHovered(date: NgbDate) {
-    return this.fromDate && !this.toDate && this.hoveredDate && date.after(this.fromDate) && date.before(this.hoveredDate);
+    return this.fromDate && !this.toDate && this.hoveredDate && date.after(this.fromDate) &&
+        date.before(this.hoveredDate);
   }
 
-  isInside(date: NgbDate) {
-    return this.toDate && date.after(this.fromDate) && date.before(this.toDate);
-  }
+  isInside(date: NgbDate) { return this.toDate && date.after(this.fromDate) && date.before(this.toDate); }
 
   isRange(date: NgbDate) {
-    return date.equals(this.fromDate) || (this.toDate && date.equals(this.toDate)) || this.isInside(date) || this.isHovered(date);
+    return date.equals(this.fromDate) || (this.toDate && date.equals(this.toDate)) || this.isInside(date) ||
+        this.isHovered(date);
   }
 
   validateInput(currentValue: NgbDate | null, input: string): NgbDate | null {
