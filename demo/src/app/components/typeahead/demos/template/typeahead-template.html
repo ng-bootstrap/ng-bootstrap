@@ -7,8 +7,12 @@
   <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
 </ng-template>
 
-<label for="typeahead-template">Search for a state:</label>
-<input id="typeahead-template" type="text" class="form-control" [(ngModel)]="model" [ngbTypeahead]="search" [resultTemplate]="rt"
-  [inputFormatter]="formatter" />
+<div class="mb-3 row">
+  <label for="typeahead-template" class="col-xs-3 col-sm-auto col-form-label">Search for a state:</label>
+  <div class="col">
+    <input id="typeahead-template" type="text" class="form-control col" [(ngModel)]="model" [ngbTypeahead]="search" [resultTemplate]="rt"
+      [inputFormatter]="formatter" />
+  </div>
+</div>
 <hr>
 <pre>Model: {{ model | json }}</pre>

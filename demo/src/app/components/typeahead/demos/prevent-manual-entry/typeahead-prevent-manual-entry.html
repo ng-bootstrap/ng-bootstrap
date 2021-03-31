@@ -1,11 +1,15 @@
 <p>Prevents manual text entry and updates the model only when an item from suggestions is selected</p>
 
-<label for="typeahead-prevent-manual-entry">Search for a state:</label>
-<input id="typeahead-prevent-manual-entry"  type="text" class="form-control"
-       [(ngModel)]="model"
-       [ngbTypeahead]="search"
-       [inputFormatter]="formatter"
-       [resultFormatter]="formatter"
-       [editable]='false' />
+<div class="mb-3 row">
+  <label for="typeahead-prevent-manual-entry" class="col-xs-3 col-sm-auto col-form-label">Search for a state:</label>
+  <div class="col">
+    <input id="typeahead-prevent-manual-entry" type="text" class="form-control"
+      [(ngModel)]="model"
+      [ngbTypeahead]="search"
+      [inputFormatter]="formatter"
+      [resultFormatter]="formatter"
+      [editable]='false' />
+  </div>
+</div>
 <hr>
 <pre>Model: {{ model | json }}</pre>
