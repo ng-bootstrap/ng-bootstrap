@@ -587,6 +587,21 @@ describe('ngb-modal', () => {
 
     });
 
+    describe('modal dialog custom class options', () => {
+
+      it('should render modals with the correct dialog custom classes', () => {
+        const modalInstance = fixture.componentInstance.open('foo', {modalDialogClass: 'bar'});
+        fixture.detectChanges();
+        expect(fixture.nativeElement).toHaveModal('foo');
+        expect(document.querySelector('.modal-dialog')).toHaveCssClass('bar');
+
+        modalInstance.close();
+        fixture.detectChanges();
+        expect(fixture.nativeElement).not.toHaveModal();
+      });
+
+    });
+
     describe('custom injector option', () => {
 
       it('should render modal with a custom injector', () => {
