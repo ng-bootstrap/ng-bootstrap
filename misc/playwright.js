@@ -6,7 +6,7 @@ yargs.usage('Build for production')
     .alias('h', 'help')
     .option('baseDir', {alias: 'd', description: 'Base directory for the tests', type: 'string', default: 'e2e-app'})
     .option('browser', {alias: 'b', description: 'Browser. Support chromium, firefox and webkit', type: 'string', default: 'chromium'})
-    .option('headless', {description: 'enable the headless mode. By default, the browser is run headfull locally and headless in CI', type: 'boolean'})
+    .option('headless', {description: 'enable the headless mode. If not provided, the browser is run headfull locally and headless in CI', type: 'boolean'})
     .option('debug', {description: 'enable debugging environment', type: 'boolean'})
     .option('slow', {description: 'enable slow motion', type: 'boolean'})
     .option('video', {alias: 'v', description: 'enable the video recording. By default, true for the ci, false locally', type: 'boolean'})
@@ -51,6 +51,12 @@ async function start() {
     process.env.NGB_VIDEO = 'true';
   }
 
+  if (parameters.headless) {
+    console.log('Headless is enabled');
+    process.env.NGB_HEADLESS = true;
+  } else {
+    process.env.NGB_HEADLESS = !!process.env.CI;
+  }
 
   const baseDir = parameters.baseDir;
   const config = require(`../${baseDir}/jasmine.json`);
