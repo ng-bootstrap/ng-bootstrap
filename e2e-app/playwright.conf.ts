@@ -10,7 +10,7 @@ export const browserName: BrowserName = process.env.NGB_BROWSER as BrowserName;
 console.log('Test suite is configured for browser:', browserName);
 
 export const launchOptions: LaunchOptions = {
-  headless: !!process.env.CI
+  headless: process.env.NGB_HEADLESS === 'true'
 };
 
 if (process.env.NGB_SLOW_MOTION) {
