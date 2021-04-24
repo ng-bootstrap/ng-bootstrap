@@ -2,6 +2,12 @@
 $arrow-size: 0.8rem;
 
 ngb-tooltip-window {
+  pointer-events: none;
+
+  .tooltip-inner {
+    pointer-events: auto;
+  }
+
   &.bs-tooltip-top .arrow,
   &.bs-tooltip-bottom .arrow {
     left: calc(50% - #{$arrow-size / 2});
