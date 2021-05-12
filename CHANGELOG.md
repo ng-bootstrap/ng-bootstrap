@@ -1,3 +1,16 @@
+## [9.1.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/9.1.0...9.1.1) (2021-05-12)
+
+
+### Bug Fixes
+
+* **modal:** honor modalWindowClass option ([#4068](https://github.com/ng-bootstrap/ng-bootstrap/issues/4068)) ([99c68ba](https://github.com/ng-bootstrap/ng-bootstrap/commit/99c68bafa948eb51d8c009f790eae92ada521080)), closes [#4067](https://github.com/ng-bootstrap/ng-bootstrap/issues/4067)
+* **modal:** missing detectChanges ([#4075](https://github.com/ng-bootstrap/ng-bootstrap/issues/4075)) ([ae2e6b1](https://github.com/ng-bootstrap/ng-bootstrap/commit/ae2e6b1e37eec461b4cdc149658374e9a2801ce4)), closes [#3960](https://github.com/ng-bootstrap/ng-bootstrap/issues/3960)
+* **popover:** enable pointer events only for popover content ([58b60b4](https://github.com/ng-bootstrap/ng-bootstrap/commit/58b60b41c4919892143c07e150d6876d962a39f4))
+* **timepicker:** add ng-touched class on blur ([#3956](https://github.com/ng-bootstrap/ng-bootstrap/issues/3956)) ([21f8f05](https://github.com/ng-bootstrap/ng-bootstrap/commit/21f8f05e99ce28a92c94d7b956a87eef185b63b0)), closes [#3852](https://github.com/ng-bootstrap/ng-bootstrap/issues/3852)
+* **tooltip:** enable pointer events only for tooltip content ([438fe5c](https://github.com/ng-bootstrap/ng-bootstrap/commit/438fe5c05c40e4a6988e1dc2d95a6eb8537797f0)), closes [#3997](https://github.com/ng-bootstrap/ng-bootstrap/issues/3997)
+
+
+
 # [9.1.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/9.0.1...9.1.0) (2021-03-23)
 
 
