@@ -976,6 +976,10 @@ describe('ngb-modal', () => {
                component.detectChanges();
 
                const modalRef = component.componentInstance.open();
+
+               // Ensure that everything works fine after a reflow
+               document.body.getBoundingClientRect();
+
                let modalEl: HTMLElement | null = null;
 
                modalRef.shown.subscribe(() => {

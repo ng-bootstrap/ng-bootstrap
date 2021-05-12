@@ -90,7 +90,9 @@ export class NgbModalStack {
 
     if (backdropCmptRef && backdropCmptRef.instance) {
       this._applyBackdropOptions(backdropCmptRef.instance, options);
+      backdropCmptRef.changeDetectorRef.detectChanges();
     }
+    windowCmptRef.changeDetectorRef.detectChanges();
     return ngbModalRef;
   }
 
