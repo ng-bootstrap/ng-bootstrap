@@ -30,7 +30,7 @@ export class NgbModalStack {
   private _modalRefs: NgbModalRef[] = [];
   private _windowAttributes = [
     'animation', 'ariaLabelledBy', 'ariaDescribedBy', 'backdrop', 'centered', 'keyboard', 'scrollable', 'size',
-    'windowClass'
+    'windowClass', 'modalDialogClass'
   ];
   private _windowCmpts: ComponentRef<NgbModalWindow>[] = [];
   private _activeInstances: EventEmitter<NgbModalRef[]> = new EventEmitter();
