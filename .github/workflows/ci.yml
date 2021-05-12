@@ -13,7 +13,7 @@ jobs:
       - run: mkdir -p $LOGS_DIR && ./scripts/sauce_connect_setup.sh
       - uses: actions/setup-node@v1
         with:
-          node-version: "12.x"
+          node-version: "14.x"
       - uses: microsoft/playwright-github-action@v1
       - id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
