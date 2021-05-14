@@ -1,5 +1,12 @@
 <main class="masthead py-3">
   <div class="container">
+    <ngb-alert [dismissible]="false" type="warning">
+      <p>
+        Beta support for Bootstrap 5 is released starting with <code>11.0.0-beta.1</code>
+      </p>
+      You can install it via the <code>npm install @ng-bootstrap/ng-bootstrap@next</code><br/>Please remember it is not production
+      ready, report any issues and make sure to check <a href="https://github.com/ng-bootstrap/ng-bootstrap/blob/master/CHANGELOG.md" target="_blank">the changes</a>.
+    </ngb-alert>
     <div class="row align-items-center">
       <div class="col-6 mx-auto col-md-6">
         <img width="512" height="512" class="img-fluid mb-3 mb-md-0" src="img/logo-stack.png" alt="ng-bootstrap logo"/>
@@ -20,7 +27,7 @@
           class="btn btn-lg btn-outline-secondary"
           routerLink="/getting-started">Get started now</a>
         </div>
-        <p class="text-muted mb-4">Currently at v{{version}}</p>
+        <p class="text-muted mb-4">Currently at v{{version}}, next v11.0.0-beta.1 (Bootstrap 5)</p>
       </div>
     </div>
   </div>
