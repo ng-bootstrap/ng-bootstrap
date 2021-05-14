@@ -4,6 +4,8 @@ This is the first beta version with Bootstrap 5 support. Please install with `np
 
 ### Known issues
 * the schematics are broken in this version
+* accordion animation seems to be broken
+* datepicker header lost its color
 * no support yet for the new Accordion, Offcanvas and Popper 2 
 
 ### Bug Fixes
