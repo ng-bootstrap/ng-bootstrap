@@ -195,9 +195,11 @@ export interface NgbPanelChangeEvent {
           <ng-template [ngTemplateOutlet]="panel.headerTpl?.templateRef || t"
                        [ngTemplateOutletContext]="{$implicit: panel, opened: panel.isOpen}"></ng-template>
         </div>
-        <div id="{{panel.id}}" class="accordion-body" role="tabpanel" [attr.aria-labelledby]="panel.id + '-header'"
+        <div id="{{panel.id}}" role="tabpanel" [attr.aria-labelledby]="panel.id + '-header'"
              *ngIf="!destroyOnHide || panel.isOpen || panel.transitionRunning">
-          <ng-template [ngTemplateOutlet]="panel.contentTpl?.templateRef || null"></ng-template>
+          <div class="accordion-body">
+            <ng-template [ngTemplateOutlet]="panel.contentTpl?.templateRef || null"></ng-template>
+          </div>
         </div>
       </div>
     </ng-template>
