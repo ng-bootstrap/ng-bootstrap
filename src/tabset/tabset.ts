@@ -112,7 +112,7 @@ export interface NgbTabChangeEvent {
   encapsulation: ViewEncapsulation.None,
   template: `
     <ul [class]="'nav nav-' + type + (orientation == 'horizontal'?  ' ' + justifyClass : ' flex-column')" role="tablist">
-      <li class="nav-item" *ngFor="let tab of tabs">
+      <li class="nav-item" role="none" *ngFor="let tab of tabs">
         <a [id]="tab.id" class="nav-link" [class.active]="tab.id === activeId" [class.disabled]="tab.disabled"
           href (click)="select(tab.id); $event.preventDefault()" role="tab" [attr.tabindex]="(tab.disabled ? '-1': undefined)"
           [attr.aria-controls]="(!destroyOnHide || tab.id === activeId ? tab.id + '-panel' : null)"
