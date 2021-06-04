@@ -1,3 +1,12 @@
+## [9.1.2](https://github.com/ng-bootstrap/ng-bootstrap/compare/9.1.1...9.1.2) (2021-06-04)
+
+
+### Bug Fixes
+
+* **datepicker:** forgotten fix for [#3863](https://github.com/ng-bootstrap/ng-bootstrap/issues/3863) ([9a4be59](https://github.com/ng-bootstrap/ng-bootstrap/commit/9a4be59356375773e1225e6c30006a122b8d7b3e))
+
+
+
 # [11.0.0-beta.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/9.1.1...11.0.0-beta.1) (2021-05-12)
 
 This is the first beta version with Bootstrap 5 support. Please install with `npm install @ng-bootstrap/ng-bootstrap@next`
