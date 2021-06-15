@@ -2,13 +2,6 @@
 $arrow-size: 1rem;
 
 ngb-popover-window {
-  pointer-events: none;
-
-  .popover-header,
-  .popover-body {
-    pointer-events: auto;
-  }
-
   &.bs-popover-top > .arrow,
   &.bs-popover-bottom > .arrow {
     left: 50%;
