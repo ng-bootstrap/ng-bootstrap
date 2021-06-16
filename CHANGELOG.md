@@ -1,3 +1,12 @@
+## [9.1.3](https://github.com/ng-bootstrap/ng-bootstrap/compare/9.1.2...9.1.3) (2021-06-16)
+
+
+### Reverts
+
+* Revert "fix(popover): enable pointer events only for popover content" ([94282d2](https://github.com/ng-bootstrap/ng-bootstrap/commit/94282d2b84dfceb119a4c8653907d47eae4bc366)) to fix #4103
+
+
+
 ## [9.1.2](https://github.com/ng-bootstrap/ng-bootstrap/compare/9.1.1...9.1.2) (2021-06-04)
 
 
@@ -15,7 +24,7 @@ This is the first beta version with Bootstrap 5 support. Please install with `np
 * the schematics are broken in this version
 * accordion animation seems to be broken
 * datepicker header lost its color
-* no support yet for the new Accordion, Offcanvas and Popper 2 
+* no support yet for the new Accordion, Offcanvas and Popper 2
 
 ### Bug Fixes
 
