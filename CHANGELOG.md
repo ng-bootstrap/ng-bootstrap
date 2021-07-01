@@ -1,3 +1,57 @@
+# [10.0.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/9.1.3...10.0.0) (2021-07-01)
+
+This release adds Angular 12 support
+
+### BREAKING CHANGES
+
+* **datepicker:** The deprecated datepicker `@Input() showWeekdays: boolean` is removed from `NgbDatepicker` and `NgbInputDatepicker`.
+It was replaced by `@Input() weekdays: TranslationWidth | boolean;` that also allows providing `TranslationWidth` if necessary.
+
+BEFORE:
+```
+<!-- datepicker -->
+<ngb-datepicker [showWeekdays]="true"></ngb-datepicker>
+<input ngbDatepicker [showWeekdays]="true"></input>
+
+<!-- datepicker config -->
+constructor(config: NgbDatepickerConfig) {
+  config.showWeekdays = true;
+}
+```
+
+AFTER:
+```
+<!-- datepicker -->
+<ngb-datepicker [weekdays]="true"></ngb-datepicker>
+<input ngbDatepicker [weekdays]="true"></input>
+
+<!-- datepicker config -->
+constructor(config: NgbDatepickerConfig) {
+  config.weekdays = TranslationWidth.Short;
+}
+```
+* **datepicker:** This change concerns you if you're creating custom datepicker calendars and i18ns.
+
+The deprecated datepicker `getWeekdayShortName(weekday: number): string;` is removed from `NgbDatepickerI18n`.
+It was replaced by `getWeekdayLabel(weekday: number, width?: TranslationWidth): string;`  to add `TranslationWidth` option and align naming.
+
+BEFORE:
+```
+@Injectable()
+export class MyDatepickerI18n extends NgbDatepickerI18n {
+  getWeekdayShortName(weekday: number) { return 'your weekday short name'; }
+}
+```
+
+AFTER:
+```
+@Injectable()
+export class MyDatepickerI18n extends NgbDatepickerI18n {
+  getWeekdayLabel(weekday: number, width?: TranslationWidth) { return 'your weekday short name'; }
+}
+```
+
+
 ## [9.1.3](https://github.com/ng-bootstrap/ng-bootstrap/compare/9.1.2...9.1.3) (2021-06-16)
 
 
