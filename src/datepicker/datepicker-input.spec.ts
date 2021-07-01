@@ -736,17 +736,6 @@ describe('NgbInputDatepicker', () => {
       expect(dp.navigation).toBe('none');
     });
 
-    it('should propagate the "showWeekdays" option', () => {
-      const fixture = createTestCmpt(`<input ngbDatepicker [showWeekdays]="true">`);
-      const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
-
-      dpInput.open();
-      fixture.detectChanges();
-
-      const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
-      expect(dp.showWeekdays).toBeTruthy();
-    });
-
     it('should propagate the "weekdays" option', () => {
       const fixture = createTestCmpt(`<input ngbDatepicker [weekdays]="false">`);
       const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);

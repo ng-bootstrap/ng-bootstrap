@@ -179,7 +179,6 @@ export class NgbDatepicker implements OnDestroy,
   private _controlValue: NgbDate | null = null;
   private _destroyed$ = new Subject<void>();
   private _publicState: NgbDatepickerState = <any>{};
-  private _showWeekdays: boolean;
 
   /**
    * The reference to a custom template for the day.
@@ -263,19 +262,6 @@ export class NgbDatepicker implements OnDestroy,
   @Input() outsideDays: 'visible' | 'collapsed' | 'hidden';
 
   /**
-   * If `true`, weekdays will be displayed.
-   *
-   * @deprecated 9.1.0, please use 'weekdays' instead
-   */
-  @Input()
-  set showWeekdays(weekdays: boolean) {
-    this.weekdays = weekdays;
-    this._showWeekdays = weekdays;
-  }
-
-  get showWeekdays(): boolean { return this._showWeekdays; }
-
-  /**
    * If `true`, week numbers will be displayed.
    */
   @Input() showWeekNumbers: boolean;
@@ -325,7 +311,7 @@ export class NgbDatepicker implements OnDestroy,
       config: NgbDatepickerConfig, cd: ChangeDetectorRef, private _elementRef: ElementRef<HTMLElement>,
       private _ngbDateAdapter: NgbDateAdapter<any>, private _ngZone: NgZone) {
     ['dayTemplate', 'dayTemplateData', 'displayMonths', 'firstDayOfWeek', 'footerTemplate', 'markDisabled', 'minDate',
-     'maxDate', 'navigation', 'outsideDays', 'showWeekdays', 'showWeekNumbers', 'startDate', 'weekdays']
+     'maxDate', 'navigation', 'outsideDays', 'showWeekNumbers', 'startDate', 'weekdays']
         .forEach(input => this[input] = config[input]);
 
     _service.dateSelect$.pipe(takeUntil(this._destroyed$)).subscribe(date => { this.dateSelect.emit(date); });
@@ -466,11 +452,6 @@ export class NgbDatepicker implements OnDestroy,
 
   ngOnChanges(changes: SimpleChanges) {
     const inputs: DatepickerServiceInputs = {};
-
-    if (changes.showWeekdays) {
-      inputs['weekdays'] = this.weekdays;
-    }
-
     ['dayTemplateData', 'displayMonths', 'markDisabled', 'firstDayOfWeek', 'navigation', 'minDate', 'maxDate',
      'outsideDays', 'weekdays']
         .filter(name => name in changes)
