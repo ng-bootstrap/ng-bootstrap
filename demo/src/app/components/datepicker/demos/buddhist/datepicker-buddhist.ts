@@ -28,11 +28,13 @@ export class NgbDatepickerI18nBuddhist extends NgbDatepickerI18n {
     this._monthsFull = getLocaleMonthNames(this._locale, FormStyle.Standalone, TranslationWidth.Wide);
   }
 
-  getWeekdayShortName(weekday: number): string { return this._weekdaysShort[weekday - 1] || ''; }
-
   getMonthShortName(month: number): string { return this._monthsShort[month - 1] || ''; }
 
   getMonthFullName(month: number): string { return this._monthsFull[month - 1] || ''; }
+
+  getWeekdayLabel(weekday: number, width?: TranslationWidth) {
+    return this._weekdaysShort[weekday - 1] || '';
+  }
 
   getDayAriaLabel(date: NgbDateStruct): string {
     const jsDate = new Date(date.year, date.month - 1, date.day);
