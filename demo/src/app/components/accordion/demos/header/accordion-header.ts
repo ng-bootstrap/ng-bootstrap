@@ -8,6 +8,9 @@ import {Component, ViewEncapsulation} from '@angular/core';
     .card.disabled {
       opacity: 0.5;
     }
+    .custom-header::after {
+      content: none;
+    }
   `]
 })
 export class NgbdAccordionHeader {
