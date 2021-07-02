@@ -21,7 +21,6 @@ export class NgbDatepickerConfig {
   maxDate: NgbDateStruct;
   navigation: 'select' | 'arrows' | 'none' = 'select';
   outsideDays: 'visible' | 'collapsed' | 'hidden' = 'visible';
-  showWeekdays = true;
   showWeekNumbers = false;
   startDate: {year: number, month: number};
   weekdays: TranslationWidth | boolean = TranslationWidth.Short;

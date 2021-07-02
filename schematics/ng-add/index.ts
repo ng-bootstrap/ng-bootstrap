@@ -11,7 +11,7 @@ import * as messages from './messages';
 import {addPackageToPackageJson, getPackageVersionFromPackageJson} from '../utils/package-config';
 
 
-const NG_BOOTSTRAP_VERSION = '9.0.0';
+const NG_BOOTSTRAP_VERSION = '10.0.0';
 const BOOTSTRAP_VERSION = '4.5.0';
 
 /**

@@ -76,7 +76,6 @@ export class NgbInputDatepicker implements OnChanges,
   private _elWithFocus: HTMLElement | null = null;
   private _model: NgbDate | null = null;
   private _inputValue: string;
-  private _showWeekdays: boolean;
   private _zoneSubscription: any;
 
   /**
@@ -203,19 +202,6 @@ export class NgbInputDatepicker implements OnChanges,
    * @since 5.2.0
    */
   @Input() restoreFocus: true | string | HTMLElement;
-
-  /**
-   * If `true`, weekdays will be displayed.
-   *
-   * @deprecated 9.1.0, please use 'weekdays' instead
-   */
-  @Input()
-  set showWeekdays(weekdays: boolean) {
-    this.weekdays = weekdays;
-    this._showWeekdays = weekdays;
-  }
-
-  get showWeekdays(): boolean { return this._showWeekdays; }
 
   /**
    * If `true`, week numbers will be displayed.

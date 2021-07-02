@@ -18,7 +18,12 @@ export class SideNavComponent {
 
   constructor(private router: Router) {}
 
-  isActive(currentRoute: any[], exact = true): boolean {
-    return this.router.isActive(this.router.createUrlTree(currentRoute), exact);
+  isActive(currentRoute: any[]): boolean {
+    return this.router.isActive(this.router.createUrlTree(currentRoute), {
+      paths: 'subset',
+      queryParams: 'subset',
+      fragment: 'ignored',
+      matrixParams: 'ignored'
+    });
   }
 }

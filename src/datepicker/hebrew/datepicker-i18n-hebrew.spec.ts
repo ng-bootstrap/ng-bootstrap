@@ -50,10 +50,10 @@ describe('datepicker-i18n-hebrew', () => {
   });
 
   it('should return weekday name', () => {
-    expect(i18n.getWeekdayShortName(0)).toBe('');
-    expect(i18n.getWeekdayShortName(1)).toBe('שני');
-    expect(i18n.getWeekdayShortName(7)).toBe('ראשון');
-    expect(i18n.getWeekdayShortName(8)).toBe('');
+    expect(i18n.getWeekdayLabel(0)).toBe('');
+    expect(i18n.getWeekdayLabel(1)).toBe('שני');
+    expect(i18n.getWeekdayLabel(7)).toBe('ראשון');
+    expect(i18n.getWeekdayLabel(8)).toBe('');
   });
 
   it('should generate aria label for a date',

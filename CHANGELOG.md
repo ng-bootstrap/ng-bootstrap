@@ -1,5 +1,84 @@
+# [10.0.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/9.1.3...10.0.0) (2021-07-01)
+
+This release adds Angular 12 support
+
+### BREAKING CHANGES
+
+* **datepicker:** The deprecated datepicker `@Input() showWeekdays: boolean` is removed from `NgbDatepicker` and `NgbInputDatepicker`.
+It was replaced by `@Input() weekdays: TranslationWidth | boolean;` that also allows providing `TranslationWidth` if necessary.
+
+BEFORE:
+```
+<!-- datepicker -->
+<ngb-datepicker [showWeekdays]="true"></ngb-datepicker>
+<input ngbDatepicker [showWeekdays]="true"></input>
+
+<!-- datepicker config -->
+constructor(config: NgbDatepickerConfig) {
+  config.showWeekdays = true;
+}
+```
+
+AFTER:
+```
+<!-- datepicker -->
+<ngb-datepicker [weekdays]="true"></ngb-datepicker>
+<input ngbDatepicker [weekdays]="true"></input>
+
+<!-- datepicker config -->
+constructor(config: NgbDatepickerConfig) {
+  config.weekdays = TranslationWidth.Short;
+}
+```
+* **datepicker:** This change concerns you if you're creating custom datepicker calendars and i18ns.
+
+The deprecated datepicker `getWeekdayShortName(weekday: number): string;` is removed from `NgbDatepickerI18n`.
+It was replaced by `getWeekdayLabel(weekday: number, width?: TranslationWidth): string;`  to add `TranslationWidth` option and align naming.
+
+BEFORE:
+```
+@Injectable()
+export class MyDatepickerI18n extends NgbDatepickerI18n {
+  getWeekdayShortName(weekday: number) { return 'your weekday short name'; }
+}
+```
+
+AFTER:
+```
+@Injectable()
+export class MyDatepickerI18n extends NgbDatepickerI18n {
+  getWeekdayLabel(weekday: number, width?: TranslationWidth) { return 'your weekday short name'; }
+}
+```
+
+
+## [9.1.3](https://github.com/ng-bootstrap/ng-bootstrap/compare/9.1.2...9.1.3) (2021-06-16)
+
+
+### Reverts
+
+* Revert "fix(popover): enable pointer events only for popover content" ([94282d2](https://github.com/ng-bootstrap/ng-bootstrap/commit/94282d2b84dfceb119a4c8653907d47eae4bc366)) to fix #4103
+
+
+
+## [9.1.2](https://github.com/ng-bootstrap/ng-bootstrap/compare/9.1.1...9.1.2) (2021-06-04)
+
+
+### Bug Fixes
+
+* **datepicker:** forgotten fix for [#3863](https://github.com/ng-bootstrap/ng-bootstrap/issues/3863) ([9a4be59](https://github.com/ng-bootstrap/ng-bootstrap/commit/9a4be59356375773e1225e6c30006a122b8d7b3e))
+
+
+
 # [11.0.0-beta.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/9.1.1...11.0.0-beta.1) (2021-05-12)
 
+This is the first beta version with Bootstrap 5 support. Please install with `npm install @ng-bootstrap/ng-bootstrap@next`
+
+### Known issues
+* the schematics are broken in this version
+* accordion animation seems to be broken
+* datepicker header lost its color
+* no support yet for the new Accordion, Offcanvas and Popper 2
 
 ### Bug Fixes
 
@@ -297,7 +376,7 @@ This major release officially adds Angular 10 support.
 ### BREAKING CHANGES
 
 * for ng-bootstrap `7.0.0` minimal required version
-of Angular is `10.0.0`, and minimal required version of Bootstrap is `4.5.0`.
+  of Angular is `10.0.0`, and minimal required version of Bootstrap is `4.5.0`.
 
 
 # [6.2.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/6.1.0...6.2.0) (2020-07-08)
@@ -613,7 +692,7 @@ This major release is compatible with Angular ^8.0.0. We would like to emphasis 
 ### BREAKING CHANGES
 
 * for ng-bootstrap `5.0.0` minimal required version
-of Angular is `8.0.0`, and minimal required version of Bootstrap is `4.3.1`.
+  of Angular is `8.0.0`, and minimal required version of Bootstrap is `4.3.1`.
 
 # [5.0.0-rc.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/5.0.0-rc.0...5.0.0-rc.1) (2019-06-28)
 
@@ -655,17 +734,17 @@ This release requires Angular version `^8.0.0`, Bootstrap `^4.3.1` and is **not 
 ### BREAKING CHANGES
 
 * for ng-bootstrap `5.0.0-rc.0` minimal required version
-of Angular is `8.0.0`, and minimal required version of Bootstrap is `4.3.1`.
+  of Angular is `8.0.0`, and minimal required version of Bootstrap is `4.3.1`.
 * Importing any ng-bootstrap module via `.forRoot()` has now been completely removed.
-The only supported way is the one documented in the [getting started](https://ng-bootstrap.github.io/#/getting-started#installation) page.
+  The only supported way is the one documented in the [getting started](https://ng-bootstrap.github.io/#/getting-started#installation) page.
 
 ```typescript
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   ...
-  imports: [NgbModule, ...],
-  ...
+    imports: [NgbModule, ...],
+...
 })
 export class YourAppModule {
 }
@@ -1209,16 +1288,16 @@ Please pay attention to the breaking changes section when upgrading.
 
 * **datepicker:** if you're using a custom `NgbDatepickerI18n` implementation, you'll have to implement an additional method: `getDayAriaLabel(date: NgbDateStruct): string`. It returns the string that will be set for the `aria-label` attribute for each displayed day. If you're not using the custom service, the `aria-label` will default to the value returned by the angular `DatePipe` with `'fullDate'` format.
 * **accordion:** The "active" CSS class is no longer added to headers of an active panel.
-This change assures that markup used by ng-bootstrap is in-line with the
-markup described in:
-https://getbootstrap.com/docs/4.0/components/collapse/#accordion-example
+  This change assures that markup used by ng-bootstrap is in-line with the
+  markup described in:
+  https://getbootstrap.com/docs/4.0/components/collapse/#accordion-example
 * **popover:** Popovers with an empty title and content are considered disabled and won't open by default.
 * **datepicker:** The datepicker is no longer focusable as a whole component. Instead, the focus is allowed on each element inside the datepicker (navigation buttons, select boxes, focusable day) in the natural order. The datepicker `.focus()` method will now only focus one day and not the whole component.
 * **datepicker:** if your application provides a LOCALE_ID other than
-the default en-US, registers the locale data for this locale, and
-doesn't use a custom NgbDatepickerI18n, then the days and months
-of the datepicker won't be displayed in English anymore, but in the
-language of the provided locale.
+  the default en-US, registers the locale data for this locale, and
+  doesn't use a custom NgbDatepickerI18n, then the days and months
+  of the datepicker won't be displayed in English anymore, but in the
+  language of the provided locale.
 
 
 
@@ -1443,7 +1522,7 @@ all widgets that open popups.
 ### BREAKING CHANGES
 
 * **dropdown:** The `up` input is no longer supported by you can use more flexible
-`placement` setting now.
+  `placement` setting now.
 
 Before:
 
@@ -1577,13 +1656,13 @@ This is the last alpha release of ng-bootstrap. Next stop - beta!
 ### BREAKING CHANGES
 
 * **buttons:** The `NgbButtonsModule` changed location (path) and content. This path
-might need adjusting for people importing individual modules.
-Before: `import {NgbButtonsModule} from './buttons/radio.module'`
-After:  `import {NgbButtonsModule} from './buttons/buttons.module'`
+  might need adjusting for people importing individual modules.
+  Before: `import {NgbButtonsModule} from './buttons/radio.module'`
+  After:  `import {NgbButtonsModule} from './buttons/buttons.module'`
 
 The `NgbButtonsModule` now contains both checkbox and radio buttons.
 * **buttons:** Selectors for radio buttons related directives were changed and now both label
-and input require ng-bootstrap specific attributes as selectors.
+  and input require ng-bootstrap specific attributes as selectors.
 
 Before:
 
@@ -1634,7 +1713,7 @@ Notice new `ngbButtonLabel` and `ngbButton` attributes that act as new selectors
 ### BREAKING CHANGES
 
 * **datepicker:** component uses `ChangeDetectionStrategy.OnPush` now for most of the internal implementation.
-Things like the dynamic internationalization or calendar change might not work anymore as these are injected services. Any internal changes in these services in runtime will not trigger datepicker re-rendering.
+  Things like the dynamic internationalization or calendar change might not work anymore as these are injected services. Any internal changes in these services in runtime will not trigger datepicker re-rendering.
 
 
 
@@ -1741,16 +1820,16 @@ Things like the dynamic internationalization or calendar change might not work a
 ### BREAKING CHANGES
 
 * **datepicker:** Datepickers in popups are much stricter about valid dates
-now and won't try to auto-correct invalid dates any more.
-For example 2017-99-99 was considered valid previously and
-auto-corrected. This is not the case any more. Please check
-control's validity to detect invalid dates entered by users.
+  now and won't try to auto-correct invalid dates any more.
+  For example 2017-99-99 was considered valid previously and
+  auto-corrected. This is not the case any more. Please check
+  control's validity to detect invalid dates entered by users.
 * **datepicker:** Invalid dates entered by a user into datepicker input are
-propagated to the model as-is. This is required to properly
-support validation and is in-line with behaviour of all the
-built-in Angular validators. From now on you need to check
-control's validity to determine if the entered date is valid
-or not.
+  propagated to the model as-is. This is required to properly
+  support validation and is in-line with behaviour of all the
+  built-in Angular validators. From now on you need to check
+  control's validity to determine if the entered date is valid
+  or not.
 
 
 
@@ -1788,8 +1867,8 @@ was tested with the latest Angular and now fully supports both 4.x and 2.x.
 ### BREAKING CHANGES
 
 * model: The `ngbModalContainer` directive is no longer needed and was
-removed from this project. Just remove any references to the
-`<template ngbModalContainer></template>` from your projects.
+  removed from this project. Just remove any references to the
+  `<template ngbModalContainer></template>` from your projects.
 
 
 
@@ -1840,7 +1919,7 @@ We are also bumping up minimal Angular version to 2.3.1 - this is required so we
 ### BREAKING CHANGES
 
 * minimal angular version was updated to 2.3.1.
-Angular@^2.3.1 will have to be used as a peer dependency from now on.
+  Angular@^2.3.1 will have to be used as a peer dependency from now on.
 
 * datepicker: `NgbDatepickerI18n` methods were renamed:
 
@@ -2138,7 +2217,7 @@ After:
 ### BREAKING CHANGES
 
 * alert: the `NgbSelfClosingAlert` component has been removed.
-Check the self-closing alert demo to know how to achieve the same thing with `NgbAlert`.
+  Check the self-closing alert demo to know how to achieve the same thing with `NgbAlert`.
 * accordion: the `change` event on the accordion level was renamed to `panelChange`.
 
 Before:
@@ -2200,8 +2279,8 @@ There are also small features and bug fixes for the existing widgets - see the d
 ### BREAKING CHANGES
 
 * typeahead: payload of the typeahead's `selectItem` event was changed - now it is
-an object implementing the `NgbTypeaheadSelectItemEvent`. You can easily migrate your existing
-code by changing:
+  an object implementing the `NgbTypeaheadSelectItemEvent`. You can easily migrate your existing
+  code by changing:
 
 `<input [ngbTypeahead]="find" (selectItem)="onSelect($event)"/>`
 
@@ -2295,9 +2374,9 @@ There are also small features and bug fixes for the existing widgets - see the d
 
 * number inputs in pagination could previously be set as strings. The values passed were transformed to numbers if necessary and rounded to integers. This is not supported anymore. All number inputs should now consistently be set as number, using the syntax `[attr]="value"` (for example: `<ngb-pagination [pageSize]="20" ...></ngb-pagination>` instead of `<ngb-pagination pageSize="20" ...></ngb-pagination>`), and rounding is not applied anymore.
 * boolean inputs in progressbar and pagination could be set by just adding the attribute
-(for example: `<ngb-progressbar striped></ngb-progressbar>`). This is not supported anymore.
-All boolean inputs must now consistently be set using the syntax `[attr]="value"`
-(for example: `<ngb-progressbar [striped]="true"></ngb-progressbar>`).
+  (for example: `<ngb-progressbar striped></ngb-progressbar>`). This is not supported anymore.
+  All boolean inputs must now consistently be set using the syntax `[attr]="value"`
+  (for example: `<ngb-progressbar [striped]="true"></ngb-progressbar>`).
 * you need to use `@NgModule`s to setup your application. Check https://ng-bootstrap.github.io/#/getting-started for more details.
 
 
