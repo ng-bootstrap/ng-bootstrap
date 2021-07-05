@@ -1,3 +1,13 @@
+# [11.0.0-beta.2](https://github.com/ng-bootstrap/ng-bootstrap/compare/10.0.0...11.0.0-beta.2) (2021-07-05)
+
+This release adds Angular 12 support for the Bootstrap 5 beta version along with a couple of bugfixes.
+
+### Bug Fixes
+
+* **accordion:** fix broken collapse animation ([801093a](https://github.com/ng-bootstrap/ng-bootstrap/commit/801093af31cd9c43e197170d76e03e1a329e93b0))
+* **datepicker:** fix header colors ([c24880c](https://github.com/ng-bootstrap/ng-bootstrap/commit/c24880c0f6455c60d9825127904dd80e1def09c8))
+
+
 # [10.0.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/9.1.3...10.0.0) (2021-07-01)
 
 This release adds Angular 12 support
