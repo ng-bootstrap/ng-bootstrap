@@ -12,7 +12,7 @@ import {NgbDatepickerConfig} from './datepicker-config';
 import {NgbDatepicker, NgbDatepickerState} from './datepicker';
 import {DayTemplateContext} from './datepicker-day-template-context';
 import {NgbDateStruct} from './ngb-date-struct';
-import {NgbDatepickerMonth} from './datepicker-month';
+import {NgbDatepickerMonth} from './datepicker';
 import {NgbDatepickerDayView} from './datepicker-day-view';
 import {NgbDatepickerKeyboardService} from './datepicker-keyboard-service';
 import {NgbDatepickerNavigationSelect} from './datepicker-navigation-select';

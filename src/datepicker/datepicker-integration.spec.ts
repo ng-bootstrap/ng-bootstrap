@@ -8,7 +8,7 @@ import {getMonthSelect, getYearSelect} from '../test/datepicker/common';
 import {NgbDatepickerI18n, NgbDatepickerI18nDefault} from './datepicker-i18n';
 import {NgbDatepicker} from './datepicker';
 import {NgbDatepickerKeyboardService} from './datepicker-keyboard-service';
-import {NgbDatepickerMonth} from './datepicker-month';
+import {NgbDatepickerMonth} from './datepicker';
 import {Key} from '../util/key';
 
 describe('ngb-datepicker integration', () => {
