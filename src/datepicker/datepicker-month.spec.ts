@@ -7,7 +7,7 @@ import {NgbDatepickerModule} from './datepicker.module';
 import {NgbDatepicker, NgbDatepickerContent} from './datepicker';
 import {NgbDatepickerKeyboardService} from './datepicker-keyboard-service';
 import {NgbDatepickerService} from './datepicker-service';
-import {NgbDatepickerMonth} from './datepicker-month';
+import {NgbDatepickerMonth} from './datepicker';
 import {NgbDate} from './ngb-date';
 import {NgbDateStruct} from './ngb-date-struct';
 import {NgbDatepickerDayView} from './datepicker-day-view';
