@@ -1,6 +1,6 @@
 <form class="row row-cols-sm-auto">
-  <div class="dp-hidden">
-    <div class="input-group">
+  <div class="col-auto">
+    <div class="dp-hidden d-inline-flex">
       <input name="datepicker"
              class="form-control"
              ngbDatepicker
@@ -23,9 +23,7 @@
         </span>
       </ng-template>
     </div>
-  </div>
-  <div class="col-12">
-    <div class="input-group">
+    <div class="input-group d-inline-flex">
       <input #dpFromDate
              class="form-control" placeholder="yyyy-mm-dd"
              name="dpFromDate"
@@ -34,7 +32,7 @@
       <button class="btn btn-outline-secondary calendar" (click)="datepicker.toggle()" type="button"></button>
     </div>
   </div>
-  <div class="col-12">
+  <div class="col-auto ps-0">
     <div class="input-group">
       <input #dpToDate
              class="form-control" placeholder="yyyy-mm-dd"
