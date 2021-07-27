@@ -14,7 +14,7 @@ import {NgbProgressbarConfig} from './progressbar-config';
     <div class="progress-bar{{type ? ' bg-' + type : ''}}{{textType ? ' text-' + textType : ''}}
     {{animated ? ' progress-bar-animated' : ''}}{{striped ? ' progress-bar-striped' : ''}}"
     role="progressbar" [style.width.%]="getPercentValue()"
-    [attr.aria-valuenow]="getValue()" aria-valuemin="0" [attr.aria-valuemax]="max">
+    [attr.aria-valuenow]="getValue()" aria-valuemin="0" [attr.aria-valuemax]="max" [attr.aria-label]="ariaLabel">
       <span *ngIf="showValue" i18n="@@ngb.progressbar.value">{{getValue() / max | percent}}</span><ng-content></ng-content>
     </div>
   `
@@ -82,6 +82,14 @@ export class NgbProgressbar {
    * Accepts any valid CSS height values, ex. `"2rem"`
    */
   @Input() @HostBinding('style.height') height: string;
+
+  /**
+   * The accessible name, defaults to 'progress bar'
+   * @see https://dequeuniversity.com/rules/axe/4.3/aria-progressbar-name?application=AxeChrome
+   *
+   * Accepts any string
+   */
+  @Input() ariaLabel = 'progress bar';
 
   constructor(config: NgbProgressbarConfig) {
     this.max = config.max;
