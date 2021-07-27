@@ -10,6 +10,10 @@ import {NgbProgressbarConfig} from './progressbar-config';
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
+function getAriaLabel(nativeEl): string {
+  return getProgressbar(nativeEl).getAttribute('aria-label') || '';
+}
+
 function getBarWidth(nativeEl): string {
   return getProgressbar(nativeEl).style.width;
 }
@@ -270,6 +274,20 @@ describe('ngb-progressbar', () => {
       const fixture = createTestComponent(html);
 
       expect(getBarHeight(fixture.nativeElement)).toBe('10px');
+    });
+
+    it('should have default accessible name', () => {
+      const html = '<ngb-progressbar></ngb-progressbar>';
+      const fixture = createTestComponent(html);
+
+      expect(getAriaLabel(fixture.nativeElement)).toBe('progress bar');
+    });
+
+    it('should have custom accessible name', () => {
+      const html = '<ngb-progressbar ariaLabel="flupke"></ngb-progressbar>';
+      const fixture = createTestComponent(html);
+
+      expect(getAriaLabel(fixture.nativeElement)).toBe('flupke');
     });
   });
 
