@@ -177,10 +177,13 @@ export class NgbRating implements ControlValueAccessor,
     if (changes['rate']) {
       this.update(this.rate);
     }
+    if (changes['max']) {
+      this._updateMax();
+    }
   }
 
   ngOnInit(): void {
-    this.contexts = Array.from({length: this.max}, (v, k) => ({fill: 0, index: k}));
+    this._setupContexts();
     this._updateState(this.rate);
   }
 
@@ -218,4 +221,13 @@ export class NgbRating implements ControlValueAccessor,
     this.contexts.forEach(
         (context, index) => context.fill = Math.round(getValueInRange(nextValue - index, 1, 0) * 100));
   }
+
+  private _updateMax() {
+    if (this.max > 0) {
+      this._setupContexts();
+      this.update(this.rate);
+    }
+  }
+
+  private _setupContexts() { this.contexts = Array.from({length: this.max}, (v, k) => ({fill: 0, index: k})); }
 }

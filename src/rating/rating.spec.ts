@@ -463,6 +463,26 @@ describe('ngb-rating', () => {
     expect(ratingEl.nativeElement.getAttribute('tabindex')).toEqual('-1');
   });
 
+  it('should contain the correct number of stars when [max] is changed', () => {
+    const fixture = createTestComponent('<ngb-rating [max]="max"></ngb-rating>');
+
+    fixture.componentInstance.max = 12;
+    fixture.detectChanges();
+
+    const totalStars = fixture.debugElement.queryAll(By.css('.sr-only')).length;
+    expect(totalStars).toBe(12);
+  });
+
+  it('should reduce the rating when [max] is changed to a value lower than the current rating', fakeAsync(() => {
+       const fixture = createTestComponent('<ngb-rating [(rate)]="rate" [max]="max"></ngb-rating>');
+
+       fixture.componentInstance.max = 2;
+       fixture.detectChanges();
+       tick();
+
+       expect(fixture.componentInstance.rate).toBe(2);
+     }));
+
   describe('keyboard support', () => {
 
     it('should handle arrow keys', () => {
