@@ -513,6 +513,16 @@ export class NgbDropdown implements AfterContentInit, OnDestroy {
         renderer.removeClass(bodyContainer, 'dropdown');
         renderer.addClass(bodyContainer, dropdownClass);
       }
+
+      // We need to trim the value because custom properties can also include spaces
+      const isEnd = getComputedStyle(this._menu.nativeElement).getPropertyValue('--bs-position').trim() === 'end';
+      if (isEnd) {
+        renderer.setStyle(this._menu.nativeElement, 'left', 'auto');
+        renderer.setStyle(this._menu.nativeElement, 'right', '0');
+      } else {
+        renderer.removeStyle(this._menu.nativeElement, 'left');
+        renderer.removeStyle(this._menu.nativeElement, 'right');
+      }
     }
   }
 }
