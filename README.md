@@ -1,3 +1,6 @@
+# JMT NOTES
+Guide: 
+
 # NG Bootstrap - Angular powered Bootstrap widgets
 
 [![npm version](https://badge.fury.io/js/%40ng-bootstrap%2Fng-bootstrap.svg)](https://badge.fury.io/js/%40ng-bootstrap%2Fng-bootstrap)
