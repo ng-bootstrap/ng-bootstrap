@@ -15,7 +15,7 @@ export class NgbdPaginationOverviewComponent {
     lang: 'html',
     code: `
       <table>
-        <tr *ngFor="let item of items | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
+        <tr *ngFor="let item of items | slice: (page-1) * pageSize : page * pageSize">
           <!-- content here -->
         </tr>
       </table>

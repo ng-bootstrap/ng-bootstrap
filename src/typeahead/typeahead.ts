@@ -33,13 +33,6 @@ import {isDefined, toString} from '../util/util';
 import {NgbTypeaheadConfig} from './typeahead-config';
 import {NgbTypeaheadWindow, ResultTemplateContext} from './typeahead-window';
 
-
-const NGB_TYPEAHEAD_VALUE_ACCESSOR = {
-  provide: NG_VALUE_ACCESSOR,
-  useExisting: forwardRef(() => NgbTypeahead),
-  multi: true
-};
-
 /**
  * An event emitted right before an item is selected from the result list.
  */
@@ -77,7 +70,7 @@ let nextWindowId = 0;
     '[attr.aria-owns]': 'isPopupOpen() ? popupId : null',
     '[attr.aria-expanded]': 'isPopupOpen()'
   },
-  providers: [NGB_TYPEAHEAD_VALUE_ACCESSOR]
+  providers: [{provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NgbTypeahead), multi: true}]
 })
 export class NgbTypeahead implements ControlValueAccessor,
     OnInit, OnDestroy {
@@ -207,7 +200,8 @@ export class NgbTypeahead implements ControlValueAccessor,
     this._resubscribeTypeahead = new BehaviorSubject(null);
 
     this._popupService = new PopupService<NgbTypeaheadWindow>(
-        NgbTypeaheadWindow, injector, viewContainerRef, _renderer, componentFactoryResolver, applicationRef);
+        NgbTypeaheadWindow, injector, viewContainerRef, _renderer, this._ngZone, componentFactoryResolver,
+        applicationRef);
 
     this._zoneSubscription = ngZone.onStable.subscribe(() => {
       if (this.isPopupOpen()) {
@@ -309,7 +303,8 @@ export class NgbTypeahead implements ControlValueAccessor,
   private _openPopup() {
     if (!this.isPopupOpen()) {
       this._inputValueBackup = this._elementRef.nativeElement.value;
-      this._windowRef = this._popupService.open();
+      const {windowRef} = this._popupService.open();
+      this._windowRef = windowRef;
       this._windowRef.instance.id = this.popupId;
       this._windowRef.instance.selectEvent.subscribe((result: any) => this._selectResultClosePopup(result));
       this._windowRef.instance.activeChangeEvent.subscribe((activeId: string) => this.activeDescendant = activeId);
@@ -327,10 +322,11 @@ export class NgbTypeahead implements ControlValueAccessor,
   }
 
   private _closePopup() {
-    this._closed$.next();
-    this._popupService.close();
-    this._windowRef = null;
-    this.activeDescendant = null;
+    this._popupService.close().subscribe(() => {
+      this._closed$.next();
+      this._windowRef = null;
+      this.activeDescendant = null;
+    });
   }
 
   private _selectResult(result: any) {

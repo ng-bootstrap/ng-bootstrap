@@ -10,7 +10,8 @@
              [displayMonths]="2"
              [dayTemplate]="t"
              outsideDays="hidden"
-             [startDate]="fromDate!">
+             [startDate]="fromDate!"
+             tabindex="-1">
       <ng-template #t let-date let-focused="focused">
         <span class="custom-day"
               [class.focused]="focused"

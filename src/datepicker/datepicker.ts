@@ -33,12 +33,6 @@ import {NgbDatepickerI18n} from './datepicker-i18n';
 import {isChangedDate, isChangedMonth} from './datepicker-tools';
 import {hasClassName} from '../util/util';
 
-export const NGB_DATEPICKER_VALUE_ACCESSOR = {
-  provide: NG_VALUE_ACCESSOR,
-  useExisting: forwardRef(() => NgbDatepicker),
-  multi: true
-};
-
 /**
  * An event emitted right before the navigation happens and the month displayed by the datepicker changes.
  */
@@ -164,7 +158,8 @@ export class NgbDatepickerContent {
 
     <ng-template [ngTemplateOutlet]="footerTemplate"></ng-template>
   `,
-  providers: [NGB_DATEPICKER_VALUE_ACCESSOR, NgbDatepickerService]
+  providers:
+      [{provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NgbDatepicker), multi: true}, NgbDatepickerService]
 })
 export class NgbDatepicker implements OnDestroy,
     OnChanges, OnInit, ControlValueAccessor {
@@ -298,16 +293,6 @@ export class NgbDatepicker implements OnDestroy,
    * @since 5.2.0
    */
   @Output() dateSelect = new EventEmitter<NgbDate>();
-
-  /**
-   * An event emitted when user selects a date using keyboard or mouse.
-   *
-   * The payload of the event is currently selected `NgbDate`.
-   *
-   * @deprecated 6.0.0 Please use 'dateSelect' output instead due to collision with native
-   * 'select' event.
-   */
-  @Output() select = this.dateSelect;
 
   onChange = (_: any) => {};
   onTouched = () => {};

@@ -13,7 +13,6 @@ import {NgbPaginationModule} from './pagination/pagination.module';
 import {NgbPopoverModule} from './popover/popover.module';
 import {NgbProgressbarModule} from './progressbar/progressbar.module';
 import {NgbRatingModule} from './rating/rating.module';
-import {NgbTabsetModule} from './tabset/tabset.module';
 import {NgbTimepickerModule} from './timepicker/timepicker.module';
 import {NgbToastModule} from './toast/toast.module';
 import {NgbTooltipModule} from './tooltip/tooltip.module';
@@ -44,7 +43,7 @@ export {
   NgbSlideEventDirection,
   NgbSlideEventSource
 } from './carousel/carousel.module';
-export {NgbCollapse, NgbCollapseModule} from './collapse/collapse.module';
+export {NgbCollapse, NgbCollapseConfig, NgbCollapseModule} from './collapse/collapse.module';
 export {
   NgbCalendar,
   NgbCalendarGregorian,
@@ -100,7 +99,8 @@ export {
   NgbNavItem,
   NgbNavLink,
   NgbNavModule,
-  NgbNavOutlet
+  NgbNavOutlet,
+  NgbNavPane
 } from './nav/nav.module';
 export {
   NgbPagination,
@@ -116,15 +116,6 @@ export {
 export {NgbPopover, NgbPopoverConfig, NgbPopoverModule} from './popover/popover.module';
 export {NgbProgressbar, NgbProgressbarConfig, NgbProgressbarModule} from './progressbar/progressbar.module';
 export {NgbRating, NgbRatingConfig, NgbRatingModule} from './rating/rating.module';
-export {
-  NgbTab,
-  NgbTabChangeEvent,
-  NgbTabContent,
-  NgbTabset,
-  NgbTabsetConfig,
-  NgbTabsetModule,
-  NgbTabTitle
-} from './tabset/tabset.module';
 export {
   NgbTimeAdapter,
   NgbTimepickerI18n,
@@ -145,13 +136,13 @@ export {
 } from './typeahead/typeahead.module';
 export {Placement} from './util/positioning';
 
+export {NgbConfig} from './ngb-config';
+
 
 const NGB_MODULES = [
   NgbAccordionModule, NgbAlertModule, NgbButtonsModule, NgbCarouselModule, NgbCollapseModule, NgbDatepickerModule,
   NgbDropdownModule, NgbModalModule, NgbNavModule, NgbPaginationModule, NgbPopoverModule, NgbProgressbarModule,
-  NgbRatingModule, NgbTimepickerModule, NgbToastModule, NgbTooltipModule, NgbTypeaheadModule,
-  // tslint:disable-next-line:deprecation
-  NgbTabsetModule
+  NgbRatingModule, NgbTimepickerModule, NgbToastModule, NgbTooltipModule, NgbTypeaheadModule
 ];
 
 @NgModule({imports: NGB_MODULES, exports: NGB_MODULES})

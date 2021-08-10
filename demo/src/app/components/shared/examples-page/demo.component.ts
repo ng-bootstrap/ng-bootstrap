@@ -23,6 +23,7 @@ export class NgbdWidgetDemoComponent {
   @Input() markup: string;
   @Input() files: { name: string; source: string }[];
   @Input() showCode = false;
+  @Input() showStackblitz;
 
   get markupSnippet() { return Snippet({lang: 'html', code: this.markup}); }
   get codeSnippet() { return Snippet({lang: 'typescript', code: this.code}); }

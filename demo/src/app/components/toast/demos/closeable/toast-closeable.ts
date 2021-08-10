@@ -7,6 +7,6 @@ export class NgbdToastCloseable {
 
   close() {
     this.show = false;
-    setTimeout(() => this.show = true, 5000);
+    setTimeout(() => this.show = true, 3000);
   }
 }
