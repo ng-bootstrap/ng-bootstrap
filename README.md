@@ -1,6 +1,29 @@
 # JMT NOTES
-Guide: 
 
+Guide:
+
+- download this library
+- create / checkout needed version
+- set ng-bootstrap as upstream (git remote add upstream https://github.com/ng-bootstrap/ng-bootstrap.git)
+- get branches from upstream (git fetch upstream)
+- checkout needed commit from ng-bootstrap and check which branch name it has
+- checkout our branch
+- git merge /name-of-the-upstream-branch-or-commit (?)/
+- push changes
+
+Release (because we use it inside package json we should release our custom library)
+
+- run yarn install
+- change version inside the main package.json to some unexcited version (i just add jmt suffix after the actual version) (8.0.3-jmt) instead of (8.0.3) for example (because with existed version it doesn't work (looks like it downloaded from ng-bootstrap) for some reason)
+- run yarn build (it will build ng-bootstrap)
+- cd dist/ng-bootstrap
+- yarn pack (it will create file ng-bootstrap-ng-bootstrap-vX.X.X-jmt....tgz inside dist folder)
+- go to https://github.com/JoinMyTrip/ng-bootstrap/releases , create a new release
+- select needed brach for release and add some new tag
+- add dist/ng-bootstrap/ng-bootstrap-ng-bootstrap-vX.X.X-jmt....tgz as binary data
+- create release 
+- copy link of release file (ng-bootstrap-ng-bootstrap-vX.X.X-jmt....tgz) and update ng-bootstrap dependency with this new link in our main project (the link will look similar to https://github.com/JoinMyTrip/ng-bootstrap/releases/download/TAG_VERSION/ng-bootstrap-ng-bootstrap-vX.X.X-jmt....tgz)
+ 
 # NG Bootstrap - Angular powered Bootstrap widgets
 
 [![npm version](https://badge.fury.io/js/%40ng-bootstrap%2Fng-bootstrap.svg)](https://badge.fury.io/js/%40ng-bootstrap%2Fng-bootstrap)
@@ -14,7 +37,6 @@ No dependencies on 3rd party JavaScript.
 
 Please check our [demo site](https://ng-bootstrap.github.io) and the list of
 [issues](https://github.com/ng-bootstrap/ng-bootstrap/issues) to see all the things we are working on. Feel free to make comments there.
-
 
 ## Table of Contents
 
@@ -48,7 +70,7 @@ The supported versions are:
 
 ## Installation
 
-We strongly recommend using [Angular CLI](https://cli.angular.io) for setting up a new project. If you have an Angular &ge; 9 CLI project, you could simply use our schematics to add ng-bootstrap library to it. 
+We strongly recommend using [Angular CLI](https://cli.angular.io) for setting up a new project. If you have an Angular &ge; 9 CLI project, you could simply use our schematics to add ng-bootstrap library to it.
 
 Just run the following:
 
@@ -63,8 +85,8 @@ If you have multiple projects and you want to target a specific application, you
 ng add @ng-bootstrap/ng-bootstrap --project myProject
 ```
 
-If you prefer not to use schematics and install everything manually, please refer to the 
-[manual installation instructions](https://ng-bootstrap.github.io/#/getting-started#installation) on our website. 
+If you prefer not to use schematics and install everything manually, please refer to the
+[manual installation instructions](https://ng-bootstrap.github.io/#/getting-started#installation) on our website.
 
 ## Supported browsers
 
@@ -72,26 +94,26 @@ We support the same browsers and versions supported by both Bootstrap 4 and Angu
 
 Our code is automatically tested on all supported browsers.
 
-
 ## Getting help
 
 Please, do not open issues for the general support questions as we want to keep GitHub issues for bug reports and feature requests. You've got much better chances of getting your question answered on [StackOverflow](http://stackoverflow.com/questions/tagged/ng-bootstrap) where maintainers are looking at questions tagged with `ng-bootstrap`.
 
 StackOverflow is a much better place to ask questions since:
-* there are hundreds of people willing to help on StackOverflow
-* questions and answers stay available for public viewing so your question / answer might help someone else
-* SO voting system assures that the best answers are prominently visible.
+
+- there are hundreds of people willing to help on StackOverflow
+- questions and answers stay available for public viewing so your question / answer might help someone else
+- SO voting system assures that the best answers are prominently visible.
 
 To save your and our time we will be systematically closing all the issues that are requests for general support and redirecting people to StackOverflow.
-
 
 ## You think you've found a bug?
 
 We want to fix it ASAP! But before fixing a bug we need to reproduce and confirm it.
 
 We ask you to respect two things:
-* fill the GitHub issue template by providing the bug description and appropriate versions of Angular, ng-bootstrap and TypeScript
-* provide a use-case that fails with a **minimal reproduction scenario** using [StackBlitz](https://stackblitz.com) (you can start by forking one from our [demo page](https://ng-bootstrap.github.io/#/components))
+
+- fill the GitHub issue template by providing the bug description and appropriate versions of Angular, ng-bootstrap and TypeScript
+- provide a use-case that fails with a **minimal reproduction scenario** using [StackBlitz](https://stackblitz.com) (you can start by forking one from our [demo page](https://ng-bootstrap.github.io/#/components))
 
 A minimal reproduction scenario allows us to quickly confirm a bug (or point out a coding problem) as well as confirm that we are fixing the right problem.
 
@@ -99,11 +121,9 @@ Please note that **we will be insisting on a minimal reproduce scenario** in ord
 
 Interestingly, from our experience users often find coding problems themselves while preparing a minimal StackBlitz. We understand that sometimes it might be hard to extract essentials bits of code from a larger code-base but we really need to isolate the problem before we can fix it.
 
-
 ## Contributing to the project
 
 Please check the [DEVELOPER.md](DEVELOPER.md) for documentation on running the project locally and [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
-
 
 ## Code of conduct
 
