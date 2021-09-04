@@ -27,7 +27,6 @@ describe('ngb-calendar-buddhist', () => {
     expect(calendar.getNext(new NgbDate(2562, 12, 31))).toEqual(new NgbDate(2563, 1, 1));
     expect(calendar.getNext(new NgbDate(2563, 2, 28))).toEqual(new NgbDate(2563, 2, 29));
     expect(calendar.getNext(new NgbDate(2563, 2, 29))).toEqual(new NgbDate(2563, 3, 1));
-    expect(calendar.getNext(new NgbDate(2563, 2, 29), 'a' as NgbPeriod)).toEqual(new NgbDate(2563, 2, 29));
   });
 
   it('should subtract days from date', () => {
@@ -49,6 +48,14 @@ describe('ngb-calendar-buddhist', () => {
 
   it('should add years to date',
      () => { expect(calendar.getNext(new NgbDate(2562, 1, 31), 'y')).toEqual(new NgbDate(2563, 1, 31)); });
+
+  it('should expect the same date - invalid period', () => {
+    const date = new NgbDate(2563, 2, 29);
+
+    const action = calendar.getNext(date, 'a' as NgbPeriod);
+
+    expect(action).toEqual(date);
+  });
 
   it('should subtract years from date',
      () => { expect(calendar.getPrev(new NgbDate(2563, 1, 31), 'y')).toEqual(new NgbDate(2562, 1, 31)); });
