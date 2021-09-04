@@ -1,4 +1,4 @@
-
+import {NgbPeriod} from '../ngb-calendar';
 import {NgbDate} from '../ngb-date';
 import {NgbCalendarBuddhist} from './ngb-calendar-buddhist';
 
@@ -27,6 +27,7 @@ describe('ngb-calendar-buddhist', () => {
     expect(calendar.getNext(new NgbDate(2562, 12, 31))).toEqual(new NgbDate(2563, 1, 1));
     expect(calendar.getNext(new NgbDate(2563, 2, 28))).toEqual(new NgbDate(2563, 2, 29));
     expect(calendar.getNext(new NgbDate(2563, 2, 29))).toEqual(new NgbDate(2563, 3, 1));
+    expect(calendar.getNext(new NgbDate(2563, 2, 29), 'a' as NgbPeriod)).toEqual(new NgbDate(2563, 2, 29));
   });
 
   it('should subtract days from date', () => {
