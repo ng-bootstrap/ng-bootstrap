@@ -56,7 +56,7 @@ let nextWindowId = 0;
  * A directive providing a simple way of creating powerful typeaheads from any text input.
  */
 @Directive({
-  selector: 'input[ngbTypeahead]',
+  selector: '[ngbTypeahead]',
   exportAs: 'ngbTypeahead',
   host: {
     '(blur)': 'handleBlur()',
