@@ -76,6 +76,7 @@ const DEMOS = [
       <li><code>NgbCalendarPersian</code></li>
       <li><code>NgbCalendarIslamicCivil</code></li>
       <li><code>NgbCalendarIslamicUmalqura</code></li>
+      <li><code>NgbCalendarBuddhist</code></li>
     </ul>
 
     <ngb-alert [dismissible]="false">
