@@ -11,18 +11,17 @@ function sortObjectByKeys(obj: Record<string, string>) {
 /**
  * Adds a package to the package.json in the given tree
  */
-export function addPackageToPackageJson(tree: Tree, pkg: string, version: string): Tree {
+export function addPackageToPackageJson(tree: Tree, pkg: string, version: string, devDependency = false): Tree {
   if (tree.exists('package.json')) {
     const sourceText = tree.read('package.json') !.toString('utf-8');
     const json = JSON.parse(sourceText);
 
-    if (!json.dependencies) {
-      json.dependencies = {};
-    }
+    const dependenciesType = devDependency ? 'devDependencies' : 'dependencies';
+    const dependencies = json[dependenciesType] || {};
 
-    if (!json.dependencies[pkg]) {
-      json.dependencies[pkg] = version;
-      json.dependencies = sortObjectByKeys(json.dependencies);
+    if (!dependencies[pkg]) {
+      dependencies[pkg] = version;
+      json[dependenciesType] = sortObjectByKeys(dependencies);
     }
 
     tree.overwrite('package.json', JSON.stringify(json, null, 2));
@@ -34,7 +33,8 @@ export function addPackageToPackageJson(tree: Tree, pkg: string, version: string
 /**
  * Gets the version of the specified package by looking at the package.json in the given tree
  */
-export function getPackageVersionFromPackageJson(tree: Tree, name: string): string | null {
+export function getPackageVersionFromPackageJson(tree: Tree, name: string, includeDevDependencies = false): string |
+    null {
   if (!tree.exists('package.json')) {
     return null;
   }
@@ -43,6 +43,10 @@ export function getPackageVersionFromPackageJson(tree: Tree, name: string): stri
 
   if (packageJson.dependencies && packageJson.dependencies[name]) {
     return packageJson.dependencies[name];
+  }
+
+  if (includeDevDependencies && packageJson.devDependencies && packageJson.devDependencies[name]) {
+    return packageJson.devDependencies[name];
   }
 
   return null;

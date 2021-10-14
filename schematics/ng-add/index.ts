@@ -36,13 +36,13 @@ export default function ngAdd(options: Schema): Rule {
 
     // Installing dependencies
     const angularCoreVersion = getPackageVersionFromPackageJson(tree, '@angular/core') !;
-    const angularLocalizeVersion = getPackageVersionFromPackageJson(tree, '@angular/localize');
+    const angularLocalizeVersion = getPackageVersionFromPackageJson(tree, '@angular/localize', true);
 
     addPackageToPackageJson(tree, 'bootstrap', VERSIONS.BOOTSTRAP);
     addPackageToPackageJson(tree, '@popperjs/core', VERSIONS.POPPER);
 
     if (angularLocalizeVersion === null) {
-      addPackageToPackageJson(tree, '@angular/localize', angularCoreVersion);
+      addPackageToPackageJson(tree, '@angular/localize', angularCoreVersion, true);
     }
 
     context.addTask(new RunSchematicTask('ng-add-setup-project', options), [
