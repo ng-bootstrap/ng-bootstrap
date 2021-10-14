@@ -26,12 +26,29 @@ import {DOCUMENT} from '@angular/common';
 
 import {listenToTriggers} from '../util/triggers';
 import {ngbAutoClose} from '../util/autoclose';
-import {positionElements, PlacementArray} from '../util/positioning';
+import {ngbPositioning, PlacementArray} from '../util/positioning';
 import {PopupService} from '../util/popup';
 
 import {NgbPopoverConfig} from './popover-config';
 
+import {Options, offset} from '@popperjs/core';
+import {Subscription} from 'rxjs';
+import {take} from 'rxjs/operators';
+
 let nextId = 0;
+
+function updatePopperOptions(options: Options) {
+  options.modifiers !.push(offset, {
+    name: 'offset',
+    options: {
+      offset: () => {
+        return [0, 12];
+      },
+    },
+  });
+
+  return options;
+}
 
 @Component({
   selector: 'ngb-popover-window',
@@ -44,13 +61,12 @@ let nextId = 0;
     '[id]': 'id'
   },
   template: `
-    <div class="popover-arrow"></div>
+    <div class="popover-arrow" data-popper-arrow></div>
     <h3 class="popover-header" *ngIf="title">
       <ng-template #simpleTitle>{{title}}</ng-template>
       <ng-template [ngTemplateOutlet]="isTitleTemplate() ? $any(title) : simpleTitle" [ngTemplateOutletContext]="context"></ng-template>
     </h3>
-    <div class="popover-body"><ng-content></ng-content></div>`,
-  styleUrls: ['./popover.scss']
+    <div class="popover-body"><ng-content></ng-content></div>`
 })
 export class NgbPopoverWindow {
   @Input() animation: boolean;
@@ -106,9 +122,11 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
   /**
    * The preferred placement of the popover.
    *
-   * Possible values are `"top"`, `"top-start"`, `"top-end"`, `"bottom"`, `"bottom-start"`,
-   * `"bottom-end"`, `"start"`, `"start-top"`, `"start-bottom"`, `"end"`, `"end-top"`,
-   * `"end-bottom"`
+   * Possible values are
+   * `"top"`, `"top-start"`, `"top-left"`, `"top-end"`, `"top-right"`,
+   * `"bottom"`, `"bottom-start"`, `"bottom-left"`, `"bottom-end"`, `"bottom-right"`,
+   * `"start"`, `left`, `"start-top"`, `"left-top"`, `"start-bottom"`, `"left-bottom"`,
+   * `"end"`, `"right"`, `"end-top"`, `"right-top"`, `"end-bottom"`, `"right-bottom"`
    *
    * Accepts an array of strings or a string with space separated possible values.
    *
@@ -177,7 +195,8 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
   private _popupService: PopupService<NgbPopoverWindow>;
   private _windowRef: ComponentRef<NgbPopoverWindow>| null = null;
   private _unregisterListenersFn;
-  private _zoneSubscription: any;
+  private _positioning = ngbPositioning();
+  private _zoneSubscription: Subscription;
   private _isDisabled(): boolean {
     if (this.disablePopover) {
       return true;
@@ -206,13 +225,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
         NgbPopoverWindow, injector, viewContainerRef, _renderer, this._ngZone, componentFactoryResolver,
         applicationRef);
 
-    this._zoneSubscription = _ngZone.onStable.subscribe(() => {
-      if (this._windowRef) {
-        positionElements(
-            this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
-            this.container === 'body', 'bs-popover');
-      }
-    });
+    this._zoneSubscription = _ngZone.onStable.subscribe(() => { this._positioning.update(); });
   }
 
   /**
@@ -251,6 +264,17 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
       // mark the parent component to be checked.
       this._windowRef.changeDetectorRef.markForCheck();
 
+      // Schedule positioning on stable, to avoid several positioning updates.
+      this._ngZone.onStable.pipe(take(1)).subscribe(() => {
+        this._positioning.createPopper({
+          hostElement: this._elementRef.nativeElement,
+          targetElement: this._windowRef !.location.nativeElement,
+          placement: this.placement,
+          appendToBody: this.container === 'body',
+          baseClass: 'bs-popover', updatePopperOptions,
+        });
+      });
+
       ngbAutoClose(
           this._ngZone, this._document, this.autoClose, () => this.close(), this.hidden,
           [this._windowRef.location.nativeElement]);
@@ -269,6 +293,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
       this._renderer.removeAttribute(this._elementRef.nativeElement, 'aria-describedby');
       this._popupService.close(this.animation).subscribe(() => {
         this._windowRef = null;
+        this._positioning.destroy();
         this.hidden.emit();
         this._changeDetector.markForCheck();
       });

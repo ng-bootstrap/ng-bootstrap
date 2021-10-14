@@ -1,4 +1,4 @@
-import {TestBed, ComponentFixture, inject} from '@angular/core/testing';
+import {TestBed, ComponentFixture, inject, fakeAsync, tick} from '@angular/core/testing';
 import {createGenericTestComponent, isBrowser, isBrowserVisible, triggerEvent} from '../test/common';
 
 import {By} from '@angular/platform-browser';
@@ -74,99 +74,104 @@ describe('ngb-tooltip', () => {
 
   describe('basic functionality', () => {
 
-    it('should open and close a tooltip - default settings and content as string', () => {
-      const fixture = createTestComponent(`<div ngbTooltip="Great tip!" style="margin-top: 100px;"></div>`);
-      const directive = fixture.debugElement.query(By.directive(NgbTooltip));
+    it('should open and close a tooltip - default settings and content as string', fakeAsync(() => {
+         const fixture = createTestComponent(`<div ngbTooltip="Great tip!" style="margin-top: 100px;"></div>`);
+         const directive = fixture.debugElement.query(By.directive(NgbTooltip));
 
-      triggerEvent(directive, 'mouseenter');
-      fixture.detectChanges();
-      const windowEl = getWindow(fixture.nativeElement);
-      const id = windowEl.getAttribute('id');
+         triggerEvent(directive, 'mouseenter');
+         fixture.detectChanges();
+         tick();
+         const windowEl = getWindow(fixture.nativeElement);
+         const id = windowEl.getAttribute('id');
 
-      expect(windowEl).toHaveCssClass('tooltip');
-      expect(windowEl).toHaveCssClass('show');
-      expect(windowEl).not.toHaveCssClass('fade');
-      expect(windowEl).toHaveCssClass('bs-tooltip-top');
-      expect(windowEl.textContent.trim()).toBe('Great tip!');
-      expect(windowEl.getAttribute('role')).toBe('tooltip');
-      expect(windowEl.parentNode).toBe(fixture.nativeElement);
-      expect(directive.nativeElement.getAttribute('aria-describedby')).toBe(id);
+         expect(windowEl).toHaveCssClass('tooltip');
+         expect(windowEl).toHaveCssClass('show');
+         expect(windowEl).not.toHaveCssClass('fade');
+         expect(windowEl).toHaveCssClass('bs-tooltip-top');
+         expect(windowEl.textContent.trim()).toBe('Great tip!');
+         expect(windowEl.getAttribute('role')).toBe('tooltip');
+         expect(windowEl.parentNode).toBe(fixture.nativeElement);
+         expect(directive.nativeElement.getAttribute('aria-describedby')).toBe(id);
 
-      triggerEvent(directive, 'mouseleave');
-      fixture.detectChanges();
-      expect(getWindow(fixture.nativeElement)).toBeNull();
-      expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
-    });
+         triggerEvent(directive, 'mouseleave');
+         fixture.detectChanges();
+         expect(getWindow(fixture.nativeElement)).toBeNull();
+         expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
+       }));
 
-    it('should open and close a tooltip - default settings and content from a template', () => {
-      const fixture = createTestComponent(`
+    it('should open and close a tooltip - default settings and content from a template', fakeAsync(() => {
+         const fixture = createTestComponent(`
         <ng-template #t>Hello, {{name}}!</ng-template><div [ngbTooltip]="t" style="margin-top: 100px;"></div>`);
-      const directive = fixture.debugElement.query(By.directive(NgbTooltip));
+         const directive = fixture.debugElement.query(By.directive(NgbTooltip));
 
-      triggerEvent(directive, 'mouseenter');
-      fixture.detectChanges();
-      const windowEl = getWindow(fixture.nativeElement);
-      const id = windowEl.getAttribute('id');
+         triggerEvent(directive, 'mouseenter');
+         fixture.detectChanges();
+         tick();
+         const windowEl = getWindow(fixture.nativeElement);
+         const id = windowEl.getAttribute('id');
 
-      expect(windowEl).toHaveCssClass('tooltip');
-      expect(windowEl).toHaveCssClass('bs-tooltip-top');
-      expect(windowEl.textContent.trim()).toBe('Hello, World!');
-      expect(windowEl.getAttribute('role')).toBe('tooltip');
-      expect(windowEl.parentNode).toBe(fixture.nativeElement);
-      expect(directive.nativeElement.getAttribute('aria-describedby')).toBe(id);
+         expect(windowEl).toHaveCssClass('tooltip');
+         expect(windowEl).toHaveCssClass('bs-tooltip-top');
+         expect(windowEl.textContent.trim()).toBe('Hello, World!');
+         expect(windowEl.getAttribute('role')).toBe('tooltip');
+         expect(windowEl.parentNode).toBe(fixture.nativeElement);
+         expect(directive.nativeElement.getAttribute('aria-describedby')).toBe(id);
 
-      triggerEvent(directive, 'mouseleave');
-      fixture.detectChanges();
-      expect(getWindow(fixture.nativeElement)).toBeNull();
-      expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
-    });
+         triggerEvent(directive, 'mouseleave');
+         fixture.detectChanges();
+         expect(getWindow(fixture.nativeElement)).toBeNull();
+         expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
+       }));
 
-    it('should open and close a tooltip - default settings, content from a template and context supplied', () => {
-      const fixture = createTestComponent(`
+    it('should open and close a tooltip - default settings, content from a template and context supplied',
+       fakeAsync(() => {
+         const fixture = createTestComponent(`
         <ng-template #t let-name="name">Hello, {{name}}!</ng-template><div [ngbTooltip]="t" style="margin-top: 100px;"></div>`);
-      const directive = fixture.debugElement.query(By.directive(NgbTooltip));
+         const directive = fixture.debugElement.query(By.directive(NgbTooltip));
 
-      directive.context.tooltip.open({name: 'John'});
-      fixture.detectChanges();
-      const windowEl = getWindow(fixture.nativeElement);
-      const id = windowEl.getAttribute('id');
+         directive.context.tooltip.open({name: 'John'});
+         fixture.detectChanges();
+         tick();
+         const windowEl = getWindow(fixture.nativeElement);
+         const id = windowEl.getAttribute('id');
 
-      expect(windowEl).toHaveCssClass('tooltip');
-      expect(windowEl).toHaveCssClass('bs-tooltip-top');
-      expect(windowEl.textContent.trim()).toBe('Hello, John!');
-      expect(windowEl.getAttribute('role')).toBe('tooltip');
-      expect(windowEl.parentNode).toBe(fixture.nativeElement);
-      expect(directive.nativeElement.getAttribute('aria-describedby')).toBe(id);
+         expect(windowEl).toHaveCssClass('tooltip');
+         expect(windowEl).toHaveCssClass('bs-tooltip-top');
+         expect(windowEl.textContent.trim()).toBe('Hello, John!');
+         expect(windowEl.getAttribute('role')).toBe('tooltip');
+         expect(windowEl.parentNode).toBe(fixture.nativeElement);
+         expect(directive.nativeElement.getAttribute('aria-describedby')).toBe(id);
 
-      triggerEvent(directive, 'mouseleave');
-      fixture.detectChanges();
-      expect(getWindow(fixture.nativeElement)).toBeNull();
-      expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
-    });
+         triggerEvent(directive, 'mouseleave');
+         fixture.detectChanges();
+         expect(getWindow(fixture.nativeElement)).toBeNull();
+         expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
+       }));
 
-    it('should open and close a tooltip - default settings and custom class', () => {
-      const fixture = createTestComponent(`
+    it('should open and close a tooltip - default settings and custom class', fakeAsync(() => {
+         const fixture = createTestComponent(`
         <div ngbTooltip="Great tip!" tooltipClass="my-custom-class" style="margin-top: 100px;"></div>`);
-      const directive = fixture.debugElement.query(By.directive(NgbTooltip));
+         const directive = fixture.debugElement.query(By.directive(NgbTooltip));
 
-      triggerEvent(directive, 'mouseenter');
-      fixture.detectChanges();
-      const windowEl = getWindow(fixture.nativeElement);
-      const id = windowEl.getAttribute('id');
+         triggerEvent(directive, 'mouseenter');
+         fixture.detectChanges();
+         tick();
+         const windowEl = getWindow(fixture.nativeElement);
+         const id = windowEl.getAttribute('id');
 
-      expect(windowEl).toHaveCssClass('tooltip');
-      expect(windowEl).toHaveCssClass('bs-tooltip-top');
-      expect(windowEl).toHaveCssClass('my-custom-class');
-      expect(windowEl.textContent.trim()).toBe('Great tip!');
-      expect(windowEl.getAttribute('role')).toBe('tooltip');
-      expect(windowEl.parentNode).toBe(fixture.nativeElement);
-      expect(directive.nativeElement.getAttribute('aria-describedby')).toBe(id);
+         expect(windowEl).toHaveCssClass('tooltip');
+         expect(windowEl).toHaveCssClass('bs-tooltip-top');
+         expect(windowEl).toHaveCssClass('my-custom-class');
+         expect(windowEl.textContent.trim()).toBe('Great tip!');
+         expect(windowEl.getAttribute('role')).toBe('tooltip');
+         expect(windowEl.parentNode).toBe(fixture.nativeElement);
+         expect(directive.nativeElement.getAttribute('aria-describedby')).toBe(id);
 
-      triggerEvent(directive, 'mouseleave');
-      fixture.detectChanges();
-      expect(getWindow(fixture.nativeElement)).toBeNull();
-      expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
-    });
+         triggerEvent(directive, 'mouseleave');
+         fixture.detectChanges();
+         expect(getWindow(fixture.nativeElement)).toBeNull();
+         expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
+       }));
 
     it('should propagate tooltipClass changes to the window', () => {
       const fixture = createTestComponent(`<div ngbTooltip="Great tip!" [tooltipClass]="tooltipClass"></div>`);
@@ -286,89 +291,95 @@ describe('ngb-tooltip', () => {
 
     describe('positioning', () => {
 
-      it('should use requested position', () => {
-        const fixture = createTestComponent(`<div ngbTooltip="Great tip!" placement="start"></div>`);
-        const directive = fixture.debugElement.query(By.directive(NgbTooltip));
+      it('should use requested position', fakeAsync(() => {
+           const fixture = createTestComponent(`<div ngbTooltip="Great tip!" placement="start"></div>`);
+           const directive = fixture.debugElement.query(By.directive(NgbTooltip));
 
-        triggerEvent(directive, 'mouseenter');
-        fixture.detectChanges();
-        const windowEl = getWindow(fixture.nativeElement);
+           triggerEvent(directive, 'mouseenter');
+           fixture.detectChanges();
+           tick();
+           const windowEl = getWindow(fixture.nativeElement);
 
-        expect(windowEl).toHaveCssClass('tooltip');
-        expect(windowEl).toHaveCssClass('bs-tooltip-start');
-        expect(windowEl.textContent.trim()).toBe('Great tip!');
-      });
+           expect(windowEl).toHaveCssClass('tooltip');
+           expect(windowEl).toHaveCssClass('bs-tooltip-start');
+           expect(windowEl.textContent.trim()).toBe('Great tip!');
+         }));
 
-      it('should properly position tooltips when a component is using the OnPush strategy', () => {
-        const fixture = createOnPushTestComponent(`<div ngbTooltip="Great tip!" placement="start"></div>`);
-        const directive = fixture.debugElement.query(By.directive(NgbTooltip));
+      it('should properly position tooltips when a component is using the OnPush strategy', fakeAsync(() => {
+           const fixture = createOnPushTestComponent(`<div ngbTooltip="Great tip!" placement="start"></div>`);
+           const directive = fixture.debugElement.query(By.directive(NgbTooltip));
 
-        triggerEvent(directive, 'mouseenter');
-        fixture.detectChanges();
-        const windowEl = getWindow(fixture.nativeElement);
+           triggerEvent(directive, 'mouseenter');
+           fixture.detectChanges();
+           tick();
+           const windowEl = getWindow(fixture.nativeElement);
 
-        expect(windowEl).toHaveCssClass('tooltip');
-        expect(windowEl).toHaveCssClass('bs-tooltip-start');
-        expect(windowEl.textContent.trim()).toBe('Great tip!');
-      });
+           expect(windowEl).toHaveCssClass('tooltip');
+           expect(windowEl).toHaveCssClass('bs-tooltip-start');
+           expect(windowEl.textContent.trim()).toBe('Great tip!');
+         }));
 
-      it('should have proper arrow placement', () => {
-        const fixture = createTestComponent(`<div ngbTooltip="Great tip!" placement="end-top"></div>`);
-        const directive = fixture.debugElement.query(By.directive(NgbTooltip));
+      it('should have proper arrow placement', fakeAsync(() => {
+           const fixture = createTestComponent(`<div ngbTooltip="Great tip!" placement="end-top"></div>`);
+           const directive = fixture.debugElement.query(By.directive(NgbTooltip));
 
-        triggerEvent(directive, 'mouseenter');
-        fixture.detectChanges();
-        const windowEl = getWindow(fixture.nativeElement);
+           triggerEvent(directive, 'mouseenter');
+           fixture.detectChanges();
+           tick();
+           const windowEl = getWindow(fixture.nativeElement);
 
-        expect(windowEl).toHaveCssClass('tooltip');
-        expect(windowEl).toHaveCssClass('bs-tooltip-end');
-        expect(windowEl).toHaveCssClass('bs-tooltip-end-top');
-        expect(windowEl.textContent.trim()).toBe('Great tip!');
-      });
+           expect(windowEl).toHaveCssClass('tooltip');
+           expect(windowEl).toHaveCssClass('bs-tooltip-end');
+           expect(windowEl).toHaveCssClass('bs-tooltip-end-top');
+           expect(windowEl.textContent.trim()).toBe('Great tip!');
+         }));
 
-      it('should accept placement in array (second value of the array should be applied)', () => {
-        const fixture = createTestComponent(
-            `<div ngbTooltip="Great tip!" [placement]="['start-top','top-start']" style="margin-top: 100px;"></div>`);
-        const directive = fixture.debugElement.query(By.directive(NgbTooltip));
+      it('should accept placement in array (second value of the array should be applied)', fakeAsync(() => {
+           const fixture = createTestComponent(
+               `<div ngbTooltip="Great tip!" [placement]="['start-top','top-start']" style="margin-top: 100px;"></div>`);
+           const directive = fixture.debugElement.query(By.directive(NgbTooltip));
 
-        triggerEvent(directive, 'mouseenter');
-        fixture.detectChanges();
-        const windowEl = getWindow(fixture.nativeElement);
+           triggerEvent(directive, 'mouseenter');
+           fixture.detectChanges();
+           tick();
+           const windowEl = getWindow(fixture.nativeElement);
 
-        expect(windowEl).toHaveCssClass('tooltip');
-        expect(windowEl).toHaveCssClass('bs-tooltip-top');
-        expect(windowEl).toHaveCssClass('bs-tooltip-top-start');
-        expect(windowEl.textContent.trim()).toBe('Great tip!');
-      });
+           expect(windowEl).toHaveCssClass('tooltip');
+           expect(windowEl).toHaveCssClass('bs-tooltip-top');
+           expect(windowEl).toHaveCssClass('bs-tooltip-top-start');
+           expect(windowEl.textContent.trim()).toBe('Great tip!');
+         }));
 
-      it('should accept placement with space separated values (second value should be applied)', () => {
-        const fixture = createTestComponent(
-            `<div ngbTooltip="Great tip!" placement="start-top top-start" style="margin-top: 100px;"></div>`);
-        const directive = fixture.debugElement.query(By.directive(NgbTooltip));
+      it('should accept placement with space separated values (second value should be applied)', fakeAsync(() => {
+           const fixture = createTestComponent(
+               `<div ngbTooltip="Great tip!" placement="start-top top-start" style="margin-top: 100px;"></div>`);
+           const directive = fixture.debugElement.query(By.directive(NgbTooltip));
 
-        triggerEvent(directive, 'mouseenter');
-        fixture.detectChanges();
-        const windowEl = getWindow(fixture.nativeElement);
+           triggerEvent(directive, 'mouseenter');
+           fixture.detectChanges();
+           tick();
+           const windowEl = getWindow(fixture.nativeElement);
 
-        expect(windowEl).toHaveCssClass('tooltip');
-        expect(windowEl).toHaveCssClass('bs-tooltip-top');
-        expect(windowEl).toHaveCssClass('bs-tooltip-top-start');
-        expect(windowEl.textContent.trim()).toBe('Great tip!');
-      });
+           expect(windowEl).toHaveCssClass('tooltip');
+           expect(windowEl).toHaveCssClass('bs-tooltip-top');
+           expect(windowEl).toHaveCssClass('bs-tooltip-top-start');
+           expect(windowEl.textContent.trim()).toBe('Great tip!');
+         }));
 
-      it('should apply auto placement', () => {
-        const fixture = createTestComponent(`<div ngbTooltip="Great tip!" placement="auto"></div>`);
-        const directive = fixture.debugElement.query(By.directive(NgbTooltip));
+      it('should apply auto placement', fakeAsync(() => {
+           const fixture = createTestComponent(`<div ngbTooltip="Great tip!" placement="auto"></div>`);
+           const directive = fixture.debugElement.query(By.directive(NgbTooltip));
 
-        triggerEvent(directive, 'mouseenter');
-        fixture.detectChanges();
-        const windowEl = getWindow(fixture.nativeElement);
+           triggerEvent(directive, 'mouseenter');
+           fixture.detectChanges();
+           tick();
+           const windowEl = getWindow(fixture.nativeElement);
 
-        expect(windowEl).toHaveCssClass('tooltip');
-        // actual placement with auto is not known in advance, so use regex to check it
-        expect(windowEl.getAttribute('class')).toMatch('bs-tooltip-\.');
-        expect(windowEl.textContent.trim()).toBe('Great tip!');
-      });
+           expect(windowEl).toHaveCssClass('tooltip');
+           // actual placement with auto is not known in advance, so use regex to check it
+           expect(windowEl.getAttribute('class')).toMatch('bs-tooltip-\.');
+           expect(windowEl.textContent.trim()).toBe('Great tip!');
+         }));
 
     });
 

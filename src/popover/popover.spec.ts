@@ -1,4 +1,4 @@
-import {TestBed, ComponentFixture, inject} from '@angular/core/testing';
+import {TestBed, ComponentFixture, inject, fakeAsync, tick} from '@angular/core/testing';
 import {createGenericTestComponent, isBrowser, isBrowserVisible, triggerEvent} from '../test/common';
 
 import {By} from '@angular/platform-browser';
@@ -86,102 +86,109 @@ describe('ngb-popover', () => {
 
   describe('basic functionality', () => {
 
-    it('should open and close a popover - default settings and content as string', () => {
-      const fixture =
-          createTestComponent(`<div ngbPopover="Great tip!" popoverTitle="Title" style="margin-top: 100px;"></div>`);
-      const directive = fixture.debugElement.query(By.directive(NgbPopover));
+    it('should open and close a popover - default settings and content as string', fakeAsync(() => {
+         const fixture =
+             createTestComponent(`<div ngbPopover="Great tip!" popoverTitle="Title" style="margin-top: 110px;"></div>`);
+         const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
-      triggerEvent(directive, 'click');
-      fixture.detectChanges();
-      const windowEl = getWindow(fixture.nativeElement);
-      const id = windowEl.getAttribute('id');
+         triggerEvent(directive, 'click');
+         fixture.detectChanges();
+         tick();
 
-      expect(windowEl).toHaveCssClass('popover');
-      expect(windowEl).toHaveCssClass('bs-popover-top');
-      expect(windowEl).toHaveCssClass('show');
-      expect(windowEl).not.toHaveCssClass('fade');
-      expect(windowEl.textContent.trim()).toBe('TitleGreat tip!');
-      expect(windowEl.getAttribute('role')).toBe('tooltip');
-      expect(windowEl.parentNode).toBe(fixture.nativeElement);
-      expect(directive.nativeElement.getAttribute('aria-describedby')).toBe(id);
+         const windowEl = getWindow(fixture.nativeElement);
+         const id = windowEl.getAttribute('id');
 
-      triggerEvent(directive, 'click');
-      fixture.detectChanges();
-      expect(getWindow(fixture.nativeElement)).toBeNull();
-      expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
-    });
+         expect(windowEl).toHaveCssClass('popover');
+         expect(windowEl).toHaveCssClass('bs-popover-top');
+         expect(windowEl).toHaveCssClass('show');
+         expect(windowEl).not.toHaveCssClass('fade');
+         expect(windowEl.textContent.trim()).toBe('TitleGreat tip!');
+         expect(windowEl.getAttribute('role')).toBe('tooltip');
+         expect(windowEl.parentNode).toBe(fixture.nativeElement);
+         expect(directive.nativeElement.getAttribute('aria-describedby')).toBe(id);
 
-    it('should open and close a popover - default settings and content from a template', () => {
-      const fixture = createTestComponent(`
+         triggerEvent(directive, 'click');
+         fixture.detectChanges();
+         expect(getWindow(fixture.nativeElement)).toBeNull();
+         expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
+
+       }));
+
+    it('should open and close a popover - default settings and content from a template', fakeAsync(() => {
+         const fixture = createTestComponent(`
           <ng-template #t>Hello, {{name}}!</ng-template>
-          <div [ngbPopover]="t" popoverTitle="Title" style="margin-top: 100px;"></div>`);
-      const directive = fixture.debugElement.query(By.directive(NgbPopover));
+          <div [ngbPopover]="t" popoverTitle="Title" style="margin-top: 150px;"></div>`);
+         const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
-      triggerEvent(directive, 'click');
-      fixture.detectChanges();
-      const windowEl = getWindow(fixture.nativeElement);
-      const id = windowEl.getAttribute('id');
+         triggerEvent(directive, 'click');
+         fixture.detectChanges();
+         tick();
+         const windowEl = getWindow(fixture.nativeElement);
+         const id = windowEl.getAttribute('id');
 
-      expect(windowEl).toHaveCssClass('popover');
-      expect(windowEl).toHaveCssClass('bs-popover-top');
-      expect(windowEl.textContent.trim()).toBe('TitleHello, World!');
-      expect(windowEl.getAttribute('role')).toBe('tooltip');
-      expect(windowEl.parentNode).toBe(fixture.nativeElement);
-      expect(directive.nativeElement.getAttribute('aria-describedby')).toBe(id);
+         expect(windowEl).toHaveCssClass('popover');
+         expect(windowEl).toHaveCssClass('bs-popover-top');
+         expect(windowEl.textContent.trim()).toBe('TitleHello, World!');
+         expect(windowEl.getAttribute('role')).toBe('tooltip');
+         expect(windowEl.parentNode).toBe(fixture.nativeElement);
+         expect(directive.nativeElement.getAttribute('aria-describedby')).toBe(id);
 
-      triggerEvent(directive, 'click');
-      fixture.detectChanges();
-      expect(getWindow(fixture.nativeElement)).toBeNull();
-      expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
-    });
+         triggerEvent(directive, 'click');
+         fixture.detectChanges();
+         expect(getWindow(fixture.nativeElement)).toBeNull();
+         expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
+       }));
 
-    it('should open and close a popover - default settings, content from a template and context supplied', () => {
-      const fixture = createTestComponent(`
+    it('should open and close a popover - default settings, content from a template and context supplied',
+       fakeAsync(() => {
+         const fixture = createTestComponent(`
           <ng-template #t let-name="name">Hello, {{name}}!</ng-template>
-          <div [ngbPopover]="t" popoverTitle="Title" style="margin-top: 100px;"></div>`);
-      const directive = fixture.debugElement.query(By.directive(NgbPopover));
+          <div [ngbPopover]="t" popoverTitle="Title" style="margin-top: 150px;"></div>`);
+         const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
-      directive.context.popover.open({name: 'John'});
-      fixture.detectChanges();
-      const windowEl = getWindow(fixture.nativeElement);
-      const id = windowEl.getAttribute('id');
+         directive.context.popover.open({name: 'John'});
+         fixture.detectChanges();
+         tick();
+         const windowEl = getWindow(fixture.nativeElement);
+         const id = windowEl.getAttribute('id');
 
-      expect(windowEl).toHaveCssClass('popover');
-      expect(windowEl).toHaveCssClass('bs-popover-top');
-      expect(windowEl.textContent.trim()).toBe('TitleHello, John!');
-      expect(windowEl.getAttribute('role')).toBe('tooltip');
-      expect(windowEl.parentNode).toBe(fixture.nativeElement);
-      expect(directive.nativeElement.getAttribute('aria-describedby')).toBe(id);
+         expect(windowEl).toHaveCssClass('popover');
+         expect(windowEl).toHaveCssClass('bs-popover-top');
+         expect(windowEl.textContent.trim()).toBe('TitleHello, John!');
+         expect(windowEl.getAttribute('role')).toBe('tooltip');
+         expect(windowEl.parentNode).toBe(fixture.nativeElement);
+         expect(directive.nativeElement.getAttribute('aria-describedby')).toBe(id);
 
-      triggerEvent(directive, 'click');
-      fixture.detectChanges();
-      expect(getWindow(fixture.nativeElement)).toBeNull();
-      expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
-    });
+         triggerEvent(directive, 'click');
+         fixture.detectChanges();
+         expect(getWindow(fixture.nativeElement)).toBeNull();
+         expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
+       }));
 
-    it('should open and close a popover - default settings and custom class', () => {
-      const fixture = createTestComponent(`
-        <div ngbPopover="Great tip!" popoverTitle="Title" popoverClass="my-custom-class" style="margin-top: 100px;"></div>`);
-      const directive = fixture.debugElement.query(By.directive(NgbPopover));
+    it('should open and close a popover - default settings and custom class', fakeAsync(() => {
+         const fixture = createTestComponent(`
+        <div ngbPopover="Great tip!" popoverTitle="Title" popoverClass="my-custom-class" style="margin-top: 150px;"></div>`);
+         const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
-      triggerEvent(directive, 'click');
-      fixture.detectChanges();
-      const windowEl = getWindow(fixture.nativeElement);
-      const id = windowEl.getAttribute('id');
+         triggerEvent(directive, 'click');
+         fixture.detectChanges();
+         tick();
+         const windowEl = getWindow(fixture.nativeElement);
+         const id = windowEl.getAttribute('id');
 
-      expect(windowEl).toHaveCssClass('popover');
-      expect(windowEl).toHaveCssClass('bs-popover-top');
-      expect(windowEl).toHaveCssClass('my-custom-class');
-      expect(windowEl.textContent.trim()).toBe('TitleGreat tip!');
-      expect(windowEl.getAttribute('role')).toBe('tooltip');
-      expect(windowEl.parentNode).toBe(fixture.nativeElement);
-      expect(directive.nativeElement.getAttribute('aria-describedby')).toBe(id);
+         expect(windowEl).toHaveCssClass('popover');
+         expect(windowEl).toHaveCssClass('bs-popover-top');
+         expect(windowEl).toHaveCssClass('my-custom-class');
+         expect(windowEl.textContent.trim()).toBe('TitleGreat tip!');
+         expect(windowEl.getAttribute('role')).toBe('tooltip');
+         expect(windowEl.parentNode).toBe(fixture.nativeElement);
+         expect(directive.nativeElement.getAttribute('aria-describedby')).toBe(id);
 
-      triggerEvent(directive, 'click');
-      fixture.detectChanges();
-      expect(getWindow(fixture.nativeElement)).toBeNull();
-      expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
-    });
+         triggerEvent(directive, 'click');
+         fixture.detectChanges();
+         expect(getWindow(fixture.nativeElement)).toBeNull();
+         expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
+       }));
 
     it('should propagate popoverClass changes to the window', () => {
       const fixture =
@@ -390,89 +397,95 @@ describe('ngb-popover', () => {
 
   describe('positioning', () => {
 
-    it('should use requested position', () => {
-      const fixture = createTestComponent(`<div ngbPopover="Great tip!" placement="start"></div>`);
-      const directive = fixture.debugElement.query(By.directive(NgbPopover));
+    it('should use requested position', fakeAsync(() => {
+         const fixture = createTestComponent(`<div ngbPopover="Great tip!" placement="start"></div>`);
+         const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
-      triggerEvent(directive, 'click');
-      fixture.detectChanges();
-      const windowEl = getWindow(fixture.nativeElement);
+         triggerEvent(directive, 'click');
+         fixture.detectChanges();
+         tick();
+         const windowEl = getWindow(fixture.nativeElement);
 
-      expect(windowEl).toHaveCssClass('popover');
-      expect(windowEl).toHaveCssClass('bs-popover-start');
-      expect(windowEl.textContent.trim()).toBe('Great tip!');
-    });
+         expect(windowEl).toHaveCssClass('popover');
+         expect(windowEl).toHaveCssClass('bs-popover-start');
+         expect(windowEl.textContent.trim()).toBe('Great tip!');
+       }));
 
-    it('should properly position popovers when a component is using the OnPush strategy', () => {
-      const fixture = createOnPushTestComponent(`<div ngbPopover="Great tip!" placement="start"></div>`);
-      const directive = fixture.debugElement.query(By.directive(NgbPopover));
+    it('should properly position popovers when a component is using the OnPush strategy', fakeAsync(() => {
+         const fixture = createOnPushTestComponent(`<div ngbPopover="Great tip!" placement="start"></div>`);
+         const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
-      triggerEvent(directive, 'click');
-      fixture.detectChanges();
-      const windowEl = getWindow(fixture.nativeElement);
+         triggerEvent(directive, 'click');
+         fixture.detectChanges();
+         tick();
+         const windowEl = getWindow(fixture.nativeElement);
 
-      expect(windowEl).toHaveCssClass('popover');
-      expect(windowEl).toHaveCssClass('bs-popover-start');
-      expect(windowEl.textContent.trim()).toBe('Great tip!');
-    });
+         expect(windowEl).toHaveCssClass('popover');
+         expect(windowEl).toHaveCssClass('bs-popover-start');
+         expect(windowEl.textContent.trim()).toBe('Great tip!');
+       }));
 
-    it('should have proper arrow placement', () => {
-      const fixture = createTestComponent(`<div ngbPopover="Great tip!" placement="end-top"></div>`);
-      const directive = fixture.debugElement.query(By.directive(NgbPopover));
+    it('should have proper arrow placement', fakeAsync(() => {
+         const fixture = createTestComponent(`<div ngbPopover="Great tip!" placement="end-top"></div>`);
+         const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
-      triggerEvent(directive, 'click');
-      fixture.detectChanges();
-      const windowEl = getWindow(fixture.nativeElement);
+         triggerEvent(directive, 'click');
+         fixture.detectChanges();
+         tick();
+         const windowEl = getWindow(fixture.nativeElement);
 
-      expect(windowEl).toHaveCssClass('popover');
-      expect(windowEl).toHaveCssClass('bs-popover-end');
-      expect(windowEl).toHaveCssClass('bs-popover-end-top');
-      expect(windowEl.textContent.trim()).toBe('Great tip!');
-    });
+         expect(windowEl).toHaveCssClass('popover');
+         expect(windowEl).toHaveCssClass('bs-popover-end');
+         expect(windowEl).toHaveCssClass('bs-popover-end-top');
+         expect(windowEl.textContent.trim()).toBe('Great tip!');
+       }));
 
-    it('should accept placement in array (second value of the array should be applied)', () => {
-      const fixture = createTestComponent(
-          `<div ngbPopover="Great tip!" [placement]="['start-top','top-start']" style="margin-top: 100px;"></div>`);
-      const directive = fixture.debugElement.query(By.directive(NgbPopover));
+    it('should accept placement in array (second value of the array should be applied)', fakeAsync(() => {
+         const fixture = createTestComponent(
+             `<div ngbPopover="Great tip!" [placement]="['start-top','top-start']" style="margin-top: 100px;"></div>`);
+         const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
-      triggerEvent(directive, 'click');
-      fixture.detectChanges();
-      const windowEl = getWindow(fixture.nativeElement);
+         triggerEvent(directive, 'click');
+         fixture.detectChanges();
+         tick();
+         const windowEl = getWindow(fixture.nativeElement);
 
-      expect(windowEl).toHaveCssClass('popover');
-      expect(windowEl).toHaveCssClass('bs-popover-top');
-      expect(windowEl).toHaveCssClass('bs-popover-top-start');
-      expect(windowEl.textContent.trim()).toBe('Great tip!');
-    });
+         expect(windowEl).toHaveCssClass('popover');
+         expect(windowEl).toHaveCssClass('bs-popover-top');
+         expect(windowEl).toHaveCssClass('bs-popover-top-start');
+         expect(windowEl.textContent.trim()).toBe('Great tip!');
+       }));
 
-    it('should accept placement with space separated values (second value should be applied)', () => {
-      const fixture = createTestComponent(
-          `<div ngbPopover="Great tip!" placement="start-top top-start" style="margin-top: 100px;"></div>`);
-      const directive = fixture.debugElement.query(By.directive(NgbPopover));
+    it('should accept placement with space separated values (second value should be applied)', fakeAsync(() => {
+         const fixture = createTestComponent(
+             `<div ngbPopover="Great tip!" placement="start-top top-start" style="margin-top: 100px;"></div>`);
+         const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
-      triggerEvent(directive, 'click');
-      fixture.detectChanges();
-      const windowEl = getWindow(fixture.nativeElement);
+         triggerEvent(directive, 'click');
+         fixture.detectChanges();
+         tick();
+         const windowEl = getWindow(fixture.nativeElement);
 
-      expect(windowEl).toHaveCssClass('popover');
-      expect(windowEl).toHaveCssClass('bs-popover-top');
-      expect(windowEl).toHaveCssClass('bs-popover-top-start');
-      expect(windowEl.textContent.trim()).toBe('Great tip!');
-    });
+         expect(windowEl).toHaveCssClass('popover');
+         expect(windowEl).toHaveCssClass('bs-popover-top');
+         expect(windowEl).toHaveCssClass('bs-popover-top-start');
+         expect(windowEl.textContent.trim()).toBe('Great tip!');
+       }));
 
-    it('should apply auto placement', () => {
-      const fixture = createTestComponent(`<div ngbPopover="Great tip!" placement="auto"></div>`);
-      const directive = fixture.debugElement.query(By.directive(NgbPopover));
+    it('should apply auto placement', fakeAsync(() => {
+         const fixture = createTestComponent(`<div ngbPopover="Great tip!" placement="auto"></div>`);
+         const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
-      triggerEvent(directive, 'click');
-      fixture.detectChanges();
-      const windowEl = getWindow(fixture.nativeElement);
+         triggerEvent(directive, 'click');
+         fixture.detectChanges();
+         tick();
+         const windowEl = getWindow(fixture.nativeElement);
 
-      expect(windowEl).toHaveCssClass('popover');
-      // actual placement with auto is not known in advance, so use regex to check it
-      expect(windowEl.getAttribute('class')).toMatch('bs-popover-\.');
-      expect(windowEl.textContent.trim()).toBe('Great tip!');
-    });
+         expect(windowEl).toHaveCssClass('popover');
+         // actual placement with auto is not known in advance, so use regex to check it
+         expect(windowEl.getAttribute('class')).toMatch('bs-popover-\.');
+         expect(windowEl.textContent.trim()).toBe('Great tip!');
+       }));
 
   });
 

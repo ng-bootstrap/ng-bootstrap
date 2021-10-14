@@ -21,7 +21,7 @@ import {DOCUMENT} from '@angular/common';
 import {fromEvent, Subject, Subscription} from 'rxjs';
 import {take} from 'rxjs/operators';
 
-import {Placement, PlacementArray, positionElements} from '../util/positioning';
+import {Placement, PlacementArray, ngbPositioning} from '../util/positioning';
 import {ngbAutoClose, SOURCE} from '../util/autoclose';
 import {Key} from '../util/key';
 
@@ -62,7 +62,7 @@ export class NgbDropdownItem {
   host: {
     '[class.dropdown-menu]': 'true',
     '[class.show]': 'dropdown.isOpen()',
-    '[attr.x-placement]': 'placement',
+    '[attr.data-popper]': 'placement',
     '(keydown.ArrowUp)': 'dropdown.onKeyDown($event)',
     '(keydown.ArrowDown)': 'dropdown.onKeyDown($event)',
     '(keydown.Home)': 'dropdown.onKeyDown($event)',
@@ -139,6 +139,7 @@ export class NgbDropdown implements AfterContentInit, OnDestroy {
   private _closed$ = new Subject<void>();
   private _zoneSubscription: Subscription;
   private _bodyContainer: HTMLElement | null = null;
+  private _positioning = ngbPositioning();
 
   @ContentChild(NgbDropdownMenu, {static: false}) private _menu: NgbDropdownMenu;
   @ContentChild(NgbDropdownAnchor, {static: false}) private _anchor: NgbDropdownAnchor;
@@ -239,7 +240,13 @@ export class NgbDropdown implements AfterContentInit, OnDestroy {
       this._applyContainer(this.container);
     }
 
-    if (changes.placement && !changes.placement.isFirstChange) {
+    if (changes.placement && !changes.placement.firstChange) {
+      this._positioning.setOptions({
+        hostElement: this._anchor.nativeElement,
+        targetElement: this._bodyContainer || this._menu.nativeElement,
+        placement: this.placement,
+        appendToBody: this.container === 'body',
+      });
       this._applyPlacementClasses();
     }
 
@@ -265,6 +272,17 @@ export class NgbDropdown implements AfterContentInit, OnDestroy {
       this._setCloseHandlers();
       if (this._anchor) {
         this._anchor.nativeElement.focus();
+        if (this.display === 'dynamic') {
+          this._ngZone.onStable.pipe(take(1)).subscribe(() => {
+            this._positioning.createPopper({
+              hostElement: this._anchor.nativeElement,
+              targetElement: this._bodyContainer || this._menu.nativeElement,
+              placement: this.placement,
+              appendToBody: this.container === 'body',
+            });
+            this._applyPlacementClasses();
+          });
+        }
       }
     }
   }
@@ -288,6 +306,7 @@ export class NgbDropdown implements AfterContentInit, OnDestroy {
   close(): void {
     if (this._open) {
       this._open = false;
+      this._positioning.destroy();
       this._resetContainer();
       this._closed$.next();
       this.openChange.emit(false);
@@ -308,7 +327,6 @@ export class NgbDropdown implements AfterContentInit, OnDestroy {
 
   ngOnDestroy() {
     this._resetContainer();
-
     this._closed$.next();
     this._zoneSubscription.unsubscribe();
   }
@@ -426,11 +444,12 @@ export class NgbDropdown implements AfterContentInit, OnDestroy {
   private _positionMenu() {
     const menu = this._menu;
     if (this.isOpen() && menu) {
-      this._applyPlacementClasses(
-          this.display === 'dynamic' ? positionElements(
-                                           this._anchor.nativeElement, this._bodyContainer || this._menu.nativeElement,
-                                           this.placement, this.container === 'body') :
-                                       this._getFirstPlacement(this.placement));
+      if (this.display === 'dynamic') {
+        this._positioning.update();
+        this._applyPlacementClasses();
+      } else {
+        this._applyPlacementClasses(this._getFirstPlacement(this.placement));
+      }
     }
   }
 
@@ -445,8 +464,6 @@ export class NgbDropdown implements AfterContentInit, OnDestroy {
       const dropdownMenuElement = this._menu.nativeElement;
 
       renderer.appendChild(dropdownElement, dropdownMenuElement);
-      renderer.removeStyle(dropdownMenuElement, 'position');
-      renderer.removeStyle(dropdownMenuElement, 'transform');
     }
     if (this._bodyContainer) {
       renderer.removeChild(this._document.body, this._bodyContainer);

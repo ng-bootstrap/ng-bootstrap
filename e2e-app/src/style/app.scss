@@ -1,13 +1,1 @@
 /* You can add global styles to this file, and also import other style files */
-
-// Temporary fix, as this classes are required for the positioning
-// They existed in bs4, and we must remove them after popper implementation
-.dropdown-menu {
-    &[x-placement^="top"],
-    &[x-placement^="end"],
-    &[x-placement^="bottom"],
-    &[x-placement^="start"] {
-      right: auto;
-      bottom: auto;
-    }
-  }

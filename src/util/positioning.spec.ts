@@ -1,222 +1,69 @@
-// tslint:disable:no-disabled-tests
-import {Positioning} from './positioning';
-import {TestBed} from '@angular/core/testing';
-import {Component} from '@angular/core';
+import {getBootstrapBaseClassPlacement, getPopperClassPlacement, Placement} from './positioning';
+import {Placement as PopperPlacement} from '@popperjs/core';
+describe('positioning', () => {
 
-xdescribe('Positioning', () => {
+  /**
+   * Object of bootstrap classes for the keys, and their corresponding popper ones in the values
+   */
+  const matchingBootstrapPopperPlacements = {
+    'top': 'top',
+    'bottom': 'bottom',
+    'start': 'left',
+    'left': 'left',
+    'end': 'right',
+    'right': 'right',
+    'top-start': 'top-start',
+    'top-left': 'top-start',
+    'top-end': 'top-end',
+    'top-right': 'top-end',
+    'bottom-start': 'bottom-start',
+    'bottom-left': 'bottom-start',
+    'bottom-end': 'bottom-end',
+    'bottom-right': 'bottom-end',
+    'start-top': 'left-start',
+    'left-top': 'left-start',
+    'start-bottom': 'left-end',
+    'left-bottom': 'left-end',
+    'end-top': 'right-start',
+    'right-top': 'right-start',
+    'end-bottom': 'right-end',
+    'right-bottom': 'right-end'
+  };
 
-  function createElement(
-      height: number, width: number, marginTop: number, marginLeft: number, isAbsolute = false): HTMLElement {
-    let el = document.createElement('div');
-    if (isAbsolute) {
-      el.style.position = 'absolute';
-      el.style.top = '0';
-      el.style.left = '0';
+  const matchingPopperBootstrapPlacements = {
+    'top': 'top',
+    'bottom': 'bottom',
+    'left': 'start',
+    'right': 'end',
+    'top-start': 'top top-start',
+    'top-end': 'top top-end',
+    'bottom-start': 'bottom bottom-start',
+    'bottom-end': 'bottom bottom-end',
+    'left-start': 'start start-top',
+    'left-end': 'start start-bottom',
+    'right-start': 'end end-top',
+    'right-end': 'end end-bottom',
+  };
+
+  it('should convert bootstrap classes to popper classes', () => {
+
+    for (const[bsClass, popperClass] of Object.entries(matchingBootstrapPopperPlacements)) {
+      expect(getPopperClassPlacement(bsClass as Placement)).toBe(popperClass);
     }
-    el.style.display = 'inline-block';
-    el.style.height = height + 'px';
-    el.style.width = width + 'px';
-    el.style.marginTop = marginTop + 'px';
-    el.style.marginLeft = marginLeft + 'px';
-
-    return el;
-  }
-
-  function checkPosition(el: HTMLElement, top: number, left: number) {
-    const transform = el.style.transform;
-    expect(transform).toBe(`translate(${left}px, ${top}px)`);
-  }
-
-  let element, targetElement, positioning, documentMargin, bodyMargin;
-  beforeAll(() => {
-    positioning = new Positioning();
-    documentMargin = document.documentElement.style.margin;
-    bodyMargin = document.body.style.margin;
-
-    document.documentElement.style.margin = '0';
-    document.body.style.margin = '0';
   });
 
-  afterAll(() => {
-    document.documentElement.style.margin = documentMargin;
-    document.body.style.margin = bodyMargin;
+  it('should convert popper classes to bootstrap classes', () => {
+
+    for (const[popperClass, bsClass] of Object.entries(matchingPopperBootstrapPlacements)) {
+      if (bsClass !== getBootstrapBaseClassPlacement('', popperClass as PopperPlacement)) {
+        console.log(
+            '(DEBUG)   popperClass', popperClass, bsClass,
+            getBootstrapBaseClassPlacement('', popperClass as PopperPlacement));
+      }
+      expect(getBootstrapBaseClassPlacement('', popperClass as PopperPlacement)).toBe(bsClass);
+    }
   });
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({declarations: [TestComponent]});
-    const fixture = TestBed.createComponent(TestComponent);
 
-    element = fixture.nativeElement.querySelector('#element');
-    targetElement = fixture.nativeElement.querySelector('#targetElement');
-  });
-
-  it('should calculate the element offset', () => {
-    let position = positioning.offset(element);
-
-    expect(position.height).toBe(200);
-    expect(position.width).toBe(300);
-    expect(position.top).toBe(100);
-    expect(position.bottom).toBe(300);
-    expect(position.left).toBe(150);
-    expect(position.right).toBe(450);
-  });
-
-  it('should calculate the element offset when scrolled', () => {
-    document.documentElement.scrollTop = 1000;
-    document.documentElement.scrollLeft = 1000;
-
-    let position = positioning.offset(element);
-
-    expect(position.top).toBe(100);
-    expect(position.bottom).toBe(300);
-    expect(position.left).toBe(150);
-    expect(position.right).toBe(450);
-
-    document.documentElement.scrollTop = 0;
-    document.documentElement.scrollLeft = 0;
-  });
-
-  it('should calculate the element position', () => {
-    let position = positioning.position(element);
-
-    expect(position.height).toBe(200);
-    expect(position.width).toBe(300);
-    expect(position.top).toBe(100);
-    expect(position.bottom).toBe(300);
-    expect(position.left).toBe(150);
-    expect(position.right).toBe(450);
-  });
-
-  it('should calculate the element position when scrolled', () => {
-    document.documentElement.scrollTop = 1000;
-    document.documentElement.scrollLeft = 1000;
-
-    let position = positioning.position(element);
-
-    expect(position.top).toBe(100);
-    expect(position.bottom).toBe(300);
-    expect(position.left).toBe(150);
-    expect(position.right).toBe(450);
-
-    document.documentElement.scrollTop = 0;
-    document.documentElement.scrollLeft = 0;
-  });
-
-  it('should calculate the element position on positioned ancestor', () => {
-    let childElement = createElement(100, 150, 50, 75);
-
-    element.style.position = 'relative';
-    element.appendChild(childElement);
-
-    let position = positioning.position(childElement);
-
-    expect(position.top).toBe(50);
-    expect(position.bottom).toBe(150);
-    expect(position.left).toBe(75);
-    expect(position.right).toBe(225);
-
-    element.style.position = '';
-    element.removeChild(childElement);
-  });
-
-  it('should position the element top-start', () => {
-
-    let isInViewport = positioning.positionElements(element, targetElement, 'top-start');
-
-    expect(isInViewport).toBe(true);
-    checkPosition(targetElement, 40, 150);
-  });
-
-  it('should position the element top-center', () => {
-    let isInViewport = positioning.positionElements(element, targetElement, 'top');
-
-    expect(isInViewport).toBe(true);
-    checkPosition(targetElement, 40, 250);
-  });
-
-  it('should position the element top-end', () => {
-    let isInViewport = positioning.positionElements(element, targetElement, 'top-end');
-
-    expect(isInViewport).toBe(true);
-    checkPosition(targetElement, 40, 350);
-  });
-
-  it('should position the element bottom-start', () => {
-    let isInViewport = positioning.positionElements(element, targetElement, 'bottom-start');
-
-    expect(isInViewport).toBe(true);
-    checkPosition(targetElement, 300, 150);
-  });
-
-  it('should position the element bottom-center', () => {
-    let isInViewport = positioning.positionElements(element, targetElement, 'bottom');
-
-    expect(isInViewport).toBe(true);
-    checkPosition(targetElement, 300, 250);
-  });
-
-  it('should position the element bottom-end', () => {
-    let isInViewport = positioning.positionElements(element, targetElement, 'bottom-end');
-
-    expect(isInViewport).toBe(true);
-    checkPosition(targetElement, 300, 350);
-  });
-
-  it('should position the element start-top', () => {
-    let isInViewport = positioning.positionElements(element, targetElement, 'start-top');
-
-    expect(isInViewport).toBe(true);
-    checkPosition(targetElement, 100, 30);
-  });
-
-  it('should position the element start-center', () => {
-    let isInViewport = positioning.positionElements(element, targetElement, 'start');
-
-    expect(isInViewport).toBe(true);
-    checkPosition(targetElement, 175, 30);
-  });
-
-  it('should position the element start-bottom', () => {
-    let isInViewport = positioning.positionElements(element, targetElement, 'start-bottom');
-
-    expect(isInViewport).toBe(true);
-    checkPosition(targetElement, 250, 30);
-  });
-
-  it('should position the element end-top', () => {
-    let isInViewport = positioning.positionElements(element, targetElement, 'end-top');
-
-    expect(isInViewport).toBe(true);
-    checkPosition(targetElement, 100, 450);
-  });
-
-  it('should position the element end-center', () => {
-    let isInViewport = positioning.positionElements(element, targetElement, 'end');
-
-    expect(isInViewport).toBe(true);
-    checkPosition(targetElement, 175, 450);
-  });
-
-  it('should position the element end-bottom', () => {
-    let isInViewport = positioning.positionElements(element, targetElement, 'end-bottom');
-
-    expect(isInViewport).toBe(true);
-    checkPosition(targetElement, 250, 450);
-  });
 
 });
-
-@Component({
-  template: `
-    <div
-      id="element"
-      style="display: inline-block; height: 200px; width: 300px; margin-top: 100px; margin-left: 150px"
-    ></div>
-    <div
-      id="targetElement"
-      style="position:absolute;top:0;left:0; display: inline-block; height: 50px; width: 100px; margin-top: 10px; margin-left: 20px"
-    ></div>
-`
-})
-export class TestComponent {
-}
