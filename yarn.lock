@@ -1473,6 +1473,11 @@
     node-gyp "^7.1.0"
     read-package-json-fast "^2.0.1"
 
+"@popperjs/core@^2.10.2":
+  version "2.10.2"
+  resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.10.2.tgz#0798c03351f0dea1a5a4cabddf26a55a7cbee590"
+  integrity sha512-IXf3XA7+XyN7CP9gGh/XB0UxVMlvARGEgGXLubFICsUMGz6Q+DU+i4gGlpOxTjKvXjkJDJC8YdqdKkDj9qZHEQ==
+
 "@rollup/plugin-commonjs@^19.0.0":
   version "19.0.0"
   resolved "https://registry.yarnpkg.com/@rollup/plugin-commonjs/-/plugin-commonjs-19.0.0.tgz#8c3e71f9a66908e60d70cc1be205834ef3e45f71"
@@ -2067,7 +2072,7 @@ agent-base@5:
   resolved "https://registry.yarnpkg.com/agent-base/-/agent-base-5.1.1.tgz#e8fb3f242959db44d63be665db7a8e739537a32c"
   integrity sha512-TMeqbNl2fMW0nMjTEPOwe3J/PRFP4vqeoNuQMG0HlMrtm5QxKqdvAkZ1pRBQ/ulIyDD5Yq0nJ7YbdD8ey0TO3g==
 
-agent-base@6:
+agent-base@6, agent-base@^6.0.2:
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/agent-base/-/agent-base-6.0.2.tgz#49fff58577cfee3f37176feab4c22e00f86d7f77"
   integrity sha512-RZNwNclF7+MS/8bDg70amg32dyeZGZxiDuQmZxKLAlQjr3jGyLx+4Kkk58UO7D2QdgFIQCovuSuZESne6RG6XQ==
@@ -2649,10 +2654,10 @@ boolean@^3.0.1:
   resolved "https://registry.yarnpkg.com/boolean/-/boolean-3.1.2.tgz#e30f210a26b02458482a8cc353ab06f262a780c2"
   integrity sha512-YN6UmV0FfLlBVvRvNPx3pz5W/mUoYB24J4WSXOKP/OOJpi+Oq6WYqPaNTHzjI0QzwWtnvEd5CGYyQPgp1jFxnw==
 
-bootstrap@5.0.2:
-  version "5.0.2"
-  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-5.0.2.tgz#aff23d5e0e03c31255ad437530ee6556e78e728e"
-  integrity sha512-1Ge963tyEQWJJ+8qtXFU6wgmAVj9gweEjibUdbmcCEYsn38tVwRk8107rk2vzt6cfQcRr3SlZ8aQBqaD8aqf+Q==
+bootstrap@5.1.2:
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-5.1.2.tgz#99e87134e656582bc126cf99be7ffb2bae9b8a2e"
+  integrity sha512-me838a7TSEkldKyplkx21dqFm16+9NbH/rCj3Myo+h2cByyjckqV4m0OnS8QBsSDEoBv8R2jHqfulGQXpvM8Bw==
 
 brace-expansion@^1.1.7:
   version "1.1.11"
@@ -3230,15 +3235,15 @@ commander@^2.12.1, commander@^2.18.0, commander@^2.20.0, commander@^2.8.1:
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
   integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
 
-commander@^6.1.0:
-  version "6.2.1"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-6.2.1.tgz#0792eb682dfbc325999bb2b84fddddba110ac73c"
-  integrity sha512-U7VdrJFnJgo4xjrHpTzu0yrHPGImdsmD95ZlgYSEajAn2JKzDhDTPG9kBTefmObL2w/ngeZnilk+OV9CG3d7UA==
-
 commander@^7.0.0, commander@^7.1.0:
   version "7.2.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-7.2.0.tgz#a36cb57d0b501ce108e4d20559a150a391d97ab7"
   integrity sha512-QrWXB+ZQSVPmIWIhtEO9H+gwHaMGYiF5ChvoJ+K9ZGHG/sVsa6yiesAD1GC/x46sET00Xlwo1u49RVVVzvcSkw==
+
+commander@^8.2.0:
+  version "8.3.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-8.3.0.tgz#4837ea1b2da67b9c616a67afbb0fafee567bca66"
+  integrity sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww==
 
 commondir@^1.0.1:
   version "1.0.1"
@@ -4004,6 +4009,13 @@ debug@^3.1.1, debug@^3.2.6:
   integrity sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ==
   dependencies:
     ms "^2.1.1"
+
+debug@^4.3.1:
+  version "4.3.2"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.2.tgz#f0a49c18ac8779e31d4a0c6029dfb76873c7428b"
+  integrity sha512-mOp8wKcvj7XxC78zLgw/ZA+6TSgkoE2C/ienthhRD298T7UNwAg9diBpLRxC0mOezLl4B0xV7M0cCO6P/O0Xhw==
+  dependencies:
+    ms "2.1.2"
 
 debug@~3.1.0:
   version "3.1.0"
@@ -8428,12 +8440,12 @@ pkg-dir@^4.1.0, pkg-dir@^4.2.0:
   dependencies:
     find-up "^4.0.0"
 
-playwright@^1.9.1:
-  version "1.12.2"
-  resolved "https://registry.yarnpkg.com/playwright/-/playwright-1.12.2.tgz#a484447177b061dd76247734fe65d77e3fb139fa"
-  integrity sha512-tSZGeILY70T4imhCMCsvzhoaDm9baosIG5fQncSWprpjVc/X4yYdBQCLBMvOi98H50hvu9fhgy2hpsgFKCsUaw==
+playwright-core@=1.16.0:
+  version "1.16.0"
+  resolved "https://registry.yarnpkg.com/playwright-core/-/playwright-core-1.16.0.tgz#c23fca9a0086c00f3e684b1dcaffd2f0d2d55ec6"
+  integrity sha512-bJBIceYaNvdGKUreCltfBgsQbvwnWdWd8u+9Ncx9aSHzWUNFDh9cQGTQxqOI2egbMw+ovSG0YU/0lJIzm/Uj/w==
   dependencies:
-    commander "^6.1.0"
+    commander "^8.2.0"
     debug "^4.1.1"
     extract-zip "^2.0.1"
     https-proxy-agent "^5.0.0"
@@ -8444,9 +8456,18 @@ playwright@^1.9.1:
     proper-lockfile "^4.1.1"
     proxy-from-env "^1.1.0"
     rimraf "^3.0.2"
+    socks-proxy-agent "^6.1.0"
     stack-utils "^2.0.3"
     ws "^7.4.6"
+    yauzl "^2.10.0"
     yazl "^2.5.1"
+
+playwright@^1.16.0:
+  version "1.16.0"
+  resolved "https://registry.yarnpkg.com/playwright/-/playwright-1.16.0.tgz#2a3a87de34dee6aad6d07f6fa05fdb5d57455058"
+  integrity sha512-EFjixq8/wT1So6TH1yXoJ3fxFJkEhmmi8BanR5yfCScG76x4WDH0zj8mVkDl9ovfODjy9g6Ba/a/5rXO+0sz6Q==
+  dependencies:
+    playwright-core "=1.16.0"
 
 please-upgrade-node@^3.2.0:
   version "3.2.0"
@@ -10186,7 +10207,16 @@ socks-proxy-agent@^5.0.0:
     debug "4"
     socks "^2.3.3"
 
-socks@^2.3.3:
+socks-proxy-agent@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/socks-proxy-agent/-/socks-proxy-agent-6.1.0.tgz#869cf2d7bd10fea96c7ad3111e81726855e285c3"
+  integrity sha512-57e7lwCN4Tzt3mXz25VxOErJKXlPfXmkMLnk310v/jwW20jWRVcgsOit+xNkN3eIEdB47GwnfAEBLacZ/wVIKg==
+  dependencies:
+    agent-base "^6.0.2"
+    debug "^4.3.1"
+    socks "^2.6.1"
+
+socks@^2.3.3, socks@^2.6.1:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/socks/-/socks-2.6.1.tgz#989e6534a07cf337deb1b1c94aaa44296520d30e"
   integrity sha512-kLQ9N5ucj8uIcxrDwjm0Jsqk06xdpBjGNQtpXy4Q8/QY2k+fY7nZH8CARy+hkbG+SGAovmzzuauCpBlb8FrnBA==

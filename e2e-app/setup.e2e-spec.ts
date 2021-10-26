@@ -1,6 +1,5 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import {ConsoleMessage} from 'playwright';
 import {browserName, test, launchOptions} from './playwright.conf';
 
 beforeAll(async() => {
@@ -13,15 +12,15 @@ beforeAll(async() => {
     console.error('Unable to setup a new page with playwright', e);
   }
 
+  // Need to wait to avoid connection failures between Playwright and the browser.
+  // To remove once Playwright test runner will be used.
+  await test.page.waitForTimeout(500);
+
   // Listen for all console events and handle errors
   test.page.on('console', async msg => {
     const type = msg.type();
     if (type === 'error' || type === 'warning') {
-      const output = ['Unexpected console error:'];
-      for (let m of msg.args()) {
-        output.push(await m.jsonValue());
-      }
-      fail(output.join('\n'));
+      fail(msg.text());
     }
   });
 

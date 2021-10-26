@@ -26,10 +26,12 @@ import {DOCUMENT} from '@angular/common';
 
 import {listenToTriggers} from '../util/triggers';
 import {ngbAutoClose} from '../util/autoclose';
-import {positionElements, PlacementArray} from '../util/positioning';
+import {ngbPositioning, PlacementArray} from '../util/positioning';
 import {PopupService} from '../util/popup';
 
 import {NgbTooltipConfig} from './tooltip-config';
+import {Subscription} from 'rxjs';
+import {take} from 'rxjs/operators';
 
 let nextId = 0;
 
@@ -43,8 +45,7 @@ let nextId = 0;
     'role': 'tooltip',
     '[id]': 'id'
   },
-  template: `<div class="tooltip-arrow"></div><div class="tooltip-inner"><ng-content></ng-content></div>`,
-  styleUrls: ['./tooltip.scss']
+  template: `<div class="tooltip-arrow" data-popper-arrow></div><div class="tooltip-inner"><ng-content></ng-content></div>`
 })
 export class NgbTooltipWindow {
   @Input() animation: boolean;
@@ -81,10 +82,11 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 
   /**
    * The preferred placement of the tooltip.
-   *
-   * Possible values are `"top"`, `"top-start"`, `"top-end"`, `"bottom"`, `"bottom-start"`,
-   * `"bottom-end"`, `"start"`, `"start-top"`, `"start-bottom"`, `"end"`, `"end-top"`,
-   * `"end-bottom"`
+   * Possible values are
+   * `"top"`, `"top-start"`, `"top-left"`, `"top-end"`, `"top-right"`,
+   * `"bottom"`, `"bottom-start"`, `"bottom-left"`, `"bottom-end"`, `"bottom-right"`,
+   * `"start"`, `left`, `"start-top"`, `"left-top"`, `"start-bottom"`, `"left-bottom"`,
+   * `"end"`, `"right"`, `"end-top"`, `"right-top"`, `"end-bottom"`, `"right-bottom"`
    *
    * Accepts an array of strings or a string with space separated possible values.
    *
@@ -152,7 +154,8 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
   private _popupService: PopupService<NgbTooltipWindow>;
   private _windowRef: ComponentRef<NgbTooltipWindow>| null = null;
   private _unregisterListenersFn;
-  private _zoneSubscription: any;
+  private _positioning = ngbPositioning();
+  private _zoneSubscription: Subscription;
 
   constructor(
       private _elementRef: ElementRef<HTMLElement>, private _renderer: Renderer2, injector: Injector,
@@ -172,13 +175,7 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
         NgbTooltipWindow, injector, viewContainerRef, _renderer, this._ngZone, componentFactoryResolver,
         applicationRef);
 
-    this._zoneSubscription = _ngZone.onStable.subscribe(() => {
-      if (this._windowRef) {
-        positionElements(
-            this._elementRef.nativeElement, this._windowRef.location.nativeElement, this.placement,
-            this.container === 'body', 'bs-tooltip');
-      }
-    });
+    this._zoneSubscription = _ngZone.onStable.subscribe(() => { this._positioning.update(); });
   }
 
   /**
@@ -228,6 +225,17 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
       // mark the parent component to be checked.
       this._windowRef.changeDetectorRef.markForCheck();
 
+      // Schedule positioning on stable, to avoid several positioning updates.
+      this._ngZone.onStable.pipe(take(1)).subscribe(() => {
+        this._positioning.createPopper({
+          hostElement: this._elementRef.nativeElement,
+          targetElement: this._windowRef !.location.nativeElement,
+          placement: this.placement,
+          appendToBody: this.container === 'body',
+          baseClass: 'bs-tooltip',
+        });
+      });
+
       ngbAutoClose(
           this._ngZone, this._document, this.autoClose, () => this.close(), this.hidden,
           [this._windowRef.location.nativeElement]);
@@ -246,6 +254,7 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
       this._renderer.removeAttribute(this._elementRef.nativeElement, 'aria-describedby');
       this._popupService.close(this.animation).subscribe(() => {
         this._windowRef = null;
+        this._positioning.destroy();
         this.hidden.emit();
         this._changeDetector.markForCheck();
       });

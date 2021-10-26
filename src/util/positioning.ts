@@ -1,166 +1,50 @@
-// previous version:
-// https://github.com/angular-ui/bootstrap/blob/07c31d0731f7cb068a1932b8e01d2312b796b4ec/src/position/position.js
-export class Positioning {
-  private getAllStyles(element: HTMLElement) { return window.getComputedStyle(element); }
-
-  private getStyle(element: HTMLElement, prop: string): string { return this.getAllStyles(element)[prop]; }
-
-  private isStaticPositioned(element: HTMLElement): boolean {
-    return (this.getStyle(element, 'position') || 'static') === 'static';
-  }
-
-  private offsetParent(element: HTMLElement): HTMLElement {
-    let offsetParentEl = <HTMLElement>element.offsetParent || document.documentElement;
-
-    while (offsetParentEl && offsetParentEl !== document.documentElement && this.isStaticPositioned(offsetParentEl)) {
-      offsetParentEl = <HTMLElement>offsetParentEl.offsetParent;
-    }
-
-    return offsetParentEl || document.documentElement;
-  }
-
-  position(element: HTMLElement, round = true): ClientRect {
-    let elPosition: ClientRect;
-    let parentOffset: ClientRect = {width: 0, height: 0, top: 0, bottom: 0, left: 0, right: 0};
-
-    if (this.getStyle(element, 'position') === 'fixed') {
-      elPosition = element.getBoundingClientRect();
-      elPosition = {
-        top: elPosition.top,
-        bottom: elPosition.bottom,
-        left: elPosition.left,
-        right: elPosition.right,
-        height: elPosition.height,
-        width: elPosition.width
-      };
-    } else {
-      const offsetParentEl = this.offsetParent(element);
-
-      elPosition = this.offset(element, false);
-
-      if (offsetParentEl !== document.documentElement) {
-        parentOffset = this.offset(offsetParentEl, false);
-      }
-
-      parentOffset.top += offsetParentEl.clientTop;
-      parentOffset.left += offsetParentEl.clientLeft;
-    }
-
-    elPosition.top -= parentOffset.top;
-    elPosition.bottom -= parentOffset.top;
-    elPosition.left -= parentOffset.left;
-    elPosition.right -= parentOffset.left;
-
-    if (round) {
-      elPosition.top = Math.round(elPosition.top);
-      elPosition.bottom = Math.round(elPosition.bottom);
-      elPosition.left = Math.round(elPosition.left);
-      elPosition.right = Math.round(elPosition.right);
-    }
-
-    return elPosition;
-  }
-
-  offset(element: HTMLElement, round = true): ClientRect {
-    const elBcr = element.getBoundingClientRect();
-    const viewportOffset = {
-      top: window.pageYOffset - document.documentElement.clientTop,
-      left: window.pageXOffset - document.documentElement.clientLeft
-    };
-
-    let elOffset = {
-      height: elBcr.height || element.offsetHeight,
-      width: elBcr.width || element.offsetWidth,
-      top: elBcr.top + viewportOffset.top,
-      bottom: elBcr.bottom + viewportOffset.top,
-      left: elBcr.left + viewportOffset.left,
-      right: elBcr.right + viewportOffset.left
-    };
-
-    if (round) {
-      elOffset.height = Math.round(elOffset.height);
-      elOffset.width = Math.round(elOffset.width);
-      elOffset.top = Math.round(elOffset.top);
-      elOffset.bottom = Math.round(elOffset.bottom);
-      elOffset.left = Math.round(elOffset.left);
-      elOffset.right = Math.round(elOffset.right);
-    }
-
-    return elOffset;
-  }
-
-  /*
-    Return false if the element to position is outside the viewport
-  */
-  positionElements(hostElement: HTMLElement, targetElement: HTMLElement, placement: string, appendToBody?: boolean):
-      boolean {
-    const[placementPrimary = 'top', placementSecondary = 'center'] = placement.split('-');
-
-    const hostElPosition = appendToBody ? this.offset(hostElement, false) : this.position(hostElement, false);
-    const targetElStyles = this.getAllStyles(targetElement);
-
-    const marginTop = parseFloat(targetElStyles.marginTop);
-    const marginBottom = parseFloat(targetElStyles.marginBottom);
-    const marginLeft = parseFloat(targetElStyles.marginLeft);
-    const marginRight = parseFloat(targetElStyles.marginRight);
-
-    let topPosition = 0;
-    let leftPosition = 0;
-
-    switch (placementPrimary) {
-      case 'top':
-        topPosition = (hostElPosition.top - (targetElement.offsetHeight + marginTop + marginBottom));
-        break;
-      case 'bottom':
-        topPosition = (hostElPosition.top + hostElPosition.height);
-        break;
-      case 'start':
-        leftPosition = (hostElPosition.left - (targetElement.offsetWidth + marginLeft + marginRight));
-        break;
-      case 'end':
-        leftPosition = (hostElPosition.left + hostElPosition.width);
-        break;
-    }
-
-    switch (placementSecondary) {
-      case 'top':
-        topPosition = hostElPosition.top;
-        break;
-      case 'bottom':
-        topPosition = hostElPosition.top + hostElPosition.height - targetElement.offsetHeight;
-        break;
-      case 'start':
-        leftPosition = hostElPosition.left;
-        break;
-      case 'end':
-        leftPosition = hostElPosition.left + hostElPosition.width - targetElement.offsetWidth;
-        break;
-      case 'center':
-        if (placementPrimary === 'top' || placementPrimary === 'bottom') {
-          leftPosition = (hostElPosition.left + hostElPosition.width / 2 - targetElement.offsetWidth / 2);
-        } else {
-          topPosition = (hostElPosition.top + hostElPosition.height / 2 - targetElement.offsetHeight / 2);
-        }
-        break;
-    }
-
-    /// The translate3d/gpu acceleration render a blurry text on chrome, the next line is commented until a browser fix
-    // targetElement.style.transform = `translate3d(${Math.round(leftPosition)}px, ${Math.floor(topPosition)}px, 0px)`;
-    targetElement.style.transform = `translate(${Math.round(leftPosition)}px, ${Math.round(topPosition)}px)`;
-
-    // Check if the targetElement is inside the viewport
-    const targetElBCR = targetElement.getBoundingClientRect();
-    const html = document.documentElement;
-    const windowHeight = window.innerHeight || html.clientHeight;
-    const windowWidth = window.innerWidth || html.clientWidth;
-
-    return targetElBCR.left >= 0 && targetElBCR.top >= 0 && targetElBCR.right <= windowWidth &&
-        targetElBCR.bottom <= windowHeight;
-  }
-}
+import {
+  arrow,
+  createPopperLite,
+  flip,
+  Instance,
+  Modifier,
+  Placement as PopperPlacement,
+  preventOverflow,
+  Options,
+} from '@popperjs/core';
 
 const placementSeparator = /\s+/;
-export const positionService = new Positioning();
+const spacesRegExp = /  +/gi;
+
+const startPrimaryPlacement = /^start/;
+const endPrimaryPlacement = /^end/;
+const startSecondaryPlacement = /-(top|left)$/;
+const endSecondaryPlacement = /-(bottom|right)$/;
+export function getPopperClassPlacement(placement: Placement): PopperPlacement {
+  const newPlacement = placement.replace(startPrimaryPlacement, 'left')
+                           .replace(endPrimaryPlacement, 'right')
+                           .replace(startSecondaryPlacement, '-start')
+                           .replace(endSecondaryPlacement, '-end') as PopperPlacement;
+  return newPlacement;
+}
+
+const popperStartPrimaryPlacement = /^left/;
+const popperEndPrimaryPlacement = /^right/;
+const popperStartSecondaryPlacement = /^start/;
+const popperEndSecondaryPlacement = /^end/;
+export function getBootstrapBaseClassPlacement(baseClass: string, placement: PopperPlacement): string {
+  let [primary, secondary] = placement.split('-');
+  const newPrimary = primary.replace(popperStartPrimaryPlacement, 'start').replace(popperEndPrimaryPlacement, 'end');
+  let classnames = [newPrimary];
+  if (secondary) {
+    let newSecondary = secondary;
+    if (primary === 'left' || primary === 'right') {
+      newSecondary =
+          newSecondary.replace(popperStartSecondaryPlacement, 'top').replace(popperEndSecondaryPlacement, 'bottom');
+    }
+    classnames.push(`${newPrimary}-${newSecondary}` as Placement);
+  }
+  if (baseClass) {
+    classnames = classnames.map((classname) => `${baseClass}-${classname}`);
+  }
+  return classnames.join(' ');
+}
 
 /*
  * Accept the placement array and applies the appropriate placement dependent on the viewport.
@@ -172,37 +56,15 @@ export const positionService = new Positioning();
  *   'start-top', 'start-bottom',
  *   'end-top', 'end-bottom'.
  * */
-export function positionElements(
-    hostElement: HTMLElement, targetElement: HTMLElement, placement: string | Placement | PlacementArray,
-    appendToBody?: boolean, baseClass?: string): Placement |
-    null {
+export function getPopperOptions({placement, baseClass}: PositioningOptions): Partial<Options> {
   let placementVals: Array<Placement> =
       Array.isArray(placement) ? placement : placement.split(placementSeparator) as Array<Placement>;
 
+  // No need to consider left and right here, as start and end are enough, and it is used for 'auto' placement only
   const allowedPlacements = [
     'top', 'bottom', 'start', 'end', 'top-start', 'top-end', 'bottom-start', 'bottom-end', 'start-top', 'start-bottom',
     'end-top', 'end-bottom'
   ];
-
-  const classList = targetElement.classList;
-  const addClassesToTarget = (targetPlacement: Placement): Array<string> => {
-    const[primary, secondary] = targetPlacement.split('-');
-    const classes: string[] = [];
-    if (baseClass) {
-      classes.push(`${baseClass}-${primary}`);
-      if (secondary) {
-        classes.push(`${baseClass}-${primary}-${secondary}`);
-      }
-
-      classes.forEach((classname) => { classList.add(classname); });
-    }
-    return classes;
-  };
-
-  // Remove old placement classes to avoid issues
-  if (baseClass) {
-    allowedPlacements.forEach((placementToRemove) => { classList.remove(`${baseClass}-${placementToRemove}`); });
-  }
 
   // replace auto placement with other placements
   let hasAuto = placementVals.findIndex(val => val === 'auto');
@@ -214,42 +76,107 @@ export function positionElements(
     });
   }
 
-  // coordinates where to position
+  const popperPlacements = placementVals.map((_placement) => { return getPopperClassPlacement(_placement); });
 
-  // Required for transform:
-  const style = targetElement.style;
-  style.position = 'absolute';
-  style.top = '0';
-  style.left = '0';
-  style['will-change'] = 'transform';
+  let mainPlacement = popperPlacements.shift();
 
-  let testPlacement: Placement | null = null;
-  let isInViewport = false;
-  for (testPlacement of placementVals) {
-    let addedClasses = addClassesToTarget(testPlacement);
+  const bsModifier: Partial<Modifier<any, any>> = {
+    name: 'bootstrapClasses',
+    enabled: !!baseClass,
+    phase: 'write',
+    fn({state}) {
+      const bsClassRegExp = new RegExp(baseClass + '-[a-z]+', 'gi');
 
-    if (positionService.positionElements(hostElement, targetElement, testPlacement, appendToBody)) {
-      isInViewport = true;
-      break;
-    }
+      const popperElement: HTMLElement = state.elements.popper as HTMLElement;
+      const popperPlacement = state.placement;
 
-    // Remove the baseClasses for further calculation
-    if (baseClass) {
-      addedClasses.forEach((classname) => { classList.remove(classname); });
-    }
-  }
+      let className = popperElement.className;
 
-  if (!isInViewport) {
-    // If nothing match, the first placement is the default one
-    testPlacement = placementVals[0];
-    addClassesToTarget(testPlacement);
-    positionService.positionElements(hostElement, targetElement, testPlacement, appendToBody);
-  }
+      // Remove old bootstrap classes
+      className = className.replace(bsClassRegExp, '');
 
-  return testPlacement;
+      // Add current placements
+      className += ` ${getBootstrapBaseClassPlacement(baseClass !, popperPlacement)}`;
+
+      // Remove multiple spaces
+      className = className.trim().replace(spacesRegExp, ' ');
+
+      // Reassign
+      popperElement.className = className;
+    },
+  };
+
+  return {
+    placement: mainPlacement,
+    modifiers: [
+      bsModifier,
+      flip,
+      preventOverflow,
+      arrow,
+      {
+        enabled: true,
+        name: 'flip',
+        options: {
+          fallbackPlacements: popperPlacements,
+        },
+      },
+      {
+        enabled: true,
+        name: 'preventOverflow',
+        phase: 'main',
+        fn: function() {},
+      },
+    ]
+  };
 }
 
-export type Placement = 'auto' | 'top' | 'bottom' | 'start' | 'end' | 'top-start' | 'top-end' | 'bottom-start' |
-    'bottom-end' | 'start-top' | 'start-bottom' | 'end-top' | 'end-bottom';
+export type Placement = 'auto' | 'top' | 'bottom' | 'start' | 'left' | 'end' | 'right' | 'top-start' | 'top-left' |
+    'top-end' | 'top-right' | 'bottom-start' | 'bottom-left' | 'bottom-end' | 'bottom-right' | 'start-top' |
+    'left-top' | 'start-bottom' | 'left-bottom' | 'end-top' | 'right-top' | 'end-bottom' | 'right-bottom';
 
 export type PlacementArray = Placement | Array<Placement>| string;
+
+interface PositioningOptions {
+  hostElement: HTMLElement;
+  targetElement: HTMLElement;
+  placement: string | Placement | PlacementArray;
+  appendToBody?: boolean;
+  baseClass?: string;
+  updatePopperOptions?: (options: Partial<Options>) => Partial<Options>;
+}
+
+function noop(arg) {
+  return arg;
+}
+export function ngbPositioning() {
+  let popperInstance: Instance | null = null;
+
+  return {
+    createPopper(positioningOption: PositioningOptions) {
+      if (!popperInstance) {
+        const updatePopperOptions = positioningOption.updatePopperOptions || noop;
+        let popperOptions = updatePopperOptions(getPopperOptions(positioningOption));
+        popperInstance =
+            createPopperLite(positioningOption.hostElement, positioningOption.targetElement, popperOptions);
+      }
+    },
+    update() {
+      if (popperInstance) {
+        popperInstance.update();
+      }
+    },
+    setOptions(positioningOption: PositioningOptions) {
+      if (popperInstance) {
+        const updatePopperOptions = positioningOption.updatePopperOptions || noop;
+        let popperOptions = updatePopperOptions(getPopperOptions(positioningOption));
+        popperInstance.setOptions(popperOptions);
+      }
+    },
+    destroy() {
+      if (popperInstance) {
+        popperInstance.destroy();
+        popperInstance = null;
+      }
+    }
+  };
+}
