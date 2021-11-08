@@ -1,4 +1,4 @@
-// tslint:disable:deprecation
+/* eslint-disable deprecation/deprecation */
 import {Component} from '@angular/core';
 import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 

@@ -14,7 +14,7 @@ describe('Tooltip Position', () => {
     const btnBox = await getBoundingBox(SELECTOR_BUTTON);
     const tooltipBox = await getBoundingBox(SELECTOR_TOOLTIP);
 
-    let [primary, secondary] = expectedPlacement.split('-');
+    const[primary, secondary] = expectedPlacement.split('-');
     const classNames = await test.page.getAttribute(SELECTOR_TOOLTIP, 'class');
     expect(classNames).toContain(`bs-tooltip-${primary}`, 'Missing primary class');
     if (secondary) {

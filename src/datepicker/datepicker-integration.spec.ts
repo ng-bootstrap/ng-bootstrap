@@ -162,7 +162,7 @@ describe('ngb-datepicker integration', () => {
     class CustomKeyboardService extends NgbDatepickerKeyboardService {
       processKey(event: KeyboardEvent, service: NgbDatepicker) {
         const state = service.state;
-        // tslint:disable-next-line:deprecation
+        /* eslint-disable-next-line deprecation/deprecation */
         switch (event.which) {
           case Key.PageUp:
             service.focusDate(service.calendar.getPrev(state.focusedDate, event.altKey ? 'y' : 'm', 1));

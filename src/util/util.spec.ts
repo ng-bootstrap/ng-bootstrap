@@ -1,4 +1,14 @@
-import {toInteger, toString, getValueInRange, isInteger, isString, hasClassName, removeAccents, closest} from './util';
+import {
+  toInteger,
+  toString,
+  getValueInRange,
+  isInteger,
+  isString,
+  hasClassName,
+  removeAccents,
+  closest,
+  isPromise
+} from './util';
 
 describe('util', () => {
 
@@ -118,6 +128,24 @@ describe('util', () => {
       expect(isString(2048)).toBeFalsy();
       expect(isString([])).toBeFalsy();
       expect(isString(undefined)).toBeFalsy();
+    });
+
+  });
+
+  describe('isPromise', () => {
+
+    it('should recognize Promises', () => {
+      expect(isPromise(new Promise(() => {}))).toBeTruthy();
+      expect(isPromise(Promise.resolve())).toBeTruthy();
+    });
+
+    it('should recognize non-Promises', () => {
+      expect(isPromise(null)).toBeFalsy();
+      expect(isPromise(2048)).toBeFalsy();
+      expect(isPromise([])).toBeFalsy();
+      expect(isPromise({})).toBeFalsy();
+      expect(isPromise(Function)).toBeFalsy();
+      expect(isPromise(undefined)).toBeFalsy();
     });
 
   });

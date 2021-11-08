@@ -1,7 +1,7 @@
 import {CommonModule} from '@angular/common';
 import {Component, Injectable, Injector, NgModule, OnDestroy, ViewChild} from '@angular/core';
 import {ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
-import {NgbModalConfig} from './modal-config';
+import {NgbModalConfig, NgbModalOptions} from './modal-config';
 import {NgbActiveModal, NgbModal, NgbModalModule, NgbModalRef} from './modal.module';
 import {createKeyEvent, isBrowser, isBrowserVisible} from '../test/common';
 import {NgbConfig} from '..';
@@ -435,7 +435,7 @@ describe('ngb-modal', () => {
       });
 
       it('should dismiss when the callback does not return false', () => {
-        fixture.componentInstance.openTplDismiss({beforeDismiss: () => {}});
+        fixture.componentInstance.openTplDismiss(<any>{beforeDismiss: () => {}});
         fixture.detectChanges();
         expect(fixture.nativeElement).toHaveModal();
 
@@ -479,7 +479,7 @@ describe('ngb-modal', () => {
          }));
 
       it('should dismiss when the returned promise is not resolved with false', fakeAsync(() => {
-           fixture.componentInstance.openTplDismiss({beforeDismiss: () => Promise.resolve()});
+           fixture.componentInstance.openTplDismiss(<any>{beforeDismiss: () => Promise.resolve()});
            fixture.detectChanges();
            expect(fixture.nativeElement).toHaveModal();
 
@@ -514,7 +514,7 @@ describe('ngb-modal', () => {
 
       it('should attach window and backdrop elements to the specified container DOM element', () => {
         const containerDomEl = document.querySelector('div#testContainer');
-        const modalInstance = fixture.componentInstance.open('foo', {container: containerDomEl});
+        const modalInstance = fixture.componentInstance.open('foo', {container: containerDomEl as HTMLElement});
         fixture.detectChanges();
         expect(fixture.nativeElement).toHaveModal('foo', '#testContainer');
 
@@ -1227,7 +1227,7 @@ class TestComponent {
 
   constructor(public modalService: NgbModal) {}
 
-  open(content: string, options?: Object) {
+  open(content: string, options?: NgbModalOptions) {
     this.openedModal = this.modalService.open(content, options);
     return this.openedModal;
   }
@@ -1237,15 +1237,15 @@ class TestComponent {
     }
   }
   dismissAll(reason?: any) { this.modalService.dismissAll(reason); }
-  openTpl(options?: Object) { return this.modalService.open(this.tplContent, options); }
-  openCmpt(cmptType: any, options?: Object) { return this.modalService.open(cmptType, options); }
-  openDestroyableTpl(options?: Object) { return this.modalService.open(this.tplDestroyableContent, options); }
-  openTplClose(options?: Object) { return this.modalService.open(this.tplContentWithClose, options); }
-  openTplDismiss(options?: Object) { return this.modalService.open(this.tplContentWithDismiss, options); }
-  openTplImplicitContext(options?: Object) {
+  openTpl(options?: NgbModalOptions) { return this.modalService.open(this.tplContent, options); }
+  openCmpt(cmptType: any, options?: NgbModalOptions) { return this.modalService.open(cmptType, options); }
+  openDestroyableTpl(options?: NgbModalOptions) { return this.modalService.open(this.tplDestroyableContent, options); }
+  openTplClose(options?: NgbModalOptions) { return this.modalService.open(this.tplContentWithClose, options); }
+  openTplDismiss(options?: NgbModalOptions) { return this.modalService.open(this.tplContentWithDismiss, options); }
+  openTplImplicitContext(options?: NgbModalOptions) {
     return this.modalService.open(this.tplContentWithImplicitContext, options);
   }
-  openTplIf(options?: Object) { return this.modalService.open(this.tplContentWithIf, options); }
+  openTplIf(options?: NgbModalOptions) { return this.modalService.open(this.tplContentWithIf, options); }
   get activeInstances() { return this.modalService.activeInstances; }
 }
 

@@ -470,7 +470,7 @@ describe('ngb-popover', () => {
 
       expect(windowEl).toHaveCssClass('popover');
       // actual placement with auto is not known in advance, so use regex to check it
-      expect(windowEl.getAttribute('class')).toMatch('bs-popover-\.');
+      expect(windowEl.getAttribute('class')).toMatch('bs-popover-.');
       expect(windowEl.textContent.trim()).toBe('Great tip!');
     });
 
