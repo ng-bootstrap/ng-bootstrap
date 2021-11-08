@@ -15,7 +15,8 @@ import {
   QueryList,
   Renderer2,
   SimpleChanges,
-  Optional
+  Optional,
+  OnChanges
 } from '@angular/core';
 import {DOCUMENT} from '@angular/common';
 import {fromEvent, Subject, Subscription} from 'rxjs';
@@ -133,7 +134,7 @@ export class NgbDropdownToggle extends NgbDropdownAnchor {
  * A directive that provides contextual overlays for displaying lists of links and more.
  */
 @Directive({selector: '[ngbDropdown]', exportAs: 'ngbDropdown', host: {'[class.show]': 'isOpen()'}})
-export class NgbDropdown implements AfterContentInit, OnDestroy {
+export class NgbDropdown implements AfterContentInit, OnChanges, OnDestroy {
   static ngAcceptInputType_autoClose: boolean | string;
   static ngAcceptInputType_display: string;
   private _closed$ = new Subject<void>();
@@ -314,7 +315,7 @@ export class NgbDropdown implements AfterContentInit, OnDestroy {
   }
 
   onKeyDown(event: KeyboardEvent) {
-    // tslint:disable-next-line:deprecation
+    /* eslint-disable-next-line deprecation/deprecation */
     const key = event.which;
     const itemElements = this._getMenuElements();
 

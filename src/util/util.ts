@@ -29,6 +29,10 @@ export function isDefined(value: any): boolean {
   return value !== undefined && value !== null;
 }
 
+export function isPromise<T>(v: any): v is Promise<T> {
+  return v && v.then;
+}
+
 export function padNumber(value: number) {
   if (isNumber(value)) {
     return `0${value}`.slice(-2);
@@ -55,6 +59,7 @@ if (typeof Element !== 'undefined' && !Element.prototype.closest) {
   }
 
   Element.prototype.closest = function(s: string) {
+    /* eslint-disable-next-line @typescript-eslint/no-this-alias */
     let el = this;
     if (!document.documentElement.contains(el)) {
       return null;

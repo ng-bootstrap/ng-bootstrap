@@ -282,7 +282,7 @@ export class NgbTypeahead implements ControlValueAccessor,
       return;
     }
 
-    // tslint:disable-next-line:deprecation
+    /* eslint-disable-next-line deprecation/deprecation */
     switch (event.which) {
       case Key.ArrowDown:
         event.preventDefault();
@@ -295,7 +295,7 @@ export class NgbTypeahead implements ControlValueAccessor,
         this._showHint();
         break;
       case Key.Enter:
-      case Key.Tab:
+      case Key.Tab: {
         const result = this._windowRef !.instance.getActive();
         if (isDefined(result)) {
           event.preventDefault();
@@ -304,6 +304,7 @@ export class NgbTypeahead implements ControlValueAccessor,
         }
         this._closePopup();
         break;
+      }
     }
   }
 

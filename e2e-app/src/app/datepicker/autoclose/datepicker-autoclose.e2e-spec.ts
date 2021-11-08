@@ -14,7 +14,7 @@ import {clickOnDay, rightClickOnDay} from '../datepicker.po';
 
 describe('Datepicker Autoclose', () => {
 
-  for (let displayMonths of[1, 2]) {
+  for (const displayMonths of[1, 2]) {
     describe(`displayMonths = ${displayMonths}`, () => {
 
       beforeEach(async() => {

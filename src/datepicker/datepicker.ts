@@ -1,6 +1,7 @@
 import {fromEvent, merge, Subject} from 'rxjs';
 import {filter, take, takeUntil} from 'rxjs/operators';
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -164,8 +165,8 @@ export class NgbDatepickerContent {
   providers:
       [{provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NgbDatepicker), multi: true}, NgbDatepickerService]
 })
-export class NgbDatepicker implements OnDestroy,
-    OnChanges, OnInit, ControlValueAccessor {
+export class NgbDatepicker implements AfterViewInit,
+    OnDestroy, OnChanges, OnInit, ControlValueAccessor {
   static ngAcceptInputType_autoClose: boolean | string;
   static ngAcceptInputType_navigation: string;
   static ngAcceptInputType_outsideDays: string;

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 let bootstrap: string = require('../../../package.json').devDependencies['bootstrap'];
 // extracts only the minor version from package.json
 // ex. "bootstrap": "4.0.1" -> "4.0"

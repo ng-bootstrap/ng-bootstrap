@@ -45,7 +45,7 @@ export function parseTriggers(triggers: string, aliases = DEFAULT_ALIASES): Trig
 export function observeTriggers(
     renderer: Renderer2, nativeElement: HTMLElement, triggers: Trigger[], isOpenedFn: () => boolean) {
   return new Observable<boolean>(subscriber => {
-    const listeners: Function[] = [];
+    const listeners: (() => void)[] = [];
     const openFn = () => subscriber.next(true);
     const closeFn = () => subscriber.next(false);
     const toggleFn = () => subscriber.next(!isOpenedFn());
@@ -98,8 +98,8 @@ export function triggerDelay(openDelay: number, closeDelay: number, isOpenedFn: 
 }
 
 export function listenToTriggers(
-    renderer: Renderer2, nativeElement: HTMLElement, triggers: string, isOpenedFn: () => boolean, openFn: Function,
-    closeFn: Function, openDelay = 0, closeDelay = 0) {
+    renderer: Renderer2, nativeElement: HTMLElement, triggers: string, isOpenedFn: () => boolean, openFn: () => void,
+    closeFn: () => void, openDelay = 0, closeDelay = 0) {
   const parsedTriggers = parseTriggers(triggers);
 
   if (parsedTriggers.length === 1 && parsedTriggers[0].isManual()) {

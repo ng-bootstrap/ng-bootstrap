@@ -1,6 +1,6 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import * as fs from 'fs';
 import * as path from 'path';
-import {ConsoleMessage} from 'playwright';
 import {browserName, test, launchOptions} from './playwright.conf';
 
 beforeAll(async() => {
@@ -18,7 +18,7 @@ beforeAll(async() => {
     const type = msg.type();
     if (type === 'error' || type === 'warning') {
       const output = ['Unexpected console error:'];
-      for (let m of msg.args()) {
+      for (const m of msg.args()) {
         output.push(await m.jsonValue());
       }
       fail(output.join('\n'));
