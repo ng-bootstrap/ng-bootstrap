@@ -3,8 +3,12 @@ module.exports = {
     rules: [
       {
         test: /\.(js|ts)$/,
-        loader: 'coverage-istanbul-loader',
-        options: { esModules: true },
+        use: [
+          {
+            loader: 'coverage-istanbul-loader',
+            options: { esModules: true },
+          }
+        ],
         enforce: 'post',
         include: require('path').join(__dirname, '..', 'src'),
         exclude: [
