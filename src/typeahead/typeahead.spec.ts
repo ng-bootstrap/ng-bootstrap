@@ -5,14 +5,13 @@ import {By} from '@angular/platform-browser';
 import {merge, Observable, of, OperatorFunction, Subject} from 'rxjs';
 import {debounceTime, filter, map} from 'rxjs/operators';
 
-import {createGenericTestComponent, isBrowser} from '../test/common';
+import {createGenericTestComponent, isBrowser, triggerEvent} from '../test/common';
 import {expectResults, getWindowLinks} from '../test/typeahead/common';
 import {ARIA_LIVE_DELAY} from '../util/accessibility/live';
 import {Key} from '../util/key';
 import {NgbTypeahead} from './typeahead';
 import {NgbTypeaheadConfig} from './typeahead-config';
 import {NgbTypeaheadModule} from './typeahead.module';
-
 
 
 const createTestComponent = (html: string) =>
@@ -46,16 +45,11 @@ function getNativeInput(element: HTMLElement): HTMLInputElement {
 function changeInput(element: any, value: string) {
   const input = getNativeInput(element);
   input.value = value;
-  const evt = document.createEvent('MouseEvent');
-  evt.initEvent('input', true, true);
-  input.dispatchEvent(evt);
+  triggerEvent(input, 'input');
 }
 
 function blurInput(element: any) {
-  const input = getNativeInput(element);
-  const evt = document.createEvent('HTMLEvents');
-  evt.initEvent('blur', false, false);
-  input.dispatchEvent(evt);
+  triggerEvent(getNativeInput(element), 'blur');
 }
 
 function expectInputValue(element: HTMLElement, value: string) {
