@@ -15,7 +15,6 @@ import {
   ElementRef,
   TemplateRef,
   ViewContainerRef,
-  ComponentFactoryResolver,
   NgZone,
   SimpleChanges,
   ViewEncapsulation,
@@ -190,8 +189,8 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 
   constructor(
       private _elementRef: ElementRef<HTMLElement>, private _renderer: Renderer2, injector: Injector,
-      componentFactoryResolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef, config: NgbPopoverConfig,
-      private _ngZone: NgZone, @Inject(DOCUMENT) private _document: any, private _changeDetector: ChangeDetectorRef,
+      viewContainerRef: ViewContainerRef, config: NgbPopoverConfig, private _ngZone: NgZone,
+      @Inject(DOCUMENT) private _document: any, private _changeDetector: ChangeDetectorRef,
       applicationRef: ApplicationRef) {
     this.animation = config.animation;
     this.autoClose = config.autoClose;
@@ -203,8 +202,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
     this.openDelay = config.openDelay;
     this.closeDelay = config.closeDelay;
     this._popupService = new PopupService<NgbPopoverWindow>(
-        NgbPopoverWindow, injector, viewContainerRef, _renderer, this._ngZone, componentFactoryResolver,
-        applicationRef);
+        NgbPopoverWindow, injector, viewContainerRef, _renderer, this._ngZone, applicationRef);
 
     this._zoneSubscription = _ngZone.onStable.subscribe(() => {
       if (this._windowRef) {
