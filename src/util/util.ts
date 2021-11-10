@@ -52,12 +52,6 @@ export function hasClassName(element: any, className: string): boolean {
 
 if (typeof Element !== 'undefined' && !Element.prototype.closest) {
   // Polyfill for ie10+
-
-  if (!Element.prototype.matches) {
-    // IE uses the non-standard name: msMatchesSelector
-    Element.prototype.matches = (Element.prototype as any).msMatchesSelector || Element.prototype.webkitMatchesSelector;
-  }
-
   Element.prototype.closest = function(s: string) {
     /* eslint-disable-next-line @typescript-eslint/no-this-alias */
     let el = this;

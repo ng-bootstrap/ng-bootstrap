@@ -46,14 +46,6 @@
               "progress": false,
               "watch": false,
               "karmaConfig": "src/karma.sauce.conf.js"
-            },
-            "saucelabs-ie": {
-              "sourceMap": false,
-              "progress": false,
-              "watch": false,
-              "tsConfig": "src/tsconfig-ie.spec.json",
-              "karmaConfig": "src/karma.sauce.conf.js",
-              "browsers": "IE11"
             }
           }
         },

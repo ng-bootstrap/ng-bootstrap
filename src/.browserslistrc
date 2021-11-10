@@ -1,8 +1,16 @@
-# Source: https://github.com/twbs/bootstrap/blob/v4.1.3/.browserslistrc
-# And intersection with Angular list: https://angular.io/guide/browser-support#browser-support
+# This file is used by the build system to adjust CSS and JS output to support the specified browsers below.
+# For additional information regarding the format and rule options, please see:
+# https://github.com/browserslist/browserslist#queries
 
-last 2 major versions
-not dead
+# For the full list of supported browsers by the Angular framework, please see:
+# https://angular.io/guide/browser-support
+
+# You can see what browsers were selected by your queries by running:
+#   npx browserslist
+
+last 1 Chrome version
+last 1 Firefox version
+last 2 Edge major versions
+last 2 Safari major versions
+last 2 iOS major versions
 Firefox ESR
-Edge 18
-IE 11
