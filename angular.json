@@ -181,8 +181,11 @@
       "schematics": {},
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-builders/custom-webpack:browser",
           "options": {
+            "customWebpackConfig": {
+              "path": "e2e-app/coverage.webpack.js"
+            },
             "outputPath": "e2e-app/dist",
             "index": "e2e-app/src/index.html",
             "main": "e2e-app/src/main.ts",
@@ -224,10 +227,9 @@
           "defaultConfiguration": ""
         },
         "serve": {
-          "builder": "ngx-build-plus:dev-server",
+          "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
-            "browserTarget": "e2e-app:build",
-            "extraWebpackConfig": "e2e-app/coverage.webpack.js"
+            "browserTarget": "e2e-app:build"
           },
           "configurations": {
             "production": {
