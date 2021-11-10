@@ -38,8 +38,7 @@ export {NgbDatepickerKeyboardService} from './datepicker-keyboard-service';
     NgbDatepickerDayView, NgbInputDatepicker
   ],
   exports: [NgbDatepicker, NgbDatepickerContent, NgbInputDatepicker, NgbDatepickerMonth],
-  imports: [CommonModule, FormsModule],
-  entryComponents: [NgbDatepicker]
+  imports: [CommonModule, FormsModule]
 })
 export class NgbDatepickerModule {
 }

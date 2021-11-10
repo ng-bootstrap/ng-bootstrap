@@ -1284,10 +1284,6 @@ class TestA11yComponent {
   ],
   exports: [TestComponent, DestroyableCmpt],
   imports: [CommonModule, NgbModalModule],
-  entryComponents: [
-    CustomInjectorCmpt, DestroyableCmpt, WithActiveModalCmpt, WithAutofocusModalCmpt, WithFirstFocusableModalCmpt,
-    WithSkipTabindexFirstFocusableModalCmpt
-  ],
   providers: [SpyService]
 })
 class NgbModalTestModule {

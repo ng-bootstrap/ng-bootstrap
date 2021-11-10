@@ -6,6 +6,6 @@ export {NgbTooltipConfig} from './tooltip-config';
 export {NgbTooltip} from './tooltip';
 export {Placement} from '../util/positioning';
 
-@NgModule({declarations: [NgbTooltip, NgbTooltipWindow], exports: [NgbTooltip], entryComponents: [NgbTooltipWindow]})
+@NgModule({declarations: [NgbTooltip, NgbTooltipWindow], exports: [NgbTooltip]})
 export class NgbTooltipModule {
 }

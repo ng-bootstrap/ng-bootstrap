@@ -7,11 +7,6 @@ export {NgbPopover} from './popover';
 export {NgbPopoverConfig} from './popover-config';
 export {Placement} from '../util/positioning';
 
-@NgModule({
-  declarations: [NgbPopover, NgbPopoverWindow],
-  exports: [NgbPopover],
-  imports: [CommonModule],
-  entryComponents: [NgbPopoverWindow]
-})
+@NgModule({declarations: [NgbPopover, NgbPopoverWindow], exports: [NgbPopover], imports: [CommonModule]})
 export class NgbPopoverModule {
 }
