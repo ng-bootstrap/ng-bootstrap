@@ -1,6 +1,5 @@
 import {
   ChangeDetectorRef,
-  ComponentFactoryResolver,
   ComponentRef,
   Directive,
   ElementRef,
@@ -287,8 +286,8 @@ export class NgbInputDatepicker implements OnChanges,
 
   constructor(
       private _parserFormatter: NgbDateParserFormatter, private _elRef: ElementRef<HTMLInputElement>,
-      private _vcRef: ViewContainerRef, private _renderer: Renderer2, private _cfr: ComponentFactoryResolver,
-      private _ngZone: NgZone, private _calendar: NgbCalendar, private _dateAdapter: NgbDateAdapter<any>,
+      private _vcRef: ViewContainerRef, private _renderer: Renderer2, private _ngZone: NgZone,
+      private _calendar: NgbCalendar, private _dateAdapter: NgbDateAdapter<any>,
       @Inject(DOCUMENT) private _document: any, private _changeDetector: ChangeDetectorRef,
       config: NgbInputDatepickerConfig) {
     ['autoClose', 'container', 'positionTarget', 'placement'].forEach(input => this[input] = config[input]);
@@ -353,8 +352,7 @@ export class NgbInputDatepicker implements OnChanges,
    */
   open() {
     if (!this.isOpen()) {
-      const cf = this._cfr.resolveComponentFactory(NgbDatepicker);
-      this._cRef = this._vcRef.createComponent(cf);
+      this._cRef = this._vcRef.createComponent(NgbDatepicker);
 
       this._applyPopupStyling(this._cRef.location.nativeElement);
       this._applyDatepickerInputs(this._cRef.instance);

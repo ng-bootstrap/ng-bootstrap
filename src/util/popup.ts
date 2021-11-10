@@ -1,6 +1,5 @@
 import {
   ApplicationRef,
-  ComponentFactoryResolver,
   ComponentRef,
   Injector,
   NgZone,
@@ -25,16 +24,15 @@ export class PopupService<T> {
 
   constructor(
       private _type: any, private _injector: Injector, private _viewContainerRef: ViewContainerRef,
-      private _renderer: Renderer2, private _ngZone: NgZone,
-      private _componentFactoryResolver: ComponentFactoryResolver, private _applicationRef: ApplicationRef) {}
+      private _renderer: Renderer2, private _ngZone: NgZone, private _applicationRef: ApplicationRef) {}
 
   open(content?: string | TemplateRef<any>, context?: any, animation = false):
       {windowRef: ComponentRef<T>, transition$: Observable<void>} {
     if (!this._windowRef) {
       this._contentRef = this._getContentRef(content, context);
       this._windowRef = this._viewContainerRef.createComponent(
-          this._componentFactoryResolver.resolveComponentFactory<T>(this._type), this._viewContainerRef.length,
-          this._injector, this._contentRef.nodes);
+          this._type,
+          {index: this._viewContainerRef.length, injector: this._injector, projectableNodes: this._contentRef.nodes});
     }
 
     const {nativeElement} = this._windowRef.location;

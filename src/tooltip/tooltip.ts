@@ -14,7 +14,6 @@ import {
   ElementRef,
   TemplateRef,
   ViewContainerRef,
-  ComponentFactoryResolver,
   NgZone,
   ViewEncapsulation,
   ChangeDetectorRef,
@@ -156,8 +155,8 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 
   constructor(
       private _elementRef: ElementRef<HTMLElement>, private _renderer: Renderer2, injector: Injector,
-      componentFactoryResolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef, config: NgbTooltipConfig,
-      private _ngZone: NgZone, @Inject(DOCUMENT) private _document: any, private _changeDetector: ChangeDetectorRef,
+      viewContainerRef: ViewContainerRef, config: NgbTooltipConfig, private _ngZone: NgZone,
+      @Inject(DOCUMENT) private _document: any, private _changeDetector: ChangeDetectorRef,
       applicationRef: ApplicationRef) {
     this.animation = config.animation;
     this.autoClose = config.autoClose;
@@ -169,8 +168,7 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
     this.openDelay = config.openDelay;
     this.closeDelay = config.closeDelay;
     this._popupService = new PopupService<NgbTooltipWindow>(
-        NgbTooltipWindow, injector, viewContainerRef, _renderer, this._ngZone, componentFactoryResolver,
-        applicationRef);
+        NgbTooltipWindow, injector, viewContainerRef, _renderer, this._ngZone, applicationRef);
 
     this._zoneSubscription = _ngZone.onStable.subscribe(() => {
       if (this._windowRef) {
