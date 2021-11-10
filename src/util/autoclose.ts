@@ -65,7 +65,7 @@ export function ngbAutoClose(
                                        takeUntil(closed$)) as Observable<MouseEvent>;
 
 
-      race<SOURCE>([
+      race([
         escapes$.pipe(map(_ => SOURCE.ESCAPE)), closeableClicks$.pipe(map(_ => SOURCE.CLICK))
       ]).subscribe((source: SOURCE) => zone.run(() => close(source)));
     }));

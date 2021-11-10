@@ -24,7 +24,7 @@ import {NgbModalWindow} from './modal-window';
 
 @Injectable({providedIn: 'root'})
 export class NgbModalStack {
-  private _activeWindowCmptHasChanged = new Subject();
+  private _activeWindowCmptHasChanged = new Subject<void>();
   private _ariaHiddenValues: Map<Element, string | null> = new Map();
   private _backdropAttributes = ['animation', 'backdropClass'];
   private _modalRefs: NgbModalRef[] = [];

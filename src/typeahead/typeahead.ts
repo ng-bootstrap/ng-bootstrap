@@ -78,7 +78,7 @@ export class NgbTypeahead implements ControlValueAccessor,
     OnInit, OnChanges, OnDestroy {
   private _popupService: PopupService<NgbTypeaheadWindow>;
   private _subscription: Subscription | null = null;
-  private _closed$ = new Subject();
+  private _closed$ = new Subject<void>();
   private _inputValueBackup: string | null = null;
   private _valueChanges: Observable<string>;
   private _resubscribeTypeahead: BehaviorSubject<any>;
