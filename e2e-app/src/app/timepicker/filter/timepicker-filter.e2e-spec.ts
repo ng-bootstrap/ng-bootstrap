@@ -14,7 +14,7 @@ describe('Timepicker Filter', () => {
     expect(`${hh}:${mm}:${ss}`).toBe(expectedValue);
   }
 
-  describe('filter', async() => {
+  describe('filter', () => {
     it(`should accept numbers`, async() => {
       await expectValue('::');  // No starting values
 

@@ -18,7 +18,7 @@ import {createTestApp} from '../utils/testing';
       let tree = await createTestApp(runner, appOptions);
       tree = await runner.runSchematicAsync('ng-add-setup-project', options, tree).toPromise();
       const workspace = await getWorkspace(tree);
-      const project = workspace.projects.get(projectName);
+      const project = workspace.projects.get(projectName) !;
       return {tree, project};
     }
 
@@ -41,7 +41,7 @@ import {createTestApp} from '../utils/testing';
 
     it(`should add 'bootstrap.min.css' to 'angular.json' by default`, async() => {
       const {project} = await createAppWithOptions();
-      const targetOptions = project.targets.get('build') !.options;
+      const targetOptions = project.targets.get('build') !.options !;
 
       expect(targetOptions.styles).toContain('node_modules/bootstrap/dist/css/bootstrap.min.css');
     });
@@ -67,7 +67,7 @@ import {createTestApp} from '../utils/testing';
 
     it(`should add 'bootstrap.min.css' to 'angular.json' if style system is unsupported`, async() => {
       const {project} = await createAppWithOptions({style: 'less'});
-      const targetOptions = project.targets.get('build') !.options;
+      const targetOptions = project.targets.get('build') !.options !;
 
       expect(targetOptions.styles).toContain('node_modules/bootstrap/dist/css/bootstrap.min.css');
       expect(log).toEqual([messages.unsupportedStyles(`projects/${projectName}/src/styles.less`)]);
