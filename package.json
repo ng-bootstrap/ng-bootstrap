@@ -1,6 +1,6 @@
 {
   "name": "@ng-bootstrap/ng-bootstrap",
-  "version": "10.0.0",
+  "version": "11.0.0-rc.0",
   "description": "Angular powered Bootstrap",
   "author": "https://github.com/ng-bootstrap/ng-bootstrap/graphs/contributors",
   "engines": {

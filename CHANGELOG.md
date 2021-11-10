@@ -1,3 +1,13 @@
+# [11.0.0-rc.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/10.0.0...11.0.0-rc.0) (2021-11-10)
+
+
+### Bug Fixes
+
+* remove 'entryComponents' from the code ([a6fd72b](https://github.com/ng-bootstrap/ng-bootstrap/commit/a6fd72bd1c42a4a47214fa7ac8a93113eae859f3))
+* remove deprecated 'ComponentFactoryResolver' ([60514a3](https://github.com/ng-bootstrap/ng-bootstrap/commit/60514a3da7959c014655cafde455b27e030c3ef1))
+
+
+
 # [11.0.0-beta.2](https://github.com/ng-bootstrap/ng-bootstrap/compare/10.0.0...11.0.0-beta.2) (2021-07-05)
 
 This release adds Angular 12 support for the Bootstrap 5 beta version along with a couple of bugfixes.
