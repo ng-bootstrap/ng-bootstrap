@@ -1,5 +1,15 @@
 // previous version:
 // https://github.com/angular-ui/bootstrap/blob/07c31d0731f7cb068a1932b8e01d2312b796b4ec/src/position/position.js
+
+interface ClientRect {
+  top: number;
+  bottom: number;
+  left: number;
+  right: number;
+  height: number;
+  width: number;
+}
+
 export class Positioning {
   private getAllStyles(element: HTMLElement) { return window.getComputedStyle(element); }
 
@@ -64,8 +74,8 @@ export class Positioning {
   offset(element: HTMLElement, round = true): ClientRect {
     const elBcr = element.getBoundingClientRect();
     const viewportOffset = {
-      top: window.pageYOffset - document.documentElement.clientTop,
-      left: window.pageXOffset - document.documentElement.clientLeft
+      top: window.scrollY - document.documentElement.clientTop,
+      left: window.scrollX - document.documentElement.clientLeft
     };
 
     let elOffset = {

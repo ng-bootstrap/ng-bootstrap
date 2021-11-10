@@ -4,6 +4,7 @@
     "rootDir": "./",
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
+    "forceConsistentCasingInFileNames": true,
     "sourceMap": true,
     "declaration": false,
     "downlevelIteration": true,
@@ -12,16 +13,17 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "strictNullChecks": true,
-    "target": "es2015",
+    "target": "es2017",
     "typeRoots": [
       "node_modules/@types"
     ],
     "lib": [
-      "es2018",
+      "es2020",
       "dom"
     ]
   },
   "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
     "strictTemplates": true,
     "fullTemplateTypeCheck": true,
     "strictInjectionParameters": true
