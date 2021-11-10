@@ -16,7 +16,7 @@ beforeAll(async() => {
   // Listen for all console events and handle errors
   test.page.on('console', async msg => {
     const type = msg.type();
-    if (type === 'error' || type === 'warning') {
+    if (type === 'error') {
       const output = ['Unexpected console error:'];
       for (const m of msg.args()) {
         output.push(await m.jsonValue());
