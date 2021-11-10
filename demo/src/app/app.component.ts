@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
     if (environment.production) {
       httpClient.get<{downloads: string}>('https://api.npmjs.org/downloads/point/last-month/@ng-bootstrap/ng-bootstrap')
           .pipe(pluck('downloads'))
-          .subscribe(count => this.downloadCount = count.toLocaleString(), () => of(''));
+          .subscribe({next: count => this.downloadCount = count.toLocaleString(), error: () => of('')});
     }
   }
 
