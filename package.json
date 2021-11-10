@@ -12,7 +12,7 @@
     "postversion": "yarn ngb:build && yarn demo:build",
     "preinstall": "node misc/preinstall.js",
     "build": "yarn ngb:build && yarn demo:build",
-    "test": "yarn check-format && yarn ngb:lint && yarn ngb:test && yarn schematics:test",
+    "test": "yarn check-format && yarn ngb:lint && yarn ngb:test",
     "tdd": "yarn ngb:tdd",
     "e2e": "yarn e2e-app:lint && yarn ngb:e2e && yarn demo:e2e",
     "demo": "yarn demo:docs && yarn demo:stackblitzes && yarn demo:serve",
