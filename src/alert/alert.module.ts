@@ -6,6 +6,6 @@ import {NgbAlert} from './alert';
 export {NgbAlert} from './alert';
 export {NgbAlertConfig} from './alert-config';
 
-@NgModule({declarations: [NgbAlert], exports: [NgbAlert], imports: [CommonModule], entryComponents: [NgbAlert]})
+@NgModule({declarations: [NgbAlert], exports: [NgbAlert], imports: [CommonModule]})
 export class NgbAlertModule {
 }

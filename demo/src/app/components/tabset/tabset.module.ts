@@ -101,8 +101,7 @@ export const ROUTES = [
     NgbdTabsetJustifyModule,
     NgbdTabsetOrientationModule
   ],
-  declarations: [NgbdTabsetWarningComponent],
-  entryComponents: [NgbdTabsetWarningComponent]
+  declarations: [NgbdTabsetWarningComponent]
 })
 export class NgbdTabsetModule {
   constructor(demoList: NgbdDemoList) {
