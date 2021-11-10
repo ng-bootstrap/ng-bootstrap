@@ -19,30 +19,18 @@ const BROWSERS = {
     platform: 'Windows 10',
     version: 'latest'
   },
-  'EDGE18': {
-    base: 'SauceLabs',
-    browserName: 'MicrosoftEdge',
-    platform: 'Windows 10',
-    version: '18.17763'
-  },
-  'IE11': {
-    base: 'SauceLabs',
-    browserName: 'internet explorer',
-    platform: 'Windows 10',
-    version: '11'
-  },
-  'SAFARI12': {
-    base: 'SauceLabs',
-    browserName: 'safari',
-    platform: 'macOS 10.14',
-    version: '12'
-  },
   'SAFARI13': {
     base: 'SauceLabs',
     browserName: 'safari',
     platform: 'macOS 10.15',
     version: '13'
   },
+  'SAFARI14': {
+    base: 'SauceLabs',
+    browserName: 'safari',
+    platform: 'macOS 11.00',
+    version: '14'
+  }
 };
 
 module.exports = function (config) {
@@ -80,7 +68,7 @@ module.exports = function (config) {
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
-    browsers: ['CHROME', 'FIREFOX', 'EDGE', 'EDGE18', 'SAFARI12', 'SAFARI13'],
+    browsers: ['CHROME', 'FIREFOX', 'EDGE', 'SAFARI13', 'SAFARI14'],
     autoWatch: false,
     singleRun: true,
     captureTimeout: 180000,
