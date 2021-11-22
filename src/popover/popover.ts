@@ -172,6 +172,13 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
    */
   @Output() hidden = new EventEmitter<void>();
 
+  /**
+   * Inside Elements are HTMLElements that will be consider 'inside' for the autoClose feature
+   * as long as the current popupWindow
+   */
+  @Input() ngbElementsInside: HTMLElement[];
+
+
   private _ngbPopoverWindowId = `ngb-popover-${nextId++}`;
   private _popupService: PopupService<NgbPopoverWindow>;
   private _windowRef: ComponentRef<NgbPopoverWindow>| null = null;
@@ -249,9 +256,13 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
       // mark the parent component to be checked.
       this._windowRef.changeDetectorRef.markForCheck();
 
+      const elementsInside = this.ngbElementsInside ? [...this.ngbElementsInside] : [];
+
+      elementsInside.push(this._windowRef.location.nativeElement);
+
       ngbAutoClose(
           this._ngZone, this._document, this.autoClose, () => this.close(), this.hidden,
-          [this._windowRef.location.nativeElement]);
+          elementsInside);
 
       transition$.subscribe(() => this.shown.emit());
     }
