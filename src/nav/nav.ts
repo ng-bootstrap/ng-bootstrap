@@ -146,6 +146,40 @@ export class NgbNavItem implements AfterContentChecked, OnInit {
 
 
 /**
+ * A directive to put on the nav link.
+ *
+ * @since 5.2.0
+ */
+@Directive({
+  selector: 'a[ngbNavLink]',
+  host: {
+    '[id]': 'navItem.domId',
+    '[class.nav-link]': 'true',
+    '[class.nav-item]': 'hasNavItemClass()',
+    '[attr.role]': `role ? role : nav.roles ? 'tab' : undefined`,
+    'href': '',
+    '[class.active]': 'navItem.active',
+    '[class.disabled]': 'navItem.disabled',
+    '[attr.tabindex]': 'navItem.disabled ? -1 : undefined',
+    '[attr.aria-controls]': 'navItem.isPanelInDom() ? navItem.panelDomId : null',
+    '[attr.aria-selected]': 'navItem.active',
+    '[attr.aria-disabled]': 'navItem.disabled',
+    '(click)': 'nav.click(navItem); $event.preventDefault()'
+  }
+})
+export class NgbNavLink {
+  constructor(
+      @Attribute('role') public role: string, public navItem: NgbNavItem, public nav: NgbNav,
+      public elRef: ElementRef) {}
+
+  hasNavItemClass() {
+    // with alternative markup we have to add `.nav-item` class, because `ngbNavItem` is on the ng-container
+    return this.navItem.elementRef.nativeElement.nodeType === Node.COMMENT_NODE;
+  }
+}
+
+
+/**
  * A nav directive that helps with implementing tabbed navigation components.
  *
  * @since 5.2.0
@@ -380,40 +414,6 @@ export class NgbNav implements AfterContentInit,
 
   private _getItemById(itemId: any): NgbNavItem | null {
     return this.items && this.items.find(item => item.id === itemId) || null;
-  }
-}
-
-
-/**
- * A directive to put on the nav link.
- *
- * @since 5.2.0
- */
-@Directive({
-  selector: 'a[ngbNavLink]',
-  host: {
-    '[id]': 'navItem.domId',
-    '[class.nav-link]': 'true',
-    '[class.nav-item]': 'hasNavItemClass()',
-    '[attr.role]': `role ? role : nav.roles ? 'tab' : undefined`,
-    'href': '',
-    '[class.active]': 'navItem.active',
-    '[class.disabled]': 'navItem.disabled',
-    '[attr.tabindex]': 'navItem.disabled ? -1 : undefined',
-    '[attr.aria-controls]': 'navItem.isPanelInDom() ? navItem.panelDomId : null',
-    '[attr.aria-selected]': 'navItem.active',
-    '[attr.aria-disabled]': 'navItem.disabled',
-    '(click)': 'nav.click(navItem); $event.preventDefault()'
-  }
-})
-export class NgbNavLink {
-  constructor(
-      @Attribute('role') public role: string, public navItem: NgbNavItem, public nav: NgbNav,
-      public elRef: ElementRef) {}
-
-  hasNavItemClass() {
-    // with alternative markup we have to add `.nav-item` class, because `ngbNavItem` is on the ng-container
-    return this.navItem.elementRef.nativeElement.nodeType === Node.COMMENT_NODE;
   }
 }
 
