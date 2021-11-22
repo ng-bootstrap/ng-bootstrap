@@ -1,5 +1,28 @@
+# [12.0.0-beta.3](https://github.com/ng-bootstrap/ng-bootstrap/compare/11.0.0-rc.0...12.0.0-beta.3) (2021-11-22)
+
+This 3rd beta release for Bootstrap 5 adds Angular 13 support and uses Popper.js for positioning. Schematics are not yet updated for this version. 
+
+Apologies for the version mixup with this release, please use this guide:
+- ng-bootstrap 10 (stable) -> Angular 12 and Bootstrap 4
+- ng-bootstrap 11 (rc) -> Angular 13 and Bootstrap 4
+- ng-bootstrap 12 (beta) -> Angular 13 and Bootstrap 5
+
+### Features
+
+* **positioning:** use popper 2 for positioning ([#4129](https://github.com/ng-bootstrap/ng-bootstrap/issues/4129)) ([5842eb5](https://github.com/ng-bootstrap/ng-bootstrap/commit/5842eb55d9aaa8d9bab038546e758e54ea74707d))
+
+### BREAKING CHANGES
+
+* **positioning**: ng-bootstrap adds `"@popperjs/core": "^2.10.2"` as a peer dependency. All positioning logic for datepicker, dropdown, popover, tooltip and typeahead is outsourced to popper.js.
+
 # [11.0.0-rc.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/10.0.0...11.0.0-rc.0) (2021-11-10)
 
+This release adds Angular 13 support. No code library changes are planned after this, but still some internal CI tooling needs to be updated (see [#4178](https://github.com/ng-bootstrap/ng-bootstrap/issues/4178) for details).
+
+Apologies for the version mixup with this release, please use this guide:
+- ng-bootstrap 10 (stable) -> Angular 12 and Bootstrap 4
+- ng-bootstrap 11 (rc) -> Angular 13 and Bootstrap 4
+- ng-bootstrap 12 (beta) -> Angular 13 and Bootstrap 5
 
 ### Bug Fixes
 
