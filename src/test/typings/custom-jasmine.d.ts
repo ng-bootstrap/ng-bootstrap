@@ -1,4 +1,4 @@
-declare module jasmine {
+declare namespace jasmine {
   interface Matchers<T> {
     toHaveToast(content?: string | string[]): boolean;
     toHaveCssClass(expected: any): boolean;

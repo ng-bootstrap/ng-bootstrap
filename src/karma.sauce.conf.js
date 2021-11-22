@@ -31,18 +31,18 @@ const BROWSERS = {
     platform: 'Windows 10',
     version: '11'
   },
-  'SAFARI': {
-    base: 'SauceLabs',
-    browserName: 'safari',
-    platform: 'macOS 10.15',
-    version: 'latest'
-  },
   'SAFARI13': {
     base: 'SauceLabs',
     browserName: 'safari',
     platform: 'macOS 10.15',
     version: '13'
   },
+  'SAFARI14': {
+    base: 'SauceLabs',
+    browserName: 'safari',
+    platform: 'macOS 11.00',
+    version: '14'
+  }
 };
 
 module.exports = function (config) {
@@ -80,7 +80,7 @@ module.exports = function (config) {
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
-    browsers: ['CHROME', 'FIREFOX', 'EDGE', 'EDGE18', 'SAFARI', 'SAFARI13'],
+    browsers: ['CHROME', 'FIREFOX', 'EDGE', 'SAFARI13', 'SAFARI14'],
     autoWatch: false,
     singleRun: true,
     captureTimeout: 180000,

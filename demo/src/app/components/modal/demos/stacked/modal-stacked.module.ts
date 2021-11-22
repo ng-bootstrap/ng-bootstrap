@@ -12,7 +12,6 @@ import {
   imports: [BrowserModule, NgbModule],
   declarations: [NgbdModalStacked, NgbdModal1Content, NgbdModal2Content],
   exports: [NgbdModalStacked],
-  bootstrap: [NgbdModalStacked],
-  entryComponents: [NgbdModal1Content, NgbdModal2Content]
+  bootstrap: [NgbdModalStacked]
 })
 export class NgbdModalStackedModule {}

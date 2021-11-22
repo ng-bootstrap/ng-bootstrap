@@ -1,4 +1,4 @@
-// tslint:disable:deprecation
+/* eslint-disable deprecation/deprecation */
 import {NgModule} from '@angular/core';
 
 import {NgbTabsetModule} from '../../../src/tabset/tabset.module';

@@ -46,26 +46,15 @@
               "progress": false,
               "watch": false,
               "karmaConfig": "src/karma.sauce.conf.js"
-            },
-            "saucelabs-ie": {
-              "sourceMap": false,
-              "progress": false,
-              "watch": false,
-              "tsConfig": "src/tsconfig-ie.spec.json",
-              "karmaConfig": "src/karma.sauce.conf.js",
-              "browsers": "IE11"
             }
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "src/tsconfig.json",
-              "src/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
+            "lintFilePatterns": [
+              "src/**/*.{ts,html}",
+              "schematics/**/*.ts"
             ]
           }
         }
@@ -167,15 +156,10 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "demo/tsconfig.json",
-              "demo/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**",
-              "**/api-docs.ts"
+            "lintFilePatterns": [
+              "demo/**/*.{ts,html}"
             ]
           }
         }
@@ -232,10 +216,9 @@
           "defaultConfiguration": ""
         },
         "serve": {
-          "builder": "ngx-build-plus:dev-server",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "e2e-app:build",
-            "extraWebpackConfig": "e2e-app/coverage.webpack.js"
+            "browserTarget": "e2e-app:build"
           },
           "configurations": {
             "production": {
@@ -249,14 +232,10 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "e2e-app/tsconfig.json",
-              "e2e-app/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
+            "lintFilePatterns": [
+              "e2e-app/**/*.{ts,html}"
             ]
           }
         }
@@ -330,18 +309,14 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "ssr-app/tsconfig.json",
-              "ssr-app/tsconfig.server.json",
-              "ssr-app/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
+            "lintFilePatterns": [
+              "ssr-app/**/*.{ts,html}"
             ]
           }
-        },
+        }
+,
         "server": {
           "builder": "@angular-devkit/build-angular:server",
           "options": {

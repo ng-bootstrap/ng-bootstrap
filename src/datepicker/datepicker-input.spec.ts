@@ -942,17 +942,6 @@ describe('NgbInputDatepicker', () => {
     });
   });
 
-  describe('positionTarget', () => {
-
-    it('should throw error if target element does not exists', fakeAsync(() => {
-         const fixture = createTestCmpt(`<input ngbDatepicker #d="ngbDatepicker" positionTarget="#nobody">`);
-         const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
-
-         expect(() => dpInput.open())
-             .toThrowError('ngbDatepicker could not find element declared in [positionTarget] to position against.');
-       }));
-  });
-
   describe('focus restore', () => {
 
     function open(fixture: ComponentFixture<TestComponent>) {

@@ -29,6 +29,10 @@ export function isDefined(value: any): boolean {
   return value !== undefined && value !== null;
 }
 
+export function isPromise<T>(v: any): v is Promise<T> {
+  return v && v.then;
+}
+
 export function padNumber(value: number) {
   if (isNumber(value)) {
     return `0${value}`.slice(-2);
@@ -48,13 +52,8 @@ export function hasClassName(element: any, className: string): boolean {
 
 if (typeof Element !== 'undefined' && !Element.prototype.closest) {
   // Polyfill for ie10+
-
-  if (!Element.prototype.matches) {
-    // IE uses the non-standard name: msMatchesSelector
-    Element.prototype.matches = (Element.prototype as any).msMatchesSelector || Element.prototype.webkitMatchesSelector;
-  }
-
   Element.prototype.closest = function(s: string) {
+    /* eslint-disable-next-line @typescript-eslint/no-this-alias */
     let el = this;
     if (!document.documentElement.contains(el)) {
       return null;
@@ -106,10 +105,10 @@ export function reflow(element: HTMLElement) {
 export function runInZone<T>(zone: NgZone): OperatorFunction<T, T> {
   return (source) => {
     return new Observable(observer => {
-      const onNext = (value: T) => zone.run(() => observer.next(value));
-      const onError = (e: any) => zone.run(() => observer.error(e));
-      const onComplete = () => zone.run(() => observer.complete());
-      return source.subscribe(onNext, onError, onComplete);
+      const next = (value: T) => zone.run(() => observer.next(value));
+      const error = (e: any) => zone.run(() => observer.error(e));
+      const complete = () => zone.run(() => observer.complete());
+      return source.subscribe({next, error, complete});
     });
   };
 }

@@ -377,7 +377,7 @@ describe('ngb-tooltip', () => {
 
            expect(windowEl).toHaveCssClass('tooltip');
            // actual placement with auto is not known in advance, so use regex to check it
-           expect(windowEl.getAttribute('class')).toMatch('bs-tooltip-\.');
+           expect(windowEl.getAttribute('class')).toMatch('bs-tooltip-.');
            expect(windowEl.textContent.trim()).toBe('Great tip!');
          }));
 

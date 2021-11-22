@@ -41,18 +41,21 @@ if (isBrowserVisible('ngbRunTransition')) {
     it(`should run specified transition on an element`, (done) => {
       element.classList.add('ngb-test-fade');
 
-      const nextSpy = createSpy();
-      const errorSpy = createSpy();
+      const next = createSpy();
+      const error = createSpy();
 
-      ngbRunTransition(zone, element, fadeFn, {animation: true, runningTransition: 'continue'})
-          .subscribe(nextSpy, errorSpy, () => {
-            expect(component.componentInstance.onTransitionEnd).toHaveBeenCalledTimes(1);
-            expect(nextSpy).toHaveBeenCalledWith(undefined);
-            expect(element.classList.contains('ngb-test-show')).toBe(false);
-            expect(errorSpy).not.toHaveBeenCalled();
-            expectOpacity(element, '0');
-            done();
-          });
+      ngbRunTransition(zone, element, fadeFn, {animation: true, runningTransition: 'continue'}).subscribe({
+        next,
+        error,
+        complete: () => {
+          expect(component.componentInstance.onTransitionEnd).toHaveBeenCalledTimes(1);
+          expect(next).toHaveBeenCalledWith(undefined);
+          expect(element.classList.contains('ngb-test-show')).toBe(false);
+          expect(error).not.toHaveBeenCalled();
+          expectOpacity(element, '0');
+          done();
+        }
+      });
 
       expect(window.getComputedStyle(element).opacity).toBe('1');
     });
@@ -65,7 +68,7 @@ if (isBrowserVisible('ngbRunTransition')) {
       const complete = createSpy('complete', () => expect(NgZone.isInAngularZone()).toBeTrue()).and.callThrough();
 
       ngbRunTransition(zone, element, fadeFn, {animation: false, runningTransition: 'continue'})
-          .subscribe(next, error, complete);
+          .subscribe({next, error, complete});
 
       expect(next).toHaveBeenCalledWith(undefined);
       expect(error).toHaveBeenCalledTimes(0);
@@ -88,7 +91,7 @@ if (isBrowserVisible('ngbRunTransition')) {
                        }).and.callThrough();
 
       ngbRunTransition(zone, element, fadeFn, {animation: true, runningTransition: 'continue'})
-          .subscribe(next, error, complete);
+          .subscribe({next, error, complete});
     });
 
     it(`should execute callbacks in provided zone when stopping currently running transition'`, () => {
@@ -101,57 +104,57 @@ if (isBrowserVisible('ngbRunTransition')) {
       };
 
       // starting first
-      const nextSpy1 = createSpy();
-      const errorSpy1 = createSpy();
-      const completeSpy1 = createSpy('complete', () => expect(NgZone.isInAngularZone()).toBeTrue()).and.callThrough();
+      const next = createSpy();
+      const error = createSpy();
+      const complete = createSpy('complete', () => expect(NgZone.isInAngularZone()).toBeTrue()).and.callThrough();
       ngbRunTransition(zone, element, startFn, {animation: true, runningTransition: 'stop'})
-          .subscribe(nextSpy1, errorSpy1, completeSpy1);
+          .subscribe({next, error, complete});
 
       // starting second
       ngbRunTransition(zone, element, startFn, {animation: true, runningTransition: 'stop'}).subscribe();
 
       // first transition was completed and no value was emitted
-      expect(nextSpy1).not.toHaveBeenCalled();
-      expect(errorSpy1).not.toHaveBeenCalled();
-      expect(completeSpy1).toHaveBeenCalled();
+      expect(next).not.toHaveBeenCalled();
+      expect(error).not.toHaveBeenCalled();
+      expect(complete).toHaveBeenCalled();
     });
 
     it(`should emit 'undefined' and complete synchronously with 'animation: false'`, () => {
       element.classList.add('ngb-test-fade');
       expect(window.getComputedStyle(element).opacity).toBe('1');
 
-      const nextSpy = createSpy();
-      const errorSpy = createSpy();
-      const completeSpy = createSpy();
+      const next = createSpy();
+      const error = createSpy();
+      const complete = createSpy();
 
       ngbRunTransition(zone, element, fadeFn, {animation: false, runningTransition: 'continue'})
-          .subscribe(nextSpy, errorSpy, completeSpy);
+          .subscribe({next, error, complete});
 
       expect(element.classList.contains('ngb-test-show')).toBe(false);
       expect(window.getComputedStyle(element).opacity).toBe('1');
       expect(component.componentInstance.onTransitionEnd).not.toHaveBeenCalled();
-      expect(nextSpy).toHaveBeenCalledWith(undefined);
-      expect(errorSpy).not.toHaveBeenCalled();
-      expect(completeSpy).toHaveBeenCalled();
+      expect(next).toHaveBeenCalledWith(undefined);
+      expect(error).not.toHaveBeenCalled();
+      expect(complete).toHaveBeenCalled();
     });
 
     it(`should emit 'undefined' and complete synchronously if transition is 'none'`, () => {
       element.classList.add('ngb-test-none');
       expect(window.getComputedStyle(element).opacity).toBe('1');
 
-      const nextSpy = createSpy();
-      const errorSpy = createSpy();
-      const completeSpy = createSpy();
+      const next = createSpy();
+      const error = createSpy();
+      const complete = createSpy();
 
       ngbRunTransition(zone, element, fadeFn, {animation: true, runningTransition: 'continue'})
-          .subscribe(nextSpy, errorSpy, completeSpy);
+          .subscribe({next, error, complete});
 
       expect(element.classList.contains('ngb-test-show')).toBe(false);
       expect(window.getComputedStyle(element).opacity).toBe('1');
       expect(component.componentInstance.onTransitionEnd).not.toHaveBeenCalled();
-      expect(nextSpy).toHaveBeenCalledWith(undefined);
-      expect(errorSpy).not.toHaveBeenCalled();
-      expect(completeSpy).toHaveBeenCalled();
+      expect(next).toHaveBeenCalledWith(undefined);
+      expect(error).not.toHaveBeenCalled();
+      expect(complete).toHaveBeenCalled();
     });
 
     it(`should complete new transition and continue one already running with 'runningTransition: continue'`, (done) => {
@@ -171,18 +174,21 @@ if (isBrowserVisible('ngbRunTransition')) {
       const nextSpy1 = createSpy();
       const errorSpy1 = createSpy();
 
-      ngbRunTransition(zone, element, startFn, {animation: true, runningTransition: 'continue'})
-          .subscribe(nextSpy1, errorSpy1, () => {
-            expect(startCalls).toBe(1);
-            expect(endCalls).toBe(1);
-            expect(component.componentInstance.onTransitionEnd).toHaveBeenCalledTimes(1);
-            expect(nextSpy1).toHaveBeenCalledWith(undefined);
-            expect(errorSpy1).not.toHaveBeenCalled();
-            expect(element.classList.contains('ngb-test-during')).toBe(false);
-            expect(element.classList.contains('ngb-test-after')).toBe(true);
-            expectOpacity(element, '0');
-            done();
-          });
+      ngbRunTransition(zone, element, startFn, {animation: true, runningTransition: 'continue'}).subscribe({
+        next: nextSpy1,
+        error: errorSpy1,
+        complete: () => {
+          expect(startCalls).toBe(1);
+          expect(endCalls).toBe(1);
+          expect(component.componentInstance.onTransitionEnd).toHaveBeenCalledTimes(1);
+          expect(nextSpy1).toHaveBeenCalledWith(undefined);
+          expect(errorSpy1).not.toHaveBeenCalled();
+          expect(element.classList.contains('ngb-test-during')).toBe(false);
+          expect(element.classList.contains('ngb-test-after')).toBe(true);
+          expectOpacity(element, '0');
+          done();
+        }
+      });
 
       // first transition is on-going, start function was called
       expect(nextSpy1).not.toHaveBeenCalled();
@@ -196,7 +202,7 @@ if (isBrowserVisible('ngbRunTransition')) {
       const completeSpy2 = createSpy();
 
       ngbRunTransition(zone, element, startFn, {animation: true, runningTransition: 'continue'})
-          .subscribe(nextSpy2, errorSpy2, completeSpy2);
+          .subscribe({next: nextSpy2, error: errorSpy2, complete: completeSpy2});
 
       // first transition is still on-going
       expect(nextSpy1).not.toHaveBeenCalled();
@@ -229,7 +235,7 @@ if (isBrowserVisible('ngbRunTransition')) {
       const completeSpy1 = createSpy();
 
       ngbRunTransition(zone, element, startFn, {animation: true, runningTransition: 'stop'})
-          .subscribe(nextSpy1, errorSpy1, completeSpy1);
+          .subscribe({next: nextSpy1, error: errorSpy1, complete: completeSpy1});
 
       // first transition is on-going, start function was called
       expect(nextSpy1).not.toHaveBeenCalled();
@@ -242,18 +248,21 @@ if (isBrowserVisible('ngbRunTransition')) {
       const nextSpy2 = createSpy();
       const errorSpy2 = createSpy();
 
-      ngbRunTransition(zone, element, startFn, {animation: true, runningTransition: 'stop'})
-          .subscribe(nextSpy2, errorSpy2, () => {
-            expect(startCalls).toBe(2);
-            expect(endCalls).toBe(1);
-            expect(component.componentInstance.onTransitionEnd).toHaveBeenCalledTimes(1);
-            expect(nextSpy2).toHaveBeenCalledWith(undefined);
-            expect(errorSpy2).not.toHaveBeenCalled();
-            expect(element.classList.contains('ngb-test-during')).toBe(false);
-            expect(element.classList.contains('ngb-test-after')).toBe(true);
-            expectOpacity(element, '0');
-            done();
-          });
+      ngbRunTransition(zone, element, startFn, {animation: true, runningTransition: 'stop'}).subscribe({
+        next: nextSpy2,
+        error: errorSpy2,
+        complete: () => {
+          expect(startCalls).toBe(2);
+          expect(endCalls).toBe(1);
+          expect(component.componentInstance.onTransitionEnd).toHaveBeenCalledTimes(1);
+          expect(nextSpy2).toHaveBeenCalledWith(undefined);
+          expect(errorSpy2).not.toHaveBeenCalled();
+          expect(element.classList.contains('ngb-test-during')).toBe(false);
+          expect(element.classList.contains('ngb-test-after')).toBe(true);
+          expectOpacity(element, '0');
+          done();
+        }
+      });
 
       // second transition should have started
       expect(nextSpy2).not.toHaveBeenCalled();
@@ -277,24 +286,24 @@ if (isBrowserVisible('ngbRunTransition')) {
       };
 
       // starting first
-      const nextSpy1 = createSpy();
-      const errorSpy1 = createSpy();
-      const completeSpy1 = createSpy();
+      const next = createSpy();
+      const error = createSpy();
+      const complete = createSpy();
 
       ngbRunTransition(zone, element, startFn, {animation: true, runningTransition: 'stop'})
-          .subscribe(nextSpy1, errorSpy1, completeSpy1);
+          .subscribe({next, error, complete});
 
       // first transition is on-going, start function was called
-      expect(nextSpy1).not.toHaveBeenCalled();
-      expect(completeSpy1).not.toHaveBeenCalled();
+      expect(next).not.toHaveBeenCalled();
+      expect(complete).not.toHaveBeenCalled();
       expect(element.classList.contains('ngb-test-during')).toBe(true);
       expect(element.classList.contains('ngb-test-after')).toBe(false);
       expect(window.getComputedStyle(element).opacity).toBe('1');
 
       ngbCompleteTransition(element);
 
-      expect(nextSpy1).toHaveBeenCalled();
-      expect(completeSpy1).toHaveBeenCalled();
+      expect(next).toHaveBeenCalled();
+      expect(complete).toHaveBeenCalled();
       expect(element.classList.contains('ngb-test-during')).toBe(false);
       expect(element.classList.contains('ngb-test-after')).toBe(true);
       expectOpacity(element, '0');
@@ -345,7 +354,7 @@ if (isBrowserVisible('ngbRunTransition')) {
 
       // first transition
       ngbRunTransition(zone, element, startFn, {animation: true, runningTransition: 'stop', context: {text: 'one'}})
-          .subscribe(() => {}, () => {}, () => {});
+          .subscribe({next: () => {}, error: () => {}, complete: () => {}});
       expect(contextSpy).toHaveBeenCalledWith({text: 'one', counter: 1});
 
       // second transiiton
@@ -364,36 +373,39 @@ if (isBrowserVisible('ngbRunTransition')) {
     it(`should pass context with 'animation: false'`, () => {
       const startFn: NgbTransitionStartFn<{flag: number}> = (_, __, context) => { expect(context.flag).toBe(42); };
 
-      const nextSpy = createSpy();
-      const errorSpy = createSpy();
-      const completeSpy = createSpy();
+      const next = createSpy();
+      const error = createSpy();
+      const complete = createSpy();
       const startFnSpy = createSpy('startFn', startFn).and.callThrough();
 
       ngbRunTransition(
           zone, element, startFnSpy, {animation: false, runningTransition: 'continue', context: {flag: 42}})
-          .subscribe(nextSpy, errorSpy, completeSpy);
+          .subscribe({next, error, complete});
 
-      expect(nextSpy).toHaveBeenCalledWith(undefined);
-      expect(errorSpy).not.toHaveBeenCalled();
-      expect(completeSpy).toHaveBeenCalled();
+      expect(next).toHaveBeenCalledWith(undefined);
+      expect(error).not.toHaveBeenCalled();
+      expect(complete).toHaveBeenCalled();
       expect(startFnSpy).toHaveBeenCalled();
     });
 
     it(`should complete and release the DOM element even if transition end is not fired`, (done) => {
       element.classList.add('ngb-test-fade');
 
-      const nextSpy = createSpy();
-      const errorSpy = createSpy();
+      const next = createSpy();
+      const error = createSpy();
 
-      ngbRunTransition(zone, element, fadeFn, {animation: true, runningTransition: 'continue'})
-          .subscribe(nextSpy, errorSpy, () => {
-            expect(component.componentInstance.onTransitionEnd).not.toHaveBeenCalled();  // <-- finished with timer
-            expect(nextSpy).toHaveBeenCalledWith(undefined);
-            expect(errorSpy).not.toHaveBeenCalled();
-            expect(element.classList.contains('ngb-test-show')).toBe(false);
-            expectOpacity(element, '');  // <-- detached from DOM
-            done();
-          });
+      ngbRunTransition(zone, element, fadeFn, {animation: true, runningTransition: 'continue'}).subscribe({
+        next,
+        error,
+        complete: () => {
+          expect(component.componentInstance.onTransitionEnd).not.toHaveBeenCalled();  // <-- finished with timer
+          expect(next).toHaveBeenCalledWith(undefined);
+          expect(error).not.toHaveBeenCalled();
+          expect(element.classList.contains('ngb-test-show')).toBe(false);
+          expectOpacity(element, '');  // <-- detached from DOM
+          done();
+        }
+      });
 
       // detaching transitioning element from DOM
       expect(window.getComputedStyle(element).opacity).toBe('1');
@@ -403,19 +415,22 @@ if (isBrowserVisible('ngbRunTransition')) {
     it(`should read duration after the start function was executed`, (done) => {
       const startFn = ({classList}: HTMLElement) => classList.add('ngb-test-long-duration');
 
-      const nextSpy = createSpy();
-      const errorSpy = createSpy();
+      const next = createSpy();
+      const error = createSpy();
 
-      ngbRunTransition(zone, element, startFn, {animation: true, runningTransition: 'continue'})
-          .subscribe(nextSpy, errorSpy, () => {
-            // if duration is read before the 'startFn' is executed, it will be read as 0
-            expect(component.componentInstance.onTransitionEnd).toHaveBeenCalledTimes(1);
-            expect(nextSpy).toHaveBeenCalledWith(undefined);
-            expect(element.classList.contains('ngb-test-long-duration')).toBe(true);
-            expect(errorSpy).not.toHaveBeenCalled();
-            expectOpacity(element, '0');
-            done();
-          });
+      ngbRunTransition(zone, element, startFn, {animation: true, runningTransition: 'continue'}).subscribe({
+        next,
+        error,
+        complete: () => {
+          // if duration is read before the 'startFn' is executed, it will be read as 0
+          expect(component.componentInstance.onTransitionEnd).toHaveBeenCalledTimes(1);
+          expect(next).toHaveBeenCalledWith(undefined);
+          expect(element.classList.contains('ngb-test-long-duration')).toBe(true);
+          expect(error).not.toHaveBeenCalled();
+          expectOpacity(element, '0');
+          done();
+        }
+      });
 
       expect(window.getComputedStyle(element).opacity).toBe('1');
       expect(element.classList.contains('ngb-test-long-duration')).toBe(true);
@@ -433,20 +448,23 @@ if (isBrowserVisible('ngbRunTransition')) {
 
       element.classList.add('ngb-test-before');
 
-      const nextSpy = createSpy();
-      const errorSpy = createSpy();
+      const next = createSpy();
+      const error = createSpy();
 
-      ngbRunTransition(zone, element, startFn, {animation: true, runningTransition: 'continue'})
-          .subscribe(nextSpy, errorSpy, () => {
-            expect(component.componentInstance.onTransitionEnd).toHaveBeenCalledTimes(1);
-            expect(nextSpy).toHaveBeenCalledWith(undefined);
-            expect(element.classList.contains('ngb-test-before')).toBe(false);
-            expect(element.classList.contains('ngb-test-during')).toBe(false);
-            expect(element.classList.contains('ngb-test-after')).toBe(true);
-            expect(errorSpy).not.toHaveBeenCalled();
-            expectOpacity(element, '0');
-            done();
-          });
+      ngbRunTransition(zone, element, startFn, {animation: true, runningTransition: 'continue'}).subscribe({
+        next,
+        error,
+        complete: () => {
+          expect(component.componentInstance.onTransitionEnd).toHaveBeenCalledTimes(1);
+          expect(next).toHaveBeenCalledWith(undefined);
+          expect(element.classList.contains('ngb-test-before')).toBe(false);
+          expect(element.classList.contains('ngb-test-during')).toBe(false);
+          expect(element.classList.contains('ngb-test-after')).toBe(true);
+          expect(error).not.toHaveBeenCalled();
+          expectOpacity(element, '0');
+          done();
+        }
+      });
 
       expect(window.getComputedStyle(element).opacity).toBe('1');
       expect(element.classList.contains('ngb-test-before')).toBe(true);
@@ -499,8 +517,8 @@ if (isBrowserVisible('ngbRunTransition')) {
       const outerEl = fixture.componentInstance.outer.nativeElement;
       const innerEl = fixture.componentInstance.inner.nativeElement;
 
-      const nextSpy = createSpy();
-      const errorSpy = createSpy();
+      const next = createSpy();
+      const error = createSpy();
 
       spyOn(fixture.componentInstance, 'onTransitionInnerEnd');
       spyOn(fixture.componentInstance, 'onTransitionOuterEnd');
@@ -508,14 +526,18 @@ if (isBrowserVisible('ngbRunTransition')) {
       ngbRunTransition(zone, outerEl, () => {
         outerEl.classList.add('ngb-test-hide-outer');
         innerEl.classList.add('ngb-test-hide-inner');
-      }, {animation: true, runningTransition: 'continue'}).subscribe(nextSpy, errorSpy, () => {
-        expect(fixture.componentInstance.onTransitionOuterEnd).toHaveBeenCalledTimes(2);
-        expect(fixture.componentInstance.onTransitionInnerEnd).toHaveBeenCalledTimes(1);
-        expectOpacity(outerEl, '0');
-        expectOpacity(innerEl, '0');
-        expect(nextSpy).toHaveBeenCalledWith(undefined);
-        expect(errorSpy).not.toHaveBeenCalled();
-        done();
+      }, {animation: true, runningTransition: 'continue'}).subscribe({
+        next,
+        error,
+        complete: () => {
+          expect(fixture.componentInstance.onTransitionOuterEnd).toHaveBeenCalledTimes(2);
+          expect(fixture.componentInstance.onTransitionInnerEnd).toHaveBeenCalledTimes(1);
+          expectOpacity(outerEl, '0');
+          expectOpacity(innerEl, '0');
+          expect(next).toHaveBeenCalledWith(undefined);
+          expect(error).not.toHaveBeenCalled();
+          done();
+        }
       });
     });
   });

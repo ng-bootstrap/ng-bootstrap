@@ -7,6 +7,7 @@ import {NgbModalBackdrop} from './modal-backdrop';
 import {NgbModalWindow} from './modal-window';
 
 import {ContentRef} from '../util/popup';
+import {isPromise} from '../util/util';
 
 /**
  * A reference to the currently opened (active) modal.
@@ -98,7 +99,8 @@ export class NgbModalRef {
 
   constructor(
       private _windowCmptRef: ComponentRef<NgbModalWindow>, private _contentRef: ContentRef,
-      private _backdropCmptRef?: ComponentRef<NgbModalBackdrop>, private _beforeDismiss?: Function) {
+      private _backdropCmptRef?: ComponentRef<NgbModalBackdrop>,
+      private _beforeDismiss?: () => boolean | Promise<boolean>) {
     _windowCmptRef.instance.dismissEvent.subscribe((reason: any) => { this.dismiss(reason); });
 
     this.result = new Promise((resolve, reject) => {
@@ -138,7 +140,7 @@ export class NgbModalRef {
         this._dismiss(reason);
       } else {
         const dismiss = this._beforeDismiss();
-        if (dismiss && dismiss.then) {
+        if (isPromise(dismiss)) {
           dismiss.then(
               result => {
                 if (result !== false) {

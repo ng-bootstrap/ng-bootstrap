@@ -1,4 +1,4 @@
-// tslint:disable:deprecation
+/* eslint-disable deprecation/deprecation */
 import {Component} from '@angular/core';
 import {NgbTabsetConfig} from '@ng-bootstrap/ng-bootstrap';
 

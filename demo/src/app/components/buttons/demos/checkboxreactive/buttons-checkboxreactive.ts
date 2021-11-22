@@ -8,10 +8,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class NgbdButtonsCheckboxreactive {
   public checkboxGroupForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {}
-
-  ngOnInit() {
-    this.checkboxGroupForm = this.formBuilder.group({
+  constructor(formBuilder: FormBuilder) {
+    this.checkboxGroupForm = formBuilder.group({
       left: true,
       middle: false,
       right: false

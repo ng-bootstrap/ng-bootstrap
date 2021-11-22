@@ -12,7 +12,6 @@ import {
   imports: [BrowserModule, NgbModule],
   declarations: [NgbdModalFocus, NgbdModalConfirm, NgbdModalConfirmAutofocus],
   exports: [NgbdModalFocus],
-  bootstrap: [NgbdModalFocus],
-  entryComponents: [NgbdModalConfirm, NgbdModalConfirmAutofocus]
+  bootstrap: [NgbdModalFocus]
 })
 export class NgbdModalFocusModule {}

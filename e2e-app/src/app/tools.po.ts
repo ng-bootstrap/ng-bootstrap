@@ -1,4 +1,5 @@
 import {baseUrl, test} from '../../playwright.conf';
+import {errors} from 'playwright';
 
 /**
  * Sends keys to a currently focused element
@@ -97,7 +98,7 @@ export const getCaretPosition = async(selector: string) =>
 */
 export const timeoutMessage = (promise: Promise<any>, message: string) => {
   return promise.catch(e => {
-    if (e instanceof require('playwright').errors.TimeoutError) {
+    if (e instanceof errors.TimeoutError) {
       e.message += '\n' + message;
     }
     throw e;

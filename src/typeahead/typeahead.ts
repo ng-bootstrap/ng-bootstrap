@@ -1,6 +1,5 @@
 import {
   ChangeDetectorRef,
-  ComponentFactoryResolver,
   ComponentRef,
   Directive,
   ElementRef,
@@ -78,7 +77,7 @@ export class NgbTypeahead implements ControlValueAccessor,
     OnInit, OnChanges, OnDestroy {
   private _popupService: PopupService<NgbTypeaheadWindow>;
   private _subscription: Subscription | null = null;
-  private _closed$ = new Subject();
+  private _closed$ = new Subject<void>();
   private _inputValueBackup: string | null = null;
   private _valueChanges: Observable<string>;
   private _resubscribeTypeahead: BehaviorSubject<any>;
@@ -199,9 +198,9 @@ export class NgbTypeahead implements ControlValueAccessor,
 
   constructor(
       private _elementRef: ElementRef<HTMLInputElement>, viewContainerRef: ViewContainerRef,
-      private _renderer: Renderer2, injector: Injector, componentFactoryResolver: ComponentFactoryResolver,
-      config: NgbTypeaheadConfig, ngZone: NgZone, private _live: Live, @Inject(DOCUMENT) private _document: any,
-      private _ngZone: NgZone, private _changeDetector: ChangeDetectorRef, applicationRef: ApplicationRef) {
+      private _renderer: Renderer2, injector: Injector, config: NgbTypeaheadConfig, ngZone: NgZone, private _live: Live,
+      @Inject(DOCUMENT) private _document: any, private _ngZone: NgZone, private _changeDetector: ChangeDetectorRef,
+      applicationRef: ApplicationRef) {
     this.container = config.container;
     this.editable = config.editable;
     this.focusFirst = config.focusFirst;
@@ -214,8 +213,7 @@ export class NgbTypeahead implements ControlValueAccessor,
     this._resubscribeTypeahead = new BehaviorSubject(null);
 
     this._popupService = new PopupService<NgbTypeaheadWindow>(
-        NgbTypeaheadWindow, injector, viewContainerRef, _renderer, this._ngZone, componentFactoryResolver,
-        applicationRef);
+        NgbTypeaheadWindow, injector, viewContainerRef, _renderer, this._ngZone, applicationRef);
 
     this._zoneSubscription = ngZone.onStable.subscribe(() => { this._positioning.update(); });
   }
@@ -279,7 +277,7 @@ export class NgbTypeahead implements ControlValueAccessor,
       return;
     }
 
-    // tslint:disable-next-line:deprecation
+    /* eslint-disable-next-line deprecation/deprecation */
     switch (event.which) {
       case Key.ArrowDown:
         event.preventDefault();
@@ -292,7 +290,7 @@ export class NgbTypeahead implements ControlValueAccessor,
         this._showHint();
         break;
       case Key.Enter:
-      case Key.Tab:
+      case Key.Tab: {
         const result = this._windowRef !.instance.getActive();
         if (isDefined(result)) {
           event.preventDefault();
@@ -301,6 +299,7 @@ export class NgbTypeahead implements ControlValueAccessor,
         }
         this._closePopup();
         break;
+      }
     }
   }
 

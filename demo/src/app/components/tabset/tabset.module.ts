@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { NgModule } from '@angular/core';
 
 import { NgbdSharedModule } from '../../shared';
@@ -100,8 +101,7 @@ export const ROUTES = [
     NgbdTabsetJustifyModule,
     NgbdTabsetOrientationModule
   ],
-  declarations: [NgbdTabsetWarningComponent],
-  entryComponents: [NgbdTabsetWarningComponent]
+  declarations: [NgbdTabsetWarningComponent]
 })
 export class NgbdTabsetModule {
   constructor(demoList: NgbdDemoList) {

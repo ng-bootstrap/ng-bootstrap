@@ -227,7 +227,7 @@ if (isBrowserVisible('ngb-alert animations')) {
   });
 }
 
-@Component({selector: 'test-cmp', template: '', entryComponents: [NgbAlert]})
+@Component({selector: 'test-cmp', template: ''})
 class TestComponent {
   name = 'World';
   closed = false;

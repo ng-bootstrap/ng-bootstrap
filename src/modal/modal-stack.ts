@@ -24,7 +24,7 @@ import {NgbModalWindow} from './modal-window';
 
 @Injectable({providedIn: 'root'})
 export class NgbModalStack {
-  private _activeWindowCmptHasChanged = new Subject();
+  private _activeWindowCmptHasChanged = new Subject<void>();
   private _ariaHiddenValues: Map<Element, string | null> = new Map();
   private _backdropAttributes = ['animation', 'backdropClass'];
   private _modalRefs: NgbModalRef[] = [];
@@ -49,7 +49,8 @@ export class NgbModalStack {
     });
   }
 
-  open(moduleCFR: ComponentFactoryResolver, contentInjector: Injector, content: any, options): NgbModalRef {
+  open(moduleCFR: ComponentFactoryResolver, contentInjector: Injector, content: any, options: NgbModalOptions):
+      NgbModalRef {
     const containerEl = options.container instanceof HTMLElement ? options.container : isDefined(options.container) ?
                                                                    this._document.querySelector(options.container) :
                                                                    this._document.body;
@@ -119,7 +120,7 @@ export class NgbModalStack {
     return windowCmptRef;
   }
 
-  private _applyWindowOptions(windowInstance: NgbModalWindow, options: Object): void {
+  private _applyWindowOptions(windowInstance: NgbModalWindow, options: NgbModalOptions): void {
     this._windowAttributes.forEach((optionName: string) => {
       if (isDefined(options[optionName])) {
         windowInstance[optionName] = options[optionName];
@@ -127,7 +128,7 @@ export class NgbModalStack {
     });
   }
 
-  private _applyBackdropOptions(backdropInstance: NgbModalBackdrop, options: Object): void {
+  private _applyBackdropOptions(backdropInstance: NgbModalBackdrop, options: NgbModalOptions): void {
     this._backdropAttributes.forEach((optionName: string) => {
       if (isDefined(options[optionName])) {
         backdropInstance[optionName] = options[optionName];

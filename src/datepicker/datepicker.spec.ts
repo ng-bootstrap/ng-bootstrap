@@ -1,5 +1,5 @@
 import {TestBed, ComponentFixture, inject, fakeAsync, tick} from '@angular/core/testing';
-import {createGenericTestComponent} from '../test/common';
+import {createGenericTestComponent, triggerEvent} from '../test/common';
 import {getMonthSelect, getYearSelect, getNavigationLinks} from '../test/datepicker/common';
 
 import {Component, TemplateRef, DebugElement} from '@angular/core';
@@ -12,7 +12,7 @@ import {NgbDatepickerConfig} from './datepicker-config';
 import {NgbDatepicker, NgbDatepickerState} from './datepicker';
 import {DayTemplateContext} from './datepicker-day-template-context';
 import {NgbDateStruct} from './ngb-date-struct';
-import {NgbDatepickerMonth} from './datepicker-month';
+import {NgbDatepickerMonth} from './datepicker';
 import {NgbDatepickerDayView} from './datepicker-day-view';
 import {NgbDatepickerKeyboardService} from './datepicker-keyboard-service';
 import {NgbDatepickerNavigationSelect} from './datepicker-navigation-select';
@@ -49,9 +49,7 @@ function getWeekdays(element: HTMLElement): string[] {
 
 function focusDay() {
   const element = document.querySelector('div.ngb-dp-day[tabindex="0"]') as HTMLElement;
-  const evt = document.createEvent('Event');
-  evt.initEvent('focusin', true, false);
-  element.dispatchEvent(evt);
+  triggerEvent(element, 'focusin');
   element.focus();
 }
 
@@ -1266,6 +1264,7 @@ describe('ngb-datepicker', () => {
     it('should prevent overriding of calendar', () => {
       try {
         (<any>dp)['calendar'] = null;
+        /* eslint-disable-next-line no-empty */
       } catch (e) {
       }
       expect(dp.calendar).toBeTruthy();

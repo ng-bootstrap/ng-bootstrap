@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import {Component} from '@angular/core';
 
 import {Snippet} from '../../../shared/code/snippet';

@@ -32,7 +32,7 @@ export class NgbDatepickerI18nBuddhist extends NgbDatepickerI18n {
 
   getMonthFullName(month: number): string { return this._monthsFull[month - 1] || ''; }
 
-  getWeekdayLabel(weekday: number, width?: TranslationWidth) {
+  getWeekdayLabel(weekday: number) {
     return this._weekdaysShort[weekday - 1] || '';
   }
 

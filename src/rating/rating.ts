@@ -149,7 +149,7 @@ export class NgbRating implements ControlValueAccessor,
   }
 
   handleKeyDown(event: KeyboardEvent) {
-    // tslint:disable-next-line:deprecation
+    /* eslint-disable-next-line deprecation/deprecation */
     switch (event.which) {
       case Key.ArrowDown:
       case Key.ArrowLeft:

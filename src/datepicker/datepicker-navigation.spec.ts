@@ -1,6 +1,6 @@
 import {TestBed, ComponentFixture} from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
-import {createGenericTestComponent} from '../test/common';
+import {createGenericTestComponent, triggerEvent} from '../test/common';
 import {getMonthSelect, getYearSelect, getNavigationLinks} from '../test/datepicker/common';
 
 import {Component} from '@angular/core';
@@ -16,9 +16,7 @@ const createTestComponent = (html: string) =>
 
 function changeSelect(element: HTMLSelectElement, value: string) {
   element.value = value;
-  const evt = document.createEvent('HTMLEvents');
-  evt.initEvent('change', true, true);
-  element.dispatchEvent(evt);
+  triggerEvent(element, 'change');
 }
 
 describe('ngb-datepicker-navigation', () => {

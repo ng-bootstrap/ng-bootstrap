@@ -100,7 +100,7 @@ export class NgbRadio implements OnDestroy {
   /**
    * The form control value when current radio button is checked.
    */
-  @Input('value')
+  @Input()
   set value(value: any) {
     this._value = value;
     const stringValue = value ? value.toString() : '';
@@ -111,7 +111,7 @@ export class NgbRadio implements OnDestroy {
   /**
    * If `true`, current radio button will be disabled.
    */
-  @Input('disabled')
+  @Input()
   set disabled(isDisabled: boolean) {
     this._disabled = isDisabled !== false;
     this.updateDisabled();

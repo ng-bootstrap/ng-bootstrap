@@ -1,5 +1,4 @@
 import { Component, Injectable } from '@angular/core';
-import {TranslationWidth} from '@angular/common';
 import {
   NgbDateStruct, NgbCalendar, NgbCalendarIslamicUmalqura, NgbDatepickerI18n
 } from '@ng-bootstrap/ng-bootstrap';
@@ -18,7 +17,7 @@ export class IslamicI18n extends NgbDatepickerI18n {
     return MONTHS[month - 1];
   }
 
-  getWeekdayLabel(weekday: number, width?: TranslationWidth) {
+  getWeekdayLabel(weekday: number) {
     return WEEKDAYS[weekday - 1];
   }
 

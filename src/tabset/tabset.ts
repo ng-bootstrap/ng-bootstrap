@@ -1,4 +1,4 @@
-// tslint:disable:deprecation
+/* eslint-disable */
 import {
   AfterContentChecked,
   Component,
@@ -111,6 +111,7 @@ export interface NgbTabChangeEvent {
   exportAs: 'ngbTabset',
   encapsulation: ViewEncapsulation.None,
   template: `
+    <!-- eslint-disable -->
     <ul [class]="'nav nav-' + type + (orientation == 'horizontal'?  ' ' + justifyClass : ' flex-column')" role="tablist">
       <li class="nav-item" *ngFor="let tab of tabs">
         <a [id]="tab.id" class="nav-link" [class.active]="tab.id === activeId" [class.disabled]="tab.disabled"
