@@ -1,6 +1,6 @@
-# [12.0.0-beta.3](https://github.com/ng-bootstrap/ng-bootstrap/compare/11.0.0-rc.0...12.0.0-beta.3) (2021-11-22)
+# [12.0.0-beta.4](https://github.com/ng-bootstrap/ng-bootstrap/compare/11.0.0-rc.0...12.0.0-beta.4) (2021-11-22)
 
-This 3rd beta release for Bootstrap 5 adds Angular 13 support and uses Popper.js for positioning. Schematics are not yet updated for this version. 
+This 4th beta release for Bootstrap 5 adds Angular 13 support and uses Popper.js for positioning. Schematics are not yet updated for this version. 
 
 Apologies for the version mixup with this release, please use this guide:
 - ng-bootstrap 10 (stable) -> Angular 12 and Bootstrap 4
