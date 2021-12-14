@@ -1067,6 +1067,18 @@ describe('ngb-datepicker-service', () => {
       expect(model.focusDate).toEqual(new NgbDate(2017, 5, 10));
     });
 
+    it(`should move focus when it inside 'markDisabled'`, () => {
+      const testDisabledDate = new NgbDate(2017, 5, 5);
+      const testState = {
+        focusVisible: true,
+        minDate: testDisabledDate,
+        markDisabled: d => d && d.day === testDisabledDate.day
+      };
+      service.focus(testDisabledDate);
+      service.set(testState);
+      expect(model.focusDate).toEqual(calendar.getNext(testDisabledDate, 'd', 1));
+    });
+
     it(`should not rebuild a single month if newly focused date is visible`, () => {
       service.focus(new NgbDate(2017, 5, 5));
 

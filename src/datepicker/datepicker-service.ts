@@ -11,6 +11,7 @@ import {
   checkMinBeforeMax,
   generateSelectBoxMonths,
   generateSelectBoxYears,
+  getMinActiveDate,
   isChangedDate,
   isChangedMonth,
   isDateSelectable,
@@ -265,9 +266,15 @@ export class NgbDatepickerService {
       startDate = state.selectedDate;
     }
 
-    // terminate early if only focus visibility was changed
     if ('focusVisible' in patch) {
-      return state;
+      const {focusDate, focusVisible, maxDate, markDisabled} = state;
+      const skipFocusDateValidation = !focusVisible || !focusDate || !markDisabled;
+      if (skipFocusDateValidation) {
+        // terminate early if only focus visibility was changed
+        return state;
+      }
+      state.focusDate = getMinActiveDate(this._calendar, markDisabled, focusDate, maxDate);
+      startDate = state.focusDate;
     }
 
     // focus date changed
