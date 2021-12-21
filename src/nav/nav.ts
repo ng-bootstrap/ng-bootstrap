@@ -246,6 +246,7 @@ export class NgbNav implements AfterContentInit,
 
   @ContentChildren(NgbNavItem) items: QueryList<NgbNavItem>;
   @ContentChildren(forwardRef(() => NgbNavLink), {descendants: true}) links: QueryList<NgbNavLink>;
+  @ContentChildren(forwardRef(() => NgbNavButton), {descendants: true}) buttons: QueryList<NgbNavButton>;
 
   destroy$ = new Subject<void>();
   navItemChange$ = new Subject<NgbNavItem | null>();
@@ -410,6 +411,38 @@ export class NgbNavLink {
   constructor(
       @Attribute('role') public role: string, public navItem: NgbNavItem, public nav: NgbNav,
       public elRef: ElementRef) {}
+
+  hasNavItemClass() {
+    // with alternative markup we have to add `.nav-item` class, because `ngbNavItem` is on the ng-container
+    return this.navItem.elementRef.nativeElement.nodeType === Node.COMMENT_NODE;
+  }
+}
+
+
+/**
+ * A directive to put on the nav button.
+ *
+ * @since 11.0.0
+ */
+@Directive({
+  selector: 'button[ngbNavButton]',
+  host: {
+    '[id]': 'navItem.domId',
+    '[class.nav-link]': 'true',
+    '[class.nav-item]': 'hasNavItemClass()',
+    '[attr.role]': `role ? role : nav.roles ? 'tab' : undefined`,
+    'href': '',
+    '[class.active]': 'navItem.active',
+    '[class.disabled]': 'navItem.disabled',
+    '[attr.tabindex]': 'navItem.disabled ? -1 : undefined',
+    '[attr.aria-controls]': 'navItem.isPanelInDom() ? navItem.panelDomId : null',
+    '[attr.aria-selected]': 'navItem.active',
+    '[attr.aria-disabled]': 'navItem.disabled',
+    '(click)': 'nav.click(navItem); $event.preventDefault()'
+  }
+})
+export class NgbNavButton {
+  constructor(@Attribute('role') public role: string, public navItem: NgbNavItem, public nav: NgbNav) {}
 
   hasNavItemClass() {
     // with alternative markup we have to add `.nav-item` class, because `ngbNavItem` is on the ng-container

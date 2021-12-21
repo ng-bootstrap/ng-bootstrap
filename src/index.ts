@@ -100,6 +100,7 @@ export {
   NgbNavContentContext,
   NgbNavItem,
   NgbNavLink,
+  NgbNavButton,
   NgbNavModule,
   NgbNavOutlet,
   NgbNavPane
