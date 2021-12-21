@@ -431,7 +431,6 @@ export class NgbNavLink {
     '[class.nav-link]': 'true',
     '[class.nav-item]': 'hasNavItemClass()',
     '[attr.role]': `role ? role : nav.roles ? 'tab' : undefined`,
-    'href': '',
     '[class.active]': 'navItem.active',
     '[class.disabled]': 'navItem.disabled',
     '[attr.tabindex]': 'navItem.disabled ? -1 : undefined',
