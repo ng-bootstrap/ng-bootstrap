@@ -219,8 +219,6 @@ export class NgbInputDatepicker implements OnChanges,
 
   /**
    * A selector specifying the element the datepicker popup should be appended to.
-   *
-   * Currently only supports `"body"`.
    */
   @Input() container: string;
 
@@ -371,7 +369,7 @@ export class NgbInputDatepicker implements OnChanges,
 
       this._cRef.instance.setDisabledState(this.disabled);
 
-      if (this.container === 'body') {
+      if (this.container) {
         this._document.querySelector(this.container).appendChild(this._cRef.location.nativeElement);
       }
 
@@ -495,7 +493,7 @@ export class NgbInputDatepicker implements OnChanges,
     this._renderer.addClass(nativeElement, 'dropdown-menu');
     this._renderer.addClass(nativeElement, 'show');
 
-    if (this.container === 'body') {
+    if (this.container) {
       this._renderer.addClass(nativeElement, 'ngb-dp-body');
     }
 
@@ -545,6 +543,6 @@ export class NgbInputDatepicker implements OnChanges,
       throw new Error('ngbDatepicker could not find element declared in [positionTarget] to position against.');
     }
 
-    positionElements(hostElement, this._cRef.location.nativeElement, this.placement, this.container === 'body');
+    positionElements(hostElement, this._cRef.location.nativeElement, this.placement, !!this.container);
   }
 }
