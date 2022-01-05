@@ -11,7 +11,9 @@ interface ClientRect {
 }
 
 export class Positioning {
-  private getAllStyles(element: HTMLElement) { return window.getComputedStyle(element); }
+  private getAllStyles(element: HTMLElement) { 
+    return !!window ? window.getComputedStyle(element) : new CSSStyleDeclaration();
+  }
 
   private getStyle(element: HTMLElement, prop: string): string { return this.getAllStyles(element)[prop]; }
 
