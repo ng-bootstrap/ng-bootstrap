@@ -13,8 +13,8 @@ const BADGES = {
   selector: 'ngbd-api-docs-badge',
   template: `
     <h5>
-      <span *ngIf="deprecated" class="badge badge-secondary" >Deprecated {{ deprecated.version }}</span>&ngsp;
-      <span *ngIf="since" class="badge badge-info" >Since {{ since.version }}</span>&ngsp;
+      <span *ngIf="deprecated" class="badge bg-secondary" >Deprecated {{ deprecated.version }}</span>&ngsp;
+      <span *ngIf="since" class="badge bg-info" >Since {{ since.version }}</span>&ngsp;
       <span class="badge" [ngClass]="badgeClass">{{text}}</span>
     </h5>
   `,
@@ -32,6 +32,6 @@ export class NgbdApiDocsBadge {
   @Input()
   set type(type: string) {
     this.text = type;
-    this.badgeClass = `badge-${BADGES[type] || 'secondary'}`;
+    this.badgeClass = `bg-${BADGES[type] || 'secondary'}`;
   }
 }
