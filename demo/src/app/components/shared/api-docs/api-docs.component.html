@@ -38,8 +38,8 @@
         <tr *ngFor="let input of apiDocs.inputs" [class.deprecated]="input.deprecated">
           <td class="label-cell">
             <code>{{input.name}}</code><br>
-            <span *ngIf="input.since" class="badge badge-info">since {{ input.since.version }}</span>&ngsp;
-            <span *ngIf="input.deprecated" class="badge badge-secondary">deprecated {{ input.deprecated.version }}</span>
+            <span *ngIf="input.since" class="badge bg-info">since {{ input.since.version }}</span>&ngsp;
+            <span *ngIf="input.deprecated" class="badge bg-secondary">deprecated {{ input.deprecated.version }}</span>
           </td>
           <td class="content-cell">
             <p *ngIf="input.deprecated">{{ input.deprecated.description }}</p>
@@ -68,8 +68,8 @@
           <tr *ngFor="let output of apiDocs.outputs" [class.deprecated]="output.deprecated">
             <td class="label-cell">
               <code>{{output.name}}</code><br>
-              <span *ngIf="output.since" class="badge badge-info">since {{ output.since.version }}</span>&ngsp;
-              <span *ngIf="output.deprecated" class="badge badge-secondary">deprecated {{ output.deprecated.version }}</span>
+              <span *ngIf="output.since" class="badge bg-info">since {{ output.since.version }}</span>&ngsp;
+              <span *ngIf="output.deprecated" class="badge bg-secondary">deprecated {{ output.deprecated.version }}</span>
             </td>
             <td class="content-cell">
               <p *ngIf="output.deprecated">{{ output.deprecated.description }}</p>
@@ -89,8 +89,8 @@
           <tr *ngFor="let method of apiDocs.methods" [class.deprecated]="method.deprecated">
             <td class="label-cell">
               <code>{{method.name}}</code><br>
-              <span *ngIf="method.since" class="badge badge-info">since {{ method.since.version }}</span>&ngsp;
-              <span *ngIf="method.deprecated" class="badge badge-secondary">deprecated {{ method.deprecated.version }}</span>
+              <span *ngIf="method.since" class="badge bg-info">since {{ method.since.version }}</span>&ngsp;
+              <span *ngIf="method.deprecated" class="badge bg-secondary">deprecated {{ method.deprecated.version }}</span>
             </td>
             <td class="content-cell">
                 <p class="signature">
