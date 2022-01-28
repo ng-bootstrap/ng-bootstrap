@@ -38,6 +38,7 @@ jobs:
           name: test-videos
           path: test-videos
         if: ${{ always() }}
+      - run: cat $LOGS_DIR/*
       - run: ./scripts/sauce_connect_block.sh
       - run: yarn saucelabs
       - run: ./scripts/sauce_connect_teardown.sh
