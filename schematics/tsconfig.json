@@ -1,11 +1,10 @@
 {
+  "extends": "../tsconfig.json",
   "compilerOptions": {
     "rootDir": "./",
     "baseUrl": "./",
     "outDir": "dist",
-    "sourceMap": true,
     "module": "commonjs",
-    "moduleResolution": "node",
     "noEmitOnError": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": false,
@@ -14,20 +13,9 @@
     "noUnusedLocals": true,
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
-    "strict": true,
-    "target": "es2015",
-    "types": [
-      "node"
-    ],
-    "lib": [
-      "es2018",
-      "dom"
-    ]
+    "strict": true
   },
   "include": [
     "./**/*.ts"
-  ],
-  "exclude": [
-    "./**/*.spec.ts"
   ]
 }

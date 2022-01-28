@@ -2,6 +2,16 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /bootstrap\.css$/,
+        use: [
+          {
+            // This loader is used to remove from bootstrap during the e2e-app build
+            // the :lang(en) selector that causes a warning.
+            loader: require.resolve('./removeLangSelector'),
+          },
+        ],
+      },
+      {
         test: /\.(js|ts)$/,
         use: [
           {
