@@ -225,7 +225,7 @@ describe('Datepicker', () => {
     } catch (e) {
       message = e.message;
     }
-    expect(message).toContain('checking that element receives pointer events');
+    expect(message).toContain('intercepts pointer events');
   });
 
   describe('Keyboard', () => {
