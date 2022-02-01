@@ -14,7 +14,7 @@ const BADGES = {
   template: `
     <h5>
       <span *ngIf="deprecated" class="badge bg-secondary" >Deprecated {{ deprecated.version }}</span>&ngsp;
-      <span *ngIf="since" class="badge bg-info" >Since {{ since.version }}</span>&ngsp;
+      <span *ngIf="since" class="badge bg-info text-dark" >Since {{ since.version }}</span>&ngsp;
       <span class="badge" [ngClass]="badgeClass">{{text}}</span>
     </h5>
   `,

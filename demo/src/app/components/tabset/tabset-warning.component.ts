@@ -9,8 +9,8 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
         <svg:svg ngbdIcon="lightbulb" fill="currentColor" />
       </div>
       <div>
-        Tabset is deprecated since version <span class="badge bg-info">6.0.0</span>
-        and is removed in <span class="badge bg-info">8.0.0</span>.
+        Tabset is deprecated since version <span class="badge bg-info text-dark">6.0.0</span>
+        and is removed in <span class="badge bg-info text-dark">8.0.0</span>.
         Please use <a routerLink="/components/nav">Nav directives</a> as a more flexible alternative.
       </div>
     </ngb-alert>
