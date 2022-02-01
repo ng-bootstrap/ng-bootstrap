@@ -32,7 +32,7 @@
         <tr *ngFor="let prop of apiDocs.properties" [class.deprecated]="prop.deprecated">
           <td class="label-cell">
             <code>{{prop.name}}</code><br>
-            <span *ngIf="prop.since" class="badge bg-info">since {{ prop.since.version }}</span>&ngsp;
+            <span *ngIf="prop.since" class="badge bg-info text-dark">since {{ prop.since.version }}</span>&ngsp;
             <span *ngIf="prop.deprecated" class="badge bg-secondary">deprecated {{ prop.deprecated.version }}</span>
           </td>
           <td class="content-cell">
@@ -61,7 +61,7 @@
           <tr *ngFor="let method of apiDocs.methods" [class.deprecated]="method.deprecated">
             <td class="label-cell">
               <code>{{method.name}}</code><br>
-              <span *ngIf="method.since" class="badge bg-info">since {{ method.since.version }}</span>&ngsp;
+              <span *ngIf="method.since" class="badge bg-info text-dark">since {{ method.since.version }}</span>&ngsp;
               <span *ngIf="method.deprecated" class="badge bg-secondary">deprecated {{ method.deprecated.version }}</span>
             </td>
             <td class="content-cell">
