@@ -2,7 +2,7 @@
   <li *ngFor="let id of tabs" [ngbNavItem]="id">
     <a ngbNavLink>
       Tab {{ id }}
-      <span class="close position-relative ps-2 fw-light" (click)="close($event, id)">×</span>
+      <span class="btn-close ms-2 fw-light" (click)="close($event, id)"></span>
     </a>
     <ng-template ngbNavContent>
       <p>Tab {{ id }} content</p>
