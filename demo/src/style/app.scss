@@ -49,7 +49,7 @@ header.navbar {
   position: sticky;
   top: 1rem;
   max-height: calc(100vh - 4rem);
-  margin-right: -1rem;
+  margin-right: calc(var(--bs-gutter-x) * -0.5);
   overflow-x: hidden;
   overflow-y: auto;
   z-index: 1;
