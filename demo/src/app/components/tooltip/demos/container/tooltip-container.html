@@ -3,14 +3,16 @@
 </p>
 
 <div class="row">
-	<div class="card px-1 py-5">
-		<button type="button" class="btn btn-outline-secondary mb-2"
-						ngbTooltip="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
-			Default tooltip
-		</button>
-		<button type="button" class="btn btn-outline-secondary"
-						ngbTooltip="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." container="body">
-			Tooltip appended to body
-		</button>
+	<div class="col-auto">
+		<div class="card px-1 py-5">
+			<button type="button" class="btn btn-outline-secondary mb-2" placement="top"
+							ngbTooltip="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
+				Default tooltip
+			</button>
+			<button type="button" class="btn btn-outline-secondary" placement="bottom"
+							ngbTooltip="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." container="body">
+				Tooltip appended to body
+			</button>
+		</div>
 	</div>
 </div>

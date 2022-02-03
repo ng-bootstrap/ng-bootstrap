@@ -3,14 +3,16 @@
 </p>
 
 <div class="row">
-	<div class="card px-1 py-5">
-		<button type="button" class="btn btn-outline-secondary mb-2"
-						ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
-			Default popover
-		</button>
-		<button type="button" class="btn btn-outline-secondary"
-						ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." container="body">
-			Popover appended to body
-		</button>
+	<div class="col-auto">
+		<div class="card px-1 py-5">
+			<button type="button" class="btn btn-outline-secondary mb-2" placement="top"
+							ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
+				Default popover
+			</button>
+			<button type="button" class="btn btn-outline-secondary" placement="bottom"
+							ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." container="body">
+				Popover appended to body
+			</button>
+		</div>
 	</div>
 </div>
