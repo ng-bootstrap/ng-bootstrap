@@ -31,18 +31,20 @@
   <br>
 
   <p>
-    Bootstrap uses <code>popper.js</code> library for positioning. We decided not to have any dependencies on 3rd
-    party libraries, so we implement a subset of the same functionality ourselves. If something is missing or you
-    have a very specific use case - please open an issue on GitHub and we'll discuss.
+    Bootstrap uses <code>popper.js</code> library for positioning. Before version <code>12.0.0</code>, as we did not want to have any dependencies on 3rd
+    party libraries, we had implemented a subset of the same functionalities ourselves.
   </p>
 
-  <ngb-alert [dismissible]="false" type="warning">
-    Since version <code>4.1</code> we position the popup using <code>position: absolute; transform: translate(x,y);
+  <p>
+    From version <code>4.1</code> to version <code>11</code> we positioned the popup using <code>position: absolute; transform: translate(x,y);
     </code> to match Bootstrap.
-    <br><br>
-    The position is calculated after popup opening when the zone is stable. At the moment we don't reposition the popup
-    on scrolling. It might be supported in future releases, please vote for issues.
-  </ngb-alert>
+    <br>
+    The position was calculated after popup opening when the zone is stable. We didn't reposition the popup on scrolling.
+  </p>
+
+  <p>
+    Since version <code>12.0.0</code> with Bootstrap 5 support, the positioning is done with <a href="https://popper.js.org/">popper v2</a>. <code>@popperjs/core</code> is defined as a peer dependency, so be sure to include it in your package.json.
+  </p>
 
   <ngbd-page-header title="API" fragment="api"></ngbd-page-header>
 
@@ -74,8 +76,8 @@
   <br>
 
   <p>
-    There also a special <code>"auto"</code> property, that is equal to <code>"top", "top-left", "top-right", "bottom",
-    "bottom-left", "bottom-right", "left", "left-top", "left-bottom", "right", "right-top", "right-bottom"</code>
+    There is also a special <code>"auto"</code> property, that is equal to <code>"top", "bottom", "start", "end", "top-start", "top-end",
+      "bottom-start", "bottom-end", "start-top", "start-bottom", "end-top", "end-bottom"</code>
   </p>
 
   <ngbd-code lang="html" [snippet]="auto"></ngbd-code>
