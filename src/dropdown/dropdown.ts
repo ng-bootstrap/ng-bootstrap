@@ -516,7 +516,14 @@ export class NgbDropdown implements AfterContentInit, OnChanges, OnDestroy {
       // remove the current placement classes
       renderer.removeClass(dropdownElement, 'dropup');
       renderer.removeClass(dropdownElement, 'dropdown');
-      menu.placement = this.display === 'static' ? null : placement;
+      const {nativeElement} = menu;
+      if (this.display === 'static') {
+        menu.placement = null;
+        renderer.setAttribute(nativeElement, 'data-bs-popper', 'static');
+      } else {
+        menu.placement = placement;
+        renderer.removeAttribute(nativeElement, 'data-bs-popper');
+      }
 
       /*
       * apply the new placement
