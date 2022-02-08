@@ -56,7 +56,7 @@ export class NgbModalStack {
                                                                    this._document.body;
     const renderer = this._rendererFactory.createRenderer(null, null);
 
-    const revertPaddingForScrollBar = this._scrollBar.compensate();
+    const revertScrollBar = this._scrollBar.hide();
     const removeBodyClass = () => {
       if (!this._modalRefs.length) {
         renderer.removeClass(this._document.body, 'modal-open');
@@ -79,7 +79,7 @@ export class NgbModalStack {
 
     this._registerModalRef(ngbModalRef);
     this._registerWindowCmpt(windowCmptRef);
-    ngbModalRef.result.then(revertPaddingForScrollBar, revertPaddingForScrollBar);
+    ngbModalRef.result.then(revertScrollBar, revertScrollBar);
     ngbModalRef.result.then(removeBodyClass, removeBodyClass);
     activeModal.close = (result: any) => { ngbModalRef.close(result); };
     activeModal.dismiss = (reason: any) => { ngbModalRef.dismiss(reason); };
