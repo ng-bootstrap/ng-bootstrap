@@ -122,7 +122,7 @@
   </p>
 
   <ul>
-    <li>Add <code>bootstrap</code> and <code>@ng-bootstrap/ng-bootstrap</code> dependencies from npm</li>
+    <li>Add <code>bootstrap</code>, <code>@popperjs/core</code> and <code>@ng-bootstrap/ng-bootstrap</code> dependencies from npm</li>
     <li>Install the <code>@angular/localize</code> polyfill</li>
     <li>Add bootstrap CSS/SCSS to your project (no javascript is required)</li>
     <li>Import <code>NgbModule</code> or any other component module like <code>NgbPaginationModule</code> in your
@@ -177,9 +177,12 @@
 
           <p>No, adding <code>bootstrap.js</code> or <code>bootstrap.min.js</code> is not necessary.</p>
 
-          The goal of ng-bootstrap is to <i>completely replace</i> JavaScript implementation for components.
-          Nor should you include other dependencies like jQuery or popper.js.
-          It is not necessary and might interfere with ng-bootstrap code.
+          <p>The goal of ng-bootstrap is to <i>completely replace</i> JavaScript implementation for components.
+          Nor should you include other dependencies like jQuery.
+          It is not necessary and might interfere with ng-bootstrap code.</p>
+
+          <p>Note that starting with ng-bootstrap 12 (with bootstrap 5 support), <code>@popperjs/core</code> is defined
+          as a peer dependency, so be sure to include it in your package.json.</p>
         </ngb-alert>
 
         <h5>@angular/localize polyfill</h5>
@@ -196,6 +199,15 @@
           <a href="https://angular.io/guide/i18n#setting-up-localization-with-the-angular-cli" target="_blank">the
             official documentation</a>.
         </p>
+
+        <h5>@popperjs/core dependency</h5>
+
+        <p>
+          If you're using ng-bootstrap &ge; 12.0.0,
+          you also have to install the <code>@popperjs/core</code> dependency:
+        </p>
+
+        <ngbd-code [snippet]="popperInstall"></ngbd-code>
 
         <h5>ng-bootstrap</h5>
 
