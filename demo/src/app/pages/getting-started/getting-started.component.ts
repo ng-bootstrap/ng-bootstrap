@@ -54,6 +54,11 @@ export class GettingStartedPage {
     code: `npm install @ng-bootstrap/ng-bootstrap`,
   });
 
+  popperInstall = Snippet({
+    lang: 'bash',
+    code: `npm install @popperjs/core`,
+  });
+
   polyfillInstall = Snippet({
     lang: 'bash',
     code: `ng add @angular/localize`,
