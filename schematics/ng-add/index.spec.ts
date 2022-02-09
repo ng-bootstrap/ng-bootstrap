@@ -22,6 +22,7 @@ describe(`ng add '@ng-bootstrap/ng-bootstrap'`, () => {
     expect(dependencies['@ng-bootstrap/ng-bootstrap']).toBeDefined('@ng-bootstrap/ng-bootstrap should be installed');
     expect(dependencies['bootstrap']).toBeDefined('bootstrap should be installed');
     expect(dependencies['@angular/localize']).toBeDefined('@angular/localize should be installed');
+    expect(dependencies['@popperjs/core']).toBeDefined('@popperjs/core should be installed');
   });
 
   it(`should report when specified 'project' is not found`, async() => {
