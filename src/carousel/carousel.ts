@@ -88,7 +88,7 @@ export class NgbSlide {
     </ol>
     <div class="carousel-inner">
       <div *ngFor="let slide of slides; index as i; count as c" class="carousel-item" [id]="'slide-' + slide.id" role="tabpanel">
-        <span class="sr-only" i18n="Currently selected slide number read by screen reader@@ngb.carousel.slide-number">
+        <span *ngIf="showSlideDescription" class="sr-only" i18n="Currently selected slide number read by screen reader@@ngb.carousel.slide-number">
           Slide {{i + 1}} of {{c}}
         </span>
         <ng-template [ngTemplateOutlet]="slide.tplRef"></ng-template>
@@ -195,6 +195,11 @@ export class NgbCarousel implements AfterContentChecked,
   @Input() showNavigationIndicators: boolean;
 
   /**
+   * If `true` slider descriptions above the slides will be visible
+   */
+  @Input() showSlideDescription: boolean;
+
+  /**
    * An event emitted just before the slide transition starts.
    *
    * See [`NgbSlideEvent`](#/components/carousel/api#NgbSlideEvent) for payload details.
@@ -234,6 +239,7 @@ export class NgbCarousel implements AfterContentChecked,
     this.pauseOnHover = config.pauseOnHover;
     this.pauseOnFocus = config.pauseOnFocus;
     this.showNavigationArrows = config.showNavigationArrows;
+    this.showSlideDescription = config.showSlideDescription;
     this.showNavigationIndicators = config.showNavigationIndicators;
   }
 

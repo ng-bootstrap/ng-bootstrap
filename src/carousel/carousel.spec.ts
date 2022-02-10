@@ -52,6 +52,7 @@ describe('ngb-carousel', () => {
     expect(carousel.pauseOnFocus).toBe(defaultConfig.pauseOnFocus);
     expect(carousel.showNavigationIndicators).toBe(defaultConfig.showNavigationIndicators);
     expect(carousel.showNavigationArrows).toBe(defaultConfig.showNavigationArrows);
+    expect(carousel.showSlideDescription).toBe(defaultConfig.showSlideDescription);
   });
 
   it('should render slides and navigation indicators', fakeAsync(() => {
