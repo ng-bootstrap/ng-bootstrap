@@ -8,6 +8,7 @@ const clickOutside = async() => await test.page.click('#outside-button');
 const rightClickOutside = async() => await test.page.click('#outside-button', {button: 'right'});
 
 const clickInside = async() => await test.page.click('div.popover-body');
+const clickInsideElements = async() => await test.page.click('h3');
 const rightClickInside = async() => await test.page.click('div.popover-body', {button: 'right'});
 
 const selectAutoClose = async(type: string) => {
@@ -61,6 +62,11 @@ describe('Popover Autoclose', () => {
     await openPopover(`Opening popover for inside click`);
     await clickInside();
     await expectPopoverToBeClosed(`Popover should be closed on inside click`);
+
+    // inside click elements
+    await openPopover(`Opening popover for inside click`);
+    await clickInsideElements();
+    await expectPopoverToBeClosed(`Popover should be closed on inside click`);
   });
 
   it(`should work when autoClose === false`, async() => {
@@ -78,6 +84,10 @@ describe('Popover Autoclose', () => {
     // inside click
     await clickInside();
     await expectPopoverToBeOpen(`Popover should NOT be closed on inside click`);
+
+    // inside click elements
+    await clickInsideElements();
+    await expectPopoverToBeOpen(`Popover should NOT be closed on inside click elements`);
   });
 
   it(`should work when autoClose === 'outside'`, async() => {
@@ -97,6 +107,10 @@ describe('Popover Autoclose', () => {
     await openPopover(`Opening popover for inside click`);
     await clickInside();
     await expectPopoverToBeOpen(`Popover should NOT be closed on inside click`);
+
+    // inside click elements
+    await clickInsideElements();
+    await expectPopoverToBeOpen(`Popover should NOT be closed on inside click`);
   });
 
   it(`should work when autoClose === 'inside'`, async() => {
@@ -113,6 +127,11 @@ describe('Popover Autoclose', () => {
     await expectPopoverToBeOpen(`Popover should NOT be closed on outside click`);
 
     // inside click
+    await clickInside();
+    await expectPopoverToBeClosed(`Popover should be closed on inside click`);
+
+    // inside click
+    await openPopover(`Opening popover for inside click elements`);
     await clickInside();
     await expectPopoverToBeClosed(`Popover should be closed on inside click`);
   });
