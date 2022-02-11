@@ -180,15 +180,7 @@ export class NgbInputDatepicker implements OnChanges,
   @Input() outsideDays: 'visible' | 'collapsed' | 'hidden';
 
   /**
-   * The preferred placement of the datepicker popup.
-   *
-   * Possible values are
-   * `"top"`, `"top-start"`, `"top-left"`, `"top-end"`, `"top-right"`,
-   * `"bottom"`, `"bottom-start"`, `"bottom-left"`, `"bottom-end"`, `"bottom-right"`,
-   * `"start"`, `left`, `"start-top"`, `"left-top"`, `"start-bottom"`, `"left-bottom"`,
-   * `"end"`, `"right"`, `"end-top"`, `"right-top"`, `"end-bottom"`, `"right-bottom"`
-   *
-   * Accepts an array of strings or a string with space separated possible values.
+   * The preferred placement of the datepicker popup, among the [possible values](#/guides/positioning#api).
    *
    * The default order of preference is `"bottom-start bottom-end top-start top-end"`
    *

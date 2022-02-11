@@ -173,13 +173,7 @@ export class NgbDropdown implements AfterContentInit, OnChanges, OnDestroy {
   @Input('open') _open = false;
 
   /**
-   * The preferred placement of the dropdown.
-   *
-   * Possible values are `"top"`, `"top-start"`, `"top-end"`, `"bottom"`, `"bottom-start"`,
-   * `"bottom-end"`, `"start"`, `"start-top"`, `"start-bottom"`, `"end"`, `"end-top"`,
-   * `"end-bottom"`
-   *
-   * Accepts an array of strings or a string with space separated possible values.
+   * The preferred placement of the dropdown, among the [possible values](#/guides/positioning#api).
    *
    * The default order of preference is `"bottom-start bottom-end top-start top-end"`
    *
