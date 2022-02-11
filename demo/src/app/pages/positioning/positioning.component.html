@@ -59,6 +59,22 @@
     Placement specifies where the popup should be positioned in the order of preference.
   </p>
 
+  <p>
+    Accepts an array of strings or a string with space separated values.
+  </p>
+
+  <p><span class="badge bg-info text-dark">since 12.0.0</span><br>Possible values are
+    <code>"top"</code>, <code>"top-start"</code>, <code>"top-left"</code>, <code>"top-end"</code>, <code>"top-right"</code>,
+    <code>"bottom"</code>, <code>"bottom-start"</code>, <code>"bottom-left"</code>, <code>"bottom-end"</code>, <code>"bottom-right"</code>,
+    <code>"start"</code>, <code>"left"</code>, <code>"start-top"</code>, <code>"left-top"</code>, <code>"start-bottom"</code>, <code>"left-bottom"</code>,
+    <code>"end"</code>, <code>"right"</code>, <code>"end-top"</code>, <code>"right-top"</code>, <code>"end-bottom"</code>, <code>"right-bottom"</code>
+  </p>
+
+  <p><span class="badge bg-secondary">before 12.0.0</span><br>Possible values were
+    <code>"top"</code>, <code>"top-left"</code>, <code>"top-right"</code>, <code>"bottom"</code>, <code>"bottom-left"</code>, <code>"bottom-right"</code>,
+    <code>"left"</code>, <code>"left-top"</code>, <code>"left-bottom"</code>, <code>"right"</code>, <code>"right-top"</code>, <code>"right-bottom"</code>
+  </p>
+
   <ul>
     <li>We go through the provided placements one-by-one an try to position the popup</li>
     <li>If it doesn't fit, we try the next one</li>
