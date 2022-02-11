@@ -9,7 +9,14 @@ export enum NgbSlideEventDirection {
   END = 'end'
 }
 
-export interface NgbCarouselCtx { direction: 'start' | 'end'; }
+export interface NgbCarouselCtx {
+  /**
+   * <span class="badge bg-info text-dark">since 12.0.0</span> Possible values are `'start' | 'end'`.
+   *
+   * <span class="badge bg-secondary">before 12.0.0</span> Possible values were `'left' | 'right'`.
+   */
+  direction: 'start' | 'end';
+}
 
 const isBeingAnimated = ({classList}: HTMLElement) => {
   return classList.contains('carousel-item-start') || classList.contains('carousel-item-end');
