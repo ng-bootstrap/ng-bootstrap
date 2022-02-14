@@ -3,8 +3,8 @@
   <ngbd-page-header title="Dependencies" fragment="dependencies" class="mt-0"></ngbd-page-header>
 
   <p>
-    The only two required dependencies are <a href="https://angular.io" target="_blank">Angular</a> and
-    <a href="https://getbootstrap.com" target="_blank">Bootstrap</a> CSS.
+    The only required dependencies are <a href="https://angular.io" target="_blank">Angular</a>,
+    <a href="https://getbootstrap.com" target="_blank">Bootstrap</a> CSS and <a href="https://popper.js.org/">Popper</a>.
     The supported versions are:
   </p>
 
@@ -14,12 +14,13 @@
         <th scope="col">ng-bootstrap</th>
         <th scope="col">Angular</th>
         <th scope="col">Bootstrap CSS</th>
+        <th scope="col">Popper</th>
       </tr>
     </thead>
     <tbody>
       <ng-template #showOlderVersions>
         <tr>
-          <td colspan="3" class="text-center p-1">
+          <td colspan="4" class="text-center p-1">
             <button class="btn btn-link m-0" (click)="olderVersionsCollapsed = false">Show older versions</button>
           </td>
         </tr>
@@ -29,57 +30,68 @@
           <th scope="row">1.x.x</th>
           <td>5.0.2</td>
           <td>4.0.0</td>
+          <td></td>
         </tr>
         <tr>
           <th scope="row">2.x.x</th>
           <td>6.0.0</td>
           <td>4.0.0</td>
+          <td></td>
         </tr>
         <tr>
           <th scope="row">3.x.x</th>
           <td>6.1.0</td>
           <td>4.0.0</td>
+          <td></td>
         </tr>
         <tr>
           <th scope="row">4.x.x</th>
           <td>7.0.0</td>
           <td>4.0.0</td>
+          <td></td>
         </tr>
         <tr>
           <th scope="row">5.x.x</th>
           <td>8.0.0</td>
           <td>4.3.1</td>
+          <td></td>
         </tr>
         <tr>
           <th scope="row">6.x.x</th>
           <td>9.0.0</td>
           <td>4.4.1</td>
+          <td></td>
         </tr>
       </ng-template>
       <tr>
         <th scope="row">7.x.x, 8.x.x</th>
         <td>10.0.0</td>
         <td>4.5.0</td>
+        <td></td>
       </tr>
       <tr>
         <th scope="row">9.x.x</th>
         <td>11.0.0</td>
         <td>4.5.0</td>
+        <td></td>
       </tr>
       <tr>
         <th scope="row">10.x.x</th>
         <td>12.0.0</td>
         <td>4.5.0</td>
+        <td></td>
       </tr>
       <tr>
         <th scope="row">11.x.x</th>
         <td>13.0.0</td>
         <td>4.6.0</td>
+        <td></td>
       </tr>
       <tr>
-        <th scope="row">12.0.0-beta.x</th>
+        <th scope="row">12.x.x</th>
         <td>13.0.0</td>
         <td>5.0.0</td>
+        <td>2.10.2</td>
       </tr>
     </tbody>
   </table>

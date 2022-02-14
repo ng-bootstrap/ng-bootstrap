@@ -6,8 +6,7 @@
 [![devDependency Status](https://david-dm.org/ng-bootstrap/ng-bootstrap/dev-status.svg?branch=master)](https://david-dm.org/ng-bootstrap/ng-bootstrap#info=devDependencies)
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/pkozlowski.svg)](https://saucelabs.com/u/pkozlowski)
 
-[Angular](https://angular.io/) widgets built from the ground up using only [Bootstrap 4](https://getbootstrap.com/) CSS with APIs designed for the Angular ecosystem.
-No dependencies on 3rd party JavaScript.
+[Angular](https://angular.io/) widgets built from the ground up using only [Bootstrap 5](https://getbootstrap.com/) CSS with APIs designed for the Angular ecosystem.
 
 Please check our [demo site](https://ng-bootstrap.github.io) and the list of
 [issues](https://github.com/ng-bootstrap/ng-bootstrap/issues) to see all the things we are working on. Feel free to make comments there.
@@ -30,22 +29,22 @@ Please check all components we have in action at https://ng-bootstrap.github.io
 
 ## Dependencies
 
-The only two dependencies are [Angular](https://angular.io) and [Bootstrap 4](https://getbootstrap.com) CSS.
+The only dependencies are [Angular](https://angular.io), [Bootstrap 5](https://getbootstrap.com) CSS and [Popper](https://popper.js.org/).
 The supported versions are:
 
-| ng-bootstrap | Angular | Bootstrap CSS |
-| ------------ | ------- | ------------- |
-| 1.x.x        | 5.0.2   | 4.0.0         |
-| 2.x.x        | 6.0.0   | 4.0.0         |
-| 3.x.x        | 6.1.0   | 4.0.0         |
-| 4.x.x        | 7.0.0   | 4.0.0         |
-| 5.x.x        | 8.0.0   | 4.3.1         |
-| 6.x.x        | 9.0.0   | 4.4.1         |
-| 7.x.x, 8.x.x | 10.0.0  | 4.5.0         |
-| 9.0.0        | 11.0.0  | 4.5.0         |
-| 10.0.0       | 12.0.0  | 4.5.0         |
-| 11.0.0       | 13.0.0  | 4.6.0         |
-| 12.0.0-beta.x| 13.0.0  | 5.0.0         |
+| ng-bootstrap | Angular | Bootstrap CSS | Popper |
+| ------------ | ------- | ------------- | -------|
+| 1.x.x        | 5.0.2   | 4.0.0         |        |
+| 2.x.x        | 6.0.0   | 4.0.0         |        |
+| 3.x.x        | 6.1.0   | 4.0.0         |        |
+| 4.x.x        | 7.0.0   | 4.0.0         |        |
+| 5.x.x        | 8.0.0   | 4.3.1         |        |
+| 6.x.x        | 9.0.0   | 4.4.1         |        |
+| 7.x.x, 8.x.x | 10.0.0  | 4.5.0         |        |
+| 9.x.x        | 11.0.0  | 4.5.0         |        |
+| 10.x.x       | 12.0.0  | 4.5.0         |        |
+| 11.x.x       | 13.0.0  | 4.6.0         |        |
+| 12.x.x       | 13.0.0  | 5.0.0         | 2.10.2 |
 
 ## Installation
 
