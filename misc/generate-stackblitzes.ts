@@ -16,6 +16,7 @@ const versions = {
   rxjs: getVersion('rxjs'),
   zoneJs: getVersion('zone.js'),
   bootstrap: getVersion('bootstrap'),
+  popper: getVersion('@popperjs/core'),
   prismjs: getVersion('prismjs')
 };
 
@@ -62,6 +63,7 @@ const initialData = {
     '@angular/forms': versions.angular,
     '@angular/localize': versions.angular,
     '@ng-bootstrap/ng-bootstrap': versions.ngBootstrap,
+    '@popperjs/core': versions.popper,
     'rxjs': versions.rxjs,
     'typescript': versions.typescript,
     'zone.js': versions.zoneJs,
