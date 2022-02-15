@@ -10,10 +10,12 @@ import {Schema} from './schema';
 import * as messages from './messages';
 import {addPackageToPackageJson, getPackageVersionFromPackageJson} from '../utils/package-config';
 
-
-const NG_BOOTSTRAP_VERSION = '12.0.0';
-const BOOTSTRAP_VERSION = '5.1.3';
-const POPPERJS_CORE_VERSION = '2.10.2';
+const VERSIONS = {
+  // automatically filled from package.json during the build
+  NGBOOTSTRAP: "^0.0.0",
+  BOOTSTRAP: "^0.0.0",
+  POPPER: "^0.0.0"
+};
 
 /**
  * This is executed when `ng add @ng-bootstrap/ng-bootstrap` is run.
@@ -37,9 +39,9 @@ export default function ngAdd(options: Schema): Rule {
     const angularCoreVersion = getPackageVersionFromPackageJson(tree, '@angular/core') !;
     const angularLocalizeVersion = getPackageVersionFromPackageJson(tree, '@angular/localize');
 
-    addPackageToPackageJson(tree, '@ng-bootstrap/ng-bootstrap', `^${NG_BOOTSTRAP_VERSION}`);
-    addPackageToPackageJson(tree, 'bootstrap', `^${BOOTSTRAP_VERSION}`);
-    addPackageToPackageJson(tree, '@popperjs/core', `^${POPPERJS_CORE_VERSION}`);
+    addPackageToPackageJson(tree, '@ng-bootstrap/ng-bootstrap', VERSIONS.NGBOOTSTRAP);
+    addPackageToPackageJson(tree, 'bootstrap', VERSIONS.BOOTSTRAP);
+    addPackageToPackageJson(tree, '@popperjs/core', VERSIONS.POPPER);
 
     if (angularLocalizeVersion === null) {
       addPackageToPackageJson(tree, '@angular/localize', angularCoreVersion);
