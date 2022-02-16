@@ -68,6 +68,7 @@ export class NgbSlide {
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: {
+    '[id]': 'id',
     'class': 'carousel slide',
     '[style.display]': '"block"',
     'tabIndex': '0',
@@ -83,7 +84,10 @@ export class NgbSlide {
     <ol class="carousel-indicators" [class.visually-hidden]="!showNavigationIndicators" role="tablist">
       <li *ngFor="let slide of slides" [class.active]="slide.id === activeId"
           role="tab" [attr.aria-labelledby]="'slide-' + slide.id" [attr.aria-controls]="'slide-' + slide.id"
+          [attr.data-bs-target]="id"
+          [attr.data-bs-to]="'slide-' + slide.id"
           [attr.aria-selected]="slide.id === activeId"
+          [attr.aria-curent]="slide.id === activeId"
           (click)="focus();select(slide.id, NgbSlideEventSource.INDICATOR);"></li>
     </ol>
     <div class="carousel-inner">
@@ -118,6 +122,13 @@ export class NgbCarousel implements AfterContentChecked,
   private _pauseOnFocus$ = new BehaviorSubject(false);
   private _pause$ = new BehaviorSubject(false);
   private _wrap$ = new BehaviorSubject(false);
+
+  /**
+   * Carousel id that must be unique for the entire document.
+   *
+   * If not provided, will be generated in the `ngb-carousel-xx` format.
+   */
+  @Input() id = `ngb-carousel-${nextId++}`;
 
   /**
    * A flag to enable/disable the animations.

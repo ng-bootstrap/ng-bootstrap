@@ -45,6 +45,7 @@ describe('ngb-carousel', () => {
     const defaultConfig = new NgbCarouselConfig(new NgbConfig());
     const carousel = new NgbCarousel(new NgbCarouselConfig(new NgbConfig()), null, <any>null, <any>null, <any>null);
 
+    expect(carousel.id).toMatch(/^ngb-carousel-[0-9]+/);
     expect(carousel.interval).toBe(defaultConfig.interval);
     expect(carousel.wrap).toBe(defaultConfig.wrap);
     expect(carousel.keyboard).toBe(defaultConfig.keyboard);
