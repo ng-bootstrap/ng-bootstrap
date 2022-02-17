@@ -26,6 +26,7 @@ import {NgbModalWindow} from './modal-window';
 export class NgbModalStack {
   private _activeWindowCmptHasChanged = new Subject<void>();
   private _ariaHiddenValues: Map<Element, string | null> = new Map();
+  private _scrollBarRestoreFn: null | (() => void) = null;
   private _backdropAttributes = ['animation', 'backdropClass'];
   private _modalRefs: NgbModalRef[] = [];
   private _windowAttributes = [
@@ -49,6 +50,20 @@ export class NgbModalStack {
     });
   }
 
+  private _restoreScrollBar() {
+    const scrollBarRestoreFn = this._scrollBarRestoreFn;
+    if (scrollBarRestoreFn) {
+      this._scrollBarRestoreFn = null;
+      scrollBarRestoreFn();
+    }
+  }
+
+  private _hideScrollBar() {
+    if (!this._scrollBarRestoreFn) {
+      this._scrollBarRestoreFn = this._scrollBar.hide();
+    }
+  }
+
   open(moduleCFR: ComponentFactoryResolver, contentInjector: Injector, content: any, options: NgbModalOptions):
       NgbModalRef {
     const containerEl = options.container instanceof HTMLElement ? options.container : isDefined(options.container) ?
@@ -56,10 +71,10 @@ export class NgbModalStack {
                                                                    this._document.body;
     const renderer = this._rendererFactory.createRenderer(null, null);
 
-    const revertScrollBar = this._scrollBar.hide();
     const removeBodyClass = () => {
       if (!this._modalRefs.length) {
         renderer.removeClass(this._document.body, 'modal-open');
+        this._restoreScrollBar();
         this._revertAriaHidden();
       }
     };
@@ -67,6 +82,8 @@ export class NgbModalStack {
     if (!containerEl) {
       throw new Error(`The specified modal container "${options.container || 'body'}" was not found in the DOM.`);
     }
+
+    this._hideScrollBar();
 
     const activeModal = new NgbActiveModal();
     const contentRef =
@@ -79,7 +96,6 @@ export class NgbModalStack {
 
     this._registerModalRef(ngbModalRef);
     this._registerWindowCmpt(windowCmptRef);
-    ngbModalRef.result.then(revertScrollBar, revertScrollBar);
     ngbModalRef.result.then(removeBodyClass, removeBodyClass);
     activeModal.close = (result: any) => { ngbModalRef.close(result); };
     activeModal.dismiss = (reason: any) => { ngbModalRef.dismiss(reason); };
