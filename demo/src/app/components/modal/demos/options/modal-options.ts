@@ -54,4 +54,8 @@ export class NgbdModalOptions {
   openModalDialogCustomClass(content) {
     this.modalService.open(content, { modalDialogClass: 'dark-modal' });
   }
+
+  openModalContentCustomClass(content) {
+    this.modalService.open(content, { modalContentClass: 'bg-info border-0' });
+  }
 }

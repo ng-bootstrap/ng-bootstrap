@@ -36,7 +36,7 @@ import {reflow} from '../util/util';
   template: `
     <div #dialog [class]="'modal-dialog' + (size ? ' modal-' + size : '') + (centered ? ' modal-dialog-centered' : '') +
      (scrollable ? ' modal-dialog-scrollable' : '') + (modalDialogClass ? ' ' + modalDialogClass : '')" role="document">
-        <div class="modal-content"><ng-content></ng-content></div>
+        <div [class]="'modal-content' + (modalContentClass ? ' ' + modalContentClass : '')"><ng-content></ng-content></div>
     </div>
     `,
   encapsulation: ViewEncapsulation.None,
@@ -59,6 +59,7 @@ export class NgbModalWindow implements OnInit,
   @Input() size: string;
   @Input() windowClass: string;
   @Input() modalDialogClass: string;
+  @Input() modalContentClass: string;
 
   @Output('dismiss') dismissEvent = new EventEmitter();
 
