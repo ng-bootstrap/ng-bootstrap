@@ -25,7 +25,6 @@ module.exports = [
     plugins: [
       replace({
         preventAssignment: true,
-        "VERSIONS.NGBOOTSTRAP": version(pkg.version),
         "VERSIONS.BOOTSTRAP": version(pkg.devDependencies.bootstrap),
         "VERSIONS.POPPER": version(pkg.devDependencies["@popperjs/core"]),
       }),
