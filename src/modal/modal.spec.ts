@@ -297,6 +297,32 @@ describe('ngb-modal', () => {
            expect(document.body).not.toHaveCssClass('modal-open');
          }));
 
+      it('should remove / restore scroll bar when multiple stacked modals are open and closed', fakeAsync(() => {
+           expect(window.getComputedStyle(document.body).overflow).not.toBe('hidden');
+           const modal1Ref = fixture.componentInstance.open('bar');
+           fixture.detectChanges();
+           expect(document.body).toHaveCssClass('modal-open');
+           expect(window.getComputedStyle(document.body).overflow).toBe('hidden');
+
+           const modal2Ref = fixture.componentInstance.open('baz');
+           fixture.detectChanges();
+           tick();
+           expect(document.body).toHaveCssClass('modal-open');
+           expect(window.getComputedStyle(document.body).overflow).toBe('hidden');
+
+           modal1Ref.close('bar result');
+           fixture.detectChanges();
+           tick();
+           expect(document.body).toHaveCssClass('modal-open');
+           expect(window.getComputedStyle(document.body).overflow).toBe('hidden');
+
+           modal2Ref.close('baz result');
+           fixture.detectChanges();
+           tick();
+           expect(document.body).not.toHaveCssClass('modal-open');
+           expect(window.getComputedStyle(document.body).overflow).not.toBe('hidden');
+         }));
+
       it('should not throw when close called multiple times', () => {
         const modalInstance = fixture.componentInstance.open('foo');
         fixture.detectChanges();
