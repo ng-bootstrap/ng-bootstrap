@@ -1,37 +1,38 @@
-import {test} from '../../../playwright.conf';
+import {expect} from '@playwright/test';
+import {getPage} from '../../../baseTest';
 
 const SELECTOR_DROPDOWN = '[ngbDropdown]';
 
 const expectDropdownToBeVisible = async(message: string, selector: string, toBody: boolean) => {
   if (toBody) {
-    await test.page.waitForSelector(`body > div > [ngbDropdownMenu]`);
+    await getPage().waitForSelector(`body > div > [ngbDropdownMenu]`);
   } else {
-    await test.page.waitForSelector(`${selector} >> [ngbDropdownItem]`);
+    await getPage().waitForSelector(`${selector} >> [ngbDropdownItem]`);
   }
-  expect(await isDropdownOpened(selector)).toBeTruthy(message);
+  expect(await isDropdownOpened(selector), message).toBeTruthy();
 };
 
 const expectDropdownToBeHidden = async(message: string, selector: string, toBody: boolean) => {
   if (toBody) {
-    await test.page.waitForSelector(`body > div > [ngbDropdownMenu]`, {state: 'hidden'});
+    await getPage().waitForSelector(`body > div > [ngbDropdownMenu]`, {state: 'hidden'});
   } else {
-    await test.page.waitForSelector(`${selector} >> [ngbDropdownItem]`, {state: 'hidden'});
+    await getPage().waitForSelector(`${selector} >> [ngbDropdownItem]`, {state: 'hidden'});
   }
-  expect(await isDropdownOpened(selector)).toBeFalsy(message);
+  expect(await isDropdownOpened(selector), message).toBeFalsy();
 };
 
 export const isDropdownOpened = async(selector = SELECTOR_DROPDOWN) => {
-  const classNames = await test.page.getAttribute(selector, 'class');
+  const classNames = await getPage().getAttribute(selector, 'class');
   return classNames !.includes('show');
 };
 
 export const toggleDropdown = async(selector: string) => {
   const expectedState = !(await isDropdownOpened(selector));
-  await test.page.click(`${selector} >> [ngbDropdownToggle]`);
+  await getPage().click(`${selector} >> [ngbDropdownToggle]`);
   if (expectedState) {
-    expect(await isDropdownOpened(selector)).toBeTruthy(`Dropdown should have been opened`);
+    expect(await isDropdownOpened(selector), `Dropdown should have been opened`).toBeTruthy();
   } else {
-    expect(await isDropdownOpened(selector)).toBeFalsy(`Dropdown should have been closed`);
+    expect(await isDropdownOpened(selector), `Dropdown should have been closed`).toBeFalsy();
   }
 };
 

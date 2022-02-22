@@ -1,39 +1,40 @@
-import {openUrl} from '../../tools.po';
-import {test} from '../../../../playwright.conf';
+import {expect} from '@playwright/test';
+import {test, getPage, setPage} from '../../../../baseTest';
 import {SELECTOR_HOUR, SELECTOR_MIN, SELECTOR_SEC} from '../timepicker.po';
 
-describe('Timepicker Filter', () => {
+test.use({testURL: 'timepicker/filter', testSelector: 'h3:text("Timepicker filtering")'});
+test.beforeEach(async({page}) => setPage(page));
 
-  beforeEach(async() => await openUrl('timepicker/filter', 'h3:text("Timepicker filtering")'));
+test.describe('Timepicker Filter', () => {
 
   async function expectValue(expectedValue) {
-    const hh = await test.page.$eval(SELECTOR_HOUR, (el: HTMLInputElement) => el.value);
-    const mm = await test.page.$eval(SELECTOR_MIN, (el: HTMLInputElement) => el.value);
-    const ss = await test.page.$eval(SELECTOR_SEC, (el: HTMLInputElement) => el.value);
+    const hh = await getPage().$eval(SELECTOR_HOUR, (el: HTMLInputElement) => el.value);
+    const mm = await getPage().$eval(SELECTOR_MIN, (el: HTMLInputElement) => el.value);
+    const ss = await getPage().$eval(SELECTOR_SEC, (el: HTMLInputElement) => el.value);
 
     expect(`${hh}:${mm}:${ss}`).toBe(expectedValue);
   }
 
-  describe('filter', () => {
-    it(`should accept numbers`, async() => {
+  test.describe('filter', () => {
+    test(`should accept numbers`, async() => {
       await expectValue('::');  // No starting values
 
-      await test.page.type(SELECTOR_HOUR, '1');
-      await test.page.type(SELECTOR_MIN, '2');
-      await test.page.type(SELECTOR_SEC, '3');
+      await getPage().type(SELECTOR_HOUR, '1');
+      await getPage().type(SELECTOR_MIN, '2');
+      await getPage().type(SELECTOR_SEC, '3');
 
-      await test.page.click(SELECTOR_HOUR);
+      await getPage().click(SELECTOR_HOUR);
       await expectValue('01:02:03');
     });
 
-    it(`shouldn't accept alpha`, async() => {
+    test(`shouldn't accept alpha`, async() => {
       await expectValue('::');  // No starting values
 
-      await test.page.type(SELECTOR_HOUR, 'A');
-      await test.page.type(SELECTOR_MIN, 'A');
-      await test.page.type(SELECTOR_SEC, 'A');
+      await getPage().type(SELECTOR_HOUR, 'A');
+      await getPage().type(SELECTOR_MIN, 'A');
+      await getPage().type(SELECTOR_SEC, 'A');
 
-      await test.page.click(SELECTOR_HOUR);
+      await getPage().click(SELECTOR_HOUR);
       await expectValue('::');
     });
   });

@@ -1,11 +1,13 @@
-import {focusElement, openUrl} from '../../tools.po';
+import {test, setPage} from '../../../../baseTest';
+import {focusElement} from '../../tools.po';
 import {expectTooltipToBeClosed, expectTooltipToBeOpen} from '../tooltip.po';
 
-describe('Tooltip Focus', () => {
+test.use({testURL: 'tooltip/focus', testSelector: 'h3:text("Tooltip focus")'});
+test.beforeEach(async({page}) => setPage(page));
 
-  beforeEach(async() => await openUrl('tooltip/focus', 'h3:text("Tooltip focus")'));
+test.describe('Tooltip Focus', () => {
 
-  it(`should work when triggers === 'focus'`, async() => {
+  test(`should work when triggers === 'focus'`, async() => {
     // focusin to show
     await focusElement('#btn-tooltip');
     await expectTooltipToBeOpen(`Tooltip should be visible when tooltip button gains focus`);

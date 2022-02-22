@@ -18,6 +18,7 @@ npm-debug.log
 coverage
 coverage-e2e/
 coverage-e2e-*/
+.nyc_output
 demo/src/api-docs.ts
 demo/src/public/**/plnkr.html
 demo/src/public/**/stackblitz.html

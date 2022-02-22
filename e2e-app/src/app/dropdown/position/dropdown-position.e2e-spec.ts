@@ -1,18 +1,22 @@
-import {getBoundingBox, openUrl} from '../../tools.po';
-import {test} from '../../../../playwright.conf';
+import {expect} from '@playwright/test';
+import {getBoundingBox} from '../../tools.po';
+import {test, getPage, setPage} from '../../../../baseTest';
 import {openDropdown} from '../dropdown.po';
 import {waitForModalCount} from '../../modal/modal.po';
 
-const removeFromDom = async() => await test.page.click('#isInDom-false');
+const removeFromDom = async() => await getPage().click('#isInDom-false');
 
-const toggleContainer = async(container: null | 'body') => await test.page.click(`#container-${container || 'null'}`);
+const toggleContainer = async(container: null | 'body') => await getPage().click(`#container-${container || 'null'}`);
 
 const togglePlacement = async(placement: 'top-start' | 'bottom-start' | 'top-end' | 'bottom-end') => {
-  await test.page.click(`#placement-${placement}`);
+  await getPage().click(`#placement-${placement}`);
 };
 
+test.use({testURL: 'dropdown/position', testSelector: 'h3:text("Dropdown positioning")'});
+test.beforeEach(async({page}) => setPage(page));
+
 ['#dropdown', '#dropdownWithTemplate'].forEach((selector) => {
-  describe(`Dropdown Position for id ${selector}`, () => {
+  test.describe(`Dropdown Position for id ${selector}`, () => {
 
     const expectSamePositions = async(placement) => {
 
@@ -20,32 +24,28 @@ const togglePlacement = async(placement: 'top-start' | 'bottom-start' | 'top-end
       await toggleContainer(null);
       await togglePlacement(placement);
 
-      await test.page.waitForSelector(`${selector} >> ${selector}Menu`);
+      await getPage().waitForSelector(`${selector} >> ${selector}Menu`);
       const inlineBox = await getBoundingBox(`${selector} >> ${selector}Menu`);
 
       // Append to body
       await toggleContainer('body');
-      await test.page.waitForSelector(`body > div > ${selector}Menu`);
+      await getPage().waitForSelector(`body > div > ${selector}Menu`);
       const bodyBox = await getBoundingBox(`body > div > ${selector}Menu`);
 
       for (const[key, value] of Object.entries(inlineBox)) {
-        expect(bodyBox[key])
-            .toBeGreaterThanOrEqual(
-                value - 1, `Position ${key} should give the same results when placed on ${placement}`);
-        expect(bodyBox[key])
-            .toBeLessThanOrEqual(
-                value + 1, `Position '${key}' should give the same results when placed on ${placement}`);
+        expect(bodyBox[key], `Position ${key} should give the same results when placed on ${placement}`)
+            .toBeGreaterThanOrEqual(value - 1);
+        expect(bodyBox[key], `Position '${key}' should give the same results when placed on ${placement}`)
+            .toBeLessThanOrEqual(value + 1);
       }
 
       // Reset
       await toggleContainer(null);
     };
 
-    beforeEach(async() => await openUrl('dropdown/position', 'h3:text("Dropdown positioning")'));
+    test.afterEach(async() => { await waitForModalCount(0); });
 
-    afterEach(async() => { await waitForModalCount(0); });
-
-    it(`should keep the same position when appended to widget or body`, async() => {
+    test(`should keep the same position when appended to widget or body`, async() => {
       await openDropdown('should open dropdown', selector);
 
       await expectSamePositions('bottom-start');
@@ -54,25 +54,25 @@ const togglePlacement = async(placement: 'top-start' | 'bottom-start' | 'top-end
       await expectSamePositions('top-end');
     });
 
-    it(`should be removed on destroy`, async() => {
+    test(`should be removed on destroy`, async() => {
       await openDropdown('should open dropdown', selector);
 
       await removeFromDom();
-      await test.page.waitForSelector(`${selector}Menu`, {state: 'detached'});
+      await getPage().waitForSelector(`${selector}Menu`, {state: 'detached'});
     });
 
-    it(`should have the body container added and removed`, async() => {
+    test(`should have the body container added and removed`, async() => {
       await toggleContainer('body');
       await openDropdown('should open dropdown', selector, true);
 
       await togglePlacement('bottom-start');
-      await test.page.waitForSelector(`body > div > ${selector}Menu`);
+      await getPage().waitForSelector(`body > div > ${selector}Menu`);
 
       await togglePlacement('top-start');
-      await test.page.waitForSelector(`body > div > ${selector}Menu`);
+      await getPage().waitForSelector(`body > div > ${selector}Menu`);
 
       await toggleContainer(null);
-      await test.page.waitForSelector(`body > div > ${selector}Menu`, {state: 'detached'});
+      await getPage().waitForSelector(`body > div > ${selector}Menu`, {state: 'detached'});
     });
 
   });

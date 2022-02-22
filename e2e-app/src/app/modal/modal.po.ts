@@ -1,4 +1,4 @@
-import {test} from '../../../playwright.conf';
+import {getPage, getBrowserName} from '../../../baseTest';
 import {timeoutMessage} from '../tools.po';
 export const SELECTOR_MODAL_DIALOG = '.modal-dialog';
 export const SELECTOR_MODAL_WINDOW = 'ngb-modal-window';
@@ -15,20 +15,20 @@ const defaultErrorMessage = (modalNumber) => {
 export const waitForModalCount = async(modalNumber, errorMessage = defaultErrorMessage(modalNumber)) => {
   // These successive waiting functions, done in this order, render the test suite more stable.
   await timeoutMessage(
-      test.page.waitForFunction(
+      getPage().waitForFunction(
           modalNumber ? `document.body.className.indexOf('modal-open') > -1` :
                         `document.body.className.indexOf('modal-open') === -1`),
       errorMessage);
   await timeoutMessage(
-      test.page.waitForFunction(`document.querySelectorAll('${SELECTOR_MODAL_WINDOW}').length === ${modalNumber}`),
+      getPage().waitForFunction(`document.querySelectorAll('${SELECTOR_MODAL_WINDOW}').length === ${modalNumber}`),
       errorMessage);
   await timeoutMessage(
-      test.page.waitForFunction(`document.querySelectorAll('${SELECTOR_MODAL_DIALOG}').length === ${modalNumber}`),
+      getPage().waitForFunction(`document.querySelectorAll('${SELECTOR_MODAL_DIALOG}').length === ${modalNumber}`),
       errorMessage);
 
-  if (process.env.NGB_BROWSER === 'webkit') {
+  if (getBrowserName() === 'webkit') {
     // Need some extra time for webkit, otherwise the modal tests are not stable.
-    await test.page.waitForTimeout(50);
+    await getPage().waitForTimeout(50);
   }
 };
 
@@ -36,5 +36,5 @@ export const waitForModalCount = async(modalNumber, errorMessage = defaultErrorM
  * Wait a short time before checking that nothing changed
  */
 export const waitForNoChange = async() => {
-  await test.page.waitForTimeout(25);
+  await getPage().waitForTimeout(25);
 };
