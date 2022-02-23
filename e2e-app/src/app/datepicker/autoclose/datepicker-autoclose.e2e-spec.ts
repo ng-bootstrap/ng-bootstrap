@@ -147,6 +147,21 @@ describe('Datepicker Autoclose', () => {
         await clickOnDay(DATE_OUTSIDE_AFTER);
         await expectDatepickerToBeClosed(`Datepicker should be closed on outside day click`);
       });
+      it(`should change autoClose setting dynamically`, async() => {
+        // initially set autoClose to 'inside' because selectAutoClose is an outside click
+        await selectAutoClose('inside');
+        await openDatepicker(`Open datepicker with autoclose 'inside'`);
+
+        // change autoClose to false whilst open
+        await selectAutoClose('false');
+        await clickOnDay(DATE_SELECT);
+        await expectDatepickerToBeOpen(`Datepicker should not close after autoClose is changed to false whilst open`);
+
+        // change autoClose to 'inside' whilst open
+        await selectAutoClose('inside');
+        await clickOnDay(DATE_SELECT);
+        await expectDatepickerToBeClosed(`Datepicker should close after autoClose is changed to 'inside' whilst open`);
+      });
     });
   }
 });
