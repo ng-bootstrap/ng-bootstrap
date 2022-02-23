@@ -41,6 +41,7 @@ import {NgbInputDatepickerConfig} from './datepicker-input-config';
 import {NgbDatepickerConfig} from './datepicker-config';
 import {isString} from '../util/util';
 import {take} from 'rxjs/operators';
+import {Subject} from 'rxjs';
 
 /**
  * A directive that allows to stick a datepicker popup to an input field.
@@ -78,6 +79,7 @@ export class NgbInputDatepicker implements OnChanges,
   private _inputValue: string;
   private _zoneSubscription: any;
   private _positioning = ngbPositioning();
+  private _destroyCloseHandlers$ = new Subject<void>();
 
   /**
    * Indicates whether the datepicker popup should be closed automatically after date selection / outside click or not.
@@ -400,9 +402,7 @@ export class NgbInputDatepicker implements OnChanges,
         throw new Error('ngbDatepicker could not find element declared in [positionTarget] to position against.');
       }
 
-      ngbAutoClose(
-          this._ngZone, this._document, this.autoClose, () => this.close(), this.closed, [],
-          [this._elRef.nativeElement, this._cRef.location.nativeElement]);
+      this._setCloseHandlers();
     }
   }
 
@@ -413,6 +413,7 @@ export class NgbInputDatepicker implements OnChanges,
     if (this.isOpen()) {
       this._vcRef.remove(this._vcRef.indexOf(this._cRef !.hostView));
       this._cRef = null;
+      this._destroyCloseHandlers$.next();
       this.closed.emit();
       this._changeDetector.markForCheck();
 
@@ -483,6 +484,10 @@ export class NgbInputDatepicker implements OnChanges,
       const {currentValue, previousValue} = changes['datepickerClass'];
       this._applyPopupClass(currentValue, previousValue);
     }
+
+    if (changes['autoClose'] && this.isOpen()) {
+      this._setCloseHandlers();
+    }
   }
 
   ngOnDestroy() {
@@ -547,5 +552,12 @@ export class NgbInputDatepicker implements OnChanges,
   private _fromDateStruct(date: NgbDateStruct | null): NgbDate | null {
     const ngbDate = date ? new NgbDate(date.year, date.month, date.day) : null;
     return this._calendar.isValid(ngbDate) ? ngbDate : null;
+  }
+
+  private _setCloseHandlers() {
+    this._destroyCloseHandlers$.next();
+    ngbAutoClose(
+        this._ngZone, this._document, this.autoClose, () => this.close(), this._destroyCloseHandlers$, [],
+        [this._elRef.nativeElement, this._cRef !.location.nativeElement]);
   }
 }
