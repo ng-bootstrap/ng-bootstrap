@@ -1,4 +1,4 @@
-import {test} from '../../../../playwright.conf';
+import {getPage} from '../../../../baseTest';
 import {focusElement, sendKey} from '../../tools.po';
 import {waitForModalCount} from '../modal.po';
 
@@ -11,7 +11,7 @@ export const SELECTOR_TYPEAHEAD_DROPDOWN = 'ngb-typeahead-window.show';
 
 
 export const openModal = async() => {
-  await test.page.click(`#open-modal`);
+  await getPage().click(`#open-modal`);
   await waitForModalCount(1);
 };
 

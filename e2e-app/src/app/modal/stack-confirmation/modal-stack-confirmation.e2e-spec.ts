@@ -1,5 +1,5 @@
-import {test} from '../../../../playwright.conf';
-import {openUrl, sendKey} from '../../tools.po';
+import {test, getPage, setPage} from '../../../../baseTest';
+import {sendKey} from '../../tools.po';
 import {waitForModalCount} from '../modal.po';
 
 import {
@@ -10,33 +10,34 @@ import {
   SELECTOR_CONFIRM_BUTTON,
 } from './modal-stack-confirmation.po';
 
-describe('Modal stack with confirmation', () => {
+test.use({testURL: 'modal/stack-confirmation', testSelector: 'h3:text("Modal stack confirmation test")'});
+test.beforeEach(async({page}) => setPage(page));
 
-  beforeEach(async() => await openUrl('modal/stack-confirmation', 'h3:text("Modal stack confirmation test")'));
+test.describe('Modal stack with confirmation', () => {
 
-  afterEach(async() => { await waitForModalCount(0); });
+  test.afterEach(async() => { await waitForModalCount(0); });
 
-  it('should close modals correctly using close button', async() => {
+  test('should close modals correctly using close button', async() => {
     await openModal();
 
     // close with button
-    await test.page.click(SELECTOR_CLOSE_BUTTON);
+    await getPage().click(SELECTOR_CLOSE_BUTTON);
     await waitForModalCount(2, 'Confirmation modal should be opened');
 
     // cancel closure with button
-    await test.page.click(SELECTOR_DISMISS_BUTTON);
+    await getPage().click(SELECTOR_DISMISS_BUTTON);
     await waitForModalCount(1, 'Confirmation modal should be dismissed');
 
     // close again
-    await test.page.click(SELECTOR_CLOSE_BUTTON);
+    await getPage().click(SELECTOR_CLOSE_BUTTON);
     await waitForModalCount(2, 'Confirmation modal should be re-opened');
 
     // close all modals
-    await test.page.click(SELECTOR_CONFIRM_BUTTON);
+    await getPage().click(SELECTOR_CONFIRM_BUTTON);
 
   });
 
-  it('should close modals correctly using ESC', async() => {
+  test('should close modals correctly using ESC', async() => {
     await openModal();
 
     // close with Escape
@@ -52,10 +53,10 @@ describe('Modal stack with confirmation', () => {
     await waitForModalCount(2, 'Confirmation modal should be re-opened');
 
     // close all modals
-    await test.page.click(SELECTOR_CONFIRM_BUTTON);
+    await getPage().click(SELECTOR_CONFIRM_BUTTON);
   });
 
-  it('should close modals correctly using backdrop click', async() => {
+  test('should close modals correctly using backdrop click', async() => {
     await openModal();
 
     // close with click
@@ -71,7 +72,7 @@ describe('Modal stack with confirmation', () => {
     await waitForModalCount(2, 'Confirmation modal should be re-opened');
 
     // close all modals
-    await test.page.click(SELECTOR_CONFIRM_BUTTON);
+    await getPage().click(SELECTOR_CONFIRM_BUTTON);
 
   });
 

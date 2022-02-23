@@ -1,17 +1,19 @@
-import {sendKey, openUrl, waitForFocus} from '../../tools.po';
+import {sendKey, waitForFocus} from '../../tools.po';
 import {clickOnDay, SELECTOR_DAY} from '../datepicker.po';
-import {test} from '../../../../playwright.conf';
+import {test, getPage, setPage} from '../../../../baseTest';
 
 const expectActive = async(selector: string) => {
-  await test.page.waitForSelector(selector + ' >> .active');
+  await getPage().waitForSelector(selector + ' >> .active');
   await waitForFocus(selector, `active date should be focused`);
 };
 
-describe('Datepicker multiple instances', () => {
+test.use({testURL: 'datepicker/multiple', testSelector: 'h3:text("Datepicker multiple")'});
+test.beforeEach(async({page}) => setPage(page));
 
-  beforeEach(async() => await openUrl('datepicker/multiple', 'h3:text("Datepicker multiple")'));
+test.describe('Datepicker multiple instances', () => {
 
-  it('the instance tapped should gain focus', async() => {
+
+  test('the instance tapped should gain focus', async() => {
 
     await clickOnDay(new Date(2016, 7, 1), '#dp1');
     await sendKey('ArrowDown');

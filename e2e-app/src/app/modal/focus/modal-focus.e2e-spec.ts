@@ -1,5 +1,6 @@
-import {test} from '../../../../playwright.conf';
-import {openUrl, sendKey, waitForFocus} from '../../tools.po';
+import {expect} from '@playwright/test';
+import {test, getPage, setPage} from '../../../../baseTest';
+import {sendKey, waitForFocus} from '../../tools.po';
 import {waitForModalCount, SELECTOR_MODAL_WINDOW} from '../modal.po';
 
 import {
@@ -11,16 +12,17 @@ import {
   SELECTOR_MODAL_HEADER,
 } from './modal-focus.po';
 
-describe('Modal', () => {
+test.use({testURL: 'modal/focus', testSelector: 'h3:text("Modal focus tests")'});
+test.beforeEach(async({page}) => setPage(page));
 
-  beforeEach(async() => await openUrl('modal/focus', 'h3:text("Modal focus tests")'));
+test.describe('Modal', () => {
 
-  afterEach(async() => {
+  test.afterEach(async() => {
     await sendKey('Escape');
     await waitForModalCount(0);
   });
 
-  it('should close modal on ESC and re-focus trigger button', async() => {
+  test('should close modal on ESC and re-focus trigger button', async() => {
     await openModal('simple');
 
     // close
@@ -30,18 +32,18 @@ describe('Modal', () => {
     await waitForFocus('#open-modal-simple', 'Should focus trigger button after closing');
   });
 
-  it('should close modal on window click and re-focus trigger button', async() => {
+  test('should close modal on window click and re-focus trigger button', async() => {
     await openModal('simple');
 
     // close
-    await test.page.click(SELECTOR_MODAL_WINDOW);
+    await getPage().click(SELECTOR_MODAL_WINDOW);
     await waitForModalCount(0, 'The modal should be closed on click');
 
     // button should be focused
     await waitForFocus('#open-modal-simple', 'Should focus trigger button after closing');
   });
 
-  it('should focus body if opener is not focusable', async() => {
+  test('should focus body if opener is not focusable', async() => {
     await openModal('disable');
 
     // close
@@ -53,26 +55,26 @@ describe('Modal', () => {
 
   });
 
-  it('should focus modal window if there is no focusable content after opening', async() => {
+  test('should focus modal window if there is no focusable content after opening', async() => {
     await openModal('simple');
 
     // window should be focused
-    expect(await test.page.textContent(SELECTOR_MODAL_CONTENT)).toBe('Modal content');
+    expect(await getPage().textContent(SELECTOR_MODAL_CONTENT)).toBe('Modal content');
     await waitForFocus(SELECTOR_MODAL_WINDOW, 'ngb-modal-window should be focused');
 
   });
 
-  it('should focus first focusable element after opening', async() => {
+  test('should focus first focusable element after opening', async() => {
     await openModal('template');
     await waitForFocus(SELECTOR_DISMISS_BUTTON, 'Modal dismiss button should be focused');
   });
 
-  it('should focus element with [ngbAutofocus] after opening', async() => {
+  test('should focus element with [ngbAutofocus] after opening', async() => {
     await openModal('autofocus');
     await waitForFocus(SELECTOR_CLOSE_BUTTON, 'Modal close button should be focused, because of ngbAutoFocus');
   });
 
-  it('should trap focus inside opened modal (Tab)', async() => {
+  test('should trap focus inside opened modal (Tab)', async() => {
     await openModal('template');
 
     // dismiss -> input -> close -> dismiss
@@ -89,7 +91,7 @@ describe('Modal', () => {
 
   });
 
-  it('should trap focus inside opened modal (Shift + Tab)', async() => {
+  test('should trap focus inside opened modal (Shift + Tab)', async() => {
     await openModal('template');
 
     // dismiss -> close -> input -> dismiss
@@ -106,11 +108,11 @@ describe('Modal', () => {
 
   });
 
-  it('should keep focus trap inside the modal when clicking on content and navigating away (Tab)', async() => {
+  test('should keep focus trap inside the modal when clicking on content and navigating away (Tab)', async() => {
     await openModal('template');
 
     // click on the header
-    await test.page.click(SELECTOR_MODAL_HEADER);
+    await getPage().click(SELECTOR_MODAL_HEADER);
     await waitForFocus(SELECTOR_MODAL_WINDOW, 'Modal window should be focused');
 
     // re-focus
@@ -119,16 +121,17 @@ describe('Modal', () => {
 
   });
 
-  it('should keep focus trap inside the modal when clicking on content and navigating away (Shift + Tab)', async() => {
-    await openModal('template');
+  test(
+      'should keep focus trap inside the modal when clicking on content and navigating away (Shift + Tab)', async() => {
+        await openModal('template');
 
-    // click on the header
-    await test.page.click(SELECTOR_MODAL_HEADER);
-    await waitForFocus(SELECTOR_MODAL_WINDOW, 'Modal window should be focused');
+        // click on the header
+        await getPage().click(SELECTOR_MODAL_HEADER);
+        await waitForFocus(SELECTOR_MODAL_WINDOW, 'Modal window should be focused');
 
-    // re-focus
-    await sendKey('Shift+Tab');
-    await waitForFocus(SELECTOR_CLOSE_BUTTON, 'Modal close button should be focused');
+        // re-focus
+        await sendKey('Shift+Tab');
+        await waitForFocus(SELECTOR_CLOSE_BUTTON, 'Modal close button should be focused');
 
-  });
+      });
 });

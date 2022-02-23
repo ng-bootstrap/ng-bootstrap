@@ -1,14 +1,15 @@
-import {test} from '../../../playwright.conf';
+import {expect} from '@playwright/test';
+import {getPage} from '../../../baseTest';
 
 export const SELECTOR_OPEN_STATUS = '#open-status';
 export const SELECTOR_TOOLTIP = 'ngb-tooltip-window';
 
 export const expectTooltipToBeOpen = async(message: string) => {
-  await test.page.waitForSelector(SELECTOR_TOOLTIP);
-  expect(await test.page.textContent(SELECTOR_OPEN_STATUS)).toBe('open', message);
+  await getPage().waitForSelector(SELECTOR_TOOLTIP);
+  expect(await getPage().textContent(SELECTOR_OPEN_STATUS), message).toBe('open');
 };
 
 export const expectTooltipToBeClosed = async(message: string) => {
-  await test.page.waitForSelector(SELECTOR_TOOLTIP, {state: 'detached'});
-  expect(await test.page.textContent(SELECTOR_OPEN_STATUS)).toBe('closed', message);
+  await getPage().waitForSelector(SELECTOR_TOOLTIP, {state: 'detached'});
+  expect(await getPage().textContent(SELECTOR_OPEN_STATUS), message).toBe('closed');
 };

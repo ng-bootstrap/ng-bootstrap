@@ -1,65 +1,68 @@
+import {expect} from '@playwright/test';
 import {isDropdownOpened, openDropdown} from '../dropdown.po';
-import {test} from '../../../../playwright.conf';
-import {sendKey, waitForFocus, openUrl} from '../../tools.po';
+import {test, getPage, setPage} from '../../../../baseTest';
+import {sendKey, waitForFocus} from '../../tools.po';
 
 const SELECTOR_DROPDOWN = '[ngbDropdown]';
 const SELECTOR_DROPDOWN_TOGGLE = '[ngbDropdownToggle]';
 const SELECTOR_DROPDOWN_ITEM = (item: number) => `#item-${item}`;
 
 const focusToggle = async() => {
-  await test.page.focus(SELECTOR_DROPDOWN_TOGGLE);
+  await getPage().focus(SELECTOR_DROPDOWN_TOGGLE);
   await waitForFocus(SELECTOR_DROPDOWN_TOGGLE, `dropdown toggle should be focused`);
 };
 
-const selectContainer = async(container: string) => await test.page.click(`#container-${container}`);
-const selectWithItems = async(withItems: boolean) => await test.page.click(`#items-${withItems}`);
+const selectContainer = async(container: string) => await getPage().click(`#container-${container}`);
+const selectWithItems = async(withItems: boolean) => await getPage().click(`#items-${withItems}`);
 
-describe(`Dropdown focus`, () => {
+test.use({testURL: 'dropdown/focus', testSelector: 'h3:text("Dropdown focus")'});
+test.beforeEach(async({page}) => setPage(page));
 
-  beforeEach(async() => await openUrl('dropdown/focus', 'h3:text("Dropdown focus")'));
+test.describe(`Dropdown focus`, () => {
 
   const containers = ['inline', 'body'];
   containers.forEach((container) => {
 
-    describe(`with container = ${container}`, () => {
+    test.describe(`with container = ${container}`, () => {
 
-      beforeEach(async() => {
+      test.beforeEach(async() => {
         await selectContainer(container);
         await selectWithItems(true);
       });
 
-      it(`should not be present on the page initially`,
-         async() => { expect(await isDropdownOpened()).toBeFalsy(`Dropdown should be closed initially`); });
+      test(`should not be present on the page initially`, async() => {
+        expect(await isDropdownOpened(), `Dropdown should be closed initially`).toBeFalsy();
+      });
 
-      it(`should open dropdown with 'Space' and focus toggling element`, async() => {
+      test(`should open dropdown with 'Space' and focus toggling element`, async() => {
         await focusToggle();
         await sendKey(' ');
         await waitForFocus(SELECTOR_DROPDOWN_TOGGLE, `Toggling element should be focused`);
-        expect(await isDropdownOpened()).toBeTruthy(`Dropdown should be opened on 'Space' press`);
+        expect(await isDropdownOpened(), `Dropdown should be opened on 'Space' press`).toBeTruthy();
       });
 
-      it(`should open dropdown with 'Enter' and focus toggling element`, async() => {
+      test(`should open dropdown with 'Enter' and focus toggling element`, async() => {
         await focusToggle();
         await sendKey('Enter');
         await waitForFocus(SELECTOR_DROPDOWN_TOGGLE, `Toggling element should be focused`);
-        expect(await isDropdownOpened()).toBeTruthy(`Dropdown should be opened on 'Enter' press`);
+        expect(await isDropdownOpened(), `Dropdown should be opened on 'Enter' press`).toBeTruthy();
       });
 
-      it(`should open dropdown with 'ArrowDown' and focus toggling element`, async() => {
+      test(`should open dropdown with 'ArrowDown' and focus toggling element`, async() => {
         await focusToggle();
         await sendKey('ArrowDown');
         await waitForFocus(SELECTOR_DROPDOWN_TOGGLE, `Toggling element should be focused`);
-        expect(await isDropdownOpened()).toBeTruthy(`Dropdown should be opened on 'ArrowDown' press`);
+        expect(await isDropdownOpened(), `Dropdown should be opened on 'ArrowDown' press`).toBeTruthy();
       });
 
-      it(`should open dropdown with 'ArrowUp' and focus toggling element`, async() => {
+      test(`should open dropdown with 'ArrowUp' and focus toggling element`, async() => {
         await focusToggle();
         await sendKey('ArrowUp');
         await waitForFocus(SELECTOR_DROPDOWN_TOGGLE, `Toggling element should be focused`);
-        expect(await isDropdownOpened()).toBeTruthy(`Dropdown should be opened on 'ArrowUp' press`);
+        expect(await isDropdownOpened(), `Dropdown should be opened on 'ArrowUp' press`).toBeTruthy();
       });
 
-      it(`should focus dropdown items with 'ArrowUp' / 'ArrowDown'`, async() => {
+      test(`should focus dropdown items with 'ArrowUp' / 'ArrowDown'`, async() => {
         // Open
         await openDropdown('Dropdown should be opened', SELECTOR_DROPDOWN, container === 'body');
         await waitForFocus(SELECTOR_DROPDOWN_TOGGLE, `Toggling element should be focused`);
@@ -85,7 +88,7 @@ describe(`Dropdown focus`, () => {
         await waitForFocus(SELECTOR_DROPDOWN_ITEM(1), `first dropdown item should stay focused`);
       });
 
-      it(`should focus dropdown first and last items with 'Home' / 'End'`, async() => {
+      test(`should focus dropdown first and last items with 'Home' / 'End'`, async() => {
         // Open
         await openDropdown('Dropdown should be opened', SELECTOR_DROPDOWN, container === 'body');
         await waitForFocus(SELECTOR_DROPDOWN_TOGGLE, `Toggling element should be focused`);
@@ -99,16 +102,16 @@ describe(`Dropdown focus`, () => {
         await waitForFocus(SELECTOR_DROPDOWN_ITEM(1), `first dropdown item should be focused`);
       });
 
-      it(`should close dropdown with 'Escape' and focus toggling element (toggle was focused)`, async() => {
+      test(`should close dropdown with 'Escape' and focus toggling element (toggle was focused)`, async() => {
         await openDropdown('Dropdown should be opened', SELECTOR_DROPDOWN, container === 'body');
         await waitForFocus(SELECTOR_DROPDOWN_TOGGLE, `Toggling element should be focused`);
 
         await sendKey('Escape');
-        expect(await isDropdownOpened()).toBeFalsy(`Dropdown should be closed on 'Escape' press`);
+        expect(await isDropdownOpened(), `Dropdown should be closed on 'Escape' press`).toBeFalsy();
         await waitForFocus(SELECTOR_DROPDOWN_TOGGLE, `Toggling element should be focused`);
       });
 
-      it(`should close dropdown with 'Escape' and focus toggling element (item was focused)`, async() => {
+      test(`should close dropdown with 'Escape' and focus toggling element (item was focused)`, async() => {
         await openDropdown('Dropdown should be opened', SELECTOR_DROPDOWN, container === 'body');
         await waitForFocus(SELECTOR_DROPDOWN_TOGGLE, `Toggling element should be focused`);
 
@@ -116,22 +119,23 @@ describe(`Dropdown focus`, () => {
         await waitForFocus(SELECTOR_DROPDOWN_ITEM(1), `first dropdown item should be focused`);
 
         await sendKey('Escape');
-        expect(await isDropdownOpened()).toBeFalsy(`Dropdown should be closed on 'Escape' press`);
+        expect(await isDropdownOpened(), `Dropdown should be closed on 'Escape' press`).toBeFalsy();
         await waitForFocus(SELECTOR_DROPDOWN_TOGGLE, `Toggling element should be focused`);
       });
 
-      if (process.env.NGB_BROWSER !== 'webkit') {
-        it(`should focus dropdown first item with Tab when dropdown is opened (toggle was focused)`, async() => {
-          await openDropdown('Dropdown should be opened', SELECTOR_DROPDOWN, container === 'body');
-          await waitForFocus(SELECTOR_DROPDOWN_TOGGLE, `Toggling element should be focused`);
+      test(
+          `should focus dropdown first item with Tab when dropdown is opened (toggle was focused)`,
+          async({browserName}) => {
+            test.skip(browserName === 'webkit');
+            await openDropdown('Dropdown should be opened', SELECTOR_DROPDOWN, container === 'body');
+            await waitForFocus(SELECTOR_DROPDOWN_TOGGLE, `Toggling element should be focused`);
 
-          // Tab -> first
-          await sendKey('Tab');
-          await waitForFocus(SELECTOR_DROPDOWN_ITEM(1), `first dropdown item should be focused`);
-        });
-      }
+            // Tab -> first
+            await sendKey('Tab');
+            await waitForFocus(SELECTOR_DROPDOWN_ITEM(1), `first dropdown item should be focused`);
+          });
 
-      it(`should close dropdown with 'Tab' when focus is moved to another element`, async() => {
+      test(`should close dropdown with 'Tab' when focus is moved to another element`, async() => {
         await openDropdown('Dropdown should be opened', SELECTOR_DROPDOWN, container === 'body');
         await waitForFocus(SELECTOR_DROPDOWN_TOGGLE, `Toggling element should be focused`);
 
@@ -145,30 +149,30 @@ describe(`Dropdown focus`, () => {
 
         // Tab -> another element
         await sendKey('Tab');
-        expect(await isDropdownOpened()).toBeFalsy(`Dropdown should be closed`);
+        expect(await isDropdownOpened(), `Dropdown should be closed`).toBeFalsy();
       });
     });
   });
 
-  describe(`without ngbDropdownItems`, () => {
+  test.describe(`without ngbDropdownItems`, () => {
 
-    beforeEach(async() => {
+    test.beforeEach(async() => {
       await selectContainer('inline');
       await selectWithItems(false);
     });
 
-    it(`should open dropdown with 'ArrowDown' and focus toggling element`, async() => {
+    test(`should open dropdown with 'ArrowDown' and focus toggling element`, async() => {
       await focusToggle();
       await sendKey('ArrowDown');
       await waitForFocus(SELECTOR_DROPDOWN_TOGGLE, `Toggling element should be focused`);
-      expect(await isDropdownOpened()).toBeTruthy(`Dropdown should be opened on 'ArrowDown' press`);
+      expect(await isDropdownOpened(), `Dropdown should be opened on 'ArrowDown' press`).toBeTruthy();
     });
 
-    it(`should open dropdown with 'ArrowUp' and focus toggling element`, async() => {
+    test(`should open dropdown with 'ArrowUp' and focus toggling element`, async() => {
       await focusToggle();
       await sendKey('ArrowUp');
       await waitForFocus(SELECTOR_DROPDOWN_TOGGLE, `Toggling element should be focused`);
-      expect(await isDropdownOpened()).toBeTruthy(`Dropdown should be opened on 'ArrowUp' press`);
+      expect(await isDropdownOpened(), `Dropdown should be opened on 'ArrowUp' press`).toBeTruthy();
     });
   });
 

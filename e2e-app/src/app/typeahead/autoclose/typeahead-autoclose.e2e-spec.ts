@@ -1,5 +1,6 @@
-import {openUrl, waitForFocus, sendKey} from '../../tools.po';
-import {test} from '../../../../playwright.conf';
+import {expect} from '@playwright/test';
+import {waitForFocus, sendKey} from '../../tools.po';
+import {test, getPage, setPage} from '../../../../baseTest';
 import {
   getTypeaheadValue,
   SELECTOR_TYPEAHEAD,
@@ -10,53 +11,54 @@ import {
 const SELECTOR_OUTSIDE_BUTTON = '#outside-button';
 const SELECTOR_OPEN_STATUS = '#open-status';
 
-const clickOutside = async() => await test.page.click(SELECTOR_OUTSIDE_BUTTON);
-const rightClickOutside = async() => await test.page.click(SELECTOR_OUTSIDE_BUTTON, {button: 'right'});
+const clickOutside = async() => await getPage().click(SELECTOR_OUTSIDE_BUTTON);
+const rightClickOutside = async() => await getPage().click(SELECTOR_OUTSIDE_BUTTON, {button: 'right'});
 
 const showHint = async(hint: boolean) => {
-  await test.page.click('#hint-dropdown');
-  await test.page.click(`#hint-${hint}`);
+  await getPage().click('#hint-dropdown');
+  await getPage().click(`#hint-${hint}`);
 };
 
 const expectTypeaheadToBeOpen = async(message: string) => {
-  await test.page.waitForSelector(SELECTOR_TYPEAHEAD_WINDOW);
-  expect(await test.page.textContent(SELECTOR_OPEN_STATUS)).toBe('open', message);
+  await getPage().waitForSelector(SELECTOR_TYPEAHEAD_WINDOW);
+  expect(await getPage().textContent(SELECTOR_OPEN_STATUS), message).toBe('open');
 };
 
 const expectTypeaheadToBeClosed = async(message: string) => {
-  await test.page.waitForSelector(SELECTOR_TYPEAHEAD_WINDOW, {state: 'detached'});
-  expect(await test.page.textContent(SELECTOR_OPEN_STATUS)).toBe('closed', message);
+  await getPage().waitForSelector(SELECTOR_TYPEAHEAD_WINDOW, {state: 'detached'});
+  expect(await getPage().textContent(SELECTOR_OPEN_STATUS), message).toBe('closed');
 };
 
 const setTypeaheadValue = async(text: string) => {
-  await test.page.type(SELECTOR_TYPEAHEAD, text);
+  await getPage().type(SELECTOR_TYPEAHEAD, text);
   await expectTypeaheadToBeOpen(`Typed ${text}, should be open`);
 };
 
 const openTypeahead = async() => {
   await setTypeaheadValue('o');
-  const items = await test.page.$$(SELECTOR_TYPEAHEAD_ITEMS);
+  const items = await getPage().$$(SELECTOR_TYPEAHEAD_ITEMS);
   expect(items.length).toBe(2);
 };
 
-describe('Typeahead Autoclose', () => {
+test.describe('Typeahead Autoclose', () => {
 
-  beforeEach(async() => await openUrl('typeahead/autoclose', 'h3:text("Typeahead autoclose")'));
+  test.use({testURL: 'typeahead/autoclose', testSelector: 'h3:text("Typeahead autoclose")'});
+  test.beforeEach(async({page}) => setPage(page));
 
-  it(`should not close typeahead on right clicks`, async() => {
+  test(`should not close typeahead on right clicks`, async() => {
     await openTypeahead();
 
-    await test.page.click(SELECTOR_TYPEAHEAD, {button: 'right'});
+    await getPage().click(SELECTOR_TYPEAHEAD, {button: 'right'});
     await expectTypeaheadToBeOpen(`Dropdown should stay visible when right-clicking on the input`);
 
-    await test.page.click(`${SELECTOR_TYPEAHEAD_ITEMS}:first-child`, {button: 'right'});
+    await getPage().click(`${SELECTOR_TYPEAHEAD_ITEMS}:first-child`, {button: 'right'});
     await expectTypeaheadToBeOpen(`Dropdown should stay visible when right-clicking inside`);
 
     await rightClickOutside();
     await expectTypeaheadToBeOpen(`Dropdown should stay visible when right-clicking outside`);
   });
 
-  it(`should close typeahead on outside click and lose focus`, async() => {
+  test(`should close typeahead on outside click and lose focus`, async() => {
     await openTypeahead();
 
     await clickOutside();
@@ -64,34 +66,34 @@ describe('Typeahead Autoclose', () => {
     await waitForFocus(SELECTOR_OUTSIDE_BUTTON, `Clicked button should be focused`);
   });
 
-  it(`should close typeahead on outside click and lose focus (with hint)`, async() => {
+  test(`should close typeahead on outside click and lose focus (with hint)`, async() => {
     await showHint(true);
     await openTypeahead();
-    expect(await getTypeaheadValue()).toBe('one', `Hint should be shown`);
+    expect(await getTypeaheadValue(), `Hint should be shown`).toBe('one');
 
     await clickOutside();
     await expectTypeaheadToBeClosed(`Dropdown should become hidden`);
     await waitForFocus(SELECTOR_OUTSIDE_BUTTON, `Clicked button should be focused`);
-    expect(await getTypeaheadValue()).toBe('o', `Hint should have been removed`);
+    expect(await getTypeaheadValue(), `Hint should have been removed`).toBe('o');
   });
 
-  it(`should not close typeahead on input click and stay focused`, async() => {
+  test(`should not close typeahead on input click and stay focused`, async() => {
     await openTypeahead();
 
-    await test.page.click(SELECTOR_TYPEAHEAD);
+    await getPage().click(SELECTOR_TYPEAHEAD);
     await expectTypeaheadToBeOpen(`Dropdown should stay visible`);
     await waitForFocus(SELECTOR_TYPEAHEAD, `Typeahead input should stay focused`);
   });
 
-  it(`should close typeahead on item click and stay focused`, async() => {
+  test(`should close typeahead on item click and stay focused`, async() => {
     await openTypeahead();
 
-    await test.page.click(`${SELECTOR_TYPEAHEAD_ITEMS}:first-child`);
+    await getPage().click(`${SELECTOR_TYPEAHEAD_ITEMS}:first-child`);
     await expectTypeaheadToBeClosed(`Dropdown should become hidden`);
     await waitForFocus(SELECTOR_TYPEAHEAD, `Typeahead input should stay focused`);
   });
 
-  it(`should close typeahead on Escape and stay focused`, async() => {
+  test(`should close typeahead on Escape and stay focused`, async() => {
     await openTypeahead();
 
     await sendKey('Escape');
@@ -99,14 +101,14 @@ describe('Typeahead Autoclose', () => {
     await waitForFocus(SELECTOR_TYPEAHEAD, `Typeahead input should stay focused`);
   });
 
-  it(`should close typeahead on Escape and stay focused (with hint)`, async() => {
+  test(`should close typeahead on Escape and stay focused (with hint)`, async() => {
     await showHint(true);
     await openTypeahead();
-    expect(await getTypeaheadValue()).toBe('one', `Hint should be shown`);
+    expect(await getTypeaheadValue(), `Hint should be shown`).toBe('one');
 
     await sendKey('Escape');
     await expectTypeaheadToBeClosed(`Dropdown should become hidden`);
     await waitForFocus(SELECTOR_TYPEAHEAD, `Typeahead input should stay focused`);
-    expect(await getTypeaheadValue()).toBe('o', `Hint should have been removed`);
+    expect(await getTypeaheadValue(), `Hint should have been removed`).toBe('o');
   });
 });
