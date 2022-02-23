@@ -80,12 +80,12 @@ export class NgbSlide {
     '[attr.aria-activedescendant]': `'slide-' + activeId`
   },
   template: `
-    <ol class="carousel-indicators" [class.visually-hidden]="!showNavigationIndicators" role="tablist">
-      <li *ngFor="let slide of slides" [class.active]="slide.id === activeId"
+    <div class="carousel-indicators" [class.visually-hidden]="!showNavigationIndicators" role="tablist">
+      <button type="button" data-bs-target *ngFor="let slide of slides" [class.active]="slide.id === activeId"
           role="tab" [attr.aria-labelledby]="'slide-' + slide.id" [attr.aria-controls]="'slide-' + slide.id"
           [attr.aria-selected]="slide.id === activeId"
-          (click)="focus();select(slide.id, NgbSlideEventSource.INDICATOR);"></li>
-    </ol>
+          (click)="focus();select(slide.id, NgbSlideEventSource.INDICATOR);"></button>
+    </div>
     <div class="carousel-inner">
       <div *ngFor="let slide of slides; index as i; count as c" class="carousel-item" [id]="'slide-' + slide.id" role="tabpanel">
         <span class="visually-hidden" i18n="Currently selected slide number read by screen reader@@ngb.carousel.slide-number">
@@ -94,14 +94,14 @@ export class NgbSlide {
         <ng-template [ngTemplateOutlet]="slide.tplRef"></ng-template>
       </div>
     </div>
-    <a class="carousel-control-prev" role="button" (click)="arrowLeft()" *ngIf="showNavigationArrows">
+    <button class="carousel-control-prev" type="button" (click)="arrowLeft()" *ngIf="showNavigationArrows">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
       <span class="visually-hidden" i18n="@@ngb.carousel.previous">Previous</span>
-    </a>
-    <a class="carousel-control-next" role="button" (click)="arrowRight()" *ngIf="showNavigationArrows">
+    </button>
+    <button class="carousel-control-next" type="button" (click)="arrowRight()" *ngIf="showNavigationArrows">
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
       <span class="visually-hidden" i18n="@@ngb.carousel.next">Next</span>
-    </a>
+    </button>
   `
 })
 export class NgbCarousel implements AfterContentChecked,
