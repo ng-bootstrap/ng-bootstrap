@@ -137,7 +137,7 @@ export class NgbDropdownToggle extends NgbDropdownAnchor {
 export class NgbDropdown implements AfterContentInit, OnChanges, OnDestroy {
   static ngAcceptInputType_autoClose: boolean | string;
   static ngAcceptInputType_display: string;
-  private _closed$ = new Subject<void>();
+  private _destroyCloseHandlers$ = new Subject<void>();
   private _zoneSubscription: Subscription;
   private _bodyContainer: HTMLElement | null = null;
   private _positioning = ngbPositioning();
@@ -249,6 +249,11 @@ export class NgbDropdown implements AfterContentInit, OnChanges, OnDestroy {
       const {currentValue, previousValue} = changes.dropdownClass;
       this._applyCustomDropdownClass(currentValue, previousValue);
     }
+
+    if (changes.autoClose && this._open) {
+      this.autoClose = changes.autoClose.currentValue;
+      this._setCloseHandlers();
+    }
   }
 
   /**
@@ -283,6 +288,8 @@ export class NgbDropdown implements AfterContentInit, OnChanges, OnDestroy {
   }
 
   private _setCloseHandlers() {
+    this._destroyCloseHandlers$.next();  // destroy any existing close handlers
+
     ngbAutoClose(
         this._ngZone, this._document, this.autoClose,
         (source: SOURCE) => {
@@ -291,8 +298,8 @@ export class NgbDropdown implements AfterContentInit, OnChanges, OnDestroy {
             this._anchor.nativeElement.focus();
           }
         },
-        this._closed$, this._menu ? [this._menu.nativeElement] : [], this._anchor ? [this._anchor.nativeElement] : [],
-        '.dropdown-item,.dropdown-divider');
+        this._destroyCloseHandlers$, this._menu ? [this._menu.nativeElement] : [],
+        this._anchor ? [this._anchor.nativeElement] : [], '.dropdown-item,.dropdown-divider');
   }
 
   /**
@@ -303,7 +310,7 @@ export class NgbDropdown implements AfterContentInit, OnChanges, OnDestroy {
       this._open = false;
       this._positioning.destroy();
       this._resetContainer();
-      this._closed$.next();
+      this._destroyCloseHandlers$.next();
       this.openChange.emit(false);
       this._changeDetector.markForCheck();
     }
@@ -322,7 +329,7 @@ export class NgbDropdown implements AfterContentInit, OnChanges, OnDestroy {
 
   ngOnDestroy() {
     this._resetContainer();
-    this._closed$.next();
+    this._destroyCloseHandlers$.next();
     this._zoneSubscription.unsubscribe();
   }
 
