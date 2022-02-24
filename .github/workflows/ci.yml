@@ -36,8 +36,8 @@ jobs:
           flags: e2e
       - uses: actions/upload-artifact@v2
         with:
-          name: test-videos
-          path: test-videos
+          name: test-reports
+          path: test-reports
         if: ${{ always() }}
       - run: cat $LOGS_DIR/*
       - run: ./scripts/sauce_connect_block.sh
