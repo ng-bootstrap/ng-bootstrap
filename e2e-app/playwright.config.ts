@@ -1,9 +1,13 @@
 import {PlaywrightTestConfig, devices} from '@playwright/test';
+import {join} from 'path';
 
 export const baseURL = "http://localhost:4200/#";
 
+const reportsDir = join(__dirname, "..", "test-reports", "e2e-app");
+
 const config: PlaywrightTestConfig = {
-  reporter: process.env.CI ? 'github' : 'list',
+  reporter: [[process.env.CI ? 'github' : 'list'], ['html', {open: 'never', outputFolder: join(reportsDir, "report")}]],
+  outputDir: join(reportsDir, "traces"),
   globalSetup: require.resolve('./setup.e2e-spec'),
   testDir: "src",
   testMatch: /\.e2e-spec\.ts$/,
@@ -16,10 +20,7 @@ const config: PlaywrightTestConfig = {
     url: baseURL,
     reuseExistingServer: !process.env.CI,
   },
-  use: {
-    baseURL,
-    viewport: {width: 1280, height: 720},
-  },
+  use: {baseURL, viewport: {width: 1280, height: 720}, trace: "retain-on-failure"},
   projects: [
     {
       name: 'chromium',
