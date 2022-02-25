@@ -1,5 +1,5 @@
+import {expect} from '@playwright/test';
 import {getPage} from '../../../../baseTest';
-import {timeoutMessage} from '../../tools.po';
 import {waitForModalCount} from '../modal.po';
 
 export const clickOnReset = async() => {
@@ -21,6 +21,5 @@ export const openModal = async(option = '') => {
 };
 
 export const waitDismissReason = async(expected, error) => {
-  await timeoutMessage(
-      getPage().waitForFunction(`document.querySelector('#dismiss-reason').textContent === '${expected}'`), error);
+  await expect(getPage().locator('#dismiss-reason'), error).toHaveText(expected);
 };

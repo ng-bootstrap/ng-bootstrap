@@ -1,5 +1,5 @@
 import {expect} from '@playwright/test';
-import {focusElement, sendKey, timeoutMessage, js} from '../../tools.po';
+import {focusElement, sendKey} from '../../tools.po';
 import {test, getPage, setPage} from '../../../../baseTest';
 import {SELECTOR_TYPEAHEAD, SELECTOR_TYPEAHEAD_ITEMS, SELECTOR_TYPEAHEAD_WINDOW} from '../typeahead.po';
 
@@ -12,20 +12,15 @@ test.describe('Typeahead', () => {
       await expect(getPage().locator(SELECTOR_TYPEAHEAD), `Typeahead should be focused`).toBeFocused();
 
   const waitForDropdownOpen = async(suggestions = 10) => {
-    await timeoutMessage(
-        getPage().waitForFunction(
-            js `document.querySelectorAll(${SELECTOR_TYPEAHEAD_ITEMS}).length === ${suggestions}`),
-        `Wrong number of suggestions (expected ${suggestions})`);
+    await expect(getPage().locator(SELECTOR_TYPEAHEAD_ITEMS), `Wrong number of suggestions (expected ${suggestions})`)
+        .toHaveCount(suggestions);
   };
 
   const waitForDropDownClosed = async() =>
       await getPage().waitForSelector(SELECTOR_TYPEAHEAD_WINDOW, {state: 'detached'});
 
-  const waitForTypeaheadValue = async expectedValue => {
-    await timeoutMessage(
-        getPage().waitForFunction(js `document.querySelector(${SELECTOR_TYPEAHEAD}).value === ${expectedValue}`),
-        `Wrong input value (expected ${expectedValue})`);
-  };
+  const waitForTypeaheadValue =
+      async expectedValue => { await expect(getPage().locator(SELECTOR_TYPEAHEAD)).toHaveValue(expectedValue); };
 
   const clickBefore = async() => await getPage().click('#first');
 
