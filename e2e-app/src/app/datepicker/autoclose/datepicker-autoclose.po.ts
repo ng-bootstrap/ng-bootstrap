@@ -30,10 +30,10 @@ export const closeDatepicker = async(message: string) => {
 
 export const expectDatepickerToBeOpen = async function(message: string) {
   await getPage().waitForSelector(SELECTOR_DATEPICKER);
-  expect(await getPage().innerText(SELECTOR_OPEN_STATUS), message).toEqual('open');
+  await expect(getPage().locator(SELECTOR_OPEN_STATUS), message).toHaveText('open');
 };
 
 export const expectDatepickerToBeClosed = async(message: string) => {
   await getPage().waitForSelector(SELECTOR_DATEPICKER, {state: 'detached'});
-  expect(await getPage().innerText(SELECTOR_OPEN_STATUS), message).toEqual('closed');
+  await expect(getPage().locator(SELECTOR_OPEN_STATUS), message).toHaveText('closed');
 };

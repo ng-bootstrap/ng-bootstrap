@@ -59,7 +59,7 @@ test.describe('Modal', () => {
     await openModal('simple');
 
     // window should be focused
-    expect(await getPage().textContent(SELECTOR_MODAL_CONTENT)).toBe('Modal content');
+    await expect(getPage().locator(SELECTOR_MODAL_CONTENT)).toHaveText('Modal content');
     await expect(getPage().locator(SELECTOR_MODAL_WINDOW), 'ngb-modal-window should be focused').toBeFocused();
 
   });

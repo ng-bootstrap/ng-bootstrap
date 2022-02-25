@@ -18,12 +18,12 @@ const selectAutoClose = async(type: string) => {
 
 const expectPopoverToBeOpen = async(message: string) => {
   await getPage().waitForSelector(SELECTOR_POPOVER);
-  expect(await getPage().textContent(SELECTOR_OPEN_STATUS), message).toBe('open');
+  await expect(getPage().locator(SELECTOR_OPEN_STATUS), message).toHaveText('open');
 };
 
 const expectPopoverToBeClosed = async(message: string) => {
   await getPage().waitForSelector(SELECTOR_POPOVER, {state: 'detached'});
-  expect(await getPage().textContent(SELECTOR_OPEN_STATUS), message).toBe('closed');
+  await expect(getPage().locator(SELECTOR_OPEN_STATUS), message).toHaveText('closed');
 };
 
 const openPopover = async(message: string) => {
