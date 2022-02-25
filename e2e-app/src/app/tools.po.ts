@@ -34,9 +34,7 @@ const roundBoundingBox = (rect: {x: number, y: number, width: number, height: nu
  * Returns the element bounding box
  */
 export const getBoundingBox = async(selector: string) => {
-  const element = await getPage().$(selector);
-  const boundingBox = element ? await element.boundingBox() : {x: 0, y: 0, width: 0, height: 0};
-  return roundBoundingBox(boundingBox !);
+  return roundBoundingBox(await getPage().locator(selector).boundingBox());
 };
 
 /**
