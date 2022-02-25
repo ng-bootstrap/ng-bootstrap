@@ -1,5 +1,5 @@
 import {expect} from '@playwright/test';
-import {sendKey, waitForFocus} from '../../tools.po';
+import {sendKey} from '../../tools.po';
 import {test, getPage, setPage} from '../../../../baseTest';
 import {isDropdownOpened} from '../dropdown.po';
 
@@ -8,11 +8,12 @@ const SELECTOR_DROPDOWN_ITEM = '[ngbDropdownItem]';
 
 const focusDropdownItem = async(index: number) => {
   await getPage().press(SELECTOR_DROPDOWN_TOGGLE, 'ArrowDown');
-  await waitForFocus(SELECTOR_DROPDOWN_TOGGLE, `dropdown should be focused`);
+  await expect(getPage().locator(SELECTOR_DROPDOWN_TOGGLE), `dropdown should be focused`).toBeFocused();
   for (let i = 0; i <= index; ++i) {
     await sendKey('ArrowDown');
   }
-  await waitForFocus(`${SELECTOR_DROPDOWN_ITEM}:nth-child(${index + 1})`, `Item should be focused`);
+  await expect(getPage().locator(`${SELECTOR_DROPDOWN_ITEM}:nth-child(${index + 1})`), `Item should be focused`)
+      .toBeFocused();
 };
 
 test.use({testURL: 'dropdown/click', testSelector: 'h3:text("Dropdown click")'});

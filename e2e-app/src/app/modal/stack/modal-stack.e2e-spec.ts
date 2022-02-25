@@ -1,5 +1,6 @@
+import {expect} from '@playwright/test';
 import {test, getPage, setPage} from '../../../../baseTest';
-import {sendKey, waitForFocus} from '../../tools.po';
+import {sendKey} from '../../tools.po';
 import {waitForModalCount} from '../modal.po';
 
 import {
@@ -28,10 +29,10 @@ test.describe('Modal stack', () => {
     await waitForModalCount(1);
 
     // Check that the button is focused again
-    await waitForFocus(SELECTOR_STACK_MODAL_BUTTON, 'Button element not focused');
+    await expect(getPage().locator(SELECTOR_STACK_MODAL_BUTTON), 'Button element not focused').toBeFocused();
     await sendKey('Tab');
 
-    await waitForFocus(SELECTOR_CLOSE_ICON, 'Close icon not focused');
+    await expect(getPage().locator(SELECTOR_CLOSE_ICON), 'Close icon not focused').toBeFocused();
 
     // close the main modal
     await sendKey('Escape');

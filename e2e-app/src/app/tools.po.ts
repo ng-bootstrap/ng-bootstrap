@@ -1,5 +1,5 @@
 import {getPage} from '../../baseTest';
-import {errors} from '@playwright/test';
+import {errors, expect} from '@playwright/test';
 
 /**
  * Sends keys to a currently focused element
@@ -12,25 +12,13 @@ export const sendKey = async(key: string) => {
 };
 
 /**
- * Wait for the provided element to be focused
- *
- * @param selector element selector to check
- * @param message to display in case of error
- */
-export const waitForFocus = async(selector: string, message = `Unable to focus '${selector}'`) => {
-  const page = getPage();
-  const el = await page.$(selector);
-  await timeoutMessage(page.waitForFunction(function(_el) { return _el === document.activeElement; }, el), message);
-};
-
-/**
  * Focus the provided element, and wait for this element to be focused, to avoid asynchronous side effet.
  *
  * @param selector element selector to focus
  */
 export const focusElement = async(selector: string) => {
   await getPage().focus(selector);
-  await waitForFocus(selector);
+  await expect(getPage().locator(selector)).toBeFocused();
 };
 
 const roundBoundingBox = (rect: {x: number, y: number, width: number, height: number}) => {

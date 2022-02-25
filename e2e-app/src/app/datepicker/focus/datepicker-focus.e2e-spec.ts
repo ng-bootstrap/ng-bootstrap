@@ -1,6 +1,6 @@
 import {expect} from '@playwright/test';
 import {test, getPage, setPage} from '../../../../baseTest';
-import {waitForFocus, sendKey} from '../../tools.po';
+import {sendKey} from '../../tools.po';
 import {
   openDatepicker,
   SELECTOR_DATEPICKER,
@@ -47,25 +47,28 @@ test.describe('Datepicker', () => {
 
   test(`should focus today when opened`, async() => {
     await openDatepicker();
-    await waitForFocus(SELECTOR_DAY(new Date()), `Today's date should be focused`);
+    await expect(getPage().locator(SELECTOR_DAY(new Date())), `Today's date should be focused`).toBeFocused();
   });
 
   test(`should focus selected day when opened`, async() => {
     await preSelectDate();  // 10 AUG 2018
     await openDatepicker();
-    await waitForFocus(SELECTOR_DAY(new Date(2018, 7, 10)), `Selected date should be focused`);
+    await expect(getPage().locator(SELECTOR_DAY(new Date(2018, 7, 10))), `Selected date should be focused`)
+        .toBeFocused();
   });
 
   test(`should focus 1st day of {year, month} startDate day when opened`, async() => {
     await selectStartDate('month-only');  // startDate = AUG 2018
     await openDatepicker();
-    await waitForFocus(SELECTOR_DAY(new Date(2018, 7, 1)), `First day of startDate should be focused`);
+    await expect(getPage().locator(SELECTOR_DAY(new Date(2018, 7, 1))), `First day of startDate should be focused`)
+        .toBeFocused();
   });
 
   test(`should focus {year, month, day} startDate day when opened`, async() => {
     await selectStartDate('month-and-day');  // startDate = 10 AUG 2018
     await openDatepicker();
-    await waitForFocus(SELECTOR_DAY(new Date(2018, 7, 10)), `First day of startDate should be focused`);
+    await expect(getPage().locator(SELECTOR_DAY(new Date(2018, 7, 10))), `First day of startDate should be focused`)
+        .toBeFocused();
   });
 
   test(`should be closed on toggle element click and focus it`, async() => {
@@ -76,7 +79,8 @@ test.describe('Datepicker', () => {
     await getPage().waitForSelector(SELECTOR_DATEPICKER, {state: 'detached'});
 
     // check toggle is focused
-    await waitForFocus(SELECTOR_TOGGLE, `Toggle element should stay focused after datepicker is closed`);
+    await expect(getPage().locator(SELECTOR_TOGGLE), `Toggle element should stay focused after datepicker is closed`)
+        .toBeFocused();
   });
 
   test(`should be closed on Escape and re-focus toggle element`, async() => {
@@ -87,7 +91,8 @@ test.describe('Datepicker', () => {
     await getPage().waitForSelector(SELECTOR_DATEPICKER, {state: 'detached'});
 
     // check toggle is focused
-    await waitForFocus(SELECTOR_TOGGLE, `Toggle element become re-focused after datepicker is closed`);
+    await expect(getPage().locator(SELECTOR_TOGGLE), `Toggle element become re-focused after datepicker is closed`)
+        .toBeFocused();
   });
 
   test(`should be closed on date selection and re-focus toggle element`, async() => {
@@ -98,7 +103,8 @@ test.describe('Datepicker', () => {
     await getPage().waitForSelector(SELECTOR_DATEPICKER, {state: 'detached'});
 
     // check toggle is focused
-    await waitForFocus(SELECTOR_TOGGLE, `Toggle element become re-focused after datepicker is closed`);
+    await expect(getPage().locator(SELECTOR_TOGGLE), `Toggle element become re-focused after datepicker is closed`)
+        .toBeFocused();
   });
 
   test(`should trap focus inside opened popup (Tab)`, async({browserName}) => {
@@ -107,22 +113,22 @@ test.describe('Datepicker', () => {
     await openDatepicker();
 
     // today -> prev. month -> month -> year -> next month -> today -> ...
-    await waitForFocus(SELECTOR_DAY(new Date()), `Today's date should be focused`);
+    await expect(getPage().locator(SELECTOR_DAY(new Date())), `Today's date should be focused`).toBeFocused();
 
     await sendKey('Tab');
-    await waitForFocus(SELECTOR_PREV_MONTH, `Previous Month arrow should be focused`);
+    await expect(getPage().locator(SELECTOR_PREV_MONTH), `Previous Month arrow should be focused`).toBeFocused();
 
     await sendKey('Tab');
-    await waitForFocus(SELECTOR_MONTH_SELECT, `Month select box should be focused`);
+    await expect(getPage().locator(SELECTOR_MONTH_SELECT), `Month select box should be focused`).toBeFocused();
 
     await sendKey('Tab');
-    await waitForFocus(SELECTOR_YEAR_SELECT, `Year select box should be focused`);
+    await expect(getPage().locator(SELECTOR_YEAR_SELECT), `Year select box should be focused`).toBeFocused();
 
     await sendKey('Tab');
-    await waitForFocus(SELECTOR_NEXT_MONTH, `Next Month arrow should be focused`);
+    await expect(getPage().locator(SELECTOR_NEXT_MONTH), `Next Month arrow should be focused`).toBeFocused();
 
     await sendKey('Tab');
-    await waitForFocus(SELECTOR_DAY(new Date()), `Today's date should be focused`);
+    await expect(getPage().locator(SELECTOR_DAY(new Date())), `Today's date should be focused`).toBeFocused();
   });
 
   test(`should trap focus inside opened popup with (Shift+Tab)`, async({browserName}) => {
@@ -131,22 +137,22 @@ test.describe('Datepicker', () => {
     await openDatepicker();
 
     // today -> next month -> year -> month -> prev. month -> today -> ...
-    await waitForFocus(SELECTOR_DAY(new Date()), `Today's date should be focused`);
+    await expect(getPage().locator(SELECTOR_DAY(new Date())), `Today's date should be focused`).toBeFocused();
 
     await sendKey('Shift+Tab');
-    await waitForFocus(SELECTOR_NEXT_MONTH, `Next Month arrow should be focused`);
+    await expect(getPage().locator(SELECTOR_NEXT_MONTH), `Next Month arrow should be focused`).toBeFocused();
 
     await sendKey('Shift+Tab');
-    await waitForFocus(SELECTOR_YEAR_SELECT, `Year select box should be focused`);
+    await expect(getPage().locator(SELECTOR_YEAR_SELECT), `Year select box should be focused`).toBeFocused();
 
     await sendKey('Shift+Tab');
-    await waitForFocus(SELECTOR_MONTH_SELECT, `Month select box should be focused`);
+    await expect(getPage().locator(SELECTOR_MONTH_SELECT), `Month select box should be focused`).toBeFocused();
 
     await sendKey('Shift+Tab');
-    await waitForFocus(SELECTOR_PREV_MONTH, `Previous Month arrow should be focused`);
+    await expect(getPage().locator(SELECTOR_PREV_MONTH), `Previous Month arrow should be focused`).toBeFocused();
 
     await sendKey('Shift+Tab');
-    await waitForFocus(SELECTOR_DAY(new Date()), `Today's date should be focused`);
+    await expect(getPage().locator(SELECTOR_DAY(new Date())), `Today's date should be focused`).toBeFocused();
   });
 
   test(`should change month on click and keep 'next' arrow focused`, async() => {
@@ -158,7 +164,7 @@ test.describe('Datepicker', () => {
 
     // skipping one months
     await getPage().click(SELECTOR_NEXT_MONTH);
-    await waitForFocus(SELECTOR_NEXT_MONTH, `Next month arrow should be focused`);
+    await expect(getPage().locator(SELECTOR_NEXT_MONTH), `Next month arrow should be focused`).toBeFocused();
 
     // make sure we changed month
     await getPage().waitForSelector(SELECTOR_DAY(firstDate), {state: 'detached'});
@@ -173,7 +179,7 @@ test.describe('Datepicker', () => {
 
     // focus next month
     await getPage().click(SELECTOR_PREV_MONTH);
-    await waitForFocus(SELECTOR_PREV_MONTH, `Previous month arrow should be focused`);
+    await expect(getPage().locator(SELECTOR_PREV_MONTH), `Previous month arrow should be focused`).toBeFocused();
 
     await getPage().waitForSelector(SELECTOR_DAY(lastDate), {state: 'detached'});
   });
@@ -183,7 +189,7 @@ test.describe('Datepicker', () => {
 
     // click on weekday header
     await getPage().click(SELECTOR_FIRST_WEEKDAY);
-    await waitForFocus(SELECTOR_DAY(new Date()), `Today's date should stay focused`);
+    await expect(getPage().locator(SELECTOR_DAY(new Date())), `Today's date should stay focused`).toBeFocused();
   });
 
 
@@ -193,11 +199,11 @@ test.describe('Datepicker', () => {
 
     // focus input
     await getPage().click(SELECTOR_DATEPICKER_INPUT);
-    await waitForFocus(SELECTOR_DATEPICKER_INPUT, `Datepicker input should be focused`);
+    await expect(getPage().locator(SELECTOR_DATEPICKER_INPUT), `Datepicker input should be focused`).toBeFocused();
 
     // tab should go back to datepicker
     await sendKey('Tab');
-    await waitForFocus(SELECTOR_PREV_MONTH, `Previous Month arrow should be focused`);
+    await expect(getPage().locator(SELECTOR_PREV_MONTH), `Previous Month arrow should be focused`).toBeFocused();
   });
 
   test(`should be closed on Escape from input and keep focus`, async() => {
@@ -205,14 +211,16 @@ test.describe('Datepicker', () => {
 
     // focus input
     await getPage().click(SELECTOR_DATEPICKER_INPUT);
-    await waitForFocus(SELECTOR_DATEPICKER_INPUT, `Datepicker input should be focused`);
+    await expect(getPage().locator(SELECTOR_DATEPICKER_INPUT), `Datepicker input should be focused`).toBeFocused();
 
     // close
     await sendKey('Escape');
     await getPage().waitForSelector(SELECTOR_DATEPICKER, {state: 'detached'});
 
     // check input is still focused
-    await waitForFocus(SELECTOR_DATEPICKER_INPUT, `Input element should stay focused after datepicker is closed`);
+    await expect(
+        getPage().locator(SELECTOR_DATEPICKER_INPUT), `Input element should stay focused after datepicker is closed`)
+        .toBeFocused();
   });
 
   test(`should not allow any interactions when disabled`, async() => {
@@ -220,7 +228,7 @@ test.describe('Datepicker', () => {
     await preSelectDate();  // 10 AUG 2018
     await openDatepicker();
 
-    await waitForFocus(SELECTOR_TOGGLE, `Toggling element should stay focused`);
+    await expect(getPage().locator(SELECTOR_TOGGLE), `Toggling element should stay focused`).toBeFocused();
 
     const dayElement = SELECTOR_DAY(new Date(2018, 7, 10));
     await getPage().waitForSelector(dayElement);
@@ -239,16 +247,16 @@ test.describe('Datepicker', () => {
       await preSelectDate();  // 10 AUG 2018
       await openDatepicker();
 
-      await waitForFocus(SELECTOR_DAY(new Date(2018, 7, 10)), `10 AUG should be focused`);
+      await expect(getPage().locator(SELECTOR_DAY(new Date(2018, 7, 10))), `10 AUG should be focused`).toBeFocused();
 
       await sendKey('ArrowUp');
-      await waitForFocus(SELECTOR_DAY(new Date(2018, 7, 3)), `03 AUG should be focused`);
+      await expect(getPage().locator(SELECTOR_DAY(new Date(2018, 7, 3))), `03 AUG should be focused`).toBeFocused();
 
       await sendKey('ArrowUp');
-      await waitForFocus(SELECTOR_DAY(new Date(2018, 6, 27)), `27 JUL should be focused`);
+      await expect(getPage().locator(SELECTOR_DAY(new Date(2018, 6, 27))), `27 JUL should be focused`).toBeFocused();
 
       await sendKey('ArrowDown');
-      await waitForFocus(SELECTOR_DAY(new Date(2018, 7, 3)), `03 AUG should be focused`);
+      await expect(getPage().locator(SELECTOR_DAY(new Date(2018, 7, 3))), `03 AUG should be focused`).toBeFocused();
     });
 
     test(`should focus previous day with 'ArrowLeft'`, async() => {
@@ -258,7 +266,7 @@ test.describe('Datepicker', () => {
       yesterday.setDate(new Date().getDate() - 1);
 
       await sendKey('ArrowLeft');
-      await waitForFocus(SELECTOR_DAY(yesterday), `Yesterday should be focused`);
+      await expect(getPage().locator(SELECTOR_DAY(yesterday)), `Yesterday should be focused`).toBeFocused();
     });
 
     test(`should focus next day with 'ArrowRight'`, async() => {
@@ -268,7 +276,7 @@ test.describe('Datepicker', () => {
       tomorrow.setDate(new Date().getDate() + 1);
 
       await sendKey('ArrowRight');
-      await waitForFocus(SELECTOR_DAY(tomorrow), `Tomorrow should be focused`);
+      await expect(getPage().locator(SELECTOR_DAY(tomorrow)), `Tomorrow should be focused`).toBeFocused();
     });
 
     test(`should focus previous week with 'ArrowUp'`, async() => {
@@ -278,7 +286,7 @@ test.describe('Datepicker', () => {
       previousWeek.setDate(new Date().getDate() - 7);
 
       await sendKey('ArrowUp');
-      await waitForFocus(SELECTOR_DAY(previousWeek), `Today-7 days should be focused`);
+      await expect(getPage().locator(SELECTOR_DAY(previousWeek)), `Today-7 days should be focused`).toBeFocused();
     });
 
     test(`should focus next week with 'ArrowDown'`, async() => {
@@ -288,7 +296,7 @@ test.describe('Datepicker', () => {
       nextWeek.setDate(new Date().getDate() + 7);
 
       await sendKey('ArrowDown');
-      await waitForFocus(SELECTOR_DAY(nextWeek), `Today+7 days should be focused`);
+      await expect(getPage().locator(SELECTOR_DAY(nextWeek)), `Today+7 days should be focused`).toBeFocused();
     });
 
     test(`should focus first day of month with 'Home'`, async() => {
@@ -296,7 +304,8 @@ test.describe('Datepicker', () => {
       await openDatepicker();
 
       await sendKey('Home');
-      await waitForFocus(SELECTOR_DAY(new Date(2018, 7, 1)), `First day of month should be focused`);
+      await expect(getPage().locator(SELECTOR_DAY(new Date(2018, 7, 1))), `First day of month should be focused`)
+          .toBeFocused();
     });
 
     test(`should focus last day of month with 'End'`, async() => {
@@ -304,7 +313,8 @@ test.describe('Datepicker', () => {
       await openDatepicker();
 
       await sendKey('End');
-      await waitForFocus(SELECTOR_DAY(new Date(2018, 7, 31)), `Last day of month should be focused`);
+      await expect(getPage().locator(SELECTOR_DAY(new Date(2018, 7, 31))), `Last day of month should be focused`)
+          .toBeFocused();
     });
 
     test(`should focus same day of previous month with 'PageUp'`, async() => {
@@ -312,7 +322,9 @@ test.describe('Datepicker', () => {
       await openDatepicker();
 
       await sendKey('PageUp');
-      await waitForFocus(SELECTOR_DAY(new Date(2018, 6, 10)), `Same day of previous month should be focused`);
+      await expect(
+          getPage().locator(SELECTOR_DAY(new Date(2018, 6, 10))), `Same day of previous month should be focused`)
+          .toBeFocused();
     });
 
     test(`should focus same day of next month with 'PageDown'`, async() => {
@@ -320,7 +332,8 @@ test.describe('Datepicker', () => {
       await openDatepicker();
 
       await sendKey('PageDown');
-      await waitForFocus(SELECTOR_DAY(new Date(2018, 8, 10)), `Same day of next month should be focused`);
+      await expect(getPage().locator(SELECTOR_DAY(new Date(2018, 8, 10))), `Same day of next month should be focused`)
+          .toBeFocused();
     });
 
     test(`should focus same day of previous year with 'Shift+PageUp'`, async() => {
@@ -328,7 +341,9 @@ test.describe('Datepicker', () => {
       await openDatepicker();
 
       await sendKey('Shift+PageUp');
-      await waitForFocus(SELECTOR_DAY(new Date(2017, 7, 10)), `Same day of previous year should be focused`);
+      await expect(
+          getPage().locator(SELECTOR_DAY(new Date(2017, 7, 10))), `Same day of previous year should be focused`)
+          .toBeFocused();
     });
 
     test(`should focus same day of next year with 'Shift+PageDown'`, async() => {
@@ -336,7 +351,8 @@ test.describe('Datepicker', () => {
       await openDatepicker();
 
       await sendKey('Shift+PageDown');
-      await waitForFocus(SELECTOR_DAY(new Date(2019, 7, 10)), `Same day of next year should be focused`);
+      await expect(getPage().locator(SELECTOR_DAY(new Date(2019, 7, 10))), `Same day of next year should be focused`)
+          .toBeFocused();
     });
 
     test(`should focus min available day with 'Shift+Home'`, async() => {
@@ -344,7 +360,8 @@ test.describe('Datepicker', () => {
       await openDatepicker();
 
       await sendKey('Shift+Home');
-      await waitForFocus(SELECTOR_DAY(new Date(2000, 0, 1)), `Min available day should be focused`);
+      await expect(getPage().locator(SELECTOR_DAY(new Date(2000, 0, 1))), `Min available day should be focused`)
+          .toBeFocused();
     });
 
     test(`should focus max available day with 'Shift+End'`, async() => {
@@ -352,7 +369,8 @@ test.describe('Datepicker', () => {
       await openDatepicker();
 
       await sendKey('Shift+End');
-      await waitForFocus(SELECTOR_DAY(new Date(2100, 0, 1)), `Max available day should be focused`);
+      await expect(getPage().locator(SELECTOR_DAY(new Date(2100, 0, 1))), `Max available day should be focused`)
+          .toBeFocused();
     });
   });
 });

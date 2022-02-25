@@ -1,6 +1,6 @@
 import {expect} from '@playwright/test';
 import {test, getPage, setPage} from '../../../../baseTest';
-import {sendKey, waitForFocus} from '../../tools.po';
+import {sendKey} from '../../tools.po';
 import {waitForModalCount, SELECTOR_MODAL_WINDOW} from '../modal.po';
 
 import {
@@ -29,7 +29,7 @@ test.describe('Modal', () => {
     await sendKey('Escape');
     await waitForModalCount(0, 'The modal should be closed on ESC');
 
-    await waitForFocus('#open-modal-simple', 'Should focus trigger button after closing');
+    await expect(getPage().locator('#open-modal-simple'), 'Should focus trigger button after closing').toBeFocused();
   });
 
   test('should close modal on window click and re-focus trigger button', async() => {
@@ -40,7 +40,7 @@ test.describe('Modal', () => {
     await waitForModalCount(0, 'The modal should be closed on click');
 
     // button should be focused
-    await waitForFocus('#open-modal-simple', 'Should focus trigger button after closing');
+    await expect(getPage().locator('#open-modal-simple'), 'Should focus trigger button after closing').toBeFocused();
   });
 
   test('should focus body if opener is not focusable', async() => {
@@ -51,7 +51,7 @@ test.describe('Modal', () => {
     await waitForModalCount(0, 'The modal should be closed on ESC');
 
     // body should be focused
-    await waitForFocus('body', 'Should focus body after closing');
+    await expect(getPage().locator('body'), 'Should focus body after closing').toBeFocused();
 
   });
 
@@ -60,34 +60,36 @@ test.describe('Modal', () => {
 
     // window should be focused
     expect(await getPage().textContent(SELECTOR_MODAL_CONTENT)).toBe('Modal content');
-    await waitForFocus(SELECTOR_MODAL_WINDOW, 'ngb-modal-window should be focused');
+    await expect(getPage().locator(SELECTOR_MODAL_WINDOW), 'ngb-modal-window should be focused').toBeFocused();
 
   });
 
   test('should focus first focusable element after opening', async() => {
     await openModal('template');
-    await waitForFocus(SELECTOR_DISMISS_BUTTON, 'Modal dismiss button should be focused');
+    await expect(getPage().locator(SELECTOR_DISMISS_BUTTON), 'Modal dismiss button should be focused').toBeFocused();
   });
 
   test('should focus element with [ngbAutofocus] after opening', async() => {
     await openModal('autofocus');
-    await waitForFocus(SELECTOR_CLOSE_BUTTON, 'Modal close button should be focused, because of ngbAutoFocus');
+    await expect(
+        getPage().locator(SELECTOR_CLOSE_BUTTON), 'Modal close button should be focused, because of ngbAutoFocus')
+        .toBeFocused();
   });
 
   test('should trap focus inside opened modal (Tab)', async() => {
     await openModal('template');
 
     // dismiss -> input -> close -> dismiss
-    await waitForFocus(SELECTOR_DISMISS_BUTTON, 'Modal dismiss button should be focused');
+    await expect(getPage().locator(SELECTOR_DISMISS_BUTTON), 'Modal dismiss button should be focused').toBeFocused();
 
     await sendKey('Tab');
-    await waitForFocus(SELECTOR_MODAL_INPUT, 'Modal input should be focused');
+    await expect(getPage().locator(SELECTOR_MODAL_INPUT), 'Modal input should be focused').toBeFocused();
 
     await sendKey('Tab');
-    await waitForFocus(SELECTOR_CLOSE_BUTTON, 'Modal close button should be focused');
+    await expect(getPage().locator(SELECTOR_CLOSE_BUTTON), 'Modal close button should be focused').toBeFocused();
 
     await sendKey('Tab');
-    await waitForFocus(SELECTOR_DISMISS_BUTTON, 'Modal dismiss button should be focused');
+    await expect(getPage().locator(SELECTOR_DISMISS_BUTTON), 'Modal dismiss button should be focused').toBeFocused();
 
   });
 
@@ -95,16 +97,16 @@ test.describe('Modal', () => {
     await openModal('template');
 
     // dismiss -> close -> input -> dismiss
-    await waitForFocus(SELECTOR_DISMISS_BUTTON, 'Modal dismiss button should be focused');
+    await expect(getPage().locator(SELECTOR_DISMISS_BUTTON), 'Modal dismiss button should be focused').toBeFocused();
 
     await sendKey('Shift+Tab');
-    await waitForFocus(SELECTOR_CLOSE_BUTTON, 'Modal close button should be focused');
+    await expect(getPage().locator(SELECTOR_CLOSE_BUTTON), 'Modal close button should be focused').toBeFocused();
 
     await sendKey('Shift+Tab');
-    await waitForFocus(SELECTOR_MODAL_INPUT, 'Modal input should be focused');
+    await expect(getPage().locator(SELECTOR_MODAL_INPUT), 'Modal input should be focused').toBeFocused();
 
     await sendKey('Shift+Tab');
-    await waitForFocus(SELECTOR_DISMISS_BUTTON, 'Modal dismiss button should be focused');
+    await expect(getPage().locator(SELECTOR_DISMISS_BUTTON), 'Modal dismiss button should be focused').toBeFocused();
 
   });
 
@@ -113,11 +115,11 @@ test.describe('Modal', () => {
 
     // click on the header
     await getPage().click(SELECTOR_MODAL_HEADER);
-    await waitForFocus(SELECTOR_MODAL_WINDOW, 'Modal window should be focused');
+    await expect(getPage().locator(SELECTOR_MODAL_WINDOW), 'Modal window should be focused').toBeFocused();
 
     // re-focus
     await sendKey('Tab');
-    await waitForFocus(SELECTOR_DISMISS_BUTTON, 'Modal dismiss button should be focused');
+    await expect(getPage().locator(SELECTOR_DISMISS_BUTTON), 'Modal dismiss button should be focused').toBeFocused();
 
   });
 
@@ -127,11 +129,11 @@ test.describe('Modal', () => {
 
         // click on the header
         await getPage().click(SELECTOR_MODAL_HEADER);
-        await waitForFocus(SELECTOR_MODAL_WINDOW, 'Modal window should be focused');
+        await expect(getPage().locator(SELECTOR_MODAL_WINDOW), 'Modal window should be focused').toBeFocused();
 
         // re-focus
         await sendKey('Shift+Tab');
-        await waitForFocus(SELECTOR_CLOSE_BUTTON, 'Modal close button should be focused');
+        await expect(getPage().locator(SELECTOR_CLOSE_BUTTON), 'Modal close button should be focused').toBeFocused();
 
       });
 });

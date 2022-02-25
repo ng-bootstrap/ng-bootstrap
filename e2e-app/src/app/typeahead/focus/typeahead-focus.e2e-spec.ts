@@ -1,4 +1,5 @@
-import {focusElement, waitForFocus, sendKey, timeoutMessage, js} from '../../tools.po';
+import {expect} from '@playwright/test';
+import {focusElement, sendKey, timeoutMessage, js} from '../../tools.po';
 import {test, getPage, setPage} from '../../../../baseTest';
 import {SELECTOR_TYPEAHEAD, SELECTOR_TYPEAHEAD_ITEMS, SELECTOR_TYPEAHEAD_WINDOW} from '../typeahead.po';
 
@@ -7,7 +8,8 @@ test.beforeEach(async({page}) => setPage(page));
 
 test.describe('Typeahead', () => {
 
-  const waitForTypeaheadFocused = async() => await waitForFocus(SELECTOR_TYPEAHEAD, `Typeahead should be focused`);
+  const waitForTypeaheadFocused = async() =>
+      await expect(getPage().locator(SELECTOR_TYPEAHEAD), `Typeahead should be focused`).toBeFocused();
 
   const waitForDropdownOpen = async(suggestions = 10) => {
     await timeoutMessage(

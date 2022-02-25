@@ -1,5 +1,5 @@
 import {expect} from '@playwright/test';
-import {waitForFocus, getCaretPosition, sendKey} from '../../tools.po';
+import {getCaretPosition, sendKey} from '../../tools.po';
 import {test, getPage, setPage} from '../../../../baseTest';
 import {SELECTOR_HOUR, SELECTOR_MIN, SELECTOR_SEC} from '../timepicker.po';
 
@@ -24,22 +24,22 @@ test.describe('Timepicker', () => {
       await focusInputBefore();
 
       await sendKey('Tab');
-      await waitForFocus(SELECTOR_HOUR, 'Hour field should be focused');
+      await expect(getPage().locator(SELECTOR_HOUR), 'Hour field should be focused').toBeFocused();
       await sendKey('Tab');
-      await waitForFocus(SELECTOR_MIN, 'Minute field should be focused');
+      await expect(getPage().locator(SELECTOR_MIN), 'Minute field should be focused').toBeFocused();
       await sendKey('Tab');
-      await waitForFocus(SELECTOR_SEC, 'Second field should be focused');
+      await expect(getPage().locator(SELECTOR_SEC), 'Second field should be focused').toBeFocused();
       await sendKey('Tab');
-      await waitForFocus(SELECTOR_AFTER, 'Input after should be focused');
+      await expect(getPage().locator(SELECTOR_AFTER), 'Input after should be focused').toBeFocused();
 
       await sendKey('Shift+Tab');
-      await waitForFocus(SELECTOR_SEC, 'Second field should be focused');
+      await expect(getPage().locator(SELECTOR_SEC), 'Second field should be focused').toBeFocused();
       await sendKey('Shift+Tab');
-      await waitForFocus(SELECTOR_MIN, 'Minute field should be focused');
+      await expect(getPage().locator(SELECTOR_MIN), 'Minute field should be focused').toBeFocused();
       await sendKey('Shift+Tab');
-      await waitForFocus(SELECTOR_HOUR, 'Hour field should be focused');
+      await expect(getPage().locator(SELECTOR_HOUR), 'Hour field should be focused').toBeFocused();
       await sendKey('Shift+Tab');
-      await waitForFocus(SELECTOR_BEFORE, 'Input before should be focused');
+      await expect(getPage().locator(SELECTOR_BEFORE), 'Input before should be focused').toBeFocused();
     });
   });
 

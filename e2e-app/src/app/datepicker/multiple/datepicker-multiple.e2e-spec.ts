@@ -1,10 +1,11 @@
-import {sendKey, waitForFocus} from '../../tools.po';
+import {expect} from '@playwright/test';
+import {sendKey} from '../../tools.po';
 import {clickOnDay, SELECTOR_DAY} from '../datepicker.po';
 import {test, getPage, setPage} from '../../../../baseTest';
 
 const expectActive = async(selector: string) => {
   await getPage().waitForSelector(selector + ' >> .active');
-  await waitForFocus(selector, `active date should be focused`);
+  await expect(getPage().locator(selector), `active date should be focused`).toBeFocused();
 };
 
 test.use({testURL: 'datepicker/multiple', testSelector: 'h3:text("Datepicker multiple")'});
