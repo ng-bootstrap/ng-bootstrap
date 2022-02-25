@@ -1,5 +1,5 @@
 import {getPage} from '../../baseTest';
-import {errors, expect} from '@playwright/test';
+import {expect} from '@playwright/test';
 
 /**
  * Sends keys to a currently focused element
@@ -42,37 +42,3 @@ export const getBoundingBox = async(selector: string) => {
  */
 export const getCaretPosition = async(selector: string) =>
     await getPage().$eval(selector, (el: HTMLInputElement) => ({start: el.selectionStart, end: el.selectionEnd}));
-
-/**
-* Add a custom message on a playwright timeout failure
-* This is a workaround, waiting for the followinf PR to be merged:
-* {@link https://github.com/microsoft/playwright/pull/4778}
-* @template T
-* @param {Promise<T>} promise
-* @param {string} message
-* @return {Promise<T>}
-*/
-export const timeoutMessage = (promise: Promise<any>, message: string) => {
-  return promise.catch(e => {
-    if (e instanceof errors.TimeoutError) {
-      e.message += '\n' + message;
-    }
-    throw e;
-  });
-};
-
-/**
- * @example
- * js `some code with ${json} variables to be stringified`
- * @param code
- * @param variables
- */
-export const js = (code: TemplateStringsArray, ...variables: any[]) => {
-  let result = '';
-  const l = code.length - 1;
-  for (let i = 0; i < l; i++) {
-    result += code[i] + JSON.stringify(variables[i]);
-  }
-  result += code[l];
-  return result;
-};
