@@ -1,5 +1,5 @@
 import {test, getPage, setPage} from '../../../../baseTest';
-import {sendKey, mouseMove} from '../../tools.po';
+import {sendKey} from '../../tools.po';
 import {waitForModalCount, waitForNoChange, SELECTOR_MODAL_DIALOG, SELECTOR_MODAL_WINDOW} from '../modal.po';
 
 import {
@@ -61,22 +61,14 @@ test.describe('Modal', () => {
 
   test('should close modal when dragging from backdrop -> dialog', async() => {
     await openModal();
-    await mouseMove(SELECTOR_MODAL_WINDOW);
-    await getPage().mouse.down();
-    await mouseMove(SELECTOR_MODAL_DIALOG);
-    await getPage().mouse.up();
-
+    await getPage().locator(SELECTOR_MODAL_WINDOW).dragTo(getPage().locator(SELECTOR_MODAL_DIALOG));
     await waitForModalCount(0, 'The modal should be closed on drag from backdrop -> dialog');
     await waitDismissReason('Click', `Modal should have been dismissed with 'Click' reason`);
   });
 
   test('should NOT close modal when dragging from dialog -> backdrop', async() => {
     await openModal();
-    await mouseMove(SELECTOR_MODAL_DIALOG);
-    await getPage().mouse.down();
-    await mouseMove(SELECTOR_MODAL_WINDOW);
-    await getPage().mouse.up();
-
+    await getPage().locator(SELECTOR_MODAL_DIALOG).dragTo(getPage().locator(SELECTOR_MODAL_WINDOW));
     await waitForNoChange();
     await waitForModalCount(1, 'The modal should stay opened on drag from dialog -> backdrop');
     await clickOnClose();

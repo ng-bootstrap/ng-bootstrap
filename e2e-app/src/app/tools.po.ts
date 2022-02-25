@@ -78,14 +78,3 @@ export const js = (code: TemplateStringsArray, ...variables: any[]) => {
   result += code[l];
   return result;
 };
-
-/**
- * Move the mouse hover the provided element
- * @param selector Element selector
- */
-export const mouseMove = async(selector: string) => {
-  const rect = await getBoundingBox(selector);
-  const x = rect.x + rect.width / 2;
-  const y = rect.y + rect.height / 2;
-  await getPage().mouse.move(x, y);
-};
