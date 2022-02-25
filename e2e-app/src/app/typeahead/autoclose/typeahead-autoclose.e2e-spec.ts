@@ -21,12 +21,12 @@ const showHint = async(hint: boolean) => {
 
 const expectTypeaheadToBeOpen = async(message: string) => {
   await getPage().waitForSelector(SELECTOR_TYPEAHEAD_WINDOW);
-  expect(await getPage().textContent(SELECTOR_OPEN_STATUS), message).toBe('open');
+  await expect(getPage().locator(SELECTOR_OPEN_STATUS), message).toHaveText('open');
 };
 
 const expectTypeaheadToBeClosed = async(message: string) => {
   await getPage().waitForSelector(SELECTOR_TYPEAHEAD_WINDOW, {state: 'detached'});
-  expect(await getPage().textContent(SELECTOR_OPEN_STATUS), message).toBe('closed');
+  await expect(getPage().locator(SELECTOR_OPEN_STATUS), message).toHaveText('closed');
 };
 
 const setTypeaheadValue = async(text: string) => {

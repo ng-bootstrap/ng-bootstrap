@@ -12,13 +12,13 @@ export const SELECTOR_FORM_INPUT = '#dropdownMenuId >> input';
 export const expectDropdownToBeVisible = async(message: string) => {
   await getPage().waitForSelector(SELECTOR_DROPDOWN_ITEM);
   expect(await isDropdownOpened(SELECTOR_DROPDOWN), message).toBeTruthy();
-  expect(await getPage().textContent(SELECTOR_OPEN_STATUS), message).toBe('open');
+  await expect(getPage().locator(SELECTOR_OPEN_STATUS), message).toHaveText('open');
 };
 
 export const expectDropdownToBeHidden = async(message: string) => {
   await getPage().waitForSelector(SELECTOR_DROPDOWN_ITEM, {state: 'hidden'});
   expect(await isDropdownOpened(SELECTOR_DROPDOWN), message).toBeFalsy();
-  expect(await getPage().textContent(SELECTOR_OPEN_STATUS), message).toBe('closed');
+  await expect(getPage().locator(SELECTOR_OPEN_STATUS), message).toHaveText('closed');
 };
 
 export const openDropdown = async(message: string) => {

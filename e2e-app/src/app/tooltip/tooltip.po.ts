@@ -6,10 +6,10 @@ export const SELECTOR_TOOLTIP = 'ngb-tooltip-window';
 
 export const expectTooltipToBeOpen = async(message: string) => {
   await getPage().waitForSelector(SELECTOR_TOOLTIP);
-  expect(await getPage().textContent(SELECTOR_OPEN_STATUS), message).toBe('open');
+  await expect(getPage().locator(SELECTOR_OPEN_STATUS), message).toHaveText('open');
 };
 
 export const expectTooltipToBeClosed = async(message: string) => {
   await getPage().waitForSelector(SELECTOR_TOOLTIP, {state: 'detached'});
-  expect(await getPage().textContent(SELECTOR_OPEN_STATUS), message).toBe('closed');
+  await expect(getPage().locator(SELECTOR_OPEN_STATUS), message).toHaveText('closed');
 };
