@@ -1,5 +1,6 @@
+import {expect} from '@playwright/test';
 import {test, getPage, setPage} from '../../../../baseTest';
-import {sendKey, waitForFocus, timeoutMessage} from '../../tools.po';
+import {sendKey, timeoutMessage} from '../../tools.po';
 import {waitForModalCount} from '../modal.po';
 
 import {
@@ -28,13 +29,14 @@ test.describe('Modal nested components', () => {
     // open datepicker
     await pressButton(SELECTOR_DATEPICKER_BUTTON);
     await timeoutMessage(getPage().waitForSelector(SELECTOR_DATEPICKER), `Datepicker should be opened`);
-    await waitForFocus(SELECTOR_DAY(new Date(2018, 0, 1)), `01 JAN 2018 should be focused`);
+    await expect(getPage().locator(SELECTOR_DAY(new Date(2018, 0, 1))), `01 JAN 2018 should be focused`).toBeFocused();
 
     // close datepicker
     await sendKey('Escape');
     await timeoutMessage(
         getPage().waitForSelector(SELECTOR_DATEPICKER, {state: 'detached'}), `Datepicker should be closed`);
-    await waitForFocus(SELECTOR_DATEPICKER_BUTTON, `Datepicker open button should be focused`);
+    await expect(getPage().locator(SELECTOR_DATEPICKER_BUTTON), `Datepicker open button should be focused`)
+        .toBeFocused();
     await waitForModalCount(1, `Modal should stay opened`);
 
     await sendKey('Escape');
@@ -46,13 +48,13 @@ test.describe('Modal nested components', () => {
     // open dropdown
     await pressButton(SELECTOR_DROPDOWN_BUTTON);
     await timeoutMessage(getPage().waitForSelector(SELECTOR_DROPDOWN), `Dropdown should be opened`);
-    await waitForFocus(SELECTOR_DROPDOWN_BUTTON, `Dropdown button should be focused`);
+    await expect(getPage().locator(SELECTOR_DROPDOWN_BUTTON), `Dropdown button should be focused`).toBeFocused();
 
     // close dropdown
     await sendKey('Escape');
     await timeoutMessage(
         getPage().waitForSelector(SELECTOR_DROPDOWN, {state: 'detached'}), `Dropdown should be closed`);
-    await waitForFocus(SELECTOR_DROPDOWN_BUTTON, `Dropdown open button should be focused`);
+    await expect(getPage().locator(SELECTOR_DROPDOWN_BUTTON), `Dropdown open button should be focused`).toBeFocused();
     await waitForModalCount(1, `Modal should stay opened`);
 
     await sendKey('Escape');
@@ -65,14 +67,14 @@ test.describe('Modal nested components', () => {
     await getPage().click(SELECTOR_TYPEAHEAD_INPUT);
     await sendKey(' ');
     await timeoutMessage(getPage().waitForSelector(SELECTOR_TYPEAHEAD_DROPDOWN), `Typeahead should be opened`);
-    await waitForFocus(SELECTOR_TYPEAHEAD_INPUT, `Typeahead input should be focused`);
+    await expect(getPage().locator(SELECTOR_TYPEAHEAD_INPUT), `Typeahead input should be focused`).toBeFocused();
 
     // close typeahead
     await sendKey('Escape');
     await timeoutMessage(
         getPage().waitForSelector(SELECTOR_TYPEAHEAD_DROPDOWN, {state: 'detached'}), `Typeahead should be
                 closed`);
-    await waitForFocus(SELECTOR_TYPEAHEAD_INPUT, `Typeahead input should be focused`);
+    await expect(getPage().locator(SELECTOR_TYPEAHEAD_INPUT), `Typeahead input should be focused`).toBeFocused();
     await waitForModalCount(1, `Modal should stay opened`);
 
     await sendKey('Escape');

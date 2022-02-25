@@ -1,5 +1,5 @@
 import {expect} from '@playwright/test';
-import {waitForFocus, sendKey} from '../../tools.po';
+import {sendKey} from '../../tools.po';
 import {test, getPage, setPage} from '../../../../baseTest';
 import {
   getTypeaheadValue,
@@ -63,7 +63,7 @@ test.describe('Typeahead Autoclose', () => {
 
     await clickOutside();
     await expectTypeaheadToBeClosed(`Dropdown should become hidden`);
-    await waitForFocus(SELECTOR_OUTSIDE_BUTTON, `Clicked button should be focused`);
+    await expect(getPage().locator(SELECTOR_OUTSIDE_BUTTON), `Clicked button should be focused`).toBeFocused();
   });
 
   test(`should close typeahead on outside click and lose focus (with hint)`, async() => {
@@ -73,7 +73,7 @@ test.describe('Typeahead Autoclose', () => {
 
     await clickOutside();
     await expectTypeaheadToBeClosed(`Dropdown should become hidden`);
-    await waitForFocus(SELECTOR_OUTSIDE_BUTTON, `Clicked button should be focused`);
+    await expect(getPage().locator(SELECTOR_OUTSIDE_BUTTON), `Clicked button should be focused`).toBeFocused();
     expect(await getTypeaheadValue(), `Hint should have been removed`).toBe('o');
   });
 
@@ -82,7 +82,7 @@ test.describe('Typeahead Autoclose', () => {
 
     await getPage().click(SELECTOR_TYPEAHEAD);
     await expectTypeaheadToBeOpen(`Dropdown should stay visible`);
-    await waitForFocus(SELECTOR_TYPEAHEAD, `Typeahead input should stay focused`);
+    await expect(getPage().locator(SELECTOR_TYPEAHEAD), `Typeahead input should stay focused`).toBeFocused();
   });
 
   test(`should close typeahead on item click and stay focused`, async() => {
@@ -90,7 +90,7 @@ test.describe('Typeahead Autoclose', () => {
 
     await getPage().click(`${SELECTOR_TYPEAHEAD_ITEMS}:first-child`);
     await expectTypeaheadToBeClosed(`Dropdown should become hidden`);
-    await waitForFocus(SELECTOR_TYPEAHEAD, `Typeahead input should stay focused`);
+    await expect(getPage().locator(SELECTOR_TYPEAHEAD), `Typeahead input should stay focused`).toBeFocused();
   });
 
   test(`should close typeahead on Escape and stay focused`, async() => {
@@ -98,7 +98,7 @@ test.describe('Typeahead Autoclose', () => {
 
     await sendKey('Escape');
     await expectTypeaheadToBeClosed(`Dropdown should become hidden`);
-    await waitForFocus(SELECTOR_TYPEAHEAD, `Typeahead input should stay focused`);
+    await expect(getPage().locator(SELECTOR_TYPEAHEAD), `Typeahead input should stay focused`).toBeFocused();
   });
 
   test(`should close typeahead on Escape and stay focused (with hint)`, async() => {
@@ -108,7 +108,7 @@ test.describe('Typeahead Autoclose', () => {
 
     await sendKey('Escape');
     await expectTypeaheadToBeClosed(`Dropdown should become hidden`);
-    await waitForFocus(SELECTOR_TYPEAHEAD, `Typeahead input should stay focused`);
+    await expect(getPage().locator(SELECTOR_TYPEAHEAD), `Typeahead input should stay focused`).toBeFocused();
     expect(await getTypeaheadValue(), `Hint should have been removed`).toBe('o');
   });
 });
