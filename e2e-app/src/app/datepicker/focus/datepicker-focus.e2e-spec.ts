@@ -234,7 +234,7 @@ test.describe('Datepicker', () => {
     await getPage().waitForSelector(dayElement);
     let message = '';
     try {
-      await getPage().click(dayElement, {timeout: 200});
+      await getPage().click(dayElement, {timeout: 500});
     } catch (e) {
       message = e.message;
     }
