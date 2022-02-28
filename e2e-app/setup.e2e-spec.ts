@@ -5,7 +5,7 @@ import NYC from "nyc";
 
 async function globalSetup(config: FullConfig) {
   const nycOutput = join(__dirname, "..", ".nyc_output");
-  await fs.rmdir(nycOutput, {recursive: true});
+  await fs.rm(nycOutput, {recursive: true, force: true});
   await fs.mkdir(nycOutput);
   return async() => {
     const nycInstance =
