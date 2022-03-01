@@ -1,5 +1,5 @@
 import {TestBed, ComponentFixture, inject, fakeAsync, tick} from '@angular/core/testing';
-import {createGenericTestComponent, isBrowser, isBrowserVisible, triggerEvent} from '../test/common';
+import {createGenericTestComponent, isBrowserVisible, triggerEvent} from '../test/common';
 
 import {By} from '@angular/platform-browser';
 import {
@@ -690,9 +690,7 @@ if (isBrowserVisible('ngb-tooltip animations')) {
     function expectTooltip(el: HTMLElement, classes: string[], noClasses: string[], opacity: string) {
       classes.forEach(c => expect(el).toHaveCssClass(c));
       noClasses.forEach(c => expect(el).not.toHaveCssClass(c));
-      if (!isBrowser('ie')) {
-        expect(window.getComputedStyle(el).opacity !).toBe(opacity);
-      }
+      expect(window.getComputedStyle(el).opacity !).toBe(opacity);
     }
 
     beforeEach(() => {
