@@ -2,18 +2,8 @@ import {ngbCompleteTransition, ngbRunTransition, NgbTransitionStartFn} from './n
 import createSpy = jasmine.createSpy;
 import {Component, ElementRef, NgZone, ViewChild} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {isBrowser, isBrowserVisible} from '../../test/common';
+import {isBrowserVisible} from '../../test/common';
 import {reflow} from '../util';
-
-/**
- * This is sometimes necessary only for IE when it fails to recalculate styles synchronously
- * after the 'transitionend' event was fired. To remove when not supporting IE anymore.
- */
-function expectOpacity(element: HTMLElement, opacity = '0') {
-  if (!isBrowser('ie')) {
-    expect(window.getComputedStyle(element).opacity).toBe(opacity);
-  }
-}
 
 function fadeFn({classList}: HTMLElement) {
   classList.remove('ngb-test-show');
@@ -52,7 +42,7 @@ if (isBrowserVisible('ngbRunTransition')) {
           expect(next).toHaveBeenCalledWith(undefined);
           expect(element.classList.contains('ngb-test-show')).toBe(false);
           expect(error).not.toHaveBeenCalled();
-          expectOpacity(element, '0');
+          expect(window.getComputedStyle(element).opacity).toBe('0');
           done();
         }
       });
@@ -185,7 +175,7 @@ if (isBrowserVisible('ngbRunTransition')) {
           expect(errorSpy1).not.toHaveBeenCalled();
           expect(element.classList.contains('ngb-test-during')).toBe(false);
           expect(element.classList.contains('ngb-test-after')).toBe(true);
-          expectOpacity(element, '0');
+          expect(window.getComputedStyle(element).opacity).toBe('0');
           done();
         }
       });
@@ -259,7 +249,7 @@ if (isBrowserVisible('ngbRunTransition')) {
           expect(errorSpy2).not.toHaveBeenCalled();
           expect(element.classList.contains('ngb-test-during')).toBe(false);
           expect(element.classList.contains('ngb-test-after')).toBe(true);
-          expectOpacity(element, '0');
+          expect(window.getComputedStyle(element).opacity).toBe('0');
           done();
         }
       });
@@ -306,7 +296,7 @@ if (isBrowserVisible('ngbRunTransition')) {
       expect(complete).toHaveBeenCalled();
       expect(element.classList.contains('ngb-test-during')).toBe(false);
       expect(element.classList.contains('ngb-test-after')).toBe(true);
-      expectOpacity(element, '0');
+      expect(window.getComputedStyle(element).opacity).toBe('0');
     });
 
     it(`should create and allow modifying context when running a new transition`, (done) => {
@@ -323,7 +313,7 @@ if (isBrowserVisible('ngbRunTransition')) {
 
       ngbRunTransition(zone, element, startFn, {animation: true, runningTransition: 'continue', context: ctx})
           .subscribe(() => {
-            expectOpacity(element, '0');
+            expect(window.getComputedStyle(element).opacity).toBe('0');
             expect(ctx.number).toBe(456);
             done();
           });
@@ -360,7 +350,7 @@ if (isBrowserVisible('ngbRunTransition')) {
       // second transiiton
       ngbRunTransition(zone, element, startFn, {animation: true, runningTransition: 'stop', context: {text: 'two'}})
           .subscribe(() => {
-            expectOpacity(element, '0');
+            expect(window.getComputedStyle(element).opacity).toBe('0');
             expect(contextSpy).toHaveBeenCalledTimes(3);
             expect(contextSpy).toHaveBeenCalledWith({text: 'two', counter: 999});
             done();
@@ -402,7 +392,7 @@ if (isBrowserVisible('ngbRunTransition')) {
           expect(next).toHaveBeenCalledWith(undefined);
           expect(error).not.toHaveBeenCalled();
           expect(element.classList.contains('ngb-test-show')).toBe(false);
-          expectOpacity(element, '');  // <-- detached from DOM
+          expect(window.getComputedStyle(element).opacity).toBe('');  // <-- detached from DOM
           done();
         }
       });
@@ -427,7 +417,7 @@ if (isBrowserVisible('ngbRunTransition')) {
           expect(next).toHaveBeenCalledWith(undefined);
           expect(element.classList.contains('ngb-test-long-duration')).toBe(true);
           expect(error).not.toHaveBeenCalled();
-          expectOpacity(element, '0');
+          expect(window.getComputedStyle(element).opacity).toBe('0');
           done();
         }
       });
@@ -461,7 +451,7 @@ if (isBrowserVisible('ngbRunTransition')) {
           expect(element.classList.contains('ngb-test-during')).toBe(false);
           expect(element.classList.contains('ngb-test-after')).toBe(true);
           expect(error).not.toHaveBeenCalled();
-          expectOpacity(element, '0');
+          expect(window.getComputedStyle(element).opacity).toBe('0');
           done();
         }
       });
@@ -532,8 +522,8 @@ if (isBrowserVisible('ngbRunTransition')) {
         complete: () => {
           expect(fixture.componentInstance.onTransitionOuterEnd).toHaveBeenCalledTimes(2);
           expect(fixture.componentInstance.onTransitionInnerEnd).toHaveBeenCalledTimes(1);
-          expectOpacity(outerEl, '0');
-          expectOpacity(innerEl, '0');
+          expect(window.getComputedStyle(outerEl).opacity).toBe('0');
+          expect(window.getComputedStyle(innerEl).opacity).toBe('0');
           expect(next).toHaveBeenCalledWith(undefined);
           expect(error).not.toHaveBeenCalled();
           done();

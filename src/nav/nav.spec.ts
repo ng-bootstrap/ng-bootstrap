@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {ComponentFixture, inject, TestBed} from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
 import {NgbNav, NgbNavConfig, NgbNavItem, NgbNavLink, NgbNavModule, NgbNavOutlet} from './nav.module';
-import {createGenericTestComponent, isBrowser, isBrowserVisible} from '../test/common';
+import {createGenericTestComponent, isBrowserVisible} from '../test/common';
 import {isDefined} from '../util/util';
 import {Key} from 'src/util/key';
 import {NgbConfig} from '../ngb-config';
@@ -1252,9 +1252,7 @@ if (isBrowserVisible('ngb-nav animations')) {
     function expectContentState(pane: HTMLElement, classes: string[], noClasses: string[], opacity: string) {
       classes.forEach(c => expect(pane).toHaveCssClass(c));
       noClasses.forEach(c => expect(pane).not.toHaveCssClass(c));
-      if (!isBrowser('ie')) {
-        expect(window.getComputedStyle(pane).opacity).toBe(opacity);
-      }
+      expect(window.getComputedStyle(pane).opacity).toBe(opacity);
     }
 
     it(`should run simple fade in/out transition when switching navs (force-reduced-motion = true)`, () => {
