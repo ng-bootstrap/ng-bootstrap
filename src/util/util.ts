@@ -50,24 +50,6 @@ export function hasClassName(element: any, className: string): boolean {
       element.className.split(/\s+/).indexOf(className) >= 0;
 }
 
-if (typeof Element !== 'undefined' && !Element.prototype.closest) {
-  // Polyfill for ie10+
-  Element.prototype.closest = function(s: string) {
-    /* eslint-disable-next-line @typescript-eslint/no-this-alias */
-    let el = this;
-    if (!document.documentElement.contains(el)) {
-      return null;
-    }
-    do {
-      if (el.matches(s)) {
-        return el;
-      }
-      el = el.parentElement || el.parentNode;
-    } while (el !== null && el.nodeType === 1);
-    return null;
-  };
-}
-
 export function closest(element: HTMLElement, selector?: string): HTMLElement | null {
   if (!selector) {
     return null;
