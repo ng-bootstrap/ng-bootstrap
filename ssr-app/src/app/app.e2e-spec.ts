@@ -2,7 +2,7 @@ import {ConsoleMessage, test, expect} from '@playwright/test';
 
 const SELECTOR_HEADER = 'h1';
 
-test.describe('SSR application', () => {
+test.describe.parallel('SSR application', () => {
 
   let messages: ConsoleMessage[] = [];
 

@@ -6,7 +6,7 @@ import {SELECTOR_TYPEAHEAD, SELECTOR_TYPEAHEAD_ITEMS, SELECTOR_TYPEAHEAD_WINDOW}
 test.use({testURL: 'typeahead/focus', testSelector: 'h3:text("Typeahead focus")'});
 test.beforeEach(async({page}) => setPage(page));
 
-test.describe('Typeahead', () => {
+test.describe.parallel('Typeahead', () => {
 
   const waitForTypeaheadFocused = async() =>
       await expect(getPage().locator(SELECTOR_TYPEAHEAD), `Typeahead should be focused`).toBeFocused();
@@ -58,7 +58,7 @@ test.describe('Typeahead', () => {
         await waitForTypeaheadValue('Colorado');
       });
 
-  test.describe('Keyboard', () => {
+  test.describe.parallel('Keyboard', () => {
 
     test.beforeEach(async() => {
       // Be sure that the mouse does not interfere with the highlighted items in dropdown

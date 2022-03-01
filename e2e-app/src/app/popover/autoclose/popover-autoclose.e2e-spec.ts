@@ -34,7 +34,7 @@ const openPopover = async(message: string) => {
 test.use({testURL: 'popover/autoclose', testSelector: 'h3:text("Popover autoclose")'});
 test.beforeEach(async({page}) => setPage(page));
 
-test.describe('Popover Autoclose', () => {
+test.describe.parallel('Popover Autoclose', () => {
 
   test(`should not close popover on right clicks`, async() => {
     await openPopover(`Opening popover for right clicks`);

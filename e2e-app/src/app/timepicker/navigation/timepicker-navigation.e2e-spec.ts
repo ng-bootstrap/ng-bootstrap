@@ -11,7 +11,7 @@ const focusInputBefore = async() => await getPage().click('#before');
 test.use({testURL: 'timepicker/navigation', testSelector: 'h3:text("Timepicker navigation")'});
 test.beforeEach(async({page}) => setPage(page));
 
-test.describe('Timepicker', () => {
+test.describe.parallel('Timepicker', () => {
 
   async function expectCaretPosition(selector: string, position: number) {
     const {start, end} = await getCaretPosition(selector);
@@ -19,7 +19,7 @@ test.describe('Timepicker', () => {
     expect(start, `Caret is not at proper position for given field`).toBe(position);
   }
 
-  test.describe('navigation', () => {
+  test.describe.parallel('navigation', () => {
     test(`should jump between inputs`, async() => {
       await focusInputBefore();
 
@@ -44,7 +44,7 @@ test.describe('Timepicker', () => {
   });
 
 
-  test.describe('arrow keys', () => {
+  test.describe.parallel('arrow keys', () => {
     test.skip(({browserName}) => browserName === 'firefox' || browserName === 'webkit');
 
     test(`should keep caret at the end of the input`, async() => {

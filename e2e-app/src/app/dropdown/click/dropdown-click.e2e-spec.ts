@@ -19,7 +19,7 @@ const focusDropdownItem = async(index: number) => {
 test.use({testURL: 'dropdown/click', testSelector: 'h3:text("Dropdown click")'});
 test.beforeEach(async({page}) => setPage(page));
 
-test.describe(`Dropdown user (click) handler`, () => {
+test.describe.parallel(`Dropdown user (click) handler`, () => {
 
   test(`should call user (click) handler on 'Enter'`, async() => {
     await focusDropdownItem(0);

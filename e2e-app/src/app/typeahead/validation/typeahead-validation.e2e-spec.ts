@@ -5,7 +5,7 @@ import {test, getPage, setPage} from '../../../../baseTest';
 test.use({testURL: 'typeahead/validation', testSelector: 'h3:text("Typeahead validation")'});
 test.beforeEach(async({page}) => setPage(page));
 
-test.describe('Typeahead', () => {
+test.describe.parallel('Typeahead', () => {
 
   test(`should stay valid on item click`, async() => {
     await getPage().click(SELECTOR_TYPEAHEAD);

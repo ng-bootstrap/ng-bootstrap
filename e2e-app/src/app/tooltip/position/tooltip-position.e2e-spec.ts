@@ -8,7 +8,7 @@ const selectPosition = async(position: string) => await getPage().click(`#flex-$
 test.use({testURL: 'tooltip/position', testSelector: 'h3:text("Tooltip positioning")'});
 test.beforeEach(async({page}) => setPage(page));
 
-test.describe('Tooltip Position', () => {
+test.describe.parallel('Tooltip Position', () => {
 
   const expectTooltipsPosition = async(type: string, expectedPlacement: string, excludedPlacements: string[] = []) => {
 

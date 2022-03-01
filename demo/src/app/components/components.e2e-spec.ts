@@ -9,7 +9,7 @@ const COMPONENTS = [
   'popover', 'progressbar', 'rating', 'table', 'tabset', 'timepicker', 'toast', 'tooltip', 'typeahead'
 ];
 
-test.describe(`Components`, () => {
+test.describe.parallel(`Components`, () => {
 
   let messages: ConsoleMessage[] = [];
 

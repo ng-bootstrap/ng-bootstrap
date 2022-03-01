@@ -21,7 +21,7 @@ const openTooltip = async(message: string) => {
 test.use({testURL: 'tooltip/autoclose', testSelector: 'h3:text("Tooltip autoclose")'});
 test.beforeEach(async({page}) => setPage(page));
 
-test.describe('Tooltip Autoclose', () => {
+test.describe.parallel('Tooltip Autoclose', () => {
 
   test(`should not close tooltip on right clicks`, async() => {
     await openTooltip(`Opening tooltip for right clicks`);

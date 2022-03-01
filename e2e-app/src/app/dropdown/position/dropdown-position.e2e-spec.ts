@@ -16,7 +16,7 @@ test.use({testURL: 'dropdown/position', testSelector: 'h3:text("Dropdown positio
 test.beforeEach(async({page}) => setPage(page));
 
 ['#dropdown', '#dropdownWithTemplate'].forEach((selector) => {
-  test.describe(`Dropdown Position for id ${selector}`, () => {
+  test.describe.parallel(`Dropdown Position for id ${selector}`, () => {
 
     const expectSamePositions = async(placement) => {
 

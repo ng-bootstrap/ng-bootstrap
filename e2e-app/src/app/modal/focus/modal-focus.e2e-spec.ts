@@ -15,7 +15,7 @@ import {
 test.use({testURL: 'modal/focus', testSelector: 'h3:text("Modal focus tests")'});
 test.beforeEach(async({page}) => setPage(page));
 
-test.describe('Modal', () => {
+test.describe.parallel('Modal', () => {
 
   test.afterEach(async() => {
     await sendKey('Escape');

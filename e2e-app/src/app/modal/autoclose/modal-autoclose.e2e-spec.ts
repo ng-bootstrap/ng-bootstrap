@@ -12,7 +12,7 @@ import {
 test.use({testURL: 'modal/autoclose', testSelector: 'h3:text("Modal autoclose tests")'});
 test.beforeEach(async({page}) => setPage(page));
 
-test.describe('Modal', () => {
+test.describe.parallel('Modal', () => {
 
   test.beforeEach(async() => { await clickOnReset(); });
 

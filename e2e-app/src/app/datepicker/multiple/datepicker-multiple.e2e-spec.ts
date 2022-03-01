@@ -11,7 +11,7 @@ const expectActive = async(selector: string) => {
 test.use({testURL: 'datepicker/multiple', testSelector: 'h3:text("Datepicker multiple")'});
 test.beforeEach(async({page}) => setPage(page));
 
-test.describe('Datepicker multiple instances', () => {
+test.describe.parallel('Datepicker multiple instances', () => {
 
 
   test('the instance tapped should gain focus', async() => {

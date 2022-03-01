@@ -39,7 +39,7 @@ const disableDatepicker = async() => await getPage().click('#disable');
 test.use({testURL: 'datepicker/focus', testSelector: 'h3:text("Datepicker focus")'});
 test.beforeEach(async({page}) => setPage(page));
 
-test.describe('Datepicker', () => {
+test.describe.parallel('Datepicker', () => {
 
   test(`should not be present on the page initially`, async() => {
     await getPage().waitForSelector(SELECTOR_DATEPICKER, {state: 'detached'});
@@ -241,7 +241,7 @@ test.describe('Datepicker', () => {
     expect(message).toContain('intercepts pointer events');
   });
 
-  test.describe('Keyboard', () => {
+  test.describe.parallel('Keyboard', () => {
 
     test(`should handle focus correctly when months are changed with keyboard`, async() => {
       await preSelectDate();  // 10 AUG 2018

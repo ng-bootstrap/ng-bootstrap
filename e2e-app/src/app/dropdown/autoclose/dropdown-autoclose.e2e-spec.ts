@@ -21,7 +21,7 @@ test.beforeEach(async({page}) => setPage(page));
 
 const containers = [null, 'body'];
 containers.forEach((container) => {
-  test.describe(`Dropdown Autoclose with container = ${container}`, () => {
+  test.describe.parallel(`Dropdown Autoclose with container = ${container}`, () => {
 
 
     test(`should not close when right clicking`, async() => {

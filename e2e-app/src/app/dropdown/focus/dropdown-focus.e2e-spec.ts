@@ -18,12 +18,12 @@ const selectWithItems = async(withItems: boolean) => await getPage().click(`#ite
 test.use({testURL: 'dropdown/focus', testSelector: 'h3:text("Dropdown focus")'});
 test.beforeEach(async({page}) => setPage(page));
 
-test.describe(`Dropdown focus`, () => {
+test.describe.parallel(`Dropdown focus`, () => {
 
   const containers = ['inline', 'body'];
   containers.forEach((container) => {
 
-    test.describe(`with container = ${container}`, () => {
+    test.describe.parallel(`with container = ${container}`, () => {
 
       test.beforeEach(async() => {
         await selectContainer(container);
@@ -166,7 +166,7 @@ test.describe(`Dropdown focus`, () => {
     });
   });
 
-  test.describe(`without ngbDropdownItems`, () => {
+  test.describe.parallel(`without ngbDropdownItems`, () => {
 
     test.beforeEach(async() => {
       await selectContainer('inline');

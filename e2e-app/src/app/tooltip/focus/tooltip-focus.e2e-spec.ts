@@ -5,7 +5,7 @@ import {expectTooltipToBeClosed, expectTooltipToBeOpen} from '../tooltip.po';
 test.use({testURL: 'tooltip/focus', testSelector: 'h3:text("Tooltip focus")'});
 test.beforeEach(async({page}) => setPage(page));
 
-test.describe('Tooltip Focus', () => {
+test.describe.parallel('Tooltip Focus', () => {
 
   test(`should work when triggers === 'focus'`, async() => {
     // focusin to show

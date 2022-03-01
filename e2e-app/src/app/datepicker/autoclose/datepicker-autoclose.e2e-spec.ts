@@ -15,10 +15,10 @@ import {clickOnDay, rightClickOnDay} from '../datepicker.po';
 test.use({testURL: 'datepicker/autoclose', testSelector: 'h3:text("Datepicker autoclose")'});
 test.beforeEach(async({page}) => setPage(page));
 
-test.describe('Datepicker Autoclose', () => {
+test.describe.parallel('Datepicker Autoclose', () => {
 
   for (const displayMonths of[1, 2]) {
-    test.describe(`displayMonths = ${displayMonths}`, () => {
+    test.describe.parallel(`displayMonths = ${displayMonths}`, () => {
 
       test.beforeEach(async() => { await selectDisplayMonths(displayMonths); });
 

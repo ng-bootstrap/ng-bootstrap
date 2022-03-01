@@ -40,7 +40,7 @@ const openTypeahead = async() => {
   expect(items.length).toBe(2);
 };
 
-test.describe('Typeahead Autoclose', () => {
+test.describe.parallel('Typeahead Autoclose', () => {
 
   test.use({testURL: 'typeahead/autoclose', testSelector: 'h3:text("Typeahead autoclose")'});
   test.beforeEach(async({page}) => setPage(page));

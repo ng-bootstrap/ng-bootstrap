@@ -19,7 +19,7 @@ import {SELECTOR_DAY} from '../../datepicker/datepicker.po';
 test.use({testURL: 'modal/nesting', testSelector: 'h3:text("Modal nesting tests")'});
 test.beforeEach(async({page}) => setPage(page));
 
-test.describe('Modal nested components', () => {
+test.describe.parallel('Modal nested components', () => {
 
   test.afterEach(async() => { await waitForModalCount(0); });
 

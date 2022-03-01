@@ -14,7 +14,7 @@ import {
 test.use({testURL: 'modal/stack', testSelector: 'h3:text("Modal stack tests")'});
 test.beforeEach(async({page}) => setPage(page));
 
-test.describe('Modal stack', () => {
+test.describe.parallel('Modal stack', () => {
 
   test.afterEach(async() => { await waitForModalCount(0); });
 

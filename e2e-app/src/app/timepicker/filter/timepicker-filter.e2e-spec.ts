@@ -5,7 +5,7 @@ import {SELECTOR_HOUR, SELECTOR_MIN, SELECTOR_SEC} from '../timepicker.po';
 test.use({testURL: 'timepicker/filter', testSelector: 'h3:text("Timepicker filtering")'});
 test.beforeEach(async({page}) => setPage(page));
 
-test.describe('Timepicker Filter', () => {
+test.describe.parallel('Timepicker Filter', () => {
 
   async function expectValue(expectedValue) {
     const hh = await getPage().$eval(SELECTOR_HOUR, (el: HTMLInputElement) => el.value);
@@ -15,7 +15,7 @@ test.describe('Timepicker Filter', () => {
     expect(`${hh}:${mm}:${ss}`).toBe(expectedValue);
   }
 
-  test.describe('filter', () => {
+  test.describe.parallel('filter', () => {
     test(`should accept numbers`, async() => {
       await expectValue('::');  // No starting values
 

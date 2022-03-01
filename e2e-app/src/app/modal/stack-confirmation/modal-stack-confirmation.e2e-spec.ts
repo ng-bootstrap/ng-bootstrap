@@ -13,7 +13,7 @@ import {
 test.use({testURL: 'modal/stack-confirmation', testSelector: 'h3:text("Modal stack confirmation test")'});
 test.beforeEach(async({page}) => setPage(page));
 
-test.describe('Modal stack with confirmation', () => {
+test.describe.parallel('Modal stack with confirmation', () => {
 
   test.afterEach(async() => { await waitForModalCount(0); });
 
