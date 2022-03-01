@@ -1,5 +1,9 @@
+/* eslint-disable */
 import {Directive} from '@angular/core';
 
+/**
+ * @deprecated 12.0.0 Please use native Angular code instead
+ */
 @Directive({
   selector: '[ngbButtonLabel]',
   host:

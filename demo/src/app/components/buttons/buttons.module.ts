@@ -1,19 +1,26 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { NgModule } from '@angular/core';
+import {NgModule} from '@angular/core';
 
-import { NgbdSharedModule } from '../../shared';
-import { ComponentWrapper } from '../../shared/component-wrapper/component-wrapper.component';
-import { NgbdComponentsSharedModule, NgbdDemoList } from '../shared';
-import { NgbdApiPage } from '../shared/api-page/api.component';
-import { NgbdExamplesPage } from '../shared/examples-page/examples.component';
-import { NgbdButtonsCheckbox } from './demos/checkbox/buttons-checkbox';
-import { NgbdButtonsCheckboxModule } from './demos/checkbox/buttons-checkbox.module';
-import { NgbdButtonsCheckboxReactiveModule } from './demos/checkboxreactive/buttons-checkbox-reactive.module';
-import { NgbdButtonsCheckboxreactive } from './demos/checkboxreactive/buttons-checkboxreactive';
-import { NgbdButtonsRadio } from './demos/radio/buttons-radio';
-import { NgbdButtonsRadioModule } from './demos/radio/buttons-radio.module';
-import { NgbdButtonsRadioReactiveModule } from './demos/radioreactive/buttons-radio-reactive.module';
-import { NgbdButtonsRadioreactive } from './demos/radioreactive/buttons-radioreactive';
+import {NgbdSharedModule} from '../../shared';
+import {ComponentWrapper} from '../../shared/component-wrapper/component-wrapper.component';
+import {NgbdComponentsSharedModule, NgbdDemoList} from '../shared';
+import {NgbdApiPage} from '../shared/api-page/api.component';
+import {NgbdExamplesPage} from '../shared/examples-page/examples.component';
+import {NgbdButtonsCheckbox} from './demos/checkbox/buttons-checkbox';
+import {NgbdButtonsCheckboxModule} from './demos/checkbox/buttons-checkbox.module';
+import {NgbdButtonsCheckboxReactiveModule} from './demos/checkboxreactive/buttons-checkbox-reactive.module';
+import {NgbdButtonsCheckboxreactive} from './demos/checkboxreactive/buttons-checkboxreactive';
+import {NgbdButtonsRadio} from './demos/radio/buttons-radio';
+import {NgbdButtonsRadioModule} from './demos/radio/buttons-radio.module';
+import {NgbdButtonsRadioReactiveModule} from './demos/radioreactive/buttons-radio-reactive.module';
+import {NgbdButtonsRadioreactive} from './demos/radioreactive/buttons-radioreactive';
+import {NgbdButtonsOverviewComponent} from './overview/buttons-overview.component';
+import {NgbdButtonsWarningComponent} from './buttons-warning.component';
+
+const OVERVIEW = {
+  'bootstrap-5': 'Bootstrap 5',
+  'bootstrap-4': 'Bootstrap 4'
+};
 
 const DEMOS = {
   checkbox: {
@@ -43,14 +50,16 @@ const DEMOS = {
 };
 
 export const ROUTES = [
-  { path: '', pathMatch: 'full', redirectTo: 'examples' },
+  { path: '', pathMatch: 'full', redirectTo: 'overview' },
   {
     path: '',
     component: ComponentWrapper,
     data: {
-      bootstrap: 'https://getbootstrap.com/docs/%version%/components/buttons/#checkbox-and-radio-buttons'
+      bootstrap: 'https://getbootstrap.com/docs/4.6/components/buttons/#checkbox-and-radio-buttons',
+      header: NgbdButtonsWarningComponent
     },
     children: [
+      { path: 'overview', component: NgbdButtonsOverviewComponent },
       { path: 'examples', component: NgbdExamplesPage },
       { path: 'api', component: NgbdApiPage }
     ]
@@ -65,10 +74,14 @@ export const ROUTES = [
     NgbdButtonsCheckboxReactiveModule,
     NgbdButtonsRadioModule,
     NgbdButtonsRadioReactiveModule
+  ],
+  declarations: [
+    NgbdButtonsOverviewComponent,
+    NgbdButtonsWarningComponent
   ]
 })
 export class NgbdButtonsModule {
   constructor(demoList: NgbdDemoList) {
-    demoList.register('buttons', DEMOS);
+    demoList.register('buttons', DEMOS, OVERVIEW);
   }
 }
