@@ -29,6 +29,7 @@ test.describe.parallel(`Components`, () => {
   });
 
   test('should load successfully', async({page}) => {
+    test.slow();
 
     await test.step('should cover all components we have', async() => {
       for (const link of await page.$$(SELECTOR_SIDE_NAV_COMPONENT_LINKS)) {
