@@ -18,12 +18,14 @@ export const getBrowserName = () => {
 export interface Fixtures {
   testURL: string;
   testSelector: string;
+  coverage: boolean;
 }
 
-export const test = baseTest.extend<Fixtures>({
+export const fixtures = {
   testURL: "",
   testSelector: "",
-  page: async({page, baseURL, testURL, testSelector, browserName}, use) => {
+  coverage: true,
+  page: async({page, baseURL, testURL, testSelector, browserName, coverage}, use) => {
     globalBrowserName = browserName;
     if (!testURL || !testSelector) {
       throw new Error("testURL and testSelector must be defined!");
@@ -45,11 +47,13 @@ export const test = baseTest.extend<Fixtures>({
 
     await use(page);
 
-    const coverage: string = await page.evaluate('JSON.stringify(window.__coverage__);');
-    if (coverage) {
+    const coverageData: string = coverage ? await page.evaluate('JSON.stringify(window.__coverage__);') : null;
+    if (coverageData) {
       const name = randomBytes(32).toString("hex");
-      await fs.writeFile(join(__dirname, '..', '.nyc_output', `${name}.json`), coverage);
+      await fs.writeFile(join(__dirname, '..', '.nyc_output', `${name}.json`), coverageData);
     }
     globalPage = null;
   },
-});
+};
+
+export const test = baseTest.extend<Fixtures>(fixtures);
