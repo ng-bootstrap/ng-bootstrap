@@ -94,10 +94,10 @@ export class NgbOffcanvasConfig implements Required<NgbOffcanvasOptions> {
   beforeDismiss: () => boolean | Promise<boolean>;
   container: string | HTMLElement;
   injector: Injector;
-  keyboard = true;
+  keyboard: boolean = true;
   panelClass: string;
   position: 'start' | 'end' | 'top' | 'bottom';
-  scroll: boolean;
+  scroll: boolean = false;
 
   private _animation: boolean;
 
