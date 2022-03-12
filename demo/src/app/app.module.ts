@@ -29,12 +29,14 @@ import {I18nPage} from './pages/i18n/i18n.component';
 import {PositioningPage} from './pages/positioning/positioning.component';
 import {NgbdSharedModule} from './shared';
 import {NgbdDemoVersionsComponent} from './demo-versions.component';
+import {NgbdOffcanvasModule} from './components/offcanvas/offcanvas.module';
 
 
 const DEMOS = [
   NgbdAccordionModule, NgbdAlertModule, NgbdButtonsModule, NgbdCarouselModule, NgbdCollapseModule, NgbdDatepickerModule,
-  NgbdDropdownModule, NgbdModalModule, NgbdNavModule, NgbdPaginationModule, NgbdPopoverModule, NgbdProgressbarModule,
-  NgbdRatingModule, NgbdTableModule, NgbdTimepickerModule, NgbdToastModule, NgbdTooltipModule, NgbdTypeaheadModule
+  NgbdDropdownModule, NgbdModalModule, NgbdNavModule, NgbdOffcanvasModule, NgbdPaginationModule, NgbdPopoverModule, NgbdProgressbarModule,
+  NgbdRatingModule, NgbdTableModule, NgbdTimepickerModule, NgbdToastModule, NgbdTooltipModule,
+  NgbdTypeaheadModule
 ];
 
 const PAGES = [GettingStartedPage, AnimationsPage, I18nPage, PositioningPage];
