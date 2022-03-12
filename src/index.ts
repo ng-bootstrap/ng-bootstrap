@@ -18,6 +18,7 @@ import {NgbTimepickerModule} from './timepicker/timepicker.module';
 import {NgbToastModule} from './toast/toast.module';
 import {NgbTooltipModule} from './tooltip/tooltip.module';
 import {NgbTypeaheadModule} from './typeahead/typeahead.module';
+import {NgbOffcanvasModule} from './offcanvas/offcanvas.module';
 
 
 
@@ -107,6 +108,15 @@ export {
   NgbNavPane
 } from './nav/nav.module';
 export {
+  OffcanvasDismissReasons,
+  NgbActiveOffcanvas,
+  NgbOffcanvas,
+  NgbOffcanvasConfig,
+  NgbOffcanvasModule,
+  NgbOffcanvasOptions,
+  NgbOffcanvasRef
+} from './offcanvas/offcanvas.module';
+export {
   NgbPagination,
   NgbPaginationConfig,
   NgbPaginationEllipsis,
@@ -146,8 +156,8 @@ export {NgbConfig} from './ngb-config';
 const NGB_MODULES = [
   /* eslint-disable-next-line deprecation/deprecation */
   NgbAccordionModule, NgbAlertModule, NgbButtonsModule, NgbCarouselModule, NgbCollapseModule, NgbDatepickerModule,
-  NgbDropdownModule, NgbModalModule, NgbNavModule, NgbPaginationModule, NgbPopoverModule, NgbProgressbarModule,
-  NgbRatingModule, NgbTimepickerModule, NgbToastModule, NgbTooltipModule, NgbTypeaheadModule
+  NgbDropdownModule, NgbModalModule, NgbNavModule, NgbOffcanvasModule, NgbPaginationModule, NgbPopoverModule,
+  NgbProgressbarModule, NgbRatingModule, NgbTimepickerModule, NgbToastModule, NgbTooltipModule, NgbTypeaheadModule
 ];
 
 @NgModule({imports: NGB_MODULES, exports: NGB_MODULES})
