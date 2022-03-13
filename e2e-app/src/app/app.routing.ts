@@ -23,6 +23,12 @@ import {TypeaheadFocusComponent} from './typeahead/focus/typeahead-focus.compone
 import {TimepickerFilterComponent} from './timepicker/filter/timepicker-filter.component';
 import {TimepickerNavigationComponent} from './timepicker/navigation/timepicker-navigation.component';
 import {TypeaheadValidationComponent} from './typeahead/validation/typeahead-validation.component';
+import {OffcanvasAutoCloseComponent} from './offcanvas/autoclose/offcanvas-autoclose.component';
+import {OffcanvasFocusComponent} from './offcanvas/focus/offcanvas-focus.component';
+import {OffcanvasNestingComponent} from './offcanvas/nesting/offcanvas-nesting.component';
+import {
+  OffcanvasStackConfirmationComponent
+} from './offcanvas/stack-confirmation/offcanvas-stack-confirmation.component';
 
 
 export const routes: Routes = [
@@ -43,6 +49,14 @@ export const routes: Routes = [
       {path: 'nesting', component: ModalNestingComponent},
       {path: 'stack', component: ModalStackComponent},
       {path: 'stack-confirmation', component: ModalStackConfirmationComponent},
+    ]
+  },
+  {
+    path: 'offcanvas',
+    children: [
+      {path: 'autoclose', component: OffcanvasAutoCloseComponent}, {path: 'focus', component: OffcanvasFocusComponent},
+      {path: 'nesting', component: OffcanvasNestingComponent},
+      {path: 'stack-confirmation', component: OffcanvasStackConfirmationComponent}
     ]
   },
   {

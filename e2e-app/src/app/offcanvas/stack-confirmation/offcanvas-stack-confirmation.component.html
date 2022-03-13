@@ -1,0 +1,23 @@
+<h3>Offcanvas stack confirmation test</h3>
+
+<ng-template #offcanvas let-offcanvas>
+  <div id="offcanvas" class="offcanvas-header">
+    <h4 class="offcanvas-title">Offcanvas with closure confirmation</h4>
+    <button id="close" type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss()"></button>
+  </div>
+  <div class="offcanvas-body">
+    <p>This offcanvas will trigger confirmation</p>
+  </div>
+</ng-template>
+
+<ng-template #confirmation let-modal>
+  <div id="stack-modal" class="modal-header">
+    <h4 class="modal-title">Are you sure you want to close the offcanvas?</h4>
+    <button id="dismiss" type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <button id="confirm" class="btn btn-primary" (click)="modal.close()">Yep</button>
+  </div>
+</ng-template>
+
+<button class="btn btn-outline-secondary ms-2" type="button" id="open-offcanvas" (click)="openOffcanvas(offcanvas)">Open Offcanvas</button>

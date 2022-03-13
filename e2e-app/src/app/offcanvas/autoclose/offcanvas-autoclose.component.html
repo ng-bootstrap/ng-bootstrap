@@ -1,0 +1,33 @@
+<h3>
+  Offcanvas autoclose tests
+  <span class="ms-1 badge bg-info text-dark" id="dismiss-reason">{{ reason }}</span>
+</h3>
+
+<!-- Offcanvas content -->
+<ng-template #content>
+  <div class="offcanvas-body">
+    <h2>Hello from offcanvas</h2>
+    <button id="offcanvas-close-button" class="btn btn-primary" (click)="closeOffcanvas()">Close offcanvas</button>
+  </div>
+</ng-template>
+
+<!-- Controls -->
+<form id="default" (contextmenu)="$event.preventDefault()">
+  <div class="mb-3 row row-cols-lg-auto">
+    <div class="col-12">
+      <div class="input-group">
+        <button class="btn btn-outline-secondary" type="button" id="open-offcanvas" (click)="openOffcanvas(content)">Open offcanvas</button>
+      </div>
+    </div>
+
+    <div class="col-12">
+      <button class="btn btn-outline-secondary ms-3" id="reset-button" (click)="reset()">Reset</button>
+      <button class="btn btn-outline-secondary ms-1" id="option-backdrop-false" (click)="options['backdrop'] = false">backdrop = false</button>
+      <button class="btn btn-outline-secondary ms-1" id="option-no-keyboard" (click)="options['keyboard'] = false">keyboard = 'false'</button>
+    </div>
+  </div>
+</form>
+
+<!-- Options -->
+<h4>Options</h4>
+<pre>{{ options | json }}</pre>
