@@ -96,7 +96,7 @@ export class NgbOffcanvasConfig implements Required<NgbOffcanvasOptions> {
   injector: Injector;
   keyboard: boolean = true;
   panelClass: string;
-  position: 'start' | 'end' | 'top' | 'bottom';
+  position: 'start' | 'end' | 'top' | 'bottom' = 'start';
   scroll: boolean = false;
 
   private _animation: boolean;
