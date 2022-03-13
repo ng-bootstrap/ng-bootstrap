@@ -766,7 +766,7 @@ describe('ngb-offcanvas', () => {
 
         constructor(private offcanvasService: NgbOffcanvas) {}
 
-        open(backdrop: boolean = true, keyboard = true) {
+        open(backdrop = true, keyboard = true) {
           return this.offcanvasService.open(this.content, {backdrop, keyboard});
         }
       }
