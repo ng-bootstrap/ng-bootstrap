@@ -33,13 +33,13 @@ describe('ngb-offcanvas-backdrop', () => {
     expect(fixture.nativeElement).toHaveCssClass('custom-backdrop');
   });
 
-  it('should emit dismiss event on click', () => {
+  it('should emit dismiss event on mousedown', () => {
     const fixture = TestBed.createComponent(NgbOffcanvasBackdrop);
     fixture.detectChanges();
 
     let emittedEvent: any;
     fixture.componentInstance.dismissEvent.subscribe(event => emittedEvent = event);
-    fixture.nativeElement.dispatchEvent(new Event('click'));
+    fixture.nativeElement.dispatchEvent(new Event('mousedown'));
     fixture.detectChanges();
 
     expect(emittedEvent).toBe(OffcanvasDismissReasons.BACKDROP_CLICK);
