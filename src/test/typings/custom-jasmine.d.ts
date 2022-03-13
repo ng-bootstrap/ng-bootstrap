@@ -4,6 +4,8 @@ declare namespace jasmine {
     toHaveCssClass(expected: any): boolean;
     toHaveModal(content?: string | string[], selector?: string): boolean;
     toHaveBackdrop(): boolean;
+    toHaveOffcanvas(content?: string | string[], selector?: string): boolean;
+    toHaveOffcanvasBackdrop(selector?: string): boolean;
     toBeShown(): boolean;
   }
 }
