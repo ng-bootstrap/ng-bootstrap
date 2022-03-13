@@ -20,6 +20,7 @@ import {ModalFocusComponent} from './modal/focus/modal-focus.component';
 import {ModalNestingComponent} from './modal/nesting/modal-nesting.component';
 import {ModalStackComponent} from './modal/stack/modal-stack.component';
 import {ModalStackConfirmationComponent} from './modal/stack-confirmation/modal-stack-confirmation.component';
+import {OffcanvasAutoCloseComponent} from './offcanvas/autoclose/offcanvas-autoclose.component';
 import {PopoverAutocloseComponent} from './popover/autoclose/popover-autoclose.component';
 import {TooltipAutocloseComponent} from './tooltip/autoclose/tooltip-autoclose.component';
 import {TooltipFocusComponent} from './tooltip/focus/tooltip-focus.component';
@@ -29,6 +30,11 @@ import {TypeaheadFocusComponent} from './typeahead/focus/typeahead-focus.compone
 import {TimepickerFilterComponent} from './timepicker/filter/timepicker-filter.component';
 import {TimepickerNavigationComponent} from './timepicker/navigation/timepicker-navigation.component';
 import {TypeaheadValidationComponent} from './typeahead/validation/typeahead-validation.component';
+import {OffcanvasFocusComponent} from './offcanvas/focus/offcanvas-focus.component';
+import {OffcanvasNestingComponent} from './offcanvas/nesting/offcanvas-nesting.component';
+import {
+  OffcanvasStackConfirmationComponent
+} from './offcanvas/stack-confirmation/offcanvas-stack-confirmation.component';
 
 
 @NgModule({
@@ -47,6 +53,10 @@ import {TypeaheadValidationComponent} from './typeahead/validation/typeahead-val
     ModalNestingComponent,
     ModalStackComponent,
     ModalStackConfirmationComponent,
+    OffcanvasAutoCloseComponent,
+    OffcanvasFocusComponent,
+    OffcanvasNestingComponent,
+    OffcanvasStackConfirmationComponent,
     PopoverAutocloseComponent,
     TooltipAutocloseComponent,
     TooltipFocusComponent,
