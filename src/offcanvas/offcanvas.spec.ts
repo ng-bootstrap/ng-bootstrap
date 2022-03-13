@@ -320,13 +320,13 @@ describe('ngb-offcanvas', () => {
         expect(fixture.nativeElement).not.toHaveOffcanvas();
       });
 
-      it('should dismiss with backdrop click', async() => {
+      it('should dismiss with backdrop mousedown', async() => {
         let rejectReason: any;
         fixture.componentInstance.open('foo').result.catch((reason) => rejectReason = reason);
         fixture.detectChanges();
         expect(fixture.nativeElement).toHaveOffcanvas('foo');
 
-        document.querySelector('ngb-offcanvas-backdrop') ?.dispatchEvent(new Event('click'));
+        document.querySelector('ngb-offcanvas-backdrop') ?.dispatchEvent(new Event('mousedown'));
         fixture.detectChanges();
 
         expect(fixture.nativeElement).not.toHaveOffcanvas();

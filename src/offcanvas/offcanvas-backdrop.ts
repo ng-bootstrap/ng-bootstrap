@@ -15,7 +15,7 @@ import {OffcanvasDismissReasons} from './offcanvas-dismiss-reasons';
     '[class]': '"offcanvas-backdrop" + (backdropClass ? " " + backdropClass : "")',
     '[class.show]': '!animation',
     '[class.fade]': 'animation',
-    '(click)': 'dismiss()'
+    '(mousedown)': 'dismiss()'
   }
 })
 export class NgbOffcanvasBackdrop implements OnInit {
