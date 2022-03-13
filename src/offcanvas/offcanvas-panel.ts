@@ -32,6 +32,7 @@ import {reflow} from '../util/util';
     'tabindex': '-1',
     '[attr.aria-modal]': 'true',
     '[attr.aria-labelledby]': 'ariaLabelledBy',
+    '[attr.aria-describedby]': 'ariaDescribedBy',
   }
 })
 export class NgbOffcanvasPanel implements OnInit,
@@ -41,6 +42,7 @@ export class NgbOffcanvasPanel implements OnInit,
 
   @Input() animation: boolean;
   @Input() ariaLabelledBy?: string;
+  @Input() ariaDescribedBy?: string;
   @Input() keyboard = true;
   @Input() panelClass: string;
   @Input() position: 'start' | 'end' | 'top' | 'bottom' = 'start';
