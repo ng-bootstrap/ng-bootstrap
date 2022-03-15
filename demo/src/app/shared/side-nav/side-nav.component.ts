@@ -6,7 +6,7 @@ export const componentsList = [
   'Popover', 'Progressbar', 'Rating', 'Table', 'Timepicker', 'Toast', 'Tooltip', 'Typeahead'
 ];
 
-export const deprecatedComponentList = ['Tabset'];
+export const deprecatedComponentList: string[] = [];
 
 @Component({
   selector: 'ngbd-side-nav',

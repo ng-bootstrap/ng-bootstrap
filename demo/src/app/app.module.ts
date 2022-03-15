@@ -18,7 +18,6 @@ import {NgbdPopoverModule} from './components/popover/popover.module';
 import {NgbdProgressbarModule} from './components/progressbar/progressbar.module';
 import {NgbdRatingModule} from './components/rating/rating.module';
 import {NgbdTableModule} from './components/table/table.module';
-import {NgbdTabsetModule} from './components/tabset/tabset.module';
 import {NgbdTimepickerModule} from './components/timepicker/timepicker.module';
 import {NgbdToastModule} from './components/toast/toast.module';
 import {NgbdTooltipModule} from './components/tooltip/tooltip.module';
@@ -35,8 +34,7 @@ import {NgbdDemoVersionsComponent} from './demo-versions.component';
 const DEMOS = [
   NgbdAccordionModule, NgbdAlertModule, NgbdButtonsModule, NgbdCarouselModule, NgbdCollapseModule, NgbdDatepickerModule,
   NgbdDropdownModule, NgbdModalModule, NgbdNavModule, NgbdPaginationModule, NgbdPopoverModule, NgbdProgressbarModule,
-  NgbdRatingModule, NgbdTableModule, NgbdTabsetModule, NgbdTimepickerModule, NgbdToastModule, NgbdTooltipModule,
-  NgbdTypeaheadModule
+  NgbdRatingModule, NgbdTableModule, NgbdTimepickerModule, NgbdToastModule, NgbdTooltipModule, NgbdTypeaheadModule
 ];
 
 const PAGES = [GettingStartedPage, AnimationsPage, I18nPage, PositioningPage];
