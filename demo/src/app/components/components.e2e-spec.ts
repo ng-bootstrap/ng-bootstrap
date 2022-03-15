@@ -6,7 +6,7 @@ const SELECTOR_CODE_BUTTONS = 'button.toggle-code';
 
 const COMPONENTS = [
   'accordion', 'alert', 'buttons', 'carousel', 'collapse', 'datepicker', 'dropdown', 'modal', 'nav', 'pagination',
-  'popover', 'progressbar', 'rating', 'table', 'tabset', 'timepicker', 'toast', 'tooltip', 'typeahead'
+  'popover', 'progressbar', 'rating', 'table', 'timepicker', 'toast', 'tooltip', 'typeahead'
 ];
 
 test.describe(`Components`, () => {
