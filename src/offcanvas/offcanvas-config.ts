@@ -33,7 +33,7 @@ export interface NgbOffcanvasOptions {
   backdropClass?: string;
 
   /**
-   * Callback right before the modal will be dismissed.
+   * Callback right before the offcanvas will be dismissed.
    *
    * If this function returns:
    * * `false`

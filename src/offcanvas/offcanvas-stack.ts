@@ -8,7 +8,6 @@ import {
   Injectable,
   Injector,
   NgZone,
-  RendererFactory2,
   TemplateRef
 } from '@angular/core';
 import {finalize, Subject} from 'rxjs';
@@ -34,7 +33,7 @@ export class NgbOffcanvasStack {
 
   constructor(
       private _applicationRef: ApplicationRef, private _injector: Injector, @Inject(DOCUMENT) private _document: any,
-      private _scrollBar: ScrollBar, private _rendererFactory: RendererFactory2, private _ngZone: NgZone) {
+      private _scrollBar: ScrollBar, private _ngZone: NgZone) {
     // Trap focus on active PanelCmpt
     this._activePanelCmptHasChanged.subscribe(() => {
       if (this._panelCmpt) {
@@ -71,8 +70,7 @@ export class NgbOffcanvasStack {
     }
 
     const activeOffcanvas = new NgbActiveOffcanvas();
-    const contentRef =
-        this._getContentRef(moduleCFR, options.injector || contentInjector, content, activeOffcanvas, options);
+    const contentRef = this._getContentRef(moduleCFR, options.injector || contentInjector, content, activeOffcanvas);
 
     let backdropCmptRef: ComponentRef<NgbOffcanvasBackdrop>| undefined =
         options.backdrop !== false ? this._attachBackdrop(moduleCFR, containerEl) : undefined;
@@ -136,8 +134,8 @@ export class NgbOffcanvasStack {
   }
 
   private _getContentRef(
-      moduleCFR: ComponentFactoryResolver, contentInjector: Injector, content: any, activeOffcanvas: NgbActiveOffcanvas,
-      options: NgbOffcanvasOptions): ContentRef {
+      moduleCFR: ComponentFactoryResolver, contentInjector: Injector, content: any,
+      activeOffcanvas: NgbActiveOffcanvas): ContentRef {
     if (!content) {
       return new ContentRef([]);
     } else if (content instanceof TemplateRef) {
@@ -145,7 +143,7 @@ export class NgbOffcanvasStack {
     } else if (isString(content)) {
       return this._createFromString(content);
     } else {
-      return this._createFromComponent(moduleCFR, contentInjector, content, activeOffcanvas, options);
+      return this._createFromComponent(moduleCFR, contentInjector, content, activeOffcanvas);
     }
   }
 
@@ -166,8 +164,8 @@ export class NgbOffcanvasStack {
   }
 
   private _createFromComponent(
-      moduleCFR: ComponentFactoryResolver, contentInjector: Injector, content: any, context: NgbActiveOffcanvas,
-      options: NgbOffcanvasOptions): ContentRef {
+      moduleCFR: ComponentFactoryResolver, contentInjector: Injector, content: any,
+      context: NgbActiveOffcanvas): ContentRef {
     const contentCmptFactory = moduleCFR.resolveComponentFactory(content);
     const offcanvasContentInjector =
         Injector.create({providers: [{provide: NgbActiveOffcanvas, useValue: context}], parent: contentInjector});
