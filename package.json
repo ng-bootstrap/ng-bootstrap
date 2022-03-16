@@ -88,7 +88,7 @@
     "@commitlint/cli": "12.1.4",
     "@commitlint/config-angular": "12.1.4",
     "@nguniversal/express-engine": "~13.0.0",
-    "@playwright/test": "^1.19.1",
+    "@playwright/test": "^1.20.0",
     "@popperjs/core": "^2.10.2",
     "@rollup/plugin-replace": "^3.1.0",
     "@rollup/plugin-typescript": "^8.3.0",

@@ -9,6 +9,7 @@ const config: PlaywrightTestConfig = {
   reporter: [[process.env.CI ? 'github' : 'list'], ['html', {open: 'never', outputFolder: join(reportsDir, "report")}]],
   outputDir: join(reportsDir, "traces"),
   globalSetup: require.resolve('./setup.e2e-spec'),
+  fullyParallel: true,
   testDir: "src",
   testMatch: /\.e2e-spec\.ts$/,
   timeout: 60000,
