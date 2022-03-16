@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 
 import { ToastService } from './toast-service';
 
 @Component({ selector: 'ngbd-toast-global', templateUrl: './toast-global.component.html' })
-export class NgbdToastGlobal {
+export class NgbdToastGlobal implements OnDestroy {
   constructor(public toastService: ToastService) {}
 
   showStandard() {
@@ -16,5 +16,9 @@ export class NgbdToastGlobal {
 
   showDanger(dangerTpl) {
     this.toastService.show(dangerTpl, { classname: 'bg-danger text-light', delay: 15000 });
+  }
+
+  ngOnDestroy(): void {
+    this.toastService.clear();
   }
 }
