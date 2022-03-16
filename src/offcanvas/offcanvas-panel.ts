@@ -68,6 +68,8 @@ export class NgbOffcanvasPanel implements OnInit,
     const {nativeElement} = this._elRef;
     const context: NgbTransitionOptions<any> = {animation: this.animation, runningTransition: 'stop'};
 
+    // TODO when we target Bootstrap 5.2+, the style.visibility handling can be removed, because Bootstrap has improved
+    // its CSS
     const offcanvasTransition$ = ngbRunTransition(this._zone, this._elRef.nativeElement, (element) => {
       nativeElement.classList.remove('show');
       return () => element.style.visibility = 'hidden';
@@ -87,6 +89,8 @@ export class NgbOffcanvasPanel implements OnInit,
   private _show() {
     const context: NgbTransitionOptions<any> = {animation: this.animation, runningTransition: 'continue'};
 
+    // TODO when we target Bootstrap 5.2+, the style.visibility handling can be removed, because Bootstrap has improved
+    // its CSS
     const offcanvasTransition$ =
         ngbRunTransition(this._zone, this._elRef.nativeElement, (element: HTMLElement, animation: boolean) => {
           if (animation) {
