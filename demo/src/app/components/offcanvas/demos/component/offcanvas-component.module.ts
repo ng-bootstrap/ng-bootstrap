@@ -9,6 +9,5 @@ import { NgbdOffcanvasComponent, NgbdOffcanvasContent } from './offcanvas-compon
   declarations: [NgbdOffcanvasComponent, NgbdOffcanvasContent],
   exports: [NgbdOffcanvasComponent],
   bootstrap: [NgbdOffcanvasComponent]
-  // entryComponents: [NgbdModalContent] // this line would be needed in Angular 8 or older
 })
 export class NgbdOffcanvasComponentModule {}
