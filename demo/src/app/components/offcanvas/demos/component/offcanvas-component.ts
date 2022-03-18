@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { NgbActiveOffcanvas, NgbOffcanvas, NgbOffcanvasOptions } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveOffcanvas, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'ngbd-offcanvas-content',
@@ -23,12 +23,15 @@ export class NgbdOffcanvasContent {
   }
 }
 
-@Component({selector: 'ngbd-offcanvas-component', templateUrl: './offcanvas-component.html'})
+@Component({
+  selector: 'ngbd-offcanvas-component',
+  templateUrl: './offcanvas-component.html'}
+)
 export class NgbdOffcanvasComponent {
   constructor(private offcanvasService: NgbOffcanvas) {}
 
-  open(options?: NgbOffcanvasOptions) {
-    const offcanvasRef = this.offcanvasService.open(NgbdOffcanvasContent, options);
+  open() {
+    const offcanvasRef = this.offcanvasService.open(NgbdOffcanvasContent);
     offcanvasRef.componentInstance.name = 'World';
   }
 }
