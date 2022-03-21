@@ -14,6 +14,8 @@ import {
   TemplateRef,
   ViewEncapsulation,
   NgZone,
+  OnInit,
+  OnDestroy,
 } from '@angular/core';
 
 import {isString} from '../util/util';
@@ -134,6 +136,7 @@ export class NgbPanel implements AfterContentChecked {
   titleTpl: NgbPanelTitle;
   headerTpl: NgbPanelHeader;
   contentTpl: NgbPanelContent;
+  panelDiv: HTMLElement | null;
 
   @ContentChildren(NgbPanelTitle, {descendants: false}) titleTpls: QueryList<NgbPanelTitle>;
   @ContentChildren(NgbPanelHeader, {descendants: false}) headerTpls: QueryList<NgbPanelHeader>;
@@ -172,6 +175,16 @@ export interface NgbPanelChangeEvent {
   preventDefault: () => void;
 }
 
+@Directive({selector: '[ngbRef]'})
+export class NgbRefDirective implements OnInit, OnDestroy {
+  @Output() ngbRef = new EventEmitter<HTMLElement | null>();
+  constructor(private _El: ElementRef) {}
+
+  ngOnInit() { this.ngbRef.emit(this._El.nativeElement); }
+
+  ngOnDestroy() { this.ngbRef.emit(null); }
+}
+
 /**
  * Accordion is a collection of collapsible panels (bootstrap cards).
  *
@@ -195,7 +208,7 @@ export interface NgbPanelChangeEvent {
           <ng-template [ngTemplateOutlet]="panel.headerTpl?.templateRef || t"
                        [ngTemplateOutletContext]="{$implicit: panel, opened: panel.isOpen}"></ng-template>
         </div>
-        <div id="{{panel.id}}" role="tabpanel" [attr.aria-labelledby]="panel.id + '-header'"
+        <div id="{{panel.id}}" (ngbRef)="panel.panelDiv = $event" role="tabpanel" [attr.aria-labelledby]="panel.id + '-header'"
              *ngIf="!destroyOnHide || panel.isOpen || panel.transitionRunning">
           <div class="accordion-body">
             <ng-template [ngTemplateOutlet]="panel.contentTpl?.templateRef || null"></ng-template>
@@ -265,9 +278,7 @@ export class NgbAccordion implements AfterContentChecked {
    */
   @Output() hidden = new EventEmitter<string>();
 
-  constructor(
-      config: NgbAccordionConfig, private _element: ElementRef, private _ngZone: NgZone,
-      private _changeDetector: ChangeDetectorRef) {
+  constructor(config: NgbAccordionConfig, private _ngZone: NgZone, private _changeDetector: ChangeDetectorRef) {
     this.animation = config.animation;
     this.type = config.type;
     this.closeOtherPanels = config.closeOthers;
@@ -344,7 +355,7 @@ export class NgbAccordion implements AfterContentChecked {
     // Setup the initial classes here
     this._ngZone.onStable.pipe(take(1)).subscribe(() => {
       this.panels.forEach(panel => {
-        const panelElement = this._getPanelElement(panel.id);
+        const panelElement = panel.panelDiv;
         if (panelElement) {
           if (!panel.initClassDone) {
             panel.initClassDone = true;
@@ -406,7 +417,7 @@ export class NgbAccordion implements AfterContentChecked {
       // When panel.transitionRunning is true, the transition needs to be started OR reversed,
       // The direction (show or hide) is choosen by each panel.isOpen state
       if (panel.transitionRunning) {
-        const panelElement = this._getPanelElement(panel.id);
+        const panelElement = panel.panelDiv;
         ngbRunTransition(this._ngZone, panelElement !, ngbCollapsingTransition, {
           animation,
           runningTransition: 'stop',
@@ -424,10 +435,6 @@ export class NgbAccordion implements AfterContentChecked {
         });
       }
     });
-  }
-
-  private _getPanelElement(panelId: string): HTMLElement | null {
-    return this._element.nativeElement.querySelector('#' + panelId);
   }
 }
 

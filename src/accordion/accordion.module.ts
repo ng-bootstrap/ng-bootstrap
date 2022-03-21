@@ -1,7 +1,15 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
-import {NgbAccordion, NgbPanel, NgbPanelTitle, NgbPanelContent, NgbPanelHeader, NgbPanelToggle} from './accordion';
+import {
+  NgbAccordion,
+  NgbPanel,
+  NgbPanelTitle,
+  NgbPanelContent,
+  NgbPanelHeader,
+  NgbPanelToggle,
+  NgbRefDirective
+} from './accordion';
 
 export {
   NgbAccordion,
@@ -18,6 +26,10 @@ export {NgbAccordionConfig} from './accordion-config';
 const NGB_ACCORDION_DIRECTIVES =
     [NgbAccordion, NgbPanel, NgbPanelTitle, NgbPanelContent, NgbPanelHeader, NgbPanelToggle];
 
-@NgModule({declarations: NGB_ACCORDION_DIRECTIVES, exports: NGB_ACCORDION_DIRECTIVES, imports: [CommonModule]})
+@NgModule({
+  declarations: [NgbRefDirective, ...NGB_ACCORDION_DIRECTIVES],
+  exports: NGB_ACCORDION_DIRECTIVES,
+  imports: [CommonModule]
+})
 export class NgbAccordionModule {
 }

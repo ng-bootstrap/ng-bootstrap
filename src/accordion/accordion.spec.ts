@@ -76,6 +76,19 @@ describe('ngb-accordion', () => {
     expect(accordionCmp.closeOtherPanels).toBe(defaultConfig.closeOthers);
   });
 
+  it('should panel authorize number as Ids', () => {
+    const testCompFixture = TestBed.createComponent(TestComponent);
+    const testComp = testCompFixture.componentInstance;
+    testComp.panels = [
+      {id: '1', disabled: false, title: 'Panel 1', content: 'foo', type: ''},
+      {id: '2', disabled: false, title: 'Panel 2', content: 'bar', type: ''},
+      {id: '3', disabled: false, title: 'Panel 3', content: 'baz', type: ''}
+    ];
+    testComp.activeIds = ['2'];
+    testCompFixture.detectChanges();
+    expectOpenPanels(testCompFixture.nativeElement, [false, true, false]);
+  });
+
   it('should have no open panels', () => {
     const fixture = TestBed.createComponent(TestComponent);
     const accordionEl = fixture.nativeElement.children[0];
