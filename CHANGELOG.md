@@ -1,3 +1,19 @@
+## [12.0.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/12.0.0...12.0.1) (2022-03-21)
+
+This release contains a couple of bugfixes for the Bootstrap 5 release.
+
+[ng-bootstrap web site](https://ng-bootstrap.github.io) was updated with documentation for older releases (now there is a dropdown in the header to switch between versions).
+
+### Bug Fixes
+
+* **accordion:** accept ids that start with a digit ([#4196](https://github.com/ng-bootstrap/ng-bootstrap/issues/4196)) ([c2eef9a](https://github.com/ng-bootstrap/ng-bootstrap/commit/c2eef9a9f287c323eb0cfadd5b76961a409e3397)), closes [#4195](https://github.com/ng-bootstrap/ng-bootstrap/issues/4195)
+* **carousel:** fix hidden carousel indicators ([#4259](https://github.com/ng-bootstrap/ng-bootstrap/issues/4259)) ([bee2668](https://github.com/ng-bootstrap/ng-bootstrap/commit/bee26684cc3dbd2ff61da63a77b342902adbc78e)), closes [#4200](https://github.com/ng-bootstrap/ng-bootstrap/issues/4200) [#4253](https://github.com/ng-bootstrap/ng-bootstrap/issues/4253)
+* **datepicker:** respond to autoClose changes dynamically ([34e3d53](https://github.com/ng-bootstrap/ng-bootstrap/commit/34e3d53e30d479c819a54f45689ba6e497446ef0))
+* **dropdown:** respond to autoClose changes dynamically ([1def999](https://github.com/ng-bootstrap/ng-bootstrap/commit/1def999f2ba8a4ec7e36df32aded023a4ca8ee4c))
+* **modal:** allows to set an HTMLElement as container in NgbModalConfig ([#4161](https://github.com/ng-bootstrap/ng-bootstrap/issues/4161)) ([a93c439](https://github.com/ng-bootstrap/ng-bootstrap/commit/a93c439ebeb6c8ad8358ec21871e828e5831948a)), closes [#4160](https://github.com/ng-bootstrap/ng-bootstrap/issues/4160)
+* **modal:** scrollbar issue with stacked modals ([#4256](https://github.com/ng-bootstrap/ng-bootstrap/issues/4256)) ([9da624d](https://github.com/ng-bootstrap/ng-bootstrap/commit/9da624d592b06e07e9b1026a38e42a2a12bf3b5e)), closes [#4255](https://github.com/ng-bootstrap/ng-bootstrap/issues/4255)
+
+
 # [12.0.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/11.0.0...12.0.0) (2022-02-14)
 
 This release adds Bootstrap 5 support.
