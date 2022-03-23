@@ -376,7 +376,7 @@ export class NgbInputDatepicker implements OnChanges,
       // focus handling
       this._elWithFocus = this._document.activeElement;
       ngbFocusTrap(this._ngZone, this._cRef.location.nativeElement, this.closed, true);
-      this._cRef.instance.focus();
+      setTimeout(() => this._cRef?.instance.focus());
 
       let hostElement: HTMLElement;
       if (isString(this.positionTarget)) {
