@@ -42,7 +42,7 @@ export class NgbdToastOverviewComponent {
   APP_TOAST_SERVICE = Snippet({
     lang: 'typescript',
     code: `
-      export interface ToastMessage {
+      export interface ToastInfo {
         header: string;
         body: string;
         delay?: number;
@@ -50,7 +50,7 @@ export class NgbdToastOverviewComponent {
       
       @Injectable({ providedIn: 'root' })
       export class AppToastService {
-        toasts: ToastMessage[] = [];
+        toasts: ToastInfo[] = [];
 
         show(header: string, body: string) {
           this.toasts.push({ header, body });
@@ -61,7 +61,7 @@ export class NgbdToastOverviewComponent {
   APP_TOAST_SERVICE_REMOVE = Snippet({
     lang: 'typescript',
     code: `
-      remove(toast: ToastMessage) {
+      remove(toast: ToastInfo) {
         this.toasts = this.toasts.filter(t => t != toast);
       }`,
   });
