@@ -175,46 +175,6 @@ describe('ngb-dropdown', () => {
     dropdown.close();
   });
 
-  it('should have data-popper attribute reflecting placement', fakeAsync(() => {
-       const html = `
-      <div ngbDropdown [open]="true" placement="bottom-right">
-          <button ngbDropdownAnchor></button>
-          <div ngbDropdownMenu>
-            <a class="dropdown-item">dropDown item</a>
-            <a class="dropdown-item">dropDown item</a>
-          </div>
-      </div>`;
-
-       const fixture = createTestComponent(html);
-       const compiled = fixture.nativeElement;
-
-
-       fixture.detectChanges();
-       tick();
-
-       expect(getMenuEl(compiled).getAttribute('data-popper')).toBe('bottom-right');
-     }));
-
-  it('should have data-popper attribute reflecting placement with a template', fakeAsync(() => {
-
-       const html = `
-    <div ngbDropdown [open]="true" placement="bottom-right">
-      <button ngbDropdownAnchor></button>
-      <div *ngIf="true" ngbDropdownMenu>
-        <a class="dropdown-item">dropDown item</a>
-        <a class="dropdown-item">dropDown item</a>
-      </div>
-    </div>`;
-
-       const fixture = createTestComponent(html);
-       const compiled = fixture.nativeElement;
-
-       fixture.detectChanges();
-       tick();
-
-       expect(getMenuEl(compiled).getAttribute('data-popper')).toBe('bottom-right');
-     }));
-
   it('should be open initially if open expression is true', () => {
     const html = `
       <div ngbDropdown [open]="true">
@@ -437,7 +397,7 @@ describe('ngb-dropdown-toggle', () => {
        const dropdownEl = compiled.querySelector('[ngbdropdownmenu]');
        const targetElement = compiled.querySelector('button');
        expect(Math.abs(dropdownEl.getBoundingClientRect().left - targetElement.getBoundingClientRect().right))
-           .toBeLessThan(1, 'Wrong dropdown placement');
+           .toBeLessThan(3, 'Wrong dropdown placement');
 
      }));
 
@@ -466,7 +426,8 @@ describe('ngb-dropdown-toggle', () => {
       const dropdownEl: HTMLElement = compiled.querySelector('[ngbdropdownmenu]');
 
       expect(dropdownEl.getAttribute('style')).toBeNull(`The dropdown element shouldn't have calculated styles`);
-      expect(dropdownEl.getAttribute('data-popper')).toBeNull(`The dropdown element shouldn't have data-popper set`);
+      expect(dropdownEl.getAttribute('data-popper-placement'))
+          .toBeNull(`The dropdown element shouldn't have data-popper-placement set`);
 
     });
 

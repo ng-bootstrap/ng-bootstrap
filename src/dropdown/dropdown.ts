@@ -28,6 +28,22 @@ import {Key} from '../util/key';
 
 import {NgbDropdownConfig} from './dropdown-config';
 import {FOCUSABLE_ELEMENTS_SELECTOR} from '../util/focus-trap';
+import {Options, offset} from '@popperjs/core';
+
+
+function updatePopperOptions(options: Options) {
+  options.modifiers !.push(offset, {
+    name: 'offset',
+    options: {
+      offset: () => {
+        return [0, 2];
+      },
+    },
+  });
+
+  return options;
+}
+
 
 @Directive({selector: '.navbar'})
 export class NgbNavbar {
@@ -63,7 +79,6 @@ export class NgbDropdownItem {
   host: {
     '[class.dropdown-menu]': 'true',
     '[class.show]': 'dropdown.isOpen()',
-    '[attr.data-popper]': 'placement',
     '(keydown.ArrowUp)': 'dropdown.onKeyDown($event)',
     '(keydown.ArrowDown)': 'dropdown.onKeyDown($event)',
     '(keydown.Home)': 'dropdown.onKeyDown($event)',
@@ -278,7 +293,7 @@ export class NgbDropdown implements AfterContentInit, OnChanges, OnDestroy {
               hostElement: this._anchor.nativeElement,
               targetElement: this._bodyContainer || this._menu.nativeElement,
               placement: this.placement,
-              appendToBody: this.container === 'body',
+              appendToBody: this.container === 'body', updatePopperOptions,
             });
             this._applyPlacementClasses();
           });
