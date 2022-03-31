@@ -42,6 +42,7 @@ import {NgbDatepickerConfig} from './datepicker-config';
 import {isString} from '../util/util';
 import {take} from 'rxjs/operators';
 import {Subject} from 'rxjs';
+import {addPopperOffset} from '../util/positioning-util';
 
 /**
  * A directive that allows to stick a datepicker popup to an input field.
@@ -394,6 +395,7 @@ export class NgbInputDatepicker implements OnChanges,
             targetElement: this._cRef.location.nativeElement,
             placement: this.placement,
             appendToBody: this.container === 'body',
+            updatePopperOptions: addPopperOffset([0, 2])
           });
         }
       });
