@@ -30,24 +30,11 @@ import {PopupService} from '../util/popup';
 
 import {NgbPopoverConfig} from './popover-config';
 
-import {Options, offset} from '@popperjs/core';
+import {addPopperOffset} from '../util/positioning-util';
 import {Subscription} from 'rxjs';
 import {take} from 'rxjs/operators';
 
 let nextId = 0;
-
-function updatePopperOptions(options: Options) {
-  options.modifiers !.push(offset, {
-    name: 'offset',
-    options: {
-      offset: () => {
-        return [0, 12];
-      },
-    },
-  });
-
-  return options;
-}
 
 @Component({
   selector: 'ngb-popover-window',
@@ -261,7 +248,8 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
           targetElement: this._windowRef !.location.nativeElement,
           placement: this.placement,
           appendToBody: this.container === 'body',
-          baseClass: 'bs-popover', updatePopperOptions,
+          baseClass: 'bs-popover',
+          updatePopperOptions: addPopperOffset([0, 8]),
         });
       });
 
