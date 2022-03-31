@@ -33,6 +33,7 @@ import {isDefined, toString} from '../util/util';
 
 import {NgbTypeaheadConfig} from './typeahead-config';
 import {NgbTypeaheadWindow, ResultTemplateContext} from './typeahead-window';
+import {addPopperOffset} from '../util/positioning-util';
 
 /**
  * An event emitted right before an item is selected from the result list.
@@ -319,6 +320,7 @@ export class NgbTypeahead implements ControlValueAccessor,
             targetElement: this._windowRef.location.nativeElement,
             placement: this.placement,
             appendToBody: this.container === 'body',
+            updatePopperOptions: addPopperOffset([0, 2]),
           });
         }
       });
