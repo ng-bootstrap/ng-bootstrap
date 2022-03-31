@@ -1005,6 +1005,10 @@ describe('ngb-modal', () => {
 
           let modalEl: HTMLElement | null = null;
 
+          modalRef.result.then(() => { expect(document.body.classList.contains('modal-open')).toBe(true); });
+
+          modalRef.closed.subscribe(() => { expect(document.body.classList.contains('modal-open')).toBe(true); });
+
           modalRef.shown.subscribe(() => {
             modalEl = document.querySelector('ngb-modal-window') as HTMLElement;
             const closeButton = document.querySelector('button#close') as HTMLButtonElement;
@@ -1018,7 +1022,11 @@ describe('ngb-modal', () => {
           modalRef.hidden.subscribe(() => {
             modalEl = document.querySelector('ngb-modal-window');
             expect(modalEl).toBeNull();
-            done();
+            expect(document.body.classList.contains('modal-open')).toBe(true);
+            setTimeout(() => {
+              expect(document.body.classList.contains('modal-open')).toBe(false);
+              done();
+            });
           });
 
           component.detectChanges();

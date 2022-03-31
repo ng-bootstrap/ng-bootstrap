@@ -21,6 +21,7 @@ import {NgbModalBackdrop} from './modal-backdrop';
 import {NgbModalOptions} from './modal-config';
 import {NgbActiveModal, NgbModalRef} from './modal-ref';
 import {NgbModalWindow} from './modal-window';
+import {take} from 'rxjs/operators';
 
 @Injectable({providedIn: 'root'})
 export class NgbModalStack {
@@ -71,14 +72,6 @@ export class NgbModalStack {
                                                                    this._document.body;
     const renderer = this._rendererFactory.createRenderer(null, null);
 
-    const removeBodyClass = () => {
-      if (!this._modalRefs.length) {
-        renderer.removeClass(this._document.body, 'modal-open');
-        this._restoreScrollBar();
-        this._revertAriaHidden();
-      }
-    };
-
     if (!containerEl) {
       throw new Error(`The specified modal container "${options.container || 'body'}" was not found in the DOM.`);
     }
@@ -96,7 +89,18 @@ export class NgbModalStack {
 
     this._registerModalRef(ngbModalRef);
     this._registerWindowCmpt(windowCmptRef);
-    ngbModalRef.result.then(removeBodyClass, removeBodyClass);
+
+    // We have to cleanup DOM after the last modal when BOTH 'hidden' was emitted and 'result' promise was resolved:
+    // - with animations OFF, 'hidden' emits synchronously, then 'result' is resolved asynchronously
+    // - with animations ON, 'result' is resolved asynchronously, then 'hidden' emits asynchronously
+    ngbModalRef.hidden.pipe(take(1)).subscribe(() => Promise.resolve(true).then(() => {
+      if (!this._modalRefs.length) {
+        renderer.removeClass(this._document.body, 'modal-open');
+        this._restoreScrollBar();
+        this._revertAriaHidden();
+      }
+    }));
+
     activeModal.close = (result: any) => { ngbModalRef.close(result); };
     activeModal.dismiss = (reason: any) => { ngbModalRef.dismiss(reason); };
 
