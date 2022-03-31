@@ -23,27 +23,12 @@ import {fromEvent, Subject, Subscription} from 'rxjs';
 import {take} from 'rxjs/operators';
 
 import {Placement, PlacementArray, ngbPositioning} from '../util/positioning';
+import {addPopperOffset} from '../util/positioning-util';
 import {ngbAutoClose, SOURCE} from '../util/autoclose';
 import {Key} from '../util/key';
 
 import {NgbDropdownConfig} from './dropdown-config';
 import {FOCUSABLE_ELEMENTS_SELECTOR} from '../util/focus-trap';
-import {Options, offset} from '@popperjs/core';
-
-
-function updatePopperOptions(options: Options) {
-  options.modifiers !.push(offset, {
-    name: 'offset',
-    options: {
-      offset: () => {
-        return [0, 2];
-      },
-    },
-  });
-
-  return options;
-}
-
 
 @Directive({selector: '.navbar'})
 export class NgbNavbar {
@@ -293,7 +278,8 @@ export class NgbDropdown implements AfterContentInit, OnChanges, OnDestroy {
               hostElement: this._anchor.nativeElement,
               targetElement: this._bodyContainer || this._menu.nativeElement,
               placement: this.placement,
-              appendToBody: this.container === 'body', updatePopperOptions,
+              appendToBody: this.container === 'body',
+              updatePopperOptions: addPopperOffset([0, 2]),
             });
             this._applyPlacementClasses();
           });
