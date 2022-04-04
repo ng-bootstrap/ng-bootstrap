@@ -307,6 +307,7 @@ export class NgbTypeahead implements ControlValueAccessor,
       this._windowRef.instance.popupClass = this.popupClass;
 
       if (this.container === 'body') {
+        this._renderer.setStyle(this._windowRef.location.nativeElement, 'z-index', '1055');
         this._document.querySelector(this.container).appendChild(this._windowRef.location.nativeElement);
       }
 
