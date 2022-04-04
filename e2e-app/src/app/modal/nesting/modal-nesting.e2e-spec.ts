@@ -12,12 +12,106 @@ import {
   SELECTOR_DROPDOWN,
   SELECTOR_TYPEAHEAD_INPUT,
   SELECTOR_TYPEAHEAD_DROPDOWN,
+  setContainer,
+  SELECTOR_DROPDOWN_ITEM,
+  SELECTOR_CLOSE_BUTTON,
+  SELECTOR_TYPEAHEAD_DROPDOWN_ITEM,
+  SELECTOR_TOOLTIP_BUTTON,
+  SELECTOR_TOOLTIP,
+  SELECTOR_POPOVER_BUTTON,
+  SELECTOR_POPOVER,
 } from './modal-nesting.po';
 
 import {SELECTOR_DAY} from '../../datepicker/datepicker.po';
 
 test.use({testURL: 'modal/nesting', testSelector: 'h3:text("Modal nesting tests")'});
 test.beforeEach(async({page}) => setPage(page));
+
+test.describe(`Modal nested components z-index`, () => {
+  for (let container of['null', 'body']) {
+    test.beforeEach(async() => { await setContainer(container); });
+    test.afterEach(async() => { await waitForModalCount(0); });
+
+    test(`datepicker with container='${container}'`, async() => {
+      await openModal();
+
+      // opening
+      await getPage().click(SELECTOR_DATEPICKER_BUTTON);
+      await expect(getPage().locator(SELECTOR_DATEPICKER), `Datepicker should be opened`).toBeVisible();
+
+      // closing
+      await getPage().click(SELECTOR_DAY(new Date(2018, 0, 1)));
+      await expect(getPage().locator(SELECTOR_DATEPICKER), `Datepicker should be closed`).toHaveCount(0);
+      await waitForModalCount(1, `Modal should stay opened`);
+
+      await getPage().click(SELECTOR_CLOSE_BUTTON);
+    });
+
+    test(`dropdown with container='${container}'`, async() => {
+      await openModal();
+
+      // opening
+      await getPage().click(SELECTOR_DROPDOWN_BUTTON);
+      await expect(getPage().locator(SELECTOR_DROPDOWN), `Dropdown should be opened`).toBeVisible();
+
+      // closing
+      await getPage().click(SELECTOR_DROPDOWN_ITEM);
+      await expect(getPage().locator(SELECTOR_DROPDOWN), `Dropdown should be closed`).toHaveCount(0);
+      await waitForModalCount(1, `Modal should stay opened`);
+
+      await getPage().click(SELECTOR_CLOSE_BUTTON);
+    });
+
+    test(`typeahead with container='${container}'`, async() => {
+      await openModal();
+
+      // opening
+      await getPage().click(SELECTOR_TYPEAHEAD_INPUT);
+      await sendKey(' ');
+      await expect(getPage().locator(SELECTOR_TYPEAHEAD_DROPDOWN), `Typeahead should be opened`).toBeVisible();
+
+      // closing
+      await getPage().click(SELECTOR_TYPEAHEAD_DROPDOWN_ITEM);
+      await expect(getPage().locator(SELECTOR_TYPEAHEAD_DROPDOWN), `Typeahead should be
+                closed`)
+          .toHaveCount(0);
+      await waitForModalCount(1, `Modal should stay opened`);
+
+      await getPage().click(SELECTOR_CLOSE_BUTTON);
+    });
+
+    test(`tooltip with container='${container}'`, async() => {
+      await openModal();
+
+      // opening
+      await getPage().click(SELECTOR_TOOLTIP_BUTTON);
+      await expect(getPage().locator(SELECTOR_TOOLTIP), `Tooltip should be opened`).toBeVisible();
+
+      // closing
+      await getPage().click(SELECTOR_TOOLTIP);
+      await expect(getPage().locator(SELECTOR_TOOLTIP), `Tooltip should be closed`).toHaveCount(0);
+      await waitForModalCount(1, `Modal should stay opened`);
+
+      await getPage().click(SELECTOR_CLOSE_BUTTON);
+    });
+
+    test(`popover with container='${container}'`, async() => {
+      await openModal();
+
+      // opening
+      await getPage().click(SELECTOR_POPOVER_BUTTON);
+      await expect(getPage().locator(SELECTOR_POPOVER), `Popover should be opened`).toBeVisible();
+
+      // closing
+      await getPage().click(SELECTOR_POPOVER);
+      await expect(getPage().locator(SELECTOR_POPOVER), `Popover should be closed`).toHaveCount(0);
+      await waitForModalCount(1, `Modal should stay opened`);
+
+      await getPage().click(SELECTOR_CLOSE_BUTTON);
+    });
+  }
+});
+
 
 test.describe('Modal nested components', () => {
 

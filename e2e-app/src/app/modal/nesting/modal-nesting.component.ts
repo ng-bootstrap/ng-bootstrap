@@ -5,6 +5,8 @@ import {map} from 'rxjs/operators';
 
 @Component({templateUrl: './modal-nesting.component.html'})
 export class ModalNestingComponent {
+  container: string | null = null;
+
   constructor(private modalService: NgbModal) {}
 
   openModal(content: TemplateRef<any>) { this.modalService.open(content); }
