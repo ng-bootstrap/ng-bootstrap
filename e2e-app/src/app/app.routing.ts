@@ -2,6 +2,7 @@ import {ModuleWithProviders} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 
 import {DatepickerAutoCloseComponent} from './datepicker/autoclose/datepicker-autoclose.component';
+import {DatepickerContainerComponent} from './datepicker/container/datepicker-container.component';
 import {DatepickerFocusComponent} from './datepicker/focus/datepicker-focus.component';
 import {DatepickerMultipleComponent} from './datepicker/multiple/datepicker-multiple.component';
 import {DropdownAutoCloseComponent} from './dropdown/autoclose/dropdown-autoclose.component';
@@ -28,6 +29,7 @@ export const routes: Routes = [
   {
     path: 'datepicker',
     children: [
+      {path: 'container', component: DatepickerContainerComponent},
       {path: 'focus', component: DatepickerFocusComponent},
       {path: 'autoclose', component: DatepickerAutoCloseComponent},
       {path: 'multiple', component: DatepickerMultipleComponent}
