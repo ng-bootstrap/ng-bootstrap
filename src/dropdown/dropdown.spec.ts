@@ -298,6 +298,25 @@ describe('ngb-dropdown', () => {
     expect(fixture.componentInstance.isOpen).toBe(false);
     expect(fixture.componentInstance.stateChanges).toEqual([true, false]);
   });
+
+  it('should disable a button dropdown item', () => {
+    const html = `<button ngbDropdownItem [disabled]="true">dropDown item</button>`;
+
+    const fixture = createTestComponent(html);
+    const itemEl = fixture.nativeElement.querySelector('button');
+
+    expect(itemEl).toHaveCssClass('disabled');
+    expect(itemEl.disabled).toBe(true);
+  });
+
+  it('should disable a link dropdown item', () => {
+    const html = `<a ngbDropdownItem [disabled]="true">dropDown item</a>`;
+
+    const fixture = createTestComponent(html);
+    const itemEl = fixture.nativeElement.querySelector('a');
+
+    expect(itemEl).toHaveCssClass('disabled');
+  });
 });
 
 describe('ngb-dropdown-toggle', () => {

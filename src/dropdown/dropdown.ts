@@ -49,11 +49,12 @@ export class NgbDropdownItem {
   @Input()
   set disabled(value: boolean) {
     this._disabled = <any>value === '' || value === true;  // accept an empty attribute as true
+    this._renderer.setProperty(this.elementRef.nativeElement, 'disabled', this._disabled);
   }
 
   get disabled(): boolean { return this._disabled; }
 
-  constructor(public elementRef: ElementRef<HTMLElement>) {}
+  constructor(public elementRef: ElementRef<HTMLElement>, private _renderer: Renderer2) {}
 }
 
 /**
