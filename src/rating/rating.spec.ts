@@ -466,11 +466,25 @@ describe('ngb-rating', () => {
   it('should contain the correct number of stars when [max] is changed', () => {
     const fixture = createTestComponent('<ngb-rating [max]="max"></ngb-rating>');
 
+    expect(getState(fixture.nativeElement).length).toBe(10);
+
     fixture.componentInstance.max = 12;
     fixture.detectChanges();
+    expect(getState(fixture.nativeElement).length).toBe(12);
 
-    const totalStars = fixture.debugElement.queryAll(By.css('.sr-only')).length;
-    expect(totalStars).toBe(12);
+    // should be ignored
+    fixture.componentInstance.max = -1;
+    fixture.detectChanges();
+    expect(getState(fixture.nativeElement).length).toBe(12);
+
+    fixture.componentInstance.max = 5;
+    fixture.detectChanges();
+    expect(getState(fixture.nativeElement).length).toBe(5);
+
+    // should be ignored
+    fixture.componentInstance.max = 0;
+    fixture.detectChanges();
+    expect(getState(fixture.nativeElement).length).toBe(5);
   });
 
   it('should reduce the rating when [max] is changed to a value lower than the current rating', fakeAsync(() => {
@@ -480,6 +494,7 @@ describe('ngb-rating', () => {
        fixture.detectChanges();
        tick();
 
+       expect(getState(fixture.nativeElement)).toEqual([true, true]);
        expect(fixture.componentInstance.rate).toBe(2);
      }));
 
