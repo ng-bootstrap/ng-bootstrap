@@ -300,22 +300,37 @@ describe('ngb-dropdown', () => {
   });
 
   it('should disable a button dropdown item', () => {
-    const html = `<button ngbDropdownItem [disabled]="true">dropDown item</button>`;
+    const html = `<button ngbDropdownItem [disabled]="disabled">dropDown item</button>`;
 
     const fixture = createTestComponent(html);
     const itemEl = fixture.nativeElement.querySelector('button');
 
+    expect(itemEl).not.toHaveCssClass('disabled');
+    expect(itemEl.disabled).toBeFalse();
+    expect(itemEl.tabIndex).toBe(0);
+
+    fixture.componentInstance.disabled = true;
+    fixture.detectChanges();
+
     expect(itemEl).toHaveCssClass('disabled');
-    expect(itemEl.disabled).toBe(true);
+    expect(itemEl.disabled).toBeTrue();
+    expect(itemEl.tabIndex).toBe(-1);
   });
 
   it('should disable a link dropdown item', () => {
-    const html = `<a ngbDropdownItem [disabled]="true">dropDown item</a>`;
+    const html = `<a ngbDropdownItem [disabled]="disabled">dropDown item</a>`;
 
     const fixture = createTestComponent(html);
     const itemEl = fixture.nativeElement.querySelector('a');
 
+    expect(itemEl).not.toHaveCssClass('disabled');
+    expect(itemEl.tabIndex).toBe(0);
+
+    fixture.componentInstance.disabled = true;
+    fixture.detectChanges();
+
     expect(itemEl).toHaveCssClass('disabled');
+    expect(itemEl.tabIndex).toBe(-1);
   });
 });
 
@@ -543,6 +558,7 @@ class TestComponent {
   isOpen = false;
   stateChanges: boolean[] = [];
   dropdownClass = 'custom-class';
+  disabled = false;
 
   recordStateChange($event) {
     this.stateChanges.push($event);
