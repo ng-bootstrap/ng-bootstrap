@@ -40,7 +40,10 @@ export class NgbNavbar {
  *
  * @since 4.1.0
  */
-@Directive({selector: '[ngbDropdownItem]', host: {'class': 'dropdown-item', '[class.disabled]': 'disabled'}})
+@Directive({
+  selector: '[ngbDropdownItem]',
+  host: {'class': 'dropdown-item', '[class.disabled]': 'disabled', '[tabIndex]': 'disabled ? -1 : 0'}
+})
 export class NgbDropdownItem {
   static ngAcceptInputType_disabled: boolean | '';
 
@@ -49,6 +52,9 @@ export class NgbDropdownItem {
   @Input()
   set disabled(value: boolean) {
     this._disabled = <any>value === '' || value === true;  // accept an empty attribute as true
+    // note: we don't use a host binding for disabled because when used on links, it fails because links don't have a
+    // disabled property
+    // setting the property using the renderer, OTOH, works fine in both cases.
     this._renderer.setProperty(this.elementRef.nativeElement, 'disabled', this._disabled);
   }
 
