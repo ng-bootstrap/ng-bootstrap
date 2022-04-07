@@ -7,8 +7,8 @@ It also explains the basic mechanics of using `git`, `node` and `yarn`.
 - [Getting the Sources](#getting-the-sources)
 - [Installing Dependencies](#installing-dependencies)
 - [Project Structure](#project-structure)
-- [Useful commands](#useful-commands)
-- [Formatting](#clang-format)
+- [Useful Commands](#useful-commands)
+- [Code Formatting](#code-formatting)
 - [Commit Messages](#commit-messages)
 
 See the [contribution guidelines](https://github.com/ng-bootstrap/ng-bootstrap/blob/master/CONTRIBUTING.md)
@@ -28,7 +28,6 @@ following products on your development machine:
 
 - We use [Yarn](https://yarnpkg.com)  (version `>=1.15.2`) to manage dependencies. See `.yarnrc` amd `.yarn/README.md` for more info.
 
-- We use [Commit Lint](https://commitlint.js.org) with [Husky](https://github.com/typicode/husky) to make sure our commit messages are following [some common rules](#commit-messages).
 
 ## Getting the Sources
 
@@ -94,12 +93,12 @@ tests respectively.
 
 #### `yarn test`
 
-Checks formatting, linting and runs all unit tests for the library with coverage
+Lints the source code and runs all unit tests for the library with coverage
 
 #### `yarn e2e`
 
-Runs all protractor tests for the library in production mode. We use them to check focus handling, browser styles, layout, etc.
-(For debugging/development it is also possible to separately serve the e2e test application with `yarn e2e-app:serve` and run protractor with `yarn ngb:e2e-noserve`)
+Runs all e2e tests for the library in production mode. We use them to check focus handling, browser styles, layout, etc.
+(For debugging/development it is also possible to separately serve the e2e test application with `yarn e2e-app:serve` and run tests with `yarn ngb:e2e-noserve`)
 
 #### `yarn ssr`
 
@@ -109,85 +108,45 @@ Builds, runs and e2e tests a simple server-side rendered application with all ng
 
 Runs exactly the same suite of actions as the CI server, so you might want to do it before opening a PR
 
-#### `yarn check-format`
-
-Checks that your source code is properly formatted without running anything else (see next section)
 
 You can inspect `package.json` scripts section for a full list of commands available.
 
-## Formatting with <a name="clang-format">clang-format</a>
+## Code Formatting
 
-We use [clang-format](http://clang.llvm.org/docs/ClangFormat.html) to automatically enforce code
-style for our TypeScript code. This allows us to focus our code reviews more on the content, and
-less on style nit-picking. It also lets us encode our style guide in the `.clang-format` file in the
-repository, allowing many tools and editors to share our settings.
+We use [Prettier](https://prettier.io) to automatically enforce code formatting for most of the files we have. 
+This allows us to focus on code reviews and features, and not on style nit-picking. 
 
-To check the formatting of your code, run
+Prettier integrates easily in many modern IDEs, but on top of this your code should be formatted automatically with
+[Husky](https://github.com/typicode/husky) and a pre-commit hook.
 
 ```bash
+
+# we enforce formatting during CI with
 yarn check-format
+
+# you can also force format the code with
+yarn format
 ```
-
-Your life will be easier if you include the formatter in your standard workflow. Otherwise, you'll
-likely forget to check the formatting, and waste time waiting for a build on GitHub that fails due
-to some whitespace difference.
-
-- Install clang-format with `npm install -g clang-format`.
-- Use `clang-format -i [file name]` to format a file (or multiple).
-  Note that `clang-format` tries to load a `clang-format` node module close to the sources being
-  formatted, or from the `$CWD`, and only then uses the globally installed one - so the version used
-  should automatically match the one required by the project.
-  Use `clang-format -version` in case you get confused.
-- Use `yarn check-format` to check if your code is `clang-format` clean. This also gives
-  you a command line to format your code.
-- `clang-format` also includes a git hook, run `git clang-format` to format all files you
-  touched.
-- You can run this as a **git pre-commit hook** to automatically format your delta regions when you
-  commit a change. In the ng-bootstrap repo, run
-
-```shell
-    $ echo -e '#!/bin/sh\nexec git clang-format' > .git/hooks/pre-commit
-    $ chmod u+x !$
-```
-
-- **WebStorm** can run clang-format on the current file.
-  1. Under Preferences, open Tools > External Tools.
-  1. Plus icon to Create Tool
-  1. Fill in the form:
-  - Name: clang-format
-  - Description: Format
-  - Synchronize files after execution: checked
-  - Open console: not checked
-  - Show in: Editor menu
-  - Program: [path to clang-format, try `$ echo $(npm config get prefix)/bin/clang-format`]
-  - Parameters: `-i -style=file $FilePath$`
-  - Working directory: `$ProjectFileDir$`
-- `clang-format` integrations are also available for many popular editors (`vim`, `emacs`,
-  `Sublime Text`, etc.).
 
 ## Commit messages
 
-#### Pre-requisites
+We use [CommitLint](https://commitlint.js.org/) to enforce commit messages and have a clean git history.
+Commit format will be enforced with [Husky](https://github.com/typicode/husky) and a `commit-msg` hook.
 
-For Conventional Commit Messages to be working with [CommitLint](https://commitlint.js.org/) you have to make sure everything is installed properly:
+Here is an example of the commit message that provides a title, an explanation and references a GitHub issue:
 
-- You have a fresh install, you just cloned the repository following the steps described in this readme?
-  **you should be fine**.
+```
+fix(tooltip): allow 'null' and 'undefined' as values for tooltip
 
-- Your project folder is a long standing one, cloned a long time ago?
-  - Make sure to remove any previous `commit-msg` or `prepare-commit-msg` hooks you might have inside `.git/hooks` directory.
-  - Install manually [Husky](https://github.com/typicode/husky) by executing this command:
-    ```bash
-    > npx husky install
-    ```
+The documentation says that falsy values are accepted,
+but in strict mode, only the empty string could actually be passed.
 
-In both cases you can validate your local installation by trying to commit something. (guides available [here](https://commitlint.js.org/#/guides-local-setup))
-
-#### Commit types and scopes 
+Fixes #3845
+```
 
 We maintain dynamic custom scopes for the project. Valid scopes correspond to the name of our widgets: `alert`, `accordion`, etc.
 
-Examples:
+More examples:
 - `feat(datepicker): ...` &rarr; a new feature for the datepicker 
 - `fix(datepicker): ...` &rarr; a bug fix for the datepicker
 - `test(datepicker): ... ` &rarr; an update to one of the datepicker unit or e2e tests
@@ -199,4 +158,4 @@ Examples:
 - `ci: ...` &rarr; any change for CI related configuration
 - `revert: ...` &rarr; revert an older commit
 
-Anything else won't pass commitlint validation.
+Anything else won't pass validation.
