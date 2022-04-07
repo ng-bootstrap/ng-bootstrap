@@ -1,3 +1,18 @@
+## [11.0.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/11.0.0...11.0.1) (2022-04-07)
+
+This release contains some bugfixes for those who still remain on Bootstrap 4
+
+### Bug Fixes
+
+* **accordion:** accept ids that start with a digit ([#4196](https://github.com/ng-bootstrap/ng-bootstrap/issues/4196)) ([ab87fc7](https://github.com/ng-bootstrap/ng-bootstrap/commit/ab87fc7498df0b762a1c15c805ad4785124f9471)), closes [#4195](https://github.com/ng-bootstrap/ng-bootstrap/issues/4195)
+* **dropdown:** disable host button of disabled dropdown item ([ba19329](https://github.com/ng-bootstrap/ng-bootstrap/commit/ba193293306a3348e5ec5ee34180687d6bc57f1f)), closes [#4301](https://github.com/ng-bootstrap/ng-bootstrap/issues/4301)
+* **dropdown:** set tabIndex to -1 on disabled dropdown items ([9cdc0fc](https://github.com/ng-bootstrap/ng-bootstrap/commit/9cdc0fc4452962d065419271cfdceff4611af36c)), closes [#4301](https://github.com/ng-bootstrap/ng-bootstrap/issues/4301)
+* **modal:** allows to set an HTMLElement as container in NgbModalConfig ([#4161](https://github.com/ng-bootstrap/ng-bootstrap/issues/4161)) ([fb01f15](https://github.com/ng-bootstrap/ng-bootstrap/commit/fb01f1589c618ea4b1a4c49dc3d8a31db033bb9d)), closes [#4160](https://github.com/ng-bootstrap/ng-bootstrap/issues/4160)
+* **modal:** remove visual 'twitch' when closing ([#4295](https://github.com/ng-bootstrap/ng-bootstrap/issues/4295)) ([a29b445](https://github.com/ng-bootstrap/ng-bootstrap/commit/a29b445a3dba00ef8593f1305ef43b42173f7f5d)), closes [#4293](https://github.com/ng-bootstrap/ng-bootstrap/issues/4293)
+* **modal:** scrollbar issue with stacked modals ([#4256](https://github.com/ng-bootstrap/ng-bootstrap/issues/4256)) ([cf13227](https://github.com/ng-bootstrap/ng-bootstrap/commit/cf132271feaaf8e45d75b4c6cd500c74b0e2f556)), closes [#4255](https://github.com/ng-bootstrap/ng-bootstrap/issues/4255)
+* **rating:** changing [max] doesn't update displayed number of stars ([9a66076](https://github.com/ng-bootstrap/ng-bootstrap/commit/9a660762c5a91743f90ae49edfa29cd5b68e1470)), closes [#4132](https://github.com/ng-bootstrap/ng-bootstrap/issues/4132)
+
+
 ## [12.0.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/12.0.0...12.0.1) (2022-03-21)
 
 This release contains a couple of bugfixes for the Bootstrap 5 release.
