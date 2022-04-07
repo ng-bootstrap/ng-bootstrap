@@ -1,3 +1,24 @@
+## [12.0.2](https://github.com/ng-bootstrap/ng-bootstrap/compare/12.0.1...12.0.2) (2022-04-07)
+
+More bugfixes for the Bootstrap 5 release
+
+### Bug Fixes
+
+* **datepicker:** add offset to match Bootstrap ([47fc2fe](https://github.com/ng-bootstrap/ng-bootstrap/commit/47fc2fe950e065338770af5b07a14ead1ce1c10b))
+* **datepicker:** do not scroll when opening with container='body' ([#4294](https://github.com/ng-bootstrap/ng-bootstrap/issues/4294)) ([112b507](https://github.com/ng-bootstrap/ng-bootstrap/commit/112b50772e622b74e032f96646f1cc002625371d)), closes [#4290](https://github.com/ng-bootstrap/ng-bootstrap/issues/4290)
+* **datepicker:** ensure popup is shown above modal ([#4282](https://github.com/ng-bootstrap/ng-bootstrap/issues/4282)) ([029ac2a](https://github.com/ng-bootstrap/ng-bootstrap/commit/029ac2aa09532ece5317ba97a9334e148716decf)), closes [#4278](https://github.com/ng-bootstrap/ng-bootstrap/issues/4278)
+* **dropdown:** add offset to match Bootstrap [#4297](https://github.com/ng-bootstrap/ng-bootstrap/issues/4297) ([9f2fe0d](https://github.com/ng-bootstrap/ng-bootstrap/commit/9f2fe0d1f0a333513b12eada5fcdef317eed35e4))
+* **dropdown:** disable host button of disabled dropdown item ([4f71568](https://github.com/ng-bootstrap/ng-bootstrap/commit/4f71568ab531f312d07f9e88688aa08fc255a465)), closes [#4301](https://github.com/ng-bootstrap/ng-bootstrap/issues/4301)
+* **dropdown:** ensure popup is shown above modal ([0a41501](https://github.com/ng-bootstrap/ng-bootstrap/commit/0a415010cfda94555924109389339c2203dbccff))
+* **dropdown:** set tabIndex to -1 on disabled dropdown items ([1ab5d21](https://github.com/ng-bootstrap/ng-bootstrap/commit/1ab5d2113007c52f7832b0898abc54b5a684bdc4)), closes [#4301](https://github.com/ng-bootstrap/ng-bootstrap/issues/4301)
+* **modal:** remove visual 'twitch' when closing ([#4295](https://github.com/ng-bootstrap/ng-bootstrap/issues/4295)) ([15246f2](https://github.com/ng-bootstrap/ng-bootstrap/commit/15246f218203e05a34d7711ebf689f5b018023bc)), closes [#4293](https://github.com/ng-bootstrap/ng-bootstrap/issues/4293)
+* **popover:** change offset to match Bootstrap ([90b4715](https://github.com/ng-bootstrap/ng-bootstrap/commit/90b4715788db40c5be805d200641e663529bcdd6))
+* **rating:** changing [max] doesn't update displayed number of stars ([9b49136](https://github.com/ng-bootstrap/ng-bootstrap/commit/9b491360513750fbb48ebc5925fa3922aec00350)), closes [#4132](https://github.com/ng-bootstrap/ng-bootstrap/issues/4132)
+* **typeahead:** add offset to match Bootstrap ([7f636ed](https://github.com/ng-bootstrap/ng-bootstrap/commit/7f636edc78aeee2d49a09b58c449c53ccb1c56c5))
+* **typeahead:** ensure popup is shown above modal ([d10df5d](https://github.com/ng-bootstrap/ng-bootstrap/commit/d10df5daf5190ac64e8f562cbef89e719b207137))
+
+
+
 ## [11.0.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/11.0.0...11.0.1) (2022-04-07)
 
 This release contains some bugfixes for those who still remain on Bootstrap 4
