@@ -300,7 +300,7 @@ export class NgbPagination implements OnChanges {
    *
    * Bootstrap currently supports small and large sizes.
    */
-  @Input() size: 'sm' | 'lg';
+  @Input() size: 'sm' | 'lg' | string | null;
 
   constructor(config: NgbPaginationConfig) {
     this.disabled = config.disabled;
