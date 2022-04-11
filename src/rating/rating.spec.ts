@@ -1,9 +1,16 @@
-import {TestBed, ComponentFixture, inject, fakeAsync, tick} from '@angular/core/testing';
+import {ComponentFixture, fakeAsync, inject, TestBed, tick} from '@angular/core/testing';
 import {createGenericTestComponent} from '../test/common';
 import {Key} from '../util/key';
 
 import {Component, DebugElement} from '@angular/core';
-import {FormsModule, ReactiveFormsModule, UntypedFormGroup, UntypedFormControl, Validators} from '@angular/forms';
+import {
+  FormControl,
+  FormsModule,
+  ReactiveFormsModule,
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators
+} from '@angular/forms';
 
 import {NgbRatingModule} from './rating.module';
 import {NgbRating} from './rating';
@@ -450,6 +457,29 @@ describe('ngb-rating', () => {
     });
   });
 
+  it('should allow customizing tabindex', () => {
+    const fixture = createTestComponent(`<ngb-rating [formControl]="formControl" [tabindex]="tabindex"></ngb-rating>`);
+    const element = fixture.debugElement.query(By.directive(NgbRating));
+
+    expect(element.attributes['tabindex']).toBe('3');
+
+    fixture.componentInstance.tabindex = undefined;
+    fixture.detectChanges();
+    expect(element.attributes['tabindex']).toBe('0');
+
+    fixture.componentInstance.tabindex = '2323';
+    fixture.detectChanges();
+    expect(element.attributes['tabindex']).toBe('2323');
+
+    fixture.componentInstance.formControl.disable();
+    fixture.detectChanges();
+    expect(element.attributes['tabindex']).toBe('-1');
+
+    fixture.componentInstance.formControl.enable();
+    fixture.detectChanges();
+    expect(element.attributes['tabindex']).toBe('2323');
+  });
+
   it('should set tabindex to -1 when disabled', () => {
     const fixture = createTestComponent('<ngb-rating></ngb-rating>');
     let ratingEl = fixture.debugElement.query(By.directive(NgbRating));
@@ -784,7 +814,9 @@ describe('ngb-rating', () => {
 class TestComponent {
   changed = false;
   form = new UntypedFormGroup({rating: new UntypedFormControl(null, Validators.required)});
+  formControl = new FormControl(0);
   max = 10;
   model;
   rate = 3;
+  tabindex?: string | number = 3;
 }
