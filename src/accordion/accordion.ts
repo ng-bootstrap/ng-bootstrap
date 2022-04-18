@@ -426,8 +426,8 @@ export class NgbAccordion implements AfterContentChecked {
     });
   }
 
-  private _getPanelElement(panelId: string): HTMLElement | null {
-    return this._element.nativeElement.querySelector('#' + panelId);
+  private _getPanelElement(panelId: string | number): HTMLElement | null {
+    return this._element.nativeElement.querySelector(`#\\3${panelId}`);
   }
 }
 
