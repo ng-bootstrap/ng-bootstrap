@@ -21,16 +21,18 @@ import {NgbModalBackdrop} from './modal-backdrop';
 import {NgbModalOptions} from './modal-config';
 import {NgbActiveModal, NgbModalRef} from './modal-ref';
 import {NgbModalWindow} from './modal-window';
+import {take} from 'rxjs/operators';
 
 @Injectable({providedIn: 'root'})
 export class NgbModalStack {
-  private _activeWindowCmptHasChanged = new Subject();
+  private _activeWindowCmptHasChanged = new Subject<void>();
   private _ariaHiddenValues: Map<Element, string | null> = new Map();
+  private _scrollBarRestoreFn: null | (() => void) = null;
   private _backdropAttributes = ['animation', 'backdropClass'];
   private _modalRefs: NgbModalRef[] = [];
   private _windowAttributes = [
     'animation', 'ariaLabelledBy', 'ariaDescribedBy', 'backdrop', 'centered', 'keyboard', 'scrollable', 'size',
-    'windowClass'
+    'windowClass', 'modalDialogClass'
   ];
   private _windowCmpts: ComponentRef<NgbModalWindow>[] = [];
   private _activeInstances: EventEmitter<NgbModalRef[]> = new EventEmitter();
@@ -49,23 +51,32 @@ export class NgbModalStack {
     });
   }
 
-  open(moduleCFR: ComponentFactoryResolver, contentInjector: Injector, content: any, options): NgbModalRef {
+  private _restoreScrollBar() {
+    const scrollBarRestoreFn = this._scrollBarRestoreFn;
+    if (scrollBarRestoreFn) {
+      this._scrollBarRestoreFn = null;
+      scrollBarRestoreFn();
+    }
+  }
+
+  private _hideScrollBar() {
+    if (!this._scrollBarRestoreFn) {
+      this._scrollBarRestoreFn = this._scrollBar.hide();
+    }
+  }
+
+  open(moduleCFR: ComponentFactoryResolver, contentInjector: Injector, content: any, options: NgbModalOptions):
+      NgbModalRef {
     const containerEl = options.container instanceof HTMLElement ? options.container : isDefined(options.container) ?
                                                                    this._document.querySelector(options.container) :
                                                                    this._document.body;
     const renderer = this._rendererFactory.createRenderer(null, null);
 
-    const revertPaddingForScrollBar = this._scrollBar.compensate();
-    const removeBodyClass = () => {
-      if (!this._modalRefs.length) {
-        renderer.removeClass(this._document.body, 'modal-open');
-        this._revertAriaHidden();
-      }
-    };
-
     if (!containerEl) {
       throw new Error(`The specified modal container "${options.container || 'body'}" was not found in the DOM.`);
     }
+
+    this._hideScrollBar();
 
     const activeModal = new NgbActiveModal();
     const contentRef =
@@ -78,8 +89,18 @@ export class NgbModalStack {
 
     this._registerModalRef(ngbModalRef);
     this._registerWindowCmpt(windowCmptRef);
-    ngbModalRef.result.then(revertPaddingForScrollBar, revertPaddingForScrollBar);
-    ngbModalRef.result.then(removeBodyClass, removeBodyClass);
+
+    // We have to cleanup DOM after the last modal when BOTH 'hidden' was emitted and 'result' promise was resolved:
+    // - with animations OFF, 'hidden' emits synchronously, then 'result' is resolved asynchronously
+    // - with animations ON, 'result' is resolved asynchronously, then 'hidden' emits asynchronously
+    ngbModalRef.hidden.pipe(take(1)).subscribe(() => Promise.resolve(true).then(() => {
+      if (!this._modalRefs.length) {
+        renderer.removeClass(this._document.body, 'modal-open');
+        this._restoreScrollBar();
+        this._revertAriaHidden();
+      }
+    }));
+
     activeModal.close = (result: any) => { ngbModalRef.close(result); };
     activeModal.dismiss = (reason: any) => { ngbModalRef.dismiss(reason); };
 
@@ -90,7 +111,9 @@ export class NgbModalStack {
 
     if (backdropCmptRef && backdropCmptRef.instance) {
       this._applyBackdropOptions(backdropCmptRef.instance, options);
+      backdropCmptRef.changeDetectorRef.detectChanges();
     }
+    windowCmptRef.changeDetectorRef.detectChanges();
     return ngbModalRef;
   }
 
@@ -117,7 +140,7 @@ export class NgbModalStack {
     return windowCmptRef;
   }
 
-  private _applyWindowOptions(windowInstance: NgbModalWindow, options: Object): void {
+  private _applyWindowOptions(windowInstance: NgbModalWindow, options: NgbModalOptions): void {
     this._windowAttributes.forEach((optionName: string) => {
       if (isDefined(options[optionName])) {
         windowInstance[optionName] = options[optionName];
@@ -125,7 +148,7 @@ export class NgbModalStack {
     });
   }
 
-  private _applyBackdropOptions(backdropInstance: NgbModalBackdrop, options: Object): void {
+  private _applyBackdropOptions(backdropInstance: NgbModalBackdrop, options: NgbModalOptions): void {
     this._backdropAttributes.forEach((optionName: string) => {
       if (isDefined(options[optionName])) {
         backdropInstance[optionName] = options[optionName];

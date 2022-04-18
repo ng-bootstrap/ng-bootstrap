@@ -20,7 +20,7 @@ function createKeyDownEvent(key: number) {
 }
 
 function getAriaState(compiled) {
-  const stars = getStars(compiled, '.sr-only');
+  const stars = getStars(compiled, '.visually-hidden');
   return stars.map(star => star.textContent === '(*)');
 }
 
@@ -28,12 +28,12 @@ function getStar(compiled, num: number) {
   return getStars(compiled)[num - 1];
 }
 
-function getStars(element, selector = 'span:not(.sr-only)') {
+function getStars(element, selector = 'span:not(.visually-hidden)') {
   return <HTMLElement[]>Array.from(element.querySelectorAll(selector));
 }
 
 function getDbgStar(element, num: number) {
-  return element.queryAll(By.css('span:not(.sr-only)'))[num - 1];
+  return element.queryAll(By.css('span:not(.visually-hidden)'))[num - 1];
 }
 
 function getState(element: DebugElement | HTMLElement) {
@@ -395,7 +395,7 @@ describe('ngb-rating', () => {
       const fixture = createTestComponent('<ngb-rating max="5"></ngb-rating>');
 
       const compiled = fixture.nativeElement;
-      const hiddenStars = getStars(compiled, '.sr-only');
+      const hiddenStars = getStars(compiled, '.visually-hidden');
 
       expect(hiddenStars.length).toBe(5);
     });
@@ -462,6 +462,41 @@ describe('ngb-rating', () => {
     fixture.detectChanges();
     expect(ratingEl.nativeElement.getAttribute('tabindex')).toEqual('-1');
   });
+
+  it('should contain the correct number of stars when [max] is changed', () => {
+    const fixture = createTestComponent('<ngb-rating [max]="max"></ngb-rating>');
+
+    expect(getState(fixture.nativeElement).length).toBe(10);
+
+    fixture.componentInstance.max = 12;
+    fixture.detectChanges();
+    expect(getState(fixture.nativeElement).length).toBe(12);
+
+    // should be ignored
+    fixture.componentInstance.max = -1;
+    fixture.detectChanges();
+    expect(getState(fixture.nativeElement).length).toBe(12);
+
+    fixture.componentInstance.max = 5;
+    fixture.detectChanges();
+    expect(getState(fixture.nativeElement).length).toBe(5);
+
+    // should be ignored
+    fixture.componentInstance.max = 0;
+    fixture.detectChanges();
+    expect(getState(fixture.nativeElement).length).toBe(5);
+  });
+
+  it('should reduce the rating when [max] is changed to a value lower than the current rating', fakeAsync(() => {
+       const fixture = createTestComponent('<ngb-rating [(rate)]="rate" [max]="max"></ngb-rating>');
+
+       fixture.componentInstance.max = 2;
+       fixture.detectChanges();
+       tick();
+
+       expect(getState(fixture.nativeElement)).toEqual([true, true]);
+       expect(fixture.componentInstance.rate).toBe(2);
+     }));
 
   describe('keyboard support', () => {
 

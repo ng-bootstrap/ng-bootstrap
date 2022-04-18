@@ -2,6 +2,7 @@ import {NgbDatepickerI18n} from '../datepicker-i18n';
 import {NgbDateStruct} from '../../index';
 import {hebrewNumerals, isHebrewLeapYear} from './hebrew';
 import {Injectable} from '@angular/core';
+import {TranslationWidth} from '@angular/common';
 
 
 const WEEKDAYS = ['שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת', 'ראשון'];
@@ -20,7 +21,7 @@ export class NgbDatepickerI18nHebrew extends NgbDatepickerI18n {
     return isHebrewLeapYear(year) ? MONTHS_LEAP[month - 1] || '' : MONTHS[month - 1] || '';
   }
 
-  getWeekdayShortName(weekday: number): string { return WEEKDAYS[weekday - 1] || ''; }
+  getWeekdayLabel(weekday: number, width?: TranslationWidth) { return WEEKDAYS[weekday - 1] || ''; }
 
   getDayAriaLabel(date: NgbDateStruct): string {
     return `${hebrewNumerals(date.day)} ${this.getMonthFullName(date.month, date.year)} ${hebrewNumerals(date.year)}`;

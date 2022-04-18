@@ -1,5 +1,6 @@
-import {test} from '../../../../playwright.conf';
-import {openUrl, sendKey, waitForFocus} from '../../tools.po';
+import {expect} from '@playwright/test';
+import {test, getPage, setPage} from '../../../../baseTest';
+import {sendKey} from '../../tools.po';
 import {waitForModalCount} from '../modal.po';
 
 import {
@@ -10,27 +11,28 @@ import {
   SELECTOR_CLOSE_ICON
 } from './modal-stack.po';
 
-describe('Modal stack', () => {
+test.use({testURL: 'modal/stack', testSelector: 'h3:text("Modal stack tests")'});
+test.beforeEach(async({page}) => setPage(page));
 
-  beforeEach(async() => await openUrl('modal/stack', 'h3:text("Modal stack tests")'));
+test.describe('Modal stack', () => {
 
-  afterEach(async() => { await waitForModalCount(0); });
+  test.afterEach(async() => { await waitForModalCount(0); });
 
-  it('should keep tab on the first modal after the second modal has closed', async() => {
+  test('should keep tab on the first modal after the second modal has closed', async() => {
     await openModal();
     await openStackModal();
     await waitForModalCount(2);
 
     // close the stack modal
     await sendKey('Escape');
-    await test.page.waitForSelector(SELECTOR_STACK_MODAL, {state: 'detached'});
+    await getPage().waitForSelector(SELECTOR_STACK_MODAL, {state: 'detached'});
     await waitForModalCount(1);
 
     // Check that the button is focused again
-    await waitForFocus(SELECTOR_STACK_MODAL_BUTTON, 'Button element not focused');
+    await expect(getPage().locator(SELECTOR_STACK_MODAL_BUTTON), 'Button element not focused').toBeFocused();
     await sendKey('Tab');
 
-    await waitForFocus(SELECTOR_CLOSE_ICON, 'Close icon not focused');
+    await expect(getPage().locator(SELECTOR_CLOSE_ICON), 'Close icon not focused').toBeFocused();
 
     // close the main modal
     await sendKey('Escape');

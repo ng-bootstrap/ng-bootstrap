@@ -44,10 +44,8 @@ export const ngbFocusTrap =
         fromEvent<KeyboardEvent>(element, 'keydown')
             .pipe(
                 takeUntil(stopFocusTrap$),
-                // tslint:disable:deprecation
-                filter(e => e.which === Key.Tab),
-                // tslint:enable:deprecation
-                withLatestFrom(lastFocusedElement$))
+                /* eslint-disable-next-line deprecation/deprecation */
+                filter(e => e.which === Key.Tab), withLatestFrom(lastFocusedElement$))
             .subscribe(([tabEvent, focusedElement]) => {
               const[first, last] = getFocusableBoundaryElements(element);
 

@@ -7,7 +7,7 @@ import {NgbDatepickerModule} from './datepicker.module';
 import {NgbDatepicker, NgbDatepickerContent} from './datepicker';
 import {NgbDatepickerKeyboardService} from './datepicker-keyboard-service';
 import {NgbDatepickerService} from './datepicker-service';
-import {NgbDatepickerMonth} from './datepicker-month';
+import {NgbDatepickerMonth} from './datepicker';
 import {NgbDate} from './ngb-date';
 import {NgbDateStruct} from './ngb-date-struct';
 import {NgbDatepickerDayView} from './datepicker-day-view';
@@ -16,7 +16,7 @@ const createTestComponent = () => createGenericTestComponent(
     `
   <ngb-datepicker #dp
                   [dayTemplate]="dt"
-                  [showWeekdays]="showWeekdays"
+                  [weekdays]="weekdays"
                   [showWeekNumbers]="showWeekNumbers"
                   [outsideDays]="outsideDays"
                   (dateSelect)="onClick($event)">
@@ -335,7 +335,7 @@ describe('ngb-datepicker-month', () => {
     const fixture = createGenericTestComponent(
         `
       <ngb-datepicker #dp
-                      [showWeekdays]="showWeekdays"
+                      [weekdays]="weekdays"
                       [showWeekNumbers]="showWeekNumbers"
                       [outsideDays]="outsideDays"
                       (select)="onClick($event)">
@@ -351,7 +351,7 @@ describe('ngb-datepicker-month', () => {
     const fixture = createGenericTestComponent(
         `
       <ngb-datepicker #dp
-                      [showWeekdays]="showWeekdays"
+                      [weekdays]="weekdays"
                       [showWeekNumbers]="showWeekNumbers"
                       [outsideDays]="outsideDays"
                       (select)="onClick($event)">
@@ -368,7 +368,7 @@ describe('ngb-datepicker-month', () => {
     const fixture = createGenericTestComponent(
         `
       <ngb-datepicker #dp
-                      [showWeekdays]="showWeekdays"
+                      [weekdays]="weekdays"
                       [showWeekNumbers]="showWeekNumbers"
                       [outsideDays]="outsideDays"
                       (select)="onClick($event)">
@@ -384,7 +384,7 @@ describe('ngb-datepicker-month', () => {
 
 @Component({selector: 'test-cmp', template: ''})
 class TestComponent {
-  showWeekdays = true;
+  weekdays = true;
   showWeekNumbers = true;
   outsideDays = 'visible';
 

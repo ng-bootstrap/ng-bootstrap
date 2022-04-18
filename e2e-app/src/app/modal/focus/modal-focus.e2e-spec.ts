@@ -1,5 +1,6 @@
-import {test} from '../../../../playwright.conf';
-import {openUrl, sendKey, waitForFocus} from '../../tools.po';
+import {expect} from '@playwright/test';
+import {test, getPage, setPage} from '../../../../baseTest';
+import {sendKey} from '../../tools.po';
 import {waitForModalCount, SELECTOR_MODAL_WINDOW} from '../modal.po';
 
 import {
@@ -11,37 +12,38 @@ import {
   SELECTOR_MODAL_HEADER,
 } from './modal-focus.po';
 
-describe('Modal', () => {
+test.use({testURL: 'modal/focus', testSelector: 'h3:text("Modal focus tests")'});
+test.beforeEach(async({page}) => setPage(page));
 
-  beforeEach(async() => await openUrl('modal/focus', 'h3:text("Modal focus tests")'));
+test.describe('Modal', () => {
 
-  afterEach(async() => {
+  test.afterEach(async() => {
     await sendKey('Escape');
     await waitForModalCount(0);
   });
 
-  it('should close modal on ESC and re-focus trigger button', async() => {
+  test('should close modal on ESC and re-focus trigger button', async() => {
     await openModal('simple');
 
     // close
     await sendKey('Escape');
     await waitForModalCount(0, 'The modal should be closed on ESC');
 
-    await waitForFocus('#open-modal-simple', 'Should focus trigger button after closing');
+    await expect(getPage().locator('#open-modal-simple'), 'Should focus trigger button after closing').toBeFocused();
   });
 
-  it('should close modal on window click and re-focus trigger button', async() => {
+  test('should close modal on window click and re-focus trigger button', async() => {
     await openModal('simple');
 
     // close
-    await test.page.click(SELECTOR_MODAL_WINDOW);
+    await getPage().click(SELECTOR_MODAL_WINDOW);
     await waitForModalCount(0, 'The modal should be closed on click');
 
     // button should be focused
-    await waitForFocus('#open-modal-simple', 'Should focus trigger button after closing');
+    await expect(getPage().locator('#open-modal-simple'), 'Should focus trigger button after closing').toBeFocused();
   });
 
-  it('should focus body if opener is not focusable', async() => {
+  test('should focus body if opener is not focusable', async() => {
     await openModal('disable');
 
     // close
@@ -49,86 +51,89 @@ describe('Modal', () => {
     await waitForModalCount(0, 'The modal should be closed on ESC');
 
     // body should be focused
-    await waitForFocus('body', 'Should focus body after closing');
+    await expect(getPage().locator('body'), 'Should focus body after closing').toBeFocused();
 
   });
 
-  it('should focus modal window if there is no focusable content after opening', async() => {
+  test('should focus modal window if there is no focusable content after opening', async() => {
     await openModal('simple');
 
     // window should be focused
-    expect(await test.page.textContent(SELECTOR_MODAL_CONTENT)).toBe('Modal content');
-    await waitForFocus(SELECTOR_MODAL_WINDOW, 'ngb-modal-window should be focused');
+    await expect(getPage().locator(SELECTOR_MODAL_CONTENT)).toHaveText('Modal content');
+    await expect(getPage().locator(SELECTOR_MODAL_WINDOW), 'ngb-modal-window should be focused').toBeFocused();
 
   });
 
-  it('should focus first focusable element after opening', async() => {
+  test('should focus first focusable element after opening', async() => {
     await openModal('template');
-    await waitForFocus(SELECTOR_DISMISS_BUTTON, 'Modal dismiss button should be focused');
+    await expect(getPage().locator(SELECTOR_DISMISS_BUTTON), 'Modal dismiss button should be focused').toBeFocused();
   });
 
-  it('should focus element with [ngbAutofocus] after opening', async() => {
+  test('should focus element with [ngbAutofocus] after opening', async() => {
     await openModal('autofocus');
-    await waitForFocus(SELECTOR_CLOSE_BUTTON, 'Modal close button should be focused, because of ngbAutoFocus');
+    await expect(
+        getPage().locator(SELECTOR_CLOSE_BUTTON), 'Modal close button should be focused, because of ngbAutoFocus')
+        .toBeFocused();
   });
 
-  it('should trap focus inside opened modal (Tab)', async() => {
+  test('should trap focus inside opened modal (Tab)', async() => {
     await openModal('template');
 
     // dismiss -> input -> close -> dismiss
-    await waitForFocus(SELECTOR_DISMISS_BUTTON, 'Modal dismiss button should be focused');
+    await expect(getPage().locator(SELECTOR_DISMISS_BUTTON), 'Modal dismiss button should be focused').toBeFocused();
 
     await sendKey('Tab');
-    await waitForFocus(SELECTOR_MODAL_INPUT, 'Modal input should be focused');
+    await expect(getPage().locator(SELECTOR_MODAL_INPUT), 'Modal input should be focused').toBeFocused();
 
     await sendKey('Tab');
-    await waitForFocus(SELECTOR_CLOSE_BUTTON, 'Modal close button should be focused');
+    await expect(getPage().locator(SELECTOR_CLOSE_BUTTON), 'Modal close button should be focused').toBeFocused();
 
     await sendKey('Tab');
-    await waitForFocus(SELECTOR_DISMISS_BUTTON, 'Modal dismiss button should be focused');
+    await expect(getPage().locator(SELECTOR_DISMISS_BUTTON), 'Modal dismiss button should be focused').toBeFocused();
 
   });
 
-  it('should trap focus inside opened modal (Shift + Tab)', async() => {
+  test('should trap focus inside opened modal (Shift + Tab)', async() => {
     await openModal('template');
 
     // dismiss -> close -> input -> dismiss
-    await waitForFocus(SELECTOR_DISMISS_BUTTON, 'Modal dismiss button should be focused');
+    await expect(getPage().locator(SELECTOR_DISMISS_BUTTON), 'Modal dismiss button should be focused').toBeFocused();
 
     await sendKey('Shift+Tab');
-    await waitForFocus(SELECTOR_CLOSE_BUTTON, 'Modal close button should be focused');
+    await expect(getPage().locator(SELECTOR_CLOSE_BUTTON), 'Modal close button should be focused').toBeFocused();
 
     await sendKey('Shift+Tab');
-    await waitForFocus(SELECTOR_MODAL_INPUT, 'Modal input should be focused');
+    await expect(getPage().locator(SELECTOR_MODAL_INPUT), 'Modal input should be focused').toBeFocused();
 
     await sendKey('Shift+Tab');
-    await waitForFocus(SELECTOR_DISMISS_BUTTON, 'Modal dismiss button should be focused');
+    await expect(getPage().locator(SELECTOR_DISMISS_BUTTON), 'Modal dismiss button should be focused').toBeFocused();
 
   });
 
-  it('should keep focus trap inside the modal when clicking on content and navigating away (Tab)', async() => {
+  test('should keep focus trap inside the modal when clicking on content and navigating away (Tab)', async() => {
     await openModal('template');
 
     // click on the header
-    await test.page.click(SELECTOR_MODAL_HEADER);
-    await waitForFocus(SELECTOR_MODAL_WINDOW, 'Modal window should be focused');
+    await getPage().click(SELECTOR_MODAL_HEADER);
+    await expect(getPage().locator(SELECTOR_MODAL_WINDOW), 'Modal window should be focused').toBeFocused();
 
     // re-focus
     await sendKey('Tab');
-    await waitForFocus(SELECTOR_DISMISS_BUTTON, 'Modal dismiss button should be focused');
+    await expect(getPage().locator(SELECTOR_DISMISS_BUTTON), 'Modal dismiss button should be focused').toBeFocused();
 
   });
 
-  it('should keep focus trap inside the modal when clicking on content and navigating away (Shift + Tab)', async() => {
-    await openModal('template');
+  test(
+      'should keep focus trap inside the modal when clicking on content and navigating away (Shift + Tab)', async() => {
+        await openModal('template');
 
-    // click on the header
-    await test.page.click(SELECTOR_MODAL_HEADER);
-    await waitForFocus(SELECTOR_MODAL_WINDOW, 'Modal window should be focused');
+        // click on the header
+        await getPage().click(SELECTOR_MODAL_HEADER);
+        await expect(getPage().locator(SELECTOR_MODAL_WINDOW), 'Modal window should be focused').toBeFocused();
 
-    // re-focus
-    await sendKey('Shift+Tab');
-    await waitForFocus(SELECTOR_CLOSE_BUTTON, 'Modal close button should be focused');
+        // re-focus
+        await sendKey('Shift+Tab');
+        await expect(getPage().locator(SELECTOR_CLOSE_BUTTON), 'Modal close button should be focused').toBeFocused();
 
-  });
+      });
 });

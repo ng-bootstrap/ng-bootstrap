@@ -8,7 +8,7 @@ import {getMonthSelect, getYearSelect} from '../test/datepicker/common';
 import {NgbDatepickerI18n, NgbDatepickerI18nDefault} from './datepicker-i18n';
 import {NgbDatepicker} from './datepicker';
 import {NgbDatepickerKeyboardService} from './datepicker-keyboard-service';
-import {NgbDatepickerMonth} from './datepicker-month';
+import {NgbDatepickerMonth} from './datepicker';
 import {Key} from '../util/key';
 
 describe('ngb-datepicker integration', () => {
@@ -162,7 +162,7 @@ describe('ngb-datepicker integration', () => {
     class CustomKeyboardService extends NgbDatepickerKeyboardService {
       processKey(event: KeyboardEvent, service: NgbDatepicker) {
         const state = service.state;
-        // tslint:disable-next-line:deprecation
+        /* eslint-disable-next-line deprecation/deprecation */
         switch (event.which) {
           case Key.PageUp:
             service.focusDate(service.calendar.getPrev(state.focusedDate, event.altKey ? 'y' : 'm', 1));

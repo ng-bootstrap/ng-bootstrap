@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { NgModule } from '@angular/core';
 
 import { NgbdSharedModule } from '../../shared';
@@ -19,6 +20,8 @@ import { NgbdDropdownNavbar } from './demos/navbar/dropdown-navbar';
 import { NgbdDropdownNavbarModule } from './demos/navbar/dropdown-navbar.module';
 import { NgbdDropdownSplit } from './demos/split/dropdown-split';
 import { NgbdDropdownSplitModule } from './demos/split/dropdown-split.module';
+import { NgbdDropdownDisabled } from './demos/disabled/dropdown-disabled';
+import { NgbdDropdownDisabledModule } from './demos/disabled/dropdown-disabled.module';
 
 const DEMOS = {
   basic: {
@@ -38,6 +41,12 @@ const DEMOS = {
     type: NgbdDropdownSplit,
     code: require('!!raw-loader!./demos/split/dropdown-split').default,
     markup: require('!!raw-loader!./demos/split/dropdown-split.html').default
+  },
+  disabled: {
+    title: 'Disabled items',
+    type: NgbdDropdownDisabled,
+    code: require('!!raw-loader!./demos/disabled/dropdown-disabled').default,
+    markup: require('!!raw-loader!./demos/disabled/dropdown-disabled.html').default
   },
   form: {
     title: 'Mixed menu items and form',
@@ -87,6 +96,7 @@ export const ROUTES = [
     NgbdDropdownBasicModule,
     NgbdDropdownConfigModule,
     NgbdDropdownContainerModule,
+    NgbdDropdownDisabledModule,
     NgbdDropdownManualModule,
     NgbdDropdownSplitModule,
     NgbdDropdownFormModule,

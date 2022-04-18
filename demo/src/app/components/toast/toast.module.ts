@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import {NgModule} from '@angular/core';
 
 import {NgbdSharedModule} from '../../../app/shared';

@@ -10,12 +10,12 @@ import {ROUTES as DATEPICKER_ROUTES} from './components/datepicker/datepicker.mo
 import {ROUTES as DROPDOWN_ROUTES} from './components/dropdown/dropdown.module';
 import {ROUTES as MODAL_ROUTES} from './components/modal/modal.module';
 import {ROUTES as NAV_ROUTES} from './components/nav/nav.module';
+import {ROUTES as OFFCANVAS_ROUTES} from './components/offcanvas/offcanvas.module';
 import {ROUTES as PAGINATION_ROUTES} from './components/pagination/pagination.module';
 import {ROUTES as POPOVER_ROUTES} from './components/popover/popover.module';
 import {ROUTES as PROGRESSBAR_ROUTES} from './components/progressbar/progressbar.module';
 import {ROUTES as RATING_ROUTES} from './components/rating/rating.module';
 import {ROUTES as TABLE_ROUTES} from './components/table/table.module';
-import {ROUTES as TABSET_ROUTES} from './components/tabset/tabset.module';
 import {ROUTES as TIMEPICKER_ROUTES} from './components/timepicker/timepicker.module';
 import {ROUTES as TOAST_ROUTES} from './components/toast/toast.module';
 import {ROUTES as TOOLTIP_ROUTES} from './components/tooltip/tooltip.module';
@@ -50,12 +50,13 @@ const routes: Routes = [
   {path: 'components/dropdown', children: DROPDOWN_ROUTES},
   {path: 'components/modal', children: MODAL_ROUTES},
   {path: 'components/nav', children: NAV_ROUTES},
+  {path: 'components/offcanvas', children: OFFCANVAS_ROUTES},
   {path: 'components/pagination', children: PAGINATION_ROUTES},
   {path: 'components/popover', children: POPOVER_ROUTES},
   {path: 'components/progressbar', children: PROGRESSBAR_ROUTES},
   {path: 'components/rating', children: RATING_ROUTES},
   {path: 'components/table', children: TABLE_ROUTES},
-  {path: 'components/tabset', children: TABSET_ROUTES},
+  {path: 'components/tabset', redirectTo: 'components/nav'},
   {path: 'components/toast', children: TOAST_ROUTES},
   {path: 'components/timepicker', children: TIMEPICKER_ROUTES},
   {path: 'components/tooltip', children: TOOLTIP_ROUTES},

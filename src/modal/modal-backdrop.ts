@@ -14,7 +14,7 @@ import {reflow} from '../util/util';
     '[class]': '"modal-backdrop" + (backdropClass ? " " + backdropClass : "")',
     '[class.show]': '!animation',
     '[class.fade]': 'animation',
-    'style': 'z-index: 1050'
+    'style': 'z-index: 1055'
   }
 })
 export class NgbModalBackdrop implements OnInit {

@@ -1,6 +1,6 @@
 <p>NgModel and reactive forms can be used without the 'rate' binding</p>
 
-<div class="form-group">
+<div class="mb-3">
   <ngb-rating [formControl]="ctrl"></ngb-rating>
   <div class="form-text small">
     <div *ngIf="ctrl.valid" class="text-success">Thanks!</div>
@@ -10,7 +10,7 @@
 
 <hr>
 <pre>Model: <b>{{ ctrl.value }}</b></pre>
-<button class="btn btn-sm btn-outline-{{ ctrl.disabled ? 'danger' : 'success'}} mr-2" (click)="toggle()">
+<button class="btn btn-sm btn-outline-{{ ctrl.disabled ? 'danger' : 'success'}} me-2" (click)="toggle()">
   {{ ctrl.disabled ? "control disabled" : " control enabled" }}
 </button>
-<button class="btn btn-sm btn-outline-primary mr-2" (click)="ctrl.setValue(null)">Clear</button>
+<button class="btn btn-sm btn-outline-primary me-2" (click)="ctrl.setValue(null)">Clear</button>

@@ -21,12 +21,12 @@ export class AppComponent implements OnInit {
       private _analytics: Analytics, route: ActivatedRoute, vps: ViewportScroller, zone: NgZone,
       httpClient: HttpClient) {
     route.fragment.pipe(filter(fragment => !!fragment))
-        .subscribe(fragment => zone.runOutsideAngular(() => requestAnimationFrame(() => vps.scrollToAnchor(fragment))));
+        .subscribe((fragment: string) => zone.runOutsideAngular(() => requestAnimationFrame(() => vps.scrollToAnchor(fragment))));
 
     if (environment.production) {
       httpClient.get<{downloads: string}>('https://api.npmjs.org/downloads/point/last-month/@ng-bootstrap/ng-bootstrap')
           .pipe(pluck('downloads'))
-          .subscribe(count => this.downloadCount = count.toLocaleString(), () => of(''));
+          .subscribe({next: count => this.downloadCount = count.toLocaleString(), error: () => of('')});
     }
   }
 

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
 import {FormControl, FormGroup, FormsModule, NgModel, ReactiveFormsModule, Validators} from '@angular/forms';

@@ -1,4 +1,4 @@
-import {ComponentFixture, inject, TestBed} from '@angular/core/testing';
+import {ComponentFixture, fakeAsync, inject, TestBed, tick} from '@angular/core/testing';
 import {createGenericTestComponent} from '../test/common';
 
 import {Component} from '@angular/core';
@@ -175,41 +175,6 @@ describe('ngb-dropdown', () => {
     dropdown.close();
   });
 
-  it('should have x-placement attribute reflecting placement', () => {
-    const html = `
-      <div ngbDropdown placement="bottom-right">
-          <button ngbDropdownAnchor></button>
-          <div ngbDropdownMenu>
-            <a class="dropdown-item">dropDown item</a>
-            <a class="dropdown-item">dropDown item</a>
-          </div>
-      </div>`;
-
-    const fixture = createTestComponent(html);
-    const compiled = fixture.nativeElement;
-
-    fixture.detectChanges();
-    expect(getMenuEl(compiled).getAttribute('x-placement')).toBe('bottom-right');
-  });
-
-  it('should have x-placement attribute reflecting placement with a template', () => {
-
-    const html = `
-    <div ngbDropdown placement="bottom-right">
-      <button ngbDropdownAnchor></button>
-      <div *ngIf="true" ngbDropdownMenu>
-        <a class="dropdown-item">dropDown item</a>
-        <a class="dropdown-item">dropDown item</a>
-      </div>
-    </div>`;
-
-    const fixture = createTestComponent(html);
-    const compiled = fixture.nativeElement;
-
-    fixture.detectChanges();
-    expect(getMenuEl(compiled).getAttribute('x-placement')).toBe('bottom-right');
-  });
-
   it('should be open initially if open expression is true', () => {
     const html = `
       <div ngbDropdown [open]="true">
@@ -333,6 +298,40 @@ describe('ngb-dropdown', () => {
     expect(fixture.componentInstance.isOpen).toBe(false);
     expect(fixture.componentInstance.stateChanges).toEqual([true, false]);
   });
+
+  it('should disable a button dropdown item', () => {
+    const html = `<button ngbDropdownItem [disabled]="disabled">dropDown item</button>`;
+
+    const fixture = createTestComponent(html);
+    const itemEl = fixture.nativeElement.querySelector('button');
+
+    expect(itemEl).not.toHaveCssClass('disabled');
+    expect(itemEl.disabled).toBeFalse();
+    expect(itemEl.tabIndex).toBe(0);
+
+    fixture.componentInstance.disabled = true;
+    fixture.detectChanges();
+
+    expect(itemEl).toHaveCssClass('disabled');
+    expect(itemEl.disabled).toBeTrue();
+    expect(itemEl.tabIndex).toBe(-1);
+  });
+
+  it('should disable a link dropdown item', () => {
+    const html = `<a ngbDropdownItem [disabled]="disabled">dropDown item</a>`;
+
+    const fixture = createTestComponent(html);
+    const itemEl = fixture.nativeElement.querySelector('a');
+
+    expect(itemEl).not.toHaveCssClass('disabled');
+    expect(itemEl.tabIndex).toBe(0);
+
+    fixture.componentInstance.disabled = true;
+    fixture.detectChanges();
+
+    expect(itemEl).toHaveCssClass('disabled');
+    expect(itemEl.tabIndex).toBe(-1);
+  });
 });
 
 describe('ngb-dropdown-toggle', () => {
@@ -411,9 +410,9 @@ describe('ngb-dropdown-toggle', () => {
 
   });
 
-  it(`should second placement if the first one doesn't fit`, () => {
-    const html = `
-      <div ngbDropdown placement="left-top right-top">
+  it(`should second placement if the first one doesn't fit`, fakeAsync(() => {
+       const html = `
+      <div ngbDropdown placement="start-top end-top">
           <button ngbDropdownToggle>
             <span class="toggle">Toggle dropdown</span>
           </button>
@@ -423,17 +422,18 @@ describe('ngb-dropdown-toggle', () => {
         </div>
       </div>`;
 
-    const fixture = createTestComponent(html);
-    const compiled = fixture.nativeElement;
-    const dropdown = fixture.debugElement.query(By.directive(NgbDropdown)).injector.get(NgbDropdown);
-    dropdown.open();
-    fixture.detectChanges();
-    const dropdownEl = compiled.querySelector('[ngbdropdownmenu]');
-    const targetElement = compiled.querySelector('button');
-    expect(Math.round(dropdownEl.getBoundingClientRect().left))
-        .toBe(Math.round(targetElement.getBoundingClientRect().right), 'Wrong dropdown placement');
+       const fixture = createTestComponent(html);
+       const compiled = fixture.nativeElement;
+       const dropdown = fixture.debugElement.query(By.directive(NgbDropdown)).injector.get(NgbDropdown);
+       dropdown.open();
+       fixture.detectChanges();
+       tick();
+       const dropdownEl = compiled.querySelector('[ngbdropdownmenu]');
+       const targetElement = compiled.querySelector('button');
+       expect(Math.abs(dropdownEl.getBoundingClientRect().left - targetElement.getBoundingClientRect().right))
+           .toBeLessThan(3, 'Wrong dropdown placement');
 
-  });
+     }));
 
   describe('ngb-dropdown-navbar', () => {
     it(`shouldn't position the menu`, () => {
@@ -460,7 +460,8 @@ describe('ngb-dropdown-toggle', () => {
       const dropdownEl: HTMLElement = compiled.querySelector('[ngbdropdownmenu]');
 
       expect(dropdownEl.getAttribute('style')).toBeNull(`The dropdown element shouldn't have calculated styles`);
-      expect(dropdownEl.getAttribute('x-placement')).toBeNull(`The dropdown element shouldn't have x-placement set`);
+      expect(dropdownEl.getAttribute('data-popper-placement'))
+          .toBeNull(`The dropdown element shouldn't have data-popper-placement set`);
 
     });
 
@@ -557,6 +558,7 @@ class TestComponent {
   isOpen = false;
   stateChanges: boolean[] = [];
   dropdownClass = 'custom-class';
+  disabled = false;
 
   recordStateChange($event) {
     this.stateChanges.push($event);

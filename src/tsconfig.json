@@ -2,23 +2,10 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "outDir": "../out-tsc/lib",
-    "declarationMap": true,
-    "target": "es2015",
     "declaration": true,
+    "declarationMap": true,
     "inlineSources": true,
-    "types": [
-      "jasmine",
-      "node"
-    ],
-    "lib": [
-      "dom",
-      "es2018"
-    ]
-  },
-  "angularCompilerOptions": {
-    "skipTemplateCodegen": true,
-    "strictMetadataEmit": true,
-    "fullTemplateTypeCheck": true
+    "types": []
   },
   "exclude": [
     "test.ts",

@@ -1,28 +1,29 @@
-import {openUrl, sendKey} from '../../tools.po';
-import {test} from '../../../../playwright.conf';
+import {sendKey} from '../../tools.po';
+import {test, getPage, setPage} from '../../../../baseTest';
 import {expectTooltipToBeClosed, expectTooltipToBeOpen} from '../tooltip.po';
 
-const clickOutside = async() => await test.page.click('#outside-button');
-const rightClickOutside = async() => await test.page.click('#outside-button', {button: 'right'});
+const clickOutside = async() => await getPage().click('#outside-button');
+const rightClickOutside = async() => await getPage().click('#outside-button', {button: 'right'});
 
-const clickInside = async() => await test.page.click('div.tooltip-inner');
-const rightClickInside = async() => await test.page.click('div.tooltip-inner', {button: 'right'});
+const clickInside = async() => await getPage().click('div.tooltip-inner');
+const rightClickInside = async() => await getPage().click('div.tooltip-inner', {button: 'right'});
 
 const selectAutoClose = async(type: string) => {
-  await test.page.click('#autoclose-dropdown');
-  await test.page.click(`#autoclose-${type}`);
+  await getPage().click('#autoclose-dropdown');
+  await getPage().click(`#autoclose-${type}`);
 };
 
 const openTooltip = async(message: string) => {
-  await test.page.click('button[ngbTooltip]');
+  await getPage().click('button[ngbTooltip]');
   await expectTooltipToBeOpen(message);
 };
 
-describe('Tooltip Autoclose', () => {
+test.use({testURL: 'tooltip/autoclose', testSelector: 'h3:text("Tooltip autoclose")'});
+test.beforeEach(async({page}) => setPage(page));
 
-  beforeEach(async() => await openUrl('tooltip/autoclose', 'h3:text("Tooltip autoclose")'));
+test.describe('Tooltip Autoclose', () => {
 
-  it(`should not close tooltip on right clicks`, async() => {
+  test(`should not close tooltip on right clicks`, async() => {
     await openTooltip(`Opening tooltip for right clicks`);
 
     await rightClickInside();
@@ -32,7 +33,7 @@ describe('Tooltip Autoclose', () => {
     await expectTooltipToBeOpen(`Tooltip should stay visible when right-clicking outside`);
   });
 
-  it(`should work when autoClose === true`, async() => {
+  test(`should work when autoClose === true`, async() => {
     await selectAutoClose('true');
 
     // escape
@@ -51,7 +52,7 @@ describe('Tooltip Autoclose', () => {
     await expectTooltipToBeClosed(`Tooltip should be closed on date selection`);
   });
 
-  it(`should work when autoClose === false`, async() => {
+  test(`should work when autoClose === false`, async() => {
     await selectAutoClose('false');
 
     // escape
@@ -68,7 +69,7 @@ describe('Tooltip Autoclose', () => {
     await expectTooltipToBeOpen(`Tooltip should NOT be closed on date selection`);
   });
 
-  it(`should work when autoClose === 'outside'`, async() => {
+  test(`should work when autoClose === 'outside'`, async() => {
     await selectAutoClose('outside');
 
     // escape
@@ -87,7 +88,7 @@ describe('Tooltip Autoclose', () => {
     await expectTooltipToBeOpen(`Tooltip should NOT be closed on date selection`);
   });
 
-  it(`should work when autoClose === 'inside'`, async() => {
+  test(`should work when autoClose === 'inside'`, async() => {
     await selectAutoClose('inside');
 
     // escape

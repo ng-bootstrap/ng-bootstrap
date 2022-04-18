@@ -1,4 +1,4 @@
-import {TestBed, ComponentFixture, fakeAsync, tick} from '@angular/core/testing';
+import {TestBed, ComponentFixture, fakeAsync, tick, waitForAsync} from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
 import {createGenericTestComponent} from '../test/common';
 
@@ -10,7 +10,6 @@ import {NgbInputDatepicker} from './datepicker-input';
 import {NgbDatepicker} from './datepicker';
 import {NgbDateStruct} from './ngb-date-struct';
 import {NgbDate} from './ngb-date';
-import {positionService} from 'src/util/positioning';
 import {NgbInputDatepickerConfig} from './datepicker-input-config';
 
 const createTestCmpt = (html: string) =>
@@ -28,7 +27,7 @@ function customizeConfig(config: NgbInputDatepickerConfig) {
   config.autoClose = 'outside';
   config.container = 'body';
   config.positionTarget = 'positionTarget';
-  config.placement = ['bottom-left', 'top-right'];
+  config.placement = ['bottom-start', 'top-end'];
 }
 
 describe('NgbInputDatepicker', () => {
@@ -390,6 +389,7 @@ describe('NgbInputDatepicker', () => {
          // open
          dpInput.open();
          fixture.detectChanges();
+         tick();
          expect(inputDebugEl.classes['ng-touched']).toBeFalsy();
          expect(fixture.componentInstance.date).toBeUndefined();
 
@@ -736,17 +736,6 @@ describe('NgbInputDatepicker', () => {
       expect(dp.navigation).toBe('none');
     });
 
-    it('should propagate the "showWeekdays" option', () => {
-      const fixture = createTestCmpt(`<input ngbDatepicker [showWeekdays]="true">`);
-      const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
-
-      dpInput.open();
-      fixture.detectChanges();
-
-      const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
-      expect(dp.showWeekdays).toBeTruthy();
-    });
-
     it('should propagate the "weekdays" option', () => {
       const fixture = createTestCmpt(`<input ngbDatepicker [weekdays]="false">`);
       const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
@@ -787,7 +776,9 @@ describe('NgbInputDatepicker', () => {
          tick();
          fixture.detectChanges();
          dpInput.open();
+
          fixture.detectChanges();
+         tick();
 
          const dp = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker);
          expect(dp.startDate).toEqual(new NgbDate(2016, 9, 13));
@@ -952,70 +943,22 @@ describe('NgbInputDatepicker', () => {
       expect(element).not.toBeNull();
       expect(element).toHaveCssClass('ngb-dp-body');
     });
-  });
 
-  describe('positionTarget', () => {
+    it('should not scroll when opening datepicker attached to body', waitForAsync(() => {
+         const fixture = createTestCmpt(`
+      <input ngbDatepicker container="body"/>
+      <div style="height: 10000px"></div>
+    `);
 
-    let positionElementsSpy: jasmine.Spy;
+         expect(document.documentElement.scrollTop).toBe(0);
 
-    beforeEach(() => { positionElementsSpy = spyOn(positionService, 'position').and.callThrough(); });
-
-    it('should position popup by input if no target provided (default)', () => {
-      const fixture = createTestCmpt(`
-          <input ngbDatepicker #d="ngbDatepicker">
-          <button (click)="open(d)">Open</button>
-      `);
-      const input = fixture.nativeElement.querySelector('input');
-
-      // open date-picker
-      const button = fixture.nativeElement.querySelector('button');
-      button.click();
-      fixture.detectChanges();
-
-      expect(positionElementsSpy).toHaveBeenCalled();
-      expect(positionElementsSpy.calls.argsFor(0)[0]).toBe(input);
-    });
-
-    it('should position popup by html element', () => {
-      const fixture = createTestCmpt(`
-          <input ngbDatepicker #d="ngbDatepicker" [positionTarget]="myButton">
-          <button #myButton (click)="open(d)">Open</button>
-      `);
-
-      // open date-picker
-      const button = fixture.nativeElement.querySelector('button');
-      button.click();
-      fixture.detectChanges();
-
-      expect(positionElementsSpy).toHaveBeenCalled();
-      expect(positionElementsSpy.calls.argsFor(0)[0]).toBe(button);
-    });
-
-    it('should position popup by css selector', () => {
-      const selector = '#myButton';
-      const fixture = createTestCmpt(`
-          <input ngbDatepicker #d="ngbDatepicker" positionTarget="${selector}">
-          <button id="myButton" (click)="open(d)">Open</button>
-      `);
-
-      // open date-picker
-      const button = fixture.nativeElement.querySelector(selector);
-      button.click();
-      fixture.detectChanges();
-
-      expect(positionElementsSpy).toHaveBeenCalled();
-      expect(positionElementsSpy.calls.argsFor(0)[0]).toBe(button);
-    });
-
-    it('should throw error if target element does not exists', fakeAsync(() => {
-         const fixture = createTestCmpt(`<input ngbDatepicker #d="ngbDatepicker" positionTarget="#nobody">`);
-         const dpInput = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
-
-         dpInput.open();
+         // open datepicker
+         const dp = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
+         dp.open();
          fixture.detectChanges();
 
-         expect(() => tick())
-             .toThrowError('ngbDatepicker could not find element declared in [positionTarget] to position against.');
+         // browser starts scrolling if focus was set before popper positioning
+         setTimeout(() => expect(document.documentElement.scrollTop).toBe(0), 10);
        }));
   });
 
@@ -1024,6 +967,7 @@ describe('NgbInputDatepicker', () => {
     function open(fixture: ComponentFixture<TestComponent>) {
       const dp = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
       dp.open();
+      tick();
       fixture.detectChanges();
     }
 
@@ -1032,106 +976,106 @@ describe('NgbInputDatepicker', () => {
       fixture.detectChanges();
     }
 
-    it('should focus previously focused element', () => {
-      const fixture = createTestCmpt(`
+    it('should focus previously focused element', fakeAsync(() => {
+         const fixture = createTestCmpt(`
         <div tabindex="0" id="focusable"></div>
         <input ngbDatepicker [startDate]="{year: 2018, month: 3}"/>
       `);
 
-      // initial focus
-      const focusableEl = fixture.nativeElement.querySelector('#focusable');
-      focusableEl.focus();
-      expect(document.activeElement).toBe(focusableEl);
+         // initial focus
+         const focusableEl = fixture.nativeElement.querySelector('#focusable');
+         focusableEl.focus();
+         expect(document.activeElement).toBe(focusableEl);
 
-      open(fixture);
-      expect(document.activeElement).not.toBe(focusableEl);
+         open(fixture);
+         expect(document.activeElement).not.toBe(focusableEl);
 
-      selectDateAndClose(fixture);
-      expect(document.activeElement).toBe(focusableEl);
-    });
+         selectDateAndClose(fixture);
+         expect(document.activeElement).toBe(focusableEl);
+       }));
 
-    it('should focus using selector provided via [restoreFocus]', () => {
-      const fixture = createTestCmpt(`
+    it('should focus using selector provided via [restoreFocus]', fakeAsync(() => {
+         const fixture = createTestCmpt(`
         <div tabindex="0" id="focusable"></div>
         <input ngbDatepicker restoreFocus="#focusable" [startDate]="{year: 2018, month: 3}"/>
       `);
 
-      const focusableEl = fixture.nativeElement.querySelector('#focusable');
-      expect(document.activeElement).not.toBe(focusableEl);
+         const focusableEl = fixture.nativeElement.querySelector('#focusable');
+         expect(document.activeElement).not.toBe(focusableEl);
 
-      open(fixture);
-      expect(document.activeElement).not.toBe(focusableEl);
+         open(fixture);
+         expect(document.activeElement).not.toBe(focusableEl);
 
-      selectDateAndClose(fixture);
-      expect(document.activeElement).toBe(focusableEl);
-    });
+         selectDateAndClose(fixture);
+         expect(document.activeElement).toBe(focusableEl);
+       }));
 
-    it('should focus using element provided via [restoreFocus]', () => {
-      const fixture = createTestCmpt(`
+    it('should focus using element provided via [restoreFocus]', fakeAsync(() => {
+         const fixture = createTestCmpt(`
         <div #el tabindex="0" id="focusable"></div>
         <input ngbDatepicker [restoreFocus]="el" [startDate]="{year: 2018, month: 3}"/>
       `);
 
-      const focusableEl = fixture.nativeElement.querySelector('#focusable');
-      expect(document.activeElement).not.toBe(focusableEl);
+         const focusableEl = fixture.nativeElement.querySelector('#focusable');
+         expect(document.activeElement).not.toBe(focusableEl);
 
-      open(fixture);
-      expect(document.activeElement).not.toBe(focusableEl);
+         open(fixture);
+         expect(document.activeElement).not.toBe(focusableEl);
 
-      selectDateAndClose(fixture);
-      expect(document.activeElement).toBe(focusableEl);
-    });
+         selectDateAndClose(fixture);
+         expect(document.activeElement).toBe(focusableEl);
+       }));
 
-    it('should fallback to body if [restoreFocus] selector is invalid', () => {
-      const fixture = createTestCmpt(`
+    it('should fallback to body if [restoreFocus] selector is invalid', fakeAsync(() => {
+         const fixture = createTestCmpt(`
         <div tabindex="0" id="focusable"></div>
         <input ngbDatepicker restoreFocus=".invalid-element" [startDate]="{year: 2018, month: 3}"/>
       `);
 
-      const focusableEl = fixture.nativeElement.querySelector('#focusable');
-      focusableEl.focus();
-      expect(document.activeElement).toBe(focusableEl);
+         const focusableEl = fixture.nativeElement.querySelector('#focusable');
+         focusableEl.focus();
+         expect(document.activeElement).toBe(focusableEl);
 
-      open(fixture);
-      expect(document.activeElement).not.toBe(focusableEl);
+         open(fixture);
+         expect(document.activeElement).not.toBe(focusableEl);
 
-      selectDateAndClose(fixture);
-      expect(document.activeElement).toBe(document.body);
-    });
+         selectDateAndClose(fixture);
+         expect(document.activeElement).toBe(document.body);
+       }));
 
-    it('should fallback to body if [restoreFocus] value is falsy', () => {
-      const fixture = createTestCmpt(`
+    it('should fallback to body if [restoreFocus] value is falsy', fakeAsync(() => {
+         const fixture = createTestCmpt(`
         <div tabindex="0" id="focusable"></div>
         <input ngbDatepicker [restoreFocus]="null" [startDate]="{year: 2018, month: 3}"/>
       `);
 
-      const focusableEl = fixture.nativeElement.querySelector('#focusable');
-      focusableEl.focus();
-      expect(document.activeElement).toBe(focusableEl);
+         const focusableEl = fixture.nativeElement.querySelector('#focusable');
+         focusableEl.focus();
+         expect(document.activeElement).toBe(focusableEl);
 
-      open(fixture);
-      expect(document.activeElement).not.toBe(focusableEl);
+         open(fixture);
+         expect(document.activeElement).not.toBe(focusableEl);
 
-      selectDateAndClose(fixture);
-      expect(document.activeElement).toBe(document.body);
-    });
+         selectDateAndClose(fixture);
+         expect(document.activeElement).toBe(document.body);
+       }));
 
-    it('should fallback to body if [restoreFocus] value is truthy', () => {
-      const fixture = createTestCmpt(`
+    it('should fallback to body if [restoreFocus] value is truthy', fakeAsync(() => {
+         const fixture = createTestCmpt(`
         <div tabindex="0" id="focusable"></div>
         <input ngbDatepicker [restoreFocus]="true" [startDate]="{year: 2018, month: 3}"/>
       `);
 
-      const focusableEl = fixture.nativeElement.querySelector('#focusable');
-      focusableEl.focus();
-      expect(document.activeElement).toBe(focusableEl);
+         const focusableEl = fixture.nativeElement.querySelector('#focusable');
+         focusableEl.focus();
+         expect(document.activeElement).toBe(focusableEl);
 
-      open(fixture);
-      expect(document.activeElement).not.toBe(focusableEl);
+         open(fixture);
+         expect(document.activeElement).not.toBe(focusableEl);
 
-      selectDateAndClose(fixture);
-      expect(document.activeElement).toBe(document.body);
-    });
+         selectDateAndClose(fixture);
+         expect(document.activeElement).toBe(document.body);
+       }));
   });
 
   describe('Native adapter', () => {

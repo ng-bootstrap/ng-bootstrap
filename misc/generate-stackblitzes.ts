@@ -15,8 +15,8 @@ const versions = {
   typescript: getVersion('typescript'),
   rxjs: getVersion('rxjs'),
   zoneJs: getVersion('zone.js'),
-  coreJs: getVersion('core-js'),
   bootstrap: getVersion('bootstrap'),
+  popper: getVersion('@popperjs/core'),
   prismjs: getVersion('prismjs')
 };
 
@@ -52,17 +52,20 @@ const initialData = {
   stackblitzUrl,
   versions,
   dependencies: JSON.stringify({
+    '@angular/animations': versions.angular,
     '@angular/core': versions.angular,
     '@angular/common': versions.angular,
     '@angular/compiler': versions.angular,
+    '@angular/compiler-cli': versions.angular,
     '@angular/platform-browser': versions.angular,
     '@angular/platform-browser-dynamic': versions.angular,
     '@angular/router': versions.angular,
     '@angular/forms': versions.angular,
     '@angular/localize': versions.angular,
     '@ng-bootstrap/ng-bootstrap': versions.ngBootstrap,
-    'core-js': versions.coreJs,
+    '@popperjs/core': versions.popper,
     'rxjs': versions.rxjs,
+    'typescript': versions.typescript,
     'zone.js': versions.zoneJs,
   }),
   tags: ['angular', 'bootstrap', 'ng-bootstrap'],

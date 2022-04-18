@@ -1,6 +1,5 @@
 import {DOCUMENT} from '@angular/common';
 import {
-  AfterViewInit,
   Component,
   ElementRef,
   EventEmitter,
@@ -44,7 +43,7 @@ import {reflow} from '../util/util';
   styleUrls: ['./modal.scss']
 })
 export class NgbModalWindow implements OnInit,
-    AfterViewInit, OnDestroy {
+    OnDestroy {
   private _closed$ = new Subject<void>();
   private _elWithFocus: Element | null = null;  // element that is focused prior to modal opening
 
@@ -71,9 +70,10 @@ export class NgbModalWindow implements OnInit,
 
   dismiss(reason): void { this.dismissEvent.emit(reason); }
 
-  ngOnInit() { this._elWithFocus = this._document.activeElement; }
-
-  ngAfterViewInit() { this._show(); }
+  ngOnInit() {
+    this._elWithFocus = this._document.activeElement;
+    this._zone.onStable.asObservable().pipe(take(1)).subscribe(() => { this._show(); });
+  }
 
   ngOnDestroy() { this._disableEventHandling(); }
 
@@ -124,7 +124,7 @@ export class NgbModalWindow implements OnInit,
       fromEvent<KeyboardEvent>(nativeElement, 'keydown')
           .pipe(
               takeUntil(this._closed$),
-              // tslint:disable-next-line:deprecation
+              /* eslint-disable-next-line deprecation/deprecation */
               filter(e => e.which === Key.Escape))
           .subscribe(event => {
             if (this.keyboard) {

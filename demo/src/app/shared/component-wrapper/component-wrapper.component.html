@@ -3,7 +3,7 @@
     <div class="col-12 col-lg-2" style="border-right: 1px solid rgba(0, 0, 0, 0.1)">
       <div class="d-lg-none d-flex py-2 px-4 align-items-center text-body sidebar-collapsed"
         (click)="sidebarCollapsed = !sidebarCollapsed" role="button">
-        <span class="mr-auto">Menu</span>
+        <span class="me-auto">Menu</span>
         <button class="btn btn-link p-0" aria-controls="doc-nav" [attr.aria-expanded]="!sidebarCollapsed"
           aria-label="Toggle documentation navigation">
           <svg class="align-middle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" width="30" height="30"
@@ -23,7 +23,7 @@
 
     <div class="col-12 col-lg-10">
       <header class="bg-light pt-4 pb-md-5 px-4 px-lg-5 d-flex d-md-block align-items-center title">
-        <h1 class="mb-4 mr-auto mr-md-none">{{ component | titlecase }}</h1>
+        <h1 class="mb-4 me-auto me-md-none">{{ component | titlecase }}</h1>
 
         <ul ngbNav [activeId]="this.activeTab"
           class="nav-tabs px-4 px-lg-5 content-tabset justify-content-md-start justify-content-end">
@@ -35,10 +35,10 @@
           </li>
 
           <li ngbNavItem ngbDropdown placement="bottom-right"
-            class="align-self-center ml-0 ml-md-auto navigation-dropdown"
+            class="align-self-center ms-0 ms-md-auto navigation-dropdown"
             *ngIf="tableOfContents.length && isLargeScreenOrLess">
             <span ngbDropdownToggle class="nav-link" title="Table of content">
-              <span class="sr-only">Table of content</span>
+              <span class="visually-hidden">Table of content</span>
               <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                 <path fill="currentColor"
                   d="M464 32H48C21.49 32 0 53.49 0 80v352c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V80c0-26.51-21.49-48-48-48zm-6 400H54a6 6 0 0 1-6-6V86a6 6 0 0 1 6-6h404a6 6 0 0 1 6 6v340a6 6 0 0 1-6 6zm-42-92v24c0 6.627-5.373 12-12 12H204c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h200c6.627 0 12 5.373 12 12zm0-96v24c0 6.627-5.373 12-12 12H204c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h200c6.627 0 12 5.373 12 12zm0-96v24c0 6.627-5.373 12-12 12H204c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h200c6.627 0 12 5.373 12 12zm-252 12c0 19.882-16.118 36-36 36s-36-16.118-36-36 16.118-36 36-36 36 16.118 36 36zm0 96c0 19.882-16.118 36-36 36s-36-16.118-36-36 16.118-36 36-36 36 16.118 36 36zm0 96c0 19.882-16.118 36-36 36s-36-16.118-36-36 16.118-36 36-36 36 16.118 36 36z">
@@ -46,7 +46,7 @@
               </svg>
             </span>
 
-            <div class="dropdown-menu-right" ngbDropdownMenu>
+            <div class="dropdown-menu-end" ngbDropdownMenu>
               <ng-template ngFor [ngForOf]="tableOfContents" let-topic>
                 <a *ngIf="topic.title else divider" class="dropdown-item" [routerLink]="['.', this.activeTab]"
                   [fragment]="topic.fragment">{{topic.title}}</a>
@@ -57,7 +57,7 @@
               <ng-container *ngIf="(bootstrapUrl$ | async) as boostrapUrl">
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item d-flex align-items-center" [href]="boostrapUrl" target="_blank" rel="nofollow noopener noreferrer">
-                  <svg:svg class="mr-2" width="16" height="16" fill="currentColor" ngbdIcon="bootstrap" />
+                  <svg:svg class="me-2" width="16" height="16" fill="currentColor" ngbdIcon="bootstrap" />
                   {{ component | titlecase }} in Bootstrap
                 </a>
               </ng-container>
@@ -67,7 +67,7 @@
       </header>
 
       <section class="row py-5 px-2 px-md-4 px-lg-5">
-        <div class="col-12 col-xl-9 px-md-0 pr-xl-4">
+        <div class="col-12 col-xl-9 px-md-0 pe-xl-4">
           <ng-template [ngComponentOutlet]="(headerComponentType$ | async)!"></ng-template>
           <router-outlet (activate)="updateNavigation($event)"></router-outlet>
         </div>
@@ -85,7 +85,7 @@
                   target="_blank" rel="nofollow noopener noreferrer"
                   [attr.title]="'See ' + component + ' component on getbootstrap.com'"
                 >
-                  <svg:svg class="mr-2" width="16" height="16" fill="currentColor" ngbdIcon="bootstrap" />
+                  <svg:svg class="me-2" width="16" height="16" fill="currentColor" ngbdIcon="bootstrap" />
                   {{ component | titlecase }} in Bootstrap
                 </a>
               </li>

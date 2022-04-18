@@ -68,7 +68,7 @@ function getJsDocTags(symbol) {
       .filter(el => ['deprecated', 'since'].includes(el.name))
       .reduce(
         (obj, el) => {
-          const[version, ...rest] = el.text.split(' ');
+          const[version, ...rest] = el.text[0].text.split(' ');
           obj[el.name] = {version, description: rest.join(' ').trim()};
           return obj;
         }, {}

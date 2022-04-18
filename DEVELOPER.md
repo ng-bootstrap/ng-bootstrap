@@ -23,12 +23,10 @@ following products on your development machine:
   [Windows](http://windows.github.com)); [GitHub's Guide to Installing
   Git](https://help.github.com/articles/set-up-git) is a good source of information.
 
-- [Node.js](https://nodejs.org), (version `>=12.10.0`) which is used to run tests, and generate distributable files. Depending on your system, you can install Node either from
+- [Node.js](https://nodejs.org), (LTS version `>=14.15.0`) which is used to run tests, and generate distributable files. Depending on your system, you can install Node either from
   source or as a pre-packaged bundle.
 
-- We use [Yarn](https://yarnpkg.com) (version `>=1.15.2`) to manage dependencies. Please, see installation instructions on their site.
-
-- We use [Chrome](https://www.google.com/chrome/) to run our tests.
+- We use [Yarn](https://yarnpkg.com)  (version `>=1.15.2`) to manage dependencies. See `.yarnrc` amd `.yarn/README.md` for more info.
 
 - We use [Commit Lint](https://commitlint.js.org) with [Husky](https://github.com/typicode/husky) to make sure our commit messages are following [some common rules](#commit-messages).
 

@@ -13,8 +13,7 @@ jobs:
       - run: mkdir -p $LOGS_DIR && ./scripts/sauce_connect_setup.sh
       - uses: actions/setup-node@v1
         with:
-          node-version: "12.x"
-      - uses: microsoft/playwright-github-action@v1
+          node-version: "14.x"
       - id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
       - uses: actions/cache@v1
@@ -24,6 +23,8 @@ jobs:
           restore-keys: |
             yarn-
       - run: yarn --frozen-lockfile
+      - run: npx playwright install-deps
+      - run: npx playwright install
       - run: yarn ci && yarn scripts:test
       - uses: codecov/codecov-action@v1
         with:
@@ -35,11 +36,11 @@ jobs:
           flags: e2e
       - uses: actions/upload-artifact@v2
         with:
-          name: test-videos
-          path: test-videos
+          name: test-reports
+          path: test-reports
         if: ${{ always() }}
+      - run: cat $LOGS_DIR/*
       - run: ./scripts/sauce_connect_block.sh
       - run: yarn saucelabs
-      - run: yarn saucelabs:ie
       - run: ./scripts/sauce_connect_teardown.sh
         if: ${{ always() }}

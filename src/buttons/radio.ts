@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {ChangeDetectorRef, Directive, ElementRef, forwardRef, Input, OnDestroy, Renderer2} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
@@ -10,6 +11,8 @@ let nextId = 0;
  *
  * Integrates with forms, so the value of a checked button is bound to the underlying form control
  * either in a reactive or template-driven way.
+ *
+ * @deprecated 12.0.0 Please use native Angular code instead
  */
 @Directive({
   selector: '[ngbRadioGroup]',
@@ -70,6 +73,8 @@ export class NgbRadioGroup implements ControlValueAccessor {
 /**
  * A directive that marks an input of type "radio" as a part of the
  * [`NgbRadioGroup`](#/components/buttons/api#NgbRadioGroup).
+ *
+ * @deprecated 12.0.0 Please use native Angular code instead
  */
 @Directive({
   selector: '[ngbButton][type=radio]',
@@ -100,7 +105,7 @@ export class NgbRadio implements OnDestroy {
   /**
    * The form control value when current radio button is checked.
    */
-  @Input('value')
+  @Input()
   set value(value: any) {
     this._value = value;
     const stringValue = value ? value.toString() : '';
@@ -111,7 +116,7 @@ export class NgbRadio implements OnDestroy {
   /**
    * If `true`, current radio button will be disabled.
    */
-  @Input('disabled')
+  @Input()
   set disabled(isDisabled: boolean) {
     this._disabled = isDisabled !== false;
     this.updateDisabled();

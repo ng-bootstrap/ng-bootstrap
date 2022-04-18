@@ -80,28 +80,28 @@ export class NgbSlide {
     '[attr.aria-activedescendant]': `'slide-' + activeId`
   },
   template: `
-    <ol class="carousel-indicators" [class.sr-only]="!showNavigationIndicators" role="tablist">
-      <li *ngFor="let slide of slides" [class.active]="slide.id === activeId"
+    <div class="carousel-indicators" [class.visually-hidden]="!showNavigationIndicators" role="tablist">
+      <button type="button" data-bs-target *ngFor="let slide of slides" [class.active]="slide.id === activeId"
           role="tab" [attr.aria-labelledby]="'slide-' + slide.id" [attr.aria-controls]="'slide-' + slide.id"
           [attr.aria-selected]="slide.id === activeId"
-          (click)="focus();select(slide.id, NgbSlideEventSource.INDICATOR);"></li>
-    </ol>
+          (click)="focus();select(slide.id, NgbSlideEventSource.INDICATOR);"></button>
+    </div>
     <div class="carousel-inner">
       <div *ngFor="let slide of slides; index as i; count as c" class="carousel-item" [id]="'slide-' + slide.id" role="tabpanel">
-        <span class="sr-only" i18n="Currently selected slide number read by screen reader@@ngb.carousel.slide-number">
+        <span class="visually-hidden" i18n="Currently selected slide number read by screen reader@@ngb.carousel.slide-number">
           Slide {{i + 1}} of {{c}}
         </span>
         <ng-template [ngTemplateOutlet]="slide.tplRef"></ng-template>
       </div>
     </div>
-    <a class="carousel-control-prev" role="button" (click)="arrowLeft()" *ngIf="showNavigationArrows">
+    <button class="carousel-control-prev" type="button" (click)="arrowLeft()" *ngIf="showNavigationArrows">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="sr-only" i18n="@@ngb.carousel.previous">Previous</span>
-    </a>
-    <a class="carousel-control-next" role="button" (click)="arrowRight()" *ngIf="showNavigationArrows">
+      <span class="visually-hidden" i18n="@@ngb.carousel.previous">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" (click)="arrowRight()" *ngIf="showNavigationArrows">
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="sr-only" i18n="@@ngb.carousel.next">Next</span>
-    </a>
+      <span class="visually-hidden" i18n="@@ngb.carousel.next">Next</span>
+    </button>
   `
 })
 export class NgbCarousel implements AfterContentChecked,
@@ -329,14 +329,14 @@ export class NgbCarousel implements AfterContentChecked,
    * Navigates to the previous slide.
    */
   prev(source?: NgbSlideEventSource) {
-    this._cycleToSelected(this._getPrevSlide(this.activeId), NgbSlideEventDirection.RIGHT, source);
+    this._cycleToSelected(this._getPrevSlide(this.activeId), NgbSlideEventDirection.END, source);
   }
 
   /**
    * Navigates to the next slide.
    */
   next(source?: NgbSlideEventSource) {
-    this._cycleToSelected(this._getNextSlide(this.activeId), NgbSlideEventDirection.LEFT, source);
+    this._cycleToSelected(this._getNextSlide(this.activeId), NgbSlideEventDirection.START, source);
   }
 
   /**
@@ -345,7 +345,7 @@ export class NgbCarousel implements AfterContentChecked,
   pause() { this._pause$.next(true); }
 
   /**
-   * Restarts cycling through the slides from left to right.
+   * Restarts cycling through the slides from start to end.
    */
   cycle() { this._pause$.next(false); }
 
@@ -405,7 +405,7 @@ export class NgbCarousel implements AfterContentChecked,
     const currentActiveSlideIdx = this._getSlideIdxById(currentActiveSlideId);
     const nextActiveSlideIdx = this._getSlideIdxById(nextActiveSlideId);
 
-    return currentActiveSlideIdx > nextActiveSlideIdx ? NgbSlideEventDirection.RIGHT : NgbSlideEventDirection.LEFT;
+    return currentActiveSlideIdx > nextActiveSlideIdx ? NgbSlideEventDirection.END : NgbSlideEventDirection.START;
   }
 
   private _getSlideById(slideId: string): NgbSlide | null {
@@ -457,7 +457,9 @@ export interface NgbSlideEvent {
   /**
    * The slide event direction.
    *
-   * Possible values are `'left' | 'right'`.
+   * <span class="badge bg-info text-dark">since 12.0.0</span> Possible values are `'start' | 'end'`.
+   *
+   * <span class="badge bg-secondary">before 12.0.0</span> Possible values were `'left' | 'right'`.
    */
   direction: NgbSlideEventDirection;
 
@@ -492,7 +494,9 @@ export interface NgbSingleSlideEvent {
   /**
    * The slide event direction.
    *
-   * Possible values are `'left' | 'right'`.
+   * <span class="badge bg-info text-dark">since 12.0.0</span> Possible values are `'start' | 'end'`.
+   *
+   * <span class="badge bg-secondary">before 12.0.0</span> Possible values were `'left' | 'right'`.
    */
   direction: NgbSlideEventDirection;
 

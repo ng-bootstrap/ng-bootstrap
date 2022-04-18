@@ -3,7 +3,6 @@
   "compilerOptions": {
     "outDir": "temp",
     "baseUrl": ".",
-    "target": "es2016"
 },
   "angularCompilerOptions": {
     "entryModule": "src/app/app.server.module#AppServerModule"

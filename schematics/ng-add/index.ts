@@ -10,9 +10,11 @@ import {Schema} from './schema';
 import * as messages from './messages';
 import {addPackageToPackageJson, getPackageVersionFromPackageJson} from '../utils/package-config';
 
-
-const NG_BOOTSTRAP_VERSION = '9.0.0';
-const BOOTSTRAP_VERSION = '4.5.0';
+const VERSIONS = {
+  // automatically filled from package.json during the build
+  BOOTSTRAP: "^0.0.0",
+  POPPER: "^0.0.0"
+};
 
 /**
  * This is executed when `ng add @ng-bootstrap/ng-bootstrap` is run.
@@ -36,8 +38,8 @@ export default function ngAdd(options: Schema): Rule {
     const angularCoreVersion = getPackageVersionFromPackageJson(tree, '@angular/core') !;
     const angularLocalizeVersion = getPackageVersionFromPackageJson(tree, '@angular/localize');
 
-    addPackageToPackageJson(tree, '@ng-bootstrap/ng-bootstrap', `^${NG_BOOTSTRAP_VERSION}`);
-    addPackageToPackageJson(tree, 'bootstrap', `^${BOOTSTRAP_VERSION}`);
+    addPackageToPackageJson(tree, 'bootstrap', VERSIONS.BOOTSTRAP);
+    addPackageToPackageJson(tree, '@popperjs/core', VERSIONS.POPPER);
 
     if (angularLocalizeVersion === null) {
       addPackageToPackageJson(tree, '@angular/localize', angularCoreVersion);

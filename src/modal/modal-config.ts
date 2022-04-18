@@ -123,7 +123,7 @@ export class NgbModalConfig implements Required<NgbModalOptions> {
   backdrop: boolean | 'static' = true;
   beforeDismiss: () => boolean | Promise<boolean>;
   centered: boolean;
-  container: string;
+  container: string | HTMLElement;
   injector: Injector;
   keyboard = true;
   scrollable: boolean;

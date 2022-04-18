@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import {Component} from '@angular/core';
 
 import {Snippet} from '../../../shared/code/snippet';
@@ -71,11 +72,12 @@ const DEMOS = [
     </p>
 
     <p>For instance, other calendar implementations available are:</p>
-    <ul class="list-unstyled ml-4">
+    <ul class="list-unstyled ms-4">
       <li><code>NgbCalendarHebrew</code> + <code>NgbDatepickerI18nHebrew</code></li>
       <li><code>NgbCalendarPersian</code></li>
       <li><code>NgbCalendarIslamicCivil</code></li>
       <li><code>NgbCalendarIslamicUmalqura</code></li>
+      <li><code>NgbCalendarBuddhist</code></li>
     </ul>
 
     <ngb-alert [dismissible]="false">

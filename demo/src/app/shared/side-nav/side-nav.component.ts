@@ -2,11 +2,11 @@ import {Component} from '@angular/core';
 import {Router} from '@angular/router';
 
 export const componentsList = [
-  'Accordion', 'Alert', 'Buttons', 'Carousel', 'Collapse', 'Datepicker', 'Dropdown', 'Modal', 'Nav', 'Pagination',
+  'Accordion', 'Alert', 'Buttons', 'Carousel', 'Collapse', 'Datepicker', 'Dropdown', 'Modal', 'Nav', 'Offcanvas', 'Pagination',
   'Popover', 'Progressbar', 'Rating', 'Table', 'Timepicker', 'Toast', 'Tooltip', 'Typeahead'
 ];
 
-export const deprecatedComponentList = ['Tabset'];
+export const deprecatedComponentList: string[] = [];
 
 @Component({
   selector: 'ngbd-side-nav',
@@ -18,7 +18,12 @@ export class SideNavComponent {
 
   constructor(private router: Router) {}
 
-  isActive(currentRoute: any[], exact = true): boolean {
-    return this.router.isActive(this.router.createUrlTree(currentRoute), exact);
+  isActive(currentRoute: any[]): boolean {
+    return this.router.isActive(this.router.createUrlTree(currentRoute), {
+      paths: 'subset',
+      queryParams: 'subset',
+      fragment: 'ignored',
+      matrixParams: 'ignored'
+    });
   }
 }

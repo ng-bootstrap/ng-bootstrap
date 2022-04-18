@@ -1,14 +1,14 @@
 <div class="row">
   <div class="col">
     <div ngbDropdown class="d-inline-block">
-      <button class="btn btn-outline-primary" id="dropdownForm1" ngbDropdownToggle>Toggle dropdown</button>
+      <button type="button" class="btn btn-outline-primary" id="dropdownForm1" ngbDropdownToggle>Toggle dropdown</button>
       <div ngbDropdownMenu aria-labelledby="dropdownForm1">
         <form class="px-4 py-3">
-          <div class="form-group">
+          <div class="mb-3">
             <label for="exampleDropdownFormEmail1">Email address</label>
             <input type="email" class="form-control" id="exampleDropdownFormEmail1" placeholder="email@example.com" autocomplete="username">
           </div>
-          <div class="form-group">
+          <div class="mb-3">
             <label for="exampleDropdownFormPassword1">Password</label>
             <input type="password" class="form-control" id="exampleDropdownFormPassword1" placeholder="Password" autocomplete="current-password">
           </div>
@@ -21,8 +21,8 @@
           <button type="submit" class="btn btn-primary">Sign in</button>
         </form>
         <div class="dropdown-divider"></div>
-        <button ngbDropdownItem>New around here? Sign up</button>
-        <button ngbDropdownItem>Forgot password?</button>
+        <button type="button" ngbDropdownItem>New around here? Sign up</button>
+        <button type="button" ngbDropdownItem>Forgot password?</button>
       </div>
     </div>
   </div>

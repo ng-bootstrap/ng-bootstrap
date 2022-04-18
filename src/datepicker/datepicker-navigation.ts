@@ -27,7 +27,7 @@ import {NgbDatepickerI18n} from './datepicker-i18n';
     <ng-template *ngIf="!showSelect" ngFor let-month [ngForOf]="months" let-i="index">
       <div class="ngb-dp-arrow" *ngIf="i > 0"></div>
       <div class="ngb-dp-month-name">
-        {{ i18n.getMonthFullName(month.number, month.year) }} {{ i18n.getYearNumerals(month.year) }}
+        {{ i18n.getMonthLabel(month.firstDate) }}
       </div>
       <div class="ngb-dp-arrow" *ngIf="i !== months.length - 1"></div>
     </ng-template>

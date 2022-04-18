@@ -25,13 +25,6 @@ describe('ngb-datepicker-i18n-default', () => {
     expect(i18n.getMonthFullName(13)).toBe('');
   });
 
-  it('should return weekday short name', () => {
-    expect(i18n.getWeekdayShortName(0)).toBe('');
-    expect(i18n.getWeekdayShortName(1)).toBe('Mo');
-    expect(i18n.getWeekdayShortName(7)).toBe('Su');
-    expect(i18n.getWeekdayShortName(8)).toBe('');
-  });
-
   it('should return weekday label', () => {
     expect(i18n.getWeekdayLabel(0)).toBe('');
     expect(i18n.getWeekdayLabel(1)).toBe('Mo');

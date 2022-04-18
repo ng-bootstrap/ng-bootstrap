@@ -40,8 +40,8 @@ header.navbar {
 }
 
 .sidebar-collapsed {
-  margin-left: -15px;
-  margin-right: -15px;
+  margin-left: calc(var(--bs-gutter-x) * -0.5);
+  margin-right: calc(var(--bs-gutter-x) * -0.5);
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
@@ -49,14 +49,19 @@ header.navbar {
   position: sticky;
   top: 1rem;
   max-height: calc(100vh - 4rem);
-  margin-right: -1rem;
+  margin-right: calc(var(--bs-gutter-x) * -0.5);
   overflow-x: hidden;
   overflow-y: auto;
+  z-index: 1;
+
+  a {
+    text-decoration: none;
+  }
 }
 
 header.title {
-  margin-left: -15px;
-  margin-right: -15px;
+  margin-left: calc(var(--bs-gutter-x) * -0.5);
+  margin-right: calc(var(--bs-gutter-x) * -0.5);
   position: relative;
 
   .content-tabset {
@@ -370,8 +375,6 @@ ngbd-api-docs-config {
   .alert {
     border-left-width: 5px;
     border-radius: 0;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
   }
 }
 
@@ -393,7 +396,7 @@ ngb-datepicker.rtl {
   direction: rtl;
 }
 
-ngb-datepicker.rtl ngb-datepicker-navigation-select select.custom-select {
+ngb-datepicker.rtl ngb-datepicker-navigation-select select.form-select {
   background-position: left 0.25rem center;
 }
 

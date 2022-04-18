@@ -1,9 +1,9 @@
 import {CommonModule} from '@angular/common';
 import {Component, Injectable, Injector, NgModule, OnDestroy, ViewChild} from '@angular/core';
 import {ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
-import {NgbModalConfig} from './modal-config';
+import {NgbModalConfig, NgbModalOptions} from './modal-config';
 import {NgbActiveModal, NgbModal, NgbModalModule, NgbModalRef} from './modal.module';
-import {createKeyEvent, isBrowser, isBrowserVisible} from '../test/common';
+import {createKeyEvent, isBrowserVisible} from '../test/common';
 import {NgbConfig} from '..';
 import {NgbConfigAnimation} from '../test/ngb-config-animation';
 import createSpy = jasmine.createSpy;
@@ -297,6 +297,32 @@ describe('ngb-modal', () => {
            expect(document.body).not.toHaveCssClass('modal-open');
          }));
 
+      it('should remove / restore scroll bar when multiple stacked modals are open and closed', fakeAsync(() => {
+           expect(window.getComputedStyle(document.body).overflow).not.toBe('hidden');
+           const modal1Ref = fixture.componentInstance.open('bar');
+           fixture.detectChanges();
+           expect(document.body).toHaveCssClass('modal-open');
+           expect(window.getComputedStyle(document.body).overflow).toBe('hidden');
+
+           const modal2Ref = fixture.componentInstance.open('baz');
+           fixture.detectChanges();
+           tick();
+           expect(document.body).toHaveCssClass('modal-open');
+           expect(window.getComputedStyle(document.body).overflow).toBe('hidden');
+
+           modal1Ref.close('bar result');
+           fixture.detectChanges();
+           tick();
+           expect(document.body).toHaveCssClass('modal-open');
+           expect(window.getComputedStyle(document.body).overflow).toBe('hidden');
+
+           modal2Ref.close('baz result');
+           fixture.detectChanges();
+           tick();
+           expect(document.body).not.toHaveCssClass('modal-open');
+           expect(window.getComputedStyle(document.body).overflow).not.toBe('hidden');
+         }));
+
       it('should not throw when close called multiple times', () => {
         const modalInstance = fixture.componentInstance.open('foo');
         fixture.detectChanges();
@@ -435,7 +461,7 @@ describe('ngb-modal', () => {
       });
 
       it('should dismiss when the callback does not return false', () => {
-        fixture.componentInstance.openTplDismiss({beforeDismiss: () => {}});
+        fixture.componentInstance.openTplDismiss(<any>{beforeDismiss: () => {}});
         fixture.detectChanges();
         expect(fixture.nativeElement).toHaveModal();
 
@@ -479,7 +505,7 @@ describe('ngb-modal', () => {
          }));
 
       it('should dismiss when the returned promise is not resolved with false', fakeAsync(() => {
-           fixture.componentInstance.openTplDismiss({beforeDismiss: () => Promise.resolve()});
+           fixture.componentInstance.openTplDismiss(<any>{beforeDismiss: () => Promise.resolve()});
            fixture.detectChanges();
            expect(fixture.nativeElement).toHaveModal();
 
@@ -514,7 +540,7 @@ describe('ngb-modal', () => {
 
       it('should attach window and backdrop elements to the specified container DOM element', () => {
         const containerDomEl = document.querySelector('div#testContainer');
-        const modalInstance = fixture.componentInstance.open('foo', {container: containerDomEl});
+        const modalInstance = fixture.componentInstance.open('foo', {container: containerDomEl as HTMLElement});
         fixture.detectChanges();
         expect(fixture.nativeElement).toHaveModal('foo', '#testContainer');
 
@@ -579,6 +605,21 @@ describe('ngb-modal', () => {
         fixture.detectChanges();
         expect(fixture.nativeElement).toHaveModal('foo');
         expect(document.querySelector('ngb-modal-backdrop')).toHaveCssClass('my-fancy-backdrop');
+
+        modalInstance.close();
+        fixture.detectChanges();
+        expect(fixture.nativeElement).not.toHaveModal();
+      });
+
+    });
+
+    describe('modal dialog custom class options', () => {
+
+      it('should render modals with the correct dialog custom classes', () => {
+        const modalInstance = fixture.componentInstance.open('foo', {modalDialogClass: 'bar'});
+        fixture.detectChanges();
+        expect(fixture.nativeElement).toHaveModal('foo');
+        expect(document.querySelector('.modal-dialog')).toHaveCssClass('bar');
 
         modalInstance.close();
         fixture.detectChanges();
@@ -950,43 +991,51 @@ describe('ngb-modal', () => {
 
       [true, false].forEach(reduceMotion => {
 
-        // this test is flaky in IE in CI
-        if (!isBrowser('ie')) {
-          it(`should run fade transition when opening/closing modal (force-reduced-motion = ${reduceMotion})`,
-             (done) => {
-               if (reduceMotion) {
-                 document.body.classList.add('ngb-reduce-motion');
-               }
-               const component = TestBed.createComponent(TestAnimationComponent);
-               component.detectChanges();
+        it(`should run fade transition when opening/closing modal (force-reduced-motion = ${reduceMotion})`, (done) => {
+          if (reduceMotion) {
+            document.body.classList.add('ngb-reduce-motion');
+          }
+          const component = TestBed.createComponent(TestAnimationComponent);
+          component.detectChanges();
 
-               const modalRef = component.componentInstance.open();
-               let modalEl: HTMLElement | null = null;
+          const modalRef = component.componentInstance.open();
 
-               modalRef.shown.subscribe(() => {
-                 modalEl = document.querySelector('ngb-modal-window') as HTMLElement;
-                 const closeButton = document.querySelector('button#close') as HTMLButtonElement;
+          // Ensure that everything works fine after a reflow
+          document.body.getBoundingClientRect();
 
-                 expect(window.getComputedStyle(modalEl).opacity).toBe('1');
-                 expect(modalEl).toHaveClass('fade');
-                 expect(modalEl).toHaveClass('show');
-                 closeButton.click();
-               });
+          let modalEl: HTMLElement | null = null;
 
-               modalRef.hidden.subscribe(() => {
-                 modalEl = document.querySelector('ngb-modal-window');
-                 expect(modalEl).toBeNull();
-                 done();
-               });
+          modalRef.result.then(() => { expect(document.body.classList.contains('modal-open')).toBe(true); });
 
-               component.detectChanges();
-               modalEl = document.querySelector('ngb-modal-window');
-               // if reducedMotion is true, modal would be opened and closed already at this point
-               if (modalEl) {
-                 expect(window.getComputedStyle(modalEl).opacity).toBe('0');
-               }
-             });
-        }
+          modalRef.closed.subscribe(() => { expect(document.body.classList.contains('modal-open')).toBe(true); });
+
+          modalRef.shown.subscribe(() => {
+            modalEl = document.querySelector('ngb-modal-window') as HTMLElement;
+            const closeButton = document.querySelector('button#close') as HTMLButtonElement;
+
+            expect(window.getComputedStyle(modalEl).opacity).toBe('1');
+            expect(modalEl).toHaveClass('fade');
+            expect(modalEl).toHaveClass('show');
+            closeButton.click();
+          });
+
+          modalRef.hidden.subscribe(() => {
+            modalEl = document.querySelector('ngb-modal-window');
+            expect(modalEl).toBeNull();
+            expect(document.body.classList.contains('modal-open')).toBe(true);
+            setTimeout(() => {
+              expect(document.body.classList.contains('modal-open')).toBe(false);
+              done();
+            });
+          });
+
+          component.detectChanges();
+          modalEl = document.querySelector('ngb-modal-window');
+          // if reducedMotion is true, modal would be opened and closed already at this point
+          if (modalEl) {
+            expect(window.getComputedStyle(modalEl).opacity).toBe('0');
+          }
+        });
 
         it(`should bump modal window if backdrop is static (force-reduced-motion = ${reduceMotion})`, (done) => {
           if (reduceMotion) {
@@ -1208,7 +1257,7 @@ class TestComponent {
 
   constructor(public modalService: NgbModal) {}
 
-  open(content: string, options?: Object) {
+  open(content: string, options?: NgbModalOptions) {
     this.openedModal = this.modalService.open(content, options);
     return this.openedModal;
   }
@@ -1218,15 +1267,15 @@ class TestComponent {
     }
   }
   dismissAll(reason?: any) { this.modalService.dismissAll(reason); }
-  openTpl(options?: Object) { return this.modalService.open(this.tplContent, options); }
-  openCmpt(cmptType: any, options?: Object) { return this.modalService.open(cmptType, options); }
-  openDestroyableTpl(options?: Object) { return this.modalService.open(this.tplDestroyableContent, options); }
-  openTplClose(options?: Object) { return this.modalService.open(this.tplContentWithClose, options); }
-  openTplDismiss(options?: Object) { return this.modalService.open(this.tplContentWithDismiss, options); }
-  openTplImplicitContext(options?: Object) {
+  openTpl(options?: NgbModalOptions) { return this.modalService.open(this.tplContent, options); }
+  openCmpt(cmptType: any, options?: NgbModalOptions) { return this.modalService.open(cmptType, options); }
+  openDestroyableTpl(options?: NgbModalOptions) { return this.modalService.open(this.tplDestroyableContent, options); }
+  openTplClose(options?: NgbModalOptions) { return this.modalService.open(this.tplContentWithClose, options); }
+  openTplDismiss(options?: NgbModalOptions) { return this.modalService.open(this.tplContentWithDismiss, options); }
+  openTplImplicitContext(options?: NgbModalOptions) {
     return this.modalService.open(this.tplContentWithImplicitContext, options);
   }
-  openTplIf(options?: Object) { return this.modalService.open(this.tplContentWithIf, options); }
+  openTplIf(options?: NgbModalOptions) { return this.modalService.open(this.tplContentWithIf, options); }
   get activeInstances() { return this.modalService.activeInstances; }
 }
 
@@ -1265,10 +1314,6 @@ class TestA11yComponent {
   ],
   exports: [TestComponent, DestroyableCmpt],
   imports: [CommonModule, NgbModalModule],
-  entryComponents: [
-    CustomInjectorCmpt, DestroyableCmpt, WithActiveModalCmpt, WithAutofocusModalCmpt, WithFirstFocusableModalCmpt,
-    WithSkipTabindexFirstFocusableModalCmpt
-  ],
   providers: [SpyService]
 })
 class NgbModalTestModule {

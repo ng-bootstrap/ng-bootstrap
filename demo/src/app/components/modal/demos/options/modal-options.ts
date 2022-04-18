@@ -50,4 +50,8 @@ export class NgbdModalOptions {
   openScrollableContent(longContent) {
     this.modalService.open(longContent, { scrollable: true });
   }
+
+  openModalDialogCustomClass(content) {
+    this.modalService.open(content, { modalDialogClass: 'dark-modal' });
+  }
 }

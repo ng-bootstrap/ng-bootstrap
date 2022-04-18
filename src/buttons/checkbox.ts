@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {ChangeDetectorRef, Directive, forwardRef, Input} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
@@ -8,6 +9,8 @@ import {NgbButtonLabel} from './label';
  *
  * Integrates with forms, so the value of a checked button is bound to the underlying form control
  * either in a reactive or template-driven way.
+ *
+ * @deprecated 12.0.0 Please use native Angular code instead
  */
 @Directive({
   selector: '[ngbButton][type=checkbox]',

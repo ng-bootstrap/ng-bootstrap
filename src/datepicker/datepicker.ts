@@ -1,6 +1,7 @@
 import {fromEvent, merge, Subject} from 'rxjs';
 import {filter, take, takeUntil} from 'rxjs/operators';
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -26,12 +27,13 @@ import {TranslationWidth} from '@angular/common';
 import {NgbCalendar} from './ngb-calendar';
 import {NgbDate} from './ngb-date';
 import {DatepickerServiceInputs, NgbDatepickerService} from './datepicker-service';
-import {DatepickerViewModel, NavigationEvent} from './datepicker-view-model';
+import {DatepickerViewModel, DayViewModel, MonthViewModel, NavigationEvent} from './datepicker-view-model';
 import {DayTemplateContext} from './datepicker-day-template-context';
 import {NgbDatepickerConfig} from './datepicker-config';
 import {NgbDateAdapter} from './adapters/ngb-date-adapter';
 import {NgbDateStruct} from './ngb-date-struct';
 import {NgbDatepickerI18n} from './datepicker-i18n';
+import {NgbDatepickerKeyboardService} from './datepicker-keyboard-service';
 import {isChangedDate, isChangedMonth} from './datepicker-tools';
 import {hasClassName} from '../util/util';
 
@@ -163,8 +165,8 @@ export class NgbDatepickerContent {
   providers:
       [{provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NgbDatepicker), multi: true}, NgbDatepickerService]
 })
-export class NgbDatepicker implements OnDestroy,
-    OnChanges, OnInit, ControlValueAccessor {
+export class NgbDatepicker implements AfterViewInit,
+    OnDestroy, OnChanges, OnInit, ControlValueAccessor {
   static ngAcceptInputType_autoClose: boolean | string;
   static ngAcceptInputType_navigation: string;
   static ngAcceptInputType_outsideDays: string;
@@ -179,7 +181,6 @@ export class NgbDatepicker implements OnDestroy,
   private _controlValue: NgbDate | null = null;
   private _destroyed$ = new Subject<void>();
   private _publicState: NgbDatepickerState = <any>{};
-  private _showWeekdays: boolean;
 
   /**
    * The reference to a custom template for the day.
@@ -263,19 +264,6 @@ export class NgbDatepicker implements OnDestroy,
   @Input() outsideDays: 'visible' | 'collapsed' | 'hidden';
 
   /**
-   * If `true`, weekdays will be displayed.
-   *
-   * @deprecated 9.1.0, please use 'weekdays' instead
-   */
-  @Input()
-  set showWeekdays(weekdays: boolean) {
-    this.weekdays = weekdays;
-    this._showWeekdays = weekdays;
-  }
-
-  get showWeekdays(): boolean { return this._showWeekdays; }
-
-  /**
    * If `true`, week numbers will be displayed.
    */
   @Input() showWeekNumbers: boolean;
@@ -325,7 +313,7 @@ export class NgbDatepicker implements OnDestroy,
       config: NgbDatepickerConfig, cd: ChangeDetectorRef, private _elementRef: ElementRef<HTMLElement>,
       private _ngbDateAdapter: NgbDateAdapter<any>, private _ngZone: NgZone) {
     ['dayTemplate', 'dayTemplateData', 'displayMonths', 'firstDayOfWeek', 'footerTemplate', 'markDisabled', 'minDate',
-     'maxDate', 'navigation', 'outsideDays', 'showWeekdays', 'showWeekNumbers', 'startDate', 'weekdays']
+     'maxDate', 'navigation', 'outsideDays', 'showWeekNumbers', 'startDate', 'weekdays']
         .forEach(input => this[input] = config[input]);
 
     _service.dateSelect$.pipe(takeUntil(this._destroyed$)).subscribe(date => { this.dateSelect.emit(date); });
@@ -466,11 +454,6 @@ export class NgbDatepicker implements OnDestroy,
 
   ngOnChanges(changes: SimpleChanges) {
     const inputs: DatepickerServiceInputs = {};
-
-    if (changes.showWeekdays) {
-      inputs['weekdays'] = this.weekdays;
-    }
-
     ['dayTemplateData', 'displayMonths', 'markDisabled', 'firstDayOfWeek', 'navigation', 'minDate', 'maxDate',
      'outsideDays', 'weekdays']
         .filter(name => name in changes)
@@ -512,5 +495,68 @@ export class NgbDatepicker implements OnDestroy,
   writeValue(value) {
     this._controlValue = NgbDate.from(this._ngbDateAdapter.fromModel(value));
     this._service.select(this._controlValue);
+  }
+}
+
+
+/**
+ * A component that renders one month including all the days, weekdays and week numbers. Can be used inside
+ * the `<ng-template ngbDatepickerMonths></ng-template>` when you want to customize months layout.
+ *
+ * For a usage example, see [custom month layout demo](#/components/datepicker/examples#custommonth)
+ *
+ * @since 5.3.0
+ */
+@Component({
+  selector: 'ngb-datepicker-month',
+  host: {'role': 'grid', '(keydown)': 'onKeyDown($event)'},
+  encapsulation: ViewEncapsulation.None,
+  styleUrls: ['./datepicker-month.scss'],
+  template: `
+    <div *ngIf="viewModel.weekdays.length > 0" class="ngb-dp-week ngb-dp-weekdays" role="row">
+      <div *ngIf="datepicker.showWeekNumbers" class="ngb-dp-weekday ngb-dp-showweek small">{{ i18n.getWeekLabel() }}</div>
+      <div *ngFor="let weekday of viewModel.weekdays" class="ngb-dp-weekday small" role="columnheader">{{ weekday }}</div>
+    </div>
+    <ng-template ngFor let-week [ngForOf]="viewModel.weeks">
+      <div *ngIf="!week.collapsed" class="ngb-dp-week" role="row">
+        <div *ngIf="datepicker.showWeekNumbers" class="ngb-dp-week-number small text-muted">{{ i18n.getWeekNumerals(week.number) }}</div>
+        <div *ngFor="let day of week.days" (click)="doSelect(day); $event.preventDefault()" class="ngb-dp-day" role="gridcell"
+             [class.disabled]="day.context.disabled"
+             [tabindex]="day.tabindex"
+             [class.hidden]="day.hidden"
+             [class.ngb-dp-today]="day.context.today"
+             [attr.aria-label]="day.ariaLabel">
+          <ng-template [ngIf]="!day.hidden">
+            <ng-template [ngTemplateOutlet]="datepicker.dayTemplate" [ngTemplateOutletContext]="day.context"></ng-template>
+          </ng-template>
+        </div>
+      </div>
+    </ng-template>
+  `
+})
+export class NgbDatepickerMonth {
+  /**
+   * The first date of month to be rendered.
+   *
+   * This month must one of the months present in the
+   * [datepicker state](#/components/datepicker/api#NgbDatepickerState).
+   */
+  @Input()
+  set month(month: NgbDateStruct) {
+    this.viewModel = this._service.getMonth(month);
+  }
+
+  viewModel: MonthViewModel;
+
+  constructor(
+      public i18n: NgbDatepickerI18n, public datepicker: NgbDatepicker,
+      private _keyboardService: NgbDatepickerKeyboardService, private _service: NgbDatepickerService) {}
+
+  onKeyDown(event: KeyboardEvent) { this._keyboardService.processKey(event, this.datepicker); }
+
+  doSelect(day: DayViewModel) {
+    if (!day.context.disabled && !day.hidden) {
+      this.datepicker.onDateSelect(day.date);
+    }
   }
 }

@@ -5,19 +5,26 @@ import {reflow} from '../util/util';
  * Defines the carousel slide transition direction.
  */
 export enum NgbSlideEventDirection {
-  LEFT = 'left',
-  RIGHT = 'right'
+  START = 'start',
+  END = 'end'
 }
 
-export interface NgbCarouselCtx { direction: 'left' | 'right'; }
+export interface NgbCarouselCtx {
+  /**
+   * <span class="badge bg-info text-dark">since 12.0.0</span> Possible values are `'start' | 'end'`.
+   *
+   * <span class="badge bg-secondary">before 12.0.0</span> Possible values were `'left' | 'right'`.
+   */
+  direction: 'start' | 'end';
+}
 
 const isBeingAnimated = ({classList}: HTMLElement) => {
-  return classList.contains('carousel-item-left') || classList.contains('carousel-item-right');
+  return classList.contains('carousel-item-start') || classList.contains('carousel-item-end');
 };
 
 const removeDirectionClasses = (classList: DOMTokenList) => {
-  classList.remove('carousel-item-left');
-  classList.remove('carousel-item-right');
+  classList.remove('carousel-item-start');
+  classList.remove('carousel-item-end');
 };
 
 const removeClasses = (classList: DOMTokenList) => {
@@ -42,7 +49,7 @@ export const ngbCarouselTransitionIn: NgbTransitionStartFn<NgbCarouselCtx> =
         removeDirectionClasses(classList);
       } else {
         // For the 'in' transition, a 'pre-class' is applied to the element to ensure its visibility
-        classList.add('carousel-item-' + (direction === NgbSlideEventDirection.LEFT ? 'next' : 'prev'));
+        classList.add('carousel-item-' + (direction === NgbSlideEventDirection.START ? 'next' : 'prev'));
         reflow(element);
         classList.add('carousel-item-' + direction);
       }

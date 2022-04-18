@@ -12,15 +12,16 @@ const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
 function getPanels(element: HTMLElement): HTMLDivElement[] {
-  return <HTMLDivElement[]>Array.from(element.querySelectorAll('.card > .card-header'));
+  return <HTMLDivElement[]>Array.from(element.querySelectorAll('.accordion-item > .accordion-header'));
 }
 
 function getPanelsContent(element: HTMLElement): HTMLDivElement[] {
-  return <HTMLDivElement[]>Array.from(element.querySelectorAll('.card > .collapse, .card > .collapsing'));
+  return <HTMLDivElement[]>Array.from(
+      element.querySelectorAll('.accordion-item > .collapse, .accordion-item > .collapsing'));
 }
 
 function getPanelsButton(element: HTMLElement): HTMLButtonElement[] {
-  return <HTMLButtonElement[]>Array.from(element.querySelectorAll('.card > .card-header button'));
+  return <HTMLButtonElement[]>Array.from(element.querySelectorAll('.accordion-item > .accordion-header button'));
 }
 
 function getPanelsTitle(element: HTMLElement): string[] {
@@ -73,6 +74,19 @@ describe('ngb-accordion', () => {
     const accordionCmp = TestBed.createComponent(NgbAccordion).componentInstance;
     expect(accordionCmp.type).toBe(defaultConfig.type);
     expect(accordionCmp.closeOtherPanels).toBe(defaultConfig.closeOthers);
+  });
+
+  it('should panel authorize number as Ids', () => {
+    const testCompFixture = TestBed.createComponent(TestComponent);
+    const testComp = testCompFixture.componentInstance;
+    testComp.panels = [
+      {id: '1', disabled: false, title: 'Panel 1', content: 'foo', type: ''},
+      {id: '2', disabled: false, title: 'Panel 2', content: 'bar', type: ''},
+      {id: '3', disabled: false, title: 'Panel 3', content: 'baz', type: ''}
+    ];
+    testComp.activeIds = ['2'];
+    testCompFixture.detectChanges();
+    expectOpenPanels(testCompFixture.nativeElement, [false, true, false]);
   });
 
   it('should have no open panels', () => {
@@ -505,23 +519,23 @@ describe('ngb-accordion', () => {
       </ngb-accordion>
     `;
     const fixture = createTestComponent(testHtml);
-    const cards = <HTMLDivElement[]>Array.from(fixture.nativeElement.querySelectorAll('.card'));
+    const cards = <HTMLDivElement[]>Array.from(fixture.nativeElement.querySelectorAll('.accordion-item'));
 
     fixture.detectChanges();
     expect(cards[0].classList.length).toBe(1);
-    expect(cards[0]).toHaveCssClass('card');
+    expect(cards[0]).toHaveCssClass('accordion-item');
 
     expect(cards[1].classList.length).toBe(2);
-    expect(cards[1]).toHaveCssClass('card');
+    expect(cards[1]).toHaveCssClass('accordion-item');
     expect(cards[1]).toHaveCssClass('custom-class');
 
     expect(cards[2].classList.length).toBe(3);
-    expect(cards[2]).toHaveCssClass('card');
+    expect(cards[2]).toHaveCssClass('accordion-item');
     expect(cards[2]).toHaveCssClass('custom-class');
     expect(cards[2]).toHaveCssClass('custom-class-2');
 
     expect(cards[3].classList.length).toBe(1);
-    expect(cards[3]).toHaveCssClass('card');
+    expect(cards[3]).toHaveCssClass('accordion-item');
   });
 
   it('should remove collapsed panels content from DOM', () => {
@@ -615,7 +629,7 @@ describe('ngb-accordion', () => {
     fixture.componentInstance.classType = 'warning';
     fixture.detectChanges();
 
-    let el = fixture.nativeElement.querySelectorAll('.card-header');
+    let el = fixture.nativeElement.querySelectorAll('.accordion-header');
     expect(el[0]).toHaveCssClass('bg-warning');
     expect(el[1]).toHaveCssClass('bg-warning');
     expect(el[2]).toHaveCssClass('bg-warning');
@@ -631,7 +645,7 @@ describe('ngb-accordion', () => {
     tc.panels[1].type = 'danger';
     fixture.detectChanges();
 
-    let el = fixture.nativeElement.querySelectorAll('.card-header');
+    let el = fixture.nativeElement.querySelectorAll('.accordion-header');
     expect(el[0]).toHaveCssClass('bg-success');
     expect(el[1]).toHaveCssClass('bg-danger');
     expect(el[2]).toHaveCssClass('bg-warning');

@@ -56,7 +56,7 @@ export interface StarTemplateContext {
   template: `
     <ng-template #t let-fill="fill">{{ fill === 100 ? '&#9733;' : '&#9734;' }}</ng-template>
     <ng-template ngFor [ngForOf]="contexts" let-index="index">
-      <span class="sr-only">({{ index < nextRate ? '*' : ' ' }})</span>
+      <span class="visually-hidden">({{ index < nextRate ? '*' : ' ' }})</span>
       <span (mouseenter)="enter(index + 1)" (click)="handleClick(index + 1)" [style.cursor]="isInteractive() ? 'pointer' : 'default'">
         <ng-template [ngTemplateOutlet]="starTemplate || starTemplateFromContent || t" [ngTemplateOutletContext]="contexts[index]">
         </ng-template>
@@ -115,7 +115,7 @@ export class NgbRating implements ControlValueAccessor,
   @Output() leave = new EventEmitter<number>();
 
   /**
-   * An event emitted when the user selects a new rating.
+   * An event emitted when the rating is changed.
    *
    * Event payload equals to the newly selected rating.
    */
@@ -149,7 +149,7 @@ export class NgbRating implements ControlValueAccessor,
   }
 
   handleKeyDown(event: KeyboardEvent) {
-    // tslint:disable-next-line:deprecation
+    /* eslint-disable-next-line deprecation/deprecation */
     switch (event.which) {
       case Key.ArrowDown:
       case Key.ArrowLeft:
@@ -177,10 +177,13 @@ export class NgbRating implements ControlValueAccessor,
     if (changes['rate']) {
       this.update(this.rate);
     }
+    if (changes['max']) {
+      this._updateMax();
+    }
   }
 
   ngOnInit(): void {
-    this.contexts = Array.from({length: this.max}, (v, k) => ({fill: 0, index: k}));
+    this._setupContexts();
     this._updateState(this.rate);
   }
 
@@ -218,4 +221,13 @@ export class NgbRating implements ControlValueAccessor,
     this.contexts.forEach(
         (context, index) => context.fill = Math.round(getValueInRange(nextValue - index, 1, 0) * 100));
   }
+
+  private _updateMax() {
+    if (this.max > 0) {
+      this._setupContexts();
+      this.update(this.rate);
+    }
+  }
+
+  private _setupContexts() { this.contexts = Array.from({length: this.max}, (v, k) => ({fill: 0, index: k})); }
 }

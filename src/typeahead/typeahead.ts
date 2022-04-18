@@ -1,6 +1,5 @@
 import {
   ChangeDetectorRef,
-  ComponentFactoryResolver,
   ComponentRef,
   Directive,
   ElementRef,
@@ -23,17 +22,18 @@ import {
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {DOCUMENT} from '@angular/common';
 import {BehaviorSubject, fromEvent, Observable, of, OperatorFunction, Subject, Subscription} from 'rxjs';
-import {map, switchMap, tap} from 'rxjs/operators';
+import {map, switchMap, take, tap} from 'rxjs/operators';
 
 import {Live} from '../util/accessibility/live';
 import {ngbAutoClose} from '../util/autoclose';
 import {Key} from '../util/key';
 import {PopupService} from '../util/popup';
-import {PlacementArray, positionElements} from '../util/positioning';
+import {PlacementArray, ngbPositioning} from '../util/positioning';
 import {isDefined, toString} from '../util/util';
 
 import {NgbTypeaheadConfig} from './typeahead-config';
 import {NgbTypeaheadWindow, ResultTemplateContext} from './typeahead-window';
+import {addPopperOffset} from '../util/positioning-util';
 
 /**
  * An event emitted right before an item is selected from the result list.
@@ -78,12 +78,13 @@ export class NgbTypeahead implements ControlValueAccessor,
     OnInit, OnChanges, OnDestroy {
   private _popupService: PopupService<NgbTypeaheadWindow>;
   private _subscription: Subscription | null = null;
-  private _closed$ = new Subject();
+  private _closed$ = new Subject<void>();
   private _inputValueBackup: string | null = null;
   private _valueChanges: Observable<string>;
   private _resubscribeTypeahead: BehaviorSubject<any>;
   private _windowRef: ComponentRef<NgbTypeaheadWindow>| null = null;
   private _zoneSubscription: any;
+  private _positioning = ngbPositioning();
 
   /**
    * The value for the `autocomplete` attribute for the `<input>` element.
@@ -156,19 +157,13 @@ export class NgbTypeahead implements ControlValueAccessor,
   @Input() showHint: boolean;
 
   /**
-   * The preferred placement of the typeahead.
+   * The preferred placement of the typeahead, among the [possible values](#/guides/positioning#api).
    *
-   * Possible values are `"top"`, `"top-left"`, `"top-right"`, `"bottom"`, `"bottom-left"`,
-   * `"bottom-right"`, `"left"`, `"left-top"`, `"left-bottom"`, `"right"`, `"right-top"`,
-   * `"right-bottom"`
-   *
-   * Accepts an array of strings or a string with space separated possible values.
-   *
-   * The default order of preference is `"bottom-left bottom-right top-left top-right"`
+   * The default order of preference is `"bottom-start bottom-end top-start top-end"`
    *
    * Please see the [positioning overview](#/positioning) for more details.
    */
-  @Input() placement: PlacementArray = 'bottom-left';
+  @Input() placement: PlacementArray = 'bottom-start';
 
   /**
   * A custom class to append to the typeahead popup window
@@ -196,9 +191,9 @@ export class NgbTypeahead implements ControlValueAccessor,
 
   constructor(
       private _elementRef: ElementRef<HTMLInputElement>, viewContainerRef: ViewContainerRef,
-      private _renderer: Renderer2, injector: Injector, componentFactoryResolver: ComponentFactoryResolver,
-      config: NgbTypeaheadConfig, ngZone: NgZone, private _live: Live, @Inject(DOCUMENT) private _document: any,
-      private _ngZone: NgZone, private _changeDetector: ChangeDetectorRef, applicationRef: ApplicationRef) {
+      private _renderer: Renderer2, injector: Injector, config: NgbTypeaheadConfig, ngZone: NgZone, private _live: Live,
+      @Inject(DOCUMENT) private _document: any, private _ngZone: NgZone, private _changeDetector: ChangeDetectorRef,
+      applicationRef: ApplicationRef) {
     this.container = config.container;
     this.editable = config.editable;
     this.focusFirst = config.focusFirst;
@@ -211,16 +206,9 @@ export class NgbTypeahead implements ControlValueAccessor,
     this._resubscribeTypeahead = new BehaviorSubject(null);
 
     this._popupService = new PopupService<NgbTypeaheadWindow>(
-        NgbTypeaheadWindow, injector, viewContainerRef, _renderer, this._ngZone, componentFactoryResolver,
-        applicationRef);
+        NgbTypeaheadWindow, injector, viewContainerRef, _renderer, this._ngZone, applicationRef);
 
-    this._zoneSubscription = ngZone.onStable.subscribe(() => {
-      if (this.isPopupOpen()) {
-        positionElements(
-            this._elementRef.nativeElement, this._windowRef !.location.nativeElement, this.placement,
-            this.container === 'body');
-      }
-    });
+    this._zoneSubscription = ngZone.onStable.subscribe(() => { this._positioning.update(); });
   }
 
   ngOnInit(): void { this._subscribeToUserInput(); }
@@ -282,7 +270,7 @@ export class NgbTypeahead implements ControlValueAccessor,
       return;
     }
 
-    // tslint:disable-next-line:deprecation
+    /* eslint-disable-next-line deprecation/deprecation */
     switch (event.which) {
       case Key.ArrowDown:
         event.preventDefault();
@@ -295,7 +283,7 @@ export class NgbTypeahead implements ControlValueAccessor,
         this._showHint();
         break;
       case Key.Enter:
-      case Key.Tab:
+      case Key.Tab: {
         const result = this._windowRef !.instance.getActive();
         if (isDefined(result)) {
           event.preventDefault();
@@ -304,6 +292,7 @@ export class NgbTypeahead implements ControlValueAccessor,
         }
         this._closePopup();
         break;
+      }
     }
   }
 
@@ -318,10 +307,24 @@ export class NgbTypeahead implements ControlValueAccessor,
       this._windowRef.instance.popupClass = this.popupClass;
 
       if (this.container === 'body') {
+        this._renderer.setStyle(this._windowRef.location.nativeElement, 'z-index', '1055');
         this._document.querySelector(this.container).appendChild(this._windowRef.location.nativeElement);
       }
 
       this._changeDetector.markForCheck();
+
+      // Schedule positioning on stable, to avoid several positioning updates.
+      this._ngZone.onStable.pipe(take(1)).subscribe(() => {
+        if (this._windowRef) {
+          this._positioning.createPopper({
+            hostElement: this._elementRef.nativeElement,
+            targetElement: this._windowRef.location.nativeElement,
+            placement: this.placement,
+            appendToBody: this.container === 'body',
+            updatePopperOptions: addPopperOffset([0, 2]),
+          });
+        }
+      });
 
       ngbAutoClose(
           this._ngZone, this._document, 'outside', () => this.dismissPopup(), this._closed$,
@@ -331,6 +334,7 @@ export class NgbTypeahead implements ControlValueAccessor,
 
   private _closePopup() {
     this._popupService.close().subscribe(() => {
+      this._positioning.destroy();
       this._closed$.next();
       this._windowRef = null;
       this.activeDescendant = null;

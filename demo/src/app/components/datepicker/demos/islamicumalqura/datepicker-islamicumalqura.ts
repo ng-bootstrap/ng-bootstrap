@@ -9,17 +9,16 @@ const MONTHS = ['محرم', 'صفر', 'ربيع الأول', 'ربيع الآخ�
 
 @Injectable()
 export class IslamicI18n extends NgbDatepickerI18n {
-
-  getWeekdayShortName(weekday: number) {
-    return WEEKDAYS[weekday - 1];
-  }
-
   getMonthShortName(month: number) {
     return MONTHS[month - 1];
   }
 
   getMonthFullName(month: number) {
     return MONTHS[month - 1];
+  }
+
+  getWeekdayLabel(weekday: number) {
+    return WEEKDAYS[weekday - 1];
   }
 
   getDayAriaLabel(date: NgbDateStruct): string {

@@ -36,14 +36,15 @@
   },
   "homepage": "https://github.com/ng-bootstrap/ng-bootstrap#readme",
   "dependencies": {
-    "tslib": "^2.0.0"
+    "tslib": "^2.3.0"
   },
   "peerDependencies": {
-    "@angular/common": "^11.0.0",
-    "@angular/core": "^11.0.0",
-    "@angular/forms": "^11.0.0",
-    "@angular/localize": "^11.0.0",
-    "rxjs": "^6.5.5"
+    "@angular/common": "^13.0.0",
+    "@angular/core": "^13.0.0",
+    "@angular/forms": "^13.0.0",
+    "@angular/localize": "^13.0.0",
+    "@popperjs/core": "^2.10.2",
+    "rxjs": "^6.5.3 || ^7.4.0"
   },
   "schematics": "./schematics/collection.json"
 }

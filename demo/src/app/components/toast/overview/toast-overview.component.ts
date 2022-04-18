@@ -42,9 +42,15 @@ export class NgbdToastOverviewComponent {
   APP_TOAST_SERVICE = Snippet({
     lang: 'typescript',
     code: `
+      export interface ToastInfo {
+        header: string;
+        body: string;
+        delay?: number;
+      }
+      
       @Injectable({ providedIn: 'root' })
       export class AppToastService {
-        toasts: any[] = [];
+        toasts: ToastInfo[] = [];
 
         show(header: string, body: string) {
           this.toasts.push({ header, body });
@@ -55,7 +61,7 @@ export class NgbdToastOverviewComponent {
   APP_TOAST_SERVICE_REMOVE = Snippet({
     lang: 'typescript',
     code: `
-      remove(toast) {
+      remove(toast: ToastInfo) {
         this.toasts = this.toasts.filter(t => t != toast);
       }`,
   });
@@ -66,7 +72,7 @@ export class NgbdToastOverviewComponent {
       <ngb-toast
         *ngFor="let toast of toastService.toasts"
         [header]="toast.header" [autohide]="true" [delay]="toast.delay || 5000"
-        (hide)="toastService.remove(toast)"
+        (hiddden)="toastService.remove(toast)"
       >{{toast.body}}</ngb-toast>`,
   });
 
@@ -91,7 +97,7 @@ export class NgbdToastOverviewComponent {
         styles: [' ... ']
       })
       export class AppToastsComponent {
-        constructor(toastService: AppToastService) {}
+        constructor(public toastService: AppToastService) {}
       }`,
   });
 

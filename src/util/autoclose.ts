@@ -50,7 +50,7 @@ export function ngbAutoClose(
       const escapes$ = fromEvent<KeyboardEvent>(document, 'keydown')
                            .pipe(
                                takeUntil(closed$),
-                               // tslint:disable-next-line:deprecation
+                               /* eslint-disable-next-line deprecation/deprecation */
                                filter(e => e.which === Key.Escape), tap(e => e.preventDefault()));
 
 
@@ -65,7 +65,7 @@ export function ngbAutoClose(
                                        takeUntil(closed$)) as Observable<MouseEvent>;
 
 
-      race<SOURCE>([
+      race([
         escapes$.pipe(map(_ => SOURCE.ESCAPE)), closeableClicks$.pipe(map(_ => SOURCE.CLICK))
       ]).subscribe((source: SOURCE) => zone.run(() => close(source)));
     }));

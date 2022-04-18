@@ -18,7 +18,6 @@ import {NgbdPopoverModule} from './components/popover/popover.module';
 import {NgbdProgressbarModule} from './components/progressbar/progressbar.module';
 import {NgbdRatingModule} from './components/rating/rating.module';
 import {NgbdTableModule} from './components/table/table.module';
-import {NgbdTabsetModule} from './components/tabset/tabset.module';
 import {NgbdTimepickerModule} from './components/timepicker/timepicker.module';
 import {NgbdToastModule} from './components/toast/toast.module';
 import {NgbdTooltipModule} from './components/tooltip/tooltip.module';
@@ -29,19 +28,21 @@ import {AnimationsPage} from './pages/animations/animations.component';
 import {I18nPage} from './pages/i18n/i18n.component';
 import {PositioningPage} from './pages/positioning/positioning.component';
 import {NgbdSharedModule} from './shared';
+import {NgbdDemoVersionsComponent} from './demo-versions.component';
+import {NgbdOffcanvasModule} from './components/offcanvas/offcanvas.module';
 
 
 const DEMOS = [
   NgbdAccordionModule, NgbdAlertModule, NgbdButtonsModule, NgbdCarouselModule, NgbdCollapseModule, NgbdDatepickerModule,
-  NgbdDropdownModule, NgbdModalModule, NgbdNavModule, NgbdPaginationModule, NgbdPopoverModule, NgbdProgressbarModule,
-  NgbdRatingModule, NgbdTableModule, NgbdTabsetModule, NgbdTimepickerModule, NgbdToastModule, NgbdTooltipModule,
+  NgbdDropdownModule, NgbdModalModule, NgbdNavModule, NgbdOffcanvasModule, NgbdPaginationModule, NgbdPopoverModule, NgbdProgressbarModule,
+  NgbdRatingModule, NgbdTableModule, NgbdTimepickerModule, NgbdToastModule, NgbdTooltipModule,
   NgbdTypeaheadModule
 ];
 
 const PAGES = [GettingStartedPage, AnimationsPage, I18nPage, PositioningPage];
 
 @NgModule({
-  declarations: [AppComponent, DefaultComponent, ...PAGES],
+  declarations: [AppComponent, DefaultComponent, NgbdDemoVersionsComponent, ...PAGES],
   imports: [BrowserModule, routing, NgbModule, NgbdSharedModule, ...DEMOS],
   bootstrap: [AppComponent]
 })
