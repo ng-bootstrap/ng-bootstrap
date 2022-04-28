@@ -1,3 +1,14 @@
+# [12.1.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/12.0.2...12.1.0) (2022-04-28)
+
+This release introduces a new [Offcanvas](https://ng-bootstrap.github.io/#/components/offcanvas) component with the API similar to Modal.
+
+### Features
+
+* **offcanvas:** add new Offcanvas component and service ([e504c31](https://github.com/ng-bootstrap/ng-bootstrap/commit/e504c3182963b5b33ab002c818a9af10f1767f40))
+* **modal:** add a 'fullscreen' option ([6d6189b](https://github.com/ng-bootstrap/ng-bootstrap/commit/6d6189b1ad50130a04925f8ca1bc34f1e55f344e)), closes [#4298](https://github.com/ng-bootstrap/ng-bootstrap/issues/4298)
+
+
+
 ## [12.0.2](https://github.com/ng-bootstrap/ng-bootstrap/compare/12.0.1...12.0.2) (2022-04-07)
 
 More bugfixes for the Bootstrap 5 release
