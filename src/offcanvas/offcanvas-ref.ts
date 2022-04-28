@@ -13,6 +13,8 @@ import {NgbOffcanvasPanel} from './offcanvas-panel';
  *
  * Instances of this class can be injected into your component passed as offcanvas content.
  * So you can `.close()` or `.dismiss()` the offcanvas window from your component.
+ *
+ * @since 12.1.0
  */
 export class NgbActiveOffcanvas {
   /**
@@ -32,6 +34,8 @@ export class NgbActiveOffcanvas {
 
 /**
  * A reference to the newly opened offcanvas returned by the `NgbOffcanvas.open()` method.
+ *
+ * @since 12.1.0
  */
 export class NgbOffcanvasRef {
   private _closed = new Subject<any>();

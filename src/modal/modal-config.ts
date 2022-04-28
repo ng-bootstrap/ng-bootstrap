@@ -72,6 +72,8 @@ export interface NgbModalOptions {
    * it will add a `'modal-fullscreen-mysize-down'` class.
    *
    * If not specified will be `false`.
+   *
+   * @since 12.1.0
    */
   fullscreen?: 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | boolean | string;
 

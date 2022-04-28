@@ -3,6 +3,14 @@ import {NgbOffcanvasConfig, NgbOffcanvasOptions} from './offcanvas-config';
 import {NgbOffcanvasRef} from './offcanvas-ref';
 import {NgbOffcanvasStack} from './offcanvas-stack';
 
+/**
+ * A service for opening an offcanvas.
+ *
+ * Creating an offcanvas is straightforward: create a component or a template and pass it as an argument to
+ * the `.open()` method.
+ *
+ * @since 12.1.0
+ */
 @Injectable({providedIn: 'root'})
 export class NgbOffcanvas {
   constructor(

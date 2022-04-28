@@ -3,6 +3,8 @@ import {NgbConfig} from '../ngb-config';
 
 /**
  * Options available when opening new offcanvas windows with `NgbOffcanvas.open()` method.
+ *
+ * @since 12.1.0
  */
 export interface NgbOffcanvasOptions {
   /**
@@ -84,6 +86,8 @@ export interface NgbOffcanvasOptions {
  *
  * You can inject this service, typically in your root component, and customize the values of its properties in
  * order to provide default values for all offcanvases used in the application.
+ *
+ * @since 12.1.0
  */
 @Injectable({providedIn: 'root'})
 export class NgbOffcanvasConfig implements Required<NgbOffcanvasOptions> {
