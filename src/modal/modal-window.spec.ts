@@ -32,6 +32,24 @@ describe('ngb-modal-dialog', () => {
       expect(dialogEl).toHaveCssClass('modal-sm');
     });
 
+    it('should render default modal window with a specified fullscreen size', () => {
+      fixture.detectChanges();
+      const dialogEl = fixture.nativeElement.querySelector('.modal-dialog') as HTMLElement;
+      expect(dialogEl).not.toHaveCssClass('modal-fullscreen');
+
+      fixture.componentInstance.fullscreen = true;
+      fixture.detectChanges();
+      expect(dialogEl).toHaveCssClass('modal-fullscreen');
+
+      fixture.componentInstance.fullscreen = 'sm';
+      fixture.detectChanges();
+      expect(dialogEl).toHaveCssClass('modal-fullscreen-sm-down');
+
+      fixture.componentInstance.fullscreen = 'custom';
+      fixture.detectChanges();
+      expect(dialogEl).toHaveCssClass('modal-fullscreen-custom-down');
+    });
+
     it('should render default modal window with a specified class', () => {
       fixture.componentInstance.windowClass = 'custom-class';
       fixture.detectChanges();

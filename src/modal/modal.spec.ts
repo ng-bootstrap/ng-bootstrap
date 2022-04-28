@@ -583,6 +583,41 @@ describe('ngb-modal', () => {
 
     });
 
+    describe('fullscreen options', () => {
+      it('should render modals with fullscreen === true', () => {
+        const modalInstance = fixture.componentInstance.open('foo', {fullscreen: true});
+        fixture.detectChanges();
+        expect(fixture.nativeElement).toHaveModal('foo');
+        expect(document.querySelector('.modal-dialog')).toHaveCssClass('modal-fullscreen');
+
+        modalInstance.close();
+        fixture.detectChanges();
+        expect(fixture.nativeElement).not.toHaveModal();
+      });
+
+      it('should render modals with specified fullscreen size', () => {
+        const modalInstance = fixture.componentInstance.open('foo', {fullscreen: 'sm'});
+        fixture.detectChanges();
+        expect(fixture.nativeElement).toHaveModal('foo');
+        expect(document.querySelector('.modal-dialog')).toHaveCssClass('modal-fullscreen-sm-down');
+
+        modalInstance.close();
+        fixture.detectChanges();
+        expect(fixture.nativeElement).not.toHaveModal();
+      });
+
+      it('should render modals with any string as fullscreen size', () => {
+        const modalInstance = fixture.componentInstance.open('foo', {fullscreen: 'blah'});
+        fixture.detectChanges();
+        expect(fixture.nativeElement).toHaveModal('foo');
+        expect(document.querySelector('.modal-dialog')).toHaveCssClass('modal-fullscreen-blah-down');
+
+        modalInstance.close();
+        fixture.detectChanges();
+        expect(fixture.nativeElement).not.toHaveModal();
+      });
+    });
+
     describe('window custom class options', () => {
 
       it('should render modals with the correct window custom classes', () => {

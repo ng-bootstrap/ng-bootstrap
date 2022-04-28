@@ -20,7 +20,7 @@ import {getFocusableBoundaryElements} from '../util/focus-trap';
 import {Key} from '../util/key';
 import {ModalDismissReasons} from './modal-dismiss-reasons';
 import {ngbRunTransition, NgbTransitionOptions} from '../util/transition/ngbTransition';
-import {reflow} from '../util/util';
+import {isString, reflow} from '../util/util';
 
 @Component({
   selector: 'ngb-modal-window',
@@ -35,7 +35,7 @@ import {reflow} from '../util/util';
   },
   template: `
     <div #dialog [class]="'modal-dialog' + (size ? ' modal-' + size : '') + (centered ? ' modal-dialog-centered' : '') +
-     (scrollable ? ' modal-dialog-scrollable' : '') + (modalDialogClass ? ' ' + modalDialogClass : '')" role="document">
+     fullscreenClass + (scrollable ? ' modal-dialog-scrollable' : '') + (modalDialogClass ? ' ' + modalDialogClass : '')" role="document">
         <div class="modal-content"><ng-content></ng-content></div>
     </div>
     `,
@@ -54,6 +54,7 @@ export class NgbModalWindow implements OnInit,
   @Input() ariaDescribedBy: string;
   @Input() backdrop: boolean | string = true;
   @Input() centered: string;
+  @Input() fullscreen: string | boolean;
   @Input() keyboard = true;
   @Input() scrollable: string;
   @Input() size: string;
@@ -67,6 +68,11 @@ export class NgbModalWindow implements OnInit,
 
   constructor(
       @Inject(DOCUMENT) private _document: any, private _elRef: ElementRef<HTMLElement>, private _zone: NgZone) {}
+
+  get fullscreenClass(): string {
+    return this.fullscreen === true ? ' modal-fullscreen' :
+                                      isString(this.fullscreen) ? ` modal-fullscreen-${this.fullscreen}-down` : '';
+  }
 
   dismiss(reason): void { this.dismissEvent.emit(reason); }
 
