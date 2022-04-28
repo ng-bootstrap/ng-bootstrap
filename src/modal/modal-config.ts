@@ -65,6 +65,17 @@ export interface NgbModalOptions {
   container?: string | HTMLElement;
 
   /**
+   * If `true` modal will always be displayed in fullscreen mode.
+   *
+   * For values like `'md'` it means that modal will be displayed in fullscreen mode
+   * only if the viewport width is below `'md'`. For custom strings (ex. when passing `'mysize'`)
+   * it will add a `'modal-fullscreen-mysize-down'` class.
+   *
+   * If not specified will be `false`.
+   */
+  fullscreen?: 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | boolean | string;
+
+  /**
    * The `Injector` to use for modal content.
    */
   injector?: Injector;
@@ -124,6 +135,7 @@ export class NgbModalConfig implements Required<NgbModalOptions> {
   beforeDismiss: () => boolean | Promise<boolean>;
   centered: boolean;
   container: string | HTMLElement;
+  fullscreen: 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | boolean | string = false;
   injector: Injector;
   keyboard = true;
   scrollable: boolean;

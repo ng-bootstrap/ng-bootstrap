@@ -18,6 +18,7 @@ describe('NgbModalConfig', () => {
        expect(config.centered).toBeUndefined();
        expect(config.container).toBeUndefined();
        expect(config.injector).toBeUndefined();
+       expect(config.fullscreen).toBe(false);
        expect(config.keyboard).toBe(true);
        expect(config.scrollable).toBeUndefined();
        expect(config.size).toBeUndefined();
