@@ -43,6 +43,10 @@ export class NgbdModalOptions {
     this.modalService.open(content, { size: 'xl' });
   }
 
+  openFullscreen(content) {
+    this.modalService.open(content, { fullscreen: true });
+  }
+
   openVerticallyCentered(content) {
     this.modalService.open(content, { centered: true });
   }
