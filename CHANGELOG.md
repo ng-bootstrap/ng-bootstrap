@@ -1,3 +1,12 @@
+## [12.1.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/12.1.0...12.1.1) (2022-04-29)
+
+
+### Bug Fixes
+
+* **offcanvas:** use correct rxjs import for the 'finalize' operator ([#4317](https://github.com/ng-bootstrap/ng-bootstrap/issues/4317)) ([428d666](https://github.com/ng-bootstrap/ng-bootstrap/commit/428d6663979ea0b0fb31851c4a8329124f250f6c))
+
+
+
 # [12.1.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/12.0.2...12.1.0) (2022-04-28)
 
 This release introduces a new [Offcanvas](https://ng-bootstrap.github.io/#/components/offcanvas) component with the API similar to Modal.
