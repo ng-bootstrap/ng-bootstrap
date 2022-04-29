@@ -10,7 +10,8 @@ import {
   NgZone,
   TemplateRef
 } from '@angular/core';
-import {finalize, Subject} from 'rxjs';
+import {finalize} from 'rxjs/operators';
+import {Subject} from 'rxjs';
 
 import {ngbFocusTrap} from '../util/focus-trap';
 import {ContentRef} from '../util/popup';
