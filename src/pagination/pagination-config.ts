@@ -15,5 +15,5 @@ export class NgbPaginationConfig {
   maxSize = 0;
   pageSize = 10;
   rotate = false;
-  size: 'sm' | 'lg' | string | null;
+  size: 'sm' | 'lg' | string;
 }
