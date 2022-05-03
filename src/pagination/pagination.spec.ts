@@ -334,6 +334,12 @@ describe('ngb-pagination', () => {
       fixture.detectChanges();
       expect(listEl).toHaveCssClass('pagination');
       expect(listEl).toHaveCssClass('pagination-123');
+
+      // null value
+      fixture.componentInstance.size = null;
+      fixture.detectChanges();
+      expect(listEl).toHaveCssClass('pagination');
+      expect(listEl).not.toHaveCssClass('pagination-123');
     });
 
     it('should render and respond to maxSize change correctly', () => {
@@ -856,7 +862,7 @@ class TestComponent {
   page = 1;
   boundaryLinks = false;
   directionLinks = false;
-  size = '';
+  size: string | null = '';
   maxSize = 0;
   ellipses = true;
   rotate = false;
