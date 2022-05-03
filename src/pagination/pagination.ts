@@ -299,6 +299,8 @@ export class NgbPagination implements OnChanges {
    * The pagination display size.
    *
    * Bootstrap currently supports small and large sizes.
+   *
+   * If the passed value is a string (ex. 'custom'), it will just add the `pagination-custom` css class
    */
   @Input() size: 'sm' | 'lg' | string | null;
 
