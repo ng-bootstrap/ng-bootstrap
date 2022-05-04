@@ -32,7 +32,6 @@ import {NgbPopoverConfig} from './popover-config';
 
 import {addPopperOffset} from '../util/positioning-util';
 import {Subscription} from 'rxjs';
-import {take} from 'rxjs/operators';
 
 let nextId = 0;
 
@@ -201,8 +200,6 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
     this.closeDelay = config.closeDelay;
     this._popupService = new PopupService<NgbPopoverWindow>(
         NgbPopoverWindow, injector, viewContainerRef, _renderer, this._ngZone, applicationRef);
-
-    this._zoneSubscription = _ngZone.onStable.subscribe(() => { this._positioning.update(); });
   }
 
   /**
@@ -241,8 +238,8 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
       // mark the parent component to be checked.
       this._windowRef.changeDetectorRef.markForCheck();
 
-      // Schedule positioning on stable, to avoid several positioning updates.
-      this._ngZone.onStable.pipe(take(1)).subscribe(() => {
+      // Setting up popper and scheduling updates when zone is stable
+      this._ngZone.runOutsideAngular(() => {
         this._positioning.createPopper({
           hostElement: this._elementRef.nativeElement,
           targetElement: this._windowRef !.location.nativeElement,
@@ -250,6 +247,12 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
           appendToBody: this.container === 'body',
           baseClass: 'bs-popover',
           updatePopperOptions: addPopperOffset([0, 8]),
+        });
+
+        Promise.resolve().then(() => {
+          // This update is required for correct arrow placement
+          this._positioning.update();
+          this._zoneSubscription = this._ngZone.onStable.subscribe(() => this._positioning.update());
         });
       });
 
@@ -266,12 +269,13 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
    *
    * This is considered to be a "manual" triggering of the popover.
    */
-  close() {
+  close(animation = this.animation) {
     if (this._windowRef) {
       this._renderer.removeAttribute(this._elementRef.nativeElement, 'aria-describedby');
-      this._popupService.close(this.animation).subscribe(() => {
+      this._popupService.close(animation).subscribe(() => {
         this._windowRef = null;
         this._positioning.destroy();
+        this._zoneSubscription ?.unsubscribe();
         this.hidden.emit();
         this._changeDetector.markForCheck();
       });
@@ -313,12 +317,9 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnDestroy() {
-    this.close();
+    this.close(false);
     // This check is needed as it might happen that ngOnDestroy is called before ngOnInit
     // under certain conditions, see: https://github.com/ng-bootstrap/ng-bootstrap/issues/2199
-    if (this._unregisterListenersFn) {
-      this._unregisterListenersFn();
-    }
-    this._zoneSubscription.unsubscribe();
+    this._unregisterListenersFn ?.();
   }
 }
