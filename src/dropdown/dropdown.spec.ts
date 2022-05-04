@@ -1,5 +1,6 @@
 import {ComponentFixture, fakeAsync, inject, TestBed, tick} from '@angular/core/testing';
 import {createGenericTestComponent} from '../test/common';
+import createSpy = jasmine.createSpy;
 
 import {Component} from '@angular/core';
 
@@ -332,6 +333,32 @@ describe('ngb-dropdown', () => {
     expect(itemEl).toHaveCssClass('disabled');
     expect(itemEl.tabIndex).toBe(-1);
   });
+
+  it('should cleanup dropdown when parent container is destroyed', () => {
+    const fixture = createTestComponent(`
+          <ng-template [ngIf]="show">
+            <div ngbDropdown>
+              <button ngbDropdownAnchor></button>
+              <div ngbDropdownMenu>
+                <a class="dropdown-item">dropdown item</a>
+              </div>
+            </div>
+          </ng-template>`);
+    const dropdown = fixture.debugElement.query(By.directive(NgbDropdown)).injector.get(NgbDropdown);
+    const menuEl = getMenuEl(fixture.nativeElement);
+
+    dropdown.open();
+    fixture.detectChanges();
+    expect(menuEl).toHaveCssClass('show');
+
+    const opencloseSpy = createSpy();
+    dropdown.openChange.subscribe(opencloseSpy);
+
+    fixture.componentInstance.show = false;
+    fixture.detectChanges();
+    expect(getDropdownEl(fixture.nativeElement)).toBeNull();
+    expect(opencloseSpy).toHaveBeenCalledWith(false);
+  });
 });
 
 describe('ngb-dropdown-toggle', () => {
@@ -559,6 +586,7 @@ class TestComponent {
   stateChanges: boolean[] = [];
   dropdownClass = 'custom-class';
   disabled = false;
+  show = true;
 
   recordStateChange($event) {
     this.stateChanges.push($event);

@@ -224,8 +224,6 @@ export class NgbDropdown implements AfterContentInit, OnChanges, OnDestroy {
     this.autoClose = config.autoClose;
 
     this.display = ngbNavbar ? 'static' : 'dynamic';
-
-    this._zoneSubscription = _ngZone.onStable.subscribe(() => { this._positionMenu(); });
   }
 
   ngAfterContentInit() {
@@ -280,7 +278,7 @@ export class NgbDropdown implements AfterContentInit, OnChanges, OnDestroy {
       if (this._anchor) {
         this._anchor.nativeElement.focus();
         if (this.display === 'dynamic') {
-          this._ngZone.onStable.pipe(take(1)).subscribe(() => {
+          this._ngZone.runOutsideAngular(() => {
             this._positioning.createPopper({
               hostElement: this._anchor.nativeElement,
               targetElement: this._bodyContainer || this._menu.nativeElement,
@@ -289,6 +287,7 @@ export class NgbDropdown implements AfterContentInit, OnChanges, OnDestroy {
               updatePopperOptions: addPopperOffset([0, 2]),
             });
             this._applyPlacementClasses();
+            this._zoneSubscription = this._ngZone.onStable.subscribe(() => this._positionMenu());
           });
         }
       }
@@ -316,8 +315,9 @@ export class NgbDropdown implements AfterContentInit, OnChanges, OnDestroy {
   close(): void {
     if (this._open) {
       this._open = false;
-      this._positioning.destroy();
       this._resetContainer();
+      this._positioning.destroy();
+      this._zoneSubscription ?.unsubscribe();
       this._destroyCloseHandlers$.next();
       this.openChange.emit(false);
       this._changeDetector.markForCheck();
@@ -335,11 +335,7 @@ export class NgbDropdown implements AfterContentInit, OnChanges, OnDestroy {
     }
   }
 
-  ngOnDestroy() {
-    this._resetContainer();
-    this._destroyCloseHandlers$.next();
-    this._zoneSubscription.unsubscribe();
-  }
+  ngOnDestroy() { this.close(); }
 
   onKeyDown(event: KeyboardEvent) {
     /* eslint-disable-next-line deprecation/deprecation */
