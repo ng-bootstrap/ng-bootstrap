@@ -1,6 +1,7 @@
 import {TestBed, ComponentFixture, fakeAsync, tick, waitForAsync} from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
 import {createGenericTestComponent} from '../test/common';
+import createSpy = jasmine.createSpy;
 
 import {Component, Injectable} from '@angular/core';
 import {FormsModule, NgForm} from '@angular/forms';
@@ -125,6 +126,26 @@ describe('NgbInputDatepicker', () => {
 
     it('should support the "position" option',
        () => { createTestCmpt(`<input ngbDatepicker #d="ngbDatepicker" [placement]="'bottom-right'">`); });
+
+    it('should cleanup datepicker when parent container is destroyed', () => {
+      const fixture = createTestCmpt(`
+          <ng-template [ngIf]="show">
+            <input ngbDatepicker #d="ngbDatepicker">
+          </ng-template>`);
+      const datepicker = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
+
+      datepicker.open();
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('ngb-datepicker')).not.toBeNull();
+
+      const closedSpy = createSpy();
+      datepicker.closed.subscribe(closedSpy);
+
+      fixture.componentInstance.show = false;
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('ngb-datepicker')).toBeNull();
+      expect(closedSpy).toHaveBeenCalledTimes(1);
+    });
   });
 
   describe('ngModel interactions', () => {
@@ -1157,6 +1178,7 @@ class TestComponent {
   maxDate: NgbDateStruct;
   isDisabled;
   popupClass = 'my-datepicker-popup';
+  show = true;
 
   onNavigate(params) {}
 
