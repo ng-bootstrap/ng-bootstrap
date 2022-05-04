@@ -1,5 +1,6 @@
 import {TestBed, ComponentFixture, inject, fakeAsync, tick} from '@angular/core/testing';
 import {createGenericTestComponent, isBrowserVisible, triggerEvent} from '../test/common';
+import createSpy = jasmine.createSpy;
 
 import {By} from '@angular/platform-browser';
 import {
@@ -391,6 +392,26 @@ describe('ngb-popover', () => {
 
       const popoverWindow = fixture.debugElement.query(By.directive(NgbPopoverWindow));
       expect(popoverWindow.nativeElement).toHaveCssClass('popover');
+    });
+
+    it('should cleanup popover when parent container is destroyed', () => {
+      const fixture = createTestComponent(`
+          <ng-template [ngIf]="show">
+            <div ngbPopover="Great popover!" [animation]="true"></div>
+          </ng-template>`);
+      const popover = fixture.debugElement.query(By.directive(NgbPopover)).injector.get(NgbPopover);
+
+      popover.open();
+      fixture.detectChanges();
+      expect(getWindow(fixture.nativeElement)).not.toBeNull();
+
+      const hiddenSpy = createSpy();
+      popover.hidden.subscribe(hiddenSpy);
+
+      // should close synchronously even with animations ON
+      fixture.componentInstance.show = false;
+      fixture.detectChanges();
+      expect(hiddenSpy).toHaveBeenCalledTimes(1);
     });
   });
 
