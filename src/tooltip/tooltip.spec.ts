@@ -18,6 +18,7 @@ import {NgbTooltipWindow, NgbTooltip} from './tooltip';
 import {NgbTooltipConfig} from './tooltip-config';
 import {NgbConfig} from '../ngb-config';
 import {NgbConfigAnimation} from '../test/ngb-config-animation';
+import createSpy = jasmine.createSpy;
 
 const createTestComponent =
     (html: string) => <ComponentFixture<TestComponent>>createGenericTestComponent(html, TestComponent);
@@ -287,6 +288,26 @@ describe('ngb-tooltip', () => {
       const tooltipWindow = fixture.debugElement.query(By.directive(NgbTooltipWindow));
       expect(tooltipWindow.nativeElement).toHaveCssClass('tooltip');
       expect(tooltipWindow.nativeElement).toHaveCssClass('show');
+    });
+
+    it('should cleanup tooltip when parent container is destroyed', () => {
+      const fixture = createTestComponent(`
+          <ng-template [ngIf]="show">
+            <div ngbTooltip="Great tip!" [animation]="true"></div>
+          </ng-template>`);
+      const tooltip = fixture.debugElement.query(By.directive(NgbTooltip)).injector.get(NgbTooltip);
+
+      tooltip.open();
+      fixture.detectChanges();
+      expect(getWindow(fixture.nativeElement)).not.toBeNull();
+
+      const hiddenSpy = createSpy();
+      tooltip.hidden.subscribe(hiddenSpy);
+
+      // should close synchronously even with animations ON
+      fixture.componentInstance.show = false;
+      fixture.detectChanges();
+      expect(hiddenSpy).toHaveBeenCalledTimes(1);
     });
 
     describe('positioning', () => {
@@ -794,6 +815,7 @@ if (isBrowserVisible('ngb-tooltip animations')) {
 @Component({selector: 'test-cmpt', template: ``})
 export class TestComponent {
   name: string | null = 'World';
+  animation = false;
   show = true;
   tooltipClass = 'my-tooltip-class';
 
