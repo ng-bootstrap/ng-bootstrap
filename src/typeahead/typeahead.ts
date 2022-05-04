@@ -22,7 +22,7 @@ import {
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {DOCUMENT} from '@angular/common';
 import {BehaviorSubject, fromEvent, Observable, of, OperatorFunction, Subject, Subscription} from 'rxjs';
-import {map, switchMap, take, tap} from 'rxjs/operators';
+import {map, switchMap, tap} from 'rxjs/operators';
 
 import {Live} from '../util/accessibility/live';
 import {ngbAutoClose} from '../util/autoclose';
@@ -83,7 +83,7 @@ export class NgbTypeahead implements ControlValueAccessor,
   private _valueChanges: Observable<string>;
   private _resubscribeTypeahead: BehaviorSubject<any>;
   private _windowRef: ComponentRef<NgbTypeaheadWindow>| null = null;
-  private _zoneSubscription: any;
+  private _zoneSubscription: Subscription;
   private _positioning = ngbPositioning();
 
   /**
@@ -207,8 +207,6 @@ export class NgbTypeahead implements ControlValueAccessor,
 
     this._popupService = new PopupService<NgbTypeaheadWindow>(
         NgbTypeaheadWindow, injector, viewContainerRef, _renderer, this._ngZone, applicationRef);
-
-    this._zoneSubscription = ngZone.onStable.subscribe(() => { this._positioning.update(); });
   }
 
   ngOnInit(): void { this._subscribeToUserInput(); }
@@ -223,7 +221,6 @@ export class NgbTypeahead implements ControlValueAccessor,
   ngOnDestroy(): void {
     this._closePopup();
     this._unsubscribeFromUserInput();
-    this._zoneSubscription.unsubscribe();
   }
 
   registerOnChange(fn: (value: any) => any): void { this._onChange = fn; }
@@ -313,8 +310,8 @@ export class NgbTypeahead implements ControlValueAccessor,
 
       this._changeDetector.markForCheck();
 
-      // Schedule positioning on stable, to avoid several positioning updates.
-      this._ngZone.onStable.pipe(take(1)).subscribe(() => {
+      // Setting up popper and scheduling updates when zone is stable
+      this._ngZone.runOutsideAngular(() => {
         if (this._windowRef) {
           this._positioning.createPopper({
             hostElement: this._elementRef.nativeElement,
@@ -323,6 +320,8 @@ export class NgbTypeahead implements ControlValueAccessor,
             appendToBody: this.container === 'body',
             updatePopperOptions: addPopperOffset([0, 2]),
           });
+
+          this._zoneSubscription = this._ngZone.onStable.subscribe(() => this._positioning.update());
         }
       });
 
@@ -335,6 +334,7 @@ export class NgbTypeahead implements ControlValueAccessor,
   private _closePopup() {
     this._popupService.close().subscribe(() => {
       this._positioning.destroy();
+      this._zoneSubscription ?.unsubscribe();
       this._closed$.next();
       this._windowRef = null;
       this.activeDescendant = null;
