@@ -40,7 +40,6 @@ import {NgbDateStruct} from './ngb-date-struct';
 import {NgbInputDatepickerConfig} from './datepicker-input-config';
 import {NgbDatepickerConfig} from './datepicker-config';
 import {isString} from '../util/util';
-import {take} from 'rxjs/operators';
 import {Subject} from 'rxjs';
 import {addPopperOffset} from '../util/positioning-util';
 
@@ -290,7 +289,6 @@ export class NgbInputDatepicker implements OnChanges,
       @Inject(DOCUMENT) private _document: any, private _changeDetector: ChangeDetectorRef,
       config: NgbInputDatepickerConfig) {
     ['autoClose', 'container', 'positionTarget', 'placement'].forEach(input => this[input] = config[input]);
-    this._zoneSubscription = _ngZone.onStable.subscribe(() => this._positioning.update());
   }
 
   registerOnChange(fn: (value: any) => any): void { this._onChange = fn; }
@@ -388,7 +386,8 @@ export class NgbInputDatepicker implements OnChanges,
         hostElement = this._elRef.nativeElement;
       }
 
-      this._ngZone.onStable.pipe(take(1)).subscribe(() => {
+      // Setting up popper and scheduling updates when zone is stable
+      this._ngZone.runOutsideAngular(() => {
         if (this._cRef) {
           this._positioning.createPopper({
             hostElement,
@@ -397,6 +396,8 @@ export class NgbInputDatepicker implements OnChanges,
             appendToBody: this.container === 'body',
             updatePopperOptions: addPopperOffset([0, 2])
           });
+
+          this._zoneSubscription = this._ngZone.onStable.subscribe(() => this._positioning.update());
         }
       });
 
@@ -415,6 +416,8 @@ export class NgbInputDatepicker implements OnChanges,
     if (this.isOpen()) {
       this._vcRef.remove(this._vcRef.indexOf(this._cRef !.hostView));
       this._cRef = null;
+      this._positioning.destroy();
+      this._zoneSubscription ?.unsubscribe();
       this._destroyCloseHandlers$.next();
       this.closed.emit();
       this._changeDetector.markForCheck();
@@ -433,8 +436,6 @@ export class NgbInputDatepicker implements OnChanges,
       } else {
         this._document.body.focus();
       }
-
-      this._positioning.destroy();
     }
   }
 
@@ -492,10 +493,7 @@ export class NgbInputDatepicker implements OnChanges,
     }
   }
 
-  ngOnDestroy() {
-    this.close();
-    this._zoneSubscription.unsubscribe();
-  }
+  ngOnDestroy() { this.close(); }
 
   private _applyDatepickerInputs(datepickerInstance: NgbDatepicker): void {
     ['dayTemplate', 'dayTemplateData', 'displayMonths', 'firstDayOfWeek', 'footerTemplate', 'markDisabled', 'minDate',
