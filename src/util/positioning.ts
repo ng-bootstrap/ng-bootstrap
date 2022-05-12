@@ -85,7 +85,7 @@ export function getPopperOptions({placement, baseClass}: PositioningOptions): Pa
     enabled: !!baseClass,
     phase: 'write',
     fn({state}) {
-      const bsClassRegExp = new RegExp(baseClass + '-[a-z]+', 'gi');
+      const bsClassRegExp = new RegExp(baseClass + '(-[a-z]+)*', 'gi');
 
       const popperElement: HTMLElement = state.elements.popper as HTMLElement;
       const popperPlacement = state.placement;
