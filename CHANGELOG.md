@@ -1,3 +1,19 @@
+## [12.1.2](https://github.com/ng-bootstrap/ng-bootstrap/compare/12.1.1...12.1.2) (2022-05-17)
+
+Bugfixes for popper positioning related to tooltip/popover arrow placement and overall performance. 
+
+### Bug Fixes
+
+* **positioning:** not all classnames are removed correctly after change detection ([9775246](https://github.com/ng-bootstrap/ng-bootstrap/commit/9775246964430d0c41588e84bdc14df8681e0404)), closes [#4327](https://github.com/ng-bootstrap/ng-bootstrap/issues/4327)
+* **pagination:** allow for custom and null 'size' values ([8df5f74](https://github.com/ng-bootstrap/ng-bootstrap/commit/8df5f74acade312d013669efbd8c2289bf8503c6)), closes [#3816](https://github.com/ng-bootstrap/ng-bootstrap/issues/3816)
+* **datepicker:** schedule positioning calculations correctly ([745a64d](https://github.com/ng-bootstrap/ng-bootstrap/commit/745a64d0efa9b80636699cf61e2b4452884fdd1e))
+* **dropdown:** schedule positioning calculations correctly ([077047e](https://github.com/ng-bootstrap/ng-bootstrap/commit/077047e11e0abcfe5b986044b78ddecde66854db))
+* **popover:** schedule positioning calculations correctly ([6b16b8d](https://github.com/ng-bootstrap/ng-bootstrap/commit/6b16b8d4dd7d0f6210f5ab2da1ea82273d99fecc))
+* **tooltip:** schedule positioning calculations correctly ([662f2b6](https://github.com/ng-bootstrap/ng-bootstrap/commit/662f2b669b578dec9428792a5a90809b5fafba06)), closes [#4321](https://github.com/ng-bootstrap/ng-bootstrap/issues/4321)
+* **typeahead:** schedule positioning calculations correctly ([79454d1](https://github.com/ng-bootstrap/ng-bootstrap/commit/79454d12c47de575a217c80960e0f951e9892567))
+
+
+
 ## [12.1.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/12.1.0...12.1.1) (2022-04-29)
 
 
