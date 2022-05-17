@@ -1,4 +1,4 @@
-import {getBootstrapBaseClassPlacement, getPopperClassPlacement, Placement} from './positioning';
+import {getBootstrapBaseClassPlacement, getPopperClassPlacement, ngbPositioning, Placement} from './positioning';
 import {Placement as PopperPlacement} from '@popperjs/core';
 describe('positioning', () => {
 
@@ -64,6 +64,58 @@ describe('positioning', () => {
     }
   });
 
+  it('should update classes correctly on DOM elements', (done) => {
+    const testCases = [
+      ['top', 'bs-base-top'],
+      ['bottom', 'bs-base-bottom'],
+      ['start', 'bs-base-start'],
+      ['left', 'bs-base-start'],
+      ['end', 'bs-base-end'],
+      ['right', 'bs-base-end'],
+      ['top-start', 'bs-base-top bs-base-top-start'],
+      ['top-left', 'bs-base-top bs-base-top-start'],
+      ['top-end', 'bs-base-top bs-base-top-end'],
+      ['top-right', 'bs-base-top bs-base-top-end'],
+      ['bottom-start', 'bs-base-bottom bs-base-bottom-start'],
+      ['bottom-left', 'bs-base-bottom bs-base-bottom-start'],
+      ['bottom-end', 'bs-base-bottom bs-base-bottom-end'],
+      ['bottom-right', 'bs-base-bottom bs-base-bottom-end'],
+      ['start-top', 'bs-base-start bs-base-start-top'],
+      ['left-top', 'bs-base-start bs-base-start-top'],
+      ['start-bottom', 'bs-base-start bs-base-start-bottom'],
+      ['left-bottom', 'bs-base-start bs-base-start-bottom'],
+      ['end-top', 'bs-base-end bs-base-end-top'],
+      ['right-top', 'bs-base-end bs-base-end-top'],
+      ['top', 'bs-base-top']
+    ];
 
+    const positioning = ngbPositioning();
+    const options = {
+      targetElement: document.createElement('div'),
+      hostElement: document.createElement('div'),
+      placement: 'top',
+      baseClass: 'bs-base'
+    };
+    positioning.createPopper(options);
 
+    function nextTest() {
+      if (testCases.length === 0) {
+        done();
+        return;
+      }
+
+      const[placement, expectedClassName] = testCases.shift() !;
+      positioning.setOptions({...options, placement});
+
+      // checking DOM after popper does 'forceUpdate'
+      queueMicrotask(() => {
+        expect(options.targetElement.className)
+            .toBe(expectedClassName, `Testing '${placement}' mapping to '${expectedClassName}'`);
+      });
+
+      setTimeout(nextTest);
+    }
+
+    nextTest();
+  });
 });
