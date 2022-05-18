@@ -26,7 +26,7 @@ export {NgbInputDatepickerConfig} from './datepicker-input-config';
 export {NgbDatepickerI18n, NgbDatepickerI18nDefault} from './datepicker-i18n';
 export {NgbDateStruct} from './ngb-date-struct';
 export {NgbDate} from './ngb-date';
-export {NgbDateAdapter} from './adapters/ngb-date-adapter';
+export {NgbDateAdapter, NgbDateStructAdapter} from './adapters/ngb-date-adapter';
 export {NgbDateNativeAdapter} from './adapters/ngb-date-native-adapter';
 export {NgbDateNativeUTCAdapter} from './adapters/ngb-date-native-utc-adapter';
 export {NgbDateParserFormatter} from './ngb-date-parser-formatter';
