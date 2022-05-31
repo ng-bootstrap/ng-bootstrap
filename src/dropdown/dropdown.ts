@@ -88,7 +88,8 @@ export class NgbDropdownMenu {
 
   @ContentChildren(NgbDropdownItem) menuItems: QueryList<NgbDropdownItem>;
 
-  constructor(@Inject(forwardRef(() => NgbDropdown)) public dropdown, _elementRef: ElementRef<HTMLElement>) {
+  constructor(
+      @Inject(forwardRef(() => NgbDropdown)) public dropdown: NgbDropdown, _elementRef: ElementRef<HTMLElement>) {
     this.nativeElement = _elementRef.nativeElement;
   }
 }
@@ -106,7 +107,8 @@ export class NgbDropdownMenu {
     {selector: '[ngbDropdownAnchor]', host: {'class': 'dropdown-toggle', '[attr.aria-expanded]': 'dropdown.isOpen()'}})
 export class NgbDropdownAnchor {
   nativeElement: HTMLElement;
-  constructor(@Inject(forwardRef(() => NgbDropdown)) public dropdown, _elementRef: ElementRef<HTMLElement>) {
+  constructor(
+      @Inject(forwardRef(() => NgbDropdown)) public dropdown: NgbDropdown, _elementRef: ElementRef<HTMLElement>) {
     this.nativeElement = _elementRef.nativeElement;
   }
 }
@@ -132,7 +134,7 @@ export class NgbDropdownAnchor {
   providers: [{provide: NgbDropdownAnchor, useExisting: forwardRef(() => NgbDropdownToggle)}]
 })
 export class NgbDropdownToggle extends NgbDropdownAnchor {
-  constructor(@Inject(forwardRef(() => NgbDropdown)) dropdown, elementRef: ElementRef<HTMLElement>) {
+  constructor(@Inject(forwardRef(() => NgbDropdown)) dropdown: NgbDropdown, elementRef: ElementRef<HTMLElement>) {
     super(dropdown, elementRef);
   }
 }

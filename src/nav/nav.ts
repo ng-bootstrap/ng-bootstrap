@@ -64,8 +64,6 @@ export class NgbNavContent {
  */
 @Directive({selector: '[ngbNavItem]', exportAs: 'ngbNavItem', host: {'[class.nav-item]': 'true'}})
 export class NgbNavItem implements AfterContentChecked, OnInit {
-  private _nav: NgbNav;
-
   /**
    * If `true`, non-active current nav item content will be removed from DOM
    * Otherwise it will just be hidden
@@ -114,10 +112,7 @@ export class NgbNavItem implements AfterContentChecked, OnInit {
 
   @ContentChildren(NgbNavContent, {descendants: false}) contentTpls: QueryList<NgbNavContent>;
 
-  constructor(@Inject(forwardRef(() => NgbNav)) nav, public elementRef: ElementRef<any>) {
-    // TODO: cf https://github.com/angular/angular/issues/30106
-    this._nav = nav;
-  }
+  constructor(@Inject(forwardRef(() => NgbNav)) private _nav: NgbNav, public elementRef: ElementRef<any>) {}
 
   ngAfterContentChecked() {
     // We are using @ContentChildren instead of @ContentChild as in the Angular version being used
