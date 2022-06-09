@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {Router} from '@angular/router';
 
 export const componentsList = [
-  'Accordion', 'Alert', 'Buttons', 'Carousel', 'Collapse', 'Datepicker', 'Dropdown', 'Modal', 'Nav', 'Offcanvas', 'Pagination',
+  'Accordion', 'Alert', 'Carousel', 'Collapse', 'Datepicker', 'Dropdown', 'Modal', 'Nav', 'Offcanvas', 'Pagination',
   'Popover', 'Progressbar', 'Rating', 'Table', 'Timepicker', 'Toast', 'Tooltip', 'Typeahead'
 ];
 
