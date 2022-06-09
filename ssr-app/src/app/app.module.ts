@@ -7,7 +7,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AccordionComponent } from './components/accordion.component';
 import { AlertComponent } from './components/alert.component';
 import { AppComponent } from './app.component';
-import { ButtonsComponent } from './components/buttons.component';
 import { CarouselComponent } from './components/carousel.component';
 import { CollapseComponent } from './components/collapse.component';
 import { DatepickerComponent } from './components/datepicker.component';
@@ -27,7 +26,6 @@ import { TypeaheadComponent } from './components/typeahead.component';
     AccordionComponent,
     AlertComponent,
     AppComponent,
-    ButtonsComponent,
     CarouselComponent,
     CollapseComponent,
     DatepickerComponent,
