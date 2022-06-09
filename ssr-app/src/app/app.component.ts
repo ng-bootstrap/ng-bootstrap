@@ -12,9 +12,6 @@ import { Component } from '@angular/core';
       <h2 class="mt-5">Alert</h2>
       <alert-component></alert-component>
 
-      <h2 class="mt-5">Buttons</h2>
-      <buttons-component></buttons-component>
-
       <h2 class="mt-5">Carousel</h2>
       <carousel-component></carousel-component>
 
