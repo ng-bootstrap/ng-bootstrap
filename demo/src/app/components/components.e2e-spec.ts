@@ -5,7 +5,7 @@ const SELECTOR_SIDE_NAV_COMPONENT_LINKS = 'ngbd-side-nav >> a[href^="#/component
 const SELECTOR_CODE_BUTTONS = 'button.toggle-code';
 
 const COMPONENTS = [
-  'accordion', 'alert', 'buttons', 'carousel', 'collapse', 'datepicker', 'dropdown', 'modal', 'nav', 'offcanvas',
+  'accordion', 'alert', 'carousel', 'collapse', 'datepicker', 'dropdown', 'modal', 'nav', 'offcanvas',
   'pagination', 'popover', 'progressbar', 'rating', 'table', 'timepicker', 'toast', 'tooltip', 'typeahead'
 ];
 
