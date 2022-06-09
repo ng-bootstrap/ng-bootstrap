@@ -2,8 +2,6 @@ import {NgModule} from '@angular/core';
 
 import {NgbAccordionModule} from './accordion/accordion.module';
 import {NgbAlertModule} from './alert/alert.module';
-/* eslint-disable-next-line deprecation/deprecation */
-import {NgbButtonsModule} from './buttons/buttons.module';
 import {NgbCarouselModule} from './carousel/carousel.module';
 import {NgbCollapseModule} from './collapse/collapse.module';
 import {NgbDatepickerModule} from './datepicker/datepicker.module';
@@ -35,8 +33,6 @@ export {
   NgbPanelToggle
 } from './accordion/accordion.module';
 export {NgbAlert, NgbAlertConfig, NgbAlertModule} from './alert/alert.module';
-/* eslint-disable-next-line deprecation/deprecation */
-export {NgbButtonLabel, NgbButtonsModule, NgbCheckBox, NgbRadio, NgbRadioGroup} from './buttons/buttons.module';
 export {
   NgbCarousel,
   NgbCarouselConfig,
@@ -154,10 +150,9 @@ export {NgbConfig} from './ngb-config';
 
 
 const NGB_MODULES = [
-  /* eslint-disable-next-line deprecation/deprecation */
-  NgbAccordionModule, NgbAlertModule, NgbButtonsModule, NgbCarouselModule, NgbCollapseModule, NgbDatepickerModule,
-  NgbDropdownModule, NgbModalModule, NgbNavModule, NgbOffcanvasModule, NgbPaginationModule, NgbPopoverModule,
-  NgbProgressbarModule, NgbRatingModule, NgbTimepickerModule, NgbToastModule, NgbTooltipModule, NgbTypeaheadModule
+  NgbAccordionModule, NgbAlertModule, NgbCarouselModule, NgbCollapseModule, NgbDatepickerModule, NgbDropdownModule,
+  NgbModalModule, NgbNavModule, NgbOffcanvasModule, NgbPaginationModule, NgbPopoverModule, NgbProgressbarModule,
+  NgbRatingModule, NgbTimepickerModule, NgbToastModule, NgbTooltipModule, NgbTypeaheadModule
 ];
 
 @NgModule({imports: NGB_MODULES, exports: NGB_MODULES})
