@@ -38,9 +38,6 @@
             ]
           },
           "configurations": {
-            "ie": {
-              "tsConfig": "src/tsconfig-ie.spec.json"
-            },
             "saucelabs": {
               "sourceMap": false,
               "progress": false,
@@ -130,9 +127,6 @@
                   "maximumError": "10kb"
                 }
               ]
-            },
-            "ie": {
-              "tsConfig": "demo/tsconfig.ie.json"
             }
           },
           "defaultConfiguration": ""
@@ -145,9 +139,6 @@
           "configurations": {
             "production": {
               "browserTarget": "demo:build:production"
-            },
-            "ie": {
-              "browserTarget": "demo:build:ie"
             },
             "playwright": {
               "liveReload": false,
