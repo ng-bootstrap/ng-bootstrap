@@ -3,7 +3,7 @@ import {createGenericTestComponent} from '../test/common';
 import {Key} from '../util/key';
 
 import {Component, DebugElement} from '@angular/core';
-import {FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule, UntypedFormGroup, UntypedFormControl, Validators} from '@angular/forms';
 
 import {NgbRatingModule} from './rating.module';
 import {NgbRating} from './rating';
@@ -783,7 +783,7 @@ describe('ngb-rating', () => {
 @Component({selector: 'test-cmp', template: ''})
 class TestComponent {
   changed = false;
-  form = new FormGroup({rating: new FormControl(null, Validators.required)});
+  form = new UntypedFormGroup({rating: new UntypedFormControl(null, Validators.required)});
   max = 10;
   model;
   rate = 3;

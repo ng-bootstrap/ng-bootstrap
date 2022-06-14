@@ -56,7 +56,7 @@ function search(text: string, pipe: PipeTransform): Country[] {
 export class NgbdTableFiltering {
 
   countries$: Observable<Country[]>;
-  filter = new FormControl('');
+  filter = new FormControl('', {nonNullable: true});
 
   constructor(pipe: DecimalPipe) {
     this.countries$ = this.filter.valueChanges.pipe(

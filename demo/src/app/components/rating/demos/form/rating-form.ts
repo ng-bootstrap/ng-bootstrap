@@ -6,7 +6,7 @@ import {FormControl, Validators} from '@angular/forms';
   templateUrl: './rating-form.html'
 })
 export class NgbdRatingForm {
-  ctrl = new FormControl(null, Validators.required);
+  ctrl = new FormControl<number | null>(null, Validators.required);
 
   toggle() {
     if (this.ctrl.disabled) {

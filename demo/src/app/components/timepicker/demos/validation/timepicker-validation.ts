@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {FormControl} from '@angular/forms';
+import {NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'ngbd-timepicker-validation',
@@ -7,7 +8,7 @@ import {FormControl} from '@angular/forms';
 })
 export class NgbdTimepickerValidation {
 
-  ctrl = new FormControl('', (control: FormControl) => {
+  ctrl = new FormControl<NgbTimeStruct | null>(null, (control: FormControl<NgbTimeStruct | null>) => {
     const value = control.value;
 
     if (!value) {
