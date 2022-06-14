@@ -32,7 +32,7 @@ describe('ngb-offcanvas', () => {
 
   beforeEach(() => {
     jasmine.addMatchers({
-      toHaveOffcanvas: function(util, customEqualityTests) {
+      toHaveOffcanvas: function() {
         return {
           compare: function(actual, content?, selector?) {
             const offcanvasContent = document.querySelector(selector || 'body').querySelector('.offcanvas');
@@ -62,7 +62,7 @@ describe('ngb-offcanvas', () => {
     });
 
     jasmine.addMatchers({
-      toHaveOffcanvasBackdrop: function(util, customEqualityTests) {
+      toHaveOffcanvasBackdrop: function() {
         return {
           compare: function(actual, selector?) {
             const backdrop = document.querySelector(selector || 'body').querySelector('ngb-offcanvas-backdrop');

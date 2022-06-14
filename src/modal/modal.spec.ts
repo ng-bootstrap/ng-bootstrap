@@ -27,7 +27,7 @@ describe('ngb-modal', () => {
 
   beforeEach(() => {
     jasmine.addMatchers({
-      toHaveModal: function(util, customEqualityTests) {
+      toHaveModal: function() {
         return {
           compare: function(actual, content?, selector?) {
             const allModalsContent = document.querySelector(selector || 'body').querySelectorAll('.modal-content');
@@ -60,7 +60,7 @@ describe('ngb-modal', () => {
     });
 
     jasmine.addMatchers({
-      toHaveBackdrop: function(util, customEqualityTests) {
+      toHaveBackdrop: function() {
         return {
           compare: function(actual) {
             return {

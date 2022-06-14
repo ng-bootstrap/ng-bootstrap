@@ -19,10 +19,10 @@ function getMenuEl(tc) {
   return tc.querySelector(`[ngbDropdownMenu]`);
 }
 
-const jasmineMatchers = {
-  toBeShown: function(util, customEqualityTests) {
+const jasmineMatchers: jasmine.CustomMatcherFactories = {
+  toBeShown: function() {
     return {
-      compare: function(actual, content?, selector?) {
+      compare: function(actual) {
         const dropdownEl = getDropdownEl(actual);
         const menuEl = getMenuEl(actual);
         const isOpen = dropdownEl.classList.contains('show') && menuEl.classList.contains('show');
