@@ -93,15 +93,15 @@ export interface NgbOffcanvasOptions {
 export class NgbOffcanvasConfig implements Required<NgbOffcanvasOptions> {
   ariaDescribedBy: string;
   ariaLabelledBy: string;
-  backdrop: boolean = true;
+  backdrop = true;
   backdropClass: string;
   beforeDismiss: () => boolean | Promise<boolean>;
   container: string | HTMLElement;
   injector: Injector;
-  keyboard: boolean = true;
+  keyboard = true;
   panelClass: string;
   position: 'start' | 'end' | 'top' | 'bottom' = 'start';
-  scroll: boolean = false;
+  scroll = false;
 
   private _animation: boolean;
 

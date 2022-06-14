@@ -33,5 +33,5 @@ export class NgbdTypeaheadFocus {
       map(term => (term === '' ? states
         : states.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1)).slice(0, 10))
     );
-  }
+  };
 }
