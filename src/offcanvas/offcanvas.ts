@@ -1,3 +1,4 @@
+/* eslint-disable deprecation/deprecation */
 import {ComponentFactoryResolver, Injectable, Injector} from '@angular/core';
 import {NgbOffcanvasConfig, NgbOffcanvasOptions} from './offcanvas-config';
 import {NgbOffcanvasRef} from './offcanvas-ref';

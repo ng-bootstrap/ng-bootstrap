@@ -1,3 +1,4 @@
+/* eslint-disable deprecation/deprecation */
 import {Injectable, Injector, ComponentFactoryResolver} from '@angular/core';
 
 import {NgbModalOptions, NgbModalConfig} from './modal-config';
