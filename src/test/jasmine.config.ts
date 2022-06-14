@@ -4,7 +4,7 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 2000;
 // Matchers
 beforeEach(() => {
   jasmine.addMatchers({
-    toHaveCssClass: function(util, customEqualityTests) {
+    toHaveCssClass: function() {
       return {compare: buildError(false), negativeCompare: buildError(true)};
 
       function buildError(isNot: boolean) {

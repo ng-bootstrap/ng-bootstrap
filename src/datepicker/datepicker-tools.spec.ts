@@ -248,7 +248,7 @@ describe(`datepicker-tools`, () => {
     };
 
     const customMatchers: jasmine.CustomMatcherFactories = {
-      toHaveTheSameMonthDataStructureAs: function(util, customEqualityTesters) {
+      toHaveTheSameMonthDataStructureAs: function(util) {
         return {
           compare(actualMonthsStorage, expectedMonthsStorage) {
             try {
@@ -261,7 +261,7 @@ describe(`datepicker-tools`, () => {
                 const storage2 = expectedMonthsStorage[i];
                 const keys1 = Object.keys(storage1);
                 const keys2 = Object.keys(storage2);
-                if (!util.equals(keys2, keys1, customEqualityTesters)) {
+                if (!util.equals(keys2, keys1)) {
                   throw `the set of keys in months[${i}]: ${keys1} != ${keys2}`;
                 }
                 for (const key of keys1) {

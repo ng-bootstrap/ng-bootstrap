@@ -19,9 +19,9 @@ describe(`ng add '@ng-bootstrap/ng-bootstrap'`, () => {
     const tree = await runner.runSchematicAsync('ng-add', {}, appTree).toPromise();
     const {dependencies} = JSON.parse(getFileContent(tree, '/package.json'));
 
-    expect(dependencies['bootstrap']).toBeDefined('bootstrap should be installed');
-    expect(dependencies['@angular/localize']).toBeDefined('@angular/localize should be installed');
-    expect(dependencies['@popperjs/core']).toBeDefined('@popperjs/core should be installed');
+    expect(dependencies['bootstrap']).withContext('bootstrap should be installed').toBeDefined();
+    expect(dependencies['@angular/localize']).withContext('@angular/localize should be installed').toBeDefined();
+    expect(dependencies['@popperjs/core']).withContext('@popperjs/core should be installed').toBeDefined();
   });
 
   it(`should report when specified 'project' is not found`, async() => {
