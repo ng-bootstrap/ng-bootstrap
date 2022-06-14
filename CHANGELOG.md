@@ -1,3 +1,14 @@
+# [13.0.0-beta.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/12.1.2...13.0.0-beta.1) (2022-06-14)
+
+This is the first beta version that adds Angular 14 support.
+
+
+### BREAKING CHANGES
+
+* **buttons:** Checkbox and Radio buttons are no longer a part of ng-bootstrap, please use native Angular. They were deprecated in ng-bootstrap 12, see [this page](https://ng-bootstrap.github.io#/components/buttons/overview) for more details.
+
+
+
 ## [12.1.2](https://github.com/ng-bootstrap/ng-bootstrap/compare/12.1.1...12.1.2) (2022-05-17)
 
 Bugfixes for popper positioning related to tooltip/popover arrow placement and overall performance. 
