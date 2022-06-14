@@ -20,6 +20,7 @@ import {NgbdTypeaheadTemplate} from './demos/template/typeahead-template';
 import {NgbdTypeaheadTemplateModule} from './demos/template/typeahead-template.module';
 import {NgbdTypeaheadPreventManualEntry} from './demos/prevent-manual-entry/typeahead-prevent-manual-entry';
 import {NgbdTypeaheadPreventManualEntryModule} from './demos/prevent-manual-entry/typeahead-prevent-manual-entry.module';
+import { Routes } from '@angular/router';
 
 const DEMOS = {
   basic: {
@@ -66,7 +67,7 @@ const DEMOS = {
   }
 };
 
-export const ROUTES = [
+export const ROUTES: Routes = [
   {path: '', pathMatch: 'full', redirectTo: 'examples'}, {
     path: '',
     component: ComponentWrapper,

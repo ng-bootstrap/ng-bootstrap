@@ -24,6 +24,7 @@ import { NgbdTimepickerValidation } from './demos/validation/timepicker-validati
 import { NgbdTimepickerValidationModule } from './demos/validation/timepicker-validation.module';
 import { NgbdTimepickerI18n } from './demos/i18n/timepicker-i18n';
 import { NgbdTimepickerI18nModule } from './demos/i18n/timepicker-i18n.module';
+import { Routes } from '@angular/router';
 
 const DEMOS = {
   basic: {
@@ -82,7 +83,7 @@ const DEMOS = {
   }
 };
 
-export const ROUTES = [
+export const ROUTES: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'examples' },
   {
     path: '',

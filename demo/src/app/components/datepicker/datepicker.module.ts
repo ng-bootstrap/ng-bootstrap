@@ -40,6 +40,7 @@ import { NgbdDatepickerPositiontargetModule } from './demos/positiontarget/datep
 import { NgbdDatepickerPositiontarget } from './demos/positiontarget/datepicker-positiontarget';
 import { NgbdDatepickerKeyboard } from './demos/keyboard/datepicker-keyboard';
 import { NgbdDatepickerKeyboardModule } from './demos/keyboard/datepicker-keyboard.module';
+import { Routes } from '@angular/router';
 
 const OVERVIEW = {
   'basic-usage': 'Basic Usage',
@@ -143,7 +144,7 @@ const DEMOS = {
   }
 };
 
-export const ROUTES = [
+export const ROUTES: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'overview' },
   {
     path: '',

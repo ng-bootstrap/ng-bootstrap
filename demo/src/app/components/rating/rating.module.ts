@@ -18,6 +18,7 @@ import { NgbdRatingForm } from './demos/form/rating-form';
 import { NgbdRatingFormModule } from './demos/form/rating-form.module';
 import { NgbdRatingTemplate } from './demos/template/rating-template';
 import { NgbdRatingTemplateModule } from './demos/template/rating-template.module';
+import { Routes } from '@angular/router';
 
 const DEMOS = {
   basic: {
@@ -58,7 +59,7 @@ const DEMOS = {
   }
 };
 
-export const ROUTES = [
+export const ROUTES: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'examples' },
   {
     path: '',

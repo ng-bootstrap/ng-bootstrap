@@ -18,6 +18,7 @@ import { NgbdModalOptions } from './demos/options/modal-options';
 import { NgbdModalOptionsModule } from './demos/options/modal-options.module';
 import { NgbdModalStacked } from './demos/stacked/modal-stacked';
 import { NgbdModalStackedModule } from './demos/stacked/modal-stacked.module';
+import { Routes } from '@angular/router';
 
 const DEMOS = {
   basic: {
@@ -58,7 +59,7 @@ const DEMOS = {
   }
 };
 
-export const ROUTES = [
+export const ROUTES: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'examples' },
   {
     path: '',

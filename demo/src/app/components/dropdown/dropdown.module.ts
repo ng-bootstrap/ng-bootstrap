@@ -22,6 +22,7 @@ import { NgbdDropdownSplit } from './demos/split/dropdown-split';
 import { NgbdDropdownSplitModule } from './demos/split/dropdown-split.module';
 import { NgbdDropdownDisabled } from './demos/disabled/dropdown-disabled';
 import { NgbdDropdownDisabledModule } from './demos/disabled/dropdown-disabled.module';
+import { Routes } from '@angular/router';
 
 const DEMOS = {
   basic: {
@@ -74,7 +75,7 @@ const DEMOS = {
   }
 };
 
-export const ROUTES = [
+export const ROUTES: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'examples' },
   {
     path: '',

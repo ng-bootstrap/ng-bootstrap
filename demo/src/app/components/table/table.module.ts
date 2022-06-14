@@ -17,6 +17,7 @@ import { NgbdTableSortable } from './demos/sortable/table-sortable';
 import { NgbdTableSortableModule } from './demos/sortable/table-sortable.module';
 import { NgbdTableOverviewDemo } from './overview/demo/table-overview-demo.component';
 import { NgbdTableOverviewComponent } from './overview/table-overview.component';
+import { Routes } from '@angular/router';
 
 const OVERVIEW = {
   'why-not': 'Why not?',
@@ -112,7 +113,7 @@ const DEMOS = {
   }
 };
 
-export const ROUTES = [
+export const ROUTES: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'overview' },
   {
     path: '',

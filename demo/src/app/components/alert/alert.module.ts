@@ -16,6 +16,7 @@ import { NgbdAlertCustom } from './demos/custom/alert-custom';
 import { NgbdAlertCustomModule } from './demos/custom/alert-custom.module';
 import { NgbdAlertSelfclosing } from './demos/selfclosing/alert-selfclosing';
 import { NgbdAlertSelfclosingModule } from './demos/selfclosing/alert-selfclosing.module';
+import { Routes } from '@angular/router';
 
 const DEMOS = {
   basic: {
@@ -90,7 +91,7 @@ const DEMOS = {
   }
 };
 
-export const ROUTES = [
+export const ROUTES: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'examples' },
   {
     path: '',

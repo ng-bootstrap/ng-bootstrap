@@ -24,6 +24,7 @@ import { NgbdTooltipTplWithContextModule } from './demos/tplwithcontext/tooltip-
 import { NgbdTooltipTplwithcontext } from './demos/tplwithcontext/tooltip-tplwithcontext';
 import { NgbdTooltipTriggers } from './demos/triggers/tooltip-triggers';
 import { NgbdTooltipTriggersModule } from './demos/triggers/tooltip-triggers.module';
+import { Routes } from '@angular/router';
 
 const DEMOS = {
   basic: {
@@ -82,7 +83,7 @@ const DEMOS = {
   }
 };
 
-export const ROUTES = [
+export const ROUTES: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'examples' },
   {
     path: '',

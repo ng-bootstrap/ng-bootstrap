@@ -21,6 +21,7 @@ import { NgbdPaginationJustifyModule } from './demos/justify/pagination-justify.
 import { NgbdPaginationSize } from './demos/size/pagination-size';
 import { NgbdPaginationSizeModule } from './demos/size/pagination-size.module';
 import { NgbdPaginationOverviewComponent } from './overview/pagination-overview.component';
+import { Routes } from '@angular/router';
 
 const OVERVIEW = {
   'basic-usage': 'Basic Usage',
@@ -72,7 +73,7 @@ const DEMOS = {
   }
 };
 
-export const ROUTES = [
+export const ROUTES: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'overview' },
   {
     path: '',
