@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, DebugElement, ViewChild} from '@angular/core';
 import {ComponentFixture, fakeAsync, inject, TestBed, tick} from '@angular/core/testing';
-import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {By} from '@angular/platform-browser';
 import {merge, Observable, of, OperatorFunction, Subject} from 'rxjs';
 import {debounceTime, filter, map} from 'rxjs/operators';
@@ -983,7 +983,7 @@ class TestComponent {
   selectEventValue: any;
   show = true;
 
-  form = new FormGroup({control: new FormControl('', Validators.required)});
+  form = new UntypedFormGroup({control: new UntypedFormControl('', Validators.required)});
 
   findOutput$: Observable<any[]>;
 

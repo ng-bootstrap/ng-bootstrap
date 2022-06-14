@@ -4,7 +4,7 @@ import {getMonthSelect, getYearSelect, getNavigationLinks} from '../test/datepic
 
 import {Component, TemplateRef, DebugElement} from '@angular/core';
 import {By} from '@angular/platform-browser';
-import {FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule, UntypedFormGroup, UntypedFormControl, Validators} from '@angular/forms';
 
 import {NgbDatepickerModule, NgbDatepickerNavigateEvent} from './datepicker.module';
 import {NgbDate} from './ngb-date';
@@ -1279,8 +1279,8 @@ class TestComponent {
   navigation = 'select';
   minDate: NgbDateStruct = {year: 2010, month: 1, day: 1};
   maxDate: NgbDateStruct = {year: 2020, month: 12, day: 31};
-  form = new FormGroup({control: new FormControl('', Validators.required)});
-  disabledForm = new FormGroup({control: new FormControl({value: null, disabled: true})});
+  form = new UntypedFormGroup({control: new UntypedFormControl('', Validators.required)});
+  disabledForm = new UntypedFormGroup({control: new UntypedFormControl({value: null, disabled: true})});
   model;
   weekdays: boolean | TranslationWidth = true;
   dayTemplateData = () => '!';

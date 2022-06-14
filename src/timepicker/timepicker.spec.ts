@@ -3,7 +3,7 @@ import {createGenericTestComponent} from '../test/common';
 
 import {ChangeDetectionStrategy, Component, DebugElement, Injectable} from '@angular/core';
 import {By} from '@angular/platform-browser';
-import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 
 import {NgbTimepickerModule} from './timepicker.module';
 import {NgbTimepickerConfig} from './timepicker-config';
@@ -1631,8 +1631,8 @@ class TestComponent {
   model;
   disabled = true;
   readonly = true;
-  form = new FormGroup({control: new FormControl('', Validators.required)});
-  disabledForm = new FormGroup({control: new FormControl({value: '', disabled: true})});
+  form = new UntypedFormGroup({control: new UntypedFormControl('', Validators.required)});
+  disabledForm = new UntypedFormGroup({control: new UntypedFormControl({value: '', disabled: true})});
   submitted = false;
 
   showSeconds = true;

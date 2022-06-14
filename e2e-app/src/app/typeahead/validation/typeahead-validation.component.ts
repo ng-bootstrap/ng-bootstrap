@@ -2,7 +2,7 @@ import {Component, ViewChild} from '@angular/core';
 import {NgbTypeahead} from '@ng-bootstrap/ng-bootstrap';
 import {Observable, Subject, merge} from 'rxjs';
 import {distinctUntilChanged, filter, map} from 'rxjs/operators';
-import {FormControl} from '@angular/forms';
+import {UntypedFormControl} from '@angular/forms';
 
 const states = [
   'Alabama',
@@ -69,7 +69,7 @@ const states = [
 @Component({templateUrl: './typeahead-validation.component.html'})
 export class TypeaheadValidationComponent {
   model: any;
-  public field = new FormControl(null, {updateOn: 'blur'});
+  public field = new UntypedFormControl(null, {updateOn: 'blur'});
 
   @ViewChild('instance', {static: true}) instance: NgbTypeahead;
   focus$ = new Subject<string>();
@@ -84,5 +84,5 @@ export class TypeaheadValidationComponent {
         .pipe(
             map(term => (term === '' ? states : states.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1))
                             .slice(0, 10)));
-  }
+  };
 }
