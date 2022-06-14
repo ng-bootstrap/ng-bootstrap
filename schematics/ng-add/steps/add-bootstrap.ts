@@ -4,7 +4,7 @@ import {Rule, SchematicContext, Tree, SchematicsException} from '@angular-devkit
 import {Schema} from '../schema';
 import * as messages from '../messages';
 import {getProjectStyleFile, getProjectTargetOptions} from '../../utils/project';
-import {getWorkspace, updateWorkspace} from '@schematics/angular/utility/workspace';
+import {readWorkspace, writeWorkspace} from '@schematics/angular/utility';
 import {workspaces, JsonArray} from '@angular-devkit/core';
 
 
@@ -26,7 +26,7 @@ const SUPPORTED_BOOTSTRAP_STYLE_IMPORTS = {
  */
 export function addBootstrapStyles(options: Schema): Rule {
   return async(host: Tree, context: SchematicContext) => {
-    const workspace = await getWorkspace(host);
+    const workspace = await readWorkspace(host);
 
     const projectName = options.project || workspace.extensions.defaultProject !.toString();
     const project = workspace.projects.get(projectName);
@@ -48,7 +48,8 @@ export function addBootstrapStyles(options: Schema): Rule {
       }
 
       // just patching 'angular.json'
-      return addBootstrapToAngularJson(workspace, project, host);
+      addBootstrapToAngularJson(project);
+      await writeWorkspace(host, workspace);
     }
   };
 }
@@ -70,8 +71,7 @@ function addBootstrapToStylesFile(styleFilePath: string, styleFilePatch: string)
 /**
  * Patches 'angular.json' to add 'bootstrap.css' styles
  */
-function addBootstrapToAngularJson(
-    workspace: workspaces.WorkspaceDefinition, project: workspaces.ProjectDefinition, host: Tree): Rule {
+function addBootstrapToAngularJson(project: workspaces.ProjectDefinition) {
   const targetOptions = getProjectTargetOptions(project, 'build');
   const styles = (targetOptions.styles as JsonArray | undefined);
   if (!styles) {
@@ -82,11 +82,9 @@ function addBootstrapToAngularJson(
     for (const[, stylePath] of existingStyles.entries()) {
       // If the given asset is already specified in the styles, we don't need to do anything.
       if (stylePath === BOOTSTRAP_CSS_FILEPATH) {
-        return () => host;
+        return;
       }
     }
     styles.unshift(BOOTSTRAP_CSS_FILEPATH);
   }
-
-  return updateWorkspace(workspace);
 }

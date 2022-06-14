@@ -1,5 +1,5 @@
 import {SchematicTestRunner, UnitTestTree} from '@angular-devkit/schematics/testing';
-import {getWorkspace} from '@schematics/angular/utility/workspace';
+import {readWorkspace} from '@schematics/angular/utility';
 import {workspaces} from '@angular-devkit/core';
 import {Schema} from './schema';
 import * as messages from './messages';
@@ -17,7 +17,7 @@ import {createTestApp} from '../utils/testing';
       const options: Schema = {project: projectName};
       let tree = await createTestApp(runner, appOptions);
       tree = await runner.runSchematicAsync('ng-add-setup-project', options, tree).toPromise();
-      const workspace = await getWorkspace(tree);
+      const workspace = await readWorkspace(tree);
       const project = workspace.projects.get(projectName) !;
       return {tree, project};
     }
