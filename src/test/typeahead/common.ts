@@ -20,7 +20,7 @@ export function expectResults(nativeEl: HTMLElement, resultsDef: string[]): void
 
     if (classIndicator === '+') {
       expect(pages[i]).toHaveCssClass('active');
-      expect(normalizeText(pages[i].textContent)).toEqual(resultDef.substr(1));
+      expect(normalizeText(pages[i].textContent)).toEqual(resultDef.substring(1));
     } else {
       expect(pages[i]).not.toHaveCssClass('active');
       expect(normalizeText(pages[i].textContent)).toEqual(resultDef);

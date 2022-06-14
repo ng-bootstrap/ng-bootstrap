@@ -362,8 +362,8 @@ export class NgbTypeahead implements ControlValueAccessor,
       const userInputLowerCase = this._inputValueBackup.toLowerCase();
       const formattedVal = this._formatItemForInput(this._windowRef.instance.getActive());
 
-      if (userInputLowerCase === formattedVal.substr(0, this._inputValueBackup.length).toLowerCase()) {
-        this._writeInputValue(this._inputValueBackup + formattedVal.substr(this._inputValueBackup.length));
+      if (userInputLowerCase === formattedVal.substring(0, this._inputValueBackup.length).toLowerCase()) {
+        this._writeInputValue(this._inputValueBackup + formattedVal.substring(this._inputValueBackup.length));
         this._elementRef.nativeElement['setSelectionRange'].apply(
             this._elementRef.nativeElement, [this._inputValueBackup.length, formattedVal.length]);
       } else {

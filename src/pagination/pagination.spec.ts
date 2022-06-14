@@ -24,16 +24,16 @@ function expectPages(nativeEl: HTMLElement, pagesDef: string[], ellipsis = '...'
       expect(pages[i]).toHaveCssClass('active');
       expect(pages[i]).not.toHaveCssClass('disabled');
       expect(pages[i].getAttribute('aria-current')).toBe('page');
-      expect(textContent).toEqual(pageDef.substr(1) + ' (current)');
+      expect(textContent).toEqual(pageDef.substring(1) + ' (current)');
     } else if (classIndicator === '-') {
       expect(pages[i]).not.toHaveCssClass('active');
       expect(pages[i]).toHaveCssClass('disabled');
       expect(pages[i].getAttribute('aria-current')).toBeNull();
-      expect(textContent).toEqual(pageDef.substr(1));
+      expect(textContent).toEqual(pageDef.substring(1));
     } else if (classIndicator === 'c') {  // Custom Pages
       const inputPagination = pages[i].querySelector('input');
       textContent += ',' + inputPagination ?.value;
-      expect(textContent).toEqual(pageDef.substr(1));
+      expect(textContent).toEqual(pageDef.substring(1));
     } else {
       expect(pages[i]).not.toHaveCssClass('active');
       expect(pages[i]).not.toHaveCssClass('disabled');
