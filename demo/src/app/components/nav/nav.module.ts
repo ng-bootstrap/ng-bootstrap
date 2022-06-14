@@ -23,6 +23,7 @@ import { NgbdNavKeepModule } from './demos/keep-content/nav-keep-content.module'
 import { NgbdNavOverviewComponent } from './overview/nav-overview.component';
 import { NgbdNavVertical } from './demos/vertical/nav-vertical';
 import { NgbdNavVerticalModule } from './demos/vertical/nav-vertical.module';
+import { Routes } from '@angular/router';
 
 const OVERVIEW = {
   'basic-usage': 'Basic Usage',
@@ -82,7 +83,7 @@ const DEMOS = {
   }
 };
 
-export const ROUTES = [
+export const ROUTES: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'overview' },
   {
     path: '',

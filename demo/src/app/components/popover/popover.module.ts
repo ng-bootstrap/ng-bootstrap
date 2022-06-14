@@ -26,6 +26,7 @@ import { NgbdPopoverTriggers } from './demos/triggers/popover-triggers';
 import { NgbdPopoverTriggersModule } from './demos/triggers/popover-triggers.module';
 import { NgbdPopoverVisibility } from './demos/visibility/popover-visibility';
 import { NgbdPopoverVisibilityModule } from './demos/visibility/popover-visibility.module';
+import { Routes } from '@angular/router';
 
 const DEMOS = {
   basic: {
@@ -90,7 +91,7 @@ const DEMOS = {
   }
 };
 
-export const ROUTES = [
+export const ROUTES: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'examples' },
   {
     path: '',

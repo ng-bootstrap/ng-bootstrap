@@ -16,6 +16,7 @@ import { NgbdOffcanvasFocusModule } from './demos/focus/offcanvas-focus.module';
 import { NgbdOffcanvasFocus } from './demos/focus/offcanvas-focus';
 import { NgbdOffcanvasConfigModule } from './demos/config/offcanvas-config.module';
 import { NgbdOffcanvasConfig } from './demos/config/offcanvas-config';
+import { Routes } from '@angular/router';
 
 const DEMOS = {
   basic: {
@@ -50,7 +51,7 @@ const DEMOS = {
   }
 };
 
-export const ROUTES = [
+export const ROUTES: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'examples' },
   {
     path: '',

@@ -14,6 +14,7 @@ import { NgbdCarouselNavigation } from './demos/navigation/carousel-navigation';
 import { NgbdCarouselNavigationModule } from './demos/navigation/carousel-navigation.module';
 import { NgbdCarouselPause } from './demos/pause/carousel-pause';
 import { NgbdCarouselPauseModule } from './demos/pause/carousel-pause.module';
+import { Routes } from '@angular/router';
 
 const DEMOS = {
   basic: {
@@ -42,7 +43,7 @@ const DEMOS = {
   }
 };
 
-export const ROUTES = [
+export const ROUTES: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'examples' },
   {
     path: '',

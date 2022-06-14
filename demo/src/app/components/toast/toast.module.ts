@@ -18,6 +18,7 @@ import {NgbdToastPreventAutohide} from './demos/prevent-autohide/toast-prevent-a
 import {NgbdToastPreventAutohideModule} from './demos/prevent-autohide/toast-prevent-autohide.module';
 import {NgbdToastOverviewComponent} from './overview/toast-overview.component';
 import {versions} from '../../../environments/versions';
+import { Routes } from '@angular/router';
 
 const OVERVIEW = {
   'inline-usage': 'Declarative usage',
@@ -96,7 +97,7 @@ const DEMOS = {
 
 const bsVersion = versions.bootstrap;
 
-export const ROUTES = [
+export const ROUTES: Routes = [
   {path: '', pathMatch: 'full', redirectTo: 'overview'}, {
     path: '',
     component: ComponentWrapper,

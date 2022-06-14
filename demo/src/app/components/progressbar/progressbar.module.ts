@@ -20,6 +20,7 @@ import { NgbdProgressbarStriped } from './demos/striped/progressbar-striped';
 import { NgbdProgressbarStripedModule } from './demos/striped/progressbar-striped.module';
 import { NgbdProgressbarTextTypes } from './demos/texttypes/progressbar-texttypes';
 import { NgbdProgressbarTextTypesModule } from './demos/texttypes/progressbar-texttypes.module';
+import { Routes } from '@angular/router';
 
 const DEMOS = {
   basic: {
@@ -66,7 +67,7 @@ const DEMOS = {
   }
 };
 
-export const ROUTES = [
+export const ROUTES: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'examples' },
   {
     path: '',

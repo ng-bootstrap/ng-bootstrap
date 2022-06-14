@@ -18,6 +18,7 @@ import { NgbdAccordionStatic } from './demos/static/accordion-static';
 import { NgbdAccordionStaticModule } from './demos/static/accordion-static.module';
 import { NgbdAccordionToggle } from './demos/toggle/accordion-toggle';
 import { NgbdAccordionToggleModule } from './demos/toggle/accordion-toggle.module';
+import { Routes } from '@angular/router';
 
 const DEMOS = {
   basic: {
@@ -58,7 +59,7 @@ const DEMOS = {
   }
 };
 
-export const ROUTES = [
+export const ROUTES: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'examples' },
   {
     path: '',

@@ -10,6 +10,7 @@ import { NgbdCollapseBasic } from './demos/basic/collapse-basic';
 import { NgbdCollapseBasicModule } from './demos/basic/collapse-basic.module';
 import { NgbdCollapseNavbar } from './demos/navbar/collapse-navbar';
 import { NgbdCollapseNavbarModule } from './demos/navbar/collapse-navbar.module';
+import { Routes } from '@angular/router';
 
 const DEMOS = {
   basic: {
@@ -26,7 +27,7 @@ const DEMOS = {
   }
 };
 
-export const ROUTES = [
+export const ROUTES: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'examples' },
   {
     path: '',
