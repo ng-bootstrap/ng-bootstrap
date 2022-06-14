@@ -1,3 +1,4 @@
+/* eslint-disable deprecation/deprecation */
 import {DOCUMENT} from '@angular/common';
 import {
   ApplicationRef,
