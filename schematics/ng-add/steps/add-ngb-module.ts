@@ -5,7 +5,7 @@ import {InsertChange} from '@schematics/angular/utility/change';
 import * as ts from '@schematics/angular/third_party/github.com/Microsoft/TypeScript/lib/typescript';
 
 import {Schema} from '../schema';
-import {getWorkspace} from '@schematics/angular/utility/workspace';
+import {readWorkspace} from '@schematics/angular/utility';
 import * as messages from '../messages';
 import {getProjectTargetOptions} from '../../utils/project';
 
@@ -36,7 +36,7 @@ const NG_BOOTSTRAP_PACKAGE_NAME = '@ng-bootstrap/ng-bootstrap';
  */
 export function addNgbModuleToAppModule(options: Schema): Rule {
   return async(host: Tree) => {
-    const workspace = await getWorkspace(host);
+    const workspace = await readWorkspace(host);
     const projectName = options.project || (workspace.extensions.defaultProject as string);
 
     // 1. getting project by name

@@ -4,7 +4,7 @@ import {
   RunSchematicTask,
 } from '@angular-devkit/schematics/tasks';
 
-import {getWorkspace} from '@schematics/angular/utility/workspace';
+import {readWorkspace} from '@schematics/angular/utility';
 
 import {Schema} from './schema';
 import * as messages from './messages';
@@ -26,7 +26,7 @@ export default function ngAdd(options: Schema): Rule {
     // Checking that project exists
     const {project} = options;
     if (project) {
-      const workspace = await getWorkspace(tree);
+      const workspace = await readWorkspace(tree);
       const projectWorkspace = workspace.projects.get(project);
 
       if (!projectWorkspace) {
