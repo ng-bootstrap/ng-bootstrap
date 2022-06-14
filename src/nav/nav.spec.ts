@@ -1467,5 +1467,5 @@ class TestComponent {
     if (isDefined(event.activeId)) {
       event.preventDefault();
     }
-  }
+  };
 }

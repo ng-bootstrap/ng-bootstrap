@@ -16,5 +16,5 @@ export class TypeaheadComponent {
   search = (text$: Observable<string>) =>
     text$.pipe(
       map(term => VALUES.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
-    )
+    );
 }

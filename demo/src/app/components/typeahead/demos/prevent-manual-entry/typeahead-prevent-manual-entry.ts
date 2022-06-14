@@ -81,6 +81,6 @@ export class NgbdTypeaheadPreventManualEntry {
     distinctUntilChanged(),
     filter(term => term.length >= 2),
     map(term => states.filter(state => new RegExp(term, 'mi').test(state.name)).slice(0, 10))
-  )
+  );
 
 }
