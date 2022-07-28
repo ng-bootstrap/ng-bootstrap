@@ -214,11 +214,11 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
       const {windowRef, transition$} =
           this._popupService.open(this.ngbPopover as(string | TemplateRef<any>), context, this.animation);
       this._windowRef = windowRef;
-      this._windowRef.instance.animation = this.animation;
-      this._windowRef.instance.title = this.popoverTitle;
-      this._windowRef.instance.context = context;
-      this._windowRef.instance.popoverClass = this.popoverClass;
-      this._windowRef.instance.id = this._ngbPopoverWindowId;
+      this._windowRef.setInput('animation', this.animation);
+      this._windowRef.setInput('title', this.popoverTitle);
+      this._windowRef.setInput('context', context);
+      this._windowRef.setInput('popoverClass', this.popoverClass);
+      this._windowRef.setInput('id', this._ngbPopoverWindowId);
 
       this._renderer.setAttribute(this._elementRef.nativeElement, 'aria-describedby', this._ngbPopoverWindowId);
 

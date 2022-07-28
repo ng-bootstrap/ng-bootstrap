@@ -191,9 +191,9 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
     if (!this._windowRef && this._ngbTooltip && !this.disableTooltip) {
       const {windowRef, transition$} = this._popupService.open(this._ngbTooltip, context, this.animation);
       this._windowRef = windowRef;
-      this._windowRef.instance.animation = this.animation;
-      this._windowRef.instance.tooltipClass = this.tooltipClass;
-      this._windowRef.instance.id = this._ngbTooltipWindowId;
+      this._windowRef.setInput('animation', this.animation);
+      this._windowRef.setInput('tooltipClass', this.tooltipClass);
+      this._windowRef.setInput('id', this._ngbTooltipWindowId);
 
       this._renderer.setAttribute(this._elementRef.nativeElement, 'aria-describedby', this._ngbTooltipWindowId);
 
