@@ -1,16 +1,16 @@
-/* eslint-disable deprecation/deprecation */
 import {DOCUMENT} from '@angular/common';
 import {
   ApplicationRef,
-  ComponentFactoryResolver,
   ComponentRef,
+  createComponent,
   EventEmitter,
   Inject,
   Injectable,
   Injector,
   NgZone,
   RendererFactory2,
-  TemplateRef
+  TemplateRef,
+  Type
 } from '@angular/core';
 import {Subject} from 'rxjs';
 
@@ -66,8 +66,7 @@ export class NgbModalStack {
     }
   }
 
-  open(moduleCFR: ComponentFactoryResolver, contentInjector: Injector, content: any, options: NgbModalOptions):
-      NgbModalRef {
+  open(contentInjector: Injector, content: any, options: NgbModalOptions): NgbModalRef {
     const containerEl = options.container instanceof HTMLElement ? options.container : isDefined(options.container) ?
                                                                    this._document.querySelector(options.container) :
                                                                    this._document.body;
@@ -80,12 +79,11 @@ export class NgbModalStack {
     this._hideScrollBar();
 
     const activeModal = new NgbActiveModal();
-    const contentRef =
-        this._getContentRef(moduleCFR, options.injector || contentInjector, content, activeModal, options);
+    const contentRef = this._getContentRef(options.injector || contentInjector, content, activeModal, options);
 
     let backdropCmptRef: ComponentRef<NgbModalBackdrop>| undefined =
-        options.backdrop !== false ? this._attachBackdrop(moduleCFR, containerEl) : undefined;
-    let windowCmptRef: ComponentRef<NgbModalWindow> = this._attachWindowComponent(moduleCFR, containerEl, contentRef);
+        options.backdrop !== false ? this._attachBackdrop(containerEl) : undefined;
+    let windowCmptRef: ComponentRef<NgbModalWindow> = this._attachWindowComponent(containerEl, contentRef.nodes);
     let ngbModalRef: NgbModalRef = new NgbModalRef(windowCmptRef, contentRef, backdropCmptRef, options.beforeDismiss);
 
     this._registerModalRef(ngbModalRef);
@@ -124,18 +122,18 @@ export class NgbModalStack {
 
   hasOpenModals(): boolean { return this._modalRefs.length > 0; }
 
-  private _attachBackdrop(moduleCFR: ComponentFactoryResolver, containerEl: any): ComponentRef<NgbModalBackdrop> {
-    let backdropFactory = moduleCFR.resolveComponentFactory(NgbModalBackdrop);
-    let backdropCmptRef = backdropFactory.create(this._injector);
+  private _attachBackdrop(containerEl: Element): ComponentRef<NgbModalBackdrop> {
+    let backdropCmptRef = createComponent(
+        NgbModalBackdrop, {environmentInjector: this._applicationRef.injector, elementInjector: this._injector});
     this._applicationRef.attachView(backdropCmptRef.hostView);
     containerEl.appendChild(backdropCmptRef.location.nativeElement);
     return backdropCmptRef;
   }
 
-  private _attachWindowComponent(moduleCFR: ComponentFactoryResolver, containerEl: any, contentRef: any):
-      ComponentRef<NgbModalWindow> {
-    let windowFactory = moduleCFR.resolveComponentFactory(NgbModalWindow);
-    let windowCmptRef = windowFactory.create(this._injector, contentRef.nodes);
+  private _attachWindowComponent(containerEl: Element, projectableNodes: Node[][]): ComponentRef<NgbModalWindow> {
+    let windowCmptRef = createComponent(
+        NgbModalWindow,
+        {environmentInjector: this._applicationRef.injector, elementInjector: this._injector, projectableNodes});
     this._applicationRef.attachView(windowCmptRef.hostView);
     containerEl.appendChild(windowCmptRef.location.nativeElement);
     return windowCmptRef;
@@ -158,7 +156,7 @@ export class NgbModalStack {
   }
 
   private _getContentRef(
-      moduleCFR: ComponentFactoryResolver, contentInjector: Injector, content: any, activeModal: NgbActiveModal,
+      contentInjector: Injector, content: Type<any>| TemplateRef<any>| string, activeModal: NgbActiveModal,
       options: NgbModalOptions): ContentRef {
     if (!content) {
       return new ContentRef([]);
@@ -167,17 +165,17 @@ export class NgbModalStack {
     } else if (isString(content)) {
       return this._createFromString(content);
     } else {
-      return this._createFromComponent(moduleCFR, contentInjector, content, activeModal, options);
+      return this._createFromComponent(contentInjector, content, activeModal, options);
     }
   }
 
-  private _createFromTemplateRef(content: TemplateRef<any>, activeModal: NgbActiveModal): ContentRef {
+  private _createFromTemplateRef(templateRef: TemplateRef<any>, activeModal: NgbActiveModal): ContentRef {
     const context = {
       $implicit: activeModal,
       close(result) { activeModal.close(result); },
       dismiss(reason) { activeModal.dismiss(reason); }
     };
-    const viewRef = content.createEmbeddedView(context);
+    const viewRef = templateRef.createEmbeddedView(context);
     this._applicationRef.attachView(viewRef);
     return new ContentRef([viewRef.rootNodes], viewRef);
   }
@@ -188,12 +186,12 @@ export class NgbModalStack {
   }
 
   private _createFromComponent(
-      moduleCFR: ComponentFactoryResolver, contentInjector: Injector, content: any, context: NgbActiveModal,
+      contentInjector: Injector, componentType: Type<any>, context: NgbActiveModal,
       options: NgbModalOptions): ContentRef {
-    const contentCmptFactory = moduleCFR.resolveComponentFactory(content);
-    const modalContentInjector =
+    const elementInjector =
         Injector.create({providers: [{provide: NgbActiveModal, useValue: context}], parent: contentInjector});
-    const componentRef = contentCmptFactory.create(modalContentInjector);
+    const componentRef =
+        createComponent(componentType, {environmentInjector: this._applicationRef.injector, elementInjector});
     const componentNativeEl = componentRef.location.nativeElement;
     if (options.scrollable) {
       (componentNativeEl as HTMLElement).classList.add('component-host-scrollable');
