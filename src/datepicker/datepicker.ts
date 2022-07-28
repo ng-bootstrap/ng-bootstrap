@@ -121,6 +121,7 @@ export class NgbDatepickerContent {
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['./datepicker.scss'],
+  host: {'[class.disabled]': 'model.disabled'},
   template: `
     <ng-template #defaultDayTemplate let-date="date" let-currentMonth="currentMonth" let-selected="selected"
                  let-disabled="disabled" let-focused="focused">

@@ -10,6 +10,12 @@ ngb-datepicker {
   &.dropdown-menu {
     padding: 0;
   }
+
+  &.disabled {
+    .ngb-dp-weekday, .ngb-dp-week-number, .ngb-dp-month-name {
+      color: var(--bs-text-muted);
+    }
+  }
 }
 
 .ngb-dp {

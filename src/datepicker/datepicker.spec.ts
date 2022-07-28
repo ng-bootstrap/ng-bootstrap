@@ -226,7 +226,7 @@ describe('ngb-datepicker', () => {
     expect(getWeekdays(fixture.nativeElement)).toEqual(['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']);
   });
 
-  it(`should allow cusotmizing the way weekdays are displayed (weekdays)`, () => {
+  it(`should allow customizing the way weekdays are displayed (weekdays)`, () => {
     const fixture = createTestComponent(`<ngb-datepicker [startDate]="date" [weekdays]="weekdays"></ngb-datepicker>`);
     expect(getWeekdays(fixture.nativeElement)).toEqual(['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']);
 
@@ -854,6 +854,7 @@ describe('ngb-datepicker', () => {
          expect(links[1].hasAttribute('disabled')).toBeTruthy();
          expect(getYearSelect(fixture.nativeElement).disabled).toBeTruthy();
          expect(getMonthSelect(fixture.nativeElement).disabled).toBeTruthy();
+         expect(getDatepicker(fixture.nativeElement)).toHaveCssClass('disabled');
        }));
   });
 
@@ -1115,6 +1116,7 @@ describe('ngb-datepicker', () => {
         expect(getDay(fixture.nativeElement, index)).toHaveCssClass('text-muted');
       }
       expect(fixture.nativeElement.querySelector('ngb-datepicker').getAttribute('tabindex')).toBeFalsy();
+      expect(getDatepicker(fixture.nativeElement)).toHaveCssClass('disabled');
     });
 
     it('should not change again the value in the model on a change coming from the model (template-driven form)',
