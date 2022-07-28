@@ -5,6 +5,7 @@ import {
   NgZone,
   Renderer2,
   TemplateRef,
+  Type,
   ViewContainerRef,
   ViewRef
 } from '@angular/core';
@@ -15,7 +16,7 @@ import {mergeMap, take, tap} from 'rxjs/operators';
 import {ngbRunTransition} from './transition/ngbTransition';
 
 export class ContentRef {
-  constructor(public nodes: any[], public viewRef?: ViewRef, public componentRef?: ComponentRef<any>) {}
+  constructor(public nodes: Node[][], public viewRef?: ViewRef, public componentRef?: ComponentRef<any>) {}
 }
 
 export class PopupService<T> {
@@ -23,16 +24,15 @@ export class PopupService<T> {
   private _contentRef: ContentRef | null = null;
 
   constructor(
-      private _type: any, private _injector: Injector, private _viewContainerRef: ViewContainerRef,
+      private _componentType: Type<any>, private _injector: Injector, private _viewContainerRef: ViewContainerRef,
       private _renderer: Renderer2, private _ngZone: NgZone, private _applicationRef: ApplicationRef) {}
 
-  open(content?: string | TemplateRef<any>, context?: any, animation = false):
+  open(content?: string | TemplateRef<any>, templateContext?: any, animation = false):
       {windowRef: ComponentRef<T>, transition$: Observable<void>} {
     if (!this._windowRef) {
-      this._contentRef = this._getContentRef(content, context);
+      this._contentRef = this._getContentRef(content, templateContext);
       this._windowRef = this._viewContainerRef.createComponent(
-          this._type,
-          {index: this._viewContainerRef.length, injector: this._injector, projectableNodes: this._contentRef.nodes});
+          this._componentType, {injector: this._injector, projectableNodes: this._contentRef.nodes});
     }
 
     const {nativeElement} = this._windowRef.location;
@@ -67,11 +67,11 @@ export class PopupService<T> {
         }));
   }
 
-  private _getContentRef(content?: string | TemplateRef<any>, context?: any): ContentRef {
+  private _getContentRef(content?: string | TemplateRef<any>, templateContext?: any): ContentRef {
     if (!content) {
       return new ContentRef([]);
     } else if (content instanceof TemplateRef) {
-      const viewRef = content.createEmbeddedView(context);
+      const viewRef = content.createEmbeddedView(templateContext);
       this._applicationRef.attachView(viewRef);
       return new ContentRef([viewRef.rootNodes], viewRef);
     } else {

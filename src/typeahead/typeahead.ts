@@ -298,10 +298,10 @@ export class NgbTypeahead implements ControlValueAccessor,
       this._inputValueBackup = this._elementRef.nativeElement.value;
       const {windowRef} = this._popupService.open();
       this._windowRef = windowRef;
-      this._windowRef.instance.id = this.popupId;
+      this._windowRef.setInput('id', this.popupId);
+      this._windowRef.setInput('popupClass', this.popupClass);
       this._windowRef.instance.selectEvent.subscribe((result: any) => this._selectResultClosePopup(result));
       this._windowRef.instance.activeChangeEvent.subscribe((activeId: string) => this.activeDescendant = activeId);
-      this._windowRef.instance.popupClass = this.popupClass;
 
       if (this.container === 'body') {
         this._renderer.setStyle(this._windowRef.location.nativeElement, 'z-index', '1055');

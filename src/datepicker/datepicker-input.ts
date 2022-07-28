@@ -352,7 +352,7 @@ export class NgbInputDatepicker implements OnChanges,
       this._cRef = this._vcRef.createComponent(NgbDatepicker);
 
       this._applyPopupStyling(this._cRef.location.nativeElement);
-      this._applyDatepickerInputs(this._cRef.instance);
+      this._applyDatepickerInputs(this._cRef);
       this._subscribeForDatepickerOutputs(this._cRef.instance);
       this._cRef.instance.ngOnInit();
       this._cRef.instance.writeValue(this._dateAdapter.toModel(this._model));
@@ -495,15 +495,15 @@ export class NgbInputDatepicker implements OnChanges,
 
   ngOnDestroy() { this.close(); }
 
-  private _applyDatepickerInputs(datepickerInstance: NgbDatepicker): void {
+  private _applyDatepickerInputs(datepickerComponentRef: ComponentRef<NgbDatepicker>): void {
     ['dayTemplate', 'dayTemplateData', 'displayMonths', 'firstDayOfWeek', 'footerTemplate', 'markDisabled', 'minDate',
      'maxDate', 'navigation', 'outsideDays', 'showNavigation', 'showWeekNumbers', 'weekdays']
-        .forEach((optionName: string) => {
-          if (this[optionName] !== undefined) {
-            datepickerInstance[optionName] = this[optionName];
+        .forEach((inputName: string) => {
+          if (this[inputName] !== undefined) {
+            datepickerComponentRef.setInput(inputName, this[inputName]);
           }
         });
-    datepickerInstance.startDate = this.startDate || this._model;
+    datepickerComponentRef.setInput('startDate', this.startDate || this._model);
   }
 
   private _applyPopupClass(newClass: string, oldClass?: string) {
