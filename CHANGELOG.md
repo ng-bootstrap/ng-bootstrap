@@ -1,11 +1,18 @@
-# [13.0.0-beta.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/12.1.2...13.0.0-beta.1) (2022-06-14)
+# [13.0.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/12.1.2...13.0.0) (2022-07-28)
 
-This is the first beta version that adds Angular 14 support.
+This release adds Angular 14.1 and Bootstrap 5.2.0 support. It also removes deprecated checkboxes and radio buttons.
+
+### Bug Fixes
+
+* **datepicker:** better display for a disabled datepicker ([52ec5b5](https://github.com/ng-bootstrap/ng-bootstrap/commit/52ec5b57b56482f588be3867095c4f03704c2cdd))
+* **datepicker:** use `-bs-xxx` variables for colors ([3012aaf](https://github.com/ng-bootstrap/ng-bootstrap/commit/3012aafd78f39cd8d6cb329b49fc1ebdb8e12d60))
+* replace `ComponentFactory` with new `createComponent` API ([9a011f3](https://github.com/ng-bootstrap/ng-bootstrap/commit/9a011f38f4b55626dee7ca63932dd5304c98b7fc)), closes [#4343](https://github.com/ng-bootstrap/ng-bootstrap/issues/4343)
+* use new `setInput()` API instead of setting inputs manually ([eec4e43](https://github.com/ng-bootstrap/ng-bootstrap/commit/eec4e43c1df395824e99ab9dc818bc4eda6ff233))
 
 
 ### BREAKING CHANGES
 
-* **buttons:** Checkbox and Radio buttons are no longer a part of ng-bootstrap, please use native Angular. They were deprecated in ng-bootstrap 12, see [this page](https://ng-bootstrap.github.io#/components/buttons/overview) for more details.
+* **buttons:** Checkbox and Radio buttons are no longer a part of ng-bootstrap, please use native Angular. They were deprecated in ng-bootstrap 12, see [this page](https://ng-bootstrap.github.io/releases/12.x/#/components/buttons/overview) for more details.
 
 
 
