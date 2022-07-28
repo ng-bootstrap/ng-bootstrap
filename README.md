@@ -1,4 +1,4 @@
-# NG Bootstrap - Angular powered Bootstrap widgets
+# NG Bootstrap - Angular-powered Bootstrap widgets
 
 [![npm version](https://badge.fury.io/js/%40ng-bootstrap%2Fng-bootstrap.svg)](https://badge.fury.io/js/%40ng-bootstrap%2Fng-bootstrap)
 [![Build Status](https://github.com/ng-bootstrap/ng-bootstrap/workflows/ci/badge.svg?branch=master)](https://github.com/ng-bootstrap/ng-bootstrap/actions)
@@ -19,7 +19,7 @@ Please check our [demo site](https://ng-bootstrap.github.io) and the list of
 - [Installation](#installation)
 - [Supported browsers](#supported-browsers)
 - [Getting help](#getting-help)
-- [You think you've found a bug?](#you-think-youve-found-a-bug)
+- [Do you think you've found a bug?](#you-think-youve-found-a-bug)
 - [Contributing to the project](#contributing-to-the-project)
 - [Code of conduct](#code-of-conduct)
 
@@ -29,7 +29,7 @@ Please check all components we have in action at https://ng-bootstrap.github.io
 
 ## Dependencies
 
-The only dependencies are [Angular](https://angular.io), [Bootstrap 5](https://getbootstrap.com) CSS and [Popper](https://popper.js.org/).
+The only dependencies are [Angular](https://angular.io), [Bootstrap 5](https://getbootstrap.com) CSS, and [Popper](https://popper.js.org/).
 The supported versions are:
 
 | ng-bootstrap | Angular | Bootstrap CSS | Popper |
@@ -80,13 +80,13 @@ Please, do not open issues for the general support questions as we want to keep 
 
 StackOverflow is a much better place to ask questions since:
 * there are hundreds of people willing to help on StackOverflow
-* questions and answers stay available for public viewing so your question / answer might help someone else
-* SO voting system assures that the best answers are prominently visible.
+* questions and answers stay available for public viewing so your question/answer might help someone else
+* Stack Overflow's voting system assures that the best answers are prominently visible.
 
 To save your and our time we will be systematically closing all the issues that are requests for general support and redirecting people to StackOverflow.
 
 
-## You think you've found a bug?
+## Do you think you've found a bug?
 
 We want to fix it ASAP! But before fixing a bug we need to reproduce and confirm it.
 
@@ -96,14 +96,14 @@ We ask you to respect two things:
 
 A minimal reproduction scenario allows us to quickly confirm a bug (or point out a coding problem) as well as confirm that we are fixing the right problem.
 
-Please note that **we will be insisting on a minimal reproduce scenario** in order to save maintainers time and ultimately be able to fix more bugs. We'll mark the issue as non-actionable without it and close if not heard from the reporter.
+Please note that **we will be insisting on a minimal reproduction scenario** in order to save maintainers time and ultimately be able to fix more bugs. We'll mark the issue as non-actionable without it and close if not heard from the reporter.
 
-Interestingly, from our experience users often find coding problems themselves while preparing a minimal StackBlitz. We understand that sometimes it might be hard to extract essentials bits of code from a larger code-base but we really need to isolate the problem before we can fix it.
+Interestingly, from our experience users often find coding problems themselves while preparing a minimal StackBlitz. We understand that sometimes it might be hard to extract essential bits of code from a larger code-base but we really need to isolate the problem before we can fix it.
 
 
 ## Contributing to the project
 
-Please check the [DEVELOPER.md](DEVELOPER.md) for documentation on running the project locally and [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
+Please check [DEVELOPER.md](DEVELOPER.md) for documentation on running the project locally and [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
 
 
 ## Code of conduct
