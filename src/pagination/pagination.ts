@@ -225,13 +225,13 @@ export class NgbPagination implements OnChanges {
   pageCount = 0;
   pages: number[] = [];
 
-  @ContentChild(NgbPaginationEllipsis, {static: false}) tplEllipsis: NgbPaginationEllipsis;
-  @ContentChild(NgbPaginationFirst, {static: false}) tplFirst: NgbPaginationFirst;
-  @ContentChild(NgbPaginationLast, {static: false}) tplLast: NgbPaginationLast;
-  @ContentChild(NgbPaginationNext, {static: false}) tplNext: NgbPaginationNext;
-  @ContentChild(NgbPaginationNumber, {static: false}) tplNumber: NgbPaginationNumber;
-  @ContentChild(NgbPaginationPrevious, {static: false}) tplPrevious: NgbPaginationPrevious;
-  @ContentChild(NgbPaginationPages, {static: false}) tplPages: NgbPaginationPages;
+  @ContentChild(NgbPaginationEllipsis, {static: false}) tplEllipsis?: NgbPaginationEllipsis;
+  @ContentChild(NgbPaginationFirst, {static: false}) tplFirst?: NgbPaginationFirst;
+  @ContentChild(NgbPaginationLast, {static: false}) tplLast?: NgbPaginationLast;
+  @ContentChild(NgbPaginationNext, {static: false}) tplNext?: NgbPaginationNext;
+  @ContentChild(NgbPaginationNumber, {static: false}) tplNumber?: NgbPaginationNumber;
+  @ContentChild(NgbPaginationPrevious, {static: false}) tplPrevious?: NgbPaginationPrevious;
+  @ContentChild(NgbPaginationPages, {static: false}) tplPages?: NgbPaginationPages;
 
   /**
    * If `true`, pagination links will be disabled.

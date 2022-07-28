@@ -116,7 +116,7 @@ export class NgbTimepicker implements ControlValueAccessor,
   static ngAcceptInputType_size: string;
 
   disabled: boolean;
-  model: NgbTime;
+  model?: NgbTime;
 
   private _hourStep: number;
   private _minuteStep: number;
@@ -210,38 +210,38 @@ export class NgbTimepicker implements ControlValueAccessor,
   setDisabledState(isDisabled: boolean) { this.disabled = isDisabled; }
 
   changeHour(step: number) {
-    this.model.changeHour(step);
+    this.model ?.changeHour(step);
     this.propagateModelChange();
   }
 
   changeMinute(step: number) {
-    this.model.changeMinute(step);
+    this.model ?.changeMinute(step);
     this.propagateModelChange();
   }
 
   changeSecond(step: number) {
-    this.model.changeSecond(step);
+    this.model ?.changeSecond(step);
     this.propagateModelChange();
   }
 
   updateHour(newVal: string) {
-    const isPM = this.model.hour >= 12;
+    const isPM = this.model ? this.model.hour >= 12 : false;
     const enteredHour = toInteger(newVal);
     if (this.meridian && (isPM && enteredHour < 12 || !isPM && enteredHour === 12)) {
-      this.model.updateHour(enteredHour + 12);
+      this.model ?.updateHour(enteredHour + 12);
     } else {
-      this.model.updateHour(enteredHour);
+      this.model ?.updateHour(enteredHour);
     }
     this.propagateModelChange();
   }
 
   updateMinute(newVal: string) {
-    this.model.updateMinute(toInteger(newVal));
+    this.model ?.updateMinute(toInteger(newVal));
     this.propagateModelChange();
   }
 
   updateSecond(newVal: string) {
-    this.model.updateSecond(toInteger(newVal));
+    this.model ?.updateSecond(toInteger(newVal));
     this.propagateModelChange();
   }
 
@@ -284,7 +284,7 @@ export class NgbTimepicker implements ControlValueAccessor,
     if (touched) {
       this.onTouched();
     }
-    if (this.model.isValid(this.seconds)) {
+    if (this.model?.isValid(this.seconds)) {
       this.onChange(
           this._ngbTimeAdapter.toModel({hour: this.model.hour, minute: this.model.minute, second: this.model.second}));
     } else {

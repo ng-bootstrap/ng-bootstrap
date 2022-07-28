@@ -133,9 +133,9 @@ export class NgbPanel implements AfterContentChecked {
   @Output() hidden = new EventEmitter<void>();
 
 
-  titleTpl: NgbPanelTitle;
-  headerTpl: NgbPanelHeader;
-  contentTpl: NgbPanelContent;
+  titleTpl?: NgbPanelTitle;
+  headerTpl?: NgbPanelHeader;
+  contentTpl?: NgbPanelContent;
   panelDiv: HTMLElement | null;
 
   @ContentChildren(NgbPanelTitle, {descendants: false}) titleTpls: QueryList<NgbPanelTitle>;
