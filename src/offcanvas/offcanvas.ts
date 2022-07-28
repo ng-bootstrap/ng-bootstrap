@@ -1,5 +1,4 @@
-/* eslint-disable deprecation/deprecation */
-import {ComponentFactoryResolver, Injectable, Injector} from '@angular/core';
+import {Injectable, Injector} from '@angular/core';
 import {NgbOffcanvasConfig, NgbOffcanvasOptions} from './offcanvas-config';
 import {NgbOffcanvasRef} from './offcanvas-ref';
 import {NgbOffcanvasStack} from './offcanvas-stack';
@@ -15,8 +14,7 @@ import {NgbOffcanvasStack} from './offcanvas-stack';
 @Injectable({providedIn: 'root'})
 export class NgbOffcanvas {
   constructor(
-      private _moduleCFR: ComponentFactoryResolver, private _injector: Injector,
-      private _offcanvasStack: NgbOffcanvasStack, private _config: NgbOffcanvasConfig) {}
+      private _injector: Injector, private _offcanvasStack: NgbOffcanvasStack, private _config: NgbOffcanvasConfig) {}
 
   /**
    * Opens a new offcanvas panel with the specified content and supplied options.
@@ -30,7 +28,7 @@ export class NgbOffcanvas {
    */
   open(content: any, options: NgbOffcanvasOptions = {}): NgbOffcanvasRef {
     const combinedOptions = {...this._config, animation: this._config.animation, ...options};
-    return this._offcanvasStack.open(this._moduleCFR, this._injector, content, combinedOptions);
+    return this._offcanvasStack.open(this._injector, content, combinedOptions);
   }
 
   /**

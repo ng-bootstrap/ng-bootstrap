@@ -1,15 +1,15 @@
-/* eslint-disable deprecation/deprecation */
 import {DOCUMENT} from '@angular/common';
 import {
   ApplicationRef,
-  ComponentFactoryResolver,
   ComponentRef,
+  createComponent,
   EventEmitter,
   Inject,
   Injectable,
   Injector,
   NgZone,
-  TemplateRef
+  TemplateRef,
+  Type
 } from '@angular/core';
 import {finalize} from 'rxjs/operators';
 import {Subject} from 'rxjs';
@@ -58,8 +58,7 @@ export class NgbOffcanvasStack {
     }
   }
 
-  open(moduleCFR: ComponentFactoryResolver, contentInjector: Injector, content: any, options: NgbOffcanvasOptions):
-      NgbOffcanvasRef {
+  open(contentInjector: Injector, content: any, options: NgbOffcanvasOptions): NgbOffcanvasRef {
     const containerEl = options.container instanceof HTMLElement ? options.container : isDefined(options.container) ?
                                                                    this._document.querySelector(options.container) :
                                                                    this._document.body;
@@ -72,11 +71,11 @@ export class NgbOffcanvasStack {
     }
 
     const activeOffcanvas = new NgbActiveOffcanvas();
-    const contentRef = this._getContentRef(moduleCFR, options.injector || contentInjector, content, activeOffcanvas);
+    const contentRef = this._getContentRef(options.injector || contentInjector, content, activeOffcanvas);
 
     let backdropCmptRef: ComponentRef<NgbOffcanvasBackdrop>| undefined =
-        options.backdrop !== false ? this._attachBackdrop(moduleCFR, containerEl) : undefined;
-    let panelCmptRef: ComponentRef<NgbOffcanvasPanel> = this._attachWindowComponent(moduleCFR, containerEl, contentRef);
+        options.backdrop !== false ? this._attachBackdrop(containerEl) : undefined;
+    let panelCmptRef: ComponentRef<NgbOffcanvasPanel> = this._attachWindowComponent(containerEl, contentRef.nodes);
     let ngbOffcanvasRef: NgbOffcanvasRef =
         new NgbOffcanvasRef(panelCmptRef, contentRef, backdropCmptRef, options.beforeDismiss);
 
@@ -102,18 +101,18 @@ export class NgbOffcanvasStack {
 
   hasOpenOffcanvas(): boolean { return !!this._offcanvasRef; }
 
-  private _attachBackdrop(moduleCFR: ComponentFactoryResolver, containerEl: any): ComponentRef<NgbOffcanvasBackdrop> {
-    let backdropFactory = moduleCFR.resolveComponentFactory(NgbOffcanvasBackdrop);
-    let backdropCmptRef = backdropFactory.create(this._injector);
+  private _attachBackdrop(containerEl: Element): ComponentRef<NgbOffcanvasBackdrop> {
+    let backdropCmptRef = createComponent(
+        NgbOffcanvasBackdrop, {environmentInjector: this._applicationRef.injector, elementInjector: this._injector});
     this._applicationRef.attachView(backdropCmptRef.hostView);
     containerEl.appendChild(backdropCmptRef.location.nativeElement);
     return backdropCmptRef;
   }
 
-  private _attachWindowComponent(moduleCFR: ComponentFactoryResolver, containerEl: any, contentRef: any):
-      ComponentRef<NgbOffcanvasPanel> {
-    let panelFactory = moduleCFR.resolveComponentFactory(NgbOffcanvasPanel);
-    let panelCmptRef = panelFactory.create(this._injector, contentRef.nodes);
+  private _attachWindowComponent(containerEl: Element, projectableNodes: Node[][]): ComponentRef<NgbOffcanvasPanel> {
+    let panelCmptRef = createComponent(
+        NgbOffcanvasPanel,
+        {environmentInjector: this._applicationRef.injector, elementInjector: this._injector, projectableNodes});
     this._applicationRef.attachView(panelCmptRef.hostView);
     containerEl.appendChild(panelCmptRef.location.nativeElement);
     return panelCmptRef;
@@ -136,7 +135,7 @@ export class NgbOffcanvasStack {
   }
 
   private _getContentRef(
-      moduleCFR: ComponentFactoryResolver, contentInjector: Injector, content: any,
+      contentInjector: Injector, content: Type<any>| TemplateRef<any>| string,
       activeOffcanvas: NgbActiveOffcanvas): ContentRef {
     if (!content) {
       return new ContentRef([]);
@@ -145,17 +144,17 @@ export class NgbOffcanvasStack {
     } else if (isString(content)) {
       return this._createFromString(content);
     } else {
-      return this._createFromComponent(moduleCFR, contentInjector, content, activeOffcanvas);
+      return this._createFromComponent(contentInjector, content, activeOffcanvas);
     }
   }
 
-  private _createFromTemplateRef(content: TemplateRef<any>, activeOffcanvas: NgbActiveOffcanvas): ContentRef {
+  private _createFromTemplateRef(templateRef: TemplateRef<any>, activeOffcanvas: NgbActiveOffcanvas): ContentRef {
     const context = {
       $implicit: activeOffcanvas,
       close(result) { activeOffcanvas.close(result); },
       dismiss(reason) { activeOffcanvas.dismiss(reason); }
     };
-    const viewRef = content.createEmbeddedView(context);
+    const viewRef = templateRef.createEmbeddedView(context);
     this._applicationRef.attachView(viewRef);
     return new ContentRef([viewRef.rootNodes], viewRef);
   }
@@ -165,13 +164,12 @@ export class NgbOffcanvasStack {
     return new ContentRef([[component]]);
   }
 
-  private _createFromComponent(
-      moduleCFR: ComponentFactoryResolver, contentInjector: Injector, content: any,
-      context: NgbActiveOffcanvas): ContentRef {
-    const contentCmptFactory = moduleCFR.resolveComponentFactory(content);
-    const offcanvasContentInjector =
+  private _createFromComponent(contentInjector: Injector, componentType: Type<any>, context: NgbActiveOffcanvas):
+      ContentRef {
+    const elementInjector =
         Injector.create({providers: [{provide: NgbActiveOffcanvas, useValue: context}], parent: contentInjector});
-    const componentRef = contentCmptFactory.create(offcanvasContentInjector);
+    const componentRef =
+        createComponent(componentType, {environmentInjector: this._applicationRef.injector, elementInjector});
     const componentNativeEl = componentRef.location.nativeElement;
     this._applicationRef.attachView(componentRef.hostView);
     return new ContentRef([[componentNativeEl]], componentRef.hostView, componentRef);

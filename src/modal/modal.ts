@@ -1,5 +1,4 @@
-/* eslint-disable deprecation/deprecation */
-import {Injectable, Injector, ComponentFactoryResolver} from '@angular/core';
+import {Injectable, Injector} from '@angular/core';
 
 import {NgbModalOptions, NgbModalConfig} from './modal-config';
 import {NgbModalRef} from './modal-ref';
@@ -13,9 +12,7 @@ import {NgbModalStack} from './modal-stack';
  */
 @Injectable({providedIn: 'root'})
 export class NgbModal {
-  constructor(
-      private _moduleCFR: ComponentFactoryResolver, private _injector: Injector, private _modalStack: NgbModalStack,
-      private _config: NgbModalConfig) {}
+  constructor(private _injector: Injector, private _modalStack: NgbModalStack, private _config: NgbModalConfig) {}
 
   /**
    * Opens a new modal window with the specified content and supplied options.
@@ -28,7 +25,7 @@ export class NgbModal {
    */
   open(content: any, options: NgbModalOptions = {}): NgbModalRef {
     const combinedOptions = {...this._config, animation: this._config.animation, ...options};
-    return this._modalStack.open(this._moduleCFR, this._injector, content, combinedOptions);
+    return this._modalStack.open(this._injector, content, combinedOptions);
   }
 
   /**
