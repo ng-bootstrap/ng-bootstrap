@@ -1,10 +1,10 @@
-<div class="toast-container">
+<div>
   <h6>Body only</h6>
   <ngb-toast [autohide]="false">
     I am a simple static toast.
   </ngb-toast>
 
-  <h6>With a text header</h6>
+  <h6 class="mt-4">With a text header</h6>
   <ngb-toast *ngIf="show" header="Hello" [autohide]="false" (hidden)="show=false">
     I am a simple static toast with a header.
   </ngb-toast>

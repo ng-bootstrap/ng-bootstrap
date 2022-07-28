@@ -11,9 +11,11 @@
   Alternatively you can take full manual control over popover opening / closing events.
 </p>
 
-<button type="button" class="btn btn-outline-secondary me-2" ngbPopover="What a great tip!" [autoClose]="false" triggers="manual" #p="ngbPopover" (click)="p.open()" popoverTitle="Pop title">
-  Click me to open a popover
-</button>
-<button type="button" class="btn btn-outline-secondary me-2" (click)="p.close()">
-  Click me to close a popover
-</button>
+<div class="buttons">
+  <button type="button" class="btn btn-outline-secondary me-2" ngbPopover="What a great tip!" [autoClose]="false" triggers="manual" #p="ngbPopover" (click)="p.open()" popoverTitle="Pop title">
+    Click me to open a popover
+  </button>
+  <button type="button" class="btn btn-outline-secondary me-2" (click)="p.close()">
+    Click me to close a popover
+  </button>
+</div>
