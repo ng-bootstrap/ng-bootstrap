@@ -177,7 +177,7 @@ export class NgbDatepicker implements AfterViewInit,
 
   @ViewChild('defaultDayTemplate', {static: true}) private _defaultDayTemplate: TemplateRef<DayTemplateContext>;
   @ViewChild('content', {static: true}) private _contentEl: ElementRef<HTMLElement>;
-  @ContentChild(NgbDatepickerContent, {static: true}) contentTemplate: NgbDatepickerContent;
+  @ContentChild(NgbDatepickerContent, {static: true}) contentTemplate?: NgbDatepickerContent;
 
   private _controlValue: NgbDate | null = null;
   private _destroyed$ = new Subject<void>();

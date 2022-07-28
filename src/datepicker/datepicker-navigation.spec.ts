@@ -80,7 +80,7 @@ describe('ngb-datepicker-navigation', () => {
   });
 
   it('should make year and month select boxes disabled', () => {
-    const fixture = createTestComponent(`<ngb-datepicker-navigation [disabled]="true"
+    const fixture = createTestComponent(`<ngb-datepicker-navigation [disabled]="true" [date]="date"
       [showSelect]="true" [selectBoxes]="selectBoxes"></ngb-datepicker-navigation>`);
 
     expect(getYearSelect(fixture.nativeElement).disabled).toBeTruthy();
