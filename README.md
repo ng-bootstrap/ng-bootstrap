@@ -33,7 +33,7 @@ The only dependencies are [Angular](https://angular.io), [Bootstrap 5](https://g
 The supported versions are:
 
 | ng-bootstrap | Angular | Bootstrap CSS | Popper |
-| ------------ | ------- | ------------- | -------|
+|--------------|---------|---------------| -------|
 | 1.x.x        | 5.0.2   | 4.0.0         |        |
 | 2.x.x        | 6.0.0   | 4.0.0         |        |
 | 3.x.x        | 6.1.0   | 4.0.0         |        |
@@ -45,7 +45,7 @@ The supported versions are:
 | 10.x.x       | 12.0.0  | 4.5.0         |        |
 | 11.x.x       | 13.0.0  | 4.6.0         |        |
 | 12.x.x       | 13.0.0  | 5.0.0         | 2.10.2 |
-| 13.0.0-beta.1| 14.0.0  | 5.1.0         | 2.10.2 |
+| 13.x.x       | 14.1.0  | 5.2.0         | 2.10.2 |
 
 ## Installation
 
