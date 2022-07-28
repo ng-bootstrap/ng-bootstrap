@@ -2,7 +2,7 @@ import {ViewportScroller} from '@angular/common';
 import {HttpClient} from '@angular/common/http';
 import {Component, NgZone, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {filter, pluck} from 'rxjs/operators';
+import {filter, map} from 'rxjs/operators';
 
 import {environment} from '../environments/environment';
 import {componentsList} from './shared';
@@ -25,7 +25,7 @@ export class AppComponent implements OnInit {
 
     if (environment.production) {
       httpClient.get<{downloads: string}>('https://api.npmjs.org/downloads/point/last-month/@ng-bootstrap/ng-bootstrap')
-          .pipe(pluck('downloads'))
+          .pipe(map(data => data?.downloads))
           .subscribe({next: count => this.downloadCount = count.toLocaleString(), error: () => of('')});
     }
   }
