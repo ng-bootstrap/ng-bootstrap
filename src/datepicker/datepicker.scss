@@ -1,5 +1,5 @@
 ngb-datepicker {
-  border: 1px solid #dfdfdf;
+  border: 1px solid var(--bs-border-color);
   border-radius: .25rem;
   display: inline-block;
 
@@ -21,7 +21,6 @@ ngb-datepicker {
     border-bottom: 0;
     border-radius: .25rem .25rem 0 0;
     padding-top: .25rem;
-    background-color: #f8f9fa;
     background-color: var(--bs-light);
   }
 
@@ -37,7 +36,6 @@ ngb-datepicker {
       height: 2rem;
       line-height: 2rem;
       text-align: center;
-      background-color: #f8f9fa;
       background-color: var(--bs-light);
     }
 

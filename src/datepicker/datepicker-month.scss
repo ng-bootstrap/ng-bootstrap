@@ -10,7 +10,6 @@ ngb-datepicker-month {
     font-style: italic;
   }
   &-weekday {
-    color: #0dcaf0;
     color: var(--bs-info);
   }
   &-week {
@@ -18,9 +17,8 @@ ngb-datepicker-month {
     display: flex;
   }
   &-weekdays {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    border-bottom: 1px solid var(--bs-border-color);
     border-radius: 0;
-    background-color: #f8f9fa;
     background-color: var(--bs-light);
   }
   &-day,
