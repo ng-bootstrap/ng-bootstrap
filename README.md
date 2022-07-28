@@ -81,7 +81,7 @@ Please, do not open issues for the general support questions as we want to keep 
 StackOverflow is a much better place to ask questions since:
 * there are hundreds of people willing to help on StackOverflow
 * questions and answers stay available for public viewing so your question/answer might help someone else
-* SO the voting system assures that the best answers are prominently visible.
+* Stack Overflow's voting system assures that the best answers are prominently visible.
 
 To save your and our time we will be systematically closing all the issues that are requests for general support and redirecting people to StackOverflow.
 
