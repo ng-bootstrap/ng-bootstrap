@@ -21,6 +21,7 @@ import {OffcanvasDismissReasons} from './offcanvas-dismiss-reasons';
 export class NgbOffcanvasBackdrop implements OnInit {
   @Input() animation: boolean;
   @Input() backdropClass: string;
+  @Input() static: boolean;
 
   @Output('dismiss') dismissEvent = new EventEmitter();
 
@@ -43,5 +44,9 @@ export class NgbOffcanvasBackdrop implements OnInit {
         {animation: this.animation, runningTransition: 'stop'});
   }
 
-  dismiss() { this.dismissEvent.emit(OffcanvasDismissReasons.BACKDROP_CLICK); }
+  dismiss() {
+    if (!this.static) {
+      this.dismissEvent.emit(OffcanvasDismissReasons.BACKDROP_CLICK);
+    }
+  }
 }

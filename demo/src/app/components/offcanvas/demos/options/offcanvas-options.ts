@@ -27,6 +27,10 @@ export class NgbdOffcanvasOptions {
     this.offcanvasService.open(content, { backdrop: false });
   }
 
+  openStaticBackdrop(content: TemplateRef<any>) {
+    this.offcanvasService.open(content, { backdrop: 'static' });
+  }
+
   openScroll(content: TemplateRef<any>) {
     this.offcanvasService.open(content, { scroll: true });
   }

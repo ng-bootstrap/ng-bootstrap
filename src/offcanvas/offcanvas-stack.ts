@@ -132,6 +132,7 @@ export class NgbOffcanvasStack {
         backdropInstance[optionName] = options[optionName];
       }
     });
+    backdropInstance.static = (options.backdrop === 'static');
   }
 
   private _getContentRef(
