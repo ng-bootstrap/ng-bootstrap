@@ -108,7 +108,6 @@ describe('ngb-offcanvas', () => {
         const offcanvasEl = document.querySelector('ngb-offcanvas-panel') as HTMLElement;
         expect(offcanvasEl).not.toHaveClass('fade');
         expect(offcanvasEl).toHaveClass('show');
-        expect(offcanvasEl.style.visibility).toBe('visible');
 
         offcanvasInstance.close('some result');
         fixture.detectChanges();
