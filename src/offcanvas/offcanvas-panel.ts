@@ -69,6 +69,7 @@ export class NgbOffcanvasPanel implements OnInit,
     const context: NgbTransitionOptions<any> = {animation: this.animation, runningTransition: 'stop'};
 
     const offcanvasTransition$ = ngbRunTransition(this._zone, this._elRef.nativeElement, (element) => {
+      nativeElement.classList.remove('showing');
       nativeElement.classList.add('hiding');
       return () => nativeElement.classList.remove('show', 'hiding');
     }, context);
