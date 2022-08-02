@@ -2,6 +2,7 @@ import {ChangeDetectionStrategy, Component, DebugElement, ViewChild} from '@angu
 import {ComponentFixture, fakeAsync, inject, TestBed, tick} from '@angular/core/testing';
 import {UntypedFormControl, UntypedFormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {By} from '@angular/platform-browser';
+import {Options} from '@popperjs/core';
 import {merge, Observable, of, OperatorFunction, Subject} from 'rxjs';
 import {debounceTime, filter, map} from 'rxjs/operators';
 
@@ -12,7 +13,7 @@ import {Key} from '../util/key';
 import {NgbTypeahead} from './typeahead';
 import {NgbTypeaheadConfig} from './typeahead-config';
 import {NgbTypeaheadModule} from './typeahead.module';
-
+import createSpy = jasmine.createSpy;
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -460,6 +461,26 @@ describe('ngb-typeahead', () => {
       expect(win.classList).toContain('test');
       expect(win.classList).toContain('other');
     });
+
+    it('should modify the popper options', (done) => {
+      const fixture = createTestComponent(`<input type="text" [(ngModel)]="model" [ngbTypeahead]="find" />`);
+
+      const typeahead = fixture.debugElement.query(By.directive(NgbTypeahead)).injector.get(NgbTypeahead);
+
+      const spy = createSpy();
+      typeahead.popperOptions = (options: Partial<Options>) => {
+        options.modifiers !.push({name: 'test', enabled: true, phase: 'main', fn: spy});
+        return options;
+      };
+      const compiled = fixture.nativeElement;
+      changeInput(compiled, 'one');
+
+      queueMicrotask(() => {
+        expect(spy).toHaveBeenCalledTimes(1);
+        done();
+      });
+    });
+
   });
 
   describe('with async typeahead function', () => {

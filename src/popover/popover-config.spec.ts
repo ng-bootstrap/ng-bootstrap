@@ -9,6 +9,7 @@ describe('ngb-popover-config', () => {
     expect(config.animation).toBe(ngbConfig.animation);
     expect(config.autoClose).toBe(true);
     expect(config.placement).toBe('auto');
+    expect(config.popperOptions({})).toEqual({});
     expect(config.triggers).toBe('click');
     expect(config.container).toBeUndefined();
     expect(config.disablePopover).toBe(false);

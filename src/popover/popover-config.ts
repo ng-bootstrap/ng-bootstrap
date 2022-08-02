@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {PlacementArray} from '../util/positioning';
 import {NgbConfig} from '../ngb-config';
+import {Options} from '@popperjs/core';
 
 /**
  * A configuration service for the [`NgbPopover`](#/components/popover/api#NgbPopover) component.
@@ -12,6 +13,7 @@ import {NgbConfig} from '../ngb-config';
 export class NgbPopoverConfig {
   autoClose: boolean | 'inside' | 'outside' = true;
   placement: PlacementArray = 'auto';
+  popperOptions = (options: Partial<Options>) => options;
   triggers = 'click';
   container: string;
   disablePopover = false;

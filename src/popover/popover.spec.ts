@@ -21,6 +21,7 @@ import {NgbPopoverConfig} from './popover-config';
 import {NgbTooltip, NgbTooltipModule} from '..';
 import {NgbConfig} from '../ngb-config';
 import {NgbConfigAnimation} from '../test/ngb-config-animation';
+import {Options} from '@popperjs/core';
 
 @Injectable()
 class SpyService {
@@ -508,6 +509,22 @@ describe('ngb-popover', () => {
          expect(windowEl.textContent.trim()).toBe('Great tip!');
        }));
 
+    it('should modify the popper options', (done) => {
+      const fixture = createTestComponent(`<div ngbPopover="Great tip!" placement="right">Trigger</div>`);
+      const popover = fixture.debugElement.query(By.directive(NgbPopover)).injector.get(NgbPopover);
+
+      const spy = createSpy();
+      popover.popperOptions = (options: Partial<Options>) => {
+        options.modifiers !.push({name: 'test', enabled: true, phase: 'main', fn: spy});
+        return options;
+      };
+      popover.open();
+
+      queueMicrotask(() => {
+        expect(spy).toHaveBeenCalledTimes(1);
+        done();
+      });
+    });
   });
 
   describe('container', () => {

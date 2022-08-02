@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 
 import {NgbDatepickerConfig} from './datepicker-config';
 import {PlacementArray} from '../util/positioning';
+import {Options} from '@popperjs/core';
 
 /**
  * A configuration service for the [`NgbDatepickerInput`](#/components/datepicker/api#NgbDatepicker) component.
@@ -17,5 +18,6 @@ export class NgbInputDatepickerConfig extends NgbDatepickerConfig {
   container: null | 'body';
   positionTarget: string | HTMLElement;
   placement: PlacementArray = ['bottom-start', 'bottom-end', 'top-start', 'top-end'];
+  popperOptions = (options: Partial<Options>) => options;
   restoreFocus: true | HTMLElement | string = true;
 }

@@ -12,6 +12,7 @@ import {NgbDatepicker} from './datepicker';
 import {NgbDateStruct} from './ngb-date-struct';
 import {NgbDate} from './ngb-date';
 import {NgbInputDatepickerConfig} from './datepicker-input-config';
+import {Options} from '@popperjs/core';
 
 const createTestCmpt = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -981,6 +982,29 @@ describe('NgbInputDatepicker', () => {
          // browser starts scrolling if focus was set before popper positioning
          setTimeout(() => expect(document.documentElement.scrollTop).toBe(0), 10);
        }));
+
+    it('should modify the popper options', (done) => {
+      const fixture = createTestCmpt(`
+        <input ngbDatepicker container="body"/>
+        <div style="height: 10000px"></div>
+      `);
+      const datepickerInput =
+          fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
+
+      const spy = createSpy();
+      datepickerInput.popperOptions = (options: Partial<Options>) => {
+        options.modifiers !.push({name: 'test', enabled: true, phase: 'main', fn: spy});
+        return options;
+      };
+      datepickerInput.open();
+
+      queueMicrotask(() => {
+        expect(spy).toHaveBeenCalledTimes(1);
+        done();
+      });
+    });
+
+
   });
 
   describe('focus restore', () => {

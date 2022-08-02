@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {Options} from '@popperjs/core';
 import {PlacementArray} from '../util/positioning';
 
 /**
@@ -11,5 +12,6 @@ import {PlacementArray} from '../util/positioning';
 export class NgbDropdownConfig {
   autoClose: boolean | 'outside' | 'inside' = true;
   placement: PlacementArray = ['bottom-start', 'bottom-end', 'top-start', 'top-end'];
+  popperOptions = (options: Partial<Options>) => options;
   container: null | 'body';
 }

@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {PlacementArray} from '../util/positioning';
+import {Options} from '@popperjs/core';
 
 /**
  * A configuration service for the [`NgbTypeahead`](#/components/typeahead/api#NgbTypeahead) component.
@@ -14,4 +15,5 @@ export class NgbTypeaheadConfig {
   focusFirst = true;
   showHint = false;
   placement: PlacementArray = ['bottom-start', 'bottom-end', 'top-start', 'top-end'];
+  popperOptions = (options: Partial<Options>) => options;
 }

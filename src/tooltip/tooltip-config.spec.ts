@@ -10,6 +10,7 @@ describe('ngb-tooltip-config', () => {
     expect(config.animation).toBe(ngbConfig.animation);
     expect(config.autoClose).toBe(true);
     expect(config.placement).toBe('auto');
+    expect(config.popperOptions({})).toEqual({});
     expect(config.triggers).toBe('hover focus');
     expect(config.container).toBeUndefined();
     expect(config.disableTooltip).toBe(false);

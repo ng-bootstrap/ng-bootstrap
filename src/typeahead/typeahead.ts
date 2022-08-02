@@ -29,6 +29,7 @@ import {ngbAutoClose} from '../util/autoclose';
 import {Key} from '../util/key';
 import {PopupService} from '../util/popup';
 import {PlacementArray, ngbPositioning} from '../util/positioning';
+import {Options} from '@popperjs/core';
 import {isDefined, toString} from '../util/util';
 
 import {NgbTypeaheadConfig} from './typeahead-config';
@@ -166,14 +167,22 @@ export class NgbTypeahead implements ControlValueAccessor,
   @Input() placement: PlacementArray = 'bottom-start';
 
   /**
-  * A custom class to append to the typeahead popup window
-  *
-  * Accepts a string containing CSS class to be applied on the `ngb-typeahead-window`.
-  *
-  * This can be used to provide instance-specific styling, ex. you can override popup window `z-index`
-  *
-  * @since 9.1.0
-  */
+   * Allow to change the default options for popper.
+   *
+   * The provided function receives the current options in the first parameter
+   * and will return the new options
+   */
+  @Input() popperOptions: (options: Partial<Options>) => Partial<Options>;
+
+  /**
+ * A custom class to append to the typeahead popup window
+ *
+ * Accepts a string containing CSS class to be applied on the `ngb-typeahead-window`.
+ *
+ * This can be used to provide instance-specific styling, ex. you can override popup window `z-index`
+ *
+ * @since 9.1.0
+ */
   @Input() popupClass: string;
 
   /**
@@ -199,6 +208,7 @@ export class NgbTypeahead implements ControlValueAccessor,
     this.focusFirst = config.focusFirst;
     this.showHint = config.showHint;
     this.placement = config.placement;
+    this.popperOptions = config.popperOptions;
 
     this._valueChanges = fromEvent<Event>(_elementRef.nativeElement, 'input')
                              .pipe(map($event => ($event.target as HTMLInputElement).value));
@@ -318,7 +328,7 @@ export class NgbTypeahead implements ControlValueAccessor,
             targetElement: this._windowRef.location.nativeElement,
             placement: this.placement,
             appendToBody: this.container === 'body',
-            updatePopperOptions: addPopperOffset([0, 2]),
+            updatePopperOptions: (options) => this.popperOptions(addPopperOffset([0, 2])(options)),
           });
 
           this._zoneSubscription = this._ngZone.onStable.subscribe(() => this._positioning.update());

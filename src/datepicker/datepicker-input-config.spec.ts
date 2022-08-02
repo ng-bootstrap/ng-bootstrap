@@ -8,6 +8,7 @@ describe('NgbInputDatepickerConfig', () => {
     expect(config.container).toBeUndefined();
     expect(config.positionTarget).toBeUndefined();
     expect(config.placement).toEqual(['bottom-start', 'bottom-end', 'top-start', 'top-end']);
+    expect(config.popperOptions({})).toEqual({});
     expect(config.restoreFocus).toBe(true);
   });
 });

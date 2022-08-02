@@ -7,6 +7,7 @@ import {Component} from '@angular/core';
 import {NgbDropdown, NgbDropdownModule} from './dropdown.module';
 import {NgbDropdownConfig} from './dropdown-config';
 import {By} from '@angular/platform-browser';
+import {Options} from '@popperjs/core';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -461,6 +462,34 @@ describe('ngb-dropdown-toggle', () => {
            .toBeLessThan(3, 'Wrong dropdown placement');
 
      }));
+
+  it('should modify the popper options', (done) => {
+    const fixture = createTestComponent(`
+    <div ngbDropdown placement="start-top end-top">
+        <button ngbDropdownToggle>
+          <span class="toggle">Toggle dropdown</span>
+        </button>
+        <div ngbDropdownMenu>
+          <a ngbDropdownItem>dropDown item</a>
+          <a ngbDropdownItem>dropDown item</a>
+      </div>
+    </div>`);
+    const dropdown = fixture.debugElement.query(By.directive(NgbDropdown)).injector.get(NgbDropdown);
+
+    const spy = createSpy();
+    dropdown.popperOptions = (options: Partial<Options>) => {
+      options.modifiers !.push({name: 'test', enabled: true, phase: 'main', fn: spy});
+      return options;
+    };
+    dropdown.open();
+
+    queueMicrotask(() => {
+      expect(spy).toHaveBeenCalledTimes(1);
+      done();
+    });
+  });
+
+
 
   describe('ngb-dropdown-navbar', () => {
     it(`shouldn't position the menu`, () => {

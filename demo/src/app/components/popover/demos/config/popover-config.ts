@@ -11,5 +11,15 @@ export class NgbdPopoverConfig {
     // customize default values of popovers used by this component tree
     config.placement = 'end';
     config.triggers = 'hover';
+
+    // example of usage for popperOptions
+    config.popperOptions = (options) => {
+      for (const modifier of(options.modifiers || [])) {
+        if (modifier.name === 'offset' && modifier.options) {
+          modifier.options.offset = () => [30, 8];
+        }
+      }
+      return options;
+    };
   }
 }

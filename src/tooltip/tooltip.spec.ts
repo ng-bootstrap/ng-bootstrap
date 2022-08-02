@@ -19,6 +19,7 @@ import {NgbTooltipConfig} from './tooltip-config';
 import {NgbConfig} from '../ngb-config';
 import {NgbConfigAnimation} from '../test/ngb-config-animation';
 import createSpy = jasmine.createSpy;
+import {Options} from '@popperjs/core';
 
 const createTestComponent =
     (html: string) => <ComponentFixture<TestComponent>>createGenericTestComponent(html, TestComponent);
@@ -401,6 +402,23 @@ describe('ngb-tooltip', () => {
            expect(windowEl.getAttribute('class')).toMatch('bs-tooltip-.');
            expect(windowEl.textContent.trim()).toBe('Great tip!');
          }));
+
+      it('should modify the popper options', (done) => {
+        const fixture = createTestComponent(`<div ngbTooltip="Great tip!" placement="auto"></div>`);
+        const tooltip = fixture.debugElement.query(By.directive(NgbTooltip)).injector.get(NgbTooltip);
+
+        const spy = createSpy();
+        tooltip.popperOptions = (options: Partial<Options>) => {
+          options.modifiers !.push({name: 'test', enabled: true, phase: 'main', fn: spy});
+          return options;
+        };
+        tooltip.open();
+
+        queueMicrotask(() => {
+          expect(spy).toHaveBeenCalledTimes(1);
+          done();
+        });
+      });
 
     });
 
