@@ -29,6 +29,7 @@ import {
 import {ngbAutoClose} from '../util/autoclose';
 import {ngbFocusTrap} from '../util/focus-trap';
 import {PlacementArray, ngbPositioning} from '../util/positioning';
+import {Options} from '@popperjs/core';
 
 import {NgbDateAdapter} from './adapters/ngb-date-adapter';
 import {NgbDatepicker, NgbDatepickerNavigateEvent} from './datepicker';
@@ -191,13 +192,21 @@ export class NgbInputDatepicker implements OnChanges,
   @Input() placement: PlacementArray;
 
   /**
-   * If `true`, when closing datepicker will focus element that was focused before datepicker was opened.
+   * Allow to change the default options for popper.
    *
-   * Alternatively you could provide a selector or an `HTMLElement` to focus. If the element doesn't exist or invalid,
-   * we'll fallback to focus document body.
-   *
-   * @since 5.2.0
+   * The provided function receives the current options in the first parameter
+   * and will return the new options
    */
+  @Input() popperOptions: (options: Partial<Options>) => Partial<Options>;
+
+  /**
+  * If `true`, when closing datepicker will focus element that was focused before datepicker was opened.
+  *
+  * Alternatively you could provide a selector or an `HTMLElement` to focus. If the element doesn't exist or invalid,
+  * we'll fallback to focus document body.
+  *
+  * @since 5.2.0
+  */
   @Input() restoreFocus: true | string | HTMLElement;
 
   /**
@@ -289,6 +298,7 @@ export class NgbInputDatepicker implements OnChanges,
       @Inject(DOCUMENT) private _document: any, private _changeDetector: ChangeDetectorRef,
       config: NgbInputDatepickerConfig) {
     ['autoClose', 'container', 'positionTarget', 'placement'].forEach(input => this[input] = config[input]);
+    this.popperOptions = config.popperOptions;
   }
 
   registerOnChange(fn: (value: any) => any): void { this._onChange = fn; }
@@ -394,7 +404,7 @@ export class NgbInputDatepicker implements OnChanges,
             targetElement: this._cRef.location.nativeElement,
             placement: this.placement,
             appendToBody: this.container === 'body',
-            updatePopperOptions: addPopperOffset([0, 2])
+            updatePopperOptions: (options) => this.popperOptions(addPopperOffset([0, 2])(options)),
           });
 
           this._zoneSubscription = this._ngZone.onStable.subscribe(() => this._positioning.update());

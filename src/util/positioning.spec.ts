@@ -55,11 +55,6 @@ describe('positioning', () => {
   it('should convert popper classes to bootstrap classes', () => {
 
     for (const[popperClass, bsClass] of Object.entries(matchingPopperBootstrapPlacements)) {
-      if (bsClass !== getBootstrapBaseClassPlacement('', popperClass as PopperPlacement)) {
-        console.log(
-            '(DEBUG)   popperClass', popperClass, bsClass,
-            getBootstrapBaseClassPlacement('', popperClass as PopperPlacement));
-      }
       expect(getBootstrapBaseClassPlacement('', popperClass as PopperPlacement)).toBe(bsClass);
     }
   });

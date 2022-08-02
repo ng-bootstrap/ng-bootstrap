@@ -23,6 +23,7 @@ import {fromEvent, Subject, Subscription} from 'rxjs';
 import {take} from 'rxjs/operators';
 
 import {Placement, PlacementArray, ngbPositioning} from '../util/positioning';
+import {Options} from '@popperjs/core';
 import {addPopperOffset} from '../util/positioning-util';
 import {ngbAutoClose, SOURCE} from '../util/autoclose';
 import {Key} from '../util/key';
@@ -191,11 +192,19 @@ export class NgbDropdown implements AfterContentInit, OnChanges, OnDestroy {
   @Input() placement: PlacementArray;
 
   /**
-  * A selector specifying the element the dropdown should be appended to.
-  * Currently only supports "body".
-  *
-  * @since 4.1.0
-  */
+   * Allow to change the default options for popper.
+   *
+   * The provided function receives the current options in the first parameter
+   * and will return the new options
+   */
+  @Input() popperOptions: (options: Partial<Options>) => Partial<Options>;
+
+  /**
+ * A selector specifying the element the dropdown should be appended to.
+ * Currently only supports "body".
+ *
+ * @since 4.1.0
+ */
   @Input() container: null | 'body';
 
   /**
@@ -222,6 +231,7 @@ export class NgbDropdown implements AfterContentInit, OnChanges, OnDestroy {
       private _ngZone: NgZone, private _elementRef: ElementRef<HTMLElement>, private _renderer: Renderer2,
       @Optional() ngbNavbar: NgbNavbar) {
     this.placement = config.placement;
+    this.popperOptions = config.popperOptions;
     this.container = config.container;
     this.autoClose = config.autoClose;
 
@@ -286,7 +296,7 @@ export class NgbDropdown implements AfterContentInit, OnChanges, OnDestroy {
               targetElement: this._bodyContainer || this._menu.nativeElement,
               placement: this.placement,
               appendToBody: this.container === 'body',
-              updatePopperOptions: addPopperOffset([0, 2]),
+              updatePopperOptions: (options) => this.popperOptions(addPopperOffset([0, 2])(options)),
             });
             this._applyPlacementClasses();
             this._zoneSubscription = this._ngZone.onStable.subscribe(() => this._positionMenu());

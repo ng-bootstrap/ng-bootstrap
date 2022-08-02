@@ -5,6 +5,7 @@ describe('ngb-dropdown-config', () => {
     const config = new NgbDropdownConfig();
 
     expect(config.placement).toEqual(['bottom-start', 'bottom-end', 'top-start', 'top-end']);
+    expect(config.popperOptions({})).toEqual({});
     expect(config.autoClose).toBe(true);
   });
 

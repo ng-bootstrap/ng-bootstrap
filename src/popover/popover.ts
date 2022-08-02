@@ -29,6 +29,7 @@ import {ngbPositioning, PlacementArray} from '../util/positioning';
 import {PopupService} from '../util/popup';
 
 import {NgbPopoverConfig} from './popover-config';
+import {Options} from '@popperjs/core';
 
 import {addPopperOffset} from '../util/positioning-util';
 import {Subscription} from 'rxjs';
@@ -114,6 +115,14 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
   @Input() placement: PlacementArray;
 
   /**
+   * Allow to change the default options for popper.
+   *
+   * The provided function receives the current options in the first parameter
+   * and will return the new options
+   */
+  @Input() popperOptions: (options: Partial<Options>) => Partial<Options>;
+
+  /**
    * Specifies events that should trigger the tooltip.
    *
    * Supports a space separated list of event names.
@@ -192,6 +201,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
     this.animation = config.animation;
     this.autoClose = config.autoClose;
     this.placement = config.placement;
+    this.popperOptions = config.popperOptions;
     this.triggers = config.triggers;
     this.container = config.container;
     this.disablePopover = config.disablePopover;
@@ -246,7 +256,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
           placement: this.placement,
           appendToBody: this.container === 'body',
           baseClass: 'bs-popover',
-          updatePopperOptions: addPopperOffset([0, 8]),
+          updatePopperOptions: (options) => this.popperOptions(addPopperOffset([0, 8])(options)),
         });
 
         Promise.resolve().then(() => {

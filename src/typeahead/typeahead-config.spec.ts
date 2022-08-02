@@ -8,5 +8,7 @@ describe('ngb-typeahead-config', () => {
     expect(config.editable).toBeTruthy();
     expect(config.focusFirst).toBeTruthy();
     expect(config.showHint).toBeFalsy();
+    expect(config.placement).toEqual(['bottom-start', 'bottom-end', 'top-start', 'top-end']);
+    expect(config.popperOptions({})).toEqual({});
   });
 });

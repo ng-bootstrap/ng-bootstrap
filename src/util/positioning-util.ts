@@ -1,7 +1,7 @@
 import {offset as offsetModifier, Options} from '@popperjs/core';
 
 export function addPopperOffset(offset: number[]) {
-  return (options: Options) => {
+  return (options: Partial<Options>) => {
     options.modifiers !.push(offsetModifier, {
       name: 'offset',
       options: {

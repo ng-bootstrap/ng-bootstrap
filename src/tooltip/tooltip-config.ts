@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {PlacementArray} from '../util/positioning';
 import {NgbConfig} from '../ngb-config';
+import {Options} from '@popperjs/core';
 
 /**
  * A configuration service for the [`NgbTooltip`](#/components/tooltip/api#NgbTooltip) component.
@@ -12,6 +13,7 @@ import {NgbConfig} from '../ngb-config';
 export class NgbTooltipConfig {
   autoClose: boolean | 'inside' | 'outside' = true;
   placement: PlacementArray = 'auto';
+  popperOptions = (options: Partial<Options>) => options;
   triggers = 'hover focus';
   container: string;
   disableTooltip = false;

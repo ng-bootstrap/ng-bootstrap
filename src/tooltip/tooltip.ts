@@ -27,6 +27,7 @@ import {listenToTriggers} from '../util/triggers';
 import {ngbAutoClose} from '../util/autoclose';
 import {ngbPositioning, PlacementArray} from '../util/positioning';
 import {PopupService} from '../util/popup';
+import {Options} from '@popperjs/core';
 
 import {NgbTooltipConfig} from './tooltip-config';
 import {Subscription} from 'rxjs';
@@ -86,6 +87,15 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
    * Please see the [positioning overview](#/positioning) for more details.
    */
   @Input() placement: PlacementArray;
+
+  /**
+   * Allow to change the default options for popper.
+   *
+   * The provided function receives the current options in the first parameter
+   * and will return the new options
+   */
+  @Input() popperOptions: (options: Partial<Options>) => Partial<Options>;
+
 
   /**
    * Specifies events that should trigger the tooltip.
@@ -156,6 +166,7 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
     this.animation = config.animation;
     this.autoClose = config.autoClose;
     this.placement = config.placement;
+    this.popperOptions = config.popperOptions;
     this.triggers = config.triggers;
     this.container = config.container;
     this.disableTooltip = config.disableTooltip;
@@ -221,6 +232,7 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
           placement: this.placement,
           appendToBody: this.container === 'body',
           baseClass: 'bs-tooltip',
+          updatePopperOptions: (options) => this.popperOptions(options),
         });
 
         Promise.resolve().then(() => {
