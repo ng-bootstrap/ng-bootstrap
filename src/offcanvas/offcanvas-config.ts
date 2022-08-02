@@ -94,7 +94,7 @@ export interface NgbOffcanvasOptions {
 export class NgbOffcanvasConfig implements Required<NgbOffcanvasOptions> {
   ariaDescribedBy: string;
   ariaLabelledBy: string;
-  backdrop = true;
+  backdrop: boolean | 'static' = true;
   backdropClass: string;
   beforeDismiss: () => boolean | Promise<boolean>;
   container: string | HTMLElement;

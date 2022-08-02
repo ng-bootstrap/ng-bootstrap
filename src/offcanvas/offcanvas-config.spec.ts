@@ -21,4 +21,10 @@ describe('NgbOffcanvasConfig', () => {
        expect(config.position).toBe('start');
        expect(config.scroll).toBeFalse();
      }));
+
+  it('should compile when setting config backdrop to static',
+     inject([NgbOffcanvasConfig], (config: NgbOffcanvasConfig) => {
+       config.backdrop = 'static';
+       expect().nothing();
+     }));
 });
