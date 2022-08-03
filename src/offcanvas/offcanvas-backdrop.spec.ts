@@ -44,4 +44,17 @@ describe('ngb-offcanvas-backdrop', () => {
 
     expect(emittedEvent).toBe(OffcanvasDismissReasons.BACKDROP_CLICK);
   });
+
+  it('should not emit dismiss event on mousedown if static is true', () => {
+    const fixture = TestBed.createComponent(NgbOffcanvasBackdrop);
+    fixture.componentInstance.static = true;
+    fixture.detectChanges();
+
+    let emittedEvent: any;
+    fixture.componentInstance.dismissEvent.subscribe(event => emittedEvent = event);
+    fixture.nativeElement.dispatchEvent(new Event('mousedown'));
+    fixture.detectChanges();
+
+    expect(emittedEvent).toBeUndefined();
+  });
 });

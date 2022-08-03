@@ -401,6 +401,43 @@ describe('ngb-offcanvas', () => {
         expect(fixture.nativeElement).not.toHaveOffcanvasBackdrop();
       });
 
+      it('should open and close offcanvas with static backdrop', () => {
+        const offcanvasInstance = fixture.componentInstance.open('foo', {backdrop: 'static'});
+        fixture.detectChanges();
+
+        expect(fixture.nativeElement).toHaveOffcanvas('foo');
+        expect(fixture.nativeElement).toHaveOffcanvasBackdrop();
+
+        offcanvasInstance.close('some reason');
+        fixture.detectChanges();
+
+        expect(fixture.nativeElement).not.toHaveOffcanvas();
+        expect(fixture.nativeElement).not.toHaveOffcanvasBackdrop();
+      });
+
+      it('should not close with backdrop mousedown if backdrop is static', async() => {
+        let rejectReason: any;
+        const offcanvasInstance = fixture.componentInstance.open('foo', {backdrop: 'static'});
+        offcanvasInstance.result.catch((reason) => rejectReason = reason);
+        fixture.detectChanges();
+        expect(fixture.nativeElement).toHaveOffcanvas('foo');
+
+        document.querySelector('ngb-offcanvas-backdrop') ?.dispatchEvent(new Event('mousedown'));
+        fixture.detectChanges();
+
+        expect(fixture.nativeElement).toHaveOffcanvas();
+        expect(fixture.nativeElement).toHaveOffcanvasBackdrop();
+
+        await fixture.whenStable();
+        expect(rejectReason).toBeUndefined();
+
+        offcanvasInstance.close('some reason');
+        fixture.detectChanges();
+
+        expect(fixture.nativeElement).not.toHaveOffcanvas();
+        expect(fixture.nativeElement).not.toHaveOffcanvasBackdrop();
+      });
+
       it('should open and close offcanvas without backdrop from template content', () => {
         const offcanvasInstance = fixture.componentInstance.openTpl({backdrop: false});
         fixture.detectChanges();
