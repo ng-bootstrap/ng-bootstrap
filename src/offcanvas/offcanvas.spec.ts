@@ -108,7 +108,6 @@ describe('ngb-offcanvas', () => {
         const offcanvasEl = document.querySelector('ngb-offcanvas-panel') as HTMLElement;
         expect(offcanvasEl).not.toHaveClass('fade');
         expect(offcanvasEl).toHaveClass('show');
-        expect(offcanvasEl.style.visibility).toBe('visible');
 
         offcanvasInstance.close('some result');
         fixture.detectChanges();
@@ -804,7 +803,14 @@ describe('ngb-offcanvas', () => {
 
                expect(window.getComputedStyle(offcanvasEl).transform).toBe('none');
                expect(offcanvasEl).toHaveClass('show');
+               expect(offcanvasEl).not.toHaveClass('showing');
+
                closeButton.click();
+               component.detectChanges();
+
+               expect(offcanvasEl).toHaveClass('show');
+               expect(offcanvasEl).not.toHaveClass('showing');
+               expect(offcanvasEl).toHaveClass('hiding');
              });
 
              offcanvasRef.hidden.subscribe(() => {
@@ -815,11 +821,48 @@ describe('ngb-offcanvas', () => {
 
              component.detectChanges();
              offcanvasEl = document.querySelector('ngb-offcanvas-panel');
+
              // if reducedMotion is true, modal would be opened and closed already at this point
              if (offcanvasEl) {
+               expect(offcanvasEl).toHaveClass('show');
+               expect(offcanvasEl).toHaveClass('showing');
                expect(window.getComputedStyle(offcanvasEl).transform).toMatch(/matrix.*/);
              }
            });
+      });
+
+      it(`should start hiding even if the show animation isn't finished yet`, (done) => {
+        const component = TestBed.createComponent(TestAnimationComponent);
+        component.detectChanges();
+
+        const offcanvasRef = component.componentInstance.open();
+
+        // Ensure that everything works fine after a reflow
+        document.body.getBoundingClientRect();
+
+        let offcanvasEl: HTMLElement | null = null;
+
+        offcanvasRef.hidden.subscribe(() => {
+          offcanvasEl = document.querySelector('ngb-offcanvas-panel');
+          expect(offcanvasEl).toBeNull();
+          done();
+        });
+
+        component.detectChanges();
+        offcanvasEl = document.querySelector('ngb-offcanvas-panel');
+
+        expect(offcanvasEl).toHaveClass('show');
+        expect(offcanvasEl).toHaveClass('showing');
+
+        const closeButton = document.querySelector('button#close') as HTMLButtonElement;
+        closeButton.click();
+        component.detectChanges();
+
+
+
+        expect(offcanvasEl).toHaveClass('show');
+        expect(offcanvasEl).not.toHaveClass('showing');
+        expect(offcanvasEl).toHaveClass('hiding');
       });
     });
   }
