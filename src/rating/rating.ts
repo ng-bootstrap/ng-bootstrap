@@ -42,7 +42,7 @@ export interface StarTemplateContext {
   encapsulation: ViewEncapsulation.None,
   host: {
     'class': 'd-inline-flex',
-    '[tabindex]': 'disabled ? -1 : 0',
+    '[tabindex]': 'disabled ? -1 : tabindex',
     'role': 'slider',
     'aria-valuemin': '0',
     '[attr.aria-valuemax]': 'max',
@@ -70,7 +70,6 @@ export class NgbRating implements ControlValueAccessor,
   contexts: StarTemplateContext[] = [];
   disabled = false;
   nextRate: number;
-
 
   /**
    * The maximal rating that can be given.
@@ -101,6 +100,12 @@ export class NgbRating implements ControlValueAccessor,
   @ContentChild(TemplateRef, {static: false}) starTemplateFromContent: TemplateRef<StarTemplateContext>;
 
   /**
+   * Allows setting a custom rating tabindex.
+   * If the component is disabled, `tabindex` will still be set to `-1`.
+   */
+  @Input() tabindex: number | string;
+
+  /**
    * An event emitted when the user is hovering over a given rating.
    *
    * Event payload equals to the rating being hovered over.
@@ -127,6 +132,7 @@ export class NgbRating implements ControlValueAccessor,
   constructor(config: NgbRatingConfig, private _changeDetectorRef: ChangeDetectorRef) {
     this.max = config.max;
     this.readonly = config.readonly;
+    this.tabindex = config.tabindex;
   }
 
   ariaValueText() { return `${this.nextRate} out of ${this.max}`; }
