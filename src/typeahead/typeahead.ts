@@ -28,6 +28,7 @@ import {Live} from '../util/accessibility/live';
 import {ngbAutoClose} from '../util/autoclose';
 import {Key} from '../util/key';
 import {PopupService} from '../util/popup';
+import {NgbRTL} from '../util/rtl';
 import {PlacementArray, ngbPositioning} from '../util/positioning';
 import {Options} from '@popperjs/core';
 import {isDefined, toString} from '../util/util';
@@ -85,7 +86,7 @@ export class NgbTypeahead implements ControlValueAccessor,
   private _resubscribeTypeahead: BehaviorSubject<any>;
   private _windowRef: ComponentRef<NgbTypeaheadWindow>| null = null;
   private _zoneSubscription: Subscription;
-  private _positioning = ngbPositioning();
+  private _positioning: ReturnType<typeof ngbPositioning>;
 
   /**
    * The value for the `autocomplete` attribute for the `<input>` element.
@@ -199,7 +200,7 @@ export class NgbTypeahead implements ControlValueAccessor,
   private _onChange = (_: any) => {};
 
   constructor(
-      private _elementRef: ElementRef<HTMLInputElement>, viewContainerRef: ViewContainerRef,
+      private _elementRef: ElementRef<HTMLInputElement>, _rtl: NgbRTL, viewContainerRef: ViewContainerRef,
       private _renderer: Renderer2, injector: Injector, config: NgbTypeaheadConfig, ngZone: NgZone, private _live: Live,
       @Inject(DOCUMENT) private _document: any, private _ngZone: NgZone, private _changeDetector: ChangeDetectorRef,
       applicationRef: ApplicationRef) {
@@ -217,6 +218,7 @@ export class NgbTypeahead implements ControlValueAccessor,
 
     this._popupService = new PopupService<NgbTypeaheadWindow>(
         NgbTypeaheadWindow, injector, viewContainerRef, _renderer, this._ngZone, applicationRef);
+    this._positioning = ngbPositioning(_rtl);
   }
 
   ngOnInit(): void { this._subscribeToUserInput(); }
