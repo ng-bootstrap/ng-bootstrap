@@ -1,5 +1,7 @@
 import {getBootstrapBaseClassPlacement, getPopperClassPlacement, ngbPositioning, Placement} from './positioning';
 import {Placement as PopperPlacement} from '@popperjs/core';
+import {NgbRTL} from './rtl';
+
 describe('positioning', () => {
 
   /**
@@ -30,6 +32,34 @@ describe('positioning', () => {
     'right-bottom': 'right-end'
   };
 
+  /**
+   * Object of bootstrap classes for the keys, and their corresponding popper ones in the values, for RTL
+   */
+  const matchingBootstrapPopperPlacementsRTL = {
+    'top': 'top',
+    'bottom': 'bottom',
+    'start': 'right',
+    'left': 'left',
+    'end': 'left',
+    'right': 'right',
+    'top-start': 'top-end',
+    'top-left': 'top-start',
+    'top-end': 'top-start',
+    'top-right': 'top-end',
+    'bottom-start': 'bottom-end',
+    'bottom-left': 'bottom-start',
+    'bottom-end': 'bottom-start',
+    'bottom-right': 'bottom-end',
+    'start-top': 'right-start',
+    'left-top': 'left-start',
+    'start-bottom': 'right-end',
+    'left-bottom': 'left-end',
+    'end-top': 'left-start',
+    'right-top': 'right-start',
+    'end-bottom': 'left-end',
+    'right-bottom': 'right-end'
+  };
+
   const matchingPopperBootstrapPlacements = {
     'top': 'top',
     'bottom': 'bottom',
@@ -46,14 +76,19 @@ describe('positioning', () => {
   };
 
   it('should convert bootstrap classes to popper classes', () => {
-
     for (const[bsClass, popperClass] of Object.entries(matchingBootstrapPopperPlacements)) {
-      expect(getPopperClassPlacement(bsClass as Placement)).toBe(popperClass);
+      expect(getPopperClassPlacement(bsClass as Placement, false))
+          .toBe(popperClass, `failed conversion for ${bsClass}`);
+    }
+  });
+
+  it('should convert bootstrap classes to popper classes (RTL)', () => {
+    for (const[bsClass, popperClass] of Object.entries(matchingBootstrapPopperPlacementsRTL)) {
+      expect(getPopperClassPlacement(bsClass as Placement, true)).toBe(popperClass, `failed conversion for ${bsClass}`);
     }
   });
 
   it('should convert popper classes to bootstrap classes', () => {
-
     for (const[popperClass, bsClass] of Object.entries(matchingPopperBootstrapPlacements)) {
       expect(getBootstrapBaseClassPlacement('', popperClass as PopperPlacement)).toBe(bsClass);
     }
@@ -84,7 +119,7 @@ describe('positioning', () => {
       ['top', 'bs-base-top']
     ];
 
-    const positioning = ngbPositioning();
+    const positioning = ngbPositioning({ isRTL: () => false } as NgbRTL);
     const options = {
       targetElement: document.createElement('div'),
       hostElement: document.createElement('div'),

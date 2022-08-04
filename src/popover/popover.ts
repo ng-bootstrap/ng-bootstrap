@@ -27,6 +27,7 @@ import {listenToTriggers} from '../util/triggers';
 import {ngbAutoClose} from '../util/autoclose';
 import {ngbPositioning, PlacementArray} from '../util/positioning';
 import {PopupService} from '../util/popup';
+import {NgbRTL} from '../util/rtl';
 
 import {NgbPopoverConfig} from './popover-config';
 import {Options} from '@popperjs/core';
@@ -181,7 +182,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
   private _popupService: PopupService<NgbPopoverWindow>;
   private _windowRef: ComponentRef<NgbPopoverWindow>| null = null;
   private _unregisterListenersFn;
-  private _positioning = ngbPositioning();
+  private _positioning: ReturnType<typeof ngbPositioning>;
   private _zoneSubscription: Subscription;
   private _isDisabled(): boolean {
     if (this.disablePopover) {
@@ -194,7 +195,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
   }
 
   constructor(
-      private _elementRef: ElementRef<HTMLElement>, private _renderer: Renderer2, injector: Injector,
+      private _elementRef: ElementRef<HTMLElement>, _rtl: NgbRTL, private _renderer: Renderer2, injector: Injector,
       viewContainerRef: ViewContainerRef, config: NgbPopoverConfig, private _ngZone: NgZone,
       @Inject(DOCUMENT) private _document: any, private _changeDetector: ChangeDetectorRef,
       applicationRef: ApplicationRef) {
@@ -208,6 +209,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
     this.popoverClass = config.popoverClass;
     this.openDelay = config.openDelay;
     this.closeDelay = config.closeDelay;
+    this._positioning = ngbPositioning(_rtl);
     this._popupService = new PopupService<NgbPopoverWindow>(
         NgbPopoverWindow, injector, viewContainerRef, _renderer, this._ngZone, applicationRef);
   }

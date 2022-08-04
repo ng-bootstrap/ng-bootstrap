@@ -8,20 +8,47 @@ import {
   preventOverflow,
   Options,
 } from '@popperjs/core';
+import {NgbRTL} from './rtl';
 
 const placementSeparator = /\s+/;
 const spacesRegExp = /  +/gi;
 
-const startPrimaryPlacement = /^start/;
-const endPrimaryPlacement = /^end/;
-const startSecondaryPlacement = /-(top|left)$/;
-const endSecondaryPlacement = /-(bottom|right)$/;
-export function getPopperClassPlacement(placement: Placement): PopperPlacement {
-  const newPlacement = placement.replace(startPrimaryPlacement, 'left')
-                           .replace(endPrimaryPlacement, 'right')
-                           .replace(startSecondaryPlacement, '-start')
-                           .replace(endSecondaryPlacement, '-end') as PopperPlacement;
-  return newPlacement;
+/**
+ * Matching classes from the Bootstrap ones to the poppers ones.
+ * The first index of each array is used for the left to right direction,
+ * the second one is used for the right to left, defaulting to the first index (when LTR and RTL lead to the same class)
+ *
+ * See [Bootstrap alignments](https://getbootstrap.com/docs/5.1/components/dropdowns/#alignment-options)
+ * and [Popper placements](https://popper.js.org/docs/v2/constructors/#options)
+ */
+const bootstrapPopperMatches = {
+  'top': ['top'],
+  'bottom': ['bottom'],
+  'start': ['left', 'right'],
+  'left': ['left'],
+  'end': ['right', 'left'],
+  'right': ['right'],
+  'top-start': ['top-start', 'top-end'],
+  'top-left': ['top-start'],
+  'top-end': ['top-end', 'top-start'],
+  'top-right': ['top-end'],
+  'bottom-start': ['bottom-start', 'bottom-end'],
+  'bottom-left': ['bottom-start'],
+  'bottom-end': ['bottom-end', 'bottom-start'],
+  'bottom-right': ['bottom-end'],
+  'start-top': ['left-start', 'right-start'],
+  'left-top': ['left-start'],
+  'start-bottom': ['left-end', 'right-end'],
+  'left-bottom': ['left-end'],
+  'end-top': ['right-start', 'left-start'],
+  'right-top': ['right-start'],
+  'end-bottom': ['right-end', 'left-end'],
+  'right-bottom': ['right-end'],
+};
+
+export function getPopperClassPlacement(placement: Placement, isRTL: boolean): PopperPlacement {
+  const[leftClass, rightClass] = bootstrapPopperMatches[placement];
+  return isRTL ? (rightClass || leftClass) : leftClass;
 }
 
 const popperStartPrimaryPlacement = /^left/;
@@ -56,7 +83,7 @@ export function getBootstrapBaseClassPlacement(baseClass: string, placement: Pop
  *   'start-top', 'start-bottom',
  *   'end-top', 'end-bottom'.
  * */
-export function getPopperOptions({placement, baseClass}: PositioningOptions): Partial<Options> {
+export function getPopperOptions({placement, baseClass}: PositioningOptions, rtl: NgbRTL): Partial<Options> {
   let placementVals: Array<Placement> =
       Array.isArray(placement) ? placement : placement.split(placementSeparator) as Array<Placement>;
 
@@ -76,7 +103,8 @@ export function getPopperOptions({placement, baseClass}: PositioningOptions): Pa
     });
   }
 
-  const popperPlacements = placementVals.map((_placement) => { return getPopperClassPlacement(_placement); });
+  const popperPlacements =
+      placementVals.map((_placement) => { return getPopperClassPlacement(_placement, rtl.isRTL()); });
 
   let mainPlacement = popperPlacements.shift();
 
@@ -148,14 +176,14 @@ interface PositioningOptions {
 function noop(arg) {
   return arg;
 }
-export function ngbPositioning() {
+export function ngbPositioning(rtl: NgbRTL) {
   let popperInstance: Instance | null = null;
 
   return {
     createPopper(positioningOption: PositioningOptions) {
       if (!popperInstance) {
         const updatePopperOptions = positioningOption.updatePopperOptions || noop;
-        let popperOptions = updatePopperOptions(getPopperOptions(positioningOption));
+        let popperOptions = updatePopperOptions(getPopperOptions(positioningOption, rtl));
         popperInstance =
             createPopperLite(positioningOption.hostElement, positioningOption.targetElement, popperOptions);
       }
@@ -168,7 +196,7 @@ export function ngbPositioning() {
     setOptions(positioningOption: PositioningOptions) {
       if (popperInstance) {
         const updatePopperOptions = positioningOption.updatePopperOptions || noop;
-        let popperOptions = updatePopperOptions(getPopperOptions(positioningOption));
+        let popperOptions = updatePopperOptions(getPopperOptions(positioningOption, rtl));
         popperInstance.setOptions(popperOptions);
       }
     },

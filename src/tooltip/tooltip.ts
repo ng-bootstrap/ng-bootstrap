@@ -28,6 +28,7 @@ import {ngbAutoClose} from '../util/autoclose';
 import {ngbPositioning, PlacementArray} from '../util/positioning';
 import {PopupService} from '../util/popup';
 import {Options} from '@popperjs/core';
+import {NgbRTL} from '../util/rtl';
 
 import {NgbTooltipConfig} from './tooltip-config';
 import {Subscription} from 'rxjs';
@@ -155,11 +156,11 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
   private _popupService: PopupService<NgbTooltipWindow>;
   private _windowRef: ComponentRef<NgbTooltipWindow>| null = null;
   private _unregisterListenersFn;
-  private _positioning = ngbPositioning();
+  private _positioning: ReturnType<typeof ngbPositioning>;
   private _zoneSubscription: Subscription;
 
   constructor(
-      private _elementRef: ElementRef<HTMLElement>, private _renderer: Renderer2, injector: Injector,
+      private _elementRef: ElementRef<HTMLElement>, _rtl: NgbRTL, private _renderer: Renderer2, injector: Injector,
       viewContainerRef: ViewContainerRef, config: NgbTooltipConfig, private _ngZone: NgZone,
       @Inject(DOCUMENT) private _document: any, private _changeDetector: ChangeDetectorRef,
       applicationRef: ApplicationRef) {
@@ -175,6 +176,7 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
     this.closeDelay = config.closeDelay;
     this._popupService = new PopupService<NgbTooltipWindow>(
         NgbTooltipWindow, injector, viewContainerRef, _renderer, this._ngZone, applicationRef);
+    this._positioning = ngbPositioning(_rtl);
   }
 
   /**

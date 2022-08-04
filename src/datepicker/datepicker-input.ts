@@ -43,6 +43,7 @@ import {NgbDatepickerConfig} from './datepicker-config';
 import {isString} from '../util/util';
 import {Subject} from 'rxjs';
 import {addPopperOffset} from '../util/positioning-util';
+import {NgbRTL} from '../util/rtl';
 
 /**
  * A directive that allows to stick a datepicker popup to an input field.
@@ -79,7 +80,7 @@ export class NgbInputDatepicker implements OnChanges,
   private _model: NgbDate | null = null;
   private _inputValue: string;
   private _zoneSubscription: any;
-  private _positioning = ngbPositioning();
+  private _positioning: ReturnType<typeof ngbPositioning>;
   private _destroyCloseHandlers$ = new Subject<void>();
 
   /**
@@ -294,11 +295,12 @@ export class NgbInputDatepicker implements OnChanges,
   constructor(
       private _parserFormatter: NgbDateParserFormatter, private _elRef: ElementRef<HTMLInputElement>,
       private _vcRef: ViewContainerRef, private _renderer: Renderer2, private _ngZone: NgZone,
-      private _calendar: NgbCalendar, private _dateAdapter: NgbDateAdapter<any>,
+      private _calendar: NgbCalendar, private _dateAdapter: NgbDateAdapter<any>, rtl: NgbRTL,
       @Inject(DOCUMENT) private _document: any, private _changeDetector: ChangeDetectorRef,
       config: NgbInputDatepickerConfig) {
     ['autoClose', 'container', 'positionTarget', 'placement'].forEach(input => this[input] = config[input]);
     this.popperOptions = config.popperOptions;
+    this._positioning = ngbPositioning(rtl);
   }
 
   registerOnChange(fn: (value: any) => any): void { this._onChange = fn; }

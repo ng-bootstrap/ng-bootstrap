@@ -24,6 +24,7 @@ import {take} from 'rxjs/operators';
 
 import {Placement, PlacementArray, ngbPositioning} from '../util/positioning';
 import {Options} from '@popperjs/core';
+import {NgbRTL} from '../util/rtl';
 import {addPopperOffset} from '../util/positioning-util';
 import {ngbAutoClose, SOURCE} from '../util/autoclose';
 import {Key} from '../util/key';
@@ -150,7 +151,7 @@ export class NgbDropdown implements AfterContentInit, OnChanges, OnDestroy {
   private _destroyCloseHandlers$ = new Subject<void>();
   private _zoneSubscription: Subscription;
   private _bodyContainer: HTMLElement | null = null;
-  private _positioning = ngbPositioning();
+  private _positioning: ReturnType<typeof ngbPositioning>;
 
   @ContentChild(NgbDropdownMenu, {static: false}) private _menu: NgbDropdownMenu;
   @ContentChild(NgbDropdownAnchor, {static: false}) private _anchor: NgbDropdownAnchor;
@@ -227,14 +228,15 @@ export class NgbDropdown implements AfterContentInit, OnChanges, OnDestroy {
   @Output() openChange = new EventEmitter<boolean>();
 
   constructor(
-      private _changeDetector: ChangeDetectorRef, config: NgbDropdownConfig, @Inject(DOCUMENT) private _document: any,
-      private _ngZone: NgZone, private _elementRef: ElementRef<HTMLElement>, private _renderer: Renderer2,
-      @Optional() ngbNavbar: NgbNavbar) {
+      private _changeDetector: ChangeDetectorRef, _rtl: NgbRTL, config: NgbDropdownConfig,
+      @Inject(DOCUMENT) private _document: any, private _ngZone: NgZone, private _elementRef: ElementRef<HTMLElement>,
+      private _renderer: Renderer2, @Optional() ngbNavbar: NgbNavbar) {
     this.placement = config.placement;
     this.popperOptions = config.popperOptions;
     this.container = config.container;
     this.autoClose = config.autoClose;
 
+    this._positioning = ngbPositioning(_rtl);
     this.display = ngbNavbar ? 'static' : 'dynamic';
   }
 
