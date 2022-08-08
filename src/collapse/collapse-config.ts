@@ -10,6 +10,7 @@ import {NgbConfig} from '../ngb-config';
 @Injectable({providedIn: 'root'})
 export class NgbCollapseConfig {
   private _animation: boolean;
+  horizontal = false;
 
   constructor(private _ngbConfig: NgbConfig) {}
 

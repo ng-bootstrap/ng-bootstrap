@@ -14,9 +14,10 @@ import {ngbCollapsingTransition} from '../util/transition/ngbCollapseTransition'
 import {NgbCollapseConfig} from './collapse-config';
 
 /**
- * A directive to provide a simple way of hiding and showing elements on the page.
+ * A directive to provide a simple way of hiding and showing elements on the
+ * page.
  */
-@Directive({selector: '[ngbCollapse]', exportAs: 'ngbCollapse'})
+@Directive({selector: '[ngbCollapse]', exportAs: 'ngbCollapse', host: {'[class.collapse-horizontal]': 'horizontal'}})
 export class NgbCollapse implements OnInit, OnChanges {
   /**
    * If `true`, collapse will be animated.
@@ -36,14 +37,21 @@ export class NgbCollapse implements OnInit, OnChanges {
   @Output() ngbCollapseChange = new EventEmitter<boolean>();
 
   /**
-   * An event emitted when the collapse element is shown, after the transition. It has no payload.
+   * If `true`, will collapse horizontally.
+   */
+  @Input() horizontal: boolean;
+
+  /**
+   * An event emitted when the collapse element is shown, after the transition.
+   * It has no payload.
    *
    * @since 8.0.0
    */
   @Output() shown = new EventEmitter<void>();
 
   /**
-   * An event emitted when the collapse element is hidden, after the transition. It has no payload.
+   * An event emitted when the collapse element is hidden, after the transition.
+   * It has no payload.
    *
    * @since 8.0.0
    */
@@ -52,6 +60,7 @@ export class NgbCollapse implements OnInit, OnChanges {
 
   constructor(private _element: ElementRef, config: NgbCollapseConfig, private _zone: NgZone) {
     this.animation = config.animation;
+    this.horizontal = config.horizontal;
   }
 
   ngOnInit() { this._runTransition(this.collapsed, false); }
@@ -77,9 +86,11 @@ export class NgbCollapse implements OnInit, OnChanges {
   }
 
   private _runTransition(collapsed: boolean, animation: boolean) {
-    return ngbRunTransition(
-        this._zone, this._element.nativeElement, ngbCollapsingTransition,
-        {animation, runningTransition: 'stop', context: {direction: collapsed ? 'hide' : 'show'}});
+    return ngbRunTransition(this._zone, this._element.nativeElement, ngbCollapsingTransition, {
+      animation,
+      runningTransition: 'stop',
+      context: {direction: collapsed ? 'hide' : 'show', dimension: this.horizontal ? 'width' : 'height'}
+    });
   }
 
   private _runTransitionWithEvents(collapsed: boolean, animation: boolean) {
