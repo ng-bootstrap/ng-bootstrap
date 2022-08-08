@@ -362,7 +362,7 @@ export class NgbAccordion implements AfterContentChecked {
             ngbRunTransition(this._ngZone, panelElement, ngbCollapsingTransition, {
               animation: false,
               runningTransition: 'continue',
-              context: {direction: panel.isOpen ? 'show' : 'hide'}
+              context: {direction: panel.isOpen ? 'show' : 'hide', dimension: 'height'}
             });
           }
         } else {
@@ -421,7 +421,7 @@ export class NgbAccordion implements AfterContentChecked {
         ngbRunTransition(this._ngZone, panelElement !, ngbCollapsingTransition, {
           animation,
           runningTransition: 'stop',
-          context: {direction: panel.isOpen ? 'show' : 'hide'}
+          context: {direction: panel.isOpen ? 'show' : 'hide', dimension: 'height'}
         }).subscribe(() => {
           panel.transitionRunning = false;
           const {id} = panel;

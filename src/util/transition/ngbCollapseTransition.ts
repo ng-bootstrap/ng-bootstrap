@@ -3,10 +3,11 @@ import {reflow} from '../util';
 
 export interface NgbCollapseCtx {
   direction: 'show' | 'hide';
-  maxHeight?: string;
+  dimension: 'width' | 'height';
+  maxSize?: string;
 }
 
-function measureCollapsingElementHeightPx(element: HTMLElement): string {
+function measureCollapsingElementDimensionPx(element: HTMLElement, dimension: 'width' | 'height'): string {
   // SSR fix for without injecting the PlatformId
   if (typeof navigator === 'undefined') {
     return '0px';
@@ -18,19 +19,19 @@ function measureCollapsingElementHeightPx(element: HTMLElement): string {
     classList.add('show');
   }
 
-  element.style.height = '';
-  const height = element.getBoundingClientRect().height + 'px';
+  element.style[dimension] = '';
+  const dimensionSize = element.getBoundingClientRect()[dimension] + 'px';
 
   if (!hasShownClass) {
     classList.remove('show');
   }
 
-  return height;
+  return dimensionSize;
 }
 
 export const ngbCollapsingTransition: NgbTransitionStartFn<NgbCollapseCtx> =
     (element: HTMLElement, animation: boolean, context: NgbCollapseCtx) => {
-      let {direction, maxHeight} = context;
+      let {direction, maxSize, dimension} = context;
       const {classList} = element;
 
       function setInitialClasses() {
@@ -48,30 +49,40 @@ export const ngbCollapsingTransition: NgbTransitionStartFn<NgbCollapseCtx> =
         return;
       }
 
-      // No maxHeight -> running the transition for the first time
-      if (!maxHeight) {
-        maxHeight = measureCollapsingElementHeightPx(element);
-        context.maxHeight = maxHeight;
-
-        // Fix the height before starting the animation
-        element.style.height = direction !== 'show' ? maxHeight : '0px';
-
+      if (direction === 'show') {
+        // Fix the dimension before starting the animation
+        element.style[dimension] = '0px';
         classList.remove('collapse');
-        classList.remove('collapsing');
-        classList.remove('show');
-
-        reflow(element);
 
         // Start the animation
         classList.add('collapsing');
-      }
 
-      // Start or revert the animation
-      element.style.height = direction === 'show' ? maxHeight : '0px';
+        const scrollDimension = `scroll${dimension[0].toUpperCase()}${dimension.slice(1)}`;
+        element.style[dimension] = element[scrollDimension] + 'px';
+      } else {
+        // No maxSize -> running the transition for the first time
+        if (!maxSize) {
+          maxSize = measureCollapsingElementDimensionPx(element, dimension);
+          context.maxSize = maxSize;
+
+          // Fix the height before starting the animation
+          element.style[dimension] = maxSize;
+
+          classList.remove('collapse');
+          classList.remove('collapsing');
+          classList.remove('show');
+
+          reflow(element);
+
+          // Start the animation
+          classList.add('collapsing');
+        }
+        element.style[dimension] = '0px';
+      }
 
       return () => {
         setInitialClasses();
         classList.remove('collapsing');
-        element.style.height = '';
+        element.style[dimension] = '';
       };
     };
