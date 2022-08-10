@@ -1,6 +1,12 @@
 import {getBootstrapBaseClassPlacement, getPopperClassPlacement, ngbPositioning, Placement} from './positioning';
 import {Placement as PopperPlacement} from '@popperjs/core';
 import {NgbRTL} from './rtl';
+import {ComponentFixture, fakeAsync, flushMicrotasks, TestBed} from '@angular/core/testing';
+import {createGenericTestComponent} from '../test/common';
+import {Component} from '@angular/core';
+import {NgbTooltip} from '../tooltip/tooltip';
+import {By} from '@angular/platform-browser';
+import {NgbTooltipModule} from '../tooltip/tooltip.module';
 
 describe('positioning', () => {
 
@@ -148,4 +154,47 @@ describe('positioning', () => {
 
     nextTest();
   });
+
+  describe('rtl', () => {
+
+    const rtlMock = {isRTL: () => false};
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        declarations: [TestComponent],
+        imports: [NgbTooltipModule],
+        providers: [{provide: NgbRTL, useValue: rtlMock}]
+      });
+    });
+
+    const createTestComponent =
+        (html: string) => <ComponentFixture<TestComponent>>createGenericTestComponent(html, TestComponent);
+
+    it('should apply correct classes for rtl', fakeAsync(() => {
+         const fixture =
+             createTestComponent(`<div ngbTooltip="Great tip!" placement="end" style="margin-top: 100px;"></div>`);
+         const tooltip = fixture.debugElement.query(By.directive(NgbTooltip)).injector.get(NgbTooltip);
+
+         tooltip.open();
+         flushMicrotasks();
+
+         let windowEl = fixture.nativeElement.querySelector('ngb-tooltip-window');
+         expect(windowEl).toHaveCssClass('bs-tooltip-end');
+
+         tooltip.close();
+         rtlMock.isRTL = () => true;
+
+         tooltip.open();
+         flushMicrotasks();
+
+         windowEl = fixture.nativeElement.querySelector('ngb-tooltip-window');
+         expect(windowEl).toHaveCssClass('bs-tooltip-start');
+
+         tooltip.close();
+       }));
+  });
 });
+
+@Component({selector: 'test-cmpt', template: ``})
+export class TestComponent {
+}
