@@ -10,6 +10,17 @@ export class PositioningPage {
     code: `<button ngbTooltip="I'll always open to the right" placement="right">Hover me</button>`
   });
 
+  rtl = Snippet({
+    lang: 'html',
+    code:`
+      <!-- RIGHT placement -->
+      <button ngbTooltip="..." placement="right"></button>
+
+      <!-- END placement -->
+      <button ngbTooltip="..." placement="end"></button>
+    `
+  });
+
   placement = Snippet({
     lang: 'html',
     code: `

@@ -29,6 +29,7 @@ import {PositioningPage} from './pages/positioning/positioning.component';
 import {NgbdSharedModule} from './shared';
 import {NgbdDemoVersionsComponent} from './demo-versions.component';
 import {NgbdOffcanvasModule} from './components/offcanvas/offcanvas.module';
+import {NgbdComponentsSharedModule} from './components/shared';
 
 
 const DEMOS = [
@@ -42,7 +43,7 @@ const PAGES = [GettingStartedPage, AnimationsPage, I18nPage, PositioningPage];
 
 @NgModule({
   declarations: [AppComponent, DefaultComponent, NgbdDemoVersionsComponent, ...PAGES],
-  imports: [BrowserModule, routing, NgbModule, NgbdSharedModule, ...DEMOS],
+    imports: [BrowserModule, routing, NgbModule, NgbdSharedModule, ...DEMOS, NgbdComponentsSharedModule],
   bootstrap: [AppComponent]
 })
 export class NgbdModule {
