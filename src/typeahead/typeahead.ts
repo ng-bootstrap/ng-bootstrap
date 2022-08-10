@@ -200,7 +200,7 @@ export class NgbTypeahead implements ControlValueAccessor,
   private _onChange = (_: any) => {};
 
   constructor(
-      private _elementRef: ElementRef<HTMLInputElement>, _rtl: NgbRTL, viewContainerRef: ViewContainerRef,
+      private _elementRef: ElementRef<HTMLInputElement>, rtl: NgbRTL, viewContainerRef: ViewContainerRef,
       private _renderer: Renderer2, injector: Injector, config: NgbTypeaheadConfig, ngZone: NgZone, private _live: Live,
       @Inject(DOCUMENT) private _document: any, private _ngZone: NgZone, private _changeDetector: ChangeDetectorRef,
       applicationRef: ApplicationRef) {
@@ -218,7 +218,7 @@ export class NgbTypeahead implements ControlValueAccessor,
 
     this._popupService = new PopupService<NgbTypeaheadWindow>(
         NgbTypeaheadWindow, injector, viewContainerRef, _renderer, this._ngZone, applicationRef);
-    this._positioning = ngbPositioning(_rtl);
+    this._positioning = ngbPositioning(rtl);
   }
 
   ngOnInit(): void { this._subscribeToUserInput(); }
