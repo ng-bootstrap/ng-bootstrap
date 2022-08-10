@@ -113,6 +113,35 @@
 
   <ngbd-code lang="html" [snippet]="container"></ngbd-code>
 
+  <ngbd-page-header title="RTL" fragment="rtl"></ngbd-page-header>
+
+  <ngbd-api-docs-badge [since]="{version: '13.1.0'}"></ngbd-api-docs-badge>
+
+  <p>
+    Bootstrap 5 has an experimental support for RTL, so the popper placement will be adapted if the page is in RTL mode
+    with <code>&lt;html dir=&quot;rtl&quot;&gt;</code>
+  </p>
+
+  <p>
+    Consider the following example:
+  </p>
+
+  <ngbd-code lang="html" [snippet]="rtl"></ngbd-code>
+
+  <p>
+    The first example with <code>right</code> placement will always display the tooltip visually on the right
+    regardless of page direction.
+  </p>
+
+  <p>
+    The second example with <code>end</code> placement will take into account page direction and display the tooltip
+    visually on the right by default and on the left in case of RTL direction.
+  </p>
+
+  <p>
+    This stays true for all placements containing <code>right</code>, <code>left</code>, <code>start</code> or <code>end</code>
+  </p>
+
   <ngbd-page-header title="Dropdown" fragment="dropdown"></ngbd-page-header>
 
   <p>
