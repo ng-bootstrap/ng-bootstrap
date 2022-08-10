@@ -228,7 +228,7 @@ export class NgbDropdown implements AfterContentInit, OnChanges, OnDestroy {
   @Output() openChange = new EventEmitter<boolean>();
 
   constructor(
-      private _changeDetector: ChangeDetectorRef, _rtl: NgbRTL, config: NgbDropdownConfig,
+      private _changeDetector: ChangeDetectorRef, rtl: NgbRTL, config: NgbDropdownConfig,
       @Inject(DOCUMENT) private _document: any, private _ngZone: NgZone, private _elementRef: ElementRef<HTMLElement>,
       private _renderer: Renderer2, @Optional() ngbNavbar: NgbNavbar) {
     this.placement = config.placement;
@@ -236,7 +236,7 @@ export class NgbDropdown implements AfterContentInit, OnChanges, OnDestroy {
     this.container = config.container;
     this.autoClose = config.autoClose;
 
-    this._positioning = ngbPositioning(_rtl);
+    this._positioning = ngbPositioning(rtl);
     this.display = ngbNavbar ? 'static' : 'dynamic';
   }
 

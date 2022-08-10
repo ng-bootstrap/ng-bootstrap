@@ -195,7 +195,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
   }
 
   constructor(
-      private _elementRef: ElementRef<HTMLElement>, _rtl: NgbRTL, private _renderer: Renderer2, injector: Injector,
+      private _elementRef: ElementRef<HTMLElement>, rtl: NgbRTL, private _renderer: Renderer2, injector: Injector,
       viewContainerRef: ViewContainerRef, config: NgbPopoverConfig, private _ngZone: NgZone,
       @Inject(DOCUMENT) private _document: any, private _changeDetector: ChangeDetectorRef,
       applicationRef: ApplicationRef) {
@@ -209,7 +209,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
     this.popoverClass = config.popoverClass;
     this.openDelay = config.openDelay;
     this.closeDelay = config.closeDelay;
-    this._positioning = ngbPositioning(_rtl);
+    this._positioning = ngbPositioning(rtl);
     this._popupService = new PopupService<NgbPopoverWindow>(
         NgbPopoverWindow, injector, viewContainerRef, _renderer, this._ngZone, applicationRef);
   }
