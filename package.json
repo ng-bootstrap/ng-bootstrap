@@ -128,6 +128,7 @@
     "karma-coverage": "~2.0.3",
     "karma-firefox-launcher": "^2.1.0",
     "karma-jasmine": "~5.0.1",
+    "karma-safari-launcher": "^1.0.0",
     "karma-sauce-launcher": "^4.3.6",
     "marked": "^1.2.3",
     "ng-packagr": "^14.1.0",
