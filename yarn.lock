@@ -6799,6 +6799,11 @@ karma-jasmine@~5.0.1:
   dependencies:
     jasmine-core "^4.1.0"
 
+karma-safari-launcher@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/karma-safari-launcher/-/karma-safari-launcher-1.0.0.tgz#96982a2cc47d066aae71c553babb28319115a2ce"
+  integrity sha512-qmypLWd6F2qrDJfAETvXDfxHvKDk+nyIjpH9xIeI3/hENr0U3nuqkxaftq73PfXZ4aOuOChA6SnLW4m4AxfRjQ==
+
 karma-sauce-launcher@^4.3.6:
   version "4.3.6"
   resolved "https://registry.yarnpkg.com/karma-sauce-launcher/-/karma-sauce-launcher-4.3.6.tgz#274f999ce5a3bc76577a438839cb0dbbf2746a48"
