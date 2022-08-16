@@ -3,9 +3,10 @@ import {createGenericTestComponent, isBrowserVisible} from '../test/common';
 
 import {Component} from '@angular/core';
 
-import {NgbCollapseModule} from './collapse.module';
+import {NgbCollapse, NgbCollapseModule} from './collapse.module';
 import {NgbConfig} from '../ngb-config';
 import {NgbConfigAnimation} from '../test/ngb-config-animation';
+import {By} from '@angular/platform-browser';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -23,6 +24,21 @@ describe('ngb-collapse', () => {
     const collapseEl = getCollapsibleContent(fixture.nativeElement);
 
     expect(collapseEl).toHaveCssClass('show');
+  });
+
+  it(`should set css classes for horizontal collapse`, () => {
+    const fixture = createTestComponent(`<div [ngbCollapse]="collapsed">Some content</div>`);
+    const element = fixture.debugElement.query(By.directive(NgbCollapse));
+    const directive = element.injector.get(NgbCollapse);
+
+    expect(element.nativeElement).toHaveCssClass('collapse');
+    expect(element.nativeElement).not.toHaveCssClass('collapse-horizontal');
+
+    directive.horizontal = true;
+    fixture.detectChanges();
+
+    expect(element.nativeElement).toHaveCssClass('collapse');
+    expect(element.nativeElement).toHaveCssClass('collapse-horizontal');
   });
 
   it('should have content closed', () => {
