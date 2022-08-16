@@ -53,6 +53,7 @@ export {
   NgbCalendarBuddhist,
   NgbDate,
   NgbDateAdapter,
+  NgbDateStructAdapter,
   NgbDateNativeAdapter,
   NgbDateNativeUTCAdapter,
   NgbDateParserFormatter,
