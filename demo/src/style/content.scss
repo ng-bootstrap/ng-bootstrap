@@ -1,0 +1,73 @@
+/*!
+ * Bootstrap  v5.2.0 (https://getbootstrap.com/)
+ * Copyright 2011-2022 The Bootstrap Authors
+ * Copyright 2011-2022 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+ */
+
+.bd-content {
+  // Offset content from fixed navbar when jumping to headings
+  > :target {
+    padding-top: 5rem;
+    margin-top: -5rem;
+  }
+
+  > h2:not(:first-child) {
+    margin-top: 3rem;
+  }
+
+  > h3 {
+    margin-top: 2rem;
+  }
+
+  > ul li,
+  > ol li {
+    margin-bottom: .25rem;
+
+    // stylelint-disable selector-max-type, selector-max-compound-selectors
+    > p ~ ul {
+      margin-top: -.5rem;
+      margin-bottom: 1rem;
+    }
+    // stylelint-enable selector-max-type, selector-max-compound-selectors
+  }
+}
+
+.bd-title {
+  @include font-size(3rem);
+}
+
+.bd-lead {
+  @include font-size(1.5rem);
+  font-weight: 300;
+}
+
+.bd-bg-violet {
+  background-color: $bd-violet;
+}
+
+.bi {
+  width: 1em;
+  height: 1em;
+  fill: currentcolor;
+}
+
+.icon-link {
+  display: flex;
+  align-items: center;
+  text-decoration-color: rgba($primary, .5);
+  text-underline-offset: .5rem;
+  backface-visibility: hidden;
+
+  .bi {
+    width: 1.5em;
+    height: 1.5em;
+    transition: .2s ease-in-out transform; // stylelint-disable-line property-disallowed-list
+  }
+
+  &:hover {
+    .bi {
+      transform: translate3d(5px, 0, 0);
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {Router} from '@angular/router';
+import {NgbActiveOffcanvas} from "@ng-bootstrap/ng-bootstrap";
 
 export const componentsList = [
   'Accordion', 'Alert', 'Carousel', 'Collapse', 'Datepicker', 'Dropdown', 'Modal', 'Nav', 'Offcanvas', 'Pagination',
@@ -16,6 +17,8 @@ export class SideNavComponent {
   components = componentsList;
   deprecatedComponents = deprecatedComponentList;
 
+  public activeOffcanvas: NgbActiveOffcanvas | undefined;
+
   constructor(private router: Router) {}
 
   isActive(currentRoute: any[]): boolean {
@@ -25,5 +28,9 @@ export class SideNavComponent {
       fragment: 'ignored',
       matrixParams: 'ignored'
     });
+  }
+
+  onLinkClick(): void {
+    this.activeOffcanvas?.close();
   }
 }

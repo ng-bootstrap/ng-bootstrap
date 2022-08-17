@@ -1,35 +1,89 @@
-<nav class="toc py-3">
-  <div class="toc-item mb-2" [class.active]="isActive(['/getting-started'])">
-    <a class="toc-link" routerLink="/getting-started">Getting Started</a>
+<div tabindex="-1" id="bdSideNav" class="offcanvas-lg offcanvas-start show" aria-labelledby="bdSidebarOffcanvasLabel"
+     aria-modal="true" role="dialog">
+  <div class="offcanvas-header pb-2 d-lg-none border-bottom">
+    <h5 class="offcanvas-title text-black" id="bdSidebarOffcanvasLabel">Browse docs</h5>
+    <button type="button" class="btn-close btn-close" aria-label="Close"
+            (click)="activeOffcanvas?.dismiss()"></button>
   </div>
 
-  <div class="toc-item mb-2" [class.active]="isActive(['/guides'])">
-    <a class="toc-link" [routerLink]="['/animations']">Guides</a>
-    <ul [ngbCollapse]="!isActive(['/guides'])" class="nav flex-column">
-      <li [class.active]="isActive(['/guides', 'animations'])">
-        <a class="toc-link d-inline-flex align-items-center" routerLink="/guides/animations">Animations</a>
-      </li>
-      <li [class.active]="isActive(['/guides', 'i18n'])">
-        <a class="toc-link" routerLink="/guides/i18n">Internationalization</a>
-      </li>
-      <li [class.active]="isActive(['/guides', 'positioning'])">
-        <a class="toc-link" routerLink="/guides/positioning">Positioning</a>
-      </li>
-    </ul>
+  <div [class.offcanvas-body]="activeOffcanvas">
+    <nav class="bd-links w-100" id="bd-docs-nav" aria-label="Docs navigation">
+      <ul class="bd-links-nav list-unstyled mb-0 pb-3 pb-md-2 pe-lg-2">
+        <li class="bd-links-group py-2">
+          <strong class="bd-links-heading d-flex w-100 align-items-center fw-semibold">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                 class="bi bi-play-circle-fill me-2" viewBox="0 0 16 16" style="color: var(--bs-indigo);">
+              <path
+                d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM6.79 5.093A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814l-3.5-2.5z"/>
+            </svg>
+            <a class="d-inline-block rounded text-decoration-none text-black" routerLink="/getting-started"
+               (click)="onLinkClick()">Getting
+              Started</a>
+          </strong>
+
+          <ul class="list-unstyled fw-normal pb-2 small" [ngbCollapse]="!isActive(['/getting-started'])">
+            <li>
+              <a class="bd-links-link d-inline-block rounded" [class.active]="isActive(['/getting-started'])"
+                 routerLink="/getting-started" (click)="onLinkClick()">Introduction</a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="bd-links-group py-2">
+          <strong class="bd-links-heading d-flex w-100 align-items-center fw-semibold">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                 class="bi bi-book-half me-2"
+                 viewBox="0 0 16 16">
+              <path
+                d="M8.5 2.687c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/>
+            </svg>
+            <a class="d-inline-block rounded text-decoration-none text-black" routerLink="/guides/animations"
+               (click)="onLinkClick()">Guides</a>
+          </strong>
+
+          <ul class="list-unstyled fw-normal pb-2 small" [ngbCollapse]="!isActive(['/guides'])">
+            <li>
+              <a class="bd-links-link d-inline-block rounded" [class.active]="isActive(['/guides', 'animations'])"
+                 routerLink="/guides/animations" (click)="onLinkClick()">Animations</a>
+            </li>
+            <li>
+              <a class="bd-links-link d-inline-block rounded" [class.active]="isActive(['/guides', 'i18n'])"
+                 routerLink="/guides/i18n" (click)="onLinkClick()">Internationalization</a>
+            </li>
+            <li>
+              <a class="bd-links-link d-inline-block rounded" [class.active]="isActive(['/guides', 'positioning'])"
+                 routerLink="/guides/positioning" (click)="onLinkClick()">Positioning</a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="bd-links-group py-2">
+          <strong class="bd-links-heading d-flex w-100 align-items-center fw-semibold">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                 class="bi bi-grid-1x2-fill me-2" viewBox="0 0 16 16" style="color: var(--bs-indigo);">
+              <path
+                d="M0 1a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V1zm9 0a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1V1zm0 9a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-5z"/>
+            </svg>
+            <a class="d-inline-block rounded text-decoration-none text-black" routerLink="/components"
+               (click)="onLinkClick()">Components</a>
+          </strong>
+
+          <ul class="list-unstyled fw-normal pb-2 small" [ngbCollapse]="!isActive(['/components'])">
+            <li *ngFor="let component of components">
+              <a class="bd-links-link d-inline-block rounded"
+                 [class.active]="isActive(['/components', component.toLowerCase()])"
+                 [routerLink]="['/components', component.toLowerCase()]" (click)="onLinkClick()">{{ component }}</a>
+            </li>
+            <li *ngFor="let component of deprecatedComponents">
+              <a class="bd-links-link d-inline-block rounded"
+                 [class.active]="isActive(['/components', component.toLowerCase()])"
+                 [routerLink]="['/components', component.toLowerCase()]" (click)="onLinkClick()">{{ component }}</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
   </div>
 
-  <div class="toc-item mb-2" [class.active]="isActive(['/components'])">
-    <a class="toc-link" [routerLink]="['/components']">Components</a>
-    <ul [ngbCollapse]="!isActive(['/components'])" class="nav flex-column">
-      <li *ngFor="let component of components"
-        [class.active]="isActive(['/components', component.toLowerCase()])">
-        <a class="toc-link" [routerLink]="['/components', component.toLowerCase()]">{{ component }}</a>
-      </li>
-      <li *ngFor="let component of deprecatedComponents"
-          [class.active]="isActive(['/components', component.toLowerCase()])">
-        <a class="toc-link deprecated" [routerLink]="['/components', component.toLowerCase()]">{{ component }}</a>
-      </li>
-    </ul>
-  </div>
+</div>
 
-</nav>

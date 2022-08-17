@@ -3,6 +3,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {AppComponent} from './app.component';
+import {NavComponent} from "./nav/nav.component";
 import {routing} from './app.routing';
 import {NgbdAccordionModule} from './components/accordion/accordion.module';
 import {NgbdAlertModule} from './components/alert/alert.module';
@@ -29,7 +30,9 @@ import {PositioningPage} from './pages/positioning/positioning.component';
 import {NgbdSharedModule} from './shared';
 import {NgbdDemoVersionsComponent} from './demo-versions.component';
 import {NgbdOffcanvasModule} from './components/offcanvas/offcanvas.module';
+import {NavOffcanvasComponent} from "./nav/nav-offcanvas.component";
 import {NgbdComponentsSharedModule} from './components/shared';
+
 
 
 const DEMOS = [
@@ -42,7 +45,7 @@ const DEMOS = [
 const PAGES = [GettingStartedPage, AnimationsPage, I18nPage, PositioningPage];
 
 @NgModule({
-  declarations: [AppComponent, DefaultComponent, NgbdDemoVersionsComponent, ...PAGES],
+  declarations: [AppComponent, DefaultComponent, NgbdDemoVersionsComponent, NavComponent, NavOffcanvasComponent, ...PAGES],
     imports: [BrowserModule, routing, NgbModule, NgbdSharedModule, ...DEMOS, NgbdComponentsSharedModule],
   bootstrap: [AppComponent]
 })

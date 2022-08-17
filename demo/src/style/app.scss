@@ -1,7 +1,20 @@
 // styles in src/style directory are applied to the whole page
 
-header.navbar {
+@import "node_modules/bootstrap/scss/_functions.scss";
+@import "node_modules/bootstrap/scss/_variables.scss";
+@import "node_modules/bootstrap/scss/_mixins.scss";
+
+// Load docs components
+@import "variables";
+@import "navbar";
+@import "content";
+@import "sidebar";
+@import "layout";
+@import "toc";
+
+.bdNavbarBody {
   background: linear-gradient(135deg, #0143a3, #0273d4);
+  border-left: 0;
 }
 
 .masthead-followup {
@@ -24,160 +37,6 @@ header.navbar {
     font-weight: 500;
     color: #000;
     text-decoration: underline;
-  }
-}
-
-.social-buttons {
-  font-size: x-small;
-  a {
-    color: #fff;
-    text-decoration: none;
-  }
-
-  svg {
-    fill: currentColor;
-  }
-}
-
-.sidebar-collapsed {
-  margin-left: calc(var(--bs-gutter-x) * -0.5);
-  margin-right: calc(var(--bs-gutter-x) * -0.5);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.sidebar {
-  position: sticky;
-  top: 1rem;
-  max-height: calc(100vh - 4rem);
-  margin-right: calc(var(--bs-gutter-x) * -0.5);
-  overflow-x: hidden;
-  overflow-y: auto;
-  z-index: 1;
-
-  a {
-    text-decoration: none;
-  }
-}
-
-header.title {
-  margin-left: calc(var(--bs-gutter-x) * -0.5);
-  margin-right: calc(var(--bs-gutter-x) * -0.5);
-  position: relative;
-
-  .content-tabset {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-
-    .nav-link {
-      border-style: solid;
-      border-width: 3px 1px 1px;
-      border-radius: 3px 3px 0 0;
-    }
-
-    .nav-link:not(.active):hover {
-      border-color: transparent;
-    }
-
-    .active {
-      border-top-color: #28a745;
-    }
-
-    .navigation-dropdown {
-      cursor: pointer;
-
-      .nav-link {
-        padding-right: 0.3rem;
-        line-height: 1em;
-        border-color: transparent;
-        background: none;
-        color: #007bff;
-        &:hover {
-          color: #0056b3;
-        }
-      }
-
-      .dropdown-toggle:after {
-        display: none;
-      }
-
-      .dropdown-menu {
-        border-color: #d9d9d9;
-      }
-
-      svg {
-        width: 22px;
-        height: 22px;
-      }
-
-      &.show {
-        .nav-link {
-          color: #0056b3;
-        }
-      }
-    }
-  }
-}
-
-.toc {
-  margin-left: 15px;
-//   margin-right: -15px;
-  font-size: 1.1rem;
-
-  .toc-item {
-    .toc-link {
-//       display: block;
-//       padding: 0.25rem 1.5rem;
-      color: rgba(0, 0, 0, 0.65);
-
-      &.deprecated {
-        text-decoration: line-through !important;
-
-        &:first-child {
-          margin-top: 0.5rem;
-        }
-      }
-    }
-
-    .nav > li > a {
-      font-size: 0.85em;
-      display: inline-block;
-
-      &:hover,
-      &:focus {
-        text-decoration: none;
-        margin-left: -0.5rem;
-        padding: 0 0.5rem;
-        background-color: #f8f9fa;
-        border-radius: 3px;
-      }
-    }
-
-    .nav > li.active > a {
-      font-weight: 500;
-      color: rgba(0, 0, 0, 0.85);
-    }
-
-    &.active > .toc-link {
-      font-weight: 500;
-      color: rgba(0, 0, 0, 0.85);
-    }
-  }
-}
-
-.contextual-nav .nav {
-  position: sticky;
-  top: 0;
-
-  a {
-    color: inherit;
-    font-size: 90%;
-    padding: 0.25rem 1rem;
-  }
-
-  a:hover {
-    color: #0275d8;
   }
 }
 
@@ -220,6 +79,7 @@ div.api-doc-component,
       .github-link {
         opacity: 1;
       }
+
       & > .title-fragment {
         opacity: 1;
       }
@@ -229,6 +89,7 @@ div.api-doc-component,
   section,
   ngbd-overview-section {
     margin-top: 3rem;
+
     h4 {
       margin-top: 2rem;
       margin-bottom: 1rem;
@@ -237,6 +98,7 @@ div.api-doc-component,
     .meta {
       font-size: 0.8rem;
       margin-bottom: 1rem;
+
       > div {
         margin-bottom: 0.5rem;
       }
@@ -276,6 +138,7 @@ a.title-fragment:focus {
 
 div.component-demo {
   margin-bottom: 3rem;
+
   h2 {
     display: flex;
     margin-bottom: 1rem;
@@ -320,6 +183,7 @@ div.component-demo {
 
       .nav-link:not(.active) {
         color: #999;
+
         &:hover {
           color: #666;
         }

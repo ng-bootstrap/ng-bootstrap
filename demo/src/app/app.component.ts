@@ -1,34 +1,50 @@
 import {ViewportScroller} from '@angular/common';
-import {HttpClient} from '@angular/common/http';
 import {Component, NgZone, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {filter, map} from 'rxjs/operators';
+import {filter} from 'rxjs/operators';
 
-import {environment} from '../environments/environment';
+
 import {componentsList} from './shared';
 import {Analytics} from './shared/analytics/analytics';
-import {of} from 'rxjs';
+import {NavOffcanvasComponent} from "./nav/nav-offcanvas.component";
+import {SideNavOffcanvasComponent} from "./shared/side-nav/side-nav-offcanvas.component";
+import {NgbOffcanvas} from "@ng-bootstrap/ng-bootstrap";
 
 
 @Component({selector: 'ngbd-app', templateUrl: './app.component.html'})
 export class AppComponent implements OnInit {
-  downloadCount = '';
   navbarCollapsed = true;
+  sidebarCollapsed = true;
 
   components = componentsList;
 
   constructor(
-      private _analytics: Analytics, route: ActivatedRoute, vps: ViewportScroller, zone: NgZone,
-      httpClient: HttpClient) {
+    private _analytics: Analytics, private offcanvasService: NgbOffcanvas, route: ActivatedRoute, vps: ViewportScroller, zone: NgZone) {
     route.fragment.pipe(filter(fragment => !!fragment))
-        .subscribe((fragment: string) => zone.runOutsideAngular(() => requestAnimationFrame(() => vps.scrollToAnchor(fragment))));
-
-    if (environment.production) {
-      httpClient.get<{downloads: string}>('https://api.npmjs.org/downloads/point/last-month/@ng-bootstrap/ng-bootstrap')
-          .pipe(map(data => data?.downloads))
-          .subscribe({next: count => this.downloadCount = count.toLocaleString(), error: () => of('')});
-    }
+      .subscribe((fragment: string) => zone.runOutsideAngular(() => requestAnimationFrame(() => vps.scrollToAnchor(fragment))));
   }
 
-  ngOnInit(): void { this._analytics.trackPageViews(); }
+  ngOnInit(): void {
+    this._analytics.trackPageViews();
+  }
+
+  openSidenavbar() {
+    this.offcanvasService.open(SideNavOffcanvasComponent, {
+      ariaLabelledBy: 'bdSidebarOffcanvasLabel',
+      panelClass: 'd-lg-none',
+      backdropClass: 'd-lg-none',
+      scroll: true,
+      position: 'start'
+    });
+  }
+
+  openNavbar() {
+    this.offcanvasService.open(NavOffcanvasComponent, {
+      ariaLabelledBy: 'bdNavbarOffcanvasLabel',
+      panelClass: 'bdNavbarBody d-lg-none',
+      backdropClass: 'd-lg-none',
+      scroll: true,
+      position: 'end'
+    });
+  }
 }

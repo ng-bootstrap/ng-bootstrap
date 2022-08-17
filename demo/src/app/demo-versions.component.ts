@@ -13,14 +13,14 @@ interface Version {
   selector: 'ngbd-demo-versions',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="nav-item" ngbDropdown>
+    <li ngbDropdown class="nav-item col-6 col-lg-auto">
       <a class="nav-link" ngbDropdownToggle id="demo-site-versions" role="button">
-        ng-bootstrap v{{ current }}
+        <span class="d-lg-none">ng-bootstrap</span> v{{ current }}
       </a>
       <div ngbDropdownMenu aria-labelledby="demo-site-versions" class="dropdown-menu dropdown-menu-end">
-        <a ngbDropdownItem *ngFor="let version of versions$ | async" href="{{ version.url }}#{{ routerUrl }}">{{ version.text }}</a>
+        <a ngbDropdownItem *ngFor="let version of versions$ | async" [style.font-weight]="version.text.toLowerCase().includes('latest') ? '500' : '400'" href="{{ version.url }}#{{ routerUrl }}">{{ version.text }}</a>
       </div>
-    </div>
+    </li>
   `
 })
 

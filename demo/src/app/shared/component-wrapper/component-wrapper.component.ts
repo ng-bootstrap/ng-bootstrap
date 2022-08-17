@@ -1,14 +1,14 @@
-import {Component, NgZone, OnDestroy, Type} from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import {Component, OnDestroy, Type} from '@angular/core';
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {Observable, Subscription} from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import {filter, map} from 'rxjs/operators';
 
-import { NgbdApiPage } from '../../components/shared/api-page/api.component';
-import { NgbdExamplesPage } from '../../components/shared/examples-page/examples.component';
+import {NgbdApiPage} from '../../components/shared/api-page/api.component';
+import {NgbdExamplesPage} from '../../components/shared/examples-page/examples.component';
 
-import { environment } from '../../../environments/environment';
+import {environment} from '../../../environments/environment';
 
-export type TableOfContents = {fragment: string, title: string}[];
+export type TableOfContents = { fragment: string, title: string }[];
 
 @Component({
   selector: 'component-wrapper',
@@ -25,14 +25,9 @@ export class ComponentWrapper implements OnDestroy {
   headerComponentType$: Observable<Type<any>>;
   bootstrapUrl$: Observable<string>;
 
-  isLargeScreenOrLess: boolean;
-  isSmallScreenOrLess: boolean;
-
-  sidebarCollapsed = true;
-
   tableOfContents: TableOfContents = [];
 
-  constructor(public route: ActivatedRoute, private _router: Router, ngZone: NgZone) {
+  constructor(public route: ActivatedRoute, private _router: Router) {
     // This component is used in route definition 'components'
     // So next child route will always be ':componentType' & next one will always be ':pageType' (or tab)
 
@@ -48,18 +43,6 @@ export class ComponentWrapper implements OnDestroy {
 
     this.headerComponentType$ = this.route.data.pipe(map(data => data?.header));
     this.bootstrapUrl$ = this.route.data.pipe(map(data => data?.bootstrap?.replace('%version%', environment.bootstrap)));
-
-    // information extracted from https://getbootstrap.com/docs/4.1/layout/overview/
-    // TODO: we should implements our own mediamatcher, according to bootstrap layout.
-    const smallScreenQL = matchMedia('(max-width: 767.98px)');
-    // eslint-disable-next-line deprecation/deprecation
-    smallScreenQL.addListener((event) => ngZone.run(() => this.isSmallScreenOrLess = event.matches));
-    this.isSmallScreenOrLess = smallScreenQL.matches;
-
-    const largeScreenQL = matchMedia('(max-width: 1199.98px)');
-    this.isLargeScreenOrLess = largeScreenQL.matches;
-    // eslint-disable-next-line deprecation/deprecation
-    largeScreenQL.addListener((event) => ngZone.run(() => this.isLargeScreenOrLess = event.matches));
   }
 
   ngOnDestroy() {
@@ -86,12 +69,12 @@ export class ComponentWrapper implements OnDestroy {
 
       if (component.classes.length > 0) {
         const klasses = getLinks(component.classes);
-        toc = toc.concat(toc.length > 0  ? [<any>{}, ...klasses] : klasses);
+        toc = toc.concat(toc.length > 0 ? [<any>{}, ...klasses] : klasses);
       }
 
       if (component.configs.length > 0) {
         const configs = getLinks(component.configs);
-        toc = toc.concat(toc.length > 0  ? [<any>{}, ...configs] : configs);
+        toc = toc.concat(toc.length > 0 ? [<any>{}, ...configs] : configs);
       }
 
       this.tableOfContents = toc;

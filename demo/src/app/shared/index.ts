@@ -14,17 +14,18 @@ import {NgbdIcons} from './icons/icons.component';
 import {NgbdPageHeaderComponent} from './page-wrapper/page-header.component';
 import {PageWrapper} from './page-wrapper/page-wrapper.component';
 import {SideNavComponent} from './side-nav/side-nav.component';
+import {SideNavOffcanvasComponent} from "./side-nav/side-nav-offcanvas.component";
 
 export {componentsList} from './side-nav/side-nav.component';
 
 @NgModule({
   imports: [CommonModule, RouterModule, NgbModule],
   exports: [
-    CommonModule, RouterModule, ComponentWrapper, PageWrapper, NgbdPageHeaderComponent, NgbdFragment, SideNavComponent,
+    CommonModule, RouterModule, ComponentWrapper, PageWrapper, NgbdPageHeaderComponent, NgbdFragment, SideNavComponent, SideNavOffcanvasComponent,
     NgbdCodeComponent, NgbModule, FormsModule, ReactiveFormsModule, HttpClientModule, NgbdIcons
   ],
   declarations: [
-    ComponentWrapper, PageWrapper, NgbdPageHeaderComponent, NgbdFragment, SideNavComponent, NgbdCodeComponent, NgbdIcons
+    ComponentWrapper, PageWrapper, NgbdPageHeaderComponent, NgbdFragment, SideNavComponent, SideNavOffcanvasComponent, NgbdCodeComponent, NgbdIcons
   ],
   providers: [Analytics, CodeHighlightService]
 })
