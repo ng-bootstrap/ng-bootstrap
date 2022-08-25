@@ -1,11 +1,17 @@
 <p>
-  You can choose a dynamic target with manual triggers. This is useful when adding tooltips
-  to dynamic html content.
+  You can choose a custom popover target. It works best when using manual triggers.
 </p>
 
-<ng-template #popContent let-text="text" let-href="href"><a [attr.href]="href" target="_blank">open {{text}} in a new window</a></ng-template>
+<div class="d-flex align-items-baseline">
 
-<p [ngbPopover]="popContent" autoClose="outside" triggers="manual" #paragraphElement>
-  Add tooltips to dynamic html that contains links like <a data-description="Angular Framework" href="https://angular.io">angular</a> or <a data-description="Angular Bootstrap Components" href="https://ng-bootstrap.github.io">ng-bootstrap</a>
-</p>
+  <p>
+    You can click
+  </p>
 
+  <button class="btn btn-outline-secondary ms-2" ngbPopover="Told you so!" [positionTarget]="target">this button,</button>
+
+  <p class="ms-2">
+    but popover will appear <b #target>here</b>.
+  </p>
+
+</div>
