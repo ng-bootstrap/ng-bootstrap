@@ -416,7 +416,6 @@ describe('ngb-popover', () => {
     });
   });
 
-
   describe('positioning', () => {
 
     it('should use requested position', fakeAsync(() => {
@@ -799,6 +798,99 @@ describe('ngb-popover', () => {
       triggerEvent(buttonEl, 'click');
     });
   });
+});
+
+describe('popover positionTarget', () => {
+  beforeEach(() => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbPopoverModule]}); });
+
+  function expectPopoverBePositionedAtHeightPx(heightPx: number) {
+    expect(Math.abs(heightPx - window.document.querySelector('ngb-popover-window') !.getBoundingClientRect().top))
+        .toBeLessThan(10);
+  }
+
+  it(`should be 'undefined' by default`, fakeAsync(() => {
+       const fixture = createTestComponent(`
+        <div style="height: 50px" ngbPopover="Great tip!" placement="bottom">Popover positionTarget</div>
+    `);
+
+       const popoverElement = fixture.debugElement.query(By.directive(NgbPopover));
+       const popover = popoverElement.injector.get(NgbPopover);
+       expect(popover.positionTarget).toBeUndefined();
+
+       popover.open();
+       tick();
+
+       // window should be positioned at the bottom of the target element
+       expectPopoverBePositionedAtHeightPx(50);
+       popover.close();
+     }));
+
+  it(`should be positioned against element reference`, fakeAsync(() => {
+       const fixture = createTestComponent(`
+        <div style="height: 50px" ngbPopover="Great tip!" placement="bottom" [positionTarget]="t">Popover positionTarget</div>
+        <div class="target" #t style="height: 50px"></div>
+    `);
+
+       const popoverElement = fixture.debugElement.query(By.directive(NgbPopover));
+       const popover = popoverElement.injector.get(NgbPopover);
+       expect(popover.positionTarget).toBe(fixture.nativeElement.querySelector('.target'));
+
+       popover.open();
+       tick();
+
+       // window should be positioned at the bottom of the target element
+       expectPopoverBePositionedAtHeightPx(100);
+       popover.close();
+     }));
+
+  it(`should be positioned against element selector`, fakeAsync(() => {
+       const fixture = createTestComponent(`
+        <div style="height: 50px" ngbPopover="Great tip!" placement="bottom" positionTarget=".target">Popover positionTarget</div>
+        <div class="target" style="height: 50px"></div>
+    `);
+
+       const popoverElement = fixture.debugElement.query(By.directive(NgbPopover));
+       const popover = popoverElement.injector.get(NgbPopover);
+
+       popover.open();
+       tick();
+
+       // window should be positioned at the bottom of the target element
+       expectPopoverBePositionedAtHeightPx(100);
+       popover.close();
+     }));
+
+  it(`should fallback to initial position with invalid selector target`, fakeAsync(() => {
+       const fixture = createTestComponent(`
+        <div style="height: 50px" ngbPopover="Great tip!" placement="bottom" positionTarget=".invalid-selector">Popover positionTarget</div>
+    `);
+
+       const popoverElement = fixture.debugElement.query(By.directive(NgbPopover));
+       const popover = popoverElement.injector.get(NgbPopover);
+
+       popover.open();
+       tick();
+
+       // window should be positioned at the bottom of the target element
+       expectPopoverBePositionedAtHeightPx(50);
+       popover.close();
+     }));
+
+  it(`should fallback to initial position with invalid element target`, fakeAsync(() => {
+       const fixture = createTestComponent(`
+        <div style="height: 50px" ngbPopover="Great tip!" placement="bottom" [positionTarget]="null">Popover positionTarget</div>
+    `);
+
+       const popoverElement = fixture.debugElement.query(By.directive(NgbPopover));
+       const popover = popoverElement.injector.get(NgbPopover);
+
+       popover.open();
+       tick();
+
+       // window should be positioned at the bottom of the target element
+       expectPopoverBePositionedAtHeightPx(50);
+       popover.close();
+     }));
 });
 
 describe('popover-tooltip', () => {
