@@ -713,6 +713,99 @@ describe('ngb-tooltip', () => {
   });
 });
 
+describe('tooltip positionTarget', () => {
+  beforeEach(() => { TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbTooltipModule]}); });
+
+  function expectTooltipBePositionedAtHeightPx(heightPx: number) {
+    expect(Math.abs(heightPx - window.document.querySelector('ngb-tooltip-window') !.getBoundingClientRect().top))
+        .toBeLessThan(10);
+  }
+
+  it(`should be 'undefined' by default`, fakeAsync(() => {
+       const fixture = createTestComponent(`
+        <div style="height: 50px" ngbTooltip="Great tip!" placement="bottom">Tooltip positionTarget</div>
+    `);
+
+       const popoverElement = fixture.debugElement.query(By.directive(NgbTooltip));
+       const popover = popoverElement.injector.get(NgbTooltip);
+       expect(popover.positionTarget).toBeUndefined();
+
+       popover.open();
+       tick();
+
+       // window should be positioned at the bottom of the target element
+       expectTooltipBePositionedAtHeightPx(50);
+       popover.close();
+     }));
+
+  it(`should be positioned against element reference`, fakeAsync(() => {
+       const fixture = createTestComponent(`
+        <div style="height: 50px" ngbTooltip="Great tip!" placement="bottom" [positionTarget]="t">Tooltip positionTarget</div>
+        <div class="target" #t style="height: 50px"></div>
+    `);
+
+       const popoverElement = fixture.debugElement.query(By.directive(NgbTooltip));
+       const popover = popoverElement.injector.get(NgbTooltip);
+       expect(popover.positionTarget).toBe(fixture.nativeElement.querySelector('.target'));
+
+       popover.open();
+       tick();
+
+       // window should be positioned at the bottom of the target element
+       expectTooltipBePositionedAtHeightPx(100);
+       popover.close();
+     }));
+
+  it(`should be positioned against element selector`, fakeAsync(() => {
+       const fixture = createTestComponent(`
+        <div style="height: 50px" ngbTooltip="Great tip!" placement="bottom" positionTarget=".target">Tooltip positionTarget</div>
+        <div class="target" style="height: 50px"></div>
+    `);
+
+       const popoverElement = fixture.debugElement.query(By.directive(NgbTooltip));
+       const popover = popoverElement.injector.get(NgbTooltip);
+
+       popover.open();
+       tick();
+
+       // window should be positioned at the bottom of the target element
+       expectTooltipBePositionedAtHeightPx(100);
+       popover.close();
+     }));
+
+  it(`should fallback to initial position with invalid selector target`, fakeAsync(() => {
+       const fixture = createTestComponent(`
+        <div style="height: 50px" ngbTooltip="Great tip!" placement="bottom" positionTarget=".invalid-selector">Tooltip positionTarget</div>
+    `);
+
+       const popoverElement = fixture.debugElement.query(By.directive(NgbTooltip));
+       const popover = popoverElement.injector.get(NgbTooltip);
+
+       popover.open();
+       tick();
+
+       // window should be positioned at the bottom of the target element
+       expectTooltipBePositionedAtHeightPx(50);
+       popover.close();
+     }));
+
+  it(`should fallback to initial position with invalid element target`, fakeAsync(() => {
+       const fixture = createTestComponent(`
+        <div style="height: 50px" ngbTooltip="Great tip!" placement="bottom" [positionTarget]="null">Tooltip positionTarget</div>
+    `);
+
+       const popoverElement = fixture.debugElement.query(By.directive(NgbTooltip));
+       const popover = popoverElement.injector.get(NgbTooltip);
+
+       popover.open();
+       tick();
+
+       // window should be positioned at the bottom of the target element
+       expectTooltipBePositionedAtHeightPx(50);
+       popover.close();
+     }));
+});
+
 if (isBrowserVisible('ngb-tooltip animations')) {
   describe('ngb-tooltip animations', () => {
 

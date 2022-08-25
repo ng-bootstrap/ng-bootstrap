@@ -29,6 +29,7 @@ import {ngbPositioning, PlacementArray} from '../util/positioning';
 import {PopupService} from '../util/popup';
 import {Options} from '@popperjs/core';
 import {NgbRTL} from '../util/rtl';
+import {isString} from '../util/util';
 
 import {NgbTooltipConfig} from './tooltip-config';
 import {Subscription} from 'rxjs';
@@ -105,6 +106,12 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
    * For more details see the [triggers demo](#/components/tooltip/examples#triggers).
    */
   @Input() triggers: string;
+
+  /**
+   * A css selector or html element specifying the element the tooltip should be positioned against.
+   * By default, the element `ngbTooltip` directive is applied to will be set as a target.
+   */
+  @Input() positionTarget?: string | HTMLElement;
 
   /**
    * A selector specifying the element the tooltip should be appended to.
@@ -208,7 +215,7 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
       this._windowRef.setInput('tooltipClass', this.tooltipClass);
       this._windowRef.setInput('id', this._ngbTooltipWindowId);
 
-      this._renderer.setAttribute(this._elementRef.nativeElement, 'aria-describedby', this._ngbTooltipWindowId);
+      this._renderer.setAttribute(this._getPositionTargetElement(), 'aria-describedby', this._ngbTooltipWindowId);
 
       if (this.container === 'body') {
         this._document.querySelector(this.container).appendChild(this._windowRef.location.nativeElement);
@@ -229,7 +236,7 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
       // Setting up popper and scheduling updates when zone is stable
       this._ngZone.runOutsideAngular(() => {
         this._positioning.createPopper({
-          hostElement: this._elementRef.nativeElement,
+          hostElement: this._getPositionTargetElement(),
           targetElement: this._windowRef !.location.nativeElement,
           placement: this.placement,
           appendToBody: this.container === 'body',
@@ -259,7 +266,7 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
    */
   close(animation = this.animation): void {
     if (this._windowRef != null) {
-      this._renderer.removeAttribute(this._elementRef.nativeElement, 'aria-describedby');
+      this._renderer.removeAttribute(this._getPositionTargetElement(), 'aria-describedby');
       this._popupService.close(animation).subscribe(() => {
         this._windowRef = null;
         this._positioning.destroy();
@@ -305,5 +312,10 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
     // This check is needed as it might happen that ngOnDestroy is called before ngOnInit
     // under certain conditions, see: https://github.com/ng-bootstrap/ng-bootstrap/issues/2199
     this._unregisterListenersFn ?.();
+  }
+
+  private _getPositionTargetElement(): HTMLElement {
+    return (isString(this.positionTarget) ? this._document.querySelector(this.positionTarget) : this.positionTarget) ||
+        this._elementRef.nativeElement;
   }
 }
