@@ -1,25 +1,25 @@
 import {
-  Component,
-  Directive,
-  Input,
-  Output,
-  EventEmitter,
+  ApplicationRef,
   ChangeDetectionStrategy,
-  OnInit,
-  OnDestroy,
-  OnChanges,
+  ChangeDetectorRef,
+  Component,
+  ComponentRef,
+  Directive,
+  ElementRef,
+  EventEmitter,
   Inject,
   Injector,
+  Input,
+  NgZone,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
   Renderer2,
-  ComponentRef,
-  ElementRef,
+  SimpleChanges,
   TemplateRef,
   ViewContainerRef,
-  NgZone,
-  SimpleChanges,
-  ViewEncapsulation,
-  ChangeDetectorRef,
-  ApplicationRef
+  ViewEncapsulation
 } from '@angular/core';
 import {DOCUMENT} from '@angular/common';
 
@@ -28,6 +28,7 @@ import {ngbAutoClose} from '../util/autoclose';
 import {ngbPositioning, PlacementArray} from '../util/positioning';
 import {PopupService} from '../util/popup';
 import {NgbRTL} from '../util/rtl';
+import {isString} from '../util/util';
 
 import {NgbPopoverConfig} from './popover-config';
 import {Options} from '@popperjs/core';
@@ -132,10 +133,10 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
   @Input() triggers: string;
 
   /**
-   * Specifies the target element for the popover. If empty, uses host element.
-   * Only works with manual trigger.
+   * A css selector or html element specifying the element the popover should be positioned against.
+   * By default, the element `ngbPopover` directive is applied to will be set as a target.
    */
-  @Input() target: HTMLElement;
+  @Input() positionTarget?: string | HTMLElement;
 
   /**
    * A selector specifying the element the popover should be appended to.
@@ -238,8 +239,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
       this._windowRef.setInput('popoverClass', this.popoverClass);
       this._windowRef.setInput('id', this._ngbPopoverWindowId);
 
-      this._renderer.setAttribute(
-          this.target || this._elementRef.nativeElement, 'aria-describedby', this._ngbPopoverWindowId);
+      this._renderer.setAttribute(this._getPositionTargetElement(), 'aria-describedby', this._ngbPopoverWindowId);
 
       if (this.container === 'body') {
         this._document.querySelector(this.container).appendChild(this._windowRef.location.nativeElement);
@@ -260,7 +260,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
       // Setting up popper and scheduling updates when zone is stable
       this._ngZone.runOutsideAngular(() => {
         this._positioning.createPopper({
-          hostElement: this.target || this._elementRef.nativeElement,
+          hostElement: this._getPositionTargetElement(),
           targetElement: this._windowRef !.location.nativeElement,
           placement: this.placement,
           appendToBody: this.container === 'body',
@@ -290,7 +290,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
    */
   close(animation = this.animation) {
     if (this._windowRef) {
-      this._renderer.removeAttribute(this.target || this._elementRef.nativeElement, 'aria-describedby');
+      this._renderer.removeAttribute(this._getPositionTargetElement(), 'aria-describedby');
       this._popupService.close(animation).subscribe(() => {
         this._windowRef = null;
         this._positioning.destroy();
@@ -340,5 +340,10 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
     // This check is needed as it might happen that ngOnDestroy is called before ngOnInit
     // under certain conditions, see: https://github.com/ng-bootstrap/ng-bootstrap/issues/2199
     this._unregisterListenersFn ?.();
+  }
+
+  private _getPositionTargetElement(): HTMLElement {
+    return (isString(this.positionTarget) ? this._document.querySelector(this.positionTarget) : this.positionTarget) ||
+        this._elementRef.nativeElement;
   }
 }
