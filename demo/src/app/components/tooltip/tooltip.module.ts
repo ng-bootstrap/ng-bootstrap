@@ -18,6 +18,7 @@ import { NgbdTooltipCustomClassModule } from './demos/customclass/tooltip-custom
 import { NgbdTooltipCustomclass } from './demos/customclass/tooltip-customclass';
 import { NgbdTooltipDelay } from './demos/delay/tooltip-delay';
 import { NgbdTooltipDelayModule } from './demos/delay/tooltip-delay.module';
+import { NgbdTooltipTarget } from './demos/custom-target/tooltip-target';
 import { NgbdTooltipTplContentModule } from './demos/tplcontent/tooltip-tpl-content.module';
 import { NgbdTooltipTplcontent } from './demos/tplcontent/tooltip-tplcontent';
 import { NgbdTooltipTplWithContextModule } from './demos/tplwithcontext/tooltip-tpl-with-context.module';
@@ -25,6 +26,7 @@ import { NgbdTooltipTplwithcontext } from './demos/tplwithcontext/tooltip-tplwit
 import { NgbdTooltipTriggers } from './demos/triggers/tooltip-triggers';
 import { NgbdTooltipTriggersModule } from './demos/triggers/tooltip-triggers.module';
 import { Routes } from '@angular/router';
+import {NgbdTooltipTargetModule} from './demos/custom-target/tooltip-target.module';
 
 const DEMOS = {
   basic: {
@@ -56,6 +58,12 @@ const DEMOS = {
     type: NgbdTooltipTplwithcontext,
     code: require('!!raw-loader!./demos/tplwithcontext/tooltip-tplwithcontext').default,
     markup: require('!!raw-loader!./demos/tplwithcontext/tooltip-tplwithcontext.html').default
+  },
+  target: {
+    title: 'Custom target',
+    type: NgbdTooltipTarget,
+    code: require('!!raw-loader!./demos/custom-target/tooltip-target').default,
+    markup: require('!!raw-loader!./demos/custom-target/tooltip-target.html').default
   },
   delay: {
     title: 'Open and close delays',
@@ -106,6 +114,7 @@ export const ROUTES: Routes = [
     NgbdTooltipContainerModule,
     NgbdTooltipCustomClassModule,
     NgbdTooltipDelayModule,
+    NgbdTooltipTargetModule,
     NgbdTooltipTplContentModule,
     NgbdTooltipTriggersModule,
     NgbdTooltipAutocloseModule,
