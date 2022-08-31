@@ -521,7 +521,7 @@ export class NgbDatepicker implements AfterViewInit,
     <ng-template ngFor let-week [ngForOf]="viewModel.weeks">
       <div *ngIf="!week.collapsed" class="ngb-dp-week" role="row">
         <div *ngIf="datepicker.showWeekNumbers" class="ngb-dp-week-number small text-muted">{{ i18n.getWeekNumerals(week.number) }}</div>
-        <div *ngFor="let day of week.days" (click)="doSelect(day); $event.preventDefault()" class="ngb-dp-day" role="gridcell"
+        <div *ngFor="let day of week.days" (mousedown)="doFocus(day)" (click)="doSelect(day); $event.preventDefault()" class="ngb-dp-day" role="gridcell"
              [class.disabled]="day.context.disabled"
              [tabindex]="day.tabindex"
              [class.hidden]="day.hidden"
@@ -558,6 +558,12 @@ export class NgbDatepickerMonth {
   doSelect(day: DayViewModel) {
     if (!day.context.disabled && !day.hidden) {
       this.datepicker.onDateSelect(day.date);
+    }
+  }
+
+  doFocus(day: DayViewModel) {
+    if (!day.context.disabled && day.context.currentMonth == day.date.month) {
+      this.datepicker.focusDate(day.date);
     }
   }
 }
