@@ -1,5 +1,5 @@
 import {NgbDate} from './ngb-date';
-import {DatepickerViewModel, DayViewModel, MonthViewModel} from './datepicker-view-model';
+import {DatepickerViewModel, DayViewModel, MonthViewModel, NgbMarkDisabled} from './datepicker-view-model';
 import {NgbCalendar} from './ngb-calendar';
 import {NgbDatepickerI18n} from './datepicker-i18n';
 
@@ -19,6 +19,19 @@ export function checkMinBeforeMax(minDate?: NgbDate | null, maxDate?: NgbDate | 
   if (maxDate && minDate && maxDate.before(minDate)) {
     throw new Error(`'maxDate' ${maxDate} should be greater than 'minDate' ${minDate}`);
   }
+}
+
+export function getMinActiveDate(
+    calendar: NgbCalendar, isDisabled: NgbMarkDisabled, date?: NgbDate | null, maxDate?: NgbDate | null): NgbDate |
+    null {
+  if (!date || date.after(maxDate)) {
+    return null;
+  }
+  if (isDisabled(date)) {
+    const nextDate = calendar.getNext(date, 'd', 1);
+    return getMinActiveDate(calendar, isDisabled, nextDate, maxDate);
+  }
+  return date;
 }
 
 export function checkDateInRange(date?: NgbDate | null, minDate?: NgbDate | null, maxDate?: NgbDate | null): NgbDate |
