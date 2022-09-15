@@ -49,36 +49,26 @@ export const ngbCollapsingTransition: NgbTransitionStartFn<NgbCollapseCtx> =
         return;
       }
 
-      if (direction === 'show') {
-        // Fix the dimension before starting the animation
-        element.style[dimension] = '0px';
+      // No maxHeight -> running the transition for the first time
+      if (!maxSize) {
+        maxSize = measureCollapsingElementDimensionPx(element, dimension);
+        context.maxSize = maxSize;
+
+        // Fix the height before starting the animation
+        element.style[dimension] = direction !== 'show' ? maxSize : '0px';
+
         classList.remove('collapse');
+        classList.remove('collapsing');
+        classList.remove('show');
+
+        reflow(element);
 
         // Start the animation
         classList.add('collapsing');
-
-        const scrollDimension = `scroll${dimension[0].toUpperCase()}${dimension.slice(1)}`;
-        element.style[dimension] = element[scrollDimension] + 'px';
-      } else {
-        // No maxSize -> running the transition for the first time
-        if (!maxSize) {
-          maxSize = measureCollapsingElementDimensionPx(element, dimension);
-          context.maxSize = maxSize;
-
-          // Fix the height before starting the animation
-          element.style[dimension] = maxSize;
-
-          classList.remove('collapse');
-          classList.remove('collapsing');
-          classList.remove('show');
-
-          reflow(element);
-
-          // Start the animation
-          classList.add('collapsing');
-        }
-        element.style[dimension] = '0px';
       }
+
+      // Start or revert the animation
+      element.style[dimension] = direction === 'show' ? maxSize : '0px';
 
       return () => {
         setInitialClasses();
