@@ -4,6 +4,7 @@ describe('ngb-progressbar-config', () => {
   it('should have sensible default values', () => {
     const config = new NgbProgressbarConfig();
 
+    expect(config.ariaLabel).toBe('progress bar');
     expect(config.max).toBe(100);
     expect(config.striped).toBe(false);
     expect(config.animated).toBe(false);

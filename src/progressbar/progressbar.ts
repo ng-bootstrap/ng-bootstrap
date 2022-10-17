@@ -42,6 +42,11 @@ export class NgbProgressbar {
   @Input() animated: boolean;
 
   /**
+   * The accessible progress bar name.
+   */
+  @Input() ariaLabel: string;
+
+  /**
    * If `true`, the progress bars will be displayed as striped.
    */
   @Input() striped: boolean;
@@ -83,17 +88,10 @@ export class NgbProgressbar {
    */
   @Input() @HostBinding('style.height') height: string;
 
-  /**
-   * The accessible name, defaults to 'progress bar'
-   * @see https://dequeuniversity.com/rules/axe/4.3/aria-progressbar-name?application=AxeChrome
-   *
-   * Accepts any string
-   */
-  @Input() ariaLabel = 'progress bar';
-
   constructor(config: NgbProgressbarConfig) {
     this.max = config.max;
     this.animated = config.animated;
+    this.ariaLabel = config.ariaLabel;
     this.striped = config.striped;
     this.textType = config.textType;
     this.type = config.type;
