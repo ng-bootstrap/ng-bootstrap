@@ -15,7 +15,7 @@ import {
   NgZone,
 } from '@angular/core';
 
-import {Observable} from 'rxjs';
+import {from, Observable} from 'rxjs';
 import {take} from 'rxjs/operators';
 
 import {NgbToastConfig} from './toast-config';
@@ -137,9 +137,20 @@ export class NgbToast implements AfterContentInit,
   }
 
   ngAfterContentInit() {
-    this._zone.onStable.asObservable().pipe(take(1)).subscribe(() => {
-      this._init();
-      this.show();
+    // The zone is always stable when running apps with nooped zone.js, the `onStable`
+    // will never emit any value when the `ngZone` is `noop`.
+    const onStable$ = this._zone.isStable
+      ? from(Promise.resolve())
+      : this._zone.onStable.pipe(take(1));
+
+    // The `onStable` emits outside of the Angular under normal conditions, but that's not
+    // the case when developers are using `zone-patch-rxjs`. This will cause unnecessary change
+    // detection cycles since `_init()` will schedule a DOM timer in Angular zone.
+    this._zone.runOutsideAngular(() => {
+      onStable$.subscribe(() => {
+        this._init();
+        this.show();
+      });
     });
   }
 
