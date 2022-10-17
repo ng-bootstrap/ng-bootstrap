@@ -8,11 +8,11 @@ const BROWSERS = {
     browserName: 'chrome',
     version: 'latest'
   },
-  'FIREFOX': {
-    base: 'SauceLabs',
-    browserName: 'firefox',
-    version: 'latest'
-  },
+  // 'FIREFOX': {
+  //   base: 'SauceLabs',
+  //   browserName: 'firefox',
+  //   version: 'latest',
+  // },
   'EDGE': {
     base: 'SauceLabs',
     browserName: 'MicrosoftEdge',
@@ -68,7 +68,7 @@ module.exports = function (config) {
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
-    browsers: ['CHROME', 'FIREFOX', 'EDGE', 'SAFARI13', 'SAFARI14'],
+    browsers: ['CHROME', 'EDGE', 'SAFARI13', 'SAFARI14'],
     autoWatch: false,
     singleRun: true,
     captureTimeout: 180000,
