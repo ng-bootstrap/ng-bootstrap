@@ -4,7 +4,7 @@ import { regExpEscape, toString, removeAccents } from '../util/util';
 /**
  * A component that helps with text highlighting.
  *
- * If splits the `result` text into parts that contain the searched `term` and generates the HTML markup to simplify
+ * It splits the `result` text into parts that contain the searched `term` and generates the HTML markup to simplify
  * highlighting:
  *
  * Ex. `result="Alaska"` and `term="as"` will produce `Al<span class="ngb-highlight">as</span>ka`.
