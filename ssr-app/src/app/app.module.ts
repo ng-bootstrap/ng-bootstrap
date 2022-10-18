@@ -22,29 +22,25 @@ import { TooltipComponent } from './components/tooltip.component';
 import { TypeaheadComponent } from './components/typeahead.component';
 
 @NgModule({
-  declarations: [
-    AccordionComponent,
-    AlertComponent,
-    AppComponent,
-    CarouselComponent,
-    CollapseComponent,
-    DatepickerComponent,
-    DropdownComponent,
-    ModalComponent,
-    NavComponent,
-    PaginationComponent,
-    PopoverComponent,
-    ProgressComponent,
-    RatingComponent,
-    TimepickerComponent,
-    TooltipComponent,
-    TypeaheadComponent
-  ],
-  imports: [
-    BrowserModule.withServerTransition({ appId: 'serverApp' }),
-    FormsModule,
-    NgbModule
-  ],
-  bootstrap: [AppComponent]
+	declarations: [
+		AccordionComponent,
+		AlertComponent,
+		AppComponent,
+		CarouselComponent,
+		CollapseComponent,
+		DatepickerComponent,
+		DropdownComponent,
+		ModalComponent,
+		NavComponent,
+		PaginationComponent,
+		PopoverComponent,
+		ProgressComponent,
+		RatingComponent,
+		TimepickerComponent,
+		TooltipComponent,
+		TypeaheadComponent,
+	],
+	imports: [BrowserModule.withServerTransition({ appId: 'serverApp' }), FormsModule, NgbModule],
+	bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

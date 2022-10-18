@@ -2,13 +2,13 @@
 
 <ngb-datepicker #dp [(ngModel)]="model" (navigate)="date = $event.next"></ngb-datepicker>
 
-<hr/>
+<hr />
 
 <button class="btn btn-sm btn-outline-primary me-2" (click)="selectToday()">Select Today</button>
 <button class="btn btn-sm btn-outline-primary me-2" (click)="dp.navigateTo()">To current month</button>
 <button class="btn btn-sm btn-outline-primary me-2" (click)="dp.navigateTo({year: 2013, month: 2})">To Feb 2013</button>
 
-<hr/>
+<hr />
 
 <pre>Month: {{ date.month }}.{{ date.year }}</pre>
 <pre>Model: {{ model | json }}</pre>

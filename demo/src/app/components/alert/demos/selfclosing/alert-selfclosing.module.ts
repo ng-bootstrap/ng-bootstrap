@@ -5,9 +5,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdAlertSelfclosing } from './alert-selfclosing';
 
 @NgModule({
-  imports: [BrowserModule, NgbModule],
-  declarations: [NgbdAlertSelfclosing],
-  exports: [NgbdAlertSelfclosing],
-  bootstrap: [NgbdAlertSelfclosing]
+	imports: [BrowserModule, NgbModule],
+	declarations: [NgbdAlertSelfclosing],
+	exports: [NgbdAlertSelfclosing],
+	bootstrap: [NgbdAlertSelfclosing],
 })
 export class NgbdAlertSelfclosingModule {}

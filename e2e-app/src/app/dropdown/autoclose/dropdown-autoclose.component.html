@@ -1,38 +1,53 @@
 <h3>
-  Dropdown autoclose tests
-  <span class="ms-1 badge {{d.isOpen() ? 'bg-success' : 'bg-danger'}}" id="open-status">{{d.isOpen() ? 'open' : 'closed'}}</span>
+	Dropdown autoclose tests
+	<span class="ms-1 badge {{ d.isOpen() ? 'bg-success' : 'bg-danger' }}" id="open-status">{{
+		d.isOpen() ? 'open' : 'closed'
+	}}</span>
 </h3>
 
 <form id="default" (contextmenu)="$event.preventDefault()">
-  <div class="mb-3 row row-cols-lg-auto">
-    <div class="col-12">
-      <div id="dropdown" #d="ngbDropdown" ngbDropdown class="d-inline-block" [autoClose]="autoClose" [container]="container">
-        <button class="btn btn-outline-secondary" ngbDropdownToggle>Dropdown</button>
-        <div id="dropdownMenuId" ngbDropdownMenu aria-labelledby="dropdownBasic1" style="overflow-y: scroll;">
-          <form>
-            <div class="mb-3">
-              <input type="email" class="form-control" id="emailInput" placeholder="email@example.com" />
-            </div>
-          </form>
-          <button type="button" id="item-1" ngbDropdownItem>Item</button>
-        </div>
-      </div>
-    </div>
+	<div class="mb-3 row row-cols-lg-auto">
+		<div class="col-12">
+			<div
+				id="dropdown"
+				#d="ngbDropdown"
+				ngbDropdown
+				class="d-inline-block"
+				[autoClose]="autoClose"
+				[container]="container"
+			>
+				<button class="btn btn-outline-secondary" ngbDropdownToggle>Dropdown</button>
+				<div id="dropdownMenuId" ngbDropdownMenu aria-labelledby="dropdownBasic1" style="overflow-y: scroll">
+					<form>
+						<div class="mb-3">
+							<input type="email" class="form-control" id="emailInput" placeholder="email@example.com" />
+						</div>
+					</form>
+					<button type="button" id="item-1" ngbDropdownItem>Item</button>
+				</div>
+			</div>
+		</div>
 
-    <div class="col-12">
-      <div ngbDropdown class="d-inline-block ms-3">
-        <button class="btn btn-outline-secondary" id="autoclose-dropdown" ngbDropdownToggle>Choose Autoclose</button>
-        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-          <button type="button" ngbDropdownItem id="autoclose-true" (click)="autoClose = true">True</button>
-          <button type="button" ngbDropdownItem id="autoclose-false" (click)="autoClose = false">False</button>
-          <button type="button" ngbDropdownItem id="autoclose-outside" (click)="autoClose = 'outside'">'Outside'</button>
-          <button type="button" ngbDropdownItem id="autoclose-inside" (click)="autoClose = 'inside'">'Inside'</button>
-        </div>
-        <button class="btn btn-outline-secondary ms-1" id="container-null" (click)="container = null">Append dropdown to widget</button>
-        <button class="btn btn-outline-secondary ms-1" id="container-body" (click)="container = 'body'">Append dropdown to body</button>
-      </div>
+		<div class="col-12">
+			<div ngbDropdown class="d-inline-block ms-3">
+				<button class="btn btn-outline-secondary" id="autoclose-dropdown" ngbDropdownToggle>Choose Autoclose</button>
+				<div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+					<button type="button" ngbDropdownItem id="autoclose-true" (click)="autoClose = true">True</button>
+					<button type="button" ngbDropdownItem id="autoclose-false" (click)="autoClose = false">False</button>
+					<button type="button" ngbDropdownItem id="autoclose-outside" (click)="autoClose = 'outside'">
+						'Outside'
+					</button>
+					<button type="button" ngbDropdownItem id="autoclose-inside" (click)="autoClose = 'inside'">'Inside'</button>
+				</div>
+				<button class="btn btn-outline-secondary ms-1" id="container-null" (click)="container = null">
+					Append dropdown to widget
+				</button>
+				<button class="btn btn-outline-secondary ms-1" id="container-body" (click)="container = 'body'">
+					Append dropdown to body
+				</button>
+			</div>
 
-      <button class="btn btn-outline-secondary ms-3" id="outside-button">Outside button</button>
-    </div>
-  </div>
+			<button class="btn btn-outline-secondary ms-3" id="outside-button">Outside button</button>
+		</div>
+	</div>
 </form>

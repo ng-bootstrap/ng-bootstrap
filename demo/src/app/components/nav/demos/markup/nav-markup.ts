@@ -1,7 +1,7 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'ngbd-nav-markup',
-  templateUrl: './nav-markup.html'
+	selector: 'ngbd-nav-markup',
+	templateUrl: './nav-markup.html',
 })
-export class NgbdNavMarkup { }
+export class NgbdNavMarkup {}

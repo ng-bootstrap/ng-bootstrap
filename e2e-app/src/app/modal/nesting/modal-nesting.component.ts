@@ -1,15 +1,17 @@
-import {Component, TemplateRef} from '@angular/core';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import { Component, TemplateRef } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-@Component({templateUrl: './modal-nesting.component.html'})
+@Component({ templateUrl: './modal-nesting.component.html' })
 export class ModalNestingComponent {
-  container: string | null = null;
+	container: string | null = null;
 
-  constructor(private modalService: NgbModal) {}
+	constructor(private modalService: NgbModal) {}
 
-  openModal(content: TemplateRef<any>) { this.modalService.open(content); }
+	openModal(content: TemplateRef<any>) {
+		this.modalService.open(content);
+	}
 
-  search = (text$: Observable<string>) => text$.pipe(map(() => ['one', 'two', 'three']));
+	search = (text$: Observable<string>) => text$.pipe(map(() => ['one', 'two', 'three']));
 }

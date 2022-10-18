@@ -6,9 +6,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdDatepickerJalali } from './datepicker-jalali';
 
 @NgModule({
-  imports: [BrowserModule, FormsModule, NgbModule],
-  declarations: [NgbdDatepickerJalali],
-  exports: [NgbdDatepickerJalali],
-  bootstrap: [NgbdDatepickerJalali]
+	imports: [BrowserModule, FormsModule, NgbModule],
+	declarations: [NgbdDatepickerJalali],
+	exports: [NgbdDatepickerJalali],
+	bootstrap: [NgbdDatepickerJalali],
 })
 export class NgbdDatepickerJalaliModule {}

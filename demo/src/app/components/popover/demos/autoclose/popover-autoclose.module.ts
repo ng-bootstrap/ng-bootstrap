@@ -5,9 +5,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdPopoverAutoclose } from './popover-autoclose';
 
 @NgModule({
-  imports: [BrowserModule, NgbModule],
-  declarations: [NgbdPopoverAutoclose],
-  exports: [NgbdPopoverAutoclose],
-  bootstrap: [NgbdPopoverAutoclose]
+	imports: [BrowserModule, NgbModule],
+	declarations: [NgbdPopoverAutoclose],
+	exports: [NgbdPopoverAutoclose],
+	bootstrap: [NgbdPopoverAutoclose],
 })
 export class NgbdPopoverAutocloseModule {}

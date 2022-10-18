@@ -5,9 +5,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdPopoverTplcontent } from './popover-tplcontent';
 
 @NgModule({
-  imports: [BrowserModule, NgbModule],
-  declarations: [NgbdPopoverTplcontent],
-  exports: [NgbdPopoverTplcontent],
-  bootstrap: [NgbdPopoverTplcontent]
+	imports: [BrowserModule, NgbModule],
+	declarations: [NgbdPopoverTplcontent],
+	exports: [NgbdPopoverTplcontent],
+	bootstrap: [NgbdPopoverTplcontent],
 })
 export class NgbdPopoverTplContentModule {}

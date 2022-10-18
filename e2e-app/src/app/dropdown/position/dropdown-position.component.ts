@@ -1,12 +1,16 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 
-@Component({templateUrl: './dropdown-position.component.html'})
+@Component({ templateUrl: './dropdown-position.component.html' })
 export class DropdownPositionComponent {
-  isInDom = true;
-  placement = 'top-start';
-  container: null | 'body' = null;
+	isInDom = true;
+	placement = 'top-start';
+	container: null | 'body' = null;
 
-  togglePlacement(placement) { this.placement = placement; }
+	togglePlacement(placement) {
+		this.placement = placement;
+	}
 
-  toggleContainer(container) { this.container = container; }
+	toggleContainer(container) {
+		this.container = container;
+	}
 }

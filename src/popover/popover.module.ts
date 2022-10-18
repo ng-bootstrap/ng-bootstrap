@@ -1,12 +1,11 @@
-import {NgModule} from '@angular/core';
+import { NgModule } from '@angular/core';
 
-import {NgbPopover, NgbPopoverWindow} from './popover';
-import {CommonModule} from '@angular/common';
+import { NgbPopover, NgbPopoverWindow } from './popover';
+import { CommonModule } from '@angular/common';
 
-export {NgbPopover} from './popover';
-export {NgbPopoverConfig} from './popover-config';
-export {Placement} from '../util/positioning';
+export { NgbPopover } from './popover';
+export { NgbPopoverConfig } from './popover-config';
+export { Placement } from '../util/positioning';
 
-@NgModule({declarations: [NgbPopover, NgbPopoverWindow], exports: [NgbPopover], imports: [CommonModule]})
-export class NgbPopoverModule {
-}
+@NgModule({ declarations: [NgbPopover, NgbPopoverWindow], exports: [NgbPopover], imports: [CommonModule] })
+export class NgbPopoverModule {}

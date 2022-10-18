@@ -1,17 +1,11 @@
-<p>
-  You can choose a custom popover target. It works best when using manual triggers.
-</p>
+<p>You can choose a custom popover target. It works best when using manual triggers.</p>
 
 <div class="d-flex align-items-baseline">
+	<p>You can click</p>
 
-  <p>
-    You can click
-  </p>
+	<button class="btn btn-outline-secondary ms-2" ngbPopover="Told you so!" [positionTarget]="target">
+		this button,
+	</button>
 
-  <button class="btn btn-outline-secondary ms-2" ngbPopover="Told you so!" [positionTarget]="target">this button,</button>
-
-  <p class="ms-2">
-    but popover will appear <b #target>here</b>.
-  </p>
-
+	<p class="ms-2">but popover will appear <b #target>here</b>.</p>
 </div>

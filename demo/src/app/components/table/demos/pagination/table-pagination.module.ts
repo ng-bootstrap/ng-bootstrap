@@ -7,9 +7,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdTablePagination } from './table-pagination';
 
 @NgModule({
-  imports: [BrowserModule, CommonModule, FormsModule, NgbModule],
-  declarations: [NgbdTablePagination],
-  exports: [NgbdTablePagination],
-  bootstrap: [NgbdTablePagination]
+	imports: [BrowserModule, CommonModule, FormsModule, NgbModule],
+	declarations: [NgbdTablePagination],
+	exports: [NgbdTablePagination],
+	bootstrap: [NgbdTablePagination],
 })
 export class NgbdTablePaginationModule {}

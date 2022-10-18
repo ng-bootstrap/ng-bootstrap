@@ -1,21 +1,33 @@
 <p>
-  You can easily override open and close triggers by specifying event names (separated by <code>:</code>) in the <code>triggers</code> property. You may pass multiple triggers; separate them with a space.
+	You can easily override open and close triggers by specifying event names (separated by <code>:</code>) in the
+	<code>triggers</code> property. You may pass multiple triggers; separate them with a space.
 </p>
 
-<button type="button" class="btn btn-outline-secondary" ngbPopover="You see, I show up on hover!" triggers="mouseenter:mouseleave" popoverTitle="Pop title">
-  Hover over me!
+<button
+	type="button"
+	class="btn btn-outline-secondary"
+	ngbPopover="You see, I show up on hover!"
+	triggers="mouseenter:mouseleave"
+	popoverTitle="Pop title"
+>
+	Hover over me!
 </button>
 
-<hr>
-<p>
-  Alternatively you can take full manual control over popover opening / closing events.
-</p>
+<hr />
+<p>Alternatively you can take full manual control over popover opening / closing events.</p>
 
 <div class="buttons">
-  <button type="button" class="btn btn-outline-secondary me-2" ngbPopover="What a great tip!" [autoClose]="false" triggers="manual" #p="ngbPopover" (click)="p.open()" popoverTitle="Pop title">
-    Click me to open a popover
-  </button>
-  <button type="button" class="btn btn-outline-secondary me-2" (click)="p.close()">
-    Click me to close a popover
-  </button>
+	<button
+		type="button"
+		class="btn btn-outline-secondary me-2"
+		ngbPopover="What a great tip!"
+		[autoClose]="false"
+		triggers="manual"
+		#p="ngbPopover"
+		(click)="p.open()"
+		popoverTitle="Pop title"
+	>
+		Click me to open a popover
+	</button>
+	<button type="button" class="btn btn-outline-secondary me-2" (click)="p.close()">Click me to close a popover</button>
 </div>

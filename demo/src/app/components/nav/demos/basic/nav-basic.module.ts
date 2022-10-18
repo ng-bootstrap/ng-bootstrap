@@ -5,10 +5,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdNavBasic } from './nav-basic';
 
 @NgModule({
-  imports: [BrowserModule, NgbModule],
-  declarations: [NgbdNavBasic],
-  exports: [NgbdNavBasic],
-  bootstrap: [NgbdNavBasic]
+	imports: [BrowserModule, NgbModule],
+	declarations: [NgbdNavBasic],
+	exports: [NgbdNavBasic],
+	bootstrap: [NgbdNavBasic],
 })
-export class NgbdNavBasicModule {
-}
+export class NgbdNavBasicModule {}

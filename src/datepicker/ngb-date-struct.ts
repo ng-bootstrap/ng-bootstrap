@@ -6,18 +6,18 @@
  * See the [date format overview](#/components/datepicker/overview#date-model) for more details.
  */
 export interface NgbDateStruct {
-  /**
-   * The year, for example 2016
-   */
-  year: number;
+	/**
+	 * The year, for example 2016
+	 */
+	year: number;
 
-  /**
-   * The month, for example 1=Jan ... 12=Dec
-   */
-  month: number;
+	/**
+	 * The month, for example 1=Jan ... 12=Dec
+	 */
+	month: number;
 
-  /**
-   * The day of month, starting at 1
-   */
-  day: number;
+	/**
+	 * The day of month, starting at 1
+	 */
+	day: number;
 }

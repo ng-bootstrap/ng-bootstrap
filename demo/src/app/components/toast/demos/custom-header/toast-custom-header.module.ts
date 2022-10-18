@@ -6,8 +6,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdToastCustomHeader } from './toast-custom-header';
 
 @NgModule({
-  imports: [BrowserModule, FormsModule, NgbModule],
-  declarations: [NgbdToastCustomHeader],
-  bootstrap: [NgbdToastCustomHeader]
+	imports: [BrowserModule, FormsModule, NgbModule],
+	declarations: [NgbdToastCustomHeader],
+	bootstrap: [NgbdToastCustomHeader],
 })
 export class NgbdToastCustomHeaderModule {}

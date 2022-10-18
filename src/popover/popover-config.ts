@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
-import {PlacementArray} from '../util/positioning';
-import {NgbConfig} from '../ngb-config';
-import {Options} from '@popperjs/core';
+import { Injectable } from '@angular/core';
+import { PlacementArray } from '../util/positioning';
+import { NgbConfig } from '../ngb-config';
+import { Options } from '@popperjs/core';
 
 /**
  * A configuration service for the [`NgbPopover`](#/components/popover/api#NgbPopover) component.
@@ -9,22 +9,26 @@ import {Options} from '@popperjs/core';
  * You can inject this service, typically in your root component, and customize the values of its properties in
  * order to provide default values for all the popovers used in the application.
  */
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class NgbPopoverConfig {
-  autoClose: boolean | 'inside' | 'outside' = true;
-  placement: PlacementArray = 'auto';
-  popperOptions = (options: Partial<Options>) => options;
-  triggers = 'click';
-  container: string;
-  disablePopover = false;
-  popoverClass: string;
-  openDelay = 0;
-  closeDelay = 0;
+	autoClose: boolean | 'inside' | 'outside' = true;
+	placement: PlacementArray = 'auto';
+	popperOptions = (options: Partial<Options>) => options;
+	triggers = 'click';
+	container: string;
+	disablePopover = false;
+	popoverClass: string;
+	openDelay = 0;
+	closeDelay = 0;
 
-  private _animation: boolean;
+	private _animation: boolean;
 
-  constructor(private _ngbConfig: NgbConfig) {}
+	constructor(private _ngbConfig: NgbConfig) {}
 
-  get animation(): boolean { return (this._animation === undefined) ? this._ngbConfig.animation : this._animation; }
-  set animation(animation: boolean) { this._animation = animation; }
+	get animation(): boolean {
+		return this._animation === undefined ? this._ngbConfig.animation : this._animation;
+	}
+	set animation(animation: boolean) {
+		this._animation = animation;
+	}
 }

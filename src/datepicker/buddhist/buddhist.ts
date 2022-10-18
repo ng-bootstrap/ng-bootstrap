@@ -1,11 +1,11 @@
-import {NgbDate} from '../ngb-date';
+import { NgbDate } from '../ngb-date';
 
 /**
  * Returns the equivalent JS date value for a give input Buddhist date.
  * `date` is an Buddhist date to be converted to Gregorian.
  */
 export function toGregorian(date: NgbDate): Date {
-  return new Date(date.year - 543, date.month - 1, date.day);
+	return new Date(date.year - 543, date.month - 1, date.day);
 }
 
 /**
@@ -14,5 +14,5 @@ export function toGregorian(date: NgbDate): Date {
  * utc to local
  */
 export function fromGregorian(gdate: Date): NgbDate {
-  return new NgbDate(gdate.getFullYear() + 543, gdate.getMonth() + 1, gdate.getDate());
+	return new NgbDate(gdate.getFullYear() + 543, gdate.getMonth() + 1, gdate.getDate());
 }

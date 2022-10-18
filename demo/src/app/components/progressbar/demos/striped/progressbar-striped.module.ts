@@ -5,9 +5,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdProgressbarStriped } from './progressbar-striped';
 
 @NgModule({
-  imports: [BrowserModule, NgbModule],
-  declarations: [NgbdProgressbarStriped],
-  exports: [NgbdProgressbarStriped],
-  bootstrap: [NgbdProgressbarStriped]
+	imports: [BrowserModule, NgbModule],
+	declarations: [NgbdProgressbarStriped],
+	exports: [NgbdProgressbarStriped],
+	bootstrap: [NgbdProgressbarStriped],
 })
 export class NgbdProgressbarStripedModule {}

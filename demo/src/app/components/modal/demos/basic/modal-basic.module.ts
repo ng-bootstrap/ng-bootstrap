@@ -5,9 +5,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdModalBasic } from './modal-basic';
 
 @NgModule({
-  imports: [BrowserModule, NgbModule],
-  declarations: [NgbdModalBasic],
-  exports: [NgbdModalBasic],
-  bootstrap: [NgbdModalBasic]
+	imports: [BrowserModule, NgbModule],
+	declarations: [NgbdModalBasic],
+	exports: [NgbdModalBasic],
+	bootstrap: [NgbdModalBasic],
 })
 export class NgbdModalBasicModule {}

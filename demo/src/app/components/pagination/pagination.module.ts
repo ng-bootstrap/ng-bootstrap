@@ -24,87 +24,87 @@ import { NgbdPaginationOverviewComponent } from './overview/pagination-overview.
 import { Routes } from '@angular/router';
 
 const OVERVIEW = {
-  'basic-usage': 'Basic Usage',
-  customization: 'Customization'
+	'basic-usage': 'Basic Usage',
+	customization: 'Customization',
 };
 
 const DEMOS = {
-  basic: {
-    title: 'Basic pagination',
-    type: NgbdPaginationBasic,
-    code: require('!!raw-loader!./demos/basic/pagination-basic').default,
-    markup: require('!!raw-loader!./demos/basic/pagination-basic.html').default
-  },
-  advanced: {
-    title: 'Advanced pagination',
-    type: NgbdPaginationAdvanced,
-    code: require('!!raw-loader!./demos/advanced/pagination-advanced').default,
-    markup: require('!!raw-loader!./demos/advanced/pagination-advanced.html').default
-  },
-  customization: {
-    title: 'Custom links and pages',
-    type: NgbdPaginationCustomization,
-    code: require('!!raw-loader!./demos/customization/pagination-customization').default,
-    markup: require('!!raw-loader!./demos/customization/pagination-customization.html').default
-  },
-  size: {
-    title: 'Pagination size',
-    type: NgbdPaginationSize,
-    code: require('!!raw-loader!./demos/size/pagination-size').default,
-    markup: require('!!raw-loader!./demos/size/pagination-size.html').default
-  },
-  justify: {
-    title: 'Pagination alignment',
-    type: NgbdPaginationJustify,
-    code: require('!!raw-loader!./demos/justify/pagination-justify').default,
-    markup: require('!!raw-loader!./demos/justify/pagination-justify.html').default
-  },
-  disabled: {
-    title: 'Disabled pagination',
-    type: NgbdPaginationDisabled,
-    code: require('!!raw-loader!./demos/disabled/pagination-disabled').default,
-    markup: require('!!raw-loader!./demos/disabled/pagination-disabled.html').default
-  },
-  config: {
-    title: 'Global configuration',
-    type: NgbdPaginationConfig,
-    code: require('!!raw-loader!./demos/config/pagination-config').default,
-    markup: require('!!raw-loader!./demos/config/pagination-config.html').default
-  }
+	basic: {
+		title: 'Basic pagination',
+		type: NgbdPaginationBasic,
+		code: require('!!raw-loader!./demos/basic/pagination-basic').default,
+		markup: require('!!raw-loader!./demos/basic/pagination-basic.html').default,
+	},
+	advanced: {
+		title: 'Advanced pagination',
+		type: NgbdPaginationAdvanced,
+		code: require('!!raw-loader!./demos/advanced/pagination-advanced').default,
+		markup: require('!!raw-loader!./demos/advanced/pagination-advanced.html').default,
+	},
+	customization: {
+		title: 'Custom links and pages',
+		type: NgbdPaginationCustomization,
+		code: require('!!raw-loader!./demos/customization/pagination-customization').default,
+		markup: require('!!raw-loader!./demos/customization/pagination-customization.html').default,
+	},
+	size: {
+		title: 'Pagination size',
+		type: NgbdPaginationSize,
+		code: require('!!raw-loader!./demos/size/pagination-size').default,
+		markup: require('!!raw-loader!./demos/size/pagination-size.html').default,
+	},
+	justify: {
+		title: 'Pagination alignment',
+		type: NgbdPaginationJustify,
+		code: require('!!raw-loader!./demos/justify/pagination-justify').default,
+		markup: require('!!raw-loader!./demos/justify/pagination-justify.html').default,
+	},
+	disabled: {
+		title: 'Disabled pagination',
+		type: NgbdPaginationDisabled,
+		code: require('!!raw-loader!./demos/disabled/pagination-disabled').default,
+		markup: require('!!raw-loader!./demos/disabled/pagination-disabled.html').default,
+	},
+	config: {
+		title: 'Global configuration',
+		type: NgbdPaginationConfig,
+		code: require('!!raw-loader!./demos/config/pagination-config').default,
+		markup: require('!!raw-loader!./demos/config/pagination-config.html').default,
+	},
 };
 
 export const ROUTES: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'overview' },
-  {
-    path: '',
-    component: ComponentWrapper,
-    data: {
-      bootstrap: 'https://getbootstrap.com/docs/%version%/components/pagination/'
-    },
-    children: [
-      { path: 'overview', component: NgbdPaginationOverviewComponent },
-      { path: 'examples', component: NgbdExamplesPage },
-      { path: 'api', component: NgbdApiPage }
-    ]
-  }
+	{ path: '', pathMatch: 'full', redirectTo: 'overview' },
+	{
+		path: '',
+		component: ComponentWrapper,
+		data: {
+			bootstrap: 'https://getbootstrap.com/docs/%version%/components/pagination/',
+		},
+		children: [
+			{ path: 'overview', component: NgbdPaginationOverviewComponent },
+			{ path: 'examples', component: NgbdExamplesPage },
+			{ path: 'api', component: NgbdApiPage },
+		],
+	},
 ];
 
 @NgModule({
-  imports: [
-    NgbdSharedModule,
-    NgbdComponentsSharedModule,
-    NgbdPaginationAdvancedModule,
-    NgbdPaginationBasicModule,
-    NgbdPaginationSizeModule,
-    NgbdPaginationConfigModule,
-    NgbdPaginationCustomizationModule,
-    NgbdPaginationDisabledModule,
-    NgbdPaginationJustifyModule
-  ],
-  declarations: [NgbdPaginationOverviewComponent]
+	imports: [
+		NgbdSharedModule,
+		NgbdComponentsSharedModule,
+		NgbdPaginationAdvancedModule,
+		NgbdPaginationBasicModule,
+		NgbdPaginationSizeModule,
+		NgbdPaginationConfigModule,
+		NgbdPaginationCustomizationModule,
+		NgbdPaginationDisabledModule,
+		NgbdPaginationJustifyModule,
+	],
+	declarations: [NgbdPaginationOverviewComponent],
 })
 export class NgbdPaginationModule {
-  constructor(demoList: NgbdDemoList) {
-    demoList.register('pagination', DEMOS, OVERVIEW);
-  }
+	constructor(demoList: NgbdDemoList) {
+		demoList.register('pagination', DEMOS, OVERVIEW);
+	}
 }

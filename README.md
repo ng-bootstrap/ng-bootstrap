@@ -11,7 +11,6 @@
 Please check our [demo site](https://ng-bootstrap.github.io) and the list of
 [issues](https://github.com/ng-bootstrap/ng-bootstrap/issues) to see all the things we are working on. Feel free to make comments there.
 
-
 ## Table of Contents
 
 - [Demo](#demo)
@@ -33,7 +32,7 @@ The only dependencies are [Angular](https://angular.io), [Bootstrap 5](https://g
 The supported versions are:
 
 | ng-bootstrap | Angular | Bootstrap CSS | Popper |
-|--------------|---------|---------------| -------|
+| ------------ | ------- | ------------- | ------ |
 | 1.x.x        | 5.0.2   | 4.0.0         |        |
 | 2.x.x        | 6.0.0   | 4.0.0         |        |
 | 3.x.x        | 6.1.0   | 4.0.0         |        |
@@ -49,7 +48,7 @@ The supported versions are:
 
 ## Installation
 
-We strongly recommend using [Angular CLI](https://cli.angular.io) for setting up a new project. If you have an Angular &ge; 9 CLI project, you could simply use our schematics to add ng-bootstrap library to it. 
+We strongly recommend using [Angular CLI](https://cli.angular.io) for setting up a new project. If you have an Angular &ge; 9 CLI project, you could simply use our schematics to add ng-bootstrap library to it.
 
 Just run the following:
 
@@ -64,8 +63,8 @@ If you have multiple projects and you want to target a specific application, you
 ng add @ng-bootstrap/ng-bootstrap --project myProject
 ```
 
-If you prefer not to use schematics and install everything manually, please refer to the 
-[manual installation instructions](https://ng-bootstrap.github.io/#/getting-started#installation) on our website. 
+If you prefer not to use schematics and install everything manually, please refer to the
+[manual installation instructions](https://ng-bootstrap.github.io/#/getting-started#installation) on our website.
 
 ## Supported browsers
 
@@ -73,26 +72,26 @@ We support the same browsers and versions supported by both Bootstrap 4 and Angu
 
 Our code is automatically tested on all supported browsers.
 
-
 ## Getting help
 
 Please, do not open issues for the general support questions as we want to keep GitHub issues for bug reports and feature requests. You've got much better chances of getting your question answered on [StackOverflow](http://stackoverflow.com/questions/tagged/ng-bootstrap) where maintainers are looking at questions tagged with `ng-bootstrap`.
 
 StackOverflow is a much better place to ask questions since:
-* there are hundreds of people willing to help on StackOverflow
-* questions and answers stay available for public viewing so your question/answer might help someone else
-* Stack Overflow's voting system assures that the best answers are prominently visible.
+
+- there are hundreds of people willing to help on StackOverflow
+- questions and answers stay available for public viewing so your question/answer might help someone else
+- Stack Overflow's voting system assures that the best answers are prominently visible.
 
 To save your and our time we will be systematically closing all the issues that are requests for general support and redirecting people to StackOverflow.
-
 
 ## Do you think you've found a bug?
 
 We want to fix it ASAP! But before fixing a bug we need to reproduce and confirm it.
 
 We ask you to respect two things:
-* fill the GitHub issue template by providing the bug description and appropriate versions of Angular, ng-bootstrap and TypeScript
-* provide a use-case that fails with a **minimal reproduction scenario** using [StackBlitz](https://stackblitz.com) (you can start by forking one from our [demo page](https://ng-bootstrap.github.io/#/components))
+
+- fill the GitHub issue template by providing the bug description and appropriate versions of Angular, ng-bootstrap and TypeScript
+- provide a use-case that fails with a **minimal reproduction scenario** using [StackBlitz](https://stackblitz.com) (you can start by forking one from our [demo page](https://ng-bootstrap.github.io/#/components))
 
 A minimal reproduction scenario allows us to quickly confirm a bug (or point out a coding problem) as well as confirm that we are fixing the right problem.
 
@@ -100,11 +99,9 @@ Please note that **we will be insisting on a minimal reproduction scenario** in 
 
 Interestingly, from our experience users often find coding problems themselves while preparing a minimal StackBlitz. We understand that sometimes it might be hard to extract essential bits of code from a larger code-base but we really need to isolate the problem before we can fix it.
 
-
 ## Contributing to the project
 
 Please check [DEVELOPER.md](DEVELOPER.md) for documentation on running the project locally and [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
-
 
 ## Code of conduct
 

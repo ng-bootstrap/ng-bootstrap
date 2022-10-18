@@ -1,8 +1,7 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'ngbd-progressbar-basic',
-  templateUrl: './progressbar-basic.html'
+	selector: 'ngbd-progressbar-basic',
+	templateUrl: './progressbar-basic.html',
 })
-export class NgbdProgressbarBasic {
-}
+export class NgbdProgressbarBasic {}

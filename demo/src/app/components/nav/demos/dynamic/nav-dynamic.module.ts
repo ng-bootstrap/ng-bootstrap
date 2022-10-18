@@ -5,10 +5,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdNavDynamic } from './nav-dynamic';
 
 @NgModule({
-  imports: [BrowserModule, NgbModule],
-  declarations: [NgbdNavDynamic],
-  exports: [NgbdNavDynamic],
-  bootstrap: [NgbdNavDynamic]
+	imports: [BrowserModule, NgbModule],
+	declarations: [NgbdNavDynamic],
+	exports: [NgbdNavDynamic],
+	bootstrap: [NgbdNavDynamic],
 })
-export class NgbdNavDynamicModule {
-}
+export class NgbdNavDynamicModule {}

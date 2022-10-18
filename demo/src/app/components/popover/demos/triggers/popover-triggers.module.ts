@@ -5,9 +5,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdPopoverTriggers } from './popover-triggers';
 
 @NgModule({
-  imports: [BrowserModule, NgbModule],
-  declarations: [NgbdPopoverTriggers],
-  exports: [NgbdPopoverTriggers],
-  bootstrap: [NgbdPopoverTriggers]
+	imports: [BrowserModule, NgbModule],
+	declarations: [NgbdPopoverTriggers],
+	exports: [NgbdPopoverTriggers],
+	bootstrap: [NgbdPopoverTriggers],
 })
 export class NgbdPopoverTriggersModule {}

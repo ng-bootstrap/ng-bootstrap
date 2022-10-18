@@ -5,9 +5,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdDatepickerCustommonth } from './datepicker-custommonth';
 
 @NgModule({
-  imports: [BrowserModule, NgbModule],
-  declarations: [NgbdDatepickerCustommonth],
-  exports: [NgbdDatepickerCustommonth],
-  bootstrap: [NgbdDatepickerCustommonth]
+	imports: [BrowserModule, NgbModule],
+	declarations: [NgbdDatepickerCustommonth],
+	exports: [NgbdDatepickerCustommonth],
+	bootstrap: [NgbdDatepickerCustommonth],
 })
 export class NgbdDatepickerCustommonthModule {}

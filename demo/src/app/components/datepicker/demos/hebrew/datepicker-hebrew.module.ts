@@ -6,9 +6,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdDatepickerHebrew } from './datepicker-hebrew';
 
 @NgModule({
-  imports: [BrowserModule, FormsModule, NgbModule],
-  declarations: [NgbdDatepickerHebrew],
-  exports: [NgbdDatepickerHebrew],
-  bootstrap: [NgbdDatepickerHebrew]
+	imports: [BrowserModule, FormsModule, NgbModule],
+	declarations: [NgbdDatepickerHebrew],
+	exports: [NgbdDatepickerHebrew],
+	bootstrap: [NgbdDatepickerHebrew],
 })
 export class NgbdDatepickerHebrewModule {}

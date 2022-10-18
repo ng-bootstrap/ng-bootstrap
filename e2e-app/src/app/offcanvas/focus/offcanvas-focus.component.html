@@ -1,39 +1,62 @@
 <h3>Offcanvas focus tests</h3>
 
-
 <!-- Simple Offcanvas -->
-<button class="btn btn-outline-secondary" type="button" id="open-offcanvas-simple" (click)="openOffcanvas()">Simple Offcanvas</button>
+<button class="btn btn-outline-secondary" type="button" id="open-offcanvas-simple" (click)="openOffcanvas()">
+	Simple Offcanvas
+</button>
 
 <!-- Closeable Offcanvas -->
 <ng-template #closeable let-offcanvas>
-  <div class="offcanvas-header">
-    <h4 class="offcanvas-title">Closeable offcanvas</h4>
-    <button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss()"></button>
-  </div>
-  <div class="offcanvas-body">
-    <form>
-      <div class="mb-3">
-        <input class="form-control">
-      </div>
-    </form>
-    <button type="button" class="btn btn-outline-dark" (click)="offcanvas.close()">Close</button>
-  </div>
+	<div class="offcanvas-header">
+		<h4 class="offcanvas-title">Closeable offcanvas</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss()"></button>
+	</div>
+	<div class="offcanvas-body">
+		<form>
+			<div class="mb-3">
+				<input class="form-control" />
+			</div>
+		</form>
+		<button type="button" class="btn btn-outline-dark" (click)="offcanvas.close()">Close</button>
+	</div>
 </ng-template>
 
-<button class="btn btn-outline-secondary ms-2" type="button" id="open-offcanvas-template" (click)="openOffcanvas(closeable)">Template Offcanvas</button>
+<button
+	class="btn btn-outline-secondary ms-2"
+	type="button"
+	id="open-offcanvas-template"
+	(click)="openOffcanvas(closeable)"
+>
+	Template Offcanvas
+</button>
 
 <!-- Offcanvas with autofocus -->
 <ng-template #autofocus let-offcanvas>
-  <div class="offcanvas-header">
-    <h4 class="offcanvas-title">Autofocus offcanvas</h4>
-    <button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss()"></button>
-  </div>
-  <div class="offcanvas-body">
-    <p>Close button should be focused</p>
-    <button ngbAutofocus type="button" class="btn btn-outline-dark" (click)="offcanvas.close()">Close</button>
-  </div>
+	<div class="offcanvas-header">
+		<h4 class="offcanvas-title">Autofocus offcanvas</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss()"></button>
+	</div>
+	<div class="offcanvas-body">
+		<p>Close button should be focused</p>
+		<button ngbAutofocus type="button" class="btn btn-outline-dark" (click)="offcanvas.close()">Close</button>
+	</div>
 </ng-template>
 
-<button class="btn btn-outline-secondary ms-2" type="button" id="open-offcanvas-autofocus" (click)="openOffcanvas(autofocus)">Autofocus Offcanvas</button>
+<button
+	class="btn btn-outline-secondary ms-2"
+	type="button"
+	id="open-offcanvas-autofocus"
+	(click)="openOffcanvas(autofocus)"
+>
+	Autofocus Offcanvas
+</button>
 
-<button class="btn btn-outline-secondary ms-2" type="button" id="open-offcanvas-disable" (click)="openAndDisable()" [disabled]="disabledButton">Open and disabled</button>
+<button
+	class="btn btn-outline-secondary ms-2"
+	type="button"
+	id="open-offcanvas-disable"
+	(click)="openAndDisable()"
+	[disabled]="disabledButton"
+>
+	Open and disabled
+</button>

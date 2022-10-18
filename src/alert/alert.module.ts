@@ -1,11 +1,10 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
-import {NgbAlert} from './alert';
+import { NgbAlert } from './alert';
 
-export {NgbAlert} from './alert';
-export {NgbAlertConfig} from './alert-config';
+export { NgbAlert } from './alert';
+export { NgbAlertConfig } from './alert-config';
 
-@NgModule({declarations: [NgbAlert], exports: [NgbAlert], imports: [CommonModule]})
-export class NgbAlertModule {
-}
+@NgModule({ declarations: [NgbAlert], exports: [NgbAlert], imports: [CommonModule] })
+export class NgbAlertModule {}

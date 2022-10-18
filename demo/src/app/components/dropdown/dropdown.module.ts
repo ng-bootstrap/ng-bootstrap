@@ -25,87 +25,87 @@ import { NgbdDropdownDisabledModule } from './demos/disabled/dropdown-disabled.m
 import { Routes } from '@angular/router';
 
 const DEMOS = {
-  basic: {
-    title: 'Dropdown',
-    type: NgbdDropdownBasic,
-    code: require('!!raw-loader!./demos/basic/dropdown-basic').default,
-    markup: require('!!raw-loader!./demos/basic/dropdown-basic.html').default
-  },
-  manual: {
-    title: 'Manual and custom triggers',
-    type: NgbdDropdownManual,
-    code: require('!!raw-loader!./demos/manual/dropdown-manual').default,
-    markup: require('!!raw-loader!./demos/manual/dropdown-manual.html').default
-  },
-  split: {
-    title: 'Button groups and split buttons',
-    type: NgbdDropdownSplit,
-    code: require('!!raw-loader!./demos/split/dropdown-split').default,
-    markup: require('!!raw-loader!./demos/split/dropdown-split.html').default
-  },
-  disabled: {
-    title: 'Disabled items',
-    type: NgbdDropdownDisabled,
-    code: require('!!raw-loader!./demos/disabled/dropdown-disabled').default,
-    markup: require('!!raw-loader!./demos/disabled/dropdown-disabled.html').default
-  },
-  form: {
-    title: 'Mixed menu items and form',
-    type: NgbdDropdownForm,
-    code: require('!!raw-loader!./demos/form/dropdown-form').default,
-    markup: require('!!raw-loader!./demos/form/dropdown-form.html').default
-  },
-  container: {
-    title: 'Container “body”',
-    type: NgbdDropdownContainer,
-    code: require('!!raw-loader!./demos/container/dropdown-container').default,
-    markup: require('!!raw-loader!./demos/container/dropdown-container.html').default
-  },
-  navbar: {
-    title: 'Dynamic positioning in a navbar',
-    type: NgbdDropdownNavbar,
-    code: require('!!raw-loader!./demos/navbar/dropdown-navbar').default,
-    markup: require('!!raw-loader!./demos/navbar/dropdown-navbar.html').default
-  },
-  config: {
-    title: 'Global configuration of dropdowns',
-    type: NgbdDropdownConfig,
-    code: require('!!raw-loader!./demos/config/dropdown-config').default,
-    markup: require('!!raw-loader!./demos/config/dropdown-config.html').default
-  }
+	basic: {
+		title: 'Dropdown',
+		type: NgbdDropdownBasic,
+		code: require('!!raw-loader!./demos/basic/dropdown-basic').default,
+		markup: require('!!raw-loader!./demos/basic/dropdown-basic.html').default,
+	},
+	manual: {
+		title: 'Manual and custom triggers',
+		type: NgbdDropdownManual,
+		code: require('!!raw-loader!./demos/manual/dropdown-manual').default,
+		markup: require('!!raw-loader!./demos/manual/dropdown-manual.html').default,
+	},
+	split: {
+		title: 'Button groups and split buttons',
+		type: NgbdDropdownSplit,
+		code: require('!!raw-loader!./demos/split/dropdown-split').default,
+		markup: require('!!raw-loader!./demos/split/dropdown-split.html').default,
+	},
+	disabled: {
+		title: 'Disabled items',
+		type: NgbdDropdownDisabled,
+		code: require('!!raw-loader!./demos/disabled/dropdown-disabled').default,
+		markup: require('!!raw-loader!./demos/disabled/dropdown-disabled.html').default,
+	},
+	form: {
+		title: 'Mixed menu items and form',
+		type: NgbdDropdownForm,
+		code: require('!!raw-loader!./demos/form/dropdown-form').default,
+		markup: require('!!raw-loader!./demos/form/dropdown-form.html').default,
+	},
+	container: {
+		title: 'Container “body”',
+		type: NgbdDropdownContainer,
+		code: require('!!raw-loader!./demos/container/dropdown-container').default,
+		markup: require('!!raw-loader!./demos/container/dropdown-container.html').default,
+	},
+	navbar: {
+		title: 'Dynamic positioning in a navbar',
+		type: NgbdDropdownNavbar,
+		code: require('!!raw-loader!./demos/navbar/dropdown-navbar').default,
+		markup: require('!!raw-loader!./demos/navbar/dropdown-navbar.html').default,
+	},
+	config: {
+		title: 'Global configuration of dropdowns',
+		type: NgbdDropdownConfig,
+		code: require('!!raw-loader!./demos/config/dropdown-config').default,
+		markup: require('!!raw-loader!./demos/config/dropdown-config.html').default,
+	},
 };
 
 export const ROUTES: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'examples' },
-  {
-    path: '',
-    component: ComponentWrapper,
-    data: {
-      bootstrap: 'https://getbootstrap.com/docs/%version%/components/dropdowns/'
-    },
-    children: [
-      { path: 'examples', component: NgbdExamplesPage },
-      { path: 'api', component: NgbdApiPage }
-    ]
-  }
+	{ path: '', pathMatch: 'full', redirectTo: 'examples' },
+	{
+		path: '',
+		component: ComponentWrapper,
+		data: {
+			bootstrap: 'https://getbootstrap.com/docs/%version%/components/dropdowns/',
+		},
+		children: [
+			{ path: 'examples', component: NgbdExamplesPage },
+			{ path: 'api', component: NgbdApiPage },
+		],
+	},
 ];
 
 @NgModule({
-  imports: [
-    NgbdSharedModule,
-    NgbdComponentsSharedModule,
-    NgbdDropdownBasicModule,
-    NgbdDropdownConfigModule,
-    NgbdDropdownContainerModule,
-    NgbdDropdownDisabledModule,
-    NgbdDropdownManualModule,
-    NgbdDropdownSplitModule,
-    NgbdDropdownFormModule,
-    NgbdDropdownNavbarModule
-  ]
+	imports: [
+		NgbdSharedModule,
+		NgbdComponentsSharedModule,
+		NgbdDropdownBasicModule,
+		NgbdDropdownConfigModule,
+		NgbdDropdownContainerModule,
+		NgbdDropdownDisabledModule,
+		NgbdDropdownManualModule,
+		NgbdDropdownSplitModule,
+		NgbdDropdownFormModule,
+		NgbdDropdownNavbarModule,
+	],
 })
 export class NgbdDropdownModule {
-  constructor(demoList: NgbdDemoList) {
-    demoList.register('dropdown', DEMOS);
-  }
+	constructor(demoList: NgbdDemoList) {
+		demoList.register('dropdown', DEMOS);
+	}
 }

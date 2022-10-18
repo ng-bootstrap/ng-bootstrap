@@ -1,14 +1,14 @@
 <ng-template #content let-offcanvas>
-  <div class="offcanvas-header">
-    <h4 class="offcanvas-title">Offcanvas title</h4>
-    <button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss('Cross click')"></button>
-  </div>
-  <div class="offcanvas-body">
-    <p>One fine body&hellip;</p>
-    <div class="text-end">
-      <button type="button" class="btn btn-outline-dark" (click)="offcanvas.close('Close click')">Close</button>
-    </div>
-  </div>
+	<div class="offcanvas-header">
+		<h4 class="offcanvas-title">Offcanvas title</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss('Cross click')"></button>
+	</div>
+	<div class="offcanvas-body">
+		<p>One fine body&hellip;</p>
+		<div class="text-end">
+			<button type="button" class="btn btn-outline-dark" (click)="offcanvas.close('Close click')">Close</button>
+		</div>
+	</div>
 </ng-template>
 
 <button class="btn btn-lg btn-outline-primary mb-2 me-2" (click)="openEnd(content)">Right position</button>
@@ -16,8 +16,16 @@
 <button class="btn btn-lg btn-outline-primary mb-2 me-2" (click)="openBottom(content)">Bottom position</button>
 <button class="btn btn-lg btn-outline-primary mb-2 me-2" (click)="openNoBackdrop(content)">No backdrop</button>
 <button class="btn btn-lg btn-outline-primary mb-2 me-2" (click)="openStaticBackdrop(content)">Static backdrop</button>
-<button class="btn btn-lg btn-outline-primary mb-2 me-2" (click)="openScroll(content)">Scrolling of main content enabled</button>
-<button class="btn btn-lg btn-outline-primary mb-2 me-2" (click)="openNoKeyboard(content)">Escape does not dismiss</button>
+<button class="btn btn-lg btn-outline-primary mb-2 me-2" (click)="openScroll(content)">
+	Scrolling of main content enabled
+</button>
+<button class="btn btn-lg btn-outline-primary mb-2 me-2" (click)="openNoKeyboard(content)">
+	Escape does not dismiss
+</button>
 <button class="btn btn-lg btn-outline-primary mb-2 me-2" (click)="openNoAnimation(content)">No animation</button>
-<button class="btn btn-lg btn-outline-primary mb-2 me-2" (click)="openCustomBackdropClass(content)">Custom backdrop class</button>
-<button class="btn btn-lg btn-outline-primary mb-2 me-2" (click)="openCustomPanelClass(content)">Custom panel class</button>
+<button class="btn btn-lg btn-outline-primary mb-2 me-2" (click)="openCustomBackdropClass(content)">
+	Custom backdrop class
+</button>
+<button class="btn btn-lg btn-outline-primary mb-2 me-2" (click)="openCustomPanelClass(content)">
+	Custom panel class
+</button>

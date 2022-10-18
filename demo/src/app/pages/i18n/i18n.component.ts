@@ -1,9 +1,7 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  templateUrl: './i18n.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+	templateUrl: './i18n.component.html',
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class I18nPage {
-
-}
+export class I18nPage {}

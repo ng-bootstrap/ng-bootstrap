@@ -5,9 +5,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdAccordionHeader } from './accordion-header';
 
 @NgModule({
-  imports: [BrowserModule, NgbModule],
-  declarations: [NgbdAccordionHeader],
-  exports: [NgbdAccordionHeader],
-  bootstrap: [NgbdAccordionHeader]
+	imports: [BrowserModule, NgbModule],
+	declarations: [NgbdAccordionHeader],
+	exports: [NgbdAccordionHeader],
+	bootstrap: [NgbdAccordionHeader],
 })
 export class NgbdAccordionHeaderModule {}

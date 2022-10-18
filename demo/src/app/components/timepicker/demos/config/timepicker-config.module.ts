@@ -6,9 +6,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdTimepickerConfig } from './timepicker-config';
 
 @NgModule({
-  imports: [BrowserModule, FormsModule, NgbModule],
-  declarations: [NgbdTimepickerConfig],
-  exports: [NgbdTimepickerConfig],
-  bootstrap: [NgbdTimepickerConfig]
+	imports: [BrowserModule, FormsModule, NgbModule],
+	declarations: [NgbdTimepickerConfig],
+	exports: [NgbdTimepickerConfig],
+	bootstrap: [NgbdTimepickerConfig],
 })
 export class NgbdTimepickerConfigModule {}

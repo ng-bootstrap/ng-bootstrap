@@ -1,8 +1,8 @@
 export interface NgbdOverviewSection {
-  title: string | false;
-  fragment: string;
+	title: string | false;
+	fragment: string;
 }
 
 export interface NgbdOverview {
-  [fragment: string]: NgbdOverviewSection;
+	[fragment: string]: NgbdOverviewSection;
 }

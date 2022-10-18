@@ -1,6 +1,6 @@
 <ngb-timepicker [(ngModel)]="time" [seconds]="seconds"></ngb-timepicker>
 <button class="btn btn-sm btn-outline-{{seconds ? 'success' : 'danger'}}" (click)="toggleSeconds()">
-    Seconds - {{seconds ? "ON" : "OFF"}}
+	Seconds - {{seconds ? "ON" : "OFF"}}
 </button>
-<hr>
+<hr />
 <pre>Selected time: {{time | json}}</pre>

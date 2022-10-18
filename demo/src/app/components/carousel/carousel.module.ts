@@ -17,59 +17,59 @@ import { NgbdCarouselPauseModule } from './demos/pause/carousel-pause.module';
 import { Routes } from '@angular/router';
 
 const DEMOS = {
-  basic: {
-    title: 'Carousel',
-    type: NgbdCarouselBasic,
-    code: require('!!raw-loader!./demos/basic/carousel-basic').default,
-    markup: require('!!raw-loader!./demos/basic/carousel-basic.html').default
-  },
-  navigation: {
-    title: 'Navigation arrows and indicators',
-    type: NgbdCarouselNavigation,
-    code: require('!!raw-loader!./demos/navigation/carousel-navigation').default,
-    markup: require('!!raw-loader!./demos/navigation/carousel-navigation.html').default
-  },
-  pause: {
-    title: 'Pause/cycle',
-    type: NgbdCarouselPause,
-    code: require('!!raw-loader!./demos/pause/carousel-pause').default,
-    markup: require('!!raw-loader!./demos/pause/carousel-pause.html').default
-  },
-  config: {
-    title: 'Global configuration of carousels',
-    type: NgbdCarouselConfig,
-    code: require('!!raw-loader!./demos/config/carousel-config').default,
-    markup: require('!!raw-loader!./demos/config/carousel-config.html').default
-  }
+	basic: {
+		title: 'Carousel',
+		type: NgbdCarouselBasic,
+		code: require('!!raw-loader!./demos/basic/carousel-basic').default,
+		markup: require('!!raw-loader!./demos/basic/carousel-basic.html').default,
+	},
+	navigation: {
+		title: 'Navigation arrows and indicators',
+		type: NgbdCarouselNavigation,
+		code: require('!!raw-loader!./demos/navigation/carousel-navigation').default,
+		markup: require('!!raw-loader!./demos/navigation/carousel-navigation.html').default,
+	},
+	pause: {
+		title: 'Pause/cycle',
+		type: NgbdCarouselPause,
+		code: require('!!raw-loader!./demos/pause/carousel-pause').default,
+		markup: require('!!raw-loader!./demos/pause/carousel-pause.html').default,
+	},
+	config: {
+		title: 'Global configuration of carousels',
+		type: NgbdCarouselConfig,
+		code: require('!!raw-loader!./demos/config/carousel-config').default,
+		markup: require('!!raw-loader!./demos/config/carousel-config.html').default,
+	},
 };
 
 export const ROUTES: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'examples' },
-  {
-    path: '',
-    component: ComponentWrapper,
-    data: {
-      bootstrap: 'https://getbootstrap.com/docs/%version%/components/carousel/'
-    },
-    children: [
-      { path: 'examples', component: NgbdExamplesPage },
-      { path: 'api', component: NgbdApiPage }
-    ]
-  }
+	{ path: '', pathMatch: 'full', redirectTo: 'examples' },
+	{
+		path: '',
+		component: ComponentWrapper,
+		data: {
+			bootstrap: 'https://getbootstrap.com/docs/%version%/components/carousel/',
+		},
+		children: [
+			{ path: 'examples', component: NgbdExamplesPage },
+			{ path: 'api', component: NgbdApiPage },
+		],
+	},
 ];
 
 @NgModule({
-  imports: [
-    NgbdSharedModule,
-    NgbdComponentsSharedModule,
-    NgbdCarouselBasicModule,
-    NgbdCarouselConfigModule,
-    NgbdCarouselNavigationModule,
-    NgbdCarouselPauseModule
-  ]
+	imports: [
+		NgbdSharedModule,
+		NgbdComponentsSharedModule,
+		NgbdCarouselBasicModule,
+		NgbdCarouselConfigModule,
+		NgbdCarouselNavigationModule,
+		NgbdCarouselPauseModule,
+	],
 })
 export class NgbdCarouselModule {
-  constructor(demoList: NgbdDemoList) {
-    demoList.register('carousel', DEMOS);
-  }
+	constructor(demoList: NgbdDemoList) {
+		demoList.register('carousel', DEMOS);
+	}
 }

@@ -1,12 +1,14 @@
-<p>First focusable element within the offcanvas will receive focus upon opening.
-You can configure to focus any other element by adding an <code>ngbAutofocus</code> attribute on it.</p>
+<p>
+	First focusable element within the offcanvas will receive focus upon opening. You can configure to focus any other
+	element by adding an <code>ngbAutofocus</code> attribute on it.
+</p>
 
 <button class="btn btn-outline-primary me-2" (click)="openFirstFocus()">
-  <div>First element focused</div>
-  <div class="text-dark" aria-hidden="true"><small>&times; button will be focused</small></div>
+	<div>First element focused</div>
+	<div class="text-dark" aria-hidden="true"><small>&times; button will be focused</small></div>
 </button>
 
 <button class="btn btn-outline-primary" (click)="openAutoFocus()">
-  <div>Element with `ngbAutofocus`</div>
-  <div class="text-dark" aria-hidden="true"><small>Ok button will be focused</small></div>
+	<div>Element with `ngbAutofocus`</div>
+	<div class="text-dark" aria-hidden="true"><small>Ok button will be focused</small></div>
 </button>

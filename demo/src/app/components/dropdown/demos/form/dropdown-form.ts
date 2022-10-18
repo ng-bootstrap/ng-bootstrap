@@ -1,8 +1,7 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'ngbd-dropdown-form',
-  templateUrl: './dropdown-form.html'
+	selector: 'ngbd-dropdown-form',
+	templateUrl: './dropdown-form.html',
 })
-export class NgbdDropdownForm {
-}
+export class NgbdDropdownForm {}

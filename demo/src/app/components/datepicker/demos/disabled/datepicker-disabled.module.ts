@@ -6,9 +6,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdDatepickerDisabled } from './datepicker-disabled';
 
 @NgModule({
-  imports: [BrowserModule, FormsModule, NgbModule],
-  declarations: [NgbdDatepickerDisabled],
-  exports: [NgbdDatepickerDisabled],
-  bootstrap: [NgbdDatepickerDisabled]
+	imports: [BrowserModule, FormsModule, NgbModule],
+	declarations: [NgbdDatepickerDisabled],
+	exports: [NgbdDatepickerDisabled],
+	bootstrap: [NgbdDatepickerDisabled],
 })
 export class NgbdDatepickerDisabledModule {}

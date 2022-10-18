@@ -1,4 +1,4 @@
 export const environment = {
-  animation: false,
-  transitionTimerDelayMs: 500,
+	animation: false,
+	transitionTimerDelayMs: 500,
 };

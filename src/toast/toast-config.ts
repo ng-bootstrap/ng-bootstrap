@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {NgbConfig} from '../ngb-config';
+import { Injectable } from '@angular/core';
+import { NgbConfig } from '../ngb-config';
 
 /**
  * Interface used to type all toast config options. See `NgbToastConfig`.
@@ -7,25 +7,25 @@ import {NgbConfig} from '../ngb-config';
  * @since 5.0.0
  */
 export interface NgbToastOptions {
-  /**
-   * Specify if the toast component should emit the `hide()` output
-   * after a certain `delay` in ms.
-   */
-  autohide?: boolean;
+	/**
+	 * Specify if the toast component should emit the `hide()` output
+	 * after a certain `delay` in ms.
+	 */
+	autohide?: boolean;
 
-  /**
-   * Delay in ms after which the `hide()` output should be emitted.
-   */
-  delay?: number;
+	/**
+	 * Delay in ms after which the `hide()` output should be emitted.
+	 */
+	delay?: number;
 
-  /**
-   * Type of aria-live attribute to be used.
-   *
-   * Could be one of these 2 values (as string):
-   * - `polite` (default)
-   * - `alert`
-   */
-  ariaLive?: 'polite' | 'alert';
+	/**
+	 * Type of aria-live attribute to be used.
+	 *
+	 * Could be one of these 2 values (as string):
+	 * - `polite` (default)
+	 * - `alert`
+	 */
+	ariaLive?: 'polite' | 'alert';
 }
 
 /**
@@ -35,16 +35,20 @@ export interface NgbToastOptions {
  *
  * @since 5.0.0
  */
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class NgbToastConfig implements NgbToastOptions {
-  autohide = true;
-  delay = 5000;
-  ariaLive: 'polite' | 'alert' = 'polite';
+	autohide = true;
+	delay = 5000;
+	ariaLive: 'polite' | 'alert' = 'polite';
 
-  private _animation: boolean;
+	private _animation: boolean;
 
-  constructor(private _ngbConfig: NgbConfig) {}
+	constructor(private _ngbConfig: NgbConfig) {}
 
-  get animation(): boolean { return (this._animation === undefined) ? this._ngbConfig.animation : this._animation; }
-  set animation(animation: boolean) { this._animation = animation; }
+	get animation(): boolean {
+		return this._animation === undefined ? this._ngbConfig.animation : this._animation;
+	}
+	set animation(animation: boolean) {
+		this._animation = animation;
+	}
 }

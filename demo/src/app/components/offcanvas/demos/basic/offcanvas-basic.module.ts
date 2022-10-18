@@ -5,9 +5,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdOffcanvasBasic } from './offcanvas-basic';
 
 @NgModule({
-  imports: [BrowserModule, NgbModule],
-  declarations: [NgbdOffcanvasBasic],
-  exports: [NgbdOffcanvasBasic],
-  bootstrap: [NgbdOffcanvasBasic]
+	imports: [BrowserModule, NgbModule],
+	declarations: [NgbdOffcanvasBasic],
+	exports: [NgbdOffcanvasBasic],
+	bootstrap: [NgbdOffcanvasBasic],
 })
 export class NgbdOffcanvasBasicModule {}

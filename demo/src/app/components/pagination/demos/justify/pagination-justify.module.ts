@@ -5,9 +5,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdPaginationJustify } from './pagination-justify';
 
 @NgModule({
-  imports: [BrowserModule, NgbModule],
-  declarations: [NgbdPaginationJustify],
-  exports: [NgbdPaginationJustify],
-  bootstrap: [NgbdPaginationJustify]
+	imports: [BrowserModule, NgbModule],
+	declarations: [NgbdPaginationJustify],
+	exports: [NgbdPaginationJustify],
+	bootstrap: [NgbdPaginationJustify],
 })
 export class NgbdPaginationJustifyModule {}

@@ -1,16 +1,18 @@
-import {Component, TemplateRef} from '@angular/core';
-import {NgbOffcanvas} from '@ng-bootstrap/ng-bootstrap';
+import { Component, TemplateRef } from '@angular/core';
+import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 
-@Component({templateUrl: './offcanvas-focus.component.html'})
+@Component({ templateUrl: './offcanvas-focus.component.html' })
 export class OffcanvasFocusComponent {
-  disabledButton = false;
+	disabledButton = false;
 
-  constructor(private offcanvasService: NgbOffcanvas) {}
+	constructor(private offcanvasService: NgbOffcanvas) {}
 
-  openOffcanvas(content?: TemplateRef<any>) { this.offcanvasService.open(content ? content : 'Offcanvas content'); }
+	openOffcanvas(content?: TemplateRef<any>) {
+		this.offcanvasService.open(content ? content : 'Offcanvas content');
+	}
 
-  openAndDisable(content?: TemplateRef<any>) {
-    this.disabledButton = true;
-    this.openOffcanvas(content);
-  }
+	openAndDisable(content?: TemplateRef<any>) {
+		this.disabledButton = true;
+		this.openOffcanvas(content);
+	}
 }

@@ -7,15 +7,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdTableFiltering } from './table-filtering';
 
 @NgModule({
-  imports: [
-    BrowserModule,
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    NgbModule
-  ],
-  declarations: [NgbdTableFiltering],
-  exports: [NgbdTableFiltering],
-  bootstrap: [NgbdTableFiltering]
+	imports: [BrowserModule, CommonModule, FormsModule, ReactiveFormsModule, NgbModule],
+	declarations: [NgbdTableFiltering],
+	exports: [NgbdTableFiltering],
+	bootstrap: [NgbdTableFiltering],
 })
 export class NgbdTableFilteringModule {}

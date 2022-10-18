@@ -1,46 +1,57 @@
 <h3>Offcanvas nesting tests</h3>
 
 <ng-template #t let-offcanvas>
-  <div class="offcanvas-header">
-    <h4 class="offcanvas-title">Offcanvas with nested popups</h4>
-    <button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss()"></button>
-  </div>
-  <div class="offcanvas-body">
-    <form>
-      <!-- datepicker -->
-      <div class="mb-3">
-        <label for="datepicker">Datepicker</label>
-        <div class="input-group">
-          <input id="datepicker" class="form-control" placeholder="yyyy-mm-dd" name="dp"
-                 ngbDatepicker #dp="ngbDatepicker" [startDate]="{year: 2018, month: 1}">
-          <button class="btn btn-outline-secondary" id="datepicker-button" (click)="dp.toggle()" type="button">Open</button>
-        </div>
-      </div>
+	<div class="offcanvas-header">
+		<h4 class="offcanvas-title">Offcanvas with nested popups</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss()"></button>
+	</div>
+	<div class="offcanvas-body">
+		<form>
+			<!-- datepicker -->
+			<div class="mb-3">
+				<label for="datepicker">Datepicker</label>
+				<div class="input-group">
+					<input
+						id="datepicker"
+						class="form-control"
+						placeholder="yyyy-mm-dd"
+						name="dp"
+						ngbDatepicker
+						#dp="ngbDatepicker"
+						[startDate]="{ year: 2018, month: 1 }"
+					/>
+					<button class="btn btn-outline-secondary" id="datepicker-button" (click)="dp.toggle()" type="button">
+						Open
+					</button>
+				</div>
+			</div>
 
-      <!-- dropdown -->
-      <div class="mb-3">
-        <label for="dropdown">Dropdown</label>
-        <div class="input-group">
-          <div ngbDropdown class="d-inline-block">
-            <button class="btn btn-outline-primary" id="dropdown" ngbDropdownToggle>Toggle dropdown</button>
-            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-              <button ngbDropdownItem>Action - 1</button>
-              <button ngbDropdownItem>Another Action</button>
-              <button ngbDropdownItem>Something else is here</button>
-            </div>
-          </div>
-        </div>
-      </div>
+			<!-- dropdown -->
+			<div class="mb-3">
+				<label for="dropdown">Dropdown</label>
+				<div class="input-group">
+					<div ngbDropdown class="d-inline-block">
+						<button class="btn btn-outline-primary" id="dropdown" ngbDropdownToggle>Toggle dropdown</button>
+						<div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+							<button ngbDropdownItem>Action - 1</button>
+							<button ngbDropdownItem>Another Action</button>
+							<button ngbDropdownItem>Something else is here</button>
+						</div>
+					</div>
+				</div>
+			</div>
 
-      <!-- typeahead -->
-      <div class="mb-3">
-        <label for="typeahead">Typeahead</label>
-        <div class="input-group">
-          <input id="typeahead" type="text" name="tphd" class="form-control" [ngbTypeahead]="search"/>
-        </div>
-      </div>
-    </form>
-  </div>
+			<!-- typeahead -->
+			<div class="mb-3">
+				<label for="typeahead">Typeahead</label>
+				<div class="input-group">
+					<input id="typeahead" type="text" name="tphd" class="form-control" [ngbTypeahead]="search" />
+				</div>
+			</div>
+		</form>
+	</div>
 </ng-template>
 
-<button class="btn btn-outline-secondary ms-2" type="button" id="open-offcanvas" (click)="openOffcanvas(t)">Open Offcanvas</button>
+<button class="btn btn-outline-secondary ms-2" type="button" id="open-offcanvas" (click)="openOffcanvas(t)">
+	Open Offcanvas
+</button>

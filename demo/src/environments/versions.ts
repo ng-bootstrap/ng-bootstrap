@@ -6,4 +6,4 @@ bootstrap = bootstrap.split('.').slice(0, 2).join('.');
 
 const ngBootstrap = require('../../../package.json').version;
 
-export const versions: {[key: string]: string} = {bootstrap, ngBootstrap};
+export const versions: { [key: string]: string } = { bootstrap, ngBootstrap };

@@ -6,20 +6,19 @@ import { NgbdDemoList } from '../../shared';
 import { NgbdOverview } from '../../shared/overview';
 
 @Component({
-  selector: 'ngbd-table-overview',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './table-overview.component.html',
-  host: {
-    '[class.overview]': 'true'
-  }
+	selector: 'ngbd-table-overview',
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	templateUrl: './table-overview.component.html',
+	host: {
+		'[class.overview]': 'true',
+	},
 })
 export class NgbdTableOverviewComponent {
+	bootstrapVersion = environment.bootstrap;
 
-  bootstrapVersion = environment.bootstrap;
+	sections: NgbdOverview = {};
 
-  sections: NgbdOverview = {};
-
-  constructor(demoList: NgbdDemoList) {
-    this.sections = demoList.getOverviewSections('table');
-  }
+	constructor(demoList: NgbdDemoList) {
+		this.sections = demoList.getOverviewSections('table');
+	}
 }

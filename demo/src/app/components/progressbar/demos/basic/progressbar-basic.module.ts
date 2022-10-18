@@ -5,9 +5,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdProgressbarBasic } from './progressbar-basic';
 
 @NgModule({
-  imports: [BrowserModule, NgbModule],
-  declarations: [NgbdProgressbarBasic],
-  exports: [NgbdProgressbarBasic],
-  bootstrap: [NgbdProgressbarBasic]
+	imports: [BrowserModule, NgbModule],
+	declarations: [NgbdProgressbarBasic],
+	exports: [NgbdProgressbarBasic],
+	bootstrap: [NgbdProgressbarBasic],
 })
 export class NgbdProgressbarBasicModule {}

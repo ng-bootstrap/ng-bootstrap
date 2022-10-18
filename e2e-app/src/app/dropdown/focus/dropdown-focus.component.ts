@@ -1,7 +1,7 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 
-@Component({templateUrl: './dropdown-focus.component.html'})
+@Component({ templateUrl: './dropdown-focus.component.html' })
 export class DropdownFocusComponent {
-  container;
-  withItems = true;
+	container;
+	withItems = true;
 }

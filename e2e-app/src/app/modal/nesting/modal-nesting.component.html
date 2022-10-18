@@ -1,73 +1,105 @@
 <h3>Modal nesting tests</h3>
 
 <ng-template #t let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title">Modal with nested popups</h4>
-    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
-  </div>
-  <div class="modal-body">
-    <form>
-      <!-- datepicker -->
-      <div class="mb-3">
-        <label for="datepicker">Datepicker</label>
-        <div class="input-group">
-          <input id="datepicker" class="form-control" placeholder="yyyy-mm-dd" name="dp"
-                 [container]="container"
-                 ngbDatepicker #dp="ngbDatepicker" [startDate]="{year: 2018, month: 1}">
-          <button class="btn btn-outline-secondary" id="datepicker-button" (click)="dp.toggle()" type="button">Open</button>
-        </div>
-      </div>
+	<div class="modal-header">
+		<h4 class="modal-title">Modal with nested popups</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+	</div>
+	<div class="modal-body">
+		<form>
+			<!-- datepicker -->
+			<div class="mb-3">
+				<label for="datepicker">Datepicker</label>
+				<div class="input-group">
+					<input
+						id="datepicker"
+						class="form-control"
+						placeholder="yyyy-mm-dd"
+						name="dp"
+						[container]="container"
+						ngbDatepicker
+						#dp="ngbDatepicker"
+						[startDate]="{ year: 2018, month: 1 }"
+					/>
+					<button class="btn btn-outline-secondary" id="datepicker-button" (click)="dp.toggle()" type="button">
+						Open
+					</button>
+				</div>
+			</div>
 
-      <!-- dropdown -->
-      <div class="mb-3">
-        <label for="dropdown">Typeahead</label>
-        <div class="input-group">
-          <div ngbDropdown class="d-inline-block" [container]="container">
-            <button class="btn btn-outline-primary" id="dropdown" ngbDropdownToggle>Toggle dropdown</button>
-            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-              <button ngbDropdownItem>Action - 1</button>
-              <button ngbDropdownItem>Another Action</button>
-              <button ngbDropdownItem>Something else is here</button>
-            </div>
-          </div>
-        </div>
-      </div>
+			<!-- dropdown -->
+			<div class="mb-3">
+				<label for="dropdown">Typeahead</label>
+				<div class="input-group">
+					<div ngbDropdown class="d-inline-block" [container]="container">
+						<button class="btn btn-outline-primary" id="dropdown" ngbDropdownToggle>Toggle dropdown</button>
+						<div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+							<button ngbDropdownItem>Action - 1</button>
+							<button ngbDropdownItem>Another Action</button>
+							<button ngbDropdownItem>Something else is here</button>
+						</div>
+					</div>
+				</div>
+			</div>
 
-      <!-- typeahead -->
-      <div class="mb-3">
-        <label for="typeahead">Typeahead</label>
-        <div class="input-group">
-          <input id="typeahead" type="text" name="tphd" class="form-control"
-                 [ngbTypeahead]="search" [container]="container"/>
-        </div>
-      </div>
+			<!-- typeahead -->
+			<div class="mb-3">
+				<label for="typeahead">Typeahead</label>
+				<div class="input-group">
+					<input
+						id="typeahead"
+						type="text"
+						name="tphd"
+						class="form-control"
+						[ngbTypeahead]="search"
+						[container]="container"
+					/>
+				</div>
+			</div>
 
-      <!-- tooltip -->
-      <div class="mb-3">
-        <label for="tooltip">Tooltip</label>
-        <div class="input-group">
-          <button id="tooltip" class="btn btn-primary" ngbTooltip="tooltip"
-                  [container]="container" triggers="click" autoClose="inside"
-          >Tooltip</button>
-        </div>
-      </div>
+			<!-- tooltip -->
+			<div class="mb-3">
+				<label for="tooltip">Tooltip</label>
+				<div class="input-group">
+					<button
+						id="tooltip"
+						class="btn btn-primary"
+						ngbTooltip="tooltip"
+						[container]="container"
+						triggers="click"
+						autoClose="inside"
+					>
+						Tooltip
+					</button>
+				</div>
+			</div>
 
-      <!-- popover -->
-      <div class="mb-3">
-      <label for="popover">Popover</label>
-        <div class="input-group">
-          <button id="popover" class="btn btn-primary" ngbPopover="popover"
-                  [container]="container" triggers="click" autoClose="inside"
-          >Popover</button>
-        </div>
-      </div>
-    </form>
-  </div>
+			<!-- popover -->
+			<div class="mb-3">
+				<label for="popover">Popover</label>
+				<div class="input-group">
+					<button
+						id="popover"
+						class="btn btn-primary"
+						ngbPopover="popover"
+						[container]="container"
+						triggers="click"
+						autoClose="inside"
+					>
+						Popover
+					</button>
+				</div>
+			</div>
+		</form>
+	</div>
 </ng-template>
 
-
 <button class="btn btn-outline-secondary me-2" type="button" id="open-modal" (click)="openModal(t)">Open Modal</button>
-<button class="btn btn-outline-secondary me-2" type="button" id="container-body" (click)="container = 'body'">Container = 'body'</button>
-<button class="btn btn-outline-secondary me-2" type="button" id="container-null" (click)="container = null">Container = null</button>
+<button class="btn btn-outline-secondary me-2" type="button" id="container-body" (click)="container = 'body'">
+	Container = 'body'
+</button>
+<button class="btn btn-outline-secondary me-2" type="button" id="container-null" (click)="container = null">
+	Container = null
+</button>
 
 <pre>container: {{ container }}</pre>

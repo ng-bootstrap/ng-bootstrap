@@ -1,4 +1,4 @@
 export enum OffcanvasDismissReasons {
-  BACKDROP_CLICK,
-  ESC
+	BACKDROP_CLICK,
+	ESC,
 }

@@ -5,9 +5,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdDropdownSplit } from './dropdown-split';
 
 @NgModule({
-  imports: [BrowserModule, NgbModule],
-  declarations: [NgbdDropdownSplit],
-  exports: [NgbdDropdownSplit],
-  bootstrap: [NgbdDropdownSplit]
+	imports: [BrowserModule, NgbModule],
+	declarations: [NgbdDropdownSplit],
+	exports: [NgbdDropdownSplit],
+	bootstrap: [NgbdDropdownSplit],
 })
 export class NgbdDropdownSplitModule {}

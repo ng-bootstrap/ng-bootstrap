@@ -1,16 +1,16 @@
 <p>NgModel and reactive forms can be used without the 'rate' binding</p>
 
 <div class="mb-3">
-  <ngb-rating [formControl]="ctrl"></ngb-rating>
-  <div class="form-text small">
-    <div *ngIf="ctrl.valid" class="text-success">Thanks!</div>
-    <div *ngIf="ctrl.invalid" class="text-danger">Please rate us</div>
-  </div>
+	<ngb-rating [formControl]="ctrl"></ngb-rating>
+	<div class="form-text small">
+		<div *ngIf="ctrl.valid" class="text-success">Thanks!</div>
+		<div *ngIf="ctrl.invalid" class="text-danger">Please rate us</div>
+	</div>
 </div>
 
-<hr>
+<hr />
 <pre>Model: <b>{{ ctrl.value }}</b></pre>
 <button class="btn btn-sm btn-outline-{{ ctrl.disabled ? 'danger' : 'success'}} me-2" (click)="toggle()">
-  {{ ctrl.disabled ? "control disabled" : " control enabled" }}
+	{{ ctrl.disabled ? "control disabled" : " control enabled" }}
 </button>
 <button class="btn btn-sm btn-outline-primary me-2" (click)="ctrl.setValue(null)">Clear</button>

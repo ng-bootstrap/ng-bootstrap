@@ -6,9 +6,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdTooltipDelay } from './tooltip-delay';
 
 @NgModule({
-  imports: [BrowserModule, FormsModule, NgbModule],
-  declarations: [NgbdTooltipDelay],
-  exports: [NgbdTooltipDelay],
-  bootstrap: [NgbdTooltipDelay]
+	imports: [BrowserModule, FormsModule, NgbModule],
+	declarations: [NgbdTooltipDelay],
+	exports: [NgbdTooltipDelay],
+	bootstrap: [NgbdTooltipDelay],
 })
 export class NgbdTooltipDelayModule {}

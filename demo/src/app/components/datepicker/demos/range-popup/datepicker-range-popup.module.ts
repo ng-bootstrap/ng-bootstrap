@@ -6,9 +6,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdDatepickerRangePopup } from './datepicker-range-popup';
 
 @NgModule({
-  imports: [BrowserModule, NgbModule, FormsModule],
-  declarations: [NgbdDatepickerRangePopup],
-  exports: [NgbdDatepickerRangePopup],
-  bootstrap: [NgbdDatepickerRangePopup]
+	imports: [BrowserModule, NgbModule, FormsModule],
+	declarations: [NgbdDatepickerRangePopup],
+	exports: [NgbdDatepickerRangePopup],
+	bootstrap: [NgbdDatepickerRangePopup],
 })
 export class NgbdDatepickerRangePopupModule {}

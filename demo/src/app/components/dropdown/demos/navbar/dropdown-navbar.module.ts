@@ -6,9 +6,9 @@ import { NgbdDropdownNavbar } from './dropdown-navbar';
 import { RouterModule } from '@angular/router';
 
 @NgModule({
-  imports: [BrowserModule, NgbModule, RouterModule],
-  declarations: [NgbdDropdownNavbar],
-  exports: [NgbdDropdownNavbar],
-  bootstrap: [NgbdDropdownNavbar]
+	imports: [BrowserModule, NgbModule, RouterModule],
+	declarations: [NgbdDropdownNavbar],
+	exports: [NgbdDropdownNavbar],
+	bootstrap: [NgbdDropdownNavbar],
 })
 export class NgbdDropdownNavbarModule {}
