@@ -29,6 +29,8 @@ import { NgbdPopoverVisibilityModule } from './demos/visibility/popover-visibili
 import { NgbdPopoverTarget } from './demos/custom-target/popover-target';
 import { NgbdPopoverTargetModule } from './demos/custom-target/popover-target.module';
 import { Routes } from '@angular/router';
+import { NgbdPopoverOptions } from './demos/options/popover-options';
+import { NgbdPopoverOptionsModule } from './demos/options/popover-options.module';
 
 const DEMOS = {
 	basic: {
@@ -91,6 +93,12 @@ const DEMOS = {
 		code: require('!!raw-loader!./demos/customclass/popover-customclass').default,
 		markup: require('!!raw-loader!./demos/customclass/popover-customclass.html').default,
 	},
+	options: {
+		title: 'Popper options',
+		type: NgbdPopoverOptions,
+		code: require('!!raw-loader!./demos/options/popover-options').default,
+		markup: require('!!raw-loader!./demos/options/popover-options.html').default,
+	},
 	config: {
 		title: 'Global configuration of popovers',
 		type: NgbdPopoverConfig,
@@ -128,6 +136,7 @@ export const ROUTES: Routes = [
 		NgbdPopoverContainerModule,
 		NgbdPopoverCustomClassModule,
 		NgbdPopoverDelayModule,
+		NgbdPopoverOptionsModule,
 		NgbdPopoverConfigModule,
 	],
 })
