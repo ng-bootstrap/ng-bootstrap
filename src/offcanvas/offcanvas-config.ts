@@ -24,7 +24,7 @@ export interface NgbOffcanvasOptions {
 
 	/**
 	 * If `true`, the backdrop element will be created for a given offcanvas.
-	 * If 'static', clicking the backdrop won't close the offcanvas.
+	 * If 'static', clicking the backdrop won't close the offcanvas (available since 13.1.0).
 	 *
 	 * Default value is `true`.
 	 */

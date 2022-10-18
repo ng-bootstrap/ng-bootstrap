@@ -192,10 +192,10 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	@Input() placement: PlacementArray;
 
 	/**
-	 * Allow to change the default options for popper.
+	 * Allows to change default Popper options when positioning the popup.
+	 * Receives current popper options and returns modified ones.
 	 *
-	 * The provided function receives the current options in the first parameter
-	 * and will return the new options
+	 * @since 13.1.0
 	 */
 	@Input() popperOptions: (options: Partial<Options>) => Partial<Options>;
 
@@ -303,8 +303,9 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 		private _changeDetector: ChangeDetectorRef,
 		config: NgbInputDatepickerConfig,
 	) {
-		['autoClose', 'container', 'positionTarget', 'placement'].forEach((input) => (this[input] = config[input]));
-		this.popperOptions = config.popperOptions;
+		['autoClose', 'container', 'positionTarget', 'placement', 'popperOptions'].forEach(
+			(input) => (this[input] = config[input]),
+		);
 		this._positioning = ngbPositioning(rtl);
 	}
 

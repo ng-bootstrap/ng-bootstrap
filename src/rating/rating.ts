@@ -108,6 +108,8 @@ export class NgbRating implements ControlValueAccessor, OnInit, OnChanges {
 	/**
 	 * Allows setting a custom rating tabindex.
 	 * If the component is disabled, `tabindex` will still be set to `-1`.
+	 *
+	 * @since 13.1.0
 	 */
 	@Input() tabindex: number | string;
 

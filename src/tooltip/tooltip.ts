@@ -92,10 +92,10 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 	@Input() placement: PlacementArray;
 
 	/**
-	 * Allow to change the default options for popper.
+	 * Allows to change default Popper options when positioning the tooltip.
+	 * Receives current popper options and returns modified ones.
 	 *
-	 * The provided function receives the current options in the first parameter
-	 * and will return the new options
+	 * @since 13.1.0
 	 */
 	@Input() popperOptions: (options: Partial<Options>) => Partial<Options>;
 
@@ -110,6 +110,8 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 	/**
 	 * A css selector or html element specifying the element the tooltip should be positioned against.
 	 * By default, the element `ngbTooltip` directive is applied to will be set as a target.
+	 *
+	 * @since 13.1.0
 	 */
 	@Input() positionTarget?: string | HTMLElement;
 

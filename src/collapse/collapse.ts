@@ -48,6 +48,8 @@ export class NgbCollapse implements OnInit {
 
 	/**
 	 * If `true`, will collapse horizontally.
+	 *
+	 * @since 13.1.0
 	 */
 	@Input() horizontal: boolean;
 

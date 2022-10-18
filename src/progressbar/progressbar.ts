@@ -52,6 +52,8 @@ export class NgbProgressbar {
 
 	/**
 	 * The accessible progress bar name.
+	 *
+	 * @since 13.1.0
 	 */
 	@Input() ariaLabel: string;
 

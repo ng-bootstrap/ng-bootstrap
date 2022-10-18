@@ -200,10 +200,10 @@ export class NgbDropdown implements AfterContentInit, OnChanges, OnDestroy {
 	@Input() placement: PlacementArray;
 
 	/**
-	 * Allow to change the default options for popper.
+	 * Allows to change default Popper options when positioning the dropdown.
+	 * Receives current popper options and returns modified ones.
 	 *
-	 * The provided function receives the current options in the first parameter
-	 * and will return the new options
+	 * @since 13.1.0
 	 */
 	@Input() popperOptions: (options: Partial<Options>) => Partial<Options>;
 
