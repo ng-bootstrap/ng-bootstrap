@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
 /**
  * A configuration service for the [`NgbProgressbar`](#/components/progressbar/api#NgbProgressbar) component.
@@ -6,14 +6,14 @@ import {Injectable} from '@angular/core';
  * You can inject this service, typically in your root component, and customize the values of its properties in
  * order to provide default values for all the progress bars used in the application.
  */
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class NgbProgressbarConfig {
-  max = 100;
-  animated = false;
-  ariaLabel = 'progress bar';
-  striped = false;
-  textType: string;
-  type: string;
-  showValue = false;
-  height: string;
+	max = 100;
+	animated = false;
+	ariaLabel = 'progress bar';
+	striped = false;
+	textType: string;
+	type: string;
+	showValue = false;
+	height: string;
 }

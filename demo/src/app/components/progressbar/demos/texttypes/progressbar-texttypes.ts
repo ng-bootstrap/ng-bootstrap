@@ -1,8 +1,7 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'ngbd-progressbar-texttypes',
-  templateUrl: './progressbar-texttypes.html'
+	selector: 'ngbd-progressbar-texttypes',
+	templateUrl: './progressbar-texttypes.html',
 })
-export class NgbdProgressbarTextTypes {
-}
+export class NgbdProgressbarTextTypes {}

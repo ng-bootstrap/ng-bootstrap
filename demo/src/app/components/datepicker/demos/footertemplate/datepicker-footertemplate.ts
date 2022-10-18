@@ -1,13 +1,13 @@
-import {Component} from '@angular/core';
-import {NgbCalendar, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+import { Component } from '@angular/core';
+import { NgbCalendar, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'ngbd-datepicker-footertemplate',
-  templateUrl: './datepicker-footertemplate.html',
+	selector: 'ngbd-datepicker-footertemplate',
+	templateUrl: './datepicker-footertemplate.html',
 })
 export class NgbdDatepickerFootertemplate {
-  model: NgbDateStruct;
-  today = this.calendar.getToday();
+	model: NgbDateStruct;
+	today = this.calendar.getToday();
 
-  constructor(private calendar: NgbCalendar) {}
+	constructor(private calendar: NgbCalendar) {}
 }

@@ -5,9 +5,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdRatingDecimal } from './rating-decimal';
 
 @NgModule({
-  imports: [BrowserModule, NgbModule],
-  declarations: [NgbdRatingDecimal],
-  exports: [NgbdRatingDecimal],
-  bootstrap: [NgbdRatingDecimal]
+	imports: [BrowserModule, NgbModule],
+	declarations: [NgbdRatingDecimal],
+	exports: [NgbdRatingDecimal],
+	bootstrap: [NgbdRatingDecimal],
 })
 export class NgbdRatingDecimalModule {}

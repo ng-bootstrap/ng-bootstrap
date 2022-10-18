@@ -8,15 +8,9 @@ import { NgbdSortableHeader } from './sortable.directive';
 import { NgbdTableComplete } from './table-complete';
 
 @NgModule({
-  imports: [
-    BrowserModule,
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    NgbModule
-  ],
-  declarations: [NgbdTableComplete, NgbdSortableHeader],
-  exports: [NgbdTableComplete],
-  bootstrap: [NgbdTableComplete]
+	imports: [BrowserModule, CommonModule, FormsModule, ReactiveFormsModule, NgbModule],
+	declarations: [NgbdTableComplete, NgbdSortableHeader],
+	exports: [NgbdTableComplete],
+	bootstrap: [NgbdTableComplete],
 })
 export class NgbdTableCompleteModule {}

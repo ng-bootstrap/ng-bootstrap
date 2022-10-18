@@ -5,9 +5,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdPopoverVisibility } from './popover-visibility';
 
 @NgModule({
-  imports: [BrowserModule, NgbModule],
-  declarations: [NgbdPopoverVisibility],
-  exports: [NgbdPopoverVisibility],
-  bootstrap: [NgbdPopoverVisibility]
+	imports: [BrowserModule, NgbModule],
+	declarations: [NgbdPopoverVisibility],
+	exports: [NgbdPopoverVisibility],
+	bootstrap: [NgbdPopoverVisibility],
 })
 export class NgbdPopoverVisibilityModule {}

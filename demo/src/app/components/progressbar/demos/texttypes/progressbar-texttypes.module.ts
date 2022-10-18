@@ -5,9 +5,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdProgressbarTextTypes } from './progressbar-texttypes';
 
 @NgModule({
-  imports: [BrowserModule, NgbModule],
-  declarations: [NgbdProgressbarTextTypes],
-  exports: [NgbdProgressbarTextTypes],
-  bootstrap: [NgbdProgressbarTextTypes]
+	imports: [BrowserModule, NgbModule],
+	declarations: [NgbdProgressbarTextTypes],
+	exports: [NgbdProgressbarTextTypes],
+	bootstrap: [NgbdProgressbarTextTypes],
 })
 export class NgbdProgressbarTextTypesModule {}

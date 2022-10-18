@@ -1,20 +1,13 @@
 {
-  "extends": "../.eslintrc.json",
-  "ignorePatterns": [
-    "!**/*"
-  ],
-  "overrides": [
-    {
-      "files": [
-        "*.ts"
-      ],
-      "parserOptions": {
-        "project": [
-          "schematics/tsconfig.eslint.json"
-        ]
-      },
-      "rules": {
-      }
-    }
-  ]
+	"extends": "../.eslintrc.json",
+	"ignorePatterns": ["!**/*"],
+	"overrides": [
+		{
+			"files": ["*.ts"],
+			"parserOptions": {
+				"project": ["schematics/tsconfig.eslint.json"]
+			},
+			"rules": {}
+		}
+	]
 }

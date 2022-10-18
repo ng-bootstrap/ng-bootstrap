@@ -1,22 +1,19 @@
 <p>
-  This example shows how to disable some dropdown items for various a11y use-cases.
-  Please try keyboard navigation with <kbd>Tab</kbd> and <kbd>Arrow Up/Down</kbd> to better understand
-  the behavior
+	This example shows how to disable some dropdown items for various a11y use-cases. Please try keyboard navigation with
+	<kbd>Tab</kbd> and <kbd>Arrow Up/Down</kbd> to better understand the behavior
 </p>
 
-
 <div ngbDropdown class="d-inline-block">
-  <button type="button" class="btn btn-outline-primary" id="dropdown1" ngbDropdownToggle>Toggle dropdown</button>
-  <div ngbDropdownMenu aria-labelledby="dropdown1">
-    <!-- items as buttons -->
-    <button ngbDropdownItem>Button (enabled)</button>
-    <button ngbDropdownItem [disabled]="true">Button (disabled, not focusable)</button>
-    <button ngbDropdownItem [class.disabled]="true" aria-disabled="true">Button (disabled, focusable)</button>
+	<button type="button" class="btn btn-outline-primary" id="dropdown1" ngbDropdownToggle>Toggle dropdown</button>
+	<div ngbDropdownMenu aria-labelledby="dropdown1">
+		<!-- items as buttons -->
+		<button ngbDropdownItem>Button (enabled)</button>
+		<button ngbDropdownItem [disabled]="true">Button (disabled, not focusable)</button>
+		<button ngbDropdownItem [class.disabled]="true" aria-disabled="true">Button (disabled, focusable)</button>
 
-    <!-- items as links -->
-    <a href="#" ngbDropdownItem>Link (enabled)</a>
-    <a href="#" ngbDropdownItem [disabled]="true">Link (disabled, not focusable)</a>
-    <a href="#" ngbDropdownItem [class.disabled]="true" aria-disabled="true">Link (disabled, focusable)</a>
-  </div>
+		<!-- items as links -->
+		<a href="#" ngbDropdownItem>Link (enabled)</a>
+		<a href="#" ngbDropdownItem [disabled]="true">Link (disabled, not focusable)</a>
+		<a href="#" ngbDropdownItem [class.disabled]="true" aria-disabled="true">Link (disabled, focusable)</a>
+	</div>
 </div>
-

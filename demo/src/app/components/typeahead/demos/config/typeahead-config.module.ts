@@ -6,9 +6,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdTypeaheadConfig } from './typeahead-config';
 
 @NgModule({
-  imports: [BrowserModule, FormsModule, NgbModule],
-  declarations: [NgbdTypeaheadConfig],
-  exports: [NgbdTypeaheadConfig],
-  bootstrap: [NgbdTypeaheadConfig]
+	imports: [BrowserModule, FormsModule, NgbModule],
+	declarations: [NgbdTypeaheadConfig],
+	exports: [NgbdTypeaheadConfig],
+	bootstrap: [NgbdTypeaheadConfig],
 })
 export class NgbdTypeaheadConfigModule {}

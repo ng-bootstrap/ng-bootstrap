@@ -6,9 +6,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdTimepickerValidation } from './timepicker-validation';
 
 @NgModule({
-  imports: [BrowserModule, ReactiveFormsModule, NgbModule],
-  declarations: [NgbdTimepickerValidation],
-  exports: [NgbdTimepickerValidation],
-  bootstrap: [NgbdTimepickerValidation]
+	imports: [BrowserModule, ReactiveFormsModule, NgbModule],
+	declarations: [NgbdTimepickerValidation],
+	exports: [NgbdTimepickerValidation],
+	bootstrap: [NgbdTimepickerValidation],
 })
 export class NgbdTimepickerValidationModule {}

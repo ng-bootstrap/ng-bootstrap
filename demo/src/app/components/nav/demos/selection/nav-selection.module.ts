@@ -5,10 +5,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdNavSelection } from './nav-selection';
 
 @NgModule({
-  imports: [BrowserModule, NgbModule],
-  declarations: [NgbdNavSelection],
-  exports: [NgbdNavSelection],
-  bootstrap: [NgbdNavSelection]
+	imports: [BrowserModule, NgbModule],
+	declarations: [NgbdNavSelection],
+	exports: [NgbdNavSelection],
+	bootstrap: [NgbdNavSelection],
 })
-export class NgbdNavSelectionModule {
-}
+export class NgbdNavSelectionModule {}

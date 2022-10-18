@@ -1,27 +1,36 @@
 <h3>
-  Typeahead autoclose tests
-  <span class="ms-1 badge {{d.isPopupOpen() ? 'bg-success' : 'bg-danger'}}" id="open-status">{{d.isPopupOpen() ? 'open' : 'closed'}}</span>
+	Typeahead autoclose tests
+	<span class="ms-1 badge {{ d.isPopupOpen() ? 'bg-success' : 'bg-danger' }}" id="open-status">{{
+		d.isPopupOpen() ? 'open' : 'closed'
+	}}</span>
 </h3>
 
 <form (contextmenu)="$event.preventDefault()">
-  <div class="row row-cols-auto">
-    <div class="col">
-      <div class="input-group">
-        <label for="typeahead" class="me-2">Typeahead</label>
-        <input #d="ngbTypeahead" id="typeahead" type="text" class="form-control" [ngbTypeahead]="search" [showHint]="showHint" />
-      </div>
-    </div>
-    <div class="col">
-      <div ngbDropdown class="d-inline-block">
-        <button class="btn btn-outline-secondary" id="hint-dropdown" ngbDropdownToggle>Show hint</button>
-        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-          <button class="dropdown-item" id="hint-true" (click)="showHint = true">True</button>
-          <button class="dropdown-item" id="hint-false" (click)="showHint = false">False</button>
-        </div>
-      </div>
-    </div>
-    <div class="col">
-      <div tabindex="0" class="btn btn-outline-secondary" id="outside-button">Outside button</div>
-    </div>
-  </div>
+	<div class="row row-cols-auto">
+		<div class="col">
+			<div class="input-group">
+				<label for="typeahead" class="me-2">Typeahead</label>
+				<input
+					#d="ngbTypeahead"
+					id="typeahead"
+					type="text"
+					class="form-control"
+					[ngbTypeahead]="search"
+					[showHint]="showHint"
+				/>
+			</div>
+		</div>
+		<div class="col">
+			<div ngbDropdown class="d-inline-block">
+				<button class="btn btn-outline-secondary" id="hint-dropdown" ngbDropdownToggle>Show hint</button>
+				<div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+					<button class="dropdown-item" id="hint-true" (click)="showHint = true">True</button>
+					<button class="dropdown-item" id="hint-false" (click)="showHint = false">False</button>
+				</div>
+			</div>
+		</div>
+		<div class="col">
+			<div tabindex="0" class="btn btn-outline-secondary" id="outside-button">Outside button</div>
+		</div>
+	</div>
 </form>

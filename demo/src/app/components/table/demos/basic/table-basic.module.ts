@@ -6,9 +6,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdTableBasic } from './table-basic';
 
 @NgModule({
-  imports: [BrowserModule, CommonModule, NgbModule],
-  declarations: [NgbdTableBasic],
-  exports: [NgbdTableBasic],
-  bootstrap: [NgbdTableBasic]
+	imports: [BrowserModule, CommonModule, NgbModule],
+	declarations: [NgbdTableBasic],
+	exports: [NgbdTableBasic],
+	bootstrap: [NgbdTableBasic],
 })
 export class NgbdTableBasicModule {}

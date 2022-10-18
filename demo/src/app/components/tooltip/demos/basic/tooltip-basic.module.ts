@@ -6,9 +6,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdTooltipBasic } from './tooltip-basic';
 
 @NgModule({
-  imports: [BrowserModule, FormsModule, NgbModule],
-  declarations: [NgbdTooltipBasic],
-  exports: [NgbdTooltipBasic],
-  bootstrap: [NgbdTooltipBasic]
+	imports: [BrowserModule, FormsModule, NgbModule],
+	declarations: [NgbdTooltipBasic],
+	exports: [NgbdTooltipBasic],
+	bootstrap: [NgbdTooltipBasic],
 })
 export class NgbdTooltipBasicModule {}

@@ -1,7 +1,7 @@
 {
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "module": "esnext",
-    "sourceMap": false
-  }
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"module": "esnext",
+		"sourceMap": false
+	}
 }

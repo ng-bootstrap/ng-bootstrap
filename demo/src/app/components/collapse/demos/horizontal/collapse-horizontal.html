@@ -1,15 +1,19 @@
-<p>You need a width on the immediate child element for the animation to work correctly.<p>
-  <button type="button" class="btn btn-outline-primary" (click)="collapse.toggle()" [attr.aria-expanded]="!isCollapsed"
-    aria-controls="collapseExample">
-    Toggle
-  </button>
+<p>You need a width on the immediate child element for the animation to work correctly.</p>
+<p>
+	<button
+		type="button"
+		class="btn btn-outline-primary"
+		(click)="collapse.toggle()"
+		[attr.aria-expanded]="!isCollapsed"
+		aria-controls="collapseExample"
+	>
+		Toggle
+	</button>
 </p>
-<div style="min-height: 100px;">
-  <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed" [horizontal]="true" style="max-width:300px;">
-    <div class="card" style="width: 300px;">
-      <div class="card-body">
-        You can collapse horizontally this card by clicking Toggle
-      </div>
-    </div>
-  </div>
+<div style="min-height: 100px">
+	<div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed" [horizontal]="true" style="max-width: 300px">
+		<div class="card" style="width: 300px">
+			<div class="card-body">You can collapse horizontally this card by clicking Toggle</div>
+		</div>
+	</div>
 </div>

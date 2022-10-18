@@ -5,9 +5,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdCollapseBasic } from './collapse-basic';
 
 @NgModule({
-  imports: [BrowserModule, NgbModule],
-  declarations: [NgbdCollapseBasic],
-  exports: [NgbdCollapseBasic],
-  bootstrap: [NgbdCollapseBasic]
+	imports: [BrowserModule, NgbModule],
+	declarations: [NgbdCollapseBasic],
+	exports: [NgbdCollapseBasic],
+	bootstrap: [NgbdCollapseBasic],
 })
 export class NgbdCollapseBasicModule {}

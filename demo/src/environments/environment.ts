@@ -6,9 +6,9 @@
 import { versions } from './versions';
 
 export const environment = {
-  production: false,
-  version: versions.ngBootstrap,
-  bootstrap: versions.bootstrap
+	production: false,
+	version: versions.ngBootstrap,
+	bootstrap: versions.bootstrap,
 };
 
 /*

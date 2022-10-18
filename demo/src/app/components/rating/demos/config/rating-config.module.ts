@@ -5,9 +5,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdRatingConfig } from './rating-config';
 
 @NgModule({
-  imports: [BrowserModule, NgbModule],
-  declarations: [NgbdRatingConfig],
-  exports: [NgbdRatingConfig],
-  bootstrap: [NgbdRatingConfig]
+	imports: [BrowserModule, NgbModule],
+	declarations: [NgbdRatingConfig],
+	exports: [NgbdRatingConfig],
+	bootstrap: [NgbdRatingConfig],
 })
 export class NgbdRatingConfigModule {}

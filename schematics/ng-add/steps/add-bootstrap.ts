@@ -1,23 +1,22 @@
 import * as path from 'path';
-import {Rule, SchematicContext, Tree, SchematicsException} from '@angular-devkit/schematics';
+import { Rule, SchematicContext, Tree, SchematicsException } from '@angular-devkit/schematics';
 
-import {Schema} from '../schema';
+import { Schema } from '../schema';
 import * as messages from '../messages';
-import {getProjectStyleFile, getProjectTargetOptions} from '../../utils/project';
-import {readWorkspace, writeWorkspace} from '@schematics/angular/utility';
-import {workspaces, JsonArray} from '@angular-devkit/core';
-
+import { getProjectStyleFile, getProjectTargetOptions } from '../../utils/project';
+import { readWorkspace, writeWorkspace } from '@schematics/angular/utility';
+import { workspaces, JsonArray } from '@angular-devkit/core';
 
 const BOOTSTRAP_CSS_FILEPATH = 'node_modules/bootstrap/dist/css/bootstrap.min.css';
 const SUPPORTED_BOOTSTRAP_STYLE_IMPORTS = {
-  '.sass': `
+	'.sass': `
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap'
 `,
-  '.scss': `
+	'.scss': `
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
-`
+`,
 };
 
 /**
@@ -25,66 +24,66 @@ const SUPPORTED_BOOTSTRAP_STYLE_IMPORTS = {
  * If not possible, we're simply adding 'bootstrap.css' to the 'angular.json'
  */
 export function addBootstrapStyles(options: Schema): Rule {
-  return async(host: Tree, context: SchematicContext) => {
-    const workspace = await readWorkspace(host);
+	return async (host: Tree, context: SchematicContext) => {
+		const workspace = await readWorkspace(host);
 
-    const projectName = options.project || workspace.extensions.defaultProject !.toString();
-    const project = workspace.projects.get(projectName);
-    if (!project) {
-      throw new SchematicsException(messages.noProject(projectName));
-    }
+		const projectName = options.project || workspace.extensions.defaultProject!.toString();
+		const project = workspace.projects.get(projectName);
+		if (!project) {
+			throw new SchematicsException(messages.noProject(projectName));
+		}
 
-    const styleFilePath = getProjectStyleFile(project) || '';
-    const styleFileExtension = path.extname(styleFilePath);
-    const styleFilePatch = SUPPORTED_BOOTSTRAP_STYLE_IMPORTS[styleFileExtension];
+		const styleFilePath = getProjectStyleFile(project) || '';
+		const styleFileExtension = path.extname(styleFilePath);
+		const styleFilePatch = SUPPORTED_BOOTSTRAP_STYLE_IMPORTS[styleFileExtension];
 
-    // found supported styles
-    if (styleFilePatch) {
-      return addBootstrapToStylesFile(styleFilePath, styleFilePatch);
-    } else {
-      // found some styles, but unsupported
-      if (styleFileExtension !== '.css' && styleFileExtension !== '') {
-        context.logger.warn(messages.unsupportedStyles(styleFilePath));
-      }
+		// found supported styles
+		if (styleFilePatch) {
+			return addBootstrapToStylesFile(styleFilePath, styleFilePatch);
+		} else {
+			// found some styles, but unsupported
+			if (styleFileExtension !== '.css' && styleFileExtension !== '') {
+				context.logger.warn(messages.unsupportedStyles(styleFilePath));
+			}
 
-      // just patching 'angular.json'
-      addBootstrapToAngularJson(project);
-      await writeWorkspace(host, workspace);
-    }
-  };
+			// just patching 'angular.json'
+			addBootstrapToAngularJson(project);
+			await writeWorkspace(host, workspace);
+		}
+	};
 }
 
 /**
  * Patches 'styles.scss' or 'styles.sass' to add Bootstrap snippet
  */
 function addBootstrapToStylesFile(styleFilePath: string, styleFilePatch: string): Rule {
-  return (host: Tree) => {
-    const styleContent = host.read(styleFilePath) !.toString('utf-8');
+	return (host: Tree) => {
+		const styleContent = host.read(styleFilePath)!.toString('utf-8');
 
-    const recorder = host.beginUpdate(styleFilePath);
-    recorder.insertRight(styleContent.length, styleFilePatch);
+		const recorder = host.beginUpdate(styleFilePath);
+		recorder.insertRight(styleContent.length, styleFilePatch);
 
-    host.commitUpdate(recorder);
-  };
+		host.commitUpdate(recorder);
+	};
 }
 
 /**
  * Patches 'angular.json' to add 'bootstrap.css' styles
  */
 function addBootstrapToAngularJson(project: workspaces.ProjectDefinition) {
-  const targetOptions = getProjectTargetOptions(project, 'build');
-  const styles = (targetOptions.styles as JsonArray | undefined);
-  if (!styles) {
-    targetOptions.styles = [BOOTSTRAP_CSS_FILEPATH];
-  } else {
-    const existingStyles = styles.map((s) => typeof s === 'string' ? s : s !['input']);
+	const targetOptions = getProjectTargetOptions(project, 'build');
+	const styles = targetOptions.styles as JsonArray | undefined;
+	if (!styles) {
+		targetOptions.styles = [BOOTSTRAP_CSS_FILEPATH];
+	} else {
+		const existingStyles = styles.map((s) => (typeof s === 'string' ? s : s!['input']));
 
-    for (const[, stylePath] of existingStyles.entries()) {
-      // If the given asset is already specified in the styles, we don't need to do anything.
-      if (stylePath === BOOTSTRAP_CSS_FILEPATH) {
-        return;
-      }
-    }
-    styles.unshift(BOOTSTRAP_CSS_FILEPATH);
-  }
+		for (const [, stylePath] of existingStyles.entries()) {
+			// If the given asset is already specified in the styles, we don't need to do anything.
+			if (stylePath === BOOTSTRAP_CSS_FILEPATH) {
+				return;
+			}
+		}
+		styles.unshift(BOOTSTRAP_CSS_FILEPATH);
+	}
 }

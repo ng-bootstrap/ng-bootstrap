@@ -1,172 +1,174 @@
 <ngbd-page-wrapper pageTitle="Positioning">
+	<p>Some of the components we have are designed to be opened inside of the popup:</p>
 
-  <p>
-    Some of the components we have are designed to be opened inside of the popup:
-  </p>
+	<ul class="list-unstyled ms-4">
+		<li><code>Datepicker</code></li>
+		<li><code>Dropdown</code></li>
+		<li><code>Popover</code></li>
+		<li><code>Tooltip</code></li>
+		<li><code>Typeahead</code></li>
+	</ul>
 
-  <ul class="list-unstyled ms-4">
-    <li><code>Datepicker</code></li>
-    <li><code>Dropdown</code></li>
-    <li><code>Popover</code></li>
-    <li><code>Tooltip</code></li>
-    <li><code>Typeahead</code></li>
-  </ul>
+	<p>
+		When the popup is opened, it is positioned correctly next to the <code>target</code> element and fits in the
+		viewport. It is also possible to provide some options, ex. whether the popup should be opened to the
+		<code>top</code> or to the <code>bottom</code> of the <code>target</code> element.
+	</p>
 
-  <p>
-    When the popup is opened, it is positioned correctly next to the <code>target</code> element and fits in the
-    viewport. It is also possible to provide some options, ex. whether the popup should be opened to the
-    <code>top</code> or to the <code>bottom</code> of the <code>target</code> element.
-  </p>
+	<p>
+		For instance here the tooltip is always forced to be opened to the <code>right</code>, even if it won't fit in the
+		viewport.
+	</p>
 
-  <p>
-    For instance here the tooltip is always forced to be opened to the <code>right</code>, even if it won't fit in the
-    viewport.
-  </p>
+	<button class="btn btn-outline-primary mb-3" ngbTooltip="I'll always open to the right" placement="right">
+		Hover me
+	</button>
 
+	<ngbd-code lang="html" [snippet]="rightExample"></ngbd-code>
 
-  <button class="btn btn-outline-primary mb-3" ngbTooltip="I'll always open to the right" placement="right">Hover me</button>
+	<br />
 
-  <ngbd-code lang="html" [snippet]="rightExample"></ngbd-code>
+	<p>
+		Bootstrap uses <code>popper.js</code> library for positioning. Before version <code>12.0.0</code>, as we did not
+		want to have any dependencies on 3rd party libraries, we had implemented a subset of the same functionalities
+		ourselves.
+	</p>
 
-  <br>
+	<p>
+		From version <code>4.1</code> to version <code>11</code> we positioned the popup using
+		<code>position: absolute; transform: translate(x,y); </code> to match Bootstrap.
+		<br />
+		The position was calculated after popup opening when the zone is stable. We didn't reposition the popup on
+		scrolling.
+	</p>
 
-  <p>
-    Bootstrap uses <code>popper.js</code> library for positioning. Before version <code>12.0.0</code>, as we did not want to have any dependencies on 3rd
-    party libraries, we had implemented a subset of the same functionalities ourselves.
-  </p>
+	<p>
+		Since version <code>12.0.0</code> with Bootstrap 5 support, the positioning is done with
+		<a href="https://popper.js.org/">popper v2</a>. <code>@popperjs/core</code> is defined as a peer dependency, so be
+		sure to include it in your package.json.
+	</p>
 
-  <p>
-    From version <code>4.1</code> to version <code>11</code> we positioned the popup using <code>position: absolute; transform: translate(x,y);
-    </code> to match Bootstrap.
-    <br>
-    The position was calculated after popup opening when the zone is stable. We didn't reposition the popup on scrolling.
-  </p>
+	<ngbd-page-header title="API" fragment="api"></ngbd-page-header>
 
-  <p>
-    Since version <code>12.0.0</code> with Bootstrap 5 support, the positioning is done with <a href="https://popper.js.org/">popper v2</a>. <code>@popperjs/core</code> is defined as a peer dependency, so be sure to include it in your package.json.
-  </p>
+	<p>
+		Components in question have two common inputs that help with positioning: <code>placement</code> and
+		<code>container</code>
+	</p>
 
-  <ngbd-page-header title="API" fragment="api"></ngbd-page-header>
+	<h4><code>Placement</code></h4>
 
-  <p>
-    Components in question have two common inputs that help with positioning: <code>placement</code> and
-    <code>container</code>
-  </p>
+	<p>Placement specifies where the popup should be positioned in the order of preference.</p>
 
-  <h4><code>Placement</code></h4>
+	<p>Accepts an array of strings or a string with space separated values.</p>
 
-  <p>
-    Placement specifies where the popup should be positioned in the order of preference.
-  </p>
+	<p>
+		<span class="badge bg-info text-dark">since 12.0.0</span><br />Possible values are <code>"top"</code>,
+		<code>"top-start"</code>, <code>"top-left"</code>, <code>"top-end"</code>, <code>"top-right"</code>,
+		<code>"bottom"</code>, <code>"bottom-start"</code>, <code>"bottom-left"</code>, <code>"bottom-end"</code>,
+		<code>"bottom-right"</code>, <code>"start"</code>, <code>"left"</code>, <code>"start-top"</code>,
+		<code>"left-top"</code>, <code>"start-bottom"</code>, <code>"left-bottom"</code>, <code>"end"</code>,
+		<code>"right"</code>, <code>"end-top"</code>, <code>"right-top"</code>, <code>"end-bottom"</code>,
+		<code>"right-bottom"</code>
+	</p>
 
-  <p>
-    Accepts an array of strings or a string with space separated values.
-  </p>
+	<p>
+		<span class="badge bg-secondary">before 12.0.0</span><br />Possible values were <code>"top"</code>,
+		<code>"top-left"</code>, <code>"top-right"</code>, <code>"bottom"</code>, <code>"bottom-left"</code>,
+		<code>"bottom-right"</code>, <code>"left"</code>, <code>"left-top"</code>, <code>"left-bottom"</code>,
+		<code>"right"</code>, <code>"right-top"</code>, <code>"right-bottom"</code>
+	</p>
 
-  <p><span class="badge bg-info text-dark">since 12.0.0</span><br>Possible values are
-    <code>"top"</code>, <code>"top-start"</code>, <code>"top-left"</code>, <code>"top-end"</code>, <code>"top-right"</code>,
-    <code>"bottom"</code>, <code>"bottom-start"</code>, <code>"bottom-left"</code>, <code>"bottom-end"</code>, <code>"bottom-right"</code>,
-    <code>"start"</code>, <code>"left"</code>, <code>"start-top"</code>, <code>"left-top"</code>, <code>"start-bottom"</code>, <code>"left-bottom"</code>,
-    <code>"end"</code>, <code>"right"</code>, <code>"end-top"</code>, <code>"right-top"</code>, <code>"end-bottom"</code>, <code>"right-bottom"</code>
-  </p>
+	<ul>
+		<li>We go through the provided placements one-by-one an try to position the popup</li>
+		<li>If it doesn't fit, we try the next one</li>
+		<li>If no provided placements in fit the viewport, we use the first provided one</li>
+	</ul>
 
-  <p><span class="badge bg-secondary">before 12.0.0</span><br>Possible values were
-    <code>"top"</code>, <code>"top-left"</code>, <code>"top-right"</code>, <code>"bottom"</code>, <code>"bottom-left"</code>, <code>"bottom-right"</code>,
-    <code>"left"</code>, <code>"left-top"</code>, <code>"left-bottom"</code>, <code>"right"</code>, <code>"right-top"</code>, <code>"right-bottom"</code>
-  </p>
+	<p>
+		If no <code>placement</code> value is provided at all, each component has it's own default order of preference.
+		Check the component API docs to find out the default order, ex.
+		<a href="" routerLink="/components/tooltip/api" fragment="NgbTooltip">here is the tooltip's API</a>.
+	</p>
 
-  <ul>
-    <li>We go through the provided placements one-by-one an try to position the popup</li>
-    <li>If it doesn't fit, we try the next one</li>
-    <li>If no provided placements in fit the viewport, we use the first provided one</li>
-  </ul>
+	<ngbd-code lang="html" [snippet]="placement"></ngbd-code>
 
-  <p>
-    If no <code>placement</code> value is provided at all, each component has it's own default order of preference.
-    Check the component API docs to find out the default order, ex.
-    <a href="" routerLink="/components/tooltip/api" fragment="NgbTooltip">here is the tooltip's API</a>.
-  </p>
+	<br />
 
-  <ngbd-code lang="html" [snippet]="placement"></ngbd-code>
+	<p>
+		There is also a special <code>"auto"</code> property, that is equal to
+		<code
+			>"top", "bottom", "start", "end", "top-start", "top-end", "bottom-start", "bottom-end", "start-top",
+			"start-bottom", "end-top", "end-bottom"</code
+		>
+	</p>
 
-  <br>
+	<ngbd-code lang="html" [snippet]="auto"></ngbd-code>
 
-  <p>
-    There is also a special <code>"auto"</code> property, that is equal to <code>"top", "bottom", "start", "end", "top-start", "top-end",
-      "bottom-start", "bottom-end", "start-top", "start-bottom", "end-top", "end-bottom"</code>
-  </p>
+	<br />
 
-  <ngbd-code lang="html" [snippet]="auto"></ngbd-code>
+	<h4><code>Container</code></h4>
 
-  <br>
+	<p>Container specifies where the popup will be physically attached to the DOM.</p>
 
-  <h4><code>Container</code></h4>
+	<p>
+		By default it is attached as a sibling of the <code>target</code> element and the only optional supported container
+		is <code>'body'</code>.
+	</p>
 
-  <p>
-    Container specifies where the popup will be physically attached to the DOM.
-  </p>
+	<ngbd-code lang="html" [snippet]="container"></ngbd-code>
 
-  <p>
-    By default it is attached as a sibling of the <code>target</code> element and the only optional supported container
-    is <code>'body'</code>.
-  </p>
+	<ngbd-page-header title="RTL" fragment="rtl"></ngbd-page-header>
 
-  <ngbd-code lang="html" [snippet]="container"></ngbd-code>
+	<ngbd-api-docs-badge [since]="{ version: '13.1.0' }"></ngbd-api-docs-badge>
 
-  <ngbd-page-header title="RTL" fragment="rtl"></ngbd-page-header>
+	<p>
+		Bootstrap 5 has an experimental support for RTL, so the popper placement will be adapted if the page is in RTL mode
+		with <code>&lt;html dir=&quot;rtl&quot;&gt;</code>
+	</p>
 
-  <ngbd-api-docs-badge [since]="{version: '13.1.0'}"></ngbd-api-docs-badge>
+	<p>Consider the following example:</p>
 
-  <p>
-    Bootstrap 5 has an experimental support for RTL, so the popper placement will be adapted if the page is in RTL mode
-    with <code>&lt;html dir=&quot;rtl&quot;&gt;</code>
-  </p>
+	<ngbd-code lang="html" [snippet]="rtl"></ngbd-code>
 
-  <p>
-    Consider the following example:
-  </p>
+	<p>
+		The first example with <code>right</code> placement will always display the tooltip visually on the right regardless
+		of page direction.
+	</p>
 
-  <ngbd-code lang="html" [snippet]="rtl"></ngbd-code>
+	<p>
+		The second example with <code>end</code> placement will take into account page direction and display the tooltip
+		visually on the right by default and on the left in case of RTL direction.
+	</p>
 
-  <p>
-    The first example with <code>right</code> placement will always display the tooltip visually on the right
-    regardless of page direction.
-  </p>
+	<p>
+		This stays true for all placements containing <code>right</code>, <code>left</code>, <code>start</code> or
+		<code>end</code>
+	</p>
 
-  <p>
-    The second example with <code>end</code> placement will take into account page direction and display the tooltip
-    visually on the right by default and on the left in case of RTL direction.
-  </p>
+	<ngbd-page-header title="Dropdown" fragment="dropdown"></ngbd-page-header>
 
-  <p>
-    This stays true for all placements containing <code>right</code>, <code>left</code>, <code>start</code> or <code>end</code>
-  </p>
+	<p>
+		There are two things that make dropdown a bit special at the moment: it won't be positioned dynamically when inside
+		the navbar and the popup (dropdown menu) is always attached to the DOM.
+	</p>
 
-  <ngbd-page-header title="Dropdown" fragment="dropdown"></ngbd-page-header>
+	<ol>
+		<li>
+			<p>
+				When dropdown is used inside the Bootstrap's <code>navbar</code>, it will not be positioned (to match Bootstrap
+				behaviour and work fine on mobile). You can override it by using the <code>display</code> input.
+			</p>
 
-  <p>
-    There are two things that make dropdown a bit special at the moment: it won't be positioned dynamically when inside
-    the navbar and the popup (dropdown menu) is always attached to the DOM.
-  </p>
+			<ngbd-code lang="html" [snippet]="dropdown"></ngbd-code>
 
-  <ol>
-    <li>
-      <p>
-        When dropdown is used inside the Bootstrap's <code>navbar</code>, it will not be positioned (to match
-        Bootstrap behaviour and work fine on mobile). You can override it by using the <code>display</code> input.
-      </p>
-
-      <ngbd-code lang="html" [snippet]="dropdown"></ngbd-code>
-
-      <br>
-    </li>
-    <li>
-      <p>
-        As <code>Dropdown</code> is not a component, but a set of directives, the dropdown menu popup is always attached
-        to the DOM even when not visible. Depending on the <code>container</code> input, the menu will always be
-        attached either to the body or to the dropdown element.
-      </p>
-    </li>
-  </ol>
-
+			<br />
+		</li>
+		<li>
+			<p>
+				As <code>Dropdown</code> is not a component, but a set of directives, the dropdown menu popup is always attached
+				to the DOM even when not visible. Depending on the <code>container</code> input, the menu will always be
+				attached either to the body or to the dropdown element.
+			</p>
+		</li>
+	</ol>
 </ngbd-page-wrapper>

@@ -1,66 +1,69 @@
 ngb-datepicker {
-  border: 1px solid var(--bs-border-color);
-  border-radius: .25rem;
-  display: inline-block;
+	border: 1px solid var(--bs-border-color);
+	border-radius: 0.25rem;
+	display: inline-block;
 
-  &-month {
-    pointer-events: auto;
-  }
+	&-month {
+		pointer-events: auto;
+	}
 
-  &.dropdown-menu {
-    padding: 0;
-  }
+	&.dropdown-menu {
+		padding: 0;
+	}
 
-  &.disabled {
-    .ngb-dp-weekday, .ngb-dp-week-number, .ngb-dp-month-name {
-      color: var(--bs-text-muted);
-    }
-  }
+	&.disabled {
+		.ngb-dp-weekday,
+		.ngb-dp-week-number,
+		.ngb-dp-month-name {
+			color: var(--bs-text-muted);
+		}
+	}
 }
 
 .ngb-dp {
-  &-body {
-    z-index: 1055;
-  }
+	&-body {
+		z-index: 1055;
+	}
 
-  &-header {
-    border-bottom: 0;
-    border-radius: .25rem .25rem 0 0;
-    padding-top: .25rem;
-    background-color: var(--bs-light);
-  }
+	&-header {
+		border-bottom: 0;
+		border-radius: 0.25rem 0.25rem 0 0;
+		padding-top: 0.25rem;
+		background-color: var(--bs-light);
+	}
 
-  &-months {
-    display: flex;
-  }
+	&-months {
+		display: flex;
+	}
 
-  &-month {
-    pointer-events: none;
+	&-month {
+		pointer-events: none;
 
-    &-name {
-      font-size: larger;
-      height: 2rem;
-      line-height: 2rem;
-      text-align: center;
-      background-color: var(--bs-light);
-    }
+		&-name {
+			font-size: larger;
+			height: 2rem;
+			line-height: 2rem;
+			text-align: center;
+			background-color: var(--bs-light);
+		}
 
-    & + & {
-      .ngb-dp-month-name, .ngb-dp-week {
-        padding-left: 1rem;
-      }
-    }
+		& + & {
+			.ngb-dp-month-name,
+			.ngb-dp-week {
+				padding-left: 1rem;
+			}
+		}
 
-    &:last-child .ngb-dp-week {
-      padding-right: .25rem;
-    }
+		&:last-child .ngb-dp-week {
+			padding-right: 0.25rem;
+		}
 
-    &:first-child .ngb-dp-week {
-      padding-left: .25rem;
-    }
+		&:first-child .ngb-dp-week {
+			padding-left: 0.25rem;
+		}
 
-    .ngb-dp-week:last-child {
-      padding-bottom: .25rem;
-    }
-  }
+		.ngb-dp-week:last-child {
+			padding-bottom: 0.25rem;
+		}
+	}
 }

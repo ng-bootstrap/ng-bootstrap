@@ -6,9 +6,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdSortableHeader, NgbdTableSortable } from './table-sortable';
 
 @NgModule({
-  imports: [BrowserModule, CommonModule, NgbModule],
-  declarations: [NgbdTableSortable, NgbdSortableHeader],
-  exports: [NgbdTableSortable],
-  bootstrap: [NgbdTableSortable]
+	imports: [BrowserModule, CommonModule, NgbModule],
+	declarations: [NgbdTableSortable, NgbdSortableHeader],
+	exports: [NgbdTableSortable],
+	bootstrap: [NgbdTableSortable],
 })
 export class NgbdTableSortableModule {}

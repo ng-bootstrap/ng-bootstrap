@@ -2,11 +2,24 @@
 <ngb-pagination [collectionSize]="120" [(page)]="page" [maxSize]="5" [boundaryLinks]="true"></ngb-pagination>
 
 <p>Restricted size with rotation:</p>
-<ngb-pagination [collectionSize]="120" [(page)]="page" [maxSize]="5" [rotate]="true" [boundaryLinks]="true"></ngb-pagination>
+<ngb-pagination
+	[collectionSize]="120"
+	[(page)]="page"
+	[maxSize]="5"
+	[rotate]="true"
+	[boundaryLinks]="true"
+></ngb-pagination>
 
 <p>Restricted size with rotation and no ellipses:</p>
-<ngb-pagination [collectionSize]="120" [(page)]="page" [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true"></ngb-pagination>
+<ngb-pagination
+	[collectionSize]="120"
+	[(page)]="page"
+	[maxSize]="5"
+	[rotate]="true"
+	[ellipses]="false"
+	[boundaryLinks]="true"
+></ngb-pagination>
 
-<hr>
+<hr />
 
 <pre>Current page: {{page}}</pre>

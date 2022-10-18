@@ -6,9 +6,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdTypeaheadFocus } from './typeahead-focus';
 
 @NgModule({
-  imports: [BrowserModule, FormsModule, NgbModule],
-  declarations: [NgbdTypeaheadFocus],
-  exports: [NgbdTypeaheadFocus],
-  bootstrap: [NgbdTypeaheadFocus]
+	imports: [BrowserModule, FormsModule, NgbModule],
+	declarations: [NgbdTypeaheadFocus],
+	exports: [NgbdTypeaheadFocus],
+	bootstrap: [NgbdTypeaheadFocus],
 })
 export class NgbdTypeaheadFocusModule {}

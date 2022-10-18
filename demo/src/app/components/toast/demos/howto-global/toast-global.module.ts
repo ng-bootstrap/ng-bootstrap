@@ -6,8 +6,8 @@ import { NgbdToastGlobal } from './toast-global.component';
 import { ToastsContainer } from './toasts-container.component';
 
 @NgModule({
-  imports: [BrowserModule, NgbModule],
-  declarations: [NgbdToastGlobal, ToastsContainer],
-  bootstrap: [NgbdToastGlobal]
+	imports: [BrowserModule, NgbModule],
+	declarations: [NgbdToastGlobal, ToastsContainer],
+	bootstrap: [NgbdToastGlobal],
 })
 export class NgbdToastGlobalModule {}

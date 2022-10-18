@@ -1,21 +1,13 @@
 {
-  "extends": "../tsconfig.json",
-  "compilerOptions": {
-    "baseUrl": "./",
-    "outDir": "../out-tsc/demo",
-    "paths": {
-      "@ng-bootstrap/ng-bootstrap": ["../src/index"]
-    }
-  },
-  "files": [
-    "src/main.ts",
-    "src/polyfills.ts"
-  ],
-  "include": [
-    "src/**/*.d.ts"
-  ],
-  "exclude": [
-    "src/**/*.po.ts",
-    "src/**/*.e2e-spec.ts"
-  ]
+	"extends": "../tsconfig.json",
+	"compilerOptions": {
+		"baseUrl": "./",
+		"outDir": "../out-tsc/demo",
+		"paths": {
+			"@ng-bootstrap/ng-bootstrap": ["../src/index"]
+		}
+	},
+	"files": ["src/main.ts", "src/polyfills.ts"],
+	"include": ["src/**/*.d.ts"],
+	"exclude": ["src/**/*.po.ts", "src/**/*.e2e-spec.ts"]
 }

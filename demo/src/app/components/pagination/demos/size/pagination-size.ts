@@ -1,9 +1,9 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'ngbd-pagination-size',
-  templateUrl: './pagination-size.html'
+	selector: 'ngbd-pagination-size',
+	templateUrl: './pagination-size.html',
 })
 export class NgbdPaginationSize {
-  currentPage = 3;
+	currentPage = 3;
 }

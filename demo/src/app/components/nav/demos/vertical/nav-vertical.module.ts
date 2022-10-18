@@ -5,10 +5,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdNavVertical } from './nav-vertical';
 
 @NgModule({
-  imports: [BrowserModule, NgbModule],
-  declarations: [NgbdNavVertical],
-  exports: [NgbdNavVertical],
-  bootstrap: [NgbdNavVertical]
+	imports: [BrowserModule, NgbModule],
+	declarations: [NgbdNavVertical],
+	exports: [NgbdNavVertical],
+	bootstrap: [NgbdNavVertical],
 })
-export class NgbdNavVerticalModule {
-}
+export class NgbdNavVerticalModule {}

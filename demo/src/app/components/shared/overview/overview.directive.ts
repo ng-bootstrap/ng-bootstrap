@@ -1,7 +1,6 @@
-import {Directive} from '@angular/core';
+import { Directive } from '@angular/core';
 
 @Directive({
-  selector: '[ngbdOverview]'
+	selector: '[ngbdOverview]',
 })
-export class NgbdOverviewDirective {
-}
+export class NgbdOverviewDirective {}

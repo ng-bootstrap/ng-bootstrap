@@ -1,35 +1,40 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 import {
-  NgbAccordion,
-  NgbPanel,
-  NgbPanelTitle,
-  NgbPanelContent,
-  NgbPanelHeader,
-  NgbPanelToggle,
-  NgbRefDirective
+	NgbAccordion,
+	NgbPanel,
+	NgbPanelTitle,
+	NgbPanelContent,
+	NgbPanelHeader,
+	NgbPanelToggle,
+	NgbRefDirective,
 } from './accordion';
 
 export {
-  NgbAccordion,
-  NgbPanel,
-  NgbPanelTitle,
-  NgbPanelContent,
-  NgbPanelChangeEvent,
-  NgbPanelHeader,
-  NgbPanelHeaderContext,
-  NgbPanelToggle
+	NgbAccordion,
+	NgbPanel,
+	NgbPanelTitle,
+	NgbPanelContent,
+	NgbPanelChangeEvent,
+	NgbPanelHeader,
+	NgbPanelHeaderContext,
+	NgbPanelToggle,
 } from './accordion';
-export {NgbAccordionConfig} from './accordion-config';
+export { NgbAccordionConfig } from './accordion-config';
 
-const NGB_ACCORDION_DIRECTIVES =
-    [NgbAccordion, NgbPanel, NgbPanelTitle, NgbPanelContent, NgbPanelHeader, NgbPanelToggle];
+const NGB_ACCORDION_DIRECTIVES = [
+	NgbAccordion,
+	NgbPanel,
+	NgbPanelTitle,
+	NgbPanelContent,
+	NgbPanelHeader,
+	NgbPanelToggle,
+];
 
 @NgModule({
-  declarations: [NgbRefDirective, ...NGB_ACCORDION_DIRECTIVES],
-  exports: NGB_ACCORDION_DIRECTIVES,
-  imports: [CommonModule]
+	declarations: [NgbRefDirective, ...NGB_ACCORDION_DIRECTIVES],
+	exports: NGB_ACCORDION_DIRECTIVES,
+	imports: [CommonModule],
 })
-export class NgbAccordionModule {
-}
+export class NgbAccordionModule {}

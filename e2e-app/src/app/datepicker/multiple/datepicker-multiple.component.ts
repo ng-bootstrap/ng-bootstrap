@@ -1,6 +1,6 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 
-@Component({templateUrl: './datepicker-multiple.component.html'})
+@Component({ templateUrl: './datepicker-multiple.component.html' })
 export class DatepickerMultipleComponent {
-  startDate = {year: 2016, month: 8};
+	startDate = { year: 2016, month: 8 };
 }

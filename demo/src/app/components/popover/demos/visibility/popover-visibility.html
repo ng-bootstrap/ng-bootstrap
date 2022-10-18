@@ -1,13 +1,20 @@
-<button type="button" class="btn btn-outline-secondary" placement="top"
-        ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." popoverTitle="Popover on top"
-        #popover="ngbPopover" (shown)="recordShown()" (hidden)="recordHidden()">
-  Open Popover
+<button
+	type="button"
+	class="btn btn-outline-secondary"
+	placement="top"
+	ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+	popoverTitle="Popover on top"
+	#popover="ngbPopover"
+	(shown)="recordShown()"
+	(hidden)="recordHidden()"
+>
+	Open Popover
 </button>
 
-<hr>
+<hr />
 
 <ul>
-  <li>Popover is currently: <code>{{ popover.isOpen() ? 'open' : 'closed' }}</code></li>
-  <li>Last shown at: <code>{{lastShown | date:'h:mm:ss'}}</code></li>
-  <li>Last hidden at: <code>{{lastHidden | date:'h:mm:ss'}}</code></li>
+	<li>Popover is currently: <code>{{ popover.isOpen() ? 'open' : 'closed' }}</code></li>
+	<li>Last shown at: <code>{{lastShown | date:'h:mm:ss'}}</code></li>
+	<li>Last hidden at: <code>{{lastHidden | date:'h:mm:ss'}}</code></li>
 </ul>

@@ -19,66 +19,66 @@ import { NgbdOffcanvasConfig } from './demos/config/offcanvas-config';
 import { Routes } from '@angular/router';
 
 const DEMOS = {
-  basic: {
-    title: 'Basic offcanvas',
-    type: NgbdOffcanvasBasic,
-    code: require('!!raw-loader!./demos/basic/offcanvas-basic').default,
-    markup: require('!!raw-loader!./demos/basic/offcanvas-basic.html').default
-  },
-  component: {
-    title: 'Components as content',
-    type: NgbdOffcanvasComponent,
-    code: require('!!raw-loader!./demos/component/offcanvas-component').default,
-    markup: require('!!raw-loader!./demos/component/offcanvas-component.html').default
-  },
-  options: {
-    title: 'Offcanvas options',
-    type: NgbdOffcanvasOptions,
-    code: require('!!raw-loader!./demos/options/offcanvas-options').default,
-    markup: require('!!raw-loader!./demos/options/offcanvas-options.html').default
-  },
-  focus: {
-    title: 'Focus management',
-    type: NgbdOffcanvasFocus,
-    code: require('!!raw-loader!./demos/focus/offcanvas-focus').default,
-    markup: require('!!raw-loader!./demos/focus/offcanvas-focus.html').default
-  },
-  config: {
-    title: 'Global configuration of Offcanvas',
-    type: NgbdOffcanvasConfig,
-    code: require('!!raw-loader!./demos/config/offcanvas-config').default,
-    markup: require('!!raw-loader!./demos/config/offcanvas-config.html').default
-  }
+	basic: {
+		title: 'Basic offcanvas',
+		type: NgbdOffcanvasBasic,
+		code: require('!!raw-loader!./demos/basic/offcanvas-basic').default,
+		markup: require('!!raw-loader!./demos/basic/offcanvas-basic.html').default,
+	},
+	component: {
+		title: 'Components as content',
+		type: NgbdOffcanvasComponent,
+		code: require('!!raw-loader!./demos/component/offcanvas-component').default,
+		markup: require('!!raw-loader!./demos/component/offcanvas-component.html').default,
+	},
+	options: {
+		title: 'Offcanvas options',
+		type: NgbdOffcanvasOptions,
+		code: require('!!raw-loader!./demos/options/offcanvas-options').default,
+		markup: require('!!raw-loader!./demos/options/offcanvas-options.html').default,
+	},
+	focus: {
+		title: 'Focus management',
+		type: NgbdOffcanvasFocus,
+		code: require('!!raw-loader!./demos/focus/offcanvas-focus').default,
+		markup: require('!!raw-loader!./demos/focus/offcanvas-focus.html').default,
+	},
+	config: {
+		title: 'Global configuration of Offcanvas',
+		type: NgbdOffcanvasConfig,
+		code: require('!!raw-loader!./demos/config/offcanvas-config').default,
+		markup: require('!!raw-loader!./demos/config/offcanvas-config.html').default,
+	},
 };
 
 export const ROUTES: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'examples' },
-  {
-    path: '',
-    component: ComponentWrapper,
-    data: {
-      bootstrap: 'https://getbootstrap.com/docs/%version%/components/offcanvas/'
-    },
-    children: [
-      { path: 'examples', component: NgbdExamplesPage },
-      { path: 'api', component: NgbdApiPage }
-    ]
-  }
+	{ path: '', pathMatch: 'full', redirectTo: 'examples' },
+	{
+		path: '',
+		component: ComponentWrapper,
+		data: {
+			bootstrap: 'https://getbootstrap.com/docs/%version%/components/offcanvas/',
+		},
+		children: [
+			{ path: 'examples', component: NgbdExamplesPage },
+			{ path: 'api', component: NgbdApiPage },
+		],
+	},
 ];
 
 @NgModule({
-  imports: [
-    NgbdSharedModule,
-    NgbdComponentsSharedModule,
-    NgbdOffcanvasBasicModule,
-    NgbdOffcanvasComponentModule,
-    NgbdOffcanvasFocusModule,
-    NgbdOffcanvasOptionsModule,
-    NgbdOffcanvasConfigModule
-  ]
+	imports: [
+		NgbdSharedModule,
+		NgbdComponentsSharedModule,
+		NgbdOffcanvasBasicModule,
+		NgbdOffcanvasComponentModule,
+		NgbdOffcanvasFocusModule,
+		NgbdOffcanvasOptionsModule,
+		NgbdOffcanvasConfigModule,
+	],
 })
 export class NgbdOffcanvasModule {
-  constructor(demoList: NgbdDemoList) {
-    demoList.register('offcanvas', DEMOS);
-  }
+	constructor(demoList: NgbdDemoList) {
+		demoList.register('offcanvas', DEMOS);
+	}
 }

@@ -6,9 +6,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdTooltipAutoclose } from './tooltip-autoclose';
 
 @NgModule({
-  imports: [BrowserModule, FormsModule, NgbModule],
-  declarations: [NgbdTooltipAutoclose],
-  exports: [NgbdTooltipAutoclose],
-  bootstrap: [NgbdTooltipAutoclose]
+	imports: [BrowserModule, FormsModule, NgbModule],
+	declarations: [NgbdTooltipAutoclose],
+	exports: [NgbdTooltipAutoclose],
+	bootstrap: [NgbdTooltipAutoclose],
 })
 export class NgbdTooltipAutocloseModule {}

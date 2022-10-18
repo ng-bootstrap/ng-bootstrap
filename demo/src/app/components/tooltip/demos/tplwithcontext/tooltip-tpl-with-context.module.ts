@@ -5,9 +5,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdTooltipTplwithcontext } from './tooltip-tplwithcontext';
 
 @NgModule({
-  imports: [BrowserModule, FormsModule, NgbModule],
-  declarations: [NgbdTooltipTplwithcontext],
-  exports: [NgbdTooltipTplwithcontext],
-  bootstrap: [NgbdTooltipTplwithcontext]
+	imports: [BrowserModule, FormsModule, NgbModule],
+	declarations: [NgbdTooltipTplwithcontext],
+	exports: [NgbdTooltipTplwithcontext],
+	bootstrap: [NgbdTooltipTplwithcontext],
 })
 export class NgbdTooltipTplWithContextModule {}

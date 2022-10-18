@@ -1,16 +1,27 @@
 <p>
-	Set the <code>container</code> property to "body" to have the popover be appended to the body instead of the triggering element's parent. This option is useful if the element triggering the popover is inside an element that clips its contents (i.e. <code>overflow: hidden</code>).
+	Set the <code>container</code> property to "body" to have the popover be appended to the body instead of the
+	triggering element's parent. This option is useful if the element triggering the popover is inside an element that
+	clips its contents (i.e. <code>overflow: hidden</code>).
 </p>
 
 <div class="row">
 	<div class="col-auto">
 		<div class="card px-1 py-5">
-			<button type="button" class="btn btn-outline-secondary mb-2" placement="top"
-							ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
+			<button
+				type="button"
+				class="btn btn-outline-secondary mb-2"
+				placement="top"
+				ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+			>
 				Default popover
 			</button>
-			<button type="button" class="btn btn-outline-secondary" placement="bottom"
-							ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." container="body">
+			<button
+				type="button"
+				class="btn btn-outline-secondary"
+				placement="bottom"
+				ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+				container="body"
+			>
 				Popover appended to body
 			</button>
 		</div>

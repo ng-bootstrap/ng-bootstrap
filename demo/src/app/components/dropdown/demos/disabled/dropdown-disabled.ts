@@ -1,8 +1,7 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'ngbd-dropdown-disabled',
-  templateUrl: './dropdown-disabled.html'
+	selector: 'ngbd-dropdown-disabled',
+	templateUrl: './dropdown-disabled.html',
 })
-export class NgbdDropdownDisabled {
-}
+export class NgbdDropdownDisabled {}

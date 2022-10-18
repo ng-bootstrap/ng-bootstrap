@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {NgbDatepickerConfig} from './datepicker-config';
-import {PlacementArray} from '../util/positioning';
-import {Options} from '@popperjs/core';
+import { NgbDatepickerConfig } from './datepicker-config';
+import { PlacementArray } from '../util/positioning';
+import { Options } from '@popperjs/core';
 
 /**
  * A configuration service for the [`NgbDatepickerInput`](#/components/datepicker/api#NgbDatepicker) component.
@@ -12,12 +12,12 @@ import {Options} from '@popperjs/core';
  *
  * @since 5.2.0
  */
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class NgbInputDatepickerConfig extends NgbDatepickerConfig {
-  autoClose: boolean | 'inside' | 'outside' = true;
-  container: null | 'body';
-  positionTarget: string | HTMLElement;
-  placement: PlacementArray = ['bottom-start', 'bottom-end', 'top-start', 'top-end'];
-  popperOptions = (options: Partial<Options>) => options;
-  restoreFocus: true | HTMLElement | string = true;
+	autoClose: boolean | 'inside' | 'outside' = true;
+	container: null | 'body';
+	positionTarget: string | HTMLElement;
+	placement: PlacementArray = ['bottom-start', 'bottom-end', 'top-start', 'top-end'];
+	popperOptions = (options: Partial<Options>) => options;
+	restoreFocus: true | HTMLElement | string = true;
 }

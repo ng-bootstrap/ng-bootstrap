@@ -21,70 +21,70 @@ import { NgbdRatingTemplateModule } from './demos/template/rating-template.modul
 import { Routes } from '@angular/router';
 
 const DEMOS = {
-  basic: {
-    title: 'Basic demo',
-    type: NgbdRatingBasic,
-    code: require('!!raw-loader!./demos/basic/rating-basic').default,
-    markup: require('!!raw-loader!./demos/basic/rating-basic.html').default
-  },
-  events: {
-    title: 'Events and readonly ratings',
-    type: NgbdRatingEvents,
-    code: require('!!raw-loader!./demos/events/rating-events').default,
-    markup: require('!!raw-loader!./demos/events/rating-events.html').default
-  },
-  template: {
-    title: 'Custom star template',
-    type: NgbdRatingTemplate,
-    code: require('!!raw-loader!./demos/template/rating-template').default,
-    markup: require('!!raw-loader!./demos/template/rating-template.html').default
-  },
-  decimal: {
-    title: 'Custom decimal rating',
-    type: NgbdRatingDecimal,
-    code: require('!!raw-loader!./demos/decimal/rating-decimal').default,
-    markup: require('!!raw-loader!./demos/decimal/rating-decimal.html').default
-  },
-  form: {
-    title: 'Form integration',
-    type: NgbdRatingForm,
-    code: require('!!raw-loader!./demos/form/rating-form').default,
-    markup: require('!!raw-loader!./demos/form/rating-form.html').default
-  },
-  config: {
-    title: 'Global configuration of ratings',
-    type: NgbdRatingConfig,
-    code: require('!!raw-loader!./demos/config/rating-config').default,
-    markup: require('!!raw-loader!./demos/config/rating-config.html').default
-  }
+	basic: {
+		title: 'Basic demo',
+		type: NgbdRatingBasic,
+		code: require('!!raw-loader!./demos/basic/rating-basic').default,
+		markup: require('!!raw-loader!./demos/basic/rating-basic.html').default,
+	},
+	events: {
+		title: 'Events and readonly ratings',
+		type: NgbdRatingEvents,
+		code: require('!!raw-loader!./demos/events/rating-events').default,
+		markup: require('!!raw-loader!./demos/events/rating-events.html').default,
+	},
+	template: {
+		title: 'Custom star template',
+		type: NgbdRatingTemplate,
+		code: require('!!raw-loader!./demos/template/rating-template').default,
+		markup: require('!!raw-loader!./demos/template/rating-template.html').default,
+	},
+	decimal: {
+		title: 'Custom decimal rating',
+		type: NgbdRatingDecimal,
+		code: require('!!raw-loader!./demos/decimal/rating-decimal').default,
+		markup: require('!!raw-loader!./demos/decimal/rating-decimal.html').default,
+	},
+	form: {
+		title: 'Form integration',
+		type: NgbdRatingForm,
+		code: require('!!raw-loader!./demos/form/rating-form').default,
+		markup: require('!!raw-loader!./demos/form/rating-form.html').default,
+	},
+	config: {
+		title: 'Global configuration of ratings',
+		type: NgbdRatingConfig,
+		code: require('!!raw-loader!./demos/config/rating-config').default,
+		markup: require('!!raw-loader!./demos/config/rating-config.html').default,
+	},
 };
 
 export const ROUTES: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'examples' },
-  {
-    path: '',
-    component: ComponentWrapper,
-    children: [
-      { path: 'examples', component: NgbdExamplesPage },
-      { path: 'api', component: NgbdApiPage }
-    ]
-  }
+	{ path: '', pathMatch: 'full', redirectTo: 'examples' },
+	{
+		path: '',
+		component: ComponentWrapper,
+		children: [
+			{ path: 'examples', component: NgbdExamplesPage },
+			{ path: 'api', component: NgbdApiPage },
+		],
+	},
 ];
 
 @NgModule({
-  imports: [
-    NgbdSharedModule,
-    NgbdComponentsSharedModule,
-    NgbdRatingBasicModule,
-    NgbdRatingConfigModule,
-    NgbdRatingTemplateModule,
-    NgbdRatingEventsModule,
-    NgbdRatingDecimalModule,
-    NgbdRatingFormModule
-  ]
+	imports: [
+		NgbdSharedModule,
+		NgbdComponentsSharedModule,
+		NgbdRatingBasicModule,
+		NgbdRatingConfigModule,
+		NgbdRatingTemplateModule,
+		NgbdRatingEventsModule,
+		NgbdRatingDecimalModule,
+		NgbdRatingFormModule,
+	],
 })
 export class NgbdRatingModule {
-  constructor(demoList: NgbdDemoList) {
-    demoList.register('rating', DEMOS);
-  }
+	constructor(demoList: NgbdDemoList) {
+		demoList.register('rating', DEMOS);
+	}
 }

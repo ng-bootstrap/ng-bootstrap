@@ -1,9 +1,7 @@
-import {Component} from '@angular/core';
-
-
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'ngbd-tooltip-autoclose',
-  templateUrl: './tooltip-autoclose.html'
+	selector: 'ngbd-tooltip-autoclose',
+	templateUrl: './tooltip-autoclose.html',
 })
 export class NgbdTooltipAutoclose {}

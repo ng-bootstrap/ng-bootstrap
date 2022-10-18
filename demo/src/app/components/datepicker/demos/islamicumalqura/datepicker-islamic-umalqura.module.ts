@@ -6,9 +6,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdDatepickerIslamicumalqura } from './datepicker-islamicumalqura';
 
 @NgModule({
-  imports: [BrowserModule, FormsModule, NgbModule],
-  declarations: [NgbdDatepickerIslamicumalqura],
-  exports: [NgbdDatepickerIslamicumalqura],
-  bootstrap: [NgbdDatepickerIslamicumalqura]
+	imports: [BrowserModule, FormsModule, NgbModule],
+	declarations: [NgbdDatepickerIslamicumalqura],
+	exports: [NgbdDatepickerIslamicumalqura],
+	bootstrap: [NgbdDatepickerIslamicumalqura],
 })
 export class NgbdDatepickerIslamicUmalquraModule {}

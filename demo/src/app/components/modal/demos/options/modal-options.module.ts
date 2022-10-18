@@ -5,9 +5,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdModalOptions } from './modal-options';
 
 @NgModule({
-  imports: [BrowserModule, NgbModule],
-  declarations: [NgbdModalOptions],
-  exports: [NgbdModalOptions],
-  bootstrap: [NgbdModalOptions]
+	imports: [BrowserModule, NgbModule],
+	declarations: [NgbdModalOptions],
+	exports: [NgbdModalOptions],
+	bootstrap: [NgbdModalOptions],
 })
 export class NgbdModalOptionsModule {}

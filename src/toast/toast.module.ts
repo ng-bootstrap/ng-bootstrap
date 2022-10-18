@@ -1,11 +1,10 @@
-import {CommonModule} from '@angular/common';
-import {NgModule} from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 
-import {NgbToast, NgbToastHeader} from './toast';
+import { NgbToast, NgbToastHeader } from './toast';
 
-export {NgbToast, NgbToastHeader} from './toast';
-export {NgbToastConfig, NgbToastOptions} from './toast-config';
+export { NgbToast, NgbToastHeader } from './toast';
+export { NgbToastConfig, NgbToastOptions } from './toast-config';
 
-@NgModule({declarations: [NgbToast, NgbToastHeader], imports: [CommonModule], exports: [NgbToast, NgbToastHeader]})
-export class NgbToastModule {
-}
+@NgModule({ declarations: [NgbToast, NgbToastHeader], imports: [CommonModule], exports: [NgbToast, NgbToastHeader] })
+export class NgbToastModule {}

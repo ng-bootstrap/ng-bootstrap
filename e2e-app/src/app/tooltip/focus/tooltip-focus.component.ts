@@ -1,5 +1,4 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 
-@Component({templateUrl: './tooltip-focus.component.html'})
-export class TooltipFocusComponent {
-}
+@Component({ templateUrl: './tooltip-focus.component.html' })
+export class TooltipFocusComponent {}

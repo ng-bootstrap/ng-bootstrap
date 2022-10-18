@@ -1,40 +1,39 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 
-import {Snippet} from '../../../shared/code/snippet';
-import {NgbdDemoList} from '../../shared';
-import {NgbdOverview} from '../../shared/overview';
-
+import { Snippet } from '../../../shared/code/snippet';
+import { NgbdDemoList } from '../../shared';
+import { NgbdOverview } from '../../shared/overview';
 
 @Component({
-  selector: 'ngbd-pagination-overview',
-  templateUrl: './pagination-overview.component.html',
-  host: {'[class.overview]': 'true'}
+	selector: 'ngbd-pagination-overview',
+	templateUrl: './pagination-overview.component.html',
+	host: { '[class.overview]': 'true' },
 })
 export class NgbdPaginationOverviewComponent {
-  NGFOR = Snippet({
-    lang: 'html',
-    code: `
+	NGFOR = Snippet({
+		lang: 'html',
+		code: `
       <table>
         <tr *ngFor="let item of items | slice: (page-1) * pageSize : page * pageSize">
           <!-- content here -->
         </tr>
       </table>
     `,
-  });
+	});
 
-  NGB_PAGINATION = Snippet({
-    lang: 'html',
-    code: `
+	NGB_PAGINATION = Snippet({
+		lang: 'html',
+		code: `
       <ngb-pagination
         [(page)]="page"
         [pageSize]="pageSize"
         [collectionSize]="items.length"></ngb-pagination>
     `,
-  });
+	});
 
-  CUSTOM_CSS = Snippet({
-    lang: 'css',
-    code: `
+	CUSTOM_CSS = Snippet({
+		lang: 'css',
+		code: `
       ngb-pagination li {
         &:first-child a {
           span {
@@ -46,11 +45,11 @@ export class NgbdPaginationOverviewComponent {
         }
       }
     `,
-  });
+	});
 
-  CUSTOM_TPL = Snippet({
-    lang: 'html',
-    code: `
+	CUSTOM_TPL = Snippet({
+		lang: 'html',
+		code: `
       <ngb-pagination>
         <ng-template ngbPaginationFirst>First</ng-template>
         <ng-template ngbPaginationLast>Last</ng-template>
@@ -60,22 +59,22 @@ export class NgbdPaginationOverviewComponent {
         <ng-template ngbPaginationNumber let-page>{{ page }}</ng-template>
       </ngb-pagination>
     `,
-  });
+	});
 
-  CUSTOM_TPL_PAGES = Snippet({
-    lang: 'html',
-    code: `
+	CUSTOM_TPL_PAGES = Snippet({
+		lang: 'html',
+		code: `
       <ngb-pagination>
         <ng-template ngbPaginationPages let-page let-pages="pages">
             <!-- render the "pages" collection here -->
         </ng-template>
       </ngb-pagination>
     `,
-  });
+	});
 
-  sections: NgbdOverview = {};
+	sections: NgbdOverview = {};
 
-  constructor(demoList: NgbdDemoList) {
-    this.sections = demoList.getOverviewSections('pagination');
-  }
+	constructor(demoList: NgbdDemoList) {
+		this.sections = demoList.getOverviewSections('pagination');
+	}
 }

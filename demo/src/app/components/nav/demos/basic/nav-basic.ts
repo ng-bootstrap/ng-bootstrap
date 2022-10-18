@@ -1,9 +1,9 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'ngbd-nav-basic',
-  templateUrl: './nav-basic.html'
+	selector: 'ngbd-nav-basic',
+	templateUrl: './nav-basic.html',
 })
 export class NgbdNavBasic {
-  active = 1;
+	active = 1;
 }

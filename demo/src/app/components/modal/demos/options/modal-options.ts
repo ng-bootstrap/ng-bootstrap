@@ -2,60 +2,62 @@ import { Component, ViewEncapsulation } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'ngbd-modal-options',
-  templateUrl: './modal-options.html',
-  encapsulation: ViewEncapsulation.None,
-  styles: [`
-    .dark-modal .modal-content {
-      background-color: #292b2c;
-      color: white;
-    }
-    .dark-modal .close {
-      color: white;
-    }
-    .light-blue-backdrop {
-      background-color: #5cb3fd;
-    }
-  `]
+	selector: 'ngbd-modal-options',
+	templateUrl: './modal-options.html',
+	encapsulation: ViewEncapsulation.None,
+	styles: [
+		`
+			.dark-modal .modal-content {
+				background-color: #292b2c;
+				color: white;
+			}
+			.dark-modal .close {
+				color: white;
+			}
+			.light-blue-backdrop {
+				background-color: #5cb3fd;
+			}
+		`,
+	],
 })
 export class NgbdModalOptions {
-  closeResult: string;
+	closeResult: string;
 
-  constructor(private modalService: NgbModal) {}
+	constructor(private modalService: NgbModal) {}
 
-  openBackDropCustomClass(content) {
-    this.modalService.open(content, {backdropClass: 'light-blue-backdrop'});
-  }
+	openBackDropCustomClass(content) {
+		this.modalService.open(content, { backdropClass: 'light-blue-backdrop' });
+	}
 
-  openWindowCustomClass(content) {
-    this.modalService.open(content, { windowClass: 'dark-modal' });
-  }
+	openWindowCustomClass(content) {
+		this.modalService.open(content, { windowClass: 'dark-modal' });
+	}
 
-  openSm(content) {
-    this.modalService.open(content, { size: 'sm' });
-  }
+	openSm(content) {
+		this.modalService.open(content, { size: 'sm' });
+	}
 
-  openLg(content) {
-    this.modalService.open(content, { size: 'lg' });
-  }
+	openLg(content) {
+		this.modalService.open(content, { size: 'lg' });
+	}
 
-  openXl(content) {
-    this.modalService.open(content, { size: 'xl' });
-  }
+	openXl(content) {
+		this.modalService.open(content, { size: 'xl' });
+	}
 
-  openFullscreen(content) {
-    this.modalService.open(content, { fullscreen: true });
-  }
+	openFullscreen(content) {
+		this.modalService.open(content, { fullscreen: true });
+	}
 
-  openVerticallyCentered(content) {
-    this.modalService.open(content, { centered: true });
-  }
+	openVerticallyCentered(content) {
+		this.modalService.open(content, { centered: true });
+	}
 
-  openScrollableContent(longContent) {
-    this.modalService.open(longContent, { scrollable: true });
-  }
+	openScrollableContent(longContent) {
+		this.modalService.open(longContent, { scrollable: true });
+	}
 
-  openModalDialogCustomClass(content) {
-    this.modalService.open(content, { modalDialogClass: 'dark-modal' });
-  }
+	openModalDialogCustomClass(content) {
+		this.modalService.open(content, { modalDialogClass: 'dark-modal' });
+	}
 }

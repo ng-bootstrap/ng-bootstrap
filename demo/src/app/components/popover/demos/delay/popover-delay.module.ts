@@ -5,9 +5,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdPopoverDelay } from './popover-delay';
 
 @NgModule({
-  imports: [BrowserModule, NgbModule],
-  declarations: [NgbdPopoverDelay],
-  exports: [NgbdPopoverDelay],
-  bootstrap: [NgbdPopoverDelay]
+	imports: [BrowserModule, NgbModule],
+	declarations: [NgbdPopoverDelay],
+	exports: [NgbdPopoverDelay],
+	bootstrap: [NgbdPopoverDelay],
 })
 export class NgbdPopoverDelayModule {}

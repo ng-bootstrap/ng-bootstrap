@@ -5,9 +5,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdAlertCloseable } from './alert-closeable';
 
 @NgModule({
-  imports: [BrowserModule, NgbModule],
-  declarations: [NgbdAlertCloseable],
-  exports: [NgbdAlertCloseable],
-  bootstrap: [NgbdAlertCloseable]
+	imports: [BrowserModule, NgbModule],
+	declarations: [NgbdAlertCloseable],
+	exports: [NgbdAlertCloseable],
+	bootstrap: [NgbdAlertCloseable],
 })
 export class NgbdAlertCloseableModule {}

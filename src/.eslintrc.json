@@ -1,25 +1,19 @@
 {
-  "extends": "../.eslintrc.json",
-  "ignorePatterns": [
-    "!**/*"
-  ],
-  "overrides": [
-    {
-      "files": [
-        "*.ts"
-      ],
-      "parserOptions": {
-        "project": [
-          "src/tsconfig.eslint.json"
-        ]
-      },
-      "rules": {
-        "@typescript-eslint/no-empty-function": "off",
-        "@typescript-eslint/no-unused-vars": "off",
-        "@angular-eslint/no-input-rename": "off",
-        "@angular-eslint/no-output-rename": "off",
-        "@angular-eslint/no-output-native": "off"
-      }
-    }
-  ]
+	"extends": "../.eslintrc.json",
+	"ignorePatterns": ["!**/*"],
+	"overrides": [
+		{
+			"files": ["*.ts"],
+			"parserOptions": {
+				"project": ["src/tsconfig.eslint.json"]
+			},
+			"rules": {
+				"@typescript-eslint/no-empty-function": "off",
+				"@typescript-eslint/no-unused-vars": "off",
+				"@angular-eslint/no-input-rename": "off",
+				"@angular-eslint/no-output-rename": "off",
+				"@angular-eslint/no-output-native": "off"
+			}
+		}
+	]
 }

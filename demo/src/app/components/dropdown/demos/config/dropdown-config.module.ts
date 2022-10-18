@@ -5,9 +5,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdDropdownConfig } from './dropdown-config';
 
 @NgModule({
-  imports: [BrowserModule, NgbModule],
-  declarations: [NgbdDropdownConfig],
-  exports: [NgbdDropdownConfig],
-  bootstrap: [NgbdDropdownConfig]
+	imports: [BrowserModule, NgbModule],
+	declarations: [NgbdDropdownConfig],
+	exports: [NgbdDropdownConfig],
+	bootstrap: [NgbdDropdownConfig],
 })
 export class NgbdDropdownConfigModule {}

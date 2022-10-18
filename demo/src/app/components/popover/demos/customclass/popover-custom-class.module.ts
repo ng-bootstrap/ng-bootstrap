@@ -5,9 +5,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdPopoverCustomclass } from './popover-customclass';
 
 @NgModule({
-  imports: [BrowserModule, NgbModule],
-  declarations: [NgbdPopoverCustomclass],
-  exports: [NgbdPopoverCustomclass],
-  bootstrap: [NgbdPopoverCustomclass]
+	imports: [BrowserModule, NgbModule],
+	declarations: [NgbdPopoverCustomclass],
+	exports: [NgbdPopoverCustomclass],
+	bootstrap: [NgbdPopoverCustomclass],
 })
 export class NgbdPopoverCustomClassModule {}

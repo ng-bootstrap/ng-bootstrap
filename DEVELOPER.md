@@ -26,8 +26,7 @@ following products on your development machine:
 - [Node.js](https://nodejs.org), (LTS version `>=14.15.0`) which is used to run tests, and generate distributable files. Depending on your system, you can install Node either from
   source or as a pre-packaged bundle.
 
-- We use [Yarn](https://yarnpkg.com)  (version `>=1.15.2`) to manage dependencies. See `.yarnrc` amd `.yarn/README.md` for more info.
-
+- We use [Yarn](https://yarnpkg.com) (version `>=1.15.2`) to manage dependencies. See `.yarnrc` amd `.yarn/README.md` for more info.
 
 ## Getting the Sources
 
@@ -108,13 +107,12 @@ Builds, runs and e2e tests a simple server-side rendered application with all ng
 
 Runs exactly the same suite of actions as the CI server, so you might want to do it before opening a PR
 
-
 You can inspect `package.json` scripts section for a full list of commands available.
 
 ## Code Formatting
 
-We use [Prettier](https://prettier.io) to automatically enforce code formatting for most of the files we have. 
-This allows us to focus on code reviews and features, and not on style nit-picking. 
+We use [Prettier](https://prettier.io) to automatically enforce code formatting for most of the files we have.
+This allows us to focus on code reviews and features, and not on style nit-picking.
 
 Prettier integrates easily in many modern IDEs, but on top of this your code should be formatted automatically with
 [Husky](https://github.com/typicode/husky) and a pre-commit hook.
@@ -147,7 +145,8 @@ Fixes #3845
 We maintain dynamic custom scopes for the project. Valid scopes correspond to the name of our widgets: `alert`, `accordion`, etc.
 
 More examples:
-- `feat(datepicker): ...` &rarr; a new feature for the datepicker 
+
+- `feat(datepicker): ...` &rarr; a new feature for the datepicker
 - `fix(datepicker): ...` &rarr; a bug fix for the datepicker
 - `test(datepicker): ... ` &rarr; an update to one of the datepicker unit or e2e tests
 - `docs(datepicker): ...` &rarr; a datepicker documentation update

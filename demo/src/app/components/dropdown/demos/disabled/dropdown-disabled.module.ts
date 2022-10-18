@@ -5,9 +5,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdDropdownDisabled } from './dropdown-disabled';
 
 @NgModule({
-  imports: [BrowserModule, NgbModule],
-  declarations: [NgbdDropdownDisabled],
-  exports: [NgbdDropdownDisabled],
-  bootstrap: [NgbdDropdownDisabled]
+	imports: [BrowserModule, NgbModule],
+	declarations: [NgbdDropdownDisabled],
+	exports: [NgbdDropdownDisabled],
+	bootstrap: [NgbdDropdownDisabled],
 })
 export class NgbdDropdownDisabledModule {}

@@ -10,28 +10,28 @@ import { NgbdOverviewDirective, NgbdOverviewSectionComponent } from './overview'
 export * from './demo-list';
 
 @NgModule({
-  imports: [NgbdSharedModule],
-  declarations: [
-    NgbdApiDocsBadge,
-    NgbdApiDocs,
-    NgbdApiDocsClass,
-    NgbdApiDocsConfig,
-    NgbdOverviewDirective,
-    NgbdOverviewSectionComponent,
-    NgbdExamplesPage,
-    NgbdApiPage,
-    NgbdWidgetDemoComponent
-  ],
-  exports: [
-    NgbdApiDocsBadge,
-    NgbdApiDocs,
-    NgbdApiDocsClass,
-    NgbdApiDocsConfig,
-    NgbdOverviewDirective,
-    NgbdOverviewSectionComponent,
-    NgbdExamplesPage,
-    NgbdApiPage,
-    NgbdWidgetDemoComponent
-  ]
+	imports: [NgbdSharedModule],
+	declarations: [
+		NgbdApiDocsBadge,
+		NgbdApiDocs,
+		NgbdApiDocsClass,
+		NgbdApiDocsConfig,
+		NgbdOverviewDirective,
+		NgbdOverviewSectionComponent,
+		NgbdExamplesPage,
+		NgbdApiPage,
+		NgbdWidgetDemoComponent,
+	],
+	exports: [
+		NgbdApiDocsBadge,
+		NgbdApiDocs,
+		NgbdApiDocsClass,
+		NgbdApiDocsConfig,
+		NgbdOverviewDirective,
+		NgbdOverviewSectionComponent,
+		NgbdExamplesPage,
+		NgbdApiPage,
+		NgbdWidgetDemoComponent,
+	],
 })
 export class NgbdComponentsSharedModule {}

@@ -1,16 +1,10 @@
 {
-  "extends": "../tsconfig.json",
-  "compilerOptions": {
-    "baseUrl": "./",
-    "outDir": "../out-tsc/e2e-app-e2e",
-    "module": "commonjs",
-    "types": [
-      "node"
-    ]
-  },
-  "include": [
-    "./src/**/*po.ts",
-    "./src/**/*spec.ts",
-    "../playwright/**/*.ts"
-  ]
+	"extends": "../tsconfig.json",
+	"compilerOptions": {
+		"baseUrl": "./",
+		"outDir": "../out-tsc/e2e-app-e2e",
+		"module": "commonjs",
+		"types": ["node"]
+	},
+	"include": ["./src/**/*po.ts", "./src/**/*spec.ts", "../playwright/**/*.ts"]
 }

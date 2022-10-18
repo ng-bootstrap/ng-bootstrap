@@ -1,7 +1,7 @@
-import {Component, ChangeDetectionStrategy, Input} from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import docs from '../../../../api-docs';
-import {ClassDesc} from './api-docs.model';
-import {Analytics} from '../../../shared/analytics/analytics';
+import { ClassDesc } from './api-docs.model';
+import { Analytics } from '../../../shared/analytics/analytics';
 
 const CONFIG_SUFFIX_LENGTH = 'Config'.length;
 
@@ -13,22 +13,22 @@ const CONFIG_SUFFIX_LENGTH = 'Config'.length;
  * default value is documented in the directive itself.
  */
 @Component({
-  selector: 'ngbd-api-docs-config',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './api-docs-config.component.html'
+	selector: 'ngbd-api-docs-config',
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	templateUrl: './api-docs-config.component.html',
 })
 export class NgbdApiDocsConfig {
-  apiDocs: ClassDesc;
-  directiveName: string;
+	apiDocs: ClassDesc;
+	directiveName: string;
 
-  constructor(private _analytics: Analytics) {}
+	constructor(private _analytics: Analytics) {}
 
-  @Input() set type(typeName: string) {
-    this.apiDocs = docs[typeName];
-    this.directiveName = typeName.slice(0, -CONFIG_SUFFIX_LENGTH);
-  }
+	@Input() set type(typeName: string) {
+		this.apiDocs = docs[typeName];
+		this.directiveName = typeName.slice(0, -CONFIG_SUFFIX_LENGTH);
+	}
 
-  trackSourceClick() {
-    this._analytics.trackEvent('Source File View', this.apiDocs.className);
-  }
+	trackSourceClick() {
+		this._analytics.trackEvent('Source File View', this.apiDocs.className);
+	}
 }
