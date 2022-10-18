@@ -1,3 +1,34 @@
+# [13.1.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/13.0.0...13.1.0) (2022-10-18)
+
+This release adds several features, notably:
+- the ability to [override Popper positioning options](https://ng-bootstrap.github.io/#/components/popover/examples#options) for dropdowns, tooltips, popovers, datepickers and typeaheads.
+- better [RTL support](https://ng-bootstrap.github.io/#/guides/positioning#rtl) with Popper
+- [horizontal collapse](https://ng-bootstrap.github.io/#/components/collapse/examples#horizontal) with animation
+- [relative `positionTarget`](https://ng-bootstrap.github.io/#/components/tooltip/examples#target) for popovers and tooltips
+
+### Bug Fixes
+
+* **collapse:** restore previous transition logic ([#4388](https://github.com/ng-bootstrap/ng-bootstrap/issues/4388)) ([ec372c3](https://github.com/ng-bootstrap/ng-bootstrap/commit/ec372c3203270359b67dba2f6457de9b6b0d0e94))
+* **collapse:** solved running transition twice ([#4374](https://github.com/ng-bootstrap/ng-bootstrap/issues/4374)) ([9c8bf98](https://github.com/ng-bootstrap/ng-bootstrap/commit/9c8bf98e7c0b297ce17887b47090beb5ad07e4fe))
+* **datepicker:** add `NgbDateStructAdapter` to export list ([#4335](https://github.com/ng-bootstrap/ng-bootstrap/issues/4335)) ([a6e9f2e](https://github.com/ng-bootstrap/ng-bootstrap/commit/a6e9f2e9307248481fe8a18027e3300e3372d120))
+* **positioning:** generate correct RTL placements for popper ([5379cd0](https://github.com/ng-bootstrap/ng-bootstrap/commit/5379cd0f32b5e13b7859c572ddb5bb0c2b058323))
+* **offcanvas:** change animations to be like in Bootstrap 5.2.0 ([#4366](https://github.com/ng-bootstrap/ng-bootstrap/issues/4366)) ([cb4406d](https://github.com/ng-bootstrap/ng-bootstrap/commit/cb4406dfff5b006bfa95f1dd0a5ab9858343bd7a))
+* **schematics:** install `@angular/localize` to `devDependencies` ([5289e8a](https://github.com/ng-bootstrap/ng-bootstrap/commit/5289e8a9b08b9e211337d1b6126b7d5ce84ac7d9))
+* **timepicker:** add `exportAs` property for ngbTimepicker ([#3980](https://github.com/ng-bootstrap/ng-bootstrap/issues/3980)) ([94e7b35](https://github.com/ng-bootstrap/ng-bootstrap/commit/94e7b35c2b6744bb642e79bc4bc288f1809b6376))
+
+
+### Features
+
+* **positioning:** allow configuring Popper via `popperOptions` API ([#4323](https://github.com/ng-bootstrap/ng-bootstrap/issues/4323)) ([a6f6803](https://github.com/ng-bootstrap/ng-bootstrap/commit/a6f6803e2d5f37e5dada496781240a6e9e7c8d33))
+* **collapse:** add horizontal collapse ([98f0527](https://github.com/ng-bootstrap/ng-bootstrap/commit/98f0527c67e08aac725eb5ad02ddb68ab031f58e))
+* **offcanvas:** add static backdrop option ([#4367](https://github.com/ng-bootstrap/ng-bootstrap/issues/4367)) ([fe4c798](https://github.com/ng-bootstrap/ng-bootstrap/commit/fe4c7986b6cb2b22156291a521ec9c26bb1af6b3))
+* **popover:** allow specifying target for popover ([711bfd3](https://github.com/ng-bootstrap/ng-bootstrap/commit/711bfd3e475a9736bb1b0830314b0a3f497fc2d8))
+* **progressbar:** add aria-label ([6a3ebaa](https://github.com/ng-bootstrap/ng-bootstrap/commit/6a3ebaa79b4d7234c2f6234bda44837cdeba35d7)), closes [#4133](https://github.com/ng-bootstrap/ng-bootstrap/issues/4133)
+* **rating:** allow overriding `tabindex` with provided value ([#4309](https://github.com/ng-bootstrap/ng-bootstrap/issues/4309)) ([9d80e66](https://github.com/ng-bootstrap/ng-bootstrap/commit/9d80e66980b13b4bc330f0e588149f5a3d954b8a))
+* **tooltip:** allow specifying target for tooltip ([dc82372](https://github.com/ng-bootstrap/ng-bootstrap/commit/dc823720723705fd4a5d1172f93327af82110552))
+
+
+
 # [13.0.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/12.1.2...13.0.0) (2022-07-28)
 
 This release adds Angular 14.1 and Bootstrap 5.2.0 support. It also removes deprecated checkboxes and radio buttons.
