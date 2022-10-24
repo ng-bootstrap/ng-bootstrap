@@ -68,7 +68,6 @@ let nextWindowId = 0;
 		autocapitalize: 'off',
 		autocorrect: 'off',
 		role: 'combobox',
-		'aria-multiline': 'false',
 		'[attr.aria-autocomplete]': 'showHint ? "both" : "list"',
 		'[attr.aria-activedescendant]': 'activeDescendant',
 		'[attr.aria-owns]': 'isPopupOpen() ? popupId : null',
