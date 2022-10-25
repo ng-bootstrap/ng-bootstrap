@@ -5,20 +5,20 @@ import { Component } from '@angular/core';
 	templateUrl: './rating-decimal.html',
 	styles: [
 		`
-			.star {
+			i {
 				position: relative;
 				display: inline-block;
-				font-size: 3rem;
+				font-size: 2.5rem;
+				padding-right: 0.1rem;
 				color: #d3d3d3;
 			}
-			.full {
+
+			.filled {
 				color: red;
-			}
-			.half {
-				position: absolute;
-				display: inline-block;
 				overflow: hidden;
-				color: red;
+				position: absolute;
+				top: 0;
+				left: 0;
 			}
 		`,
 	],
