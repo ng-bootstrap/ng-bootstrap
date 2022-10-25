@@ -1,9 +1,11 @@
-<p>Custom rating template provided via a variable. Shows fine-grained rating display</p>
+<p>Custom readonly decimal rating with template provided via an input</p>
+
+<p>We use <code>bootstrap-icons</code> to display hearts</p>
 
 <ng-template #t let-fill="fill">
-	<span class="star" [class.full]="fill === 100">
-		<span class="half" [style.width.%]="fill">&hearts;</span>&hearts;
-	</span>
+	<i class="bi-heart-fill">
+		<i *ngIf="fill > 0" class="bi-heart-fill filled" [style.width.%]="fill"></i>
+	</i>
 </ng-template>
 
 <ngb-rating [(rate)]="currentRate" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating>

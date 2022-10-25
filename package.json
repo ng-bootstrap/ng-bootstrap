@@ -106,6 +106,7 @@
     "@typescript-eslint/eslint-plugin": "^5.28.0",
     "@typescript-eslint/parser": "^5.28.0",
     "bootstrap": "5.2.0",
+    "bootstrap-icons": "1.9.1",
     "conventional-changelog-cli": "^2.0.12",
     "coverage-istanbul-loader": "^3.0.3",
     "cross-spawn": "^7.0.1",

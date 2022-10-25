@@ -5,17 +5,18 @@ import { Component } from '@angular/core';
 	templateUrl: './rating-template.html',
 	styles: [
 		`
-			.star {
+			i {
 				font-size: 1.5rem;
+				padding-right: 0.1rem;
 				color: #b0c4de;
 			}
 			.filled {
 				color: #1e90ff;
 			}
-			.bad {
+			.low {
 				color: #deb0b0;
 			}
-			.filled.bad {
+			.filled.low {
 				color: #ff1e1e;
 			}
 		`,

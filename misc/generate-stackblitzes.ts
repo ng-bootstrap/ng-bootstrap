@@ -10,6 +10,7 @@ const packageJson = fs.readJsonSync('package.json');
 
 const versions = {
 	ngBootstrap: packageJson.version,
+	bootstrapIcons: getVersion('bootstrap-icons'),
 	angular: getVersion('@angular/core'),
 	typescript: getVersion('typescript'),
 	rxjs: getVersion('rxjs'),
