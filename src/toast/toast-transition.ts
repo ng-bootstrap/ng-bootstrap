@@ -4,24 +4,24 @@ import { reflow } from '../util/util';
 export const ngbToastFadeInTransition: NgbTransitionStartFn = (element: HTMLElement, animation: true) => {
 	const { classList } = element;
 
-	if (!animation) {
+	if (animation) {
+		classList.add('fade');
+	} else {
 		classList.add('show');
 		return;
 	}
 
-	classList.remove('hide');
 	reflow(element);
-	classList.add('showing');
+	classList.add('show', 'showing');
 
 	return () => {
 		classList.remove('showing');
-		classList.add('show');
 	};
 };
 
 export const ngbToastFadeOutTransition: NgbTransitionStartFn = ({ classList }: HTMLElement) => {
-	classList.remove('show');
+	classList.add('showing');
 	return () => {
-		classList.add('hide');
+		classList.remove('show', 'showing');
 	};
 };

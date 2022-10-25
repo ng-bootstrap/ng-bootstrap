@@ -160,7 +160,7 @@ if (isBrowserVisible('ngb-toast animations')) {
 					expect(toastEl).toHaveCssClass('show');
 				} else {
 					expect(window.getComputedStyle(toastEl).opacity).toBe('0');
-					expect(toastEl).not.toHaveCssClass('show');
+					expect(toastEl).toHaveCssClass('show');
 					expect(toastEl).toHaveCssClass('showing');
 				}
 			});
@@ -185,7 +185,6 @@ if (isBrowserVisible('ngb-toast animations')) {
 					expect(window.getComputedStyle(toastEl).opacity).toBe('0');
 					expect(toastEl).not.toHaveCssClass('show');
 					expect(toastEl).toHaveCssClass('fade');
-					expect(toastEl).toHaveCssClass('hide');
 				});
 			});
 		});
