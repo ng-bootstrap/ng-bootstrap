@@ -1,7 +1,22 @@
 import { Component } from '@angular/core';
-import { Snippet } from '../../shared/code/snippet';
+import { Snippet } from '../../services/snippet';
+import { NgbdCodeComponent } from '../../shared/code/code.component';
+import { NgbdPageWrapper } from '../../shared/page-wrapper/page-wrapper.component';
+import { RouterLinkWithHref } from '@angular/router';
+import { NgbdApiDocsBadge } from '../../shared/api-docs';
+import { NgbdPageHeaderComponent } from '../../shared/page-wrapper/page-header.component';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
+	standalone: true,
+	imports: [
+		NgbdCodeComponent,
+		NgbdPageWrapper,
+		RouterLinkWithHref,
+		NgbdApiDocsBadge,
+		NgbdPageHeaderComponent,
+		NgbTooltipModule,
+	],
 	templateUrl: './positioning.component.html',
 })
 export class PositioningPage {

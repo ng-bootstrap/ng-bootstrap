@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { NgbProgressbarConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbProgressbarConfig, NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
 	selector: 'ngbd-progressbar-config',
+	standalone: true,
+	imports: [NgbProgressbarModule],
 	templateUrl: './progressbar-config.html',
 	providers: [NgbProgressbarConfig], // add the NgbProgressbarConfig to the component providers
 })

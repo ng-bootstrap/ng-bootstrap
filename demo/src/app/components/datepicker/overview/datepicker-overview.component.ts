@@ -2,12 +2,25 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { environment } from '../../../../environments/environment';
 
-import { Snippet } from '../../../shared/code/snippet';
-import { NgbdDemoList } from '../../shared';
-import { NgbdOverview } from '../../shared/overview';
+import { Snippet } from '../../../services/snippet';
+import { NgbdDemoListService } from '../../../services/demo-list.service';
+import { NgbdCodeComponent } from '../../../shared/code/code.component';
+import { RouterLinkWithHref } from '@angular/router';
+import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbdDatepickerOverviewDemoComponent } from './demo/datepicker-overview-demo.component';
+import { NgbdOverviewSectionComponent } from '../../../shared/overview/overview-section.component';
+import { NgbdOverview } from '../../../shared/overview/overview';
 
 @Component({
 	selector: 'ngbd-datepicker-overview',
+	standalone: true,
+	imports: [
+		NgbdCodeComponent,
+		RouterLinkWithHref,
+		NgbdOverviewSectionComponent,
+		NgbAlertModule,
+		NgbdDatepickerOverviewDemoComponent,
+	],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	templateUrl: './datepicker-overview.component.html',
 	host: {
@@ -197,7 +210,7 @@ export class NgbdDatepickerOverviewComponent {
 
 	sections: NgbdOverview = {};
 
-	constructor(demoList: NgbdDemoList) {
+	constructor(demoList: NgbdDemoListService) {
 		this.sections = demoList.getOverviewSections('datepicker');
 	}
 }

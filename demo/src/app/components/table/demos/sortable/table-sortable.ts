@@ -1,4 +1,5 @@
 import { Component, Directive, EventEmitter, Input, Output, QueryList, ViewChildren } from '@angular/core';
+import { DecimalPipe, NgForOf } from '@angular/common';
 
 interface Country {
 	id: number;
@@ -52,6 +53,7 @@ export interface SortEvent {
 
 @Directive({
 	selector: 'th[sortable]',
+	standalone: true,
 	host: {
 		'[class.asc]': 'direction === "asc"',
 		'[class.desc]': 'direction === "desc"',
@@ -71,6 +73,8 @@ export class NgbdSortableHeader {
 
 @Component({
 	selector: 'ngbd-table-sortable',
+	standalone: true,
+	imports: [DecimalPipe, NgForOf, NgbdSortableHeader],
 	templateUrl: './table-sortable.html',
 })
 export class NgbdTableSortable {

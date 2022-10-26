@@ -1,10 +1,11 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, ViewChild } from '@angular/core';
 
-import { ISnippet } from './snippet';
-import { CodeHighlightService } from './code-highlight.service';
+import { ISnippet } from '../../services/snippet';
+import { CodeHighlightService } from '../../services/code-highlight.service';
 
 @Component({
 	selector: 'ngbd-code',
+	standalone: true,
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: ` <pre class="language-{{ snippet.lang }}"><code #code class="language-{{ snippet.lang }}"></code></pre> `,
 })

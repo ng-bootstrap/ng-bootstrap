@@ -1,5 +1,11 @@
 import { Component, Injectable } from '@angular/core';
-import { NgbDateStruct, NgbCalendar, NgbDatepickerI18n, NgbCalendarBuddhist } from '@ng-bootstrap/ng-bootstrap';
+import {
+	NgbDateStruct,
+	NgbCalendar,
+	NgbDatepickerI18n,
+	NgbCalendarBuddhist,
+	NgbDatepickerModule,
+} from '@ng-bootstrap/ng-bootstrap';
 import localeThai from '@angular/common/locales/th';
 import {
 	getLocaleDayNames,
@@ -8,7 +14,9 @@ import {
 	getLocaleMonthNames,
 	formatDate,
 	registerLocaleData,
+	JsonPipe,
 } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Injectable()
 export class NgbDatepickerI18nBuddhist extends NgbDatepickerI18n {
@@ -53,6 +61,8 @@ export class NgbDatepickerI18nBuddhist extends NgbDatepickerI18n {
 
 @Component({
 	selector: 'ngbd-datepicker-buddhist',
+	standalone: true,
+	imports: [NgbDatepickerModule, FormsModule, JsonPipe],
 	templateUrl: './datepicker-buddhist.html',
 	providers: [
 		{ provide: NgbCalendar, useClass: NgbCalendarBuddhist },

@@ -1,9 +1,8 @@
 import * as ejs from 'ejs';
 import * as fs from 'fs-extra';
-import * as glob from 'glob';
 import * as path from 'path';
 
-import { parseDemo } from './parse-demo';
+import { parseDemos } from './parse-demo';
 
 const stackblitzUrl = 'https://stackblitz.com/run';
 const packageJson = fs.readJsonSync('package.json');
@@ -81,36 +80,32 @@ const initialData = {
 fs.ensureDirSync(base);
 fs.emptyDirSync(base);
 
-// Getting demo modules metadata
-const modulesInfo = parseDemo(path.join(root, '**', 'demos', '*', '*.ts'));
+// Getting demo components metadata
+const demosMetadata = parseDemos(root);
 
 // re-creating all stackblitzes
-for (const demoModule of modulesInfo.keys()) {
-	const demoFolder = path.normalize(path.dirname(demoModule));
-	const demoFiles = glob.sync(path.join(demoFolder, '*'), {});
-	const [, componentName, , demoName] = demoFolder.replace(root, '').split(path.sep);
-	const modulePath = path.basename(demoModule, '.ts');
-	const moduleInfo = modulesInfo.get(demoModule);
-
+for (const { componentName, demoName, fileName, files, className, selector } of demosMetadata) {
 	const destinationFolder = path.join(base, componentName, demoName);
 
 	const stackblitzData = {
 		...initialData,
+		fileName: `./app/${fileName}`,
+		tsImportName: `./app/${fileName.substring(0, fileName.lastIndexOf('.'))}`,
 		componentName,
 		demoName,
-		...moduleInfo,
-		modulePath: `./app/${modulePath}`,
-		title: `ng-bootstrap - ${capitalize(componentName)} - ${capitalize(demoName)}`,
+		className,
+		selector,
+		title: `ng-bootstrap demo - ${capitalize(componentName)} - ${capitalize(demoName)}`,
 		tags: [...initialData.tags],
 		files: [...initialData.files],
-		openFile: `app/${moduleInfo.bootstrap.fileName}`,
+		openFile: `app/${fileName}`,
 	};
 
 	stackblitzData.tags.push(componentName);
 
 	stackblitzData.files.push({ name: 'src/index.html', source: indexFile(stackblitzData) });
 	stackblitzData.files.push({ name: 'src/main.ts', source: mainFile(stackblitzData) });
-	for (const file of demoFiles) {
+	for (const file of files) {
 		const destFile = path.basename(file);
 		stackblitzData.files.push({ name: `src/app/${destFile}`, source: fs.readFileSync(file).toString() });
 	}
@@ -119,4 +114,4 @@ for (const demoModule of modulesInfo.keys()) {
 	fs.writeFileSync(path.join(destinationFolder, 'stackblitz.html'), stackblitzFile(stackblitzData));
 }
 
-console.log(`generated ${modulesInfo.size} stackblitze(s) from demo sources.`);
+console.log(`generated ${demosMetadata.length} stackblitze(s) from demo sources.`);

@@ -1,87 +1,89 @@
 import * as glob from 'glob';
 import * as path from 'path';
 import * as ts from 'typescript';
+import * as fs from 'fs';
 
-const BOOTSTRAP_REGEX = new RegExp(/bootstrap:[\s]*\[[\s]*(.*?)[\s,]*]/m);
 const SELECTOR_REGEX = new RegExp(/selector:[\s]*['"`]([^'"`]*)['"`]/m);
-
-export interface ComponentMetadata {
-	className?: string;
-	fileName: string;
-	selector: string;
-}
+const TYPE_REGEX = new RegExp(/type:\s*([^,]*)/gi);
 
 export interface DemoMetadata {
-	bootstrap: ComponentMetadata;
-	moduleClassName: string;
+	componentName: string;
+	demoName: string;
+	className: string;
+	fileName: string;
+	selector: string;
+	folder: string;
+	files: string[];
 }
 
-/**
- * For a given glob path extracts a map with module filenames as keys and as values:
- *  - class name of the demo module
- *  - the component selector of the `MyComponent` in `bootstrap: [MyComponent]`
- */
-export function parseDemo(globPath: string): Map<string, DemoMetadata> {
-	const components = new Map<string, ComponentMetadata>();
-	const modules = new Map<string, DemoMetadata>();
+export function parseDemos(demoFolderPath: string): DemoMetadata[] {
+	const demos: DemoMetadata[] = [];
 
-	function processFile(sourceFile: ts.SourceFile) {
-		parseNode(sourceFile);
-
-		function parseNode(node: ts.Node) {
-			switch (node.kind) {
-				case ts.SyntaxKind.Decorator:
-					const decorator = <ts.Decorator>node;
-
-					if (decorator.parent && decorator.parent.kind === ts.SyntaxKind.ClassDeclaration) {
-						const className = (<ts.ClassDeclaration>decorator.parent).name.getText(sourceFile);
-						const textDecorator = decorator.getText(sourceFile);
-
-						if (textDecorator.startsWith('@NgModule')) {
-							const matches = BOOTSTRAP_REGEX.exec(textDecorator);
-							if (matches) {
-								modules.set(sourceFile.fileName, {
-									moduleClassName: className,
-									bootstrap: { selector: '', fileName: '', className: matches[1] },
-								});
-							} else {
-								throw new Error(`Couldn't find any bootstrap components in ${className} in ${sourceFile.fileName}`);
-							}
-						}
-
-						if (textDecorator.startsWith('@Component')) {
-							const matches = SELECTOR_REGEX.exec(textDecorator);
-							if (matches) {
-								components.set(className, { selector: matches[1], fileName: path.basename(sourceFile.fileName) });
-							}
-						}
-					}
-			}
-
-			ts.forEachChild(node, parseNode);
-		}
-	}
-
-	// start
-	const files = glob.sync(globPath);
-	const program = ts.createProgram(files, {});
+	const program = ts.createProgram(glob.sync(`${demoFolderPath}/**/*.ts`), {});
 	program.getTypeChecker();
-	files.forEach((file) => processFile(program.getSourceFile(file)));
 
-	// checks
-	if (modules.size === 0) {
-		throw new Error(`Couldn't find any NgModules in ${globPath}`);
+	function processRoutingFile(routingFile: string, demosPath: string) {
+		const demoFolders = fs.readdirSync(demosPath);
+
+		let parts = routingFile.split(path.sep);
+		const componentName = parts[parts.length - 2];
+
+		const knownDemoComponents = new Set<string>();
+
+		// 1. Getting all known demo class names from the routes config
+		program.getSourceFile(routingFile).forEachChild((node) => {
+			if (node.kind === ts.SyntaxKind.VariableStatement && node.getText().includes('DEMOS')) {
+				let matches = node.getText().matchAll(TYPE_REGEX);
+				for (let match of matches) {
+					knownDemoComponents.add(match[1]);
+				}
+			}
+		});
+
+		demoFolders.forEach((demoName) => {
+			let demoFolder = path.join(demosPath, demoName);
+
+			const demoFiles = glob.sync(`${demoFolder}/**/*.ts`);
+
+			// 2. Getting all exising components from all the demo files and searching if the match known ones
+			demoFiles.forEach((demoFile) => {
+				const sourceFile = program.getSourceFile(demoFile);
+				sourceFile.forEachChild((node) => {
+					switch (node.kind) {
+						case ts.SyntaxKind.ClassDeclaration:
+							const classDeclaration = <ts.ClassDeclaration>node;
+							const className = classDeclaration.name.getText();
+
+							// 3. If we see that this class declaration is a known demo component, we extract its selector and filename
+							if (knownDemoComponents.has(className)) {
+								classDeclaration.decorators?.forEach((decorator) => {
+									const textDecorator = decorator.getText();
+									if (textDecorator.startsWith('@Component')) {
+										const matches = SELECTOR_REGEX.exec(textDecorator);
+										if (matches) {
+											demos.push({
+												componentName,
+												demoName,
+												className,
+												selector: matches[1],
+												fileName: path.basename(sourceFile.fileName),
+												folder: demoFolder,
+												files: glob.sync(`${demoFolder}/**/*.*`),
+											});
+										}
+									}
+								});
+							}
+					}
+				});
+			});
+		});
 	}
 
-	// replacing temporary component types with their selectors
-	modules.forEach((metadata) => {
-		const bootstrapComponent = metadata.bootstrap.className;
-		const bootstrapMetadata = components.get(bootstrapComponent);
-		if (!bootstrapMetadata) {
-			throw new Error(`Couldn't get bootstrap component metadata for component ${bootstrapComponent}`);
-		}
-		metadata.bootstrap = bootstrapMetadata;
-	});
+	const routingFiles = glob.sync(`${demoFolderPath}/**/*.routes.ts`);
 
-	return modules;
+	routingFiles.forEach((routingFile) =>
+		processRoutingFile(routingFile, `${routingFile.substring(0, routingFile.lastIndexOf(path.sep) + 1)}demos`),
+	);
+	return demos;
 }

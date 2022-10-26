@@ -1,23 +1,29 @@
 import { ViewportScroller } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, NgZone, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { filter, map } from 'rxjs/operators';
+import { ActivatedRoute, RouterLinkActive, RouterLinkWithHref, RouterOutlet } from '@angular/router';
+import { NgbdDemoVersionsComponent } from './demo-versions.component';
 
+import { COMPONENT_LIST } from './shared/component-list';
 import { environment } from '../environments/environment';
-import { componentsList } from './shared';
-import { Analytics } from './shared/analytics/analytics';
+import { AnalyticsService } from './services/analytics.service';
+import { filter, map } from 'rxjs/operators';
 import { of } from 'rxjs';
 
-@Component({ selector: 'ngbd-app', templateUrl: './app.component.html' })
+@Component({
+	standalone: true,
+	selector: 'ngbd-app',
+	templateUrl: './app.component.html',
+	imports: [RouterLinkWithHref, RouterLinkActive, RouterOutlet, NgbdDemoVersionsComponent],
+})
 export class AppComponent implements OnInit {
 	downloadCount = '';
 	navbarCollapsed = true;
 
-	components = componentsList;
+	components = COMPONENT_LIST;
 
 	constructor(
-		private _analytics: Analytics,
+		private _analytics: AnalyticsService,
 		route: ActivatedRoute,
 		vps: ViewportScroller,
 		zone: NgZone,

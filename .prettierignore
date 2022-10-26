@@ -13,7 +13,6 @@ demo/src/docs.json
 dist
 e2e-app/dist
 misc/api-doc-test-cases
-misc/parse-demo-test-cases
 node_modules
 schematics/dist
 ssr-app/dist

@@ -3,6 +3,7 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
 	selector: 'ngbd-modal-content',
+	standalone: true,
 	template: `
 		<div class="modal-header">
 			<h4 class="modal-title">Hi there!</h4>

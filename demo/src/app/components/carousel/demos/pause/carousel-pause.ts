@@ -1,7 +1,14 @@
 import { Component, ViewChild } from '@angular/core';
-import { NgbCarousel, NgbSlideEvent, NgbSlideEventSource } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCarousel, NgbCarouselModule, NgbSlideEvent, NgbSlideEventSource } from '@ng-bootstrap/ng-bootstrap';
+import { NgForOf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
-@Component({ selector: 'ngbd-carousel-pause', templateUrl: './carousel-pause.html' })
+@Component({
+	selector: 'ngbd-carousel-pause',
+	standalone: true,
+	imports: [NgbCarouselModule, NgForOf, FormsModule],
+	templateUrl: './carousel-pause.html',
+})
 export class NgbdCarouselPause {
 	images = [62, 83, 466, 965, 982, 1043, 738].map((n) => `https://picsum.photos/id/${n}/900/500`);
 

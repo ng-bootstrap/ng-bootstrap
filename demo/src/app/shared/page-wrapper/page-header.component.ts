@@ -1,8 +1,12 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { NgbdOverviewSection } from '../../components/shared/overview';
+import { RouterLinkWithHref } from '@angular/router';
+import { NgbdFragment } from '../fragment/fragment.directive';
+import { NgbdOverviewSection } from '../overview/overview';
 
 @Component({
 	selector: 'ngbd-page-header',
+	standalone: true,
+	imports: [RouterLinkWithHref, NgbdFragment],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	host: {
 		class: 'd-block',
@@ -10,7 +14,7 @@ import { NgbdOverviewSection } from '../../components/shared/overview';
 	template: `
 		<h2>
 			<a routerLink="." [fragment]="fragment" ngbdFragment>
-				<img src="img/link-symbol.svg" />
+				<i class="bi bi-link-45deg" style="font-size: 1.75rem; color: black"></i>
 			</a>
 			{{ title }}
 		</h2>

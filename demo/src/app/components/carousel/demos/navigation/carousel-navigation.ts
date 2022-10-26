@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
-import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCarouselConfig, NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgForOf, NgIf } from '@angular/common';
 
 @Component({
 	selector: 'ngbd-carousel-navigation',
+	standalone: true,
+	imports: [NgbCarouselModule, NgIf, NgForOf],
 	templateUrl: './carousel-navigation.html',
 	providers: [NgbCarouselConfig], // add NgbCarouselConfig to the component providers
 })

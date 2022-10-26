@@ -1,13 +1,17 @@
 import { Component } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { Snippet } from '../shared/code/snippet';
+import { Snippet } from '../services/snippet';
+import { NgbdCodeComponent } from '../shared/code/code.component';
+import { RouterLinkWithHref } from '@angular/router';
 
 @Component({
 	selector: 'ngbd-default',
+	standalone: true,
+	imports: [NgbdCodeComponent, RouterLinkWithHref],
 	templateUrl: './default.component.html',
 })
 export class DefaultComponent {
-	public version: string = environment.version;
+	version = environment.version;
 
 	installation = Snippet({
 		lang: 'ts',

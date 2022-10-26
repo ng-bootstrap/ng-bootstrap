@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { ModalDismissReasons, NgbDatepickerModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
 	selector: 'ngbd-modal-basic',
+	standalone: true,
+	imports: [NgbDatepickerModule],
 	templateUrl: './modal-basic.html',
 })
 export class NgbdModalBasic {

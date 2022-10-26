@@ -1,8 +1,12 @@
 import { Component } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgIf } from '@angular/common';
 
 @Component({
 	selector: 'ngbd-rating-form',
+	standalone: true,
+	imports: [NgbRatingModule, ReactiveFormsModule, NgIf],
 	templateUrl: './rating-form.html',
 })
 export class NgbdRatingForm {
