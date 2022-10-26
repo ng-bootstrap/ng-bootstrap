@@ -60,7 +60,14 @@ export class NgbNavContent {
  *
  * @since 5.2.0
  */
-@Directive({ selector: '[ngbNavItem]', exportAs: 'ngbNavItem', host: { '[class.nav-item]': 'true' } })
+@Directive({ 
+	selector: '[ngbNavItem]', 
+	exportAs: 'ngbNavItem', 
+	host: { 
+		'[class.nav-item]': 'true',
+		'[attr.role]': `role ? role : roles ? 'presentation' : undefined`,
+	}, 
+})
 export class NgbNavItem implements AfterContentChecked, OnInit {
 	/**
 	 * If `true`, non-active current nav item content will be removed from DOM
