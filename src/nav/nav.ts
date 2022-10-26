@@ -401,7 +401,7 @@ export class NgbNav implements AfterContentInit, OnChanges, OnDestroy {
  * @since 5.2.0
  */
 @Directive({
-	selector: 'a[ngbNavLink]',
+	selector: 'a[ngbNavLink], button[ngbNavLink]',
 	host: {
 		'[id]': 'navItem.domId',
 		'[class.nav-link]': 'true',
