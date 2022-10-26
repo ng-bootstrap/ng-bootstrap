@@ -25,11 +25,11 @@
 	<ngb-alert type="secondary" [dismissible]="false">
 		<ul ngbNav #nav="ngbNav" class="nav-pills">
 			<li ngbNavItem>
-				<a ngbNavLink>First</a>
+				<button ngbNavLink>First</button>
 				<ng-template ngbNavContent>Content for the first nav</ng-template>
 			</li>
 			<li ngbNavItem>
-				<a ngbNavLink>Second</a>
+				<button ngbNavLink>Second</button>
 				<ng-template ngbNavContent>Content for the second nav</ng-template>
 			</li>
 		</ul>
@@ -105,9 +105,13 @@
 	<h4>Accessibility</h4>
 
 	<p>
-		By default nav sets <code>'tablist'</code>, <code>'tab'</code> and <code>'tabpanel'</code> roles on elements. If you
-		plan to use different ones (ex. if you're using a nav inside the navbar), you can tell it not to generate any roles
-		and add your own. Or you could simply override them by providing <code>role="myRole"</code> where necessary.
+		By default nav sets <code>'tablist'</code>, <code>'tab'</code> and
+		<code>'tabpanel'</code> roles on elements. When using the automatic
+		roles, use <code>&lt;button&rt;</code> instead of <code>&lt;a&rt;</code> for the nav
+		links. If you plan to use different ones (ex. if you're using a nav
+		inside the navbar), you can tell it not to generate any roles and add
+		your own. Or you could simply override them by providing
+		<code>role="myRole"</code> where necessary.
 	</p>
 
 	<ngbd-code [snippet]="ROLES"></ngbd-code>
