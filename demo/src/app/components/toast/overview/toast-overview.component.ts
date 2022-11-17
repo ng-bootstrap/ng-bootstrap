@@ -1,13 +1,20 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
-import { Snippet } from '../../../shared/code/snippet';
-import { NgbdDemoList } from '../../shared';
-import { NgbdOverview } from '../../shared/overview';
+import { Snippet } from '../../../services/snippet';
+import { NgbdDemoListService } from '../../../services/demo-list.service';
 import { versions } from '../../../../environments/versions';
+import { RouterLinkWithHref } from '@angular/router';
+import { NgbdCodeComponent } from '../../../shared/code/code.component';
+import { NgbAlertModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbdOverviewSectionComponent } from '../../../shared/overview/overview-section.component';
+import { NgbdOverview } from '../../../shared/overview/overview';
 
 @Component({
 	selector: 'ngbd-toast-overview',
+	standalone: true,
+	imports: [NgbAlertModule, NgbNavModule, NgbdOverviewSectionComponent, RouterLinkWithHref, NgbdCodeComponent],
 	templateUrl: './toast-overview.component.html',
+	changeDetection: ChangeDetectionStrategy.OnPush,
 	host: { '[class.overview]': 'true' },
 })
 export class NgbdToastOverviewComponent {
@@ -44,7 +51,7 @@ export class NgbdToastOverviewComponent {
         body: string;
         delay?: number;
       }
-      
+
       @Injectable({ providedIn: 'root' })
       export class AppToastService {
         toasts: ToastInfo[] = [];
@@ -107,7 +114,7 @@ export class NgbdToastOverviewComponent {
 
 	sections: NgbdOverview = {};
 
-	constructor(demoList: NgbdDemoList) {
+	constructor(demoList: NgbdDemoListService) {
 		this.sections = demoList.getOverviewSections('toast');
 	}
 }

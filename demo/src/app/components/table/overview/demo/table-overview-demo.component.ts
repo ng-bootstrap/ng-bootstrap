@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DecimalPipe, NgForOf } from '@angular/common';
 
 interface Country {
 	name: string;
@@ -9,6 +10,8 @@ interface Country {
 
 @Component({
 	selector: 'ngbd-table-overview-demo',
+	standalone: true,
+	imports: [DecimalPipe, NgForOf],
 	template: `
 		<table class="table table-striped">
 			<thead>

@@ -3,6 +3,7 @@ import { NgbOffcanvasConfig, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
 	selector: 'ngbd-offcanvas-config',
+	standalone: true,
 	templateUrl: './offcanvas-config.html',
 	// add NgbOffcanvasConfig and NgbOffcanvas to the component providers
 	providers: [NgbOffcanvasConfig, NgbOffcanvas],

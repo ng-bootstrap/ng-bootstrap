@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DecimalPipe, NgForOf } from '@angular/common';
 
 interface Country {
 	name: string;
@@ -36,6 +37,8 @@ const COUNTRIES: Country[] = [
 
 @Component({
 	selector: 'ngbd-table-basic',
+	standalone: true,
+	imports: [NgForOf, DecimalPipe],
 	templateUrl: './table-basic.html',
 })
 export class NgbdTableBasic {

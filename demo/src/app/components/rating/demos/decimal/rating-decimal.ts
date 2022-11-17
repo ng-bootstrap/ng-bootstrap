@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
+import { NgIf } from '@angular/common';
+import { NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
 	selector: 'ngbd-rating-decimal',
+	standalone: true,
+	imports: [NgbRatingModule, NgIf],
 	templateUrl: './rating-decimal.html',
 	styles: [
 		`

@@ -3,6 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
 	selector: 'ngbd-modal-options',
+	standalone: true,
 	templateUrl: './modal-options.html',
 	encapsulation: ViewEncapsulation.None,
 	styles: [

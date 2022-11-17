@@ -1,17 +1,33 @@
 import { Component, NgZone, OnDestroy, Type } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterLinkWithHref, RouterOutlet } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
-import { NgbdApiPage } from '../../components/shared/api-page/api.component';
-import { NgbdExamplesPage } from '../../components/shared/examples-page/examples.component';
+import { NgbdApiPage } from '../api-page/api-page.component';
+import { NgbdExamplesPage } from '../examples-page/examples.component';
 
 import { environment } from '../../../environments/environment';
+import { SideNavComponent } from '../side-nav/side-nav.component';
+import { AsyncPipe, NgComponentOutlet, NgForOf, NgIf, TitleCasePipe } from '@angular/common';
+import { NgbCollapseModule, NgbDropdownModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 
 export type TableOfContents = { fragment: string; title: string }[];
 
 @Component({
-	selector: 'component-wrapper',
+	standalone: true,
+	imports: [
+		SideNavComponent,
+		TitleCasePipe,
+		NgbNavModule,
+		NgbCollapseModule,
+		NgbDropdownModule,
+		RouterLinkWithHref,
+		NgForOf,
+		NgIf,
+		AsyncPipe,
+		NgComponentOutlet,
+		RouterOutlet,
+	],
 	templateUrl: 'component-wrapper.component.html',
 })
 export class ComponentWrapper implements OnDestroy {

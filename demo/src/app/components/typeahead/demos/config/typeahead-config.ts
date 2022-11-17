@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { NgbTypeaheadConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTypeaheadConfig, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+import { FormsModule } from '@angular/forms';
 
 const states = [
 	'Alabama',
@@ -67,6 +68,8 @@ const states = [
 
 @Component({
 	selector: 'ngbd-typeahead-config',
+	standalone: true,
+	imports: [NgbTypeaheadModule, FormsModule],
 	templateUrl: './typeahead-config.html',
 	styles: [
 		`

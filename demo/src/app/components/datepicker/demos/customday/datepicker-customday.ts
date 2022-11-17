@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
-import { NgbCalendar, NgbDate, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCalendar, NgbDate, NgbDatepickerModule, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule } from '@angular/forms';
 
 @Component({
 	selector: 'ngbd-datepicker-customday',
+	standalone: true,
+	imports: [NgbDatepickerModule, FormsModule],
 	templateUrl: './datepicker-customday.html',
 	styles: [
 		`

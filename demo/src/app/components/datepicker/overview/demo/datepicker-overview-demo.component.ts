@@ -1,8 +1,17 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { NgbCalendar, NgbDate, NgbDateNativeAdapter } from '@ng-bootstrap/ng-bootstrap';
+import {
+	NgbCalendar,
+	NgbDate,
+	NgbDateNativeAdapter,
+	NgbTooltipModule,
+	NgbDatepickerModule,
+} from '@ng-bootstrap/ng-bootstrap';
+import { DatePipe } from '@angular/common';
 
 @Component({
 	selector: 'ngbd-datepicker-demo-overview',
+	standalone: true,
+	imports: [NgbTooltipModule, NgbDatepickerModule, DatePipe],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
 		<div class="mb-3">

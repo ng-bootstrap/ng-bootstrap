@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { AsyncPipe, NgForOf } from '@angular/common';
 import { NavigationEnd, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
 import { environment } from '../environments/environment';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { filter, map } from 'rxjs/operators';
 
 interface Version {
 	text: string;
@@ -11,34 +12,29 @@ interface Version {
 
 @Component({
 	selector: 'ngbd-demo-versions',
+	standalone: true,
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	imports: [NgForOf, AsyncPipe, NgbDropdownModule],
 	template: `
 		<div class="nav-item" ngbDropdown>
 			<a class="nav-link" ngbDropdownToggle id="demo-site-versions" role="button"> ng-bootstrap v{{ current }} </a>
 			<div ngbDropdownMenu aria-labelledby="demo-site-versions" class="dropdown-menu dropdown-menu-end">
-				<a ngbDropdownItem *ngFor="let version of versions$ | async" href="{{ version.url }}#{{ routerUrl }}">{{
-					version.text
-				}}</a>
+				<a
+					ngbDropdownItem
+					*ngFor="let version of versions$ | async"
+					href="{{ version.url }}#{{ routerUrl$ | async }}"
+					>{{ version.text }}</a
+				>
 			</div>
 		</div>
 	`,
 })
-export class NgbdDemoVersionsComponent implements OnDestroy {
+export class NgbdDemoVersionsComponent {
 	current = environment.version;
-	routerUrl = '';
+
+	routerUrl$ = inject(Router).events.pipe(
+		filter((event) => event instanceof NavigationEnd),
+		map((event: NavigationEnd) => event.url),
+	);
 	versions$: Promise<Version[]> = (window as any).NGB_DEMO_VERSIONS;
-
-	private _subscription: Subscription;
-
-	constructor(router: Router) {
-		this._subscription = router.events
-			.pipe(filter((event) => event instanceof NavigationEnd))
-			.subscribe((event: NavigationEnd) => {
-				this.routerUrl = event.url;
-			});
-	}
-
-	ngOnDestroy() {
-		this._subscription.unsubscribe();
-	}
 }

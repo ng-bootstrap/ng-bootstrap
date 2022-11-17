@@ -1,8 +1,15 @@
 import { Component, OnDestroy } from '@angular/core';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { ToastService } from './toast-service';
+import { ToastsContainer } from './toasts-container.component';
 
-@Component({ selector: 'ngbd-toast-global', templateUrl: './toast-global.component.html' })
+@Component({
+	selector: 'ngbd-toast-global',
+	standalone: true,
+	imports: [NgbTooltipModule, ToastsContainer],
+	templateUrl: './toast-global.component.html',
+})
 export class NgbdToastGlobal implements OnDestroy {
 	constructor(public toastService: ToastService) {}
 

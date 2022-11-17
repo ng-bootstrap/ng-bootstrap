@@ -1,26 +1,17 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { Component } from '@angular/core';
 
-import { Snippet } from '../../../shared/code/snippet';
-import { NgbdExamplesPage } from '../../shared/examples-page/examples.component';
+import { Snippet } from '../../../services/snippet';
+import { NgbdExamplesPage } from '../../../shared/examples-page/examples.component';
 import { NgbdDatepickerHebrew } from '../demos/hebrew/datepicker-hebrew';
-import { NgbdDatepickerHebrewModule } from '../demos/hebrew/datepicker-hebrew.module';
-import { NgbdDatepickerIslamicCivilModule } from '../demos/islamiccivil/datepicker-islamic-civil.module';
 import { NgbdDatepickerIslamiccivil } from '../demos/islamiccivil/datepicker-islamiccivil';
-import { NgbdDatepickerIslamicUmalquraModule } from '../demos/islamicumalqura/datepicker-islamic-umalqura.module';
 import { NgbdDatepickerIslamicumalqura } from '../demos/islamicumalqura/datepicker-islamicumalqura';
 import { NgbdDatepickerJalali } from '../demos/jalali/datepicker-jalali';
-import { NgbdDatepickerJalaliModule } from '../demos/jalali/datepicker-jalali.module';
-import { NgbdDatepickerBuddhistModule } from '../demos/buddhist/datepicker-buddhist.module';
 import { NgbdDatepickerBuddhist } from '../demos/buddhist/datepicker-buddhist';
-
-export const DEMO_CALENDAR_MODULES = [
-	NgbdDatepickerHebrewModule,
-	NgbdDatepickerJalaliModule,
-	NgbdDatepickerIslamicCivilModule,
-	NgbdDatepickerIslamicUmalquraModule,
-	NgbdDatepickerBuddhistModule,
-];
+import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbdCodeComponent } from '../../../shared/code/code.component';
+import { NgbdWidgetDemoComponent } from '../../../shared/examples-page/demo.component';
+import { NgComponentOutlet, NgForOf } from '@angular/common';
 
 const DEMOS = [
 	{
@@ -62,6 +53,8 @@ const DEMOS = [
 
 @Component({
 	selector: 'ngbd-datepicker-calendars',
+	standalone: true,
+	imports: [NgbAlertModule, NgbdCodeComponent, NgbdWidgetDemoComponent, NgComponentOutlet, NgForOf],
 	template: `
 		<p>
 			Datepicker relies on <code>NgbCalendar</code> abstract class for calendar-related calculations. Default

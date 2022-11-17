@@ -1,13 +1,27 @@
 import { Component } from '@angular/core';
 
-import { Snippet } from '../../../shared/code/snippet';
-import { NgbdDemoList } from '../../shared';
-import { NgbdOverview } from '../../shared/overview';
+import { Snippet } from '../../../services/snippet';
+import { NgbdDemoListService } from '../../../services/demo-list.service';
 
 import { versions } from '../../../../environments/versions';
+import { NgbAlertModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbdCodeComponent } from '../../../shared/code/code.component';
+import { RouterLinkWithHref } from '@angular/router';
+import { NgbdApiDocsBadge } from '../../../shared/api-docs';
+import { NgbdOverviewSectionComponent } from '../../../shared/overview/overview-section.component';
+import { NgbdOverview } from '../../../shared/overview/overview';
 
 @Component({
 	selector: 'ngbd-nav-overview',
+	standalone: true,
+	imports: [
+		NgbNavModule,
+		NgbAlertModule,
+		NgbdOverviewSectionComponent,
+		NgbdCodeComponent,
+		RouterLinkWithHref,
+		NgbdApiDocsBadge,
+	],
 	templateUrl: './nav-overview.component.html',
 	host: { '[class.overview]': 'true' },
 })
@@ -81,7 +95,7 @@ export class NgbdNavOverviewComponent {
 
 	sections: NgbdOverview = {};
 
-	constructor(demoList: NgbdDemoList) {
+	constructor(demoList: NgbdDemoListService) {
 		this.sections = demoList.getOverviewSections('nav');
 	}
 }

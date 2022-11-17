@@ -1,6 +1,7 @@
 import { Directive, Input } from '@angular/core';
 
 @Directive({
+	standalone: true,
 	selector: 'a[ngbdFragment]',
 	host: {
 		'[class.title-fragment]': 'true',

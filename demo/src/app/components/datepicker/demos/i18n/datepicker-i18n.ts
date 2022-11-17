@@ -1,5 +1,6 @@
 import { Component, Injectable } from '@angular/core';
-import { NgbDatepickerI18n, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAlertModule, NgbDatepickerI18n, NgbDatepickerModule, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule } from '@angular/forms';
 
 const I18N_VALUES = {
 	fr: {
@@ -43,6 +44,8 @@ export class CustomDatepickerI18n extends NgbDatepickerI18n {
 
 @Component({
 	selector: 'ngbd-datepicker-i18n',
+	standalone: true,
+	imports: [NgbDatepickerModule, NgbAlertModule, FormsModule],
 	templateUrl: './datepicker-i18n.html',
 	providers: [I18n, { provide: NgbDatepickerI18n, useClass: CustomDatepickerI18n }], // define custom NgbDatepickerI18n provider
 })

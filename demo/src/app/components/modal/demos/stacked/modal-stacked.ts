@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
+	selector: 'ngbd-modal-stacked',
+	standalone: true,
 	template: `
 		<div class="modal-header">
 			<h4 class="modal-title">Hi there!</h4>

@@ -1,5 +1,11 @@
 import { Component, Injectable } from '@angular/core';
-import { NgbDatepicker, NgbDatepickerKeyboardService, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import {
+	NgbDatepicker,
+	NgbDatepickerKeyboardService,
+	NgbDatepickerModule,
+	NgbDateStruct,
+} from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule } from '@angular/forms';
 
 const Key = {
 	PageUp: 'PageUp',
@@ -36,6 +42,8 @@ export class CustomKeyboardService extends NgbDatepickerKeyboardService {
 
 @Component({
 	selector: 'ngbd-datepicker-keyboard',
+	standalone: true,
+	imports: [NgbDatepickerModule, FormsModule],
 	templateUrl: './datepicker-keyboard.html',
 	providers: [{ provide: NgbDatepickerKeyboardService, useClass: CustomKeyboardService }],
 })
