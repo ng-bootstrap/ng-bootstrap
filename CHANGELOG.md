@@ -1,3 +1,13 @@
+## [13.1.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/13.1.0...13.1.1) (2022-11-17)
+
+
+### Bug Fixes
+
+* **toast:** update toast transitions to match Bootstrap 5.2 ([#4411](https://github.com/ng-bootstrap/ng-bootstrap/issues/4411)) ([f1c2a09](https://github.com/ng-bootstrap/ng-bootstrap/commit/f1c2a09c325cd81493e24795ee5985fdabec6427))
+* **typeahead:** remove aria-multiline attribute ([#4409](https://github.com/ng-bootstrap/ng-bootstrap/issues/4409)) ([9bd749c](https://github.com/ng-bootstrap/ng-bootstrap/commit/9bd749c52077e48205b5d49731b8e7ad32f8f106)), closes [#4181](https://github.com/ng-bootstrap/ng-bootstrap/issues/4181)
+
+
+
 # [13.1.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/13.0.0...13.1.0) (2022-10-18)
 
 This release adds several features, notably:
