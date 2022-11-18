@@ -990,6 +990,104 @@ describe('ngb-typeahead', () => {
 			expect(typeahead.showHint).toBe(true);
 		});
 	});
+
+	describe('selectOnExact set to true', () => {
+		let fixture;
+		let compiled;
+		let inputEl;
+		beforeEach(() => {
+			fixture = createTestComponent(
+				`<input type='text' [(ngModel)]='model' [ngbTypeahead]='findAnywhere' [selectOnExact]='true'/>`,
+			);
+			compiled = fixture.nativeElement;
+			inputEl = getNativeInput(compiled);
+		});
+
+		it('should select the only existing result when it matches the user input', fakeAsync(() => {
+			tick();
+			changeInput(compiled, 'one more');
+			fixture.detectChanges();
+			expect(getWindow(compiled)).toBeNull();
+			expect(inputEl.value).toBe('one more');
+		}));
+
+		it('should not select the only existing result when it doesn`t match the user input', fakeAsync(() => {
+			tick();
+			changeInput(compiled, 'one mor');
+			fixture.detectChanges();
+			expectWindowResults(compiled, ['+one more']);
+			expect(inputEl.value).toBe('one mor');
+		}));
+	});
+
+	describe('selectOnExact set to true with objects', () => {
+		let fixture;
+		let compiled;
+		let inputEl;
+		beforeEach(() => {
+			fixture = createTestComponent(
+				`<input
+					[(ngModel)]='model'
+					[ngbTypeahead]='findObjectsFormatter'
+					[selectOnExact]='true'
+					[inputFormatter]='formatter'
+					[resultFormatter]='formatter'/>`,
+			);
+			compiled = fixture.nativeElement;
+			inputEl = getNativeInput(compiled);
+		});
+
+		it('should select the only existing result when it matches the user input', fakeAsync(() => {
+			tick();
+			changeInput(compiled, '10 one more');
+			fixture.detectChanges();
+			expect(getWindow(compiled)).toBeNull();
+			expect(inputEl.value).toBe('10 one more');
+			expect(fixture.componentInstance.model).toEqual({ id: 10, value: 'one more' });
+		}));
+
+		it('should not select the only existing result when it doesn`t match the user input', fakeAsync(() => {
+			tick();
+			changeInput(compiled, '10 one mor');
+			fixture.detectChanges();
+			expectWindowResults(compiled, ['+10 one more']);
+			expect(inputEl.value).toBe('10 one mor');
+		}));
+	});
+
+	describe('selectOnExact set to true and editable set to false', () => {
+		let fixture;
+		let compiled;
+		let inputEl;
+		beforeEach(() => {
+			fixture = createTestComponent(
+				`
+				<form [formGroup]='form'>
+					<input type='text' formControlName='control' [ngbTypeahead]='findAnywhere' [selectOnExact]='true' [editable]='false'/>
+				</form>`,
+			);
+			compiled = fixture.nativeElement;
+			inputEl = getNativeInput(compiled);
+		});
+
+		it('should select the only existing result when it matches the user input', fakeAsync(() => {
+			tick();
+			changeInput(compiled, 'one more');
+			fixture.detectChanges();
+			expect(getWindow(compiled)).toBeNull();
+			expect(fixture.componentInstance.form.controls.control.value).toBe('one more');
+			expect(fixture.componentInstance.form.controls.control.valid).toBeTrue();
+		}));
+
+		it('should not select the only existing result when it doesn`t match the user input', fakeAsync(() => {
+			tick();
+			changeInput(compiled, 'one mor');
+			fixture.detectChanges();
+			expectWindowResults(compiled, ['+one more']);
+			expect(fixture.componentInstance.form.controls.control.value).toBeUndefined();
+			expect(fixture.componentInstance.form.controls.control.valid).toBeFalse();
+		}));
+	});
 });
 
 @Component({
@@ -1050,6 +1148,10 @@ class TestComponent {
 
 	findObjects = (text$: Observable<string>) => {
 		return text$.pipe(map((text) => this._objects.filter((v) => v.value.startsWith(text))));
+	};
+
+	findObjectsFormatter = (text$: Observable<string>) => {
+		return text$.pipe(map((text) => this._objects.filter((v) => this.formatter(v).startsWith(text))));
 	};
 
 	formatter = (obj: { id: number; value: string }) => {

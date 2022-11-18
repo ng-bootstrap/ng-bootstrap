@@ -7,6 +7,7 @@ import { NgbdTypeaheadConfig } from './demos/config/typeahead-config';
 import { NgbdTypeaheadFocus } from './demos/focus/typeahead-focus';
 import { NgbdTypeaheadFormat } from './demos/format/typeahead-format';
 import { NgbdTypeaheadHttp } from './demos/http/typeahead-http';
+import { NgbdTypeaheadSelectOnExact } from './demos/select-on-exact/typeahead-select-on-exact';
 import { NgbdTypeaheadTemplate } from './demos/template/typeahead-template';
 import { NgbdTypeaheadPreventManualEntry } from './demos/prevent-manual-entry/typeahead-prevent-manual-entry';
 import { Routes } from '@angular/router';
@@ -19,6 +20,12 @@ const DEMOS = {
 		type: NgbdTypeaheadBasic,
 		code: require('!!raw-loader!./demos/basic/typeahead-basic').default,
 		markup: require('!!raw-loader!./demos/basic/typeahead-basic.html').default,
+	},
+	'select-on-exact': {
+		title: 'Select on exact',
+		type: NgbdTypeaheadSelectOnExact,
+		code: require('!!raw-loader!./demos/select-on-exact/typeahead-select-on-exact').default,
+		markup: require('!!raw-loader!./demos/select-on-exact/typeahead-select-on-exact.html').default,
 	},
 	focus: {
 		title: 'Open on focus',
