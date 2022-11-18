@@ -82,21 +82,22 @@ export class NgbSlide {
 	},
 	template: `
 		<div
+			*ngIf="showNavigationIndicators"
 			class="carousel-indicators"
-			[class.visually-hidden]="!showNavigationIndicators"
 			role="tablist"
 			[attr.aria-activedescendant]="'slide-' + activeId"
 		>
 			<button
 				type="button"
 				data-bs-target
-				*ngFor="let slide of slides"
+				*ngFor="let slide of slides; index as i; count as c"
 				[class.active]="slide.id === activeId"
 				role="tab"
-				[attr.aria-labelledby]="'slide-' + slide.id"
 				[attr.aria-controls]="'slide-' + slide.id"
 				[attr.aria-selected]="slide.id === activeId"
 				(click)="focus(); select(slide.id, NgbSlideEventSource.INDICATOR)"
+				i18n-aria-label="Currently selected slide number read by screen reader@@ngb.carousel.slide-number"
+				attr.aria-label="Slide {{ i + 1 }} of {{ c }}"
 			></button>
 		</div>
 		<div class="carousel-inner">
