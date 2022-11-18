@@ -80,6 +80,7 @@ export class NgbTypeahead implements ControlValueAccessor, OnInit, OnChanges, On
 	private _subscription: Subscription | null = null;
 	private _closed$ = new Subject<void>();
 	private _inputValueBackup: string | null = null;
+	private _inputValueForSelectOnExact: string | null = null;
 	private _valueChanges: Observable<string>;
 	private _resubscribeTypeahead: BehaviorSubject<any>;
 	private _windowRef: ComponentRef<NgbTypeaheadWindow> | null = null;
@@ -111,6 +112,13 @@ export class NgbTypeahead implements ControlValueAccessor, OnInit, OnChanges, On
 	 * If `true`, the first item in the result list will always stay focused while typing.
 	 */
 	@Input() focusFirst: boolean;
+
+	/**
+	 * If `true`, automatically selects the item when it is the only one that exactly matches the user input
+	 *
+	 * @since 13.2.0
+	 */
+	@Input() selectOnExact: boolean;
 
 	/**
 	 * The function that converts an item from the result list to a `string` to display in the `<input>` field.
@@ -213,6 +221,7 @@ export class NgbTypeahead implements ControlValueAccessor, OnInit, OnChanges, On
 		this.container = config.container;
 		this.editable = config.editable;
 		this.focusFirst = config.focusFirst;
+		this.selectOnExact = config.selectOnExact;
 		this.showHint = config.showHint;
 		this.placement = config.placement;
 		this.popperOptions = config.popperOptions;
@@ -425,6 +434,7 @@ export class NgbTypeahead implements ControlValueAccessor, OnInit, OnChanges, On
 		const results$ = this._valueChanges.pipe(
 			tap((value) => {
 				this._inputValueBackup = this.showHint ? value : null;
+				this._inputValueForSelectOnExact = this.selectOnExact ? value : null;
 				this._onChange(this.editable ? value : undefined);
 			}),
 			this.ngbTypeahead ? this.ngbTypeahead : () => of([]),
@@ -434,25 +444,34 @@ export class NgbTypeahead implements ControlValueAccessor, OnInit, OnChanges, On
 			if (!results || results.length === 0) {
 				this._closePopup();
 			} else {
-				this._openPopup();
+				// when there is only one result and this matches the input value
+				if (
+					this.selectOnExact &&
+					results.length === 1 &&
+					this._formatItemForInput(results[0]) === this._inputValueForSelectOnExact
+				) {
+					this._selectResult(results[0]);
+					this._closePopup();
+				} else {
+					this._openPopup();
+					this._windowRef!.instance.focusFirst = this.focusFirst;
+					this._windowRef!.instance.results = results;
+					this._windowRef!.instance.term = this._elementRef.nativeElement.value;
+					if (this.resultFormatter) {
+						this._windowRef!.instance.formatter = this.resultFormatter;
+					}
+					if (this.resultTemplate) {
+						this._windowRef!.instance.resultTemplate = this.resultTemplate;
+					}
+					this._windowRef!.instance.resetActive();
 
-				this._windowRef!.instance.focusFirst = this.focusFirst;
-				this._windowRef!.instance.results = results;
-				this._windowRef!.instance.term = this._elementRef.nativeElement.value;
-				if (this.resultFormatter) {
-					this._windowRef!.instance.formatter = this.resultFormatter;
+					// The observable stream we are subscribing to might have async steps
+					// and if a component containing typeahead is using the OnPush strategy
+					// the change detection turn wouldn't be invoked automatically.
+					this._windowRef!.changeDetectorRef.detectChanges();
+
+					this._showHint();
 				}
-				if (this.resultTemplate) {
-					this._windowRef!.instance.resultTemplate = this.resultTemplate;
-				}
-				this._windowRef!.instance.resetActive();
-
-				// The observable stream we are subscribing to might have async steps
-				// and if a component containing typeahead is using the OnPush strategy
-				// the change detection turn wouldn't be invoked automatically.
-				this._windowRef!.changeDetectorRef.detectChanges();
-
-				this._showHint();
 			}
 
 			// live announcer

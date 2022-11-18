@@ -1,0 +1,6 @@
+A typeahead example that selects the item when it is the only one that matches the user input
+
+<label for="typeahead-select-on-exact">Search for a state:</label>
+<input id="typeahead-select-on-exact" type="text" class="form-control" [(ngModel)]="model" [ngbTypeahead]="search" />
+<hr />
+<pre>Model: {{ model | json }}</pre>
