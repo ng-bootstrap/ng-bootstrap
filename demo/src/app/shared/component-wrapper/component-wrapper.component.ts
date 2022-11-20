@@ -1,5 +1,5 @@
 import { Component, NgZone, OnDestroy, Type } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router, RouterLinkWithHref, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
@@ -21,7 +21,7 @@ export type TableOfContents = { fragment: string; title: string }[];
 		NgbNavModule,
 		NgbCollapseModule,
 		NgbDropdownModule,
-		RouterLinkWithHref,
+		RouterLink,
 		NgForOf,
 		NgIf,
 		AsyncPipe,
@@ -84,37 +84,39 @@ export class ComponentWrapper implements OnDestroy {
 	}
 
 	updateNavigation(component: NgbdExamplesPage | NgbdApiPage | any) {
-		const getLinks = (typeCollection: string[]) => {
-			return typeCollection.map((item) => ({
-				fragment: item,
-				title: item,
-			}));
-		};
-		this.tableOfContents = [];
-		if (component instanceof NgbdExamplesPage) {
-			this.tableOfContents = component.demos.map((demo) => {
-				return {
-					fragment: demo.id,
-					title: demo.title,
-				};
-			});
-		} else if (component instanceof NgbdApiPage) {
-			let toc = getLinks(component.components);
+		setTimeout(() => {
+			const getLinks = (typeCollection: string[]) => {
+				return typeCollection.map((item) => ({
+					fragment: item,
+					title: item,
+				}));
+			};
+			this.tableOfContents = [];
+			if (component instanceof NgbdExamplesPage) {
+				this.tableOfContents = component.demos.map((demo) => {
+					return {
+						fragment: demo.id,
+						title: demo.title,
+					};
+				});
+			} else if (component instanceof NgbdApiPage) {
+				let toc = getLinks(component.components);
 
-			if (component.classes.length > 0) {
-				const klasses = getLinks(component.classes);
-				toc = toc.concat(toc.length > 0 ? [<any>{}, ...klasses] : klasses);
+				if (component.classes.length > 0) {
+					const klasses = getLinks(component.classes);
+					toc = toc.concat(toc.length > 0 ? [<any>{}, ...klasses] : klasses);
+				}
+
+				if (component.configs.length > 0) {
+					const configs = getLinks(component.configs);
+					toc = toc.concat(toc.length > 0 ? [<any>{}, ...configs] : configs);
+				}
+
+				this.tableOfContents = toc;
+			} /* Overview */ else {
+				// TODO: maybe we should also have an abstract class to test instanceof
+				this.tableOfContents = Object.values(component.sections).map((section) => section) as TableOfContents;
 			}
-
-			if (component.configs.length > 0) {
-				const configs = getLinks(component.configs);
-				toc = toc.concat(toc.length > 0 ? [<any>{}, ...configs] : configs);
-			}
-
-			this.tableOfContents = toc;
-		} /* Overview */ else {
-			// TODO: maybe we should also have an abstract class to test instanceof
-			this.tableOfContents = Object.values(component.sections).map((section) => section) as TableOfContents;
-		}
+		}, 0);
 	}
 }

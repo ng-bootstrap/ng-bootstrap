@@ -65,7 +65,7 @@
 						"outputPath": "demo/dist",
 						"index": "demo/src/public/index.html",
 						"main": "demo/src/main.ts",
-						"polyfills": "demo/src/polyfills.ts",
+						"polyfills": ["zone.js"],
 						"tsConfig": "demo/tsconfig.json",
 						"assets": [
 							{
@@ -241,7 +241,7 @@
 						"outputPath": "ssr-app/dist/browser",
 						"index": "ssr-app/src/index.html",
 						"main": "ssr-app/src/main.ts",
-						"polyfills": "ssr-app/src/polyfills.ts",
+						"polyfills": ["zone.js"],
 						"tsConfig": "ssr-app/tsconfig.json",
 						"assets": [
 							"ssr-app/src/favicon.ico",
@@ -336,7 +336,7 @@
 						"outputPath": "test-app/dist",
 						"index": "test-app/src/index.html",
 						"main": "test-app/src/main.ts",
-						"polyfills": "test-app/src/polyfills.ts",
+						"polyfills": ["zone.js"],
 						"tsConfig": "test-app/tsconfig.json",
 						"assets": ["test-app/src/favicon.ico"],
 						"styles": ["node_modules/bootstrap/dist/css/bootstrap.css", "test-app/src/styles.css"],

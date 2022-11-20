@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { RouterLinkWithHref } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { NgbdFragment } from '../fragment/fragment.directive';
 import { NgbdOverviewSection } from '../overview/overview';
 
 @Component({
 	selector: 'ngbd-page-header',
 	standalone: true,
-	imports: [RouterLinkWithHref, NgbdFragment],
+	imports: [RouterLink, NgbdFragment],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	host: {
 		class: 'd-block',

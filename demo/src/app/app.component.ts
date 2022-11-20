@@ -1,7 +1,7 @@
 import { ViewportScroller } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, NgZone, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterLinkActive, RouterLinkWithHref, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, RouterLinkActive, RouterLink, RouterOutlet } from '@angular/router';
 import { NgbdDemoVersionsComponent } from './demo-versions.component';
 
 import { COMPONENT_LIST } from './shared/component-list';
@@ -14,7 +14,7 @@ import { of } from 'rxjs';
 	standalone: true,
 	selector: 'ngbd-app',
 	templateUrl: './app.component.html',
-	imports: [RouterLinkWithHref, RouterLinkActive, RouterOutlet, NgbdDemoVersionsComponent],
+	imports: [RouterLink, RouterLinkActive, RouterOutlet, NgbdDemoVersionsComponent],
 })
 export class AppComponent implements OnInit {
 	downloadCount = '';

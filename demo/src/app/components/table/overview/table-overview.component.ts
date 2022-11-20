@@ -4,7 +4,7 @@ import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../../../../environments/environment';
 
 import { NgbdDemoListService } from '../../../services/demo-list.service';
-import { RouterLinkWithHref } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { NgbdTableOverviewDemo } from './demo/table-overview-demo.component';
 import { NgbdOverviewSectionComponent } from '../../../shared/overview/overview-section.component';
 import { NgbdOverview } from '../../../shared/overview/overview';
@@ -12,7 +12,7 @@ import { NgbdOverview } from '../../../shared/overview/overview';
 @Component({
 	selector: 'ngbd-table-overview',
 	standalone: true,
-	imports: [NgbAlertModule, NgbdOverviewSectionComponent, RouterLinkWithHref, NgbdTableOverviewDemo],
+	imports: [NgbAlertModule, NgbdOverviewSectionComponent, RouterLink, NgbdTableOverviewDemo],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	templateUrl: './table-overview.component.html',
 	host: {
