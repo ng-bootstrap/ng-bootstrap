@@ -5,14 +5,14 @@ import { NgbdDemoListService } from '../../../services/demo-list.service';
 import { NgbdCodeComponent } from '../../../shared/code/code.component';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdApiDocsBadge } from '../../../shared/api-docs';
-import { RouterLinkWithHref } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { NgbdOverviewSectionComponent } from '../../../shared/overview/overview-section.component';
 import { NgbdOverview } from '../../../shared/overview/overview';
 
 @Component({
 	selector: 'ngbd-pagination-overview',
 	standalone: true,
-	imports: [NgbdOverviewSectionComponent, NgbdCodeComponent, NgbAlertModule, NgbdApiDocsBadge, RouterLinkWithHref],
+	imports: [NgbdOverviewSectionComponent, NgbdCodeComponent, NgbAlertModule, NgbdApiDocsBadge, RouterLink],
 	templateUrl: './pagination-overview.component.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	host: { '[class.overview]': 'true' },

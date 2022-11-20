@@ -6,7 +6,7 @@ import { NgbdDemoListService } from '../../../services/demo-list.service';
 import { versions } from '../../../../environments/versions';
 import { NgbAlertModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdCodeComponent } from '../../../shared/code/code.component';
-import { RouterLinkWithHref } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { NgbdApiDocsBadge } from '../../../shared/api-docs';
 import { NgbdOverviewSectionComponent } from '../../../shared/overview/overview-section.component';
 import { NgbdOverview } from '../../../shared/overview/overview';
@@ -19,7 +19,7 @@ import { NgbdOverview } from '../../../shared/overview/overview';
 		NgbAlertModule,
 		NgbdOverviewSectionComponent,
 		NgbdCodeComponent,
-		RouterLinkWithHref,
+		RouterLink,
 		NgbdApiDocsBadge,
 	],
 	templateUrl: './nav-overview.component.html',

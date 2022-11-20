@@ -13,7 +13,8 @@
 		"noUnusedLocals": true,
 		"skipDefaultLibCheck": true,
 		"skipLibCheck": true,
-		"strict": true
+		"strict": true,
+		"types": ["jasmine"]
 	},
 	"include": ["./**/*.ts"]
 }

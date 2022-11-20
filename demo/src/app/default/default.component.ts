@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Snippet } from '../services/snippet';
 import { NgbdCodeComponent } from '../shared/code/code.component';
-import { RouterLinkWithHref } from '@angular/router';
+import { RouterLink } from '@angular/router';
 
 @Component({
 	selector: 'ngbd-default',
 	standalone: true,
-	imports: [NgbdCodeComponent, RouterLinkWithHref],
+	imports: [NgbdCodeComponent, RouterLink],
 	templateUrl: './default.component.html',
 })
 export class DefaultComponent {

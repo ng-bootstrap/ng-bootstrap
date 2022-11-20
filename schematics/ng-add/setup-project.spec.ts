@@ -30,14 +30,14 @@ import { createTestApp } from '../utils/testing';
 
 		it(`should add '@angular/localize' polyfill`, async () => {
 			let tree = await createTestApp(runner);
-			const polyfillFilePath = `projects/${projectName}/src/polyfills.ts`;
+			const tsconfigFilePath = `tsconfig.json`;
 
-			expect(tree.read(polyfillFilePath)!.toString()).not.toContain('@angular/localize');
+			expect(tree.read(tsconfigFilePath)!.toString()).not.toContain('@angular/localize');
 
 			tree = await runner
 				.runSchematicAsync('ng-add-setup-project', projectName ? { project: projectName } : {}, tree)
 				.toPromise();
-			expect(tree.read(polyfillFilePath)!.toString()).toContain('@angular/localize');
+			expect(tree.read(tsconfigFilePath)!.toString()).toContain('@angular/localize');
 		});
 
 		it(`should add 'bootstrap.min.css' to 'angular.json' by default`, async () => {
