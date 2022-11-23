@@ -5,7 +5,7 @@ import { environment } from '../../../../environments/environment';
 import { Snippet } from '../../../services/snippet';
 import { NgbdDemoListService } from '../../../services/demo-list.service';
 import { NgbdCodeComponent } from '../../../shared/code/code.component';
-import { RouterLinkWithHref } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdDatepickerOverviewDemoComponent } from './demo/datepicker-overview-demo.component';
 import { NgbdOverviewSectionComponent } from '../../../shared/overview/overview-section.component';
@@ -16,7 +16,7 @@ import { NgbdOverview } from '../../../shared/overview/overview';
 	standalone: true,
 	imports: [
 		NgbdCodeComponent,
-		RouterLinkWithHref,
+		RouterLink,
 		NgbdOverviewSectionComponent,
 		NgbAlertModule,
 		NgbdDatepickerOverviewDemoComponent,
