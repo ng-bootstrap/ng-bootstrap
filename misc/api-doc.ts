@@ -1,8 +1,12 @@
 // tslint:disable:no-bitwise
 import {
+	CallExpression,
 	createProgram,
+	Decorator,
 	displayPartsToString,
 	getCombinedModifierFlags,
+	getDecorators,
+	Identifier,
 	ModifierFlags,
 	Program,
 	SyntaxKind,
@@ -165,7 +169,7 @@ class APIDocVisitor {
 		const { deprecated, since } = getJsDocTags(symbol);
 		const className = classDeclaration.name.text;
 		const typeParameter = getTypeParameter(this.program, classDeclaration.name);
-		const decorators = classDeclaration.decorators;
+		const decorators = getDecorators(classDeclaration);
 		let directiveInfo;
 		let members;
 
@@ -355,25 +359,34 @@ class APIDocVisitor {
 		return node ? this.typeChecker.typeToString(this.typeChecker.getTypeAtLocation(node)) : 'void';
 	}
 
-	isDirectiveDecorator(decorator) {
-		const decoratorIdentifierText = decorator.expression.expression.text;
-		return decoratorIdentifierText === 'Directive' || decoratorIdentifierText === 'Component';
+	isDirectiveDecorator(decorator: Decorator) {
+		const decoratorType = this.getDecoratorType(decorator);
+		return decoratorType === 'Directive' || decoratorType === 'Component';
 	}
 
-	isServiceDecorator(decorator) {
-		return decorator.expression.expression.text === 'Injectable';
+	isServiceDecorator(decorator: Decorator) {
+		return this.getDecoratorType(decorator) === 'Injectable';
 	}
 
 	getDecoratorOfType(node, decoratorType) {
-		const decorators = node.decorators || [];
+		const decorators = getDecorators(node) || [];
 
 		for (let i = 0; i < decorators.length; i++) {
-			if (decorators[i].expression.expression.text === decoratorType) {
-				return decorators[i];
+			const decorator = decorators[i];
+			const decoratorCall = decorator.expression as CallExpression;
+			const decoratorIdentifier = decoratorCall.expression as Identifier;
+			if (decoratorIdentifier.text === decoratorType) {
+				return decorator;
 			}
 		}
 
 		return null;
+	}
+
+	private getDecoratorType(decorator: Decorator): string | undefined {
+		const decoratorCall = decorator.expression as CallExpression;
+		const decoratorIdentifier = decoratorCall.expression as Identifier;
+		return decoratorIdentifier.text;
 	}
 }
 
