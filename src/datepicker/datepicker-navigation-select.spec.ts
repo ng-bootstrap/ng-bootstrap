@@ -1,10 +1,9 @@
-import { TestBed, ComponentFixture } from '@angular/core/testing';
+import { ComponentFixture } from '@angular/core/testing';
 import { createGenericTestComponent, triggerEvent } from '../test/common';
 import { getMonthSelect, getYearSelect } from '../test/datepicker/common';
 
 import { Component } from '@angular/core';
 
-import { NgbDatepickerModule } from './datepicker.module';
 import { NgbDatepickerNavigationSelect } from './datepicker-navigation-select';
 import { NgbDate } from './ngb-date';
 
@@ -20,11 +19,6 @@ function changeSelect(element: HTMLSelectElement, value: string) {
 }
 
 describe('ngb-datepicker-navigation-select', () => {
-	beforeEach(() => {
-		TestBed.overrideModule(NgbDatepickerModule, { set: { exports: [NgbDatepickerNavigationSelect] } });
-		TestBed.configureTestingModule({ declarations: [TestComponent], imports: [NgbDatepickerModule] });
-	});
-
 	it('should generate month options correctly', () => {
 		const fixture = createTestComponent(
 			`<ngb-datepicker-navigation-select [date]="date" [months]="months" [years]="years">`,
@@ -141,7 +135,7 @@ describe('ngb-datepicker-navigation-select', () => {
 	});
 });
 
-@Component({ selector: 'test-cmp', template: '' })
+@Component({ selector: 'test-cmp', standalone: true, imports: [NgbDatepickerNavigationSelect], template: '' })
 class TestComponent {
 	date = new NgbDate(2016, 8, 22);
 	months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];

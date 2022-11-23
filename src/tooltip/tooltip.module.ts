@@ -1,10 +1,13 @@
 import { NgModule } from '@angular/core';
 
-import { NgbTooltip, NgbTooltipWindow } from './tooltip';
+import { NgbTooltip } from './tooltip';
 
 export { NgbTooltipConfig } from './tooltip-config';
 export { NgbTooltip } from './tooltip';
 export { Placement } from '../util/positioning';
 
-@NgModule({ declarations: [NgbTooltip, NgbTooltipWindow], exports: [NgbTooltip] })
+@NgModule({
+	imports: [NgbTooltip],
+	exports: [NgbTooltip],
+})
 export class NgbTooltipModule {}

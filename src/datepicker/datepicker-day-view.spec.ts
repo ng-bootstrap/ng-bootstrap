@@ -1,22 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
 import { Component } from '@angular/core';
-import { NgbDatepickerDayView } from './datepicker-day-view';
-import { NgbDate } from './ngb-date';
-import { NgbDatepickerI18n, NgbDatepickerI18nDefault } from './datepicker-i18n';
+import { NgbDate, NgbDatepickerDayView } from './datepicker.module';
 
 function getElement(element: HTMLElement): HTMLElement {
 	return <HTMLElement>element.querySelector('[ngbDatepickerDayView]');
 }
 
 describe('ngbDatepickerDayView', () => {
-	beforeEach(() => {
-		TestBed.configureTestingModule({
-			declarations: [TestComponent, NgbDatepickerDayView],
-			providers: [{ provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nDefault }],
-		});
-	});
-
 	it('should display date', () => {
 		const fixture = TestBed.createComponent(TestComponent);
 		fixture.detectChanges();
@@ -83,6 +74,8 @@ describe('ngbDatepickerDayView', () => {
 
 @Component({
 	selector: 'test-cmp',
+	standalone: true,
+	imports: [NgbDatepickerDayView],
 	template:
 		'<div ngbDatepickerDayView [date]="date" [currentMonth]="currentMonth" [selected]="selected" [disabled]="disabled"></div>',
 })

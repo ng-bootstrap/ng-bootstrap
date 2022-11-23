@@ -23,6 +23,7 @@ import { reflow } from '../util/util';
 
 @Component({
 	selector: 'ngb-offcanvas-panel',
+	standalone: true,
 	template: '<ng-content></ng-content>',
 	encapsulation: ViewEncapsulation.None,
 	styleUrls: [],

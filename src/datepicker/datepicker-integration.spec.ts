@@ -12,10 +12,6 @@ import { NgbDatepickerMonth } from './datepicker';
 import { Key } from '../util/key';
 
 describe('ngb-datepicker integration', () => {
-	beforeEach(() => {
-		TestBed.configureTestingModule({ declarations: [TestComponent], imports: [NgbDatepickerModule] });
-	});
-
 	it('should allow overriding datepicker calendar', () => {
 		@Injectable()
 		class FixedTodayCalendar extends NgbCalendarGregorian {
@@ -259,5 +255,5 @@ describe('ngb-datepicker integration', () => {
 	});
 });
 
-@Component({ selector: 'test-cmp', template: '' })
+@Component({ selector: 'test-cmp', standalone: true, imports: [NgbDatepickerModule], template: '' })
 class TestComponent {}

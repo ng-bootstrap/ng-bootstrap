@@ -1,14 +1,8 @@
-import { CommonModule } from '@angular/common';
-import { Component, Injectable, Injector, NgModule, OnDestroy, ViewChild } from '@angular/core';
+import { Component, Injectable, Injector, OnDestroy, ViewChild } from '@angular/core';
+import { NgIf } from '@angular/common';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { NgbOffcanvasConfig, NgbOffcanvasOptions } from './offcanvas-config';
-import {
-	NgbActiveOffcanvas,
-	NgbOffcanvas,
-	NgbOffcanvasModule,
-	NgbOffcanvasRef,
-	OffcanvasDismissReasons,
-} from './offcanvas.module';
+import { NgbActiveOffcanvas, NgbOffcanvas, NgbOffcanvasRef, OffcanvasDismissReasons } from './offcanvas.module';
 import { isBrowserVisible } from '../test/common';
 import { NgbConfig } from '..';
 import { NgbConfigAnimation } from '../test/ngb-config-animation';
@@ -92,7 +86,7 @@ describe('ngb-offcanvas', () => {
 
 	describe('default configuration', () => {
 		beforeEach(() => {
-			TestBed.configureTestingModule({ imports: [NgbOffcanvasTestModule] });
+			TestBed.configureTestingModule({ providers: [SpyService] });
 			fixture = TestBed.createComponent(TestComponent);
 		});
 
@@ -745,7 +739,6 @@ describe('ngb-offcanvas', () => {
 	describe('custom global configuration', () => {
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				imports: [NgbOffcanvasTestModule],
 				providers: [{ provide: NgbOffcanvasConfig, useValue: { position: 'end' } }],
 			});
 			fixture = TestBed.createComponent(TestComponent);
@@ -780,6 +773,7 @@ describe('ngb-offcanvas', () => {
 	if (isBrowserVisible('ngb-offcanvas animations')) {
 		describe('ngb-offcanvas animations', () => {
 			@Component({
+				standalone: true,
 				template: `
 					<ng-template #content let-close="close" let-dismiss="dismiss">
 						<div id="inside-div">Bla bla</div>
@@ -799,8 +793,6 @@ describe('ngb-offcanvas', () => {
 
 			beforeEach(() => {
 				TestBed.configureTestingModule({
-					declarations: [TestAnimationComponent],
-					imports: [NgbOffcanvasModule],
 					providers: [{ provide: NgbConfig, useClass: NgbConfigAnimation }],
 				});
 			});
@@ -891,7 +883,7 @@ describe('ngb-offcanvas', () => {
 	}
 });
 
-@Component({ selector: 'custom-injector-cmpt', template: 'Some content' })
+@Component({ selector: 'custom-injector-cmpt', standalone: true, template: 'Some content' })
 export class CustomInjectorCmpt implements OnDestroy {
 	constructor(private _spyService: CustomSpyService) {}
 
@@ -900,7 +892,7 @@ export class CustomInjectorCmpt implements OnDestroy {
 	}
 }
 
-@Component({ selector: 'destroyable-cmpt', template: 'Some content' })
+@Component({ selector: 'destroyable-cmpt', standalone: true, template: 'Some content' })
 export class DestroyableCmpt implements OnDestroy {
 	constructor(private _spyService: SpyService) {}
 
@@ -911,6 +903,7 @@ export class DestroyableCmpt implements OnDestroy {
 
 @Component({
 	selector: 'offcanvas-content-cmpt',
+	standalone: true,
 	template: '<button class="closeFromInside" (click)="close()">Close</button>',
 })
 export class WithActiveOffcanvasCmpt {
@@ -923,12 +916,14 @@ export class WithActiveOffcanvasCmpt {
 
 @Component({
 	selector: 'offcanvas-autofocus-cmpt',
+	standalone: true,
 	template: `<button class="withNgbAutofocus" ngbAutofocus>Click Me</button>`,
 })
 export class WithAutofocusOffcanvasCmpt {}
 
 @Component({
 	selector: 'offcanvas-firstfocusable-cmpt',
+	standalone: true,
 	template: `
 		<button class="firstFocusable close">Close</button>
 		<button class="other">Other button</button>
@@ -938,6 +933,7 @@ export class WithFirstFocusableOffcanvasCmpt {}
 
 @Component({
 	selector: 'offcanvas-skip-tabindex-firstfocusable-cmpt',
+	standalone: true,
 	template: `
 		<button tabindex="-1" class="firstFocusable close">Close</button>
 		<button class="other">Other button</button>
@@ -947,6 +943,8 @@ export class WithSkipTabindexFirstFocusableOffcanvasCmpt {}
 
 @Component({
 	selector: 'test-cmpt',
+	standalone: true,
+	imports: [NgIf, DestroyableCmpt],
 	template: `
 		<div id="testContainer"></div>
 		<ng-template #content>Hello, {{ name }}!</ng-template>
@@ -1023,6 +1021,7 @@ class TestComponent {
 
 @Component({
 	selector: 'test-a11y-cmpt',
+	standalone: true,
 	template: `
 		<div class="to-hide to-restore-true" aria-hidden="true">
 			<div class="not-to-hide"></div>
@@ -1050,20 +1049,3 @@ class TestA11yComponent {
 		return this.offcanvasService.open('foo', options);
 	}
 }
-
-@NgModule({
-	declarations: [
-		TestComponent,
-		CustomInjectorCmpt,
-		DestroyableCmpt,
-		WithActiveOffcanvasCmpt,
-		WithAutofocusOffcanvasCmpt,
-		WithFirstFocusableOffcanvasCmpt,
-		WithSkipTabindexFirstFocusableOffcanvasCmpt,
-		TestA11yComponent,
-	],
-	exports: [TestComponent, DestroyableCmpt],
-	imports: [CommonModule, NgbOffcanvasModule],
-	providers: [SpyService],
-})
-class NgbOffcanvasTestModule {}

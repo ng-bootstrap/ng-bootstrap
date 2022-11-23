@@ -5,7 +5,6 @@ import { ChangeDetectionStrategy, Component, DebugElement, Injectable } from '@a
 import { By } from '@angular/platform-browser';
 import { UntypedFormControl, UntypedFormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
-import { NgbTimepickerModule } from './timepicker.module';
 import { NgbTimepickerConfig } from './timepicker-config';
 import { NgbTimepicker } from './timepicker';
 import { NgbTimepickerI18n } from './timepicker-i18n';
@@ -80,13 +79,6 @@ function customizeConfig(config: NgbTimepickerConfig) {
 }
 
 describe('ngb-timepicker', () => {
-	beforeEach(() => {
-		TestBed.configureTestingModule({
-			declarations: [TestComponent, TestComponentOnPush],
-			imports: [NgbTimepickerModule, FormsModule, ReactiveFormsModule],
-		});
-	});
-
 	describe('initialization', () => {
 		it('should initialize inputs with provided config', () => {
 			const defaultConfig = new NgbTimepickerConfig();
@@ -1240,7 +1232,6 @@ describe('ngb-timepicker', () => {
 		let config: NgbTimepickerConfig;
 
 		beforeEach(() => {
-			TestBed.configureTestingModule({ imports: [NgbTimepickerModule] });
 			TestBed.overrideComponent(NgbTimepicker, { set: { template: '' } });
 		});
 
@@ -1263,7 +1254,6 @@ describe('ngb-timepicker', () => {
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				imports: [NgbTimepickerModule],
 				providers: [{ provide: NgbTimepickerConfig, useValue: config }],
 			});
 		});
@@ -1320,7 +1310,6 @@ describe('ngb-timepicker', () => {
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				imports: [NgbTimepickerModule],
 				providers: [{ provide: NgbTimepickerConfig, useValue: config }],
 			});
 		});
@@ -1544,8 +1533,6 @@ describe('ngb-timepicker', () => {
 	describe('Custom adapter', () => {
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				declarations: [TestComponent],
-				imports: [NgbTimepickerModule, FormsModule],
 				providers: [{ provide: NgbTimeAdapter, useClass: StringTimeAdapter }],
 			});
 		});
@@ -1630,7 +1617,12 @@ describe('ngb-timepicker', () => {
 	});
 });
 
-@Component({ selector: 'test-cmp', template: '' })
+@Component({
+	selector: 'test-cmp',
+	standalone: true,
+	imports: [NgbTimepicker, FormsModule, ReactiveFormsModule],
+	template: '',
+})
 class TestComponent {
 	model;
 	disabled = true;
@@ -1646,7 +1638,13 @@ class TestComponent {
 	}
 }
 
-@Component({ selector: 'test-cmp-on-push', template: '', changeDetection: ChangeDetectionStrategy.OnPush })
+@Component({
+	selector: 'test-cmp-on-push',
+	standalone: true,
+	imports: [NgbTimepicker, FormsModule],
+	template: '',
+	changeDetection: ChangeDetectionStrategy.OnPush,
+})
 class TestComponentOnPush {}
 
 @Injectable()

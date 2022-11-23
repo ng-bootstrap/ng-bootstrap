@@ -5,7 +5,6 @@ import { By } from '@angular/platform-browser';
 
 import { Component } from '@angular/core';
 
-import { NgbAlertModule } from './alert.module';
 import { NgbAlert } from './alert';
 import { NgbAlertConfig } from './alert-config';
 
@@ -24,10 +23,6 @@ function getCloseButton(element: HTMLElement): HTMLButtonElement {
 }
 
 describe('ngb-alert', () => {
-	beforeEach(() => {
-		TestBed.configureTestingModule({ declarations: [TestComponent], imports: [NgbAlertModule] });
-	});
-
 	it('should initialize inputs with default values', () => {
 		const defaultConfig = new NgbAlertConfig(new NgbConfig());
 		const alertCmp = TestBed.createComponent(NgbAlert).componentInstance;
@@ -145,10 +140,6 @@ describe('ngb-alert', () => {
 	describe('Custom config', () => {
 		let config: NgbAlertConfig;
 
-		beforeEach(() => {
-			TestBed.configureTestingModule({ imports: [NgbAlertModule] });
-		});
-
 		beforeEach(inject([NgbAlertConfig], (c: NgbAlertConfig) => {
 			config = c;
 			config.dismissible = false;
@@ -172,7 +163,6 @@ describe('ngb-alert', () => {
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				imports: [NgbAlertModule],
 				providers: [{ provide: NgbAlertConfig, useValue: config }],
 			});
 		});
@@ -191,6 +181,8 @@ describe('ngb-alert', () => {
 if (isBrowserVisible('ngb-alert animations')) {
 	describe('ngb-alert animations', () => {
 		@Component({
+			standalone: true,
+			imports: [NgbAlert],
 			template: ` <ngb-alert type="success" (close)="onClose()">Cool!</ngb-alert>`,
 			host: { '[class.ngb-reduce-motion]': 'reduceMotion' },
 		})
@@ -201,8 +193,6 @@ if (isBrowserVisible('ngb-alert animations')) {
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				declarations: [TestAnimationComponent],
-				imports: [NgbAlertModule],
 				providers: [{ provide: NgbConfig, useClass: NgbConfigAnimation }],
 			});
 		});
@@ -231,7 +221,7 @@ if (isBrowserVisible('ngb-alert animations')) {
 	});
 }
 
-@Component({ selector: 'test-cmp', template: '' })
+@Component({ selector: 'test-cmp', standalone: true, imports: [NgbAlert], template: '' })
 class TestComponent {
 	name = 'World';
 	closed = false;

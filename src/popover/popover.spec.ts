@@ -14,11 +14,11 @@ import {
 	AfterViewInit,
 	NgZone,
 } from '@angular/core';
+import { NgIf } from '@angular/common';
 
-import { NgbPopoverModule } from './popover.module';
-import { NgbPopoverWindow, NgbPopover } from './popover';
+import { NgbPopover, NgbPopoverWindow } from './popover';
 import { NgbPopoverConfig } from './popover-config';
-import { NgbTooltip, NgbTooltipModule } from '..';
+import { NgbTooltip } from '../tooltip/tooltip';
 import { NgbConfig } from '../ngb-config';
 import { NgbConfigAnimation } from '../test/ngb-config-animation';
 import { Options } from '@popperjs/core';
@@ -39,10 +39,6 @@ function getWindow(element) {
 }
 
 describe('ngb-popover-window', () => {
-	beforeEach(() => {
-		TestBed.configureTestingModule({ declarations: [TestComponent], imports: [NgbPopoverModule] });
-	});
-
 	afterEach(() => {
 		// Cleaning elements, because of a TestBed issue with the id attribute
 		Array.from(document.body.children).map((element: HTMLElement) => {
@@ -81,8 +77,6 @@ describe('ngb-popover-window', () => {
 describe('ngb-popover', () => {
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [TestComponent, TestOnPushComponent, DestroyableCmpt, TestHooksComponent],
-			imports: [NgbPopoverModule],
 			providers: [SpyService],
 		});
 	});
@@ -630,10 +624,6 @@ describe('ngb-popover', () => {
 	});
 
 	describe('triggers', () => {
-		beforeEach(() => {
-			TestBed.configureTestingModule({ declarations: [TestComponent], imports: [NgbPopoverModule] });
-		});
-
 		it('should support toggle triggers', () => {
 			const fixture = createTestComponent(`<div ngbPopover="Great tip!" triggers="click"></div>`);
 			const directive = fixture.debugElement.query(By.directive(NgbPopover));
@@ -743,7 +733,6 @@ describe('ngb-popover', () => {
 		let config: NgbPopoverConfig;
 
 		beforeEach(() => {
-			TestBed.configureTestingModule({ imports: [NgbPopoverModule] });
 			TestBed.overrideComponent(TestComponent, { set: { template: `<div ngbPopover="Great tip!"></div>` } });
 		});
 
@@ -776,7 +765,6 @@ describe('ngb-popover', () => {
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				imports: [NgbPopoverModule],
 				providers: [{ provide: NgbPopoverConfig, useValue: config }],
 			});
 		});
@@ -808,10 +796,6 @@ describe('ngb-popover', () => {
 });
 
 describe('popover positionTarget', () => {
-	beforeEach(() => {
-		TestBed.configureTestingModule({ declarations: [TestComponent], imports: [NgbPopoverModule] });
-	});
-
 	function expectPopoverBePositionedAtHeightPx(heightPx: number) {
 		expect(
 			Math.abs(heightPx - window.document.querySelector('ngb-popover-window')!.getBoundingClientRect().top),
@@ -904,10 +888,6 @@ describe('popover positionTarget', () => {
 });
 
 describe('popover-tooltip', () => {
-	beforeEach(() => {
-		TestBed.configureTestingModule({ declarations: [TestComponent], imports: [NgbPopoverModule, NgbTooltipModule] });
-	});
-
 	it(`should work when attached on the same element and container='body'`, () => {
 		const fixture = createTestComponent(`<button ngbPopover="Popover" ngbTooltip="Tooltip" container="body"></button>`);
 		const button = fixture.nativeElement.querySelector('button');
@@ -927,6 +907,8 @@ describe('popover-tooltip', () => {
 if (isBrowserVisible('ngb-popover animations')) {
 	describe('ngb-popover animations', () => {
 		@Component({
+			standalone: true,
+			imports: [NgbPopover],
 			template: `<button ngbPopover="Great tip!" triggers="click" (shown)="shown()" (hidden)="hidden()"></button>`,
 			host: { '[class.ngb-reduce-motion]': 'reduceMotion' },
 		})
@@ -944,8 +926,6 @@ if (isBrowserVisible('ngb-popover animations')) {
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				declarations: [TestAnimationComponent],
-				imports: [NgbPopoverModule],
 				providers: [{ provide: NgbConfig, useClass: NgbConfigAnimation }],
 			});
 		});
@@ -1040,7 +1020,21 @@ if (isBrowserVisible('ngb-popover animations')) {
 	});
 }
 
-@Component({ selector: 'test-cmpt', template: `` })
+@Component({ selector: 'destroyable-cmpt', standalone: true, template: 'Some content' })
+export class DestroyableCmpt implements OnDestroy {
+	constructor(private _spyService: SpyService) {}
+
+	ngOnDestroy(): void {
+		this._spyService.called = true;
+	}
+}
+
+@Component({
+	selector: 'test-cmpt',
+	standalone: true,
+	imports: [NgbPopover, NgbTooltip, NgIf, DestroyableCmpt],
+	template: ``,
+})
 export class TestComponent {
 	name = 'World';
 	show = true;
@@ -1065,19 +1059,21 @@ export class TestComponent {
 	}
 }
 
-@Component({ selector: 'test-onpush-cmpt', changeDetection: ChangeDetectionStrategy.OnPush, template: `` })
+@Component({
+	selector: 'test-onpush-cmpt',
+	standalone: true,
+	imports: [NgbPopover],
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	template: ``,
+})
 export class TestOnPushComponent {}
 
-@Component({ selector: 'destroyable-cmpt', template: 'Some content' })
-export class DestroyableCmpt implements OnDestroy {
-	constructor(private _spyService: SpyService) {}
-
-	ngOnDestroy(): void {
-		this._spyService.called = true;
-	}
-}
-
-@Component({ selector: 'test-hooks', template: `<div ngbPopover="popover"></div>` })
+@Component({
+	selector: 'test-hooks',
+	standalone: true,
+	imports: [NgbPopover],
+	template: `<div ngbPopover="popover"></div>`,
+})
 export class TestHooksComponent implements AfterViewInit {
 	@ViewChild(NgbPopover, { static: true }) popover;
 

@@ -1,5 +1,6 @@
 import { TestBed, ComponentFixture, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { NgIf } from '@angular/common';
 import { createGenericTestComponent } from '../test/common';
 import createSpy = jasmine.createSpy;
 
@@ -34,10 +35,6 @@ function customizeConfig(config: NgbInputDatepickerConfig) {
 }
 
 describe('NgbInputDatepicker', () => {
-	beforeEach(() => {
-		TestBed.configureTestingModule({ declarations: [TestComponent], imports: [NgbDatepickerModule, FormsModule] });
-	});
-
 	it('should initialize inputs with provided datepicker config', () => {
 		const defaultConfig = new NgbInputDatepickerConfig();
 		const fixture = createTestCmpt(`<input ngbDatepicker>`);
@@ -87,7 +84,6 @@ describe('NgbInputDatepicker', () => {
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				imports: [NgbDatepickerModule],
 				providers: [{ provide: NgbInputDatepickerConfig, useValue: config }],
 			});
 		});
@@ -1129,8 +1125,6 @@ describe('NgbInputDatepicker', () => {
 	describe('Native adapter', () => {
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				declarations: [TestNativeComponent],
-				imports: [NgbDatepickerModule, FormsModule],
 				providers: [{ provide: NgbDateAdapter, useClass: NgbDateNativeAdapter }],
 			});
 		});
@@ -1194,12 +1188,22 @@ class NgbDateNativeAdapter extends NgbDateAdapter<Date> {
 	}
 }
 
-@Component({ selector: 'test-native-cmp', template: '' })
+@Component({
+	selector: 'test-native-cmp',
+	standalone: true,
+	imports: [NgbDatepickerModule, FormsModule],
+	template: '',
+})
 class TestNativeComponent {
 	date: Date;
 }
 
-@Component({ selector: 'test-cmp', template: '' })
+@Component({
+	selector: 'test-cmp',
+	standalone: true,
+	imports: [NgbDatepickerModule, FormsModule, NgIf],
+	template: '',
+})
 class TestComponent {
 	container;
 	date: NgbDateStruct;

@@ -8,6 +8,7 @@ import { reflow } from '../util/util';
 
 @Component({
 	selector: 'ngb-modal-backdrop',
+	standalone: true,
 	encapsulation: ViewEncapsulation.None,
 	template: '',
 	host: {
