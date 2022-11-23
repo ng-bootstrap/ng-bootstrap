@@ -5,7 +5,7 @@ import { join } from 'path';
 
 let globalPage: Page | null = null;
 export const getPage = (): Page => {
-	return globalPage;
+	return globalPage!;
 };
 export const setPage = (page: Page | null) => {
 	globalPage = page;

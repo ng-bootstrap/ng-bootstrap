@@ -56,7 +56,7 @@ export function parseDemos(demoFolderPath: string): DemoMetadata[] {
 
 							// 3. If we see that this class declaration is a known demo component, we extract its selector and filename
 							if (knownDemoComponents.has(className)) {
-								classDeclaration.decorators?.forEach((decorator) => {
+								ts.getDecorators(classDeclaration).forEach((decorator) => {
 									const textDecorator = decorator.getText();
 									if (textDecorator.startsWith('@Component')) {
 										const matches = SELECTOR_REGEX.exec(textDecorator);

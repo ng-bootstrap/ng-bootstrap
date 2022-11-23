@@ -25,8 +25,8 @@
 					"options": {
 						"fileReplacements": [
 							{
-								"src": "src/environment.ts",
-								"replaceWith": "src/environment.test.ts"
+								"replace": "src/environment.ts",
+								"with": "src/environment.test.ts"
 							}
 						],
 						"main": "src/test.ts",
@@ -99,8 +99,8 @@
 						"production": {
 							"fileReplacements": [
 								{
-									"src": "demo/src/environments/environment.ts",
-									"replaceWith": "demo/src/environments/environment.prod.ts"
+									"replace": "demo/src/environments/environment.ts",
+									"with": "demo/src/environments/environment.prod.ts"
 								}
 							],
 							"optimization": true,
