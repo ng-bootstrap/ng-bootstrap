@@ -2,9 +2,13 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, ViewEn
 import { NavigationEvent, MonthViewModel } from './datepicker-view-model';
 import { NgbDate } from './ngb-date';
 import { NgbDatepickerI18n } from './datepicker-i18n';
+import { NgFor, NgIf } from '@angular/common';
+import { NgbDatepickerNavigationSelect } from './datepicker-navigation-select';
 
 @Component({
 	selector: 'ngb-datepicker-navigation',
+	standalone: true,
+	imports: [NgIf, NgFor, NgbDatepickerNavigationSelect],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
 	styleUrls: ['./datepicker-navigation.scss'],

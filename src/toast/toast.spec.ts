@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { createGenericTestComponent, isBrowserVisible } from '../test/common';
-import { NgbToastModule } from './toast.module';
 
+import { NgbToast, NgbToastHeader } from './toast';
 import { NgbConfig } from '../ngb-config';
 import { NgbConfigAnimation } from '../test/ngb-config-animation';
 
@@ -18,10 +18,6 @@ const getToastHeaderElement = (element: HTMLElement): Element =>
 const getToastBodyElement = (element: HTMLElement): Element => getElementWithSelector(element, 'ngb-toast .toast-body');
 
 describe('ngb-toast', () => {
-	beforeEach(() => {
-		TestBed.configureTestingModule({ declarations: [TestComponent], imports: [NgbToastModule] });
-	});
-
 	describe('via declarative usage', () => {
 		it('should be instantiable declaratively', () => {
 			const fixture = createTestComponent(`<ngb-toast header="header">body</ngb-toast>`);
@@ -120,6 +116,8 @@ describe('ngb-toast', () => {
 if (isBrowserVisible('ngb-toast animations')) {
 	describe('ngb-toast animations', () => {
 		@Component({
+			standalone: true,
+			imports: [[NgbToast, NgbToastHeader]],
 			template: ` <ngb-toast header="Hello" [autohide]="false" (shown)="onShown()" (hidden)="onHidden()"
 				>Cool!</ngb-toast
 			>`,
@@ -133,8 +131,6 @@ if (isBrowserVisible('ngb-toast animations')) {
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				declarations: [TestAnimationComponent],
-				imports: [NgbToastModule],
 				providers: [{ provide: NgbConfig, useClass: NgbConfigAnimation }],
 			});
 		});
@@ -191,7 +187,7 @@ if (isBrowserVisible('ngb-toast animations')) {
 	});
 }
 
-@Component({ selector: 'test-cmp', template: '' })
+@Component({ selector: 'test-cmp', standalone: true, imports: [NgbToast, NgbToastHeader], template: '' })
 export class TestComponent {
 	visible = true;
 	autohide = true;

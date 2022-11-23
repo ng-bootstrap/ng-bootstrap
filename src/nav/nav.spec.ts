@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NgFor, NgIf } from '@angular/common';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NgbNav, NgbNavConfig, NgbNavItem, NgbNavLink, NgbNavModule, NgbNavOutlet } from './nav.module';
@@ -83,13 +84,6 @@ function expectContents(fixture: ComponentFixture<any>, expected: string[], acti
 }
 
 describe('nav', () => {
-	beforeEach(() => {
-		TestBed.configureTestingModule({
-			declarations: [TestComponent],
-			imports: [NgbNavModule],
-		});
-	});
-
 	it('should initialize inputs with default values', inject([NgbNavConfig], (config) => {
 		const nav = new NgbNav('tablist', config, <any>null, null);
 		expect(nav.destroyOnHide).toBe(config.destroyOnHide);
@@ -1214,6 +1208,8 @@ describe('nav', () => {
 if (isBrowserVisible('ngb-nav animations')) {
 	describe('ngb-nav animations', () => {
 		@Component({
+			standalone: true,
+			imports: [NgbNavModule],
 			template: `
 				<ul ngbNav #n="ngbNav" class="nav-tabs" (shown)="onNavShownSpy($event)" (hidden)="onNavHiddenSpy($event)">
 					<li [ngbNavItem]="1" (shown)="onItemShownSpy(1)" (hidden)="onItemHiddenSpy(1)">
@@ -1243,8 +1239,6 @@ if (isBrowserVisible('ngb-nav animations')) {
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				declarations: [TestAnimationComponent],
-				imports: [NgbNavModule],
 				providers: [{ provide: NgbConfig, useClass: NgbConfigAnimation }],
 			});
 		});
@@ -1448,7 +1442,7 @@ if (isBrowserVisible('ngb-nav animations')) {
 	});
 }
 
-@Component({ selector: 'test-cmp', template: '' })
+@Component({ selector: 'test-cmp', template: '', standalone: true, imports: [NgbNavModule, NgFor, NgIf] })
 class TestComponent {
 	activeId;
 	disabled = true;

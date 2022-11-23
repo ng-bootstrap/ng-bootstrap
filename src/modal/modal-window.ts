@@ -24,6 +24,7 @@ import { isString, reflow } from '../util/util';
 
 @Component({
 	selector: 'ngb-modal-window',
+	standalone: true,
 	host: {
 		'[class]': '"modal d-block" + (windowClass ? " " + windowClass : "")',
 		'[class.fade]': 'animation',

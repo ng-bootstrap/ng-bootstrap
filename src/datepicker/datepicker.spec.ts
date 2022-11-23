@@ -153,13 +153,6 @@ function customizeConfig(config: NgbDatepickerConfig) {
 }
 
 describe('ngb-datepicker', () => {
-	beforeEach(() => {
-		TestBed.configureTestingModule({
-			declarations: [TestComponent],
-			imports: [NgbDatepickerModule, FormsModule, ReactiveFormsModule],
-		});
-	});
-
 	it('should initialize inputs with provided config', () => {
 		const defaultConfig = new NgbDatepickerConfig();
 		const datepicker = TestBed.createComponent(NgbDatepicker).componentInstance;
@@ -1186,10 +1179,6 @@ describe('ngb-datepicker', () => {
 	describe('Custom config', () => {
 		let config: NgbDatepickerConfig;
 
-		beforeEach(() => {
-			TestBed.configureTestingModule({ imports: [NgbDatepickerModule] });
-		});
-
 		beforeEach(inject([NgbDatepickerConfig], (c: NgbDatepickerConfig) => {
 			config = c;
 			customizeConfig(config);
@@ -1209,7 +1198,6 @@ describe('ngb-datepicker', () => {
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				imports: [NgbDatepickerModule],
 				providers: [{ provide: NgbDatepickerConfig, useValue: config }],
 			});
 		});
@@ -1234,7 +1222,6 @@ describe('ngb-datepicker', () => {
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				imports: [NgbDatepickerModule],
 				providers: [{ provide: NgbDatepickerKeyboardService, useValue: mockKeyboardService }],
 			});
 			const fixture = createTestComponent(
@@ -1307,7 +1294,12 @@ describe('ngb-datepicker', () => {
 	});
 });
 
-@Component({ selector: 'test-cmp', template: '' })
+@Component({
+	selector: 'test-cmp',
+	standalone: true,
+	imports: [NgbDatepickerModule, FormsModule, ReactiveFormsModule],
+	template: '',
+})
 class TestComponent {
 	date = { year: 2016, month: 8 };
 	displayMonths = 1;

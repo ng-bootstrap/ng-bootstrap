@@ -14,6 +14,7 @@ import { NgbTime } from './ngb-time';
 import { NgbTimepickerConfig } from './timepicker-config';
 import { NgbTimeAdapter } from './ngb-time-adapter';
 import { NgbTimepickerI18n } from './timepicker-i18n';
+import { NgIf } from '@angular/common';
 
 const FILTER_REGEX = /[^0-9]/g;
 
@@ -23,6 +24,8 @@ const FILTER_REGEX = /[^0-9]/g;
 @Component({
 	exportAs: 'ngbTimepicker',
 	selector: 'ngb-timepicker',
+	standalone: true,
+	imports: [NgIf],
 	encapsulation: ViewEncapsulation.None,
 	styleUrls: ['./timepicker.scss'],
 	template: `

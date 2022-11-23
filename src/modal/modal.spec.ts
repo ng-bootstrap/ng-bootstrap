@@ -1,8 +1,8 @@
-import { CommonModule } from '@angular/common';
-import { Component, Injectable, Injector, NgModule, OnDestroy, ViewChild } from '@angular/core';
+import { Component, Injectable, Injector, OnDestroy, ViewChild } from '@angular/core';
+import { NgIf } from '@angular/common';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { NgbModalConfig, NgbModalOptions } from './modal-config';
-import { NgbActiveModal, NgbModal, NgbModalModule, NgbModalRef } from './modal.module';
+import { NgbActiveModal, NgbModal, NgbModalRef } from './modal.module';
 import { createKeyEvent, isBrowserVisible } from '../test/common';
 import { NgbConfig } from '..';
 import { NgbConfigAnimation } from '../test/ngb-config-animation';
@@ -96,7 +96,7 @@ describe('ngb-modal', () => {
 
 	describe('default configuration', () => {
 		beforeEach(() => {
-			TestBed.configureTestingModule({ imports: [NgbModalTestModule] });
+			TestBed.configureTestingModule({ providers: [SpyService] });
 			fixture = TestBed.createComponent(TestComponent);
 		});
 
@@ -954,7 +954,6 @@ describe('ngb-modal', () => {
 	describe('custom global configuration', () => {
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				imports: [NgbModalTestModule],
 				providers: [{ provide: NgbModalConfig, useValue: { size: 'sm' } }],
 			});
 			fixture = TestBed.createComponent(TestComponent);
@@ -987,6 +986,7 @@ describe('ngb-modal', () => {
 	if (isBrowserVisible('ngb-modal animations')) {
 		describe('ngb-modal animations', () => {
 			@Component({
+				standalone: true,
 				template: `
 					<ng-template #content let-close="close" let-dismiss="dismiss">
 						<div id="inside-div">Bla bla</div>
@@ -1006,8 +1006,6 @@ describe('ngb-modal', () => {
 
 			beforeEach(() => {
 				TestBed.configureTestingModule({
-					declarations: [TestAnimationComponent],
-					imports: [NgbModalModule],
 					providers: [{ provide: NgbConfig, useClass: NgbConfigAnimation }],
 				});
 			});
@@ -1203,7 +1201,7 @@ describe('ngb-modal', () => {
 	}
 });
 
-@Component({ selector: 'custom-injector-cmpt', template: 'Some content' })
+@Component({ selector: 'custom-injector-cmpt', standalone: true, template: 'Some content' })
 export class CustomInjectorCmpt implements OnDestroy {
 	constructor(private _spyService: CustomSpyService) {}
 
@@ -1212,7 +1210,7 @@ export class CustomInjectorCmpt implements OnDestroy {
 	}
 }
 
-@Component({ selector: 'destroyable-cmpt', template: 'Some content' })
+@Component({ selector: 'destroyable-cmpt', standalone: true, template: 'Some content' })
 export class DestroyableCmpt implements OnDestroy {
 	constructor(private _spyService: SpyService) {}
 
@@ -1223,6 +1221,7 @@ export class DestroyableCmpt implements OnDestroy {
 
 @Component({
 	selector: 'modal-content-cmpt',
+	standalone: true,
 	template: '<button class="closeFromInside" (click)="close()">Close</button>',
 })
 export class WithActiveModalCmpt {
@@ -1235,12 +1234,14 @@ export class WithActiveModalCmpt {
 
 @Component({
 	selector: 'modal-autofocus-cmpt',
+	standalone: true,
 	template: `<button class="withNgbAutofocus" ngbAutofocus>Click Me</button>`,
 })
 export class WithAutofocusModalCmpt {}
 
 @Component({
 	selector: 'modal-firstfocusable-cmpt',
+	standalone: true,
 	template: `
 		<button class="firstFocusable close">Close</button>
 		<button class="other">Other button</button>
@@ -1250,6 +1251,7 @@ export class WithFirstFocusableModalCmpt {}
 
 @Component({
 	selector: 'modal-skip-tabindex-firstfocusable-cmpt',
+	standalone: true,
 	template: `
 		<button tabindex="-1" class="firstFocusable close">Close</button>
 		<button class="other">Other button</button>
@@ -1259,6 +1261,8 @@ export class WithSkipTabindexFirstFocusableModalCmpt {}
 
 @Component({
 	selector: 'test-cmpt',
+	standalone: true,
+	imports: [NgIf, DestroyableCmpt],
 	template: `
 		<div id="testContainer"></div>
 		<ng-template #content>Hello, {{ name }}!</ng-template>
@@ -1341,6 +1345,7 @@ class TestComponent {
 
 @Component({
 	selector: 'test-a11y-cmpt',
+	standalone: true,
 	template: `
 		<div class="to-hide to-restore-true" aria-hidden="true">
 			<div class="not-to-hide"></div>
@@ -1368,20 +1373,3 @@ class TestA11yComponent {
 		return this.modalService.open('foo', options);
 	}
 }
-
-@NgModule({
-	declarations: [
-		TestComponent,
-		CustomInjectorCmpt,
-		DestroyableCmpt,
-		WithActiveModalCmpt,
-		WithAutofocusModalCmpt,
-		WithFirstFocusableModalCmpt,
-		WithSkipTabindexFirstFocusableModalCmpt,
-		TestA11yComponent,
-	],
-	exports: [TestComponent, DestroyableCmpt],
-	imports: [CommonModule, NgbModalModule],
-	providers: [SpyService],
-})
-class NgbModalTestModule {}

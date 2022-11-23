@@ -4,5 +4,8 @@ import { NgbCollapse } from './collapse';
 export { NgbCollapse } from './collapse';
 export { NgbCollapseConfig } from './collapse-config';
 
-@NgModule({ declarations: [NgbCollapse], exports: [NgbCollapse] })
+@NgModule({
+	imports: [NgbCollapse],
+	exports: [NgbCollapse],
+})
 export class NgbCollapseModule {}

@@ -1,21 +1,15 @@
-import { TestBed, ComponentFixture } from '@angular/core/testing';
+import { ComponentFixture } from '@angular/core/testing';
 import { createGenericTestComponent } from '../test/common';
 
 import { Component, ViewChild } from '@angular/core';
 
 import { NgbTypeaheadWindow } from './typeahead-window';
 import { expectResults, getWindowLinks } from '../test/typeahead/common';
-import { NgbTypeaheadModule } from './typeahead.module';
 
 const createTestComponent = (html: string) =>
 	createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
 describe('ngb-typeahead-window', () => {
-	beforeEach(() => {
-		TestBed.overrideModule(NgbTypeaheadModule, { set: { exports: [NgbTypeaheadWindow] } });
-		TestBed.configureTestingModule({ declarations: [TestComponent], imports: [NgbTypeaheadModule] });
-	});
-
 	describe('display', () => {
 		it('should display results with the first row active', () => {
 			const fixture = createTestComponent(
@@ -198,7 +192,7 @@ describe('ngb-typeahead-window', () => {
 	});
 });
 
-@Component({ selector: 'test-cmp', template: '' })
+@Component({ selector: 'test-cmp', standalone: true, imports: [NgbTypeaheadWindow], template: '' })
 class TestComponent {
 	active: string;
 	results = ['bar', 'baz'];

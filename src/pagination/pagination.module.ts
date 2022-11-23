@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 import {
 	NgbPagination,
@@ -24,7 +23,7 @@ export {
 } from './pagination';
 export { NgbPaginationConfig } from './pagination-config';
 
-const DIRECTIVES = [
+const NGB_PAGINATION_DIRECTIVES = [
 	NgbPagination,
 	NgbPaginationEllipsis,
 	NgbPaginationFirst,
@@ -35,5 +34,8 @@ const DIRECTIVES = [
 	NgbPaginationPages,
 ];
 
-@NgModule({ declarations: DIRECTIVES, exports: DIRECTIVES, imports: [CommonModule] })
+@NgModule({
+	imports: NGB_PAGINATION_DIRECTIVES,
+	exports: NGB_PAGINATION_DIRECTIVES,
+})
 export class NgbPaginationModule {}

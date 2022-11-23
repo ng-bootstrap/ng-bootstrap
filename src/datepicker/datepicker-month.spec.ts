@@ -1,16 +1,14 @@
-import { TestBed, ComponentFixture } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { createGenericTestComponent } from '../test/common';
 
 import { Component, Injectable } from '@angular/core';
 
 import { NgbDatepickerModule } from './datepicker.module';
-import { NgbDatepicker, NgbDatepickerContent } from './datepicker';
+import { NgbDatepicker } from './datepicker';
 import { NgbDatepickerKeyboardService } from './datepicker-keyboard-service';
 import { NgbDatepickerService } from './datepicker-service';
-import { NgbDatepickerMonth } from './datepicker';
 import { NgbDate } from './ngb-date';
 import { NgbDateStruct } from './ngb-date-struct';
-import { NgbDatepickerDayView } from './datepicker-day-view';
 
 const createTestComponent = () =>
 	createGenericTestComponent(
@@ -228,17 +226,12 @@ class MockDatepickerService extends NgbDatepickerService {
 
 describe('ngb-datepicker-month', () => {
 	beforeEach(() => {
-		TestBed.overrideModule(NgbDatepickerModule, {
-			set: { exports: [NgbDatepicker, NgbDatepickerContent, NgbDatepickerMonth, NgbDatepickerDayView] },
-		});
 		TestBed.overrideComponent(NgbDatepicker, {
 			add: {
 				providers: [{ provide: NgbDatepickerService, useClass: MockDatepickerService }, NgbDatepickerKeyboardService],
 			},
 		});
 		TestBed.configureTestingModule({
-			declarations: [TestComponent],
-			imports: [NgbDatepickerModule],
 			providers: [{ provide: NgbDatepickerService, useClass: MockDatepickerService }],
 		});
 	});
@@ -386,7 +379,7 @@ describe('ngb-datepicker-month', () => {
 	});
 });
 
-@Component({ selector: 'test-cmp', template: '' })
+@Component({ selector: 'test-cmp', standalone: true, imports: [NgbDatepickerModule], template: '' })
 class TestComponent {
 	weekdays = true;
 	showWeekNumbers = true;

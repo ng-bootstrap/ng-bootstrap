@@ -3,7 +3,7 @@ import { createGenericTestComponent, isBrowserVisible } from '../test/common';
 
 import { Component } from '@angular/core';
 
-import { NgbCollapse, NgbCollapseModule } from './collapse.module';
+import { NgbCollapse } from './collapse';
 import { NgbConfig } from '../ngb-config';
 import { NgbConfigAnimation } from '../test/ngb-config-animation';
 import { By } from '@angular/platform-browser';
@@ -16,10 +16,6 @@ function getCollapsibleContent(element: HTMLElement): HTMLDivElement {
 }
 
 describe('ngb-collapse', () => {
-	beforeEach(() => {
-		TestBed.configureTestingModule({ declarations: [TestComponent], imports: [NgbCollapseModule] });
-	});
-
 	it('should have content open', () => {
 		const fixture = createTestComponent(`<div [ngbCollapse]="collapsed">Some content</div>`);
 
@@ -111,6 +107,8 @@ describe('ngb-collapse', () => {
 if (isBrowserVisible('ngb-collapse animations')) {
 	describe('ngb-collapse animations', () => {
 		@Component({
+			standalone: true,
+			imports: [NgbCollapse],
 			template: `
 				<button (click)="c.toggle()">Collapse!</button>
 				<div
@@ -133,8 +131,6 @@ if (isBrowserVisible('ngb-collapse animations')) {
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				declarations: [TestAnimationComponent],
-				imports: [NgbCollapseModule],
 				providers: [{ provide: NgbConfig, useClass: NgbConfigAnimation }],
 			});
 		});
@@ -271,7 +267,7 @@ if (isBrowserVisible('ngb-collapse animations')) {
 	});
 }
 
-@Component({ selector: 'test-cmp', template: '' })
+@Component({ selector: 'test-cmp', standalone: true, imports: [NgbCollapse], template: '' })
 class TestComponent {
 	collapsed = false;
 }
