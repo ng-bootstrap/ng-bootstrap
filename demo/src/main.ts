@@ -1,10 +1,9 @@
-import { importProvidersFrom } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { AppComponent } from './app/app.component';
 import { PreloadAllModules, provideRouter, withPreloading } from '@angular/router';
 import { ROUTES } from './app/routes';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withNoXsrfProtection } from '@angular/common/http';
 
 bootstrapApplication(AppComponent, {
 	providers: [
@@ -13,6 +12,6 @@ bootstrapApplication(AppComponent, {
 			provide: LocationStrategy,
 			useClass: HashLocationStrategy,
 		},
-		importProvidersFrom([HttpClientModule]),
+		provideHttpClient(withNoXsrfProtection()),
 	],
 }).catch((err) => console.error(err));
