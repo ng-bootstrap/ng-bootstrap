@@ -16,9 +16,11 @@ import { distinctUntilChanged, skip, startWith, takeUntil } from 'rxjs/operators
 import { ngbNavFadeInTransition, ngbNavFadeOutTransition } from './nav-transition';
 import { ngbRunTransition, NgbTransitionOptions } from '../util/transition/ngbTransition';
 import { NgbNav, NgbNavItem } from './nav';
+import { NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
 
 @Directive({
 	selector: '[ngbNavPane]',
+	standalone: true,
 	host: {
 		'[id]': 'item.panelDomId',
 		class: 'tab-pane',
@@ -42,6 +44,8 @@ export class NgbNavPane {
  */
 @Component({
 	selector: '[ngbNavOutlet]',
+	standalone: true,
+	imports: [NgbNavPane, NgFor, NgIf, NgTemplateOutlet],
 	host: { '[class.tab-content]': 'true' },
 	encapsulation: ViewEncapsulation.None,
 	changeDetection: ChangeDetectionStrategy.OnPush,

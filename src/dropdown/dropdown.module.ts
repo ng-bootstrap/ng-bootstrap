@@ -27,5 +27,8 @@ const NGB_DROPDOWN_DIRECTIVES = [
 	NgbNavbar,
 ];
 
-@NgModule({ declarations: NGB_DROPDOWN_DIRECTIVES, exports: NGB_DROPDOWN_DIRECTIVES })
+@NgModule({
+	imports: NGB_DROPDOWN_DIRECTIVES,
+	exports: NGB_DROPDOWN_DIRECTIVES,
+})
 export class NgbDropdownModule {}

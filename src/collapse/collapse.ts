@@ -10,6 +10,7 @@ import { NgbCollapseConfig } from './collapse-config';
 @Directive({
 	selector: '[ngbCollapse]',
 	exportAs: 'ngbCollapse',
+	standalone: true,
 	host: { '[class.collapse-horizontal]': 'horizontal' },
 })
 export class NgbCollapse implements OnInit {

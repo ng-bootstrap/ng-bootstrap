@@ -1,11 +1,11 @@
 import { fakeAsync, discardPeriodicTasks, tick, TestBed, ComponentFixture, inject } from '@angular/core/testing';
 import { createGenericTestComponent, isBrowserVisible } from '../test/common';
+import { NgFor, NgIf } from '@angular/common';
 
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
-import { NgbCarouselModule } from './carousel.module';
-import { NgbCarousel, NgbSlideEvent, NgbSlideEventSource, NgbSingleSlideEvent } from './carousel';
+import { NgbCarousel, NgbSlideEvent, NgbSlideEventSource, NgbSingleSlideEvent, NgbSlide } from './carousel';
 import { NgbCarouselConfig } from './carousel-config';
 import { NgbConfig } from '../ngb-config';
 import { NgbConfigAnimation } from '../test/ngb-config-animation';
@@ -43,13 +43,6 @@ function expectActiveSlides(nativeEl: HTMLDivElement, active: boolean[]) {
 }
 
 describe('ngb-carousel', () => {
-	beforeEach(() => {
-		TestBed.configureTestingModule({
-			declarations: [TestComponent, TestComponentOnPush],
-			imports: [NgbCarouselModule],
-		});
-	});
-
 	it('should initialize inputs with default values', () => {
 		const defaultConfig = new NgbCarouselConfig(new NgbConfig());
 		const carousel = new NgbCarousel(new NgbCarouselConfig(new NgbConfig()), null, <any>null, <any>null, <any>null);
@@ -896,10 +889,6 @@ describe('ngb-carousel', () => {
 	describe('Custom config', () => {
 		let config: NgbCarouselConfig;
 
-		beforeEach(() => {
-			TestBed.configureTestingModule({ imports: [NgbCarouselModule] });
-		});
-
 		beforeEach(inject([NgbCarouselConfig], (c: NgbCarouselConfig) => {
 			config = c;
 			config.interval = 1000;
@@ -938,7 +927,6 @@ describe('ngb-carousel', () => {
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				imports: [NgbCarouselModule],
 				providers: [{ provide: NgbCarouselConfig, useValue: config }],
 			});
 		});
@@ -962,6 +950,8 @@ describe('ngb-carousel', () => {
 if (isBrowserVisible('ngb-carousel animations')) {
 	describe('ngb-carousel animations', () => {
 		@Component({
+			standalone: true,
+			imports: [NgbCarousel, NgbSlide],
 			template: `
 				<ngb-carousel (slid)="onSlid($event)" [interval]="-1">
 					<ng-template ngbSlide id="one">One</ng-template>
@@ -978,8 +968,6 @@ if (isBrowserVisible('ngb-carousel animations')) {
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				declarations: [TestAnimationComponent],
-				imports: [NgbCarouselModule],
 				providers: [{ provide: NgbConfig, useClass: NgbConfigAnimation }],
 			});
 		});
@@ -1148,7 +1136,26 @@ if (isBrowserVisible('ngb-carousel animations')) {
 	});
 }
 
-@Component({ selector: 'test-cmp', template: '' })
+@Component({
+	selector: 'test-cmp-on-push',
+	standalone: true,
+	imports: [NgbCarousel, NgbSlide],
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	template: `
+		<ngb-carousel>
+			<ng-template ngbSlide>foo</ng-template>
+			<ng-template ngbSlide>bar</ng-template>
+		</ngb-carousel>
+	`,
+})
+class TestComponentOnPush {}
+
+@Component({
+	selector: 'test-cmp',
+	standalone: true,
+	imports: [NgbCarousel, NgbSlide, NgIf, NgFor, TestComponentOnPush],
+	template: '',
+})
 class TestComponent {
 	addNewSlide = false;
 	interval;
@@ -1161,15 +1168,3 @@ class TestComponent {
 	carouselSlideCallBack = (event: NgbSlideEvent) => {};
 	carouselSingleSlideCallBack = (event: NgbSingleSlideEvent, id: string) => {};
 }
-
-@Component({
-	selector: 'test-cmp-on-push',
-	changeDetection: ChangeDetectionStrategy.OnPush,
-	template: `
-		<ngb-carousel>
-			<ng-template ngbSlide>foo</ng-template>
-			<ng-template ngbSlide>bar</ng-template>
-		</ngb-carousel>
-	`,
-})
-class TestComponentOnPush {}

@@ -3,6 +3,7 @@ import { createGenericTestComponent } from '../test/common';
 import createSpy = jasmine.createSpy;
 
 import { Component } from '@angular/core';
+import { NgIf } from '@angular/common';
 
 import { NgbDropdown, NgbDropdownModule } from './dropdown.module';
 import { NgbDropdownConfig } from './dropdown-config';
@@ -50,7 +51,6 @@ const jasmineMatchers: jasmine.CustomMatcherFactories = {
 describe('ngb-dropdown', () => {
 	beforeEach(() => {
 		jasmine.addMatchers(jasmineMatchers);
-		TestBed.configureTestingModule({ declarations: [TestComponent], imports: [NgbDropdownModule] });
 	});
 
 	it('should be closed and down by default', () => {
@@ -366,7 +366,6 @@ describe('ngb-dropdown', () => {
 describe('ngb-dropdown-toggle', () => {
 	beforeEach(() => {
 		jasmine.addMatchers(jasmineMatchers);
-		TestBed.configureTestingModule({ declarations: [TestComponent], imports: [NgbDropdownModule] });
 	});
 
 	it('should toggle dropdown on click', () => {
@@ -550,7 +549,6 @@ describe('ngb-dropdown-toggle', () => {
 		let config: NgbDropdownConfig;
 
 		beforeEach(() => {
-			TestBed.configureTestingModule({ imports: [NgbDropdownModule] });
 			TestBed.overrideComponent(TestComponent, {
 				set: {
 					template: `
@@ -585,7 +583,6 @@ describe('ngb-dropdown-toggle', () => {
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				imports: [NgbDropdownModule],
 				providers: [{ provide: NgbDropdownConfig, useValue: config }],
 			});
 		});
@@ -607,7 +604,7 @@ describe('ngb-dropdown-toggle', () => {
 	});
 });
 
-@Component({ selector: 'test-cmp', template: '' })
+@Component({ selector: 'test-cmp', standalone: true, imports: [NgbDropdownModule, NgIf], template: '' })
 class TestComponent {
 	isOpen = false;
 	stateChanges: boolean[] = [];

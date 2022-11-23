@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
-import { UntypedFormControl, UntypedFormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { Options } from '@popperjs/core';
 import { merge, Observable, of, OperatorFunction, Subject } from 'rxjs';
@@ -12,8 +12,9 @@ import { ARIA_LIVE_DELAY } from '../util/accessibility/live';
 import { Key } from '../util/key';
 import { NgbTypeahead } from './typeahead';
 import { NgbTypeaheadConfig } from './typeahead-config';
-import { NgbTypeaheadModule } from './typeahead.module';
+import { NgIf } from '@angular/common';
 import createSpy = jasmine.createSpy;
+import { NgbHighlight } from './highlight';
 
 const createTestComponent = (html: string) =>
 	createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -66,8 +67,6 @@ function expectWindowResults(element, expectedResults: string[]) {
 describe('ngb-typeahead', () => {
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			declarations: [TestComponent, TestOnPushComponent, TestAsyncComponent],
-			imports: [NgbTypeaheadModule, FormsModule, ReactiveFormsModule],
 			providers: [{ provide: ARIA_LIVE_DELAY, useValue: null }],
 		});
 	});
@@ -993,7 +992,12 @@ describe('ngb-typeahead', () => {
 	});
 });
 
-@Component({ selector: 'test-cmp', template: '' })
+@Component({
+	selector: 'test-cmp',
+	standalone: true,
+	imports: [NgbHighlight, NgbTypeahead, FormsModule, ReactiveFormsModule, NgIf],
+	template: '',
+})
 class TestComponent {
 	private _strings = ['one', 'one more', 'two', 'three'];
 	private _objects = [
@@ -1063,7 +1067,13 @@ class TestComponent {
 	}
 }
 
-@Component({ selector: 'test-onpush-cmp', changeDetection: ChangeDetectionStrategy.OnPush, template: '' })
+@Component({
+	selector: 'test-onpush-cmp',
+	standalone: true,
+	imports: [NgbHighlight, NgbTypeahead, FormsModule],
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	template: '',
+})
 class TestOnPushComponent {
 	private _strings = ['one', 'one more', 'two', 'three'];
 
@@ -1075,7 +1085,7 @@ class TestOnPushComponent {
 	};
 }
 
-@Component({ selector: 'test-async-cmp', template: '' })
+@Component({ selector: 'test-async-cmp', standalone: true, imports: [NgbHighlight, NgbTypeahead], template: '' })
 class TestAsyncComponent {
 	private _strings = ['one', 'one more', 'two', 'three'];
 

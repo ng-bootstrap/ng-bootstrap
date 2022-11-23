@@ -1,10 +1,9 @@
-import { TestBed, ComponentFixture } from '@angular/core/testing';
+import { ComponentFixture } from '@angular/core/testing';
 import { createGenericTestComponent } from '../test/common';
 
 import { Component } from '@angular/core';
 
 import { NgbHighlight } from './highlight';
-import { NgbTypeaheadModule } from './typeahead.module';
 
 const createTestComponent = (html: string) =>
 	createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -33,11 +32,6 @@ function highlightHtml(fixture) {
 }
 
 describe('ngb-highlight', () => {
-	beforeEach(() => {
-		TestBed.overrideModule(NgbTypeaheadModule, { set: { exports: [NgbHighlight] } });
-		TestBed.configureTestingModule({ declarations: [TestComponent], imports: [NgbTypeaheadModule] });
-	});
-
 	it('should render highlighted text when there is one match', () => {
 		const fixture = createTestComponent('<ngb-highlight result="foo bar baz" term="bar"></ngb-highlight>');
 
@@ -208,5 +202,5 @@ describe('ngb-highlight', () => {
 	});
 });
 
-@Component({ selector: 'test-cmp', template: '' })
+@Component({ selector: 'test-cmp', standalone: true, imports: [NgbHighlight], template: '' })
 class TestComponent {}

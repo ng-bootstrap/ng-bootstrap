@@ -32,7 +32,7 @@ import { Key } from '../util/key';
 import { NgbDropdownConfig } from './dropdown-config';
 import { FOCUSABLE_ELEMENTS_SELECTOR } from '../util/focus-trap';
 
-@Directive({ selector: '.navbar' })
+@Directive({ selector: '.navbar', standalone: true })
 export class NgbNavbar {}
 
 /**
@@ -43,6 +43,7 @@ export class NgbNavbar {}
  */
 @Directive({
 	selector: '[ngbDropdownItem]',
+	standalone: true,
 	host: { class: 'dropdown-item', '[class.disabled]': 'disabled', '[tabIndex]': 'disabled ? -1 : 0' },
 })
 export class NgbDropdownItem {
@@ -71,6 +72,7 @@ export class NgbDropdownItem {
  */
 @Directive({
 	selector: '[ngbDropdownMenu]',
+	standalone: true,
 	host: {
 		'[class.dropdown-menu]': 'true',
 		'[class.show]': 'dropdown.isOpen()',
@@ -110,6 +112,7 @@ export class NgbDropdownMenu {
  */
 @Directive({
 	selector: '[ngbDropdownAnchor]',
+	standalone: true,
 	host: { class: 'dropdown-toggle', '[attr.aria-expanded]': 'dropdown.isOpen()' },
 })
 export class NgbDropdownAnchor {
@@ -129,6 +132,7 @@ export class NgbDropdownAnchor {
  */
 @Directive({
 	selector: '[ngbDropdownToggle]',
+	standalone: true,
 	host: {
 		class: 'dropdown-toggle',
 		'[attr.aria-expanded]': 'dropdown.isOpen()',
@@ -151,7 +155,12 @@ export class NgbDropdownToggle extends NgbDropdownAnchor {
 /**
  * A directive that provides contextual overlays for displaying lists of links and more.
  */
-@Directive({ selector: '[ngbDropdown]', exportAs: 'ngbDropdown', host: { '[class.show]': 'isOpen()' } })
+@Directive({
+	selector: '[ngbDropdown]',
+	exportAs: 'ngbDropdown',
+	standalone: true,
+	host: { '[class.show]': 'isOpen()' },
+})
 export class NgbDropdown implements AfterContentInit, OnChanges, OnDestroy {
 	static ngAcceptInputType_autoClose: boolean | string;
 	static ngAcceptInputType_display: string;

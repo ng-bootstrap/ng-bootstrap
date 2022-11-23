@@ -3,7 +3,6 @@ import { createGenericTestComponent } from '../test/common';
 
 import { Component } from '@angular/core';
 
-import { NgbProgressbarModule } from './progressbar.module';
 import { NgbProgressbar } from './progressbar';
 import { NgbProgressbarConfig } from './progressbar-config';
 
@@ -137,10 +136,6 @@ describe('ngb-progressbar', () => {
 	});
 
 	describe('UI logic', () => {
-		beforeEach(() => {
-			TestBed.configureTestingModule({ declarations: [TestComponent], imports: [NgbProgressbarModule] });
-		});
-
 		it('accepts a value and respond to value changes', () => {
 			const html = '<ngb-progressbar [value]="value"></ngb-progressbar>';
 			const fixture = createTestComponent(html);
@@ -292,10 +287,6 @@ describe('ngb-progressbar', () => {
 	describe('Custom config', () => {
 		let config: NgbProgressbarConfig;
 
-		beforeEach(() => {
-			TestBed.configureTestingModule({ imports: [NgbProgressbarModule] });
-		});
-
 		beforeEach(inject([NgbProgressbarConfig], (c: NgbProgressbarConfig) => {
 			config = c;
 			config.max = 1000;
@@ -328,7 +319,6 @@ describe('ngb-progressbar', () => {
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				imports: [NgbProgressbarModule],
 				providers: [{ provide: NgbProgressbarConfig, useValue: config }],
 			});
 		});
@@ -347,7 +337,7 @@ describe('ngb-progressbar', () => {
 	});
 });
 
-@Component({ selector: 'test-cmp', template: '' })
+@Component({ selector: 'test-cmp', standalone: true, imports: [NgbProgressbar], template: '' })
 class TestComponent {
 	value = 10;
 	max = 50;

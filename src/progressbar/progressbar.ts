@@ -1,12 +1,15 @@
 import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation, HostBinding } from '@angular/core';
 import { getValueInRange, isNumber } from '../util/util';
 import { NgbProgressbarConfig } from './progressbar-config';
+import { NgIf, PercentPipe } from '@angular/common';
 
 /**
  * A directive that provides feedback on the progress of a workflow or an action.
  */
 @Component({
 	selector: 'ngb-progressbar',
+	standalone: true,
+	imports: [NgIf, PercentPipe],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
 	host: { class: 'progress' },

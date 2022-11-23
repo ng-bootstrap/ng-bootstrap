@@ -12,7 +12,6 @@ import {
 	Validators,
 } from '@angular/forms';
 
-import { NgbRatingModule } from './rating.module';
 import { NgbRating } from './rating';
 import { NgbRatingConfig } from './rating-config';
 import { By } from '@angular/platform-browser';
@@ -54,13 +53,6 @@ function getStateText(compiled) {
 }
 
 describe('ngb-rating', () => {
-	beforeEach(() => {
-		TestBed.configureTestingModule({
-			declarations: [TestComponent],
-			imports: [NgbRatingModule, FormsModule, ReactiveFormsModule],
-		});
-	});
-
 	it('should initialize inputs with default values', () => {
 		const defaultConfig = new NgbRatingConfig();
 		const rating = new NgbRating(new NgbRatingConfig(), <any>null);
@@ -770,10 +762,6 @@ describe('ngb-rating', () => {
 	describe('Custom config', () => {
 		let config: NgbRatingConfig;
 
-		beforeEach(() => {
-			TestBed.configureTestingModule({ imports: [NgbRatingModule] });
-		});
-
 		beforeEach(inject([NgbRatingConfig], (c: NgbRatingConfig) => {
 			config = c;
 			config.max = 5;
@@ -797,7 +785,6 @@ describe('ngb-rating', () => {
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				imports: [NgbRatingModule],
 				providers: [{ provide: NgbRatingConfig, useValue: config }],
 			});
 		});
@@ -813,7 +800,12 @@ describe('ngb-rating', () => {
 	});
 });
 
-@Component({ selector: 'test-cmp', template: '' })
+@Component({
+	selector: 'test-cmp',
+	standalone: true,
+	imports: [NgbRating, FormsModule, ReactiveFormsModule],
+	template: '',
+})
 class TestComponent {
 	changed = false;
 	form = new UntypedFormGroup({ rating: new UntypedFormControl(null, Validators.required) });

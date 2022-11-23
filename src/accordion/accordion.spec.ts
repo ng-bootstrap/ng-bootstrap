@@ -1,10 +1,17 @@
 import { TestBed, ComponentFixture, inject } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { NgFor } from '@angular/common';
 import { createGenericTestComponent, isBrowserVisible } from '../test/common';
 
 import { Component } from '@angular/core';
 
-import { NgbAccordionModule, NgbPanelChangeEvent, NgbAccordionConfig, NgbAccordion } from './accordion.module';
+import {
+	NgbAccordionModule,
+	NgbPanelChangeEvent,
+	NgbAccordionConfig,
+	NgbAccordion,
+	NgbPanel,
+} from './accordion.module';
 import { NgbConfig } from '../ngb-config';
 import { NgbConfigAnimation } from '../test/ngb-config-animation';
 
@@ -68,7 +75,6 @@ describe('ngb-accordion', () => {
   `;
 
 	beforeEach(() => {
-		TestBed.configureTestingModule({ declarations: [TestComponent], imports: [NgbAccordionModule] });
 		TestBed.overrideComponent(TestComponent, { set: { template: html } });
 	});
 
@@ -678,10 +684,6 @@ describe('ngb-accordion', () => {
 	describe('Custom config', () => {
 		let config: NgbAccordionConfig;
 
-		beforeEach(() => {
-			TestBed.configureTestingModule({ imports: [NgbAccordionModule] });
-		});
-
 		beforeEach(inject([NgbAccordionConfig], (c: NgbAccordionConfig) => {
 			config = c;
 			config.closeOthers = true;
@@ -705,7 +707,6 @@ describe('ngb-accordion', () => {
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				imports: [NgbAccordionModule],
 				providers: [{ provide: NgbAccordionConfig, useValue: config }],
 			});
 		});
@@ -897,6 +898,8 @@ describe('ngb-accordion', () => {
 if (isBrowserVisible('ngb-accordion animations')) {
 	describe('ngb-accordion animations', () => {
 		@Component({
+			standalone: true,
+			imports: [NgbAccordion, NgbPanel],
 			template: `
 				<ngb-accordion
 					activeIds="first"
@@ -921,8 +924,6 @@ if (isBrowserVisible('ngb-accordion animations')) {
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				declarations: [TestAnimationComponent],
-				imports: [NgbAccordionModule],
 				providers: [{ provide: NgbConfig, useClass: NgbConfigAnimation }],
 			});
 		});
@@ -1074,7 +1075,7 @@ if (isBrowserVisible('ngb-accordion animations')) {
 	});
 }
 
-@Component({ selector: 'test-cmp', template: '' })
+@Component({ selector: 'test-cmp', standalone: true, imports: [NgbAccordionModule, NgFor], template: '' })
 class TestComponent {
 	activeIds: string | string[] = [];
 	classType;

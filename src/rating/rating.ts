@@ -17,6 +17,7 @@ import { NgbRatingConfig } from './rating-config';
 import { getValueInRange } from '../util/util';
 import { Key } from '../util/key';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NgFor, NgTemplateOutlet } from '@angular/common';
 
 /**
  * The context for the custom star display template defined in the `starTemplate`.
@@ -38,6 +39,8 @@ export interface StarTemplateContext {
  */
 @Component({
 	selector: 'ngb-rating',
+	standalone: true,
+	imports: [NgFor, NgTemplateOutlet],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
 	host: {

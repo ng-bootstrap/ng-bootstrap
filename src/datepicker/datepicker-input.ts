@@ -53,6 +53,7 @@ import { NgbRTL } from '../util/rtl';
 @Directive({
 	selector: 'input[ngbDatepicker]',
 	exportAs: 'ngbDatepicker',
+	standalone: true,
 	host: {
 		'(input)': 'manualDateChange($event.target.value)',
 		'(change)': 'manualDateChange($event.target.value, true)',
