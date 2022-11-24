@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgForOf } from '@angular/common';
+import { NgFor } from '@angular/common';
 
 @Component({
 	selector: 'ngbd-nav-dynamic',
 	standalone: true,
-	imports: [NgbNavModule, NgForOf],
+	imports: [NgbNavModule, NgFor],
 	templateUrl: './nav-dynamic.html',
 	styles: [
 		`

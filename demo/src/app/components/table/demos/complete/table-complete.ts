@@ -1,4 +1,4 @@
-import { AsyncPipe, DecimalPipe, NgForOf, NgIf } from '@angular/common';
+import { AsyncPipe, DecimalPipe, NgFor, NgIf } from '@angular/common';
 import { Component, QueryList, ViewChildren } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -12,7 +12,7 @@ import { NgbPaginationModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootst
 	selector: 'ngbd-table-complete',
 	standalone: true,
 	imports: [
-		NgForOf,
+		NgFor,
 		DecimalPipe,
 		FormsModule,
 		AsyncPipe,

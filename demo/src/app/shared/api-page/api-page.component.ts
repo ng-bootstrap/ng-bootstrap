@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import apiDocs from '../../../api-docs';
 import { NgbdApiDocs, NgbdApiDocsClass, NgbdApiDocsConfig } from '../api-docs';
-import { NgForOf } from '@angular/common';
+import { NgFor } from '@angular/common';
 
 export function getApis(component: string) {
 	const components: any[] = [];
@@ -35,7 +35,7 @@ export function getApis(component: string) {
 
 @Component({
 	standalone: true,
-	imports: [NgbdApiDocs, NgbdApiDocsClass, NgbdApiDocsConfig, NgForOf],
+	imports: [NgbdApiDocs, NgbdApiDocsClass, NgbdApiDocsConfig, NgFor],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
 		<ngbd-api-docs *ngFor="let component of components" [directive]="component"></ngbd-api-docs>
