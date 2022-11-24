@@ -1,5 +1,5 @@
 import { Component, PipeTransform } from '@angular/core';
-import { AsyncPipe, DecimalPipe, NgForOf } from '@angular/common';
+import { AsyncPipe, DecimalPipe, NgFor } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 import { Observable } from 'rxjs';
@@ -54,7 +54,7 @@ function search(text: string, pipe: PipeTransform): Country[] {
 @Component({
 	selector: 'ngbd-table-filtering',
 	standalone: true,
-	imports: [DecimalPipe, NgForOf, AsyncPipe, ReactiveFormsModule, NgbTypeaheadModule],
+	imports: [DecimalPipe, NgFor, AsyncPipe, ReactiveFormsModule, NgbTypeaheadModule],
 	templateUrl: './table-filtering.html',
 	providers: [DecimalPipe],
 })

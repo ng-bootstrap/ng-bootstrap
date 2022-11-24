@@ -8,7 +8,7 @@ import { NgbdExamplesPage } from '../examples-page/examples.component';
 
 import { environment } from '../../../environments/environment';
 import { SideNavComponent } from '../side-nav/side-nav.component';
-import { AsyncPipe, NgComponentOutlet, NgForOf, NgIf, TitleCasePipe } from '@angular/common';
+import { AsyncPipe, NgComponentOutlet, NgFor, NgIf, TitleCasePipe } from '@angular/common';
 import { NgbCollapseModule, NgbDropdownModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 
 export type TableOfContents = { fragment: string; title: string }[];
@@ -22,7 +22,7 @@ export type TableOfContents = { fragment: string; title: string }[];
 		NgbCollapseModule,
 		NgbDropdownModule,
 		RouterLink,
-		NgForOf,
+		NgFor,
 		NgIf,
 		AsyncPipe,
 		NgComponentOutlet,

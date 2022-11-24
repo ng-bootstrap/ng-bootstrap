@@ -3,11 +3,11 @@ import { ActivatedRoute } from '@angular/router';
 
 import { NgbdDemoListService } from '../../services/demo-list.service';
 import { NgbdWidgetDemoComponent } from './demo.component';
-import { NgComponentOutlet, NgForOf } from '@angular/common';
+import { NgComponentOutlet, NgFor } from '@angular/common';
 
 @Component({
 	standalone: true,
-	imports: [NgbdWidgetDemoComponent, NgComponentOutlet, NgForOf],
+	imports: [NgbdWidgetDemoComponent, NgComponentOutlet, NgFor],
 	template: `
 		<ngbd-widget-demo
 			*ngFor="let demo of demos"

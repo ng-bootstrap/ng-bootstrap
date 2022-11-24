@@ -4,7 +4,7 @@ import { PropertyDesc, DirectiveDesc, InputDesc, MethodDesc, ClassDesc, signatur
 import { AnalyticsService } from '../../services/analytics.service';
 import { RouterLink } from '@angular/router';
 import { NgbdApiDocsBadge } from './api-docs-badge.component';
-import { NgForOf, NgIf } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { NgbdFragment } from '../fragment/fragment.directive';
 
 /**
@@ -18,7 +18,7 @@ import { NgbdFragment } from '../fragment/fragment.directive';
 @Component({
 	selector: 'ngbd-api-docs',
 	standalone: true,
-	imports: [RouterLink, NgbdApiDocsBadge, NgIf, NgForOf, NgbdFragment],
+	imports: [RouterLink, NgbdApiDocsBadge, NgIf, NgFor, NgbdFragment],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	templateUrl: './api-docs.component.html',
 	styles: [

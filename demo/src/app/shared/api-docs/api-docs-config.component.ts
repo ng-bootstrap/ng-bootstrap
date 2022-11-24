@@ -4,7 +4,7 @@ import { ClassDesc } from './api-docs.model';
 import { AnalyticsService } from '../../services/analytics.service';
 import { RouterLink } from '@angular/router';
 import { NgbdApiDocsBadge } from './api-docs-badge.component';
-import { NgForOf, NgIf } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { NgbdFragment } from '../fragment/fragment.directive';
 
 const CONFIG_SUFFIX_LENGTH = 'Config'.length;
@@ -19,7 +19,7 @@ const CONFIG_SUFFIX_LENGTH = 'Config'.length;
 @Component({
 	selector: 'ngbd-api-docs-config',
 	standalone: true,
-	imports: [RouterLink, NgbdApiDocsBadge, NgForOf, NgIf, NgbdFragment],
+	imports: [RouterLink, NgbdApiDocsBadge, NgFor, NgIf, NgbdFragment],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	templateUrl: './api-docs-config.component.html',
 })

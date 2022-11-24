@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgForOf } from '@angular/common';
+import { NgFor } from '@angular/common';
 import { COMPONENT_LIST, DEPRECATED_COMPONENT_LIST } from '../component-list';
 
 @Component({
 	selector: 'ngbd-side-nav',
 	standalone: true,
-	imports: [RouterLink, NgbCollapseModule, NgForOf],
+	imports: [RouterLink, NgbCollapseModule, NgFor],
 	templateUrl: './side-nav.component.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })

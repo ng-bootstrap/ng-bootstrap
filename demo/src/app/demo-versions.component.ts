@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { AsyncPipe, NgForOf } from '@angular/common';
+import { AsyncPipe, NgFor } from '@angular/common';
 import { NavigationEnd, Router } from '@angular/router';
 import { environment } from '../environments/environment';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
@@ -14,7 +14,7 @@ interface Version {
 	selector: 'ngbd-demo-versions',
 	standalone: true,
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	imports: [NgForOf, AsyncPipe, NgbDropdownModule],
+	imports: [NgFor, AsyncPipe, NgbDropdownModule],
 	template: `
 		<div class="nav-item" ngbDropdown>
 			<a class="nav-link" ngbDropdownToggle id="demo-site-versions" role="button"> ng-bootstrap v{{ current }} </a>

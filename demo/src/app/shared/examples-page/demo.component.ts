@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { AnalyticsService } from '../../services/analytics.service';
 import { ISnippet, Snippet } from '../../services/snippet';
 import { RouterLink } from '@angular/router';
-import { NgForOf, NgIf } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { NgbdCodeComponent } from '../code/code.component';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdFragment } from '../fragment/fragment.directive';
@@ -18,7 +18,7 @@ const TYPES: { [name: string]: string } = {
 @Component({
 	selector: 'ngbd-widget-demo',
 	standalone: true,
-	imports: [RouterLink, NgIf, NgbdCodeComponent, NgbNavModule, NgForOf, NgbdFragment],
+	imports: [RouterLink, NgIf, NgbdCodeComponent, NgbNavModule, NgFor, NgbdFragment],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	templateUrl: './demo.component.html',
 })
