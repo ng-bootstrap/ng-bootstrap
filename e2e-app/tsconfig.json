@@ -7,7 +7,7 @@
 			"@ng-bootstrap/ng-bootstrap": ["../src/index"]
 		}
 	},
-	"files": ["src/main.ts", "src/polyfills.ts"],
+	"files": ["src/main.ts"],
 	"angularCompilerOptions": {
 		"strictTemplates": false,
 		"fullTemplateTypeCheck": false

@@ -172,7 +172,7 @@
 						"outputPath": "e2e-app/dist",
 						"index": "e2e-app/src/index.html",
 						"main": "e2e-app/src/main.ts",
-						"polyfills": "e2e-app/src/polyfills.ts",
+						"polyfills": ["zone.js"],
 						"tsConfig": "e2e-app/tsconfig.json",
 						"assets": ["e2e-app/src/favicon.ico"],
 						"styles": ["node_modules/bootstrap/dist/css/bootstrap.css", "e2e-app/src/style/app.scss"],
