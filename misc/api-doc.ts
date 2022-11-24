@@ -1,16 +1,38 @@
-// tslint:disable:no-bitwise
 import {
-	CallExpression,
+	canHaveDecorators,
+	ClassDeclaration,
+	ClassElement,
 	createProgram,
 	Decorator,
 	displayPartsToString,
+	Expression,
 	getCombinedModifierFlags,
 	getDecorators,
-	Identifier,
+	InterfaceDeclaration,
+	isCallExpression,
+	isClassDeclaration,
+	isGetAccessor,
+	isIdentifier,
+	isInterfaceDeclaration,
+	isMethodDeclaration,
+	isMethodSignature,
+	isObjectLiteralExpression,
+	isPropertyAssignment,
+	isPropertyDeclaration,
+	isPropertySignature,
+	isSetAccessorDeclaration,
+	MethodDeclaration,
+	MethodSignature,
 	ModifierFlags,
+	NamedDeclaration,
+	Node,
+	NodeArray,
 	Program,
-	SyntaxKind,
+	PropertyDeclaration,
+	PropertySignature,
+	Symbol,
 	TypeChecker,
+	TypeElement,
 } from 'typescript';
 
 import * as marked from 'marked';
@@ -19,9 +41,7 @@ function displayPartsToHtml(displayParts: any): string {
 	return marked(displayPartsToString(displayParts), { gfm: true }).trim();
 }
 
-function getNamesCompareFn(name = 'name') {
-	return (a, b) => a[name].localeCompare(b[name]);
-}
+const NAMED_COMPARE = (a, b) => a['name'].localeCompare(b['name']);
 
 const ANGULAR_LIFECYCLE_METHODS = [
 	'ngOnInit',
@@ -63,6 +83,23 @@ function isInternalMember(member) {
 	return false;
 }
 
+function isDecoratorOfType(decorator: Decorator, types: string[]) {
+	return (
+		isCallExpression(decorator.expression) &&
+		isIdentifier(decorator.expression.expression) &&
+		types.includes(decorator.expression.expression.text)
+	);
+}
+
+function getDecoratorOfType(node: Node, decoratorType: string): Decorator | undefined {
+	const decorators = canHaveDecorators(node) ? getDecorators(node) || [] : [];
+	return decorators.find((decorator) => isDecoratorOfType(decorator, [decoratorType]));
+}
+
+function unquoteName(name: string) {
+	return name.replace(/^['"]|['"]$/g, '');
+}
+
 function isAngularLifecycleHook(methodName) {
 	return ANGULAR_LIFECYCLE_METHODS.includes(methodName);
 }
@@ -71,11 +108,10 @@ function isPrivate(member) {
 	return (getCombinedModifierFlags(member) & ModifierFlags.Private) !== 0;
 }
 
-function isPrivateOrInternal(member, typeChecker) {
-	return isPrivate(member) || hasNoJSDoc(member, typeChecker) || isInternalMember(member);
-}
-
-function getJsDocTags(symbol) {
+function getJsDocTags(symbol: Symbol): {
+	deprecated?: { version: string; description: string };
+	since?: { version: string; description: string };
+} {
 	return !symbol
 		? {}
 		: symbol
@@ -86,31 +122,6 @@ function getJsDocTags(symbol) {
 					obj[el.name] = { version, description: rest.join(' ').trim() };
 					return obj;
 				}, {});
-}
-
-function getTypeParameter(program, declaration) {
-	// getting type of 'Class <T = number>'
-	const type = program.getTypeChecker().getTypeAtLocation(declaration);
-
-	// checking if '<...>' part is present
-	if (type.typeParameters) {
-		// getting 'T' parameter from declaration
-		const parameter = type.typeParameters[0].symbol;
-		let parameterString = parameter.getName();
-
-		// checking if there is a default type value (ex. '= number')
-		const defaultType = program.getTypeChecker().getTypeAtLocation(parameter.getDeclarations()[0].default);
-
-		// default type can be 'unknown', 'error', base type (ex. 'number') or another symbol
-		if (defaultType && !['error', 'unknown'].includes(defaultType.intrinsicName)) {
-			parameterString += defaultType.intrinsicName
-				? ` = ${defaultType.intrinsicName}`
-				: ` = ${defaultType.symbol.getName()}`;
-		}
-		return parameterString;
-	} else {
-		return undefined;
-	}
 }
 
 class APIDocVisitor {
@@ -130,9 +141,9 @@ class APIDocVisitor {
 		}
 
 		return sourceFile.statements.reduce((directivesSoFar, statement) => {
-			if (statement.kind === SyntaxKind.ClassDeclaration) {
+			if (isClassDeclaration(statement)) {
 				return directivesSoFar.concat(this.visitClassDeclaration(fileName, statement));
-			} else if (statement.kind === SyntaxKind.InterfaceDeclaration) {
+			} else if (isInterfaceDeclaration(statement)) {
 				return directivesSoFar.concat(this.visitInterfaceDeclaration(fileName, statement));
 			}
 
@@ -140,12 +151,11 @@ class APIDocVisitor {
 		}, []);
 	}
 
-	visitInterfaceDeclaration(fileName, interfaceDeclaration) {
+	visitInterfaceDeclaration(fileName: string, interfaceDeclaration: InterfaceDeclaration) {
 		const symbol = this.typeChecker.getSymbolAtLocation(interfaceDeclaration.name);
 		const description = displayPartsToHtml(symbol.getDocumentationComment(this.typeChecker));
 		const { deprecated, since } = getJsDocTags(symbol);
 		const className = interfaceDeclaration.name.text;
-		const typeParameter = getTypeParameter(this.program, interfaceDeclaration.name);
 		const members = this.visitMembers(interfaceDeclaration.members);
 
 		return [
@@ -155,7 +165,6 @@ class APIDocVisitor {
 				description,
 				deprecated,
 				since,
-				typeParameter,
 				type: 'Interface',
 				methods: members.methods,
 				properties: members.properties,
@@ -163,12 +172,11 @@ class APIDocVisitor {
 		];
 	}
 
-	visitClassDeclaration(fileName, classDeclaration) {
+	visitClassDeclaration(fileName: string, classDeclaration: ClassDeclaration) {
 		const symbol = this.typeChecker.getSymbolAtLocation(classDeclaration.name);
 		const description = displayPartsToHtml(symbol.getDocumentationComment(this.typeChecker));
 		const { deprecated, since } = getJsDocTags(symbol);
 		const className = classDeclaration.name.text;
-		const typeParameter = getTypeParameter(this.program, classDeclaration.name);
 		const decorators = getDecorators(classDeclaration);
 		let directiveInfo;
 		let members;
@@ -179,9 +187,10 @@ class APIDocVisitor {
 		}
 
 		if (decorators) {
-			for (let i = 0; i < decorators.length; i++) {
-				if (this.isDirectiveDecorator(decorators[i])) {
-					directiveInfo = this.visitDirectiveDecorator(decorators[i]);
+			for (const decorator of decorators) {
+				// COMPONENT / DIRECTIVE
+				if (isDecoratorOfType(decorator, ['Directive', 'Component'])) {
+					directiveInfo = this.visitDirectiveDecorator(decorator);
 					members = this.visitMembers(classDeclaration.members);
 
 					return [
@@ -191,7 +200,6 @@ class APIDocVisitor {
 							description,
 							deprecated,
 							since,
-							typeParameter,
 							type: directiveInfo.type,
 							selector: directiveInfo.selector,
 							exportAs: directiveInfo.exportAs,
@@ -201,7 +209,9 @@ class APIDocVisitor {
 							methods: members.methods,
 						},
 					];
-				} else if (this.isServiceDecorator(decorators[i])) {
+				}
+				// SERVICE
+				else if (isDecoratorOfType(decorator, ['Injectable'])) {
 					members = this.visitMembers(classDeclaration.members);
 
 					return [
@@ -211,7 +221,6 @@ class APIDocVisitor {
 							description,
 							deprecated,
 							since,
-							typeParameter,
 							type: 'Service',
 							methods: members.methods,
 							properties: members.properties,
@@ -219,7 +228,9 @@ class APIDocVisitor {
 					];
 				}
 			}
-		} else if (description) {
+		}
+		// CLASS
+		else if (description) {
 			members = this.visitMembers(classDeclaration.members);
 
 			return [
@@ -240,153 +251,141 @@ class APIDocVisitor {
 		return [];
 	}
 
-	visitDirectiveDecorator(decorator) {
-		let selector;
-		let exportAs;
-		const properties = decorator.expression.arguments[0].properties;
-		const type = decorator.expression.expression.text;
+	// @Directive({ selector: 'my-directive', exportAs: 'myDirective' })
+	// @Component({ selector: 'my-component', exportAs: 'myComponent' })
+	visitDirectiveDecorator(decorator: Decorator) {
+		let result: { type: string; selector?: string; exportAs?: string };
 
-		for (let i = 0; i < properties.length; i++) {
-			if (properties[i].name.text === 'selector') {
-				// TODO: this will only work if selector is initialized as a string literal
-				selector = properties[i].initializer.text;
-			}
-			if (properties[i].name.text === 'exportAs') {
-				// TODO: this will only work if selector is initialized as a string literal
-				exportAs = properties[i].initializer.text;
+		if (isCallExpression(decorator.expression)) {
+			if (isIdentifier(decorator.expression.expression)) {
+				result = {
+					type: decorator.expression.expression.getText(),
+				};
+
+				const objectLiteral = decorator.expression.arguments[0];
+
+				if (isObjectLiteralExpression(objectLiteral)) {
+					for (const item of objectLiteral.properties) {
+						if (isPropertyAssignment(item)) {
+							const propertyName = item.name.getText();
+							if (['selector', 'exportAs'].includes(propertyName)) {
+								result[propertyName] = item.initializer.getText();
+							}
+						}
+					}
+				}
 			}
 		}
 
-		return { selector, exportAs, type };
+		return result;
 	}
 
-	visitMembers(members) {
+	visitMembers(members: NodeArray<TypeElement | ClassElement>) {
 		const inputs = [];
 		const outputs = [];
 		const methods = [];
 		const properties = [];
-		let inputDecorator, outDecorator;
 
-		for (let i = 0; i < members.length; i++) {
-			inputDecorator = this.getDecoratorOfType(members[i], 'Input');
-			outDecorator = this.getDecoratorOfType(members[i], 'Output');
-			const { deprecated, since } = getJsDocTags(members[i].symbol);
+		for (const member of members) {
+			// skipping private and internal
+			if (isPrivate(member) || isInternalMember(member)) {
+				continue;
+			}
+
+			// Release info tags
+			const symbol = this.typeChecker.getSymbolAtLocation(member.name);
+			const { deprecated, since } = getJsDocTags(symbol);
 			const releaseInfo = { deprecated, since };
 
+			const inputDecorator = getDecoratorOfType(member, 'Input');
+			const outputDecorator = getDecoratorOfType(member, 'Output');
+
+			// Input accessor or property
 			if (inputDecorator) {
-				inputs.push(Object.assign(this.visitInput(members[i], inputDecorator), releaseInfo));
-			} else if (outDecorator) {
-				outputs.push(Object.assign(this.visitOutput(members[i], outDecorator), releaseInfo));
-			} else if (
-				(members[i].kind === SyntaxKind.MethodDeclaration || members[i].kind === SyntaxKind.MethodSignature) &&
-				!isAngularLifecycleHook(members[i].name.text) &&
-				!isPrivateOrInternal(members[i], this.typeChecker)
+				if (isPropertyDeclaration(member)) {
+					inputs.push({ ...this.visitInputProperty(member, inputDecorator), ...releaseInfo });
+				} else if (isSetAccessorDeclaration(member)) {
+					inputs.push({ ...this.visitInputOrOutputDeclaration(member, inputDecorator), ...releaseInfo });
+				}
+			}
+
+			// Output
+			else if (isPropertyDeclaration(member) && outputDecorator) {
+				outputs.push({ ...this.visitInputOrOutputDeclaration(member, outputDecorator), ...releaseInfo });
+			}
+
+			// Method
+			else if (
+				(isMethodDeclaration(member) || isMethodSignature(member)) &&
+				!isAngularLifecycleHook(member.name.getText()) &&
+				!hasNoJSDoc(member, this.typeChecker)
 			) {
-				methods.push(Object.assign(this.visitMethodDeclaration(members[i]), releaseInfo));
-			} else if (
-				(members[i].kind === SyntaxKind.PropertyDeclaration ||
-					members[i].kind === SyntaxKind.PropertySignature ||
-					members[i].kind === SyntaxKind.GetAccessor) &&
-				!isPrivate(members[i]) &&
-				!isInternalMember(members[i])
-			) {
-				properties.push(Object.assign(this.visitProperty(members[i]), releaseInfo));
+				methods.push({ ...this.visitMethod(member), ...releaseInfo });
+			}
+
+			// Property
+			else if (isPropertyDeclaration(member) || isPropertySignature(member)) {
+				properties.push({ ...this.visitProperty(member), ...releaseInfo });
+			}
+
+			// Accessor
+			else if (isGetAccessor(member)) {
+				properties.push({ ...this.visitNamedDeclaration(member), ...releaseInfo });
 			}
 		}
 
-		inputs.sort(getNamesCompareFn());
-		outputs.sort(getNamesCompareFn());
-		properties.sort(getNamesCompareFn());
+		inputs.sort(NAMED_COMPARE);
+		outputs.sort(NAMED_COMPARE);
+		properties.sort(NAMED_COMPARE);
 
 		return { inputs, outputs, methods, properties };
 	}
 
-	visitMethodDeclaration(method) {
+	visitMethod(method: MethodDeclaration | MethodSignature) {
 		return {
-			name: method.name.text,
-			description: displayPartsToHtml(method.symbol.getDocumentationComment(this.typeChecker)),
-			args: method.parameters ? method.parameters.map((prop) => this.visitArgument(prop)) : [],
+			...this.visitNamedDeclaration(method),
+			args: method.parameters ? method.parameters.map((prop) => this.visitNamedDeclaration(prop)) : [],
 			returnType: this.visitType(method.type),
 		};
 	}
 
-	visitArgument(arg) {
-		return { name: arg.name.text, type: this.visitType(arg) };
-	}
-
-	visitInput(property, inDecorator) {
-		const inArgs = inDecorator.expression.arguments;
+	visitInputOrOutputDeclaration(declaration: NamedDeclaration, decorator: Decorator) {
+		const args = isCallExpression(decorator.expression) ? decorator.expression.arguments : ([] as Expression[]);
 		return {
-			name: inArgs.length ? inArgs[0].text : property.name.text,
-			defaultValue: property.initializer ? this.stringifyDefaultValue(property.initializer) : undefined,
-			type: this.visitType(property),
-			description: displayPartsToHtml(property.symbol.getDocumentationComment(this.typeChecker)),
+			...this.visitNamedDeclaration(declaration),
+			name: args.length ? unquoteName(args[0].getText()) : declaration.name.getText(),
 		};
 	}
 
-	stringifyDefaultValue(node) {
-		if (node.text) {
-			return node.text;
-		} else if (node.kind === SyntaxKind.FalseKeyword) {
-			return 'false';
-		} else if (node.kind === SyntaxKind.TrueKeyword) {
-			return 'true';
-		}
-	}
-
-	visitOutput(property, outDecorator) {
-		const outArgs = outDecorator.expression.arguments;
+	visitInputProperty(property: PropertyDeclaration, decorator: Decorator) {
 		return {
-			name: outArgs.length ? outArgs[0].text : property.name.text,
-			description: displayPartsToHtml(property.symbol.getDocumentationComment(this.typeChecker)),
+			...this.visitInputOrOutputDeclaration(property, decorator),
+			defaultValue: property.initializer?.getText(),
 		};
 	}
 
-	visitProperty(property) {
+	visitNamedDeclaration(declaration: NamedDeclaration) {
+		const symbol = this.typeChecker.getSymbolAtLocation(declaration.name);
 		return {
-			name: property.name.text,
-			defaultValue: property.initializer ? this.stringifyDefaultValue(property.initializer) : undefined,
-			type: this.visitType(property),
-			description: displayPartsToHtml(property.symbol.getDocumentationComment(this.typeChecker)),
+			name: declaration.name.getText(),
+			type: this.visitType(declaration),
+			description: displayPartsToHtml(symbol.getDocumentationComment(this.typeChecker)),
 		};
 	}
 
-	visitType(node) {
+	visitProperty(property: PropertyDeclaration | PropertySignature) {
+		return {
+			...this.visitNamedDeclaration(property),
+			defaultValue: property.initializer?.getText(),
+		};
+	}
+
+	visitType(node: Node & { type? }) {
 		if (node && node.type) {
 			return node.type.getText();
 		}
 
 		return node ? this.typeChecker.typeToString(this.typeChecker.getTypeAtLocation(node)) : 'void';
-	}
-
-	isDirectiveDecorator(decorator: Decorator) {
-		const decoratorType = this.getDecoratorType(decorator);
-		return decoratorType === 'Directive' || decoratorType === 'Component';
-	}
-
-	isServiceDecorator(decorator: Decorator) {
-		return this.getDecoratorType(decorator) === 'Injectable';
-	}
-
-	getDecoratorOfType(node, decoratorType) {
-		const decorators = getDecorators(node) || [];
-
-		for (let i = 0; i < decorators.length; i++) {
-			const decorator = decorators[i];
-			const decoratorCall = decorator.expression as CallExpression;
-			const decoratorIdentifier = decoratorCall.expression as Identifier;
-			if (decoratorIdentifier.text === decoratorType) {
-				return decorator;
-			}
-		}
-
-		return null;
-	}
-
-	private getDecoratorType(decorator: Decorator): string | undefined {
-		const decoratorCall = decorator.expression as CallExpression;
-		const decoratorIdentifier = decoratorCall.expression as Identifier;
-		return decoratorIdentifier.text;
 	}
 }
 

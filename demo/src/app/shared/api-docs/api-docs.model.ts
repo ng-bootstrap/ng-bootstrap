@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-interface */
 export interface ClassDesc {
 	type: string;
-	typeParameter: string;
 	fileName: string;
 	className: string;
 	description: string;
