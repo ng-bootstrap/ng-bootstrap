@@ -3,10 +3,7 @@
 		<a routerLink="." fragment="{{ apiDocs.className }}" ngbdFragment title="Anchor link to: {{ apiDocs.className }}">
 			<i class="bi bi-link-45deg" style="font-size: 1.75rem; color: black"></i>
 		</a>
-		<span>
-			{{ apiDocs.className
-			}}<span class="text-muted fw-light" *ngIf="apiDocs.typeParameter">&lt;{{ apiDocs.typeParameter }}&gt;</span>
-		</span>
+		{{ apiDocs.className }}
 		<a
 			class="github-link"
 			(click)="trackSourceClick()"
