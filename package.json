@@ -89,7 +89,7 @@
     "@angular/router": "^15.0.0",
     "@commitlint/cli": "12.1.4",
     "@commitlint/config-angular": "12.1.4",
-    "@nguniversal/express-engine": "^14.1.0-rc.0",
+    "@nguniversal/express-engine": "^15.0.0",
     "@playwright/test": "^1.28.1",
     "@popperjs/core": "^2.10.2",
     "@rollup/plugin-replace": "^3.1.0",
