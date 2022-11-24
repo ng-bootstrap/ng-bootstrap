@@ -10,4 +10,7 @@ import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@ang
 import './test/jasmine.config';
 
 // First, initialize the Angular testing environment.
-getTestBed().initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
+getTestBed().initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting(), {
+	errorOnUnknownElements: true,
+	errorOnUnknownProperties: true,
+});
