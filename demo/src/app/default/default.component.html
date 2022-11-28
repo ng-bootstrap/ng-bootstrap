@@ -1,5 +1,16 @@
 <main class="masthead py-3">
 	<div class="container">
+		<ngb-alert [dismissible]="false" type="warning" class="d-flex">
+			<i class="bi bi-lightbulb me-3"></i>
+			<div>
+				Support for Angular 15 is available with <code>14.0.0-rc.X</code> via
+				<code>npm install @ng-bootstrap/ng-bootstrap@next</code> (<a
+					href="https://github.com/ng-bootstrap/ng-bootstrap/blob/master/CHANGELOG.md"
+					target="_blank"
+					>see the changelog</a
+				>)
+			</div>
+		</ngb-alert>
 		<div class="row align-items-center">
 			<div class="col-6 mx-auto col-md-6">
 				<img width="512" height="512" class="img-fluid mb-3 mb-md-0" src="img/logo-stack.svg" alt="ng-bootstrap logo" />
