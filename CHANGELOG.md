@@ -1,3 +1,24 @@
+# [14.0.0-rc.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/13.1.1...14.0.0-rc.0) (2022-11-28)
+
+This release bumps minimum supported versions to Angular 15.0.0, Bootstrap 5.2.3 and Popper 2.11.6.
+
+It also introduces support for standalone components, which means that you can now import ng-bootstrap inside your 
+standalone components in 3 ways:
+
+```
+imports: [NgbModule]                     // import all ng-bootstrap components
+imports: [NgbNavModule]                  // import a certain type of components
+imports: [NgbNav, NgbNavOutlet, etc... ] // import required components individually
+```
+
+The demo site, stackblitzes and documentation have been updated to reflect these changes.
+
+### Features
+
+* migrate all components and directives to standalone ([5e6d11c](https://github.com/ng-bootstrap/ng-bootstrap/commit/5e6d11c5a2304298401f9954abeaebb1f34b2e17))
+
+
+
 ## [13.1.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/13.1.0...13.1.1) (2022-11-17)
 
 
