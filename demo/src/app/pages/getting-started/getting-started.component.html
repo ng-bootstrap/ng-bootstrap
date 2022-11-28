@@ -98,8 +98,21 @@
 				<td>5.2.0</td>
 				<td>2.10.2</td>
 			</tr>
+			<tr>
+				<th scope="row">14.x.x</th>
+				<td>15.0.0</td>
+				<td>5.2.0</td>
+				<td>2.10.2</td>
+			</tr>
 		</tbody>
 	</table>
+
+	<ngb-alert type="warning" [dismissible]="false">
+		<p>
+			If you don't plan to use version 14.x.x of ng-bootstrap, you should switch to the documentation of the version you
+			want to use by selecting it in the menu bar above.
+		</p>
+	</ngb-alert>
 
 	<p>
 		When bumping ng-bootstrap major version, make sure to check all the breaking changes listed in the
@@ -112,7 +125,7 @@
 	<p>
 		We strongly recommend using
 		<a href="https://cli.angular.io/" target="_blank">Angular CLI</a> for setting up a new project. If you have an
-		Angular &ge; 9 CLI project, you could simply use our schematics to add ng-bootstrap library to it.
+		Angular CLI project, you could simply use our schematics to add ng-bootstrap library to it.
 	</p>
 
 	<p>Just run the following:</p>
@@ -143,8 +156,8 @@
 		<li>Install the <code>@angular/localize</code> polyfill</li>
 		<li>Add bootstrap CSS/SCSS to your project (no javascript is required)</li>
 		<li>
-			Import <code>NgbModule</code> or any other component module like <code>NgbPaginationModule</code> in your
-			application
+			Import <code>NgbModule</code>, or any other component module like <code>NgbPaginationModule</code>, or directly
+			import the ng-bootstrap components and directives that you use, which are standalone.
 		</li>
 	</ul>
 
@@ -186,7 +199,7 @@
 
 				<p>In case you're using SCSS, please add this to your <code>styles.scss</code> directly:</p>
 
-				<ngbd-code [snippet]="bootstrapCss"></ngbd-code>
+				<ngbd-code [snippet]="bootstrapScss"></ngbd-code>
 
 				<ngb-alert type="warning" [dismissible]="false" class="mt-3">
 					<p class="fw-bold" style="font-size: 1.1rem">Should I add Bootstrap JavaScript files to my project?</p>
@@ -207,10 +220,7 @@
 
 				<h5>@angular/localize polyfill</h5>
 
-				<p>
-					If you're using Angular &ge; 9.0.0 and ng-bootstrap &ge; 6.0.0, you also have to install the
-					<code>@angular/localize</code> polyfill:
-				</p>
+				<p>Install the <code>@angular/localize</code> polyfill:</p>
 
 				<ngbd-code [snippet]="polyfillInstall"></ngbd-code>
 
@@ -223,9 +233,7 @@
 
 				<h5>@popperjs/core dependency</h5>
 
-				<p>
-					If you're using ng-bootstrap &ge; 12.0.0, you also have to install the <code>@popperjs/core</code> dependency:
-				</p>
+				<p>Install the <code>@popperjs/core</code> dependency:</p>
 
 				<ngbd-code [snippet]="popperInstall"></ngbd-code>
 
@@ -235,7 +243,7 @@
 
 				<ngbd-code [snippet]="codeInstall"></ngbd-code>
 
-				<p>Once installed you need to import our main module and you're good to go</p>
+				<p>Once installed you can import our main module, and you're good to go</p>
 
 				<ngbd-code [snippet]="codeRoot"></ngbd-code>
 			</div>
@@ -252,6 +260,13 @@
 	<p>The resulting bundle will be smaller in this case.</p>
 
 	<ngbd-code [snippet]="codeOther"></ngbd-code>
+
+	<p>
+		Or, since all our components and directives are standalone, you can directly import them in your modules or in your
+		standalone components.
+	</p>
+
+	<ngbd-code [snippet]="codeStandalone"></ngbd-code>
 
 	<ngbd-page-header title="Supported Browsers" fragment="browsers"></ngbd-page-header>
 

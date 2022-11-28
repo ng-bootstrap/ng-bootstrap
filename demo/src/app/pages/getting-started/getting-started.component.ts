@@ -28,9 +28,16 @@ export class GettingStartedPage {
 		code: `ng add @ng-bootstrap/ng-bootstrap --project myProject`,
 	});
 
-	bootstrapCss = Snippet({
+	bootstrapScss = Snippet({
 		lang: 'css',
-		code: `@import "~bootstrap/scss/bootstrap";`,
+		code: `
+      @import "bootstrap/scss/bootstrap";
+      /*
+      or import only the bootstrap scss files that your application actually needs,
+      as described in the Bootstrap customization guide:
+      https://getbootstrap.com/docs/5.2/customize/sass/#importing
+      */
+		`,
 	});
 
 	bootstrapCssAngularJson = Snippet({
@@ -73,7 +80,7 @@ export class GettingStartedPage {
 	codeRoot = Snippet({
 		lang: 'typescript',
 		code: `
-      import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+      import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
       @NgModule({
         imports: [NgbModule],
@@ -86,12 +93,28 @@ export class GettingStartedPage {
 	codeOther = Snippet({
 		lang: 'typescript',
 		code: `
-      import {NgbPaginationModule, NgbAlertModule} from '@ng-bootstrap/ng-bootstrap';
+      import { NgbPaginationModule, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 
       @NgModule({
         imports: [NgbPaginationModule, NgbAlertModule],
       })
       export class YourAppModule {
+      }
+    `,
+	});
+
+	codeStandalone = Snippet({
+		lang: 'typescript',
+		code: `
+      import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
+
+      @Component({
+        selector: 'app-product',
+        standalone: true,
+        imports: [NgbAlert],
+        templateUrl: './product.component.html'
+      })
+      export class ProductComponent {
       }
     `,
 	});
