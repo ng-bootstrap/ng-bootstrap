@@ -16,6 +16,8 @@ import {
 	NgZone,
 	OnInit,
 	OnDestroy,
+	Inject,
+	forwardRef,
 } from '@angular/core';
 
 import { isString } from '../util/util';
@@ -218,7 +220,10 @@ export class NgbPanelToggle {
 		}
 	}
 
-	constructor(public accordion: NgbAccordion, @Optional() @Host() public panel: NgbPanel) {}
+	constructor(
+		@Inject(forwardRef(() => NgbAccordion)) public accordion: NgbAccordion,
+		@Optional() @Host() public panel: NgbPanel,
+	) {}
 }
 
 /**
