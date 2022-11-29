@@ -1,6 +1,6 @@
 {
   "name": "@ng-bootstrap/ng-bootstrap",
-  "version": "14.0.0-rc.0",
+  "version": "14.0.0-rc.1",
   "description": "Angular powered Bootstrap",
   "author": "https://github.com/ng-bootstrap/ng-bootstrap/graphs/contributors",
   "engines": {
@@ -33,7 +33,7 @@
     "ngb:tdd": "ng test ng-bootstrap --source-map false",
     "ngb:e2e": "playwright test -c e2e-app",
     "ngb:build": "ng build ng-bootstrap -c production && yarn schematics:build && yarn ngb:static && yarn ngb:build:lint",
-		"ngb:build:lint": "eslint --no-eslintrc --config misc/eslintrc-after-build.js dist/**/*.{js,mjs}",
+    "ngb:build:lint": "eslint --no-eslintrc --config misc/eslintrc-after-build.js dist/**/*.{js,mjs}",
     "demo:serve": "ng serve demo --host 0.0.0.0",
     "demo:docs": "ts-node --project misc/tsconfig.json misc/generate-docs.ts",
     "demo:stackblitzes": "ts-node --project misc/tsconfig.json misc/generate-stackblitzes.ts",
