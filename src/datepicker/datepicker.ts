@@ -10,6 +10,7 @@ import {
 	ElementRef,
 	EventEmitter,
 	forwardRef,
+	Inject,
 	Input,
 	NgZone,
 	OnChanges,
@@ -179,7 +180,7 @@ export class NgbDatepickerMonth {
 
 	constructor(
 		public i18n: NgbDatepickerI18n,
-		public datepicker: NgbDatepicker,
+		@Inject(forwardRef(() => NgbDatepicker)) public datepicker: NgbDatepicker,
 		private _keyboardService: NgbDatepickerKeyboardService,
 		private _service: NgbDatepickerService,
 	) {}
