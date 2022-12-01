@@ -4,6 +4,7 @@ import { ComponentWrapper } from '../../shared/component-wrapper/component-wrapp
 import { NgbdApiPage } from '../../shared/api-page/api-page.component';
 import { NgbdExamplesPage } from '../../shared/examples-page/examples.component';
 import { NgbdAccordionBasic } from './demos/basic/accordion-basic';
+import { NgbdAccordionBasicDirective } from './demos/directive/accordion-basic';
 import { NgbdAccordionConfig } from './demos/config/accordion-config';
 import { NgbdAccordionHeader } from './demos/header/accordion-header';
 import { NgbdAccordionPreventchange } from './demos/preventchange/accordion-preventchange';
@@ -13,6 +14,12 @@ import { Routes } from '@angular/router';
 import { NgbdDemoListService } from '../../services/demo-list.service';
 
 const DEMOS = {
+	directive: {
+		title: 'Directive',
+		code: require('!raw-loader!./demos/directive/accordion-basic').default,
+		markup: require('!raw-loader!./demos/directive/accordion-basic.html').default,
+		type: NgbdAccordionBasicDirective,
+	},
 	basic: {
 		title: 'Accordion',
 		code: require('!raw-loader!./demos/basic/accordion-basic').default,
