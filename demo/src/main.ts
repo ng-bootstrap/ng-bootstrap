@@ -1,12 +1,17 @@
-import { enableProdMode } from '@angular/core';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { AppComponent } from './app/app.component';
+import { PreloadAllModules, provideRouter, withPreloading } from '@angular/router';
+import { ROUTES } from './app/routes';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { provideHttpClient, withNoXsrfProtection } from '@angular/common/http';
 
-import { NgbdModule } from './app/app.module';
-import { environment } from './environments/environment';
-
-// depending on the env mode, enable prod mode or add debugging modules
-if (environment.production) {
-	enableProdMode();
-}
-
-platformBrowserDynamic().bootstrapModule(NgbdModule);
+bootstrapApplication(AppComponent, {
+	providers: [
+		provideRouter(ROUTES, withPreloading(PreloadAllModules)),
+		{
+			provide: LocationStrategy,
+			useClass: HashLocationStrategy,
+		},
+		provideHttpClient(withNoXsrfProtection()),
+	],
+}).catch((err) => console.error(err));

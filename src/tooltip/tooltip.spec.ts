@@ -1,5 +1,6 @@
-import { TestBed, ComponentFixture, inject, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { createGenericTestComponent, isBrowserVisible, triggerEvent } from '../test/common';
+import createSpy = jasmine.createSpy;
 
 import { By } from '@angular/platform-browser';
 import {
@@ -11,13 +12,13 @@ import {
 	ViewChild,
 	ViewContainerRef,
 } from '@angular/core';
+import { NgIf } from '@angular/common';
 
-import { NgbTooltipModule } from './tooltip.module';
-import { NgbTooltipWindow, NgbTooltip } from './tooltip';
+import { NgbTooltip, NgbTooltipWindow } from './tooltip';
 import { NgbTooltipConfig } from './tooltip-config';
 import { NgbConfig } from '../ngb-config';
 import { NgbConfigAnimation } from '../test/ngb-config-animation';
-import createSpy = jasmine.createSpy;
+
 import { Options } from '@popperjs/core';
 
 const createTestComponent = (html: string) =>
@@ -31,10 +32,6 @@ function getWindow(element) {
 }
 
 describe('ngb-tooltip-window', () => {
-	beforeEach(() => {
-		TestBed.configureTestingModule({ imports: [NgbTooltipModule] });
-	});
-
 	afterEach(() => {
 		// Cleaning elements, because of a TestBed issue with the id attribute
 		Array.from(document.body.children).map((element: HTMLElement) => {
@@ -69,13 +66,6 @@ describe('ngb-tooltip-window', () => {
 });
 
 describe('ngb-tooltip', () => {
-	beforeEach(() => {
-		TestBed.configureTestingModule({
-			declarations: [TestComponent, TestOnPushComponent, TestHooksComponent],
-			imports: [NgbTooltipModule],
-		});
-	});
-
 	describe('basic functionality', () => {
 		it('should open and close a tooltip - default settings and content as string', fakeAsync(() => {
 			const fixture = createTestComponent(`<div ngbTooltip="Great tip!" style="margin-top: 100px;"></div>`);
@@ -654,7 +644,6 @@ describe('ngb-tooltip', () => {
 		let config: NgbTooltipConfig;
 
 		beforeEach(() => {
-			TestBed.configureTestingModule({ imports: [NgbTooltipModule] });
 			TestBed.overrideComponent(TestComponent, { set: { template: `<div ngbTooltip="Great tip!"></div>` } });
 		});
 
@@ -687,7 +676,6 @@ describe('ngb-tooltip', () => {
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				imports: [NgbTooltipModule],
 				providers: [{ provide: NgbTooltipConfig, useValue: config }],
 			});
 		});
@@ -720,10 +708,6 @@ describe('ngb-tooltip', () => {
 });
 
 describe('tooltip positionTarget', () => {
-	beforeEach(() => {
-		TestBed.configureTestingModule({ declarations: [TestComponent], imports: [NgbTooltipModule] });
-	});
-
 	function expectTooltipBePositionedAtHeightPx(heightPx: number) {
 		expect(
 			Math.abs(heightPx - window.document.querySelector('ngb-tooltip-window')!.getBoundingClientRect().top),
@@ -818,6 +802,8 @@ describe('tooltip positionTarget', () => {
 if (isBrowserVisible('ngb-tooltip animations')) {
 	describe('ngb-tooltip animations', () => {
 		@Component({
+			standalone: true,
+			imports: [NgbTooltip],
 			template: `<button ngbTooltip="Great tip!" triggers="click" (shown)="shown()" (hidden)="hidden()"></button>`,
 			host: { '[class.ngb-reduce-motion]': 'reduceMotion' },
 		})
@@ -835,8 +821,6 @@ if (isBrowserVisible('ngb-tooltip animations')) {
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				declarations: [TestAnimationComponent],
-				imports: [NgbTooltipModule],
 				providers: [{ provide: NgbConfig, useClass: NgbConfigAnimation }],
 			});
 		});
@@ -931,7 +915,7 @@ if (isBrowserVisible('ngb-tooltip animations')) {
 	});
 }
 
-@Component({ selector: 'test-cmpt', template: `` })
+@Component({ selector: 'test-cmpt', standalone: true, imports: [NgbTooltip, NgIf], template: `` })
 export class TestComponent {
 	name: string | null = 'World';
 	animation = false;
@@ -955,10 +939,21 @@ export class TestComponent {
 	}
 }
 
-@Component({ selector: 'test-onpush-cmpt', changeDetection: ChangeDetectionStrategy.OnPush, template: `` })
+@Component({
+	selector: 'test-onpush-cmpt',
+	standalone: true,
+	imports: [NgbTooltip],
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	template: ``,
+})
 export class TestOnPushComponent {}
 
-@Component({ selector: 'test-hooks', template: `<div ngbTooltip="tooltip"></div>` })
+@Component({
+	selector: 'test-hooks',
+	standalone: true,
+	imports: [NgbTooltip],
+	template: `<div ngbTooltip="tooltip"></div>`,
+})
 export class TestHooksComponent implements AfterViewInit {
 	@ViewChild(NgbTooltip, { static: true }) tooltip;
 

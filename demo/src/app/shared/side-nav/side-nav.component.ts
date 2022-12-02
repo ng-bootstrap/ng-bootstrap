@@ -1,36 +1,19 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-
-export const componentsList = [
-	'Accordion',
-	'Alert',
-	'Carousel',
-	'Collapse',
-	'Datepicker',
-	'Dropdown',
-	'Modal',
-	'Nav',
-	'Offcanvas',
-	'Pagination',
-	'Popover',
-	'Progressbar',
-	'Rating',
-	'Table',
-	'Timepicker',
-	'Toast',
-	'Tooltip',
-	'Typeahead',
-];
-
-export const deprecatedComponentList: string[] = [];
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgFor } from '@angular/common';
+import { COMPONENT_LIST, DEPRECATED_COMPONENT_LIST } from '../component-list';
 
 @Component({
 	selector: 'ngbd-side-nav',
+	standalone: true,
+	imports: [RouterLink, NgbCollapseModule, NgFor],
 	templateUrl: './side-nav.component.html',
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SideNavComponent {
-	components = componentsList;
-	deprecatedComponents = deprecatedComponentList;
+	components = COMPONENT_LIST;
+	deprecatedComponents = DEPRECATED_COMPONENT_LIST;
 
 	constructor(private router: Router) {}
 

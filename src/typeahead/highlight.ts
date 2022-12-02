@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges, ChangeDetectionStrategy, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { regExpEscape, toString, removeAccents } from '../util/util';
+import { NgFor, NgIf } from '@angular/common';
 
 /**
  * A component that helps with text highlighting.
@@ -11,6 +12,8 @@ import { regExpEscape, toString, removeAccents } from '../util/util';
  */
 @Component({
 	selector: 'ngb-highlight',
+	standalone: true,
+	imports: [NgIf, NgFor],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
 	template:

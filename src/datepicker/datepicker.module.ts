@@ -1,12 +1,7 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { NgbDatepicker, NgbDatepickerContent } from './datepicker';
 import { NgbDatepickerMonth } from './datepicker';
-import { NgbDatepickerNavigation } from './datepicker-navigation';
 import { NgbInputDatepicker } from './datepicker-input';
-import { NgbDatepickerDayView } from './datepicker-day-view';
-import { NgbDatepickerNavigationSelect } from './datepicker-navigation-select';
 
 export { NgbDatepicker, NgbDatepickerContent, NgbDatepickerNavigateEvent, NgbDatepickerState } from './datepicker';
 export { NgbInputDatepicker } from './datepicker-input';
@@ -32,17 +27,10 @@ export { NgbDateNativeUTCAdapter } from './adapters/ngb-date-native-utc-adapter'
 export { NgbDateParserFormatter } from './ngb-date-parser-formatter';
 export { NgbDatepickerKeyboardService } from './datepicker-keyboard-service';
 
+const NGB_DATEPICKER_DIRECTIVES = [NgbDatepicker, NgbDatepickerContent, NgbInputDatepicker, NgbDatepickerMonth];
+
 @NgModule({
-	declarations: [
-		NgbDatepicker,
-		NgbDatepickerContent,
-		NgbDatepickerMonth,
-		NgbDatepickerNavigation,
-		NgbDatepickerNavigationSelect,
-		NgbDatepickerDayView,
-		NgbInputDatepicker,
-	],
-	exports: [NgbDatepicker, NgbDatepickerContent, NgbInputDatepicker, NgbDatepickerMonth],
-	imports: [CommonModule, FormsModule],
+	exports: NGB_DATEPICKER_DIRECTIVES,
+	imports: NGB_DATEPICKER_DIRECTIVES,
 })
 export class NgbDatepickerModule {}

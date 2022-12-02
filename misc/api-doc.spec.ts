@@ -12,13 +12,13 @@ describe('APIDocVisitor', () => {
 
 		expect(docs.Foo.fileName).toBe('misc/api-doc-test-cases/directives-no-in-out.ts');
 		expect(docs.Foo.className).toBe('Foo');
-		expect(docs.Foo.selector).toBe('[foo]');
+		expect(docs.Foo.selector).toBe(`'[foo]'`);
 		expect(docs.Foo.description).toBe('<p>Foo doc</p>');
-		expect(docs.Foo.exportAs).toBe('foo');
+		expect(docs.Foo.exportAs).toBe(`'foo'`);
 
 		expect(docs.Bar.fileName).toBe('misc/api-doc-test-cases/directives-no-in-out.ts');
 		expect(docs.Bar.className).toBe('Bar');
-		expect(docs.Bar.selector).toBe('bar');
+		expect(docs.Bar.selector).toBe(`'bar'`);
 		expect(docs.Bar.exportAs).toBeUndefined();
 		expect(docs.Bar.description).toBe('<p>Bar doc</p>');
 	});
@@ -63,7 +63,7 @@ describe('APIDocVisitor', () => {
 
 		expect(inputDocs[0].defaultValue).toBe('false');
 		expect(inputDocs[1].defaultValue).toBe('5');
-		expect(inputDocs[2].defaultValue).toBe('bar');
+		expect(inputDocs[2].defaultValue).toBe(`'bar'`);
 	});
 
 	it('should extract inferred types', () => {
@@ -75,7 +75,7 @@ describe('APIDocVisitor', () => {
 		expect(inputDocs[0].type).toBe('boolean');
 		expect(inputDocs[1].defaultValue).toBe('5');
 		expect(inputDocs[1].type).toBe('number');
-		expect(inputDocs[2].defaultValue).toBe('bar');
+		expect(inputDocs[2].defaultValue).toBe(`'bar'`);
 		expect(inputDocs[2].type).toBe('string');
 	});
 
@@ -158,7 +158,7 @@ describe('APIDocVisitor', () => {
 		expect(serviceDocs.properties[2].name).toBe('noDescriptionButStillExtract');
 		expect(serviceDocs.properties[2].description).toBe('');
 		expect(serviceDocs.properties[2].type).toBe('string');
-		expect(serviceDocs.properties[2].defaultValue).toBe('sth');
+		expect(serviceDocs.properties[2].defaultValue).toBe(`'sth'`);
 	});
 
 	it('should extract documentation from interfaces', () => {
@@ -251,16 +251,5 @@ describe('APIDocVisitor', () => {
 		expect(docs.NgbDirective.outputs[0].since).toEqual({ version: '2.0.0', description: '' });
 		expect(docs.NgbDirective.properties[0].since).toEqual({ version: '2.0.0', description: '' });
 		expect(docs.NgbDirective.methods[0].since).toEqual({ version: '2.0.0', description: '' });
-	});
-
-	it('should extract class and interface type parameters', () => {
-		const docs = apiDoc(['misc/api-doc-test-cases/type-parameters.ts']);
-
-		expect(docs.NoParameterComponent.typeParameter).toBeUndefined();
-		expect(docs.ParameterComponent.typeParameter).toEqual('C');
-		expect(docs.NoParameterInterface.typeParameter).toBeUndefined();
-		expect(docs.ParameterInterface.typeParameter).toEqual('I = NoParameterInterface');
-		expect(docs.NoParameterService.typeParameter).toBeUndefined();
-		expect(docs.ParameterService.typeParameter).toEqual('S = number');
 	});
 });

@@ -4,10 +4,6 @@ import { NgbOffcanvasBackdrop } from './offcanvas-backdrop';
 import { OffcanvasDismissReasons } from './offcanvas-dismiss-reasons';
 
 describe('ngb-offcanvas-backdrop', () => {
-	beforeEach(() => {
-		TestBed.configureTestingModule({ declarations: [NgbOffcanvasBackdrop] });
-	});
-
 	it('should render backdrop with required CSS classes', () => {
 		const fixture = TestBed.createComponent(NgbOffcanvasBackdrop);
 

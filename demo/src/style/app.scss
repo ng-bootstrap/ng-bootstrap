@@ -371,7 +371,9 @@ ngbd-api-docs-config {
 	}
 }
 
-.overview {
+.overview,
+ngbd-default,
+ngbd-page-wrapper {
 	.alert {
 		border-left-width: 5px;
 		border-radius: 0;

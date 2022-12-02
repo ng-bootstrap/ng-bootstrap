@@ -1,3 +1,44 @@
+# [14.0.0-rc.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/14.0.0-rc.0...14.0.0-rc.1) (2022-11-29)
+
+
+### Bug Fixes
+
+* **accordion:** add missing `forwardRef` ([9e01092](https://github.com/ng-bootstrap/ng-bootstrap/commit/9e01092f00ac02245c2d73dbd1d203f368275c8f))
+* **datepicker:** add missing `forwardRef` ([1e68c9b](https://github.com/ng-bootstrap/ng-bootstrap/commit/1e68c9bdd54162d67f5895436ed2b4586af90e4c))
+
+
+
+# [14.0.0-rc.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/13.1.1...14.0.0-rc.0) (2022-11-28)
+
+This release bumps minimum supported versions to Angular 15.0.0, Bootstrap 5.2.3 and Popper 2.11.6.
+
+It also introduces support for standalone components, which means that you can now import ng-bootstrap inside your 
+standalone components in 3 ways:
+
+```
+imports: [NgbModule]                     // import all ng-bootstrap components
+imports: [NgbNavModule]                  // import a certain type of components
+imports: [NgbNav, NgbNavOutlet, etc... ] // import required components individually
+```
+
+The demo site, stackblitzes and documentation have been updated to reflect these changes.
+
+### Features
+
+* migrate all components and directives to standalone ([5e6d11c](https://github.com/ng-bootstrap/ng-bootstrap/commit/5e6d11c5a2304298401f9954abeaebb1f34b2e17))
+
+
+
+## [13.1.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/13.1.0...13.1.1) (2022-11-17)
+
+
+### Bug Fixes
+
+* **toast:** update toast transitions to match Bootstrap 5.2 ([#4411](https://github.com/ng-bootstrap/ng-bootstrap/issues/4411)) ([f1c2a09](https://github.com/ng-bootstrap/ng-bootstrap/commit/f1c2a09c325cd81493e24795ee5985fdabec6427))
+* **typeahead:** remove aria-multiline attribute ([#4409](https://github.com/ng-bootstrap/ng-bootstrap/issues/4409)) ([9bd749c](https://github.com/ng-bootstrap/ng-bootstrap/commit/9bd749c52077e48205b5d49731b8e7ad32f8f106)), closes [#4181](https://github.com/ng-bootstrap/ng-bootstrap/issues/4181)
+
+
+
 # [13.1.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/13.0.0...13.1.0) (2022-10-18)
 
 This release adds several features, notably:

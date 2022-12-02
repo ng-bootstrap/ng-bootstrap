@@ -2,6 +2,7 @@ import { TestBed, ComponentFixture, inject, fakeAsync, tick } from '@angular/cor
 import { createGenericTestComponent } from '../test/common';
 
 import { Component } from '@angular/core';
+import { NgIf } from '@angular/common';
 
 import { NgbPaginationModule } from './pagination.module';
 import { NgbPagination } from './pagination';
@@ -147,10 +148,6 @@ describe('ngb-pagination', () => {
 	});
 
 	describe('UI logic', () => {
-		beforeEach(() => {
-			TestBed.configureTestingModule({ declarations: [TestComponent], imports: [NgbPaginationModule] });
-		});
-
 		it('should render and respond to collectionSize change', () => {
 			const html = '<ngb-pagination [collectionSize]="collectionSize" [page]="1"></ngb-pagination>';
 			const fixture = createTestComponent(html);
@@ -677,10 +674,6 @@ describe('ngb-pagination', () => {
 	});
 
 	describe('Customization', () => {
-		beforeEach(() => {
-			TestBed.configureTestingModule({ declarations: [TestComponent], imports: [NgbPaginationModule] });
-		});
-
 		it('should allow overriding link templates', () => {
 			const fixture = createTestComponent(`
         <ngb-pagination [collectionSize]="50" [page]="1" [boundaryLinks]="true" [ellipses]="true" [maxSize]="2">
@@ -728,10 +721,6 @@ describe('ngb-pagination', () => {
 	});
 
 	describe('Custom Pages', () => {
-		beforeEach(() => {
-			TestBed.configureTestingModule({ declarations: [TestPageComponent], imports: [NgbPaginationModule] });
-		});
-
 		it('should render and respond to collectionSize change with customPages', () => {
 			const fixture = TestBed.createComponent(TestPageComponent);
 
@@ -804,10 +793,6 @@ describe('ngb-pagination', () => {
 	describe('Custom config', () => {
 		let config: NgbPaginationConfig;
 
-		beforeEach(() => {
-			TestBed.configureTestingModule({ imports: [NgbPaginationModule] });
-		});
-
 		beforeEach(inject([NgbPaginationConfig], (c: NgbPaginationConfig) => {
 			config = c;
 			config.boundaryLinks = true;
@@ -841,7 +826,6 @@ describe('ngb-pagination', () => {
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				imports: [NgbPaginationModule],
 				providers: [{ provide: NgbPaginationConfig, useValue: config }],
 			});
 		});
@@ -856,7 +840,7 @@ describe('ngb-pagination', () => {
 	});
 });
 
-@Component({ selector: 'test-cmp', template: '' })
+@Component({ selector: 'test-cmp', standalone: true, imports: [NgbPaginationModule, NgIf], template: '' })
 class TestComponent {
 	disabled = false;
 	pageSize = 10;
@@ -874,6 +858,8 @@ class TestComponent {
 
 @Component({
 	selector: 'test-page-cmp',
+	standalone: true,
+	imports: [NgbPaginationModule, NgIf],
 	template: `<ngb-pagination
 		[collectionSize]="collectionSize"
 		[page]="page"

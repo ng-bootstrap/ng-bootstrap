@@ -13,9 +13,12 @@ import {
 import { NgbDate } from './ngb-date';
 import { toInteger } from '../util/util';
 import { NgbDatepickerI18n } from './datepicker-i18n';
+import { NgFor } from '@angular/common';
 
 @Component({
 	selector: 'ngb-datepicker-navigation-select',
+	standalone: true,
+	imports: [NgFor],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
 	styleUrls: ['./datepicker-navigation-select.scss'],

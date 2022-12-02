@@ -50,7 +50,7 @@ export interface NgbNavContentContext {
  *
  * @since 5.2.0
  */
-@Directive({ selector: 'ng-template[ngbNavContent]' })
+@Directive({ selector: 'ng-template[ngbNavContent]', standalone: true })
 export class NgbNavContent {
 	constructor(public templateRef: TemplateRef<any>) {}
 }
@@ -60,14 +60,17 @@ export class NgbNavContent {
  *
  * @since 5.2.0
  */
+
 @Directive({ 
 	selector: '[ngbNavItem]', 
 	exportAs: 'ngbNavItem', 
+  standalone: true,
 	host: { 
 		'[class.nav-item]': 'true',
 		'[attr.role]': `role ? role : roles ? 'presentation' : undefined`,
 	}, 
 })
+
 export class NgbNavItem implements AfterContentChecked, OnInit {
 	/**
 	 * If `true`, non-active current nav item content will be removed from DOM
@@ -158,6 +161,7 @@ export class NgbNavItem implements AfterContentChecked, OnInit {
 @Directive({
 	selector: '[ngbNav]',
 	exportAs: 'ngbNav',
+	standalone: true,
 	host: {
 		'[class.nav]': 'true',
 		'[class.flex-column]': `orientation === 'vertical'`,
@@ -409,6 +413,7 @@ export class NgbNav implements AfterContentInit, OnChanges, OnDestroy {
  */
 @Directive({
 	selector: 'a[ngbNavLink], button[ngbNavLink]',
+	standalone: true,
 	host: {
 		'[id]': 'navItem.domId',
 		'[class.nav-link]': 'true',

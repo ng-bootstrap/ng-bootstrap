@@ -2,6 +2,9 @@ import { Component, Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, of, OperatorFunction } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, tap, switchMap } from 'rxjs/operators';
+import { NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule } from '@angular/forms';
+import { JsonPipe, NgIf } from '@angular/common';
 
 const WIKI_URL = 'https://en.wikipedia.org/w/api.php';
 const PARAMS = new HttpParams({
@@ -29,6 +32,8 @@ export class WikipediaService {
 
 @Component({
 	selector: 'ngbd-typeahead-http',
+	standalone: true,
+	imports: [NgbTypeaheadModule, FormsModule, NgIf, JsonPipe],
 	templateUrl: './typeahead-http.html',
 	providers: [WikipediaService],
 	styles: [

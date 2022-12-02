@@ -19,7 +19,7 @@ import {
 	ViewEncapsulation,
 	AfterViewInit,
 } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
 
 import { NgbCarouselConfig } from './carousel-config';
 
@@ -38,7 +38,7 @@ let nextId = 0;
 /**
  * A directive that wraps the individual carousel slide.
  */
-@Directive({ selector: 'ng-template[ngbSlide]' })
+@Directive({ selector: 'ng-template[ngbSlide]', standalone: true })
 export class NgbSlide {
 	/**
 	 * Slide id that must be unique for the entire document.
@@ -65,6 +65,8 @@ export class NgbSlide {
 @Component({
 	selector: 'ngb-carousel',
 	exportAs: 'ngbCarousel',
+	standalone: true,
+	imports: [NgFor, NgTemplateOutlet, NgIf],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
 	host: {
@@ -605,5 +607,3 @@ export enum NgbSlideEventSource {
 	ARROW_RIGHT = 'arrowRight',
 	INDICATOR = 'indicator',
 }
-
-export const NGB_CAROUSEL_DIRECTIVES = [NgbCarousel, NgbSlide];

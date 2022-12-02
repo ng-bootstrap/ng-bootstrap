@@ -3,6 +3,7 @@ import { NgbActiveOffcanvas, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
 	selector: 'ngbd-offcanvas-firstfocus',
+	standalone: true,
 	template: `
 		<div class="offcanvas-header">
 			<h4 class="offcanvas-title">Offcanvas title</h4>
@@ -22,6 +23,7 @@ export class NgbdOffcanvasFirstFocus {
 
 @Component({
 	selector: 'ngbd-offcanvas-autofocus',
+	standalone: true,
 	template: `
 		<div class="offcanvas-header">
 			<h4 class="offcanvas-title">Offcanvas title</h4>
@@ -41,7 +43,7 @@ export class NgbdOffcanvasAutoFocus {
 	constructor(readonly offcanvas: NgbActiveOffcanvas) {}
 }
 
-@Component({ selector: 'ngbd-offcanvas-focus', templateUrl: './offcanvas-focus.html' })
+@Component({ selector: 'ngbd-offcanvas-focus', standalone: true, templateUrl: './offcanvas-focus.html' })
 export class NgbdOffcanvasFocus {
 	constructor(private offcanvasService: NgbOffcanvas) {}
 

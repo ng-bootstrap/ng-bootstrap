@@ -18,6 +18,7 @@ import { Observable } from 'rxjs';
 import { NgbAlertConfig } from './alert-config';
 import { ngbRunTransition } from '../util/transition/ngbTransition';
 import { ngbAlertFadingTransition } from './alert-transition';
+import { NgIf } from '@angular/common';
 
 /**
  * Alert is a component to provide contextual feedback messages for user.
@@ -27,6 +28,8 @@ import { ngbAlertFadingTransition } from './alert-transition';
 @Component({
 	selector: 'ngb-alert',
 	exportAs: 'ngbAlert',
+	standalone: true,
+	imports: [NgIf],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
 	host: { role: 'alert', class: 'alert show', '[class.fade]': 'animation', '[class.alert-dismissible]': 'dismissible' },

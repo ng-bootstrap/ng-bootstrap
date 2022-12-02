@@ -60,6 +60,7 @@ let nextWindowId = 0;
 @Directive({
 	selector: 'input[ngbTypeahead]',
 	exportAs: 'ngbTypeahead',
+	standalone: true,
 	host: {
 		'(blur)': 'handleBlur()',
 		'[class.open]': 'isPopupOpen()',

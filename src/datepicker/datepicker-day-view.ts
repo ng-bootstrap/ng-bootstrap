@@ -4,6 +4,7 @@ import { NgbDatepickerI18n } from './datepicker-i18n';
 
 @Component({
 	selector: '[ngbDatepickerDayView]',
+	standalone: true,
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
 	styleUrls: ['./datepicker-day-view.scss'],

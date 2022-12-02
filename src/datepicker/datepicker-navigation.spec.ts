@@ -1,11 +1,10 @@
-import { TestBed, ComponentFixture } from '@angular/core/testing';
+import { ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { createGenericTestComponent, triggerEvent } from '../test/common';
-import { getMonthSelect, getYearSelect, getNavigationLinks } from '../test/datepicker/common';
+import { getMonthSelect, getNavigationLinks, getYearSelect } from '../test/datepicker/common';
 
 import { Component } from '@angular/core';
 
-import { NgbDatepickerModule } from './datepicker.module';
 import { NavigationEvent } from './datepicker-view-model';
 import { NgbDatepickerNavigation } from './datepicker-navigation';
 import { NgbDate } from './ngb-date';
@@ -20,13 +19,6 @@ function changeSelect(element: HTMLSelectElement, value: string) {
 }
 
 describe('ngb-datepicker-navigation', () => {
-	beforeEach(() => {
-		TestBed.overrideModule(NgbDatepickerModule, {
-			set: { exports: [NgbDatepickerNavigation, NgbDatepickerNavigationSelect] },
-		});
-		TestBed.configureTestingModule({ declarations: [TestComponent], imports: [NgbDatepickerModule] });
-	});
-
 	it('should toggle navigation select component', () => {
 		const fixture = createTestComponent(`<ngb-datepicker-navigation [showSelect]="showSelect" [date]="date"
           [selectBoxes]="selectBoxes"></ngb-datepicker-navigation>`);
@@ -144,7 +136,7 @@ describe('ngb-datepicker-navigation', () => {
 	});
 });
 
-@Component({ selector: 'test-cmp', template: '' })
+@Component({ selector: 'test-cmp', standalone: true, imports: [NgbDatepickerNavigation], template: '' })
 class TestComponent {
 	date = new NgbDate(2016, 8, 1);
 	prevDisabled = false;

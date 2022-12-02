@@ -21,6 +21,7 @@ import { take } from 'rxjs/operators';
 import { NgbToastConfig } from './toast-config';
 import { ngbRunTransition } from '../util/transition/ngbTransition';
 import { ngbToastFadeInTransition, ngbToastFadeOutTransition } from './toast-transition';
+import { NgIf, NgTemplateOutlet } from '@angular/common';
 
 /**
  * This directive allows the usage of HTML markup or other directives
@@ -28,7 +29,7 @@ import { ngbToastFadeInTransition, ngbToastFadeOutTransition } from './toast-tra
  *
  * @since 5.0.0
  */
-@Directive({ selector: '[ngbToastHeader]' })
+@Directive({ selector: '[ngbToastHeader]', standalone: true })
 export class NgbToastHeader {}
 
 /**
@@ -40,6 +41,8 @@ export class NgbToastHeader {}
 @Component({
 	selector: 'ngb-toast',
 	exportAs: 'ngbToast',
+	standalone: true,
+	imports: [NgIf, NgTemplateOutlet],
 	encapsulation: ViewEncapsulation.None,
 	host: {
 		role: 'alert',

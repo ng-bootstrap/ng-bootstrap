@@ -45,10 +45,11 @@ The supported versions are:
 | 11.x.x       | 13.0.0  | 4.6.0         |        |
 | 12.x.x       | 13.0.0  | 5.0.0         | 2.10.2 |
 | 13.x.x       | 14.1.0  | 5.2.0         | 2.10.2 |
+| 14.x.x       | 15.0.0  | 5.2.3         | 2.11.6 |
 
 ## Installation
 
-We strongly recommend using [Angular CLI](https://cli.angular.io) for setting up a new project. If you have an Angular &ge; 9 CLI project, you could simply use our schematics to add ng-bootstrap library to it.
+We strongly recommend using [Angular CLI](https://cli.angular.io) for setting up a new project. If you have an Angular CLI project, you could simply use our schematics to add ng-bootstrap library to it.
 
 Just run the following:
 

@@ -6,7 +6,6 @@ describe('ngb-offcanvas-panel', () => {
 	let fixture: ComponentFixture<NgbOffcanvasPanel>;
 
 	beforeEach(() => {
-		TestBed.configureTestingModule({ declarations: [NgbOffcanvasPanel] });
 		fixture = TestBed.createComponent(NgbOffcanvasPanel);
 	});
 

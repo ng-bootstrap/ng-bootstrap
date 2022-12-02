@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 
-import { NgbOffcanvas, OffcanvasDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDatepickerModule, NgbOffcanvas, OffcanvasDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
 	selector: 'ngbd-offcanvas-basic',
+	standalone: true,
+	imports: [NgbDatepickerModule],
 	templateUrl: './offcanvas-basic.html',
 })
 export class NgbdOffcanvasBasic {

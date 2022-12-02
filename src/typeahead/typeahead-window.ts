@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewEncapsulation } from '@angular/core';
 
 import { toString } from '../util/util';
+import { NgbHighlight } from './highlight';
+import { NgFor, NgTemplateOutlet } from '@angular/common';
 
 /**
  * The context for the typeahead result template in case you want to override the default one.
@@ -20,6 +22,8 @@ export interface ResultTemplateContext {
 @Component({
 	selector: 'ngb-typeahead-window',
 	exportAs: 'ngbTypeaheadWindow',
+	standalone: true,
+	imports: [NgbHighlight, NgFor, NgTemplateOutlet],
 	encapsulation: ViewEncapsulation.None,
 	host: {
 		'(mousedown)': '$event.preventDefault()',

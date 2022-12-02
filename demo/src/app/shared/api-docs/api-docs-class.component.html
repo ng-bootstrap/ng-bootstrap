@@ -1,0 +1,85 @@
+<div class="api-doc-component" [class.deprecated]="apiDocs.deprecated">
+	<h3>
+		<a routerLink="." fragment="{{ apiDocs.className }}" ngbdFragment title="Anchor link to: {{ apiDocs.className }}">
+			<i class="bi bi-link-45deg" style="font-size: 1.75rem; color: black"></i>
+		</a>
+		{{ apiDocs.className }}
+		<a
+			class="github-link"
+			(click)="trackSourceClick()"
+			href="https://github.com/ng-bootstrap/ng-bootstrap/tree/master/{{ apiDocs.fileName }}"
+			target="_blank"
+			title="Link to Github: {{ apiDocs.className }}"
+		>
+			<i class="bi bi-github" style="font-size: 1.5rem; color: black"></i>
+		</a>
+	</h3>
+	<ngbd-api-docs-badge
+		[type]="apiDocs.type"
+		[deprecated]="apiDocs.deprecated"
+		[since]="apiDocs.since"
+	></ngbd-api-docs-badge>
+	<p *ngIf="apiDocs.deprecated">{{ apiDocs.deprecated.description }}</p>
+	<p class="lead" [innerHTML]="apiDocs.description"></p>
+
+	<ng-template [ngIf]="apiDocs.properties && apiDocs.properties.length">
+		<section>
+			<h4>Properties</h4>
+			<table class="table table-sm">
+				<tbody>
+					<tr *ngFor="let prop of apiDocs.properties" [class.deprecated]="prop.deprecated">
+						<td class="label-cell">
+							<code>{{ prop.name }}</code
+							><br />
+							<span *ngIf="prop.since" class="badge bg-info text-dark">since {{ prop.since.version }}</span
+							>&ngsp;
+							<span *ngIf="prop.deprecated" class="badge bg-secondary">deprecated {{ prop.deprecated.version }}</span>
+						</td>
+						<td class="content-cell">
+							<p *ngIf="prop.deprecated">{{ prop.deprecated.description }}</p>
+							<p class="description" [innerHTML]="prop.description"></p>
+							<div class="meta">
+								<div>
+									<i>Type: </i><code>{{ prop.type }}</code>
+								</div>
+								<div *ngIf="prop.defaultValue">
+									<i>Default value: </i><code>{{ prop.defaultValue || '-' }}</code>
+								</div>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
+	</ng-template>
+
+	<ng-template [ngIf]="apiDocs.methods && apiDocs.methods.length">
+		<section>
+			<h4>Methods</h4>
+			<table class="table table-sm">
+				<tbody>
+					<tr *ngFor="let method of apiDocs.methods" [class.deprecated]="method.deprecated">
+						<td class="label-cell">
+							<code>{{ method.name }}</code
+							><br />
+							<span *ngIf="method.since" class="badge bg-info text-dark">since {{ method.since.version }}</span
+							>&ngsp;
+							<span *ngIf="method.deprecated" class="badge bg-secondary"
+								>deprecated {{ method.deprecated.version }}</span
+							>
+						</td>
+						<td class="content-cell">
+							<p class="signature">
+								<code>{{ methodSignature(method) }}</code
+								>&ngsp;
+								<small class="text-muted" title="Return type">=&gt; {{ method.returnType }}</small>
+							</p>
+							<p *ngIf="method.deprecated">{{ method.deprecated.description }}</p>
+							<p class="description" [innerHTML]="method.description"></p>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
+	</ng-template>
+</div>

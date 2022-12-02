@@ -1,18 +1,15 @@
 import './polyfills';
+import {bootstrapApplication} from '@angular/platform-browser';
+import {<%=className%>} from '<%=tsImportName%>';
 
-import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
+bootstrapApplication(<%=className%>)
+.then(ref => {
+  // Ensure Angular destroys itself on hot reloads.
+  if (window['ngRef']) {
+    window['ngRef'].destroy();
+  }
+  window['ngRef'] = ref;
 
-import {<%=moduleClassName%>} from '<%=modulePath%>';
-
-platformBrowserDynamic()
-    .bootstrapModule(<%=moduleClassName%>)
-    .then(ref => {
-      // Ensure Angular destroys itself on hot reloads.
-      if (window['ngRef']) {
-        window['ngRef'].destroy();
-      }
-      window['ngRef'] = ref;
-
-      // Otherwise, log the boot error
-    })
-    .catch(err => console.error(err));
+  // Otherwise, log the boot error
+})
+.catch(err => console.error(err));
