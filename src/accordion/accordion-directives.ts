@@ -1,4 +1,5 @@
 import {
+	AfterContentChecked,
 	AfterContentInit,
 	ChangeDetectorRef,
 	Component,
@@ -9,15 +10,18 @@ import {
 	forwardRef,
 	Inject,
 	Input,
+	OnChanges,
 	OnDestroy,
 	Output,
 	QueryList,
+	SimpleChanges,
 	TemplateRef,
 } from '@angular/core';
 import { NgbCollapse } from '../collapse/collapse';
 import { NgTemplateOutlet } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { NgbAccordionConfig } from './accordion-config';
+import { isString } from '../util/util';
 
 /*
  * This is the proof of concept for the new Accordion component.
@@ -170,14 +174,35 @@ export class NgbAccordionItem implements AfterContentInit, OnDestroy {
 }
 
 @Directive({ selector: '[ngbAccordion]', standalone: true, host: { '[class.accordion]': 'true' } })
-export class NgbAccordionDirective {
+export class NgbAccordionDirective implements AfterContentChecked, OnChanges {
 	@Input() animation: boolean;
 	@Input() closeOthers: boolean;
+	@Input() activeIds: string | readonly string[] = [];
 
 	@Output() shown = new EventEmitter<string>();
 	@Output() hidden = new EventEmitter<string>();
 
+	private refreshActiveIds = false;
+
 	@ContentChildren(NgbAccordionItem) private _items: QueryList<NgbAccordionItem>;
+
+	ngOnChanges({ activeIds }: SimpleChanges) {
+		if (activeIds) {
+			this.refreshActiveIds = true;
+			if (isString(this.activeIds)) {
+				this.activeIds = this.activeIds.split(/\s*,\s*/);
+			}
+		}
+	}
+
+	ngAfterContentChecked() {
+		if (this.activeIds.length !== 0 && this.refreshActiveIds) {
+			this.refreshActiveIds = false;
+			this._items.forEach((item) => {
+				item.collapsed = !this.activeIds.includes(item.id);
+			});
+		}
+	}
 
 	toggle(id: string) {
 		this._items.forEach((item) => {

@@ -1,5 +1,6 @@
 <div
 	ngbAccordion
+	[activeIds]="activeIds"
 	[animation]="animation"
 	[closeOthers]="closeOthers"
 	(shown)="log('shown ' + $event)"
@@ -64,5 +65,6 @@
 	Close others is "{{ closeOthers ? 'ON' : 'OFF' }}"
 </button>
 <button class="btn btn-sm btn-outline-secondary me-1" (click)="collapsed = !collapsed">Toggle second</button>
+<button class="btn btn-sm btn-outline-secondary me-1" (click)="updateActiveIds()">Toggle activeIds</button>
 
 <hr />

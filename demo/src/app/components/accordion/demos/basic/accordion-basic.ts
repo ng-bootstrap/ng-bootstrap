@@ -9,7 +9,17 @@ import { AccordionDirectivesModule } from '@ng-bootstrap/ng-bootstrap';
 })
 export class NgbdAccordionBasic {
 	animation = true;
-	closeOthers = true;
+	activeIds: string[] | string = '1,3';
+	closeOthers = false;
 	collapsed = true;
 	log = console.log;
+
+	updateActiveIds() {
+		this.activeIds = [
+			...new Set(
+				Array.from({ length: Math.floor(Math.random() * 3) + 1 }, () => `${Math.floor(Math.random() * 3) + 1}`),
+			),
+		];
+		console.log(this.activeIds);
+	}
 }
