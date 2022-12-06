@@ -1,35 +1,68 @@
-<ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0">
-	<ngb-panel title="Simple">
-		<ng-template ngbPanelContent>
-			Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon
-			officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf
-			moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim
-			keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher
-			vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't
-			heard of them accusamus labore sustainable VHS.
-		</ng-template>
-	</ngb-panel>
-	<ngb-panel>
-		<ng-template ngbPanelTitle>
-			<span>&#9733; <b>Fancy</b> title &#9733;</span>
-		</ng-template>
-		<ng-template ngbPanelContent>
-			Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon
-			officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf
-			moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim
-			keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher
-			vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't
-			heard of them accusamus labore sustainable VHS.
-		</ng-template>
-	</ngb-panel>
-	<ngb-panel title="Disabled" [disabled]="true">
-		<ng-template ngbPanelContent>
-			Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon
-			officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf
-			moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim
-			keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher
-			vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't
-			heard of them accusamus labore sustainable VHS.
-		</ng-template>
-	</ngb-panel>
-</ngb-accordion>
+<div
+	ngbAccordion
+	[animation]="animation"
+	[closeOthers]="closeOthers"
+	(shown)="log('shown ' + $event)"
+	(hidden)="log('hidden ' + $event)"
+>
+	<div ngbAccordionItem="1">
+		<h2 ngbAccordionHeader>
+			<button ngbAccordionToggle>Accordion Item #1</button>
+		</h2>
+		<div [ngbAccordionCollapse]="false">
+			<div ngbAccordionBody>
+				<ng-template>
+					<strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin
+					adds the appropriate classes that we use to style each element. These classes control the overall appearance,
+					as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or
+					overriding our default variables. It's also worth noting that just about any HTML can go within the
+					<code>.accordion-body</code>, though the transition does limit overflow.
+				</ng-template>
+			</div>
+		</div>
+	</div>
+	<div ngbAccordionItem="2">
+		<h2 ngbAccordionHeader>
+			<button ngbAccordionToggle>Accordion Item #2</button>
+		</h2>
+		<div [ngbAccordionCollapse]="collapsed">
+			<div ngbAccordionBody>
+				<ng-template>
+					<strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin
+					adds the appropriate classes that we use to style each element. These classes control the overall appearance,
+					as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or
+					overriding our default variables. It's also worth noting that just about any HTML can go within the
+					<code>.accordion-body</code>, though the transition does limit overflow.
+				</ng-template>
+			</div>
+		</div>
+	</div>
+	<div ngbAccordionItem="3">
+		<h2 ngbAccordionHeader>
+			<button ngbAccordionToggle>Accordion Item #3</button>
+		</h2>
+		<div ngbAccordionCollapse>
+			<div ngbAccordionBody [destroyOnHide]="false">
+				<ng-template>
+					<strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin
+					adds the appropriate classes that we use to style each element. These classes control the overall appearance,
+					as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or
+					overriding our default variables. It's also worth noting that just about any HTML can go within the
+					<code>.accordion-body</code>, though the transition does limit overflow.
+				</ng-template>
+			</div>
+		</div>
+	</div>
+</div>
+
+<hr />
+
+<button class="btn btn-sm btn-outline-secondary me-1" (click)="animation = !animation">
+	Animation is "{{ animation ? 'ON' : 'OFF' }}"
+</button>
+<button class="btn btn-sm btn-outline-secondary me-1" (click)="closeOthers = !closeOthers">
+	Close others is "{{ closeOthers ? 'ON' : 'OFF' }}"
+</button>
+<button class="btn btn-sm btn-outline-secondary me-1" (click)="collapsed = !collapsed">Toggle second</button>
+
+<hr />

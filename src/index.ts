@@ -17,6 +17,7 @@ import { NgbToastModule } from './toast/toast.module';
 import { NgbTooltipModule } from './tooltip/tooltip.module';
 import { NgbTypeaheadModule } from './typeahead/typeahead.module';
 import { NgbOffcanvasModule } from './offcanvas/offcanvas.module';
+import { AccordionDirectivesModule } from './accordion/accordion-directives.module';
 
 export {
 	NgbAccordion,
@@ -30,6 +31,15 @@ export {
 	NgbPanelTitle,
 	NgbPanelToggle,
 } from './accordion/accordion.module';
+export {
+	NgbAccordionBody,
+	NgbAccordionCollapse,
+	NgbAccordionDirective,
+	NgbAccordionHeader,
+	NgbAccordionItem,
+	NgbAccordionToggle,
+	AccordionDirectivesModule,
+} from './accordion/accordion-directives.module';
 export { NgbAlert, NgbAlertConfig, NgbAlertModule } from './alert/alert.module';
 export {
 	NgbCarousel,
@@ -149,6 +159,7 @@ export { NgbConfig } from './ngb-config';
 
 const NGB_MODULES = [
 	NgbAccordionModule,
+	AccordionDirectivesModule,
 	NgbAlertModule,
 	NgbCarouselModule,
 	NgbCollapseModule,
