@@ -1,18 +1,8 @@
-# [14.0.0-rc.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/14.0.0-rc.0...14.0.0-rc.1) (2022-11-29)
-
-
-### Bug Fixes
-
-* **accordion:** add missing `forwardRef` ([9e01092](https://github.com/ng-bootstrap/ng-bootstrap/commit/9e01092f00ac02245c2d73dbd1d203f368275c8f))
-* **datepicker:** add missing `forwardRef` ([1e68c9b](https://github.com/ng-bootstrap/ng-bootstrap/commit/1e68c9bdd54162d67f5895436ed2b4586af90e4c))
-
-
-
-# [14.0.0-rc.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/13.1.1...14.0.0-rc.0) (2022-11-28)
+# [14.0.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/14.0.0-rc.1...14.0.0) (2022-12-07)
 
 This release bumps minimum supported versions to Angular 15.0.0, Bootstrap 5.2.3 and Popper 2.11.6.
 
-It also introduces support for standalone components, which means that you can now import ng-bootstrap inside your 
+It also introduces support for standalone components, which means that you can now import ng-bootstrap inside your
 standalone components in 3 ways:
 
 ```
@@ -23,13 +13,18 @@ imports: [NgbNav, NgbNavOutlet, etc... ] // import required components individua
 
 The demo site, stackblitzes and documentation have been updated to reflect these changes.
 
+### Bug Fixes
+
+* **accordion:** add missing `forwardRef` ([9e01092](https://github.com/ng-bootstrap/ng-bootstrap/commit/9e01092f00ac02245c2d73dbd1d203f368275c8f))
+* **datepicker:** add missing `forwardRef` ([1e68c9b](https://github.com/ng-bootstrap/ng-bootstrap/commit/1e68c9bdd54162d67f5895436ed2b4586af90e4c))
+
 ### Features
 
 * migrate all components and directives to standalone ([5e6d11c](https://github.com/ng-bootstrap/ng-bootstrap/commit/5e6d11c5a2304298401f9954abeaebb1f34b2e17))
 
 
 
-## [13.1.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/13.1.0...13.1.1) (2022-11-17)
+# [13.1.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/13.1.0...13.1.1) (2022-11-17)
 
 
 ### Bug Fixes
