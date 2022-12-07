@@ -1,4 +1,4 @@
-# [14.0.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/14.0.0-rc.1...14.0.0) (2022-12-07)
+# [14.0.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/13.1.1...14.0.0) (2022-12-07)
 
 This release bumps minimum supported versions to Angular 15.0.0, Bootstrap 5.2.3 and Popper 2.11.6.
 
