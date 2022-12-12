@@ -1,4 +1,5 @@
 import {
+	ApplicationRef,
 	ChangeDetectorRef,
 	ComponentRef,
 	Directive,
@@ -9,15 +10,14 @@ import {
 	Injector,
 	Input,
 	NgZone,
+	OnChanges,
 	OnDestroy,
 	OnInit,
 	Output,
 	Renderer2,
+	SimpleChanges,
 	TemplateRef,
 	ViewContainerRef,
-	ApplicationRef,
-	OnChanges,
-	SimpleChanges,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DOCUMENT } from '@angular/common';
@@ -28,8 +28,7 @@ import { Live } from '../util/accessibility/live';
 import { ngbAutoClose } from '../util/autoclose';
 import { Key } from '../util/key';
 import { PopupService } from '../util/popup';
-import { NgbRTL } from '../util/rtl';
-import { PlacementArray, ngbPositioning } from '../util/positioning';
+import { ngbPositioning, PlacementArray } from '../util/positioning';
 import { Options } from '@popperjs/core';
 import { isDefined, toString } from '../util/util';
 
@@ -200,7 +199,6 @@ export class NgbTypeahead implements ControlValueAccessor, OnInit, OnChanges, On
 
 	constructor(
 		private _elementRef: ElementRef<HTMLInputElement>,
-		rtl: NgbRTL,
 		viewContainerRef: ViewContainerRef,
 		private _renderer: Renderer2,
 		injector: Injector,
@@ -233,7 +231,7 @@ export class NgbTypeahead implements ControlValueAccessor, OnInit, OnChanges, On
 			this._ngZone,
 			applicationRef,
 		);
-		this._positioning = ngbPositioning(rtl);
+		this._positioning = ngbPositioning();
 	}
 
 	ngOnInit(): void {

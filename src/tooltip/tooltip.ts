@@ -1,25 +1,25 @@
 import {
-	Component,
-	Directive,
-	Input,
-	Output,
-	EventEmitter,
+	ApplicationRef,
 	ChangeDetectionStrategy,
-	OnInit,
-	OnDestroy,
+	ChangeDetectorRef,
+	Component,
+	ComponentRef,
+	Directive,
+	ElementRef,
+	EventEmitter,
 	Inject,
 	Injector,
+	Input,
+	NgZone,
+	OnChanges,
+	OnDestroy,
+	OnInit,
+	Output,
 	Renderer2,
-	ComponentRef,
-	ElementRef,
+	SimpleChanges,
 	TemplateRef,
 	ViewContainerRef,
-	NgZone,
 	ViewEncapsulation,
-	ChangeDetectorRef,
-	ApplicationRef,
-	OnChanges,
-	SimpleChanges,
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
@@ -28,7 +28,6 @@ import { ngbAutoClose } from '../util/autoclose';
 import { ngbPositioning, PlacementArray } from '../util/positioning';
 import { PopupService } from '../util/popup';
 import { Options } from '@popperjs/core';
-import { NgbRTL } from '../util/rtl';
 import { isString } from '../util/util';
 
 import { NgbTooltipConfig } from './tooltip-config';
@@ -171,7 +170,6 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 
 	constructor(
 		private _elementRef: ElementRef<HTMLElement>,
-		rtl: NgbRTL,
 		private _renderer: Renderer2,
 		injector: Injector,
 		viewContainerRef: ViewContainerRef,
@@ -199,7 +197,7 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 			this._ngZone,
 			applicationRef,
 		);
-		this._positioning = ngbPositioning(rtl);
+		this._positioning = ngbPositioning();
 	}
 
 	/**

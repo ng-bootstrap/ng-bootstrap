@@ -1,7 +1,7 @@
 import { getBootstrapBaseClassPlacement, getPopperClassPlacement, ngbPositioning, Placement } from './positioning';
 import { Placement as PopperPlacement } from '@popperjs/core';
 import { NgbRTL } from './rtl';
-import { ComponentFixture, fakeAsync, flushMicrotasks, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flushMicrotasks, inject, TestBed } from '@angular/core/testing';
 import { createGenericTestComponent } from '../test/common';
 import { Component } from '@angular/core';
 import { NgbTooltip } from '../tooltip/tooltip';
@@ -101,61 +101,73 @@ describe('positioning', () => {
 		}
 	});
 
-	it('should update classes correctly on DOM elements', (done) => {
-		const testCases = [
-			['top', 'bs-base-top'],
-			['bottom', 'bs-base-bottom'],
-			['start', 'bs-base-start'],
-			['left', 'bs-base-start'],
-			['end', 'bs-base-end'],
-			['right', 'bs-base-end'],
-			['top-start', 'bs-base-top bs-base-top-start'],
-			['top-left', 'bs-base-top bs-base-top-start'],
-			['top-end', 'bs-base-top bs-base-top-end'],
-			['top-right', 'bs-base-top bs-base-top-end'],
-			['bottom-start', 'bs-base-bottom bs-base-bottom-start'],
-			['bottom-left', 'bs-base-bottom bs-base-bottom-start'],
-			['bottom-end', 'bs-base-bottom bs-base-bottom-end'],
-			['bottom-right', 'bs-base-bottom bs-base-bottom-end'],
-			['start-top', 'bs-base-start bs-base-start-top'],
-			['left-top', 'bs-base-start bs-base-start-top'],
-			['start-bottom', 'bs-base-start bs-base-start-bottom'],
-			['left-bottom', 'bs-base-start bs-base-start-bottom'],
-			['end-top', 'bs-base-end bs-base-end-top'],
-			['right-top', 'bs-base-end bs-base-end-top'],
-			['top', 'bs-base-top'],
-		];
-
-		const positioning = ngbPositioning({ isRTL: () => false } as NgbRTL);
-		const options = {
-			targetElement: document.createElement('div'),
-			hostElement: document.createElement('div'),
-			placement: 'top',
-			baseClass: 'bs-base',
-		};
-		positioning.createPopper(options);
-
-		function nextTest() {
-			if (testCases.length === 0) {
-				done();
-				return;
-			}
-
-			const [placement, expectedClassName] = testCases.shift()!;
-			positioning.setOptions({ ...options, placement });
-
-			// checking DOM after popper does 'forceUpdate'
-			queueMicrotask(() => {
-				expect(options.targetElement.className).toBe(
-					expectedClassName,
-					`Testing '${placement}' mapping to '${expectedClassName}'`,
-				);
+	describe('ngbPositioning', () => {
+		beforeEach(() => {
+			TestBed.configureTestingModule({
+				providers: [
+					{ provide: NgbRTL, useValue: { isRTL: () => false } },
+					{ provide: 'ngbPositioning', useFactory: () => ngbPositioning() },
+				],
 			});
+		});
 
-			setTimeout(nextTest);
-		}
+		it('should update classes correctly on DOM elements', (done) => {
+			inject(['ngbPositioning'], (positioning) => {
+				const testCases = [
+					['top', 'bs-base-top'],
+					['bottom', 'bs-base-bottom'],
+					['start', 'bs-base-start'],
+					['left', 'bs-base-start'],
+					['end', 'bs-base-end'],
+					['right', 'bs-base-end'],
+					['top-start', 'bs-base-top bs-base-top-start'],
+					['top-left', 'bs-base-top bs-base-top-start'],
+					['top-end', 'bs-base-top bs-base-top-end'],
+					['top-right', 'bs-base-top bs-base-top-end'],
+					['bottom-start', 'bs-base-bottom bs-base-bottom-start'],
+					['bottom-left', 'bs-base-bottom bs-base-bottom-start'],
+					['bottom-end', 'bs-base-bottom bs-base-bottom-end'],
+					['bottom-right', 'bs-base-bottom bs-base-bottom-end'],
+					['start-top', 'bs-base-start bs-base-start-top'],
+					['left-top', 'bs-base-start bs-base-start-top'],
+					['start-bottom', 'bs-base-start bs-base-start-bottom'],
+					['left-bottom', 'bs-base-start bs-base-start-bottom'],
+					['end-top', 'bs-base-end bs-base-end-top'],
+					['right-top', 'bs-base-end bs-base-end-top'],
+					['top', 'bs-base-top'],
+				];
 
-		nextTest();
+				const options = {
+					targetElement: document.createElement('div'),
+					hostElement: document.createElement('div'),
+					placement: 'top',
+					baseClass: 'bs-base',
+				};
+				positioning.createPopper(options);
+
+				function nextTest() {
+					if (testCases.length === 0) {
+						done();
+						return;
+					}
+
+					const [placement, expectedClassName] = testCases.shift()!;
+					positioning.setOptions({ ...options, placement });
+
+					// checking DOM after popper does 'forceUpdate'
+					queueMicrotask(() => {
+						expect(options.targetElement.className).toBe(
+							expectedClassName,
+							`Testing '${placement}' mapping to '${expectedClassName}'`,
+						);
+					});
+
+					setTimeout(nextTest);
+				}
+
+				nextTest();
+			})();
+		});
 	});
 
 	describe('rtl', () => {
