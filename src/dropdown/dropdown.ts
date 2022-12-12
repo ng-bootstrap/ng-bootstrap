@@ -1,4 +1,5 @@
 import {
+	AfterContentInit,
 	ChangeDetectorRef,
 	ContentChild,
 	ContentChildren,
@@ -9,22 +10,20 @@ import {
 	Inject,
 	Input,
 	NgZone,
-	AfterContentInit,
+	OnChanges,
 	OnDestroy,
+	Optional,
 	Output,
 	QueryList,
 	Renderer2,
 	SimpleChanges,
-	Optional,
-	OnChanges,
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { fromEvent, Subject, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 
-import { Placement, PlacementArray, ngbPositioning } from '../util/positioning';
+import { ngbPositioning, Placement, PlacementArray } from '../util/positioning';
 import { Options } from '@popperjs/core';
-import { NgbRTL } from '../util/rtl';
 import { addPopperOffset } from '../util/positioning-util';
 import { ngbAutoClose, SOURCE } from '../util/autoclose';
 import { Key } from '../util/key';
@@ -245,7 +244,6 @@ export class NgbDropdown implements AfterContentInit, OnChanges, OnDestroy {
 
 	constructor(
 		private _changeDetector: ChangeDetectorRef,
-		rtl: NgbRTL,
 		config: NgbDropdownConfig,
 		@Inject(DOCUMENT) private _document: any,
 		private _ngZone: NgZone,
@@ -258,7 +256,7 @@ export class NgbDropdown implements AfterContentInit, OnChanges, OnDestroy {
 		this.container = config.container;
 		this.autoClose = config.autoClose;
 
-		this._positioning = ngbPositioning(rtl);
+		this._positioning = ngbPositioning();
 		this.display = ngbNavbar ? 'static' : 'dynamic';
 	}
 

@@ -9,6 +9,7 @@ import {
 	Options,
 } from '@popperjs/core';
 import { NgbRTL } from './rtl';
+import { inject } from '@angular/core';
 
 const placementSeparator = /\s+/;
 const spacesRegExp = /  +/gi;
@@ -210,7 +211,9 @@ interface PositioningOptions {
 function noop(arg) {
 	return arg;
 }
-export function ngbPositioning(rtl: NgbRTL) {
+
+export function ngbPositioning() {
+	const rtl = inject(NgbRTL);
 	let popperInstance: Instance | null = null;
 
 	return {

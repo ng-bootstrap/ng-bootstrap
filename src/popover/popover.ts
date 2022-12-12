@@ -27,7 +27,6 @@ import { listenToTriggers } from '../util/triggers';
 import { ngbAutoClose } from '../util/autoclose';
 import { ngbPositioning, PlacementArray } from '../util/positioning';
 import { PopupService } from '../util/popup';
-import { NgbRTL } from '../util/rtl';
 import { isString } from '../util/util';
 
 import { NgbPopoverConfig } from './popover-config';
@@ -211,7 +210,6 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 
 	constructor(
 		private _elementRef: ElementRef<HTMLElement>,
-		rtl: NgbRTL,
 		private _renderer: Renderer2,
 		injector: Injector,
 		viewContainerRef: ViewContainerRef,
@@ -231,7 +229,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 		this.popoverClass = config.popoverClass;
 		this.openDelay = config.openDelay;
 		this.closeDelay = config.closeDelay;
-		this._positioning = ngbPositioning(rtl);
+		this._positioning = ngbPositioning();
 		this._popupService = new PopupService<NgbPopoverWindow>(
 			NgbPopoverWindow,
 			injector,
