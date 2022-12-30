@@ -22,7 +22,7 @@ header.navbar {
 
 	a {
 		font-weight: 500;
-		color: #000;
+		color: var(--bs-dark-text);
 		text-decoration: underline;
 	}
 }
@@ -129,7 +129,7 @@ header.title {
 		.toc-link {
 			//       display: block;
 			//       padding: 0.25rem 1.5rem;
-			color: rgba(0, 0, 0, 0.65);
+			color: var(--bs-secondary-color);
 
 			&.deprecated {
 				text-decoration: line-through !important;
@@ -149,19 +149,19 @@ header.title {
 				text-decoration: none;
 				margin-left: -0.5rem;
 				padding: 0 0.5rem;
-				background-color: #f8f9fa;
+				background-color: var(--bs-light-bg-subtle);
 				border-radius: 3px;
 			}
 		}
 
 		.nav > li.active > a {
 			font-weight: 500;
-			color: rgba(0, 0, 0, 0.85);
+			color: var(--bs-body-color);
 		}
 
 		&.active > .toc-link {
 			font-weight: 500;
-			color: rgba(0, 0, 0, 0.85);
+			color: var(--bs-body-color);
 		}
 	}
 }
@@ -319,14 +319,14 @@ div.component-demo {
 			font-size: 80%;
 
 			.nav-link.active {
-				background-color: #f5f2f0;
-				border-bottom: 1px solid #f5f2f0;
+				background-color: var(--bs-body-bg);
+				border-bottom: 1px solid var(--bs-border-color);
 			}
 
 			.nav-link:not(.active) {
-				color: #999;
+				color: var(--bs-tertiary-color);
 				&:hover {
-					color: #666;
+					color: var(--bs-secondary-color);
 				}
 			}
 		}
@@ -337,8 +337,8 @@ div.component-demo {
 			padding-right: 0;
 
 			.nav-link.active {
-				color: #666;
-				background-color: #f5f5f5;
+				color: var(--bs-body-color);
+				background-color: var(--bs-body-bg);
 				border: 1px solid #dee2e6;
 				border-right-color: #f5f5f5;
 				border-top-right-radius: 0;

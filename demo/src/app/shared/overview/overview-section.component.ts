@@ -15,7 +15,7 @@ import { NgbdFragment } from '../fragment/fragment.directive';
 	template: `
 		<h2 [id]="section.fragment">
 			<a class="title-fragment" routerLink="." [fragment]="section.fragment">
-				<i class="bi bi-link-45deg" style="font-size: 1.75rem; color: black"></i>
+				<i class="bi bi-link-45deg" style="font-size: 1.75rem; color: var(--bs-heading-color)"></i>
 			</a>
 			{{ section.title }}
 		</h2>
