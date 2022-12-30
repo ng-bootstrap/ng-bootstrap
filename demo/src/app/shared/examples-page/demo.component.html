@@ -1,12 +1,12 @@
 <div class="component-demo">
 	<h2 [id]="id">
 		<a routerLink="." [fragment]="id" ngbdFragment title="Anchor link to demo: {{ id }}">
-			<i class="bi bi-link-45deg" style="font-size: 1.75rem; color: black"></i>
+			<i class="bi bi-link-45deg" style="font-size: 1.75rem; color: var(--bs-heading-color)"></i>
 		</a>
 		<span>{{ demoTitle }}</span>
 		<button
 			type="button"
-			class="btn btn-light me-2 toggle-code"
+			class="btn btn-outline-secondary me-2 toggle-code"
 			[class.active]="showCode"
 			(click)="showCode = !showCode; trackShowCodeClick()"
 		>
@@ -21,7 +21,7 @@
 			*ngIf="showStackblitz"
 			role="button"
 			(click)="trackStackBlitzClick()"
-			class="stackblitz btn btn-light"
+			class="stackblitz btn btn-outline-secondary"
 			target="_blank"
 			href="stackblitzes/{{ component }}/{{ id }}/stackblitz.html"
 			title="Edit in StackBlitz"
@@ -31,7 +31,7 @@
 		</a>
 	</h2>
 	<div class="card">
-		<div *ngIf="showCode" class="bg-light border-bottom tabset-code">
+		<div *ngIf="showCode" class="bg-body-tertiary border-bottom tabset-code">
 			<ul
 				ngbNav
 				#nav="ngbNav"
