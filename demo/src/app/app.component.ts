@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, NgZone, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLinkActive, RouterLink, RouterOutlet } from '@angular/router';
 import { NgbdDemoVersionsComponent } from './demo-versions.component';
+import { NgbdDemoThemeComponent } from './demo-theme.component';
 
 import { COMPONENT_LIST } from './shared/component-list';
 import { environment } from '../environments/environment';
@@ -14,7 +15,7 @@ import { of } from 'rxjs';
 	standalone: true,
 	selector: 'ngbd-app',
 	templateUrl: './app.component.html',
-	imports: [RouterLink, RouterLinkActive, RouterOutlet, NgbdDemoVersionsComponent],
+	imports: [RouterLink, RouterLinkActive, RouterOutlet, NgbdDemoVersionsComponent, NgbdDemoThemeComponent],
 })
 export class AppComponent implements OnInit {
 	downloadCount = '';

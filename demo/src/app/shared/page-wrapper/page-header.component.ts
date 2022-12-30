@@ -14,7 +14,7 @@ import { NgbdOverviewSection } from '../overview/overview';
 	template: `
 		<h2>
 			<a routerLink="." [fragment]="fragment" ngbdFragment>
-				<i class="bi bi-link-45deg" style="font-size: 1.75rem; color: black"></i>
+				<i class="bi bi-link-45deg" style="font-size: 1.75rem; color: var(--bs-heading-color)"></i>
 			</a>
 			{{ title }}
 		</h2>
