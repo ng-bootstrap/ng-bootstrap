@@ -2942,7 +2942,7 @@ bootstrap-icons@1.9.1:
 
 bootstrap@5.3.0-alpha1:
   version "5.3.0-alpha1"
-  resolved "http://proget/npm/SDWorxNpm/bootstrap/-/bootstrap-5.3.0-alpha1.tgz#380629c4367893f02f7879a01ea3ae0f94e2e70e"
+  resolved "http://registry.yarnpkg.com/bootstrap/-/bootstrap-5.3.0-alpha1.tgz#380629c4367893f02f7879a01ea3ae0f94e2e70e"
   integrity sha1-OAYpxDZ4k/AveHmgHqOuD5Ti5w4=
 
 brace-expansion@^1.1.7:
