@@ -29,4 +29,8 @@ import { NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
 })
 export class NgbdRatingDecimal {
 	currentRate = 3.14;
+
+	ariaValueText(current: number, max: number) {
+		return `${current} out of ${max} hearts`;
+	}
 }
