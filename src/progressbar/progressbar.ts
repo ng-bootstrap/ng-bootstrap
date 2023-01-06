@@ -12,17 +12,22 @@ import { NgIf, PercentPipe } from '@angular/common';
 	imports: [NgIf, PercentPipe],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
-	host: { class: 'progress' },
+	host: {
+		class: 'progress',
+		role: 'progressbar',
+		'[attr.aria-valuenow]': 'getValue()',
+		'aria-valuemin': '0',
+		'[attr.aria-valuemax]': 'max',
+		'[attr.aria-label]': 'ariaLabel',
+	},
 	template: `
 		<div
-			class="progress-bar{{ type ? ' bg-' + type : '' }}{{ textType ? ' text-' + textType : '' }}
-    {{ animated ? ' progress-bar-animated' : '' }}{{ striped ? ' progress-bar-striped' : '' }}"
-			role="progressbar"
+			class="progress-bar{{ type ? (textType ? ' bg-' + type : ' text-bg-' + type) : '' }}{{
+				textType ? ' text-' + textType : ''
+			}}"
+			[class.progress-bar-animated]="animated"
+			[class.progress-bar-striped]="striped"
 			[style.width.%]="getPercentValue()"
-			[attr.aria-valuenow]="getValue()"
-			aria-valuemin="0"
-			[attr.aria-valuemax]="max"
-			[attr.aria-label]="ariaLabel"
 		>
 			<span *ngIf="showValue" i18n="@@ngb.progressbar.value">{{ getValue() / max | percent }}</span
 			><ng-content></ng-content>
