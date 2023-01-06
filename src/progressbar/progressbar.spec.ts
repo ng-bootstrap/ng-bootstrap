@@ -10,7 +10,7 @@ const createTestComponent = (html: string) =>
 	createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
 function getAriaLabel(nativeEl): string {
-	return getProgressbar(nativeEl).getAttribute('aria-label') || '';
+	return getProgress(nativeEl).getAttribute('aria-label') || '';
 }
 
 function getBarWidth(nativeEl): string {
@@ -18,11 +18,15 @@ function getBarWidth(nativeEl): string {
 }
 
 function getBarHeight(nativeEl): string {
-	return nativeEl.querySelector('.progress').style.height;
+	return getProgress(nativeEl).style.height;
 }
 
 function getBarValue(nativeEl): number {
-	return parseInt(getProgressbar(nativeEl).getAttribute('aria-valuenow')!, 10);
+	return parseInt(getProgress(nativeEl).getAttribute('aria-valuenow')!, 10);
+}
+
+function getProgress(nativeEl: Element): HTMLElement {
+	return nativeEl.querySelector('.progress') as HTMLElement;
 }
 
 function getProgressbar(nativeEl: Element): HTMLElement {
@@ -175,15 +179,15 @@ describe('ngb-progressbar', () => {
 			const html = '<ngb-progressbar [value]="value" [type]="type"></ngb-progressbar>';
 			const fixture = createTestComponent(html);
 
-			expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('bg-warning');
+			expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('text-bg-warning');
 
 			fixture.componentInstance.type = 'info';
 			fixture.detectChanges();
-			expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('bg-info');
+			expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('text-bg-info');
 
 			fixture.componentInstance.type = 'dark';
 			fixture.detectChanges();
-			expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('bg-dark');
+			expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('text-bg-dark');
 		});
 
 		it('accepts a custom text type', () => {
@@ -194,6 +198,21 @@ describe('ngb-progressbar', () => {
 
 			fixture.componentInstance.textType = 'info';
 			fixture.detectChanges();
+			expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('text-info');
+		});
+
+		it('accepts a custom type and text type', () => {
+			const html = '<ngb-progressbar [value]="value" [type]="type" [textType]="textType"></ngb-progressbar>';
+			const fixture = createTestComponent(html);
+
+			expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('text-light');
+			expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('bg-warning');
+
+			fixture.componentInstance.type = 'danger';
+			fixture.componentInstance.textType = 'info';
+			fixture.detectChanges();
+			expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('bg-danger');
+			expect(getProgressbar(fixture.nativeElement)).not.toHaveCssClass('text-bg-danger');
 			expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('text-info');
 		});
 
@@ -231,12 +250,12 @@ describe('ngb-progressbar', () => {
 			const html = '<ngb-progressbar [value]="value" [type]="type" [striped]="true"></ngb-progressbar>';
 			const fixture = createTestComponent(html);
 
-			expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('bg-warning');
+			expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('text-bg-warning');
 			expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('progress-bar-striped');
 
 			fixture.componentInstance.type = 'success';
 			fixture.detectChanges();
-			expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('bg-success');
+			expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('text-bg-success');
 			expect(getProgressbar(fixture.nativeElement)).toHaveCssClass('progress-bar-striped');
 		});
 
@@ -244,8 +263,8 @@ describe('ngb-progressbar', () => {
 			const html = '<ngb-progressbar [value]="130" [max]="150"></ngb-progressbar>';
 			const fixture = createTestComponent(html);
 
-			expect(getProgressbar(fixture.nativeElement).getAttribute('aria-valuemin')).toBe('0');
-			expect(getProgressbar(fixture.nativeElement).getAttribute('aria-valuemax')).toBe('150');
+			expect(getProgress(fixture.nativeElement).getAttribute('aria-valuemin')).toBe('0');
+			expect(getProgress(fixture.nativeElement).getAttribute('aria-valuemax')).toBe('150');
 		});
 
 		it('should display the progress-bar label', () => {
