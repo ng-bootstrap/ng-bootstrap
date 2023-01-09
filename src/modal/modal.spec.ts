@@ -1,8 +1,10 @@
 import { Component, Injectable, Injector, OnDestroy, ViewChild } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { Router } from '@angular/router';
 import { NgbModalConfig, NgbModalOptions } from './modal-config';
-import { NgbActiveModal, NgbModal, NgbModalRef } from './modal.module';
+import { NgbActiveModal, NgbModal, NgbModalModule, NgbModalRef } from './modal.module';
 import { createKeyEvent, isBrowserVisible } from '../test/common';
 import { NgbConfig } from '..';
 import { NgbConfigAnimation } from '../test/ngb-config-animation';
@@ -1199,6 +1201,43 @@ describe('ngb-modal', () => {
 			});
 		});
 	}
+
+	describe('Lazy loading', () => {
+		@Component({ template: '<router-outlet></router-outlet>' })
+		class AppComponent {}
+
+		beforeEach(() => {
+			TestBed.configureTestingModule({
+				declarations: [AppComponent],
+				imports: [
+					NgbModalModule,
+					RouterTestingModule.withRoutes([
+						{
+							path: 'lazy',
+							loadChildren: () => import('./modal-lazy-module.spec'),
+						},
+					]),
+				],
+			});
+		});
+
+		it('should use correct injectors', fakeAsync(() => {
+			const router = TestBed.inject(Router);
+
+			const fixture = TestBed.createComponent(AppComponent);
+			fixture.detectChanges();
+
+			// opening by navigating
+			router.navigate(['lazy']);
+			tick();
+			fixture.detectChanges();
+			expect(fixture.nativeElement).toHaveModal('lazy modal');
+
+			// closing by navigating away
+			router.navigate(['']);
+			tick();
+		}));
+	});
 });
 
 @Component({ selector: 'custom-injector-cmpt', standalone: true, template: 'Some content' })
