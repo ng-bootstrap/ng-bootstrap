@@ -11,11 +11,11 @@ const BOOTSTRAP_CSS_FILEPATH = 'node_modules/bootstrap/dist/css/bootstrap.min.cs
 const SUPPORTED_BOOTSTRAP_STYLE_IMPORTS = {
 	'.sass': `
 /* Importing Bootstrap SCSS file. */
-@import '~bootstrap/scss/bootstrap'
+@import 'bootstrap/scss/bootstrap'
 `,
 	'.scss': `
 /* Importing Bootstrap SCSS file. */
-@import '~bootstrap/scss/bootstrap';
+@import 'bootstrap/scss/bootstrap';
 `,
 };
 
