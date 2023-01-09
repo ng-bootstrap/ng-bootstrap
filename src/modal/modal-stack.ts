@@ -3,6 +3,7 @@ import {
 	ApplicationRef,
 	ComponentRef,
 	createComponent,
+	EnvironmentInjector,
 	EventEmitter,
 	Inject,
 	Injectable,
@@ -50,6 +51,7 @@ export class NgbModalStack {
 	constructor(
 		private _applicationRef: ApplicationRef,
 		private _injector: Injector,
+		private _environmentInjector: EnvironmentInjector,
 		@Inject(DOCUMENT) private _document: any,
 		private _scrollBar: ScrollBar,
 		private _rendererFactory: RendererFactory2,
@@ -96,7 +98,10 @@ export class NgbModalStack {
 		this._hideScrollBar();
 
 		const activeModal = new NgbActiveModal();
-		const contentRef = this._getContentRef(options.injector || contentInjector, content, activeModal, options);
+
+		contentInjector = options.injector || contentInjector;
+		const environmentInjector = contentInjector.get(EnvironmentInjector, null) || this._environmentInjector;
+		const contentRef = this._getContentRef(contentInjector, environmentInjector, content, activeModal, options);
 
 		let backdropCmptRef: ComponentRef<NgbModalBackdrop> | undefined =
 			options.backdrop !== false ? this._attachBackdrop(containerEl) : undefined;
@@ -190,6 +195,7 @@ export class NgbModalStack {
 
 	private _getContentRef(
 		contentInjector: Injector,
+		environmentInjector: EnvironmentInjector,
 		content: Type<any> | TemplateRef<any> | string,
 		activeModal: NgbActiveModal,
 		options: NgbModalOptions,
@@ -201,7 +207,7 @@ export class NgbModalStack {
 		} else if (isString(content)) {
 			return this._createFromString(content);
 		} else {
-			return this._createFromComponent(contentInjector, content, activeModal, options);
+			return this._createFromComponent(contentInjector, environmentInjector, content, activeModal, options);
 		}
 	}
 
@@ -227,6 +233,7 @@ export class NgbModalStack {
 
 	private _createFromComponent(
 		contentInjector: Injector,
+		environmentInjector: EnvironmentInjector,
 		componentType: Type<any>,
 		context: NgbActiveModal,
 		options: NgbModalOptions,
@@ -236,7 +243,7 @@ export class NgbModalStack {
 			parent: contentInjector,
 		});
 		const componentRef = createComponent(componentType, {
-			environmentInjector: this._applicationRef.injector,
+			environmentInjector,
 			elementInjector,
 		});
 		const componentNativeEl = componentRef.location.nativeElement;
