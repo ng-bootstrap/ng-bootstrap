@@ -53,8 +53,8 @@ import { createTestApp } from '../utils/testing';
 			const expectedStylesPath = `projects/${projectName}/src/styles.sass`;
 			const stylesFile = tree.read(expectedStylesPath)!.toString();
 
-			expect(stylesFile).toContain(`@import '~bootstrap/scss/bootstrap'`);
-			expect(stylesFile).not.toContain(`@import '~bootstrap/scss/bootstrap;'`);
+			expect(stylesFile).toContain(`@import 'bootstrap/scss/bootstrap'`);
+			expect(stylesFile).not.toContain(`@import 'bootstrap/scss/bootstrap;'`);
 		});
 
 		it(`should patch 'style.scss' when using SCSS styles`, async () => {
@@ -63,7 +63,7 @@ import { createTestApp } from '../utils/testing';
 			const expectedStylesPath = `projects/${projectName}/src/styles.scss`;
 			const stylesFile = tree.read(expectedStylesPath)!.toString();
 
-			expect(stylesFile).toContain(`@import '~bootstrap/scss/bootstrap';`);
+			expect(stylesFile).toContain(`@import 'bootstrap/scss/bootstrap';`);
 		});
 
 		it(`should add 'bootstrap.min.css' to 'angular.json' if style system is unsupported`, async () => {
