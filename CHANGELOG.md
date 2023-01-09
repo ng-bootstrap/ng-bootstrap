@@ -1,3 +1,16 @@
+## [14.0.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/14.0.0...14.0.1) (2023-01-09)
+
+Fixes a DI issue with modal dependencies in lazy-loaded modules introduced in `14.0.0`.
+
+### Bug Fixes
+
+* **modal:** provide `NgbModal` at the correct level ([#4464](https://github.com/ng-bootstrap/ng-bootstrap/issues/4464)) ([8ac01c2](https://github.com/ng-bootstrap/ng-bootstrap/commit/8ac01c2aa38676490a4963cf8bb66a2b73368b51)), closes [#4447](https://github.com/ng-bootstrap/ng-bootstrap/issues/4447)
+* **positioning:** use `inject` for `NgbRTL` dependency ([7f2146d](https://github.com/ng-bootstrap/ng-bootstrap/commit/7f2146d84822eb1870f5a141626f261d1ecc5799)), closes [#4403](https://github.com/ng-bootstrap/ng-bootstrap/issues/4403)
+* **progressbar:** add aria attributes in parent and `text-bg-color` class when no `textType` ([#4461](https://github.com/ng-bootstrap/ng-bootstrap/issues/4461)) ([54bf804](https://github.com/ng-bootstrap/ng-bootstrap/commit/54bf804bfda01851e353f21aad7e5a691dcc5a1d))
+* **schematics:** correct `'bootstrap/scss/bootstrap'` imports ([#4465](https://github.com/ng-bootstrap/ng-bootstrap/issues/4465)) ([56b166b](https://github.com/ng-bootstrap/ng-bootstrap/commit/56b166b96735b594856ebd77152bb768f2c4780a)), closes [#4463](https://github.com/ng-bootstrap/ng-bootstrap/issues/4463)
+
+
+
 # [14.0.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/13.1.1...14.0.0) (2022-12-07)
 
 This release bumps minimum supported versions to Angular 15.0.0, Bootstrap 5.2.3 and Popper 2.11.6.
