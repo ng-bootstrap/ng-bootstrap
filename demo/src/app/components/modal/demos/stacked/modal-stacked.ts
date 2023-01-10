@@ -27,6 +27,7 @@ export class NgbdModal1Content {
 }
 
 @Component({
+	standalone: true,
 	template: `
 		<div class="modal-header">
 			<h4 class="modal-title">Hi there!</h4>
@@ -44,7 +45,7 @@ export class NgbdModal2Content {
 	constructor(public activeModal: NgbActiveModal) {}
 }
 
-@Component({ selector: 'ngbd-modal-stacked', templateUrl: './modal-stacked.html' })
+@Component({ selector: 'ngbd-modal-stacked', standalone: true, templateUrl: './modal-stacked.html' })
 export class NgbdModalStacked {
 	modalsNumber = 0;
 
