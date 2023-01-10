@@ -50,7 +50,7 @@ export interface StarTemplateContext {
 		'aria-valuemin': '0',
 		'[attr.aria-valuemax]': 'max',
 		'[attr.aria-valuenow]': 'nextRate',
-		'[attr.aria-valuetext]': 'ariaValueText()',
+		'[attr.aria-valuetext]': 'ariaValueText(nextRate, max)',
 		'[attr.aria-disabled]': 'readonly ? true : null',
 		'(blur)': 'handleBlur()',
 		'(keydown)': 'handleKeyDown($event)',
@@ -117,6 +117,13 @@ export class NgbRating implements ControlValueAccessor, OnInit, OnChanges {
 	@Input() tabindex: number | string;
 
 	/**
+	 * Allows to provide a function to set a custom aria-valuetext
+	 */
+	@Input() ariaValueText(current: number, max: number) {
+		return `${current} out of ${max}`;
+	}
+
+	/**
 	 * An event emitted when the user is hovering over a given rating.
 	 *
 	 * Event payload equals to the rating being hovered over.
@@ -144,10 +151,6 @@ export class NgbRating implements ControlValueAccessor, OnInit, OnChanges {
 		this.max = config.max;
 		this.readonly = config.readonly;
 		this.tabindex = config.tabindex;
-	}
-
-	ariaValueText() {
-		return `${this.nextRate} out of ${this.max}`;
 	}
 
 	isInteractive(): boolean {

@@ -438,6 +438,19 @@ describe('ngb-rating', () => {
 			expect(rating.attributes['aria-valuetext']).toBe('7 out of 10');
 		});
 
+		it('should allow to customize aria-valuetext', () => {
+			const fixture = createTestComponent(
+				'<ngb-rating [max]="max" rate="3" [ariaValueText]="customAriaValueTextFunction"></ngb-rating>',
+			);
+
+			const rating = fixture.debugElement.query(By.directive(NgbRating));
+
+			getStar(rating.nativeElement, 7).click();
+			fixture.detectChanges();
+
+			expect(rating.attributes['aria-valuetext']).toBe('Rating: 7 out of 10 stars');
+		});
+
 		it('updates aria-disabled when readonly', () => {
 			const fixture = createTestComponent('<ngb-rating></ngb-rating>');
 			let ratingEl = fixture.debugElement.query(By.directive(NgbRating));
@@ -814,4 +827,5 @@ class TestComponent {
 	model;
 	rate = 3;
 	tabindex?: string | number = 3;
+	customAriaValueTextFunction = (current: number, max: number) => `Rating: ${current} out of ${max} stars`;
 }
