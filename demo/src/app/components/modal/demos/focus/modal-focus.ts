@@ -35,6 +35,7 @@ export class NgbdModalConfirm {
 
 @Component({
 	selector: 'ngbd-modal-confirm-autofocus',
+	standalone: true,
 	template: `
 		<div class="modal-header">
 			<h4 class="modal-title" id="modal-title">Profile deletion</h4>
@@ -70,7 +71,7 @@ const MODALS: { [name: string]: Type<any> } = {
 	autofocus: NgbdModalConfirmAutofocus,
 };
 
-@Component({ selector: 'ngbd-modal-focus', templateUrl: './modal-focus.html' })
+@Component({ selector: 'ngbd-modal-focus', standalone: true, templateUrl: './modal-focus.html' })
 export class NgbdModalFocus {
 	withAutofocus = `<button type="button" ngbAutofocus class="btn btn-danger"
       (click)="modal.close('Ok click')">Ok</button>`;

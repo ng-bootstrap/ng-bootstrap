@@ -23,7 +23,7 @@ export class NgbdModalContent {
 	constructor(public activeModal: NgbActiveModal) {}
 }
 
-@Component({ selector: 'ngbd-modal-component', templateUrl: './modal-component.html' })
+@Component({ selector: 'ngbd-modal-component', standalone: true, templateUrl: './modal-component.html' })
 export class NgbdModalComponent {
 	constructor(private modalService: NgbModal) {}
 
