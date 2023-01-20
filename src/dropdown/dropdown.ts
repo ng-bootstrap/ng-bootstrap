@@ -12,7 +12,6 @@ import {
 	NgZone,
 	OnChanges,
 	OnDestroy,
-	Optional,
 	Output,
 	QueryList,
 	Renderer2,
@@ -31,6 +30,9 @@ import { Key } from '../util/key';
 import { NgbDropdownConfig } from './dropdown-config';
 import { FOCUSABLE_ELEMENTS_SELECTOR } from '../util/focus-trap';
 
+/**
+ * @deprecated this directive isn't useful anymore. You can remove it from your imports
+ */
 @Directive({ selector: '.navbar', standalone: true })
 export class NgbNavbar {}
 
@@ -249,7 +251,6 @@ export class NgbDropdown implements AfterContentInit, OnChanges, OnDestroy {
 		private _ngZone: NgZone,
 		private _elementRef: ElementRef<HTMLElement>,
 		private _renderer: Renderer2,
-		@Optional() ngbNavbar: NgbNavbar,
 	) {
 		this.placement = config.placement;
 		this.popperOptions = config.popperOptions;
@@ -257,7 +258,7 @@ export class NgbDropdown implements AfterContentInit, OnChanges, OnDestroy {
 		this.autoClose = config.autoClose;
 
 		this._positioning = ngbPositioning();
-		this.display = ngbNavbar ? 'static' : 'dynamic';
+		this.display = this._elementRef.nativeElement.closest('.navbar') ? 'static' : 'dynamic';
 	}
 
 	ngAfterContentInit() {
