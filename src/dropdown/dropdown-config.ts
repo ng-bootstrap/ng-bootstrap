@@ -14,4 +14,5 @@ export class NgbDropdownConfig {
 	placement: PlacementArray = ['bottom-start', 'bottom-end', 'top-start', 'top-end'];
 	popperOptions = (options: Partial<Options>) => options;
 	container: null | 'body';
+	zIndex: string | undefined;
 }

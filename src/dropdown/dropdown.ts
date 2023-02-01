@@ -192,6 +192,10 @@ export class NgbDropdown implements AfterContentInit, OnChanges, OnDestroy {
 	 * @since 9.1.0
 	 */
 	@Input() dropdownClass: string;
+	/**
+	 * Defines a custom z-index value when the container element is body. The default value is 1055.
+	 */
+	@Input() dropdownZIndex: string | undefined;
 
 	/**
 	 * Defines whether or not the dropdown menu is opened initially.
@@ -255,6 +259,7 @@ export class NgbDropdown implements AfterContentInit, OnChanges, OnDestroy {
 		this.popperOptions = config.popperOptions;
 		this.container = config.container;
 		this.autoClose = config.autoClose;
+		this.dropdownZIndex = config.zIndex;
 
 		this._positioning = ngbPositioning();
 		this.display = ngbNavbar ? 'static' : 'dynamic';
@@ -536,7 +541,8 @@ export class NgbDropdown implements AfterContentInit, OnChanges, OnDestroy {
 			// Override some styles to have the positioning working
 			renderer.setStyle(bodyContainer, 'position', 'absolute');
 			renderer.setStyle(dropdownMenuElement, 'position', 'static');
-			renderer.setStyle(bodyContainer, 'z-index', '1055');
+			const zIndex = this.dropdownZIndex || '1055';
+			renderer.setStyle(bodyContainer, 'z-index', zIndex);
 
 			renderer.appendChild(bodyContainer, dropdownMenuElement);
 			renderer.appendChild(this._document.body, bodyContainer);
