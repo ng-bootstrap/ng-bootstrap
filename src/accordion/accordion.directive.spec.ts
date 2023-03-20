@@ -82,9 +82,9 @@ describe('ngb-accordion directive', () => {
 				(shown) = "itemShownCallback($event)"
 				(hidden) = "itemHiddenCallback($event)"
 				>
-				<div ngbAccordionHeader>
-					<button ngbAccordionToggle>{{item.header}}</button>
-				</div>
+				<h2 ngbAccordionHeader>
+					<button ngbAccordionButton>{{item.header}}</button>
+				</h2>
 				<div ngbAccordionCollapse>
 					<div ngbAccordionBody><ng-template>{{item.body}}</ng-template></div>
 				</div>
@@ -201,8 +201,8 @@ describe('ngb-accordion directive', () => {
 		const fixture = createTestComponent(
 			`<div ngbAccordion>
 				<div ngbAccordionItem>
-					<div ngbAccordionHeader> <button ngbAccordionToggle>Toggle</button></div>
-					<div ngbAccordionCollapse> <div ngbAccordionBody></div> </div>
+					<h2 ngbAccordionHeader><button ngbAccordionButton>Toggle</button></h2>
+					<div ngbAccordionCollapse><div ngbAccordionBody></div></div>
 				</div>
 			</div>`,
 		);
@@ -233,6 +233,61 @@ describe('ngb-accordion directive', () => {
 		});
 	});
 
+	it(`should allow customizing headers with 'NgbAccordionToggle'`, () => {
+		const fixture = createTestComponent(
+			`<div ngbAccordion>
+				<div [ngbAccordionItem]="'custom-' + index" *ngFor="let item of items; let index = index;">
+					<div ngbAccordionHeader class='accordion-button'>
+						<button type='button' ngbAccordionToggle>{{item.header}}</button>
+					</div>
+					<div ngbAccordionCollapse>
+						<div ngbAccordionBody><ng-template>{{item.body}}</ng-template></div>
+					</div>
+				</div>
+			</div>`,
+		);
+
+		fixture.detectChanges();
+
+		const el = fixture.nativeElement;
+		expectOpenPanels(el, [false, false, false]);
+
+		// open second
+		getButton(el, 1).click();
+		fixture.detectChanges();
+		expectOpenPanels(el, [false, true, false]);
+
+		// close second
+		getButton(el, 1).click();
+		fixture.detectChanges();
+		expectOpenPanels(el, [false, false, false]);
+	});
+
+	it(`should no allow clicking on disabled headers with 'NgbAcdordionToggle'`, () => {
+		const fixture = createTestComponent(
+			`<div ngbAccordion>
+				<div ngbAccordionItem [disabled]="true">
+					<div ngbAccordionHeader class="accordion-button">
+						<button type='button' ngbAccordionToggle>Toggle</button>
+					</div>
+					<div ngbAccordionCollapse>
+						<div ngbAccordionBody><ng-template>Body</ng-template></div>
+					</div>
+				</div>
+			</div>`,
+		);
+
+		fixture.detectChanges();
+
+		const el = fixture.nativeElement;
+		expectOpenPanels(el, [false]);
+
+		// user click should not open the panel
+		getButton(el, 0).click();
+		fixture.detectChanges();
+		expectOpenPanels(el, [false]);
+	});
+
 	it('should remove body content from DOM only for the first collapse', () => {
 		const fixture = TestBed.createComponent(TestComponent);
 		const originalItems = fixture.componentInstance.items;
@@ -250,9 +305,9 @@ describe('ngb-accordion directive', () => {
 		const fixture = createTestComponent(
 			`<div ngbAccordion>
 				<div [ngbAccordionItem]="'custom-' + index" *ngFor="let item of items; let index = index;">
-					<div ngbAccordionHeader>
-						<button ngbAccordionToggle>{{item.header}}</button>
-					</div>
+					<h2 ngbAccordionHeader>
+						<button ngbAccordionButton>{{item.header}}</button>
+					</h2>
 					<div ngbAccordionCollapse>
 						<div ngbAccordionBody><ng-template>{{item.body}}</ng-template></div>
 					</div>
@@ -266,9 +321,9 @@ describe('ngb-accordion directive', () => {
 		const fixture = createTestComponent(
 			`<div ngbAccordion>
 				<div ngbAccordionItem *ngFor="let item of items">
-					<div ngbAccordionHeader>
-						<button ngbAccordionToggle>{{item.header}}</button>
-					</div>
+					<h2 ngbAccordionHeader>
+						<button ngbAccordionButton>{{item.header}}</button>
+					</h2>
 					<div ngbAccordionCollapse>
 						<div ngbAccordionBody><ng-template>{{item.body}}</ng-template></div>
 					</div>
@@ -383,12 +438,12 @@ describe('ngb-accordion directive', () => {
 			const html = `
 				<div ngbAccordion>
 					<div ngbAccordionItem [collapsed]="false">
-						<div ngbAccordionHeader> <button ngbAccordionToggle>Toggle</button></div>
-						<div ngbAccordionCollapse> <div ngbAccordionBody></div> </div>
+						<h2 ngbAccordionHeader><button ngbAccordionButton>Toggle</button></h2>
+						<div ngbAccordionCollapse><div ngbAccordionBody></div></div>
 					</div>
 					<div ngbAccordionItem>
-						<div ngbAccordionHeader> <button ngbAccordionToggle>Toggle</button></div>
-						<div ngbAccordionCollapse> <div ngbAccordionBody></div> </div>
+						<h2 ngbAccordionHeader><button ngbAccordionButton>Toggle</button></h2>
+						<div ngbAccordionCollapse><div ngbAccordionBody></div></div>
 					</div>
 				</div>`;
 			const { accordionDirective, nativeElement } = createTestImperativeAccordion(html);
@@ -397,16 +452,17 @@ describe('ngb-accordion directive', () => {
 			expect(accordionDirective.isExpanded(ids[0])).toBe(true);
 			expect(accordionDirective.isExpanded(ids[1])).toBe(false);
 		});
+
 		it('should expanded and collapse individual panels', () => {
 			const html = `
 			<div ngbAccordion>
 				<div ngbAccordionItem>
-					<div ngbAccordionHeader> <button ngbAccordionToggle>Toggle</button></div>
-					<div ngbAccordionCollapse> <div ngbAccordionBody></div> </div>
+					<h2 ngbAccordionHeader><button ngbAccordionButton>Toggle</button></h2>
+					<div ngbAccordionCollapse><div ngbAccordionBody></div></div>
 				</div>
 				<div ngbAccordionItem>
-					<div ngbAccordionHeader> <button ngbAccordionToggle>Toggle</button></div>
-					<div ngbAccordionCollapse> <div ngbAccordionBody></div> </div>
+					<h2 ngbAccordionHeader><button ngbAccordionButton>Toggle</button></h2>
+					<div ngbAccordionCollapse><div ngbAccordionBody></div></div>
 				</div>
 			</div>
 			`;
@@ -427,16 +483,17 @@ describe('ngb-accordion directive', () => {
 			fixture.detectChanges();
 			expectOpenPanels(nativeElement, [true, false]);
 		});
+
 		it('should not expand / collapse if already expanded / collapsed', () => {
 			const testHtml = `
 			<div ngbAccordion (hidden)="hiddenCallback($event)" (shown)="shownCallback($event)">
 				<div ngbAccordionItem [collapsed]="false">
-					<div ngbAccordionHeader> <button ngbAccordionToggle>Toggle</button></div>
-					<div ngbAccordionCollapse> <div ngbAccordionBody></div> </div>
+					<h2 ngbAccordionHeader><button ngbAccordionButton>Toggle</button></h2>
+					<div ngbAccordionCollapse><div ngbAccordionBody></div></div>
 				</div>
 				<div ngbAccordionItem>
-					<div ngbAccordionHeader> <button ngbAccordionToggle>Toggle</button></div>
-					<div ngbAccordionCollapse> <div ngbAccordionBody></div> </div>
+					<h2 ngbAccordionHeader><button ngbAccordionButton>Toggle</button></h2>
+					<div ngbAccordionCollapse><div ngbAccordionBody></div></div>
 				</div>
 			</div>`;
 
@@ -462,12 +519,12 @@ describe('ngb-accordion directive', () => {
 			const testHtml = `
 			<div ngbAccordion [closeOthers]="true">
 				<div ngbAccordionItem>
-					<div ngbAccordionHeader> <button ngbAccordionToggle>Toggle</button></div>
-					<div ngbAccordionCollapse> <div ngbAccordionBody></div> </div>
+					<h2 ngbAccordionHeader><button ngbAccordionButton>Toggle</button></h2>
+					<div ngbAccordionCollapse><div ngbAccordionBody></div></div>
 				</div>
 				<div ngbAccordionItem [collapsed]="false">
-					<div ngbAccordionHeader> <button ngbAccordionToggle>Toggle</button></div>
-					<div ngbAccordionCollapse> <div ngbAccordionBody></div> </div>
+					<h2 ngbAccordionHeader><button ngbAccordionButton>Toggle</button></h2>
+					<div ngbAccordionCollapse><div ngbAccordionBody></div></div>
 				</div>
 			</div>`;
 			const { accordionDirective, nativeElement, fixture } = createTestImperativeAccordion(testHtml);
@@ -482,8 +539,8 @@ describe('ngb-accordion directive', () => {
 			const testHtml = `
 			<div ngbAccordion (shown)="shownCallback($event)">
 				<div ngbAccordionItem [disabled]="true">
-					<div ngbAccordionHeader> <button ngbAccordionToggle>Toggle</button></div>
-					<div ngbAccordionCollapse> <div ngbAccordionBody></div> </div>
+					<h2 ngbAccordionHeader><button ngbAccordionButton>Toggle</button></h2>
+					<div ngbAccordionCollapse><div ngbAccordionBody></div></div>
 				</div>
 			</div>`;
 			const { accordionDirective, nativeElement, fixture } = createTestImperativeAccordion(testHtml);
@@ -503,12 +560,12 @@ describe('ngb-accordion directive', () => {
 			const testHtml = `
 			<div ngbAccordion [closeOthers]="false">
 				<div ngbAccordionItem>
-					<div ngbAccordionHeader> <button ngbAccordionToggle>Toggle</button></div>
-					<div ngbAccordionCollapse> <div ngbAccordionBody></div> </div>
+					<h2 ngbAccordionHeader><button ngbAccordionButton>Toggle</button></h2>
+					<div ngbAccordionCollapse><div ngbAccordionBody></div></div>
 				</div>
 				<div ngbAccordionItem>
-					<div ngbAccordionHeader> <button ngbAccordionToggle>Toggle</button></div>
-					<div ngbAccordionCollapse> <div ngbAccordionBody></div> </div>
+					<h2 ngbAccordionHeader><button ngbAccordionButton>Toggle</button></h2>
+					<div ngbAccordionCollapse><div ngbAccordionBody></div></div>
 				</div>
 			</div>`;
 
@@ -525,12 +582,12 @@ describe('ngb-accordion directive', () => {
 			const testHtml = `
 			<div ngbAccordion [closeOthers]="true">
 				<div ngbAccordionItem>
-					<div ngbAccordionHeader> <button ngbAccordionToggle>Toggle</button></div>
-					<div ngbAccordionCollapse> <div ngbAccordionBody></div> </div>
+					<h2 ngbAccordionHeader><button ngbAccordionButton>Toggle</button></h2>
+					<div ngbAccordionCollapse><div ngbAccordionBody></div></div>
 				</div>
 				<div ngbAccordionItem>
-					<div ngbAccordionHeader> <button ngbAccordionToggle>Toggle</button></div>
-					<div ngbAccordionCollapse> <div ngbAccordionBody></div> </div>
+					<h2 ngbAccordionHeader><button ngbAccordionButton>Toggle</button></h2>
+					<div ngbAccordionCollapse><div ngbAccordionBody></div></div>
 				</div>
 			</div>`;
 
@@ -547,12 +604,12 @@ describe('ngb-accordion directive', () => {
 			const testHtml = `
 			<div ngbAccordion [closeOthers]="true">
 				<div ngbAccordionItem>
-					<div ngbAccordionHeader> <button ngbAccordionToggle>Toggle</button></div>
-					<div ngbAccordionCollapse> <div ngbAccordionBody></div> </div>
+					<h2 ngbAccordionHeader><button ngbAccordionButton>Toggle</button></h2>
+					<div ngbAccordionCollapse><div ngbAccordionBody></div></div>
 				</div>
 				<div ngbAccordionItem [collapsed]="false">
-					<div ngbAccordionHeader> <button ngbAccordionToggle>Toggle</button></div>
-					<div ngbAccordionCollapse> <div ngbAccordionBody></div> </div>
+					<h2 ngbAccordionHeader><button ngbAccordionButton>Toggle</button></h2>
+					<div ngbAccordionCollapse><div ngbAccordionBody></div></div>
 				</div>
 			</div>`;
 
@@ -569,12 +626,12 @@ describe('ngb-accordion directive', () => {
 			const testHtml = `
 			<div ngbAccordion>
 				<div ngbAccordionItem>
-					<div ngbAccordionHeader> <button ngbAccordionToggle>Toggle</button></div>
-					<div ngbAccordionCollapse> <div ngbAccordionBody></div> </div>
+					<h2 ngbAccordionHeader><button ngbAccordionButton>Toggle</button></h2>
+					<div ngbAccordionCollapse> <div ngbAccordionBody></div></div>
 				</div>
 				<div ngbAccordionItem [collapsed]="false">
-					<div ngbAccordionHeader> <button ngbAccordionToggle>Toggle</button></div>
-					<div ngbAccordionCollapse> <div ngbAccordionBody></div> </div>
+					<h2 ngbAccordionHeader><button ngbAccordionButton>Toggle</button></h2>
+					<div ngbAccordionCollapse> <div ngbAccordionBody></div></div>
 				</div>
 			</div>`;
 
@@ -634,12 +691,12 @@ if (isBrowserVisible('ngb-accordion-directive animations')) {
 			template: `
 				<div ngbAccordion (shown)="onShown($event)" (hidden)="onHidden($event)">
 					<div ngbAccordionItem [collapsed]="false" (shown)="onCollapseShown()" (hidden)="onCollapseHidden()">
-						<div ngbAccordionHeader> <button ngbAccordionToggle>Toggle</button></div>
-						<div ngbAccordionCollapse> <div ngbAccordionBody></div> </div>
+						<h2 ngbAccordionHeader><button ngbAccordionButton>Toggle</button></h2>
+						<div ngbAccordionCollapse><div ngbAccordionBody></div></div>
 					</div>
 					<div ngbAccordionItem>
-						<div ngbAccordionHeader> <button ngbAccordionToggle>Toggle</button></div>
-						<div ngbAccordionCollapse> <div ngbAccordionBody></div> </div>
+						<h2 ngbAccordionHeader><button ngbAccordionButton>Toggle</button></h2>
+						<div ngbAccordionCollapse><div ngbAccordionBody></div></div>
 					</div>
 				</div>
 			`,

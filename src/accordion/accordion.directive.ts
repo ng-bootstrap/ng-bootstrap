@@ -61,18 +61,21 @@ export class NgbAccordionCollapse {
 	) {}
 }
 
+/**
+ * A directive to put on a toggling element inside the accordion header.
+ * It will register click handlers that toggle the associated panel and will handle accessibility attributes.
+ *
+ * This directive is used internally by the `NgbAccordionButton` directive.
+ */
 @Directive({
 	selector: '[ngbAccordionToggle]',
 	standalone: true,
 	host: {
 		'[id]': 'item.toggleId',
-		'[disabled]': 'item.disabled',
-		'[class.accordion-button]': 'true',
 		'[class.collapsed]': 'item.collapsed',
 		'[attr.aria-controls]': 'item.collapseId',
 		'[attr.aria-expanded]': '!item.collapsed',
-		type: 'button',
-		'(click)': '!item.disable ? accordion.toggle(item.id): undefined',
+		'(click)': '!item.disabled && accordion.toggle(item.id)',
 	},
 })
 export class NgbAccordionToggle {
@@ -80,6 +83,28 @@ export class NgbAccordionToggle {
 		@Inject(forwardRef(() => NgbAccordionItem)) public item: NgbAccordionItem,
 		@Inject(forwardRef(() => NgbAccordionDirective)) public accordion: NgbAccordionDirective,
 	) {}
+}
+
+/**
+ * A directive to put on a button element inside the accordion header.
+ * If you want a custom markup for the header, you can also use the `NgbAccordionToggle` directive.
+ */
+@Directive({
+	selector: 'button[ngbAccordionButton]',
+	standalone: true,
+	host: {
+		'[disabled]': 'item.disabled',
+		'[class.accordion-button]': 'true',
+		type: 'button',
+	},
+	hostDirectives: [
+		{
+			directive: NgbAccordionToggle,
+		},
+	],
+})
+export class NgbAccordionButton {
+	constructor(@Inject(forwardRef(() => NgbAccordionItem)) public item: NgbAccordionItem) {}
 }
 
 @Directive({
