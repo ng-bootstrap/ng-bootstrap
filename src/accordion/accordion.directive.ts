@@ -26,7 +26,7 @@ let nextId = 0;
 	standalone: true,
 	imports: [NgTemplateOutlet],
 	host: { '[class.accordion-body]': 'true' },
-	template: ` <ng-template [ngTemplateOutlet]="template()" ]></ng-template> `,
+	template: ` <ng-template [ngTemplateOutlet]="template()"></ng-template> `,
 })
 export class NgbAccordionBody {
 	constructor(@Inject(forwardRef(() => NgbAccordionItem)) private _item: NgbAccordionItem) {}
