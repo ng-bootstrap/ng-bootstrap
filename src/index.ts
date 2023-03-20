@@ -19,6 +19,15 @@ import { NgbTypeaheadModule } from './typeahead/typeahead.module';
 import { NgbOffcanvasModule } from './offcanvas/offcanvas.module';
 
 export {
+	NgbAccordionDirective,
+	NgbAccordionItem,
+	NgbAccordionHeader,
+	NgbAccordionToggle,
+	NgbAccordionCollapse,
+	NgbAccordionBody,
+} from './accordion/accordion.module';
+
+export {
 	NgbAccordion,
 	NgbAccordionConfig,
 	NgbAccordionModule,
