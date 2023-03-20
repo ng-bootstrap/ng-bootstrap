@@ -11,6 +11,13 @@ import { NgbdAccordionToggle } from './demos/toggle/accordion-toggle';
 import { NgbdAccordionKeepContent } from './demos/keep-content/accordion-keep-content';
 import { Routes } from '@angular/router';
 import { NgbdDemoListService } from '../../services/demo-list.service';
+import { NgbdAccordionOverviewComponent } from './overview/accordion-overview.component';
+
+const OVERVIEW = {
+	'basic-usage': 'Basic Usage',
+	features: 'Features',
+	customization: 'Customization',
+};
 
 const DEMOS = {
 	basic: {
@@ -52,7 +59,7 @@ const DEMOS = {
 };
 
 export const ROUTES: Routes = [
-	{ path: '', pathMatch: 'full', redirectTo: 'examples' },
+	{ path: '', pathMatch: 'full', redirectTo: 'overview' },
 	{
 		path: '',
 		component: ComponentWrapper,
@@ -63,10 +70,11 @@ export const ROUTES: Routes = [
 			{
 				provide: ENVIRONMENT_INITIALIZER,
 				multi: true,
-				useValue: () => inject(NgbdDemoListService).register('accordion', DEMOS),
+				useValue: () => inject(NgbdDemoListService).register('accordion', DEMOS, OVERVIEW),
 			},
 		],
 		children: [
+			{ path: 'overview', component: NgbdAccordionOverviewComponent },
 			{ path: 'examples', component: NgbdExamplesPage },
 			{ path: 'api', component: NgbdApiPage },
 		],

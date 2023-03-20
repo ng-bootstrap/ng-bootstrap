@@ -1,0 +1,88 @@
+<ngb-alert type="warning" [dismissible]="false">
+	This page describes accordion directives that were introduced in <code>14.1.0</code>. Previous implementation of the
+	accordion was component-based and is deprecated since <code>14.1.0</code>. You can find related documentation and
+	examples for the old version <a href="/releases/13.x/#/components/accordion">here</a>.
+</ngb-alert>
+
+<h4>
+	<span class="badge bg-info text-dark">Since 14.1.0</span>
+</h4>
+
+<ngbd-overview-section [section]="sections['basic-usage']">
+	<p>
+		We're using a set of accordion directives and matching exactly the markup of the
+		<a href="https://getbootstrap.com/docs/{{ bootstrapVersion }}/components/accordion/#example"
+			>Bootstrap's accordion</a
+		>. On top we generate appropriate css classes, provide a11y and animations out of the box. Main advantage of this
+		approach (vs. using components) is that all DOM nodes are accessible, so you can easily add missing functionality
+		and customize the look and feel.
+	</p>
+
+	<p>
+		<ngbd-accordion-demo></ngbd-accordion-demo>
+	</p>
+
+	<p>The code for a minimal one-panel accordion would look like this:</p>
+
+	<ngbd-code [snippet]="BASIC_ACCORDION"></ngbd-code>
+
+	<p>If you want to work with the accordion API, you can get either accordion or item instances from the template.</p>
+
+	<ngbd-code [snippet]="API_TPL"></ngbd-code>
+	<ngbd-code [snippet]="API_CODE"></ngbd-code>
+
+	<p>
+		If an item id is not provided as in the example above, it will be generated automatically in the
+		<code>'ngb-accordion-item-XXX'</code> format.
+	</p>
+
+	<p>For more details please refer to the <a routerLink="../api">complete API</a></p>
+</ngbd-overview-section>
+
+<ngbd-overview-section [section]="sections['features']">
+	<h4>One panel at a time</h4>
+
+	<p>
+		By default accordion allows opening as many panels as you want. If you need to have only one panel opened at a time,
+		you should use <code>[closeOthers]</code> input. See <a routerLink="../examples" fragment="static">example</a>.
+	</p>
+
+	<ngbd-code [snippet]="HIDE_OTHERS"></ngbd-code>
+
+	<h4>Keeping/removing DOM</h4>
+
+	<p>
+		You can choose to either keep or remove the DOM nodes of the panels that are not opened. This is done by using the
+		<code>[destroyOnHide]</code> either at the accordion level or at the item level. See
+		<a routerLink="../examples" fragment="keep-content">example</a>.
+	</p>
+
+	<ngbd-code [snippet]="KEEP_DOM"></ngbd-code>
+
+	<h4>Events</h4>
+
+	<p>
+		Ypu can be notified when an item is shown or hidden with the <code>(shown)</code>/<code>(hidden)</code> outputs.
+		Payload is the id of the panel being toggled. These events will be fired after the animation is done.
+	</p>
+
+	<ngbd-code [snippet]="EVENTS"></ngbd-code>
+</ngbd-overview-section>
+
+<ngbd-overview-section [section]="sections['customization']">
+	<p>
+		You can provide a different template for accordion headers. In this case we would recommend changing the
+		<code>ngbAccordionHeader</code> markup and using <code>ngbAccordionToggle</code> on the element that toggles a
+		panel. Standard <code>ngbAccordionButton</code> directive should be used with default
+		<code>h2 &gt; button</code> markup and might add unwanted <code>.accordion-button</code> class.
+	</p>
+
+	<p>
+		You should also remove the <code>.accordion-button::after</code> chevron, if you want to use default
+		<code>.accordion-button</code> class as a starting point.
+	</p>
+
+	<ngbd-code [snippet]="CUSTOM_HEADER"></ngbd-code>
+
+	<p>Please see a <a routerLink="../examples" fragment="header">working example</a> for more details</p>
+</ngbd-overview-section>
