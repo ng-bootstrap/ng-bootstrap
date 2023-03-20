@@ -1,0 +1,48 @@
+<p>You can use <code>[destroyOnHide]</code> input either for the whole accordion or for any individual panel</p>
+
+<div ngbAccordion [closeOthers]="true">
+	<div ngbAccordionItem [collapsed]="false">
+		<h2 ngbAccordionHeader>
+			<button ngbAccordionButton>Destroy content</button>
+		</h2>
+		<div ngbAccordionCollapse>
+			<div ngbAccordionBody>
+				<ng-template>
+					<ngb-alert [dismissible]="false" class="d-block mt-3" type="danger">
+						This panel content DOM will de destroyed when collapsed
+					</ngb-alert>
+					<p>
+						Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon
+						officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3
+						wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et.
+						Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan
+						excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt
+						you probably haven't heard of them accusamus labore sustainable VHS.
+					</p>
+				</ng-template>
+			</div>
+		</div>
+	</div>
+	<div ngbAccordionItem [destroyOnHide]="false">
+		<h2 ngbAccordionHeader>
+			<button ngbAccordionButton>Keep content</button>
+		</h2>
+		<div ngbAccordionCollapse>
+			<div ngbAccordionBody>
+				<ng-template>
+					<ngb-alert [dismissible]="false" class="d-block mt-3" type="success">
+						This panel content is always present in DOM
+					</ngb-alert>
+					<p>
+						Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon
+						officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3
+						wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et.
+						Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan
+						excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt
+						you probably haven't heard of them accusamus labore sustainable VHS.
+					</p>
+				</ng-template>
+			</div>
+		</div>
+	</div>
+</div>

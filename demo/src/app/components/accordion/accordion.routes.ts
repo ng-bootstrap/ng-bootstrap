@@ -4,22 +4,15 @@ import { ComponentWrapper } from '../../shared/component-wrapper/component-wrapp
 import { NgbdApiPage } from '../../shared/api-page/api-page.component';
 import { NgbdExamplesPage } from '../../shared/examples-page/examples.component';
 import { NgbdAccordionBasic } from './demos/basic/accordion-basic';
-import { NgbdAccordionBasicDirective } from './demos/directive/accordion-basic';
 import { NgbdAccordionConfig } from './demos/config/accordion-config';
 import { NgbdAccordionHeader } from './demos/header/accordion-header';
-import { NgbdAccordionPreventchange } from './demos/preventchange/accordion-preventchange';
 import { NgbdAccordionStatic } from './demos/static/accordion-static';
 import { NgbdAccordionToggle } from './demos/toggle/accordion-toggle';
+import { NgbdAccordionKeepContent } from './demos/keep-content/accordion-keep-content';
 import { Routes } from '@angular/router';
 import { NgbdDemoListService } from '../../services/demo-list.service';
 
 const DEMOS = {
-	directive: {
-		title: 'Directive',
-		code: require('!raw-loader!./demos/directive/accordion-basic').default,
-		markup: require('!raw-loader!./demos/directive/accordion-basic.html').default,
-		type: NgbdAccordionBasicDirective,
-	},
 	basic: {
 		title: 'Accordion',
 		code: require('!raw-loader!./demos/basic/accordion-basic').default,
@@ -44,11 +37,11 @@ const DEMOS = {
 		markup: require('!!raw-loader!./demos/header/accordion-header.html').default,
 		type: NgbdAccordionHeader,
 	},
-	preventchange: {
-		title: 'Prevent panel toggle',
-		code: require('!!raw-loader!./demos/preventchange/accordion-preventchange').default,
-		markup: require('!!raw-loader!./demos/preventchange/accordion-preventchange.html').default,
-		type: NgbdAccordionPreventchange,
+	'keep-content': {
+		title: 'Keep content',
+		code: require('!raw-loader!./demos/keep-content/accordion-keep-content').default,
+		markup: require('!raw-loader!./demos/keep-content/accordion-keep-content.html').default,
+		type: NgbdAccordionKeepContent,
 	},
 	config: {
 		title: 'Global configuration of accordions',

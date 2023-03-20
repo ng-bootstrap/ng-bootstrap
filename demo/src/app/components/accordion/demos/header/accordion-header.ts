@@ -10,15 +10,10 @@ import { NgIf } from '@angular/common';
 	encapsulation: ViewEncapsulation.None,
 	styles: [
 		`
-			.card.disabled {
-				opacity: 0.5;
-			}
 			.custom-header::after {
 				content: none;
 			}
 		`,
 	],
 })
-export class NgbdAccordionHeader {
-	disabled = false;
-}
+export class NgbdAccordionHeader {}
