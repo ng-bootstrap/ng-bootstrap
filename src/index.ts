@@ -25,6 +25,7 @@ export {
 	NgbAccordionToggle,
 	NgbAccordionCollapse,
 	NgbAccordionBody,
+	NgbAccordionButton,
 } from './accordion/accordion.module';
 
 export {

@@ -8,6 +8,7 @@ import {
 	NgbAccordionToggle,
 	NgbAccordionBody,
 	NgbAccordionCollapse,
+	NgbAccordionButton,
 } from './accordion.directive';
 
 export {
@@ -22,6 +23,7 @@ export {
 } from './accordion';
 
 export {
+	NgbAccordionButton,
 	NgbAccordionDirective,
 	NgbAccordionItem,
 	NgbAccordionHeader,
@@ -38,6 +40,7 @@ const NGB_ACCORDION_DIRECTIVES = [
 	NgbPanelContent,
 	NgbPanelHeader,
 	NgbPanelToggle,
+	NgbAccordionButton,
 	NgbAccordionDirective,
 	NgbAccordionItem,
 	NgbAccordionHeader,
