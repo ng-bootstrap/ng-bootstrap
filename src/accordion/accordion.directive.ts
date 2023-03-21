@@ -163,6 +163,7 @@ export class NgbAccordionItem implements AfterContentInit, OnDestroy {
 	@Input() set collapsed(collapsed: boolean) {
 		if (this.collapsed !== collapsed) {
 			this._collapsed = collapsed;
+			this._cd.markForCheck(); // need if the accordion is used inside a component having OnPush change detection strategy
 			// we need force CD to get template into DOM before starting animation to calculate its height correctly
 			if (!this._collapsed) {
 				this.animatingBodyCollapse = true;

@@ -2,7 +2,7 @@ import { TestBed, ComponentFixture, inject } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { createGenericTestComponent, isBrowserVisible } from '../test/common';
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { NgbAccordionModule, NgbAccordionConfig, NgbAccordionDirective } from './accordion.module';
 import { NgbConfig } from '../ngb-config';
@@ -701,6 +701,50 @@ describe('ngb-accordion directive', () => {
 			fixture.detectChanges();
 			expectOpenPanels(nativeElement, [false, false]);
 		});
+	});
+});
+
+describe('on push change detection strategy', () => {
+	@Component({
+		selector: 'test-cmp',
+		template: `
+			<div ngbAccordion [closeOthers]="true">
+				<div ngbAccordionItem [collapsed]="false">
+					<h2 ngbAccordionHeader><button ngbAccordionButton>Toggle</button></h2>
+					<div ngbAccordionCollapse><div ngbAccordionBody></div></div>
+				</div>
+				<div ngbAccordionItem>
+					<h2 ngbAccordionHeader><button ngbAccordionButton>Toggle</button></h2>
+					<div ngbAccordionCollapse><div ngbAccordionBody></div></div>
+				</div>
+				<div ngbAccordionItem>
+					<h2 ngbAccordionHeader><button ngbAccordionButton>Toggle</button></h2>
+					<div ngbAccordionCollapse><div ngbAccordionBody></div></div>
+				</div>
+			</div>
+		`,
+		standalone: true,
+		imports: [NgbAccordionModule],
+		changeDetection: ChangeDetectionStrategy.OnPush,
+	})
+	class TestOnPushComponent {}
+	it('Update the other panels accordingly', () => {
+		const fixture = TestBed.createComponent(TestOnPushComponent);
+		fixture.detectChanges();
+		const buttons = fixture.nativeElement.querySelectorAll('.accordion-header > .accordion-button');
+		expectOpenPanels(fixture.nativeElement, [true, false, false]);
+
+		buttons[1].click();
+		fixture.detectChanges();
+		expectOpenPanels(fixture.nativeElement, [false, true, false]);
+
+		buttons[2].click();
+		fixture.detectChanges();
+		expectOpenPanels(fixture.nativeElement, [false, false, true]);
+
+		buttons[0].click();
+		fixture.detectChanges();
+		expectOpenPanels(fixture.nativeElement, [true, false, false]);
 	});
 });
 
