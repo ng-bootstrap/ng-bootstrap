@@ -115,12 +115,19 @@ export class NgbAccordionButton {
 		'[class.accordion-header]': 'true',
 	},
 })
-export class NgbAccordionHeader {
-	constructor() {}
-}
+export class NgbAccordionHeader {}
 
+/**
+ * A directive that wraps an accordion item: a toggleable header + body that collapses.
+ *
+ * You can get hold of the `NgbAccordionItem` instance by using the `#item="ngbAccordionItem"`.
+ * It provides some useful properties and methods about a single item: ex. whether it is collapsed or disabled.
+ *
+ * Every accordion item has a string ID that is automatically generated, unless provided explicitly.
+ */
 @Directive({
 	selector: '[ngbAccordionItem]',
+	exportAs: 'ngbAccordionItem',
 	standalone: true,
 	host: {
 		'[class.accordion-item]': 'true',

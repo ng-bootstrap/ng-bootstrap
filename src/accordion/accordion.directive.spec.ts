@@ -387,6 +387,64 @@ describe('ngb-accordion directive', () => {
 		expect(toggleButtons[0].disabled).toBeTruthy();
 	});
 
+	it(`should allow using 'ngbAccordionItem' from the template`, () => {
+		const fixture = createTestComponent(
+			`<div ngbAccordion>
+					<div ngbAccordionItem='item' #item='ngbAccordionItem' [collapsed]='false'>
+						<h2 ngbAccordionHeader>
+							<button ngbAccordionButton>{{ item.collapsed ? 'collapsed-' : 'expanded-' }}{{ item.disabled ? 'disabled' : 'enabled' }}</button>
+						</h2>
+						<div ngbAccordionCollapse><div ngbAccordionBody></div></div>
+					</div>
+				</div>
+				<button id="btn-toggle" (click)='item.toggle()'></button>
+				<button id="btn-expand" (click)='item.collapsed = false'></button>
+				<button id="btn-disable" (click)='item.disabled = true'></button>`,
+		);
+
+		const el = fixture.nativeElement;
+
+		// initial state
+		expect(getPanelsTitle(el)).toEqual(['expanded-enabled']);
+
+		// toggling via item.toggle()
+		el.querySelector('#btn-toggle').click();
+		fixture.detectChanges();
+		expect(getPanelsTitle(el)).toEqual(['collapsed-enabled']);
+
+		// expanding via item.collapsed = false
+		el.querySelector('#btn-expand').click();
+		fixture.detectChanges();
+		expect(getPanelsTitle(el)).toEqual(['expanded-enabled']);
+
+		// changing disabled state via item.disabled = true
+		el.querySelector('#btn-disable').click();
+		fixture.detectChanges();
+		expect(getPanelsTitle(el)).toEqual(['expanded-disabled']);
+	});
+
+	it(`should allow using 'ngbAccordionItem' from the template in a loop`, () => {
+		const fixture = createTestComponent(
+			`<div ngbAccordion>
+					<div ngbAccordionItem #item='ngbAccordionItem' *ngFor='let i of items' [collapsed]='i.collapsed' [disabled]='i.disabled'>
+						<h2 ngbAccordionHeader>
+							<button ngbAccordionButton>{{ item.collapsed ? 'collapsed-' : 'expanded-' }}{{ item.disabled ? 'disabled' : 'enabled' }}</button>
+						</h2>
+						<div ngbAccordionCollapse><div ngbAccordionBody></div></div>
+					</div>
+				</div>`,
+		);
+		const el = fixture.nativeElement;
+
+		expect(getPanelsTitle(el)).toEqual(['collapsed-enabled', 'collapsed-enabled', 'collapsed-enabled']);
+
+		fixture.componentInstance.items[1].disabled = true;
+		fixture.componentInstance.items[0].collapsed = false;
+		fixture.detectChanges();
+
+		expect(getPanelsTitle(el)).toEqual(['expanded-enabled', 'collapsed-disabled', 'collapsed-enabled']);
+	});
+
 	it('should emit panel events when toggling panels', () => {
 		const fixture = TestBed.createComponent(TestComponent);
 		const el = fixture.nativeElement;
