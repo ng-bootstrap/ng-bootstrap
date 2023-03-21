@@ -263,7 +263,7 @@ describe('ngb-accordion directive', () => {
 		expectOpenPanels(el, [false, false, false]);
 	});
 
-	it(`should no allow clicking on disabled headers with 'NgbAcdordionToggle'`, () => {
+	it(`should no allow clicking on disabled headers with 'NgbAccordionToggle'`, () => {
 		const fixture = createTestComponent(
 			`<div ngbAccordion>
 				<div ngbAccordionItem [disabled]="true">
@@ -481,6 +481,26 @@ describe('ngb-accordion directive', () => {
 		getHeaders(el).forEach((header) => expect(header.getAttribute('role')).toBe('heading'));
 
 		getCollapses(el).forEach((collapse) => expect(collapse.getAttribute('role')).toBe('region'));
+	});
+
+	it(`should toggle '.collapsed' class on header when panel is toggled`, () => {
+		const fixture = createTestComponent(`
+			<div ngbAccordion>
+				<div ngbAccordionItem [collapsed]="false">
+					<div ngbAccordionHeader><button ngbAccordionToggle>Toggle</button></div>
+					<div ngbAccordionCollapse><div ngbAccordionBody></div></div>
+				</div>
+			</div>
+		`);
+
+		const header = fixture.nativeElement.querySelector('[ngbAccordionHeader]');
+		const toggle = fixture.nativeElement.querySelector('[ngbAccordionToggle]');
+
+		expect(header).not.toHaveCssClass('collapsed');
+
+		toggle.click();
+		fixture.detectChanges();
+		expect(header).toHaveCssClass('collapsed');
 	});
 
 	describe('imperative API', () => {
