@@ -113,9 +113,12 @@ export class NgbAccordionButton {
 	host: {
 		role: 'heading',
 		'[class.accordion-header]': 'true',
+		'[class.collapsed]': 'item.collapsed',
 	},
 })
-export class NgbAccordionHeader {}
+export class NgbAccordionHeader {
+	constructor(@Inject(forwardRef(() => NgbAccordionItem)) public item: NgbAccordionItem) {}
+}
 
 /**
  * A directive that wraps an accordion item: a toggleable header + body that collapses.
