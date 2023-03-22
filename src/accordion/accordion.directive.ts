@@ -18,26 +18,38 @@ import { Subscription } from 'rxjs';
 import { NgbAccordionConfig } from './accordion-config';
 import { NgTemplateOutlet } from '@angular/common';
 import { NgbCollapse } from '../collapse/collapse';
+import { isString } from '../util/util';
 
 let nextId = 0;
 
+/**
+ * A directive that wraps the content of an accordion item's collapsible body.
+ *
+ * The actual content is provided in a child `ng-template` element.
+ * Depending on the state of the accordion, the template will be either inserted or removed from the DOM.
+ */
 @Component({
 	selector: '[ngbAccordionBody]',
 	standalone: true,
 	imports: [NgTemplateOutlet],
 	host: { '[class.accordion-body]': 'true' },
-	template: ` <ng-template [ngTemplateOutlet]="template()"></ng-template> `,
+	template: `<ng-template [ngTemplateOutlet]="template()"></ng-template>`,
 })
 export class NgbAccordionBody {
 	constructor(@Inject(forwardRef(() => NgbAccordionItem)) private _item: NgbAccordionItem) {}
 
-	@ContentChild(TemplateRef, { static: true }) bodyTpl: TemplateRef<any>;
+	@ContentChild(TemplateRef, { static: true }) private _bodyTpl: TemplateRef<any>;
 
 	template() {
-		return this._item.destroyOnHide === false || this._item.animatingBodyCollapse ? this.bodyTpl : null;
+		return this._item.destroyOnHide === false || this._item.animatingBodyCollapse ? this._bodyTpl : null;
 	}
 }
 
+/**
+ * A directive that wraps the collapsible item's content of the accordion.
+ *
+ * Internally it reuses the [`NgbCollapse` directive](#/components/collapse)
+ */
 @Directive({
 	exportAs: 'ngbAccordionCollapse',
 	standalone: true,
@@ -62,10 +74,10 @@ export class NgbAccordionCollapse {
 }
 
 /**
- * A directive to put on a toggling element inside the accordion header.
+ * A directive to put on a toggling element inside the accordion item's header.
  * It will register click handlers that toggle the associated panel and will handle accessibility attributes.
  *
- * This directive is used internally by the `NgbAccordionButton` directive.
+ * This directive is used internally by the [`NgbAccordionButton` directive](#/components/accordion/api#NgbAccordionButton).
  */
 @Directive({
 	selector: '[ngbAccordionToggle]',
@@ -86,8 +98,9 @@ export class NgbAccordionToggle {
 }
 
 /**
- * A directive to put on a button element inside the accordion header.
- * If you want a custom markup for the header, you can also use the `NgbAccordionToggle` directive.
+ * A directive to put on a button element inside an accordion item's header.
+ *
+ * If you want a custom markup for the header, you can also use the [`NgbAccordionToggle` directive](#/components/accordion/api#NgbAccordionToggle).
  */
 @Directive({
 	selector: 'button[ngbAccordionButton]',
@@ -107,6 +120,9 @@ export class NgbAccordionButton {
 	constructor(@Inject(forwardRef(() => NgbAccordionItem)) public item: NgbAccordionItem) {}
 }
 
+/**
+ * A directive that wraps an accordion item's header.
+ */
 @Directive({
 	selector: '[ngbAccordionHeader]',
 	standalone: true,
@@ -123,10 +139,10 @@ export class NgbAccordionHeader {
 /**
  * A directive that wraps an accordion item: a toggleable header + body that collapses.
  *
- * You can get hold of the `NgbAccordionItem` instance by using the `#item="ngbAccordionItem"`.
- * It provides some useful properties and methods about a single item: ex. whether it is collapsed or disabled.
+ * You can get hold of the `NgbAccordionItem` instance in the template with `#item="ngbAccordionItem"`.
+ * It allows to check if the item is collapsed or not, toggle the collapse state, etc.
  *
- * Every accordion item has a string ID that is automatically generated, unless provided explicitly.
+ * Every accordion item has a string ID that is automatically generated in the `ngb-accordion-item-XX` format, unless provided explicitly.
  */
 @Directive({
 	selector: '[ngbAccordionItem]',
@@ -146,23 +162,40 @@ export class NgbAccordionItem implements AfterContentInit, OnDestroy {
 	private _subscriptions: Subscription[] = [];
 	private _collapsed = true;
 	private _id = `ngb-accordion-item-${nextId++}`;
-	private _disabled = false;
 
 	animatingBodyCollapse = false;
 
 	@ContentChild(NgbAccordionCollapse, { static: true }) private _collapse: NgbAccordionCollapse;
 
-	@Input('ngbAccordionItem') set id(inputId: string) {
-		if (inputId) {
-			this._id = inputId;
+	/**
+	 * Sets the custom ID of the accordion item. It must be unique for the document.
+	 *
+	 * @param id The ID of the accordion item, must be a non-empty string
+	 */
+	@Input('ngbAccordionItem') set id(id: string) {
+		if (isString(id) && id !== '') {
+			this._id = id;
 		}
 	}
+
+	/**
+	 * If `true`, the content of the accordion item's body will be removed from the DOM. It will be just hidden otherwise.
+	 *
+	 * This property can also be set up on the parent [`NgbAccordion` directive](#/components/accordion/api#NgbAccordionDirective).
+	 */
 	@Input() destroyOnHide = this._accordion.destroyOnHide;
-	@Input() set disabled(isDisabled: boolean) {
-		if (isDisabled != this.disabled) {
-			this._disabled = isDisabled;
-		}
-	}
+
+	/**
+	 * If `true`, the accordion item will be disabled.
+	 * It won't react to user's clicks, but still will be toggelable programmatically.
+	 */
+	@Input() disabled = false;
+
+	/**
+	 *	If `true`, the accordion item will be collapsed. Otherwise, it will be expanded.
+	 *
+	 * @param collapsed New state of the accordion item.
+	 */
 	@Input() set collapsed(collapsed: boolean) {
 		if (this.collapsed !== collapsed) {
 			this._collapsed = collapsed;
@@ -178,15 +211,21 @@ export class NgbAccordionItem implements AfterContentInit, OnDestroy {
 		}
 	}
 
+	/**
+	 * Event emitted when the expanding animation is finished. It has no payload.
+	 */
 	@Output() shown = new EventEmitter<void>();
+
+	/**
+	 * Event emitted when the collapsing animation is finished and before the content is removed from DOM.
+	 * It has no payload.
+	 */
 	@Output() hidden = new EventEmitter<void>();
 
-	get collapsed(): boolean {
+	get collapsed() {
 		return this._collapsed;
 	}
-	get disabled() {
-		return this._disabled;
-	}
+
 	get id() {
 		return `${this._id}`;
 	}
@@ -194,11 +233,12 @@ export class NgbAccordionItem implements AfterContentInit, OnDestroy {
 	get toggleId() {
 		return `${this.id}-toggle`;
 	}
+
 	get collapseId() {
 		return `${this.id}-collapse`;
 	}
 
-	ngAfterContentInit(): void {
+	ngAfterContentInit() {
 		const { ngbCollapse } = this._collapse;
 		// we need to disable the animation for the first init
 		ngbCollapse.animation = false;
@@ -220,15 +260,23 @@ export class NgbAccordionItem implements AfterContentInit, OnDestroy {
 		);
 	}
 
-	ngOnDestroy(): void {
+	ngOnDestroy() {
 		this._subscriptions.forEach((s) => s.unsubscribe());
 	}
 
+	/**
+	 * Toggles an accordion item.
+	 */
 	toggle() {
 		this.collapsed = !this.collapsed;
 	}
 }
 
+/**
+ * Accordion is a stack of cards that have a header and collapsible body.
+ *
+ * This directive is a container for these items and provides an API to handle them.
+ */
 @Directive({
 	exportAs: 'ngbAccordion',
 	standalone: true,
@@ -241,24 +289,27 @@ export class NgbAccordionDirective {
 	 * If `true`, accordion will be animated.
 	 */
 	@Input() animation: boolean;
+
 	/**
 	 * If `true`, only one item at the time can stay open.
 	 */
 	@Input() closeOthers: boolean;
+
 	/**
-	 * If `true`, the content of the AccordionBody will be removed from the DOM.
-	 * This property can be overwritten at AccordionItem level
+	 * If `true`, the content of the accordion items body will be removed from the DOM. It will be just hidden otherwise.
+	 *
+	 * This property can be overwritten at the [`NgbAccordionItem`](#/components/accordion/api#NgbAccordionItem) level
 	 */
 	@Input() destroyOnHide = true;
 
 	/**
-	 * An event emitted when the expanding animation is finished on the collapse. The payload is the AccordionItem id.
+	 * Event emitted when the expanding animation is finished. The payload is the id of shown accordion item.
 	 */
 	@Output() shown = new EventEmitter<string>();
 
 	/**
-	 * An event emitted when the collapsing animation is finished on the collapse, and before the content of the AccordionBody is removed.
-	 * The payload is the AccordionItem id.
+	 * Event emitted when the collapsing animation is finished and before the content is removed from DOM.
+	 * The payload is the id of hidden accordion item.
 	 */
 	@Output() hidden = new EventEmitter<string>();
 
@@ -268,9 +319,11 @@ export class NgbAccordionDirective {
 	}
 
 	/**
-	 * Toggles a panel with the given id.
+	 * Toggles an item with the given id.
 	 *
-	 * Has no effect if the panel is disabled.
+	 * It will toggle an item, even if it is disabled.
+	 *
+	 * @param itemId The id of the item to toggle.
 	 */
 	toggle(itemId: string) {
 		const toToggle = this._getItem(itemId);
@@ -288,9 +341,11 @@ export class NgbAccordionDirective {
 	}
 
 	/**
-	 * Expands panel with the given id.
+	 * Expands an item with the given id.
 	 *
-	 * If `closeOther` is `true` it will collapse the other panels.
+	 * If `closeOthers` is `true`, it will collapse other panels.
+	 *
+	 * @param itemId The id of the item to expand.
 	 */
 	expand(itemId: string) {
 		const toExpand = this._getItem(itemId);
@@ -306,14 +361,14 @@ export class NgbAccordionDirective {
 	}
 
 	/**
-	 * Expand all panels.
+	 * Expands all items.
 	 *
-	 * If `closeOther` is `true` it will keep open the panel that is open, otherwise will expand the first one.
+	 * If `closeOthers` is `true` and all items are closed, it will open the first one. Otherwise, it will keep the opened one.
 	 */
 	expandAll() {
 		if (this.closeOthers) {
 			// we check if there is an item open and if it is not we can expand the first item
-			// (otherwise we toggle do nothing)
+			// (otherwise we toggle nothing)
 			if (!this._items.find((item) => !item.collapsed)) {
 				this._items.get(0)!.collapsed = false;
 			}
@@ -325,9 +380,11 @@ export class NgbAccordionDirective {
 	}
 
 	/**
-	 * Collapse panel with the given id.
+	 * Collapses an item with the given id.
 	 *
-	 * Has no effect if the panelId does not correspond to any panel.
+	 * Has no effect if the `itemId` does not correspond to any item.
+	 *
+	 * @param itemId The id of the item to collapse.
 	 */
 	collapse(itemId: string) {
 		const toCollapse = this._getItem(itemId);
@@ -335,20 +392,23 @@ export class NgbAccordionDirective {
 			toCollapse.collapsed = true;
 		}
 	}
+
 	/**
-	 * Collapse all panels.
+	 * Collapses all items.
 	 */
 	collapseAll() {
 		this._items.forEach((item) => (item.collapsed = true));
 	}
 
 	/**
-	 * Checks if a panel with a given id is expanded.
+	 * Checks if an item with the given id is expanded.
 	 *
-	 * If the panel does not exist will return false.
+	 * If the `itemId` does not correspond to any item, it returns `false`.
+	 *
+	 * @param itemId The id of the item to check.
 	 */
-	isExpanded(panelId: string): boolean {
-		const item = this._getItem(panelId);
+	isExpanded(itemId: string): boolean {
+		const item = this._getItem(itemId);
 		return item ? !item.collapsed : false;
 	}
 
