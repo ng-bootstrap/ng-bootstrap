@@ -1,3 +1,4 @@
+/* eslint-disable deprecation/deprecation */
 import { TestBed, ComponentFixture, inject } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NgFor } from '@angular/common';
