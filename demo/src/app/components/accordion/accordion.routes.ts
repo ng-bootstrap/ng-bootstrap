@@ -12,6 +12,7 @@ import { NgbdAccordionKeepContent } from './demos/keep-content/accordion-keep-co
 import { Routes } from '@angular/router';
 import { NgbdDemoListService } from '../../services/demo-list.service';
 import { NgbdAccordionOverviewComponent } from './overview/accordion-overview.component';
+import { NgbdAcccordionDeprecationComponent } from './accordion-deprecation.component';
 
 const OVERVIEW = {
 	'basic-usage': 'Basic Usage',
@@ -65,6 +66,7 @@ export const ROUTES: Routes = [
 		component: ComponentWrapper,
 		data: {
 			bootstrap: 'https://getbootstrap.com/docs/%version%/components/collapse/#accordion-example',
+			header: NgbdAcccordionDeprecationComponent,
 		},
 		providers: [
 			{
