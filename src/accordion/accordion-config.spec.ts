@@ -1,3 +1,4 @@
+/* eslint-disable deprecation/deprecation */
 import { NgbConfig } from '../ngb-config';
 import { NgbAccordionConfig } from './accordion-config';
 

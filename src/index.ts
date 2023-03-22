@@ -28,6 +28,7 @@ export {
 	NgbAccordionButton,
 } from './accordion/accordion.module';
 
+/* eslint-disable deprecation/deprecation */
 export {
 	NgbAccordion,
 	NgbAccordionConfig,
@@ -40,6 +41,7 @@ export {
 	NgbPanelTitle,
 	NgbPanelToggle,
 } from './accordion/accordion.module';
+/* eslint-disable deprecation/deprecation */
 export { NgbAlert, NgbAlertConfig, NgbAlertModule } from './alert/alert.module';
 export {
 	NgbCarousel,

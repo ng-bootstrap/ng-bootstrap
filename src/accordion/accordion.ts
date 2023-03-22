@@ -1,3 +1,4 @@
+/* eslint-disable deprecation/deprecation */
 import {
 	AfterContentChecked,
 	ChangeDetectorRef,
@@ -34,6 +35,7 @@ let nextId = 0;
  * The context for the [NgbPanelHeader](#/components/accordion/api#NgbPanelHeader) template
  *
  * @since 4.1.0
+ * @deprecated 14.1.0
  */
 export interface NgbPanelHeaderContext {
 	/**
@@ -50,6 +52,7 @@ export interface NgbPanelHeaderContext {
  * You can also use [`NgbPanelTitle`](#/components/accordion/api#NgbPanelTitle) to customize only the panel title.
  *
  * @since 4.1.0
+ * @deprecated 14.1.0
  */
 @Directive({ selector: 'ng-template[ngbPanelHeader]', standalone: true })
 export class NgbPanelHeader {
@@ -60,6 +63,8 @@ export class NgbPanelHeader {
  * A directive that wraps only the panel title with HTML markup inside.
  *
  * You can also use [`NgbPanelHeader`](#/components/accordion/api#NgbPanelHeader) to customize the full panel header.
+ *
+ * @deprecated 14.1.0
  */
 @Directive({ selector: 'ng-template[ngbPanelTitle]', standalone: true })
 export class NgbPanelTitle {
@@ -68,6 +73,8 @@ export class NgbPanelTitle {
 
 /**
  * A directive that wraps the accordion panel content.
+ *
+ * @deprecated 14.1.0
  */
 @Directive({ selector: 'ng-template[ngbPanelContent]', standalone: true })
 export class NgbPanelContent {
@@ -76,6 +83,8 @@ export class NgbPanelContent {
 
 /**
  * A directive that wraps an individual accordion panel with title and collapsible content.
+ *
+ * @deprecated 14.1.0
  */
 @Directive({ selector: 'ngb-panel', standalone: true })
 export class NgbPanel implements AfterContentChecked {
@@ -157,6 +166,8 @@ export class NgbPanel implements AfterContentChecked {
 
 /**
  * An event emitted right before toggling an accordion panel.
+ *
+ * @deprecated 14.1.0
  */
 export interface NgbPanelChangeEvent {
 	/**
@@ -197,6 +208,7 @@ export class NgbRefDirective implements OnInit, OnDestroy {
  * To be used inside the [`NgbPanelHeader`](#/components/accordion/api#NgbPanelHeader)
  *
  * @since 4.1.0
+ * @deprecated 14.1.0
  */
 @Directive({
 	selector: 'button[ngbPanelToggle]',
@@ -231,6 +243,8 @@ export class NgbPanelToggle {
  *
  * It can ensure only one panel is opened at a time and allows to customize panel
  * headers.
+ *
+ * @deprecated 14.1.0
  */
 @Component({
 	selector: 'ngb-accordion',

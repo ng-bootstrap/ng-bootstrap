@@ -1,3 +1,4 @@
+/* eslint-disable deprecation/deprecation */
 import { NgModule } from '@angular/core';
 
 import { NgbAccordion, NgbPanel, NgbPanelContent, NgbPanelHeader, NgbPanelTitle, NgbPanelToggle } from './accordion';
