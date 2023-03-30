@@ -4,9 +4,9 @@
 </p>
 
 <div class="d-flex">
-	<ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-pills" orientation="vertical">
-		<li ngbNavItem="top">
-			<a ngbNavLink>Top</a>
+	<div ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-pills flex-column" orientation="vertical">
+		<ng-container ngbNavItem="top">
+			<button ngbNavLink>Top</button>
 			<ng-template ngbNavContent>
 				<p>
 					Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth
@@ -15,9 +15,9 @@
 					salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.
 				</p>
 			</ng-template>
-		</li>
-		<li ngbNavItem="middle">
-			<a ngbNavLink>Middle</a>
+		</ng-container>
+		<ng-container ngbNavItem="middle">
+			<button ngbNavLink>Middle</button>
 			<ng-template ngbNavContent>
 				<p>
 					Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko
@@ -28,9 +28,9 @@
 					stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.
 				</p>
 			</ng-template>
-		</li>
-		<li ngbNavItem="bottom">
-			<a ngbNavLink>Bottom</a>
+		</ng-container>
+		<ng-container ngbNavItem="bottom">
+			<button ngbNavLink>Bottom</button>
 			<ng-template ngbNavContent>
 				<p>
 					Sed commodo, leo at suscipit dictum, quam est porttitor sapien, eget sodales nibh elit id diam. Nulla
@@ -42,8 +42,8 @@
 					aliquet ultricies in eget neque. Phasellus nec tortor vel tellus pulvinar feugiat.
 				</p>
 			</ng-template>
-		</li>
-	</ul>
+		</ng-container>
+	</div>
 
 	<div [ngbNavOutlet]="nav" class="ms-4"></div>
 </div>

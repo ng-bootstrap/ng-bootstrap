@@ -1,9 +1,9 @@
 <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
 	<li *ngFor="let id of tabs" [ngbNavItem]="id">
-		<a ngbNavLink>
+		<button ngbNavLink>
 			Tab {{ id }}
 			<span class="btn-close ms-2 fw-light" (click)="close($event, id)"></span>
-		</a>
+		</button>
 		<ng-template ngbNavContent>
 			<p>Tab {{ id }} content</p>
 		</ng-template>
