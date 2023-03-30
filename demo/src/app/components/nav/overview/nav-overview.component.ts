@@ -33,15 +33,40 @@ export class NgbdNavOverviewComponent {
 		code: `
         <ul ngbNav #nav="ngbNav" class="nav-tabs">
           <li ngbNavItem>
-            <a ngbNavLink>First</a>
+            <button ngbNavLink>First</button>
             <ng-template ngbNavContent>First content</ng-template>
           </li>
           <li ngbNavItem>
-            <a ngbNavLink>Second</a>
+            <button ngbNavLink>Second</button>
             <ng-template ngbNavContent>Second content</ng-template>
           </li>
         </ul>
         <div [ngbNavOutlet]="nav"></div>
+    `,
+	});
+
+	MARKUP = Snippet({
+		lang: 'html',
+		code: `
+        <!-- navs as list items -->
+        <ul ngbNav class="nav-tabs">
+          <li ngbNavItem>
+            <button ngbNavLink>Button</button>
+          </li>
+          <li ngbNavItem>
+            <a ngbNavLink>Link</a>
+          </li>
+        </ul>
+
+        <!-- navs without list -->
+        <div ngbNav class="nav-tabs">
+          <ng-container ngbNavItem>
+            <button ngbNavLink>Button</button>
+          </ng-container>
+          <ng-container ngbNavItem>
+            <a ngbNavLink>Link</a>
+          </ng-container>
+        </div>
     `,
 	});
 
@@ -50,10 +75,10 @@ export class NgbdNavOverviewComponent {
 		code: `
         <ul ngbNav [(activeId)]="activeId" class="nav-tabs">
           <li [ngbNavItem]="1">
-            <a ngbNavLink>First</a>
+            <button ngbNavLink>First</button>
           </li>
           <li [ngbNavItem]="2">
-            <a ngbNavLink>Second</a>
+            <button ngbNavLink>Second</button>
           </li>
         </ul>
     `,

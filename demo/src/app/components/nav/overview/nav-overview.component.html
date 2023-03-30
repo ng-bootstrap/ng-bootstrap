@@ -25,11 +25,11 @@
 	<ngb-alert type="secondary" [dismissible]="false">
 		<ul ngbNav #nav="ngbNav" class="nav-pills">
 			<li ngbNavItem>
-				<a ngbNavLink>First</a>
+				<button ngbNavLink>First</button>
 				<ng-template ngbNavContent>Content for the first nav</ng-template>
 			</li>
 			<li ngbNavItem>
-				<a ngbNavLink>Second</a>
+				<button ngbNavLink>Second</button>
 				<ng-template ngbNavContent>Content for the second nav</ng-template>
 			</li>
 		</ul>
@@ -54,6 +54,21 @@
 		We use <code>ng-templates</code> for the content, so by default only currently active content will be present in the
 		DOM tree. If you wish to keep even the non-active content in the DOM, take a look at the
 		<code>[destroyOnHide]</code> input and <a routerLink="../examples" fragment="keep-content">this demo</a>.
+	</p>
+
+	<h4>Markup</h4>
+
+	<p>
+		Bootstrap proposes flexible markup options for navs. We support all of them, but recommend using buttons instead of
+		links, if just click/keyboard handling is what you need, and you don't use <code>href</code>s or a router
+		integration.
+	</p>
+
+	<ngbd-code [snippet]="MARKUP"></ngbd-code>
+
+	<p>
+		You can also use the <code>&lt;nav&gt;</code> element if you prefer. See the
+		<a routerLink="../examples" fragment="markup">markup demo</a> for more details.
 	</p>
 
 	<h4>Selection / active nav</h4>
