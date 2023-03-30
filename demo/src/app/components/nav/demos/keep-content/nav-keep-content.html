@@ -1,6 +1,6 @@
 <ul ngbNav #nav="ngbNav" [(activeId)]="active" [destroyOnHide]="false" class="nav-tabs">
 	<li [ngbNavItem]="1" [destroyOnHide]="true">
-		<a ngbNavLink>One</a>
+		<button ngbNavLink>One</button>
 		<ng-template ngbNavContent>
 			<ngb-alert [dismissible]="false" class="d-block mt-3" type="danger">
 				This tab content DOM will de destroyed when not active
@@ -15,7 +15,7 @@
 		</ng-template>
 	</li>
 	<li [ngbNavItem]="2">
-		<a ngbNavLink>Two</a>
+		<button ngbNavLink>Two</button>
 		<ng-template ngbNavContent>
 			<ngb-alert [dismissible]="false" class="d-block mt-3" type="success">
 				This tab content DOM will always stay in DOM
@@ -32,7 +32,7 @@
 		</ng-template>
 	</li>
 	<li [ngbNavItem]="3">
-		<a ngbNavLink>Three</a>
+		<button ngbNavLink>Three</button>
 		<ng-template ngbNavContent let-active>
 			<ngb-alert *ngIf="active" [dismissible]="false" class="d-block mt-3">
 				While tab content DOM is never destroyed, this alert exists only when current tab is active

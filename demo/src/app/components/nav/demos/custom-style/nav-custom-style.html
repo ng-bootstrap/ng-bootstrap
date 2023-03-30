@@ -1,6 +1,6 @@
 <ul ngbNav #nav="ngbNav" [activeId]="2" class="nav-tabs justify-content-center">
 	<li [ngbNavItem]="1">
-		<a ngbNavLink>Simple</a>
+		<button ngbNavLink>Simple</button>
 		<ng-template ngbNavContent>
 			<p>
 				Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth
@@ -11,7 +11,7 @@
 		</ng-template>
 	</li>
 	<li [ngbNavItem]="2">
-		<a ngbNavLink><b>Fancy</b> title</a>
+		<button ngbNavLink><b>Fancy</b> title</button>
 		<ng-template ngbNavContent>
 			<p>
 				Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko
@@ -24,7 +24,7 @@
 		</ng-template>
 	</li>
 	<li ngbDropdown class="nav-item">
-		<a href (click)="false" class="nav-link" ngbDropdownToggle>Dropdown</a>
+		<button type="button" class="nav-link" ngbDropdownToggle>Dropdown</button>
 		<div ngbDropdownMenu>
 			<button ngbDropdownItem>Action</button>
 			<button ngbDropdownItem>Another action</button>
@@ -34,7 +34,7 @@
 		</div>
 	</li>
 	<li ngbNavItem [disabled]="true" class="ms-auto">
-		<a ngbNavLink>Disabled</a>
+		<button ngbNavLink>Disabled</button>
 		<ng-template ngbNavContent>
 			<p>
 				Sed commodo, leo at suscipit dictum, quam est porttitor sapien, eget sodales nibh elit id diam. Nulla facilisi.

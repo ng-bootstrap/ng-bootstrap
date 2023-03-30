@@ -1,8 +1,11 @@
-<p>You can use alternative markup without <code>ul li</code> elements</p>
+<p>
+	You can use alternative markup without <code>&lt;ul&gt; &lt;li&gt;</code> elements. You can also interchange
+	<code>&lt;button&gt;</code> and <code>&lt;a&gt;</code> elements for links.
+</p>
 
 <nav ngbNav #nav="ngbNav" class="nav-tabs">
 	<ng-container ngbNavItem>
-		<a ngbNavLink>One</a>
+		<button ngbNavLink>Button</button>
 		<ng-template ngbNavContent>
 			<p>
 				Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth
@@ -13,7 +16,7 @@
 		</ng-template>
 	</ng-container>
 	<ng-container ngbNavItem>
-		<a ngbNavLink>Two</a>
+		<a ngbNavLink>I'm a link</a>
 		<ng-template ngbNavContent>
 			<p>
 				Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko
@@ -25,8 +28,22 @@
 			</p>
 		</ng-template>
 	</ng-container>
-	<ng-container ngbNavItem>
-		<a ngbNavLink>Three</a>
+	<ng-container ngbNavItem [disabled]="true">
+		<button ngbNavLink>I'm a disabled button</button>
+		<ng-template ngbNavContent>
+			<p>
+				Sed commodo, leo at suscipit dictum, quam est porttitor sapien, eget sodales nibh elit id diam. Nulla facilisi.
+				Donec egestas ligula vitae odio interdum aliquet. Duis lectus turpis, luctus eget tincidunt eu, congue et odio.
+				Duis pharetra et nisl at faucibus. Quisque luctus pulvinar arcu, et molestie lectus ultrices et. Sed diam urna,
+				egestas ut ipsum vel, volutpat volutpat neque. Praesent fringilla tortor arcu. Vivamus faucibus nisl enim, nec
+				tristique ipsum euismod facilisis. Morbi ut bibendum est, eu tincidunt odio. Orci varius natoque penatibus et
+				magnis dis parturient montes, nascetur ridiculus mus. Mauris aliquet odio ac lorem aliquet ultricies in eget
+				neque. Phasellus nec tortor vel tellus pulvinar feugiat.
+			</p>
+		</ng-template>
+	</ng-container>
+	<ng-container ngbNavItem [disabled]="true">
+		<a ngbNavLink>I'm a disabled link</a>
 		<ng-template ngbNavContent>
 			<p>
 				Sed commodo, leo at suscipit dictum, quam est porttitor sapien, eget sodales nibh elit id diam. Nulla facilisi.
