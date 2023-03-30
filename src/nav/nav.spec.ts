@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NgFor, NgIf } from '@angular/common';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NgbNav, NgbNavConfig, NgbNavItem, NgbNavLink, NgbNavModule, NgbNavOutlet } from './nav.module';
+import { NgbNav, NgbNavConfig, NgbNavItem, NgbNavLinkBase, NgbNavModule, NgbNavOutlet } from './nav.module';
 import { createGenericTestComponent, isBrowserVisible } from '../test/common';
 import { isDefined } from '../util/util';
 import { Key } from 'src/util/key';
@@ -39,7 +39,7 @@ function getItems(fixture: ComponentFixture<any>): HTMLElement[] {
 }
 
 function getLinks(fixture: ComponentFixture<any>): HTMLElement[] {
-	return fixture.debugElement.queryAll(By.directive(NgbNavLink)).map((debugElement) => debugElement.nativeElement);
+	return fixture.debugElement.queryAll(By.directive(NgbNavLinkBase)).map((debugElement) => debugElement.nativeElement);
 }
 
 function createKeyDownEvent(key: number) {
@@ -94,7 +94,7 @@ describe('nav', () => {
 		const fixture = createTestComponent(`
       <ul ngbNav #n="ngbNav" [class]="'nav-tabs my-nav'">
         <li ngbNavItem [class]="'my-nav-item'">
-            <a ngbNavLink [class]="'my-nav-link'"></a>
+            <button ngbNavLink [class]="'my-nav-link'"></button>
             <ng-template ngbTabContent></ng-template>
         </li>
       </ul>
@@ -116,7 +116,7 @@ describe('nav', () => {
 		const fixture = createTestComponent(`
       <ul ngbNav #n="ngbNav" class="nav-tabs">
         <li ngbNavItem>
-            <a ngbNavLink></a>
+            <button ngbNavLink></button>
             <ng-template ngbTabContent></ng-template>
         </li>
       </ul>
@@ -132,7 +132,7 @@ describe('nav', () => {
 		const fixture = createTestComponent(`
       <ul ngbNav #n="ngbNav" [roles]="false" class="nav-tabs">
         <li ngbNavItem>
-            <a ngbNavLink></a>
+            <button ngbNavLink></button>
             <ng-template ngbTabContent></ng-template>
         </li>
       </ul>
@@ -148,7 +148,7 @@ describe('nav', () => {
 		const fixture = createTestComponent(`
       <ul ngbNav #n="ngbNav" role="list" class="nav-tabs">
         <li ngbNavItem>
-            <a ngbNavLink role="alert"></a>
+            <button ngbNavLink role="alert"></button>
             <ng-template ngbTabContent></ng-template>
         </li>
       </ul>
@@ -164,7 +164,7 @@ describe('nav', () => {
 		const fixture = createTestComponent(`
       <ul ngbNav #n="ngbNav" [orientation]="orientation" [roles]="roles">
         <li ngbNavItem>
-            <a ngbNavLink></a>
+            <button ngbNavLink></button>
             <ng-template ngbTabContent></ng-template>
         </li>
       </ul>
@@ -198,11 +198,11 @@ describe('nav', () => {
 			`
       <ul ngbNav #n="ngbNav" class="nav-tabs" (activeIdChange)="onActiveIdChange($event)" (navChange)="onNavChange($event)">
         <li [ngbNavItem]="1">
-            <a ngbNavLink>link 1</a>
+            <button ngbNavLink>link 1</button>
             <ng-template ngbNavContent>content 1</ng-template>
         </li>
         <li [ngbNavItem]="2">
-            <a ngbNavLink>link 2</a>
+            <button ngbNavLink>link 2</button>
             <ng-template ngbNavContent>content 2</ng-template>
         </li>
       </ul>
@@ -225,7 +225,7 @@ describe('nav', () => {
 		const fixture = createTestComponent(`
       <ul ngbNav #n="ngbNav" [activeId]="100" class="nav-tabs">
         <li ngbNavItem>
-            <a ngbNavLink>link 1</a>
+            <button ngbNavLink>link 1</button>
             <ng-template ngbNavContent>content 1</ng-template>
         </li>
       </ul>
@@ -251,10 +251,10 @@ describe('nav', () => {
 		const fixture = createTestComponent(`
       <ul ngbNav #n="ngbNav" class="nav-tabs">
         <li ngbNavItem>
-            <a ngbNavLink>link 1</a>
+            <button ngbNavLink>link 1</button>
         </li>
         <li ngbNavItem domId="two">
-            <a ngbNavLink>link 2</a>
+            <button ngbNavLink>link 2</button>
         </li>
       </ul>
       <div [ngbNavOutlet]="n"></div>
@@ -273,10 +273,10 @@ describe('nav', () => {
 		const fixture = createTestComponent(`
       <ul ngbNav class="nav-tabs">
         <li ngbNavItem>
-            <a ngbNavLink>link 1</a>
+            <button ngbNavLink>link 1</button>
         </li>
         <li ngbNavItem domId="two">
-            <a ngbNavLink>link 2</a>
+            <button ngbNavLink>link 2</button>
         </li>
       </ul>
     `);
@@ -292,7 +292,7 @@ describe('nav', () => {
 		const fixture = createTestComponent(`
       <ul ngbNav #n="ngbNav" [(activeId)]="activeId" class="nav-tabs">
         <li *ngFor="let item of items" [ngbNavItem]="item">
-            <a ngbNavLink>link {{ item }}</a>
+            <button ngbNavLink>link {{ item }}</button>
             <ng-template ngbNavContent>content {{ item }}</ng-template>
         </li>
       </ul>
@@ -331,11 +331,11 @@ describe('nav', () => {
 		const fixture = createTestComponent(`
       <ul ngbNav #n="ngbNav" [(activeId)]="activeId" class="nav-tabs">
         <li [ngbNavItem]="1" *ngIf="visible">
-            <a ngbNavLink>link 1</a>
+            <button ngbNavLink>link 1</button>
             <ng-template ngbNavContent>content 1</ng-template>
         </li>
         <li [ngbNavItem]="2" *ngIf="visible">
-            <a ngbNavLink>link 2</a>
+            <button ngbNavLink>link 2</button>
             <ng-template ngbNavContent>content 2</ng-template>
         </li>
       </ul>
@@ -360,11 +360,11 @@ describe('nav', () => {
 		const fixture = createTestComponent(`
       <ul ngbNav #n="ngbNav" [activeId]="activeId" class="nav-tabs">
         <li [ngbNavItem]="1">
-            <a ngbNavLink>link 1</a>
+            <button ngbNavLink>link 1</button>
             <ng-template ngbNavContent>content 1</ng-template>
         </li>
         <li [ngbNavItem]="2">
-            <a ngbNavLink>link 2</a>
+            <button ngbNavLink>link 2</button>
             <ng-template ngbNavContent>content 2</ng-template>
         </li>
       </ul>
@@ -384,19 +384,19 @@ describe('nav', () => {
 		const fixture = createTestComponent(`
       <ul ngbNav #n="ngbNav" [activeId]="activeId" class="nav-tabs">
         <li [ngbNavItem]="0">
-            <a ngbNavLink>link 1</a>
+            <button ngbNavLink>link 1</button>
             <ng-template ngbNavContent>content 1</ng-template>
         </li>
         <li [ngbNavItem]="true">
-            <a ngbNavLink>link 2</a>
+            <button ngbNavLink>link 2</button>
             <ng-template ngbNavContent>content 2</ng-template>
         </li>
         <li [ngbNavItem]="false">
-            <a ngbNavLink>link 3</a>
+            <button ngbNavLink>link 3</button>
             <ng-template ngbNavContent>content 3</ng-template>
         </li>
         <li [ngbNavItem]="''">
-            <a ngbNavLink>link 4</a>
+            <button ngbNavLink>link 4</button>
             <ng-template ngbNavContent>content 4</ng-template>
         </li>
       </ul>
@@ -431,11 +431,11 @@ describe('nav', () => {
 		const fixture = createTestComponent(`
       <ul ngbNav #n="ngbNav" class="nav-tabs">
         <li ngbNavItem domId="one">
-            <a ngbNavLink>link 1</a>
+            <button ngbNavLink>link 1</button>
             <ng-template ngbNavContent>content 1</ng-template>
         </li>
         <li ngbNavItem domId="two">
-            <a ngbNavLink>link 2</a>
+            <button ngbNavLink>link 2</button>
             <ng-template ngbNavContent>content 2</ng-template>
         </li>
       </ul>
@@ -453,11 +453,11 @@ describe('nav', () => {
 		const fixture = createTestComponent(`
       <ul ngbNav #n="ngbNav" class="nav-tabs">
         <li ngbNavItem>
-            <a ngbNavLink>link 1</a>
+            <button ngbNavLink>link 1</button>
             <ng-template ngbNavContent>content 1</ng-template>
         </li>
         <li ngbNavItem domId="two">
-            <a ngbNavLink>link 2</a>
+            <button ngbNavLink>link 2</button>
             <ng-template ngbNavContent>content 2</ng-template>
         </li>
       </ul>
@@ -495,12 +495,16 @@ describe('nav', () => {
               <ng-template ngbNavContent>content 1</ng-template>
           </li>
           <li [ngbNavItem]="2" (hidden)="onItemHidden(2)" (shown)="onItemShown(2)">
-              <a ngbNavLink>link 2</a>
+              <button ngbNavLink>link 2</button>
               <ng-template ngbNavContent>content 2</ng-template>
           </li>
           <li [ngbNavItem]="3" [disabled]="true" (hidden)="onItemHidden(3)" (shown)="onItemShown(3)">
-              <a ngbNavLink>disabled</a>
+              <button ngbNavLink>disabled</button>
               <ng-template ngbNavContent>content 3</ng-template>
+          </li>
+					<li [ngbNavItem]="4" [disabled]="true" (hidden)="onItemHidden(4)" (shown)="onItemShown(4)">
+              <a ngbNavLink>disabled</a>
+              <ng-template ngbNavContent>content 4</ng-template>
           </li>
         </ul>
         <div [ngbNavOutlet]="n"></div>
@@ -515,7 +519,7 @@ describe('nav', () => {
 			links = getLinks(fixture);
 			nav = getNavDirective(fixture);
 
-			expectLinks(fixture, [true, false, false]);
+			expectLinks(fixture, [true, false, false, false]);
 			expectContents(fixture, ['content 1']);
 		});
 
@@ -523,7 +527,7 @@ describe('nav', () => {
 			links[1].click();
 			fixture.detectChanges();
 
-			expectLinks(fixture, [false, true, false]);
+			expectLinks(fixture, [false, true, false, false]);
 			expectContents(fixture, ['content 2']);
 			expect(fixture.componentInstance.activeId).toBe(2);
 			expect(activeIdChangeSpy).toHaveBeenCalledWith(2);
@@ -538,7 +542,7 @@ describe('nav', () => {
 			links[0].click();
 			fixture.detectChanges();
 
-			expectLinks(fixture, [true, false, false]);
+			expectLinks(fixture, [true, false, false, false]);
 			expectContents(fixture, ['content 1']);
 			expect(fixture.componentInstance.activeId).toBe(1);
 			expect(activeIdChangeSpy).toHaveBeenCalledTimes(0);
@@ -553,7 +557,20 @@ describe('nav', () => {
 			links[2].click();
 			fixture.detectChanges();
 
-			expectLinks(fixture, [true, false, false]);
+			expectLinks(fixture, [true, false, false, false]);
+			expectContents(fixture, ['content 1']);
+			expect(fixture.componentInstance.activeId).toBe(1);
+			expect(activeIdChangeSpy).toHaveBeenCalledTimes(0);
+			expect(navChangeSpy).toHaveBeenCalledTimes(0);
+			expect(hiddenItemSpy).not.toHaveBeenCalled();
+			expect(shownItemSpy).not.toHaveBeenCalled();
+			expect(hiddenNavSpy).not.toHaveBeenCalled();
+			expect(shownNavSpy).not.toHaveBeenCalled();
+
+			links[3].click();
+			fixture.detectChanges();
+
+			expectLinks(fixture, [true, false, false, false]);
 			expectContents(fixture, ['content 1']);
 			expect(fixture.componentInstance.activeId).toBe(1);
 			expect(activeIdChangeSpy).toHaveBeenCalledTimes(0);
@@ -568,7 +585,7 @@ describe('nav', () => {
 			fixture.componentInstance.activeId = 2;
 			fixture.detectChanges();
 
-			expectLinks(fixture, [false, true, false]);
+			expectLinks(fixture, [false, true, false, false]);
 			expectContents(fixture, ['content 2']);
 			expect(fixture.componentInstance.activeId).toBe(2);
 			expect(activeIdChangeSpy).toHaveBeenCalledTimes(0);
@@ -583,7 +600,7 @@ describe('nav', () => {
 			fixture.componentInstance.activeId = 1;
 			fixture.detectChanges();
 
-			expectLinks(fixture, [true, false, false]);
+			expectLinks(fixture, [true, false, false, false]);
 			expectContents(fixture, ['content 1']);
 			expect(fixture.componentInstance.activeId).toBe(1);
 			expect(activeIdChangeSpy).toHaveBeenCalledTimes(0);
@@ -598,7 +615,7 @@ describe('nav', () => {
 			fixture.componentInstance.activeId = 3;
 			fixture.detectChanges();
 
-			expectLinks(fixture, [false, false, true]);
+			expectLinks(fixture, [false, false, true, false]);
 			expectContents(fixture, ['content 3']);
 			expect(fixture.componentInstance.activeId).toBe(3);
 			expect(activeIdChangeSpy).toHaveBeenCalledTimes(0);
@@ -613,7 +630,7 @@ describe('nav', () => {
 			fixture.componentInstance.activeId = 1000;
 			fixture.detectChanges();
 
-			expectLinks(fixture, [false, false, false]);
+			expectLinks(fixture, [false, false, false, false]);
 			expect(getContent(fixture)).toBeUndefined();
 			expect(fixture.componentInstance.activeId).toBe(1000);
 			expect(activeIdChangeSpy).toHaveBeenCalledTimes(0);
@@ -628,7 +645,7 @@ describe('nav', () => {
 			nav.select(2);
 			fixture.detectChanges();
 
-			expectLinks(fixture, [false, true, false]);
+			expectLinks(fixture, [false, true, false, false]);
 			expectContents(fixture, ['content 2']);
 			expect(fixture.componentInstance.activeId).toBe(2);
 			expect(activeIdChangeSpy).toHaveBeenCalledWith(2);
@@ -643,7 +660,7 @@ describe('nav', () => {
 			nav.select(1);
 			fixture.detectChanges();
 
-			expectLinks(fixture, [true, false, false]);
+			expectLinks(fixture, [true, false, false, false]);
 			expectContents(fixture, ['content 1']);
 			expect(fixture.componentInstance.activeId).toBe(1);
 			expect(activeIdChangeSpy).toHaveBeenCalledTimes(0);
@@ -658,7 +675,7 @@ describe('nav', () => {
 			nav.select(3);
 			fixture.detectChanges();
 
-			expectLinks(fixture, [false, false, true]);
+			expectLinks(fixture, [false, false, true, false]);
 			expectContents(fixture, ['content 3']);
 			expect(fixture.componentInstance.activeId).toBe(3);
 			expect(activeIdChangeSpy).toHaveBeenCalledWith(3);
@@ -668,13 +685,27 @@ describe('nav', () => {
 			expect(shownItemSpy).toHaveBeenCalledWith(3);
 			expect(hiddenNavSpy).toHaveBeenCalledWith(1);
 			expect(shownNavSpy).toHaveBeenCalledWith(3);
+
+			nav.select(4);
+			fixture.detectChanges();
+
+			expectLinks(fixture, [false, false, false, true]);
+			expectContents(fixture, ['content 4']);
+			expect(fixture.componentInstance.activeId).toBe(4);
+			expect(activeIdChangeSpy).toHaveBeenCalledWith(4);
+			expect(navChangeSpy).toHaveBeenCalledTimes(0);
+			expect(navChangeSpy).toHaveBeenCalledTimes(0);
+			expect(hiddenItemSpy).toHaveBeenCalledWith(3);
+			expect(shownItemSpy).toHaveBeenCalledWith(4);
+			expect(hiddenNavSpy).toHaveBeenCalledWith(3);
+			expect(shownNavSpy).toHaveBeenCalledWith(4);
 		});
 
 		it(`'.select()' should change to an invalid nav`, () => {
 			nav.select(1000);
 			fixture.detectChanges();
 
-			expectLinks(fixture, [false, false, false]);
+			expectLinks(fixture, [false, false, false, false]);
 			expect(getContent(fixture)).toBeUndefined();
 			expect(fixture.componentInstance.activeId).toBe(1000);
 			expect(activeIdChangeSpy).toHaveBeenCalledWith(1000);
@@ -691,11 +722,11 @@ describe('nav', () => {
         <div class="container" style="overflow: scroll; height: 5rem; border: 1px solid gray; padding-top: 2rem;">
           <ul ngbNav #n="ngbNav" class="nav-tabs">
             <li ngbNavItem>
-                <a ngbNavLink>link 1</a>
+                <button ngbNavLink>link 1</button>
                 <ng-template ngbNavContent>content 1</ng-template>
             </li>
             <li ngbNavItem>
-                <a ngbNavLink>link 2</a>
+                <button ngbNavLink>link 2</button>
                 <ng-template ngbNavContent>content 2</ng-template>
             </li>
           </ul>
@@ -728,11 +759,11 @@ describe('nav', () => {
         <ul ngbNav #n="ngbNav" class="nav-tabs" [(activeId)]="activeId" (activeIdChange)="onActiveIdChange($event)"
         (navChange)="onNavChangePrevent($event)">
           <li [ngbNavItem]="1">
-              <a ngbNavLink>link 1</a>
+              <button ngbNavLink>link 1</button>
               <ng-template ngbNavContent>content 1</ng-template>
           </li>
           <li [ngbNavItem]="2">
-              <a ngbNavLink>link 2</a>
+              <button ngbNavLink>link 2</button>
               <ng-template ngbNavContent>content 2</ng-template>
           </li>
         </ul>
@@ -763,11 +794,11 @@ describe('nav', () => {
 		const fixture = createTestComponent(`
       <ul ngbNav #n="ngbNav" [(activeId)]="activeId" (activeIdChange)="onActiveIdChange($event)" class="nav-tabs">
         <li [ngbNavItem]="1">
-            <a ngbNavLink>link 1</a>
+            <button ngbNavLink>link 1</button>
             <ng-template ngbNavContent>content 1</ng-template>
         </li>
         <li [ngbNavItem]="2">
-            <a ngbNavLink>link 2</a>
+            <button ngbNavLink>link 2</button>
             <ng-template ngbNavContent>content 2</ng-template>
         </li>
       </ul>
@@ -788,11 +819,11 @@ describe('nav', () => {
 		const fixture = createTestComponent(`
       <ul ngbNav #n="ngbNav" class="nav-tabs">
         <li ngbNavItem>
-            <a ngbNavLink>link 1</a>
+            <button ngbNavLink>link 1</button>
             <ng-template ngbNavContent>content 1</ng-template>
         </li>
         <li ngbNavItem>
-            <a ngbNavLink>link 2</a>
+            <button ngbNavLink>link 2</button>
             <ng-template ngbNavContent>content 2</ng-template>
         </li>
       </ul>
@@ -810,11 +841,11 @@ describe('nav', () => {
 		const fixture = createTestComponent(`
       <ul ngbNav #n="ngbNav" class="nav-tabs" [destroyOnHide]="false">
         <li ngbNavItem>
-            <a ngbNavLink>link 1</a>
+            <button ngbNavLink>link 1</button>
             <ng-template ngbNavContent>content 1</ng-template>
         </li>
         <li ngbNavItem>
-            <a ngbNavLink>link 2</a>
+            <button ngbNavLink>link 2</button>
             <ng-template ngbNavContent>content 2</ng-template>
         </li>
       </ul>
@@ -832,11 +863,11 @@ describe('nav', () => {
 		const fixture = createTestComponent(`
       <ul ngbNav #n="ngbNav" class="nav-tabs">
         <li ngbNavItem>
-            <a ngbNavLink>link 1</a>
+            <button ngbNavLink>link 1</button>
             <ng-template ngbNavContent>content 1</ng-template>
         </li>
         <li ngbNavItem [destroyOnHide]="false">
-            <a ngbNavLink>link 2</a>
+            <button ngbNavLink>link 2</button>
             <ng-template ngbNavContent>content 2</ng-template>
         </li>
       </ul>
@@ -854,11 +885,11 @@ describe('nav', () => {
 		const fixture = createTestComponent(`
       <ul ngbNav #n="ngbNav" [destroyOnHide]="false" class="nav-tabs">
         <li ngbNavItem>
-            <a ngbNavLink>link 1</a>
+            <button ngbNavLink>link 1</button>
             <ng-template ngbNavContent>content 1</ng-template>
         </li>
         <li ngbNavItem [destroyOnHide]="true">
-            <a ngbNavLink>link 2</a>
+            <button ngbNavLink>link 2</button>
             <ng-template ngbNavContent>content 2</ng-template>
         </li>
       </ul>
@@ -873,6 +904,30 @@ describe('nav', () => {
 	});
 
 	it(`should work with alternative markup without <ul> and <li>`, () => {
+		const fixture = createTestComponent(`
+      <nav ngbNav #n="ngbNav" class="nav-tabs">
+        <ng-container ngbNavItem>
+            <button ngbNavLink>link 1</button>
+            <ng-template ngbNavContent>content 1</ng-template>
+        </ng-container>
+        <ng-container ngbNavItem>
+            <button ngbNavLink>link 2</button>
+            <ng-template ngbNavContent>content 2</ng-template>
+        </ng-container>
+      </nav>
+      <div [ngbNavOutlet]="n"></div>
+    `);
+
+		expectLinks(fixture, [true, false], true);
+		expectContents(fixture, ['content 1']);
+
+		getLinks(fixture)[1].click();
+		fixture.detectChanges();
+		expectLinks(fixture, [false, true], true);
+		expectContents(fixture, ['content 2']);
+	});
+
+	it(`should work with alternative markup with links`, () => {
 		const fixture = createTestComponent(`
       <nav ngbNav #n="ngbNav" class="nav-tabs">
         <ng-container ngbNavItem>
@@ -900,22 +955,34 @@ describe('nav', () => {
 		const fixture = createTestComponent(`
         <ul ngbNav #n="ngbNav" class="nav-tabs">
           <li ngbNavItem [disabled]="disabled">
-              <a ngbNavLink>link 1</a>
+              <button ngbNavLink>link 1</button>
               <ng-template ngbNavContent>content 1</ng-template>
+          </li>
+          <li ngbNavItem [disabled]="disabled">
+              <a ngbNavLink>link 2</a>
+              <ng-template ngbNavContent>content 2</ng-template>
           </li>
         </ul>
         <div [ngbNavOutlet]="n"></div>
       `);
 
 		const links = getLinks(fixture);
-		expectLinks(fixture, [true]);
+		expectLinks(fixture, [true, false]);
 		expect(links[0]).toHaveCssClass('disabled');
+		expect(links[1]).toHaveCssClass('disabled');
+		expect(links[0].getAttribute('disabled')).toBe('');
+		expect(links[1].getAttribute('disabled')).toBeNull();
+		expect(links[0].getAttribute('type')).toBe('button');
+		expect(links[1].getAttribute('type')).toBeNull();
 		expectContents(fixture, ['content 1']);
 
 		fixture.componentInstance.disabled = false;
 		fixture.detectChanges();
-		expectLinks(fixture, [true]);
+		expectLinks(fixture, [true, false]);
 		expect(links[0]).not.toHaveCssClass('disabled');
+		expect(links[1]).not.toHaveCssClass('disabled');
+		expect(links[0].getAttribute('disabled')).toBeNull();
+		expect(links[1].getAttribute('disabled')).toBeNull();
 		expectContents(fixture, ['content 1']);
 	});
 
@@ -923,11 +990,11 @@ describe('nav', () => {
 		const fixture = createTestComponent(`
       <ul ngbNav #n="ngbNav" class="nav-tabs">
         <li ngbNavItem domId="one">
-            <a ngbNavLink>link 1</a>
+            <button ngbNavLink>link 1</button>
             <ng-template ngbNavContent>content 1</ng-template>
         </li>
         <li ngbNavItem domId="two">
-            <a ngbNavLink>link 2</a>
+            <button ngbNavLink>link 2</button>
             <ng-template ngbNavContent>content 2</ng-template>
         </li>
       </ul>
@@ -954,7 +1021,7 @@ describe('nav', () => {
 		const fixture = createTestComponent(`
       <ul ngbNav #n="ngbNav" class="nav-tabs">
         <li ngbNavItem [disabled]="disabled">
-            <a ngbNavLink>link 1</a>
+            <button ngbNavLink>link 1</button>
             <ng-template ngbNavContent>content 1</ng-template>
         </li>
       </ul>
@@ -973,11 +1040,11 @@ describe('nav', () => {
 		const fixture = createTestComponent(`
       <ul ngbNav #n="ngbNav" class="nav-tabs" [destroyOnHide]="false">
         <li ngbNavItem>
-            <a ngbNavLink>link 1</a>
+            <button ngbNavLink>link 1</button>
             <ng-template ngbNavContent let-active>1-{{ active }}</ng-template>
         </li>
         <li ngbNavItem>
-            <a ngbNavLink>link 2</a>
+            <button ngbNavLink>link 2</button>
             <ng-template ngbNavContent let-active>2-{{ active }}</ng-template>
         </li>
       </ul>
@@ -996,11 +1063,11 @@ describe('nav', () => {
 			const fixture = createTestComponent(`
         <ul ngbNav #n="ngbNav" [roles]="false" class="nav-tabs" keyboard="true">
           <li ngbNavItem>
-              <a ngbNavLink></a>
+              <button ngbNavLink></button>
               <ng-template ngbTabContent></ng-template>
           </li>
           <li ngbNavItem>
-              <a ngbNavLink></a>
+              <button ngbNavLink></button>
               <ng-template ngbTabContent></ng-template>
           </li>
         </ul>
@@ -1022,15 +1089,15 @@ describe('nav', () => {
 			const fixture = createTestComponent(`
       <ul ngbNav #n="ngbNav" class="nav-tabs" keyboard="true">
         <li [ngbNavItem]="1">
-            <a ngbNavLink>link 1</a>
+            <button ngbNavLink>link 1</button>
             <ng-template ngbNavContent>content 1</ng-template>
         </li>
         <li [ngbNavItem]="2" [disabled]="true">
-            <a ngbNavLink>disabled</a>
+            <button ngbNavLink>disabled</button>
             <ng-template ngbNavContent>content 2</ng-template>
         </li>
         <li [ngbNavItem]="3">
-            <a ngbNavLink>link 3</a>
+            <button ngbNavLink>link 3</button>
             <ng-template ngbNavContent>content 3</ng-template>
         </li>
       </ul>
@@ -1055,15 +1122,15 @@ describe('nav', () => {
 			const fixture = createTestComponent(`
         <ul ngbNav #n="ngbNav" class="nav-tabs" keyboard="true">
           <li ngbNavItem>
-              <a ngbNavLink></a>
+              <button ngbNavLink></button>
               <ng-template ngbTabContent></ng-template>
           </li>
           <li ngbNavItem>
-              <a ngbNavLink></a>
+              <button ngbNavLink></button>
               <ng-template ngbTabContent></ng-template>
           </li>
           <li ngbNavItem>
-              <a ngbNavLink></a>
+              <button ngbNavLink></button>
               <ng-template ngbTabContent></ng-template>
           </li>
         </ul>
@@ -1106,15 +1173,15 @@ describe('nav', () => {
 			const fixture = createTestComponent(`
       <ul ngbNav #n="ngbNav" class="nav-tabs" keyboard="true" orientation="vertical">
         <li ngbNavItem>
-            <a ngbNavLink></a>
+            <button ngbNavLink></button>
             <ng-template ngbTabContent></ng-template>
         </li>
         <li ngbNavItem>
-            <a ngbNavLink></a>
+            <button ngbNavLink></button>
             <ng-template ngbTabContent></ng-template>
         </li>
         <li ngbNavItem>
-            <a ngbNavLink></a>
+            <button ngbNavLink></button>
             <ng-template ngbTabContent></ng-template>
         </li>
       </ul>
@@ -1157,15 +1224,15 @@ describe('nav', () => {
 			const fixture = createTestComponent(`
           <ul ngbNav #n="ngbNav" class="nav-tabs" keyboard="changeWithArrows">
             <li ngbNavItem>
-                <a ngbNavLink></a>
+                <button ngbNavLink></button>
                 <ng-template ngbTabContent></ng-template>
             </li>
             <li ngbNavItem>
-                <a ngbNavLink></a>
+                <button ngbNavLink></button>
                 <ng-template ngbTabContent></ng-template>
             </li>
             <li ngbNavItem>
-                <a ngbNavLink></a>
+                <button ngbNavLink></button>
                 <ng-template ngbTabContent></ng-template>
             </li>
           </ul>
@@ -1213,15 +1280,15 @@ if (isBrowserVisible('ngb-nav animations')) {
 			template: `
 				<ul ngbNav #n="ngbNav" class="nav-tabs" (shown)="onNavShownSpy($event)" (hidden)="onNavHiddenSpy($event)">
 					<li [ngbNavItem]="1" (shown)="onItemShownSpy(1)" (hidden)="onItemHiddenSpy(1)">
-						<a ngbNavLink>link 1</a>
+						<button ngbNavLink>link 1</button>
 						<ng-template ngbNavContent>content 1</ng-template>
 					</li>
 					<li [ngbNavItem]="2" (shown)="onItemShownSpy(2)" (hidden)="onItemHiddenSpy(2)">
-						<a ngbNavLink>link 2</a>
+						<button ngbNavLink>link 2</button>
 						<ng-template ngbNavContent>content 2</ng-template>
 					</li>
 					<li [ngbNavItem]="3" (shown)="onItemShownSpy(3)" (hidden)="onItemHiddenSpy(3)">
-						<a ngbNavLink>link 2</a>
+						<button ngbNavLink>link 2</button>
 						<ng-template ngbNavContent>content 3</ng-template>
 					</li>
 				</ul>

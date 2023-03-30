@@ -243,7 +243,7 @@ export class NgbNav implements AfterContentInit, OnChanges, OnDestroy {
 	@Output() hidden = new EventEmitter<any>();
 
 	@ContentChildren(NgbNavItem) items: QueryList<NgbNavItem>;
-	@ContentChildren(forwardRef(() => NgbNavLink), { descendants: true }) links: QueryList<NgbNavLink>;
+	@ContentChildren(forwardRef(() => NgbNavLinkBase), { descendants: true }) links: QueryList<NgbNavLinkBase>;
 
 	destroy$ = new Subject<void>();
 	navItemChange$ = new Subject<NgbNavItem | null>();
@@ -396,30 +396,23 @@ export class NgbNav implements AfterContentInit, OnChanges, OnDestroy {
 	}
 }
 
-/**
- * A directive to put on the nav link.
- *
- * @since 5.2.0
- */
 @Directive({
-	selector: 'a[ngbNavLink]',
+	selector: '[ngbNavLink]',
 	standalone: true,
 	host: {
 		'[id]': 'navItem.domId',
 		'[class.nav-link]': 'true',
 		'[class.nav-item]': 'hasNavItemClass()',
 		'[attr.role]': `role ? role : nav.roles ? 'tab' : undefined`,
-		href: '',
 		'[class.active]': 'navItem.active',
 		'[class.disabled]': 'navItem.disabled',
 		'[attr.tabindex]': 'navItem.disabled ? -1 : undefined',
 		'[attr.aria-controls]': 'navItem.isPanelInDom() ? navItem.panelDomId : null',
 		'[attr.aria-selected]': 'navItem.active',
 		'[attr.aria-disabled]': 'navItem.disabled',
-		'(click)': 'nav.click(navItem); $event.preventDefault()',
 	},
 })
-export class NgbNavLink {
+export class NgbNavLinkBase {
 	constructor(
 		@Attribute('role') public role: string,
 		public navItem: NgbNavItem,
@@ -431,6 +424,41 @@ export class NgbNavLink {
 		// with alternative markup we have to add `.nav-item` class, because `ngbNavItem` is on the ng-container
 		return this.navItem.elementRef.nativeElement.nodeType === Node.COMMENT_NODE;
 	}
+}
+
+/**
+ * A directive to mark the nav link when used on a button element.
+ */
+@Directive({
+	selector: 'button[ngbNavLink]',
+	standalone: true,
+	hostDirectives: [NgbNavLinkBase],
+	host: {
+		type: 'button',
+		'[disabled]': 'navItem.disabled',
+		'(click)': 'nav.click(navItem)',
+	},
+})
+export class NgbNavLinkButton {
+	constructor(public navItem: NgbNavItem, public nav: NgbNav) {}
+}
+
+/**
+ * A directive to mark the nav link when used on a link element.
+ *
+ * @since 5.2.0
+ */
+@Directive({
+	selector: 'a[ngbNavLink]',
+	standalone: true,
+	hostDirectives: [NgbNavLinkBase],
+	host: {
+		href: '',
+		'(click)': 'nav.click(navItem); $event.preventDefault()',
+	},
+})
+export class NgbNavLink {
+	constructor(public navItem: NgbNavItem, public nav: NgbNav) {}
 }
 
 /**
