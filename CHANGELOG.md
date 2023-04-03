@@ -2,7 +2,7 @@
 
 This release improves navs accessibility and introduces a new accordion implementation based on directives. The new implementation is more flexible and allows for easier customization. Old accordion implementation is still available, but deprecated and will be removed in one of the future major releases.
 
-See [the documentation](https://ng-bootstrap.github.io/#/components/accordion/examples) for more details.
+See [the documentation](https://ng-bootstrap.github.io/#/components/accordion) for more details.
 
 ### Bug Fixes
 
