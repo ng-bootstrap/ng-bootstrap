@@ -1,3 +1,25 @@
+# [14.1.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/14.0.1...14.1.0) (2023-04-03)
+
+This release improves navs accessibility and introduces a new accordion implementation based on directives. The new implementation is more flexible and allows for easier customization. Old accordion implementation is still available, but deprecated and will be removed in one of the future major releases.
+
+See [the documentation](https://ng-bootstrap.github.io/#/components/accordion/examples) for more details.
+
+### Bug Fixes
+
+* **accordion:** fix `OnPush` change detection strategy behavior ([#4480](https://github.com/ng-bootstrap/ng-bootstrap/issues/4480)) ([d39d508](https://github.com/ng-bootstrap/ng-bootstrap/commit/d39d508661bcc9e4a37d04f8bc86294926759a64))
+* **nav:** add 'presentation' role to nav items ([e88c5c5](https://github.com/ng-bootstrap/ng-bootstrap/commit/e88c5c5a464db146bc01e443252269de05d5b2c2)), closes [#4398](https://github.com/ng-bootstrap/ng-bootstrap/issues/4398)
+
+
+### Features
+
+* **accordion:** export `NgbAccordionItem` directive to the template ([#4479](https://github.com/ng-bootstrap/ng-bootstrap/issues/4479)) ([c0c6358](https://github.com/ng-bootstrap/ng-bootstrap/commit/c0c6358a377a9d5d7f872dcfb9afd32ea5ef0e5c))
+* **accordion:** add `NgbAccordionButton` directive ([f1eefe0](https://github.com/ng-bootstrap/ng-bootstrap/commit/f1eefe08f105cece9b8dd74aaee3f241a3496cab))
+* **accordion:** new accordion implemented with directives ([#4437](https://github.com/ng-bootstrap/ng-bootstrap/issues/4437)) ([fd56d0e](https://github.com/ng-bootstrap/ng-bootstrap/commit/fd56d0e797bc8c1160b9ca63dd290c843162f023))
+* **nav:** allow using `NgbNavLink` on a button element ([7db38b8](https://github.com/ng-bootstrap/ng-bootstrap/commit/7db38b827728d461f789cf7fc5d047aaf61fcf69))
+* **rating:** allow customizing `aria-textvalue` ([#4453](https://github.com/ng-bootstrap/ng-bootstrap/issues/4453)) ([064fef3](https://github.com/ng-bootstrap/ng-bootstrap/commit/064fef3c4e0cdd098ad646f138a6b0966a0d2d4b))
+
+
+
 ## [14.0.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/14.0.0...14.0.1) (2023-01-09)
 
 Fixes a DI issue with modal dependencies in lazy-loaded modules introduced in `14.0.0`.
