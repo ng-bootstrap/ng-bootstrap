@@ -56,6 +56,20 @@ export class NgbNavContent {
 }
 
 /**
+ * This directive applies a specific role on a non-container based ngbNavItem.
+ */
+@Directive({
+	selector: '[ngbNavItem]:not(ng-container)',
+	standalone: true,
+	host: {
+		'[attr.role]': `role ? role : nav.roles ? 'presentation' : undefined`,
+	},
+})
+export class NgbNavItemRole {
+	constructor(@Attribute('role') public role: string, @Inject(forwardRef(() => NgbNav)) public nav: NgbNav) {}
+}
+
+/**
  * The directive used to group nav link and related nav content. As well as set nav identifier and some options.
  *
  * @since 5.2.0

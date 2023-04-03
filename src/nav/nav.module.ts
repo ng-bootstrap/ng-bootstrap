@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 
-import { NgbNav, NgbNavContent, NgbNavItem, NgbNavLink, NgbNavLinkButton, NgbNavLinkBase } from './nav';
+import { NgbNav, NgbNavContent, NgbNavItem, NgbNavItemRole, NgbNavLink, NgbNavLinkButton, NgbNavLinkBase } from './nav';
+
 import { NgbNavOutlet, NgbNavPane } from './nav-outlet';
 
 export {
@@ -8,6 +9,7 @@ export {
 	NgbNavContent,
 	NgbNavContentContext,
 	NgbNavItem,
+	NgbNavItemRole,
 	NgbNavLink,
 	NgbNavLinkButton,
 	NgbNavLinkBase,
@@ -20,6 +22,7 @@ const NGB_NAV_DIRECTIVES = [
 	NgbNavContent,
 	NgbNav,
 	NgbNavItem,
+	NgbNavItemRole,
 	NgbNavLink,
 	NgbNavLinkButton,
 	NgbNavLinkBase,

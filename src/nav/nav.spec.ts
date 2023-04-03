@@ -124,6 +124,7 @@ describe('nav', () => {
     `);
 
 		expect(getNav(fixture).getAttribute('role')).toBe('tablist');
+		expect(getItems(fixture)[0].getAttribute('role')).toBe('presentation');
 		expect(getLinks(fixture)[0].getAttribute('role')).toBe('tab');
 		expect(getContent(fixture).getAttribute('role')).toBe('tabpanel');
 	});
@@ -140,6 +141,7 @@ describe('nav', () => {
     `);
 
 		expect(getNav(fixture).getAttribute('role')).toBeNull();
+		expect(getItems(fixture)[0].getAttribute('role')).toBeNull();
 		expect(getLinks(fixture)[0].getAttribute('role')).toBeNull();
 		expect(getContent(fixture).getAttribute('role')).toBeNull();
 	});
@@ -147,17 +149,18 @@ describe('nav', () => {
 	it(`should allow overriding any A11Y roles`, () => {
 		const fixture = createTestComponent(`
       <ul ngbNav #n="ngbNav" role="list" class="nav-tabs">
-        <li ngbNavItem>
-            <button ngbNavLink role="alert"></button>
+        <li ngbNavItem role="myItemRole">
+            <button ngbNavLink role="myLinkRole"></button>
             <ng-template ngbTabContent></ng-template>
         </li>
       </ul>
-      <div [ngbNavOutlet]="n" paneRole="myRole"></div>
+      <div [ngbNavOutlet]="n" paneRole="myPaneRole"></div>
     `);
 
 		expect(getNav(fixture).getAttribute('role')).toBe('list');
-		expect(getLinks(fixture)[0].getAttribute('role')).toBe('alert');
-		expect(getContent(fixture).getAttribute('role')).toBe('myRole');
+		expect(getItems(fixture)[0].getAttribute('role')).toBe('myItemRole');
+		expect(getLinks(fixture)[0].getAttribute('role')).toBe('myLinkRole');
+		expect(getContent(fixture).getAttribute('role')).toBe('myPaneRole');
 	});
 
 	it(`should set orientation CSS and 'aria-orientation' correctly`, () => {
