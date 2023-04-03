@@ -27,6 +27,8 @@ let nextId = 0;
  *
  * The actual content is provided in a child `ng-template` element.
  * Depending on the state of the accordion, the template will be either inserted or removed from the DOM.
+ *
+ * @since 14.1.0
  */
 @Component({
 	selector: '[ngbAccordionBody]',
@@ -49,6 +51,8 @@ export class NgbAccordionBody {
  * A directive that wraps the collapsible item's content of the accordion.
  *
  * Internally it reuses the [`NgbCollapse` directive](#/components/collapse)
+ *
+ * @since 14.1.0
  */
 @Directive({
 	exportAs: 'ngbAccordionCollapse',
@@ -78,6 +82,8 @@ export class NgbAccordionCollapse {
  * It will register click handlers that toggle the associated panel and will handle accessibility attributes.
  *
  * This directive is used internally by the [`NgbAccordionButton` directive](#/components/accordion/api#NgbAccordionButton).
+ *
+ * @since 14.1.0
  */
 @Directive({
 	selector: '[ngbAccordionToggle]',
@@ -101,6 +107,8 @@ export class NgbAccordionToggle {
  * A directive to put on a button element inside an accordion item's header.
  *
  * If you want a custom markup for the header, you can also use the [`NgbAccordionToggle` directive](#/components/accordion/api#NgbAccordionToggle).
+ *
+ * @since 14.1.0
  */
 @Directive({
 	selector: 'button[ngbAccordionButton]',
@@ -122,6 +130,8 @@ export class NgbAccordionButton {
 
 /**
  * A directive that wraps an accordion item's header.
+ *
+ * @since 14.1.0
  */
 @Directive({
 	selector: '[ngbAccordionHeader]',
@@ -143,6 +153,8 @@ export class NgbAccordionHeader {
  * It allows to check if the item is collapsed or not, toggle the collapse state, etc.
  *
  * Every accordion item has a string ID that is automatically generated in the `ngb-accordion-item-XX` format, unless provided explicitly.
+ *
+ * @since 14.1.0
  */
 @Directive({
 	selector: '[ngbAccordionItem]',
@@ -276,6 +288,8 @@ export class NgbAccordionItem implements AfterContentInit, OnDestroy {
  * Accordion is a stack of cards that have a header and collapsible body.
  *
  * This directive is a container for these items and provides an API to handle them.
+ *
+ * @since 14.1.0
  */
 @Directive({
 	exportAs: 'ngbAccordion',

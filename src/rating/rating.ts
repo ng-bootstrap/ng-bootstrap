@@ -118,6 +118,8 @@ export class NgbRating implements ControlValueAccessor, OnInit, OnChanges {
 
 	/**
 	 * Allows to provide a function to set a custom aria-valuetext
+	 *
+	 * @since 14.1.0
 	 */
 	@Input() ariaValueText(current: number, max: number) {
 		return `${current} out of ${max}`;

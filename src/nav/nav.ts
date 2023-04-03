@@ -57,6 +57,8 @@ export class NgbNavContent {
 
 /**
  * This directive applies a specific role on a non-container based ngbNavItem.
+ *
+ * @since 14.1.0
  */
 @Directive({
 	selector: '[ngbNavItem]:not(ng-container)',
