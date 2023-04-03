@@ -109,6 +109,7 @@ export {
 	NgbNavContent,
 	NgbNavContentContext,
 	NgbNavItem,
+	NgbNavItemRole,
 	NgbNavLink,
 	NgbNavLinkButton,
 	NgbNavLinkBase,
