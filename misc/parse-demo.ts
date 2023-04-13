@@ -25,7 +25,7 @@ export function parseDemos(demoFolderPath: string): DemoMetadata[] {
 	function processRoutingFile(routingFile: string, demosPath: string) {
 		const demoFolders = fs.readdirSync(demosPath);
 
-		let parts = routingFile.split(path.sep);
+		let parts = routingFile.split('/');
 		const componentName = parts[parts.length - 2];
 
 		const knownDemoComponents = new Set<string>();
@@ -83,7 +83,7 @@ export function parseDemos(demoFolderPath: string): DemoMetadata[] {
 	const routingFiles = glob.sync(`${demoFolderPath}/**/*.routes.ts`);
 
 	routingFiles.forEach((routingFile) =>
-		processRoutingFile(routingFile, `${routingFile.substring(0, routingFile.lastIndexOf(path.sep) + 1)}demos`),
+		processRoutingFile(routingFile, `${routingFile.substring(0, routingFile.lastIndexOf('/') + 1)}demos`),
 	);
 	return demos;
 }
