@@ -25,7 +25,7 @@ function expectPages(nativeEl: HTMLElement, pagesDef: string[], ellipsis = '...'
 			expect(pages[i]).toHaveCssClass('active');
 			expect(pages[i]).not.toHaveCssClass('disabled');
 			expect(pages[i].getAttribute('aria-current')).toBe('page');
-			expect(textContent).toEqual(pageDef.substring(1) + ' (current)');
+			expect(textContent).toEqual(pageDef.substring(1));
 		} else if (classIndicator === '-') {
 			expect(pages[i]).not.toHaveCssClass('active');
 			expect(pages[i]).toHaveCssClass('disabled');
@@ -682,10 +682,7 @@ describe('ngb-pagination', () => {
           <ng-template ngbPaginationPrevious>P</ng-template>
           <ng-template ngbPaginationNext>N</ng-template>
           <ng-template ngbPaginationEllipsis>E</ng-template>
-          <ng-template ngbPaginationNumber let-page let-currentPage="currentPage">
-            {{ page }}!
-            <span *ngIf="page === currentPage" class="visually-hidden">(current)</span>
-          </ng-template>
+          <ng-template ngbPaginationNumber let-page let-currentPage="currentPage">{{ page }}!</ng-template>
         </ngb-pagination>
       `);
 
@@ -701,7 +698,6 @@ describe('ngb-pagination', () => {
           <ng-template ngbPaginationNext let-disabled="disabled">{{ disabled ? 'dN' : 'N' }}</ng-template>
           <ng-template ngbPaginationNumber let-page let-currentPage="currentPage" let-disabled="disabled">
             {{ disabled ? 'd'+page : page }}
-            <span *ngIf="page === currentPage" class="visually-hidden">(current)</span>
           </ng-template>
         </ngb-pagination>
       `);
