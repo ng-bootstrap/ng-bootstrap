@@ -210,16 +210,21 @@ export class NgbAccordionItem implements AfterContentInit, OnDestroy {
 	 */
 	@Input() set collapsed(collapsed: boolean) {
 		if (this.collapsed !== collapsed) {
+			// checking if accordion allows to expand the panel in respect to 'closeOthers' flag
+			if (this.collapsed && !this._accordion._ensureCanExpand(this)) {
+				return;
+			}
+
 			this._collapsed = collapsed;
 			this._cd.markForCheck(); // need if the accordion is used inside a component having OnPush change detection strategy
 			// we need force CD to get template into DOM before starting animation to calculate its height correctly
-			if (!this._collapsed) {
+			if (!this.collapsed) {
 				this.animatingBodyCollapse = true;
 				this._cd.detectChanges();
 			}
 			// we also need to make sure 'animation' flag is up-to- date
 			this._collapse.ngbCollapse.animation = this._accordion.animation;
-			this._collapse.ngbCollapse.collapsed = collapsed;
+			this._collapse.ngbCollapse.collapsed = this.collapsed;
 		}
 	}
 
@@ -282,6 +287,20 @@ export class NgbAccordionItem implements AfterContentInit, OnDestroy {
 	toggle() {
 		this.collapsed = !this.collapsed;
 	}
+
+	/**
+	 * Expands an accordion item.
+	 */
+	expand() {
+		this.collapsed = false;
+	}
+
+	/**
+	 * Collapses an accordion item.
+	 */
+	collapse() {
+		this.collapsed = true;
+	}
 }
 
 /**
@@ -327,6 +346,8 @@ export class NgbAccordionDirective {
 	 */
 	@Output() hidden = new EventEmitter<string>();
 
+	private _anItemWasAlreadyExpandedDuringInitialisation = false;
+
 	constructor(config: NgbAccordionConfig) {
 		this.animation = config.animation;
 		this.closeOthers = config.closeOthers;
@@ -340,18 +361,7 @@ export class NgbAccordionDirective {
 	 * @param itemId The id of the item to toggle.
 	 */
 	toggle(itemId: string) {
-		const toToggle = this._getItem(itemId);
-		if (toToggle) {
-			const oldStateCollapsed = toToggle.collapsed;
-			this._items.forEach((item) => {
-				if (item === toToggle) {
-					item.toggle();
-				} else if (this.closeOthers && oldStateCollapsed) {
-					// collapse other items if the selected item was collapsed and it will be open
-					item.collapsed = true;
-				}
-			});
-		}
+		this._getItem(itemId)?.toggle();
 	}
 
 	/**
@@ -362,16 +372,7 @@ export class NgbAccordionDirective {
 	 * @param itemId The id of the item to expand.
 	 */
 	expand(itemId: string) {
-		const toExpand = this._getItem(itemId);
-		if (toExpand) {
-			this._items.forEach((item) => {
-				if (item === toExpand) {
-					toExpand.collapsed = false;
-				} else if (this.closeOthers) {
-					item.collapsed = true;
-				}
-			});
-		}
+		const item = this._getItem(itemId)?.expand();
 	}
 
 	/**
@@ -384,12 +385,10 @@ export class NgbAccordionDirective {
 			// we check if there is an item open and if it is not we can expand the first item
 			// (otherwise we toggle nothing)
 			if (!this._items.find((item) => !item.collapsed)) {
-				this._items.get(0)!.collapsed = false;
+				this._items.first.expand();
 			}
 		} else {
-			this._items.forEach((item) => {
-				item.collapsed = false;
-			});
+			this._items.forEach((item) => item.expand());
 		}
 	}
 
@@ -401,17 +400,14 @@ export class NgbAccordionDirective {
 	 * @param itemId The id of the item to collapse.
 	 */
 	collapse(itemId: string) {
-		const toCollapse = this._getItem(itemId);
-		if (toCollapse) {
-			toCollapse.collapsed = true;
-		}
+		this._getItem(itemId)?.collapse();
 	}
 
 	/**
 	 * Collapses all items.
 	 */
 	collapseAll() {
-		this._items.forEach((item) => (item.collapsed = true));
+		this._items.forEach((item) => item.collapse());
 	}
 
 	/**
@@ -424,6 +420,33 @@ export class NgbAccordionDirective {
 	isExpanded(itemId: string): boolean {
 		const item = this._getItem(itemId);
 		return item ? !item.collapsed : false;
+	}
+
+	/**
+	 * It checks, if the item can be expanded in the current state of the accordion.
+	 * With `closeOthers` there can be only one expanded item at a time.
+	 *
+	 * @internal
+	 */
+	_ensureCanExpand(toExpand: NgbAccordionItem) {
+		if (!this.closeOthers) {
+			return true;
+		}
+
+		// special case during the initialization of the [collapse]="false" inputs
+		// `this._items` QueryList is not yet initialized, but we need to ensure only one item can be expanded at a time
+		if (!this._items) {
+			if (!this._anItemWasAlreadyExpandedDuringInitialisation) {
+				this._anItemWasAlreadyExpandedDuringInitialisation = true;
+				return true;
+			}
+			return false;
+		}
+
+		// if there is an expanded item, we need to collapse it first
+		this._items.find((item) => !item.collapsed && toExpand !== item)?.collapse();
+
+		return true;
 	}
 
 	private _getItem(itemId: string) {
