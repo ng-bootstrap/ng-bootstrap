@@ -161,10 +161,7 @@ export class NgbPaginationPages {
 		<ng-template #next><span aria-hidden="true" i18n="@@ngb.pagination.next">&raquo;</span></ng-template>
 		<ng-template #last><span aria-hidden="true" i18n="@@ngb.pagination.last">&raquo;&raquo;</span></ng-template>
 		<ng-template #ellipsis>...</ng-template>
-		<ng-template #defaultNumber let-page let-currentPage="currentPage">
-			{{ page }}
-			<span *ngIf="page === currentPage" class="visually-hidden">(current)</span>
-		</ng-template>
+		<ng-template #defaultNumber let-page let-currentPage="currentPage">{{ page }}</ng-template>
 		<ng-template #defaultPages let-page let-pages="pages" let-disabled="disabled">
 			<li
 				*ngFor="let pageNumber of pages"
