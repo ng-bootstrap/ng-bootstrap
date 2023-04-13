@@ -1,10 +1,10 @@
-import { TestBed, ComponentFixture, inject } from '@angular/core/testing';
+import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { createGenericTestComponent, isBrowserVisible } from '../test/common';
 
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, QueryList, ViewChild, ViewChildren } from '@angular/core';
 
-import { NgbAccordionModule, NgbAccordionConfig, NgbAccordionDirective } from './accordion.module';
+import { NgbAccordionConfig, NgbAccordionDirective, NgbAccordionItem, NgbAccordionModule } from './accordion.module';
 import { NgbConfig } from '../ngb-config';
 import { NgbConfigAnimation } from '../test/ngb-config-animation';
 import { NgFor } from '@angular/common';
@@ -501,6 +501,132 @@ describe('ngb-accordion directive', () => {
 		toggle.click();
 		fixture.detectChanges();
 		expect(header).toHaveCssClass('collapsed');
+	});
+
+	describe('closeOthers', () => {
+		@Component({
+			standalone: true,
+			imports: [NgbAccordionModule, NgFor],
+			template: `
+				<div ngbAccordion #accordion="ngbAccordion" [closeOthers]="true">
+					<div
+						*ngFor="let _ of state; let index = index"
+						[ngbAccordionItem]="keys[index]"
+						#item="ngbAccordionItem"
+						[collapsed]="state[index]"
+					>
+						<h2 ngbAccordionHeader>
+							<button ngbAccordionButton>{{ item.collapsed }}</button>
+						</h2>
+						<div ngbAccordionCollapse>
+							<div ngbAccordionBody></div>
+						</div>
+					</div>
+				</div>
+			`,
+		})
+		class CloseOthersComponent {
+			keys = ['one', 'two', 'three', 'four'];
+
+			@ViewChild(NgbAccordionDirective) accordion: NgbAccordionDirective;
+			@ViewChildren(NgbAccordionItem) items: QueryList<NgbAccordionItem>;
+
+			constructor(@Inject('state') public state: boolean[]) {}
+		}
+
+		it(`should allow expanding one panel initially`, () => {
+			TestBed.overrideProvider('state', { useValue: [true, false, true] });
+			const fixture = TestBed.createComponent(CloseOthersComponent);
+			fixture.detectChanges();
+			expect(getPanelsTitle(fixture.nativeElement)).toEqual(['true', 'false', 'true']);
+		});
+
+		it(`should work with one panel opened initially + collapse on click`, () => {
+			TestBed.overrideProvider('state', { useValue: [true, false, true] });
+			const fixture = TestBed.createComponent(CloseOthersComponent);
+			fixture.detectChanges();
+
+			getButton(fixture.nativeElement, 1).click();
+			fixture.detectChanges();
+			expect(getPanelsTitle(fixture.nativeElement)).toEqual(['true', 'true', 'true']);
+		});
+
+		it(`should work with one panel opened initially + collapse on item.toggle()`, () => {
+			TestBed.overrideProvider('state', { useValue: [true, false, true] });
+			const fixture = TestBed.createComponent(CloseOthersComponent);
+			fixture.detectChanges();
+
+			fixture.componentInstance.items.get(1)!.toggle();
+			fixture.detectChanges();
+			expect(getPanelsTitle(fixture.nativeElement)).toEqual(['true', 'true', 'true']);
+		});
+
+		it(`should work with one panel opened initially + collapse on item.collapse = true`, () => {
+			TestBed.overrideProvider('state', { useValue: [true, false, true] });
+			const fixture = TestBed.createComponent(CloseOthersComponent);
+			fixture.detectChanges();
+
+			fixture.componentInstance.items.get(1)!.collapsed = true;
+			fixture.detectChanges();
+			expect(getPanelsTitle(fixture.nativeElement)).toEqual(['true', 'true', 'true']);
+		});
+
+		it(`should work with one panel opened initially + collapse on accordion.toggle(item)`, () => {
+			TestBed.overrideProvider('state', { useValue: [true, false, true] });
+			const fixture = TestBed.createComponent(CloseOthersComponent);
+			fixture.detectChanges();
+
+			fixture.componentInstance.accordion.toggle('two');
+			fixture.detectChanges();
+			expect(getPanelsTitle(fixture.nativeElement)).toEqual(['true', 'true', 'true']);
+		});
+
+		it(`should work with one panel opened initially + expand on click`, () => {
+			TestBed.overrideProvider('state', { useValue: [true, false, true] });
+			const fixture = TestBed.createComponent(CloseOthersComponent);
+			fixture.detectChanges();
+
+			getButton(fixture.nativeElement, 0).click();
+			fixture.detectChanges();
+			expect(getPanelsTitle(fixture.nativeElement)).toEqual(['false', 'true', 'true']);
+		});
+
+		it(`should work with one panel opened initially + expand on item.toggle()`, () => {
+			TestBed.overrideProvider('state', { useValue: [true, false, true] });
+			const fixture = TestBed.createComponent(CloseOthersComponent);
+			fixture.detectChanges();
+
+			fixture.componentInstance.items.get(0)!.toggle();
+			fixture.detectChanges();
+			expect(getPanelsTitle(fixture.nativeElement)).toEqual(['false', 'true', 'true']);
+		});
+
+		it(`should work with one panel opened initially + expand on item.collapse = false`, () => {
+			TestBed.overrideProvider('state', { useValue: [true, false, true] });
+			const fixture = TestBed.createComponent(CloseOthersComponent);
+			fixture.detectChanges();
+
+			fixture.componentInstance.items.get(0)!.collapsed = false;
+			fixture.detectChanges();
+			expect(getPanelsTitle(fixture.nativeElement)).toEqual(['false', 'true', 'true']);
+		});
+
+		it(`should work with one panel opened initially + expand on accordion.toggle(item)`, () => {
+			TestBed.overrideProvider('state', { useValue: [true, false, true] });
+			const fixture = TestBed.createComponent(CloseOthersComponent);
+			fixture.detectChanges();
+
+			fixture.componentInstance.accordion.toggle('one');
+			fixture.detectChanges();
+			expect(getPanelsTitle(fixture.nativeElement)).toEqual(['false', 'true', 'true']);
+		});
+
+		it(`should not allow expanding multiple panels initially`, () => {
+			TestBed.overrideProvider('state', { useValue: [false, false, false, true] });
+			const fixture = TestBed.createComponent(CloseOthersComponent);
+			fixture.detectChanges();
+			expect(getPanelsTitle(fixture.nativeElement)).toEqual(['false', 'true', 'true', 'true']);
+		});
 	});
 
 	describe('imperative API', () => {
