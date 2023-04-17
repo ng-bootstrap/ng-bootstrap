@@ -5,6 +5,8 @@ import { takeUntil } from 'rxjs/operators';
 
 import { NgbModalBackdrop } from './modal-backdrop';
 import { NgbModalWindow } from './modal-window';
+import { NgbModalOptions, NgbModalUpdatableOptions } from './modal-config';
+import { isDefined } from '../util/util';
 
 import { ContentRef } from '../util/popup';
 import { isPromise } from '../util/util';
@@ -13,9 +15,14 @@ import { isPromise } from '../util/util';
  * A reference to the currently opened (active) modal.
  *
  * Instances of this class can be injected into your component passed as modal content.
- * So you can `.close()` or `.dismiss()` the modal window from your component.
+ * So you can `.update()`, `.close()` or `.dismiss()` the modal window from your component.
  */
 export class NgbActiveModal {
+	/**
+	 * Update options of an opened modal with `options` value.
+	 *
+	 */
+	update(options: NgbModalUpdatableOptions): void {}
 	/**
 	 * Closes the modal with an optional `result` value.
 	 *
@@ -31,6 +38,21 @@ export class NgbActiveModal {
 	dismiss(reason?: any): void {}
 }
 
+const WINDOW_ATTRIBUTES: string[] = [
+	'animation',
+	'ariaLabelledBy',
+	'ariaDescribedBy',
+	'backdrop',
+	'centered',
+	'fullscreen',
+	'keyboard',
+	'scrollable',
+	'size',
+	'windowClass',
+	'modalDialogClass',
+];
+const BACKDROP_ATTRIBUTES: string[] = ['animation', 'backdropClass'];
+
 /**
  * A reference to the newly opened modal returned by the `NgbModal.open()` method.
  */
@@ -40,6 +62,33 @@ export class NgbModalRef {
 	private _hidden = new Subject<void>();
 	private _resolve: (result?: any) => void;
 	private _reject: (reason?: any) => void;
+
+	private _applyWindowOptions(windowInstance: NgbModalWindow, options: NgbModalOptions): void {
+		WINDOW_ATTRIBUTES.forEach((optionName: string) => {
+			if (isDefined(options[optionName])) {
+				windowInstance[optionName] = options[optionName];
+			}
+		});
+	}
+
+	private _applyBackdropOptions(backdropInstance: NgbModalBackdrop, options: NgbModalOptions): void {
+		BACKDROP_ATTRIBUTES.forEach((optionName: string) => {
+			if (isDefined(options[optionName])) {
+				backdropInstance[optionName] = options[optionName];
+			}
+		});
+	}
+
+	/**
+	 * Update options of an opened modal with `options` value.
+	 *
+	 */
+	update(options: NgbModalUpdatableOptions): void {
+		this._applyWindowOptions(this._windowCmptRef.instance, options);
+		if (this._backdropCmptRef && this._backdropCmptRef.instance) {
+			this._applyBackdropOptions(this._backdropCmptRef.instance, options);
+		}
+	}
 
 	/**
 	 * The instance of a component used for the modal content.

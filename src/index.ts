@@ -100,6 +100,7 @@ export {
 	NgbModalConfig,
 	NgbModalModule,
 	NgbModalOptions,
+	NgbModalUpdatableOptions,
 	NgbModalRef,
 } from './modal/modal.module';
 export {

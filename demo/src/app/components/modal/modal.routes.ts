@@ -7,6 +7,7 @@ import { NgbdModalComponent } from './demos/component/modal-component';
 import { NgbdModalConfig } from './demos/config/modal-config';
 import { NgbdModalFocus } from './demos/focus/modal-focus';
 import { NgbdModalOptions } from './demos/options/modal-options';
+import { NgbdModalUpdatableOptions } from './demos/updatable/modal-updatable-options';
 import { NgbdModalStacked } from './demos/stacked/modal-stacked';
 import { Routes } from '@angular/router';
 import { ENVIRONMENT_INITIALIZER, inject } from '@angular/core';
@@ -36,6 +37,12 @@ const DEMOS = {
 		type: NgbdModalOptions,
 		code: require('!!raw-loader!./demos/options/modal-options').default,
 		markup: require('!!raw-loader!./demos/options/modal-options.html').default,
+	},
+	updatable: {
+		title: 'Updatable options',
+		type: NgbdModalUpdatableOptions,
+		code: require('!!raw-loader!./demos/updatable/modal-updatable-options').default,
+		markup: require('!!raw-loader!./demos/updatable/modal-updatable-options.html').default,
 	},
 	stacked: {
 		title: 'Stacked modals',

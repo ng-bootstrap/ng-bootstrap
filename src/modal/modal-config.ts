@@ -122,6 +122,21 @@ export interface NgbModalOptions {
 }
 
 /**
+ * Options available on a opened modal windows with `NgbModalRef.update()` and `NgbActiveModal.update()` methods.
+ */
+export type NgbModalUpdatableOptions = Pick<
+	NgbModalOptions,
+	| 'ariaLabelledBy'
+	| 'ariaDescribedBy'
+	| 'centered'
+	| 'fullscreen'
+	| 'backdropClass'
+	| 'size'
+	| 'windowClass'
+	| 'modalDialogClass'
+>;
+
+/**
  * A configuration service for the [`NgbModal`](#/components/modal/api#NgbModal) service.
  *
  * You can inject this service, typically in your root component, and customize the values of its properties in
