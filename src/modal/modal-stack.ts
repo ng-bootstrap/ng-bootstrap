@@ -20,7 +20,7 @@ import { ContentRef } from '../util/popup';
 import { ScrollBar } from '../util/scrollbar';
 import { isDefined, isString } from '../util/util';
 import { NgbModalBackdrop } from './modal-backdrop';
-import { NgbModalOptions } from './modal-config';
+import { NgbModalOptions, NgbModalUpdatableOptions } from './modal-config';
 import { NgbActiveModal, NgbModalRef } from './modal-ref';
 import { NgbModalWindow } from './modal-window';
 import { take } from 'rxjs/operators';
@@ -30,21 +30,7 @@ export class NgbModalStack {
 	private _activeWindowCmptHasChanged = new Subject<void>();
 	private _ariaHiddenValues: Map<Element, string | null> = new Map();
 	private _scrollBarRestoreFn: null | (() => void) = null;
-	private _backdropAttributes = ['animation', 'backdropClass'];
 	private _modalRefs: NgbModalRef[] = [];
-	private _windowAttributes = [
-		'animation',
-		'ariaLabelledBy',
-		'ariaDescribedBy',
-		'backdrop',
-		'centered',
-		'fullscreen',
-		'keyboard',
-		'scrollable',
-		'size',
-		'windowClass',
-		'modalDialogClass',
-	];
 	private _windowCmpts: ComponentRef<NgbModalWindow>[] = [];
 	private _activeInstances: EventEmitter<NgbModalRef[]> = new EventEmitter();
 
@@ -131,13 +117,16 @@ export class NgbModalStack {
 			ngbModalRef.dismiss(reason);
 		};
 
-		this._applyWindowOptions(windowCmptRef.instance, options);
+		activeModal.update = (options: NgbModalUpdatableOptions) => {
+			ngbModalRef.update(options);
+		};
+
+		ngbModalRef.update(options);
 		if (this._modalRefs.length === 1) {
 			renderer.addClass(this._document.body, 'modal-open');
 		}
 
 		if (backdropCmptRef && backdropCmptRef.instance) {
-			this._applyBackdropOptions(backdropCmptRef.instance, options);
 			backdropCmptRef.changeDetectorRef.detectChanges();
 		}
 		windowCmptRef.changeDetectorRef.detectChanges();
@@ -175,22 +164,6 @@ export class NgbModalStack {
 		this._applicationRef.attachView(windowCmptRef.hostView);
 		containerEl.appendChild(windowCmptRef.location.nativeElement);
 		return windowCmptRef;
-	}
-
-	private _applyWindowOptions(windowInstance: NgbModalWindow, options: NgbModalOptions): void {
-		this._windowAttributes.forEach((optionName: string) => {
-			if (isDefined(options[optionName])) {
-				windowInstance[optionName] = options[optionName];
-			}
-		});
-	}
-
-	private _applyBackdropOptions(backdropInstance: NgbModalBackdrop, options: NgbModalOptions): void {
-		this._backdropAttributes.forEach((optionName: string) => {
-			if (isDefined(options[optionName])) {
-				backdropInstance[optionName] = options[optionName];
-			}
-		});
 	}
 
 	private _getContentRef(

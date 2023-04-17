@@ -3,7 +3,7 @@ import { NgIf } from '@angular/common';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
-import { NgbModalConfig, NgbModalOptions } from './modal-config';
+import { NgbModalConfig, NgbModalOptions, NgbModalUpdatableOptions } from './modal-config';
 import { NgbActiveModal, NgbModal, NgbModalModule, NgbModalRef } from './modal.module';
 import { createKeyEvent, isBrowserVisible } from '../test/common';
 import { NgbConfig } from '..';
@@ -583,6 +583,21 @@ describe('ngb-modal', () => {
 				fixture.detectChanges();
 				expect(fixture.nativeElement).not.toHaveModal();
 			});
+
+			it('should actualize the modals render with specified size', () => {
+				const modalInstance = fixture.componentInstance.open('foo', { size: 'sm' });
+				fixture.detectChanges();
+				expect(fixture.nativeElement).toHaveModal('foo');
+				expect(document.querySelector('.modal-dialog')).toHaveCssClass('modal-sm');
+
+				fixture.componentInstance.update({ size: 'xl' });
+				fixture.detectChanges();
+				expect(document.querySelector('.modal-dialog')).toHaveCssClass('modal-xl');
+
+				modalInstance.close();
+				fixture.detectChanges();
+				expect(fixture.nativeElement).not.toHaveModal();
+			});
 		});
 
 		describe('fullscreen options', () => {
@@ -620,12 +635,93 @@ describe('ngb-modal', () => {
 			});
 		});
 
+		describe('update fullscreen options', () => {
+			it('should render modals with small fullscreen after update', () => {
+				const modalInstance = fixture.componentInstance.open('foo', { fullscreen: true });
+				fixture.detectChanges();
+				expect(fixture.nativeElement).toHaveModal('foo');
+				expect(document.querySelector('.modal-dialog')).toHaveCssClass('modal-fullscreen');
+
+				fixture.componentInstance.update({ fullscreen: 'sm' });
+				fixture.detectChanges();
+				expect(document.querySelector('.modal-dialog')).toHaveCssClass('modal-fullscreen-sm-down');
+
+				modalInstance.close();
+				fixture.detectChanges();
+				expect(fixture.nativeElement).not.toHaveModal();
+			});
+
+			it('should render modals with specified fullscreen size after update', () => {
+				const modalInstance = fixture.componentInstance.open('foo', { fullscreen: 'sm' });
+				fixture.detectChanges();
+				expect(fixture.nativeElement).toHaveModal('foo');
+				expect(document.querySelector('.modal-dialog')).toHaveCssClass('modal-fullscreen-sm-down');
+
+				fixture.componentInstance.update({ fullscreen: 'xl' });
+				fixture.detectChanges();
+				expect(document.querySelector('.modal-dialog')).toHaveCssClass('modal-fullscreen-xl-down');
+
+				modalInstance.close();
+				fixture.detectChanges();
+				expect(fixture.nativeElement).not.toHaveModal();
+			});
+
+			it('should render modals with any string as fullscreen size after update', () => {
+				const modalInstance = fixture.componentInstance.open('foo', { fullscreen: 'sm' });
+				fixture.detectChanges();
+				expect(fixture.nativeElement).toHaveModal('foo');
+				expect(document.querySelector('.modal-dialog')).toHaveCssClass('modal-fullscreen-sm-down');
+
+				fixture.componentInstance.update({ fullscreen: 'blah' });
+				fixture.detectChanges();
+				expect(document.querySelector('.modal-dialog')).toHaveCssClass('modal-fullscreen-blah-down');
+
+				modalInstance.close();
+				fixture.detectChanges();
+				expect(fixture.nativeElement).not.toHaveModal();
+			});
+		});
+
 		describe('window custom class options', () => {
 			it('should render modals with the correct window custom classes', () => {
 				const modalInstance = fixture.componentInstance.open('foo', { windowClass: 'bar' });
 				fixture.detectChanges();
 				expect(fixture.nativeElement).toHaveModal('foo');
 				expect(document.querySelector('ngb-modal-window')).toHaveCssClass('bar');
+
+				modalInstance.close();
+				fixture.detectChanges();
+				expect(fixture.nativeElement).not.toHaveModal();
+			});
+		});
+
+		describe('update window custom class options', () => {
+			it('should render modals with the correct window custom classes after update', () => {
+				const modalInstance = fixture.componentInstance.open('foo', { windowClass: 'bar' });
+				fixture.detectChanges();
+				expect(fixture.nativeElement).toHaveModal('foo');
+				expect(document.querySelector('ngb-modal-window')).toHaveCssClass('bar');
+
+				fixture.componentInstance.update({ windowClass: 'foo' });
+				fixture.detectChanges();
+				expect(document.querySelector('ngb-modal-window')).toHaveCssClass('foo');
+
+				modalInstance.close();
+				fixture.detectChanges();
+				expect(fixture.nativeElement).not.toHaveModal();
+			});
+		});
+
+		describe('update of backdrop custom class options ', () => {
+			it('should render modals with the correct backdrop custom classes after update', () => {
+				const modalInstance = fixture.componentInstance.open('foo', { backdropClass: 'bar' });
+				fixture.detectChanges();
+				expect(fixture.nativeElement).toHaveModal('foo');
+				expect(document.querySelector('ngb-modal-backdrop')).toHaveCssClass('bar');
+
+				fixture.componentInstance.update({ backdropClass: 'my-fancy-backdrop' });
+				fixture.detectChanges();
+				expect(document.querySelector('ngb-modal-backdrop')).toHaveCssClass('my-fancy-backdrop');
 
 				modalInstance.close();
 				fixture.detectChanges();
@@ -652,6 +748,23 @@ describe('ngb-modal', () => {
 				fixture.detectChanges();
 				expect(fixture.nativeElement).toHaveModal('foo');
 				expect(document.querySelector('.modal-dialog')).toHaveCssClass('bar');
+
+				modalInstance.close();
+				fixture.detectChanges();
+				expect(fixture.nativeElement).not.toHaveModal();
+			});
+		});
+
+		describe('update of modal dialog customing class options ', () => {
+			it('should render modals with the correct dialog custom classes after update', () => {
+				const modalInstance = fixture.componentInstance.open('foo', { modalDialogClass: 'bar' });
+				fixture.detectChanges();
+				expect(fixture.nativeElement).toHaveModal('foo');
+				expect(document.querySelector('.modal-dialog')).toHaveCssClass('bar');
+
+				fixture.componentInstance.update({ modalDialogClass: 'toc' });
+				fixture.detectChanges();
+				expect(document.querySelector('.modal-dialog')).toHaveCssClass('toc');
 
 				modalInstance.close();
 				fixture.detectChanges();
@@ -777,6 +890,23 @@ describe('ngb-modal', () => {
 			});
 		});
 
+		describe('update centered options', () => {
+			it('should render modals vertically centered after update', () => {
+				const modalInstance = fixture.componentInstance.open('foo', { centered: false });
+				fixture.detectChanges();
+				expect(fixture.nativeElement).toHaveModal('foo');
+				expect(document.querySelector('.modal-dialog')).toHaveCssClass('modal-dialog');
+
+				fixture.componentInstance.update({ centered: true });
+				fixture.detectChanges();
+				expect(document.querySelector('.modal-dialog')).toHaveCssClass('modal-dialog-centered');
+
+				modalInstance.close();
+				fixture.detectChanges();
+				expect(fixture.nativeElement).not.toHaveModal();
+			});
+		});
+
 		describe('scrollable content', () => {
 			it('should render scrollable content modals', () => {
 				const modalInstance = fixture.componentInstance.open('foo', { scrollable: true });
@@ -823,6 +953,44 @@ describe('ngb-modal', () => {
 
 				const modalElement = <HTMLElement>document.querySelector('ngb-modal-window');
 				expect(modalElement.getAttribute('aria-describedby')).toBe(id);
+
+				modalInstance.close('some result');
+				fixture.detectChanges();
+				expect(fixture.nativeElement).not.toHaveModal();
+			});
+
+			it('should support update of aria-labelledby options', () => {
+				const id = 'aria-labelledby-id';
+				const newId = 'aria-labelledby-new-id';
+
+				const modalInstance = fixture.componentInstance.open('foo', { ariaLabelledBy: id });
+				fixture.detectChanges();
+
+				const modalElement = <HTMLElement>document.querySelector('ngb-modal-window');
+				expect(modalElement.getAttribute('aria-labelledby')).toBe(id);
+
+				fixture.componentInstance.update({ ariaLabelledBy: newId });
+				fixture.detectChanges();
+				expect(modalElement.getAttribute('aria-labelledby')).toBe(newId);
+
+				modalInstance.close('some result');
+				fixture.detectChanges();
+				expect(fixture.nativeElement).not.toHaveModal();
+			});
+
+			it('should support update of aria-describedby options', () => {
+				const id = 'aria-describedby-id';
+				const newId = 'aria-describedby-new-id';
+
+				const modalInstance = fixture.componentInstance.open('foo', { ariaDescribedBy: id });
+				fixture.detectChanges();
+
+				const modalElement = <HTMLElement>document.querySelector('ngb-modal-window');
+				expect(modalElement.getAttribute('aria-describedby')).toBe(id);
+
+				fixture.componentInstance.update({ ariaDescribedBy: newId });
+				fixture.detectChanges();
+				expect(modalElement.getAttribute('aria-describedby')).toBe(newId);
 
 				modalInstance.close('some result');
 				fixture.detectChanges();
@@ -1347,6 +1515,11 @@ class TestComponent {
 	open(content: string, options?: NgbModalOptions) {
 		this.openedModal = this.modalService.open(content, options);
 		return this.openedModal;
+	}
+	update(options: NgbModalUpdatableOptions) {
+		if (this.openedModal) {
+			this.openedModal.update(options);
+		}
 	}
 	close() {
 		if (this.openedModal) {
