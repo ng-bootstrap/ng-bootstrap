@@ -48,6 +48,7 @@ let nextId = 0;
 		'[class.fade]': 'animation',
 		role: 'tooltip',
 		'[id]': 'id',
+		style: 'position: absolute;',
 	},
 	template: ` <div class="popover-arrow" data-popper-arrow></div>
 		<h3 class="popover-header" *ngIf="title">
