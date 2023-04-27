@@ -704,6 +704,29 @@ describe('ngb-tooltip', () => {
 			const buttonEl = fixture.debugElement.query(By.css('button'));
 			triggerEvent(buttonEl, 'click');
 		});
+
+		/**
+		 * See https://github.com/ng-bootstrap/ng-bootstrap/issues/4494 for more details
+		 * It moves the 'after' span to a new line when the tooltip is shown
+		 */
+		it('it should not move things to a new line when wrapped in a DOM element', () => {
+			const fixture = createTestComponent(`
+        <span>before</span><span><span id="tooltip" ngbTooltip='tooltip' triggers='click:blur'></span></span><span id='after'>after</span>
+      `);
+
+			expect(getWindow(fixture.nativeElement)).toBeNull();
+
+			let tooltip = fixture.nativeElement.querySelector('#tooltip') as HTMLButtonElement;
+			let afterSpan = fixture.nativeElement.querySelector('#after') as HTMLSpanElement;
+
+			const { x, y } = afterSpan.getBoundingClientRect();
+
+			tooltip.click();
+			expect(getWindow(fixture.nativeElement)).not.toBeNull();
+
+			expect(afterSpan.getBoundingClientRect().x).toEqual(x);
+			expect(afterSpan.getBoundingClientRect().y).toEqual(y);
+		});
 	});
 });
 
