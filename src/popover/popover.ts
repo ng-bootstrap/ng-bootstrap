@@ -44,7 +44,7 @@ let nextId = 0;
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
 	host: {
-		'[class]': '"popover" + (popoverClass ? " " + popoverClass : "")',
+		'[class]': '"popover" + (popoverClass ? " " + popoverClass : "") + " position-absolute"',
 		'[class.fade]': 'animation',
 		role: 'tooltip',
 		'[id]': 'id',
