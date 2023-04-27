@@ -41,7 +41,7 @@ let nextId = 0;
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
 	host: {
-		'[class]': '"tooltip" + (tooltipClass ? " " + tooltipClass : "")',
+		'[class]': '"tooltip" + (tooltipClass ? " " + tooltipClass : "") + " position-absolute"',
 		'[class.fade]': 'animation',
 		role: 'tooltip',
 		'[id]': 'id',
