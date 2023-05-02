@@ -1,3 +1,15 @@
+## [14.1.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/14.1.0...14.1.1) (2023-05-02)
+
+
+### Bug Fixes
+
+* **accordion:** fix inconsistent `closeOthers` behavior ([#4490](https://github.com/ng-bootstrap/ng-bootstrap/issues/4490)) ([77f667d](https://github.com/ng-bootstrap/ng-bootstrap/commit/77f667de3fd7319256bb76f23f350ddca448bf75))
+* **pagination:** remove `.visually-hidden` spans ([#4492](https://github.com/ng-bootstrap/ng-bootstrap/issues/4492)) ([c819b6c](https://github.com/ng-bootstrap/ng-bootstrap/commit/c819b6cc968445dea06bf8ff2cbdd531e2d8c569)), closes [#3870](https://github.com/ng-bootstrap/ng-bootstrap/issues/3870)
+* **popover:** avoid moving sibling elements on open ([0c45ae8](https://github.com/ng-bootstrap/ng-bootstrap/commit/0c45ae8f6cff62a5f9c1586a337addb5173d84c2)), closes [#4494](https://github.com/ng-bootstrap/ng-bootstrap/issues/4494)
+* **tooltip:** avoid moving sibling elements on open ([65c1db9](https://github.com/ng-bootstrap/ng-bootstrap/commit/65c1db902b8dbfab9ab099e63b041cd39bc20e2e)), closes [#4494](https://github.com/ng-bootstrap/ng-bootstrap/issues/4494)
+
+
+
 # [14.1.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/14.0.1...14.1.0) (2023-04-03)
 
 This release improves navs accessibility and introduces a new accordion implementation based on directives. The new implementation is more flexible and allows for easier customization. Old accordion implementation is still available, but deprecated and will be removed in one of the future major releases.
