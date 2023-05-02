@@ -1,12 +1,5 @@
 import { NgModule } from '@angular/core';
-import {
-	NgbDropdown,
-	NgbDropdownAnchor,
-	NgbDropdownToggle,
-	NgbDropdownMenu,
-	NgbDropdownItem,
-	NgbNavbar,
-} from './dropdown';
+import { NgbDropdown, NgbDropdownAnchor, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownItem } from './dropdown';
 
 export {
 	NgbDropdown,
@@ -14,18 +7,12 @@ export {
 	NgbDropdownToggle,
 	NgbDropdownMenu,
 	NgbDropdownItem,
+	// eslint-disable-next-line deprecation/deprecation
 	NgbNavbar,
 } from './dropdown';
 export { NgbDropdownConfig } from './dropdown-config';
 
-const NGB_DROPDOWN_DIRECTIVES = [
-	NgbDropdown,
-	NgbDropdownAnchor,
-	NgbDropdownToggle,
-	NgbDropdownMenu,
-	NgbDropdownItem,
-	NgbNavbar,
-];
+const NGB_DROPDOWN_DIRECTIVES = [NgbDropdown, NgbDropdownAnchor, NgbDropdownToggle, NgbDropdownMenu, NgbDropdownItem];
 
 @NgModule({
 	imports: NGB_DROPDOWN_DIRECTIVES,
