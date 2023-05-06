@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { APP_ID, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -40,7 +40,8 @@ import { TypeaheadComponent } from './components/typeahead.component';
 		TooltipComponent,
 		TypeaheadComponent,
 	],
-	imports: [BrowserModule.withServerTransition({ appId: 'serverApp' }), FormsModule, NgbModule],
+	providers: [{ provide: APP_ID, useValue: 'serverApp' }],
+	imports: [BrowserModule, FormsModule, NgbModule],
 	bootstrap: [AppComponent],
 })
 export class AppModule {}

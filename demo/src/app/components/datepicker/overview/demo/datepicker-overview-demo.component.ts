@@ -18,9 +18,9 @@ import { DatePipe } from '@angular/common';
 			<h5>Vacations</h5>
 			<p>
 				from
-				<b>{{ adapter.toModel(fromDate) | date: 'mediumDate' }}</b>
+				<b>{{ adapter.toModel(fromDate) | date : 'mediumDate' }}</b>
 				to
-				<b>{{ adapter.toModel(toDate ? toDate : hoveredDate) | date: 'mediumDate' }}</b>
+				<b>{{ adapter.toModel(toDate ? toDate : hoveredDate) | date : 'mediumDate' }}</b>
 			</p>
 		</div>
 
