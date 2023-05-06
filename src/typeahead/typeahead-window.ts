@@ -17,6 +17,11 @@ export interface ResultTemplateContext {
 	 * Search term from the `<input>` used to get current result.
 	 */
 	term: string;
+
+	/**
+	 * The function which transforms the result into a string
+	 */
+	formatter: (result: any) => string;
 }
 
 @Component({

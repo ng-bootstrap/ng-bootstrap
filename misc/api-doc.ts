@@ -376,7 +376,7 @@ class APIDocVisitor {
 	visitProperty(property: PropertyDeclaration | PropertySignature) {
 		return {
 			...this.visitNamedDeclaration(property),
-			defaultValue: property.initializer?.getText(),
+			defaultValue: isPropertyDeclaration(property) ? property.initializer?.getText() : undefined,
 		};
 	}
 

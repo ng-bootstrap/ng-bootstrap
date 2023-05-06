@@ -16,7 +16,7 @@ import { createTestApp } from '../utils/testing';
 			// 'app' is the default application, so we're not passing '--project' option
 			const options: Schema = { project: projectName };
 			let tree = await createTestApp(runner, appOptions);
-			tree = await runner.runSchematicAsync('ng-add-setup-project', options, tree).toPromise();
+			tree = await runner.runSchematic('ng-add-setup-project', options, tree);
 			const workspace = await readWorkspace(tree);
 			const project = workspace.projects.get(projectName)!;
 			return { tree, project };
@@ -30,14 +30,12 @@ import { createTestApp } from '../utils/testing';
 
 		it(`should add '@angular/localize' polyfill`, async () => {
 			let tree = await createTestApp(runner);
-			const tsconfigFilePath = `tsconfig.json`;
+			const tsconfigAppFilePath = `projects/${projectName}/tsconfig.app.json`;
 
-			expect(tree.read(tsconfigFilePath)!.toString()).not.toContain('@angular/localize');
+			expect(tree.read(tsconfigAppFilePath)!.toString()).not.toContain('@angular/localize');
 
-			tree = await runner
-				.runSchematicAsync('ng-add-setup-project', projectName ? { project: projectName } : {}, tree)
-				.toPromise();
-			expect(tree.read(tsconfigFilePath)!.toString()).toContain('@angular/localize');
+			tree = await runner.runSchematic('ng-add-setup-project', projectName ? { project: projectName } : {}, tree);
+			expect(tree.read(tsconfigAppFilePath)!.toString()).toContain('@angular/localize');
 		});
 
 		it(`should add 'bootstrap.min.css' to 'angular.json' by default`, async () => {

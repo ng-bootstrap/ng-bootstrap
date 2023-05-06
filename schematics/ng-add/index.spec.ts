@@ -1,6 +1,5 @@
 import { Tree } from '@angular-devkit/schematics';
 import { SchematicTestRunner } from '@angular-devkit/schematics/testing';
-import { getFileContent } from '@schematics/angular/utility/test/get-file-content';
 
 import { createTestApp } from '../utils/testing';
 import * as messages from './messages';
@@ -15,8 +14,8 @@ describe(`ng add '@ng-bootstrap/ng-bootstrap'`, () => {
 	});
 
 	it(`should add missing dependencies to 'package.json'`, async () => {
-		const tree = await runner.runSchematicAsync('ng-add', {}, appTree).toPromise();
-		const { dependencies, devDependencies } = JSON.parse(getFileContent(tree, '/package.json'));
+		const tree = await runner.runSchematic('ng-add', {}, appTree);
+		const { dependencies, devDependencies } = JSON.parse(tree.get('/package.json')!.content.toString());
 
 		expect(dependencies['bootstrap']).withContext('bootstrap should be installed').toBeDefined();
 		expect(dependencies['@angular/localize'] || devDependencies['@angular/localize'])
@@ -28,7 +27,7 @@ describe(`ng add '@ng-bootstrap/ng-bootstrap'`, () => {
 	it(`should report when specified 'project' is not found`, async () => {
 		let message = '';
 		try {
-			await runner.runSchematicAsync('ng-add', { project: 'test' }, appTree).toPromise();
+			await runner.runSchematic('ng-add', { project: 'test' }, appTree);
 		} catch (e) {
 			message = (e as Error).message;
 		} finally {
