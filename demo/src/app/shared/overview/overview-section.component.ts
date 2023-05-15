@@ -13,8 +13,8 @@ import { NgbdFragment } from '../fragment/fragment.directive';
 		class: 'd-block',
 	},
 	template: `
-		<h2>
-			<a class="title-fragment" routerLink="." [fragment]="section.fragment" ngbdFragment>
+		<h2 [id]="section.fragment">
+			<a class="title-fragment" routerLink="." [fragment]="section.fragment">
 				<i class="bi bi-link-45deg" style="font-size: 1.75rem; color: black"></i>
 			</a>
 			{{ section.title }}

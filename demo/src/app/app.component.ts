@@ -1,13 +1,12 @@
-import { ViewportScroller } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, NgZone, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterLinkActive, RouterLink, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { NgbdDemoVersionsComponent } from './demo-versions.component';
 
 import { COMPONENT_LIST } from './shared/component-list';
 import { environment } from '../environments/environment';
 import { AnalyticsService } from './services/analytics.service';
-import { filter, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { of } from 'rxjs';
 
 @Component({
@@ -22,19 +21,7 @@ export class AppComponent implements OnInit {
 
 	components = COMPONENT_LIST;
 
-	constructor(
-		private _analytics: AnalyticsService,
-		route: ActivatedRoute,
-		vps: ViewportScroller,
-		zone: NgZone,
-		httpClient: HttpClient,
-	) {
-		route.fragment
-			.pipe(filter((fragment) => !!fragment))
-			.subscribe((fragment: string) =>
-				zone.runOutsideAngular(() => requestAnimationFrame(() => vps.scrollToAnchor(fragment))),
-			);
-
+	constructor(private _analytics: AnalyticsService, route: ActivatedRoute, zone: NgZone, httpClient: HttpClient) {
 		if (environment.production) {
 			httpClient
 				.get<{ downloads: string }>('https://api.npmjs.org/downloads/point/last-month/@ng-bootstrap/ng-bootstrap')
