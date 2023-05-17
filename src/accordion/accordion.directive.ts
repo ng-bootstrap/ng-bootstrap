@@ -317,7 +317,7 @@ export class NgbAccordionItem implements AfterContentInit, OnDestroy {
 	host: { '[class.accordion]': 'true' },
 })
 export class NgbAccordionDirective {
-	@ContentChildren(NgbAccordionItem, { descendants: false }) private _items: QueryList<NgbAccordionItem>;
+	@ContentChildren(NgbAccordionItem, { descendants: false }) private _items?: QueryList<NgbAccordionItem>;
 	/**
 	 * If `true`, accordion will be animated.
 	 */
@@ -372,7 +372,7 @@ export class NgbAccordionDirective {
 	 * @param itemId The id of the item to expand.
 	 */
 	expand(itemId: string) {
-		const item = this._getItem(itemId)?.expand();
+		this._getItem(itemId)?.expand();
 	}
 
 	/**
@@ -381,14 +381,16 @@ export class NgbAccordionDirective {
 	 * If `closeOthers` is `true` and all items are closed, it will open the first one. Otherwise, it will keep the opened one.
 	 */
 	expandAll() {
-		if (this.closeOthers) {
-			// we check if there is an item open and if it is not we can expand the first item
-			// (otherwise we toggle nothing)
-			if (!this._items.find((item) => !item.collapsed)) {
-				this._items.first.expand();
+		if (this._items) {
+			if (this.closeOthers) {
+				// we check if there is an item open and if it is not we can expand the first item
+				// (otherwise we toggle nothing)
+				if (!this._items.find((item) => !item.collapsed)) {
+					this._items.first.expand();
+				}
+			} else {
+				this._items.forEach((item) => item.expand());
 			}
-		} else {
-			this._items.forEach((item) => item.expand());
 		}
 	}
 
@@ -407,7 +409,7 @@ export class NgbAccordionDirective {
 	 * Collapses all items.
 	 */
 	collapseAll() {
-		this._items.forEach((item) => item.collapse());
+		this._items?.forEach((item) => item.collapse());
 	}
 
 	/**
@@ -417,7 +419,7 @@ export class NgbAccordionDirective {
 	 *
 	 * @param itemId The id of the item to check.
 	 */
-	isExpanded(itemId: string): boolean {
+	isExpanded(itemId: string) {
 		const item = this._getItem(itemId);
 		return item ? !item.collapsed : false;
 	}
@@ -449,7 +451,7 @@ export class NgbAccordionDirective {
 		return true;
 	}
 
-	private _getItem(itemId: string) {
-		return this._items.find((item) => item.id === itemId);
+	private _getItem(itemId: string): NgbAccordionItem | undefined {
+		return this._items?.find((item) => item.id === itemId);
 	}
 }
