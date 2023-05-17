@@ -638,6 +638,19 @@ describe('ngb-accordion directive', () => {
 			return { fixture, accordionDirective, nativeElement };
 		}
 
+		it(`ensure methods don't fail when called before view init`, inject(
+			[NgbAccordionConfig],
+			(config: NgbAccordionConfig) => {
+				const accordion = new NgbAccordionDirective(config);
+				accordion.toggle('one');
+				accordion.collapse('one');
+				accordion.expand('one');
+				accordion.expandAll();
+				accordion.collapseAll();
+				accordion.isExpanded('one');
+			},
+		));
+
 		it('should check if a panel with a given id is expanded', () => {
 			const html = `
 				<div ngbAccordion>
