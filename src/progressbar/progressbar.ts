@@ -98,7 +98,7 @@ export class NgbProgressbar {
 	 *
 	 * Should be in the `[0, max]` range.
 	 */
-	@Input() value = 0;
+	@Input({ required: true }) value = 0;
 
 	/**
 	 * The height of the progress bar.

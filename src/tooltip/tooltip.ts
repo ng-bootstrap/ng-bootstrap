@@ -206,7 +206,7 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 	 *
 	 * If the content if falsy, the tooltip won't open.
 	 */
-	@Input()
+	@Input({ required: true })
 	set ngbTooltip(value: string | TemplateRef<any> | null | undefined) {
 		this._ngbTooltip = value;
 		if (!value && this._windowRef) {

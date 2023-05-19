@@ -104,7 +104,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 	 *
 	 * If the title and the content are falsy, the popover won't open.
 	 */
-	@Input() ngbPopover: string | TemplateRef<any> | null | undefined;
+	@Input({ required: true }) ngbPopover: string | TemplateRef<any> | null | undefined;
 
 	/**
 	 * The title of the popover.
