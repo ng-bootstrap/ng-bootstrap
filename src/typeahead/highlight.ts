@@ -36,13 +36,13 @@ export class NgbHighlight implements OnChanges {
 	 * If the `term` is found inside this text, it will be highlighted.
 	 * If the `term` contains array then all the items from it will be highlighted inside the text.
 	 */
-	@Input() result?: string | null;
+	@Input({ required: true }) result?: string | null;
 
 	/**
 	 * The term or array of terms to be highlighted.
 	 * Since version `v4.2.0` term could be a `string[]`
 	 */
-	@Input() term: string | readonly string[];
+	@Input({ required: true }) term: string | readonly string[];
 
 	/**
 	 * Boolean option to determine if the highlighting should be sensitive to accents or not.

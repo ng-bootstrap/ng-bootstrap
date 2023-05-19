@@ -312,7 +312,7 @@ export class NgbPagination implements OnChanges {
 	 *  `collectionSize` and `pageSize`. Ex. if you have 100 items in your collection and displaying 20 items per page,
 	 *  you'll end up with 5 pages.
 	 */
-	@Input() collectionSize: number;
+	@Input({ required: true }) collectionSize: number;
 
 	/**
 	 *  The maximum number of pages to display.
@@ -324,7 +324,7 @@ export class NgbPagination implements OnChanges {
 	 *
 	 *  Page numbers start with `1`.
 	 */
-	@Input() page = 1;
+	@Input({ required: true }) page = 1;
 
 	/**
 	 *  The number of items per page.
