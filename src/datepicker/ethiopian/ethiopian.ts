@@ -2,6 +2,13 @@ import { NgbDate } from '../ngb-date';
 
 const JD_EPOCH = 1724220.5;
 const DAYSPERMONTH = [30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 5];
+
+/**
+ * Determine whether this date is in a leap year.
+ * * `year` is the year to examine
+ * returns boolean - true if this is a leap year, false if not
+ * */
+
 export function isEthiopianLeapYear(year: number): boolean {
 	if (year != null) {
 		return year % 4 == 3 || year % 4 == -1;
@@ -9,11 +16,24 @@ export function isEthiopianLeapYear(year: number): boolean {
 	return false;
 }
 
+/**
+ * Sets the Ethiopian year.
+ * * `date` is Ethiopian date
+ * * `yearValue` incremented year
+ * returns NgbDate - ethiopian date
+ * */
+
 export function setEthiopianYear(date: NgbDate, yearValue: number): NgbDate {
 	date.year = +yearValue;
 	return date;
 }
 
+/**
+ * Sets the Ethiopian month.
+ * * `date` is Ethiopian date
+ * * `val` incremented month
+ * returns NgbDate - Ethiopian date
+ * */
 export function setEthiopianMonth(date: NgbDate, val: number): NgbDate {
 	val = +val;
 	date.year = date.year + Math.floor((val - 1) / 13);
@@ -21,6 +41,12 @@ export function setEthiopianMonth(date: NgbDate, val: number): NgbDate {
 	return date;
 }
 
+/**
+ * Sets the Ethiopian day.
+ * * `date` is Ethiopian date
+ * * `day` incremented day
+ * returns NgbDate - Ethiopian date
+ * */
 export function setEthiopianDay(date: NgbDate, day: number): NgbDate {
 	let mDays = getDaysPerMonth(date.month, date.year);
 	if (day <= 0) {
