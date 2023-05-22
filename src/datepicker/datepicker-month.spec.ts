@@ -360,6 +360,26 @@ describe('ngb-datepicker-month', () => {
 		expect(fixture.nativeElement.querySelectorAll('.customClass')[0].innerText.trim()).toEqual('Custom Content');
 	});
 
+	it('should prefer custom month template passed via the input', () => {
+		const fixture = createGenericTestComponent(
+			`
+			<ng-template #cc><div class="customClass">Custom Content</div></ng-template>
+      <ngb-datepicker #dp
+                      [weekdays]="weekdays"
+                      [showWeekNumbers]="showWeekNumbers"
+                      [outsideDays]="outsideDays"
+                      [contentTemplate]='cc'
+                      (select)="onClick($event)">
+        <ng-template ngbDatepickerContent><div class="customClass">Custom Inline Content</div></ng-template>
+      </ngb-datepicker>
+    `,
+			TestComponent,
+		) as ComponentFixture<TestComponent>;
+		expectDates(fixture.nativeElement, []);
+		expect(fixture.nativeElement.querySelectorAll('.customClass').length).toEqual(1);
+		expect(fixture.nativeElement.querySelectorAll('.customClass')[0].innerText.trim()).toEqual('Custom Content');
+	});
+
 	it('should handle keyboard events with custom month template', () => {
 		const fixture = createGenericTestComponent(
 			`

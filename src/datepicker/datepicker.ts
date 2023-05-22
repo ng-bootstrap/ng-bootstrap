@@ -10,7 +10,9 @@ import {
 	ElementRef,
 	EventEmitter,
 	forwardRef,
+	inject,
 	Inject,
+	Injector,
 	Input,
 	NgZone,
 	OnChanges,
@@ -39,6 +41,7 @@ import { isChangedDate, isChangedMonth } from './datepicker-tools';
 import { hasClassName } from '../util/util';
 import { NgbDatepickerDayView } from './datepicker-day-view';
 import { NgbDatepickerNavigation } from './datepicker-navigation';
+import { ContentTemplateContext } from './datepicker-content-template-context';
 
 /**
  * An event emitted right before the navigation happens and the month displayed by the datepicker changes.
@@ -256,7 +259,11 @@ export class NgbDatepickerMonth {
 		</div>
 
 		<div class="ngb-dp-content" [class.ngb-dp-months]="!contentTemplate" #content>
-			<ng-template [ngTemplateOutlet]="contentTemplate?.templateRef || defaultContentTemplate"></ng-template>
+			<ng-template
+				[ngTemplateOutlet]="contentTemplate || contentTemplateFromContent?.templateRef || defaultContentTemplate"
+				[ngTemplateOutletContext]="{ $implicit: this }"
+				[ngTemplateOutletInjector]="injector"
+			></ng-template>
 		</div>
 
 		<ng-template [ngTemplateOutlet]="footerTemplate"></ng-template>
@@ -276,11 +283,22 @@ export class NgbDatepicker implements AfterViewInit, OnDestroy, OnChanges, OnIni
 
 	@ViewChild('defaultDayTemplate', { static: true }) private _defaultDayTemplate: TemplateRef<DayTemplateContext>;
 	@ViewChild('content', { static: true }) private _contentEl: ElementRef<HTMLElement>;
-	@ContentChild(NgbDatepickerContent, { static: true }) contentTemplate?: NgbDatepickerContent;
+
+	protected injector = inject(Injector);
 
 	private _controlValue: NgbDate | null = null;
 	private _destroyed$ = new Subject<void>();
 	private _publicState: NgbDatepickerState = <any>{};
+
+	/**
+	 * The reference to a custom content template.
+	 *
+	 * Allows to completely override the way datepicker displays months.
+	 *
+	 * See [`NgbDatepickerContent`](#/components/datepicker/api#NgbDatepickerContent) for more details.
+	 */
+	@Input() contentTemplate: TemplateRef<ContentTemplateContext>;
+	@ContentChild(NgbDatepickerContent, { static: true }) contentTemplateFromContent?: NgbDatepickerContent;
 
 	/**
 	 * The reference to a custom template for the day.
@@ -419,6 +437,7 @@ export class NgbDatepicker implements AfterViewInit, OnDestroy, OnChanges, OnIni
 		private _ngZone: NgZone,
 	) {
 		[
+			'contentTemplate',
 			'dayTemplate',
 			'dayTemplateData',
 			'displayMonths',
