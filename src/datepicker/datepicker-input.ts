@@ -43,6 +43,7 @@ import { NgbDatepickerConfig } from './datepicker-config';
 import { isString } from '../util/util';
 import { Subject } from 'rxjs';
 import { addPopperOffset } from '../util/positioning-util';
+import { ContentTemplateContext } from './datepicker-content-template-context';
 
 /**
  * A directive that allows to stick a datepicker popup to an input field.
@@ -93,6 +94,15 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	 * @since 3.0.0
 	 */
 	@Input() autoClose: boolean | 'inside' | 'outside';
+
+	/**
+	 * The reference to a custom content template.
+	 *
+	 * Allows to completely override the way datepicker.
+	 *
+	 * See [`NgbDatepickerContent`](#/components/datepicker/api#NgbDatepickerContent) for more details.
+	 */
+	@Input() contentTemplate: TemplateRef<ContentTemplateContext>;
 
 	/**
 	 * An optional class applied to the datepicker popup element.
@@ -530,6 +540,7 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 
 	private _applyDatepickerInputs(datepickerComponentRef: ComponentRef<NgbDatepicker>): void {
 		[
+			'contentTemplate',
 			'dayTemplate',
 			'dayTemplateData',
 			'displayMonths',
