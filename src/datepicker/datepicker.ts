@@ -411,7 +411,7 @@ export class NgbDatepicker implements AfterViewInit, OnDestroy, OnChanges, OnIni
 	constructor(
 		private _service: NgbDatepickerService,
 		private _calendar: NgbCalendar,
-		public i18n: NgbDatepickerI18n,
+		private _i18n: NgbDatepickerI18n,
 		config: NgbDatepickerConfig,
 		cd: ChangeDetectorRef,
 		private _elementRef: ElementRef<HTMLElement>,
@@ -506,6 +506,13 @@ export class NgbDatepicker implements AfterViewInit, OnDestroy, OnChanges, OnIni
 	 */
 	get calendar(): NgbCalendar {
 		return this._calendar;
+	}
+
+	/**
+	 * Returns the i18n service used in the specific datepicker instance.
+	 */
+	get i18n(): NgbDatepickerI18n {
+		return this._i18n;
 	}
 
 	/**

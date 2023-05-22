@@ -128,6 +128,12 @@ describe('ngb-datepicker integration', () => {
 			const weekLabel = weekLabelElement.innerText.trim();
 			expect(weekLabel).toEqual(ALPHABET.substring(0, 2));
 		});
+
+		it('should allow accessing i18n via a getter ', () => {
+			const dp = fixture.debugElement.query(By.directive(NgbDatepicker)).injector.get(NgbDatepicker);
+			expect(dp.i18n).toBeDefined();
+			expect(dp.i18n.getMonthFullName(1)).toEqual('A');
+		});
 	});
 
 	describe('i18n-month-label', () => {
