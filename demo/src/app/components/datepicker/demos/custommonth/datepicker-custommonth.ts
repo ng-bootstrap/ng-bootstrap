@@ -1,5 +1,5 @@
-import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
-import { NgbDatepicker, NgbDatepickerI18n, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import { Component, ViewEncapsulation } from '@angular/core';
+import { NgbDatepicker, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgFor } from '@angular/common';
 
 @Component({
@@ -10,10 +10,10 @@ import { NgFor } from '@angular/common';
 	encapsulation: ViewEncapsulation.None,
 	styles: [
 		`
-			.custom-datepicker .ngb-dp-header {
+			.ngb-dp-header {
 				padding: 0;
 			}
-			.custom-datepicker .ngb-dp-content {
+			.custom-month-grid {
 				display: grid;
 				grid-template-columns: auto auto;
 				grid-column-gap: 1rem;
@@ -23,17 +23,13 @@ import { NgFor } from '@angular/common';
 	],
 })
 export class NgbdDatepickerCustommonth {
-	@ViewChild(NgbDatepicker, { static: true }) datepicker: NgbDatepicker;
-
-	constructor(public i18n: NgbDatepickerI18n) {}
-
-	navigate(number: number) {
-		const { state, calendar } = this.datepicker;
-		this.datepicker.navigateTo(calendar.getNext(state.firstDate, 'm', number));
+	navigate(datepicker: NgbDatepicker, number: number) {
+		const { state, calendar } = datepicker;
+		datepicker.navigateTo(calendar.getNext(state.firstDate, 'm', number));
 	}
 
-	today() {
-		const { calendar } = this.datepicker;
-		this.datepicker.navigateTo(calendar.getToday());
+	today(datepicker: NgbDatepicker) {
+		const { calendar } = datepicker;
+		datepicker.navigateTo(calendar.getToday());
 	}
 }

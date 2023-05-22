@@ -1,25 +1,53 @@
 <p>This datepicker uses a custom month layout.</p>
 
-<div class="d-inline-block">
-	<div class="btn-group d-flex justify-content-end mb-2" role="group">
-		<button type="button" class="btn btn-sm btn-outline-primary" (click)="navigate(-1);">Prev</button>
-		<button type="button" class="btn btn-sm btn-outline-primary" (click)="today()">Today</button>
-		<button type="button" class="btn btn-sm btn-outline-primary" (click)="navigate(1)">Next</button>
-	</div>
+<h4>Inline</h4>
 
+<ng-template #c let-dp>
+	<div class="p-2">
+		<div class="btn-group d-flex justify-content-end mb-2" role="group">
+			<button type="button" class="btn btn-sm btn-outline-primary" (click)="navigate(dp, -1);">Prev</button>
+			<button type="button" class="btn btn-sm btn-outline-primary" (click)="today(dp)">Today</button>
+			<button type="button" class="btn btn-sm btn-outline-primary" (click)="navigate(dp, 1)">Next</button>
+		</div>
+		<div class="custom-month-grid">
+			<div *ngFor="let month of dp.state.months">
+				<div class="text-primary p-1 fw-bold">{{ dp.i18n.getMonthShortName(month.month) }} {{ month.year }}</div>
+				<ngb-datepicker-month class="border rounded" [month]="month"></ngb-datepicker-month>
+			</div>
+		</div>
+	</div>
+</ng-template>
+
+<div class="d-inline-block mb-3">
 	<ngb-datepicker
-		class="custom-datepicker px-3 pt-1 pb-3"
-		#dp
+		class="px-3 pt-1 pb-3"
 		[displayMonths]="4"
+		[contentTemplate]="c"
 		outsideDays="hidden"
 		[weekdays]="false"
 		navigation="none"
 	>
-		<ng-template ngbDatepickerContent>
-			<div *ngFor="let month of dp.state.months">
-				<div class="text-primary p-1 fw-bold">{{ i18n.getMonthShortName(month.month) }} {{ month.year }}</div>
-				<ngb-datepicker-month class="border rounded" [month]="month"></ngb-datepicker-month>
-			</div>
-		</ng-template>
 	</ngb-datepicker>
 </div>
+
+<h4>In a popup</h4>
+
+<form class="row row-cols-sm-auto">
+	<div class="col-12">
+		<div class="input-group">
+			<input
+				class="form-control"
+				placeholder="yyyy-mm-dd"
+				name="dp"
+				ngbDatepicker
+				[displayMonths]="4"
+				outsideDays="hidden"
+				navigation="none"
+				[weekdays]="false"
+				#d="ngbDatepicker"
+				[contentTemplate]="c"
+			/>
+			<button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
+		</div>
+	</div>
+</form>
