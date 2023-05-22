@@ -1,12 +1,16 @@
 import {
+	AfterContentChecked,
 	AfterContentInit,
+	ApplicationRef,
 	ChangeDetectorRef,
-	Component,
 	ContentChild,
 	ContentChildren,
 	Directive,
+	ElementRef,
+	EmbeddedViewRef,
 	EventEmitter,
 	forwardRef,
+	inject,
 	Inject,
 	Input,
 	OnDestroy,
@@ -16,7 +20,6 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { NgbAccordionConfig } from './accordion-config';
-import { NgTemplateOutlet } from '@angular/common';
 import { NgbCollapse } from '../collapse/collapse';
 import { isString } from '../util/util';
 
@@ -30,20 +33,51 @@ let nextId = 0;
  *
  * @since 14.1.0
  */
-@Component({
+@Directive({
 	selector: '[ngbAccordionBody]',
 	standalone: true,
-	imports: [NgTemplateOutlet],
 	host: { '[class.accordion-body]': 'true' },
-	template: `<ng-template [ngTemplateOutlet]="template()"></ng-template>`,
 })
-export class NgbAccordionBody {
-	constructor(@Inject(forwardRef(() => NgbAccordionItem)) private _item: NgbAccordionItem) {}
+export class NgbAccordionBody implements AfterContentChecked, OnDestroy {
+	private _appRef = inject(ApplicationRef);
+	private _element = inject(ElementRef<HTMLElement>).nativeElement;
+	private _item = inject(NgbAccordionItem);
+
+	private _viewRef: EmbeddedViewRef<any> | null = null;
 
 	@ContentChild(TemplateRef, { static: true }) private _bodyTpl: TemplateRef<any>;
 
-	template() {
-		return this._item.destroyOnHide === false || this._item.animatingBodyCollapse ? this._bodyTpl : null;
+	ngAfterContentChecked(): void {
+		if (this._bodyTpl) {
+			if (this._item.animatingBodyCollapse || !this._item.destroyOnHide) {
+				this._createViewIfNotExists();
+			} else {
+				this._destroyViewIfExists();
+			}
+		}
+	}
+
+	ngOnDestroy(): void {
+		this._destroyViewIfExists();
+	}
+
+	private _destroyViewIfExists(): void {
+		if (this._viewRef) {
+			this._appRef.detachView(this._viewRef);
+			this._viewRef.destroy();
+			this._viewRef = null;
+		}
+	}
+
+	private _createViewIfNotExists(): void {
+		if (!this._viewRef) {
+			this._viewRef = this._bodyTpl.createEmbeddedView(null);
+			this._viewRef.detectChanges();
+			this._appRef.attachView(this._viewRef);
+			for (const node of this._viewRef.rootNodes) {
+				this._element.appendChild(node);
+			}
+		}
 	}
 }
 
@@ -311,9 +345,9 @@ export class NgbAccordionItem implements AfterContentInit, OnDestroy {
  * @since 14.1.0
  */
 @Directive({
-	exportAs: 'ngbAccordion',
-	standalone: true,
 	selector: '[ngbAccordion]',
+	standalone: true,
+	exportAs: 'ngbAccordion',
 	host: { '[class.accordion]': 'true' },
 })
 export class NgbAccordionDirective {
