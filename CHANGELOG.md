@@ -1,3 +1,22 @@
+# [14.2.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/14.1.1...14.2.0) (2023-05-23)
+
+
+### Bug Fixes
+
+* **accordion:** don't fail when calling `toggle()` too early ([#4506](https://github.com/ng-bootstrap/ng-bootstrap/issues/4506)) ([08585a3](https://github.com/ng-bootstrap/ng-bootstrap/commit/08585a3e3c5352372a9564837d3ee4da37fc199d)), closes [#4505](https://github.com/ng-bootstrap/ng-bootstrap/issues/4505)
+* **accordion:** use a directive for `NgbAccordionBody` ([#4507](https://github.com/ng-bootstrap/ng-bootstrap/issues/4507)) ([aedbab9](https://github.com/ng-bootstrap/ng-bootstrap/commit/aedbab9f3edbf271f62ea9a012fb633b262c2ffe)), closes [#4502](https://github.com/ng-bootstrap/ng-bootstrap/issues/4502)
+
+
+### Features
+
+* **datepicker:** add 'contentTemplate' to input datepicker ([2bfc212](https://github.com/ng-bootstrap/ng-bootstrap/commit/2bfc212e2ebdcce9541a391380e27716c0a372f8)), closes [#4497](https://github.com/ng-bootstrap/ng-bootstrap/issues/4497)
+* **datepicker:** allow accessing i18n from the instance ([0864688](https://github.com/ng-bootstrap/ng-bootstrap/commit/0864688a80235276ccd322a58d1aff53f5607331))
+* **dropdown:** replace `NgbNavbar` usage by DOM call to `closest()` ([#4471](https://github.com/ng-bootstrap/ng-bootstrap/issues/4471)) ([c524384](https://github.com/ng-bootstrap/ng-bootstrap/commit/c52438414368d7806a4b327975ed683d8ea3625e)), closes [#4462](https://github.com/ng-bootstrap/ng-bootstrap/issues/4462)
+* **modal:** allow update options of opened modal ([e945442](https://github.com/ng-bootstrap/ng-bootstrap/commit/e9454425d5f388ae4eb18dc16065aa60d69baa38)), closes [#4281](https://github.com/ng-bootstrap/ng-bootstrap/issues/4281) [#4396](https://github.com/ng-bootstrap/ng-bootstrap/issues/4396) [#4446](https://github.com/ng-bootstrap/ng-bootstrap/issues/4446)
+* **typeahead:** add `selectOnExact` option ([4eb6cc7](https://github.com/ng-bootstrap/ng-bootstrap/commit/4eb6cc7ac69618d0ccecf3568d17c203b5ce2a71)), closes [#4371](https://github.com/ng-bootstrap/ng-bootstrap/issues/4371)
+
+
+
 ## [14.1.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/14.1.0...14.1.1) (2023-05-02)
 
 
