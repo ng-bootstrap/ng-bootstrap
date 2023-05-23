@@ -295,7 +295,10 @@ export class NgbDatepicker implements AfterViewInit, OnDestroy, OnChanges, OnIni
 	 *
 	 * Allows to completely override the way datepicker displays months.
 	 *
-	 * See [`NgbDatepickerContent`](#/components/datepicker/api#NgbDatepickerContent) for more details.
+	 * See [`NgbDatepickerContent`](#/components/datepicker/api#NgbDatepickerContent) and
+	 * [`ContentTemplateContext`](#/components/datepicker/api#ContentTemplateContext) for more details.
+	 *
+	 * @since 14.2.0
 	 */
 	@Input() contentTemplate: TemplateRef<ContentTemplateContext>;
 	@ContentChild(NgbDatepickerContent, { static: true }) contentTemplateFromContent?: NgbDatepickerContent;
@@ -529,6 +532,8 @@ export class NgbDatepicker implements AfterViewInit, OnDestroy, OnChanges, OnIni
 
 	/**
 	 * Returns the i18n service used in the specific datepicker instance.
+	 *
+	 * @since 14.2.0
 	 */
 	get i18n(): NgbDatepickerI18n {
 		return this._i18n;

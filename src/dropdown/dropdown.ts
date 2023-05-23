@@ -31,7 +31,7 @@ import { NgbDropdownConfig } from './dropdown-config';
 import { FOCUSABLE_ELEMENTS_SELECTOR } from '../util/focus-trap';
 
 /**
- * @deprecated this directive isn't useful anymore. You can remove it from your imports
+ * @deprecated 14.2.0 this directive isn't useful anymore. You can remove it from your imports
  */
 @Directive({ selector: '.navbar', standalone: true })
 export class NgbNavbar {}

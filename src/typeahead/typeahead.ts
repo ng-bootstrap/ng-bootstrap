@@ -114,13 +114,6 @@ export class NgbTypeahead implements ControlValueAccessor, OnInit, OnChanges, On
 	@Input() focusFirst: boolean;
 
 	/**
-	 * If `true`, automatically selects the item when it is the only one that exactly matches the user input
-	 *
-	 * @since 13.2.0
-	 */
-	@Input() selectOnExact: boolean;
-
-	/**
 	 * The function that converts an item from the result list to a `string` to display in the `<input>` field.
 	 *
 	 * It is called when the user selects something in the popup or the model value changes, so the input needs to
@@ -158,6 +151,13 @@ export class NgbTypeahead implements ControlValueAccessor, OnInit, OnChanges, On
 	 * Also see the [template for results demo](#/components/typeahead/examples#template) for more details.
 	 */
 	@Input() resultTemplate: TemplateRef<ResultTemplateContext>;
+
+	/**
+	 * If `true`, automatically selects the item when it is the only one that exactly matches the user input
+	 *
+	 * @since 14.2.0
+	 */
+	@Input() selectOnExact: boolean;
 
 	/**
 	 * If `true`, will show the hint in the `<input>` when an item in the result list matches.

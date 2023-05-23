@@ -101,6 +101,8 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	 * Allows to completely override the way datepicker.
 	 *
 	 * See [`NgbDatepickerContent`](#/components/datepicker/api#NgbDatepickerContent) for more details.
+	 *
+	 * @since 14.2.0
 	 */
 	@Input() contentTemplate: TemplateRef<ContentTemplateContext>;
 

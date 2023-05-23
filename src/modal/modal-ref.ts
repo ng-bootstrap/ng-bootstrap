@@ -19,8 +19,9 @@ import { isPromise } from '../util/util';
  */
 export class NgbActiveModal {
 	/**
-	 * Update options of an opened modal with `options` value.
+	 * Updates options of an opened modal.
 	 *
+	 * @since 14.2.0
 	 */
 	update(options: NgbModalUpdatableOptions): void {}
 	/**
@@ -80,8 +81,9 @@ export class NgbModalRef {
 	}
 
 	/**
-	 * Update options of an opened modal with `options` value.
+	 * Updates options of an opened modal.
 	 *
+	 * @since 14.2.0
 	 */
 	update(options: NgbModalUpdatableOptions): void {
 		this._applyWindowOptions(this._windowCmptRef.instance, options);

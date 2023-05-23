@@ -122,7 +122,9 @@ export interface NgbModalOptions {
 }
 
 /**
- * Options available on a opened modal windows with `NgbModalRef.update()` and `NgbActiveModal.update()` methods.
+ * Options that can be changed on an opened modal with `NgbModalRef.update()` and `NgbActiveModal.update()` methods.
+ *
+ * @since 14.2.0
  */
 export type NgbModalUpdatableOptions = Pick<
 	NgbModalOptions,
