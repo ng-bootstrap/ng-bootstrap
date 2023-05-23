@@ -21,12 +21,6 @@ const DEMOS = {
 		code: require('!!raw-loader!./demos/basic/typeahead-basic').default,
 		markup: require('!!raw-loader!./demos/basic/typeahead-basic.html').default,
 	},
-	'select-on-exact': {
-		title: 'Select on exact',
-		type: NgbdTypeaheadSelectOnExact,
-		code: require('!!raw-loader!./demos/select-on-exact/typeahead-select-on-exact').default,
-		markup: require('!!raw-loader!./demos/select-on-exact/typeahead-select-on-exact.html').default,
-	},
 	focus: {
 		title: 'Open on focus',
 		type: NgbdTypeaheadFocus,
@@ -38,6 +32,12 @@ const DEMOS = {
 		type: NgbdTypeaheadFormat,
 		code: require('!!raw-loader!./demos/format/typeahead-format').default,
 		markup: require('!!raw-loader!./demos/format/typeahead-format.html').default,
+	},
+	'select-on-exact': {
+		title: 'Select on exact',
+		type: NgbdTypeaheadSelectOnExact,
+		code: require('!!raw-loader!./demos/select-on-exact/typeahead-select-on-exact').default,
+		markup: require('!!raw-loader!./demos/select-on-exact/typeahead-select-on-exact.html').default,
 	},
 	http: {
 		title: 'Wikipedia search',
