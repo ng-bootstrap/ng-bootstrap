@@ -1,7 +1,11 @@
 [
   {
-    "text": "v14.0.0 (Latest)",
+    "text": "v15.x (Latest)",
     "url": "/"
+  },
+  {
+    "text": "v14.x",
+    "url": "/releases/14.x/"
   },
   {
 	"text": "v13.x",
