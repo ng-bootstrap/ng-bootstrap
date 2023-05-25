@@ -13,7 +13,7 @@ import { NgbDatepickerNavigationSelect } from './datepicker-navigation-select';
 	encapsulation: ViewEncapsulation.None,
 	styleUrls: ['./datepicker-navigation.scss'],
 	template: `
-		<div class="ngb-dp-arrow">
+		<div class="ngb-dp-arrow ngb-dp-arrow-prev">
 			<button
 				type="button"
 				class="btn btn-link ngb-dp-arrow-btn"
@@ -45,7 +45,7 @@ import { NgbDatepickerNavigationSelect } from './datepicker-navigation-select';
 			</div>
 			<div class="ngb-dp-arrow" *ngIf="i !== months.length - 1"></div>
 		</ng-template>
-		<div class="ngb-dp-arrow right">
+		<div class="ngb-dp-arrow ngb-dp-arrow-next">
 			<button
 				type="button"
 				class="btn btn-link ngb-dp-arrow-btn"
