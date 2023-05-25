@@ -1,3 +1,39 @@
+# [15.0.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/14.2.0...15.0.0) (2023-05-25)
+
+This release bumps minimum supported version of Angular to `16.0.0`. 
+
+No new features are introduced since `14.x`, apart from some inputs becoming [required](https://github.com/ng-bootstrap/ng-bootstrap/commit/7f86a74658b5a33d2e41abaf0e32362aa44c195f).
+
+### Bug Fixes
+
+* **datepicker:** remove navigation arrow `.right` class ([#3922](https://github.com/ng-bootstrap/ng-bootstrap/issues/3922)) ([3735699](https://github.com/ng-bootstrap/ng-bootstrap/commit/3735699f4d2c11b86cb091d4acf23cc0d1dbc453))
+
+
+### Features
+
+* make some inputs required ([7f86a74](https://github.com/ng-bootstrap/ng-bootstrap/commit/7f86a74658b5a33d2e41abaf0e32362aa44c195f))
+* upgrade to Angular 16 ([2928430](https://github.com/ng-bootstrap/ng-bootstrap/commit/292843044888b1631fe38618551d53db5d8022a2))
+
+
+### BREAKING CHANGES
+
+* **datepicker:** Might be breaking, if datepicker arrows are customized.
+Datepicker navigation arrow markup.
+
+BEFORE:
+```html
+<div class="ngb-dp-arrow">       <!-- left -->
+<div class="ngb-dp-arrow right"> <!-- right -->
+```
+
+AFTER:
+```html
+<div class="ngb-dp-arrow ngb-dp-arrow-prev"> <!-- prev -->
+<div class="ngb-dp-arrow ngb-dp-arrow-next"> <!-- next -->
+```
+
+
+
 # [14.2.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/14.1.1...14.2.0) (2023-05-23)
 
 
