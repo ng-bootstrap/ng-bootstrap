@@ -21,6 +21,7 @@ import {
 	isPropertyDeclaration,
 	isPropertySignature,
 	isSetAccessorDeclaration,
+	isStringLiteral,
 	MethodDeclaration,
 	MethodSignature,
 	ModifierFlags,
@@ -351,9 +352,30 @@ class APIDocVisitor {
 
 	visitInputOrOutputDeclaration(declaration: NamedDeclaration, decorator: Decorator) {
 		const args = isCallExpression(decorator.expression) ? decorator.expression.arguments : ([] as Expression[]);
+
+		let name = declaration.name.getText();
+		if (args.length) {
+			if (isStringLiteral(args[0])) {
+				name = args[0].text;
+			} else if (isObjectLiteralExpression(args[0])) {
+				const aliasProp = args[0].properties.find((prop) => prop.name.getText() === 'alias');
+				if (aliasProp && isPropertyAssignment(aliasProp)) {
+					if (isStringLiteral(aliasProp.initializer)) {
+						name = aliasProp.initializer.text;
+					} else {
+						throw new Error('Expected alias value to be string literal');
+					}
+				} else {
+					// no alias found, the name is the declaration name
+				}
+			} else {
+				throw new Error('unexpected expression in decorator argument');
+			}
+		}
+
 		return {
 			...this.visitNamedDeclaration(declaration),
-			name: args.length ? unquoteName(args[0].getText()) : declaration.name.getText(),
+			name,
 		};
 	}
 
