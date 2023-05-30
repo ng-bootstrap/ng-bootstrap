@@ -38,7 +38,7 @@ describe('APIDocVisitor', () => {
 	it('should extract inputs info', () => {
 		const inputDocs = apiDoc(['./misc/api-doc-test-cases/directives-with-inputs.ts']).Foo.inputs;
 
-		expect(inputDocs.length).toBe(3);
+		expect(inputDocs.length).toBe(6);
 
 		expect(inputDocs[0].name).toBe('bar');
 		expect(inputDocs[0].defaultValue).toBeUndefined();
@@ -54,6 +54,15 @@ describe('APIDocVisitor', () => {
 		expect(inputDocs[2].defaultValue).toBe('5');
 		expect(inputDocs[2].type).toBe('number');
 		expect(inputDocs[2].description).toBe('<p>Has default value</p>');
+
+		expect(inputDocs[3].name).toBe('ngbAliased1');
+		expect(inputDocs[3].type).toBe('string');
+
+		expect(inputDocs[4].name).toBe('ngbAliased2');
+		expect(inputDocs[4].type).toBe('string');
+
+		expect(inputDocs[5].name).toBe('required');
+		expect(inputDocs[5].type).toBe('string');
 	});
 
 	it('should extract input default value', () => {
