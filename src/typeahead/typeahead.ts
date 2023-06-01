@@ -132,7 +132,7 @@ export class NgbTypeahead implements ControlValueAccessor, OnInit, OnChanges, On
 	 *
 	 * Note that the `this` argument is `undefined` so you need to explicitly bind it to a desired "this" target.
 	 */
-	@Input({ required: true }) ngbTypeahead: OperatorFunction<string, readonly any[]> | null | undefined;
+	@Input() ngbTypeahead: OperatorFunction<string, readonly any[]> | null | undefined;
 
 	/**
 	 * The function that converts an item from the result list to a `string` to display in the popup.

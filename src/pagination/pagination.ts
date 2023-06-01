@@ -324,7 +324,7 @@ export class NgbPagination implements OnChanges {
 	 *
 	 *  Page numbers start with `1`.
 	 */
-	@Input({ required: true }) page = 1;
+	@Input() page = 1;
 
 	/**
 	 *  The number of items per page.
