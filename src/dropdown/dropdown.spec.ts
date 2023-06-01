@@ -518,6 +518,35 @@ describe('ngb-dropdown-toggle', () => {
 			);
 		});
 
+		it(`shouldn't position the menu even if ngIf is applied`, () => {
+			const html = `
+      <nav class="navbar">
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav" *ngIf="true">
+            <li class="nav-item" ngbDropdown placement="bottom-right">
+              <a class="nav-link" ngbDropdownToggle role="button">Open</a>
+              <div ngbDropdownMenu>
+                <div class="dropdown-item">Item</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    `;
+
+			const fixture = createTestComponent(html);
+			const compiled = fixture.nativeElement;
+			const dropdown = fixture.debugElement.query(By.directive(NgbDropdown)).injector.get(NgbDropdown);
+			dropdown.open();
+			fixture.detectChanges();
+			const dropdownEl: HTMLElement = compiled.querySelector('[ngbdropdownmenu]');
+
+			expect(dropdownEl.getAttribute('style')).toBeNull(`The dropdown element shouldn't have calculated styles`);
+			expect(dropdownEl.getAttribute('data-popper-placement')).toBeNull(
+				`The dropdown element shouldn't have data-popper-placement set`,
+			);
+		});
+
 		it(`can override the defaut display value`, () => {
 			const html = `
       <nav class="navbar">
