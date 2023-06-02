@@ -1,8 +1,13 @@
 import './polyfills';
+import {provideHttpClient, withNoXsrfProtection} from '@angular/common/http';
 import {bootstrapApplication} from '@angular/platform-browser';
 import {<%=className%>} from '<%=tsImportName%>';
 
-bootstrapApplication(<%=className%>)
+bootstrapApplication(<%=className%>, {
+  providers: [
+    provideHttpClient(withNoXsrfProtection()),
+  ],
+})
 .then(ref => {
   // Ensure Angular destroys itself on hot reloads.
   if (window['ngRef']) {
