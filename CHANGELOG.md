@@ -1,3 +1,15 @@
+## [15.0.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/15.0.0...15.0.1) (2023-06-06)
+
+
+### Bug Fixes
+
+* **dropdown:** set `display` when inside a navbar and guarded by `ngIf` ([#4521](https://github.com/ng-bootstrap/ng-bootstrap/issues/4521)) ([05eafb2](https://github.com/ng-bootstrap/ng-bootstrap/commit/05eafb24dc10e8188d0fa49151ca052acdf2d057)), closes [#4520](https://github.com/ng-bootstrap/ng-bootstrap/issues/4520)
+* revert some inputs to optional ([#4519](https://github.com/ng-bootstrap/ng-bootstrap/issues/4519)) ([decfe41](https://github.com/ng-bootstrap/ng-bootstrap/commit/decfe411a54054dd7d7545adb618561d8aa75d6c)), closes [#4516](https://github.com/ng-bootstrap/ng-bootstrap/issues/4516) [#4518](https://github.com/ng-bootstrap/ng-bootstrap/issues/4518)
+* **schematics:** don't use deprecated `--name` option ([be75dcc](https://github.com/ng-bootstrap/ng-bootstrap/commit/be75dccfe2a178df98bfef1d7c71337b93bf3f43))
+* **schematics:** support apps created with `--standalone` flag ([7f5f7b6](https://github.com/ng-bootstrap/ng-bootstrap/commit/7f5f7b6c032f88ddefb32c77d85f0ad93ff4eb17)), closes [#4511](https://github.com/ng-bootstrap/ng-bootstrap/issues/4511)
+
+
+
 # [15.0.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/14.2.0...15.0.0) (2023-05-25)
 
 This release bumps minimum supported version of Angular to `16.0.0`. 
