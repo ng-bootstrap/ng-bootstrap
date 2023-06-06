@@ -140,7 +140,7 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 	/**
 	 * Default template context for `TemplateRef`, can be overridden with `open` method.
 	 */
-	@Input() tooltipContext: Object | null | undefined;
+	@Input() tooltipContext: any;
 
 	/**
 	 * The opening delay in ms. Works only for "non-manual" opening triggers defined by the `triggers` input.

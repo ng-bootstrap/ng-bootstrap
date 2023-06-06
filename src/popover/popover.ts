@@ -170,7 +170,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 	/**
 	 * Default template context for `TemplateRef`, can be overridden with `open` method.
 	 */
-	@Input() popoverContext: Object | null | undefined;
+	@Input() popoverContext: any;
 
 	/**
 	 * The opening delay in ms. Works only for "non-manual" opening triggers defined by the `triggers` input.
