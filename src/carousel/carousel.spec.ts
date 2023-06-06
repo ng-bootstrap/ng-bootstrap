@@ -23,7 +23,7 @@ const getArrowElements = (el: HTMLElement) =>
 function expectActiveSlides(nativeEl: HTMLDivElement, active: boolean[]) {
 	const slideElms = getSlideElements(nativeEl);
 	const indicatorElms = getIndicatorElements(nativeEl);
-	const carouselElm = nativeEl.querySelector('ngb-carousel');
+	const indicatorContainerElm = nativeEl.querySelector('.carousel-indicators');
 
 	expect(slideElms.length).toBe(active.length);
 	expect(indicatorElms.length).toBe(active.length);
@@ -33,7 +33,7 @@ function expectActiveSlides(nativeEl: HTMLDivElement, active: boolean[]) {
 			expect(slideElms[i]).toHaveCssClass('active');
 			expect(indicatorElms[i]).toHaveCssClass('active');
 			expect(indicatorElms[i].getAttribute('aria-selected')).toBe('true');
-			expect(carouselElm!.getAttribute('aria-activedescendant')).toBe(slideElms[i].id);
+			expect(indicatorContainerElm!.getAttribute('aria-activedescendant')).toBe(slideElms[i].id);
 		} else {
 			expect(slideElms[i]).not.toHaveCssClass('active');
 			expect(indicatorElms[i]).not.toHaveCssClass('active');
