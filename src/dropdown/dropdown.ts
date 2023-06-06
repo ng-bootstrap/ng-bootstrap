@@ -12,6 +12,7 @@ import {
 	NgZone,
 	OnChanges,
 	OnDestroy,
+	OnInit,
 	Output,
 	QueryList,
 	Renderer2,
@@ -162,7 +163,7 @@ export class NgbDropdownToggle extends NgbDropdownAnchor {
 	standalone: true,
 	host: { '[class.show]': 'isOpen()' },
 })
-export class NgbDropdown implements AfterContentInit, OnChanges, OnDestroy {
+export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestroy {
 	static ngAcceptInputType_autoClose: boolean | string;
 	static ngAcceptInputType_display: string;
 	private _destroyCloseHandlers$ = new Subject<void>();
@@ -258,7 +259,12 @@ export class NgbDropdown implements AfterContentInit, OnChanges, OnDestroy {
 		this.autoClose = config.autoClose;
 
 		this._positioning = ngbPositioning();
-		this.display = this._elementRef.nativeElement.closest('.navbar') ? 'static' : 'dynamic';
+	}
+
+	ngOnInit(): void {
+		if (!this.display) {
+			this.display = this._elementRef.nativeElement.closest('.navbar') ? 'static' : 'dynamic';
+		}
 	}
 
 	ngAfterContentInit() {
