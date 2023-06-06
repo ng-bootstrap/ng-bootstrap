@@ -12,6 +12,6 @@ export default function ngAddSetupProject(options: Schema): Rule {
 	return chain([
 		addNgbModuleToAppModule(options),
 		addBootstrapStyles(options),
-		externalSchematic('@angular/localize', 'ng-add', options.project ? { name: options.project } : {}),
+		externalSchematic('@angular/localize', 'ng-add', options.project ? { project: options.project } : {}),
 	]);
 }
