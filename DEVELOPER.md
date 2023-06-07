@@ -97,7 +97,14 @@ Lints the source code and runs all unit tests for the library with coverage
 #### `yarn e2e`
 
 Runs all e2e tests for the library in production mode. We use them to check focus handling, browser styles, layout, etc.
-(For debugging/development it is also possible to separately serve the e2e test application with `yarn e2e-app:serve` and run tests with `yarn ngb:e2e-noserve`)
+
+e2e test are done with [Playwright](https://playwright.dev/).
+
+You have several tips for debugging/development:
+
+- Run `yarn e2e-app:serve` to run the e2e-app server and speed up the tests re-run,
+- Run `yarn playwright test -c e2e-app --ui` to launch the [Playwright UI mode](https://playwright.dev/docs/test-ui-mode) and focus on one browser/test combination,
+- For VSCode users, install the [Playwright extension](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright) to run specific tests on one browser/test combination and be able to set breakpoints, inspect variables, ...
 
 #### `yarn ssr`
 
