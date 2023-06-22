@@ -1,9 +1,14 @@
 import { Component, TemplateRef } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { FormsModule } from '@angular/forms';
 
-@Component({ templateUrl: './modal-nesting.component.html' })
+@Component({
+	standalone: true,
+	imports: [FormsModule, NgbModule],
+	templateUrl: './modal-nesting.component.html',
+})
 export class ModalNestingComponent {
 	container: string | null = null;
 

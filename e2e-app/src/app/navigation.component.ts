@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { routes } from './app.routing';
+import { ROUTES } from './app.routes';
 import { NavigationEnd } from '@angular/router';
+import { NgFor } from '@angular/common';
 
 @Component({
 	selector: 'app-navigation',
+	standalone: true,
+	imports: [NgFor],
 	template: `
 		<a role="button" class="btn btn-outline-primary ms-3" id="navigate-home" href="#/">Menu</a>
 		<div [hidden]="isHidden">
@@ -30,7 +33,7 @@ export class NavigationComponent {
 	isHidden = false;
 
 	constructor(public router: Router) {
-		this.routes = routes;
+		this.routes = ROUTES;
 
 		router.events.subscribe((evt) => {
 			if (evt instanceof NavigationEnd) {

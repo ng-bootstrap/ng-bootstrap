@@ -1,9 +1,14 @@
 import { Component, TemplateRef } from '@angular/core';
-import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { FormsModule } from '@angular/forms';
 
-@Component({ templateUrl: './offcanvas-nesting.component.html' })
+@Component({
+	standalone: true,
+	imports: [FormsModule, NgbModule],
+	templateUrl: './offcanvas-nesting.component.html',
+})
 export class OffcanvasNestingComponent {
 	constructor(private offcanvasService: NgbOffcanvas) {}
 

@@ -1,7 +1,14 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, TemplateRef } from '@angular/core';
-import { OffcanvasDismissReasons, NgbOffcanvas, NgbOffcanvasRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbOffcanvas, NgbOffcanvasRef, OffcanvasDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { JsonPipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
-@Component({ templateUrl: './offcanvas-autoclose.component.html', changeDetection: ChangeDetectionStrategy.OnPush })
+@Component({
+	standalone: true,
+	imports: [FormsModule, JsonPipe, NgbModule],
+	templateUrl: './offcanvas-autoclose.component.html',
+	changeDetection: ChangeDetectionStrategy.OnPush,
+})
 export class OffcanvasAutoCloseComponent {
 	private offcanvasRef: NgbOffcanvasRef | null = null;
 	reason = '';

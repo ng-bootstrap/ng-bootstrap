@@ -1,7 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
-import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
-import { Observable, Subject, merge } from 'rxjs';
-import { distinctUntilChanged, filter, map, delay } from 'rxjs/operators';
+import { NgbModule, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
+import { merge, Observable, Subject } from 'rxjs';
+import { delay, distinctUntilChanged, filter, map } from 'rxjs/operators';
+import { FormsModule } from '@angular/forms';
 
 const states = [
 	'Alabama',
@@ -65,7 +66,11 @@ const states = [
 	'Wyoming',
 ];
 
-@Component({ templateUrl: './typeahead-focus.component.html' })
+@Component({
+	standalone: true,
+	imports: [FormsModule, NgbModule],
+	templateUrl: './typeahead-focus.component.html',
+})
 export class TypeaheadFocusComponent {
 	model: any;
 
