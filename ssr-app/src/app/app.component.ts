@@ -1,7 +1,40 @@
 import { Component } from '@angular/core';
+import { TypeaheadComponent } from './components/typeahead.component';
+import { TooltipComponent } from './components/tooltip.component';
+import { TimepickerComponent } from './components/timepicker.component';
+import { RatingComponent } from './components/rating.component';
+import { ProgressComponent } from './components/progress.component';
+import { PopoverComponent } from './components/popover.component';
+import { PaginationComponent } from './components/pagination.component';
+import { NavComponent } from './components/nav.component';
+import { ModalComponent } from './components/modal.component';
+import { DropdownComponent } from './components/dropdown.component';
+import { DatepickerComponent } from './components/datepicker.component';
+import { CollapseComponent } from './components/collapse.component';
+import { CarouselComponent } from './components/carousel.component';
+import { AlertComponent } from './components/alert.component';
+import { AccordionComponent } from './components/accordion.component';
 
 @Component({
 	selector: 'app-root',
+	standalone: true,
+	imports: [
+		AccordionComponent,
+		AlertComponent,
+		CarouselComponent,
+		CollapseComponent,
+		DatepickerComponent,
+		DropdownComponent,
+		ModalComponent,
+		NavComponent,
+		PaginationComponent,
+		PopoverComponent,
+		ProgressComponent,
+		RatingComponent,
+		TimepickerComponent,
+		TooltipComponent,
+		TypeaheadComponent,
+	],
 	template: `
 		<div class="container p-5">
 			<h1>ng-bootstrap SSR test application</h1>

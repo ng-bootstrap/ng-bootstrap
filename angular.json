@@ -252,44 +252,31 @@
 							}
 						],
 						"styles": ["node_modules/bootstrap/dist/css/bootstrap.css"],
-						"scripts": [],
-						"aot": false,
-						"vendorChunk": true,
-						"extractLicenses": false,
-						"buildOptimizer": false,
-						"sourceMap": true,
-						"optimization": false,
-						"namedChunks": true
+						"scripts": []
 					},
 					"configurations": {
 						"production": {
-							"fileReplacements": [
-								{
-									"replace": "ssr-app/src/environments/environment.ts",
-									"with": "ssr-app/src/environments/environment.prod.ts"
-								}
-							],
-							"optimization": true,
-							"outputHashing": "all",
-							"sourceMap": false,
-							"namedChunks": false,
-							"aot": true,
-							"extractLicenses": true,
-							"vendorChunk": false,
-							"buildOptimizer": true,
-							"progress": false
+							"outputHashing": "all"
+						},
+						"development": {
+							"buildOptimizer": false,
+							"optimization": false,
+							"vendorChunk": true,
+							"extractLicenses": false,
+							"sourceMap": true,
+							"namedChunks": true
 						}
 					},
-					"defaultConfiguration": ""
+					"defaultConfiguration": "production"
 				},
 				"serve": {
 					"builder": "@angular-devkit/build-angular:dev-server",
-					"options": {
-						"browserTarget": "ssr-app:build"
-					},
 					"configurations": {
 						"production": {
 							"browserTarget": "ssr-app:build:production"
+						},
+						"developement": {
+							"browserTarget": "ssr-app:build:development"
 						}
 					}
 				},
@@ -304,22 +291,52 @@
 					"options": {
 						"outputPath": "ssr-app/dist/server",
 						"main": "ssr-app/server.ts",
-						"tsConfig": "ssr-app/tsconfig.server.json",
-						"progress": false,
-						"sourceMap": true,
-						"optimization": false
+						"tsConfig": "ssr-app/tsconfig.server.json"
 					},
 					"configurations": {
 						"production": {
-							"fileReplacements": [
-								{
-									"replace": "ssr-app/src/environments/environment.ts",
-									"with": "ssr-app/src/environments/environment.prod.ts"
-								}
-							]
+							"outputHashing": "media"
+						},
+						"development": {
+							"buildOptimizer": false,
+							"optimization": false,
+							"sourceMap": true,
+							"extractLicenses": false,
+							"vendorChunk": true
 						}
 					},
-					"defaultConfiguration": ""
+					"defaultConfiguration": "production"
+				},
+				"serve-ssr": {
+					"builder": "@nguniversal/builders:ssr-dev-server",
+					"configurations": {
+						"production": {
+							"browserTarget": "ssr-app:build:production",
+							"serverTarget": "ssr-app:server:production"
+						},
+						"development": {
+							"browserTarget": "ssr-app:build:development",
+							"serverTarget": "ssr-app:server:development"
+						}
+					},
+					"defaultConfiguration": "development"
+				},
+				"prerender": {
+					"builder": "@nguniversal/builders:prerender",
+					"options": {
+						"routes": ["/"]
+					},
+					"configurations": {
+						"production": {
+							"browserTarget": "ssr-app:build:production",
+							"serverTarget": "ssr-app:server:production"
+						},
+						"development": {
+							"browserTarget": "ssr-app:build:development",
+							"serverTarget": "ssr-app:server:development"
+						}
+					},
+					"defaultConfiguration": "production"
 				}
 			}
 		},

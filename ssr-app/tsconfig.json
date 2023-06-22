@@ -5,7 +5,8 @@
 		"outDir": "../out-tsc/ssr-app",
 		"paths": {
 			"@ng-bootstrap/ng-bootstrap": ["../dist/ng-bootstrap"]
-		}
+		},
+		"types": ["@angular/localize"]
 	},
 	"files": ["src/main.ts"],
 	"include": ["src/**/*.d.ts"],

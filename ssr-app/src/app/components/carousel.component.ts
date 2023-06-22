@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
+import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
 	selector: 'carousel-component',
+	standalone: true,
+	imports: [NgbCarouselModule],
 	template: `
 		<ngb-carousel>
 			<ng-template ngbSlide>

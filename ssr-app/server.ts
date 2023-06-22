@@ -1,23 +1,23 @@
 import 'zone.js/node';
-import '@angular/localize/init';
 
+import { APP_BASE_HREF } from '@angular/common';
 import { ngExpressEngine } from '@nguniversal/express-engine';
 import * as express from 'express';
-import { join } from 'path';
-
-import { AppServerModule } from './src/main.server';
-import { APP_BASE_HREF } from '@angular/common';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+import bootstrap from './src/main.server';
 
 // The Express app is exported so that it can be used by serverless Functions.
-export function app() {
+export function app(): express.Express {
 	const server = express();
 	const distFolder = join(process.cwd(), 'ssr-app/dist/browser');
+	const indexHtml = existsSync(join(distFolder, 'index.original.html')) ? 'index.original.html' : 'index';
 
-	// Our Universal express-engine (found @ https://github.com/angular/universal/tree/master/modules/express-engine)
+	// Our Universal express-engine (found @ https://github.com/angular/universal/tree/main/modules/express-engine)
 	server.engine(
 		'html',
-		<any>ngExpressEngine({
-			bootstrap: AppServerModule,
+		ngExpressEngine({
+			bootstrap,
 		}),
 	);
 
@@ -25,7 +25,7 @@ export function app() {
 	server.set('views', distFolder);
 
 	// Example Express Rest API endpoints
-	// app.get('/api/**', (req, res) => { });
+	// server.get('/api/**', (req, res) => { });
 	// Serve static files from /browser
 	server.get(
 		'*.*',
@@ -36,14 +36,14 @@ export function app() {
 
 	// All regular routes use the Universal engine
 	server.get('*', (req, res) => {
-		res.render('index', { req, providers: [{ provide: APP_BASE_HREF, useValue: req.baseUrl }] });
+		res.render(indexHtml, { req, providers: [{ provide: APP_BASE_HREF, useValue: req.baseUrl }] });
 	});
 
 	return server;
 }
 
-function run() {
-	const port = process.env.PORT || 4200;
+function run(): void {
+	const port = process.env['PORT'] || 4200;
 
 	// Start up the Node server
 	const server = app();
@@ -57,8 +57,9 @@ function run() {
 // The below code is to ensure that the server is run only when not requiring the bundle.
 declare const __non_webpack_require__: NodeRequire;
 const mainModule = __non_webpack_require__.main;
-if (mainModule && mainModule.filename === __filename) {
+const moduleFilename = (mainModule && mainModule.filename) || '';
+if (moduleFilename === __filename || moduleFilename.includes('iisnode')) {
 	run();
 }
 
-export * from './src/main.server';
+export default bootstrap;

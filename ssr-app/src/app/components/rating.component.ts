@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
+import { NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
 	selector: 'rating-component',
+	standalone: true,
+	imports: [NgbRatingModule],
 	styles: [
 		`
 			.star {

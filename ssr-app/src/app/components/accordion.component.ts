@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
+import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
 	selector: 'accordion-component',
+	standalone: true,
+	imports: [NgbAccordionModule],
 	template: `
 		<style>
 			.custom-header::after {
