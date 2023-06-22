@@ -1,12 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
-import { routing } from './app.routing';
-import { AppComponent } from './app.component';
-import { NavigationComponent } from './navigation.component';
+import { Routes } from '@angular/router';
 
 import { DatepickerAutoCloseComponent } from './datepicker/autoclose/datepicker-autoclose.component';
 import { DatepickerContainerComponent } from './datepicker/container/datepicker-container.component';
@@ -21,7 +13,6 @@ import { ModalFocusComponent } from './modal/focus/modal-focus.component';
 import { ModalNestingComponent } from './modal/nesting/modal-nesting.component';
 import { ModalStackComponent } from './modal/stack/modal-stack.component';
 import { ModalStackConfirmationComponent } from './modal/stack-confirmation/modal-stack-confirmation.component';
-import { OffcanvasAutoCloseComponent } from './offcanvas/autoclose/offcanvas-autoclose.component';
 import { PopoverAutocloseComponent } from './popover/autoclose/popover-autoclose.component';
 import { TooltipAutocloseComponent } from './tooltip/autoclose/tooltip-autoclose.component';
 import { TooltipFocusComponent } from './tooltip/focus/tooltip-focus.component';
@@ -31,42 +22,71 @@ import { TypeaheadFocusComponent } from './typeahead/focus/typeahead-focus.compo
 import { TimepickerFilterComponent } from './timepicker/filter/timepicker-filter.component';
 import { TimepickerNavigationComponent } from './timepicker/navigation/timepicker-navigation.component';
 import { TypeaheadValidationComponent } from './typeahead/validation/typeahead-validation.component';
+import { OffcanvasAutoCloseComponent } from './offcanvas/autoclose/offcanvas-autoclose.component';
 import { OffcanvasFocusComponent } from './offcanvas/focus/offcanvas-focus.component';
 import { OffcanvasNestingComponent } from './offcanvas/nesting/offcanvas-nesting.component';
 import { OffcanvasStackConfirmationComponent } from './offcanvas/stack-confirmation/offcanvas-stack-confirmation.component';
 
-@NgModule({
-	declarations: [
-		AppComponent,
-		NavigationComponent,
-		DatepickerAutoCloseComponent,
-		DatepickerContainerComponent,
-		DatepickerFocusComponent,
-		DatepickerMultipleComponent,
-		DropdownAutoCloseComponent,
-		DropdownFocusComponent,
-		DropdownClickComponent,
-		DropdownPositionComponent,
-		ModalAutoCloseComponent,
-		ModalFocusComponent,
-		ModalNestingComponent,
-		ModalStackComponent,
-		ModalStackConfirmationComponent,
-		OffcanvasAutoCloseComponent,
-		OffcanvasFocusComponent,
-		OffcanvasNestingComponent,
-		OffcanvasStackConfirmationComponent,
-		PopoverAutocloseComponent,
-		TooltipAutocloseComponent,
-		TooltipFocusComponent,
-		TooltipPositionComponent,
-		TypeaheadFocusComponent,
-		TypeaheadValidationComponent,
-		TypeaheadAutoCloseComponent,
-		TimepickerFilterComponent,
-		TimepickerNavigationComponent,
-	],
-	imports: [BrowserModule, FormsModule, ReactiveFormsModule, routing, NgbModule],
-	bootstrap: [AppComponent],
-})
-export class AppModule {}
+export const ROUTES: Routes = [
+	{
+		path: 'datepicker',
+		children: [
+			{ path: 'container', component: DatepickerContainerComponent },
+			{ path: 'focus', component: DatepickerFocusComponent },
+			{ path: 'autoclose', component: DatepickerAutoCloseComponent },
+			{ path: 'multiple', component: DatepickerMultipleComponent },
+		],
+	},
+	{
+		path: 'modal',
+		children: [
+			{ path: 'autoclose', component: ModalAutoCloseComponent },
+			{ path: 'focus', component: ModalFocusComponent },
+			{ path: 'nesting', component: ModalNestingComponent },
+			{ path: 'stack', component: ModalStackComponent },
+			{ path: 'stack-confirmation', component: ModalStackConfirmationComponent },
+		],
+	},
+	{
+		path: 'offcanvas',
+		children: [
+			{ path: 'autoclose', component: OffcanvasAutoCloseComponent },
+			{ path: 'focus', component: OffcanvasFocusComponent },
+			{ path: 'nesting', component: OffcanvasNestingComponent },
+			{ path: 'stack-confirmation', component: OffcanvasStackConfirmationComponent },
+		],
+	},
+	{
+		path: 'dropdown',
+		children: [
+			{ path: 'autoclose', component: DropdownAutoCloseComponent },
+			{ path: 'click', component: DropdownClickComponent },
+			{ path: 'focus', component: DropdownFocusComponent },
+			{ path: 'position', component: DropdownPositionComponent },
+		],
+	},
+	{ path: 'popover', children: [{ path: 'autoclose', component: PopoverAutocloseComponent }] },
+	{
+		path: 'tooltip',
+		children: [
+			{ path: 'autoclose', component: TooltipAutocloseComponent },
+			{ path: 'focus', component: TooltipFocusComponent },
+			{ path: 'position', component: TooltipPositionComponent },
+		],
+	},
+	{
+		path: 'typeahead',
+		children: [
+			{ path: 'focus', component: TypeaheadFocusComponent },
+			{ path: 'autoclose', component: TypeaheadAutoCloseComponent },
+			{ path: 'validation', component: TypeaheadValidationComponent },
+		],
+	},
+	{
+		path: 'timepicker',
+		children: [
+			{ path: 'navigation', component: TimepickerNavigationComponent },
+			{ path: 'filter', component: TimepickerFilterComponent },
+		],
+	},
+];

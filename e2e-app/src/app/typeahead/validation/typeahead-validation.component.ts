@@ -1,8 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
-import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
-import { Observable, Subject, merge } from 'rxjs';
+import { NgbModule, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
+import { merge, Observable, Subject } from 'rxjs';
 import { distinctUntilChanged, filter, map } from 'rxjs/operators';
-import { UntypedFormControl } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, UntypedFormControl } from '@angular/forms';
 
 const states = [
 	'Alabama',
@@ -66,7 +66,11 @@ const states = [
 	'Wyoming',
 ];
 
-@Component({ templateUrl: './typeahead-validation.component.html' })
+@Component({
+	standalone: true,
+	imports: [FormsModule, NgbModule, ReactiveFormsModule],
+	templateUrl: './typeahead-validation.component.html',
+})
 export class TypeaheadValidationComponent {
 	model: any;
 	public field = new UntypedFormControl(null, { updateOn: 'blur' });

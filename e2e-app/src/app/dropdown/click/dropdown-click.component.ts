@@ -1,6 +1,11 @@
 import { Component } from '@angular/core';
+import { NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
+	standalone: true,
+	imports: [FormsModule, NgbModule, NgIf],
 	template: `
 		<h3>Dropdown click tests</h3>
 		<form>

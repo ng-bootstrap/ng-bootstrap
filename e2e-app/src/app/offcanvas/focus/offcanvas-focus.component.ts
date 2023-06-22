@@ -1,7 +1,12 @@
 import { Component, TemplateRef } from '@angular/core';
-import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule } from '@angular/forms';
 
-@Component({ templateUrl: './offcanvas-focus.component.html' })
+@Component({
+	standalone: true,
+	imports: [FormsModule, NgbModule],
+	templateUrl: './offcanvas-focus.component.html',
+})
 export class OffcanvasFocusComponent {
 	disabledButton = false;
 
