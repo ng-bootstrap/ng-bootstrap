@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
+import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule } from '@angular/forms';
 
 @Component({
 	selector: 'datepicker-component',
+	standalone: true,
+	imports: [FormsModule, NgbDatepickerModule],
 	template: `
 		<form class="row row-cols-lg-auto">
 			<div class="col-12 mb-3 me-5">
