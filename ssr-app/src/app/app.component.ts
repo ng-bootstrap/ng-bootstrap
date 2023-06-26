@@ -14,6 +14,7 @@ import { CollapseComponent } from './components/collapse.component';
 import { CarouselComponent } from './components/carousel.component';
 import { AlertComponent } from './components/alert.component';
 import { AccordionComponent } from './components/accordion.component';
+import { ScrollSpyComponent } from './components/scrollspy.component';
 
 @Component({
 	selector: 'app-root',
@@ -31,6 +32,7 @@ import { AccordionComponent } from './components/accordion.component';
 		PopoverComponent,
 		ProgressComponent,
 		RatingComponent,
+		ScrollSpyComponent,
 		TimepickerComponent,
 		TooltipComponent,
 		TypeaheadComponent,
@@ -74,6 +76,9 @@ import { AccordionComponent } from './components/accordion.component';
 
 			<h2 class="mt-5">Rating</h2>
 			<rating-component></rating-component>
+
+			<h2 class="mt-5">Scrollspy</h2>
+			<scrollspy-component></scrollspy-component>
 
 			<h2 class="mt-5">Timepicker</h2>
 			<timepicker-component></timepicker-component>
