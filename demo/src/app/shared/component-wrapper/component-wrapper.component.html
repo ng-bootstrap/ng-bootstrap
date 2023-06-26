@@ -104,7 +104,7 @@
 			<section class="row py-5 px-2 px-md-4 px-lg-5">
 				<div class="col-12 col-xl-9 px-md-0 pe-xl-4">
 					<ng-template [ngComponentOutlet]="(headerComponentType$ | async)!"></ng-template>
-					<router-outlet (activate)="updateNavigation($event)"></router-outlet>
+					<router-outlet (activate)="onActivate($event)" (deactivate)="onDeactivate()"></router-outlet>
 				</div>
 
 				<div class="col-12 col-xl-3 d-none d-xl-block contextual-nav" *ngIf="!isLargeScreenOrLess">
@@ -113,6 +113,7 @@
 							<a
 								*ngIf="topic.title; else divider"
 								class="nav-link"
+								ngbScrollSpyItem
 								[routerLink]="['.', this.activeTab]"
 								[fragment]="topic.fragment"
 								>{{ topic.title }}</a

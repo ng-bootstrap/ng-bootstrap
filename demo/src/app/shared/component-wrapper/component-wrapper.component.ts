@@ -1,4 +1,4 @@
-import { Component, NgZone, OnDestroy, Type } from '@angular/core';
+import { Component, inject, NgZone, OnDestroy, Type } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
@@ -9,7 +9,13 @@ import { NgbdExamplesPage } from '../examples-page/examples.component';
 import { environment } from '../../../environments/environment';
 import { SideNavComponent } from '../side-nav/side-nav.component';
 import { AsyncPipe, NgComponentOutlet, NgFor, NgIf, TitleCasePipe } from '@angular/common';
-import { NgbCollapseModule, NgbDropdownModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+	NgbCollapseModule,
+	NgbDropdownModule,
+	NgbNavModule,
+	NgbScrollSpyItem,
+	NgbScrollSpyService,
+} from '@ng-bootstrap/ng-bootstrap';
 
 export type TableOfContents = { fragment: string; title: string }[];
 
@@ -27,6 +33,7 @@ export type TableOfContents = { fragment: string; title: string }[];
 		AsyncPipe,
 		NgComponentOutlet,
 		RouterOutlet,
+		NgbScrollSpyItem,
 	],
 	templateUrl: 'component-wrapper.component.html',
 })
@@ -47,10 +54,11 @@ export class ComponentWrapper implements OnDestroy {
 
 	tableOfContents: TableOfContents = [];
 
+	scrollSpy = inject(NgbScrollSpyService);
+
 	constructor(public route: ActivatedRoute, private _router: Router, ngZone: NgZone) {
 		// This component is used in route definition 'components'
 		// So next child route will always be ':componentType' & next one will always be ':pageType' (or tab)
-
 		this._routerSubscription = this._router.events
 			.pipe(filter((event) => event instanceof NavigationEnd))
 			.subscribe(() => {
@@ -83,7 +91,7 @@ export class ComponentWrapper implements OnDestroy {
 		this._routerSubscription.unsubscribe();
 	}
 
-	updateNavigation(component: NgbdExamplesPage | NgbdApiPage | any) {
+	onActivate(component: NgbdExamplesPage | NgbdApiPage | any) {
 		setTimeout(() => {
 			const getLinks = (typeCollection: string[]) => {
 				return typeCollection.map((item) => ({
@@ -117,6 +125,14 @@ export class ComponentWrapper implements OnDestroy {
 				// TODO: maybe we should also have an abstract class to test instanceof
 				this.tableOfContents = Object.values(component.sections).map((section) => section) as TableOfContents;
 			}
+
+			this.scrollSpy.start({
+				fragments: this.tableOfContents.map((item) => item.fragment),
+			});
 		}, 0);
+	}
+
+	onDeactivate() {
+		this.scrollSpy.stop();
 	}
 }

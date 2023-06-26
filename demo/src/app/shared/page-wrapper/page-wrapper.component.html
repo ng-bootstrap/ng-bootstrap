@@ -81,7 +81,9 @@
 				<div class="col-12 col-xl-3 d-none d-xl-block contextual-nav">
 					<ul class="nav flex-column text-muted pt-4">
 						<li *ngFor="let topic of tableOfContents" class="nav-item">
-							<a [id]="topic.fragment" class="nav-link" routerLink="." [fragment]="topic.fragment">{{ topic.title }}</a>
+							<a [id]="topic.fragment" ngbScrollSpyItem class="nav-link" routerLink="." [fragment]="topic.fragment">
+								{{ topic.title }}
+							</a>
 						</li>
 					</ul>
 				</div>
