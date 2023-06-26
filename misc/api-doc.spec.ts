@@ -124,6 +124,12 @@ describe('APIDocVisitor', () => {
 		expect(methodDocs[0].args[2].type).toBe('number');
 	});
 
+	it('should not extract internal components, directives, services and interfaces', () => {
+		const docs = apiDoc(['./misc/api-doc-test-cases/internal-things.ts']);
+
+		expect(docs).toEqual({});
+	});
+
 	it('should not extract public methods info when annotated with @internal', () => {
 		const methodDocs = apiDoc(['./misc/api-doc-test-cases/component-with-internal-methods.ts']).Foo.methods;
 

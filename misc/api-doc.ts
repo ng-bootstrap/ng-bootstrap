@@ -8,6 +8,7 @@ import {
 	Expression,
 	getCombinedModifierFlags,
 	getDecorators,
+	getJSDocTags,
 	InterfaceDeclaration,
 	isCallExpression,
 	isClassDeclaration,
@@ -68,20 +69,8 @@ function hasNoJSDoc(member, typeChecker) {
 	return jsDoc.trim().length === 0;
 }
 
-function isInternalMember(member) {
-	if (member.jsDoc && member.jsDoc.length > 0) {
-		for (let i = 0; i < member.jsDoc.length; i++) {
-			if (member.jsDoc[i].tags && member.jsDoc[i].tags.length > 0) {
-				for (let j = 0; j < member.jsDoc[i].tags.length; j++) {
-					if (member.jsDoc[i].tags[j].tagName.text === 'internal') {
-						return true;
-					}
-				}
-			}
-		}
-	}
-
-	return false;
+function isInternal(node: Node) {
+	return getJSDocTags(node).filter((tag) => tag.tagName.text === 'internal').length > 0;
 }
 
 function isDecoratorOfType(decorator: Decorator, types: string[]) {
@@ -142,9 +131,9 @@ class APIDocVisitor {
 		}
 
 		return sourceFile.statements.reduce((directivesSoFar, statement) => {
-			if (isClassDeclaration(statement)) {
+			if (isClassDeclaration(statement) && !isInternal(statement)) {
 				return directivesSoFar.concat(this.visitClassDeclaration(fileName, statement));
-			} else if (isInterfaceDeclaration(statement)) {
+			} else if (isInterfaceDeclaration(statement) && !isInternal(statement)) {
 				return directivesSoFar.concat(this.visitInterfaceDeclaration(fileName, statement));
 			}
 
@@ -289,7 +278,7 @@ class APIDocVisitor {
 
 		for (const member of members) {
 			// skipping private and internal
-			if (isPrivate(member) || isInternalMember(member)) {
+			if (isPrivate(member) || isInternal(member)) {
 				continue;
 			}
 
