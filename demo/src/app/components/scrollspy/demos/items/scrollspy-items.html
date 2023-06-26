@@ -1,0 +1,60 @@
+<p>Shows the example of <code>NgbScrollSpyItem</code> usage to highlight items and handle scrolling</p>
+
+<div class="row">
+	<div class="col-4">
+		<div id="list-example" class="list-group">
+			<button type="button" class="list-group-item list-group-item-action" [ngbScrollSpyItem]="[spy, 'items-1']">
+				1 - button
+			</button>
+			<button type="button" class="list-group-item list-group-item-action" [ngbScrollSpyItem]="spy" fragment="items-2">
+				2 - button
+			</button>
+			<a type="button" class="list-group-item list-group-item-action" [ngbScrollSpyItem]="spy" fragment="items-3">
+				3 - link no href
+			</a>
+			<a
+				class="list-group-item list-group-item-action"
+				href
+				[class.active]="spy.active === 'items-4'"
+				(click)="spy.scrollTo('items-4'); $event.preventDefault();"
+			>
+				4 - link no directive
+			</a>
+			<a routerLink="." class="list-group-item list-group-item-action" [ngbScrollSpyItem]="spy" fragment="items">
+				5 - routerLink example
+			</a>
+		</div>
+	</div>
+	<div class="col-8">
+		<div ngbScrollSpy #spy="ngbScrollSpy" rootMargin="16px" class="bg-light p-3 rounded-2 mb-3" style="height: 200px">
+			<h4 ngbScrollSpyFragment="items-1">First heading</h4>
+			<p>
+				Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth
+				master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro
+				keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat
+				salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.
+			</p>
+			<h4 ngbScrollSpyFragment="items-2">Second heading</h4>
+			<p>
+				Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth
+				master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro
+				keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat
+				salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.
+			</p>
+			<h4 ngbScrollSpyFragment="items-3">Third heading</h4>
+			<p>
+				Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth
+				master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro
+				keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat
+				salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.
+			</p>
+			<h4 ngbScrollSpyFragment="items-4">Fourth heading</h4>
+			<p>
+				Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth
+				master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro
+				keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat
+				salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.
+			</p>
+		</div>
+	</div>
+</div>

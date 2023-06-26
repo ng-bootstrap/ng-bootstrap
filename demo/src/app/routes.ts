@@ -13,6 +13,7 @@ import { ROUTES as PAGINATION_ROUTES } from './components/pagination/pagination.
 import { ROUTES as POPOVER_ROUTES } from './components/popover/popover.routes';
 import { ROUTES as PROGRESSBAR_ROUTES } from './components/progressbar/progressbar.routes';
 import { ROUTES as RATING_ROUTES } from './components/rating/rating.routes';
+import { ROUTES as SCROLLSPY_ROUTES } from './components/scrollspy/scrollspy.routes';
 import { ROUTES as TABLE_ROUTES } from './components/table/table.routes';
 import { ROUTES as TIMEPICKER_ROUTES } from './components/timepicker/timepicker.routes';
 import { ROUTES as TOAST_ROUTES } from './components/toast/toast.routes';
@@ -53,6 +54,7 @@ export const ROUTES: Routes = [
 	{ path: 'components/popover', children: POPOVER_ROUTES },
 	{ path: 'components/progressbar', children: PROGRESSBAR_ROUTES },
 	{ path: 'components/rating', children: RATING_ROUTES },
+	{ path: 'components/scrollspy', children: SCROLLSPY_ROUTES },
 	{ path: 'components/table', children: TABLE_ROUTES },
 	{ path: 'components/tabset', redirectTo: 'components/nav' },
 	{ path: 'components/toast', children: TOAST_ROUTES },

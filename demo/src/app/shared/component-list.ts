@@ -12,6 +12,7 @@ export const COMPONENT_LIST = [
 	'Popover',
 	'Progressbar',
 	'Rating',
+	'Scrollspy',
 	'Table',
 	'Timepicker',
 	'Toast',

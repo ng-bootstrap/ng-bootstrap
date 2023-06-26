@@ -1,0 +1,58 @@
+<nav class="navbar bg-light px-3 mb-3">
+	<span class="navbar-brand">Navbar</span>
+	<ul class="nav nav-pills" [ngbScrollSpyMenu]="s">
+		<li class="nav-item">
+			<button class="nav-link" ngbScrollSpyItem="basic-1">First</button>
+		</li>
+		<li class="nav-item">
+			<button class="nav-link" ngbScrollSpyItem="basic-2">Second</button>
+		</li>
+		<li ngbDropdown class="nav-item">
+			<button ngbDropdownToggle class="nav-link" ngbScrollSpyItem="basic-p1">Dropdown</button>
+			<ul ngbDropdownMenu>
+				<li><button ngbDropdownItem ngbScrollSpyItem="basic-3" parent="basic-p1">Third</button></li>
+				<li><button ngbDropdownItem ngbScrollSpyItem="basic-4" parent="basic-p1">Fourth</button></li>
+				<li><hr class="dropdown-divider" /></li>
+				<li><button ngbDropdownItem ngbScrollSpyItem="basic-5" parent="basic-p1">Fifth</button></li>
+			</ul>
+		</li>
+	</ul>
+</nav>
+
+<div ngbScrollSpy #s="ngbScrollSpy" rootMargin="0px 0px -40%" class="bg-light p-3 rounded-2 mb-3" style="height: 200px">
+	<h4 ngbScrollSpyFragment="basic-1">First heading</h4>
+	<p>
+		Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master
+		cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh
+		dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum
+		iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.
+	</p>
+	<h4 ngbScrollSpyFragment="basic-2">Second heading</h4>
+	<p>
+		Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master
+		cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh
+		dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum
+		iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.
+	</p>
+	<h4 ngbScrollSpyFragment="basic-3">Third heading</h4>
+	<p>
+		Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master
+		cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh
+		dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum
+		iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.
+	</p>
+	<h4 ngbScrollSpyFragment="basic-4">Fourth heading</h4>
+	<p>
+		Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master
+		cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh
+		dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum
+		iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.
+	</p>
+	<h4 ngbScrollSpyFragment="basic-5">Fifth heading</h4>
+	<p>
+		Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master
+		cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh
+		dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum
+		iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.
+	</p>
+</div>
