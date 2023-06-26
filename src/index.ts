@@ -12,6 +12,7 @@ import { NgbPaginationModule } from './pagination/pagination.module';
 import { NgbPopoverModule } from './popover/popover.module';
 import { NgbProgressbarModule } from './progressbar/progressbar.module';
 import { NgbRatingModule } from './rating/rating.module';
+import { NgbScrollSpyModule } from './scrollspy/scrollspy.module';
 import { NgbTimepickerModule } from './timepicker/timepicker.module';
 import { NgbToastModule } from './toast/toast.module';
 import { NgbTooltipModule } from './tooltip/tooltip.module';
@@ -144,6 +145,16 @@ export { NgbPopover, NgbPopoverConfig, NgbPopoverModule } from './popover/popove
 export { NgbProgressbar, NgbProgressbarConfig, NgbProgressbarModule } from './progressbar/progressbar.module';
 export { NgbRating, NgbRatingConfig, NgbRatingModule } from './rating/rating.module';
 export {
+	NgbScrollSpy,
+	NgbScrollSpyConfig,
+	NgbScrollSpyFragment,
+	NgbScrollSpyItem,
+	NgbScrollSpyMenu,
+	NgbScrollSpyModule,
+	NgbScrollSpyProcessChanges,
+	NgbScrollSpyService,
+} from './scrollspy/scrollspy.module';
+export {
 	NgbTimeAdapter,
 	NgbTimepickerI18n,
 	NgbTimepicker,
@@ -178,6 +189,7 @@ const NGB_MODULES = [
 	NgbPopoverModule,
 	NgbProgressbarModule,
 	NgbRatingModule,
+	NgbScrollSpyModule,
 	NgbTimepickerModule,
 	NgbToastModule,
 	NgbTooltipModule,
