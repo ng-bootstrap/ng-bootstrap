@@ -4,14 +4,14 @@ import {
 	Attribute,
 	ChangeDetectorRef,
 	ContentChildren,
+	DestroyRef,
 	Directive,
 	ElementRef,
 	EventEmitter,
 	forwardRef,
-	Inject,
+	inject,
 	Input,
 	OnChanges,
-	OnDestroy,
 	OnInit,
 	Output,
 	QueryList,
@@ -21,7 +21,7 @@ import {
 import { DOCUMENT } from '@angular/common';
 
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { isDefined } from '../util/util';
 import { NgbNavConfig } from './nav-config';
@@ -52,7 +52,7 @@ export interface NgbNavContentContext {
  */
 @Directive({ selector: 'ng-template[ngbNavContent]', standalone: true })
 export class NgbNavContent {
-	constructor(public templateRef: TemplateRef<any>) {}
+	templateRef = inject(TemplateRef);
 }
 
 /**
@@ -68,7 +68,9 @@ export class NgbNavContent {
 	},
 })
 export class NgbNavItemRole {
-	constructor(@Attribute('role') public role: string, @Inject(forwardRef(() => NgbNav)) public nav: NgbNav) {}
+	nav = inject(NgbNav);
+
+	constructor(@Attribute('role') public role: string) {}
 }
 
 /**
@@ -78,6 +80,9 @@ export class NgbNavItemRole {
  */
 @Directive({ selector: '[ngbNavItem]', exportAs: 'ngbNavItem', standalone: true, host: { '[class.nav-item]': 'true' } })
 export class NgbNavItem implements AfterContentChecked, OnInit {
+	private _nav = inject(NgbNav);
+	private _nativeElement = inject(ElementRef).nativeElement as HTMLElement;
+
 	/**
 	 * If `true`, non-active current nav item content will be removed from DOM
 	 * Otherwise it will just be hidden
@@ -126,8 +131,6 @@ export class NgbNavItem implements AfterContentChecked, OnInit {
 
 	@ContentChildren(NgbNavContent, { descendants: false }) contentTpls: QueryList<NgbNavContent>;
 
-	constructor(@Inject(forwardRef(() => NgbNav)) private _nav: NgbNav, public elementRef: ElementRef<any>) {}
-
 	ngAfterContentChecked() {
 		// We are using @ContentChildren instead of @ContentChild as in the Angular version being used
 		// only @ContentChildren allows us to specify the {descendants: false} option.
@@ -157,6 +160,13 @@ export class NgbNavItem implements AfterContentChecked, OnInit {
 	isPanelInDom() {
 		return (isDefined(this.destroyOnHide) ? !this.destroyOnHide : !this._nav.destroyOnHide) || this.active;
 	}
+
+	/**
+	 * @internal
+	 */
+	isNgContainer() {
+		return this._nativeElement.nodeType === Node.COMMENT_NODE;
+	}
 }
 
 /**
@@ -181,9 +191,15 @@ export class NgbNavItem implements AfterContentChecked, OnInit {
 		'(keydown.End)': 'onKeyDown($event)',
 	},
 })
-export class NgbNav implements AfterContentInit, OnChanges, OnDestroy {
+export class NgbNav implements AfterContentInit, OnChanges {
 	static ngAcceptInputType_orientation: string;
 	static ngAcceptInputType_roles: boolean | string;
+
+	private _config = inject(NgbNavConfig);
+	private _cd = inject(ChangeDetectorRef);
+	private _document = inject(DOCUMENT);
+
+	destroyRef = inject(DestroyRef);
 
 	/**
 	 * The id of the nav that should be active
@@ -205,27 +221,27 @@ export class NgbNav implements AfterContentInit, OnChanges, OnDestroy {
 	 *
 	 * @since 8.0.0
 	 */
-	@Input() animation: boolean;
+	@Input() animation = this._config.animation;
 
 	/**
 	 * If `true`, non-active nav content will be removed from DOM
 	 * Otherwise it will just be hidden
 	 */
-	@Input() destroyOnHide;
+	@Input() destroyOnHide = this._config.destroyOnHide;
 
 	/**
 	 * The orientation of navs.
 	 *
 	 * Using `vertical` will also add the `aria-orientation` attribute
 	 */
-	@Input() orientation: 'horizontal' | 'vertical';
+	@Input() orientation = this._config.orientation;
 
 	/**
 	 * Role attribute generating strategy:
 	 * - `false` - no role attributes will be generated
 	 * - `'tablist'` - 'tablist', 'tab' and 'tabpanel' will be generated (default)
 	 */
-	@Input() roles: 'tablist' | false;
+	@Input() roles = this._config.roles;
 
 	/**
 	 * Keyboard support for nav focus/selection using arrow keys.
@@ -238,7 +254,7 @@ export class NgbNav implements AfterContentInit, OnChanges, OnDestroy {
 	 *
 	 * @since 6.1.0
 	 */
-	@Input() keyboard: boolean | 'changeWithArrows';
+	@Input() keyboard = this._config.keyboard;
 
 	/**
 	 * An event emitted when the fade in transition is finished for one of the items.
@@ -261,21 +277,9 @@ export class NgbNav implements AfterContentInit, OnChanges, OnDestroy {
 	@ContentChildren(NgbNavItem) items: QueryList<NgbNavItem>;
 	@ContentChildren(forwardRef(() => NgbNavLinkBase), { descendants: true }) links: QueryList<NgbNavLinkBase>;
 
-	destroy$ = new Subject<void>();
 	navItemChange$ = new Subject<NgbNavItem | null>();
 
-	constructor(
-		@Attribute('role') public role: string,
-		config: NgbNavConfig,
-		private _cd: ChangeDetectorRef,
-		@Inject(DOCUMENT) private _document: any,
-	) {
-		this.animation = config.animation;
-		this.destroyOnHide = config.destroyOnHide;
-		this.orientation = config.orientation;
-		this.roles = config.roles;
-		this.keyboard = config.keyboard;
-	}
+	constructor(@Attribute('role') public role: string) {}
 
 	/**
 	 * The nav change event emitted right before the nav change happens on user click.
@@ -304,7 +308,7 @@ export class NgbNav implements AfterContentInit, OnChanges, OnDestroy {
 		let position = -1;
 
 		enabledLinks.forEach((link, index) => {
-			if (link.elRef.nativeElement === this._document.activeElement) {
+			if (link.nativeElement === this._document.activeElement) {
 				position = index;
 			}
 		});
@@ -345,7 +349,7 @@ export class NgbNav implements AfterContentInit, OnChanges, OnDestroy {
 			if (this.keyboard === 'changeWithArrows') {
 				this.select(enabledLinks[position].navItem.id);
 			}
-			enabledLinks[position].elRef.nativeElement.focus();
+			enabledLinks[position].nativeElement.focus();
 
 			event.preventDefault();
 		}
@@ -368,17 +372,15 @@ export class NgbNav implements AfterContentInit, OnChanges, OnDestroy {
 			}
 		}
 
-		this.items.changes.pipe(takeUntil(this.destroy$)).subscribe(() => this._notifyItemChanged(this.activeId));
+		this.items.changes
+			.pipe(takeUntilDestroyed(this.destroyRef))
+			.subscribe(() => this._notifyItemChanged(this.activeId));
 	}
 
 	ngOnChanges({ activeId }: SimpleChanges): void {
 		if (activeId && !activeId.firstChange) {
 			this._notifyItemChanged(activeId.currentValue);
 		}
-	}
-
-	ngOnDestroy() {
-		this.destroy$.next();
 	}
 
 	private _updateActiveId(nextId: any, emitNavChange = true) {
@@ -418,7 +420,7 @@ export class NgbNav implements AfterContentInit, OnChanges, OnDestroy {
 	host: {
 		'[id]': 'navItem.domId',
 		'[class.nav-link]': 'true',
-		'[class.nav-item]': 'hasNavItemClass()',
+		'[class.nav-item]': 'navItem.isNgContainer()',
 		'[attr.role]': `role ? role : nav.roles ? 'tab' : undefined`,
 		'[class.active]': 'navItem.active',
 		'[class.disabled]': 'navItem.disabled',
@@ -429,17 +431,11 @@ export class NgbNav implements AfterContentInit, OnChanges, OnDestroy {
 	},
 })
 export class NgbNavLinkBase {
-	constructor(
-		@Attribute('role') public role: string,
-		public navItem: NgbNavItem,
-		public nav: NgbNav,
-		public elRef: ElementRef,
-	) {}
+	navItem = inject(NgbNavItem);
+	nav = inject(NgbNav);
+	nativeElement = inject(ElementRef).nativeElement as HTMLElement;
 
-	hasNavItemClass() {
-		// with alternative markup we have to add `.nav-item` class, because `ngbNavItem` is on the ng-container
-		return this.navItem.elementRef.nativeElement.nodeType === Node.COMMENT_NODE;
-	}
+	constructor(@Attribute('role') public role: string) {}
 }
 
 /**
@@ -455,9 +451,7 @@ export class NgbNavLinkBase {
 		'(click)': 'nav.click(navItem)',
 	},
 })
-export class NgbNavLinkButton {
-	constructor(public navItem: NgbNavItem, public nav: NgbNav) {}
-}
+export class NgbNavLinkButton extends NgbNavLinkBase {}
 
 /**
  * A directive to mark the nav link when used on a link element.
@@ -473,9 +467,7 @@ export class NgbNavLinkButton {
 		'(click)': 'nav.click(navItem); $event.preventDefault()',
 	},
 })
-export class NgbNavLink {
-	constructor(public navItem: NgbNavItem, public nav: NgbNav) {}
-}
+export class NgbNavLink extends NgbNavLinkBase {}
 
 /**
  * The payload of the change event emitted right before the nav change happens on user click.
