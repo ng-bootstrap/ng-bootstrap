@@ -197,14 +197,7 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 		this.tooltipClass = config.tooltipClass;
 		this.openDelay = config.openDelay;
 		this.closeDelay = config.closeDelay;
-		this._popupService = new PopupService<NgbTooltipWindow>(
-			NgbTooltipWindow,
-			injector,
-			viewContainerRef,
-			_renderer,
-			this._ngZone,
-			applicationRef,
-		);
+		this._popupService = new PopupService(NgbTooltipWindow);
 		this._positioning = ngbPositioning();
 	}
 

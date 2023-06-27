@@ -1,10 +1,11 @@
 import { NgbPopoverConfig } from './popover-config';
 import { NgbConfig } from '../ngb-config';
+import { TestBed } from '@angular/core/testing';
 
 describe('ngb-popover-config', () => {
 	it('should have sensible default values', () => {
-		const ngbConfig = new NgbConfig();
-		const config = new NgbPopoverConfig(ngbConfig);
+		const ngbConfig = TestBed.inject(NgbConfig);
+		const config = TestBed.inject(NgbPopoverConfig);
 
 		expect(config.animation).toBe(ngbConfig.animation);
 		expect(config.autoClose).toBe(true);

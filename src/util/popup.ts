@@ -1,9 +1,9 @@
 import {
 	ApplicationRef,
 	ComponentRef,
+	inject,
 	Injector,
 	NgZone,
-	Renderer2,
 	TemplateRef,
 	Type,
 	ViewContainerRef,
@@ -14,6 +14,7 @@ import { Observable, of } from 'rxjs';
 import { mergeMap, take, tap } from 'rxjs/operators';
 
 import { ngbRunTransition } from './transition/ngbTransition';
+import { DOCUMENT } from '@angular/common';
 
 export class ContentRef {
 	constructor(public nodes: Node[][], public viewRef?: ViewRef, public componentRef?: ComponentRef<any>) {}
@@ -23,14 +24,13 @@ export class PopupService<T> {
 	private _windowRef: ComponentRef<T> | null = null;
 	private _contentRef: ContentRef | null = null;
 
-	constructor(
-		private _componentType: Type<any>,
-		private _injector: Injector,
-		private _viewContainerRef: ViewContainerRef,
-		private _renderer: Renderer2,
-		private _ngZone: NgZone,
-		private _applicationRef: ApplicationRef,
-	) {}
+	private _document = inject(DOCUMENT);
+	private _applicationRef = inject(ApplicationRef);
+	private _injector = inject(Injector);
+	private _viewContainerRef = inject(ViewContainerRef);
+	private _ngZone = inject(NgZone);
+
+	constructor(private _componentType: Type<T>) {}
 
 	open(
 		content?: string | TemplateRef<any>,
@@ -93,7 +93,7 @@ export class PopupService<T> {
 			this._applicationRef.attachView(viewRef);
 			return new ContentRef([viewRef.rootNodes], viewRef);
 		} else {
-			return new ContentRef([[this._renderer.createText(`${content}`)]]);
+			return new ContentRef([[this._document.createTextNode(`${content}`)]]);
 		}
 	}
 }
