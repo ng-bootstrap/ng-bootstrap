@@ -232,14 +232,7 @@ export class NgbTypeahead implements ControlValueAccessor, OnInit, OnChanges, On
 
 		this._resubscribeTypeahead = new BehaviorSubject(null);
 
-		this._popupService = new PopupService<NgbTypeaheadWindow>(
-			NgbTypeaheadWindow,
-			injector,
-			viewContainerRef,
-			_renderer,
-			this._ngZone,
-			applicationRef,
-		);
+		this._popupService = new PopupService(NgbTypeaheadWindow);
 		this._positioning = ngbPositioning();
 	}
 
