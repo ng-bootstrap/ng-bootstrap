@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NgFor, NgIf } from '@angular/common';
-import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NgbNav, NgbNavConfig, NgbNavItem, NgbNavLinkBase, NgbNavModule, NgbNavOutlet } from './nav.module';
 import { createGenericTestComponent, isBrowserVisible } from '../test/common';
@@ -84,11 +84,15 @@ function expectContents(fixture: ComponentFixture<any>, expected: string[], acti
 }
 
 describe('nav', () => {
-	it('should initialize inputs with default values', inject([NgbNavConfig], (config) => {
-		const nav = new NgbNav('tablist', config, <any>null, null);
+	it('should initialize inputs with default values', () => {
+		let nav = getNavDirective(createTestComponent('<ul ngbNav></ul>'));
+		let config = TestBed.inject(NgbNavConfig);
+
 		expect(nav.destroyOnHide).toBe(config.destroyOnHide);
 		expect(nav.roles).toBe(config.roles);
-	}));
+		expect(nav.orientation).toBe(config.orientation);
+		expect(nav.keyboard).toBe(config.keyboard);
+	});
 
 	it(`should set and allow overriding CSS classes`, () => {
 		const fixture = createTestComponent(`
