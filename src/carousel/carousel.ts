@@ -1,37 +1,38 @@
 import {
 	AfterContentChecked,
 	AfterContentInit,
+	AfterViewInit,
 	ChangeDetectionStrategy,
 	ChangeDetectorRef,
 	Component,
 	ContentChildren,
+	DestroyRef,
 	Directive,
 	ElementRef,
 	EventEmitter,
-	Inject,
+	inject,
 	Input,
 	NgZone,
-	OnDestroy,
 	Output,
 	PLATFORM_ID,
 	QueryList,
 	TemplateRef,
 	ViewEncapsulation,
-	AfterViewInit,
 } from '@angular/core';
 import { isPlatformBrowser, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
 
 import { NgbCarouselConfig } from './carousel-config';
 
-import { BehaviorSubject, combineLatest, NEVER, Observable, Subject, timer, zip } from 'rxjs';
-import { distinctUntilChanged, map, startWith, switchMap, take, takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, NEVER, Observable, timer, zip } from 'rxjs';
+import { distinctUntilChanged, map, startWith, switchMap, take } from 'rxjs/operators';
 import { ngbCompleteTransition, ngbRunTransition, NgbTransitionOptions } from '../util/transition/ngbTransition';
 import {
+	NgbCarouselCtx,
 	ngbCarouselTransitionIn,
 	ngbCarouselTransitionOut,
 	NgbSlideEventDirection,
-	NgbCarouselCtx,
 } from './carousel-transition';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 let nextId = 0;
 
@@ -40,6 +41,8 @@ let nextId = 0;
  */
 @Directive({ selector: 'ng-template[ngbSlide]', standalone: true })
 export class NgbSlide {
+	templateRef = inject(TemplateRef);
+
 	/**
 	 * Slide id that must be unique for the entire document.
 	 *
@@ -53,8 +56,6 @@ export class NgbSlide {
 	 * @since 8.0.0
 	 */
 	@Output() slid = new EventEmitter<NgbSingleSlideEvent>();
-
-	constructor(public tplRef: TemplateRef<any>) {}
 }
 
 /**
@@ -108,7 +109,7 @@ export class NgbSlide {
 				>
 					Slide {{ i + 1 }} of {{ c }}
 				</span>
-				<ng-template [ngTemplateOutlet]="slide.tplRef"></ng-template>
+				<ng-template [ngTemplateOutlet]="slide.templateRef"></ng-template>
 			</div>
 		</div>
 		<button class="carousel-control-prev" type="button" (click)="arrowLeft()" *ngIf="showNavigationArrows">
@@ -121,26 +122,32 @@ export class NgbSlide {
 		</button>
 	`,
 })
-export class NgbCarousel implements AfterContentChecked, AfterContentInit, AfterViewInit, OnDestroy {
+export class NgbCarousel implements AfterContentChecked, AfterContentInit, AfterViewInit {
 	@ContentChildren(NgbSlide) slides: QueryList<NgbSlide>;
 
 	public NgbSlideEventSource = NgbSlideEventSource;
 
-	private _destroy$ = new Subject<void>();
-	private _interval$ = new BehaviorSubject(0);
+	private _config = inject(NgbCarouselConfig);
+	private _platformId = inject(PLATFORM_ID);
+	private _ngZone = inject(NgZone);
+	private _cd = inject(ChangeDetectorRef);
+	private _container = inject(ElementRef);
+	private _destroyRef = inject(DestroyRef);
+
+	private _interval$ = new BehaviorSubject(this._config.interval);
 	private _mouseHover$ = new BehaviorSubject(false);
 	private _focused$ = new BehaviorSubject(false);
-	private _pauseOnHover$ = new BehaviorSubject(false);
-	private _pauseOnFocus$ = new BehaviorSubject(false);
+	private _pauseOnHover$ = new BehaviorSubject(this._config.pauseOnHover);
+	private _pauseOnFocus$ = new BehaviorSubject(this._config.pauseOnFocus);
 	private _pause$ = new BehaviorSubject(false);
-	private _wrap$ = new BehaviorSubject(false);
+	private _wrap$ = new BehaviorSubject(this._config.wrap);
 
 	/**
 	 * A flag to enable/disable the animations.
 	 *
 	 * @since 8.0.0
 	 */
-	@Input() animation: boolean;
+	@Input() animation = this._config.animation;
 
 	/**
 	 * The slide id that should be displayed **initially**.
@@ -176,7 +183,7 @@ export class NgbCarousel implements AfterContentChecked, AfterContentInit, After
 	/**
 	 * If `true`, allows to interact with carousel using keyboard 'arrow left' and 'arrow right'.
 	 */
-	@Input() keyboard: boolean;
+	@Input() keyboard = this._config.keyboard;
 
 	/**
 	 * If `true`, will pause slide switching when mouse cursor hovers the slide.
@@ -209,14 +216,14 @@ export class NgbCarousel implements AfterContentChecked, AfterContentInit, After
 	 *
 	 * @since 2.2.0
 	 */
-	@Input() showNavigationArrows: boolean;
+	@Input() showNavigationArrows = this._config.showNavigationArrows;
 
 	/**
 	 * If `true`, navigation indicators at the bottom of the slide will be visible.
 	 *
 	 * @since 2.2.0
 	 */
-	@Input() showNavigationIndicators: boolean;
+	@Input() showNavigationIndicators = this._config.showNavigationIndicators;
 
 	/**
 	 * An event emitted just before the slide transition starts.
@@ -254,23 +261,6 @@ export class NgbCarousel implements AfterContentChecked, AfterContentInit, After
 
 	get focused() {
 		return this._focused$.value;
-	}
-
-	constructor(
-		config: NgbCarouselConfig,
-		@Inject(PLATFORM_ID) private _platformId,
-		private _ngZone: NgZone,
-		private _cd: ChangeDetectorRef,
-		private _container: ElementRef,
-	) {
-		this.animation = config.animation;
-		this.interval = config.interval;
-		this.wrap = config.wrap;
-		this.keyboard = config.keyboard;
-		this.pauseOnHover = config.pauseOnHover;
-		this.pauseOnFocus = config.pauseOnFocus;
-		this.showNavigationArrows = config.showNavigationArrows;
-		this.showNavigationIndicators = config.showNavigationIndicators;
 	}
 
 	arrowLeft() {
@@ -328,13 +318,13 @@ export class NgbCarousel implements AfterContentChecked, AfterContentInit, After
 
 						distinctUntilChanged(),
 						switchMap((interval) => (interval > 0 ? timer(interval, interval) : NEVER)),
-						takeUntil(this._destroy$),
+						takeUntilDestroyed(this._destroyRef),
 					)
 					.subscribe(() => this._ngZone.run(() => this.next(NgbSlideEventSource.TIMER)));
 			});
 		}
 
-		this.slides.changes.pipe(takeUntil(this._destroy$)).subscribe(() => {
+		this.slides.changes.pipe(takeUntilDestroyed(this._destroyRef)).subscribe(() => {
 			this._transitionIds?.forEach((id) => ngbCompleteTransition(this._getSlideElement(id)));
 			this._transitionIds = null;
 
@@ -368,10 +358,6 @@ export class NgbCarousel implements AfterContentChecked, AfterContentInit, After
 				element.classList.add('active');
 			}
 		}
-	}
-
-	ngOnDestroy() {
-		this._destroy$.next();
 	}
 
 	/**

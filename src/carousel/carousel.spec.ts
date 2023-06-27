@@ -44,8 +44,8 @@ function expectActiveSlides(nativeEl: HTMLDivElement, active: boolean[]) {
 
 describe('ngb-carousel', () => {
 	it('should initialize inputs with default values', () => {
-		const defaultConfig = new NgbCarouselConfig(new NgbConfig());
-		const carousel = new NgbCarousel(new NgbCarouselConfig(new NgbConfig()), null, <any>null, <any>null, <any>null);
+		const defaultConfig = TestBed.inject(NgbCarouselConfig);
+		const carousel = TestBed.createComponent(NgbCarousel).componentInstance;
 
 		expect(carousel.interval).toBe(defaultConfig.interval);
 		expect(carousel.wrap).toBe(defaultConfig.wrap);
@@ -915,8 +915,8 @@ describe('ngb-carousel', () => {
 		});
 	});
 
-	describe('Custom config as provider', () => {
-		const config = new NgbCarouselConfig(new NgbConfig());
+	it('should initialize inputs with provided config as provider', () => {
+		const config = TestBed.inject(NgbCarouselConfig);
 		config.interval = 1000;
 		config.wrap = false;
 		config.keyboard = false;
@@ -925,25 +925,14 @@ describe('ngb-carousel', () => {
 		config.showNavigationIndicators = true;
 		config.showNavigationArrows = true;
 
-		beforeEach(() => {
-			TestBed.configureTestingModule({
-				providers: [{ provide: NgbCarouselConfig, useValue: config }],
-			});
-		});
-
-		it('should initialize inputs with provided config as provider', () => {
-			const fixture = TestBed.createComponent(NgbCarousel);
-			fixture.detectChanges();
-
-			const carousel = fixture.componentInstance;
-			expect(carousel.interval).toBe(config.interval);
-			expect(carousel.wrap).toBe(config.wrap);
-			expect(carousel.keyboard).toBe(config.keyboard);
-			expect(carousel.pauseOnHover).toBe(config.pauseOnHover);
-			expect(carousel.pauseOnFocus).toBe(config.pauseOnFocus);
-			expect(carousel.showNavigationIndicators).toBe(config.showNavigationIndicators);
-			expect(carousel.showNavigationArrows).toBe(config.showNavigationArrows);
-		});
+		const carousel = TestBed.createComponent(NgbCarousel).componentInstance;
+		expect(carousel.interval).toBe(config.interval);
+		expect(carousel.wrap).toBe(config.wrap);
+		expect(carousel.keyboard).toBe(config.keyboard);
+		expect(carousel.pauseOnHover).toBe(config.pauseOnHover);
+		expect(carousel.pauseOnFocus).toBe(config.pauseOnFocus);
+		expect(carousel.showNavigationIndicators).toBe(config.showNavigationIndicators);
+		expect(carousel.showNavigationArrows).toBe(config.showNavigationArrows);
 	});
 });
 

@@ -1,9 +1,9 @@
 import { NgbCarouselConfig } from './carousel-config';
-import { NgbConfig } from '../ngb-config';
+import { TestBed } from '@angular/core/testing';
 
 describe('ngb-carousel-config', () => {
 	it('should have sensible default values', () => {
-		const config = new NgbCarouselConfig(new NgbConfig());
+		const config = TestBed.inject(NgbCarouselConfig);
 
 		expect(config.interval).toBe(5000);
 		expect(config.keyboard).toBe(true);
