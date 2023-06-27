@@ -379,23 +379,25 @@ export class NgbAccordionItem implements AfterContentInit {
 	host: { '[class.accordion]': 'true' },
 })
 export class NgbAccordionDirective {
+	private _config = inject(NgbAccordionConfig);
+	private _anItemWasAlreadyExpandedDuringInitialisation = false;
+
 	@ContentChildren(NgbAccordionItem, { descendants: false }) private _items?: QueryList<NgbAccordionItem>;
 	/**
 	 * If `true`, accordion will be animated.
 	 */
-	@Input() animation: boolean;
+	@Input() animation = this._config.animation;
 
 	/**
 	 * If `true`, only one item at the time can stay open.
 	 */
-	@Input() closeOthers: boolean;
-
+	@Input() closeOthers = this._config.closeOthers;
 	/**
 	 * If `true`, the content of the accordion items body will be removed from the DOM. It will be just hidden otherwise.
 	 *
 	 * This property can be overwritten at the [`NgbAccordionItem`](#/components/accordion/api#NgbAccordionItem) level
 	 */
-	@Input() destroyOnHide: boolean;
+	@Input() destroyOnHide = this._config.destroyOnHide;
 
 	/**
 	 * Event emitted before expanding animation starts. The payload is the id of shown accordion item.
@@ -421,14 +423,6 @@ export class NgbAccordionDirective {
 	 * The payload is the id of hidden accordion item.
 	 */
 	@Output() hidden = new EventEmitter<string>();
-
-	private _anItemWasAlreadyExpandedDuringInitialisation = false;
-
-	constructor(config: NgbAccordionConfig) {
-		this.animation = config.animation;
-		this.closeOthers = config.closeOthers;
-		this.destroyOnHide = config.destroyOnHide;
-	}
 
 	/**
 	 * Toggles an item with the given id.

@@ -101,10 +101,13 @@ describe('ngb-accordion directive', () => {
 	});
 
 	it('should initialize inputs with default values', () => {
-		const defaultConfig = new NgbAccordionConfig(new NgbConfig());
-		const accordion = new NgbAccordionDirective(defaultConfig);
-		expect(accordion.closeOthers).toBe(defaultConfig.closeOthers);
-		expect(accordion.animation).toBe(defaultConfig.animation);
+		const defaultConfig = TestBed.inject(NgbAccordionConfig);
+
+		TestBed.runInInjectionContext(() => {
+			let accordion = new NgbAccordionDirective();
+			expect(accordion.closeOthers).toBe(defaultConfig.closeOthers);
+			expect(accordion.animation).toBe(defaultConfig.animation);
+		});
 	});
 
 	it('should have no open panels', () => {
@@ -691,18 +694,17 @@ describe('ngb-accordion directive', () => {
 			return { fixture, accordionDirective, nativeElement };
 		}
 
-		it(`ensure methods don't fail when called before view init`, inject(
-			[NgbAccordionConfig],
-			(config: NgbAccordionConfig) => {
-				const accordion = new NgbAccordionDirective(config);
+		it(`ensure methods don't fail when called before view init`, () => {
+			TestBed.runInInjectionContext(() => {
+				const accordion = new NgbAccordionDirective();
 				accordion.toggle('one');
 				accordion.collapse('one');
 				accordion.expand('one');
 				accordion.expandAll();
 				accordion.collapseAll();
 				accordion.isExpanded('one');
-			},
-		));
+			});
+		});
 
 		it('should check if a panel with a given id is expanded', () => {
 			const html = `
@@ -978,23 +980,18 @@ describe('Custom config', () => {
 		expect(directive.closeOthers).toBe(config.closeOthers);
 	});
 });
-describe('Custom config as provider', () => {
-	let config = new NgbAccordionConfig(new NgbConfig());
-	beforeEach(() => {
-		config = new NgbAccordionConfig(new NgbConfig());
-		config.closeOthers = true;
-		TestBed.overrideProvider(NgbAccordionConfig, { useValue: config });
-	});
 
-	it('should initialize inputs with provided config as provider', () => {
-		const fixture = TestBed.createComponent(TestComponent);
-		fixture.detectChanges();
+it('should initialize inputs with provided config', () => {
+	let config = TestBed.inject(NgbAccordionConfig);
+	config.closeOthers = true;
+	config.destroyOnHide = false;
 
-		const directiveEl = fixture.debugElement.query(By.directive(NgbAccordionDirective));
-		const directive = directiveEl.injector.get(NgbAccordionDirective);
+	const fixture = TestBed.createComponent(TestComponent);
+	fixture.detectChanges();
 
-		expect(directive.closeOthers).toBe(config.closeOthers);
-	});
+	const directive = fixture.debugElement.query(By.directive(NgbAccordionDirective)).injector.get(NgbAccordionDirective);
+	expect(directive.closeOthers).toBe(config.closeOthers);
+	expect(directive.destroyOnHide).toBe(config.destroyOnHide);
 });
 
 if (isBrowserVisible('ngb-accordion-directive animations')) {
