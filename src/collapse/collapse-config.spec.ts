@@ -1,11 +1,10 @@
-import { NgbConfig } from '../ngb-config';
 import { NgbCollapseConfig } from './collapse-config';
+import { TestBed } from '@angular/core/testing';
 
 describe('ngb-collapse-config', () => {
 	it('should have sensible default values', () => {
-		const config = new NgbConfig();
-		const collapseConfig = new NgbCollapseConfig(config);
+		const config = TestBed.inject(NgbCollapseConfig);
 
-		expect(collapseConfig.animation).toBe(config.animation);
+		expect(config.horizontal).toBe(false);
 	});
 });

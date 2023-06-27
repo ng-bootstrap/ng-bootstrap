@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { NgbConfig } from '../ngb-config';
 
 /**
@@ -9,13 +9,13 @@ import { NgbConfig } from '../ngb-config';
  */
 @Injectable({ providedIn: 'root' })
 export class NgbCollapseConfig {
+	private _ngbConfig = inject(NgbConfig);
 	private _animation: boolean;
+
 	horizontal = false;
 
-	constructor(private _ngbConfig: NgbConfig) {}
-
 	get animation(): boolean {
-		return this._animation === undefined ? this._ngbConfig.animation : this._animation;
+		return this._animation ?? this._ngbConfig.animation;
 	}
 	set animation(animation: boolean) {
 		this._animation = animation;
