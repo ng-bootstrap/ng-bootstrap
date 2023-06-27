@@ -3,6 +3,7 @@ import {
 	Component,
 	ElementRef,
 	EventEmitter,
+	inject,
 	Input,
 	NgZone,
 	Output,
@@ -49,6 +50,10 @@ import { ngbAlertFadingTransition } from './alert-transition';
 	styleUrls: ['./alert.scss'],
 })
 export class NgbAlert {
+	private _config = inject(NgbAlertConfig);
+	private _elementRef = inject(ElementRef<HTMLElement>);
+	private _zone = inject(NgZone);
+
 	/**
 	 * If `true`, alert closing will be animated.
 	 *
@@ -57,7 +62,7 @@ export class NgbAlert {
 	 *
 	 * @since 8.0.0
 	 */
-	@Input() animation: boolean;
+	@Input() animation = this._config.animation;
 
 	/**
 	 * If `true`, alert can be dismissed by the user.
@@ -65,7 +70,7 @@ export class NgbAlert {
 	 * The close button (×) will be displayed and you can be notified
 	 * of the event with the `(closed)` output.
 	 */
-	@Input() dismissible: boolean;
+	@Input() dismissible = this._config.dismissible;
 
 	/**
 	 * Type of the alert.
@@ -73,7 +78,7 @@ export class NgbAlert {
 	 * Bootstrap provides styles for the following types: `'success'`, `'info'`, `'warning'`, `'danger'`, `'primary'`,
 	 * `'secondary'`, `'light'` and `'dark'`.
 	 */
-	@Input() type: string;
+	@Input() type = this._config.type;
 
 	/**
 	 * An event emitted when the close button is clicked. It has no payload and only relevant for dismissible alerts.
@@ -81,12 +86,6 @@ export class NgbAlert {
 	 * @since 8.0.0
 	 */
 	@Output() closed = new EventEmitter<void>();
-
-	constructor(config: NgbAlertConfig, private _element: ElementRef<HTMLElement>, private _zone: NgZone) {
-		this.dismissible = config.dismissible;
-		this.type = config.type;
-		this.animation = config.animation;
-	}
 
 	/**
 	 * Triggers alert closing programmatically (same as clicking on the close button (×)).
@@ -99,7 +98,7 @@ export class NgbAlert {
 	 * @since 8.0.0
 	 */
 	close(): Observable<void> {
-		const transition = ngbRunTransition(this._zone, this._element.nativeElement, ngbAlertFadingTransition, {
+		const transition = ngbRunTransition(this._zone, this._elementRef.nativeElement, ngbAlertFadingTransition, {
 			animation: this.animation,
 			runningTransition: 'continue',
 		});
