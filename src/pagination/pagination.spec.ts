@@ -1,4 +1,4 @@
-import { TestBed, ComponentFixture, inject, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { createGenericTestComponent } from '../test/common';
 
 import { Component } from '@angular/core';
@@ -82,7 +82,7 @@ describe('ngb-pagination', () => {
 		let pagination: NgbPagination;
 
 		beforeEach(() => {
-			pagination = new NgbPagination(new NgbPaginationConfig());
+			pagination = TestBed.createComponent(NgbPagination).componentInstance;
 		});
 
 		it('should initialize inputs with default values', () => {
