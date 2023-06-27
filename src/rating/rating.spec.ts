@@ -54,8 +54,8 @@ function getStateText(compiled) {
 
 describe('ngb-rating', () => {
 	it('should initialize inputs with default values', () => {
-		const defaultConfig = new NgbRatingConfig();
-		const rating = new NgbRating(new NgbRatingConfig(), <any>null);
+		const defaultConfig = TestBed.inject(NgbRatingConfig);
+		const rating = TestBed.createComponent(NgbRating).componentInstance;
 		expect(rating.max).toBe(defaultConfig.max);
 		expect(rating.readonly).toBe(defaultConfig.readonly);
 	});
