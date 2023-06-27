@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { PlacementArray } from '../util/positioning';
 import { NgbConfig } from '../ngb-config';
 import { Options } from '@popperjs/core';
@@ -11,6 +11,9 @@ import { Options } from '@popperjs/core';
  */
 @Injectable({ providedIn: 'root' })
 export class NgbTooltipConfig {
+	private _ngbConfig = inject(NgbConfig);
+	private _animation: boolean;
+
 	autoClose: boolean | 'inside' | 'outside' = true;
 	placement: PlacementArray = 'auto';
 	popperOptions = (options: Partial<Options>) => options;
@@ -21,12 +24,8 @@ export class NgbTooltipConfig {
 	openDelay = 0;
 	closeDelay = 0;
 
-	private _animation: boolean;
-
-	constructor(private _ngbConfig: NgbConfig) {}
-
 	get animation(): boolean {
-		return this._animation === undefined ? this._ngbConfig.animation : this._animation;
+		return this._animation ?? this._ngbConfig.animation;
 	}
 	set animation(animation: boolean) {
 		this._animation = animation;
