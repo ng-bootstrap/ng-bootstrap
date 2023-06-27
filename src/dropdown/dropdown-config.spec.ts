@@ -7,6 +7,7 @@ describe('ngb-dropdown-config', () => {
 		expect(config.placement).toEqual(['bottom-start', 'bottom-end', 'top-start', 'top-end']);
 		expect(config.popperOptions({})).toEqual({});
 		expect(config.autoClose).toBe(true);
+		expect(config.container).toBe(null);
 	});
 
 	it('should allow setting "inside" and "outside" value for autoClose', () => {

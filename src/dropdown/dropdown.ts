@@ -7,7 +7,7 @@ import {
 	ElementRef,
 	EventEmitter,
 	forwardRef,
-	Inject,
+	inject,
 	Input,
 	NgZone,
 	OnChanges,
@@ -15,7 +15,6 @@ import {
 	OnInit,
 	Output,
 	QueryList,
-	Renderer2,
 	SimpleChanges,
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
@@ -23,7 +22,6 @@ import { fromEvent, Subject, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import { ngbPositioning, Placement, PlacementArray } from '../util/positioning';
-import { Options } from '@popperjs/core';
 import { addPopperOffset } from '../util/positioning-util';
 import { ngbAutoClose, SOURCE } from '../util/autoclose';
 import { Key } from '../util/key';
@@ -54,20 +52,29 @@ export class NgbDropdownItem {
 
 	private _disabled = false;
 
+	nativeElement = inject(ElementRef).nativeElement as HTMLElement;
+
 	@Input()
 	set disabled(value: boolean) {
 		this._disabled = <any>value === '' || value === true; // accept an empty attribute as true
-		// note: we don't use a host binding for disabled because when used on links, it fails because links don't have a
-		// disabled property
-		// setting the property using the renderer, OTOH, works fine in both cases.
-		this._renderer.setProperty(this.elementRef.nativeElement, 'disabled', this._disabled);
 	}
 
 	get disabled(): boolean {
 		return this._disabled;
 	}
+}
 
-	constructor(public elementRef: ElementRef<HTMLElement>, private _renderer: Renderer2) {}
+/**
+ * A directive that will be applied if dropdown item is a button.
+ * It will only set the disabled property.
+ */
+@Directive({
+	selector: 'button[ngbDropdownItem]',
+	standalone: true,
+	host: { '[disabled]': 'item.disabled' },
+})
+export class NgbDropdownButtonItem {
+	item = inject(NgbDropdownItem);
 }
 
 /**
@@ -90,18 +97,10 @@ export class NgbDropdownItem {
 	},
 })
 export class NgbDropdownMenu {
-	nativeElement: HTMLElement;
-	placement: Placement | null = 'bottom';
-	isOpen = false;
+	dropdown = inject(NgbDropdown);
+	nativeElement = inject(ElementRef).nativeElement as HTMLElement;
 
 	@ContentChildren(NgbDropdownItem) menuItems: QueryList<NgbDropdownItem>;
-
-	constructor(
-		@Inject(forwardRef(() => NgbDropdown)) public dropdown: NgbDropdown,
-		_elementRef: ElementRef<HTMLElement>,
-	) {
-		this.nativeElement = _elementRef.nativeElement;
-	}
 }
 
 /**
@@ -123,13 +122,8 @@ export class NgbDropdownMenu {
 	},
 })
 export class NgbDropdownAnchor {
-	nativeElement: HTMLElement;
-	constructor(
-		@Inject(forwardRef(() => NgbDropdown)) public dropdown: NgbDropdown,
-		_elementRef: ElementRef<HTMLElement>,
-	) {
-		this.nativeElement = _elementRef.nativeElement;
-	}
+	dropdown = inject(NgbDropdown);
+	nativeElement = inject(ElementRef).nativeElement as HTMLElement;
 }
 
 /**
@@ -154,14 +148,7 @@ export class NgbDropdownAnchor {
 	},
 	providers: [{ provide: NgbDropdownAnchor, useExisting: forwardRef(() => NgbDropdownToggle) }],
 })
-export class NgbDropdownToggle extends NgbDropdownAnchor {
-	constructor(
-		@Inject(forwardRef(() => NgbDropdown)) public dropdown: NgbDropdown,
-		_elementRef: ElementRef<HTMLElement>,
-	) {
-		super(dropdown, _elementRef);
-	}
-}
+export class NgbDropdownToggle extends NgbDropdownAnchor {}
 
 /**
  * A directive that provides contextual overlays for displaying lists of links and more.
@@ -175,10 +162,18 @@ export class NgbDropdownToggle extends NgbDropdownAnchor {
 export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestroy {
 	static ngAcceptInputType_autoClose: boolean | string;
 	static ngAcceptInputType_display: string;
+
+	private _changeDetector = inject(ChangeDetectorRef);
+	private _config = inject(NgbDropdownConfig);
+	private _document = inject(DOCUMENT);
+	private _ngZone = inject(NgZone);
+	private _nativeElement = inject(ElementRef).nativeElement as HTMLElement;
+
 	private _destroyCloseHandlers$ = new Subject<void>();
 	private _zoneSubscription: Subscription;
 	private _bodyContainer: HTMLElement | null = null;
-	private _positioning: ReturnType<typeof ngbPositioning>;
+
+	private _positioning = ngbPositioning();
 
 	@ContentChild(NgbDropdownMenu, { static: false }) private _menu: NgbDropdownMenu;
 	@ContentChild(NgbDropdownAnchor, { static: false }) private _anchor: NgbDropdownAnchor;
@@ -191,7 +186,7 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 	 * * `"inside"` - the dropdown will close on inside menu clicks, but not outside clicks.
 	 * * `"outside"` - the dropdown will close only on the outside clicks and not on menu clicks.
 	 */
-	@Input() autoClose: boolean | 'outside' | 'inside';
+	@Input() autoClose = this._config.autoClose;
 
 	/**
 	 * A custom class that is applied only to the `ngbDropdownMenu` parent element.
@@ -217,7 +212,7 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 	 *
 	 * Please see the [positioning overview](#/positioning) for more details.
 	 */
-	@Input() placement: PlacementArray;
+	@Input() placement = this._config.placement;
 
 	/**
 	 * Allows to change default Popper options when positioning the dropdown.
@@ -225,7 +220,7 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 	 *
 	 * @since 13.1.0
 	 */
-	@Input() popperOptions: (options: Partial<Options>) => Partial<Options>;
+	@Input() popperOptions = this._config.popperOptions;
 
 	/**
 	 * A selector specifying the element the dropdown should be appended to.
@@ -233,7 +228,7 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 	 *
 	 * @since 4.1.0
 	 */
-	@Input() container: null | 'body';
+	@Input() container: null | 'body' = this._config.container;
 
 	/**
 	 * Enable or disable the dynamic positioning. The default value is dynamic unless the dropdown is used
@@ -254,25 +249,9 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 	 */
 	@Output() openChange = new EventEmitter<boolean>();
 
-	constructor(
-		private _changeDetector: ChangeDetectorRef,
-		config: NgbDropdownConfig,
-		@Inject(DOCUMENT) private _document: any,
-		private _ngZone: NgZone,
-		private _elementRef: ElementRef<HTMLElement>,
-		private _renderer: Renderer2,
-	) {
-		this.placement = config.placement;
-		this.popperOptions = config.popperOptions;
-		this.container = config.container;
-		this.autoClose = config.autoClose;
-
-		this._positioning = ngbPositioning();
-	}
-
 	ngOnInit(): void {
 		if (!this.display) {
-			this.display = this._elementRef.nativeElement.closest('.navbar') ? 'static' : 'dynamic';
+			this.display = this._nativeElement.closest('.navbar') ? 'static' : 'dynamic';
 		}
 	}
 
@@ -438,9 +417,9 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
                But the menu is not a sibling to anchor/toggle, it is at the end of the body.
                Trick is to synchronously focus the menu element, and let the [keydown.Tab] go
                so that browser will focus the proper element (first one focusable in the menu) */
-						this._renderer.setAttribute(this._menu.nativeElement, 'tabindex', '0');
+						this._menu.nativeElement.setAttribute('tabindex', '0');
 						this._menu.nativeElement.focus();
-						this._renderer.removeAttribute(this._menu.nativeElement, 'tabindex');
+						this._menu.nativeElement.removeAttribute('tabindex');
 					} else if (event.shiftKey) {
 						this.close();
 					}
@@ -458,7 +437,7 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 					fromEvent<FocusEvent>(event.target as HTMLElement, 'focusout')
 						.pipe(take(1))
 						.subscribe(({ relatedTarget }) => {
-							if (!this._elementRef.nativeElement.contains(relatedTarget as HTMLElement)) {
+							if (!this._nativeElement.contains(relatedTarget as HTMLElement)) {
 								this.close();
 							}
 						});
@@ -497,7 +476,7 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 	}
 
 	private _isDropup(): boolean {
-		return this._elementRef.nativeElement.classList.contains('dropup');
+		return this._nativeElement.classList.contains('dropup');
 	}
 
 	private _isEventFromToggle(event: KeyboardEvent) {
@@ -505,11 +484,9 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 	}
 
 	private _getMenuElements(): HTMLElement[] {
-		const menu = this._menu;
-		if (menu == null) {
-			return [];
-		}
-		return menu.menuItems.filter((item) => !item.disabled).map((item) => item.elementRef.nativeElement);
+		return this._menu
+			? this._menu.menuItems.filter(({ disabled }) => !disabled).map(({ nativeElement }) => nativeElement)
+			: [];
 	}
 
 	private _positionMenu() {
@@ -529,15 +506,11 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 	}
 
 	private _resetContainer() {
-		const renderer = this._renderer;
 		if (this._menu) {
-			const dropdownElement = this._elementRef.nativeElement;
-			const dropdownMenuElement = this._menu.nativeElement;
-
-			renderer.appendChild(dropdownElement, dropdownMenuElement);
+			this._nativeElement.appendChild(this._menu.nativeElement);
 		}
 		if (this._bodyContainer) {
-			renderer.removeChild(this._document.body, this._bodyContainer);
+			this._document.body.removeChild(this._bodyContainer);
 			this._bodyContainer = null;
 		}
 	}
@@ -545,54 +518,45 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 	private _applyContainer(container: null | 'body' = null) {
 		this._resetContainer();
 		if (container === 'body') {
-			const renderer = this._renderer;
 			const dropdownMenuElement = this._menu.nativeElement;
-			const bodyContainer = (this._bodyContainer = this._bodyContainer || renderer.createElement('div'));
+			const bodyContainer = (this._bodyContainer = this._bodyContainer || this._document.createElement('div'));
 
 			// Override some styles to have the positioning working
-			renderer.setStyle(bodyContainer, 'position', 'absolute');
-			renderer.setStyle(dropdownMenuElement, 'position', 'static');
-			renderer.setStyle(bodyContainer, 'z-index', '1055');
+			bodyContainer.style.position = 'absolute';
+			dropdownMenuElement.style.position = 'static';
+			bodyContainer.style.zIndex = '1055';
 
-			renderer.appendChild(bodyContainer, dropdownMenuElement);
-			renderer.appendChild(this._document.body, bodyContainer);
+			bodyContainer.appendChild(dropdownMenuElement);
+			this._document.body.appendChild(bodyContainer);
 		}
 
 		this._applyCustomDropdownClass(this.dropdownClass);
 	}
 
 	private _applyCustomDropdownClass(newClass: string, oldClass?: string) {
-		const targetElement = this.container === 'body' ? this._bodyContainer : this._elementRef.nativeElement;
+		const targetElement = this.container === 'body' ? this._bodyContainer : this._nativeElement;
 		if (targetElement) {
 			if (oldClass) {
-				this._renderer.removeClass(targetElement, oldClass);
+				targetElement.classList.remove(oldClass);
 			}
 			if (newClass) {
-				this._renderer.addClass(targetElement, newClass);
+				targetElement.classList.add(newClass);
 			}
 		}
 	}
 
 	private _applyPlacementClasses(placement?: Placement | null) {
-		const menu = this._menu;
-		if (menu) {
+		if (this._menu) {
 			if (!placement) {
 				placement = this._getFirstPlacement(this.placement);
 			}
 
-			const renderer = this._renderer;
-			const dropdownElement = this._elementRef.nativeElement;
-
 			// remove the current placement classes
-			renderer.removeClass(dropdownElement, 'dropup');
-			renderer.removeClass(dropdownElement, 'dropdown');
-			const { nativeElement } = menu;
+			this._nativeElement.classList.remove('dropup', 'dropdown');
 			if (this.display === 'static') {
-				menu.placement = null;
-				renderer.setAttribute(nativeElement, 'data-bs-popper', 'static');
+				this._menu.nativeElement.setAttribute('data-bs-popper', 'static');
 			} else {
-				menu.placement = placement;
-				renderer.removeAttribute(nativeElement, 'data-bs-popper');
+				this._menu.nativeElement.removeAttribute('data-bs-popper');
 			}
 
 			/*
@@ -600,13 +564,11 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 			 * in case of top use up-arrow or down-arrow otherwise
 			 */
 			const dropdownClass = placement.search('^top') !== -1 ? 'dropup' : 'dropdown';
-			renderer.addClass(dropdownElement, dropdownClass);
+			this._nativeElement.classList.add(dropdownClass);
 
-			const bodyContainer = this._bodyContainer;
-			if (bodyContainer) {
-				renderer.removeClass(bodyContainer, 'dropup');
-				renderer.removeClass(bodyContainer, 'dropdown');
-				renderer.addClass(bodyContainer, dropdownClass);
+			if (this._bodyContainer) {
+				this._bodyContainer.classList.remove('dropup', 'dropdown');
+				this._bodyContainer.classList.add(dropdownClass);
 			}
 		}
 	}
