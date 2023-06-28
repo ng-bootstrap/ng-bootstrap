@@ -39,6 +39,8 @@ function expectActiveSlides(nativeEl: HTMLDivElement, active: boolean[]) {
 			expect(indicatorElms[i]).not.toHaveCssClass('active');
 			expect(indicatorElms[i].getAttribute('aria-selected')).toBe('false');
 		}
+
+		expect(indicatorElms[i].getAttribute('aria-label')).toBe(`Slide ${i + 1} of ${active.length}`);
 	}
 }
 
@@ -857,13 +859,11 @@ describe('ngb-carousel', () => {
 		const slideElms = getSlideElements(fixture.nativeElement);
 		expect(slideElms.length).toBe(1);
 		expect(slideElms[0].textContent).toMatch(/foo/);
-		expect(fixture.nativeElement.querySelectorAll('.carousel-indicators.visually-hidden > button').length).toBe(0);
 		expect(getIndicatorElements(fixture.nativeElement).length).toBe(1);
 
 		fixture.componentInstance.showNavigationIndicators = false;
 		fixture.detectChanges();
-		expect(fixture.nativeElement.querySelectorAll('.carousel-indicators.visually-hidden > button').length).toBe(1);
-		expect(getIndicatorElements(fixture.nativeElement).length).toBe(1);
+		expect(getIndicatorElements(fixture.nativeElement).length).toBe(0);
 
 		discardPeriodicTasks();
 	}));
