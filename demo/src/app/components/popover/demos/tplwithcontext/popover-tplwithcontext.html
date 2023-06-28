@@ -37,3 +37,18 @@
 		English
 	</button>
 </div>
+
+<hr />
+
+<p>Alternatively you can also pass in a default context when triggering a popover.</p>
+<div class="buttons">
+	<button
+		type="button"
+		class="btn btn-outline-secondary me-2"
+		[ngbPopover]="popContent"
+		[popoverTitle]="popTitle"
+		[popoverContext]="{language: '中文', greeting: '你好'}"
+	>
+		Chinese
+	</button>
+</div>

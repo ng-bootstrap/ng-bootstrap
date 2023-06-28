@@ -34,3 +34,17 @@
 		English
 	</button>
 </div>
+
+<hr />
+
+<p>Alternatively you can pass in a default context when triggering a tooltip.</p>
+<div class="buttons">
+	<button
+		type="button"
+		class="btn btn-outline-secondary me-2"
+		[ngbTooltip]="tipContent"
+		[tooltipContext]="{greeting: '你好'}"
+	>
+		French
+	</button>
+</div>

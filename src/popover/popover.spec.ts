@@ -160,6 +160,81 @@ describe('ngb-popover', () => {
 			expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
 		}));
 
+		it('should open and close a popover - default settings, content from a template and template context object supplied by markup', fakeAsync(() => {
+			const fixture = createTestComponent(`
+          <ng-template #t let-name="name">Hello, {{name}}!</ng-template>
+          <div [ngbPopover]="t" popoverTitle="Title" [popoverContext]="{name: 'John'}" style="margin-top: 150px;"></div>`);
+			const directive = fixture.debugElement.query(By.directive(NgbPopover));
+
+			directive.context.popover.open();
+			fixture.detectChanges();
+			tick();
+			const windowEl = getWindow(fixture.nativeElement);
+			const id = windowEl.getAttribute('id');
+
+			expect(windowEl).toHaveCssClass('popover');
+			expect(windowEl).toHaveCssClass('bs-popover-top');
+			expect(windowEl.textContent.trim()).toBe('TitleHello, John!');
+			expect(windowEl.getAttribute('role')).toBe('tooltip');
+			expect(windowEl.parentNode).toBe(fixture.nativeElement);
+			expect(directive.nativeElement.getAttribute('aria-describedby')).toBe(id);
+
+			triggerEvent(directive, 'click');
+			fixture.detectChanges();
+			expect(getWindow(fixture.nativeElement)).toBeNull();
+			expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
+		}));
+
+		it('should open and close a popover - default settings, content from a template and template context object supplied by markup, open by click', fakeAsync(() => {
+			const fixture = createTestComponent(`
+          <ng-template #t let-name="name">Hello, {{name}}!</ng-template>
+          <div [ngbPopover]="t" popoverTitle="Title" [popoverContext]="{name: 'John'}" style="margin-top: 150px;"></div>`);
+			const directive = fixture.debugElement.query(By.directive(NgbPopover));
+
+			triggerEvent(directive, 'click');
+			fixture.detectChanges();
+			tick();
+			const windowEl = getWindow(fixture.nativeElement);
+			const id = windowEl.getAttribute('id');
+
+			expect(windowEl).toHaveCssClass('popover');
+			expect(windowEl).toHaveCssClass('bs-popover-top');
+			expect(windowEl.textContent.trim()).toBe('TitleHello, John!');
+			expect(windowEl.getAttribute('role')).toBe('tooltip');
+			expect(windowEl.parentNode).toBe(fixture.nativeElement);
+			expect(directive.nativeElement.getAttribute('aria-describedby')).toBe(id);
+
+			triggerEvent(directive, 'click');
+			fixture.detectChanges();
+			expect(getWindow(fixture.nativeElement)).toBeNull();
+			expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
+		}));
+
+		it('should open and close a popover - default settings, content from a template and template context object supplied can be override with open method', fakeAsync(() => {
+			const fixture = createTestComponent(`
+          <ng-template #t let-name="name">Hello, {{name}}!</ng-template>
+          <div [ngbPopover]="t" popoverTitle="Title" [popoverContext]="{name: 'John'}" style="margin-top: 150px;"></div>`);
+			const directive = fixture.debugElement.query(By.directive(NgbPopover));
+
+			directive.context.popover.open({ name: 'World' });
+			fixture.detectChanges();
+			tick();
+			const windowEl = getWindow(fixture.nativeElement);
+			const id = windowEl.getAttribute('id');
+
+			expect(windowEl).toHaveCssClass('popover');
+			expect(windowEl).toHaveCssClass('bs-popover-top');
+			expect(windowEl.textContent.trim()).toBe('TitleHello, World!');
+			expect(windowEl.getAttribute('role')).toBe('tooltip');
+			expect(windowEl.parentNode).toBe(fixture.nativeElement);
+			expect(directive.nativeElement.getAttribute('aria-describedby')).toBe(id);
+
+			triggerEvent(directive, 'click');
+			fixture.detectChanges();
+			expect(getWindow(fixture.nativeElement)).toBeNull();
+			expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
+		}));
+
 		it('should open and close a popover - default settings and custom class', fakeAsync(() => {
 			const fixture = createTestComponent(`
         <div ngbPopover="Great tip!" popoverTitle="Title" popoverClass="my-custom-class" style="margin-top: 150px;"></div>`);

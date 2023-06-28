@@ -138,6 +138,11 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 	@Input() tooltipClass: string;
 
 	/**
+	 * Default template context for `TemplateRef`, can be overridden with `open` method.
+	 */
+	@Input() tooltipContext: any;
+
+	/**
 	 * The opening delay in ms. Works only for "non-manual" opening triggers defined by the `triggers` input.
 	 *
 	 * @since 4.1.0
@@ -226,7 +231,11 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 	 */
 	open(context?: any) {
 		if (!this._windowRef && this._ngbTooltip && !this.disableTooltip) {
-			const { windowRef, transition$ } = this._popupService.open(this._ngbTooltip, context, this.animation);
+			const { windowRef, transition$ } = this._popupService.open(
+				this._ngbTooltip,
+				context ?? this.tooltipContext,
+				this.animation,
+			);
 			this._windowRef = windowRef;
 			this._windowRef.setInput('animation', this.animation);
 			this._windowRef.setInput('tooltipClass', this.tooltipClass);

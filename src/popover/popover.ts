@@ -168,6 +168,11 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 	@Input() popoverClass: string;
 
 	/**
+	 * Default template context for `TemplateRef`, can be overridden with `open` method.
+	 */
+	@Input() popoverContext: any;
+
+	/**
 	 * The opening delay in ms. Works only for "non-manual" opening triggers defined by the `triggers` input.
 	 *
 	 * @since 4.1.0
@@ -252,13 +257,13 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 			// this type assertion is safe because otherwise _isDisabled would return true
 			const { windowRef, transition$ } = this._popupService.open(
 				this.ngbPopover as string | TemplateRef<any>,
-				context,
+				context ?? this.popoverContext,
 				this.animation,
 			);
 			this._windowRef = windowRef;
 			this._windowRef.setInput('animation', this.animation);
 			this._windowRef.setInput('title', this.popoverTitle);
-			this._windowRef.setInput('context', context);
+			this._windowRef.setInput('context', context ?? this.popoverContext);
 			this._windowRef.setInput('popoverClass', this.popoverClass);
 			this._windowRef.setInput('id', this._ngbPopoverWindowId);
 

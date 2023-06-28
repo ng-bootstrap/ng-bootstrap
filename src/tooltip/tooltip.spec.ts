@@ -140,6 +140,78 @@ describe('ngb-tooltip', () => {
 			expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
 		}));
 
+		it('should open and close a tooltip - default settings, content from a template and context supplied by markup', fakeAsync(() => {
+			const fixture = createTestComponent(`
+        <ng-template #t let-name="name">Hello, {{name}}!</ng-template><div [ngbTooltip]="t" [tooltipContext]="{name: 'John'}" style="margin-top: 100px;"></div>`);
+			const directive = fixture.debugElement.query(By.directive(NgbTooltip));
+
+			directive.context.tooltip.open({ name: 'World' });
+			fixture.detectChanges();
+			tick();
+			const windowEl = getWindow(fixture.nativeElement);
+			const id = windowEl.getAttribute('id');
+
+			expect(windowEl).toHaveCssClass('tooltip');
+			expect(windowEl).toHaveCssClass('bs-tooltip-top');
+			expect(windowEl.textContent.trim()).toBe('Hello, World!');
+			expect(windowEl.getAttribute('role')).toBe('tooltip');
+			expect(windowEl.parentNode).toBe(fixture.nativeElement);
+			expect(directive.nativeElement.getAttribute('aria-describedby')).toBe(id);
+
+			triggerEvent(directive, 'mouseleave');
+			fixture.detectChanges();
+			expect(getWindow(fixture.nativeElement)).toBeNull();
+			expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
+		}));
+
+		it('should open and close a tooltip - default settings, content from a template and context supplied by markup, triggered by events', fakeAsync(() => {
+			const fixture = createTestComponent(`
+        <ng-template #t let-name="name">Hello, {{name}}!</ng-template><div [ngbTooltip]="t" [tooltipContext]="{name: 'John'}" style="margin-top: 100px;"></div>`);
+			const directive = fixture.debugElement.query(By.directive(NgbTooltip));
+
+			triggerEvent(directive, 'mouseenter');
+			fixture.detectChanges();
+			tick();
+			const windowEl = getWindow(fixture.nativeElement);
+			const id = windowEl.getAttribute('id');
+
+			expect(windowEl).toHaveCssClass('tooltip');
+			expect(windowEl).toHaveCssClass('bs-tooltip-top');
+			expect(windowEl.textContent.trim()).toBe('Hello, John!');
+			expect(windowEl.getAttribute('role')).toBe('tooltip');
+			expect(windowEl.parentNode).toBe(fixture.nativeElement);
+			expect(directive.nativeElement.getAttribute('aria-describedby')).toBe(id);
+
+			triggerEvent(directive, 'mouseleave');
+			fixture.detectChanges();
+			expect(getWindow(fixture.nativeElement)).toBeNull();
+			expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
+		}));
+
+		it('should open and close a tooltip - default settings, content from a template and context supplied by markup are overrided by open method', fakeAsync(() => {
+			const fixture = createTestComponent(`
+        <ng-template #t let-name="name">Hello, {{name}}!</ng-template><div [ngbTooltip]="t" [tooltipContext]="{name: 'John'}" style="margin-top: 100px;"></div>`);
+			const directive = fixture.debugElement.query(By.directive(NgbTooltip));
+
+			directive.context.tooltip.open();
+			fixture.detectChanges();
+			tick();
+			const windowEl = getWindow(fixture.nativeElement);
+			const id = windowEl.getAttribute('id');
+
+			expect(windowEl).toHaveCssClass('tooltip');
+			expect(windowEl).toHaveCssClass('bs-tooltip-top');
+			expect(windowEl.textContent.trim()).toBe('Hello, John!');
+			expect(windowEl.getAttribute('role')).toBe('tooltip');
+			expect(windowEl.parentNode).toBe(fixture.nativeElement);
+			expect(directive.nativeElement.getAttribute('aria-describedby')).toBe(id);
+
+			triggerEvent(directive, 'mouseleave');
+			fixture.detectChanges();
+			expect(getWindow(fixture.nativeElement)).toBeNull();
+			expect(directive.nativeElement.getAttribute('aria-describedby')).toBeNull();
+		}));
+
 		it('should open and close a tooltip - default settings and custom class', fakeAsync(() => {
 			const fixture = createTestComponent(`
         <div ngbTooltip="Great tip!" tooltipClass="my-custom-class" style="margin-top: 100px;"></div>`);
