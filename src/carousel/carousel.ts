@@ -79,10 +79,14 @@ export class NgbSlide {
 		'(mouseleave)': 'mouseHover = false',
 		'(focusin)': 'focused = true',
 		'(focusout)': 'focused = false',
-		'[attr.aria-activedescendant]': `'slide-' + activeId`,
 	},
 	template: `
-		<div class="carousel-indicators" [class.visually-hidden]="!showNavigationIndicators" role="tablist">
+		<div
+			class="carousel-indicators"
+			[class.visually-hidden]="!showNavigationIndicators"
+			role="tablist"
+			[attr.aria-activedescendant]="'slide-' + activeId"
+		>
 			<button
 				type="button"
 				data-bs-target
