@@ -29,6 +29,7 @@ header.navbar {
 
 .social-buttons {
 	font-size: x-small;
+
 	a {
 		color: #fff;
 		text-decoration: none;
@@ -93,6 +94,7 @@ header.title {
 				border-color: transparent;
 				background: none;
 				color: #007bff;
+
 				&:hover {
 					color: #0056b3;
 				}
@@ -177,7 +179,7 @@ header.title {
 
 		&.active {
 			font-weight: 500;
-			color: rgba(0, 0, 0, 0.85);
+			color: rgba(var(--bs-emphasis-color-rgb), 0.85);
 		}
 	}
 
@@ -225,6 +227,7 @@ div.api-doc-component,
 			.github-link {
 				opacity: 1;
 			}
+
 			& > .title-fragment {
 				opacity: 1;
 			}
@@ -234,6 +237,7 @@ div.api-doc-component,
 	section,
 	ngbd-overview-section {
 		margin-top: 3rem;
+
 		h4 {
 			margin-top: 2rem;
 			margin-bottom: 1rem;
@@ -242,6 +246,7 @@ div.api-doc-component,
 		.meta {
 			font-size: 0.8rem;
 			margin-bottom: 1rem;
+
 			> div {
 				margin-bottom: 0.5rem;
 			}
@@ -281,6 +286,7 @@ a.title-fragment:focus {
 
 div.component-demo {
 	margin-bottom: 3rem;
+
 	> h2 {
 		display: flex;
 		margin-bottom: 1rem;
@@ -325,6 +331,7 @@ div.component-demo {
 
 			.nav-link:not(.active) {
 				color: var(--bs-tertiary-color);
+
 				&:hover {
 					color: var(--bs-secondary-color);
 				}
