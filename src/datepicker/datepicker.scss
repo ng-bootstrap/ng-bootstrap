@@ -29,7 +29,7 @@ ngb-datepicker {
 		border-bottom: 0;
 		border-radius: 0.25rem 0.25rem 0 0;
 		padding-top: 0.25rem;
-		background-color: var(--bs-secondary-bg);
+		background-color: var(--bs-tertiary-bg);
 	}
 
 	&-months {
@@ -44,7 +44,7 @@ ngb-datepicker {
 			height: 2rem;
 			line-height: 2rem;
 			text-align: center;
-			background-color: var(--bs-secondary-bg);
+			background-color: var(--bs-tertiary-bg);
 		}
 
 		& + & {
