@@ -139,6 +139,8 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 
 	/**
 	 * Default template context for `TemplateRef`, can be overridden with `open` method.
+	 *
+	 * @since 15.1.0
 	 */
 	@Input() tooltipContext: any;
 

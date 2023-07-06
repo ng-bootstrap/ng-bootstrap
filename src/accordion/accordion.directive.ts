@@ -276,6 +276,8 @@ export class NgbAccordionItem implements AfterContentInit, OnDestroy {
 
 	/**
 	 * Event emitted before the expanding animation starts. It has no payload.
+	 *
+	 * @since 15.1.0
 	 */
 	@Output() show = new EventEmitter<void>();
 
@@ -286,6 +288,8 @@ export class NgbAccordionItem implements AfterContentInit, OnDestroy {
 
 	/**
 	 * Event emitted before the collapsing animation starts. It has no payload.
+	 *
+	 * @since 15.1.0
 	 */
 	@Output() hide = new EventEmitter<void>();
 
@@ -392,8 +396,9 @@ export class NgbAccordionDirective {
 	@Input() destroyOnHide = true;
 
 	/**
-	 * Event emitted before expanding animation starts and before content is added to the DOM.
-	 * The payload is the id of shown accordion item.
+	 * Event emitted before expanding animation starts. The payload is the id of shown accordion item.
+	 *
+	 * @since 15.1.0
 	 */
 	@Output() show = new EventEmitter<string>();
 
@@ -404,6 +409,8 @@ export class NgbAccordionDirective {
 
 	/**
 	 * Event emitted before the collapsing animation starts. The payload is the id of hidden accordion item.
+	 *
+	 * @since 15.1.0
 	 */
 	@Output() hide = new EventEmitter<string>();
 
