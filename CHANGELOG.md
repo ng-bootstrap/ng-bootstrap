@@ -1,3 +1,15 @@
+# [15.1.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/15.0.1...15.1.0) (2023-07-06)
+
+This release introduces [Scrollspy](https://ng-bootstrap.github.io/#/components/scrollspy) service and directives.
+
+### Features
+
+* **accordion:** add 'show' and 'hide' events ([#4537](https://github.com/ng-bootstrap/ng-bootstrap/issues/4537)) ([005290e](https://github.com/ng-bootstrap/ng-bootstrap/commit/005290e8dd3373a636d4eea35377c13b5ac2f3d6)), closes [#4528](https://github.com/ng-bootstrap/ng-bootstrap/issues/4528)
+* **popover/tooltip:** allow specifying context via template ([#4512](https://github.com/ng-bootstrap/ng-bootstrap/issues/4512)) ([56779ae](https://github.com/ng-bootstrap/ng-bootstrap/commit/56779aef3654175cb4c25894cab1cc8664d554ef))
+* **scrollspy:** add scrollspy service and directives ([a16430f](https://github.com/ng-bootstrap/ng-bootstrap/commit/a16430f83922962e7b767451b5645fe0d645df4b)), closes [#5](https://github.com/ng-bootstrap/ng-bootstrap/issues/5)
+
+
+
 ## [15.0.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/15.0.0...15.0.1) (2023-06-06)
 
 
