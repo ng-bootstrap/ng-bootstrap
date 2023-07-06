@@ -249,13 +249,25 @@ export class NgbAccordionItem implements AfterContentInit, OnDestroy {
 				return;
 			}
 
+			// changing the collapsed state
 			this._collapsed = collapsed;
+
 			this._cd.markForCheck(); // need if the accordion is used inside a component having OnPush change detection strategy
 			// we need force CD to get template into DOM before starting animation to calculate its height correctly
 			if (!this.collapsed) {
 				this.animatingBodyCollapse = true;
 				this._cd.detectChanges();
 			}
+
+			// firing events before starting animations
+			if (!this.collapsed) {
+				this.show.emit();
+				this._accordion.show.emit(this.id);
+			} else {
+				this.hide.emit();
+				this._accordion.hide.emit(this.id);
+			}
+
 			// we also need to make sure 'animation' flag is up-to- date
 			this._collapse.ngbCollapse.animation = this._accordion.animation;
 			this._collapse.ngbCollapse.collapsed = this.collapsed;
@@ -263,9 +275,19 @@ export class NgbAccordionItem implements AfterContentInit, OnDestroy {
 	}
 
 	/**
+	 * Event emitted before the expanding animation starts. It has no payload.
+	 */
+	@Output() show = new EventEmitter<void>();
+
+	/**
 	 * Event emitted when the expanding animation is finished. It has no payload.
 	 */
 	@Output() shown = new EventEmitter<void>();
+
+	/**
+	 * Event emitted before the collapsing animation starts. It has no payload.
+	 */
+	@Output() hide = new EventEmitter<void>();
 
 	/**
 	 * Event emitted when the collapsing animation is finished and before the content is removed from DOM.
@@ -370,9 +392,20 @@ export class NgbAccordionDirective {
 	@Input() destroyOnHide = true;
 
 	/**
+	 * Event emitted before expanding animation starts and before content is added to the DOM.
+	 * The payload is the id of shown accordion item.
+	 */
+	@Output() show = new EventEmitter<string>();
+
+	/**
 	 * Event emitted when the expanding animation is finished. The payload is the id of shown accordion item.
 	 */
 	@Output() shown = new EventEmitter<string>();
+
+	/**
+	 * Event emitted before the collapsing animation starts. The payload is the id of hidden accordion item.
+	 */
+	@Output() hide = new EventEmitter<string>();
 
 	/**
 	 * Event emitted when the collapsing animation is finished and before the content is removed from DOM.

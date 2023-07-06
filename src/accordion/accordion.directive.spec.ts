@@ -74,12 +74,16 @@ function expectOpenPanels(nativeEl: HTMLElement, openPanelsDef: boolean[]) {
 describe('ngb-accordion directive', () => {
 	let html = `
 		<div ngbAccordion #acc="ngbAccordion"
-			[closeOthers]="closeOthers" [destroyOnHide]="destroyOnHide" (shown)="shownCallback($event)" (hidden)="hiddenCallback($event)">
+			[closeOthers]="closeOthers" [destroyOnHide]="destroyOnHide"
+			(show)="showCallback($event)" (hide)="hideCallback($event)"
+			(shown)="shownCallback($event)" (hidden)="hiddenCallback($event)">
 			<div ngbAccordionItem *ngFor="let item of items"
 				[disabled]="item.disabled"
 				[collapsed]="item.collapsed"
 				[destroyOnHide]="item.destroyOnHide"
+				(show) = "itemShowCallback($event)"
 				(shown) = "itemShownCallback($event)"
+				(hide) = "itemHideCallback($event)"
 				(hidden) = "itemHiddenCallback($event)"
 				>
 				<h2 ngbAccordionHeader>
@@ -451,21 +455,29 @@ describe('ngb-accordion directive', () => {
 		const ci = fixture.componentInstance;
 		fixture.detectChanges();
 
+		spyOn(ci, 'showCallback');
 		spyOn(ci, 'shownCallback');
+		spyOn(ci, 'hideCallback');
 		spyOn(ci, 'hiddenCallback');
+		spyOn(ci, 'itemShowCallback');
 		spyOn(ci, 'itemShownCallback');
+		spyOn(ci, 'itemHideCallback');
 		spyOn(ci, 'itemHiddenCallback');
 
 		getButton(el, 0).click();
 		fixture.detectChanges();
 		const itemId = getItem(el, 0).id;
 
+		expect(fixture.componentInstance.showCallback).toHaveBeenCalledWith(itemId);
 		expect(fixture.componentInstance.shownCallback).toHaveBeenCalledWith(itemId);
+		expect(fixture.componentInstance.itemShowCallback).toHaveBeenCalledWith(undefined);
 		expect(fixture.componentInstance.itemShownCallback).toHaveBeenCalledWith(undefined);
 
 		getButton(el, 0).click();
 		fixture.detectChanges();
+		expect(fixture.componentInstance.hideCallback).toHaveBeenCalledWith(itemId);
 		expect(fixture.componentInstance.hiddenCallback).toHaveBeenCalledWith(itemId);
+		expect(fixture.componentInstance.itemHideCallback).toHaveBeenCalledWith(undefined);
 		expect(fixture.componentInstance.itemHiddenCallback).toHaveBeenCalledWith(undefined);
 	});
 
@@ -1149,8 +1161,12 @@ class TestComponent {
 			destroyOnHide: false,
 		},
 	];
-	shownCallback = (panelId: string) => {};
-	hiddenCallback = (panelId: string) => {};
-	itemShownCallback = (panelId?: string) => {};
-	itemHiddenCallback = (panelId?: string) => {};
+	showCallback = (_: string) => {};
+	shownCallback = (_: string) => {};
+	hideCallback = (_: string) => {};
+	hiddenCallback = (_: string) => {};
+	itemShowCallback = (_?) => {};
+	itemShownCallback = (_?) => {};
+	itemHideCallback = (_?) => {};
+	itemHiddenCallback = (_?) => {};
 }
