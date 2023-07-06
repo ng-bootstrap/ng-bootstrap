@@ -30,16 +30,16 @@ export class NgbdScrollSpyOverviewComponent {
       // get the service
       let service = inject(NgbScrollSpyService);
 
-      // get notified when visible section changes
+      // get notified when visible fragment changes
       service.active$.subscribe((activeId) => {
         // ...
       });
 
       // watch fragments you're interested in
-      // you can also add/remove them later
+      // they can also be provided via start options
       service.observe('section-one-id');
 
-      // start the service when you're ready and pass options if you want
+      // start the service when you're ready and pass options
       service.start({ ... });
 
       // stop the service when you're done

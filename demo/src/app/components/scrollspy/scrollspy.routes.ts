@@ -14,7 +14,7 @@ import { NgbdScrollSpyNested } from './demos/nested/scrollspy-nested';
 const OVERVIEW = {
 	service: 'Basic service',
 	directive: 'Scrollspy directive',
-	highlighting: 'Highlighting active sections',
+	highlighting: 'Highlighting active items',
 	customization: 'Customization',
 };
 

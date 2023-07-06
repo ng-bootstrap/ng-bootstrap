@@ -3,45 +3,47 @@
 </h4>
 
 <p>
-	Scrollspy service and set of directives help to watch scroll position changes of the whole document or a specific
-	container and get notified when document section is scrolled in or out of the viewport.
+	Scrollspy service and set of directives help to watch scroll position changes of the document or a specific container
+	and get notified when a part of it is scrolled into or out of the viewport.
 </p>
 
 <ngbd-overview-section [section]="sections['service']">
 	<p>
 		The core scrollspy implementation is a
 		<a routerLink="../api" fragment="NgbScrollSpyService"><code>NgbScrollSpyService</code></a> that is based on an
-		<code>IntersectionObserver</code>. You can see the example of the service working on this very website to highlight
-		which page section of the documentation is currently visible on the page.
+		<code>IntersectionObserver</code>. You can see the example of the service working on this very page to highlight
+		which documentation section is currently active.
 	</p>
 
 	<p>
-		If you wish to use the service and watch for the whole document scroll changes, you need to do at least the
-		following:
+		You should at least specify which container you'd like to spy on and which sections (fragments) inside this
+		container should be watched. Fragments are identified by unique <code>id</code> attributes.
 	</p>
+
+	<p>Fpr example, if you want to watch for the document scroll changes, you need to do at least the following:</p>
 
 	<ngbd-code [snippet]="SERVICE"></ngbd-code>
 
 	<p>
 		You can also pass multiple <a routerLink="../api" fragment="NgbScrollSpyOptions">options</a> when starting a
 		service. For example, you can set a specific container element instead of the whole document, configure the
-		intersection observer and change the scrolling behavior.
+		intersection observer and change scrolling behavior.
 	</p>
 
 	<p>
-		You can use the service together with the <code>Router</code> and <code>routerLink</code>s, or you can force the
-		scrollspy to get to a specific fragment manually via the <code>.scrollTo()</code> method.
+		You can use the service together with the <code>routerLink</code> directive and its <code>[fragment]</code> input,
+		or you can force the scrollspy to get to a specific fragment via the <code>.scrollTo()</code> method.
 	</p>
 </ngbd-overview-section>
 
 <ngbd-overview-section [section]="sections['directive']">
 	<p>
 		The directive will help you to setup the scrollspy service instance on a specific container. It is merely a
-		syntactic sugar around the service that will start and add fragments automations, as well as clean eveything up when
-		host component is destroyed.
+		syntactic sugar around the service that will start and add fragments automatically, as well as clean everything up
+		when host component is destroyed.
 	</p>
 
-	<p>At the very minimal it will look like this:</p>
+	<p>It will look something like this:</p>
 
 	<ngbd-code [snippet]="DIRECTIVE"></ngbd-code>
 
@@ -54,21 +56,21 @@
 
 <ngbd-overview-section [section]="sections['highlighting']">
 	<p>
-		There are also two helper directives: <code>NgbScrollSpyMenu</code> and <code>NgbScrollSpyItem</code> that will help
-		you with highlghting the active item in the menu, nav or any list.
+		There are also two helper directives: <code>NgbScrollSpyMenu</code> and <code>NgbScrollSpyItem</code>. They will
+		highlight the active item in a menu, nav or any custom list.
 	</p>
 
 	<h4>Individual items</h4>
 
 	<p>
 		<a routerLink="../api" fragment="NgbScrollSpyItem"><code>NgbScrollSpyItem</code></a> directive either gets the
-		nearest ScrollSpy from the DI or from the direct reference and adds/removes <code>.active</code> class dynamically
-		based on the current scrollspy state.
+		nearest scrollspy from the DI or uses the direct reference. It adds and removes <code>.active</code> class
+		dynamically based on the current scrollspy state.
 	</p>
 
 	<ngbd-code [snippet]="ITEM_BASIC"></ngbd-code>
 
-	<p>It has also may ways of referencing related scrollspies and fragments:</p>
+	<p>It has also several convenient ways of referencing related scrollspies and fragments:</p>
 
 	<ngbd-code [snippet]="ITEM_SYNTAX"></ngbd-code>
 
@@ -77,16 +79,17 @@
 	<h4>Hierarchical menus</h4>
 
 	<p>
-		Sometimes, if you have a hierarchical menu, you may want to highlight the whole branch of the menu when any, not
-		only a single item. For this purpose, you can use the
-		<a routerLink="../api" fragment="NgbScrollSpyMenu"><code>NgbScrollSpyMenu</code></a> directive together with items.
+		In case of multiple nesting levels, you might want to highlight the whole branch of the menu and not only a single
+		item. For this purpose, you can use the
+		<a routerLink="../api" fragment="NgbScrollSpyMenu"><code>NgbScrollSpyMenu</code></a> directive on a container with
+		items.
 	</p>
 
 	<ngbd-code [snippet]="MENU"></ngbd-code>
 
 	<p>
-		It this case you might reference scrollspy only once at the menu level, ot not refernce at all if it available via
-		DI.
+		It this case you might reference scrollspy only once at the menu level, or not reference at all if it is available
+		via DI.
 	</p>
 
 	<p>For more details, please see the <a routerLink="../examples" fragment="nested">related remo</a></p>
@@ -94,27 +97,27 @@
 
 <ngbd-overview-section [section]="sections['customization']">
 	<p>
-		If you wish to customize the <code>IntersectionObserver</code> you can pass <code>rootMargin</code> and
+		If you want to customize the <code>IntersectionObserver</code> you can pass <code>rootMargin</code> and
 		<code>threshold</code> options when starting the service.
 	</p>
 
 	<p>
-		If you do not like this approach or any would like to change anything else when process the intersection observer
-		events, you can completely override the algorithm by providing your own implementation function via the
-		<code>[processChanges]="myCustomProcess"</code> input or set it directly on the service.
+		If you don't like the default scrollspy behavior or would like to process intersection observer events on your own,
+		you can completely override the algorithm by providing your own implementation function via the
+		<code>[processChanges]="myCustomProcess"</code> input or set it directly via the service start options.
 	</p>
 
 	<p>
-		For example, the current scrollspy implementation doesn't allow for gaps in-between items, ex. if you're in-between
-		items 'one' and 'two' (one is not visible anymore and two is not visible yet), we'll still mark item 'one' as
-		active.
+		For example, default scrollspy implementation doesn't allow for gaps in-between items, ex. if you're in-between
+		fragments 'one' and 'two' ('one' is not visible anymore and 'two' is not visible yet), we'll still mark item 'one'
+		as active.
 	</p>
 
 	<p>
-		If you override the logic, you'll get the list of the intersection observer entries and you can process them as you
-		wish. You see the current scrollspy state and it's up to you to call the provided <code>changeActive()</code> method
-		when it's time to change the active fragment. You can also use the <code>context</code> that is persisted across the
-		calls.
+		If you provide your own function, you'll get the list of the intersection observer entries and you can process them
+		as you wish. You can use the current scrollspy state and it's up to you to call the provided
+		<code>changeActive()</code> method when it's time to change the active fragment. You can also use the
+		<code>context</code> that is persisted across the calls.
 	</p>
 
 	<ngbd-code [snippet]="CUSTOMIZATION"></ngbd-code>
