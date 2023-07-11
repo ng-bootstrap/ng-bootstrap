@@ -367,12 +367,6 @@
 					},
 					"configurations": {
 						"production": {
-							"fileReplacements": [
-								{
-									"replace": "test-app/src/environments/environment.ts",
-									"with": "test-app/src/environments/environment.prod.ts"
-								}
-							],
 							"optimization": true,
 							"outputHashing": "all",
 							"sourceMap": false,
