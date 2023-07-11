@@ -1,0 +1,22 @@
+<h2>Slider with form control </h2>
+<ngb-slider [minValue]="0" [maxValue]="100" [stepSize]="25" [formControl]="sliderControl"></ngb-slider>
+{{ sliderControl.value }}
+<hr />
+
+<h2>Slider with value </h2>
+<ngb-slider [minValue]="0" [maxValue]="100" [stepSize]="1" [(value)]="value"></ngb-slider>
+{{ value }}
+<hr />
+
+<h2>Disabled slider </h2>
+<ngb-slider [minValue]="0" [maxValue]="100" [stepSize]="1" [formControl]="disabledControl" [readonly]="readonlyToggle"></ngb-slider>
+<hr />
+
+<div class="form-check form-switch">
+    <input class="form-check-input" type="checkbox" role="switch" id="disabled" [(ngModel)]="disabledToggle" (change)="handleDisabled()">
+    <label class="form-check-label" for="disabled">Disabled</label>
+</div>
+<div class="form-check form-switch">
+    <input class="form-check-input" type="checkbox" role="switch" id="readonly" [(ngModel)]="readonlyToggle">
+    <label class="form-check-label" for="readonly">Readonly</label>
+</div>

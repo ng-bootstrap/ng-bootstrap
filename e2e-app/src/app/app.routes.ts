@@ -28,6 +28,7 @@ import { OffcanvasNestingComponent } from './offcanvas/nesting/offcanvas-nesting
 import { OffcanvasStackConfirmationComponent } from './offcanvas/stack-confirmation/offcanvas-stack-confirmation.component';
 import { DropdownShadowComponent } from './dropdown/shadow/dropdown-shadow.component';
 import { TooltipTriggersComponent } from './tooltip/triggers/tooltip-triggers.component';
+import { SliderBasicComponent } from './slider/slider-basic.component';
 
 export const ROUTES: Routes = [
 	{
@@ -93,4 +94,5 @@ export const ROUTES: Routes = [
 			{ path: 'filter', component: TimepickerFilterComponent },
 		],
 	},
+	{ path: 'slider', children: [{ path: 'basic', component: SliderBasicComponent }] },
 ];

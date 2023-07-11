@@ -13,6 +13,7 @@ export const COMPONENT_LIST = [
 	'Progressbar',
 	'Rating',
 	'Scrollspy',
+	'Slider',
 	'Table',
 	'Timepicker',
 	'Toast',

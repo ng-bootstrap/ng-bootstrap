@@ -1,0 +1,25 @@
+<h3>Basic slider with FormControl</h3>
+
+<ngb-slider
+	[minValue]="0"
+	[maxValue]="100"
+	[stepSize]="25"
+	[formControl]="sliderControl"
+	[readonly]="readonlyToggle"
+></ngb-slider>
+
+<div class="form-check form-switch">
+	<input
+		class="form-check-input"
+		type="checkbox"
+		role="switch"
+		id="disabled"
+		[(ngModel)]="disabledToggle"
+		(change)="handleDisabled()"
+	/>
+	<label class="form-check-label" for="disabled">Disabled</label>
+</div>
+<div class="form-check form-switch">
+	<input class="form-check-input" type="checkbox" role="switch" id="readonly" [(ngModel)]="readonlyToggle" />
+	<label class="form-check-label" for="readonly">Readonly</label>
+</div>

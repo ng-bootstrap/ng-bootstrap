@@ -18,6 +18,7 @@ import { NgbToastModule } from './toast/toast.module';
 import { NgbTooltipModule } from './tooltip/tooltip.module';
 import { NgbTypeaheadModule } from './typeahead/typeahead.module';
 import { NgbOffcanvasModule } from './offcanvas/offcanvas.module';
+import { NgbSliderModule } from './slider/slider.module';
 
 export {
 	NgbAccordionDirective,
@@ -154,6 +155,7 @@ export {
 	NgbScrollSpyProcessChanges,
 	NgbScrollSpyService,
 } from './scrollspy/scrollspy.module';
+export { NgbSlider, NgbSliderConfig, NgbSliderModule } from './slider/slider.module';
 export {
 	NgbTimeAdapter,
 	NgbTimepickerI18n,
@@ -190,6 +192,7 @@ const NGB_MODULES = [
 	NgbProgressbarModule,
 	NgbRatingModule,
 	NgbScrollSpyModule,
+	NgbSliderModule,
 	NgbTimepickerModule,
 	NgbToastModule,
 	NgbTooltipModule,
