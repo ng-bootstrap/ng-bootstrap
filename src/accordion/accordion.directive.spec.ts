@@ -237,6 +237,47 @@ describe('ngb-accordion directive', () => {
 		});
 	});
 
+	it('should not remove body content if destroyOnHide is false on the accordion and unset for the items', () => {
+		const fixture = createTestComponent(
+			`<div ngbAccordion [destroyOnHide]="false">
+				<div ngbAccordionItem *ngFor="let item of items">
+					<h2 ngbAccordionHeader>
+						<button ngbAccordionButton>{{item.header}}</button>
+					</h2>
+					<div ngbAccordionCollapse>
+						<div ngbAccordionBody><ng-template>{{item.body}}</ng-template></div>
+					</div>
+			</div>
+			</div>`,
+		);
+		fixture.detectChanges();
+
+		getCollapses(fixture.nativeElement).forEach((collapse, idx) => {
+			expect(getCollapseBodyContent(collapse)).toBe(fixture.componentInstance.items[idx].body);
+		});
+	});
+
+	it('should respect destroyOnHide on the accordion-item if is set in accordion and accordion-item', () => {
+		const fixture = createTestComponent(
+			`<div ngbAccordion [destroyOnHide]="false">
+				<div ngbAccordionItem *ngFor="let item of items" [destroyOnHide]="item.destroyOnHide">
+					<h2 ngbAccordionHeader>
+						<button ngbAccordionButton>{{item.header}}</button>
+					</h2>
+					<div ngbAccordionCollapse>
+						<div ngbAccordionBody><ng-template>{{item.body}}</ng-template></div>
+					</div>
+			</div>
+			</div>`,
+		);
+		fixture.componentInstance.items[0].destroyOnHide = true;
+		fixture.detectChanges();
+
+		getCollapses(fixture.nativeElement).forEach((collapse, idx) => {
+			expect(getCollapseBodyContent(collapse)).toBe(idx === 0 ? '' : fixture.componentInstance.items[idx].body);
+		});
+	});
+
 	it(`should allow customizing headers with 'NgbAccordionToggle'`, () => {
 		const fixture = createTestComponent(
 			`<div ngbAccordion>
@@ -321,7 +362,7 @@ describe('ngb-accordion directive', () => {
 		expect(getItemsIds(fixture.nativeElement)).toEqual(['custom-0', 'custom-1', 'custom-2']);
 	});
 
-	it('should remove body content from DOM if destroyOnHide is not set on accordion and on accordion-collapse', () => {
+	it('should remove body content from DOM if destroyOnHide is not set on accordion and on accordion-item', () => {
 		const fixture = createTestComponent(
 			`<div ngbAccordion>
 				<div ngbAccordionItem *ngFor="let item of items">
