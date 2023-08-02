@@ -208,6 +208,7 @@ export class NgbAccordionItem implements AfterContentInit, OnDestroy {
 	private _subscriptions: Subscription[] = [];
 	private _collapsed = true;
 	private _id = `ngb-accordion-item-${nextId++}`;
+	private _destroyOnHide: boolean | undefined;
 
 	animatingBodyCollapse = false;
 
@@ -229,7 +230,13 @@ export class NgbAccordionItem implements AfterContentInit, OnDestroy {
 	 *
 	 * This property can also be set up on the parent [`NgbAccordion` directive](#/components/accordion/api#NgbAccordionDirective).
 	 */
-	@Input() destroyOnHide = this._accordion.destroyOnHide;
+	@Input() set destroyOnHide(destroyOnHide: boolean) {
+		this._destroyOnHide = destroyOnHide;
+	}
+
+	get destroyOnHide(): boolean {
+		return this._destroyOnHide === undefined ? this._accordion.destroyOnHide : this._destroyOnHide!;
+	}
 
 	/**
 	 * If `true`, the accordion item will be disabled.
