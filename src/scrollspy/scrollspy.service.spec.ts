@@ -123,20 +123,35 @@ describe('ScrollSpy service (mocked)', () => {
 		scrollSpy.start();
 		scrollSpy.observe(fragment);
 		scrollSpy.unobserve(fragment);
-		expect(mockObserver.unobserve).toHaveBeenCalledWith(fragment);
+		expect(mockObserver.disconnect).toHaveBeenCalled();
 	});
 
 	it('should unregister existing fragments by id', () => {
 		scrollSpy.start();
 		scrollSpy.observe(fragment);
 		scrollSpy.unobserve(fragment.id);
-		expect(mockObserver.unobserve).toHaveBeenCalledWith(fragment);
+		expect(mockObserver.disconnect).toHaveBeenCalled();
 	});
 
 	it('should not unregister non-existing fragments', () => {
 		scrollSpy.start();
 		scrollSpy.unobserve('blah');
-		expect(mockObserver.unobserve).not.toHaveBeenCalled();
+		expect(mockObserver.disconnect).not.toHaveBeenCalled();
+	});
+
+	it('should re-register remaining fragments when unregistering one', () => {
+		const one = appendFragmentToDOM('one');
+		const two = appendFragmentToDOM('two');
+		scrollSpy.start({ fragments: [one, two] });
+		expect(mockObserver.observe).toHaveBeenCalledTimes(2);
+
+		scrollSpy.unobserve(two);
+		expect(mockObserver.disconnect).toHaveBeenCalled();
+		expect(mockObserver.observe).toHaveBeenCalledTimes(3);
+		expect(mockObserver.observe.calls.mostRecent().args[0]).toBe(one);
+
+		removeFragmentFromDOM('one');
+		removeFragmentFromDOM('two');
 	});
 
 	it('should scroll to a fragment by id', () => {
@@ -171,7 +186,7 @@ describe('ScrollSpy service (mocked)', () => {
 		expect(spy).toHaveBeenCalledWith({ top: 0, behavior: 'auto' });
 	});
 
-	it('should allow changeing scrolling options from the configuration', inject(
+	it('should allow changing scrolling options from the configuration', inject(
 		[NgbScrollSpyConfig],
 		(config: NgbScrollSpyConfig) => {
 			const spy = spyOn(document.documentElement, 'scrollTo') as any;
@@ -252,6 +267,26 @@ if (isBrowserVisible('scrollspy-service')) {
 				expect(scrollSpy.active).toBe('one');
 
 				removeFragmentFromDOM('one');
+			},
+		));
+
+		it('should recompute active fragment after removing currently active one', inject(
+			[NgbScrollSpyService],
+			async (scrollSpy: NgbScrollSpyService) => {
+				appendFragmentToDOM('one');
+				appendFragmentToDOM('two');
+
+				scrollSpy.start({ fragments: ['one', 'two'] });
+				expect(scrollSpy.active).toBe('');
+
+				expect(await firstValueFrom(scrollSpy.active$)).toBe('one');
+
+				scrollSpy.unobserve('one');
+				expect(await firstValueFrom(scrollSpy.active$)).toBe('two');
+
+				scrollSpy.stop();
+				removeFragmentFromDOM('one');
+				removeFragmentFromDOM('two');
 			},
 		));
 

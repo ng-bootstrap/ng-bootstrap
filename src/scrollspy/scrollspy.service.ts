@@ -281,7 +281,13 @@ export class NgbScrollSpyService implements NgbScrollSpyRef, OnDestroy {
 
 		if (fragmentElement) {
 			this._fragments.delete(fragmentElement);
-			this._observer.unobserve(fragmentElement);
+
+			// we're removing and re-adding all current fragments to recompute active one
+			this._observer.disconnect();
+
+			for (const fragment of this._fragments) {
+				this._observer.observe(fragment);
+			}
 		}
 	}
 
