@@ -10,6 +10,7 @@ import { NgbdScrollSpyBasic } from './demos/basic/scrollspy-basic';
 import { NgbdScrollSpyNavbar } from './demos/navbar/scrollspy-navbar';
 import { NgbdScrollSpyItems } from './demos/items/scrollspy-items';
 import { NgbdScrollSpyNested } from './demos/nested/scrollspy-nested';
+import { NgbdScrollSpyService } from './demos/service/scrollspy-service';
 
 const OVERVIEW = {
 	service: 'Basic service',
@@ -30,6 +31,12 @@ const DEMOS = {
 		type: NgbdScrollSpyItems,
 		code: require('!!raw-loader!./demos/items/scrollspy-items').default,
 		markup: require('!!raw-loader!./demos/items/scrollspy-items.html').default,
+	},
+	service: {
+		title: 'Service',
+		type: NgbdScrollSpyService,
+		code: require('!!raw-loader!./demos/service/scrollspy-service').default,
+		markup: require('!!raw-loader!./demos/service/scrollspy-service.html').default,
 	},
 	nested: {
 		title: 'Nested items',
