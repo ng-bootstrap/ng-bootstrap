@@ -1,0 +1,36 @@
+<p>This demo shows how to use the <code>NgbScrollSpyService</code>.</p>
+
+<p>Highlights current example on this page:</p>
+
+<div class="d-flex ms-2">
+	<div class="d-flex flex-column align-items-start me-5">
+		<h5>Local</h5>
+		<div
+			*ngFor="let fragment of fragments"
+			[class.text-bg-danger]="fragment === scrollSpy.active"
+			class="badge text-bg-secondary mb-1"
+		>
+			{{ fragment }}
+		</div>
+	</div>
+	<div class="d-flex flex-column align-items-start">
+		<h5>From 'root'</h5>
+		<span
+			*ngFor="let fragment of fragments"
+			[class.text-bg-danger]="fragment === rootScrollSpy.active"
+			class="badge text-bg-secondary mb-1"
+		>
+			{{ fragment }}
+		</span>
+	</div>
+</div>
+
+<hr />
+
+<div>
+	<button class="btn btn-sm btn-outline-primary me-2" (click)="scrollSpy.stop()">Stop</button>
+	<button class="btn btn-sm btn-outline-primary me-2" (click)="scrollSpy.start({ fragments })">Start</button>
+	<button class="btn btn-sm btn-outline-primary me-2" (click)="scrollSpy.unobserve('service')">
+		Unobserve 'service' fragment
+	</button>
+</div>
