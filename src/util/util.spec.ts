@@ -8,6 +8,7 @@ import {
 	removeAccents,
 	closest,
 	isPromise,
+	getActiveElement,
 } from './util';
 
 describe('util', () => {
@@ -170,4 +171,34 @@ describe('util', () => {
 			});
 		});
 	}
+
+	describe('getActiveElement', () => {
+		it('should return nothing for a wrong element', () => {
+			expect(getActiveElement(null as any)).toEqual(null);
+			expect(getActiveElement(document.createElement('div') as any)).toEqual(null);
+		});
+
+		it('should return focused element', () => {
+			expect(getActiveElement(document)).toEqual(document.body);
+
+			const input = document.createElement('input');
+			document.body.appendChild(input);
+			input.focus();
+
+			expect(getActiveElement(document)).toEqual(input);
+			document.body.removeChild(input);
+		});
+
+		it('should return focused element from the shadow dom', () => {
+			const div = document.createElement('div');
+			div.attachShadow({ mode: 'open' });
+			const input = document.createElement('input');
+			div.shadowRoot!.appendChild(input);
+			document.body.appendChild(div);
+			input.focus();
+
+			expect(getActiveElement(document)).toEqual(input);
+			document.body.removeChild(div);
+		});
+	});
 });

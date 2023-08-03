@@ -99,3 +99,17 @@ export function runInZone<T>(zone: NgZone): OperatorFunction<T, T> {
 export function removeAccents(str: string): string {
 	return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
+
+/**
+ * Returns the active element in the given root.
+ * If the active element is inside a shadow root, it is searched recursively.
+ */
+export function getActiveElement(root: Document | ShadowRoot = document): Element | null {
+	const activeEl = root?.activeElement;
+
+	if (!activeEl) {
+		return null;
+	}
+
+	return activeEl.shadowRoot ? getActiveElement(activeEl.shadowRoot) : activeEl;
+}
