@@ -154,7 +154,7 @@ export class NgbScrollSpyService implements NgbScrollSpyRef, OnDestroy {
 	 */
 	start(options?: NgbScrollSpyOptions) {
 		if (isPlatformBrowser(this._platformId)) {
-			this.stop();
+			this._cleanup();
 
 			const { root, rootMargin, scrollBehavior, threshold, fragments, changeDetectorRef, processChanges } = {
 				...options,
@@ -198,12 +198,8 @@ export class NgbScrollSpyService implements NgbScrollSpyRef, OnDestroy {
 	 * Stops the service and unobserves all fragments.
 	 */
 	stop() {
-		this._fragments.clear();
-		this._observer?.disconnect();
-		this._changeDetectorRef = this._diChangeDetectorRef;
-		this._scrollBehavior = this._config.scrollBehavior;
-		this._observer = null;
-		this._containerElement = null;
+		this._cleanup();
+		this._active$.next('');
 	}
 
 	/**
@@ -290,6 +286,15 @@ export class NgbScrollSpyService implements NgbScrollSpyRef, OnDestroy {
 	}
 
 	ngOnDestroy() {
-		this.stop();
+		this._cleanup();
+	}
+
+	private _cleanup() {
+		this._fragments.clear();
+		this._observer?.disconnect();
+		this._changeDetectorRef = this._diChangeDetectorRef;
+		this._scrollBehavior = this._config.scrollBehavior;
+		this._observer = null;
+		this._containerElement = null;
 	}
 }

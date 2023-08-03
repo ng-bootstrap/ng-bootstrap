@@ -225,6 +225,36 @@ if (isBrowserVisible('scrollspy-service')) {
 			},
 		));
 
+		it('should reset active fragment after stopping service explicitly', inject(
+			[NgbScrollSpyService],
+			async (scrollSpy: NgbScrollSpyService) => {
+				appendFragmentToDOM('one');
+
+				scrollSpy.start({ fragments: ['one'] });
+				expect(await firstValueFrom(scrollSpy.active$)).toBe('one');
+
+				scrollSpy.stop();
+				expect(scrollSpy.active).toBe('');
+
+				removeFragmentFromDOM('one');
+			},
+		));
+
+		it(`should not reset active fragment when destroying via 'ngOnDestroy' `, inject(
+			[NgbScrollSpyService],
+			async (scrollSpy: NgbScrollSpyService) => {
+				appendFragmentToDOM('one');
+
+				scrollSpy.start({ fragments: ['one'] });
+				expect(await firstValueFrom(scrollSpy.active$)).toBe('one');
+
+				scrollSpy.ngOnDestroy();
+				expect(scrollSpy.active).toBe('one');
+
+				removeFragmentFromDOM('one');
+			},
+		));
+
 		it('should update currently active fragment', inject(
 			[NgbScrollSpyService],
 			async (scrollSpy: NgbScrollSpyService) => {
