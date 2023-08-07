@@ -26,6 +26,7 @@ import { OffcanvasAutoCloseComponent } from './offcanvas/autoclose/offcanvas-aut
 import { OffcanvasFocusComponent } from './offcanvas/focus/offcanvas-focus.component';
 import { OffcanvasNestingComponent } from './offcanvas/nesting/offcanvas-nesting.component';
 import { OffcanvasStackConfirmationComponent } from './offcanvas/stack-confirmation/offcanvas-stack-confirmation.component';
+import { DropdownShadowComponent } from './dropdown/shadow/dropdown-shadow.component';
 
 export const ROUTES: Routes = [
 	{
@@ -63,6 +64,7 @@ export const ROUTES: Routes = [
 			{ path: 'click', component: DropdownClickComponent },
 			{ path: 'focus', component: DropdownFocusComponent },
 			{ path: 'position', component: DropdownPositionComponent },
+			{ path: 'shadow', component: DropdownShadowComponent },
 		],
 	},
 	{ path: 'popover', children: [{ path: 'autoclose', component: PopoverAutocloseComponent }] },

@@ -30,6 +30,7 @@ import { Key } from '../util/key';
 
 import { NgbDropdownConfig } from './dropdown-config';
 import { FOCUSABLE_ELEMENTS_SELECTOR } from '../util/focus-trap';
+import { getActiveElement } from '../util/util';
 
 /**
  * @deprecated 14.2.0 this directive isn't useful anymore. You can remove it from your imports
@@ -401,7 +402,7 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 				if (item.contains(event.target as HTMLElement)) {
 					itemElement = item;
 				}
-				if (item === this._document.activeElement) {
+				if (item === getActiveElement(this._document)) {
 					position = index;
 				}
 			});
