@@ -1,3 +1,15 @@
+## [15.1.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/15.1.0...15.1.1) (2023-08-07)
+
+
+### Bug Fixes
+
+* **accordion:**  override `destroyOnHide` correctly ([#4545](https://github.com/ng-bootstrap/ng-bootstrap/issues/4545)) ([e0f15c6](https://github.com/ng-bootstrap/ng-bootstrap/commit/e0f15c6c0dc1d701c1b3f0de3fa7d4bc6ff8e9d9)), closes [#4541](https://github.com/ng-bootstrap/ng-bootstrap/issues/4541)
+* **dropdown:** fix arrow navigation inside shadow dom ([#4548](https://github.com/ng-bootstrap/ng-bootstrap/issues/4548)) ([995d22d](https://github.com/ng-bootstrap/ng-bootstrap/commit/995d22d91e35a03e822c0e600a13457a73e88ce5)), closes [#4540](https://github.com/ng-bootstrap/ng-bootstrap/issues/4540)
+* **scrollspy:** change active to '' (empty) after explicit stop ([cec803d](https://github.com/ng-bootstrap/ng-bootstrap/commit/cec803daf1db66e832850bbc6d9cc2f7281f5e0f))
+* **scrollspy:** recompute active when unobserving fragments ([4dac691](https://github.com/ng-bootstrap/ng-bootstrap/commit/4dac691daf7cac8d0abff567c34eab82bd69de35))
+
+
+
 # [15.1.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/15.0.1...15.1.0) (2023-07-06)
 
 This release introduces [Scrollspy](https://ng-bootstrap.github.io/#/components/scrollspy) service and directives.
