@@ -30,7 +30,7 @@ import { Key } from '../util/key';
 
 import { NgbDropdownConfig } from './dropdown-config';
 import { FOCUSABLE_ELEMENTS_SELECTOR } from '../util/focus-trap';
-import { getActiveElement } from '../util/util';
+import { appendContainerChild, getActiveElement } from '../util/util';
 
 /**
  * @deprecated 14.2.0 this directive isn't useful anymore. You can remove it from your imports
@@ -225,7 +225,7 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 	 *
 	 * @since 4.1.0
 	 */
-	@Input() container: null | 'body';
+	@Input() container: null | 'body' | HTMLElement;
 
 	/**
 	 * Enable or disable the dynamic positioning. The default value is dynamic unless the dropdown is used
@@ -528,15 +528,16 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 
 			renderer.appendChild(dropdownElement, dropdownMenuElement);
 		}
-		if (this._bodyContainer) {
-			renderer.removeChild(this._document.body, this._bodyContainer);
+		if (this._bodyContainer?.parentElement) {
+			renderer.removeChild(this._bodyContainer.parentElement, this._bodyContainer);
 			this._bodyContainer = null;
 		}
 	}
 
-	private _applyContainer(container: null | 'body' = null) {
+	private _applyContainer(container: null | 'body' | HTMLElement = null) {
 		this._resetContainer();
-		if (container === 'body') {
+		if (container) {
+			console.log(container);
 			const renderer = this._renderer;
 			const dropdownMenuElement = this._menu.nativeElement;
 			const bodyContainer = (this._bodyContainer = this._bodyContainer || renderer.createElement('div'));
@@ -547,7 +548,7 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 			renderer.setStyle(bodyContainer, 'z-index', '1055');
 
 			renderer.appendChild(bodyContainer, dropdownMenuElement);
-			renderer.appendChild(this._document.body, bodyContainer);
+			appendContainerChild(this._document, bodyContainer, container);
 		}
 
 		this._applyCustomDropdownClass(this.dropdownClass);

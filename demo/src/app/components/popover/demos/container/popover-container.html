@@ -17,13 +17,34 @@
 			</button>
 			<button
 				type="button"
-				class="btn btn-outline-secondary"
+				class="btn btn-outline-secondary mb-2"
 				placement="bottom"
 				ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
 				container="body"
 			>
 				Popover appended to body
 			</button>
+			<button
+				type="button"
+				class="btn btn-outline-secondary mb-2"
+				placement="bottom"
+				ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+				container="#popver-container"
+			>
+				Popover appended to container by id
+			</button>
+			<button
+				type="button"
+				class="btn btn-outline-secondary"
+				placement="bottom"
+				ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+				[container]="popoverContainer"
+			>
+				Popover appended to container
+			</button>
 		</div>
+	</div>
+	<div class="col-auto">
+		<div class="card px-1 py-5 overflow-visible" id="popver-container" #popoverContainer>Popover custom container</div>
 	</div>
 </div>
