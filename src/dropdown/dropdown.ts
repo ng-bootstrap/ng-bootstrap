@@ -220,8 +220,7 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 	@Input() popperOptions: (options: Partial<Options>) => Partial<Options>;
 
 	/**
-	 * A selector specifying the element the dropdown should be appended to.
-	 * Currently only supports "body".
+	 * A selector or HTMLElement specifying the element the dropdown should be appended to.
 	 *
 	 * @since 4.1.0
 	 */

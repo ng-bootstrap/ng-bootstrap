@@ -117,9 +117,8 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 	@Input() positionTarget?: string | HTMLElement;
 
 	/**
-	 * A selector specifying the element the tooltip should be appended to.
+	 * A selector or HTMLElement specifying the element the tooltip should be appended to.
 	 *
-	 * Currently only supports `"body"`.
 	 */
 	@Input() container: string | HTMLElement;
 
