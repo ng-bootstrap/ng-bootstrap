@@ -62,7 +62,7 @@ export class NgbAlert implements OnInit, OnChanges {
 	 * If `true`, alert can be dismissed by the user.
 	 *
 	 * The close button (×) will be displayed and you can be notified
-	 * of the event with the `(close)` output.
+	 * of the event with the `(closed)` output.
 	 */
 	@Input() dismissible: boolean;
 
