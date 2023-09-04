@@ -6,6 +6,7 @@ import { NgbdApiPage } from '../../shared/api-page/api-page.component';
 import { ComponentWrapper } from '../../shared/component-wrapper/component-wrapper.component';
 import { NgbdExamplesPage } from '../../shared/examples-page/examples.component';
 import { NgbSliderBasic } from './demos/basic/slider-basic';
+import { NgbSliderRange } from './demos/range/slider-range';
 
 const DEMOS = {
 	basic: {
@@ -13,6 +14,12 @@ const DEMOS = {
 		type: NgbSliderBasic,
 		code: require('!!raw-loader!./demos/basic/slider-basic').default,
 		markup: require('!!raw-loader!./demos/basic/slider-basic.html').default,
+	},
+	range: {
+		title: 'Range demo',
+		type: NgbSliderRange,
+		code: require('!!raw-loader!./demos/range/slider-range').default,
+		markup: require('!!raw-loader!./demos/range/slider-range.html').default,
 	},
 };
 

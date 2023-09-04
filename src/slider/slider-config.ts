@@ -11,7 +11,7 @@ export class NgbSliderConfig {
 	minValue: number;
 	maxValue: number;
 	stepSize: number;
-	value: number;
+	sliderValues: number[];
 	readonly: boolean;
 	disabled: boolean;
 }
@@ -23,7 +23,7 @@ export const NgbDefaultSliderConfig: NgbSliderConfig = {
 	minValue: 0,
 	maxValue: 100,
 	stepSize: 1,
-	value: 30,
+	sliderValues: [30],
 	readonly: false,
 	disabled: false,
 };

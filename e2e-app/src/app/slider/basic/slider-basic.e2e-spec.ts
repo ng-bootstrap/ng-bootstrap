@@ -1,14 +1,13 @@
 import { expect } from '@playwright/test';
-import { getPage, setPage, test } from '../../../baseTest';
-import { sendKey } from '../tools.po';
+import { getPage, setPage, test } from '../../../../baseTest';
+import { sendKey } from '../../tools.po';
 import {
 	SELECTOR_MAX_LABEL,
 	SELECTOR_MIN_LABEL,
 	SELECTOR_SLIDER,
 	SELECTOR_SLIDER_HANDLE,
-	sliderHandleState,
-	sliderState,
-} from './slider.po';
+	sliderHandleState
+} from '../slider.po';
 
 test.use({ testURL: 'slider/basic', testSelector: 'h3:text("Basic slider with FormControl")' });
 test.beforeEach(async ({ page }) => setPage(page));
@@ -20,6 +19,7 @@ const defaultExpectedState: { [key: string]: string | null } = {
 	text: '50',
 	readonly: null,
 	disabled: null,
+	style: 'left: 50%;'
 };
 
 const SELECTOR_DISABLED_TOGGLE = 'input[id=disabled]';
@@ -27,32 +27,27 @@ const SELECTOR_READONLY_TOGGLE = 'input[id=readonly]';
 
 test.describe(`basic slider with FormControl`, () => {
 	test(`should initialize slider with default values`, async () => {
-		expect(await sliderState()).toEqual(defaultExpectedState);
-
-		const handleState = await sliderHandleState();
-
-		expect(handleState).toContain('left: 50%');
+		expect((await sliderHandleState())[0]).toEqual(defaultExpectedState);
 	});
 
 	test(`should snap the handle to correct tick on the slider click event`, async () => {
 		const expectedState = { ...defaultExpectedState };
 		expectedState.value = '75';
 		expectedState.text = '75';
+		expectedState.style = 'left: 75%;';
 
 		const sliderLocator = getPage().locator(SELECTOR_SLIDER);
 		const boundingBox = await sliderLocator.boundingBox();
 		await sliderLocator.click({ position: { x: boundingBox!.x + boundingBox!.width * 0.8, y: 1 } });
 
-		expect(await sliderState()).toEqual(expectedState);
-
-		const handleState = await sliderHandleState();
-		expect(handleState).toContain('left: 75%');
+		expect((await sliderHandleState())[0]).toEqual(expectedState);
 	});
 
 	test(`should snap the handle on mouse drag event`, async () => {
 		const expectedState = { ...defaultExpectedState };
 		expectedState.value = '75';
 		expectedState.text = '75';
+		expectedState.style = 'left: 75%;';
 
 		const sliderHandleLocator = getPage().locator(SELECTOR_SLIDER_HANDLE);
 		const sliderLocator = getPage().locator(SELECTOR_SLIDER);
@@ -61,16 +56,14 @@ test.describe(`basic slider with FormControl`, () => {
 			targetPosition: { x: boundingBox!.x + boundingBox!.width * 0.8, y: 1 },
 		});
 
-		expect(await sliderState()).toEqual(expectedState);
-
-		const handleState = await sliderHandleState();
-		expect(handleState).toContain('left: 75%');
+		expect((await sliderHandleState())[0]).toEqual(expectedState);
 	});
 
 	test(`should move handle on key strokes`, async () => {
 		const expectedState = { ...defaultExpectedState };
 		expectedState.value = '0';
 		expectedState.text = '0';
+		expectedState.style = 'left: 0%;';
 
 		const minLabelLocator = getPage().locator(SELECTOR_MIN_LABEL);
 		const maxLabelLocator = getPage().locator(SELECTOR_MAX_LABEL);
@@ -78,10 +71,8 @@ test.describe(`basic slider with FormControl`, () => {
 		await getPage().locator(SELECTOR_SLIDER_HANDLE).click();
 		await sendKey('Home');
 
-		expect(await sliderState()).toEqual(expectedState);
+		expect((await sliderHandleState())[0]).toEqual(expectedState);
 
-		let handleState = await sliderHandleState();
-		expect(handleState).toContain('left: 0%');
 		expect(await minLabelLocator.isVisible()).toBe(false);
 		expect(await maxLabelLocator.isVisible()).toBe(true);
 
@@ -89,30 +80,25 @@ test.describe(`basic slider with FormControl`, () => {
 
 		expectedState.text = '100';
 		expectedState.value = '100';
+		expectedState.style = 'left: 100%;';
 
-		expect(await sliderState()).toEqual(expectedState);
+		expect((await sliderHandleState())[0]).toEqual(expectedState);
 
-		handleState = await sliderHandleState();
-		expect(handleState).toContain('left: 100%');
 		expect(await minLabelLocator.isVisible()).toBe(true);
 		expect(await maxLabelLocator.isVisible()).toBe(false);
 	});
 
 	test(`should render slider disabled when passing the 'disabled' option`, async () => {
 		const sliderHandleLocator = getPage().locator(SELECTOR_SLIDER_HANDLE);
-		const sliderLocator = getPage().locator(SELECTOR_SLIDER);
 
-		await expect(sliderLocator).toBeEnabled();
 		await expect(sliderHandleLocator).toBeEnabled();
 
 		await getPage().locator(SELECTOR_DISABLED_TOGGLE).click();
 
-		await expect(sliderLocator).toBeDisabled();
 		await expect(sliderHandleLocator).toBeDisabled();
 
 		await getPage().locator(SELECTOR_DISABLED_TOGGLE).click();
 
-		await expect(sliderLocator).toBeEnabled();
 		await expect(sliderHandleLocator).toBeEnabled();
 	});
 
@@ -127,9 +113,8 @@ test.describe(`basic slider with FormControl`, () => {
 		const boundingBox = await sliderLocator.boundingBox();
 		await sliderLocator.click({ position: { x: boundingBox!.x + boundingBox!.width * 0.8, y: 1 } });
 
-		expect(await sliderState()).toEqual(expectedState);
+		expect((await sliderHandleState())[0]).toEqual(expectedState);
 
-		await expect(sliderLocator).toBeEnabled();
 		await expect(sliderHandleLocator).toBeEnabled();
 
 		await getPage().locator(SELECTOR_READONLY_TOGGLE).click();
@@ -138,8 +123,9 @@ test.describe(`basic slider with FormControl`, () => {
 
 		expectedState.value = '75';
 		expectedState.text = '75';
+		expectedState.style = 'left: 75%;';
 		expectedState.readonly = null;
 
-		expect(await sliderState()).toEqual(expectedState);
+		expect((await sliderHandleState())[0]).toEqual(expectedState);
 	});
 });

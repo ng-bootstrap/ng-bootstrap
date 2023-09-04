@@ -4,26 +4,30 @@ export const SELECTOR_SLIDER = 'ngb-slider';
 export const SELECTOR_SLIDER_HANDLE = 'button.ngb-slider-handle';
 export const SELECTOR_MIN_LABEL = 'div.ngb-slider-label-min';
 export const SELECTOR_MAX_LABEL = 'div.ngb-slider-label-max';
-
-export const sliderState = async () => {
-	return await getPage()
-		.locator(SELECTOR_SLIDER)
-		.evaluate((rootNode: HTMLElement) => {
-			return {
-				value: rootNode.getAttribute('aria-valuenow'),
-				min: rootNode.getAttribute('aria-valuemin'),
-				max: rootNode.getAttribute('aria-valuemax'),
-				text: rootNode.getAttribute('aria-valuetext'),
-				disabled: rootNode.getAttribute('aria-disabled'),
-				readonly: rootNode.getAttribute('aria-readonly'),
-			};
-		});
-};
+export const SELECTOR_SLIDER_PROGRESS = 'div.ngb-slider-progress';
 
 export const sliderHandleState = async () => {
 	return await getPage()
 		.locator(SELECTOR_SLIDER_HANDLE)
-		.evaluate((rootNode: HTMLElement) => {
-			return rootNode.getAttribute('style');
+		.evaluateAll((rootNode: HTMLElement[]) => {
+			return rootNode.map((rn) => {
+				return {
+					style: rn.getAttribute('style'),
+					value: rn.getAttribute('aria-valuenow'),
+					min: rn.getAttribute('aria-valuemin'),
+					max: rn.getAttribute('aria-valuemax'),
+					text: rn.getAttribute('aria-valuetext'),
+					disabled: rn.getAttribute('aria-disabled'),
+					readonly: rn.getAttribute('aria-readonly'),
+				};
+			});
+		});
+};
+
+export const sliderProgressState = async () => {
+	return await getPage()
+		.locator(SELECTOR_SLIDER_PROGRESS)
+		.evaluateAll((rootNode: HTMLElement[]) => {
+			return rootNode.map((rn) => rn.getAttribute('style'));
 		});
 };

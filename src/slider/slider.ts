@@ -1,3 +1,4 @@
+import { NgFor, NgIf } from '@angular/common';
 import {
 	AfterViewInit,
 	ChangeDetectionStrategy,
@@ -98,43 +99,63 @@ export class NgbSliderHandleDirective {
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
 	providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NgbSlider), multi: true }],
-	imports: [NgbSliderHandleDirective],
+	imports: [NgbSliderHandleDirective, NgIf, NgFor],
 	host: {
 		'(click)': 'sliderValueChange($event.clientX, _sliderValueChangeType.COORDINATE)',
-		role: 'slider',
-		'[attr.aria-valuemin]': '_state.minValue()',
-		'[attr.aria-valuemax]': '_state.maxValue()',
-		'[attr.aria-valuenow]': '_state.handleValue()',
-		'[attr.aria-valuetext]': '_state.handleValue()',
-		'[attr.aria-readonly]': '_state.readonly() ? true : null',
-		'[attr.aria-disabled]': '_state.disabled() ? true : null',
-		'[attr.disabled]': '_state.disabled() ? true : null',
 		'(blur)': 'handleBlur()',
 	},
 	template: `
-		<div
-			#progress
-			class="ngb-slider-progress"
-			[attr.disabled]="_state.disabled() ? true : null"
-			[style.width.%]="_state.handleValuePercent()"
-		></div>
+		<ng-container *ngFor="let repeat of [].constructor(_state._dirtyValue().length - 1 || 1); let i = index">
+			<div
+				#progress
+				class="ngb-slider-progress"
+				[attr.disabled]="_state.disabled() ? true : null"
+				[style.left.%]="_state._dirtyValue().length === 1 ? 0 : _state.sortedCleanValuePercent()[i]"
+				[style.width.%]="
+					_state._dirtyValue().length === 1
+						? _state.sortedCleanValuePercent()[i]
+						: _state.sortedCleanValuePercent()[i + 1] - _state.sortedCleanValuePercent()[i]
+				"
+			></div>
+		</ng-container>
+
 		<div #minLabel class="ngb-slider-label ngb-slider-label-min" [style.visibility]="_state.minValueLabelDisplay()">
 			{{ _state.minValue() }}
 		</div>
 		<div #maxLabel class="ngb-slider-label ngb-slider-label-max" [style.visibility]="_state.maxValueLabelDisplay()">
 			{{ _state.maxValue() }}
 		</div>
-		<div class="ngb-slider-label ngb-slider-label-now" [style.left.%]="_state.handleValuePercent()">
-			{{ _state.handleValue() }}</div
+		<div
+			class="ngb-slider-label ngb-slider-label-now"
+			[style.visibility]="_state.mixLabelDisplay()"
+			[style.left.%]="(_state.sortedCleanValuePercent()[0] + _state.sortedCleanValuePercent()?.[1]) / 2"
 		>
-		<button
-			ngbSliderHandle
-			[sliderHandle]="_state.handleValuePercent()"
-			[attr.disabled]="_state.disabled() ? true : null"
-			(sliderCoordinateMove)="sliderValueChange($event, _sliderValueChangeType.COORDINATE)"
-			(sliderKeydown)="sliderValueChange($event, _sliderValueChangeType.KEY)"
-			>&nbsp;
-		</button>
+			{{ _state.sortedCleanValue()[0] }} - {{ _state.sortedCleanValue()[1] }}</div
+		>
+		<ng-container *ngFor="let repeat of [].constructor(_state._dirtyValue().length); let i = index">
+			<button
+				ngbSliderHandle
+				[sliderHandle]="_state.cleanValuePercent()[i]"
+				(sliderCoordinateMove)="sliderValueChange($event, _sliderValueChangeType.COORDINATE, i)"
+				(sliderKeydown)="sliderValueChange($event, _sliderValueChangeType.KEY, i)"
+				role="slider"
+				[attr.aria-valuemin]="_state.minValue()"
+				[attr.aria-valuemax]="_state.maxValue()"
+				[attr.aria-valuenow]="_state.cleanValue()[i]"
+				[attr.aria-valuetext]="_state.cleanValue()[i]"
+				[attr.aria-readonly]="_state.readonly() ? true : null"
+				[attr.aria-disabled]="_state.disabled() ? true : null"
+				[attr.disabled]="_state.disabled() ? true : null"
+				>&nbsp;
+			</button>
+			<div
+				class="ngb-slider-label ngb-slider-label-now"
+				[style.left.%]="_state.cleanValuePercent()[i]"
+				[style.visibility]="_state.mixLabelDisplay() === 'visible' ? 'hidden' : 'visible'"
+			>
+				{{ _state.cleanValue()[i] }}</div
+			>
+		</ng-container>
 	`,
 	styleUrls: ['./slider.scss'],
 })
@@ -166,7 +187,7 @@ export class NgbSlider implements OnInit, ControlValueAccessor, AfterViewInit, O
 	private _minValue: number;
 	private _maxValue: number;
 	private _stepSize: number;
-	private _value: number;
+	private _sliderValues: number[];
 	private _readonly: boolean;
 	private _disabled = false;
 
@@ -222,12 +243,12 @@ export class NgbSlider implements OnInit, ControlValueAccessor, AfterViewInit, O
 	 * Current slider value
 	 */
 	@Input()
-	set value(value: number) {
-		this._value = value;
+	set sliderValues(value: number[]) {
+		this._sliderValues = value;
 	}
 
-	get value(): number {
-		return this._value;
+	get sliderValues(): number[] {
+		return this._sliderValues;
 	}
 
 	/**
@@ -261,7 +282,7 @@ export class NgbSlider implements OnInit, ControlValueAccessor, AfterViewInit, O
 	 * emitted every time when the value is changed
 	 */
 	@Output()
-	valueChange = new EventEmitter<number>(true);
+	sliderValuesChange = new EventEmitter<number[]>(true);
 
 	/**
 	 * Control value accessor methods
@@ -273,7 +294,7 @@ export class NgbSlider implements OnInit, ControlValueAccessor, AfterViewInit, O
 	registerOnChange(fn: (value: any) => any): void {
 		this.onChange = fn;
 		// workaround to update the value of the form when the Input value does not correspond to a real step of the slider
-		if (this._state._dirtyValue() !== this._state.handleValue()) {
+		if (this._state._dirtyValue().some((dh, index) => dh != this._state.cleanValue()[index])) {
 			this.emitControlValues();
 		}
 	}
@@ -282,8 +303,12 @@ export class NgbSlider implements OnInit, ControlValueAccessor, AfterViewInit, O
 		this.onTouched = fn;
 	}
 
-	writeValue(value: number): void {
-		this._state._dirtyValue.set(value);
+	writeValue(value: any): void {
+		if (value instanceof Array) {
+			this._state._dirtyValue.set(value);
+		} else {
+			this._state._dirtyValue.set([value]);
+		}
 	}
 
 	setDisabledState(isDisabled: boolean) {
@@ -296,7 +321,7 @@ export class NgbSlider implements OnInit, ControlValueAccessor, AfterViewInit, O
 			minValue: this.minValue,
 			maxValue: this.maxValue,
 			stepSize: this.stepSize,
-			value: this.value,
+			sliderValues: this.sliderValues,
 			readonly: this.readonly,
 			disabled: this.disabled,
 		});
@@ -322,8 +347,8 @@ export class NgbSlider implements OnInit, ControlValueAccessor, AfterViewInit, O
 	 * Method that holds all the necessary emits to update the input value of the slider
 	 */
 	emitControlValues() {
-		this.onChange(this._state.handleValue());
-		this.valueChange.emit(this._state.handleValue());
+		this.onChange(this._state.sortedCleanValue());
+		this.sliderValuesChange.emit(this.sliderValues);
 		this.onTouched();
 	}
 
@@ -332,19 +357,19 @@ export class NgbSlider implements OnInit, ControlValueAccessor, AfterViewInit, O
 	 * @param value new clicked coordinate or the numberic number of a pressed key
 	 * @param changeType type of the provided value: COORDINATE or KEY
 	 */
-	sliderValueChange(value: number, changeType: SliderValueChangeType) {
+	sliderValueChange(value: number, changeType: SliderValueChangeType, handleNumber?: number) {
 		switch (changeType) {
 			case SliderValueChangeType.COORDINATE:
-				this._widget.actions.adjustCoordinate(value);
+				this._widget.actions.adjustCoordinate(value, handleNumber);
 				break;
 			case SliderValueChangeType.KEY:
-				this._widget.actions.onKeydown(value);
+				this._widget.actions.onKeydown(value, handleNumber!);
 				break;
 			default:
 				break;
 		}
-		if (this.value !== this._widget?.state.handleValue()) {
-			this.value = this._widget?.state.handleValue();
+		if (this._state._dirtyValue().some((sch, index) => sch != this._state.cleanValue()[index])) {
+			this.sliderValues = this._state.sortedCleanValue();
 			this.emitControlValues();
 		}
 	}
@@ -354,14 +379,18 @@ export class NgbSlider implements OnInit, ControlValueAccessor, AfterViewInit, O
  * Holds all the required values to draw and manage the slider
  */
 export interface SliderState {
-	handleValue: Signal<number>;
 	minLabelWidth: Signal<number>;
 	maxLabelWidth: Signal<number>;
 	minValueLabelDisplay: Signal<string>;
 	maxValueLabelDisplay: Signal<string>;
-	handleValuePercent: Signal<number>;
+	mixLabelDisplay: Signal<string>;
 
-	_dirtyValue: WritableSignal<number>;
+	_dirtyValue: WritableSignal<number[]>;
+	cleanValue: Signal<number[]>;
+	cleanValuePercent: Signal<number[]>;
+	sortedCleanValue: Signal<number[]>;
+	sortedCleanValuePercent: Signal<number[]>;
+
 	minValue: WritableSignal<number>;
 	maxValue: WritableSignal<number>;
 	stepSize: WritableSignal<number>;
@@ -376,8 +405,8 @@ export interface SliderState {
  * Holds the available actions that can be applied to the slider
  */
 export interface SliderActions {
-	adjustCoordinate(coordinate: number): void;
-	onKeydown(key: number): void;
+	adjustCoordinate(coordinate: number, handleNumber?: number): void;
+	onKeydown(key: number, handleNumber: number): void;
 }
 
 /**
@@ -394,7 +423,7 @@ export interface SliderWidget {
  * @returns populated SliderWidget object
  */
 export function createSlider(config?: Partial<NgbSliderConfig>): SliderWidget {
-	const _dirtyValue = signal(config?.value ?? NgbDefaultSliderConfig.value);
+	const _dirtyValue = signal(config?.sliderValues ?? [...NgbDefaultSliderConfig.sliderValues]);
 
 	// validation in case of equal min and max values
 	let min = config?.minValue ?? NgbDefaultSliderConfig.minValue;
@@ -414,39 +443,82 @@ export function createSlider(config?: Partial<NgbSliderConfig>): SliderWidget {
 	const minLabelDomRect: WritableSignal<DOMRect> = signal(new DOMRect());
 	const maxLabelDomRect: WritableSignal<DOMRect> = signal(new DOMRect());
 
-	const handleValue = computed(() => {
-		if (_dirtyValue() >= maxValue()) {
+	const valueCompute = (value: number) => {
+		if (value >= maxValue()) {
 			return maxValue();
-		} else if (_dirtyValue() <= minValue()) {
+		} else if (value <= minValue()) {
 			return minValue();
 		}
-		const indexMin = Math.floor(_dirtyValue() / stepSize());
-		return _dirtyValue() % stepSize() < stepSize() / 2 ? indexMin * stepSize() : (indexMin + 1) * stepSize();
+		const indexMin = Math.floor(value / stepSize());
+		return value % stepSize() < stepSize() / 2 ? indexMin * stepSize() : (indexMin + 1) * stepSize();
+	};
+
+	const cleanValue = computed(() => {
+		return _dirtyValue().map((dh) => {
+			return valueCompute(dh);
+		});
 	});
 
-	const handleValuePercent = computed(() => {
-		return ((handleValue() - minValue()) * 100) / (maxValue() - minValue());
+	const sortedCleanValue = computed(() => [...cleanValue()].sort((a, b) => a - b));
+
+	const percentCompute = (value: number) => {
+		return ((value - minValue()) * 100) / (maxValue() - minValue());
+	};
+
+	const cleanValuePercent = computed(() => {
+		return cleanValue().map((ch) => {
+			return percentCompute(ch);
+		});
 	});
+
+	const sortedCleanValuePercent = computed(() => [...cleanValuePercent()].sort((a, b) => a - b));
 
 	const minLabelWidth = computed(() => (minLabelDomRect?.().width / sliderDomRect?.().width) * 100);
 	const maxLabelWidth = computed(() => (maxLabelDomRect?.().width / sliderDomRect?.().width) * 100);
 
-	const minValueLabelDisplay = computed(() => (handleValuePercent?.() < minLabelWidth() + 1 ? 'hidden' : 'visible'));
-	const maxValueLabelDisplay = computed(() =>
-		handleValuePercent?.() > 100 - maxLabelWidth() - 1 ? 'hidden' : 'visible',
+	const minValueLabelDisplay = computed(() =>
+		cleanValuePercent().some((handle) => handle < minLabelWidth() + 1) ? 'hidden' : 'visible',
 	);
+	const maxValueLabelDisplay = computed(() =>
+		cleanValuePercent().some((handle) => handle > 100 - maxLabelWidth() - 1) ? 'hidden' : 'visible',
+	);
+
+	// TODO: do not show labels over handles if there are more than 2 handles
+	const mixLabelDisplay = computed(() => {
+		return _dirtyValue().length === 2 && Math.abs(cleanValuePercent()[0] - cleanValuePercent()[1]!) <= 10
+			? 'visible'
+			: 'hidden';
+	});
 
 	const _isInteractable = computed(() => !disabled() && !readonly());
 
+	const getClosestSliderHandle = (clickedPercent: number) => {
+		if (_dirtyValue().length === 1) {
+			return 0;
+		}
+		const closestBigger = sortedCleanValue().find((sch) => sch > clickedPercent * 100);
+		const closestBiggerIndex = closestBigger
+			? sortedCleanValue().indexOf(closestBigger!)
+			: sortedCleanValue().length - 1;
+		const midPoint =
+			sortedCleanValue()[closestBiggerIndex - 1] +
+			(sortedCleanValue()[closestBiggerIndex] - sortedCleanValue()[closestBiggerIndex - 1]) / 2;
+		let closestValue: number;
+		if (clickedPercent * 100 <= midPoint) {
+			closestValue = sortedCleanValue()[closestBiggerIndex - 1];
+		} else {
+			closestValue = sortedCleanValue()[closestBiggerIndex];
+		}
+		return cleanValue().indexOf(closestValue);
+	};
+
 	return {
 		state: {
-			_dirtyValue,
 			minValue,
 			maxValue,
 			stepSize,
 			readonly,
 			disabled,
-			handleValue,
 			minLabelWidth,
 			maxLabelWidth,
 			minValueLabelDisplay,
@@ -454,31 +526,53 @@ export function createSlider(config?: Partial<NgbSliderConfig>): SliderWidget {
 			sliderDomRect,
 			minLabelDomRect,
 			maxLabelDomRect,
-			handleValuePercent,
+			mixLabelDisplay,
+			_dirtyValue,
+			cleanValue,
+			cleanValuePercent,
+			sortedCleanValue,
+			sortedCleanValuePercent,
 		},
 		actions: {
-			adjustCoordinate(clickedCoordinate: number) {
+			adjustCoordinate(clickedCoordinate: number, handleNumber?: number) {
 				if (_isInteractable()) {
 					const clickedPercent = (clickedCoordinate - sliderDomRect().left) / sliderDomRect().width;
-					_dirtyValue.set(clickedPercent * (maxValue() - minValue()) + minValue());
+					let derivedHandleIndex = handleNumber ?? getClosestSliderHandle(clickedPercent);
+					const newValue = clickedPercent * (maxValue() - minValue()) + minValue();
+					_dirtyValue.update((dh) => {
+						dh[derivedHandleIndex] = newValue;
+						return dh;
+					});
 				}
 			},
-			onKeydown(key: number) {
+			onKeydown(key: number, handleIndex: number) {
 				if (_isInteractable()) {
 					switch (key) {
 						case Key.ArrowDown:
 						case Key.ArrowLeft:
-							_dirtyValue.set(handleValue() - stepSize());
+							_dirtyValue.update((value) => {
+								value[handleIndex] = cleanValue()[handleIndex] - stepSize();
+								return value;
+							});
 							break;
 						case Key.ArrowUp:
 						case Key.ArrowRight:
-							_dirtyValue.set(handleValue() + stepSize());
+							_dirtyValue.update((value) => {
+								value[handleIndex] = cleanValue()[handleIndex] + stepSize();
+								return value;
+							});
 							break;
 						case Key.Home:
-							_dirtyValue.set(minValue());
+							_dirtyValue.update((value) => {
+								value[handleIndex] = minValue();
+								return value;
+							});
 							break;
 						case Key.End:
-							_dirtyValue.set(maxValue());
+							_dirtyValue.update((value) => {
+								value[handleIndex] = maxValue();
+								return value;
+							});
 							break;
 						case Key.PageUp:
 							// TODO it is optional in accessibility guidelines, so define the skip value for steps and write unit test

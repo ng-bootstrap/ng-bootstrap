@@ -11,7 +11,7 @@ import { NgbSliderModule } from '@ng-bootstrap/ng-bootstrap';
 export class NgbSliderBasic implements OnInit{
 	sliderControl = new FormControl(60);
 	disabledControl = new FormControl(60);
-	value = 20;
+	sliderValues = [20];
 	disabledToggle = true;
 	readonlyToggle = true;
 
