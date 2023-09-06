@@ -42,7 +42,9 @@ export enum SliderValueChangeType {
 	standalone: true,
 	host: {
 		class: 'ngb-slider-handle',
-		'[style.left.%]': 'sliderHandle',
+		'[class]': "vertical ? 'ngb-slider-handle-vertical' : 'ngb-slider-handle-horizontal'",
+		'[style.left.%]': 'vertical ? "" : sliderHandle',
+		'[style.top.%]': 'vertical ? 100 - sliderHandle : ""',
 	},
 })
 export class NgbSliderHandleDirective {
@@ -52,6 +54,11 @@ export class NgbSliderHandleDirective {
 	 * Left offset of the handle element in %
 	 */
 	@Input() sliderHandle: number;
+
+	/**
+	 * Direction of the slider
+	 */
+	@Input() vertical: boolean;
 
 	/**
 	 * An event containing the new value of slider handle coordinate
@@ -86,7 +93,7 @@ export class NgbSliderHandleDirective {
 
 	private elementDrag(e: MouseEvent) {
 		e.preventDefault();
-		this.sliderCoordinateMove.emit(e.clientX);
+		this.sliderCoordinateMove.emit(this.vertical ? e.clientY : e.clientX);
 	}
 }
 
@@ -101,7 +108,9 @@ export class NgbSliderHandleDirective {
 	providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NgbSlider), multi: true }],
 	imports: [NgbSliderHandleDirective, NgIf, NgFor],
 	host: {
-		'(click)': 'sliderValueChange($event.clientX, _sliderValueChangeType.COORDINATE)',
+		'[class]': '_state.vertical() ? "ngb-slider-vertical" : "ngb-slider-horizontal"',
+		'(click)':
+			'sliderValueChange(_state.vertical() ? $event.clientY : $event.clientX, _sliderValueChangeType.COORDINATE)',
 		'(blur)': 'handleBlur()',
 	},
 	template: `
@@ -110,25 +119,64 @@ export class NgbSliderHandleDirective {
 				#progress
 				class="ngb-slider-progress"
 				[attr.disabled]="_state.disabled() ? true : null"
-				[style.left.%]="_state._dirtyValue().length === 1 ? 0 : _state.sortedCleanValuePercent()[i]"
+				[style.left.%]="
+					_state.vertical() ? 0 : _state._dirtyValue().length === 1 ? 0 : _state.sortedCleanValuePercent()[i]
+				"
+				[style.bottom.%]="
+					_state.vertical() ? (_state._dirtyValue().length === 1 ? 0 : _state.sortedCleanValuePercent()[i]) : 0
+				"
 				[style.width.%]="
-					_state._dirtyValue().length === 1
+					_state.vertical()
+						? 100
+						: _state._dirtyValue().length === 1
 						? _state.sortedCleanValuePercent()[i]
 						: _state.sortedCleanValuePercent()[i + 1] - _state.sortedCleanValuePercent()[i]
+				"
+				[style.height.%]="
+					_state.vertical()
+						? _state._dirtyValue().length === 1
+							? _state.sortedCleanValuePercent()[i]
+							: _state.sortedCleanValuePercent()[i + 1] - _state.sortedCleanValuePercent()[i]
+						: 100
 				"
 			></div>
 		</ng-container>
 
-		<div #minLabel class="ngb-slider-label ngb-slider-label-min" [style.visibility]="_state.minValueLabelDisplay()">
+		<div
+			#minLabel
+			[class]="
+				_state.vertical()
+					? 'ngb-slider-label-vertical ngb-slider-label-vertical-min'
+					: 'ngb-slider-label ngb-slider-label-min'
+			"
+			[style.visibility]="_state.minValueLabelDisplay()"
+		>
 			{{ _state.minValue() }}
 		</div>
-		<div #maxLabel class="ngb-slider-label ngb-slider-label-max" [style.visibility]="_state.maxValueLabelDisplay()">
+		<div
+			#maxLabel
+			[class]="
+				_state.vertical()
+					? 'ngb-slider-label-vertical ngb-slider-label-vertical-max'
+					: 'ngb-slider-label ngb-slider-label-max'
+			"
+			[style.visibility]="_state.maxValueLabelDisplay()"
+		>
 			{{ _state.maxValue() }}
 		</div>
 		<div
-			class="ngb-slider-label ngb-slider-label-now"
+			[class]="
+				_state.vertical()
+					? 'ngb-slider-label-vertical ngb-slider-label-vertical-now'
+					: 'ngb-slider-label ngb-slider-label-now'
+			"
 			[style.visibility]="_state.mixLabelDisplay()"
-			[style.left.%]="(_state.sortedCleanValuePercent()[0] + _state.sortedCleanValuePercent()?.[1]) / 2"
+			[style.left.%]="
+				_state.vertical() ? 0 : (_state.sortedCleanValuePercent()[0] + _state.sortedCleanValuePercent()[1]) / 2
+			"
+			[style.top.%]="
+				_state.vertical() ? 100 - (_state.sortedCleanValuePercent()[0] + _state.sortedCleanValuePercent()[1]) / 2 : 0
+			"
 		>
 			{{ _state.sortedCleanValue()[0] }} - {{ _state.sortedCleanValue()[1] }}</div
 		>
@@ -136,6 +184,7 @@ export class NgbSliderHandleDirective {
 			<button
 				ngbSliderHandle
 				[sliderHandle]="_state.cleanValuePercent()[i]"
+				[vertical]="vertical"
 				(sliderCoordinateMove)="sliderValueChange($event, _sliderValueChangeType.COORDINATE, i)"
 				(sliderKeydown)="sliderValueChange($event, _sliderValueChangeType.KEY, i)"
 				role="slider"
@@ -149,8 +198,13 @@ export class NgbSliderHandleDirective {
 				>&nbsp;
 			</button>
 			<div
-				class="ngb-slider-label ngb-slider-label-now"
-				[style.left.%]="_state.cleanValuePercent()[i]"
+				[class]="
+					_state.vertical()
+						? 'ngb-slider-label-vertical ngb-slider-label-vertical-now'
+						: 'ngb-slider-label ngb-slider-label-now'
+				"
+				[style.left.%]="_state.vertical() ? 0 : _state.cleanValuePercent()[i]"
+				[style.top.%]="_state.vertical() ? 100 - _state.cleanValuePercent()[i] : 0"
 				[style.visibility]="_state.mixLabelDisplay() === 'visible' ? 'hidden' : 'visible'"
 			>
 				{{ _state.cleanValue()[i] }}</div
@@ -165,7 +219,7 @@ export class NgbSlider implements OnInit, ControlValueAccessor, AfterViewInit, O
 	 */
 	private _elementRef = inject(ElementRef);
 
-	private _sliderValueChangeType = SliderValueChangeType;
+	_sliderValueChangeType = SliderValueChangeType;
 
 	private resizeObserver = new ResizeObserver(() => {
 		this._state.sliderDomRect.set(this._elementRef.nativeElement.getBoundingClientRect());
@@ -190,6 +244,7 @@ export class NgbSlider implements OnInit, ControlValueAccessor, AfterViewInit, O
 	private _sliderValues: number[];
 	private _readonly: boolean;
 	private _disabled = false;
+	private _vertical: boolean;
 
 	/**
 	 * SliderWidget hold the state and actions applicable to the NgbSliderComponent
@@ -198,7 +253,7 @@ export class NgbSlider implements OnInit, ControlValueAccessor, AfterViewInit, O
 	/**
 	 * SliderState stores current model state of the NgbSliderComponent
 	 */
-	private _state: SliderState;
+	_state: SliderState;
 
 	/**
 	 * The minimum value that can be assigned to the slider.
@@ -277,6 +332,16 @@ export class NgbSlider implements OnInit, ControlValueAccessor, AfterViewInit, O
 		return this._disabled;
 	}
 
+	@Input()
+	set vertical(value: boolean) {
+		this._vertical = value;
+		this._state?.vertical.set(value);
+	}
+
+	get vertical(): boolean {
+		return this._vertical;
+	}
+
 	/**
 	 * An event containing the new slider value
 	 * emitted every time when the value is changed
@@ -324,6 +389,7 @@ export class NgbSlider implements OnInit, ControlValueAccessor, AfterViewInit, O
 			sliderValues: this.sliderValues,
 			readonly: this.readonly,
 			disabled: this.disabled,
+			vertical: this.vertical,
 		});
 		this._state = this._widget.state;
 
@@ -360,6 +426,9 @@ export class NgbSlider implements OnInit, ControlValueAccessor, AfterViewInit, O
 	sliderValueChange(value: number, changeType: SliderValueChangeType, handleNumber?: number) {
 		switch (changeType) {
 			case SliderValueChangeType.COORDINATE:
+				if (this._state.vertical()) {
+					this._state.sliderDomRect.set(this._elementRef.nativeElement.getBoundingClientRect());
+				}
 				this._widget.actions.adjustCoordinate(value, handleNumber);
 				break;
 			case SliderValueChangeType.KEY:
@@ -396,6 +465,7 @@ export interface SliderState {
 	stepSize: WritableSignal<number>;
 	readonly: WritableSignal<boolean>;
 	disabled: WritableSignal<boolean>;
+	vertical: WritableSignal<boolean>;
 	minLabelDomRect: WritableSignal<DOMRect>;
 	maxLabelDomRect: WritableSignal<DOMRect>;
 	sliderDomRect: WritableSignal<DOMRect>;
@@ -438,10 +508,14 @@ export function createSlider(config?: Partial<NgbSliderConfig>): SliderWidget {
 	const stepSize = signal(config?.stepSize || NgbDefaultSliderConfig.stepSize);
 	const readonly = signal(config?.readonly ?? NgbDefaultSliderConfig.readonly);
 	const disabled = signal(config?.disabled ?? NgbDefaultSliderConfig.disabled);
+	const vertical = signal(config?.vertical ?? NgbDefaultSliderConfig.vertical);
 
 	const sliderDomRect: WritableSignal<DOMRect> = signal(new DOMRect());
 	const minLabelDomRect: WritableSignal<DOMRect> = signal(new DOMRect());
 	const maxLabelDomRect: WritableSignal<DOMRect> = signal(new DOMRect());
+
+	const _sliderDomRectOffset = computed(() => (vertical() ? sliderDomRect().top : sliderDomRect().left));
+	const _sliderDomRectSize = computed(() => (vertical() ? sliderDomRect().height : sliderDomRect().width));
 
 	const valueCompute = (value: number) => {
 		if (value >= maxValue()) {
@@ -473,8 +547,8 @@ export function createSlider(config?: Partial<NgbSliderConfig>): SliderWidget {
 
 	const sortedCleanValuePercent = computed(() => [...cleanValuePercent()].sort((a, b) => a - b));
 
-	const minLabelWidth = computed(() => (minLabelDomRect?.().width / sliderDomRect?.().width) * 100);
-	const maxLabelWidth = computed(() => (maxLabelDomRect?.().width / sliderDomRect?.().width) * 100);
+	const minLabelWidth = computed(() => (minLabelDomRect?.().width / _sliderDomRectSize()) * 100);
+	const maxLabelWidth = computed(() => (maxLabelDomRect?.().width / _sliderDomRectSize()) * 100);
 
 	const minValueLabelDisplay = computed(() =>
 		cleanValuePercent().some((handle) => handle < minLabelWidth() + 1) ? 'hidden' : 'visible',
@@ -532,11 +606,14 @@ export function createSlider(config?: Partial<NgbSliderConfig>): SliderWidget {
 			cleanValuePercent,
 			sortedCleanValue,
 			sortedCleanValuePercent,
+			vertical,
 		},
 		actions: {
 			adjustCoordinate(clickedCoordinate: number, handleNumber?: number) {
 				if (_isInteractable()) {
-					const clickedPercent = (clickedCoordinate - sliderDomRect().left) / sliderDomRect().width;
+					const clickedPercent = vertical()
+						? (_sliderDomRectSize() - clickedCoordinate + _sliderDomRectOffset()) / _sliderDomRectSize()
+						: (clickedCoordinate - _sliderDomRectOffset()) / _sliderDomRectSize();
 					let derivedHandleIndex = handleNumber ?? getClosestSliderHandle(clickedPercent);
 					const newValue = clickedPercent * (maxValue() - minValue()) + minValue();
 					_dirtyValue.update((dh) => {

@@ -19,6 +19,7 @@ const COMPONENTS = [
 	'progressbar',
 	'rating',
 	'scrollspy',
+	'slider',
 	'table',
 	'timepicker',
 	'toast',

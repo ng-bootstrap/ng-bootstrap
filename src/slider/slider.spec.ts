@@ -22,6 +22,7 @@ function getStateValues(sliderState: SliderState) {
 		sortedCleanValuePercent: sliderState.sortedCleanValuePercent(),
 		disabled: sliderState.disabled(),
 		readonly: sliderState.readonly(),
+		vertical: sliderState.vertical(),
 	};
 }
 
@@ -44,6 +45,7 @@ const defaultStateValues = {
 	sortedCleanValuePercent: [30],
 	disabled: false,
 	readonly: false,
+	vertical: false,
 };
 
 const initializeSliderWithRectangles = (config?: Partial<NgbSliderConfig>) => {
@@ -52,6 +54,15 @@ const initializeSliderWithRectangles = (config?: Partial<NgbSliderConfig>) => {
 	slider.state.sliderDomRect.set(new DOMRect(10, 0, 100, 4));
 	slider.state.minLabelDomRect.set(new DOMRect(10, 5, 3, 4));
 	slider.state.maxLabelDomRect.set(new DOMRect(100, 5, 3, 4));
+	return slider;
+};
+
+const initializeSliderWithRectanglesVertical = (config?: Partial<NgbSliderConfig>) => {
+	const slider = createSlider({ ...config, vertical: true });
+
+	slider.state.sliderDomRect.set(new DOMRect(10, 0, 4, 100));
+	slider.state.minLabelDomRect.set(new DOMRect(20, 0, 3, 4));
+	slider.state.maxLabelDomRect.set(new DOMRect(20, 100, 3, 4));
 	return slider;
 };
 
@@ -412,6 +423,30 @@ describe(`ngb-slider range`, () => {
 		expectedStateValue.sortedCleanValue = [45, 56];
 		expectedStateValue.sortedCleanValuePercent = [45, 56];
 		expectedStateValue.mixLabelDisplay = 'hidden';
+
+		expect(getStateValues(slider.state)).toEqual(expectedStateValue);
+	});
+});
+
+describe(`ngb-slider vertical`, () => {
+	it(`should calculate the clicked percent from the bottom to the top of the slider`, () => {
+		const slider = initializeSliderWithRectanglesVertical();
+
+		const expectedStateValue = { ...defaultStateValues };
+		expectedStateValue.sliderDomRect = new DOMRect(10, 0, 4, 100);
+		expectedStateValue.minLabelDomRect = new DOMRect(20, 0, 3, 4);
+		expectedStateValue.maxLabelDomRect = new DOMRect(20, 100, 3, 4);
+		expectedStateValue.vertical = true;
+
+		expect(getStateValues(slider.state)).toEqual(expectedStateValue);
+
+		slider.actions.adjustCoordinate(60);
+
+		expectedStateValue._dirtyValue = [40];
+		expectedStateValue.cleanValue = [40];
+		expectedStateValue.sortedCleanValue = [40];
+		expectedStateValue.cleanValuePercent = [40];
+		expectedStateValue.sortedCleanValuePercent = [40];
 
 		expect(getStateValues(slider.state)).toEqual(expectedStateValue);
 	});

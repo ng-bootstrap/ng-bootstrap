@@ -6,7 +6,7 @@ import {
 	SELECTOR_MIN_LABEL,
 	SELECTOR_SLIDER,
 	SELECTOR_SLIDER_HANDLE,
-	sliderHandleState
+	sliderHandleState,
 } from '../slider.po';
 
 test.use({ testURL: 'slider/basic', testSelector: 'h3:text("Basic slider with FormControl")' });
@@ -19,7 +19,7 @@ const defaultExpectedState: { [key: string]: string | null } = {
 	text: '50',
 	readonly: null,
 	disabled: null,
-	style: 'left: 50%;'
+	style: 'left: 50%;',
 };
 
 const SELECTOR_DISABLED_TOGGLE = 'input[id=disabled]';

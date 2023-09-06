@@ -30,6 +30,7 @@ import { DropdownShadowComponent } from './dropdown/shadow/dropdown-shadow.compo
 import { TooltipTriggersComponent } from './tooltip/triggers/tooltip-triggers.component';
 import { SliderBasicComponent } from './slider/basic/slider-basic.component';
 import { SliderRangeComponent } from './slider/range/slider-range.component';
+import { SliderVerticalComponent } from './slider/vertical/slider-vertical.component';
 
 export const ROUTES: Routes = [
 	{
@@ -100,6 +101,7 @@ export const ROUTES: Routes = [
 		children: [
 			{ path: 'basic', component: SliderBasicComponent },
 			{ path: 'range', component: SliderRangeComponent },
+			{ path: 'vertical', component: SliderVerticalComponent },
 		],
 	},
 ];

@@ -8,7 +8,7 @@ import { NgbSliderModule } from '@ng-bootstrap/ng-bootstrap';
 	imports: [NgbSliderModule, ReactiveFormsModule, FormsModule],
 	templateUrl: './slider-basic.html',
 })
-export class NgbSliderBasic implements OnInit{
+export class NgbSliderBasic implements OnInit {
 	sliderControl = new FormControl(60);
 	disabledControl = new FormControl(60);
 	sliderValues = [20];

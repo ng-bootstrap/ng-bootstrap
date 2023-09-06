@@ -3,12 +3,12 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbSliderModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-	selector: 'ngb-slider-range',
+	selector: 'ngb-slider-vertical',
 	standalone: true,
 	imports: [NgbSliderModule, ReactiveFormsModule, FormsModule],
-	templateUrl: './slider-range.html',
+	templateUrl: './slider-vertical.html',
 })
-export class NgbSliderRange {
-	sliderControl = new FormControl([10, 40, 50, 60, 90]);
-	sliderValues = [10, 40];
+export class NgbSliderVertical {
+	sliderControl = new FormControl([30]);
+	sliderControlRange = new FormControl([10, 50]);
 }

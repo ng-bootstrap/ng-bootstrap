@@ -14,6 +14,7 @@ export class NgbSliderConfig {
 	sliderValues: number[];
 	readonly: boolean;
 	disabled: boolean;
+	vertical: boolean;
 }
 
 /**
@@ -26,4 +27,5 @@ export const NgbDefaultSliderConfig: NgbSliderConfig = {
 	sliderValues: [30],
 	readonly: false,
 	disabled: false,
+	vertical: false,
 };

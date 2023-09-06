@@ -1,0 +1,23 @@
+<h2>Vertical slider</h2>
+<div class="d-flex" style="height: 350px">
+	<div class="col-6" style="height: 300px">
+		<ngb-slider
+			[minValue]="0"
+			[maxValue]="100"
+			[stepSize]="1"
+			[vertical]="true"
+			[formControl]="sliderControl"
+		></ngb-slider>
+		{{ (sliderControl.value)}}
+	</div>
+	<div class="col-6" style="height: 300px">
+		<ngb-slider
+			[minValue]="0"
+			[maxValue]="100"
+			[stepSize]="1"
+			[vertical]="true"
+			[formControl]="sliderControlRange"
+		></ngb-slider>
+		{{ (sliderControlRange.value)}}
+	</div>
+</div>

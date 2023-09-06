@@ -7,6 +7,7 @@ import { ComponentWrapper } from '../../shared/component-wrapper/component-wrapp
 import { NgbdExamplesPage } from '../../shared/examples-page/examples.component';
 import { NgbSliderBasic } from './demos/basic/slider-basic';
 import { NgbSliderRange } from './demos/range/slider-range';
+import { NgbSliderVertical } from './demos/vertical/slider-vertical';
 
 const DEMOS = {
 	basic: {
@@ -20,6 +21,12 @@ const DEMOS = {
 		type: NgbSliderRange,
 		code: require('!!raw-loader!./demos/range/slider-range').default,
 		markup: require('!!raw-loader!./demos/range/slider-range.html').default,
+	},
+	vertical: {
+		title: 'Vertical demo',
+		type: NgbSliderVertical,
+		code: require('!!raw-loader!./demos/vertical/slider-vertical').default,
+		markup: require('!!raw-loader!./demos/vertical/slider-vertical.html').default,
 	},
 };
 

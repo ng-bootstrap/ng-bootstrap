@@ -3,11 +3,17 @@
 	border: none;
 	width: 1.25rem;
 	height: 1.25rem;
-	top: -0.5rem;
 	border-radius: 0.625rem;
-	transform: translateX(-50%);
 	outline: none;
 	position: absolute;
+
+	&-horizontal {
+		transform: translate(-50%, -40%);
+	}
+
+	&-vertical {
+		transform: translate(-40%, -50%);
+	}
 }
 
 .ngb-slider-handle:focus {
@@ -17,7 +23,11 @@
 .ngb-slider-progress {
 	background-color: #005eb8;
 	height: 0.25rem;
- 	position: absolute;
+	position: absolute;
+
+	&-vertical {
+		transform: rotate(90deg);
+	}
 }
 
 .ngb-slider-label {
@@ -37,14 +47,45 @@
 	}
 }
 
+.ngb-slider-label-vertical {
+	margin-left: 1rem;
+	position: absolute;
+	transform: translateY(-40%);
+	white-space: nowrap;
+
+	&-min {
+		top: 100%;
+	}
+
+	&-max {
+		top: 0%;
+	}
+
+	&-now {
+		transform: translateY(-50%);
+	}
+}
+
 ngb-slider {
 	display: flex;
-	width: 100%;
 	background-color: #d3d3d3;
-	height: 0.25rem;
 	position: relative;
+}
+
+.ngb-slider-horizontal {
+	width: 100%;
+	height: 0.25rem;
 	margin-top: 2rem;
 	margin-bottom: 1rem;
+}
+
+.ngb-slider-vertical {
+	height: 100%;
+	width: 0.25rem;
+	margin-right: 2rem;
+	margin-left: 1rem;
+	margin-bottom: 1rem;
+	margin-top: 1rem;
 }
 
 .ngb-slider-progress[disabled],

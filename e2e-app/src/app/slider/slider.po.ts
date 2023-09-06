@@ -4,6 +4,8 @@ export const SELECTOR_SLIDER = 'ngb-slider';
 export const SELECTOR_SLIDER_HANDLE = 'button.ngb-slider-handle';
 export const SELECTOR_MIN_LABEL = 'div.ngb-slider-label-min';
 export const SELECTOR_MAX_LABEL = 'div.ngb-slider-label-max';
+export const SELECTOR_MIN_LABEL_VERTICAL = 'div.ngb-slider-label-vertical-min';
+export const SELECTOR_MAX_LABEL_VERTICAL = 'div.ngb-slider-label-vertical-max';
 export const SELECTOR_SLIDER_PROGRESS = 'div.ngb-slider-progress';
 
 export const sliderHandleState = async () => {
