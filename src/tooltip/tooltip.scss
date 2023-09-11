@@ -5,4 +5,16 @@ ngb-tooltip-window {
 	.tooltip-inner {
 		pointer-events: auto;
 	}
+
+	&.bs-tooltip-top,
+	&.bs-tooltip-bottom {
+		padding-left: 0;
+		padding-right: 0;
+	}
+
+	&.bs-tooltip-start,
+	&.bs-tooltip-end {
+		padding-top: 0;
+		padding-bottom: 0;
+	}
 }
