@@ -3,6 +3,7 @@
 .husky
 .vscode
 .yarn
+.nyc_output
 coverage
 coverage-e2e
 test-reports
