@@ -45,8 +45,8 @@ let nextId = 0;
 		'[class.fade]': 'animation',
 		role: 'tooltip',
 		'[id]': 'id',
-		style: 'position: absolute;',
 	},
+	styleUrls: ['./tooltip.scss'],
 	template: `<div class="tooltip-arrow" data-popper-arrow></div
 		><div class="tooltip-inner"><ng-content></ng-content></div>`,
 })

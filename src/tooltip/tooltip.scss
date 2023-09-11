@@ -1,0 +1,8 @@
+ngb-tooltip-window {
+	pointer-events: none;
+	position: absolute;
+
+	.tooltip-inner {
+		pointer-events: auto;
+	}
+}
