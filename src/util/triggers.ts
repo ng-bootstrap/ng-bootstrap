@@ -1,25 +1,9 @@
-import { Observable, merge } from 'rxjs';
-import { share, filter, delay, map } from 'rxjs/operators';
-import { Renderer2 } from '@angular/core';
-
-export class Trigger {
-	constructor(public open: string, public close?: string) {
-		if (!close) {
-			this.close = open;
-		}
-	}
-
-	isManual() {
-		return this.open === 'manual' || this.close === 'manual';
-	}
-}
-
-const DEFAULT_ALIASES = {
+const ALIASES = {
 	hover: ['mouseenter', 'mouseleave'],
 	focus: ['focusin', 'focusout'],
 };
 
-export function parseTriggers(triggers: string, aliases = DEFAULT_ALIASES): Trigger[] {
+export function parseTriggers(triggers: string): [string, string?][] {
 	const trimmedTriggers = (triggers || '').trim();
 
 	if (trimmedTriggers.length === 0) {
@@ -29,113 +13,70 @@ export function parseTriggers(triggers: string, aliases = DEFAULT_ALIASES): Trig
 	const parsedTriggers = trimmedTriggers
 		.split(/\s+/)
 		.map((trigger) => trigger.split(':'))
-		.map((triggerPair) => {
-			let alias = aliases[triggerPair[0]] || triggerPair;
-			return new Trigger(alias[0], alias[1]);
-		});
+		.map((triggerPair) => (ALIASES[triggerPair[0]] || triggerPair) as [string, string?]);
 
-	const manualTriggers = parsedTriggers.filter((triggerPair) => triggerPair.isManual());
+	const manualTriggers = parsedTriggers.filter((triggerPair) => triggerPair.includes('manual'));
 
 	if (manualTriggers.length > 1) {
-		throw 'Triggers parse error: only one manual trigger is allowed';
+		throw `Triggers parse error: only one manual trigger is allowed`;
 	}
 
 	if (manualTriggers.length === 1 && parsedTriggers.length > 1) {
-		throw "Triggers parse error: manual trigger can't be mixed with other triggers";
+		throw `Triggers parse error: manual trigger can't be mixed with other triggers`;
 	}
 
-	return parsedTriggers;
-}
-
-export function observeTriggers(
-	renderer: Renderer2,
-	nativeElement: HTMLElement,
-	triggers: Trigger[],
-	isOpenedFn: () => boolean,
-) {
-	return new Observable<boolean>((subscriber) => {
-		const listeners: (() => void)[] = [];
-		const openFn = () => subscriber.next(true);
-		const closeFn = () => subscriber.next(false);
-		const toggleFn = () => subscriber.next(!isOpenedFn());
-
-		triggers.forEach((trigger: Trigger) => {
-			if (trigger.open === trigger.close) {
-				listeners.push(renderer.listen(nativeElement, trigger.open, toggleFn));
-			} else {
-				listeners.push(
-					renderer.listen(nativeElement, trigger.open, openFn),
-					renderer.listen(nativeElement, trigger.close!, closeFn),
-				);
-			}
-		});
-
-		return () => {
-			listeners.forEach((unsubscribeFn) => unsubscribeFn());
-		};
-	});
-}
-
-const delayOrNoop = <T>(time: number) => (time > 0 ? delay<T>(time) : (a: Observable<T>) => a);
-
-export function triggerDelay(openDelay: number, closeDelay: number, isOpenedFn: () => boolean) {
-	return (input$: Observable<boolean>) => {
-		let pending: { open: boolean } | null = null;
-		const filteredInput$ = input$.pipe(
-			map((open) => ({ open })),
-			filter((event) => {
-				const currentlyOpen = isOpenedFn();
-				if (currentlyOpen !== event.open && (!pending || pending.open === currentlyOpen)) {
-					pending = event;
-					return true;
-				}
-				if (pending && pending.open !== event.open) {
-					pending = null;
-				}
-				return false;
-			}),
-			share(),
-		);
-		const delayedOpen$ = filteredInput$.pipe(
-			filter((event) => event.open),
-			delayOrNoop(openDelay),
-		);
-		const delayedClose$ = filteredInput$.pipe(
-			filter((event) => !event.open),
-			delayOrNoop(closeDelay),
-		);
-		return merge(delayedOpen$, delayedClose$).pipe(
-			filter((event) => {
-				if (event === pending) {
-					pending = null;
-					return event.open !== isOpenedFn();
-				}
-				return false;
-			}),
-			map((event) => event.open),
-		);
-	};
+	return manualTriggers.length ? [] : parsedTriggers;
 }
 
 export function listenToTriggers(
-	renderer: Renderer2,
-	nativeElement: HTMLElement,
+	element: HTMLElement,
 	triggers: string,
 	isOpenedFn: () => boolean,
 	openFn: () => void,
 	closeFn: () => void,
-	openDelay = 0,
-	closeDelay = 0,
+	openDelayMs = 0,
+	closeDelayMs = 0,
 ) {
 	const parsedTriggers = parseTriggers(triggers);
 
-	if (parsedTriggers.length === 1 && parsedTriggers[0].isManual()) {
+	if (parsedTriggers.length === 0) {
 		return () => {};
 	}
 
-	const subscription = observeTriggers(renderer, nativeElement, parsedTriggers, isOpenedFn)
-		.pipe(triggerDelay(openDelay, closeDelay, isOpenedFn))
-		.subscribe((open) => (open ? openFn() : closeFn()));
+	const activeOpenTriggers = new Set<string>();
+	const cleanupFns: (() => void)[] = [];
+	let timeout: any;
 
-	return () => subscription.unsubscribe();
+	function addEventListener(name: string, listener: () => void) {
+		element.addEventListener(name, listener);
+		cleanupFns.push(() => element.removeEventListener(name, listener));
+	}
+
+	function withDelay(fn: () => void, delayMs: number) {
+		clearTimeout(timeout);
+		if (delayMs > 0) {
+			timeout = setTimeout(fn, delayMs);
+		} else {
+			fn();
+		}
+	}
+
+	for (const [openTrigger, closeTrigger] of parsedTriggers) {
+		if (!closeTrigger) {
+			addEventListener(openTrigger, () =>
+				isOpenedFn() ? withDelay(closeFn, closeDelayMs) : withDelay(openFn, openDelayMs),
+			);
+		} else {
+			addEventListener(openTrigger, () => {
+				activeOpenTriggers.add(openTrigger);
+				withDelay(() => activeOpenTriggers.size > 0 && openFn(), openDelayMs);
+			});
+			addEventListener(closeTrigger, () => {
+				activeOpenTriggers.delete(openTrigger);
+				withDelay(() => activeOpenTriggers.size === 0 && closeFn(), closeDelayMs);
+			});
+		}
+	}
+
+	return () => cleanupFns.forEach((cleanupFn) => cleanupFn());
 }

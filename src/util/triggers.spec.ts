@@ -1,69 +1,38 @@
+import { listenToTriggers, parseTriggers } from './triggers';
 import { fakeAsync, tick } from '@angular/core/testing';
-import { Subject, Subscription, Observable } from 'rxjs';
-import { parseTriggers, triggerDelay } from './triggers';
 
 describe('triggers', () => {
 	describe('parseTriggers', () => {
 		it('should parse single trigger', () => {
-			const t = parseTriggers('foo');
-
-			expect(t.length).toBe(1);
-			expect(t[0].open).toBe('foo');
-			expect(t[0].close).toBe('foo');
+			expect(parseTriggers('foo')).toEqual([['foo']]);
 		});
 
 		it('should parse open:close form', () => {
-			const t = parseTriggers('foo:bar');
-
-			expect(t.length).toBe(1);
-			expect(t[0].open).toBe('foo');
-			expect(t[0].close).toBe('bar');
+			expect(parseTriggers('foo:bar')).toEqual([['foo', 'bar']]);
 		});
 
 		it('should parse multiple triggers', () => {
-			const t = parseTriggers('foo:bar bar:baz');
-
-			expect(t.length).toBe(2);
-			expect(t[0].open).toBe('foo');
-			expect(t[0].close).toBe('bar');
-			expect(t[1].open).toBe('bar');
-			expect(t[1].close).toBe('baz');
+			expect(parseTriggers('foo:bar bar:baz')).toEqual([
+				['foo', 'bar'],
+				['bar', 'baz'],
+			]);
 		});
 
 		it('should parse multiple triggers with mixed forms', () => {
-			const t = parseTriggers('foo bar:baz');
-
-			expect(t.length).toBe(2);
-			expect(t[0].open).toBe('foo');
-			expect(t[0].close).toBe('foo');
-			expect(t[1].open).toBe('bar');
-			expect(t[1].close).toBe('baz');
+			expect(parseTriggers('foo bar:baz')).toEqual([['foo'], ['bar', 'baz']]);
 		});
 
 		it('should properly trim excessive white-spaces', () => {
-			const t = parseTriggers('foo   bar  \n baz ');
-
-			expect(t.length).toBe(3);
-			expect(t[0].open).toBe('foo');
-			expect(t[0].close).toBe('foo');
-			expect(t[1].open).toBe('bar');
-			expect(t[1].close).toBe('bar');
-			expect(t[2].open).toBe('baz');
-			expect(t[2].close).toBe('baz');
+			expect(parseTriggers('foo   bar  \n baz ')).toEqual([['foo'], ['bar'], ['baz']]);
 		});
 
 		it('should lookup and translate special aliases', () => {
-			const t = parseTriggers('hover');
-
-			expect(t.length).toBe(1);
-			expect(t[0].open).toBe('mouseenter');
-			expect(t[0].close).toBe('mouseleave');
+			expect(parseTriggers('hover')).toEqual([['mouseenter', 'mouseleave']]);
+			expect(parseTriggers('focus')).toEqual([['focusin', 'focusout']]);
 		});
 
 		it('should detect manual triggers', () => {
-			const t = parseTriggers('manual');
-
-			expect(t[0].isManual).toBeTruthy();
+			expect(parseTriggers('manual').length).toBe(0);
 		});
 
 		it('should ignore empty inputs', () => {
@@ -85,149 +54,122 @@ describe('triggers', () => {
 		});
 	});
 
-	describe('triggerDelay', () => {
-		let subject$: Subject<boolean>;
-		let delayed$: Observable<boolean>;
-		let open: boolean;
-		let subscription: Subscription | null = null;
-		let spy: jasmine.Spy;
+	describe('listenToTriggers', () => {
+		const div = document.createElement('div');
+		let states: boolean[] = [];
+		let isOpenedFn = () => (states.length === 0 ? false : states[states.length - 1]);
+		let openFn = jasmine.createSpy('openFn').and.callFake(() => states.push(true));
+		let closeFn = jasmine.createSpy('closeFn').and.callFake(() => states.push(false));
+		let cleanupFn: () => void;
 
 		beforeEach(() => {
-			subject$ = new Subject();
-			spy = jasmine.createSpy('listener', (newValue) => (open = newValue)).and.callThrough();
-			delayed$ = subject$.asObservable().pipe(triggerDelay(5000, 1000, () => open));
-			subscription = delayed$.subscribe(spy);
+			states = [];
+			cleanupFn = () => {};
 		});
+
+		it(`should listen to 'click'`, fakeAsync(() => {
+			cleanupFn = listenToTriggers(div, 'click', isOpenedFn, openFn, closeFn);
+
+			div.click();
+			expect(states).toEqual([true]);
+			expect(openFn).toHaveBeenCalledTimes(1);
+			div.click();
+			expect(states).toEqual([true, false]);
+			expect(closeFn).toHaveBeenCalledTimes(1);
+			div.click();
+			expect(states).toEqual([true, false, true]);
+			expect(openFn).toHaveBeenCalledTimes(2);
+		}));
+
+		it(`should listen to 'focus'`, fakeAsync(() => {
+			cleanupFn = listenToTriggers(div, 'focus', isOpenedFn, openFn, closeFn);
+
+			div.dispatchEvent(new FocusEvent('focusin'));
+			expect(states).toEqual([true]);
+			div.dispatchEvent(new FocusEvent('focusout'));
+			expect(states).toEqual([true, false]);
+
+			expect(openFn).toHaveBeenCalledTimes(1);
+			expect(closeFn).toHaveBeenCalledTimes(1);
+		}));
+
+		it(`should listen to 'hover focus'`, fakeAsync(() => {
+			cleanupFn = listenToTriggers(div, 'hover focus', isOpenedFn, openFn, closeFn);
+
+			div.dispatchEvent(new FocusEvent('focusin'));
+			div.dispatchEvent(new MouseEvent('mouseenter'));
+			expect(states).toEqual([true, true]);
+
+			div.dispatchEvent(new FocusEvent('focusout'));
+			expect(states).toEqual([true, true]);
+			div.dispatchEvent(new FocusEvent('mouseleave'));
+			expect(states).toEqual([true, true, false]);
+
+			expect(openFn).toHaveBeenCalledTimes(2);
+			expect(closeFn).toHaveBeenCalledTimes(1);
+		}));
+
+		it(`should listen to 'hover' with delays on open`, fakeAsync(() => {
+			cleanupFn = listenToTriggers(div, 'hover', isOpenedFn, openFn, closeFn, 100);
+
+			// with delay
+			div.dispatchEvent(new MouseEvent('mouseenter'));
+			expect(states).toEqual([]);
+			tick(100);
+			expect(states).toEqual([true]);
+
+			div.dispatchEvent(new FocusEvent('mouseleave'));
+			expect(states).toEqual([true, false]);
+
+			expect(openFn).toHaveBeenCalledTimes(1);
+			expect(closeFn).toHaveBeenCalledTimes(1);
+
+			states = [];
+
+			// cancellation
+			div.dispatchEvent(new MouseEvent('mouseenter')); // this should be ignored
+			tick(50);
+			expect(states).toEqual([]);
+			div.dispatchEvent(new MouseEvent('mouseleave'));
+
+			tick(100);
+			expect(states).toEqual([false]);
+		}));
+
+		it(`should listen to 'hover' with delays on close`, fakeAsync(() => {
+			cleanupFn = listenToTriggers(div, 'hover', isOpenedFn, openFn, closeFn, 0, 100);
+
+			// with delay
+			div.dispatchEvent(new MouseEvent('mouseenter'));
+			expect(states).toEqual([true]);
+
+			div.dispatchEvent(new FocusEvent('mouseleave'));
+			expect(states).toEqual([true]);
+			tick(100);
+			expect(states).toEqual([true, false]);
+
+			expect(openFn).toHaveBeenCalledTimes(1);
+			expect(closeFn).toHaveBeenCalledTimes(1);
+
+			states = [];
+
+			// cancellation
+			div.dispatchEvent(new MouseEvent('mouseenter'));
+			expect(states).toEqual([true]);
+
+			div.dispatchEvent(new MouseEvent('mouseleave')); // this should be ignored
+			tick(50);
+			expect(states).toEqual([true]);
+			div.dispatchEvent(new MouseEvent('mouseenter'));
+
+			tick(100);
+			expect(states).toEqual([true, true]);
+		}));
 
 		afterEach(() => {
-			if (subscription) {
-				subscription.unsubscribe();
-				subscription = null;
-			}
+			cleanupFn();
+			openFn.calls.reset();
+			closeFn.calls.reset();
 		});
-
-		it('delays open', fakeAsync(() => {
-			open = false;
-			subject$.next(true);
-			tick(4999);
-			expect(spy).not.toHaveBeenCalled();
-			tick(2);
-			expect(spy).toHaveBeenCalledWith(true);
-			tick(100000);
-			expect(spy.calls.count()).toBe(1);
-		}));
-
-		it('cancels open if it is already done through another way', fakeAsync(() => {
-			open = false;
-			subject$.next(true);
-			tick(4999);
-			expect(spy).not.toHaveBeenCalled();
-			open = true;
-			tick(2);
-			expect(spy).not.toHaveBeenCalled();
-			tick(100000);
-			expect(spy.calls.count()).toBe(0);
-		}));
-
-		it('delays close', fakeAsync(() => {
-			open = true;
-			subject$.next(false);
-			tick(999);
-			expect(spy).not.toHaveBeenCalled();
-			tick(2);
-			expect(spy).toHaveBeenCalledWith(false);
-			tick(100000);
-			expect(spy.calls.count()).toBe(1);
-		}));
-
-		it('cancels close if it is already done through another way', fakeAsync(() => {
-			open = true;
-			subject$.next(false);
-			tick(999);
-			expect(spy).not.toHaveBeenCalled();
-			open = false;
-			tick(2);
-			expect(spy).not.toHaveBeenCalled();
-			tick(100000);
-			expect(spy.calls.count()).toBe(0);
-		}));
-
-		it('ignores extra open during openDelay', fakeAsync(() => {
-			open = false;
-			subject$.next(true);
-			tick(200);
-			subject$.next(true);
-			tick(100);
-			subject$.next(true);
-			tick(200);
-			tick(4499);
-			expect(spy).not.toHaveBeenCalled();
-			tick(2);
-			expect(spy).toHaveBeenCalledWith(true);
-			tick(100000);
-			expect(spy.calls.count()).toBe(1);
-		}));
-
-		it('ignores extra close during closeDelay', fakeAsync(() => {
-			open = true;
-			subject$.next(false);
-			tick(200);
-			subject$.next(false);
-			tick(100);
-			subject$.next(false);
-			tick(200);
-			tick(499);
-			expect(spy).not.toHaveBeenCalled();
-			tick(2);
-			expect(spy).toHaveBeenCalledWith(false);
-			tick(100000);
-			expect(spy.calls.count()).toBe(1);
-		}));
-
-		it('cancels open when receiving close during openDelay', fakeAsync(() => {
-			open = false;
-			subject$.next(true);
-			tick(4999);
-			subject$.next(false);
-			tick(100000);
-			expect(spy).not.toHaveBeenCalled();
-		}));
-
-		it('cancels close when receiving open during closeDelay', fakeAsync(() => {
-			open = true;
-			subject$.next(false);
-			tick(999);
-			subject$.next(true);
-			tick(100000);
-			expect(spy).not.toHaveBeenCalled();
-		}));
-
-		it('closes during openDelay if opened through another way', fakeAsync(() => {
-			open = false;
-			subject$.next(true);
-			tick(4999);
-			open = true;
-			subject$.next(false);
-			tick(999);
-			expect(spy).not.toHaveBeenCalled();
-			tick(2);
-			expect(spy).toHaveBeenCalledWith(false);
-			tick(100000);
-			expect(spy.calls.count()).toBe(1);
-		}));
-
-		it('opens during closeDelay if closed through another way', fakeAsync(() => {
-			open = true;
-			subject$.next(false);
-			tick(999);
-			open = false;
-			subject$.next(true);
-			tick(4999);
-			expect(spy).not.toHaveBeenCalled();
-			tick(2);
-			expect(spy).toHaveBeenCalledWith(true);
-			tick(100000);
-			expect(spy.calls.count()).toBe(1);
-		}));
 	});
 });

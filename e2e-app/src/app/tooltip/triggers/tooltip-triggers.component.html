@@ -1,0 +1,28 @@
+<h3>
+	Tooltip triggers
+	<span class="ms-1 badge {{ d.isOpen() ? 'bg-success' : 'bg-danger' }}" id="open-status">{{
+		d.isOpen() ? 'open' : 'closed'
+	}}</span>
+</h3>
+
+<form id="default">
+	<div class="mb-3 row row-cols-lg-auto">
+		<div class="col-12">
+			<button class="btn btn-outline-light" id="before">Before</button>
+			<button
+				id="trigger"
+				#d="ngbTooltip"
+				ngbTooltip="Tooltip here"
+				type="button"
+				class="btn btn-outline-secondary ms-2"
+			>
+				Tooltip
+			</button>
+			<button class="btn btn-outline-light ms-2" id="after">After</button>
+		</div>
+
+		<div class="col-12">
+			<button class="btn btn-outline-secondary ms-1" id="outside-button">Outside button</button>
+		</div>
+	</div>
+</form>
