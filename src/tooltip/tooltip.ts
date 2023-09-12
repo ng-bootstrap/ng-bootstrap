@@ -279,9 +279,15 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 				});
 			});
 
-			ngbAutoClose(this._ngZone, this._document, this.autoClose, () => this.close(), this.hidden, [
-				this._windowRef.location.nativeElement,
-			]);
+			ngbAutoClose(
+				this._ngZone,
+				this._document,
+				this.autoClose,
+				() => this.close(),
+				this.hidden,
+				[this._windowRef.location.nativeElement],
+				[this._elementRef.nativeElement],
+			);
 
 			transition$.subscribe(() => this.shown.emit());
 		}
@@ -327,7 +333,6 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 
 	ngOnInit() {
 		this._unregisterListenersFn = listenToTriggers(
-			this._renderer,
 			this._elementRef.nativeElement,
 			this.triggers,
 			this.isOpen.bind(this),

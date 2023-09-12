@@ -353,7 +353,6 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 
 	ngOnInit() {
 		this._unregisterListenersFn = listenToTriggers(
-			this._renderer,
 			this._elementRef.nativeElement,
 			this.triggers,
 			this.isOpen.bind(this),

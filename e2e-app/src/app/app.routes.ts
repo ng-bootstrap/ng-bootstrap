@@ -27,6 +27,7 @@ import { OffcanvasFocusComponent } from './offcanvas/focus/offcanvas-focus.compo
 import { OffcanvasNestingComponent } from './offcanvas/nesting/offcanvas-nesting.component';
 import { OffcanvasStackConfirmationComponent } from './offcanvas/stack-confirmation/offcanvas-stack-confirmation.component';
 import { DropdownShadowComponent } from './dropdown/shadow/dropdown-shadow.component';
+import { TooltipTriggersComponent } from './tooltip/triggers/tooltip-triggers.component';
 
 export const ROUTES: Routes = [
 	{
@@ -74,6 +75,7 @@ export const ROUTES: Routes = [
 			{ path: 'autoclose', component: TooltipAutocloseComponent },
 			{ path: 'focus', component: TooltipFocusComponent },
 			{ path: 'position', component: TooltipPositionComponent },
+			{ path: 'triggers', component: TooltipTriggersComponent },
 		],
 	},
 	{
