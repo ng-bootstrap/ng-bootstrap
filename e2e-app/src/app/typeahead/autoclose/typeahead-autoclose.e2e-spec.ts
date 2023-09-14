@@ -30,7 +30,7 @@ const expectTypeaheadToBeClosed = async (message: string) => {
 };
 
 const setTypeaheadValue = async (text: string) => {
-	await getPage().type(SELECTOR_TYPEAHEAD, text);
+	await getPage().locator(SELECTOR_TYPEAHEAD).pressSequentially(text);
 	await expectTypeaheadToBeOpen(`Typed ${text}, should be open`);
 };
 

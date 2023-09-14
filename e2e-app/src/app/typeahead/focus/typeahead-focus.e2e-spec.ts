@@ -36,7 +36,7 @@ test.describe('Typeahead', () => {
 
 	test(`should preserve value previously selected with mouse when reopening with focus then closing without selection`, async () => {
 		await getPage().click(SELECTOR_TYPEAHEAD);
-		await getPage().type(SELECTOR_TYPEAHEAD, 'col');
+		await getPage().locator(SELECTOR_TYPEAHEAD).pressSequentially('col');
 
 		await waitForDropdownOpen(2);
 		await waitForTypeaheadFocused();
