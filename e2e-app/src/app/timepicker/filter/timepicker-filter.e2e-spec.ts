@@ -18,9 +18,9 @@ test.describe('Timepicker Filter', () => {
 		test(`should accept numbers`, async () => {
 			await expectValue('::'); // No starting values
 
-			await getPage().type(SELECTOR_HOUR, '1');
-			await getPage().type(SELECTOR_MIN, '2');
-			await getPage().type(SELECTOR_SEC, '3');
+			await getPage().locator(SELECTOR_HOUR).pressSequentially('1');
+			await getPage().locator(SELECTOR_MIN).pressSequentially('2');
+			await getPage().locator(SELECTOR_SEC).pressSequentially('3');
 
 			await getPage().click(SELECTOR_HOUR);
 			await expectValue('01:02:03');
@@ -29,9 +29,9 @@ test.describe('Timepicker Filter', () => {
 		test(`shouldn't accept alpha`, async () => {
 			await expectValue('::'); // No starting values
 
-			await getPage().type(SELECTOR_HOUR, 'A');
-			await getPage().type(SELECTOR_MIN, 'A');
-			await getPage().type(SELECTOR_SEC, 'A');
+			await getPage().locator(SELECTOR_HOUR).pressSequentially('A');
+			await getPage().locator(SELECTOR_MIN).pressSequentially('A');
+			await getPage().locator(SELECTOR_SEC).pressSequentially('A');
 
 			await getPage().click(SELECTOR_HOUR);
 			await expectValue('::');
