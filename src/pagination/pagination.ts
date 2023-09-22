@@ -1,18 +1,26 @@
+import type { PaginationApi, PaginationState, PaginationWidget } from '@agnos-ui/angular-headless';
 import {
+	callWidgetFactory,
+	createPagination,
+	patchSimpleChanges,
+	toSlotContextWidget,
+	ngBootstrapPagination,
+} from '@agnos-ui/angular-headless';
+import { AsyncPipe, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
+import type { OnChanges, Signal, SimpleChanges } from '@angular/core';
+import {
+	ChangeDetectionStrategy,
 	Component,
+	TemplateRef,
 	ContentChild,
 	Directive,
 	EventEmitter,
 	Input,
 	Output,
-	OnChanges,
-	ChangeDetectionStrategy,
-	SimpleChanges,
-	TemplateRef,
+	inject,
 } from '@angular/core';
-import { getValueInRange, isNumber } from '../util/util';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { NgbPaginationConfig } from './pagination-config';
-import { NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
 
 /**
  * A context for the
@@ -146,13 +154,10 @@ export class NgbPaginationPages {
 	constructor(public templateRef: TemplateRef<NgbPaginationPagesContext>) {}
 }
 
-/**
- * A component that displays page numbers and allows to customize them in several ways.
- */
 @Component({
 	selector: 'ngb-pagination',
 	standalone: true,
-	imports: [NgIf, NgFor, NgTemplateOutlet],
+	imports: [NgIf, NgFor, AsyncPipe, NgTemplateOutlet],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	host: { role: 'navigation' },
 	template: `
@@ -167,20 +172,20 @@ export class NgbPaginationPages {
 				*ngFor="let pageNumber of pages"
 				class="page-item"
 				[class.active]="pageNumber === page"
-				[class.disabled]="isEllipsis(pageNumber) || disabled"
+				[class.disabled]="widget.api.isEllipsis(pageNumber) || disabled"
 				[attr.aria-current]="pageNumber === page ? 'page' : null"
 			>
-				<a *ngIf="isEllipsis(pageNumber)" class="page-link" tabindex="-1" aria-disabled="true">
+				<a *ngIf="widget.api.isEllipsis(pageNumber)" class="page-link" tabindex="-1" aria-disabled="true">
 					<ng-template
 						[ngTemplateOutlet]="tplEllipsis?.templateRef || ellipsis"
 						[ngTemplateOutletContext]="{ disabled: true, currentPage: page }"
 					></ng-template>
 				</a>
 				<a
-					*ngIf="!isEllipsis(pageNumber)"
+					*ngIf="!widget.api.isEllipsis(pageNumber)"
 					class="page-link"
 					href
-					(click)="selectPage(pageNumber); $event.preventDefault()"
+					(click)="widget.actions.select(pageNumber); $event.preventDefault()"
 					[attr.tabindex]="disabled ? '-1' : null"
 					[attr.aria-disabled]="disabled ? 'true' : null"
 				>
@@ -191,84 +196,91 @@ export class NgbPaginationPages {
 				</a>
 			</li>
 		</ng-template>
-		<ul [class]="'pagination' + (size ? ' pagination-' + size : '')">
-			<li *ngIf="boundaryLinks" class="page-item" [class.disabled]="previousDisabled()">
-				<a
-					aria-label="First"
-					i18n-aria-label="@@ngb.pagination.first-aria"
-					class="page-link"
-					href
-					(click)="selectPage(1); $event.preventDefault()"
-					[attr.tabindex]="previousDisabled() ? '-1' : null"
-					[attr.aria-disabled]="previousDisabled() ? 'true' : null"
-				>
-					<ng-template
-						[ngTemplateOutlet]="tplFirst?.templateRef || first"
-						[ngTemplateOutletContext]="{ disabled: previousDisabled(), currentPage: page }"
-					></ng-template>
-				</a>
-			</li>
+		<ng-container *ngIf="widget.state$ | async as state">
+			<ul [class]="'pagination' + (size ? ' pagination-' + size : '')">
+				<li *ngIf="state.boundaryLinks" class="page-item" [class.disabled]="state.previousDisabled">
+					<a
+						aria-label="First"
+						i18n-aria-label="@@ngb.pagination.first-aria"
+						class="page-link"
+						href
+						(click)="widget.actions.first(); $event.preventDefault()"
+						[attr.tabindex]="state.previousDisabled ? '-1' : null"
+						[attr.aria-disabled]="state.previousDisabled ? 'true' : null"
+					>
+						<ng-template
+							[ngTemplateOutlet]="tplFirst?.templateRef || first"
+							[ngTemplateOutletContext]="{ disabled: state.previousDisabled, currentPage: page }"
+						></ng-template>
+					</a>
+				</li>
 
-			<li *ngIf="directionLinks" class="page-item" [class.disabled]="previousDisabled()">
-				<a
-					aria-label="Previous"
-					i18n-aria-label="@@ngb.pagination.previous-aria"
-					class="page-link"
-					href
-					(click)="selectPage(page - 1); $event.preventDefault()"
-					[attr.tabindex]="previousDisabled() ? '-1' : null"
-					[attr.aria-disabled]="previousDisabled() ? 'true' : null"
+				<li *ngIf="state.directionLinks" class="page-item" [class.disabled]="state.previousDisabled">
+					<a
+						aria-label="Previous"
+						i18n-aria-label="@@ngb.pagination.previous-aria"
+						class="page-link"
+						href
+						(click)="widget.actions.previous(); $event.preventDefault()"
+						[attr.tabindex]="state.previousDisabled ? '-1' : null"
+						[attr.aria-disabled]="state.previousDisabled ? 'true' : null"
+					>
+						<ng-template
+							[ngTemplateOutlet]="tplPrevious?.templateRef || previous"
+							[ngTemplateOutletContext]="{ disabled: state.previousDisabled }"
+						></ng-template>
+					</a>
+				</li>
+				<ng-template
+					[ngTemplateOutlet]="tplPages?.templateRef || defaultPages"
+					[ngTemplateOutletContext]="{ $implicit: state.page, pages: state.pages, disabled: state.disabled }"
 				>
-					<ng-template
-						[ngTemplateOutlet]="tplPrevious?.templateRef || previous"
-						[ngTemplateOutletContext]="{ disabled: previousDisabled() }"
-					></ng-template>
-				</a>
-			</li>
-			<ng-template
-				[ngTemplateOutlet]="tplPages?.templateRef || defaultPages"
-				[ngTemplateOutletContext]="{ $implicit: page, pages: pages, disabled: disabled }"
-			>
-			</ng-template>
-			<li *ngIf="directionLinks" class="page-item" [class.disabled]="nextDisabled()">
-				<a
-					aria-label="Next"
-					i18n-aria-label="@@ngb.pagination.next-aria"
-					class="page-link"
-					href
-					(click)="selectPage(page + 1); $event.preventDefault()"
-					[attr.tabindex]="nextDisabled() ? '-1' : null"
-					[attr.aria-disabled]="nextDisabled() ? 'true' : null"
-				>
-					<ng-template
-						[ngTemplateOutlet]="tplNext?.templateRef || next"
-						[ngTemplateOutletContext]="{ disabled: nextDisabled(), currentPage: page }"
-					></ng-template>
-				</a>
-			</li>
+				</ng-template>
+				<li *ngIf="state.directionLinks" class="page-item" [class.disabled]="state.nextDisabled">
+					<a
+						aria-label="Next"
+						i18n-aria-label="@@ngb.pagination.next-aria"
+						class="page-link"
+						href
+						(click)="widget.actions.next(); $event.preventDefault()"
+						[attr.tabindex]="state.nextDisabled ? '-1' : null"
+						[attr.aria-disabled]="state.nextDisabled ? 'true' : null"
+					>
+						<ng-template
+							[ngTemplateOutlet]="tplNext?.templateRef || next"
+							[ngTemplateOutletContext]="{ disabled: state.nextDisabled, currentPage: state.page }"
+						></ng-template>
+					</a>
+				</li>
 
-			<li *ngIf="boundaryLinks" class="page-item" [class.disabled]="nextDisabled()">
-				<a
-					aria-label="Last"
-					i18n-aria-label="@@ngb.pagination.last-aria"
-					class="page-link"
-					href
-					(click)="selectPage(pageCount); $event.preventDefault()"
-					[attr.tabindex]="nextDisabled() ? '-1' : null"
-					[attr.aria-disabled]="nextDisabled() ? 'true' : null"
-				>
-					<ng-template
-						[ngTemplateOutlet]="tplLast?.templateRef || last"
-						[ngTemplateOutletContext]="{ disabled: nextDisabled(), currentPage: page }"
-					></ng-template>
-				</a>
-			</li>
-		</ul>
+				<li *ngIf="boundaryLinks" class="page-item" [class.disabled]="state.nextDisabled">
+					<a
+						aria-label="Last"
+						i18n-aria-label="@@ngb.pagination.last-aria"
+						class="page-link"
+						href
+						(click)="widget.actions.last(); $event.preventDefault()"
+						[attr.tabindex]="state.nextDisabled ? '-1' : null"
+						[attr.aria-disabled]="state.nextDisabled ? 'true' : null"
+					>
+						<ng-template
+							[ngTemplateOutlet]="tplLast?.templateRef || last"
+							[ngTemplateOutletContext]="{ disabled: state.nextDisabled, currentPage: state.page }"
+						></ng-template>
+					</a>
+				</li>
+			</ul>
+		</ng-container>
 	`,
 })
 export class NgbPagination implements OnChanges {
-	pageCount = 0;
-	pages: number[] = [];
+	// Those two getters are only for the tests and could be removed if we remove more tests done in AgnosUI
+	get pageCount() {
+		return this._widget.stores.pageCount$();
+	}
+	get pages() {
+		return this._widget.stores.pages$();
+	}
 
 	@ContentChild(NgbPaginationEllipsis, { static: false }) tplEllipsis?: NgbPaginationEllipsis;
 	@ContentChild(NgbPaginationFirst, { static: false }) tplFirst?: NgbPaginationFirst;
@@ -349,158 +361,55 @@ export class NgbPagination implements OnChanges {
 	 */
 	@Input() size: 'sm' | 'lg' | string | null;
 
-	constructor(config: NgbPaginationConfig) {
-		this.disabled = config.disabled;
-		this.boundaryLinks = config.boundaryLinks;
-		this.directionLinks = config.directionLinks;
-		this.ellipses = config.ellipses;
-		this.maxSize = config.maxSize;
-		this.pageSize = config.pageSize;
-		this.rotate = config.rotate;
-		this.size = config.size;
-	}
+	readonly config: NgbPaginationConfig;
+	readonly _widget: PaginationWidget;
+	readonly widget: Pick<PaginationWidget, 'actions' | 'api' | 'directives' | 'state$' | 'stores'>;
+	readonly api: PaginationApi;
+	readonly state$: Signal<PaginationState>;
 
-	hasPrevious(): boolean {
-		return this.page > 1;
-	}
+	constructor() {
+		this.config = inject(NgbPaginationConfig);
 
-	hasNext(): boolean {
-		return this.page < this.pageCount;
-	}
+		this.disabled = this.config.disabled;
+		this.boundaryLinks = this.config.boundaryLinks;
+		this.directionLinks = this.config.directionLinks;
+		this.ellipses = this.config.ellipses;
+		this.maxSize = this.config.maxSize;
+		this.pageSize = this.config.pageSize;
+		this.rotate = this.config.rotate;
+		this.size = this.config.size;
 
-	nextDisabled(): boolean {
-		return !this.hasNext() || this.disabled;
-	}
+		this._widget = callWidgetFactory(createPagination, null, {
+			pagesFactory: ngBootstrapPagination(this.config.maxSize, this.config.rotate, this.config.ellipses),
+			pageSize: this.config.pageSize,
+			page: 1,
+			boundaryLinks: this.config.boundaryLinks,
+			directionLinks: this.config.directionLinks,
+			disabled: this.config.disabled,
+		});
+		this.widget = toSlotContextWidget(this._widget);
+		this.api = this._widget.api;
 
-	previousDisabled(): boolean {
-		return !this.hasPrevious() || this.disabled;
-	}
+		this.state$ = toSignal(this._widget.state$ as any, { requireSync: true });
 
-	selectPage(pageNumber: number): void {
-		this._updatePages(pageNumber);
+		this._widget.patch({
+			onPageChange: (page: number) => this.pageChange.emit(page),
+		});
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
-		this._updatePages(this.page);
-	}
-
-	isEllipsis(pageNumber): boolean {
-		return pageNumber === -1;
-	}
-
-	/**
-	 * Appends ellipses and first/last page number to the displayed pages
-	 */
-	private _applyEllipses(start: number, end: number) {
-		if (this.ellipses) {
-			if (start > 0) {
-				// The first page will always be included. If the displayed range
-				// starts after the third page, then add ellipsis. But if the range
-				// starts on the third page, then add the second page instead of
-				// an ellipsis, because the ellipsis would only hide a single page.
-				if (start > 2) {
-					this.pages.unshift(-1);
-				} else if (start === 2) {
-					this.pages.unshift(2);
-				}
-				this.pages.unshift(1);
-			}
-			if (end < this.pageCount) {
-				// The last page will always be included. If the displayed range
-				// ends before the third-last page, then add ellipsis. But if the range
-				// ends on third-last page, then add the second-last page instead of
-				// an ellipsis, because the ellipsis would only hide a single page.
-				if (end < this.pageCount - 2) {
-					this.pages.push(-1);
-				} else if (end === this.pageCount - 2) {
-					this.pages.push(this.pageCount - 1);
-				}
-				this.pages.push(this.pageCount);
-			}
+		// changes !== null is for the current ng-bootstrap tests.
+		if (changes !== null && (changes?.maxSize || changes?.rotate || this?.ellipses)) {
+			this._widget.patch({
+				pagesFactory: ngBootstrapPagination(
+					changes.maxSize ? changes.maxSize.currentValue : this.maxSize,
+					changes.rotate ? changes.rotate.currentValue : this.rotate,
+					changes.ellipses ? changes.ellipses.currentValue : this.ellipses,
+				),
+			});
 		}
-	}
-
-	/**
-	 * Rotates page numbers based on maxSize items visible.
-	 * Currently selected page stays in the middle:
-	 *
-	 * Ex. for selected page = 6:
-	 * [5,*6*,7] for maxSize = 3
-	 * [4,5,*6*,7] for maxSize = 4
-	 */
-	private _applyRotation(): [number, number] {
-		let start = 0;
-		let end = this.pageCount;
-		let leftOffset = Math.floor(this.maxSize / 2);
-		let rightOffset = this.maxSize % 2 === 0 ? leftOffset - 1 : leftOffset;
-
-		if (this.page <= leftOffset) {
-			// very beginning, no rotation -> [0..maxSize]
-			end = this.maxSize;
-		} else if (this.pageCount - this.page < leftOffset) {
-			// very end, no rotation -> [len-maxSize..len]
-			start = this.pageCount - this.maxSize;
-		} else {
-			// rotate
-			start = this.page - leftOffset - 1;
-			end = this.page + rightOffset;
-		}
-
-		return [start, end];
-	}
-
-	/**
-	 * Paginates page numbers based on maxSize items per page.
-	 */
-	private _applyPagination(): [number, number] {
-		let page = Math.ceil(this.page / this.maxSize) - 1;
-		let start = page * this.maxSize;
-		let end = start + this.maxSize;
-
-		return [start, end];
-	}
-
-	private _setPageInRange(newPageNo) {
-		const prevPageNo = this.page;
-		this.page = getValueInRange(newPageNo, this.pageCount, 1);
-
-		if (this.page !== prevPageNo && isNumber(this.collectionSize)) {
-			this.pageChange.emit(this.page);
-		}
-	}
-
-	private _updatePages(newPage: number) {
-		this.pageCount = Math.ceil(this.collectionSize / this.pageSize);
-
-		if (!isNumber(this.pageCount)) {
-			this.pageCount = 0;
-		}
-
-		// fill-in model needed to render pages
-		this.pages.length = 0;
-		for (let i = 1; i <= this.pageCount; i++) {
-			this.pages.push(i);
-		}
-
-		// set page within 1..max range
-		this._setPageInRange(newPage);
-
-		// apply maxSize if necessary
-		if (this.maxSize > 0 && this.pageCount > this.maxSize) {
-			let start = 0;
-			let end = this.pageCount;
-
-			// either paginating or rotating page numbers
-			if (this.rotate) {
-				[start, end] = this._applyRotation();
-			} else {
-				[start, end] = this._applyPagination();
-			}
-
-			this.pages = this.pages.slice(start, end);
-
-			// adding ellipses
-			this._applyEllipses(start, end);
+		if (changes !== null) {
+			patchSimpleChanges(this._widget.patch, changes);
 		}
 	}
 }
