@@ -1,5 +1,5 @@
 .ngb-slider-handle {
-	background-color: #005eb8;
+	background-color: var(--bs-primary, #005eb8);
 	border: none;
 	width: 1.25rem;
 	height: 1.25rem;
@@ -17,11 +17,11 @@
 }
 
 .ngb-slider-handle:focus {
-	box-shadow: 0 0 25px 5px #48abe0;
+	box-shadow: 0 0 25px 5px var(--bs-info, #48abe0);
 }
 
 .ngb-slider-progress {
-	background-color: #005eb8;
+	background-color: var(--bs-primary, #005eb8);
 	height: 0.25rem;
 	position: absolute;
 
@@ -68,7 +68,7 @@
 
 ngb-slider {
 	display: flex;
-	background-color: #d3d3d3;
+	background-color: var(--bs-secondary-bg, #d3d3d3);
 	position: relative;
 }
 
@@ -90,10 +90,28 @@ ngb-slider {
 
 .ngb-slider-progress[disabled],
 .ngb-slider-handle[disabled] {
-	background-color: #b3b3b3;
+	background-color: var(--bs-dark-bg-subtle, #b3b3b3);
 	cursor: not-allowed;
+}
+
+.ngb-slider-label[disabled],
+.ngb-slider-label-vertical[disabled] {
+	color: var(--bs-dark-bg-subtle, #b3b3b3);
 }
 
 ngb-slider[disabled] {
 	cursor: not-allowed;
+}
+
+.ngb-clickable-slider-area {
+	height: 1.5rem;
+	width: 100%;
+	transform: translateY(-50%);
+}
+
+.ngb-clickable-slider-area-vertical {
+	width: 1.5rem;
+	height: 100%;
+	transform: translateX(-50%);
+	flex-shrink: 0;
 }

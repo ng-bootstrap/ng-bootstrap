@@ -4,96 +4,93 @@ import {
 	ChangeDetectionStrategy,
 	Component,
 	computed,
+	DestroyRef,
 	Directive,
 	ElementRef,
 	EventEmitter,
 	forwardRef,
-	HostListener,
 	inject,
 	Input,
+	NgZone,
 	OnDestroy,
 	OnInit,
 	Output,
 	signal,
-	Signal,
 	ViewChild,
 	ViewEncapsulation,
 	WritableSignal,
 } from '@angular/core';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { skip } from 'rxjs';
 import { Key } from '../util/key';
-import { NgbDefaultSliderConfig, NgbSliderConfig } from './slider-config';
-
-/**
- * Types of the change that can happen to the slider value when the value is modified
- */
-export enum SliderValueChangeType {
-	COORDINATE = 'coordinate',
-	KEY = 'key',
-}
+import { NgbSliderConfig } from './slider-config';
+import { SliderWidget } from './slider.model';
 
 /**
  * A directive that is responsible for:
- * * the click and keyboard even capture and propagation
- * * positioning of the slider handle
+ * the click and keyboard even capture and propagation
+ * positioning of the slider handle
  */
 @Directive({
 	selector: '[ngbSliderHandle]',
 	standalone: true,
 	host: {
 		class: 'ngb-slider-handle',
-		'[class]': "vertical ? 'ngb-slider-handle-vertical' : 'ngb-slider-handle-horizontal'",
-		'[style.left.%]': 'vertical ? "" : sliderHandle',
-		'[style.top.%]': 'vertical ? 100 - sliderHandle : ""',
+		'[class]': "sliderWidget.state.vertical() ? 'ngb-slider-handle-vertical' : 'ngb-slider-handle-horizontal'",
+		'[style.left.%]': 'sliderWidget.state.handleTooltipLeft()[sliderIndex]',
+		'[style.top.%]': 'sliderWidget.state.handleTooltipTop()[sliderIndex]',
+		'(keydown)': 'sliderWidget.actions.onKeydown($event, sliderIndex)',
+		'(mousedown)': 'onMouseDown($event)',
 	},
 })
 export class NgbSliderHandleDirective {
 	private _elementRef = inject(ElementRef);
+	private _zone = inject(NgZone);
+	// needed to avoid changedetection on the mouse move over the same coordinate (vertical or horizonal movement)
+	private _prevCoordinate = -1;
 
 	/**
-	 * Left offset of the handle element in %
+	 * Slider component state and events
 	 */
-	@Input() sliderHandle: number;
+	@Input() sliderWidget: SliderWidget;
 
 	/**
-	 * Direction of the slider
+	 * Index of the slider handle
 	 */
-	@Input() vertical: boolean;
+	@Input() sliderIndex: number;
 
-	/**
-	 * An event containing the new value of slider handle coordinate
-	 * emitted every time when the handle is moved with the mouse
-	 */
-	@Output() sliderCoordinateMove = new EventEmitter<number>();
-
-	/**
-	 * An event containing the key that was pressed on slider handle
-	 * emited every time when a key stroke is captured
-	 */
-	@Output() sliderKeydown = new EventEmitter<number>();
-
-	@HostListener('keydown', ['$event'])
-	private onKeyDown(event: KeyboardEvent) {
-		// eslint-disable-next-line deprecation/deprecation
-		if (event.which !== Key.Tab) {
-			event.preventDefault();
-		}
-		// eslint-disable-next-line deprecation/deprecation
-		this.sliderKeydown.emit(event.which);
-	}
-
-	@HostListener('mousedown', ['$event'])
-	private onMouseDown(event: MouseEvent) {
+	onMouseDown(event: MouseEvent) {
 		this._elementRef.nativeElement.focus();
+		this.sliderWidget.state.sliderDomRect.set(this._elementRef.nativeElement.parentElement.getBoundingClientRect());
 		event.preventDefault();
 		const handleDrag = (e: MouseEvent) => this.elementDrag(e);
-		document.addEventListener('mousemove', handleDrag);
-		document.addEventListener('mouseup', () => document.removeEventListener('mousemove', handleDrag), { once: true });
+		this.sliderWidget.state.internalChange.set(true);
+		this._zone.runOutsideAngular(() => {
+			document.addEventListener('mousemove', handleDrag);
+		});
+		document.addEventListener(
+			'mouseup',
+			() => {
+				document.removeEventListener('mousemove', handleDrag);
+				this.sliderWidget.state.internalChange.set(false);
+			},
+			{ once: true },
+		);
 	}
 
 	private elementDrag(e: MouseEvent) {
 		e.preventDefault();
-		this.sliderCoordinateMove.emit(this.vertical ? e.clientY : e.clientX);
+		const newCoord = this.sliderWidget.state.vertical() ? e.clientY : e.clientX;
+		if (!this.sliderWidget.state.readonly() && !this.sliderWidget.state.disabled()) {
+			this._elementRef.nativeElement.focus();
+		}
+		if (this._prevCoordinate !== newCoord) {
+			this._prevCoordinate = newCoord;
+			this._zone.run(() => {
+				this.sliderWidget.actions.adjustCoordinate(newCoord, this.sliderIndex);
+			});
+		}
 	}
 }
 
@@ -108,108 +105,98 @@ export class NgbSliderHandleDirective {
 	providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NgbSlider), multi: true }],
 	imports: [NgbSliderHandleDirective, NgIf, NgFor],
 	host: {
-		'[class]': '_state.vertical() ? "ngb-slider-vertical" : "ngb-slider-horizontal"',
-		'(click)':
-			'sliderValueChange(_state.vertical() ? $event.clientY : $event.clientX, _sliderValueChangeType.COORDINATE)',
+		'[class]': 'widget.state.vertical() ? "ngb-slider-vertical" : "ngb-slider-horizontal"',
 		'(blur)': 'handleBlur()',
 	},
 	template: `
-		<ng-container *ngFor="let repeat of [].constructor(_state._dirtyValue().length - 1 || 1); let i = index">
-			<div
-				#progress
-				class="ngb-slider-progress"
-				[attr.disabled]="_state.disabled() ? true : null"
-				[style.left.%]="
-					_state.vertical() ? 0 : _state._dirtyValue().length === 1 ? 0 : _state.sortedCleanValuePercent()[i]
-				"
-				[style.bottom.%]="
-					_state.vertical() ? (_state._dirtyValue().length === 1 ? 0 : _state.sortedCleanValuePercent()[i]) : 0
-				"
-				[style.width.%]="
-					_state.vertical()
-						? 100
-						: _state._dirtyValue().length === 1
-						? _state.sortedCleanValuePercent()[i]
-						: _state.sortedCleanValuePercent()[i + 1] - _state.sortedCleanValuePercent()[i]
-				"
-				[style.height.%]="
-					_state.vertical()
-						? _state._dirtyValue().length === 1
-							? _state.sortedCleanValuePercent()[i]
-							: _state.sortedCleanValuePercent()[i + 1] - _state.sortedCleanValuePercent()[i]
-						: 100
-				"
-			></div>
-		</ng-container>
-
+		<div
+			[class]="widget.state.vertical() ? 'ngb-clickable-slider-area-vertical' : 'ngb-clickable-slider-area'"
+			(click)="sliderClick($event)"
+		>
+		</div>
+		<div
+			*ngFor="let repeat of [].constructor(widget.state.cleanValue().length - 1 || 1); let i = index"
+			#progress
+			class="ngb-slider-progress"
+			[attr.disabled]="widget.state.disabled() ? true : null"
+			[style.left.%]="widget.state.progressLeft()[i]"
+			[style.bottom.%]="widget.state.progressBottom()[i]"
+			[style.width.%]="widget.state.progressWidth()[i]"
+			[style.height.%]="widget.state.progressHeight()[i]"
+		></div>
 		<div
 			#minLabel
 			[class]="
-				_state.vertical()
+				widget.state.vertical()
 					? 'ngb-slider-label-vertical ngb-slider-label-vertical-min'
 					: 'ngb-slider-label ngb-slider-label-min'
 			"
-			[style.visibility]="_state.minValueLabelDisplay()"
+			[style.visibility]="widget.state.minValueLabelDisplay()"
+			[attr.disabled]="widget.state.disabled() ? true : null"
 		>
-			{{ _state.minValue() }}
+			{{ widget.state.minValue() }}
 		</div>
 		<div
 			#maxLabel
 			[class]="
-				_state.vertical()
+				widget.state.vertical()
 					? 'ngb-slider-label-vertical ngb-slider-label-vertical-max'
 					: 'ngb-slider-label ngb-slider-label-max'
 			"
-			[style.visibility]="_state.maxValueLabelDisplay()"
+			[style.visibility]="widget.state.maxValueLabelDisplay()"
+			[attr.disabled]="widget.state.disabled() ? true : null"
 		>
-			{{ _state.maxValue() }}
+			{{ widget.state.maxValue() }}
 		</div>
 		<div
 			[class]="
-				_state.vertical()
+				widget.state.vertical()
 					? 'ngb-slider-label-vertical ngb-slider-label-vertical-now'
 					: 'ngb-slider-label ngb-slider-label-now'
 			"
-			[style.visibility]="_state.mixLabelDisplay()"
-			[style.left.%]="
-				_state.vertical() ? 0 : (_state.sortedCleanValuePercent()[0] + _state.sortedCleanValuePercent()[1]) / 2
-			"
-			[style.top.%]="
-				_state.vertical() ? 100 - (_state.sortedCleanValuePercent()[0] + _state.sortedCleanValuePercent()[1]) / 2 : 0
-			"
+			[style.visibility]="widget.state.mixLabelDisplay()"
+			[style.left.%]="widget.state.mixLabelLeft()"
+			[style.top.%]="widget.state.mixLabelTop()"
+			[attr.disabled]="widget.state.disabled() ? true : null"
 		>
-			{{ _state.sortedCleanValue()[0] }} - {{ _state.sortedCleanValue()[1] }}</div
+			{{ widget.state.sortedCleanValue()[0] }} - {{ widget.state.sortedCleanValue()[1] }}</div
 		>
-		<ng-container *ngFor="let repeat of [].constructor(_state._dirtyValue().length); let i = index">
+		<ng-template
+			ngFor
+			let-item
+			[ngForOf]="widget.state.sortedHandleDisplay()"
+			let-i="index"
+			;
+			[ngForTrackBy]="trackHandle"
+		>
 			<button
 				ngbSliderHandle
-				[sliderHandle]="_state.cleanValuePercent()[i]"
-				[vertical]="vertical"
-				(sliderCoordinateMove)="sliderValueChange($event, _sliderValueChangeType.COORDINATE, i)"
-				(sliderKeydown)="sliderValueChange($event, _sliderValueChangeType.KEY, i)"
+				[sliderWidget]="widget"
+				[sliderIndex]="item.id"
 				role="slider"
-				[attr.aria-valuemin]="_state.minValue()"
-				[attr.aria-valuemax]="_state.maxValue()"
-				[attr.aria-valuenow]="_state.cleanValue()[i]"
-				[attr.aria-valuetext]="_state.cleanValue()[i]"
-				[attr.aria-readonly]="_state.readonly() ? true : null"
-				[attr.aria-disabled]="_state.disabled() ? true : null"
-				[attr.disabled]="_state.disabled() ? true : null"
+				[attr.aria-valuemin]="widget.state.minValue()"
+				[attr.aria-valuemax]="widget.state.maxValue()"
+				[attr.aria-valuenow]="item.value"
+				[attr.aria-valuetext]="item.value"
+				[attr.aria-readonly]="widget.state.readonly() ? true : null"
+				[attr.aria-disabled]="widget.state.disabled() ? true : null"
+				[attr.disabled]="widget.state.disabled() ? true : null"
 				>&nbsp;
 			</button>
 			<div
 				[class]="
-					_state.vertical()
+					widget.state.vertical()
 						? 'ngb-slider-label-vertical ngb-slider-label-vertical-now'
 						: 'ngb-slider-label ngb-slider-label-now'
 				"
-				[style.left.%]="_state.vertical() ? 0 : _state.cleanValuePercent()[i]"
-				[style.top.%]="_state.vertical() ? 100 - _state.cleanValuePercent()[i] : 0"
-				[style.visibility]="_state.mixLabelDisplay() === 'visible' ? 'hidden' : 'visible'"
+				[style.left.%]="widget.state.handleTooltipLeft()[i]"
+				[style.top.%]="widget.state.handleTooltipTop()[i]"
+				[style.visibility]="widget.state.mixLabelDisplay() === 'visible' ? 'hidden' : 'visible'"
+				[attr.disabled]="widget.state.disabled() ? true : null"
 			>
-				{{ _state.cleanValue()[i] }}</div
+				{{ widget.state.cleanValue()[i] }}</div
 			>
-		</ng-container>
+		</ng-template>
 	`,
 	styleUrls: ['./slider.scss'],
 })
@@ -218,13 +205,12 @@ export class NgbSlider implements OnInit, ControlValueAccessor, AfterViewInit, O
 	 * NgbSlider element reference
 	 */
 	private _elementRef = inject(ElementRef);
+	private _destroyRef = inject(DestroyRef);
 
-	_sliderValueChangeType = SliderValueChangeType;
-
-	private resizeObserver = new ResizeObserver(() => {
-		this._state.sliderDomRect.set(this._elementRef.nativeElement.getBoundingClientRect());
-		this._state.minLabelDomRect.set(this._minLabelRef?.nativeElement.getBoundingClientRect());
-		this._state.maxLabelDomRect.set(this._maxLabelRef?.nativeElement.getBoundingClientRect());
+	private _resizeObserver = new ResizeObserver(() => {
+		this.widget.state.sliderDomRect.set(this._elementRef.nativeElement.getBoundingClientRect());
+		this.widget.state.minLabelDomRect.set(this._minLabelRef?.nativeElement.getBoundingClientRect());
+		this.widget.state.maxLabelDomRect.set(this._maxLabelRef?.nativeElement.getBoundingClientRect());
 	});
 
 	/**
@@ -238,34 +224,21 @@ export class NgbSlider implements OnInit, ControlValueAccessor, AfterViewInit, O
 	@ViewChild('maxLabel')
 	private _maxLabelRef: ElementRef;
 
-	private _minValue: number;
-	private _maxValue: number;
-	private _stepSize: number;
-	private _sliderValues: number[];
-	private _readonly: boolean;
-	private _disabled = false;
-	private _vertical: boolean;
-
 	/**
 	 * SliderWidget hold the state and actions applicable to the NgbSliderComponent
 	 */
-	private _widget: SliderWidget;
-	/**
-	 * SliderState stores current model state of the NgbSliderComponent
-	 */
-	_state: SliderState;
+	widget: SliderWidget = createSlider(inject(NgbSliderConfig));
 
 	/**
 	 * The minimum value that can be assigned to the slider.
 	 */
 	@Input()
 	set minValue(value: number) {
-		this._minValue = value;
-		this._state?.minValue.set(value);
+		this.widget.state.minValueDirty.set(value);
 	}
 
 	get minValue(): number {
-		return this._minValue;
+		return this.widget.state.minValue();
 	}
 
 	/**
@@ -273,12 +246,11 @@ export class NgbSlider implements OnInit, ControlValueAccessor, AfterViewInit, O
 	 */
 	@Input()
 	set maxValue(value: number) {
-		this._maxValue = value;
-		this._state?.maxValue.set(value);
+		this.widget.state.maxValueDirty.set(value);
 	}
 
 	get maxValue(): number {
-		return this._maxValue;
+		return this.widget.state.maxValue();
 	}
 
 	/**
@@ -286,12 +258,11 @@ export class NgbSlider implements OnInit, ControlValueAccessor, AfterViewInit, O
 	 */
 	@Input()
 	set stepSize(value: number) {
-		this._stepSize = value;
-		this._state?.stepSize.set(value);
+		this.widget.state.stepSizeDirty.set(value);
 	}
 
 	get stepSize(): number {
-		return this._stepSize;
+		return this.widget.state.stepSize();
 	}
 
 	/**
@@ -299,11 +270,14 @@ export class NgbSlider implements OnInit, ControlValueAccessor, AfterViewInit, O
 	 */
 	@Input()
 	set sliderValues(value: number[]) {
-		this._sliderValues = value;
+		// to avoid circular dependency of the value change
+		if (!this.widget.state.internalChange()) {
+			this.widget.state._dirtyValue.set(value);
+		}
 	}
 
 	get sliderValues(): number[] {
-		return this._sliderValues;
+		return this.widget.state.sortedCleanValue();
 	}
 
 	/**
@@ -311,12 +285,11 @@ export class NgbSlider implements OnInit, ControlValueAccessor, AfterViewInit, O
 	 */
 	@Input()
 	set readonly(value: boolean) {
-		this._readonly = value;
-		this._state?.readonly.set(value);
+		this.widget.state.readonly.set(value);
 	}
 
 	get readonly(): boolean {
-		return this._readonly;
+		return this.widget.state.readonly();
 	}
 
 	/**
@@ -324,22 +297,23 @@ export class NgbSlider implements OnInit, ControlValueAccessor, AfterViewInit, O
 	 */
 	@Input()
 	set disabled(value: boolean) {
-		this._disabled = value;
-		this._state?.disabled.set(value);
+		this.widget.state.disabled.set(value);
 	}
 
 	get disabled(): boolean {
-		return this._disabled;
+		return this.widget.state.disabled();
 	}
 
+	/**
+	 * If `true` slider is vertically positioned
+	 */
 	@Input()
 	set vertical(value: boolean) {
-		this._vertical = value;
-		this._state?.vertical.set(value);
+		this.widget.state.vertical.set(value);
 	}
 
 	get vertical(): boolean {
-		return this._vertical;
+		return this.widget.state.vertical();
 	}
 
 	/**
@@ -347,7 +321,7 @@ export class NgbSlider implements OnInit, ControlValueAccessor, AfterViewInit, O
 	 * emitted every time when the value is changed
 	 */
 	@Output()
-	sliderValuesChange = new EventEmitter<number[]>(true);
+	sliderValuesChange = new EventEmitter<number[]>();
 
 	/**
 	 * Control value accessor methods
@@ -359,7 +333,7 @@ export class NgbSlider implements OnInit, ControlValueAccessor, AfterViewInit, O
 	registerOnChange(fn: (value: any) => any): void {
 		this.onChange = fn;
 		// workaround to update the value of the form when the Input value does not correspond to a real step of the slider
-		if (this._state._dirtyValue().some((dh, index) => dh != this._state.cleanValue()[index])) {
+		if (this.widget.state._dirtyValue().some((dh, index) => dh != this.widget.state.cleanValue()[index])) {
 			this.emitControlValues();
 		}
 	}
@@ -369,40 +343,32 @@ export class NgbSlider implements OnInit, ControlValueAccessor, AfterViewInit, O
 	}
 
 	writeValue(value: any): void {
-		if (value instanceof Array) {
-			this._state._dirtyValue.set(value);
+		if (Array.isArray(value)) {
+			this.widget.state._dirtyValue.set(value);
 		} else {
-			this._state._dirtyValue.set([value]);
+			this.widget.state._dirtyValue.set([value]);
 		}
 	}
 
 	setDisabledState(isDisabled: boolean) {
-		this._disabled = isDisabled;
-		this._state.disabled.set(isDisabled);
+		this.widget.state.disabled.set(isDisabled);
 	}
 
 	ngOnInit() {
-		this._widget = createSlider({
-			minValue: this.minValue,
-			maxValue: this.maxValue,
-			stepSize: this.stepSize,
-			sliderValues: this.sliderValues,
-			readonly: this.readonly,
-			disabled: this.disabled,
-			vertical: this.vertical,
+		this.widget.events.onValueChange$.pipe(takeUntilDestroyed(this._destroyRef)).subscribe((value: number[]) => {
+			queueMicrotask(() => {
+				this.emitControlValues();
+				this.sliderValuesChange.emit(value);
+			});
 		});
-		this._state = this._widget.state;
-
-		// handle the case of the invalid value entered by the user
-		this.emitControlValues();
 	}
 
 	ngAfterViewInit() {
-		this.resizeObserver.observe(this._elementRef.nativeElement);
+		this._resizeObserver.observe(this._elementRef.nativeElement);
 	}
 
 	ngOnDestroy() {
-		this.resizeObserver.unobserve(this._elementRef.nativeElement);
+		this._resizeObserver.unobserve(this._elementRef.nativeElement);
 	}
 
 	handleBlur() {
@@ -413,78 +379,18 @@ export class NgbSlider implements OnInit, ControlValueAccessor, AfterViewInit, O
 	 * Method that holds all the necessary emits to update the input value of the slider
 	 */
 	emitControlValues() {
-		this.onChange(this._state.sortedCleanValue());
-		this.sliderValuesChange.emit(this.sliderValues);
+		this.onChange(this.widget.state.sortedCleanValue());
 		this.onTouched();
 	}
 
-	/**
-	 * Wrapper method to process the model changes and call the value setter
-	 * @param value new clicked coordinate or the numberic number of a pressed key
-	 * @param changeType type of the provided value: COORDINATE or KEY
-	 */
-	sliderValueChange(value: number, changeType: SliderValueChangeType, handleNumber?: number) {
-		switch (changeType) {
-			case SliderValueChangeType.COORDINATE:
-				if (this._state.vertical()) {
-					this._state.sliderDomRect.set(this._elementRef.nativeElement.getBoundingClientRect());
-				}
-				this._widget.actions.adjustCoordinate(value, handleNumber);
-				break;
-			case SliderValueChangeType.KEY:
-				this._widget.actions.onKeydown(value, handleNumber!);
-				break;
-			default:
-				break;
-		}
-		if (this._state._dirtyValue().some((sch, index) => sch != this._state.cleanValue()[index])) {
-			this.sliderValues = this._state.sortedCleanValue();
-			this.emitControlValues();
-		}
+	sliderClick($event: any) {
+		this.widget.state.sliderDomRect.set(this._elementRef.nativeElement.getBoundingClientRect());
+		this.widget.actions.adjustCoordinate(this.widget.state.vertical() ? $event.clientY : $event.clientX);
 	}
-}
 
-/**
- * Holds all the required values to draw and manage the slider
- */
-export interface SliderState {
-	minLabelWidth: Signal<number>;
-	maxLabelWidth: Signal<number>;
-	minValueLabelDisplay: Signal<string>;
-	maxValueLabelDisplay: Signal<string>;
-	mixLabelDisplay: Signal<string>;
-
-	_dirtyValue: WritableSignal<number[]>;
-	cleanValue: Signal<number[]>;
-	cleanValuePercent: Signal<number[]>;
-	sortedCleanValue: Signal<number[]>;
-	sortedCleanValuePercent: Signal<number[]>;
-
-	minValue: WritableSignal<number>;
-	maxValue: WritableSignal<number>;
-	stepSize: WritableSignal<number>;
-	readonly: WritableSignal<boolean>;
-	disabled: WritableSignal<boolean>;
-	vertical: WritableSignal<boolean>;
-	minLabelDomRect: WritableSignal<DOMRect>;
-	maxLabelDomRect: WritableSignal<DOMRect>;
-	sliderDomRect: WritableSignal<DOMRect>;
-}
-
-/**
- * Holds the available actions that can be applied to the slider
- */
-export interface SliderActions {
-	adjustCoordinate(coordinate: number, handleNumber?: number): void;
-	onKeydown(key: number, handleNumber: number): void;
-}
-
-/**
- * Wrapper interface that holds everything that corresponds to the slider
- */
-export interface SliderWidget {
-	actions: SliderActions;
-	state: SliderState;
+	trackHandle(index: number, handle: { id: number; value: number }) {
+		return handle.id;
+	}
 }
 
 /**
@@ -492,23 +398,36 @@ export interface SliderWidget {
  * @param config input configuration
  * @returns populated SliderWidget object
  */
-export function createSlider(config?: Partial<NgbSliderConfig>): SliderWidget {
-	const _dirtyValue = signal(config?.sliderValues ?? [...NgbDefaultSliderConfig.sliderValues]);
+export function createSlider(config: NgbSliderConfig): SliderWidget {
+	const internalChange = signal(false);
+	const _dirtyValue = signal(config.sliderValues);
 
 	// validation in case of equal min and max values
-	let min = config?.minValue ?? NgbDefaultSliderConfig.minValue;
-	let max = config?.maxValue ?? NgbDefaultSliderConfig.maxValue;
-	if (min === max) {
-		min = NgbDefaultSliderConfig.minValue;
-		max = NgbDefaultSliderConfig.maxValue;
-	}
-	const minValue = signal(Math.min(min, max));
-	const maxValue = signal(Math.max(min, max));
+	const minValueDirty = signal(config.minValue);
+	const maxValueDirty = signal(config.maxValue);
 
-	const stepSize = signal(config?.stepSize || NgbDefaultSliderConfig.stepSize);
-	const readonly = signal(config?.readonly ?? NgbDefaultSliderConfig.readonly);
-	const disabled = signal(config?.disabled ?? NgbDefaultSliderConfig.disabled);
-	const vertical = signal(config?.vertical ?? NgbDefaultSliderConfig.vertical);
+	const minValue = computed(() => {
+		if (minValueDirty() === maxValueDirty()) {
+			return config.minValue;
+		} else {
+			return Math.min(minValueDirty(), maxValueDirty());
+		}
+	});
+
+	const maxValue = computed(() => {
+		if (minValueDirty() === maxValueDirty()) {
+			return config.maxValue;
+		} else {
+			return Math.max(minValueDirty(), maxValueDirty());
+		}
+	});
+
+	const stepSizeDirty = signal(config.stepSize);
+
+	const stepSize = computed(() => stepSizeDirty() || config.stepSize);
+	const readonly = signal(config.readonly);
+	const disabled = signal(config.disabled);
+	const vertical = signal(config.vertical);
 
 	const sliderDomRect: WritableSignal<DOMRect> = signal(new DOMRect());
 	const minLabelDomRect: WritableSignal<DOMRect> = signal(new DOMRect());
@@ -516,6 +435,65 @@ export function createSlider(config?: Partial<NgbSliderConfig>): SliderWidget {
 
 	const _sliderDomRectOffset = computed(() => (vertical() ? sliderDomRect().top : sliderDomRect().left));
 	const _sliderDomRectSize = computed(() => (vertical() ? sliderDomRect().height : sliderDomRect().width));
+
+	const progressLeft = computed(() =>
+		vertical()
+			? Array(sortedCleanValuePercent().length).fill(0)
+			: sortedCleanValuePercent().length === 1
+			? [0]
+			: sortedCleanValuePercent(),
+	);
+	const progressBottom = computed(() =>
+		vertical()
+			? sortedCleanValuePercent().length === 1
+				? [0]
+				: sortedCleanValuePercent()
+			: Array(sortedCleanValuePercent().length).fill(0),
+	);
+	const progressWidth = computed(() =>
+		vertical()
+			? Array(sortedCleanValuePercent().length).fill(100)
+			: sortedCleanValuePercent().length === 1
+			? sortedCleanValuePercent()
+			: sortedCleanValuePercent().map((cvp, index, array) => {
+					if (index === array.length) {
+						return cvp;
+					} else {
+						return array[index + 1] - cvp;
+					}
+			  }),
+	);
+	const progressHeight = computed(() =>
+		vertical()
+			? sortedCleanValuePercent().length === 1
+				? sortedCleanValuePercent()
+				: sortedCleanValuePercent().map((cvp, index, array) => {
+						if (index === array.length) {
+							return cvp;
+						} else {
+							return array[index + 1] - cvp;
+						}
+				  })
+			: Array(sortedCleanValuePercent().length).fill(100),
+	);
+
+	const mixLabelLeft = computed(() =>
+		vertical() || sortedCleanValuePercent().length != 2
+			? 0
+			: (sortedCleanValuePercent()[0] + sortedCleanValuePercent()[1]) / 2,
+	);
+	const mixLabelTop = computed(() =>
+		vertical() && sortedCleanValuePercent().length === 2
+			? 100 - (sortedCleanValuePercent()[0] + sortedCleanValuePercent()[1]) / 2
+			: 0,
+	);
+
+	const handleTooltipLeft = computed(() =>
+		vertical() ? Array(cleanValuePercent().length).fill(0) : cleanValuePercent(),
+	);
+	const handleTooltipTop = computed(() =>
+		vertical() ? cleanValuePercent().map((cvp) => 100 - cvp) : Array(cleanValuePercent().length).fill(0),
+	);
 
 	const valueCompute = (value: number) => {
 		if (value >= maxValue()) {
@@ -527,13 +505,25 @@ export function createSlider(config?: Partial<NgbSliderConfig>): SliderWidget {
 		return value % stepSize() < stepSize() / 2 ? indexMin * stepSize() : (indexMin + 1) * stepSize();
 	};
 
-	const cleanValue = computed(() => {
-		return _dirtyValue().map((dh) => {
-			return valueCompute(dh);
-		});
-	});
+	const cleanValue = computed(
+		() => {
+			return _dirtyValue().map((dh) => {
+				return valueCompute(dh);
+			});
+		},
+		{
+			equal: (a, b) => a.every((val, index) => val === b[index]),
+		},
+	);
 
 	const sortedCleanValue = computed(() => [...cleanValue()].sort((a, b) => a - b));
+	const sortedHandleDisplay = computed(() =>
+		cleanValue()
+			.map((cv, index) => {
+				return { id: index, value: cv };
+			})
+			.sort((a, b) => a.value - b.value),
+	);
 
 	const percentCompute = (value: number) => {
 		return ((value - minValue()) * 100) / (maxValue() - minValue());
@@ -607,6 +597,19 @@ export function createSlider(config?: Partial<NgbSliderConfig>): SliderWidget {
 			sortedCleanValue,
 			sortedCleanValuePercent,
 			vertical,
+			progressLeft,
+			progressBottom,
+			progressHeight,
+			progressWidth,
+			mixLabelLeft,
+			mixLabelTop,
+			handleTooltipLeft,
+			handleTooltipTop,
+			internalChange,
+			sortedHandleDisplay,
+			minValueDirty,
+			maxValueDirty,
+			stepSizeDirty
 		},
 		actions: {
 			adjustCoordinate(clickedCoordinate: number, handleNumber?: number) {
@@ -622,9 +625,10 @@ export function createSlider(config?: Partial<NgbSliderConfig>): SliderWidget {
 					});
 				}
 			},
-			onKeydown(key: number, handleIndex: number) {
+			onKeydown(event: KeyboardEvent, handleIndex: number) {
 				if (_isInteractable()) {
-					switch (key) {
+					// eslint-disable-next-line deprecation/deprecation
+					switch (event.which) {
 						case Key.ArrowDown:
 						case Key.ArrowLeft:
 							_dirtyValue.update((value) => {
@@ -657,9 +661,16 @@ export function createSlider(config?: Partial<NgbSliderConfig>): SliderWidget {
 						case Key.PageDown:
 							// TODO it is optional in accessibility guidelines, so define the skip value for steps and write unit test
 							break;
+						default:
+							return;
 					}
+					event.preventDefault();
+					event.stopPropagation();
 				}
 			},
+		},
+		events: {
+			onValueChange$: toObservable(sortedCleanValue).pipe(skip(2)),
 		},
 	};
 }

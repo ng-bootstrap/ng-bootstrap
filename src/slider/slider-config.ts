@@ -8,24 +8,11 @@ import { Injectable } from '@angular/core';
  */
 @Injectable({ providedIn: 'root' })
 export class NgbSliderConfig {
-	minValue: number;
-	maxValue: number;
-	stepSize: number;
-	sliderValues: number[];
-	readonly: boolean;
-	disabled: boolean;
-	vertical: boolean;
+	minValue = 0;
+	maxValue = 100;
+	stepSize = 1;
+	sliderValues = [30];
+	readonly = false;
+	disabled = false;
+	vertical = false;
 }
-
-/**
- * Default slider values
- */
-export const NgbDefaultSliderConfig: NgbSliderConfig = {
-	minValue: 0,
-	maxValue: 100,
-	stepSize: 1,
-	sliderValues: [30],
-	readonly: false,
-	disabled: false,
-	vertical: false,
-};
