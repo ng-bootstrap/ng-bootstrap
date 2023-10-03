@@ -48,7 +48,7 @@ export class NgbAccordionBody implements AfterContentChecked, OnDestroy {
 
 	ngAfterContentChecked(): void {
 		if (this._bodyTpl) {
-			if (this._item.animatingBodyCollapse || !this._item.destroyOnHide) {
+			if (this._item._shouldBeInDOM) {
 				this._createViewIfNotExists();
 			} else {
 				this._destroyViewIfExists();
@@ -195,7 +195,7 @@ export class NgbAccordionItem implements AfterContentInit {
 	private _id = `ngb-accordion-item-${nextId++}`;
 	private _destroyOnHide: boolean | undefined;
 
-	animatingBodyCollapse = false;
+	private _collapseAnimationRunning = false;
 
 	@ContentChild(NgbAccordionCollapse, { static: true }) private _collapse: NgbAccordionCollapse;
 
@@ -283,6 +283,10 @@ export class NgbAccordionItem implements AfterContentInit {
 		return `${this.id}-collapse`;
 	}
 
+	get _shouldBeInDOM() {
+		return !this.collapsed || this._collapseAnimationRunning || !this.destroyOnHide;
+	}
+
 	ngAfterContentInit() {
 		const { ngbCollapse } = this._collapse;
 		// we need to disable the animation for the first init
@@ -293,7 +297,7 @@ export class NgbAccordionItem implements AfterContentInit {
 		// event forwarding from 'ngbCollapse' to 'ngbAccordion'
 		ngbCollapse.hidden.pipe(takeUntilDestroyed(this._destroyRef)).subscribe(() => {
 			// when the animation finishes we can remove the template from DOM
-			this.animatingBodyCollapse = false;
+			this._collapseAnimationRunning = false;
 			this.hidden.emit();
 			this._accordion.hidden.emit(this.id);
 		});
@@ -324,8 +328,9 @@ export class NgbAccordionItem implements AfterContentInit {
 
 			// need if the accordion is used inside a component having OnPush change detection strategy
 			this._cd.markForCheck();
+
 			// we need force CD to get template into DOM before starting animation to calculate its height correctly
-			this.animatingBodyCollapse = true;
+			// this will synchronously put the item body into DOM, because `this._collapsed` was flipped to `false`
 			this._cd.detectChanges();
 
 			// firing events before starting animations
@@ -344,6 +349,7 @@ export class NgbAccordionItem implements AfterContentInit {
 	collapse() {
 		if (!this.collapsed) {
 			this._collapsed = true;
+			this._collapseAnimationRunning = true;
 
 			// need if the accordion is used inside a component having OnPush change detection strategy
 			this._cd.markForCheck();
