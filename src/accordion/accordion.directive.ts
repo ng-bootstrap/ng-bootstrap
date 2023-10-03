@@ -235,34 +235,10 @@ export class NgbAccordionItem implements AfterContentInit {
 	 * @param collapsed New state of the accordion item.
 	 */
 	@Input() set collapsed(collapsed: boolean) {
-		if (this.collapsed !== collapsed) {
-			// checking if accordion allows to expand the panel in respect to 'closeOthers' flag
-			if (this.collapsed && !this._accordion._ensureCanExpand(this)) {
-				return;
-			}
-
-			// changing the collapsed state
-			this._collapsed = collapsed;
-
-			this._cd.markForCheck(); // need if the accordion is used inside a component having OnPush change detection strategy
-			// we need force CD to get template into DOM before starting animation to calculate its height correctly
-			if (!this.collapsed) {
-				this.animatingBodyCollapse = true;
-				this._cd.detectChanges();
-			}
-
-			// firing events before starting animations
-			if (!this.collapsed) {
-				this.show.emit();
-				this._accordion.show.emit(this.id);
-			} else {
-				this.hide.emit();
-				this._accordion.hide.emit(this.id);
-			}
-
-			// we also need to make sure 'animation' flag is up-to- date
-			this._collapse.ngbCollapse.animation = this._accordion.animation;
-			this._collapse.ngbCollapse.collapsed = this.collapsed;
+		if (collapsed) {
+			this.collapse();
+		} else {
+			this.expand();
 		}
 	}
 
@@ -338,14 +314,48 @@ export class NgbAccordionItem implements AfterContentInit {
 	 * Expands an accordion item.
 	 */
 	expand() {
-		this.collapsed = false;
+		if (this.collapsed) {
+			// checking if accordion allows to expand the panel in respect to 'closeOthers' flag
+			if (!this._accordion._ensureCanExpand(this)) {
+				return;
+			}
+
+			this._collapsed = false;
+
+			// need if the accordion is used inside a component having OnPush change detection strategy
+			this._cd.markForCheck();
+			// we need force CD to get template into DOM before starting animation to calculate its height correctly
+			this.animatingBodyCollapse = true;
+			this._cd.detectChanges();
+
+			// firing events before starting animations
+			this.show.emit();
+			this._accordion.show.emit(this.id);
+
+			// we also need to make sure 'animation' flag is up-to- date
+			this._collapse.ngbCollapse.animation = this._accordion.animation;
+			this._collapse.ngbCollapse.collapsed = false;
+		}
 	}
 
 	/**
 	 * Collapses an accordion item.
 	 */
 	collapse() {
-		this.collapsed = true;
+		if (!this.collapsed) {
+			this._collapsed = true;
+
+			// need if the accordion is used inside a component having OnPush change detection strategy
+			this._cd.markForCheck();
+
+			// firing events before starting animations
+			this.hide.emit();
+			this._accordion.hide.emit(this.id);
+
+			// we also need to make sure 'animation' flag is up-to- date
+			this._collapse.ngbCollapse.animation = this._accordion.animation;
+			this._collapse.ngbCollapse.collapsed = true;
+		}
 	}
 }
 
