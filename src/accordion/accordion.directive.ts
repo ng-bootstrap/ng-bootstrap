@@ -96,11 +96,7 @@ export class NgbAccordionBody implements AfterContentChecked, OnDestroy {
 		'[id]': 'item.collapseId',
 		'[attr.aria-labelledby]': 'item.toggleId',
 	},
-	hostDirectives: [
-		{
-			directive: NgbCollapse,
-		},
-	],
+	hostDirectives: [NgbCollapse],
 })
 export class NgbAccordionCollapse {
 	item = inject(NgbAccordionItem);
@@ -146,11 +142,7 @@ export class NgbAccordionToggle {
 		'[class.accordion-button]': 'true',
 		type: 'button',
 	},
-	hostDirectives: [
-		{
-			directive: NgbAccordionToggle,
-		},
-	],
+	hostDirectives: [NgbAccordionToggle],
 })
 export class NgbAccordionButton {
 	item = inject(NgbAccordionItem);
