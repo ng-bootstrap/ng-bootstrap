@@ -9,9 +9,7 @@ import {
 	ElementRef,
 	EmbeddedViewRef,
 	EventEmitter,
-	forwardRef,
 	inject,
-	Inject,
 	Input,
 	OnDestroy,
 	Output,
@@ -105,10 +103,8 @@ export class NgbAccordionBody implements AfterContentChecked, OnDestroy {
 	],
 })
 export class NgbAccordionCollapse {
-	constructor(
-		@Inject(forwardRef(() => NgbAccordionItem)) public item: NgbAccordionItem,
-		public ngbCollapse: NgbCollapse,
-	) {}
+	item = inject(NgbAccordionItem);
+	ngbCollapse = inject(NgbCollapse);
 }
 
 /**
@@ -131,10 +127,8 @@ export class NgbAccordionCollapse {
 	},
 })
 export class NgbAccordionToggle {
-	constructor(
-		@Inject(forwardRef(() => NgbAccordionItem)) public item: NgbAccordionItem,
-		@Inject(forwardRef(() => NgbAccordionDirective)) public accordion: NgbAccordionDirective,
-	) {}
+	item = inject(NgbAccordionItem);
+	accordion = inject(NgbAccordionDirective);
 }
 
 /**
@@ -159,7 +153,7 @@ export class NgbAccordionToggle {
 	],
 })
 export class NgbAccordionButton {
-	constructor(@Inject(forwardRef(() => NgbAccordionItem)) public item: NgbAccordionItem) {}
+	item = inject(NgbAccordionItem);
 }
 
 /**
@@ -177,7 +171,7 @@ export class NgbAccordionButton {
 	},
 })
 export class NgbAccordionHeader {
-	constructor(@Inject(forwardRef(() => NgbAccordionItem)) public item: NgbAccordionItem) {}
+	item = inject(NgbAccordionItem);
 }
 
 /**
@@ -200,10 +194,8 @@ export class NgbAccordionHeader {
 	},
 })
 export class NgbAccordionItem implements AfterContentInit, OnDestroy {
-	constructor(
-		@Inject(forwardRef(() => NgbAccordionDirective)) private _accordion: NgbAccordionDirective,
-		private _cd: ChangeDetectorRef,
-	) {}
+	private _accordion = inject(NgbAccordionDirective);
+	private _cd = inject(ChangeDetectorRef);
 
 	private _subscriptions: Subscription[] = [];
 	private _collapsed = true;
