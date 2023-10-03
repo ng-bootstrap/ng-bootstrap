@@ -10,6 +10,8 @@ import { NgbConfig } from '../ngb-config';
 @Injectable({ providedIn: 'root' })
 export class NgbAccordionConfig {
 	closeOthers = false;
+	destroyOnHide = true;
+
 	/**
 	 * @deprecated 14.1.0
 	 */

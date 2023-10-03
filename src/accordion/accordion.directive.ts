@@ -384,7 +384,7 @@ export class NgbAccordionDirective {
 	 *
 	 * This property can be overwritten at the [`NgbAccordionItem`](#/components/accordion/api#NgbAccordionItem) level
 	 */
-	@Input() destroyOnHide = true;
+	@Input() destroyOnHide: boolean;
 
 	/**
 	 * Event emitted before expanding animation starts. The payload is the id of shown accordion item.
@@ -416,6 +416,7 @@ export class NgbAccordionDirective {
 	constructor(config: NgbAccordionConfig) {
 		this.animation = config.animation;
 		this.closeOthers = config.closeOthers;
+		this.destroyOnHide = config.destroyOnHide;
 	}
 
 	/**
