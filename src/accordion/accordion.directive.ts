@@ -5,6 +5,7 @@ import {
 	ChangeDetectorRef,
 	ContentChild,
 	ContentChildren,
+	DestroyRef,
 	Directive,
 	ElementRef,
 	EmbeddedViewRef,
@@ -16,7 +17,7 @@ import {
 	QueryList,
 	TemplateRef,
 } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgbAccordionConfig } from './accordion-config';
 import { NgbCollapse } from '../collapse/collapse';
 import { isString } from '../util/util';
@@ -185,11 +186,11 @@ export class NgbAccordionHeader {
 		'[id]': 'id',
 	},
 })
-export class NgbAccordionItem implements AfterContentInit, OnDestroy {
+export class NgbAccordionItem implements AfterContentInit {
 	private _accordion = inject(NgbAccordionDirective);
 	private _cd = inject(ChangeDetectorRef);
+	private _destroyRef = inject(DestroyRef);
 
-	private _subscriptions: Subscription[] = [];
 	private _collapsed = true;
 	private _id = `ngb-accordion-item-${nextId++}`;
 	private _destroyOnHide: boolean | undefined;
@@ -314,22 +315,16 @@ export class NgbAccordionItem implements AfterContentInit, OnDestroy {
 		// we set the animation to the default of the accordion
 		ngbCollapse.animation = this._accordion.animation;
 		// event forwarding from 'ngbCollapse' to 'ngbAccordion'
-		this._subscriptions.push(
-			ngbCollapse.hidden.subscribe(() => {
-				// when the animation finishes we can remove the template from DOM
-				this.animatingBodyCollapse = false;
-				this.hidden.emit();
-				this._accordion.hidden.emit(this.id);
-			}),
-			ngbCollapse.shown.subscribe(() => {
-				this.shown.emit();
-				this._accordion.shown.emit(this.id);
-			}),
-		);
-	}
-
-	ngOnDestroy() {
-		this._subscriptions.forEach((s) => s.unsubscribe());
+		ngbCollapse.hidden.pipe(takeUntilDestroyed(this._destroyRef)).subscribe(() => {
+			// when the animation finishes we can remove the template from DOM
+			this.animatingBodyCollapse = false;
+			this.hidden.emit();
+			this._accordion.hidden.emit(this.id);
+		});
+		ngbCollapse.shown.pipe(takeUntilDestroyed(this._destroyRef)).subscribe(() => {
+			this.shown.emit();
+			this._accordion.shown.emit(this.id);
+		});
 	}
 
 	/**
