@@ -6,17 +6,19 @@ const BROWSERS = {
 	CHROME: {
 		base: 'SauceLabs',
 		browserName: 'chrome',
+		platform: 'Windows 11',
 		version: 'latest',
 	},
-	// FIREFOX: {
-	// 	base: 'SauceLabs',
-	// 	browserName: 'firefox',
-	// 	version: 'latest',
-	// },
+	FIREFOX: {
+		base: 'SauceLabs',
+		browserName: 'firefox',
+		platform: 'Windows 11',
+		version: 'latest',
+	},
 	EDGE: {
 		base: 'SauceLabs',
 		browserName: 'MicrosoftEdge',
-		platform: 'Windows 10',
+		platform: 'Windows 11',
 		version: 'latest',
 	},
 	SAFARI15: {
@@ -28,7 +30,7 @@ const BROWSERS = {
 	SAFARI16: {
 		base: 'SauceLabs',
 		browserName: 'safari',
-		platform: 'macOS 12',
+		platform: 'macOS 13',
 		version: '16',
 	},
 };

@@ -10,7 +10,7 @@ cd `dirname $0`
 # SAUCE_USERNAME
 # SAUCE_ACCESS_KEY
 
-CONNECT_URL="https://saucelabs.com/downloads/sc-4.8.1-linux.tar.gz"
+CONNECT_URL="https://saucelabs.com/downloads/sc-4.9.1-linux.tar.gz"
 CONNECT_DIR="/tmp/sauce-connect-$RANDOM"
 CONNECT_DOWNLOAD="sc-latest-linux.tar.gz"
 
