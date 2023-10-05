@@ -42,15 +42,23 @@ describe('ngb-alert', () => {
 	});
 
 	it('should allow specifying alert type', () => {
-		const fixture = createTestComponent('<ngb-alert type="success">Cool!</ngb-alert>');
+		const fixture = createTestComponent(
+			`<ngb-alert type="success" [class]="'class1'" class="class2" [class.class3]='true'>Cool!</ngb-alert>`,
+		);
 		const alertEl = getAlertElement(fixture.nativeElement);
 
 		expect(alertEl.getAttribute('role')).toEqual('alert');
+		expect(alertEl).toHaveCssClass('alert');
+		expect(alertEl).toHaveCssClass('class1');
+		expect(alertEl).toHaveCssClass('class2');
+		expect(alertEl).toHaveCssClass('class3');
 		expect(alertEl).toHaveCssClass('alert-success');
 	});
 
 	it('should allow changing alert type', () => {
-		const fixture = createTestComponent('<ngb-alert [type]="type">Cool!</ngb-alert>');
+		const fixture = createTestComponent(
+			`'<ngb-alert [type]="type" [class]="'class1'" class="class2" [class.class3]='true'>Cool!</ngb-alert>'`,
+		);
 		const alertEl = getAlertElement(fixture.nativeElement);
 
 		expect(alertEl).toHaveCssClass('alert-success');
@@ -59,6 +67,10 @@ describe('ngb-alert', () => {
 		fixture.componentInstance.type = 'warning';
 		fixture.detectChanges();
 		expect(alertEl).not.toHaveCssClass('alert-success');
+		expect(alertEl).toHaveCssClass('alert');
+		expect(alertEl).toHaveCssClass('class1');
+		expect(alertEl).toHaveCssClass('class2');
+		expect(alertEl).toHaveCssClass('class3');
 		expect(alertEl).toHaveCssClass('alert-warning');
 	});
 

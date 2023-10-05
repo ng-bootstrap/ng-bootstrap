@@ -1,24 +1,20 @@
 import {
-	Component,
-	Input,
-	Output,
-	EventEmitter,
 	ChangeDetectionStrategy,
-	Renderer2,
+	Component,
 	ElementRef,
-	OnChanges,
-	OnInit,
-	SimpleChanges,
-	ViewEncapsulation,
+	EventEmitter,
+	Input,
 	NgZone,
+	Output,
+	ViewEncapsulation,
 } from '@angular/core';
+import { NgIf } from '@angular/common';
 
 import { Observable } from 'rxjs';
 
 import { NgbAlertConfig } from './alert-config';
 import { ngbRunTransition } from '../util/transition/ngbTransition';
 import { ngbAlertFadingTransition } from './alert-transition';
-import { NgIf } from '@angular/common';
 
 /**
  * Alert is a component to provide contextual feedback messages for user.
@@ -32,7 +28,12 @@ import { NgIf } from '@angular/common';
 	imports: [NgIf],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
-	host: { role: 'alert', class: 'alert show', '[class.fade]': 'animation', '[class.alert-dismissible]': 'dismissible' },
+	host: {
+		role: 'alert',
+		'[class]': '"alert show" + (type ? " alert-" + type : "")',
+		'[class.fade]': 'animation',
+		'[class.alert-dismissible]': 'dismissible',
+	},
 	template: `
 		<ng-content></ng-content>
 		<button
@@ -47,7 +48,7 @@ import { NgIf } from '@angular/common';
 	`,
 	styleUrls: ['./alert.scss'],
 })
-export class NgbAlert implements OnInit, OnChanges {
+export class NgbAlert {
 	/**
 	 * If `true`, alert closing will be animated.
 	 *
@@ -81,12 +82,7 @@ export class NgbAlert implements OnInit, OnChanges {
 	 */
 	@Output() closed = new EventEmitter<void>();
 
-	constructor(
-		config: NgbAlertConfig,
-		private _renderer: Renderer2,
-		private _element: ElementRef,
-		private _zone: NgZone,
-	) {
+	constructor(config: NgbAlertConfig, private _element: ElementRef<HTMLElement>, private _zone: NgZone) {
 		this.dismissible = config.dismissible;
 		this.type = config.type;
 		this.animation = config.animation;
@@ -109,17 +105,5 @@ export class NgbAlert implements OnInit, OnChanges {
 		});
 		transition.subscribe(() => this.closed.emit());
 		return transition;
-	}
-
-	ngOnChanges(changes: SimpleChanges) {
-		const typeChange = changes['type'];
-		if (typeChange && !typeChange.firstChange) {
-			this._renderer.removeClass(this._element.nativeElement, `alert-${typeChange.previousValue}`);
-			this._renderer.addClass(this._element.nativeElement, `alert-${typeChange.currentValue}`);
-		}
-	}
-
-	ngOnInit() {
-		this._renderer.addClass(this._element.nativeElement, `alert-${this.type}`);
 	}
 }
