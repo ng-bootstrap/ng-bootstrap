@@ -13,7 +13,7 @@ jobs:
       - run: mkdir -p $LOGS_DIR && ./scripts/sauce_connect_setup.sh
       - uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18
       - id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
       - uses: actions/cache@v3

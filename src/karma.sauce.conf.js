@@ -6,14 +6,13 @@ const BROWSERS = {
 	CHROME: {
 		base: 'SauceLabs',
 		browserName: 'chrome',
-		platform: 'Windows 11',
 		version: 'latest',
 	},
 	FIREFOX: {
 		base: 'SauceLabs',
 		browserName: 'firefox',
-		platform: 'Windows 11',
 		version: 'latest',
+		'moz:debuggerAddress': true,
 	},
 	EDGE: {
 		base: 'SauceLabs',
@@ -49,14 +48,14 @@ module.exports = function (config) {
 			clearContext: false, // leave Jasmine Spec Runner output visible in browser
 		},
 		sauceLabs: {
-			build: `GitHub run #${process.env.GITHUB_RUN_ID}`,
-			tunnelIdentifier: process.env.GITHUB_RUN_ID,
-			testName: 'ng-bootstrap',
-			retryLimit: 3,
-			startConnect: false,
-			recordVideo: false,
-			recordScreenshots: false,
-			options: {
+			'sauce:options': {
+				build: `GitHub run #${process.env.GITHUB_RUN_ID}`,
+				tunnelIdentifier: process.env.GITHUB_RUN_ID,
+				testName: 'ng-bootstrap',
+				retryLimit: 3,
+				startConnect: false,
+				recordVideo: false,
+				recordScreenshots: false,
 				commandTimeout: 600,
 				idleTimeout: 600,
 				maxDuration: 5400,
@@ -70,7 +69,7 @@ module.exports = function (config) {
 		port: 9876,
 		colors: true,
 		logLevel: config.LOG_INFO,
-		browsers: ['CHROME', 'EDGE', 'SAFARI15', 'SAFARI16'],
+		browsers: ['CHROME', 'FIREFOX', 'EDGE', 'SAFARI15', 'SAFARI16'],
 		autoWatch: false,
 		singleRun: true,
 		captureTimeout: 180000,
