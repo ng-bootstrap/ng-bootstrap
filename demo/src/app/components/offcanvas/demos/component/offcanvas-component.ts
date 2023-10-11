@@ -19,6 +19,16 @@ import { NgbActiveOffcanvas, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 			<button type="button" class="btn btn-outline-dark" (click)="activeOffcanvas.close('Close click')">Close</button>
 		</div>
 	`,
+	styles: [
+		`
+			/* Opening offcanvas as a component requires this style in order to scroll */
+			:host {
+				height: 100%;
+				display: flex;
+				flex-direction: column;
+			}
+		`,
+	],
 })
 export class NgbdOffcanvasContent {
 	@Input() name;
