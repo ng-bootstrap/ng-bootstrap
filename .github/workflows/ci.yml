@@ -3,17 +3,12 @@ on: [push, pull_request]
 jobs:
   ci:
     runs-on: ubuntu-latest
-    env:
-      SAUCE_USERNAME: pkozlowski
-      SAUCE_ACCESS_KEY: c5ea8b730bc9-378b-43e4-6e34-e66aa371
-      BROWSER_PROVIDER_READY_FILE: /tmp/sauce-connect-ready
-      LOGS_DIR: /tmp/logs
+    name: CI
     steps:
       - uses: actions/checkout@v3
-      - run: mkdir -p $LOGS_DIR && ./scripts/sauce_connect_setup.sh
       - uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18
       - id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
       - uses: actions/cache@v3
@@ -39,8 +34,19 @@ jobs:
           name: test-reports
           path: test-reports
         if: ${{ always() }}
-      - run: cat $LOGS_DIR/*
-      - run: ./scripts/sauce_connect_block.sh
+  sauce-labs:
+    runs-on: ubuntu-latest
+    name: Sauce Labs
+    steps:
+      - uses: actions/checkout@v3
+      - uses: saucelabs/sauce-connect-action@v2
+        with:
+          username: ${{ secrets.SAUCE_USERNAME }}
+          accessKey: ${{ secrets.SAUCE_ACCESS_KEY }}
+          tunnelName: ng-bootstrap-${{ github.run_id }}
       - run: yarn saucelabs
-      - run: ./scripts/sauce_connect_teardown.sh
-        if: ${{ always() }}
+      - uses: actions/upload-artifact@v3
+        if: ${{ failure() }}
+        with:
+          name: sauce-connect-log
+          path: ${{ env.SAUCE_CONNECT_DIR_IN_HOST }}/sauce-connect.log
