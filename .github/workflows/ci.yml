@@ -1,19 +1,25 @@
 name: ci
-on: [push, pull_request]
+
+on:
+  push:
+    branches:
+      - main
+      - '[0-9]+.[0-9]+.x'
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   ci:
     runs-on: ubuntu-latest
-    env:
-      SAUCE_USERNAME: pkozlowski
-      SAUCE_ACCESS_KEY: c5ea8b730bc9-378b-43e4-6e34-e66aa371
-      BROWSER_PROVIDER_READY_FILE: /tmp/sauce-connect-ready
-      LOGS_DIR: /tmp/logs
     steps:
       - uses: actions/checkout@v3
-      - run: mkdir -p $LOGS_DIR && ./scripts/sauce_connect_setup.sh
       - uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18
       - id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
       - uses: actions/cache@v3
@@ -38,9 +44,4 @@ jobs:
         with:
           name: test-reports
           path: test-reports
-        if: ${{ always() }}
-      - run: cat $LOGS_DIR/*
-      - run: ./scripts/sauce_connect_block.sh
-      - run: yarn saucelabs
-      - run: ./scripts/sauce_connect_teardown.sh
         if: ${{ always() }}
