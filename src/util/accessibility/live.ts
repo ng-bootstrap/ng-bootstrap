@@ -1,5 +1,4 @@
-import { Injectable, Inject, InjectionToken, OnDestroy } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { Injectable, Inject, InjectionToken } from '@angular/core';
 
 // usefulness (and default value) of delay documented in Material's CDK
 // https://github.com/angular/material2/blob/6405da9b8e8532a7e5c854c920ee1815c275d734/src/cdk/a11y/live-announcer/live-announcer.ts#L50
@@ -12,8 +11,8 @@ export function ARIA_LIVE_DELAY_FACTORY(): number {
 	return 100;
 }
 
-function getLiveElement(document: any, lazyCreate = false): HTMLElement | null {
-	let element = document.body.querySelector('#ngb-live') as HTMLElement;
+function getLiveElement(parentElement: HTMLElement, lazyCreate = false): HTMLElement | null {
+	let element = parentElement.querySelector('#ngb-live') as HTMLElement;
 
 	if (element == null && lazyCreate) {
 		element = document.createElement('div');
@@ -24,26 +23,18 @@ function getLiveElement(document: any, lazyCreate = false): HTMLElement | null {
 
 		element.classList.add('visually-hidden');
 
-		document.body.appendChild(element);
+		parentElement.appendChild(element);
 	}
 
 	return element;
 }
 
 @Injectable({ providedIn: 'root' })
-export class Live implements OnDestroy {
-	constructor(@Inject(DOCUMENT) private _document: any, @Inject(ARIA_LIVE_DELAY) private _delay: any) {}
+export class Live {
+	constructor(@Inject(ARIA_LIVE_DELAY) private _delay: any) {}
 
-	ngOnDestroy() {
-		const element = getLiveElement(this._document);
-		if (element) {
-			// if exists, it will always be attached to the <body>
-			element.parentElement!.removeChild(element);
-		}
-	}
-
-	say(message: string) {
-		const element = getLiveElement(this._document, true);
+	say(message: string, parentElement: HTMLElement) {
+		const element = getLiveElement(parentElement, true);
 		const delay = this._delay;
 
 		if (element != null) {

@@ -475,8 +475,14 @@ export class NgbTypeahead implements ControlValueAccessor, OnInit, OnChanges, On
 			}
 
 			// live announcer
-			const count = results ? results.length : 0;
-			this._live.say(count === 0 ? 'No results available' : `${count} result${count === 1 ? '' : 's'} available`);
+			const parentElement = this._elementRef.nativeElement.parentElement;
+			if (parentElement) {
+				const count = results ? results.length : 0;
+				this._live.say(
+					count === 0 ? 'No results available' : `${count} result${count === 1 ? '' : 's'} available`,
+					parentElement,
+				);
+			}
 		});
 	}
 
