@@ -19,4 +19,11 @@ describe('ngb-dropdown-config', () => {
 		config.autoClose = 'inside';
 		expect(config.autoClose).toBe('inside');
 	});
+
+	it('should allow settings string or undefined value for zIndex', () => {
+		const config = new NgbDropdownConfig();
+		expect(config.zIndex).toBe(undefined);
+		config.zIndex = '1057';
+		expect(config.zIndex).toBe('1057');
+	});
 });

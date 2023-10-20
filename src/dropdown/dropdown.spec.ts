@@ -437,6 +437,24 @@ describe('ngb-dropdown-toggle', () => {
 		expect(parentContainer.parentNode).toBe(document.body, 'The dropdown should be attached to the body');
 	});
 
+	it('should be appended with zIndex to body', () => {
+		const html = `
+      <div ngbDropdown [dropdownZIndex]="'1059'" container="body">
+          <button ngbDropdownToggle>
+            <span class="toggle">Toggle dropdown</span>
+          </button>
+          <div ngbDropdownMenu ></div>
+      </div>`;
+
+		const fixture = createTestComponent(html);
+		const dropdown = fixture.debugElement.query(By.directive(NgbDropdown)).injector.get(NgbDropdown);
+		dropdown.open();
+		fixture.detectChanges();
+		const dropdownElement = document.querySelector('div[ngbDropdownMenu]')!;
+		const parentContainer = dropdownElement.parentNode! as HTMLElement;
+		expect(parentContainer.style.zIndex).toEqual('1059');
+	});
+
 	it(`should second placement if the first one doesn't fit`, fakeAsync(() => {
 		const html = `
       <div ngbDropdown placement="start-top end-top">
