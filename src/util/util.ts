@@ -107,3 +107,18 @@ export function getActiveElement(root: Document | ShadowRoot = document): Elemen
 
 	return activeEl.shadowRoot ? getActiveElement(activeEl.shadowRoot) : activeEl;
 }
+
+/**
+ * Append child element to container
+ */
+export function appendContainerChild(
+	document: Document,
+	element: HTMLElement,
+	container?: string | HTMLElement | null,
+) {
+	if (container instanceof HTMLElement) {
+		container.appendChild(element);
+	} else if (container) {
+		(document.querySelector(container) ?? document.body).appendChild(element);
+	}
+}

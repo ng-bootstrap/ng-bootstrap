@@ -27,7 +27,7 @@ import { listenToTriggers } from '../util/triggers';
 import { ngbAutoClose } from '../util/autoclose';
 import { ngbPositioning, PlacementArray } from '../util/positioning';
 import { PopupService } from '../util/popup';
-import { isString } from '../util/util';
+import { appendContainerChild, isString } from '../util/util';
 
 import { NgbPopoverConfig } from './popover-config';
 import { Options } from '@popperjs/core';
@@ -147,11 +147,10 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 	@Input() positionTarget?: string | HTMLElement;
 
 	/**
-	 * A selector specifying the element the popover should be appended to.
+	 * A selector or HTMLElement specifying the element the popover should be appended to.
 	 *
-	 * Currently only supports `body`.
 	 */
-	@Input() container: string;
+	@Input() container: string | HTMLElement;
 
 	/**
 	 * If `true`, popover is disabled and won't be displayed.
@@ -271,9 +270,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 
 			this._renderer.setAttribute(this._getPositionTargetElement(), 'aria-describedby', this._ngbPopoverWindowId);
 
-			if (this.container === 'body') {
-				this._document.querySelector(this.container).appendChild(this._windowRef.location.nativeElement);
-			}
+			appendContainerChild(this._document, this._windowRef.location.nativeElement, this.container);
 
 			// We need to detect changes, because we don't know where .open() might be called from.
 			// Ex. opening popover from one of lifecycle hooks that run after the CD
@@ -293,7 +290,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 					hostElement: this._getPositionTargetElement(),
 					targetElement: this._windowRef!.location.nativeElement,
 					placement: this.placement,
-					appendToBody: this.container === 'body',
+					appendToBody: this.container === 'body' || this.container === this._document.body,
 					baseClass: 'bs-popover',
 					updatePopperOptions: (options) => this.popperOptions(addPopperOffset([0, 8])(options)),
 				});

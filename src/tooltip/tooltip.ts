@@ -28,7 +28,7 @@ import { ngbAutoClose } from '../util/autoclose';
 import { ngbPositioning, PlacementArray } from '../util/positioning';
 import { PopupService } from '../util/popup';
 import { Options } from '@popperjs/core';
-import { isString } from '../util/util';
+import { appendContainerChild, isString } from '../util/util';
 
 import { NgbTooltipConfig } from './tooltip-config';
 import { Subscription } from 'rxjs';
@@ -117,11 +117,10 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 	@Input() positionTarget?: string | HTMLElement;
 
 	/**
-	 * A selector specifying the element the tooltip should be appended to.
+	 * A selector or HTMLElement specifying the element the tooltip should be appended to.
 	 *
-	 * Currently only supports `"body"`.
 	 */
-	@Input() container: string;
+	@Input() container: string | HTMLElement;
 
 	/**
 	 * If `true`, tooltip is disabled and won't be displayed.
@@ -245,9 +244,7 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 
 			this._renderer.setAttribute(this._getPositionTargetElement(), 'aria-describedby', this._ngbTooltipWindowId);
 
-			if (this.container === 'body') {
-				this._document.querySelector(this.container).appendChild(this._windowRef.location.nativeElement);
-			}
+			appendContainerChild(this._document, this._windowRef.location.nativeElement, this.container);
 
 			// We need to detect changes, because we don't know where .open() might be called from.
 			// Ex. opening tooltip from one of lifecycle hooks that run after the CD
@@ -267,7 +264,7 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 					hostElement: this._getPositionTargetElement(),
 					targetElement: this._windowRef!.location.nativeElement,
 					placement: this.placement,
-					appendToBody: this.container === 'body',
+					appendToBody: this.container === 'body' || this.container === this._document.body,
 					baseClass: 'bs-tooltip',
 					updatePopperOptions: (options) => this.popperOptions(options),
 				});

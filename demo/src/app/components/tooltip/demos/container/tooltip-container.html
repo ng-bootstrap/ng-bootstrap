@@ -17,13 +17,36 @@
 			</button>
 			<button
 				type="button"
-				class="btn btn-outline-secondary"
+				class="btn btn-outline-secondary mb-2"
 				placement="bottom"
 				ngbTooltip="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
 				container="body"
 			>
 				Tooltip appended to body
 			</button>
+			<button
+				type="button"
+				class="btn btn-outline-secondary mb-2"
+				placement="top"
+				container="#tooltip-custom-container"
+				ngbTooltip="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+			>
+				Tooltip append to container id
+			</button>
+			<button
+				type="button"
+				class="btn btn-outline-secondary mb-2"
+				placement="top"
+				[container]="tooltipContainer"
+				ngbTooltip="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+			>
+				Tooltip append to container
+			</button>
+		</div>
+	</div>
+	<div class="col-auto">
+		<div class="card px-1 py-5 overflow-visible" id="tooltip-custom-container" #tooltipContainer>
+			Tooltip custom container
 		</div>
 	</div>
 </div>

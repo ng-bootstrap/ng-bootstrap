@@ -3,50 +3,87 @@
 	it belongs. This option is useful if the dropdown is defined inside an element that clips its contents (i.e.
 	<code>overflow: hidden</code>).
 </p>
-<table class="table table-striped">
-	<thead>
-		<tr>
-			<th scope="col">#</th>
-			<th scope="col">Items</th>
-			<th scope="col">Actions</th>
-			<th scope="col">Actions</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td>1</td>
-			<td>
-				Item
-				<div>
-					<small class="text-muted">Both &ldquo;Actions&rdquo; table cells define an overflow hidden</small>
-				</div>
-			</td>
-			<td class="overflow-hidden">
-				<div ngbDropdown container="body">
-					<button type="button" class="btn btn-outline-primary btn-sm" ngbDropdownToggle>Actions</button>
-					<div ngbDropdownMenu>
-						<button ngbDropdownItem>Edit</button>
-						<button ngbDropdownItem>Duplicate</button>
-						<button ngbDropdownItem>Move</button>
-						<div class="dropdown-divider"></div>
-						<button ngbDropdownItem>Delete</button>
+<div id="dropdown-container" #dropdownContainer>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th scope="col">#</th>
+				<th scope="col">Items</th>
+				<th scope="col">Actions</th>
+				<th scope="col">Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>1</td>
+				<td>
+					Item
+					<div>
+						<small class="text-muted">Both &ldquo;Actions&rdquo; table cells define an overflow hidden</small>
 					</div>
-				</div>
-				<small class="text-muted">Dropdown uses container "body"</small>
-			</td>
-			<td class="overflow-hidden">
-				<div ngbDropdown>
-					<button type="button" class="btn btn-outline-primary btn-sm" ngbDropdownToggle>Actions</button>
-					<div ngbDropdownMenu>
-						<button ngbDropdownItem>Edit</button>
-						<button ngbDropdownItem>Duplicate</button>
-						<button ngbDropdownItem>Move</button>
-						<div class="dropdown-divider"></div>
-						<button ngbDropdownItem>Delete</button>
+				</td>
+				<td class="overflow-hidden">
+					<div ngbDropdown container="body">
+						<button type="button" class="btn btn-outline-primary btn-sm" ngbDropdownToggle>Actions</button>
+						<div ngbDropdownMenu>
+							<button ngbDropdownItem>Edit</button>
+							<button ngbDropdownItem>Duplicate</button>
+							<button ngbDropdownItem>Move</button>
+							<div class="dropdown-divider"></div>
+							<button ngbDropdownItem>Delete</button>
+						</div>
 					</div>
-				</div>
-				<small class="text-muted">Default dropdown</small>
-			</td>
-		</tr>
-	</tbody>
-</table>
+					<small class="text-muted">Dropdown uses container "body"</small>
+				</td>
+				<td class="overflow-hidden">
+					<div ngbDropdown>
+						<button type="button" class="btn btn-outline-primary btn-sm" ngbDropdownToggle>Actions</button>
+						<div ngbDropdownMenu>
+							<button ngbDropdownItem>Edit</button>
+							<button ngbDropdownItem>Duplicate</button>
+							<button ngbDropdownItem>Move</button>
+							<div class="dropdown-divider"></div>
+							<button ngbDropdownItem>Delete</button>
+						</div>
+					</div>
+					<small class="text-muted">Default dropdown</small>
+				</td>
+			</tr>
+			<tr>
+				<td>1</td>
+				<td>
+					Item
+					<div>
+						<small class="text-muted">Both Dropdown's container will be the div</small>
+					</div>
+				</td>
+				<td class="overflow-hidden">
+					<div ngbDropdown container="#dropdown-container">
+						<button type="button" class="btn btn-outline-primary btn-sm" ngbDropdownToggle>Actions</button>
+						<div ngbDropdownMenu>
+							<button ngbDropdownItem>Edit</button>
+							<button ngbDropdownItem>Duplicate</button>
+							<button ngbDropdownItem>Move</button>
+							<div class="dropdown-divider"></div>
+							<button ngbDropdownItem>Delete</button>
+						</div>
+					</div>
+					<small class="text-muted">Dropdown uses container <code>#dropdown-container</code></small>
+				</td>
+				<td class="overflow-hidden">
+					<div ngbDropdown [container]="dropdownContainer">
+						<button type="button" class="btn btn-outline-primary btn-sm" ngbDropdownToggle>Actions</button>
+						<div ngbDropdownMenu>
+							<button ngbDropdownItem>Edit</button>
+							<button ngbDropdownItem>Duplicate</button>
+							<button ngbDropdownItem>Move</button>
+							<div class="dropdown-divider"></div>
+							<button ngbDropdownItem>Delete</button>
+						</div>
+					</div>
+					<small class="text-muted">Dropdown uses container element <code>dropdownContainer</code></small>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
