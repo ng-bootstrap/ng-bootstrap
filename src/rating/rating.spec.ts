@@ -451,16 +451,37 @@ describe('ngb-rating', () => {
 			expect(rating.attributes['aria-valuetext']).toBe('Rating: 7 out of 10 stars');
 		});
 
-		it('updates aria-disabled when readonly', () => {
-			const fixture = createTestComponent('<ngb-rating></ngb-rating>');
-			let ratingEl = fixture.debugElement.query(By.directive(NgbRating));
-			fixture.detectChanges();
-			expect(ratingEl.attributes['aria-disabled'] == null).toBeTruthy();
+		it(`updates 'aria-readonly' when readonly`, () => {
+			const fixture = TestBed.createComponent(NgbRating);
+			const { nativeElement, componentInstance: rating } = fixture;
 
-			let ratingComp = <NgbRating>ratingEl.componentInstance;
-			ratingComp.readonly = true;
 			fixture.detectChanges();
-			expect(ratingEl.attributes['aria-disabled']).toBe('true');
+			expect(nativeElement.getAttribute('aria-readonly')).toBeNull();
+			expect(nativeElement.getAttribute('aria-disabled')).toBeNull();
+
+			// readonly
+			rating.readonly = true;
+			fixture.detectChanges();
+			expect(nativeElement.getAttribute('aria-readonly')).toBe('true');
+			expect(nativeElement.getAttribute('aria-disabled')).toBeNull();
+
+			// readonly and disabled
+			rating.disabled = true;
+			fixture.detectChanges();
+			expect(nativeElement.getAttribute('aria-readonly')).toBeNull();
+			expect(nativeElement.getAttribute('aria-disabled')).toBe('true');
+		});
+
+		it(`updates 'aria-disabled' when disabled`, () => {
+			const fixture = createTestComponent('<ngb-rating [disabled]="disabled" />');
+			let { nativeElement } = fixture.debugElement.query(By.directive(NgbRating));
+
+			fixture.detectChanges();
+			expect(nativeElement.getAttribute('aria-disabled')).toBeNull();
+
+			fixture.componentInstance.disabled = true;
+			fixture.detectChanges();
+			expect(nativeElement.getAttribute('aria-disabled')).toBe('true');
 		});
 	});
 
@@ -673,7 +694,9 @@ describe('ngb-rating', () => {
 			getStar(element.nativeElement, 3).click();
 			fixture.detectChanges();
 			expect(getState(element.nativeElement)).toEqual([true, true, true, false, false]);
+			expect(element.nativeElement.getAttribute('aria-disabled')).toBeNull();
 			expect(getState(disabledElement.nativeElement)).toEqual([false, false, false, false, false]);
+			expect(disabledElement.nativeElement.getAttribute('aria-disabled')).toBe('true');
 			expect(fixture.componentInstance.model).toEqual(3);
 
 			getStar(disabledElement.nativeElement, 4).click();
@@ -821,6 +844,7 @@ describe('ngb-rating', () => {
 })
 class TestComponent {
 	changed = false;
+	disabled = false;
 	form = new UntypedFormGroup({ rating: new UntypedFormControl(null, Validators.required) });
 	formControl = new FormControl(0);
 	max = 10;
