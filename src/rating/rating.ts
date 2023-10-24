@@ -51,7 +51,8 @@ export interface StarTemplateContext {
 		'[attr.aria-valuemax]': 'max',
 		'[attr.aria-valuenow]': 'nextRate',
 		'[attr.aria-valuetext]': 'ariaValueText(nextRate, max)',
-		'[attr.aria-disabled]': 'readonly ? true : null',
+		'[attr.aria-readonly]': 'readonly && !disabled ? true : null',
+		'[attr.aria-disabled]': 'disabled ? true : null',
 		'(blur)': 'handleBlur()',
 		'(keydown)': 'handleKeyDown($event)',
 		'(mouseleave)': 'reset()',
@@ -77,8 +78,12 @@ export interface StarTemplateContext {
 })
 export class NgbRating implements ControlValueAccessor, OnInit, OnChanges {
 	contexts: StarTemplateContext[] = [];
-	disabled = false;
 	nextRate: number;
+
+	/**
+	 * If `true`, the rating can't be changed or focused.
+	 */
+	@Input() disabled = false;
 
 	/**
 	 * The maximal rating that can be given.
