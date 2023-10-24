@@ -1,6 +1,6 @@
 {
   "name": "@ng-bootstrap/ng-bootstrap",
-  "version": "15.1.1",
+  "version": "15.1.2",
   "description": "Angular powered Bootstrap",
   "author": "https://github.com/ng-bootstrap/ng-bootstrap/graphs/contributors",
   "engines": {
@@ -154,6 +154,6 @@
     "zone.js": "~0.13.0"
   },
   "resolutions": {
-		"webdriverio": "^7.33.0"
-	}
+    "webdriverio": "^7.33.0"
+  }
 }

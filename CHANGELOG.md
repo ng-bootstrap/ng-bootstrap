@@ -1,3 +1,19 @@
+## [15.1.2](https://github.com/ng-bootstrap/ng-bootstrap/compare/15.1.1...15.1.2) (2023-10-24)
+
+This release aligns tooltip closing behavior with Bootstrap (both desktop and mobile), fixes a long-standing bug with tooltip opening issues.
+
+While we don't consider it a breaking change, some complex existing tooltips might behave differently.
+
+### Bug Fixes
+
+* **accordion:** initialize `destroyOnHide` from configuration ([a8b39be](https://github.com/ng-bootstrap/ng-bootstrap/commit/a8b39becbb9e0b236d272bdd7504a1d6fc763a17))
+* **rating:** generate correct `aria-readonly/disabled` attributes ([#4586](https://github.com/ng-bootstrap/ng-bootstrap/issues/4586)) ([f99bc96](https://github.com/ng-bootstrap/ng-bootstrap/commit/f99bc9678952b9edd35117c0ebd6f85a6fb18f9f))
+* **tooltip:** align closing behavior with Bootstrap ([55f45fd](https://github.com/ng-bootstrap/ng-bootstrap/commit/55f45fd9de8d3380645710814c1202c8a28af9d0)), closes [#3889](https://github.com/ng-bootstrap/ng-bootstrap/issues/3889)
+* **tooltip:** fixed closing on hover from arrow direction ([4417ee6](https://github.com/ng-bootstrap/ng-bootstrap/commit/4417ee6a28fe7abfe0cea37a04938f70bad10ca0)), closes [#3997](https://github.com/ng-bootstrap/ng-bootstrap/issues/3997)
+* **tooltip:** remove padding for non-standard placements ([c7c0978](https://github.com/ng-bootstrap/ng-bootstrap/commit/c7c0978c8e0c680e3d3a166663ed1eaae37289e9)), closes [#4369](https://github.com/ng-bootstrap/ng-bootstrap/issues/4369)
+
+
+
 ## [15.1.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/15.1.0...15.1.1) (2023-08-07)
 
 
