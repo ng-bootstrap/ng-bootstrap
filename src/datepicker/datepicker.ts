@@ -38,7 +38,6 @@ import { NgbDateStruct } from './ngb-date-struct';
 import { NgbDatepickerI18n } from './datepicker-i18n';
 import { NgbDatepickerKeyboardService } from './datepicker-keyboard-service';
 import { isChangedDate, isChangedMonth } from './datepicker-tools';
-import { hasClassName } from '../util/util';
 import { NgbDatepickerDayView } from './datepicker-day-view';
 import { NgbDatepickerNavigation } from './datepicker-navigation';
 import { ContentTemplateContext } from './datepicker-content-template-context';
@@ -588,15 +587,17 @@ export class NgbDatepicker implements AfterViewInit, OnDestroy, OnChanges, OnIni
 			// and ignoring all focus events where both 'target' and 'related' target are day cells
 			merge(focusIns$, focusOuts$)
 				.pipe(
-					filter(
-						({ target, relatedTarget }) =>
-							!(
-								hasClassName(target, 'ngb-dp-day') &&
-								hasClassName(relatedTarget, 'ngb-dp-day') &&
-								nativeElement.contains(target as Node) &&
-								nativeElement.contains(relatedTarget as Node)
-							),
-					),
+					filter((focusEvent) => {
+						const target = focusEvent.target as HTMLElement | null;
+						const relatedTarget = focusEvent.relatedTarget as HTMLElement | null;
+
+						return !(
+							target?.classList.contains('ngb-dp-day') &&
+							relatedTarget?.classList.contains('ngb-dp-day') &&
+							nativeElement.contains(target) &&
+							nativeElement.contains(relatedTarget)
+						);
+					}),
 					takeUntil(this._destroyed$),
 				)
 				.subscribe(({ type }) => this._ngZone.run(() => this._service.set({ focusVisible: type === 'focusin' })));

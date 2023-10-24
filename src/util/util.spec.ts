@@ -4,7 +4,6 @@ import {
 	getValueInRange,
 	isInteger,
 	isString,
-	hasClassName,
 	removeAccents,
 	closest,
 	isPromise,
@@ -133,24 +132,6 @@ describe('util', () => {
 			expect(isPromise({})).toBeFalsy();
 			expect(isPromise(Function)).toBeFalsy();
 			expect(isPromise(undefined)).toBeFalsy();
-		});
-	});
-
-	describe('hasClassName', () => {
-		it('should find classes correctly', () => {
-			const element = { className: 'foo bar  baz' };
-
-			expect(hasClassName(element, 'foo')).toBeTruthy();
-			expect(hasClassName(element, 'bar')).toBeTruthy();
-			expect(hasClassName(element, 'baz')).toBeTruthy();
-			expect(hasClassName(element, 'fo')).toBeFalsy();
-			expect(hasClassName(element, ' ')).toBeFalsy();
-		});
-
-		it('should work with incorrect values', () => {
-			expect(hasClassName(null, 'foo')).toBeFalsy();
-			expect(hasClassName({}, 'foo')).toBeFalsy();
-			expect(hasClassName({ className: null }, 'foo')).toBeFalsy();
 		});
 	});
 
