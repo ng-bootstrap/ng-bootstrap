@@ -1,9 +1,9 @@
 import { NgbToastConfig } from './toast-config';
-import { NgbConfig } from '../ngb-config';
+import { TestBed } from '@angular/core/testing';
 
 describe('NgbToastConfig', () => {
 	it('should have sensible default values', () => {
-		const config = new NgbToastConfig(new NgbConfig());
+		const config = TestBed.inject(NgbToastConfig);
 
 		expect(config.delay).toBe(5000);
 		expect(config.autohide).toBe(true);

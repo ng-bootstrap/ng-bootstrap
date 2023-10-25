@@ -4,15 +4,16 @@ import {
 	Component,
 	ContentChild,
 	Directive,
+	ElementRef,
 	EventEmitter,
+	inject,
 	Input,
+	NgZone,
 	OnChanges,
 	Output,
 	SimpleChanges,
 	TemplateRef,
 	ViewEncapsulation,
-	ElementRef,
-	NgZone,
 } from '@angular/core';
 
 import { Observable } from 'rxjs';
@@ -75,6 +76,11 @@ export class NgbToastHeader {}
 	styleUrls: ['./toast.scss'],
 })
 export class NgbToast implements AfterContentInit, OnChanges {
+	private _config = inject(NgbToastConfig);
+	private _zone = inject(NgZone);
+	private _element = inject(ElementRef);
+
+	private _timeoutID;
 	/**
 	 * If `true`, toast opening and closing will be animated.
 	 *
@@ -82,21 +88,19 @@ export class NgbToast implements AfterContentInit, OnChanges {
 	 *
 	 * @since 8.0.0
 	 */
-	@Input() animation: boolean;
-
-	private _timeoutID;
+	@Input() animation = this._config.animation;
 
 	/**
 	 * Delay after which the toast will hide (ms).
 	 * default: `500` (ms) (inherited from NgbToastConfig)
 	 */
-	@Input() delay: number;
+	@Input() delay = this._config.delay;
 
 	/**
 	 * Auto hide the toast after a delay in ms.
 	 * default: `true` (inherited from NgbToastConfig)
 	 */
-	@Input() autohide: boolean;
+	@Input() autohide = this._config.autohide;
 
 	/**
 	 * Text to be used as toast's header.
@@ -131,18 +135,8 @@ export class NgbToast implements AfterContentInit, OnChanges {
 	 */
 	@Output() hidden = new EventEmitter<void>();
 
-	constructor(
-		@Attribute('aria-live') public ariaLive: string,
-		config: NgbToastConfig,
-		private _zone: NgZone,
-		private _element: ElementRef,
-	) {
-		if (this.ariaLive == null) {
-			this.ariaLive = config.ariaLive;
-		}
-		this.delay = config.delay;
-		this.autohide = config.autohide;
-		this.animation = config.animation;
+	constructor(@Attribute('aria-live') public ariaLive: string) {
+		this.ariaLive ??= this._config.ariaLive;
 	}
 
 	ngAfterContentInit() {
