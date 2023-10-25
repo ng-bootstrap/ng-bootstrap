@@ -28,6 +28,7 @@ interface Country {
 					<td>
 						<img
 							[src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag"
+							[alt]="'The flag of ' + country.name"
 							class="me-2"
 							style="width: 20px"
 						/>
