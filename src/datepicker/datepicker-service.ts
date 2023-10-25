@@ -2,7 +2,7 @@ import { NgbCalendar } from './ngb-calendar';
 import { NgbDate } from './ngb-date';
 import { NgbDateStruct } from './ngb-date-struct';
 import { DatepickerViewModel, NgbDayTemplateData, NgbMarkDisabled } from './datepicker-view-model';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { isInteger, toInteger } from '../util/util';
 import { Observable, Subject } from 'rxjs';
 import {
@@ -104,6 +104,9 @@ export class NgbDatepickerService {
 		},
 	};
 
+	private _calendar = inject(NgbCalendar);
+	private _i18n = inject(NgbDatepickerI18n);
+
 	private _model$ = new Subject<DatepickerViewModel>();
 
 	private _dateSelect$ = new Subject<NgbDate>();
@@ -148,8 +151,6 @@ export class NgbDatepickerService {
 			this._nextState(patch);
 		}
 	}
-
-	constructor(private _calendar: NgbCalendar, private _i18n: NgbDatepickerI18n) {}
 
 	focus(date?: NgbDate | null) {
 		const focusedDate = this.toValidDate(date, null);

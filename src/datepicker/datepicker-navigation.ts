@@ -1,4 +1,12 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
+import {
+	Component,
+	Input,
+	Output,
+	EventEmitter,
+	ChangeDetectionStrategy,
+	ViewEncapsulation,
+	inject,
+} from '@angular/core';
 import { NavigationEvent, MonthViewModel } from './datepicker-view-model';
 import { NgbDate } from './ngb-date';
 import { NgbDatepickerI18n } from './datepicker-i18n';
@@ -64,6 +72,8 @@ import { NgbDatepickerNavigationSelect } from './datepicker-navigation-select';
 export class NgbDatepickerNavigation {
 	navigation = NavigationEvent;
 
+	i18n = inject(NgbDatepickerI18n);
+
 	@Input() date: NgbDate;
 	@Input() disabled: boolean;
 	@Input() months: MonthViewModel[] = [];
@@ -74,8 +84,6 @@ export class NgbDatepickerNavigation {
 
 	@Output() navigate = new EventEmitter<NavigationEvent>();
 	@Output() select = new EventEmitter<NgbDate>();
-
-	constructor(public i18n: NgbDatepickerI18n) {}
 
 	onClickPrev(event: MouseEvent) {
 		(event.currentTarget as HTMLElement).focus();
