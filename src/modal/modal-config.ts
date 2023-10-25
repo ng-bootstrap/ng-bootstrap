@@ -1,4 +1,4 @@
-import { Injectable, Injector } from '@angular/core';
+import { inject, Injectable, Injector } from '@angular/core';
 import { NgbConfig } from '../ngb-config';
 
 /**
@@ -148,6 +148,9 @@ export type NgbModalUpdatableOptions = Pick<
  */
 @Injectable({ providedIn: 'root' })
 export class NgbModalConfig implements Required<NgbModalOptions> {
+	private _ngbConfig = inject(NgbConfig);
+	private _animation: boolean;
+
 	ariaLabelledBy: string;
 	ariaDescribedBy: string;
 	backdrop: boolean | 'static' = true;
@@ -163,12 +166,8 @@ export class NgbModalConfig implements Required<NgbModalOptions> {
 	modalDialogClass: string;
 	backdropClass: string;
 
-	private _animation: boolean;
-
-	constructor(private _ngbConfig: NgbConfig) {}
-
 	get animation(): boolean {
-		return this._animation === undefined ? this._ngbConfig.animation : this._animation;
+		return this._animation ?? this._ngbConfig.animation;
 	}
 	set animation(animation: boolean) {
 		this._animation = animation;
