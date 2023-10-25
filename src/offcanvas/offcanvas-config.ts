@@ -1,4 +1,4 @@
-import { Injectable, Injector } from '@angular/core';
+import { inject, Injectable, Injector } from '@angular/core';
 import { NgbConfig } from '../ngb-config';
 
 /**
@@ -92,6 +92,9 @@ export interface NgbOffcanvasOptions {
  */
 @Injectable({ providedIn: 'root' })
 export class NgbOffcanvasConfig implements Required<NgbOffcanvasOptions> {
+	private _ngbConfig = inject(NgbConfig);
+	private _animation: boolean;
+
 	ariaDescribedBy: string;
 	ariaLabelledBy: string;
 	backdrop: boolean | 'static' = true;
@@ -104,12 +107,8 @@ export class NgbOffcanvasConfig implements Required<NgbOffcanvasOptions> {
 	position: 'start' | 'end' | 'top' | 'bottom' = 'start';
 	scroll = false;
 
-	private _animation: boolean;
-
-	constructor(private _ngbConfig: NgbConfig) {}
-
 	get animation(): boolean {
-		return this._animation === undefined ? this._ngbConfig.animation : this._animation;
+		return this._animation ?? this._ngbConfig.animation;
 	}
 	set animation(animation: boolean) {
 		this._animation = animation;
