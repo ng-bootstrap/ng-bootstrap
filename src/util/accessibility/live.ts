@@ -1,16 +1,10 @@
-import { Injectable, Inject, InjectionToken, OnDestroy } from '@angular/core';
+import { inject, Injectable, InjectionToken, OnDestroy } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
-// usefulness (and default value) of delay documented in Material's CDK
-// https://github.com/angular/material2/blob/6405da9b8e8532a7e5c854c920ee1815c275d734/src/cdk/a11y/live-announcer/live-announcer.ts#L50
-export type ARIA_LIVE_DELAY_TYPE = number | null;
-export const ARIA_LIVE_DELAY = new InjectionToken<ARIA_LIVE_DELAY_TYPE>('live announcer delay', {
+export const ARIA_LIVE_DELAY = new InjectionToken<number | null>('live announcer delay', {
 	providedIn: 'root',
-	factory: ARIA_LIVE_DELAY_FACTORY,
+	factory: () => 100,
 });
-export function ARIA_LIVE_DELAY_FACTORY(): number {
-	return 100;
-}
 
 function getLiveElement(document: any, lazyCreate = false): HTMLElement | null {
 	let element = document.body.querySelector('#ngb-live') as HTMLElement;
@@ -32,7 +26,8 @@ function getLiveElement(document: any, lazyCreate = false): HTMLElement | null {
 
 @Injectable({ providedIn: 'root' })
 export class Live implements OnDestroy {
-	constructor(@Inject(DOCUMENT) private _document: any, @Inject(ARIA_LIVE_DELAY) private _delay: any) {}
+	private _document = inject(DOCUMENT);
+	private _delay = inject(ARIA_LIVE_DELAY);
 
 	ngOnDestroy() {
 		const element = getLiveElement(this._document);
