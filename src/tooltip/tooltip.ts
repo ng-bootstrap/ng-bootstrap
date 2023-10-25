@@ -27,6 +27,7 @@ import { isString } from '../util/util';
 
 import { NgbTooltipConfig } from './tooltip-config';
 import { Subscription } from 'rxjs';
+import { addPopperOffset } from '../util/positioning-util';
 
 let nextId = 0;
 
@@ -239,7 +240,7 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 					placement: this.placement,
 					appendToBody: this.container === 'body',
 					baseClass: 'bs-tooltip',
-					updatePopperOptions: (options) => this.popperOptions(options),
+					updatePopperOptions: (options) => this.popperOptions(addPopperOffset([0, 6])(options)),
 				});
 
 				Promise.resolve().then(() => {
