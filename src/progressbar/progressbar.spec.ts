@@ -38,11 +38,11 @@ describe('ngb-progressbar', () => {
 		let progressCmp: NgbProgressbar;
 
 		beforeEach(() => {
-			progressCmp = new NgbProgressbar(new NgbProgressbarConfig());
+			progressCmp = TestBed.createComponent(NgbProgressbar).componentInstance;
 		});
 
 		it('should initialize inputs with default values', () => {
-			const defaultConfig = new NgbProgressbarConfig();
+			const defaultConfig = TestBed.inject(NgbProgressbarConfig);
 			expect(progressCmp.max).toBe(defaultConfig.max);
 			expect(progressCmp.animated).toBe(defaultConfig.animated);
 			expect(progressCmp.striped).toBe(defaultConfig.striped);
