@@ -8,7 +8,7 @@
 
 	&:hover:not(.bg-primary),
 	&.active:not(.bg-primary) {
-		background-color: var(--bs-btn-bg);
+		background-color: var(--bs-tertiary-bg);
 		outline: 1px solid var(--bs-border-color);
 	}
 
