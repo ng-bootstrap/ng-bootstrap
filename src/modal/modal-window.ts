@@ -3,7 +3,7 @@ import {
 	Component,
 	ElementRef,
 	EventEmitter,
-	Inject,
+	inject,
 	Input,
 	NgZone,
 	OnDestroy,
@@ -54,6 +54,10 @@ import { isString, reflow } from '../util/util';
 	styleUrls: ['./modal.scss'],
 })
 export class NgbModalWindow implements OnInit, OnDestroy {
+	private _document = inject(DOCUMENT);
+	private _elRef = inject(ElementRef<HTMLElement>);
+	private _zone = inject(NgZone);
+
 	private _closed$ = new Subject<void>();
 	private _elWithFocus: Element | null = null; // element that is focused prior to modal opening
 
@@ -75,12 +79,6 @@ export class NgbModalWindow implements OnInit, OnDestroy {
 
 	shown = new Subject<void>();
 	hidden = new Subject<void>();
-
-	constructor(
-		@Inject(DOCUMENT) private _document: any,
-		private _elRef: ElementRef<HTMLElement>,
-		private _zone: NgZone,
-	) {}
 
 	get fullscreenClass(): string {
 		return this.fullscreen === true
