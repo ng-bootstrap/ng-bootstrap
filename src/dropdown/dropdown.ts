@@ -116,7 +116,11 @@ export class NgbDropdownMenu {
 @Directive({
 	selector: '[ngbDropdownAnchor]',
 	standalone: true,
-	host: { class: 'dropdown-toggle', '[attr.aria-expanded]': 'dropdown.isOpen()' },
+	host: {
+		class: 'dropdown-toggle',
+		'[class.show]': 'dropdown.isOpen()',
+		'[attr.aria-expanded]': 'dropdown.isOpen()',
+	},
 })
 export class NgbDropdownAnchor {
 	nativeElement: HTMLElement;
@@ -138,6 +142,7 @@ export class NgbDropdownAnchor {
 	standalone: true,
 	host: {
 		class: 'dropdown-toggle',
+		'[class.show]': 'dropdown.isOpen()',
 		'[attr.aria-expanded]': 'dropdown.isOpen()',
 		'(click)': 'dropdown.toggle()',
 		'(keydown.ArrowUp)': 'dropdown.onKeyDown($event)',
@@ -150,8 +155,11 @@ export class NgbDropdownAnchor {
 	providers: [{ provide: NgbDropdownAnchor, useExisting: forwardRef(() => NgbDropdownToggle) }],
 })
 export class NgbDropdownToggle extends NgbDropdownAnchor {
-	constructor(@Inject(forwardRef(() => NgbDropdown)) dropdown: NgbDropdown, elementRef: ElementRef<HTMLElement>) {
-		super(dropdown, elementRef);
+	constructor(
+		@Inject(forwardRef(() => NgbDropdown)) public dropdown: NgbDropdown,
+		_elementRef: ElementRef<HTMLElement>,
+	) {
+		super(dropdown, _elementRef);
 	}
 }
 
