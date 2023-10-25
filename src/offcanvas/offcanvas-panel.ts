@@ -1,9 +1,8 @@
-import { DOCUMENT } from '@angular/common';
 import {
 	Component,
 	ElementRef,
 	EventEmitter,
-	Inject,
+	inject,
 	Input,
 	NgZone,
 	OnDestroy,
@@ -20,6 +19,7 @@ import { Key } from '../util/key';
 import { OffcanvasDismissReasons } from './offcanvas-dismiss-reasons';
 import { ngbRunTransition, NgbTransitionOptions } from '../util/transition/ngbTransition';
 import { reflow } from '../util/util';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
 	selector: 'ngb-offcanvas-panel',
@@ -37,6 +37,10 @@ import { reflow } from '../util/util';
 	},
 })
 export class NgbOffcanvasPanel implements OnInit, OnDestroy {
+	private _document = inject(DOCUMENT);
+	private _elRef = inject(ElementRef<HTMLElement>);
+	private _zone = inject(NgZone);
+
 	private _closed$ = new Subject<void>();
 	private _elWithFocus: Element | null = null; // element that is focused prior to offcanvas opening
 
@@ -51,12 +55,6 @@ export class NgbOffcanvasPanel implements OnInit, OnDestroy {
 
 	shown = new Subject<void>();
 	hidden = new Subject<void>();
-
-	constructor(
-		@Inject(DOCUMENT) private _document: any,
-		private _elRef: ElementRef<HTMLElement>,
-		private _zone: NgZone,
-	) {}
 
 	dismiss(reason): void {
 		this.dismissEvent.emit(reason);
@@ -77,16 +75,15 @@ export class NgbOffcanvasPanel implements OnInit, OnDestroy {
 	}
 
 	hide(): Observable<any> {
-		const { nativeElement } = this._elRef;
 		const context: NgbTransitionOptions<any> = { animation: this.animation, runningTransition: 'stop' };
 
 		const offcanvasTransition$ = ngbRunTransition(
 			this._zone,
 			this._elRef.nativeElement,
 			(element) => {
-				nativeElement.classList.remove('showing');
-				nativeElement.classList.add('hiding');
-				return () => nativeElement.classList.remove('show', 'hiding');
+				element.classList.remove('showing');
+				element.classList.add('hiding');
+				return () => element.classList.remove('show', 'hiding');
 			},
 			context,
 		);

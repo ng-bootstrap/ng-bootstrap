@@ -1,4 +1,4 @@
-import { Injectable, Injector } from '@angular/core';
+import { inject, Injectable, Injector } from '@angular/core';
 import { NgbOffcanvasConfig, NgbOffcanvasOptions } from './offcanvas-config';
 import { NgbOffcanvasRef } from './offcanvas-ref';
 import { NgbOffcanvasStack } from './offcanvas-stack';
@@ -13,11 +13,9 @@ import { NgbOffcanvasStack } from './offcanvas-stack';
  */
 @Injectable({ providedIn: 'root' })
 export class NgbOffcanvas {
-	constructor(
-		private _injector: Injector,
-		private _offcanvasStack: NgbOffcanvasStack,
-		private _config: NgbOffcanvasConfig,
-	) {}
+	private _injector = inject(Injector);
+	private _offcanvasStack = inject(NgbOffcanvasStack);
+	private _config = inject(NgbOffcanvasConfig);
 
 	/**
 	 * Opens a new offcanvas panel with the specified content and supplied options.
