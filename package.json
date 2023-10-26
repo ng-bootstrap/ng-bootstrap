@@ -88,6 +88,7 @@
     "@angular/platform-browser-dynamic": "~16.0.0",
     "@angular/platform-server": "~16.0.0",
     "@angular/router": "~16.0.0",
+    "@axe-core/playwright": "^4.8.1",
     "@commitlint/cli": "12.1.4",
     "@commitlint/config-angular": "12.1.4",
     "@nguniversal/builders": "~16.0.0",

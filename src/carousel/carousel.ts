@@ -35,6 +35,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 let nextId = 0;
+let carouselId = 0;
 
 /**
  * A directive that wraps the individual carousel slide.
@@ -112,13 +113,25 @@ export class NgbSlide {
 				<ng-template [ngTemplateOutlet]="slide.templateRef"></ng-template>
 			</div>
 		</div>
-		<button class="carousel-control-prev" type="button" (click)="arrowLeft()" *ngIf="showNavigationArrows">
+		<button
+			class="carousel-control-prev"
+			type="button"
+			(click)="arrowLeft()"
+			*ngIf="showNavigationArrows"
+			[attr.aria-labelledby]="id + '-previous'"
+		>
 			<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-			<span class="visually-hidden" i18n="@@ngb.carousel.previous">Previous</span>
+			<span class="visually-hidden" i18n="@@ngb.carousel.previous" [id]="id + '-previous'">Previous</span>
 		</button>
-		<button class="carousel-control-next" type="button" (click)="arrowRight()" *ngIf="showNavigationArrows">
+		<button
+			class="carousel-control-next"
+			type="button"
+			(click)="arrowRight()"
+			*ngIf="showNavigationArrows"
+			[attr.aria-labelledby]="id + '-next'"
+		>
 			<span class="carousel-control-next-icon" aria-hidden="true"></span>
-			<span class="visually-hidden" i18n="@@ngb.carousel.next">Next</span>
+			<span class="visually-hidden" i18n="@@ngb.carousel.next" [id]="id + '-next'">Next</span>
 		</button>
 	`,
 })
@@ -141,6 +154,8 @@ export class NgbCarousel implements AfterContentChecked, AfterContentInit, After
 	private _pauseOnFocus$ = new BehaviorSubject(this._config.pauseOnFocus);
 	private _pause$ = new BehaviorSubject(false);
 	private _wrap$ = new BehaviorSubject(this._config.wrap);
+
+	id = `ngb-carousel-${carouselId++}`;
 
 	/**
 	 * A flag to enable/disable the animations.

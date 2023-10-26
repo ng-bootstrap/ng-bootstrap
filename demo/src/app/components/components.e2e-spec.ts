@@ -1,4 +1,5 @@
-import { ConsoleMessage, test, expect } from '@playwright/test';
+import { ConsoleMessage, test, expect, type Page } from '@playwright/test';
+import AxeBuilder from '@axe-core/playwright';
 
 const SELECTOR_TAB_LINKS = 'header.title a.nav-link';
 const SELECTOR_SIDE_NAV_COMPONENT_LINKS = 'ngbd-side-nav >> a[href^="#/components/"]';
@@ -25,6 +26,30 @@ const COMPONENTS = [
 	'tooltip',
 	'typeahead',
 ];
+
+const TEST_TO_FIX = {
+	accordion: ['aria-required-attr', 'color-contrast'],
+	alert: ['color-contrast'],
+	carousel: ['aria-allowed-attr'],
+	collapse: ['aria-valid-attr-value'],
+	datepicker: ['button-name', 'color-contrast', 'label', 'select-name'],
+	dropdown: ['button-name'],
+	modal: ['color-contrast'],
+	nav: ['aria-allowed-attr', 'aria-required-children'],
+	offcanvas: [],
+	pagination: [],
+	popover: [],
+	progressbar: ['color-contrast'],
+	rating: ['aria-input-field-name'],
+	scrollspy: ['color-contrast'],
+	table: ['select-name'],
+	timepicker: ['color-contrast'], //because of the alert
+	toast: ['color-contrast'],
+	tooltip: [],
+	typeahead: [],
+};
+
+const makeAxeBuilder = (page: Page) => new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']);
 
 test.describe(`Components`, () => {
 	let messages: ConsoleMessage[] = [];
@@ -74,6 +99,18 @@ test.describe(`Components`, () => {
 						await link.click();
 					}
 				});
+			});
+		}
+	});
+
+	test('should not have any WCAG violations', async ({ page, baseURL }) => {
+		for (const component of COMPONENTS) {
+			await test.step(`${component} page`, async () => {
+				await page.goto(`${baseURL}/components/${component}/examples`);
+				await page.waitForSelector(SELECTOR_TAB_LINKS);
+				expect(
+					(await makeAxeBuilder(page).include('.card-body').disableRules(TEST_TO_FIX[component]).analyze()).violations,
+				).toEqual([]);
 			});
 		}
 	});
