@@ -59,8 +59,6 @@ test.describe('Tooltip Position', () => {
 		let rangeY = [Math.max(offsets[0] - 1, 0), offsets[0] + 1];
 		let rangeX = [Math.max(offsets[1] - 1, 0), offsets[1] + 1];
 
-		console.log(rangeX, rangeY);
-
 		expect(
 			Math.abs(yDiff),
 			`Tooltip top positioning for expected placement '${expectedPlacement}'`,
