@@ -96,7 +96,7 @@ export class NgbRating implements ControlValueAccessor, OnInit, OnChanges {
 
 	/**
 	 * The current rating. Could be a decimal value like `3.75`.
-	 */ ß;
+	 */
 	@Input() rate: number;
 
 	/**
