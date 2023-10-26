@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 
 import * as prism from 'prismjs';
 import 'prismjs/components/prism-typescript';
-import 'prismjs/components/prism-bash';
 
 // Prism tries to highlight the whole document on DOMContentLoad.
 // Unfortunately with webpack the only way of disabling it

@@ -1,0 +1,126 @@
+[data-bs-theme='dark'] pre[class*='language-'],
+[data-bs-theme='dark'] code[class*='language-'] {
+	color: #c9d1d9;
+	font-size: 15px;
+	text-shadow: none;
+	font-family: source-code-pro, Menlo, Monaco, Consolas, Courier New, monospace;
+	direction: ltr;
+	text-align: left;
+	white-space: pre;
+	word-spacing: normal;
+	word-break: normal;
+	line-height: 1.5;
+	-moz-tab-size: 2;
+	-o-tab-size: 2;
+	tab-size: 2;
+	-webkit-hyphens: none;
+	-moz-hyphens: none;
+	-ms-hyphens: none;
+	hyphens: none;
+	border-radius: 3px;
+}
+[data-bs-theme='dark'] pre[class*='language-']::selection,
+[data-bs-theme='dark'] code[class*='language-']::selection,
+[data-bs-theme='dark'] pre[class*='language-']::mozselection,
+[data-bs-theme='dark'] code[class*='language-']::mozselection {
+	text-shadow: none;
+	background: #234879;
+}
+@media print {
+	[data-bs-theme='dark'] pre[class*='language-'],
+	[data-bs-theme='dark'] code[class*='language-'] {
+		text-shadow: none;
+	}
+}
+[data-bs-theme='dark'] pre[class*='language-'] {
+	padding: 1em;
+	margin: 0.5em 0;
+	overflow: auto;
+	background: #161b22;
+}
+[data-bs-theme='dark'] :not(pre) > code[class*='language-'] {
+	padding: 0.1em 0.3em;
+	border-radius: 0.3em;
+	color: #c9d1d9;
+	background: #343942;
+}
+[data-bs-theme='dark'] pre[data-line] {
+	position: relative;
+}
+[data-bs-theme='dark'] pre[class*='language-'] > code[class*='language-'] {
+	position: relative;
+	z-index: 1;
+}
+[data-bs-theme='dark'] .line-highlight {
+	position: absolute;
+	left: 0;
+	right: 0;
+	padding: inherit 0;
+	margin-top: 1em;
+	background: #2f2a1e;
+	box-shadow: inset 5px 0 0 #674c16;
+	z-index: 0;
+	pointer-events: none;
+	line-height: inherit;
+	white-space: pre;
+}
+[data-bs-theme='dark'] .namespace {
+	opacity: 0.7;
+}
+[data-bs-theme='dark'] .token.comment,
+[data-bs-theme='dark'] .token.prolog,
+[data-bs-theme='dark'] .token.doctype,
+[data-bs-theme='dark'] .token.cdata {
+	color: #8b949e;
+}
+[data-bs-theme='dark'] .token.punctuation {
+	color: #c9d1d9;
+}
+[data-bs-theme='dark'] .token.property,
+[data-bs-theme='dark'] .token.tag,
+[data-bs-theme='dark'] .token.boolean,
+[data-bs-theme='dark'] .token.number,
+[data-bs-theme='dark'] .token.constant,
+[data-bs-theme='dark'] .token.symbol,
+[data-bs-theme='dark'] .token.deleted {
+	color: #79c0ff;
+}
+[data-bs-theme='dark'] .token.selector,
+[data-bs-theme='dark'] .token.attr-name,
+[data-bs-theme='dark'] .token.string,
+[data-bs-theme='dark'] .token.char,
+[data-bs-theme='dark'] .token.builtin,
+[data-bs-theme='dark'] .token.inserted {
+	color: #a5d6ff;
+}
+[data-bs-theme='dark'] .token.operator,
+[data-bs-theme='dark'] .token.entity,
+[data-bs-theme='dark'] .token.url,
+[data-bs-theme='dark'] .language-css .token.string,
+[data-bs-theme='dark'] .style .token.string {
+	color: #a5d6ff;
+	background: #161b22;
+}
+[data-bs-theme='dark'] .token.atrule,
+[data-bs-theme='dark'] .token.attr-value,
+[data-bs-theme='dark'] .token.keyword {
+	color: #a5d6ff;
+}
+[data-bs-theme='dark'] .token.function {
+	color: #d2a8ff;
+}
+[data-bs-theme='dark'] .token.regex,
+[data-bs-theme='dark'] .token.important,
+[data-bs-theme='dark'] .token.variable {
+	color: #a8daff;
+}
+[data-bs-theme='dark'] .token.important,
+[data-bs-theme='dark'] .token.bold {
+	font-weight: bold;
+}
+[data-bs-theme='dark'] .token.italic {
+	font-style: italic;
+}
+[data-bs-theme='dark'] .token.entity {
+	cursor: help;
+}

@@ -82,7 +82,8 @@
 						"styles": [
 							"node_modules/bootstrap/dist/css/bootstrap.css",
 							"node_modules/bootstrap-icons/font/bootstrap-icons.css",
-							"node_modules/prismjs/themes/prism.css",
+							"demo/src/style/prism-light.css",
+							"demo/src/style/prism-dark.css",
 							"demo/src/style/app.scss",
 							"demo/src/style/demos.css"
 						],
