@@ -392,18 +392,10 @@ ngbd-page-wrapper {
 	}
 }
 
-// override prism theme background color to inline it with bootstrap colors
-code[class*='language-'],
-pre[class*='language-'],
 ngb-alert {
 	background-color: #f5f5f5; // same as bootstrap card header
 	border-radius: 3px;
 	tab-size: 2;
-}
-
-span.token.tag {
-	font-size: 1em;
-	padding: 0;
 }
 
 // Right-To-Left layout for the Islamic Calendars
