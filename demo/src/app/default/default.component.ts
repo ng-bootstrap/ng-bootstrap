@@ -15,8 +15,7 @@ export class DefaultComponent {
 	version = environment.version;
 
 	installation = Snippet({
-		lang: 'ts',
-		code: `// Installation for Angular CLI
-ng add @ng-bootstrap/ng-bootstrap`,
+		lang: 'text',
+		code: `ng add @ng-bootstrap/ng-bootstrap`,
 	});
 }

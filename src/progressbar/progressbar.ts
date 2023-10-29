@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation, HostBinding } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, inject, Input, ViewEncapsulation } from '@angular/core';
 import { getValueInRange, isNumber } from '../util/util';
 import { NgbProgressbarConfig } from './progressbar-config';
 import { NgIf, PercentPipe } from '@angular/common';
@@ -35,6 +35,7 @@ import { NgIf, PercentPipe } from '@angular/common';
 	`,
 })
 export class NgbProgressbar {
+	private _config = inject(NgbProgressbarConfig);
 	private _max: number;
 
 	/**
@@ -56,24 +57,24 @@ export class NgbProgressbar {
 	 *
 	 * Takes effect only for browsers supporting CSS3 animations, and if `striped` is `true`.
 	 */
-	@Input() animated: boolean;
+	@Input() animated = this._config.animated;
 
 	/**
 	 * The accessible progress bar name.
 	 *
 	 * @since 13.1.0
 	 */
-	@Input() ariaLabel: string;
+	@Input() ariaLabel = this._config.ariaLabel;
 
 	/**
 	 * If `true`, the progress bars will be displayed as striped.
 	 */
-	@Input() striped: boolean;
+	@Input() striped = this._config.striped;
 
 	/**
 	 * If `true`, the current percentage will be shown in the `xx%` format.
 	 */
-	@Input() showValue: boolean;
+	@Input() showValue = this._config.showValue;
 
 	/**
 	 * Optional text variant type of the progress bar.
@@ -83,7 +84,7 @@ export class NgbProgressbar {
 	 *
 	 * @since 5.2.0
 	 */
-	@Input() textType: string;
+	@Input() textType = this._config.textType;
 
 	/**
 	 * The type of the progress bar.
@@ -91,7 +92,7 @@ export class NgbProgressbar {
 	 * Supports types based on Bootstrap background color variants, like:
 	 *  `"success"`, `"info"`, `"warning"`, `"danger"`, `"primary"`, `"secondary"`, `"dark"` and so on.
 	 */
-	@Input() type: string;
+	@Input() type = this._config.type;
 
 	/**
 	 * The current value for the progress bar.
@@ -105,17 +106,10 @@ export class NgbProgressbar {
 	 *
 	 * Accepts any valid CSS height values, ex. `"2rem"`
 	 */
-	@Input() @HostBinding('style.height') height: string;
+	@Input() @HostBinding('style.height') height = this._config.height;
 
-	constructor(config: NgbProgressbarConfig) {
-		this.max = config.max;
-		this.animated = config.animated;
-		this.ariaLabel = config.ariaLabel;
-		this.striped = config.striped;
-		this.textType = config.textType;
-		this.type = config.type;
-		this.showValue = config.showValue;
-		this.height = config.height;
+	constructor() {
+		this.max = this._config.max;
 	}
 
 	getValue() {

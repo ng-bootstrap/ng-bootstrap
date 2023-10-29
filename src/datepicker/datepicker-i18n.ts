@@ -1,10 +1,6 @@
-import { Inject, Injectable, LOCALE_ID } from '@angular/core';
+import { inject, Injectable, LOCALE_ID } from '@angular/core';
 import { formatDate, FormStyle, getLocaleDayNames, getLocaleMonthNames, TranslationWidth } from '@angular/common';
 import { NgbDateStruct } from './ngb-date-struct';
-
-export function NGB_DATEPICKER_18N_FACTORY(locale) {
-	return new NgbDatepickerI18nDefault(locale);
-}
 
 /**
  * A service supplying i18n data to the datepicker component.
@@ -19,7 +15,10 @@ export function NGB_DATEPICKER_18N_FACTORY(locale) {
  * [Hebrew calendar demo](#/components/datepicker/calendars#hebrew) on how to extend this class and define
  * a custom provider for i18n.
  */
-@Injectable({ providedIn: 'root', useFactory: NGB_DATEPICKER_18N_FACTORY, deps: [LOCALE_ID] })
+@Injectable({
+	providedIn: 'root',
+	useFactory: () => new NgbDatepickerI18nDefault(),
+})
 export abstract class NgbDatepickerI18n {
 	/**
 	 * Returns the weekday label using specified width
@@ -103,15 +102,10 @@ export abstract class NgbDatepickerI18n {
  */
 @Injectable()
 export class NgbDatepickerI18nDefault extends NgbDatepickerI18n {
-	private _monthsShort: readonly string[];
-	private _monthsFull: readonly string[];
+	private _locale = inject(LOCALE_ID);
 
-	constructor(@Inject(LOCALE_ID) private _locale: string) {
-		super();
-
-		this._monthsShort = getLocaleMonthNames(_locale, FormStyle.Standalone, TranslationWidth.Abbreviated);
-		this._monthsFull = getLocaleMonthNames(_locale, FormStyle.Standalone, TranslationWidth.Wide);
-	}
+	private _monthsShort = getLocaleMonthNames(this._locale, FormStyle.Standalone, TranslationWidth.Abbreviated);
+	private _monthsFull = getLocaleMonthNames(this._locale, FormStyle.Standalone, TranslationWidth.Wide);
 
 	getWeekdayLabel(weekday: number, width?: TranslationWidth): string {
 		const weekdaysStartingOnSunday = getLocaleDayNames(

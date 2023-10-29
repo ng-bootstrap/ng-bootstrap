@@ -1,6 +1,6 @@
 import createSpy = jasmine.createSpy;
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
-import { isBrowserVisible, createGenericTestComponent } from '../test/common';
+import { createGenericTestComponent, isBrowserVisible } from '../test/common';
 import { By } from '@angular/platform-browser';
 
 import { Component } from '@angular/core';
@@ -24,7 +24,7 @@ function getCloseButton(element: HTMLElement): HTMLButtonElement {
 
 describe('ngb-alert', () => {
 	it('should initialize inputs with default values', () => {
-		const defaultConfig = new NgbAlertConfig(new NgbConfig());
+		const defaultConfig = TestBed.inject(NgbAlertConfig);
 		const alertCmp = TestBed.createComponent(NgbAlert).componentInstance;
 		expect(alertCmp.dismissible).toBe(defaultConfig.dismissible);
 		expect(alertCmp.type).toBe(defaultConfig.type);
@@ -168,25 +168,14 @@ describe('ngb-alert', () => {
 		});
 	});
 
-	describe('Custom config as provider', () => {
-		let config = new NgbAlertConfig(new NgbConfig());
+	it('should initialize inputs with provided config as provider', () => {
+		let config = TestBed.inject(NgbAlertConfig);
 		config.dismissible = false;
 		config.type = 'success';
 
-		beforeEach(() => {
-			TestBed.configureTestingModule({
-				providers: [{ provide: NgbAlertConfig, useValue: config }],
-			});
-		});
-
-		it('should initialize inputs with provided config as provider', () => {
-			const fixture = TestBed.createComponent(NgbAlert);
-			fixture.detectChanges();
-
-			const alert = fixture.componentInstance;
-			expect(alert.dismissible).toBe(config.dismissible);
-			expect(alert.type).toBe(config.type);
-		});
+		const alert = TestBed.createComponent(NgbAlert).componentInstance;
+		expect(alert.dismissible).toBe(config.dismissible);
+		expect(alert.type).toBe(config.type);
 	});
 });
 

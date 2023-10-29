@@ -1,6 +1,6 @@
-import { Injectable, Injector } from '@angular/core';
+import { inject, Injectable, Injector } from '@angular/core';
 
-import { NgbModalOptions, NgbModalConfig } from './modal-config';
+import { NgbModalConfig, NgbModalOptions } from './modal-config';
 import { NgbModalRef } from './modal-ref';
 import { NgbModalStack } from './modal-stack';
 
@@ -12,7 +12,9 @@ import { NgbModalStack } from './modal-stack';
  */
 @Injectable({ providedIn: 'root' })
 export class NgbModal {
-	constructor(private _injector: Injector, private _modalStack: NgbModalStack, private _config: NgbModalConfig) {}
+	private _injector = inject(Injector);
+	private _modalStack = inject(NgbModalStack);
+	private _config = inject(NgbModalConfig);
 
 	/**
 	 * Opens a new modal window with the specified content and supplied options.

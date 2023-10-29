@@ -5,13 +5,12 @@ import {
 	ElementRef,
 	EventEmitter,
 	forwardRef,
-	Inject,
+	inject,
 	Input,
 	NgZone,
 	OnChanges,
 	OnDestroy,
 	Output,
-	Renderer2,
 	SimpleChanges,
 	TemplateRef,
 	ViewContainerRef,
@@ -28,8 +27,7 @@ import {
 
 import { ngbAutoClose } from '../util/autoclose';
 import { ngbFocusTrap } from '../util/focus-trap';
-import { ngbPositioning, PlacementArray } from '../util/positioning';
-import { Options } from '@popperjs/core';
+import { ngbPositioning } from '../util/positioning';
 
 import { NgbDateAdapter } from './adapters/ngb-date-adapter';
 import { NgbDatepicker, NgbDatepickerNavigateEvent } from './datepicker';
@@ -74,13 +72,23 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	static ngAcceptInputType_outsideDays: string;
 	static ngAcceptInputType_weekdays: boolean | number;
 
+	private _parserFormatter = inject(NgbDateParserFormatter);
+	private _elRef = inject(ElementRef<HTMLInputElement>);
+	private _vcRef = inject(ViewContainerRef);
+	private _ngZone = inject(NgZone);
+	private _calendar = inject(NgbCalendar);
+	private _dateAdapter = inject(NgbDateAdapter<any>);
+	private _document = inject(DOCUMENT);
+	private _changeDetector = inject(ChangeDetectorRef);
+	private _config = inject(NgbInputDatepickerConfig);
+
 	private _cRef: ComponentRef<NgbDatepicker> | null = null;
 	private _disabled = false;
 	private _elWithFocus: HTMLElement | null = null;
 	private _model: NgbDate | null = null;
 	private _inputValue: string;
 	private _zoneSubscription: any;
-	private _positioning: ReturnType<typeof ngbPositioning>;
+	private _positioning = ngbPositioning();
 	private _destroyCloseHandlers$ = new Subject<void>();
 
 	/**
@@ -93,7 +101,7 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	 *
 	 * @since 3.0.0
 	 */
-	@Input() autoClose: boolean | 'inside' | 'outside';
+	@Input() autoClose = this._config.autoClose;
 
 	/**
 	 * The reference to a custom content template.
@@ -201,7 +209,7 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	 *
 	 * Please see the [positioning overview](#/positioning) for more details.
 	 */
-	@Input() placement: PlacementArray;
+	@Input() placement = this._config.placement;
 
 	/**
 	 * Allows to change default Popper options when positioning the popup.
@@ -209,7 +217,7 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	 *
 	 * @since 13.1.0
 	 */
-	@Input() popperOptions: (options: Partial<Options>) => Partial<Options>;
+	@Input() popperOptions = this._config.popperOptions;
 
 	/**
 	 * If `true`, when closing datepicker will focus element that was focused before datepicker was opened.
@@ -241,7 +249,7 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	 *
 	 * Currently only supports `"body"`.
 	 */
-	@Input() container: string;
+	@Input() container = this._config.container;
 
 	/**
 	 * A css selector or html element specifying the element the datepicker popup should be positioned against.
@@ -250,7 +258,7 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	 *
 	 * @since 4.2.0
 	 */
-	@Input() positionTarget: string | HTMLElement;
+	@Input() positionTarget = this._config.positionTarget;
 
 	/**
 	 * The way weekdays should be displayed.
@@ -301,24 +309,6 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	private _onChange = (_: any) => {};
 	private _onTouched = () => {};
 	private _validatorChange = () => {};
-
-	constructor(
-		private _parserFormatter: NgbDateParserFormatter,
-		private _elRef: ElementRef<HTMLInputElement>,
-		private _vcRef: ViewContainerRef,
-		private _renderer: Renderer2,
-		private _ngZone: NgZone,
-		private _calendar: NgbCalendar,
-		private _dateAdapter: NgbDateAdapter<any>,
-		@Inject(DOCUMENT) private _document: any,
-		private _changeDetector: ChangeDetectorRef,
-		config: NgbInputDatepickerConfig,
-	) {
-		['autoClose', 'container', 'positionTarget', 'placement', 'popperOptions'].forEach(
-			(input) => (this[input] = config[input]),
-		);
-		this._positioning = ngbPositioning();
-	}
 
 	registerOnChange(fn: (value: any) => any): void {
 		this._onChange = fn;
@@ -408,15 +398,15 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 			this._cRef.instance.setDisabledState(this.disabled);
 
 			if (this.container === 'body') {
-				this._document.querySelector(this.container).appendChild(this._cRef.location.nativeElement);
+				this._document.querySelector(this.container)?.appendChild(this._cRef.location.nativeElement);
 			}
 
 			// focus handling
-			this._elWithFocus = this._document.activeElement;
+			this._elWithFocus = this._document.activeElement as HTMLElement | null;
 			ngbFocusTrap(this._ngZone, this._cRef.location.nativeElement, this.closed, true);
 			setTimeout(() => this._cRef?.instance.focus());
 
-			let hostElement: HTMLElement;
+			let hostElement: HTMLElement | null;
 			if (isString(this.positionTarget)) {
 				hostElement = this._document.querySelector(this.positionTarget);
 			} else if (this.positionTarget instanceof HTMLElement) {
@@ -425,9 +415,13 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 				hostElement = this._elRef.nativeElement;
 			}
 
+			if (this.positionTarget && !hostElement) {
+				throw new Error('ngbDatepicker could not find element declared in [positionTarget] to position against.');
+			}
+
 			// Setting up popper and scheduling updates when zone is stable
 			this._ngZone.runOutsideAngular(() => {
-				if (this._cRef) {
+				if (this._cRef && hostElement) {
 					this._positioning.createPopper({
 						hostElement,
 						targetElement: this._cRef.location.nativeElement,
@@ -439,10 +433,6 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 					this._zoneSubscription = this._ngZone.onStable.subscribe(() => this._positioning.update());
 				}
 			});
-
-			if (this.positionTarget && !hostElement) {
-				throw new Error('ngbDatepicker could not find element declared in [positionTarget] to position against.');
-			}
 
 			this._setCloseHandlers();
 		}
@@ -565,23 +555,22 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	}
 
 	private _applyPopupClass(newClass: string, oldClass?: string) {
-		const popupEl = this._cRef?.location.nativeElement;
+		const popupEl = this._cRef?.location.nativeElement as HTMLElement;
 		if (popupEl) {
 			if (newClass) {
-				this._renderer.addClass(popupEl, newClass);
+				popupEl.classList.add(newClass);
 			}
 			if (oldClass) {
-				this._renderer.removeClass(popupEl, oldClass);
+				popupEl.classList.remove(oldClass);
 			}
 		}
 	}
 
-	private _applyPopupStyling(nativeElement: any) {
-		this._renderer.addClass(nativeElement, 'dropdown-menu');
-		this._renderer.addClass(nativeElement, 'show');
+	private _applyPopupStyling(nativeElement: HTMLElement) {
+		nativeElement.classList.add('dropdown-menu', 'show');
 
 		if (this.container === 'body') {
-			this._renderer.addClass(nativeElement, 'ngb-dp-body');
+			nativeElement.classList.add('ngb-dp-body');
 		}
 
 		this._applyPopupClass(this.datepickerClass);
@@ -600,7 +589,7 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	private _writeModelValue(model: NgbDate | null) {
 		const value = this._parserFormatter.format(model);
 		this._inputValue = value;
-		this._renderer.setProperty(this._elRef.nativeElement, 'value', value);
+		this._elRef.nativeElement.value = value;
 		if (this.isOpen()) {
 			this._cRef!.instance.writeValue(this._dateAdapter.toModel(model));
 			this._onTouched();

@@ -1,13 +1,9 @@
-import { Injectable, Inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
 @Injectable({ providedIn: 'root' })
 export class NgbRTL {
-	private _element: HTMLHtmlElement;
-
-	constructor(@Inject(DOCUMENT) document: any) {
-		this._element = document.documentElement;
-	}
+	private _element = inject(DOCUMENT).documentElement;
 
 	isRTL() {
 		return (this._element.getAttribute('dir') || '').toLowerCase() === 'rtl';

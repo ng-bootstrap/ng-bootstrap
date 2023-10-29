@@ -1,11 +1,10 @@
-name: ci
+name: SauceLabs
 
 on:
   push:
     branches:
       - master
-      - '[0-9]+_[0-9]+_x'
-  pull_request:
+  pull_request_target:
     types: [opened, synchronize, reopened]
 
 concurrency:
@@ -13,8 +12,12 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  ci:
+  saucelabs:
     runs-on: ubuntu-latest
+    name: SauceLabs
+    env:
+      SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
+      SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -29,19 +32,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
       - run: yarn --frozen-lockfile
-      - run: npx playwright install-deps
-      - run: npx playwright install
-      - run: yarn ci && yarn scripts:test
-      - uses: codecov/codecov-action@v3
+      - uses: saucelabs/sauce-connect-action@v2
         with:
-          file: coverage/lcov.info
-          flags: unit
-      - uses: codecov/codecov-action@v3
-        with:
-          file: coverage-e2e/lcov.info
-          flags: e2e
+          username: ${{ env.SAUCE_USERNAME }}
+          accessKey: ${{ env.SAUCE_ACCESS_KEY }}
+          tunnelIdentifier: ${{ github.run_id }}
+      - run: yarn saucelabs
       - uses: actions/upload-artifact@v3
-        with:
-          name: test-reports
-          path: test-reports
         if: ${{ always() }}
+        with:
+          name: sauce-connect-log
+          path: /tmp/sauce-connect-action**/sauce-connect.log

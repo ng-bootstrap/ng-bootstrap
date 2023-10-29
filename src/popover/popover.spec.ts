@@ -832,26 +832,19 @@ describe('ngb-popover', () => {
 		});
 	});
 
-	describe('Custom config as provider', () => {
-		let config = new NgbPopoverConfig(new NgbConfig());
+	it('should initialize inputs with provided config as provider', () => {
+		TestBed.overrideComponent(TestComponent, { set: { template: `<div ngbPopover="Great tip!"></div>` } });
+
+		let config = TestBed.inject(NgbPopoverConfig);
 		config.placement = 'bottom';
 		config.triggers = 'hover';
 		config.popoverClass = 'my-custom-class';
 
-		beforeEach(() => {
-			TestBed.configureTestingModule({
-				providers: [{ provide: NgbPopoverConfig, useValue: config }],
-			});
-		});
+		const { popover } = TestBed.createComponent(TestComponent).componentInstance;
 
-		it('should initialize inputs with provided config as provider', () => {
-			const fixture = createTestComponent(`<div ngbPopover="Great tip!"></div>`);
-			const popover = fixture.componentInstance.popover;
-
-			expect(popover.placement).toBe(config.placement);
-			expect(popover.triggers).toBe(config.triggers);
-			expect(popover.popoverClass).toBe(config.popoverClass);
-		});
+		expect(popover.placement).toBe(config.placement);
+		expect(popover.triggers).toBe(config.triggers);
+		expect(popover.popoverClass).toBe(config.popoverClass);
 	});
 
 	describe('non-regression', () => {

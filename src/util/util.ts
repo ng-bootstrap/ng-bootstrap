@@ -45,12 +45,6 @@ export function regExpEscape(text) {
 	return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 }
 
-export function hasClassName(element: any, className: string): boolean {
-	return (
-		element && element.className && element.className.split && element.className.split(/\s+/).indexOf(className) >= 0
-	);
-}
-
 export function closest(element: HTMLElement, selector?: string): HTMLElement | null {
 	if (!selector) {
 		return null;

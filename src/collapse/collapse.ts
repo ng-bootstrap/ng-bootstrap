@@ -1,4 +1,4 @@
-import { Directive, ElementRef, EventEmitter, Input, NgZone, OnInit, Output } from '@angular/core';
+import { Directive, ElementRef, EventEmitter, inject, Input, NgZone, OnInit, Output } from '@angular/core';
 import { ngbRunTransition } from '../util/transition/ngbTransition';
 import { ngbCollapsingTransition } from '../util/transition/ngbCollapseTransition';
 import { NgbCollapseConfig } from './collapse-config';
@@ -14,6 +14,10 @@ import { NgbCollapseConfig } from './collapse-config';
 	host: { '[class.collapse-horizontal]': 'horizontal' },
 })
 export class NgbCollapse implements OnInit {
+	private _config = inject(NgbCollapseConfig);
+	private _element = inject(ElementRef);
+	private _zone = inject(NgZone);
+
 	/**
 	 * If `true`, collapse will be animated.
 	 *
@@ -22,7 +26,7 @@ export class NgbCollapse implements OnInit {
 	 *
 	 * @since 8.0.0
 	 */
-	@Input() animation;
+	@Input() animation = this._config.animation;
 
 	/**
 	 * Flag used to track if the collapse setter is invoked during initialization
@@ -52,7 +56,7 @@ export class NgbCollapse implements OnInit {
 	 *
 	 * @since 13.1.0
 	 */
-	@Input() horizontal: boolean;
+	@Input() horizontal = this._config.horizontal;
 
 	/**
 	 * An event emitted when the collapse element is shown, after the transition.
@@ -69,11 +73,6 @@ export class NgbCollapse implements OnInit {
 	 * @since 8.0.0
 	 */
 	@Output() hidden = new EventEmitter<void>();
-
-	constructor(private _element: ElementRef, config: NgbCollapseConfig, private _zone: NgZone) {
-		this.animation = config.animation;
-		this.horizontal = config.horizontal;
-	}
 
 	ngOnInit() {
 		this._runTransition(this._isCollapsed, false);

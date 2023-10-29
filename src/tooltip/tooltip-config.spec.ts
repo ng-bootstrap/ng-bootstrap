@@ -1,11 +1,12 @@
 import { NgbTooltipConfig } from './tooltip-config';
 
 import { NgbConfig } from '../ngb-config';
+import { TestBed } from '@angular/core/testing';
 
 describe('ngb-tooltip-config', () => {
 	it('should have sensible default values', () => {
-		const ngbConfig = new NgbConfig();
-		const config = new NgbTooltipConfig(ngbConfig);
+		const ngbConfig = TestBed.inject(NgbConfig);
+		const config = TestBed.inject(NgbTooltipConfig);
 
 		expect(config.animation).toBe(ngbConfig.animation);
 		expect(config.autoClose).toBe(true);

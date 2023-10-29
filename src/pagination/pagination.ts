@@ -1,12 +1,13 @@
 import {
+	ChangeDetectionStrategy,
 	Component,
 	ContentChild,
 	Directive,
 	EventEmitter,
+	inject,
 	Input,
-	Output,
 	OnChanges,
-	ChangeDetectionStrategy,
+	Output,
 	SimpleChanges,
 	TemplateRef,
 } from '@angular/core';
@@ -267,6 +268,8 @@ export class NgbPaginationPages {
 	`,
 })
 export class NgbPagination implements OnChanges {
+	private _config = inject(NgbPaginationConfig);
+
 	pageCount = 0;
 	pages: number[] = [];
 
@@ -281,29 +284,29 @@ export class NgbPagination implements OnChanges {
 	/**
 	 * If `true`, pagination links will be disabled.
 	 */
-	@Input() disabled: boolean;
+	@Input() disabled = this._config.disabled;
 
 	/**
 	 * If `true`, the "First" and "Last" page links are shown.
 	 */
-	@Input() boundaryLinks: boolean;
+	@Input() boundaryLinks = this._config.boundaryLinks;
 
 	/**
 	 * If `true`, the "Next" and "Previous" page links are shown.
 	 */
-	@Input() directionLinks: boolean;
+	@Input() directionLinks = this._config.directionLinks;
 
 	/**
 	 * If `true`, the ellipsis symbols and first/last page numbers will be shown when `maxSize` > number of pages.
 	 */
-	@Input() ellipses: boolean;
+	@Input() ellipses = this._config.ellipses;
 
 	/**
 	 * Whether to rotate pages when `maxSize` > number of pages.
 	 *
 	 * The current page always stays in the middle if `true`.
 	 */
-	@Input() rotate: boolean;
+	@Input() rotate = this._config.rotate;
 
 	/**
 	 *  The number of items in your paginated collection.
@@ -317,7 +320,7 @@ export class NgbPagination implements OnChanges {
 	/**
 	 *  The maximum number of pages to display.
 	 */
-	@Input() maxSize: number;
+	@Input() maxSize = this._config.maxSize;
 
 	/**
 	 *  The current page.
@@ -329,7 +332,7 @@ export class NgbPagination implements OnChanges {
 	/**
 	 *  The number of items per page.
 	 */
-	@Input() pageSize: number;
+	@Input() pageSize = this._config.pageSize;
 
 	/**
 	 *  An event fired when the page is changed. Will fire only if collection size is set and all values are valid.
@@ -347,18 +350,7 @@ export class NgbPagination implements OnChanges {
 	 *
 	 * If the passed value is a string (ex. 'custom'), it will just add the `pagination-custom` css class
 	 */
-	@Input() size: 'sm' | 'lg' | string | null;
-
-	constructor(config: NgbPaginationConfig) {
-		this.disabled = config.disabled;
-		this.boundaryLinks = config.boundaryLinks;
-		this.directionLinks = config.directionLinks;
-		this.ellipses = config.ellipses;
-		this.maxSize = config.maxSize;
-		this.pageSize = config.pageSize;
-		this.rotate = config.rotate;
-		this.size = config.size;
-	}
+	@Input() size = this._config.size;
 
 	hasPrevious(): boolean {
 		return this.page > 1;

@@ -47,7 +47,19 @@ export class NgbdApiDocs {
 	@Input() set directive(directiveName: string) {
 		this.apiDocs = docs[directiveName];
 		this.configServiceName = `${directiveName}Config`;
+
+		// Fix for the accordion config name
+		if (directiveName === 'NgbAccordionDirective') {
+			this.configServiceName = 'NgbAccordionConfig';
+		}
+
 		const configApiDocs = docs[this.configServiceName];
+
+		// Fix for the datepicker config name
+		if (directiveName === 'NgbInputDatepicker') {
+			configApiDocs.properties = [...configApiDocs.properties, ...docs['NgbDatepickerConfig'].properties];
+		}
+
 		this._configProperties = {};
 		if (configApiDocs) {
 			this.apiDocs.inputs.forEach(

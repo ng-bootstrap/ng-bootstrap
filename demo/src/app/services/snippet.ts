@@ -1,5 +1,5 @@
 export interface ISnippet {
-	lang: 'html' | 'typescript' | 'css' | 'bash' | string;
+	lang: 'html' | 'typescript' | 'css' | 'text' | string;
 	code: string;
 }
 

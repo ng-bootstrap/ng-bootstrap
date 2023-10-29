@@ -1,4 +1,14 @@
-import { Component, ElementRef, EventEmitter, Input, NgZone, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import {
+	Component,
+	ElementRef,
+	EventEmitter,
+	inject,
+	Input,
+	NgZone,
+	OnInit,
+	Output,
+	ViewEncapsulation,
+} from '@angular/core';
 
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -20,13 +30,14 @@ import { OffcanvasDismissReasons } from './offcanvas-dismiss-reasons';
 	},
 })
 export class NgbOffcanvasBackdrop implements OnInit {
+	private _nativeElement = inject(ElementRef).nativeElement as HTMLElement;
+	private _zone = inject(NgZone);
+
 	@Input() animation: boolean;
 	@Input() backdropClass: string;
 	@Input() static: boolean;
 
 	@Output('dismiss') dismissEvent = new EventEmitter();
-
-	constructor(private _el: ElementRef<HTMLElement>, private _zone: NgZone) {}
 
 	ngOnInit() {
 		this._zone.onStable
@@ -35,7 +46,7 @@ export class NgbOffcanvasBackdrop implements OnInit {
 			.subscribe(() => {
 				ngbRunTransition(
 					this._zone,
-					this._el.nativeElement,
+					this._nativeElement,
 					(element: HTMLElement, animation: boolean) => {
 						if (animation) {
 							reflow(element);
@@ -48,7 +59,7 @@ export class NgbOffcanvasBackdrop implements OnInit {
 	}
 
 	hide(): Observable<void> {
-		return ngbRunTransition(this._zone, this._el.nativeElement, ({ classList }) => classList.remove('show'), {
+		return ngbRunTransition(this._zone, this._nativeElement, ({ classList }) => classList.remove('show'), {
 			animation: this.animation,
 			runningTransition: 'stop',
 		});
