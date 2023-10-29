@@ -1,37 +1,33 @@
 // Configuration used testing via Sauce Labs on GitHub CI
 
-process.env.SAUCE_ACCESS_KEY = process.env.SAUCE_ACCESS_KEY.split('').reverse().join('');
-
 const BROWSERS = {
 	CHROME: {
 		base: 'SauceLabs',
 		browserName: 'chrome',
-		platform: 'Windows 11',
-		version: 'latest',
+		browserVersion: 'latest',
 	},
 	FIREFOX: {
 		base: 'SauceLabs',
 		browserName: 'firefox',
-		platform: 'Windows 11',
-		version: 'latest',
+		browserVersion: 'latest',
 	},
 	EDGE: {
 		base: 'SauceLabs',
 		browserName: 'MicrosoftEdge',
-		platform: 'Windows 11',
-		version: 'latest',
+		browserVersion: 'latest',
+		platformName: 'Windows 11',
 	},
 	SAFARI15: {
 		base: 'SauceLabs',
 		browserName: 'safari',
-		platform: 'macOS 12',
-		version: '15',
+		browserVersion: '15',
+		platformName: 'macOS 12',
 	},
 	SAFARI16: {
 		base: 'SauceLabs',
 		browserName: 'safari',
-		platform: 'macOS 13',
-		version: '16',
+		browserVersion: '16',
+		platformName: 'macOS 13',
 	},
 };
 
@@ -56,11 +52,9 @@ module.exports = function (config) {
 			startConnect: false,
 			recordVideo: false,
 			recordScreenshots: false,
-			options: {
-				commandTimeout: 600,
-				idleTimeout: 600,
-				maxDuration: 5400,
-			},
+			commandTimeout: 600,
+			idleTimeout: 600,
+			maxDuration: 5400,
 		},
 
 		customLaunchers: BROWSERS,
@@ -70,7 +64,7 @@ module.exports = function (config) {
 		port: 9876,
 		colors: true,
 		logLevel: config.LOG_INFO,
-		browsers: ['CHROME', 'EDGE', 'SAFARI15', 'SAFARI16'],
+		browsers: ['CHROME', 'FIREFOX', 'EDGE', 'SAFARI15', 'SAFARI16'],
 		autoWatch: false,
 		singleRun: true,
 		captureTimeout: 180000,

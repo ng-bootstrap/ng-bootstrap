@@ -1,14 +1,14 @@
 import {
+	AfterViewChecked,
+	ChangeDetectionStrategy,
 	Component,
+	ElementRef,
+	EventEmitter,
+	inject,
 	Input,
 	Output,
-	EventEmitter,
-	ChangeDetectionStrategy,
-	ViewEncapsulation,
-	AfterViewChecked,
 	ViewChild,
-	ElementRef,
-	Renderer2,
+	ViewEncapsulation,
 } from '@angular/core';
 import { NgbDate } from './ngb-date';
 import { toInteger } from '../util/util';
@@ -51,6 +51,11 @@ import { NgFor } from '@angular/common';
 	`,
 })
 export class NgbDatepickerNavigationSelect implements AfterViewChecked {
+	private _month = -1;
+	private _year = -1;
+
+	i18n = inject(NgbDatepickerI18n);
+
 	@Input() date: NgbDate;
 	@Input() disabled: boolean;
 	@Input() months: number[];
@@ -58,13 +63,8 @@ export class NgbDatepickerNavigationSelect implements AfterViewChecked {
 
 	@Output() select = new EventEmitter<NgbDate>();
 
-	@ViewChild('month', { static: true, read: ElementRef }) monthSelect: ElementRef;
-	@ViewChild('year', { static: true, read: ElementRef }) yearSelect: ElementRef;
-
-	private _month = -1;
-	private _year = -1;
-
-	constructor(public i18n: NgbDatepickerI18n, private _renderer: Renderer2) {}
+	@ViewChild('month', { static: true, read: ElementRef }) monthSelect: ElementRef<HTMLSelectElement>;
+	@ViewChild('year', { static: true, read: ElementRef }) yearSelect: ElementRef<HTMLSelectElement>;
 
 	changeMonth(month: string) {
 		this.select.emit(new NgbDate(this.date.year, toInteger(month), 1));
@@ -78,11 +78,11 @@ export class NgbDatepickerNavigationSelect implements AfterViewChecked {
 		if (this.date) {
 			if (this.date.month !== this._month) {
 				this._month = this.date.month;
-				this._renderer.setProperty(this.monthSelect.nativeElement, 'value', this._month);
+				this.monthSelect.nativeElement.value = `${this._month}`;
 			}
 			if (this.date.year !== this._year) {
 				this._year = this.date.year;
-				this._renderer.setProperty(this.yearSelect.nativeElement, 'value', this._year);
+				this.yearSelect.nativeElement.value = `${this._year}`;
 			}
 		}
 	}

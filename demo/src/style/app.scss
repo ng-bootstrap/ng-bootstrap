@@ -22,13 +22,14 @@ header.navbar {
 
 	a {
 		font-weight: 500;
-		color: #000;
+		color: var(--bs-dark-text);
 		text-decoration: underline;
 	}
 }
 
 .social-buttons {
 	font-size: x-small;
+
 	a {
 		color: #fff;
 		text-decoration: none;
@@ -93,6 +94,7 @@ header.title {
 				border-color: transparent;
 				background: none;
 				color: #007bff;
+
 				&:hover {
 					color: #0056b3;
 				}
@@ -129,7 +131,7 @@ header.title {
 		.toc-link {
 			//       display: block;
 			//       padding: 0.25rem 1.5rem;
-			color: rgba(0, 0, 0, 0.65);
+			color: var(--bs-secondary-color);
 
 			&.deprecated {
 				text-decoration: line-through !important;
@@ -149,19 +151,19 @@ header.title {
 				text-decoration: none;
 				margin-left: -0.5rem;
 				padding: 0 0.5rem;
-				background-color: #f8f9fa;
+				background-color: var(--bs-light-bg-subtle);
 				border-radius: 3px;
 			}
 		}
 
 		.nav > li.active > a {
 			font-weight: 500;
-			color: rgba(0, 0, 0, 0.85);
+			color: var(--bs-body-color);
 		}
 
 		&.active > .toc-link {
 			font-weight: 500;
-			color: rgba(0, 0, 0, 0.85);
+			color: var(--bs-body-color);
 		}
 	}
 }
@@ -177,7 +179,7 @@ header.title {
 
 		&.active {
 			font-weight: 500;
-			color: rgba(0, 0, 0, 0.85);
+			color: rgba(var(--bs-emphasis-color-rgb), 0.85);
 		}
 	}
 
@@ -225,6 +227,7 @@ div.api-doc-component,
 			.github-link {
 				opacity: 1;
 			}
+
 			& > .title-fragment {
 				opacity: 1;
 			}
@@ -234,6 +237,7 @@ div.api-doc-component,
 	section,
 	ngbd-overview-section {
 		margin-top: 3rem;
+
 		h4 {
 			margin-top: 2rem;
 			margin-bottom: 1rem;
@@ -242,6 +246,7 @@ div.api-doc-component,
 		.meta {
 			font-size: 0.8rem;
 			margin-bottom: 1rem;
+
 			> div {
 				margin-bottom: 0.5rem;
 			}
@@ -281,6 +286,7 @@ a.title-fragment:focus {
 
 div.component-demo {
 	margin-bottom: 3rem;
+
 	> h2 {
 		display: flex;
 		margin-bottom: 1rem;
@@ -319,14 +325,15 @@ div.component-demo {
 			font-size: 80%;
 
 			.nav-link.active {
-				background-color: #f5f2f0;
-				border-bottom: 1px solid #f5f2f0;
+				background-color: var(--bs-body-bg);
+				border-bottom: 1px solid var(--bs-border-color);
 			}
 
 			.nav-link:not(.active) {
-				color: #999;
+				color: var(--bs-tertiary-color);
+
 				&:hover {
-					color: #666;
+					color: var(--bs-secondary-color);
 				}
 			}
 		}
@@ -337,8 +344,8 @@ div.component-demo {
 			padding-right: 0;
 
 			.nav-link.active {
-				color: #666;
-				background-color: #f5f5f5;
+				color: var(--bs-body-color);
+				background-color: var(--bs-body-bg);
 				border: 1px solid #dee2e6;
 				border-right-color: #f5f5f5;
 				border-top-right-radius: 0;
@@ -385,18 +392,10 @@ ngbd-page-wrapper {
 	}
 }
 
-// override prism theme background color to inline it with bootstrap colors
-code[class*='language-'],
-pre[class*='language-'],
 ngb-alert {
 	background-color: #f5f5f5; // same as bootstrap card header
 	border-radius: 3px;
 	tab-size: 2;
-}
-
-span.token.tag {
-	font-size: 1em;
-	padding: 0;
 }
 
 // Right-To-Left layout for the Islamic Calendars

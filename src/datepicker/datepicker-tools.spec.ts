@@ -13,11 +13,19 @@ import {
 import { NgbDate } from './ngb-date';
 import { NgbCalendarGregorian } from './ngb-calendar';
 import { DatepickerViewModel, MonthViewModel, NgbMarkDisabled } from './datepicker-view-model';
-import { NgbDatepickerI18nDefault } from './datepicker-i18n';
+import { NgbDatepickerI18n, NgbDatepickerI18nDefault } from './datepicker-i18n';
+import { TestBed } from '@angular/core/testing';
 
 describe(`datepicker-tools`, () => {
 	const calendar = new NgbCalendarGregorian();
-	const i18n = new NgbDatepickerI18nDefault('en');
+	let i18n: NgbDatepickerI18n;
+
+	beforeEach(() => {
+		TestBed.configureTestingModule({
+			providers: [{ provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nDefault }],
+		});
+		i18n = TestBed.inject(NgbDatepickerI18n);
+	});
 
 	describe(`dateComparator()`, () => {
 		it(`should compare valid dates`, () => {

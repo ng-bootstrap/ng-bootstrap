@@ -80,7 +80,7 @@ describe('ngb-accordion', () => {
 	});
 
 	it('should initialize inputs with default values', () => {
-		const defaultConfig = new NgbAccordionConfig(new NgbConfig());
+		const defaultConfig = TestBed.inject(NgbAccordionConfig);
 		const accordionCmp = TestBed.createComponent(NgbAccordion).componentInstance;
 		expect(accordionCmp.type).toBe(defaultConfig.type);
 		expect(accordionCmp.closeOtherPanels).toBe(defaultConfig.closeOthers);
@@ -692,27 +692,6 @@ describe('ngb-accordion', () => {
 		}));
 
 		it('should initialize inputs with provided config', () => {
-			const fixture = TestBed.createComponent(NgbAccordion);
-			fixture.detectChanges();
-
-			let accordion = fixture.componentInstance;
-			expect(accordion.closeOtherPanels).toBe(config.closeOthers);
-			expect(accordion.type).toBe(config.type);
-		});
-	});
-
-	describe('Custom config as provider', () => {
-		let config = new NgbAccordionConfig(new NgbConfig());
-		config.closeOthers = true;
-		config.type = 'success';
-
-		beforeEach(() => {
-			TestBed.configureTestingModule({
-				providers: [{ provide: NgbAccordionConfig, useValue: config }],
-			});
-		});
-
-		it('should initialize inputs with provided config as provider', () => {
 			const fixture = TestBed.createComponent(NgbAccordion);
 			fixture.detectChanges();
 

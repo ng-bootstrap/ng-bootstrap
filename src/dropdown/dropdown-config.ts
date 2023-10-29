@@ -13,5 +13,5 @@ export class NgbDropdownConfig {
 	autoClose: boolean | 'outside' | 'inside' = true;
 	placement: PlacementArray = ['bottom-start', 'bottom-end', 'top-start', 'top-end'];
 	popperOptions = (options: Partial<Options>) => options;
-	container: null | 'body';
+	container: null | 'body' = null;
 }

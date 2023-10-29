@@ -1,7 +1,7 @@
 <div class="api-doc-component" [class.deprecated]="apiDocs.deprecated">
 	<h3 [id]="apiDocs.className">
 		<a routerLink="." [fragment]="apiDocs.className" ngbdFragment title="Anchor link to: {{ apiDocs.className }}">
-			<i class="bi bi-link-45deg" style="font-size: 1.75rem; color: black"></i>
+			<i class="bi bi-link-45deg" style="font-size: 1.75rem; color: var(--bs-heading-color)"></i>
 		</a>
 		{{ apiDocs.className }}
 		<a
@@ -11,7 +11,7 @@
 			target="_blank"
 			title="Link to Github: {{ apiDocs.className }}"
 		>
-			<i class="bi bi-github" style="font-size: 1.5rem; color: black"></i>
+			<i class="bi bi-github" style="font-size: 1.5rem; color: var(--bs-heading-color)"></i>
 		</a>
 	</h3>
 	<ngbd-api-docs-badge

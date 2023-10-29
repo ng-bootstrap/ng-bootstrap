@@ -18,3 +18,8 @@ beforeEach(() => {
 		},
 	});
 });
+
+beforeAll(() => {
+	// this fixes the "Some of your tests did a full page reload!" error
+	window.onbeforeunload = () => 'nope';
+});

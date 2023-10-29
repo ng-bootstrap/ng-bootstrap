@@ -4,7 +4,7 @@ import {
 	ComponentRef,
 	createComponent,
 	EventEmitter,
-	Inject,
+	inject,
 	Injectable,
 	Injector,
 	NgZone,
@@ -25,6 +25,11 @@ import { NgbOffcanvasPanel } from './offcanvas-panel';
 
 @Injectable({ providedIn: 'root' })
 export class NgbOffcanvasStack {
+	private _applicationRef = inject(ApplicationRef);
+	private _injector = inject(Injector);
+	private _document = inject(DOCUMENT);
+	private _scrollBar = inject(ScrollBar);
+
 	private _activePanelCmptHasChanged = new Subject<void>();
 	private _scrollBarRestoreFn: null | (() => void) = null;
 	private _backdropAttributes = ['animation', 'backdropClass'];
@@ -33,17 +38,12 @@ export class NgbOffcanvasStack {
 	private _panelCmpt?: ComponentRef<NgbOffcanvasPanel>;
 	private _activeInstance: EventEmitter<NgbOffcanvasRef | undefined> = new EventEmitter();
 
-	constructor(
-		private _applicationRef: ApplicationRef,
-		private _injector: Injector,
-		@Inject(DOCUMENT) private _document: any,
-		private _scrollBar: ScrollBar,
-		private _ngZone: NgZone,
-	) {
+	constructor() {
+		const ngZone = inject(NgZone);
 		// Trap focus on active PanelCmpt
 		this._activePanelCmptHasChanged.subscribe(() => {
 			if (this._panelCmpt) {
-				ngbFocusTrap(this._ngZone, this._panelCmpt.location.nativeElement, this._activePanelCmptHasChanged);
+				ngbFocusTrap(ngZone, this._panelCmpt.location.nativeElement, this._activePanelCmptHasChanged);
 			}
 		});
 	}
@@ -67,7 +67,7 @@ export class NgbOffcanvasStack {
 			options.container instanceof HTMLElement
 				? options.container
 				: isDefined(options.container)
-				? this._document.querySelector(options.container)
+				? this._document.querySelector(options.container!)
 				: this._document.body;
 		if (!containerEl) {
 			throw new Error(`The specified offcanvas container "${options.container || 'body'}" was not found in the DOM.`);

@@ -1,10 +1,10 @@
 /* eslint-disable deprecation/deprecation */
-import { NgbConfig } from '../ngb-config';
 import { NgbAccordionConfig } from './accordion-config';
+import { TestBed } from '@angular/core/testing';
 
 describe('ngb-accordion-config', () => {
 	it('should have sensible default values', () => {
-		const config = new NgbAccordionConfig(new NgbConfig());
+		const config = TestBed.inject(NgbAccordionConfig);
 
 		expect(config.closeOthers).toBe(false);
 		expect(config.destroyOnHide).toBe(true);

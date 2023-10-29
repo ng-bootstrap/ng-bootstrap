@@ -5,6 +5,7 @@ import {
 	ContentChild,
 	EventEmitter,
 	forwardRef,
+	inject,
 	Input,
 	OnChanges,
 	OnInit,
@@ -51,7 +52,8 @@ export interface StarTemplateContext {
 		'[attr.aria-valuemax]': 'max',
 		'[attr.aria-valuenow]': 'nextRate',
 		'[attr.aria-valuetext]': 'ariaValueText(nextRate, max)',
-		'[attr.aria-disabled]': 'readonly ? true : null',
+		'[attr.aria-readonly]': 'readonly && !disabled ? true : null',
+		'[attr.aria-disabled]': 'disabled ? true : null',
 		'(blur)': 'handleBlur()',
 		'(keydown)': 'handleKeyDown($event)',
 		'(mouseleave)': 'reset()',
@@ -77,13 +79,20 @@ export interface StarTemplateContext {
 })
 export class NgbRating implements ControlValueAccessor, OnInit, OnChanges {
 	contexts: StarTemplateContext[] = [];
-	disabled = false;
 	nextRate: number;
+
+	private _config = inject(NgbRatingConfig);
+	private _changeDetectorRef = inject(ChangeDetectorRef);
+
+	/**
+	 * If `true`, the rating can't be changed or focused.
+	 */
+	@Input() disabled = false;
 
 	/**
 	 * The maximal rating that can be given.
 	 */
-	@Input() max: number;
+	@Input() max = this._config.max;
 
 	/**
 	 * The current rating. Could be a decimal value like `3.75`.
@@ -93,12 +102,12 @@ export class NgbRating implements ControlValueAccessor, OnInit, OnChanges {
 	/**
 	 * If `true`, the rating can't be changed.
 	 */
-	@Input() readonly: boolean;
+	@Input() readonly = this._config.readonly;
 
 	/**
 	 * If `true`, the rating can be reset to `0` by mouse clicking currently set rating.
 	 */
-	@Input() resettable: boolean;
+	@Input() resettable = this._config.resettable;
 
 	/**
 	 * The template to override the way each star is displayed.
@@ -114,7 +123,7 @@ export class NgbRating implements ControlValueAccessor, OnInit, OnChanges {
 	 *
 	 * @since 13.1.0
 	 */
-	@Input() tabindex: number | string;
+	@Input() tabindex = this._config.tabindex;
 
 	/**
 	 * Allows to provide a function to set a custom aria-valuetext
@@ -148,12 +157,6 @@ export class NgbRating implements ControlValueAccessor, OnInit, OnChanges {
 
 	onChange = (_: any) => {};
 	onTouched = () => {};
-
-	constructor(config: NgbRatingConfig, private _changeDetectorRef: ChangeDetectorRef) {
-		this.max = config.max;
-		this.readonly = config.readonly;
-		this.tabindex = config.tabindex;
-	}
 
 	isInteractive(): boolean {
 		return !this.readonly && !this.disabled;

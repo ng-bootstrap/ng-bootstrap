@@ -19,12 +19,12 @@ export class GettingStartedPage {
 	bsVersion = versions.bootstrap;
 
 	schematics = Snippet({
-		lang: 'bash',
+		lang: 'text',
 		code: `ng add @ng-bootstrap/ng-bootstrap`,
 	});
 
 	schematicsProject = Snippet({
-		lang: 'bash',
+		lang: 'text',
 		code: `ng add @ng-bootstrap/ng-bootstrap --project myProject`,
 	});
 
@@ -58,22 +58,22 @@ export class GettingStartedPage {
 	});
 
 	bootstrapInstall = Snippet({
-		lang: 'bash',
+		lang: 'text',
 		code: `npm install bootstrap`,
 	});
 
 	codeInstall = Snippet({
-		lang: 'bash',
+		lang: 'text',
 		code: `npm install @ng-bootstrap/ng-bootstrap`,
 	});
 
 	popperInstall = Snippet({
-		lang: 'bash',
+		lang: 'text',
 		code: `npm install @popperjs/core`,
 	});
 
 	polyfillInstall = Snippet({
-		lang: 'bash',
+		lang: 'text',
 		code: `ng add @angular/localize`,
 	});
 

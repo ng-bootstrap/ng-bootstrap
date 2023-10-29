@@ -13,35 +13,47 @@ import { Options } from '@popperjs/core';
 const createTestComponent = (html: string) =>
 	createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
-function getDropdownEl(tc) {
-	return tc.querySelector(`[ngbDropdown]`);
+function getDropdownEl(tc: HTMLElement) {
+	return tc.querySelector(`[ngbDropdown]`)!;
 }
 
-function getMenuEl(tc) {
-	return tc.querySelector(`[ngbDropdownMenu]`);
+function getMenuEl(tc: HTMLElement) {
+	return tc.querySelector(`[ngbDropdownMenu]`)!;
+}
+
+function getToggleEl(tc: HTMLElement): HTMLButtonElement {
+	return (tc.querySelector(`[ngbDropdownToggle]`) ?? tc.querySelector(`[ngbDropdownAnchor]`))!;
 }
 
 const jasmineMatchers: jasmine.CustomMatcherFactories = {
 	toBeShown: function () {
 		return {
-			compare: function (actual) {
+			compare: function (actual: HTMLElement) {
 				const dropdownEl = getDropdownEl(actual);
+				const toggleEl = getToggleEl(actual);
 				const menuEl = getMenuEl(actual);
-				const isOpen = dropdownEl.classList.contains('show') && menuEl.classList.contains('show');
+				const isOpen =
+					dropdownEl.classList.contains('show') &&
+					toggleEl.classList.contains('show') &&
+					menuEl.classList.contains('show');
 
 				return {
 					pass: isOpen,
-					message: `Expected ${actual.outerHTML} to have the "show class on both container and menu"`,
+					message: `Expected ${actual.outerHTML} to have the "show class on container, toggle and menu elements"`,
 				};
 			},
-			negativeCompare: function (actual) {
+			negativeCompare: function (actual: HTMLElement) {
 				const dropdownEl = getDropdownEl(actual);
+				const toggleEl = getToggleEl(actual);
 				const menuEl = getMenuEl(actual);
-				const isClosed = !dropdownEl.classList.contains('show') && !menuEl.classList.contains('show');
+				const isClosed =
+					!dropdownEl.classList.contains('show') &&
+					!toggleEl.classList.contains('show') &&
+					!menuEl.classList.contains('show');
 
 				return {
 					pass: isClosed,
-					message: `Expected ${actual.outerHTML} not to have the "show class both container and menu"`,
+					message: `Expected ${actual.outerHTML} not to have the "show class on container, toggle and menu elements"`,
 				};
 			},
 		};
@@ -378,9 +390,10 @@ describe('ngb-dropdown-toggle', () => {
 		const fixture = createTestComponent(html);
 		const compiled = fixture.nativeElement;
 		let dropdownEl = getDropdownEl(compiled);
-		let buttonEl = compiled.querySelector('button');
+		let buttonEl = getToggleEl(compiled);
 
 		expect(dropdownEl).not.toHaveCssClass('show');
+		expect(buttonEl).not.toHaveCssClass('show');
 		expect(buttonEl.getAttribute('aria-expanded')).toBe('false');
 
 		buttonEl.click();

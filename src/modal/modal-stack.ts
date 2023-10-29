@@ -5,11 +5,10 @@ import {
 	createComponent,
 	EnvironmentInjector,
 	EventEmitter,
-	Inject,
+	inject,
 	Injectable,
 	Injector,
 	NgZone,
-	RendererFactory2,
 	TemplateRef,
 	Type,
 } from '@angular/core';
@@ -27,6 +26,12 @@ import { take } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class NgbModalStack {
+	private _applicationRef = inject(ApplicationRef);
+	private _injector = inject(Injector);
+	private _environmentInjector = inject(EnvironmentInjector);
+	private _document = inject(DOCUMENT);
+	private _scrollBar = inject(ScrollBar);
+
 	private _activeWindowCmptHasChanged = new Subject<void>();
 	private _ariaHiddenValues: Map<Element, string | null> = new Map();
 	private _scrollBarRestoreFn: null | (() => void) = null;
@@ -34,20 +39,14 @@ export class NgbModalStack {
 	private _windowCmpts: ComponentRef<NgbModalWindow>[] = [];
 	private _activeInstances: EventEmitter<NgbModalRef[]> = new EventEmitter();
 
-	constructor(
-		private _applicationRef: ApplicationRef,
-		private _injector: Injector,
-		private _environmentInjector: EnvironmentInjector,
-		@Inject(DOCUMENT) private _document: any,
-		private _scrollBar: ScrollBar,
-		private _rendererFactory: RendererFactory2,
-		private _ngZone: NgZone,
-	) {
+	constructor() {
+		const ngZone = inject(NgZone);
+
 		// Trap focus on active WindowCmpt
 		this._activeWindowCmptHasChanged.subscribe(() => {
 			if (this._windowCmpts.length) {
 				const activeWindowCmpt = this._windowCmpts[this._windowCmpts.length - 1];
-				ngbFocusTrap(this._ngZone, activeWindowCmpt.location.nativeElement, this._activeWindowCmptHasChanged);
+				ngbFocusTrap(ngZone, activeWindowCmpt.location.nativeElement, this._activeWindowCmptHasChanged);
 				this._revertAriaHidden();
 				this._setAriaHidden(activeWindowCmpt.location.nativeElement);
 			}
@@ -73,9 +72,8 @@ export class NgbModalStack {
 			options.container instanceof HTMLElement
 				? options.container
 				: isDefined(options.container)
-				? this._document.querySelector(options.container)
+				? this._document.querySelector(options.container!)
 				: this._document.body;
-		const renderer = this._rendererFactory.createRenderer(null, null);
 
 		if (!containerEl) {
 			throw new Error(`The specified modal container "${options.container || 'body'}" was not found in the DOM.`);
@@ -103,7 +101,7 @@ export class NgbModalStack {
 		ngbModalRef.hidden.pipe(take(1)).subscribe(() =>
 			Promise.resolve(true).then(() => {
 				if (!this._modalRefs.length) {
-					renderer.removeClass(this._document.body, 'modal-open');
+					this._document.body.classList.remove('modal-open');
 					this._restoreScrollBar();
 					this._revertAriaHidden();
 				}
@@ -123,7 +121,7 @@ export class NgbModalStack {
 
 		ngbModalRef.update(options);
 		if (this._modalRefs.length === 1) {
-			renderer.addClass(this._document.body, 'modal-open');
+			this._document.body.classList.add('modal-open');
 		}
 
 		if (backdropCmptRef && backdropCmptRef.instance) {

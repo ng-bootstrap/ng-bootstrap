@@ -1,6 +1,5 @@
 import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { createGenericTestComponent, isBrowserVisible, triggerEvent } from '../test/common';
-import createSpy = jasmine.createSpy;
 
 import { By } from '@angular/platform-browser';
 import {
@@ -20,6 +19,7 @@ import { NgbConfig } from '../ngb-config';
 import { NgbConfigAnimation } from '../test/ngb-config-animation';
 
 import { Options } from '@popperjs/core';
+import createSpy = jasmine.createSpy;
 
 const createTestComponent = (html: string) =>
 	<ComponentFixture<TestComponent>>createGenericTestComponent(html, TestComponent);
@@ -739,28 +739,21 @@ describe('ngb-tooltip', () => {
 		});
 	});
 
-	describe('Custom config as provider', () => {
-		let config = new NgbTooltipConfig(new NgbConfig());
+	it('should initialize inputs with provided config as provider', () => {
+		TestBed.overrideComponent(TestComponent, { set: { template: `<div ngbTooltip="Great tip!"></div>` } });
+
+		let config = TestBed.inject(NgbTooltipConfig);
 		config.placement = 'bottom';
 		config.triggers = 'click';
 		config.container = 'body';
 		config.tooltipClass = 'my-custom-class';
 
-		beforeEach(() => {
-			TestBed.configureTestingModule({
-				providers: [{ provide: NgbTooltipConfig, useValue: config }],
-			});
-		});
+		const { tooltip } = TestBed.createComponent(TestComponent).componentInstance;
 
-		it('should initialize inputs with provided config as provider', () => {
-			const fixture = createTestComponent(`<div ngbTooltip="Great tip!"></div>`);
-			const tooltip = fixture.componentInstance.tooltip;
-
-			expect(tooltip.placement).toBe(config.placement);
-			expect(tooltip.triggers).toBe(config.triggers);
-			expect(tooltip.container).toBe(config.container);
-			expect(tooltip.tooltipClass).toBe(config.tooltipClass);
-		});
+		expect(tooltip.placement).toBe(config.placement);
+		expect(tooltip.triggers).toBe(config.triggers);
+		expect(tooltip.container).toBe(config.container);
+		expect(tooltip.tooltipClass).toBe(config.tooltipClass);
 	});
 
 	describe('non-regression', () => {

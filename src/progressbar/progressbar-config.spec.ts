@@ -1,8 +1,9 @@
 import { NgbProgressbarConfig } from './progressbar-config';
+import { TestBed } from '@angular/core/testing';
 
 describe('ngb-progressbar-config', () => {
 	it('should have sensible default values', () => {
-		const config = new NgbProgressbarConfig();
+		const config = TestBed.inject(NgbProgressbarConfig);
 
 		expect(config.ariaLabel).toBe('progress bar');
 		expect(config.max).toBe(100);
