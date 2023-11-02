@@ -1,0 +1,23 @@
+<form class="row row-cols-sm-auto">
+	<div class="col-12">
+		<div class="input-group">
+			<input
+				class="form-control"
+				placeholder="yyyy-mm-dd"
+				name="dp"
+				[(ngModel)]="model"
+				ngbDatepicker
+				#d="ngbDatepicker"
+			/>
+			<button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
+		</div>
+	</div>
+</form>
+
+<hr />
+<pre>Model: {{ model | json }}</pre>
+
+<ngb-alert class="mt-3 mb-0" type="info" [dismissible]="false">
+	You must provide the icon for the button that matches your application's style. In this example, the icon comes from
+	<code>bootstrap-icons</code>.
+</ngb-alert>

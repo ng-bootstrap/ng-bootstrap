@@ -1,0 +1,18 @@
+<p>
+	The Jalali calendar is a solar calendar that was used in Persia. Variants of it are still in use in Iran and
+	Afghanistan
+</p>
+
+<ngb-datepicker #dp [(ngModel)]="model" [firstDayOfWeek]="6"></ngb-datepicker>
+
+<hr />
+
+<button class="btn btn-sm btn-outline-primary me-2" (click)="selectToday()">Select Today</button>
+<button class="btn btn-sm btn-outline-primary me-2" (click)="dp.navigateTo()">To current month</button>
+<button class="btn btn-sm btn-outline-primary me-2" (click)="dp.navigateTo({year: 1396, month: 4})">
+	To Tir. 1396
+</button>
+
+<hr />
+
+<pre>Model: {{ model | json }}</pre>

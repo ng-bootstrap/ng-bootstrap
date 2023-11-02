@@ -1,0 +1,48 @@
+<p>
+	These datepickers use custom date adapter and formatter. The custom <code>NgbDateAdapter</code> lets you use your own
+	model i.e. the structure of ngModel. The custom <code>NgbDateParserFormatter</code> lets you use your own formatter or
+	parser i.e. the date format in input field.
+	<br />
+	<br />
+	Notice that there are <strong>two</strong> different services: the <code>NgbDateAdapter</code> and the
+	<code>NgbDateParserFormatter</code>.
+</p>
+<br />
+<div class="row">
+	<div class="col-6">
+		<ngb-datepicker #d1 [(ngModel)]="model1" #c1="ngModel"></ngb-datepicker>
+
+		<hr />
+		<button class="btn btn-sm btn-outline-primary" (click)="model1 = today">Select Today</button>
+		<hr />
+
+		<pre>Model: {{ model1 | json }}</pre>
+		<pre>State: {{ c1.status }}</pre>
+	</div>
+
+	<div class="col-6">
+		<form class="row row-cols-sm-auto">
+			<div class="col-12">
+				<div class="input-group">
+					<input
+						class="form-control"
+						placeholder="dd/mm/yyyy"
+						name="d2"
+						#c2="ngModel"
+						[(ngModel)]="model2"
+						ngbDatepicker
+						#d2="ngbDatepicker"
+					/>
+					<button class="btn btn-outline-secondary bi bi-calendar3" (click)="d2.toggle()" type="button"></button>
+				</div>
+			</div>
+		</form>
+
+		<hr />
+		<button class="btn btn-sm btn-outline-primary" (click)="model2 = today">Select Today</button>
+		<hr />
+
+		<pre>Model: {{ model2 | json }}</pre>
+		<pre>State: {{ c2.status }}</pre>
+	</div>
+</div>

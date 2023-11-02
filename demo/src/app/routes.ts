@@ -7,6 +7,7 @@ import { ROUTES as COLLAPSE_ROUTES } from './components/collapse/collapse.routes
 import { ROUTES as DATEPICKER_ROUTES } from './components/datepicker/datepicker.routes';
 import { ROUTES as DROPDOWN_ROUTES } from './components/dropdown/dropdown.routes';
 import { ROUTES as MODAL_ROUTES } from './components/modal/modal.routes';
+import { ROUTES as MONTHPICKER_ROUTES } from './components/monthpicker/monthpicker.routes';
 import { ROUTES as NAV_ROUTES } from './components/nav/nav.routes';
 import { ROUTES as OFFCANVAS_ROUTES } from './components/offcanvas/offcanvas.routes';
 import { ROUTES as PAGINATION_ROUTES } from './components/pagination/pagination.routes';
@@ -48,6 +49,7 @@ export const ROUTES: Routes = [
 	{ path: 'components/datepicker', children: DATEPICKER_ROUTES },
 	{ path: 'components/dropdown', children: DROPDOWN_ROUTES },
 	{ path: 'components/modal', children: MODAL_ROUTES },
+	{ path: 'components/monthpicker', children: MONTHPICKER_ROUTES },
 	{ path: 'components/nav', children: NAV_ROUTES },
 	{ path: 'components/offcanvas', children: OFFCANVAS_ROUTES },
 	{ path: 'components/pagination', children: PAGINATION_ROUTES },

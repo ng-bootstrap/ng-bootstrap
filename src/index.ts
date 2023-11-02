@@ -107,6 +107,17 @@ export {
 	NgbModalRef,
 } from './modal/modal.module';
 export {
+	NgbMonth,
+	NgbMonthpicker,
+	NgbMonthpickerConfig,
+	NgbMonthpickerI18n,
+	NgbMonthpickerKeyboardService,
+	NgbMonthpickerModule,
+	NgbMonthpickerNavigateEvent,
+	NgbMonthpickerState,
+	NgbMonthStruct,
+} from './monthpicker/monthpicker.module';
+export {
 	NgbNavChangeEvent,
 	NgbNavConfig,
 	NgbNav,

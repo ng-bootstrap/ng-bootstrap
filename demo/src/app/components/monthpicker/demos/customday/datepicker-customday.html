@@ -1,0 +1,39 @@
+<p>This datepicker uses a custom template to display days. All week-ends are displayed with an orange background.</p>
+
+<form class="row row-cols-sm-auto">
+	<div class="col-12">
+		<div class="input-group">
+			<input
+				class="form-control"
+				placeholder="yyyy-mm-dd"
+				name="dp"
+				[(ngModel)]="model"
+				ngbDatepicker
+				[dayTemplate]="customDay"
+				[markDisabled]="isDisabled"
+				#d="ngbDatepicker"
+			/>
+			<button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
+		</div>
+	</div>
+</form>
+
+<ng-template
+	#customDay
+	let-date
+	let-currentMonth="currentMonth"
+	let-selected="selected"
+	let-disabled="disabled"
+	let-focused="focused"
+>
+	<span
+		class="custom-day"
+		[class.weekend]="isWeekend(date)"
+		[class.focused]="focused"
+		[class.bg-primary]="selected"
+		[class.hidden]="date.month !== currentMonth"
+		[class.text-muted]="disabled"
+	>
+		{{ date.day }}
+	</span>
+</ng-template>

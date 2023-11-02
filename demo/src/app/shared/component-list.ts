@@ -6,6 +6,7 @@ export const COMPONENT_LIST = [
 	'Datepicker',
 	'Dropdown',
 	'Modal',
+	'Monthpicker',
 	'Nav',
 	'Offcanvas',
 	'Pagination',

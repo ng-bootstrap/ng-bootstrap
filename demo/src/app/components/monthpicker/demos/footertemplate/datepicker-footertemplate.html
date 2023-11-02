@@ -1,0 +1,27 @@
+<p>
+	This datepicker uses a footer template which is presented inside datepicker. Today and close buttons used as an
+	example.
+</p>
+
+<form class="row row-cols-sm-auto">
+	<div class="col-12">
+		<div class="input-group">
+			<input
+				class="form-control"
+				placeholder="yyyy-mm-dd"
+				name="dp"
+				[(ngModel)]="model"
+				ngbDatepicker
+				[footerTemplate]="footerTemplate"
+				#d="ngbDatepicker"
+			/>
+			<button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
+		</div>
+	</div>
+</form>
+
+<ng-template #footerTemplate>
+	<hr class="my-0" />
+	<button class="btn btn-primary btn-sm m-2 float-start" (click)="model = today; d.close()">Today</button>
+	<button class="btn btn-secondary btn-sm m-2 float-end" (click)="d.close()">Close</button>
+</ng-template>

@@ -1,0 +1,55 @@
+<ngb-datepicker
+	[displayMonths]="displayMonths"
+	[navigation]="navigation"
+	[showWeekNumbers]="showWeekNumbers"
+	[outsideDays]="outsideDays"
+>
+</ngb-datepicker>
+
+<hr />
+
+<form class="row row-cols-sm-auto">
+	<div class="col-12">
+		<div class="input-group">
+			<input
+				class="form-control"
+				placeholder="yyyy-mm-dd"
+				name="dp"
+				[displayMonths]="displayMonths"
+				[navigation]="navigation"
+				[outsideDays]="outsideDays"
+				[showWeekNumbers]="showWeekNumbers"
+				ngbDatepicker
+				#d="ngbDatepicker"
+			/>
+			<button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
+		</div>
+	</div>
+</form>
+
+<hr />
+
+<div class="d-flex flex-wrap align-content-between p-2">
+	<select class="form-select" [(ngModel)]="displayMonths">
+		<option [ngValue]="1">One month</option>
+		<option [ngValue]="2">Two months</option>
+		<option [ngValue]="3">Three months</option>
+	</select>
+
+	<select class="form-select" [(ngModel)]="navigation">
+		<option value="none">Without navigation</option>
+		<option value="select">With select boxes</option>
+		<option value="arrows">Without select boxes</option>
+	</select>
+
+	<select class="form-select" [(ngModel)]="showWeekNumbers">
+		<option [ngValue]="true">Week numbers</option>
+		<option [ngValue]="false">No week numbers</option>
+	</select>
+
+	<select class="form-select" [(ngModel)]="outsideDays">
+		<option value="visible">Visible outside days</option>
+		<option value="hidden">Hidden outside days</option>
+		<option value="collapsed">Collapsed outside days</option>
+	</select>
+</div>
