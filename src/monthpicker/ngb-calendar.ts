@@ -1,12 +1,12 @@
-import { NgbDate } from './ngb-month';
+import { NgbMonth } from './ngb-month';
 import { Injectable } from '@angular/core';
 import { isInteger } from '../util/util';
 
 export function fromJSDate(jsDate: Date) {
-	return new NgbDate(jsDate.getFullYear(), jsDate.getMonth() + 1, jsDate.getDate());
+	return new NgbMonth(jsDate.getFullYear(), jsDate.getMonth() + 1);
 }
-export function toJSDate(date: NgbDate) {
-	const jsDate = new Date(date.year, date.month - 1, date.day, 12);
+export function toJSDate(date: NgbMonth) {
+	const jsDate = new Date(date.year, date.month - 1);
 	// this is done avoid 30 -> 1930 conversion
 	if (!isNaN(jsDate.getTime())) {
 		jsDate.setFullYear(date.year);
@@ -24,7 +24,7 @@ export function NGB_DATEPICKER_CALENDAR_FACTORY() {
  * A service that represents the calendar used by the datepicker.
  *
  * The default implementation uses the Gregorian calendar. You can inject it in your own
- * implementations if necessary to simplify `NgbDate` calculations.
+ * implementations if necessary to simplify `NgbMonth` calculations.
  */
 @Injectable({ providedIn: 'root', useFactory: NGB_DATEPICKER_CALENDAR_FACTORY })
 export abstract class NgbCalendar {
@@ -50,7 +50,7 @@ export abstract class NgbCalendar {
 	 *
 	 * With the default calendar we use ISO 8601: 'weekday' is 1=Mon ... 7=Sun
 	 */
-	abstract getWeekday(date: NgbDate): number;
+	abstract getWeekday(date: NgbMonth): number;
 
 	/**
 	 * Adds a number of years, months or days to a given date.
@@ -60,7 +60,7 @@ export abstract class NgbCalendar {
 	 *
 	 * Always returns a new date.
 	 */
-	abstract getNext(date: NgbDate, period?: NgbPeriod, number?: number): NgbDate;
+	abstract getNext(date: NgbMonth, period?: NgbPeriod, number?: number): NgbMonth;
 
 	/**
 	 * Subtracts a number of years, months or days from a given date.
@@ -70,22 +70,22 @@ export abstract class NgbCalendar {
 	 *
 	 * Always returns a new date.
 	 */
-	abstract getPrev(date: NgbDate, period?: NgbPeriod, number?: number): NgbDate;
+	abstract getPrev(date: NgbMonth, period?: NgbPeriod, number?: number): NgbMonth;
 
 	/**
 	 * Returns the week number for a given week.
 	 */
-	abstract getWeekNumber(week: readonly NgbDate[], firstDayOfWeek: number): number;
+	abstract getWeekNumber(week: readonly NgbMonth[], firstDayOfWeek: number): number;
 
 	/**
 	 * Returns the today's date.
 	 */
-	abstract getToday(): NgbDate;
+	abstract getToday(): NgbMonth;
 
 	/**
 	 * Checks if a date is valid in the current calendar.
 	 */
-	abstract isValid(date?: NgbDate | null): boolean;
+	abstract isValid(date?: NgbMonth | null): boolean;
 }
 
 @Injectable()
@@ -102,7 +102,7 @@ export class NgbCalendarGregorian extends NgbCalendar {
 		return 6;
 	}
 
-	getNext(date: NgbDate, period: NgbPeriod = 'd', number = 1) {
+	getNext(date: NgbMonth, period: NgbPeriod = 'd', number = 1) {
 		let jsDate = toJSDate(date);
 		let checkMonth = true;
 		let expectedMonth = jsDate.getMonth();
@@ -136,18 +136,18 @@ export class NgbCalendarGregorian extends NgbCalendar {
 		return fromJSDate(jsDate);
 	}
 
-	getPrev(date: NgbDate, period: NgbPeriod = 'd', number = 1) {
+	getPrev(date: NgbMonth, period: NgbPeriod = 'd', number = 1) {
 		return this.getNext(date, period, -number);
 	}
 
-	getWeekday(date: NgbDate) {
+	getWeekday(date: NgbMonth) {
 		let jsDate = toJSDate(date);
 		let day = jsDate.getDay();
 		// in JS Date Sun=0, in ISO 8601 Sun=7
 		return day === 0 ? 7 : day;
 	}
 
-	getWeekNumber(week: readonly NgbDate[], firstDayOfWeek: number) {
+	getWeekNumber(week: readonly NgbMonth[], firstDayOfWeek: number) {
 		// in JS Date Sun=0, in ISO 8601 Sun=7
 		if (firstDayOfWeek === 7) {
 			firstDayOfWeek = 0;
@@ -164,12 +164,12 @@ export class NgbCalendarGregorian extends NgbCalendar {
 		return Math.floor(Math.round((time - jsDate.getTime()) / 86400000) / 7) + 1;
 	}
 
-	getToday(): NgbDate {
+	getToday(): NgbMonth {
 		return fromJSDate(new Date());
 	}
 
-	isValid(date?: NgbDate | null): boolean {
-		if (!date || !isInteger(date.year) || !isInteger(date.month) || !isInteger(date.day)) {
+	isValid(date?: NgbMonth | null): boolean {
+		if (!date || !isInteger(date.year) || !isInteger(date.month)) {
 			return false;
 		}
 
@@ -180,11 +180,6 @@ export class NgbCalendarGregorian extends NgbCalendar {
 
 		const jsDate = toJSDate(date);
 
-		return (
-			!isNaN(jsDate.getTime()) &&
-			jsDate.getFullYear() === date.year &&
-			jsDate.getMonth() + 1 === date.month &&
-			jsDate.getDate() === date.day
-		);
+		return !isNaN(jsDate.getTime()) && jsDate.getFullYear() === date.year && jsDate.getMonth() + 1 === date.month;
 	}
 }

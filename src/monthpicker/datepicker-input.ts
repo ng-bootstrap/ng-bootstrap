@@ -29,15 +29,15 @@ import { ngbAutoClose } from '../util/autoclose';
 import { ngbFocusTrap } from '../util/focus-trap';
 import { ngbPositioning } from '../util/positioning';
 
-import { NgbDateAdapter } from './adapters/ngb-date-adapter';
-import { NgbDatepicker, NgbDatepickerNavigateEvent } from './monthpicker';
+import { NgbMonthAdapter } from './adapters/ngb-date-adapter';
+import { NgbMonthpicker, NgbMonthpickerNavigateEvent } from './monthpicker';
 import { DayTemplateContext } from './datepicker-day-template-context';
 import { NgbCalendar } from './ngb-calendar';
-import { NgbDate } from './ngb-month';
-import { NgbDateParserFormatter } from './ngb-date-parser-formatter';
-import { NgbDateStruct } from './ngb-month-struct';
+import { NgbMonth } from './ngb-month';
+import { NgbMonthParserFormatter } from './ngb-date-parser-formatter';
+import { NgbMonthStruct } from './ngb-month-struct';
 import { NgbInputDatepickerConfig } from './datepicker-input-config';
-import { NgbDatepickerConfig } from './monthpicker-config';
+import { NgbMonthpickerConfig } from './monthpicker-config';
 import { isString } from '../util/util';
 import { Subject } from 'rxjs';
 import { addPopperOffset } from '../util/positioning-util';
@@ -49,8 +49,8 @@ import { ContentTemplateContext } from './datepicker-content-template-context';
  * Manages interaction with the input field itself, does value formatting and provides forms integration.
  */
 @Directive({
-	selector: 'input[ngbDatepicker]',
-	exportAs: 'ngbDatepicker',
+	selector: 'input[ngbMonthpicker]',
+	exportAs: 'ngbMonthpicker',
 	standalone: true,
 	host: {
 		'(input)': 'manualDateChange($event.target.value)',
@@ -62,7 +62,7 @@ import { ContentTemplateContext } from './datepicker-content-template-context';
 	providers: [
 		{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NgbInputDatepicker), multi: true },
 		{ provide: NG_VALIDATORS, useExisting: forwardRef(() => NgbInputDatepicker), multi: true },
-		{ provide: NgbDatepickerConfig, useExisting: NgbInputDatepickerConfig },
+		{ provide: NgbMonthpickerConfig, useExisting: NgbInputDatepickerConfig },
 	],
 })
 export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAccessor, Validator {
@@ -72,20 +72,20 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	static ngAcceptInputType_outsideDays: string;
 	static ngAcceptInputType_weekdays: boolean | number;
 
-	private _parserFormatter = inject(NgbDateParserFormatter);
+	private _parserFormatter = inject(NgbMonthParserFormatter);
 	private _elRef = inject(ElementRef<HTMLInputElement>);
 	private _vcRef = inject(ViewContainerRef);
 	private _ngZone = inject(NgZone);
 	private _calendar = inject(NgbCalendar);
-	private _dateAdapter = inject(NgbDateAdapter<any>);
+	private _dateAdapter = inject(NgbMonthAdapter<any>);
 	private _document = inject(DOCUMENT);
 	private _changeDetector = inject(ChangeDetectorRef);
 	private _config = inject(NgbInputDatepickerConfig);
 
-	private _cRef: ComponentRef<NgbDatepicker> | null = null;
+	private _cRef: ComponentRef<NgbMonthpicker> | null = null;
 	private _disabled = false;
 	private _elWithFocus: HTMLElement | null = null;
-	private _model: NgbDate | null = null;
+	private _model: NgbMonth | null = null;
 	private _inputValue: string;
 	private _zoneSubscription: any;
 	private _positioning = ngbPositioning();
@@ -108,7 +108,7 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	 *
 	 * Allows to completely override the way datepicker.
 	 *
-	 * See [`NgbDatepickerContent`](#/components/datepicker/api#NgbDatepickerContent) for more details.
+	 * See [`NgbMonthpickerContent`](#/components/datepicker/api#NgbMonthpickerContent) for more details.
 	 *
 	 * @since 14.2.0
 	 */
@@ -138,7 +138,7 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	 *
 	 * @since 3.3.0
 	 */
-	@Input() dayTemplateData: (date: NgbDate, current?: { year: number; month: number }) => any;
+	@Input() dayTemplateData: (date: NgbMonth, current?: { year: number; month: number }) => any;
 
 	/**
 	 * The number of months to display.
@@ -166,21 +166,21 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	 *
 	 * `current` is the month that is currently displayed by the datepicker.
 	 */
-	@Input() markDisabled: (date: NgbDate, current?: { year: number; month: number }) => boolean;
+	@Input() markDisabled: (date: NgbMonth, current?: { year: number; month: number }) => boolean;
 
 	/**
 	 * The earliest date that can be displayed or selected. Also used for form validation.
 	 *
 	 * If not provided, 'year' select box will display 10 years before the current month.
 	 */
-	@Input() minDate: NgbDateStruct;
+	@Input() minDate: NgbMonthStruct;
 
 	/**
 	 * The latest date that can be displayed or selected. Also used for form validation.
 	 *
 	 * If not provided, 'year' select box will display 10 years after the current month.
 	 */
-	@Input() maxDate: NgbDateStruct;
+	@Input() maxDate: NgbMonthStruct;
 
 	/**
 	 * Navigation type.
@@ -274,18 +274,18 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	/**
 	 * An event emitted when user selects a date using keyboard or mouse.
 	 *
-	 * The payload of the event is currently selected `NgbDate`.
+	 * The payload of the event is currently selected `NgbMonth`.
 	 *
 	 * @since 1.1.1
 	 */
-	@Output() dateSelect = new EventEmitter<NgbDate>();
+	@Output() dateSelect = new EventEmitter<NgbMonth>();
 
 	/**
 	 * Event emitted right after the navigation happens and displayed month changes.
 	 *
-	 * See [`NgbDatepickerNavigateEvent`](#/components/datepicker/api#NgbDatepickerNavigateEvent) for the payload info.
+	 * See [`NgbMonthpickerNavigateEvent`](#/components/datepicker/api#NgbMonthpickerNavigateEvent) for the payload info.
 	 */
-	@Output() navigate = new EventEmitter<NgbDatepickerNavigateEvent>();
+	@Output() navigate = new EventEmitter<NgbMonthpickerNavigateEvent>();
 
 	/**
 	 * An event fired after closing datepicker window.
@@ -336,11 +336,11 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 				return { ngbDate: { invalid: value } };
 			}
 
-			if (this.minDate && ngbDate.before(NgbDate.from(this.minDate))) {
+			if (this.minDate && ngbDate.before(NgbMonth.from(this.minDate))) {
 				return { ngbDate: { minDate: { minDate: this.minDate, actual: value } } };
 			}
 
-			if (this.maxDate && ngbDate.after(NgbDate.from(this.maxDate))) {
+			if (this.maxDate && ngbDate.after(NgbMonth.from(this.maxDate))) {
 				return { ngbDate: { maxDate: { maxDate: this.maxDate, actual: value } } };
 			}
 		}
@@ -378,7 +378,7 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	 */
 	open() {
 		if (!this.isOpen()) {
-			this._cRef = this._vcRef.createComponent(NgbDatepicker);
+			this._cRef = this._vcRef.createComponent(NgbMonthpicker);
 
 			this._applyPopupStyling(this._cRef.location.nativeElement);
 			this._applyDatepickerInputs(this._cRef);
@@ -530,7 +530,7 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 		this.close();
 	}
 
-	private _applyDatepickerInputs(datepickerComponentRef: ComponentRef<NgbDatepicker>): void {
+	private _applyDatepickerInputs(datepickerComponentRef: ComponentRef<NgbMonthpicker>): void {
 		[
 			'contentTemplate',
 			'dayTemplate',
@@ -576,7 +576,7 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 		this._applyPopupClass(this.datepickerClass);
 	}
 
-	private _subscribeForDatepickerOutputs(datepickerInstance: NgbDatepicker) {
+	private _subscribeForDatepickerOutputs(datepickerInstance: NgbMonthpicker) {
 		datepickerInstance.navigate.subscribe((navigateEvent) => this.navigate.emit(navigateEvent));
 		datepickerInstance.dateSelect.subscribe((date) => {
 			this.dateSelect.emit(date);
@@ -586,7 +586,7 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 		});
 	}
 
-	private _writeModelValue(model: NgbDate | null) {
+	private _writeModelValue(model: NgbMonth | null) {
 		const value = this._parserFormatter.format(model);
 		this._inputValue = value;
 		this._elRef.nativeElement.value = value;
@@ -596,8 +596,8 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 		}
 	}
 
-	private _fromDateStruct(date: NgbDateStruct | null): NgbDate | null {
-		const ngbDate = date ? new NgbDate(date.year, date.month, date.day) : null;
+	private _fromDateStruct(date: NgbMonthStruct | null): NgbMonth | null {
+		const ngbDate = date ? new NgbMonth(date.year, date.month) : null;
 		return this._calendar.isValid(ngbDate) ? ngbDate : null;
 	}
 

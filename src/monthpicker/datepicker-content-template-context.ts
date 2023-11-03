@@ -1,4 +1,4 @@
-import { NgbDatepicker } from './monthpicker';
+import { NgbMonthpicker } from './monthpicker';
 
 /**
  * The context for the datepicker 'content' template.
@@ -14,5 +14,5 @@ export interface ContentTemplateContext {
 	 *
 	 * Can be used for convenience as a default template key, ex. `let-d`.
 	 */
-	$implicit: NgbDatepicker;
+	$implicit: NgbMonthpicker;
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { NgbDatepickerConfig } from './monthpicker-config';
+import { NgbMonthpickerConfig } from './monthpicker-config';
 import { PlacementArray } from '../util/positioning';
 import { Options } from '@popperjs/core';
 
@@ -13,7 +13,7 @@ import { Options } from '@popperjs/core';
  * @since 5.2.0
  */
 @Injectable({ providedIn: 'root' })
-export class NgbInputDatepickerConfig extends NgbDatepickerConfig {
+export class NgbInputDatepickerConfig extends NgbMonthpickerConfig {
 	autoClose: boolean | 'inside' | 'outside' = true;
 	container: null | 'body';
 	positionTarget: string | HTMLElement;

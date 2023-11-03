@@ -11,12 +11,12 @@ import { NavigationEvent, MonthViewModel } from './datepicker-view-model';
 import { NgbMonth } from './ngb-month';
 import { NgbMonthpickerI18n } from './monthpicker-i18n';
 import { NgFor, NgIf } from '@angular/common';
-import { NgbDatepickerNavigationSelect } from './monthpicker-navigation-select';
+import { NgbMonthpickerNavigationSelect } from './monthpicker-navigation-select';
 
 @Component({
 	selector: 'ngb-monthpicker-navigation',
 	standalone: true,
-	imports: [NgIf, NgFor, NgbDatepickerNavigationSelect],
+	imports: [NgIf, NgFor, NgbMonthpickerNavigationSelect],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
 	styleUrls: ['./monthpicker-navigation.scss'],
@@ -35,7 +35,7 @@ import { NgbDatepickerNavigationSelect } from './monthpicker-navigation-select';
 				<span class="ngb-dp-navigation-chevron"></span>
 			</button>
 		</div>
-		<ngb-datepicker-navigation-select
+		<ngb-monthpicker-navigation-select
 			*ngIf="showSelect"
 			class="ngb-dp-navigation-select"
 			[date]="date"
@@ -44,7 +44,7 @@ import { NgbDatepickerNavigationSelect } from './monthpicker-navigation-select';
 			[years]="selectBoxes.years"
 			(select)="select.emit($event)"
 		>
-		</ngb-datepicker-navigation-select>
+		</ngb-monthpicker-navigation-select>
 
 		<ng-template *ngIf="!showSelect" ngFor let-month [ngForOf]="months" let-i="index">
 			<div class="ngb-dp-arrow" *ngIf="i > 0"></div>

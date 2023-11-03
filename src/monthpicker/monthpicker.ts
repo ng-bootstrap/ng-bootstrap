@@ -31,7 +31,6 @@ import { NgbCalendar } from './ngb-calendar';
 import { NgbMonth } from './ngb-month';
 import { DatepickerServiceInputs, NgbMonthpickerService } from './datepicker-service';
 import { DatepickerViewModel, DayViewModel, MonthViewModel, NavigationEvent } from './datepicker-view-model';
-import { DayTemplateContext } from './datepicker-day-template-context';
 import { NgbMonthpickerConfig } from './monthpicker-config';
 import { NgbMonthAdapter } from './adapters/ngb-date-adapter';
 import { NgbMonthStruct } from './ngb-month-struct';
@@ -529,7 +528,7 @@ export class NgbMonthpicker implements AfterViewInit, OnChanges, OnInit, Control
 	 * Use the `[startDate]` input as an alternative.
 	 */
 	navigateTo(date?: { year: number; month: number; day?: number }) {
-		this._service.open(NgbMonth.from(date ? (date.day ? (date as NgbMonthStruct) : { ...date, day: 1 }) : null));
+		this._service.open(NgbMonth.from(date ? (date.day ? (date as NgbMonthStruct) : { ...date }) : null));
 	}
 
 	ngAfterViewInit() {
@@ -576,9 +575,9 @@ export class NgbMonthpicker implements AfterViewInit, OnChanges, OnInit, Control
 
 			this.navigateTo(this.startDate);
 		}
-		if (!this.dayTemplate) {
+		/*if (!this.dayTemplate) {
 			this.dayTemplate = this._defaultDayTemplate;
-		}
+		}*/
 	}
 
 	ngOnChanges(changes: SimpleChanges) {

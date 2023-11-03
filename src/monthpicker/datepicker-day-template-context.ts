@@ -1,4 +1,4 @@
-import { NgbDate } from './ngb-month';
+import { NgbMonth } from './ngb-month';
 /**
  * The context for the datepicker 'day' template.
  *
@@ -12,7 +12,7 @@ export interface DayTemplateContext {
 	 *
 	 * @since 3.3.0
 	 */
-	$implicit: NgbDate;
+	$implicit: NgbMonth;
 
 	/**
 	 * The month currently displayed by the datepicker.
@@ -36,7 +36,7 @@ export interface DayTemplateContext {
 	/**
 	 * The date that corresponds to the template.
 	 */
-	date: NgbDate;
+	date: NgbMonth;
 
 	/**
 	 * `True` if the current date is disabled.

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { NgbDateStruct } from '../ngb-month-struct';
-import { NgbDateNativeAdapter } from './ngb-date-native-adapter';
+import { NgbMonthStruct } from '../ngb-month-struct';
+import { NgbMonthNativeAdapter } from './ngb-date-native-adapter';
 
 /**
  * Same as [`NgbDateNativeAdapter`](#/components/datepicker/api#NgbDateNativeAdapter), but with UTC dates.
@@ -8,13 +8,13 @@ import { NgbDateNativeAdapter } from './ngb-date-native-adapter';
  * @since 3.2.0
  */
 @Injectable()
-export class NgbDateNativeUTCAdapter extends NgbDateNativeAdapter {
-	protected _fromNativeDate(date: Date): NgbDateStruct {
-		return { year: date.getUTCFullYear(), month: date.getUTCMonth() + 1, day: date.getUTCDate() };
+export class NgbMonthNativeUTCAdapter extends NgbMonthNativeAdapter {
+	protected _fromNativeDate(date: Date): NgbMonthStruct {
+		return { year: date.getUTCFullYear(), month: date.getUTCMonth() + 1 };
 	}
 
-	protected _toNativeDate(date: NgbDateStruct): Date {
-		const jsDate = new Date(Date.UTC(date.year, date.month - 1, date.day));
+	protected _toNativeDate(date: NgbMonthStruct): Date {
+		const jsDate = new Date(Date.UTC(date.year, date.month - 1));
 		// avoid 30 -> 1930 conversion
 		jsDate.setUTCFullYear(date.year);
 		return jsDate;
