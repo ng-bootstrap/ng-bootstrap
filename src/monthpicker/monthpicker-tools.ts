@@ -1,5 +1,5 @@
 import { NgbMonth } from './ngb-month';
-import { DatepickerViewModel, MonthViewModel } from './datepicker-view-model';
+import { DayViewModel, MonthpickerViewModel, MonthViewModel } from './monthpicker-view-model';
 import { NgbMonthCalendar } from './ngb-month-calendar';
 import { NgbMonthpickerI18n } from './monthpicker-i18n';
 
@@ -36,7 +36,7 @@ export function checkDateInRange(
 	return date || null;
 }
 
-export function isDateSelectable(date: NgbMonth | null | undefined, state: DatepickerViewModel) {
+export function isDateSelectable(date: NgbMonth | null | undefined, state: MonthpickerViewModel) {
 	const { minDate, maxDate, disabled, markDisabled } = state;
 	return !(
 		date === null ||
@@ -96,7 +96,7 @@ export function nextMonthDisabled(calendar: NgbMonthCalendar, date: NgbMonth, ma
 }
 
 export function prevMonthDisabled(calendar: NgbMonthCalendar, date: NgbMonth, minDate: NgbMonth | null) {
-	const prevDate = calendar.getPrev(date, 'm');
+	const prevDate = Object.assign(calendar.getPrev(date, 'm'), { day: 1 });
 	return (
 		minDate != null &&
 		((prevDate.year === minDate.year && prevDate.month < minDate.month) ||
@@ -107,7 +107,7 @@ export function prevMonthDisabled(calendar: NgbMonthCalendar, date: NgbMonth, mi
 export function buildMonths(
 	calendar: NgbMonthCalendar,
 	date: NgbMonth,
-	state: DatepickerViewModel,
+	state: MonthpickerViewModel,
 	i18n: NgbMonthpickerI18n,
 	force: boolean,
 ): MonthViewModel[] {
@@ -117,7 +117,7 @@ export function buildMonths(
 
 	// generate new first dates, nullify or reuse months
 	const firstDates = Array.from({ length: displayMonths }, (_, i) => {
-		const firstDate = Object.assign(calendar.getNext(date, 'm', i), { day: 1 });
+		const firstDate = Object.assign(calendar.getNext(date, 'm', i));
 		months[i] = <any>null;
 
 		if (!force) {
@@ -144,7 +144,7 @@ export function buildMonths(
 export function buildMonth(
 	calendar: NgbMonthCalendar,
 	date: NgbMonth,
-	state: DatepickerViewModel,
+	state: MonthpickerViewModel,
 	i18n: NgbMonthpickerI18n,
 	month: MonthViewModel = {} as MonthViewModel,
 ): MonthViewModel {
@@ -175,7 +175,7 @@ export function buildMonth(
 	}
 
 	// month has weeks
-	/*for (let week = 0; week < calendar.getWeeksPerMonth(); week++) {
+	for (let week = 0; week < calendar.getWeeksPerMonth(); week++) {
 		let weekObject = month.weeks[week];
 		if (!weekObject) {
 			weekObject = month.weeks[week] = { number: 0, days: [], collapsed: true };
@@ -185,13 +185,13 @@ export function buildMonth(
 		// week has days
 		for (let day = 0; day < calendar.getDaysPerWeek(); day++) {
 			if (week === 0 && weekdaysVisible) {
-				month.weekdays[day] = i18n.getWeekdayLabel(calendar.getWeekday(date), weekdayWidth);
+				//month.weekdays[day] = i18n.getWeekdayLabel(calendar.getWeekday(date), weekdayWidth);
 			}
 
-			const newDate = new NgbMonth(date.year, date.month, date.day);
+			const newDate = new NgbMonth(date.year, date.month);
 			const nextDate = calendar.getNext(newDate);
 
-			const ariaLabel = i18n.getDayAriaLabel(newDate);
+			//const ariaLabel = i18n.getDayAriaLabel(newDate);
 
 			// marking date as disabled
 			let disabled = !!((minDate && newDate.before(minDate)) || (maxDate && newDate.after(maxDate)));
@@ -234,7 +234,7 @@ export function buildMonth(
 				today,
 			});
 			dayObject.tabindex = -1;
-			dayObject.ariaLabel = ariaLabel;
+			//dayObject.ariaLabel = ariaLabel;
 			dayObject.hidden = false;
 
 			date = nextDate;
@@ -250,7 +250,7 @@ export function buildMonth(
 			outsideDays === 'collapsed' &&
 			days[0].date.month !== month.number &&
 			days[days.length - 1].date.month !== month.number;
-	}*/
+	}
 
 	return month;
 }

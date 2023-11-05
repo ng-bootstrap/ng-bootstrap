@@ -1,6 +1,6 @@
 import { Injectable, TemplateRef } from '@angular/core';
 import { TranslationWidth } from '@angular/common';
-import { DayTemplateContext } from './datepicker-day-template-context';
+import { DayTemplateContext } from './monthpicker-day-template-context';
 import { NgbMonthStruct } from './ngb-month-struct';
 
 /**

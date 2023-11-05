@@ -1,7 +1,7 @@
 import { NgbMonthCalendar } from './ngb-month-calendar';
 import { NgbMonth } from './ngb-month';
 import { NgbMonthStruct } from './ngb-month-struct';
-import { DatepickerViewModel, NgbDayTemplateData, NgbMarkDisabled } from './datepicker-view-model';
+import { MonthpickerViewModel, NgbDayTemplateData, NgbMarkDisabled } from './monthpicker-view-model';
 import { inject, Injectable } from '@angular/core';
 import { isInteger, toInteger } from '../util/util';
 import { Observable, Subject } from 'rxjs';
@@ -16,13 +16,13 @@ import {
 	isDateSelectable,
 	nextMonthDisabled,
 	prevMonthDisabled,
-} from './datepicker-tools';
+} from './monthpicker-tools';
 
 import { filter } from 'rxjs/operators';
 import { NgbMonthpickerI18n } from './monthpicker-i18n';
 import { TranslationWidth } from '@angular/common';
 
-export type DatepickerServiceInputs = Partial<{
+export type MonthpickerServiceInputs = Partial<{
 	dayTemplateData: NgbDayTemplateData;
 	displayMonths: number;
 	disabled: boolean;
@@ -39,7 +39,7 @@ export type DatepickerServiceInputs = Partial<{
 @Injectable()
 export class NgbMonthpickerService {
 	private _VALIDATORS: {
-		[K in keyof DatepickerServiceInputs]: (v: DatepickerServiceInputs[K]) => Partial<DatepickerViewModel> | void;
+		[K in keyof MonthpickerServiceInputs]: (v: MonthpickerServiceInputs[K]) => Partial<MonthpickerViewModel> | void;
 	} = {
 		dayTemplateData: (dayTemplateData: NgbDayTemplateData) => {
 			if (this._state.dayTemplateData !== dayTemplateData) {
@@ -107,11 +107,11 @@ export class NgbMonthpickerService {
 	private _calendar = inject(NgbMonthCalendar);
 	private _i18n = inject(NgbMonthpickerI18n);
 
-	private _model$ = new Subject<DatepickerViewModel>();
+	private _model$ = new Subject<MonthpickerViewModel>();
 
 	private _dateSelect$ = new Subject<NgbMonth>();
 
-	private _state: DatepickerViewModel = {
+	private _state: MonthpickerViewModel = {
 		dayTemplateData: null,
 		markDisabled: null,
 		maxDate: null,
@@ -134,7 +134,7 @@ export class NgbMonthpickerService {
 		weekdaysVisible: true,
 	};
 
-	get model$(): Observable<DatepickerViewModel> {
+	get model$(): Observable<MonthpickerViewModel> {
 		return this._model$.pipe(filter((model) => model.months.length > 0));
 	}
 
@@ -142,7 +142,7 @@ export class NgbMonthpickerService {
 		return this._dateSelect$.pipe(filter((date) => date !== null));
 	}
 
-	set(options: DatepickerServiceInputs) {
+	set(options: MonthpickerServiceInputs) {
 		let patch = Object.keys(options)
 			.map((key) => this._VALIDATORS[key](options[key]))
 			.reduce((obj, part) => ({ ...obj, ...part }), {});
@@ -206,14 +206,14 @@ export class NgbMonthpickerService {
 		throw new Error(`month ${struct.month} of year ${struct.year} not found`);
 	}
 
-	private _nextState(patch: Partial<DatepickerViewModel>) {
+	private _nextState(patch: Partial<MonthpickerViewModel>) {
 		const newState = this._updateState(patch);
 		this._patchContexts(newState);
 		this._state = newState;
 		this._model$.next(this._state);
 	}
 
-	private _patchContexts(state: DatepickerViewModel) {
+	private _patchContexts(state: MonthpickerViewModel) {
 		const { months, displayMonths, selectedDate, focusDate, focusVisible, disabled, outsideDays } = state;
 		state.months.forEach((month) => {
 			month.weeks.forEach((week) => {
@@ -251,7 +251,7 @@ export class NgbMonthpickerService {
 		});
 	}
 
-	private _updateState(patch: Partial<DatepickerViewModel>): DatepickerViewModel {
+	private _updateState(patch: Partial<MonthpickerViewModel>): MonthpickerViewModel {
 		// patching fields
 		const state = Object.assign({}, this._state, patch);
 

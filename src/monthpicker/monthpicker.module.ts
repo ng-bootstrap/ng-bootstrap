@@ -14,9 +14,9 @@ export { NgbInputDatepickerConfig } from './datepicker-input-config';
 export { NgbMonthpickerI18n, NgbMonthpickerI18nDefault } from './monthpicker-i18n';
 export { NgbMonthStruct } from './ngb-month-struct';
 export { NgbMonth } from './ngb-month';
-export { NgbMonthAdapter, NgbMonthStructAdapter } from './adapters/ngb-date-adapter';
-export { NgbMonthNativeAdapter } from './adapters/ngb-date-native-adapter';
-export { NgbMonthNativeUTCAdapter } from './adapters/ngb-date-native-utc-adapter';
+export { NgbMonthAdapter, NgbMonthStructAdapter } from './adapters/ngb-month-adapter';
+export { NgbMonthNativeAdapter } from './adapters/ngb-month-native-adapter';
+export { NgbMonthNativeUTCAdapter } from './adapters/ngb-month-native-utc-adapter';
 export { NgbMonthParserFormatter } from './ngb-date-parser-formatter';
 export { NgbMonthpickerKeyboardService } from './monthpicker-keyboard-service';
 

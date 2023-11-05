@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { NgbMonthAdapter } from './ngb-date-adapter';
+import { NgbMonthAdapter } from './ngb-month-adapter';
 import { NgbMonthStruct } from '../ngb-month-struct';
 import { isInteger } from '../../util/util';
 

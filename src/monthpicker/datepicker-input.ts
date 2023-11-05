@@ -29,9 +29,9 @@ import { ngbAutoClose } from '../util/autoclose';
 import { ngbFocusTrap } from '../util/focus-trap';
 import { ngbPositioning } from '../util/positioning';
 
-import { NgbMonthAdapter } from './adapters/ngb-date-adapter';
+import { NgbMonthAdapter } from './adapters/ngb-month-adapter';
 import { NgbMonthpicker, NgbMonthpickerNavigateEvent } from './monthpicker';
-import { DayTemplateContext } from './datepicker-day-template-context';
+import { DayTemplateContext } from './monthpicker-day-template-context';
 import { NgbMonthCalendar } from './ngb-month-calendar';
 import { NgbMonth } from './ngb-month';
 import { NgbMonthParserFormatter } from './ngb-date-parser-formatter';
@@ -41,7 +41,7 @@ import { NgbMonthpickerConfig } from './monthpicker-config';
 import { isString } from '../util/util';
 import { Subject } from 'rxjs';
 import { addPopperOffset } from '../util/positioning-util';
-import { ContentTemplateContext } from './datepicker-content-template-context';
+import { ContentTemplateContext } from './monthpicker-content-template-context';
 
 /**
  * A directive that allows to stick a datepicker popup to an input field.

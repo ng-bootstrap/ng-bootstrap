@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { NgbMonthStruct } from '../ngb-month-struct';
 import { isInteger } from '../../util/util';
 
-export function NGB_DATEPICKER_DATE_ADAPTER_FACTORY() {
+export function NGB_MONTHPICKER_DATE_ADAPTER_FACTORY() {
 	return new NgbMonthStructAdapter();
 }
 
@@ -18,7 +18,7 @@ export function NGB_DATEPICKER_DATE_ADAPTER_FACTORY() {
  * See the [date format overview](#/components/datepicker/overview#date-model) for more details
  * and the [custom adapter demo](#/components/datepicker/examples#adapter) for an example.
  */
-@Injectable({ providedIn: 'root', useFactory: NGB_DATEPICKER_DATE_ADAPTER_FACTORY })
+@Injectable({ providedIn: 'root', useFactory: NGB_MONTHPICKER_DATE_ADAPTER_FACTORY })
 export abstract class NgbMonthAdapter<D> {
 	/**
 	 * Converts a user-model date of type `D` to an `NgbMonthStruct` for internal use.

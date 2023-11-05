@@ -29,16 +29,16 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NgbMonthCalendar } from './ngb-month-calendar';
 import { NgbMonth } from './ngb-month';
-import { DatepickerServiceInputs, NgbMonthpickerService } from './datepicker-service';
-import { DatepickerViewModel, DayViewModel, MonthViewModel, NavigationEvent } from './datepicker-view-model';
+import { MonthpickerServiceInputs, NgbMonthpickerService } from './monthpicker-service';
+import { MonthpickerViewModel, DayViewModel, MonthViewModel, NavigationEvent } from './monthpicker-view-model';
 import { NgbMonthpickerConfig } from './monthpicker-config';
-import { NgbMonthAdapter } from './adapters/ngb-date-adapter';
+import { NgbMonthAdapter } from './adapters/ngb-month-adapter';
 import { NgbMonthStruct } from './ngb-month-struct';
 import { NgbMonthpickerI18n } from './monthpicker-i18n';
 import { NgbMonthpickerKeyboardService } from './monthpicker-keyboard-service';
-import { isChangedDate, isChangedMonth } from './datepicker-tools';
+import { isChangedDate, isChangedMonth } from './monthpicker-tools';
 import { NgbMonthpickerNavigation } from './monthpicker-navigation';
-import { ContentTemplateContext } from './datepicker-content-template-context';
+import { ContentTemplateContext } from './monthpicker-content-template-context';
 
 /**
  * An event emitted right before the navigation happens and the month displayed by the datepicker changes.
@@ -208,14 +208,14 @@ export class NgbMonthpickerMonth {
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
 	styleUrls: ['./monthpicker.scss'],
-	host: { '[class.disabled]': 'model.disabled' },
+	//host: { '[class.disabled]': 'model.disabled' },
 	template: `
 		<ng-template #defaultContentTemplate>
-			<div *ngFor="let month of model.months; let i = index" class="ngb-dp-month">
+			<!--<div *ngFor="let month of model.months; let i = index" class="ngb-dp-month">
 				<div *ngIf="navigation === 'none' || (displayMonths > 1 && navigation === 'select')" class="ngb-dp-month-name">
 					{{ i18n.getMonthLabel(month.firstDate) }}
 				</div>
-			</div>
+			</div>-->
 		</ng-template>
 
 		<div class="ngb-mp-header">
@@ -255,7 +255,7 @@ export class NgbMonthpicker implements AfterViewInit, OnChanges, OnInit, Control
 	static ngAcceptInputType_outsideDays: string;
 	static ngAcceptInputType_weekdays: boolean | number;
 
-	model: DatepickerViewModel;
+	model: MonthpickerViewModel;
 
 	@ViewChild('content', { static: true }) private _contentEl: ElementRef<HTMLElement>;
 
@@ -559,7 +559,7 @@ export class NgbMonthpicker implements AfterViewInit, OnChanges, OnInit, Control
 
 	ngOnInit() {
 		if (this.model === undefined) {
-			const inputs: DatepickerServiceInputs = {};
+			const inputs: MonthpickerServiceInputs = {};
 			[
 				'dayTemplateData',
 				'displayMonths',
@@ -581,7 +581,7 @@ export class NgbMonthpicker implements AfterViewInit, OnChanges, OnInit, Control
 	}
 
 	ngOnChanges(changes: SimpleChanges) {
-		const inputs: DatepickerServiceInputs = {};
+		const inputs: MonthpickerServiceInputs = {};
 		[
 			'dayTemplateData',
 			'displayMonths',
@@ -615,14 +615,14 @@ export class NgbMonthpicker implements AfterViewInit, OnChanges, OnInit, Control
 	}
 
 	onNavigateEvent(event: NavigationEvent) {
-		/*switch (event) {
+		switch (event) {
 			case NavigationEvent.PREV:
-				this._service.open(this._calendar.getPrev(this.model.firstDate!, 'm', 1));
+				this._service.open(this._calendar.getPrev(this.model.firstDate!, 'y', 1));
 				break;
 			case NavigationEvent.NEXT:
-				this._service.open(this._calendar.getNext(this.model.firstDate!, 'm', 1));
+				this._service.open(this._calendar.getNext(this.model.firstDate!, 'y', 1));
 				break;
-		}*/
+		}
 	}
 
 	registerOnChange(fn: (value: any) => any): void {

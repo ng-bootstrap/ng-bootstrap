@@ -1,9 +1,9 @@
-ngb-datepicker-navigation {
+ngb-monthpicker-navigation {
 	display: flex;
 	align-items: center;
 }
 
-.ngb-dp {
+.ngb-mp {
 	&-navigation-chevron {
 		border-style: solid;
 		border-width: 0.2em 0.2em 0 0;
@@ -27,7 +27,7 @@ ngb-datepicker-navigation {
 		&-next {
 			justify-content: flex-end;
 
-			.ngb-dp-navigation-chevron {
+			.ngb-mp-navigation-chevron {
 				transform: rotate(45deg);
 				margin-left: 0.15em;
 				margin-right: 0.25em;

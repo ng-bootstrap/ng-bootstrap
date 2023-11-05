@@ -9,15 +9,15 @@ import {
 	getFirstViewDate,
 	isChangedMonth,
 	isDateSelectable,
-} from './datepicker-tools';
+} from './monthpicker-tools';
 import { NgbMonth } from './ngb-month';
-import { NgbCalendarGregorian } from './ngb-calendar';
-import { DatepickerViewModel, MonthViewModel, NgbMarkDisabled } from './datepicker-view-model';
+import { NgbMonthCalendarGregorian } from './ngb-month-calendar';
+import { MonthpickerViewModel, MonthViewModel, NgbMarkDisabled } from './monthpicker-view-model';
 import { NgbMonthpickerI18n, NgbMonthpickerI18nDefault } from './monthpicker-i18n';
 import { TestBed } from '@angular/core/testing';
 
 describe(`datepicker-tools`, () => {
-	const calendar = new NgbCalendarGregorian();
+	const calendar = new NgbMonthCalendarGregorian();
 	let i18n: NgbMonthpickerI18n;
 
 	beforeEach(() => {

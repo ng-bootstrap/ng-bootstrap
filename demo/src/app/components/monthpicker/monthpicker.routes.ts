@@ -5,7 +5,7 @@ import { NgbdDemoListService } from '../../services/demo-list.service';
 import { NgbdApiPage } from '../../shared/api-page/api-page.component';
 import { NgbdExamplesPage } from '../../shared/examples-page/examples.component';
 import { NgbdDatepickerAdapter } from './demos/adapter/datepicker-adapter';
-import { NgbdMonthpickerBasic } from './demos/basic/datepicker-basic';
+import { NgbdMonthpickerBasic } from './demos/basic/monthpicker-basic';
 import { NgbdDatepickerConfig } from './demos/config/datepicker-config';
 import { NgbdDatepickerCustomday } from './demos/customday/datepicker-customday';
 import { NgbdDatepickerDisabled } from './demos/disabled/datepicker-disabled';
@@ -40,8 +40,8 @@ const DEMOS = {
 	basic: {
 		title: 'Basic monthpicker',
 		type: NgbdMonthpickerBasic,
-		code: require('!!raw-loader!./demos/basic/datepicker-basic').default,
-		markup: require('!!raw-loader!./demos/basic/datepicker-basic.html').default,
+		code: require('!!raw-loader!./demos/basic/monthpicker-basic').default,
+		markup: require('!!raw-loader!./demos/basic/monthpicker-basic.html').default,
 	},
 	/*popup: {
 		title: 'Datepicker in a popup',

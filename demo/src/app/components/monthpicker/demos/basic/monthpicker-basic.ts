@@ -7,15 +7,13 @@ import { JsonPipe } from '@angular/common';
 	selector: 'ngbd-monthpicker-basic',
 	standalone: true,
 	imports: [NgbMonthpickerModule, FormsModule, JsonPipe],
-	templateUrl: './datepicker-basic.html',
+	templateUrl: './monthpicker-basic.html',
 })
 export class NgbdMonthpickerBasic {
 	model: NgbMonthStruct;
 	date: { year: number; month: number };
 
-	constructor(private calendar: NgbMonthCalendar) {
-		console.log('model', this.model);
-	}
+	constructor(private calendar: NgbMonthCalendar) {}
 
 	selectToday() {
 		this.model = this.calendar.getToday();

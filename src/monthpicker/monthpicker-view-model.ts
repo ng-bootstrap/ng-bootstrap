@@ -1,6 +1,6 @@
 import { NgbMonth } from './ngb-month';
 import { NgbMonthStruct } from './ngb-month-struct';
-import { DayTemplateContext } from './datepicker-day-template-context';
+import { DayTemplateContext } from './monthpicker-day-template-context';
 import { TranslationWidth } from '@angular/common';
 
 export type NgbMarkDisabled = (date: NgbMonthStruct, current?: { year: number; month: number }) => boolean;
@@ -29,7 +29,7 @@ export type MonthViewModel = {
 	weekdays: string[];
 };
 
-export type DatepickerViewModel = {
+export type MonthpickerViewModel = {
 	dayTemplateData: NgbDayTemplateData | null;
 	disabled: boolean;
 	displayMonths: number;

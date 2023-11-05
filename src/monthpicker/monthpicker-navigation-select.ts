@@ -21,9 +21,9 @@ import { NgFor } from '@angular/common';
 	imports: [NgFor],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
-	styleUrls: ['./datepicker-navigation-select.scss'],
+	styleUrls: ['./monthpicker-navigation-select.scss'],
 	template: `
-		<select
+		<!--<select
 			#month
 			[disabled]="disabled"
 			class="form-select"
@@ -36,7 +36,7 @@ import { NgFor } from '@angular/common';
 			<option *ngFor="let m of months" [attr.aria-label]="i18n.getMonthFullName(m, date.year)" [value]="m">{{
 				i18n.getMonthShortName(m, date.year)
 			}}</option> </select
-		><select
+		>--><select
 			#year
 			[disabled]="disabled"
 			class="form-select"

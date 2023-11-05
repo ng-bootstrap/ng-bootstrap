@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NgbMonthStruct } from '../ngb-month-struct';
-import { NgbMonthNativeAdapter } from './ngb-date-native-adapter';
+import { NgbMonthNativeAdapter } from './ngb-month-native-adapter';
 
 /**
  * Same as [`NgbDateNativeAdapter`](#/components/datepicker/api#NgbDateNativeAdapter), but with UTC dates.
