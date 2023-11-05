@@ -14,10 +14,10 @@ export function toJSDate(date: NgbMonth) {
 	return jsDate;
 }
 
-export type NgbPeriod = 'y' | 'm' | 'd';
+export type NgbMonthPeriod = 'y' | 'm';
 
-export function NGB_DATEPICKER_CALENDAR_FACTORY() {
-	return new NgbCalendarGregorian();
+export function NGB_MONTHPICKER_CALENDAR_FACTORY() {
+	return new NgbMonthCalendarGregorian();
 }
 
 /**
@@ -26,8 +26,8 @@ export function NGB_DATEPICKER_CALENDAR_FACTORY() {
  * The default implementation uses the Gregorian calendar. You can inject it in your own
  * implementations if necessary to simplify `NgbMonth` calculations.
  */
-@Injectable({ providedIn: 'root', useFactory: NGB_DATEPICKER_CALENDAR_FACTORY })
-export abstract class NgbCalendar {
+@Injectable({ providedIn: 'root', useFactory: NGB_MONTHPICKER_CALENDAR_FACTORY })
+export abstract class NgbMonthCalendar {
 	/**
 	 * Returns the number of days per week.
 	 */
@@ -53,14 +53,14 @@ export abstract class NgbCalendar {
 	abstract getWeekday(date: NgbMonth): number;
 
 	/**
-	 * Adds a number of years, months or days to a given date.
+	 * Adds a number of years, months to a given date.
 	 *
-	 * * `period` can be `y`, `m` or `d` and defaults to day.
+	 * * `period` can be `y` or `m` and defaults to months.
 	 * * `number` defaults to 1.
 	 *
 	 * Always returns a new date.
 	 */
-	abstract getNext(date: NgbMonth, period?: NgbPeriod, number?: number): NgbMonth;
+	abstract getNext(date: NgbMonth, period?: NgbMonthPeriod, number?: number): NgbMonth;
 
 	/**
 	 * Subtracts a number of years, months or days from a given date.
@@ -70,7 +70,7 @@ export abstract class NgbCalendar {
 	 *
 	 * Always returns a new date.
 	 */
-	abstract getPrev(date: NgbMonth, period?: NgbPeriod, number?: number): NgbMonth;
+	abstract getPrev(date: NgbMonth, period?: NgbMonthPeriod, number?: number): NgbMonth;
 
 	/**
 	 * Returns the week number for a given week.
@@ -89,7 +89,7 @@ export abstract class NgbCalendar {
 }
 
 @Injectable()
-export class NgbCalendarGregorian extends NgbCalendar {
+export class NgbMonthCalendarGregorian extends NgbMonthCalendar {
 	getDaysPerWeek() {
 		return 7;
 	}
@@ -102,7 +102,7 @@ export class NgbCalendarGregorian extends NgbCalendar {
 		return 6;
 	}
 
-	getNext(date: NgbMonth, period: NgbPeriod = 'd', number = 1) {
+	getNext(date: NgbMonth, period: NgbMonthPeriod = 'm', number = 1) {
 		let jsDate = toJSDate(date);
 		let checkMonth = true;
 		let expectedMonth = jsDate.getMonth();
@@ -119,10 +119,6 @@ export class NgbCalendarGregorian extends NgbCalendar {
 					expectedMonth = expectedMonth + 12;
 				}
 				break;
-			case 'd':
-				jsDate.setDate(jsDate.getDate() + number);
-				checkMonth = false;
-				break;
 			default:
 				return date;
 		}
@@ -136,7 +132,7 @@ export class NgbCalendarGregorian extends NgbCalendar {
 		return fromJSDate(jsDate);
 	}
 
-	getPrev(date: NgbMonth, period: NgbPeriod = 'd', number = 1) {
+	getPrev(date: NgbMonth, period: NgbMonthPeriod = 'm', number = 1) {
 		return this.getNext(date, period, -number);
 	}
 

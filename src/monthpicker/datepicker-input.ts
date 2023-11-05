@@ -32,7 +32,7 @@ import { ngbPositioning } from '../util/positioning';
 import { NgbMonthAdapter } from './adapters/ngb-date-adapter';
 import { NgbMonthpicker, NgbMonthpickerNavigateEvent } from './monthpicker';
 import { DayTemplateContext } from './datepicker-day-template-context';
-import { NgbCalendar } from './ngb-calendar';
+import { NgbMonthCalendar } from './ngb-month-calendar';
 import { NgbMonth } from './ngb-month';
 import { NgbMonthParserFormatter } from './ngb-date-parser-formatter';
 import { NgbMonthStruct } from './ngb-month-struct';
@@ -76,7 +76,7 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	private _elRef = inject(ElementRef<HTMLInputElement>);
 	private _vcRef = inject(ViewContainerRef);
 	private _ngZone = inject(NgZone);
-	private _calendar = inject(NgbCalendar);
+	private _calendar = inject(NgbMonthCalendar);
 	private _dateAdapter = inject(NgbMonthAdapter<any>);
 	private _document = inject(DOCUMENT);
 	private _changeDetector = inject(ChangeDetectorRef);
@@ -487,7 +487,7 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	 *
 	 * Use the `[startDate]` input as an alternative.
 	 */
-	navigateTo(date?: { year: number; month: number; day?: number }) {
+	navigateTo(date?: { year: number; month: number }) {
 		if (this.isOpen()) {
 			this._cRef!.instance.navigateTo(date);
 		}

@@ -27,7 +27,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-import { NgbCalendar } from './ngb-calendar';
+import { NgbMonthCalendar } from './ngb-month-calendar';
 import { NgbMonth } from './ngb-month';
 import { DatepickerServiceInputs, NgbMonthpickerService } from './datepicker-service';
 import { DatepickerViewModel, DayViewModel, MonthViewModel, NavigationEvent } from './datepicker-view-model';
@@ -262,7 +262,7 @@ export class NgbMonthpicker implements AfterViewInit, OnChanges, OnInit, Control
 	protected injector = inject(Injector);
 
 	private _service = inject(NgbMonthpickerService);
-	private _calendar = inject(NgbCalendar);
+	private _calendar = inject(NgbMonthCalendar);
 	private _i18n = inject(NgbMonthpickerI18n);
 	private _config = inject(NgbMonthpickerConfig);
 	private _nativeElement = inject(ElementRef).nativeElement as HTMLElement;
@@ -485,7 +485,7 @@ export class NgbMonthpicker implements AfterViewInit, OnChanges, OnInit, Control
 	 *
 	 *  @since 5.3.0
 	 */
-	get calendar(): NgbCalendar {
+	get calendar(): NgbMonthCalendar {
 		return this._calendar;
 	}
 
@@ -527,8 +527,8 @@ export class NgbMonthpicker implements AfterViewInit, OnChanges, OnInit, Control
 	 *
 	 * Use the `[startDate]` input as an alternative.
 	 */
-	navigateTo(date?: { year: number; month: number; day?: number }) {
-		this._service.open(NgbMonth.from(date ? (date.day ? (date as NgbMonthStruct) : { ...date }) : null));
+	navigateTo(date?: { year: number; month: number }) {
+		this._service.open(NgbMonth.from(date ? (date as NgbMonthStruct) : null));
 	}
 
 	ngAfterViewInit() {
@@ -615,14 +615,14 @@ export class NgbMonthpicker implements AfterViewInit, OnChanges, OnInit, Control
 	}
 
 	onNavigateEvent(event: NavigationEvent) {
-		switch (event) {
+		/*switch (event) {
 			case NavigationEvent.PREV:
 				this._service.open(this._calendar.getPrev(this.model.firstDate!, 'm', 1));
 				break;
 			case NavigationEvent.NEXT:
 				this._service.open(this._calendar.getNext(this.model.firstDate!, 'm', 1));
 				break;
-		}
+		}*/
 	}
 
 	registerOnChange(fn: (value: any) => any): void {

@@ -1,4 +1,4 @@
-import { NgbCalendar } from './ngb-calendar';
+import { NgbMonthCalendar } from './ngb-month-calendar';
 import { NgbMonth } from './ngb-month';
 import { NgbMonthStruct } from './ngb-month-struct';
 import { DatepickerViewModel, NgbDayTemplateData, NgbMarkDisabled } from './datepicker-view-model';
@@ -104,7 +104,7 @@ export class NgbMonthpickerService {
 		},
 	};
 
-	private _calendar = inject(NgbCalendar);
+	private _calendar = inject(NgbMonthCalendar);
 	private _i18n = inject(NgbMonthpickerI18n);
 
 	private _model$ = new Subject<DatepickerViewModel>();

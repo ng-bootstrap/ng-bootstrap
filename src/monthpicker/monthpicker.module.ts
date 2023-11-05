@@ -5,7 +5,7 @@ import { NgbInputDatepicker } from './datepicker-input';
 
 export { NgbMonthpicker, NgbMonthpickerContent, NgbMonthpickerNavigateEvent, NgbMonthpickerState } from './monthpicker';
 export { NgbInputDatepicker } from './datepicker-input';
-export { NgbCalendar, NgbPeriod, NgbCalendarGregorian } from './ngb-calendar';
+export { NgbMonthCalendar, NgbMonthPeriod, NgbMonthCalendarGregorian } from './ngb-month-calendar';
 export { NgbMonthpickerMonth } from './monthpicker';
 export { NgbMonthpickerNavigation } from './monthpicker-navigation';
 export { NgbMonthpickerNavigationSelect } from './monthpicker-navigation-select';

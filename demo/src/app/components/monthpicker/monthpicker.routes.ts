@@ -5,7 +5,7 @@ import { NgbdDemoListService } from '../../services/demo-list.service';
 import { NgbdApiPage } from '../../shared/api-page/api-page.component';
 import { NgbdExamplesPage } from '../../shared/examples-page/examples.component';
 import { NgbdDatepickerAdapter } from './demos/adapter/datepicker-adapter';
-import { NgbdDatepickerBasic } from './demos/basic/datepicker-basic';
+import { NgbdMonthpickerBasic } from './demos/basic/datepicker-basic';
 import { NgbdDatepickerConfig } from './demos/config/datepicker-config';
 import { NgbdDatepickerCustomday } from './demos/customday/datepicker-customday';
 import { NgbdDatepickerDisabled } from './demos/disabled/datepicker-disabled';
@@ -23,7 +23,7 @@ import { Routes } from '@angular/router';
 
 const OVERVIEW = {
 	'basic-usage': 'Basic Usage',
-	'getting-date': 'Getting/setting a date',
+	/*'getting-date': 'Getting/setting a date',
 	'date-model': 'Date model and format',
 	navigation: 'Moving around',
 	'limiting-dates': 'Disabling and limiting dates',
@@ -33,17 +33,17 @@ const OVERVIEW = {
 	'footer-template': 'Custom footer',
 	range: 'Range selection',
 	i18n: 'Internationalization',
-	'keyboard-shortcuts': 'Keyboard shortcuts',
+	'keyboard-shortcuts': 'Keyboard shortcuts',*/
 };
 
 const DEMOS = {
 	basic: {
-		title: 'Basic datepicker',
-		type: NgbdDatepickerBasic,
+		title: 'Basic monthpicker',
+		type: NgbdMonthpickerBasic,
 		code: require('!!raw-loader!./demos/basic/datepicker-basic').default,
 		markup: require('!!raw-loader!./demos/basic/datepicker-basic.html').default,
 	},
-	popup: {
+	/*popup: {
 		title: 'Datepicker in a popup',
 		type: NgbdDatepickerPopup,
 		code: require('!!raw-loader!./demos/popup/datepicker-popup').default,
@@ -120,7 +120,7 @@ const DEMOS = {
 		type: NgbdDatepickerConfig,
 		code: require('!!raw-loader!./demos/config/datepicker-config').default,
 		markup: require('!!raw-loader!./demos/config/datepicker-config.html').default,
-	},
+	},*/
 };
 
 export const ROUTES: Routes = [

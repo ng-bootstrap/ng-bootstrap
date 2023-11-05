@@ -31,16 +31,16 @@ export class NgbMonthpickerKeyboardService {
 				monthpicker.focusDate(event.shiftKey ? state.minDate : state.firstDate);
 				break;
 			case Key.ArrowLeft:
-				monthpicker.focusDate(calendar.getPrev(state.focusedDate, 'd', 1));
+				monthpicker.focusDate(calendar.getPrev(state.focusedDate, 'm', 1));
 				break;
 			case Key.ArrowUp:
-				monthpicker.focusDate(calendar.getPrev(state.focusedDate, 'd', calendar.getDaysPerWeek()));
+				monthpicker.focusDate(calendar.getPrev(state.focusedDate, 'm', calendar.getDaysPerWeek()));
 				break;
 			case Key.ArrowRight:
-				monthpicker.focusDate(calendar.getNext(state.focusedDate, 'd', 1));
+				monthpicker.focusDate(calendar.getNext(state.focusedDate, 'm', 1));
 				break;
 			case Key.ArrowDown:
-				monthpicker.focusDate(calendar.getNext(state.focusedDate, 'd', calendar.getDaysPerWeek()));
+				monthpicker.focusDate(calendar.getNext(state.focusedDate, 'm', calendar.getDaysPerWeek()));
 				break;
 			case Key.Enter:
 			case Key.Space:

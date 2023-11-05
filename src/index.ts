@@ -107,6 +107,8 @@ export {
 	NgbModalRef,
 } from './modal/modal.module';
 export {
+	NgbMonthCalendar,
+	NgbMonthCalendarGregorian,
 	NgbMonth,
 	NgbMonthpicker,
 	NgbMonthpickerConfig,
