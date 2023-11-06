@@ -21,7 +21,6 @@ import { FormsModule } from '@angular/forms';
 @Injectable()
 export class NgbDatepickerI18nBuddhist extends NgbDatepickerI18n {
 	private _locale = 'th';
-	private _weekdaysShort: readonly string[];
 	private _monthsShort: readonly string[];
 	private _monthsFull: readonly string[];
 
@@ -29,9 +28,6 @@ export class NgbDatepickerI18nBuddhist extends NgbDatepickerI18n {
 		super();
 
 		registerLocaleData(localeThai);
-
-		const weekdaysStartingOnSunday = getLocaleDayNames(this._locale, FormStyle.Standalone, TranslationWidth.Short);
-		this._weekdaysShort = weekdaysStartingOnSunday.map((day, index) => weekdaysStartingOnSunday[(index + 1) % 7]);
 
 		this._monthsShort = getLocaleMonthNames(this._locale, FormStyle.Standalone, TranslationWidth.Abbreviated);
 		this._monthsFull = getLocaleMonthNames(this._locale, FormStyle.Standalone, TranslationWidth.Wide);
@@ -43,10 +39,6 @@ export class NgbDatepickerI18nBuddhist extends NgbDatepickerI18n {
 
 	getMonthFullName(month: number): string {
 		return this._monthsFull[month - 1] || '';
-	}
-
-	getWeekdayLabel(weekday: number) {
-		return this._weekdaysShort[weekday - 1] || '';
 	}
 
 	getDayAriaLabel(date: NgbDateStruct): string {

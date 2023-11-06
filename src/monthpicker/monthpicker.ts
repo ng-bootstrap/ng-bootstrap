@@ -130,18 +130,12 @@ export class NgbMonthpickerContent {
 	styleUrls: ['./datepicker-month.scss'],
 	template: `
 		<div *ngIf="viewModel.weekdays.length > 0" class="ngb-dp-week ngb-dp-weekdays" role="row">
-			<!--<div *ngIf="datepicker.showWeekNumbers" class="ngb-dp-weekday ngb-dp-showweek small">{{
-				i18n.getWeekLabel()
-			}}</div>-->
 			<div *ngFor="let weekday of viewModel.weekdays" class="ngb-dp-weekday small" role="columnheader">{{
 				weekday
 			}}</div>
 		</div>
 		<ng-template ngFor let-week [ngForOf]="viewModel.weeks">
 			<div *ngIf="!week.collapsed" class="ngb-dp-week" role="row">
-				<!--<div *ngIf="datepicker.showWeekNumbers" class="ngb-dp-week-number small text-muted">{{
-					i18n.getWeekNumerals(week.number)
-				}}</div>-->
 				<div
 					*ngFor="let day of week.days"
 					(click)="doSelect(day); $event.preventDefault()"
@@ -208,14 +202,15 @@ export class NgbMonthpickerMonth {
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
 	styleUrls: ['./monthpicker.scss'],
-	//host: { '[class.disabled]': 'model.disabled' },
+	host: { '[class.disabled]': 'model.disabled' },
 	template: `
 		<ng-template #defaultContentTemplate>
-			<!--<div *ngFor="let month of model.months; let i = index" class="ngb-dp-month">
+			<div *ngFor="let month of model.months; let i = index" class="ngb-dp-month">
+				{{ i }}
 				<div *ngIf="navigation === 'none' || (displayMonths > 1 && navigation === 'select')" class="ngb-dp-month-name">
 					{{ i18n.getMonthLabel(month.firstDate) }}
 				</div>
-			</div>-->
+			</div>
 		</ng-template>
 
 		<div class="ngb-mp-header">
@@ -252,8 +247,6 @@ export class NgbMonthpickerMonth {
 export class NgbMonthpicker implements AfterViewInit, OnChanges, OnInit, ControlValueAccessor {
 	static ngAcceptInputType_autoClose: boolean | string;
 	static ngAcceptInputType_navigation: string;
-	static ngAcceptInputType_outsideDays: string;
-	static ngAcceptInputType_weekdays: boolean | number;
 
 	model: MonthpickerViewModel;
 
@@ -311,13 +304,6 @@ export class NgbMonthpicker implements AfterViewInit, OnChanges, OnInit, Control
 	@Input() displayMonths = this._config.displayMonths;
 
 	/**
-	 * The first day of the week.
-	 *
-	 * With default calendar we use ISO 8601: 'weekday' is 1=Mon ... 7=Sun.
-	 */
-	@Input() firstDayOfWeek = this._config.firstDayOfWeek;
-
-	/**
 	 * The reference to the custom template for the datepicker footer.
 	 *
 	 * @since 3.3.0
@@ -357,22 +343,6 @@ export class NgbMonthpicker implements AfterViewInit, OnChanges, OnInit, Control
 	@Input() navigation = this._config.navigation;
 
 	/**
-	 * The way of displaying days that don't belong to the current month.
-	 *
-	 * * `"visible"` - days are visible
-	 * * `"hidden"` - days are hidden, white space preserved
-	 * * `"collapsed"` - days are collapsed, so the datepicker height might change between months
-	 *
-	 * For the 2+ months view, days in between months are never shown.
-	 */
-	@Input() outsideDays = this._config.outsideDays;
-
-	/**
-	 * If `true`, week numbers will be displayed.
-	 */
-	@Input() showWeekNumbers = this._config.showWeekNumbers;
-
-	/**
 	 * The date to open calendar with.
 	 *
 	 * With the default calendar we use ISO 8601: 'month' is 1=Jan ... 12=Dec.
@@ -381,17 +351,6 @@ export class NgbMonthpicker implements AfterViewInit, OnChanges, OnInit, Control
 	 * You could use `navigateTo(date)` method as an alternative.
 	 */
 	@Input() startDate = this._config.startDate;
-
-	/**
-	 * The way weekdays should be displayed.
-	 *
-	 * * `true` - weekdays are displayed using default width
-	 * * `false` - weekdays are not displayed
-	 * * `TranslationWidth` - weekdays are displayed using specified width
-	 *
-	 * @since 9.1.0
-	 */
-	@Input() weekdays = this._config.weekdays;
 
 	/**
 	 * An event emitted right before the navigation happens and displayed month changes.
@@ -454,6 +413,7 @@ export class NgbMonthpicker implements AfterViewInit, OnChanges, OnInit, Control
 			const oldFocusedDate = this.model ? this.model.focusDate : null;
 
 			this.model = model;
+			console.log('model', model);
 
 			// handling selection change
 			if (isChangedDate(newSelectedDate, this._controlValue)) {
@@ -560,17 +520,9 @@ export class NgbMonthpicker implements AfterViewInit, OnChanges, OnInit, Control
 	ngOnInit() {
 		if (this.model === undefined) {
 			const inputs: MonthpickerServiceInputs = {};
-			[
-				'dayTemplateData',
-				'displayMonths',
-				'markDisabled',
-				'firstDayOfWeek',
-				'navigation',
-				'minDate',
-				'maxDate',
-				'outsideDays',
-				'weekdays',
-			].forEach((name) => (inputs[name] = this[name]));
+			['dayTemplateData', 'displayMonths', 'markDisabled', 'navigation', 'minDate', 'maxDate'].forEach(
+				(name) => (inputs[name] = this[name]),
+			);
 			this._service.set(inputs);
 
 			this.navigateTo(this.startDate);
@@ -582,17 +534,7 @@ export class NgbMonthpicker implements AfterViewInit, OnChanges, OnInit, Control
 
 	ngOnChanges(changes: SimpleChanges) {
 		const inputs: MonthpickerServiceInputs = {};
-		[
-			'dayTemplateData',
-			'displayMonths',
-			'markDisabled',
-			'firstDayOfWeek',
-			'navigation',
-			'minDate',
-			'maxDate',
-			'outsideDays',
-			'weekdays',
-		]
+		['dayTemplateData', 'displayMonths', 'markDisabled', 'navigation', 'minDate', 'maxDate']
 			.filter((name) => name in changes)
 			.forEach((name) => (inputs[name] = this[name]));
 		this._service.set(inputs);

@@ -6,7 +6,7 @@ import { NgbMonthStruct } from './ngb-month-struct';
  * A service supplying i18n data to the datepicker component.
  *
  * The default implementation of this service uses the Angular locale and registered locale data for
- * weekdays and month names (as explained in the Angular i18n guide).
+ * month names (as explained in the Angular i18n guide).
  *
  * It also provides a way to i18n data that depends on calendar calculations, like aria labels, day, week and year
  * numerals. For other static labels the datepicker uses the default Angular i18n.

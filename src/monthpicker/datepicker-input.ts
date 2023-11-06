@@ -69,8 +69,6 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	static ngAcceptInputType_autoClose: boolean | string;
 	static ngAcceptInputType_disabled: boolean | '';
 	static ngAcceptInputType_navigation: string;
-	static ngAcceptInputType_outsideDays: string;
-	static ngAcceptInputType_weekdays: boolean | number;
 
 	private _parserFormatter = inject(NgbMonthParserFormatter);
 	private _elRef = inject(ElementRef<HTMLInputElement>);
@@ -146,13 +144,6 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	@Input() displayMonths: number;
 
 	/**
-	 * The first day of the week.
-	 *
-	 * With default calendar we use ISO 8601: 'weekday' is 1=Mon ... 7=Sun.
-	 */
-	@Input() firstDayOfWeek: number;
-
-	/**
 	 * The reference to the custom template for the datepicker footer.
 	 *
 	 * @since 3.3.0
@@ -192,17 +183,6 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	@Input() navigation: 'select' | 'arrows' | 'none';
 
 	/**
-	 * The way of displaying days that don't belong to the current month.
-	 *
-	 * * `"visible"` - days are visible
-	 * * `"hidden"` - days are hidden, white space preserved
-	 * * `"collapsed"` - days are collapsed, so the datepicker height might change between months
-	 *
-	 * For the 2+ months view, days in between months are never shown.
-	 */
-	@Input() outsideDays: 'visible' | 'collapsed' | 'hidden';
-
-	/**
 	 * The preferred placement of the datepicker popup, among the [possible values](#/guides/positioning#api).
 	 *
 	 * The default order of preference is `"bottom-start bottom-end top-start top-end"`
@@ -230,11 +210,6 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	@Input() restoreFocus: true | string | HTMLElement;
 
 	/**
-	 * If `true`, week numbers will be displayed.
-	 */
-	@Input() showWeekNumbers: boolean;
-
-	/**
 	 * The date to open calendar with.
 	 *
 	 * With the default calendar we use ISO 8601: 'month' is 1=Jan ... 12=Dec.
@@ -259,17 +234,6 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	 * @since 4.2.0
 	 */
 	@Input() positionTarget = this._config.positionTarget;
-
-	/**
-	 * The way weekdays should be displayed.
-	 *
-	 * * `true` - weekdays are displayed using default width
-	 * * `false` - weekdays are not displayed
-	 * * `TranslationWidth` - weekdays are displayed using specified width
-	 *
-	 * @since 9.1.0
-	 */
-	@Input() weekdays: TranslationWidth | boolean;
 
 	/**
 	 * An event emitted when user selects a date using keyboard or mouse.
@@ -536,16 +500,12 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 			'dayTemplate',
 			'dayTemplateData',
 			'displayMonths',
-			'firstDayOfWeek',
 			'footerTemplate',
 			'markDisabled',
 			'minDate',
 			'maxDate',
 			'navigation',
-			'outsideDays',
 			'showNavigation',
-			'showWeekNumbers',
-			'weekdays',
 		].forEach((inputName: string) => {
 			if (this[inputName] !== undefined) {
 				datepickerComponentRef.setInput(inputName, this[inputName]);

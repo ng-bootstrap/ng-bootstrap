@@ -184,10 +184,6 @@ export function buildMonth(
 
 		// week has days
 		for (let day = 0; day < calendar.getDaysPerWeek(); day++) {
-			if (week === 0 && weekdaysVisible) {
-				month.weekdays[day] = i18n.getWeekdayLabel(calendar.getWeekday(date), weekdayWidth);
-			}
-
 			const newDate = new NgbDate(date.year, date.month, date.day);
 			const nextDate = calendar.getNext(newDate);
 

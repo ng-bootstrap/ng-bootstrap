@@ -26,7 +26,6 @@ export type MonthViewModel = {
 	number: number;
 	year: number;
 	weeks: WeekViewModel[];
-	weekdays: string[];
 };
 
 export type MonthpickerViewModel = {
@@ -34,7 +33,6 @@ export type MonthpickerViewModel = {
 	disabled: boolean;
 	displayMonths: number;
 	firstDate: NgbMonth | null;
-	firstDayOfWeek: number;
 	focusDate: NgbMonth | null;
 	focusVisible: boolean;
 	lastDate: NgbMonth | null;
@@ -43,7 +41,6 @@ export type MonthpickerViewModel = {
 	minDate: NgbMonth | null;
 	months: MonthViewModel[];
 	navigation: 'select' | 'arrows' | 'none';
-	outsideDays: 'visible' | 'collapsed' | 'hidden';
 	prevDisabled: boolean;
 	nextDisabled: boolean;
 	selectBoxes: {
@@ -51,8 +48,6 @@ export type MonthpickerViewModel = {
 		months: number[];
 	};
 	selectedDate: NgbMonth | null;
-	weekdayWidth: TranslationWidth;
-	weekdaysVisible: boolean;
 };
 
 export enum NavigationEvent {

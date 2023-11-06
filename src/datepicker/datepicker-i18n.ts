@@ -21,13 +21,6 @@ import { NgbDateStruct } from './ngb-date-struct';
 })
 export abstract class NgbDatepickerI18n {
 	/**
-	 * Returns the weekday label using specified width
-	 *
-	 * @since 9.1.0
-	 */
-	abstract getWeekdayLabel(weekday: number, width?: TranslationWidth): string;
-
-	/**
 	 * Returns the short month name to display in the date picker navigation.
 	 *
 	 * With default calendar we use ISO 8601: 'month' is 1=Jan ... 12=Dec.
@@ -106,16 +99,6 @@ export class NgbDatepickerI18nDefault extends NgbDatepickerI18n {
 
 	private _monthsShort = getLocaleMonthNames(this._locale, FormStyle.Standalone, TranslationWidth.Abbreviated);
 	private _monthsFull = getLocaleMonthNames(this._locale, FormStyle.Standalone, TranslationWidth.Wide);
-
-	getWeekdayLabel(weekday: number, width?: TranslationWidth): string {
-		const weekdaysStartingOnSunday = getLocaleDayNames(
-			this._locale,
-			FormStyle.Standalone,
-			width === undefined ? TranslationWidth.Short : width,
-		);
-		const weekdays = weekdaysStartingOnSunday.map((day, index) => weekdaysStartingOnSunday[(index + 1) % 7]);
-		return weekdays[weekday - 1] || '';
-	}
 
 	getMonthShortName(month: number): string {
 		return this._monthsShort[month - 1] || '';

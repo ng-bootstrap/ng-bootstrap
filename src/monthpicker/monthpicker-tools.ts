@@ -148,16 +148,7 @@ export function buildMonth(
 	i18n: NgbMonthpickerI18n,
 	month: MonthViewModel = {} as MonthViewModel,
 ): MonthViewModel {
-	const {
-		dayTemplateData,
-		minDate,
-		maxDate,
-		firstDayOfWeek,
-		markDisabled,
-		outsideDays,
-		weekdayWidth,
-		weekdaysVisible,
-	} = state;
+	const { dayTemplateData, minDate, maxDate, markDisabled } = state;
 	const calendarToday = calendar.getToday();
 
 	month.firstDate = <any>null;
@@ -165,14 +156,8 @@ export function buildMonth(
 	month.number = date.month;
 	month.year = date.year;
 	month.weeks = month.weeks || [];
-	month.weekdays = month.weekdays || [];
 
-	date = getFirstViewDate(calendar, date, firstDayOfWeek);
-
-	// clearing weekdays, if not visible
-	if (!weekdaysVisible) {
-		month.weekdays.length = 0;
-	}
+	date = getFirstViewDate(calendar, date);
 
 	// month has weeks
 	for (let week = 0; week < calendar.getWeeksPerMonth(); week++) {
@@ -184,10 +169,6 @@ export function buildMonth(
 
 		// week has days
 		for (let day = 0; day < calendar.getDaysPerWeek(); day++) {
-			if (week === 0 && weekdaysVisible) {
-				//month.weekdays[day] = i18n.getWeekdayLabel(calendar.getWeekday(date), weekdayWidth);
-			}
-
 			const newDate = new NgbMonth(date.year, date.month);
 			const nextDate = calendar.getNext(newDate);
 
@@ -240,24 +221,18 @@ export function buildMonth(
 			date = nextDate;
 		}
 
-		weekObject.number = calendar.getWeekNumber(
-			days.map((day) => day.date),
-			firstDayOfWeek,
-		);
+		weekObject.number = calendar.getWeekNumber(days.map((day) => day.date));
 
 		// marking week as collapsed
-		weekObject.collapsed =
-			outsideDays === 'collapsed' &&
-			days[0].date.month !== month.number &&
-			days[days.length - 1].date.month !== month.number;
+		weekObject.collapsed = days[0].date.month !== month.number && days[days.length - 1].date.month !== month.number;
 	}
 
 	return month;
 }
 
-export function getFirstViewDate(calendar: NgbMonthCalendar, date: NgbMonth, firstDayOfWeek: number): NgbMonth {
+export function getFirstViewDate(calendar: NgbMonthCalendar, date: NgbMonth): NgbMonth {
 	const daysPerWeek = calendar.getDaysPerWeek();
 	const firstMonthDate = new NgbMonth(date.year, date.month);
 	const dayOfWeek = calendar.getWeekday(firstMonthDate) % daysPerWeek;
-	return calendar.getPrev(firstMonthDate, 'm', (daysPerWeek + dayOfWeek - firstDayOfWeek) % daysPerWeek);
+	return calendar.getPrev(firstMonthDate, 'm', (daysPerWeek + dayOfWeek) % daysPerWeek);
 }

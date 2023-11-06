@@ -19,6 +19,4 @@ import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 export class NgbdDatepickerMultiple {
 	displayMonths = 2;
 	navigation = 'select';
-	showWeekNumbers = false;
-	outsideDays = 'visible';
 }

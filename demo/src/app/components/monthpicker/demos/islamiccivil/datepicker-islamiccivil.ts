@@ -9,7 +9,6 @@ import {
 import { FormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
 
-const WEEKDAYS = ['ن', 'ث', 'ر', 'خ', 'ج', 'س', 'ح'];
 const MONTHS = [
 	'محرم',
 	'صفر',
@@ -33,10 +32,6 @@ export class IslamicI18n extends NgbDatepickerI18n {
 
 	getMonthFullName(month: number) {
 		return MONTHS[month - 1];
-	}
-
-	getWeekdayLabel(weekday: number) {
-		return WEEKDAYS[weekday - 1];
 	}
 
 	getDayAriaLabel(date: NgbDateStruct): string {

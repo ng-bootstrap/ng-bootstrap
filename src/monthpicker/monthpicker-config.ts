@@ -15,13 +15,9 @@ export class NgbMonthpickerConfig {
 	dayTemplateData: (date: NgbMonthStruct, current?: { year: number; month: number }) => any;
 	footerTemplate: TemplateRef<any>;
 	displayMonths = 1;
-	firstDayOfWeek = 1;
 	markDisabled: (date: NgbMonthStruct, current?: { year: number; month: number }) => boolean;
 	minDate: NgbMonthStruct;
 	maxDate: NgbMonthStruct;
 	navigation: 'select' | 'arrows' | 'none' = 'select';
-	outsideDays: 'visible' | 'collapsed' | 'hidden' = 'visible';
-	showWeekNumbers = false;
 	startDate: { year: number; month: number };
-	weekdays: TranslationWidth | boolean = TranslationWidth.Short;
 }

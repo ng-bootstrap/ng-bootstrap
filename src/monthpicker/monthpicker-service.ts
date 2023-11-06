@@ -26,14 +26,11 @@ export type MonthpickerServiceInputs = Partial<{
 	dayTemplateData: NgbDayTemplateData;
 	displayMonths: number;
 	disabled: boolean;
-	firstDayOfWeek: number;
 	focusVisible: boolean;
 	markDisabled: NgbMarkDisabled;
 	maxDate: NgbMonth | null;
 	minDate: NgbMonth | null;
 	navigation: 'select' | 'arrows' | 'none';
-	outsideDays: 'visible' | 'collapsed' | 'hidden';
-	weekdays: TranslationWidth | boolean;
 }>;
 
 @Injectable()
@@ -55,12 +52,6 @@ export class NgbMonthpickerService {
 		disabled: (disabled: boolean) => {
 			if (this._state.disabled !== disabled) {
 				return { disabled };
-			}
-		},
-		firstDayOfWeek: (firstDayOfWeek: number) => {
-			firstDayOfWeek = toInteger(firstDayOfWeek);
-			if (isInteger(firstDayOfWeek) && firstDayOfWeek >= 0 && this._state.firstDayOfWeek !== firstDayOfWeek) {
-				return { firstDayOfWeek };
 			}
 		},
 		focusVisible: (focusVisible: boolean) => {
@@ -90,18 +81,6 @@ export class NgbMonthpickerService {
 				return { navigation };
 			}
 		},
-		outsideDays: (outsideDays: 'visible' | 'collapsed' | 'hidden') => {
-			if (this._state.outsideDays !== outsideDays) {
-				return { outsideDays };
-			}
-		},
-		weekdays: (weekdays: boolean | TranslationWidth) => {
-			const weekdayWidth = weekdays === true || weekdays === false ? TranslationWidth.Short : weekdays;
-			const weekdaysVisible = weekdays === true || weekdays === false ? weekdays : true;
-			if (this._state.weekdayWidth !== weekdayWidth || this._state.weekdaysVisible !== weekdaysVisible) {
-				return { weekdayWidth, weekdaysVisible };
-			}
-		},
 	};
 
 	private _calendar = inject(NgbMonthCalendar);
@@ -119,19 +98,15 @@ export class NgbMonthpickerService {
 		disabled: false,
 		displayMonths: 1,
 		firstDate: null,
-		firstDayOfWeek: 1,
 		lastDate: null,
 		focusDate: null,
 		focusVisible: false,
 		months: [],
 		navigation: 'select',
-		outsideDays: 'visible',
 		prevDisabled: false,
 		nextDisabled: false,
 		selectedDate: null,
 		selectBoxes: { years: [], months: [] },
-		weekdayWidth: TranslationWidth.Short,
-		weekdaysVisible: true,
 	};
 
 	get model$(): Observable<MonthpickerViewModel> {
@@ -214,7 +189,7 @@ export class NgbMonthpickerService {
 	}
 
 	private _patchContexts(state: MonthpickerViewModel) {
-		const { months, displayMonths, selectedDate, focusDate, focusVisible, disabled, outsideDays } = state;
+		const { months, displayMonths, selectedDate, focusDate, focusVisible, disabled } = state;
 		state.months.forEach((month) => {
 			month.weeks.forEach((week) => {
 				week.days.forEach((day) => {
@@ -240,11 +215,9 @@ export class NgbMonthpickerService {
 					// visibility
 					if (month.number !== day.date.month) {
 						day.hidden =
-							outsideDays === 'hidden' ||
-							outsideDays === 'collapsed' ||
-							(displayMonths > 1 &&
-								day.date.after(months[0].firstDate) &&
-								day.date.before(months[displayMonths - 1].lastDate));
+							displayMonths > 1 &&
+							day.date.after(months[0].firstDate) &&
+							day.date.before(months[displayMonths - 1].lastDate);
 					}
 				});
 			});
@@ -306,13 +279,10 @@ export class NgbMonthpickerService {
 		if (startDate) {
 			const forceRebuild =
 				'dayTemplateData' in patch ||
-				'firstDayOfWeek' in patch ||
 				'markDisabled' in patch ||
 				'minDate' in patch ||
 				'maxDate' in patch ||
-				'disabled' in patch ||
-				'outsideDays' in patch ||
-				'weekdaysVisible' in patch;
+				'disabled' in patch;
 
 			const months = buildMonths(this._calendar, startDate, state, this._i18n, forceRebuild);
 

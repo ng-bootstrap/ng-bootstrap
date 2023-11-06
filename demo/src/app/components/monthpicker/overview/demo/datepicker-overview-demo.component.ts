@@ -44,9 +44,7 @@ import { DatePipe } from '@angular/common';
 			(dateSelect)="onDateSelection($event)"
 			[dayTemplate]="dayTemplate"
 			[markDisabled]="markDisabled"
-			[showWeekNumbers]="true"
 			[minDate]="today"
-			outsideDays="hidden"
 			[displayMonths]="2"
 		>
 		</ngb-datepicker>

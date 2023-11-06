@@ -75,7 +75,7 @@ export abstract class NgbMonthCalendar {
 	/**
 	 * Returns the week number for a given week.
 	 */
-	abstract getWeekNumber(week: readonly NgbMonth[], firstDayOfWeek: number): number;
+	abstract getWeekNumber(week: readonly NgbMonth[]): number;
 
 	/**
 	 * Returns the today's date.
@@ -143,13 +143,8 @@ export class NgbMonthCalendarGregorian extends NgbMonthCalendar {
 		return day === 0 ? 7 : day;
 	}
 
-	getWeekNumber(week: readonly NgbMonth[], firstDayOfWeek: number) {
-		// in JS Date Sun=0, in ISO 8601 Sun=7
-		if (firstDayOfWeek === 7) {
-			firstDayOfWeek = 0;
-		}
-
-		const thursdayIndex = (4 + 7 - firstDayOfWeek) % 7;
+	getWeekNumber(week: readonly NgbMonth[]) {
+		const thursdayIndex = (4 + 7) % 7;
 		let date = week[thursdayIndex];
 
 		const jsDate = toJSDate(date);
