@@ -1,7 +1,5 @@
-/* eslint-disable deprecation/deprecation */
 import { NgModule } from '@angular/core';
 
-import { NgbAccordion, NgbPanel, NgbPanelContent, NgbPanelHeader, NgbPanelTitle, NgbPanelToggle } from './accordion';
 import {
 	NgbAccordionDirective,
 	NgbAccordionItem,
@@ -11,17 +9,6 @@ import {
 	NgbAccordionCollapse,
 	NgbAccordionButton,
 } from './accordion.directive';
-
-export {
-	NgbAccordion,
-	NgbPanel,
-	NgbPanelTitle,
-	NgbPanelContent,
-	NgbPanelChangeEvent,
-	NgbPanelHeader,
-	NgbPanelHeaderContext,
-	NgbPanelToggle,
-} from './accordion';
 
 export {
 	NgbAccordionButton,
@@ -35,12 +22,6 @@ export {
 export { NgbAccordionConfig } from './accordion-config';
 
 const NGB_ACCORDION_DIRECTIVES = [
-	NgbAccordion,
-	NgbPanel,
-	NgbPanelTitle,
-	NgbPanelContent,
-	NgbPanelHeader,
-	NgbPanelToggle,
 	NgbAccordionButton,
 	NgbAccordionDirective,
 	NgbAccordionItem,
