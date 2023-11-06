@@ -6,8 +6,8 @@ import * as ts from '@schematics/angular/third_party/github.com/Microsoft/TypeSc
 
 import { Schema } from '../schema';
 import { readWorkspace } from '@schematics/angular/utility';
+import { getMainFilePath } from '@schematics/angular/utility/standalone/util';
 import * as messages from '../messages';
-import { getProjectTargetOptions } from '../../utils/project';
 
 const NG_BOOTSTRAP_MODULE_NAME = 'NgbModule';
 const NG_BOOTSTRAP_PACKAGE_NAME = '@ng-bootstrap/ng-bootstrap';
@@ -45,8 +45,7 @@ export function addNgbModuleToAppModule(options: Schema): Rule {
 		}
 
 		// 2. getting main file for project
-		const projectBuildOptions = getProjectTargetOptions(project, 'build');
-		const mainFilePath = projectBuildOptions.main as string;
+		const mainFilePath = await getMainFilePath(host, projectName);
 		if (!mainFilePath || !host.read(mainFilePath)) {
 			throw new SchematicsException(messages.noMainFile(projectName));
 		}
