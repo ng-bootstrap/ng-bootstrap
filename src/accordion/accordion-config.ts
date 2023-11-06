@@ -15,11 +15,6 @@ export class NgbAccordionConfig {
 	closeOthers = false;
 	destroyOnHide = true;
 
-	/**
-	 * @deprecated 14.1.0
-	 */
-	type: string;
-
 	get animation(): boolean {
 		return this._animation ?? this._ngbConfig.animation;
 	}
