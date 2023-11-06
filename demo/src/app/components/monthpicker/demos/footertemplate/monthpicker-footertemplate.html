@@ -1,5 +1,5 @@
 <p>
-	This datepicker uses a footer template which is presented inside datepicker. Today and close buttons used as an
+	This monthpicker uses a footer template which is presented inside datepicker. Today and close buttons used as an
 	example.
 </p>
 
@@ -8,12 +8,12 @@
 		<div class="input-group">
 			<input
 				class="form-control"
-				placeholder="yyyy-mm-dd"
-				name="dp"
+				placeholder="yyyy-mm"
+				name="mp"
 				[(ngModel)]="model"
-				ngbDatepicker
+				ngbMonthpicker
 				[footerTemplate]="footerTemplate"
-				#d="ngbDatepicker"
+				#d="ngbMonthpicker"
 			/>
 			<button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
 		</div>

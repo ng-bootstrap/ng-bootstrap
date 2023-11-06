@@ -8,12 +8,12 @@ import { NgbDatepicker } from './datepicker';
 import { NgbDatepickerKeyboardService } from './datepicker-keyboard-service';
 import { NgbDatepickerService } from './datepicker-service';
 import { NgbDate } from './ngb-date';
-import { NgbDateStruct } from './ngb-date-struct';
+import { NgbMonthStruct } from './ngb-date-struct';
 
 const createTestComponent = () =>
 	createGenericTestComponent(
 		`
-  <ngb-datepicker #dp
+  <ngb-monthpicker #dp
                   [dayTemplate]="dt"
                   [weekdays]="weekdays"
                   [showWeekNumbers]="showWeekNumbers"
@@ -26,15 +26,15 @@ const createTestComponent = () =>
 	) as ComponentFixture<TestComponent>;
 
 function getWeekNumbers(element: HTMLElement): HTMLElement[] {
-	return <HTMLElement[]>Array.from(element.querySelectorAll('.ngb-dp-week-number'));
+	return <HTMLElement[]>Array.from(element.querySelectorAll('.ngb-mp-week-number'));
 }
 
 function getDates(element: HTMLElement): HTMLElement[] {
-	return <HTMLElement[]>Array.from(element.querySelectorAll('.ngb-dp-day'));
+	return <HTMLElement[]>Array.from(element.querySelectorAll('.ngb-mp-day'));
 }
 
 function getWeekLabel(element: HTMLElement): HTMLElement | null {
-	return element.querySelector('.ngb-dp-showweek');
+	return element.querySelector('.ngb-mp-showweek');
 }
 
 function expectWeekNumbers(element: HTMLElement, weeknumbers: string[]) {
@@ -55,7 +55,7 @@ function expectWeekLabel(element: HTMLElement, weekLabel: string) {
 
 @Injectable()
 class MockDatepickerService extends NgbDatepickerService {
-	getMonth(struct: NgbDateStruct) {
+	getMonth(struct: NgbMonthStruct) {
 		return {
 			firstDate: new NgbDate(2016, 8, 1),
 			lastDate: new NgbDate(2016, 8, 31),

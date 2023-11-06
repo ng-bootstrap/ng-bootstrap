@@ -7,12 +7,12 @@ import { isInteger } from '../util/util';
  * It is the implementation of the `NgbMonthStruct` interface that adds some convenience methods,
  * like `.equals()`, `.before()`, etc.
  *
- * All datepicker APIs consume `NgbMonthStruct`, but return `NgbMonth`.
+ * All monthpicker APIs consume `NgbMonthStruct`, but return `NgbMonth`.
  *
  * In many cases it is simpler to manipulate these objects together with
- * [`NgbCalendar`](#/components/datepicker/api#NgbCalendar) than native JS Dates.
+ * [`NgbCalendar`](#/components/monthpicker/api#NgbCalendar) than native JS Dates.
  *
- * See the [date format overview](#/components/datepicker/overview#date-model) for more details.
+ * See the [date format overview](#/components/monthpicker/overview#date-model) for more details.
  */
 export class NgbMonth implements NgbMonthStruct {
 	/**

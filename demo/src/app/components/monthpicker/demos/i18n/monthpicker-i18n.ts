@@ -1,11 +1,16 @@
 import { Component, Injectable } from '@angular/core';
-import { NgbAlertModule, NgbDatepickerI18n, NgbDatepickerModule, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import {
+	NgbAlertModule,
+	NgbMonthpickerModule,
+	NgbDateStruct,
+	NgbMonthpickerI18n,
+	NgbMonthStruct,
+} from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 
 const I18N_VALUES = {
 	fr: {
 		months: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Aou', 'Sep', 'Oct', 'Nov', 'Déc'],
-		weekLabel: 'sem',
 	},
 	// other languages you would support
 };
@@ -19,14 +24,11 @@ export class I18n {
 
 // Define custom service providing the months translations
 @Injectable()
-export class CustomDatepickerI18n extends NgbDatepickerI18n {
+export class CustomMonthpickerI18n extends NgbMonthpickerI18n {
 	constructor(private _i18n: I18n) {
 		super();
 	}
 
-	getWeekLabel(): string {
-		return I18N_VALUES[this._i18n.language].weekLabel;
-	}
 	getMonthShortName(month: number): string {
 		return I18N_VALUES[this._i18n.language].months[month - 1];
 	}
@@ -39,12 +41,12 @@ export class CustomDatepickerI18n extends NgbDatepickerI18n {
 }
 
 @Component({
-	selector: 'ngbd-datepicker-i18n',
+	selector: 'ngbd-monthpicker-i18n',
 	standalone: true,
-	imports: [NgbDatepickerModule, NgbAlertModule, FormsModule],
-	templateUrl: './datepicker-i18n.html',
-	providers: [I18n, { provide: NgbDatepickerI18n, useClass: CustomDatepickerI18n }], // define custom NgbDatepickerI18n provider
+	imports: [NgbMonthpickerModule, NgbAlertModule, FormsModule],
+	templateUrl: './monthpicker-i18n.html',
+	providers: [I18n, { provide: NgbMonthpickerI18n, useClass: CustomMonthpickerI18n }], // define custom NgbMonthpickerI18n provider
 })
-export class NgbdDatepickerI18n {
-	model: NgbDateStruct;
+export class NgbdMonthpickerI18n {
+	model: NgbMonthStruct;
 }

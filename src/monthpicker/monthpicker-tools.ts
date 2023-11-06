@@ -111,12 +111,12 @@ export function buildMonths(
 	i18n: NgbMonthpickerI18n,
 	force: boolean,
 ): MonthViewModel[] {
-	const { displayMonths, months } = state;
+	const { months } = state;
 	// move old months to a temporary array
 	const monthsToReuse = months.splice(0, months.length);
 
 	// generate new first dates, nullify or reuse months
-	const firstDates = Array.from({ length: displayMonths }, (_, i) => {
+	const firstDates = Array.from({ length: 1 }, (_, i) => {
 		const firstDate = Object.assign(calendar.getNext(date, 'm', i));
 		months[i] = <any>null;
 

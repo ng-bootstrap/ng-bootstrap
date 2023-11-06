@@ -4,7 +4,7 @@ import { NgbMonthStruct } from '../ngb-month-struct';
 import { isInteger } from '../../util/util';
 
 /**
- * [`NgbDateAdapter`](#/components/datepicker/api#NgbDateAdapter) implementation that uses
+ * [`NgbMonthAdapter`](#/components/monthpicker/api#NgbMonthAdapter) implementation that uses
  * native javascript dates as a user date model.
  */
 @Injectable()

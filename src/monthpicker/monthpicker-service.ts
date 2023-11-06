@@ -3,13 +3,11 @@ import { NgbMonth } from './ngb-month';
 import { NgbMonthStruct } from './ngb-month-struct';
 import { MonthpickerViewModel, NgbDayTemplateData, NgbMarkDisabled } from './monthpicker-view-model';
 import { inject, Injectable } from '@angular/core';
-import { isInteger, toInteger } from '../util/util';
 import { Observable, Subject } from 'rxjs';
 import {
 	buildMonths,
 	checkDateInRange,
 	checkMinBeforeMax,
-	generateSelectBoxMonths,
 	generateSelectBoxYears,
 	isChangedDate,
 	isChangedMonth,
@@ -20,11 +18,9 @@ import {
 
 import { filter } from 'rxjs/operators';
 import { NgbMonthpickerI18n } from './monthpicker-i18n';
-import { TranslationWidth } from '@angular/common';
 
 export type MonthpickerServiceInputs = Partial<{
 	dayTemplateData: NgbDayTemplateData;
-	displayMonths: number;
 	disabled: boolean;
 	focusVisible: boolean;
 	markDisabled: NgbMarkDisabled;
@@ -41,12 +37,6 @@ export class NgbMonthpickerService {
 		dayTemplateData: (dayTemplateData: NgbDayTemplateData) => {
 			if (this._state.dayTemplateData !== dayTemplateData) {
 				return { dayTemplateData };
-			}
-		},
-		displayMonths: (displayMonths: number) => {
-			displayMonths = toInteger(displayMonths);
-			if (isInteger(displayMonths) && displayMonths > 0 && this._state.displayMonths !== displayMonths) {
-				return { displayMonths };
 			}
 		},
 		disabled: (disabled: boolean) => {
@@ -96,7 +86,6 @@ export class NgbMonthpickerService {
 		maxDate: null,
 		minDate: null,
 		disabled: false,
-		displayMonths: 1,
 		firstDate: null,
 		lastDate: null,
 		focusDate: null,
@@ -106,7 +95,7 @@ export class NgbMonthpickerService {
 		prevDisabled: false,
 		nextDisabled: false,
 		selectedDate: null,
-		selectBoxes: { years: [], months: [] },
+		selectBoxes: { years: [] },
 	};
 
 	get model$(): Observable<MonthpickerViewModel> {
@@ -189,7 +178,7 @@ export class NgbMonthpickerService {
 	}
 
 	private _patchContexts(state: MonthpickerViewModel) {
-		const { months, displayMonths, selectedDate, focusDate, focusVisible, disabled } = state;
+		const { months, selectedDate, focusDate, focusVisible, disabled } = state;
 		state.months.forEach((month) => {
 			month.weeks.forEach((week) => {
 				week.days.forEach((day) => {
@@ -214,10 +203,7 @@ export class NgbMonthpickerService {
 
 					// visibility
 					if (month.number !== day.date.month) {
-						day.hidden =
-							displayMonths > 1 &&
-							day.date.after(months[0].firstDate) &&
-							day.date.before(months[displayMonths - 1].lastDate);
+						day.hidden = day.date.after(months[0].firstDate) && day.date.before(months[0].lastDate);
 					}
 				});
 			});
@@ -311,18 +297,8 @@ export class NgbMonthpickerService {
 				if ('minDate' in patch || 'maxDate' in patch || state.selectBoxes.years.length === 0 || yearChanged) {
 					state.selectBoxes.years = generateSelectBoxYears(state.firstDate, state.minDate, state.maxDate);
 				}
-
-				// months -> when current year or boundaries change
-				if ('minDate' in patch || 'maxDate' in patch || state.selectBoxes.months.length === 0 || yearChanged) {
-					state.selectBoxes.months = generateSelectBoxMonths(
-						this._calendar,
-						state.firstDate,
-						state.minDate,
-						state.maxDate,
-					);
-				}
 			} else {
-				state.selectBoxes = { years: [], months: [] };
+				state.selectBoxes = { years: [] };
 			}
 
 			// updating navigation arrows -> boundaries change (min/max) or month/year changes

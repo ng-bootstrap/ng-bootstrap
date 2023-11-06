@@ -31,7 +31,6 @@ export type MonthViewModel = {
 export type MonthpickerViewModel = {
 	dayTemplateData: NgbDayTemplateData | null;
 	disabled: boolean;
-	displayMonths: number;
 	firstDate: NgbMonth | null;
 	focusDate: NgbMonth | null;
 	focusVisible: boolean;
@@ -45,7 +44,6 @@ export type MonthpickerViewModel = {
 	nextDisabled: boolean;
 	selectBoxes: {
 		years: number[];
-		months: number[];
 	};
 	selectedDate: NgbMonth | null;
 };

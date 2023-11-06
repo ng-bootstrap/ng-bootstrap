@@ -41,7 +41,7 @@ import { NgbMonthpickerNavigation } from './monthpicker-navigation';
 import { ContentTemplateContext } from './monthpicker-content-template-context';
 
 /**
- * An event emitted right before the navigation happens and the month displayed by the datepicker changes.
+ * An event emitted right before the navigation happens and the month displayed by the monthpicker changes.
  */
 export interface NgbMonthpickerNavigateEvent {
 	/**
@@ -63,9 +63,9 @@ export interface NgbMonthpickerNavigateEvent {
 }
 
 /**
- * An interface that represents the readonly public state of the datepicker.
+ * An interface that represents the readonly public state of the monthpicker.
  *
- * Accessible via the `datepicker.state` getter
+ * Accessible via the `monthpicker.state` getter
  *
  * @since 5.2.0
  */
@@ -91,12 +91,12 @@ export interface NgbMonthpickerState {
 	readonly lastDate: NgbMonth;
 
 	/**
-	 * The date currently focused by the datepicker
+	 * The date currently focused by the monthpicker
 	 */
 	readonly focusedDate: NgbMonth;
 
 	/**
-	 * First dates of months currently displayed by the datepicker
+	 * First dates of months currently displayed by the monthpicker
 	 *
 	 * @since 5.3.0
 	 */
@@ -104,7 +104,7 @@ export interface NgbMonthpickerState {
 }
 
 /**
- * A directive that marks the content template that customizes the way datepicker months are displayed
+ * A directive that marks the content template that customizes the way monthpicker months are displayed
  *
  * @since 5.3.0
  */
@@ -117,17 +117,17 @@ export class NgbMonthpickerContent {
  * A component that renders one month including all the days, weekdays and week numbers. Can be used inside
  * the `<ng-template NgbMonthpickerMonths></ng-template>` when you want to customize months layout.
  *
- * For a usage example, see [custom month layout demo](#/components/datepicker/examples#custommonth)
+ * For a usage example, see [custom month layout demo](#/components/monthpicker/examples#custommonth)
  *
  * @since 5.3.0
  */
 @Component({
-	selector: 'ngb-datepicker-month',
+	selector: 'ngb-monthpicker-month',
 	standalone: true,
 	imports: [NgIf, NgFor, NgTemplateOutlet],
 	host: { role: 'grid', '(keydown)': 'onKeyDown($event)' },
 	encapsulation: ViewEncapsulation.None,
-	styleUrls: ['./datepicker-month.scss'],
+	styleUrls: ['./monthpicker-month.scss'],
 	template: `
 		<div *ngIf="viewModel.weekdays.length > 0" class="ngb-dp-week ngb-dp-weekdays" role="row">
 			<div *ngFor="let weekday of viewModel.weekdays" class="ngb-dp-weekday small" role="columnheader">{{
@@ -149,7 +149,7 @@ export class NgbMonthpickerContent {
 				>
 					<ng-template [ngIf]="!day.hidden">
 						<ng-template
-							[ngTemplateOutlet]="datepicker.dayTemplate"
+							[ngTemplateOutlet]="monthpicker.dayTemplate"
 							[ngTemplateOutletContext]="day.context"
 						></ng-template>
 					</ng-template>
@@ -163,7 +163,7 @@ export class NgbMonthpickerMonth {
 	private _service = inject(NgbMonthpickerService);
 
 	i18n = inject(NgbMonthpickerI18n);
-	datepicker = inject(NgbMonthpicker);
+	monthpicker = inject(NgbMonthpicker);
 
 	viewModel: MonthViewModel;
 
@@ -171,7 +171,7 @@ export class NgbMonthpickerMonth {
 	 * The first date of month to be rendered.
 	 *
 	 * This month must one of the months present in the
-	 * [datepicker state](#/components/datepicker/api#NgbMonthpickerState).
+	 * [monthpicker state](#/components/monthpicker/api#NgbMonthpickerState).
 	 */
 	@Input()
 	set month(month: NgbMonthStruct) {
@@ -179,12 +179,12 @@ export class NgbMonthpickerMonth {
 	}
 
 	onKeyDown(event: KeyboardEvent) {
-		this._keyboardService.processKey(event, this.datepicker);
+		this._keyboardService.processKey(event, this.monthpicker);
 	}
 
 	doSelect(day: DayViewModel) {
 		if (!day.context.disabled && !day.hidden) {
-			this.datepicker.onDateSelect(day.date);
+			this.monthpicker.onDateSelect(day.date);
 		}
 	}
 }
@@ -207,7 +207,7 @@ export class NgbMonthpickerMonth {
 		<ng-template #defaultContentTemplate>
 			<div *ngFor="let month of model.months; let i = index" class="ngb-dp-month">
 				{{ i }}
-				<div *ngIf="navigation === 'none' || (displayMonths > 1 && navigation === 'select')" class="ngb-dp-month-name">
+				<div *ngIf="navigation === 'none' || navigation === 'select'" class="ngb-dp-month-name">
 					{{ i18n.getMonthLabel(month.firstDate) }}
 				</div>
 			</div>
@@ -269,10 +269,10 @@ export class NgbMonthpicker implements AfterViewInit, OnChanges, OnInit, Control
 	/**
 	 * The reference to a custom content template.
 	 *
-	 * Allows to completely override the way datepicker displays months.
+	 * Allows to completely override the way monthpicker displays months.
 	 *
-	 * See [`NgbMonthpickerContent`](#/components/datepicker/api#NgbMonthpickerContent) and
-	 * [`ContentTemplateContext`](#/components/datepicker/api#ContentTemplateContext) for more details.
+	 * See [`NgbMonthpickerContent`](#/components/monthpicker/api#NgbMonthpickerContent) and
+	 * [`ContentTemplateContext`](#/components/monthpicker/api#ContentTemplateContext) for more details.
 	 *
 	 * @since 14.2.0
 	 */
@@ -284,27 +284,22 @@ export class NgbMonthpicker implements AfterViewInit, OnChanges, OnInit, Control
 	 *
 	 * Allows to completely override the way a day 'cell' in the calendar is displayed.
 	 *
-	 * See [`DayTemplateContext`](#/components/datepicker/api#DayTemplateContext) for the data you get inside.
+	 * See [`DayTemplateContext`](#/components/monthpicker/api#DayTemplateContext) for the data you get inside.
 	 */
 	@Input() dayTemplate = this._config.dayTemplate;
 
 	/**
 	 * The callback to pass any arbitrary data to the template cell via the
-	 * [`DayTemplateContext`](#/components/datepicker/api#DayTemplateContext)'s `data` parameter.
+	 * [`DayTemplateContext`](#/components/monthpicker/api#DayTemplateContext)'s `data` parameter.
 	 *
-	 * `current` is the month that is currently displayed by the datepicker.
+	 * `current` is the month that is currently displayed by the monthpicker.
 	 *
 	 * @since 3.3.0
 	 */
 	@Input() dayTemplateData = this._config.dayTemplateData;
 
 	/**
-	 * The number of months to display.
-	 */
-	@Input() displayMonths = this._config.displayMonths;
-
-	/**
-	 * The reference to the custom template for the datepicker footer.
+	 * The reference to the custom template for the monthpicker footer.
 	 *
 	 * @since 3.3.0
 	 */
@@ -315,7 +310,7 @@ export class NgbMonthpicker implements AfterViewInit, OnChanges, OnInit, Control
 	 *
 	 * It is called for each new date when navigating to a different month.
 	 *
-	 * `current` is the month that is currently displayed by the datepicker.
+	 * `current` is the month that is currently displayed by the monthpicker.
 	 */
 	@Input() markDisabled = this._config.markDisabled;
 
@@ -355,7 +350,7 @@ export class NgbMonthpicker implements AfterViewInit, OnChanges, OnInit, Control
 	/**
 	 * An event emitted right before the navigation happens and displayed month changes.
 	 *
-	 * See [`NgbMonthpickerNavigateEvent`](#/components/datepicker/api#NgbMonthpickerNavigateEvent) for the payload info.
+	 * See [`NgbMonthpickerNavigateEvent`](#/components/monthpicker/api#NgbMonthpickerNavigateEvent) for the payload info.
 	 */
 	@Output() navigate = new EventEmitter<NgbMonthpickerNavigateEvent>();
 
@@ -432,7 +427,7 @@ export class NgbMonthpicker implements AfterViewInit, OnChanges, OnInit, Control
 	}
 
 	/**
-	 *  Returns the readonly public state of the datepicker
+	 *  Returns the readonly public state of the monthpicker
 	 *
 	 * @since 5.2.0
 	 */
@@ -441,7 +436,7 @@ export class NgbMonthpicker implements AfterViewInit, OnChanges, OnInit, Control
 	}
 
 	/**
-	 *  Returns the calendar service used in the specific datepicker instance.
+	 *  Returns the calendar service used in the specific monthpicker instance.
 	 *
 	 *  @since 5.3.0
 	 */
@@ -450,7 +445,7 @@ export class NgbMonthpicker implements AfterViewInit, OnChanges, OnInit, Control
 	}
 
 	/**
-	 * Returns the i18n service used in the specific datepicker instance.
+	 * Returns the i18n service used in the specific monthpicker instance.
 	 *
 	 * @since 14.2.0
 	 */
@@ -520,7 +515,7 @@ export class NgbMonthpicker implements AfterViewInit, OnChanges, OnInit, Control
 	ngOnInit() {
 		if (this.model === undefined) {
 			const inputs: MonthpickerServiceInputs = {};
-			['dayTemplateData', 'displayMonths', 'markDisabled', 'navigation', 'minDate', 'maxDate'].forEach(
+			['dayTemplateData', 'markDisabled', 'navigation', 'minDate', 'maxDate'].forEach(
 				(name) => (inputs[name] = this[name]),
 			);
 			this._service.set(inputs);
@@ -534,7 +529,7 @@ export class NgbMonthpicker implements AfterViewInit, OnChanges, OnInit, Control
 
 	ngOnChanges(changes: SimpleChanges) {
 		const inputs: MonthpickerServiceInputs = {};
-		['dayTemplateData', 'displayMonths', 'markDisabled', 'navigation', 'minDate', 'maxDate']
+		['dayTemplateData', 'markDisabled', 'navigation', 'minDate', 'maxDate']
 			.filter((name) => name in changes)
 			.forEach((name) => (inputs[name] = this[name]));
 		this._service.set(inputs);

@@ -21,7 +21,7 @@ export function NGB_MONTHPICKER_CALENDAR_FACTORY() {
 }
 
 /**
- * A service that represents the calendar used by the datepicker.
+ * A service that represents the calendar used by the monthpicker.
  *
  * The default implementation uses the Gregorian calendar. You can inject it in your own
  * implementations if necessary to simplify `NgbMonth` calculations.

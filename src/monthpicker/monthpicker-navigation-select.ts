@@ -27,9 +27,9 @@ import { NgFor } from '@angular/common';
 			#year
 			[disabled]="disabled"
 			class="form-select"
-			i18n-aria-label="@@ngb.datepicker.select-year"
+			i18n-aria-label="@@ngb.monthpicker.select-year"
 			aria-label="Select year"
-			i18n-title="@@ngb.datepicker.select-year"
+			i18n-title="@@ngb.monthpicker.select-year"
 			title="Select year"
 			(change)="changeYear($any($event).target.value)"
 		>

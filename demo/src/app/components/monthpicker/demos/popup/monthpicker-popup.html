@@ -3,11 +3,11 @@
 		<div class="input-group">
 			<input
 				class="form-control"
-				placeholder="yyyy-mm-dd"
-				name="dp"
+				placeholder="yyyy-mm"
+				name="mp"
 				[(ngModel)]="model"
-				ngbDatepicker
-				#d="ngbDatepicker"
+				ngbMonthpicker
+				#d="ngbMonthpicker"
 			/>
 			<button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
 		</div>

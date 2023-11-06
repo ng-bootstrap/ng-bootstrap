@@ -2,13 +2,13 @@ import { padNumber, toInteger, isNumber } from '../util/util';
 import { NgbMonthStruct } from './ngb-month-struct';
 import { Injectable } from '@angular/core';
 
-export function NGB_DATEPICKER_PARSER_FORMATTER_FACTORY() {
-	return new NgbDateISOParserFormatter();
+export function NGB_MONTHPICKER_PARSER_FORMATTER_FACTORY() {
+	return new NgbMonthISOParserFormatter();
 }
 
 /**
  * An abstract service for parsing and formatting dates for the
- * [`NgbInputDatepicker`](#/components/datepicker/api#NgbInputDatepicker) directive.
+ * [`NgbInputMonthpicker`](#/components/monthpicker/api#NgbInputMonthpicker) directive.
  * Converts between the internal `NgbMonthStruct` model presentation and a `string` that is displayed in the
  * input element.
  *
@@ -19,9 +19,9 @@ export function NGB_DATEPICKER_PARSER_FORMATTER_FACTORY() {
  * Default implementation uses the ISO 8601 format, but you can provide another implementation via DI
  * to use an alternative string format or a custom parsing logic.
  *
- * See the [date format overview](#/components/datepicker/overview#date-model) for more details.
+ * See the [date format overview](#/components/monthpicker/overview#date-model) for more details.
  */
-@Injectable({ providedIn: 'root', useFactory: NGB_DATEPICKER_PARSER_FORMATTER_FACTORY })
+@Injectable({ providedIn: 'root', useFactory: NGB_MONTHPICKER_PARSER_FORMATTER_FACTORY })
 export abstract class NgbMonthParserFormatter {
 	/**
 	 * Parses the given `string` to an `NgbMonthStruct`.
@@ -41,7 +41,7 @@ export abstract class NgbMonthParserFormatter {
 }
 
 @Injectable()
-export class NgbDateISOParserFormatter extends NgbMonthParserFormatter {
+export class NgbMonthISOParserFormatter extends NgbMonthParserFormatter {
 	parse(value: string): NgbMonthStruct | null {
 		if (value != null) {
 			const dateParts = value.trim().split('-');

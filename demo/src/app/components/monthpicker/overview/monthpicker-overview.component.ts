@@ -7,27 +7,27 @@ import { NgbdDemoListService } from '../../../services/demo-list.service';
 import { NgbdCodeComponent } from '../../../shared/code/code.component';
 import { RouterLink } from '@angular/router';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgbdDatepickerOverviewDemoComponent } from './demo/datepicker-overview-demo.component';
+import { NgbdMonthpickerOverviewDemoComponent } from './demo/monthpicker-overview-demo.component';
 import { NgbdOverviewSectionComponent } from '../../../shared/overview/overview-section.component';
 import { NgbdOverview } from '../../../shared/overview/overview';
 
 @Component({
-	selector: 'ngbd-datepicker-overview',
+	selector: 'ngbd-monthpicker-overview',
 	standalone: true,
 	imports: [
 		NgbdCodeComponent,
 		RouterLink,
 		NgbdOverviewSectionComponent,
 		NgbAlertModule,
-		NgbdDatepickerOverviewDemoComponent,
+		NgbdMonthpickerOverviewDemoComponent,
 	],
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	templateUrl: './datepicker-overview.component.html',
+	templateUrl: './monthpicker-overview.component.html',
 	host: {
 		'[class.overview]': 'true',
 	},
 })
-export class NgbdDatepickerOverviewComponent {
+export class NgbdMonthpickerOverviewComponent {
 	snippets = {
 		basic: Snippet({
 			lang: 'html',
@@ -134,8 +134,7 @@ export class NgbdDatepickerOverviewComponent {
 			lang: 'html',
 			code: `
         <ngb-datepicker #datepicker
-                        [startDate]="{month: 8, year: 2016}"
-                        [displayMonths]="2">
+                        [startDate]="{month: 8, year: 2016}">
           <ng-template ngbDatepickerContent>
             <div *ngFor="let monthStruct of datepicker.state.months">
               <span>{{i18n.getMonthFullName(monthStruct.month)}} {{monthStruct.year}}</span>

@@ -34,9 +34,9 @@ import { NgbMonthpicker, NgbMonthpickerNavigateEvent } from './monthpicker';
 import { DayTemplateContext } from './monthpicker-day-template-context';
 import { NgbMonthCalendar } from './ngb-month-calendar';
 import { NgbMonth } from './ngb-month';
-import { NgbMonthParserFormatter } from './ngb-date-parser-formatter';
+import { NgbMonthParserFormatter } from './ngb-month-parser-formatter';
 import { NgbMonthStruct } from './ngb-month-struct';
-import { NgbInputDatepickerConfig } from './datepicker-input-config';
+import { NgbInputMonthpickerConfig } from './monthpicker-input-config';
 import { NgbMonthpickerConfig } from './monthpicker-config';
 import { isString } from '../util/util';
 import { Subject } from 'rxjs';
@@ -60,12 +60,12 @@ import { ContentTemplateContext } from './monthpicker-content-template-context';
 		'[disabled]': 'disabled',
 	},
 	providers: [
-		{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NgbInputDatepicker), multi: true },
-		{ provide: NG_VALIDATORS, useExisting: forwardRef(() => NgbInputDatepicker), multi: true },
-		{ provide: NgbMonthpickerConfig, useExisting: NgbInputDatepickerConfig },
+		{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NgbInputMonthpicker), multi: true },
+		{ provide: NG_VALIDATORS, useExisting: forwardRef(() => NgbInputMonthpicker), multi: true },
+		{ provide: NgbMonthpickerConfig, useExisting: NgbInputMonthpickerConfig },
 	],
 })
-export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAccessor, Validator {
+export class NgbInputMonthpicker implements OnChanges, OnDestroy, ControlValueAccessor, Validator {
 	static ngAcceptInputType_autoClose: boolean | string;
 	static ngAcceptInputType_disabled: boolean | '';
 	static ngAcceptInputType_navigation: string;
@@ -78,7 +78,7 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	private _dateAdapter = inject(NgbMonthAdapter<any>);
 	private _document = inject(DOCUMENT);
 	private _changeDetector = inject(ChangeDetectorRef);
-	private _config = inject(NgbInputDatepickerConfig);
+	private _config = inject(NgbInputMonthpickerConfig);
 
 	private _cRef: ComponentRef<NgbMonthpicker> | null = null;
 	private _disabled = false;
@@ -137,11 +137,6 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	 * @since 3.3.0
 	 */
 	@Input() dayTemplateData: (date: NgbMonth, current?: { year: number; month: number }) => any;
-
-	/**
-	 * The number of months to display.
-	 */
-	@Input() displayMonths: number;
 
 	/**
 	 * The reference to the custom template for the datepicker footer.
@@ -499,7 +494,6 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 			'contentTemplate',
 			'dayTemplate',
 			'dayTemplateData',
-			'displayMonths',
 			'footerTemplate',
 			'markDisabled',
 			'minDate',

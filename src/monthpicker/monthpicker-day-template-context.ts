@@ -1,8 +1,8 @@
 import { NgbMonth } from './ngb-month';
 /**
- * The context for the datepicker 'day' template.
+ * The context for the monthpicker 'day' template.
  *
- * You can override the way dates are displayed in the datepicker via the `[dayTemplate]` input.
+ * You can override the way dates are displayed in the monthpicker via the `[dayTemplate]` input.
  */
 export interface DayTemplateContext {
 	/**
@@ -15,19 +15,19 @@ export interface DayTemplateContext {
 	$implicit: NgbMonth;
 
 	/**
-	 * The month currently displayed by the datepicker.
+	 * The month currently displayed by the monthpicker.
 	 */
 	currentMonth: number;
 
 	/**
-	 * The year currently displayed by the datepicker.
+	 * The year currently displayed by the monthpicker.
 	 *
 	 * @since 5.2.0
 	 */
 	currentYear: number;
 
 	/**
-	 * Any data you pass using the `[dayTemplateData]` input in the datepicker.
+	 * Any data you pass using the `[dayTemplateData]` input in the monthpicker.
 	 *
 	 * @since 3.3.0
 	 */

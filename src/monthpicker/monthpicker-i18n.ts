@@ -3,16 +3,16 @@ import { FormStyle, getLocaleMonthNames, TranslationWidth } from '@angular/commo
 import { NgbMonthStruct } from './ngb-month-struct';
 
 /**
- * A service supplying i18n data to the datepicker component.
+ * A service supplying i18n data to the monthpicker component.
  *
  * The default implementation of this service uses the Angular locale and registered locale data for
  * month names (as explained in the Angular i18n guide).
  *
  * It also provides a way to i18n data that depends on calendar calculations, like aria labels, day, week and year
- * numerals. For other static labels the datepicker uses the default Angular i18n.
+ * numerals. For other static labels the monthpicker uses the default Angular i18n.
  *
- * See the [i18n demo](#/components/datepicker/examples#i18n) and
- * [Hebrew calendar demo](#/components/datepicker/calendars#hebrew) on how to extend this class and define
+ * See the [i18n demo](#/components/monthpicker/examples#i18n) and
+ * [Hebrew calendar demo](#/components/monthpicker/calendars#hebrew) on how to extend this class and define
  * a custom provider for i18n.
  */
 @Injectable({
@@ -42,7 +42,7 @@ export abstract class NgbMonthpickerI18n {
 	}
 
 	/**
-	 * Returns the textual representation of a year that is rendered in the datepicker year select box.
+	 * Returns the textual representation of a year that is rendered in the monthpicker year select box.
 	 */
 	getYearNumerals(year: number): string {
 		return `${year}`;

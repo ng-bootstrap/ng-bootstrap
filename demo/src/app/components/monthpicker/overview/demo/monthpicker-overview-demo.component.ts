@@ -9,7 +9,7 @@ import {
 import { DatePipe } from '@angular/common';
 
 @Component({
-	selector: 'ngbd-datepicker-demo-overview',
+	selector: 'ngbd-monthpicker-demo-overview',
 	standalone: true,
 	imports: [NgbTooltipModule, NgbDatepickerModule, DatePipe],
 	changeDetection: ChangeDetectionStrategy.OnPush,
@@ -45,7 +45,6 @@ import { DatePipe } from '@angular/common';
 			[dayTemplate]="dayTemplate"
 			[markDisabled]="markDisabled"
 			[minDate]="today"
-			[displayMonths]="2"
 		>
 		</ngb-datepicker>
 	`,
@@ -85,7 +84,7 @@ import { DatePipe } from '@angular/common';
 	],
 	providers: [NgbDateNativeAdapter],
 })
-export class NgbdDatepickerOverviewDemoComponent {
+export class NgbdMonthpickerOverviewDemoComponent {
 	today: NgbDate;
 
 	hoveredDate: NgbDate | null = null;

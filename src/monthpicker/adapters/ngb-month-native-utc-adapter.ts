@@ -3,7 +3,7 @@ import { NgbMonthStruct } from '../ngb-month-struct';
 import { NgbMonthNativeAdapter } from './ngb-month-native-adapter';
 
 /**
- * Same as [`NgbDateNativeAdapter`](#/components/datepicker/api#NgbDateNativeAdapter), but with UTC dates.
+ * Same as [`NgbMonthNativeAdapter`](#/components/monthpicker/api#NgbMonthNativeAdapter), but with UTC dates.
  *
  * @since 3.2.0
  */

@@ -40,7 +40,6 @@ import { NgbMonthpickerNavigationSelect } from './monthpicker-navigation-select'
 			class="ngb-mp-navigation-select"
 			[date]="date"
 			[disabled]="disabled"
-			[months]="selectBoxes.months"
 			[years]="selectBoxes.years"
 			(select)="select.emit($event)"
 		>
@@ -76,11 +75,11 @@ export class NgbMonthpickerNavigation {
 
 	@Input() date: NgbMonth;
 	@Input() disabled: boolean;
-	@Input() months: MonthViewModel[] = [];
+	@Input() months: number[] = [];
 	@Input() showSelect: boolean;
 	@Input() prevDisabled: boolean;
 	@Input() nextDisabled: boolean;
-	@Input() selectBoxes: { years: number[]; months: number[] };
+	@Input() selectBoxes: { years: number[] };
 
 	@Output() navigate = new EventEmitter<NavigationEvent>();
 	@Output() select = new EventEmitter<NgbMonth>();

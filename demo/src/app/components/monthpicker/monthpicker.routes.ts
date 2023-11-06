@@ -7,16 +7,11 @@ import { NgbdExamplesPage } from '../../shared/examples-page/examples.component'
 import { NgbdDatepickerAdapter } from './demos/adapter/datepicker-adapter';
 import { NgbdMonthpickerBasic } from './demos/basic/monthpicker-basic';
 import { NgbdDatepickerConfig } from './demos/config/datepicker-config';
-import { NgbdDatepickerCustomday } from './demos/customday/datepicker-customday';
-import { NgbdDatepickerDisabled } from './demos/disabled/datepicker-disabled';
-import { NgbdDatepickerFootertemplate } from './demos/footertemplate/datepicker-footertemplate';
-import { NgbdDatepickerI18n } from './demos/i18n/datepicker-i18n';
-import { NgbdDatepickerCustommonth } from './demos/custommonth/datepicker-custommonth';
-import { NgbdDatepickerMultiple } from './demos/multiple/datepicker-multiple';
-import { NgbdDatepickerPopup } from './demos/popup/datepicker-popup';
-import { NgbdDatepickerRange } from './demos/range/datepicker-range';
-import { NgbdDatepickerRangePopup } from './demos/range-popup/datepicker-range-popup';
-import { NgbdDatepickerOverviewComponent } from './overview/datepicker-overview.component';
+import { NgbdMonthpickerDisabled } from './demos/disabled/monthpicker-disabled';
+import { NgbdMonthpickerFootertemplate } from './demos/footertemplate/monthpicker-footertemplate';
+import { NgbdMonthpickerI18n } from './demos/i18n/monthpicker-i18n';
+import { NgbdMonthpickerPopup } from './demos/popup/monthpicker-popup';
+import { NgbdMonthpickerOverviewComponent } from './overview/monthpicker-overview.component';
 import { NgbdDatepickerPositiontarget } from './demos/positiontarget/datepicker-positiontarget';
 import { NgbdDatepickerKeyboard } from './demos/keyboard/datepicker-keyboard';
 import { Routes } from '@angular/router';
@@ -43,67 +38,37 @@ const DEMOS = {
 		code: require('!!raw-loader!./demos/basic/monthpicker-basic').default,
 		markup: require('!!raw-loader!./demos/basic/monthpicker-basic.html').default,
 	},
-	/*popup: {
-		title: 'Datepicker in a popup',
-		type: NgbdDatepickerPopup,
-		code: require('!!raw-loader!./demos/popup/datepicker-popup').default,
-		markup: require('!!raw-loader!./demos/popup/datepicker-popup.html').default,
-	},
-	multiple: {
-		title: 'Multiple months',
-		type: NgbdDatepickerMultiple,
-		code: require('!!raw-loader!./demos/multiple/datepicker-multiple').default,
-		markup: require('!!raw-loader!./demos/multiple/datepicker-multiple.html').default,
-	},
-	range: {
-		title: 'Range selection',
-		type: NgbdDatepickerRange,
-		code: require('!!raw-loader!./demos/range/datepicker-range').default,
-		markup: require('!!raw-loader!./demos/range/datepicker-range.html').default,
-	},
-	'range-popup': {
-		title: 'Range selection in a popup',
-		type: NgbdDatepickerRangePopup,
-		code: require('!!raw-loader!./demos/range-popup/datepicker-range-popup').default,
-		markup: require('!!raw-loader!./demos/range-popup/datepicker-range-popup.html').default,
+	popup: {
+		title: 'Monthpicker in a popup',
+		type: NgbdMonthpickerPopup,
+		code: require('!!raw-loader!./demos/popup/monthpicker-popup').default,
+		markup: require('!!raw-loader!./demos/popup/monthpicker-popup.html').default,
 	},
 	disabled: {
-		title: 'Disabled datepicker',
-		type: NgbdDatepickerDisabled,
-		code: require('!!raw-loader!./demos/disabled/datepicker-disabled').default,
-		markup: require('!!raw-loader!./demos/disabled/datepicker-disabled.html').default,
+		title: 'Disabled monthpicker',
+		type: NgbdMonthpickerDisabled,
+		code: require('!!raw-loader!./demos/disabled/monthpicker-disabled').default,
+		markup: require('!!raw-loader!./demos/disabled/monthpicker-disabled.html').default,
 	},
-	adapter: {
+	/*adapter: {
 		title: 'Custom date adapter and formatter',
 		type: NgbdDatepickerAdapter,
 		code: require('!!raw-loader!./demos/adapter/datepicker-adapter').default,
 		markup: require('!!raw-loader!./demos/adapter/datepicker-adapter.html').default,
-	},
+	},*/
 	i18n: {
-		title: 'Internationalization of datepickers',
-		type: NgbdDatepickerI18n,
-		code: require('!!raw-loader!./demos/i18n/datepicker-i18n').default,
-		markup: require('!!raw-loader!./demos/i18n/datepicker-i18n.html').default,
-	},
-	customday: {
-		title: 'Custom day view',
-		type: NgbdDatepickerCustomday,
-		code: require('!!raw-loader!./demos/customday/datepicker-customday').default,
-		markup: require('!!raw-loader!./demos/customday/datepicker-customday.html').default,
-	},
-	custommonth: {
-		title: 'Custom month layout',
-		type: NgbdDatepickerCustommonth,
-		code: require('!!raw-loader!./demos/custommonth/datepicker-custommonth').default,
-		markup: require('!!raw-loader!./demos/custommonth/datepicker-custommonth.html').default,
+		title: 'Internationalization of monthpickers',
+		type: NgbdMonthpickerI18n,
+		code: require('!!raw-loader!./demos/i18n/monthpicker-i18n').default,
+		markup: require('!!raw-loader!./demos/i18n/monthpicker-i18n.html').default,
 	},
 	footertemplate: {
 		title: 'Footer template',
-		type: NgbdDatepickerFootertemplate,
-		code: require('!!raw-loader!./demos/footertemplate/datepicker-footertemplate').default,
-		markup: require('!!raw-loader!./demos/footertemplate/datepicker-footertemplate.html').default,
+		type: NgbdMonthpickerFootertemplate,
+		code: require('!!raw-loader!./demos/footertemplate/monthpicker-footertemplate').default,
+		markup: require('!!raw-loader!./demos/footertemplate/monthpicker-footertemplate.html').default,
 	},
-	positiontarget: {
+	/*positiontarget: {
 		title: 'Position target',
 		type: NgbdDatepickerPositiontarget,
 		code: require('!!raw-loader!./demos/positiontarget/datepicker-positiontarget').default,
@@ -136,7 +101,7 @@ export const ROUTES: Routes = [
 			},
 		],
 		children: [
-			{ path: 'overview', component: NgbdDatepickerOverviewComponent },
+			{ path: 'overview', component: NgbdMonthpickerOverviewComponent },
 			{ path: 'examples', component: NgbdExamplesPage },
 			{ path: 'api', component: NgbdApiPage },
 		],

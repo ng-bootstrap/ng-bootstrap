@@ -1,26 +1,26 @@
 import { NgModule } from '@angular/core';
 import { NgbMonthpicker, NgbMonthpickerContent } from './monthpicker';
 import { NgbMonthpickerMonth } from './monthpicker';
-import { NgbInputDatepicker } from './datepicker-input';
+import { NgbInputMonthpicker } from './monthpicker-input';
 
 export { NgbMonthpicker, NgbMonthpickerContent, NgbMonthpickerNavigateEvent, NgbMonthpickerState } from './monthpicker';
-export { NgbInputDatepicker } from './datepicker-input';
+export { NgbInputMonthpicker } from './monthpicker-input';
 export { NgbMonthCalendar, NgbMonthPeriod, NgbMonthCalendarGregorian } from './ngb-month-calendar';
 export { NgbMonthpickerMonth } from './monthpicker';
 export { NgbMonthpickerNavigation } from './monthpicker-navigation';
 export { NgbMonthpickerNavigationSelect } from './monthpicker-navigation-select';
 export { NgbMonthpickerConfig } from './monthpicker-config';
-export { NgbInputDatepickerConfig } from './datepicker-input-config';
+export { NgbInputMonthpickerConfig } from './monthpicker-input-config';
 export { NgbMonthpickerI18n, NgbMonthpickerI18nDefault } from './monthpicker-i18n';
 export { NgbMonthStruct } from './ngb-month-struct';
 export { NgbMonth } from './ngb-month';
 export { NgbMonthAdapter, NgbMonthStructAdapter } from './adapters/ngb-month-adapter';
 export { NgbMonthNativeAdapter } from './adapters/ngb-month-native-adapter';
 export { NgbMonthNativeUTCAdapter } from './adapters/ngb-month-native-utc-adapter';
-export { NgbMonthParserFormatter } from './ngb-date-parser-formatter';
+export { NgbMonthParserFormatter } from './ngb-month-parser-formatter';
 export { NgbMonthpickerKeyboardService } from './monthpicker-keyboard-service';
 
-const NGB_MONTHPICKER_DIRECTIVES = [NgbMonthpicker, NgbMonthpickerContent, NgbInputDatepicker, NgbMonthpickerMonth];
+const NGB_MONTHPICKER_DIRECTIVES = [NgbMonthpicker, NgbMonthpickerContent, NgbInputMonthpicker, NgbMonthpickerMonth];
 
 @NgModule({
 	exports: NGB_MONTHPICKER_DIRECTIVES,
