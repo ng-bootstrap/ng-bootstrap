@@ -444,7 +444,6 @@ export class NgbNavLinkBase {
 @Directive({
 	selector: 'button[ngbNavLink]',
 	standalone: true,
-	hostDirectives: [NgbNavLinkBase],
 	host: {
 		type: 'button',
 		'[disabled]': 'navItem.disabled',
@@ -461,7 +460,6 @@ export class NgbNavLinkButton extends NgbNavLinkBase {}
 @Directive({
 	selector: 'a[ngbNavLink]',
 	standalone: true,
-	hostDirectives: [NgbNavLinkBase],
 	host: {
 		href: '',
 		'(click)': 'nav.click(navItem); $event.preventDefault()',
