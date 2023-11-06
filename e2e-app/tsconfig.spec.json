@@ -4,7 +4,7 @@
 		"baseUrl": "./",
 		"outDir": "../out-tsc/e2e-app-e2e",
 		"module": "commonjs",
-		"types": ["node"]
+		"types": ["node", "@angular/localize"]
 	},
 	"include": ["./src/**/*po.ts", "./src/**/*spec.ts", "../playwright/**/*.ts"]
 }
