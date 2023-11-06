@@ -284,6 +284,11 @@ a.title-fragment:focus {
 	opacity: 1;
 }
 
+[data-bs-theme='dark'] div.component-demo .tabset-code .nav .nav-link.active {
+	background-color: #161b22;
+	border-bottom-color: #161b22;
+}
+
 div.component-demo {
 	margin-bottom: 3rem;
 
@@ -300,6 +305,7 @@ div.component-demo {
 			display: flex;
 			align-items: center;
 			align-self: center;
+			opacity: 0.85;
 		}
 
 		.toggle-code svg {
@@ -325,8 +331,8 @@ div.component-demo {
 			font-size: 80%;
 
 			.nav-link.active {
-				background-color: var(--bs-body-bg);
-				border-bottom: 1px solid var(--bs-border-color);
+				background-color: #f6f8fa;
+				border-bottom-color: #f6f8fa;
 			}
 
 			.nav-link:not(.active) {
