@@ -3,6 +3,7 @@
 	"compilerOptions": {
 		"baseUrl": "./",
 		"outDir": "../out-tsc/e2e-app",
+		"types": ["@angular/localize"],
 		"paths": {
 			"@ng-bootstrap/ng-bootstrap": ["../src/index"]
 		}

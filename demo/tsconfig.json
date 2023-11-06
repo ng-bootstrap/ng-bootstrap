@@ -3,6 +3,7 @@
 	"compilerOptions": {
 		"baseUrl": "./",
 		"outDir": "../out-tsc/demo",
+		"types": ["@angular/localize"],
 		"paths": {
 			"@ng-bootstrap/ng-bootstrap": ["../src/index"]
 		}

@@ -131,11 +131,11 @@
 				"serve": {
 					"builder": "@angular-devkit/build-angular:dev-server",
 					"options": {
-						"browserTarget": "demo:build"
+						"buildTarget": "demo:build"
 					},
 					"configurations": {
 						"production": {
-							"browserTarget": "demo:build:production"
+							"buildTarget": "demo:build:production"
 						},
 						"playwright": {
 							"liveReload": false,
@@ -152,7 +152,7 @@
 				"extract-i18n": {
 					"builder": "@angular-devkit/build-angular:extract-i18n",
 					"options": {
-						"browserTarget": "demo:build"
+						"buildTarget": "demo:build"
 					}
 				}
 			}
@@ -274,10 +274,10 @@
 					"builder": "@angular-devkit/build-angular:dev-server",
 					"configurations": {
 						"production": {
-							"browserTarget": "ssr-app:build:production"
+							"buildTarget": "ssr-app:build:production"
 						},
 						"developement": {
-							"browserTarget": "ssr-app:build:development"
+							"buildTarget": "ssr-app:build:development"
 						}
 					}
 				},
@@ -309,7 +309,7 @@
 					"defaultConfiguration": "production"
 				},
 				"serve-ssr": {
-					"builder": "@nguniversal/builders:ssr-dev-server",
+					"builder": "@angular-devkit/build-angular:ssr-dev-server",
 					"configurations": {
 						"production": {
 							"browserTarget": "ssr-app:build:production",
@@ -323,7 +323,7 @@
 					"defaultConfiguration": "development"
 				},
 				"prerender": {
-					"builder": "@nguniversal/builders:prerender",
+					"builder": "@angular-devkit/build-angular:prerender",
 					"options": {
 						"routes": ["/"]
 					},
@@ -382,11 +382,11 @@
 				"serve": {
 					"builder": "@angular-devkit/build-angular:dev-server",
 					"options": {
-						"browserTarget": "test-app:build"
+						"buildTarget": "test-app:build"
 					},
 					"configurations": {
 						"production": {
-							"browserTarget": "test-app:build:production"
+							"buildTarget": "test-app:build:production"
 						}
 					}
 				}
