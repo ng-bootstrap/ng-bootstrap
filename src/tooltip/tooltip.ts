@@ -316,7 +316,7 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 
 	ngOnChanges({ tooltipClass }: SimpleChanges) {
 		if (tooltipClass && this.isOpen()) {
-			this._windowRef!.instance.tooltipClass = tooltipClass.currentValue;
+			this._windowRef!.setInput('tooltipClass', tooltipClass.currentValue);
 		}
 	}
 
