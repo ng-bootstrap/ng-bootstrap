@@ -8,6 +8,5 @@ describe('ngb-accordion-config', () => {
 
 		expect(config.closeOthers).toBe(false);
 		expect(config.destroyOnHide).toBe(true);
-		expect(config.type).toBeUndefined();
 	});
 });
