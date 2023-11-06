@@ -421,14 +421,14 @@ export class NgbTypeahead implements ControlValueAccessor, OnInit, OnChanges, On
 					this._closePopup();
 				} else {
 					this._openPopup();
-					this._windowRef!.instance.focusFirst = this.focusFirst;
-					this._windowRef!.instance.results = results;
-					this._windowRef!.instance.term = this._nativeElement.value;
+					this._windowRef!.setInput('focusFirst', this.focusFirst);
+					this._windowRef!.setInput('results', results);
+					this._windowRef!.setInput('term', this._nativeElement.value);
 					if (this.resultFormatter) {
-						this._windowRef!.instance.formatter = this.resultFormatter;
+						this._windowRef!.setInput('formatter', this.resultFormatter);
 					}
 					if (this.resultTemplate) {
-						this._windowRef!.instance.resultTemplate = this.resultTemplate;
+						this._windowRef!.setInput('resultTemplate', this.resultTemplate);
 					}
 					this._windowRef!.instance.resetActive();
 

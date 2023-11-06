@@ -507,12 +507,11 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 
 			if (this.isOpen()) {
 				if (changes['minDate']) {
-					this._cRef!.instance.minDate = this.minDate;
+					this._cRef!.setInput('minDate', this.minDate);
 				}
 				if (changes['maxDate']) {
-					this._cRef!.instance.maxDate = this.maxDate;
+					this._cRef!.setInput('maxDate', this.maxDate);
 				}
-				this._cRef!.instance.ngOnChanges(changes);
 			}
 		}
 
