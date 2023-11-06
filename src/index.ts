@@ -21,6 +21,8 @@ import { NgbOffcanvasModule } from './offcanvas/offcanvas.module';
 
 export {
 	NgbAccordionDirective,
+	NgbAccordionConfig,
+	NgbAccordionModule,
 	NgbAccordionItem,
 	NgbAccordionHeader,
 	NgbAccordionToggle,
@@ -29,20 +31,6 @@ export {
 	NgbAccordionButton,
 } from './accordion/accordion.module';
 
-/* eslint-disable deprecation/deprecation */
-export {
-	NgbAccordion,
-	NgbAccordionConfig,
-	NgbAccordionModule,
-	NgbPanel,
-	NgbPanelChangeEvent,
-	NgbPanelContent,
-	NgbPanelHeader,
-	NgbPanelHeaderContext,
-	NgbPanelTitle,
-	NgbPanelToggle,
-} from './accordion/accordion.module';
-/* eslint-disable deprecation/deprecation */
 export { NgbAlert, NgbAlertConfig, NgbAlertModule } from './alert/alert.module';
 export {
 	NgbCarousel,
