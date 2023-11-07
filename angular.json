@@ -35,13 +35,23 @@
 						"codeCoverageExclude": ["src/test.ts", "src/test/**"]
 					},
 					"configurations": {
+						"tdd": {
+							"sourceMap": false
+						},
+						"coverage": {
+							"codeCoverage": true,
+							"sourceMap": true,
+							"progress": false,
+							"watch": false
+						},
 						"saucelabs": {
 							"sourceMap": false,
 							"progress": false,
 							"watch": false,
 							"karmaConfig": "src/karma.sauce.conf.js"
 						}
-					}
+					},
+					"defaultConfiguration": "tdd"
 				},
 				"lint": {
 					"builder": "@angular-eslint/builder:lint",
@@ -69,11 +79,6 @@
 						"tsConfig": "demo/tsconfig.json",
 						"assets": [
 							{
-								"glob": "favicon.ico",
-								"input": "src",
-								"output": "/"
-							},
-							{
 								"glob": "**/*",
 								"input": "demo/src/public",
 								"output": "/"
@@ -87,14 +92,7 @@
 							"demo/src/style/app.scss",
 							"demo/src/style/demos.css"
 						],
-						"scripts": [],
-						"aot": false,
-						"vendorChunk": true,
-						"extractLicenses": false,
-						"buildOptimizer": false,
-						"sourceMap": true,
-						"optimization": false,
-						"namedChunks": true
+						"scripts": []
 					},
 					"configurations": {
 						"production": {
@@ -104,14 +102,6 @@
 									"with": "demo/src/environments/environment.prod.ts"
 								}
 							],
-							"optimization": true,
-							"outputHashing": "all",
-							"sourceMap": false,
-							"namedChunks": false,
-							"aot": true,
-							"extractLicenses": true,
-							"vendorChunk": false,
-							"buildOptimizer": true,
 							"budgets": [
 								{
 									"type": "initial",
@@ -123,25 +113,37 @@
 									"maximumWarning": "6kb",
 									"maximumError": "10kb"
 								}
-							]
+							],
+							"outputHashing": "all"
+						},
+						"development": {
+							"buildOptimizer": false,
+							"optimization": false,
+							"vendorChunk": true,
+							"extractLicenses": false,
+							"sourceMap": true,
+							"namedChunks": true
+						},
+						"ci": {
+							"outputHashing": "all",
+							"progress": false
 						}
 					},
-					"defaultConfiguration": ""
+					"defaultConfiguration": "production"
 				},
 				"serve": {
 					"builder": "@angular-devkit/build-angular:dev-server",
-					"options": {
-						"buildTarget": "demo:build"
-					},
 					"configurations": {
-						"production": {
-							"buildTarget": "demo:build:production"
+						"development": {
+							"buildTarget": "demo:build:development"
 						},
 						"playwright": {
+							"buildTarget": "demo:build:production",
 							"liveReload": false,
 							"watch": false
 						}
-					}
+					},
+					"defaultConfiguration": "development"
 				},
 				"lint": {
 					"builder": "@angular-eslint/builder:lint",
@@ -174,15 +176,7 @@
 						"tsConfig": "e2e-app/tsconfig.json",
 						"assets": ["e2e-app/src/favicon.ico"],
 						"styles": ["node_modules/bootstrap/dist/css/bootstrap.css", "e2e-app/src/style/app.scss"],
-						"scripts": [],
-						"progress": false,
-						"aot": false,
-						"vendorChunk": true,
-						"extractLicenses": false,
-						"buildOptimizer": false,
-						"sourceMap": true,
-						"optimization": false,
-						"namedChunks": true
+						"scripts": []
 					},
 					"configurations": {
 						"production": {
@@ -191,32 +185,32 @@
 									"replace": "e2e-app/src/environments/environment.ts",
 									"with": "e2e-app/src/environments/environment.prod.ts"
 								}
-							],
-							"optimization": true,
-							"namedChunks": false,
-							"aot": true,
-							"extractLicenses": true,
-							"vendorChunk": false,
-							"buildOptimizer": true
+							]
+						},
+						"development": {
+							"buildOptimizer": false,
+							"optimization": false,
+							"vendorChunk": true,
+							"extractLicenses": false,
+							"sourceMap": true,
+							"namedChunks": true
 						}
 					},
-					"defaultConfiguration": ""
+					"defaultConfiguration": "production"
 				},
 				"serve": {
 					"builder": "@angular-devkit/build-angular:dev-server",
-					"options": {
-						"buildTarget": "e2e-app:build"
-					},
 					"configurations": {
-						"production": {
-							"buildTarget": "e2e-app:build:production"
+						"development": {
+							"buildTarget": "e2e-app:build:development"
 						},
 						"playwright": {
 							"buildTarget": "e2e-app:build:production",
 							"liveReload": false,
 							"watch": false
 						}
-					}
+					},
+					"defaultConfiguration": "development"
 				},
 				"lint": {
 					"builder": "@angular-eslint/builder:lint",
@@ -346,46 +340,40 @@
 			"prefix": "app",
 			"architect": {
 				"build": {
-					"builder": "@angular-devkit/build-angular:browser",
+					"builder": "@angular-devkit/build-angular:application",
 					"options": {
 						"outputPath": "test-app/dist",
 						"index": "test-app/src/index.html",
-						"main": "test-app/src/main.ts",
+						"browser": "test-app/src/main.ts",
 						"polyfills": ["zone.js"],
 						"tsConfig": "test-app/tsconfig.json",
 						"assets": ["test-app/src/favicon.ico"],
 						"styles": ["node_modules/bootstrap/dist/css/bootstrap.css", "test-app/src/styles.css"],
-						"scripts": [],
-						"vendorChunk": true,
-						"extractLicenses": false,
-						"buildOptimizer": false,
-						"sourceMap": true,
-						"optimization": false,
-						"namedChunks": true
+						"scripts": []
 					},
 					"configurations": {
 						"production": {
-							"optimization": true,
-							"outputHashing": "all",
-							"sourceMap": false,
-							"namedChunks": false,
-							"extractLicenses": true,
-							"vendorChunk": false,
-							"buildOptimizer": true
+							"outputHashing": "all"
+						},
+						"development": {
+							"optimization": false,
+							"extractLicenses": false,
+							"sourceMap": true
 						}
 					},
-					"defaultConfiguration": ""
+					"defaultConfiguration": "production"
 				},
 				"serve": {
 					"builder": "@angular-devkit/build-angular:dev-server",
-					"options": {
-						"buildTarget": "test-app:build"
-					},
 					"configurations": {
 						"production": {
 							"buildTarget": "test-app:build:production"
+						},
+						"development": {
+							"buildTarget": "test-app:build:development"
 						}
-					}
+					},
+					"defaultConfiguration": "development"
 				}
 			}
 		}
