@@ -1,5 +1,5 @@
 import { NgbMonth } from './ngb-month';
-import { DayViewModel, MonthpickerViewModel, MonthViewModel } from './monthpicker-view-model';
+import { MonthpickerViewModel, YearMonthViewModel, YearViewModel } from './monthpicker-view-model';
 import { NgbMonthCalendar } from './ngb-month-calendar';
 import { NgbMonthpickerI18n } from './monthpicker-i18n';
 
@@ -104,130 +104,111 @@ export function prevMonthDisabled(calendar: NgbMonthCalendar, date: NgbMonth, mi
 	);
 }
 
-export function buildMonths(
+export function buildYears(
 	calendar: NgbMonthCalendar,
 	date: NgbMonth,
 	state: MonthpickerViewModel,
 	i18n: NgbMonthpickerI18n,
 	force: boolean,
-): MonthViewModel[] {
-	const { months } = state;
-	// move old months to a temporary array
-	const monthsToReuse = months.splice(0, months.length);
+): YearViewModel[] {
+	const { years } = state;
+	// move old years to a temporary array
+	const yearsToReuse = years.splice(0, years.length);
 
-	// generate new first dates, nullify or reuse months
+	// generate new first dates, nullify or reuse years
 	const firstDates = Array.from({ length: 1 }, (_, i) => {
 		const firstDate = Object.assign(calendar.getNext(date, 'm', i));
-		months[i] = <any>null;
+		years[i] = <any>null;
 
 		if (!force) {
-			const reusedIndex = monthsToReuse.findIndex((month) => month.firstDate.equals(firstDate));
-			// move reused month back to months
+			const reusedIndex = yearsToReuse.findIndex((month) => month.firstDate.equals(firstDate));
+			// move reused year back to years
 			if (reusedIndex !== -1) {
-				months[i] = monthsToReuse.splice(reusedIndex, 1)[0];
+				years[i] = yearsToReuse.splice(reusedIndex, 1)[0];
 			}
 		}
 
 		return firstDate;
 	});
 
-	// rebuild nullified months
+	// rebuild nullified years
 	firstDates.forEach((firstDate, i) => {
-		if (months[i] === null) {
-			months[i] = buildMonth(calendar, firstDate, state, i18n, monthsToReuse.shift() || ({} as MonthViewModel));
+		if (years[i] === null) {
+			years[i] = buildYear(calendar, firstDate, state, i18n, yearsToReuse.shift() || ({} as YearViewModel));
 		}
 	});
 
-	return months;
+	return years;
 }
 
-export function buildMonth(
+export function buildYear(
 	calendar: NgbMonthCalendar,
 	date: NgbMonth,
 	state: MonthpickerViewModel,
 	i18n: NgbMonthpickerI18n,
-	month: MonthViewModel = {} as MonthViewModel,
-): MonthViewModel {
-	const { dayTemplateData, minDate, maxDate, markDisabled } = state;
+	year: YearViewModel = {} as YearViewModel,
+): YearViewModel {
+	const { monthTemplateData, minDate, maxDate, markDisabled } = state;
 	const calendarToday = calendar.getToday();
 
-	month.firstDate = <any>null;
-	month.lastDate = <any>null;
-	month.number = date.month;
-	month.year = date.year;
-	month.weeks = month.weeks || [];
+	year.firstDate = new NgbMonth(date.year, 1);
+	year.lastDate = new NgbMonth(date.year, calendar.getMonths().length);
+	year.year = date.year;
+	year.months = year.months || [];
 
-	date = getFirstViewDate(calendar, date);
+	for (let month = 1; month <= calendar.getMonths().length; month++) {
+		const newMonth = new NgbMonth(date.year, month);
+		const nextMonth = calendar.getNext(newMonth);
 
-	// month has weeks
-	for (let week = 0; week < calendar.getWeeksPerMonth(); week++) {
-		let weekObject = month.weeks[week];
-		if (!weekObject) {
-			weekObject = month.weeks[week] = { number: 0, days: [], collapsed: true };
-		}
-		const days = weekObject.days;
+		const ariaLabel = ''; // TODO: i18n.getMonthAriaLabel(newMonth);
 
-		// week has days
-		for (let day = 0; day < calendar.getDaysPerWeek(); day++) {
-			const newDate = new NgbMonth(date.year, date.month);
-			const nextDate = calendar.getNext(newDate);
-
-			//const ariaLabel = i18n.getDayAriaLabel(newDate);
-
-			// marking date as disabled
-			let disabled = !!((minDate && newDate.before(minDate)) || (maxDate && newDate.after(maxDate)));
-			if (!disabled && markDisabled) {
-				disabled = markDisabled(newDate, { month: month.number, year: month.year });
-			}
-
-			// today
-			let today = newDate.equals(calendarToday);
-
-			// adding user-provided data to the context
-			let contextUserData = dayTemplateData
-				? dayTemplateData(newDate, { month: month.number, year: month.year })
-				: undefined;
-
-			// saving first date of the month
-			if (month.firstDate === null && newDate.month === month.number) {
-				month.firstDate = newDate;
-			}
-
-			// saving last date of the month
-			if (newDate.month === month.number && nextDate.month !== month.number) {
-				month.lastDate = newDate;
-			}
-
-			let dayObject = days[day];
-			if (!dayObject) {
-				dayObject = days[day] = {} as DayViewModel;
-			}
-			dayObject.date = newDate;
-			dayObject.context = Object.assign(dayObject.context || {}, {
-				$implicit: newDate,
-				date: newDate,
-				data: contextUserData,
-				currentMonth: month.number,
-				currentYear: month.year,
-				disabled,
-				focused: false,
-				selected: false,
-				today,
-			});
-			dayObject.tabindex = -1;
-			//dayObject.ariaLabel = ariaLabel;
-			dayObject.hidden = false;
-
-			date = nextDate;
+		// marking date as disabled
+		let disabled = !!((minDate && newMonth.before(minDate)) || (maxDate && newMonth.after(maxDate)));
+		if (!disabled && markDisabled) {
+			disabled = markDisabled(newMonth, { month: month, year: year.year });
 		}
 
-		weekObject.number = calendar.getWeekNumber(days.map((day) => day.date));
+		// today
+		let today = newMonth.equals(calendarToday);
 
-		// marking week as collapsed
-		weekObject.collapsed = days[0].date.month !== month.number && days[days.length - 1].date.month !== month.number;
+		// adding user-provided data to the context
+		let contextUserData = monthTemplateData
+			? monthTemplateData(newMonth, { month: month, year: year.year })
+			: undefined;
+
+		// saving first date of the month
+		/*if (year.firstDate === null && newMonth.month === year.number) {
+			year.firstDate = newMonth;
+		}
+
+		// saving last date of the month
+		if (newMonth.month === year.number && nextMonth.month !== month) {
+			year.lastDate = newMonth;
+		}*/
+
+		let monthObject = year.months[month - 1];
+		if (!monthObject) {
+			monthObject = year.months[month - 1] = {} as YearMonthViewModel;
+		}
+		monthObject.date = newMonth;
+		monthObject.context = Object.assign(monthObject.context || {}, {
+			$implicit: newMonth,
+			date: newMonth,
+			data: contextUserData,
+			currentMonth: month,
+			currentYear: year.year,
+			disabled,
+			focused: false,
+			selected: false,
+			today,
+		});
+		monthObject.tabindex = -1;
+		monthObject.ariaLabel = ariaLabel;
+
+		date = nextMonth;
 	}
 
-	return month;
+	return year;
 }
 
 export function getFirstViewDate(calendar: NgbMonthCalendar, date: NgbMonth): NgbMonth {

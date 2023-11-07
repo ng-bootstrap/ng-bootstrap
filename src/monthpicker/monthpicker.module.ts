@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { NgbMonthpicker, NgbMonthpickerContent } from './monthpicker';
-import { NgbMonthpickerMonth } from './monthpicker';
+import { NgbMonthpickerYear } from './monthpicker';
 import { NgbInputMonthpicker } from './monthpicker-input';
 
 export { NgbMonthpicker, NgbMonthpickerContent, NgbMonthpickerNavigateEvent, NgbMonthpickerState } from './monthpicker';
 export { NgbInputMonthpicker } from './monthpicker-input';
 export { NgbMonthCalendar, NgbMonthPeriod, NgbMonthCalendarGregorian } from './ngb-month-calendar';
-export { NgbMonthpickerMonth } from './monthpicker';
+export { NgbMonthpickerYear } from './monthpicker';
 export { NgbMonthpickerNavigation } from './monthpicker-navigation';
 export { NgbMonthpickerNavigationSelect } from './monthpicker-navigation-select';
 export { NgbMonthpickerConfig } from './monthpicker-config';
@@ -20,7 +20,7 @@ export { NgbMonthNativeUTCAdapter } from './adapters/ngb-month-native-utc-adapte
 export { NgbMonthParserFormatter } from './ngb-month-parser-formatter';
 export { NgbMonthpickerKeyboardService } from './monthpicker-keyboard-service';
 
-const NGB_MONTHPICKER_DIRECTIVES = [NgbMonthpicker, NgbMonthpickerContent, NgbInputMonthpicker, NgbMonthpickerMonth];
+const NGB_MONTHPICKER_DIRECTIVES = [NgbMonthpicker, NgbMonthpickerContent, NgbInputMonthpicker, NgbMonthpickerYear];
 
 @NgModule({
 	exports: NGB_MONTHPICKER_DIRECTIVES,

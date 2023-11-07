@@ -1,0 +1,23 @@
+ngb-monthpicker-year {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	padding: 0.25rem;
+}
+
+.ngb-mp {
+	&-month {
+		cursor: pointer;
+		width: 4rem;
+		height: 2rem;
+
+		&.disabled,
+		&.hidden {
+			cursor: default;
+			pointer-events: none;
+		}
+
+		&[tabindex='0'] {
+			z-index: 1;
+		}
+	}
+}

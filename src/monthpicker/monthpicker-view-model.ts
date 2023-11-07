@@ -1,35 +1,27 @@
 import { NgbMonth } from './ngb-month';
 import { NgbMonthStruct } from './ngb-month-struct';
-import { DayTemplateContext } from './monthpicker-day-template-context';
+import { MonthTemplateContext } from './monthpicker-month-template-context';
 import { TranslationWidth } from '@angular/common';
 
 export type NgbMarkDisabled = (date: NgbMonthStruct, current?: { year: number; month: number }) => boolean;
-export type NgbDayTemplateData = (date: NgbMonthStruct, current?: { year: number; month: number }) => any;
+export type NgbMonthTemplateData = (date: NgbMonthStruct, current?: { year: number; month: number }) => any;
 
-export type DayViewModel = {
+export type YearMonthViewModel = {
 	date: NgbMonth;
-	context: DayTemplateContext;
+	context: MonthTemplateContext;
 	tabindex: number;
 	ariaLabel: string;
-	hidden: boolean;
 };
 
-export type WeekViewModel = {
-	number: number;
-	days: DayViewModel[];
-	collapsed: boolean;
-};
-
-export type MonthViewModel = {
+export type YearViewModel = {
 	firstDate: NgbMonth;
 	lastDate: NgbMonth;
-	number: number;
 	year: number;
-	weeks: WeekViewModel[];
+	months: YearMonthViewModel[];
 };
 
 export type MonthpickerViewModel = {
-	dayTemplateData: NgbDayTemplateData | null;
+	monthTemplateData: NgbMonthTemplateData | null;
 	disabled: boolean;
 	firstDate: NgbMonth | null;
 	focusDate: NgbMonth | null;
@@ -38,7 +30,7 @@ export type MonthpickerViewModel = {
 	markDisabled: NgbMarkDisabled | null;
 	maxDate: NgbMonth | null;
 	minDate: NgbMonth | null;
-	months: MonthViewModel[];
+	years: YearViewModel[];
 	navigation: 'select' | 'arrows' | 'none';
 	prevDisabled: boolean;
 	nextDisabled: boolean;

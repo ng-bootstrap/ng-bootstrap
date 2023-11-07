@@ -7,7 +7,7 @@ import {
 	ViewEncapsulation,
 	inject,
 } from '@angular/core';
-import { NavigationEvent, MonthViewModel } from './monthpicker-view-model';
+import { NavigationEvent } from './monthpicker-view-model';
 import { NgbMonth } from './ngb-month';
 import { NgbMonthpickerI18n } from './monthpicker-i18n';
 import { NgFor, NgIf } from '@angular/common';

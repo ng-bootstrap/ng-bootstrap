@@ -1,11 +1,11 @@
 import { NgbMonthCalendar } from './ngb-month-calendar';
 import { NgbMonth } from './ngb-month';
 import { NgbMonthStruct } from './ngb-month-struct';
-import { MonthpickerViewModel, NgbDayTemplateData, NgbMarkDisabled } from './monthpicker-view-model';
+import { MonthpickerViewModel, NgbMonthTemplateData, NgbMarkDisabled } from './monthpicker-view-model';
 import { inject, Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import {
-	buildMonths,
+	buildYears,
 	checkDateInRange,
 	checkMinBeforeMax,
 	generateSelectBoxYears,
@@ -20,7 +20,7 @@ import { filter } from 'rxjs/operators';
 import { NgbMonthpickerI18n } from './monthpicker-i18n';
 
 export type MonthpickerServiceInputs = Partial<{
-	dayTemplateData: NgbDayTemplateData;
+	monthTemplateData: NgbMonthTemplateData;
 	disabled: boolean;
 	focusVisible: boolean;
 	markDisabled: NgbMarkDisabled;
@@ -34,9 +34,9 @@ export class NgbMonthpickerService {
 	private _VALIDATORS: {
 		[K in keyof MonthpickerServiceInputs]: (v: MonthpickerServiceInputs[K]) => Partial<MonthpickerViewModel> | void;
 	} = {
-		dayTemplateData: (dayTemplateData: NgbDayTemplateData) => {
-			if (this._state.dayTemplateData !== dayTemplateData) {
-				return { dayTemplateData };
+		monthTemplateData: (monthTemplateData: NgbMonthTemplateData) => {
+			if (this._state.monthTemplateData !== monthTemplateData) {
+				return { monthTemplateData };
 			}
 		},
 		disabled: (disabled: boolean) => {
@@ -81,7 +81,7 @@ export class NgbMonthpickerService {
 	private _dateSelect$ = new Subject<NgbMonth>();
 
 	private _state: MonthpickerViewModel = {
-		dayTemplateData: null,
+		monthTemplateData: null,
 		markDisabled: null,
 		maxDate: null,
 		minDate: null,
@@ -90,7 +90,7 @@ export class NgbMonthpickerService {
 		lastDate: null,
 		focusDate: null,
 		focusVisible: false,
-		months: [],
+		years: [],
 		navigation: 'select',
 		prevDisabled: false,
 		nextDisabled: false,
@@ -99,7 +99,7 @@ export class NgbMonthpickerService {
 	};
 
 	get model$(): Observable<MonthpickerViewModel> {
-		return this._model$.pipe(filter((model) => model.months.length > 0));
+		return this._model$.pipe(filter((model) => model.years.length > 0));
 	}
 
 	get dateSelect$(): Observable<NgbMonth> {
@@ -161,13 +161,13 @@ export class NgbMonthpickerService {
 		return this._calendar.isValid(ngbMonth) ? ngbMonth : defaultValue;
 	}
 
-	getMonth(struct: NgbMonthStruct) {
-		for (let month of this._state.months) {
-			if (struct.month === month.number && struct.year === month.year) {
-				return month;
+	getYear(struct: NgbMonthStruct) {
+		for (let year of this._state.years) {
+			if (struct.year === year.year) {
+				return year;
 			}
 		}
-		throw new Error(`month ${struct.month} of year ${struct.year} not found`);
+		throw new Error(`year ${struct.year} not found`);
 	}
 
 	private _nextState(patch: Partial<MonthpickerViewModel>) {
@@ -178,9 +178,9 @@ export class NgbMonthpickerService {
 	}
 
 	private _patchContexts(state: MonthpickerViewModel) {
-		const { months, selectedDate, focusDate, focusVisible, disabled } = state;
-		state.months.forEach((month) => {
-			month.weeks.forEach((week) => {
+		const { years, selectedDate, focusDate, focusVisible, disabled } = state;
+		state.years.forEach((month) => {
+			/*month.weeks.forEach((week) => {
 				week.days.forEach((day) => {
 					// patch focus flag
 					if (focusDate) {
@@ -203,10 +203,10 @@ export class NgbMonthpickerService {
 
 					// visibility
 					if (month.number !== day.date.month) {
-						day.hidden = day.date.after(months[0].firstDate) && day.date.before(months[0].lastDate);
+						day.hidden = day.date.after(years[0].firstDate) && day.date.before(years[0].lastDate);
 					}
 				});
-			});
+			});*/
 		});
 	}
 
@@ -230,7 +230,7 @@ export class NgbMonthpickerService {
 		}
 
 		// initial rebuild via 'select()'
-		if ('selectedDate' in patch && this._state.months.length === 0) {
+		if ('selectedDate' in patch && this._state.years.length === 0) {
 			startDate = state.selectedDate;
 		}
 
@@ -246,7 +246,7 @@ export class NgbMonthpickerService {
 
 			// nothing to rebuild if only focus changed and it is still visible
 			if (
-				state.months.length !== 0 &&
+				state.years.length !== 0 &&
 				state.focusDate &&
 				!state.focusDate.before(state.firstDate) &&
 				!state.focusDate.after(state.lastDate)
@@ -264,18 +264,18 @@ export class NgbMonthpickerService {
 		// rebuilding months
 		if (startDate) {
 			const forceRebuild =
-				'dayTemplateData' in patch ||
+				'monthTemplateData' in patch ||
 				'markDisabled' in patch ||
 				'minDate' in patch ||
 				'maxDate' in patch ||
 				'disabled' in patch;
 
-			const months = buildMonths(this._calendar, startDate, state, this._i18n, forceRebuild);
+			const years = buildYears(this._calendar, startDate, state, this._i18n, forceRebuild);
 
-			// updating months and boundary dates
-			state.months = months;
-			state.firstDate = months[0].firstDate;
-			state.lastDate = months[months.length - 1].lastDate;
+			// updating years and boundary dates
+			state.years = years;
+			state.firstDate = years[0].firstDate;
+			state.lastDate = years[years.length - 1].lastDate;
 
 			// reset selected date if 'markDisabled' returns true
 			if ('selectedDate' in patch && !isDateSelectable(state.selectedDate, state)) {

@@ -24,13 +24,13 @@ import {
 	ViewEncapsulation,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
+import { JsonPipe, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NgbMonthCalendar } from './ngb-month-calendar';
 import { NgbMonth } from './ngb-month';
 import { MonthpickerServiceInputs, NgbMonthpickerService } from './monthpicker-service';
-import { MonthpickerViewModel, DayViewModel, MonthViewModel, NavigationEvent } from './monthpicker-view-model';
+import { MonthpickerViewModel, YearMonthViewModel, NavigationEvent, YearViewModel } from './monthpicker-view-model';
 import { NgbMonthpickerConfig } from './monthpicker-config';
 import { NgbMonthAdapter } from './adapters/ngb-month-adapter';
 import { NgbMonthStruct } from './ngb-month-struct';
@@ -39,6 +39,8 @@ import { NgbMonthpickerKeyboardService } from './monthpicker-keyboard-service';
 import { isChangedDate, isChangedMonth } from './monthpicker-tools';
 import { NgbMonthpickerNavigation } from './monthpicker-navigation';
 import { ContentTemplateContext } from './monthpicker-content-template-context';
+import { MonthTemplateContext } from './monthpicker-month-template-context';
+import { NgbMonthpickerMonthView } from './monthpicker-month-view';
 
 /**
  * An event emitted right before the navigation happens and the month displayed by the monthpicker changes.
@@ -100,7 +102,7 @@ export interface NgbMonthpickerState {
 	 *
 	 * @since 5.3.0
 	 */
-	readonly months: NgbMonth[];
+	readonly years: NgbMonth[];
 }
 
 /**
@@ -114,7 +116,7 @@ export class NgbMonthpickerContent {
 }
 
 /**
- * A component that renders one month including all the days, weekdays and week numbers. Can be used inside
+ * A component that renders one year including all the months. Can be used inside
  * the `<ng-template NgbMonthpickerMonths></ng-template>` when you want to customize months layout.
  *
  * For a usage example, see [custom month layout demo](#/components/monthpicker/examples#custommonth)
@@ -122,69 +124,59 @@ export class NgbMonthpickerContent {
  * @since 5.3.0
  */
 @Component({
-	selector: 'ngb-monthpicker-month',
+	selector: 'ngb-monthpicker-year',
 	standalone: true,
 	imports: [NgIf, NgFor, NgTemplateOutlet],
 	host: { role: 'grid', '(keydown)': 'onKeyDown($event)' },
 	encapsulation: ViewEncapsulation.None,
-	styleUrls: ['./monthpicker-month.scss'],
+	styleUrls: ['./monthpicker-year.scss'],
 	template: `
-		<div *ngIf="viewModel.weekdays.length > 0" class="ngb-dp-week ngb-dp-weekdays" role="row">
-			<div *ngFor="let weekday of viewModel.weekdays" class="ngb-dp-weekday small" role="columnheader">{{
-				weekday
-			}}</div>
-		</div>
-		<ng-template ngFor let-week [ngForOf]="viewModel.weeks">
-			<div *ngIf="!week.collapsed" class="ngb-dp-week" role="row">
-				<div
-					*ngFor="let day of week.days"
-					(click)="doSelect(day); $event.preventDefault()"
-					class="ngb-dp-day"
-					role="gridcell"
-					[class.disabled]="day.context.disabled"
-					[tabindex]="day.tabindex"
-					[class.hidden]="day.hidden"
-					[class.ngb-dp-today]="day.context.today"
-					[attr.aria-label]="day.ariaLabel"
-				>
-					<ng-template [ngIf]="!day.hidden">
-						<ng-template
-							[ngTemplateOutlet]="monthpicker.dayTemplate"
-							[ngTemplateOutletContext]="day.context"
-						></ng-template>
-					</ng-template>
-				</div>
+		<ng-template ngFor let-month [ngForOf]="viewModel.months">
+			<div
+				role="gridcell"
+				class="ngb-mp-month"
+				(click)="doSelect(month); $event.preventDefault()"
+				[class.disabled]="month?.context.disabled"
+				[tabindex]="month?.tabindex"
+				[class.ngb-mp-today]="month?.context.today"
+				[attr.aria-label]="month?.ariaLabel"
+			>
+				<ng-template
+					[ngTemplateOutlet]="monthpicker.monthTemplate"
+					[ngTemplateOutletContext]="month?.context"
+				></ng-template>
 			</div>
 		</ng-template>
 	`,
 })
-export class NgbMonthpickerMonth {
+export class NgbMonthpickerYear {
 	private _keyboardService = inject(NgbMonthpickerKeyboardService);
 	private _service = inject(NgbMonthpickerService);
 
 	i18n = inject(NgbMonthpickerI18n);
 	monthpicker = inject(NgbMonthpicker);
 
-	viewModel: MonthViewModel;
+	viewModel: YearViewModel;
 
 	/**
-	 * The first date of month to be rendered.
+	 * The first date of year to be rendered.
 	 *
-	 * This month must one of the months present in the
+	 * This year must one of the years present in the
 	 * [monthpicker state](#/components/monthpicker/api#NgbMonthpickerState).
 	 */
 	@Input()
-	set month(month: NgbMonthStruct) {
-		this.viewModel = this._service.getMonth(month);
+	set year(year: NgbMonthStruct) {
+		this.viewModel = this._service.getYear(year);
+		console.log('set', this.viewModel);
 	}
 
 	onKeyDown(event: KeyboardEvent) {
 		this._keyboardService.processKey(event, this.monthpicker);
 	}
 
-	doSelect(day: DayViewModel) {
-		if (!day.context.disabled && !day.hidden) {
-			this.monthpicker.onDateSelect(day.date);
+	doSelect(month: YearMonthViewModel) {
+		if (!month.context.disabled) {
+			this.monthpicker.onDateSelect(month.date);
 		}
 	}
 }
@@ -198,18 +190,36 @@ export class NgbMonthpickerMonth {
 	exportAs: 'ngbMonthpicker',
 	selector: 'ngb-monthpicker',
 	standalone: true,
-	imports: [NgIf, NgFor, NgTemplateOutlet, NgbMonthpickerNavigation],
+	imports: [NgIf, NgFor, NgTemplateOutlet, NgbMonthpickerNavigation, NgbMonthpickerYear, NgbMonthpickerMonthView],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
 	styleUrls: ['./monthpicker.scss'],
 	host: { '[class.disabled]': 'model.disabled' },
 	template: `
+		<ng-template
+			#defaultMonthTemplate
+			let-date="date"
+			let-currentMonth="currentMonth"
+			let-selected="selected"
+			let-disabled="disabled"
+			let-focused="focused"
+		>
+			<div
+				ngbMonthpickerMonthView
+				[date]="date"
+				[currentMonth]="currentMonth"
+				[selected]="selected"
+				[disabled]="disabled"
+				[focused]="focused"
+			>
+			</div>
+		</ng-template>
 		<ng-template #defaultContentTemplate>
-			<div *ngFor="let month of model.months; let i = index" class="ngb-dp-month">
-				{{ i }}
-				<div *ngIf="navigation === 'none' || navigation === 'select'" class="ngb-dp-month-name">
-					{{ i18n.getMonthLabel(month.firstDate) }}
+			<div *ngFor="let year of model.years; let i = index" class="ngb-mp-year">
+				<div *ngIf="navigation === 'none' || (displayYears > 1 && navigation === 'select')" class="ngb-mp-year-name">
+					{{ year.year }}
 				</div>
+				<ngb-monthpicker-year [year]="year.firstDate"></ngb-monthpicker-year>
 			</div>
 		</ng-template>
 
@@ -229,7 +239,7 @@ export class NgbMonthpickerMonth {
 			</ngb-monthpicker-navigation>
 		</div>
 
-		<div class="ngb-mp-content" [class.ngb-dp-months]="!contentTemplate" #content>
+		<div class="ngb-mp-content" [class.ngb-mp-years]="!contentTemplate" #content>
 			<ng-template
 				[ngTemplateOutlet]="contentTemplate || contentTemplateFromContent?.templateRef || defaultContentTemplate"
 				[ngTemplateOutletContext]="{ $implicit: this }"
@@ -250,6 +260,7 @@ export class NgbMonthpicker implements AfterViewInit, OnChanges, OnInit, Control
 
 	model: MonthpickerViewModel;
 
+	@ViewChild('defaultMonthTemplate', { static: true }) private _defaultMonthTemplate: TemplateRef<MonthTemplateContext>;
 	@ViewChild('content', { static: true }) private _contentEl: ElementRef<HTMLElement>;
 
 	protected injector = inject(Injector);
@@ -286,17 +297,22 @@ export class NgbMonthpicker implements AfterViewInit, OnChanges, OnInit, Control
 	 *
 	 * See [`DayTemplateContext`](#/components/monthpicker/api#DayTemplateContext) for the data you get inside.
 	 */
-	@Input() dayTemplate = this._config.dayTemplate;
+	@Input() monthTemplate = this._config.monthTemplate;
 
 	/**
 	 * The callback to pass any arbitrary data to the template cell via the
-	 * [`DayTemplateContext`](#/components/monthpicker/api#DayTemplateContext)'s `data` parameter.
+	 * [`MonthTemplateContext`](#/components/monthpicker/api#MonthTemplateContext)'s `data` parameter.
 	 *
 	 * `current` is the month that is currently displayed by the monthpicker.
 	 *
 	 * @since 3.3.0
 	 */
-	@Input() dayTemplateData = this._config.dayTemplateData;
+	@Input() monthTemplateData = this._config.monthTemplateData;
+
+	/**
+	 * The number of years to display.
+	 */
+	@Input() displayYears = this._config.displayYears;
 
 	/**
 	 * The reference to the custom template for the monthpicker footer.
@@ -384,7 +400,7 @@ export class NgbMonthpicker implements AfterViewInit, OnChanges, OnInit, Control
 				firstDate: model.firstDate!,
 				lastDate: model.lastDate!,
 				focusedDate: model.focusDate!,
-				months: model.months.map((viewModel) => viewModel.firstDate),
+				years: model.years.map((viewModel) => viewModel.firstDate),
 			};
 
 			let navigationPrevented = false;
@@ -515,21 +531,21 @@ export class NgbMonthpicker implements AfterViewInit, OnChanges, OnInit, Control
 	ngOnInit() {
 		if (this.model === undefined) {
 			const inputs: MonthpickerServiceInputs = {};
-			['dayTemplateData', 'markDisabled', 'navigation', 'minDate', 'maxDate'].forEach(
+			['monthTemplateData', 'markDisabled', 'navigation', 'minDate', 'maxDate'].forEach(
 				(name) => (inputs[name] = this[name]),
 			);
 			this._service.set(inputs);
 
 			this.navigateTo(this.startDate);
 		}
-		/*if (!this.dayTemplate) {
-			this.dayTemplate = this._defaultDayTemplate;
-		}*/
+		if (!this.monthTemplate) {
+			this.monthTemplate = this._defaultMonthTemplate;
+		}
 	}
 
 	ngOnChanges(changes: SimpleChanges) {
 		const inputs: MonthpickerServiceInputs = {};
-		['dayTemplateData', 'markDisabled', 'navigation', 'minDate', 'maxDate']
+		['monthTemplateData', 'markDisabled', 'navigation', 'minDate', 'maxDate']
 			.filter((name) => name in changes)
 			.forEach((name) => (inputs[name] = this[name]));
 		this._service.set(inputs);

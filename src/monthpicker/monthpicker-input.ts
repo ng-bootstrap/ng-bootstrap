@@ -31,7 +31,7 @@ import { ngbPositioning } from '../util/positioning';
 
 import { NgbMonthAdapter } from './adapters/ngb-month-adapter';
 import { NgbMonthpicker, NgbMonthpickerNavigateEvent } from './monthpicker';
-import { DayTemplateContext } from './monthpicker-day-template-context';
+import { MonthTemplateContext } from './monthpicker-month-template-context';
 import { NgbMonthCalendar } from './ngb-month-calendar';
 import { NgbMonth } from './ngb-month';
 import { NgbMonthParserFormatter } from './ngb-month-parser-formatter';
@@ -124,19 +124,19 @@ export class NgbInputMonthpicker implements OnChanges, OnDestroy, ControlValueAc
 	 *
 	 * Allows to completely override the way a day 'cell' in the calendar is displayed.
 	 *
-	 * See [`DayTemplateContext`](#/components/datepicker/api#DayTemplateContext) for the data you get inside.
+	 * See [`MonthTemplateContext`](#/components/datepicker/api#MonthTemplateContext) for the data you get inside.
 	 */
-	@Input() dayTemplate: TemplateRef<DayTemplateContext>;
+	@Input() dayTemplate: TemplateRef<MonthTemplateContext>;
 
 	/**
 	 * The callback to pass any arbitrary data to the template cell via the
-	 * [`DayTemplateContext`](#/components/datepicker/api#DayTemplateContext)'s `data` parameter.
+	 * [`MonthTemplateContext`](#/components/datepicker/api#MonthTemplateContext)'s `data` parameter.
 	 *
 	 * `current` is the month that is currently displayed by the datepicker.
 	 *
 	 * @since 3.3.0
 	 */
-	@Input() dayTemplateData: (date: NgbMonth, current?: { year: number; month: number }) => any;
+	@Input() monthTemplateData: (date: NgbMonth, current?: { year: number; month: number }) => any;
 
 	/**
 	 * The reference to the custom template for the datepicker footer.
@@ -492,8 +492,8 @@ export class NgbInputMonthpicker implements OnChanges, OnDestroy, ControlValueAc
 	private _applyDatepickerInputs(datepickerComponentRef: ComponentRef<NgbMonthpicker>): void {
 		[
 			'contentTemplate',
-			'dayTemplate',
-			'dayTemplateData',
+			'monthTemplate',
+			'monthTemplateData',
 			'footerTemplate',
 			'markDisabled',
 			'minDate',

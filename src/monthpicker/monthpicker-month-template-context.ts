@@ -4,7 +4,7 @@ import { NgbMonth } from './ngb-month';
  *
  * You can override the way dates are displayed in the monthpicker via the `[dayTemplate]` input.
  */
-export interface DayTemplateContext {
+export interface MonthTemplateContext {
 	/**
 	 * The date that corresponds to the template. Same as the `date` parameter.
 	 *
@@ -27,7 +27,7 @@ export interface DayTemplateContext {
 	currentYear: number;
 
 	/**
-	 * Any data you pass using the `[dayTemplateData]` input in the monthpicker.
+	 * Any data you pass using the `[monthTemplateData]` input in the monthpicker.
 	 *
 	 * @since 3.3.0
 	 */

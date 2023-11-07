@@ -3,7 +3,7 @@ ngb-monthpicker {
 	border-radius: 0.25rem;
 	display: inline-block;
 
-	&-month {
+	&-year {
 		pointer-events: auto;
 	}
 
@@ -32,11 +32,11 @@ ngb-monthpicker {
 		background-color: var(--bs-tertiary-bg);
 	}
 
-	&-months {
+	&-years {
 		display: flex;
 	}
 
-	&-month {
+	&-year {
 		pointer-events: none;
 
 		&-name {
@@ -48,21 +48,21 @@ ngb-monthpicker {
 		}
 
 		& + & {
-			.ngb-dp-month-name,
-			.ngb-dp-week {
+			.ngb-mp-month-name,
+			.ngb-mp-week {
 				padding-left: 1rem;
 			}
 		}
 
-		&:last-child .ngb-dp-week {
+		&:last-child .ngb-mp-week {
 			padding-right: 0.25rem;
 		}
 
-		&:first-child .ngb-dp-week {
+		&:first-child .ngb-mp-week {
 			padding-left: 0.25rem;
 		}
 
-		.ngb-dp-week:last-child {
+		.ngb-mp-week:last-child {
 			padding-bottom: 0.25rem;
 		}
 	}

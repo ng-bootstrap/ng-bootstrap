@@ -1,8 +1,8 @@
-import { NgbInputDatepickerConfig } from './monthpicker-input-config';
+import { NgbInputMonthpickerConfig } from './monthpicker-input-config';
 
 describe('NgbInputDatepickerConfig', () => {
 	it('should have sensible default values', () => {
-		const config = new NgbInputDatepickerConfig();
+		const config = new NgbInputMonthpickerConfig();
 
 		expect(config.autoClose).toBe(true);
 		expect(config.container).toBeUndefined();

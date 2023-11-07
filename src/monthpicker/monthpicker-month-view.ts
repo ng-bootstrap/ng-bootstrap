@@ -3,11 +3,11 @@ import { NgbMonth } from './ngb-month';
 import { NgbMonthpickerI18n } from './monthpicker-i18n';
 
 @Component({
-	selector: '[ngbDatepickerDayView]',
+	selector: '[ngbMonthpickerMonthView]',
 	standalone: true,
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
-	styleUrls: ['./datepicker-day-view.scss'],
+	styleUrls: ['./monthpicker-month-view.scss'],
 	host: {
 		class: 'btn-light',
 		'[class.bg-primary]': 'selected',
@@ -16,18 +16,18 @@ import { NgbMonthpickerI18n } from './monthpicker-i18n';
 		'[class.outside]': 'isMuted()',
 		'[class.active]': 'focused',
 	},
-	template: `{{ i18n.getDayNumerals(date) }}`,
+	template: `{{ i18n.getMonthShortName(date?.month) }}`,
 })
-export class NgbDatepickerDayView {
-	i18n = inject(NgbDatepickerI18n);
+export class NgbMonthpickerMonthView {
+	i18n = inject(NgbMonthpickerI18n);
 
 	@Input() currentMonth: number;
-	@Input() date: NgbDate;
+	@Input() date: NgbMonth;
 	@Input() disabled: boolean;
 	@Input() focused: boolean;
 	@Input() selected: boolean;
 
 	isMuted() {
-		return !this.selected && (this.date.month !== this.currentMonth || this.disabled);
+		return !this.selected && (this.date?.month !== this.currentMonth || this.disabled);
 	}
 }

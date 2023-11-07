@@ -1,6 +1,6 @@
 import { Injectable, TemplateRef } from '@angular/core';
 import { TranslationWidth } from '@angular/common';
-import { DayTemplateContext } from './monthpicker-day-template-context';
+import { MonthTemplateContext } from './monthpicker-month-template-context';
 import { NgbMonthStruct } from './ngb-month-struct';
 
 /**
@@ -11,9 +11,10 @@ import { NgbMonthStruct } from './ngb-month-struct';
  */
 @Injectable({ providedIn: 'root' })
 export class NgbMonthpickerConfig {
-	dayTemplate: TemplateRef<DayTemplateContext>;
-	dayTemplateData: (date: NgbMonthStruct, current?: { year: number; month: number }) => any;
+	monthTemplate: TemplateRef<MonthTemplateContext>;
+	monthTemplateData: (date: NgbMonthStruct, current?: { year: number; month: number }) => any;
 	footerTemplate: TemplateRef<any>;
+	displayYears = 1;
 	markDisabled: (date: NgbMonthStruct, current?: { year: number; month: number }) => boolean;
 	minDate: NgbMonthStruct;
 	maxDate: NgbMonthStruct;
