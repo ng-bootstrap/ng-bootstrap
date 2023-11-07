@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
 
 import { AnalyticsService } from '../../services/analytics.service';
 import { ISnippet, Snippet } from '../../services/snippet';
@@ -7,6 +7,7 @@ import { NgFor, NgIf } from '@angular/common';
 import { NgbdCodeComponent } from '../code/code.component';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdFragment } from '../fragment/fragment.directive';
+import { NgbdDemoCodeService } from '../../services/demo-code.service';
 
 const TYPES: { [name: string]: string } = {
 	html: 'HTML',
@@ -32,15 +33,17 @@ export class NgbdWidgetDemoComponent {
 	@Input() showCode = false;
 	@Input() showStackblitz;
 
+	codeService = inject(NgbdDemoCodeService);
+
 	get markupSnippet() {
-		return Snippet({ lang: 'html', code: this.markup });
+		return Snippet({ lang: 'html', code: this.codeService.getDemoSource(this.markup) });
 	}
 	get codeSnippet() {
-		return Snippet({ lang: 'typescript', code: this.code });
+		return Snippet({ lang: 'typescript', code: this.codeService.getDemoSource(this.markup) });
 	}
 
 	getFileSnippet({ name, source }): ISnippet {
-		return Snippet({ code: source, lang: name.split('.').pop() || '' });
+		return Snippet({ code: this.codeService.getDemoSource(source), lang: name.split('.').pop() || '' });
 	}
 
 	get hasManyFiles() {

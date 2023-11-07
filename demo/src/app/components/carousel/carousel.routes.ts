@@ -14,26 +14,26 @@ const DEMOS = {
 	basic: {
 		title: 'Carousel',
 		type: NgbdCarouselBasic,
-		code: require('!!raw-loader!./demos/basic/carousel-basic').default,
-		markup: require('!!raw-loader!./demos/basic/carousel-basic.html').default,
+		code: 'carousel/demos/basic/carousel-basic.ts',
+		markup: 'carousel/demos/basic/carousel-basic.html',
 	},
 	navigation: {
 		title: 'Navigation arrows and indicators',
 		type: NgbdCarouselNavigation,
-		code: require('!!raw-loader!./demos/navigation/carousel-navigation').default,
-		markup: require('!!raw-loader!./demos/navigation/carousel-navigation.html').default,
+		code: 'carousel/demos/navigation/carousel-navigation.ts',
+		markup: 'carousel/demos/navigation/carousel-navigation.html',
 	},
 	pause: {
 		title: 'Pause/cycle',
 		type: NgbdCarouselPause,
-		code: require('!!raw-loader!./demos/pause/carousel-pause').default,
-		markup: require('!!raw-loader!./demos/pause/carousel-pause.html').default,
+		code: 'carousel/demos/pause/carousel-pause.ts',
+		markup: 'carousel/demos/pause/carousel-pause.html',
 	},
 	config: {
 		title: 'Global configuration of carousels',
 		type: NgbdCarouselConfig,
-		code: require('!!raw-loader!./demos/config/carousel-config').default,
-		markup: require('!!raw-loader!./demos/config/carousel-config.html').default,
+		code: 'carousel/demos/config/carousel-config.ts',
+		markup: 'carousel/demos/config/carousel-config.html',
 	},
 };
 

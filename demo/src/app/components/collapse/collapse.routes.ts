@@ -13,20 +13,20 @@ const DEMOS = {
 	basic: {
 		title: 'Collapse',
 		type: NgbdCollapseBasic,
-		code: require('!!raw-loader!./demos/basic/collapse-basic').default,
-		markup: require('!!raw-loader!./demos/basic/collapse-basic.html').default,
+		code: 'collapse/demos/basic/collapse-basic.ts',
+		markup: 'collapse/demos/basic/collapse-basic.html',
 	},
 	horizontal: {
 		title: 'Horizontal collapse',
 		type: NgbdCollapseHorizontal,
-		code: require('!!raw-loader!./demos/horizontal/collapse-horizontal').default,
-		markup: require('!!raw-loader!./demos/horizontal/collapse-horizontal.html').default,
+		code: 'collapse/demos/horizontal/collapse-horizontal.ts',
+		markup: 'collapse/demos/horizontal/collapse-horizontal.html',
 	},
 	navbar: {
 		title: 'Responsive Navbar',
 		type: NgbdCollapseNavbar,
-		code: require('!!raw-loader!./demos/navbar/collapse-navbar').default,
-		markup: require('!!raw-loader!./demos/navbar/collapse-navbar.html').default,
+		code: 'collapse/demos/navbar/collapse-navbar.ts',
+		markup: 'collapse/demos/navbar/collapse-navbar.html',
 	},
 };
 
