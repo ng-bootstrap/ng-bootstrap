@@ -15,32 +15,32 @@ const DEMOS = {
 	basic: {
 		title: 'Basic offcanvas',
 		type: NgbdOffcanvasBasic,
-		code: require('!!raw-loader!./demos/basic/offcanvas-basic').default,
-		markup: require('!!raw-loader!./demos/basic/offcanvas-basic.html').default,
+		code: 'offcanvas/demos/basic/offcanvas-basic.ts',
+		markup: 'offcanvas/demos/basic/offcanvas-basic.html',
 	},
 	component: {
 		title: 'Components as content',
 		type: NgbdOffcanvasComponent,
-		code: require('!!raw-loader!./demos/component/offcanvas-component').default,
-		markup: require('!!raw-loader!./demos/component/offcanvas-component.html').default,
+		code: 'offcanvas/demos/component/offcanvas-component.ts',
+		markup: 'offcanvas/demos/component/offcanvas-component.html',
 	},
 	options: {
 		title: 'Offcanvas options',
 		type: NgbdOffcanvasOptions,
-		code: require('!!raw-loader!./demos/options/offcanvas-options').default,
-		markup: require('!!raw-loader!./demos/options/offcanvas-options.html').default,
+		code: 'offcanvas/demos/options/offcanvas-options.ts',
+		markup: 'offcanvas/demos/options/offcanvas-options.html',
 	},
 	focus: {
 		title: 'Focus management',
 		type: NgbdOffcanvasFocus,
-		code: require('!!raw-loader!./demos/focus/offcanvas-focus').default,
-		markup: require('!!raw-loader!./demos/focus/offcanvas-focus.html').default,
+		code: 'offcanvas/demos/focus/offcanvas-focus.ts',
+		markup: 'offcanvas/demos/focus/offcanvas-focus.html',
 	},
 	config: {
 		title: 'Global configuration of Offcanvas',
 		type: NgbdOffcanvasConfig,
-		code: require('!!raw-loader!./demos/config/offcanvas-config').default,
-		markup: require('!!raw-loader!./demos/config/offcanvas-config.html').default,
+		code: 'offcanvas/demos/config/offcanvas-config.ts',
+		markup: 'offcanvas/demos/config/offcanvas-config.html',
 	},
 };
 

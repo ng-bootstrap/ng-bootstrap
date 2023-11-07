@@ -22,50 +22,26 @@ const DEMOS = {
 	inline: {
 		title: 'Declarative inline usage',
 		type: NgbdToastInline,
-		code: require('!!raw-loader!./demos/inline/toast-inline').default,
-		markup: require('!!raw-loader!./demos/inline/toast-inline.html').default,
+		code: 'toast/demos/inline/toast-inline.ts',
+		markup: 'toast/demos/inline/toast-inline.html',
 	},
 	'custom-header': {
 		title: 'Using a Template as header',
 		type: NgbdToastCustomHeader,
-		files: [
-			{
-				name: 'toast-custom-header.html',
-				source: require('!!raw-loader!./demos/custom-header/toast-custom-header.html').default,
-			},
-			{
-				name: 'toast-custom-header.ts',
-				source: require('!!raw-loader!./demos/custom-header/toast-custom-header').default,
-			},
-		],
+		code: 'toast/demos/custom-header/toast-custom-header.ts',
+		markup: 'toast/demos/custom-header/toast-custom-header.html',
 	},
 	closeable: {
 		title: 'Closeable toast',
 		type: NgbdToastCloseable,
-		files: [
-			{
-				name: 'toast-closeable.html',
-				source: require('!!raw-loader!./demos/closeable/toast-closeable.html').default,
-			},
-			{
-				name: 'toast-closeable.ts',
-				source: require('!!raw-loader!./demos/closeable/toast-closeable.ts').default,
-			},
-		],
+		code: 'toast/demos/closeable/toast-closeable.ts',
+		markup: 'toast/demos/closeable/toast-closeable.html',
 	},
 	'prevent-autohide': {
 		title: 'Prevent autohide on mouseover',
 		type: NgbdToastPreventAutohide,
-		files: [
-			{
-				name: 'toast-prevent-autohide.html',
-				source: require('!!raw-loader!./demos/prevent-autohide/toast-prevent-autohide.html').default,
-			},
-			{
-				name: 'toast-prevent-autohide.ts',
-				source: require('!!raw-loader!./demos/prevent-autohide/toast-prevent-autohide.ts').default,
-			},
-		],
+		code: 'toast/demos/prevent-autohide/toast-prevent-autohide.ts',
+		markup: 'toast/demos/prevent-autohide/toast-prevent-autohide.html',
 	},
 	'howto-global': {
 		title: 'Toast management service',
@@ -73,19 +49,19 @@ const DEMOS = {
 		files: [
 			{
 				name: 'toast-service.ts',
-				source: require('!!raw-loader!./demos/howto-global/toast-service.ts').default,
+				source: 'toast/demos/howto-global/toast-service.ts',
 			},
 			{
 				name: 'toast-global.component.html',
-				source: require('!!raw-loader!./demos/howto-global/toast-global.component.html').default,
+				source: 'toast/demos/howto-global/toast-global.component.html',
 			},
 			{
 				name: 'toast-global.component.ts',
-				source: require('!!raw-loader!./demos/howto-global/toast-global.component').default,
+				source: 'toast/demos/howto-global/toast-global.component.ts',
 			},
 			{
 				name: 'toasts-container.component.ts',
-				source: require('!!raw-loader!./demos/howto-global/toasts-container.component').default,
+				source: 'toast/demos/howto-global/toasts-container.component.ts',
 			},
 		],
 	},

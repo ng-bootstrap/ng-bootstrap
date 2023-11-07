@@ -23,32 +23,32 @@ const DEMOS = {
 	basic: {
 		title: 'Basic',
 		type: NgbdScrollSpyBasic,
-		code: require('!!raw-loader!./demos/basic/scrollspy-basic').default,
-		markup: require('!!raw-loader!./demos/basic/scrollspy-basic.html').default,
+		code: 'scrollspy/demos/basic/scrollspy-basic.ts',
+		markup: 'scrollspy/demos/basic/scrollspy-basic.html',
 	},
 	items: {
 		title: 'Menu items',
 		type: NgbdScrollSpyItems,
-		code: require('!!raw-loader!./demos/items/scrollspy-items').default,
-		markup: require('!!raw-loader!./demos/items/scrollspy-items.html').default,
+		code: 'scrollspy/demos/items/scrollspy-items.ts',
+		markup: 'scrollspy/demos/items/scrollspy-items.html',
 	},
 	service: {
 		title: 'Service',
 		type: NgbdScrollSpyService,
-		code: require('!!raw-loader!./demos/service/scrollspy-service').default,
-		markup: require('!!raw-loader!./demos/service/scrollspy-service.html').default,
+		code: 'scrollspy/demos/service/scrollspy-service.ts',
+		markup: 'scrollspy/demos/service/scrollspy-service.html',
 	},
 	nested: {
 		title: 'Nested items',
 		type: NgbdScrollSpyNested,
-		code: require('!!raw-loader!./demos/nested/scrollspy-nested').default,
-		markup: require('!!raw-loader!./demos/nested/scrollspy-nested.html').default,
+		code: 'scrollspy/demos/nested/scrollspy-nested.ts',
+		markup: 'scrollspy/demos/nested/scrollspy-nested.html',
 	},
 	navbar: {
 		title: 'Navbar',
 		type: NgbdScrollSpyNavbar,
-		code: require('!!raw-loader!./demos/navbar/scrollspy-navbar').default,
-		markup: require('!!raw-loader!./demos/navbar/scrollspy-navbar.html').default,
+		code: 'scrollspy/demos/navbar/scrollspy-navbar.ts',
+		markup: 'scrollspy/demos/navbar/scrollspy-navbar.html',
 	},
 };
 

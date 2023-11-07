@@ -23,11 +23,11 @@ const DEMOS = {
 		files: [
 			{
 				name: 'table-basic.html',
-				source: require('!!raw-loader!./demos/basic/table-basic.html').default,
+				source: 'table/demos/basic/table-basic.html',
 			},
 			{
 				name: 'table-basic.ts',
-				source: require('!!raw-loader!./demos/basic/table-basic').default,
+				source: 'table/demos/basic/table-basic.ts',
 			},
 		],
 	},
@@ -37,11 +37,11 @@ const DEMOS = {
 		files: [
 			{
 				name: 'table-sortable.html',
-				source: require('!!raw-loader!./demos/sortable/table-sortable.html').default,
+				source: 'table/demos/sortable/table-sortable.html',
 			},
 			{
 				name: 'table-sortable.ts',
-				source: require('!!raw-loader!./demos/sortable/table-sortable').default,
+				source: 'table/demos/sortable/table-sortable.ts',
 			},
 		],
 	},
@@ -51,11 +51,11 @@ const DEMOS = {
 		files: [
 			{
 				name: 'table-filtering.html',
-				source: require('!!raw-loader!./demos/filtering/table-filtering.html').default,
+				source: 'table/demos/filtering/table-filtering.html',
 			},
 			{
 				name: 'table-filtering.ts',
-				source: require('!!raw-loader!./demos/filtering/table-filtering').default,
+				source: 'table/demos/filtering/table-filtering.ts',
 			},
 		],
 	},
@@ -65,11 +65,11 @@ const DEMOS = {
 		files: [
 			{
 				name: 'table-pagination.html',
-				source: require('!!raw-loader!./demos/pagination/table-pagination.html').default,
+				source: 'table/demos/pagination/table-pagination.html',
 			},
 			{
 				name: 'table-pagination.ts',
-				source: require('!!raw-loader!./demos/pagination/table-pagination').default,
+				source: 'table/demos/pagination/table-pagination.ts',
 			},
 		],
 	},
@@ -79,27 +79,27 @@ const DEMOS = {
 		files: [
 			{
 				name: 'countries.ts',
-				source: require('!!raw-loader!./demos/complete/countries').default,
+				source: 'table/demos/complete/countries.ts',
 			},
 			{
 				name: 'country.service.ts',
-				source: require('!!raw-loader!./demos/complete/country.service').default,
+				source: 'table/demos/complete/country.service.ts',
 			},
 			{
 				name: 'country.ts',
-				source: require('!!raw-loader!./demos/complete/country').default,
+				source: 'table/demos/complete/country.ts',
 			},
 			{
 				name: 'table-complete.html',
-				source: require('!!raw-loader!./demos/complete/table-complete.html').default,
+				source: 'table/demos/complete/table-complete.html',
 			},
 			{
 				name: 'table-complete.ts',
-				source: require('!!raw-loader!./demos/complete/table-complete').default,
+				source: 'table/demos/complete/table-complete.ts',
 			},
 			{
 				name: 'sortable.directive.ts',
-				source: require('!!raw-loader!./demos/complete/sortable.directive').default,
+				source: 'table/demos/complete/sortable.directive.ts',
 			},
 		],
 	},
