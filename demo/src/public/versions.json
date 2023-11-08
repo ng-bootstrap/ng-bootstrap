@@ -1,7 +1,11 @@
 [
+	{
+		"text": "v16.0.0-rc.x (next)",
+		"url": "/"
+	},
   {
-    "text": "v15.x (Latest)",
-    "url": "/"
+    "text": "v15.x (latest)",
+    "url": "/releases/15.x/"
   },
   {
     "text": "v14.x",
