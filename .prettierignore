@@ -10,6 +10,7 @@ test-reports
 demo/dist
 demo/src/public
 demo/src/api-docs.ts
+demo/src/demos-sources.ts
 demo/src/docs.json
 dist
 e2e-app/dist
