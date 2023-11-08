@@ -81,8 +81,6 @@ export {
 	NgbDropdownMenu,
 	NgbDropdownModule,
 	NgbDropdownToggle,
-	// eslint-disable-next-line deprecation/deprecation
-	NgbNavbar,
 } from './dropdown/dropdown.module';
 export {
 	ModalDismissReasons,
