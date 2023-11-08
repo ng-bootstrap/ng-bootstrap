@@ -3,12 +3,12 @@ import { environment } from '../../environments/environment';
 import { Snippet } from '../services/snippet';
 import { NgbdCodeComponent } from '../shared/code/code.component';
 import { RouterLink } from '@angular/router';
-import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAlert, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
 	selector: 'ngbd-default',
 	standalone: true,
-	imports: [NgbdCodeComponent, RouterLink, NgbAlertModule],
+	imports: [NgbdCodeComponent, RouterLink, NgbAlertModule, NgbAlert],
 	templateUrl: './default.component.html',
 })
 export class DefaultComponent {
