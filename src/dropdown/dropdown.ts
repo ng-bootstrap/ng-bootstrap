@@ -31,12 +31,6 @@ import { FOCUSABLE_ELEMENTS_SELECTOR } from '../util/focus-trap';
 import { getActiveElement } from '../util/util';
 
 /**
- * @deprecated 14.2.0 this directive isn't useful anymore. You can remove it from your imports
- */
-@Directive({ selector: '.navbar', standalone: true })
-export class NgbNavbar {}
-
-/**
  * A directive you should put on a dropdown item to enable keyboard navigation.
  * Arrow keys will move focus between items marked with this directive.
  *

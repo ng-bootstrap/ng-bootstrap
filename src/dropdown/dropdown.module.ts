@@ -15,8 +15,6 @@ export {
 	NgbDropdownMenu,
 	NgbDropdownItem,
 	NgbDropdownButtonItem,
-	// eslint-disable-next-line deprecation/deprecation
-	NgbNavbar,
 } from './dropdown';
 export { NgbDropdownConfig } from './dropdown-config';
 
