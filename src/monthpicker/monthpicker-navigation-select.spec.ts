@@ -4,8 +4,8 @@ import { getMonthSelect, getYearSelect } from '../test/datepicker/common';
 
 import { Component } from '@angular/core';
 
-import { NgbDatepickerNavigationSelect } from './datepicker-navigation-select';
-import { NgbDate } from './ngb-date';
+import { NgbMonthpickerNavigationSelect } from './monthpicker-navigation-select';
+import { NgbMonth } from './ngb-month';
 
 const createTestComponent = (html: string) =>
 	createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -64,17 +64,17 @@ describe('ngb-datepicker-navigation-select', () => {
 		spyOn(fixture.componentInstance, 'onSelect');
 
 		changeSelect(monthSelect, '2');
-		expect(fixture.componentInstance.onSelect).toHaveBeenCalledWith(new NgbDate(2016, 2, 1));
+		expect(fixture.componentInstance.onSelect).toHaveBeenCalledWith(new NgbMonth(2016, 2));
 
 		changeSelect(monthSelect, '10');
-		expect(fixture.componentInstance.onSelect).toHaveBeenCalledWith(new NgbDate(2016, 10, 1));
+		expect(fixture.componentInstance.onSelect).toHaveBeenCalledWith(new NgbMonth(2016, 10));
 
 		changeSelect(yearSelect, '2017');
-		expect(fixture.componentInstance.onSelect).toHaveBeenCalledWith(new NgbDate(2017, 8, 1));
+		expect(fixture.componentInstance.onSelect).toHaveBeenCalledWith(new NgbMonth(2017, 8));
 
 		// out of range
 		changeSelect(yearSelect, '2000');
-		expect(fixture.componentInstance.onSelect).toHaveBeenCalledWith(new NgbDate(NaN, 8, 1));
+		expect(fixture.componentInstance.onSelect).toHaveBeenCalledWith(new NgbMonth(NaN, 8));
 	});
 
 	it('should select months and years when date changes', () => {
@@ -85,13 +85,13 @@ describe('ngb-datepicker-navigation-select', () => {
 		expect(getMonthSelect(fixture.nativeElement).value).toBe('8');
 		expect(getYearSelect(fixture.nativeElement).value).toBe('2016');
 
-		fixture.componentInstance.date = new NgbDate(2017, 9, 22);
+		fixture.componentInstance.date = new NgbMonth(2017, 9);
 		fixture.detectChanges();
 		expect(getMonthSelect(fixture.nativeElement).value).toBe('9');
 		expect(getYearSelect(fixture.nativeElement).value).toBe('2017');
 
 		// out of range
-		fixture.componentInstance.date = new NgbDate(2222, 22, 22);
+		fixture.componentInstance.date = new NgbMonth(2222, 22);
 		fixture.detectChanges();
 		expect(getMonthSelect(fixture.nativeElement).value).toBe('');
 		expect(getYearSelect(fixture.nativeElement).value).toBe('');
@@ -135,9 +135,9 @@ describe('ngb-datepicker-navigation-select', () => {
 	});
 });
 
-@Component({ selector: 'test-cmp', standalone: true, imports: [NgbDatepickerNavigationSelect], template: '' })
+@Component({ selector: 'test-cmp', standalone: true, imports: [NgbMonthpickerNavigationSelect], template: '' })
 class TestComponent {
-	date = new NgbDate(2016, 8, 22);
+	date = new NgbMonth(2016, 8);
 	months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 	ariaMonths = ['July', 'August', 'September'];
 	years = [2015, 2016, 2017];

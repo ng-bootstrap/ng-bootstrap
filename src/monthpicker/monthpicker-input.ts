@@ -120,13 +120,13 @@ export class NgbInputMonthpicker implements OnChanges, OnDestroy, ControlValueAc
 	@Input() datepickerClass: string;
 
 	/**
-	 * The reference to a custom template for the day.
+	 * The reference to a custom template for the month.
 	 *
-	 * Allows to completely override the way a day 'cell' in the calendar is displayed.
+	 * Allows to completely override the way a month 'cell' in the calendar is displayed.
 	 *
 	 * See [`MonthTemplateContext`](#/components/datepicker/api#MonthTemplateContext) for the data you get inside.
 	 */
-	@Input() dayTemplate: TemplateRef<MonthTemplateContext>;
+	@Input() monthTemplate: TemplateRef<MonthTemplateContext>;
 
 	/**
 	 * The callback to pass any arbitrary data to the template cell via the
@@ -212,7 +212,7 @@ export class NgbInputMonthpicker implements OnChanges, OnDestroy, ControlValueAc
 	 *
 	 * You could use `navigateTo(date)` method as an alternative.
 	 */
-	@Input() startDate: { year: number; month: number; day?: number };
+	@Input() startDate: { year: number; month: number };
 
 	/**
 	 * A selector specifying the element the datepicker popup should be appended to.
@@ -524,7 +524,7 @@ export class NgbInputMonthpicker implements OnChanges, OnDestroy, ControlValueAc
 		nativeElement.classList.add('dropdown-menu', 'show');
 
 		if (this.container === 'body') {
-			nativeElement.classList.add('ngb-dp-body');
+			nativeElement.classList.add('ngb-mp-body');
 		}
 
 		this._applyPopupClass(this.datepickerClass);

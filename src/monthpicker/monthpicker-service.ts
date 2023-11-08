@@ -179,34 +179,26 @@ export class NgbMonthpickerService {
 
 	private _patchContexts(state: MonthpickerViewModel) {
 		const { years, selectedDate, focusDate, focusVisible, disabled } = state;
-		state.years.forEach((month) => {
-			/*month.weeks.forEach((week) => {
-				week.days.forEach((day) => {
-					// patch focus flag
-					if (focusDate) {
-						day.context.focused = focusDate.equals(day.date) && focusVisible;
-					}
+		state.years.forEach((year) => {
+			year.months.forEach((month) => {
+				// patch focus flag
+				if (focusDate) {
+					month.context.focused = focusDate.equals(month.date) && focusVisible;
+				}
 
-					// calculating tabindex
-					day.tabindex =
-						!disabled && focusDate && day.date.equals(focusDate) && focusDate.month === month.number ? 0 : -1;
+				// calculating tabindex
+				month.tabindex = !disabled && focusDate && month.date.equals(focusDate) ? 0 : -1;
 
-					// override context disabled
-					if (disabled === true) {
-						day.context.disabled = true;
-					}
+				// override context disabled
+				if (disabled === true) {
+					month.context.disabled = true;
+				}
 
-					// patch selection flag
-					if (selectedDate !== undefined) {
-						day.context.selected = selectedDate !== null && selectedDate.equals(day.date);
-					}
-
-					// visibility
-					if (month.number !== day.date.month) {
-						day.hidden = day.date.after(years[0].firstDate) && day.date.before(years[0].lastDate);
-					}
-				});
-			});*/
+				// patch selection flag
+				if (selectedDate !== undefined) {
+					month.context.selected = selectedDate !== null && selectedDate.equals(month.date);
+				}
+			});
 		});
 	}
 

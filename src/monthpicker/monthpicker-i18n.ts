@@ -8,7 +8,7 @@ import { NgbMonthStruct } from './ngb-month-struct';
  * The default implementation of this service uses the Angular locale and registered locale data for
  * month names (as explained in the Angular i18n guide).
  *
- * It also provides a way to i18n data that depends on calendar calculations, like aria labels, day, week and year
+ * It also provides a way to i18n data that depends on calendar calculations, like aria labels and year
  * numerals. For other static labels the monthpicker uses the default Angular i18n.
  *
  * See the [i18n demo](#/components/monthpicker/examples#i18n) and
@@ -35,7 +35,7 @@ export abstract class NgbMonthpickerI18n {
 	abstract getMonthFullName(month: number, year?: number): string;
 
 	/**
-	 * Returns the text label to display above the day view.
+	 * Returns the text label to display above the month view.
 	 */
 	getMonthLabel(date: NgbMonthStruct): string {
 		return `${this.getMonthFullName(date.month, date.year)} ${this.getYearNumerals(date.year)}`;

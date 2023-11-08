@@ -3,12 +3,12 @@ import { createGenericTestComponent } from '../test/common';
 
 import { Component, Injectable } from '@angular/core';
 
-import { NgbDatepickerModule } from './datepicker.module';
-import { NgbDatepicker } from './datepicker';
-import { NgbDatepickerKeyboardService } from './datepicker-keyboard-service';
-import { NgbDatepickerService } from './datepicker-service';
-import { NgbDate } from './ngb-date';
-import { NgbMonthStruct } from './ngb-date-struct';
+import { NgbMonthpickerModule } from './monthpicker.module';
+import { NgbMonthpicker } from './monthpicker';
+import { NgbMonthpickerKeyboardService } from './monthpicker-keyboard-service';
+import { NgbMonthpickerService } from './monthpicker-service';
+import { NgbMonth } from './ngb-month';
+import { NgbMonthStruct } from './ngb-month-struct';
 
 const createTestComponent = () =>
 	createGenericTestComponent(
@@ -20,7 +20,7 @@ const createTestComponent = () =>
                   [outsideDays]="outsideDays"
                   (dateSelect)="onClick($event)">
     <ng-template #dt let-date="date">{{ date.day }}</ng-template>
-  </ngb-datepicker>
+  </ngb-monthpicker>
 `,
 		TestComponent,
 	) as ComponentFixture<TestComponent>;
@@ -54,11 +54,11 @@ function expectWeekLabel(element: HTMLElement, weekLabel: string) {
 }
 
 @Injectable()
-class MockDatepickerService extends NgbDatepickerService {
+class MockDatepickerService extends NgbMonthpickerService {
 	getMonth(struct: NgbMonthStruct) {
 		return {
-			firstDate: new NgbDate(2016, 8, 1),
-			lastDate: new NgbDate(2016, 8, 31),
+			firstDate: new NgbMonth(2016, 8),
+			lastDate: new NgbMonth(2016, 8),
 			year: 2016,
 			number: 8,
 			weekdays: ['Mo', 'Tu'],
@@ -68,12 +68,12 @@ class MockDatepickerService extends NgbDatepickerService {
 					number: 1,
 					days: [
 						{
-							date: new NgbDate(2016, 7, 4),
+							date: new NgbMonth(2016, 7),
 							context: {
 								currentMonth: 8,
 								currentYear: 2016,
-								$implicit: new NgbDate(2016, 7, 4),
-								date: new NgbDate(2016, 7, 4),
+								$implicit: new NgbMonth(2016, 7),
+								date: new NgbMonth(2016, 7),
 								disabled: false,
 								focused: false,
 								selected: false,
@@ -84,12 +84,12 @@ class MockDatepickerService extends NgbDatepickerService {
 							hidden: true,
 						},
 						{
-							date: new NgbDate(2016, 8, 1),
+							date: new NgbMonth(2016, 8),
 							context: {
 								currentMonth: 8,
 								currentYear: 2016,
-								$implicit: new NgbDate(2016, 8, 1),
-								date: new NgbDate(2016, 8, 1),
+								$implicit: new NgbMonth(2016, 8),
+								date: new NgbMonth(2016, 8),
 								disabled: false,
 								focused: false,
 								selected: false,
@@ -107,12 +107,12 @@ class MockDatepickerService extends NgbDatepickerService {
 					number: 2,
 					days: [
 						{
-							date: new NgbDate(2016, 8, 2),
+							date: new NgbMonth(2016, 8),
 							context: {
 								currentMonth: 8,
 								currentYear: 2016,
-								$implicit: new NgbDate(2016, 8, 2),
-								date: new NgbDate(2016, 8, 2),
+								$implicit: new NgbMonth(2016, 8),
+								date: new NgbMonth(2016, 8),
 								disabled: true,
 								focused: false,
 								selected: false,
@@ -123,12 +123,12 @@ class MockDatepickerService extends NgbDatepickerService {
 							hidden: false,
 						},
 						{
-							date: new NgbDate(2016, 8, 3),
+							date: new NgbMonth(2016, 8),
 							context: {
 								currentMonth: 8,
 								currentYear: 2016,
-								$implicit: new NgbDate(2016, 8, 3),
-								date: new NgbDate(2016, 8, 3),
+								$implicit: new NgbMonth(2016, 8),
+								date: new NgbMonth(2016, 8),
 								disabled: false,
 								focused: false,
 								selected: false,
@@ -146,12 +146,12 @@ class MockDatepickerService extends NgbDatepickerService {
 					number: 3,
 					days: [
 						{
-							date: new NgbDate(2016, 8, 4),
+							date: new NgbMonth(2016, 8),
 							context: {
 								currentMonth: 8,
 								currentYear: 2016,
-								$implicit: new NgbDate(2016, 8, 4),
-								date: new NgbDate(2016, 8, 4),
+								$implicit: new NgbMonth(2016, 8),
+								date: new NgbMonth(2016, 8),
 								disabled: false,
 								focused: false,
 								selected: false,
@@ -162,12 +162,12 @@ class MockDatepickerService extends NgbDatepickerService {
 							hidden: false,
 						},
 						{
-							date: new NgbDate(2016, 9, 1),
+							date: new NgbMonth(2016, 9),
 							context: {
 								currentMonth: 8,
 								currentYear: 2016,
-								$implicit: new NgbDate(2016, 9, 1),
-								date: new NgbDate(2016, 9, 1),
+								$implicit: new NgbMonth(2016, 9),
+								date: new NgbMonth(2016, 9),
 								disabled: false,
 								focused: false,
 								selected: false,
@@ -185,12 +185,12 @@ class MockDatepickerService extends NgbDatepickerService {
 					number: 4,
 					days: [
 						{
-							date: new NgbDate(2016, 9, 2),
+							date: new NgbMonth(2016, 9),
 							context: {
 								currentMonth: 8,
 								currentYear: 2016,
-								$implicit: new NgbDate(2016, 9, 2),
-								date: new NgbDate(2016, 9, 2),
+								$implicit: new NgbMonth(2016, 9),
+								date: new NgbMonth(2016, 9),
 								disabled: false,
 								focused: false,
 								selected: false,
@@ -201,12 +201,12 @@ class MockDatepickerService extends NgbDatepickerService {
 							hidden: true,
 						},
 						{
-							date: new NgbDate(2016, 9, 3),
+							date: new NgbMonth(2016, 9),
 							context: {
 								currentMonth: 8,
 								currentYear: 2016,
-								$implicit: new NgbDate(2016, 9, 3),
-								date: new NgbDate(2016, 9, 3),
+								$implicit: new NgbMonth(2016, 9),
+								date: new NgbMonth(2016, 9),
 								disabled: false,
 								focused: false,
 								selected: false,
@@ -224,15 +224,15 @@ class MockDatepickerService extends NgbDatepickerService {
 	}
 }
 
-describe('ngb-datepicker-month', () => {
+describe('ngb-monthpicker-month', () => {
 	beforeEach(() => {
-		TestBed.overrideComponent(NgbDatepicker, {
+		TestBed.overrideComponent(NgbMonthpicker, {
 			add: {
-				providers: [{ provide: NgbDatepickerService, useClass: MockDatepickerService }, NgbDatepickerKeyboardService],
+				providers: [{ provide: NgbMonthpickerService, useClass: MockDatepickerService }, NgbMonthpickerKeyboardService],
 			},
 		});
 		TestBed.configureTestingModule({
-			providers: [{ provide: NgbDatepickerService, useClass: MockDatepickerService }],
+			providers: [{ provide: NgbMonthpickerService, useClass: MockDatepickerService }],
 		});
 	});
 
@@ -267,7 +267,7 @@ describe('ngb-datepicker-month', () => {
 		const dates = getDates(fixture.nativeElement);
 		dates[1].click();
 
-		expect(fixture.componentInstance.onClick).toHaveBeenCalledWith(new NgbDate(2016, 8, 1));
+		expect(fixture.componentInstance.onClick).toHaveBeenCalledWith(new NgbMonth(2016, 8));
 	});
 
 	it('should not send date selection events for hidden and disabled dates', () => {
@@ -301,15 +301,15 @@ describe('ngb-datepicker-month', () => {
 		// hidden
 		expect(dates[0]).toHaveCssClass('hidden');
 		expect(dates[0]).not.toHaveCssClass('disabled');
-		expect(dates[0]).not.toHaveCssClass('ngb-dp-today');
+		expect(dates[0]).not.toHaveCssClass('ngb-mp-today');
 		// normal
 		expect(dates[1]).not.toHaveCssClass('hidden');
 		expect(dates[1]).not.toHaveCssClass('disabled');
-		expect(dates[1]).not.toHaveCssClass('ngb-dp-today');
+		expect(dates[1]).not.toHaveCssClass('ngb-mp-today');
 		// disabled
 		expect(dates[2]).not.toHaveCssClass('hidden');
 		expect(dates[2]).toHaveCssClass('disabled');
-		expect(dates[2]).toHaveCssClass('ngb-dp-today');
+		expect(dates[2]).toHaveCssClass('ngb-mp-today');
 	});
 
 	it('should not display collapsed weeks', () => {
@@ -328,15 +328,15 @@ describe('ngb-datepicker-month', () => {
 	it('should render custom month layout', () => {
 		const fixture = createGenericTestComponent(
 			`
-      <ngb-datepicker #dp
+      <ngb-monthpicker #dp
                       [weekdays]="weekdays"
                       [showWeekNumbers]="showWeekNumbers"
                       [outsideDays]="outsideDays"
                       (select)="onClick($event)">
         <ng-template ngbDatepickerContent>
-          <ngb-datepicker-month [month]="{month: 8, year: 2016}"></ngb-datepicker-month>
+          <ngb-monthpicker-month [month]="{month: 8, year: 2016}"></ngb-monthpicker-month>
         </ng-template>
-      </ngb-datepicker>`,
+      </ngb-monthpicker>`,
 			TestComponent,
 		) as ComponentFixture<TestComponent>;
 		expectDates(fixture.nativeElement, ['', '1', '2', '3', '4', '']);
@@ -345,13 +345,13 @@ describe('ngb-datepicker-month', () => {
 	it('should render custom month template', () => {
 		const fixture = createGenericTestComponent(
 			`
-      <ngb-datepicker #dp
+      <ngb-monthpicker #dp
                       [weekdays]="weekdays"
                       [showWeekNumbers]="showWeekNumbers"
                       [outsideDays]="outsideDays"
                       (select)="onClick($event)">
         <ng-template ngbDatepickerContent><div class="customClass">Custom Content</div></ng-template>
-      </ngb-datepicker>
+      </ngb-monthpicker>
     `,
 			TestComponent,
 		) as ComponentFixture<TestComponent>;
@@ -364,14 +364,14 @@ describe('ngb-datepicker-month', () => {
 		const fixture = createGenericTestComponent(
 			`
 			<ng-template #cc><div class="customClass">Custom Content</div></ng-template>
-      <ngb-datepicker #dp
+      <ngb-monthpicker #dp
                       [weekdays]="weekdays"
                       [showWeekNumbers]="showWeekNumbers"
                       [outsideDays]="outsideDays"
                       [contentTemplate]='cc'
                       (select)="onClick($event)">
         <ng-template ngbDatepickerContent><div class="customClass">Custom Inline Content</div></ng-template>
-      </ngb-datepicker>
+      </ngb-monthpicker>
     `,
 			TestComponent,
 		) as ComponentFixture<TestComponent>;
@@ -383,13 +383,13 @@ describe('ngb-datepicker-month', () => {
 	it('should handle keyboard events with custom month template', () => {
 		const fixture = createGenericTestComponent(
 			`
-      <ngb-datepicker #dp
+      <ngb-monthpicker #dp
                       [weekdays]="weekdays"
                       [showWeekNumbers]="showWeekNumbers"
                       [outsideDays]="outsideDays"
                       (select)="onClick($event)">
         <ng-template ngbDatepickerContent><div class="customClass">Custom Content</div></ng-template>
-      </ngb-datepicker>
+      </ngb-monthpicker>
     `,
 			TestComponent,
 		) as ComponentFixture<TestComponent>;
@@ -399,7 +399,7 @@ describe('ngb-datepicker-month', () => {
 	});
 });
 
-@Component({ selector: 'test-cmp', standalone: true, imports: [NgbDatepickerModule], template: '' })
+@Component({ selector: 'test-cmp', standalone: true, imports: [NgbMonthpickerModule], template: '' })
 class TestComponent {
 	weekdays = true;
 	showWeekNumbers = true;

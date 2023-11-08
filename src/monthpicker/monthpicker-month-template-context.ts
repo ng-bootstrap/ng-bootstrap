@@ -1,12 +1,12 @@
 import { NgbMonth } from './ngb-month';
 /**
- * The context for the monthpicker 'day' template.
+ * The context for the monthpicker 'month' template.
  *
- * You can override the way dates are displayed in the monthpicker via the `[dayTemplate]` input.
+ * You can override the way dates are displayed in the monthpicker via the `[monthTemplate]` input.
  */
 export interface MonthTemplateContext {
 	/**
-	 * The date that corresponds to the template. Same as the `date` parameter.
+	 * The month that corresponds to the template. Same as the `date` parameter.
 	 *
 	 * Can be used for convenience as a default template key, ex. `let-d`.
 	 *

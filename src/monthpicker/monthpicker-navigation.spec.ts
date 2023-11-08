@@ -5,10 +5,10 @@ import { getMonthSelect, getNavigationLinks, getYearSelect } from '../test/datep
 
 import { Component } from '@angular/core';
 
-import { NavigationEvent } from './datepicker-view-model';
-import { NgbDatepickerNavigation } from './datepicker-navigation';
-import { NgbDate } from './ngb-date';
-import { NgbDatepickerNavigationSelect } from './datepicker-navigation-select';
+import { NavigationEvent } from './monthpicker-view-model';
+import { NgbMonthpickerNavigation } from './monthpicker-navigation';
+import { NgbMonth } from './ngb-month';
+import { NgbMonthpickerNavigationSelect } from './monthpicker-navigation-select';
 
 const createTestComponent = (html: string) =>
 	createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -23,13 +23,13 @@ describe('ngb-datepicker-navigation', () => {
 		const fixture = createTestComponent(`<ngb-datepicker-navigation [showSelect]="showSelect" [date]="date"
           [selectBoxes]="selectBoxes"></ngb-datepicker-navigation>`);
 
-		expect(fixture.debugElement.query(By.directive(NgbDatepickerNavigationSelect))).not.toBeNull();
+		expect(fixture.debugElement.query(By.directive(NgbMonthpickerNavigationSelect))).not.toBeNull();
 		expect(getMonthSelect(fixture.nativeElement).value).toBe('8');
 		expect(getYearSelect(fixture.nativeElement).value).toBe('2016');
 
 		fixture.componentInstance.showSelect = false;
 		fixture.detectChanges();
-		expect(fixture.debugElement.query(By.directive(NgbDatepickerNavigationSelect))).toBeNull();
+		expect(fixture.debugElement.query(By.directive(NgbMonthpickerNavigationSelect))).toBeNull();
 	});
 
 	it('should send date selection event', () => {
@@ -41,10 +41,10 @@ describe('ngb-datepicker-navigation', () => {
 		spyOn(fixture.componentInstance, 'onSelect');
 
 		changeSelect(monthSelect, '2');
-		expect(fixture.componentInstance.onSelect).toHaveBeenCalledWith(new NgbDate(2016, 2, 1));
+		expect(fixture.componentInstance.onSelect).toHaveBeenCalledWith(new NgbMonth(2016, 2));
 
 		changeSelect(yearSelect, '2020');
-		expect(fixture.componentInstance.onSelect).toHaveBeenCalledWith(new NgbDate(2020, 8, 1));
+		expect(fixture.componentInstance.onSelect).toHaveBeenCalledWith(new NgbMonth(2020, 8));
 	});
 
 	it('should make prev navigation button disabled', () => {
@@ -136,13 +136,13 @@ describe('ngb-datepicker-navigation', () => {
 	});
 });
 
-@Component({ selector: 'test-cmp', standalone: true, imports: [NgbDatepickerNavigation], template: '' })
+@Component({ selector: 'test-cmp', standalone: true, imports: [NgbMonthpickerNavigation], template: '' })
 class TestComponent {
-	date = new NgbDate(2016, 8, 1);
+	date = new NgbMonth(2016, 8);
 	prevDisabled = false;
 	nextDisabled = false;
 	showSelect = true;
-	selectBoxes = { months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], years: [2015, 2016, 2017, 2018, 2019, 2020] };
+	selectBoxes = { years: [2015, 2016, 2017, 2018, 2019, 2020] };
 
 	onNavigate = (event) => {};
 	onSelect = (date) => {};

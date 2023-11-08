@@ -1,29 +1,28 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, Injectable, Type } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { NgbDatepickerModule, NgbDateStruct } from './datepicker.module';
-import { NgbCalendar, NgbCalendarGregorian } from './ngb-calendar';
-import { NgbDate } from './ngb-date';
-import { getMonthSelect, getYearSelect } from '../test/datepicker/common';
-import { NgbDatepickerI18n, NgbDatepickerI18nDefault } from './datepicker-i18n';
-import { NgbDatepicker } from './datepicker';
-import { NgbDatepickerKeyboardService } from './datepicker-keyboard-service';
-import { NgbDatepickerMonth } from './datepicker';
+import { NgbMonthpickerModule, NgbMonthStruct } from './monthpicker.module';
+import { NgbMonthCalendar, NgbMonthCalendarGregorian } from './ngb-month-calendar';
+import { NgbMonth } from './ngb-month';
+import { getMonthSelect, getYearSelect } from '../test/monthpicker/common';
+import { NgbMonthpickerI18n, NgbMonthpickerI18nDefault } from './monthpicker-i18n';
+import { NgbMonthpicker, NgbMonthpickerYear } from './monthpicker';
+import { NgbMonthpickerKeyboardService } from './monthpicker-keyboard-service';
 import { Key } from '../util/key';
 
-describe('ngb-datepicker integration', () => {
-	it('should allow overriding datepicker calendar', () => {
+describe('ngb-monthpicker integration', () => {
+	it('should allow overriding monthpicker calendar', () => {
 		@Injectable()
-		class FixedTodayCalendar extends NgbCalendarGregorian {
+		class FixedTodayCalendar extends NgbMonthCalendarGregorian {
 			getToday() {
-				return new NgbDate(2000, 7, 1);
+				return new NgbMonth(2000, 7);
 			}
 		}
 
 		TestBed.overrideComponent(TestComponent, {
 			set: {
-				template: `<ngb-datepicker></ngb-datepicker>`,
-				providers: [{ provide: NgbCalendar, useClass: FixedTodayCalendar }],
+				template: `<ngb-monthpicker></ngb-monthpicker>`,
+				providers: [{ provide: NgbMonthCalendar, useClass: FixedTodayCalendar }],
 			},
 		});
 		const fixture = TestBed.createComponent(TestComponent);
@@ -37,7 +36,7 @@ describe('ngb-datepicker integration', () => {
 		const ALPHABET = 'ABCDEFGHIJKLMNOPRSTQUVWXYZ';
 
 		@Injectable()
-		class CustomI18n extends NgbDatepickerI18nDefault {
+		class CustomI18n extends NgbMonthpickerI18nDefault {
 			// alphabetic months: Jan -> A, Feb -> B, etc
 			getMonthShortName(month: number) {
 				return ALPHABET[month - 1];
@@ -49,7 +48,7 @@ describe('ngb-datepicker integration', () => {
 			}
 
 			// alphabetic days: 1 -> A, 2 -> B, etc
-			getDayNumerals(date: NgbDateStruct) {
+			getDayNumerals(date: NgbMonthStruct) {
 				return ALPHABET[date.day - 1];
 			}
 
@@ -75,13 +74,13 @@ describe('ngb-datepicker integration', () => {
 			TestBed.overrideComponent(TestComponent, {
 				set: {
 					template: `
-            <ngb-datepicker [startDate]="{year: 2018, month: 1}"
+            <ngb-monthpicker [startDate]="{year: 2018, month: 1}"
                             [minDate]="{year: 2017, month: 1, day: 1}"
                             [maxDate]="{year: 2019, month: 12, day: 31}"
                             [showWeekNumbers]="true"
                             [displayMonths]="2"
-            ></ngb-datepicker>`,
-					providers: [{ provide: NgbDatepickerI18n, useClass: CustomI18n }],
+            ></ngb-monthpicker>`,
+					providers: [{ provide: NgbMonthpickerI18n, useClass: CustomI18n }],
 				},
 			});
 
@@ -130,7 +129,7 @@ describe('ngb-datepicker integration', () => {
 		});
 
 		it('should allow accessing i18n via a getter ', () => {
-			const dp = fixture.debugElement.query(By.directive(NgbDatepicker)).injector.get(NgbDatepicker);
+			const dp = fixture.debugElement.query(By.directive(NgbMonthpicker)).injector.get(NgbMonthpicker);
 			expect(dp.i18n).toBeDefined();
 			expect(dp.i18n.getMonthFullName(1)).toEqual('A');
 		});
@@ -138,8 +137,8 @@ describe('ngb-datepicker integration', () => {
 
 	describe('i18n-month-label', () => {
 		@Injectable()
-		class CustomI18n extends NgbDatepickerI18nDefault {
-			getMonthLabel(date: NgbDateStruct): string {
+		class CustomI18n extends NgbMonthpickerI18nDefault {
+			getMonthLabel(date: NgbMonthStruct): string {
 				return `${date.month}-${date.year}`;
 			}
 		}
@@ -150,13 +149,13 @@ describe('ngb-datepicker integration', () => {
 			TestBed.overrideComponent(TestComponent, {
 				set: {
 					template: `
-            <ngb-datepicker [startDate]="{year: 2018, month: 1}"
+            <ngb-monthpicker [startDate]="{year: 2018, month: 1}"
                             [minDate]="{year: 2017, month: 1, day: 1}"
                             [maxDate]="{year: 2019, month: 12, day: 31}"
                             [showWeekNumbers]="true"
                             [displayMonths]="2"
-            ></ngb-datepicker>`,
-					providers: [{ provide: NgbDatepickerI18n, useClass: CustomI18n }],
+            ></ngb-monthpicker>`,
+					providers: [{ provide: NgbMonthpickerI18n, useClass: CustomI18n }],
 				},
 			});
 
@@ -173,8 +172,8 @@ describe('ngb-datepicker integration', () => {
 
 	describe('keyboard service', () => {
 		@Injectable()
-		class CustomKeyboardService extends NgbDatepickerKeyboardService {
-			processKey(event: KeyboardEvent, service: NgbDatepicker) {
+		class CustomKeyboardService extends NgbMonthpickerKeyboardService {
+			processKey(event: KeyboardEvent, service: NgbMonthpicker) {
 				const state = service.state;
 				/* eslint-disable-next-line deprecation/deprecation */
 				switch (event.which) {
@@ -195,22 +194,22 @@ describe('ngb-datepicker integration', () => {
 
 		let fixture: ComponentFixture<TestComponent>;
 		let calendar: NgbCalendar;
-		let mv: NgbDatepickerMonth;
-		let startDate: NgbDate = new NgbDate(2018, 1, 1);
+		let mv: NgbMonthpickerMonth;
+		let startDate: NgbMonth = new NgbMonth(2018, 1, 1);
 
 		beforeEach(() => {
 			TestBed.overrideComponent(TestComponent, {
 				set: {
 					template: `
-            <ngb-datepicker [startDate]="{year: 2018, month: 1}" [displayMonths]="1"></ngb-datepicker>`,
-					providers: [{ provide: NgbDatepickerKeyboardService, useClass: CustomKeyboardService }],
+            <ngb-monthpicker [startDate]="{year: 2018, month: 1}" [displayMonths]="1"></ngb-monthpicker>`,
+					providers: [{ provide: NgbMonthpickerKeyboardService, useClass: CustomKeyboardService }],
 				},
 			});
 
 			fixture = TestBed.createComponent(TestComponent);
 			fixture.detectChanges();
-			calendar = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbDatepicker).calendar;
-			mv = fixture.debugElement.query(By.css('ngb-datepicker-month')).injector.get(NgbDatepickerMonth);
+			calendar = fixture.debugElement.query(By.css('ngb-monthpicker')).injector.get(NgbMonthpicker).calendar;
+			mv = fixture.debugElement.query(By.css('ngb-monthpicker-month')).injector.get(NgbMonthpickerMonth);
 
 			spyOn(calendar, 'getPrev');
 		});
@@ -228,38 +227,40 @@ describe('ngb-datepicker integration', () => {
 		});
 	});
 
-	describe('ngb-datepicker-month', () => {
+	describe('ngb-monthpicker-month', () => {
 		let fixture: ComponentFixture<TestComponent>;
-		let mv: NgbDatepickerMonth;
-		let startDate: NgbDate = new NgbDate(2018, 1, 1);
-		let ngbCalendar: NgbCalendar;
+		let mv: NgbMonthpickerMonth;
+		let startDate: NgbMonth = new NgbMonth(2018, 1);
+		let ngbMonthCalendar: NgbMonthCalendar;
 
 		beforeEach(() => {
 			TestBed.overrideComponent(TestComponent, {
 				set: {
 					template: `
-            <ngb-datepicker [startDate]="{year: 2018, month: 1}" [displayMonths]="1">
+            <ngb-monthpicker [startDate]="{year: 2018, month: 1}" [displayMonths]="1">
               <ng-template ngbDatepickerContent>
-                <ngb-datepicker-month [month]="{year: 2018, month: 1}"></ngb-datepicker-month>
+                <ngb-monthpicker-month [month]="{year: 2018, month: 1}"></ngb-monthpicker-month>
               </ng-template>
-            </ngb-datepicker>`,
+            </ngb-monthpicker>`,
 				},
 			});
 
 			fixture = TestBed.createComponent(TestComponent);
 			fixture.detectChanges();
-			mv = fixture.debugElement.query(By.css('ngb-datepicker-month')).injector.get(NgbDatepickerMonth);
-			ngbCalendar = fixture.debugElement.query(By.css('ngb-datepicker')).injector.get(NgbCalendar as Type<NgbCalendar>);
+			mv = fixture.debugElement.query(By.css('ngb-monthpicker-year')).injector.get(NgbMonthpickerYear);
+			ngbMonthCalendar = fixture.debugElement
+				.query(By.css('ngb-monthpicker'))
+				.injector.get(NgbMonthCalendar as Type<NgbMonthCalendar>);
 
-			spyOn(ngbCalendar, 'getPrev');
+			spyOn(ngbMonthCalendar, 'getPrev');
 		});
 
 		it('should preserve the functionality of keyboard service', () => {
 			mv.onKeyDown(<any>{ which: Key.ArrowUp, altKey: true, preventDefault: () => {}, stopPropagation: () => {} });
-			expect(ngbCalendar.getPrev).toHaveBeenCalledWith(startDate, 'd', 7);
+			expect(ngbMonthCalendar.getPrev).toHaveBeenCalledWith(startDate, 'd', 7);
 		});
 	});
 });
 
-@Component({ selector: 'test-cmp', standalone: true, imports: [NgbDatepickerModule], template: '' })
+@Component({ selector: 'test-cmp', standalone: true, imports: [NgbMonthpickerModule], template: '' })
 class TestComponent {}

@@ -1,6 +1,6 @@
 import { NgbMonthpicker, NgbMonthpickerState } from './monthpicker';
 import { NgbMonthpickerKeyboardService } from './monthpicker-keyboard-service';
-import { NgbCalendar, NgbCalendarGregorian } from './ngb-calendar';
+import { NgbMonthCalendar, NgbMonthCalendarGregorian } from './ngb-month-calendar';
 import { TestBed } from '@angular/core/testing';
 import { NgbMonth } from './ngb-month';
 import { Key } from '../util/key';
@@ -10,7 +10,7 @@ const event = (keyCode: number, shift = false) =>
 
 describe('ngb-monthpicker-keyboard-service', () => {
 	let service: NgbMonthpickerKeyboardService;
-	let calendar: NgbCalendar;
+	let calendar: NgbMonthCalendar;
 	let mock: Partial<NgbMonthpicker>;
 	let processKey = function (e: KeyboardEvent) {
 		service.processKey(e, mock as NgbMonthpicker);
@@ -19,10 +19,10 @@ describe('ngb-monthpicker-keyboard-service', () => {
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			providers: [{ provide: NgbCalendar, useClass: NgbCalendarGregorian }, NgbMonthpickerKeyboardService],
+			providers: [{ provide: NgbMonthCalendar, useClass: NgbMonthCalendarGregorian }, NgbMonthpickerKeyboardService],
 		});
 
-		calendar = TestBed.inject(NgbCalendar);
+		calendar = TestBed.inject(NgbMonthCalendar);
 		service = TestBed.inject(NgbMonthpickerKeyboardService);
 		mock = { state, focusDate: () => {}, focusSelect: () => {}, calendar };
 
@@ -38,16 +38,16 @@ describe('ngb-monthpicker-keyboard-service', () => {
 
 	it('should move focus by 1 day or 1 week with "Arrow" keys', () => {
 		processKey(event(Key.ArrowUp));
-		expect(calendar.getPrev).toHaveBeenCalledWith(state.focusedDate, 'd', 7);
+		expect(calendar.getPrev).toHaveBeenCalledWith(state.focusedDate, 'm', 3);
 
 		processKey(event(Key.ArrowDown));
-		expect(calendar.getNext).toHaveBeenCalledWith(state.focusedDate, 'd', 7);
+		expect(calendar.getNext).toHaveBeenCalledWith(state.focusedDate, 'm', 3);
 
 		processKey(event(Key.ArrowLeft));
-		expect(calendar.getPrev).toHaveBeenCalledWith(state.focusedDate, 'd', 1);
+		expect(calendar.getPrev).toHaveBeenCalledWith(state.focusedDate, 'm', 1);
 
 		processKey(event(Key.ArrowRight));
-		expect(calendar.getNext).toHaveBeenCalledWith(state.focusedDate, 'd', 1);
+		expect(calendar.getNext).toHaveBeenCalledWith(state.focusedDate, 'm', 1);
 
 		expect(calendar.getPrev).toHaveBeenCalledTimes(2);
 		expect(calendar.getNext).toHaveBeenCalledTimes(2);

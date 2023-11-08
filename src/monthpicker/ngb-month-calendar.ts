@@ -29,28 +29,11 @@ export function NGB_MONTHPICKER_CALENDAR_FACTORY() {
 @Injectable({ providedIn: 'root', useFactory: NGB_MONTHPICKER_CALENDAR_FACTORY })
 export abstract class NgbMonthCalendar {
 	/**
-	 * Returns the number of days per week.
-	 */
-	abstract getDaysPerWeek(): number;
-
-	/**
 	 * Returns an array of months per year.
 	 *
 	 * With default calendar we use ISO 8601 and return [1, 2, ..., 12];
 	 */
 	abstract getMonths(year?: number): number[];
-
-	/**
-	 * Returns the number of weeks per month.
-	 */
-	abstract getWeeksPerMonth(): number;
-
-	/**
-	 * Returns the weekday number for a given day.
-	 *
-	 * With the default calendar we use ISO 8601: 'weekday' is 1=Mon ... 7=Sun
-	 */
-	abstract getWeekday(date: NgbMonth): number;
 
 	/**
 	 * Adds a number of years, months to a given date.
@@ -65,17 +48,12 @@ export abstract class NgbMonthCalendar {
 	/**
 	 * Subtracts a number of years, months or days from a given date.
 	 *
-	 * * `period` can be `y`, `m` or `d` and defaults to day.
+	 * * `period` can be `y` or `m` and defaults to month.
 	 * * `number` defaults to 1.
 	 *
 	 * Always returns a new date.
 	 */
 	abstract getPrev(date: NgbMonth, period?: NgbMonthPeriod, number?: number): NgbMonth;
-
-	/**
-	 * Returns the week number for a given week.
-	 */
-	abstract getWeekNumber(week: readonly NgbMonth[]): number;
 
 	/**
 	 * Returns the today's date.
@@ -90,16 +68,8 @@ export abstract class NgbMonthCalendar {
 
 @Injectable()
 export class NgbMonthCalendarGregorian extends NgbMonthCalendar {
-	getDaysPerWeek() {
-		return 7;
-	}
-
 	getMonths() {
 		return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-	}
-
-	getWeeksPerMonth() {
-		return 6;
 	}
 
 	getNext(date: NgbMonth, period: NgbMonthPeriod = 'm', number = 1) {
@@ -134,25 +104,6 @@ export class NgbMonthCalendarGregorian extends NgbMonthCalendar {
 
 	getPrev(date: NgbMonth, period: NgbMonthPeriod = 'm', number = 1) {
 		return this.getNext(date, period, -number);
-	}
-
-	getWeekday(date: NgbMonth) {
-		let jsDate = toJSDate(date);
-		let day = jsDate.getDay();
-		// in JS Date Sun=0, in ISO 8601 Sun=7
-		return day === 0 ? 7 : day;
-	}
-
-	getWeekNumber(week: readonly NgbMonth[]) {
-		const thursdayIndex = (4 + 7) % 7;
-		let date = week[thursdayIndex];
-
-		const jsDate = toJSDate(date);
-		jsDate.setDate(jsDate.getDate() + 4 - (jsDate.getDay() || 7)); // Thursday
-		const time = jsDate.getTime();
-		jsDate.setMonth(0); // Compare with Jan 1
-		jsDate.setDate(1);
-		return Math.floor(Math.round((time - jsDate.getTime()) / 86400000) / 7) + 1;
 	}
 
 	getToday(): NgbMonth {

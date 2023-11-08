@@ -1,5 +1,4 @@
 import { Injectable, TemplateRef } from '@angular/core';
-import { TranslationWidth } from '@angular/common';
 import { MonthTemplateContext } from './monthpicker-month-template-context';
 import { NgbMonthStruct } from './ngb-month-struct';
 

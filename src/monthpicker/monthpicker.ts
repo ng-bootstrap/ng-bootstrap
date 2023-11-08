@@ -136,14 +136,14 @@ export class NgbMonthpickerContent {
 				role="gridcell"
 				class="ngb-mp-month"
 				(click)="doSelect(month); $event.preventDefault()"
-				[class.disabled]="month?.context.disabled"
-				[tabindex]="month?.tabindex"
-				[class.ngb-mp-today]="month?.context.today"
-				[attr.aria-label]="month?.ariaLabel"
+				[class.disabled]="month.context.disabled"
+				[tabindex]="month.tabindex"
+				[class.ngb-mp-today]="month.context.today"
+				[attr.aria-label]="month.ariaLabel"
 			>
 				<ng-template
 					[ngTemplateOutlet]="monthpicker.monthTemplate"
-					[ngTemplateOutletContext]="month?.context"
+					[ngTemplateOutletContext]="month.context"
 				></ng-template>
 			</div>
 		</ng-template>
@@ -291,11 +291,11 @@ export class NgbMonthpicker implements AfterViewInit, OnChanges, OnInit, Control
 	@ContentChild(NgbMonthpickerContent, { static: true }) contentTemplateFromContent?: NgbMonthpickerContent;
 
 	/**
-	 * The reference to a custom template for the day.
+	 * The reference to a custom template for the month.
 	 *
-	 * Allows to completely override the way a day 'cell' in the calendar is displayed.
+	 * Allows to completely override the way a month 'cell' in the calendar is displayed.
 	 *
-	 * See [`DayTemplateContext`](#/components/monthpicker/api#DayTemplateContext) for the data you get inside.
+	 * See [`MonthTemplateContext`](#/components/monthpicker/api#MonthTemplateContext) for the data you get inside.
 	 */
 	@Input() monthTemplate = this._config.monthTemplate;
 
@@ -487,7 +487,7 @@ export class NgbMonthpicker implements AfterViewInit, OnChanges, OnInit, Control
 		this._ngZone.onStable
 			.asObservable()
 			.pipe(take(1))
-			.subscribe(() => this._nativeElement.querySelector<HTMLElement>('div.ngb-dp-day[tabindex="0"]')?.focus());
+			.subscribe(() => this._nativeElement.querySelector<HTMLElement>('div.ngb-mp-month[tabindex="0"]')?.focus());
 	}
 
 	/**
@@ -508,7 +508,7 @@ export class NgbMonthpicker implements AfterViewInit, OnChanges, OnInit, Control
 			const focusOuts$ = fromEvent<FocusEvent>(this._contentEl.nativeElement, 'focusout');
 
 			// we're changing 'focusVisible' only when entering or leaving months view
-			// and ignoring all focus events where both 'target' and 'related' target are day cells
+			// and ignoring all focus events where both 'target' and 'related' target are month cells
 			merge(focusIns$, focusOuts$)
 				.pipe(
 					filter((focusEvent) => {
@@ -516,8 +516,8 @@ export class NgbMonthpicker implements AfterViewInit, OnChanges, OnInit, Control
 						const relatedTarget = focusEvent.relatedTarget as HTMLElement | null;
 
 						return !(
-							target?.classList.contains('ngb-dp-day') &&
-							relatedTarget?.classList.contains('ngb-dp-day') &&
+							target?.classList.contains('ngb-mp-month') &&
+							relatedTarget?.classList.contains('ngb-mp-month') &&
 							this._nativeElement.contains(target) &&
 							this._nativeElement.contains(relatedTarget)
 						);

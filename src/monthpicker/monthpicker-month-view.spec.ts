@@ -1,7 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
 import { Component } from '@angular/core';
-import { NgbDate, NgbDatepickerDayView } from './datepicker.module';
+import { NgbMonthpickerMonthView } from './monthpicker-month-view';
+import { NgbMonth } from './ngb-month';
 
 function getElement(element: HTMLElement): HTMLElement {
 	return <HTMLElement>element.querySelector('[ngbDatepickerDayView]');
@@ -15,7 +16,7 @@ describe('ngbDatepickerDayView', () => {
 		const el = getElement(fixture.nativeElement);
 		expect(el.innerText).toBe('22');
 
-		fixture.componentInstance.date = new NgbDate(2016, 7, 25);
+		fixture.componentInstance.date = new NgbMonth(2016, 7);
 		fixture.detectChanges();
 		expect(el.innerText).toBe('25');
 	});
@@ -40,7 +41,7 @@ describe('ngbDatepickerDayView', () => {
 		expect(el).not.toHaveCssClass('text-muted');
 		expect(el).not.toHaveCssClass('outside');
 
-		fixture.componentInstance.date = new NgbDate(2016, 8, 22);
+		fixture.componentInstance.date = new NgbMonth(2016, 8);
 		fixture.detectChanges();
 		expect(el).toHaveCssClass('text-muted');
 		expect(el).toHaveCssClass('outside');
@@ -75,13 +76,13 @@ describe('ngbDatepickerDayView', () => {
 @Component({
 	selector: 'test-cmp',
 	standalone: true,
-	imports: [NgbDatepickerDayView],
+	imports: [NgbMonthpickerMonthView],
 	template:
-		'<div ngbDatepickerDayView [date]="date" [currentMonth]="currentMonth" [selected]="selected" [disabled]="disabled"></div>',
+		'<div ngbMonthpickerMonthView [date]="date" [currentMonth]="currentMonth" [selected]="selected" [disabled]="disabled"></div>',
 })
 class TestComponent {
 	currentMonth = 7;
-	date: NgbDate = new NgbDate(2016, 7, 22);
+	date: NgbMonth = new NgbMonth(2016, 7);
 	disabled = false;
 	selected = false;
 }

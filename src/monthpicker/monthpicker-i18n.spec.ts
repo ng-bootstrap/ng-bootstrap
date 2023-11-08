@@ -1,7 +1,7 @@
 import { NgbMonthpickerI18nDefault } from './monthpicker-i18n';
 import { TestBed } from '@angular/core/testing';
 
-describe('ngb-datepicker-i18n-default', () => {
+describe('ngb-monthpicker-i18n-default', () => {
 	let i18n: NgbMonthpickerI18nDefault;
 
 	beforeEach(() => {

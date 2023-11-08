@@ -12,9 +12,7 @@ ngb-monthpicker {
 	}
 
 	&.disabled {
-		.ngb-dp-weekday,
-		.ngb-dp-week-number,
-		.ngb-dp-month-name {
+		.ngb-mp-month-name {
 			color: var(--bs-text-muted);
 		}
 	}
@@ -48,22 +46,9 @@ ngb-monthpicker {
 		}
 
 		& + & {
-			.ngb-mp-month-name,
-			.ngb-mp-week {
+			.ngb-mp-month-name {
 				padding-left: 1rem;
 			}
-		}
-
-		&:last-child .ngb-mp-week {
-			padding-right: 0.25rem;
-		}
-
-		&:first-child .ngb-mp-week {
-			padding-left: 0.25rem;
-		}
-
-		.ngb-mp-week:last-child {
-			padding-bottom: 0.25rem;
 		}
 	}
 }

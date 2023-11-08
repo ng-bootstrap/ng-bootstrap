@@ -1,8 +1,8 @@
 import { NgbMonth } from './ngb-month';
 
-describe('ngb-date', () => {
+describe('ngb-month', () => {
 	describe('from', () => {
-		it('should create a date from a structure', () => {
+		it('should create a month from a structure', () => {
 			expect(NgbMonth.from({ year: 2010, month: 10 })).toEqual(new NgbMonth(2010, 10));
 		});
 
@@ -21,7 +21,7 @@ describe('ngb-date', () => {
 	describe('equals', () => {
 		const date = new NgbMonth(2016, 8);
 
-		it('should return true for the same dates', () => {
+		it('should return true for the same months', () => {
 			expect(date.equals(new NgbMonth(2016, 8))).toBeTruthy();
 		});
 
@@ -29,7 +29,7 @@ describe('ngb-date', () => {
 			expect(date.equals({ month: 8, year: 2016 })).toBeTruthy();
 		});
 
-		it('should return false different dates', () => {
+		it('should return false different months', () => {
 			expect(date.equals(new NgbMonth(0, 8))).toBeFalsy();
 			expect(date.equals(new NgbMonth(2016, 0))).toBeFalsy();
 			expect(date.equals(new NgbMonth(2016, 8))).toBeFalsy();

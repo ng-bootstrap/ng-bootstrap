@@ -96,7 +96,7 @@ export function nextMonthDisabled(calendar: NgbMonthCalendar, date: NgbMonth, ma
 }
 
 export function prevMonthDisabled(calendar: NgbMonthCalendar, date: NgbMonth, minDate: NgbMonth | null) {
-	const prevDate = Object.assign(calendar.getPrev(date, 'm'), { day: 1 });
+	const prevDate = Object.assign(calendar.getPrev(date, 'm'));
 	return (
 		minDate != null &&
 		((prevDate.year === minDate.year && prevDate.month < minDate.month) ||
@@ -209,11 +209,4 @@ export function buildYear(
 	}
 
 	return year;
-}
-
-export function getFirstViewDate(calendar: NgbMonthCalendar, date: NgbMonth): NgbMonth {
-	const daysPerWeek = calendar.getDaysPerWeek();
-	const firstMonthDate = new NgbMonth(date.year, date.month);
-	const dayOfWeek = calendar.getWeekday(firstMonthDate) % daysPerWeek;
-	return calendar.getPrev(firstMonthDate, 'm', (daysPerWeek + dayOfWeek) % daysPerWeek);
 }

@@ -16,7 +16,7 @@ import { NgbMonthpickerI18n } from './monthpicker-i18n';
 		'[class.outside]': 'isMuted()',
 		'[class.active]': 'focused',
 	},
-	template: `{{ i18n.getMonthShortName(date?.month) }}`,
+	template: `{{ i18n.getMonthShortName(date.month) }}`,
 })
 export class NgbMonthpickerMonthView {
 	i18n = inject(NgbMonthpickerI18n);
@@ -28,6 +28,6 @@ export class NgbMonthpickerMonthView {
 	@Input() selected: boolean;
 
 	isMuted() {
-		return !this.selected && (this.date?.month !== this.currentMonth || this.disabled);
+		return !this.selected && (this.date.month !== this.currentMonth || this.disabled);
 	}
 }
