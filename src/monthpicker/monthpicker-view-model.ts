@@ -1,7 +1,6 @@
 import { NgbMonth } from './ngb-month';
 import { NgbMonthStruct } from './ngb-month-struct';
 import { MonthTemplateContext } from './monthpicker-month-template-context';
-import { TranslationWidth } from '@angular/common';
 
 export type NgbMarkDisabled = (date: NgbMonthStruct, current?: { year: number; month: number }) => boolean;
 export type NgbMonthTemplateData = (date: NgbMonthStruct, current?: { year: number; month: number }) => any;

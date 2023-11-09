@@ -940,7 +940,7 @@ describe('ngb-monthpicker-service', () => {
 		});
 	});
 
-	describe(`dayTemplateData`, () => {
+	describe(`monthTemplateData`, () => {
 		it(`should not pass anything to the template by default`, () => {
 			// MAY 2017
 			service.focus(new NgbMonth(2017, 5));
@@ -948,21 +948,21 @@ describe('ngb-monthpicker-service', () => {
 		});
 
 		it(`should pass arbitrary data to the template`, () => {
-			service.set({ dayTemplateData: () => 'data' });
+			service.set({ monthTemplateData: () => 'data' });
 
 			// MAY 2017
 			service.focus(new NgbMonth(2017, 5));
 			expect(getDay(0).context.data).toBe('data');
 		});
 
-		it(`should update months when 'dayTemplateData' changes`, () => {
+		it(`should update months when 'monthTemplateData' changes`, () => {
 			// MAY 2017
-			service.set({ dayTemplateData: () => 'one' });
+			service.set({ monthTemplateData: () => 'one' });
 			service.focus(new NgbMonth(2017, 5));
 
 			expect(getDay(0).context.data).toBe('one');
 
-			service.set({ dayTemplateData: (_) => 'two' });
+			service.set({ monthTemplateData: (_) => 'two' });
 
 			expect(getDay(0).context.data).toBe('two');
 		});

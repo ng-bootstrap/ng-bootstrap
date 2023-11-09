@@ -15,7 +15,7 @@ import {
 	TemplateRef,
 	ViewContainerRef,
 } from '@angular/core';
-import { DOCUMENT, TranslationWidth } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import {
 	AbstractControl,
 	ControlValueAccessor,

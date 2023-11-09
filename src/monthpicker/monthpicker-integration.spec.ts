@@ -209,7 +209,7 @@ describe('ngb-monthpicker integration', () => {
 			fixture = TestBed.createComponent(TestComponent);
 			fixture.detectChanges();
 			calendar = fixture.debugElement.query(By.css('ngb-monthpicker')).injector.get(NgbMonthpicker).calendar;
-			mv = fixture.debugElement.query(By.css('ngb-monthpicker-month')).injector.get(NgbMonthpickerMonth);
+			mv = fixture.debugElement.query(By.css('ngb-monthpicker-year')).injector.get(NgbMonthpickerYear);
 
 			spyOn(calendar, 'getPrev');
 		});

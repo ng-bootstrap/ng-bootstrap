@@ -6,13 +6,11 @@ import {
 	dateComparator,
 	generateSelectBoxMonths,
 	generateSelectBoxYears,
-	getFirstViewDate,
 	isChangedMonth,
-	isDateSelectable,
 } from './monthpicker-tools';
 import { NgbMonth } from './ngb-month';
 import { NgbMonthCalendarGregorian } from './ngb-month-calendar';
-import { MonthpickerViewModel, MonthViewModel, NgbMarkDisabled } from './monthpicker-view-model';
+import { MonthpickerViewModel, NgbMarkDisabled } from './monthpicker-view-model';
 import { NgbMonthpickerI18n, NgbMonthpickerI18nDefault } from './monthpicker-i18n';
 import { TestBed } from '@angular/core/testing';
 
@@ -123,7 +121,7 @@ describe(`datepicker-tools`, () => {
 						firstDayOfWeek: 1,
 						weekdayWidth: TranslationWidth.Short,
 						weekdaysVisible: true,
-					} as DatepickerViewModel,
+					} as MonthpickerViewModel,
 					i18n,
 				);
 
@@ -157,7 +155,7 @@ describe(`datepicker-tools`, () => {
 			let month = buildYear(
 				calendar,
 				new NgbMonth(2017, 5),
-				{ firstDayOfWeek: 1, markDisabled } as DatepickerViewModel,
+				{ firstDayOfWeek: 1, markDisabled } as MonthpickerViewModel,
 				i18n,
 			);
 
@@ -177,7 +175,7 @@ describe(`datepicker-tools`, () => {
 				minDate: new NgbMonth(2017, 5),
 				maxDate: new NgbMonth(2017, 5),
 				markDisabled: mock.markDisabled,
-			} as DatepickerViewModel;
+			} as MonthpickerViewModel;
 			buildYear(calendar, new NgbMonth(2017, 5), state, i18n);
 
 			// called one time, because it should be used only inside min-max range
@@ -189,7 +187,7 @@ describe(`datepicker-tools`, () => {
 			const markDisabled: NgbMarkDisabled = (date) => date.day === 1;
 
 			// MAY 2017
-			let state = { firstDayOfWeek: 1, minDate: new NgbMonth(2017, 5), markDisabled } as DatepickerViewModel;
+			let state = { firstDayOfWeek: 1, minDate: new NgbMonth(2017, 5), markDisabled } as MonthpickerViewModel;
 			const month = buildYear(calendar, new NgbMonth(2017, 5), state, i18n);
 
 			// MIN = 2, so 1-2 MAY - disabled
@@ -203,7 +201,7 @@ describe(`datepicker-tools`, () => {
 			const markDisabled: NgbMarkDisabled = (date) => date.day === 3;
 
 			// MAY 2017
-			let state = { firstDayOfWeek: 1, maxDate: new NgbMonth(2017, 5), markDisabled } as DatepickerViewModel;
+			let state = { firstDayOfWeek: 1, maxDate: new NgbMonth(2017, 5), markDisabled } as MonthpickerViewModel;
 			const month = buildYear(calendar, new NgbMonth(2017, 5), state, i18n);
 
 			// MAX = 2, so 3-4 MAY - disabled
@@ -222,7 +220,7 @@ describe(`datepicker-tools`, () => {
 					firstDayOfWeek: 7,
 					weekdaysVisible: true,
 					weekdayWidth: TranslationWidth.Short,
-				} as DatepickerViewModel,
+				} as MonthpickerViewModel,
 				i18n,
 			);
 			expect(month.weekdays).toEqual(['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']);
@@ -236,7 +234,7 @@ describe(`datepicker-tools`, () => {
 					firstDayOfWeek: 3,
 					weekdaysVisible: true,
 					weekdayWidth: TranslationWidth.Short,
-				} as DatepickerViewModel,
+				} as MonthpickerViewModel,
 				i18n,
 			);
 			expect(month.weekdays).toEqual(['We', 'Th', 'Fr', 'Sa', 'Su', 'Mo', 'Tu']);
@@ -246,7 +244,7 @@ describe(`datepicker-tools`, () => {
 
 	describe(`buildYears()`, () => {
 		it(`should generate 'displayMonths' number of months`, () => {
-			let state = { displayMonths: 1, firstDayOfWeek: 1, months: [] as MonthViewModel[] } as DatepickerViewModel;
+			let state = { displayMonths: 1, firstDayOfWeek: 1, months: [] as MonthViewModel[] } as MonthpickerViewModel;
 			let months = buildYears(calendar, new NgbMonth(2017, 5), state, i18n, false);
 			expect(months.length).toBe(1);
 
@@ -319,7 +317,7 @@ describe(`datepicker-tools`, () => {
 		});
 
 		it(`should reuse the same data structure (force = false)`, () => {
-			let state = { displayMonths: 1, firstDayOfWeek: 1, months: [] as MonthViewModel[] } as DatepickerViewModel;
+			let state = { displayMonths: 1, firstDayOfWeek: 1, months: [] as MonthViewModel[] } as MonthpickerViewModel;
 			let months = buildYears(calendar, new NgbMonth(2017, 5), state, i18n, false);
 			expect(months).toBe(state.months);
 			expect(months.length).toBe(1);
@@ -390,7 +388,7 @@ describe(`datepicker-tools`, () => {
 		});
 
 		it(`should reuse the same data structure (force = true)`, () => {
-			let state = { displayMonths: 1, firstDayOfWeek: 1, months: [] as MonthViewModel[] } as DatepickerViewModel;
+			let state = { displayMonths: 1, firstDayOfWeek: 1, months: [] as MonthViewModel[] } as MonthpickerViewModel;
 			let months = buildYears(calendar, new NgbMonth(2017, 5), state, i18n, true);
 			expect(months).toBe(state.months);
 			expect(months.length).toBe(1);
@@ -455,92 +453,42 @@ describe(`datepicker-tools`, () => {
 		});
 	});
 
-	describe(`getFirstViewDate()`, () => {
-		const months = [
-			// Mon
-			{ start: 1, date: new NgbMonth(2017, 1), first: new NgbMonth(2016, 12) },
-			{ start: 1, date: new NgbMonth(2017, 2), first: new NgbMonth(2017, 1) },
-			{ start: 1, date: new NgbMonth(2017, 3), first: new NgbMonth(2017, 2) },
-			{ start: 1, date: new NgbMonth(2017, 4), first: new NgbMonth(2017, 3) },
-			{ start: 1, date: new NgbMonth(2017, 5), first: new NgbMonth(2017, 5) },
-			{ start: 1, date: new NgbMonth(2017, 6), first: new NgbMonth(2017, 5) },
-			{ start: 1, date: new NgbMonth(2017, 7), first: new NgbMonth(2017, 6) },
-			{ start: 1, date: new NgbMonth(2017, 8), first: new NgbMonth(2017, 7) },
-			{ start: 1, date: new NgbMonth(2017, 9), first: new NgbMonth(2017, 8) },
-			{ start: 1, date: new NgbMonth(2017, 10), first: new NgbMonth(2017, 9) },
-			{ start: 1, date: new NgbMonth(2017, 11), first: new NgbMonth(2017, 10) },
-			{ start: 1, date: new NgbMonth(2017, 12), first: new NgbMonth(2017, 11) },
-			// Sun
-			{ start: 7, date: new NgbMonth(2017, 1), first: new NgbMonth(2017, 1) },
-			{ start: 7, date: new NgbMonth(2017, 2), first: new NgbMonth(2017, 1) },
-			{ start: 7, date: new NgbMonth(2017, 3), first: new NgbMonth(2017, 2) },
-			{ start: 7, date: new NgbMonth(2017, 4), first: new NgbMonth(2017, 3) },
-			{ start: 7, date: new NgbMonth(2017, 5), first: new NgbMonth(2017, 4) },
-			{ start: 7, date: new NgbMonth(2017, 6), first: new NgbMonth(2017, 5) },
-			{ start: 7, date: new NgbMonth(2017, 7), first: new NgbMonth(2017, 6) },
-			{ start: 7, date: new NgbMonth(2017, 8), first: new NgbMonth(2017, 7) },
-			{ start: 7, date: new NgbMonth(2017, 9), first: new NgbMonth(2017, 8) },
-			{ start: 7, date: new NgbMonth(2017, 10), first: new NgbMonth(2017, 10) },
-			{ start: 7, date: new NgbMonth(2017, 11), first: new NgbMonth(2017, 10) },
-			{ start: 7, date: new NgbMonth(2017, 12), first: new NgbMonth(2017, 11) },
-			// Wed
-			{ start: 3, date: new NgbMonth(2017, 1), first: new NgbMonth(2016, 12) },
-			{ start: 3, date: new NgbMonth(2017, 2), first: new NgbMonth(2017, 2) },
-			{ start: 3, date: new NgbMonth(2017, 3), first: new NgbMonth(2017, 3) },
-			{ start: 3, date: new NgbMonth(2017, 4), first: new NgbMonth(2017, 3) },
-			{ start: 3, date: new NgbMonth(2017, 5), first: new NgbMonth(2017, 4) },
-			{ start: 3, date: new NgbMonth(2017, 6), first: new NgbMonth(2017, 5) },
-			{ start: 3, date: new NgbMonth(2017, 7), first: new NgbMonth(2017, 6) },
-			{ start: 3, date: new NgbMonth(2017, 8), first: new NgbMonth(2017, 7) },
-			{ start: 3, date: new NgbMonth(2017, 9), first: new NgbMonth(2017, 8) },
-			{ start: 3, date: new NgbMonth(2017, 10), first: new NgbMonth(2017, 9) },
-			{ start: 3, date: new NgbMonth(2017, 11), first: new NgbMonth(2017, 11) },
-			{ start: 3, date: new NgbMonth(2017, 12), first: new NgbMonth(2017, 11) },
-		];
-
-		months.forEach((month) => {
-			it(`should return the correct first view date`, () => {
-				expect(getFirstViewDate(calendar, month.date, month.start)).toEqual(month.first);
-			});
-		});
-	});
-
 	/*describe(`isDateSelectable()`, () => {
 		// disabling 15th of any month
 		const markDisabled: NgbMarkDisabled = (date, month) => date.day === 15;
 
 		it(`should return false if date is invalid`, () => {
-			let state = { disabled: false } as DatepickerViewModel;
+			let state = { disabled: false } as MonthpickerViewModel;
 			expect(isDateSelectable(null, state)).toBeFalsy();
 			expect(isDateSelectable(undefined, state)).toBeFalsy();
 		});
 
 		it(`should return false if datepicker is disabled`, () => {
-			let state = { disabled: true } as DatepickerViewModel;
+			let state = { disabled: true } as MonthpickerViewModel;
 			expect(isDateSelectable(new NgbMonth(2016, 11), state)).toBeFalsy();
 			expect(isDateSelectable(new NgbMonth(2017, 11), state)).toBeFalsy();
 			expect(isDateSelectable(new NgbMonth(2018, 11), state)).toBeFalsy();
 		});
 
 		it(`should take into account markDisabled values`, () => {
-			let state = { disabled: false, markDisabled } as DatepickerViewModel;
+			let state = { disabled: false, markDisabled } as MonthpickerViewModel;
 			expect(isDateSelectable(new NgbMonth(2016, 11), state)).toBeFalsy();
 			expect(isDateSelectable(new NgbMonth(2017, 11), state)).toBeFalsy();
 			expect(isDateSelectable(new NgbMonth(2018, 11), state)).toBeFalsy();
 		});
 
 		it(`should take into account minDate values`, () => {
-			let state = { disabled: false, minDate: new NgbMonth(2018, 11) } as DatepickerViewModel;
+			let state = { disabled: false, minDate: new NgbMonth(2018, 11) } as MonthpickerViewModel;
 			expect(isDateSelectable(new NgbMonth(2017, 11), state)).toBeFalsy();
 		});
 
 		it(`should take into account maxDate values`, () => {
-			let state = { disabled: false, maxDate: new NgbMonth(2016, 11) } as DatepickerViewModel;
+			let state = { disabled: false, maxDate: new NgbMonth(2016, 11) } as MonthpickerViewModel;
 			expect(isDateSelectable(new NgbMonth(2017, 11), state)).toBeFalsy();
 		});
 
 		it(`should return true for normal values`, () => {
-			let state = { disabled: false } as DatepickerViewModel;
+			let state = { disabled: false } as MonthpickerViewModel;
 			expect(isDateSelectable(new NgbMonth(2016, 11), state)).toBeTruthy();
 			expect(isDateSelectable(new NgbMonth(2017, 11), state)).toBeTruthy();
 			expect(isDateSelectable(new NgbMonth(2018, 11), state)).toBeTruthy();

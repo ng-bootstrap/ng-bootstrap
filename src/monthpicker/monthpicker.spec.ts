@@ -152,11 +152,10 @@ describe('ngb-monthpicker', () => {
 		expectSameValues(monthpicker, defaultConfig);
 	});
 
-	it('should display current month if no date provided', () => {
+	it('should display current year if no date provided', () => {
 		const fixture = createTestComponent(`<ngb-monthpicker></ngb-monthpicker>`);
 
 		const today = new Date();
-		expect(getMonthSelect(fixture.nativeElement).value).toBe(`${today.getMonth() + 1}`);
 		expect(getYearSelect(fixture.nativeElement).value).toBe(`${today.getFullYear()}`);
 	});
 

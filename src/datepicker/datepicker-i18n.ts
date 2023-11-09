@@ -1,5 +1,5 @@
 import { inject, Injectable, LOCALE_ID } from '@angular/core';
-import { formatDate, FormStyle, getLocaleDayNames, getLocaleMonthNames, TranslationWidth } from '@angular/common';
+import { formatDate, FormStyle, getLocaleMonthNames, TranslationWidth } from '@angular/common';
 import { NgbDateStruct } from './ngb-date-struct';
 
 /**
