@@ -5,8 +5,7 @@ import { filter, map } from 'rxjs/operators';
 
 import { NgbdApiPage } from '../api-page/api-page.component';
 import { NgbdExamplesPage } from '../examples-page/examples.component';
-
-import { environment } from '../../../environments/environment';
+import { LIB_VERSIONS } from '../../tokens';
 import { SideNavComponent } from '../side-nav/side-nav.component';
 import { AsyncPipe, NgComponentOutlet, NgFor, NgIf, TitleCasePipe } from '@angular/common';
 import {
@@ -39,6 +38,7 @@ export type TableOfContents = { fragment: string; title: string }[];
 })
 export class ComponentWrapper implements OnDestroy {
 	private _routerSubscription: Subscription;
+	private bootstrapVersion = inject(LIB_VERSIONS).bootstrap;
 
 	activeTab = 'examples';
 
@@ -71,7 +71,7 @@ export class ComponentWrapper implements OnDestroy {
 
 		this.headerComponentType$ = this.route.data.pipe(map((data) => data?.header));
 		this.bootstrapUrl$ = this.route.data.pipe(
-			map((data) => data?.bootstrap?.replace('%version%', environment.bootstrap)),
+			map((data) => data?.bootstrap?.replace('%version%', this.bootstrapVersion)),
 		);
 
 		// information extracted from https://getbootstrap.com/docs/4.1/layout/overview/

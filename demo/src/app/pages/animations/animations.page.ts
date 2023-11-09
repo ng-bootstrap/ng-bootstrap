@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Snippet } from '../../services/snippet';
-import { versions } from '../../../environments/versions';
+import { LIB_VERSIONS } from '../../tokens';
 import { CodeComponent } from '../../shared/code.component';
 import { RouterLink } from '@angular/router';
 import { NgbdPageHeaderComponent } from '../../shared/page-wrapper/page-header.component';
@@ -12,7 +12,7 @@ import { NgbdPageWrapper } from '../../shared/page-wrapper/page-wrapper.componen
 	templateUrl: './animations.page.html',
 })
 export class AnimationsPage {
-	bsVersion = versions.bootstrap;
+	bsVersion = inject(LIB_VERSIONS).bootstrap;
 
 	config = Snippet({
 		lang: 'typescript',

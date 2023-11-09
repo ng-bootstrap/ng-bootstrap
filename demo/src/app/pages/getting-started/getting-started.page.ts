@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Snippet } from '../../services/snippet';
-import { versions } from '../../../environments/versions';
+import { LIB_VERSIONS } from '../../tokens';
 import { NgbdPageHeaderComponent } from '../../shared/page-wrapper/page-header.component';
 import { CodeComponent } from '../../shared/code.component';
 import { NgbdPageWrapper } from '../../shared/page-wrapper/page-wrapper.component';
@@ -16,7 +16,7 @@ import { NgIf } from '@angular/common';
 export class GettingStartedPage {
 	instructionsCollapsed = true;
 	olderVersionsCollapsed = true;
-	bsVersion = versions.bootstrap;
+	bootstrapVersion = inject(LIB_VERSIONS).bootstrap;
 
 	schematics = Snippet({
 		lang: 'text',

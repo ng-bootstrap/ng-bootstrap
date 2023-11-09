@@ -1,7 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
-import { environment } from '../../../../environments/environment';
-
+import { LIB_VERSIONS } from '../../../tokens';
 import { Snippet } from '../../../services/snippet';
 import { NgbdDemoListService } from '../../../services/demo-list.service';
 import { CodeComponent } from '../../../shared/code.component';
@@ -206,7 +205,7 @@ export class NgbdDatepickerOverviewComponent {
 		}),
 	};
 
-	bootstrapVersion = environment.bootstrap;
+	bootstrapVersion = inject(LIB_VERSIONS).bootstrap;
 
 	sections: NgbdOverview = {};
 

@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { Snippet } from '../../../services/snippet';
 import { NgbdDemoListService } from '../../../services/demo-list.service';
-import { versions } from '../../../../environments/versions';
+import { LIB_VERSIONS } from '../../../tokens';
 import { RouterLink } from '@angular/router';
 import { CodeComponent } from '../../../shared/code.component';
 import { NgbAlertModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
@@ -18,7 +18,7 @@ import { NgbdOverview } from '../../../shared/overview/overview';
 	host: { '[class.overview]': 'true' },
 })
 export class NgbdToastOverviewComponent {
-	bsVersion = versions.bootstrap;
+	bootstrapVersion = inject(LIB_VERSIONS).bootstrap;
 
 	TOAST_INLINE_BASIC = Snippet({
 		lang: 'html',
