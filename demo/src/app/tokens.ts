@@ -1,5 +1,6 @@
 import { inject, InjectionToken } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
+import { versions } from './versions';
 
 /**
  * Checks if we're at the 'ng-bootstrap.github.io'
@@ -21,4 +22,12 @@ export const NPM_VIEWS = new InjectionToken<Promise<string>>('npmViews', {
 					.then((data: { downloads: number }) => data?.downloads.toLocaleString())
 			: Promise.resolve('');
 	},
+});
+
+/**
+ * Library versions
+ */
+export const LIB_VERSIONS = new InjectionToken('versions', {
+	providedIn: 'root',
+	factory: () => versions,
 });

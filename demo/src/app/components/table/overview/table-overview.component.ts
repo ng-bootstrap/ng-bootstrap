@@ -1,8 +1,7 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { environment } from '../../../../environments/environment';
-
+import { LIB_VERSIONS } from '../../../tokens';
 import { NgbdDemoListService } from '../../../services/demo-list.service';
 import { RouterLink } from '@angular/router';
 import { NgbdTableOverviewDemo } from './demo/table-overview-demo.component';
@@ -20,7 +19,7 @@ import { NgbdOverview } from '../../../shared/overview/overview';
 	},
 })
 export class NgbdTableOverviewComponent {
-	bootstrapVersion = environment.bootstrap;
+	bootstrapVersion = inject(LIB_VERSIONS).bootstrap;
 
 	sections: NgbdOverview = {};
 

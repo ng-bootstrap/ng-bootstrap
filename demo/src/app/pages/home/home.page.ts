@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { environment } from '../../../environments/environment';
+import { Component, inject } from '@angular/core';
+import { LIB_VERSIONS } from '../../tokens';
 import { Snippet } from '../../services/snippet';
 import { CodeComponent } from '../../shared/code.component';
 import { RouterLink } from '@angular/router';
@@ -12,7 +12,7 @@ import { NgbAlert, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 	templateUrl: './home.page.html',
 })
 export class HomePage {
-	version = environment.version;
+	version = inject(LIB_VERSIONS).ngBootstrap;
 
 	installation = Snippet({
 		lang: 'text',

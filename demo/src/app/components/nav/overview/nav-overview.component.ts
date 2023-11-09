@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { Snippet } from '../../../services/snippet';
 import { NgbdDemoListService } from '../../../services/demo-list.service';
 
-import { versions } from '../../../../environments/versions';
+import { LIB_VERSIONS } from '../../../tokens';
 import { NgbAlertModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { CodeComponent } from '../../../shared/code.component';
 import { RouterLink } from '@angular/router';
@@ -19,7 +19,7 @@ import { NgbdOverview } from '../../../shared/overview/overview';
 	host: { '[class.overview]': 'true' },
 })
 export class NgbdNavOverviewComponent {
-	bsVersion = versions.bootstrap;
+	bootstrapVersion = inject(LIB_VERSIONS).bootstrap;
 
 	BASIC = Snippet({
 		lang: 'html',

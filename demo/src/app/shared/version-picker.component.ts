@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { AsyncPipe, NgFor } from '@angular/common';
 import { NavigationEnd, Router } from '@angular/router';
-import { environment } from '../../environments/environment';
+import { LIB_VERSIONS } from '../tokens';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { filter, map } from 'rxjs/operators';
 
@@ -30,8 +30,7 @@ interface Version {
 	`,
 })
 export class VersionPickerComponent {
-	current = environment.version;
-
+	current = inject(LIB_VERSIONS).ngBootstrap;
 	versions$: Promise<Version[]> = (window as any).NGB_DEMO_VERSIONS;
 	routerUrl$ = inject(Router).events.pipe(
 		filter((event) => event instanceof NavigationEnd),

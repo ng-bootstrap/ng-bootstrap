@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { Snippet } from '../../../services/snippet';
 import { NgbdDemoListService } from '../../../services/demo-list.service';
@@ -9,7 +9,7 @@ import { RouterLink } from '@angular/router';
 import { NgbdOverviewSectionComponent } from '../../../shared/overview/overview-section.component';
 import { NgbdOverview } from '../../../shared/overview/overview';
 import { NgbdAccordionDemoComponent } from './demo/accordion-overview-demo.component';
-import { environment } from '../../../../environments/environment';
+import { LIB_VERSIONS } from '../../../tokens';
 
 @Component({
 	selector: 'ngbd-accordion-overview',
@@ -109,7 +109,7 @@ export class NgbdAccordionOverviewComponent {
     `,
 	});
 
-	bootstrapVersion = environment.bootstrap;
+	bootstrapVersion = inject(LIB_VERSIONS).bootstrap;
 	sections: NgbdOverview = {};
 
 	constructor(demoList: NgbdDemoListService) {

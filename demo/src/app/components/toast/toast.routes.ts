@@ -8,7 +8,6 @@ import { NgbdToastGlobal } from './demos/howto-global/toast-global.component';
 import { NgbdToastInline } from './demos/inline/toast-inline';
 import { NgbdToastPreventAutohide } from './demos/prevent-autohide/toast-prevent-autohide';
 import { NgbdToastOverviewComponent } from './overview/toast-overview.component';
-import { versions } from '../../../environments/versions';
 import { Routes } from '@angular/router';
 import { ENVIRONMENT_INITIALIZER, inject } from '@angular/core';
 import { NgbdDemoListService } from '../../services/demo-list.service';
@@ -67,15 +66,13 @@ const DEMOS = {
 	},
 };
 
-const bsVersion = versions.bootstrap;
-
 export const ROUTES: Routes = [
 	{ path: '', pathMatch: 'full', redirectTo: 'overview' },
 	{
 		path: '',
 		component: ComponentWrapper,
 		data: {
-			bootstrap: `https://getbootstrap.com/docs/${bsVersion}/components/toasts/`,
+			bootstrap: `https://getbootstrap.com/docs/%version%/components/toasts/`,
 		},
 		providers: [
 			{
