@@ -39,7 +39,7 @@ export class NgbdWidgetDemoComponent {
 		return Snippet({ lang: 'html', code: this.codeService.getDemoSource(this.markup) });
 	}
 	get codeSnippet() {
-		return Snippet({ lang: 'typescript', code: this.codeService.getDemoSource(this.markup) });
+		return Snippet({ lang: 'typescript', code: this.codeService.getDemoSource(this.code) });
 	}
 
 	getFileSnippet({ name, source }): ISnippet {
