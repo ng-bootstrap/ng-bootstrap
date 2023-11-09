@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { AsyncPipe, NgFor } from '@angular/common';
 import { NavigationEnd, Router } from '@angular/router';
-import { environment } from '../environments/environment';
+import { environment } from '../../environments/environment';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { filter, map } from 'rxjs/operators';
 
@@ -11,7 +11,7 @@ interface Version {
 }
 
 @Component({
-	selector: 'ngbd-demo-versions',
+	selector: 'ngbd-version-picker',
 	standalone: true,
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	imports: [NgFor, AsyncPipe, NgbDropdownModule],
@@ -29,12 +29,12 @@ interface Version {
 		</div>
 	`,
 })
-export class NgbdDemoVersionsComponent {
+export class VersionPickerComponent {
 	current = environment.version;
 
+	versions$: Promise<Version[]> = (window as any).NGB_DEMO_VERSIONS;
 	routerUrl$ = inject(Router).events.pipe(
 		filter((event) => event instanceof NavigationEnd),
 		map((event: NavigationEnd) => event.url),
 	);
-	versions$: Promise<Version[]> = (window as any).NGB_DEMO_VERSIONS;
 }

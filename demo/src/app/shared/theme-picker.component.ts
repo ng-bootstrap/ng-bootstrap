@@ -9,7 +9,7 @@ interface Theme {
 }
 
 @Component({
-	selector: 'ngbd-demo-theme',
+	selector: 'ngbd-theme-picker',
 	standalone: true,
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	imports: [NgFor, NgbDropdownModule],
@@ -31,7 +31,7 @@ interface Theme {
 		</div>
 	`,
 })
-export class NgbdDemoThemeComponent {
+export class ThemePickerComponent {
 	themes: Theme[] = [
 		{ id: 'auto', name: 'Auto', icon: 'circle-half' },
 		{ id: 'light', name: 'Light', icon: 'sun-fill' },
