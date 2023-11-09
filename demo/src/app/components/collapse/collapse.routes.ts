@@ -36,6 +36,7 @@ export const ROUTES: Routes = [
 		path: '',
 		component: ComponentWrapper,
 		data: {
+			name: 'Collapse',
 			bootstrap: 'https://getbootstrap.com/docs/%version%/components/collapse/',
 		},
 		providers: [

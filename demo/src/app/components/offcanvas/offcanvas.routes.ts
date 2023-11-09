@@ -50,6 +50,7 @@ export const ROUTES: Routes = [
 		path: '',
 		component: ComponentWrapper,
 		data: {
+			name: 'Offcanvas',
 			bootstrap: 'https://getbootstrap.com/docs/%version%/components/offcanvas/',
 		},
 		providers: [

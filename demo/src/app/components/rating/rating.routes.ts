@@ -56,6 +56,9 @@ export const ROUTES: Routes = [
 	{
 		path: '',
 		component: ComponentWrapper,
+		data: {
+			name: 'Rating',
+		},
 		providers: [
 			{
 				provide: ENVIRONMENT_INITIALIZER,

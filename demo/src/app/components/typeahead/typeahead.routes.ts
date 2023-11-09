@@ -70,6 +70,9 @@ export const ROUTES: Routes = [
 	{
 		path: '',
 		component: ComponentWrapper,
+		data: {
+			name: 'Typeahead',
+		},
 		providers: [
 			{
 				provide: ENVIRONMENT_INITIALIZER,

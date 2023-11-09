@@ -43,6 +43,7 @@ export const ROUTES: Routes = [
 		path: '',
 		component: ComponentWrapper,
 		data: {
+			name: 'Carousel',
 			bootstrap: 'https://getbootstrap.com/docs/%version%/components/carousel/',
 		},
 		providers: [

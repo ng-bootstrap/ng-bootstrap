@@ -70,6 +70,7 @@ export const ROUTES: Routes = [
 		path: '',
 		component: ComponentWrapper,
 		data: {
+			name: 'Pagination',
 			bootstrap: 'https://getbootstrap.com/docs/%version%/components/pagination/',
 		},
 		providers: [

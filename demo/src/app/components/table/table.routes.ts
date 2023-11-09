@@ -110,6 +110,9 @@ export const ROUTES: Routes = [
 	{
 		path: '',
 		component: ComponentWrapper,
+		data: {
+			name: 'Table',
+		},
 		providers: [
 			{
 				provide: ENVIRONMENT_INITIALIZER,

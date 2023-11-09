@@ -1,7 +1,5 @@
-import { Component, inject, NgZone, OnDestroy, Type } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { Component, inject, NgZone } from '@angular/core';
+import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
 
 import { NgbdApiPage } from '../api-page/api-page.component';
 import { NgbdExamplesPage } from '../examples-page/examples.component';
@@ -36,16 +34,15 @@ export type TableOfContents = { fragment: string; title: string }[];
 	],
 	templateUrl: 'component-wrapper.component.html',
 })
-export class ComponentWrapper implements OnDestroy {
-	private _routerSubscription: Subscription;
-	private bootstrapVersion = inject(LIB_VERSIONS).bootstrap;
+export class ComponentWrapper {
+	private scrollSpy = inject(NgbScrollSpyService);
+	private route = inject(ActivatedRoute);
 
-	activeTab = 'examples';
-
-	component: string;
-
-	headerComponentType$: Observable<Type<any>>;
-	bootstrapUrl$: Observable<string>;
+	componentName = this.route.snapshot.data.name;
+	activeTab = this.route.firstChild!.routeConfig?.path!;
+	headerComponentType = this.route.snapshot.data.header;
+	bootstrapUrl = this.route.snapshot.data.bootstrap?.replace('%version%', inject(LIB_VERSIONS).bootstrap);
+	childrenRouteConfig = this.route.routeConfig!.children!;
 
 	isLargeScreenOrLess: boolean;
 	isSmallScreenOrLess: boolean;
@@ -54,41 +51,19 @@ export class ComponentWrapper implements OnDestroy {
 
 	tableOfContents: TableOfContents = [];
 
-	scrollSpy = inject(NgbScrollSpyService);
-
-	constructor(public route: ActivatedRoute, private _router: Router, ngZone: NgZone) {
-		// This component is used in route definition 'components'
-		// So next child route will always be ':componentType' & next one will always be ':pageType' (or tab)
-		this._routerSubscription = this._router.events
-			.pipe(filter((event) => event instanceof NavigationEnd))
-			.subscribe(() => {
-				const parentRoute = this.route.snapshot.parent;
-				const tabRoute = this.route.snapshot.firstChild;
-
-				this.component = parentRoute!.url[1].path;
-				this.activeTab = tabRoute!.url[0].path;
-			});
-
-		this.headerComponentType$ = this.route.data.pipe(map((data) => data?.header));
-		this.bootstrapUrl$ = this.route.data.pipe(
-			map((data) => data?.bootstrap?.replace('%version%', this.bootstrapVersion)),
-		);
-
+	constructor() {
 		// information extracted from https://getbootstrap.com/docs/4.1/layout/overview/
 		// TODO: we should implements our own mediamatcher, according to bootstrap layout.
+		const zone = inject(NgZone);
 		const smallScreenQL = matchMedia('(max-width: 767.98px)');
 		// eslint-disable-next-line deprecation/deprecation
-		smallScreenQL.addListener((event) => ngZone.run(() => (this.isSmallScreenOrLess = event.matches)));
+		smallScreenQL.addListener((event) => zone.run(() => (this.isSmallScreenOrLess = event.matches)));
 		this.isSmallScreenOrLess = smallScreenQL.matches;
 
 		const largeScreenQL = matchMedia('(max-width: 1199.98px)');
 		this.isLargeScreenOrLess = largeScreenQL.matches;
 		// eslint-disable-next-line deprecation/deprecation
-		largeScreenQL.addListener((event) => ngZone.run(() => (this.isLargeScreenOrLess = event.matches)));
-	}
-
-	ngOnDestroy() {
-		this._routerSubscription.unsubscribe();
+		largeScreenQL.addListener((event) => zone.run(() => (this.isLargeScreenOrLess = event.matches)));
 	}
 
 	onActivate(component: NgbdExamplesPage | NgbdApiPage | any) {
