@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
-import { Location } from '@angular/common';
+import { inject, Injectable } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { IS_PRODUCTION } from '../tokens';
 
 declare const ga: any;
 
@@ -13,20 +13,17 @@ declare const ga: any;
 	providedIn: 'root',
 })
 export class AnalyticsService {
-	private _enabled: boolean;
-
-	constructor(private _location: Location, private _router: Router) {
-		this._enabled = window.location.href.indexOf('ng-bootstrap.github.io') >= 0;
-	}
+	private isProduction = inject(IS_PRODUCTION);
+	private router = inject(Router);
 
 	/**
 	 * Intended to be called only once. Subscribes to router events and sends a page view
 	 * after each ended navigation event.
 	 */
-	trackPageViews() {
-		if (this._enabled) {
-			this._router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
-				ga('send', { hitType: 'pageview', page: this._location.path() });
+	start() {
+		if (this.isProduction) {
+			this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
+				ga('send', { hitType: 'pageview', page: this.router.url });
 			});
 		}
 	}
@@ -35,7 +32,7 @@ export class AnalyticsService {
 	 * Sends an event.
 	 */
 	trackEvent(action: string, category: string) {
-		if (this._enabled) {
+		if (this.isProduction) {
 			ga('send', { hitType: 'event', eventCategory: category, eventAction: action });
 		}
 	}
