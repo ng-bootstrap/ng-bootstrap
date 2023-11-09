@@ -2,12 +2,11 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { NgbdOverviewSection } from './overview';
 import { RouterLink } from '@angular/router';
-import { NgbdFragment } from '../fragment/fragment.directive';
 
 @Component({
 	selector: 'ngbd-overview-section',
 	standalone: true,
-	imports: [RouterLink, NgbdFragment],
+	imports: [RouterLink],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	host: {
 		class: 'd-block',

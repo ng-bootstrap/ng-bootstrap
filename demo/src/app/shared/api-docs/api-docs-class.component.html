@@ -1,6 +1,11 @@
 <div class="api-doc-component" [class.deprecated]="apiDocs.deprecated">
 	<h3 [id]="apiDocs.className">
-		<a routerLink="." fragment="{{ apiDocs.className }}" ngbdFragment title="Anchor link to: {{ apiDocs.className }}">
+		<a
+			routerLink="."
+			fragment="{{ apiDocs.className }}"
+			class="title-fragment"
+			title="Anchor link to: {{ apiDocs.className }}"
+		>
 			<i class="bi bi-link-45deg" style="font-size: 1.75rem; color: var(--bs-heading-color)"></i>
 		</a>
 		{{ apiDocs.className }}
