@@ -4,7 +4,7 @@ import { Snippet } from '../../../services/snippet';
 import { NgbdDemoListService } from '../../../services/demo-list.service';
 import { versions } from '../../../../environments/versions';
 import { RouterLink } from '@angular/router';
-import { NgbdCodeComponent } from '../../../shared/code/code.component';
+import { CodeComponent } from '../../../shared/code.component';
 import { NgbAlertModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdOverviewSectionComponent } from '../../../shared/overview/overview-section.component';
 import { NgbdOverview } from '../../../shared/overview/overview';
@@ -12,7 +12,7 @@ import { NgbdOverview } from '../../../shared/overview/overview';
 @Component({
 	selector: 'ngbd-toast-overview',
 	standalone: true,
-	imports: [NgbAlertModule, NgbNavModule, NgbdOverviewSectionComponent, RouterLink, NgbdCodeComponent],
+	imports: [NgbAlertModule, NgbNavModule, NgbdOverviewSectionComponent, RouterLink, CodeComponent],
 	templateUrl: './toast-overview.component.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	host: { '[class.overview]': 'true' },
