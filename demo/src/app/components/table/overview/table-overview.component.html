@@ -15,7 +15,7 @@
 	GitHub.
 </ngb-alert>
 
-<ngbd-overview-section [section]="sections['why-not']">
+<ngbd-page-header fragment="why-not" [title]="overview['why-not']">
 	<p>
 		Most importantly, there are way too many different use cases and options for such a complex component. Instead of
 		building a <b>monster-of-a-widget</b> with hundreds of options and customizations, we would encourage you to use
@@ -36,9 +36,9 @@
 		<li>doesn't bloat your resulting bundle size by bringing 3rd party dependencies</li>
 		<li>doesn't pretend to be an Angular library by wrapping something else</li>
 	</ul>
-</ngbd-overview-section>
+</ngbd-page-header>
 
-<ngbd-overview-section [section]="sections['examples']">
+<ngbd-page-header fragment="examples" [title]="overview['examples']">
 	<p>
 		Having said that, we decided to give you some simple examples of common table features. Take a look at them for the
 		inspiration and maybe even use them as a starting point.
@@ -64,4 +64,4 @@
 			custom delay for the data fetch.
 		</li>
 	</ul>
-</ngbd-overview-section>
+</ngbd-page-header>

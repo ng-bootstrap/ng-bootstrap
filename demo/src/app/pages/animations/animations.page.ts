@@ -3,12 +3,12 @@ import { Snippet } from '../../services/snippet';
 import { LIB_VERSIONS } from '../../tokens';
 import { CodeComponent } from '../../shared/code.component';
 import { RouterLink } from '@angular/router';
-import { NgbdPageHeaderComponent } from '../../shared/page-wrapper/page-header.component';
+import { PageHeaderComponent } from '../../shared/page-header.component';
 import { NgbdPageWrapper } from '../../shared/page-wrapper/page-wrapper.component';
 
 @Component({
 	standalone: true,
-	imports: [CodeComponent, RouterLink, NgbdPageHeaderComponent, NgbdPageWrapper],
+	imports: [CodeComponent, RouterLink, PageHeaderComponent, NgbdPageWrapper],
 	templateUrl: './animations.page.html',
 })
 export class AnimationsPage {

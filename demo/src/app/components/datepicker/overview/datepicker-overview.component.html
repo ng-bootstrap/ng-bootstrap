@@ -11,7 +11,7 @@
 <ngbd-datepicker-demo-overview class="d-block my-4"></ngbd-datepicker-demo-overview>
 
 <!-- BASIC USAGE -->
-<ngbd-overview-section [section]="sections['basic-usage']">
+<ngbd-page-header fragment="basic-usage" [title]="overview['basic-usage']">
 	<p>Datepicker can be used either inline or inside of the popup.</p>
 
 	<ngbd-code [snippet]="snippets.basic"></ngbd-code>
@@ -66,14 +66,15 @@
 	<p>
 		When using a button (or any other element) to open the popup, the styling and content of the button is left up to
 		you. In the example above, the button is simply given the text "Toggle", but you could also use an icon, or even
-		group the <code>input</code> and <code>button</code> with an
+		group the
+		<code>input</code> and <code>button</code> with an
 		<a href="https://getbootstrap.com/docs/{{ bootstrapVersion }}/components/input-group/#button-addons">input group</a
 		>.
 	</p>
-</ngbd-overview-section>
+</ngbd-page-header>
 
 <!-- GETTING / SETTING A DATE -->
-<ngbd-overview-section [section]="sections['getting-date']">
+<ngbd-page-header fragment="getting-date" [title]="overview['getting-date']">
 	<p>
 		You have several ways of knowing when user selects a date. The date is selected either by clicking on it, pressing
 		<code>Space</code> or <code>Enter</code>, typing text in the input or programmatically.
@@ -87,7 +88,7 @@
 
 	<p>
 		The model, however, is NOT a native javascript date, see the following
-		<a routerLink="./" [fragment]="sections['date-model'].fragment">Date Model</a> section for more info.
+		<a routerLink="./" [fragment]="overview['date-model'].fragment">Date Model</a> section for more info.
 	</p>
 
 	<ngbd-code [snippet]="snippets.form"></ngbd-code>
@@ -99,10 +100,10 @@
 	</p>
 
 	<ngbd-code [snippet]="snippets.selection"></ngbd-code>
-</ngbd-overview-section>
+</ngbd-page-header>
 
 <!-- DATE MODEL-->
-<ngbd-overview-section [section]="sections['date-model']">
+<ngbd-page-header fragment="date-model" [title]="overview['date-model']">
 	<p>
 		Datepicker uses <a routerLink="../api" fragment="NgbDateStruct"><code>NgbDateStruct</code></a> interface as a model
 		and not the native <code>Date</code> object. It's a simple data structure with 3 fields, but note that months start
@@ -156,10 +157,10 @@
 		<code>NgbDateParserFormatter</code> methods, as in
 		<a routerLink="../examples" fragment="adapter">custom date parser formatter example</a>.
 	</p>
-</ngbd-overview-section>
+</ngbd-page-header>
 
 <!-- MOVING AROUND-->
-<ngbd-overview-section [section]="sections['navigation']">
+<ngbd-page-header fragment="navigation" [title]="overview['navigation']">
 	<p>
 		Date selection and navigation are two different things. You might have a date selected in January, but August
 		currently displayed.
@@ -177,10 +178,10 @@
 	</p>
 
 	<ngbd-code [snippet]="snippets.navigation"></ngbd-code>
-</ngbd-overview-section>
+</ngbd-page-header>
 
 <!-- DISABLING/LIMITING DATES-->
-<ngbd-overview-section [section]="sections['limiting-dates']">
+<ngbd-page-header fragment="limiting-dates" [title]="overview['limiting-dates']">
 	<p>
 		You can limit the dates available for navigation and selection using
 		<code>[minDate]</code> and <code>[maxDate]</code> inputs. If you don't specify any of them, you'll have infinite
@@ -195,10 +196,10 @@
 
 	<ngbd-code style="position: relative; top: 0.25rem" [snippet]="snippets.disablingTS"></ngbd-code>
 	<ngbd-code style="position: relative; bottom: 0.25rem" [snippet]="snippets.disablingHTML"></ngbd-code>
-</ngbd-overview-section>
+</ngbd-page-header>
 
 <!-- DAY CUSTOMIZATION-->
-<ngbd-overview-section [section]="sections['day-template']">
+<ngbd-page-header fragment="day-template" [title]="overview['day-template']">
 	<p>
 		You can completely replace how each date is rendered by providing a custom template and rendering anything you want
 		inside. You'll get a date context available inside the template with info on whether current date is disabled,
@@ -217,13 +218,14 @@
 		<code>let-date="date"</code> in the template. See
 		<a href="https://angular.io/api/common/NgTemplateOutlet#example">$implicit example</a> in Angular documentation.
 	</ngb-alert>
-</ngbd-overview-section>
+</ngbd-page-header>
 
 <!-- TODAY'S DATE -->
-<ngbd-overview-section [section]="sections['today']">
+<ngbd-page-header fragment="today" [title]="overview['today']">
 	<p>
 		It is often useful to highlight a today's date in the calendar view or add a certain logic to it. Today's date is
-		the date returned by the <a routerLink="../api" fragment="NgbCalendar">NgbCalendar</a>'s <code>getToday()</code>
+		the date returned by the <a routerLink="../api" fragment="NgbCalendar">NgbCalendar</a>'s
+		<code>getToday()</code>
 		method.
 	</p>
 
@@ -242,10 +244,10 @@
 	</p>
 
 	<ngbd-code [snippet]="snippets.todayTemplate"></ngbd-code>
-</ngbd-overview-section>
+</ngbd-page-header>
 
 <!-- MONTH LAYOUT CUSTOMIZATION-->
-<ngbd-overview-section [section]="sections['content-template']">
+<ngbd-page-header fragment="content-template" [title]="overview['content-template']">
 	<p>
 		You can replace the content of the datepicker. Combined with the NgbDatepickerMonthView you can customize the layout
 		of months as in the
@@ -253,23 +255,24 @@
 	</p>
 
 	<ngbd-code [snippet]="snippets.contentTemplate"></ngbd-code>
-</ngbd-overview-section>
+</ngbd-page-header>
 
 <!-- FOOTER TEMPLATE -->
-<ngbd-overview-section [section]="sections['footer-template']">
+<ngbd-page-header fragment="footer-template" [title]="overview['footer-template']">
 	<p>You can insert anything you want in a datepicker footer by providing a template.</p>
 
 	<ngbd-code [snippet]="snippets.footerTemplate"></ngbd-code>
-</ngbd-overview-section>
+</ngbd-page-header>
 
 <!-- RANGE SELECTION -->
-<ngbd-overview-section [section]="sections['range']">
+<ngbd-page-header fragment="range" [title]="overview['range']">
 	<p>
 		The datepicker model is a single date, however you still can implement range selection functionality. With
 		<code>(select)</code> and <code>(dateSelect)</code> outputs you'll know which dates are being selected and with the
 		<code>[dayTemplate]</code> input you can customize the way any particular date looks. If you want to use the
 		<code>NgbDatepickerInput</code>, you can also tell the popup to stay open by tuning the
-		<code>[autoClose]</code> input. Check the <a routerLink="../examples" fragment="range">range selection example</a>
+		<code>[autoClose]</code> input. Check the
+		<a routerLink="../examples" fragment="range">range selection example</a>
 		and the initial demo on this page for more details.
 	</p>
 
@@ -278,15 +281,16 @@
 		<code>NgbDatepicker</code> inside of it. In this case we'll handle everything related to date selection and
 		navigation for you and you can create a completely customized popup with any data model you want.
 	</p>
-</ngbd-overview-section>
+</ngbd-page-header>
 
 <!-- I18N -->
-<ngbd-overview-section [section]="sections['i18n']">
+<ngbd-page-header fragment="i18n" [title]="overview['i18n']">
 	<p>
 		Since the 2.0.0 release datepicker will use the
 		<a href="https://angular.io/guide/i18n#setting-up-the-locale-of-your-app">application locale</a>
 		if it is present to get translations of weekdays and month names. The internal service that does translation is
-		called <code>NgbDatepickerI18n</code> and you could provide your own implementation if necessary.
+		called
+		<code>NgbDatepickerI18n</code> and you could provide your own implementation if necessary.
 	</p>
 
 	<ngbd-code [snippet]="snippets.i18n"></ngbd-code>
@@ -296,10 +300,10 @@
 		month label is extracted under the <code>ngb.datepicker.previous-month</code>
 		name.
 	</p>
-</ngbd-overview-section>
+</ngbd-page-header>
 
 <!-- Keyboard -->
-<ngbd-overview-section [section]="sections['keyboard-shortcuts']">
+<ngbd-page-header fragment="keyboard-shortcuts" [title]="overview['keyboard-shortcuts']">
 	<p>
 		You can customize keyboard navigation as in the
 		<a routerLink="../examples" fragment="keyboard">custom keyboard navigation example</a>. The default keys are as
@@ -358,4 +362,4 @@
 			</tr>
 		</tbody>
 	</table>
-</ngbd-overview-section>
+</ngbd-page-header>

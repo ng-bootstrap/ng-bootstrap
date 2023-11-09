@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { ComponentWrapper } from '../../shared/component-wrapper/component-wrapper.component';
 import { NgbdApiPage } from '../../shared/api-page/api-page.component';
-import { NgbdExamplesPage } from '../../shared/examples-page/examples.component';
+import { DemoListComponent } from '../../shared/examples-page/demo-list.component';
 import { NgbdToastCloseable } from './demos/closeable/toast-closeable';
 import { NgbdToastCustomHeader } from './demos/custom-header/toast-custom-header';
 import { NgbdToastGlobal } from './demos/howto-global/toast-global.component';
@@ -9,40 +9,43 @@ import { NgbdToastInline } from './demos/inline/toast-inline';
 import { NgbdToastPreventAutohide } from './demos/prevent-autohide/toast-prevent-autohide';
 import { NgbdToastOverviewComponent } from './overview/toast-overview.component';
 import { Routes } from '@angular/router';
-import { ENVIRONMENT_INITIALIZER, inject } from '@angular/core';
-import { NgbdDemoListService } from '../../services/demo-list.service';
 
 const OVERVIEW = {
 	'inline-usage': 'Declarative usage',
 	'toast-service': 'Building a toast management service',
 };
 
-const DEMOS = {
-	inline: {
+const DEMOS = [
+	{
+		fragment: 'inline',
 		title: 'Declarative inline usage',
 		type: NgbdToastInline,
 		code: 'toast/demos/inline/toast-inline.ts',
 		markup: 'toast/demos/inline/toast-inline.html',
 	},
-	'custom-header': {
+	{
+		fragment: 'custom-header',
 		title: 'Using a Template as header',
 		type: NgbdToastCustomHeader,
 		code: 'toast/demos/custom-header/toast-custom-header.ts',
 		markup: 'toast/demos/custom-header/toast-custom-header.html',
 	},
-	closeable: {
+	{
+		fragment: 'closeable',
 		title: 'Closeable toast',
 		type: NgbdToastCloseable,
 		code: 'toast/demos/closeable/toast-closeable.ts',
 		markup: 'toast/demos/closeable/toast-closeable.html',
 	},
-	'prevent-autohide': {
+	{
+		fragment: 'prevent-autohide',
 		title: 'Prevent autohide on mouseover',
 		type: NgbdToastPreventAutohide,
 		code: 'toast/demos/prevent-autohide/toast-prevent-autohide.ts',
 		markup: 'toast/demos/prevent-autohide/toast-prevent-autohide.html',
 	},
-	'howto-global': {
+	{
+		fragment: 'howto-global',
 		title: 'Toast management service',
 		type: NgbdToastGlobal,
 		files: [
@@ -64,7 +67,7 @@ const DEMOS = {
 			},
 		],
 	},
-};
+];
 
 export const ROUTES: Routes = [
 	{ path: '', pathMatch: 'full', redirectTo: 'overview' },
@@ -75,16 +78,17 @@ export const ROUTES: Routes = [
 			name: 'Toast',
 			bootstrap: `https://getbootstrap.com/docs/%version%/components/toasts/`,
 		},
-		providers: [
-			{
-				provide: ENVIRONMENT_INITIALIZER,
-				multi: true,
-				useValue: () => inject(NgbdDemoListService).register('toast', DEMOS, OVERVIEW),
-			},
-		],
 		children: [
-			{ path: 'overview', component: NgbdToastOverviewComponent },
-			{ path: 'examples', component: NgbdExamplesPage },
+			{
+				path: 'overview',
+				component: NgbdToastOverviewComponent,
+				data: { overview: OVERVIEW },
+			},
+			{
+				path: 'examples',
+				component: DemoListComponent,
+				data: { demos: DEMOS },
+			},
 			{ path: 'api', component: NgbdApiPage },
 		],
 	},

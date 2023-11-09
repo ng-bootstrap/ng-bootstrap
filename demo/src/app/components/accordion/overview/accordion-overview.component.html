@@ -2,7 +2,7 @@
 	<span class="badge bg-info text-dark">Since 14.1.0</span>
 </h4>
 
-<ngbd-overview-section [section]="sections['basic-usage']">
+<ngbd-page-header fragment="basic-usage" [title]="overview['basic-usage']">
 	<p>
 		We're using a set of accordion directives and matching exactly the markup of the
 		<a href="https://getbootstrap.com/docs/{{ bootstrapVersion }}/components/accordion/#example"
@@ -31,9 +31,9 @@
 	</p>
 
 	<p>For more details please refer to the <a routerLink="../api">complete API</a></p>
-</ngbd-overview-section>
+</ngbd-page-header>
 
-<ngbd-overview-section [section]="sections['features']">
+<ngbd-page-header fragment="features" [title]="overview['features']">
 	<h4>One panel at a time</h4>
 
 	<p>
@@ -61,9 +61,9 @@
 	</p>
 
 	<ngbd-code [snippet]="EVENTS"></ngbd-code>
-</ngbd-overview-section>
+</ngbd-page-header>
 
-<ngbd-overview-section [section]="sections['customization']">
+<ngbd-page-header fragment="customization" [title]="overview['customization']">
 	<p>
 		You can provide a different template for accordion headers. In this case we would recommend changing the
 		<code>ngbAccordionHeader</code> markup and using <code>ngbAccordionToggle</code> on the element that toggles a
@@ -79,4 +79,4 @@
 	<ngbd-code [snippet]="CUSTOM_HEADER"></ngbd-code>
 
 	<p>Please see a <a routerLink="../examples" fragment="header">working example</a> for more details</p>
-</ngbd-overview-section>
+</ngbd-page-header>

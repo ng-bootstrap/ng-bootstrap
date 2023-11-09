@@ -25,12 +25,12 @@ const TYPES: { [name: string]: string } = {
 export class NgbdWidgetDemoComponent {
 	@Input() demoTitle: string;
 	@Input() component: string;
-	@Input() id: string;
+	@Input() fragment: string;
 	@Input() code: string;
 	@Input() markup: string;
 	@Input() files: { name: string; source: string }[];
 	@Input() showCode = false;
-	@Input() showStackblitz;
+	@Input() showStackblitz: boolean;
 
 	codeService = inject(NgbdDemoCodeService);
 
@@ -56,11 +56,11 @@ export class NgbdWidgetDemoComponent {
 	}
 
 	trackStackBlitzClick() {
-		this._analytics.trackEvent('StackBlitz View', this.component + ' ' + this.id);
+		this._analytics.trackEvent('StackBlitz View', this.component + ' ' + this.fragment);
 	}
 	trackShowCodeClick() {
 		if (this.showCode) {
-			this._analytics.trackEvent('Show Code View', this.component + ' ' + this.id);
+			this._analytics.trackEvent('Show Code View', this.component + ' ' + this.fragment);
 		}
 	}
 }

@@ -1,25 +1,17 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
 
 import { LIB_VERSIONS } from '../../../tokens';
 import { Snippet } from '../../../services/snippet';
-import { NgbdDemoListService } from '../../../services/demo-list.service';
 import { CodeComponent } from '../../../shared/code.component';
 import { RouterLink } from '@angular/router';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdDatepickerOverviewDemoComponent } from './demo/datepicker-overview-demo.component';
-import { NgbdOverviewSectionComponent } from '../../../shared/overview/overview-section.component';
-import { NgbdOverview } from '../../../shared/overview/overview';
+import { PageHeaderComponent } from '../../../shared/page-header.component';
 
 @Component({
 	selector: 'ngbd-datepicker-overview',
 	standalone: true,
-	imports: [
-		CodeComponent,
-		RouterLink,
-		NgbdOverviewSectionComponent,
-		NgbAlertModule,
-		NgbdDatepickerOverviewDemoComponent,
-	],
+	imports: [CodeComponent, RouterLink, NgbAlertModule, NgbdDatepickerOverviewDemoComponent, PageHeaderComponent],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	templateUrl: './datepicker-overview.component.html',
 	host: {
@@ -27,6 +19,9 @@ import { NgbdOverview } from '../../../shared/overview/overview';
 	},
 })
 export class NgbdDatepickerOverviewComponent {
+	bootstrapVersion = inject(LIB_VERSIONS).bootstrap;
+	@Input() overview: { fragment: string; title: string };
+
 	snippets = {
 		basic: Snippet({
 			lang: 'html',
@@ -204,12 +199,4 @@ export class NgbdDatepickerOverviewComponent {
       `,
 		}),
 	};
-
-	bootstrapVersion = inject(LIB_VERSIONS).bootstrap;
-
-	sections: NgbdOverview = {};
-
-	constructor(demoList: NgbdDemoListService) {
-		this.sections = demoList.getOverviewSections('datepicker');
-	}
 }

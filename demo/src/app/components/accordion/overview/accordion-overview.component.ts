@@ -1,32 +1,33 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
 
 import { Snippet } from '../../../services/snippet';
-import { NgbdDemoListService } from '../../../services/demo-list.service';
 import { CodeComponent } from '../../../shared/code.component';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdApiDocsBadge } from '../../../shared/api-docs';
 import { RouterLink } from '@angular/router';
-import { NgbdOverviewSectionComponent } from '../../../shared/overview/overview-section.component';
-import { NgbdOverview } from '../../../shared/overview/overview';
 import { NgbdAccordionDemoComponent } from './demo/accordion-overview-demo.component';
+import { PageHeaderComponent } from '../../../shared/page-header.component';
 import { LIB_VERSIONS } from '../../../tokens';
 
 @Component({
 	selector: 'ngbd-accordion-overview',
 	standalone: true,
 	imports: [
-		NgbdOverviewSectionComponent,
 		CodeComponent,
 		NgbAlertModule,
 		NgbdApiDocsBadge,
 		RouterLink,
 		NgbdAccordionDemoComponent,
+		PageHeaderComponent,
 	],
 	templateUrl: './accordion-overview.component.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	host: { '[class.overview]': 'true' },
 })
 export class NgbdAccordionOverviewComponent {
+	bootstrapVersion = inject(LIB_VERSIONS).bootstrap;
+	@Input() overview: { fragment: string; title: string };
+
 	BASIC_ACCORDION = Snippet({
 		lang: 'html',
 		code: `
@@ -108,11 +109,4 @@ export class NgbdAccordionOverviewComponent {
       </div>
     `,
 	});
-
-	bootstrapVersion = inject(LIB_VERSIONS).bootstrap;
-	sections: NgbdOverview = {};
-
-	constructor(demoList: NgbdDemoListService) {
-		this.sections = demoList.getOverviewSections('accordion');
-	}
 }

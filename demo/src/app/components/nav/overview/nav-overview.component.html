@@ -4,7 +4,7 @@
 
 <p>Nav directives will help you to build navigation components.</p>
 
-<ngbd-overview-section [section]="sections['basic-usage']">
+<ngbd-page-header fragment="basic-usage" [title]="overview['basic-usage']">
 	<p>
 		Nav includes <code>NgbNav</code>, <code>NgbNavItem</code>, <code>NgbNavLink</code>,
 		<code>NgbNavContent</code> directives and the <code>NgbNavOutlet</code> component.
@@ -90,9 +90,9 @@
 		won't be raised in case of programmatic nav selection. It is not possible to select disabled tabs by clicking on
 		them.
 	</p>
-</ngbd-overview-section>
+</ngbd-page-header>
 
-<ngbd-overview-section [section]="sections['customization']">
+<ngbd-page-header fragment="customization" [title]="overview['customization']">
 	<ngb-alert type="warning" [dismissible]="false">
 		It is up to you to specify the nav type using bootstrap standard <code>.nav-tabs</code> or
 		<code>.nav-pills</code> classes. Otherwise active nav will not be highlighted,
@@ -126,9 +126,9 @@
 	</p>
 
 	<ngbd-code [snippet]="ROLES"></ngbd-code>
-</ngbd-overview-section>
+</ngbd-page-header>
 
-<ngbd-overview-section [section]="sections['routing']">
+<ngbd-page-header fragment="routing" [title]="overview['routing']">
 	<p>
 		Router integration is simple: just use standard <code>&lt;router-outlet&gt;</code> component instead of
 		<code>ngbNavOutlet</code> and add <code>[routerLink]</code> directives to nav links.
@@ -144,9 +144,9 @@
 	<p>and in your template:</p>
 
 	<ngbd-code [snippet]="ROUTER"></ngbd-code>
-</ngbd-overview-section>
+</ngbd-page-header>
 
-<ngbd-overview-section [section]="sections['keyboard-shortcuts']">
+<ngbd-page-header fragment="keyboard-shortcuts" [title]="overview['keyboard-shortcuts']">
 	<ngbd-api-docs-badge [since]="{ version: '6.1.0' }"></ngbd-api-docs-badge>
 
 	<p>
@@ -180,4 +180,4 @@
 			</tr>
 		</tbody>
 	</table>
-</ngbd-overview-section>
+</ngbd-page-header>

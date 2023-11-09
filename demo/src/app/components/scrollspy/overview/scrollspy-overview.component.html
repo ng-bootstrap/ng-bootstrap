@@ -7,7 +7,7 @@
 	and get notified when a part of it is scrolled into or out of the viewport.
 </p>
 
-<ngbd-overview-section [section]="sections['service']">
+<ngbd-page-header fragment="service" [title]="overview['service']">
 	<p>
 		The core scrollspy implementation is a
 		<a routerLink="../api" fragment="NgbScrollSpyService"><code>NgbScrollSpyService</code></a> that is based on an
@@ -34,9 +34,9 @@
 		You can use the service together with the <code>routerLink</code> directive and its <code>[fragment]</code> input,
 		or you can force the scrollspy to get to a specific fragment via the <code>.scrollTo()</code> method.
 	</p>
-</ngbd-overview-section>
+</ngbd-page-header>
 
-<ngbd-overview-section [section]="sections['directive']">
+<ngbd-page-header fragment="directive" [title]="overview['directive']">
 	<p>
 		The directive will help you to setup the scrollspy service instance on a specific container. It is merely a
 		syntactic sugar around the service that will start and add fragments automatically, as well as clean everything up
@@ -52,9 +52,9 @@
 		<a routerLink="../api" fragment="NgbScrollSpy"><code>NgbScrollSpy</code> API</a> for all available inputs and
 		outputs.
 	</p>
-</ngbd-overview-section>
+</ngbd-page-header>
 
-<ngbd-overview-section [section]="sections['highlighting']">
+<ngbd-page-header fragment="highlighting" [title]="overview['highlighting']">
 	<p>
 		There are also two helper directives: <code>NgbScrollSpyMenu</code> and <code>NgbScrollSpyItem</code>. They will
 		highlight the active item in a menu, nav or any custom list.
@@ -93,9 +93,9 @@
 	</p>
 
 	<p>For more details, please see the <a routerLink="../examples" fragment="nested">related remo</a></p>
-</ngbd-overview-section>
+</ngbd-page-header>
 
-<ngbd-overview-section [section]="sections['customization']">
+<ngbd-page-header fragment="customization" [title]="overview['customization']">
 	<p>
 		If you want to customize the <code>IntersectionObserver</code> you can pass <code>rootMargin</code> and
 		<code>threshold</code> options when starting the service.
@@ -121,4 +121,4 @@
 	</p>
 
 	<ngbd-code [snippet]="CUSTOMIZATION"></ngbd-code>
-</ngbd-overview-section>
+</ngbd-page-header>

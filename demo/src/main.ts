@@ -5,6 +5,7 @@ import { AppComponent } from './app/app.component';
 import {
 	PreloadAllModules,
 	provideRouter,
+	withComponentInputBinding,
 	withHashLocation,
 	withInMemoryScrolling,
 	withPreloading,
@@ -20,6 +21,7 @@ bootstrapApplication(AppComponent, {
 			ROUTES,
 			withPreloading(PreloadAllModules),
 			withHashLocation(),
+			withComponentInputBinding(),
 			withInMemoryScrolling({
 				anchorScrolling: 'enabled',
 				scrollPositionRestoration: 'enabled',

@@ -1,25 +1,24 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 
 import { Snippet } from '../../../services/snippet';
-import { NgbdDemoListService } from '../../../services/demo-list.service';
 
 import { LIB_VERSIONS } from '../../../tokens';
 import { NgbAlertModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { CodeComponent } from '../../../shared/code.component';
 import { RouterLink } from '@angular/router';
 import { NgbdApiDocsBadge } from '../../../shared/api-docs';
-import { NgbdOverviewSectionComponent } from '../../../shared/overview/overview-section.component';
-import { NgbdOverview } from '../../../shared/overview/overview';
+import { PageHeaderComponent } from '../../../shared/page-header.component';
 
 @Component({
 	selector: 'ngbd-nav-overview',
 	standalone: true,
-	imports: [NgbNavModule, NgbAlertModule, NgbdOverviewSectionComponent, CodeComponent, RouterLink, NgbdApiDocsBadge],
+	imports: [NgbNavModule, NgbAlertModule, CodeComponent, RouterLink, NgbdApiDocsBadge, PageHeaderComponent],
 	templateUrl: './nav-overview.component.html',
 	host: { '[class.overview]': 'true' },
 })
 export class NgbdNavOverviewComponent {
 	bootstrapVersion = inject(LIB_VERSIONS).bootstrap;
+	@Input() overview: { fragment: string; title: string };
 
 	BASIC = Snippet({
 		lang: 'html',
@@ -110,10 +109,4 @@ export class NgbdNavOverviewComponent {
       constructor(public route: ActivatedRoute) {}
     `,
 	});
-
-	sections: NgbdOverview = {};
-
-	constructor(demoList: NgbdDemoListService) {
-		this.sections = demoList.getOverviewSections('nav');
-	}
 }

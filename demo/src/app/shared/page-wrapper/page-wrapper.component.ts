@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ContentChildren, inject, Input, NgZone, QueryList } from '@angular/core';
-import { NgbdPageHeaderComponent } from './page-header.component';
+import { PageHeaderComponent } from '../page-header.component';
 import { TableOfContents } from '../component-wrapper/component-wrapper.component';
 import {
 	NgbCollapseModule,
@@ -20,7 +20,7 @@ import { SideNavComponent } from '../side-nav/side-nav.component';
 export class NgbdPageWrapper implements AfterViewInit {
 	@Input() pageTitle: string;
 
-	@ContentChildren(NgbdPageHeaderComponent) private _tableOfContents: QueryList<NgbdPageHeaderComponent>;
+	@ContentChildren(PageHeaderComponent) private _tableOfContents: QueryList<PageHeaderComponent>;
 
 	sidebarCollapsed = true;
 	isLargeScreenOrLess: boolean;
