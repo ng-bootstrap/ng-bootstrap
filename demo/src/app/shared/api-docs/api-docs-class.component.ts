@@ -5,7 +5,6 @@ import { AnalyticsService } from '../../services/analytics.service';
 import { RouterLink } from '@angular/router';
 import { NgbdApiDocsBadge } from './api-docs-badge.component';
 import { NgFor, NgIf } from '@angular/common';
-import { NgbdFragment } from '../fragment/fragment.directive';
 
 /**
  * Displays the API docs of a class, which is not a directive.
@@ -15,7 +14,7 @@ import { NgbdFragment } from '../fragment/fragment.directive';
 @Component({
 	selector: 'ngbd-api-docs-class',
 	standalone: true,
-	imports: [RouterLink, NgbdApiDocsBadge, NgIf, NgFor, NgbdFragment],
+	imports: [RouterLink, NgbdApiDocsBadge, NgIf, NgFor],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	templateUrl: './api-docs-class.component.html',
 	styles: [
