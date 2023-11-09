@@ -17,7 +17,7 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 		NgbdPageHeaderComponent,
 		NgbTooltipModule,
 	],
-	templateUrl: './positioning.component.html',
+	templateUrl: './positioning.page.html',
 })
 export class PositioningPage {
 	rightExample = Snippet({

@@ -9,7 +9,7 @@ import { NgbdPageWrapper } from '../../shared/page-wrapper/page-wrapper.componen
 @Component({
 	standalone: true,
 	imports: [NgbdCodeComponent, RouterLink, NgbdPageHeaderComponent, NgbdPageWrapper],
-	templateUrl: './animations.component.html',
+	templateUrl: './animations.page.html',
 })
 export class AnimationsPage {
 	bsVersion = versions.bootstrap;

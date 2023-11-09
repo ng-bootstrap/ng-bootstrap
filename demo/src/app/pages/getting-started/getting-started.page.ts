@@ -10,7 +10,7 @@ import { NgIf } from '@angular/common';
 @Component({
 	standalone: true,
 	imports: [NgbdPageHeaderComponent, NgbdCodeComponent, NgbCollapseModule, NgbAlertModule, NgIf, NgbdPageWrapper],
-	templateUrl: './getting-started.component.html',
+	templateUrl: './getting-started.page.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GettingStartedPage {

@@ -5,7 +5,7 @@ import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 @Component({
 	standalone: true,
 	imports: [NgbdPageWrapper, NgbAlertModule],
-	templateUrl: './i18n.component.html',
+	templateUrl: './i18n.page.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class I18nPage {}

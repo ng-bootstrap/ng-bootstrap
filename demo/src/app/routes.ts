@@ -19,15 +19,15 @@ import { ROUTES as TIMEPICKER_ROUTES } from './components/timepicker/timepicker.
 import { ROUTES as TOAST_ROUTES } from './components/toast/toast.routes';
 import { ROUTES as TOOLTIP_ROUTES } from './components/tooltip/tooltip.routes';
 import { ROUTES as TYPEAHEAD_ROUTES } from './components/typeahead/typeahead.routes';
-import { DefaultComponent } from './default';
-import { GettingStartedPage } from './pages/getting-started/getting-started.component';
-import { AnimationsPage } from './pages/animations/animations.component';
-import { I18nPage } from './pages/i18n/i18n.component';
-import { PositioningPage } from './pages/positioning/positioning.component';
+import { HomePage } from './pages/home/home.page';
+import { GettingStartedPage } from './pages/getting-started/getting-started.page';
+import { AnimationsPage } from './pages/animations/animations.page';
+import { I18nPage } from './pages/i18n/i18n.page';
+import { PositioningPage } from './pages/positioning/positioning.page';
 
 export const ROUTES: Routes = [
 	{ path: '', pathMatch: 'full', redirectTo: 'home' },
-	{ path: 'home', component: DefaultComponent },
+	{ path: 'home', component: HomePage },
 	{ path: 'getting-started', component: GettingStartedPage },
 	{ path: 'animations', redirectTo: 'guides/animations' },
 	{ path: 'positioning', redirectTo: 'guides/positioning' },
