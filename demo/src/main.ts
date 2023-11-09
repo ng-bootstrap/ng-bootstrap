@@ -11,6 +11,8 @@ import {
 } from '@angular/router';
 import { ROUTES } from './app/routes';
 import { provideHttpClient, withNoXsrfProtection } from '@angular/common/http';
+import { APP_INITIALIZER, inject } from '@angular/core';
+import { AnalyticsService } from './app/services/analytics.service';
 
 bootstrapApplication(AppComponent, {
 	providers: [
@@ -24,5 +26,11 @@ bootstrapApplication(AppComponent, {
 			}),
 		),
 		provideHttpClient(withNoXsrfProtection()),
+		{
+			provide: APP_INITIALIZER,
+			useFactory: () => {
+				inject(AnalyticsService).start();
+			},
+		},
 	],
 }).catch((err) => console.error(err));

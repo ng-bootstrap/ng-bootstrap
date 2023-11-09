@@ -1,37 +1,20 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, NgZone, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { NgbdDemoVersionsComponent } from './demo-versions.component';
 import { NgbdDemoThemeComponent } from './demo-theme.component';
 
 import { COMPONENT_LIST } from './shared/component-list';
-import { environment } from '../environments/environment';
-import { AnalyticsService } from './services/analytics.service';
-import { map } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
+import { NPM_VIEWS } from './tokens';
 
 @Component({
 	standalone: true,
 	selector: 'ngbd-app',
 	templateUrl: './app.component.html',
-	imports: [RouterLink, RouterLinkActive, RouterOutlet, NgbdDemoVersionsComponent, NgbdDemoThemeComponent],
+	imports: [RouterLink, RouterLinkActive, RouterOutlet, NgbdDemoVersionsComponent, NgbdDemoThemeComponent, AsyncPipe],
 })
-export class AppComponent implements OnInit {
-	downloadCount = '';
-	navbarCollapsed = true;
-
+export class AppComponent {
 	components = COMPONENT_LIST;
-
-	constructor(private _analytics: AnalyticsService, route: ActivatedRoute, zone: NgZone, httpClient: HttpClient) {
-		if (environment.production) {
-			httpClient
-				.get<{ downloads: string }>('https://api.npmjs.org/downloads/point/last-month/@ng-bootstrap/ng-bootstrap')
-				.pipe(map((data) => data?.downloads))
-				.subscribe({ next: (count) => (this.downloadCount = count.toLocaleString()), error: () => of('') });
-		}
-	}
-
-	ngOnInit(): void {
-		this._analytics.trackPageViews();
-	}
+	downloadCount = inject(NPM_VIEWS);
+	navbarCollapsed = true;
 }
