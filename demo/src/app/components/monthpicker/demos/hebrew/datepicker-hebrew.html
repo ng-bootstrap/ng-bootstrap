@@ -3,18 +3,17 @@
 	an official calendar for civil purposes.
 </p>
 
-<ngb-datepicker
+<ngb-monthpicker
 	class="hebrew rtl"
-	#dp
+	#mp
 	[(ngModel)]="model"
 	[displayMonths]="1"
-	[firstDayOfWeek]="7"
-	[dayTemplate]="dt"
-	[dayTemplateData]="dayTemplateData"
+	[monthTemplate]="mt"
+	[monthTemplateData]="monthTemplateData"
 >
-</ngb-datepicker>
+</ngb-monthpicker>
 
-<ng-template #dt let-date let-data="data" let-selected="selected" let-currentMonth="currentMonth">
+<ng-template #mt let-date let-data="data" let-selected="selected" let-currentMonth="currentMonth">
 	<div class="hebrew-day" [class.outside]="date.month !== currentMonth" [class.selected]="selected">
 		<div class="gregorian-num">{{ data.gregorian.day + '/' + (data.gregorian.month) }}</div>
 		<div class="hebrew-num">{{ i18n.getDayNumerals(date) }}</div>
@@ -24,7 +23,7 @@
 <hr />
 
 <button class="btn btn-sm btn-outline-primary me-2" (click)="selectToday()">Select Today</button>
-<button class="btn btn-sm btn-outline-primary me-2" (click)="dp.navigateTo()">To current month</button>
+<button class="btn btn-sm btn-outline-primary me-2" (click)="mp.navigateTo()">To current month</button>
 
 <hr />
 

@@ -1,5 +1,5 @@
 <p>
-	This datepicker uses a custom position target and placement. Popup is positioned according to the toggle button
+	This monthpicker uses a custom position target and placement. Popup is positioned according to the toggle button
 	instead of input which is default.
 </p>
 
@@ -8,15 +8,15 @@
 		<div class="input-group">
 			<input
 				class="form-control"
-				placeholder="yyyy-mm-dd"
-				name="dp"
+				placeholder="yyyy-mm"
+				name="mp"
 				[(ngModel)]="model"
-				ngbDatepicker
-				#d="ngbDatepicker"
+				ngbMonthpicker
+				#m="ngbMonthpicker"
 				[placement]="placement"
 				[positionTarget]="buttonEl"
 			/>
-			<button #buttonEl class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
+			<button #buttonEl class="btn btn-outline-secondary bi bi-calendar3" (click)="m.toggle()" type="button"></button>
 		</div>
 	</div>
 </form>

@@ -110,6 +110,8 @@ export {
 	NgbMonthCalendar,
 	NgbMonthCalendarGregorian,
 	NgbMonth,
+	NgbMonthAdapter,
+	NgbMonthParserFormatter,
 	NgbMonthpicker,
 	NgbMonthpickerConfig,
 	NgbMonthpickerI18n,

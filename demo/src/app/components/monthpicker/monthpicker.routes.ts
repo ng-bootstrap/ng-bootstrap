@@ -4,7 +4,7 @@ import { ComponentWrapper } from '../../shared/component-wrapper/component-wrapp
 import { NgbdDemoListService } from '../../services/demo-list.service';
 import { NgbdApiPage } from '../../shared/api-page/api-page.component';
 import { NgbdExamplesPage } from '../../shared/examples-page/examples.component';
-import { NgbdDatepickerAdapter } from './demos/adapter/datepicker-adapter';
+import { NgbdMonthpickerAdapter } from './demos/adapter/monthpicker-adapter';
 import { NgbdMonthpickerBasic } from './demos/basic/monthpicker-basic';
 import { NgbdDatepickerConfig } from './demos/config/datepicker-config';
 import { NgbdMonthpickerDisabled } from './demos/disabled/monthpicker-disabled';
@@ -12,7 +12,7 @@ import { NgbdMonthpickerFootertemplate } from './demos/footertemplate/monthpicke
 import { NgbdMonthpickerI18n } from './demos/i18n/monthpicker-i18n';
 import { NgbdMonthpickerPopup } from './demos/popup/monthpicker-popup';
 import { NgbdMonthpickerOverviewComponent } from './overview/monthpicker-overview.component';
-import { NgbdDatepickerPositiontarget } from './demos/positiontarget/datepicker-positiontarget';
+import { NgbdMonthpickerPositiontarget } from './demos/positiontarget/monthpicker-positiontarget';
 import { NgbdDatepickerKeyboard } from './demos/keyboard/datepicker-keyboard';
 import { Routes } from '@angular/router';
 
@@ -50,12 +50,12 @@ const DEMOS = {
 		code: require('!!raw-loader!./demos/disabled/monthpicker-disabled').default,
 		markup: require('!!raw-loader!./demos/disabled/monthpicker-disabled.html').default,
 	},
-	/*adapter: {
-		title: 'Custom date adapter and formatter',
-		type: NgbdDatepickerAdapter,
-		code: require('!!raw-loader!./demos/adapter/datepicker-adapter').default,
-		markup: require('!!raw-loader!./demos/adapter/datepicker-adapter.html').default,
-	},*/
+	adapter: {
+		title: 'Custom month adapter and formatter',
+		type: NgbdMonthpickerAdapter,
+		code: require('!!raw-loader!./demos/adapter/monthpicker-adapter').default,
+		markup: require('!!raw-loader!./demos/adapter/monthpicker-adapter.html').default,
+	},
 	i18n: {
 		title: 'Internationalization of monthpickers',
 		type: NgbdMonthpickerI18n,
@@ -68,12 +68,12 @@ const DEMOS = {
 		code: require('!!raw-loader!./demos/footertemplate/monthpicker-footertemplate').default,
 		markup: require('!!raw-loader!./demos/footertemplate/monthpicker-footertemplate.html').default,
 	},
-	/*positiontarget: {
+	positiontarget: {
 		title: 'Position target',
-		type: NgbdDatepickerPositiontarget,
-		code: require('!!raw-loader!./demos/positiontarget/datepicker-positiontarget').default,
-		markup: require('!!raw-loader!./demos/positiontarget/datepicker-positiontarget.html').default,
-	},
+		type: NgbdMonthpickerPositiontarget,
+		code: require('!!raw-loader!./demos/positiontarget/monthpicker-positiontarget').default,
+		markup: require('!!raw-loader!./demos/positiontarget/monthpicker-positiontarget.html').default,
+	} /*
 	keyboard: {
 		title: 'Custom keyboard navigation',
 		type: NgbdDatepickerKeyboard,
@@ -85,7 +85,7 @@ const DEMOS = {
 		type: NgbdDatepickerConfig,
 		code: require('!!raw-loader!./demos/config/datepicker-config').default,
 		markup: require('!!raw-loader!./demos/config/datepicker-config.html').default,
-	},*/
+	},*/,
 };
 
 export const ROUTES: Routes = [

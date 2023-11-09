@@ -13,6 +13,7 @@ const COMPONENTS = [
 	'datepicker',
 	'dropdown',
 	'modal',
+	'monthpicker',
 	'nav',
 	'offcanvas',
 	'pagination',
