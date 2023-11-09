@@ -79,6 +79,7 @@ export const ROUTES: Routes = [
 		path: '',
 		component: ComponentWrapper,
 		data: {
+			name: 'Nav',
 			bootstrap: 'https://getbootstrap.com/docs/%version%/components/navs/',
 		},
 		providers: [

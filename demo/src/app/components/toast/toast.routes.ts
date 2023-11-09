@@ -72,6 +72,7 @@ export const ROUTES: Routes = [
 		path: '',
 		component: ComponentWrapper,
 		data: {
+			name: 'Toast',
 			bootstrap: `https://getbootstrap.com/docs/%version%/components/toasts/`,
 		},
 		providers: [

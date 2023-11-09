@@ -65,6 +65,7 @@ export const ROUTES: Routes = [
 		path: '',
 		component: ComponentWrapper,
 		data: {
+			name: 'Accordion',
 			bootstrap: 'https://getbootstrap.com/docs/%version%/components/accordion/',
 			header: NgbdAcccordionDeprecationComponent,
 		},

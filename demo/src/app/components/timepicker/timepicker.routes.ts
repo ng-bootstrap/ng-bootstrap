@@ -77,6 +77,9 @@ export const ROUTES: Routes = [
 	{
 		path: '',
 		component: ComponentWrapper,
+		data: {
+			name: 'Timepicker',
+		},
 		providers: [
 			{
 				provide: ENVIRONMENT_INITIALIZER,

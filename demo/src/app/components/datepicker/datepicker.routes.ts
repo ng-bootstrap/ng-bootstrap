@@ -129,6 +129,9 @@ export const ROUTES: Routes = [
 	{
 		path: '',
 		component: ComponentWrapper,
+		data: {
+			name: 'Datepicker',
+		},
 		providers: [
 			{
 				provide: ENVIRONMENT_INITIALIZER,

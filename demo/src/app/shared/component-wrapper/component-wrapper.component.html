@@ -41,17 +41,15 @@
 
 		<div class="col-12 col-lg-10">
 			<header class="bg-body-tertiary pt-4 pb-md-5 px-4 px-lg-5 d-flex d-md-block align-items-center title">
-				<h1 class="mb-4 me-auto me-md-none">{{ component | titlecase }}</h1>
+				<h1 class="mb-4 me-auto me-md-none">{{ componentName }}</h1>
 
 				<ul
 					ngbNav
 					[activeId]="this.activeTab"
 					class="nav-tabs px-4 px-lg-5 content-tabset justify-content-md-start justify-content-end"
 				>
-					<li [ngbNavItem]="childRoute.path" *ngFor="let childRoute of route.routeConfig!.children">
-						<a ngbNavLink [routerLink]="['.', childRoute.path]">
-							{{ childRoute.path || '' | titlecase }}
-						</a>
+					<li [ngbNavItem]="childRoute.path" *ngFor="let childRoute of childrenRouteConfig">
+						<a ngbNavLink [routerLink]="['.', childRoute.path]"> {{ childRoute.path || '' | titlecase }}</a>
 					</li>
 
 					<li
@@ -84,16 +82,16 @@
 							<ng-template #divider>
 								<div class="dropdown-divider"></div>
 							</ng-template>
-							<ng-container *ngIf="bootstrapUrl$ | async as boostrapUrl">
+							<ng-container *ngIf="bootstrapUrl">
 								<div class="dropdown-divider"></div>
 								<a
 									class="dropdown-item d-flex align-items-center"
-									[href]="boostrapUrl"
+									[href]="bootstrapUrl"
 									target="_blank"
 									rel="nofollow noopener noreferrer"
 								>
 									<i class="bi bi-bootstrap-fill me-2" style="font-size: 1rem"></i>
-									{{ component | titlecase }} in Bootstrap
+									{{ componentName }} in Bootstrap
 								</a>
 							</ng-container>
 						</div>
@@ -103,7 +101,7 @@
 
 			<section class="row py-5 px-2 px-md-4 px-lg-5">
 				<div class="col-12 col-xl-9 px-md-0 pe-xl-4">
-					<ng-template [ngComponentOutlet]="(headerComponentType$ | async)!"></ng-template>
+					<ng-template [ngComponentOutlet]="headerComponentType"></ng-template>
 					<router-outlet (activate)="onActivate($event)" (deactivate)="onDeactivate()"></router-outlet>
 				</div>
 
@@ -120,17 +118,17 @@
 							>
 						</li>
 						<ng-template #divider>&nbsp;</ng-template>
-						<ng-container *ngIf="bootstrapUrl$ | async as boostrapUrl">
+						<ng-container *ngIf="bootstrapUrl">
 							<li class="nav-item">
 								<a
 									class="nav-link mt-3 mx-3 border-top pt-4 px-0 d-flex align-items-center"
-									[href]="boostrapUrl"
+									[href]="bootstrapUrl"
 									target="_blank"
 									rel="nofollow noopener noreferrer"
-									[attr.title]="'See ' + component + ' component on getbootstrap.com'"
+									[attr.title]="'See ' + componentName + ' component on getbootstrap.com'"
 								>
 									<i class="bi bi-bootstrap-fill me-2" style="font-size: 1rem"></i>
-									{{ component | titlecase }} in Bootstrap
+									{{ componentName }} in Bootstrap
 								</a>
 							</li>
 						</ng-container>

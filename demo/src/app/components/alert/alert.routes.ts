@@ -50,7 +50,10 @@ export const ROUTES: Routes = [
 	{
 		path: '',
 		component: ComponentWrapper,
-		data: { bootstrap: 'https://getbootstrap.com/docs/%version%/components/alerts/' },
+		data: {
+			name: 'Alert',
+			bootstrap: 'https://getbootstrap.com/docs/%version%/components/alerts/',
+		},
 		providers: [
 			{
 				provide: ENVIRONMENT_INITIALIZER,
