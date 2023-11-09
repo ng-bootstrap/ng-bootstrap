@@ -1,8 +1,8 @@
 import { Component, inject, NgZone } from '@angular/core';
-import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
 
 import { NgbdApiPage } from '../api-page/api-page.component';
-import { NgbdExamplesPage } from '../examples-page/examples.component';
+import { DemoListComponent } from '../examples-page/demo-list.component';
 import { LIB_VERSIONS } from '../../tokens';
 import { SideNavComponent } from '../side-nav/side-nav.component';
 import { AsyncPipe, NgComponentOutlet, NgFor, NgIf, TitleCasePipe } from '@angular/common';
@@ -13,6 +13,8 @@ import {
 	NgbScrollSpyItem,
 	NgbScrollSpyService,
 } from '@ng-bootstrap/ng-bootstrap';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { filter, map } from 'rxjs/operators';
 
 export type TableOfContents = { fragment: string; title: string }[];
 
@@ -39,7 +41,7 @@ export class ComponentWrapper {
 	private route = inject(ActivatedRoute);
 
 	componentName = this.route.snapshot.data.name;
-	activeTab = this.route.firstChild!.routeConfig?.path!;
+	activeTab: string;
 	headerComponentType = this.route.snapshot.data.header;
 	bootstrapUrl = this.route.snapshot.data.bootstrap?.replace('%version%', inject(LIB_VERSIONS).bootstrap);
 	childrenRouteConfig = this.route.routeConfig!.children!;
@@ -52,6 +54,16 @@ export class ComponentWrapper {
 	tableOfContents: TableOfContents = [];
 
 	constructor() {
+		inject(Router)
+			.events.pipe(
+				takeUntilDestroyed(),
+				filter((event) => event instanceof NavigationEnd),
+				map(() => this.route.snapshot.firstChild!.url[0].path!),
+			)
+			.subscribe((url) => {
+				this.activeTab = url;
+			});
+
 		// information extracted from https://getbootstrap.com/docs/4.1/layout/overview/
 		// TODO: we should implements our own mediamatcher, according to bootstrap layout.
 		const zone = inject(NgZone);
@@ -66,7 +78,7 @@ export class ComponentWrapper {
 		largeScreenQL.addListener((event) => zone.run(() => (this.isLargeScreenOrLess = event.matches)));
 	}
 
-	onActivate(component: NgbdExamplesPage | NgbdApiPage | any) {
+	onActivate(component: DemoListComponent | NgbdApiPage | any) {
 		setTimeout(() => {
 			const getLinks = (typeCollection: string[]) => {
 				return typeCollection.map((item) => ({
@@ -75,13 +87,11 @@ export class ComponentWrapper {
 				}));
 			};
 			this.tableOfContents = [];
-			if (component instanceof NgbdExamplesPage) {
-				this.tableOfContents = component.demos.map((demo) => {
-					return {
-						fragment: demo.id,
-						title: demo.title,
-					};
-				});
+			if (component instanceof DemoListComponent) {
+				this.tableOfContents = component.demos.map((demo) => ({
+					fragment: demo.fragment,
+					title: demo.title,
+				}));
 			} else if (component instanceof NgbdApiPage) {
 				let toc = getLinks(component.components);
 
@@ -98,7 +108,10 @@ export class ComponentWrapper {
 				this.tableOfContents = toc;
 			} /* Overview */ else {
 				// TODO: maybe we should also have an abstract class to test instanceof
-				this.tableOfContents = Object.values(component.sections).map((section) => section) as TableOfContents;
+				this.tableOfContents = Object.keys(component.overview).map((key: any) => ({
+					fragment: key,
+					title: component.overview[key],
+				}));
 			}
 
 			this.scrollSpy.start({

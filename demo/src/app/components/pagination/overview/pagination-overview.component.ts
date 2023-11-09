@@ -1,23 +1,23 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { Snippet } from '../../../services/snippet';
-import { NgbdDemoListService } from '../../../services/demo-list.service';
 import { CodeComponent } from '../../../shared/code.component';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdApiDocsBadge } from '../../../shared/api-docs';
 import { RouterLink } from '@angular/router';
-import { NgbdOverviewSectionComponent } from '../../../shared/overview/overview-section.component';
-import { NgbdOverview } from '../../../shared/overview/overview';
+import { PageHeaderComponent } from '../../../shared/page-header.component';
 
 @Component({
 	selector: 'ngbd-pagination-overview',
 	standalone: true,
-	imports: [NgbdOverviewSectionComponent, CodeComponent, NgbAlertModule, NgbdApiDocsBadge, RouterLink],
+	imports: [CodeComponent, NgbAlertModule, NgbdApiDocsBadge, RouterLink, PageHeaderComponent],
 	templateUrl: './pagination-overview.component.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	host: { '[class.overview]': 'true' },
 })
 export class NgbdPaginationOverviewComponent {
+	@Input() overview: { fragment: string; title: string };
+
 	NGFOR = Snippet({
 		lang: 'html',
 		code: `
@@ -79,10 +79,4 @@ export class NgbdPaginationOverviewComponent {
       </ngb-pagination>
     `,
 	});
-
-	sections: NgbdOverview = {};
-
-	constructor(demoList: NgbdDemoListService) {
-		this.sections = demoList.getOverviewSections('pagination');
-	}
 }

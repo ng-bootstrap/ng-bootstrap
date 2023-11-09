@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { ComponentWrapper } from '../../shared/component-wrapper/component-wrapper.component';
-import { NgbdExamplesPage } from '../../shared/examples-page/examples.component';
+import { DemoListComponent } from '../../shared/examples-page/demo-list.component';
 import { NgbdTableBasic } from './demos/basic/table-basic';
 import { NgbdTableComplete } from './demos/complete/table-complete';
 import { NgbdTableFiltering } from './demos/filtering/table-filtering';
@@ -8,16 +8,15 @@ import { NgbdTablePagination } from './demos/pagination/table-pagination';
 import { NgbdTableSortable } from './demos/sortable/table-sortable';
 import { NgbdTableOverviewComponent } from './overview/table-overview.component';
 import { Routes } from '@angular/router';
-import { ENVIRONMENT_INITIALIZER, inject } from '@angular/core';
-import { NgbdDemoListService } from '../../services/demo-list.service';
 
 const OVERVIEW = {
 	'why-not': 'Why not?',
 	examples: 'Code examples',
 };
 
-const DEMOS = {
-	basic: {
+const DEMOS = [
+	{
+		fragment: 'basic',
 		title: 'Basic table',
 		type: NgbdTableBasic,
 		files: [
@@ -31,7 +30,8 @@ const DEMOS = {
 			},
 		],
 	},
-	sortable: {
+	{
+		fragment: 'sortable',
 		title: 'Sortable table',
 		type: NgbdTableSortable,
 		files: [
@@ -45,7 +45,8 @@ const DEMOS = {
 			},
 		],
 	},
-	filtering: {
+	{
+		fragment: 'filtering',
 		title: 'Search and filtering',
 		type: NgbdTableFiltering,
 		files: [
@@ -59,7 +60,8 @@ const DEMOS = {
 			},
 		],
 	},
-	pagination: {
+	{
+		fragment: 'pagination',
 		title: 'Pagination',
 		type: NgbdTablePagination,
 		files: [
@@ -73,7 +75,8 @@ const DEMOS = {
 			},
 		],
 	},
-	complete: {
+	{
+		fragment: 'complete',
 		title: 'Complete example',
 		type: NgbdTableComplete,
 		files: [
@@ -103,7 +106,7 @@ const DEMOS = {
 			},
 		],
 	},
-};
+];
 
 export const ROUTES: Routes = [
 	{ path: '', pathMatch: 'full', redirectTo: 'overview' },
@@ -113,16 +116,17 @@ export const ROUTES: Routes = [
 		data: {
 			name: 'Table',
 		},
-		providers: [
-			{
-				provide: ENVIRONMENT_INITIALIZER,
-				multi: true,
-				useValue: () => inject(NgbdDemoListService).register('table', DEMOS, OVERVIEW),
-			},
-		],
 		children: [
-			{ path: 'overview', component: NgbdTableOverviewComponent },
-			{ path: 'examples', component: NgbdExamplesPage },
+			{
+				path: 'overview',
+				component: NgbdTableOverviewComponent,
+				data: { overview: OVERVIEW },
+			},
+			{
+				path: 'examples',
+				component: DemoListComponent,
+				data: { demos: DEMOS },
+			},
 		],
 	},
 ];

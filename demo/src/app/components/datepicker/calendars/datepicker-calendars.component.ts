@@ -2,7 +2,7 @@
 import { Component } from '@angular/core';
 
 import { Snippet } from '../../../services/snippet';
-import { NgbdExamplesPage } from '../../../shared/examples-page/examples.component';
+import { DemoListComponent } from '../../../shared/examples-page/demo-list.component';
 import { NgbdDatepickerHebrew } from '../demos/hebrew/datepicker-hebrew';
 import { NgbdDatepickerIslamiccivil } from '../demos/islamiccivil/datepicker-islamiccivil';
 import { NgbdDatepickerIslamicumalqura } from '../demos/islamicumalqura/datepicker-islamicumalqura';
@@ -13,37 +13,37 @@ import { CodeComponent } from '../../../shared/code.component';
 import { NgbdWidgetDemoComponent } from '../../../shared/examples-page/demo.component';
 import { NgComponentOutlet, NgFor } from '@angular/common';
 
-const DEMOS = [
+export const DEMOS = [
 	{
-		id: 'hebrew',
+		fragment: 'hebrew',
 		title: 'Hebrew',
 		type: NgbdDatepickerHebrew,
 		code: 'datepicker/demos/hebrew/datepicker-hebrew.ts',
 		markup: 'datepicker/demos/hebrew/datepicker-hebrew.html',
 	},
 	{
-		id: 'jalali',
+		fragment: 'jalali',
 		title: 'Jalali',
 		type: NgbdDatepickerJalali,
 		code: 'datepicker/demos/jalali/datepicker-jalali.ts',
 		markup: 'datepicker/demos/jalali/datepicker-jalali.html',
 	},
 	{
-		id: 'islamiccivil',
+		fragment: 'islamiccivil',
 		title: 'Islamic Civil',
 		type: NgbdDatepickerIslamiccivil,
 		code: 'datepicker/demos/islamiccivil/datepicker-islamiccivil.ts',
 		markup: 'datepicker/demos/islamiccivil/datepicker-islamiccivil.html',
 	},
 	{
-		id: 'islamicumalqura',
+		fragment: 'islamicumalqura',
 		title: 'Islamic Umm al-Qura',
 		type: NgbdDatepickerIslamicumalqura,
 		code: 'datepicker/demos/islamicumalqura/datepicker-islamicumalqura.ts',
 		markup: 'datepicker/demos/islamicumalqura/datepicker-islamicumalqura.html',
 	},
 	{
-		id: 'buddhist',
+		fragment: 'buddhist',
 		title: 'Buddhist',
 		type: NgbdDatepickerBuddhist,
 		code: 'datepicker/demos/buddhist/datepicker-buddhist.ts',
@@ -92,7 +92,7 @@ const DEMOS = [
 
 		<ngbd-widget-demo
 			*ngFor="let demo of demos"
-			[id]="demo.id"
+			[fragment]="demo.fragment"
 			[demoTitle]="demo.title"
 			[code]="demo.code"
 			[markup]="demo.markup"
@@ -102,9 +102,7 @@ const DEMOS = [
 		</ngbd-widget-demo>
 	`,
 })
-export class NgbdDatepickerCalendarsComponent extends NgbdExamplesPage {
-	demos = DEMOS;
-
+export class NgbdDatepickerCalendarsComponent extends DemoListComponent {
 	snippets = {
 		calendars: Snippet({
 			lang: 'typescript',

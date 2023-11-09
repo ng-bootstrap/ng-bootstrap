@@ -1,6 +1,6 @@
 <div class="component-demo">
-	<h2 [id]="id">
-		<a routerLink="." [fragment]="id" class="title-fragment" title="Anchor link to demo: {{ id }}">
+	<h2 [id]="fragment">
+		<a routerLink="." [fragment]="fragment" class="title-fragment" title="Anchor link to demo: {{ fragment }}">
 			<i class="bi bi-link-45deg" style="font-size: 1.75rem; color: var(--bs-heading-color)"></i>
 		</a>
 		<span>{{ demoTitle }}</span>
@@ -23,7 +23,7 @@
 			(click)="trackStackBlitzClick()"
 			class="stackblitz btn-sm btn btn-outline-secondary"
 			target="_blank"
-			href="stackblitzes/{{ component }}/{{ id }}/stackblitz.html"
+			href="stackblitzes/{{ component }}/{{ fragment }}/stackblitz.html"
 			title="Edit in StackBlitz"
 		>
 			<img class="stackblitz-icon" src="img/stackblitz-icon.svg" alt="StackBlitz icon" />
@@ -50,15 +50,15 @@
 				</ng-template>
 
 				<ng-template #old>
-					<li ngbNavItem="{{ component }}-{{ id }}-html">
+					<li ngbNavItem="{{ component }}-{{ fragment }}-html">
 						<a ngbNavLink>
-							<span class="ms-2">{{ component }}-{{ id }}.html</span>
+							<span class="ms-2">{{ component }}-{{ fragment }}.html</span>
 						</a>
 						<ngbd-code *ngbNavContent [snippet]="markupSnippet"></ngbd-code>
 					</li>
-					<li ngbNavItem="{{ component }}-{{ id }}-typescript">
+					<li ngbNavItem="{{ component }}-{{ fragment }}-typescript">
 						<a ngbNavLink>
-							<span class="ms-2">{{ component }}-{{ id }}.ts</span>
+							<span class="ms-2">{{ component }}-{{ fragment }}.ts</span>
 						</a>
 						<ngbd-code *ngbNavContent [snippet]="codeSnippet"></ngbd-code>
 					</li>

@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { NgbdOverviewSection } from '../overview/overview';
 
 @Component({
 	selector: 'ngbd-page-header',
@@ -17,9 +16,10 @@ import { NgbdOverviewSection } from '../overview/overview';
 			</a>
 			{{ title }}
 		</h2>
+		<ng-content></ng-content>
 	`,
 })
-export class NgbdPageHeaderComponent implements NgbdOverviewSection {
-	@Input() title: string;
+export class PageHeaderComponent {
 	@Input() fragment: string;
+	@Input() title: string;
 }

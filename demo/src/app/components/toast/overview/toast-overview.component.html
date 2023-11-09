@@ -3,7 +3,7 @@
 	Goal is to mimic the push notifications available both on mobile and desktop operating systems.
 </p>
 
-<ngbd-overview-section [section]="sections['inline-usage']">
+<ngbd-page-header fragment="inline-usage" [title]="overview['inline-usage']">
 	<p>
 		<a [routerLink]="['..', 'api']" fragment="NgbToast">NgbToast</a> component allows you to only render the
 		corresponding markup. Use it in one of your templates, and you are done. It will render a toast.
@@ -25,9 +25,9 @@
 		application environment.
 	</p>
 	<ngbd-code [snippet]="TOAST_INLINE_LIFECYCLE"></ngbd-code>
-</ngbd-overview-section>
+</ngbd-page-header>
 
-<ngbd-overview-section [section]="sections['toast-service']">
+<ngbd-page-header fragment="toast-service" [title]="overview['toast-service']">
 	<p>Let's take the opportunity to demonstrate how to simply build a global toast management service.</p>
 	<ngb-alert [dismissible]="false" type="secondary">
 		<strong>TLDR;</strong>
@@ -130,4 +130,4 @@
 		Click <a [routerLink]="['..', 'examples']" fragment="howto-global" title="Toast management service">here</a> to see
 		an example a bit more advanced of this how-to.
 	</p>
-</ngbd-overview-section>
+</ngbd-page-header>

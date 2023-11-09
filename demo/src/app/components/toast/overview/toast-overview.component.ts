@@ -1,24 +1,23 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
 
 import { Snippet } from '../../../services/snippet';
-import { NgbdDemoListService } from '../../../services/demo-list.service';
 import { LIB_VERSIONS } from '../../../tokens';
 import { RouterLink } from '@angular/router';
 import { CodeComponent } from '../../../shared/code.component';
 import { NgbAlertModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgbdOverviewSectionComponent } from '../../../shared/overview/overview-section.component';
-import { NgbdOverview } from '../../../shared/overview/overview';
+import { PageHeaderComponent } from '../../../shared/page-header.component';
 
 @Component({
 	selector: 'ngbd-toast-overview',
 	standalone: true,
-	imports: [NgbAlertModule, NgbNavModule, NgbdOverviewSectionComponent, RouterLink, CodeComponent],
+	imports: [NgbAlertModule, NgbNavModule, RouterLink, CodeComponent, PageHeaderComponent],
 	templateUrl: './toast-overview.component.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	host: { '[class.overview]': 'true' },
 })
 export class NgbdToastOverviewComponent {
 	bootstrapVersion = inject(LIB_VERSIONS).bootstrap;
+	@Input() overview: { fragment: string; title: string };
 
 	TOAST_INLINE_BASIC = Snippet({
 		lang: 'html',
@@ -111,10 +110,4 @@ export class NgbdToastOverviewComponent {
       <!-- somewhere in your root component template -->
       <app-toasts aria-live="polite" aria-atomic="true"></app-toasts>`,
 	});
-
-	sections: NgbdOverview = {};
-
-	constructor(demoList: NgbdDemoListService) {
-		this.sections = demoList.getOverviewSections('toast');
-	}
 }

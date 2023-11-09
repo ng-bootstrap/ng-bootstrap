@@ -3,7 +3,7 @@
 	to split your data collection into pages yourself.
 </p>
 
-<ngbd-overview-section [section]="sections['basic-usage']">
+<ngbd-page-header fragment="basic-usage" [title]="overview['basic-usage']">
 	<p>
 		In order to properly operate a pagination behaviour, there are 3 important notions you have to be familiar with,
 		which are actually available as <code>&#64;Input()</code> on the widget:
@@ -43,9 +43,9 @@
 		>, you don't need to reimplement dedicated pipes for that purpose. Recommendation is to move filtering and sorting
 		logic into the component itself where some property getters could be exposed.
 	</p>
-</ngbd-overview-section>
+</ngbd-page-header>
 
-<ngbd-overview-section [section]="sections['customization']">
+<ngbd-page-header fragment="customization" [title]="overview['customization']">
 	<p>
 		It is possible to customize what exactly is displayed in each pagination link and there are several ways of doing
 		it.
@@ -89,4 +89,4 @@
 	<ngbd-code [snippet]="CUSTOM_TPL_PAGES"></ngbd-code>
 
 	<p>Also see the <a routerLink="../examples" fragment="customization">Customization example</a> for a live version.</p>
-</ngbd-overview-section>
+</ngbd-page-header>

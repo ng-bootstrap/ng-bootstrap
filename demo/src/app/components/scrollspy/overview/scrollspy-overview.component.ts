@@ -1,29 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { Snippet } from '../../../services/snippet';
-import { NgbdDemoListService } from '../../../services/demo-list.service';
 import { NgbAlertModule, NgbScrollSpyModule } from '@ng-bootstrap/ng-bootstrap';
 import { CodeComponent } from '../../../shared/code.component';
 import { RouterLink } from '@angular/router';
 import { NgbdApiDocsBadge } from '../../../shared/api-docs';
-import { NgbdOverviewSectionComponent } from '../../../shared/overview/overview-section.component';
-import { NgbdOverview } from '../../../shared/overview/overview';
+import { PageHeaderComponent } from '../../../shared/page-header.component';
 
 @Component({
 	selector: 'ngbd-scrollspy-overview',
 	standalone: true,
-	imports: [
-		NgbAlertModule,
-		NgbScrollSpyModule,
-		NgbdOverviewSectionComponent,
-		CodeComponent,
-		RouterLink,
-		NgbdApiDocsBadge,
-	],
+	imports: [NgbAlertModule, NgbScrollSpyModule, CodeComponent, RouterLink, NgbdApiDocsBadge, PageHeaderComponent],
 	templateUrl: './scrollspy-overview.component.html',
 	host: { '[class.overview]': 'true' },
 })
 export class NgbdScrollSpyOverviewComponent {
+	@Input() overview: { fragment: string; title: string };
+
 	SERVICE = Snippet({
 		lang: 'ts',
 		code: `
@@ -120,10 +113,4 @@ export class NgbdScrollSpyOverviewComponent {
       <pre>{{ spy.active }}</pre> // 'one'
     `,
 	});
-
-	sections: NgbdOverview = {};
-
-	constructor(demoList: NgbdDemoListService) {
-		this.sections = demoList.getOverviewSections('scrollspy');
-	}
 }

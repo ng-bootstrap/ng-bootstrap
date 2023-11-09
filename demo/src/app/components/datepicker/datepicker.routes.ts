@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { ENVIRONMENT_INITIALIZER, inject } from '@angular/core';
 import { ComponentWrapper } from '../../shared/component-wrapper/component-wrapper.component';
-import { NgbdDemoListService } from '../../services/demo-list.service';
 import { NgbdApiPage } from '../../shared/api-page/api-page.component';
-import { NgbdExamplesPage } from '../../shared/examples-page/examples.component';
+import { DemoListComponent } from '../../shared/examples-page/demo-list.component';
 import { NgbdDatepickerCalendarsComponent } from './calendars/datepicker-calendars.component';
 import { NgbdDatepickerAdapter } from './demos/adapter/datepicker-adapter';
 import { NgbdDatepickerBasic } from './demos/basic/datepicker-basic';
@@ -21,6 +19,7 @@ import { NgbdDatepickerOverviewComponent } from './overview/datepicker-overview.
 import { NgbdDatepickerPositiontarget } from './demos/positiontarget/datepicker-positiontarget';
 import { NgbdDatepickerKeyboard } from './demos/keyboard/datepicker-keyboard';
 import { Routes } from '@angular/router';
+import { DEMOS as CALENDAR_DEMOS } from './calendars/datepicker-calendars.component';
 
 const OVERVIEW = {
 	'basic-usage': 'Basic Usage',
@@ -37,92 +36,106 @@ const OVERVIEW = {
 	'keyboard-shortcuts': 'Keyboard shortcuts',
 };
 
-const DEMOS = {
-	basic: {
+const DEMOS = [
+	{
+		fragment: 'basic',
 		title: 'Basic datepicker',
 		type: NgbdDatepickerBasic,
 		code: 'datepicker/demos/basic/datepicker-basic.ts',
 		markup: 'datepicker/demos/basic/datepicker-basic.html',
 	},
-	popup: {
+	{
+		fragment: 'popup',
 		title: 'Datepicker in a popup',
 		type: NgbdDatepickerPopup,
 		code: 'datepicker/demos/popup/datepicker-popup.ts',
 		markup: 'datepicker/demos/popup/datepicker-popup.html',
 	},
-	multiple: {
+	{
+		fragment: 'multiple',
 		title: 'Multiple months',
 		type: NgbdDatepickerMultiple,
 		code: 'datepicker/demos/multiple/datepicker-multiple.ts',
 		markup: 'datepicker/demos/multiple/datepicker-multiple.html',
 	},
-	range: {
+	{
+		fragment: 'range',
 		title: 'Range selection',
 		type: NgbdDatepickerRange,
 		code: 'datepicker/demos/range/datepicker-range.ts',
 		markup: 'datepicker/demos/range/datepicker-range.html',
 	},
-	'range-popup': {
+	{
+		fragment: 'range-popup',
 		title: 'Range selection in a popup',
 		type: NgbdDatepickerRangePopup,
 		code: 'datepicker/demos/range-popup/datepicker-range-popup.ts',
 		markup: 'datepicker/demos/range-popup/datepicker-range-popup.html',
 	},
-	disabled: {
+	{
+		fragment: 'disabled',
 		title: 'Disabled datepicker',
 		type: NgbdDatepickerDisabled,
 		code: 'datepicker/demos/disabled/datepicker-disabled.ts',
 		markup: 'datepicker/demos/disabled/datepicker-disabled.html',
 	},
-	adapter: {
+	{
+		fragment: 'adapter',
 		title: 'Custom date adapter and formatter',
 		type: NgbdDatepickerAdapter,
 		code: 'datepicker/demos/adapter/datepicker-adapter.ts',
 		markup: 'datepicker/demos/adapter/datepicker-adapter.html',
 	},
-	i18n: {
+	{
+		fragment: 'i18n',
 		title: 'Internationalization of datepickers',
 		type: NgbdDatepickerI18n,
 		code: 'datepicker/demos/i18n/datepicker-i18n.ts',
 		markup: 'datepicker/demos/i18n/datepicker-i18n.html',
 	},
-	customday: {
+	{
+		fragment: 'customday',
 		title: 'Custom day view',
 		type: NgbdDatepickerCustomday,
 		code: 'datepicker/demos/customday/datepicker-customday.ts',
 		markup: 'datepicker/demos/customday/datepicker-customday.html',
 	},
-	custommonth: {
+	{
+		fragment: 'custommonth',
 		title: 'Custom month layout',
 		type: NgbdDatepickerCustommonth,
 		code: 'datepicker/demos/custommonth/datepicker-custommonth.ts',
 		markup: 'datepicker/demos/custommonth/datepicker-custommonth.html',
 	},
-	footertemplate: {
+	{
+		fragment: 'footertemplate',
 		title: 'Footer template',
 		type: NgbdDatepickerFootertemplate,
 		code: 'datepicker/demos/footertemplate/datepicker-footertemplate.ts',
 		markup: 'datepicker/demos/footertemplate/datepicker-footertemplate.html',
 	},
-	positiontarget: {
+	{
+		fragment: 'positiontarget',
 		title: 'Position target',
 		type: NgbdDatepickerPositiontarget,
 		code: 'datepicker/demos/positiontarget/datepicker-positiontarget.ts',
 		markup: 'datepicker/demos/positiontarget/datepicker-positiontarget.html',
 	},
-	keyboard: {
+	{
+		fragment: 'keyboard',
 		title: 'Custom keyboard navigation',
 		type: NgbdDatepickerKeyboard,
 		code: 'datepicker/demos/keyboard/datepicker-keyboard.ts',
 		markup: 'datepicker/demos/keyboard/datepicker-keyboard.html',
 	},
-	config: {
+	{
+		fragment: 'config',
 		title: 'Global configuration of datepickers',
 		type: NgbdDatepickerConfig,
 		code: 'datepicker/demos/config/datepicker-config.ts',
 		markup: 'datepicker/demos/config/datepicker-config.html',
 	},
-};
+];
 
 export const ROUTES: Routes = [
 	{ path: '', pathMatch: 'full', redirectTo: 'overview' },
@@ -132,17 +145,22 @@ export const ROUTES: Routes = [
 		data: {
 			name: 'Datepicker',
 		},
-		providers: [
-			{
-				provide: ENVIRONMENT_INITIALIZER,
-				multi: true,
-				useValue: () => inject(NgbdDemoListService).register('datepicker', DEMOS, OVERVIEW),
-			},
-		],
 		children: [
-			{ path: 'overview', component: NgbdDatepickerOverviewComponent },
-			{ path: 'examples', component: NgbdExamplesPage },
-			{ path: 'calendars', component: NgbdDatepickerCalendarsComponent },
+			{
+				path: 'overview',
+				component: NgbdDatepickerOverviewComponent,
+				data: { overview: OVERVIEW },
+			},
+			{
+				path: 'examples',
+				component: DemoListComponent,
+				data: { demos: DEMOS },
+			},
+			{
+				path: 'calendars',
+				component: NgbdDatepickerCalendarsComponent,
+				data: { demos: CALENDAR_DEMOS },
+			},
 			{ path: 'api', component: NgbdApiPage },
 		],
 	},

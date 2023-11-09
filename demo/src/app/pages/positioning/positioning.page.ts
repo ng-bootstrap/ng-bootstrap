@@ -4,12 +4,12 @@ import { CodeComponent } from '../../shared/code.component';
 import { NgbdPageWrapper } from '../../shared/page-wrapper/page-wrapper.component';
 import { RouterLink } from '@angular/router';
 import { NgbdApiDocsBadge } from '../../shared/api-docs';
-import { NgbdPageHeaderComponent } from '../../shared/page-wrapper/page-header.component';
+import { PageHeaderComponent } from '../../shared/page-header.component';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
 	standalone: true,
-	imports: [CodeComponent, NgbdPageWrapper, RouterLink, NgbdApiDocsBadge, NgbdPageHeaderComponent, NgbTooltipModule],
+	imports: [CodeComponent, NgbdPageWrapper, RouterLink, NgbdApiDocsBadge, PageHeaderComponent, NgbTooltipModule],
 	templateUrl: './positioning.page.html',
 })
 export class PositioningPage {

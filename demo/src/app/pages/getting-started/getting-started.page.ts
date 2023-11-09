@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Snippet } from '../../services/snippet';
 import { LIB_VERSIONS } from '../../tokens';
-import { NgbdPageHeaderComponent } from '../../shared/page-wrapper/page-header.component';
+import { PageHeaderComponent } from '../../shared/page-header.component';
 import { CodeComponent } from '../../shared/code.component';
 import { NgbdPageWrapper } from '../../shared/page-wrapper/page-wrapper.component';
 import { NgbAlertModule, NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
@@ -9,7 +9,7 @@ import { NgIf } from '@angular/common';
 
 @Component({
 	standalone: true,
-	imports: [NgbdPageHeaderComponent, CodeComponent, NgbCollapseModule, NgbAlertModule, NgIf, NgbdPageWrapper],
+	imports: [PageHeaderComponent, CodeComponent, NgbCollapseModule, NgbAlertModule, NgIf, NgbdPageWrapper],
 	templateUrl: './getting-started.page.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
