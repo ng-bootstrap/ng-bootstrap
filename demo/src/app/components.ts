@@ -1,4 +1,4 @@
-export const COMPONENT_LIST = [
+export const COMPONENTS = [
 	'Accordion',
 	'Alert',
 	'Carousel',
@@ -20,4 +20,4 @@ export const COMPONENT_LIST = [
 	'Typeahead',
 ];
 
-export const DEPRECATED_COMPONENT_LIST: string[] = [];
+export const DEPRECATED_COMPONENTS: string[] = [];

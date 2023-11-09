@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgFor } from '@angular/common';
-import { COMPONENT_LIST, DEPRECATED_COMPONENT_LIST } from '../component-list';
+import { COMPONENTS, DEPRECATED_COMPONENTS } from '../../components';
 
 @Component({
 	selector: 'ngbd-side-nav',
@@ -12,8 +12,8 @@ import { COMPONENT_LIST, DEPRECATED_COMPONENT_LIST } from '../component-list';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SideNavComponent {
-	components = COMPONENT_LIST;
-	deprecatedComponents = DEPRECATED_COMPONENT_LIST;
+	components = COMPONENTS;
+	deprecatedComponents = DEPRECATED_COMPONENTS;
 
 	constructor(private router: Router) {}
 
