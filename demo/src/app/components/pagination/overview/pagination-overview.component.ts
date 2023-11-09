@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { Snippet } from '../../../services/snippet';
 import { NgbdDemoListService } from '../../../services/demo-list.service';
-import { NgbdCodeComponent } from '../../../shared/code/code.component';
+import { CodeComponent } from '../../../shared/code.component';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdApiDocsBadge } from '../../../shared/api-docs';
 import { RouterLink } from '@angular/router';
@@ -12,7 +12,7 @@ import { NgbdOverview } from '../../../shared/overview/overview';
 @Component({
 	selector: 'ngbd-pagination-overview',
 	standalone: true,
-	imports: [NgbdOverviewSectionComponent, NgbdCodeComponent, NgbAlertModule, NgbdApiDocsBadge, RouterLink],
+	imports: [NgbdOverviewSectionComponent, CodeComponent, NgbAlertModule, NgbdApiDocsBadge, RouterLink],
 	templateUrl: './pagination-overview.component.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	host: { '[class.overview]': 'true' },

@@ -5,7 +5,7 @@ import { NgbdDemoListService } from '../../../services/demo-list.service';
 
 import { versions } from '../../../../environments/versions';
 import { NgbAlertModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgbdCodeComponent } from '../../../shared/code/code.component';
+import { CodeComponent } from '../../../shared/code.component';
 import { RouterLink } from '@angular/router';
 import { NgbdApiDocsBadge } from '../../../shared/api-docs';
 import { NgbdOverviewSectionComponent } from '../../../shared/overview/overview-section.component';
@@ -14,14 +14,7 @@ import { NgbdOverview } from '../../../shared/overview/overview';
 @Component({
 	selector: 'ngbd-nav-overview',
 	standalone: true,
-	imports: [
-		NgbNavModule,
-		NgbAlertModule,
-		NgbdOverviewSectionComponent,
-		NgbdCodeComponent,
-		RouterLink,
-		NgbdApiDocsBadge,
-	],
+	imports: [NgbNavModule, NgbAlertModule, NgbdOverviewSectionComponent, CodeComponent, RouterLink, NgbdApiDocsBadge],
 	templateUrl: './nav-overview.component.html',
 	host: { '[class.overview]': 'true' },
 })

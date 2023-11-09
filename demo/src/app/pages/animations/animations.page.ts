@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { Snippet } from '../../services/snippet';
 import { versions } from '../../../environments/versions';
-import { NgbdCodeComponent } from '../../shared/code/code.component';
+import { CodeComponent } from '../../shared/code.component';
 import { RouterLink } from '@angular/router';
 import { NgbdPageHeaderComponent } from '../../shared/page-wrapper/page-header.component';
 import { NgbdPageWrapper } from '../../shared/page-wrapper/page-wrapper.component';
 
 @Component({
 	standalone: true,
-	imports: [NgbdCodeComponent, RouterLink, NgbdPageHeaderComponent, NgbdPageWrapper],
+	imports: [CodeComponent, RouterLink, NgbdPageHeaderComponent, NgbdPageWrapper],
 	templateUrl: './animations.page.html',
 })
 export class AnimationsPage {

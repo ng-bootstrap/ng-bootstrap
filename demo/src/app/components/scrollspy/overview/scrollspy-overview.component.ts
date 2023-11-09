@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { Snippet } from '../../../services/snippet';
 import { NgbdDemoListService } from '../../../services/demo-list.service';
 import { NgbAlertModule, NgbScrollSpyModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgbdCodeComponent } from '../../../shared/code/code.component';
+import { CodeComponent } from '../../../shared/code.component';
 import { RouterLink } from '@angular/router';
 import { NgbdApiDocsBadge } from '../../../shared/api-docs';
 import { NgbdOverviewSectionComponent } from '../../../shared/overview/overview-section.component';
@@ -16,7 +16,7 @@ import { NgbdOverview } from '../../../shared/overview/overview';
 		NgbAlertModule,
 		NgbScrollSpyModule,
 		NgbdOverviewSectionComponent,
-		NgbdCodeComponent,
+		CodeComponent,
 		RouterLink,
 		NgbdApiDocsBadge,
 	],

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { Snippet } from '../../../services/snippet';
 import { NgbdDemoListService } from '../../../services/demo-list.service';
-import { NgbdCodeComponent } from '../../../shared/code/code.component';
+import { CodeComponent } from '../../../shared/code.component';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdApiDocsBadge } from '../../../shared/api-docs';
 import { RouterLink } from '@angular/router';
@@ -16,7 +16,7 @@ import { environment } from '../../../../environments/environment';
 	standalone: true,
 	imports: [
 		NgbdOverviewSectionComponent,
-		NgbdCodeComponent,
+		CodeComponent,
 		NgbAlertModule,
 		NgbdApiDocsBadge,
 		RouterLink,
