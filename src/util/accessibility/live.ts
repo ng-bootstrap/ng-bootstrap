@@ -2,12 +2,15 @@ import { inject, Injectable, InjectionToken, OnDestroy } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
 export const ARIA_LIVE_DELAY = new InjectionToken<number | null>('live announcer delay', {
-	providedIn: 'root',
 	factory: () => 100,
 });
 
-function getLiveElement(document: any, lazyCreate = false): HTMLElement | null {
-	let element = document.body.querySelector('#ngb-live') as HTMLElement;
+export const LIVE_CONTAINER = new InjectionToken<HTMLElement | null>('live container', {
+	factory: () => null,
+});
+
+function getLiveElement(document: any, container: HTMLElement, lazyCreate = false): HTMLElement | null {
+	let element = container.querySelector('#ngb-live') as HTMLElement;
 
 	if (element == null && lazyCreate) {
 		element = document.createElement('div');
@@ -16,21 +19,20 @@ function getLiveElement(document: any, lazyCreate = false): HTMLElement | null {
 		element.setAttribute('aria-live', 'polite');
 		element.setAttribute('aria-atomic', 'true');
 
-		element.classList.add('visually-hidden');
-
-		document.body.appendChild(element);
+		container.appendChild(element);
 	}
 
 	return element;
 }
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class Live implements OnDestroy {
 	private _document = inject(DOCUMENT);
 	private _delay = inject(ARIA_LIVE_DELAY);
+	private _container = inject(LIVE_CONTAINER) || this._document.body;
 
 	ngOnDestroy() {
-		const element = getLiveElement(this._document);
+		const element = getLiveElement(this._document, this._container);
 		if (element) {
 			// if exists, it will always be attached to the <body>
 			element.parentElement!.removeChild(element);
@@ -38,7 +40,7 @@ export class Live implements OnDestroy {
 	}
 
 	say(message: string) {
-		const element = getLiveElement(this._document, true);
+		const element = getLiveElement(this._document, this._container, true);
 		const delay = this._delay;
 
 		if (element != null) {
