@@ -19,6 +19,8 @@ function getLiveElement(document: any, container: HTMLElement, lazyCreate = fals
 		element.setAttribute('aria-live', 'polite');
 		element.setAttribute('aria-atomic', 'true');
 
+		element.classList.add('visually-hidden');
+
 		container.appendChild(element);
 	}
 
@@ -34,7 +36,7 @@ export class Live implements OnDestroy {
 	ngOnDestroy() {
 		const element = getLiveElement(this._document, this._container);
 		if (element) {
-			// if exists, it will always be attached to the <body>
+			// if exists, it will always be attached to either the <body> or the overriding container provided through the LIVE_CONTAINER DI token
 			element.parentElement!.removeChild(element);
 		}
 	}

@@ -8,7 +8,7 @@ import { debounceTime, filter, map } from 'rxjs/operators';
 
 import { createGenericTestComponent, triggerEvent } from '../test/common';
 import { expectResults, getWindowLinks } from '../test/typeahead/common';
-import { ARIA_LIVE_DELAY } from '../util/accessibility/live';
+import { ARIA_LIVE_DELAY, Live } from '../util/accessibility/live';
 import { NgbTypeahead } from './typeahead';
 import { NgbTypeaheadConfig } from './typeahead-config';
 import { NgbHighlight } from './highlight';
@@ -63,9 +63,23 @@ function expectWindowResults(element, expectedResults: string[]) {
 }
 
 describe('ngb-typeahead', () => {
+	let mockLiveService: Partial<Live>;
+
 	beforeEach(() => {
-		TestBed.configureTestingModule({
-			providers: [{ provide: ARIA_LIVE_DELAY, useValue: null }],
+		mockLiveService = {
+			say: createSpy('say'),
+		};
+
+		TestBed.overrideDirective(NgbTypeahead, {
+			remove: {
+				providers: [Live],
+			},
+			add: {
+				providers: [
+					{ provide: ARIA_LIVE_DELAY, useValue: null },
+					{ provide: Live, useValue: mockLiveService },
+				],
+			},
 		});
 	});
 
@@ -838,6 +852,41 @@ describe('ngb-typeahead', () => {
 			expect(input.getAttribute('aria-owns')).toBeNull();
 			expect(input.getAttribute('aria-activedescendant')).toBeNull();
 		}));
+
+		describe('live', () => {
+			let fixture: ComponentFixture<TestComponent>;
+			let compiled: any;
+
+			beforeEach(() => {
+				fixture = createTestComponent(`<input type="text" [(ngModel)]="model" [ngbTypeahead]="find"/>`);
+				compiled = fixture.nativeElement;
+			});
+
+			it('should call the method with the correct message when there is more than one result', fakeAsync(() => {
+				tick();
+				changeInput(compiled, 'o');
+				fixture.detectChanges();
+
+				expectWindowResults(compiled, ['+one', 'one more']);
+				expect(mockLiveService.say).toHaveBeenCalledWith('2 results available');
+			}));
+
+			it('should call the method with the correct message when there is not any result available', fakeAsync(() => {
+				tick();
+				changeInput(compiled, 'a');
+				fixture.detectChanges();
+
+				expect(mockLiveService.say).toHaveBeenCalledWith('No results available');
+			}));
+
+			it('should call the method with the correct message when there is one single result available', fakeAsync(() => {
+				tick();
+				changeInput(compiled, 'one more');
+				fixture.detectChanges();
+
+				expect(mockLiveService.say).toHaveBeenCalledWith('1 result available');
+			}));
+		});
 	});
 
 	describe('hint', () => {
