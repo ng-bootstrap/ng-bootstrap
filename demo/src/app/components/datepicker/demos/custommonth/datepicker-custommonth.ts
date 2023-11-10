@@ -10,7 +10,7 @@ import { NgFor } from '@angular/common';
 	encapsulation: ViewEncapsulation.None,
 	styles: [
 		`
-			.ngb-dp-header {
+			.no-header-padding .ngb-dp-header {
 				padding: 0;
 			}
 			.custom-month-grid {
