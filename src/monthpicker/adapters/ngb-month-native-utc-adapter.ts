@@ -4,8 +4,6 @@ import { NgbMonthNativeAdapter } from './ngb-month-native-adapter';
 
 /**
  * Same as [`NgbMonthNativeAdapter`](#/components/monthpicker/api#NgbMonthNativeAdapter), but with UTC dates.
- *
- * @since 3.2.0
  */
 @Injectable()
 export class NgbMonthNativeUTCAdapter extends NgbMonthNativeAdapter {

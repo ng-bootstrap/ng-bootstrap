@@ -120,6 +120,8 @@ export {
 	NgbMonthpickerNavigateEvent,
 	NgbMonthpickerState,
 	NgbMonthStruct,
+	NgbInputMonthpickerConfig,
+	NgbMonthNativeAdapter,
 } from './monthpicker/monthpicker.module';
 export {
 	NgbNavChangeEvent,

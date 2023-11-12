@@ -5,12 +5,10 @@ import { PlacementArray } from '../util/positioning';
 import { Options } from '@popperjs/core';
 
 /**
- * A configuration service for the [`NgbDatepickerInput`](#/components/datepicker/api#NgbDatepicker) component.
+ * A configuration service for the [`NgbMonthpickerInput`](#/components/monthpicker/api#NgbMonthpicker) component.
  *
  * You can inject this service, typically in your root component, and customize the values of its properties in
- * order to provide default values for all the datepicker inputs used in the application.
- *
- * @since 5.2.0
+ * order to provide default values for all the monthpicker inputs used in the application.
  */
 @Injectable({ providedIn: 'root' })
 export class NgbInputMonthpickerConfig extends NgbMonthpickerConfig {

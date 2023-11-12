@@ -30,7 +30,7 @@ function getDay(element: HTMLElement, index: number): HTMLElement {
 	return getDates(element)[index].querySelector('div') as HTMLElement;
 }
 
-function getDatepicker(element: HTMLElement): HTMLElement {
+function getMonthpicker(element: HTMLElement): HTMLElement {
 	return element.querySelector('ngb-monthpicker') as HTMLElement;
 }
 
@@ -722,11 +722,11 @@ describe('ngb-monthpicker', () => {
 
 	it('should insert an embedded view for footer when `footerTemplate` provided', () => {
 		const fixture = createTestComponent(`<ngb-monthpicker #dp [footerTemplate]="footerTemplate"></ngb-monthpicker>
-      <ng-template #footerTemplate><span id="myDatepickerFooter">My footer</span></ng-template>`);
+      <ng-template #footerTemplate><span id="myMonthpickerFooter">My footer</span></ng-template>`);
 
 		fixture.detectChanges();
 
-		expect(fixture.nativeElement.querySelector('#myDatepickerFooter')).not.toBeNull();
+		expect(fixture.nativeElement.querySelector('#myMonthpickerFooter')).not.toBeNull();
 	});
 
 	describe('ngModel', () => {
@@ -871,7 +871,7 @@ describe('ngb-monthpicker', () => {
 			expect(links[1].hasAttribute('disabled')).toBeTruthy();
 			expect(getYearSelect(fixture.nativeElement).disabled).toBeTruthy();
 			expect(getMonthSelect(fixture.nativeElement).disabled).toBeTruthy();
-			expect(getDatepicker(fixture.nativeElement)).toHaveCssClass('disabled');
+			expect(getMonthpicker(fixture.nativeElement)).toHaveCssClass('disabled');
 		}));
 	});
 
@@ -1085,15 +1085,15 @@ describe('ngb-monthpicker', () => {
 			fixture.detectChanges();
 			tick();
 			fixture.detectChanges();
-			expect(getDatepicker(compiled)).toHaveCssClass('ng-invalid');
-			expect(getDatepicker(compiled)).not.toHaveCssClass('ng-valid');
+			expect(getMonthpicker(compiled)).toHaveCssClass('ng-invalid');
+			expect(getMonthpicker(compiled)).not.toHaveCssClass('ng-valid');
 
 			fixture.componentInstance.model = { year: 2016, month: 8 };
 			fixture.detectChanges();
 			tick();
 			fixture.detectChanges();
-			expect(getDatepicker(compiled)).toHaveCssClass('ng-valid');
-			expect(getDatepicker(compiled)).not.toHaveCssClass('ng-invalid');
+			expect(getMonthpicker(compiled)).toHaveCssClass('ng-valid');
+			expect(getMonthpicker(compiled)).not.toHaveCssClass('ng-invalid');
 		}));
 
 		it('should work with model-driven form validation', () => {
@@ -1107,13 +1107,13 @@ describe('ngb-monthpicker', () => {
 			fixture.detectChanges();
 			const dates = getDates(fixture.nativeElement);
 
-			expect(getDatepicker(compiled)).toHaveCssClass('ng-invalid');
-			expect(getDatepicker(compiled)).not.toHaveCssClass('ng-valid');
+			expect(getMonthpicker(compiled)).toHaveCssClass('ng-invalid');
+			expect(getMonthpicker(compiled)).not.toHaveCssClass('ng-valid');
 
 			dates[0].click();
 			fixture.detectChanges();
-			expect(getDatepicker(compiled)).toHaveCssClass('ng-valid');
-			expect(getDatepicker(compiled)).not.toHaveCssClass('ng-invalid');
+			expect(getMonthpicker(compiled)).toHaveCssClass('ng-valid');
+			expect(getMonthpicker(compiled)).not.toHaveCssClass('ng-invalid');
 		});
 
 		it('should be disabled with reactive forms', () => {
@@ -1131,7 +1131,7 @@ describe('ngb-monthpicker', () => {
 				expect(getDay(fixture.nativeElement, index)).toHaveCssClass('text-muted');
 			}
 			expect(fixture.nativeElement.querySelector('ngb-monthpicker').getAttribute('tabindex')).toBeFalsy();
-			expect(getDatepicker(fixture.nativeElement)).toHaveCssClass('disabled');
+			expect(getMonthpicker(fixture.nativeElement)).toHaveCssClass('disabled');
 		});
 
 		it('should not change again the value in the model on a change coming from the model (template-driven form)', () => {

@@ -238,7 +238,7 @@ describe('ngb-monthpicker integration', () => {
 				set: {
 					template: `
             <ngb-monthpicker [startDate]="{year: 2018, month: 1}" [displayMonths]="1">
-              <ng-template ngbDatepickerContent>
+              <ng-template ngbMonthpickerContent>
                 <ngb-monthpicker-month [month]="{year: 2018, month: 1}"></ngb-monthpicker-month>
               </ng-template>
             </ngb-monthpicker>`,

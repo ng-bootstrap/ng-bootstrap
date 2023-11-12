@@ -6,19 +6,19 @@ import { NgbdApiPage } from '../../shared/api-page/api-page.component';
 import { NgbdExamplesPage } from '../../shared/examples-page/examples.component';
 import { NgbdMonthpickerAdapter } from './demos/adapter/monthpicker-adapter';
 import { NgbdMonthpickerBasic } from './demos/basic/monthpicker-basic';
-import { NgbdDatepickerConfig } from './demos/config/datepicker-config';
+import { NgbdMonthpickerConfig } from './demos/config/monthpicker-config';
 import { NgbdMonthpickerDisabled } from './demos/disabled/monthpicker-disabled';
 import { NgbdMonthpickerFootertemplate } from './demos/footertemplate/monthpicker-footertemplate';
 import { NgbdMonthpickerI18n } from './demos/i18n/monthpicker-i18n';
 import { NgbdMonthpickerPopup } from './demos/popup/monthpicker-popup';
 import { NgbdMonthpickerOverviewComponent } from './overview/monthpicker-overview.component';
 import { NgbdMonthpickerPositiontarget } from './demos/positiontarget/monthpicker-positiontarget';
-import { NgbdDatepickerKeyboard } from './demos/keyboard/datepicker-keyboard';
+import { NgbdMonthpickerKeyboard } from './demos/keyboard/monthpicker-keyboard';
 import { Routes } from '@angular/router';
 
 const OVERVIEW = {
 	'basic-usage': 'Basic Usage',
-	/*'getting-date': 'Getting/setting a date',
+	'getting-date': 'Getting/setting a date',
 	'date-model': 'Date model and format',
 	navigation: 'Moving around',
 	'limiting-dates': 'Disabling and limiting dates',
@@ -28,7 +28,7 @@ const OVERVIEW = {
 	'footer-template': 'Custom footer',
 	range: 'Range selection',
 	i18n: 'Internationalization',
-	'keyboard-shortcuts': 'Keyboard shortcuts',*/
+	'keyboard-shortcuts': 'Keyboard shortcuts',
 };
 
 const DEMOS = {
@@ -73,19 +73,19 @@ const DEMOS = {
 		type: NgbdMonthpickerPositiontarget,
 		code: require('!!raw-loader!./demos/positiontarget/monthpicker-positiontarget').default,
 		markup: require('!!raw-loader!./demos/positiontarget/monthpicker-positiontarget.html').default,
-	} /*
+	},
 	keyboard: {
 		title: 'Custom keyboard navigation',
-		type: NgbdDatepickerKeyboard,
-		code: require('!!raw-loader!./demos/keyboard/datepicker-keyboard').default,
-		markup: require('!!raw-loader!./demos/keyboard/datepicker-keyboard.html').default,
+		type: NgbdMonthpickerKeyboard,
+		code: require('!!raw-loader!./demos/keyboard/monthpicker-keyboard').default,
+		markup: require('!!raw-loader!./demos/keyboard/monthpicker-keyboard.html').default,
 	},
 	config: {
-		title: 'Global configuration of datepickers',
-		type: NgbdDatepickerConfig,
-		code: require('!!raw-loader!./demos/config/datepicker-config').default,
-		markup: require('!!raw-loader!./demos/config/datepicker-config.html').default,
-	},*/,
+		title: 'Global configuration of monthpickers',
+		type: NgbdMonthpickerConfig,
+		code: require('!!raw-loader!./demos/config/monthpicker-config').default,
+		markup: require('!!raw-loader!./demos/config/monthpicker-config.html').default,
+	},
 };
 
 export const ROUTES: Routes = [

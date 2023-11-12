@@ -304,11 +304,11 @@ describe('NgbInputMonthpicker', () => {
 			button.click(); // open
 			tick();
 			fixture.detectChanges();
-			const buttonInDatePicker = fixture.nativeElement.querySelector('ngb-monthpicker button');
+			const buttonInMonthPicker = fixture.nativeElement.querySelector('ngb-monthpicker button');
 
 			expect(fixture.nativeElement.querySelector('ngb-monthpicker')).not.toBeNull();
 			expect(input.disabled).toBeTruthy();
-			expect(buttonInDatePicker.disabled).toBeTruthy();
+			expect(buttonInMonthPicker.disabled).toBeTruthy();
 
 			const dayElements = fixture.nativeElement.querySelectorAll('ngb-monthpicker-month .ngb-mp-day');
 			expect(dayElements[1]).toHaveCssClass('disabled');
@@ -322,7 +322,7 @@ describe('NgbInputMonthpicker', () => {
 
 			expect(fixture.nativeElement.querySelector('ngb-monthpicker')).not.toBeNull();
 			expect(input.disabled).toBeFalsy();
-			expect(buttonInDatePicker.disabled).toBeFalsy();
+			expect(buttonInMonthPicker.disabled).toBeFalsy();
 
 			const dayElements2 = fixture.nativeElement.querySelectorAll('ngb-monthpicker-month .ngb-mp-day');
 			expect(dayElements2[1]).not.toHaveCssClass('disabled');
@@ -344,11 +344,11 @@ describe('NgbInputMonthpicker', () => {
 
 			button.click(); // open
 			fixture.detectChanges();
-			const buttonInDatePicker = fixture.nativeElement.querySelector('ngb-monthpicker button');
+			const buttonInMonthPicker = fixture.nativeElement.querySelector('ngb-monthpicker button');
 
 			expect(fixture.nativeElement.querySelector('ngb-monthpicker')).not.toBeNull();
 			expect(input.disabled).toBeTruthy();
-			expect(buttonInDatePicker.disabled).toBeTruthy();
+			expect(buttonInMonthPicker.disabled).toBeTruthy();
 
 			const dayElements = fixture.nativeElement.querySelectorAll('ngb-monthpicker-month .ngb-mp-day');
 			expect(dayElements[1]).toHaveCssClass('disabled');
@@ -360,7 +360,7 @@ describe('NgbInputMonthpicker', () => {
 
 			expect(fixture.nativeElement.querySelector('ngb-monthpicker')).not.toBeNull();
 			expect(input.disabled).toBeFalsy();
-			expect(buttonInDatePicker.disabled).toBeFalsy();
+			expect(buttonInMonthPicker.disabled).toBeFalsy();
 
 			const dayElements2 = fixture.nativeElement.querySelectorAll('ngb-monthpicker-month .ngb-mp-day');
 			expect(dayElements2[1]).not.toHaveCssClass('disabled');

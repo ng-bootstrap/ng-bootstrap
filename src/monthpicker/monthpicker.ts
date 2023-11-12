@@ -58,8 +58,6 @@ export interface NgbMonthpickerNavigateEvent {
 
 	/**
 	 * Calling this function will prevent navigation from happening.
-	 *
-	 * @since 4.1.0
 	 */
 	preventDefault: () => void;
 }
@@ -68,8 +66,6 @@ export interface NgbMonthpickerNavigateEvent {
  * An interface that represents the readonly public state of the monthpicker.
  *
  * Accessible via the `monthpicker.state` getter
- *
- * @since 5.2.0
  */
 export interface NgbMonthpickerState {
 	/**
@@ -99,16 +95,12 @@ export interface NgbMonthpickerState {
 
 	/**
 	 * First dates of months currently displayed by the monthpicker
-	 *
-	 * @since 5.3.0
 	 */
 	readonly years: NgbMonth[];
 }
 
 /**
  * A directive that marks the content template that customizes the way monthpicker months are displayed
- *
- * @since 5.3.0
  */
 @Directive({ selector: 'ng-template[NgbMonthpickerContent]', standalone: true })
 export class NgbMonthpickerContent {
@@ -120,8 +112,6 @@ export class NgbMonthpickerContent {
  * the `<ng-template NgbMonthpickerMonths></ng-template>` when you want to customize months layout.
  *
  * For a usage example, see [custom month layout demo](#/components/monthpicker/examples#custommonth)
- *
- * @since 5.3.0
  */
 @Component({
 	selector: 'ngb-monthpicker-year',
@@ -284,8 +274,6 @@ export class NgbMonthpicker implements AfterViewInit, OnChanges, OnInit, Control
 	 *
 	 * See [`NgbMonthpickerContent`](#/components/monthpicker/api#NgbMonthpickerContent) and
 	 * [`ContentTemplateContext`](#/components/monthpicker/api#ContentTemplateContext) for more details.
-	 *
-	 * @since 14.2.0
 	 */
 	@Input() contentTemplate: TemplateRef<ContentTemplateContext>;
 	@ContentChild(NgbMonthpickerContent, { static: true }) contentTemplateFromContent?: NgbMonthpickerContent;
@@ -304,8 +292,6 @@ export class NgbMonthpicker implements AfterViewInit, OnChanges, OnInit, Control
 	 * [`MonthTemplateContext`](#/components/monthpicker/api#MonthTemplateContext)'s `data` parameter.
 	 *
 	 * `current` is the month that is currently displayed by the monthpicker.
-	 *
-	 * @since 3.3.0
 	 */
 	@Input() monthTemplateData = this._config.monthTemplateData;
 
@@ -316,8 +302,6 @@ export class NgbMonthpicker implements AfterViewInit, OnChanges, OnInit, Control
 
 	/**
 	 * The reference to the custom template for the monthpicker footer.
-	 *
-	 * @since 3.3.0
 	 */
 	@Input() footerTemplate = this._config.footerTemplate;
 
@@ -374,8 +358,6 @@ export class NgbMonthpicker implements AfterViewInit, OnChanges, OnInit, Control
 	 * An event emitted when user selects a date using keyboard or mouse.
 	 *
 	 * The payload of the event is currently selected `NgbMonth`.
-	 *
-	 * @since 5.2.0
 	 */
 	@Output() dateSelect = new EventEmitter<NgbMonth>();
 
@@ -444,8 +426,6 @@ export class NgbMonthpicker implements AfterViewInit, OnChanges, OnInit, Control
 
 	/**
 	 *  Returns the readonly public state of the monthpicker
-	 *
-	 * @since 5.2.0
 	 */
 	get state(): NgbMonthpickerState {
 		return this._publicState;
@@ -453,8 +433,6 @@ export class NgbMonthpicker implements AfterViewInit, OnChanges, OnInit, Control
 
 	/**
 	 *  Returns the calendar service used in the specific monthpicker instance.
-	 *
-	 *  @since 5.3.0
 	 */
 	get calendar(): NgbMonthCalendar {
 		return this._calendar;
@@ -462,8 +440,6 @@ export class NgbMonthpicker implements AfterViewInit, OnChanges, OnInit, Control
 
 	/**
 	 * Returns the i18n service used in the specific monthpicker instance.
-	 *
-	 * @since 14.2.0
 	 */
 	get i18n(): NgbMonthpickerI18n {
 		return this._i18n;

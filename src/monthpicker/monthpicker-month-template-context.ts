@@ -9,8 +9,6 @@ export interface MonthTemplateContext {
 	 * The month that corresponds to the template. Same as the `date` parameter.
 	 *
 	 * Can be used for convenience as a default template key, ex. `let-d`.
-	 *
-	 * @since 3.3.0
 	 */
 	$implicit: NgbMonth;
 
@@ -21,15 +19,11 @@ export interface MonthTemplateContext {
 
 	/**
 	 * The year currently displayed by the monthpicker.
-	 *
-	 * @since 5.2.0
 	 */
 	currentYear: number;
 
 	/**
 	 * Any data you pass using the `[monthTemplateData]` input in the monthpicker.
-	 *
-	 * @since 3.3.0
 	 */
 	data?: any;
 
@@ -55,8 +49,6 @@ export interface MonthTemplateContext {
 
 	/**
 	 * `True` if the current date is today (equal to `NgbCalendar.getToday()`).
-	 *
-	 * @since 4.1.0
 	 */
 	today: boolean;
 }

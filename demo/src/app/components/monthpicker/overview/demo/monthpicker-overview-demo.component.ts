@@ -1,17 +1,17 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
-	NgbCalendar,
-	NgbDate,
-	NgbDateNativeAdapter,
+	NgbMonth,
+	NgbMonthNativeAdapter,
 	NgbTooltipModule,
-	NgbDatepickerModule,
+	NgbMonthpickerModule,
+	NgbMonthCalendar,
 } from '@ng-bootstrap/ng-bootstrap';
 import { DatePipe } from '@angular/common';
 
 @Component({
 	selector: 'ngbd-monthpicker-demo-overview',
 	standalone: true,
-	imports: [NgbTooltipModule, NgbDatepickerModule, DatePipe],
+	imports: [NgbTooltipModule, NgbMonthpickerModule, DatePipe],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
 		<div class="mb-3">
@@ -24,7 +24,7 @@ import { DatePipe } from '@angular/common';
 			</p>
 		</div>
 
-		<ng-template #dayTemplate let-date let-disabled="disabled">
+		<ng-template #monthTemplate let-date let-disabled="disabled">
 			<span
 				class="custom-day"
 				[ngbTooltip]="getTooltip(date)"
@@ -40,13 +40,13 @@ import { DatePipe } from '@angular/common';
 			</span>
 		</ng-template>
 
-		<ngb-datepicker
+		<ngb-monthpicker
 			(dateSelect)="onDateSelection($event)"
-			[dayTemplate]="dayTemplate"
+			[monthTemplate]="monthTemplate"
 			[markDisabled]="markDisabled"
 			[minDate]="today"
 		>
-		</ngb-datepicker>
+		</ngb-monthpicker>
 	`,
 	styles: [
 		`
@@ -82,15 +82,15 @@ import { DatePipe } from '@angular/common';
 			}
 		`,
 	],
-	providers: [NgbDateNativeAdapter],
+	providers: [NgbMonthNativeAdapter],
 })
 export class NgbdMonthpickerOverviewDemoComponent {
-	today: NgbDate;
+	today: NgbMonth;
 
-	hoveredDate: NgbDate | null = null;
+	hoveredDate: NgbMonth | null = null;
 
-	fromDate: NgbDate;
-	toDate: NgbDate | null = null;
+	fromDate: NgbMonth;
+	toDate: NgbMonth | null = null;
 
 	holidays: { month: number; day: number; text: string }[] = [
 		{ month: 1, day: 1, text: 'New Years Day' },
@@ -104,23 +104,23 @@ export class NgbdMonthpickerOverviewDemoComponent {
 		{ month: 12, day: 25, text: 'Christmas Day' },
 	];
 
-	constructor(private calendar: NgbCalendar, public adapter: NgbDateNativeAdapter) {
+	constructor(private calendar: NgbMonthCalendar, public adapter: NgbMonthNativeAdapter) {
 		this.markDisabled = this.markDisabled.bind(this);
 		this.today = calendar.getToday();
 		this.fromDate = this.getFirstAvailableDate(this.today);
-		this.toDate = this.getFirstAvailableDate(calendar.getNext(this.today, 'd', 15));
+		this.toDate = this.getFirstAvailableDate(calendar.getNext(this.today, 'm', 15));
 	}
 
-	isHoliday(date: NgbDate): string {
-		const holiday = this.holidays.find((h) => h.day === date.day && h.month === date.month);
+	isHoliday(date: NgbMonth): string {
+		const holiday = this.holidays.find((h) => h.month === date.month);
 		return holiday ? holiday.text : '';
 	}
 
-	markDisabled(date: NgbDate, current: { year: number; month: number }): boolean {
-		return this.isHoliday(date) !== '' || (this.isWeekend(date) && date.month === current.month);
+	markDisabled(date: NgbMonth, current: { year: number; month: number }): boolean {
+		return this.isHoliday(date) !== '' || date.month === current.month;
 	}
 
-	onDateSelection(date: NgbDate) {
+	onDateSelection(date: NgbMonth) {
 		if (!this.fromDate && !this.toDate) {
 			this.fromDate = date;
 		} else if (this.fromDate && !this.toDate && (date.after(this.fromDate) || date.equals(this.fromDate))) {
@@ -131,30 +131,26 @@ export class NgbdMonthpickerOverviewDemoComponent {
 		}
 	}
 
-	getTooltip(date: NgbDate): string {
+	getTooltip(date: NgbMonth): string {
 		const holidayTooltip = this.isHoliday(date);
 
 		if (holidayTooltip) {
 			return holidayTooltip;
-		} else if (this.isRange(date) && !this.isWeekend(date)) {
+		} else if (this.isRange(date)) {
 			return 'Vacations!';
 		} else {
 			return '';
 		}
 	}
 
-	getFirstAvailableDate(date: NgbDate): NgbDate {
-		while (this.isWeekend(date) || this.isHoliday(date)) {
-			date = this.calendar.getNext(date, 'd', 1);
+	getFirstAvailableDate(date: NgbMonth): NgbMonth {
+		while (this.isHoliday(date)) {
+			date = this.calendar.getNext(date, 'm', 1);
 		}
 		return date;
 	}
 
-	isWeekend(date: NgbDate) {
-		return this.calendar.getWeekday(date) >= 6;
-	}
-
-	isRange(date: NgbDate) {
+	isRange(date: NgbMonth) {
 		return (
 			date.equals(this.fromDate) ||
 			(this.toDate && date.equals(this.toDate)) ||
@@ -163,13 +159,13 @@ export class NgbdMonthpickerOverviewDemoComponent {
 		);
 	}
 
-	isHovered(date: NgbDate) {
+	isHovered(date: NgbMonth) {
 		return (
 			this.fromDate && !this.toDate && this.hoveredDate && date.after(this.fromDate) && date.before(this.hoveredDate)
 		);
 	}
 
-	isInside(date: NgbDate) {
+	isInside(date: NgbMonth) {
 		return this.toDate && date.after(this.fromDate) && date.before(this.toDate);
 	}
 }

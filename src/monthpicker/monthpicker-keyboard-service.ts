@@ -6,8 +6,6 @@ import { Key } from '../util/key';
  * A service that represents the keyboard navigation.
  *
  * Default keyboard shortcuts [are documented in the overview](#/components/monthpicker/overview#keyboard-shortcuts)
- *
- * @since 5.2.0
  */
 @Injectable({ providedIn: 'root' })
 export class NgbMonthpickerKeyboardService {

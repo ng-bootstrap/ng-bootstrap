@@ -1,6 +1,6 @@
 import { ComponentFixture } from '@angular/core/testing';
 import { createGenericTestComponent, triggerEvent } from '../test/common';
-import { getMonthSelect, getYearSelect } from '../test/datepicker/common';
+import { getMonthSelect, getYearSelect } from '../test/monthpicker/common';
 
 import { Component } from '@angular/core';
 
@@ -18,10 +18,10 @@ function changeSelect(element: HTMLSelectElement, value: string) {
 	triggerEvent(element, 'change');
 }
 
-describe('ngb-datepicker-navigation-select', () => {
+describe('ngb-monthpicker-navigation-select', () => {
 	it('should generate month options correctly', () => {
 		const fixture = createTestComponent(
-			`<ngb-datepicker-navigation-select [date]="date" [months]="months" [years]="years">`,
+			`<ngb-monthpicker-navigation-select [date]="date" [months]="months" [years]="years">`,
 		);
 		expect(getOptionValues(getMonthSelect(fixture.nativeElement))).toEqual([
 			'1',
@@ -43,7 +43,7 @@ describe('ngb-datepicker-navigation-select', () => {
 
 	it('should generate year options correctly', () => {
 		const fixture = createTestComponent(
-			`<ngb-datepicker-navigation-select [date]="date" [months]="months" [years]="years">`,
+			`<ngb-monthpicker-navigation-select [date]="date" [months]="months" [years]="years">`,
 		);
 
 		const yearSelect = getYearSelect(fixture.nativeElement);
@@ -56,7 +56,7 @@ describe('ngb-datepicker-navigation-select', () => {
 
 	it('should send date selection events', () => {
 		const fixture = createTestComponent(
-			`<ngb-datepicker-navigation-select [date]="date" [months]="months" [years]="years" (select)="onSelect($event)">`,
+			`<ngb-monthpicker-navigation-select [date]="date" [months]="months" [years]="years" (select)="onSelect($event)">`,
 		);
 
 		const monthSelect = getMonthSelect(fixture.nativeElement);
@@ -79,7 +79,7 @@ describe('ngb-datepicker-navigation-select', () => {
 
 	it('should select months and years when date changes', () => {
 		const fixture = createTestComponent(
-			`<ngb-datepicker-navigation-select [date]="date" [months]="months" [years]="years">`,
+			`<ngb-monthpicker-navigation-select [date]="date" [months]="months" [years]="years">`,
 		);
 
 		expect(getMonthSelect(fixture.nativeElement).value).toBe('8');
@@ -99,7 +99,7 @@ describe('ngb-datepicker-navigation-select', () => {
 
 	it('should have disabled select boxes when disabled', () => {
 		const fixture = createTestComponent(
-			`<ngb-datepicker-navigation-select [disabled]="true" [date]="date" [months]="months" [years]="years">`,
+			`<ngb-monthpicker-navigation-select [disabled]="true" [date]="date" [months]="months" [years]="years">`,
 		);
 
 		expect(getMonthSelect(fixture.nativeElement).disabled).toBe(true);
@@ -108,7 +108,7 @@ describe('ngb-datepicker-navigation-select', () => {
 
 	it('should have correct aria attributes on select options', () => {
 		const fixture = createTestComponent(
-			`<ngb-datepicker-navigation-select [date]="date" [months]="[7, 8, 9]" [years]="years">`,
+			`<ngb-monthpicker-navigation-select [date]="date" [months]="[7, 8, 9]" [years]="years">`,
 		);
 
 		getOptions(getMonthSelect(fixture.nativeElement)).forEach((option, index) => {
@@ -118,7 +118,7 @@ describe('ngb-datepicker-navigation-select', () => {
 
 	it('should have correct aria attributes on select elements', () => {
 		const fixture = createTestComponent(
-			`<ngb-datepicker-navigation-select [date]="date" [months]="[7, 8, 9]" [years]="years">`,
+			`<ngb-monthpicker-navigation-select [date]="date" [months]="[7, 8, 9]" [years]="years">`,
 		);
 
 		expect(getMonthSelect(fixture.nativeElement).getAttribute('aria-label')).toBe('Select month');
@@ -127,7 +127,7 @@ describe('ngb-datepicker-navigation-select', () => {
 
 	it('should have correct title attributes on select elements', () => {
 		const fixture = createTestComponent(
-			`<ngb-datepicker-navigation-select [date]="date" [months]="[7, 8, 9]" [years]="years">`,
+			`<ngb-monthpicker-navigation-select [date]="date" [months]="[7, 8, 9]" [years]="years">`,
 		);
 
 		expect(getMonthSelect(fixture.nativeElement).getAttribute('title')).toBe('Select month');

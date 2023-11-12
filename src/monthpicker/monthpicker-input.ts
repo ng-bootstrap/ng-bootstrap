@@ -44,7 +44,7 @@ import { addPopperOffset } from '../util/positioning-util';
 import { ContentTemplateContext } from './monthpicker-content-template-context';
 
 /**
- * A directive that allows to stick a datepicker popup to an input field.
+ * A directive that allows to stick a monthpicker popup to an input field.
  *
  * Manages interaction with the input field itself, does value formatting and provides forms integration.
  */
@@ -90,58 +90,48 @@ export class NgbInputMonthpicker implements OnChanges, OnDestroy, ControlValueAc
 	private _destroyCloseHandlers$ = new Subject<void>();
 
 	/**
-	 * Indicates whether the datepicker popup should be closed automatically after date selection / outside click or not.
+	 * Indicates whether the monthpicker popup should be closed automatically after date selection / outside click or not.
 	 *
 	 * * `true` - the popup will close on both date selection and outside click.
 	 * * `false` - the popup can only be closed manually via `close()` or `toggle()` methods.
 	 * * `"inside"` - the popup will close on date selection, but not outside clicks.
 	 * * `"outside"` - the popup will close only on the outside click and not on date selection/inside clicks.
-	 *
-	 * @since 3.0.0
 	 */
 	@Input() autoClose = this._config.autoClose;
 
 	/**
 	 * The reference to a custom content template.
 	 *
-	 * Allows to completely override the way datepicker.
+	 * Allows to completely override the way monthpicker.
 	 *
-	 * See [`NgbMonthpickerContent`](#/components/datepicker/api#NgbMonthpickerContent) for more details.
-	 *
-	 * @since 14.2.0
+	 * See [`NgbMonthpickerContent`](#/components/monthpicker/api#NgbMonthpickerContent) for more details.
 	 */
 	@Input() contentTemplate: TemplateRef<ContentTemplateContext>;
 
 	/**
-	 * An optional class applied to the datepicker popup element.
-	 *
-	 * @since 9.1.0
+	 * An optional class applied to the monthpicker popup element.
 	 */
-	@Input() datepickerClass: string;
+	@Input() monthpickerClass: string;
 
 	/**
 	 * The reference to a custom template for the month.
 	 *
 	 * Allows to completely override the way a month 'cell' in the calendar is displayed.
 	 *
-	 * See [`MonthTemplateContext`](#/components/datepicker/api#MonthTemplateContext) for the data you get inside.
+	 * See [`MonthTemplateContext`](#/components/monthpicker/api#MonthTemplateContext) for the data you get inside.
 	 */
 	@Input() monthTemplate: TemplateRef<MonthTemplateContext>;
 
 	/**
 	 * The callback to pass any arbitrary data to the template cell via the
-	 * [`MonthTemplateContext`](#/components/datepicker/api#MonthTemplateContext)'s `data` parameter.
+	 * [`MonthTemplateContext`](#/components/monthpicker/api#MonthTemplateContext)'s `data` parameter.
 	 *
-	 * `current` is the month that is currently displayed by the datepicker.
-	 *
-	 * @since 3.3.0
+	 * `current` is the month that is currently displayed by the monthpicker.
 	 */
 	@Input() monthTemplateData: (date: NgbMonth, current?: { year: number; month: number }) => any;
 
 	/**
-	 * The reference to the custom template for the datepicker footer.
-	 *
-	 * @since 3.3.0
+	 * The reference to the custom template for the monthpicker footer.
 	 */
 	@Input() footerTemplate: TemplateRef<any>;
 
@@ -150,7 +140,7 @@ export class NgbInputMonthpicker implements OnChanges, OnDestroy, ControlValueAc
 	 *
 	 * It is called for each new date when navigating to a different month.
 	 *
-	 * `current` is the month that is currently displayed by the datepicker.
+	 * `current` is the month that is currently displayed by the monthpicker.
 	 */
 	@Input() markDisabled: (date: NgbMonth, current?: { year: number; month: number }) => boolean;
 
@@ -178,7 +168,7 @@ export class NgbInputMonthpicker implements OnChanges, OnDestroy, ControlValueAc
 	@Input() navigation: 'select' | 'arrows' | 'none';
 
 	/**
-	 * The preferred placement of the datepicker popup, among the [possible values](#/guides/positioning#api).
+	 * The preferred placement of the monthpicker popup, among the [possible values](#/guides/positioning#api).
 	 *
 	 * The default order of preference is `"bottom-start bottom-end top-start top-end"`
 	 *
@@ -189,18 +179,14 @@ export class NgbInputMonthpicker implements OnChanges, OnDestroy, ControlValueAc
 	/**
 	 * Allows to change default Popper options when positioning the popup.
 	 * Receives current popper options and returns modified ones.
-	 *
-	 * @since 13.1.0
 	 */
 	@Input() popperOptions = this._config.popperOptions;
 
 	/**
-	 * If `true`, when closing datepicker will focus element that was focused before datepicker was opened.
+	 * If `true`, when closing monthpicker will focus element that was focused before monthpicker was opened.
 	 *
 	 * Alternatively you could provide a selector or an `HTMLElement` to focus. If the element doesn't exist or invalid,
 	 * we'll fallback to focus document body.
-	 *
-	 * @since 5.2.0
 	 */
 	@Input() restoreFocus: true | string | HTMLElement;
 
@@ -215,18 +201,16 @@ export class NgbInputMonthpicker implements OnChanges, OnDestroy, ControlValueAc
 	@Input() startDate: { year: number; month: number };
 
 	/**
-	 * A selector specifying the element the datepicker popup should be appended to.
+	 * A selector specifying the element the monthpicker popup should be appended to.
 	 *
 	 * Currently only supports `"body"`.
 	 */
 	@Input() container = this._config.container;
 
 	/**
-	 * A css selector or html element specifying the element the datepicker popup should be positioned against.
+	 * A css selector or html element specifying the element the monthpicker popup should be positioned against.
 	 *
 	 * By default the input is used as a target.
-	 *
-	 * @since 4.2.0
 	 */
 	@Input() positionTarget = this._config.positionTarget;
 
@@ -234,22 +218,18 @@ export class NgbInputMonthpicker implements OnChanges, OnDestroy, ControlValueAc
 	 * An event emitted when user selects a date using keyboard or mouse.
 	 *
 	 * The payload of the event is currently selected `NgbMonth`.
-	 *
-	 * @since 1.1.1
 	 */
 	@Output() dateSelect = new EventEmitter<NgbMonth>();
 
 	/**
 	 * Event emitted right after the navigation happens and displayed month changes.
 	 *
-	 * See [`NgbMonthpickerNavigateEvent`](#/components/datepicker/api#NgbMonthpickerNavigateEvent) for the payload info.
+	 * See [`NgbMonthpickerNavigateEvent`](#/components/monthpicker/api#NgbMonthpickerNavigateEvent) for the payload info.
 	 */
 	@Output() navigate = new EventEmitter<NgbMonthpickerNavigateEvent>();
 
 	/**
-	 * An event fired after closing datepicker window.
-	 *
-	 * @since 4.2.0
+	 * An event fired after closing monthpicker window.
 	 */
 	@Output() closed = new EventEmitter<void>();
 
@@ -331,7 +311,7 @@ export class NgbInputMonthpicker implements OnChanges, OnDestroy, ControlValueAc
 	}
 
 	/**
-	 * Opens the datepicker popup.
+	 * Opens the monthpicker popup.
 	 *
 	 * If the related form control contains a valid date, the corresponding month will be opened.
 	 */
@@ -340,8 +320,8 @@ export class NgbInputMonthpicker implements OnChanges, OnDestroy, ControlValueAc
 			this._cRef = this._vcRef.createComponent(NgbMonthpicker);
 
 			this._applyPopupStyling(this._cRef.location.nativeElement);
-			this._applyDatepickerInputs(this._cRef);
-			this._subscribeForDatepickerOutputs(this._cRef.instance);
+			this._applyMonthpickerInputs(this._cRef);
+			this._subscribeForMonthpickerOutputs(this._cRef.instance);
 			this._cRef.instance.ngOnInit();
 			this._cRef.instance.writeValue(this._dateAdapter.toModel(this._model));
 
@@ -375,7 +355,7 @@ export class NgbInputMonthpicker implements OnChanges, OnDestroy, ControlValueAc
 			}
 
 			if (this.positionTarget && !hostElement) {
-				throw new Error('ngbDatepicker could not find element declared in [positionTarget] to position against.');
+				throw new Error('ngbMonthpicker could not find element declared in [positionTarget] to position against.');
 			}
 
 			// Setting up popper and scheduling updates when zone is stable
@@ -398,7 +378,7 @@ export class NgbInputMonthpicker implements OnChanges, OnDestroy, ControlValueAc
 	}
 
 	/**
-	 * Closes the datepicker popup.
+	 * Closes the monthpicker popup.
 	 */
 	close() {
 		if (this.isOpen()) {
@@ -428,7 +408,7 @@ export class NgbInputMonthpicker implements OnChanges, OnDestroy, ControlValueAc
 	}
 
 	/**
-	 * Toggles the datepicker popup.
+	 * Toggles the monthpicker popup.
 	 */
 	toggle() {
 		if (this.isOpen()) {
@@ -475,8 +455,8 @@ export class NgbInputMonthpicker implements OnChanges, OnDestroy, ControlValueAc
 			}
 		}
 
-		if (changes['datepickerClass']) {
-			const { currentValue, previousValue } = changes['datepickerClass'];
+		if (changes['monthpickerClass']) {
+			const { currentValue, previousValue } = changes['monthpickerClass'];
 			this._applyPopupClass(currentValue, previousValue);
 		}
 
@@ -489,7 +469,7 @@ export class NgbInputMonthpicker implements OnChanges, OnDestroy, ControlValueAc
 		this.close();
 	}
 
-	private _applyDatepickerInputs(datepickerComponentRef: ComponentRef<NgbMonthpicker>): void {
+	private _applyMonthpickerInputs(monthpickerComponentRef: ComponentRef<NgbMonthpicker>): void {
 		[
 			'contentTemplate',
 			'monthTemplate',
@@ -502,10 +482,10 @@ export class NgbInputMonthpicker implements OnChanges, OnDestroy, ControlValueAc
 			'showNavigation',
 		].forEach((inputName: string) => {
 			if (this[inputName] !== undefined) {
-				datepickerComponentRef.setInput(inputName, this[inputName]);
+				monthpickerComponentRef.setInput(inputName, this[inputName]);
 			}
 		});
-		datepickerComponentRef.setInput('startDate', this.startDate || this._model);
+		monthpickerComponentRef.setInput('startDate', this.startDate || this._model);
 	}
 
 	private _applyPopupClass(newClass: string, oldClass?: string) {
@@ -527,12 +507,12 @@ export class NgbInputMonthpicker implements OnChanges, OnDestroy, ControlValueAc
 			nativeElement.classList.add('ngb-mp-body');
 		}
 
-		this._applyPopupClass(this.datepickerClass);
+		this._applyPopupClass(this.monthpickerClass);
 	}
 
-	private _subscribeForDatepickerOutputs(datepickerInstance: NgbMonthpicker) {
-		datepickerInstance.navigate.subscribe((navigateEvent) => this.navigate.emit(navigateEvent));
-		datepickerInstance.dateSelect.subscribe((date) => {
+	private _subscribeForMonthpickerOutputs(monthpickerInstance: NgbMonthpicker) {
+		monthpickerInstance.navigate.subscribe((navigateEvent) => this.navigate.emit(navigateEvent));
+		monthpickerInstance.dateSelect.subscribe((date) => {
 			this.dateSelect.emit(date);
 			if (this.autoClose === true || this.autoClose === 'inside') {
 				this.close();

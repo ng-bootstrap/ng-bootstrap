@@ -5,10 +5,10 @@ import { NgbMonthpickerMonthView } from './monthpicker-month-view';
 import { NgbMonth } from './ngb-month';
 
 function getElement(element: HTMLElement): HTMLElement {
-	return <HTMLElement>element.querySelector('[ngbDatepickerDayView]');
+	return <HTMLElement>element.querySelector('[ngbMonthpickerMonthView]');
 }
 
-describe('ngbDatepickerDayView', () => {
+describe('ngbMonthpickerMonthView', () => {
 	it('should display date', () => {
 		const fixture = TestBed.createComponent(TestComponent);
 		fixture.detectChanges();

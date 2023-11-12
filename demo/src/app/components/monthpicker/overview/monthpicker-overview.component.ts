@@ -32,116 +32,116 @@ export class NgbdMonthpickerOverviewComponent {
 		basic: Snippet({
 			lang: 'html',
 			code: `
-        <!-- 1. inline datepicker -->
-        <ngb-datepicker #d></ngb-datepicker>
+        <!-- 1. inline monthpicker -->
+        <ngb-monthpicker #d></ngb-monthpicker>
 
-        <!-- 2. datepicker in the popup -->
-        <input type="text" ngbDatepicker #d="ngbDatepicker"/>
+        <!-- 2. monthpicker in the popup -->
+        <input type="text" ngbMonthpicker #d="ngbMonthpicker"/>
       `,
 		}),
 		popup: Snippet({
 			lang: 'html',
 			code: `
-        <input type="text" ngbDatepicker #d="ngbDatepicker"/>
+        <input type="text" ngbMonthpicker #d="ngbMonthpicker"/>
         <button (click)="d.toggle()">Toggle</button>
       `,
 		}),
 		form: Snippet({
 			lang: 'html',
 			code: `
-        <input type="text" ngbDatepicker [(ngModel)]="date"/>
+        <input type="text" ngbMonthpicker [(ngModel)]="date"/>
       `,
 		}),
 		selection: Snippet({
 			lang: 'html',
 			code: `
         <!-- inline -->
-        <ngb-datepicker (dateSelect)="onDateSelect($event)"></ngb-datepicker>
+        <ngb-monthpicker (dateSelect)="onDateSelect($event)"></ngb-monthpicker>
 
         <!-- in the popup -->
-        <input type="text" ngbDatepicker (dateSelect)="onDateSelect($event)"/>
+        <input type="text" ngbMonthpicker (dateSelect)="onDateSelect($event)"/>
       `,
 		}),
 		navigation: Snippet({
 			lang: 'html',
 			code: `
-        <ngb-datepicker #d [startDate]="{year: 1789, month: 7}"></ngb-datepicker>
+        <ngb-monthpicker #d [startDate]="{year: 1789, month: 7}"></ngb-monthpicker>
         <button (click)="d.navigateTo({year: 2048, month: 1})">Goto JAN 2048</button>
       `,
 		}),
 		dateStruct: Snippet({
 			lang: 'typescript',
 			code: `
-        const date: NgbDateStruct = { year: 1789, month: 7, day: 14 }; // July, 14 1789
+        const date: NgbMonthStruct = { year: 1789, month: 7}; // July, 1789
       `,
 		}),
 		date: Snippet({
 			lang: 'typescript',
 			code: `
-        const date: NgbDate = new NgbDate(1789, 7, 14);                // July, 14 1789
+        const date: NgbMonth = new NgbMonth(1789, 7);                // July, 1789
 
-        date.before({ year: 1789, month: 7, day: 14 });                // compare to a structure
-        date.equals(NgbDate.from({ year: 1789, month: 7, day: 14 }));  // or to another date object
+        date.before({ year: 1789, month: 7 });                // compare to a structure
+        date.equals(NgbMonth.from({ year: 1789, month: 7 }));  // or to another date object
       `,
 		}),
 		nativeAdapter: Snippet({
 			lang: 'typescript',
 			code: `
         // native adapter is bundled with library
-        providers: [{provide: NgbDateAdapter, useClass: NgbDateNativeAdapter}]
+        providers: [{provide: NgbMonthAdapter, useClass: NgbMonthNativeAdapter}]
 
         // or another native adapter that works with UTC dates
-        providers: [{provide: NgbDateAdapter, useClass: NgbDateNativeUTCAdapter}]
+        providers: [{provide: NgbMonthAdapter, useClass: NgbMonthNativeUTCAdapter}]
       `,
 		}),
 		adapter: Snippet({
 			lang: 'typescript',
 			code: `
         @Injectable()
-        export abstract class NgbDateAdapter<D> {
-          abstract fromModel(value: D): NgbDateStruct; // from your model -> internal model
-          abstract toModel(date: NgbDateStruct): D; // from internal model -> your mode
+        export abstract class NgbMonthAdapter<D> {
+          abstract fromModel(value: D): NgbMonthStruct; // from your model -> internal model
+          abstract toModel(date: NgbMonthStruct): D; // from internal model -> your mode
         }
 
         // create your own if necessary
-        providers: [{provide: NgbDateAdapter, useClass: YourOwnDateAdapter}]
+        providers: [{provide: NgbMonthAdapter, useClass: YourOwnDateAdapter}]
       `,
 		}),
 		formatter: Snippet({
 			lang: 'typescript',
 			code: `
         @Injectable()
-        export abstract class NgbDateParserFormatter {
-          abstract parse(value: string): NgbDateStruct; // from input -> internal model
-          abstract format(date: NgbDateStruct): string; // from internal model -> string
+        export abstract class NgbMonthParserFormatter {
+          abstract parse(value: string): NgbMonthStruct; // from input -> internal model
+          abstract format(date: NgbMonthStruct): string; // from internal model -> string
         }
 
         // create your own if necessary
-        providers: [{provide: NgbDateParserFormatter, useClass: YourOwnParserFormatter}]
+        providers: [{provide: NgbMonthParserFormatter, useClass: YourOwnParserFormatter}]
       `,
 		}),
-		dayTemplate: Snippet({
+		monthTemplate: Snippet({
 			lang: 'html',
 			code: `
         <ng-template #t let-date>
         	{{ date.day }}
         </ng-template>
 
-        <ngbDatepicker [dayTemplate]=“t”/>
+        <ngbMonthpicker [monthTemplate]=“t”/>
       `,
 		}),
 		contentTemplate: Snippet({
 			lang: 'html',
 			code: `
-        <ngb-datepicker #datepicker
+        <ngb-monthpicker #monthpicker
                         [startDate]="{month: 8, year: 2016}">
-          <ng-template ngbDatepickerContent>
-            <div *ngFor="let monthStruct of datepicker.state.months">
+          <ng-template ngbMonthpickerContent>
+            <div *ngFor="let monthStruct of monthpicker.state.months">
               <span>{{i18n.getMonthFullName(monthStruct.month)}} {{monthStruct.year}}</span>
-              <ngb-datepicker-month-view [month]="monthStruct"></ngb-datepicker-month-view>
+              <ngb-monthpicker-month-view [month]="monthStruct"></ngb-monthpicker-month-view>
             </div>
           </ng-template>
-        </ngb-datepicker>
+        </ngb-monthpicker>
       `,
 		}),
 		todayHTML: Snippet({
@@ -152,14 +152,14 @@ export class NgbdMonthpickerOverviewComponent {
         </div>
       `,
 		}),
-		todayTemplate: Snippet({
+		tomonthTemplate: Snippet({
 			lang: 'html',
 			code: `
         <ng-template #t let-today="today">
           <span *ngIf="today">...</span>
         </ng-template>
 
-        <ngbDatepicker [dayTemplate]=“t”/>
+        <ngbMonthpicker [monthTemplate]=“t”/>
       `,
 		}),
 		footerTemplate: Snippet({
@@ -169,37 +169,37 @@ export class NgbdMonthpickerOverviewComponent {
           <button (click)="model = today">Today</button>
         </ng-template>
 
-        <ngbDatepicker [footerTemplate]=“t”/>
+        <ngbMonthpicker [footerTemplate]=“t”/>
       `,
 		}),
 		disablingTS: Snippet({
 			lang: 'typescript',
 			code: `
         // disable the 13th of each month
-        const isDisabled = (date: NgbDate, current: {month: number}) => date.day === 13;
+        const isDisabled = (date: NgbMonth, current: {month: number}) => date.day === 13;
       `,
 		}),
 		disablingHTML: Snippet({
 			lang: 'html',
 			code: `
-        <ngb-datepicker [minDate]="{year: 2010, month: 1, day: 1}"
+        <ngb-monthpicker [minDate]="{year: 2010, month: 1, day: 1}"
                         [maxDate]="{year: 2048, month: 12, day: 31}"
                         [markDisabled]="isDisabled">
-        </ngb-datepicker>
+        </ngb-monthpicker>
       `,
 		}),
 		i18n: Snippet({
 			lang: 'typescript',
 			code: `
         @Injectable()
-        export abstract class NgbDatepickerI18n {
+        export abstract class NgbMonthpickerI18n {
           abstract getMonthShortName(month: number): string;
           abstract getMonthFullName(month: number): string;
-          abstract getDayAriaLabel(date: NgbDateStruct): string;
+          abstract getDayAriaLabel(date: NgbMonthStruct): string;
         }
 
         // provide your own if necessary
-        providers: [{provide: NgbDatepickerI18n, useClass: YourOwnDatepickerI18n}]
+        providers: [{provide: NgbMonthpickerI18n, useClass: YourOwnMonthpickerI18n}]
       `,
 		}),
 	};
@@ -209,6 +209,6 @@ export class NgbdMonthpickerOverviewComponent {
 	sections: NgbdOverview = {};
 
 	constructor(demoList: NgbdDemoListService) {
-		this.sections = demoList.getOverviewSections('datepicker');
+		this.sections = demoList.getOverviewSections('monthpicker');
 	}
 }

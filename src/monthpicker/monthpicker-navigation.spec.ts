@@ -1,7 +1,7 @@
 import { ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { createGenericTestComponent, triggerEvent } from '../test/common';
-import { getMonthSelect, getNavigationLinks, getYearSelect } from '../test/datepicker/common';
+import { getMonthSelect, getNavigationLinks, getYearSelect } from '../test/monthpicker/common';
 
 import { Component } from '@angular/core';
 
@@ -18,10 +18,10 @@ function changeSelect(element: HTMLSelectElement, value: string) {
 	triggerEvent(element, 'change');
 }
 
-describe('ngb-datepicker-navigation', () => {
+describe('ngb-monthpicker-navigation', () => {
 	it('should toggle navigation select component', () => {
-		const fixture = createTestComponent(`<ngb-datepicker-navigation [showSelect]="showSelect" [date]="date"
-          [selectBoxes]="selectBoxes"></ngb-datepicker-navigation>`);
+		const fixture = createTestComponent(`<ngb-monthpicker-navigation [showSelect]="showSelect" [date]="date"
+          [selectBoxes]="selectBoxes"></ngb-monthpicker-navigation>`);
 
 		expect(fixture.debugElement.query(By.directive(NgbMonthpickerNavigationSelect))).not.toBeNull();
 		expect(getMonthSelect(fixture.nativeElement).value).toBe('8');
@@ -33,8 +33,8 @@ describe('ngb-datepicker-navigation', () => {
 	});
 
 	it('should send date selection event', () => {
-		const fixture = createTestComponent(`<ngb-datepicker-navigation [showSelect]="true" [date]="date"
-          [selectBoxes]="selectBoxes" (select)="onSelect($event)"></ngb-datepicker-navigation>`);
+		const fixture = createTestComponent(`<ngb-monthpicker-navigation [showSelect]="true" [date]="date"
+          [selectBoxes]="selectBoxes" (select)="onSelect($event)"></ngb-monthpicker-navigation>`);
 
 		const monthSelect = getMonthSelect(fixture.nativeElement);
 		const yearSelect = getYearSelect(fixture.nativeElement);
@@ -49,7 +49,7 @@ describe('ngb-datepicker-navigation', () => {
 
 	it('should make prev navigation button disabled', () => {
 		const fixture = createTestComponent(
-			`<ngb-datepicker-navigation [prevDisabled]="prevDisabled"></ngb-datepicker-navigation>`,
+			`<ngb-monthpicker-navigation [prevDisabled]="prevDisabled"></ngb-monthpicker-navigation>`,
 		);
 
 		const links = getNavigationLinks(fixture.nativeElement);
@@ -62,7 +62,7 @@ describe('ngb-datepicker-navigation', () => {
 
 	it('should make next navigation button disabled', () => {
 		const fixture = createTestComponent(
-			`<ngb-datepicker-navigation [nextDisabled]="nextDisabled"></ngb-datepicker-navigation>`,
+			`<ngb-monthpicker-navigation [nextDisabled]="nextDisabled"></ngb-monthpicker-navigation>`,
 		);
 
 		const links = getNavigationLinks(fixture.nativeElement);
@@ -74,8 +74,8 @@ describe('ngb-datepicker-navigation', () => {
 	});
 
 	it('should make year and month select boxes disabled', () => {
-		const fixture = createTestComponent(`<ngb-datepicker-navigation [disabled]="true" [date]="date"
-      [showSelect]="true" [selectBoxes]="selectBoxes"></ngb-datepicker-navigation>`);
+		const fixture = createTestComponent(`<ngb-monthpicker-navigation [disabled]="true" [date]="date"
+      [showSelect]="true" [selectBoxes]="selectBoxes"></ngb-monthpicker-navigation>`);
 
 		expect(getYearSelect(fixture.nativeElement).disabled).toBeTruthy();
 		expect(getMonthSelect(fixture.nativeElement).disabled).toBeTruthy();
@@ -83,7 +83,7 @@ describe('ngb-datepicker-navigation', () => {
 
 	it('should send navigation events', () => {
 		const fixture = createTestComponent(
-			`<ngb-datepicker-navigation (navigate)="onNavigate($event)"></ngb-datepicker-navigation>`,
+			`<ngb-monthpicker-navigation (navigate)="onNavigate($event)"></ngb-monthpicker-navigation>`,
 		);
 		const [previousButton, nextButton] = getNavigationLinks(fixture.nativeElement);
 		const previousButtonSpan = previousButton.querySelector<HTMLElement>('span')!;
@@ -104,7 +104,7 @@ describe('ngb-datepicker-navigation', () => {
 	});
 
 	it('should retain focus on the navigation links after click', () => {
-		const fixture = createTestComponent(`<ngb-datepicker-navigation></ngb-datepicker-navigation>`);
+		const fixture = createTestComponent(`<ngb-monthpicker-navigation></ngb-monthpicker-navigation>`);
 		const [previousButton, nextButton] = getNavigationLinks(fixture.nativeElement);
 
 		// prev
@@ -117,7 +117,7 @@ describe('ngb-datepicker-navigation', () => {
 	});
 
 	it('should have buttons of type button', () => {
-		const fixture = createTestComponent(`<ngb-datepicker-navigation></ngb-datepicker-navigation>`);
+		const fixture = createTestComponent(`<ngb-monthpicker-navigation></ngb-monthpicker-navigation>`);
 
 		const links = getNavigationLinks(fixture.nativeElement);
 		links.forEach((link) => {
@@ -126,7 +126,7 @@ describe('ngb-datepicker-navigation', () => {
 	});
 
 	it('should have correct titles and aria attributes on buttons', () => {
-		const fixture = createTestComponent(`<ngb-datepicker-navigation></ngb-datepicker-navigation>`);
+		const fixture = createTestComponent(`<ngb-monthpicker-navigation></ngb-monthpicker-navigation>`);
 
 		const links = getNavigationLinks(fixture.nativeElement);
 		expect(links[0].getAttribute('aria-label')).toBe('Previous month');

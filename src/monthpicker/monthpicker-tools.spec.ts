@@ -14,7 +14,7 @@ import { MonthpickerViewModel, NgbMarkDisabled } from './monthpicker-view-model'
 import { NgbMonthpickerI18n, NgbMonthpickerI18nDefault } from './monthpicker-i18n';
 import { TestBed } from '@angular/core/testing';
 
-describe(`datepicker-tools`, () => {
+describe(`monthpicker-tools`, () => {
 	const calendar = new NgbMonthCalendarGregorian();
 	let i18n: NgbMonthpickerI18n;
 
@@ -463,7 +463,7 @@ describe(`datepicker-tools`, () => {
 			expect(isDateSelectable(undefined, state)).toBeFalsy();
 		});
 
-		it(`should return false if datepicker is disabled`, () => {
+		it(`should return false if monthpicker is disabled`, () => {
 			let state = { disabled: true } as MonthpickerViewModel;
 			expect(isDateSelectable(new NgbMonth(2016, 11), state)).toBeFalsy();
 			expect(isDateSelectable(new NgbMonth(2017, 11), state)).toBeFalsy();

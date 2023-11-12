@@ -54,7 +54,7 @@ function expectWeekLabel(element: HTMLElement, weekLabel: string) {
 }
 
 @Injectable()
-class MockDatepickerService extends NgbMonthpickerService {
+class MockMonthpickerService extends NgbMonthpickerService {
 	getMonth(struct: NgbMonthStruct) {
 		return {
 			firstDate: new NgbMonth(2016, 8),
@@ -228,11 +228,14 @@ describe('ngb-monthpicker-month', () => {
 	beforeEach(() => {
 		TestBed.overrideComponent(NgbMonthpicker, {
 			add: {
-				providers: [{ provide: NgbMonthpickerService, useClass: MockDatepickerService }, NgbMonthpickerKeyboardService],
+				providers: [
+					{ provide: NgbMonthpickerService, useClass: MockMonthpickerService },
+					NgbMonthpickerKeyboardService,
+				],
 			},
 		});
 		TestBed.configureTestingModule({
-			providers: [{ provide: NgbMonthpickerService, useClass: MockDatepickerService }],
+			providers: [{ provide: NgbMonthpickerService, useClass: MockMonthpickerService }],
 		});
 	});
 
@@ -333,7 +336,7 @@ describe('ngb-monthpicker-month', () => {
                       [showWeekNumbers]="showWeekNumbers"
                       [outsideDays]="outsideDays"
                       (select)="onClick($event)">
-        <ng-template ngbDatepickerContent>
+        <ng-template ngbMonthpickerContent>
           <ngb-monthpicker-month [month]="{month: 8, year: 2016}"></ngb-monthpicker-month>
         </ng-template>
       </ngb-monthpicker>`,
@@ -350,7 +353,7 @@ describe('ngb-monthpicker-month', () => {
                       [showWeekNumbers]="showWeekNumbers"
                       [outsideDays]="outsideDays"
                       (select)="onClick($event)">
-        <ng-template ngbDatepickerContent><div class="customClass">Custom Content</div></ng-template>
+        <ng-template ngbMonthpickerContent><div class="customClass">Custom Content</div></ng-template>
       </ngb-monthpicker>
     `,
 			TestComponent,
@@ -370,7 +373,7 @@ describe('ngb-monthpicker-month', () => {
                       [outsideDays]="outsideDays"
                       [contentTemplate]='cc'
                       (select)="onClick($event)">
-        <ng-template ngbDatepickerContent><div class="customClass">Custom Inline Content</div></ng-template>
+        <ng-template ngbMonthpickerContent><div class="customClass">Custom Inline Content</div></ng-template>
       </ngb-monthpicker>
     `,
 			TestComponent,
@@ -388,7 +391,7 @@ describe('ngb-monthpicker-month', () => {
                       [showWeekNumbers]="showWeekNumbers"
                       [outsideDays]="outsideDays"
                       (select)="onClick($event)">
-        <ng-template ngbDatepickerContent><div class="customClass">Custom Content</div></ng-template>
+        <ng-template ngbMonthpickerContent><div class="customClass">Custom Content</div></ng-template>
       </ngb-monthpicker>
     `,
 			TestComponent,

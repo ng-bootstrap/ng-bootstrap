@@ -1,3 +1,7 @@
+<h4>
+	<span class="badge bg-info text-dark">Since 16.0.0</span>
+</h4>
+
 <p>
 	Monthpicker will help you with month selection. It can be used either inline with
 	<code>NgbMonthpicker</code> component or as a popup on any input element with
@@ -9,7 +13,7 @@
 	is a short example of the vacation range picker that displays holidays with tooltips and disables weekends.
 </p>
 
-<ngbd-monthpicker-demo-overview class="d-block my-4"></ngbd-monthpicker-demo-overview>
+<ngbd-monthpicker-demo-overview class="d-block my-4" />
 
 <!-- BASIC USAGE -->
 <ngbd-overview-section [section]="sections['basic-usage']">
@@ -208,7 +212,7 @@
 
 	<p>
 		For more info on what is provided in the template context, see the
-		<a routerLink="../api" fragment="DayTemplateContext">DayTemplateContext API</a>
+		<a routerLink="../api" fragment="MonthTemplateContext">MonthTemplateContext API</a>
 	</p>
 
 	<ngbd-code [snippet]="snippets.dayTemplate"></ngbd-code>
@@ -238,7 +242,7 @@
 
 	<p>
 		You can also access this information from the
-		<a routerLink="../api" fragment="DayTemplateContext">DayTemplateContext API</a> if you're using a custom day
+		<a routerLink="../api" fragment="MonthTemplateContext">MonthTemplateContext API</a> if you're using a custom day
 		template. It contains a <code>today: boolean</code> flag since v4.1.0
 	</p>
 
@@ -315,7 +319,7 @@
 			</tr>
 			<tr>
 				<td><code>Escape</code></td>
-				<td>Closes the datepicker popup (unless <code>[autoClose]</code> is false)</td>
+				<td>Closes the monthpicker popup (unless <code>[autoClose]</code> is false)</td>
 			</tr>
 			<tr>
 				<td><code>Arrow(Up|Down|Left|Right)</code></td>
