@@ -17,7 +17,11 @@ import { ngbRunTransition } from './transition/ngbTransition';
 import { DOCUMENT } from '@angular/common';
 
 export class ContentRef {
-	constructor(public nodes: Node[][], public viewRef?: ViewRef, public componentRef?: ComponentRef<any>) {}
+	constructor(
+		public nodes: Node[][],
+		public viewRef?: ViewRef,
+		public componentRef?: ComponentRef<any>,
+	) {}
 }
 
 export class PopupService<T> {

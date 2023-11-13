@@ -14,7 +14,10 @@ export class ModalAutoCloseComponent {
 	reason = '';
 	options = {};
 
-	constructor(private modalService: NgbModal, private cd: ChangeDetectorRef) {}
+	constructor(
+		private modalService: NgbModal,
+		private cd: ChangeDetectorRef,
+	) {}
 
 	openModal(content?: TemplateRef<any>) {
 		this.modalRef = this.modalService.open(content, this.options);

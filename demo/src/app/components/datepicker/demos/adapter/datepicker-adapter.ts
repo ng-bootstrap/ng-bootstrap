@@ -74,7 +74,10 @@ export class NgbdDatepickerAdapter {
 	model1: string;
 	model2: string;
 
-	constructor(private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) {}
+	constructor(
+		private ngbCalendar: NgbCalendar,
+		private dateAdapter: NgbDateAdapter<string>,
+	) {}
 
 	get today() {
 		return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;

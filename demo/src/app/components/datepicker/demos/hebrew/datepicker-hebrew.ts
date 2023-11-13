@@ -51,7 +51,10 @@ import { JsonPipe } from '@angular/common';
 export class NgbdDatepickerHebrew {
 	model: NgbDateStruct;
 
-	constructor(private calendar: NgbCalendar, public i18n: NgbDatepickerI18n) {
+	constructor(
+		private calendar: NgbCalendar,
+		public i18n: NgbDatepickerI18n,
+	) {
 		this.dayTemplateData = this.dayTemplateData.bind(this);
 	}
 

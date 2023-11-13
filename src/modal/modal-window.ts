@@ -84,8 +84,8 @@ export class NgbModalWindow implements OnInit, OnDestroy {
 		return this.fullscreen === true
 			? ' modal-fullscreen'
 			: isString(this.fullscreen)
-			? ` modal-fullscreen-${this.fullscreen}-down`
-			: '';
+			  ? ` modal-fullscreen-${this.fullscreen}-down`
+			  : '';
 	}
 
 	dismiss(reason): void {
