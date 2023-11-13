@@ -9,7 +9,10 @@ import { NgbModal, NgbModule, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 export class OffcanvasStackConfirmationComponent {
 	@ViewChild('confirmation', { static: true, read: TemplateRef }) confirmationTpl: TemplateRef<any>;
 
-	constructor(private modalService: NgbModal, private offcanvasService: NgbOffcanvas) {}
+	constructor(
+		private modalService: NgbModal,
+		private offcanvasService: NgbOffcanvas,
+	) {}
 
 	openOffcanvas(content: TemplateRef<any>) {
 		this.offcanvasService.open(content, { beforeDismiss: () => this.modalService.open(this.confirmationTpl).result });

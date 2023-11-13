@@ -14,7 +14,10 @@ export class OffcanvasAutoCloseComponent {
 	reason = '';
 	options = {};
 
-	constructor(private offcanvasService: NgbOffcanvas, private cd: ChangeDetectorRef) {}
+	constructor(
+		private offcanvasService: NgbOffcanvas,
+		private cd: ChangeDetectorRef,
+	) {}
 
 	openOffcanvas(content?: TemplateRef<any>) {
 		this.offcanvasRef = this.offcanvasService.open(content, this.options);

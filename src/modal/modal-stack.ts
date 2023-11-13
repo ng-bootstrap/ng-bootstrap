@@ -72,8 +72,8 @@ export class NgbModalStack {
 			options.container instanceof HTMLElement
 				? options.container
 				: isDefined(options.container)
-				? this._document.querySelector(options.container!)
-				: this._document.body;
+				  ? this._document.querySelector(options.container!)
+				  : this._document.body;
 
 		if (!containerEl) {
 			throw new Error(`The specified modal container "${options.container || 'body'}" was not found in the DOM.`);

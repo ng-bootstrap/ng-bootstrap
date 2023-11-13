@@ -3,7 +3,13 @@ code[class*='language-'] {
 	color: #24292f;
 	font-size: 15px;
 	text-shadow: none;
-	font-family: source-code-pro, Menlo, Monaco, Consolas, Courier New, monospace;
+	font-family:
+		source-code-pro,
+		Menlo,
+		Monaco,
+		Consolas,
+		Courier New,
+		monospace;
 	direction: ltr;
 	text-align: left;
 	white-space: pre;

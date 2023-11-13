@@ -67,8 +67,8 @@ export class NgbOffcanvasStack {
 			options.container instanceof HTMLElement
 				? options.container
 				: isDefined(options.container)
-				? this._document.querySelector(options.container!)
-				: this._document.body;
+				  ? this._document.querySelector(options.container!)
+				  : this._document.body;
 		if (!containerEl) {
 			throw new Error(`The specified offcanvas container "${options.container || 'body'}" was not found in the DOM.`);
 		}

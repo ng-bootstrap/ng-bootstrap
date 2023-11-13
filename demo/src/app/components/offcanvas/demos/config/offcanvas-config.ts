@@ -9,7 +9,10 @@ import { NgbOffcanvasConfig, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 	providers: [NgbOffcanvasConfig, NgbOffcanvas],
 })
 export class NgbdOffcanvasConfig {
-	constructor(config: NgbOffcanvasConfig, private offcanvasService: NgbOffcanvas) {
+	constructor(
+		config: NgbOffcanvasConfig,
+		private offcanvasService: NgbOffcanvas,
+	) {
 		// customize default values of offcanvas used by this component tree
 		config.position = 'end';
 		config.backdropClass = 'bg-info';

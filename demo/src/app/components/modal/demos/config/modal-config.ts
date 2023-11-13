@@ -9,7 +9,10 @@ import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 	providers: [NgbModalConfig, NgbModal],
 })
 export class NgbdModalConfig {
-	constructor(config: NgbModalConfig, private modalService: NgbModal) {
+	constructor(
+		config: NgbModalConfig,
+		private modalService: NgbModal,
+	) {
 		// customize default values of modals used by this component tree
 		config.backdrop = 'static';
 		config.keyboard = false;

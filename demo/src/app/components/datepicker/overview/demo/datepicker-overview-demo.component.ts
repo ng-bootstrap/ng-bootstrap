@@ -18,9 +18,9 @@ import { DatePipe } from '@angular/common';
 			<h5>Vacations</h5>
 			<p>
 				from
-				<b>{{ adapter.toModel(fromDate) | date : 'mediumDate' }}</b>
+				<b>{{ adapter.toModel(fromDate) | date: 'mediumDate' }}</b>
 				to
-				<b>{{ adapter.toModel(toDate ? toDate : hoveredDate) | date : 'mediumDate' }}</b>
+				<b>{{ adapter.toModel(toDate ? toDate : hoveredDate) | date: 'mediumDate' }}</b>
 			</p>
 		</div>
 
@@ -107,7 +107,10 @@ export class NgbdDatepickerOverviewDemoComponent {
 		{ month: 12, day: 25, text: 'Christmas Day' },
 	];
 
-	constructor(private calendar: NgbCalendar, public adapter: NgbDateNativeAdapter) {
+	constructor(
+		private calendar: NgbCalendar,
+		public adapter: NgbDateNativeAdapter,
+	) {
 		this.markDisabled = this.markDisabled.bind(this);
 		this.today = calendar.getToday();
 		this.fromDate = this.getFirstAvailableDate(this.today);
