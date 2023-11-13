@@ -67,7 +67,7 @@
     "tslib": "^2.3.0"
   },
   "devDependencies": {
-    "@angular-builders/custom-webpack": "~16.0.1",
+    "@angular-builders/custom-webpack": "~17.0.0",
     "@angular-devkit/build-angular": "~17.0.0",
     "@angular-devkit/core": "~17.0.0",
     "@angular-devkit/schematics": "~17.0.0",
