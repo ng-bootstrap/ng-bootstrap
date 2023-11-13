@@ -5,6 +5,13 @@
 	"useTabs": true,
 	"overrides": [
 		{
+			"files": "*.html",
+			"options": {
+				"parser": "angular",
+				"htmlWhitespaceSensitivity": "strict"
+			}
+		},
+		{
 			"files": "src/**/*",
 			"options": {
 				"htmlWhitespaceSensitivity": "strict"
