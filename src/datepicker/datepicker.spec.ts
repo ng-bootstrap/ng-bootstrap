@@ -187,6 +187,15 @@ describe('ngb-datepicker', () => {
 		}).not.toThrowError();
 	});
 
+	it(`should accept 'startDate' values containing days`, () => {
+		const fixture = TestBed.createComponent(NgbDatepicker);
+		fixture.componentInstance.startDate = { year: 2016, month: 8, day: 3 };
+		fixture.detectChanges();
+
+		expect(getMonthSelect(fixture.nativeElement).value).toBe('8');
+		expect(getYearSelect(fixture.nativeElement).value).toBe('2016');
+	});
+
 	it('should handle incorrect startDate values', () => {
 		const fixture = createTestComponent(`<ngb-datepicker [startDate]="date"></ngb-datepicker>`);
 		const today = new Date();
