@@ -10,7 +10,7 @@
 
 <hr />
 <pre>Model: <b>{{ ctrl.value }}</b></pre>
-<button class="btn btn-sm btn-outline-{{ ctrl.disabled ? 'danger' : 'success'}} me-2" (click)="toggle()">
-	{{ ctrl.disabled ? "control disabled" : " control enabled" }}
+<button class="btn btn-sm btn-outline-{{ ctrl.disabled ? 'danger' : 'success' }} me-2" (click)="toggle()">
+	{{ ctrl.disabled ? 'control disabled' : ' control enabled' }}
 </button>
 <button class="btn btn-sm btn-outline-primary me-2" (click)="ctrl.setValue(null)">Clear</button>

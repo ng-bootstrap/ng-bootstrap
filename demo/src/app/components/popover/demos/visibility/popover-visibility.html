@@ -14,7 +14,13 @@
 <hr />
 
 <ul>
-	<li>Popover is currently: <code>{{ popover.isOpen() ? 'open' : 'closed' }}</code></li>
-	<li>Last shown at: <code>{{lastShown | date:'h:mm:ss'}}</code></li>
-	<li>Last hidden at: <code>{{lastHidden | date:'h:mm:ss'}}</code></li>
+	<li
+		>Popover is currently: <code>{{ popover.isOpen() ? 'open' : 'closed' }}</code></li
+	>
+	<li
+		>Last shown at: <code>{{ lastShown | date: 'h:mm:ss' }}</code></li
+	>
+	<li
+		>Last hidden at: <code>{{ lastHidden | date: 'h:mm:ss' }}</code></li
+	>
 </ul>

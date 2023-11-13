@@ -1,6 +1,9 @@
 <p>You can optionally pass in a context when manually triggering a tooltip.</p>
 
-<ng-template #tipContent let-greeting="greeting">{{greeting}}, <b>{{name}}</b>!</ng-template>
+<ng-template #tipContent let-greeting="greeting"
+	>{{ greeting }}, <b>{{ name }}</b
+	>!</ng-template
+>
 
 <div class="buttons">
 	<button
@@ -43,7 +46,7 @@
 		type="button"
 		class="btn btn-outline-secondary me-2"
 		[ngbTooltip]="tipContent"
-		[tooltipContext]="{greeting: '你好'}"
+		[tooltipContext]="{ greeting: '你好' }"
 	>
 		French
 	</button>
