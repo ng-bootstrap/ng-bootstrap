@@ -4,7 +4,6 @@ import { ClassDesc, MethodDesc, signature } from './api-docs.model';
 import { AnalyticsService } from '../../services/analytics.service';
 import { RouterLink } from '@angular/router';
 import { NgbdApiDocsBadge } from './api-docs-badge.component';
-import { NgFor, NgIf } from '@angular/common';
 
 /**
  * Displays the API docs of a class, which is not a directive.
@@ -14,7 +13,7 @@ import { NgFor, NgIf } from '@angular/common';
 @Component({
 	selector: 'ngbd-api-docs-class',
 	standalone: true,
-	imports: [RouterLink, NgbdApiDocsBadge, NgIf, NgFor],
+	imports: [RouterLink, NgbdApiDocsBadge],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	templateUrl: './api-docs-class.component.html',
 	styles: [

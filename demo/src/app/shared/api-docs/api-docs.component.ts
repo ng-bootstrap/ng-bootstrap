@@ -1,10 +1,9 @@
-import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import docs from '../../../api-docs';
-import { PropertyDesc, DirectiveDesc, InputDesc, MethodDesc, ClassDesc, signature } from './api-docs.model';
+import { ClassDesc, DirectiveDesc, InputDesc, MethodDesc, PropertyDesc, signature } from './api-docs.model';
 import { AnalyticsService } from '../../services/analytics.service';
 import { RouterLink } from '@angular/router';
 import { NgbdApiDocsBadge } from './api-docs-badge.component';
-import { NgFor, NgIf } from '@angular/common';
 
 /**
  * Displays the API docs of a directive.
@@ -17,7 +16,7 @@ import { NgFor, NgIf } from '@angular/common';
 @Component({
 	selector: 'ngbd-api-docs',
 	standalone: true,
-	imports: [RouterLink, NgbdApiDocsBadge, NgIf, NgFor],
+	imports: [RouterLink, NgbdApiDocsBadge],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	templateUrl: './api-docs.component.html',
 	styles: [

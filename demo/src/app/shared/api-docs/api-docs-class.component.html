@@ -24,67 +24,85 @@
 		[deprecated]="apiDocs.deprecated"
 		[since]="apiDocs.since"
 	></ngbd-api-docs-badge>
-	<p *ngIf="apiDocs.deprecated">{{ apiDocs.deprecated.description }}</p>
+	@if (apiDocs.deprecated) {
+		<p>{{ apiDocs.deprecated.description }}</p>
+	}
 	<p class="lead" [innerHTML]="apiDocs.description"></p>
 
-	<ng-template [ngIf]="apiDocs.properties && apiDocs.properties.length">
+	@if (apiDocs.properties && apiDocs.properties.length) {
 		<section>
 			<h4>Properties</h4>
 			<table class="table table-sm">
 				<tbody>
-					<tr *ngFor="let prop of apiDocs.properties" [class.deprecated]="prop.deprecated">
-						<td class="label-cell">
-							<code>{{ prop.name }}</code
-							><br />
-							<span *ngIf="prop.since" class="badge bg-info text-dark">since {{ prop.since.version }}</span
-							>&ngsp;
-							<span *ngIf="prop.deprecated" class="badge bg-secondary">deprecated {{ prop.deprecated.version }}</span>
-						</td>
-						<td class="content-cell">
-							<p *ngIf="prop.deprecated">{{ prop.deprecated.description }}</p>
-							<p class="description" [innerHTML]="prop.description"></p>
-							<div class="meta">
-								<div>
-									<i>Type: </i><code>{{ prop.type }}</code>
+					@for (prop of apiDocs.properties; track prop) {
+						<tr [class.deprecated]="prop.deprecated">
+							<td class="label-cell">
+								<code>{{ prop.name }}</code
+								><br />
+								@if (prop.since) {
+									<span class="badge bg-info text-dark">since {{ prop.since.version }}</span>
+								}
+								&ngsp;
+								@if (prop.deprecated) {
+									<span class="badge bg-secondary">deprecated {{ prop.deprecated.version }}</span>
+								}
+							</td>
+							<td class="content-cell">
+								@if (prop.deprecated) {
+									<p>{{ prop.deprecated.description }}</p>
+								}
+								<p class="description" [innerHTML]="prop.description"></p>
+								<div class="meta">
+									<div>
+										<i>Type: </i><code>{{ prop.type }}</code>
+									</div>
+									@if (prop.defaultValue) {
+										<div>
+											<i>Default value: </i><code>{{ prop.defaultValue || '-' }}</code>
+										</div>
+									}
 								</div>
-								<div *ngIf="prop.defaultValue">
-									<i>Default value: </i><code>{{ prop.defaultValue || '-' }}</code>
-								</div>
-							</div>
-						</td>
-					</tr>
+							</td>
+						</tr>
+					}
 				</tbody>
 			</table>
 		</section>
-	</ng-template>
+	}
 
-	<ng-template [ngIf]="apiDocs.methods && apiDocs.methods.length">
+	@if (apiDocs.methods && apiDocs.methods.length) {
 		<section>
 			<h4>Methods</h4>
 			<table class="table table-sm">
 				<tbody>
-					<tr *ngFor="let method of apiDocs.methods" [class.deprecated]="method.deprecated">
-						<td class="label-cell">
-							<code>{{ method.name }}</code
-							><br />
-							<span *ngIf="method.since" class="badge bg-info text-dark">since {{ method.since.version }}</span
-							>&ngsp;
-							<span *ngIf="method.deprecated" class="badge bg-secondary"
-								>deprecated {{ method.deprecated.version }}</span
-							>
-						</td>
-						<td class="content-cell">
-							<p class="signature">
-								<code>{{ methodSignature(method) }}</code
-								>&ngsp;
-								<small class="text-muted" title="Return type">=&gt; {{ method.returnType }}</small>
-							</p>
-							<p *ngIf="method.deprecated">{{ method.deprecated.description }}</p>
-							<p class="description" [innerHTML]="method.description"></p>
-						</td>
-					</tr>
+					@for (method of apiDocs.methods; track method) {
+						<tr [class.deprecated]="method.deprecated">
+							<td class="label-cell">
+								<code>{{ method.name }}</code
+								><br />
+								@if (method.since) {
+									<span class="badge bg-info text-dark">since {{ method.since.version }}</span>
+								}
+								&ngsp;
+								@if (method.deprecated) {
+									<span class="badge bg-secondary">deprecated {{ method.deprecated.version }}</span>
+								}
+							</td>
+							<td class="content-cell">
+								<p class="signature">
+									<code>{{ methodSignature(method) }}</code
+									>&ngsp;
+									<small class="text-muted" title="Return type">=&gt; {{ method.returnType }}</small>
+								</p>
+								@if (method.deprecated) {
+									<p>{{ method.deprecated.description }}</p>
+								}
+								<p class="description" [innerHTML]="method.description"></p>
+							</td>
+						</tr>
+					}
 				</tbody>
 			</table>
 		</section>
-	</ng-template>
+	}
 </div>

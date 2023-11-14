@@ -23,10 +23,12 @@
 		[deprecated]="apiDocs.deprecated"
 		[since]="apiDocs.since"
 	></ngbd-api-docs-badge>
-	<p *ngIf="apiDocs.deprecated">{{ apiDocs.deprecated.description }}</p>
+	@if (apiDocs.deprecated) {
+		<p>{{ apiDocs.deprecated.description }}</p>
+	}
 	<p class="lead" [innerHTML]="apiDocs.description"></p>
 
-	<ng-template [ngIf]="apiDocs.properties && apiDocs.properties.length">
+	@if (apiDocs.properties && apiDocs.properties.length) {
 		<section>
 			<h4>Properties</h4>
 			<p class="description">
@@ -39,5 +41,5 @@
 				Documentation available in <a routerLink="." fragment="{{ directiveName }}">{{ directiveName }}</a>
 			</p>
 		</section>
-	</ng-template>
+	}
 </div>
