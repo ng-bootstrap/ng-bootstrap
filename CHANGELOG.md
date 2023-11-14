@@ -1,3 +1,12 @@
+# [16.0.0-rc.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/16.0.0-rc.0...16.0.0-rc.1) (2023-11-14)
+
+
+### Bug Fixes
+
+* **datepicker:** `startDate` type should accept dates with days ([#4618](https://github.com/ng-bootstrap/ng-bootstrap/issues/4618)) ([81ec20a](https://github.com/ng-bootstrap/ng-bootstrap/commit/81ec20aa440b3fe9cecd2b1cd3754fa8b26a34cd)), closes [#4616](https://github.com/ng-bootstrap/ng-bootstrap/issues/4616)
+
+
+
 # [16.0.0-rc.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/15.1.2...16.0.0-rc.0) (2023-11-08)
 
 This release bumps minimum required versions to Angular `17.0.0`, Bootstrap `5.3.2` and introduces dark mode support for components and demo site.
