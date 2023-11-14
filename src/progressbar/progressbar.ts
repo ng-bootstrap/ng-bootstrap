@@ -19,6 +19,7 @@ import { NgIf, PercentPipe } from '@angular/common';
 		'aria-valuemin': '0',
 		'[attr.aria-valuemax]': 'max',
 		'[attr.aria-label]': 'ariaLabel',
+		'[style.width.%]': 'stacked ? getPercentValue() : null',
 	},
 	template: `
 		<div
@@ -27,7 +28,7 @@ import { NgIf, PercentPipe } from '@angular/common';
 			}}"
 			[class.progress-bar-animated]="animated"
 			[class.progress-bar-striped]="striped"
-			[style.width.%]="getPercentValue()"
+			[style.width.%]="!stacked ? getPercentValue() : null"
 		>
 			<span *ngIf="showValue" i18n="@@ngb.progressbar.value">{{ getValue() / max | percent }}</span
 			><ng-content></ng-content>
@@ -65,6 +66,13 @@ export class NgbProgressbar {
 	 * @since 13.1.0
 	 */
 	@Input() ariaLabel = this._config.ariaLabel;
+
+	/**
+	 * If `true`, the progress bars will be stacked.
+	 *
+	 * @since 16.0.0
+	 */
+	@Input() stacked = this._config.stacked;
 
 	/**
 	 * If `true`, the progress bars will be displayed as striped.

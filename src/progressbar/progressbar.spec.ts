@@ -45,6 +45,7 @@ describe('ngb-progressbar', () => {
 			const defaultConfig = TestBed.inject(NgbProgressbarConfig);
 			expect(progressCmp.max).toBe(defaultConfig.max);
 			expect(progressCmp.animated).toBe(defaultConfig.animated);
+			expect(progressCmp.stacked).toBe(defaultConfig.stacked);
 			expect(progressCmp.striped).toBe(defaultConfig.striped);
 			expect(progressCmp.textType).toBe(defaultConfig.textType);
 			expect(progressCmp.type).toBe(defaultConfig.type);
@@ -300,6 +301,14 @@ describe('ngb-progressbar', () => {
 			const fixture = createTestComponent(html);
 
 			expect(getAriaLabel(fixture.nativeElement)).toBe('flupke');
+		});
+
+		it('should set width on progress when stacked is true', () => {
+			const html = '<ngb-progressbar [value]="50" [stacked]="true"></ngb-progressbar>';
+			const fixture = createTestComponent(html);
+
+			expect(getBarWidth(fixture.nativeElement)).toBe('');
+			expect(getProgress(fixture.nativeElement).style.width).toBe('50%');
 		});
 	});
 

@@ -16,4 +16,5 @@ export class NgbProgressbarConfig {
 	type: string;
 	showValue = false;
 	height: string;
+	stacked = false;
 }
