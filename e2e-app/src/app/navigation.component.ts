@@ -1,30 +1,31 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 
 import { ROUTES } from './app.routes';
-import { NavigationEnd } from '@angular/router';
-import { NgFor } from '@angular/common';
 
 @Component({
 	selector: 'app-navigation',
 	standalone: true,
-	imports: [NgFor],
 	template: `
 		<a role="button" class="btn btn-outline-primary ms-3" id="navigate-home" href="#/">Menu</a>
 		<div [hidden]="isHidden">
-			<div *ngFor="let route of routes" class="card m-1 d-inline-block" style="width: 290px;">
-				<div class="card-header">{{ route.path }}</div>
-				<ul class="list-group list-group-flush">
-					<li *ngFor="let childRoute of route.children" class="list-group-item">
-						<a
-							href="#{{ route.path }}/{{ childRoute.path }}"
-							id="navigate-{{ route.path }}-{{ childRoute.path }}"
-							class="list-group-link"
-							>{{ childRoute.path }}</a
-						>
-					</li>
-				</ul>
-			</div>
+			@for (route of routes; track route) {
+				<div class="card m-1 d-inline-block" style="width: 290px;">
+					<div class="card-header">{{ route.path }}</div>
+					<ul class="list-group list-group-flush">
+						@for (childRoute of route.children; track childRoute) {
+							<li class="list-group-item">
+								<a
+									href="#{{ route.path }}/{{ childRoute.path }}"
+									id="navigate-{{ route.path }}-{{ childRoute.path }}"
+									class="list-group-link"
+									>{{ childRoute.path }}</a
+								>
+							</li>
+						}
+					</ul>
+				</div>
+			}
 		</div>
 	`,
 })
