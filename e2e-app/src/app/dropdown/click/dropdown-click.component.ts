@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
-import { NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
 	standalone: true,
-	imports: [FormsModule, NgbModule, NgIf],
+	imports: [FormsModule, NgbModule],
 	template: `
 		<h3>Dropdown click tests</h3>
 		<form>
@@ -33,10 +32,18 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 				</div>
 
 				<div class="col-12">
-					<span id="space-click" *ngIf="spaceClick" class="ms-3">SPACE-CLICK</span>
-					<span id="enter-click" *ngIf="enterClick" class="ms-3">ENTER-CLICK</span>
-					<span id="enter-key" *ngIf="enterKey" class="ms-3">ENTER-KEY</span>
-					<span id="space-key" *ngIf="spaceKey" class="ms-3">SPACE-KEY</span>
+					@if (spaceClick) {
+						<span id="space-click" class="ms-3">SPACE-CLICK</span>
+					}
+					@if (enterClick) {
+						<span id="enter-click" class="ms-3">ENTER-CLICK</span>
+					}
+					@if (enterKey) {
+						<span id="enter-key" class="ms-3">ENTER-KEY</span>
+					}
+					@if (spaceKey) {
+						<span id="space-key" class="ms-3">SPACE-KEY</span>
+					}
 				</div>
 			</div>
 		</form>
