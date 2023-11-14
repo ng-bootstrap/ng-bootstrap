@@ -24,104 +24,132 @@
 		[deprecated]="apiDocs.deprecated"
 		[since]="apiDocs.since"
 	></ngbd-api-docs-badge>
-	<p *ngIf="apiDocs.deprecated">{{ apiDocs.deprecated.description }}</p>
+	@if (apiDocs.deprecated) {
+		<p>{{ apiDocs.deprecated.description }}</p>
+	}
 	<p class="lead" [innerHTML]="apiDocs.description"></p>
 
 	<section>
 		<h4>
 			Selector: <code class="selector">{{ apiDocs.selector }}</code>
 		</h4>
-		<h6 *ngIf="apiDocs.exportAs">
-			Exported as: <code class="export-as">{{ apiDocs.exportAs }}</code>
-		</h6>
+		@if (apiDocs.exportAs) {
+			<h6>
+				Exported as: <code class="export-as">{{ apiDocs.exportAs }}</code>
+			</h6>
+		}
 	</section>
 
-	<ng-template [ngIf]="apiDocs.inputs.length">
+	@if (apiDocs.inputs.length) {
 		<section>
 			<h4>Inputs</h4>
 			<table class="table table-sm">
 				<tbody>
-					<tr *ngFor="let input of apiDocs.inputs" [class.deprecated]="input.deprecated">
-						<td class="label-cell">
-							<code>{{ input.name }}</code
-							><br />
-							<span *ngIf="input.since" class="badge bg-info text-dark">since {{ input.since.version }}</span
-							>&ngsp;
-							<span *ngIf="input.deprecated" class="badge bg-secondary">deprecated {{ input.deprecated.version }}</span>
-						</td>
-						<td class="content-cell">
-							<p *ngIf="input.deprecated">{{ input.deprecated.description }}</p>
-							<p class="description" [innerHTML]="input.description"></p>
-							<div class="meta">
-								<div>
-									<i>Type: </i><code>{{ input.type }}</code>
+					@for (input of apiDocs.inputs; track input) {
+						<tr [class.deprecated]="input.deprecated">
+							<td class="label-cell">
+								<code>{{ input.name }}</code
+								><br />
+								@if (input.since) {
+									<span class="badge bg-info text-dark">since {{ input.since.version }}</span>
+								}
+								&ngsp;
+								@if (input.deprecated) {
+									<span class="badge bg-secondary">deprecated {{ input.deprecated.version }}</span>
+								}
+							</td>
+							<td class="content-cell">
+								@if (input.deprecated) {
+									<p>{{ input.deprecated.description }}</p>
+								}
+								<p class="description" [innerHTML]="input.description"></p>
+								<div class="meta">
+									<div>
+										<i>Type: </i><code>{{ input.type }}</code>
+									</div>
+									@if (defaultInputValue(input) || hasConfigProperty(input)) {
+										<div>
+											<span
+												><i>Default value: </i><code>{{ defaultInputValue(input) || '-' }}</code></span
+											>&ngsp;
+											@if (hasConfigProperty(input)) {
+												<span>&mdash; initialized from {{ configServiceName }} service</span>
+											}
+										</div>
+									}
 								</div>
-								<div *ngIf="defaultInputValue(input) || hasConfigProperty(input)">
-									<span
-										><i>Default value: </i><code>{{ defaultInputValue(input) || '-' }}</code></span
-									>&ngsp;
-									<span *ngIf="hasConfigProperty(input)">&mdash; initialized from {{ configServiceName }} service</span>
-								</div>
-							</div>
-						</td>
-					</tr>
+							</td>
+						</tr>
+					}
 				</tbody>
 			</table>
 		</section>
-	</ng-template>
+	}
 
-	<ng-template [ngIf]="apiDocs.outputs.length">
+	@if (apiDocs.outputs.length) {
 		<section>
 			<h4>Outputs</h4>
 			<table class="table table-sm">
 				<tbody>
-					<tr *ngFor="let output of apiDocs.outputs" [class.deprecated]="output.deprecated">
-						<td class="label-cell">
-							<code>{{ output.name }}</code
-							><br />
-							<span *ngIf="output.since" class="badge bg-info text-dark">since {{ output.since.version }}</span
-							>&ngsp;
-							<span *ngIf="output.deprecated" class="badge bg-secondary"
-								>deprecated {{ output.deprecated.version }}</span
-							>
-						</td>
-						<td class="content-cell">
-							<p *ngIf="output.deprecated">{{ output.deprecated.description }}</p>
-							<p class="description" [innerHTML]="output.description"></p>
-						</td>
-					</tr>
+					@for (output of apiDocs.outputs; track output) {
+						<tr [class.deprecated]="output.deprecated">
+							<td class="label-cell">
+								<code>{{ output.name }}</code
+								><br />
+								@if (output.since) {
+									<span class="badge bg-info text-dark">since {{ output.since.version }}</span>
+								}
+								&ngsp;
+								@if (output.deprecated) {
+									<span class="badge bg-secondary">deprecated {{ output.deprecated.version }}</span>
+								}
+							</td>
+							<td class="content-cell">
+								@if (output.deprecated) {
+									<p>{{ output.deprecated.description }}</p>
+								}
+								<p class="description" [innerHTML]="output.description"></p>
+							</td>
+						</tr>
+					}
 				</tbody>
 			</table>
 		</section>
-	</ng-template>
+	}
 
-	<ng-template [ngIf]="apiDocs.methods.length && apiDocs.exportAs">
+	@if (apiDocs.methods.length && apiDocs.exportAs) {
 		<section>
 			<h4>Methods</h4>
 			<table class="table table-sm">
 				<tbody>
-					<tr *ngFor="let method of apiDocs.methods" [class.deprecated]="method.deprecated">
-						<td class="label-cell">
-							<code>{{ method.name }}</code
-							><br />
-							<span *ngIf="method.since" class="badge bg-info text-dark">since {{ method.since.version }}</span
-							>&ngsp;
-							<span *ngIf="method.deprecated" class="badge bg-secondary"
-								>deprecated {{ method.deprecated.version }}</span
-							>
-						</td>
-						<td class="content-cell">
-							<p class="signature">
-								<code>{{ methodSignature(method) }}</code
-								>&ngsp;
-								<small class="text-muted" title="Return type">=&gt; {{ method.returnType }}</small>
-							</p>
-							<p *ngIf="method.deprecated">{{ method.deprecated.description }}</p>
-							<p class="description" [innerHTML]="method.description"></p>
-						</td>
-					</tr>
+					@for (method of apiDocs.methods; track method) {
+						<tr [class.deprecated]="method.deprecated">
+							<td class="label-cell">
+								<code>{{ method.name }}</code
+								><br />
+								@if (method.since) {
+									<span class="badge bg-info text-dark">since {{ method.since.version }}</span>
+								}
+								&ngsp;
+								@if (method.deprecated) {
+									<span class="badge bg-secondary">deprecated {{ method.deprecated.version }}</span>
+								}
+							</td>
+							<td class="content-cell">
+								<p class="signature">
+									<code>{{ methodSignature(method) }}</code
+									>&ngsp;
+									<small class="text-muted" title="Return type">=&gt; {{ method.returnType }}</small>
+								</p>
+								@if (method.deprecated) {
+									<p>{{ method.deprecated.description }}</p>
+								}
+								<p class="description" [innerHTML]="method.description"></p>
+							</td>
+						</tr>
+					}
 				</tbody>
 			</table>
 		</section>
-	</ng-template>
+	}
 </div>

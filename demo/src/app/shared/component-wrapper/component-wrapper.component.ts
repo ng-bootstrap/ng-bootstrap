@@ -5,7 +5,7 @@ import { NgbdApiPage } from '../api-page/api-page.component';
 import { DemoListComponent } from '../examples-page/demo-list.component';
 import { LIB_VERSIONS } from '../../tokens';
 import { SideNavComponent } from '../side-nav/side-nav.component';
-import { AsyncPipe, NgComponentOutlet, NgFor, NgIf, TitleCasePipe } from '@angular/common';
+import { AsyncPipe, NgComponentOutlet, TitleCasePipe } from '@angular/common';
 import {
 	NgbCollapseModule,
 	NgbDropdownModule,
@@ -27,8 +27,6 @@ export type TableOfContents = { fragment: string; title: string }[];
 		NgbCollapseModule,
 		NgbDropdownModule,
 		RouterLink,
-		NgFor,
-		NgIf,
 		AsyncPipe,
 		NgComponentOutlet,
 		RouterOutlet,

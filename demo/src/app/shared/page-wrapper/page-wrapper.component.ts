@@ -7,14 +7,13 @@ import {
 	NgbScrollSpyModule,
 	NgbScrollSpyService,
 } from '@ng-bootstrap/ng-bootstrap';
-import { NgFor, NgIf } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { SideNavComponent } from '../side-nav/side-nav.component';
 
 @Component({
 	selector: 'ngbd-page-wrapper',
 	standalone: true,
-	imports: [NgbCollapseModule, NgbDropdownModule, NgbScrollSpyModule, NgIf, NgFor, RouterLink, SideNavComponent],
+	imports: [NgbCollapseModule, NgbDropdownModule, NgbScrollSpyModule, RouterLink, SideNavComponent],
 	templateUrl: './page-wrapper.component.html',
 })
 export class NgbdPageWrapper implements AfterViewInit {

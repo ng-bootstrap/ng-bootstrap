@@ -17,55 +17,58 @@
 			</svg>
 			<span class="ms-1">Code</span>
 		</button>
-		<a
-			*ngIf="showStackblitz"
-			role="button"
-			(click)="trackStackBlitzClick()"
-			class="stackblitz btn-sm btn btn-outline-secondary"
-			target="_blank"
-			href="stackblitzes/{{ component | lowercase }}/{{ fragment }}/stackblitz.html"
-			title="Edit in StackBlitz"
-		>
-			<img class="stackblitz-icon" src="img/stackblitz-icon.svg" alt="StackBlitz icon" />
-			StackBlitz
-		</a>
+		@if (showStackblitz) {
+			<a
+				role="button"
+				(click)="trackStackBlitzClick()"
+				class="stackblitz btn-sm btn btn-outline-secondary"
+				target="_blank"
+				href="stackblitzes/{{ component | lowercase }}/{{ fragment }}/stackblitz.html"
+				title="Edit in StackBlitz"
+			>
+				<img class="stackblitz-icon" src="img/stackblitz-icon.svg" alt="StackBlitz icon" />
+				StackBlitz
+			</a>
+		}
 	</h2>
 	<div class="card">
-		<div *ngIf="showCode" class="border-bottom tabset-code">
-			<ul
-				ngbNav
-				#nav="ngbNav"
-				class="nav-{{ hasManyFiles ? 'pills' : 'tabs' }}"
-				[class.d-flex]="hasManyFiles"
-				[class.flex-row]="hasManyFiles"
-				[orientation]="hasManyFiles ? 'vertical' : 'horizontal'"
-			>
-				<ng-template [ngIf]="files" [ngIfElse]="old">
-					<li ngbNavItem="{{ component }}-{{ file.name }}-{{ index }}" *ngFor="let file of files; index as index">
-						<a ngbNavLink>
-							<span class="text-truncate" [title]="tabType(file.name)">{{ file.name }}</span>
-						</a>
-						<ngbd-code *ngbNavContent [snippet]="getFileSnippet(file)"></ngbd-code>
-					</li>
-				</ng-template>
-
-				<ng-template #old>
-					<li ngbNavItem="{{ component }}-{{ fragment }}-html">
-						<a ngbNavLink>
-							<span class="ms-2">{{ component }}-{{ fragment }}.html</span>
-						</a>
-						<ngbd-code *ngbNavContent [snippet]="markupSnippet"></ngbd-code>
-					</li>
-					<li ngbNavItem="{{ component }}-{{ fragment }}-typescript">
-						<a ngbNavLink>
-							<span class="ms-2">{{ component }}-{{ fragment }}.ts</span>
-						</a>
-						<ngbd-code *ngbNavContent [snippet]="codeSnippet"></ngbd-code>
-					</li>
-				</ng-template>
-			</ul>
-			<div [ngbNavOutlet]="nav"></div>
-		</div>
+		@if (showCode) {
+			<div class="border-bottom tabset-code">
+				<ul
+					ngbNav
+					#nav="ngbNav"
+					class="nav-{{ hasManyFiles ? 'pills' : 'tabs' }}"
+					[class.d-flex]="hasManyFiles"
+					[class.flex-row]="hasManyFiles"
+					[orientation]="hasManyFiles ? 'vertical' : 'horizontal'"
+				>
+					@if (files) {
+						@for (file of files; track file; let index = $index) {
+							<li ngbNavItem="{{ component }}-{{ file.name }}-{{ index }}">
+								<a ngbNavLink>
+									<span class="text-truncate" [title]="tabType(file.name)">{{ file.name }}</span>
+								</a>
+								<ngbd-code *ngbNavContent [snippet]="getFileSnippet(file)"></ngbd-code>
+							</li>
+						}
+					} @else {
+						<li ngbNavItem="{{ component }}-{{ fragment }}-html">
+							<a ngbNavLink>
+								<span class="ms-2">{{ component }}-{{ fragment }}.html</span>
+							</a>
+							<ngbd-code *ngbNavContent [snippet]="markupSnippet"></ngbd-code>
+						</li>
+						<li ngbNavItem="{{ component }}-{{ fragment }}-typescript">
+							<a ngbNavLink>
+								<span class="ms-2">{{ component }}-{{ fragment }}.ts</span>
+							</a>
+							<ngbd-code *ngbNavContent [snippet]="codeSnippet"></ngbd-code>
+						</li>
+					}
+				</ul>
+				<div [ngbNavOutlet]="nav"></div>
+			</div>
+		}
 		<div class="card-body">
 			<ng-content></ng-content>
 		</div>
