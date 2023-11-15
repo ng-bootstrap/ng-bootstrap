@@ -1,6 +1,5 @@
 import { TestBed, ComponentFixture, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NgIf } from '@angular/common';
 import { createGenericTestComponent } from '../test/common';
 import createSpy = jasmine.createSpy;
 
@@ -130,10 +129,11 @@ describe('NgbInputDatepicker', () => {
 		});
 
 		it('should cleanup datepicker when parent container is destroyed', () => {
-			const fixture = createTestCmpt(`
-          <ng-template [ngIf]="show">
-            <input ngbDatepicker #d="ngbDatepicker">
-          </ng-template>`);
+			const fixture = createTestCmpt(
+				`@if (show) {
+           <input ngbDatepicker #d="ngbDatepicker" />
+				 }`,
+			);
 			const datepicker = fixture.debugElement.query(By.directive(NgbInputDatepicker)).injector.get(NgbInputDatepicker);
 
 			datepicker.open();
@@ -1212,7 +1212,7 @@ class TestNativeComponent {
 @Component({
 	selector: 'test-cmp',
 	standalone: true,
-	imports: [NgbDatepickerModule, FormsModule, NgIf],
+	imports: [NgbDatepickerModule, FormsModule],
 	template: '',
 })
 class TestComponent {

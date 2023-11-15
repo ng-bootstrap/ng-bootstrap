@@ -7,7 +7,7 @@ import { NgbDatepickerI18n } from './datepicker-i18n';
 	standalone: true,
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
-	styleUrls: ['./datepicker-day-view.scss'],
+	styleUrl: './datepicker-day-view.scss',
 	host: {
 		class: 'btn-light',
 		'[class.bg-primary]': 'selected',

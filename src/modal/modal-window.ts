@@ -47,11 +47,11 @@ import { isString, reflow } from '../util/util';
 			"
 			role="document"
 		>
-			<div class="modal-content"><ng-content></ng-content></div>
+			<div class="modal-content"><ng-content /></div>
 		</div>
 	`,
 	encapsulation: ViewEncapsulation.None,
-	styleUrls: ['./modal.scss'],
+	styleUrl: './modal.scss',
 })
 export class NgbModalWindow implements OnInit, OnDestroy {
 	private _document = inject(DOCUMENT);

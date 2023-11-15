@@ -1,5 +1,4 @@
 import { Component, Injectable, Injector, OnDestroy, ViewChild } from '@angular/core';
-import { NgIf } from '@angular/common';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { NgbOffcanvasConfig, NgbOffcanvasOptions } from './offcanvas-config';
 import { NgbActiveOffcanvas, NgbOffcanvas, NgbOffcanvasRef, OffcanvasDismissReasons } from './offcanvas.module';
@@ -944,7 +943,7 @@ export class WithSkipTabindexFirstFocusableOffcanvasCmpt {}
 @Component({
 	selector: 'test-cmpt',
 	standalone: true,
-	imports: [NgIf, DestroyableCmpt],
+	imports: [DestroyableCmpt],
 	template: `
 		<div id="testContainer"></div>
 		<ng-template #content>Hello, {{ name }}!</ng-template>
@@ -960,9 +959,9 @@ export class WithSkipTabindexFirstFocusableOffcanvasCmpt {}
 			<button id="dismiss" (click)="offcanvas.dismiss('myReason')">Dismiss me</button>
 		</ng-template>
 		<ng-template #contentWithIf>
-			<ng-template [ngIf]="show">
+			@if (show) {
 				<button id="if" (click)="show = false">Click me</button>
-			</ng-template>
+			}
 		</ng-template>
 		<button id="open" (click)="open('from button')">Open</button>
 		<div id="open-no-focus" (click)="open('from non focusable element')">Open</div>

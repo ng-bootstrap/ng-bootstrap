@@ -17,7 +17,7 @@ import {
 	TemplateRef,
 	ViewEncapsulation,
 } from '@angular/core';
-import { DOCUMENT, NgIf, NgTemplateOutlet } from '@angular/common';
+import { DOCUMENT, NgTemplateOutlet } from '@angular/common';
 
 import { listenToTriggers } from '../util/triggers';
 import { ngbAutoClose } from '../util/autoclose';
@@ -35,7 +35,7 @@ let nextId = 0;
 @Component({
 	selector: 'ngb-popover-window',
 	standalone: true,
-	imports: [NgTemplateOutlet, NgIf],
+	imports: [NgTemplateOutlet],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
 	host: {
@@ -45,15 +45,21 @@ let nextId = 0;
 		'[id]': 'id',
 		style: 'position: absolute;',
 	},
-	template: ` <div class="popover-arrow" data-popper-arrow></div>
-		<h3 class="popover-header" *ngIf="title">
-			<ng-template #simpleTitle>{{ title }}</ng-template>
-			<ng-template
-				[ngTemplateOutlet]="isTitleTemplate() ? $any(title) : simpleTitle"
-				[ngTemplateOutletContext]="context"
-			></ng-template>
-		</h3>
-		<div class="popover-body"><ng-content></ng-content></div>`,
+	template: `
+		<div class="popover-arrow" data-popper-arrow></div>
+		@if (title) {
+			<h3 class="popover-header">
+				<ng-template #simpleTitle>{{ title }}</ng-template>
+				<ng-template
+					[ngTemplateOutlet]="isTitleTemplate() ? $any(title) : simpleTitle"
+					[ngTemplateOutletContext]="context"
+				/>
+			</h3>
+		}
+		<div class="popover-body">
+			<ng-content />
+		</div>
+	`,
 })
 export class NgbPopoverWindow {
 	@Input() animation: boolean;

@@ -1,6 +1,5 @@
 import { fakeAsync, discardPeriodicTasks, tick, TestBed, ComponentFixture, inject } from '@angular/core/testing';
 import { createGenericTestComponent, isBrowserVisible } from '../test/common';
-import { NgFor, NgIf } from '@angular/common';
 
 import { By } from '@angular/platform-browser';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
@@ -307,7 +306,9 @@ describe('ngb-carousel', () => {
       <ngb-carousel #c [interval]="0">
         <ng-template ngbSlide>foo</ng-template>
         <ng-template ngbSlide>bar</ng-template>
-        <ng-template ngbSlide *ngIf="addNewSlide">baz</ng-template>
+        @if (addNewSlide) {
+        	<ng-template ngbSlide>baz</ng-template>
+        }
       </ngb-carousel>
       <button id="next" (click)="c.next(); addNewSlide = true">Next</button>
     `;
@@ -325,9 +326,11 @@ describe('ngb-carousel', () => {
 	it('should mark component for check when slides change', () => {
 		const html = `
       <ngb-carousel #c [interval]="0">
-        <ng-template ngbSlide *ngFor="let s of slides">
-          <div class="slide">{{ s }}</div>
-        </ng-template>
+      	@for (s of slides; track slide) {
+					<ng-template ngbSlide>
+						<div class="slide">{{ s }}</div>
+					</ng-template>
+        }
       </ngb-carousel>
     `;
 
@@ -1142,7 +1145,7 @@ class TestComponentOnPush {}
 @Component({
 	selector: 'test-cmp',
 	standalone: true,
-	imports: [NgbCarousel, NgbSlide, NgIf, NgFor, TestComponentOnPush],
+	imports: [NgbCarousel, NgbSlide, TestComponentOnPush],
 	template: '',
 })
 class TestComponent {

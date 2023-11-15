@@ -350,14 +350,14 @@ describe('ngb-dropdown', () => {
 
 	it('should cleanup dropdown when parent container is destroyed', () => {
 		const fixture = createTestComponent(`
-          <ng-template [ngIf]="show">
+          @if (show) {
             <div ngbDropdown>
               <button ngbDropdownAnchor></button>
               <div ngbDropdownMenu>
                 <a class="dropdown-item">dropdown item</a>
               </div>
             </div>
-          </ng-template>`);
+          }`);
 		const dropdown = fixture.debugElement.query(By.directive(NgbDropdown)).injector.get(NgbDropdown);
 		const menuEl = getMenuEl(fixture.nativeElement);
 

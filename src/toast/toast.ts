@@ -22,7 +22,7 @@ import { take } from 'rxjs/operators';
 import { NgbToastConfig } from './toast-config';
 import { ngbRunTransition } from '../util/transition/ngbTransition';
 import { ngbToastFadeInTransition, ngbToastFadeOutTransition } from './toast-transition';
-import { NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 
 /**
  * This directive allows the usage of HTML markup or other directives
@@ -43,7 +43,7 @@ export class NgbToastHeader {}
 	selector: 'ngb-toast',
 	exportAs: 'ngbToast',
 	standalone: true,
-	imports: [NgIf, NgTemplateOutlet],
+	imports: [NgTemplateOutlet],
 	encapsulation: ViewEncapsulation.None,
 	host: {
 		role: 'alert',
@@ -56,9 +56,9 @@ export class NgbToastHeader {}
 		<ng-template #headerTpl>
 			<strong class="me-auto">{{ header }}</strong>
 		</ng-template>
-		<ng-template [ngIf]="contentHeaderTpl || header">
+		@if (contentHeaderTpl || header) {
 			<div class="toast-header">
-				<ng-template [ngTemplateOutlet]="contentHeaderTpl || headerTpl"></ng-template>
+				<ng-template [ngTemplateOutlet]="contentHeaderTpl || headerTpl" />
 				<button
 					type="button"
 					class="btn-close"
@@ -68,12 +68,12 @@ export class NgbToastHeader {}
 				>
 				</button>
 			</div>
-		</ng-template>
+		}
 		<div class="toast-body">
-			<ng-content></ng-content>
+			<ng-content />
 		</div>
 	`,
-	styleUrls: ['./toast.scss'],
+	styleUrl: './toast.scss',
 })
 export class NgbToast implements AfterContentInit, OnChanges {
 	private _config = inject(NgbToastConfig);

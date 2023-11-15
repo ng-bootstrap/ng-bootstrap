@@ -18,7 +18,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ngbNavFadeInTransition, ngbNavFadeOutTransition } from './nav-transition';
 import { ngbRunTransition, NgbTransitionOptions } from '../util/transition/ngbTransition';
 import { NgbNav, NgbNavItem } from './nav';
-import { NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 
 @Directive({
 	selector: '[ngbNavPane]',
@@ -47,25 +47,23 @@ export class NgbNavPane {
 @Component({
 	selector: '[ngbNavOutlet]',
 	standalone: true,
-	imports: [NgbNavPane, NgFor, NgIf, NgTemplateOutlet],
-	host: { '[class.tab-content]': 'true' },
+	imports: [NgbNavPane, NgTemplateOutlet],
+	host: {
+		'[class.tab-content]': 'true',
+	},
 	encapsulation: ViewEncapsulation.None,
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	template: `
-		<ng-template ngFor let-item [ngForOf]="nav.items">
-			<div
-				ngbNavPane
-				*ngIf="item.isPanelInDom() || isPanelTransitioning(item)"
-				[item]="item"
-				[nav]="nav"
-				[role]="paneRole"
-			>
-				<ng-template
-					[ngTemplateOutlet]="item.contentTpl?.templateRef || null"
-					[ngTemplateOutletContext]="{ $implicit: item.active || isPanelTransitioning(item) }"
-				></ng-template>
-			</div>
-		</ng-template>
+		@for (item of nav.items; track item) {
+			@if (item.isPanelInDom() || isPanelTransitioning(item)) {
+				<div ngbNavPane [item]="item" [nav]="nav" [role]="paneRole">
+					<ng-template
+						[ngTemplateOutlet]="item.contentTpl?.templateRef || null"
+						[ngTemplateOutletContext]="{ $implicit: item.active || isPanelTransitioning(item) }"
+					/>
+				</div>
+			}
+		}
 	`,
 })
 export class NgbNavOutlet implements AfterViewInit {

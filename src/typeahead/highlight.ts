@@ -1,6 +1,5 @@
-import { Component, Input, OnChanges, ChangeDetectionStrategy, SimpleChanges, ViewEncapsulation } from '@angular/core';
-import { regExpEscape, toString, removeAccents } from '../util/util';
-import { NgFor, NgIf } from '@angular/common';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import { regExpEscape, removeAccents, toString } from '../util/util';
 
 /**
  * A component that helps with text highlighting.
@@ -13,14 +12,18 @@ import { NgFor, NgIf } from '@angular/common';
 @Component({
 	selector: 'ngb-highlight',
 	standalone: true,
-	imports: [NgIf, NgFor],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
-	template:
-		`<ng-template ngFor [ngForOf]="parts" let-part let-isOdd="odd">` +
-		`<span *ngIf="isOdd; else even" [class]="highlightClass">{{part}}</span><ng-template #even>{{part}}</ng-template>` +
-		`</ng-template>`, // template needs to be formatted in a certain way so we don't add empty text nodes
-	styleUrls: ['./highlight.scss'],
+	template: `
+		@for (part of parts; track part; let odd = $odd) {
+			@if (odd) {
+				<span class="{{ highlightClass }}">{{ part }}</span>
+			} @else {
+				<ng-container>{{ part }}</ng-container>
+			}
+		}
+	`,
+	styleUrl: './highlight.scss',
 })
 export class NgbHighlight implements OnChanges {
 	parts: string[];

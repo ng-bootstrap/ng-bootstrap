@@ -2,7 +2,6 @@ import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/cor
 import { createGenericTestComponent } from '../test/common';
 
 import { Component } from '@angular/core';
-import { NgIf } from '@angular/common';
 
 import { NgbPaginationModule } from './pagination.module';
 import { NgbPagination } from './pagination';
@@ -836,7 +835,12 @@ describe('ngb-pagination', () => {
 	});
 });
 
-@Component({ selector: 'test-cmp', standalone: true, imports: [NgbPaginationModule, NgIf], template: '' })
+@Component({
+	selector: 'test-cmp',
+	standalone: true,
+	imports: [NgbPaginationModule],
+	template: '',
+})
 class TestComponent {
 	disabled = false;
 	pageSize = 10;
@@ -855,7 +859,7 @@ class TestComponent {
 @Component({
 	selector: 'test-page-cmp',
 	standalone: true,
-	imports: [NgbPaginationModule, NgIf],
+	imports: [NgbPaginationModule],
 	template: `<ngb-pagination
 		[collectionSize]="collectionSize"
 		[page]="page"
@@ -863,11 +867,13 @@ class TestComponent {
 		[disabled]="disabled"
 	>
 		<ng-template ngbPaginationPages let-page let-pages="pages" let-disabled="disabled">
-			<li *ngIf="pages.length > 0">
-				<label>Pages</label>
-				<input type="text" inputmode="numeric" pattern="[0-9]*" [disabled]="disabled" [value]="page" />
-				<span>of {{ pages.length }}</span>
-			</li>
+			@if (pages.length > 0) {
+				<li>
+					<label>Pages</label>
+					<input type="text" inputmode="numeric" pattern="[0-9]*" [disabled]="disabled" [value]="page" />
+					<span>of {{ pages.length }}</span>
+				</li>
+			}
 		</ng-template>
 	</ngb-pagination>`,
 })

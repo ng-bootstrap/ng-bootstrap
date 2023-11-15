@@ -9,7 +9,6 @@ import {
 	Output,
 	ViewEncapsulation,
 } from '@angular/core';
-import { NgIf } from '@angular/common';
 
 import { Observable } from 'rxjs';
 
@@ -26,7 +25,6 @@ import { ngbAlertFadingTransition } from './alert-transition';
 	selector: 'ngb-alert',
 	exportAs: 'ngbAlert',
 	standalone: true,
-	imports: [NgIf],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
 	host: {
@@ -36,18 +34,18 @@ import { ngbAlertFadingTransition } from './alert-transition';
 		'[class.alert-dismissible]': 'dismissible',
 	},
 	template: `
-		<ng-content></ng-content>
-		<button
-			*ngIf="dismissible"
-			type="button"
-			class="btn-close"
-			aria-label="Close"
-			i18n-aria-label="@@ngb.alert.close"
-			(click)="close()"
-		>
-		</button>
+		<ng-content />
+		@if (dismissible) {
+			<button
+				type="button"
+				class="btn-close"
+				aria-label="Close"
+				i18n-aria-label="@@ngb.alert.close"
+				(click)="close()"
+			></button>
+		}
 	`,
-	styleUrls: ['./alert.scss'],
+	styleUrl: './alert.scss',
 })
 export class NgbAlert {
 	private _config = inject(NgbAlertConfig);

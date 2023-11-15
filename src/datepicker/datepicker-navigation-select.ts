@@ -13,15 +13,13 @@ import {
 import { NgbDate } from './ngb-date';
 import { toInteger } from '../util/util';
 import { NgbDatepickerI18n } from './datepicker-i18n';
-import { NgFor } from '@angular/common';
 
 @Component({
 	selector: 'ngb-datepicker-navigation-select',
 	standalone: true,
-	imports: [NgFor],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
-	styleUrls: ['./datepicker-navigation-select.scss'],
+	styleUrl: './datepicker-navigation-select.scss',
 	template: `
 		<select
 			#month
@@ -33,9 +31,11 @@ import { NgFor } from '@angular/common';
 			title="Select month"
 			(change)="changeMonth($any($event).target.value)"
 		>
-			<option *ngFor="let m of months" [attr.aria-label]="i18n.getMonthFullName(m, date.year)" [value]="m">{{
-				i18n.getMonthShortName(m, date.year)
-			}}</option> </select
+			@for (m of months; track m) {
+				<option [attr.aria-label]="i18n.getMonthFullName(m, date.year)" [value]="m">{{
+					i18n.getMonthShortName(m, date.year)
+				}}</option>
+			}</select
 		><select
 			#year
 			[disabled]="disabled"
@@ -46,7 +46,9 @@ import { NgFor } from '@angular/common';
 			title="Select year"
 			(change)="changeYear($any($event).target.value)"
 		>
-			<option *ngFor="let y of years" [value]="y">{{ i18n.getYearNumerals(y) }}</option>
+			@for (y of years; track y) {
+				<option [value]="y">{{ i18n.getYearNumerals(y) }}</option>
+			}
 		</select>
 	`,
 })
