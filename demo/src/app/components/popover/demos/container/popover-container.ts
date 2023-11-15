@@ -6,6 +6,10 @@ import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 	standalone: true,
 	imports: [NgbPopoverModule],
 	templateUrl: './popover-container.html',
-	styles: ['.card { overflow: hidden }'],
+	styles: `
+			.card {
+				overflow: hidden;
+			}
+		`,
 })
 export class NgbdPopoverContainer {}

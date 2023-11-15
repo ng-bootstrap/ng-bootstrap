@@ -72,16 +72,10 @@ const states = [
 	standalone: true,
 	imports: [NgbTypeaheadModule, FormsModule, JsonPipe],
 	templateUrl: './typeahead-format.html',
-	styles: [
-		`
-			.form-control {
-				width: 300px;
-			}
-		`,
-	],
+	styles: `.form-control { width: 300px; }`,
 })
 export class NgbdTypeaheadFormat {
-	public model: any;
+	model: any;
 
 	formatter = (result: string) => result.toUpperCase();
 

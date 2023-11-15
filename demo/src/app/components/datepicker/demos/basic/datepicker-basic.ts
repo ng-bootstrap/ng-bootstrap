@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { NgbDateStruct, NgbCalendar, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import { Component, inject } from '@angular/core';
+import { NgbCalendar, NgbDatepickerModule, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
 
@@ -10,12 +10,8 @@ import { JsonPipe } from '@angular/common';
 	templateUrl: './datepicker-basic.html',
 })
 export class NgbdDatepickerBasic {
+	today = inject(NgbCalendar).getToday();
+
 	model: NgbDateStruct;
 	date: { year: number; month: number };
-
-	constructor(private calendar: NgbCalendar) {}
-
-	selectToday() {
-		this.model = this.calendar.getToday();
-	}
 }

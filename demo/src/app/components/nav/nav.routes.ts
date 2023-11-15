@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 import { ComponentWrapper } from '../../shared/component-wrapper/component-wrapper.component';
 import { NgbdApiPage } from '../../shared/api-page/api-page.component';
 import { DemoListComponent } from '../../shared/examples-page/demo-list.component';

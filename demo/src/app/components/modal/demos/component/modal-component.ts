@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -18,14 +18,18 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 	`,
 })
 export class NgbdModalContent {
-	@Input() name;
+	activeModal = inject(NgbActiveModal);
 
-	constructor(public activeModal: NgbActiveModal) {}
+	@Input() name: string;
 }
 
-@Component({ selector: 'ngbd-modal-component', standalone: true, templateUrl: './modal-component.html' })
+@Component({
+	selector: 'ngbd-modal-component',
+	standalone: true,
+	templateUrl: './modal-component.html',
+})
 export class NgbdModalComponent {
-	constructor(private modalService: NgbModal) {}
+	private modalService = inject(NgbModal);
 
 	open() {
 		const modalRef = this.modalService.open(NgbdModalContent);

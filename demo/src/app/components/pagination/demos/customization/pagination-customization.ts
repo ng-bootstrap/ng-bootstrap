@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
 import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgIf } from '@angular/common';
 
 const FILTER_PAG_REGEX = /[^0-9]/g;
 
 @Component({
 	selector: 'ngbd-pagination-customization',
 	standalone: true,
-	imports: [NgbPaginationModule, NgIf],
+	imports: [NgbPaginationModule],
 	templateUrl: './pagination-customization.html',
 })
 export class NgbdPaginationCustomization {

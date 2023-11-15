@@ -1,14 +1,12 @@
 import { Component } from '@angular/core';
-import { NgIf } from '@angular/common';
 import { NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
 	selector: 'ngbd-rating-decimal',
 	standalone: true,
-	imports: [NgbRatingModule, NgIf],
+	imports: [NgbRatingModule],
 	templateUrl: './rating-decimal.html',
-	styles: [
-		`
+	styles: `
 			i {
 				position: relative;
 				display: inline-block;
@@ -25,10 +23,9 @@ import { NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
 				left: 0;
 			}
 		`,
-	],
 })
 export class NgbdRatingDecimal {
-	currentRate = 3.14;
+	rating = 3.14;
 
 	ariaValueText(current: number, max: number) {
 		return `${current} out of ${max} hearts`;

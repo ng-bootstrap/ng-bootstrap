@@ -1,10 +1,10 @@
-import { Component, Injectable } from '@angular/core';
+import { Component, inject, Injectable } from '@angular/core';
 import {
-	NgbDateStruct,
 	NgbCalendar,
-	NgbDatepickerI18n,
 	NgbCalendarPersian,
+	NgbDatepickerI18n,
 	NgbDatepickerModule,
+	NgbDateStruct,
 } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
@@ -39,12 +39,7 @@ export class NgbDatepickerI18nPersian extends NgbDatepickerI18n {
 	],
 })
 export class NgbdDatepickerJalali {
+	today = inject(NgbCalendar).getToday();
 	model: NgbDateStruct;
 	date: { year: number; month: number };
-
-	constructor(private calendar: NgbCalendar) {}
-
-	selectToday() {
-		this.model = this.calendar.getToday();
-	}
 }

@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { NgbDate, NgbCalendar, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import { Component, inject } from '@angular/core';
+import { NgbCalendar, NgbDate, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
 
@@ -32,15 +32,11 @@ import { JsonPipe } from '@angular/common';
 	],
 })
 export class NgbdDatepickerRange {
+	calendar = inject(NgbCalendar);
+
 	hoveredDate: NgbDate | null = null;
-
-	fromDate: NgbDate;
-	toDate: NgbDate | null = null;
-
-	constructor(calendar: NgbCalendar) {
-		this.fromDate = calendar.getToday();
-		this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
-	}
+	fromDate: NgbDate = this.calendar.getToday();
+	toDate: NgbDate | null = this.calendar.getNext(this.fromDate, 'd', 10);
 
 	onDateSelection(date: NgbDate) {
 		if (!this.fromDate && !this.toDate) {

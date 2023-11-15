@@ -15,7 +15,7 @@ import { PageHeaderComponent } from '../../../shared/page-header.component';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	templateUrl: './datepicker-overview.component.html',
 	host: {
-		'[class.overview]': 'true',
+		class: 'overview',
 	},
 })
 export class NgbdDatepickerOverviewComponent {
@@ -127,14 +127,14 @@ export class NgbdDatepickerOverviewComponent {
 		contentTemplate: Snippet({
 			lang: 'html',
 			code: `
-        <ngb-datepicker #datepicker
-                        [startDate]="{month: 8, year: 2016}"
-                        [displayMonths]="2">
+        <ngb-datepicker #datepicker [startDate]="{month: 8, year: 2016}" [displayMonths]="2">
           <ng-template ngbDatepickerContent>
-            <div *ngFor="let monthStruct of datepicker.state.months">
-              <span>{{i18n.getMonthFullName(monthStruct.month)}} {{monthStruct.year}}</span>
-              <ngb-datepicker-month-view [month]="monthStruct"></ngb-datepicker-month-view>
-            </div>
+            @for (monthStruct of datepicker.state.months; track monthStruct) {
+              <div>
+                <span>{{ i18n.getMonthFullName(monthStruct.month) }} {{ monthStruct.year }}</span>
+                <ngb-datepicker-month-view [month]="monthStruct"></ngb-datepicker-month-view>
+              </div>
+            }
           </ng-template>
         </ngb-datepicker>
       `,
@@ -151,7 +151,9 @@ export class NgbdDatepickerOverviewComponent {
 			lang: 'html',
 			code: `
         <ng-template #t let-today="today">
-          <span *ngIf="today">...</span>
+          @if (today) {
+            <span>...</span>
+          }
         </ng-template>
 
         <ngbDatepicker [dayTemplate]=“t”/>

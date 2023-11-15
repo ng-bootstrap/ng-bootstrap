@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 import { Component } from '@angular/core';
 
 import { Snippet } from '../../../services/snippet';
@@ -11,7 +10,7 @@ import { NgbdDatepickerBuddhist } from '../demos/buddhist/datepicker-buddhist';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 import { CodeComponent } from '../../../shared/code.component';
 import { NgbdWidgetDemoComponent } from '../../../shared/examples-page/demo.component';
-import { NgComponentOutlet, NgFor } from '@angular/common';
+import { NgComponentOutlet } from '@angular/common';
 
 export const DEMOS = [
 	{
@@ -54,7 +53,7 @@ export const DEMOS = [
 @Component({
 	selector: 'ngbd-datepicker-calendars',
 	standalone: true,
-	imports: [NgbAlertModule, CodeComponent, NgbdWidgetDemoComponent, NgComponentOutlet, NgFor],
+	imports: [NgbAlertModule, CodeComponent, NgbdWidgetDemoComponent, NgComponentOutlet],
 	template: `
 		<p>
 			Datepicker relies on <code>NgbCalendar</code> abstract class for calendar-related calculations. Default
@@ -90,16 +89,17 @@ export const DEMOS = [
 
 		<br />
 
-		<ngbd-widget-demo
-			*ngFor="let demo of demos"
-			[fragment]="demo.fragment"
-			[demoTitle]="demo.title"
-			[code]="demo.code"
-			[markup]="demo.markup"
-			component="datepicker"
-		>
-			<ng-template [ngComponentOutlet]="demo.type"></ng-template>
-		</ngbd-widget-demo>
+		@for (demo of demos; track demo) {
+			<ngbd-widget-demo
+				[fragment]="demo.fragment"
+				[demoTitle]="demo.title"
+				[code]="demo.code"
+				[markup]="demo.markup"
+				component="datepicker"
+			>
+				<ng-template [ngComponentOutlet]="demo.type"></ng-template>
+			</ngbd-widget-demo>
+		}
 	`,
 })
 export class NgbdDatepickerCalendarsComponent extends DemoListComponent {

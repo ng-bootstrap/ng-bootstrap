@@ -1,20 +1,20 @@
-import { Component, Injectable } from '@angular/core';
+import { Component, inject, Injectable } from '@angular/core';
 import {
-	NgbDateStruct,
 	NgbCalendar,
-	NgbDatepickerI18n,
 	NgbCalendarBuddhist,
+	NgbDatepickerI18n,
 	NgbDatepickerModule,
+	NgbDateStruct,
 } from '@ng-bootstrap/ng-bootstrap';
 import localeThai from '@angular/common/locales/th';
 import {
-	getLocaleDayNames,
-	FormStyle,
-	TranslationWidth,
-	getLocaleMonthNames,
 	formatDate,
-	registerLocaleData,
+	FormStyle,
+	getLocaleDayNames,
+	getLocaleMonthNames,
 	JsonPipe,
+	registerLocaleData,
+	TranslationWidth,
 } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -70,12 +70,8 @@ export class NgbDatepickerI18nBuddhist extends NgbDatepickerI18n {
 	],
 })
 export class NgbdDatepickerBuddhist {
+	today = inject(NgbCalendar).getToday();
+
 	model: NgbDateStruct;
 	date: { year: number; month: number };
-
-	constructor(private calendar: NgbCalendar) {}
-
-	selectToday() {
-		this.model = this.calendar.getToday();
-	}
 }

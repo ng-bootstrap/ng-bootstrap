@@ -2,10 +2,11 @@
 
 <p>We use <code>bootstrap-icons</code> to display stars</p>
 
-<ngb-rating [(rate)]="currentRate">
+<ngb-rating [(rate)]="rating">
 	<ng-template let-fill="fill" let-index="index">
 		<i class="bi-star{{ fill === 100 ? '-fill' : '' }}" [class.filled]="fill === 100" [class.low]="index < 3"></i>
 	</ng-template>
 </ngb-rating>
+
 <hr />
-<pre>Rate: <b>{{currentRate}}</b></pre>
+<pre>Rate: <b>{{rating}}</b></pre>

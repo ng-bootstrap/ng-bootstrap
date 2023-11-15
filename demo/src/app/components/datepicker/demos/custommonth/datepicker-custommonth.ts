@@ -1,11 +1,10 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { NgbDatepicker, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgFor } from '@angular/common';
 
 @Component({
 	selector: 'ngbd-datepicker-custommonth',
 	standalone: true,
-	imports: [NgbDatepickerModule, NgFor],
+	imports: [NgbDatepickerModule],
 	templateUrl: './datepicker-custommonth.html',
 	encapsulation: ViewEncapsulation.None,
 	styles: [

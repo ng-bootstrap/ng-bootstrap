@@ -72,16 +72,10 @@ const states = [
 	standalone: true,
 	imports: [NgbTypeaheadModule, FormsModule, JsonPipe],
 	templateUrl: './typeahead-basic.html',
-	styles: [
-		`
-			.form-control {
-				width: 300px;
-			}
-		`,
-	],
+	styles: `.form-control { width: 300px; }`,
 })
 export class NgbdTypeaheadBasic {
-	public model: any;
+	model: any;
 
 	search: OperatorFunction<string, readonly string[]> = (text$: Observable<string>) =>
 		text$.pipe(

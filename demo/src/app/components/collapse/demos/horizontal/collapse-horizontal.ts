@@ -8,5 +8,5 @@ import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 	templateUrl: './collapse-horizontal.html',
 })
 export class NgbdCollapseHorizontal {
-	public isCollapsed = false;
+	isCollapsed = false;
 }

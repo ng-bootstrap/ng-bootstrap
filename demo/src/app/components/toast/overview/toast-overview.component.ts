@@ -31,15 +31,18 @@ export class NgbdToastOverviewComponent {
 		lang: 'html',
 		code: `
       <!-- Using *ngIf to toggle display (showToast = true initially) -->
-      <ngb-toast header="I can be closed!" *ngIf="showToast" (hide)="showToast = false">
-        <!-- Content here -->
-      </ngb-toast>
+      @if (showToast) {
+        <ngb-toast header="I can be closed!" (hidden)="showToast = false">
+          <!-- Content here -->
+        </ngb-toast>
+      }
 
       <!-- or looping over a collection of toasts with *ngFor -->
-      <ngb-toast [header]="'Toast #'+index+' here!'"
-        *ngFor="let toast of toasts; index as index" (hide)="toasts.splice(index, 1)">
-        <!-- Content here -->
-      </ngb-toast>`,
+      @for (toast of toasts; track toast; let i = $index) {
+        <ngb-toast [header]="'Toast #'+index+' here!'" (hidden)="toasts.splice(i, 1)">
+          <!-- Content here -->
+        </ngb-toast>
+      }`,
 	});
 
 	APP_TOAST_SERVICE = Snippet({
@@ -72,11 +75,13 @@ export class NgbdToastOverviewComponent {
 	APP_TOASTS_CONTAINER_TPL = Snippet({
 		lang: 'html',
 		code: `
-      <ngb-toast
-        *ngFor="let toast of toastService.toasts"
-        [header]="toast.header" [autohide]="true" [delay]="toast.delay || 5000"
-        (hiddden)="toastService.remove(toast)"
-      >{{toast.body}}</ngb-toast>`,
+      @for (toast of toastService.toasts; track toast) {
+        <ngb-toast
+          [header]="toast.header" [autohide]="true" [delay]="toast.delay || 5000"
+          (hidden)="toastService.remove(toast)"
+        >{{ toast.body }}</ngb-toast>
+      }
+`,
 	});
 
 	APP_TOASTS_CONTAINER_STYLES = Snippet({

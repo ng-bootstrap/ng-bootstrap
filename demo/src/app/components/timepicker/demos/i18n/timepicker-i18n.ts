@@ -1,4 +1,4 @@
-import { Component, Injectable } from '@angular/core';
+import { Component, inject, Injectable } from '@angular/core';
 import { NgbAlertModule, NgbTimepickerI18n, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
@@ -18,9 +18,7 @@ export class I18n {
 // Define custom service providing the "AM" and "PM" translations.
 @Injectable()
 export class CustomTimepickerI18n extends NgbTimepickerI18n {
-	constructor(private _i18n: I18n) {
-		super();
-	}
+	private _i18n = inject(I18n);
 
 	getMorningPeriod(): string {
 		return I18N_VALUES[this._i18n.language].periods[0];
@@ -36,7 +34,13 @@ export class CustomTimepickerI18n extends NgbTimepickerI18n {
 	standalone: true,
 	imports: [NgbTimepickerModule, NgbAlertModule, FormsModule, JsonPipe],
 	templateUrl: './timepicker-i18n.html',
-	providers: [I18n, { provide: NgbTimepickerI18n, useClass: CustomTimepickerI18n }], // define custom NgbTimepickerI18n provider
+	providers: [
+		I18n,
+		{
+			provide: NgbTimepickerI18n,
+			useClass: CustomTimepickerI18n,
+		},
+	], // define custom NgbTimepickerI18n provider
 })
 export class NgbdTimepickerI18n {
 	model = { hour: 13, minute: 30 };

@@ -1,10 +1,14 @@
 <p>NgModel and reactive forms can be used without the 'rate' binding</p>
 
 <div class="mb-3">
-	<ngb-rating [formControl]="ctrl"></ngb-rating>
+	<ngb-rating [formControl]="ctrl" />
+
 	<div class="form-text small">
-		<div *ngIf="ctrl.valid" class="text-success">Thanks!</div>
-		<div *ngIf="ctrl.invalid" class="text-danger">Please rate us</div>
+		@if (ctrl.valid) {
+			<div class="text-success">Thanks!</div>
+		} @else {
+			<div class="text-danger">Please rate us</div>
+		}
 	</div>
 </div>
 

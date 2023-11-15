@@ -7,11 +7,6 @@ import { NgbAccordionDirective, NgbAccordionModule } from '@ng-bootstrap/ng-boot
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	imports: [NgbAccordionModule, NgbAccordionDirective],
 	template: `
-		<style>
-			.form-group {
-				margin-bottom: 0.5rem;
-			}
-		</style>
 		<div ngbAccordion [closeOthers]="true">
 			<div ngbAccordionItem>
 				<h2 ngbAccordionHeader>

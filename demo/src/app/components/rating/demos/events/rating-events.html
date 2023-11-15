@@ -1,9 +1,11 @@
-<ngb-rating [(rate)]="selected" (hover)="hovered = $event" (leave)="hovered = 0" [readonly]="readonly"></ngb-rating>
+<ngb-rating [(rate)]="selected" (hover)="hovered = $event" (leave)="hovered = 0" [readonly]="readonly" />
 <hr />
+
 <pre>
-Selected: <b>{{selected}}</b>
-Hovered: <b>{{hovered}}</b>
+Selected: <b>{{ selected }}</b>
+Hovered: <b>{{ hovered }}</b>
 </pre>
+
 <button class="btn btn-sm btn-outline-{{ readonly ? 'danger' : 'success' }}" (click)="readonly = !readonly">
 	{{ readonly ? 'readonly' : 'editable' }}
 </button>

@@ -1,3 +1,7 @@
+<ng-template #standardTpl> I'm a standard toast </ng-template>
+
+<ng-template #successTpl> I'm a success toast </ng-template>
+
 <ng-template #dangerTpl>
 	<svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="24" height="24" viewBox="0 0 24 24">
 		<path
@@ -10,9 +14,11 @@
 <p>Please click one of the button to see a Toast being displayed in the top right corner of your screen:</p>
 
 <div class="buttons">
-	<button class="btn btn-primary" (click)="showStandard()" ngbTooltip="Will disappear in 5s">Standard toast</button
+	<button class="btn btn-primary" (click)="showStandard(standardTpl)" ngbTooltip="Will disappear in 5s"
+		>Standard toast</button
 	>&nbsp;
-	<button class="btn btn-success" (click)="showSuccess()" ngbTooltip="Will disappear in 10s">Success toast</button
+	<button class="btn btn-success" (click)="showSuccess(successTpl)" ngbTooltip="Will disappear in 10s"
+		>Success toast</button
 	>&nbsp;
 	<button class="btn btn-danger" (click)="showDanger(dangerTpl)" ngbTooltip="Will disappear in 15s">Danger toast</button
 	>&nbsp;

@@ -34,9 +34,11 @@
 	<li [ngbNavItem]="3">
 		<button ngbNavLink>Three</button>
 		<ng-template ngbNavContent let-active>
-			<ngb-alert *ngIf="active" [dismissible]="false" class="d-block mt-3">
-				While tab content DOM is never destroyed, this alert exists only when current tab is active
-			</ngb-alert>
+			@if (active) {
+				<ngb-alert [dismissible]="false" class="d-block mt-3">
+					While tab content DOM is never destroyed, this alert exists only when current tab is active
+				</ngb-alert>
+			}
 
 			<p>
 				Sed commodo, leo at suscipit dictum, quam est porttitor sapien, eget sodales nibh elit id diam. Nulla facilisi.

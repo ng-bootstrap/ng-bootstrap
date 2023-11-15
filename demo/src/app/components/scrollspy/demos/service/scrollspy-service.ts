@@ -1,11 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { NgbScrollSpyModule, NgbScrollSpyService } from '@ng-bootstrap/ng-bootstrap';
-import { NgForOf } from '@angular/common';
 
 @Component({
 	selector: 'ngbd-scrollspy-service',
 	standalone: true,
-	imports: [NgbScrollSpyModule, NgForOf],
+	imports: [NgbScrollSpyModule],
 	templateUrl: './scrollspy-service.html',
 	providers: [NgbScrollSpyService],
 })

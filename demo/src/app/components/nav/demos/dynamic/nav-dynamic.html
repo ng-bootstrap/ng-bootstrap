@@ -1,13 +1,15 @@
 <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
-	<li *ngFor="let id of tabs" [ngbNavItem]="id">
-		<button ngbNavLink>
-			Tab {{ id }}
-			<span class="btn-close ms-2 fw-light" (click)="close($event, id)"></span>
-		</button>
-		<ng-template ngbNavContent>
-			<p>Tab {{ id }} content</p>
-		</ng-template>
-	</li>
+	@for (id of navs; track id) {
+		<li [ngbNavItem]="id">
+			<button ngbNavLink>
+				Tab {{ id }}
+				<span class="btn-close ms-3 fw-light" (click)="close($event, id)"></span>
+			</button>
+			<ng-template ngbNavContent>
+				<p>Tab {{ id }} content</p>
+			</ng-template>
+		</li>
+	}
 	<li class="nav-item" role="presentation">
 		<button type="button" class="nav-link" (click)="add($event)">...</button>
 	</li>

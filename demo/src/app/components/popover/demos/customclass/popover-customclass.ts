@@ -7,16 +7,14 @@ import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 	imports: [NgbPopoverModule],
 	templateUrl: './popover-customclass.html',
 	encapsulation: ViewEncapsulation.None,
-	styles: [
-		`
-			.my-custom-class {
-				background: aliceblue;
-				font-size: 125%;
-			}
-			.my-custom-class .arrow::after {
-				border-top-color: aliceblue;
-			}
-		`,
-	],
+	styles: `
+		.my-custom-class {
+			background: aliceblue;
+			font-size: 125%;
+		}
+		.my-custom-class .arrow::after {
+			border-top-color: aliceblue;
+		}
+	`,
 })
 export class NgbdPopoverCustomclass {}

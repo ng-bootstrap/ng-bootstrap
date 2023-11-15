@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { NgbActiveOffcanvas, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -31,9 +31,8 @@ import { NgbActiveOffcanvas, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 	],
 })
 export class NgbdOffcanvasContent {
-	@Input() name;
-
-	constructor(public activeOffcanvas: NgbActiveOffcanvas) {}
+	activeOffcanvas = inject(NgbActiveOffcanvas);
+	@Input() name: string;
 }
 
 @Component({
@@ -42,7 +41,7 @@ export class NgbdOffcanvasContent {
 	templateUrl: './offcanvas-component.html',
 })
 export class NgbdOffcanvasComponent {
-	constructor(private offcanvasService: NgbOffcanvas) {}
+	private offcanvasService = inject(NgbOffcanvas);
 
 	open() {
 		const offcanvasRef = this.offcanvasService.open(NgbdOffcanvasContent);

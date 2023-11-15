@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NgbCalendar, NgbDate, NgbDatepickerModule, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 
@@ -32,9 +32,9 @@ import { FormsModule } from '@angular/forms';
 	],
 })
 export class NgbdDatepickerCustomday {
-	model: NgbDateStruct;
+	private calendar = inject(NgbCalendar);
 
-	constructor(private calendar: NgbCalendar) {}
+	model: NgbDateStruct;
 
 	isDisabled = (date: NgbDate, current: { month: number; year: number }) => date.month !== current.month;
 	isWeekend = (date: NgbDate) => this.calendar.getWeekday(date) >= 6;

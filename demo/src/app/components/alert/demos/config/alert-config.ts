@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgbAlertConfig, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -10,8 +10,6 @@ import { NgbAlertConfig, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 	providers: [NgbAlertConfig],
 })
 export class NgbdAlertConfig {
-	@Input() public alerts: Array<string> = [];
-
 	constructor(alertConfig: NgbAlertConfig) {
 		// customize default values of alerts used by this component tree
 		alertConfig.type = 'success';

@@ -3,7 +3,9 @@
 	<ngb-toast [autohide]="false"> I am a simple static toast. </ngb-toast>
 
 	<h6 class="mt-4">With a text header</h6>
-	<ngb-toast *ngIf="show" header="Hello" [autohide]="false" (hidden)="show = false">
-		I am a simple static toast with a header.
-	</ngb-toast>
+	@if (show) {
+		<ngb-toast header="Hello" [autohide]="false" (hidden)="show = false">
+			I am a simple static toast with a header.
+		</ngb-toast>
+	}
 </div>

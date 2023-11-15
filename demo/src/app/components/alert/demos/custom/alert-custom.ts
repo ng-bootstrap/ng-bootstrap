@@ -6,14 +6,12 @@ import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 	standalone: true,
 	imports: [NgbAlertModule],
 	templateUrl: './alert-custom.html',
-	styles: [
-		`
-			:host .alert-custom {
+	styles: `
+			.alert-custom {
 				color: #99004d;
 				background-color: #f169b4;
 				border-color: #800040;
 			}
 		`,
-	],
 })
 export class NgbdAlertCustom {}

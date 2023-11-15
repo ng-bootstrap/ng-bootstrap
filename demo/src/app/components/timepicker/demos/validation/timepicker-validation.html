@@ -2,12 +2,22 @@
 
 <div class="mb-3">
 	<ngb-timepicker [formControl]="ctrl" required></ngb-timepicker>
-	<div *ngIf="ctrl.valid" class="small form-text text-success">Great choice</div>
-	<div *ngIf="ctrl.errors" class="small form-text text-danger">
-		<div *ngIf="ctrl.errors['required']">Select some time during lunchtime</div>
-		<div *ngIf="ctrl.errors['tooLate']">Oh no, it's way too late</div>
-		<div *ngIf="ctrl.errors['tooEarly']">It's a bit too early</div>
-	</div>
+	@if (ctrl.valid) {
+		<div class="small form-text text-success">Great choice</div>
+	}
+	@if (ctrl.errors) {
+		<div class="small form-text text-danger">
+			@if (ctrl.errors['required']) {
+				<div>Select some time during lunchtime</div>
+			}
+			@if (ctrl.errors['tooLate']) {
+				<div>Oh no, it's way too late</div>
+			}
+			@if (ctrl.errors['tooEarly']) {
+				<div>It's a bit too early</div>
+			}
+		</div>
+	}
 </div>
 
 <hr />

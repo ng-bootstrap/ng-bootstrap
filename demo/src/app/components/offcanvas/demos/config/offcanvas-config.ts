@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { NgbOffcanvasConfig, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
+import { Component, TemplateRef } from '@angular/core';
+import { NgbOffcanvas, NgbOffcanvasConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
 	selector: 'ngbd-offcanvas-config',
@@ -19,7 +19,7 @@ export class NgbdOffcanvasConfig {
 		config.keyboard = false;
 	}
 
-	open(content) {
+	open(content: TemplateRef<any>) {
 		this.offcanvasService.open(content);
 	}
 }

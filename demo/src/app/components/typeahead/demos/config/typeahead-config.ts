@@ -71,17 +71,11 @@ const states = [
 	standalone: true,
 	imports: [NgbTypeaheadModule, FormsModule],
 	templateUrl: './typeahead-config.html',
-	styles: [
-		`
-			.form-control {
-				width: 300px;
-			}
-		`,
-	],
+	styles: `.form-control { width: 300px; }`,
 	providers: [NgbTypeaheadConfig], // add NgbTypeaheadConfig to the component providers
 })
 export class NgbdTypeaheadConfig {
-	public model: any;
+	model: any;
 
 	constructor(config: NgbTypeaheadConfig) {
 		// customize default values of typeaheads used by this component tree
