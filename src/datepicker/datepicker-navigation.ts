@@ -1,25 +1,24 @@
 import {
+	ChangeDetectionStrategy,
 	Component,
+	EventEmitter,
+	inject,
 	Input,
 	Output,
-	EventEmitter,
-	ChangeDetectionStrategy,
 	ViewEncapsulation,
-	inject,
 } from '@angular/core';
-import { NavigationEvent, MonthViewModel } from './datepicker-view-model';
+import { MonthViewModel, NavigationEvent } from './datepicker-view-model';
 import { NgbDate } from './ngb-date';
 import { NgbDatepickerI18n } from './datepicker-i18n';
-import { NgFor, NgIf } from '@angular/common';
 import { NgbDatepickerNavigationSelect } from './datepicker-navigation-select';
 
 @Component({
 	selector: 'ngb-datepicker-navigation',
 	standalone: true,
-	imports: [NgIf, NgFor, NgbDatepickerNavigationSelect],
+	imports: [NgbDatepickerNavigationSelect],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
-	styleUrls: ['./datepicker-navigation.scss'],
+	styleUrl: './datepicker-navigation.scss',
 	template: `
 		<div class="ngb-dp-arrow ngb-dp-arrow-prev">
 			<button
@@ -35,24 +34,30 @@ import { NgbDatepickerNavigationSelect } from './datepicker-navigation-select';
 				<span class="ngb-dp-navigation-chevron"></span>
 			</button>
 		</div>
-		<ngb-datepicker-navigation-select
-			*ngIf="showSelect"
-			class="ngb-dp-navigation-select"
-			[date]="date"
-			[disabled]="disabled"
-			[months]="selectBoxes.months"
-			[years]="selectBoxes.years"
-			(select)="select.emit($event)"
-		>
-		</ngb-datepicker-navigation-select>
+		@if (showSelect) {
+			<ngb-datepicker-navigation-select
+				class="ngb-dp-navigation-select"
+				[date]="date"
+				[disabled]="disabled"
+				[months]="selectBoxes.months"
+				[years]="selectBoxes.years"
+				(select)="select.emit($event)"
+			/>
+		}
 
-		<ng-template *ngIf="!showSelect" ngFor let-month [ngForOf]="months" let-i="index">
-			<div class="ngb-dp-arrow" *ngIf="i > 0"></div>
-			<div class="ngb-dp-month-name">
-				{{ i18n.getMonthLabel(month.firstDate) }}
-			</div>
-			<div class="ngb-dp-arrow" *ngIf="i !== months.length - 1"></div>
-		</ng-template>
+		@if (!showSelect) {
+			@for (month of months; track month; let i = $index) {
+				@if (i > 0) {
+					<div class="ngb-dp-arrow"></div>
+				}
+				<div class="ngb-dp-month-name">
+					{{ i18n.getMonthLabel(month.firstDate) }}
+				</div>
+				@if (i !== months.length - 1) {
+					<div class="ngb-dp-arrow"></div>
+				}
+			}
+		}
 		<div class="ngb-dp-arrow ngb-dp-arrow-next">
 			<button
 				type="button"

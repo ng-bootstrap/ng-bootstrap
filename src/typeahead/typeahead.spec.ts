@@ -12,9 +12,8 @@ import { ARIA_LIVE_DELAY } from '../util/accessibility/live';
 import { Key } from '../util/key';
 import { NgbTypeahead } from './typeahead';
 import { NgbTypeaheadConfig } from './typeahead-config';
-import { NgIf } from '@angular/common';
-import createSpy = jasmine.createSpy;
 import { NgbHighlight } from './highlight';
+import createSpy = jasmine.createSpy;
 
 const createTestComponent = (html: string) =>
 	createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -751,7 +750,11 @@ describe('ngb-typeahead', () => {
 
 		it('should properly destroy typeahead window when the "container" option is used', () => {
 			const selector = 'body';
-			const fixture = createTestComponent(`<input *ngIf="show" [ngbTypeahead]="find" container="${selector}"/>`);
+			const fixture = createTestComponent(
+				`@if (show) {
+					<input [ngbTypeahead]="find" container="${selector}"/>
+				}`,
+			);
 
 			changeInput(fixture.nativeElement, 'one');
 			fixture.detectChanges();
@@ -1093,7 +1096,7 @@ describe('ngb-typeahead', () => {
 @Component({
 	selector: 'test-cmp',
 	standalone: true,
-	imports: [NgbHighlight, NgbTypeahead, FormsModule, ReactiveFormsModule, NgIf],
+	imports: [NgbHighlight, NgbTypeahead, FormsModule, ReactiveFormsModule],
 	template: '',
 })
 class TestComponent {

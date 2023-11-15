@@ -14,7 +14,6 @@ import {
 	AfterViewInit,
 	NgZone,
 } from '@angular/core';
-import { NgIf } from '@angular/common';
 
 import { NgbPopover, NgbPopoverWindow } from './popover';
 import { NgbPopoverConfig } from './popover-config';
@@ -429,7 +428,9 @@ describe('ngb-popover', () => {
 
 		it('should not leave dangling popovers in the DOM', () => {
 			const fixture = createTestComponent(
-				`<ng-template [ngIf]="show"><div ngbPopover="Great tip!" popoverTitle="Title"></div></ng-template>`,
+				`@if (show) {
+					<div ngbPopover="Great tip!" popoverTitle="Title"></div>
+				}`,
 			);
 			const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
@@ -443,9 +444,11 @@ describe('ngb-popover', () => {
 		});
 
 		it('should properly cleanup popovers with manual triggers', () => {
-			const fixture = createTestComponent(`<ng-template [ngIf]="show">
-                                            <div ngbPopover="Great tip!" triggers="manual" #p="ngbPopover" (mouseenter)="p.open()"></div>
-                                        </ng-template>`);
+			const fixture = createTestComponent(
+				`@if (show) {
+					<div ngbPopover="Great tip!" triggers="manual" #p="ngbPopover" (mouseenter)="p.open()"></div>
+				}`,
+			);
 			const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
 			triggerEvent(directive, 'mouseenter');
@@ -466,10 +469,11 @@ describe('ngb-popover', () => {
 		});
 
 		it('should cleanup popover when parent container is destroyed', () => {
-			const fixture = createTestComponent(`
-          <ng-template [ngIf]="show">
-            <div ngbPopover="Great popover!" [animation]="true"></div>
-          </ng-template>`);
+			const fixture = createTestComponent(
+				`@if (show) {
+           <div ngbPopover="Great popover!" [animation]="true"></div>
+         }`,
+			);
 			const popover = fixture.debugElement.query(By.directive(NgbPopover)).injector.get(NgbPopover);
 
 			popover.open();
@@ -612,7 +616,9 @@ describe('ngb-popover', () => {
 		it('should properly destroy popovers when the "container" option is used', () => {
 			const selector = 'body';
 			const fixture = createTestComponent(
-				`<div *ngIf="show" ngbPopover="Great tip!" container="` + selector + `"></div>`,
+				`@if (show) {
+					<div ngbPopover="Great tip!" container="${selector}"></div>
+				}`,
 			);
 			const directive = fixture.debugElement.query(By.directive(NgbPopover));
 
@@ -1123,7 +1129,7 @@ export class DestroyableCmpt implements OnDestroy {
 @Component({
 	selector: 'test-cmpt',
 	standalone: true,
-	imports: [NgbPopover, NgbTooltip, NgIf, DestroyableCmpt],
+	imports: [NgbPopover, NgbTooltip, DestroyableCmpt],
 	template: ``,
 })
 export class TestComponent {

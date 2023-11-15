@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { NgFor, NgIf } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NgbNav, NgbNavConfig, NgbNavItem, NgbNavLinkBase, NgbNavModule, NgbNavOutlet } from './nav.module';
@@ -298,10 +297,12 @@ describe('nav', () => {
 	it(`should work with dynamically generated navs`, () => {
 		const fixture = createTestComponent(`
       <ul ngbNav #n="ngbNav" [(activeId)]="activeId" class="nav-tabs">
-        <li *ngFor="let item of items" [ngbNavItem]="item">
-            <button ngbNavLink>link {{ item }}</button>
-            <ng-template ngbNavContent>content {{ item }}</ng-template>
-        </li>
+      	@for (item of items; track item) {
+					<li [ngbNavItem]="item">
+							<button ngbNavLink>link {{ item }}</button>
+							<ng-template ngbNavContent>content {{ item }}</ng-template>
+					</li>
+        }
       </ul>
       <div [ngbNavOutlet]="n"></div>
     `);
@@ -337,14 +338,16 @@ describe('nav', () => {
 	it(`should work with conditional nav items`, () => {
 		const fixture = createTestComponent(`
       <ul ngbNav #n="ngbNav" [(activeId)]="activeId" class="nav-tabs">
-        <li [ngbNavItem]="1" *ngIf="visible">
-            <button ngbNavLink>link 1</button>
-            <ng-template ngbNavContent>content 1</ng-template>
-        </li>
-        <li [ngbNavItem]="2" *ngIf="visible">
-            <button ngbNavLink>link 2</button>
-            <ng-template ngbNavContent>content 2</ng-template>
-        </li>
+      	@if (visible) {
+					<li [ngbNavItem]="1">
+							<button ngbNavLink>link 1</button>
+							<ng-template ngbNavContent>content 1</ng-template>
+					</li>
+					<li [ngbNavItem]="2">
+							<button ngbNavLink>link 2</button>
+							<ng-template ngbNavContent>content 2</ng-template>
+					</li>
+        }
       </ul>
       <div [ngbNavOutlet]="n"></div>
     `);
@@ -1516,7 +1519,7 @@ if (isBrowserVisible('ngb-nav animations')) {
 	});
 }
 
-@Component({ selector: 'test-cmp', template: '', standalone: true, imports: [NgbNavModule, NgFor, NgIf] })
+@Component({ selector: 'test-cmp', template: '', standalone: true, imports: [NgbNavModule] })
 class TestComponent {
 	activeId;
 	disabled = true;

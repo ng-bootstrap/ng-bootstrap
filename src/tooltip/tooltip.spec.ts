@@ -11,7 +11,6 @@ import {
 	ViewChild,
 	ViewContainerRef,
 } from '@angular/core';
-import { NgIf } from '@angular/common';
 
 import { NgbTooltip, NgbTooltipWindow } from './tooltip';
 import { NgbTooltipConfig } from './tooltip-config';
@@ -317,7 +316,9 @@ describe('ngb-tooltip', () => {
 
 		it('should not leave dangling tooltips in the DOM', () => {
 			const fixture = createTestComponent(
-				`<ng-template [ngIf]="show"><div ngbTooltip="Great tip!"></div></ng-template>`,
+				`@if (show) {
+					<div ngbTooltip="Great tip!"></div>
+				}`,
 			);
 			const directive = fixture.debugElement.query(By.directive(NgbTooltip));
 
@@ -331,10 +332,11 @@ describe('ngb-tooltip', () => {
 		});
 
 		it('should properly cleanup tooltips with manual triggers', () => {
-			const fixture = createTestComponent(`
-            <ng-template [ngIf]="show">
-              <div ngbTooltip="Great tip!" triggers="manual" #t="ngbTooltip" (mouseenter)="t.open()"></div>
-            </ng-template>`);
+			const fixture = createTestComponent(
+				`@if (show) {
+						<div ngbTooltip="Great tip!" triggers="manual" #t="ngbTooltip" (mouseenter)="t.open()"></div>
+				}`,
+			);
 			const directive = fixture.debugElement.query(By.directive(NgbTooltip));
 
 			triggerEvent(directive, 'mouseenter');
@@ -356,10 +358,11 @@ describe('ngb-tooltip', () => {
 		});
 
 		it('should cleanup tooltip when parent container is destroyed', () => {
-			const fixture = createTestComponent(`
-          <ng-template [ngIf]="show">
-            <div ngbTooltip="Great tip!" [animation]="true"></div>
-          </ng-template>`);
+			const fixture = createTestComponent(
+				`@if (show) {
+				  <div ngbTooltip="Great tip!" [animation]="true"></div>
+         }`,
+			);
 			const tooltip = fixture.debugElement.query(By.directive(NgbTooltip)).injector.get(NgbTooltip);
 
 			tooltip.open();
@@ -626,7 +629,9 @@ describe('ngb-tooltip', () => {
 		it('should properly destroy tooltips when the "container" option is used', () => {
 			const selector = 'body';
 			const fixture = createTestComponent(
-				`<div *ngIf="show" ngbTooltip="Great tip!" container="` + selector + `"></div>`,
+				`@if (show) {
+					<div ngbTooltip="Great tip!" container="${selector}"></div>
+				}`,
 			);
 			const directive = fixture.debugElement.query(By.directive(NgbTooltip));
 
@@ -1003,7 +1008,7 @@ if (isBrowserVisible('ngb-tooltip animations')) {
 	});
 }
 
-@Component({ selector: 'test-cmpt', standalone: true, imports: [NgbTooltip, NgIf], template: `` })
+@Component({ selector: 'test-cmpt', standalone: true, imports: [NgbTooltip], template: `` })
 export class TestComponent {
 	name: string | null = 'World';
 	animation = false;

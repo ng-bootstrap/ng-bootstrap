@@ -24,7 +24,7 @@ import {
 	ViewEncapsulation,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { NgbCalendar } from './ngb-calendar';
@@ -126,44 +126,49 @@ export class NgbDatepickerContent {
 @Component({
 	selector: 'ngb-datepicker-month',
 	standalone: true,
-	imports: [NgIf, NgFor, NgTemplateOutlet],
-	host: { role: 'grid', '(keydown)': 'onKeyDown($event)' },
+	imports: [NgTemplateOutlet],
+	host: {
+		role: 'grid',
+		'(keydown)': 'onKeyDown($event)',
+	},
 	encapsulation: ViewEncapsulation.None,
-	styleUrls: ['./datepicker-month.scss'],
+	styleUrl: './datepicker-month.scss',
 	template: `
-		<div *ngIf="viewModel.weekdays.length > 0" class="ngb-dp-week ngb-dp-weekdays" role="row">
-			<div *ngIf="datepicker.showWeekNumbers" class="ngb-dp-weekday ngb-dp-showweek small">{{
-				i18n.getWeekLabel()
-			}}</div>
-			<div *ngFor="let weekday of viewModel.weekdays" class="ngb-dp-weekday small" role="columnheader">{{
-				weekday
-			}}</div>
-		</div>
-		<ng-template ngFor let-week [ngForOf]="viewModel.weeks">
-			<div *ngIf="!week.collapsed" class="ngb-dp-week" role="row">
-				<div *ngIf="datepicker.showWeekNumbers" class="ngb-dp-week-number small text-muted">{{
-					i18n.getWeekNumerals(week.number)
-				}}</div>
-				<div
-					*ngFor="let day of week.days"
-					(click)="doSelect(day); $event.preventDefault()"
-					class="ngb-dp-day"
-					role="gridcell"
-					[class.disabled]="day.context.disabled"
-					[tabindex]="day.tabindex"
-					[class.hidden]="day.hidden"
-					[class.ngb-dp-today]="day.context.today"
-					[attr.aria-label]="day.ariaLabel"
-				>
-					<ng-template [ngIf]="!day.hidden">
-						<ng-template
-							[ngTemplateOutlet]="datepicker.dayTemplate"
-							[ngTemplateOutletContext]="day.context"
-						></ng-template>
-					</ng-template>
-				</div>
+		@if (viewModel.weekdays.length > 0) {
+			<div class="ngb-dp-week ngb-dp-weekdays" role="row">
+				@if (datepicker.showWeekNumbers) {
+					<div class="ngb-dp-weekday ngb-dp-showweek small">{{ i18n.getWeekLabel() }}</div>
+				}
+				@for (weekday of viewModel.weekdays; track weekday) {
+					<div class="ngb-dp-weekday small" role="columnheader">{{ weekday }}</div>
+				}
 			</div>
-		</ng-template>
+		}
+		@for (week of viewModel.weeks; track week) {
+			@if (!week.collapsed) {
+				<div class="ngb-dp-week" role="row">
+					@if (datepicker.showWeekNumbers) {
+						<div class="ngb-dp-week-number small text-muted">{{ i18n.getWeekNumerals(week.number) }}</div>
+					}
+					@for (day of week.days; track day) {
+						<div
+							(click)="doSelect(day); $event.preventDefault()"
+							class="ngb-dp-day"
+							role="gridcell"
+							[class.disabled]="day.context.disabled"
+							[tabindex]="day.tabindex"
+							[class.hidden]="day.hidden"
+							[class.ngb-dp-today]="day.context.today"
+							[attr.aria-label]="day.ariaLabel"
+						>
+							@if (!day.hidden) {
+								<ng-template [ngTemplateOutlet]="datepicker.dayTemplate" [ngTemplateOutletContext]="day.context" />
+							}
+						</div>
+					}
+				</div>
+			}
+		}
 	`,
 })
 export class NgbDatepickerMonth {
@@ -206,11 +211,13 @@ export class NgbDatepickerMonth {
 	exportAs: 'ngbDatepicker',
 	selector: 'ngb-datepicker',
 	standalone: true,
-	imports: [NgIf, NgFor, NgTemplateOutlet, NgbDatepickerDayView, NgbDatepickerMonth, NgbDatepickerNavigation],
+	imports: [NgTemplateOutlet, NgbDatepickerDayView, NgbDatepickerMonth, NgbDatepickerNavigation],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
-	styleUrls: ['./datepicker.scss'],
-	host: { '[class.disabled]': 'model.disabled' },
+	styleUrl: './datepicker.scss',
+	host: {
+		'[class.disabled]': 'model.disabled',
+	},
 	template: `
 		<ng-template
 			#defaultDayTemplate
@@ -232,28 +239,32 @@ export class NgbDatepickerMonth {
 		</ng-template>
 
 		<ng-template #defaultContentTemplate>
-			<div *ngFor="let month of model.months; let i = index" class="ngb-dp-month">
-				<div *ngIf="navigation === 'none' || (displayMonths > 1 && navigation === 'select')" class="ngb-dp-month-name">
-					{{ i18n.getMonthLabel(month.firstDate) }}
+			@for (month of model.months; track month; let i = $index) {
+				<div class="ngb-dp-month">
+					@if (navigation === 'none' || (displayMonths > 1 && navigation === 'select')) {
+						<div class="ngb-dp-month-name">
+							{{ i18n.getMonthLabel(month.firstDate) }}
+						</div>
+					}
+					<ngb-datepicker-month [month]="month.firstDate" />
 				</div>
-				<ngb-datepicker-month [month]="month.firstDate"></ngb-datepicker-month>
-			</div>
+			}
 		</ng-template>
 
 		<div class="ngb-dp-header">
-			<ngb-datepicker-navigation
-				*ngIf="navigation !== 'none'"
-				[date]="model.firstDate!"
-				[months]="model.months"
-				[disabled]="model.disabled"
-				[showSelect]="model.navigation === 'select'"
-				[prevDisabled]="model.prevDisabled"
-				[nextDisabled]="model.nextDisabled"
-				[selectBoxes]="model.selectBoxes"
-				(navigate)="onNavigateEvent($event)"
-				(select)="onNavigateDateSelect($event)"
-			>
-			</ngb-datepicker-navigation>
+			@if (navigation !== 'none') {
+				<ngb-datepicker-navigation
+					[date]="model.firstDate!"
+					[months]="model.months"
+					[disabled]="model.disabled"
+					[showSelect]="model.navigation === 'select'"
+					[prevDisabled]="model.prevDisabled"
+					[nextDisabled]="model.nextDisabled"
+					[selectBoxes]="model.selectBoxes"
+					(navigate)="onNavigateEvent($event)"
+					(select)="onNavigateDateSelect($event)"
+				/>
+			}
 		</div>
 
 		<div class="ngb-dp-content" [class.ngb-dp-months]="!contentTemplate" #content>
@@ -261,10 +272,10 @@ export class NgbDatepickerMonth {
 				[ngTemplateOutlet]="contentTemplate || contentTemplateFromContent?.templateRef || defaultContentTemplate"
 				[ngTemplateOutletContext]="{ $implicit: this }"
 				[ngTemplateOutletInjector]="injector"
-			></ng-template>
+			/>
 		</div>
 
-		<ng-template [ngTemplateOutlet]="footerTemplate"></ng-template>
+		<ng-template [ngTemplateOutlet]="footerTemplate" />
 	`,
 	providers: [
 		{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NgbDatepicker), multi: true },

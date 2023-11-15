@@ -14,7 +14,6 @@ import { NgbTime } from './ngb-time';
 import { NgbTimepickerConfig } from './timepicker-config';
 import { NgbTimeAdapter } from './ngb-time-adapter';
 import { NgbTimepickerI18n } from './timepicker-i18n';
-import { NgIf } from '@angular/common';
 
 const FILTER_REGEX = /[^0-9]/g;
 
@@ -25,27 +24,27 @@ const FILTER_REGEX = /[^0-9]/g;
 	exportAs: 'ngbTimepicker',
 	selector: 'ngb-timepicker',
 	standalone: true,
-	imports: [NgIf],
 	encapsulation: ViewEncapsulation.None,
-	styleUrls: ['./timepicker.scss'],
+	styleUrl: './timepicker.scss',
 	template: `
 		<fieldset [disabled]="disabled" [class.disabled]="disabled">
 			<div class="ngb-tp">
 				<div class="ngb-tp-input-container ngb-tp-hour">
-					<button
-						*ngIf="spinners"
-						tabindex="-1"
-						type="button"
-						(click)="changeHour(hourStep)"
-						class="btn btn-link"
-						[class.btn-sm]="isSmallSize"
-						[class.btn-lg]="isLargeSize"
-						[class.disabled]="disabled"
-						[disabled]="disabled"
-					>
-						<span class="chevron ngb-tp-chevron"></span>
-						<span class="visually-hidden" i18n="@@ngb.timepicker.increment-hours">Increment hours</span>
-					</button>
+					@if (spinners) {
+						<button
+							tabindex="-1"
+							type="button"
+							(click)="changeHour(hourStep)"
+							class="btn btn-link"
+							[class.btn-sm]="isSmallSize"
+							[class.btn-lg]="isLargeSize"
+							[class.disabled]="disabled"
+							[disabled]="disabled"
+						>
+							<span class="chevron ngb-tp-chevron"></span>
+							<span class="visually-hidden" i18n="@@ngb.timepicker.increment-hours">Increment hours</span>
+						</button>
+					}
 					<input
 						type="text"
 						class="ngb-tp-input form-control"
@@ -66,37 +65,39 @@ const FILTER_REGEX = /[^0-9]/g;
 						(keydown.ArrowUp)="changeHour(hourStep); $event.preventDefault()"
 						(keydown.ArrowDown)="changeHour(-hourStep); $event.preventDefault()"
 					/>
-					<button
-						*ngIf="spinners"
-						tabindex="-1"
-						type="button"
-						(click)="changeHour(-hourStep)"
-						class="btn btn-link"
-						[class.btn-sm]="isSmallSize"
-						[class.btn-lg]="isLargeSize"
-						[class.disabled]="disabled"
-						[disabled]="disabled"
-					>
-						<span class="chevron ngb-tp-chevron bottom"></span>
-						<span class="visually-hidden" i18n="@@ngb.timepicker.decrement-hours">Decrement hours</span>
-					</button>
+					@if (spinners) {
+						<button
+							tabindex="-1"
+							type="button"
+							(click)="changeHour(-hourStep)"
+							class="btn btn-link"
+							[class.btn-sm]="isSmallSize"
+							[class.btn-lg]="isLargeSize"
+							[class.disabled]="disabled"
+							[disabled]="disabled"
+						>
+							<span class="chevron ngb-tp-chevron bottom"></span>
+							<span class="visually-hidden" i18n="@@ngb.timepicker.decrement-hours">Decrement hours</span>
+						</button>
+					}
 				</div>
 				<div class="ngb-tp-spacer">:</div>
 				<div class="ngb-tp-input-container ngb-tp-minute">
-					<button
-						*ngIf="spinners"
-						tabindex="-1"
-						type="button"
-						(click)="changeMinute(minuteStep)"
-						class="btn btn-link"
-						[class.btn-sm]="isSmallSize"
-						[class.btn-lg]="isLargeSize"
-						[class.disabled]="disabled"
-						[disabled]="disabled"
-					>
-						<span class="chevron ngb-tp-chevron"></span>
-						<span class="visually-hidden" i18n="@@ngb.timepicker.increment-minutes">Increment minutes</span>
-					</button>
+					@if (spinners) {
+						<button
+							tabindex="-1"
+							type="button"
+							(click)="changeMinute(minuteStep)"
+							class="btn btn-link"
+							[class.btn-sm]="isSmallSize"
+							[class.btn-lg]="isLargeSize"
+							[class.disabled]="disabled"
+							[disabled]="disabled"
+						>
+							<span class="chevron ngb-tp-chevron"></span>
+							<span class="visually-hidden" i18n="@@ngb.timepicker.increment-minutes">Increment minutes</span>
+						</button>
+					}
 					<input
 						type="text"
 						class="ngb-tp-input form-control"
@@ -117,89 +118,97 @@ const FILTER_REGEX = /[^0-9]/g;
 						(keydown.ArrowUp)="changeMinute(minuteStep); $event.preventDefault()"
 						(keydown.ArrowDown)="changeMinute(-minuteStep); $event.preventDefault()"
 					/>
-					<button
-						*ngIf="spinners"
-						tabindex="-1"
-						type="button"
-						(click)="changeMinute(-minuteStep)"
-						class="btn btn-link"
-						[class.btn-sm]="isSmallSize"
-						[class.btn-lg]="isLargeSize"
-						[class.disabled]="disabled"
-						[disabled]="disabled"
-					>
-						<span class="chevron ngb-tp-chevron bottom"></span>
-						<span class="visually-hidden" i18n="@@ngb.timepicker.decrement-minutes">Decrement minutes</span>
-					</button>
+					@if (spinners) {
+						<button
+							tabindex="-1"
+							type="button"
+							(click)="changeMinute(-minuteStep)"
+							class="btn btn-link"
+							[class.btn-sm]="isSmallSize"
+							[class.btn-lg]="isLargeSize"
+							[class.disabled]="disabled"
+							[disabled]="disabled"
+						>
+							<span class="chevron ngb-tp-chevron bottom"></span>
+							<span class="visually-hidden" i18n="@@ngb.timepicker.decrement-minutes">Decrement minutes</span>
+						</button>
+					}
 				</div>
-				<div *ngIf="seconds" class="ngb-tp-spacer">:</div>
-				<div *ngIf="seconds" class="ngb-tp-input-container ngb-tp-second">
-					<button
-						*ngIf="spinners"
-						tabindex="-1"
-						type="button"
-						(click)="changeSecond(secondStep)"
-						class="btn btn-link"
-						[class.btn-sm]="isSmallSize"
-						[class.btn-lg]="isLargeSize"
-						[class.disabled]="disabled"
-						[disabled]="disabled"
-					>
-						<span class="chevron ngb-tp-chevron"></span>
-						<span class="visually-hidden" i18n="@@ngb.timepicker.increment-seconds">Increment seconds</span>
-					</button>
-					<input
-						type="text"
-						class="ngb-tp-input form-control"
-						[class.form-control-sm]="isSmallSize"
-						[class.form-control-lg]="isLargeSize"
-						maxlength="2"
-						inputmode="numeric"
-						placeholder="SS"
-						i18n-placeholder="@@ngb.timepicker.SS"
-						[value]="formatMinSec(model?.second)"
-						(change)="updateSecond($any($event).target.value)"
-						[readOnly]="readonlyInputs"
-						[disabled]="disabled"
-						aria-label="Seconds"
-						i18n-aria-label="@@ngb.timepicker.seconds"
-						(blur)="handleBlur()"
-						(input)="formatInput($any($event).target)"
-						(keydown.ArrowUp)="changeSecond(secondStep); $event.preventDefault()"
-						(keydown.ArrowDown)="changeSecond(-secondStep); $event.preventDefault()"
-					/>
-					<button
-						*ngIf="spinners"
-						tabindex="-1"
-						type="button"
-						(click)="changeSecond(-secondStep)"
-						class="btn btn-link"
-						[class.btn-sm]="isSmallSize"
-						[class.btn-lg]="isLargeSize"
-						[class.disabled]="disabled"
-						[disabled]="disabled"
-					>
-						<span class="chevron ngb-tp-chevron bottom"></span>
-						<span class="visually-hidden" i18n="@@ngb.timepicker.decrement-seconds">Decrement seconds</span>
-					</button>
-				</div>
-				<div *ngIf="meridian" class="ngb-tp-spacer"></div>
-				<div *ngIf="meridian" class="ngb-tp-meridian">
-					<button
-						type="button"
-						class="btn btn-outline-primary"
-						[class.btn-sm]="isSmallSize"
-						[class.btn-lg]="isLargeSize"
-						[disabled]="disabled"
-						[class.disabled]="disabled"
-						(click)="toggleMeridian()"
-					>
-						<ng-container *ngIf="model && model.hour >= 12; else am" i18n="@@ngb.timepicker.PM">{{
-							i18n.getAfternoonPeriod()
-						}}</ng-container>
-						<ng-template #am i18n="@@ngb.timepicker.AM">{{ i18n.getMorningPeriod() }}</ng-template>
-					</button>
-				</div>
+				@if (seconds) {
+					<div class="ngb-tp-spacer">:</div>
+					<div class="ngb-tp-input-container ngb-tp-second">
+						@if (spinners) {
+							<button
+								tabindex="-1"
+								type="button"
+								(click)="changeSecond(secondStep)"
+								class="btn btn-link"
+								[class.btn-sm]="isSmallSize"
+								[class.btn-lg]="isLargeSize"
+								[class.disabled]="disabled"
+								[disabled]="disabled"
+							>
+								<span class="chevron ngb-tp-chevron"></span>
+								<span class="visually-hidden" i18n="@@ngb.timepicker.increment-seconds">Increment seconds</span>
+							</button>
+						}
+						<input
+							type="text"
+							class="ngb-tp-input form-control"
+							[class.form-control-sm]="isSmallSize"
+							[class.form-control-lg]="isLargeSize"
+							maxlength="2"
+							inputmode="numeric"
+							placeholder="SS"
+							i18n-placeholder="@@ngb.timepicker.SS"
+							[value]="formatMinSec(model?.second)"
+							(change)="updateSecond($any($event).target.value)"
+							[readOnly]="readonlyInputs"
+							[disabled]="disabled"
+							aria-label="Seconds"
+							i18n-aria-label="@@ngb.timepicker.seconds"
+							(blur)="handleBlur()"
+							(input)="formatInput($any($event).target)"
+							(keydown.ArrowUp)="changeSecond(secondStep); $event.preventDefault()"
+							(keydown.ArrowDown)="changeSecond(-secondStep); $event.preventDefault()"
+						/>
+						@if (spinners) {
+							<button
+								tabindex="-1"
+								type="button"
+								(click)="changeSecond(-secondStep)"
+								class="btn btn-link"
+								[class.btn-sm]="isSmallSize"
+								[class.btn-lg]="isLargeSize"
+								[class.disabled]="disabled"
+								[disabled]="disabled"
+							>
+								<span class="chevron ngb-tp-chevron bottom"></span>
+								<span class="visually-hidden" i18n="@@ngb.timepicker.decrement-seconds">Decrement seconds</span>
+							</button>
+						}
+					</div>
+				}
+				@if (meridian) {
+					<div class="ngb-tp-spacer"></div>
+					<div class="ngb-tp-meridian">
+						<button
+							type="button"
+							class="btn btn-outline-primary"
+							[class.btn-sm]="isSmallSize"
+							[class.btn-lg]="isLargeSize"
+							[disabled]="disabled"
+							[class.disabled]="disabled"
+							(click)="toggleMeridian()"
+						>
+							@if (model && model.hour >= 12) {
+								<ng-container i18n="@@ngb.timepicker.PM">{{ i18n.getAfternoonPeriod() }}</ng-container>
+							} @else {
+								<ng-container>{{ i18n.getMorningPeriod() }}</ng-container>
+							}
+						</button>
+					</div>
+				}
 			</div>
 		</fieldset>
 	`,

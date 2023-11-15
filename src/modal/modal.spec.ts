@@ -1,5 +1,4 @@
 import { Component, Injectable, Injector, OnDestroy, ViewChild } from '@angular/core';
-import { NgIf } from '@angular/common';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
@@ -8,8 +7,8 @@ import { NgbActiveModal, NgbModal, NgbModalModule, NgbModalRef } from './modal.m
 import { createKeyEvent, isBrowserVisible } from '../test/common';
 import { NgbConfig } from '..';
 import { NgbConfigAnimation } from '../test/ngb-config-animation';
-import createSpy = jasmine.createSpy;
 import { Key } from 'src/util/key';
+import createSpy = jasmine.createSpy;
 
 const NOOP = () => {};
 
@@ -1371,7 +1370,7 @@ describe('ngb-modal', () => {
 	}
 
 	describe('Lazy loading', () => {
-		@Component({ template: '<router-outlet></router-outlet>' })
+		@Component({ template: '<router-outlet />' })
 		class AppComponent {}
 
 		beforeEach(() => {
@@ -1469,11 +1468,11 @@ export class WithSkipTabindexFirstFocusableModalCmpt {}
 @Component({
 	selector: 'test-cmpt',
 	standalone: true,
-	imports: [NgIf, DestroyableCmpt],
+	imports: [DestroyableCmpt],
 	template: `
 		<div id="testContainer"></div>
 		<ng-template #content>Hello, {{ name }}!</ng-template>
-		<ng-template #destroyableContent><destroyable-cmpt></destroyable-cmpt></ng-template>
+		<ng-template #destroyableContent><destroyable-cmpt /></ng-template>
 		<ng-template #contentWithClose let-close="close">
 			<button id="close" (click)="close('myResult')">Close me</button>
 		</ng-template>
@@ -1485,9 +1484,9 @@ export class WithSkipTabindexFirstFocusableModalCmpt {}
 			<button id="dismiss" (click)="modal.dismiss('myReason')">Dismiss me</button>
 		</ng-template>
 		<ng-template #contentWithIf>
-			<ng-template [ngIf]="show">
+			@if (show) {
 				<button id="if" (click)="show = false">Click me</button>
-			</ng-template>
+			}
 		</ng-template>
 		<button id="open" (click)="open('from button')">Open</button>
 		<div id="open-no-focus" (click)="open('from non focusable element')">Open</div>

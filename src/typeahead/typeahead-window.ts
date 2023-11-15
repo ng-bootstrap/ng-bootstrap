@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewEncaps
 
 import { toString } from '../util/util';
 import { NgbHighlight } from './highlight';
-import { NgFor, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 
 /**
  * The context for the typeahead result template in case you want to override the default one.
@@ -28,7 +28,7 @@ export interface ResultTemplateContext {
 	selector: 'ngb-typeahead-window',
 	exportAs: 'ngbTypeaheadWindow',
 	standalone: true,
-	imports: [NgbHighlight, NgFor, NgTemplateOutlet],
+	imports: [NgbHighlight, NgTemplateOutlet],
 	encapsulation: ViewEncapsulation.None,
 	host: {
 		'(mousedown)': '$event.preventDefault()',
@@ -38,9 +38,9 @@ export interface ResultTemplateContext {
 	},
 	template: `
 		<ng-template #rt let-result="result" let-term="term" let-formatter="formatter">
-			<ngb-highlight [result]="formatter(result)" [term]="term"></ngb-highlight>
+			<ngb-highlight [result]="formatter(result)" [term]="term" />
 		</ng-template>
-		<ng-template ngFor [ngForOf]="results" let-result let-idx="index">
+		@for (result of results; track result; let idx = $index) {
 			<button
 				type="button"
 				class="dropdown-item"
@@ -53,9 +53,9 @@ export interface ResultTemplateContext {
 				<ng-template
 					[ngTemplateOutlet]="resultTemplate || rt"
 					[ngTemplateOutletContext]="{ result: result, term: term, formatter: formatter }"
-				></ng-template>
+				/>
 			</button>
-		</ng-template>
+		}
 	`,
 })
 export class NgbTypeaheadWindow implements OnInit {

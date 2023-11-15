@@ -42,9 +42,13 @@ let nextId = 0;
 		role: 'tooltip',
 		'[id]': 'id',
 	},
-	styleUrls: ['./tooltip.scss'],
-	template: `<div class="tooltip-arrow" data-popper-arrow></div
-		><div class="tooltip-inner"><ng-content></ng-content></div>`,
+	styleUrl: './tooltip.scss',
+	template: `
+		<div class="tooltip-arrow" data-popper-arrow></div>
+		<div class="tooltip-inner">
+			<ng-content />
+		</div>
+	`,
 })
 export class NgbTooltipWindow {
 	@Input() animation: boolean;

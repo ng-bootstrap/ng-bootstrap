@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, HostBinding, inject, Input, ViewEncapsulation } from '@angular/core';
 import { getValueInRange, isNumber } from '../util/util';
 import { NgbProgressbarConfig } from './progressbar-config';
-import { NgIf, PercentPipe } from '@angular/common';
+import { PercentPipe } from '@angular/common';
 
 /**
  * A directive that provides feedback on the progress of a workflow or an action.
@@ -9,7 +9,7 @@ import { NgIf, PercentPipe } from '@angular/common';
 @Component({
 	selector: 'ngb-progressbar',
 	standalone: true,
-	imports: [NgIf, PercentPipe],
+	imports: [PercentPipe],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
 	host: {
@@ -29,8 +29,10 @@ import { NgIf, PercentPipe } from '@angular/common';
 			[class.progress-bar-striped]="striped"
 			[style.width.%]="getPercentValue()"
 		>
-			<span *ngIf="showValue" i18n="@@ngb.progressbar.value">{{ getValue() / max | percent }}</span
-			><ng-content></ng-content>
+			@if (showValue) {
+				<span i18n="@@ngb.progressbar.value">{{ getValue() / max | percent }}</span>
+			}
+			<ng-content />
 		</div>
 	`,
 })

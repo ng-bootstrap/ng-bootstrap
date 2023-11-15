@@ -11,7 +11,9 @@ import { NgbCollapseConfig } from './collapse-config';
 	selector: '[ngbCollapse]',
 	exportAs: 'ngbCollapse',
 	standalone: true,
-	host: { '[class.collapse-horizontal]': 'horizontal' },
+	host: {
+		'[class.collapse-horizontal]': 'horizontal',
+	},
 })
 export class NgbCollapse implements OnInit {
 	private _config = inject(NgbCollapseConfig);

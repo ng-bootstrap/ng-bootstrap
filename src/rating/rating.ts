@@ -18,7 +18,7 @@ import { NgbRatingConfig } from './rating-config';
 import { getValueInRange } from '../util/util';
 import { Key } from '../util/key';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { NgFor, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 
 /**
  * The context for the custom star display template defined in the `starTemplate`.
@@ -41,7 +41,7 @@ export interface StarTemplateContext {
 @Component({
 	selector: 'ngb-rating',
 	standalone: true,
-	imports: [NgFor, NgTemplateOutlet],
+	imports: [NgTemplateOutlet],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
 	host: {
@@ -60,7 +60,7 @@ export interface StarTemplateContext {
 	},
 	template: `
 		<ng-template #t let-fill="fill">{{ fill === 100 ? '&#9733;' : '&#9734;' }}</ng-template>
-		<ng-template ngFor [ngForOf]="contexts" let-index="index">
+		@for (_ of contexts; track _; let index = $index) {
 			<span class="visually-hidden">({{ index < nextRate ? '*' : ' ' }})</span>
 			<span
 				(mouseenter)="enter(index + 1)"
@@ -70,10 +70,9 @@ export interface StarTemplateContext {
 				<ng-template
 					[ngTemplateOutlet]="starTemplate || starTemplateFromContent || t"
 					[ngTemplateOutletContext]="contexts[index]"
-				>
-				</ng-template>
+				/>
 			</span>
-		</ng-template>
+		}
 	`,
 	providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NgbRating), multi: true }],
 })

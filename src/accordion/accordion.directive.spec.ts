@@ -77,24 +77,28 @@ describe('ngb-accordion directive', () => {
 			[closeOthers]="closeOthers" [destroyOnHide]="destroyOnHide"
 			(show)="showCallback($event)" (hide)="hideCallback($event)"
 			(shown)="shownCallback($event)" (hidden)="hiddenCallback($event)">
-			<div ngbAccordionItem *ngFor="let item of items"
-				[disabled]="item.disabled"
-				[collapsed]="item.collapsed"
-				[destroyOnHide]="item.destroyOnHide"
-				(show) = "itemShowCallback($event)"
-				(shown) = "itemShownCallback($event)"
-				(hide) = "itemHideCallback($event)"
-				(hidden) = "itemHiddenCallback($event)"
-				>
-				<h2 ngbAccordionHeader>
-					<button ngbAccordionButton>{{item.header}}</button>
-				</h2>
-				<div ngbAccordionCollapse>
-					<div ngbAccordionBody><ng-template>{{item.body}}</ng-template></div>
+			@for (item of items; track item) {
+				<div ngbAccordionItem
+					[disabled]="item.disabled"
+					[collapsed]="item.collapsed"
+					[destroyOnHide]="item.destroyOnHide"
+					(show) = "itemShowCallback($event)"
+					(shown) = "itemShownCallback($event)"
+					(hide) = "itemHideCallback($event)"
+					(hidden) = "itemHiddenCallback($event)"
+					>
+					<h2 ngbAccordionHeader>
+						<button ngbAccordionButton>{{item.header}}</button>
+					</h2>
+					<div ngbAccordionCollapse>
+						<div ngbAccordionBody><ng-template>{{item.body}}</ng-template></div>
+					</div>
 				</div>
-			</div>
+			}
 		</div>
-		<button *ngFor="let panel of panels" (click)="acc.toggle(panel.id)">Toggle the panel {{ panel.id }}</button>
+		@for (panel of panels; track panel) {
+			<button (click)="acc.toggle(panel.id)">Toggle the panel {{ panel.id }}</button>
+		}
 	`;
 	beforeEach(() => {
 		TestBed.overrideComponent(TestComponent, { set: { template: html } });
@@ -243,14 +247,16 @@ describe('ngb-accordion directive', () => {
 	it('should not remove body content if destroyOnHide is false on the accordion and unset for the items', () => {
 		const fixture = createTestComponent(
 			`<div ngbAccordion [destroyOnHide]="false">
-				<div ngbAccordionItem *ngFor="let item of items">
-					<h2 ngbAccordionHeader>
-						<button ngbAccordionButton>{{item.header}}</button>
-					</h2>
-					<div ngbAccordionCollapse>
-						<div ngbAccordionBody><ng-template>{{item.body}}</ng-template></div>
+				@for (item of items; track item) {
+					<div ngbAccordionItem>
+						<h2 ngbAccordionHeader>
+							<button ngbAccordionButton>{{item.header}}</button>
+						</h2>
+						<div ngbAccordionCollapse>
+							<div ngbAccordionBody><ng-template>{{item.body}}</ng-template></div>
+						</div>
 					</div>
-			</div>
+				}
 			</div>`,
 		);
 		fixture.detectChanges();
@@ -263,14 +269,16 @@ describe('ngb-accordion directive', () => {
 	it('should respect destroyOnHide on the accordion-item if is set in accordion and accordion-item', () => {
 		const fixture = createTestComponent(
 			`<div ngbAccordion [destroyOnHide]="false">
-				<div ngbAccordionItem *ngFor="let item of items" [destroyOnHide]="item.destroyOnHide">
-					<h2 ngbAccordionHeader>
-						<button ngbAccordionButton>{{item.header}}</button>
-					</h2>
-					<div ngbAccordionCollapse>
-						<div ngbAccordionBody><ng-template>{{item.body}}</ng-template></div>
+				@for (item of items; track item) {
+					<div ngbAccordionItem [destroyOnHide]="item.destroyOnHide">
+						<h2 ngbAccordionHeader>
+							<button ngbAccordionButton>{{item.header}}</button>
+						</h2>
+						<div ngbAccordionCollapse>
+							<div ngbAccordionBody><ng-template>{{item.body}}</ng-template></div>
+						</div>
 					</div>
-			</div>
+				}
 			</div>`,
 		);
 		fixture.componentInstance.items[0].destroyOnHide = true;
@@ -284,14 +292,16 @@ describe('ngb-accordion directive', () => {
 	it(`should allow customizing headers with 'NgbAccordionToggle'`, () => {
 		const fixture = createTestComponent(
 			`<div ngbAccordion>
-				<div [ngbAccordionItem]="'custom-' + index" *ngFor="let item of items; let index = index;">
-					<div ngbAccordionHeader class='accordion-button'>
-						<button type='button' ngbAccordionToggle>{{item.header}}</button>
+				@for (item of items; track item; let index = $index) {
+					<div [ngbAccordionItem]="'custom-' + index">
+						<div ngbAccordionHeader class='accordion-button'>
+							<button type='button' ngbAccordionToggle>{{item.header}}</button>
+						</div>
+						<div ngbAccordionCollapse>
+							<div ngbAccordionBody><ng-template>{{item.body}}</ng-template></div>
+						</div>
 					</div>
-					<div ngbAccordionCollapse>
-						<div ngbAccordionBody><ng-template>{{item.body}}</ng-template></div>
-					</div>
-				</div>
+				}
 			</div>`,
 		);
 
@@ -352,14 +362,16 @@ describe('ngb-accordion directive', () => {
 	it('should have a custom panel id', () => {
 		const fixture = createTestComponent(
 			`<div ngbAccordion>
-				<div [ngbAccordionItem]="'custom-' + index" *ngFor="let item of items; let index = index;">
-					<h2 ngbAccordionHeader>
-						<button ngbAccordionButton>{{item.header}}</button>
-					</h2>
-					<div ngbAccordionCollapse>
-						<div ngbAccordionBody><ng-template>{{item.body}}</ng-template></div>
+				@for (item of items; track item; let index = $index) {
+					<div [ngbAccordionItem]="'custom-' + index">
+						<h2 ngbAccordionHeader>
+							<button ngbAccordionButton>{{item.header}}</button>
+						</h2>
+						<div ngbAccordionCollapse>
+							<div ngbAccordionBody><ng-template>{{item.body}}</ng-template></div>
+						</div>
 					</div>
-			</div>
+				}
 			</div>`,
 		);
 		expect(getItemsIds(fixture.nativeElement)).toEqual(['custom-0', 'custom-1', 'custom-2']);
@@ -368,14 +380,16 @@ describe('ngb-accordion directive', () => {
 	it('should remove body content from DOM if destroyOnHide is not set on accordion and on accordion-item', () => {
 		const fixture = createTestComponent(
 			`<div ngbAccordion>
-				<div ngbAccordionItem *ngFor="let item of items">
-					<h2 ngbAccordionHeader>
-						<button ngbAccordionButton>{{item.header}}</button>
-					</h2>
-					<div ngbAccordionCollapse>
-						<div ngbAccordionBody><ng-template>{{item.body}}</ng-template></div>
+				@for (item of items; track item) {
+					<div ngbAccordionItem>
+						<h2 ngbAccordionHeader>
+							<button ngbAccordionButton>{{item.header}}</button>
+						</h2>
+						<div ngbAccordionCollapse>
+							<div ngbAccordionBody><ng-template>{{item.body}}</ng-template></div>
+						</div>
 					</div>
-			</div>
+				}
 			</div>`,
 		);
 
@@ -474,13 +488,15 @@ describe('ngb-accordion directive', () => {
 	it(`should allow using 'ngbAccordionItem' from the template in a loop`, () => {
 		const fixture = createTestComponent(
 			`<div ngbAccordion>
-					<div ngbAccordionItem #item='ngbAccordionItem' *ngFor='let i of items' [collapsed]='i.collapsed' [disabled]='i.disabled'>
+				@for (i of items; track item) {
+					<div ngbAccordionItem #item='ngbAccordionItem'[collapsed]='i.collapsed' [disabled]='i.disabled'>
 						<h2 ngbAccordionHeader>
 							<button ngbAccordionButton>{{ item.collapsed ? 'collapsed-' : 'expanded-' }}{{ item.disabled ? 'disabled' : 'enabled' }}</button>
 						</h2>
 						<div ngbAccordionCollapse><div ngbAccordionBody></div></div>
 					</div>
-				</div>`,
+				}
+			</div>`,
 		);
 		const el = fixture.nativeElement;
 
@@ -565,19 +581,16 @@ describe('ngb-accordion directive', () => {
 			imports: [NgbAccordionModule, NgFor],
 			template: `
 				<div ngbAccordion #accordion="ngbAccordion" [closeOthers]="true">
-					<div
-						*ngFor="let _ of state; let index = index"
-						[ngbAccordionItem]="keys[index]"
-						#item="ngbAccordionItem"
-						[collapsed]="state[index]"
-					>
-						<h2 ngbAccordionHeader>
-							<button ngbAccordionButton>{{ item.collapsed }}</button>
-						</h2>
-						<div ngbAccordionCollapse>
-							<div ngbAccordionBody></div>
+					@for (_ of state; track _; let index = $index) {
+						<div [ngbAccordionItem]="keys[index]" #item="ngbAccordionItem" [collapsed]="state[index]">
+							<h2 ngbAccordionHeader>
+								<button ngbAccordionButton>{{ item.collapsed }}</button>
+							</h2>
+							<div ngbAccordionCollapse>
+								<div ngbAccordionBody></div>
+							</div>
 						</div>
-					</div>
+					}
 				</div>
 			`,
 		})

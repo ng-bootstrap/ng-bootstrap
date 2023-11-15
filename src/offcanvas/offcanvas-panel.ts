@@ -24,9 +24,8 @@ import { DOCUMENT } from '@angular/common';
 @Component({
 	selector: 'ngb-offcanvas-panel',
 	standalone: true,
-	template: '<ng-content></ng-content>',
+	template: '<ng-content />',
 	encapsulation: ViewEncapsulation.None,
-	styleUrls: [],
 	host: {
 		'[class]': '"offcanvas offcanvas-" + position  + (panelClass ? " " + panelClass : "")',
 		role: 'dialog',

@@ -19,7 +19,7 @@ import {
 	TemplateRef,
 	ViewEncapsulation,
 } from '@angular/core';
-import { isPlatformBrowser, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
+import { isPlatformBrowser, NgTemplateOutlet } from '@angular/common';
 
 import { NgbCarouselConfig } from './carousel-config';
 
@@ -68,7 +68,7 @@ export class NgbSlide {
 	selector: 'ngb-carousel',
 	exportAs: 'ngbCarousel',
 	standalone: true,
-	imports: [NgFor, NgTemplateOutlet, NgIf],
+	imports: [NgTemplateOutlet],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
 	host: {
@@ -85,54 +85,47 @@ export class NgbSlide {
 	},
 	template: `
 		<div class="carousel-indicators" [class.visually-hidden]="!showNavigationIndicators" role="tablist">
-			<button
-				type="button"
-				data-bs-target
-				*ngFor="let slide of slides"
-				[class.active]="slide.id === activeId"
-				role="tab"
-				[attr.aria-labelledby]="'slide-' + slide.id"
-				[attr.aria-controls]="'slide-' + slide.id"
-				[attr.aria-selected]="slide.id === activeId"
-				(click)="focus(); select(slide.id, NgbSlideEventSource.INDICATOR)"
-			></button>
+			@for (slide of slides; track slide) {
+				<button
+					type="button"
+					data-bs-target
+					[class.active]="slide.id === activeId"
+					role="tab"
+					[attr.aria-labelledby]="'slide-' + slide.id"
+					[attr.aria-controls]="'slide-' + slide.id"
+					[attr.aria-selected]="slide.id === activeId"
+					(click)="focus(); select(slide.id, NgbSlideEventSource.INDICATOR)"
+				></button>
+			}
 		</div>
 		<div class="carousel-inner">
-			<div
-				*ngFor="let slide of slides; index as i; count as c"
-				class="carousel-item"
-				[id]="'slide-' + slide.id"
-				role="tabpanel"
-			>
-				<span
-					class="visually-hidden"
-					i18n="Currently selected slide number read by screen reader@@ngb.carousel.slide-number"
-				>
-					Slide {{ i + 1 }} of {{ c }}
-				</span>
-				<ng-template [ngTemplateOutlet]="slide.templateRef"></ng-template>
-			</div>
+			@for (slide of slides; track slide; let i = $index; let c = $count) {
+				<div class="carousel-item" [id]="'slide-' + slide.id" role="tabpanel">
+					<span
+						class="visually-hidden"
+						i18n="Currently selected slide number read by screen reader@@ngb.carousel.slide-number"
+					>
+						Slide {{ i + 1 }} of {{ c }}
+					</span>
+					<ng-template [ngTemplateOutlet]="slide.templateRef" />
+				</div>
+			}
 		</div>
-		<button
-			class="carousel-control-prev"
-			type="button"
-			(click)="arrowLeft()"
-			*ngIf="showNavigationArrows"
-			[attr.aria-labelledby]="id + '-previous'"
-		>
-			<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-			<span class="visually-hidden" i18n="@@ngb.carousel.previous" [id]="id + '-previous'">Previous</span>
-		</button>
-		<button
-			class="carousel-control-next"
-			type="button"
-			(click)="arrowRight()"
-			*ngIf="showNavigationArrows"
-			[attr.aria-labelledby]="id + '-next'"
-		>
-			<span class="carousel-control-next-icon" aria-hidden="true"></span>
-			<span class="visually-hidden" i18n="@@ngb.carousel.next" [id]="id + '-next'">Next</span>
-		</button>
+		@if (showNavigationArrows) {
+			<button
+				class="carousel-control-prev"
+				type="button"
+				(click)="arrowLeft()"
+				[attr.aria-labelledby]="id + '-previous'"
+			>
+				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+				<span class="visually-hidden" i18n="@@ngb.carousel.previous" [id]="id + '-previous'">Previous</span>
+			</button>
+			<button class="carousel-control-next" type="button" (click)="arrowRight()" [attr.aria-labelledby]="id + '-next'">
+				<span class="carousel-control-next-icon" aria-hidden="true"></span>
+				<span class="visually-hidden" i18n="@@ngb.carousel.next" [id]="id + '-next'">Next</span>
+			</button>
+		}
 	`,
 })
 export class NgbCarousel implements AfterContentChecked, AfterContentInit, AfterViewInit {
