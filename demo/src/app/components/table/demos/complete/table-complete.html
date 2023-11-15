@@ -19,7 +19,9 @@
 				[(ngModel)]="service.searchTerm"
 			/>
 		</div>
-		<span class="col col-form-label" *ngIf="service.loading$ | async">Loading...</span>
+		@if (service.loading$ | async) {
+			<span class="col col-form-label">Loading...</span>
+		}
 	</div>
 
 	<table class="table table-striped">
@@ -32,20 +34,26 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr *ngFor="let country of countries$ | async">
-				<th scope="row">{{ country.id }}</th>
-				<td>
-					<img
-						[src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag"
-						[alt]="'The flag of ' + country.name"
-						class="me-2"
-						style="width: 20px"
-					/>
-					<ngb-highlight [result]="country.name" [term]="service.searchTerm"></ngb-highlight>
-				</td>
-				<td><ngb-highlight [result]="country.area | number" [term]="service.searchTerm"></ngb-highlight></td>
-				<td><ngb-highlight [result]="country.population | number" [term]="service.searchTerm"></ngb-highlight></td>
-			</tr>
+			@for (country of countries$ | async; track country.id) {
+				<tr>
+					<th scope="row">{{ country.id }}</th>
+					<td>
+						<img
+							[src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag"
+							[alt]="'The flag of ' + country.name"
+							class="me-2"
+							style="width: 20px"
+						/>
+						<ngb-highlight [result]="country.name" [term]="service.searchTerm" />
+					</td>
+					<td><ngb-highlight [result]="country.area | number" [term]="service.searchTerm" /></td>
+					<td><ngb-highlight [result]="country.population | number" [term]="service.searchTerm" /></td>
+				</tr>
+			} @empty {
+				<tr>
+					<td colspan="4" style="text-align: center">No countries found</td>
+				</tr>
+			}
 		</tbody>
 	</table>
 

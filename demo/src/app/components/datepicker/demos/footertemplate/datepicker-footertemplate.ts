@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NgbCalendar, NgbDatepickerModule, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 
@@ -9,8 +9,6 @@ import { FormsModule } from '@angular/forms';
 	templateUrl: './datepicker-footertemplate.html',
 })
 export class NgbdDatepickerFootertemplate {
+	today = inject(NgbCalendar).getToday();
 	model: NgbDateStruct;
-	today = this.calendar.getToday();
-
-	constructor(private calendar: NgbCalendar) {}
 }

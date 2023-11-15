@@ -12,8 +12,4 @@ import { JsonPipe } from '@angular/common';
 export class NgbdTimepickerSeconds {
 	time: NgbTimeStruct = { hour: 13, minute: 30, second: 30 };
 	seconds = true;
-
-	toggleSeconds() {
-		this.seconds = !this.seconds;
-	}
 }

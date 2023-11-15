@@ -1,5 +1,5 @@
 import { Component, Directive, EventEmitter, Input, Output, QueryList, ViewChildren } from '@angular/core';
-import { DecimalPipe, NgFor } from '@angular/common';
+import { DecimalPipe } from '@angular/common';
 
 interface Country {
 	id: number;
@@ -74,7 +74,7 @@ export class NgbdSortableHeader {
 @Component({
 	selector: 'ngbd-table-sortable',
 	standalone: true,
-	imports: [DecimalPipe, NgFor, NgbdSortableHeader],
+	imports: [DecimalPipe, NgbdSortableHeader],
 	templateUrl: './table-sortable.html',
 })
 export class NgbdTableSortable {
@@ -84,11 +84,11 @@ export class NgbdTableSortable {
 
 	onSort({ column, direction }: SortEvent) {
 		// resetting other headers
-		this.headers.forEach((header) => {
+		for (const header of this.headers) {
 			if (header.sortable !== column) {
 				header.direction = '';
 			}
-		});
+		}
 
 		// sorting countries
 		if (direction === '' || column === '') {

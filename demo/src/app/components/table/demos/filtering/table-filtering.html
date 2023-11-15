@@ -22,19 +22,25 @@
 		</tr>
 	</thead>
 	<tbody>
-		<tr *ngFor="let country of countries$ | async; index as i">
-			<th scope="row">{{ i + 1 }}</th>
-			<td>
-				<img
-					[src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag"
-					[alt]="'The flag of ' + country.name"
-					class="me-2"
-					style="width: 20px"
-				/>
-				<ngb-highlight [result]="country.name" [term]="filter.value"></ngb-highlight>
-			</td>
-			<td><ngb-highlight [result]="country.area | number" [term]="filter.value"></ngb-highlight></td>
-			<td><ngb-highlight [result]="country.population | number" [term]="filter.value"></ngb-highlight></td>
-		</tr>
+		@for (country of countries$ | async; track country.name; let i = $index) {
+			<tr>
+				<th scope="row">{{ i + 1 }}</th>
+				<td>
+					<img
+						[src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag"
+						[alt]="'The flag of ' + country.name"
+						class="me-2"
+						style="width: 20px"
+					/>
+					<ngb-highlight [result]="country.name" [term]="filter.value" />
+				</td>
+				<td><ngb-highlight [result]="country.area | number" [term]="filter.value" /></td>
+				<td><ngb-highlight [result]="country.population | number" [term]="filter.value" /></td>
+			</tr>
+		} @empty {
+			<tr>
+				<td colspan="4" style="text-align: center">No countries found</td>
+			</tr>
+		}
 	</tbody>
 </table>

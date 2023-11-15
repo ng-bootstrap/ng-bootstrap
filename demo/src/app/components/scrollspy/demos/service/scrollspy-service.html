@@ -5,23 +5,19 @@
 <div class="d-flex ms-2">
 	<div class="d-flex flex-column align-items-start me-5">
 		<h5>Local</h5>
-		<div
-			*ngFor="let fragment of fragments"
-			[class.text-bg-danger]="fragment === scrollSpy.active"
-			class="badge text-bg-secondary mb-1"
-		>
-			{{ fragment }}
-		</div>
+		@for (fragment of fragments; track fragment) {
+			<div [class.text-bg-danger]="fragment === scrollSpy.active" class="badge text-bg-secondary mb-1">
+				{{ fragment }}
+			</div>
+		}
 	</div>
 	<div class="d-flex flex-column align-items-start">
 		<h5>From 'root'</h5>
-		<span
-			*ngFor="let fragment of fragments"
-			[class.text-bg-danger]="fragment === rootScrollSpy.active"
-			class="badge text-bg-secondary mb-1"
-		>
-			{{ fragment }}
-		</span>
+		@for (fragment of fragments; track fragment) {
+			<span [class.text-bg-danger]="fragment === rootScrollSpy.active" class="badge text-bg-secondary mb-1">
+				{{ fragment }}
+			</span>
+		}
 	</div>
 </div>
 

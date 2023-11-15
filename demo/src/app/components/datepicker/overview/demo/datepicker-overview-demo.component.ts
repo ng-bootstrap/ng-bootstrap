@@ -48,8 +48,7 @@ import { DatePipe } from '@angular/common';
 			[minDate]="today"
 			outsideDays="hidden"
 			[displayMonths]="2"
-		>
-		</ngb-datepicker>
+		/>
 	`,
 	styles: [
 		`

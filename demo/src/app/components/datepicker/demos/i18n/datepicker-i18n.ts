@@ -1,4 +1,4 @@
-import { Component, Injectable } from '@angular/core';
+import { Component, inject, Injectable } from '@angular/core';
 import { NgbAlertModule, NgbDatepickerI18n, NgbDatepickerModule, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 
@@ -21,9 +21,7 @@ export class I18n {
 // Define custom service providing the months and weekdays translations
 @Injectable()
 export class CustomDatepickerI18n extends NgbDatepickerI18n {
-	constructor(private _i18n: I18n) {
-		super();
-	}
+	private _i18n = inject(I18n);
 
 	getWeekdayLabel(weekday: number): string {
 		return I18N_VALUES[this._i18n.language].weekdays[weekday - 1];

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTooltip, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
 	selector: 'ngbd-tooltip-tplwithcontext',
@@ -10,7 +10,7 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 export class NgbdTooltipTplwithcontext {
 	name = 'World';
 
-	toggleWithGreeting(tooltip, greeting: string) {
+	toggleWithGreeting(tooltip: NgbTooltip, greeting: string) {
 		if (tooltip.isOpen()) {
 			tooltip.close();
 		} else {

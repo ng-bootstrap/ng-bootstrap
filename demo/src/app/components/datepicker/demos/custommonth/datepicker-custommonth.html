@@ -10,10 +10,12 @@
 			<button type="button" class="btn btn-sm btn-outline-primary" (click)="navigate(dp, 1)">Next</button>
 		</div>
 		<div class="custom-month-grid">
-			<div *ngFor="let month of dp.state.months">
-				<div class="text-primary p-1 fw-bold">{{ dp.i18n.getMonthShortName(month.month) }} {{ month.year }}</div>
-				<ngb-datepicker-month class="border rounded" [month]="month"></ngb-datepicker-month>
-			</div>
+			@for (month of dp.state.months; track month) {
+				<div>
+					<div class="text-primary p-1 fw-bold">{{ dp.i18n.getMonthShortName(month.month) }} {{ month.year }}</div>
+					<ngb-datepicker-month class="border rounded" [month]="month"></ngb-datepicker-month>
+				</div>
+			}
 		</div>
 	</div>
 </ng-template>
@@ -26,8 +28,7 @@
 		outsideDays="hidden"
 		[weekdays]="false"
 		navigation="none"
-	>
-	</ngb-datepicker>
+	/>
 </div>
 
 <h4>In a popup</h4>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject, TemplateRef } from '@angular/core';
 
 import { NgbDatepickerModule, NgbOffcanvas, OffcanvasDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
@@ -9,11 +9,10 @@ import { NgbDatepickerModule, NgbOffcanvas, OffcanvasDismissReasons } from '@ng-
 	templateUrl: './offcanvas-basic.html',
 })
 export class NgbdOffcanvasBasic {
+	private offcanvasService = inject(NgbOffcanvas);
 	closeResult = '';
 
-	constructor(private offcanvasService: NgbOffcanvas) {}
-
-	open(content) {
+	open(content: TemplateRef<any>) {
 		this.offcanvasService.open(content, { ariaLabelledBy: 'offcanvas-basic-title' }).result.then(
 			(result) => {
 				this.closeResult = `Closed with: ${result}`;
@@ -25,12 +24,13 @@ export class NgbdOffcanvasBasic {
 	}
 
 	private getDismissReason(reason: any): string {
-		if (reason === OffcanvasDismissReasons.ESC) {
-			return 'by pressing ESC';
-		} else if (reason === OffcanvasDismissReasons.BACKDROP_CLICK) {
-			return 'by clicking on the backdrop';
-		} else {
-			return `with: ${reason}`;
+		switch (reason) {
+			case OffcanvasDismissReasons.ESC:
+				return 'by pressing ESC';
+			case OffcanvasDismissReasons.BACKDROP_CLICK:
+				return 'by clicking on the backdrop';
+			default:
+				return `with: ${reason}`;
 		}
 	}
 }

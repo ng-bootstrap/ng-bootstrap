@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPopover, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
 	selector: 'ngbd-popover-tplwithcontext',
@@ -10,7 +10,7 @@ import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 export class NgbdPopoverTplwithcontext {
 	name = 'World';
 
-	toggleWithGreeting(popover, greeting: string, language: string) {
+	toggleWithGreeting(popover: NgbPopover, greeting: string, language: string) {
 		if (popover.isOpen()) {
 			popover.close();
 		} else {

@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
 	selector: 'ngbd-modal-stacked',
@@ -19,10 +20,8 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 	`,
 })
 export class NgbdModal1Content {
-	constructor(
-		private modalService: NgbModal,
-		public activeModal: NgbActiveModal,
-	) {}
+	private modalService = inject(NgbModal);
+	activeModal = inject(NgbActiveModal);
 
 	open() {
 		this.modalService.open(NgbdModal2Content, { size: 'lg' });
@@ -45,15 +44,20 @@ export class NgbdModal1Content {
 	`,
 })
 export class NgbdModal2Content {
-	constructor(public activeModal: NgbActiveModal) {}
+	activeModal = inject(NgbActiveModal);
 }
 
-@Component({ selector: 'ngbd-modal-stacked', standalone: true, templateUrl: './modal-stacked.html' })
+@Component({
+	selector: 'ngbd-modal-stacked',
+	standalone: true,
+	templateUrl: './modal-stacked.html',
+})
 export class NgbdModalStacked {
+	private modalService = inject(NgbModal);
 	modalsNumber = 0;
 
-	constructor(private modalService: NgbModal) {
-		this.modalService.activeInstances.subscribe((list) => {
+	constructor() {
+		this.modalService.activeInstances.pipe(takeUntilDestroyed()).subscribe((list) => {
 			this.modalsNumber = list.length;
 		});
 	}

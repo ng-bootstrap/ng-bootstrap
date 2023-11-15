@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 import { ComponentWrapper } from '../../shared/component-wrapper/component-wrapper.component';
 import { DemoListComponent } from '../../shared/examples-page/demo-list.component';
 import { NgbdTableBasic } from './demos/basic/table-basic';

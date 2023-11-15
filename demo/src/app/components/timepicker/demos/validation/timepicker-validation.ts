@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { NgbTimepickerModule, NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
-import { JsonPipe, NgIf } from '@angular/common';
+import { JsonPipe } from '@angular/common';
 
 @Component({
 	selector: 'ngbd-timepicker-validation',
 	standalone: true,
-	imports: [NgbTimepickerModule, ReactiveFormsModule, JsonPipe, NgIf],
+	imports: [NgbTimepickerModule, ReactiveFormsModule, JsonPipe],
 	templateUrl: './timepicker-validation.html',
 })
 export class NgbdTimepickerValidation {

@@ -48,7 +48,9 @@
 			<button ngbAccordionToggle [disabled]="third.disabled" class="p-0 btn btn-link container-fluid text-start ps-0">
 				Third panel
 			</button>
-			<p *ngIf="third.disabled" class="text-muted m-0 small">[I'm&nbsp;disabled]</p>
+			@if (third.disabled) {
+				<p class="text-muted m-0 small">[I'm&nbsp;disabled]</p>
+			}
 		</div>
 		<div ngbAccordionCollapse>
 			<div ngbAccordionBody>

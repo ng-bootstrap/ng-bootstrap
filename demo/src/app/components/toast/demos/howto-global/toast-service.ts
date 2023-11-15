@@ -1,14 +1,20 @@
 import { Injectable, TemplateRef } from '@angular/core';
 
+export interface Toast {
+	template: TemplateRef<any>;
+	classname?: string;
+	delay?: number;
+}
+
 @Injectable({ providedIn: 'root' })
 export class ToastService {
-	toasts: any[] = [];
+	toasts: Toast[] = [];
 
-	show(textOrTpl: string | TemplateRef<any>, options: any = {}) {
-		this.toasts.push({ textOrTpl, ...options });
+	show(toast: Toast) {
+		this.toasts.push(toast);
 	}
 
-	remove(toast) {
+	remove(toast: Toast) {
 		this.toasts = this.toasts.filter((t) => t !== toast);
 	}
 

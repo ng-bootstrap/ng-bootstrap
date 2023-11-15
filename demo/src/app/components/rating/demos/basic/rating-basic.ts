@@ -8,5 +8,5 @@ import { NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
 	templateUrl: './rating-basic.html',
 })
 export class NgbdRatingBasic {
-	currentRate = 8;
+	rating = 8;
 }

@@ -8,5 +8,5 @@ import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 	templateUrl: './collapse-basic.html',
 })
 export class NgbdCollapseBasic {
-	public isCollapsed = false;
+	isCollapsed = false;
 }

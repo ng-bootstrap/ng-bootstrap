@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
 	NgbCalendar,
 	NgbCalendarHebrew,
@@ -49,12 +49,12 @@ import { JsonPipe } from '@angular/common';
 	],
 })
 export class NgbdDatepickerHebrew {
+	i18n = inject(NgbDatepickerI18n);
+	calendar = inject(NgbCalendar);
+
 	model: NgbDateStruct;
 
-	constructor(
-		private calendar: NgbCalendar,
-		public i18n: NgbDatepickerI18n,
-	) {
+	constructor() {
 		this.dayTemplateData = this.dayTemplateData.bind(this);
 	}
 
@@ -62,9 +62,5 @@ export class NgbdDatepickerHebrew {
 		return {
 			gregorian: (this.calendar as NgbCalendarHebrew).toGregorian(date),
 		};
-	}
-
-	selectToday() {
-		this.model = this.calendar.getToday();
 	}
 }

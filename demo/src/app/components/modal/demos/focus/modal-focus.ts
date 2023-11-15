@@ -1,4 +1,4 @@
-import { Component, Type } from '@angular/core';
+import { Component, inject, Type } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -30,7 +30,7 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 	`,
 })
 export class NgbdModalConfirm {
-	constructor(public modal: NgbActiveModal) {}
+	modal = inject(NgbActiveModal);
 }
 
 @Component({
@@ -63,7 +63,7 @@ export class NgbdModalConfirm {
 	`,
 })
 export class NgbdModalConfirmAutofocus {
-	constructor(public modal: NgbActiveModal) {}
+	modal = inject(NgbActiveModal);
 }
 
 const MODALS: { [name: string]: Type<any> } = {
@@ -73,12 +73,9 @@ const MODALS: { [name: string]: Type<any> } = {
 
 @Component({ selector: 'ngbd-modal-focus', standalone: true, templateUrl: './modal-focus.html' })
 export class NgbdModalFocus {
-	withAutofocus = `<button type="button" ngbAutofocus class="btn btn-danger"
-      (click)="modal.close('Ok click')">Ok</button>`;
-
-	constructor(private _modalService: NgbModal) {}
+	private modalService = inject(NgbModal);
 
 	open(name: string) {
-		this._modalService.open(MODALS[name]);
+		this.modalService.open(MODALS[name]);
 	}
 }

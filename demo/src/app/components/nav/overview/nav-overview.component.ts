@@ -88,9 +88,11 @@ export class NgbdNavOverviewComponent {
 		code: `
       <!-- your navs bound to current route fragments -->
       <ul ngbNav [activeId]="route.fragment | async" class="nav-tabs">
-        <li [ngbNavItem]="link.fragment" *ngFor="let link of links">
-          <a ngbNavLink routerLink="." [fragment]="link.fragment">{{ link.title }}</a>
-        </li>
+        @for (link of links; track link) {
+          <li [ngbNavItem]="link.fragment">
+            <a ngbNavLink routerLink="." [fragment]="link.fragment">{{ link.title }}</a>
+          </li>
+          }
       </ul>
 
       <!-- and an actual outlet elsewhere -->

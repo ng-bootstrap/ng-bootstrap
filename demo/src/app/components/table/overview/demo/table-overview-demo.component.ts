@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { DecimalPipe, NgFor } from '@angular/common';
+import { DecimalPipe } from '@angular/common';
 
 interface Country {
 	name: string;
@@ -11,7 +11,7 @@ interface Country {
 @Component({
 	selector: 'ngbd-table-overview-demo',
 	standalone: true,
-	imports: [DecimalPipe, NgFor],
+	imports: [DecimalPipe],
 	template: `
 		<table class="table table-striped">
 			<thead>
@@ -23,20 +23,22 @@ interface Country {
 				</tr>
 			</thead>
 			<tbody>
-				<tr *ngFor="let country of countries; index as i">
-					<th scope="row">{{ i + 1 }}</th>
-					<td>
-						<img
-							[src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag"
-							[alt]="'The flag of ' + country.name"
-							class="me-2"
-							style="width: 20px"
-						/>
-						{{ country.name }}
-					</td>
-					<td>{{ country.area | number }}</td>
-					<td>{{ country.population | number }}</td>
-				</tr>
+				@for (country of countries; track country; let i = $index) {
+					<tr>
+						<th scope="row">{{ i + 1 }}</th>
+						<td>
+							<img
+								[src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag"
+								[alt]="'The flag of ' + country.name"
+								class="me-2"
+								style="width: 20px"
+							/>
+							{{ country.name }}
+						</td>
+						<td>{{ country.area | number }}</td>
+						<td>{{ country.population | number }}</td>
+					</tr>
+				}
 			</tbody>
 		</table>
 	`,

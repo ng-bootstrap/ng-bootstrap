@@ -22,9 +22,11 @@ export class NgbdPaginationOverviewComponent {
 		lang: 'html',
 		code: `
       <table>
-        <tr *ngFor="let item of items | slice: (page-1) * pageSize : page * pageSize">
-          <!-- content here -->
-        </tr>
+        @for (item of items | slice: (page-1) * pageSize : page * pageSize; track item) {
+          <tr>
+            <!-- content here -->
+          </tr>
+        }
       </table>
     `,
 	});
@@ -32,10 +34,9 @@ export class NgbdPaginationOverviewComponent {
 	NGB_PAGINATION = Snippet({
 		lang: 'html',
 		code: `
-      <ngb-pagination
-        [(page)]="page"
-        [pageSize]="pageSize"
-        [collectionSize]="items.length"></ngb-pagination>
+      <ngb-pagination [(page)]="page"
+                      [pageSize]="pageSize"
+                      [collectionSize]="items.length" />
     `,
 	});
 

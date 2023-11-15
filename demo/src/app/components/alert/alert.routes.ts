@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-
 import { Routes } from '@angular/router';
 import { ComponentWrapper } from '../../shared/component-wrapper/component-wrapper.component';
 import { DemoListComponent } from '../../shared/examples-page/demo-list.component';

@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewEncapsulation } from '@angular/core';
+import { Component, inject, TemplateRef, ViewEncapsulation } from '@angular/core';
 import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -8,9 +8,7 @@ import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 	encapsulation: ViewEncapsulation.None,
 })
 export class NgbdOffcanvasOptions {
-	closeResult: string;
-
-	constructor(private offcanvasService: NgbOffcanvas) {}
+	private offcanvasService = inject(NgbOffcanvas);
 
 	openEnd(content: TemplateRef<any>) {
 		this.offcanvasService.open(content, { position: 'end' });

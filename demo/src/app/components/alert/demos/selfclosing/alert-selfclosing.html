@@ -1,14 +1,15 @@
 <p>Static self-closing alert that disappears after 20 seconds (refresh the page if it has already disappeared)</p>
-<ngb-alert #staticAlert *ngIf="!staticAlertClosed" (closed)="staticAlertClosed = true"
-	>Check out our awesome new features!</ngb-alert
->
+
+@if (!staticAlertClosed) {
+	<ngb-alert #staticAlert (closed)="staticAlertClosed = true">Check out our awesome new features!</ngb-alert>
+}
 
 <hr />
 
 <p>Show a self-closing success message that disappears after 5 seconds.</p>
-<ngb-alert #selfClosingAlert *ngIf="successMessage" type="success" (closed)="successMessage = ''"
-	>{{ successMessage }}
-</ngb-alert>
-<p>
-	<button class="btn btn-primary" (click)="changeSuccessMessage()">Change message</button>
-</p>
+
+@if (successMessage) {
+	<ngb-alert #selfClosingAlert type="success" (closed)="successMessage = ''">{{ successMessage }}</ngb-alert>
+}
+
+<button class="btn btn-primary" (click)="changeSuccessMessage()">Change message</button>

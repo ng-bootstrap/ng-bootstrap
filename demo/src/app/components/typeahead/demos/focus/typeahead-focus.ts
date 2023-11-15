@@ -72,18 +72,13 @@ const states = [
 	standalone: true,
 	imports: [NgbTypeaheadModule, FormsModule, JsonPipe],
 	templateUrl: './typeahead-focus.html',
-	styles: [
-		`
-			.form-control {
-				width: 300px;
-			}
-		`,
-	],
+	styles: `.form-control { width: 300px; }`,
 })
 export class NgbdTypeaheadFocus {
 	model: any;
 
 	@ViewChild('instance', { static: true }) instance: NgbTypeahead;
+
 	focus$ = new Subject<string>();
 	click$ = new Subject<string>();
 

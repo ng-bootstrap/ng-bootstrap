@@ -11,8 +11,4 @@ import { NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
 export class NgbdTimepickerSpinners {
 	time = { hour: 13, minute: 30 };
 	spinners = true;
-
-	toggleSpinners() {
-		this.spinners = !this.spinners;
-	}
 }

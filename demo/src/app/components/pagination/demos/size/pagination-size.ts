@@ -8,5 +8,5 @@ import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 	templateUrl: './pagination-size.html',
 })
 export class NgbdPaginationSize {
-	currentPage = 3;
+	page = 3;
 }

@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgFor } from '@angular/common';
 
 @Component({
 	selector: 'ngbd-nav-dynamic',
 	standalone: true,
-	imports: [NgbNavModule, NgFor],
+	imports: [NgbNavModule],
 	templateUrl: './nav-dynamic.html',
 	styles: [
 		`
@@ -21,18 +20,18 @@ import { NgFor } from '@angular/common';
 	],
 })
 export class NgbdNavDynamic {
-	tabs = [1, 2, 3, 4, 5];
-	counter = this.tabs.length + 1;
-	active;
+	navs = [1, 2, 3, 4, 5];
+	counter = this.navs.length + 1;
+	active: number;
 
 	close(event: MouseEvent, toRemove: number) {
-		this.tabs = this.tabs.filter((id) => id !== toRemove);
+		this.navs = this.navs.filter((id) => id !== toRemove);
 		event.preventDefault();
 		event.stopImmediatePropagation();
 	}
 
 	add(event: MouseEvent) {
-		this.tabs.push(this.counter++);
+		this.navs.push(this.counter++);
 		event.preventDefault();
 	}
 }

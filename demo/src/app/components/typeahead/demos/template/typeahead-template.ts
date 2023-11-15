@@ -66,16 +66,10 @@ const statesWithFlags: { name: string; flag: string }[] = [
 	standalone: true,
 	imports: [NgbTypeaheadModule, FormsModule, JsonPipe],
 	templateUrl: './typeahead-template.html',
-	styles: [
-		`
-			.form-control {
-				width: 300px;
-			}
-		`,
-	],
+	styles: `.form-control { width: 300px; }`,
 })
 export class NgbdTypeaheadTemplate {
-	public model: any;
+	model: any;
 
 	search: OperatorFunction<string, readonly { name; flag }[]> = (text$: Observable<string>) =>
 		text$.pipe(

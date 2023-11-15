@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { NgbCalendar, NgbDatepickerModule, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { Component, inject } from '@angular/core';
+import { NgbCalendar, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -9,10 +9,6 @@ import { FormsModule } from '@angular/forms';
 	templateUrl: './datepicker-disabled.html',
 })
 export class NgbdDatepickerDisabled {
-	model: NgbDateStruct;
+	model = inject(NgbCalendar).getToday();
 	disabled = true;
-
-	constructor(calendar: NgbCalendar) {
-		this.model = calendar.getToday();
-	}
 }

@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, inject, TemplateRef, ViewEncapsulation } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -22,35 +22,33 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 	],
 })
 export class NgbdModalOptions {
-	closeResult: string;
+	private modalService = inject(NgbModal);
 
-	constructor(private modalService: NgbModal) {}
-
-	openBackDropCustomClass(content) {
+	openBackDropCustomClass(content: TemplateRef<any>) {
 		this.modalService.open(content, { backdropClass: 'light-blue-backdrop' });
 	}
 
-	openWindowCustomClass(content) {
+	openWindowCustomClass(content: TemplateRef<any>) {
 		this.modalService.open(content, { windowClass: 'dark-modal' });
 	}
 
-	openSm(content) {
+	openSm(content: TemplateRef<any>) {
 		this.modalService.open(content, { size: 'sm' });
 	}
 
-	openLg(content) {
+	openLg(content: TemplateRef<any>) {
 		this.modalService.open(content, { size: 'lg' });
 	}
 
-	openXl(content) {
+	openXl(content: TemplateRef<any>) {
 		this.modalService.open(content, { size: 'xl' });
 	}
 
-	openFullscreen(content) {
+	openFullscreen(content: TemplateRef<any>) {
 		this.modalService.open(content, { fullscreen: true });
 	}
 
-	openVerticallyCentered(content) {
+	openVerticallyCentered(content: TemplateRef<any>) {
 		this.modalService.open(content, { centered: true });
 	}
 
@@ -58,7 +56,7 @@ export class NgbdModalOptions {
 		this.modalService.open(longContent, { scrollable: true });
 	}
 
-	openModalDialogCustomClass(content) {
+	openModalDialogCustomClass(content: TemplateRef<any>) {
 		this.modalService.open(content, { modalDialogClass: 'dark-modal' });
 	}
 }

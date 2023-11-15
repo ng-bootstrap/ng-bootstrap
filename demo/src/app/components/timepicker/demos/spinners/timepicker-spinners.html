@@ -1,7 +1,7 @@
-<ngb-timepicker [(ngModel)]="time" [spinners]="spinners"></ngb-timepicker>
+<ngb-timepicker [(ngModel)]="time" [spinners]="spinners" />
 
 <hr />
 
-<button class="m-t-1 btn btn-sm btn-outline-{{ spinners ? 'success' : 'danger' }}" (click)="toggleSpinners()">
+<button class="m-t-1 btn btn-sm btn-outline-{{ spinners ? 'success' : 'danger' }}" (click)="spinners = !spinners">
 	Spinners - {{ spinners ? 'ON' : 'OFF' }}
 </button>

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -35,9 +35,8 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 	`,
 })
 export class NgbdModalContent {
-	@Input() name;
-
-	constructor(public activeModal: NgbActiveModal) {}
+	activeModal = inject(NgbActiveModal);
+	@Input() name: string;
 }
 
 @Component({
@@ -46,7 +45,7 @@ export class NgbdModalContent {
 	templateUrl: './modal-updatable-options.html',
 })
 export class NgbdModalUpdatableOptions {
-	constructor(private modalService: NgbModal) {}
+	private modalService = inject(NgbModal);
 
 	open() {
 		const modalRef = this.modalService.open(NgbdModalContent);
