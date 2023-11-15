@@ -7,15 +7,13 @@ import {
 	SimpleChanges,
 	ViewEncapsulation,
 } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormsModule } from '@angular/forms';
 import { isInteger, isNumber, padNumber, toInteger } from '../util/util';
 import { NgbTime } from './ngb-time';
 import { NgbTimepickerConfig } from './timepicker-config';
 import { NgbTimeAdapter } from './ngb-time-adapter';
 import { NgbTimepickerI18n } from './timepicker-i18n';
 import { NgIf } from '@angular/common';
-
 const FILTER_REGEX = /[^0-9]/g;
 
 /**
@@ -25,7 +23,7 @@ const FILTER_REGEX = /[^0-9]/g;
 	exportAs: 'ngbTimepicker',
 	selector: 'ngb-timepicker',
 	standalone: true,
-	imports: [NgIf],
+	imports: [NgIf, FormsModule],
 	encapsulation: ViewEncapsulation.None,
 	styleUrls: ['./timepicker.scss'],
 	template: `
@@ -55,7 +53,7 @@ const FILTER_REGEX = /[^0-9]/g;
 						inputmode="numeric"
 						placeholder="HH"
 						i18n-placeholder="@@ngb.timepicker.HH"
-						[value]="formatHour(model?.hour)"
+						[(ngModel)]="model.hour"
 						(change)="updateHour($any($event).target.value)"
 						[readOnly]="readonlyInputs"
 						[disabled]="disabled"
@@ -66,6 +64,7 @@ const FILTER_REGEX = /[^0-9]/g;
 						(keydown.ArrowUp)="changeHour(hourStep); $event.preventDefault()"
 						(keydown.ArrowDown)="changeHour(-hourStep); $event.preventDefault()"
 					/>
+
 					<button
 						*ngIf="spinners"
 						tabindex="-1"
@@ -106,7 +105,7 @@ const FILTER_REGEX = /[^0-9]/g;
 						inputmode="numeric"
 						placeholder="MM"
 						i18n-placeholder="@@ngb.timepicker.MM"
-						[value]="formatMinSec(model?.minute)"
+						[(ngModel)]="model.minute"
 						(change)="updateMinute($any($event).target.value)"
 						[readOnly]="readonlyInputs"
 						[disabled]="disabled"
@@ -157,7 +156,7 @@ const FILTER_REGEX = /[^0-9]/g;
 						inputmode="numeric"
 						placeholder="SS"
 						i18n-placeholder="@@ngb.timepicker.SS"
-						[value]="formatMinSec(model?.second)"
+						[(ngModel)]="model.second"
 						(change)="updateSecond($any($event).target.value)"
 						[readOnly]="readonlyInputs"
 						[disabled]="disabled"
@@ -209,7 +208,7 @@ export class NgbTimepicker implements ControlValueAccessor, OnChanges {
 	static ngAcceptInputType_size: string;
 
 	disabled: boolean;
-	model?: NgbTime;
+	model: NgbTime;
 
 	private _hourStep: number;
 	private _minuteStep: number;
@@ -353,6 +352,7 @@ export class NgbTimepicker implements ControlValueAccessor, OnChanges {
 			this.model?.updateHour(enteredHour);
 		}
 		this.propagateModelChange();
+		this.model.hour = this.formatHour(this.model.hour);
 	}
 
 	/**
@@ -361,6 +361,7 @@ export class NgbTimepicker implements ControlValueAccessor, OnChanges {
 	updateMinute(newVal: string) {
 		this.model?.updateMinute(toInteger(newVal));
 		this.propagateModelChange();
+		this.model.minute = this.formatMinSec(this.model?.minute);
 	}
 
 	/**
@@ -369,6 +370,7 @@ export class NgbTimepicker implements ControlValueAccessor, OnChanges {
 	updateSecond(newVal: string) {
 		this.model?.updateSecond(toInteger(newVal));
 		this.propagateModelChange();
+		this.model.second = this.formatMinSec(this.model?.second);
 	}
 
 	toggleMeridian() {
@@ -381,7 +383,7 @@ export class NgbTimepicker implements ControlValueAccessor, OnChanges {
 		input.value = input.value.replace(FILTER_REGEX, '');
 	}
 
-	formatHour(value?: number) {
+	formatHour(value?: number): any {
 		if (isNumber(value)) {
 			if (this.meridian) {
 				return padNumber(value % 12 === 0 ? 12 : value % 12);
@@ -393,7 +395,7 @@ export class NgbTimepicker implements ControlValueAccessor, OnChanges {
 		}
 	}
 
-	formatMinSec(value?: number) {
+	formatMinSec(value?: number): any {
 		return padNumber(isNumber(value) ? value : NaN);
 	}
 
