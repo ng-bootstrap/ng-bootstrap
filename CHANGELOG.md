@@ -1,3 +1,20 @@
+# [16.0.0-rc.2](https://github.com/ng-bootstrap/ng-bootstrap/compare/16.0.0-rc.1...16.0.0-rc.2) (2023-11-16)
+
+This release migrates to the new control flow syntax internally and for all demos.
+
+### Bug Fixes
+
+* **accordion:** allow querying body template ([#4625](https://github.com/ng-bootstrap/ng-bootstrap/issues/4625)) ([472d842](https://github.com/ng-bootstrap/ng-bootstrap/commit/472d84234d6a6abd6ff20e8f4ca643aca43f77f1)), closes [#4623](https://github.com/ng-bootstrap/ng-bootstrap/issues/4623)
+* **dropdown:** allow setting custom tabindex on items ([#4626](https://github.com/ng-bootstrap/ng-bootstrap/issues/4626)) ([3d9f052](https://github.com/ng-bootstrap/ng-bootstrap/commit/3d9f052d287ecc4a12592b3b9cb9af5ee422f0e9)), closes [#4592](https://github.com/ng-bootstrap/ng-bootstrap/issues/4592)
+
+
+### Features
+
+* **datepicker:** add ethiopian date picker ([bf02fb0](https://github.com/ng-bootstrap/ng-bootstrap/commit/bf02fb0f700d4f456a943135a72b0ff59b0ec28d)), closes [#4499](https://github.com/ng-bootstrap/ng-bootstrap/issues/4499)
+* migrate to the new control flow syntax ([6c3570b](https://github.com/ng-bootstrap/ng-bootstrap/commit/6c3570b1897181569f6c8ed4107250e861c507dd))
+
+
+
 # [16.0.0-rc.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/16.0.0-rc.0...16.0.0-rc.1) (2023-11-14)
 
 
