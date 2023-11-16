@@ -44,6 +44,7 @@ export {
 export { NgbCollapse, NgbCollapseConfig, NgbCollapseModule } from './collapse/collapse.module';
 export {
 	NgbCalendar,
+	NgbCalendarEthiopian,
 	NgbCalendarGregorian,
 	NgbCalendarHebrew,
 	NgbCalendarIslamicCivil,
@@ -61,6 +62,7 @@ export {
 	NgbInputDatepickerConfig,
 	NgbDatepickerContent,
 	NgbDatepickerI18n,
+	NgbDatepickerI18nAmharic,
 	NgbDatepickerI18nDefault,
 	NgbDatepickerI18nHebrew,
 	NgbDatepickerKeyboardService,
