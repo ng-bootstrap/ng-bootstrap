@@ -332,6 +332,23 @@ describe('ngb-dropdown', () => {
 		expect(itemEl.tabIndex).toBe(-1);
 	});
 
+	it('should allow using custom tabindex on a dropdown item', () => {
+		const html = `
+			<button ngbDropdownItem>one</button>
+			<button ngbDropdownItem disabled>two</button>
+			<button ngbDropdownItem tabindex='3'>three</button>
+			<button ngbDropdownItem tabindex='2' disabled>four</button>
+		`;
+
+		const fixture = createTestComponent(html);
+		const [one, two, three, four] = Array.from(fixture.nativeElement.querySelectorAll('button')) as HTMLButtonElement[];
+
+		expect(one.tabIndex).toBe(0);
+		expect(two.tabIndex).toBe(-1);
+		expect(three.tabIndex).toBe(3);
+		expect(four.tabIndex).toBe(-1);
+	});
+
 	it('should disable a link dropdown item', () => {
 		const html = `<a ngbDropdownItem [disabled]="disabled">dropDown item</a>`;
 

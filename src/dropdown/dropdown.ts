@@ -39,7 +39,11 @@ import { getActiveElement } from '../util/util';
 @Directive({
 	selector: '[ngbDropdownItem]',
 	standalone: true,
-	host: { class: 'dropdown-item', '[class.disabled]': 'disabled', '[tabIndex]': 'disabled ? -1 : 0' },
+	host: {
+		class: 'dropdown-item',
+		'[class.disabled]': 'disabled',
+		'[tabIndex]': 'disabled ? -1 : tabindex',
+	},
 })
 export class NgbDropdownItem {
 	static ngAcceptInputType_disabled: boolean | '';
@@ -47,6 +51,8 @@ export class NgbDropdownItem {
 	private _disabled = false;
 
 	nativeElement = inject(ElementRef).nativeElement as HTMLElement;
+
+	@Input() tabindex: string | number = 0;
 
 	@Input()
 	set disabled(value: boolean) {
