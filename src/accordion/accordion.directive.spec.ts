@@ -2,12 +2,19 @@ import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { createGenericTestComponent, isBrowserVisible } from '../test/common';
 
-import { ChangeDetectionStrategy, Component, Inject, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	Component,
+	ElementRef,
+	Inject,
+	QueryList,
+	ViewChild,
+	ViewChildren,
+} from '@angular/core';
 
 import { NgbAccordionConfig, NgbAccordionDirective, NgbAccordionItem, NgbAccordionModule } from './accordion.module';
 import { NgbConfig } from '../ngb-config';
 import { NgbConfigAnimation } from '../test/ngb-config-animation';
-import { NgFor } from '@angular/common';
 
 const createTestComponent = (html: string) =>
 	createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -578,7 +585,7 @@ describe('ngb-accordion directive', () => {
 	describe('closeOthers', () => {
 		@Component({
 			standalone: true,
-			imports: [NgbAccordionModule, NgFor],
+			imports: [NgbAccordionModule],
 			template: `
 				<div ngbAccordion #accordion="ngbAccordion" [closeOthers]="true">
 					@for (_ of state; track _; let index = $index) {
@@ -975,6 +982,37 @@ describe('on push change detection strategy', () => {
 	});
 });
 
+it(`should allow querying from the body template`, () => {
+	@Component({
+		standalone: true,
+		imports: [NgbAccordionModule],
+		template: `
+			<div ngbAccordion>
+				<div ngbAccordionItem [collapsed]="false">
+					<h2 ngbAccordionHeader>
+						<button ngbAccordionButton>Foo</button>
+					</h2>
+					<div ngbAccordionCollapse>
+						<div ngbAccordionBody>
+							<ng-template>
+								<div #bar>Bar</div>
+							</ng-template>
+						</div>
+					</div>
+				</div>
+			</div>
+		`,
+	})
+	class QueryTestComponent {
+		@ViewChild('bar') bar: ElementRef;
+	}
+
+	let cmp = TestBed.createComponent(QueryTestComponent);
+	cmp.detectChanges();
+	expect(cmp.componentInstance.bar).toBeDefined();
+	expect(cmp.componentInstance.bar.nativeElement.textContent).toBe('Bar');
+});
+
 describe('Custom config', () => {
 	let config: NgbAccordionConfig;
 
@@ -1184,7 +1222,7 @@ if (isBrowserVisible('ngb-accordion-directive animations')) {
 	selector: 'test-cmp',
 	template: '<div ngbAccordion></div>',
 	standalone: true,
-	imports: [NgbAccordionModule, NgFor],
+	imports: [NgbAccordionModule],
 })
 class TestComponent {
 	destroyOnHide = true;

@@ -1,7 +1,6 @@
 import {
 	AfterContentChecked,
 	AfterContentInit,
-	ApplicationRef,
 	ChangeDetectorRef,
 	ContentChild,
 	ContentChildren,
@@ -16,6 +15,7 @@ import {
 	Output,
 	QueryList,
 	TemplateRef,
+	ViewContainerRef,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgbAccordionConfig } from './accordion-config';
@@ -38,7 +38,7 @@ let nextId = 0;
 	host: { '[class.accordion-body]': 'true' },
 })
 export class NgbAccordionBody implements AfterContentChecked, OnDestroy {
-	private _appRef = inject(ApplicationRef);
+	private _vcr = inject(ViewContainerRef);
 	private _element = inject(ElementRef<HTMLElement>).nativeElement;
 	private _item = inject(NgbAccordionItem);
 
@@ -62,7 +62,6 @@ export class NgbAccordionBody implements AfterContentChecked, OnDestroy {
 
 	private _destroyViewIfExists(): void {
 		if (this._viewRef) {
-			this._appRef.detachView(this._viewRef);
 			this._viewRef.destroy();
 			this._viewRef = null;
 		}
@@ -70,9 +69,8 @@ export class NgbAccordionBody implements AfterContentChecked, OnDestroy {
 
 	private _createViewIfNotExists(): void {
 		if (!this._viewRef) {
-			this._viewRef = this._bodyTpl.createEmbeddedView(null);
+			this._viewRef = this._vcr.createEmbeddedView(this._bodyTpl);
 			this._viewRef.detectChanges();
-			this._appRef.attachView(this._viewRef);
 			for (const node of this._viewRef.rootNodes) {
 				this._element.appendChild(node);
 			}
