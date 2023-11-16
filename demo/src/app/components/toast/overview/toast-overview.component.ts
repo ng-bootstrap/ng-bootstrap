@@ -30,14 +30,14 @@ export class NgbdToastOverviewComponent {
 	TOAST_INLINE_LIFECYCLE = Snippet({
 		lang: 'html',
 		code: `
-      <!-- Using *ngIf to toggle display (showToast = true initially) -->
+      <!-- Using @if to toggle display (showToast = true initially) -->
       @if (showToast) {
         <ngb-toast header="I can be closed!" (hidden)="showToast = false">
           <!-- Content here -->
         </ngb-toast>
       }
 
-      <!-- or looping over a collection of toasts with *ngFor -->
+      <!-- or looping over a collection of toasts with @for -->
       @for (toast of toasts; track toast; let i = $index) {
         <ngb-toast [header]="'Toast #'+index+' here!'" (hidden)="toasts.splice(i, 1)">
           <!-- Content here -->

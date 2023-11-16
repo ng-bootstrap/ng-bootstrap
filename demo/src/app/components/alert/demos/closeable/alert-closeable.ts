@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { NgFor } from '@angular/common';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 
 interface Alert {
@@ -45,7 +44,7 @@ const ALERTS: Alert[] = [
 @Component({
 	selector: 'ngbd-alert-closeable',
 	standalone: true,
-	imports: [NgFor, NgbAlertModule],
+	imports: [NgbAlertModule],
 	templateUrl: './alert-closeable.html',
 })
 export class NgbdAlertCloseable {
