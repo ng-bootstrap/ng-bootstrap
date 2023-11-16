@@ -12,6 +12,8 @@ export { NgbCalendarPersian } from './jalali/ngb-calendar-persian';
 export { NgbCalendarHebrew } from './hebrew/ngb-calendar-hebrew';
 export { NgbDatepickerI18nHebrew } from './hebrew/datepicker-i18n-hebrew';
 export { NgbCalendarBuddhist } from './buddhist/ngb-calendar-buddhist';
+export { NgbCalendarEthiopian } from './ethiopian/ngb-calendar-ethiopian';
+export { NgbDatepickerI18nAmharic } from './ethiopian/datepicker-i18n-amharic';
 export { NgbDatepickerMonth } from './datepicker';
 export { NgbDatepickerDayView } from './datepicker-day-view';
 export { NgbDatepickerNavigation } from './datepicker-navigation';
