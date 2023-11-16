@@ -16,16 +16,14 @@ import { NgbdApiDocsBadge } from './api-docs-badge.component';
 	imports: [RouterLink, NgbdApiDocsBadge],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	templateUrl: './api-docs-class.component.html',
-	styles: [
-		`
-			.label-cell {
-				width: 25%;
-			}
-			.content-cell {
-				width: 75%;
-			}
-		`,
-	],
+	styles: `
+		.label-cell {
+			width: 25%;
+		}
+		.content-cell {
+			width: 75%;
+		}
+	`,
 })
 export class NgbdApiDocsClass {
 	apiDocs: ClassDesc;

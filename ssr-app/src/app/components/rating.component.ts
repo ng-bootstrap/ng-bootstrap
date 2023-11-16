@@ -5,25 +5,23 @@ import { NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
 	selector: 'rating-component',
 	standalone: true,
 	imports: [NgbRatingModule],
-	styles: [
-		`
-			.star {
-				position: relative;
-				display: inline-block;
-				font-size: 3rem;
-				color: #d3d3d3;
-			}
-			.full {
-				color: red;
-			}
-			.half {
-				position: absolute;
-				display: inline-block;
-				overflow: hidden;
-				color: red;
-			}
-		`,
-	],
+	styles: `
+		.star {
+			position: relative;
+			display: inline-block;
+			font-size: 3rem;
+			color: #d3d3d3;
+		}
+		.full {
+			color: red;
+		}
+		.half {
+			position: absolute;
+			display: inline-block;
+			overflow: hidden;
+			color: red;
+		}
+	`,
 	template: `
 		<ng-template #t let-fill="fill">
 			<span class="star" [class.full]="fill === 100">
