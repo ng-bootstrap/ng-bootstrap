@@ -11,6 +11,7 @@ import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 import { CodeComponent } from '../../../shared/code.component';
 import { NgbdWidgetDemoComponent } from '../../../shared/examples-page/demo.component';
 import { NgComponentOutlet } from '@angular/common';
+import { NgbdDatepickerEthiopian } from '../demos/ethiopian/datepicker-ethiopian';
 
 export const DEMOS = [
 	{
@@ -47,6 +48,13 @@ export const DEMOS = [
 		type: NgbdDatepickerBuddhist,
 		code: 'datepicker/demos/buddhist/datepicker-buddhist.ts',
 		markup: 'datepicker/demos/buddhist/datepicker-buddhist.html',
+	},
+	{
+		fragment: 'ethiopian',
+		title: 'Ethiopian',
+		type: NgbdDatepickerEthiopian,
+		code: 'datepicker/demos/ethiopian/datepicker-ethiopian.ts',
+		markup: 'datepicker/demos/ethiopian/datepicker-ethiopian.html',
 	},
 ];
 
