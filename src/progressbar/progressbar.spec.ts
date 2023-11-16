@@ -3,7 +3,7 @@ import { createGenericTestComponent } from '../test/common';
 
 import { Component } from '@angular/core';
 
-import { NgbProgressbar } from './progressbar';
+import { NgbProgressbar, NgbProgressbarStacked } from './progressbar';
 import { NgbProgressbarConfig } from './progressbar-config';
 
 const createTestComponent = (html: string) =>
@@ -45,7 +45,6 @@ describe('ngb-progressbar', () => {
 			const defaultConfig = TestBed.inject(NgbProgressbarConfig);
 			expect(progressCmp.max).toBe(defaultConfig.max);
 			expect(progressCmp.animated).toBe(defaultConfig.animated);
-			expect(progressCmp.stacked).toBe(defaultConfig.stacked);
 			expect(progressCmp.striped).toBe(defaultConfig.striped);
 			expect(progressCmp.textType).toBe(defaultConfig.textType);
 			expect(progressCmp.type).toBe(defaultConfig.type);
@@ -303,8 +302,9 @@ describe('ngb-progressbar', () => {
 			expect(getAriaLabel(fixture.nativeElement)).toBe('flupke');
 		});
 
-		it('should set width on progress when stacked is true', () => {
-			const html = '<ngb-progressbar [value]="50" [stacked]="true"></ngb-progressbar>';
+		it('should set width on progress when inside <ngb-progressbar-stacked>', () => {
+			const html =
+				'<ngb-progressbar-stacked><ngb-progressbar [value]="50"></ngb-progressbar></ngb-progressbar-stacked>';
 			const fixture = createTestComponent(html);
 
 			expect(getBarWidth(fixture.nativeElement)).toBe('');
@@ -365,7 +365,7 @@ describe('ngb-progressbar', () => {
 	});
 });
 
-@Component({ selector: 'test-cmp', standalone: true, imports: [NgbProgressbar], template: '' })
+@Component({ selector: 'test-cmp', standalone: true, imports: [NgbProgressbar, NgbProgressbarStacked], template: '' })
 class TestComponent {
 	value = 10;
 	max = 50;

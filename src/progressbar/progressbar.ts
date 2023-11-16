@@ -37,6 +37,7 @@ import { NgIf, PercentPipe } from '@angular/common';
 })
 export class NgbProgressbar {
 	private _config = inject(NgbProgressbarConfig);
+	public stacked = inject(NgbProgressbarStacked, { optional: true });
 	private _max: number;
 
 	/**
@@ -66,13 +67,6 @@ export class NgbProgressbar {
 	 * @since 13.1.0
 	 */
 	@Input() ariaLabel = this._config.ariaLabel;
-
-	/**
-	 * If `true`, the progress bars will be stacked.
-	 *
-	 * @since 16.0.0
-	 */
-	@Input() stacked = this._config.stacked;
 
 	/**
 	 * If `true`, the progress bars will be displayed as striped.
@@ -128,3 +122,20 @@ export class NgbProgressbar {
 		return (100 * this.getValue()) / this.max;
 	}
 }
+
+/**
+ * A directive that allow to stack progress bars.
+ *
+ * @since 16.0.0
+ */
+@Component({
+	selector: 'ngb-progressbar-stacked',
+	standalone: true,
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	encapsulation: ViewEncapsulation.None,
+	host: {
+		class: 'progress-stacked',
+	},
+	template: `<ng-content></ng-content>`,
+})
+export class NgbProgressbarStacked {}
