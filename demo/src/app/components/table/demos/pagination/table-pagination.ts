@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { DecimalPipe, NgFor } from '@angular/common';
+import { DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgbPaginationModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -95,7 +95,7 @@ const COUNTRIES: Country[] = [
 @Component({
 	selector: 'ngbd-table-pagination',
 	standalone: true,
-	imports: [DecimalPipe, NgFor, FormsModule, NgbTypeaheadModule, NgbPaginationModule],
+	imports: [DecimalPipe, FormsModule, NgbTypeaheadModule, NgbPaginationModule],
 	templateUrl: './table-pagination.html',
 })
 export class NgbdTablePagination {

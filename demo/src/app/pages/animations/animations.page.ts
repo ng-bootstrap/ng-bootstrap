@@ -51,6 +51,14 @@ export class AnimationsPage {
 
 	alert = Snippet({ lang: 'html', code: `<ngb-alert *ngIf="isOpen" (closed)="isOpen = false">I'm open</ngb-alert>` });
 
+	alertControlFlow = Snippet({
+		lang: 'html',
+		code: `
+    @if (isOpen) {
+      <ngb-alert (closed)="isOpen = false">I'm open</ngb-alert>
+    }`,
+	});
+
 	recipeAccordion = Snippet({
 		lang: 'html',
 		code: `
@@ -65,7 +73,9 @@ export class AnimationsPage {
 	recipeAlertTpl = Snippet({
 		lang: 'html',
 		code: `
-    <ngb-alert #a *ngIf="visible" (closed)="visible = false">...</ngb-alert>
+    @if (visible) {
+      <ngb-alert #a (closed)="visible = false">...</ngb-alert>
+    }
     <button (click)="a.close()">Close</button>
     `,
 	});
@@ -134,10 +144,12 @@ export class AnimationsPage {
 	recipeToastTpl = Snippet({
 		lang: 'html',
 		code: `
-    <ngb-toast *ngIf="visible" header="Hello" [autohide]="false"
-        (shown)="onShown()" (hidden)="onHidden(); visible = false">
-    ...
-    </ngb-toast>
+    @if (visible) {
+      <ngb-toast header="Hello" [autohide]="false"
+          (shown)="onShown()" (hidden)="onHidden(); visible = false">
+      ...
+      </ngb-toast>
+    }
     `,
 	});
 

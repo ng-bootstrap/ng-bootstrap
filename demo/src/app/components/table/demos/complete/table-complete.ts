@@ -1,4 +1,4 @@
-import { AsyncPipe, DecimalPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe, DecimalPipe } from '@angular/common';
 import { Component, QueryList, ViewChildren } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -11,7 +11,7 @@ import { NgbHighlight, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 @Component({
 	selector: 'ngbd-table-complete',
 	standalone: true,
-	imports: [NgFor, DecimalPipe, FormsModule, AsyncPipe, NgbHighlight, NgbdSortableHeader, NgbPaginationModule, NgIf],
+	imports: [DecimalPipe, FormsModule, AsyncPipe, NgbHighlight, NgbdSortableHeader, NgbPaginationModule],
 	templateUrl: './table-complete.html',
 	providers: [CountryService, DecimalPipe],
 })
