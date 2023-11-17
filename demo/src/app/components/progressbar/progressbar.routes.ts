@@ -6,6 +6,7 @@ import { NgbdProgressbarConfig } from './demos/config/progressbar-config';
 import { NgbdProgressbarHeight } from './demos/height/progressbar-height';
 import { NgbdProgressbarLabels } from './demos/labels/progressbar-labels';
 import { NgbdProgressbarShowvalue } from './demos/showvalue/progressbar-showvalue';
+import { NgbdProgressbarStacked } from './demos/stacked/progressbar-stacked';
 import { NgbdProgressbarStriped } from './demos/striped/progressbar-striped';
 import { NgbdProgressbarTextTypes } from './demos/texttypes/progressbar-texttypes';
 import { Routes } from '@angular/router';
@@ -52,6 +53,13 @@ const DEMOS = [
 		type: NgbdProgressbarHeight,
 		code: 'progressbar/demos/height/progressbar-height.ts',
 		markup: 'progressbar/demos/height/progressbar-height.html',
+	},
+	{
+		fragment: 'stacked',
+		title: 'Progress bars stacked',
+		type: NgbdProgressbarStacked,
+		code: 'progressbar/demos/stacked/progressbar-stacked.ts',
+		markup: 'progressbar/demos/stacked/progressbar-stacked.html',
 	},
 	{
 		fragment: 'config',

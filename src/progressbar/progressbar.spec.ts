@@ -3,7 +3,7 @@ import { createGenericTestComponent } from '../test/common';
 
 import { Component } from '@angular/core';
 
-import { NgbProgressbar } from './progressbar';
+import { NgbProgressbar, NgbProgressbarStacked } from './progressbar';
 import { NgbProgressbarConfig } from './progressbar-config';
 
 const createTestComponent = (html: string) =>
@@ -301,6 +301,15 @@ describe('ngb-progressbar', () => {
 
 			expect(getAriaLabel(fixture.nativeElement)).toBe('flupke');
 		});
+
+		it('should set width on progress when inside <ngb-progressbar-stacked>', () => {
+			const html =
+				'<ngb-progressbar-stacked><ngb-progressbar [value]="50"></ngb-progressbar></ngb-progressbar-stacked>';
+			const fixture = createTestComponent(html);
+
+			expect(getBarWidth(fixture.nativeElement)).toBe('');
+			expect(getProgress(fixture.nativeElement).style.width).toBe('50%');
+		});
 	});
 
 	describe('Custom config', () => {
@@ -356,7 +365,7 @@ describe('ngb-progressbar', () => {
 	});
 });
 
-@Component({ selector: 'test-cmp', standalone: true, imports: [NgbProgressbar], template: '' })
+@Component({ selector: 'test-cmp', standalone: true, imports: [NgbProgressbar, NgbProgressbarStacked], template: '' })
 class TestComponent {
 	value = 10;
 	max = 50;

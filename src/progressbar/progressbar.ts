@@ -19,6 +19,7 @@ import { PercentPipe } from '@angular/common';
 		'aria-valuemin': '0',
 		'[attr.aria-valuemax]': 'max',
 		'[attr.aria-label]': 'ariaLabel',
+		'[style.width.%]': 'stacked ? getPercentValue() : null',
 	},
 	template: `
 		<div
@@ -27,7 +28,7 @@ import { PercentPipe } from '@angular/common';
 			}}"
 			[class.progress-bar-animated]="animated"
 			[class.progress-bar-striped]="striped"
-			[style.width.%]="getPercentValue()"
+			[style.width.%]="!stacked ? getPercentValue() : null"
 		>
 			@if (showValue) {
 				<span i18n="@@ngb.progressbar.value">{{ getValue() / max | percent }}</span>
@@ -38,6 +39,7 @@ import { PercentPipe } from '@angular/common';
 })
 export class NgbProgressbar {
 	private _config = inject(NgbProgressbarConfig);
+	public stacked = inject(NgbProgressbarStacked, { optional: true });
 	private _max: number;
 
 	/**
@@ -122,3 +124,20 @@ export class NgbProgressbar {
 		return (100 * this.getValue()) / this.max;
 	}
 }
+
+/**
+ * A directive that allow to stack progress bars.
+ *
+ * @since 16.0.0
+ */
+@Component({
+	selector: 'ngb-progressbar-stacked',
+	standalone: true,
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	encapsulation: ViewEncapsulation.None,
+	host: {
+		class: 'progress-stacked',
+	},
+	template: `<ng-content></ng-content>`,
+})
+export class NgbProgressbarStacked {}

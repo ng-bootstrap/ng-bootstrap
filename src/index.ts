@@ -131,7 +131,12 @@ export {
 	NgbPaginationPages,
 } from './pagination/pagination.module';
 export { NgbPopover, NgbPopoverConfig, NgbPopoverModule } from './popover/popover.module';
-export { NgbProgressbar, NgbProgressbarConfig, NgbProgressbarModule } from './progressbar/progressbar.module';
+export {
+	NgbProgressbar,
+	NgbProgressbarConfig,
+	NgbProgressbarModule,
+	NgbProgressbarStacked,
+} from './progressbar/progressbar.module';
 export { NgbRating, NgbRatingConfig, NgbRatingModule } from './rating/rating.module';
 export {
 	NgbScrollSpy,
