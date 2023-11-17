@@ -102,7 +102,7 @@ export class NgbdToastOverviewComponent {
       @Component({
         selector: 'app-toasts',
         template: ' ... ',
-        styles: [' ... ']
+        styles: ' ... '
       })
       export class AppToastsComponent {
         constructor(public toastService: AppToastService) {}

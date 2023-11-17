@@ -50,40 +50,38 @@ import { DatePipe } from '@angular/common';
 			[displayMonths]="2"
 		/>
 	`,
-	styles: [
-		`
-			.custom-day {
-				text-align: center;
-				display: inline-block;
-				width: 2rem;
-				height: 2rem;
-				line-height: 2rem;
-			}
-			.custom-day:hover {
-				background-color: #e6e6e6;
-			}
-			.disabled {
-				color: #bbbbbb;
-			}
-			.disabled:hover {
-				background-color: transparent;
-			}
-			.holiday,
-			.holiday.disabled,
-			.holiday:hover {
-				color: white;
-				background-color: coral;
-			}
-			.range:not(.holiday):not(.disabled),
-			.custom-day:not(.disabled):not(.holiday):hover {
-				background-color: rgb(2, 117, 216);
-				color: white;
-			}
-			.faded:not(.holiday):not(.disabled) {
-				background-color: rgba(2, 117, 216, 0.5);
-			}
-		`,
-	],
+	styles: `
+		.custom-day {
+			text-align: center;
+			display: inline-block;
+			width: 2rem;
+			height: 2rem;
+			line-height: 2rem;
+		}
+		.custom-day:hover {
+			background-color: #e6e6e6;
+		}
+		.disabled {
+			color: #bbbbbb;
+		}
+		.disabled:hover {
+			background-color: transparent;
+		}
+		.holiday,
+		.holiday.disabled,
+		.holiday:hover {
+			color: white;
+			background-color: coral;
+		}
+		.range:not(.holiday):not(.disabled),
+		.custom-day:not(.disabled):not(.holiday):hover {
+			background-color: rgb(2, 117, 216);
+			color: white;
+		}
+		.faded:not(.holiday):not(.disabled) {
+			background-color: rgba(2, 117, 216, 0.5);
+		}
+	`,
 	providers: [NgbDateNativeAdapter],
 })
 export class NgbdDatepickerOverviewDemoComponent {

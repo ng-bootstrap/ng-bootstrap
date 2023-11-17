@@ -6,18 +6,16 @@ import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 	standalone: true,
 	imports: [NgbNavModule],
 	templateUrl: './nav-dynamic.html',
-	styles: [
-		`
-			.close {
-				font-size: 1.4rem;
-				opacity: 0.1;
-				transition: opacity 0.3s;
-			}
-			.nav-link:hover > .close {
-				opacity: 0.8;
-			}
-		`,
-	],
+	styles: `
+		.close {
+			font-size: 1.4rem;
+			opacity: 0.1;
+			transition: opacity 0.3s;
+		}
+		.nav-link:hover > .close {
+			opacity: 0.8;
+		}
+	`,
 })
 export class NgbdNavDynamic {
 	navs = [1, 2, 3, 4, 5];
