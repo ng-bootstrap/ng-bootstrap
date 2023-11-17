@@ -76,6 +76,7 @@ export const DEMOS = [
 			<li><code>NgbCalendarIslamicCivil</code></li>
 			<li><code>NgbCalendarIslamicUmalqura</code></li>
 			<li><code>NgbCalendarBuddhist</code></li>
+			<li><code>NgbCalendarEthiopian</code></li>
 		</ul>
 
 		<ngb-alert [dismissible]="false">
