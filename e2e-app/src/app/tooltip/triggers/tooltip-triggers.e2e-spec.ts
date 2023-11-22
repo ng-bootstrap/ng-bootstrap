@@ -37,9 +37,7 @@ test.describe('Tooltip Triggers', () => {
 		await expectTooltipToBeClosed(`Tooltip should close after clicking the outside element`);
 	});
 
-	test(`should close tooltip on blur`, async ({ browserName }) => {
-		test.skip(browserName === 'webkit');
-
+	test(`should close tooltip on blur`, async () => {
 		await getPage().click('#before');
 
 		await sendKey('Tab');
@@ -49,9 +47,7 @@ test.describe('Tooltip Triggers', () => {
 		await expectTooltipToBeClosed(`Tooltip should close after focusing outside the element`);
 	});
 
-	test(`should not close tooltip on blur after triggering element click`, async ({ browserName }) => {
-		test.skip(browserName === 'webkit');
-
+	test(`should not close tooltip on blur after triggering element click`, async () => {
 		await getPage().click('#before');
 
 		await sendKey('Tab');
