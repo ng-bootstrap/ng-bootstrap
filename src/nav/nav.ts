@@ -189,6 +189,7 @@ export class NgbNavItem implements AfterContentChecked, OnInit {
 		'(keydown.arrowUp)': 'onKeyDown($event)',
 		'(keydown.Home)': 'onKeyDown($event)',
 		'(keydown.End)': 'onKeyDown($event)',
+		'(focusout)': 'onFocusout($event)',
 	},
 })
 export class NgbNav implements AfterContentInit, OnChanges {
@@ -198,8 +199,11 @@ export class NgbNav implements AfterContentInit, OnChanges {
 	private _config = inject(NgbNavConfig);
 	private _cd = inject(ChangeDetectorRef);
 	private _document = inject(DOCUMENT);
+	private _nativeElement = inject(ElementRef).nativeElement as HTMLElement;
 
 	destroyRef = inject(DestroyRef);
+
+	_navigatingWithKeyboard = false;
 
 	/**
 	 * The id of the nav that should be active
@@ -246,8 +250,8 @@ export class NgbNav implements AfterContentInit, OnChanges {
 	/**
 	 * Keyboard support for nav focus/selection using arrow keys.
 	 *
-	 * * `false` - no keyboard support.
 	 * * `true` - navs will be focused using keyboard arrow keys
+	 * * `false` - no keyboard support
 	 * * `'changeWithArrows'` -  nav will be selected using keyboard arrow keys
 	 *
 	 * See the [list of available keyboard shortcuts](#/components/nav/overview#keyboard-shortcuts).
@@ -296,6 +300,12 @@ export class NgbNav implements AfterContentInit, OnChanges {
 		}
 	}
 
+	onFocusout({ relatedTarget }: FocusEvent) {
+		if (!this._nativeElement.contains(relatedTarget as HTMLElement)) {
+			this._navigatingWithKeyboard = false;
+		}
+	}
+
 	onKeyDown(event: KeyboardEvent) {
 		if (this.roles !== 'tablist' || !this.keyboard) {
 			return;
@@ -315,29 +325,13 @@ export class NgbNav implements AfterContentInit, OnChanges {
 
 		if (length) {
 			switch (key) {
+				case Key.ArrowUp:
 				case Key.ArrowLeft:
-					if (this.orientation === 'vertical') {
-						return;
-					}
 					position = (position - 1 + length) % length;
 					break;
 				case Key.ArrowRight:
-					if (this.orientation === 'vertical') {
-						return;
-					}
-					position = (position + 1) % length;
-					break;
 				case Key.ArrowDown:
-					if (this.orientation === 'horizontal') {
-						return;
-					}
 					position = (position + 1) % length;
-					break;
-				case Key.ArrowUp:
-					if (this.orientation === 'horizontal') {
-						return;
-					}
-					position = (position - 1 + length) % length;
 					break;
 				case Key.Home:
 					position = 0;
@@ -350,6 +344,7 @@ export class NgbNav implements AfterContentInit, OnChanges {
 				this.select(enabledLinks[position].navItem.id);
 			}
 			enabledLinks[position].nativeElement.focus();
+			this._navigatingWithKeyboard = true;
 
 			event.preventDefault();
 		}
@@ -424,7 +419,7 @@ export class NgbNav implements AfterContentInit, OnChanges {
 		'[attr.role]': `role ? role : nav.roles ? 'tab' : undefined`,
 		'[class.active]': 'navItem.active',
 		'[class.disabled]': 'navItem.disabled',
-		'[attr.tabindex]': 'navItem.disabled ? -1 : undefined',
+		'[attr.tabindex]': 'tabindex',
 		'[attr.aria-controls]': 'navItem.isPanelInDom() ? navItem.panelDomId : null',
 		'[attr.aria-selected]': 'navItem.active',
 		'[attr.aria-disabled]': 'navItem.disabled',
@@ -436,6 +431,16 @@ export class NgbNavLinkBase {
 	nativeElement = inject(ElementRef).nativeElement as HTMLElement;
 
 	constructor(@Attribute('role') public role: string) {}
+
+	get tabindex() {
+		if (this.nav.keyboard === false) {
+			return this.navItem.disabled ? -1 : undefined;
+		}
+		if (this.nav._navigatingWithKeyboard) {
+			return -1;
+		}
+		return this.navItem.disabled || !this.navItem.active ? -1 : undefined;
+	}
 }
 
 /**

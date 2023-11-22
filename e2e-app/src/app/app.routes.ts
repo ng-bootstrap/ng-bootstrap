@@ -28,6 +28,7 @@ import { OffcanvasNestingComponent } from './offcanvas/nesting/offcanvas-nesting
 import { OffcanvasStackConfirmationComponent } from './offcanvas/stack-confirmation/offcanvas-stack-confirmation.component';
 import { DropdownShadowComponent } from './dropdown/shadow/dropdown-shadow.component';
 import { TooltipTriggersComponent } from './tooltip/triggers/tooltip-triggers.component';
+import { NavFocusComponent } from './nav/focus/nav-focus.component';
 
 export const ROUTES: Routes = [
 	{
@@ -48,6 +49,10 @@ export const ROUTES: Routes = [
 			{ path: 'stack', component: ModalStackComponent },
 			{ path: 'stack-confirmation', component: ModalStackConfirmationComponent },
 		],
+	},
+	{
+		path: 'nav',
+		children: [{ path: 'focus', component: NavFocusComponent }],
 	},
 	{
 		path: 'offcanvas',

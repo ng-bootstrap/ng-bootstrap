@@ -1,4 +1,4 @@
-import { getPage } from '../../baseTest';
+import { getBrowserName, getPage } from '../../baseTest';
 import { expect } from '@playwright/test';
 
 /**
@@ -8,6 +8,10 @@ import { expect } from '@playwright/test';
  * https://playwright.dev/docs/api/class-keyboard?_highlight=keyboard#keyboardpresskey-options
  */
 export const sendKey = async (key: string) => {
+	// Add Alt modifier for Tabs and Safari
+	if (getBrowserName() === 'webkit' && ['Tab', 'Shift+Tab'].includes(key)) {
+		key = `Alt+${key}`;
+	}
 	await getPage().keyboard.press(key);
 };
 

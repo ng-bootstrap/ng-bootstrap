@@ -17,7 +17,7 @@ export class NgbNavConfig {
 	destroyOnHide = true;
 	orientation: 'horizontal' | 'vertical' = 'horizontal';
 	roles: 'tablist' | false = 'tablist';
-	keyboard: boolean | 'changeWithArrows' = false;
+	keyboard: boolean | 'changeWithArrows' = true;
 
 	get animation(): boolean {
 		return this._animation ?? this._ngbConfig.animation;

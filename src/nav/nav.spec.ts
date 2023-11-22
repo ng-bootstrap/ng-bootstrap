@@ -1071,7 +1071,7 @@ describe('nav', () => {
 	describe(`nav keyboard navigation`, () => {
 		it(`should not work for nav with role different from 'tablist`, () => {
 			const fixture = createTestComponent(`
-        <ul ngbNav #n="ngbNav" [roles]="false" class="nav-tabs" keyboard="true">
+        <ul ngbNav #n="ngbNav" [roles]="false" class="nav-tabs">
           <li ngbNavItem>
               <button ngbNavLink></button>
               <ng-template ngbTabContent></ng-template>
@@ -1097,7 +1097,7 @@ describe('nav', () => {
 
 		it(`should ignore disabled tabs`, () => {
 			const fixture = createTestComponent(`
-      <ul ngbNav #n="ngbNav" class="nav-tabs" keyboard="true">
+      <ul ngbNav #n="ngbNav" class="nav-tabs">
         <li [ngbNavItem]="1">
             <button ngbNavLink>link 1</button>
             <ng-template ngbNavContent>content 1</ng-template>
@@ -1127,10 +1127,9 @@ describe('nav', () => {
 			expectLinks(fixture, [true, false, false]);
 		});
 
-		it(`should move focus correctly between tablinks on 'arrow right', 'arrow left',
-         'home', 'end' keydown when keyboard is true`, () => {
+		it(`should move focus correctly between tablinks on 'arrow right', 'arrow left', 'home', 'end'`, () => {
 			const fixture = createTestComponent(`
-        <ul ngbNav #n="ngbNav" class="nav-tabs" keyboard="true">
+        <ul ngbNav #n="ngbNav" class="nav-tabs">
           <li ngbNavItem>
               <button ngbNavLink></button>
               <ng-template ngbTabContent></ng-template>
@@ -1178,10 +1177,9 @@ describe('nav', () => {
 			expectLinks(fixture, [true, false, false]);
 		});
 
-		it(`should move focus correctly for vertical nav on 'arrow down', 'arrow up',
-       'home', 'end' keydown when keyboard is true`, () => {
+		it(`should move focus correctly for vertical nav on 'arrow down', 'arrow up', 'home', 'end'`, () => {
 			const fixture = createTestComponent(`
-      <ul ngbNav #n="ngbNav" class="nav-tabs" keyboard="true" orientation="vertical">
+      <ul ngbNav #n="ngbNav" class="nav-tabs" orientation="vertical">
         <li ngbNavItem>
             <button ngbNavLink></button>
             <ng-template ngbTabContent></ng-template>
@@ -1229,8 +1227,7 @@ describe('nav', () => {
 			expectLinks(fixture, [true, false, false]);
 		});
 
-		it(`should change tab and focus  on 'arrow right', 'arrow left',
-         'home', 'end' keydown keydown when keyboard is 'changeWithArrows'`, () => {
+		it(`should change tab and focus  on 'arrow right', 'arrow left', 'home', 'end' when keyboard is 'changeWithArrows'`, () => {
 			const fixture = createTestComponent(`
           <ul ngbNav #n="ngbNav" class="nav-tabs" keyboard="changeWithArrows">
             <li ngbNavItem>
