@@ -1,0 +1,43 @@
+<h3>Nav focus tests</h3>
+
+<div ngbDropdown class="d-inline-block me-3">
+	<button class="btn btn-outline-secondary" id="keyboard-dropdown" ngbDropdownToggle
+		>Keyboard = '{{ keyboard }}'</button
+	>
+	<div ngbDropdownMenu aria-labelledby="dropdown">
+		<button ngbDropdownItem id="keyboard-true" (click)="keyboard = true">True</button>
+		<button ngbDropdownItem id="keyboard-false" (click)="keyboard = false">False</button>
+		<button ngbDropdownItem id="keyboard-arrows" (click)="keyboard = 'changeWithArrows'">Change with Arrows</button>
+	</div>
+</div>
+
+<hr />
+
+<input id="before" type="text" placeholder="before" />
+
+<ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs" [keyboard]="keyboard">
+	<li [ngbNavItem]="1" domId="nav-1">
+		<button ngbNavLink>One</button>
+		<ng-template ngbNavContent>One</ng-template>
+	</li>
+	<li [ngbNavItem]="2" domId="nav-2">
+		<button ngbNavLink>Two</button>
+		<ng-template ngbNavContent>Two</ng-template>
+	</li>
+	<li [ngbNavItem]="3" domId="nav-3">
+		<button ngbNavLink>Three</button>
+		<ng-template ngbNavContent>Three</ng-template>
+	</li>
+	<li [ngbNavItem]="4" domId="nav-4" [disabled]="true">
+		<button ngbNavLink>Four</button>
+		<ng-template ngbNavContent>Four</ng-template>
+	</li>
+</ul>
+
+<div [ngbNavOutlet]="nav" class="mt-2"></div>
+
+<input id="after" type="text" placeholder="after" />
+
+<hr />
+
+<pre>Active: {{ active }}</pre>
