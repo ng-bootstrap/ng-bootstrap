@@ -11,6 +11,9 @@ import {
 	toGregorian,
 } from './ethiopian';
 
+/**
+ * @since 16.0.0
+ */
 @Injectable()
 export class NgbCalendarEthiopian extends NgbCalendar {
 	getDaysPerWeek(): number {

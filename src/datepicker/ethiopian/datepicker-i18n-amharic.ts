@@ -6,6 +6,9 @@ import { TranslationWidth } from '@angular/common';
 const WEEKDAYS = ['እሑድ', 'ሰኞ', 'ማክሰኞ', 'ረቡዕ', 'ሓሙስ', 'ዓርብ', 'ቅዳሜ'];
 const MONTHS = ['መስከረም', 'ጥቅምት', 'ኅዳር', 'ታህሣሥ', 'ጥር', 'የካቲት', 'መጋቢት', 'ሚያዝያ', 'ግንቦት', 'ሰኔ', 'ሐምሌ', 'ነሐሴ', 'ጳጉሜ'];
 
+/**
+ * @since 16.0.0
+ */
 @Injectable()
 export class NgbDatepickerI18nAmharic extends NgbDatepickerI18n {
 	getMonthShortName(month: number, year?: number | undefined): string {
