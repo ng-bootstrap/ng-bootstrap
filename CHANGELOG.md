@@ -1,34 +1,15 @@
-# [16.0.0-rc.2](https://github.com/ng-bootstrap/ng-bootstrap/compare/16.0.0-rc.1...16.0.0-rc.2) (2023-11-16)
+# [16.0.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/15.1.2...16.0.0) (2023-11-22)
 
-This release migrates to the new control flow syntax internally and for all demos.
+This release bumps minimum required versions to Angular `17.0.0` and Bootstrap `5.3.2`.
 
-### Bug Fixes
+Main features:
+- dark mode support for all components and demo site.
+- new stacked progressbar markup in Bootstrap `5.3` allowed us to do the long-standing [stacked progressbar](https://ng-bootstrap.github.io/#/components/progressbar/examples#stacked) feature request.
+- [Ethiopian calendar](https://ng-bootstrap.github.io/#/components/datepicker/calendars#ethiopian) for datepicker.
+- old component-based accordion implementation is removed (it was deprecated in `14.1.0` in favor of [directive-based implementation](https://ng-bootstrap.github.io/#/components/accordion/overview)).
+- we're using new control flow syntax internally and for all demos.
 
-* **accordion:** allow querying body template ([#4625](https://github.com/ng-bootstrap/ng-bootstrap/issues/4625)) ([472d842](https://github.com/ng-bootstrap/ng-bootstrap/commit/472d84234d6a6abd6ff20e8f4ca643aca43f77f1)), closes [#4623](https://github.com/ng-bootstrap/ng-bootstrap/issues/4623)
-* **dropdown:** allow setting custom tabindex on items ([#4626](https://github.com/ng-bootstrap/ng-bootstrap/issues/4626)) ([3d9f052](https://github.com/ng-bootstrap/ng-bootstrap/commit/3d9f052d287ecc4a12592b3b9cb9af5ee422f0e9)), closes [#4592](https://github.com/ng-bootstrap/ng-bootstrap/issues/4592)
-
-
-### Features
-
-* **datepicker:** add ethiopian date picker ([bf02fb0](https://github.com/ng-bootstrap/ng-bootstrap/commit/bf02fb0f700d4f456a943135a72b0ff59b0ec28d)), closes [#4499](https://github.com/ng-bootstrap/ng-bootstrap/issues/4499)
-* migrate to the new control flow syntax ([6c3570b](https://github.com/ng-bootstrap/ng-bootstrap/commit/6c3570b1897181569f6c8ed4107250e861c507dd))
-
-
-
-# [16.0.0-rc.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/16.0.0-rc.0...16.0.0-rc.1) (2023-11-14)
-
-
-### Bug Fixes
-
-* **datepicker:** `startDate` type should accept dates with days ([#4618](https://github.com/ng-bootstrap/ng-bootstrap/issues/4618)) ([81ec20a](https://github.com/ng-bootstrap/ng-bootstrap/commit/81ec20aa440b3fe9cecd2b1cd3754fa8b26a34cd)), closes [#4616](https://github.com/ng-bootstrap/ng-bootstrap/issues/4616)
-
-
-
-# [16.0.0-rc.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/15.1.2...16.0.0-rc.0) (2023-11-08)
-
-This release bumps minimum required versions to Angular `17.0.0`, Bootstrap `5.3.2` and introduces dark mode support for components and demo site.
-
-It also removes old component-based accordion implementation, which was deprecated in `14.1.0` in favor of [directive-based implementation](https://ng-bootstrap.github.io/#/components/accordion/overview).
+Please make sure to check the `BREAKING CHANGES` section below.
 
 ### Bug Fixes
 
@@ -38,12 +19,19 @@ It also removes old component-based accordion implementation, which was deprecat
 * **nav:** `NgbNavLinkBase` matches multiple times ([02ab48b](https://github.com/ng-bootstrap/ng-bootstrap/commit/02ab48b26d9fe0d6e08e6eb88c9ec77eda5c542e)), closes [#4594](https://github.com/ng-bootstrap/ng-bootstrap/issues/4594)
 * **schematics:** use `getMainFilePath()` to get main project file ([acd635a](https://github.com/ng-bootstrap/ng-bootstrap/commit/acd635ac5519e398f0781ab5526cd66581c74337))
 * **tooltip:** add offset to align with Bootstrap 5.3 ([6fd04af](https://github.com/ng-bootstrap/ng-bootstrap/commit/6fd04af5550e60aabd307e40afbcab001c4cbe35)), closes [#4574](https://github.com/ng-bootstrap/ng-bootstrap/issues/4574)
+* **datepicker:** `startDate` type should accept dates with days ([#4618](https://github.com/ng-bootstrap/ng-bootstrap/issues/4618)) ([81ec20a](https://github.com/ng-bootstrap/ng-bootstrap/commit/81ec20aa440b3fe9cecd2b1cd3754fa8b26a34cd)), closes [#4616](https://github.com/ng-bootstrap/ng-bootstrap/issues/4616)
+* **accordion:** allow querying body template ([#4625](https://github.com/ng-bootstrap/ng-bootstrap/issues/4625)) ([472d842](https://github.com/ng-bootstrap/ng-bootstrap/commit/472d84234d6a6abd6ff20e8f4ca643aca43f77f1)), closes [#4623](https://github.com/ng-bootstrap/ng-bootstrap/issues/4623)
+* **dropdown:** allow setting custom tabindex on items ([#4626](https://github.com/ng-bootstrap/ng-bootstrap/issues/4626)) ([3d9f052](https://github.com/ng-bootstrap/ng-bootstrap/commit/3d9f052d287ecc4a12592b3b9cb9af5ee422f0e9)), closes [#4592](https://github.com/ng-bootstrap/ng-bootstrap/issues/4592)
+* **nav:** correct focus handing with keyboard ([184b6bd](https://github.com/ng-bootstrap/ng-bootstrap/commit/184b6bd1ff5a69bb17930cda7e6b39d94a15ac59))
 
 
 ### Features
 
 * bootstrap 5.3 and dark mode ([99c2162](https://github.com/ng-bootstrap/ng-bootstrap/commit/99c2162785cc97c30c5c1b9124205d0371b53e37)), closes [#4450](https://github.com/ng-bootstrap/ng-bootstrap/issues/4450)
 * add axe a11y tests of the demo site ([#4588](https://github.com/ng-bootstrap/ng-bootstrap/issues/4588)) ([b573a2b](https://github.com/ng-bootstrap/ng-bootstrap/commit/b573a2b0d610d07ab57d7c04a01a65540267d108))
+* **progressbar:** add stacked progressbar ([#4621](https://github.com/ng-bootstrap/ng-bootstrap/issues/4621)) ([1982133](https://github.com/ng-bootstrap/ng-bootstrap/commit/1982133449e4ebc0df1d529cde1fc624f64d253c))
+* **datepicker:** add ethiopian date picker ([bf02fb0](https://github.com/ng-bootstrap/ng-bootstrap/commit/bf02fb0f700d4f456a943135a72b0ff59b0ec28d)), closes [#4499](https://github.com/ng-bootstrap/ng-bootstrap/issues/4499)
+* migrate to the new control flow syntax ([6c3570b](https://github.com/ng-bootstrap/ng-bootstrap/commit/6c3570b1897181569f6c8ed4107250e861c507dd))
 * **accordion:** remove `type` from configuration ([ed7732a](https://github.com/ng-bootstrap/ng-bootstrap/commit/ed7732a08ce4b60c79ac8d981edf77d524802f59))
 * **accordion:** remove component-based version ([7aab9e3](https://github.com/ng-bootstrap/ng-bootstrap/commit/7aab9e3634c52d2578fad478cf1156300c3b5839))
 * **dropdown:** remove deprecated `NgbNavbar` directive ([c2c8061](https://github.com/ng-bootstrap/ng-bootstrap/commit/c2c80616fecc5d231bdbbbdcbf4af3ce8f981772))
@@ -54,8 +42,10 @@ It also removes old component-based accordion implementation, which was deprecat
 * minimum required versions are now Angular `17.0.0`, Bootstrap `5.3.2` and Popper `2.11.8`
 * **accordion:** removed component-based accordion. It was deprecated in `14.1.0`
 * **accordion:** removed `type` property from the `NgbAccordionConfig`. It was deprecated in `14.1.0`.
-* **nav:**` NgbNavbar` directive is removed, as it is no longer required. It was deprecated in `14.2.0`. 
 * we use `inject` function internally more than before, so constructor signatures have changed for all components. If you extend our components (and you really shouldn't do it), you might need to update your code.
+* **nav:**` NgbNavbar` directive is removed, as it is no longer required. It was deprecated in `14.2.0`.
+* **nav:** default value for the `@Input() keyboard: boolean | 'changeWithArrows'` was changed from `false` to `true`, meaning that all navs are now keyboard accessible by default and focus between navs moves with arrow keys. Focusing behavior follows the WAI-ARIA tab recommendation as well as Bootstrap's nav implementation. To turn off keyboard support set `keyboard` to `false` either on the individual `NgbNav` or via `NgbNavConfig`
+
 
 
 ## [15.1.2](https://github.com/ng-bootstrap/ng-bootstrap/compare/15.1.1...15.1.2) (2023-10-24)
