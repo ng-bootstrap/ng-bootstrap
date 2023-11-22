@@ -25,7 +25,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { isDefined } from '../util/util';
 import { NgbNavConfig } from './nav-config';
-import { Key } from '../util/key';
 
 const isValidNavId = (id: any) => isDefined(id) && id !== '';
 
@@ -310,8 +309,6 @@ export class NgbNav implements AfterContentInit, OnChanges {
 		if (this.roles !== 'tablist' || !this.keyboard) {
 			return;
 		}
-		/* eslint-disable-next-line deprecation/deprecation */
-		const key = event.which;
 		const enabledLinks = this.links.filter((link) => !link.navItem.disabled);
 		const { length } = enabledLinks;
 
@@ -324,19 +321,19 @@ export class NgbNav implements AfterContentInit, OnChanges {
 		});
 
 		if (length) {
-			switch (key) {
-				case Key.ArrowUp:
-				case Key.ArrowLeft:
+			switch (event.key) {
+				case 'ArrowUp':
+				case 'ArrowLeft':
 					position = (position - 1 + length) % length;
 					break;
-				case Key.ArrowRight:
-				case Key.ArrowDown:
+				case 'ArrowRight':
+				case 'ArrowDown':
 					position = (position + 1) % length;
 					break;
-				case Key.Home:
+				case 'Home':
 					position = 0;
 					break;
-				case Key.End:
+				case 'End':
 					position = length - 1;
 					break;
 			}

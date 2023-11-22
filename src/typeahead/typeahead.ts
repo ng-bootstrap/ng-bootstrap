@@ -22,7 +22,6 @@ import { map, switchMap, tap } from 'rxjs/operators';
 
 import { Live } from '../util/accessibility/live';
 import { ngbAutoClose } from '../util/autoclose';
-import { Key } from '../util/key';
 import { PopupService } from '../util/popup';
 import { ngbPositioning } from '../util/positioning';
 import { isDefined, toString } from '../util/util';
@@ -276,20 +275,19 @@ export class NgbTypeahead implements ControlValueAccessor, OnInit, OnChanges, On
 			return;
 		}
 
-		/* eslint-disable-next-line deprecation/deprecation */
-		switch (event.which) {
-			case Key.ArrowDown:
+		switch (event.key) {
+			case 'ArrowDown':
 				event.preventDefault();
 				this._windowRef!.instance.next();
 				this._showHint();
 				break;
-			case Key.ArrowUp:
+			case 'ArrowUp':
 				event.preventDefault();
 				this._windowRef!.instance.prev();
 				this._showHint();
 				break;
-			case Key.Enter:
-			case Key.Tab: {
+			case 'Enter':
+			case 'Tab': {
 				const result = this._windowRef!.instance.getActive();
 				if (isDefined(result)) {
 					event.preventDefault();

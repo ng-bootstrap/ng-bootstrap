@@ -17,7 +17,6 @@ import { fromEvent, Observable, Subject, zip } from 'rxjs';
 import { filter, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 
 import { getFocusableBoundaryElements } from '../util/focus-trap';
-import { Key } from '../util/key';
 import { ModalDismissReasons } from './modal-dismiss-reasons';
 import { ngbRunTransition, NgbTransitionOptions } from '../util/transition/ngbTransition';
 import { isString, reflow } from '../util/util';
@@ -161,8 +160,7 @@ export class NgbModalWindow implements OnInit, OnDestroy {
 			fromEvent<KeyboardEvent>(nativeElement, 'keydown')
 				.pipe(
 					takeUntil(this._closed$),
-					/* eslint-disable-next-line deprecation/deprecation */
-					filter((e) => e.which === Key.Escape),
+					filter((e) => e.key === 'Escape'),
 				)
 				.subscribe((event) => {
 					if (this.keyboard) {

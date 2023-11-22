@@ -4,7 +4,6 @@ import { By } from '@angular/platform-browser';
 import { NgbNav, NgbNavConfig, NgbNavItem, NgbNavLinkBase, NgbNavModule, NgbNavOutlet } from './nav.module';
 import { createGenericTestComponent, isBrowserVisible } from '../test/common';
 import { isDefined } from '../util/util';
-import { Key } from 'src/util/key';
 import { NgbConfig } from '../ngb-config';
 import { NgbConfigAnimation } from '../test/ngb-config-animation';
 import createSpy = jasmine.createSpy;
@@ -41,8 +40,8 @@ function getLinks(fixture: ComponentFixture<any>): HTMLElement[] {
 	return fixture.debugElement.queryAll(By.directive(NgbNavLinkBase)).map((debugElement) => debugElement.nativeElement);
 }
 
-function createKeyDownEvent(key: number) {
-	const event = { which: key, preventDefault: () => {}, stopPropagation: () => {} };
+function createKeyDownEvent(key: string) {
+	const event = { key, preventDefault: () => {}, stopPropagation: () => {} };
 	spyOn(event, 'preventDefault');
 	spyOn(event, 'stopPropagation');
 	return event;
@@ -1085,7 +1084,7 @@ describe('nav', () => {
       `);
 
 			const links = getLinks(fixture);
-			const eventArrowRight = createKeyDownEvent(Key.ArrowRight);
+			const eventArrowRight = createKeyDownEvent('ArrowRight');
 
 			links[0].focus();
 			expect(document.activeElement).toBe(links[0]);
@@ -1115,7 +1114,7 @@ describe('nav', () => {
     `);
 
 			const links = getLinks(fixture);
-			const eventArrowRight = createKeyDownEvent(Key.ArrowRight);
+			const eventArrowRight = createKeyDownEvent('ArrowRight');
 
 			links[0].focus();
 			expect(document.activeElement).toBe(links[0]);
@@ -1147,10 +1146,10 @@ describe('nav', () => {
       `);
 
 			const links = getLinks(fixture);
-			const eventArrowRight = createKeyDownEvent(Key.ArrowRight);
-			const eventArrowLeft = createKeyDownEvent(Key.ArrowLeft);
-			const eventHomeKey = createKeyDownEvent(Key.Home);
-			const eventEndKey = createKeyDownEvent(Key.End);
+			const eventArrowRight = createKeyDownEvent('ArrowRight');
+			const eventArrowLeft = createKeyDownEvent('ArrowLeft');
+			const eventHomeKey = createKeyDownEvent('Home');
+			const eventEndKey = createKeyDownEvent('End');
 
 			links[0].focus();
 			expect(document.activeElement).toBe(links[0]);
@@ -1197,10 +1196,10 @@ describe('nav', () => {
     `);
 
 			const links = getLinks(fixture);
-			const eventArrowUp = createKeyDownEvent(Key.ArrowUp);
-			const eventArrowDown = createKeyDownEvent(Key.ArrowDown);
-			const eventHomeKey = createKeyDownEvent(Key.Home);
-			const eventEndKey = createKeyDownEvent(Key.End);
+			const eventArrowUp = createKeyDownEvent('ArrowUp');
+			const eventArrowDown = createKeyDownEvent('ArrowDown');
+			const eventHomeKey = createKeyDownEvent('Home');
+			const eventEndKey = createKeyDownEvent('End');
 
 			links[0].focus();
 			expect(document.activeElement).toBe(links[0]);
@@ -1247,10 +1246,10 @@ describe('nav', () => {
         `);
 
 			const links = getLinks(fixture);
-			const eventArrowRight = createKeyDownEvent(Key.ArrowRight);
-			const eventArrowLeft = createKeyDownEvent(Key.ArrowLeft);
-			const eventHomeKey = createKeyDownEvent(Key.Home);
-			const eventEndKey = createKeyDownEvent(Key.End);
+			const eventArrowRight = createKeyDownEvent('ArrowRight');
+			const eventArrowLeft = createKeyDownEvent('ArrowLeft');
+			const eventHomeKey = createKeyDownEvent('Home');
+			const eventEndKey = createKeyDownEvent('End');
 
 			links[0].focus();
 			expect(document.activeElement).toBe(links[0]);
