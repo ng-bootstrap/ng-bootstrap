@@ -118,9 +118,7 @@ test.describe('Datepicker', () => {
 		).toBeFocused();
 	});
 
-	test(`should trap focus inside opened popup (Tab)`, async ({ browserName }) => {
-		test.skip(browserName === 'webkit');
-
+	test(`should trap focus inside opened popup (Tab)`, async () => {
 		await openDatepicker();
 
 		// today -> prev. month -> month -> year -> next month -> today -> ...
@@ -142,9 +140,7 @@ test.describe('Datepicker', () => {
 		await expect(getPage().locator(SELECTOR_DAY(new Date())), `Today's date should be focused`).toBeFocused();
 	});
 
-	test(`should trap focus inside opened popup with (Shift+Tab)`, async ({ browserName }) => {
-		test.skip(browserName === 'webkit');
-
+	test(`should trap focus inside opened popup with (Shift+Tab)`, async () => {
 		await openDatepicker();
 
 		// today -> next month -> year -> month -> prev. month -> today -> ...
@@ -203,8 +199,7 @@ test.describe('Datepicker', () => {
 		await expect(getPage().locator(SELECTOR_DAY(new Date())), `Today's date should stay focused`).toBeFocused();
 	});
 
-	test(`should allow focusing datepicker input`, async ({ browserName }) => {
-		test.skip(browserName === 'webkit');
+	test(`should allow focusing datepicker input`, async () => {
 		await openDatepicker();
 
 		// focus input

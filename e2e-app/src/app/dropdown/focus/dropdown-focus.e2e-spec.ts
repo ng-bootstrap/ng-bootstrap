@@ -1,6 +1,6 @@
 import { expect } from '@playwright/test';
 import { isDropdownOpened, openDropdown } from '../dropdown.po';
-import { test, getPage, setPage } from '../../../../baseTest';
+import { getPage, setPage, test } from '../../../../baseTest';
 import { sendKey } from '../../tools.po';
 
 const SELECTOR_DROPDOWN = '[ngbDropdown]';
@@ -144,15 +144,12 @@ test.describe(`Dropdown focus`, () => {
 				await expect(getPage().locator(SELECTOR_DROPDOWN_TOGGLE), `Toggling element should be focused`).toBeFocused();
 			});
 
-			test(`should focus dropdown first item with Tab when dropdown is opened (toggle was focused)`, async ({
-				browserName,
-			}) => {
-				test.skip(browserName === 'webkit');
+			test(`should focus dropdown first item with Tab when dropdown is opened (toggle was focused)`, async () => {
 				await openDropdown('Dropdown should be opened', SELECTOR_DROPDOWN, container === 'body');
 				await expect(getPage().locator(SELECTOR_DROPDOWN_TOGGLE), `Toggling element should be focused`).toBeFocused();
 
 				// Tab -> first
-				await sendKey('Tab');
+				await sendKey('Tab', false);
 				await expect(
 					getPage().locator(SELECTOR_DROPDOWN_ITEM(1)),
 					`first dropdown item should be focused`,
@@ -178,7 +175,7 @@ test.describe(`Dropdown focus`, () => {
 				).toBeFocused();
 
 				// Tab -> another element
-				await sendKey('Tab');
+				await sendKey('Tab', false);
 				expect(await isDropdownOpened(), `Dropdown should be closed`).toBeFalsy();
 			});
 		});

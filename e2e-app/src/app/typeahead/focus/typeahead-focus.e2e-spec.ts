@@ -74,8 +74,7 @@ test.describe('Typeahead', () => {
 			await waitForTypeaheadFocused();
 		});
 
-		test(`should select element on tab`, async ({ browserName }) => {
-			test.skip(browserName === 'webkit');
+		test(`should select element on tab`, async () => {
 			await focusElement(SELECTOR_TYPEAHEAD);
 			await sendKey('Tab');
 			await waitForTypeaheadFocused();
