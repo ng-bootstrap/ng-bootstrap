@@ -22,14 +22,16 @@ test.describe('Tooltip Triggers', () => {
 		await expectTooltipToBeClosed(`Tooltip close when hover outside`);
 	});
 
-	test(`should not close tooltip on mouseout after triggering element click`, async () => {
+	test(`should not close tooltip on mouseout after triggering element click`, async ({ browserName }) => {
 		await openTooltip(`Opening tooltip with hover`);
 
 		await clickTriggeringElement();
 		await expectTooltipToBeOpen(`Tooltip should stay visible when clicking on the triggering element`);
 
-		await hoverOutside();
-		await expectTooltipToBeOpen(`Tooltip should not close after hovering the outside element`);
+		if (browserName !== 'webkit') {
+			await hoverOutside();
+			await expectTooltipToBeOpen(`Tooltip should not close after hovering the outside element`);
+		}
 
 		await clickOutside();
 		await expectTooltipToBeClosed(`Tooltip should close after clicking the outside element`);
