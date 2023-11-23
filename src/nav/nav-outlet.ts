@@ -49,7 +49,7 @@ export class NgbNavPane {
 	standalone: true,
 	imports: [NgbNavPane, NgTemplateOutlet],
 	host: {
-		'[class.tab-content]': 'true',
+		class: 'tab-content',
 	},
 	encapsulation: ViewEncapsulation.None,
 	changeDetection: ChangeDetectionStrategy.OnPush,

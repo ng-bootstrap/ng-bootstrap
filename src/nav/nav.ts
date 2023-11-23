@@ -82,7 +82,7 @@ export class NgbNavItemRole {
 	exportAs: 'ngbNavItem',
 	standalone: true,
 	host: {
-		'[class.nav-item]': 'true',
+		class: 'nav-item',
 	},
 })
 export class NgbNavItem implements OnInit {
@@ -175,7 +175,7 @@ export class NgbNavItem implements OnInit {
 	exportAs: 'ngbNav',
 	standalone: true,
 	host: {
-		'[class.nav]': 'true',
+		class: 'nav',
 		'[class.flex-column]': `orientation === 'vertical'`,
 		'[attr.aria-orientation]': `orientation === 'vertical' && roles === 'tablist' ? 'vertical' : undefined`,
 		'[attr.role]': `role ? role : roles ? 'tablist' : undefined`,
@@ -408,7 +408,7 @@ export class NgbNav implements AfterContentInit, OnChanges {
 	standalone: true,
 	host: {
 		'[id]': 'navItem.domId',
-		'[class.nav-link]': 'true',
+		class: 'nav-link',
 		'[class.nav-item]': 'navItem.isNgContainer()',
 		'[attr.role]': `role ? role : nav.roles ? 'tab' : undefined`,
 		'[class.active]': 'navItem.active',
