@@ -242,7 +242,6 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 					hostElement: this._getPositionTargetElement(),
 					targetElement: this._windowRef!.location.nativeElement,
 					placement: this.placement,
-					appendToBody: this.container === 'body',
 					baseClass: 'bs-tooltip',
 					updatePopperOptions: (options) => this.popperOptions(addPopperOffset([0, 6])(options)),
 				});

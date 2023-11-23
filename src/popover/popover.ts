@@ -260,7 +260,6 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 					hostElement: this._getPositionTargetElement(),
 					targetElement: this._windowRef!.location.nativeElement,
 					placement: this.placement,
-					appendToBody: this.container === 'body',
 					baseClass: 'bs-popover',
 					updatePopperOptions: (options) => this.popperOptions(addPopperOffset([0, 8])(options)),
 				});
