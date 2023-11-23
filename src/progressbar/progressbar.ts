@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, HostBinding, inject, Input, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input, ViewEncapsulation } from '@angular/core';
 import { getValueInRange, isNumber } from '../util/util';
 import { NgbProgressbarConfig } from './progressbar-config';
 import { PercentPipe } from '@angular/common';
@@ -20,6 +20,7 @@ import { PercentPipe } from '@angular/common';
 		'[attr.aria-valuemax]': 'max',
 		'[attr.aria-label]': 'ariaLabel',
 		'[style.width.%]': 'stacked ? getPercentValue() : null',
+		'[style.height]': 'height',
 	},
 	template: `
 		<div
@@ -110,7 +111,7 @@ export class NgbProgressbar {
 	 *
 	 * Accepts any valid CSS height values, ex. `"2rem"`
 	 */
-	@Input() @HostBinding('style.height') height = this._config.height;
+	@Input() height = this._config.height;
 
 	constructor() {
 		this.max = this._config.max;
