@@ -75,16 +75,10 @@ export class PopupService<T> {
 			{ animation, runningTransition: 'stop' },
 		).pipe(
 			tap(() => {
-				if (this._windowRef) {
-					// this is required because of the container='body' option
-					this._viewContainerRef.remove(this._viewContainerRef.indexOf(this._windowRef.hostView));
-					this._windowRef = null;
-				}
-				if (this._contentRef?.viewRef) {
-					this._applicationRef.detachView(this._contentRef.viewRef);
-					this._contentRef.viewRef.destroy();
-					this._contentRef = null;
-				}
+				this._windowRef?.destroy();
+				this._contentRef?.viewRef?.destroy();
+				this._windowRef = null;
+				this._contentRef = null;
 			}),
 		);
 	}
