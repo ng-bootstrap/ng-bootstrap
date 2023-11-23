@@ -150,8 +150,7 @@ export class NgbNavOutlet implements AfterViewInit {
 
 	private _updateActivePane() {
 		this._activePane = this._getActivePane();
-		this._activePane?.nativeElement.classList.add('show');
-		this._activePane?.nativeElement.classList.add('active');
+		this._activePane?.nativeElement.classList.add('show', 'active');
 	}
 
 	private _getPaneForItem(item: NgbNavItem | null) {
