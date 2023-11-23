@@ -15,7 +15,6 @@ import { fromEvent, Observable, Subject } from 'rxjs';
 import { filter, take, takeUntil } from 'rxjs/operators';
 
 import { getFocusableBoundaryElements } from '../util/focus-trap';
-import { Key } from '../util/key';
 import { OffcanvasDismissReasons } from './offcanvas-dismiss-reasons';
 import { ngbRunTransition, NgbTransitionOptions } from '../util/transition/ngbTransition';
 import { reflow } from '../util/util';
@@ -129,8 +128,7 @@ export class NgbOffcanvasPanel implements OnInit, OnDestroy {
 			fromEvent<KeyboardEvent>(nativeElement, 'keydown')
 				.pipe(
 					takeUntil(this._closed$),
-					/* eslint-disable-next-line deprecation/deprecation */
-					filter((e) => e.which === Key.Escape),
+					filter((e) => e.key === 'Escape'),
 				)
 				.subscribe((event) => {
 					if (this.keyboard) {

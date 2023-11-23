@@ -1,6 +1,5 @@
 import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { createGenericTestComponent } from '../test/common';
-import { Key } from '../util/key';
 
 import { Component, DebugElement } from '@angular/core';
 import {
@@ -19,8 +18,8 @@ import { By } from '@angular/platform-browser';
 const createTestComponent = (html: string) =>
 	createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
 
-function createKeyDownEvent(key: number) {
-	const event = { which: key, preventDefault: () => {} };
+function createKeyDownEvent(key: string) {
+	const event = { key, preventDefault: () => {} };
 	spyOn(event, 'preventDefault');
 	return event;
 }
@@ -563,35 +562,35 @@ describe('ngb-rating', () => {
 			const element = fixture.debugElement.query(By.directive(NgbRating));
 
 			// right -> +1
-			let event = createKeyDownEvent(Key.ArrowRight);
+			let event = createKeyDownEvent('ArrowRight');
 			element.triggerEventHandler('keydown', event);
 			fixture.detectChanges();
 			expect(getState(element.nativeElement)).toEqual([true, true, true, true, false]);
 			expect(event.preventDefault).toHaveBeenCalled();
 
 			// up -> +1
-			event = createKeyDownEvent(Key.ArrowUp);
+			event = createKeyDownEvent('ArrowUp');
 			element.triggerEventHandler('keydown', event);
 			fixture.detectChanges();
 			expect(getState(element.nativeElement)).toEqual([true, true, true, true, true]);
 			expect(event.preventDefault).toHaveBeenCalled();
 
 			// left -> -1
-			event = createKeyDownEvent(Key.ArrowLeft);
+			event = createKeyDownEvent('ArrowLeft');
 			element.triggerEventHandler('keydown', event);
 			fixture.detectChanges();
 			expect(getState(element.nativeElement)).toEqual([true, true, true, true, false]);
 			expect(event.preventDefault).toHaveBeenCalled();
 
 			// down -> -1
-			event = createKeyDownEvent(Key.ArrowDown);
+			event = createKeyDownEvent('ArrowDown');
 			element.triggerEventHandler('keydown', event);
 			fixture.detectChanges();
 			expect(getState(element.nativeElement)).toEqual([true, true, true, false, false]);
 			expect(event.preventDefault).toHaveBeenCalled();
 
 			// any other -> 0
-			event = createKeyDownEvent(Key.Space);
+			event = createKeyDownEvent(' ');
 			const expectedState = getState(element.nativeElement);
 			element.triggerEventHandler('keydown', event);
 			fixture.detectChanges();
@@ -605,14 +604,14 @@ describe('ngb-rating', () => {
 			const element = fixture.debugElement.query(By.directive(NgbRating));
 
 			// home -> 0
-			let event = createKeyDownEvent(Key.Home);
+			let event = createKeyDownEvent('Home');
 			element.triggerEventHandler('keydown', event);
 			fixture.detectChanges();
 			expect(getState(element.nativeElement)).toEqual([false, false, false, false, false]);
 			expect(event.preventDefault).toHaveBeenCalled();
 
 			// end -> max
-			event = createKeyDownEvent(Key.End);
+			event = createKeyDownEvent('End');
 			element.triggerEventHandler('keydown', event);
 			fixture.detectChanges();
 			expect(getState(element.nativeElement)).toEqual([true, true, true, true, true]);

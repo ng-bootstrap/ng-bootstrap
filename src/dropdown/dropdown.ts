@@ -24,7 +24,6 @@ import { take } from 'rxjs/operators';
 import { ngbPositioning, Placement, PlacementArray } from '../util/positioning';
 import { addPopperOffset } from '../util/positioning-util';
 import { ngbAutoClose, SOURCE } from '../util/autoclose';
-import { Key } from '../util/key';
 
 import { NgbDropdownConfig } from './dropdown-config';
 import { FOCUSABLE_ELEMENTS_SELECTOR } from '../util/focus-trap';
@@ -376,8 +375,7 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 	}
 
 	onKeyDown(event: KeyboardEvent) {
-		/* eslint-disable-next-line deprecation/deprecation */
-		const key = event.which;
+		const { key } = event;
 		const itemElements = this._getMenuElements();
 
 		let position = -1;
@@ -396,7 +394,7 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 		}
 
 		// closing on Enter / Space
-		if (key === Key.Space || key === Key.Enter) {
+		if (key === ' ' || key === 'Enter') {
 			if (itemElement && (this.autoClose === true || this.autoClose === 'inside')) {
 				// Item is either a button or a link, so click will be triggered by the browser on Enter or Space.
 				// So we have to register a one-time click handler that will fire after any user defined click handlers
@@ -408,7 +406,7 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 			return;
 		}
 
-		if (key === Key.Tab) {
+		if (key === 'Tab') {
 			if (event.target && this.isOpen() && this.autoClose) {
 				if (this._anchor.nativeElement === event.target) {
 					if (this.container === 'body' && !event.shiftKey) {
@@ -452,20 +450,20 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 
 			if (itemElements.length) {
 				switch (key) {
-					case Key.ArrowDown:
+					case 'ArrowDown':
 						position = Math.min(position + 1, itemElements.length - 1);
 						break;
-					case Key.ArrowUp:
+					case 'ArrowUp':
 						if (this._isDropup() && position === -1) {
 							position = itemElements.length - 1;
 							break;
 						}
 						position = Math.max(position - 1, 0);
 						break;
-					case Key.Home:
+					case 'Home':
 						position = 0;
 						break;
-					case Key.End:
+					case 'End':
 						position = itemElements.length - 1;
 						break;
 				}
