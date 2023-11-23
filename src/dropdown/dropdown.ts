@@ -273,7 +273,6 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 				hostElement: this._anchor.nativeElement,
 				targetElement: this._bodyContainer || this._menu.nativeElement,
 				placement: this.placement,
-				appendToBody: this.container === 'body',
 			});
 			this._applyPlacementClasses();
 		}
@@ -313,7 +312,6 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 							hostElement: this._anchor.nativeElement,
 							targetElement: this._bodyContainer || this._menu.nativeElement,
 							placement: this.placement,
-							appendToBody: this.container === 'body',
 							updatePopperOptions: (options) => this.popperOptions(addPopperOffset([0, 2])(options)),
 						});
 						this._applyPlacementClasses();

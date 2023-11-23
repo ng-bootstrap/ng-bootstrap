@@ -426,7 +426,6 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 						hostElement,
 						targetElement: this._cRef.location.nativeElement,
 						placement: this.placement,
-						appendToBody: this.container === 'body',
 						updatePopperOptions: (options) => this.popperOptions(addPopperOffset([0, 2])(options)),
 					});
 
