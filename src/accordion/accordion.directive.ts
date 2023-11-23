@@ -35,7 +35,9 @@ let nextId = 0;
 @Directive({
 	selector: '[ngbAccordionBody]',
 	standalone: true,
-	host: { '[class.accordion-body]': 'true' },
+	host: {
+		class: 'accordion-body',
+	},
 })
 export class NgbAccordionBody implements AfterContentChecked, OnDestroy {
 	private _vcr = inject(ViewContainerRef);
@@ -89,7 +91,7 @@ export class NgbAccordionBody implements AfterContentChecked, OnDestroy {
 	selector: '[ngbAccordionCollapse]',
 	host: {
 		role: 'region',
-		'[class.accordion-collapse]': 'true',
+		class: 'accordion-collapse',
 		'[id]': 'item.collapseId',
 		'[attr.aria-labelledby]': 'item.toggleId',
 	},
@@ -136,7 +138,7 @@ export class NgbAccordionToggle {
 	standalone: true,
 	host: {
 		'[disabled]': 'item.disabled',
-		'[class.accordion-button]': 'true',
+		class: 'accordion-button',
 		type: 'button',
 	},
 	hostDirectives: [NgbAccordionToggle],
@@ -155,7 +157,7 @@ export class NgbAccordionButton {
 	standalone: true,
 	host: {
 		role: 'heading',
-		'[class.accordion-header]': 'true',
+		class: 'accordion-header',
 		'[class.collapsed]': 'item.collapsed',
 	},
 })
@@ -178,8 +180,8 @@ export class NgbAccordionHeader {
 	exportAs: 'ngbAccordionItem',
 	standalone: true,
 	host: {
-		'[class.accordion-item]': 'true',
 		'[id]': 'id',
+		class: 'accordion-item',
 	},
 })
 export class NgbAccordionItem implements AfterContentInit {
@@ -372,7 +374,9 @@ export class NgbAccordionItem implements AfterContentInit {
 	selector: '[ngbAccordion]',
 	standalone: true,
 	exportAs: 'ngbAccordion',
-	host: { '[class.accordion]': 'true' },
+	host: {
+		class: 'accordion',
+	},
 })
 export class NgbAccordionDirective {
 	private _config = inject(NgbAccordionConfig);

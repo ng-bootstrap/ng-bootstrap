@@ -83,7 +83,7 @@ export class NgbDropdownButtonItem {
 	selector: '[ngbDropdownMenu]',
 	standalone: true,
 	host: {
-		'[class.dropdown-menu]': 'true',
+		class: 'dropdown-menu',
 		'[class.show]': 'dropdown.isOpen()',
 		'(keydown.ArrowUp)': 'dropdown.onKeyDown($event)',
 		'(keydown.ArrowDown)': 'dropdown.onKeyDown($event)',
