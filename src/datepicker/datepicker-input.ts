@@ -443,7 +443,7 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	 */
 	close() {
 		if (this.isOpen()) {
-			this._vcRef.remove(this._vcRef.indexOf(this._cRef!.hostView));
+			this._cRef?.destroy();
 			this._cRef = null;
 			this._positioning.destroy();
 			this._zoneSubscription?.unsubscribe();

@@ -61,10 +61,8 @@ export class NgbAccordionBody implements AfterContentChecked, OnDestroy {
 	}
 
 	private _destroyViewIfExists(): void {
-		if (this._viewRef) {
-			this._viewRef.destroy();
-			this._viewRef = null;
-		}
+		this._viewRef?.destroy();
+		this._viewRef = null;
 	}
 
 	private _createViewIfNotExists(): void {

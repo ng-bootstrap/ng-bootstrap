@@ -176,10 +176,7 @@ export class NgbOffcanvasRef {
 			const { nativeElement } = this._panelCmptRef.location;
 			nativeElement.parentNode.removeChild(nativeElement);
 			this._panelCmptRef.destroy();
-
-			if (this._contentRef && this._contentRef.viewRef) {
-				this._contentRef.viewRef.destroy();
-			}
+			this._contentRef?.viewRef?.destroy();
 
 			this._panelCmptRef = <any>null;
 			this._contentRef = <any>null;
