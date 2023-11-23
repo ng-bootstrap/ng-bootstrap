@@ -1,8 +1,8 @@
 import {
-	AfterContentChecked,
 	AfterContentInit,
 	Attribute,
 	ChangeDetectorRef,
+	ContentChild,
 	ContentChildren,
 	DestroyRef,
 	Directive,
@@ -77,8 +77,15 @@ export class NgbNavItemRole {
  *
  * @since 5.2.0
  */
-@Directive({ selector: '[ngbNavItem]', exportAs: 'ngbNavItem', standalone: true, host: { '[class.nav-item]': 'true' } })
-export class NgbNavItem implements AfterContentChecked, OnInit {
+@Directive({
+	selector: '[ngbNavItem]',
+	exportAs: 'ngbNavItem',
+	standalone: true,
+	host: {
+		'[class.nav-item]': 'true',
+	},
+})
+export class NgbNavItem implements OnInit {
 	private _nav = inject(NgbNav);
 	private _nativeElement = inject(ElementRef).nativeElement as HTMLElement;
 
@@ -126,17 +133,7 @@ export class NgbNavItem implements AfterContentChecked, OnInit {
 	 */
 	@Output() hidden = new EventEmitter<void>();
 
-	contentTpl: NgbNavContent | null;
-
-	@ContentChildren(NgbNavContent, { descendants: false }) contentTpls: QueryList<NgbNavContent>;
-
-	ngAfterContentChecked() {
-		// We are using @ContentChildren instead of @ContentChild as in the Angular version being used
-		// only @ContentChildren allows us to specify the {descendants: false} option.
-		// Without {descendants: false} we are hitting bugs described in:
-		// https://github.com/ng-bootstrap/ng-bootstrap/issues/2240
-		this.contentTpl = this.contentTpls.first;
-	}
+	@ContentChild(NgbNavContent, { descendants: false }) contentTpl?: NgbNavContent;
 
 	ngOnInit() {
 		if (!isDefined(this.domId)) {
