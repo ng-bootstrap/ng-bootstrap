@@ -57,7 +57,7 @@ const BACKDROP_ATTRIBUTES: string[] = ['animation', 'backdropClass'];
 /**
  * A reference to the newly opened modal returned by the `NgbModal.open()` method.
  */
-export class NgbModalRef {
+export class NgbModalRef<T = any> {
 	private _closed = new Subject<any>();
 	private _dismissed = new Subject<any>();
 	private _hidden = new Subject<void>();
@@ -97,10 +97,11 @@ export class NgbModalRef {
 	 *
 	 * When a `TemplateRef` is used as the content or when the modal is closed, will return `undefined`.
 	 */
-	get componentInstance(): any {
+	get componentInstance(): T extends new (...args: any[]) => any ? InstanceType<T> : undefined {
 		if (this._contentRef && this._contentRef.componentRef) {
 			return this._contentRef.componentRef.instance;
 		}
+		return undefined as any;
 	}
 
 	/**
@@ -160,7 +161,7 @@ export class NgbModalRef {
 		private _windowCmptRef: ComponentRef<NgbModalWindow>,
 		private _contentRef: ContentRef,
 		private _backdropCmptRef?: ComponentRef<NgbModalBackdrop>,
-		private _beforeDismiss?: () => boolean | Promise<boolean>,
+		private _beforeDismiss?: (modalRef: NgbModalRef<any>) => boolean | Promise<boolean>,
 	) {
 		_windowCmptRef.instance.dismissEvent.subscribe((reason: any) => {
 			this.dismiss(reason);
@@ -202,7 +203,7 @@ export class NgbModalRef {
 			if (!this._beforeDismiss) {
 				this._dismiss(reason);
 			} else {
-				const dismiss = this._beforeDismiss();
+				const dismiss = this._beforeDismiss(this);
 				if (isPromise(dismiss)) {
 					dismiss.then(
 						(result) => {
