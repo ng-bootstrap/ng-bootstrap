@@ -68,7 +68,7 @@ export const ROUTES: Routes = [
 		path: '',
 		component: ComponentWrapper,
 		data: {
-			name: 'Dropdown',
+			name: 'Modal',
 			bootstrap: 'https://getbootstrap.com/docs/%version%/components/modal/',
 		},
 		children: [
