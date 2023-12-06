@@ -53,6 +53,7 @@ describe('ngb-carousel', () => {
 		expect(carousel.pauseOnFocus).toBe(defaultConfig.pauseOnFocus);
 		expect(carousel.showNavigationIndicators).toBe(defaultConfig.showNavigationIndicators);
 		expect(carousel.showNavigationArrows).toBe(defaultConfig.showNavigationArrows);
+		expect(carousel.fade).toBe(defaultConfig.fade);
 	});
 
 	it('should render slides and navigation indicators', fakeAsync(() => {
@@ -889,6 +890,23 @@ describe('ngb-carousel', () => {
 		discardPeriodicTasks();
 	}));
 
+	it('should have fade transition to the flags', fakeAsync(() => {
+		const html = `
+    <ngb-carousel [fade]="fade">
+      <ng-template ngbSlide>foo</ng-template>
+    </ngb-carousel>
+  `;
+		const fixture = createTestComponent(html);
+
+		expect(fixture.nativeElement.querySelector('ngb-carousel').className).toBe('carousel slide');
+
+		fixture.componentInstance.fade = true;
+		fixture.detectChanges();
+		expect(fixture.nativeElement.querySelector('ngb-carousel').className).toBe('carousel slide carousel-fade');
+
+		discardPeriodicTasks();
+	}));
+
 	describe('Custom config', () => {
 		let config: NgbCarouselConfig;
 
@@ -901,6 +919,7 @@ describe('ngb-carousel', () => {
 			config.pauseOnFocus = false;
 			config.showNavigationIndicators = true;
 			config.showNavigationArrows = true;
+			config.fade = false;
 		}));
 
 		it('should initialize inputs with provided config', () => {
@@ -915,6 +934,7 @@ describe('ngb-carousel', () => {
 			expect(carousel.pauseOnFocus).toBe(config.pauseOnFocus);
 			expect(carousel.showNavigationIndicators).toBe(config.showNavigationIndicators);
 			expect(carousel.showNavigationArrows).toBe(config.showNavigationArrows);
+			expect(carousel.fade).toBe(config.fade);
 		});
 	});
 
@@ -927,6 +947,7 @@ describe('ngb-carousel', () => {
 		config.pauseOnFocus = false;
 		config.showNavigationIndicators = true;
 		config.showNavigationArrows = true;
+		config.fade = false;
 
 		const carousel = TestBed.createComponent(NgbCarousel).componentInstance;
 		expect(carousel.interval).toBe(config.interval);
@@ -936,6 +957,7 @@ describe('ngb-carousel', () => {
 		expect(carousel.pauseOnFocus).toBe(config.pauseOnFocus);
 		expect(carousel.showNavigationIndicators).toBe(config.showNavigationIndicators);
 		expect(carousel.showNavigationArrows).toBe(config.showNavigationArrows);
+		expect(carousel.fade).toBe(config.fade);
 	});
 });
 
@@ -1156,6 +1178,7 @@ class TestComponent {
 	pauseOnHover = true;
 	showNavigationArrows = true;
 	showNavigationIndicators = true;
+	fade = false;
 	slides = ['a', 'b'];
 	carouselSlideCallBack = (event: NgbSlideEvent) => {};
 	carouselSingleSlideCallBack = (event: NgbSingleSlideEvent, id: string) => {};

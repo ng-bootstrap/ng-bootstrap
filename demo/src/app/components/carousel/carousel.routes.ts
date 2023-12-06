@@ -4,6 +4,7 @@ import { DemoListComponent } from '../../shared/examples-page/demo-list.componen
 import { NgbdCarouselBasic } from './demos/basic/carousel-basic';
 import { NgbdCarouselConfig } from './demos/config/carousel-config';
 import { NgbdCarouselNavigation } from './demos/navigation/carousel-navigation';
+import { NgbdCarouselTransition } from './demos/transition/carousel-transition';
 import { NgbdCarouselPause } from './demos/pause/carousel-pause';
 import { Routes } from '@angular/router';
 
@@ -17,10 +18,17 @@ const DEMOS = [
 	},
 	{
 		fragment: 'navigation',
-		title: 'Navigation arrows and indicators',
+		title: 'Navigation arrows andindicators',
 		type: NgbdCarouselNavigation,
 		code: 'carousel/demos/navigation/carousel-navigation.ts',
 		markup: 'carousel/demos/navigation/carousel-navigation.html',
+	},
+	{
+		fragment: 'transition',
+		title: 'Fade transition',
+		type: NgbdCarouselTransition,
+		code: 'carousel/demos/navigation/carousel-transition.ts',
+		markup: 'carousel/demos/navigation/carousel-transition.html',
 	},
 	{
 		fragment: 'pause',

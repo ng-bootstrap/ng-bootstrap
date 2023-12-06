@@ -1,0 +1,23 @@
+@if (images) {
+	<ngb-carousel [fade]="fade">
+		@for (image of images; track image) {
+			<ng-template ngbSlide>
+				<div class="picsum-img-wrapper">
+					<img [src]="image" alt="Random slide" />
+				</div>
+				<div class="carousel-caption">
+					<h3>Transition</h3>
+					<p>This carousel has fade transition.</p>
+				</div>
+			</ng-template>
+		}
+	</ngb-carousel>
+}
+
+<hr />
+
+<div class="btn-group" role="group" aria-label="Carousel toggle transition">
+	<button type="button" (click)="fade = !fade" class="btn btn-outline-secondary btn-sm">
+		Toggle fade transitions
+	</button>
+</div>
