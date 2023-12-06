@@ -12,7 +12,7 @@ import { NgbActiveOffcanvas, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 		<div class="offcanvas-body">
 			<p>One fine body&hellip;</p>
 			<div class="text-end">
-				<button type="button" class="btn btn-outline-dark" (click)="offcanvas.close('OK click')">OK</button>
+				<button type="button" class="btn btn-outline-secondary" (click)="offcanvas.close('OK click')">OK</button>
 			</div>
 		</div>
 	`,
@@ -32,7 +32,7 @@ export class NgbdOffcanvasFirstFocus {
 		<div class="offcanvas-body">
 			<p>One fine body&hellip;</p>
 			<div class="text-end">
-				<button ngbAutofocus type="button" class="btn btn-outline-dark" (click)="offcanvas.close('OK click')">
+				<button ngbAutofocus type="button" class="btn btn-outline-secondary" (click)="offcanvas.close('OK click')">
 					OK
 				</button>
 			</div>

@@ -11,7 +11,7 @@ export enum NgbSlideEventDirection {
 
 export interface NgbCarouselCtx {
 	/**
-	 * <span class="badge bg-info text-dark">since 12.0.0</span> Possible values are `'start' | 'end'`.
+	 * <span class="badge text-bg-info">since 12.0.0</span> Possible values are `'start' | 'end'`.
 	 *
 	 * <span class="badge bg-secondary">before 12.0.0</span> Possible values were `'left' | 'right'`.
 	 */
