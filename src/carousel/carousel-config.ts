@@ -19,6 +19,7 @@ export class NgbCarouselConfig {
 	pauseOnFocus = true;
 	showNavigationArrows = true;
 	showNavigationIndicators = true;
+	fade = false;
 
 	get animation(): boolean {
 		return this._animation ?? this._ngbConfig.animation;
