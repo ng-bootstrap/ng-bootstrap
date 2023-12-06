@@ -13,24 +13,24 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 			<p>Hello, {{ name }}!</p>
 		</div>
 		<div class="modal-footer">
-			<button type="button" class="btn btn-outline-dark" (click)="activeModal.update({ size: 'xl' })">
+			<button type="button" class="btn btn-outline-secondary" (click)="activeModal.update({ size: 'xl' })">
 				Update size
 			</button>
-			<button type="button" class="btn btn-outline-dark" (click)="activeModal.update({ centered: true })">
+			<button type="button" class="btn btn-outline-secondary" (click)="activeModal.update({ centered: true })">
 				Update centered
 			</button>
 			<button
 				type="button"
-				class="btn btn-outline-dark"
+				class="btn btn-outline-secondary"
 				(click)="activeModal.update({ backdropClass: 'light-blue-backdrop' })"
 			>
 				Update backdropClass
 			</button>
-			<button type="button" class="btn btn-outline-dark" (click)="activeModal.update({ fullscreen: true })">
+			<button type="button" class="btn btn-outline-secondary" (click)="activeModal.update({ fullscreen: true })">
 				Update fullscreen
 			</button>
 
-			<button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+			<button type="button" class="btn btn-outline-secondary" (click)="activeModal.close('Close click')">Close</button>
 		</div>
 	`,
 })

@@ -19,7 +19,7 @@ const BADGES = {
 			}
 			&ngsp;
 			@if (since) {
-				<span class="badge bg-info text-dark">Since {{ since.version }}</span>
+				<span class="badge text-bg-info">Since {{ since.version }}</span>
 			}
 			&ngsp;
 			<span class="badge {{ badgeClass }}">{{ text }}</span>

@@ -16,7 +16,9 @@ import { NgbActiveOffcanvas, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 		</div>
 		<div class="offcanvas-body">
 			<div>Hello {{ name }}</div>
-			<button type="button" class="btn btn-outline-dark" (click)="activeOffcanvas.close('Close click')">Close</button>
+			<button type="button" class="btn btn-outline-secondary" (click)="activeOffcanvas.close('Close click')">
+				Close
+			</button>
 		</div>
 	`,
 	styles: `

@@ -55,6 +55,6 @@ export class NgbdModalOptions {
 	}
 
 	openModalDialogCustomClass(content: TemplateRef<any>) {
-		this.modalService.open(content, { modalDialogClass: 'dark-modal' });
+		this.modalService.open(content, { modalDialogClass: 'text-primary' });
 	}
 }
