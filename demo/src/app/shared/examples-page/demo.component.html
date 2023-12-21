@@ -54,13 +54,13 @@
 					} @else {
 						<li ngbNavItem="{{ component() }}-{{ fragment() }}-html">
 							<a ngbNavLink>
-								<span class="ms-2">{{ component() }}-{{ fragment() }}.html</span>
+								<span class="ms-2">{{ component() | lowercase }}-{{ fragment() }}.html</span>
 							</a>
 							<ngbd-code *ngbNavContent [snippet]="markupSnippet()"></ngbd-code>
 						</li>
 						<li ngbNavItem="{{ component() }}-{{ fragment() }}-typescript">
 							<a ngbNavLink>
-								<span class="ms-2">{{ component() }}-{{ fragment() }}.ts</span>
+								<span class="ms-2">{{ component() | lowercase }}-{{ fragment() }}.ts</span>
 							</a>
 							<ngbd-code *ngbNavContent [snippet]="codeSnippet()"></ngbd-code>
 						</li>
