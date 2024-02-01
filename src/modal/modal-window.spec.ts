@@ -62,6 +62,15 @@ describe('ngb-modal-dialog', () => {
 			expect(dialogEl.getAttribute('role')).toBe('document');
 		});
 
+		it('should render default modal window with a specified role', () => {
+			fixture.componentInstance.role = 'alertdialog';
+			fixture.detectChanges();
+			const dialogEl: Element = fixture.nativeElement.querySelector('.modal-dialog');
+
+			expect(fixture.nativeElement.getAttribute('role')).toBe('alertdialog');
+			expect(dialogEl.getAttribute('role')).toBe('document');
+		});
+
 		it('should render modal dialog with a specified class', () => {
 			fixture.componentInstance.modalDialogClass = 'custom-dialog-class';
 			fixture.detectChanges();

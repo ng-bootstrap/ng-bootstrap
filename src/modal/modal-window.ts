@@ -29,11 +29,11 @@ import { isString, reflow } from '../util/util';
 	host: {
 		'[class]': '"modal d-block" + (windowClass ? " " + windowClass : "")',
 		'[class.fade]': 'animation',
-		role: 'dialog',
 		tabindex: '-1',
 		'[attr.aria-modal]': 'true',
 		'[attr.aria-labelledby]': 'ariaLabelledBy',
 		'[attr.aria-describedby]': 'ariaDescribedBy',
+		'[attr.role]': 'role',
 	},
 	template: `
 		<div
@@ -72,6 +72,7 @@ export class NgbModalWindow implements OnInit, OnDestroy {
 	@Input() centered: string;
 	@Input() fullscreen: string | boolean;
 	@Input() keyboard = true;
+	@Input() role: string = 'dialog';
 	@Input() scrollable: string;
 	@Input() size: string;
 	@Input() windowClass: string;
