@@ -11,6 +11,7 @@ import { DropdownPositionComponent } from './dropdown/position/dropdown-position
 import { ModalAutoCloseComponent } from './modal/autoclose/modal-autoclose.component';
 import { ModalFocusComponent } from './modal/focus/modal-focus.component';
 import { ModalNestingComponent } from './modal/nesting/modal-nesting.component';
+import { ModalRoleComponent } from './modal/role/modal-role.component';
 import { ModalStackComponent } from './modal/stack/modal-stack.component';
 import { ModalStackConfirmationComponent } from './modal/stack-confirmation/modal-stack-confirmation.component';
 import { PopoverAutocloseComponent } from './popover/autoclose/popover-autoclose.component';
@@ -46,6 +47,7 @@ export const ROUTES: Routes = [
 			{ path: 'autoclose', component: ModalAutoCloseComponent },
 			{ path: 'focus', component: ModalFocusComponent },
 			{ path: 'nesting', component: ModalNestingComponent },
+			{ path: 'role', component: ModalRoleComponent },
 			{ path: 'stack', component: ModalStackComponent },
 			{ path: 'stack-confirmation', component: ModalStackConfirmationComponent },
 		],
