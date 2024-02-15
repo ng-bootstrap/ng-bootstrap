@@ -119,6 +119,13 @@ export interface NgbModalOptions {
 	 * @since 1.1.0
 	 */
 	backdropClass?: string;
+
+	/**
+	 * Role attribute for the modal window.
+	 *
+	 * Default value is `'dialog'`.
+	 */
+	windowRole?: 'dialog' | 'alertdialog';
 }
 
 /**
@@ -165,6 +172,7 @@ export class NgbModalConfig implements Required<NgbModalOptions> {
 	windowClass: string;
 	modalDialogClass: string;
 	backdropClass: string;
+	windowRole: 'dialog' | 'alertdialog' = 'dialog';
 
 	get animation(): boolean {
 		return this._animation ?? this._ngbConfig.animation;

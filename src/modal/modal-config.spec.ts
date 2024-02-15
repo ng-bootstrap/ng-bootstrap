@@ -22,6 +22,7 @@ describe('NgbModalConfig', () => {
 			expect(config.scrollable).toBeUndefined();
 			expect(config.size).toBeUndefined();
 			expect(config.windowClass).toBeUndefined();
+			expect(config.windowRole).toBe('dialog');
 		},
 	));
 });

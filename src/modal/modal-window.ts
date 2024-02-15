@@ -27,7 +27,7 @@ import { isString, reflow } from '../util/util';
 	host: {
 		'[class]': '"modal d-block" + (windowClass ? " " + windowClass : "")',
 		'[class.fade]': 'animation',
-		role: 'dialog',
+		'[attr.role]': 'windowRole',
 		tabindex: '-1',
 		'[attr.aria-modal]': 'true',
 		'[attr.aria-labelledby]': 'ariaLabelledBy',
@@ -73,6 +73,7 @@ export class NgbModalWindow implements OnInit, OnDestroy {
 	@Input() size: string;
 	@Input() windowClass: string;
 	@Input() modalDialogClass: string;
+	@Input() windowRole: 'dialog' | 'alertdialog' = 'dialog';
 
 	@Output('dismiss') dismissEvent = new EventEmitter();
 
