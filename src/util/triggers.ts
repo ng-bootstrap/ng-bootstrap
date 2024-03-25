@@ -1,3 +1,5 @@
+import { Observable, EMPTY } from 'rxjs';
+
 const ALIASES = {
 	hover: ['mouseenter', 'mouseleave'],
 	focus: ['focusin', 'focusout'],
@@ -36,6 +38,8 @@ export function listenToTriggers(
 	closeFn: () => void,
 	openDelayMs = 0,
 	closeDelayMs = 0,
+	enterPopover: Observable<void> = EMPTY,
+	leavePopover: Observable<void> = EMPTY,
 ) {
 	const parsedTriggers = parseTriggers(triggers);
 
@@ -72,6 +76,17 @@ export function listenToTriggers(
 				withDelay(() => activeOpenTriggers.size > 0 && openFn(), openDelayMs);
 			});
 			addEventListener(closeTrigger, () => {
+				activeOpenTriggers.delete(openTrigger);
+				withDelay(() => activeOpenTriggers.size === 0 && closeFn(), closeDelayMs);
+			});
+		}
+
+		if (openTrigger === 'mouseenter' && closeTrigger === 'mouseleave' && closeDelayMs > 0) {
+			enterPopover.subscribe(() => {
+				activeOpenTriggers.add(openTrigger);
+				clearTimeout(timeout);
+			});
+			leavePopover.subscribe(() => {
 				activeOpenTriggers.delete(openTrigger);
 				withDelay(() => activeOpenTriggers.size === 0 && closeFn(), closeDelayMs);
 			});
