@@ -3,6 +3,14 @@
 	<code>openDelay</code> and <code>closeDelay</code> properties. Note that the <code>autoClose</code> feature does not
 	use the close delay, it closes the tooltip immediately.
 </p>
+<p>
+	When using the <code>hover</code> trigger with a <code>closeDelay</code>, the tooltip will remain open if the mouse
+	enters it before the close delay is over. This is important for accessibility as it allows users of screen magnifiers
+	to move the cursor over the tooltip so they can magnify and read it without it disappearing. (See
+	<a href="https://www.w3.org/WAI/WCAG21/Understanding/content-on-hover-or-focus.html#hoverable"
+		>WCAG Success Criterion 1.4.13</a
+	>.)
+</p>
 
 <div class="buttons">
 	<button
