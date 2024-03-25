@@ -646,6 +646,27 @@ describe('ngb-tooltip', () => {
 	});
 
 	describe('visibility', () => {
+		it('should stay open if the tooltip is hovered before the closeDelay times out', fakeAsync(() => {
+			const fixture = createTestComponent(
+				`<div ngbTooltip="Great tip!" triggers="hover" [closeDelay]="200" style="margin-top: 110px;"></div>`,
+			);
+			const directive = fixture.debugElement.query(By.directive(NgbTooltip));
+
+			triggerEvent(directive, 'mouseenter');
+			tick();
+			expect(getWindow(fixture.nativeElement)).toBeTruthy();
+
+			triggerEvent(directive, 'mouseleave');
+			tick(100);
+			triggerEvent(getWindow(fixture.nativeElement), 'mouseenter');
+			tick(300);
+			expect(getWindow(fixture.nativeElement)).toBeTruthy();
+
+			triggerEvent(getWindow(fixture.nativeElement), 'mouseleave');
+			tick(300);
+			expect(getWindow(fixture.nativeElement)).toBeFalsy();
+		}));
+
 		it('should emit events when showing and hiding tooltip', () => {
 			const fixture = createTestComponent(
 				`<div ngbTooltip="Great tip!" triggers="click" (shown)="shown()" (hidden)="hidden()"></div>`,
