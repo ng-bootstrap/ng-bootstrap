@@ -6,6 +6,7 @@ import {
 	Directive,
 	ElementRef,
 	EventEmitter,
+	HostListener,
 	inject,
 	Input,
 	NgZone,
@@ -26,7 +27,7 @@ import { PopupService } from '../util/popup';
 import { isString } from '../util/util';
 
 import { NgbTooltipConfig } from './tooltip-config';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { addPopperOffset } from '../util/positioning-util';
 
 let nextId = 0;
@@ -54,6 +55,18 @@ export class NgbTooltipWindow {
 	@Input() animation: boolean;
 	@Input() id: string;
 	@Input() tooltipClass: string;
+	@Input() readonly mouseEnter: Subject<void>;
+	@Input() readonly mouseLeave: Subject<void>;
+
+	@HostListener('mouseenter')
+	onMouseEnter() {
+		this.mouseEnter?.next();
+	}
+
+	@HostListener('mouseleave')
+	onMouseLeave() {
+		this.mouseLeave?.next();
+	}
 }
 
 /**
@@ -183,6 +196,9 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 	private _positioning = ngbPositioning();
 	private _zoneSubscription: Subscription;
 
+	private _mouseEnterTooltip = new Subject<void>();
+	private _mouseLeaveTooltip = new Subject<void>();
+
 	/**
 	 * The string content or a `TemplateRef` for the content to be displayed in the tooltip.
 	 *
@@ -217,6 +233,8 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 			this._windowRef.setInput('animation', this.animation);
 			this._windowRef.setInput('tooltipClass', this.tooltipClass);
 			this._windowRef.setInput('id', this._ngbTooltipWindowId);
+			this._windowRef.setInput('mouseEnter', this._mouseEnterTooltip);
+			this._windowRef.setInput('mouseLeave', this._mouseLeaveTooltip);
 
 			this._getPositionTargetElement().setAttribute('aria-describedby', this._ngbTooltipWindowId);
 
@@ -314,6 +332,8 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 			this.close.bind(this),
 			+this.openDelay,
 			+this.closeDelay,
+			this._mouseEnterTooltip,
+			this._mouseLeaveTooltip,
 		);
 	}
 
@@ -325,6 +345,8 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 
 	ngOnDestroy() {
 		this.close(false);
+		this._mouseEnterTooltip.complete();
+		this._mouseLeaveTooltip.complete();
 		// This check is needed as it might happen that ngOnDestroy is called before ngOnInit
 		// under certain conditions, see: https://github.com/ng-bootstrap/ng-bootstrap/issues/2199
 		this._unregisterListenersFn?.();
