@@ -10,6 +10,7 @@ import { NgbdDropdownNavbar } from './demos/navbar/dropdown-navbar';
 import { NgbdDropdownSplit } from './demos/split/dropdown-split';
 import { NgbdDropdownDisabled } from './demos/disabled/dropdown-disabled';
 import { Routes } from '@angular/router';
+import { NgbdDropdownContainerString } from './demos/container-string/dropdown-container-string';
 
 const DEMOS = [
 	{
@@ -51,6 +52,13 @@ const DEMOS = [
 		fragment: 'container',
 		title: 'Container “body”',
 		type: NgbdDropdownContainer,
+		code: 'dropdown/demos/container/dropdown-container.ts',
+		markup: 'dropdown/demos/container/dropdown-container.html',
+	},
+	{
+		fragment: 'container-string',
+		title: 'Container “string”',
+		type: NgbdDropdownContainerString,
 		code: 'dropdown/demos/container/dropdown-container.ts',
 		markup: 'dropdown/demos/container/dropdown-container.html',
 	},
