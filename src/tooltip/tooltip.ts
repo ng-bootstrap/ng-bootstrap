@@ -1,4 +1,7 @@
 import {
+	afterRender,
+	AfterRenderPhase,
+	AfterRenderRef,
 	ChangeDetectionStrategy,
 	ChangeDetectorRef,
 	Component,
@@ -7,6 +10,7 @@ import {
 	ElementRef,
 	EventEmitter,
 	inject,
+	Injector,
 	Input,
 	NgZone,
 	OnChanges,
@@ -26,7 +30,6 @@ import { PopupService } from '../util/popup';
 import { isString } from '../util/util';
 
 import { NgbTooltipConfig } from './tooltip-config';
-import { Subscription } from 'rxjs';
 import { addPopperOffset } from '../util/positioning-util';
 
 let nextId = 0;
@@ -174,6 +177,7 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 	private _ngZone = inject(NgZone);
 	private _document = inject(DOCUMENT);
 	private _changeDetector = inject(ChangeDetectorRef);
+	private _injector = inject(Injector);
 
 	private _ngbTooltip: string | TemplateRef<any> | null | undefined;
 	private _ngbTooltipWindowId = `ngb-tooltip-${nextId++}`;
@@ -181,7 +185,7 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 	private _windowRef: ComponentRef<NgbTooltipWindow> | null = null;
 	private _unregisterListenersFn;
 	private _positioning = ngbPositioning();
-	private _zoneSubscription: Subscription;
+	private _afterRenderRef: AfterRenderRef | undefined;
 
 	/**
 	 * The string content or a `TemplateRef` for the content to be displayed in the tooltip.
@@ -249,8 +253,13 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 				Promise.resolve().then(() => {
 					// This update is required for correct arrow placement
 					this._positioning.update();
-					this._zoneSubscription = this._ngZone.onStable.subscribe(() => this._positioning.update());
 				});
+				this._afterRenderRef = afterRender(
+					() => {
+						this._positioning.update();
+					},
+					{ phase: AfterRenderPhase.MixedReadWrite, injector: this._injector },
+				);
 			});
 
 			ngbAutoClose(
@@ -278,7 +287,7 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 			this._popupService.close(animation).subscribe(() => {
 				this._windowRef = null;
 				this._positioning.destroy();
-				this._zoneSubscription?.unsubscribe();
+				this._afterRenderRef?.destroy();
 				this.hidden.emit();
 				this._changeDetector.markForCheck();
 			});
