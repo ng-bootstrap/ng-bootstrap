@@ -1,5 +1,7 @@
 import {
 	AfterContentInit,
+	afterNextRender,
+	AfterRenderPhase,
 	Attribute,
 	Component,
 	ContentChild,
@@ -7,6 +9,7 @@ import {
 	ElementRef,
 	EventEmitter,
 	inject,
+	Injector,
 	Input,
 	NgZone,
 	OnChanges,
@@ -17,7 +20,6 @@ import {
 } from '@angular/core';
 
 import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
 
 import { NgbToastConfig } from './toast-config';
 import { ngbRunTransition } from '../util/transition/ngbTransition';
@@ -78,6 +80,7 @@ export class NgbToastHeader {}
 export class NgbToast implements AfterContentInit, OnChanges {
 	private _config = inject(NgbToastConfig);
 	private _zone = inject(NgZone);
+	private _injector = inject(Injector);
 	private _element = inject(ElementRef);
 
 	private _timeoutID;
@@ -140,13 +143,13 @@ export class NgbToast implements AfterContentInit, OnChanges {
 	}
 
 	ngAfterContentInit() {
-		this._zone.onStable
-			.asObservable()
-			.pipe(take(1))
-			.subscribe(() => {
+		afterNextRender(
+			() => {
 				this._init();
 				this.show();
-			});
+			},
+			{ phase: AfterRenderPhase.MixedReadWrite, injector: this._injector },
+		);
 	}
 
 	ngOnChanges(changes: SimpleChanges) {
