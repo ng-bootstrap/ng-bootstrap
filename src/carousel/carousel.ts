@@ -1,6 +1,8 @@
 import {
 	AfterContentChecked,
 	AfterContentInit,
+	afterNextRender,
+	AfterRenderPhase,
 	AfterViewInit,
 	ChangeDetectionStrategy,
 	ChangeDetectorRef,
@@ -11,6 +13,7 @@ import {
 	ElementRef,
 	EventEmitter,
 	inject,
+	Injector,
 	Input,
 	NgZone,
 	Output,
@@ -139,6 +142,7 @@ export class NgbCarousel implements AfterContentChecked, AfterContentInit, After
 	private _cd = inject(ChangeDetectorRef);
 	private _container = inject(ElementRef);
 	private _destroyRef = inject(DestroyRef);
+	private _injector = inject(Injector);
 
 	private _interval$ = new BehaviorSubject(this._config.interval);
 	private _mouseHover$ = new BehaviorSubject(false);
@@ -340,16 +344,19 @@ export class NgbCarousel implements AfterContentChecked, AfterContentInit, After
 
 			// The following code need to be done asynchronously, after the dom becomes stable,
 			// otherwise all changes will be undone.
-			this._ngZone.onStable.pipe(take(1)).subscribe(() => {
-				for (const { id } of this.slides) {
-					const element = this._getSlideElement(id);
-					if (id === this.activeId) {
-						element.classList.add('active');
-					} else {
-						element.classList.remove('active');
+			afterNextRender(
+				() => {
+					for (const { id } of this.slides) {
+						const element = this._getSlideElement(id);
+						if (id === this.activeId) {
+							element.classList.add('active');
+						} else {
+							element.classList.remove('active');
+						}
 					}
-				}
-			});
+				},
+				{ phase: AfterRenderPhase.MixedReadWrite, injector: this._injector },
+			);
 		});
 	}
 
