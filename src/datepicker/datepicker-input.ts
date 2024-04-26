@@ -1,4 +1,7 @@
 import {
+	afterRender,
+	AfterRenderPhase,
+	AfterRenderRef,
 	ChangeDetectorRef,
 	ComponentRef,
 	Directive,
@@ -6,6 +9,7 @@ import {
 	EventEmitter,
 	forwardRef,
 	inject,
+	Injector,
 	Input,
 	NgZone,
 	OnChanges,
@@ -80,6 +84,7 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	private _dateAdapter = inject(NgbDateAdapter<any>);
 	private _document = inject(DOCUMENT);
 	private _changeDetector = inject(ChangeDetectorRef);
+	private _injector = inject(Injector);
 	private _config = inject(NgbInputDatepickerConfig);
 
 	private _cRef: ComponentRef<NgbDatepicker> | null = null;
@@ -87,7 +92,7 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	private _elWithFocus: HTMLElement | null = null;
 	private _model: NgbDate | null = null;
 	private _inputValue: string;
-	private _zoneSubscription: any;
+	private _afterRenderRef: AfterRenderRef | undefined;
 	private _positioning = ngbPositioning();
 	private _destroyCloseHandlers$ = new Subject<void>();
 
@@ -429,7 +434,12 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 						updatePopperOptions: (options) => this.popperOptions(addPopperOffset([0, 2])(options)),
 					});
 
-					this._zoneSubscription = this._ngZone.onStable.subscribe(() => this._positioning.update());
+					this._afterRenderRef = afterRender(
+						() => {
+							this._positioning.update();
+						},
+						{ phase: AfterRenderPhase.MixedReadWrite, injector: this._injector },
+					);
 				}
 			});
 
@@ -445,7 +455,7 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 			this._cRef?.destroy();
 			this._cRef = null;
 			this._positioning.destroy();
-			this._zoneSubscription?.unsubscribe();
+			this._afterRenderRef?.destroy();
 			this._destroyCloseHandlers$.next();
 			this.closed.emit();
 			this._changeDetector.markForCheck();

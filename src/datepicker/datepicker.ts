@@ -1,6 +1,8 @@
 import { fromEvent, merge } from 'rxjs';
-import { filter, take } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 import {
+	afterNextRender,
+	AfterRenderPhase,
 	AfterViewInit,
 	ChangeDetectionStrategy,
 	ChangeDetectorRef,
@@ -303,6 +305,7 @@ export class NgbDatepicker implements AfterViewInit, OnChanges, OnInit, ControlV
 	private _ngbDateAdapter = inject(NgbDateAdapter<any>);
 	private _ngZone = inject(NgZone);
 	private _destroyRef = inject(DestroyRef);
+	private _injector = inject(Injector);
 
 	private _controlValue: NgbDate | null = null;
 	private _publicState: NgbDatepickerState = <any>{};
@@ -547,10 +550,12 @@ export class NgbDatepicker implements AfterViewInit, OnChanges, OnInit, ControlV
 	}
 
 	focus() {
-		this._ngZone.onStable
-			.asObservable()
-			.pipe(take(1))
-			.subscribe(() => this._nativeElement.querySelector<HTMLElement>('div.ngb-dp-day[tabindex="0"]')?.focus());
+		afterNextRender(
+			() => {
+				this._nativeElement.querySelector<HTMLElement>('div.ngb-dp-day[tabindex="0"]')?.focus();
+			},
+			{ phase: AfterRenderPhase.Read, injector: this._injector },
+		);
 	}
 
 	/**
