@@ -1,4 +1,7 @@
 import {
+	afterRender,
+	AfterRenderPhase,
+	AfterRenderRef,
 	ChangeDetectorRef,
 	ComponentRef,
 	Directive,
@@ -6,6 +9,7 @@ import {
 	EventEmitter,
 	forwardRef,
 	inject,
+	Injector,
 	Input,
 	NgZone,
 	OnChanges,
@@ -76,6 +80,7 @@ export class NgbTypeahead implements ControlValueAccessor, OnInit, OnChanges, On
 	private _document = inject(DOCUMENT);
 	private _ngZone = inject(NgZone);
 	private _changeDetector = inject(ChangeDetectorRef);
+	private _injector = inject(Injector);
 
 	private _popupService = new PopupService(NgbTypeaheadWindow);
 	private _positioning = ngbPositioning();
@@ -89,7 +94,7 @@ export class NgbTypeahead implements ControlValueAccessor, OnInit, OnChanges, On
 	);
 	private _resubscribeTypeahead$ = new BehaviorSubject(null);
 	private _windowRef: ComponentRef<NgbTypeaheadWindow> | null = null;
-	private _zoneSubscription: Subscription;
+	private _afterRenderRef: AfterRenderRef;
 
 	/**
 	 * The value for the `autocomplete` attribute for the `<input>` element.
@@ -327,7 +332,12 @@ export class NgbTypeahead implements ControlValueAccessor, OnInit, OnChanges, On
 						updatePopperOptions: (options) => this.popperOptions(addPopperOffset([0, 2])(options)),
 					});
 
-					this._zoneSubscription = this._ngZone.onStable.subscribe(() => this._positioning.update());
+					this._afterRenderRef = afterRender(
+						() => {
+							this._positioning.update();
+						},
+						{ phase: AfterRenderPhase.MixedReadWrite, injector: this._injector },
+					);
 				}
 			});
 
@@ -341,7 +351,7 @@ export class NgbTypeahead implements ControlValueAccessor, OnInit, OnChanges, On
 	private _closePopup() {
 		this._popupService.close().subscribe(() => {
 			this._positioning.destroy();
-			this._zoneSubscription?.unsubscribe();
+			this._afterRenderRef?.destroy();
 			this._closed$.next();
 			this._windowRef = null;
 			this.activeDescendant = null;
