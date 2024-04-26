@@ -1,5 +1,9 @@
 import {
 	AfterContentInit,
+	afterNextRender,
+	afterRender,
+	AfterRenderPhase,
+	AfterRenderRef,
 	ChangeDetectorRef,
 	ContentChild,
 	ContentChildren,
@@ -8,6 +12,7 @@ import {
 	EventEmitter,
 	forwardRef,
 	inject,
+	Injector,
 	Input,
 	NgZone,
 	OnChanges,
@@ -18,7 +23,7 @@ import {
 	SimpleChanges,
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { fromEvent, Subject, Subscription } from 'rxjs';
+import { fromEvent, Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import { ngbPositioning, Placement, PlacementArray } from '../util/positioning';
@@ -165,11 +170,12 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 	private _changeDetector = inject(ChangeDetectorRef);
 	private _config = inject(NgbDropdownConfig);
 	private _document = inject(DOCUMENT);
+	private _injector = inject(Injector);
 	private _ngZone = inject(NgZone);
 	private _nativeElement = inject(ElementRef).nativeElement as HTMLElement;
 
 	private _destroyCloseHandlers$ = new Subject<void>();
-	private _zoneSubscription: Subscription;
+	private _afterRenderRef: AfterRenderRef | undefined;
 	private _bodyContainer: HTMLElement | null = null;
 
 	private _positioning = ngbPositioning();
@@ -255,12 +261,15 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 	}
 
 	ngAfterContentInit() {
-		this._ngZone.onStable.pipe(take(1)).subscribe(() => {
-			this._applyPlacementClasses();
-			if (this._open) {
-				this._setCloseHandlers();
-			}
-		});
+		afterNextRender(
+			() => {
+				this._applyPlacementClasses();
+				if (this._open) {
+					this._setCloseHandlers();
+				}
+			},
+			{ phase: AfterRenderPhase.Write, injector: this._injector },
+		);
 	}
 
 	ngOnChanges(changes: SimpleChanges) {
@@ -315,7 +324,12 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 							updatePopperOptions: (options) => this.popperOptions(addPopperOffset([0, 2])(options)),
 						});
 						this._applyPlacementClasses();
-						this._zoneSubscription = this._ngZone.onStable.subscribe(() => this._positionMenu());
+						this._afterRenderRef = afterRender(
+							() => {
+								this._positionMenu();
+							},
+							{ phase: AfterRenderPhase.Write, injector: this._injector },
+						);
 					});
 				}
 			}
@@ -350,7 +364,7 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 			this._open = false;
 			this._resetContainer();
 			this._positioning.destroy();
-			this._zoneSubscription?.unsubscribe();
+			this._afterRenderRef?.destroy();
 			this._destroyCloseHandlers$.next();
 			this.openChange.emit(false);
 			this._changeDetector.markForCheck();
