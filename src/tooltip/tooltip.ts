@@ -325,7 +325,7 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 
 	ngOnDestroy() {
 		this.close(false);
-		// This check is needed as it might happen that ngOnDestroy is called before ngOnInit
+		// This check is necessary because it's possible that ngOnDestroy could be invoked before ngOnInit.
 		// under certain conditions, see: https://github.com/ng-bootstrap/ng-bootstrap/issues/2199
 		this._unregisterListenersFn?.();
 	}
