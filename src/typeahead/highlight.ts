@@ -15,7 +15,7 @@ import { regExpEscape, removeAccents, toString } from '../util/util';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	encapsulation: ViewEncapsulation.None,
 	template: `
-		@for (part of parts; track part; let odd = $odd) {
+		@for (part of parts; track $index; let odd = $odd) {
 			@if (odd) {
 				<span class="{{ highlightClass }}">{{ part }}</span>
 			} @else {
