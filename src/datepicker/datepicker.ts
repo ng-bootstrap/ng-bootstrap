@@ -309,6 +309,7 @@ export class NgbDatepicker implements AfterViewInit, OnChanges, OnInit, ControlV
 
 	private _controlValue: NgbDate | null = null;
 	private _publicState: NgbDatepickerState = <any>{};
+	private _initialized = false;
 
 	/**
 	 * The reference to a custom content template.
@@ -617,6 +618,7 @@ export class NgbDatepicker implements AfterViewInit, OnChanges, OnInit, ControlV
 		if (!this.dayTemplate) {
 			this.dayTemplate = this._defaultDayTemplate;
 		}
+		this._initialized = true;
 	}
 
 	ngOnChanges(changes: SimpleChanges) {
@@ -636,7 +638,7 @@ export class NgbDatepicker implements AfterViewInit, OnChanges, OnInit, ControlV
 			.forEach((name) => (inputs[name] = this[name]));
 		this._service.set(inputs);
 
-		if ('startDate' in changes) {
+		if ('startDate' in changes && this._initialized) {
 			const { currentValue, previousValue } = changes.startDate;
 			if (isChangedMonth(previousValue, currentValue)) {
 				this.navigateTo(this.startDate);
