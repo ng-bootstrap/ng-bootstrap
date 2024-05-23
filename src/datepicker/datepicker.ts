@@ -421,7 +421,7 @@ export class NgbDatepicker implements AfterViewInit, OnChanges, OnInit, ControlV
 	 *
 	 * * `true` - weekdays are displayed using default width
 	 * * `false` - weekdays are not displayed
-	 * * `TranslationWidth` - weekdays are displayed using specified width
+	 * * `"short" | "long" | "narrow"` - weekdays are displayed using specified width
 	 *
 	 * @since 9.1.0
 	 */

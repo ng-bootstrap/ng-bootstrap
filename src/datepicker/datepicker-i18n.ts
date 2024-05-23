@@ -1,5 +1,5 @@
 import { inject, Injectable, LOCALE_ID } from '@angular/core';
-import { formatDate, FormStyle, getLocaleDayNames, getLocaleMonthNames, TranslationWidth } from '@angular/common';
+import { formatDate } from '@angular/common';
 import { NgbDateStruct } from './ngb-date-struct';
 
 /**
@@ -25,7 +25,7 @@ export abstract class NgbDatepickerI18n {
 	 *
 	 * @since 9.1.0
 	 */
-	abstract getWeekdayLabel(weekday: number, width?: TranslationWidth): string;
+	abstract getWeekdayLabel(weekday: number, width?: 'short' | 'long' | 'narrow'): string;
 
 	/**
 	 * Returns the short month name to display in the date picker navigation.
@@ -104,14 +104,16 @@ export abstract class NgbDatepickerI18n {
 export class NgbDatepickerI18nDefault extends NgbDatepickerI18n {
 	private _locale = inject(LOCALE_ID);
 
-	private _monthsShort = getLocaleMonthNames(this._locale, FormStyle.Standalone, TranslationWidth.Abbreviated);
-	private _monthsFull = getLocaleMonthNames(this._locale, FormStyle.Standalone, TranslationWidth.Wide);
+	private _monthsShort = [...Array(12).keys()].map((month) =>
+		Intl.DateTimeFormat(this._locale, { month: 'short' }).format(new Date(2000, month)),
+	);
+	private _monthsFull = [...Array(12).keys()].map((month) =>
+		Intl.DateTimeFormat(this._locale, { month: 'long' }).format(new Date(2000, month)),
+	);
 
-	getWeekdayLabel(weekday: number, width?: TranslationWidth): string {
-		const weekdaysStartingOnSunday = getLocaleDayNames(
-			this._locale,
-			FormStyle.Standalone,
-			width === undefined ? TranslationWidth.Short : width,
+	getWeekdayLabel(weekday: number, width: 'short' | 'long' | 'narrow' = 'narrow'): string {
+		const weekdaysStartingOnSunday = [...Array(7).keys()].map((day) =>
+			Intl.DateTimeFormat(this._locale, { weekday: width }).format(new Date(Date.UTC(2021, 5, day - 1))),
 		);
 		const weekdays = weekdaysStartingOnSunday.map((day, index) => weekdaysStartingOnSunday[(index + 1) % 7]);
 		return weekdays[weekday - 1] || '';

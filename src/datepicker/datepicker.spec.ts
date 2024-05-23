@@ -17,7 +17,6 @@ import { NgbDatepickerDayView } from './datepicker-day-view';
 import { NgbDatepickerKeyboardService } from './datepicker-keyboard-service';
 import { NgbDatepickerNavigationSelect } from './datepicker-navigation-select';
 import { NgbDatepickerNavigation } from './datepicker-navigation';
-import { TranslationWidth } from '@angular/common';
 
 const createTestComponent = (html: string) =>
 	createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -149,7 +148,7 @@ function customizeConfig(config: NgbDatepickerConfig) {
 	config.outsideDays = 'collapsed';
 	config.showWeekNumbers = true;
 	config.startDate = { year: 2015, month: 1 };
-	config.weekdays = TranslationWidth.Abbreviated;
+	config.weekdays = 'narrow';
 }
 
 describe('ngb-datepicker', () => {
@@ -233,18 +232,18 @@ describe('ngb-datepicker', () => {
 
 	it(`should display weekdays by default`, () => {
 		const fixture = createTestComponent(`<ngb-datepicker [startDate]="date"></ngb-datepicker>`);
-		expect(getWeekdays(fixture.nativeElement)).toEqual(['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']);
+		expect(getWeekdays(fixture.nativeElement)).toEqual(['M', 'T', 'W', 'T', 'F', 'S', 'S']);
 	});
 
 	it(`should allow customizing the way weekdays are displayed (weekdays)`, () => {
 		const fixture = createTestComponent(`<ngb-datepicker [startDate]="date" [weekdays]="weekdays"></ngb-datepicker>`);
-		expect(getWeekdays(fixture.nativeElement)).toEqual(['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']);
+		expect(getWeekdays(fixture.nativeElement)).toEqual(['M', 'T', 'W', 'T', 'F', 'S', 'S']);
 
 		fixture.componentInstance.weekdays = false;
 		fixture.detectChanges();
 		expect(getWeekdays(fixture.nativeElement)).toEqual([]);
 
-		fixture.componentInstance.weekdays = TranslationWidth.Narrow;
+		fixture.componentInstance.weekdays = 'narrow';
 		fixture.detectChanges();
 		expect(getWeekdays(fixture.nativeElement)).toEqual(['M', 'T', 'W', 'T', 'F', 'S', 'S']);
 	});
@@ -1318,7 +1317,7 @@ class TestComponent {
 	form = new UntypedFormGroup({ control: new UntypedFormControl('', Validators.required) });
 	disabledForm = new UntypedFormGroup({ control: new UntypedFormControl({ value: null, disabled: true }) });
 	model;
-	weekdays: boolean | TranslationWidth = true;
+	weekdays: boolean | 'short' | 'long' | 'narrow' = true;
 	dayTemplateData = () => '!';
 	markDisabled = (date: NgbDateStruct) => {
 		return NgbDate.from(date)!.equals(new NgbDate(2016, 8, 22));
