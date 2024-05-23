@@ -15,7 +15,7 @@ import {
 	TemplateRef,
 	ViewContainerRef,
 } from '@angular/core';
-import { DOCUMENT, TranslationWidth } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import {
 	AbstractControl,
 	ControlValueAccessor,
@@ -265,11 +265,11 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	 *
 	 * * `true` - weekdays are displayed using default width
 	 * * `false` - weekdays are not displayed
-	 * * `TranslationWidth` - weekdays are displayed using specified width
+	 * * `"short" | "long" | "narrow"` - weekdays are displayed using specified width
 	 *
 	 * @since 9.1.0
 	 */
-	@Input() weekdays: TranslationWidth | boolean;
+	@Input() weekdays: 'short' | 'long' | 'narrow' | boolean;
 
 	/**
 	 * An event emitted when user selects a date using keyboard or mouse.

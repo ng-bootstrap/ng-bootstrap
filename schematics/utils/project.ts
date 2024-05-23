@@ -1,6 +1,6 @@
-import { normalize, workspaces } from '@angular-devkit/core';
+import { normalize } from '@angular-devkit/core';
 import { SchematicsException } from '@angular-devkit/schematics';
-
+import { workspaces } from '@angular-devkit/core';
 // Regular expression that matches all possible Angular CLI default style files
 const defaultStyleFileRegex = /styles\.(c|le|sc|sa)ss/;
 

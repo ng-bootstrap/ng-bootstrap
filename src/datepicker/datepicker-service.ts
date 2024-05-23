@@ -20,7 +20,6 @@ import {
 
 import { filter } from 'rxjs/operators';
 import { NgbDatepickerI18n } from './datepicker-i18n';
-import { TranslationWidth } from '@angular/common';
 
 export type DatepickerServiceInputs = Partial<{
 	dayTemplateData: NgbDayTemplateData;
@@ -33,7 +32,7 @@ export type DatepickerServiceInputs = Partial<{
 	minDate: NgbDate | null;
 	navigation: 'select' | 'arrows' | 'none';
 	outsideDays: 'visible' | 'collapsed' | 'hidden';
-	weekdays: TranslationWidth | boolean;
+	weekdays: 'short' | 'long' | 'narrow' | boolean;
 }>;
 
 @Injectable()
@@ -95,8 +94,8 @@ export class NgbDatepickerService {
 				return { outsideDays };
 			}
 		},
-		weekdays: (weekdays: boolean | TranslationWidth) => {
-			const weekdayWidth = weekdays === true || weekdays === false ? TranslationWidth.Short : weekdays;
+		weekdays: (weekdays: boolean | 'short' | 'long' | 'narrow') => {
+			const weekdayWidth = weekdays === true || weekdays === false ? 'narrow' : weekdays;
 			const weekdaysVisible = weekdays === true || weekdays === false ? weekdays : true;
 			if (this._state.weekdayWidth !== weekdayWidth || this._state.weekdaysVisible !== weekdaysVisible) {
 				return { weekdayWidth, weekdaysVisible };
@@ -130,7 +129,7 @@ export class NgbDatepickerService {
 		nextDisabled: false,
 		selectedDate: null,
 		selectBoxes: { years: [], months: [] },
-		weekdayWidth: TranslationWidth.Short,
+		weekdayWidth: 'narrow',
 		weekdaysVisible: true,
 	};
 

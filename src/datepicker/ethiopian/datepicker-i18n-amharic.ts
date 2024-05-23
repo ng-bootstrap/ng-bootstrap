@@ -1,7 +1,6 @@
 import { NgbDatepickerI18n } from '../datepicker-i18n';
 import { Injectable } from '@angular/core';
 import { NgbDateStruct } from '../../index';
-import { TranslationWidth } from '@angular/common';
 
 const WEEKDAYS = ['እሑድ', 'ሰኞ', 'ማክሰኞ', 'ረቡዕ', 'ሓሙስ', 'ዓርብ', 'ቅዳሜ'];
 const MONTHS = ['መስከረም', 'ጥቅምት', 'ኅዳር', 'ታህሣሥ', 'ጥር', 'የካቲት', 'መጋቢት', 'ሚያዝያ', 'ግንቦት', 'ሰኔ', 'ሐምሌ', 'ነሐሴ', 'ጳጉሜ'];
@@ -19,7 +18,7 @@ export class NgbDatepickerI18nAmharic extends NgbDatepickerI18n {
 		return MONTHS[month - 1];
 	}
 
-	getWeekdayLabel(weekday: number, width?: TranslationWidth | undefined): string {
+	getWeekdayLabel(weekday: number, width?: 'short' | 'long' | 'narrow' | undefined): string {
 		return WEEKDAYS[weekday - 1];
 	}
 
