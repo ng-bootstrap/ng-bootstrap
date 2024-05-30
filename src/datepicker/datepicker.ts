@@ -286,7 +286,7 @@ export class NgbDatepicker implements AfterViewInit, OnChanges, OnInit, ControlV
 	static ngAcceptInputType_autoClose: boolean | string;
 	static ngAcceptInputType_navigation: string;
 	static ngAcceptInputType_outsideDays: string;
-	static ngAcceptInputType_weekdays: boolean | number;
+	static ngAcceptInputType_weekdays: boolean | string;
 
 	model: DatepickerViewModel;
 
