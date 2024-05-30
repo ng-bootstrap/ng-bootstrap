@@ -22,5 +22,5 @@ export class NgbDatepickerConfig {
 	outsideDays: 'visible' | 'collapsed' | 'hidden' = 'visible';
 	showWeekNumbers = false;
 	startDate: { year: number; month: number; day?: number };
-	weekdays: 'short' | 'long' | 'narrow' | boolean = 'narrow';
+	weekdays: Exclude<Intl.DateTimeFormatOptions['weekday'], undefined> | boolean = 'narrow';
 }

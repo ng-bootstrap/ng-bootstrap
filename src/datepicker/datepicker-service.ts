@@ -32,7 +32,7 @@ export type DatepickerServiceInputs = Partial<{
 	minDate: NgbDate | null;
 	navigation: 'select' | 'arrows' | 'none';
 	outsideDays: 'visible' | 'collapsed' | 'hidden';
-	weekdays: 'short' | 'long' | 'narrow' | boolean;
+	weekdays: Exclude<Intl.DateTimeFormatOptions['weekday'], undefined> | boolean;
 }>;
 
 @Injectable()
@@ -94,7 +94,7 @@ export class NgbDatepickerService {
 				return { outsideDays };
 			}
 		},
-		weekdays: (weekdays: boolean | 'short' | 'long' | 'narrow') => {
+		weekdays: (weekdays: boolean | Exclude<Intl.DateTimeFormatOptions['weekday'], undefined>) => {
 			const weekdayWidth = weekdays === true || weekdays === false ? 'narrow' : weekdays;
 			const weekdaysVisible = weekdays === true || weekdays === false ? weekdays : true;
 			if (this._state.weekdayWidth !== weekdayWidth || this._state.weekdaysVisible !== weekdaysVisible) {

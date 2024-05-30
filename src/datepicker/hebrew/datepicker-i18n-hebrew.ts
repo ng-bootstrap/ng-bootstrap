@@ -34,7 +34,7 @@ export class NgbDatepickerI18nHebrew extends NgbDatepickerI18n {
 		return isHebrewLeapYear(year) ? MONTHS_LEAP[month - 1] || '' : MONTHS[month - 1] || '';
 	}
 
-	getWeekdayLabel(weekday: number, width?: 'short' | 'long' | 'narrow') {
+	getWeekdayLabel(weekday: number, width?: Intl.DateTimeFormatOptions['weekday']) {
 		return WEEKDAYS[weekday - 1] || '';
 	}
 

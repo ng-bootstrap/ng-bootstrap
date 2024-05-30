@@ -50,7 +50,7 @@ export type DatepickerViewModel = {
 		months: number[];
 	};
 	selectedDate: NgbDate | null;
-	weekdayWidth: 'short' | 'long' | 'narrow';
+	weekdayWidth: Exclude<Intl.DateTimeFormatOptions['weekday'], undefined>;
 	weekdaysVisible: boolean;
 };
 

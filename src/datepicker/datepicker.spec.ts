@@ -1317,7 +1317,7 @@ class TestComponent {
 	form = new UntypedFormGroup({ control: new UntypedFormControl('', Validators.required) });
 	disabledForm = new UntypedFormGroup({ control: new UntypedFormControl({ value: null, disabled: true }) });
 	model;
-	weekdays: boolean | 'short' | 'long' | 'narrow' = true;
+	weekdays: boolean | Exclude<Intl.DateTimeFormatOptions['weekday'], undefined> = true;
 	dayTemplateData = () => '!';
 	markDisabled = (date: NgbDateStruct) => {
 		return NgbDate.from(date)!.equals(new NgbDate(2016, 8, 22));
