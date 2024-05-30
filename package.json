@@ -106,7 +106,7 @@
     "@types/prismjs": "1.26.2",
     "@typescript-eslint/eslint-plugin": "^6.9.0",
     "@typescript-eslint/parser": "^6.9.0",
-    "bootstrap": "5.3.2",
+    "bootstrap": "5.3.3",
     "bootstrap-icons": "1.9.1",
     "conventional-changelog-cli": "^2.0.12",
     "coverage-istanbul-loader": "^3.0.3",
