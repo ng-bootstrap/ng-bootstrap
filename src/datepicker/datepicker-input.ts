@@ -70,7 +70,7 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	static ngAcceptInputType_disabled: boolean | '';
 	static ngAcceptInputType_navigation: string;
 	static ngAcceptInputType_outsideDays: string;
-	static ngAcceptInputType_weekdays: boolean | number;
+	static ngAcceptInputType_weekdays: boolean | string;
 
 	private _parserFormatter = inject(NgbDateParserFormatter);
 	private _elRef = inject(ElementRef<HTMLInputElement>);
