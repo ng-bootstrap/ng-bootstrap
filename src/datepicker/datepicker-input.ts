@@ -269,7 +269,7 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	 *
 	 * @since 9.1.0
 	 */
-	@Input() weekdays: 'short' | 'long' | 'narrow' | boolean;
+	@Input() weekdays: Exclude<Intl.DateTimeFormatOptions['weekday'], undefined> | boolean;
 
 	/**
 	 * An event emitted when user selects a date using keyboard or mouse.

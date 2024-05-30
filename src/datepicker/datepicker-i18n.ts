@@ -25,7 +25,7 @@ export abstract class NgbDatepickerI18n {
 	 *
 	 * @since 9.1.0
 	 */
-	abstract getWeekdayLabel(weekday: number, width?: 'short' | 'long' | 'narrow'): string;
+	abstract getWeekdayLabel(weekday: number, width?: Exclude<Intl.DateTimeFormatOptions['weekday'], undefined>): string;
 
 	/**
 	 * Returns the short month name to display in the date picker navigation.
@@ -111,7 +111,10 @@ export class NgbDatepickerI18nDefault extends NgbDatepickerI18n {
 		Intl.DateTimeFormat(this._locale, { month: 'long' }).format(new Date(2000, month)),
 	);
 
-	getWeekdayLabel(weekday: number, width: 'short' | 'long' | 'narrow' = 'narrow'): string {
+	getWeekdayLabel(
+		weekday: number,
+		width: Exclude<Intl.DateTimeFormatOptions['weekday'], undefined> = 'narrow',
+	): string {
 		const weekdaysStartingOnSunday = [...Array(7).keys()].map((day) =>
 			Intl.DateTimeFormat(this._locale, { weekday: width }).format(new Date(Date.UTC(2021, 5, day - 1))),
 		);

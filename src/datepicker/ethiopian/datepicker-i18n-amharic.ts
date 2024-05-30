@@ -18,7 +18,7 @@ export class NgbDatepickerI18nAmharic extends NgbDatepickerI18n {
 		return MONTHS[month - 1];
 	}
 
-	getWeekdayLabel(weekday: number, width?: 'short' | 'long' | 'narrow' | undefined): string {
+	getWeekdayLabel(weekday: number, width?: Intl.DateTimeFormatOptions['weekday']): string {
 		return WEEKDAYS[weekday - 1];
 	}
 
