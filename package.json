@@ -64,7 +64,6 @@
   },
   "homepage": "https://github.com/ng-bootstrap/ng-bootstrap#readme",
   "dependencies": {
-    "@types/intl": "^1.2.2",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
@@ -102,6 +101,7 @@
     "@types/fs-extra": "^9.0.3",
     "@types/glob": "^7.1.1",
     "@types/he": "^1.1.0",
+    "@types/intl": "^1.2.2",
     "@types/jasmine": "~5.1.1",
     "@types/node": "^16.18.26",
     "@types/prismjs": "1.26.2",
