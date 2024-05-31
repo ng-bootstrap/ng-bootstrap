@@ -139,7 +139,7 @@ export class NgbDatepickerContent {
 				@if (datepicker.showWeekNumbers) {
 					<div class="ngb-dp-weekday ngb-dp-showweek small">{{ i18n.getWeekLabel() }}</div>
 				}
-				@for (weekday of viewModel.weekdays; track weekday) {
+				@for (weekday of viewModel.weekdays; track $index) {
 					<div class="ngb-dp-weekday small" role="columnheader">{{ weekday }}</div>
 				}
 			</div>
@@ -239,7 +239,7 @@ export class NgbDatepickerMonth {
 		</ng-template>
 
 		<ng-template #defaultContentTemplate>
-			@for (month of model.months; track month; let i = $index) {
+			@for (month of model.months; track month) {
 				<div class="ngb-dp-month">
 					@if (navigation === 'none' || (displayMonths > 1 && navigation === 'select')) {
 						<div class="ngb-dp-month-name">
