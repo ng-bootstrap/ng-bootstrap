@@ -239,7 +239,7 @@ export class NgbDatepickerMonth {
 		</ng-template>
 
 		<ng-template #defaultContentTemplate>
-			@for (month of model.months; track month; let i = $index) {
+			@for (month of model.months; track month) {
 				<div class="ngb-dp-month">
 					@if (navigation === 'none' || (displayMonths > 1 && navigation === 'select')) {
 						<div class="ngb-dp-month-name">
