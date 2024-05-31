@@ -139,7 +139,7 @@ export class NgbDatepickerContent {
 				@if (datepicker.showWeekNumbers) {
 					<div class="ngb-dp-weekday ngb-dp-showweek small">{{ i18n.getWeekLabel() }}</div>
 				}
-				@for (weekday of viewModel.weekdays; track weekday) {
+				@for (weekday of viewModel.weekdays; track $index) {
 					<div class="ngb-dp-weekday small" role="columnheader">{{ weekday }}</div>
 				}
 			</div>
