@@ -495,7 +495,7 @@ describe('ngb-accordion directive', () => {
 	it(`should allow using 'ngbAccordionItem' from the template in a loop`, () => {
 		const fixture = createTestComponent(
 			`<div ngbAccordion>
-				@for (i of items; track item) {
+				@for (i of items; track i) {
 					<div ngbAccordionItem #item='ngbAccordionItem'[collapsed]='i.collapsed' [disabled]='i.disabled'>
 						<h2 ngbAccordionHeader>
 							<button ngbAccordionButton>{{ item.collapsed ? 'collapsed-' : 'expanded-' }}{{ item.disabled ? 'disabled' : 'enabled' }}</button>
@@ -505,6 +505,7 @@ describe('ngb-accordion directive', () => {
 				}
 			</div>`,
 		);
+
 		const el = fixture.nativeElement;
 
 		expect(getPanelsTitle(el)).toEqual(['collapsed-enabled', 'collapsed-enabled', 'collapsed-enabled']);
@@ -588,8 +589,8 @@ describe('ngb-accordion directive', () => {
 			imports: [NgbAccordionModule],
 			template: `
 				<div ngbAccordion #accordion="ngbAccordion" [closeOthers]="true">
-					@for (_ of state; track _; let index = $index) {
-						<div [ngbAccordionItem]="keys[index]" #item="ngbAccordionItem" [collapsed]="state[index]">
+					@for (_ of state; track $index) {
+						<div [ngbAccordionItem]="keys[$index]" #item="ngbAccordionItem" [collapsed]="state[$index]">
 							<h2 ngbAccordionHeader>
 								<button ngbAccordionButton>{{ item.collapsed }}</button>
 							</h2>
