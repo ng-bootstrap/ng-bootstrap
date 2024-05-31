@@ -1,5 +1,5 @@
 import { TestBed, ComponentFixture, inject, fakeAsync, tick } from '@angular/core/testing';
-import { createGenericTestComponent, triggerEvent } from '../test/common';
+import { createGenericTestComponent, ignoreTrackWarnings, triggerEvent } from '../test/common';
 import { getMonthSelect, getYearSelect, getNavigationLinks } from '../test/datepicker/common';
 
 import { Component, TemplateRef, DebugElement } from '@angular/core';
@@ -173,6 +173,8 @@ describe('ngb-datepicker', () => {
 	});
 
 	it('should allow changing min/max dates at the same time', () => {
+		// hide track warnings because they're the year select options which change, which is expected and normal
+		ignoreTrackWarnings();
 		const fixture = createTestComponent('<ngb-datepicker [minDate]="minDate" [maxDate]="maxDate"></ngb-datepicker>');
 
 		expect(() => {
@@ -265,6 +267,8 @@ describe('ngb-datepicker', () => {
 	});
 
 	it('should allow infinite navigation when min/max dates are not set', () => {
+		// hide track warnings because they're the year select options which change, which is expected and normal
+		ignoreTrackWarnings();
 		const fixture = createTestComponent(`<ngb-datepicker [startDate]="date"></ngb-datepicker>`);
 
 		fixture.detectChanges();
@@ -321,6 +325,8 @@ describe('ngb-datepicker', () => {
 	});
 
 	it('should handle minDate edge case values', () => {
+		// hide track warnings because they're the year select options which change, which is expected and normal
+		ignoreTrackWarnings();
 		const fixture = createTestComponent(`<ngb-datepicker [minDate]="minDate" [startDate]="date"></ngb-datepicker>`);
 		const datepicker = fixture.debugElement.query(By.directive(NgbDatepicker)).injector.get(NgbDatepicker);
 
@@ -360,6 +366,8 @@ describe('ngb-datepicker', () => {
 	});
 
 	it('should handle maxDate edge case values', () => {
+		// hide track warnings because they're the year select options which change, which is expected and normal
+		ignoreTrackWarnings();
 		const fixture = createTestComponent(`<ngb-datepicker [maxDate]="maxDate" [startDate]="date"></ngb-datepicker>`);
 		const datepicker = fixture.debugElement.query(By.directive(NgbDatepicker)).injector.get(NgbDatepicker);
 
