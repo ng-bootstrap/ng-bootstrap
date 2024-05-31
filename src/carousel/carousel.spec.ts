@@ -326,7 +326,7 @@ describe('ngb-carousel', () => {
 	it('should mark component for check when slides change', () => {
 		const html = `
       <ngb-carousel #c [interval]="0">
-      	@for (s of slides; track slide) {
+      	@for (s of slides; track $index) {
 					<ng-template ngbSlide>
 						<div class="slide">{{ s }}</div>
 					</ng-template>
