@@ -5,6 +5,7 @@
 		"baseUrl": "./",
 		"outDir": "dist",
 		"module": "commonjs",
+		"moduleResolution": "node",
 		"noEmitOnError": true,
 		"noFallthroughCasesInSwitch": true,
 		"noImplicitAny": false,
