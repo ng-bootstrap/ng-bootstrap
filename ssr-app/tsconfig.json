@@ -8,7 +8,7 @@
 		},
 		"types": ["@angular/localize"]
 	},
-	"files": ["src/main.ts"],
+	"files": ["src/main.ts", "src/main.server.ts", "server.ts"],
 	"include": ["src/**/*.d.ts"],
 	"exclude": ["src/**/*.po.ts", "src/**/*.e2e-spec.ts"]
 }
