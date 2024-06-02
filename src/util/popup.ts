@@ -1,4 +1,6 @@
 import {
+	afterNextRender,
+	AfterRenderPhase,
 	ApplicationRef,
 	ComponentRef,
 	inject,
@@ -10,8 +12,8 @@ import {
 	ViewRef,
 } from '@angular/core';
 
-import { Observable, of } from 'rxjs';
-import { mergeMap, take, tap } from 'rxjs/operators';
+import { Observable, of, Subject } from 'rxjs';
+import { mergeMap, tap } from 'rxjs/operators';
 
 import { ngbRunTransition } from './transition/ngbTransition';
 import { DOCUMENT } from '@angular/common';
@@ -50,8 +52,19 @@ export class PopupService<T> {
 		}
 
 		const { nativeElement } = this._windowRef.location;
-		const transition$ = this._ngZone.onStable.pipe(
-			take(1),
+
+		const nextRenderSubject = new Subject<void>();
+		afterNextRender(
+			() => {
+				nextRenderSubject.next();
+				nextRenderSubject.complete();
+			},
+			{
+				injector: this._injector,
+				phase: AfterRenderPhase.MixedReadWrite,
+			},
+		);
+		const transition$ = nextRenderSubject.pipe(
 			mergeMap(() =>
 				ngbRunTransition(this._ngZone, nativeElement, ({ classList }) => classList.add('show'), {
 					animation,
