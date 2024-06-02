@@ -1,7 +1,17 @@
-import { Component, ElementRef, inject, Input, NgZone, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+	afterNextRender,
+	AfterRenderPhase,
+	Component,
+	ElementRef,
+	inject,
+	Injector,
+	Input,
+	NgZone,
+	OnInit,
+	ViewEncapsulation,
+} from '@angular/core';
 
 import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
 
 import { ngbRunTransition } from '../util/transition/ngbTransition';
 import { reflow } from '../util/util';
@@ -21,15 +31,14 @@ import { reflow } from '../util/util';
 export class NgbModalBackdrop implements OnInit {
 	private _nativeElement = inject(ElementRef).nativeElement as HTMLElement;
 	private _zone = inject(NgZone);
+	private _injector = inject(Injector);
 
 	@Input() animation: boolean;
 	@Input() backdropClass: string;
 
 	ngOnInit() {
-		this._zone.onStable
-			.asObservable()
-			.pipe(take(1))
-			.subscribe(() => {
+		afterNextRender(
+			() =>
 				ngbRunTransition(
 					this._zone,
 					this._nativeElement,
@@ -40,8 +49,9 @@ export class NgbModalBackdrop implements OnInit {
 						element.classList.add('show');
 					},
 					{ animation: this.animation, runningTransition: 'continue' },
-				);
-			});
+				),
+			{ injector: this._injector, phase: AfterRenderPhase.MixedReadWrite },
+		);
 	}
 
 	hide(): Observable<void> {
