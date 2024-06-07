@@ -16,7 +16,7 @@ export function createGenericTestComponent<T>(
 
 export function isBrowserVisible(suiteName: string) {
 	if (document.hidden) {
-		// console.warn(`${suiteName} tests were skipped because browser tab running these tests is hidden or inactive`);
+		console.warn(`${suiteName} tests were skipped because browser tab running these tests is hidden or inactive`);
 		return false;
 	}
 	return true;
