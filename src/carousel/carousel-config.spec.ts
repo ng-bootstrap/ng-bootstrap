@@ -11,5 +11,6 @@ describe('ngb-carousel-config', () => {
 		expect(config.pauseOnHover).toBe(true);
 		expect(config.showNavigationIndicators).toBe(true);
 		expect(config.showNavigationArrows).toBe(true);
+		expect(config.fade).toBe(false);
 	});
 });

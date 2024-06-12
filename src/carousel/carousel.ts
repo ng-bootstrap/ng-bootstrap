@@ -2,6 +2,7 @@ import {
 	AfterContentChecked,
 	AfterContentInit,
 	AfterViewInit,
+	booleanAttribute,
 	ChangeDetectionStrategy,
 	ChangeDetectorRef,
 	Component,
@@ -73,6 +74,7 @@ export class NgbSlide {
 	encapsulation: ViewEncapsulation.None,
 	host: {
 		class: 'carousel slide',
+		'[class.carousel-fade]': 'fade',
 		'[style.display]': '"block"',
 		tabIndex: '0',
 		'(keydown.arrowLeft)': 'keyboard && arrowLeft()',
@@ -232,6 +234,13 @@ export class NgbCarousel implements AfterContentChecked, AfterContentInit, After
 	 * @since 2.2.0
 	 */
 	@Input() showNavigationIndicators = this._config.showNavigationIndicators;
+
+	/**
+	 * If `true`, the animation of the slides will be a fade transition instead of a slide.
+	 *
+	 * @since 16.1.0
+	 */
+	@Input({ transform: booleanAttribute }) fade = this._config.fade;
 
 	/**
 	 * An event emitted just before the slide transition starts.
