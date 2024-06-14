@@ -39,7 +39,7 @@
     "demo:sources": "ts-node --project misc/tsconfig.json misc/extract-demo-sources.ts",
     "demo:lint": "ng lint demo",
     "demo:build": "yarn demo:lint && yarn demo:docs && yarn demo:sources && yarn demo:stackblitzes && ng build demo",
-    "demo:publish": "gh-pages --dist demo/dist --branch master --repo https://github.com/ng-bootstrap/ng-bootstrap.github.io.git",
+    "demo:publish": "gh-pages --dist demo/dist/browser --branch master --repo https://github.com/ng-bootstrap/ng-bootstrap.github.io.git",
     "demo:release-snapshot": "ts-node --project misc/tsconfig.json misc/demo-release-snapshot.ts",
     "demo:e2e": "yarn demo:docs && playwright test -c demo",
     "ssr-app:lint": "ng lint ssr-app",

@@ -69,12 +69,12 @@
 			"schematics": {},
 			"architect": {
 				"build": {
-					"builder": "@angular-devkit/build-angular:browser",
+					"builder": "@angular-devkit/build-angular:application",
 					"options": {
 						"allowedCommonJsDependencies": ["prismjs"],
 						"outputPath": "demo/dist",
-						"index": "demo/src/public/index.html",
-						"main": "demo/src/main.ts",
+						"index": "demo/src/index.html",
+						"browser": "demo/src/main.ts",
 						"polyfills": ["zone.js"],
 						"tsConfig": "demo/tsconfig.json",
 						"assets": [
@@ -111,12 +111,9 @@
 							"outputHashing": "all"
 						},
 						"development": {
-							"buildOptimizer": false,
 							"optimization": false,
-							"vendorChunk": true,
 							"extractLicenses": false,
-							"sourceMap": true,
-							"namedChunks": true
+							"sourceMap": true
 						},
 						"ci": {
 							"outputHashing": "all",
