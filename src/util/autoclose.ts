@@ -1,5 +1,5 @@
 import { NgZone } from '@angular/core';
-import { fromEvent, Observable, race } from 'rxjs';
+import { fromEvent, Observable, race, Subscription } from 'rxjs';
 import { delay, filter, map, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { closest } from './util';
 
@@ -39,6 +39,7 @@ export function ngbAutoClose(
 	ignoreElements?: HTMLElement[],
 	insideSelector?: string,
 ) {
+	let subscriptions: Subscription[] = [];
 	// closing on ESC and outside clicks
 	if (type) {
 		zone.runOutsideAngular(
@@ -77,10 +78,17 @@ export function ngbAutoClose(
 					takeUntil(closed$),
 				) as Observable<MouseEvent>;
 
-				race([escapes$.pipe(map((_) => SOURCE.ESCAPE)), closeableClicks$.pipe(map((_) => SOURCE.CLICK))]).subscribe(
-					(source: SOURCE) => zone.run(() => close(source)),
-				);
+				const raceSubscription = race([
+					escapes$.pipe(map((_) => SOURCE.ESCAPE)),
+					closeableClicks$.pipe(map((_) => SOURCE.CLICK)),
+				]).subscribe((source: SOURCE) => zone.run(() => close(source)));
+
+				// Add the race subscription to the array of subscriptions
+				subscriptions.push(raceSubscription);
 			}),
 		);
 	}
+
+	// Cleanup logic
+	return () => subscriptions.forEach((sub) => sub.unsubscribe());
 }

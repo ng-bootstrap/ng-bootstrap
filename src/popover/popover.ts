@@ -214,6 +214,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 	private _unregisterListenersFn;
 	private _positioning = ngbPositioning();
 	private _zoneSubscription: Subscription;
+	private _autoCloseCleanupFn: () => void;
 
 	/**
 	 * Opens the popover.
@@ -271,12 +272,26 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 				});
 			});
 
-			ngbAutoClose(this._ngZone, this._document, this.autoClose, () => this.close(), this.hidden, [
-				this._windowRef.location.nativeElement,
-			]);
+			this.setupAutoClose();
 
 			transition$.subscribe(() => this.shown.emit());
 		}
+	}
+
+	setupAutoClose() {
+		//Clean up previous autoClose
+		if (this._autoCloseCleanupFn != undefined) {
+			this._autoCloseCleanupFn();
+		}
+		//Setup new autoClose
+		this._autoCloseCleanupFn = ngbAutoClose(
+			this._ngZone,
+			this._document,
+			this.autoClose,
+			() => this.close(),
+			this.hidden,
+			[this._windowRef!.location.nativeElement],
+		);
 	}
 
 	/**
@@ -329,13 +344,17 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 		);
 	}
 
-	ngOnChanges({ ngbPopover, popoverTitle, disablePopover, popoverClass }: SimpleChanges) {
+	ngOnChanges({ ngbPopover, popoverTitle, disablePopover, popoverClass, autoClose }: SimpleChanges) {
 		if (popoverClass && this.isOpen()) {
 			this._windowRef!.setInput('popoverClass', popoverClass.currentValue);
 		}
 		// close popover if title and content become empty, or disablePopover set to true
 		if ((ngbPopover || popoverTitle || disablePopover) && this._isDisabled()) {
 			this.close();
+		}
+		//Dynamically update autoClose
+		if (autoClose && !this._isDisabled() && this.isOpen()) {
+			this.setupAutoClose();
 		}
 	}
 
