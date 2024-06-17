@@ -75,7 +75,7 @@
 						"outputPath": "demo/dist",
 						"index": "demo/src/index.html",
 						"browser": "demo/src/main.ts",
-						"polyfills": ["zone.js"],
+						"polyfills": ["@angular/localize/init"],
 						"tsConfig": "demo/tsconfig.json",
 						"assets": [
 							{
