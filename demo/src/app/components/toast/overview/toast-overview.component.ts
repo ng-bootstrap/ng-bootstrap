@@ -1,11 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { Snippet } from '../../../services/snippet';
-import { LIB_VERSIONS } from '../../../tokens';
 import { RouterLink } from '@angular/router';
 import { CodeComponent } from '../../../shared/code.component';
 import { NgbAlertModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { PageHeaderComponent } from '../../../shared/page-header.component';
+import { NgbdOverviewPage } from '../../../shared/overview-page/overview-page.class';
 
 @Component({
 	selector: 'ngbd-toast-overview',
@@ -15,10 +15,7 @@ import { PageHeaderComponent } from '../../../shared/page-header.component';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	host: { '[class.overview]': 'true' },
 })
-export class NgbdToastOverviewComponent {
-	bootstrapVersion = inject(LIB_VERSIONS).bootstrap;
-	@Input() overview: { fragment: string; title: string };
-
+export class NgbdToastOverviewComponent extends NgbdOverviewPage {
 	TOAST_INLINE_BASIC = Snippet({
 		lang: 'html',
 		code: `

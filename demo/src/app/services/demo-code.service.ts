@@ -6,7 +6,7 @@ import sources from '../../demos-sources';
 	providedIn: 'root',
 })
 export class NgbdDemoCodeService {
-	getDemoSource(fileName: string): string {
-		return sources[fileName] || '';
+	getDemoSource(fileName?: string): string {
+		return fileName ? sources[fileName] || '' : '';
 	}
 }

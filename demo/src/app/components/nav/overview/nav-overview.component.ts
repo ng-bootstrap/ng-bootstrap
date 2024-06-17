@@ -1,13 +1,12 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { Snippet } from '../../../services/snippet';
-
-import { LIB_VERSIONS } from '../../../tokens';
 import { NgbAlertModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { CodeComponent } from '../../../shared/code.component';
 import { RouterLink } from '@angular/router';
 import { NgbdApiDocsBadge } from '../../../shared/api-docs';
 import { PageHeaderComponent } from '../../../shared/page-header.component';
+import { NgbdOverviewPage } from '../../../shared/overview-page/overview-page.class';
 
 @Component({
 	selector: 'ngbd-nav-overview',
@@ -16,10 +15,7 @@ import { PageHeaderComponent } from '../../../shared/page-header.component';
 	templateUrl: './nav-overview.component.html',
 	host: { '[class.overview]': 'true' },
 })
-export class NgbdNavOverviewComponent {
-	bootstrapVersion = inject(LIB_VERSIONS).bootstrap;
-	@Input() overview: { fragment: string; title: string };
-
+export class NgbdNavOverviewComponent extends NgbdOverviewPage {
 	BASIC = Snippet({
 		lang: 'html',
 		code: `

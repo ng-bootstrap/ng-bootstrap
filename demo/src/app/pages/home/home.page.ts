@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { LIB_VERSIONS } from '../../tokens';
 import { Snippet } from '../../services/snippet';
 import { CodeComponent } from '../../shared/code.component';
@@ -8,6 +8,7 @@ import { NgbAlert, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 @Component({
 	selector: 'ngbd-home',
 	standalone: true,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 	imports: [CodeComponent, RouterLink, NgbAlertModule, NgbAlert],
 	templateUrl: './home.page.html',
 })

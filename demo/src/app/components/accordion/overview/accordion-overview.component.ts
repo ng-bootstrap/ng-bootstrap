@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { Snippet } from '../../../services/snippet';
 import { CodeComponent } from '../../../shared/code.component';
@@ -7,11 +7,12 @@ import { NgbdApiDocsBadge } from '../../../shared/api-docs';
 import { RouterLink } from '@angular/router';
 import { NgbdAccordionDemoComponent } from './demo/accordion-overview-demo.component';
 import { PageHeaderComponent } from '../../../shared/page-header.component';
-import { LIB_VERSIONS } from '../../../tokens';
+import { NgbdOverviewPage } from '../../../shared/overview-page/overview-page.class';
 
 @Component({
 	selector: 'ngbd-accordion-overview',
 	standalone: true,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 	imports: [
 		CodeComponent,
 		NgbAlertModule,
@@ -21,13 +22,9 @@ import { LIB_VERSIONS } from '../../../tokens';
 		PageHeaderComponent,
 	],
 	templateUrl: './accordion-overview.component.html',
-	changeDetection: ChangeDetectionStrategy.OnPush,
-	host: { '[class.overview]': 'true' },
+	host: { class: 'overview' },
 })
-export class NgbdAccordionOverviewComponent {
-	bootstrapVersion = inject(LIB_VERSIONS).bootstrap;
-	@Input() overview: { fragment: string; title: string };
-
+export class NgbdAccordionOverviewComponent extends NgbdOverviewPage {
 	BASIC_ACCORDION = Snippet({
 		lang: 'html',
 		code: `

@@ -23,7 +23,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			@if (!olderVersionsCollapsed) {
+			@if (!olderVersionsCollapsed()) {
 				<tr>
 					<th scope="row">1.x.x</th>
 					<td>^5.0.2</td>
@@ -75,7 +75,7 @@
 			} @else {
 				<tr>
 					<td colspan="4" class="text-center p-1">
-						<button class="btn btn-link m-0" (click)="olderVersionsCollapsed = false">Show older versions</button>
+						<button class="btn btn-link m-0" (click)="olderVersionsCollapsed.set(false)">Show older versions</button>
 					</td>
 				</tr>
 			}
@@ -188,15 +188,15 @@
 	<p>
 		<a
 			href
-			(click)="instructionsCollapsed = !instructionsCollapsed; $event.preventDefault()"
-			[attr.aria-expanded]="!instructionsCollapsed"
+			(click)="instructionsCollapsed.set(!instructionsCollapsed()); $event.preventDefault()"
+			[attr.aria-expanded]="!instructionsCollapsed()"
 			aria-controls="detailed-instructions"
 		>
-			Click here to {{ instructionsCollapsed ? 'show' : 'hide' }} detailed instructions
+			Click here to {{ instructionsCollapsed() ? 'show' : 'hide' }} detailed instructions
 		</a>
 	</p>
 
-	<div id="detailed=instructions" [ngbCollapse]="instructionsCollapsed">
+	<div id="detailed=instructions" [ngbCollapse]="instructionsCollapsed()">
 		<div class="card">
 			<div class="card-body">
 				<h5>Bootstrap (CSS only)</h5>
