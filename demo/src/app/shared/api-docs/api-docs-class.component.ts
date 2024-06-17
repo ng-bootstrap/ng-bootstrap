@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import docs from '../../../api-docs';
 import { ClassDesc, MethodDesc, signature } from './api-docs.model';
 import { AnalyticsService } from '../../services/analytics.service';
@@ -13,32 +13,21 @@ import { NgbdApiDocsBadge } from './api-docs-badge.component';
 @Component({
 	selector: 'ngbd-api-docs-class',
 	standalone: true,
-	imports: [RouterLink, NgbdApiDocsBadge],
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	imports: [RouterLink, NgbdApiDocsBadge],
 	templateUrl: './api-docs-class.component.html',
-	styles: `
-		.label-cell {
-			width: 25%;
-		}
-		.content-cell {
-			width: 75%;
-		}
-	`,
 })
 export class NgbdApiDocsClass {
-	apiDocs: ClassDesc;
+	private _analytics = inject(AnalyticsService);
 
-	constructor(private _analytics: AnalyticsService) {}
-
-	@Input() set type(typeName: string) {
-		this.apiDocs = docs[typeName];
-	}
+	type = input.required<string>();
+	apiDocs = computed<ClassDesc>(() => docs[this.type()]);
 
 	methodSignature(method: MethodDesc): string {
 		return signature(method);
 	}
 
 	trackSourceClick() {
-		this._analytics.trackEvent('Source File View', this.apiDocs.className);
+		this._analytics.trackEvent('Source File View', this.apiDocs().className);
 	}
 }

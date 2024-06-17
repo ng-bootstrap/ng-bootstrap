@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { Snippet } from '../../../services/snippet';
 import { CodeComponent } from '../../../shared/code.component';
@@ -6,6 +6,7 @@ import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdApiDocsBadge } from '../../../shared/api-docs';
 import { RouterLink } from '@angular/router';
 import { PageHeaderComponent } from '../../../shared/page-header.component';
+import { NgbdOverviewPage } from '../../../shared/overview-page/overview-page.class';
 
 @Component({
 	selector: 'ngbd-pagination-overview',
@@ -15,9 +16,7 @@ import { PageHeaderComponent } from '../../../shared/page-header.component';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	host: { '[class.overview]': 'true' },
 })
-export class NgbdPaginationOverviewComponent {
-	@Input() overview: { fragment: string; title: string };
-
+export class NgbdPaginationOverviewComponent extends NgbdOverviewPage {
 	NGFOR = Snippet({
 		lang: 'html',
 		code: `

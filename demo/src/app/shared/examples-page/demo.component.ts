@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
 
 import { AnalyticsService } from '../../services/analytics.service';
-import { ISnippet, Snippet } from '../../services/snippet';
+import { Snippet } from '../../services/snippet';
 import { RouterLink } from '@angular/router';
 import { LowerCasePipe } from '@angular/common';
 import { CodeComponent } from '../code.component';
@@ -18,38 +18,36 @@ const TYPES: { [name: string]: string } = {
 @Component({
 	selector: 'ngbd-widget-demo',
 	standalone: true,
-	imports: [RouterLink, CodeComponent, NgbNavModule, LowerCasePipe],
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	imports: [RouterLink, CodeComponent, NgbNavModule, LowerCasePipe],
 	templateUrl: './demo.component.html',
 })
 export class NgbdWidgetDemoComponent {
-	@Input() demoTitle: string;
-	@Input() component: string;
-	@Input() fragment: string;
-	@Input() code: string;
-	@Input() markup: string;
-	@Input() files: { name: string; source: string }[];
-	@Input() showCode = false;
-	@Input() showStackblitz: boolean;
+	private _analytics = inject(AnalyticsService);
+	private _codeService = inject(NgbdDemoCodeService);
 
-	codeService = inject(NgbdDemoCodeService);
+	demoTitle = input.required<string>();
+	component = input.required<string>();
+	fragment = input.required<string>();
+	code = input<string>();
+	markup = input<string>();
+	files = input<{ name: string; source: string }[]>();
+	showStackblitz = input<boolean>();
 
-	get markupSnippet() {
-		return Snippet({ lang: 'html', code: this.codeService.getDemoSource(this.markup) });
-	}
-	get codeSnippet() {
-		return Snippet({ lang: 'typescript', code: this.codeService.getDemoSource(this.code) });
-	}
+	showCode = signal(false);
 
-	getFileSnippet({ name, source }): ISnippet {
-		return Snippet({ code: this.codeService.getDemoSource(source), lang: name.split('.').pop() || '' });
-	}
+	markupSnippet = computed(() => Snippet({ lang: 'html', code: this._codeService.getDemoSource(this.markup()) }));
+	codeSnippet = computed(() => Snippet({ lang: 'typescript', code: this._codeService.getDemoSource(this.code()) }));
 
-	get hasManyFiles() {
-		return this.files && this.files.length > 5;
-	}
+	filesWithSnippets = computed(() =>
+		(this.files() || []).map(({ source, name }) => ({
+			source,
+			name,
+			snippet: Snippet({ code: this._codeService.getDemoSource(source), lang: name.split('.').pop() || '' }),
+		})),
+	);
 
-	constructor(private _analytics: AnalyticsService) {}
+	hasManyFiles = computed(() => (this.files() || []).length > 5);
 
 	tabType(name: string) {
 		return TYPES[name.split('.').pop() || ''] || 'Code';
@@ -59,7 +57,7 @@ export class NgbdWidgetDemoComponent {
 		this._analytics.trackEvent('StackBlitz View', this.component + ' ' + this.fragment);
 	}
 	trackShowCodeClick() {
-		if (this.showCode) {
+		if (this.showCode()) {
 			this._analytics.trackEvent('Show Code View', this.component + ' ' + this.fragment);
 		}
 	}

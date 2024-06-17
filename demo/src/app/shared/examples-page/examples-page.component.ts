@@ -1,21 +1,23 @@
-import { Component, inject, Input } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NgbdWidgetDemoComponent } from './demo.component';
 import { NgComponentOutlet } from '@angular/common';
+import { MenuItem } from '../../tokens';
+import { NgbdComponentPage } from '../component-wrapper/component-page.class';
 
 @Component({
+	selector: 'ngbd-examples-page',
 	standalone: true,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 	imports: [NgbdWidgetDemoComponent, NgComponentOutlet],
 	template: `
-		@for (demo of demos; track demo) {
+		@for (demo of component.demos; track demo) {
 			<ngbd-widget-demo
 				[fragment]="demo.fragment"
 				[demoTitle]="demo.title"
 				[code]="demo.code"
 				[markup]="demo.markup"
-				[component]="componentName"
+				[component]="component.name"
 				[files]="demo.files"
-				[showCode]="demo.showCode"
 				[showStackblitz]="demo.showStackblitz ?? true"
 			>
 				<ng-template [ngComponentOutlet]="demo.type"></ng-template>
@@ -23,7 +25,8 @@ import { NgComponentOutlet } from '@angular/common';
 		}
 	`,
 })
-export class DemoListComponent {
-	componentName = inject(ActivatedRoute).parent!.snapshot.data.name;
-	@Input() demos: any;
+export class NgbdExamplesPageComponent extends NgbdComponentPage {
+	get menuItems(): MenuItem[] {
+		return this.component.demos;
+	}
 }

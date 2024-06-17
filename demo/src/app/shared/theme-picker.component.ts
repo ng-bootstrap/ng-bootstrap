@@ -1,11 +1,19 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, signal } from '@angular/core';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 interface Theme {
-	id: string;
+	id: 'auto' | 'light' | 'dark';
 	name: string;
 	icon: string;
 }
+
+const PREFERS_COLOR_SCHEME_DARK = window.matchMedia('(prefers-color-scheme: dark)');
+
+const THEMES: Theme[] = [
+	{ id: 'auto', name: 'Auto', icon: 'bi-circle-half' },
+	{ id: 'light', name: 'Light', icon: 'bi-sun-fill' },
+	{ id: 'dark', name: 'Dark', icon: 'bi-moon-stars-fill' },
+];
 
 @Component({
 	selector: 'ngbd-theme-picker',
@@ -15,12 +23,12 @@ interface Theme {
 	template: `
 		<div class="nav-item" ngbDropdown>
 			<a class="nav-link" ngbDropdownToggle id="demo-site-theme" role="button">
-				<span class="bi bi-{{ currentTheme.icon }}"></span>
+				<span class="bi {{ current().icon }}"></span>
 			</a>
 			<div ngbDropdownMenu aria-labelledby="demo-site-theme" class="dropdown-menu dropdown-menu-end">
-				@for (theme of themes; track theme) {
-					<button ngbDropdownItem [class.active]="theme.id === currentTheme.id" (click)="setTheme(theme)">
-						<span class="bi bi-{{ theme.icon }} me-2"></span>{{ theme.name }}
+				@for (theme of themes(); track theme) {
+					<button ngbDropdownItem [class.active]="theme.id === current().id" (click)="preferred.set(theme.id)">
+						<span class="bi {{ theme.icon }} me-2"></span>{{ theme.name }}
 					</button>
 				}
 			</div>
@@ -28,47 +36,22 @@ interface Theme {
 	`,
 })
 export class ThemePickerComponent {
-	themes: Theme[] = [
-		{ id: 'auto', name: 'Auto', icon: 'circle-half' },
-		{ id: 'light', name: 'Light', icon: 'sun-fill' },
-		{ id: 'dark', name: 'Dark', icon: 'moon-stars-fill' },
-	];
-	currentTheme: Theme = { id: 'auto', name: 'auto', icon: 'circle-half' };
+	themes = signal(THEMES).asReadonly();
+	preferred = signal(localStorage.getItem('theme') || this.themes()[0].id);
+	current = computed(() => this.themes().find((t) => t.id === this.preferred()) || this.themes()[0]);
+	systemTheme = signal(PREFERS_COLOR_SCHEME_DARK.matches ? 'dark' : 'light');
+	dataBsTheme = computed(() => (this.current().id === 'auto' ? this.systemTheme()! : this.current().id));
 
 	constructor() {
-		const theme = this.themes.find((t) => t.id === localStorage.getItem('theme'));
-		if (theme) {
-			this.currentTheme = theme;
-		}
-		this.setTheme(this.getPreferredTheme());
+		// save preferred theme in local storage when it changes
+		effect(() => localStorage.setItem('theme', this.preferred()));
 
-		window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-			if (this.currentTheme.id !== 'light' || this.currentTheme.id !== ('dark' as any)) {
-				this.setTheme(this.getPreferredTheme());
-			}
-		});
-	}
+		// updating current theme in DOM
+		effect(() => document.documentElement.setAttribute('data-bs-theme', this.dataBsTheme()));
 
-	getPreferredTheme(): Theme {
-		if (this.currentTheme) {
-			return this.currentTheme;
-		} else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-			return this.themes.find((t) => t.id === 'dark')!;
-		} else {
-			return this.themes.find((t) => t.id === 'light')!;
-		}
-	}
-
-	setTheme(theme: Theme): void {
-		this.currentTheme = theme;
-		localStorage.setItem('theme', theme.id);
-		if (theme.id === 'auto') {
-			document.documentElement.setAttribute(
-				'data-bs-theme',
-				window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light',
-			);
-		} else {
-			document.documentElement.setAttribute('data-bs-theme', theme.id);
-		}
+		// listening to system theme changes, could be done with RxJS, but this is simpler
+		PREFERS_COLOR_SCHEME_DARK.addEventListener('change', (event) =>
+			this.systemTheme.set(event.matches ? 'dark' : 'light'),
+		);
 	}
 }

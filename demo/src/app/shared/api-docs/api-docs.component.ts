@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import docs from '../../../api-docs';
-import { ClassDesc, DirectiveDesc, InputDesc, MethodDesc, PropertyDesc, signature } from './api-docs.model';
+import { DirectiveDesc, InputDesc, MethodDesc, PropertyDesc, signature } from './api-docs.model';
 import { AnalyticsService } from '../../services/analytics.service';
 import { RouterLink } from '@angular/router';
 import { NgbdApiDocsBadge } from './api-docs-badge.component';
@@ -16,60 +16,43 @@ import { NgbdApiDocsBadge } from './api-docs-badge.component';
 @Component({
 	selector: 'ngbd-api-docs',
 	standalone: true,
-	imports: [RouterLink, NgbdApiDocsBadge],
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	imports: [RouterLink, NgbdApiDocsBadge],
 	templateUrl: './api-docs.component.html',
-	styles: `
-		.label-cell {
-			width: 25%;
-		}
-		.content-cell {
-			width: 75%;
-		}
-	`,
 })
 export class NgbdApiDocs {
-	/**
-	 * Object which contains, for each input name of the directive, the corresponding property of the associated config
-	 * service (if any)
-	 */
-	private _configProperties: { [propertyName: string]: PropertyDesc };
-
-	apiDocs: DirectiveDesc;
-	configServiceName: string;
-
 	constructor(private _analytics: AnalyticsService) {}
 
-	@Input() set directive(directiveName: string) {
-		this.apiDocs = docs[directiveName];
-		this.configServiceName = `${directiveName}Config`;
+	directive = input.required<string>();
+	apiDocs = computed<DirectiveDesc>(() => docs[this.directive()]);
+	configServiceName = computed(() =>
+		this.directive() === 'NgbAccordionDirective' ? 'NgbAccordionConfig' : `${this.directive()}Config`,
+	);
 
-		// Fix for the accordion config name
-		if (directiveName === 'NgbAccordionDirective') {
-			this.configServiceName = 'NgbAccordionConfig';
-		}
-
-		const configApiDocs = docs[this.configServiceName];
+	private _configProperties = computed<{ [propertyName: string]: PropertyDesc }>(() => {
+		const configApiDocs = docs[this.configServiceName()];
 
 		// Fix for the datepicker config name
-		if (directiveName === 'NgbInputDatepicker') {
+		if (this.directive() === 'NgbInputDatepicker') {
 			configApiDocs.properties = [...configApiDocs.properties, ...docs['NgbDatepickerConfig'].properties];
 		}
 
-		this._configProperties = {};
+		let properties = {};
 		if (configApiDocs) {
-			this.apiDocs.inputs.forEach(
-				(input) => (this._configProperties[input.name] = this._findInputConfigProperty(configApiDocs, input)),
+			this.apiDocs().inputs.forEach(
+				(input) => (properties[input.name] = configApiDocs.properties.filter((prop) => prop.name === input.name)[0]),
 			);
 		}
-	}
+
+		return properties;
+	});
 
 	/**
 	 * Returns the default value of the given directive input by first looking for it in the matching config service
 	 * property. If there is no matching config property, it reads it from the input.
 	 */
 	defaultInputValue(input: InputDesc): string {
-		const configProperty = this._configProperties[input.name];
+		const configProperty = this._configProperties()[input.name];
 		return (configProperty ? configProperty.defaultValue : input.defaultValue) || '';
 	}
 
@@ -77,7 +60,7 @@ export class NgbdApiDocs {
 	 * Returns true if there is a config service property matching with the given directive input
 	 */
 	hasConfigProperty(input: InputDesc): boolean {
-		return !!this._configProperties[input.name];
+		return !!this._configProperties()[input.name];
 	}
 
 	methodSignature(method: MethodDesc): string {
@@ -85,10 +68,6 @@ export class NgbdApiDocs {
 	}
 
 	trackSourceClick() {
-		this._analytics.trackEvent('Source File View', this.apiDocs.className);
-	}
-
-	private _findInputConfigProperty(configApiDocs: ClassDesc, input: InputDesc): PropertyDesc {
-		return configApiDocs.properties.filter((prop) => prop.name === input.name)[0];
+		this._analytics.trackEvent('Source File View', this.apiDocs().className);
 	}
 }

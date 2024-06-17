@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Snippet } from '../../services/snippet';
 import { CodeComponent } from '../../shared/code.component';
 import { NgbdPageWrapper } from '../../shared/page-wrapper/page-wrapper.component';
@@ -9,6 +9,7 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
 	standalone: true,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 	imports: [CodeComponent, NgbdPageWrapper, RouterLink, NgbdApiDocsBadge, PageHeaderComponent, NgbTooltipModule],
 	templateUrl: './positioning.page.html',
 })

@@ -1,44 +1,44 @@
-<div (click)="trackSourceClick()" class="api-doc-component" [class.deprecated]="apiDocs.deprecated">
-	<h3 [id]="apiDocs.className">
+<div (click)="trackSourceClick()" class="api-doc-component" [class.deprecated]="apiDocs().deprecated">
+	<h3 [id]="apiDocs().className">
 		<a
 			routerLink="."
-			fragment="{{ apiDocs.className }}"
+			fragment="{{ apiDocs().className }}"
 			class="title-fragment"
-			title="Anchor link to: {{ apiDocs.className }}"
+			title="Anchor link to: {{ apiDocs().className }}"
 		>
 			<i class="bi bi-link-45deg" style="font-size: 1.75rem; color: var(--bs-heading-color)"></i>
 		</a>
-		{{ apiDocs.className }}
+		{{ apiDocs().className }}
 		<a
 			class="github-link"
-			href="https://github.com/ng-bootstrap/ng-bootstrap/tree/master/{{ apiDocs.fileName }}"
+			href="https://github.com/ng-bootstrap/ng-bootstrap/tree/master/{{ apiDocs().fileName }}"
 			target="_blank"
-			title="Link to Github: {{ apiDocs.className }}"
+			title="Link to Github: {{ apiDocs().className }}"
 		>
 			<i class="bi bi-github" style="font-size: 1.5rem; color: var(--bs-heading-color)"></i>
 		</a>
 	</h3>
 	<ngbd-api-docs-badge
 		type="Configuration"
-		[deprecated]="apiDocs.deprecated"
-		[since]="apiDocs.since"
+		[deprecated]="apiDocs().deprecated"
+		[since]="apiDocs().since"
 	></ngbd-api-docs-badge>
-	@if (apiDocs.deprecated) {
-		<p>{{ apiDocs.deprecated.description }}</p>
+	@if (apiDocs().deprecated) {
+		<p>{{ apiDocs().deprecated?.description }}</p>
 	}
-	<p class="lead" [innerHTML]="apiDocs.description"></p>
+	<p class="lead" [innerHTML]="apiDocs().description"></p>
 
-	@if (apiDocs.properties && apiDocs.properties.length) {
+	@if (apiDocs().properties && apiDocs().properties.length) {
 		<section>
 			<h4>Properties</h4>
 			<p class="description">
-				@for (property of apiDocs.properties; track property) {
+				@for (property of apiDocs().properties; track property) {
 					<code class="pe-2">{{ property.name }}</code
 					>&ngsp;
 				}
 			</p>
 			<p class="mt-3">
-				Documentation available in <a routerLink="." fragment="{{ directiveName }}">{{ directiveName }}</a>
+				Documentation available in <a routerLink="." fragment="{{ directiveName() }}">{{ directiveName() }}</a>
 			</p>
 		</section>
 	}

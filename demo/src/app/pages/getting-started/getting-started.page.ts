@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { Snippet } from '../../services/snippet';
 import { LIB_VERSIONS } from '../../tokens';
 import { PageHeaderComponent } from '../../shared/page-header.component';
@@ -8,14 +8,15 @@ import { NgbAlertModule, NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
 	standalone: true,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 	imports: [PageHeaderComponent, CodeComponent, NgbCollapseModule, NgbAlertModule, NgbdPageWrapper],
 	templateUrl: './getting-started.page.html',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GettingStartedPage {
-	instructionsCollapsed = true;
-	olderVersionsCollapsed = true;
 	bootstrapVersion = inject(LIB_VERSIONS).bootstrap;
+
+	instructionsCollapsed = signal(true);
+	olderVersionsCollapsed = signal(true);
 
 	schematics = Snippet({
 		lang: 'text',
