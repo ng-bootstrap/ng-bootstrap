@@ -223,11 +223,10 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 
 	/**
 	 * A selector specifying the element the dropdown should be appended to.
-	 * Currently only supports "body".
 	 *
 	 * @since 4.1.0
 	 */
-	@Input() container: null | 'body' = this._config.container;
+	@Input() container: null | 'body' | string = this._config.container;
 
 	/**
 	 * Enable or disable the dynamic positioning. The default value is dynamic unless the dropdown is used
@@ -265,7 +264,7 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 
 	ngOnChanges(changes: SimpleChanges) {
 		if (changes.container && this._open) {
-			this._applyContainer(this.container);
+			this._applyContainer();
 		}
 
 		if (changes.placement && !changes.placement.firstChange) {
@@ -301,7 +300,7 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 	open(): void {
 		if (!this._open) {
 			this._open = true;
-			this._applyContainer(this.container);
+			this._applyContainer();
 			this.openChange.emit(true);
 			this._setCloseHandlers();
 			if (this._anchor) {
@@ -506,14 +505,18 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 			this._nativeElement.appendChild(this._menu.nativeElement);
 		}
 		if (this._bodyContainer) {
-			this._document.body.removeChild(this._bodyContainer);
+			this._getRootContainer().removeChild(this._bodyContainer);
 			this._bodyContainer = null;
 		}
 	}
 
-	private _applyContainer(container: null | 'body' = null) {
+	private _isCustomContainer(): boolean {
+		return !!(this.container && (this.container === 'body' || typeof this.container == 'string'));
+	}
+
+	private _applyContainer() {
 		this._resetContainer();
-		if (container === 'body') {
+		if (this._isCustomContainer()) {
 			const dropdownMenuElement = this._menu.nativeElement;
 			const bodyContainer = (this._bodyContainer = this._bodyContainer || this._document.createElement('div'));
 
@@ -523,7 +526,7 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 			bodyContainer.style.zIndex = '1055';
 
 			bodyContainer.appendChild(dropdownMenuElement);
-			this._document.body.appendChild(bodyContainer);
+			this._getRootContainer().appendChild(bodyContainer);
 		}
 
 		this._applyCustomDropdownClass(this.dropdownClass);
@@ -567,5 +570,12 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 				this._bodyContainer.classList.add(dropdownClass);
 			}
 		}
+	}
+
+	private _getRootContainer(): HTMLElement {
+		if (this.container !== 'body' && typeof this.container == 'string') {
+			return this._document.body.querySelector(this.container) || this._document.body;
+		}
+		return this._document.body;
 	}
 }
