@@ -4,6 +4,7 @@ import { ClassDesc } from './api-docs.model';
 import { AnalyticsService } from '../../services/analytics.service';
 import { RouterLink } from '@angular/router';
 import { NgbdApiDocsBadge } from './api-docs-badge.component';
+import { COMPONENT_DATA } from '../../tokens';
 
 const CONFIG_SUFFIX_LENGTH = 'Config'.length;
 
@@ -22,7 +23,8 @@ const CONFIG_SUFFIX_LENGTH = 'Config'.length;
 	templateUrl: './api-docs-config.component.html',
 })
 export class NgbdApiDocsConfig {
-	private _analytics = inject(AnalyticsService);
+	private analytics = inject(AnalyticsService);
+	private componentName = inject(COMPONENT_DATA).name;
 
 	type = input<string>('');
 
@@ -30,6 +32,9 @@ export class NgbdApiDocsConfig {
 	directiveName = computed<string>(() => this.type().slice(0, -CONFIG_SUFFIX_LENGTH));
 
 	trackSourceClick() {
-		this._analytics.trackEvent('Source File View', this.apiDocs().className);
+		this.analytics.trackClick('ngb_view_source_code', {
+			component_name: this.componentName.toLowerCase(),
+			class_name: this.apiDocs().className,
+		});
 	}
 }

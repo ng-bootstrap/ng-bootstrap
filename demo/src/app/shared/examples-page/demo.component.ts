@@ -54,11 +54,17 @@ export class NgbdWidgetDemoComponent {
 	}
 
 	trackStackBlitzClick() {
-		this._analytics.trackEvent('StackBlitz View', this.component + ' ' + this.fragment);
+		this._analytics.trackClick('open_demo_stackblitz', {
+			component_name: this.component().toLowerCase(),
+			demo_name: this.fragment(),
+		});
 	}
 	trackShowCodeClick() {
 		if (this.showCode()) {
-			this._analytics.trackEvent('Show Code View', this.component + ' ' + this.fragment);
+			this._analytics.trackClick('ngb_open_demo_source', {
+				component: this.component().toLowerCase(),
+				demo_name: this.fragment(),
+			});
 		}
 	}
 }

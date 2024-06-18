@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import docs from '../../../api-docs';
 import { DirectiveDesc, InputDesc, MethodDesc, PropertyDesc, signature } from './api-docs.model';
 import { AnalyticsService } from '../../services/analytics.service';
 import { RouterLink } from '@angular/router';
 import { NgbdApiDocsBadge } from './api-docs-badge.component';
+import { COMPONENT_DATA } from '../../tokens';
 
 /**
  * Displays the API docs of a directive.
@@ -21,7 +22,8 @@ import { NgbdApiDocsBadge } from './api-docs-badge.component';
 	templateUrl: './api-docs.component.html',
 })
 export class NgbdApiDocs {
-	constructor(private _analytics: AnalyticsService) {}
+	private analytics = inject(AnalyticsService);
+	private componentName = inject(COMPONENT_DATA).name;
 
 	directive = input.required<string>();
 	apiDocs = computed<DirectiveDesc>(() => docs[this.directive()]);
@@ -68,6 +70,9 @@ export class NgbdApiDocs {
 	}
 
 	trackSourceClick() {
-		this._analytics.trackEvent('Source File View', this.apiDocs().className);
+		this.analytics.trackClick('ngb_view_source_code', {
+			component_name: this.componentName.toLowerCase(),
+			class_name: this.apiDocs().className,
+		});
 	}
 }
