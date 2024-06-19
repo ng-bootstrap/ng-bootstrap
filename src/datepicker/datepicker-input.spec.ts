@@ -26,11 +26,18 @@ function expectSameValues(inputDatepicker: NgbInputDatepicker, config: NgbInputD
 	);
 }
 
+function getWeekdays(element: HTMLElement): string[] {
+	return (<HTMLElement[]>Array.from(element.querySelectorAll('.ngb-dp-weekday')) || []).map((el) =>
+		el.textContent!.trim(),
+	);
+}
+
 function customizeConfig(config: NgbInputDatepickerConfig) {
 	config.autoClose = 'outside';
 	config.container = 'body';
-	config.positionTarget = 'positionTarget';
+	config.positionTarget = '#positionTarget';
 	config.placement = ['bottom-start', 'top-end'];
+	config.firstDayOfWeek = 7;
 }
 
 describe('NgbInputDatepicker', () => {
@@ -94,6 +101,30 @@ describe('NgbInputDatepicker', () => {
 				.query(By.directive(NgbInputDatepicker))
 				.injector.get(NgbInputDatepicker);
 			expectSameValues(inputDatepicker, config);
+		});
+	});
+
+	describe('Custom config as provider', () => {
+		const config = new NgbInputDatepickerConfig();
+		config.firstDayOfWeek = 7;
+
+		beforeEach(() => {
+			TestBed.configureTestingModule({
+				providers: [{ provide: NgbInputDatepickerConfig, useValue: config }],
+			});
+		});
+
+		it('should provide config to child datepicker', () => {
+			const fixture = createTestCmpt(`<input ngbDatepicker>`);
+
+			const inputDatepicker = fixture.debugElement
+				.query(By.directive(NgbInputDatepicker))
+				.injector.get(NgbInputDatepicker);
+			inputDatepicker.open();
+			fixture.detectChanges();
+			const datepicker = fixture.nativeElement.querySelector('ngb-datepicker');
+			expect(datepicker).not.toBeNull();
+			expect(getWeekdays(datepicker)).toEqual(['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']);
 		});
 	});
 

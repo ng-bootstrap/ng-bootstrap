@@ -1226,6 +1226,26 @@ describe('ngb-datepicker', () => {
 		});
 	});
 
+	describe('Custom config with startDate', () => {
+		const config = new NgbDatepickerConfig();
+		config.firstDayOfWeek = 2;
+
+		beforeEach(() => {
+			TestBed.configureTestingModule({
+				providers: [{ provide: NgbDatepickerConfig, useValue: config }],
+			});
+		});
+
+		it(`should inherit config even when 'startDate' is set before init`, () => {
+			const fixture = createTestComponent(
+				`<ngb-datepicker [startDate]="{ year: 2016, month: 8, day: 3 }"></ngb-datepicker>`,
+			);
+			fixture.detectChanges();
+
+			expect(getWeekdays(fixture.nativeElement)).toEqual(['Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo']);
+		});
+	});
+
 	describe('NgbDatepicker', () => {
 		let mockState: NgbDatepickerState;
 		let dp: NgbDatepicker;

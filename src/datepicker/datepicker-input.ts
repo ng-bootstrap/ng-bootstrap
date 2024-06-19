@@ -86,6 +86,7 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	private _changeDetector = inject(ChangeDetectorRef);
 	private _injector = inject(Injector);
 	private _config = inject(NgbInputDatepickerConfig);
+	private _injector = inject(Injector);
 
 	private _cRef: ComponentRef<NgbDatepicker> | null = null;
 	private _disabled = false;
@@ -383,7 +384,7 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	 */
 	open() {
 		if (!this.isOpen()) {
-			this._cRef = this._vcRef.createComponent(NgbDatepicker);
+			this._cRef = this._vcRef.createComponent(NgbDatepicker, { injector: this._injector });
 
 			this._applyPopupStyling(this._cRef.location.nativeElement);
 			this._applyDatepickerInputs(this._cRef);
