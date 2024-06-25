@@ -309,7 +309,7 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 	}
 
 	/**
-	 * Returns `true`, if the popover is currently shown.
+	 * Returns `true`, if the tooltip is currently shown.
 	 */
 	isOpen(): boolean {
 		return this._windowRef != null;
