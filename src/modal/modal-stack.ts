@@ -67,7 +67,7 @@ export class NgbModalStack {
 		}
 	}
 
-	open(contentInjector: Injector, content: any, options: NgbModalOptions): NgbModalRef {
+	open<Component, Result>(contentInjector: Injector, content: Type<Component>, options: NgbModalOptions): NgbModalRef {
 		const containerEl =
 			options.container instanceof HTMLElement
 				? options.container
@@ -108,7 +108,7 @@ export class NgbModalStack {
 			}),
 		);
 
-		activeModal.close = (result: any) => {
+		activeModal.close = (result: Result) => {
 			ngbModalRef.close(result);
 		};
 		activeModal.dismiss = (reason: any) => {
