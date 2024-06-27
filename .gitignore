@@ -30,3 +30,9 @@ yarn-error.log
 .ng_pkg_build
 src/ng-bootstrap.metadata.json
 test-videos/
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
