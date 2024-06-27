@@ -105,10 +105,10 @@ export class NgbDatepickerI18nDefault extends NgbDatepickerI18n {
 	private _locale = inject(LOCALE_ID);
 
 	private _monthsShort = [...Array(12).keys()].map((month) =>
-		Intl.DateTimeFormat(this._locale, { month: 'short' }).format(new Date(2000, month)),
+		Intl.DateTimeFormat(this._locale, { month: 'short', timeZone: 'UTC' }).format(new Date(2000, month, 15)),
 	);
 	private _monthsFull = [...Array(12).keys()].map((month) =>
-		Intl.DateTimeFormat(this._locale, { month: 'long' }).format(new Date(2000, month)),
+		Intl.DateTimeFormat(this._locale, { month: 'long', timeZone: 'UTC' }).format(new Date(2000, month, 15)),
 	);
 
 	getWeekdayLabel(
