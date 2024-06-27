@@ -105,10 +105,10 @@ export class NgbDatepickerI18nDefault extends NgbDatepickerI18n {
 	private _locale = inject(LOCALE_ID);
 
 	private _monthsShort = [...Array(12).keys()].map((month) =>
-		Intl.DateTimeFormat(this._locale, { month: 'short' }).format(new Date(2000, month)),
+		Intl.DateTimeFormat(this._locale, { month: 'short', timeZone: 'UTC' }).format(new Date(2000, month, 15)),
 	);
 	private _monthsFull = [...Array(12).keys()].map((month) =>
-		Intl.DateTimeFormat(this._locale, { month: 'long' }).format(new Date(2000, month)),
+		Intl.DateTimeFormat(this._locale, { month: 'long', timeZone: 'UTC' }).format(new Date(2000, month, 15)),
 	);
 
 	getWeekdayLabel(
@@ -116,7 +116,9 @@ export class NgbDatepickerI18nDefault extends NgbDatepickerI18n {
 		width: Exclude<Intl.DateTimeFormatOptions['weekday'], undefined> = 'narrow',
 	): string {
 		const weekdaysStartingOnSunday = [...Array(7).keys()].map((day) =>
-			Intl.DateTimeFormat(this._locale, { weekday: width }).format(new Date(Date.UTC(2021, 5, day - 1))),
+			Intl.DateTimeFormat(this._locale, { weekday: width, timeZone: 'UTC' }).format(
+				new Date(Date.UTC(2021, 5, day - 1)),
+			),
 		);
 		const weekdays = weekdaysStartingOnSunday.map((day, index) => weekdaysStartingOnSunday[(index + 1) % 7]);
 		return weekdays[weekday - 1] || '';
