@@ -1,4 +1,7 @@
 import {
+	afterRender,
+	AfterRenderPhase,
+	AfterRenderRef,
 	ChangeDetectionStrategy,
 	ChangeDetectorRef,
 	Component,
@@ -8,6 +11,7 @@ import {
 	EventEmitter,
 	HostBinding,
 	inject,
+	Injector,
 	Input,
 	NgZone,
 	OnChanges,
@@ -206,6 +210,7 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 	private _ngZone = inject(NgZone);
 	private _document = inject(DOCUMENT);
 	private _changeDetector = inject(ChangeDetectorRef);
+	private _injector = inject(Injector);
 
 	private _ngbTooltip: string | TemplateRef<any> | null | undefined;
 	private _ngbTooltipWindowId = `ngb-tooltip-${nextId++}`;
@@ -214,8 +219,8 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 	private _unregisterListenersFn;
 	private _windowListenersSubscription: Subscription;
 	private _positioning = ngbPositioning();
-	private _zoneSubscription: Subscription;
 	private _triggersState = new TriggersState();
+	private _afterRenderRef: AfterRenderRef | undefined;
 
 	/**
 	 * The string content or a `TemplateRef` for the content to be displayed in the tooltip.
@@ -304,7 +309,6 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 					hostElement: this._getPositionTargetElement(),
 					targetElement: this._windowRef!.location.nativeElement,
 					placement: this.placement,
-					appendToBody: this.container === 'body',
 					baseClass: 'bs-tooltip',
 					updatePopperOptions: (options) => this.popperOptions(addPopperOffset([0, 6])(options)),
 				});
@@ -312,8 +316,13 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 				Promise.resolve().then(() => {
 					// This update is required for correct arrow placement
 					this._positioning.update();
-					this._zoneSubscription = this._ngZone.onStable.subscribe(() => this._positioning.update());
 				});
+				this._afterRenderRef = afterRender(
+					() => {
+						this._positioning.update();
+					},
+					{ phase: AfterRenderPhase.MixedReadWrite, injector: this._injector },
+				);
 			});
 
 			ngbAutoClose(
@@ -341,8 +350,8 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 			this._popupService.close(animation).subscribe(() => {
 				this._windowRef = null;
 				this._positioning.destroy();
-				this._zoneSubscription?.unsubscribe();
 				this._windowListenersSubscription?.unsubscribe();
+				this._afterRenderRef?.destroy();
 				this.hidden.emit();
 				this._changeDetector.markForCheck();
 			});
@@ -393,7 +402,7 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 
 	ngOnDestroy() {
 		this.close(false);
-		// This check is needed as it might happen that ngOnDestroy is called before ngOnInit
+		// This check is necessary because it's possible that ngOnDestroy could be invoked before ngOnInit.
 		// under certain conditions, see: https://github.com/ng-bootstrap/ng-bootstrap/issues/2199
 		this._unregisterListenersFn?.();
 	}

@@ -1,7 +1,6 @@
 import { NgZone } from '@angular/core';
 import { fromEvent, Observable, race } from 'rxjs';
 import { delay, filter, map, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
-import { Key } from './key';
 import { closest } from './util';
 
 const isContainedIn = (element: HTMLElement, array?: HTMLElement[]) =>
@@ -60,8 +59,7 @@ export function ngbAutoClose(
 
 				const escapes$ = fromEvent<KeyboardEvent>(document, 'keydown').pipe(
 					takeUntil(closed$),
-					/* eslint-disable-next-line deprecation/deprecation */
-					filter((e) => e.which === Key.Escape),
+					filter((e) => e.key === 'Escape'),
 					tap((e) => e.preventDefault()),
 				);
 

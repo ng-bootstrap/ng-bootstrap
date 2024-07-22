@@ -1,5 +1,5 @@
 import { TestBed, ComponentFixture, inject, fakeAsync, tick } from '@angular/core/testing';
-import { createGenericTestComponent, triggerEvent } from '../test/common';
+import { createGenericTestComponent, ignoreTrackWarnings, triggerEvent } from '../test/common';
 import { getMonthSelect, getYearSelect, getNavigationLinks } from '../test/datepicker/common';
 
 import { Component, TemplateRef, DebugElement } from '@angular/core';
@@ -17,7 +17,6 @@ import { NgbDatepickerDayView } from './datepicker-day-view';
 import { NgbDatepickerKeyboardService } from './datepicker-keyboard-service';
 import { NgbDatepickerNavigationSelect } from './datepicker-navigation-select';
 import { NgbDatepickerNavigation } from './datepicker-navigation';
-import { TranslationWidth } from '@angular/common';
 
 const createTestComponent = (html: string) =>
 	createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -54,9 +53,9 @@ function focusDay() {
 	element.focus();
 }
 
-function triggerKeyDown(element: DebugElement, keyCode: number, shiftKey = false) {
+function triggerKeyDown(element: DebugElement, key: string, shiftKey = false) {
 	let event = {
-		which: keyCode,
+		key,
 		shiftKey: shiftKey,
 		defaultPrevented: false,
 		propagationStopped: false,
@@ -149,7 +148,7 @@ function customizeConfig(config: NgbDatepickerConfig) {
 	config.outsideDays = 'collapsed';
 	config.showWeekNumbers = true;
 	config.startDate = { year: 2015, month: 1 };
-	config.weekdays = TranslationWidth.Abbreviated;
+	config.weekdays = 'narrow';
 }
 
 describe('ngb-datepicker', () => {
@@ -174,6 +173,8 @@ describe('ngb-datepicker', () => {
 	});
 
 	it('should allow changing min/max dates at the same time', () => {
+		// hide track warnings because they're the year select options which change, which is expected and normal
+		ignoreTrackWarnings();
 		const fixture = createTestComponent('<ngb-datepicker [minDate]="minDate" [maxDate]="maxDate"></ngb-datepicker>');
 
 		expect(() => {
@@ -233,18 +234,18 @@ describe('ngb-datepicker', () => {
 
 	it(`should display weekdays by default`, () => {
 		const fixture = createTestComponent(`<ngb-datepicker [startDate]="date"></ngb-datepicker>`);
-		expect(getWeekdays(fixture.nativeElement)).toEqual(['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']);
+		expect(getWeekdays(fixture.nativeElement)).toEqual(['M', 'T', 'W', 'T', 'F', 'S', 'S']);
 	});
 
 	it(`should allow customizing the way weekdays are displayed (weekdays)`, () => {
 		const fixture = createTestComponent(`<ngb-datepicker [startDate]="date" [weekdays]="weekdays"></ngb-datepicker>`);
-		expect(getWeekdays(fixture.nativeElement)).toEqual(['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']);
+		expect(getWeekdays(fixture.nativeElement)).toEqual(['M', 'T', 'W', 'T', 'F', 'S', 'S']);
 
 		fixture.componentInstance.weekdays = false;
 		fixture.detectChanges();
 		expect(getWeekdays(fixture.nativeElement)).toEqual([]);
 
-		fixture.componentInstance.weekdays = TranslationWidth.Narrow;
+		fixture.componentInstance.weekdays = 'narrow';
 		fixture.detectChanges();
 		expect(getWeekdays(fixture.nativeElement)).toEqual(['M', 'T', 'W', 'T', 'F', 'S', 'S']);
 	});
@@ -266,6 +267,8 @@ describe('ngb-datepicker', () => {
 	});
 
 	it('should allow infinite navigation when min/max dates are not set', () => {
+		// hide track warnings because they're the year select options which change, which is expected and normal
+		ignoreTrackWarnings();
 		const fixture = createTestComponent(`<ngb-datepicker [startDate]="date"></ngb-datepicker>`);
 
 		fixture.detectChanges();
@@ -322,6 +325,8 @@ describe('ngb-datepicker', () => {
 	});
 
 	it('should handle minDate edge case values', () => {
+		// hide track warnings because they're the year select options which change, which is expected and normal
+		ignoreTrackWarnings();
 		const fixture = createTestComponent(`<ngb-datepicker [minDate]="minDate" [startDate]="date"></ngb-datepicker>`);
 		const datepicker = fixture.debugElement.query(By.directive(NgbDatepicker)).injector.get(NgbDatepicker);
 
@@ -361,6 +366,8 @@ describe('ngb-datepicker', () => {
 	});
 
 	it('should handle maxDate edge case values', () => {
+		// hide track warnings because they're the year select options which change, which is expected and normal
+		ignoreTrackWarnings();
 		const fixture = createTestComponent(`<ngb-datepicker [maxDate]="maxDate" [startDate]="date"></ngb-datepicker>`);
 		const datepicker = fixture.debugElement.query(By.directive(NgbDatepicker)).injector.get(NgbDatepicker);
 
@@ -710,10 +717,10 @@ describe('ngb-datepicker', () => {
 		focusDay();
 		fixture.detectChanges();
 
-		triggerKeyDown(getMonthContainer(datepicker), 13 /* enter */);
+		triggerKeyDown(getMonthContainer(datepicker), 'Enter');
 		fixture.detectChanges();
 
-		triggerKeyDown(getMonthContainer(datepicker), 13 /* enter */);
+		triggerKeyDown(getMonthContainer(datepicker), 'Enter');
 		fixture.detectChanges();
 		expect(fixture.componentInstance.onDateSelect).toHaveBeenCalledTimes(2);
 	});
@@ -729,10 +736,10 @@ describe('ngb-datepicker', () => {
 		focusDay();
 		fixture.detectChanges();
 
-		triggerKeyDown(getMonthContainer(datepicker), 32 /* space */);
+		triggerKeyDown(getMonthContainer(datepicker), ' ');
 		fixture.detectChanges();
 
-		triggerKeyDown(getMonthContainer(datepicker), 32 /* space */);
+		triggerKeyDown(getMonthContainer(datepicker), ' ');
 		fixture.detectChanges();
 		expect(fixture.componentInstance.onDateSelect).toHaveBeenCalledTimes(2);
 	});
@@ -924,22 +931,22 @@ describe('ngb-datepicker', () => {
 			// focus in
 			focusDay();
 
-			triggerKeyDown(getMonthContainer(datepicker), 40 /* down arrow */);
+			triggerKeyDown(getMonthContainer(datepicker), 'ArrowDown');
 			fixture.detectChanges();
 			expectFocusedDate(datepicker, new NgbDate(2016, 8, 8));
 			expectSelectedDate(datepicker, null);
 
-			triggerKeyDown(getMonthContainer(datepicker), 39 /* right arrow */);
+			triggerKeyDown(getMonthContainer(datepicker), 'ArrowRight');
 			fixture.detectChanges();
 			expectFocusedDate(datepicker, new NgbDate(2016, 8, 9));
 			expectSelectedDate(datepicker, null);
 
-			triggerKeyDown(getMonthContainer(datepicker), 38 /* up arrow */);
+			triggerKeyDown(getMonthContainer(datepicker), 'ArrowUp');
 			fixture.detectChanges();
 			expectFocusedDate(datepicker, new NgbDate(2016, 8, 2));
 			expectSelectedDate(datepicker, null);
 
-			triggerKeyDown(getMonthContainer(datepicker), 37 /* left arrow */);
+			triggerKeyDown(getMonthContainer(datepicker), 'ArrowLeft');
 			fixture.detectChanges();
 			expectFocusedDate(datepicker, new NgbDate(2016, 8, 1));
 			expectSelectedDate(datepicker, null);
@@ -952,17 +959,17 @@ describe('ngb-datepicker', () => {
 
 			focusDay();
 
-			triggerKeyDown(getMonthContainer(datepicker), 32 /* space */);
+			triggerKeyDown(getMonthContainer(datepicker), ' ');
 			fixture.detectChanges();
 			expectFocusedDate(datepicker, new NgbDate(2016, 8, 1));
 			expectSelectedDate(datepicker, new NgbDate(2016, 8, 1));
 
-			triggerKeyDown(getMonthContainer(datepicker), 40 /* down arrow */);
+			triggerKeyDown(getMonthContainer(datepicker), 'ArrowDown');
 			fixture.detectChanges();
 			expectFocusedDate(datepicker, new NgbDate(2016, 8, 8));
 			expectSelectedDate(datepicker, new NgbDate(2016, 8, 1));
 
-			triggerKeyDown(getMonthContainer(datepicker), 13 /* enter */);
+			triggerKeyDown(getMonthContainer(datepicker), 'Enter');
 			fixture.detectChanges();
 			expectFocusedDate(datepicker, new NgbDate(2016, 8, 8));
 			expectSelectedDate(datepicker, new NgbDate(2016, 8, 8));
@@ -975,12 +982,12 @@ describe('ngb-datepicker', () => {
 
 			focusDay();
 
-			triggerKeyDown(getMonthContainer(datepicker), 35 /* end */);
+			triggerKeyDown(getMonthContainer(datepicker), 'End');
 			fixture.detectChanges();
 			expectFocusedDate(datepicker, new NgbDate(2016, 9, 30));
 			expectSelectedDate(datepicker, null);
 
-			triggerKeyDown(getMonthContainer(datepicker), 36 /* home */);
+			triggerKeyDown(getMonthContainer(datepicker), 'Home');
 			fixture.detectChanges();
 			expectFocusedDate(datepicker, new NgbDate(2016, 8, 1));
 			expectSelectedDate(datepicker, null);
@@ -993,22 +1000,22 @@ describe('ngb-datepicker', () => {
 
 			focusDay();
 
-			triggerKeyDown(getMonthContainer(datepicker), 35 /* end */, true /* shift */);
+			triggerKeyDown(getMonthContainer(datepicker), 'End', true /* shift */);
 			fixture.detectChanges();
 			expectFocusedDate(datepicker, new NgbDate(2020, 12, 31));
 			expectSelectedDate(datepicker, null);
 
-			triggerKeyDown(getMonthContainer(datepicker), 40 /* down arrow */);
+			triggerKeyDown(getMonthContainer(datepicker), 'ArrowDown');
 			fixture.detectChanges();
 			expectFocusedDate(datepicker, new NgbDate(2020, 12, 31));
 			expectSelectedDate(datepicker, null);
 
-			triggerKeyDown(getMonthContainer(datepicker), 36 /* home */, true /* shift */);
+			triggerKeyDown(getMonthContainer(datepicker), 'Home', true /* shift */);
 			fixture.detectChanges();
 			expectFocusedDate(datepicker, new NgbDate(2010, 1, 1));
 			expectSelectedDate(datepicker, null);
 
-			triggerKeyDown(getMonthContainer(datepicker), 38 /* up arrow */);
+			triggerKeyDown(getMonthContainer(datepicker), 'ArrowUp');
 			fixture.detectChanges();
 			expectFocusedDate(datepicker, new NgbDate(2010, 1, 1));
 			expectSelectedDate(datepicker, null);
@@ -1021,28 +1028,28 @@ describe('ngb-datepicker', () => {
 
 			focusDay();
 
-			triggerKeyDown(getMonthContainer(datepicker), 39 /* right arrow */);
+			triggerKeyDown(getMonthContainer(datepicker), 'ArrowRight');
 			fixture.detectChanges();
 			expectFocusedDate(datepicker, new NgbDate(2016, 8, 2));
 			expectSelectedDate(datepicker, null);
 
-			triggerKeyDown(getMonthContainer(datepicker), 33 /* page up */);
+			triggerKeyDown(getMonthContainer(datepicker), 'PageUp');
 			fixture.detectChanges();
 			expectFocusedDate(datepicker, new NgbDate(2016, 7, 2));
 			expectSelectedDate(datepicker, null);
 
-			triggerKeyDown(getMonthContainer(datepicker), 34 /* page down */);
+			triggerKeyDown(getMonthContainer(datepicker), 'PageDown');
 			fixture.detectChanges();
 			expectFocusedDate(datepicker, new NgbDate(2016, 8, 2));
 			expectSelectedDate(datepicker, null);
 
-			triggerKeyDown(getMonthContainer(datepicker), 34 /* page down */);
+			triggerKeyDown(getMonthContainer(datepicker), 'PageDown');
 			fixture.detectChanges();
 
 			expectFocusedDate(datepicker, new NgbDate(2016, 9, 2));
 			expectSelectedDate(datepicker, null);
 
-			triggerKeyDown(getMonthContainer(datepicker), 34 /* page down */);
+			triggerKeyDown(getMonthContainer(datepicker), 'PageDown');
 			fixture.detectChanges();
 			datepicker = fixture.debugElement.query(By.directive(NgbDatepicker));
 			expectFocusedDate(datepicker, new NgbDate(2016, 10, 2));
@@ -1061,13 +1068,13 @@ describe('ngb-datepicker', () => {
 			expectFocusedDate(datepicker, new NgbDate(2016, 8, 1));
 			expectSelectedDate(datepicker, null);
 
-			triggerKeyDown(getMonthContainer(datepicker), 33 /* page up */, true /* shift */);
+			triggerKeyDown(getMonthContainer(datepicker), 'PageUp', true /* shift */);
 			fixture.detectChanges();
 
 			expectFocusedDate(datepicker, new NgbDate(2015, 8, 1), true);
 			expectSelectedDate(datepicker, null);
 
-			triggerKeyDown(getMonthContainer(datepicker), 34 /* page down */, true /* shift */);
+			triggerKeyDown(getMonthContainer(datepicker), 'PageDown', true /* shift */);
 			fixture.detectChanges();
 
 			expectFocusedDate(datepicker, new NgbDate(2016, 8, 1));
@@ -1318,7 +1325,7 @@ class TestComponent {
 	form = new UntypedFormGroup({ control: new UntypedFormControl('', Validators.required) });
 	disabledForm = new UntypedFormGroup({ control: new UntypedFormControl({ value: null, disabled: true }) });
 	model;
-	weekdays: boolean | TranslationWidth = true;
+	weekdays: boolean | Exclude<Intl.DateTimeFormatOptions['weekday'], undefined> = true;
 	dayTemplateData = () => '!';
 	markDisabled = (date: NgbDateStruct) => {
 		return NgbDate.from(date)!.equals(new NgbDate(2016, 8, 22));

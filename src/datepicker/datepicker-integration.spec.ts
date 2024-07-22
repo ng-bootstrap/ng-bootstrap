@@ -6,10 +6,8 @@ import { NgbCalendar, NgbCalendarGregorian } from './ngb-calendar';
 import { NgbDate } from './ngb-date';
 import { getMonthSelect, getYearSelect } from '../test/datepicker/common';
 import { NgbDatepickerI18n, NgbDatepickerI18nDefault } from './datepicker-i18n';
-import { NgbDatepicker } from './datepicker';
+import { NgbDatepicker, NgbDatepickerMonth } from './datepicker';
 import { NgbDatepickerKeyboardService } from './datepicker-keyboard-service';
-import { NgbDatepickerMonth } from './datepicker';
-import { Key } from '../util/key';
 
 describe('ngb-datepicker integration', () => {
 	it('should allow overriding datepicker calendar', () => {
@@ -176,12 +174,11 @@ describe('ngb-datepicker integration', () => {
 		class CustomKeyboardService extends NgbDatepickerKeyboardService {
 			processKey(event: KeyboardEvent, service: NgbDatepicker) {
 				const state = service.state;
-				/* eslint-disable-next-line deprecation/deprecation */
-				switch (event.which) {
-					case Key.PageUp:
+				switch (event.key) {
+					case 'PageUp':
 						service.focusDate(service.calendar.getPrev(state.focusedDate, event.altKey ? 'y' : 'm', 1));
 						break;
-					case Key.PageDown:
+					case 'PageDown':
 						service.focusDate(service.calendar.getNext(state.focusedDate, event.altKey ? 'y' : 'm', 1));
 						break;
 					default:
@@ -216,14 +213,14 @@ describe('ngb-datepicker integration', () => {
 		});
 
 		it('should allow customize keyboard navigation', () => {
-			mv.onKeyDown(<any>{ which: Key.PageUp, altKey: true, preventDefault: () => {}, stopPropagation: () => {} });
+			mv.onKeyDown(<any>{ key: 'PageUp', altKey: true, preventDefault: () => {}, stopPropagation: () => {} });
 			expect(calendar.getPrev).toHaveBeenCalledWith(startDate, 'y', 1);
-			mv.onKeyDown(<any>{ which: Key.PageUp, shiftKey: true, preventDefault: () => {}, stopPropagation: () => {} });
+			mv.onKeyDown(<any>{ key: 'PageUp', shiftKey: true, preventDefault: () => {}, stopPropagation: () => {} });
 			expect(calendar.getPrev).toHaveBeenCalledWith(startDate, 'm', 1);
 		});
 
 		it('should allow access to default keyboard navigation', () => {
-			mv.onKeyDown(<any>{ which: Key.ArrowUp, altKey: true, preventDefault: () => {}, stopPropagation: () => {} });
+			mv.onKeyDown(<any>{ key: 'ArrowUp', altKey: true, preventDefault: () => {}, stopPropagation: () => {} });
 			expect(calendar.getPrev).toHaveBeenCalledWith(startDate, 'd', 7);
 		});
 	});
@@ -255,7 +252,7 @@ describe('ngb-datepicker integration', () => {
 		});
 
 		it('should preserve the functionality of keyboard service', () => {
-			mv.onKeyDown(<any>{ which: Key.ArrowUp, altKey: true, preventDefault: () => {}, stopPropagation: () => {} });
+			mv.onKeyDown(<any>{ key: 'ArrowUp', altKey: true, preventDefault: () => {}, stopPropagation: () => {} });
 			expect(ngbCalendar.getPrev).toHaveBeenCalledWith(startDate, 'd', 7);
 		});
 	});

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { NgbDatepicker } from './datepicker';
-import { Key } from '../util/key';
 
 /**
  * A service that represents the keyboard navigation.
@@ -16,34 +15,33 @@ export class NgbDatepickerKeyboardService {
 	 */
 	processKey(event: KeyboardEvent, datepicker: NgbDatepicker) {
 		const { state, calendar } = datepicker;
-		/* eslint-disable-next-line deprecation/deprecation */
-		switch (event.which) {
-			case Key.PageUp:
+		switch (event.key) {
+			case 'PageUp':
 				datepicker.focusDate(calendar.getPrev(state.focusedDate, event.shiftKey ? 'y' : 'm', 1));
 				break;
-			case Key.PageDown:
+			case 'PageDown':
 				datepicker.focusDate(calendar.getNext(state.focusedDate, event.shiftKey ? 'y' : 'm', 1));
 				break;
-			case Key.End:
+			case 'End':
 				datepicker.focusDate(event.shiftKey ? state.maxDate : state.lastDate);
 				break;
-			case Key.Home:
+			case 'Home':
 				datepicker.focusDate(event.shiftKey ? state.minDate : state.firstDate);
 				break;
-			case Key.ArrowLeft:
+			case 'ArrowLeft':
 				datepicker.focusDate(calendar.getPrev(state.focusedDate, 'd', 1));
 				break;
-			case Key.ArrowUp:
+			case 'ArrowUp':
 				datepicker.focusDate(calendar.getPrev(state.focusedDate, 'd', calendar.getDaysPerWeek()));
 				break;
-			case Key.ArrowRight:
+			case 'ArrowRight':
 				datepicker.focusDate(calendar.getNext(state.focusedDate, 'd', 1));
 				break;
-			case Key.ArrowDown:
+			case 'ArrowDown':
 				datepicker.focusDate(calendar.getNext(state.focusedDate, 'd', calendar.getDaysPerWeek()));
 				break;
-			case Key.Enter:
-			case Key.Space:
+			case 'Enter':
+			case ' ':
 				datepicker.focusSelect();
 				break;
 			default:

@@ -3,10 +3,9 @@ import { NgbDatepickerKeyboardService } from './datepicker-keyboard-service';
 import { NgbCalendar, NgbCalendarGregorian } from './ngb-calendar';
 import { TestBed } from '@angular/core/testing';
 import { NgbDate } from './ngb-date';
-import { Key } from '../util/key';
 
-const event = (keyCode: number, shift = false) =>
-	<any>{ which: keyCode, shiftKey: shift, preventDefault: () => {}, stopPropagation: () => {} };
+const event = (key: string, shift = false) =>
+	<any>{ key, shiftKey: shift, preventDefault: () => {}, stopPropagation: () => {} };
 
 describe('ngb-datepicker-keyboard-service', () => {
 	let service: NgbDatepickerKeyboardService;
@@ -37,16 +36,16 @@ describe('ngb-datepicker-keyboard-service', () => {
 	});
 
 	it('should move focus by 1 day or 1 week with "Arrow" keys', () => {
-		processKey(event(Key.ArrowUp));
+		processKey(event('ArrowUp'));
 		expect(calendar.getPrev).toHaveBeenCalledWith(state.focusedDate, 'd', 7);
 
-		processKey(event(Key.ArrowDown));
+		processKey(event('ArrowDown'));
 		expect(calendar.getNext).toHaveBeenCalledWith(state.focusedDate, 'd', 7);
 
-		processKey(event(Key.ArrowLeft));
+		processKey(event('ArrowLeft'));
 		expect(calendar.getPrev).toHaveBeenCalledWith(state.focusedDate, 'd', 1);
 
-		processKey(event(Key.ArrowRight));
+		processKey(event('ArrowRight'));
 		expect(calendar.getNext).toHaveBeenCalledWith(state.focusedDate, 'd', 1);
 
 		expect(calendar.getPrev).toHaveBeenCalledTimes(2);
@@ -54,16 +53,16 @@ describe('ngb-datepicker-keyboard-service', () => {
 	});
 
 	it('should move focus by 1 month or year "PgUp" and "PageDown"', () => {
-		processKey(event(Key.PageUp));
+		processKey(event('PageUp'));
 		expect(calendar.getPrev).toHaveBeenCalledWith(state.focusedDate, 'm', 1);
 
-		processKey(event(Key.PageDown));
+		processKey(event('PageDown'));
 		expect(calendar.getNext).toHaveBeenCalledWith(state.focusedDate, 'm', 1);
 
-		processKey(event(Key.PageUp, true));
+		processKey(event('PageUp', true));
 		expect(calendar.getPrev).toHaveBeenCalledWith(state.focusedDate, 'y', 1);
 
-		processKey(event(Key.PageDown, true));
+		processKey(event('PageDown', true));
 		expect(calendar.getNext).toHaveBeenCalledWith(state.focusedDate, 'y', 1);
 
 		expect(calendar.getPrev).toHaveBeenCalledTimes(2);
@@ -71,51 +70,51 @@ describe('ngb-datepicker-keyboard-service', () => {
 	});
 
 	it('should select focused date with "Space" and "Enter"', () => {
-		processKey(event(Key.Enter));
-		processKey(event(Key.Space));
+		processKey(event('Enter'));
+		processKey(event(' '));
 		expect(mock.focusSelect).toHaveBeenCalledTimes(2);
 	});
 
 	it('should move focus to the first and last days in the view with "Home" and "End"', () => {
-		processKey(event(Key.Home));
+		processKey(event('Home'));
 		expect(mock.focusDate).toHaveBeenCalledWith(undefined);
 
-		processKey(event(Key.End));
+		processKey(event('End'));
 		expect(mock.focusDate).toHaveBeenCalledWith(undefined);
 
 		Object.assign(state, { firstDate: new NgbDate(2017, 1, 1) });
 		Object.assign(state, { lastDate: new NgbDate(2017, 12, 1) });
 
-		processKey(event(Key.Home));
+		processKey(event('Home'));
 		expect(mock.focusDate).toHaveBeenCalledWith(new NgbDate(2017, 1, 1));
 
-		processKey(event(Key.End));
+		processKey(event('End'));
 		expect(mock.focusDate).toHaveBeenCalledWith(new NgbDate(2017, 12, 1));
 
 		expect(mock.focusDate).toHaveBeenCalledTimes(4);
 	});
 
 	it('should move focus to the "min" and "max" dates with "Home" and "End"', () => {
-		processKey(event(Key.Home, true));
+		processKey(event('Home', true));
 		expect(mock.focusDate).toHaveBeenCalledWith(undefined);
 
-		processKey(event(Key.End, true));
+		processKey(event('End', true));
 		expect(mock.focusDate).toHaveBeenCalledWith(undefined);
 
 		Object.assign(state, { minDate: new NgbDate(2017, 1, 1) });
 		Object.assign(state, { maxDate: new NgbDate(2017, 12, 1) });
 
-		processKey(event(Key.Home, true));
+		processKey(event('Home', true));
 		expect(mock.focusDate).toHaveBeenCalledWith(new NgbDate(2017, 1, 1));
 
-		processKey(event(Key.End, true));
+		processKey(event('End', true));
 		expect(mock.focusDate).toHaveBeenCalledWith(new NgbDate(2017, 12, 1));
 
 		expect(mock.focusDate).toHaveBeenCalledTimes(4);
 	});
 
 	it('should prevent default and stop propagation of the known key', () => {
-		let e = event(Key.ArrowUp);
+		let e = event('ArrowUp');
 		spyOn(e, 'preventDefault');
 		spyOn(e, 'stopPropagation');
 
@@ -124,7 +123,7 @@ describe('ngb-datepicker-keyboard-service', () => {
 		expect(e.stopPropagation).toHaveBeenCalled();
 
 		// unknown key
-		e = event(23);
+		e = event('blah');
 		spyOn(e, 'preventDefault');
 		spyOn(e, 'stopPropagation');
 

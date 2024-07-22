@@ -1,51 +1,60 @@
-<div class="api-doc-component" [class.deprecated]="apiDocs.deprecated">
-	<h3 [id]="apiDocs.className">
+<style>
+	.label-cell {
+		width: 25%;
+	}
+	.content-cell {
+		width: 75%;
+	}
+</style>
+
+<div class="api-doc-component" [class.deprecated]="apiDocs().deprecated">
+	<h3 [id]="apiDocs().className">
 		<a
 			routerLink="."
-			[fragment]="apiDocs.className"
+			[fragment]="apiDocs().className"
 			class="title-fragment"
-			title="Anchor link to: {{ apiDocs.className }}"
+			title="Anchor link to: {{ apiDocs().className }}"
 		>
 			<i class="bi bi-link-45deg" style="font-size: 1.75rem; color: var(--bs-heading-color)"></i>
 		</a>
-		{{ apiDocs.className }}
+		{{ apiDocs().className }}
 		<a
 			class="github-link"
 			(click)="trackSourceClick()"
-			href="https://github.com/ng-bootstrap/ng-bootstrap/tree/master/{{ apiDocs.fileName }}"
+			href="https://github.com/ng-bootstrap/ng-bootstrap/tree/master/{{ apiDocs().fileName }}"
 			target="_blank"
-			title="Link to Github: {{ apiDocs.className }}"
+			title="Link to Github: {{ apiDocs().className }}"
 		>
 			<i class="bi bi-github" style="font-size: 1.5rem; color: var(--bs-heading-color)"></i>
 		</a>
 	</h3>
 	<ngbd-api-docs-badge
-		[type]="apiDocs.type"
-		[deprecated]="apiDocs.deprecated"
-		[since]="apiDocs.since"
+		[type]="apiDocs().type"
+		[deprecated]="apiDocs().deprecated"
+		[since]="apiDocs().since"
 	></ngbd-api-docs-badge>
-	@if (apiDocs.deprecated) {
-		<p>{{ apiDocs.deprecated.description }}</p>
+	@if (apiDocs().deprecated) {
+		<p>{{ apiDocs().deprecated?.description }}</p>
 	}
-	<p class="lead" [innerHTML]="apiDocs.description"></p>
+	<p class="lead" [innerHTML]="apiDocs().description"></p>
 
 	<section>
 		<h4>
-			Selector: <code class="selector">{{ apiDocs.selector }}</code>
+			Selector: <code class="selector">{{ apiDocs().selector }}</code>
 		</h4>
-		@if (apiDocs.exportAs) {
+		@if (apiDocs().exportAs) {
 			<h6>
-				Exported as: <code class="export-as">{{ apiDocs.exportAs }}</code>
+				Exported as: <code class="export-as">{{ apiDocs().exportAs }}</code>
 			</h6>
 		}
 	</section>
 
-	@if (apiDocs.inputs.length) {
+	@if (apiDocs().inputs.length) {
 		<section>
 			<h4>Inputs</h4>
 			<table class="table table-sm">
 				<tbody>
-					@for (input of apiDocs.inputs; track input) {
+					@for (input of apiDocs().inputs; track input) {
 						<tr [class.deprecated]="input.deprecated">
 							<td class="label-cell">
 								<code>{{ input.name }}</code
@@ -73,7 +82,7 @@
 												><i>Default value: </i><code>{{ defaultInputValue(input) || '-' }}</code></span
 											>&ngsp;
 											@if (hasConfigProperty(input)) {
-												<span>&mdash; initialized from {{ configServiceName }} service</span>
+												<span>&mdash; initialized from {{ configServiceName() }} service</span>
 											}
 										</div>
 									}
@@ -86,12 +95,12 @@
 		</section>
 	}
 
-	@if (apiDocs.outputs.length) {
+	@if (apiDocs().outputs.length) {
 		<section>
 			<h4>Outputs</h4>
 			<table class="table table-sm">
 				<tbody>
-					@for (output of apiDocs.outputs; track output) {
+					@for (output of apiDocs().outputs; track output) {
 						<tr [class.deprecated]="output.deprecated">
 							<td class="label-cell">
 								<code>{{ output.name }}</code
@@ -117,12 +126,12 @@
 		</section>
 	}
 
-	@if (apiDocs.methods.length && apiDocs.exportAs) {
+	@if (apiDocs().methods.length && apiDocs().exportAs) {
 		<section>
 			<h4>Methods</h4>
 			<table class="table table-sm">
 				<tbody>
-					@for (method of apiDocs.methods; track method) {
+					@for (method of apiDocs().methods; track method) {
 						<tr [class.deprecated]="method.deprecated">
 							<td class="label-cell">
 								<code>{{ method.name }}</code

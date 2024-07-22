@@ -1,8 +1,8 @@
 import {
-	AfterContentChecked,
 	AfterContentInit,
 	Attribute,
 	ChangeDetectorRef,
+	ContentChild,
 	ContentChildren,
 	DestroyRef,
 	Directive,
@@ -25,7 +25,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { isDefined } from '../util/util';
 import { NgbNavConfig } from './nav-config';
-import { Key } from '../util/key';
 
 const isValidNavId = (id: any) => isDefined(id) && id !== '';
 
@@ -78,8 +77,15 @@ export class NgbNavItemRole {
  *
  * @since 5.2.0
  */
-@Directive({ selector: '[ngbNavItem]', exportAs: 'ngbNavItem', standalone: true, host: { '[class.nav-item]': 'true' } })
-export class NgbNavItem implements AfterContentChecked, OnInit {
+@Directive({
+	selector: '[ngbNavItem]',
+	exportAs: 'ngbNavItem',
+	standalone: true,
+	host: {
+		class: 'nav-item',
+	},
+})
+export class NgbNavItem implements OnInit {
 	private _nav = inject(NgbNav);
 	private _nativeElement = inject(ElementRef).nativeElement as HTMLElement;
 
@@ -127,17 +133,7 @@ export class NgbNavItem implements AfterContentChecked, OnInit {
 	 */
 	@Output() hidden = new EventEmitter<void>();
 
-	contentTpl: NgbNavContent | null;
-
-	@ContentChildren(NgbNavContent, { descendants: false }) contentTpls: QueryList<NgbNavContent>;
-
-	ngAfterContentChecked() {
-		// We are using @ContentChildren instead of @ContentChild as in the Angular version being used
-		// only @ContentChildren allows us to specify the {descendants: false} option.
-		// Without {descendants: false} we are hitting bugs described in:
-		// https://github.com/ng-bootstrap/ng-bootstrap/issues/2240
-		this.contentTpl = this.contentTpls.first;
-	}
+	@ContentChild(NgbNavContent, { descendants: false }) contentTpl?: NgbNavContent;
 
 	ngOnInit() {
 		if (!isDefined(this.domId)) {
@@ -179,7 +175,7 @@ export class NgbNavItem implements AfterContentChecked, OnInit {
 	exportAs: 'ngbNav',
 	standalone: true,
 	host: {
-		'[class.nav]': 'true',
+		class: 'nav',
 		'[class.flex-column]': `orientation === 'vertical'`,
 		'[attr.aria-orientation]': `orientation === 'vertical' && roles === 'tablist' ? 'vertical' : undefined`,
 		'[attr.role]': `role ? role : roles ? 'tablist' : undefined`,
@@ -310,8 +306,6 @@ export class NgbNav implements AfterContentInit, OnChanges {
 		if (this.roles !== 'tablist' || !this.keyboard) {
 			return;
 		}
-		/* eslint-disable-next-line deprecation/deprecation */
-		const key = event.which;
 		const enabledLinks = this.links.filter((link) => !link.navItem.disabled);
 		const { length } = enabledLinks;
 
@@ -324,19 +318,19 @@ export class NgbNav implements AfterContentInit, OnChanges {
 		});
 
 		if (length) {
-			switch (key) {
-				case Key.ArrowUp:
-				case Key.ArrowLeft:
+			switch (event.key) {
+				case 'ArrowUp':
+				case 'ArrowLeft':
 					position = (position - 1 + length) % length;
 					break;
-				case Key.ArrowRight:
-				case Key.ArrowDown:
+				case 'ArrowRight':
+				case 'ArrowDown':
 					position = (position + 1) % length;
 					break;
-				case Key.Home:
+				case 'Home':
 					position = 0;
 					break;
-				case Key.End:
+				case 'End':
 					position = length - 1;
 					break;
 			}
@@ -414,7 +408,7 @@ export class NgbNav implements AfterContentInit, OnChanges {
 	standalone: true,
 	host: {
 		'[id]': 'navItem.domId',
-		'[class.nav-link]': 'true',
+		class: 'nav-link',
 		'[class.nav-item]': 'navItem.isNgContainer()',
 		'[attr.role]': `role ? role : nav.roles ? 'tab' : undefined`,
 		'[class.active]': 'navItem.active',

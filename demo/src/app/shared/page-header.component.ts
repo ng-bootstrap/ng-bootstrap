@@ -1,25 +1,25 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 @Component({
 	selector: 'ngbd-page-header',
 	standalone: true,
-	imports: [RouterLink],
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	imports: [RouterLink],
 	host: {
 		class: 'd-block',
 	},
 	template: `
-		<h2 [id]="fragment">
-			<a class="title-fragment" routerLink="." [fragment]="fragment">
+		<h2 [id]="fragment()">
+			<a class="title-fragment" routerLink="." [fragment]="fragment()">
 				<i class="bi bi-link-45deg" style="font-size: 1.75rem; color: var(--bs-heading-color)"></i>
 			</a>
-			{{ title }}
+			{{ title() }}
 		</h2>
 		<ng-content></ng-content>
 	`,
 })
 export class PageHeaderComponent {
-	@Input() fragment: string;
-	@Input() title: string;
+	fragment = input.required<string>();
+	title = input.required<string>();
 }

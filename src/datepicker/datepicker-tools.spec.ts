@@ -1,4 +1,3 @@
-import { TranslationWidth } from '@angular/common';
 import {
 	buildMonth,
 	buildMonths,
@@ -121,7 +120,7 @@ describe(`datepicker-tools`, () => {
 					refMonth.date,
 					{
 						firstDayOfWeek: 1,
-						weekdayWidth: TranslationWidth.Short,
+						weekdayWidth: 'short',
 						weekdaysVisible: true,
 					} as DatepickerViewModel,
 					i18n,
@@ -132,7 +131,7 @@ describe(`datepicker-tools`, () => {
 				expect(month.number).toEqual(refMonth.date.month);
 				expect(month.firstDate).toEqual(new NgbDate(refMonth.date.year, refMonth.date.month, 1));
 				expect(month.lastDate).toEqual(new NgbDate(refMonth.date.year, refMonth.date.month, refMonth.lastDay));
-				expect(month.weekdays).toEqual(['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']);
+				expect(month.weekdays).toEqual(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']);
 				expect(month.weeks.length).toBe(6);
 
 				// First week, first day
@@ -221,11 +220,11 @@ describe(`datepicker-tools`, () => {
 				{
 					firstDayOfWeek: 7,
 					weekdaysVisible: true,
-					weekdayWidth: TranslationWidth.Short,
+					weekdayWidth: 'short',
 				} as DatepickerViewModel,
 				i18n,
 			);
-			expect(month.weekdays).toEqual(['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']);
+			expect(month.weekdays).toEqual(['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']);
 			expect(month.weeks[0].days[0].date).toEqual(new NgbDate(2017, 4, 30));
 
 			// WED = 3
@@ -235,11 +234,11 @@ describe(`datepicker-tools`, () => {
 				{
 					firstDayOfWeek: 3,
 					weekdaysVisible: true,
-					weekdayWidth: TranslationWidth.Short,
+					weekdayWidth: 'short',
 				} as DatepickerViewModel,
 				i18n,
 			);
-			expect(month.weekdays).toEqual(['We', 'Th', 'Fr', 'Sa', 'Su', 'Mo', 'Tu']);
+			expect(month.weekdays).toEqual(['Wed', 'Thu', 'Fri', 'Sat', 'Sun', 'Mon', 'Tue']);
 			expect(month.weeks[0].days[0].date).toEqual(new NgbDate(2017, 4, 26));
 		});
 	});

@@ -3,7 +3,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { IS_PRODUCTION } from '../tokens';
 
-declare const ga: any;
+declare const gtag: any;
 
 /**
  * Simple Google Analytics service. Note that all its methods don't do anything unless the app
@@ -23,7 +23,14 @@ export class AnalyticsService {
 	start() {
 		if (this.isProduction) {
 			this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
-				ga('send', { hitType: 'pageview', page: this.router.url });
+				const data = {
+					page_path: this.router.url,
+				};
+
+				if (this.router.url.startsWith('/components')) {
+					data['component_name'] = this.router.url.split('/')[2];
+				}
+				gtag('event', 'ngb_navigation', data);
 			});
 		}
 	}
@@ -31,9 +38,14 @@ export class AnalyticsService {
 	/**
 	 * Sends an event.
 	 */
-	trackEvent(action: string, category: string) {
+	trackClick(action: string, options: Record<string, string> = {}) {
+		const data = {
+			event_action: action,
+			...options,
+		};
+
 		if (this.isProduction) {
-			ga('send', { hitType: 'event', eventCategory: category, eventAction: action });
+			gtag('event', 'ngb_click', data);
 		}
 	}
 }

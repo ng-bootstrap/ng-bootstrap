@@ -49,6 +49,7 @@ Angular and Popper are explicitly listed as peer dependencies, while Bootstrap i
 | 14.x.x       | ^15.0.0 | 5.2.3         | ^2.11.6 |
 | 15.x.x       | ^16.0.0 | 5.2.3         | ^2.11.6 |
 | 16.x.x       | ^17.0.0 | 5.3.2         | ^2.11.8 |
+| 17.x.x       | ^18.0.0 | 5.3.2         | ^2.11.8 |
 
 ## Installation
 

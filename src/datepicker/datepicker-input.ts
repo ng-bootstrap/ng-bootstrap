@@ -1,4 +1,7 @@
 import {
+	afterRender,
+	AfterRenderPhase,
+	AfterRenderRef,
 	ChangeDetectorRef,
 	ComponentRef,
 	Directive,
@@ -6,6 +9,7 @@ import {
 	EventEmitter,
 	forwardRef,
 	inject,
+	Injector,
 	Input,
 	NgZone,
 	OnChanges,
@@ -15,7 +19,7 @@ import {
 	TemplateRef,
 	ViewContainerRef,
 } from '@angular/core';
-import { DOCUMENT, TranslationWidth } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import {
 	AbstractControl,
 	ControlValueAccessor,
@@ -70,7 +74,7 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	static ngAcceptInputType_disabled: boolean | '';
 	static ngAcceptInputType_navigation: string;
 	static ngAcceptInputType_outsideDays: string;
-	static ngAcceptInputType_weekdays: boolean | number;
+	static ngAcceptInputType_weekdays: boolean | string;
 
 	private _parserFormatter = inject(NgbDateParserFormatter);
 	private _elRef = inject(ElementRef<HTMLInputElement>);
@@ -80,6 +84,7 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	private _dateAdapter = inject(NgbDateAdapter<any>);
 	private _document = inject(DOCUMENT);
 	private _changeDetector = inject(ChangeDetectorRef);
+	private _injector = inject(Injector);
 	private _config = inject(NgbInputDatepickerConfig);
 
 	private _cRef: ComponentRef<NgbDatepicker> | null = null;
@@ -87,7 +92,7 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	private _elWithFocus: HTMLElement | null = null;
 	private _model: NgbDate | null = null;
 	private _inputValue: string;
-	private _zoneSubscription: any;
+	private _afterRenderRef: AfterRenderRef | undefined;
 	private _positioning = ngbPositioning();
 	private _destroyCloseHandlers$ = new Subject<void>();
 
@@ -265,11 +270,11 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	 *
 	 * * `true` - weekdays are displayed using default width
 	 * * `false` - weekdays are not displayed
-	 * * `TranslationWidth` - weekdays are displayed using specified width
+	 * * `"short" | "long" | "narrow"` - weekdays are displayed using specified width
 	 *
 	 * @since 9.1.0
 	 */
-	@Input() weekdays: TranslationWidth | boolean;
+	@Input() weekdays: Exclude<Intl.DateTimeFormatOptions['weekday'], undefined> | boolean;
 
 	/**
 	 * An event emitted when user selects a date using keyboard or mouse.
@@ -426,11 +431,15 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 						hostElement,
 						targetElement: this._cRef.location.nativeElement,
 						placement: this.placement,
-						appendToBody: this.container === 'body',
 						updatePopperOptions: (options) => this.popperOptions(addPopperOffset([0, 2])(options)),
 					});
 
-					this._zoneSubscription = this._ngZone.onStable.subscribe(() => this._positioning.update());
+					this._afterRenderRef = afterRender(
+						() => {
+							this._positioning.update();
+						},
+						{ phase: AfterRenderPhase.MixedReadWrite, injector: this._injector },
+					);
 				}
 			});
 
@@ -443,10 +452,10 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	 */
 	close() {
 		if (this.isOpen()) {
-			this._vcRef.remove(this._vcRef.indexOf(this._cRef!.hostView));
+			this._cRef?.destroy();
 			this._cRef = null;
 			this._positioning.destroy();
-			this._zoneSubscription?.unsubscribe();
+			this._afterRenderRef?.destroy();
 			this._destroyCloseHandlers$.next();
 			this.closed.emit();
 			this._changeDetector.markForCheck();

@@ -3,14 +3,14 @@
 		<div class="col-12 col-lg-2 border-end">
 			<div
 				class="d-lg-none d-flex py-2 px-4 align-items-center text-body sidebar-collapsed"
-				(click)="sidebarCollapsed = !sidebarCollapsed"
+				(click)="sidebarCollapsed.set(!sidebarCollapsed())"
 				role="button"
 			>
 				<span class="me-auto">Menu</span>
 				<button
 					class="btn btn-link p-0"
 					aria-controls="doc-nav"
-					[attr.aria-expanded]="!sidebarCollapsed"
+					[attr.aria-expanded]="!sidebarCollapsed()"
 					aria-label="Toggle documentation navigation"
 				>
 					<svg
@@ -34,17 +34,17 @@
 			</div>
 			<ngbd-side-nav
 				id="doc-nav"
-				[ngbCollapse]="sidebarCollapsed"
+				[ngbCollapse]="sidebarCollapsed()"
 				class="d-lg-block my-3 collapse sidebar"
 			></ngbd-side-nav>
 		</div>
 
 		<div class="col-12 col-lg-10">
 			<header class="bg-body-tertiary pt-4 pb-md-5 px-4 px-lg-5 d-flex d-md-block align-items-center title">
-				<h1 class="mt-0">{{ pageTitle }}</h1>
+				<h1 class="mt-0">{{ pageTitle() }}</h1>
 
 				<ul class="nav nav-tabs px-4 px-lg-5 content-tabset justify-content-md-start justify-content-end">
-					@if (tableOfContents.length && isLargeScreenOrLess) {
+					@if (tableOfContents().length && isLargeScreenOrLess()) {
 						<li
 							ngbDropdown
 							placement="bottom-right"
@@ -61,8 +61,8 @@
 							</span>
 
 							<div class="dropdown-menu-end" ngbDropdownMenu>
-								@for (topic of tableOfContents; track topic) {
-									<a class="dropdown-item" routerLink="." [fragment]="topic.fragment">{{ topic.title }}</a>
+								@for (topic of tableOfContents(); track topic) {
+									<a class="dropdown-item" routerLink="." [fragment]="topic.fragment()">{{ topic.title() }}</a>
 								}
 							</div>
 						</li>
@@ -77,10 +77,16 @@
 
 				<div class="col-12 col-xl-3 d-none d-xl-block contextual-nav">
 					<ul class="nav flex-column text-muted pt-4">
-						@for (topic of tableOfContents; track topic) {
+						@for (topic of tableOfContents(); track topic) {
 							<li class="nav-item">
-								<a [id]="topic.fragment" ngbScrollSpyItem class="nav-link" routerLink="." [fragment]="topic.fragment">
-									{{ topic.title }}
+								<a
+									[id]="topic.fragment()"
+									ngbScrollSpyItem
+									class="nav-link"
+									routerLink="."
+									[fragment]="topic.fragment()"
+								>
+									{{ topic.title() }}
 								</a>
 							</li>
 						}

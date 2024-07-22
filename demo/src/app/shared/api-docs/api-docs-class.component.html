@@ -1,40 +1,49 @@
-<div class="api-doc-component" [class.deprecated]="apiDocs.deprecated">
-	<h3 [id]="apiDocs.className">
+<style>
+	.label-cell {
+		width: 25%;
+	}
+	.content-cell {
+		width: 75%;
+	}
+</style>
+
+<div class="api-doc-component" [class.deprecated]="apiDocs().deprecated">
+	<h3 [id]="apiDocs().className">
 		<a
 			routerLink="."
-			fragment="{{ apiDocs.className }}"
+			fragment="{{ apiDocs().className }}"
 			class="title-fragment"
-			title="Anchor link to: {{ apiDocs.className }}"
+			title="Anchor link to: {{ apiDocs().className }}"
 		>
 			<i class="bi bi-link-45deg" style="font-size: 1.75rem; color: var(--bs-heading-color)"></i>
 		</a>
-		{{ apiDocs.className }}
+		{{ apiDocs().className }}
 		<a
 			class="github-link"
 			(click)="trackSourceClick()"
-			href="https://github.com/ng-bootstrap/ng-bootstrap/tree/master/{{ apiDocs.fileName }}"
+			href="https://github.com/ng-bootstrap/ng-bootstrap/tree/master/{{ apiDocs().fileName }}"
 			target="_blank"
-			title="Link to Github: {{ apiDocs.className }}"
+			title="Link to Github: {{ apiDocs().className }}"
 		>
 			<i class="bi bi-github" style="font-size: 1.5rem; color: var(--bs-heading-color)"></i>
 		</a>
 	</h3>
 	<ngbd-api-docs-badge
-		[type]="apiDocs.type"
-		[deprecated]="apiDocs.deprecated"
-		[since]="apiDocs.since"
+		[type]="apiDocs().type"
+		[deprecated]="apiDocs().deprecated"
+		[since]="apiDocs().since"
 	></ngbd-api-docs-badge>
-	@if (apiDocs.deprecated) {
-		<p>{{ apiDocs.deprecated.description }}</p>
+	@if (apiDocs().deprecated) {
+		<p>{{ apiDocs().deprecated?.description }}</p>
 	}
-	<p class="lead" [innerHTML]="apiDocs.description"></p>
+	<p class="lead" [innerHTML]="apiDocs().description"></p>
 
-	@if (apiDocs.properties && apiDocs.properties.length) {
+	@if (apiDocs().properties && apiDocs().properties.length) {
 		<section>
 			<h4>Properties</h4>
 			<table class="table table-sm">
 				<tbody>
-					@for (prop of apiDocs.properties; track prop) {
+					@for (prop of apiDocs().properties; track prop) {
 						<tr [class.deprecated]="prop.deprecated">
 							<td class="label-cell">
 								<code>{{ prop.name }}</code
@@ -70,12 +79,12 @@
 		</section>
 	}
 
-	@if (apiDocs.methods && apiDocs.methods.length) {
+	@if (apiDocs().methods && apiDocs().methods.length) {
 		<section>
 			<h4>Methods</h4>
 			<table class="table table-sm">
 				<tbody>
-					@for (method of apiDocs.methods; track method) {
+					@for (method of apiDocs().methods; track method) {
 						<tr [class.deprecated]="method.deprecated">
 							<td class="label-cell">
 								<code>{{ method.name }}</code

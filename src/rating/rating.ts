@@ -16,7 +16,6 @@ import {
 } from '@angular/core';
 import { NgbRatingConfig } from './rating-config';
 import { getValueInRange } from '../util/util';
-import { Key } from '../util/key';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NgTemplateOutlet } from '@angular/common';
 
@@ -179,20 +178,19 @@ export class NgbRating implements ControlValueAccessor, OnInit, OnChanges {
 	}
 
 	handleKeyDown(event: KeyboardEvent) {
-		/* eslint-disable-next-line deprecation/deprecation */
-		switch (event.which) {
-			case Key.ArrowDown:
-			case Key.ArrowLeft:
+		switch (event.key) {
+			case 'ArrowDown':
+			case 'ArrowLeft':
 				this.update(this.rate - 1);
 				break;
-			case Key.ArrowUp:
-			case Key.ArrowRight:
+			case 'ArrowUp':
+			case 'ArrowRight':
 				this.update(this.rate + 1);
 				break;
-			case Key.Home:
+			case 'Home':
 				this.update(0);
 				break;
-			case Key.End:
+			case 'End':
 				this.update(this.max);
 				break;
 			default:

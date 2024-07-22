@@ -1,4 +1,7 @@
 import {
+	afterRender,
+	AfterRenderPhase,
+	AfterRenderRef,
 	ChangeDetectorRef,
 	ComponentRef,
 	Directive,
@@ -6,6 +9,7 @@ import {
 	EventEmitter,
 	forwardRef,
 	inject,
+	Injector,
 	Input,
 	NgZone,
 	OnChanges,
@@ -22,7 +26,6 @@ import { map, switchMap, tap } from 'rxjs/operators';
 
 import { Live } from '../util/accessibility/live';
 import { ngbAutoClose } from '../util/autoclose';
-import { Key } from '../util/key';
 import { PopupService } from '../util/popup';
 import { ngbPositioning } from '../util/positioning';
 import { isDefined, toString } from '../util/util';
@@ -77,6 +80,7 @@ export class NgbTypeahead implements ControlValueAccessor, OnInit, OnChanges, On
 	private _document = inject(DOCUMENT);
 	private _ngZone = inject(NgZone);
 	private _changeDetector = inject(ChangeDetectorRef);
+	private _injector = inject(Injector);
 
 	private _popupService = new PopupService(NgbTypeaheadWindow);
 	private _positioning = ngbPositioning();
@@ -90,7 +94,7 @@ export class NgbTypeahead implements ControlValueAccessor, OnInit, OnChanges, On
 	);
 	private _resubscribeTypeahead$ = new BehaviorSubject(null);
 	private _windowRef: ComponentRef<NgbTypeaheadWindow> | null = null;
-	private _zoneSubscription: Subscription;
+	private _afterRenderRef: AfterRenderRef;
 
 	/**
 	 * The value for the `autocomplete` attribute for the `<input>` element.
@@ -276,20 +280,19 @@ export class NgbTypeahead implements ControlValueAccessor, OnInit, OnChanges, On
 			return;
 		}
 
-		/* eslint-disable-next-line deprecation/deprecation */
-		switch (event.which) {
-			case Key.ArrowDown:
+		switch (event.key) {
+			case 'ArrowDown':
 				event.preventDefault();
 				this._windowRef!.instance.next();
 				this._showHint();
 				break;
-			case Key.ArrowUp:
+			case 'ArrowUp':
 				event.preventDefault();
 				this._windowRef!.instance.prev();
 				this._showHint();
 				break;
-			case Key.Enter:
-			case Key.Tab: {
+			case 'Enter':
+			case 'Tab': {
 				const result = this._windowRef!.instance.getActive();
 				if (isDefined(result)) {
 					event.preventDefault();
@@ -326,11 +329,15 @@ export class NgbTypeahead implements ControlValueAccessor, OnInit, OnChanges, On
 						hostElement: this._nativeElement,
 						targetElement: this._windowRef.location.nativeElement,
 						placement: this.placement,
-						appendToBody: this.container === 'body',
 						updatePopperOptions: (options) => this.popperOptions(addPopperOffset([0, 2])(options)),
 					});
 
-					this._zoneSubscription = this._ngZone.onStable.subscribe(() => this._positioning.update());
+					this._afterRenderRef = afterRender(
+						() => {
+							this._positioning.update();
+						},
+						{ phase: AfterRenderPhase.MixedReadWrite, injector: this._injector },
+					);
 				}
 			});
 
@@ -344,7 +351,7 @@ export class NgbTypeahead implements ControlValueAccessor, OnInit, OnChanges, On
 	private _closePopup() {
 		this._popupService.close().subscribe(() => {
 			this._positioning.destroy();
-			this._zoneSubscription?.unsubscribe();
+			this._afterRenderRef?.destroy();
 			this._closed$.next();
 			this._windowRef = null;
 			this.activeDescendant = null;

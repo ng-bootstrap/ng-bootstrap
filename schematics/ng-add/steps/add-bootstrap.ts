@@ -33,7 +33,7 @@ export function addBootstrapStyles(options: Schema): Rule {
 			throw new SchematicsException(messages.noProject(projectName));
 		}
 
-		const styleFilePath = getProjectStyleFile(project) || '';
+		const styleFilePath = getProjectStyleFile(project as any) || '';
 		const styleFileExtension = path.extname(styleFilePath);
 		const styleFilePatch = SUPPORTED_BOOTSTRAP_STYLE_IMPORTS[styleFileExtension];
 
@@ -47,7 +47,7 @@ export function addBootstrapStyles(options: Schema): Rule {
 			}
 
 			// just patching 'angular.json'
-			addBootstrapToAngularJson(project);
+			addBootstrapToAngularJson(project as any);
 			await writeWorkspace(host, workspace);
 		}
 	};

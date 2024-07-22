@@ -40,14 +40,14 @@ export interface ResultTemplateContext {
 		<ng-template #rt let-result="result" let-term="term" let-formatter="formatter">
 			<ngb-highlight [result]="formatter(result)" [term]="term" />
 		</ng-template>
-		@for (result of results; track result; let idx = $index) {
+		@for (result of results; track $index) {
 			<button
 				type="button"
 				class="dropdown-item"
 				role="option"
-				[id]="id + '-' + idx"
-				[class.active]="idx === activeIdx"
-				(mouseenter)="markActive(idx)"
+				[id]="id + '-' + $index"
+				[class.active]="$index === activeIdx"
+				(mouseenter)="markActive($index)"
 				(click)="select(result)"
 			>
 				<ng-template

@@ -166,7 +166,7 @@ export class NgbPaginationPages {
 		<ng-template #ellipsis>...</ng-template>
 		<ng-template #defaultNumber let-page let-currentPage="currentPage">{{ page }}</ng-template>
 		<ng-template #defaultPages let-page let-pages="pages" let-disabled="disabled">
-			@for (pageNumber of pages; track pageNumber) {
+			@for (pageNumber of pages; track $index) {
 				<li
 					class="page-item"
 					[class.active]="pageNumber === page"
