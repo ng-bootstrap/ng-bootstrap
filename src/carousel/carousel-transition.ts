@@ -23,14 +23,12 @@ const isBeingAnimated = ({ classList }: HTMLElement) => {
 };
 
 const removeDirectionClasses = (classList: DOMTokenList) => {
-	classList.remove('carousel-item-start');
-	classList.remove('carousel-item-end');
+	classList.remove('carousel-item-start', 'carousel-item-end');
 };
 
 const removeClasses = (classList: DOMTokenList) => {
 	removeDirectionClasses(classList);
-	classList.remove('carousel-item-prev');
-	classList.remove('carousel-item-next');
+	classList.remove('carousel-item-prev', 'carousel-item-next');
 };
 
 export const ngbCarouselTransitionIn: NgbTransitionStartFn<NgbCarouselCtx> = (
@@ -41,7 +39,6 @@ export const ngbCarouselTransitionIn: NgbTransitionStartFn<NgbCarouselCtx> = (
 	const { classList } = element;
 
 	if (!animation) {
-		removeDirectionClasses(classList);
 		removeClasses(classList);
 		classList.add('active');
 		return;
@@ -71,7 +68,6 @@ export const ngbCarouselTransitionOut: NgbTransitionStartFn<NgbCarouselCtx> = (
 	const { classList } = element;
 
 	if (!animation) {
-		removeDirectionClasses(classList);
 		removeClasses(classList);
 		classList.remove('active');
 		return;

@@ -1,9 +1,12 @@
 import { DOCUMENT } from '@angular/common';
 import {
+	afterNextRender,
+	AfterRenderPhase,
 	Component,
 	ElementRef,
 	EventEmitter,
 	inject,
+	Injector,
 	Input,
 	NgZone,
 	OnDestroy,
@@ -17,7 +20,6 @@ import { fromEvent, Observable, Subject, zip } from 'rxjs';
 import { filter, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 
 import { getFocusableBoundaryElements } from '../util/focus-trap';
-import { Key } from '../util/key';
 import { ModalDismissReasons } from './modal-dismiss-reasons';
 import { ngbRunTransition, NgbTransitionOptions } from '../util/transition/ngbTransition';
 import { isString, reflow } from '../util/util';
@@ -57,6 +59,7 @@ export class NgbModalWindow implements OnInit, OnDestroy {
 	private _document = inject(DOCUMENT);
 	private _elRef = inject(ElementRef<HTMLElement>);
 	private _zone = inject(NgZone);
+	private _injector = inject(Injector);
 
 	private _closed$ = new Subject<void>();
 	private _elWithFocus: Element | null = null; // element that is focused prior to modal opening
@@ -94,12 +97,7 @@ export class NgbModalWindow implements OnInit, OnDestroy {
 
 	ngOnInit() {
 		this._elWithFocus = this._document.activeElement;
-		this._zone.onStable
-			.asObservable()
-			.pipe(take(1))
-			.subscribe(() => {
-				this._show();
-			});
+		afterNextRender(() => this._show(), { injector: this._injector, phase: AfterRenderPhase.MixedReadWrite });
 	}
 
 	ngOnDestroy() {
@@ -161,8 +159,7 @@ export class NgbModalWindow implements OnInit, OnDestroy {
 			fromEvent<KeyboardEvent>(nativeElement, 'keydown')
 				.pipe(
 					takeUntil(this._closed$),
-					/* eslint-disable-next-line deprecation/deprecation */
-					filter((e) => e.which === Key.Escape),
+					filter((e) => e.key === 'Escape'),
 				)
 				.subscribe((event) => {
 					if (this.keyboard) {

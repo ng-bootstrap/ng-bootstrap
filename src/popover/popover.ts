@@ -1,4 +1,7 @@
 import {
+	afterRender,
+	AfterRenderPhase,
+	AfterRenderRef,
 	ChangeDetectionStrategy,
 	ChangeDetectorRef,
 	Component,
@@ -8,6 +11,7 @@ import {
 	EventEmitter,
 	HostBinding,
 	inject,
+	Injector,
 	Input,
 	NgZone,
 	OnChanges,
@@ -245,6 +249,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 	private _ngZone = inject(NgZone);
 	private _document = inject(DOCUMENT);
 	private _changeDetector = inject(ChangeDetectorRef);
+	private _injector = inject(Injector);
 
 	private _ngbPopoverWindowId = `ngb-popover-${nextId++}`;
 	private _popupService = new PopupService(NgbPopoverWindow);
@@ -252,8 +257,8 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 	private _unregisterListenersFn;
 	private _windowListenersSubscription: Subscription;
 	private _positioning = ngbPositioning();
-	private _zoneSubscription: Subscription;
 	private _triggersState = new TriggersState();
+	private _afterRenderRef: AfterRenderRef;
 
 	/**
 	 * Opens the popover.
@@ -328,7 +333,6 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 					hostElement: this._getPositionTargetElement(),
 					targetElement: this._windowRef!.location.nativeElement,
 					placement: this.placement,
-					appendToBody: this.container === 'body',
 					baseClass: 'bs-popover',
 					updatePopperOptions: (options) => this.popperOptions(addPopperOffset([0, 8])(options)),
 				});
@@ -336,8 +340,13 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 				Promise.resolve().then(() => {
 					// This update is required for correct arrow placement
 					this._positioning.update();
-					this._zoneSubscription = this._ngZone.onStable.subscribe(() => this._positioning.update());
 				});
+				this._afterRenderRef = afterRender(
+					() => {
+						this._positioning.update();
+					},
+					{ phase: AfterRenderPhase.MixedReadWrite, injector: this._injector },
+				);
 			});
 
 			ngbAutoClose(this._ngZone, this._document, this.autoClose, () => this.close(), this.hidden, [
@@ -359,8 +368,8 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 			this._popupService.close(animation).subscribe(() => {
 				this._windowRef = null;
 				this._positioning.destroy();
-				this._zoneSubscription?.unsubscribe();
 				this._windowListenersSubscription?.unsubscribe();
+				this._afterRenderRef?.destroy();
 				this.hidden.emit();
 				this._changeDetector.markForCheck();
 			});

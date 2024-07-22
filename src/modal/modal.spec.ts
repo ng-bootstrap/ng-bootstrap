@@ -1,14 +1,19 @@
 import { Component, Injectable, Injector, OnDestroy, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { NgbModalConfig, NgbModalOptions, NgbModalUpdatableOptions } from './modal-config';
 import { NgbActiveModal, NgbModal, NgbModalModule, NgbModalRef } from './modal.module';
-import { createKeyEvent, isBrowserVisible } from '../test/common';
+import { isBrowserVisible } from '../test/common';
 import { NgbConfig } from '..';
 import { NgbConfigAnimation } from '../test/ngb-config-animation';
-import { Key } from 'src/util/key';
 import createSpy = jasmine.createSpy;
+
+function createKeyDownEvent(key: string) {
+	const event = { key, preventDefault: () => {}, stopPropagation: () => {} };
+	spyOn(event, 'preventDefault');
+	spyOn(event, 'stopPropagation');
+	return event;
+}
 
 const NOOP = () => {};
 
@@ -1325,8 +1330,8 @@ describe('ngb-modal', () => {
 				modalRef.shown.subscribe(() => {
 					modalEl = document.querySelector('ngb-modal-window') as HTMLElement;
 
-					const event = createKeyEvent(Key.Escape, { type: 'keydown' });
-					modalEl.dispatchEvent(event);
+					// dispatch keydown event on modal window
+					modalEl.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
 
 					component.detectChanges();
 					expect(modalEl).toHaveClass('modal-static');
@@ -1351,8 +1356,7 @@ describe('ngb-modal', () => {
 				modalRef.shown.subscribe(() => {
 					modalEl = document.querySelector('ngb-modal-window') as HTMLElement;
 
-					const event = createKeyEvent(Key.Escape, { type: 'keydown' });
-					modalEl.dispatchEvent(event);
+					modalEl.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
 
 					component.detectChanges();
 					expect(modalEl).not.toHaveClass('modal-static');
@@ -1378,7 +1382,7 @@ describe('ngb-modal', () => {
 				declarations: [AppComponent],
 				imports: [
 					NgbModalModule,
-					RouterTestingModule.withRoutes([
+					RouterModule.forRoot([
 						{
 							path: 'lazy',
 							loadChildren: () => import('./modal-lazy-module.spec'),

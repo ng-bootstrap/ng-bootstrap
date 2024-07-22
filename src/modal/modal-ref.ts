@@ -228,10 +228,7 @@ export class NgbModalRef {
 			const { nativeElement } = this._windowCmptRef.location;
 			nativeElement.parentNode.removeChild(nativeElement);
 			this._windowCmptRef.destroy();
-
-			if (this._contentRef && this._contentRef.viewRef) {
-				this._contentRef.viewRef.destroy();
-			}
+			this._contentRef?.viewRef?.destroy();
 
 			this._windowCmptRef = <any>null;
 			this._contentRef = <any>null;

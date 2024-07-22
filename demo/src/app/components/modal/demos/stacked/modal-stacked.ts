@@ -15,7 +15,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 			<p><button class="btn btn-lg btn-outline-primary" (click)="open()">Launch demo modal</button></p>
 		</div>
 		<div class="modal-footer">
-			<button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+			<button type="button" class="btn btn-outline-secondary" (click)="activeModal.close('Close click')">Close</button>
 		</div>
 	`,
 })
@@ -39,7 +39,7 @@ export class NgbdModal1Content {
 			<p>Hello, World!</p>
 		</div>
 		<div class="modal-footer">
-			<button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+			<button type="button" class="btn btn-outline-secondary" (click)="activeModal.close('Close click')">Close</button>
 		</div>
 	`,
 })

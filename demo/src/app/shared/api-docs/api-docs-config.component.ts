@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import docs from '../../../api-docs';
 import { ClassDesc } from './api-docs.model';
 import { AnalyticsService } from '../../services/analytics.service';
 import { RouterLink } from '@angular/router';
 import { NgbdApiDocsBadge } from './api-docs-badge.component';
+import { COMPONENT_DATA } from '../../tokens';
 
 const CONFIG_SUFFIX_LENGTH = 'Config'.length;
 
@@ -17,22 +18,23 @@ const CONFIG_SUFFIX_LENGTH = 'Config'.length;
 @Component({
 	selector: 'ngbd-api-docs-config',
 	standalone: true,
-	imports: [RouterLink, NgbdApiDocsBadge],
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	imports: [RouterLink, NgbdApiDocsBadge],
 	templateUrl: './api-docs-config.component.html',
 })
 export class NgbdApiDocsConfig {
-	apiDocs: ClassDesc;
-	directiveName: string;
+	private analytics = inject(AnalyticsService);
+	private componentName = inject(COMPONENT_DATA).name;
 
-	constructor(private _analytics: AnalyticsService) {}
+	type = input<string>('');
 
-	@Input() set type(typeName: string) {
-		this.apiDocs = docs[typeName];
-		this.directiveName = typeName.slice(0, -CONFIG_SUFFIX_LENGTH);
-	}
+	apiDocs = computed<ClassDesc>(() => docs[this.type()]);
+	directiveName = computed<string>(() => this.type().slice(0, -CONFIG_SUFFIX_LENGTH));
 
 	trackSourceClick() {
-		this._analytics.trackEvent('Source File View', this.apiDocs.className);
+		this.analytics.trackClick('ngb_view_source_code', {
+			component_name: this.componentName.toLowerCase(),
+			class_name: this.apiDocs().className,
+		});
 	}
 }

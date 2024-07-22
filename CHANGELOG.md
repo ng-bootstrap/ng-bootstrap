@@ -1,3 +1,23 @@
+# [17.0.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/16.0.0...17.0.0) (2024-06-13)
+
+This release bumps minimum required versions to Angular `18.0.0`.
+
+We do not officially support `provideExperimentalZonelessChangeDetection()` yet, it will come in a future minor release. Please remember this an experimental API, follow [#4709](https://github.com/ng-bootstrap/ng-bootstrap/issues/4709) and open new issues if you find any problems.
+
+Signal support will come later, most likely in the next major release.
+
+### Bug Fixes
+
+* **datepicker:** track weekdays by $index ([#4712](https://github.com/ng-bootstrap/ng-bootstrap/issues/4712)) ([ca1028d](https://github.com/ng-bootstrap/ng-bootstrap/commit/ca1028d48dfdaa6aa4081ee0bbedaf6ae72e1253))
+* **datepicker:** track weekdays by index to avoid clashes ([7c693d6](https://github.com/ng-bootstrap/ng-bootstrap/commit/7c693d65186c5ab4cc32b60a634381114eea6158))
+* **datepicker:** type of ngAcceptInputType_weekdays ([5ad11bb](https://github.com/ng-bootstrap/ng-bootstrap/commit/5ad11bb7cff366d710266b282a540657257c69bf))
+* **pagination:** track page by index since -1 can be there twice ([1d190a8](https://github.com/ng-bootstrap/ng-bootstrap/commit/1d190a875cde544203553ad65bd0063ecbe63123))
+* **timepicker:** get period from angular formatDate ([56b0368](https://github.com/ng-bootstrap/ng-bootstrap/commit/56b0368db339e0af84b748ce42de6d91022f1f50))
+* **typeahead** track by index in NgbHighlight ([#4707](https://github.com/ng-bootstrap/ng-bootstrap/issues/4707)) ([2085265](https://github.com/ng-bootstrap/ng-bootstrap/commit/20852651f3ced32fa93f7941f676364ca0d0c2b1)), closes [#4705](https://github.com/ng-bootstrap/ng-bootstrap/issues/4705)
+* **typeahead:** track results by index in NgbTypeahead ([#4711](https://github.com/ng-bootstrap/ng-bootstrap/issues/4711)) ([fa8aba9](https://github.com/ng-bootstrap/ng-bootstrap/commit/fa8aba9b505353917f6fb9c2c7e5b13e0f675aee)), closes [#4702](https://github.com/ng-bootstrap/ng-bootstrap/issues/4702)
+
+
+
 # [16.0.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/15.1.2...16.0.0) (2023-11-22)
 
 This release bumps minimum required versions to Angular `17.0.0` and Bootstrap `5.3.2`.

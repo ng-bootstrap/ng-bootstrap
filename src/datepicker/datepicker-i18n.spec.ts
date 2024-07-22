@@ -26,8 +26,8 @@ describe('ngb-datepicker-i18n-default', () => {
 
 	it('should return weekday label', () => {
 		expect(i18n.getWeekdayLabel(0)).toBe('');
-		expect(i18n.getWeekdayLabel(1)).toBe('Mo');
-		expect(i18n.getWeekdayLabel(7)).toBe('Su');
+		expect(i18n.getWeekdayLabel(1)).toBe('M');
+		expect(i18n.getWeekdayLabel(7)).toBe('S');
 		expect(i18n.getWeekdayLabel(8)).toBe('');
 	});
 

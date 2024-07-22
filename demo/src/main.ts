@@ -12,7 +12,7 @@ import {
 } from '@angular/router';
 import { ROUTES } from './app/routes';
 import { provideHttpClient, withNoXsrfProtection } from '@angular/common/http';
-import { APP_INITIALIZER, inject } from '@angular/core';
+import { APP_INITIALIZER, inject, provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { AnalyticsService } from './app/services/analytics.service';
 
 bootstrapApplication(AppComponent, {
@@ -28,6 +28,7 @@ bootstrapApplication(AppComponent, {
 			}),
 		),
 		provideHttpClient(withNoXsrfProtection()),
+		provideExperimentalZonelessChangeDetection(),
 		{
 			provide: APP_INITIALIZER,
 			useFactory: () => {

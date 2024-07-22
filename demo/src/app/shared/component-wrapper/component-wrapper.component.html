@@ -3,14 +3,14 @@
 		<div class="col-12 col-lg-2 border-end">
 			<div
 				class="d-lg-none d-flex py-2 px-4 align-items-center text-body sidebar-collapsed"
-				(click)="sidebarCollapsed = !sidebarCollapsed"
+				(click)="sidebarCollapsed.set(!sidebarCollapsed())"
 				role="button"
 			>
 				<span class="me-auto">Menu</span>
 				<button
 					class="btn btn-link p-0"
 					aria-controls="doc-nav"
-					[attr.aria-expanded]="!sidebarCollapsed"
+					[attr.aria-expanded]="!sidebarCollapsed()"
 					aria-label="Toggle documentation navigation"
 				>
 					<svg
@@ -34,18 +34,18 @@
 			</div>
 			<ngbd-side-nav
 				id="doc-nav"
-				[ngbCollapse]="sidebarCollapsed"
+				[ngbCollapse]="sidebarCollapsed()"
 				class="d-lg-block py-3 collapse sidebar"
 			></ngbd-side-nav>
 		</div>
 
 		<div class="col-12 col-lg-10">
 			<header class="bg-body-tertiary pt-4 pb-md-5 px-4 px-lg-5 d-flex d-md-block align-items-center title">
-				<h1 class="mb-4 me-auto me-md-none">{{ componentName }}</h1>
+				<h1 class="mb-4 me-auto me-md-none">{{ component.name }}</h1>
 
 				<ul
 					ngbNav
-					[activeId]="this.activeTab"
+					[activeId]="this.activeTab()"
 					class="nav-tabs px-4 px-lg-5 content-tabset justify-content-md-start justify-content-end"
 				>
 					@for (childRoute of childrenRouteConfig; track childRoute) {
@@ -54,7 +54,7 @@
 						</li>
 					}
 
-					@if (tableOfContents.length && isLargeScreenOrLess) {
+					@if (menuItems().length && isLargeScreenOrLess()) {
 						<li
 							ngbNavItem
 							ngbDropdown
@@ -72,10 +72,10 @@
 							</span>
 
 							<div class="dropdown-menu-end" ngbDropdownMenu>
-								@for (topic of tableOfContents; track topic) {
-									@if (topic.title) {
-										<a class="dropdown-item" [routerLink]="['.', this.activeTab]" [fragment]="topic.fragment">{{
-											topic.title
+								@for (item of menuItems(); track item.fragment) {
+									@if (item.title !== 'separator') {
+										<a class="dropdown-item" [routerLink]="['.', this.activeTab()]" [fragment]="item.fragment">{{
+											item.title
 										}}</a>
 									} @else {
 										<div class="dropdown-divider"></div>
@@ -90,7 +90,7 @@
 										rel="nofollow noopener noreferrer"
 									>
 										<i class="bi bi-bootstrap-fill me-2" style="font-size: 1rem"></i>
-										{{ componentName }} in Bootstrap
+										{{ component.name }} in Bootstrap
 									</a>
 								}
 							</div>
@@ -101,22 +101,22 @@
 
 			<section class="row py-5 px-2 px-md-4 px-lg-5">
 				<div class="col-12 col-xl-9 px-md-0 pe-xl-4">
-					<ng-template [ngComponentOutlet]="headerComponentType"></ng-template>
+					<ng-template [ngComponentOutlet]="component.header"></ng-template>
 					<router-outlet (activate)="onActivate($event)" (deactivate)="onDeactivate()"></router-outlet>
 				</div>
 
-				@if (!isLargeScreenOrLess) {
+				@if (!isLargeScreenOrLess()) {
 					<div class="col-12 col-xl-3 d-none d-xl-block contextual-nav">
 						<ul class="nav flex-column text-muted pt-4">
-							@for (topic of tableOfContents; track topic) {
+							@for (item of menuItems(); track item.fragment) {
 								<li class="nav-item">
-									@if (topic.title) {
+									@if (item.title !== 'separator') {
 										<a
 											class="nav-link"
 											ngbScrollSpyItem
-											[routerLink]="['.', this.activeTab]"
-											[fragment]="topic.fragment"
-											>{{ topic.title }}</a
+											[routerLink]="['.', this.activeTab()]"
+											[fragment]="item.fragment"
+											>{{ item.title }}</a
 										>
 									} @else {
 										&nbsp;
@@ -130,10 +130,10 @@
 										[href]="bootstrapUrl"
 										target="_blank"
 										rel="nofollow noopener noreferrer"
-										[attr.title]="'See ' + componentName + ' component on getbootstrap.com'"
+										[attr.title]="'See ' + component.name + ' component on getbootstrap.com'"
 									>
 										<i class="bi bi-bootstrap-fill me-2" style="font-size: 1rem"></i>
-										{{ componentName }} in Bootstrap
+										{{ component.name }} in Bootstrap
 									</a>
 								</li>
 							}

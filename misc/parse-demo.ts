@@ -32,7 +32,7 @@ export function parseDemos(demoFolderPath: string): DemoMetadata[] {
 
 		// 1. Getting all known demo class names from the routes config
 		program.getSourceFile(routingFile).forEachChild((node) => {
-			if (node.kind === ts.SyntaxKind.VariableStatement && node.getText().includes('DEMOS')) {
+			if (node.kind === ts.SyntaxKind.VariableStatement && node.getText().includes('DATA')) {
 				let matches = node.getText().matchAll(TYPE_REGEX);
 				for (let match of matches) {
 					knownDemoComponents.add(match[1]);

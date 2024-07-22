@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 
 import { Snippet } from '../../../services/snippet';
-import { DemoListComponent } from '../../../shared/examples-page/demo-list.component';
 import { NgbdDatepickerHebrew } from '../demos/hebrew/datepicker-hebrew';
 import { NgbdDatepickerIslamiccivil } from '../demos/islamiccivil/datepicker-islamiccivil';
 import { NgbdDatepickerIslamicumalqura } from '../demos/islamicumalqura/datepicker-islamicumalqura';
@@ -12,8 +11,10 @@ import { CodeComponent } from '../../../shared/code.component';
 import { NgbdWidgetDemoComponent } from '../../../shared/examples-page/demo.component';
 import { NgComponentOutlet } from '@angular/common';
 import { NgbdDatepickerEthiopian } from '../demos/ethiopian/datepicker-ethiopian';
+import { NgbdComponentPage } from '../../../shared/component-wrapper/component-page.class';
+import { Demo, MenuItem } from 'src/app/tokens';
 
-export const DEMOS = [
+const DEMOS: Demo[] = [
 	{
 		fragment: 'hebrew',
 		title: 'Hebrew',
@@ -111,7 +112,13 @@ export const DEMOS = [
 		}
 	`,
 })
-export class NgbdDatepickerCalendarsComponent extends DemoListComponent {
+export class NgbdDatepickerCalendarsComponent extends NgbdComponentPage {
+	get menuItems(): MenuItem[] {
+		return DEMOS;
+	}
+
+	demos = DEMOS;
+
 	snippets = {
 		calendars: Snippet({
 			lang: 'typescript',

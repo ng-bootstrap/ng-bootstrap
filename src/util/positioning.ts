@@ -203,7 +203,6 @@ interface PositioningOptions {
 	hostElement: HTMLElement;
 	targetElement: HTMLElement;
 	placement: string | Placement | PlacementArray;
-	appendToBody?: boolean;
 	baseClass?: string;
 	updatePopperOptions?: (options: Partial<Options>) => Partial<Options>;
 }

@@ -9,7 +9,6 @@ import { debounceTime, filter, map } from 'rxjs/operators';
 import { createGenericTestComponent, triggerEvent } from '../test/common';
 import { expectResults, getWindowLinks } from '../test/typeahead/common';
 import { ARIA_LIVE_DELAY } from '../util/accessibility/live';
-import { Key } from '../util/key';
 import { NgbTypeahead } from './typeahead';
 import { NgbTypeaheadConfig } from './typeahead-config';
 import { NgbHighlight } from './highlight';
@@ -24,8 +23,8 @@ const createOnPushTestComponent = (html: string) =>
 const createAsyncTestComponent = (html: string) =>
 	createGenericTestComponent(html, TestAsyncComponent) as ComponentFixture<TestAsyncComponent>;
 
-function createKeyDownEvent(key: number) {
-	const event = { which: key, preventDefault: () => {}, stopPropagation: () => {} };
+function createKeyDownEvent(key: string) {
+	const event = { key, preventDefault: () => {}, stopPropagation: () => {} };
 	spyOn(event, 'preventDefault');
 	spyOn(event, 'stopPropagation');
 	return event;
@@ -248,7 +247,7 @@ describe('ngb-typeahead', () => {
 			fixture.detectChanges();
 			expectWindowResults(compiled, ['+one', 'one more']);
 
-			const event = createKeyDownEvent(Key.Enter);
+			const event = createKeyDownEvent('Enter');
 			getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
 			fixture.detectChanges();
 			expect(getWindow(compiled)).toBeNull();
@@ -266,7 +265,7 @@ describe('ngb-typeahead', () => {
 			fixture.detectChanges();
 			expect(getWindow(compiled)).not.toBeNull();
 
-			const event = createKeyDownEvent(Key.Tab);
+			const event = createKeyDownEvent('Tab');
 			getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
 			fixture.detectChanges();
 			expect(getWindow(compiled)).toBeNull();
@@ -285,26 +284,26 @@ describe('ngb-typeahead', () => {
 			expectWindowResults(compiled, ['+one', 'one more']);
 
 			// down
-			let event = createKeyDownEvent(Key.ArrowDown);
+			let event = createKeyDownEvent('ArrowDown');
 			getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
 			fixture.detectChanges();
 			expectWindowResults(compiled, ['one', '+one more']);
 			expect(event.preventDefault).toHaveBeenCalled();
 
-			event = createKeyDownEvent(Key.ArrowDown);
+			event = createKeyDownEvent('ArrowDown');
 			getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
 			fixture.detectChanges();
 			expectWindowResults(compiled, ['+one', 'one more']);
 			expect(event.preventDefault).toHaveBeenCalled();
 
 			// up
-			event = createKeyDownEvent(Key.ArrowUp);
+			event = createKeyDownEvent('ArrowUp');
 			getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
 			fixture.detectChanges();
 			expectWindowResults(compiled, ['one', '+one more']);
 			expect(event.preventDefault).toHaveBeenCalled();
 
-			event = createKeyDownEvent(Key.ArrowUp);
+			event = createKeyDownEvent('ArrowUp');
 			getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
 			fixture.detectChanges();
 			expectWindowResults(compiled, ['+one', 'one more']);
@@ -340,7 +339,7 @@ describe('ngb-typeahead', () => {
 			expectWindowResults(compiled, ['+one', 'one more']);
 
 			// move down to highlight the second item
-			let event = createKeyDownEvent(Key.ArrowDown);
+			let event = createKeyDownEvent('ArrowDown');
 			getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
 			fixture.detectChanges();
 			expectWindowResults(compiled, ['one', '+one more']);
@@ -361,19 +360,19 @@ describe('ngb-typeahead', () => {
 			expectWindowResults(compiled, ['one', 'one more']);
 
 			// down
-			let event = createKeyDownEvent(Key.ArrowDown);
+			let event = createKeyDownEvent('ArrowDown');
 			getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
 			fixture.detectChanges();
 			expectWindowResults(compiled, ['+one', 'one more']);
 			expect(event.preventDefault).toHaveBeenCalled();
 
-			event = createKeyDownEvent(Key.ArrowDown);
+			event = createKeyDownEvent('ArrowDown');
 			getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
 			fixture.detectChanges();
 			expectWindowResults(compiled, ['one', '+one more']);
 			expect(event.preventDefault).toHaveBeenCalled();
 
-			event = createKeyDownEvent(Key.ArrowDown);
+			event = createKeyDownEvent('ArrowDown');
 			getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
 			fixture.detectChanges();
 			expectWindowResults(compiled, ['one', 'one more']);
@@ -389,13 +388,13 @@ describe('ngb-typeahead', () => {
 			expectWindowResults(compiled, ['one', 'one more']);
 
 			// up
-			let event = createKeyDownEvent(Key.ArrowUp);
+			let event = createKeyDownEvent('ArrowUp');
 			getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
 			fixture.detectChanges();
 			expectWindowResults(compiled, ['one', '+one more']);
 			expect(event.preventDefault).toHaveBeenCalled();
 
-			event = createKeyDownEvent(Key.ArrowUp);
+			event = createKeyDownEvent('ArrowUp');
 			getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
 			fixture.detectChanges();
 			expectWindowResults(compiled, ['+one', 'one more']);
@@ -412,7 +411,7 @@ describe('ngb-typeahead', () => {
 			fixture.detectChanges();
 			expect(getWindow(compiled)).not.toBeNull();
 
-			const event = createKeyDownEvent(Key.Tab);
+			const event = createKeyDownEvent('Tab');
 			getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
 			fixture.detectChanges();
 			expect(getWindow(compiled)).toBeNull();
@@ -548,7 +547,7 @@ describe('ngb-typeahead', () => {
 			fixture.detectChanges();
 			expectWindowResults(compiled, ['+ONE', 'ONE MORE']);
 
-			const event = createKeyDownEvent(Key.Enter);
+			const event = createKeyDownEvent('Enter');
 			getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
 			fixture.detectChanges();
 			expect(getWindow(compiled)).toBeNull();
@@ -636,7 +635,7 @@ describe('ngb-typeahead', () => {
 			expect(getNativeInput(compiled)).not.toHaveCssClass('ng-valid');
 			expect(fixture.componentInstance.model).toBeUndefined();
 
-			const event = createKeyDownEvent(Key.Enter);
+			const event = createKeyDownEvent('Enter');
 			getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
 			fixture.detectChanges();
 			expect(getNativeInput(compiled)).not.toHaveCssClass('ng-invalid');
@@ -662,7 +661,7 @@ describe('ngb-typeahead', () => {
 			expect(getNativeInput(compiled)).not.toHaveCssClass('ng-valid');
 			expect(fixture.componentInstance.model).toBeUndefined();
 
-			const event = createKeyDownEvent(Key.Enter);
+			const event = createKeyDownEvent('Enter');
 			getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
 			fixture.detectChanges();
 			expect(getNativeInput(compiled)).not.toHaveCssClass('ng-invalid');
@@ -694,7 +693,7 @@ describe('ngb-typeahead', () => {
 			expect(getNativeInput(compiled)).not.toHaveCssClass('ng-valid');
 			expect(fixture.componentInstance.model).toBeUndefined();
 
-			const event = createKeyDownEvent(Key.Enter);
+			const event = createKeyDownEvent('Enter');
 			getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
 			fixture.detectChanges();
 			expect(getNativeInput(compiled)).not.toHaveCssClass('ng-invalid');
@@ -827,12 +826,12 @@ describe('ngb-typeahead', () => {
 			expect(input.getAttribute('aria-owns')).toMatch(/ngb-typeahead-[0-9]+/);
 			expect(input.getAttribute('aria-activedescendant')).toMatch(/ngb-typeahead-[0-9]+-0/);
 
-			let event = createKeyDownEvent(Key.ArrowDown);
+			let event = createKeyDownEvent('ArrowDown');
 			getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
 			fixture.detectChanges();
 			expect(input.getAttribute('aria-activedescendant')).toMatch(/ngb-typeahead-[0-9]+-1/);
 
-			event = createKeyDownEvent(Key.Enter);
+			event = createKeyDownEvent('Enter');
 			getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
 			fixture.detectChanges();
 			expect(input.getAttribute('aria-expanded')).toBe('false');
@@ -858,7 +857,7 @@ describe('ngb-typeahead', () => {
 			expect(inputEl.selectionStart).toBe(2);
 			expect(inputEl.selectionEnd).toBe(3);
 
-			const event = createKeyDownEvent(Key.ArrowDown);
+			const event = createKeyDownEvent('ArrowDown');
 			getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
 			fixture.detectChanges();
 			expect(inputEl.value).toBe('one more');
@@ -880,7 +879,7 @@ describe('ngb-typeahead', () => {
 			expect(inputEl.value).toBe('one');
 			expect(inputEl.selectionStart).toBe(inputEl.selectionEnd);
 
-			const event = createKeyDownEvent(Key.ArrowDown);
+			const event = createKeyDownEvent('ArrowDown');
 			getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
 			fixture.detectChanges();
 			expect(inputEl.value).toBe('one more');
@@ -903,7 +902,7 @@ describe('ngb-typeahead', () => {
 			expect(inputEl.selectionStart).toBe(2);
 			expect(inputEl.selectionEnd).toBe(3);
 
-			const event = createKeyDownEvent(Key.ArrowDown);
+			const event = createKeyDownEvent('ArrowDown');
 			getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
 			fixture.detectChanges();
 			expect(inputEl.value).toBe('onE MORE');

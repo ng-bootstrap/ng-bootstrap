@@ -1,5 +1,5 @@
 import { ComponentFixture } from '@angular/core/testing';
-import { createGenericTestComponent, triggerEvent } from '../test/common';
+import { createGenericTestComponent, ignoreTrackWarnings, triggerEvent } from '../test/common';
 import { getMonthSelect, getYearSelect } from '../test/datepicker/common';
 
 import { Component } from '@angular/core';
@@ -42,6 +42,7 @@ describe('ngb-datepicker-navigation-select', () => {
 	});
 
 	it('should generate year options correctly', () => {
+		ignoreTrackWarnings();
 		const fixture = createTestComponent(
 			`<ngb-datepicker-navigation-select [date]="date" [months]="months" [years]="years">`,
 		);

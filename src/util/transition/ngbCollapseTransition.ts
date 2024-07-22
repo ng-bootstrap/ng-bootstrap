@@ -60,9 +60,7 @@ export const ngbCollapsingTransition: NgbTransitionStartFn<NgbCollapseCtx> = (
 		// Fix the height before starting the animation
 		element.style[dimension] = direction !== 'show' ? maxSize : '0px';
 
-		classList.remove('collapse');
-		classList.remove('collapsing');
-		classList.remove('show');
+		classList.remove('collapse', 'collapsing', 'show');
 
 		reflow(element);
 

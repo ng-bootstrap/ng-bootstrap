@@ -1,6 +1,8 @@
 import { fromEvent, merge } from 'rxjs';
-import { filter, take } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 import {
+	afterNextRender,
+	AfterRenderPhase,
 	AfterViewInit,
 	ChangeDetectionStrategy,
 	ChangeDetectorRef,
@@ -139,7 +141,7 @@ export class NgbDatepickerContent {
 				@if (datepicker.showWeekNumbers) {
 					<div class="ngb-dp-weekday ngb-dp-showweek small">{{ i18n.getWeekLabel() }}</div>
 				}
-				@for (weekday of viewModel.weekdays; track weekday) {
+				@for (weekday of viewModel.weekdays; track $index) {
 					<div class="ngb-dp-weekday small" role="columnheader">{{ weekday }}</div>
 				}
 			</div>
@@ -239,7 +241,7 @@ export class NgbDatepickerMonth {
 		</ng-template>
 
 		<ng-template #defaultContentTemplate>
-			@for (month of model.months; track month; let i = $index) {
+			@for (month of model.months; track month) {
 				<div class="ngb-dp-month">
 					@if (navigation === 'none' || (displayMonths > 1 && navigation === 'select')) {
 						<div class="ngb-dp-month-name">
@@ -286,7 +288,7 @@ export class NgbDatepicker implements AfterViewInit, OnChanges, OnInit, ControlV
 	static ngAcceptInputType_autoClose: boolean | string;
 	static ngAcceptInputType_navigation: string;
 	static ngAcceptInputType_outsideDays: string;
-	static ngAcceptInputType_weekdays: boolean | number;
+	static ngAcceptInputType_weekdays: boolean | string;
 
 	model: DatepickerViewModel;
 
@@ -303,6 +305,7 @@ export class NgbDatepicker implements AfterViewInit, OnChanges, OnInit, ControlV
 	private _ngbDateAdapter = inject(NgbDateAdapter<any>);
 	private _ngZone = inject(NgZone);
 	private _destroyRef = inject(DestroyRef);
+	private _injector = inject(Injector);
 
 	private _controlValue: NgbDate | null = null;
 	private _publicState: NgbDatepickerState = <any>{};
@@ -421,7 +424,7 @@ export class NgbDatepicker implements AfterViewInit, OnChanges, OnInit, ControlV
 	 *
 	 * * `true` - weekdays are displayed using default width
 	 * * `false` - weekdays are not displayed
-	 * * `TranslationWidth` - weekdays are displayed using specified width
+	 * * `"short" | "long" | "narrow"` - weekdays are displayed using specified width
 	 *
 	 * @since 9.1.0
 	 */
@@ -547,10 +550,12 @@ export class NgbDatepicker implements AfterViewInit, OnChanges, OnInit, ControlV
 	}
 
 	focus() {
-		this._ngZone.onStable
-			.asObservable()
-			.pipe(take(1))
-			.subscribe(() => this._nativeElement.querySelector<HTMLElement>('div.ngb-dp-day[tabindex="0"]')?.focus());
+		afterNextRender(
+			() => {
+				this._nativeElement.querySelector<HTMLElement>('div.ngb-dp-day[tabindex="0"]')?.focus();
+			},
+			{ phase: AfterRenderPhase.Read, injector: this._injector },
+		);
 	}
 
 	/**

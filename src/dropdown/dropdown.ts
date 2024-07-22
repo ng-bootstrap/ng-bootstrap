@@ -1,5 +1,9 @@
 import {
 	AfterContentInit,
+	afterNextRender,
+	afterRender,
+	AfterRenderPhase,
+	AfterRenderRef,
 	ChangeDetectorRef,
 	ContentChild,
 	ContentChildren,
@@ -8,6 +12,7 @@ import {
 	EventEmitter,
 	forwardRef,
 	inject,
+	Injector,
 	Input,
 	NgZone,
 	OnChanges,
@@ -18,13 +23,12 @@ import {
 	SimpleChanges,
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { fromEvent, Subject, Subscription } from 'rxjs';
+import { fromEvent, Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import { ngbPositioning, Placement, PlacementArray } from '../util/positioning';
 import { addPopperOffset } from '../util/positioning-util';
 import { ngbAutoClose, SOURCE } from '../util/autoclose';
-import { Key } from '../util/key';
 
 import { NgbDropdownConfig } from './dropdown-config';
 import { FOCUSABLE_ELEMENTS_SELECTOR } from '../util/focus-trap';
@@ -84,7 +88,7 @@ export class NgbDropdownButtonItem {
 	selector: '[ngbDropdownMenu]',
 	standalone: true,
 	host: {
-		'[class.dropdown-menu]': 'true',
+		class: 'dropdown-menu',
 		'[class.show]': 'dropdown.isOpen()',
 		'(keydown.ArrowUp)': 'dropdown.onKeyDown($event)',
 		'(keydown.ArrowDown)': 'dropdown.onKeyDown($event)',
@@ -166,11 +170,12 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 	private _changeDetector = inject(ChangeDetectorRef);
 	private _config = inject(NgbDropdownConfig);
 	private _document = inject(DOCUMENT);
+	private _injector = inject(Injector);
 	private _ngZone = inject(NgZone);
 	private _nativeElement = inject(ElementRef).nativeElement as HTMLElement;
 
 	private _destroyCloseHandlers$ = new Subject<void>();
-	private _zoneSubscription: Subscription;
+	private _afterRenderRef: AfterRenderRef | undefined;
 	private _bodyContainer: HTMLElement | null = null;
 
 	private _positioning = ngbPositioning();
@@ -256,12 +261,15 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 	}
 
 	ngAfterContentInit() {
-		this._ngZone.onStable.pipe(take(1)).subscribe(() => {
-			this._applyPlacementClasses();
-			if (this._open) {
-				this._setCloseHandlers();
-			}
-		});
+		afterNextRender(
+			() => {
+				this._applyPlacementClasses();
+				if (this._open) {
+					this._setCloseHandlers();
+				}
+			},
+			{ phase: AfterRenderPhase.Write, injector: this._injector },
+		);
 	}
 
 	ngOnChanges(changes: SimpleChanges) {
@@ -274,7 +282,6 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 				hostElement: this._anchor.nativeElement,
 				targetElement: this._bodyContainer || this._menu.nativeElement,
 				placement: this.placement,
-				appendToBody: this.container === 'body',
 			});
 			this._applyPlacementClasses();
 		}
@@ -314,11 +321,15 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 							hostElement: this._anchor.nativeElement,
 							targetElement: this._bodyContainer || this._menu.nativeElement,
 							placement: this.placement,
-							appendToBody: this.container === 'body',
 							updatePopperOptions: (options) => this.popperOptions(addPopperOffset([0, 2])(options)),
 						});
 						this._applyPlacementClasses();
-						this._zoneSubscription = this._ngZone.onStable.subscribe(() => this._positionMenu());
+						this._afterRenderRef = afterRender(
+							() => {
+								this._positionMenu();
+							},
+							{ phase: AfterRenderPhase.Write, injector: this._injector },
+						);
 					});
 				}
 			}
@@ -353,7 +364,7 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 			this._open = false;
 			this._resetContainer();
 			this._positioning.destroy();
-			this._zoneSubscription?.unsubscribe();
+			this._afterRenderRef?.destroy();
 			this._destroyCloseHandlers$.next();
 			this.openChange.emit(false);
 			this._changeDetector.markForCheck();
@@ -376,8 +387,7 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 	}
 
 	onKeyDown(event: KeyboardEvent) {
-		/* eslint-disable-next-line deprecation/deprecation */
-		const key = event.which;
+		const { key } = event;
 		const itemElements = this._getMenuElements();
 
 		let position = -1;
@@ -396,7 +406,7 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 		}
 
 		// closing on Enter / Space
-		if (key === Key.Space || key === Key.Enter) {
+		if (key === ' ' || key === 'Enter') {
 			if (itemElement && (this.autoClose === true || this.autoClose === 'inside')) {
 				// Item is either a button or a link, so click will be triggered by the browser on Enter or Space.
 				// So we have to register a one-time click handler that will fire after any user defined click handlers
@@ -408,7 +418,7 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 			return;
 		}
 
-		if (key === Key.Tab) {
+		if (key === 'Tab') {
 			if (event.target && this.isOpen() && this.autoClose) {
 				if (this._anchor.nativeElement === event.target) {
 					if (this.container === 'body' && !event.shiftKey) {
@@ -452,20 +462,20 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 
 			if (itemElements.length) {
 				switch (key) {
-					case Key.ArrowDown:
+					case 'ArrowDown':
 						position = Math.min(position + 1, itemElements.length - 1);
 						break;
-					case Key.ArrowUp:
+					case 'ArrowUp':
 						if (this._isDropup() && position === -1) {
 							position = itemElements.length - 1;
 							break;
 						}
 						position = Math.max(position - 1, 0);
 						break;
-					case Key.Home:
+					case 'Home':
 						position = 0;
 						break;
-					case Key.End:
+					case 'End':
 						position = itemElements.length - 1;
 						break;
 				}
