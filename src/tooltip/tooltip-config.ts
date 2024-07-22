@@ -30,4 +30,7 @@ export class NgbTooltipConfig {
 	set animation(animation: boolean) {
 		this._animation = animation;
 	}
+
+	mouseleaveCloseDelay = 100;
+	focusoutCloseDelay = 10;
 }

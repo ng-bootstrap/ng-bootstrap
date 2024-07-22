@@ -15,11 +15,12 @@ import {
 	NgZone,
 } from '@angular/core';
 
-import { NgbPopover, NgbPopoverWindow } from './popover';
-import { NgbPopoverConfig } from './popover-config';
-import { NgbTooltip } from '../tooltip/tooltip';
 import { NgbConfig } from '../ngb-config';
 import { NgbConfigAnimation } from '../test/ngb-config-animation';
+import { NgbTooltip } from '../tooltip/tooltip';
+import { NgbPopover, NgbPopoverWindow } from './popover';
+import { NgbPopoverConfig } from './popover-config';
+
 import { Options } from '@popperjs/core';
 
 @Injectable()
@@ -808,6 +809,56 @@ describe('ngb-popover', () => {
 			fixture.detectChanges();
 			expect(getWindow(fixture.nativeElement)).toBeNull();
 		});
+	});
+
+	describe('stays open when hovered or focused', () => {
+		it('stays open when hovered with mouseleave close trigger', fakeAsync(() => {
+			const fixture = createTestComponent(`<div ngbPopover="Great tip!" triggers="mouseenter:mouseleave"></div>`);
+			const directive = fixture.debugElement.query(By.directive(NgbPopover));
+
+			triggerEvent(directive, 'mouseenter');
+			fixture.detectChanges();
+			expect(getWindow(fixture.nativeElement)).not.toBeNull();
+
+			triggerEvent(directive, 'mouseleave');
+			triggerEvent(getWindow(fixture.nativeElement), 'mouseenter');
+			fixture.detectChanges();
+			expect(getWindow(fixture.nativeElement)).not.toBeNull();
+
+			triggerEvent(getWindow(fixture.nativeElement), 'mouseleave');
+			triggerEvent(directive, 'mouseenter');
+			fixture.detectChanges();
+			expect(getWindow(fixture.nativeElement)).not.toBeNull();
+
+			triggerEvent(directive, 'mouseleave');
+			fixture.detectChanges();
+			tick(200);
+			expect(getWindow(fixture.nativeElement)).toBeNull();
+		}));
+
+		it('stays open when focused with focusout close trigger', fakeAsync(() => {
+			const fixture = createTestComponent(`<div ngbPopover="Great tip!" triggers="focusin:focusout"></div>`);
+			const directive = fixture.debugElement.query(By.directive(NgbPopover));
+
+			triggerEvent(directive, 'focusin');
+			fixture.detectChanges();
+			expect(getWindow(fixture.nativeElement)).not.toBeNull();
+
+			triggerEvent(directive, 'focusout');
+			triggerEvent(getWindow(fixture.nativeElement), 'focusin');
+			fixture.detectChanges();
+			expect(getWindow(fixture.nativeElement)).not.toBeNull();
+
+			triggerEvent(getWindow(fixture.nativeElement), 'focusout');
+			triggerEvent(directive, 'focusin');
+			fixture.detectChanges();
+			expect(getWindow(fixture.nativeElement)).not.toBeNull();
+
+			triggerEvent(directive, 'focusout');
+			fixture.detectChanges();
+			tick(200);
+			expect(getWindow(fixture.nativeElement)).toBeNull();
+		}));
 	});
 
 	describe('Custom config', () => {

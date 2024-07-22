@@ -6,6 +6,7 @@ import {
 	Directive,
 	ElementRef,
 	EventEmitter,
+	HostBinding,
 	inject,
 	Input,
 	NgZone,
@@ -18,17 +19,16 @@ import {
 	ViewEncapsulation,
 } from '@angular/core';
 import { DOCUMENT, NgTemplateOutlet } from '@angular/common';
+import { Observable, Subscription, switchMap } from 'rxjs';
 
-import { listenToTriggers } from '../util/triggers';
 import { ngbAutoClose } from '../util/autoclose';
 import { ngbPositioning } from '../util/positioning';
 import { PopupService } from '../util/popup';
+import { addPopperOffset } from '../util/positioning-util';
+import { listenToTriggers, parseTriggers, TriggersState } from '../util/triggers';
 import { isString } from '../util/util';
 
 import { NgbPopoverConfig } from './popover-config';
-
-import { addPopperOffset } from '../util/positioning-util';
-import { Subscription } from 'rxjs';
 
 let nextId = 0;
 
@@ -45,6 +45,13 @@ let nextId = 0;
 		'[id]': 'id',
 		style: 'position: absolute;',
 	},
+	styles: [
+		`
+			:host:focus {
+				outline: none;
+			}
+		`,
+	],
 	template: `
 		<div class="popover-arrow" data-popper-arrow></div>
 		@if (title) {
@@ -61,15 +68,31 @@ let nextId = 0;
 		</div>
 	`,
 })
-export class NgbPopoverWindow {
+export class NgbPopoverWindow implements OnInit {
 	@Input() animation: boolean;
 	@Input() title: string | TemplateRef<any> | null | undefined;
 	@Input() id: string;
 	@Input() popoverClass: string;
 	@Input() context: any;
+	@HostBinding('attr.tabIndex') tabIndex = -1;
+	@Output() inited = new EventEmitter<HTMLElement>();
+
+	set focusable(value: boolean) {
+		this.tabIndex = value ? 0 : -1;
+	}
+
+	get focusable() {
+		return this.tabIndex !== -1;
+	}
+
+	constructor(private _elementRef: ElementRef) {}
 
 	isTitleTemplate() {
 		return this.title instanceof TemplateRef;
+	}
+
+	ngOnInit() {
+		this.inited.next(this._elementRef.nativeElement);
 	}
 }
 
@@ -192,6 +215,21 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 	@Input() closeDelay = this._config.closeDelay;
 
 	/**
+	 * The delay before the popover is closed on mouseleave.  Only takes effect if "mouseleave" is among the close
+	 * triggers.
+	 *
+	 * @since *Unreleased*
+	 */
+	@Input() mouseleaveCloseDelay = this._config.mouseleaveCloseDelay;
+
+	/**
+	 * The delay before the popover is closed on focusout.  Only takes effect if "focusout" is among the close triggers.
+	 *
+	 * @since *Unreleased*
+	 */
+	@Input() focusoutCloseDelay = this._config.focusoutCloseDelay;
+
+	/**
 	 * An event emitted when the popover opening animation has finished. Contains no payload.
 	 */
 	@Output() shown = new EventEmitter<void>();
@@ -212,8 +250,10 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 	private _popupService = new PopupService(NgbPopoverWindow);
 	private _windowRef: ComponentRef<NgbPopoverWindow> | null = null;
 	private _unregisterListenersFn;
+	private _windowListenersSubscription: Subscription;
 	private _positioning = ngbPositioning();
 	private _zoneSubscription: Subscription;
+	private _triggersState = new TriggersState();
 
 	/**
 	 * Opens the popover.
@@ -235,6 +275,34 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 			this._windowRef.setInput('context', context ?? this.popoverContext);
 			this._windowRef.setInput('popoverClass', this.popoverClass);
 			this._windowRef.setInput('id', this._ngbPopoverWindowId);
+
+			// Make the tooltip window focuseable to track focusin and focusout events
+			if (parseTriggers(this.triggers).some(([_, closeTrigger]) => closeTrigger === 'focusout')) {
+				this._windowRef.instance.focusable = true;
+			}
+
+			// Subscribe to trigger events on the popover
+			this._windowListenersSubscription?.unsubscribe();
+			this._windowListenersSubscription = this._windowRef.instance.inited
+				.pipe(
+					switchMap((nativeElement) => {
+						const f = listenToTriggers(
+							nativeElement,
+							true,
+							this.triggers,
+							this.isOpen.bind(this),
+							this.open.bind(this),
+							this.close.bind(this),
+							+this.openDelay,
+							+this.closeDelay,
+							+this.mouseleaveCloseDelay,
+							+this.focusoutCloseDelay,
+							this._triggersState,
+						);
+						return new Observable(() => f);
+					}),
+				)
+				.subscribe();
 
 			this._getPositionTargetElement().setAttribute('aria-describedby', this._ngbPopoverWindowId);
 
@@ -292,6 +360,7 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 				this._windowRef = null;
 				this._positioning.destroy();
 				this._zoneSubscription?.unsubscribe();
+				this._windowListenersSubscription?.unsubscribe();
 				this.hidden.emit();
 				this._changeDetector.markForCheck();
 			});
@@ -321,12 +390,16 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 	ngOnInit() {
 		this._unregisterListenersFn = listenToTriggers(
 			this._nativeElement,
+			false,
 			this.triggers,
 			this.isOpen.bind(this),
 			this.open.bind(this),
 			this.close.bind(this),
 			+this.openDelay,
 			+this.closeDelay,
+			+this.mouseleaveCloseDelay,
+			+this.focusoutCloseDelay,
+			this._triggersState,
 		);
 	}
 

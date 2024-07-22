@@ -1,4 +1,4 @@
-const ALIASES = {
+﻿const ALIASES = {
 	hover: ['mouseenter', 'mouseleave'],
 	focus: ['focusin', 'focusout'],
 };
@@ -28,14 +28,23 @@ export function parseTriggers(triggers: string): [string, string?][] {
 	return manualTriggers.length ? [] : parsedTriggers;
 }
 
+export class TriggersState {
+	activeOpenTriggers = new Set<string>();
+	timeout: NodeJS.Timeout;
+}
+
 export function listenToTriggers(
 	element: HTMLElement,
+	isPopover: boolean,
 	triggers: string,
 	isOpenedFn: () => boolean,
 	openFn: () => void,
 	closeFn: () => void,
 	openDelayMs = 0,
 	closeDelayMs = 0,
+	mouseleaveCloseDelayMs = 0,
+	focusoutCloseDelayMs = 0,
+	state: TriggersState = new TriggersState(),
 ) {
 	const parsedTriggers = parseTriggers(triggers);
 
@@ -43,19 +52,34 @@ export function listenToTriggers(
 		return () => {};
 	}
 
-	const activeOpenTriggers = new Set<string>();
 	const cleanupFns: (() => void)[] = [];
-	let timeout: any;
 
 	function addEventListener(name: string, listener: () => void) {
 		element.addEventListener(name, listener);
 		cleanupFns.push(() => element.removeEventListener(name, listener));
 	}
 
-	function withDelay(fn: () => void, delayMs: number) {
-		clearTimeout(timeout);
-		if (delayMs > 0) {
-			timeout = setTimeout(fn, delayMs);
+	function withOpenDelay(fn: () => void) {
+		clearTimeout(state.timeout);
+		if (openDelayMs > 0) {
+			state.timeout = setTimeout(fn, openDelayMs);
+		} else {
+			fn();
+		}
+	}
+
+	function withCloseDelay(trigger: string, fn: () => void) {
+		clearTimeout(state.timeout);
+		// Do not handle popover clicks because it is the realm of [autoClose]
+		if (isPopover && trigger === 'click') return;
+		const delay =
+			trigger === 'mouseleave'
+				? Math.max(mouseleaveCloseDelayMs, closeDelayMs)
+				: trigger === 'focusout'
+				  ? Math.max(focusoutCloseDelayMs, closeDelayMs)
+				  : closeDelayMs;
+		if (delay > 0) {
+			state.timeout = setTimeout(fn, delay);
 		} else {
 			fn();
 		}
@@ -64,16 +88,16 @@ export function listenToTriggers(
 	for (const [openTrigger, closeTrigger] of parsedTriggers) {
 		if (!closeTrigger) {
 			addEventListener(openTrigger, () =>
-				isOpenedFn() ? withDelay(closeFn, closeDelayMs) : withDelay(openFn, openDelayMs),
+				isOpenedFn() ? withCloseDelay(openTrigger, closeFn) : withOpenDelay(openFn),
 			);
 		} else {
 			addEventListener(openTrigger, () => {
-				activeOpenTriggers.add(openTrigger);
-				withDelay(() => activeOpenTriggers.size > 0 && openFn(), openDelayMs);
+				state.activeOpenTriggers.add(openTrigger);
+				withOpenDelay(() => state.activeOpenTriggers.size > 0 && openFn());
 			});
 			addEventListener(closeTrigger, () => {
-				activeOpenTriggers.delete(openTrigger);
-				withDelay(() => activeOpenTriggers.size === 0 && closeFn(), closeDelayMs);
+				state.activeOpenTriggers.delete(openTrigger);
+				withCloseDelay(closeTrigger, () => state.activeOpenTriggers.size === 0 && closeFn());
 			});
 		}
 	}
