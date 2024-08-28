@@ -1,3 +1,17 @@
+## [17.0.1](https://github.com/ng-bootstrap/ng-bootstrap/compare/17.0.0...17.0.1) (2024-08-28)
+
+Hopefully fixes **that one** datepicker bug with weekday labels.
+
+Also replacing `NgZone.onStable()` with `afterRender()/afterNextRender()` internally and using esbuild with zoneless CD for the demo site.
+
+### Bug Fixes
+
+* **datepicker:** generate weekday labels in correct order ([04010d6](https://github.com/ng-bootstrap/ng-bootstrap/commit/04010d6af69a02691d91e7180b50a986fcf3ef71))
+* **datepicker:** config not inherited from datepicker-input ([db14075](https://github.com/ng-bootstrap/ng-bootstrap/commit/db14075d07de381fe9c2d4b8ab3db29ad19c7c4a)), closes [#3848](https://github.com/ng-bootstrap/ng-bootstrap/issues/3848)
+* **datepicker:** global config not applied ([18919c9](https://github.com/ng-bootstrap/ng-bootstrap/commit/18919c990eeb346c2e5980c0c3808c32826c226b)), closes [#4697](https://github.com/ng-bootstrap/ng-bootstrap/issues/4697)
+
+
+
 # [17.0.0](https://github.com/ng-bootstrap/ng-bootstrap/compare/16.0.0...17.0.0) (2024-06-13)
 
 This release bumps minimum required versions to Angular `18.0.0`.
