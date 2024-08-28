@@ -124,7 +124,7 @@ describe('NgbInputDatepicker', () => {
 			fixture.detectChanges();
 			const datepicker = fixture.nativeElement.querySelector('ngb-datepicker');
 			expect(datepicker).not.toBeNull();
-			expect(getWeekdays(datepicker)).toEqual(['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']);
+			expect(getWeekdays(datepicker)).toEqual(['S', 'M', 'T', 'W', 'T', 'F', 'S']);
 		});
 	});
 

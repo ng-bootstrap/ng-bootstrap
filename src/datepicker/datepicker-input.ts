@@ -86,7 +86,6 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 	private _changeDetector = inject(ChangeDetectorRef);
 	private _injector = inject(Injector);
 	private _config = inject(NgbInputDatepickerConfig);
-	private _injector = inject(Injector);
 
 	private _cRef: ComponentRef<NgbDatepicker> | null = null;
 	private _disabled = false;
