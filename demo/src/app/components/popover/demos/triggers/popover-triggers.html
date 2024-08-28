@@ -1,11 +1,16 @@
-<p>
+﻿<p>
 	You can easily override open and close triggers by specifying event names (separated by <code>:</code>) in the
 	<code>triggers</code> property. You may pass multiple triggers; separate them with a space.
 </p>
 
+<p>
+	Two common options are <code>mouseenter:mouseleave</code> (alias <code>hover</code>) and
+	<code>focusin:focusout</code> (alias <code>focus</code>).
+</p>
+
 <button
 	type="button"
-	class="btn btn-outline-secondary"
+	class="btn btn-outline-secondary me-2"
 	ngbPopover="You see, I show up on hover!"
 	triggers="mouseenter:mouseleave"
 	popoverTitle="Pop title"
@@ -13,21 +18,68 @@
 	Hover over me!
 </button>
 
+<button
+	type="button"
+	class="btn btn-outline-secondary me-2"
+	ngbPopover="You see, I show up on focus!"
+	triggers="focusin:focusout"
+	popoverTitle="Pop title"
+>
+	Focus me!
+</button>
+
+<hr />
+<p>
+	Note that <code>mouseleave</code> close trigger will not close the popover when mouse cursor is over it. Similarly,
+	the <code>focusout</code> trigger will not close the popover when it is focused. Use the buttons below to see it in
+	action.
+</p>
+
+<button
+	type="button"
+	class="btn btn-outline-secondary me-2"
+	ngbPopover="Try to select and copy this text.  The popover is still open."
+	triggers="mouseenter:mouseleave"
+	autoClose="outside"
+	popoverTitle="Pop title"
+>
+	Hover over me!
+</button>
+
+<ng-template #popLink
+	>Click the link to <a href="https://ng-bootstrap.github.io/" target="_blank">ng-bootstrap homepage</a>. The popover is
+	still open.</ng-template
+>
+<button
+	type="button"
+	class="btn btn-outline-secondary me-2"
+	[ngbPopover]="popLink"
+	triggers="focusin:focusout"
+	autoClose="outside"
+	popoverTitle="Pop title"
+>
+	Focus me!
+</button>
+
+<p class="mt-2">
+	<small
+		><strong>NB</strong>: These buttons use <code>autoClose="outside"</code> to enable clicks inside the popover.</small
+	>
+</p>
+
 <hr />
 <p>Alternatively you can take full manual control over popover opening / closing events.</p>
 
-<div class="buttons">
-	<button
-		type="button"
-		class="btn btn-outline-secondary me-2"
-		ngbPopover="What a great tip!"
-		[autoClose]="false"
-		triggers="manual"
-		#p="ngbPopover"
-		(click)="p.open()"
-		popoverTitle="Pop title"
-	>
-		Click me to open a popover
-	</button>
-	<button type="button" class="btn btn-outline-secondary me-2" (click)="p.close()">Click me to close a popover</button>
-</div>
+<button
+	type="button"
+	class="btn btn-outline-secondary me-2"
+	ngbPopover="What a great tip!"
+	[autoClose]="false"
+	triggers="manual"
+	#p="ngbPopover"
+	(click)="p.open()"
+	popoverTitle="Pop title"
+>
+	Click me to open a popover
+</button>
+<button type="button" class="btn btn-outline-secondary me-2" (click)="p.close()">Click me to close a popover</button>
