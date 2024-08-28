@@ -4,13 +4,11 @@
   "description": "Angular powered Bootstrap",
   "author": "https://github.com/ng-bootstrap/ng-bootstrap/graphs/contributors",
   "engines": {
-    "node": ">=16.10.0",
-    "yarn": ">=1.15.2 <2.0.0"
+    "node": ">=20.11.1",
+    "npm": "Please use Yarn to install dependencies"
   },
+  "packageManager": "yarn@4.3.1",
   "scripts": {
-    "version": "yarn changelog && git add CHANGELOG.md",
-    "postversion": "yarn ngb:build && yarn demo:build",
-    "preinstall": "node misc/preinstall.js",
     "prepare": "is-ci || husky install .husky",
     "build": "yarn ngb:build && yarn demo:build",
     "test": "yarn ngb:lint && yarn ngb:test && yarn schematics:test",
@@ -52,7 +50,8 @@
     "schematics:build": "rollup --failAfterWarnings -c schematics/rollup.config.js",
     "schematics:tdd": "ts-node-dev --respawn --project schematics/tsconfig.json node_modules/jasmine/bin/jasmine schematics/**/*.spec.ts",
     "schematics:test": "ts-node --project schematics/tsconfig.json node_modules/jasmine/bin/jasmine schematics/**/*.spec.ts",
-    "ci": "yarn check-format && yarn test && yarn e2e && yarn build -c ci && yarn ssr"
+    "ci": "yarn check-format && yarn test && yarn e2e && yarn build -c ci && yarn ssr",
+    "prepare-release": "yarn changelog && git add CHANGELOG.md && yarn build"
   },
   "repository": {
     "type": "git",
