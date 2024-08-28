@@ -1242,7 +1242,7 @@ describe('ngb-datepicker', () => {
 			);
 			fixture.detectChanges();
 
-			expect(getWeekdays(fixture.nativeElement)).toEqual(['Tu', 'We', 'Th', 'Fr', 'Sa', 'Su', 'Mo']);
+			expect(getWeekdays(fixture.nativeElement)).toEqual(['T', 'W', 'T', 'F', 'S', 'S', 'M']);
 		});
 	});
 
