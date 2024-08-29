@@ -1,4 +1,4 @@
-import { inject, Injectable, Injector } from '@angular/core';
+import { inject, Injectable, Injector, Type } from '@angular/core';
 
 import { NgbModalConfig, NgbModalOptions } from './modal-config';
 import { NgbModalRef } from './modal-ref';
@@ -25,9 +25,12 @@ export class NgbModal {
 	 *
 	 * Also see the [`NgbModalOptions`](#/components/modal/api#NgbModalOptions) for the list of supported options.
 	 */
-	open(content: any, options: NgbModalOptions = {}): NgbModalRef {
+	open<Component = any, Result = any>(
+		content: Type<Component> | any,
+		options: NgbModalOptions = {},
+	): NgbModalRef<Component, Result> {
 		const combinedOptions = { ...this._config, animation: this._config.animation, ...options };
-		return this._modalStack.open(this._injector, content, combinedOptions);
+		return this._modalStack.open<Component, Result>(this._injector, content, combinedOptions);
 	}
 
 	/**
