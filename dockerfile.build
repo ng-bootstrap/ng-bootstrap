@@ -1,0 +1,18 @@
+FROM debian:bookworm as build
+WORKDIR /home/pubaayaam/
+
+RUN apt update -y && \
+    apt install nodejs -y && \
+    apt install npm -y && \
+    npm install -g yarn
+
+RUN apt install telnet procps lsof -y
+
+RUN npm install -g @angular/cli
+
+WORKDIR /home/pubaayaam/ng-bootstrap
+COPY . .
+RUN npm install @ng-bootstrap/ng-bootstrap --legacy-peer-deps 
+RUN yarn install
+RUN  npm run build 
+CMD ["tail", "-f","/dev/null"]
