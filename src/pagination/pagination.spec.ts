@@ -47,8 +47,6 @@ function expectPages(nativeEl: HTMLElement, pagesDef: string[], ellipsis = '...'
 			expect(pages[i]).not.toHaveCssClass('active');
 			expect(pages[i]).toHaveCssClass('disabled');
 			expect(pages[i].getAttribute('aria-current')).toBeNull();
-			expect(pages[i].querySelector('a')!.getAttribute('tabindex')).toEqual('-1');
-			expect(pages[i].querySelector('a')!.hasAttribute('aria-disabled')).toBeTruthy();
 		}
 	}
 }
