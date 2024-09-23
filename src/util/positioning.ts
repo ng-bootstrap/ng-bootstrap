@@ -162,12 +162,6 @@ export function getPopperOptions({ placement, baseClass }: PositioningOptions, r
 					fallbackPlacements: popperPlacements,
 				},
 			},
-			{
-				enabled: true,
-				name: 'preventOverflow',
-				phase: 'main',
-				fn: function () {},
-			},
 		],
 	};
 }
