@@ -298,6 +298,7 @@ export class NgbAccordionItem implements AfterContentInit {
 			this._collapseAnimationRunning = false;
 			this.hidden.emit();
 			this._accordion.hidden.emit(this.id);
+			this._cd.detectChanges();
 		});
 		ngbCollapse.shown.pipe(takeUntilDestroyed(this._destroyRef)).subscribe(() => {
 			this.shown.emit();
