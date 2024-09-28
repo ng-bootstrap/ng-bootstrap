@@ -1,4 +1,4 @@
-import { Component, inject, TemplateRef } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, TemplateRef } from '@angular/core';
 
 import { NgbDatepickerModule, NgbOffcanvas, OffcanvasDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
@@ -10,6 +10,7 @@ import { NgbDatepickerModule, NgbOffcanvas, OffcanvasDismissReasons } from '@ng-
 })
 export class NgbdOffcanvasBasic {
 	private offcanvasService = inject(NgbOffcanvas);
+	private _changeDetector = inject(ChangeDetectorRef);
 	closeResult = '';
 
 	open(content: TemplateRef<any>) {
@@ -19,6 +20,7 @@ export class NgbdOffcanvasBasic {
 			},
 			(reason) => {
 				this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+				this._changeDetector.markForCheck();
 			},
 		);
 	}
