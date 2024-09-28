@@ -1,4 +1,4 @@
-import { Component, inject, TemplateRef } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, TemplateRef } from '@angular/core';
 
 import { ModalDismissReasons, NgbDatepickerModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -9,6 +9,7 @@ import { ModalDismissReasons, NgbDatepickerModule, NgbModal } from '@ng-bootstra
 	templateUrl: './modal-basic.html',
 })
 export class NgbdModalBasic {
+	private _changeDetector = inject(ChangeDetectorRef);
 	private modalService = inject(NgbModal);
 	closeResult = '';
 
@@ -19,6 +20,7 @@ export class NgbdModalBasic {
 			},
 			(reason) => {
 				this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+				this._changeDetector.markForCheck();
 			},
 		);
 	}

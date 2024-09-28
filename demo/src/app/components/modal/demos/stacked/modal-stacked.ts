@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
@@ -53,12 +53,14 @@ export class NgbdModal2Content {
 	templateUrl: './modal-stacked.html',
 })
 export class NgbdModalStacked {
+	private _changeDetector = inject(ChangeDetectorRef);
 	private modalService = inject(NgbModal);
 	modalsNumber = 0;
 
 	constructor() {
 		this.modalService.activeInstances.pipe(takeUntilDestroyed()).subscribe((list) => {
 			this.modalsNumber = list.length;
+			this._changeDetector.markForCheck();
 		});
 	}
 
