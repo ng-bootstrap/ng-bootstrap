@@ -1,4 +1,4 @@
-import { Component, inject, TemplateRef } from '@angular/core';
+import { Component, inject, signal, TemplateRef, WritableSignal } from '@angular/core';
 
 import { ModalDismissReasons, NgbDatepickerModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -9,15 +9,15 @@ import { ModalDismissReasons, NgbDatepickerModule, NgbModal } from '@ng-bootstra
 })
 export class NgbdModalBasic {
 	private modalService = inject(NgbModal);
-	closeResult = '';
+	closeResult: WritableSignal<string> = signal('');
 
 	open(content: TemplateRef<any>) {
 		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
 			(result) => {
-				this.closeResult = `Closed with: ${result}`;
+				this.closeResult.set(`Closed with: ${result}`);
 			},
 			(reason) => {
-				this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+				this.closeResult.set(`Dismissed ${this.getDismissReason(reason)}`);
 			},
 		);
 	}
