@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, TemplateRef } from '@angular/core';
+import { Component, inject, signal, TemplateRef, WritableSignal } from '@angular/core';
 
 import { NgbDatepickerModule, NgbOffcanvas, OffcanvasDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
@@ -10,17 +10,15 @@ import { NgbDatepickerModule, NgbOffcanvas, OffcanvasDismissReasons } from '@ng-
 })
 export class NgbdOffcanvasBasic {
 	private offcanvasService = inject(NgbOffcanvas);
-	private _changeDetector = inject(ChangeDetectorRef);
-	closeResult = '';
+	closeResult: WritableSignal<string> = signal('');
 
 	open(content: TemplateRef<any>) {
 		this.offcanvasService.open(content, { ariaLabelledBy: 'offcanvas-basic-title' }).result.then(
 			(result) => {
-				this.closeResult = `Closed with: ${result}`;
+				this.closeResult.set(`Closed with: ${result}`);
 			},
 			(reason) => {
-				this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-				this._changeDetector.markForCheck();
+				this.closeResult.set(`Dismissed ${this.getDismissReason(reason)}`);
 			},
 		);
 	}
