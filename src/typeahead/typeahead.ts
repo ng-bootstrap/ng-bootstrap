@@ -409,7 +409,7 @@ export class NgbTypeahead implements ControlValueAccessor, OnInit, OnChanges, On
 			tap((value) => {
 				this._inputValueBackup = this.showHint ? value : null;
 				this._inputValueForSelectOnExact = this.selectOnExact ? value : null;
-				this._onChange(this.editable ? value : undefined);
+				this._onChange(this.editable ? value : null);
 			}),
 			this.ngbTypeahead ? this.ngbTypeahead : () => of([]),
 		);
