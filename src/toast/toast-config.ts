@@ -23,9 +23,9 @@ export interface NgbToastOptions {
 	 *
 	 * Could be one of these 2 values (as string):
 	 * - `polite` (default)
-	 * - `alert`
+	 * - `assertive`
 	 */
-	ariaLive?: 'polite' | 'alert';
+	ariaLive?: 'polite' | 'assertive';
 }
 
 /**
@@ -42,7 +42,7 @@ export class NgbToastConfig implements NgbToastOptions {
 
 	autohide = true;
 	delay = 5000;
-	ariaLive: 'polite' | 'alert' = 'polite';
+	ariaLive: 'polite' | 'assertive' = 'polite';
 
 	get animation(): boolean {
 		return this._animation ?? this._ngbConfig.animation;
