@@ -1,4 +1,4 @@
-import { listenToTriggers, parseTriggers } from './triggers';
+﻿import { listenToTriggers, parseTriggers } from './triggers';
 import { fakeAsync, tick } from '@angular/core/testing';
 
 describe('triggers', () => {
@@ -68,7 +68,7 @@ describe('triggers', () => {
 		});
 
 		it(`should listen to 'click'`, fakeAsync(() => {
-			cleanupFn = listenToTriggers(div, 'click', isOpenedFn, openFn, closeFn);
+			cleanupFn = listenToTriggers(div, false, 'click', isOpenedFn, openFn, closeFn);
 
 			div.click();
 			expect(states).toEqual([true]);
@@ -82,7 +82,7 @@ describe('triggers', () => {
 		}));
 
 		it(`should listen to 'focus'`, fakeAsync(() => {
-			cleanupFn = listenToTriggers(div, 'focus', isOpenedFn, openFn, closeFn);
+			cleanupFn = listenToTriggers(div, false, 'focus', isOpenedFn, openFn, closeFn);
 
 			div.dispatchEvent(new FocusEvent('focusin'));
 			expect(states).toEqual([true]);
@@ -94,7 +94,7 @@ describe('triggers', () => {
 		}));
 
 		it(`should listen to 'hover focus'`, fakeAsync(() => {
-			cleanupFn = listenToTriggers(div, 'hover focus', isOpenedFn, openFn, closeFn);
+			cleanupFn = listenToTriggers(div, false, 'hover focus', isOpenedFn, openFn, closeFn);
 
 			div.dispatchEvent(new FocusEvent('focusin'));
 			div.dispatchEvent(new MouseEvent('mouseenter'));
@@ -110,7 +110,7 @@ describe('triggers', () => {
 		}));
 
 		it(`should listen to 'hover' with delays on open`, fakeAsync(() => {
-			cleanupFn = listenToTriggers(div, 'hover', isOpenedFn, openFn, closeFn, 100);
+			cleanupFn = listenToTriggers(div, false, 'hover', isOpenedFn, openFn, closeFn, 100);
 
 			// with delay
 			div.dispatchEvent(new MouseEvent('mouseenter'));
@@ -137,7 +137,7 @@ describe('triggers', () => {
 		}));
 
 		it(`should listen to 'hover' with delays on close`, fakeAsync(() => {
-			cleanupFn = listenToTriggers(div, 'hover', isOpenedFn, openFn, closeFn, 0, 100);
+			cleanupFn = listenToTriggers(div, false, 'hover', isOpenedFn, openFn, closeFn, 0, 100);
 
 			// with delay
 			div.dispatchEvent(new MouseEvent('mouseenter'));
