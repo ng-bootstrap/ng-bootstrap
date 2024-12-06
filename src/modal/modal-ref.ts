@@ -47,6 +47,7 @@ const WINDOW_ATTRIBUTES: string[] = [
 	'centered',
 	'fullscreen',
 	'keyboard',
+	'role',
 	'scrollable',
 	'size',
 	'windowClass',
