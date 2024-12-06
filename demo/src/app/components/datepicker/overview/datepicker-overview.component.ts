@@ -117,7 +117,7 @@ export class NgbdDatepickerOverviewComponent extends NgbdOverviewPage {
         	{{ date.day }}
         </ng-template>
 
-        <ngbDatepicker [dayTemplate]=“t”/>
+        <ngbDatepicker [dayTemplate]="t"/>
       `,
 		}),
 		contentTemplate: Snippet({
@@ -152,7 +152,7 @@ export class NgbdDatepickerOverviewComponent extends NgbdOverviewPage {
           }
         </ng-template>
 
-        <ngbDatepicker [dayTemplate]=“t”/>
+        <ngbDatepicker [dayTemplate]="t"/>
       `,
 		}),
 		footerTemplate: Snippet({
@@ -162,7 +162,7 @@ export class NgbdDatepickerOverviewComponent extends NgbdOverviewPage {
           <button (click)="model = today">Today</button>
         </ng-template>
 
-        <ngbDatepicker [footerTemplate]=“t”/>
+        <ngbDatepicker [footerTemplate]="t"/>
       `,
 		}),
 		disablingTS: Snippet({
