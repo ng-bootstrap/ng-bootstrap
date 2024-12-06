@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal, WritableSignal } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
@@ -54,11 +54,11 @@ export class NgbdModal2Content {
 })
 export class NgbdModalStacked {
 	private modalService = inject(NgbModal);
-	modalsNumber = 0;
+	modalsNumber: WritableSignal<number> = signal(0);
 
 	constructor() {
 		this.modalService.activeInstances.pipe(takeUntilDestroyed()).subscribe((list) => {
-			this.modalsNumber = list.length;
+			this.modalsNumber.set(list.length);
 		});
 	}
 
