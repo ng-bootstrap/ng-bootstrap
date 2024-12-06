@@ -633,7 +633,7 @@ describe('ngb-typeahead', () => {
 			fixture.detectChanges();
 			expect(getNativeInput(compiled)).toHaveCssClass('ng-invalid');
 			expect(getNativeInput(compiled)).not.toHaveCssClass('ng-valid');
-			expect(fixture.componentInstance.model).toBeUndefined();
+			expect(fixture.componentInstance.model).toBeNull();
 
 			const event = createKeyDownEvent('Enter');
 			getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
@@ -659,7 +659,7 @@ describe('ngb-typeahead', () => {
 			fixture.detectChanges();
 			expect(getNativeInput(compiled)).toHaveCssClass('ng-invalid');
 			expect(getNativeInput(compiled)).not.toHaveCssClass('ng-valid');
-			expect(fixture.componentInstance.model).toBeUndefined();
+			expect(fixture.componentInstance.model).toBeNull();
 
 			const event = createKeyDownEvent('Enter');
 			getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
@@ -672,7 +672,7 @@ describe('ngb-typeahead', () => {
 			fixture.detectChanges();
 			expect(getNativeInput(compiled)).toHaveCssClass('ng-invalid');
 			expect(getNativeInput(compiled)).not.toHaveCssClass('ng-valid');
-			expect(fixture.componentInstance.model).toBeUndefined();
+			expect(fixture.componentInstance.model).toBeNull();
 		}));
 
 		it('should clear model on user input when the editable option is on and no search was triggered', fakeAsync(() => {
@@ -691,7 +691,7 @@ describe('ngb-typeahead', () => {
 			fixture.detectChanges();
 			expect(getNativeInput(compiled)).toHaveCssClass('ng-invalid');
 			expect(getNativeInput(compiled)).not.toHaveCssClass('ng-valid');
-			expect(fixture.componentInstance.model).toBeUndefined();
+			expect(fixture.componentInstance.model).toBeNull();
 
 			const event = createKeyDownEvent('Enter');
 			getDebugInput(fixture.debugElement).triggerEventHandler('keydown', event);
@@ -704,8 +704,25 @@ describe('ngb-typeahead', () => {
 			fixture.detectChanges();
 			expect(getNativeInput(compiled)).toHaveCssClass('ng-invalid');
 			expect(getNativeInput(compiled)).not.toHaveCssClass('ng-valid');
-			expect(fixture.componentInstance.model).toBeUndefined();
+			expect(fixture.componentInstance.model).toBeNull();
 		}));
+
+		it('should use null and not undefined as value to make sure the form group value is valid (issue 4777)', () => {
+			const html = `
+           <form [formGroup]="form">
+             <input type="text" formControlName="control" [ngbTypeahead]="findObjects" [editable]="false" />
+           </form>`;
+			const fixture = createTestComponent(html);
+			const compiled = fixture.nativeElement;
+
+			changeInput(compiled, 'o');
+			fixture.detectChanges();
+
+			const formValue = fixture.componentInstance.form.getRawValue();
+			expect(formValue.control).toBeNull();
+
+			expect(() => fixture.componentInstance.form.setValue(formValue)).not.toThrow();
+		});
 	});
 
 	describe('select event', () => {
@@ -1086,7 +1103,7 @@ describe('ngb-typeahead', () => {
 			changeInput(compiled, 'one mor');
 			fixture.detectChanges();
 			expectWindowResults(compiled, ['+one more']);
-			expect(fixture.componentInstance.form.controls.control.value).toBeUndefined();
+			expect(fixture.componentInstance.form.controls.control.value).toBeNull();
 			expect(fixture.componentInstance.form.controls.control.valid).toBeFalse();
 		}));
 	});
