@@ -2,10 +2,9 @@ import { Component } from '@angular/core';
 import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-	selector: 'ngbd-pagination-disabled',
-	standalone: true,
-	imports: [NgbPaginationModule],
-	templateUrl: './pagination-disabled.html',
+    selector: 'ngbd-pagination-disabled',
+    imports: [NgbPaginationModule],
+    templateUrl: './pagination-disabled.html'
 })
 export class NgbdPaginationDisabled {
 	page = 3;

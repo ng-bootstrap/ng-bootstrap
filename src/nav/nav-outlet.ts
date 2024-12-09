@@ -45,15 +45,14 @@ export class NgbNavPane {
  * @since 5.2.0
  */
 @Component({
-	selector: '[ngbNavOutlet]',
-	standalone: true,
-	imports: [NgbNavPane, NgTemplateOutlet],
-	host: {
-		class: 'tab-content',
-	},
-	encapsulation: ViewEncapsulation.None,
-	changeDetection: ChangeDetectionStrategy.OnPush,
-	template: `
+    selector: '[ngbNavOutlet]',
+    imports: [NgbNavPane, NgTemplateOutlet],
+    host: {
+        class: 'tab-content',
+    },
+    encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    template: `
 		@for (item of nav.items; track item) {
 			@if (item.isPanelInDom() || isPanelTransitioning(item)) {
 				<div ngbNavPane [item]="item" [nav]="nav" [role]="paneRole">
@@ -64,7 +63,7 @@ export class NgbNavPane {
 				</div>
 			}
 		}
-	`,
+	`
 })
 export class NgbNavOutlet implements AfterViewInit {
 	private _cd = inject(ChangeDetectorRef);

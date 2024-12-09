@@ -3,10 +3,9 @@ import { Component, inject, TemplateRef } from '@angular/core';
 import { NgbDatepickerModule, NgbOffcanvas, OffcanvasDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-	selector: 'ngbd-offcanvas-basic',
-	standalone: true,
-	imports: [NgbDatepickerModule],
-	templateUrl: './offcanvas-basic.html',
+    selector: 'ngbd-offcanvas-basic',
+    imports: [NgbDatepickerModule],
+    templateUrl: './offcanvas-basic.html'
 })
 export class NgbdOffcanvasBasic {
 	private offcanvasService = inject(NgbOffcanvas);

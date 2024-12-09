@@ -12,11 +12,10 @@ interface Version {
 }
 
 @Component({
-	selector: 'ngbd-version-picker',
-	standalone: true,
-	changeDetection: ChangeDetectionStrategy.OnPush,
-	imports: [AsyncPipe, NgbDropdownModule],
-	template: `
+    selector: 'ngbd-version-picker',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [AsyncPipe, NgbDropdownModule],
+    template: `
 		<div class="nav-item" ngbDropdown>
 			<a class="nav-link" ngbDropdownToggle id="demo-site-versions" role="button"> ng-bootstrap v{{ current }} </a>
 			<div ngbDropdownMenu aria-labelledby="demo-site-versions" class="dropdown-menu dropdown-menu-end">
@@ -25,7 +24,7 @@ interface Version {
 				}
 			</div>
 		</div>
-	`,
+	`
 })
 export class VersionPickerComponent {
 	current = inject(LIB_VERSIONS).ngBootstrap;

@@ -1,6 +1,5 @@
 import {
 	afterRender,
-	AfterRenderPhase,
 	AfterRenderRef,
 	ChangeDetectionStrategy,
 	ChangeDetectorRef,
@@ -36,19 +35,18 @@ import { addPopperOffset } from '../util/positioning-util';
 let nextId = 0;
 
 @Component({
-	selector: 'ngb-popover-window',
-	standalone: true,
-	imports: [NgTemplateOutlet],
-	changeDetection: ChangeDetectionStrategy.OnPush,
-	encapsulation: ViewEncapsulation.None,
-	host: {
-		'[class]': '"popover" + (popoverClass ? " " + popoverClass : "")',
-		'[class.fade]': 'animation',
-		role: 'tooltip',
-		'[id]': 'id',
-		style: 'position: absolute;',
-	},
-	template: `
+    selector: 'ngb-popover-window',
+    imports: [NgTemplateOutlet],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    encapsulation: ViewEncapsulation.None,
+    host: {
+        '[class]': '"popover" + (popoverClass ? " " + popoverClass : "")',
+        '[class.fade]': 'animation',
+        role: 'tooltip',
+        '[id]': 'id',
+        style: 'position: absolute;',
+    },
+    template: `
 		<div class="popover-arrow" data-popper-arrow></div>
 		@if (title) {
 			<h3 class="popover-header">
@@ -62,7 +60,7 @@ let nextId = 0;
 		<div class="popover-body">
 			<ng-content />
 		</div>
-	`,
+	`
 })
 export class NgbPopoverWindow {
 	@Input() animation: boolean;
@@ -273,10 +271,12 @@ export class NgbPopover implements OnInit, OnDestroy, OnChanges {
 					this._positioning.update();
 				});
 				this._afterRenderRef = afterRender(
-					() => {
-						this._positioning.update();
+					{
+						mixedReadWrite: () => {
+							this._positioning.update();
+						},
 					},
-					{ phase: AfterRenderPhase.MixedReadWrite, injector: this._injector },
+					{ injector: this._injector },
 				);
 			});
 

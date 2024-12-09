@@ -1,6 +1,6 @@
 import { Component, Injectable, Injector, OnDestroy, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { NgbModalConfig, NgbModalOptions, NgbModalUpdatableOptions } from './modal-config';
 import { NgbActiveModal, NgbModal, NgbModalModule, NgbModalRef } from './modal.module';
 import { isBrowserVisible } from '../test/common';
@@ -1374,13 +1374,16 @@ describe('ngb-modal', () => {
 	}
 
 	describe('Lazy loading', () => {
-		@Component({ template: '<router-outlet />' })
+		@Component({
+    template: '<router-outlet />',
+	imports: [RouterOutlet],
+})
 		class AppComponent {}
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				declarations: [AppComponent],
 				imports: [
+					AppComponent,
 					NgbModalModule,
 					RouterModule.forRoot([
 						{
@@ -1470,10 +1473,9 @@ export class WithFirstFocusableModalCmpt {}
 export class WithSkipTabindexFirstFocusableModalCmpt {}
 
 @Component({
-	selector: 'test-cmpt',
-	standalone: true,
-	imports: [DestroyableCmpt],
-	template: `
+    selector: 'test-cmpt',
+    imports: [DestroyableCmpt],
+    template: `
 		<div id="testContainer"></div>
 		<ng-template #content>Hello, {{ name }}!</ng-template>
 		<ng-template #destroyableContent><destroyable-cmpt /></ng-template>
@@ -1500,7 +1502,7 @@ export class WithSkipTabindexFirstFocusableModalCmpt {}
 			style="display: inline-block;"
 			>Open</div
 		>
-	`,
+	`
 })
 class TestComponent {
 	name = 'World';

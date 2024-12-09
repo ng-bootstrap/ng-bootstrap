@@ -62,11 +62,10 @@ const statesWithFlags: { name: string; flag: string }[] = [
 ];
 
 @Component({
-	selector: 'ngbd-typeahead-template',
-	standalone: true,
-	imports: [NgbTypeaheadModule, FormsModule, JsonPipe],
-	templateUrl: './typeahead-template.html',
-	styles: `.form-control { width: 300px; }`,
+    selector: 'ngbd-typeahead-template',
+    imports: [NgbTypeaheadModule, FormsModule, JsonPipe],
+    templateUrl: './typeahead-template.html',
+    styles: `.form-control { width: 300px; }`
 })
 export class NgbdTypeaheadTemplate {
 	model: any;

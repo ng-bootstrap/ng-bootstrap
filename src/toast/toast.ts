@@ -1,7 +1,6 @@
 import {
 	AfterContentInit,
 	afterNextRender,
-	AfterRenderPhase,
 	Attribute,
 	Component,
 	ContentChild,
@@ -42,19 +41,18 @@ export class NgbToastHeader {}
  * @since 5.0.0
  */
 @Component({
-	selector: 'ngb-toast',
-	exportAs: 'ngbToast',
-	standalone: true,
-	imports: [NgTemplateOutlet],
-	encapsulation: ViewEncapsulation.None,
-	host: {
-		role: 'alert',
-		'[attr.aria-live]': 'ariaLive',
-		'aria-atomic': 'true',
-		class: 'toast',
-		'[class.fade]': 'animation',
-	},
-	template: `
+    selector: 'ngb-toast',
+    exportAs: 'ngbToast',
+    imports: [NgTemplateOutlet],
+    encapsulation: ViewEncapsulation.None,
+    host: {
+        role: 'alert',
+        '[attr.aria-live]': 'ariaLive',
+        'aria-atomic': 'true',
+        class: 'toast',
+        '[class.fade]': 'animation',
+    },
+    template: `
 		<ng-template #headerTpl>
 			<strong class="me-auto">{{ header }}</strong>
 		</ng-template>
@@ -75,7 +73,7 @@ export class NgbToastHeader {}
 			<ng-content />
 		</div>
 	`,
-	styleUrl: './toast.scss',
+    styleUrl: './toast.scss'
 })
 export class NgbToast implements AfterContentInit, OnChanges {
 	private _config = inject(NgbToastConfig);
@@ -144,11 +142,13 @@ export class NgbToast implements AfterContentInit, OnChanges {
 
 	ngAfterContentInit() {
 		afterNextRender(
-			() => {
-				this._init();
-				this.show();
+			{
+				mixedReadWrite: () => {
+					this._init();
+					this.show();
+				},
 			},
-			{ phase: AfterRenderPhase.MixedReadWrite, injector: this._injector },
+			{ injector: this._injector },
 		);
 	}
 

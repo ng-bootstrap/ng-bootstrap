@@ -192,7 +192,9 @@ describe('ngb-typeahead-window', () => {
 	});
 });
 
-@Component({ selector: 'test-cmp', standalone: true, imports: [NgbTypeaheadWindow], template: '' })
+@Component({
+    selector: 'test-cmp', imports: [NgbTypeaheadWindow], template: ''
+})
 class TestComponent {
 	active: string;
 	results = ['bar', 'baz'];

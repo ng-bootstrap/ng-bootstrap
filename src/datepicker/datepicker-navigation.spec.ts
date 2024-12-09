@@ -136,7 +136,9 @@ describe('ngb-datepicker-navigation', () => {
 	});
 });
 
-@Component({ selector: 'test-cmp', standalone: true, imports: [NgbDatepickerNavigation], template: '' })
+@Component({
+    selector: 'test-cmp', imports: [NgbDatepickerNavigation], template: ''
+})
 class TestComponent {
 	date = new NgbDate(2016, 8, 1);
 	prevDisabled = false;

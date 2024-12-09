@@ -3,10 +3,9 @@ import { Component, inject, TemplateRef } from '@angular/core';
 import { ModalDismissReasons, NgbDatepickerModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-	selector: 'ngbd-modal-basic',
-	standalone: true,
-	imports: [NgbDatepickerModule],
-	templateUrl: './modal-basic.html',
+    selector: 'ngbd-modal-basic',
+    imports: [NgbDatepickerModule],
+    templateUrl: './modal-basic.html'
 })
 export class NgbdModalBasic {
 	private modalService = inject(NgbModal);

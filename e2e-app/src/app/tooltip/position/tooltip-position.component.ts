@@ -4,9 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-	standalone: true,
-	imports: [FormsModule, NgbModule, NgStyle],
-	templateUrl: './tooltip-position.component.html',
+    imports: [FormsModule, NgbModule, NgStyle],
+    templateUrl: './tooltip-position.component.html'
 })
 export class TooltipPositionComponent {
 	flexPosition = 'justify-content-start';

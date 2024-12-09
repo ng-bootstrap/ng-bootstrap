@@ -836,10 +836,9 @@ describe('ngb-rating', () => {
 });
 
 @Component({
-	selector: 'test-cmp',
-	standalone: true,
-	imports: [NgbRating, FormsModule, ReactiveFormsModule],
-	template: '',
+    selector: 'test-cmp',
+    imports: [NgbRating, FormsModule, ReactiveFormsModule],
+    template: ''
 })
 class TestComponent {
 	changed = false;

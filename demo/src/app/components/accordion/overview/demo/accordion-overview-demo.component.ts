@@ -2,11 +2,10 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NgbAccordionDirective, NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-	selector: 'ngbd-accordion-demo',
-	standalone: true,
-	changeDetection: ChangeDetectionStrategy.OnPush,
-	imports: [NgbAccordionModule, NgbAccordionDirective],
-	template: `
+    selector: 'ngbd-accordion-demo',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [NgbAccordionModule, NgbAccordionDirective],
+    template: `
 		<div ngbAccordion [closeOthers]="true">
 			<div ngbAccordionItem>
 				<h2 ngbAccordionHeader>
@@ -30,6 +29,6 @@ import { NgbAccordionDirective, NgbAccordionModule } from '@ng-bootstrap/ng-boot
 				</div>
 			</div>
 		</div>
-	`,
+	`
 })
 export class NgbdAccordionDemoComponent {}

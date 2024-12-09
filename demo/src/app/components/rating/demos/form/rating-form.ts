@@ -3,10 +3,9 @@ import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-	selector: 'ngbd-rating-form',
-	standalone: true,
-	imports: [NgbRatingModule, ReactiveFormsModule],
-	templateUrl: './rating-form.html',
+    selector: 'ngbd-rating-form',
+    imports: [NgbRatingModule, ReactiveFormsModule],
+    templateUrl: './rating-form.html'
 })
 export class NgbdRatingForm {
 	ctrl = new FormControl<number | null>(null, Validators.required);

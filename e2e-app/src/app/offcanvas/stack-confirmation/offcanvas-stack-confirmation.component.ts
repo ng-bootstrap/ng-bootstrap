@@ -2,9 +2,8 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { NgbModal, NgbModule, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-	standalone: true,
-	imports: [NgbModule],
-	templateUrl: './offcanvas-stack-confirmation.component.html',
+    imports: [NgbModule],
+    templateUrl: './offcanvas-stack-confirmation.component.html'
 })
 export class OffcanvasStackConfirmationComponent {
 	@ViewChild('confirmation', { static: true, read: TemplateRef }) confirmationTpl: TemplateRef<any>;

@@ -5,9 +5,8 @@ import { map } from 'rxjs/operators';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-	standalone: true,
-	imports: [FormsModule, NgbModule],
-	templateUrl: './offcanvas-nesting.component.html',
+    imports: [FormsModule, NgbModule],
+    templateUrl: './offcanvas-nesting.component.html'
 })
 export class OffcanvasNestingComponent {
 	constructor(private offcanvasService: NgbOffcanvas) {}

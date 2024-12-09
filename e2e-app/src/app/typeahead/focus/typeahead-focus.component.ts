@@ -67,9 +67,8 @@ const states = [
 ];
 
 @Component({
-	standalone: true,
-	imports: [FormsModule, NgbModule],
-	templateUrl: './typeahead-focus.component.html',
+    imports: [FormsModule, NgbModule],
+    templateUrl: './typeahead-focus.component.html'
 })
 export class TypeaheadFocusComponent {
 	model: any;

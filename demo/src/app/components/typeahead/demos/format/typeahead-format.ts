@@ -68,11 +68,10 @@ const states = [
 ];
 
 @Component({
-	selector: 'ngbd-typeahead-format',
-	standalone: true,
-	imports: [NgbTypeaheadModule, FormsModule, JsonPipe],
-	templateUrl: './typeahead-format.html',
-	styles: `.form-control { width: 300px; }`,
+    selector: 'ngbd-typeahead-format',
+    imports: [NgbTypeaheadModule, FormsModule, JsonPipe],
+    templateUrl: './typeahead-format.html',
+    styles: `.form-control { width: 300px; }`
 })
 export class NgbdTypeaheadFormat {
 	model: any;

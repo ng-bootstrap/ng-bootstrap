@@ -1,6 +1,5 @@
 import {
 	afterNextRender,
-	AfterRenderPhase,
 	Component,
 	ElementRef,
 	inject,
@@ -38,19 +37,21 @@ export class NgbModalBackdrop implements OnInit {
 
 	ngOnInit() {
 		afterNextRender(
-			() =>
-				ngbRunTransition(
-					this._zone,
-					this._nativeElement,
-					(element: HTMLElement, animation: boolean) => {
-						if (animation) {
-							reflow(element);
-						}
-						element.classList.add('show');
-					},
-					{ animation: this.animation, runningTransition: 'continue' },
-				),
-			{ injector: this._injector, phase: AfterRenderPhase.MixedReadWrite },
+			{
+				mixedReadWrite: () =>
+					ngbRunTransition(
+						this._zone,
+						this._nativeElement,
+						(element: HTMLElement, animation: boolean) => {
+							if (animation) {
+								reflow(element);
+							}
+							element.classList.add('show');
+						},
+						{ animation: this.animation, runningTransition: 'continue' },
+					),
+			},
+			{ injector: this._injector },
 		);
 	}
 

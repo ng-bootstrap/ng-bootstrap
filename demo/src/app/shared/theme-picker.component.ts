@@ -16,11 +16,10 @@ const THEMES: Theme[] = [
 ];
 
 @Component({
-	selector: 'ngbd-theme-picker',
-	standalone: true,
-	changeDetection: ChangeDetectionStrategy.OnPush,
-	imports: [NgbDropdownModule],
-	template: `
+    selector: 'ngbd-theme-picker',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [NgbDropdownModule],
+    template: `
 		<div class="nav-item" ngbDropdown>
 			<a class="nav-link" ngbDropdownToggle id="demo-site-theme" role="button">
 				<span class="bi {{ current().icon }}"></span>
@@ -33,7 +32,7 @@ const THEMES: Theme[] = [
 				}
 			</div>
 		</div>
-	`,
+	`
 })
 export class ThemePickerComponent {
 	themes = signal(THEMES).asReadonly();

@@ -9,11 +9,10 @@ import { FormsModule } from '@angular/forms';
 import { NgbHighlight, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-	selector: 'ngbd-table-complete',
-	standalone: true,
-	imports: [DecimalPipe, FormsModule, AsyncPipe, NgbHighlight, NgbdSortableHeader, NgbPaginationModule],
-	templateUrl: './table-complete.html',
-	providers: [CountryService, DecimalPipe],
+    selector: 'ngbd-table-complete',
+    imports: [DecimalPipe, FormsModule, AsyncPipe, NgbHighlight, NgbdSortableHeader, NgbPaginationModule],
+    templateUrl: './table-complete.html',
+    providers: [CountryService, DecimalPipe]
 })
 export class NgbdTableComplete {
 	countries$: Observable<Country[]>;

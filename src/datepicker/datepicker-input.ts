@@ -1,6 +1,5 @@
 import {
 	afterRender,
-	AfterRenderPhase,
 	AfterRenderRef,
 	ChangeDetectorRef,
 	ComponentRef,
@@ -435,10 +434,12 @@ export class NgbInputDatepicker implements OnChanges, OnDestroy, ControlValueAcc
 					});
 
 					this._afterRenderRef = afterRender(
-						() => {
-							this._positioning.update();
+						{
+							mixedReadWrite: () => {
+								this._positioning.update();
+							},
 						},
-						{ phase: AfterRenderPhase.MixedReadWrite, injector: this._injector },
+						{ injector: this._injector },
 					);
 				}
 			});

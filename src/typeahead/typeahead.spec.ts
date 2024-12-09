@@ -1093,10 +1093,9 @@ describe('ngb-typeahead', () => {
 });
 
 @Component({
-	selector: 'test-cmp',
-	standalone: true,
-	imports: [NgbHighlight, NgbTypeahead, FormsModule, ReactiveFormsModule],
-	template: '',
+    selector: 'test-cmp',
+    imports: [NgbHighlight, NgbTypeahead, FormsModule, ReactiveFormsModule],
+    template: ''
 })
 class TestComponent {
 	private _strings = ['one', 'one more', 'two', 'three'];
@@ -1172,11 +1171,10 @@ class TestComponent {
 }
 
 @Component({
-	selector: 'test-onpush-cmp',
-	standalone: true,
-	imports: [NgbHighlight, NgbTypeahead, FormsModule],
-	changeDetection: ChangeDetectionStrategy.OnPush,
-	template: '',
+    selector: 'test-onpush-cmp',
+    imports: [NgbHighlight, NgbTypeahead, FormsModule],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    template: ''
 })
 class TestOnPushComponent {
 	private _strings = ['one', 'one more', 'two', 'three'];
@@ -1189,7 +1187,9 @@ class TestOnPushComponent {
 	};
 }
 
-@Component({ selector: 'test-async-cmp', standalone: true, imports: [NgbHighlight, NgbTypeahead], template: '' })
+@Component({
+    selector: 'test-async-cmp', imports: [NgbHighlight, NgbTypeahead], template: ''
+})
 class TestAsyncComponent {
 	private _strings = ['one', 'one more', 'two', 'three'];
 

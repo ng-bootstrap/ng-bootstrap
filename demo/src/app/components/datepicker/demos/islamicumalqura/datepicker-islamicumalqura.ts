@@ -45,14 +45,13 @@ export class IslamicI18n extends NgbDatepickerI18n {
 }
 
 @Component({
-	selector: 'ngbd-datepicker-islamicumalqura',
-	standalone: true,
-	imports: [NgbDatepickerModule, FormsModule, JsonPipe],
-	templateUrl: './datepicker-islamicumalqura.html',
-	providers: [
-		{ provide: NgbCalendar, useClass: NgbCalendarIslamicUmalqura },
-		{ provide: NgbDatepickerI18n, useClass: IslamicI18n },
-	],
+    selector: 'ngbd-datepicker-islamicumalqura',
+    imports: [NgbDatepickerModule, FormsModule, JsonPipe],
+    templateUrl: './datepicker-islamicumalqura.html',
+    providers: [
+        { provide: NgbCalendar, useClass: NgbCalendarIslamicUmalqura },
+        { provide: NgbDatepickerI18n, useClass: IslamicI18n },
+    ]
 })
 export class NgbdDatepickerIslamicumalqura {
 	today = inject(NgbCalendar).getToday();

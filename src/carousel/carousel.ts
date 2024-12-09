@@ -2,7 +2,6 @@ import {
 	AfterContentChecked,
 	AfterContentInit,
 	afterNextRender,
-	AfterRenderPhase,
 	AfterViewInit,
 	ChangeDetectionStrategy,
 	ChangeDetectorRef,
@@ -68,25 +67,24 @@ export class NgbSlide {
  * Allows to set intervals, change the way user interacts with the slides and provides a programmatic API.
  */
 @Component({
-	selector: 'ngb-carousel',
-	exportAs: 'ngbCarousel',
-	standalone: true,
-	imports: [NgTemplateOutlet],
-	changeDetection: ChangeDetectionStrategy.OnPush,
-	encapsulation: ViewEncapsulation.None,
-	host: {
-		class: 'carousel slide',
-		'[style.display]': '"block"',
-		tabIndex: '0',
-		'(keydown.arrowLeft)': 'keyboard && arrowLeft()',
-		'(keydown.arrowRight)': 'keyboard && arrowRight()',
-		'(mouseenter)': 'mouseHover = true',
-		'(mouseleave)': 'mouseHover = false',
-		'(focusin)': 'focused = true',
-		'(focusout)': 'focused = false',
-		'[attr.aria-activedescendant]': `'slide-' + activeId`,
-	},
-	template: `
+    selector: 'ngb-carousel',
+    exportAs: 'ngbCarousel',
+    imports: [NgTemplateOutlet],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    encapsulation: ViewEncapsulation.None,
+    host: {
+        class: 'carousel slide',
+        '[style.display]': '"block"',
+        tabIndex: '0',
+        '(keydown.arrowLeft)': 'keyboard && arrowLeft()',
+        '(keydown.arrowRight)': 'keyboard && arrowRight()',
+        '(mouseenter)': 'mouseHover = true',
+        '(mouseleave)': 'mouseHover = false',
+        '(focusin)': 'focused = true',
+        '(focusout)': 'focused = false',
+        '[attr.aria-activedescendant]': `'slide-' + activeId`,
+    },
+    template: `
 		<div class="carousel-indicators" [class.visually-hidden]="!showNavigationIndicators" role="tablist">
 			@for (slide of slides; track slide) {
 				<button
@@ -129,7 +127,7 @@ export class NgbSlide {
 				<span class="visually-hidden" i18n="@@ngb.carousel.next" [id]="id + '-next'">Next</span>
 			</button>
 		}
-	`,
+	`
 })
 export class NgbCarousel implements AfterContentChecked, AfterContentInit, AfterViewInit {
 	@ContentChildren(NgbSlide) slides: QueryList<NgbSlide>;
@@ -345,17 +343,19 @@ export class NgbCarousel implements AfterContentChecked, AfterContentInit, After
 			// The following code need to be done asynchronously, after the dom becomes stable,
 			// otherwise all changes will be undone.
 			afterNextRender(
-				() => {
-					for (const { id } of this.slides) {
-						const element = this._getSlideElement(id);
-						if (id === this.activeId) {
-							element.classList.add('active');
-						} else {
-							element.classList.remove('active');
+				{
+					mixedReadWrite: () => {
+						for (const { id } of this.slides) {
+							const element = this._getSlideElement(id);
+							if (id === this.activeId) {
+								element.classList.add('active');
+							} else {
+								element.classList.remove('active');
+							}
 						}
-					}
+					},
 				},
-				{ phase: AfterRenderPhase.MixedReadWrite, injector: this._injector },
+				{ injector: this._injector },
 			);
 		});
 	}

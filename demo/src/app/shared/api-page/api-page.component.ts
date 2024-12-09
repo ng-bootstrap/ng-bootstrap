@@ -38,11 +38,10 @@ function toMenuItems(names: string[]): MenuItem[] {
 }
 
 @Component({
-	selector: 'ngbd-api-page',
-	standalone: true,
-	changeDetection: ChangeDetectionStrategy.OnPush,
-	imports: [NgbdApiDocs, NgbdApiDocsClass, NgbdApiDocsConfig],
-	template: `
+    selector: 'ngbd-api-page',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [NgbdApiDocs, NgbdApiDocsClass, NgbdApiDocsConfig],
+    template: `
 		@for (component of components; track component) {
 			<ngbd-api-docs [directive]="component"></ngbd-api-docs>
 		}
@@ -52,7 +51,7 @@ function toMenuItems(names: string[]): MenuItem[] {
 		@for (config of configs; track config) {
 			<ngbd-api-docs-config [type]="config"></ngbd-api-docs-config>
 		}
-	`,
+	`
 })
 export class NgbdApiPage extends NgbdComponentPage {
 	get menuItems(): MenuItem[] {

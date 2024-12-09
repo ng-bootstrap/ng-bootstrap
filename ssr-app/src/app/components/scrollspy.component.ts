@@ -2,10 +2,9 @@ import { Component } from '@angular/core';
 import { NgbScrollSpyModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-	selector: 'scrollspy-component',
-	standalone: true,
-	imports: [NgbScrollSpyModule],
-	template: `
+    selector: 'scrollspy-component',
+    imports: [NgbScrollSpyModule],
+    template: `
 		<div class="row">
 			<div class="col-4">
 				<nav [ngbScrollSpyMenu]="spy" class="h-100 flex-column align-items-stretch pe-4 border-end">
@@ -43,6 +42,6 @@ import { NgbScrollSpyModule } from '@ng-bootstrap/ng-bootstrap';
 				</div>
 			</div>
 		</div>
-	`,
+	`
 })
 export class ScrollSpyComponent {}

@@ -2,10 +2,9 @@ import { Component } from '@angular/core';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-	selector: 'carousel-component',
-	standalone: true,
-	imports: [NgbCarouselModule],
-	template: `
+    selector: 'carousel-component',
+    imports: [NgbCarouselModule],
+    template: `
 		<ngb-carousel>
 			<ng-template ngbSlide>
 				<img src="/one.jpeg" alt="Random first slide" />
@@ -29,6 +28,6 @@ import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 				</div>
 			</ng-template>
 		</ngb-carousel>
-	`,
+	`
 })
 export class CarouselComponent {}

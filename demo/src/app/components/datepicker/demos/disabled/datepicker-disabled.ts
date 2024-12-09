@@ -3,10 +3,9 @@ import { NgbCalendar, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-	selector: 'ngbd-datepicker-disabled',
-	standalone: true,
-	imports: [NgbDatepickerModule, FormsModule],
-	templateUrl: './datepicker-disabled.html',
+    selector: 'ngbd-datepicker-disabled',
+    imports: [NgbDatepickerModule, FormsModule],
+    templateUrl: './datepicker-disabled.html'
 })
 export class NgbdDatepickerDisabled {
 	model = inject(NgbCalendar).getToday();

@@ -12,11 +12,10 @@ import { COMPONENT_DATA } from '../../tokens';
  * For Config services, use NgbdApiDocsConfig instead.
  */
 @Component({
-	selector: 'ngbd-api-docs-class',
-	standalone: true,
-	changeDetection: ChangeDetectionStrategy.OnPush,
-	imports: [RouterLink, NgbdApiDocsBadge],
-	templateUrl: './api-docs-class.component.html',
+    selector: 'ngbd-api-docs-class',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [RouterLink, NgbdApiDocsBadge],
+    templateUrl: './api-docs-class.component.html'
 })
 export class NgbdApiDocsClass {
 	private analytics = inject(AnalyticsService);

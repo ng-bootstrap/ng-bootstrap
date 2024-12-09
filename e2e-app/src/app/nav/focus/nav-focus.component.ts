@@ -2,10 +2,9 @@ import { Component } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-	selector: 'nav-focus-component',
-	standalone: true,
-	imports: [NgbModule],
-	templateUrl: './nav-focus.component.html',
+    selector: 'nav-focus-component',
+    imports: [NgbModule],
+    templateUrl: './nav-focus.component.html'
 })
 export class NavFocusComponent {
 	active = 2;

@@ -9,10 +9,9 @@ interface Country {
 }
 
 @Component({
-	selector: 'ngbd-table-overview-demo',
-	standalone: true,
-	imports: [DecimalPipe],
-	template: `
+    selector: 'ngbd-table-overview-demo',
+    imports: [DecimalPipe],
+    template: `
 		<table class="table table-striped">
 			<thead>
 				<tr>
@@ -41,7 +40,7 @@ interface Country {
 				}
 			</tbody>
 		</table>
-	`,
+	`
 })
 export class NgbdTableOverviewDemo {
 	countries: Country[] = [

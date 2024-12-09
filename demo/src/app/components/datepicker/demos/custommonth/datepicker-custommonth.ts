@@ -2,12 +2,11 @@ import { Component, ViewEncapsulation } from '@angular/core';
 import { NgbDatepicker, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-	selector: 'ngbd-datepicker-custommonth',
-	standalone: true,
-	imports: [NgbDatepickerModule],
-	templateUrl: './datepicker-custommonth.html',
-	encapsulation: ViewEncapsulation.None,
-	styles: `
+    selector: 'ngbd-datepicker-custommonth',
+    imports: [NgbDatepickerModule],
+    templateUrl: './datepicker-custommonth.html',
+    encapsulation: ViewEncapsulation.None,
+    styles: `
 		.no-header-padding .ngb-dp-header {
 			padding: 0;
 		}
@@ -17,7 +16,7 @@ import { NgbDatepicker, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 			grid-column-gap: 1rem;
 			grid-row-gap: 0.5rem;
 		}
-	`,
+	`
 })
 export class NgbdDatepickerCustommonth {
 	navigate(datepicker: NgbDatepicker, number: number) {
