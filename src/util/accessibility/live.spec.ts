@@ -19,7 +19,7 @@ describe('LiveAnnouncer', () => {
 		beforeEach(() =>
 			TestBed.configureTestingModule({
 				providers: [Live, { provide: ARIA_LIVE_DELAY, useValue: null }],
-				declarations: [TestComponent],
+				imports: [TestComponent],
 			}),
 		);
 
