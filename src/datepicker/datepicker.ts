@@ -2,7 +2,6 @@ import { fromEvent, merge } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import {
 	afterNextRender,
-	AfterRenderPhase,
 	AfterViewInit,
 	ChangeDetectionStrategy,
 	ChangeDetectorRef,
@@ -550,10 +549,12 @@ export class NgbDatepicker implements AfterViewInit, OnChanges, OnInit, ControlV
 
 	focus() {
 		afterNextRender(
-			() => {
-				this._nativeElement.querySelector<HTMLElement>('div.ngb-dp-day[tabindex="0"]')?.focus();
+			{
+				read: () => {
+					this._nativeElement.querySelector<HTMLElement>('div.ngb-dp-day[tabindex="0"]')?.focus();
+				},
 			},
-			{ phase: AfterRenderPhase.Read, injector: this._injector },
+			{ injector: this._injector },
 		);
 	}
 

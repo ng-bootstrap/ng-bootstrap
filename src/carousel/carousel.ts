@@ -2,7 +2,6 @@ import {
 	AfterContentChecked,
 	AfterContentInit,
 	afterNextRender,
-	AfterRenderPhase,
 	AfterViewInit,
 	ChangeDetectionStrategy,
 	ChangeDetectorRef,
@@ -344,17 +343,19 @@ export class NgbCarousel implements AfterContentChecked, AfterContentInit, After
 			// The following code need to be done asynchronously, after the dom becomes stable,
 			// otherwise all changes will be undone.
 			afterNextRender(
-				() => {
-					for (const { id } of this.slides) {
-						const element = this._getSlideElement(id);
-						if (id === this.activeId) {
-							element.classList.add('active');
-						} else {
-							element.classList.remove('active');
+				{
+					mixedReadWrite: () => {
+						for (const { id } of this.slides) {
+							const element = this._getSlideElement(id);
+							if (id === this.activeId) {
+								element.classList.add('active');
+							} else {
+								element.classList.remove('active');
+							}
 						}
-					}
+					},
 				},
-				{ phase: AfterRenderPhase.MixedReadWrite, injector: this._injector },
+				{ injector: this._injector },
 			);
 		});
 	}

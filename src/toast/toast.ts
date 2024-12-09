@@ -1,7 +1,6 @@
 import {
 	AfterContentInit,
 	afterNextRender,
-	AfterRenderPhase,
 	Attribute,
 	Component,
 	ContentChild,
@@ -143,11 +142,13 @@ export class NgbToast implements AfterContentInit, OnChanges {
 
 	ngAfterContentInit() {
 		afterNextRender(
-			() => {
-				this._init();
-				this.show();
+			{
+				mixedReadWrite: () => {
+					this._init();
+					this.show();
+				},
 			},
-			{ phase: AfterRenderPhase.MixedReadWrite, injector: this._injector },
+			{ injector: this._injector },
 		);
 	}
 
