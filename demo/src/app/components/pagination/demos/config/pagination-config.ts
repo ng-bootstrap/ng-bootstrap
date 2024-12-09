@@ -2,11 +2,10 @@ import { Component } from '@angular/core';
 import { NgbPaginationConfig, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-	selector: 'ngbd-pagination-config',
-	standalone: true,
-	imports: [NgbPaginationModule],
-	templateUrl: './pagination-config.html',
-	providers: [NgbPaginationConfig], // add NgbPaginationConfig to the component providers
+    selector: 'ngbd-pagination-config',
+    imports: [NgbPaginationModule],
+    templateUrl: './pagination-config.html',
+    providers: [NgbPaginationConfig]
 })
 export class NgbdPaginationConfig {
 	page = 4;

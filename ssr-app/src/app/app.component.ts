@@ -17,27 +17,26 @@ import { AccordionComponent } from './components/accordion.component';
 import { ScrollSpyComponent } from './components/scrollspy.component';
 
 @Component({
-	selector: 'app-root',
-	standalone: true,
-	imports: [
-		AccordionComponent,
-		AlertComponent,
-		CarouselComponent,
-		CollapseComponent,
-		DatepickerComponent,
-		DropdownComponent,
-		ModalComponent,
-		NavComponent,
-		PaginationComponent,
-		PopoverComponent,
-		ProgressComponent,
-		RatingComponent,
-		ScrollSpyComponent,
-		TimepickerComponent,
-		TooltipComponent,
-		TypeaheadComponent,
-	],
-	template: `
+    selector: 'app-root',
+    imports: [
+        AccordionComponent,
+        AlertComponent,
+        CarouselComponent,
+        CollapseComponent,
+        DatepickerComponent,
+        DropdownComponent,
+        ModalComponent,
+        NavComponent,
+        PaginationComponent,
+        PopoverComponent,
+        ProgressComponent,
+        RatingComponent,
+        ScrollSpyComponent,
+        TimepickerComponent,
+        TooltipComponent,
+        TypeaheadComponent,
+    ],
+    template: `
 		<div class="container p-5">
 			<h1>ng-bootstrap SSR test application</h1>
 
@@ -89,6 +88,6 @@ import { ScrollSpyComponent } from './components/scrollspy.component';
 			<h2 class="mt-5">Typeahead</h2>
 			<typeahead-component></typeahead-component>
 		</div>
-	`,
+	`
 })
 export class AppComponent {}

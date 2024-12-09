@@ -3,9 +3,8 @@ import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-	templateUrl: './datepicker-container.component.html',
-	standalone: true,
-	imports: [FormsModule, NgbModule],
+    templateUrl: './datepicker-container.component.html',
+    imports: [FormsModule, NgbModule]
 })
 export class DatepickerContainerComponent {
 	constructor(private modalService: NgbModal) {}

@@ -116,13 +116,12 @@ describe('ngb-toast', () => {
 if (isBrowserVisible('ngb-toast animations')) {
 	describe('ngb-toast animations', () => {
 		@Component({
-			standalone: true,
-			imports: [[NgbToast, NgbToastHeader]],
-			template: ` <ngb-toast header="Hello" [autohide]="false" (shown)="onShown()" (hidden)="onHidden()"
+    imports: [[NgbToast, NgbToastHeader]],
+    template: ` <ngb-toast header="Hello" [autohide]="false" (shown)="onShown()" (hidden)="onHidden()"
 				>Cool!</ngb-toast
 			>`,
-			host: { '[class.ngb-reduce-motion]': 'reduceMotion' },
-		})
+    host: { '[class.ngb-reduce-motion]': 'reduceMotion' }
+})
 		class TestAnimationComponent {
 			reduceMotion = true;
 			onShown = () => {};
@@ -187,7 +186,9 @@ if (isBrowserVisible('ngb-toast animations')) {
 	});
 }
 
-@Component({ selector: 'test-cmp', standalone: true, imports: [NgbToast, NgbToastHeader], template: '' })
+@Component({
+    selector: 'test-cmp', imports: [NgbToast, NgbToastHeader], template: ''
+})
 export class TestComponent {
 	visible = true;
 	autohide = true;

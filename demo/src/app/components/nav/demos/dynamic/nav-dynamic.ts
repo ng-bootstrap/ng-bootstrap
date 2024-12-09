@@ -2,11 +2,10 @@ import { Component } from '@angular/core';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-	selector: 'ngbd-nav-dynamic',
-	standalone: true,
-	imports: [NgbNavModule],
-	templateUrl: './nav-dynamic.html',
-	styles: `
+    selector: 'ngbd-nav-dynamic',
+    imports: [NgbNavModule],
+    templateUrl: './nav-dynamic.html',
+    styles: `
 		.close {
 			font-size: 1.4rem;
 			opacity: 0.1;
@@ -15,7 +14,7 @@ import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 		.nav-link:hover > .close {
 			opacity: 0.8;
 		}
-	`,
+	`
 })
 export class NgbdNavDynamic {
 	navs = [1, 2, 3, 4, 5];

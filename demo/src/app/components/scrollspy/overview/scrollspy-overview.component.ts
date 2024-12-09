@@ -9,11 +9,10 @@ import { PageHeaderComponent } from '../../../shared/page-header.component';
 import { NgbdOverviewPage } from '../../../shared/overview-page/overview-page.class';
 
 @Component({
-	selector: 'ngbd-scrollspy-overview',
-	standalone: true,
-	imports: [NgbAlertModule, NgbScrollSpyModule, CodeComponent, RouterLink, NgbdApiDocsBadge, PageHeaderComponent],
-	templateUrl: './scrollspy-overview.component.html',
-	host: { '[class.overview]': 'true' },
+    selector: 'ngbd-scrollspy-overview',
+    imports: [NgbAlertModule, NgbScrollSpyModule, CodeComponent, RouterLink, NgbdApiDocsBadge, PageHeaderComponent],
+    templateUrl: './scrollspy-overview.component.html',
+    host: { '[class.overview]': 'true' }
 })
 export class NgbdScrollSpyOverviewComponent extends NgbdOverviewPage {
 	SERVICE = Snippet({

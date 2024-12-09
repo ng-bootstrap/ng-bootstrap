@@ -4,10 +4,9 @@ import { NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { JsonPipe } from '@angular/common';
 
 @Component({
-	selector: 'ngbd-timepicker-meridian',
-	standalone: true,
-	imports: [NgbTimepickerModule, FormsModule, JsonPipe],
-	templateUrl: './timepicker-meridian.html',
+    selector: 'ngbd-timepicker-meridian',
+    imports: [NgbTimepickerModule, FormsModule, JsonPipe],
+    templateUrl: './timepicker-meridian.html'
 })
 export class NgbdTimepickerMeridian {
 	time = { hour: 13, minute: 30 };

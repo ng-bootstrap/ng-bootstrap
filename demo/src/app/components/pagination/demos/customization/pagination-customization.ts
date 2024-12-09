@@ -4,10 +4,9 @@ import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 const FILTER_PAG_REGEX = /[^0-9]/g;
 
 @Component({
-	selector: 'ngbd-pagination-customization',
-	standalone: true,
-	imports: [NgbPaginationModule],
-	templateUrl: './pagination-customization.html',
+    selector: 'ngbd-pagination-customization',
+    imports: [NgbPaginationModule],
+    templateUrl: './pagination-customization.html'
 })
 export class NgbdPaginationCustomization {
 	page = 4;

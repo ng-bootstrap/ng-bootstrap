@@ -36,10 +36,9 @@ const COUNTRIES: Country[] = [
 ];
 
 @Component({
-	selector: 'ngbd-table-basic',
-	standalone: true,
-	imports: [DecimalPipe],
-	templateUrl: './table-basic.html',
+    selector: 'ngbd-table-basic',
+    imports: [DecimalPipe],
+    templateUrl: './table-basic.html'
 })
 export class NgbdTableBasic {
 	countries = COUNTRIES;

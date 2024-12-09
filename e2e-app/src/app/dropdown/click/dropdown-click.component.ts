@@ -3,9 +3,8 @@ import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-	standalone: true,
-	imports: [FormsModule, NgbModule],
-	template: `
+    imports: [FormsModule, NgbModule],
+    template: `
 		<h3>Dropdown click tests</h3>
 		<form>
 			<div class="mb-3 row row-cols-lg-auto">
@@ -47,7 +46,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 				</div>
 			</div>
 		</form>
-	`,
+	`
 })
 export class DropdownClickComponent {
 	enterClick = false;

@@ -5,10 +5,9 @@ import { NgbAlert, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
-	selector: 'ngbd-alert-selfclosing',
-	standalone: true,
-	imports: [NgbAlertModule],
-	templateUrl: './alert-selfclosing.html',
+    selector: 'ngbd-alert-selfclosing',
+    imports: [NgbAlertModule],
+    templateUrl: './alert-selfclosing.html'
 })
 export class NgbdAlertSelfclosing {
 	private _message$ = new Subject<string>();

@@ -7,12 +7,11 @@ import { FormsModule } from '@angular/forms';
 const VALUES = ['one', 'two', 'three'];
 
 @Component({
-	selector: 'typeahead-component',
-	standalone: true,
-	imports: [FormsModule, NgbTypeaheadModule],
-	template: `
+    selector: 'typeahead-component',
+    imports: [FormsModule, NgbTypeaheadModule],
+    template: `
 		<input id="typeahead-basic" type="text" class="form-control" [(ngModel)]="model" [ngbTypeahead]="search" />
-	`,
+	`
 })
 export class TypeaheadComponent {
 	model = 'one';

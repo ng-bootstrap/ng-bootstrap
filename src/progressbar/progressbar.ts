@@ -7,22 +7,21 @@ import { PercentPipe } from '@angular/common';
  * A directive that provides feedback on the progress of a workflow or an action.
  */
 @Component({
-	selector: 'ngb-progressbar',
-	standalone: true,
-	imports: [PercentPipe],
-	changeDetection: ChangeDetectionStrategy.OnPush,
-	encapsulation: ViewEncapsulation.None,
-	host: {
-		class: 'progress',
-		role: 'progressbar',
-		'[attr.aria-valuenow]': 'getValue()',
-		'aria-valuemin': '0',
-		'[attr.aria-valuemax]': 'max',
-		'[attr.aria-label]': 'ariaLabel',
-		'[style.width.%]': 'stacked ? getPercentValue() : null',
-		'[style.height]': 'height',
-	},
-	template: `
+    selector: 'ngb-progressbar',
+    imports: [PercentPipe],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    encapsulation: ViewEncapsulation.None,
+    host: {
+        class: 'progress',
+        role: 'progressbar',
+        '[attr.aria-valuenow]': 'getValue()',
+        'aria-valuemin': '0',
+        '[attr.aria-valuemax]': 'max',
+        '[attr.aria-label]': 'ariaLabel',
+        '[style.width.%]': 'stacked ? getPercentValue() : null',
+        '[style.height]': 'height',
+    },
+    template: `
 		<div
 			class="progress-bar{{ type ? (textType ? ' bg-' + type : ' text-bg-' + type) : '' }}{{
 				textType ? ' text-' + textType : ''
@@ -36,7 +35,7 @@ import { PercentPipe } from '@angular/common';
 			}
 			<ng-content />
 		</div>
-	`,
+	`
 })
 export class NgbProgressbar {
 	private _config = inject(NgbProgressbarConfig);

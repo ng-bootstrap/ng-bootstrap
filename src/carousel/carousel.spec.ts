@@ -942,17 +942,16 @@ describe('ngb-carousel', () => {
 if (isBrowserVisible('ngb-carousel animations')) {
 	describe('ngb-carousel animations', () => {
 		@Component({
-			standalone: true,
-			imports: [NgbCarousel, NgbSlide],
-			template: `
+    imports: [NgbCarousel, NgbSlide],
+    template: `
 				<ngb-carousel (slid)="onSlid($event)" [interval]="-1">
 					<ng-template ngbSlide id="one">One</ng-template>
 					<ng-template ngbSlide id="two">Two</ng-template>
 					<ng-template ngbSlide id="three">Three</ng-template>
 				</ngb-carousel>
 			`,
-			host: { '[class.ngb-reduce-motion]': 'reduceMotion' },
-		})
+    host: { '[class.ngb-reduce-motion]': 'reduceMotion' }
+})
 		class TestAnimationComponent {
 			reduceMotion = true;
 			onSlid = (payload) => payload;
@@ -1129,24 +1128,22 @@ if (isBrowserVisible('ngb-carousel animations')) {
 }
 
 @Component({
-	selector: 'test-cmp-on-push',
-	standalone: true,
-	imports: [NgbCarousel, NgbSlide],
-	changeDetection: ChangeDetectionStrategy.OnPush,
-	template: `
+    selector: 'test-cmp-on-push',
+    imports: [NgbCarousel, NgbSlide],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    template: `
 		<ngb-carousel>
 			<ng-template ngbSlide>foo</ng-template>
 			<ng-template ngbSlide>bar</ng-template>
 		</ngb-carousel>
-	`,
+	`
 })
 class TestComponentOnPush {}
 
 @Component({
-	selector: 'test-cmp',
-	standalone: true,
-	imports: [NgbCarousel, NgbSlide, TestComponentOnPush],
-	template: '',
+    selector: 'test-cmp',
+    imports: [NgbCarousel, NgbSlide, TestComponentOnPush],
+    template: ''
 })
 class TestComponent {
 	addNewSlide = false;

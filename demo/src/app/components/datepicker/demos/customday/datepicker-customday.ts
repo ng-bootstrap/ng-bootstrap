@@ -3,11 +3,10 @@ import { NgbCalendar, NgbDate, NgbDatepickerModule, NgbDateStruct } from '@ng-bo
 import { FormsModule } from '@angular/forms';
 
 @Component({
-	selector: 'ngbd-datepicker-customday',
-	standalone: true,
-	imports: [NgbDatepickerModule, FormsModule],
-	templateUrl: './datepicker-customday.html',
-	styles: `
+    selector: 'ngbd-datepicker-customday',
+    imports: [NgbDatepickerModule, FormsModule],
+    templateUrl: './datepicker-customday.html',
+    styles: `
 		.custom-day {
 			text-align: center;
 			padding: 0.185rem 0.25rem;
@@ -27,7 +26,7 @@ import { FormsModule } from '@angular/forms';
 		.hidden {
 			display: none;
 		}
-	`,
+	`
 })
 export class NgbdDatepickerCustomday {
 	private calendar = inject(NgbCalendar);
