@@ -399,7 +399,9 @@ describe('ngb-datepicker-month', () => {
 	});
 });
 
-@Component({ selector: 'test-cmp', standalone: true, imports: [NgbDatepickerModule], template: '' })
+@Component({
+    selector: 'test-cmp', imports: [NgbDatepickerModule], template: ''
+})
 class TestComponent {
 	weekdays = true;
 	showWeekNumbers = true;

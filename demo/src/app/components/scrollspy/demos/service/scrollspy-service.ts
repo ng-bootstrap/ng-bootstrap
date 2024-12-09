@@ -2,11 +2,10 @@ import { Component, inject } from '@angular/core';
 import { NgbScrollSpyModule, NgbScrollSpyService } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-	selector: 'ngbd-scrollspy-service',
-	standalone: true,
-	imports: [NgbScrollSpyModule],
-	templateUrl: './scrollspy-service.html',
-	providers: [NgbScrollSpyService],
+    selector: 'ngbd-scrollspy-service',
+    imports: [NgbScrollSpyModule],
+    templateUrl: './scrollspy-service.html',
+    providers: [NgbScrollSpyService]
 })
 export class NgbdScrollSpyService {
 	fragments = ['basic', 'items', 'service', 'nested', 'navbar'];

@@ -2,10 +2,9 @@ import { Component } from '@angular/core';
 import { NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-	selector: 'rating-component',
-	standalone: true,
-	imports: [NgbRatingModule],
-	styles: `
+    selector: 'rating-component',
+    imports: [NgbRatingModule],
+    styles: `
 		.star {
 			position: relative;
 			display: inline-block;
@@ -22,7 +21,7 @@ import { NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
 			color: red;
 		}
 	`,
-	template: `
+    template: `
 		<ng-template #t let-fill="fill">
 			<span class="star" [class.full]="fill === 100">
 				<span class="half" [style.width.%]="fill">&hearts;</span>&hearts;
@@ -30,7 +29,7 @@ import { NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
 		</ng-template>
 
 		<ngb-rating [(rate)]="currentRate" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating>
-	`,
+	`
 })
 export class RatingComponent {
 	currentRate = 3.14;

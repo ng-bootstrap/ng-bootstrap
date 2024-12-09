@@ -3,10 +3,9 @@ import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-	standalone: true,
-	imports: [FormsModule, NgbModule],
-	changeDetection: ChangeDetectionStrategy.OnPush,
-	templateUrl: './datepicker-autoclose.component.html',
+    imports: [FormsModule, NgbModule],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    templateUrl: './datepicker-autoclose.component.html'
 })
 export class DatepickerAutoCloseComponent {
 	autoClose: boolean | 'inside' | 'outside' = true;

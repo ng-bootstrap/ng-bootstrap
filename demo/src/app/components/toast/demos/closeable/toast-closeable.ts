@@ -2,10 +2,9 @@ import { Component } from '@angular/core';
 import { NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-	selector: 'ngbd-toast-closeable',
-	standalone: true,
-	imports: [NgbToastModule],
-	templateUrl: './toast-closeable.html',
+    selector: 'ngbd-toast-closeable',
+    imports: [NgbToastModule],
+    templateUrl: './toast-closeable.html'
 })
 export class NgbdToastCloseable {
 	show = true;

@@ -8,14 +8,13 @@ import { PageHeaderComponent } from '../../../shared/page-header.component';
 import { NgbdOverviewPage } from '../../../shared/overview-page/overview-page.class';
 
 @Component({
-	selector: 'ngbd-datepicker-overview',
-	standalone: true,
-	changeDetection: ChangeDetectionStrategy.OnPush,
-	imports: [CodeComponent, RouterLink, NgbAlertModule, NgbdDatepickerOverviewDemoComponent, PageHeaderComponent],
-	templateUrl: './datepicker-overview.component.html',
-	host: {
-		class: 'overview',
-	},
+    selector: 'ngbd-datepicker-overview',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [CodeComponent, RouterLink, NgbAlertModule, NgbdDatepickerOverviewDemoComponent, PageHeaderComponent],
+    templateUrl: './datepicker-overview.component.html',
+    host: {
+        class: 'overview',
+    }
 })
 export class NgbdDatepickerOverviewComponent extends NgbdOverviewPage {
 	snippets = {

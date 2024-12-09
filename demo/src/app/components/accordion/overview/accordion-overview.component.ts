@@ -10,19 +10,18 @@ import { PageHeaderComponent } from '../../../shared/page-header.component';
 import { NgbdOverviewPage } from '../../../shared/overview-page/overview-page.class';
 
 @Component({
-	selector: 'ngbd-accordion-overview',
-	standalone: true,
-	changeDetection: ChangeDetectionStrategy.OnPush,
-	imports: [
-		CodeComponent,
-		NgbAlertModule,
-		NgbdApiDocsBadge,
-		RouterLink,
-		NgbdAccordionDemoComponent,
-		PageHeaderComponent,
-	],
-	templateUrl: './accordion-overview.component.html',
-	host: { class: 'overview' },
+    selector: 'ngbd-accordion-overview',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        CodeComponent,
+        NgbAlertModule,
+        NgbdApiDocsBadge,
+        RouterLink,
+        NgbdAccordionDemoComponent,
+        PageHeaderComponent,
+    ],
+    templateUrl: './accordion-overview.component.html',
+    host: { class: 'overview' }
 })
 export class NgbdAccordionOverviewComponent extends NgbdOverviewPage {
 	BASIC_ACCORDION = Snippet({

@@ -2,10 +2,9 @@ import { Component } from '@angular/core';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-	selector: 'nav-component',
-	standalone: true,
-	imports: [NgbNavModule],
-	template: `
+    selector: 'nav-component',
+    imports: [NgbNavModule],
+    template: `
 		<ul ngbNav #nav="ngbNav" class="nav-tabs">
 			<li ngbNavItem>
 				<a ngbNavLink>Tab One</a>
@@ -21,6 +20,6 @@ import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 			</li>
 		</ul>
 		<div [ngbNavOutlet]="nav"></div>
-	`,
+	`
 })
 export class NavComponent {}

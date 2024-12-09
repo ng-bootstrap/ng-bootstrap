@@ -31,12 +31,11 @@ export class WikipediaService {
 }
 
 @Component({
-	selector: 'ngbd-typeahead-http',
-	standalone: true,
-	imports: [NgbTypeaheadModule, FormsModule, JsonPipe],
-	templateUrl: './typeahead-http.html',
-	providers: [WikipediaService],
-	styles: `.form-control { width: 300px; }`,
+    selector: 'ngbd-typeahead-http',
+    imports: [NgbTypeaheadModule, FormsModule, JsonPipe],
+    templateUrl: './typeahead-http.html',
+    providers: [WikipediaService],
+    styles: `.form-control { width: 300px; }`
 })
 export class NgbdTypeaheadHttp {
 	private service = inject(WikipediaService);

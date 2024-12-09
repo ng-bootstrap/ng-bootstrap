@@ -19,11 +19,10 @@ import { RouterLink } from '@angular/router';
 import { SideNavComponent } from '../side-nav/side-nav.component';
 
 @Component({
-	selector: 'ngbd-page-wrapper',
-	standalone: true,
-	changeDetection: ChangeDetectionStrategy.OnPush,
-	imports: [NgbCollapseModule, NgbDropdownModule, NgbScrollSpyModule, RouterLink, SideNavComponent],
-	templateUrl: './page-wrapper.component.html',
+    selector: 'ngbd-page-wrapper',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [NgbCollapseModule, NgbDropdownModule, NgbScrollSpyModule, RouterLink, SideNavComponent],
+    templateUrl: './page-wrapper.component.html'
 })
 export class NgbdPageWrapper {
 	private _scrollSpy = inject(NgbScrollSpyService);

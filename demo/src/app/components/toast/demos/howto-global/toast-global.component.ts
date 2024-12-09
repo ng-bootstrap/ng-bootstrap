@@ -5,10 +5,9 @@ import { ToastService } from './toast-service';
 import { ToastsContainer } from './toasts-container.component';
 
 @Component({
-	selector: 'ngbd-toast-global',
-	standalone: true,
-	imports: [NgbTooltipModule, ToastsContainer],
-	templateUrl: './toast-global.component.html',
+    selector: 'ngbd-toast-global',
+    imports: [NgbTooltipModule, ToastsContainer],
+    templateUrl: './toast-global.component.html'
 })
 export class NgbdToastGlobal implements OnDestroy {
 	toastService = inject(ToastService);

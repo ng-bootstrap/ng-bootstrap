@@ -6,13 +6,12 @@ import { PageHeaderComponent } from '../../../shared/page-header.component';
 import { NgbdOverviewPage } from '../../../shared/overview-page/overview-page.class';
 
 @Component({
-	selector: 'ngbd-table-overview',
-	standalone: true,
-	imports: [NgbAlertModule, RouterLink, NgbdTableOverviewDemo, PageHeaderComponent],
-	changeDetection: ChangeDetectionStrategy.OnPush,
-	templateUrl: './table-overview.component.html',
-	host: {
-		'[class.overview]': 'true',
-	},
+    selector: 'ngbd-table-overview',
+    imports: [NgbAlertModule, RouterLink, NgbdTableOverviewDemo, PageHeaderComponent],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    templateUrl: './table-overview.component.html',
+    host: {
+        '[class.overview]': 'true',
+    }
 })
 export class NgbdTableOverviewComponent extends NgbdOverviewPage {}

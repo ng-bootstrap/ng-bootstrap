@@ -16,11 +16,10 @@ const TYPES: { [name: string]: string } = {
 };
 
 @Component({
-	selector: 'ngbd-widget-demo',
-	standalone: true,
-	changeDetection: ChangeDetectionStrategy.OnPush,
-	imports: [RouterLink, CodeComponent, NgbNavModule, LowerCasePipe],
-	templateUrl: './demo.component.html',
+    selector: 'ngbd-widget-demo',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [RouterLink, CodeComponent, NgbNavModule, LowerCasePipe],
+    templateUrl: './demo.component.html'
 })
 export class NgbdWidgetDemoComponent {
 	private _analytics = inject(AnalyticsService);

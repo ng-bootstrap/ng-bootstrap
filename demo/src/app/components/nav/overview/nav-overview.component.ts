@@ -9,11 +9,10 @@ import { PageHeaderComponent } from '../../../shared/page-header.component';
 import { NgbdOverviewPage } from '../../../shared/overview-page/overview-page.class';
 
 @Component({
-	selector: 'ngbd-nav-overview',
-	standalone: true,
-	imports: [NgbNavModule, NgbAlertModule, CodeComponent, RouterLink, NgbdApiDocsBadge, PageHeaderComponent],
-	templateUrl: './nav-overview.component.html',
-	host: { '[class.overview]': 'true' },
+    selector: 'ngbd-nav-overview',
+    imports: [NgbNavModule, NgbAlertModule, CodeComponent, RouterLink, NgbdApiDocsBadge, PageHeaderComponent],
+    templateUrl: './nav-overview.component.html',
+    host: { '[class.overview]': 'true' }
 })
 export class NgbdNavOverviewComponent extends NgbdOverviewPage {
 	BASIC = Snippet({
