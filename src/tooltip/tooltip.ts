@@ -1,6 +1,5 @@
 import {
 	afterRender,
-	AfterRenderPhase,
 	AfterRenderRef,
 	ChangeDetectionStrategy,
 	ChangeDetectorRef,
@@ -255,10 +254,12 @@ export class NgbTooltip implements OnInit, OnDestroy, OnChanges {
 					this._positioning.update();
 				});
 				this._afterRenderRef = afterRender(
-					() => {
-						this._positioning.update();
+					{
+						mixedReadWrite: () => {
+							this._positioning.update();
+						},
 					},
-					{ phase: AfterRenderPhase.MixedReadWrite, injector: this._injector },
+					{ injector: this._injector },
 				);
 			});
 

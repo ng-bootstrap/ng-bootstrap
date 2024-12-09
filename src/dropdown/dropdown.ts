@@ -2,7 +2,6 @@ import {
 	AfterContentInit,
 	afterNextRender,
 	afterRender,
-	AfterRenderPhase,
 	AfterRenderRef,
 	ChangeDetectorRef,
 	ContentChild,
@@ -262,13 +261,15 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 
 	ngAfterContentInit() {
 		afterNextRender(
-			() => {
-				this._applyPlacementClasses();
-				if (this._open) {
-					this._setCloseHandlers();
-				}
+			{
+				write: () => {
+					this._applyPlacementClasses();
+					if (this._open) {
+						this._setCloseHandlers();
+					}
+				},
 			},
-			{ phase: AfterRenderPhase.Write, injector: this._injector },
+			{ injector: this._injector },
 		);
 	}
 
@@ -325,10 +326,12 @@ export class NgbDropdown implements OnInit, AfterContentInit, OnChanges, OnDestr
 						});
 						this._applyPlacementClasses();
 						this._afterRenderRef = afterRender(
-							() => {
-								this._positionMenu();
+							{
+								write: () => {
+									this._positionMenu();
+								},
 							},
-							{ phase: AfterRenderPhase.Write, injector: this._injector },
+							{ injector: this._injector },
 						);
 					});
 				}
