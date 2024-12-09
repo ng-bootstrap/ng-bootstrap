@@ -107,7 +107,7 @@
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
     "@typescript-eslint/utils": "^7.2.0",
-    "bootstrap": "5.3.2",
+    "bootstrap": "5.3.3",
     "bootstrap-icons": "1.9.1",
     "conventional-changelog-cli": "^2.0.12",
     "coverage-istanbul-loader": "^3.0.3",
