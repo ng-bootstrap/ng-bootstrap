@@ -1,6 +1,6 @@
 import { Component, Injectable, Injector, OnDestroy, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { NgbModalConfig, NgbModalOptions, NgbModalUpdatableOptions } from './modal-config';
 import { NgbActiveModal, NgbModal, NgbModalModule, NgbModalRef } from './modal.module';
 import { isBrowserVisible } from '../test/common';
@@ -1376,14 +1376,14 @@ describe('ngb-modal', () => {
 	describe('Lazy loading', () => {
 		@Component({
     template: '<router-outlet />',
-    
+	imports: [RouterOutlet],
 })
 		class AppComponent {}
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				declarations: [AppComponent],
 				imports: [
+					AppComponent,
 					NgbModalModule,
 					RouterModule.forRoot([
 						{

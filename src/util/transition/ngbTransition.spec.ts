@@ -16,7 +16,7 @@ if (isBrowserVisible('ngbRunTransition')) {
 		let zone: NgZone;
 
 		beforeEach(() => {
-			TestBed.configureTestingModule({ declarations: [TestComponent] });
+			TestBed.configureTestingModule({ imports: [TestComponent] });
 
 			component = TestBed.createComponent(TestComponent);
 			component.detectChanges();
@@ -536,7 +536,7 @@ if (isBrowserVisible('ngbRunTransition')) {
 			onTransitionInnerEnd = () => {};
 		}
 
-		beforeEach(() => TestBed.configureTestingModule({ declarations: [TestComponentNested] }));
+		beforeEach(() => TestBed.configureTestingModule({ imports: [TestComponentNested] }));
 
 		it(`should ignore all inner element transitions`, (done) => {
 			const zone = TestBed.inject(NgZone);

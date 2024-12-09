@@ -175,8 +175,7 @@ describe('positioning', () => {
 
 		beforeEach(() => {
 			TestBed.configureTestingModule({
-				declarations: [TestComponent],
-				imports: [NgbTooltipModule],
+				imports: [NgbTooltipModule, TestComponent],
 				providers: [{ provide: NgbRTL, useValue: rtlMock }],
 			});
 		});
@@ -212,6 +211,5 @@ describe('positioning', () => {
 
 @Component({
     selector: 'test-cmpt', template: ``,
-    
 })
 export class TestComponent {}

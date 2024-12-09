@@ -31,9 +31,10 @@ class LazyComponent implements OnDestroy {
 }
 
 @NgModule({
-	declarations: [LazyComponent, LazyModalContent],
 	providers: [LazyService],
 	imports: [
+		LazyComponent,
+		LazyModalContent,
 		NgbModalModule,
 		RouterModule.forChild([
 			{
