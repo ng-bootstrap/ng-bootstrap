@@ -210,6 +210,8 @@ describe('positioning', () => {
 });
 
 @Component({
-    selector: 'test-cmpt', template: ``,
+    selector: 'test-cmpt',
+	template: ``,
+	imports: [NgbTooltip],
 })
 export class TestComponent {}
