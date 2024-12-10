@@ -306,10 +306,14 @@ export class NgbAccordionItem implements AfterContentInit {
 			this._collapseAnimationRunning = false;
 			this.hidden.emit();
 			this._accordion.hidden.emit(this.id);
+			// need if the accordion is used inside a component having OnPush change detection strategy
+			this._cd.markForCheck();
 		});
 		ngbCollapse.shown.pipe(takeUntilDestroyed(this._destroyRef)).subscribe(() => {
 			this.shown.emit();
 			this._accordion.shown.emit(this.id);
+			// need if the accordion is used inside a component having OnPush change detection strategy
+			this._cd.markForCheck();
 		});
 	}
 
