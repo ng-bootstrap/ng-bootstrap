@@ -29,11 +29,6 @@ bootstrapApplication(AppComponent, {
 		),
 		provideHttpClient(withNoXsrfProtection()),
 		provideExperimentalZonelessChangeDetection(),
-		{
-			provide: provideAppInitializer,
-			useFactory: () => {
-				inject(AnalyticsService).start();
-			},
-		},
+		provideAppInitializer(() => inject(AnalyticsService).start()),
 	],
 }).catch((err) => console.error(err));
