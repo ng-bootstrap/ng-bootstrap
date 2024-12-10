@@ -13,12 +13,12 @@ import { NgbDatepickerI18n } from './datepicker-i18n';
 import { NgbDatepickerNavigationSelect } from './datepicker-navigation-select';
 
 @Component({
-    selector: 'ngb-datepicker-navigation',
-    imports: [NgbDatepickerNavigationSelect],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None,
-    styleUrl: './datepicker-navigation.scss',
-    template: `
+	selector: 'ngb-datepicker-navigation',
+	imports: [NgbDatepickerNavigationSelect],
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	encapsulation: ViewEncapsulation.None,
+	styleUrl: './datepicker-navigation.scss',
+	template: `
 		<div class="ngb-dp-arrow ngb-dp-arrow-prev">
 			<button
 				type="button"
@@ -71,7 +71,7 @@ import { NgbDatepickerNavigationSelect } from './datepicker-navigation-select';
 				<span class="ngb-dp-navigation-chevron"></span>
 			</button>
 		</div>
-	`
+	`,
 })
 export class NgbDatepickerNavigation {
 	navigation = NavigationEvent;

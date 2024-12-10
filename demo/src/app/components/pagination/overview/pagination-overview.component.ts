@@ -9,11 +9,11 @@ import { PageHeaderComponent } from '../../../shared/page-header.component';
 import { NgbdOverviewPage } from '../../../shared/overview-page/overview-page.class';
 
 @Component({
-    selector: 'ngbd-pagination-overview',
-    imports: [CodeComponent, NgbAlertModule, NgbdApiDocsBadge, RouterLink, PageHeaderComponent],
-    templateUrl: './pagination-overview.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    host: { '[class.overview]': 'true' }
+	selector: 'ngbd-pagination-overview',
+	imports: [CodeComponent, NgbAlertModule, NgbdApiDocsBadge, RouterLink, PageHeaderComponent],
+	templateUrl: './pagination-overview.component.html',
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	host: { '[class.overview]': 'true' },
 })
 export class NgbdPaginationOverviewComponent extends NgbdOverviewPage {
 	NGFOR = Snippet({

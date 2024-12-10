@@ -7,9 +7,9 @@ import { NgbdPageWrapper } from '../../shared/page-wrapper/page-wrapper.componen
 import { NgbAlertModule, NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [PageHeaderComponent, CodeComponent, NgbCollapseModule, NgbAlertModule, NgbdPageWrapper],
-    templateUrl: './getting-started.page.html'
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	imports: [PageHeaderComponent, CodeComponent, NgbCollapseModule, NgbAlertModule, NgbdPageWrapper],
+	templateUrl: './getting-started.page.html',
 })
 export class GettingStartedPage {
 	bootstrapVersion = inject(LIB_VERSIONS).bootstrap;

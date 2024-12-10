@@ -3,9 +3,9 @@ import { NgbCarousel, NgbCarouselModule, NgbSlideEvent, NgbSlideEventSource } fr
 import { FormsModule } from '@angular/forms';
 
 @Component({
-    selector: 'ngbd-carousel-pause',
-    imports: [NgbCarouselModule, FormsModule],
-    templateUrl: './carousel-pause.html'
+	selector: 'ngbd-carousel-pause',
+	imports: [NgbCarouselModule, FormsModule],
+	templateUrl: './carousel-pause.html',
 })
 export class NgbdCarouselPause {
 	images = [62, 83, 466, 965, 982, 1043, 738].map((n) => `https://picsum.photos/id/${n}/900/500`);

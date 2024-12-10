@@ -400,7 +400,9 @@ describe('ngb-datepicker-month', () => {
 });
 
 @Component({
-    selector: 'test-cmp', imports: [NgbDatepickerModule], template: ''
+	selector: 'test-cmp',
+	imports: [NgbDatepickerModule],
+	template: '',
 })
 class TestComponent {
 	weekdays = true;

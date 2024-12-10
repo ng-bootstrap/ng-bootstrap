@@ -8,9 +8,9 @@ import { AsyncPipe } from '@angular/common';
 import { NPM_VIEWS } from './tokens';
 
 @Component({
-    selector: 'ngbd-app',
-    templateUrl: './app.component.html',
-    imports: [RouterLink, RouterLinkActive, RouterOutlet, VersionPickerComponent, ThemePickerComponent, AsyncPipe]
+	selector: 'ngbd-app',
+	templateUrl: './app.component.html',
+	imports: [RouterLink, RouterLinkActive, RouterOutlet, VersionPickerComponent, ThemePickerComponent, AsyncPipe],
 })
 export class AppComponent {
 	components = COMPONENTS;

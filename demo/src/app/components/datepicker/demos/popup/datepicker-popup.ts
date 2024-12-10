@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
 
 @Component({
-    selector: 'ngbd-datepicker-popup',
-    imports: [NgbDatepickerModule, NgbAlertModule, FormsModule, JsonPipe],
-    templateUrl: './datepicker-popup.html'
+	selector: 'ngbd-datepicker-popup',
+	imports: [NgbDatepickerModule, NgbAlertModule, FormsModule, JsonPipe],
+	templateUrl: './datepicker-popup.html',
 })
 export class NgbdDatepickerPopup {
 	model: NgbDateStruct;

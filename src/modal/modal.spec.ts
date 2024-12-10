@@ -1375,9 +1375,9 @@ describe('ngb-modal', () => {
 
 	describe('Lazy loading', () => {
 		@Component({
-    template: '<router-outlet />',
-	imports: [RouterOutlet],
-})
+			template: '<router-outlet />',
+			imports: [RouterOutlet],
+		})
 		class AppComponent {}
 
 		beforeEach(() => {
@@ -1473,9 +1473,9 @@ export class WithFirstFocusableModalCmpt {}
 export class WithSkipTabindexFirstFocusableModalCmpt {}
 
 @Component({
-    selector: 'test-cmpt',
-    imports: [DestroyableCmpt],
-    template: `
+	selector: 'test-cmpt',
+	imports: [DestroyableCmpt],
+	template: `
 		<div id="testContainer"></div>
 		<ng-template #content>Hello, {{ name }}!</ng-template>
 		<ng-template #destroyableContent><destroyable-cmpt /></ng-template>
@@ -1502,7 +1502,7 @@ export class WithSkipTabindexFirstFocusableModalCmpt {}
 			style="display: inline-block;"
 			>Open</div
 		>
-	`
+	`,
 })
 class TestComponent {
 	name = 'World';

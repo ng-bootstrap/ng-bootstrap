@@ -836,9 +836,9 @@ describe('ngb-pagination', () => {
 });
 
 @Component({
-    selector: 'test-cmp',
-    imports: [NgbPaginationModule],
-    template: ''
+	selector: 'test-cmp',
+	imports: [NgbPaginationModule],
+	template: '',
 })
 class TestComponent {
 	disabled = false;
@@ -856,9 +856,9 @@ class TestComponent {
 }
 
 @Component({
-    selector: 'test-page-cmp',
-    imports: [NgbPaginationModule],
-    template: `<ngb-pagination
+	selector: 'test-page-cmp',
+	imports: [NgbPaginationModule],
+	template: `<ngb-pagination
 		[collectionSize]="collectionSize"
 		[page]="page"
 		[pageSize]="pageSize"
@@ -873,7 +873,7 @@ class TestComponent {
 				</li>
 			}
 		</ng-template>
-	</ngb-pagination>`
+	</ngb-pagination>`,
 })
 class TestPageComponent {
 	pageSize = 10;

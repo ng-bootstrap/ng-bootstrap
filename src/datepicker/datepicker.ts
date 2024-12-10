@@ -125,15 +125,15 @@ export class NgbDatepickerContent {
  * @since 5.3.0
  */
 @Component({
-    selector: 'ngb-datepicker-month',
-    imports: [NgTemplateOutlet],
-    host: {
-        role: 'grid',
-        '(keydown)': 'onKeyDown($event)',
-    },
-    encapsulation: ViewEncapsulation.None,
-    styleUrl: './datepicker-month.scss',
-    template: `
+	selector: 'ngb-datepicker-month',
+	imports: [NgTemplateOutlet],
+	host: {
+		role: 'grid',
+		'(keydown)': 'onKeyDown($event)',
+	},
+	encapsulation: ViewEncapsulation.None,
+	styleUrl: './datepicker-month.scss',
+	template: `
 		@if (viewModel.weekdays.length > 0) {
 			<div class="ngb-dp-week ngb-dp-weekdays" role="row">
 				@if (datepicker.showWeekNumbers) {
@@ -169,7 +169,7 @@ export class NgbDatepickerContent {
 				</div>
 			}
 		}
-	`
+	`,
 })
 export class NgbDatepickerMonth {
 	private _keyboardService = inject(NgbDatepickerKeyboardService);
@@ -208,16 +208,16 @@ export class NgbDatepickerMonth {
  * `NgbDatepicker` is meant to be displayed inline on a page or put inside a popup.
  */
 @Component({
-    exportAs: 'ngbDatepicker',
-    selector: 'ngb-datepicker',
-    imports: [NgTemplateOutlet, NgbDatepickerDayView, NgbDatepickerMonth, NgbDatepickerNavigation],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None,
-    styleUrl: './datepicker.scss',
-    host: {
-        '[class.disabled]': 'model.disabled',
-    },
-    template: `
+	exportAs: 'ngbDatepicker',
+	selector: 'ngb-datepicker',
+	imports: [NgTemplateOutlet, NgbDatepickerDayView, NgbDatepickerMonth, NgbDatepickerNavigation],
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	encapsulation: ViewEncapsulation.None,
+	styleUrl: './datepicker.scss',
+	host: {
+		'[class.disabled]': 'model.disabled',
+	},
+	template: `
 		<ng-template
 			#defaultDayTemplate
 			let-date="date"
@@ -276,10 +276,10 @@ export class NgbDatepickerMonth {
 
 		<ng-template [ngTemplateOutlet]="footerTemplate" />
 	`,
-    providers: [
-        { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NgbDatepicker), multi: true },
-        NgbDatepickerService,
-    ]
+	providers: [
+		{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NgbDatepicker), multi: true },
+		NgbDatepickerService,
+	],
 })
 export class NgbDatepicker implements AfterViewInit, OnChanges, OnInit, ControlValueAccessor {
 	static ngAcceptInputType_autoClose: boolean | string;

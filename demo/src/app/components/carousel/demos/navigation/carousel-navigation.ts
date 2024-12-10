@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { NgbCarouselConfig, NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-    selector: 'ngbd-carousel-navigation',
-    imports: [NgbCarouselModule],
-    templateUrl: './carousel-navigation.html',
-    providers: [NgbCarouselConfig]
+	selector: 'ngbd-carousel-navigation',
+	imports: [NgbCarouselModule],
+	templateUrl: './carousel-navigation.html',
+	providers: [NgbCarouselConfig],
 })
 export class NgbdCarouselNavigation {
 	showNavigationArrows = false;

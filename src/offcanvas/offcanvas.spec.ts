@@ -941,9 +941,9 @@ export class WithFirstFocusableOffcanvasCmpt {}
 export class WithSkipTabindexFirstFocusableOffcanvasCmpt {}
 
 @Component({
-    selector: 'test-cmpt',
-    imports: [DestroyableCmpt],
-    template: `
+	selector: 'test-cmpt',
+	imports: [DestroyableCmpt],
+	template: `
 		<div id="testContainer"></div>
 		<ng-template #content>Hello, {{ name }}!</ng-template>
 		<ng-template #destroyableContent><destroyable-cmpt></destroyable-cmpt></ng-template>
@@ -964,7 +964,7 @@ export class WithSkipTabindexFirstFocusableOffcanvasCmpt {}
 		</ng-template>
 		<button id="open" (click)="open('from button')">Open</button>
 		<div id="open-no-focus" (click)="open('from non focusable element')">Open</div>
-	`
+	`,
 })
 class TestComponent {
 	name = 'World';

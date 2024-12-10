@@ -9,10 +9,10 @@ import {
 import { FormsModule } from '@angular/forms';
 
 @Component({
-    selector: 'ngbd-datepicker-config',
-    imports: [NgbDatepickerModule, FormsModule],
-    templateUrl: './datepicker-config.html',
-    providers: [NgbInputDatepickerConfig]
+	selector: 'ngbd-datepicker-config',
+	imports: [NgbDatepickerModule, FormsModule],
+	templateUrl: './datepicker-config.html',
+	providers: [NgbInputDatepickerConfig],
 })
 export class NgbdDatepickerConfig {
 	model: NgbDateStruct;

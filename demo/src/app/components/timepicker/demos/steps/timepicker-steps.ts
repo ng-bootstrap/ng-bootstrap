@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
 
 @Component({
-    selector: 'ngbd-timepicker-steps',
-    imports: [NgbTimepickerModule, FormsModule, JsonPipe],
-    templateUrl: './timepicker-steps.html'
+	selector: 'ngbd-timepicker-steps',
+	imports: [NgbTimepickerModule, FormsModule, JsonPipe],
+	templateUrl: './timepicker-steps.html',
 })
 export class NgbdTimepickerSteps {
 	time: NgbTimeStruct = { hour: 13, minute: 30, second: 0 };

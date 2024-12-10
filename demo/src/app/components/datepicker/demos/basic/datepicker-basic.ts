@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
 
 @Component({
-    selector: 'ngbd-datepicker-basic',
-    imports: [NgbDatepickerModule, FormsModule, JsonPipe],
-    templateUrl: './datepicker-basic.html'
+	selector: 'ngbd-datepicker-basic',
+	imports: [NgbDatepickerModule, FormsModule, JsonPipe],
+	templateUrl: './datepicker-basic.html',
 })
 export class NgbdDatepickerBasic {
 	today = inject(NgbCalendar).getToday();

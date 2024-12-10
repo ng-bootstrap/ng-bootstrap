@@ -29,13 +29,13 @@ export class NgbDatepickerI18nPersian extends NgbDatepickerI18n {
 }
 
 @Component({
-    selector: 'ngbd-datepicker-jalali',
-    imports: [NgbDatepickerModule, FormsModule, JsonPipe],
-    templateUrl: './datepicker-jalali.html',
-    providers: [
-        { provide: NgbCalendar, useClass: NgbCalendarPersian },
-        { provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nPersian },
-    ]
+	selector: 'ngbd-datepicker-jalali',
+	imports: [NgbDatepickerModule, FormsModule, JsonPipe],
+	templateUrl: './datepicker-jalali.html',
+	providers: [
+		{ provide: NgbCalendar, useClass: NgbCalendarPersian },
+		{ provide: NgbDatepickerI18n, useClass: NgbDatepickerI18nPersian },
+	],
 })
 export class NgbdDatepickerJalali {
 	today = inject(NgbCalendar).getToday();

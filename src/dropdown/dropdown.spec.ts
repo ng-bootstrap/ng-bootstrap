@@ -664,7 +664,9 @@ describe('ngb-dropdown-toggle', () => {
 });
 
 @Component({
-    selector: 'test-cmp', imports: [NgbDropdownModule, NgIf], template: ''
+	selector: 'test-cmp',
+	imports: [NgbDropdownModule, NgIf],
+	template: '',
 })
 class TestComponent {
 	isOpen = false;

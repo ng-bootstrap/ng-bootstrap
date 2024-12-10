@@ -72,9 +72,9 @@ export class NgbdSortableHeader {
 }
 
 @Component({
-    selector: 'ngbd-table-sortable',
-    imports: [DecimalPipe, NgbdSortableHeader],
-    templateUrl: './table-sortable.html'
+	selector: 'ngbd-table-sortable',
+	imports: [DecimalPipe, NgbdSortableHeader],
+	templateUrl: './table-sortable.html',
 })
 export class NgbdTableSortable {
 	countries = COUNTRIES;

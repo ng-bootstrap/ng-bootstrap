@@ -8,9 +8,9 @@ import { PageHeaderComponent } from '../../shared/page-header.component';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [CodeComponent, NgbdPageWrapper, RouterLink, NgbdApiDocsBadge, PageHeaderComponent, NgbTooltipModule],
-    templateUrl: './positioning.page.html'
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	imports: [CodeComponent, NgbdPageWrapper, RouterLink, NgbdApiDocsBadge, PageHeaderComponent, NgbTooltipModule],
+	templateUrl: './positioning.page.html',
 })
 export class PositioningPage {
 	rightExample = Snippet({

@@ -5,10 +5,10 @@ import { JsonPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-    selector: 'ngbd-timepicker-config',
-    imports: [NgbTimepickerModule, FormsModule, JsonPipe],
-    templateUrl: './timepicker-config.html',
-    providers: [NgbTimepickerConfig]
+	selector: 'ngbd-timepicker-config',
+	imports: [NgbTimepickerModule, FormsModule, JsonPipe],
+	templateUrl: './timepicker-config.html',
+	providers: [NgbTimepickerConfig],
 })
 export class NgbdTimepickerConfig {
 	time: NgbTimeStruct = { hour: 13, minute: 30, second: 0 };

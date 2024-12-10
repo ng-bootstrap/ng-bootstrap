@@ -38,25 +38,25 @@ export interface StarTemplateContext {
  * A directive that helps visualising and interacting with a star rating bar.
  */
 @Component({
-    selector: 'ngb-rating',
-    imports: [NgTemplateOutlet],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    encapsulation: ViewEncapsulation.None,
-    host: {
-        class: 'd-inline-flex',
-        '[tabindex]': 'disabled ? -1 : tabindex',
-        role: 'slider',
-        'aria-valuemin': '0',
-        '[attr.aria-valuemax]': 'max',
-        '[attr.aria-valuenow]': 'nextRate',
-        '[attr.aria-valuetext]': 'ariaValueText(nextRate, max)',
-        '[attr.aria-readonly]': 'readonly && !disabled ? true : null',
-        '[attr.aria-disabled]': 'disabled ? true : null',
-        '(blur)': 'handleBlur()',
-        '(keydown)': 'handleKeyDown($event)',
-        '(mouseleave)': 'reset()',
-    },
-    template: `
+	selector: 'ngb-rating',
+	imports: [NgTemplateOutlet],
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	encapsulation: ViewEncapsulation.None,
+	host: {
+		class: 'd-inline-flex',
+		'[tabindex]': 'disabled ? -1 : tabindex',
+		role: 'slider',
+		'aria-valuemin': '0',
+		'[attr.aria-valuemax]': 'max',
+		'[attr.aria-valuenow]': 'nextRate',
+		'[attr.aria-valuetext]': 'ariaValueText(nextRate, max)',
+		'[attr.aria-readonly]': 'readonly && !disabled ? true : null',
+		'[attr.aria-disabled]': 'disabled ? true : null',
+		'(blur)': 'handleBlur()',
+		'(keydown)': 'handleKeyDown($event)',
+		'(mouseleave)': 'reset()',
+	},
+	template: `
 		<ng-template #t let-fill="fill">{{ fill === 100 ? '&#9733;' : '&#9734;' }}</ng-template>
 		@for (_ of contexts; track _; let index = $index) {
 			<span class="visually-hidden">({{ index < nextRate ? '*' : ' ' }})</span>
@@ -72,7 +72,7 @@ export interface StarTemplateContext {
 			</span>
 		}
 	`,
-    providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NgbRating), multi: true }]
+	providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NgbRating), multi: true }],
 })
 export class NgbRating implements ControlValueAccessor, OnInit, OnChanges {
 	contexts: StarTemplateContext[] = [];

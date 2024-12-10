@@ -2,11 +2,11 @@ import { Component, ViewEncapsulation } from '@angular/core';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-    selector: 'ngbd-popover-customclass',
-    imports: [NgbPopoverModule],
-    templateUrl: './popover-customclass.html',
-    encapsulation: ViewEncapsulation.None,
-    styles: `
+	selector: 'ngbd-popover-customclass',
+	imports: [NgbPopoverModule],
+	templateUrl: './popover-customclass.html',
+	encapsulation: ViewEncapsulation.None,
+	styles: `
 		.my-custom-class {
 			background: aliceblue;
 			font-size: 125%;
@@ -14,6 +14,6 @@ import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 		.my-custom-class .arrow::after {
 			border-top-color: aliceblue;
 		}
-	`
+	`,
 })
 export class NgbdPopoverCustomclass {}
