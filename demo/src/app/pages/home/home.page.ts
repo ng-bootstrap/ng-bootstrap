@@ -3,12 +3,12 @@ import { LIB_VERSIONS } from '../../tokens';
 import { Snippet } from '../../services/snippet';
 import { CodeComponent } from '../../shared/code.component';
 import { RouterLink } from '@angular/router';
-import { NgbAlert, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
 	selector: 'ngbd-home',
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	imports: [CodeComponent, RouterLink, NgbAlertModule, NgbAlert],
+	imports: [CodeComponent, RouterLink, NgbAlertModule],
 	templateUrl: './home.page.html',
 })
 export class HomePage {

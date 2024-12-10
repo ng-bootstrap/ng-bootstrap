@@ -1,7 +1,6 @@
 import { Component, inject, Injectable } from '@angular/core';
 import { NgbAlertModule, NgbTimepickerI18n, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
-import { JsonPipe } from '@angular/common';
 
 const I18N_VALUES = {
 	el: { periods: ['πμ', 'μμ'] },
@@ -31,7 +30,7 @@ export class CustomTimepickerI18n extends NgbTimepickerI18n {
 
 @Component({
 	selector: 'ngbd-timepicker-i18n',
-	imports: [NgbTimepickerModule, NgbAlertModule, FormsModule, JsonPipe],
+	imports: [NgbTimepickerModule, NgbAlertModule, FormsModule],
 	templateUrl: './timepicker-i18n.html',
 	providers: [
 		I18n,
