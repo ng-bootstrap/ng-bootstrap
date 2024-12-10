@@ -227,7 +227,7 @@
 						"outputPath": "ssr-app/dist",
 						"index": "ssr-app/src/index.html",
 						"browser": "ssr-app/src/main.ts",
-						"polyfills": ["zone.js"],
+						"polyfills": ["zone.js", "@angular/localize/init"],
 						"tsConfig": "ssr-app/tsconfig.json",
 						"assets": [
 							"ssr-app/src/favicon.ico",
