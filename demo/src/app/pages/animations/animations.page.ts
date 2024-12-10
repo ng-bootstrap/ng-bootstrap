@@ -61,11 +61,11 @@ export class AnimationsPage {
 	recipeAccordion = Snippet({
 		lang: 'html',
 		code: `
-    <ngb-accordion (shown)="onPanelShown($event)" (hidden)="onPanelHidden($event)">
-      <ngb-panel id="one" (shown)="onPanelShown('one')" (hidden)="onPanelHidden('one')">
+    <div ngbAccordion (shown)="onItemShown($event)" (hidden)="onItemHidden($event)">
+      <div ngbAccordionItem="one" (shown)="onItemShown('one')" (hidden)="onItemHidden('one')">
         ...
-      </ngb-panel>
-    </ngb-accordion>
+      </div>
+    </div>
     `,
 	});
 
