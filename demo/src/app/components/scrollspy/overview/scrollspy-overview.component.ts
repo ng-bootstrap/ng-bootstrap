@@ -4,13 +4,12 @@ import { Snippet } from '../../../services/snippet';
 import { NgbAlertModule, NgbScrollSpyModule } from '@ng-bootstrap/ng-bootstrap';
 import { CodeComponent } from '../../../shared/code.component';
 import { RouterLink } from '@angular/router';
-import { NgbdApiDocsBadge } from '../../../shared/api-docs';
 import { PageHeaderComponent } from '../../../shared/page-header.component';
 import { NgbdOverviewPage } from '../../../shared/overview-page/overview-page.class';
 
 @Component({
 	selector: 'ngbd-scrollspy-overview',
-	imports: [NgbAlertModule, NgbScrollSpyModule, CodeComponent, RouterLink, NgbdApiDocsBadge, PageHeaderComponent],
+	imports: [NgbAlertModule, NgbScrollSpyModule, CodeComponent, RouterLink, PageHeaderComponent],
 	templateUrl: './scrollspy-overview.component.html',
 	host: { '[class.overview]': 'true' },
 })
